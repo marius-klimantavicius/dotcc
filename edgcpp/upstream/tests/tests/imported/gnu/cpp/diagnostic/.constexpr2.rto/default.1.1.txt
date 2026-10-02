@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 5: error: missing initializer for constexpr variable
+  extern constexpr int i __attribute__((unused));  // { dg-error "22:declaration of .constexpr. variable .i." }
+         ^
+
+"Test_name.c", line 9: error: a constexpr static data member declaration requires an in-class initializer
+    constexpr static int i __attribute__((unused));  // { dg-error "24:.constexpr. static data member .i." }
+                                                  ^
+
+2 errors detected in the compilation of "Test_name.c".

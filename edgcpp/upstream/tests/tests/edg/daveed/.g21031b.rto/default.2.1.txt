@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=2 --c11 Test_name.c
+"Test_name.c", line 5: error: type of cast must be integral
+  _Static_assert (((tr_sys_dir_t)((void *)0)) == ((void *)0), "values should match");
+                    ^
+
+"Test_name.c", line 5: error: type of cast must be integral
+  _Static_assert (((tr_sys_dir_t)((void *)0)) == ((void *)0), "values should match");
+                                                   ^
+
+"Test_name.c", line 6: error: type of cast must be integral
+  _Static_assert ((((void *)0)) == ((void *)0), "values should match");
+                     ^
+
+"Test_name.c", line 6: error: type of cast must be integral
+  _Static_assert ((((void *)0)) == ((void *)0), "values should match");
+                                     ^
+
+4 errors detected in the compilation of "Test_name.c".

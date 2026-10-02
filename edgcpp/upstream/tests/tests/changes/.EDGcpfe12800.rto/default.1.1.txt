@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 14: error: incomplete type "N" is not allowed
+    struct N sealed {};  // "sealed" is a class modifier.
+             ^
+
+"Test_name.c", line 14: error: expected a ";"
+    struct N sealed {};  // "sealed" is a class modifier.
+                    ^
+
+2 errors detected in the compilation of "Test_name.c".

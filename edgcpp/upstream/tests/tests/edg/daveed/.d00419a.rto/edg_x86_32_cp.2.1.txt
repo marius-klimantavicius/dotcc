@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=2 --microsoft -DNEG Test_name.c
+"Test_name.c", line 21: error: declaration is incompatible with "void WinMain()" (declared at line 20)
+  void CC WinMain() {}
+          ^
+
+"Test_name.c", line 24: error: declaration is incompatible with "void wWinMain()" (declared at line 23)
+  void CC wWinMain() {}
+          ^
+
+"Test_name.c", line 28: error: declaration is incompatible with "void xWinMain()" (declared at line 27)
+  void __stdcall xWinMain() {}
+                 ^
+
+3 errors detected in the compilation of "Test_name.c".

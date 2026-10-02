@@ -1,0 +1,59 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 31: error: "Numbers::zero" is ambiguous
+    double n = Numbers::zero; // expected-error {{reference to 'zero' is ambiguous}}
+                        ^
+
+"Test_name.c", line 32: error: more than one instance of overloaded function "Numbers::f" matches the argument list:
+            function "Ints::f(int)" (declared at line 9)
+            function "Floats::f(float)" (declared at line 15)
+            argument types are: (double)
+    Numbers::f(n); // expected-error{{call to 'f' is ambiguous}}
+    ^
+
+"Test_name.c", line 52: error: no instance of overloaded function "Numbers::f" matches the argument list
+            argument types are: (Numbers::Number)
+    Numbers::f(n); // expected-error {{no matching function for call to 'f'}}
+    ^
+"Test_name.c", line 15: note: function "Floats::f" does not match because argument #1 does not match parameter
+    void f(float); // expected-note 3 {{candidate function}}
+         ^
+"Test_name.c", line 9: note: function "Ints::f" does not match because argument #1 does not match parameter
+    void f(int); // expected-note 3 {{candidate function}}
+         ^
+
+"Test_name.c", line 63: error: no instance of overloaded function "Numbers2::f" matches the argument list
+            argument types are: (Numbers::Number)
+    Numbers2::f(n); // expected-error {{no matching function for call to 'f'}}
+    ^
+"Test_name.c", line 9: note: function "Ints::f" does not match because argument #1 does not match parameter
+    void f(int); // expected-note 3 {{candidate function}}
+         ^
+"Test_name.c", line 15: note: function "Floats::f" does not match because argument #1 does not match parameter
+    void f(float); // expected-note 3 {{candidate function}}
+         ^
+
+"Test_name.c", line 68: error: no suitable constructor exists to convert from "int" to "Numbers::Number"
+    Numbers2::g(i); // expected-error {{no viable conversion from 'int' to 'Number'}}
+                ^
+
+"Test_name.c", line 72: error: no suitable constructor exists to convert from "float" to "Numbers::Number"
+    Numbers2::g(f); // expected-error {{no viable conversion from 'float' to 'Number'}}
+                ^
+
+"Test_name.c", line 86: error: "inline_ns::x" is ambiguous
+    int k1 = x + y; // expected-error 2{{ambiguous}}
+             ^
+
+"Test_name.c", line 86: error: "inline_ns::y" is ambiguous
+    int k1 = x + y; // expected-error 2{{ambiguous}}
+                 ^
+
+"Test_name.c", line 87: error: "inline_ns::x" is ambiguous
+    int k2 = inline_ns::x + inline_ns::y; // expected-error 2{{ambiguous}}
+                        ^
+
+"Test_name.c", line 87: error: "inline_ns::y" is ambiguous
+    int k2 = inline_ns::x + inline_ns::y; // expected-error 2{{ambiguous}}
+                                       ^
+
+10 errors detected in the compilation of "Test_name.c".

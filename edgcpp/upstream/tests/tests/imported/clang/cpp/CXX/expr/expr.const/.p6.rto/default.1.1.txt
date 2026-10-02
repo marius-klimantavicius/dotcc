@@ -1,0 +1,56 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 13: error: name followed by "::" must be a class or namespace name
+  template<typename T> int &is_reference_var = T::error; // expected-error {{'::'}}
+                                               ^
+          detected during instantiation of "int &is_reference_var [with T=long]" at line 26
+
+"Test_name.c", line 6: error: name followed by "::" must be a class or namespace name
+  template<typename T> constexpr int is_constexpr() { return T::error; } // expected-error {{'::'}}
+                                                             ^
+          detected during instantiation of "int is_constexpr<T>() [with T=int]" at line 32
+
+"Test_name.c", line 8: error: name followed by "::" must be a class or namespace name
+  template<typename T> int not_constexpr_var = T::error;
+                                               ^
+          detected during instantiation of "int not_constexpr_var [with T=int]" at line 33
+
+"Test_name.c", line 9: error: name followed by "::" must be a class or namespace name
+  template<typename T> constexpr int is_constexpr_var = T::error; // expected-error {{'::'}}
+                                                        ^
+          detected during instantiation of "const int is_constexpr_var [with T=int]" at line 34
+
+"Test_name.c", line 10: error: name followed by "::" must be a class or namespace name
+  template<typename T> const int is_const_var = T::error; // expected-error {{'::'}}
+                                                ^
+          detected during instantiation of "const int is_const_var [with T=int]" at line 35
+
+"Test_name.c", line 11: error: name followed by "::" must be a class or namespace name
+  template<typename T> const volatile int is_const_volatile_var = T::error;
+                                                                  ^
+          detected during instantiation of "const volatile int is_const_volatile_var [with T=int]" at line 36
+
+"Test_name.c", line 12: error: name followed by "::" must be a class or namespace name
+  template<typename T> T is_dependent_var = T::error; // expected-error {{'::'}}
+                                            ^
+          detected during instantiation of "T is_dependent_var [with T=int]" at line 37
+
+"Test_name.c", line 12: error: name followed by "::" must be a class or namespace name
+  template<typename T> T is_dependent_var = T::error; // expected-error {{'::'}}
+                                            ^
+          detected during instantiation of "T is_dependent_var [with T=const int]" at line 38
+
+"Test_name.c", line 13: error: name followed by "::" must be a class or namespace name
+  template<typename T> int &is_reference_var = T::error; // expected-error {{'::'}}
+                                               ^
+          detected during instantiation of "int &is_reference_var [with T=int]" at line 39
+
+"Test_name.c", line 40: warning: invalid narrowing conversion from "float" to "int"
+    (void)sizeof(int{is_float_var<int>}); // expected-error {{cannot be narrowed}} expected-note {{cast}}
+                     ^
+
+"Test_name.c", line 14: error: name followed by "::" must be a class or namespace name
+  template<typename T> float is_float_var = T::error;
+                                            ^
+          detected during instantiation of "float is_float_var [with T=int]" at line 40
+
+10 errors detected in the compilation of "Test_name.c".

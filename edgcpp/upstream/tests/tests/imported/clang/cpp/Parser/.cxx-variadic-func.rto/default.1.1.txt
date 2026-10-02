@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 10: error: expected a ")"
+  void h(int n..., int m); // expected-error {{expected ')'}} expected-note {{to match}}
+                 ^
+
+"Test_name.c", line 30: error: unexpected end of default argument expression
+    void f(int = a<Ts...>()...);
+                           ^
+
+2 errors detected in the compilation of "Test_name.c".

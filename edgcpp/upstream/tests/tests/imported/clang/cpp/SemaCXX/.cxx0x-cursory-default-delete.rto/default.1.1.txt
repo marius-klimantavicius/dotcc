@@ -1,0 +1,173 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 24: error: function "non_copiable::non_copiable(const non_copiable &)" (declared at line 6) cannot be referenced -- it is a deleted function
+    non_copiable nc2 = nc; // expected-error {{deleted constructor}}
+                       ^
+
+"Test_name.c", line 25: error: function "non_copiable::operator=(const non_copiable &)" (declared at line 7) cannot be referenced -- it is a deleted function
+    nc = nc; // expected-error {{deleted operator}}
+       ^
+
+"Test_name.c", line 31: error: const variable "cncc1" requires an initializer -- class "non_const_copy" has no user-provided default constructor
+    const non_const_copy cncc1; // expected-error {{default initialization of an object of const type 'const non_const_copy' without a user-provided default constructor}}
+                         ^
+
+"Test_name.c", line 32: error: class "non_const_copy" has no suitable copy constructor
+    non_const_copy ncc3 = cncc; // expected-error {{no matching}}
+                          ^
+
+"Test_name.c", line 33: error: no operator "=" matches these operands
+            operand types are: non_const_copy = const non_const_copy
+    ncc = cncc; // expected-error {{no viable overloaded}}
+        ^
+"Test_name.c", line 20: note: function "non_const_copy::operator=(non_const_copy &) &&" does not match because argument #1 does not match parameter
+  non_const_copy& non_const_copy::operator = (non_const_copy&) && = default; // expected-note {{not viable}}
+                                  ^
+"Test_name.c", line 19: note: function "non_const_copy::operator=(non_const_copy &) &" does not match because argument #1 does not match parameter
+  non_const_copy& non_const_copy::operator = (non_const_copy&) & = default; // expected-note {{not viable}}
+                                  ^
+
+"Test_name.c", line 31: warning: variable "cncc1" was declared but never referenced
+    const non_const_copy cncc1; // expected-error {{default initialization of an object of const type 'const non_const_copy' without a user-provided default constructor}}
+                         ^
+
+"Test_name.c", line 110: error: const variable "si" requires an initializer -- class "some_init" has no user-provided default constructor
+    const some_init si; // expected-error {{default initialization of an object of const type 'const some_init' without a user-provided default constructor}}
+                    ^
+
+"Test_name.c", line 111: error: const variable "sim" requires an initializer -- class "some_init_mutable" has no user-provided default constructor
+    const some_init_mutable sim; // ok
+                            ^
+
+"Test_name.c", line 114: error: const variable "ssi" requires an initializer -- class "sub_some_init" has no user-provided default constructor
+    const sub_some_init ssi; // expected-error {{default initialization of an object of const type 'const sub_some_init' without a user-provided default constructor}}
+                        ^
+
+"Test_name.c", line 117: error: const variable "sicon" requires an initializer -- class "some_init_container" has no user-provided default constructor
+    const some_init_container sicon; // expected-error {{default initialization of an object of const type 'const some_init_container' without a user-provided default constructor}}
+                              ^
+
+"Test_name.c", line 121: error: const variable "ppcf" requires an initializer -- class "param_pack_ctor_field" has no user-provided default constructor
+    const param_pack_ctor_field ppcf; // ok
+                                ^
+
+"Test_name.c", line 123: error: const variable "mppad" requires an initializer -- class "multi_param_pack_and_defaulted" has no user-provided default constructor
+    const multi_param_pack_and_defaulted mppad; // expected-error {{default initialization of an object of const type 'const multi_param_pack_and_defaulted' without a user-provided default constructor}}
+                                         ^
+
+"Test_name.c", line 124: error: const variable "itcad" requires an initializer -- class "ignored_template_ctor_and_def" has no user-provided default constructor
+    const ignored_template_ctor_and_def itcad; // expected-error {{default initialization of an object of const type 'const ignored_template_ctor_and_def' without a user-provided default constructor}}
+                                        ^
+
+"Test_name.c", line 108: warning: variable "nf" was declared but never referenced
+    const no_fields nf; // ok
+                    ^
+
+"Test_name.c", line 109: warning: variable "ai" was declared but never referenced
+    const all_init ai; // ok
+                   ^
+
+"Test_name.c", line 119: warning: variable "nfc" was declared but never referenced
+    const no_fields_container nfc; // ok
+                              ^
+
+"Test_name.c", line 123: warning: variable "mppad" was declared but never referenced
+    const multi_param_pack_and_defaulted mppad; // expected-error {{default initialization of an object of const type 'const multi_param_pack_and_defaulted' without a user-provided default constructor}}
+                                         ^
+
+"Test_name.c", line 124: warning: variable "itcad" was declared but never referenced
+    const ignored_template_ctor_and_def itcad; // expected-error {{default initialization of an object of const type 'const ignored_template_ctor_and_def' without a user-provided default constructor}}
+                                        ^
+
+"Test_name.c", line 129: error: the parameter of this defaulted copy-constructor cannot be const because a base or member copy constructor parameter is non-const
+    non_const_derived(const non_const_derived&) = default; // expected-error {{requires it to be non-const}}
+    ^
+
+"Test_name.c", line 134: error: invalid type for defaulted constructor
+    bad_decls(volatile bad_decls&) = default; // expected-error {{may not be volatile}}
+    ^
+
+"Test_name.c", line 135: error: invalid type for defaulted assignment operator
+    bad_decls&& operator = (bad_decls) = default; // expected-error {{lvalue reference}} expected-error {{must return 'bad_decls &'}}
+                ^
+
+"Test_name.c", line 136: error: invalid type for defaulted assignment operator
+    bad_decls& operator = (volatile bad_decls&) = default; // expected-error {{may not be volatile}}
+               ^
+
+"Test_name.c", line 137: error: invalid type for defaulted assignment operator
+    bad_decls& operator = (const bad_decls&) const = default; // expected-error {{may not have 'const', 'constexpr' or 'volatile' qualifiers}}
+               ^
+
+"Test_name.c", line 142: error: invalid redeclaration of member function "DefaultDelete::DefaultDelete()" (declared at line 141)
+    DefaultDelete() = delete; // expected-error {{constructor cannot be redeclared}}
+    ^
+
+"Test_name.c", line 145: error: invalid redeclaration of member function "DefaultDelete::~DefaultDelete()" (declared at line 144)
+    ~DefaultDelete() = delete; // expected-error {{destructor cannot be redeclared}}
+    ^
+
+"Test_name.c", line 148: error: invalid redeclaration of member function "DefaultDelete::operator=(const DefaultDelete &)" (declared at line 147)
+    DefaultDelete &operator=(const DefaultDelete &) = delete; // expected-error {{class member cannot be redeclared}}
+                   ^
+
+"Test_name.c", line 153: error: invalid redeclaration of member function "DeleteDefault::DeleteDefault()" (declared at line 152)
+    DeleteDefault() = default; // expected-error {{constructor cannot be redeclared}}
+    ^
+
+"Test_name.c", line 156: error: invalid redeclaration of member function "DeleteDefault::~DeleteDefault()" (declared at line 155)
+    ~DeleteDefault() = default; // expected-error {{destructor cannot be redeclared}}
+    ^
+
+"Test_name.c", line 159: error: invalid redeclaration of member function "DeleteDefault::operator=(const DeleteDefault &)" (declared at line 158)
+    DeleteDefault &operator=(const DeleteDefault &) = default; // expected-error {{class member cannot be redeclared}}
+                   ^
+
+"Test_name.c", line 174: error: exception specification for virtual function "except_spec_d_good::~except_spec_d_good" is incompatible with that of overridden function "except_spec_b::~except_spec_b"
+    ~except_spec_d_good();
+    ^
+
+"Test_name.c", line 174: error: exception specification for virtual function "except_spec_d_good::~except_spec_d_good" is incompatible with that of overridden function "except_spec_a::~except_spec_a"
+    ~except_spec_d_good();
+    ^
+
+"Test_name.c", line 178: error: exception specification for virtual function "except_spec_d_good2::~except_spec_d_good2" is incompatible with that of overridden function "except_spec_b::~except_spec_b"
+    ~except_spec_d_good2() = default;
+    ^
+
+"Test_name.c", line 178: error: exception specification for virtual function "except_spec_d_good2::~except_spec_d_good2" is incompatible with that of overridden function "except_spec_a::~except_spec_a"
+    ~except_spec_d_good2() = default;
+    ^
+
+"Test_name.c", line 189: error: exception specification for implicitly declared virtual function "except_spec_d_mismatch::~except_spec_d_mismatch" is incompatible with that of overridden function "except_spec_b::~except_spec_b"
+  struct except_spec_d_mismatch : except_spec_a, except_spec_b {
+         ^
+
+"Test_name.c", line 189: error: exception specification for implicitly declared virtual function "except_spec_d_mismatch::~except_spec_d_mismatch" is incompatible with that of overridden function "except_spec_a::~except_spec_a"
+  struct except_spec_d_mismatch : except_spec_a, except_spec_b {
+         ^
+
+"Test_name.c", line 192: error: exception specification for implicitly declared virtual function "except_spec_d_match::~except_spec_d_match" is incompatible with that of overridden function "except_spec_b::~except_spec_b"
+  struct except_spec_d_match : except_spec_a, except_spec_b {
+         ^
+
+"Test_name.c", line 192: error: exception specification for implicitly declared virtual function "except_spec_d_match::~except_spec_d_match" is incompatible with that of overridden function "except_spec_a::~except_spec_a"
+  struct except_spec_d_match : except_spec_a, except_spec_b {
+         ^
+
+"Test_name.c", line 202: error: a predeclared function cannot be deleted
+  void *operator new(size_t) = delete; // expected-error {{deleted definition must be first declaration}} expected-note {{implicit}}
+                               ^
+
+"Test_name.c", line 203: error: a predeclared function cannot be deleted
+  void operator delete(void *) noexcept = delete; // expected-error {{deleted definition must be first declaration}} expected-note {{implicit}}
+                                          ^
+
+"Test_name.c", line 208: error: "= delete" can only appear on the first declaration of a function
+  template<typename T> void delete_template_too_late() = delete; // expected-error {{must be first decl}} expected-note {{substitution failure}}
+                            ^
+
+"Test_name.c", line 214: error: "= delete" can only appear on the first declaration of a function
+  template<typename T> void DeletedMemberTemplateTooLate::f() = delete; // expected-error {{must be first decl}} expected-note {{substitution failure}}
+                                                          ^
+
+35 errors detected in the compilation of "Test_name.c".

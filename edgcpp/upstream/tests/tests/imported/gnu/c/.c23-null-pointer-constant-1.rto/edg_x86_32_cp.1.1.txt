@@ -1,0 +1,173 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 62: warning: expression has no effect
+    (1 ? p1 : 0);
+    ^
+
+"Test_name.c", line 63: warning: expression has no effect
+    (1 ? p1 : 0L);
+    ^
+
+"Test_name.c", line 64: warning: expression has no effect
+    (1 ? p1 : 0ULL);
+    ^
+
+"Test_name.c", line 65: warning: expression has no effect
+    (1 ? p1 : (char) 0);
+    ^
+
+"Test_name.c", line 66: warning: expression has no effect
+    (1 ? p1 : (bool) 0);
+    ^
+
+"Test_name.c", line 67: warning: expression has no effect
+    (1 ? p1 : (enum e) 0);
+    ^
+
+"Test_name.c", line 68: warning: expression has no effect
+    (1 ? p1 : false);
+    ^
+
+"Test_name.c", line 69: warning: expression has no effect
+    (1 ? p1 : BZERO);
+    ^
+
+"Test_name.c", line 70: warning: expression has no effect
+    (1 ? p1 : (enum e2) 0);
+    ^
+
+"Test_name.c", line 71: warning: expression has no effect
+    (1 ? p1 : LZERO);
+    ^
+
+"Test_name.c", line 72: warning: expression has no effect
+    (1 ? p1 : (enum e3) 0);
+    ^
+
+"Test_name.c", line 77: warning: expression has no effect
+    p1 == 0;
+    ^
+
+"Test_name.c", line 78: warning: expression has no effect
+    p1 == 0LL;
+    ^
+
+"Test_name.c", line 79: warning: expression has no effect
+    p1 == 0U;
+    ^
+
+"Test_name.c", line 80: warning: expression has no effect
+    p1 == (char) 0;
+    ^
+
+"Test_name.c", line 81: warning: expression has no effect
+    p1 == (bool) 0;
+    ^
+
+"Test_name.c", line 82: warning: expression has no effect
+    p1 == (enum e) 0;
+    ^
+
+"Test_name.c", line 83: warning: expression has no effect
+    p1 == false;
+    ^
+
+"Test_name.c", line 84: warning: expression has no effect
+    p1 == BZERO;
+    ^
+
+"Test_name.c", line 85: warning: expression has no effect
+    p1 == (enum e2) 0;
+    ^
+
+"Test_name.c", line 86: warning: expression has no effect
+    p1 == LZERO;
+    ^
+
+"Test_name.c", line 87: warning: expression has no effect
+    p1 == (enum e3) 0;
+    ^
+
+"Test_name.c", line 92: warning: expression has no effect
+    p1 != 0;
+    ^
+
+"Test_name.c", line 93: warning: expression has no effect
+    p1 != 0LL;
+    ^
+
+"Test_name.c", line 94: warning: expression has no effect
+    p1 != 0U;
+    ^
+
+"Test_name.c", line 95: warning: expression has no effect
+    p1 != (char) 0;
+    ^
+
+"Test_name.c", line 96: warning: expression has no effect
+    p1 != (bool) 0;
+    ^
+
+"Test_name.c", line 97: warning: expression has no effect
+    p1 != (enum e) 0;
+    ^
+
+"Test_name.c", line 98: warning: expression has no effect
+    p1 != false;
+    ^
+
+"Test_name.c", line 99: warning: expression has no effect
+    p1 != BZERO;
+    ^
+
+"Test_name.c", line 100: warning: expression has no effect
+    p1 != (enum e2) 0;
+    ^
+
+"Test_name.c", line 101: warning: expression has no effect
+    p1 != LZERO;
+    ^
+
+"Test_name.c", line 102: warning: expression has no effect
+    p1 != (enum e3) 0;
+    ^
+
+"Test_name.c", line 108: warning: statement is unreachable
+    return 0UL;
+    ^
+
+"Test_name.c", line 109: warning: statement is unreachable
+    return 0LL;
+    ^
+
+"Test_name.c", line 110: warning: statement is unreachable
+    return (char) 0;
+    ^
+
+"Test_name.c", line 111: warning: statement is unreachable
+    return (bool) 0;
+    ^
+
+"Test_name.c", line 112: warning: statement is unreachable
+    return (enum e) 0;
+    ^
+
+"Test_name.c", line 113: warning: statement is unreachable
+    return false;
+    ^
+
+"Test_name.c", line 114: warning: statement is unreachable
+    return BZERO;
+    ^
+
+"Test_name.c", line 115: warning: statement is unreachable
+    return (enum e2) 0;
+    ^
+
+"Test_name.c", line 116: warning: statement is unreachable
+    return LZERO;
+    ^
+
+"Test_name.c", line 117: warning: statement is unreachable
+    return (enum e3) 0;
+    ^
+

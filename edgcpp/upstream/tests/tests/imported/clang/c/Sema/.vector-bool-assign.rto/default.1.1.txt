@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 15: error: the "ext_vector_type" attribute may appear only in a typedef
+    v8b m1 = __builtin_convertvector(v, __attribute__((ext_vector_type(8))) int);
+                                                       ^
+
+"Test_name.c", line 16: error: the "ext_vector_type" attribute may appear only in a typedef
+    v8b m2 = __builtin_convertvector(v, __attribute__((ext_vector_type(8))) unsigned);
+                                                       ^
+
+"Test_name.c", line 17: error: the "ext_vector_type" attribute may appear only in a typedef
+    v8b m3 = __builtin_convertvector(v, __attribute__((ext_vector_type(8))) long);
+                                                       ^
+
+"Test_name.c", line 18: error: the "ext_vector_type" attribute may appear only in a typedef
+    v8b m4 = __builtin_convertvector(v, __attribute__((ext_vector_type(8))) unsigned long);
+                                                       ^
+
+"Test_name.c", line 19: error: the "ext_vector_type" attribute may appear only in a typedef
+    v8b m5 = __builtin_convertvector(v, __attribute__((ext_vector_type(8))) char);
+                                                       ^
+
+"Test_name.c", line 20: error: the "ext_vector_type" attribute may appear only in a typedef
+    v8b m6 = __builtin_convertvector(v, __attribute__((ext_vector_type(8))) unsigned char);
+                                                       ^
+
+"Test_name.c", line 21: error: argument of type "v8i" (aka "__attribute((ext_vector_type(8))) int") is incompatible with parameter of type "v8b" (aka "__attribute((ext_vector_type(8))) _Bool")
+    foo(v);
+        ^
+
+"Test_name.c", line 22: error: return value type does not match the function type
+    return v;
+           ^
+
+"Test_name.c", line 15: warning: variable "m1" was declared but never referenced
+    v8b m1 = __builtin_convertvector(v, __attribute__((ext_vector_type(8))) int);
+        ^
+
+"Test_name.c", line 16: warning: variable "m2" was declared but never referenced
+    v8b m2 = __builtin_convertvector(v, __attribute__((ext_vector_type(8))) unsigned);
+        ^
+
+"Test_name.c", line 17: warning: variable "m3" was declared but never referenced
+    v8b m3 = __builtin_convertvector(v, __attribute__((ext_vector_type(8))) long);
+        ^
+
+"Test_name.c", line 18: warning: variable "m4" was declared but never referenced
+    v8b m4 = __builtin_convertvector(v, __attribute__((ext_vector_type(8))) unsigned long);
+        ^
+
+"Test_name.c", line 19: warning: variable "m5" was declared but never referenced
+    v8b m5 = __builtin_convertvector(v, __attribute__((ext_vector_type(8))) char);
+        ^
+
+"Test_name.c", line 20: warning: variable "m6" was declared but never referenced
+    v8b m6 = __builtin_convertvector(v, __attribute__((ext_vector_type(8))) unsigned char);
+        ^
+
+"Test_name.c", line 26: error: return value type does not match the function type
+    return vf; // expected-error{{returning 'v4f' (vector of 4 'float' values) from a function with incompatible result type 'v4b' (vector of 4 'bool' values}}
+           ^
+
+"Test_name.c", line 30: error: return value type does not match the function type
+    return v; // expected-error{{returning 'v8i' (vector of 8 'int' values) from a function with incompatible result type 'v4b' (vector of 4 'bool' values)}}
+           ^
+
+10 errors detected in the compilation of "Test_name.c".

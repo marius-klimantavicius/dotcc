@@ -1,0 +1,5 @@
+cpfe -DTEST_NUMBER=1 -r Test_name.c
+"test.h", line 3: remark: variable "OlInherit" was declared but never referenced
+  static void (*OlInherit)() = _XtInherit;
+                ^
+

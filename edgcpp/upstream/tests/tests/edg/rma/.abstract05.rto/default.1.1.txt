@@ -1,0 +1,11 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --set_flag=no_checking_pragmas --strict Test_name.c
+"Test_name.c", line 11: error: array of abstract class "Shape" is not allowed:
+            function "Shape::scale" is a pure virtual function
+  void rotate_all(Shape shapes[])
+                        ^
+
+"Test_name.c", line 11: remark: parameter "shapes" was never referenced
+  void rotate_all(Shape shapes[])
+                        ^
+
+1 error detected in the compilation of "Test_name.c".

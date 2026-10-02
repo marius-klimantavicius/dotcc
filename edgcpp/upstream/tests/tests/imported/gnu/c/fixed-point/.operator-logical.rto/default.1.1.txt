@@ -1,0 +1,374 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 48: error: expected a ";"
+    short _Fract sf;
+                 ^
+
+"Test_name.c", line 49: warning: expression has no effect
+    _Fract f;
+    ^
+
+"Test_name.c", line 49: warning: variable "_Fract" is used before its value is set
+    _Fract f;
+    ^
+
+"Test_name.c", line 49: error: expected a ";"
+    _Fract f;
+           ^
+
+"Test_name.c", line 50: error: "_Fract" has already been declared in the current scope
+    long _Fract lf;
+         ^
+
+"Test_name.c", line 50: error: expected a ";"
+    long _Fract lf;
+                ^
+
+"Test_name.c", line 51: error: "_Fract" has already been declared in the current scope
+    long long _Fract llf;
+              ^
+
+"Test_name.c", line 51: error: expected a ";"
+    long long _Fract llf;
+                     ^
+
+"Test_name.c", line 52: error: "_Fract" has already been declared in the current scope
+    unsigned short _Fract usf;
+                   ^
+
+"Test_name.c", line 52: error: expected a ";"
+    unsigned short _Fract usf;
+                          ^
+
+"Test_name.c", line 53: error: "_Fract" has already been declared in the current scope
+    unsigned _Fract uf;
+             ^
+
+"Test_name.c", line 53: error: expected a ";"
+    unsigned _Fract uf;
+                    ^
+
+"Test_name.c", line 54: error: "_Fract" has already been declared in the current scope
+    unsigned long _Fract ulf;
+                  ^
+
+"Test_name.c", line 54: error: expected a ";"
+    unsigned long _Fract ulf;
+                         ^
+
+"Test_name.c", line 55: error: "_Fract" has already been declared in the current scope
+    unsigned long long _Fract ullf;
+                       ^
+
+"Test_name.c", line 55: error: expected a ";"
+    unsigned long long _Fract ullf;
+                              ^
+
+"Test_name.c", line 56: error: identifier "_Sat" is undefined
+    _Sat short _Fract Ssf;
+    ^
+
+"Test_name.c", line 56: error: expected a ";"
+    _Sat short _Fract Ssf;
+         ^
+
+"Test_name.c", line 57: error: expected a ";"
+    _Sat _Fract Sf;
+         ^
+
+"Test_name.c", line 58: error: expected a ";"
+    _Sat long _Fract Slf;
+         ^
+
+"Test_name.c", line 59: error: expected a ";"
+    _Sat long long _Fract Sllf;
+         ^
+
+"Test_name.c", line 60: error: expected a ";"
+    _Sat unsigned short _Fract Susf;
+         ^
+
+"Test_name.c", line 61: error: expected a ";"
+    _Sat unsigned _Fract Suf;
+         ^
+
+"Test_name.c", line 62: error: expected a ";"
+    _Sat unsigned long _Fract Sulf;
+         ^
+
+"Test_name.c", line 63: error: expected a ";"
+    _Sat unsigned long long _Fract Sullf;
+         ^
+
+"Test_name.c", line 64: error: expected a ";"
+    short _Accum sa;
+                 ^
+
+"Test_name.c", line 65: warning: expression has no effect
+    _Accum a;
+    ^
+
+"Test_name.c", line 65: warning: variable "_Accum" is used before its value is set
+    _Accum a;
+    ^
+
+"Test_name.c", line 65: error: expected a ";"
+    _Accum a;
+           ^
+
+"Test_name.c", line 66: error: "_Accum" has already been declared in the current scope
+    long _Accum la;
+         ^
+
+"Test_name.c", line 66: error: expected a ";"
+    long _Accum la;
+                ^
+
+"Test_name.c", line 67: error: "_Accum" has already been declared in the current scope
+    long long _Accum lla;
+              ^
+
+"Test_name.c", line 67: error: expected a ";"
+    long long _Accum lla;
+                     ^
+
+"Test_name.c", line 68: error: "_Accum" has already been declared in the current scope
+    unsigned short _Accum usa;
+                   ^
+
+"Test_name.c", line 68: error: expected a ";"
+    unsigned short _Accum usa;
+                          ^
+
+"Test_name.c", line 69: error: "_Accum" has already been declared in the current scope
+    unsigned _Accum ua;
+             ^
+
+"Test_name.c", line 69: error: expected a ";"
+    unsigned _Accum ua;
+                    ^
+
+"Test_name.c", line 70: error: "_Accum" has already been declared in the current scope
+    unsigned long _Accum ula;
+                  ^
+
+"Test_name.c", line 70: error: expected a ";"
+    unsigned long _Accum ula;
+                         ^
+
+"Test_name.c", line 71: error: "_Accum" has already been declared in the current scope
+    unsigned long long _Accum ulla;
+                       ^
+
+"Test_name.c", line 71: error: expected a ";"
+    unsigned long long _Accum ulla;
+                              ^
+
+"Test_name.c", line 72: error: expected a ";"
+    _Sat short _Accum Ssa;
+         ^
+
+"Test_name.c", line 73: error: expected a ";"
+    _Sat _Accum Sa;
+         ^
+
+"Test_name.c", line 74: error: expected a ";"
+    _Sat long _Accum Sla;
+         ^
+
+"Test_name.c", line 75: error: expected a ";"
+    _Sat long long _Accum Slla;
+         ^
+
+"Test_name.c", line 76: error: expected a ";"
+    _Sat unsigned short _Accum Susa;
+         ^
+
+"Test_name.c", line 77: error: expected a ";"
+    _Sat unsigned _Accum Sua;
+         ^
+
+"Test_name.c", line 78: error: expected a ";"
+    _Sat unsigned long _Accum Sula;
+         ^
+
+"Test_name.c", line 79: error: expected a ";"
+    _Sat unsigned long long _Accum Sulla;
+         ^
+
+"Test_name.c", line 83: error: identifier "sf" is undefined
+    FIXED_POINT_LOGICAL (sf);
+    ^
+
+"Test_name.c", line 84: error: identifier "f" is undefined
+    FIXED_POINT_LOGICAL (f);
+    ^
+
+"Test_name.c", line 85: error: identifier "lf" is undefined
+    FIXED_POINT_LOGICAL (lf);
+    ^
+
+"Test_name.c", line 86: error: identifier "llf" is undefined
+    FIXED_POINT_LOGICAL (llf);
+    ^
+
+"Test_name.c", line 87: error: identifier "usf" is undefined
+    FIXED_POINT_LOGICAL (usf);
+    ^
+
+"Test_name.c", line 88: error: identifier "uf" is undefined
+    FIXED_POINT_LOGICAL (uf);
+    ^
+
+"Test_name.c", line 89: error: identifier "ulf" is undefined
+    FIXED_POINT_LOGICAL (ulf);
+    ^
+
+"Test_name.c", line 90: error: identifier "ullf" is undefined
+    FIXED_POINT_LOGICAL (ullf);
+    ^
+
+"Test_name.c", line 91: error: identifier "Ssf" is undefined
+    FIXED_POINT_LOGICAL (Ssf);
+    ^
+
+"Test_name.c", line 92: error: identifier "Sf" is undefined
+    FIXED_POINT_LOGICAL (Sf);
+    ^
+
+"Test_name.c", line 93: error: identifier "Slf" is undefined
+    FIXED_POINT_LOGICAL (Slf);
+    ^
+
+"Test_name.c", line 94: error: identifier "Sllf" is undefined
+    FIXED_POINT_LOGICAL (Sllf);
+    ^
+
+"Test_name.c", line 95: error: identifier "Susf" is undefined
+    FIXED_POINT_LOGICAL (Susf);
+    ^
+
+"Test_name.c", line 96: error: identifier "Suf" is undefined
+    FIXED_POINT_LOGICAL (Suf);
+    ^
+
+"Test_name.c", line 97: error: identifier "Sulf" is undefined
+    FIXED_POINT_LOGICAL (Sulf);
+    ^
+
+"Test_name.c", line 98: error: identifier "Sullf" is undefined
+    FIXED_POINT_LOGICAL (Sullf);
+    ^
+
+"Test_name.c", line 99: error: identifier "sa" is undefined
+    FIXED_POINT_LOGICAL (sa);
+    ^
+
+"Test_name.c", line 100: error: identifier "a" is undefined
+    FIXED_POINT_LOGICAL (a);
+    ^
+
+"Test_name.c", line 101: error: identifier "la" is undefined
+    FIXED_POINT_LOGICAL (la);
+    ^
+
+"Test_name.c", line 102: error: identifier "lla" is undefined
+    FIXED_POINT_LOGICAL (lla);
+    ^
+
+"Test_name.c", line 103: error: identifier "usa" is undefined
+    FIXED_POINT_LOGICAL (usa);
+    ^
+
+"Test_name.c", line 104: error: identifier "ua" is undefined
+    FIXED_POINT_LOGICAL (ua);
+    ^
+
+"Test_name.c", line 105: error: identifier "ula" is undefined
+    FIXED_POINT_LOGICAL (ula);
+    ^
+
+"Test_name.c", line 106: error: identifier "ulla" is undefined
+    FIXED_POINT_LOGICAL (ulla);
+    ^
+
+"Test_name.c", line 107: error: identifier "Ssa" is undefined
+    FIXED_POINT_LOGICAL (Ssa);
+    ^
+
+"Test_name.c", line 108: error: identifier "Sa" is undefined
+    FIXED_POINT_LOGICAL (Sa);
+    ^
+
+"Test_name.c", line 109: error: identifier "Sla" is undefined
+    FIXED_POINT_LOGICAL (Sla);
+    ^
+
+"Test_name.c", line 110: error: identifier "Slla" is undefined
+    FIXED_POINT_LOGICAL (Slla);
+    ^
+
+"Test_name.c", line 111: error: identifier "Susa" is undefined
+    FIXED_POINT_LOGICAL (Susa);
+    ^
+
+"Test_name.c", line 112: error: identifier "Sua" is undefined
+    FIXED_POINT_LOGICAL (Sua);
+    ^
+
+"Test_name.c", line 113: error: identifier "Sula" is undefined
+    FIXED_POINT_LOGICAL (Sula);
+    ^
+
+"Test_name.c", line 114: error: identifier "Sulla" is undefined
+    FIXED_POINT_LOGICAL (Sulla);
+    ^
+
+"Test_name.c", line 50: warning: variable "_Fract" was declared but never referenced
+    long _Fract lf;
+         ^
+
+"Test_name.c", line 51: warning: variable "_Fract" was declared but never referenced
+    long long _Fract llf;
+              ^
+
+"Test_name.c", line 52: warning: variable "_Fract" was declared but never referenced
+    unsigned short _Fract usf;
+                   ^
+
+"Test_name.c", line 53: warning: variable "_Fract" was declared but never referenced
+    unsigned _Fract uf;
+             ^
+
+"Test_name.c", line 54: warning: variable "_Fract" was declared but never referenced
+    unsigned long _Fract ulf;
+                  ^
+
+"Test_name.c", line 55: warning: variable "_Fract" was declared but never referenced
+    unsigned long long _Fract ullf;
+                       ^
+
+"Test_name.c", line 66: warning: variable "_Accum" was declared but never referenced
+    long _Accum la;
+         ^
+
+"Test_name.c", line 67: warning: variable "_Accum" was declared but never referenced
+    long long _Accum lla;
+              ^
+
+"Test_name.c", line 68: warning: variable "_Accum" was declared but never referenced
+    unsigned short _Accum usa;
+                   ^
+
+"Test_name.c", line 69: warning: variable "_Accum" was declared but never referenced
+    unsigned _Accum ua;
+             ^
+
+"Test_name.c", line 70: warning: variable "_Accum" was declared but never referenced
+    unsigned long _Accum ula;
+                  ^
+
+"Test_name.c", line 71: warning: variable "_Accum" was declared but never referenced
+    unsigned long long _Accum ulla;
+                       ^
+
+77 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 55: warning: enumerated type mixed with another type
+      case 3: return 3; /* { dg-warning "case value '3' not in enumerated type 'enum e'" "excess 3" } */
+           ^
+
+"Test_name.c", line 61: warning: enumerated type mixed with another type
+      case 3: return 3; /* { dg-warning "case value '3' not in enumerated type 'enum e'" "excess 3" } */
+           ^
+

@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 7: error: quoted string should contain at least one character
+  const static char32_t	c0 = U'';		/* { dg-error "empty character" } */
+                       	     ^
+
+"Test_name.c", line 8: error: too many characters in character constant
+  const static char32_t	c1 = U'ab';		/* { dg-error "multi-character literal cannot have an encoding prefix" } */
+                       	     ^
+
+"Test_name.c", line 14: error: invalid character for char16_t literal
+  const static char32_t	c6 = u'\U00064321';	/* { dg-error "character not encodable in a single code unit" } */
+                       	       ^
+
+"Test_name.c", line 7: warning: variable "c0" was declared but never referenced
+  const static char32_t	c0 = U'';		/* { dg-error "empty character" } */
+                       	^
+
+"Test_name.c", line 8: warning: variable "c1" was declared but never referenced
+  const static char32_t	c1 = U'ab';		/* { dg-error "multi-character literal cannot have an encoding prefix" } */
+                       	^
+
+"Test_name.c", line 9: warning: variable "c2" was declared but never referenced
+  const static char32_t	c2 = U'\U00064321';
+                       	^
+
+"Test_name.c", line 11: warning: variable "c3" was declared but never referenced
+  const static char32_t	c3 = 'a';
+                       	^
+
+"Test_name.c", line 12: warning: variable "c4" was declared but never referenced
+  const static char32_t	c4 = u'a';
+                       	^
+
+"Test_name.c", line 13: warning: variable "c5" was declared but never referenced
+  const static char32_t	c5 = u'\u2029';
+                       	^
+
+"Test_name.c", line 14: warning: variable "c6" was declared but never referenced
+  const static char32_t	c6 = u'\U00064321';	/* { dg-error "character not encodable in a single code unit" } */
+                       	^
+
+"Test_name.c", line 15: warning: variable "c7" was declared but never referenced
+  const static char32_t	c7 = L'a';
+                       	^
+
+"Test_name.c", line 16: warning: variable "c8" was declared but never referenced
+  const static char32_t	c8 = L'\u2029';
+                       	^
+
+"Test_name.c", line 17: warning: variable "c9" was declared but never referenced
+  const static char32_t	c9 = L'\U00064321';     /* { dg-warning "character not encodable in a single code unit" "" { target { { ! 4byte_wchar_t } && c++20_down } } } */
+                       	^
+
+3 errors detected in the compilation of "Test_name.c".

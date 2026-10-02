@@ -1,0 +1,41 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 8: warning: unknown attribute "clang::nomerge"
+    [[clang::nomerge]] bar();
+      ^
+
+"Test_name.c", line 9: warning: unknown attribute "clang::nomerge"
+    [[clang::nomerge(1, 2)]] bar(); // expected-error {{'clang::nomerge' attribute takes no arguments}}
+      ^
+
+"Test_name.c", line 11: warning: unknown attribute "clang::nomerge"
+    [[clang::nomerge]] x = 10; // expected-warning {{'clang::nomerge' attribute is ignored because there exists no call expression inside the statement}}
+      ^
+
+"Test_name.c", line 13: warning: unknown attribute "clang::nomerge"
+    [[clang::nomerge]] label: bar(); // expected-error {{'clang::nomerge' attribute only applies to functions, statements and variables}}
+      ^
+
+"Test_name.c", line 10: warning: variable "x" was set but never used
+    int x;
+        ^
+
+"Test_name.c", line 13: warning: label "label" was declared but never referenced
+    [[clang::nomerge]] label: bar(); // expected-error {{'clang::nomerge' attribute only applies to functions, statements and variables}}
+                       ^
+
+"Test_name.c", line 17: warning: unknown attribute "clang::nomerge"
+  [[clang::nomerge]] int f();
+    ^
+
+"Test_name.c", line 19: warning: unknown attribute "clang::nomerge"
+  [[clang::nomerge]] static int i = f(); // expected-warning {{'clang::nomerge' attribute is ignored because 'i' is not a function pointer}}
+    ^
+
+"Test_name.c", line 21: warning: unknown attribute "clang::nomerge"
+  [[clang::nomerge]] void (*j)(void);
+    ^
+
+"Test_name.c", line 23: warning: unknown attribute "clang::nomerge"
+  struct [[clang::nomerge]] buz {}; // expected-error {{'clang::nomerge' attribute only applies to functions, statements and variables}}
+           ^
+

@@ -1,0 +1,94 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 14: warning: variable "g" was declared but never referenced
+    if (T f(), g, h; f()) {}
+               ^
+
+"Test_name.c", line 14: warning: variable "h" was declared but never referenced
+    if (T f(), g, h; f()) {}
+                  ^
+
+"Test_name.c", line 24: error: a condition declaration must declare a variable
+    if (T f()) {} // expected-error {{function type}}
+          ^
+
+"Test_name.c", line 25: error: a condition declaration can only declare one variable
+    if (T f(), g, h) {} // expected-error {{function type}}
+                  ^
+
+"Test_name.c", line 25: warning: variable "g" was declared but never referenced
+    if (T f(), g, h) {} // expected-error {{function type}}
+               ^
+
+"Test_name.c", line 25: warning: variable "h" was declared but never referenced
+    if (T f(), g, h) {} // expected-error {{function type}}
+                  ^
+
+"Test_name.c", line 35: error: identifier "n" is undefined
+    if (T(n)(g)) {} // expected-error {{undeclared identifier 'n'}}
+          ^
+
+"Test_name.c", line 39: warning: variable "n" is used before its value is set
+    switch (int n; n) {}
+                   ^
+
+"Test_name.c", line 40: warning: expression has no effect
+    switch (g; int g = 5) {} // expected-warning {{expression result unused}}
+            ^
+
+"Test_name.c", line 42: warning: variable "a" is used before its value is set
+    if (int a, b; int c = a) { // expected-note 6{{previous}}
+                          ^
+
+"Test_name.c", line 43: error: "a", declared in condition, may not be redeclared in this scope
+      int a; // expected-error {{redefinition}}
+          ^
+
+"Test_name.c", line 44: error: "b", declared in condition, may not be redeclared in this scope
+      int b; // expected-error {{redefinition}}
+          ^
+
+"Test_name.c", line 45: error: "c", declared in condition, may not be redeclared in this scope
+      int c; // expected-error {{redefinition}}
+          ^
+
+"Test_name.c", line 43: warning: variable "a" was declared but never referenced
+      int a; // expected-error {{redefinition}}
+          ^
+
+"Test_name.c", line 44: warning: variable "b" was declared but never referenced
+      int b; // expected-error {{redefinition}}
+          ^
+
+"Test_name.c", line 45: warning: variable "c" was declared but never referenced
+      int c; // expected-error {{redefinition}}
+          ^
+
+"Test_name.c", line 47: error: "a", declared in condition, may not be redeclared in this scope
+      int a; // expected-error {{redefinition}}
+          ^
+
+"Test_name.c", line 48: error: "b", declared in condition, may not be redeclared in this scope
+      int b; // expected-error {{redefinition}}
+          ^
+
+"Test_name.c", line 49: error: "c", declared in condition, may not be redeclared in this scope
+      int c; // expected-error {{redefinition}}
+          ^
+
+"Test_name.c", line 47: warning: variable "a" was declared but never referenced
+      int a; // expected-error {{redefinition}}
+          ^
+
+"Test_name.c", line 48: warning: variable "b" was declared but never referenced
+      int b; // expected-error {{redefinition}}
+          ^
+
+"Test_name.c", line 49: warning: variable "c" was declared but never referenced
+      int c; // expected-error {{redefinition}}
+          ^
+
+"Test_name.c", line 42: warning: variable "b" was declared but never referenced
+    if (int a, b; int c = a) { // expected-note 6{{previous}}
+               ^
+
+9 errors detected in the compilation of "Test_name.c".

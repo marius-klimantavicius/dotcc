@@ -1,0 +1,35 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 107: warning: missing return statement at end of non-void function "A::children"
+  }
+  ^
+
+"Test_name.c", line 53: warning: missing return statement at end of non-void function "H<T>::buffer"
+    T *buffer () { }
+                   ^
+          detected during:
+            instantiation of "I<T, 0>::~I() [with T=D<A>]" at line 68
+            instantiation of "J<T, cap>::~J() [with T=D<A>, cap=0]" at line 103
+
+"Test_name.c", line 72: warning: missing return statement at end of non-void function "J<T, cap>::begin"
+    iterator begin () { }
+                        ^
+          detected during:
+            instantiation of "void J<T, cap>::shrink(int) [with T=D<A>, cap=0]" at line 68
+            instantiation of "J<T, cap>::~J() [with T=D<A>, cap=0]" at line 103
+
+"Test_name.c", line 70: warning: missing return statement at end of non-void function "J<T, cap>::capacity"
+    int capacity () const { m_buffer.capacity (); }
+                                                  ^
+          detected during instantiation of "J<T, cap>::J(const J<T, cap> &) [with T=D<A>, cap=0]" at line 103
+
+"Test_name.c", line 54: warning: missing return statement at end of non-void function "H<T>::capacity"
+    int capacity () const { }
+                            ^
+          detected during:
+            instantiation of "int J<T, cap>::capacity() const [with T=D<A>, cap=0]" at line 80
+            instantiation of "J<T, cap>::J(const J<T, cap> &) [with T=D<A>, cap=0]" at line 103
+
+"Test_name.c", line 71: warning: missing return statement at end of non-void function "J<T, cap>::operator[]"
+    T & operator[](int i) { }
+                            ^
+

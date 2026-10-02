@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 20: error: "cleanup" attribute within a constexpr function is not currently supported
+    int a __attribute__((cleanup (cleanup))) = 1;
+                         ^
+
+"Test_name.c", line 20: warning: variable "a" was declared but never referenced
+    int a __attribute__((cleanup (cleanup))) = 1;
+        ^
+
+"Test_name.c", line 27: error: "cleanup" attribute within a constexpr function is not currently supported
+    int a __attribute__((cleanup (cleanup2))) = 1;
+                         ^
+
+"Test_name.c", line 27: warning: variable "a" was declared but never referenced
+    int a __attribute__((cleanup (cleanup2))) = 1;
+        ^
+
+"Test_name.c", line 31: warning: variable "x" was declared but never referenced
+  constexpr auto x = foo ();	// { dg-message "in 'constexpr' expansion of" }
+                 ^
+
+"Test_name.c", line 32: warning: variable "y" was declared but never referenced
+  constexpr auto y = bar ();
+                 ^
+
+2 errors detected in the compilation of "Test_name.c".

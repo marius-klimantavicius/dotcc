@@ -1,0 +1,20 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 8: error: type name is not allowed
+  concept C = string; // { dg-error "expected primary-expression" }
+              ^
+
+"Test_name.c", line 14: error: no instance of function template "fun" matches the argument list
+            argument types are: (int *)
+    fun((int *)0); // { dg-error "" }
+    ^
+"Test_name.c", line 11: note: substituting "<int *>" for function template "fun" failed constraints
+  void fun(T s) { }
+       ^
+"Test_name.c", line 10: note: concept "C" not satisfied for "<int *>"
+  template<C T>
+           ^
+"Test_name.c", line 8: note: atomic constraint failed substitution
+  concept C = string; // { dg-error "expected primary-expression" }
+              ^
+
+2 errors detected in the compilation of "Test_name.c".

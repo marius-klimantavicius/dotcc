@@ -1,0 +1,5 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 10: remark: handler parameter "k" was declared but never referenced
+      catch (int k) {
+                 ^
+

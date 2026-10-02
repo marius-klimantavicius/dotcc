@@ -1,0 +1,15 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --cfront_3.0 Test_name.c
+"Test_name.c", line 4: warning: class "A" defines no constructor to initialize the following:
+            reference member "A::i"
+  class A { int& i; };     // cfront: error     cpfe: okay
+        ^
+
+"Test_name.c", line 4: error: implicitly generated constructor for class "A" cannot initialize:
+            reference member "A::i"
+  class A { int& i; };     // cfront: error     cpfe: okay
+        ^
+          detected during:
+            implicit generation of "A::A()" at line 5
+            implicit generation of "B::B()" at line 5
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,24 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 12: error: no instance of constructor "A" matches the argument list
+            argument types are: (int, double)
+  A b = A{3, 4.0}; // expected-error {{no viable constructor or deduction guide}}
+         ^
+
+"Test_name.c", line 12: error: cannot deduce class template arguments
+  A b = A{3, 4.0}; // expected-error {{no viable constructor or deduction guide}}
+        ^
+
+"Test_name.c", line 12: error: too many initializer values
+  A b = A{3, 4.0}; // expected-error {{no viable constructor or deduction guide}}
+             ^
+
+"Test_name.c", line 12: error: no instance of constructor "A" matches the argument list
+            argument types are: (<error-type>)
+  A b = A{3, 4.0}; // expected-error {{no viable constructor or deduction guide}}
+    ^
+
+"Test_name.c", line 12: error: cannot deduce class template arguments
+  A b = A{3, 4.0}; // expected-error {{no viable constructor or deduction guide}}
+  ^
+
+5 errors detected in the compilation of "Test_name.c".

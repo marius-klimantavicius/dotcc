@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: error: no instance of function template "foo" matches the argument list
+            argument types are: (int, void *)
+    foo(0, p); // { dg-error "no matching" }
+    ^
+"Test_name.c", line 5: note: candidate function template "foo" failed deduction
+  template<typename T> void foo(T, T); // { dg-message "template" }
+                            ^
+
+1 error detected in the compilation of "Test_name.c".

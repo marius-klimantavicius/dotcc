@@ -1,0 +1,86 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 8: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) __uint128_t
+                           ^
+
+"Test_name.c", line 8: error: identifier "__uint128_t" is undefined
+  __attribute__((noinline, noclone)) __uint128_t
+                                     ^
+
+"Test_name.c", line 9: error: identifier "__uint128_t" is undefined
+  foo (__uint128_t x)
+       ^
+
+"Test_name.c", line 11: error: identifier "__uint128_t" is undefined
+    return x * (((__uint128_t) -1) << 63);
+                  ^
+
+"Test_name.c", line 14: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) __uint128_t
+                           ^
+
+"Test_name.c", line 14: error: identifier "__uint128_t" is undefined
+  __attribute__((noinline, noclone)) __uint128_t
+                                     ^
+
+"Test_name.c", line 15: error: identifier "__uint128_t" is undefined
+  bar (__uint128_t x)
+       ^
+
+"Test_name.c", line 17: error: identifier "__uint128_t" is undefined
+    return x * (((__uint128_t) 1) << 63);
+                  ^
+
+"Test_name.c", line 17: error: expected a ")"
+    return x * (((__uint128_t) 1) << 63);
+                               ^
+
+"Test_name.c", line 20: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) __uint128_t
+                           ^
+
+"Test_name.c", line 20: error: identifier "__uint128_t" is undefined
+  __attribute__((noinline, noclone)) __uint128_t
+                                     ^
+
+"Test_name.c", line 21: error: identifier "__uint128_t" is undefined
+  baz (__uint128_t x)
+       ^
+
+"Test_name.c", line 23: error: identifier "__uint128_t" is undefined
+    return x * -(((__uint128_t) 1) << 62);
+                   ^
+
+"Test_name.c", line 23: error: expected a ")"
+    return x * -(((__uint128_t) 1) << 62);
+                                ^
+
+"Test_name.c", line 29: error: identifier "__uint128_t" is undefined
+    if (foo (1) != (((__uint128_t) -1) << 63)
+                      ^
+
+"Test_name.c", line 32: error: identifier "__uint128_t" is undefined
+    if (bar (1) != (((__uint128_t) 1) << 63)
+                      ^
+
+"Test_name.c", line 32: error: expected a ")"
+    if (bar (1) != (((__uint128_t) 1) << 63)
+                                   ^
+
+"Test_name.c", line 33: error: expected a ")"
+        || bar (8) != (((__uint128_t) 1) << 66))
+                                      ^
+
+"Test_name.c", line 35: error: identifier "__uint128_t" is undefined
+    if (baz (1) != -(((__uint128_t) 1) << 62)
+                       ^
+
+"Test_name.c", line 35: error: expected a ")"
+    if (baz (1) != -(((__uint128_t) 1) << 62)
+                                    ^
+
+"Test_name.c", line 36: error: expected a ")"
+        || baz (8) != ((-(((__uint128_t) 1) << 62)) << 3))
+                                         ^
+
+18 errors detected in the compilation of "Test_name.c".

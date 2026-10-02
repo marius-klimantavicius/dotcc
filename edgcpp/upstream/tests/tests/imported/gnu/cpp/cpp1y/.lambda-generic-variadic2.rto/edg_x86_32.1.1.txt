@@ -1,0 +1,39 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 137: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 140: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 155: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 158: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 206: error: first parameter of allocation function must be of type "size_t"
+  void* operator new(std::size_t, void* __p)
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 210: error: first parameter of allocation function must be of type "size_t"
+  void* operator new[](std::size_t, void* __p)
+        ^
+
+"./cpp1y/lambda-generic-variadic2.C", line 23: error: "auto" is not allowed here
+    X::f([](auto... xs){});
+            ^
+
+"./cpp1y/lambda-generic-variadic2.C", line 23: error: expected a ")"
+    X::f([](auto... xs){});
+                    ^
+
+"./cpp1y/lambda-generic-variadic2.C", line 15: error: no suitable user-defined conversion from "lambda [](<error-type>, ...)->void" to "F" (aka "std::function<void ()>") exists
+      g(t);
+        ^
+          detected during instantiation of "void X::f(T) [with T=lambda [](<error-type>, ...)->void]" at line 23
+
+9 errors detected in the compilation of "Test_name.c".

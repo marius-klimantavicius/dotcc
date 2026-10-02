@@ -1,0 +1,70 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 10: error: too many initializer values
+  auto [h, i] ( a, a );	// { dg-error "invalid initializer for structured binding declaration" }
+                   ^
+
+"Test_name.c", line 11: error: braced initialization of a variable declared with a placeholder type but without "=" requires exactly one element inside the braces
+  auto [j, k] { a, a };	// { dg-error "invalid initializer for structured binding declaration" }
+              ^
+
+"Test_name.c", line 11: error: an #include <initializer_list> is needed prior to a use of std::initializer_list, including an implicit use
+  auto [j, k] { a, a };	// { dg-error "invalid initializer for structured binding declaration" }
+              ^
+
+"Test_name.c", line 11: error: cannot deduce "auto" type
+  auto [j, k] { a, a };	// { dg-error "invalid initializer for structured binding declaration" }
+  ^
+
+"Test_name.c", line 12: error: an #include <initializer_list> is needed prior to a use of std::initializer_list, including an implicit use
+  auto [l, m] = { a };	// { dg-error "deducing from brace-enclosed initializer list requires" }
+                ^
+
+"Test_name.c", line 12: error: cannot deduce "auto" type
+  auto [l, m] = { a };	// { dg-error "deducing from brace-enclosed initializer list requires" }
+  ^
+
+"Test_name.c", line 13: error: braced initialization of a variable declared with a placeholder type but without "=" requires exactly one element inside the braces
+  auto [n, o] {};		// { dg-error "invalid initializer for structured binding declaration" }
+              ^
+
+"Test_name.c", line 13: error: cannot deduce "auto" type
+  auto [n, o] {};		// { dg-error "invalid initializer for structured binding declaration" }
+  ^
+
+"Test_name.c", line 14: error: expected an expression
+  auto [p, q] ();		// { dg-error "invalid initializer for structured binding declaration" }
+               ^
+
+"Test_name.c", line 14: error: expected a ")"
+  auto [p, q] ();		// { dg-error "invalid initializer for structured binding declaration" }
+                ^
+
+"Test_name.c", line 15: error: cannot deduce "auto" type
+  auto [r, s] = {};	// { dg-error "deducing from brace-enclosed initializer list requires" }
+  ^
+
+"Test_name.c", line 16: error: an #include <initializer_list> is needed prior to a use of std::initializer_list, including an implicit use
+  auto [t, u] = { a, a };	// { dg-error "deducing from brace-enclosed initializer list requires" }
+                ^
+
+"Test_name.c", line 16: error: cannot deduce "auto" type
+  auto [t, u] = { a, a };	// { dg-error "deducing from brace-enclosed initializer list requires" }
+  ^
+
+"Test_name.c", line 7: warning: structured binding "b" was declared but never referenced
+  auto [b, c] (a);
+        ^
+
+"Test_name.c", line 8: warning: structured binding "d" was declared but never referenced
+  auto [d, e] { a };
+        ^
+
+"Test_name.c", line 9: warning: structured binding "f" was declared but never referenced
+  auto [f, g] = a;
+        ^
+
+"Test_name.c", line 10: warning: structured binding "h" was declared but never referenced
+  auto [h, i] ( a, a );	// { dg-error "invalid initializer for structured binding declaration" }
+        ^
+
+13 errors detected in the compilation of "Test_name.c".

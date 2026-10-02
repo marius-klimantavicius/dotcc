@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 25: error: a pointer to a bound function may only be used to call the function
+    (void)a.operator double<int>();             // { dg-error "not a template" }
+            ^
+
+"Test_name.c", line 25: error: type name is not allowed
+    (void)a.operator double<int>();             // { dg-error "not a template" }
+                            ^
+
+"Test_name.c", line 25: error: expected an expression
+    (void)a.operator double<int>();             // { dg-error "not a template" }
+                                 ^
+
+"Test_name.c", line 26: error: class "K" may not have a template argument list
+    (void)a.operator K<int>();                  // { dg-error "not a template" }
+                     ^
+
+"Test_name.c", line 27: error: a pointer to a bound function may only be used to call the function
+    (void)a.A<double>::operator double<int>();  // { dg-error "not a template" }
+                       ^
+
+"Test_name.c", line 27: error: type name is not allowed
+    (void)a.A<double>::operator double<int>();  // { dg-error "not a template" }
+                                       ^
+
+"Test_name.c", line 27: error: expected an expression
+    (void)a.A<double>::operator double<int>();  // { dg-error "not a template" }
+                                            ^
+
+"Test_name.c", line 28: error: class "K" may not have a template argument list
+    (void)a.A<double>::operator K<int>();       // { dg-error "not a template" }
+                                ^
+
+8 errors detected in the compilation of "Test_name.c".

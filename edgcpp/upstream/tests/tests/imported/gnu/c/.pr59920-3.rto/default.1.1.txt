@@ -1,0 +1,422 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 22: error: declaration is incompatible with previous "bar" (declared at line 8)
+    int bar (int i)
+        ^
+
+"Test_name.c", line 23: error: expected a ";"
+    {
+    ^
+
+"Test_name.c", line 33: warning: parsing restarts here after previous syntax error
+    int w = 0;
+             ^
+
+"Test_name.c", line 48: warning: statement is unreachable
+    D
+    ^
+
+"Test_name.c", line 48: error: identifier "w" is undefined
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l100" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l101" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l102" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l103" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l104" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l105" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l106" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l107" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l108" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l109" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l110" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l111" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l112" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l113" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l114" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l115" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l116" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l117" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l118" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l119" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l120" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l121" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l122" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l123" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l124" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l125" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l126" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l127" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l128" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l129" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l130" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l131" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l132" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l133" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l134" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l135" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l136" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l137" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l138" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l139" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l140" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l141" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l142" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l143" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l144" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l145" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l146" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l147" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l148" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l149" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l150" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l151" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l152" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l153" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l154" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l155" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l156" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l157" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l158" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l159" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l160" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l161" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l162" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l163" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l164" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l165" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l166" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l167" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l168" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l169" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l170" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l171" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l172" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l173" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l174" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l175" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l176" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l177" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l178" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l179" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l180" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l181" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l182" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l183" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l184" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l185" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l186" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l187" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l188" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l189" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l190" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l191" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l192" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l193" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l194" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l195" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l196" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l197" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l198" was declared but never referenced
+    D
+    ^
+
+"Test_name.c", line 45: warning: label "l199" was declared but never referenced
+    D
+    ^
+
+3 errors detected in the compilation of "Test_name.c".

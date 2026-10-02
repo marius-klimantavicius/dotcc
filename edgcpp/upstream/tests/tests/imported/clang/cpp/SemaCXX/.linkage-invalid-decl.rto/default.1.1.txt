@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 7: error: explicit type is missing ("int" assumed)
+  inline foo(A)(enum E;
+         ^
+
+"Test_name.c", line 7: error: identifier "A" is undefined
+  inline foo(A)(enum E;
+             ^
+
+"Test_name.c", line 7: error: expected a ";"
+  inline foo(A)(enum E;
+               ^
+
+3 errors detected in the compilation of "Test_name.c".

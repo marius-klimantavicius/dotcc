@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 -w --c++11 Test_name.c
+"SemaCXX/windows-arm-valist.cpp", line 15: error: static assertion failed with "type mismatch for va_list"
+    static_assert(is_same<decltype(va), decltype(cp)>::value,
+    ^
+
+1 error detected in the compilation of "Test_name.c".

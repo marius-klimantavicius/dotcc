@@ -1,0 +1,37 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics -w Test_name.c
+"Test_name.c", line 102: error: no instance of constructor "std::basic_stringbuf<_CharT, _Traits, _Alloc>::basic_stringbuf [with _CharT=wchar_t, _Traits=std::char_traits<wchar_t>, _Alloc=std::allocator<wchar_t>]" matches the argument list
+            argument types are: (int)
+      public:       explicit       basic_ostringstream(ios_base::openmode __mode = ios_base::out)       : __ostream_type(), _M_stringbuf(__mode | ios_base::out)       {
+                                                                                                                                        ^
+"Test_name.c", line 79: note: function "std::basic_stringbuf<_CharT, _Traits, _Alloc>::basic_stringbuf(const std::basic_stringbuf<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t>> &) [with _CharT=wchar_t, _Traits=std::char_traits<wchar_t>, _Alloc=std::allocator<wchar_t>]" does not match because argument #1 does not match parameter
+      template<typename _CharT, typename _Traits, typename _Alloc>     class basic_stringbuf : public basic_streambuf<_CharT, _Traits>     {
+                                                                             ^
+"Test_name.c", line 79: note: function "std::basic_stringbuf<_CharT, _Traits, _Alloc>::basic_stringbuf(std::basic_stringbuf<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t>> &&) [with _CharT=wchar_t, _Traits=std::char_traits<wchar_t>, _Alloc=std::allocator<wchar_t>]" does not match because argument #1 does not match parameter
+      template<typename _CharT, typename _Traits, typename _Alloc>     class basic_stringbuf : public basic_streambuf<_CharT, _Traits>     {
+                                                                             ^
+"Test_name.c", line 86: note: function "std::basic_stringbuf<_CharT, _Traits, _Alloc>::basic_stringbuf(std::ios_base::openmode) [with _CharT=wchar_t, _Traits=std::char_traits<wchar_t>, _Alloc=std::allocator<wchar_t>]" does not match because argument #1 does not match parameter
+      public:       explicit       basic_stringbuf(ios_base::openmode __mode = ios_base::in | ios_base::out)       : __streambuf_type(), _M_mode(__mode), _M_string()       {
+                                   ^
+          detected during:
+            instantiation of "std::basic_ostringstream<_CharT, _Traits, _Alloc>::basic_ostringstream(std::ios_base::openmode) [with _CharT=wchar_t, _Traits=std::char_traits<wchar_t>, _Alloc=std::allocator<wchar_t>]" at line 110
+            instantiation of "std::basic_ostream<_CharT, _Traits> &std::operator<<(std::basic_ostream<_CharT, _Traits> &, const std::complex<_Tp> &) [with _Tp=long double, _CharT=wchar_t, _Traits=std::char_traits<wchar_t>]" at line 113
+
+"Test_name.c", line 55: error: argument of type "std::basic_streambuf<wchar_t, std::char_traits<wchar_t>>::char_type *" (aka "wchar_t *") is incompatible with parameter of type "std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t>>::size_type" (aka "std::size_t")
+      template<typename _CharT, typename _Traits, typename _Alloc>     template<typename _InputIterator>     basic_string<_CharT, _Traits, _Alloc>::     basic_string(_InputIterator __beg, _InputIterator __end, const _Alloc& __a)     : _M_dataplus(_S_construct(__beg, __end, __a), __a)     {
+                                                                                                                                                                                                                                                                    ^
+          detected during:
+            instantiation of "std::basic_string<_CharT, _Traits, _Alloc>::basic_string(_InputIterator, _InputIterator, const _Alloc &) [with _CharT=wchar_t, _Traits=std::char_traits<wchar_t>, _Alloc=std::allocator<wchar_t>, _InputIterator=wchar_t *]" at line 91
+            instantiation of "std::basic_stringbuf<_CharT, _Traits, _Alloc>::__string_type std::basic_stringbuf<_CharT, _Traits, _Alloc>::str() const [with _CharT=wchar_t, _Traits=std::char_traits<wchar_t>, _Alloc=std::allocator<wchar_t>]" at line 105
+            instantiation of "std::basic_ostringstream<_CharT, _Traits, _Alloc>::__string_type std::basic_ostringstream<_CharT, _Traits, _Alloc>::str() const [with _CharT=wchar_t, _Traits=std::char_traits<wchar_t>, _Alloc=std::allocator<wchar_t>]" at line 111
+            instantiation of "std::basic_ostream<_CharT, _Traits> &std::operator<<(std::basic_ostream<_CharT, _Traits> &, const std::complex<_Tp> &) [with _Tp=long double, _CharT=wchar_t, _Traits=std::char_traits<wchar_t>]" at line 113
+
+"Test_name.c", line 55: error: argument of type "std::basic_streambuf<wchar_t, std::char_traits<wchar_t>>::char_type *" (aka "wchar_t *") is incompatible with parameter of type "wchar_t"
+      template<typename _CharT, typename _Traits, typename _Alloc>     template<typename _InputIterator>     basic_string<_CharT, _Traits, _Alloc>::     basic_string(_InputIterator __beg, _InputIterator __end, const _Alloc& __a)     : _M_dataplus(_S_construct(__beg, __end, __a), __a)     {
+                                                                                                                                                                                                                                                                           ^
+          detected during:
+            instantiation of "std::basic_string<_CharT, _Traits, _Alloc>::basic_string(_InputIterator, _InputIterator, const _Alloc &) [with _CharT=wchar_t, _Traits=std::char_traits<wchar_t>, _Alloc=std::allocator<wchar_t>, _InputIterator=wchar_t *]" at line 91
+            instantiation of "std::basic_stringbuf<_CharT, _Traits, _Alloc>::__string_type std::basic_stringbuf<_CharT, _Traits, _Alloc>::str() const [with _CharT=wchar_t, _Traits=std::char_traits<wchar_t>, _Alloc=std::allocator<wchar_t>]" at line 105
+            instantiation of "std::basic_ostringstream<_CharT, _Traits, _Alloc>::__string_type std::basic_ostringstream<_CharT, _Traits, _Alloc>::str() const [with _CharT=wchar_t, _Traits=std::char_traits<wchar_t>, _Alloc=std::allocator<wchar_t>]" at line 111
+            instantiation of "std::basic_ostream<_CharT, _Traits> &std::operator<<(std::basic_ostream<_CharT, _Traits> &, const std::complex<_Tp> &) [with _Tp=long double, _CharT=wchar_t, _Traits=std::char_traits<wchar_t>]" at line 113
+
+3 errors detected in the compilation of "Test_name.c".

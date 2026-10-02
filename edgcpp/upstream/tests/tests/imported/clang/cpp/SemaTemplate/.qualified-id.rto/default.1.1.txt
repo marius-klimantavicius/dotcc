@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 56: error: this declaration cannot have multiple "template <...>" clauses
+      class Outer2<V>::Inner; // expected-error{{nested name specifier 'Outer2<V>' for declaration does not refer into a class, class template or class template partial specialization}}
+      ^
+
+1 error detected in the compilation of "Test_name.c".

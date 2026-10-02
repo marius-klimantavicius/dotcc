@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 18: error: "aliastemplate_a" has already been declared in the current scope
+    template<typename T> using aliastemplate_a = int; // expected-error {{redefinition}}
+                               ^
+
+"Test_name.c", line 20: error: argument list for alias template "TagVs::aliastemplate_b" is missing
+    struct aliastemplate_b {}; // expected-error {{redefinition}}
+           ^
+
+"Test_name.c", line 8: warning: structured binding "TagVs::binding_a" was declared but never referenced
+    auto [binding_a] = Bindable{}; // expected-error {{redefinition}}
+          ^
+
+"Test_name.c", line 9: warning: structured binding "TagVs::binding_b" was declared but never referenced
+    auto [binding_b] = Bindable{}; // expected-note {{previous}}
+          ^
+
+2 errors detected in the compilation of "Test_name.c".

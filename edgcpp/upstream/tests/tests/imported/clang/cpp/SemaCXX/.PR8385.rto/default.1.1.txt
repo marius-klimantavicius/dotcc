@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 9: error: explicit instantiation is not allowed in the current scope
+  struct{template struct{
+         ^
+
+At end of source: error: expected a ";"
+
+At end of source: error: expected a "}"
+"Test_name.c", line 9: note: to match this "{"
+  struct{template struct{
+        ^
+
+At end of source: error: expected an identifier
+
+At end of source: error: expected a ";"
+
+5 errors detected in the compilation of "Test_name.c".

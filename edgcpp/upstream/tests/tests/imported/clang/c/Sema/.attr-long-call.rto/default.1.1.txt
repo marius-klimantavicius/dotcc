@@ -1,0 +1,81 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 6: warning: unknown attribute "long_call"
+  __attribute__((long_call(0))) void foo1(void);  // expected-error {{'long_call' attribute takes no arguments}}
+                 ^
+
+"Test_name.c", line 7: warning: unknown attribute "short_call"
+  __attribute__((short_call(0))) void foo9(void);  // expected-error {{'short_call' attribute takes no arguments}}
+                 ^
+
+"Test_name.c", line 8: warning: unknown attribute "far"
+  __attribute__((far(0))) void foo2(void);  // expected-error {{'far' attribute takes no arguments}}
+                 ^
+
+"Test_name.c", line 9: warning: unknown attribute "near"
+  __attribute__((near(0))) void foo3(void);  // expected-error {{'near' attribute takes no arguments}}
+                 ^
+
+"Test_name.c", line 11: warning: unknown attribute "long_call"
+  __attribute((long_call)) int a; // expected-warning {{attribute only applies to functions}}
+               ^
+
+"Test_name.c", line 12: warning: unknown attribute "short_call"
+  __attribute((short_call)) int d; // expected-warning {{attribute only applies to functions}}
+               ^
+
+"Test_name.c", line 13: warning: unknown attribute "far"
+  __attribute((far)) int a; // expected-warning {{attribute only applies to functions}}
+               ^
+
+"Test_name.c", line 14: warning: unknown attribute "near"
+  __attribute((near)) int a; // expected-warning {{attribute only applies to functions}}
+               ^
+
+"Test_name.c", line 16: warning: unknown attribute "long_call"
+  __attribute((long_call)) void foo4(void);
+               ^
+
+"Test_name.c", line 17: warning: unknown attribute "short_call"
+  __attribute((short_call)) void foo10(void);
+               ^
+
+"Test_name.c", line 18: warning: unknown attribute "far"
+  __attribute((far)) void foo5(void);
+               ^
+
+"Test_name.c", line 19: warning: unknown attribute "near"
+  __attribute((near)) void foo6(void);
+               ^
+
+"Test_name.c", line 21: warning: unknown attribute "long_call"
+  __attribute((long_call, far)) void foo7(void);
+               ^
+
+"Test_name.c", line 21: warning: unknown attribute "far"
+  __attribute((long_call, far)) void foo7(void);
+                          ^
+
+"Test_name.c", line 22: warning: unknown attribute "short_call"
+  __attribute((short_call, near)) void foo11(void);
+               ^
+
+"Test_name.c", line 22: warning: unknown attribute "near"
+  __attribute((short_call, near)) void foo11(void);
+                           ^
+
+"Test_name.c", line 24: warning: unknown attribute "far"
+  __attribute((far, near)) void foo8(void); // expected-error {{'near' and 'far' attributes are not compatible}} \
+               ^
+
+"Test_name.c", line 24: warning: unknown attribute "near"
+  __attribute((far, near)) void foo8(void); // expected-error {{'near' and 'far' attributes are not compatible}} \
+                    ^
+
+"Test_name.c", line 27: warning: unknown attribute "short_call"
+  __attribute((short_call, long_call)) void foo12(void); // expected-error {{'long_call' and 'short_call' attributes are not compatible}} \
+               ^
+
+"Test_name.c", line 27: warning: unknown attribute "long_call"
+  __attribute((short_call, long_call)) void foo12(void); // expected-error {{'long_call' and 'short_call' attributes are not compatible}} \
+                           ^
+

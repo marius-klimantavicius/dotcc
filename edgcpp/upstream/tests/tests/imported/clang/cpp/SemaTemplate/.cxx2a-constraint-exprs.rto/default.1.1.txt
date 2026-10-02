@@ -1,0 +1,97 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 8: error: name followed by "::" must be a class or namespace name
+  template<typename T> constexpr bool f = T::value;
+                                          ^
+          detected during instantiation of "const bool f [with T=int]" at line 12
+
+"Test_name.c", line 16: error: template constraint not satisfied
+    using s = S<int>; // expected-error {{constraints not satisfied}}
+                   ^
+"Test_name.c", line 14: note: substitution of arguments "<int>" for requires-clause failed
+    template<typename T> requires false && f<int> struct S {};
+                                  ^
+"Test_name.c", line 14: note: atomic constraint failed substitution
+    template<typename T> requires false && f<int> struct S {};
+                                  ^
+
+"Test_name.c", line 19: error: no instance of function template "unevaluated::foo" matches the argument list
+    int a = (foo<int>(), 0); // expected-error{{no matching function}}
+             ^
+"Test_name.c", line 17: note: substituting "<int>" for function template "unevaluated::foo" failed constraints
+    template<typename T> void foo() requires false && f<int> { };
+                              ^
+"Test_name.c", line 17: note: atomic constraint failed substitution
+    template<typename T> void foo() requires false && f<int> { };
+                                             ^
+
+"Test_name.c", line 22: error: no instance of function template "unevaluated::bar" matches the argument list
+    int b = (bar<int>(), 0); // expected-error{{no matching function}}
+             ^
+"Test_name.c", line 20: note: substituting "<int>" for function template "unevaluated::bar" failed constraints
+    template<typename T> void bar() requires requires { requires false && f<int>; } { };
+                              ^
+"Test_name.c", line 20: note: atomic constraint evaluates to false
+    template<typename T> void bar() requires requires { requires false && f<int>; } { };
+                                             ^
+
+"Test_name.c", line 25: error: constraints for function "unevaluated::M<T>::foo [with T=int]" (declared at line 23) are not satisfied
+    int c = (M<int>::foo(), 0);
+                     ^
+
+"Test_name.c", line 8: error: name followed by "::" must be a class or namespace name
+  template<typename T> constexpr bool f = T::value;
+                                          ^
+          detected during instantiation of "const bool f [with T=int [0]]" at line 32
+
+"Test_name.c", line 32: error: template constraint not satisfied
+    using s = S<int>;
+                   ^
+"Test_name.c", line 30: note: substitution of arguments "<int>" for requires-clause failed
+    template<typename T> requires f<int[0]> struct S {};
+                                  ^
+"Test_name.c", line 30: note: atomic constraint must have type bool
+    template<typename T> requires f<int[0]> struct S {};
+                                  ^
+
+"Test_name.c", line 8: error: name followed by "::" must be a class or namespace name
+  template<typename T> constexpr bool f = T::value;
+                                          ^
+          detected during instantiation of "const bool f [with T=int [1]]" at line 37
+
+"Test_name.c", line 37: error: no instance of function template "constant_evaluated::foo" matches the argument list
+    int a = (foo<int>(), 0);
+             ^
+"Test_name.c", line 34: note: substituting "<int>" for function template "constant_evaluated::foo" failed constraints
+    template<typename T> void foo() requires f<int[1]> { };
+                              ^
+"Test_name.c", line 34: note: atomic constraint must have type bool
+    template<typename T> void foo() requires f<int[1]> { };
+                                             ^
+
+"Test_name.c", line 8: error: name followed by "::" must be a class or namespace name
+  template<typename T> constexpr bool f = T::value;
+                                          ^
+          detected during instantiation of "const bool f [with T=int [2]]" at line 44
+
+"Test_name.c", line 44: error: no instance of function template "constant_evaluated::bar" matches the argument list
+    int b = (bar<int>(), 0);
+             ^
+"Test_name.c", line 40: note: substituting "<int>" for function template "constant_evaluated::bar" failed constraints
+    template<typename T> void bar() requires requires { requires f<int[2]>; } { };
+                              ^
+"Test_name.c", line 40: note: atomic constraint evaluates to false
+    template<typename T> void bar() requires requires { requires f<int[2]>; } { };
+                                             ^
+
+"Test_name.c", line 8: error: name followed by "::" must be a class or namespace name
+  template<typename T> constexpr bool f = T::value;
+                                          ^
+          detected during:
+            instantiation of "const bool f [with T=int [3]]" at line 47
+            instantiation of class "constant_evaluated::M<T> [with T=int]" at line 47
+
+"Test_name.c", line 47: error: constraints for function "constant_evaluated::M<T>::foo [with T=int]" (declared at line 45) are not satisfied
+    int c = (M<int>::foo(), 0);
+                     ^
+
+13 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 16: error: extra text after expected end of number
+    d = 0b1101p1; /* { dg-error "invalid suffix 'p1' on integer constant" } */
+              ^
+
+"Test_name.c", line 18: error: invalid binary number
+    i = 0b3011;   /* { dg-error "invalid suffix 'b3011' on integer constant" } */
+          ^
+
+"Test_name.c", line 19: error: invalid binary number
+    i = 0b113;    /* { dg-error "invalid digit '3' in binary constant" } */
+            ^
+
+"Test_name.c", line 12: warning: variable "d" was set but never used
+    double d;
+           ^
+
+"Test_name.c", line 13: warning: variable "i" was set but never used
+    int i;
+        ^
+
+3 errors detected in the compilation of "Test_name.c".

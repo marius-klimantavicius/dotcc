@@ -1,0 +1,26 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./dfp/builtin-snan-2.c", line 9: error: identifier "_Decimal32" is undefined
+  volatile _Decimal32 d32 = __builtin_nansd32 ("");
+           ^
+
+"./dfp/builtin-snan-2.c", line 9: error: function call is not allowed in a constant expression
+  volatile _Decimal32 d32 = __builtin_nansd32 ("");
+                            ^
+
+"./dfp/builtin-snan-2.c", line 10: error: identifier "_Decimal64" is undefined
+  volatile _Decimal64 d64 = __builtin_nansd64 ("");
+           ^
+
+"./dfp/builtin-snan-2.c", line 10: error: function call is not allowed in a constant expression
+  volatile _Decimal64 d64 = __builtin_nansd64 ("");
+                            ^
+
+"./dfp/builtin-snan-2.c", line 11: error: identifier "_Decimal128" is undefined
+  volatile _Decimal128 d128 = __builtin_nansd128 ("");
+           ^
+
+"./dfp/builtin-snan-2.c", line 11: error: function call is not allowed in a constant expression
+  volatile _Decimal128 d128 = __builtin_nansd128 ("");
+                              ^
+
+6 errors detected in the compilation of "Test_name.c".

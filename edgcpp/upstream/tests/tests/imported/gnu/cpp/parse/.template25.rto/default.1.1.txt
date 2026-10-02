@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 7: error: a template declaration is not allowed here
+    template<typename T> class A /* { dg-error "a template declaration cannot appear at block scope" } */
+    ^
+
+"Test_name.c", line 14: error: explicit instantiation is not allowed in the current scope
+    template f<int>(); /* { dg-error "expected primary-expression" "primary-expression" } */
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

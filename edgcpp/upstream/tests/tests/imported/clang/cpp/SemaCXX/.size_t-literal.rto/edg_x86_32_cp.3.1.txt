@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=3 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++23 Test_name.c
+"Test_name.c", line 21: warning: variable "a1" was set but never used
+    auto a1 = 1z;
+         ^
+
+"Test_name.c", line 26: warning: variable "a2" was set but never used
+    auto a2 = 1Z;
+         ^
+
+"Test_name.c", line 33: warning: variable "a1" was set but never used
+    auto a1 = 1uz;
+         ^
+
+"Test_name.c", line 38: warning: variable "a2" was set but never used
+    auto a2 = 1uZ;
+         ^
+
+"Test_name.c", line 43: warning: variable "a3" was set but never used
+    auto a3 = 1Uz;
+         ^
+
+"Test_name.c", line 48: warning: variable "a4" was set but never used
+    auto a4 = 1UZ;
+         ^
+
+"Test_name.c", line 53: warning: variable "a5" was set but never used
+    auto a5 = 1zu;
+         ^
+
+"Test_name.c", line 58: warning: variable "a6" was set but never used
+    auto a6 = 1Zu;
+         ^
+
+"Test_name.c", line 63: warning: variable "a7" was set but never used
+    auto a7 = 1zU;
+         ^
+
+"Test_name.c", line 68: warning: variable "a8" was set but never used
+    auto a8 = 1ZU;
+         ^
+
+"Test_name.c", line 76: error: integer constant is too large
+    (void)3'000'000'000z; // cxx23-32-error {{signed 'size_t' literal is out of range of possible signed 'size_t' values}}
+          ^
+
+"Test_name.c", line 78: error: integer constant is too large
+    (void)5'000'000'000uz; // cxx23-32-error {{'size_t' literal is out of range of possible 'size_t' values}}
+          ^
+
+"Test_name.c", line 82: error: integer constant is too large
+    (void)0x180000000uz; //cxx23-32-error {{'size_t' literal is out of range of possible 'size_t' values}}
+          ^
+
+3 errors detected in the compilation of "Test_name.c".

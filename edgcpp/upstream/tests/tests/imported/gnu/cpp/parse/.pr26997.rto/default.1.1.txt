@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 15: error: type name is not allowed
+             t->a // { dg-error "before '->' token" }
+             ^
+
+"Test_name.c", line 10: warning: variable "v3" was set but never used
+    t *v3;
+       ^
+
+"Test_name.c", line 26: error: cast to type "C ()" is not allowed
+    (C ())(3); // { dg-error "3:invalid cast" } 
+     ^
+
+"Test_name.c", line 45: error: cast to type "C ()" is not allowed
+    (C ())[2];
+     ^
+
+"Test_name.c", line 45: error: expected an identifier
+    (C ())[2];
+           ^
+
+"Test_name.c", line 45: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+    (C ())[2];
+             ^
+
+"Test_name.c", line 45: error: expected a "{" introducing a lambda body
+    (C ())[2];
+             ^
+
+"Test_name.c", line 46: error: cast to type "S ()" is not allowed
+    (S ())(3); // { dg-error "3:invalid cast" } 
+     ^
+
+"Test_name.c", line 47: error: cast to type "C ()" is not allowed
+    (C())*var; // { dg-error "3:invalid cast" } 
+     ^
+
+"Test_name.c", line 48: error: cast to type "C ()" is not allowed
+    (C())+var;  // { dg-error "3:invalid cast" } 
+     ^
+
+8 errors detected in the compilation of "Test_name.c".

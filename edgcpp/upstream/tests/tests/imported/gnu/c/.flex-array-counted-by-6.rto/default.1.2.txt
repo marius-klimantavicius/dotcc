@@ -1,0 +1,5 @@
+./a.out
+WAT: __builtin_dynamic_object_size((char *)(bar + 1), 1) == -1 (expected 16)
+Failure at line: 37
+WAT: __builtin_dynamic_object_size((char *)(bar + 2), 1) == -1 (expected 8)
+Failure at line: 38

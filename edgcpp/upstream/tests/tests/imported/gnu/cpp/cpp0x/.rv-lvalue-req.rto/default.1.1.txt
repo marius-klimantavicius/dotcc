@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: error: expression must be an lvalue or a function designator
+    &declval<int>();		        // { dg-error "16:taking address of rvalue" }
+     ^
+
+"Test_name.c", line 10: error: expression must be a modifiable lvalue
+    declval<int>() = declval<int>();	// { dg-error "15:using rvalue as lvalue" }
+    ^
+
+"Test_name.c", line 11: error: expression must be a modifiable lvalue
+    declval<int>()++;			// { dg-error "15:using rvalue as lvalue" }
+    ^
+
+"Test_name.c", line 12: error: expression must be a modifiable lvalue
+    --declval<int>();			// { dg-error "17:using rvalue as lvalue" }
+      ^
+
+"Test_name.c", line 13: error: expression must be a modifiable lvalue
+    declval<int>() += 1;			// { dg-error "rvalue" }
+    ^
+
+5 errors detected in the compilation of "Test_name.c".

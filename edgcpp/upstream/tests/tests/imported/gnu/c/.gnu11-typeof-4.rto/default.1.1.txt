@@ -1,0 +1,150 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 --strict_gnu Test_name.c
+"Test_name.c", line 11: error: variable "x" is not a type name
+  __typeof_unqual__ (x.i) j2; /* { dg-error "applied to a bit-field" } */
+                     ^
+
+"Test_name.c", line 11: error: expected a ")"
+  __typeof_unqual__ (x.i) j2; /* { dg-error "applied to a bit-field" } */
+                      ^
+
+"Test_name.c", line 11: warning: explicit type is missing ("int" assumed)
+  __typeof_unqual__ (x.i) j2; /* { dg-error "applied to a bit-field" } */
+  ^
+
+"Test_name.c", line 11: warning: unnamed prototyped parameters not allowed when body is present
+  __typeof_unqual__ (x.i) j2; /* { dg-error "applied to a bit-field" } */
+  ^
+
+"Test_name.c", line 11: error: expected a "{"
+  __typeof_unqual__ (x.i) j2; /* { dg-error "applied to a bit-field" } */
+                          ^
+
+"Test_name.c", line 22: warning: parsing restarts here after previous syntax error
+  void fg (void) {}
+                 ^
+
+"Test_name.c", line 23: error: identifier "nf1" is undefined
+  __typeof__ (&nf1) pnf1 = fg; /* { dg-warning "qualified function pointer from unqualified" } */
+               ^
+
+"Test_name.c", line 23: error: identifier "fg" is undefined
+  __typeof__ (&nf1) pnf1 = fg; /* { dg-warning "qualified function pointer from unqualified" } */
+                           ^
+
+"Test_name.c", line 24: error: identifier "nf2" is undefined
+  __typeof (&nf2) pnf2 = fg; /* { dg-warning "qualified function pointer from unqualified" } */
+             ^
+
+"Test_name.c", line 38: error: declaration is incompatible with "<error-type> fg2" (declared at line 31)
+  void fg2 (void) {} /* { dg-error "conflicting type qualifiers for" } */
+       ^
+
+"Test_name.c", line 39: error: declaration is incompatible with "<error-type> fg2a" (declared at line 31)
+  _Noreturn void fg2a (void) { abort (); } /* { dg-error "conflicting type qualifiers for" } */
+                 ^
+
+"Test_name.c", line 39: warning: function declared with "noreturn" does return
+  _Noreturn void fg2a (void) { abort (); } /* { dg-error "conflicting type qualifiers for" } */
+                                         ^
+
+"Test_name.c", line 40: error: declaration is incompatible with "<error-type> fg2b" (declared at line 31)
+  __attribute__((noreturn)) void fg2b (void) { abort (); } /* { dg-error "conflicting type qualifiers for" } */
+                                 ^
+
+"Test_name.c", line 40: warning: function declared with "noreturn" does return
+  __attribute__((noreturn)) void fg2b (void) { abort (); } /* { dg-error "conflicting type qualifiers for" } */
+                                                         ^
+
+"Test_name.c", line 41: error: declaration is incompatible with "<error-type> fg3" (declared at line 32)
+  void fg3 (void) {} /* { dg-error "conflicting type qualifiers for" } */
+       ^
+
+"Test_name.c", line 42: error: declaration is incompatible with "<error-type> fg3a" (declared at line 32)
+  _Noreturn void fg3a (void) { abort (); } /* { dg-error "conflicting type qualifiers for" } */
+                 ^
+
+"Test_name.c", line 42: warning: function declared with "noreturn" does return
+  _Noreturn void fg3a (void) { abort (); } /* { dg-error "conflicting type qualifiers for" } */
+                                         ^
+
+"Test_name.c", line 43: error: declaration is incompatible with "<error-type> fg3b" (declared at line 32)
+  __attribute__((noreturn)) void fg3b (void) { abort (); } /* { dg-error "conflicting type qualifiers for" } */
+                                 ^
+
+"Test_name.c", line 43: warning: function declared with "noreturn" does return
+  __attribute__((noreturn)) void fg3b (void) { abort (); } /* { dg-error "conflicting type qualifiers for" } */
+                                                         ^
+
+"Test_name.c", line 44: error: declaration is incompatible with "<error-type> fg4" (declared at line 33)
+  void fg4 (void) {}
+       ^
+
+"Test_name.c", line 45: error: declaration is incompatible with "<error-type> fg4a" (declared at line 33)
+  _Noreturn void fg4a (void) { abort (); }
+                 ^
+
+"Test_name.c", line 45: warning: function declared with "noreturn" does return
+  _Noreturn void fg4a (void) { abort (); }
+                                         ^
+
+"Test_name.c", line 46: error: declaration is incompatible with "<error-type> fg4b" (declared at line 33)
+  __attribute__((noreturn)) void fg4b (void) { abort (); }
+                                 ^
+
+"Test_name.c", line 46: warning: function declared with "noreturn" does return
+  __attribute__((noreturn)) void fg4b (void) { abort (); }
+                                                         ^
+
+"Test_name.c", line 47: error: declaration is incompatible with "<error-type> fg5" (declared at line 34)
+  void fg5 (void) {}
+       ^
+
+"Test_name.c", line 48: error: declaration is incompatible with "<error-type> fg5a" (declared at line 34)
+  _Noreturn void fg5a (void) { abort (); }
+                 ^
+
+"Test_name.c", line 48: warning: function declared with "noreturn" does return
+  _Noreturn void fg5a (void) { abort (); }
+                                         ^
+
+"Test_name.c", line 49: error: declaration is incompatible with "<error-type> fg5b" (declared at line 34)
+  __attribute__((noreturn)) void fg5b (void) { abort (); }
+                                 ^
+
+"Test_name.c", line 49: warning: function declared with "noreturn" does return
+  __attribute__((noreturn)) void fg5b (void) { abort (); }
+                                                         ^
+
+"Test_name.c", line 54: warning: function "ok" declared implicitly
+    __typeof__ (ok ()) x = 2;
+                ^
+
+"Test_name.c", line 55: warning: function "__typeof_unqual" declared implicitly
+    __typeof_unqual (also_ok ()) y = 2;
+    ^
+
+"Test_name.c", line 55: warning: function "also_ok" declared implicitly
+    __typeof_unqual (also_ok ()) y = 2;
+                     ^
+
+"Test_name.c", line 55: error: expected a ";"
+    __typeof_unqual (also_ok ()) y = 2;
+                                 ^
+
+"Test_name.c", line 58: warning: function "not_defined" declared implicitly
+    __typeof (p + not_defined ()) q;
+                  ^
+
+"Test_name.c", line 59: warning: function "also_not_defined" declared implicitly
+    __typeof_unqual__ (p + also_not_defined ()) q2;
+                           ^
+
+"Test_name.c", line 59: error: expected a ";"
+    __typeof_unqual__ (p + also_not_defined ()) q2;
+                                                ^
+
+"Test_name.c", line 58: warning: variable "q" was declared but never referenced
+    __typeof (p + not_defined ()) q;
+                                  ^
+
+20 errors detected in the compilation of "Test_name.c".

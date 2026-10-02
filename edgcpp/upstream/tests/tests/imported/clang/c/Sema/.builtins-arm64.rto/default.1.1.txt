@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -DTEST1 --c Test_name.c
+"Test_name.c", line 19: error: too few arguments in function call
+    __clear_cache(); // expected-error {{too few arguments to function call}}
+                  ^
+
+"Test_name.c", line 23: warning: function "__builtin_arm_dmb" declared implicitly
+    __builtin_arm_dmb(16); // expected-error-re {{argument value {{.*}} is outside the valid range}}
+    ^
+
+"Test_name.c", line 24: warning: function "__builtin_arm_dsb" declared implicitly
+    __builtin_arm_dsb(17); // expected-error-re {{argument value {{.*}} is outside the valid range}}
+    ^
+
+"Test_name.c", line 25: warning: function "__builtin_arm_isb" declared implicitly
+    __builtin_arm_isb(18); // expected-error-re {{argument value {{.*}} is outside the valid range}}
+    ^
+
+"Test_name.c", line 29: warning: function "__builtin_arm_prefetch" declared implicitly
+    __builtin_arm_prefetch(0, 2, 0, 0, 0); // expected-error-re {{argument value {{.*}} is outside the valid range}}
+    ^
+
+"Test_name.c", line 36: warning: function "__builtin_arm_range_prefetch" declared implicitly
+    __builtin_arm_range_prefetch(0, 2, 0, 0); // expected-error-re {{argument value {{.*}} is outside the valid range}}
+    ^
+
+"Test_name.c", line 39: warning: function "__builtin_arm_range_prefetch_x" declared implicitly
+    __builtin_arm_range_prefetch_x(0, 2, 0, 0, 0, 0, 0); // expected-error-re {{argument value {{.*}} is outside the valid range}}
+    ^
+
+"Test_name.c", line 49: warning: function "__builtin_arm_trap" declared implicitly
+    __builtin_arm_trap(42);
+    ^
+
+1 error detected in the compilation of "Test_name.c".

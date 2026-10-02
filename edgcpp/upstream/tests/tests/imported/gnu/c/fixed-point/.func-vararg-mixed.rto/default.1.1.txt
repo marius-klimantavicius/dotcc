@@ -1,0 +1,1120 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"./fixed-point/func-vararg-mixed.c", line 22: error: identifier "_Fract" is undefined
+  static _Fract
+         ^
+
+"./fixed-point/func-vararg-mixed.c", line 27: error: identifier "_Fract" is undefined
+    _Fract result_fr;
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 30: error: identifier "_Fract" is undefined
+               _Fract
+               ^
+
+"./fixed-point/func-vararg-mixed.c", line 26: warning: variable "result_i" was set but never used
+    int result_i;
+        ^
+
+"./fixed-point/func-vararg-mixed.c", line 39: error: identifier "_Fract" is undefined
+    _Fract result_fr;
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 43: error: identifier "_Fract" is undefined
+               _Fract
+               ^
+
+"./fixed-point/func-vararg-mixed.c", line 38: warning: variable "result_i" was set but never used
+    int result_i;
+        ^
+
+"./fixed-point/func-vararg-mixed.c", line 66: error: expected a ";"
+  static short _Fract vararg_sf (unsigned arg, ...) { va_list ap; int result_i; _Fract result_fr; double result_d; short _Fract result; 
+                      ^
+
+"./fixed-point/func-vararg-mixed.c", line 66: warning: parsing restarts here after previous syntax error
+  ; result_fr = 
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 66: warning: this declaration has no storage class or type specifier
+  ; result_fr = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 66: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 66: error: identifier "ap" is undefined
+  ap
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 66: error: variable "_Fract" is not a type name
+  _Fract
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 66: warning: this declaration has no storage class or type specifier
+  ; result_d = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 66: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 66: warning: this declaration has no storage class or type specifier
+  ; result = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 66: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 66: warning: "short" would have been promoted to "int" when passed through the ellipsis parameter; use the latter type instead
+  short _Fract
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 66: error: expected a ")"
+  short _Fract
+        ^
+
+"./fixed-point/func-vararg-mixed.c", line 66: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 66: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg-mixed.c", line 67: warning: parsing restarts here after previous syntax error
+  ; result_fr = 
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 67: warning: this declaration has no storage class or type specifier
+  ; result_fr = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 67: error: variable "result_fr" has already been initialized
+  ; result_fr = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 67: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 67: error: variable "_Fract" is not a type name
+  _Fract
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 67: warning: this declaration has no storage class or type specifier
+  ; result_d = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 67: error: variable "result_d" has already been initialized
+  ; result_d = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 67: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 67: warning: this declaration has no storage class or type specifier
+  ; result = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 67: error: variable "result" has already been initialized
+  ; result = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 67: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 67: error: variable "_Fract" is not a type name
+  _Fract
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 67: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 67: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg-mixed.c", line 68: warning: parsing restarts here after previous syntax error
+  ; result_fr = 
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 68: warning: this declaration has no storage class or type specifier
+  ; result_fr = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 68: error: variable "result_fr" has already been initialized
+  ; result_fr = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 68: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 68: error: variable "_Fract" is not a type name
+  _Fract
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 68: warning: this declaration has no storage class or type specifier
+  ; result_d = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 68: error: variable "result_d" has already been initialized
+  ; result_d = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 68: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 68: warning: this declaration has no storage class or type specifier
+  ; result = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 68: error: variable "result" has already been initialized
+  ; result = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 68: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 68: error: expected a ")"
+  long _Fract
+       ^
+
+"./fixed-point/func-vararg-mixed.c", line 68: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 68: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg-mixed.c", line 69: warning: parsing restarts here after previous syntax error
+  ; result_fr = 
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 69: warning: this declaration has no storage class or type specifier
+  ; result_fr = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 69: error: variable "result_fr" has already been initialized
+  ; result_fr = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 69: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 69: error: variable "_Fract" is not a type name
+  _Fract
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 69: warning: this declaration has no storage class or type specifier
+  ; result_d = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 69: error: variable "result_d" has already been initialized
+  ; result_d = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 69: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 69: warning: this declaration has no storage class or type specifier
+  ; result = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 69: error: variable "result" has already been initialized
+  ; result = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 69: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 69: error: expected a ")"
+  long long _Fract
+            ^
+
+"./fixed-point/func-vararg-mixed.c", line 69: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 69: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg-mixed.c", line 70: warning: parsing restarts here after previous syntax error
+  ; result_fr = 
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 70: warning: this declaration has no storage class or type specifier
+  ; result_fr = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 70: error: variable "result_fr" has already been initialized
+  ; result_fr = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 70: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 70: error: variable "_Fract" is not a type name
+  _Fract
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 70: warning: this declaration has no storage class or type specifier
+  ; result_d = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 70: error: variable "result_d" has already been initialized
+  ; result_d = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 70: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 70: warning: this declaration has no storage class or type specifier
+  ; result = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 70: error: variable "result" has already been initialized
+  ; result = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 70: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 70: warning: "unsigned short" would have been promoted to "int" when passed through the ellipsis parameter; use the latter type instead
+  unsigned short _Fract
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 70: error: expected a ")"
+  unsigned short _Fract
+                 ^
+
+"./fixed-point/func-vararg-mixed.c", line 70: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 70: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg-mixed.c", line 71: warning: parsing restarts here after previous syntax error
+  ; result_fr = 
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 71: warning: this declaration has no storage class or type specifier
+  ; result_fr = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 71: error: variable "result_fr" has already been initialized
+  ; result_fr = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 71: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 71: error: variable "_Fract" is not a type name
+  _Fract
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 71: warning: this declaration has no storage class or type specifier
+  ; result_d = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 71: error: variable "result_d" has already been initialized
+  ; result_d = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 71: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 71: warning: this declaration has no storage class or type specifier
+  ; result = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 71: error: variable "result" has already been initialized
+  ; result = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 71: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 71: error: expected a ")"
+  unsigned _Fract
+           ^
+
+"./fixed-point/func-vararg-mixed.c", line 71: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 71: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg-mixed.c", line 72: warning: parsing restarts here after previous syntax error
+  ; result_fr = 
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 72: warning: this declaration has no storage class or type specifier
+  ; result_fr = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 72: error: variable "result_fr" has already been initialized
+  ; result_fr = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 72: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 72: error: variable "_Fract" is not a type name
+  _Fract
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 72: warning: this declaration has no storage class or type specifier
+  ; result_d = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 72: error: variable "result_d" has already been initialized
+  ; result_d = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 72: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 72: warning: this declaration has no storage class or type specifier
+  ; result = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 72: error: variable "result" has already been initialized
+  ; result = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 72: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 72: error: expected a ")"
+  unsigned long _Fract
+                ^
+
+"./fixed-point/func-vararg-mixed.c", line 72: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 72: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg-mixed.c", line 73: warning: parsing restarts here after previous syntax error
+  ; result_fr = 
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 73: warning: this declaration has no storage class or type specifier
+  ; result_fr = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 73: error: variable "result_fr" has already been initialized
+  ; result_fr = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 73: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 73: error: variable "_Fract" is not a type name
+  _Fract
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 73: warning: this declaration has no storage class or type specifier
+  ; result_d = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 73: error: variable "result_d" has already been initialized
+  ; result_d = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 73: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 73: warning: this declaration has no storage class or type specifier
+  ; result = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 73: error: variable "result" has already been initialized
+  ; result = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 73: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 73: error: expected a ")"
+  unsigned long long _Fract
+                     ^
+
+"./fixed-point/func-vararg-mixed.c", line 73: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 73: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg-mixed.c", line 74: warning: parsing restarts here after previous syntax error
+  ; result_fr = 
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 74: warning: this declaration has no storage class or type specifier
+  ; result_fr = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 74: error: variable "result_fr" has already been initialized
+  ; result_fr = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 74: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 74: error: variable "_Fract" is not a type name
+  _Fract
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 74: warning: this declaration has no storage class or type specifier
+  ; result_d = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 74: error: variable "result_d" has already been initialized
+  ; result_d = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 74: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 74: warning: this declaration has no storage class or type specifier
+  ; result = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 74: error: variable "result" has already been initialized
+  ; result = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 74: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 74: error: identifier "_Sat" is undefined
+  _Sat short _Fract
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 74: error: invalid combination of type specifiers
+  _Sat short _Fract
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 74: error: expected a ")"
+  _Sat short _Fract
+             ^
+
+"./fixed-point/func-vararg-mixed.c", line 74: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 74: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg-mixed.c", line 75: warning: parsing restarts here after previous syntax error
+  ; result_fr = 
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 75: warning: this declaration has no storage class or type specifier
+  ; result_fr = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 75: error: variable "result_fr" has already been initialized
+  ; result_fr = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 75: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 75: error: variable "_Fract" is not a type name
+  _Fract
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 75: warning: this declaration has no storage class or type specifier
+  ; result_d = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 75: error: variable "result_d" has already been initialized
+  ; result_d = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 75: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 75: warning: this declaration has no storage class or type specifier
+  ; result = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 75: error: variable "result" has already been initialized
+  ; result = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 75: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 75: error: identifier "_Sat" is undefined
+  _Sat _Fract
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 75: error: expected a ")"
+  _Sat _Fract
+       ^
+
+"./fixed-point/func-vararg-mixed.c", line 75: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 75: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg-mixed.c", line 76: warning: parsing restarts here after previous syntax error
+  ; result_fr = 
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 76: warning: this declaration has no storage class or type specifier
+  ; result_fr = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 76: error: variable "result_fr" has already been initialized
+  ; result_fr = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 76: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 76: error: variable "_Fract" is not a type name
+  _Fract
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 76: warning: this declaration has no storage class or type specifier
+  ; result_d = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 76: error: variable "result_d" has already been initialized
+  ; result_d = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 76: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 76: warning: this declaration has no storage class or type specifier
+  ; result = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 76: error: variable "result" has already been initialized
+  ; result = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 76: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 76: error: identifier "_Sat" is undefined
+  _Sat long _Fract
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 76: error: invalid combination of type specifiers
+  _Sat long _Fract
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 76: error: expected a ")"
+  _Sat long _Fract
+            ^
+
+"./fixed-point/func-vararg-mixed.c", line 76: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 76: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg-mixed.c", line 77: warning: parsing restarts here after previous syntax error
+  ; result_fr = 
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 77: warning: this declaration has no storage class or type specifier
+  ; result_fr = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 77: error: variable "result_fr" has already been initialized
+  ; result_fr = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 77: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 77: error: variable "_Fract" is not a type name
+  _Fract
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 77: warning: this declaration has no storage class or type specifier
+  ; result_d = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 77: error: variable "result_d" has already been initialized
+  ; result_d = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 77: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 77: warning: this declaration has no storage class or type specifier
+  ; result = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 77: error: variable "result" has already been initialized
+  ; result = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 77: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 77: error: identifier "_Sat" is undefined
+  _Sat long long _Fract
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 77: error: invalid combination of type specifiers
+  _Sat long long _Fract
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 77: error: expected a ")"
+  _Sat long long _Fract
+                 ^
+
+"./fixed-point/func-vararg-mixed.c", line 77: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 77: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg-mixed.c", line 78: warning: parsing restarts here after previous syntax error
+  ; result_fr = 
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 78: warning: this declaration has no storage class or type specifier
+  ; result_fr = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 78: error: variable "result_fr" has already been initialized
+  ; result_fr = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 78: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 78: error: variable "_Fract" is not a type name
+  _Fract
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 78: warning: this declaration has no storage class or type specifier
+  ; result_d = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 78: error: variable "result_d" has already been initialized
+  ; result_d = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 78: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 78: warning: this declaration has no storage class or type specifier
+  ; result = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 78: error: variable "result" has already been initialized
+  ; result = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 78: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 78: error: identifier "_Sat" is undefined
+  _Sat unsigned short _Fract
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 78: error: invalid combination of type specifiers
+  _Sat unsigned short _Fract
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 78: error: expected a ")"
+  _Sat unsigned short _Fract
+                      ^
+
+"./fixed-point/func-vararg-mixed.c", line 78: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 78: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg-mixed.c", line 79: warning: parsing restarts here after previous syntax error
+  ; result_fr = 
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 79: warning: this declaration has no storage class or type specifier
+  ; result_fr = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 79: error: variable "result_fr" has already been initialized
+  ; result_fr = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 79: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 79: error: variable "_Fract" is not a type name
+  _Fract
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 79: warning: this declaration has no storage class or type specifier
+  ; result_d = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 79: error: variable "result_d" has already been initialized
+  ; result_d = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 79: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 79: warning: this declaration has no storage class or type specifier
+  ; result = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 79: error: variable "result" has already been initialized
+  ; result = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 79: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 79: error: identifier "_Sat" is undefined
+  _Sat unsigned _Fract
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 79: error: invalid combination of type specifiers
+  _Sat unsigned _Fract
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 79: error: expected a ")"
+  _Sat unsigned _Fract
+                ^
+
+"./fixed-point/func-vararg-mixed.c", line 79: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 79: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg-mixed.c", line 80: warning: parsing restarts here after previous syntax error
+  ; result_fr = 
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 80: warning: this declaration has no storage class or type specifier
+  ; result_fr = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 80: error: variable "result_fr" has already been initialized
+  ; result_fr = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 80: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 80: error: variable "_Fract" is not a type name
+  _Fract
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 80: warning: this declaration has no storage class or type specifier
+  ; result_d = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 80: error: variable "result_d" has already been initialized
+  ; result_d = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 80: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 80: warning: this declaration has no storage class or type specifier
+  ; result = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 80: error: variable "result" has already been initialized
+  ; result = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 80: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 80: error: identifier "_Sat" is undefined
+  _Sat unsigned long _Fract
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 80: error: invalid combination of type specifiers
+  _Sat unsigned long _Fract
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 80: error: expected a ")"
+  _Sat unsigned long _Fract
+                     ^
+
+"./fixed-point/func-vararg-mixed.c", line 80: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 80: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg-mixed.c", line 81: warning: parsing restarts here after previous syntax error
+  ; result_fr = 
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 81: warning: this declaration has no storage class or type specifier
+  ; result_fr = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 81: error: variable "result_fr" has already been initialized
+  ; result_fr = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 81: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 81: error: variable "_Fract" is not a type name
+  _Fract
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 81: warning: this declaration has no storage class or type specifier
+  ; result_d = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 81: error: variable "result_d" has already been initialized
+  ; result_d = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 81: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 81: warning: this declaration has no storage class or type specifier
+  ; result = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 81: error: variable "result" has already been initialized
+  ; result = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 81: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 81: error: identifier "_Sat" is undefined
+  _Sat unsigned long long _Fract
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 81: error: invalid combination of type specifiers
+  _Sat unsigned long long _Fract
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 81: error: expected a ")"
+  _Sat unsigned long long _Fract
+                          ^
+
+"./fixed-point/func-vararg-mixed.c", line 81: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 81: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg-mixed.c", line 82: warning: parsing restarts here after previous syntax error
+  ; result_fr = 
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 82: warning: this declaration has no storage class or type specifier
+  ; result_fr = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 82: error: variable "result_fr" has already been initialized
+  ; result_fr = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 82: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 82: error: variable "_Fract" is not a type name
+  _Fract
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 82: warning: this declaration has no storage class or type specifier
+  ; result_d = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 82: error: variable "result_d" has already been initialized
+  ; result_d = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 82: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 82: warning: this declaration has no storage class or type specifier
+  ; result = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 82: error: variable "result" has already been initialized
+  ; result = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 82: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 82: warning: "short" would have been promoted to "int" when passed through the ellipsis parameter; use the latter type instead
+  short _Accum
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 82: error: expected a ")"
+  short _Accum
+        ^
+
+"./fixed-point/func-vararg-mixed.c", line 82: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 82: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg-mixed.c", line 83: warning: parsing restarts here after previous syntax error
+  ; result_fr = 
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 83: warning: this declaration has no storage class or type specifier
+  ; result_fr = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 83: error: variable "result_fr" has already been initialized
+  ; result_fr = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 83: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 83: error: variable "_Fract" is not a type name
+  _Fract
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 83: warning: this declaration has no storage class or type specifier
+  ; result_d = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 83: error: variable "result_d" has already been initialized
+  ; result_d = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 83: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 83: warning: this declaration has no storage class or type specifier
+  ; result = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 83: error: variable "result" has already been initialized
+  ; result = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 83: error: this operator is not allowed in a constant expression
+  __builtin_va_arg(
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 83: error: identifier "_Accum" is undefined
+  _Accum
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 83: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 83: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg-mixed.c", line 84: warning: parsing restarts here after previous syntax error
+  ; result_fr = 
+  ^
+
+"./fixed-point/func-vararg-mixed.c", line 84: warning: this declaration has no storage class or type specifier
+  ; result_fr = 
+    ^
+
+"./fixed-point/func-vararg-mixed.c", line 84: error: variable "result_fr" has already been initialized
+  ; result_fr = 
+    ^
+
+Error limit reached.
+200 errors detected in the compilation of "Test_name.c".
+Compilation terminated.

@@ -1,0 +1,45 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 27: error: const variable "b" requires an initializer -- class "B" has no user-provided default constructor
+    B const b;    // { dg-error "uninitialized 'const" }
+            ^
+
+"Test_name.c", line 30: error: const variable "c" requires an initializer -- class "C" has no user-provided default constructor
+    C const c[ 1 ]; // { dg-error "uninitialized 'const" }
+            ^
+
+"Test_name.c", line 36: error: const variable "e" requires an initializer -- class "E" has no user-provided default constructor
+    E const e;	// { dg-error "uninitialized 'const" }
+             ^
+
+"Test_name.c", line 39: error: const variable "f" requires an initializer -- class "F<int>" has no user-provided default constructor
+    F<int> const f; // { dg-error "uninitialized 'const" }
+                 ^
+
+"Test_name.c", line 42: error: const variable "g" requires an initializer -- class "G<int>" has no user-provided default constructor
+    G<int> const g; // { dg-error "uninitialized 'const" }
+                  ^
+
+"Test_name.c", line 36: warning: variable "e" was declared but never referenced
+    E const e;	// { dg-error "uninitialized 'const" }
+            ^
+
+"Test_name.c", line 42: warning: variable "g" was declared but never referenced
+    G<int> const g; // { dg-error "uninitialized 'const" }
+                 ^
+
+"Test_name.c", line 53: error: const variable "t" requires an initializer -- class "H" has no user-provided default constructor
+    T const t; // { dg-error "uninitialized 'const" }
+             ^
+          detected during instantiation of "void g<T>() [with T=H]" at line 57
+
+"Test_name.c", line 53: error: const variable "t" requires an initializer -- class "I" has no user-provided default constructor
+    T const t; // { dg-error "uninitialized 'const" }
+            ^
+          detected during instantiation of "void g<T>() [with T=I]" at line 58
+
+"Test_name.c", line 54: error: declaration is incompatible with previous "text" (declared at line 54)
+    extern T const text; // { dg-error "conflicting declaration" }
+                   ^
+          detected during instantiation of "void g<T>() [with T=I]" at line 58
+
+8 errors detected in the compilation of "Test_name.c".

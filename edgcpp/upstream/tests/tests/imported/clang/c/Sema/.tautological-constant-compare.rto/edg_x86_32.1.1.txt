@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -DTEST=2 -DTEST=2 -DTEST -DTEST -DTEST -DTEST --c Test_name.c
+"Test_name.c", line 504: warning: pointless comparison of unsigned integer with zero
+    if (e < yes)
+          ^
+
+"Test_name.c", line 510: warning: pointless comparison of unsigned integer with zero
+    if (e >= yes)
+          ^
+
+"Test_name.c", line 519: warning: pointless comparison of unsigned integer with zero
+    if (yes <= e)
+            ^
+
+"Test_name.c", line 521: warning: pointless comparison of unsigned integer with zero
+    if (yes > e)
+            ^
+
+"Test_name.c", line 561: warning: variable "a" is used before its value is set
+    if (a.a < 3) {}
+        ^
+

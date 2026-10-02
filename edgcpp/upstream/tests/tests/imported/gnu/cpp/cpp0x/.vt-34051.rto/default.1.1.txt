@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 11: error: class "A" has no member "operator T"
+    using A::operator T; // { dg-error "parameter packs|T" }
+             ^
+
+"Test_name.c", line 11: error: parameter pack "T" was referenced but not expanded
+    using A::operator T; // { dg-error "parameter packs|T" }
+                      ^
+
+2 errors detected in the compilation of "Test_name.c".

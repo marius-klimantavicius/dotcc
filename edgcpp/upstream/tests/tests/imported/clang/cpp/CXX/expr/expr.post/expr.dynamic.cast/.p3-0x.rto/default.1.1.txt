@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 15: error: the operand of an rvalue reference dynamic_cast must have a complete class type
+    Y &&yr2 = dynamic_cast<Y&&>(z); // expected-error{{'Z' is an incomplete type}}
+                                ^
+
+1 error detected in the compilation of "Test_name.c".

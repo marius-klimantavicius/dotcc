@@ -1,0 +1,14 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 6: error: integer operation result is out of range
+  enum E3 { zero3, one3, two3, many3 = many+1 };
+                                           ^
+
+"Test_name.c", line 9: error: enumeration value is out of "int" range
+  enum E6 { many6 = many5, evenmore6, yetmore6 };
+                           ^
+
+"Test_name.c", line 10: error: integer constant is too large
+  enum E7 { many7 = 0x100000000-1 };
+                    ^
+
+3 errors detected in the compilation of "Test_name.c".

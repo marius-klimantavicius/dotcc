@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 5: error: the default constructor of "struct <unnamed>" cannot be referenced -- it is a deleted function
+  struct { struct { int& i ; } bar ; } foo ; // { dg-error "deleted|uninitialized" "uninit" }
+                                       ^
+
+1 error detected in the compilation of "Test_name.c".

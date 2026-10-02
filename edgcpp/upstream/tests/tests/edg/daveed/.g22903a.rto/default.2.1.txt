@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=2 --diag_error=430 --microsoft_v=1927 Test_name.c
+"Test_name.c", line 8: error: returning reference to local temporary
+      return ptr;
+             ^
+
+1 error detected in the compilation of "Test_name.c".

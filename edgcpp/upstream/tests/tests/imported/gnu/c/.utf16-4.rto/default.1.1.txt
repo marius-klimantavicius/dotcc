@@ -1,0 +1,58 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 10: error: quoted string should contain at least one character
+  char16_t	c0 = u'';		/* { dg-error "empty character" } */
+          	      ^
+
+"Test_name.c", line 10: error: identifier "u" is undefined
+  char16_t	c0 = u'';		/* { dg-error "empty character" } */
+          	     ^
+
+"Test_name.c", line 10: error: expected a ";"
+  char16_t	c0 = u'';		/* { dg-error "empty character" } */
+          	      ^
+
+"Test_name.c", line 11: warning: multicharacter character literal (potential portability problem)
+  char16_t	c1 = u'ab';		/* { dg-warning "multi-character literal cannot have an encoding prefix" } */
+          	      ^
+
+"Test_name.c", line 11: error: expected a ";"
+  char16_t	c1 = u'ab';		/* { dg-warning "multi-character literal cannot have an encoding prefix" } */
+          	      ^
+
+"Test_name.c", line 12: warning: multicharacter character literal (potential portability problem)
+  char16_t	c2 = u'\U00064321';	/* { dg-warning "character not encodable in a single code unit" } */
+          	      ^
+
+"Test_name.c", line 12: error: expected a ";"
+  char16_t	c2 = u'\U00064321';	/* { dg-warning "character not encodable in a single code unit" } */
+          	      ^
+
+"Test_name.c", line 15: error: identifier "U" is undefined
+  char16_t	c4 = U'a';
+          	     ^
+
+"Test_name.c", line 15: error: expected a ";"
+  char16_t	c4 = U'a';
+          	      ^
+
+"Test_name.c", line 16: warning: multicharacter character literal (potential portability problem)
+  char16_t	c5 = U'\u2029';
+          	      ^
+
+"Test_name.c", line 16: error: expected a ";"
+  char16_t	c5 = U'\u2029';
+          	      ^
+
+"Test_name.c", line 17: warning: multicharacter character literal (potential portability problem)
+  char16_t	c6 = U'\U00064321';	/* { dg-warning "conversion from .(long )?unsigned int. to 'char16_t' {aka '(short )?unsigned int'} changes value from .410401. to .17185." } */
+          	      ^
+
+"Test_name.c", line 17: error: expected a ";"
+  char16_t	c6 = U'\U00064321';	/* { dg-warning "conversion from .(long )?unsigned int. to 'char16_t' {aka '(short )?unsigned int'} changes value from .410401. to .17185." } */
+          	      ^
+
+"Test_name.c", line 20: warning: integer conversion resulted in truncation
+  char16_t 	c9 = L'\U00064321';	/* { dg-warning "conversion" "" { target { 4byte_wchar_t } } } */
+           	     ^
+
+9 errors detected in the compilation of "Test_name.c".

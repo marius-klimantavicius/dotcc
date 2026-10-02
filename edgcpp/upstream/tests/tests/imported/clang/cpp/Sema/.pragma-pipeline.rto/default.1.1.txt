@@ -1,0 +1,49 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 5: warning: unrecognized #pragma
+  #pragma clang loop pipeline(disable) /* expected-error {{expected unqualified-id}} */
+          ^
+
+"Test_name.c", line 14: warning: unrecognized #pragma
+  /* expected-error {{invalid argument of type 'double'; expected an integer type}} */ #pragma clang loop pipeline_initiation_interval(1.0)
+                                                                                               ^
+
+"Test_name.c", line 15: warning: unrecognized #pragma
+  /* expected-error {{invalid value '0'; must be positive}} */ #pragma clang loop pipeline_initiation_interval(0)
+                                                                       ^
+
+"Test_name.c", line 16: warning: unrecognized #pragma
+  /* expected-error {{invalid value '-1'; must be positive}} */ #pragma clang loop pipeline_initiation_interval(-1)
+                                                                        ^
+
+"Test_name.c", line 23: warning: unrecognized #pragma
+  #pragma clang loop pipeline(disable) 
+          ^
+
+"Test_name.c", line 25: warning: unrecognized #pragma
+  #pragma clang loop pipeline_initiation_interval(4)
+          ^
+
+"Test_name.c", line 28: warning: unrecognized #pragma
+  #pragma clang loop pipeline(disable)
+          ^
+
+"Test_name.c", line 29: warning: unrecognized #pragma
+  #pragma clang loop pipeline_initiation_interval(4) /* expected-error {{incompatible directives 'pipeline(disable)' and 'pipeline_initiation_interval(4)'}} */
+          ^
+
+"Test_name.c", line 34: warning: unrecognized #pragma
+  #pragma clang loop pipeline(disable)
+          ^
+
+"Test_name.c", line 12: warning: variable "i" was declared but never referenced
+    int i = 0;
+        ^
+
+"Test_name.c", line 24: warning: variable "j" was declared but never referenced
+  /* expected-error {{expected a for, while, or do-while loop to follow '#pragma clang loop'}} */ int j = Length;
+                                                                                                      ^
+
+"Test_name.c", line 26: warning: variable "k" was declared but never referenced
+  /* expected-error {{expected a for, while, or do-while loop to follow '#pragma clang loop'}} */ int k = Length;
+                                                                                                      ^
+

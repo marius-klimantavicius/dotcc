@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 --strict_gnu Test_name.c
+"Test_name.c", line 17: warning: function declared with "noreturn" does return
+    return;	/* { dg-warning "function declared 'noreturn' has a 'return' statement" } */
+    ^
+
+"Test_name.c", line 25: warning: function declared with "noreturn" does return
+  }		/* { dg-warning "'noreturn' function does return" } */
+  ^
+
+"Test_name.c", line 31: warning: function declared with "noreturn" does return
+      return;	/* { dg-warning "function declared 'noreturn' has a 'return' statement" } */
+      ^
+
+"Test_name.c", line 34: warning: function declared with "noreturn" does return
+    return;	/* { dg-warning "function declared 'noreturn' has a 'return' statement" } */
+    ^
+
+"Test_name.c", line 41: warning: function declared with "noreturn" does return
+      return;	/* { dg-warning "function declared 'noreturn' has a 'return' statement" } */
+      ^
+
+"Test_name.c", line 44: warning: function declared with "noreturn" does return
+  }		/* { dg-warning "'noreturn' function does return" } */
+  ^
+

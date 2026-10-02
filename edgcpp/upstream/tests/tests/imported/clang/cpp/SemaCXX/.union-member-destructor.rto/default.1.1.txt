@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 7: error: static assertion failed with ""
+    ~VSX() { static_assert(sizeof(T) != 4, ""); } // expected-error {{static assertion failed due to requirement 'sizeof(int) != 4':}} \
+             ^
+"Test_name.c", line 7: note: the final comparison was 4 != 4
+    ~VSX() { static_assert(sizeof(T) != 4, ""); } // expected-error {{static assertion failed due to requirement 'sizeof(int) != 4':}} \
+                                     ^
+          detected during instantiation of "t1::VSX<T>::~VSX() [with T=int]" at line 19
+
+"Test_name.c", line 25: error: static assertion failed with ""
+    ~VSX() { static_assert(sizeof(T) != 4, ""); } // expected-error {{static assertion failed due to requirement 'sizeof(int) != 4':}} \
+             ^
+"Test_name.c", line 25: note: the final comparison was 4 != 4
+    ~VSX() { static_assert(sizeof(T) != 4, ""); } // expected-error {{static assertion failed due to requirement 'sizeof(int) != 4':}} \
+                                     ^
+          detected during instantiation of "t2::VSX<T>::~VSX() [with T=int]" at line 37
+
+"Test_name.c", line 43: error: static assertion failed with ""
+    ~VSX() { static_assert(sizeof(T) != 4, ""); } // expected-error {{static assertion failed due to requirement 'sizeof(int) != 4':}} \
+             ^
+"Test_name.c", line 43: note: the final comparison was 4 != 4
+    ~VSX() { static_assert(sizeof(T) != 4, ""); } // expected-error {{static assertion failed due to requirement 'sizeof(int) != 4':}} \
+                                     ^
+          detected during instantiation of "t3::VSX<T>::~VSX() [with T=int]" at line 51
+
+3 errors detected in the compilation of "Test_name.c".

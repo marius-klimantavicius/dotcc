@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: error: a string literal cannot be used to initialize a flexible array member
+    struct A a0 = { 3, "AB" };                /* { dg-error "(non-static)|(initialization)" } */
+                       ^
+
+"Test_name.c", line 10: warning: variable "a0" was declared but never referenced
+    struct A a0 = { 3, "AB" };                /* { dg-error "(non-static)|(initialization)" } */
+             ^
+
+"Test_name.c", line 13: error: a string literal cannot be used to initialize a flexible array member
+  struct A a1 = { 3, "AB" };                  /* { dg-bogus "(non-static)|(initialization)" } */
+                     ^
+
+"Test_name.c", line 15: error: a string literal cannot be used to initialize a flexible array member
+  struct A a2 = (struct A){ 3, "AB" };        /* { dg-error "(non-static)|(initialization)" } */
+                               ^
+
+"Test_name.c", line 19: error: a string literal cannot be used to initialize a flexible array member
+      B1 (): a3 { 3, "AB" } { }               /* { dg-error "(non-static)|(initialization)" } */
+                     ^
+
+"Test_name.c", line 24: error: a string literal cannot be used to initialize a flexible array member
+      B2 (): a4 ((struct A){ 3, "AB" }) { }   /* { dg-error "(non-static)|(initialization)" } */
+                                ^
+
+5 errors detected in the compilation of "Test_name.c".

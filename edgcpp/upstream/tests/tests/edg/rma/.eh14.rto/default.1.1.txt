@@ -1,0 +1,14 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 4: error: exception specification is not allowed
+  typedef void F() throw();
+                   ^
+
+"Test_name.c", line 6: error: exception specification is incompatible with that of previous function "f" (declared at line 5)
+  void f() throw(int);
+           ^
+
+"Test_name.c", line 8: error: exception specification is incompatible with that of previous function "g" (declared at line 7)
+  void g() throw();
+           ^
+
+3 errors detected in the compilation of "Test_name.c".

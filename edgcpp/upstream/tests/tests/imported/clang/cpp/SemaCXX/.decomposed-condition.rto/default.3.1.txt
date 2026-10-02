@@ -1,0 +1,78 @@
+fe_only -DTEST_NUMBER=3 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++26 Test_name.c
+"Test_name.c", line 21: error: structured binding is not allowed in a condition
+    if (auto [ok, d] = x) // cxx26-warning {{structured binding declaration in a condition is incompatible with C++ standards before C++2c}}
+             ^
+
+"Test_name.c", line 25: warning: statement is unreachable
+    ok = {}; // expected-error {{use of undeclared identifier 'ok'}}
+    ^
+
+"Test_name.c", line 25: error: identifier "ok" is undefined
+    ok = {}; // expected-error {{use of undeclared identifier 'ok'}}
+    ^
+
+"Test_name.c", line 26: error: identifier "d" is undefined
+    d = {};  // expected-error {{use of undeclared identifier 'd'}}
+    ^
+
+"Test_name.c", line 33: error: structured binding is not allowed in a condition
+    if (auto &[a, b] = x) // cxx26-warning {{structured binding declaration in a condition is incompatible with C++ standards before C++2c}}
+              ^
+
+"Test_name.c", line 38: warning: statement is unreachable
+    if (auto [a, b] = x) // expected-error {{an array type is not allowed here}} \
+    ^
+
+"Test_name.c", line 38: error: structured binding is not allowed in a condition
+    if (auto [a, b] = x) // expected-error {{an array type is not allowed here}} \
+             ^
+
+"Test_name.c", line 48: error: structured binding is not allowed in a condition
+    switch (X s = {true, n}; auto [ok, d] = s) {
+                                  ^
+
+"Test_name.c", line 50: warning: statement is unreachable
+      s = {};
+      ^
+
+"Test_name.c", line 60: warning: statement is unreachable
+    ok = {}; // expected-error {{use of undeclared identifier 'ok'}}
+    ^
+
+"Test_name.c", line 60: error: identifier "ok" is undefined
+    ok = {}; // expected-error {{use of undeclared identifier 'ok'}}
+    ^
+
+"Test_name.c", line 61: error: identifier "d" is undefined
+    d = {};  // expected-error {{use of undeclared identifier 'd'}}
+    ^
+
+"Test_name.c", line 62: error: identifier "s" is undefined
+    s = {};  // expected-error {{use of undeclared identifier 's'}}
+    ^
+
+"Test_name.c", line 73: error: structured binding is not allowed in a condition
+    while (auto [ok, d] = X{n > 1, n}) {
+                ^
+
+"Test_name.c", line 79: warning: statement is unreachable
+    return ok; // expected-error {{use of undeclared identifier 'ok'}}
+    ^
+
+"Test_name.c", line 79: error: identifier "ok" is undefined
+    return ok; // expected-error {{use of undeclared identifier 'ok'}}
+           ^
+
+"Test_name.c", line 90: error: structured binding is not allowed in a condition
+    for (X x = {true, n}; auto &[ok, d] = x; --d) {
+                                ^
+
+"Test_name.c", line 101: warning: statement is unreachable
+    return d; // expected-error {{use of undeclared identifier 'd'}}
+    ^
+
+"Test_name.c", line 101: error: identifier "d" is undefined
+    return d; // expected-error {{use of undeclared identifier 'd'}}
+           ^
+
+13 errors detected in the compilation of "Test_name.c".

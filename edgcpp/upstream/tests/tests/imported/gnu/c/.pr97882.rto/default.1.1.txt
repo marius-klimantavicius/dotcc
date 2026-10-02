@@ -1,0 +1,150 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c17 --strict_gnu Test_name.c
+"Test_name.c", line 10: error: declaration is incompatible with "enum E e_u" (declared at line 9)
+  unsigned e_u;           // { dg-error "conflicting types for 'e_u'; have 'unsigned int'" }
+           ^
+
+"Test_name.c", line 14: error: declaration is incompatible with "enum E *p" (declared at line 13)
+  unsigned *p;            // { dg-error "conflicting types for 'p'; have 'unsigned int \\*'" }
+            ^
+
+"Test_name.c", line 17: error: declaration is incompatible with "enum E **p2" (declared at line 16)
+  unsigned **p2;          // { dg-error "conflicting types for 'p2'; have 'unsigned int \\*\\*'" }
+             ^
+
+"Test_name.c", line 20: error: declaration is incompatible with "enum E ***p3" (declared at line 19)
+  unsigned ***p3;         // { dg-error "conflicting types for 'p3'; have 'unsigned int \\*\\*\\*'" }
+              ^
+
+"Test_name.c", line 26: error: declaration is incompatible with "enum E *r[]" (declared at line 25)
+  extern unsigned *r[1];  // { dg-error "conflicting types for 'r'; have 'unsigned int \\*\\\[1]'" }
+                   ^
+
+"Test_name.c", line 29: error: declaration is incompatible with "enum E **r2[]" (declared at line 28)
+  extern unsigned **r2[2];// { dg-error "conflicting types for 'r2'; have 'unsigned int \\*\\*\\\[2]'" }
+                    ^
+
+"Test_name.c", line 36: error: declaration is incompatible with "EPAx *peax" (declared at line 35)
+  extern UPAx* peax;      // { dg-error "conflicting types for 'peax'; have 'unsigned int \\* \\(\\*\\)\\\[]'" }
+               ^
+
+"Test_name.c", line 47: error: declaration is incompatible with "enum E fE_u()" (declared at line 46)
+  unsigned fE_u ();      // { dg-error "conflicting types for 'fE_u'; have 'unsigned int\\(\\)'" }
+           ^
+
+"Test_name.c", line 50: error: declaration is incompatible with "enum E *fpE_u()" (declared at line 49)
+  unsigned* fpE_u ();    // { dg-error "conflicting types for 'fpE_u'; have 'unsigned int \\*\\(\\)'" }
+            ^
+
+"Test_name.c", line 53: error: declaration is incompatible with "enum E **fppE_u()" (declared at line 52)
+  unsigned** fppE_u ();   // { dg-error "conflicting types for 'fppE_u'; have 'unsigned int \\*\\*\\(\\)'" }
+             ^
+
+"Test_name.c", line 55: error: declaration is incompatible with "unsigned int **fppE_u()" (declared at line 53)
+  enum E** fppE_u ();     // { dg-message "previous declaration of 'fppE_u' with type 'enum E \\*\\*\\(\\)'" "note" }
+           ^
+
+"Test_name.c", line 56: error: declaration is incompatible with "enum E **fppE_u()" (declared at line 55)
+  unsigned** fppE_u ();   // { dg-error "conflicting types for 'fppE_u'; have 'unsigned int \\*\\*\\(\\)'" }
+             ^
+
+"Test_name.c", line 59: error: declaration is incompatible with "enum E gE_u()" (declared at line 58)
+  unsigned gE_u ()       // { dg-error "conflicting types for 'gE_u'; have 'unsigned int\\(\\)'" }
+           ^
+
+"Test_name.c", line 63: error: declaration is incompatible with "enum E **gppE_u()" (declared at line 62)
+  unsigned** gppE_u ()   // { dg-error "conflicting types for 'gppE_u'; have 'unsigned int \\*\\*\\(\\)'" }
+             ^
+
+"Test_name.c", line 67: error: declaration is incompatible with "unsigned int fu_E()" (declared at line 66)
+  enum E fu_E ();        // { dg-error "conflicting types for 'fu_E'; have 'enum E\\(\\)'" }
+         ^
+
+"Test_name.c", line 70: error: declaration is incompatible with "unsigned int gu_E()" (declared at line 69)
+  enum E gu_E () { }     // { dg-error "conflicting types for 'gu_E'" }
+         ^
+
+"Test_name.c", line 70: error: a function may not return a value of this type
+  enum E gu_E () { }     // { dg-error "conflicting types for 'gu_E'" }
+         ^
+
+"Test_name.c", line 77: error: declaration is incompatible with "FE_ *fpF_u()" (declared at line 76)
+  Fuv* fpF_u ();         // { dg-error "conflicting types for 'fpF_u'; have 'unsigned int \\(\\*\\(\\)\\)\\(void\\)'" }
+       ^
+
+"Test_name.c", line 91: error: declaration is incompatible with "void fvE_u(enum E)" (declared at line 90)
+  void fvE_u (unsigned);  // { dg-error "conflicting types for 'fvE_u'; have 'void\\(unsigned int\\)'" }
+       ^
+
+"Test_name.c", line 94: error: declaration is incompatible with "void fviE_u(int, enum E)" (declared at line 93)
+  void fviE_u (int, unsigned);  // { dg-error "conflicting types for 'fviE_u'; have 'void\\(int, *unsigned int\\)'" }
+       ^
+
+"Test_name.c", line 97: error: declaration is incompatible with "void fvE_el(enum E, ...)" (declared at line 96)
+  void fvE_el (unsigned, ...);  // { dg-error "conflicting types for 'fvE_el'; have 'void\\(unsigned int, \\.\\.\\.\\)'" }
+       ^
+
+"Test_name.c", line 106: error: declaration is incompatible with "enum G f11()" (declared at line 105)
+    unsigned f11 () { }   // { dg-error "conflicting types for 'f11'; have 'unsigned int\\(\\)'" }
+             ^
+
+"Test_name.c", line 106: error: expected a ";"
+    unsigned f11 () { }   // { dg-error "conflicting types for 'f11'; have 'unsigned int\\(\\)'" }
+                    ^
+
+"Test_name.c", line 112: warning: type qualifier on return type is meaningless
+    const enum G f21 ();  // { dg-message "note: previous declaration of 'f21' with type 'enum G\\(\\)'" "note" }
+    ^
+
+"Test_name.c", line 113: error: declaration is incompatible with "const enum G f21()" (declared at line 112)
+    unsigned f21 () { }   // { dg-error "conflicting types for 'f21'; have 'unsigned int\\(\\)'" }
+             ^
+
+"Test_name.c", line 113: error: expected a ";"
+    unsigned f21 () { }   // { dg-error "conflicting types for 'f21'; have 'unsigned int\\(\\)'" }
+                    ^
+
+"Test_name.c", line 120: warning: type qualifier on return type is meaningless
+    const unsigned f31 () { }   // { dg-error "conflicting types for 'f31'; have 'unsigned int\\(\\)'" }
+    ^
+
+"Test_name.c", line 120: error: declaration is incompatible with "enum G f31()" (declared at line 119)
+    const unsigned f31 () { }   // { dg-error "conflicting types for 'f31'; have 'unsigned int\\(\\)'" }
+                   ^
+
+"Test_name.c", line 120: error: expected a ";"
+    const unsigned f31 () { }   // { dg-error "conflicting types for 'f31'; have 'unsigned int\\(\\)'" }
+                          ^
+
+"Test_name.c", line 126: error: invalid storage class for a function
+    auto enum G f31 ();         // { dg-message "note: previous declaration of 'f31' with type 'enum G\\(\\)'" "note" }
+    ^
+
+"Test_name.c", line 126: error: declaration is incompatible with previous "f31" (declared at line 120)
+    auto enum G f31 ();         // { dg-message "note: previous declaration of 'f31' with type 'enum G\\(\\)'" "note" }
+                ^
+
+"Test_name.c", line 127: warning: type qualifier on return type is meaningless
+    const unsigned f31 () { }   // { dg-error "conflicting types for 'f31'; have 'unsigned int\\(\\)'" }
+    ^
+
+"Test_name.c", line 127: error: declaration is incompatible with "enum G f31()" (declared at line 126)
+    const unsigned f31 () { }   // { dg-error "conflicting types for 'f31'; have 'unsigned int\\(\\)'" }
+                   ^
+
+"Test_name.c", line 127: error: expected a ";"
+    const unsigned f31 () { }   // { dg-error "conflicting types for 'f31'; have 'unsigned int\\(\\)'" }
+                          ^
+
+"Test_name.c", line 134: error: expected a ";"
+    int* f51 () { }       // { dg-error "conflicting types for 'f51'; have 'int \\*\\(\\)'" }
+                ^
+
+"Test_name.c", line 142: error: declaration is incompatible with "void f61(enum G)" (declared at line 141)
+    void f61 (unsigned)   // { dg-error "conflicting types for 'f61'; have 'void\\(unsigned int\\)'" }
+         ^
+
+"Test_name.c", line 143: error: expected a ";"
+    { }
+    ^
+
+34 errors detected in the compilation of "Test_name.c".

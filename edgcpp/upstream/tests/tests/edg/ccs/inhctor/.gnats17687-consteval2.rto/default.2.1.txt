@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=2 --c++20 -DNEG Test_name.c
+"Test_name.c", line 29: error: call to consteval function "test" did not produce a valid constant expression
+    C c3 = test(argc);
+               ^
+"Test_name.c", line 29: note: the value of parameter "argc" (declared at line 25) cannot be used as a constant
+    C c3 = test(argc);
+                ^
+
+"Test_name.c", line 30: error: call to consteval function "C::A(int)" did not produce a valid constant expression
+    C c4(argc);
+         ^
+"Test_name.c", line 30: note: the value of parameter "argc" (declared at line 25) cannot be used as a constant
+    C c4(argc);
+         ^
+
+2 errors detected in the compilation of "Test_name.c".

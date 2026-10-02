@@ -1,0 +1,277 @@
+fe_only -DTEST_NUMBER=3 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 -DSTD3 Test_name.c
+"Test_name.c", line 185: error: type name is not allowed
+  struct __details_is_trivially_relocatable : bool_constant<__builtin_is_cpp_trivially_relocatable(T)> {};
+                                                                                                   ^
+
+"Test_name.c", line 185: error: identifier "__builtin_is_cpp_trivially_relocatable" is undefined
+  struct __details_is_trivially_relocatable : bool_constant<__builtin_is_cpp_trivially_relocatable(T)> {};
+                                                            ^
+
+"Test_name.c", line 226: error: expected a ")"
+  struct __details_is_constructible : bool_constant<__is_constructible(Args...)> {};
+                                                                           ^
+
+"Test_name.c", line 226: error: parameter pack "Args" was referenced but not expanded
+  struct __details_is_constructible : bool_constant<__is_constructible(Args...)> {};
+                                                                       ^
+
+"Test_name.c", line 273: error: static assertion failed
+  static_assert(std::is_trivially_copyable<int&>::value);
+  ^
+
+"Test_name.c", line 277: error: static assertion failed
+  static_assert(std::is_trivially_copyable_v<int&>);
+  ^
+
+"Test_name.c", line 287: error: static assertion failed
+   static_assert(std::is_standard_layout<int&>::value);
+   ^
+
+"Test_name.c", line 292: error: static assertion failed
+   static_assert(std::is_standard_layout_v<int&>);
+   ^
+
+"Test_name.c", line 299: error: static assertion failed
+  static_assert(std::is_empty<int&>::value);
+  ^
+
+"Test_name.c", line 303: error: static assertion failed
+  static_assert(std::is_empty_v<int&>);
+  ^
+
+"Test_name.c", line 311: error: static assertion failed
+  static_assert(std::is_assignable<int&, void>::value);
+  ^
+
+"Test_name.c", line 314: error: static assertion failed
+  static_assert(std::is_assignable_v<int&, void>);
+  ^
+
+"Test_name.c", line 320: error: static assertion failed
+  static_assert(std::is_constructible<void>::value);
+  ^
+
+"Test_name.c", line 323: error: static assertion failed
+  static_assert(std::is_constructible_v<void>);
+  ^
+
+"Test_name.c", line 329: error: static assertion failed
+  static_assert(std::is_final<int&>::value);
+  ^
+
+"Test_name.c", line 335: error: static assertion failed
+  static_assert(std::is_final_v<int&>);
+  ^
+
+"Test_name.c", line 342: error: static assertion failed
+  static_assert(std::is_final<Arr>::value);
+  ^
+
+"Test_name.c", line 347: error: static assertion failed
+  static_assert(std::is_final_v<Arr>);
+  ^
+
+"Test_name.c", line 355: error: static assertion failed
+  static_assert(std::is_aggregate<void>::value);
+  ^
+
+"Test_name.c", line 359: error: static assertion failed
+  static_assert(std::is_aggregate_v<void>);
+  ^
+
+"Test_name.c", line 367: error: static assertion failed
+  static_assert(std::is_abstract<int&>::value);
+  ^
+
+"Test_name.c", line 373: error: static assertion failed
+  static_assert(std::is_abstract_v<int&>);
+  ^
+
+"Test_name.c", line 391: error: static assertion failed
+      static_assert(is_trivially_copyable<int&>::value);
+      ^
+
+"Test_name.c", line 395: error: static assertion failed
+      static_assert(is_trivially_copyable_v<int&>);
+      ^
+
+"Test_name.c", line 400: error: static assertion failed
+      static_assert(is_standard_layout<int&>::value);
+      ^
+
+"Test_name.c", line 405: error: static assertion failed
+       static_assert(is_standard_layout_v<int&>);
+       ^
+
+"Test_name.c", line 410: error: static assertion failed
+      static_assert(is_assignable<int&, void>::value);
+      ^
+
+"Test_name.c", line 413: error: static assertion failed
+      static_assert(is_assignable_v<int&, void>);
+      ^
+
+"Test_name.c", line 417: error: static assertion failed
+      static_assert(is_empty<int&>::value);
+      ^
+
+"Test_name.c", line 421: error: static assertion failed
+      static_assert(is_empty_v<int&>);
+      ^
+
+"Test_name.c", line 426: error: static assertion failed
+      static_assert(is_constructible<void>::value);
+      ^
+
+"Test_name.c", line 429: error: static assertion failed
+      static_assert(is_constructible_v<void>);
+      ^
+
+"Test_name.c", line 433: error: static assertion failed
+      static_assert(std::is_aggregate<void>::value);
+      ^
+
+"Test_name.c", line 437: error: static assertion failed
+      static_assert(std::is_aggregate_v<void>);
+      ^
+
+"Test_name.c", line 442: error: static assertion failed
+      static_assert(is_final<int&>::value);
+      ^
+
+"Test_name.c", line 448: error: static assertion failed
+      static_assert(is_final_v<int&>);
+      ^
+
+"Test_name.c", line 455: error: static assertion failed
+      static_assert(is_final<A>::value);
+      ^
+
+"Test_name.c", line 461: error: static assertion failed
+      static_assert(is_final<Fn>::value);
+      ^
+
+"Test_name.c", line 467: error: static assertion failed
+      static_assert(is_abstract<int&>::value);
+      ^
+
+"Test_name.c", line 473: error: static assertion failed
+      static_assert(is_abstract_v<int&>);
+      ^
+
+"Test_name.c", line 524: error: no instance of function template "concepts::f" matches the argument list
+      f<int&>();
+      ^
+"Test_name.c", line 483: note: substituting "<int &>" for function template "concepts::f" failed constraints
+  requires std::is_trivially_relocatable<T>::value void f();  // #cand1
+                                                        ^
+"Test_name.c", line 483: note: atomic constraint must have type bool
+  requires std::is_trivially_relocatable<T>::value void f();  // #cand1
+           ^
+
+"Test_name.c", line 531: error: no instance of function template "concepts::g" matches the argument list
+      g<int&>();
+      ^
+"Test_name.c", line 488: note: substituting "<int &>" for function template "concepts::g" failed constraints
+  template <C T> void g();  // #cand2
+                      ^
+"Test_name.c", line 488: note: concept "concepts::C" not satisfied for "<int &>"
+  template <C T> void g();  // #cand2
+            ^
+"Test_name.c", line 486: note: atomic constraint must have type bool
+  concept C = std::is_trivially_relocatable_v<T>; // #concept2
+              ^
+
+"Test_name.c", line 539: error: no instance of function template "concepts::f2" matches the argument list
+      f2<int&>();
+      ^
+"Test_name.c", line 491: note: substituting "<int &>" for function template "concepts::f2" failed constraints
+  requires std::is_trivially_copyable<T>::value void f2();  // #cand3
+                                                     ^
+"Test_name.c", line 491: note: atomic constraint evaluates to false
+  requires std::is_trivially_copyable<T>::value void f2();  // #cand3
+           ^
+
+"Test_name.c", line 546: error: no instance of function template "concepts::g2" matches the argument list
+      g2<int&>();
+      ^
+"Test_name.c", line 496: note: substituting "<int &>" for function template "concepts::g2" failed constraints
+  template <C2 T> void g2();  // #cand4
+                       ^
+"Test_name.c", line 496: note: concept "concepts::C2" not satisfied for "<int &>"
+  template <C2 T> void g2();  // #cand4
+            ^
+"Test_name.c", line 494: note: atomic constraint evaluates to false
+  concept C2 = std::is_trivially_copyable_v<T>; // #concept4
+               ^
+
+"Test_name.c", line 554: error: no instance of function template "concepts::f4" matches the argument list
+      f4<int&, void>();
+      ^
+"Test_name.c", line 499: note: substituting "<int &, void>" for function template "concepts::f4" failed constraints
+  requires std::is_assignable<T, U>::value void f4();  // #cand7
+                                                ^
+"Test_name.c", line 499: note: atomic constraint evaluates to false
+  requires std::is_assignable<T, U>::value void f4();  // #cand7
+           ^
+
+"Test_name.c", line 560: error: no instance of function template "concepts::g4" matches the argument list
+      g4<int&>();
+      ^
+"Test_name.c", line 504: note: substituting "<int &>" for function template "concepts::g4" failed constraints
+  template <C4<void> T> void g4();  // #cand8
+                             ^
+"Test_name.c", line 504: note: concept "concepts::C4" not satisfied for "<int &, void>"
+  template <C4<void> T> void g4();  // #cand8
+            ^
+"Test_name.c", line 502: note: atomic constraint evaluates to false
+  concept C4 = std::is_assignable_v<T, U>; // #concept8
+               ^
+
+"Test_name.c", line 567: error: no instance of function template "concepts::f3" matches the argument list
+      f3<void>();
+      ^
+"Test_name.c", line 507: note: substituting "<void>" for function template "concepts::f3" failed constraints
+  requires std::is_constructible<Args...>::value void f3();  // #cand5
+                                                      ^
+"Test_name.c", line 507: note: atomic constraint evaluates to false
+  requires std::is_constructible<Args...>::value void f3();  // #cand5
+           ^
+
+"Test_name.c", line 573: error: no instance of function template "concepts::g3" matches the argument list
+      g3<void>();
+      ^
+"Test_name.c", line 512: note: substituting "<void>" for function template "concepts::g3" failed constraints
+  template <C3 T> void g3();  // #cand6
+                       ^
+"Test_name.c", line 512: note: concept "concepts::C3" not satisfied for "<void>"
+  template <C3 T> void g3();  // #cand6
+            ^
+"Test_name.c", line 510: note: atomic constraint evaluates to false
+  concept C3 = std::is_constructible_v<Args...>; // #concept6
+               ^
+
+"Test_name.c", line 580: error: no instance of function template "concepts::f5" matches the argument list
+      f5<void>();
+      ^
+"Test_name.c", line 516: note: substituting "<void>" for function template "concepts::f5" failed constraints
+  requires std::is_aggregate<T>::value void f5();  // #cand9
+                                            ^
+"Test_name.c", line 516: note: atomic constraint evaluates to false
+  requires std::is_aggregate<T>::value void f5();  // #cand9
+           ^
+
+"Test_name.c", line 587: error: no instance of function template "concepts::g5" matches the argument list
+      g5<void>();
+      ^
+"Test_name.c", line 521: note: substituting "<void>" for function template "concepts::g5" failed constraints
+  template <C5 T> void g5();  // #cand10
+                       ^
+"Test_name.c", line 521: note: concept "concepts::C5" not satisfied for "<void>"
+  template <C5 T> void g5();  // #cand10
+            ^
+"Test_name.c", line 519: note: atomic constraint evaluates to false
+  concept C5 = std::is_aggregate_v<T>; // #concept10
+               ^
+
+50 errors detected in the compilation of "Test_name.c".

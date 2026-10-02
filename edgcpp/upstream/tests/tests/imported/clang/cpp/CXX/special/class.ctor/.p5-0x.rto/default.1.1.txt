@@ -1,0 +1,179 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 29: error: the default constructor of "Deleted1a" cannot be referenced -- it is a deleted function
+  Deleted1a d1a; // expected-error {{implicitly-deleted default constructor}}
+            ^
+
+"Test_name.c", line 41: error: the default constructor of "Deleted2a" cannot be referenced -- it is a deleted function
+  Deleted2a d2a; // expected-error {{implicitly-deleted default constructor}}
+            ^
+
+"Test_name.c", line 41: error: "Deleted2a::Deleted2a()" (declared at line 38) is inaccessible
+  Deleted2a d2a; // expected-error {{implicitly-deleted default constructor}}
+            ^
+
+"Test_name.c", line 45: error: the default constructor of "Deleted2b" cannot be referenced -- it is a deleted function
+  Deleted2b d2b; // expected-error {{deleted default constructor}}
+            ^
+
+"Test_name.c", line 48: error: identifier "error" is undefined
+  class NotDeleted2b { int &a = error; }; // expected-error {{undeclared identifier}}
+                                ^
+
+"Test_name.c", line 59: warning: class "Deleted3a" defines no constructor to initialize the following:
+            const member "Deleted3a::a"
+  class Deleted3a { const int a; }; // expected-note {{because field 'a' of const-qualified type 'const int' would not be initialized}} \
+        ^
+
+"Test_name.c", line 62: error: the default constructor of "Deleted3a" cannot be referenced -- it is a deleted function
+  Deleted3a d3a; // expected-error {{implicitly-deleted default constructor}}
+            ^
+
+"Test_name.c", line 63: warning: class "Deleted3b" defines no constructor to initialize the following:
+            const member "Deleted3b::a"
+  class Deleted3b { const DefaultedDefCtorUninitialized1 a[42]; }; // expected-note {{because field 'a' of const-qualified type 'const DefaultedDefCtorUninitialized1[42]' would not be initialized}}
+        ^
+
+"Test_name.c", line 64: error: the default constructor of "Deleted3b" cannot be referenced -- it is a deleted function
+  Deleted3b d3b; // expected-error {{implicitly-deleted default constructor}}
+            ^
+
+"Test_name.c", line 65: warning: class "Deleted3c" defines no constructor to initialize the following:
+            const member "Deleted3c::a"
+  class Deleted3c { const DefaultedDefCtorUninitialized2 a; }; // expected-note {{because field 'a' of const-qualified type 'const DefaultedDefCtorUninitialized2' would not be initialized}}
+        ^
+
+"Test_name.c", line 66: error: the default constructor of "Deleted3c" cannot be referenced -- it is a deleted function
+  Deleted3c d3c; // expected-error {{implicitly-deleted default constructor}}
+            ^
+
+"Test_name.c", line 74: error: variable "nd3d" has an uninitialized const or reference member
+  NotDeleted3d nd3d;
+               ^
+
+"Test_name.c", line 76: error: variable "nd3e" has an uninitialized const or reference member
+  NotDeleted3e nd3e;
+               ^
+
+"Test_name.c", line 80: error: variable "nd3g" has an uninitialized const or reference member
+  NotDeleted3g nd3g;
+               ^
+
+"Test_name.c", line 82: error: variable "nd3h" has an uninitialized const or reference member
+  NotDeleted3h nd3h;
+               ^
+
+"Test_name.c", line 83: error: implicitly generated constructor for class "NotDeleted3i" cannot initialize:
+            member "NotDeleted3i::a"
+  struct NotDeleted3i { const DefaultedDefCtor2 a; };
+         ^
+          detected during implicit generation of "NotDeleted3i::NotDeleted3i()" at line 84
+
+"Test_name.c", line 93: error: the default constructor of "Deleted4a" cannot be referenced -- it is a deleted function
+  Deleted4a d4a; // expected-error {{implicitly-deleted default constructor}}
+            ^
+
+"Test_name.c", line 95: error: variable "nd4a" has an uninitialized const or reference member
+  NotDeleted4a nd4a;
+               ^
+
+"Test_name.c", line 103: error: variable "d5a" has an uninitialized const or reference member
+  Deleted5a d5a; // expected-error {{implicitly-deleted default constructor}}
+            ^
+
+"Test_name.c", line 105: error: variable "nd5a" has an uninitialized const or reference member
+  NotDeleted5a nd5a;
+               ^
+
+"Test_name.c", line 113: error: the default constructor of "Deleted6a" cannot be referenced -- it is a deleted function
+  Deleted6a d6a; // expected-error {{implicitly-deleted default constructor}}
+            ^
+
+"Test_name.c", line 115: error: the default constructor of "Deleted6b" cannot be referenced -- it is a deleted function
+  Deleted6b d6b; // expected-error {{implicitly-deleted default constructor}}
+            ^
+
+"Test_name.c", line 117: error: the default constructor of "Deleted6c" cannot be referenced -- it is a deleted function
+  Deleted6c d6c; // expected-error {{implicitly-deleted default constructor}}
+            ^
+
+"Test_name.c", line 119: error: the default constructor of "Deleted6d" cannot be referenced -- it is a deleted function
+  Deleted6d d6d; // expected-error {{implicitly-deleted default constructor}}
+            ^
+
+"Test_name.c", line 123: error: the default constructor of "Deleted6e" cannot be referenced -- it is a deleted function
+  Deleted6e d6e; // expected-error {{implicitly-deleted default constructor}}
+            ^
+
+"Test_name.c", line 133: error: the default constructor of "Deleted7a" cannot be referenced -- it is a deleted function
+  Deleted7a d7a; // expected-error {{implicitly-deleted default constructor}}
+            ^
+
+"Test_name.c", line 133: error: function "Deleted7a::~Deleted7a()" (declared implicitly) cannot be referenced -- it is a deleted function
+  Deleted7a d7a; // expected-error {{implicitly-deleted default constructor}}
+            ^
+
+"Test_name.c", line 135: error: the default constructor of "Deleted7b" cannot be referenced -- it is a deleted function
+  Deleted7b d7b; // expected-error {{implicitly-deleted default constructor}}
+            ^
+
+"Test_name.c", line 135: error: function "Deleted7b::~Deleted7b()" (declared implicitly) cannot be referenced -- it is a deleted function
+  Deleted7b d7b; // expected-error {{implicitly-deleted default constructor}}
+            ^
+
+"Test_name.c", line 137: error: no default constructor exists for class "Deleted7c"
+  Deleted7c d7c; // expected-error {{implicitly-deleted default constructor}}
+            ^
+
+"Test_name.c", line 137: error: function "Deleted7c::~Deleted7c()" (declared implicitly) cannot be referenced -- it is a deleted function
+  Deleted7c d7c; // expected-error {{implicitly-deleted default constructor}}
+            ^
+
+"Test_name.c", line 139: error: the default constructor of "Deleted7d" cannot be referenced -- it is a deleted function
+  Deleted7d d7d; // expected-error {{implicitly-deleted default constructor}}
+            ^
+
+"Test_name.c", line 139: error: function "Deleted7d::~Deleted7d()" (declared implicitly) cannot be referenced -- it is a deleted function
+  Deleted7d d7d; // expected-error {{implicitly-deleted default constructor}}
+            ^
+
+"Test_name.c", line 141: error: the default constructor of "Deleted7e" cannot be referenced -- it is a deleted function
+  Deleted7e d7e; // expected-error {{implicitly-deleted default constructor}}
+            ^
+
+"Test_name.c", line 143: error: the default constructor of "Deleted7f" cannot be referenced -- it is a deleted function
+  Deleted7f d7f; // expected-error {{implicitly-deleted default constructor}}
+            ^
+
+"Test_name.c", line 147: error: the default constructor of "Deleted7h" cannot be referenced -- it is a deleted function
+  Deleted7h d7h; // expected-error {{implicitly-deleted default constructor}}
+            ^
+
+"Test_name.c", line 172: error: static assertion failed with ""
+  ASSERT_NONTRIVIAL(NonTrivialDefCtor2, , virtual void f();)
+  ^
+
+"Test_name.c", line 173: error: static assertion failed with ""
+  ASSERT_NONTRIVIAL(NonTrivialDefCtor3, : virtual Trivial, )
+  ^
+
+"Test_name.c", line 176: error: static assertion failed with ""
+  ASSERT_NONTRIVIAL(NonTrivialDefCtor4, , int m = 52;)
+  ^
+
+"Test_name.c", line 179: error: static assertion failed with ""
+  ASSERT_NONTRIVIAL(NonTrivialDefCtor5, : NonTrivialDefCtor1, )
+  ^
+
+"Test_name.c", line 183: error: static assertion failed with ""
+  ASSERT_NONTRIVIAL(NonTrivialDefCtor6, , NonTrivialDefCtor1 t;)
+  ^
+
+"Test_name.c", line 190: error: static assertion failed with ""
+  static_assert(!__has_trivial_constructor(NonTrivialDefCtor7), "");
+  ^
+
+"Test_name.c", line 194: error: static assertion failed with ""
+  static_assert(!__has_trivial_constructor(NonTrivialDefCtor8), "");
+  ^
+
+40 errors detected in the compilation of "Test_name.c".

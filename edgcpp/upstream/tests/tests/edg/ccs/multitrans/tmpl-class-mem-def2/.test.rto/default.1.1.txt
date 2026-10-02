@@ -1,0 +1,1 @@
+cpfe -DTEST_NUMBER=1 --multi_trans -tused --g++ Test_name.c tmpl-class-mem-def2-p2.C tmpl-class-mem-def2-p3.C

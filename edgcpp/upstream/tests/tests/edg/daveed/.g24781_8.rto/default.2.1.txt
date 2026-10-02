@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=2 --c++23 -DNEG Test_name.c
+"Test_name.c", line 9: error: a nonstatic member reference must be relative to a specific object
+          nonstatic_fun();   // EXPECT: error
+          ^
+
+"Test_name.c", line 10: error: "this" may only be used inside a nonstatic member function
+          auto x = this;     // EXPECT: error
+                   ^
+
+"Test_name.c", line 19: error: an explicit "this" function requires a selector operand
+          explicit_fun();     // EXPECT: error
+          ^
+
+"Test_name.c", line 20: error: an explicit "this" function requires a selector operand
+          explicit_fun(C{});  // EXPECT: error
+          ^
+
+"Test_name.c", line 33: error: a pointer to a bound function may only be used to call the function
+  auto y = c.explicit_fun;   // EXPECT: error
+             ^
+
+5 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 13: warning: variable "l2" was declared but never referenced
+    static __thread int l2;
+                        ^
+
+"Test_name.c", line 31: warning: variable "j" was declared but never referenced
+    int j = B<int>::t;
+        ^
+
+"Test_name.c", line 32: warning: variable "k" was declared but never referenced
+    int k = B<const int>::t;
+        ^
+
+"Test_name.c", line 8: warning: variable "g3" was declared but never referenced
+  static __thread int g3;
+                      ^
+

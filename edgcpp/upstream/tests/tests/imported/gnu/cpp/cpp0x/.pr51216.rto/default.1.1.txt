@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: error: a value of type "void" cannot be used to initialize an entity of type "int"
+    int i = ({ if (1) ; });           // { dg-error "ignored" }
+            ^
+
+"Test_name.c", line 10: error: a value of type "void" cannot be used to initialize an entity of type "int"
+    int j = ({ for (;;) ; });         // { dg-error "ignored" }
+            ^
+
+"Test_name.c", line 10: warning: dynamic initialization in unreachable code
+    int j = ({ for (;;) ; });         // { dg-error "ignored" }
+        ^
+
+"Test_name.c", line 11: error: a value of type "void" cannot be used to initialize an entity of type "int"
+    int k = ({ while (1) ; });        // { dg-error "ignored" }
+            ^
+
+"Test_name.c", line 11: warning: dynamic initialization in unreachable code
+    int k = ({ while (1) ; });        // { dg-error "ignored" }
+        ^
+
+"Test_name.c", line 12: error: a value of type "void" cannot be used to initialize an entity of type "int"
+    int l = ({ do { } while (1); });  // { dg-error "ignored" }
+            ^
+
+"Test_name.c", line 12: warning: dynamic initialization in unreachable code
+    int l = ({ do { } while (1); });  // { dg-error "ignored" }
+        ^
+
+4 errors detected in the compilation of "Test_name.c".

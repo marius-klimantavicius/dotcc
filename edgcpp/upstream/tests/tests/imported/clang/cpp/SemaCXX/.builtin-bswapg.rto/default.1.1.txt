@@ -1,0 +1,393 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 7: error: static assertion failed with ""
+    static_assert(__is_same(char, decltype(__builtin_bswapg((char)0))), "");
+    ^
+
+"Test_name.c", line 8: error: static assertion failed with ""
+    static_assert(__is_same(unsigned char, decltype(__builtin_bswapg((unsigned char)0))), "");
+    ^
+
+"Test_name.c", line 9: error: static assertion failed with ""
+    static_assert(__is_same(short, decltype(__builtin_bswapg((short)0))), "");
+    ^
+
+"Test_name.c", line 10: error: static assertion failed with ""
+    static_assert(__is_same(unsigned short, decltype(__builtin_bswapg((unsigned short)0))), "");
+    ^
+
+"Test_name.c", line 12: error: static assertion failed with ""
+    static_assert(__is_same(unsigned int, decltype(__builtin_bswapg((unsigned int)0))), "");
+    ^
+
+"Test_name.c", line 13: error: static assertion failed with ""
+    static_assert(__is_same(long, decltype(__builtin_bswapg((long)0))), "");
+    ^
+
+"Test_name.c", line 14: error: static assertion failed with ""
+    static_assert(__is_same(unsigned long, decltype(__builtin_bswapg((unsigned long)0))), "");
+    ^
+
+"Test_name.c", line 15: error: static assertion failed with ""
+  	static_assert(__is_same(_BitInt(8), decltype(__builtin_bswapg((_BitInt(8))0))), "");
+  	^
+
+"Test_name.c", line 16: error: static assertion failed with ""
+  	static_assert(__is_same(_BitInt(16), decltype(__builtin_bswapg((_BitInt(16))0))), "");
+  	^
+
+"Test_name.c", line 17: error: static assertion failed with ""
+  	static_assert(__is_same(_BitInt(32), decltype(__builtin_bswapg((_BitInt(32))0))), "");
+  	^
+
+"Test_name.c", line 18: error: static assertion failed with ""
+  	static_assert(__is_same(_BitInt(64), decltype(__builtin_bswapg((_BitInt(64))0))), "");
+  	^
+
+"Test_name.c", line 19: error: static assertion failed with ""
+  	static_assert(__is_same(_BitInt(128), decltype(__builtin_bswapg((_BitInt(128))0))), "");
+  	^
+
+"Test_name.c", line 49: error: static assertion failed with "bswapg in lambda should preserve type"
+      static_assert(__is_same(decltype(x), decltype(__builtin_bswapg(x))), 
+      ^
+          detected during instantiation of function "lambda [](auto)->auto [with <auto-1>=unsigned long]" at line 53
+
+"Test_name.c", line 54: error: static assertion failed with ""
+    static_assert(__is_same(unsigned long, decltype(result_long)), "");
+    ^
+
+"Test_name.c", line 49: error: static assertion failed with "bswapg in lambda should preserve type"
+      static_assert(__is_same(decltype(x), decltype(__builtin_bswapg(x))), 
+      ^
+          detected during instantiation of function "lambda [](auto)->auto [with <auto-1>=short]" at line 59
+
+"Test_name.c", line 60: error: static assertion failed with ""
+    static_assert(__is_same(short, decltype(result_short)), "");
+    ^
+
+"Test_name.c", line 49: error: static assertion failed with "bswapg in lambda should preserve type"
+      static_assert(__is_same(decltype(x), decltype(__builtin_bswapg(x))), 
+      ^
+          detected during instantiation of function "lambda [](auto)->auto [with <auto-1>=char]" at line 62
+
+"Test_name.c", line 63: error: static assertion failed with ""
+    static_assert(__is_same(char, decltype(result_char)), "");
+    ^
+
+"Test_name.c", line 84: error: expression must have a constant value
+    static constexpr auto swapped_value = __builtin_bswapg(Value);
+                                          ^
+"Test_name.c", line 84: note: cannot call non-constexpr function "__builtin_bswapg" (declared implicitly)
+    static constexpr auto swapped_value = __builtin_bswapg(Value);
+                                          ^
+          detected during instantiation of class "ValueTemplateTypeTest<Value> [with Value=4660]" at line 92
+
+"Test_name.c", line 82: error: static assertion failed with "Value template bswapg should preserve type"
+    static_assert(type_matches, "Value template bswapg should preserve type");
+    ^
+          detected during instantiation of class "ValueTemplateTypeTest<Value> [with Value=305419896UL]" at line 93
+
+"Test_name.c", line 84: error: expression must have a constant value
+    static constexpr auto swapped_value = __builtin_bswapg(Value);
+                                          ^
+"Test_name.c", line 84: note: cannot call non-constexpr function "__builtin_bswapg" (declared implicitly)
+    static constexpr auto swapped_value = __builtin_bswapg(Value);
+                                          ^
+          detected during instantiation of class "ValueTemplateTypeTest<Value> [with Value=305419896UL]" at line 93
+
+"Test_name.c", line 82: error: static assertion failed with "Value template bswapg should preserve type"
+    static_assert(type_matches, "Value template bswapg should preserve type");
+    ^
+          detected during instantiation of class "ValueTemplateTypeTest<Value> [with Value=(short)4660]" at line 94
+
+"Test_name.c", line 84: error: expression must have a constant value
+    static constexpr auto swapped_value = __builtin_bswapg(Value);
+                                          ^
+"Test_name.c", line 84: note: cannot call non-constexpr function "__builtin_bswapg" (declared implicitly)
+    static constexpr auto swapped_value = __builtin_bswapg(Value);
+                                          ^
+          detected during instantiation of class "ValueTemplateTypeTest<Value> [with Value=(short)4660]" at line 94
+
+"Test_name.c", line 82: error: static assertion failed with "Value template bswapg should preserve type"
+    static_assert(type_matches, "Value template bswapg should preserve type");
+    ^
+          detected during instantiation of class "ValueTemplateTypeTest<Value> [with Value='\022']" at line 95
+
+"Test_name.c", line 84: error: expression must have a constant value
+    static constexpr auto swapped_value = __builtin_bswapg(Value);
+                                          ^
+"Test_name.c", line 84: note: cannot call non-constexpr function "__builtin_bswapg" (declared implicitly)
+    static constexpr auto swapped_value = __builtin_bswapg(Value);
+                                          ^
+          detected during instantiation of class "ValueTemplateTypeTest<Value> [with Value='\022']" at line 95
+
+"Test_name.c", line 202: error: expression must have a constant value
+  	static_assert(__builtin_bswapg(e) == ENUM_VALUE2, "");
+  	              ^
+"Test_name.c", line 202: note: cannot call non-constexpr function "__builtin_bswapg" (declared implicitly)
+  	static_assert(__builtin_bswapg(e) == ENUM_VALUE2, "");
+  	              ^
+
+"Test_name.c", line 225: error: expression must have a constant value
+    static_assert(__builtin_bswapg((_BitInt(8))0x12) == (_BitInt(8))0x12, "");
+                  ^
+"Test_name.c", line 225: note: cannot call non-constexpr function "__builtin_bswapg" (declared implicitly)
+    static_assert(__builtin_bswapg((_BitInt(8))0x12) == (_BitInt(8))0x12, "");
+                  ^
+
+"Test_name.c", line 226: error: expression must have a constant value
+    static_assert(__builtin_bswapg((_BitInt(16))0x1234) == (_BitInt(16))0x3412, "");
+                  ^
+"Test_name.c", line 226: note: cannot call non-constexpr function "__builtin_bswapg" (declared implicitly)
+    static_assert(__builtin_bswapg((_BitInt(16))0x1234) == (_BitInt(16))0x3412, "");
+                  ^
+
+"Test_name.c", line 227: error: expression must have a constant value
+    static_assert(__builtin_bswapg((_BitInt(32))0x00001234) == (_BitInt(32))0x34120000, "");
+                  ^
+"Test_name.c", line 227: note: cannot call non-constexpr function "__builtin_bswapg" (declared implicitly)
+    static_assert(__builtin_bswapg((_BitInt(32))0x00001234) == (_BitInt(32))0x34120000, "");
+                  ^
+
+"Test_name.c", line 228: error: expression must have a constant value
+    static_assert(__builtin_bswapg((_BitInt(64))0x0000000000001234) == (_BitInt(64))0x3412000000000000, "");
+                  ^
+"Test_name.c", line 228: note: cannot call non-constexpr function "__builtin_bswapg" (declared implicitly)
+    static_assert(__builtin_bswapg((_BitInt(64))0x0000000000001234) == (_BitInt(64))0x3412000000000000, "");
+                  ^
+
+"Test_name.c", line 229: error: expression must have a constant value
+    static_assert(__builtin_bswapg(~(_BitInt(128))0) == (~(_BitInt(128))0), "");
+                  ^
+"Test_name.c", line 229: note: cannot call non-constexpr function "__builtin_bswapg" (declared implicitly)
+    static_assert(__builtin_bswapg(~(_BitInt(128))0) == (~(_BitInt(128))0), "");
+                  ^
+
+"Test_name.c", line 230: error: expression must have a constant value
+    static_assert(__builtin_bswapg((_BitInt(24))0x1234) == (_BitInt(24))0x3412, "");
+                  ^
+"Test_name.c", line 230: note: cannot call non-constexpr function "__builtin_bswapg" (declared implicitly)
+    static_assert(__builtin_bswapg((_BitInt(24))0x1234) == (_BitInt(24))0x3412, "");
+                  ^
+
+"Test_name.c", line 24: error: static assertion failed with "bswapg should return the same type as its argument"
+    static_assert(__is_same(T, decltype(__builtin_bswapg(T{}))), 
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=char]" at line 34
+
+"Test_name.c", line 30: error: static assertion failed with ""
+    static_assert(__is_same(T, decltype(__builtin_bswapg(zero))), "");
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=char]" at line 34
+
+"Test_name.c", line 31: error: static assertion failed with ""
+    static_assert(__is_same(T, decltype(__builtin_bswapg(max))), "");
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=char]" at line 34
+
+"Test_name.c", line 32: error: static assertion failed with ""
+    static_assert(__is_same(T, decltype(__builtin_bswapg(one))), "");
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=char]" at line 34
+
+"Test_name.c", line 24: error: static assertion failed with "bswapg should return the same type as its argument"
+    static_assert(__is_same(T, decltype(__builtin_bswapg(T{}))), 
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=unsigned char]" at line 35
+
+"Test_name.c", line 30: error: static assertion failed with ""
+    static_assert(__is_same(T, decltype(__builtin_bswapg(zero))), "");
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=unsigned char]" at line 35
+
+"Test_name.c", line 31: error: static assertion failed with ""
+    static_assert(__is_same(T, decltype(__builtin_bswapg(max))), "");
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=unsigned char]" at line 35
+
+"Test_name.c", line 32: error: static assertion failed with ""
+    static_assert(__is_same(T, decltype(__builtin_bswapg(one))), "");
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=unsigned char]" at line 35
+
+"Test_name.c", line 24: error: static assertion failed with "bswapg should return the same type as its argument"
+    static_assert(__is_same(T, decltype(__builtin_bswapg(T{}))), 
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=short]" at line 36
+
+"Test_name.c", line 30: error: static assertion failed with ""
+    static_assert(__is_same(T, decltype(__builtin_bswapg(zero))), "");
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=short]" at line 36
+
+"Test_name.c", line 31: error: static assertion failed with ""
+    static_assert(__is_same(T, decltype(__builtin_bswapg(max))), "");
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=short]" at line 36
+
+"Test_name.c", line 32: error: static assertion failed with ""
+    static_assert(__is_same(T, decltype(__builtin_bswapg(one))), "");
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=short]" at line 36
+
+"Test_name.c", line 24: error: static assertion failed with "bswapg should return the same type as its argument"
+    static_assert(__is_same(T, decltype(__builtin_bswapg(T{}))), 
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=unsigned short]" at line 37
+
+"Test_name.c", line 30: error: static assertion failed with ""
+    static_assert(__is_same(T, decltype(__builtin_bswapg(zero))), "");
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=unsigned short]" at line 37
+
+"Test_name.c", line 31: error: static assertion failed with ""
+    static_assert(__is_same(T, decltype(__builtin_bswapg(max))), "");
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=unsigned short]" at line 37
+
+"Test_name.c", line 32: error: static assertion failed with ""
+    static_assert(__is_same(T, decltype(__builtin_bswapg(one))), "");
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=unsigned short]" at line 37
+
+"Test_name.c", line 24: error: static assertion failed with "bswapg should return the same type as its argument"
+    static_assert(__is_same(T, decltype(__builtin_bswapg(T{}))), 
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=unsigned int]" at line 39
+
+"Test_name.c", line 30: error: static assertion failed with ""
+    static_assert(__is_same(T, decltype(__builtin_bswapg(zero))), "");
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=unsigned int]" at line 39
+
+"Test_name.c", line 31: error: static assertion failed with ""
+    static_assert(__is_same(T, decltype(__builtin_bswapg(max))), "");
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=unsigned int]" at line 39
+
+"Test_name.c", line 32: error: static assertion failed with ""
+    static_assert(__is_same(T, decltype(__builtin_bswapg(one))), "");
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=unsigned int]" at line 39
+
+"Test_name.c", line 24: error: static assertion failed with "bswapg should return the same type as its argument"
+    static_assert(__is_same(T, decltype(__builtin_bswapg(T{}))), 
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=long]" at line 40
+
+"Test_name.c", line 30: error: static assertion failed with ""
+    static_assert(__is_same(T, decltype(__builtin_bswapg(zero))), "");
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=long]" at line 40
+
+"Test_name.c", line 31: error: static assertion failed with ""
+    static_assert(__is_same(T, decltype(__builtin_bswapg(max))), "");
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=long]" at line 40
+
+"Test_name.c", line 32: error: static assertion failed with ""
+    static_assert(__is_same(T, decltype(__builtin_bswapg(one))), "");
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=long]" at line 40
+
+"Test_name.c", line 24: error: static assertion failed with "bswapg should return the same type as its argument"
+    static_assert(__is_same(T, decltype(__builtin_bswapg(T{}))), 
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=_BitInt(8)]" at line 41
+
+"Test_name.c", line 30: error: static assertion failed with ""
+    static_assert(__is_same(T, decltype(__builtin_bswapg(zero))), "");
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=_BitInt(8)]" at line 41
+
+"Test_name.c", line 31: error: static assertion failed with ""
+    static_assert(__is_same(T, decltype(__builtin_bswapg(max))), "");
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=_BitInt(8)]" at line 41
+
+"Test_name.c", line 32: error: static assertion failed with ""
+    static_assert(__is_same(T, decltype(__builtin_bswapg(one))), "");
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=_BitInt(8)]" at line 41
+
+"Test_name.c", line 24: error: static assertion failed with "bswapg should return the same type as its argument"
+    static_assert(__is_same(T, decltype(__builtin_bswapg(T{}))), 
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=_BitInt(16)]" at line 42
+
+"Test_name.c", line 30: error: static assertion failed with ""
+    static_assert(__is_same(T, decltype(__builtin_bswapg(zero))), "");
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=_BitInt(16)]" at line 42
+
+"Test_name.c", line 31: error: static assertion failed with ""
+    static_assert(__is_same(T, decltype(__builtin_bswapg(max))), "");
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=_BitInt(16)]" at line 42
+
+"Test_name.c", line 32: error: static assertion failed with ""
+    static_assert(__is_same(T, decltype(__builtin_bswapg(one))), "");
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=_BitInt(16)]" at line 42
+
+"Test_name.c", line 24: error: static assertion failed with "bswapg should return the same type as its argument"
+    static_assert(__is_same(T, decltype(__builtin_bswapg(T{}))), 
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=_BitInt(32)]" at line 43
+
+"Test_name.c", line 30: error: static assertion failed with ""
+    static_assert(__is_same(T, decltype(__builtin_bswapg(zero))), "");
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=_BitInt(32)]" at line 43
+
+"Test_name.c", line 31: error: static assertion failed with ""
+    static_assert(__is_same(T, decltype(__builtin_bswapg(max))), "");
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=_BitInt(32)]" at line 43
+
+"Test_name.c", line 32: error: static assertion failed with ""
+    static_assert(__is_same(T, decltype(__builtin_bswapg(one))), "");
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=_BitInt(32)]" at line 43
+
+"Test_name.c", line 24: error: static assertion failed with "bswapg should return the same type as its argument"
+    static_assert(__is_same(T, decltype(__builtin_bswapg(T{}))), 
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=_BitInt(64)]" at line 44
+
+"Test_name.c", line 30: error: static assertion failed with ""
+    static_assert(__is_same(T, decltype(__builtin_bswapg(zero))), "");
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=_BitInt(64)]" at line 44
+
+"Test_name.c", line 31: error: static assertion failed with ""
+    static_assert(__is_same(T, decltype(__builtin_bswapg(max))), "");
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=_BitInt(64)]" at line 44
+
+"Test_name.c", line 32: error: static assertion failed with ""
+    static_assert(__is_same(T, decltype(__builtin_bswapg(one))), "");
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=_BitInt(64)]" at line 44
+
+"Test_name.c", line 24: error: static assertion failed with "bswapg should return the same type as its argument"
+    static_assert(__is_same(T, decltype(__builtin_bswapg(T{}))), 
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=_BitInt(128)]" at line 45
+
+"Test_name.c", line 30: error: static assertion failed with ""
+    static_assert(__is_same(T, decltype(__builtin_bswapg(zero))), "");
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=_BitInt(128)]" at line 45
+
+"Test_name.c", line 31: error: static assertion failed with ""
+    static_assert(__is_same(T, decltype(__builtin_bswapg(max))), "");
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=_BitInt(128)]" at line 45
+
+"Test_name.c", line 32: error: static assertion failed with ""
+    static_assert(__is_same(T, decltype(__builtin_bswapg(one))), "");
+    ^
+          detected during instantiation of "void test_template_type_check<T>() [with T=_BitInt(128)]" at line 45
+
+76 errors detected in the compilation of "Test_name.c".

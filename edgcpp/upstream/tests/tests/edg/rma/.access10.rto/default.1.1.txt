@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 5: error: types cannot be declared in anonymous unions
+    union { int i; union { char c; short s; }; };
+                         ^
+
+"Test_name.c", line 9: error: member "A::s" (declared at line 5) is inaccessible
+    a.s = 0;
+      ^
+
+2 errors detected in the compilation of "Test_name.c".

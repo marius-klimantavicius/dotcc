@@ -1,0 +1,20 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 23: error: the definition of std::initializer_list does not contain the expected constructor
+  vector fields_normal{2};
+                      ^
+
+"Test_name.c", line 23: error: no instance of constructor "vector::vector" matches the argument list
+            argument types are: (int)
+  vector fields_normal{2};
+                      ^
+"Test_name.c", line 20: note: function "vector::vector(std::initializer_list<field<int>>)" does not match because argument #1 does not match parameter
+    vector(std::initializer_list<field<int>>) { }
+    ^
+"Test_name.c", line 19: note: function "vector::vector(const vector &)" does not match because argument #1 does not match parameter
+  struct vector {
+         ^
+"Test_name.c", line 19: note: function "vector::vector(vector &&)" does not match because argument #1 does not match parameter
+  struct vector {
+         ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 40: error: the default constructor of "TDerive<Deleted>" cannot be referenced -- it is a deleted function
+  ShouldDelete A; // expected-error{{call to implicitly-deleted}}
+               ^
+
+"Test_name.c", line 40: error: function "TDerive<T>::~TDerive() [with T=Deleted]" (declared implicitly) cannot be referenced -- it is a deleted function
+  ShouldDelete A; // expected-error{{call to implicitly-deleted}}
+               ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,14 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 13: error: use of a type with no linkage to declare a variable with linkage
+  i0f71f[] = { 0 }
+  ^
+
+"Test_name.c", line 13: error: no suitable constructor exists to convert from "int" to "union <unnamed>"
+  i0f71f[] = { 0 }
+               ^
+
+"Test_name.c", line 15: error: use of a type with no linkage to declare a variable with linkage
+  *volatile i0f720 = { 0 }
+            ^
+
+3 errors detected in the compilation of "Test_name.c".

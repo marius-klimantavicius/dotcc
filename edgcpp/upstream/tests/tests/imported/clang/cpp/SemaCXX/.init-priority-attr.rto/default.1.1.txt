@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 -DSYSTEM -DNOERROR -DSYSTEM Test_name.c
+"init-priority-attr.cpp", line 32: error: expected a ")"
+  Two goo __attribute__((init_priority(2,3))) ( 5, 6 ); // expected-error {{'init_priority' attribute takes one argument}}
+                                        ^
+
+"init-priority-attr.cpp", line 32: error: expected an identifier
+  Two goo __attribute__((init_priority(2,3))) ( 5, 6 ); // expected-error {{'init_priority' attribute takes one argument}}
+                                         ^
+
+"init-priority-attr.cpp", line 32: error: expected a ";"
+  Two goo __attribute__((init_priority(2,3))) ( 5, 6 ); // expected-error {{'init_priority' attribute takes one argument}}
+                                            ^
+
+"init-priority-attr.cpp", line 45: error: invalid argument to attribute "init_priority"
+  Two zoo[2]  __attribute__((init_priority(-1))); // expected-error {{'init_priority' attribute requires integer constant between 0 and 65535 inclusive}}
+                                           ^
+
+"init-priority-attr.cpp", line 48: error: invalid argument to attribute "init_priority"
+  Two boo[2]  __attribute__((init_priority(65536))); // expected-error {{'init_priority' attribute requires integer constant between 0 and 65535 inclusive}}
+                                           ^
+
+"init-priority-attr.cpp", line 51: error: this constant expression has type "double" instead of the required integral or enum type
+  Two koo[4]  __attribute__((init_priority(1.13))); // expected-error {{'init_priority' attribute requires an integer constant}}
+                                           ^
+
+"init-priority-attr.cpp", line 57: error: the "init_priority" attribute can only be used for definitions of static data members and namespace scope variables of class types
+  int i  __attribute__((init_priority(1001))); // expected-error {{can only use 'init_priority' attribute on file-scope definitions of objects of class type}}
+                        ^
+
+7 errors detected in the compilation of "Test_name.c".

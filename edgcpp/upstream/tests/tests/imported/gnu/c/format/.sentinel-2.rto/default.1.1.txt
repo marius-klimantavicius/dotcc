@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"./format/sentinel-2.c", line 17: warning: argument must be a constant null pointer value
+    foo (6, 7, 0);
+               ^
+
+"./format/sentinel-2.c", line 18: warning: argument must be a constant null pointer value
+    bar (0);
+         ^
+

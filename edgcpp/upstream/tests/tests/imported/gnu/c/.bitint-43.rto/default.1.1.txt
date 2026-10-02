@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 11: error: integer constant is too large
+    x &= 0x2aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaauwb;
+         ^
+
+"Test_name.c", line 12: error: integer constant is too large
+    y &= 0x555555555555555555555555555555555555555555555555555555555555555uwb;
+         ^
+
+2 errors detected in the compilation of "Test_name.c".

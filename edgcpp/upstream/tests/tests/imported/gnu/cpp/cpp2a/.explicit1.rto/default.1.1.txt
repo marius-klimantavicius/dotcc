@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 46: error: copy-list-initialization cannot use a constructor marked "explicit"
+    S s1 = { 1 }; // { dg-error "converting" }
+           ^
+
+"Test_name.c", line 50: error: copy-list-initialization cannot use a constructor marked "explicit"
+    S s4 = { 7, 8, 9, 10 }; // { dg-error "converting" }
+           ^
+
+"Test_name.c", line 53: error: copy-list-initialization cannot use a constructor marked "explicit"
+    T t1 = { 1 }; // { dg-error "converting" }
+           ^
+
+"Test_name.c", line 54: error: copy-list-initialization cannot use a constructor marked "explicit"
+    T t2 = { 1, 2 }; // { dg-error "converting" }
+           ^
+
+"Test_name.c", line 55: error: copy-list-initialization cannot use a constructor marked "explicit"
+    T t3 = { 1, 2, 3 }; // { dg-error "converting" }
+           ^
+
+"Test_name.c", line 56: error: copy-list-initialization cannot use a constructor marked "explicit"
+    T t4 = { 1, 2, 3, 4 }; // { dg-error "converting" }
+           ^
+
+"Test_name.c", line 62: error: copy-list-initialization cannot use a constructor marked "explicit"
+    U u1 = { 1 }; // { dg-error "converting" }
+           ^
+
+7 errors detected in the compilation of "Test_name.c".

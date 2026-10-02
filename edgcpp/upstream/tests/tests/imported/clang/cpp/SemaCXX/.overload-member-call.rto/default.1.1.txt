@@ -1,0 +1,134 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 37: error: more than one instance of overloaded function "X::g" matches the argument list:
+            function "X::g(int) const" (declared at line 17)
+            function "X::g(int)" (declared at line 18)
+            argument types are: (int)
+      g(0); // expected-error{{call to 'g' is ambiguous}}
+      ^
+
+"Test_name.c", line 46: error: no instance of overloaded function "X::f" matches the argument list and object (the object has type qualifiers that prevent a match)
+            argument types are: (int)
+            object type is: volatile X
+    xv.f(0); // expected-error{{no matching member function for call to 'f'}}
+       ^
+
+"Test_name.c", line 47: error: no instance of overloaded function "X::f" matches the argument list and object (the object has type qualifiers that prevent a match)
+            argument types are: (int)
+            object type is: volatile X
+    xvp->f(0); // expected-error{{no matching member function for call to 'f'}}
+         ^
+
+"Test_name.c", line 55: error: more than one instance of overloaded function "X::g" matches the argument list:
+            function "X::g(int) const" (declared at line 17)
+            function "X::g(int)" (declared at line 18)
+            argument types are: (int)
+    X::g(0); // expected-error{{call to 'g' is ambiguous}}
+    ^
+
+"Test_name.c", line 57: error: a nonstatic member reference must be relative to a specific object
+    X::h(0); // expected-error{{call to non-static member function without an object argument}}
+    ^
+
+"Test_name.c", line 102: error: no instance of overloaded function "test1::A::foo" matches the argument list
+            argument types are: (int, const char [6])
+            object type is: test1::A
+      a.foo(4, "hello"); //expected-error {{no matching member function for call to 'foo'}}
+        ^
+"Test_name.c", line 93: note: number of parameters of function "test1::A::foo(unsigned int)" does not match the call
+      void foo(unsigned n = 10); // expected-note {{candidate function not viable: allows at most single argument 'n', but 2 arguments were provided}}
+           ^
+"Test_name.c", line 92: note: number of parameters of function "test1::A::foo(int)" does not match the call
+      void foo(int n); // expected-note {{candidate function not viable: requires single argument 'n', but 2 arguments were provided}}
+           ^
+"Test_name.c", line 80: note: number of parameters of function "test1::A::foo(int, const char *, int, int)" does not match the call
+      void foo(int n, const char *s, int t, int u = 0); // expected-note {{candidate function not viable: requires at least 3 arguments, but 2 were provided}}
+           ^
+"Test_name.c", line 79: note: number of parameters of function "test1::A::foo(int, const char *, int, ...)" does not match the call
+      void foo(int n, const char *s, int t, ...); // expected-note {{candidate function not viable: requires at least 3 arguments, but 2 were provided}}
+           ^
+"Test_name.c", line 78: note: number of parameters of function "test1::A::foo(int, const char *, int)" does not match the call
+      void foo(int n, const char *s, int t); // expected-note {{candidate function not viable: requires 3 arguments, but 2 were provided}}
+           ^
+"Test_name.c", line 77: note: function "test1::A::foo(int, char)" does not match because argument #2 does not match parameter
+      void foo(int n, char N); // expected-note {{candidate function not viable: no known conversion from 'const char[6]' to 'char' for 2nd argument}} 
+           ^
+"Test_name.c", line 76: note: function template "test1::A::foo(T, unsigned int)" does not match because argument #2 does not match parameter
+      void foo(T t, unsigned N); // expected-note {{candidate function template not viable: no known conversion from 'const char[6]' to 'unsigned int' for 2nd argument}}
+           ^
+
+"Test_name.c", line 105: error: no instance of overloaded function "test1::A::bar" matches the argument list and object (the object has type qualifiers that prevent a match)
+            argument types are: (int)
+            object type is: const test1::A
+      b.bar(0); //expected-error {{no matching member function for call to 'bar'}}
+        ^
+
+"Test_name.c", line 107: error: no instance of overloaded function "test1::A::baz" matches the argument list
+            argument types are: (const test1::A)
+            object type is: test1::A
+      a.baz(b); //expected-error {{no matching member function for call to 'baz'}}
+        ^
+"Test_name.c", line 86: note: function "test1::A::baz(int)" does not match because argument #1 does not match parameter
+      void baz(int i); // expected-note {{candidate function not viable: no known conversion from 'const A' to 'int' for 1st argument}} 
+           ^
+"Test_name.c", line 85: note: function "test1::A::baz(test1::A &)" does not match because argument #1 does not match parameter
+      void baz(A &d); // expected-note {{candidate function not viable: 1st argument ('const A') would lose const qualifier}}
+           ^
+
+"Test_name.c", line 109: error: no instance of overloaded function "test1::A::rab" matches the argument list
+            object type is: test1::A
+      a.rab(); //expected-error {{no matching member function for call to 'rab'}}
+        ^
+"Test_name.c", line 95: note: number of parameters of function "test1::A::rab(int, int)" does not match the call
+      void rab(int n, int u = 0); // expected-note {{candidate function not viable: requires at least argument 'n', but no arguments were provided}}
+           ^
+"Test_name.c", line 94: note: number of parameters of function "test1::A::rab(double, int)" does not match the call
+      void rab(double n, int u = 0); // expected-note {{candidate function not viable: requires at least argument 'n', but no arguments were provided}}
+           ^
+
+"Test_name.c", line 110: error: no instance of overloaded function "test1::A::zab" matches the argument list
+            argument types are: (int, int, int)
+            object type is: test1::A
+      a.zab(3, 4, 5); //expected-error {{no matching member function for call to 'zab'}}
+        ^
+"Test_name.c", line 97: note: number of parameters of function "test1::A::zab(int, int)" does not match the call
+      void zab(int n = 0, int u = 0); // expected-note {{candidate function not viable: requires at most 2 arguments, but 3 were provided}}
+           ^
+"Test_name.c", line 96: note: number of parameters of function "test1::A::zab(double, int)" does not match the call
+      void zab(double n = 0.0, int u = 0); // expected-note {{candidate function not viable: requires at most 2 arguments, but 3 were provided}}
+           ^
+
+"Test_name.c", line 112: error: no instance of overloaded function "test1::A::ref" matches the argument list and object (the object has type qualifiers that prevent a match)
+            object type is: test1::A
+      a.ref();    // expected-error {{no matching member function for call to 'ref'}}
+        ^
+"Test_name.c", line 89: note: number of parameters of function "test1::A::ref(int) &" does not match the call
+      void ref(int) &; // expected-note {{expects an lvalue for object argument}} expected-note {{requires 1 argument, but 0 were provided}}
+           ^
+
+"Test_name.c", line 113: error: no instance of overloaded function "test1::A::ref" matches the argument list and object (the object has type qualifiers that prevent a match)
+            argument types are: (int)
+            object type is: test1::A
+      A().ref(1); // expected-error {{no matching member function for call to 'ref'}}
+          ^
+"Test_name.c", line 88: note: number of parameters of function "test1::A::ref() &&" does not match the call
+      void ref() &&;   // expected-note {{expects an rvalue for object argument}} expected-note {{requires 0 arguments, but 1 was provided}}
+           ^
+
+"Test_name.c", line 123: error: no instance of overloaded function "b7398190::S::f" matches the argument list and object (the object has type qualifiers that prevent a match)
+            object type is: const b7398190::S
+    int k = p->f(); // expected-error {{no matching member function for call to 'f'}}
+               ^
+"Test_name.c", line 120: note: number of parameters of function "b7398190::S::f(int)" does not match the call
+      void f(int); // expected-note {{requires 1 argument, but 0 were provided}}
+           ^
+
+"Test_name.c", line 129: error: no instance of function template "lambda [](int, int, auto...)->auto" matches the argument list
+            argument types are: (int *, int *)
+            object type is: lambda [](int, int, auto...)->auto
+    [](int, int, auto...){}(p, p); // expected-error {{no matching function}} expected-note {{no known conversion}}
+    ^
+"Test_name.c", line 129: note: function template "lambda [](int, int, auto...)->auto" does not match because argument #1 does not match parameter
+    [](int, int, auto...){}(p, p); // expected-error {{no matching function}} expected-note {{no known conversion}}
+      ^
+
+14 errors detected in the compilation of "Test_name.c".

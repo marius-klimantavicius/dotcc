@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --c++14 -tused -A Test_name.c
+"Test_name.c", line 4: error: expression must have a constant value
+      static constexpr int *&&r = &n;
+                                  ^
+"Test_name.c", line 4: note: a pointer or reference to parameter "n" (declared at line 3) cannot be used as a constant
+      static constexpr int *&&r = &n;
+                                  ^
+
+"Test_name.c", line 4: warning: variable "r" was declared but never referenced
+      static constexpr int *&&r = &n;
+                              ^
+
+1 error detected in the compilation of "Test_name.c".

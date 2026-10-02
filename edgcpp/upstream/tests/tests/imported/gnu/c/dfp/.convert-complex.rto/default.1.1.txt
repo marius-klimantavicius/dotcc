@@ -1,0 +1,106 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./dfp/convert-complex.c", line 15: error: identifier "_Decimal32" is undefined
+    _Decimal32 d32;
+    ^
+
+"./dfp/convert-complex.c", line 16: error: identifier "_Decimal64" is undefined
+    _Decimal64 d64;
+    ^
+
+"./dfp/convert-complex.c", line 17: error: identifier "_Decimal128" is undefined
+    _Decimal128 d128;
+    ^
+
+"./dfp/convert-complex.c", line 19: error: complex integral types are not supported
+    cf = 2.0f * __extension__ 1i + 3.0f;
+                               ^
+
+"./dfp/convert-complex.c", line 20: error: complex integral types are not supported
+    cd = 2.0 * __extension__ 1i + 3.0;
+                              ^
+
+"./dfp/convert-complex.c", line 21: error: complex integral types are not supported
+    cld = 2.0l * __extension__ 1i + 3.0l;
+                                ^
+
+"./dfp/convert-complex.c", line 28: error: extra text after expected end of number
+    if (d32 != 3.0DF)
+                  ^
+
+"./dfp/convert-complex.c", line 30: error: extra text after expected end of number
+    if (d64 != 3.0dd)
+                  ^
+
+"./dfp/convert-complex.c", line 32: error: extra text after expected end of number
+    if (d128 != 3.0dl)
+                   ^
+
+"./dfp/convert-complex.c", line 36: error: extra text after expected end of number
+    d32 = 2.5DF;
+             ^
+
+"./dfp/convert-complex.c", line 37: error: extra text after expected end of number
+    d64 = 1.5DD;
+             ^
+
+"./dfp/convert-complex.c", line 38: error: extra text after expected end of number
+    d128 = 2.5DL;
+              ^
+
+"./dfp/convert-complex.c", line 67: error: extra text after expected end of number
+    d64 = 0.125dl;
+               ^
+
+"./dfp/convert-complex.c", line 72: error: extra text after expected end of number
+    d128 = 1.25E-7dl;
+                  ^
+
+"./dfp/convert-complex.c", line 82: error: complex integral types are not supported
+    cf = 2.0f * __extension__ 1i + 2.25f;
+                               ^
+
+"./dfp/convert-complex.c", line 86: error: extra text after expected end of number
+    if (d32 != 2.25DF)
+                   ^
+
+"./dfp/convert-complex.c", line 88: error: extra text after expected end of number
+    if (d64 != 2.25DD)
+                   ^
+
+"./dfp/convert-complex.c", line 90: error: extra text after expected end of number
+    if (d128 != 2.25DL)
+                    ^
+
+"./dfp/convert-complex.c", line 94: error: complex integral types are not supported
+    cd = 2.0 * __extension__ 1i + 1.25;
+                              ^
+
+"./dfp/convert-complex.c", line 98: error: extra text after expected end of number
+    if (d32 != 1.25DF)
+                   ^
+
+"./dfp/convert-complex.c", line 100: error: extra text after expected end of number
+    if (d64 != 1.25DD)
+                   ^
+
+"./dfp/convert-complex.c", line 102: error: extra text after expected end of number
+    if (d128 != 1.25DL)
+                    ^
+
+"./dfp/convert-complex.c", line 106: error: complex integral types are not supported
+    cld = 2.0l * __extension__ 1i + 0.0625l;
+                                ^
+
+"./dfp/convert-complex.c", line 110: error: extra text after expected end of number
+    if (d32 != 0.0625DF)
+                     ^
+
+"./dfp/convert-complex.c", line 112: error: extra text after expected end of number
+    if (d64 != 0.0625DD)
+                     ^
+
+"./dfp/convert-complex.c", line 114: error: extra text after expected end of number
+    if (d128 != 0.0625DL)
+                      ^
+
+26 errors detected in the compilation of "Test_name.c".

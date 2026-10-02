@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 66: warning: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+  compute_motion (from, fromvpos, fromhpos, did_motion, to, tovpos, tohpos,
+                  ^
+
+"Test_name.c", line 111: warning: variable "charvec" is used before its value is set
+  	      if (((((enum Lisp_Type) (((unsigned long) ((charvec))) &
+  	                                                  ^
+
+"Test_name.c", line 168: warning: variable "_val" is used before its value is set
+  																														       _val;}
+  																														       ^
+

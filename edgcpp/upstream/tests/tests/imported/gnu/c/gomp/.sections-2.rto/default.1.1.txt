@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 8: warning: unrecognized #pragma
+    #pragma omp sections
+            ^
+
+"Test_name.c", line 11: warning: unrecognized #pragma
+    #pragma omp sections
+            ^
+
+"Test_name.c", line 15: warning: unrecognized #pragma
+    #pragma omp sections
+            ^
+
+"Test_name.c", line 20: warning: unrecognized #pragma
+    #pragma omp sections
+            ^
+
+"Test_name.c", line 22: warning: unrecognized #pragma
+      #pragma omp section
+              ^
+
+"Test_name.c", line 26: warning: unrecognized #pragma
+      #pragma omp section
+              ^
+

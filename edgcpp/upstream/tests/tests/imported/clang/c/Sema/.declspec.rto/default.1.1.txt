@@ -1,0 +1,82 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 6: error: function returning array is not allowed
+  T foo(int n, int m) {  }  // expected-error {{cannot return array type}}
+    ^
+
+"Test_name.c", line 10: error: expected a ";"
+  int typedef validTypeDecl(void) { } // expected-error {{function definition declared 'typedef'}}
+                                  ^
+
+"Test_name.c", line 13: warning: parsing restarts here after previous syntax error
+  int gv1;
+         ^
+
+"Test_name.c", line 16: error: invalid combination of type specifiers
+  int gv2;
+  ^
+
+"Test_name.c", line 23: warning: type qualifiers on function types are ignored
+  const f* v1;         // expected-warning {{'const' qualifier on function type 'f' (aka 'int (void)') has no effect and is a Clang extension}}
+  ^
+
+"Test_name.c", line 24: error: "restrict" is not allowed
+  __restrict__ f* v2;  // expected-error {{restrict requires a pointer or reference ('f' (aka 'int (void)') is invalid)}}
+  ^
+
+"Test_name.c", line 25: error: a pointer or reference to function type may not be qualified by "restrict"
+  __restrict__ fptr v3; // expected-error {{pointer to function type 'f' (aka 'int (void)') may not be 'restrict' qualified}}
+  ^
+
+"Test_name.c", line 26: error: a pointer or reference to function type may not be qualified by "restrict"
+  f *__restrict__ v4;   // expected-error {{pointer to function type 'f' (aka 'int (void)') may not be 'restrict' qualified}}
+     ^
+
+"Test_name.c", line 28: error: "restrict" is not allowed
+  restrict struct hallo; // expected-error {{restrict requires a pointer or reference}}
+  ^
+
+"Test_name.c", line 34: error: expected a ";"
+  void test2(void) {}
+  ^
+
+"Test_name.c", line 40: error: invalid combination of type specifiers
+  typedef int test3g;
+          ^
+
+"Test_name.c", line 43: warning: type qualifier specified more than once
+  const const int pr8264_1 = 0;  // expected-warning {{duplicate 'const' declaration specifier}}
+        ^
+
+"Test_name.c", line 44: warning: type qualifier specified more than once
+  volatile volatile int pr8264_2;  // expected-warning {{duplicate 'volatile' declaration specifier}}
+           ^
+
+"Test_name.c", line 45: warning: type qualifier specified more than once
+  char * restrict restrict pr8264_3;  // expected-warning {{duplicate 'restrict' declaration specifier}}
+                  ^
+
+"Test_name.c", line 47: error: more than one storage class may not be specified
+  extern extern int pr8264_4;  // expected-warning {{duplicate 'extern' declaration specifier}}
+         ^
+
+"Test_name.c", line 49: error: more than one storage class may not be specified
+    register register int x;  // expected-warning {{duplicate 'register' declaration specifier}}
+             ^
+
+"Test_name.c", line 49: warning: variable "x" was declared but never referenced
+    register register int x;  // expected-warning {{duplicate 'register' declaration specifier}}
+                          ^
+
+"Test_name.c", line 52: warning: duplicate specifier in declaration
+  inline inline void pr8264_6(void) {}  // expected-warning {{duplicate 'inline' declaration specifier}}
+         ^
+
+"Test_name.c", line 53: warning: duplicate specifier in declaration
+  _Noreturn _Noreturn void pr8264_7(void);  // expected-warning {{duplicate '_Noreturn' declaration specifier}}
+            ^
+
+"Test_name.c", line 18: warning: function "buggy" was declared but never referenced
+  static void buggy(int *x) { }
+              ^
+
+11 errors detected in the compilation of "Test_name.c".

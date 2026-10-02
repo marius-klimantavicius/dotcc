@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: error: a literal operator cannot be a member of a class
+    int operator ""_Bar(char32_t);  // { dg-error "7:.int Foo::operator\"\"_Bar\\(char32_t\\). must be a non-member function" }
+        ^
+
+"Test_name.c", line 12: error: identifier "operator ""_Bar" is undefined
+  int i = operator ""_Bar(U'x');  // { dg-error "9:'operator\"\"_Bar' was not declared in this scope" }
+          ^
+
+"Test_name.c", line 13: error: user-defined literal operator not found
+  int j = U'x'_Bar;  // { dg-error "unable to find character literal operator" }
+          ^
+
+"Test_name.c", line 16: error: a literal operator cannot be a member of a class
+  Foo::operator ""_Bar(char32_t)  // { dg-error "must be a non-member function" }
+                ^
+
+4 errors detected in the compilation of "Test_name.c".

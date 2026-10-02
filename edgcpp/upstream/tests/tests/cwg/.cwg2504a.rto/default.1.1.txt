@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++23 -tused Test_name.c
+"Test_name.c", line 13: error: the sub-object construction of "D2" for inheriting constructors cannot be performed -- the associated constructor is deleted
+  D2 f(1.0);
+       ^
+
+1 error detected in the compilation of "Test_name.c".

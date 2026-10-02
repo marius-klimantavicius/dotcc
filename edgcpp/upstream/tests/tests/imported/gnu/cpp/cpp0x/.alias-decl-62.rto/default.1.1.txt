@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 20: error: identifier "j" is undefined
+      j k;			// { dg-error "incomplete" }
+      ^
+          detected during:
+            instantiation of class "h<<unnamed>, <unnamed>>::i [with <unnamed>=int, <unnamed>=int]" at line 12
+            processing of template argument list for "f" based on template argument <h<int, int>::i> at line 17
+            instantiation of class "h<<unnamed>, <unnamed>> [with <unnamed>=int, <unnamed>=int]" at line 23
+
+1 error detected in the compilation of "Test_name.c".

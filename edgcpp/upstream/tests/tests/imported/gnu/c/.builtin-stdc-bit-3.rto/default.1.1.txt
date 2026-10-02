@@ -1,0 +1,57 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 9: warning: function "__builtin_stdc_leading_zeros" declared implicitly
+    __builtin_stdc_leading_zeros ((char) 0);		/* { dg-error "argument 1 in call to function '__builtin_stdc_leading_zeros' has 'char' type" } */
+    ^
+
+"Test_name.c", line 10: warning: function "__builtin_stdc_leading_ones" declared implicitly
+    __builtin_stdc_leading_ones ((char) 0);		/* { dg-error "argument 1 in call to function '__builtin_stdc_leading_ones' has 'char' type" } */
+    ^
+
+"Test_name.c", line 11: warning: function "__builtin_stdc_trailing_zeros" declared implicitly
+    __builtin_stdc_trailing_zeros ((char) 0);		/* { dg-error "argument 1 in call to function '__builtin_stdc_trailing_zeros' has 'char' type" } */
+    ^
+
+"Test_name.c", line 12: warning: function "__builtin_stdc_trailing_ones" declared implicitly
+    __builtin_stdc_trailing_ones ((char) 0);		/* { dg-error "argument 1 in call to function '__builtin_stdc_trailing_ones' has 'char' type" } */
+    ^
+
+"Test_name.c", line 13: warning: function "__builtin_stdc_first_leading_zero" declared implicitly
+    __builtin_stdc_first_leading_zero ((char) 0);		/* { dg-error "argument 1 in call to function '__builtin_stdc_first_leading_zero' has 'char' type" } */
+    ^
+
+"Test_name.c", line 14: warning: function "__builtin_stdc_first_leading_one" declared implicitly
+    __builtin_stdc_first_leading_one ((char) 0);		/* { dg-error "argument 1 in call to function '__builtin_stdc_first_leading_one' has 'char' type" } */
+    ^
+
+"Test_name.c", line 15: warning: function "__builtin_stdc_first_trailing_zero" declared implicitly
+    __builtin_stdc_first_trailing_zero ((char) 0);	/* { dg-error "argument 1 in call to function '__builtin_stdc_first_trailing_zero' has 'char' type" } */
+    ^
+
+"Test_name.c", line 16: warning: function "__builtin_stdc_first_trailing_one" declared implicitly
+    __builtin_stdc_first_trailing_one ((char) 0);		/* { dg-error "argument 1 in call to function '__builtin_stdc_first_trailing_one' has 'char' type" } */
+    ^
+
+"Test_name.c", line 17: warning: function "__builtin_stdc_count_zeros" declared implicitly
+    __builtin_stdc_count_zeros ((char) 0);		/* { dg-error "argument 1 in call to function '__builtin_stdc_count_zeros' has 'char' type" } */
+    ^
+
+"Test_name.c", line 18: warning: function "__builtin_stdc_count_ones" declared implicitly
+    __builtin_stdc_count_ones ((char) 0);			/* { dg-error "argument 1 in call to function '__builtin_stdc_count_ones' has 'char' type" } */
+    ^
+
+"Test_name.c", line 19: warning: function "__builtin_stdc_has_single_bit" declared implicitly
+    __builtin_stdc_has_single_bit ((char) 0);		/* { dg-error "argument 1 in call to function '__builtin_stdc_has_single_bit' has 'char' type" } */
+    ^
+
+"Test_name.c", line 20: warning: function "__builtin_stdc_bit_width" declared implicitly
+    __builtin_stdc_bit_width ((char) 0);			/* { dg-error "argument 1 in call to function '__builtin_stdc_bit_width' has 'char' type" } */
+    ^
+
+"Test_name.c", line 21: warning: function "__builtin_stdc_bit_floor" declared implicitly
+    __builtin_stdc_bit_floor ((char) 0);			/* { dg-error "argument 1 in call to function '__builtin_stdc_bit_floor' has 'char' type" } */
+    ^
+
+"Test_name.c", line 22: warning: function "__builtin_stdc_bit_ceil" declared implicitly
+    __builtin_stdc_bit_ceil ((char) 0);			/* { dg-error "argument 1 in call to function '__builtin_stdc_bit_ceil' has 'char' type" } */
+    ^
+

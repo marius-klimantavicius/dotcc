@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 13: error: no instance of function template "forward" matches the argument list
+    f(forward<Args...>(args...)); // { dg-error "no matching" }
+      ^
+"Test_name.c", line 6: note: number of parameters of function template "forward" does not match the call
+    _Tp&& forward(_Tp&& __t) { return __t; } // { dg-message "note" }
+          ^
+          detected during instantiation of "void g(Args &&...) [with Args=<>]" at line 18
+
+1 error detected in the compilation of "Test_name.c".

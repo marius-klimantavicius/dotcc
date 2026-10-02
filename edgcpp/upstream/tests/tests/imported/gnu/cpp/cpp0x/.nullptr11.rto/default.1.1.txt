@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 12: warning: variable "c" was declared but never referenced
+    assert_true(nullptr == nullptr);
+    ^
+
+"Test_name.c", line 13: warning: variable "c" was declared but never referenced
+    assert_false(nullptr != nullptr);
+    ^
+
+"Test_name.c", line 17: warning: variable "c" was declared but never referenced
+    assert_true(mynull == nullptr);
+    ^
+
+"Test_name.c", line 18: warning: variable "c" was declared but never referenced
+    assert_false(mynull != nullptr);
+    ^
+
+"Test_name.c", line 20: warning: variable "c" was declared but never referenced
+    assert_true(nullptr == mynull);
+    ^
+
+"Test_name.c", line 21: warning: variable "c" was declared but never referenced
+    assert_false(nullptr != mynull);
+    ^
+
+"Test_name.c", line 23: warning: variable "c" was declared but never referenced
+    assert_true(mynull == mynull);
+    ^
+
+"Test_name.c", line 24: warning: variable "c" was declared but never referenced
+    assert_false(mynull != mynull);
+    ^
+

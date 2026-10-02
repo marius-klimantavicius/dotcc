@@ -1,0 +1,7 @@
+fe_only -DTEST_NUMBER=4 --c++11 -tused --multi_trans_unit -DDIFF2 Test_name.c gnats23163-p2.C
+"test.h", line 14: error: declaration of member "count_time<N, base>::factor" had a different meaning during compilation of "Test_name.c"
+    static constexpr int factor = fac2[N];
+                         ^
+          detected during compilation of secondary translation unit "gnats23163-p2.C"
+
+1 error detected in the compilation of "Test_name.c".

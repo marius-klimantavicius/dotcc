@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 13: error: deduced return type "std::nullptr_t" conflicts with previously deduced type "int (*)(int)"
+      return nullptr;	// { dg-error "inconsistent deduction for auto return type: 'int \\(\\*\\)\\(int\\)' and then 'std::nullptr_t'" } */
+             ^
+
+"Test_name.c", line 21: error: deduced return type "std::nullptr_t" conflicts with previously deduced type "int (*)(int)"
+    return nullptr;	// { dg-error "inconsistent deduction for auto return type: 'int \\(\\*\\)\\(int\\)' and then 'std::nullptr_t'" } */
+           ^
+
+2 errors detected in the compilation of "Test_name.c".

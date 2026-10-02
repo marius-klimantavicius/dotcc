@@ -1,0 +1,804 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 --modules Test_name.c
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/type_traits", line 421: error: identifier "__int128" is undefined
+      struct __is_integral_helper<__int128>
+                                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/type_traits", line 426: error: expected a ">"
+      struct __is_integral_helper<unsigned __int128>
+                                           ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/type_traits", line 812: error: expected a ">"
+     , signed __int128
+              ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/type_traits", line 832: error: expected a ">"
+     , unsigned __int128
+                ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/type_traits", line 1878: error: identifier "__int128" is undefined
+      struct __make_unsigned<__int128>
+                             ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/type_traits", line 1879: error: expected a ";"
+      { using __type = unsigned __int128; };
+                                ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/type_traits", line 2038: error: expected a ">"
+      struct __make_signed<unsigned __int128>
+                                    ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/type_traits", line 2039: error: identifier "__int128" is undefined
+      { using __type = __int128; };
+                       ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/functional_hash.h", line 179: error: identifier "__int128" is undefined
+    template<> struct hash<__int128> : public __hash_base<size_t, __int128> { size_t operator()(__int128 __val) const noexcept { return static_cast<size_t>(__val); } };
+                           ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/functional_hash.h", line 179: error: identifier "__int128" is undefined
+    template<> struct hash<__int128> : public __hash_base<size_t, __int128> { size_t operator()(__int128 __val) const noexcept { return static_cast<size_t>(__val); } };
+                                                                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/functional_hash.h", line 179: error: identifier "__int128" is undefined
+    template<> struct hash<__int128> : public __hash_base<size_t, __int128> { size_t operator()(__int128 __val) const noexcept { return static_cast<size_t>(__val); } };
+                                                                                                ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/functional_hash.h", line 181: error: identifier "__int128" is undefined
+    template<> struct hash<__int128 unsigned> : public __hash_base<size_t, __int128 unsigned> { size_t operator()(__int128 unsigned __val) const noexcept { return static_cast<size_t>(__val); } };
+                           ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/functional_hash.h", line 181: error: invalid combination of type specifiers
+    template<> struct hash<__int128 unsigned> : public __hash_base<size_t, __int128 unsigned> { size_t operator()(__int128 unsigned __val) const noexcept { return static_cast<size_t>(__val); } };
+                           ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/functional_hash.h", line 181: error: class "std::hash<<error-type>>" has already been defined (previous definition at line 179)
+    template<> struct hash<__int128 unsigned> : public __hash_base<size_t, __int128 unsigned> { size_t operator()(__int128 unsigned __val) const noexcept { return static_cast<size_t>(__val); } };
+                      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/functional_hash.h", line 181: error: identifier "__int128" is undefined
+    template<> struct hash<__int128 unsigned> : public __hash_base<size_t, __int128 unsigned> { size_t operator()(__int128 unsigned __val) const noexcept { return static_cast<size_t>(__val); } };
+                                                                           ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/functional_hash.h", line 181: error: invalid combination of type specifiers
+    template<> struct hash<__int128 unsigned> : public __hash_base<size_t, __int128 unsigned> { size_t operator()(__int128 unsigned __val) const noexcept { return static_cast<size_t>(__val); } };
+                                                                           ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/functional_hash.h", line 181: error: identifier "__int128" is undefined
+    template<> struct hash<__int128 unsigned> : public __hash_base<size_t, __int128 unsigned> { size_t operator()(__int128 unsigned __val) const noexcept { return static_cast<size_t>(__val); } };
+                                                                                                                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/functional_hash.h", line 181: error: invalid combination of type specifiers
+    template<> struct hash<__int128 unsigned> : public __hash_base<size_t, __int128 unsigned> { size_t operator()(__int128 unsigned __val) const noexcept { return static_cast<size_t>(__val); } };
+                                                                                                                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/cpp_type_traits.h", line 264: error: identifier "__int128" is undefined
+  __extension__ template<> struct __is_integer<__int128> { enum { __value = 1 }; typedef __true_type __type; }; __extension__ template<> struct __is_integer<unsigned __int128> { enum { __value = 1 }; typedef __true_type __type; };
+                                               ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/cpp_type_traits.h", line 264: error: expected a ">"
+  __extension__ template<> struct __is_integer<__int128> { enum { __value = 1 }; typedef __true_type __type; }; __extension__ template<> struct __is_integer<unsigned __int128> { enum { __value = 1 }; typedef __true_type __type; };
+                                                                                                                                                                      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algobase.h", line 1031: error: identifier "__int128" is undefined
+    __extension__ inline constexpr __int128
+                                   ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algobase.h", line 1032: error: identifier "__int128" is undefined
+    __size_to_integer(__int128 __n) { return __n; }
+                      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algobase.h", line 1034: error: missing initializer for constexpr variable
+    __size_to_integer(unsigned __int128 __n) { return __n; }
+    ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algobase.h", line 1034: error: expected a ";"
+    __size_to_integer(unsigned __int128 __n) { return __n; }
+    ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algobase.h", line 1213: error: name followed by "::" must be a class or namespace name
+        __is_random_access_iter<_II>::__value, bool>::__type
+        ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algobase.h", line 1227: error: name followed by "::" must be a class or namespace name
+        __is_random_access_iter<_II>::__value, bool>::__type
+        ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algobase.h", line 1298: error: identifier "random_access_iterator_tag" is undefined
+      struct __lc_rai<random_access_iterator_tag, random_access_iterator_tag>
+                      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algobase.h", line 1298: error: identifier "random_access_iterator_tag" is undefined
+      struct __lc_rai<random_access_iterator_tag, random_access_iterator_tag>
+                                                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algobase.h", line 1388: error: identifier "ptrdiff_t" is undefined
+   static ptrdiff_t
+          ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algobase.h", line 1924: error: pair is not a template
+      pair<_InputIterator1, _InputIterator2>
+      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algobase.h", line 1951: error: pair is not a template
+      inline pair<_InputIterator1, _InputIterator2>
+             ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algobase.h", line 1986: error: pair is not a template
+      inline pair<_InputIterator1, _InputIterator2>
+             ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algobase.h", line 2003: error: pair is not a template
+      pair<_InputIterator1, _InputIterator2>
+      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algobase.h", line 2033: error: pair is not a template
+      inline pair<_InputIterator1, _InputIterator2>
+             ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algobase.h", line 2070: error: pair is not a template
+      inline pair<_InputIterator1, _InputIterator2>
+             ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algobase.h", line 2102: error: name followed by "::" must be a class or namespace name
+      typename iterator_traits<_InputIterator>::difference_type
+               ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algobase.h", line 2102: error: iterator_traits is not a template
+      typename iterator_traits<_InputIterator>::difference_type
+               ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algobase.h", line 2295: error: expected a declaration
+  }
+  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stringfwd.h", line 67: error: char_traits is not a template
+    template<> struct char_traits<char32_t>;
+                      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stringfwd.h", line 72: error: char_traits is not a template
+    template<typename _CharT, typename _Traits = char_traits<_CharT>,
+                                                 ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stringfwd.h", line 73: error: allocator is not a template
+             typename _Alloc = allocator<_CharT> >
+                               ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stringfwd.h", line 79: error: basic_string is not a template
+    typedef basic_string<char> string;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stringfwd.h", line 82: error: basic_string is not a template
+    typedef basic_string<wchar_t> wstring;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stringfwd.h", line 91: error: basic_string is not a template
+    typedef basic_string<char16_t> u16string;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stringfwd.h", line 94: error: basic_string is not a template
+    typedef basic_string<char32_t> u32string;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stringfwd.h", line 100: error: expected a declaration
+  }
+  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/iosfwd", line 119: error: char_traits is not a template
+    template<typename _CharT, typename _Traits = char_traits<_CharT> >
+                                                 ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/iosfwd", line 122: error: char_traits is not a template
+    template<typename _CharT, typename _Traits = char_traits<_CharT> >
+                                                 ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/iosfwd", line 125: error: char_traits is not a template
+    template<typename _CharT, typename _Traits = char_traits<_CharT> >
+                                                 ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/iosfwd", line 128: error: char_traits is not a template
+    template<typename _CharT, typename _Traits = char_traits<_CharT> >
+                                                 ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/iosfwd", line 131: error: char_traits is not a template
+    template<typename _CharT, typename _Traits = char_traits<_CharT> >
+                                                 ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/iosfwd", line 136: error: basic_ios is not a template
+    typedef basic_ios<char> ios;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/iosfwd", line 139: error: basic_streambuf is not a template
+    typedef basic_streambuf<char> streambuf;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/iosfwd", line 142: error: basic_istream is not a template
+    typedef basic_istream<char> istream;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/iosfwd", line 145: error: basic_ostream is not a template
+    typedef basic_ostream<char> ostream;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/iosfwd", line 148: error: basic_iostream is not a template
+    typedef basic_iostream<char> iostream;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/iosfwd", line 151: error: basic_stringbuf is not a template
+    typedef basic_stringbuf<char> stringbuf;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/iosfwd", line 154: error: basic_istringstream is not a template
+    typedef basic_istringstream<char> istringstream;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/iosfwd", line 157: error: basic_ostringstream is not a template
+    typedef basic_ostringstream<char> ostringstream;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/iosfwd", line 160: error: basic_stringstream is not a template
+    typedef basic_stringstream<char> stringstream;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/iosfwd", line 163: error: basic_filebuf is not a template
+    typedef basic_filebuf<char> filebuf;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/iosfwd", line 176: error: basic_ios is not a template
+    typedef basic_ios<wchar_t> wios;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/iosfwd", line 179: error: basic_streambuf is not a template
+    typedef basic_streambuf<wchar_t> wstreambuf;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/iosfwd", line 182: error: basic_istream is not a template
+    typedef basic_istream<wchar_t> wistream;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/iosfwd", line 185: error: basic_ostream is not a template
+    typedef basic_ostream<wchar_t> wostream;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/iosfwd", line 188: error: basic_iostream is not a template
+    typedef basic_iostream<wchar_t> wiostream;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/iosfwd", line 191: error: basic_stringbuf is not a template
+    typedef basic_stringbuf<wchar_t> wstringbuf;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/iosfwd", line 194: error: basic_istringstream is not a template
+    typedef basic_istringstream<wchar_t> wistringstream;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/iosfwd", line 197: error: basic_ostringstream is not a template
+    typedef basic_ostringstream<wchar_t> wostringstream;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/iosfwd", line 200: error: basic_stringstream is not a template
+    typedef basic_stringstream<wchar_t> wstringstream;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/iosfwd", line 203: error: basic_filebuf is not a template
+    typedef basic_filebuf<wchar_t> wfilebuf;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/iosfwd", line 258: error: expected a declaration
+  }
+  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/ostream_insert.h", line 68: error: a class or namespace qualified name is required
+        typedef typename __ostream_type::ios_base __ios_base;
+                         ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/ostream_insert.h", line 68: error: expected a ";"
+        typedef typename __ostream_type::ios_base __ios_base;
+                                                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/ostream_insert.h", line 70: error: identifier "_CharT" is undefined
+        const _CharT __c = __out.fill();
+              ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/ostream_insert.h", line 70: error: identifier "__out" is undefined
+        const _CharT __c = __out.fill();
+                           ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/ostream_insert.h", line 71: error: expected a declaration
+        for (; __n > 0; --__n)
+        ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/ostream_insert.h", line 110: error: expected a ";"
+         __out.width(0);
+              ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/ostream_insert.h", line 111: error: expected a declaration
+       }
+       ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/ostream_insert.h", line 121: error: expected a declaration
+      }
+      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/ostream_insert.h", line 130: error: identifier "streamsize" is undefined
+            streamsize);
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/ostream_insert.h", line 129: error: "__ostream_insert" is not a class or function template name in the current scope
+    extern template wostream& __ostream_insert(wostream&, const wchar_t*,
+                              ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/ostream_insert.h", line 137: error: expected a declaration
+  }
+  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 131: error: identifier "size_type" is undefined
+        static constexpr size_type npos = size_type(-1);
+                         ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 131: error: identifier "size_type" is undefined
+        static constexpr size_type npos = size_type(-1);
+                                          ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 137: error: expected a "{"
+        : _M_len{0}, _M_str{nullptr}
+        ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 137: error: expected a ";"
+        : _M_len{0}, _M_str{nullptr}
+                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 137: error: expected a declaration
+        : _M_len{0}, _M_str{nullptr}
+                   ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 144: error: identifier "_CharT" is undefined
+        basic_string_view(const _CharT* __str) noexcept
+                                ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 145: error: expected a "{"
+        : _M_len{traits_type::length(__str)},
+        ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 145: error: name followed by "::" must be a class or namespace name
+        : _M_len{traits_type::length(__str)},
+                 ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 145: error: expected a ";"
+        : _M_len{traits_type::length(__str)},
+                                           ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 145: error: expected a declaration
+        : _M_len{traits_type::length(__str)},
+                                            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 190: error: identifier "const_iterator" is undefined
+        constexpr const_iterator
+                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 191: error: a type qualifier is not allowed on a nonmember function
+        begin() const noexcept
+                ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 192: error: "this" may only be used inside a nonstatic member function
+        { return this->_M_str; }
+                 ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 195: error: identifier "const_iterator" is undefined
+        constexpr const_iterator
+                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 196: error: a type qualifier is not allowed on a nonmember function
+        end() const noexcept
+              ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 197: error: "this" may only be used inside a nonstatic member function
+        { return this->_M_str + this->_M_len; }
+                 ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 197: error: "this" may only be used inside a nonstatic member function
+        { return this->_M_str + this->_M_len; }
+                                ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 200: error: identifier "const_iterator" is undefined
+        constexpr const_iterator
+                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 201: error: a type qualifier is not allowed on a nonmember function
+        cbegin() const noexcept
+                 ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 202: error: "this" may only be used inside a nonstatic member function
+        { return this->_M_str; }
+                 ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 205: error: identifier "const_iterator" is undefined
+        constexpr const_iterator
+                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 206: error: a type qualifier is not allowed on a nonmember function
+        cend() const noexcept
+               ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 207: error: "this" may only be used inside a nonstatic member function
+        { return this->_M_str + this->_M_len; }
+                 ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 207: error: "this" may only be used inside a nonstatic member function
+        { return this->_M_str + this->_M_len; }
+                                ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 210: error: identifier "const_reverse_iterator" is undefined
+        constexpr const_reverse_iterator
+                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 211: error: a type qualifier is not allowed on a nonmember function
+        rbegin() const noexcept
+                 ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 212: error: "this" may only be used inside a nonstatic member function
+        { return const_reverse_iterator(this->end()); }
+                                        ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 212: error: identifier "const_reverse_iterator" is undefined
+        { return const_reverse_iterator(this->end()); }
+                 ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 215: error: identifier "const_reverse_iterator" is undefined
+        constexpr const_reverse_iterator
+                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 216: error: a type qualifier is not allowed on a nonmember function
+        rend() const noexcept
+               ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 217: error: "this" may only be used inside a nonstatic member function
+        { return const_reverse_iterator(this->begin()); }
+                                        ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 217: error: identifier "const_reverse_iterator" is undefined
+        { return const_reverse_iterator(this->begin()); }
+                 ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 220: error: identifier "const_reverse_iterator" is undefined
+        constexpr const_reverse_iterator
+                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 221: error: a type qualifier is not allowed on a nonmember function
+        crbegin() const noexcept
+                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 222: error: "this" may only be used inside a nonstatic member function
+        { return const_reverse_iterator(this->end()); }
+                                        ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 222: error: identifier "const_reverse_iterator" is undefined
+        { return const_reverse_iterator(this->end()); }
+                 ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 225: error: identifier "const_reverse_iterator" is undefined
+        constexpr const_reverse_iterator
+                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 226: error: a type qualifier is not allowed on a nonmember function
+        crend() const noexcept
+                ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 227: error: "this" may only be used inside a nonstatic member function
+        { return const_reverse_iterator(this->begin()); }
+                                        ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 227: error: identifier "const_reverse_iterator" is undefined
+        { return const_reverse_iterator(this->begin()); }
+                 ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 232: error: "size_type" is not a type name
+        constexpr size_type
+                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 233: error: a type qualifier is not allowed on a nonmember function
+        size() const noexcept
+               ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 234: error: "this" may only be used inside a nonstatic member function
+        { return this->_M_len; }
+                 ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 237: error: "size_type" is not a type name
+        constexpr size_type
+                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 238: error: a type qualifier is not allowed on a nonmember function
+        length() const noexcept
+                 ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 239: error: identifier "_M_len" is undefined
+        { return _M_len; }
+                 ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 242: error: "size_type" is not a type name
+        constexpr size_type
+                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 243: error: a type qualifier is not allowed on a nonmember function
+        max_size() const noexcept
+                   ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 246: error: identifier "value_type" is undefined
+    / sizeof(value_type) / 4;
+             ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 251: error: a type qualifier is not allowed on a nonmember function
+        empty() const noexcept
+                ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 252: error: "this" may only be used inside a nonstatic member function
+        { return this->_M_len == 0; }
+                 ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 257: error: identifier "const_reference" is undefined
+        constexpr const_reference
+                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 258: error: "operator[]" must be a member function
+        operator[](size_type __pos) const noexcept
+        ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 258: error: "size_type" is not a type name
+        operator[](size_type __pos) const noexcept
+                   ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 258: error: a type qualifier is not allowed on a nonmember function
+        operator[](size_type __pos) const noexcept
+                                    ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 260: error: "this" may only be used inside a nonstatic member function
+   do { if (__builtin_expect(!bool(__pos < this->_M_len), false)) std::__glibcxx_assert_fail("/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", 260, __PRETTY_FUNCTION__, "__pos < this->_M_len"); } while (false);
+                                           ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 261: error: "this" may only be used inside a nonstatic member function
+   return *(this->_M_str + __pos);
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 265: error: identifier "const_reference" is undefined
+        constexpr const_reference
+                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 266: error: expected a ")"
+        at(size_type __pos) const
+                     ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 266: error: expected a ";"
+        at(size_type __pos) const
+                            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 462: error: "size_type" is not a type name
+        constexpr size_type
+                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 463: error: identifier "_CharT" is undefined
+        find(const _CharT* __str, size_type __pos, size_type __n) const noexcept;
+                   ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 463: error: "size_type" is not a type name
+        find(const _CharT* __str, size_type __pos, size_type __n) const noexcept;
+                                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 463: error: "size_type" is not a type name
+        find(const _CharT* __str, size_type __pos, size_type __n) const noexcept;
+                                                   ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 463: error: a type qualifier is not allowed on a nonmember function
+        find(const _CharT* __str, size_type __pos, size_type __n) const noexcept;
+                                                                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 466: error: "size_type" is not a type name
+        constexpr size_type
+                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 467: error: identifier "_CharT" is undefined
+        find(const _CharT* __str, size_type __pos = 0) const noexcept
+                   ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 467: error: "size_type" is not a type name
+        find(const _CharT* __str, size_type __pos = 0) const noexcept
+                                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 467: error: a type qualifier is not allowed on a nonmember function
+        find(const _CharT* __str, size_type __pos = 0) const noexcept
+                                                       ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 468: error: "this" may only be used inside a nonstatic member function
+        { return this->find(__str, __pos, traits_type::length(__str)); }
+                 ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 468: error: name followed by "::" must be a class or namespace name
+        { return this->find(__str, __pos, traits_type::length(__str)); }
+                                          ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 471: error: "size_type" is not a type name
+        constexpr size_type
+                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 472: error: expected a ")"
+        rfind(basic_string_view __str, size_type __pos = npos) const noexcept
+                                ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 472: error: expected a ";"
+        rfind(basic_string_view __str, size_type __pos = npos) const noexcept
+                                                               ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 480: error: "size_type" is not a type name
+        constexpr size_type
+                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 481: error: identifier "_CharT" is undefined
+        rfind(const _CharT* __str, size_type __pos, size_type __n) const noexcept;
+                    ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 481: error: "size_type" is not a type name
+        rfind(const _CharT* __str, size_type __pos, size_type __n) const noexcept;
+                                   ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 481: error: "size_type" is not a type name
+        rfind(const _CharT* __str, size_type __pos, size_type __n) const noexcept;
+                                                    ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 481: error: a type qualifier is not allowed on a nonmember function
+        rfind(const _CharT* __str, size_type __pos, size_type __n) const noexcept;
+                                                                   ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 481: error: declaration is incompatible with "const <error-type> rfind" (declared at line 472)
+        rfind(const _CharT* __str, size_type __pos, size_type __n) const noexcept;
+        ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 484: error: "size_type" is not a type name
+        constexpr size_type
+                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 485: error: identifier "_CharT" is undefined
+        rfind(const _CharT* __str, size_type __pos = npos) const noexcept
+                    ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 485: error: "size_type" is not a type name
+        rfind(const _CharT* __str, size_type __pos = npos) const noexcept
+                                   ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 485: error: a type qualifier is not allowed on a nonmember function
+        rfind(const _CharT* __str, size_type __pos = npos) const noexcept
+                                                           ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 485: error: declaration is incompatible with previous "rfind" (declared at line 472)
+        rfind(const _CharT* __str, size_type __pos = npos) const noexcept
+        ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 486: error: "this" may only be used inside a nonstatic member function
+        { return this->rfind(__str, __pos, traits_type::length(__str)); }
+                 ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 486: error: name followed by "::" must be a class or namespace name
+        { return this->rfind(__str, __pos, traits_type::length(__str)); }
+                                           ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 489: error: "size_type" is not a type name
+        constexpr size_type
+                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 490: error: expected a ")"
+        find_first_of(basic_string_view __str, size_type __pos = 0) const noexcept
+                                        ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 490: error: expected a ";"
+        find_first_of(basic_string_view __str, size_type __pos = 0) const noexcept
+                                                                    ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 504: error: "size_type" is not a type name
+        constexpr size_type
+                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 505: error: identifier "_CharT" is undefined
+        find_first_of(const _CharT* __str, size_type __pos = 0) const noexcept
+                            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 505: error: "size_type" is not a type name
+        find_first_of(const _CharT* __str, size_type __pos = 0) const noexcept
+                                           ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 505: error: a type qualifier is not allowed on a nonmember function
+        find_first_of(const _CharT* __str, size_type __pos = 0) const noexcept
+                                                                ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 505: error: declaration is incompatible with "const <error-type> find_first_of" (declared at line 490)
+        find_first_of(const _CharT* __str, size_type __pos = 0) const noexcept
+        ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 506: error: "this" may only be used inside a nonstatic member function
+        { return this->find_first_of(__str, __pos, traits_type::length(__str)); }
+                 ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 506: error: name followed by "::" must be a class or namespace name
+        { return this->find_first_of(__str, __pos, traits_type::length(__str)); }
+                                                   ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 509: error: "size_type" is not a type name
+        constexpr size_type
+                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 510: error: expected a ")"
+        find_last_of(basic_string_view __str,
+                                       ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 511: error: expected a ";"
+       size_type __pos = npos) const noexcept
+                               ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 525: error: "size_type" is not a type name
+        constexpr size_type
+                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 526: error: identifier "_CharT" is undefined
+        find_last_of(const _CharT* __str, size_type __pos = npos) const noexcept
+                           ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 526: error: "size_type" is not a type name
+        find_last_of(const _CharT* __str, size_type __pos = npos) const noexcept
+                                          ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 526: error: a type qualifier is not allowed on a nonmember function
+        find_last_of(const _CharT* __str, size_type __pos = npos) const noexcept
+                                                                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 526: error: declaration is incompatible with "const <error-type> find_last_of" (declared at line 510)
+        find_last_of(const _CharT* __str, size_type __pos = npos) const noexcept
+        ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 527: error: "this" may only be used inside a nonstatic member function
+        { return this->find_last_of(__str, __pos, traits_type::length(__str)); }
+                 ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 527: error: name followed by "::" must be a class or namespace name
+        { return this->find_last_of(__str, __pos, traits_type::length(__str)); }
+                                                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 530: error: "size_type" is not a type name
+        constexpr size_type
+                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 531: error: expected a ")"
+        find_first_not_of(basic_string_view __str,
+                                            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 532: error: expected a ";"
+     size_type __pos = 0) const noexcept
+                          ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 540: error: "size_type" is not a type name
+        constexpr size_type
+                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 541: error: identifier "_CharT" is undefined
+        find_first_not_of(const _CharT* __str,
+                                ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 542: error: "size_type" is not a type name
+     size_type __pos, size_type __n) const noexcept;
+     ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 542: error: "size_type" is not a type name
+     size_type __pos, size_type __n) const noexcept;
+                      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 542: error: a type qualifier is not allowed on a nonmember function
+     size_type __pos, size_type __n) const noexcept;
+                                     ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 541: error: declaration is incompatible with "const <error-type> find_first_not_of" (declared at line 531)
+        find_first_not_of(const _CharT* __str,
+        ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/string_view", line 545: error: "size_type" is not a type name
+        constexpr size_type
+                  ^
+
+Error limit reached.
+200 errors detected in the compilation of "Test_name.c".
+Compilation terminated.

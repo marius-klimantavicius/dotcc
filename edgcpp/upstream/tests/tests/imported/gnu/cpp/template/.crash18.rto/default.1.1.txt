@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./template/crash18.C", line 9: warning: variable "t" was declared but never referenced
+    const std::type_info& t = typeid(T);
+                          ^
+
+"./template/crash18.C", line 10: warning: variable "t2" was declared but never referenced
+    const std::type_info& t2 = typeid(float);
+                          ^
+

@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 5: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive (assumes contains (simd))]];
+    ^
+
+"Test_name.c", line 6: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive (assumes contains (error))]];
+    ^
+
+"Test_name.c", line 7: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive (assumes, contains (simd))]];
+    ^
+
+"Test_name.c", line 12: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (simd)]]
+      ^
+
+"Test_name.c", line 17: warning: attribute namespace "omp" is unrecognized
+        [[omp::directive (error at (execution) message ("Should not happen"))]];
+          ^
+

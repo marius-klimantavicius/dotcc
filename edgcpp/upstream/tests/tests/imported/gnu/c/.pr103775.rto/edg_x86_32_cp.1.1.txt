@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 8: error: identifier "__int128" is undefined
+  foo (char a, short b, int c, __int128 d, char e, short f, int g, __int128 h)
+                               ^
+
+"Test_name.c", line 8: error: identifier "__int128" is undefined
+  foo (char a, short b, int c, __int128 d, char e, short f, int g, __int128 h)
+                                                                   ^
+
+2 errors detected in the compilation of "Test_name.c".

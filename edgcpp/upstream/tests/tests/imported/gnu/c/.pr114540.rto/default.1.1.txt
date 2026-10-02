@@ -1,0 +1,102 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 10: error: unknown register name "2147483648"
+    asm ("" : : : "2147483648");			/* { dg-error "unknown register name" } */
+                  ^
+
+"Test_name.c", line 11: error: unknown register name "4294967296"
+    asm ("" : : : "4294967296");			/* { dg-error "unknown register name" } */
+                  ^
+
+"Test_name.c", line 12: error: unknown register name "18446744073709551616"
+    asm ("" : : : "18446744073709551616");	/* { dg-error "unknown register name" } */
+                  ^
+
+"Test_name.c", line 13: error: unknown register name "9223372036854775808"
+    asm ("" : : : "9223372036854775808");		/* { dg-error "unknown register name" } */
+                  ^
+
+"Test_name.c", line 14: error: unknown register name "9223372036854775807"
+    asm ("" : : : "9223372036854775807");		/* { dg-error "unknown register name" } */
+                  ^
+
+"Test_name.c", line 15: error: unknown register name "2147483647"
+    asm ("" : : : "2147483647");			/* { dg-error "unknown register name" } */
+                  ^
+
+"Test_name.c", line 16: error: unknown register name "4&"
+    asm ("" : : : "4&");				/* { dg-error "unknown register name" } */
+                  ^
+
+"Test_name.c", line 17: error: unknown register name "1'0"
+    asm ("" : : : "1'0");				/* { dg-error "unknown register name" } */
+                  ^
+
+"Test_name.c", line 22: error: unknown register name "2147483648"
+    register int a asm("2147483648");		/* { dg-error "invalid register name for" } */
+                       ^
+
+"Test_name.c", line 23: error: unknown register name "4294967296"
+    register int b asm("4294967296");		/* { dg-error "invalid register name for" } */
+                       ^
+
+"Test_name.c", line 24: error: unknown register name "18446744073709551616"
+    register int c asm("18446744073709551616");	/* { dg-error "invalid register name for" } */
+                       ^
+
+"Test_name.c", line 25: error: unknown register name "9223372036854775808"
+    register int d asm("9223372036854775808");	/* { dg-error "invalid register name for" } */
+                       ^
+
+"Test_name.c", line 26: error: unknown register name "9223372036854775807"
+    register int e asm("9223372036854775807");	/* { dg-error "invalid register name for" } */
+                       ^
+
+"Test_name.c", line 27: error: unknown register name "2147483647"
+    register int f asm("2147483647");		/* { dg-error "invalid register name for" } */
+                       ^
+
+"Test_name.c", line 28: error: unknown register name "4&"
+    register int g asm("4&");			/* { dg-error "invalid register name for" } */
+                       ^
+
+"Test_name.c", line 29: error: unknown register name "1'0"
+    register int h asm("1'0");			/* { dg-error "invalid register name for" } */
+                       ^
+
+"Test_name.c", line 22: warning: variable "a" was declared but never referenced
+    register int a asm("2147483648");		/* { dg-error "invalid register name for" } */
+                 ^
+
+"Test_name.c", line 23: warning: variable "b" was declared but never referenced
+    register int b asm("4294967296");		/* { dg-error "invalid register name for" } */
+                 ^
+
+"Test_name.c", line 24: warning: variable "c" was declared but never referenced
+    register int c asm("18446744073709551616");	/* { dg-error "invalid register name for" } */
+                 ^
+
+"Test_name.c", line 25: warning: variable "d" was declared but never referenced
+    register int d asm("9223372036854775808");	/* { dg-error "invalid register name for" } */
+                 ^
+
+"Test_name.c", line 26: warning: variable "e" was declared but never referenced
+    register int e asm("9223372036854775807");	/* { dg-error "invalid register name for" } */
+                 ^
+
+"Test_name.c", line 27: warning: variable "f" was declared but never referenced
+    register int f asm("2147483647");		/* { dg-error "invalid register name for" } */
+                 ^
+
+"Test_name.c", line 28: warning: variable "g" was declared but never referenced
+    register int g asm("4&");			/* { dg-error "invalid register name for" } */
+                 ^
+
+"Test_name.c", line 29: warning: variable "h" was declared but never referenced
+    register int h asm("1'0");			/* { dg-error "invalid register name for" } */
+                 ^
+
+"Test_name.c", line 31: warning: variable "i" was declared but never referenced
+    register int i asm("0");
+                 ^
+
+16 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: error: expression must have a constant value
+  pk () noexcept (sm)  // { dg-error "constant expression" }
+                  ^
+"Test_name.c", line 8: note: the value of variable "sm" (declared at line 5) cannot be used as a constant
+  pk () noexcept (sm)  // { dg-error "constant expression" }
+                  ^
+
+1 error detected in the compilation of "Test_name.c".

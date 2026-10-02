@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++20 -tused -A Test_name.c
+"Test_name.c", line 3: error: template parameter "T" may not be redeclared in this scope
+  template<typename T> T T(T) {}
+                         ^
+
+1 error detected in the compilation of "Test_name.c".

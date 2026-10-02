@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 10: warning: pointless comparison of unsigned integer with zero
+    return 0ULL > p; /* { dg-warning "15:comparison is always false due to limited range of data type" } */
+                ^
+
+"Test_name.c", line 16: warning: pointless comparison of unsigned integer with zero
+    return 0ULL <= p; /* { dg-warning "15:comparison is always true due to limited range of data type" } */
+                ^
+
+"Test_name.c", line 22: warning: pointless comparison of unsigned integer with zero
+    return p >= 0U; /* { dg-warning "12:comparison of unsigned expression in '>= 0' is always true" } */
+             ^
+
+"Test_name.c", line 28: warning: pointless comparison of unsigned integer with zero
+    return p < 0U; /* { dg-warning "12:comparison of unsigned expression in '< 0' is always false" } */
+             ^
+

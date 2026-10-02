@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=2 --sun --sun_linker_scope -DNEG Test_name.c
+"Test_name.c", line 20: warning: declaration does not declare anything
+  int __hidden;
+  ^
+
+"Test_name.c", line 20: error: link scope specifier not allowed on this declaration
+  int __hidden;
+  ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 35: warning: variable "x" is used before its value is set
+    int x = x; // { dg-bogus "assigned to itself" }
+            ^
+
+"Test_name.c", line 36: warning: variable "y" is used before its value is set
+    static int y = y; // { dg-bogus "assigned to itself" }
+                   ^
+
+"Test_name.c", line 42: warning: variable "f" is used before its value is set
+    *f = *f; // { dg-bogus "assigned to itself" }
+          ^
+
+"Test_name.c", line 43: warning: variable "bar1" is used before its value is set
+    bar1->b_ = bar1->b_; // { dg-bogus "assigned to itself" }
+               ^
+
+"Test_name.c", line 44: warning: variable "bar2" is used before its value is set
+    bar2.c_ = bar2.c_; // { dg-bogus "assigned to itself" }
+              ^
+
+"Test_name.c", line 48: warning: variable "bar_array" is used before its value is set
+    bar_array[3].c_ = bar_array[3].c_; // { dg-bogus "assigned to itself" }
+                      ^
+
+"Test_name.c", line 39: warning: variable "n" was declared but never referenced
+    char n;
+         ^
+
+"Test_name.c", line 40: warning: variable "overflow" was declared but never referenced
+    int overflow;
+        ^
+

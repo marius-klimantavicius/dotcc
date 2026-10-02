@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 12: error: incomplete type "void" is not allowed
+    T m;	// { dg-error "incomplete type|invalid use" }
+      ^
+          detected during:
+            instantiation of class "X<T> [with T=void]" at line 18
+            instantiation of class "Derived<T>::Nested [with T=void]" at line 22
+            instantiation of class "Derived<T> [with T=void]" at line 29
+
+1 error detected in the compilation of "Test_name.c".

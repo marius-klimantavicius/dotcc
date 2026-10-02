@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 8: warning: unknown attribute "clang::enforce_tcb"
+  PLACE_IN_TCB("foo") void in_tcb_foo();
+  ^
+
+"Test_name.c", line 15: warning: unknown attribute "clang::enforce_tcb"
+    PLACE_IN_TCB("foo")
+    ^
+
+"Test_name.c", line 26: warning: unknown attribute "clang::enforce_tcb"
+  PLACE_IN_TCB("foo")
+  ^
+
+"Test_name.c", line 33: warning: unknown attribute "clang::enforce_tcb"
+  PLACE_IN_TCB("foo")
+  ^
+
+"Test_name.c", line 42: warning: unknown attribute "clang::enforce_tcb"
+  PLACE_IN_TCB("foo")
+  ^
+
+"Test_name.c", line 46: warning: unknown attribute "clang::enforce_tcb"
+  PLACE_IN_TCB("bar")
+  ^
+
+"Test_name.c", line 55: warning: unknown attribute "clang::enforce_tcb"
+  PLACE_IN_TCB("foo")
+  ^
+
+"Test_name.c", line 67: warning: unknown attribute "clang::enforce_tcb"
+  PLACE_IN_TCB("foo")
+  ^
+

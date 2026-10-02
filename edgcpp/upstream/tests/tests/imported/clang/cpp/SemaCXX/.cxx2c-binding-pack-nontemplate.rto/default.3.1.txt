@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=3 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++23 Test_name.c
+"Test_name.c", line 12: warning: structured binding packs are a C++26 feature
+    auto [x, ...rest, y] = arr;
+             ^
+
+"Test_name.c", line 12: error: a structured binding pack can only be declared inside a template
+    auto [x, ...rest, y] = arr;
+             ^
+
+"Test_name.c", line 12: error: there are more elements than there are binding names
+    auto [x, ...rest, y] = arr;
+         ^
+
+"Test_name.c", line 18: error: a structured binding cannot be declared "constexpr"
+    constexpr auto [x_c, ...rest_c, y_c] = arr;
+    ^
+
+"Test_name.c", line 18: warning: structured binding packs are a C++26 feature
+    constexpr auto [x_c, ...rest_c, y_c] = arr;
+                         ^
+
+"Test_name.c", line 18: error: a structured binding pack can only be declared inside a template
+    constexpr auto [x_c, ...rest_c, y_c] = arr;
+                         ^
+
+"Test_name.c", line 18: error: there are more elements than there are binding names
+    constexpr auto [x_c, ...rest_c, y_c] = arr;
+                   ^
+
+"Test_name.c", line 12: warning: structured binding "x" was declared but never referenced
+    auto [x, ...rest, y] = arr;
+          ^
+
+"Test_name.c", line 18: warning: structured binding "x_c" was declared but never referenced
+    constexpr auto [x_c, ...rest_c, y_c] = arr;
+                    ^
+
+5 errors detected in the compilation of "Test_name.c".

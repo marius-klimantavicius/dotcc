@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 8: error: this operation on an enumerated type requires an applicable user-defined operator function
+    a++;  // expected-error{{cannot increment expression of enum type 'A'}}
+     ^
+
+"Test_name.c", line 9: error: this operation on an enumerated type requires an applicable user-defined operator function
+    a--;  // expected-error{{cannot decrement expression of enum type 'A'}}
+     ^
+
+"Test_name.c", line 10: error: this operation on an enumerated type requires an applicable user-defined operator function
+    ++a;  // expected-error{{cannot increment expression of enum type 'A'}}
+    ^
+
+"Test_name.c", line 11: error: this operation on an enumerated type requires an applicable user-defined operator function
+    --a;  // expected-error{{cannot decrement expression of enum type 'A'}}
+    ^
+
+"Test_name.c", line 16: warning: variable "ret" was declared but never referenced
+  inline B operator++ (B &b, int) { B ret = b; ++b; return b; }
+                                      ^
+
+4 errors detected in the compilation of "Test_name.c".

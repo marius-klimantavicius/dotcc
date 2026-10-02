@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 21: error: expression must have a constant value
+  static_assert (f());		// { dg-error "non-constant" }
+                 ^
+"Test_name.c", line 16: note: assumption failed
+    [[assume (s.length () == 0)]]; // { dg-error "assume" }
+                          ^
+"Test_name.c", line 16: note: the final comparison was 6 == 0
+    [[assume (s.length () == 0)]]; // { dg-error "assume" }
+                          ^
+
+1 error detected in the compilation of "Test_name.c".

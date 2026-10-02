@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 23: error: function "f(int)" (declared at line 8) cannot be referenced -- it is a deleted function
+    f(0); // { dg-error "deleted" }
+    ^
+
+"Test_name.c", line 24: error: function "g(int)" (declared at line 14) cannot be referenced -- it is a deleted function
+    g(0); // { dg-error "deleted" }
+    ^
+
+"Test_name.c", line 25: error: function "h(T, T) [with T=int]" (declared at line 19) cannot be referenced -- it is a deleted function
+    h(1, 1); // { dg-error "deleted" }
+    ^
+
+3 errors detected in the compilation of "Test_name.c".

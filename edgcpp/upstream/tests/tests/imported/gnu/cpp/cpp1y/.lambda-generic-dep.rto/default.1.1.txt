@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"./cpp1y/lambda-generic-dep.C", line 11: warning: variable "g" was declared but never referenced
+    auto g = [](auto a) {
+         ^
+
+"./cpp1y/lambda-generic-dep.C", line 14: warning: variable "g2" was declared but never referenced
+    auto g2 = [=](auto a) {
+         ^
+
+"./cpp1y/lambda-generic-dep.C", line 30: warning: explicit lambda template parameters are a C++20 feature
+    auto f = [] <typename T> (T const& s) mutable {
+                ^
+

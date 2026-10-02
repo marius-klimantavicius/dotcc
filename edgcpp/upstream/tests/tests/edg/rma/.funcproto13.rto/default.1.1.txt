@@ -1,0 +1,22 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 5: error: identifier "pf" is undefined
+  void f(pf) void pf(enum E{x,y}  ); { }
+         ^
+
+"Test_name.c", line 5: error: expected a "{"
+  void f(pf) void pf(enum E{x,y}  ); { }
+             ^
+
+"Test_name.c", line 6: error: identifier "pf" is undefined
+  void g(pf, i) void pf(enum E{x,y} e); int i; { }
+         ^
+
+"Test_name.c", line 6: error: identifier "i" is undefined
+  void g(pf, i) void pf(enum E{x,y} e); int i; { }
+             ^
+
+"Test_name.c", line 6: error: expected a "{"
+  void g(pf, i) void pf(enum E{x,y} e); int i; { }
+                ^
+
+5 errors detected in the compilation of "Test_name.c".

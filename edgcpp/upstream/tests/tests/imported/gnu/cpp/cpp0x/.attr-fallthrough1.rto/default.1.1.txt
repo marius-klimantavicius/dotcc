@@ -1,0 +1,470 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 16: warning: unknown attribute "fallthrough"
+        [[fallthrough (n > 0)]];			// { dg-error "'fallthrough' attribute does not take any arguments" }
+          ^
+
+"Test_name.c", line 20: warning: unknown attribute "fallthrough"
+        [[fallthrough]];
+          ^
+
+"Test_name.c", line 24: warning: unknown attribute "fallthrough"
+        [[fallthrough ("abc")]];			// { dg-error "'fallthrough' attribute does not take any arguments" }
+          ^
+
+"Test_name.c", line 28: warning: unknown attribute "fallthrough"
+        [[fallthrough (1, 2, 3)]];		// { dg-error "'fallthrough' attribute does not take any arguments" }
+          ^
+
+"Test_name.c", line 30: warning: unknown attribute "fallthrough"
+        [[fallthrough]];				// { dg-error "attribute 'fallthrough' not preceding a case label or default label" }
+          ^
+
+"Test_name.c", line 37: warning: unknown attribute "fallthrough"
+    [[fallthrough]] int x1;			// { dg-error "'fallthrough' attribute ignored" }
+      ^
+
+"Test_name.c", line 39: warning: unknown attribute "fallthrough"
+    auto a = [] [[fallthrough]] () {};		// { dg-error "'fallthrough' attribute ignored" }
+                  ^
+
+"Test_name.c", line 40: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+    auto b = [] constexpr [[fallthrough]] {};	// { dg-error "'fallthrough' attribute ignored" }
+                ^
+
+"Test_name.c", line 40: error: constexpr lambdas are not enabled in this mode
+    auto b = [] constexpr [[fallthrough]] {};	// { dg-error "'fallthrough' attribute ignored" }
+                ^
+
+"Test_name.c", line 40: warning: unknown attribute "fallthrough"
+    auto b = [] constexpr [[fallthrough]] {};	// { dg-error "'fallthrough' attribute ignored" }
+                            ^
+
+"Test_name.c", line 43: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+    auto c = [] noexcept [[fallthrough]] {};	// { dg-error "'fallthrough' attribute ignored" }
+                ^
+
+"Test_name.c", line 43: warning: unknown attribute "fallthrough"
+    auto c = [] noexcept [[fallthrough]] {};	// { dg-error "'fallthrough' attribute ignored" }
+                           ^
+
+"Test_name.c", line 45: warning: unknown attribute "fallthrough"
+    auto d = [] () [[fallthrough]] {};		// { dg-error "'fallthrough' attribute ignored" }
+                     ^
+
+"Test_name.c", line 46: warning: unknown attribute "fallthrough"
+    auto e = new int [n] [[fallthrough]];		// { dg-warning "attributes ignored on outermost array type in new expression" }
+                           ^
+
+"Test_name.c", line 47: warning: unknown attribute "fallthrough"
+    auto e2 = new int [n] [[fallthrough]] [42];	// { dg-warning "attributes ignored on outermost array type in new expression" }
+                            ^
+
+"Test_name.c", line 48: warning: unknown attribute "fallthrough"
+    auto f = new int [n][42] [[fallthrough]];	// { dg-error "'fallthrough' attribute ignored" }
+                               ^
+
+"Test_name.c", line 49: warning: unknown attribute "fallthrough"
+    [[fallthrough]] {}				// { dg-warning "attributes at the beginning of statement are ignored" }
+      ^
+
+"Test_name.c", line 50: warning: unknown attribute "fallthrough"
+    [[fallthrough]] if (true) {}			// { dg-warning "attributes at the beginning of statement are ignored" }
+      ^
+
+"Test_name.c", line 51: warning: unknown attribute "fallthrough"
+    [[fallthrough]] while (false) {}		// { dg-warning "attributes at the beginning of statement are ignored" }
+      ^
+
+"Test_name.c", line 52: warning: unknown attribute "fallthrough"
+    [[fallthrough]] goto lab;			// { dg-warning "attributes at the beginning of statement are ignored" }
+      ^
+
+"Test_name.c", line 53: warning: unknown attribute "fallthrough"
+    [[fallthrough]] lab:;				// { dg-error "'fallthrough' attribute ignored" }
+      ^
+
+"Test_name.c", line 54: warning: unknown attribute "fallthrough"
+    [[fallthrough]] try {} catch (int) {}		// { dg-warning "attributes at the beginning of statement are ignored" }
+      ^
+
+"Test_name.c", line 55: warning: unknown attribute "fallthrough"
+    if ([[fallthrough]] int x = 0) {}		// { dg-error "'fallthrough' attribute ignored" }
+          ^
+
+"Test_name.c", line 58: warning: unknown attribute "fallthrough"
+      [[fallthrough]] case 1:			// { dg-error "'fallthrough' attribute ignored" }
+        ^
+
+"Test_name.c", line 59: warning: unknown attribute "fallthrough"
+      [[fallthrough]] break;			// { dg-warning "attributes at the beginning of statement are ignored" }
+        ^
+
+"Test_name.c", line 60: warning: unknown attribute "fallthrough"
+      [[fallthrough]] default:			// { dg-error "'fallthrough' attribute ignored" }
+        ^
+
+"Test_name.c", line 63: warning: unknown attribute "fallthrough"
+    for ([[fallthrough]] auto a : arr) {}		// { dg-error "'fallthrough' attribute ignored" }
+           ^
+
+"Test_name.c", line 64: warning: unknown attribute "fallthrough"
+    for ([[fallthrough]] auto [a, b] : arr2) {}	// { dg-error "'fallthrough' attribute ignored" }
+           ^
+
+"Test_name.c", line 64: warning: structured bindings are a C++17 feature
+    for ([[fallthrough]] auto [a, b] : arr2) {}	// { dg-error "'fallthrough' attribute ignored" }
+                              ^
+
+"Test_name.c", line 64: warning: structured binding "a" was declared but never referenced
+    for ([[fallthrough]] auto [a, b] : arr2) {}	// { dg-error "'fallthrough' attribute ignored" }
+                               ^
+
+"Test_name.c", line 66: warning: unknown attribute "fallthrough"
+    [[fallthrough]] asm ("");			// { dg-warning "attributes ignored on 'asm' declaration" }
+      ^
+
+"Test_name.c", line 67: warning: unknown attribute "fallthrough"
+    try {} catch ([[fallthrough]] int x) {}	// { dg-error "'fallthrough' attribute ignored" }
+                    ^
+
+"Test_name.c", line 68: warning: unknown attribute "fallthrough"
+    try {} catch ([[fallthrough]] int) {}		// { dg-error "'fallthrough' attribute ignored" }
+                    ^
+
+"Test_name.c", line 69: warning: unknown attribute "fallthrough"
+    try {} catch (int [[fallthrough]] x) {}	// { dg-warning "attribute ignored" }
+                        ^
+
+"Test_name.c", line 70: warning: unknown attribute "fallthrough"
+    try {} catch (int [[fallthrough]]) {}		// { dg-warning "attribute ignored" }
+                        ^
+
+"Test_name.c", line 71: warning: unknown attribute "fallthrough"
+    try {} catch (int x [[fallthrough]]) {}	// { dg-error "'fallthrough' attribute ignored" }
+                          ^
+
+"Test_name.c", line 37: warning: variable "x1" was declared but never referenced
+    [[fallthrough]] int x1;			// { dg-error "'fallthrough' attribute ignored" }
+                        ^
+
+"Test_name.c", line 39: warning: variable "a" was declared but never referenced
+    auto a = [] [[fallthrough]] () {};		// { dg-error "'fallthrough' attribute ignored" }
+         ^
+
+"Test_name.c", line 40: warning: variable "b" was declared but never referenced
+    auto b = [] constexpr [[fallthrough]] {};	// { dg-error "'fallthrough' attribute ignored" }
+         ^
+
+"Test_name.c", line 43: warning: variable "c" was declared but never referenced
+    auto c = [] noexcept [[fallthrough]] {};	// { dg-error "'fallthrough' attribute ignored" }
+         ^
+
+"Test_name.c", line 45: warning: variable "d" was declared but never referenced
+    auto d = [] () [[fallthrough]] {};		// { dg-error "'fallthrough' attribute ignored" }
+         ^
+
+"Test_name.c", line 74: warning: unknown attribute "fallthrough"
+  [[fallthrough]] int bar ();			// { dg-error "'fallthrough' attribute ignored" }
+    ^
+
+"Test_name.c", line 75: warning: unknown attribute "fallthrough"
+  using foobar [[fallthrough]] = int;		// { dg-error "'fallthrough' attribute ignored" }
+                 ^
+
+"Test_name.c", line 76: warning: unknown attribute "fallthrough"
+  [[fallthrough]] int a;				// { dg-error "'fallthrough' attribute ignored" }
+    ^
+
+"Test_name.c", line 77: warning: unknown attribute "fallthrough"
+  [[fallthrough]] auto [b, c] = arr;		// { dg-error "'fallthrough' attribute ignored" }
+    ^
+
+"Test_name.c", line 77: warning: structured bindings are a C++17 feature
+  [[fallthrough]] auto [b, c] = arr;		// { dg-error "'fallthrough' attribute ignored" }
+                       ^
+
+"Test_name.c", line 79: warning: unknown attribute "fallthrough"
+  [[fallthrough]];				// { dg-warning "attribute ignored" }
+    ^
+
+"Test_name.c", line 80: warning: unknown attribute "fallthrough"
+  inline [[fallthrough]] void baz () {}		// { dg-warning "attribute ignored" }
+           ^
+
+"Test_name.c", line 82: warning: unknown attribute "fallthrough"
+  constexpr [[fallthrough]] int qux () { return 0; }	// { dg-warning "attribute ignored" }
+              ^
+
+"Test_name.c", line 84: warning: unknown attribute "fallthrough"
+  int [[fallthrough]] d;				// { dg-warning "attribute ignored" }
+        ^
+
+"Test_name.c", line 85: warning: unknown attribute "fallthrough"
+  int const [[fallthrough]] e = 1;		// { dg-warning "attribute ignored" }
+              ^
+
+"Test_name.c", line 86: warning: unknown attribute "fallthrough"
+  struct A {} [[fallthrough]];			// { dg-warning "attribute ignored in declaration of 'struct A'" }
+                ^
+
+"Test_name.c", line 87: warning: unknown attribute "fallthrough"
+  struct A [[fallthrough]];			// { dg-warning "attribute ignored" }
+             ^
+
+"Test_name.c", line 87: warning: declaration does not declare anything
+  struct A [[fallthrough]];			// { dg-warning "attribute ignored" }
+  ^
+
+"Test_name.c", line 88: warning: unknown attribute "fallthrough"
+  struct A [[fallthrough]] a1;			// { dg-warning "attribute ignored" }
+             ^
+
+"Test_name.c", line 89: warning: unknown attribute "fallthrough"
+  A [[fallthrough]] a2;				// { dg-warning "attribute ignored" }
+      ^
+
+"Test_name.c", line 90: warning: unknown attribute "fallthrough"
+  enum B { B0 } [[fallthrough]];			// { dg-warning "attribute ignored in declaration of 'enum B'" }
+                  ^
+
+"Test_name.c", line 91: warning: unknown attribute "fallthrough"
+  enum B [[fallthrough]];				// { dg-warning "attribute ignored" }
+           ^
+
+"Test_name.c", line 91: warning: declaration does not declare anything
+  enum B [[fallthrough]];				// { dg-warning "attribute ignored" }
+  ^
+
+"Test_name.c", line 92: warning: unknown attribute "fallthrough"
+  enum B [[fallthrough]] b1;			// { dg-warning "attribute ignored" }
+           ^
+
+"Test_name.c", line 93: warning: unknown attribute "fallthrough"
+  B [[fallthrough]] b2;				// { dg-warning "attribute ignored" }
+      ^
+
+"Test_name.c", line 94: warning: unknown attribute "fallthrough"
+  struct [[fallthrough]] C {};			// { dg-error "'fallthrough' attribute ignored" }
+           ^
+
+"Test_name.c", line 95: warning: unknown attribute "fallthrough"
+  int f [[fallthrough]];				// { dg-error "'fallthrough' attribute ignored" }
+          ^
+
+"Test_name.c", line 96: warning: unknown attribute "fallthrough"
+  int g[2] [[fallthrough]];			// { dg-error "'fallthrough' attribute ignored" }
+             ^
+
+"Test_name.c", line 97: warning: unknown attribute "fallthrough"
+  int g2 [[fallthrough]] [2];			// { dg-error "'fallthrough' attribute ignored" }
+           ^
+
+"Test_name.c", line 98: warning: unknown attribute "fallthrough"
+  int corge () [[fallthrough]];			// { dg-error "'fallthrough' attribute ignored" }
+                 ^
+
+"Test_name.c", line 99: warning: unknown attribute "fallthrough"
+  int *[[fallthrough]] h;				// { dg-error "'fallthrough' attribute ignored" }
+         ^
+
+"Test_name.c", line 100: warning: unknown attribute "fallthrough"
+  int & [[fallthrough]] i = f;			// { dg-error "'fallthrough' attribute ignored" }
+          ^
+
+"Test_name.c", line 101: warning: unknown attribute "fallthrough"
+  int && [[fallthrough]] j = 0;			// { dg-error "'fallthrough' attribute ignored" }
+           ^
+
+"Test_name.c", line 102: warning: unknown attribute "fallthrough"
+  int S::* [[fallthrough]] k;			// { dg-error "'fallthrough' attribute ignored" }
+             ^
+
+"Test_name.c", line 103: warning: unknown attribute "fallthrough"
+  auto l = sizeof (int [2] [[fallthrough]]);	// { dg-error "'fallthrough' attribute ignored" }
+                             ^
+
+"Test_name.c", line 104: warning: unknown attribute "fallthrough"
+  int freddy ([[fallthrough]] int a,		// { dg-error "'fallthrough' attribute ignored" }
+                ^
+
+"Test_name.c", line 105: warning: unknown attribute "fallthrough"
+  	    [[fallthrough]] int,		// { dg-error "'fallthrough' attribute ignored" }
+  	      ^
+
+"Test_name.c", line 106: warning: unknown attribute "fallthrough"
+  	    [[fallthrough]] int c = 0,		// { dg-error "'fallthrough' attribute ignored" }
+  	      ^
+
+"Test_name.c", line 107: warning: unknown attribute "fallthrough"
+  	    [[fallthrough]] int = 0);		// { dg-error "'fallthrough' attribute ignored" }
+  	      ^
+
+"Test_name.c", line 109: warning: unknown attribute "fallthrough"
+  corge ([[fallthrough]] int a,			// { dg-error "'fallthrough' attribute ignored" }
+           ^
+
+"Test_name.c", line 110: warning: unknown attribute "fallthrough"
+         [[fallthrough]] int,			// { dg-error "'fallthrough' attribute ignored" }
+           ^
+
+"Test_name.c", line 111: warning: unknown attribute "fallthrough"
+         [[fallthrough]] int c = 0,		// { dg-error "'fallthrough' attribute ignored" }
+           ^
+
+"Test_name.c", line 112: warning: unknown attribute "fallthrough"
+         [[fallthrough]] int = 0)			// { dg-error "'fallthrough' attribute ignored" }
+           ^
+
+"Test_name.c", line 115: warning: unknown attribute "fallthrough"
+  [[fallthrough]] void
+    ^
+
+"Test_name.c", line 119: warning: unknown attribute "fallthrough"
+  int grault (int [[fallthrough]] a,		// { dg-warning "attribute ignored" }
+                    ^
+
+"Test_name.c", line 120: warning: unknown attribute "fallthrough"
+  	    int [[fallthrough]],		// { dg-warning "attribute ignored" }
+  	          ^
+
+"Test_name.c", line 121: warning: unknown attribute "fallthrough"
+  	    int [[fallthrough]] c = 0,		// { dg-warning "attribute ignored" }
+  	          ^
+
+"Test_name.c", line 122: warning: unknown attribute "fallthrough"
+  	    int [[fallthrough]] = 0);		// { dg-warning "attribute ignored" }
+  	          ^
+
+"Test_name.c", line 124: warning: unknown attribute "fallthrough"
+  waldo (int [[fallthrough]] a,			// { dg-warning "attribute ignored" }
+               ^
+
+"Test_name.c", line 125: warning: unknown attribute "fallthrough"
+         int [[fallthrough]],			// { dg-warning "attribute ignored" }
+               ^
+
+"Test_name.c", line 126: warning: unknown attribute "fallthrough"
+         int [[fallthrough]] c = 0,		// { dg-warning "attribute ignored" }
+               ^
+
+"Test_name.c", line 127: warning: unknown attribute "fallthrough"
+         int [[fallthrough]] = 0)			// { dg-warning "attribute ignored" }
+               ^
+
+"Test_name.c", line 130: warning: unknown attribute "fallthrough"
+  int plugh (int a [[fallthrough]],		// { dg-error "'fallthrough' attribute ignored" }
+                     ^
+
+"Test_name.c", line 131: warning: unknown attribute "fallthrough"
+  	    int b [[fallthrough]] = 0);		// { dg-error "'fallthrough' attribute ignored" }
+  	            ^
+
+"Test_name.c", line 133: warning: unknown attribute "fallthrough"
+  thud (int a [[fallthrough]],			// { dg-error "'fallthrough' attribute ignored" }
+                ^
+
+"Test_name.c", line 134: warning: unknown attribute "fallthrough"
+        int b [[fallthrough]] = 0)		// { dg-error "'fallthrough' attribute ignored" }
+                ^
+
+"Test_name.c", line 137: warning: unknown attribute "fallthrough"
+  enum [[fallthrough]] D { D0 };			// { dg-error "'fallthrough' attribute ignored" }
+         ^
+
+"Test_name.c", line 138: warning: unknown attribute "fallthrough"
+  enum class [[fallthrough]] E { E0 };		// { dg-error "'fallthrough' attribute ignored" }
+               ^
+
+"Test_name.c", line 140: warning: unknown attribute "fallthrough"
+  enum [[fallthrough]] F;				// { dg-warning "type attributes ignored after type is already defined" }
+         ^
+
+"Test_name.c", line 142: warning: unknown attribute "fallthrough"
+    G0 [[fallthrough]],				// { dg-error "'fallthrough' attribute ignored" }
+         ^
+
+"Test_name.c", line 143: warning: unknown attribute "fallthrough"
+    G1 [[fallthrough]] = 2			// { dg-error "'fallthrough' attribute ignored" }
+         ^
+
+"Test_name.c", line 145: warning: unknown attribute "fallthrough"
+  namespace [[fallthrough]] H { using H0 = int; }	// { dg-warning "'fallthrough' attribute directive ignored" } */
+              ^
+
+"Test_name.c", line 146: warning: unknown attribute "fallthrough"
+  namespace [[fallthrough]] {}			// { dg-warning "'fallthrough' attribute directive ignored" }
+              ^
+
+"Test_name.c", line 147: warning: unknown attribute "fallthrough"
+  [[fallthrough]] using namespace H;		// { dg-warning "'fallthrough' attribute directive ignored" }
+    ^
+
+"Test_name.c", line 148: warning: unknown attribute "fallthrough"
+  struct [[fallthrough]] I			// { dg-error "'fallthrough' attribute ignored" }
+           ^
+
+"Test_name.c", line 150: warning: unknown attribute "fallthrough"
+    [[fallthrough]];				// { dg-error "declaration does not declare anything" }
+      ^
+
+"Test_name.c", line 150: warning: declaration does not declare anything
+    [[fallthrough]];				// { dg-error "declaration does not declare anything" }
+                   ^
+
+"Test_name.c", line 151: warning: unknown attribute "fallthrough"
+    [[fallthrough]] int i;			// { dg-error "'fallthrough' attribute ignored" }
+      ^
+
+"Test_name.c", line 152: warning: unknown attribute "fallthrough"
+    [[fallthrough]] int foo ();			// { dg-error "'fallthrough' attribute ignored" }
+      ^
+
+"Test_name.c", line 153: warning: unknown attribute "fallthrough"
+    [[fallthrough]] int bar () { return 1; }	// { dg-error "'fallthrough' attribute ignored" }
+      ^
+
+"Test_name.c", line 154: warning: unknown attribute "fallthrough"
+    [[fallthrough]] int : 0;			// { dg-error "'fallthrough' attribute ignored" }
+      ^
+
+"Test_name.c", line 155: warning: unknown attribute "fallthrough"
+    [[fallthrough]] int i2 : 5;			// { dg-error "'fallthrough' attribute ignored" }
+      ^
+
+"Test_name.c", line 156: warning: unknown attribute "fallthrough"
+    [[fallthrough]] static int i3;		// { dg-error "'fallthrough' attribute ignored" }
+      ^
+
+"Test_name.c", line 159: warning: unknown attribute "fallthrough"
+  [[fallthrough]] int I::i4 = 0;			// { dg-error "'fallthrough' attribute ignored" }
+    ^
+
+"Test_name.c", line 160: warning: unknown attribute "fallthrough"
+  struct J : [[fallthrough]] C {};		// { dg-warning "attributes on base specifiers are ignored" }
+               ^
+
+"Test_name.c", line 165: warning: unknown attribute "fallthrough"
+  typedef int L [[fallthrough]];			// { dg-error "'fallthrough' attribute ignored" }
+                  ^
+
+"Test_name.c", line 169: warning: unknown attribute "fallthrough"
+  struct [[fallthrough]] M<int> { int m; };	// { dg-error "'fallthrough' attribute ignored" }
+           ^
+
+"Test_name.c", line 170: warning: unknown attribute "fallthrough"
+  typedef int N[2] [[fallthrough]];		// { dg-error "'fallthrough' attribute ignored" }
+                     ^
+
+"Test_name.c", line 171: warning: unknown attribute "fallthrough"
+  typedef int O [[fallthrough]] [2];		// { dg-error "'fallthrough' attribute ignored" }
+                  ^
+
+"Test_name.c", line 77: warning: structured binding "b" was declared but never referenced
+  [[fallthrough]] auto [b, c] = arr;		// { dg-error "'fallthrough' attribute ignored" }
+                        ^
+
+"Test_name.c", line 85: warning: variable "e" was declared but never referenced
+  int const [[fallthrough]] e = 1;		// { dg-warning "attribute ignored" }
+                            ^
+
+1 error detected in the compilation of "Test_name.c".

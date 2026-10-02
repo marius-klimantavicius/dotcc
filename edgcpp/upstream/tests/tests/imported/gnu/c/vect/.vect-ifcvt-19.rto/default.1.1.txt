@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 6: warning: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+  void __GIMPLE (ssa,guessed_local(10737414), startwith ("fix_loops"))
+                 ^
+
+"Test_name.c", line 6: error: expected a ")"
+  void __GIMPLE (ssa,guessed_local(10737414), startwith ("fix_loops"))
+                                  ^
+
+"Test_name.c", line 7: error: expected a declaration
+  foo (int * f, int d, int e)
+  ^
+
+"Test_name.c", line 29: warning: parsing restarts here after previous syntax error
+      goto __BB4(guessed(79188460));
+                                   ^
+
+"Test_name.c", line 31: error: expected a declaration
+    __BB(9,guessed_local(435831803)):
+    ^
+
+"Test_name.c", line 34: error: expected a declaration
+    __BB(4,guessed_local(627172605)):
+    ^
+
+"Test_name.c", line 6: warning: standard requires that parameter "ssa" be given a type by a subsequent declaration ("int" assumed)
+  void __GIMPLE (ssa,guessed_local(10737414), startwith ("fix_loops"))
+                 ^
+
+"Test_name.c", line 6: warning: standard requires that parameter "guessed_local" be given a type by a subsequent declaration ("int" assumed)
+  void __GIMPLE (ssa,guessed_local(10737414), startwith ("fix_loops"))
+                     ^
+
+"Test_name.c", line 37: error: expected a "{"
+    else
+    ^
+
+"Test_name.c", line 63: warning: parsing restarts here after previous syntax error
+  }
+  ^
+
+5 errors detected in the compilation of "Test_name.c".

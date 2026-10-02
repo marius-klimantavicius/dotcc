@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 6: error: Foo is not a template
+  struct X : public Foo<Bar { // expected-error {{unknown template name 'Foo'}} expected-error {{use of undeclared identifier 'Bar'}} expected-note {{to match this '<'}}
+                    ^
+
+"Test_name.c", line 6: error: identifier "Bar" is undefined
+  struct X : public Foo<Bar { // expected-error {{unknown template name 'Foo'}} expected-error {{use of undeclared identifier 'Bar'}} expected-note {{to match this '<'}}
+                        ^
+
+"Test_name.c", line 6: error: expected a ">"
+  struct X : public Foo<Bar { // expected-error {{unknown template name 'Foo'}} expected-error {{use of undeclared identifier 'Bar'}} expected-note {{to match this '<'}}
+                            ^
+
+3 errors detected in the compilation of "Test_name.c".

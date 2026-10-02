@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 14: error: no instance of constructor "NoDefault::NoDefault" matches the argument list
+      Whoops(const char *s, T v = T()) : str(s), obj(v) {}  // { dg-error "no matching" }
+                                  ^
+"Test_name.c", line 6: note: number of parameters of function "NoDefault::NoDefault(const NoDefault &)" does not match the call
+  struct NoDefault {
+         ^
+"Test_name.c", line 6: note: number of parameters of function "NoDefault::NoDefault(NoDefault &&)" does not match the call
+  struct NoDefault {
+         ^
+"Test_name.c", line 8: note: number of parameters of function "NoDefault::NoDefault(int)" does not match the call
+      NoDefault(int v) : val(v) {}
+      ^
+          detected during instantiation of "Whoops<T>::Whoops(const char *, T) [with T=NoDefault]" at line 17
+
+1 error detected in the compilation of "Test_name.c".

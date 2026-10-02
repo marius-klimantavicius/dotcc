@@ -1,0 +1,6 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --microsoft_version=1200 --microsoft -n Test_name.c
+"Test_name.c", line 5: error: the modifier "selectany" is not allowed on this declaration
+  A __declspec(selectany) x;
+                          ^
+
+1 error detected in the compilation of "Test_name.c".

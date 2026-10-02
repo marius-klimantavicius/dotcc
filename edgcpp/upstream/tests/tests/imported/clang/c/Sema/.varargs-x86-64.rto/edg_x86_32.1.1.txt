@@ -1,0 +1,114 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 6: warning: const variable "args2" requires an initializer
+    const __builtin_va_list args2;
+                                 ^
+
+"Test_name.c", line 7: warning: variable "args2" is used before its value is set
+    (void)__builtin_va_arg(args2, int); // expected-error {{first argument to 'va_arg' is of type 'const __builtin_va_list' and not 'va_list'}}
+                           ^
+
+"Test_name.c", line 11: error: identifier "__builtin_ms_va_list" is undefined
+    __builtin_ms_va_list ap;
+    ^
+
+"Test_name.c", line 15: warning: unknown attribute "ms_abi"
+  void __attribute__((ms_abi)) g1(int a) {
+                      ^
+
+"Test_name.c", line 16: error: identifier "__builtin_ms_va_list" is undefined
+    __builtin_ms_va_list ap;
+    ^
+
+"Test_name.c", line 22: warning: unknown attribute "ms_abi"
+  void __attribute__((ms_abi)) g2(int a, int b, ...) {
+                      ^
+
+"Test_name.c", line 23: error: identifier "__builtin_ms_va_list" is undefined
+    __builtin_ms_va_list ap;
+    ^
+
+"Test_name.c", line 30: warning: unknown attribute "ms_abi"
+  void __attribute__((ms_abi)) g3(float a, ...) { // expected-note 2{{parameter of type 'float' is declared here}}
+                      ^
+
+"Test_name.c", line 31: error: identifier "__builtin_ms_va_list" is undefined
+    __builtin_ms_va_list ap;
+    ^
+
+"Test_name.c", line 37: warning: unknown attribute "ms_abi"
+  void __attribute__((ms_abi)) g5(void) {
+                      ^
+
+"Test_name.c", line 38: error: identifier "__builtin_ms_va_list" is undefined
+    __builtin_ms_va_list ap;
+    ^
+
+"Test_name.c", line 42: warning: unknown attribute "ms_abi"
+  void __attribute__((ms_abi)) g6(int a, ...) {
+                      ^
+
+"Test_name.c", line 43: error: identifier "__builtin_ms_va_list" is undefined
+    __builtin_ms_va_list ap;
+    ^
+
+"Test_name.c", line 47: warning: unknown attribute "ms_abi"
+  void __attribute__((ms_abi))
+                      ^
+
+"Test_name.c", line 48: error: identifier "__builtin_ms_va_list" is undefined
+  bar(__builtin_ms_va_list authors, ...) {
+      ^
+
+"Test_name.c", line 54: warning: unknown attribute "ms_abi"
+  void __attribute__((ms_abi)) g7(int a, ...) {
+                      ^
+
+"Test_name.c", line 55: error: identifier "__builtin_ms_va_list" is undefined
+    __builtin_ms_va_list ap;
+    ^
+
+"Test_name.c", line 58: error: expression must be a modifiable lvalue
+    __builtin_va_arg(ap, int) = 1; // expected-error {{expression is not assignable}}
+    ^
+
+"Test_name.c", line 59: error: expression must be an lvalue or a function designator
+    int *x = &__builtin_va_arg(ap, int); // expected-error {{cannot take the address of an rvalue}}
+              ^
+
+"Test_name.c", line 63: warning: unknown attribute "ms_abi"
+  void __attribute__((ms_abi)) g8(int a, ...) {
+                      ^
+
+"Test_name.c", line 64: error: identifier "__builtin_ms_va_list" is undefined
+    __builtin_ms_va_list ap;
+    ^
+
+"Test_name.c", line 71: warning: unknown attribute "ms_abi"
+  void __attribute__((ms_abi)) g9(__builtin_ms_va_list args) {
+                      ^
+
+"Test_name.c", line 71: error: identifier "__builtin_ms_va_list" is undefined
+  void __attribute__((ms_abi)) g9(__builtin_ms_va_list args) {
+                                  ^
+
+"Test_name.c", line 72: warning: "float" would have been promoted to "double" when passed through the ellipsis parameter; use the latter type instead
+    (void)__builtin_va_arg(args, float); // expected-warning {{second argument to 'va_arg' is of promotable type 'float'}}
+                                 ^
+
+"Test_name.c", line 74: warning: "short" would have been promoted to "int" when passed through the ellipsis parameter; use the latter type instead
+    (void)__builtin_va_arg(args, short); // expected-warning {{second argument to 'va_arg' is of promotable type 'short'}}
+                                 ^
+
+"Test_name.c", line 75: warning: "char" would have been promoted to "int" when passed through the ellipsis parameter; use the latter type instead
+    (void)__builtin_va_arg(args, char); // expected-warning {{second argument to 'va_arg' is of promotable type 'char'}}
+                                 ^
+
+"Test_name.c", line 78: warning: unknown attribute "ms_abi"
+  void __attribute__((ms_abi)) g10(int a, ...) {
+                      ^
+
+"Test_name.c", line 79: warning: variable "ap" was set but never used
+    __builtin_va_list ap;
+                      ^
+
+12 errors detected in the compilation of "Test_name.c".

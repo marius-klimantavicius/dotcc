@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 17: error: the default constructor of "D1" cannot be referenced -- it is a deleted function
+    D1 e;		    // { dg-error "deleted" } D1 has no default constructor
+       ^
+
+"Test_name.c", line 23: error: the sub-object construction of "D2" for inheriting constructors cannot be performed -- the associated constructor is deleted
+  D2 f(1.0);	    // { dg-error "deleted" } B1 has no default constructor
+       ^
+
+2 errors detected in the compilation of "Test_name.c".

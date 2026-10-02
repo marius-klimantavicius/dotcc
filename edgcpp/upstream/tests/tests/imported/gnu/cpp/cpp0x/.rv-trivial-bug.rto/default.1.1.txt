@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp0x/rv-trivial-bug.C", line 19: error: function "base2::base2(const base2 &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      base2 b2(b);
+               ^
+
+"./cpp0x/rv-trivial-bug.C", line 24: error: function "base2::operator=(const base2 &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      b = b2;
+        ^
+
+2 errors detected in the compilation of "Test_name.c".

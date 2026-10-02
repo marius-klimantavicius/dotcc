@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 7: error: "this" may only be used inside a nonstatic member function
+    decltype(this) q; // expected-error {{invalid use of 'this' outside of a non-static member function}}
+             ^
+
+"Test_name.c", line 9: error: "this" may only be used inside a nonstatic member function
+    int arr[sizeof(this)]; // expected-error {{invalid use of 'this' outside of a non-static member function}}
+                   ^
+
+"Test_name.c", line 12: error: "this" may only be used inside a nonstatic member function
+    typedef auto f() -> decltype(this); // expected-error {{invalid use of 'this' outside of a non-static member function}}
+                                 ^
+
+3 errors detected in the compilation of "Test_name.c".

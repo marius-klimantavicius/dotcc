@@ -1,0 +1,158 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c17 --strict_gnu -w Test_name.c
+"Test_name.c", line 15: error: declaration is incompatible with "void foo()" (declared at line 13)
+  foo(int, int, int, int, U, U, V, V, W, W, int,
+  ^
+
+"Test_name.c", line 24: error: argument of type "int" is incompatible with parameter of type "U" (aka "__attribute((vector_size(8))) int")
+         (W){}, 2, (T){}, 0, 0, 0, 0, (U){}, (U){},
+                             ^
+
+"Test_name.c", line 24: error: argument of type "int" is incompatible with parameter of type "U" (aka "__attribute((vector_size(8))) int")
+         (W){}, 2, (T){}, 0, 0, 0, 0, (U){}, (U){},
+                                ^
+
+"Test_name.c", line 24: error: argument of type "int" is incompatible with parameter of type "V" (aka "__attribute((vector_size(16))) int")
+         (W){}, 2, (T){}, 0, 0, 0, 0, (U){}, (U){},
+                                   ^
+
+"Test_name.c", line 24: error: argument of type "U" (aka "__attribute((vector_size(8))) int") is incompatible with parameter of type "V" (aka "__attribute((vector_size(16))) int")
+         (W){}, 2, (T){}, 0, 0, 0, 0, (U){}, (U){},
+                                      ^
+
+"Test_name.c", line 24: error: argument of type "U" (aka "__attribute((vector_size(8))) int") is incompatible with parameter of type "W" (aka "__attribute((vector_size(32))) int")
+         (W){}, 2, (T){}, 0, 0, 0, 0, (U){}, (U){},
+                                             ^
+
+"Test_name.c", line 25: error: argument of type "V" (aka "__attribute((vector_size(16))) int") is incompatible with parameter of type "W" (aka "__attribute((vector_size(32))) int")
+         (V){}, (V){}, (W){}, (W){}, (T){},
+         ^
+
+"Test_name.c", line 25: error: argument of type "V" (aka "__attribute((vector_size(16))) int") is incompatible with parameter of type "T" (aka "__attribute((vector_size(4))) int")
+         (V){}, (V){}, (W){}, (W){}, (T){},
+                ^
+
+"Test_name.c", line 25: error: argument of type "W" (aka "__attribute((vector_size(32))) int") is incompatible with parameter of type "T" (aka "__attribute((vector_size(4))) int")
+         (V){}, (V){}, (W){}, (W){}, (T){},
+                       ^
+
+"Test_name.c", line 25: error: argument of type "W" (aka "__attribute((vector_size(32))) int") is incompatible with parameter of type "int"
+         (V){}, (V){}, (W){}, (W){}, (T){},
+                              ^
+
+"Test_name.c", line 25: error: argument of type "T" (aka "__attribute((vector_size(4))) int") is incompatible with parameter of type "U" (aka "__attribute((vector_size(8))) int")
+         (V){}, (V){}, (W){}, (W){}, (T){},
+                                     ^
+
+"Test_name.c", line 26: error: argument of type "T" (aka "__attribute((vector_size(4))) int") is incompatible with parameter of type "U" (aka "__attribute((vector_size(8))) int")
+         (T){}, 0, 0, 0, 0, (U){}, (U){}, (V){},
+         ^
+
+"Test_name.c", line 26: error: argument of type "int" is incompatible with parameter of type "V" (aka "__attribute((vector_size(16))) int")
+         (T){}, 0, 0, 0, 0, (U){}, (U){}, (V){},
+                ^
+
+"Test_name.c", line 26: error: argument of type "int" is incompatible with parameter of type "V" (aka "__attribute((vector_size(16))) int")
+         (T){}, 0, 0, 0, 0, (U){}, (U){}, (V){},
+                   ^
+
+"Test_name.c", line 26: error: argument of type "int" is incompatible with parameter of type "W" (aka "__attribute((vector_size(32))) int")
+         (T){}, 0, 0, 0, 0, (U){}, (U){}, (V){},
+                      ^
+
+"Test_name.c", line 26: error: argument of type "int" is incompatible with parameter of type "W" (aka "__attribute((vector_size(32))) int")
+         (T){}, 0, 0, 0, 0, (U){}, (U){}, (V){},
+                         ^
+
+"Test_name.c", line 26: error: argument of type "U" (aka "__attribute((vector_size(8))) int") is incompatible with parameter of type "T" (aka "__attribute((vector_size(4))) int")
+         (T){}, 0, 0, 0, 0, (U){}, (U){}, (V){},
+                            ^
+
+"Test_name.c", line 26: error: argument of type "U" (aka "__attribute((vector_size(8))) int") is incompatible with parameter of type "T" (aka "__attribute((vector_size(4))) int")
+         (T){}, 0, 0, 0, 0, (U){}, (U){}, (V){},
+                                   ^
+
+"Test_name.c", line 26: error: argument of type "V" (aka "__attribute((vector_size(16))) int") is incompatible with parameter of type "int"
+         (T){}, 0, 0, 0, 0, (U){}, (U){}, (V){},
+                                          ^
+
+"Test_name.c", line 27: error: argument of type "V" (aka "__attribute((vector_size(16))) int") is incompatible with parameter of type "W" (aka "__attribute((vector_size(32))) int")
+         (V){}, (W){}, (W){}, (T){}, (T){}, 0, 0, 0,
+         ^
+
+"Test_name.c", line 27: error: argument of type "W" (aka "__attribute((vector_size(32))) int") is incompatible with parameter of type "T" (aka "__attribute((vector_size(4))) int")
+         (V){}, (W){}, (W){}, (T){}, (T){}, 0, 0, 0,
+                       ^
+
+"Test_name.c", line 27: error: argument of type "T" (aka "__attribute((vector_size(4))) int") is incompatible with parameter of type "int"
+         (V){}, (W){}, (W){}, (T){}, (T){}, 0, 0, 0,
+                                     ^
+
+"Test_name.c", line 28: error: argument of type "int" is incompatible with parameter of type "W" (aka "__attribute((vector_size(32))) int")
+         0, 0, 0, (T){},
+               ^
+
+"Test_name.c", line 28: error: argument of type "T" (aka "__attribute((vector_size(4))) int") is incompatible with parameter of type "int"
+         0, 0, 0, (T){},
+                  ^
+
+"Test_name.c", line 29: error: argument of type "T" (aka "__attribute((vector_size(4))) int") is incompatible with parameter of type "int"
+         (T){}, (W){},
+         ^
+
+"Test_name.c", line 29: error: argument of type "W" (aka "__attribute((vector_size(32))) int") is incompatible with parameter of type "int"
+         (T){}, (W){},
+                ^
+
+"Test_name.c", line 30: error: argument of type "W" (aka "__attribute((vector_size(32))) int") is incompatible with parameter of type "int"
+         (W){}, (T){}, (T){}, 0, 0, 0, 0, 0, 0, (W){},
+         ^
+
+"Test_name.c", line 30: error: argument of type "T" (aka "__attribute((vector_size(4))) int") is incompatible with parameter of type "int"
+         (W){}, (T){}, (T){}, 0, 0, 0, 0, 0, 0, (W){},
+                ^
+
+"Test_name.c", line 30: error: argument of type "T" (aka "__attribute((vector_size(4))) int") is incompatible with parameter of type "int"
+         (W){}, (T){}, (T){}, 0, 0, 0, 0, 0, 0, (W){},
+                       ^
+
+"Test_name.c", line 30: error: argument of type "int" is incompatible with parameter of type "V" (aka "__attribute((vector_size(16))) int")
+         (W){}, (T){}, (T){}, 0, 0, 0, 0, 0, 0, (W){},
+                              ^
+
+"Test_name.c", line 30: error: argument of type "int" is incompatible with parameter of type "W" (aka "__attribute((vector_size(32))) int")
+         (W){}, (T){}, (T){}, 0, 0, 0, 0, 0, 0, (W){},
+                                 ^
+
+"Test_name.c", line 30: error: argument of type "int" is incompatible with parameter of type "T" (aka "__attribute((vector_size(4))) int")
+         (W){}, (T){}, (T){}, 0, 0, 0, 0, 0, 0, (W){},
+                                    ^
+
+"Test_name.c", line 30: error: argument of type "int" is incompatible with parameter of type "U" (aka "__attribute((vector_size(8))) int")
+         (W){}, (T){}, (T){}, 0, 0, 0, 0, 0, 0, (W){},
+                                             ^
+
+"Test_name.c", line 30: error: argument of type "W" (aka "__attribute((vector_size(32))) int") is incompatible with parameter of type "F" (aka "__attribute((vector_size(16))) _Float32")
+         (W){}, (T){}, (T){}, 0, 0, 0, 0, 0, 0, (W){},
+                                                ^
+
+"Test_name.c", line 31: error: argument of type "V" (aka "__attribute((vector_size(16))) int") is incompatible with parameter of type "int"
+         (V){}, (W){}, (T){}, 0, 0, (U){}, (F){});
+         ^
+
+"Test_name.c", line 31: error: argument of type "W" (aka "__attribute((vector_size(32))) int") is incompatible with parameter of type "int"
+         (V){}, (W){}, (T){}, 0, 0, (U){}, (F){});
+                ^
+
+"Test_name.c", line 31: error: argument of type "T" (aka "__attribute((vector_size(4))) int") is incompatible with parameter of type "int"
+         (V){}, (W){}, (T){}, 0, 0, (U){}, (F){});
+                       ^
+
+"Test_name.c", line 31: error: argument of type "U" (aka "__attribute((vector_size(8))) int") is incompatible with parameter of type "int"
+         (V){}, (W){}, (T){}, 0, 0, (U){}, (F){});
+                                    ^
+
+"Test_name.c", line 31: error: argument of type "F" (aka "__attribute((vector_size(16))) _Float32") is incompatible with parameter of type "G" (aka "__attribute((vector_size(32))) _Float64")
+         (V){}, (W){}, (T){}, 0, 0, (U){}, (F){});
+                                           ^
+
+39 errors detected in the compilation of "Test_name.c".

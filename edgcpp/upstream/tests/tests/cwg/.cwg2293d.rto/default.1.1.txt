@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++17 -tused -A -w Test_name.c
+"Test_name.c", line 3: error: nontype "T::type" is not a type name
+    template<class T, T::type n = 0> class X;
+                      ^
+
+1 error detected in the compilation of "Test_name.c".

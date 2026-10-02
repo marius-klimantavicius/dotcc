@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 4: warning: exception specification is not allowed
+  main() throw() { }
+         ^
+
+"Test_name.c", line 4: error: return type "int" omitted in declaration of function "main"
+  main() throw() { }
+  ^
+
+1 error detected in the compilation of "Test_name.c".

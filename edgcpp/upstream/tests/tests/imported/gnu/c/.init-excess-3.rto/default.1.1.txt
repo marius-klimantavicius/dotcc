@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 9: warning: a value of type "char *" cannot be used to initialize an entity of type "char"
+  char s0[] = {"abc",1}; /* { dg-error "'char..' initializer|near init" } */
+               ^
+
+"Test_name.c", line 9: error: integer conversion resulted in truncation
+  char s0[] = {"abc",1}; /* { dg-error "'char..' initializer|near init" } */
+               ^
+
+"Test_name.c", line 10: warning: a value of type "char *" cannot be used to initialize an entity of type "char"
+  char s1[] = {"abc","a"}; /* { dg-error "'char..' initializer|near init" } */
+               ^
+
+"Test_name.c", line 10: error: integer conversion resulted in truncation
+  char s1[] = {"abc","a"}; /* { dg-error "'char..' initializer|near init" } */
+               ^
+
+"Test_name.c", line 10: warning: a value of type "char *" cannot be used to initialize an entity of type "char"
+  char s1[] = {"abc","a"}; /* { dg-error "'char..' initializer|near init" } */
+                     ^
+
+"Test_name.c", line 10: error: integer conversion resulted in truncation
+  char s1[] = {"abc","a"}; /* { dg-error "'char..' initializer|near init" } */
+                     ^
+
+"Test_name.c", line 11: warning: a value of type "char *" cannot be used to initialize an entity of type "char"
+  char s2[] = {1,"abc"}; /* { dg-error "'char..' initializer|near init|computable at load time" } */
+                 ^
+
+"Test_name.c", line 11: error: integer conversion resulted in truncation
+  char s2[] = {1,"abc"}; /* { dg-error "'char..' initializer|near init|computable at load time" } */
+                 ^
+
+"Test_name.c", line 14: warning: a value of type "char *" cannot be used to initialize an entity of type "char"
+  char s3[5] = {"abc",1}; /* { dg-error "'char.5.' initializer|near init" } */
+                ^
+
+"Test_name.c", line 14: error: integer conversion resulted in truncation
+  char s3[5] = {"abc",1}; /* { dg-error "'char.5.' initializer|near init" } */
+                ^
+
+"Test_name.c", line 15: warning: a value of type "char *" cannot be used to initialize an entity of type "char"
+  char s4[5] = {"abc","a"}; /* { dg-error "'char.5.' initializer|near init" } */
+                ^
+
+"Test_name.c", line 15: error: integer conversion resulted in truncation
+  char s4[5] = {"abc","a"}; /* { dg-error "'char.5.' initializer|near init" } */
+                ^
+
+"Test_name.c", line 15: warning: a value of type "char *" cannot be used to initialize an entity of type "char"
+  char s4[5] = {"abc","a"}; /* { dg-error "'char.5.' initializer|near init" } */
+                      ^
+
+"Test_name.c", line 15: error: integer conversion resulted in truncation
+  char s4[5] = {"abc","a"}; /* { dg-error "'char.5.' initializer|near init" } */
+                      ^
+
+"Test_name.c", line 16: warning: a value of type "char *" cannot be used to initialize an entity of type "char"
+  char s5[5] = {1,"abc"}; /* { dg-error "'char.5.' initializer|near init|computable at load time" } */
+                  ^
+
+"Test_name.c", line 16: error: integer conversion resulted in truncation
+  char s5[5] = {1,"abc"}; /* { dg-error "'char.5.' initializer|near init|computable at load time" } */
+                  ^
+
+8 errors detected in the compilation of "Test_name.c".

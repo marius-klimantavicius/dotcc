@@ -1,0 +1,197 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --exceptions --c++11 Test_name.c
+"Test_name.c", line 17: warning: unknown attribute "consumable"
+  class CONSUMABLE(unconsumed) ConsumableClass {
+        ^
+
+"Test_name.c", line 22: warning: unknown attribute "return_typestate"
+    ConsumableClass(nullptr_t p) RETURN_TYPESTATE(consumed);
+                                 ^
+
+"Test_name.c", line 23: warning: unknown attribute "return_typestate"
+    ConsumableClass(T val) RETURN_TYPESTATE(unconsumed);
+                           ^
+
+"Test_name.c", line 29: warning: unknown attribute "set_typestate"
+    ConsumableClass<T>& operator=(nullptr_t) SET_TYPESTATE(consumed);
+                                             ^
+
+"Test_name.c", line 37: warning: unknown attribute "set_typestate"
+    void operator()(int a) SET_TYPESTATE(consumed);
+                           ^
+
+"Test_name.c", line 38: warning: unknown attribute "callable_when"
+    void operator*() const CALLABLE_WHEN("unconsumed");
+                           ^
+
+"Test_name.c", line 39: warning: unknown attribute "callable_when"
+    void unconsumedCall() const CALLABLE_WHEN("unconsumed");
+                                ^
+
+"Test_name.c", line 40: warning: unknown attribute "callable_when"
+    void callableWhenUnknown() const CALLABLE_WHEN("unconsumed", "unknown");
+                                     ^
+
+"Test_name.c", line 42: warning: unknown attribute "test_typestate"
+    bool isValid() const TEST_TYPESTATE(unconsumed);
+                         ^
+
+"Test_name.c", line 43: warning: unknown attribute "test_typestate"
+    operator bool() const TEST_TYPESTATE(unconsumed);
+                          ^
+
+"Test_name.c", line 44: warning: unknown attribute "test_typestate"
+    bool operator!=(nullptr_t) const TEST_TYPESTATE(unconsumed);
+                                     ^
+
+"Test_name.c", line 45: warning: unknown attribute "test_typestate"
+    bool operator==(nullptr_t) const TEST_TYPESTATE(consumed);
+                                     ^
+
+"Test_name.c", line 50: warning: unknown attribute "set_typestate"
+    void consume() SET_TYPESTATE(consumed);
+                   ^
+
+"Test_name.c", line 51: warning: unknown attribute "set_typestate"
+    void unconsume() SET_TYPESTATE(unconsumed);
+                     ^
+
+"Test_name.c", line 54: warning: unknown attribute "consumable"
+  class CONSUMABLE(unconsumed) DestructorTester {
+        ^
+
+"Test_name.c", line 58: warning: unknown attribute "return_typestate"
+    DestructorTester(nullptr_t) RETURN_TYPESTATE(unconsumed);
+                                ^
+
+"Test_name.c", line 61: warning: unknown attribute "callable_when"
+    void operator*() CALLABLE_WHEN("unconsumed");
+                     ^
+
+"Test_name.c", line 63: warning: unknown attribute "callable_when"
+    ~DestructorTester() CALLABLE_WHEN("consumed");
+                        ^
+
+"Test_name.c", line 68: warning: unknown attribute "return_typestate"
+  void dtByValMarkUnconsumed(DestructorTester RETURN_TYPESTATE(unconsumed));
+                                              ^
+
+"Test_name.c", line 83: warning: unknown attribute "return_typestate"
+  ConsumableClass<int> returnsConsumed() RETURN_TYPESTATE(consumed);
+                                         ^
+
+"Test_name.c", line 88: warning: unknown attribute "return_typestate"
+  ConsumableClass<int> returnsUnknown() RETURN_TYPESTATE(unknown);
+                                        ^
+
+"Test_name.c", line 427: warning: unknown attribute "return_typestate"
+  void testParamReturnTypestateCallee(bool cond, ConsumableClass<int> &Param RETURN_TYPESTATE(unconsumed)) { // expected-warning {{parameter 'Param' not in expected state when the function returns: expected 'unconsumed', observed 'consumed'}}
+                                                                             ^
+
+"Test_name.c", line 437: warning: unknown attribute "return_typestate"
+  void testRvalueRefParamReturnTypestateCallee(ConsumableClass<int> &&Param RETURN_TYPESTATE(unconsumed)) {
+                                                                            ^
+
+"Test_name.c", line 450: warning: unknown attribute "param_typestate"
+  void testParamTypestateCallee(ConsumableClass<int>  Param0 PARAM_TYPESTATE(consumed),
+                                                             ^
+
+"Test_name.c", line 451: warning: unknown attribute "param_typestate"
+                                ConsumableClass<int> &Param1 PARAM_TYPESTATE(consumed)) {
+                                                             ^
+
+"Test_name.c", line 464: warning: unknown attribute "param_typestate"
+  void consumeFunc(ConsumableClass<int> P PARAM_TYPESTATE(unconsumed));
+                                          ^
+
+"Test_name.c", line 466: warning: unknown attribute "param_typestate"
+    static void consumeFuncStatic(ConsumableClass<int> P PARAM_TYPESTATE(unconsumed));
+                                                         ^
+
+"Test_name.c", line 467: warning: unknown attribute "param_typestate"
+    void consumeFuncMeth(ConsumableClass<int> P PARAM_TYPESTATE(unconsumed));
+                                                ^
+
+"Test_name.c", line 468: warning: unknown attribute "param_typestate"
+    void operator<<(ConsumableClass<int> P PARAM_TYPESTATE(unconsumed));
+                                           ^
+
+"Test_name.c", line 471: warning: unknown attribute "param_typestate"
+  void operator>>(ParamTest& pt, ConsumableClass<int> P PARAM_TYPESTATE(unconsumed));
+                                                        ^
+
+"Test_name.c", line 721: warning: unknown attribute "consumable"
+  class CONSUMABLE(unconsumed)
+        ^
+
+"Test_name.c", line 722: warning: unknown attribute "consumable_auto_cast_state"
+        __attribute__((consumable_auto_cast_state))
+                       ^
+
+"Test_name.c", line 723: warning: unknown attribute "consumable_set_state_on_read"
+        __attribute__((consumable_set_state_on_read))
+                       ^
+
+"Test_name.c", line 730: warning: unknown attribute "return_typestate"
+    Status() RETURN_TYPESTATE(consumed);
+             ^
+
+"Test_name.c", line 731: warning: unknown attribute "return_typestate"
+    Status(int c) RETURN_TYPESTATE(unconsumed);
+                  ^
+
+"Test_name.c", line 736: warning: unknown attribute "callable_when"
+    Status& operator=(const Status &other) CALLABLE_WHEN("unknown", "consumed");
+                                           ^
+
+"Test_name.c", line 737: warning: unknown attribute "callable_when"
+    Status& operator=(Status &&other) CALLABLE_WHEN("unknown", "consumed");
+                                      ^
+
+"Test_name.c", line 739: warning: unknown attribute "set_typestate"
+    bool operator==(const Status &other) const SET_TYPESTATE(consumed);
+                                               ^
+
+"Test_name.c", line 741: warning: unknown attribute "set_typestate"
+    bool check()  const SET_TYPESTATE(consumed);
+                        ^
+
+"Test_name.c", line 742: warning: unknown attribute "set_typestate"
+    void ignore() const SET_TYPESTATE(consumed);
+                        ^
+
+"Test_name.c", line 745: warning: unknown attribute "callable_when"
+    void clear() CALLABLE_WHEN("unknown", "consumed") SET_TYPESTATE(consumed);
+                 ^
+
+"Test_name.c", line 745: warning: unknown attribute "set_typestate"
+    void clear() CALLABLE_WHEN("unknown", "consumed") SET_TYPESTATE(consumed);
+                                                      ^
+
+"Test_name.c", line 747: warning: unknown attribute "callable_when"
+    ~Status() CALLABLE_WHEN("unknown", "consumed");
+              ^
+
+"Test_name.c", line 755: warning: unknown attribute "return_typestate"
+  void   handleStatus(const Status& s RETURN_TYPESTATE(consumed));
+                                      ^
+
+"Test_name.c", line 824: warning: variable "a" was set but never used
+    int a;
+        ^
+
+"Test_name.c", line 832: warning: variable "a" was set but never used
+    int a;
+        ^
+
+"Test_name.c", line 841: warning: variable "a" was set but never used
+    int a;
+        ^
+
+"Test_name.c", line 690: warning: function "ContinueICETest::foo1" was declared but never referenced
+  static void foo1() {
+              ^
+
+"Test_name.c", line 697: warning: function "ContinueICETest::foo2" was declared but never referenced
+  static void foo2() {
+              ^
+

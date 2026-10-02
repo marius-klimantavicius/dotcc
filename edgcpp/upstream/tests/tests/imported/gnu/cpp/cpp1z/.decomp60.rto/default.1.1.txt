@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 11: warning: capturing structured bindings is a C++20 feature
+    [&i]() { }; // { dg-warning "captured structured bindings" "" { target c++17_only } }
+      ^
+
+"Test_name.c", line 12: warning: capturing structured bindings is a C++20 feature
+    [i]() { }; // { dg-warning "captured structured bindings" "" { target c++17_only } }
+     ^
+

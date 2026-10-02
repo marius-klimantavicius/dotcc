@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 14: error: identifier "_Decimal32" is undefined
+  _Decimal32 rf3(void);
+  ^
+
+"Test_name.c", line 15: error: identifier "_Decimal64" is undefined
+  _Decimal64 rf4(void);
+  ^
+
+"Test_name.c", line 16: error: identifier "_Decimal128" is undefined
+  _Decimal128 rf5(void);
+  ^
+
+"Test_name.c", line 26: warning: type qualifier is meaningless on cast type
+    (const void)rf3();
+     ^
+
+"Test_name.c", line 28: error: identifier "_Decimal32" is undefined
+    (_Decimal32)rf1();
+     ^
+
+"Test_name.c", line 28: error: expected a ";"
+    (_Decimal32)rf1();
+                ^
+
+"Test_name.c", line 29: error: identifier "_Decimal64" is undefined
+    (_Decimal64)rf2();
+     ^
+
+"Test_name.c", line 29: error: expected a ";"
+    (_Decimal64)rf2();
+                ^
+
+"Test_name.c", line 30: error: identifier "_Decimal128" is undefined
+    (_Decimal128)rf3();
+     ^
+
+"Test_name.c", line 30: error: expected a ";"
+    (_Decimal128)rf3();
+                 ^
+
+"Test_name.c", line 31: error: expected a ";"
+    (_Decimal128)rf4();
+                 ^
+
+"Test_name.c", line 32: error: expected a ";"
+    (_Decimal128)rf5();
+                 ^
+
+"Test_name.c", line 39: error: expected a ";"
+    (_Decimal32)if1(); /* { dg-warning "cast from function call of type 'int' to non-matching type '_Decimal32'" } */
+                ^
+
+"Test_name.c", line 40: error: expected a ";"
+    (_Decimal64)if2(); /* { dg-warning "cast from function call of type 'char' to non-matching type '_Decimal64'" } */
+                ^
+
+"Test_name.c", line 41: error: expected a ";"
+    (_Decimal128)if3(); /* { dg-warning "cast from function call of type 'long int' to non-matching type '_Decimal128'" } */
+                 ^
+
+"Test_name.c", line 45: error: expected a ";"
+    (_Decimal32)cf(); /* { dg-warning "cast from function call of type 'complex double' to non-matching type '_Decimal32'" } */
+                ^
+
+15 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 43: warning: statement is unreachable
+      for ( ; ; (void)({ ++i; continue; i;})) {} // expected-warning{{'continue' is bound to current loop, GCC binds it to the enclosing loop}}
+                                        ^
+
+"Test_name.c", line 48: warning: statement is unreachable
+      for ( ; ; (void)({ ++i; break; i;})) {} // expected-warning{{'break' is bound to current loop, GCC binds it to the enclosing loop}}
+                                     ^
+
+"Test_name.c", line 114: warning: statement is unreachable
+      for ( ; ; (void)({ ++y; break; y;})) {} // expected-warning{{'break' is bound to loop, GCC binds it to switc}}
+                                     ^
+
+"Test_name.c", line 121: warning: statement is unreachable
+      for ( ; ({ ++y; break; y;}); ++y) {} // expected-warning{{'break' is bound to loop, GCC binds it to switch}}
+                             ^
+
+"Test_name.c", line 155: warning: statement is unreachable
+      for ( ; ({ ++y; while (({ break; y; })) {} y;}); ++y) {} // expected-warning{{'break' is bound to current loop, GCC binds it to the enclosing loop}}
+                                       ^
+
+"Test_name.c", line 162: warning: statement is unreachable
+      for ( ; ({ ++y; do {} while (({ break; y; })); y;}); ++y) {} // expected-warning{{'break' is bound to current loop, GCC binds it to the enclosing loop}}
+                                             ^
+

@@ -1,0 +1,426 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 12: error: vector operation does not apply to vector with non-integral type
+    (void)(v2fa & v2fa); // expected-error{{invalid operands to binary expression}}
+                ^
+
+"Test_name.c", line 16: error: vector operation does not apply to vector with non-integral type
+    (void)(~v2fa); // expected-error{{invalid argument type 'v2f' (vector of 2 'float' values) to unary}}
+            ^
+
+"Test_name.c", line 22: error: expression must have integral type
+    int array1[v2ua]; // expected-error{{size of array has non-integer type 'v2u' (vector of 2 'unsigned int' values}}
+               ^
+
+"Test_name.c", line 25: error: expression must have integral type
+    (void)(array2[v2ua]); // expected-error{{array subscript is not an integer}}
+                  ^
+
+"Test_name.c", line 27: warning: variable "v2u_ptr" was declared but never referenced
+    v2u *v2u_ptr = 0;
+         ^
+
+"Test_name.c", line 28: warning: variable "v2s_ptr" was declared but never referenced
+    v2s *v2s_ptr;
+         ^
+
+"Test_name.c", line 56: error: expression must have arithmetic or pointer type
+    (void)(v2ua && ua);
+           ^
+
+"Test_name.c", line 57: error: expression must have arithmetic or pointer type
+    (void)(ua && v2ua);
+                 ^
+
+"Test_name.c", line 58: error: expression must have arithmetic or pointer type
+    (void)(v2ua || ua);
+           ^
+
+"Test_name.c", line 59: error: expression must have arithmetic or pointer type
+    (void)(ua || v2ua);
+                 ^
+
+"Test_name.c", line 83: error: mixed vector-scalar operation not allowed
+    ua += v2ua; // expected-error{{assigning to 'unsigned int' from incompatible type 'v2u'}}
+       ^
+
+"Test_name.c", line 84: error: mixed vector-scalar operation not allowed
+    ua -= v2ua; // expected-error{{assigning to 'unsigned int' from incompatible type 'v2u'}}
+       ^
+
+"Test_name.c", line 85: error: mixed vector-scalar operation not allowed
+    ua *= v2ua; // expected-error{{assigning to 'unsigned int' from incompatible type 'v2u'}}
+       ^
+
+"Test_name.c", line 86: error: mixed vector-scalar operation not allowed
+    ua /= v2ua; // expected-error{{assigning to 'unsigned int' from incompatible type 'v2u'}}
+       ^
+
+"Test_name.c", line 87: error: mixed vector-scalar operation not allowed
+    ua %= v2ua; // expected-error{{assigning to 'unsigned int' from incompatible type 'v2u'}}
+       ^
+
+"Test_name.c", line 88: error: mixed vector-scalar operation not allowed
+    ua &= v2ua; // expected-error{{assigning to 'unsigned int' from incompatible type 'v2u'}}
+       ^
+
+"Test_name.c", line 89: error: mixed vector-scalar operation not allowed
+    ua |= v2ua; // expected-error{{assigning to 'unsigned int' from incompatible type 'v2u'}}
+       ^
+
+"Test_name.c", line 90: error: mixed vector-scalar operation not allowed
+    ua ^= v2ua; // expected-error{{assigning to 'unsigned int' from incompatible type 'v2u'}}
+       ^
+
+"Test_name.c", line 91: error: mixed vector-scalar operation not allowed
+    ua >>= v2ua; // expected-error{{assigning to 'unsigned int' from incompatible type 'v2u'}}
+       ^
+
+"Test_name.c", line 92: error: mixed vector-scalar operation not allowed
+    ua <<= v2ua; // expected-error{{assigning to 'unsigned int' from incompatible type 'v2u'}}
+       ^
+
+"Test_name.c", line 105: error: expression must have integral type
+    (void)(v2fa % fa); // expected-error{{invalid operands to binary expression}}
+                  ^
+
+"Test_name.c", line 105: error: mixed vector-scalar operation not allowed
+    (void)(v2fa % fa); // expected-error{{invalid operands to binary expression}}
+                ^
+
+"Test_name.c", line 106: error: expression must have integral type
+    (void)(fa % v2fa); // expected-error{{invalid operands to binary expression}}
+           ^
+
+"Test_name.c", line 106: error: mixed vector-scalar operation not allowed
+    (void)(fa % v2fa); // expected-error{{invalid operands to binary expression}}
+              ^
+
+"Test_name.c", line 120: error: expression must have arithmetic or pointer type
+    (void)(v2fa && fa);
+           ^
+
+"Test_name.c", line 121: error: expression must have arithmetic or pointer type
+    (void)(fa && v2fa);
+                 ^
+
+"Test_name.c", line 122: error: expression must have arithmetic or pointer type
+    (void)(v2fa || fa);
+           ^
+
+"Test_name.c", line 123: error: expression must have arithmetic or pointer type
+    (void)(fa || v2fa);
+                 ^
+
+"Test_name.c", line 125: error: vector operation does not apply to vector with non-integral type
+    (void)(v2fa & fa); // expected-error{{invalid operands to binary expression}}
+                ^
+
+"Test_name.c", line 126: error: vector operation does not apply to vector with non-integral type
+    (void)(fa & v2fa); // expected-error{{invalid operands to binary expression}}
+              ^
+
+"Test_name.c", line 127: error: vector operation does not apply to vector with non-integral type
+    (void)(v2fa | fa); // expected-error{{invalid operands to binary expression}}
+                ^
+
+"Test_name.c", line 128: error: vector operation does not apply to vector with non-integral type
+    (void)(fa | v2fa); // expected-error{{invalid operands to binary expression}}
+              ^
+
+"Test_name.c", line 129: error: vector operation does not apply to vector with non-integral type
+    (void)(v2fa ^ fa); // expected-error{{invalid operands to binary expression}}
+                ^
+
+"Test_name.c", line 130: error: vector operation does not apply to vector with non-integral type
+    (void)(fa ^ v2fa); // expected-error{{invalid operands to binary expression}}
+              ^
+
+"Test_name.c", line 144: error: vector operation does not apply to vector with non-integral type
+    v2fa %= fa; // expected-error{{invalid operands to binary expression}}
+         ^
+
+"Test_name.c", line 145: error: vector operation does not apply to vector with non-integral type
+    v2fa &= fa; // expected-error{{invalid operands to binary expression}}
+         ^
+
+"Test_name.c", line 146: error: vector operation does not apply to vector with non-integral type
+    v2fa |= fa; // expected-error{{invalid operands to binary expression}}
+         ^
+
+"Test_name.c", line 147: error: vector operation does not apply to vector with non-integral type
+    v2fa ^= fa; // expected-error{{invalid operands to binary expression}}
+         ^
+
+"Test_name.c", line 151: error: mixed vector-scalar operation not allowed
+    fa += v2fa; // expected-error{{assigning to 'float' from incompatible type 'v2f'}}
+       ^
+
+"Test_name.c", line 152: error: mixed vector-scalar operation not allowed
+    fa -= v2fa; // expected-error{{assigning to 'float' from incompatible type 'v2f'}}
+       ^
+
+"Test_name.c", line 153: error: mixed vector-scalar operation not allowed
+    fa *= v2fa; // expected-error{{assigning to 'float' from incompatible type 'v2f'}}
+       ^
+
+"Test_name.c", line 154: error: mixed vector-scalar operation not allowed
+    fa /= v2fa; // expected-error{{assigning to 'float' from incompatible type 'v2f'}}
+       ^
+
+"Test_name.c", line 155: error: mixed vector-scalar operation not allowed
+    fa %= v2fa; // expected-error{{invalid operands to binary expression}}
+       ^
+
+"Test_name.c", line 156: error: mixed vector-scalar operation not allowed
+    fa &= v2fa; // expected-error{{invalid operands to binary expression}}
+       ^
+
+"Test_name.c", line 157: error: mixed vector-scalar operation not allowed
+    fa |= v2fa; // expected-error{{invalid operands to binary expression}}
+       ^
+
+"Test_name.c", line 158: error: mixed vector-scalar operation not allowed
+    fa ^= v2fa; // expected-error{{invalid operands to binary expression}}
+       ^
+
+"Test_name.c", line 159: error: mixed vector-scalar operation not allowed
+    fa >>= v2fa; // expected-error{{used type 'float' where integer is required}}
+       ^
+
+"Test_name.c", line 160: error: mixed vector-scalar operation not allowed
+    fa <<= v2fa; // expected-error{{used type 'float' where integer is required}}
+       ^
+
+"Test_name.c", line 168: error: mixed vector-scalar operation not allowed
+    (void)(v2ua + ea);
+                ^
+
+"Test_name.c", line 169: error: mixed vector-scalar operation not allowed
+    (void)(ea + v2ua);
+              ^
+
+"Test_name.c", line 170: error: mixed vector-scalar operation not allowed
+    (void)(v2ua - ea);
+                ^
+
+"Test_name.c", line 171: error: mixed vector-scalar operation not allowed
+    (void)(ea - v2ua);
+              ^
+
+"Test_name.c", line 172: error: mixed vector-scalar operation not allowed
+    (void)(v2ua * ea);
+                ^
+
+"Test_name.c", line 173: error: mixed vector-scalar operation not allowed
+    (void)(ea * v2ua);
+              ^
+
+"Test_name.c", line 174: error: mixed vector-scalar operation not allowed
+    (void)(v2ua / ea);
+                ^
+
+"Test_name.c", line 175: error: mixed vector-scalar operation not allowed
+    (void)(ea / v2ua);
+              ^
+
+"Test_name.c", line 176: error: mixed vector-scalar operation not allowed
+    (void)(v2ua % ea);
+                ^
+
+"Test_name.c", line 177: error: mixed vector-scalar operation not allowed
+    (void)(ea % v2ua);
+              ^
+
+"Test_name.c", line 179: error: mixed vector-scalar operation not allowed
+    (void)(v2ua == ea);
+                ^
+
+"Test_name.c", line 180: error: mixed vector-scalar operation not allowed
+    (void)(ea == v2ua);
+              ^
+
+"Test_name.c", line 181: error: mixed vector-scalar operation not allowed
+    (void)(v2ua != ea);
+                ^
+
+"Test_name.c", line 182: error: mixed vector-scalar operation not allowed
+    (void)(ea != v2ua);
+              ^
+
+"Test_name.c", line 183: error: mixed vector-scalar operation not allowed
+    (void)(v2ua <= ea);
+                ^
+
+"Test_name.c", line 184: error: mixed vector-scalar operation not allowed
+    (void)(ea <= v2ua);
+              ^
+
+"Test_name.c", line 185: error: mixed vector-scalar operation not allowed
+    (void)(v2ua >= ea);
+                ^
+
+"Test_name.c", line 186: error: mixed vector-scalar operation not allowed
+    (void)(ea >= v2ua);
+              ^
+
+"Test_name.c", line 187: error: mixed vector-scalar operation not allowed
+    (void)(v2ua < ea);
+                ^
+
+"Test_name.c", line 188: error: mixed vector-scalar operation not allowed
+    (void)(ea < v2ua);
+              ^
+
+"Test_name.c", line 189: error: mixed vector-scalar operation not allowed
+    (void)(v2ua > ea);
+                ^
+
+"Test_name.c", line 190: error: mixed vector-scalar operation not allowed
+    (void)(ea > v2ua);
+              ^
+
+"Test_name.c", line 191: error: expression must have arithmetic or pointer type
+    (void)(v2ua && ea);
+           ^
+
+"Test_name.c", line 192: error: expression must have arithmetic or pointer type
+    (void)(ea && v2ua);
+                 ^
+
+"Test_name.c", line 193: error: expression must have arithmetic or pointer type
+    (void)(v2ua || ea);
+           ^
+
+"Test_name.c", line 194: error: expression must have arithmetic or pointer type
+    (void)(ea || v2ua);
+                 ^
+
+"Test_name.c", line 196: error: mixed vector-scalar operation not allowed
+    (void)(v2ua & ea);
+                ^
+
+"Test_name.c", line 197: error: mixed vector-scalar operation not allowed
+    (void)(ea & v2ua);
+              ^
+
+"Test_name.c", line 198: error: mixed vector-scalar operation not allowed
+    (void)(v2ua | ea);
+                ^
+
+"Test_name.c", line 199: error: mixed vector-scalar operation not allowed
+    (void)(ea | v2ua);
+              ^
+
+"Test_name.c", line 200: error: mixed vector-scalar operation not allowed
+    (void)(v2ua ^ ea);
+                ^
+
+"Test_name.c", line 201: error: mixed vector-scalar operation not allowed
+    (void)(ea ^ v2ua);
+              ^
+
+"Test_name.c", line 202: error: mixed vector-scalar operation not allowed
+    (void)(v2ua << ea);
+                ^
+
+"Test_name.c", line 203: error: mixed vector-scalar operation not allowed
+    (void)(ea << v2ua);
+              ^
+
+"Test_name.c", line 204: error: mixed vector-scalar operation not allowed
+    (void)(v2ua >> ea);
+                ^
+
+"Test_name.c", line 205: error: mixed vector-scalar operation not allowed
+    (void)(ea >> v2ua);
+              ^
+
+"Test_name.c", line 207: error: mixed vector-scalar operation not allowed
+    v2ua += ea;
+         ^
+
+"Test_name.c", line 208: error: mixed vector-scalar operation not allowed
+    v2ua -= ea;
+         ^
+
+"Test_name.c", line 209: error: mixed vector-scalar operation not allowed
+    v2ua *= ea;
+         ^
+
+"Test_name.c", line 210: error: mixed vector-scalar operation not allowed
+    v2ua /= ea;
+         ^
+
+"Test_name.c", line 211: error: mixed vector-scalar operation not allowed
+    v2ua %= ea;
+         ^
+
+"Test_name.c", line 212: error: mixed vector-scalar operation not allowed
+    v2ua &= ea;
+         ^
+
+"Test_name.c", line 213: error: mixed vector-scalar operation not allowed
+    v2ua |= ea;
+         ^
+
+"Test_name.c", line 214: error: mixed vector-scalar operation not allowed
+    v2ua ^= ea;
+         ^
+
+"Test_name.c", line 215: error: mixed vector-scalar operation not allowed
+    v2ua >>= ea;
+         ^
+
+"Test_name.c", line 216: error: mixed vector-scalar operation not allowed
+    v2ua <<= ea;
+         ^
+
+"Test_name.c", line 218: error: mixed vector-scalar operation not allowed
+    ea += v2ua; // expected-error{{assigning to 'enum Enum' from incompatible type 'v2u'}}
+       ^
+
+"Test_name.c", line 219: error: mixed vector-scalar operation not allowed
+    ea -= v2ua; // expected-error{{assigning to 'enum Enum' from incompatible type 'v2u'}}
+       ^
+
+"Test_name.c", line 220: error: mixed vector-scalar operation not allowed
+    ea *= v2ua; // expected-error{{assigning to 'enum Enum' from incompatible type 'v2u'}}
+       ^
+
+"Test_name.c", line 221: error: mixed vector-scalar operation not allowed
+    ea /= v2ua; // expected-error{{assigning to 'enum Enum' from incompatible type 'v2u'}}
+       ^
+
+"Test_name.c", line 222: error: mixed vector-scalar operation not allowed
+    ea %= v2ua; // expected-error{{assigning to 'enum Enum' from incompatible type 'v2u'}}
+       ^
+
+"Test_name.c", line 223: error: mixed vector-scalar operation not allowed
+    ea &= v2ua; // expected-error{{assigning to 'enum Enum' from incompatible type 'v2u'}}
+       ^
+
+"Test_name.c", line 224: error: mixed vector-scalar operation not allowed
+    ea |= v2ua; // expected-error{{assigning to 'enum Enum' from incompatible type 'v2u'}}
+       ^
+
+"Test_name.c", line 225: error: mixed vector-scalar operation not allowed
+    ea ^= v2ua; // expected-error{{assigning to 'enum Enum' from incompatible type 'v2u'}}
+       ^
+
+"Test_name.c", line 226: error: mixed vector-scalar operation not allowed
+    ea >>= v2ua; // expected-error{{assigning to 'enum Enum' from incompatible type 'v2u'}}
+       ^
+
+"Test_name.c", line 227: error: mixed vector-scalar operation not allowed
+    ea <<= v2ua; // expected-error{{assigning to 'enum Enum' from incompatible type 'v2u'}}
+       ^
+
+"Test_name.c", line 235: error: incomplete type "enum Enum2" is not allowed
+    (void)(v2ua + *ea); // expected-error{{cannot convert between vector and non-scalar values}}
+                  ^
+
+"Test_name.c", line 236: error: incomplete type "enum Enum2" is not allowed
+    (void)(*ea + v2ua); // expected-error{{cannot convert between vector and non-scalar values}}
+           ^
+
+104 errors detected in the compilation of "Test_name.c".

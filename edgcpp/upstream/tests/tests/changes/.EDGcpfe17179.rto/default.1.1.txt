@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 14: error: this declaration has no storage class or type specifier
+  constexpr struct S {
+  ^
+
+"Test_name.c", line 14: error: expected a ";"
+  constexpr struct S {
+            ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,13 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --no_exceptions Test_name.c
+"Test_name.c", line 9: warning: unknown attribute "noclone"
+    __attribute__ ((noinline, noclone)) S *fn2 (int);
+                              ^
+
+"Test_name.c", line 10: warning: unknown attribute "noclone"
+    __attribute__ ((noinline, noclone)) void fn3 ();
+                              ^
+
+"Test_name.c", line 11: warning: unknown attribute "noclone"
+    __attribute__ ((noinline, noclone)) static S *fn4 (int);
+                              ^
+

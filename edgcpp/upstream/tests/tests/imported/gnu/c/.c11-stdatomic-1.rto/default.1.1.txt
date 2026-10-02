@@ -1,0 +1,449 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 Test_name.c
+"./c11-stdatomic-1.c", line 60: warning: variable "sva" was declared but never referenced
+    _Atomic struct s sva = 
+                     ^
+
+"./c11-stdatomic-1.c", line 82: warning: variable "v" was declared but never referenced
+    do { atomic_bool v; char array1[sizeof (atomic_bool) == sizeof (_Atomic _Bool) ? 1 : -1]; char array2[_Alignof (atomic_bool) == _Alignof (_Atomic _Bool) ? 1 : -1]; } while (0);
+                     ^
+
+"./c11-stdatomic-1.c", line 82: warning: variable "array1" was declared but never referenced
+    do { atomic_bool v; char array1[sizeof (atomic_bool) == sizeof (_Atomic _Bool) ? 1 : -1]; char array2[_Alignof (atomic_bool) == _Alignof (_Atomic _Bool) ? 1 : -1]; } while (0);
+                             ^
+
+"./c11-stdatomic-1.c", line 82: warning: variable "array2" was declared but never referenced
+    do { atomic_bool v; char array1[sizeof (atomic_bool) == sizeof (_Atomic _Bool) ? 1 : -1]; char array2[_Alignof (atomic_bool) == _Alignof (_Atomic _Bool) ? 1 : -1]; } while (0);
+                                                                                                   ^
+
+"./c11-stdatomic-1.c", line 83: warning: variable "v" was declared but never referenced
+    do { atomic_char v; char array1[sizeof (atomic_char) == sizeof (_Atomic char) ? 1 : -1]; char array2[_Alignof (atomic_char) == _Alignof (_Atomic char) ? 1 : -1]; } while (0);
+                     ^
+
+"./c11-stdatomic-1.c", line 83: warning: variable "array1" was declared but never referenced
+    do { atomic_char v; char array1[sizeof (atomic_char) == sizeof (_Atomic char) ? 1 : -1]; char array2[_Alignof (atomic_char) == _Alignof (_Atomic char) ? 1 : -1]; } while (0);
+                             ^
+
+"./c11-stdatomic-1.c", line 83: warning: variable "array2" was declared but never referenced
+    do { atomic_char v; char array1[sizeof (atomic_char) == sizeof (_Atomic char) ? 1 : -1]; char array2[_Alignof (atomic_char) == _Alignof (_Atomic char) ? 1 : -1]; } while (0);
+                                                                                                  ^
+
+"./c11-stdatomic-1.c", line 84: warning: variable "v" was declared but never referenced
+    do { atomic_schar v; char array1[sizeof (atomic_schar) == sizeof (_Atomic signed char) ? 1 : -1]; char array2[_Alignof (atomic_schar) == _Alignof (_Atomic signed char) ? 1 : -1]; } while (0);
+                      ^
+
+"./c11-stdatomic-1.c", line 84: warning: variable "array1" was declared but never referenced
+    do { atomic_schar v; char array1[sizeof (atomic_schar) == sizeof (_Atomic signed char) ? 1 : -1]; char array2[_Alignof (atomic_schar) == _Alignof (_Atomic signed char) ? 1 : -1]; } while (0);
+                              ^
+
+"./c11-stdatomic-1.c", line 84: warning: variable "array2" was declared but never referenced
+    do { atomic_schar v; char array1[sizeof (atomic_schar) == sizeof (_Atomic signed char) ? 1 : -1]; char array2[_Alignof (atomic_schar) == _Alignof (_Atomic signed char) ? 1 : -1]; } while (0);
+                                                                                                           ^
+
+"./c11-stdatomic-1.c", line 85: warning: variable "v" was declared but never referenced
+    do { atomic_uchar v; char array1[sizeof (atomic_uchar) == sizeof (_Atomic unsigned char) ? 1 : -1]; char array2[_Alignof (atomic_uchar) == _Alignof (_Atomic unsigned char) ? 1 : -1]; } while (0);
+                      ^
+
+"./c11-stdatomic-1.c", line 85: warning: variable "array1" was declared but never referenced
+    do { atomic_uchar v; char array1[sizeof (atomic_uchar) == sizeof (_Atomic unsigned char) ? 1 : -1]; char array2[_Alignof (atomic_uchar) == _Alignof (_Atomic unsigned char) ? 1 : -1]; } while (0);
+                              ^
+
+"./c11-stdatomic-1.c", line 85: warning: variable "array2" was declared but never referenced
+    do { atomic_uchar v; char array1[sizeof (atomic_uchar) == sizeof (_Atomic unsigned char) ? 1 : -1]; char array2[_Alignof (atomic_uchar) == _Alignof (_Atomic unsigned char) ? 1 : -1]; } while (0);
+                                                                                                             ^
+
+"./c11-stdatomic-1.c", line 86: warning: variable "v" was declared but never referenced
+    do { atomic_short v; char array1[sizeof (atomic_short) == sizeof (_Atomic short) ? 1 : -1]; char array2[_Alignof (atomic_short) == _Alignof (_Atomic short) ? 1 : -1]; } while (0);
+                      ^
+
+"./c11-stdatomic-1.c", line 86: warning: variable "array1" was declared but never referenced
+    do { atomic_short v; char array1[sizeof (atomic_short) == sizeof (_Atomic short) ? 1 : -1]; char array2[_Alignof (atomic_short) == _Alignof (_Atomic short) ? 1 : -1]; } while (0);
+                              ^
+
+"./c11-stdatomic-1.c", line 86: warning: variable "array2" was declared but never referenced
+    do { atomic_short v; char array1[sizeof (atomic_short) == sizeof (_Atomic short) ? 1 : -1]; char array2[_Alignof (atomic_short) == _Alignof (_Atomic short) ? 1 : -1]; } while (0);
+                                                                                                     ^
+
+"./c11-stdatomic-1.c", line 87: warning: variable "v" was declared but never referenced
+    do { atomic_ushort v; char array1[sizeof (atomic_ushort) == sizeof (_Atomic unsigned short) ? 1 : -1]; char array2[_Alignof (atomic_ushort) == _Alignof (_Atomic unsigned short) ? 1 : -1]; } while (0);
+                       ^
+
+"./c11-stdatomic-1.c", line 87: warning: variable "array1" was declared but never referenced
+    do { atomic_ushort v; char array1[sizeof (atomic_ushort) == sizeof (_Atomic unsigned short) ? 1 : -1]; char array2[_Alignof (atomic_ushort) == _Alignof (_Atomic unsigned short) ? 1 : -1]; } while (0);
+                               ^
+
+"./c11-stdatomic-1.c", line 87: warning: variable "array2" was declared but never referenced
+    do { atomic_ushort v; char array1[sizeof (atomic_ushort) == sizeof (_Atomic unsigned short) ? 1 : -1]; char array2[_Alignof (atomic_ushort) == _Alignof (_Atomic unsigned short) ? 1 : -1]; } while (0);
+                                                                                                                ^
+
+"./c11-stdatomic-1.c", line 88: warning: variable "v" was declared but never referenced
+    do { atomic_int v; char array1[sizeof (atomic_int) == sizeof (_Atomic int) ? 1 : -1]; char array2[_Alignof (atomic_int) == _Alignof (_Atomic int) ? 1 : -1]; } while (0);
+                    ^
+
+"./c11-stdatomic-1.c", line 88: warning: variable "array1" was declared but never referenced
+    do { atomic_int v; char array1[sizeof (atomic_int) == sizeof (_Atomic int) ? 1 : -1]; char array2[_Alignof (atomic_int) == _Alignof (_Atomic int) ? 1 : -1]; } while (0);
+                            ^
+
+"./c11-stdatomic-1.c", line 88: warning: variable "array2" was declared but never referenced
+    do { atomic_int v; char array1[sizeof (atomic_int) == sizeof (_Atomic int) ? 1 : -1]; char array2[_Alignof (atomic_int) == _Alignof (_Atomic int) ? 1 : -1]; } while (0);
+                                                                                               ^
+
+"./c11-stdatomic-1.c", line 89: warning: variable "v" was declared but never referenced
+    do { atomic_uint v; char array1[sizeof (atomic_uint) == sizeof (_Atomic unsigned int) ? 1 : -1]; char array2[_Alignof (atomic_uint) == _Alignof (_Atomic unsigned int) ? 1 : -1]; } while (0);
+                     ^
+
+"./c11-stdatomic-1.c", line 89: warning: variable "array1" was declared but never referenced
+    do { atomic_uint v; char array1[sizeof (atomic_uint) == sizeof (_Atomic unsigned int) ? 1 : -1]; char array2[_Alignof (atomic_uint) == _Alignof (_Atomic unsigned int) ? 1 : -1]; } while (0);
+                             ^
+
+"./c11-stdatomic-1.c", line 89: warning: variable "array2" was declared but never referenced
+    do { atomic_uint v; char array1[sizeof (atomic_uint) == sizeof (_Atomic unsigned int) ? 1 : -1]; char array2[_Alignof (atomic_uint) == _Alignof (_Atomic unsigned int) ? 1 : -1]; } while (0);
+                                                                                                          ^
+
+"./c11-stdatomic-1.c", line 90: warning: variable "v" was declared but never referenced
+    do { atomic_long v; char array1[sizeof (atomic_long) == sizeof (_Atomic long) ? 1 : -1]; char array2[_Alignof (atomic_long) == _Alignof (_Atomic long) ? 1 : -1]; } while (0);
+                     ^
+
+"./c11-stdatomic-1.c", line 90: warning: variable "array1" was declared but never referenced
+    do { atomic_long v; char array1[sizeof (atomic_long) == sizeof (_Atomic long) ? 1 : -1]; char array2[_Alignof (atomic_long) == _Alignof (_Atomic long) ? 1 : -1]; } while (0);
+                             ^
+
+"./c11-stdatomic-1.c", line 90: warning: variable "array2" was declared but never referenced
+    do { atomic_long v; char array1[sizeof (atomic_long) == sizeof (_Atomic long) ? 1 : -1]; char array2[_Alignof (atomic_long) == _Alignof (_Atomic long) ? 1 : -1]; } while (0);
+                                                                                                  ^
+
+"./c11-stdatomic-1.c", line 91: warning: variable "v" was declared but never referenced
+    do { atomic_ulong v; char array1[sizeof (atomic_ulong) == sizeof (_Atomic unsigned long) ? 1 : -1]; char array2[_Alignof (atomic_ulong) == _Alignof (_Atomic unsigned long) ? 1 : -1]; } while (0);
+                      ^
+
+"./c11-stdatomic-1.c", line 91: warning: variable "array1" was declared but never referenced
+    do { atomic_ulong v; char array1[sizeof (atomic_ulong) == sizeof (_Atomic unsigned long) ? 1 : -1]; char array2[_Alignof (atomic_ulong) == _Alignof (_Atomic unsigned long) ? 1 : -1]; } while (0);
+                              ^
+
+"./c11-stdatomic-1.c", line 91: warning: variable "array2" was declared but never referenced
+    do { atomic_ulong v; char array1[sizeof (atomic_ulong) == sizeof (_Atomic unsigned long) ? 1 : -1]; char array2[_Alignof (atomic_ulong) == _Alignof (_Atomic unsigned long) ? 1 : -1]; } while (0);
+                                                                                                             ^
+
+"./c11-stdatomic-1.c", line 92: warning: variable "v" was declared but never referenced
+    do { atomic_llong v; char array1[sizeof (atomic_llong) == sizeof (_Atomic long long) ? 1 : -1]; char array2[_Alignof (atomic_llong) == _Alignof (_Atomic long long) ? 1 : -1]; } while (0);
+                      ^
+
+"./c11-stdatomic-1.c", line 92: warning: variable "array1" was declared but never referenced
+    do { atomic_llong v; char array1[sizeof (atomic_llong) == sizeof (_Atomic long long) ? 1 : -1]; char array2[_Alignof (atomic_llong) == _Alignof (_Atomic long long) ? 1 : -1]; } while (0);
+                              ^
+
+"./c11-stdatomic-1.c", line 92: warning: variable "array2" was declared but never referenced
+    do { atomic_llong v; char array1[sizeof (atomic_llong) == sizeof (_Atomic long long) ? 1 : -1]; char array2[_Alignof (atomic_llong) == _Alignof (_Atomic long long) ? 1 : -1]; } while (0);
+                                                                                                         ^
+
+"./c11-stdatomic-1.c", line 93: warning: variable "v" was declared but never referenced
+    do { atomic_ullong v; char array1[sizeof (atomic_ullong) == sizeof (_Atomic unsigned long long) ? 1 : -1]; char array2[_Alignof (atomic_ullong) == _Alignof (_Atomic unsigned long long) ? 1 : -1]; } while (0);
+                       ^
+
+"./c11-stdatomic-1.c", line 93: warning: variable "array1" was declared but never referenced
+    do { atomic_ullong v; char array1[sizeof (atomic_ullong) == sizeof (_Atomic unsigned long long) ? 1 : -1]; char array2[_Alignof (atomic_ullong) == _Alignof (_Atomic unsigned long long) ? 1 : -1]; } while (0);
+                               ^
+
+"./c11-stdatomic-1.c", line 93: warning: variable "array2" was declared but never referenced
+    do { atomic_ullong v; char array1[sizeof (atomic_ullong) == sizeof (_Atomic unsigned long long) ? 1 : -1]; char array2[_Alignof (atomic_ullong) == _Alignof (_Atomic unsigned long long) ? 1 : -1]; } while (0);
+                                                                                                                    ^
+
+"./c11-stdatomic-1.c", line 94: warning: variable "v" was declared but never referenced
+    do { atomic_char16_t v; char array1[sizeof (atomic_char16_t) == sizeof (_Atomic short unsigned int) ? 1 : -1]; char array2[_Alignof (atomic_char16_t) == _Alignof (_Atomic short unsigned int) ? 1 : -1]; } while (0);
+                         ^
+
+"./c11-stdatomic-1.c", line 94: warning: variable "array1" was declared but never referenced
+    do { atomic_char16_t v; char array1[sizeof (atomic_char16_t) == sizeof (_Atomic short unsigned int) ? 1 : -1]; char array2[_Alignof (atomic_char16_t) == _Alignof (_Atomic short unsigned int) ? 1 : -1]; } while (0);
+                                 ^
+
+"./c11-stdatomic-1.c", line 94: warning: variable "array2" was declared but never referenced
+    do { atomic_char16_t v; char array1[sizeof (atomic_char16_t) == sizeof (_Atomic short unsigned int) ? 1 : -1]; char array2[_Alignof (atomic_char16_t) == _Alignof (_Atomic short unsigned int) ? 1 : -1]; } while (0);
+                                                                                                                        ^
+
+"./c11-stdatomic-1.c", line 95: warning: variable "v" was declared but never referenced
+    do { atomic_char32_t v; char array1[sizeof (atomic_char32_t) == sizeof (_Atomic unsigned int) ? 1 : -1]; char array2[_Alignof (atomic_char32_t) == _Alignof (_Atomic unsigned int) ? 1 : -1]; } while (0);
+                         ^
+
+"./c11-stdatomic-1.c", line 95: warning: variable "array1" was declared but never referenced
+    do { atomic_char32_t v; char array1[sizeof (atomic_char32_t) == sizeof (_Atomic unsigned int) ? 1 : -1]; char array2[_Alignof (atomic_char32_t) == _Alignof (_Atomic unsigned int) ? 1 : -1]; } while (0);
+                                 ^
+
+"./c11-stdatomic-1.c", line 95: warning: variable "array2" was declared but never referenced
+    do { atomic_char32_t v; char array1[sizeof (atomic_char32_t) == sizeof (_Atomic unsigned int) ? 1 : -1]; char array2[_Alignof (atomic_char32_t) == _Alignof (_Atomic unsigned int) ? 1 : -1]; } while (0);
+                                                                                                                  ^
+
+"./c11-stdatomic-1.c", line 96: warning: variable "v" was declared but never referenced
+    do { atomic_wchar_t v; char array1[sizeof (atomic_wchar_t) == sizeof (_Atomic wchar_t) ? 1 : -1]; char array2[_Alignof (atomic_wchar_t) == _Alignof (_Atomic wchar_t) ? 1 : -1]; } while (0);
+                        ^
+
+"./c11-stdatomic-1.c", line 96: warning: variable "array1" was declared but never referenced
+    do { atomic_wchar_t v; char array1[sizeof (atomic_wchar_t) == sizeof (_Atomic wchar_t) ? 1 : -1]; char array2[_Alignof (atomic_wchar_t) == _Alignof (_Atomic wchar_t) ? 1 : -1]; } while (0);
+                                ^
+
+"./c11-stdatomic-1.c", line 96: warning: variable "array2" was declared but never referenced
+    do { atomic_wchar_t v; char array1[sizeof (atomic_wchar_t) == sizeof (_Atomic wchar_t) ? 1 : -1]; char array2[_Alignof (atomic_wchar_t) == _Alignof (_Atomic wchar_t) ? 1 : -1]; } while (0);
+                                                                                                           ^
+
+"./c11-stdatomic-1.c", line 97: warning: variable "v" was declared but never referenced
+    do { atomic_int_least8_t v; char array1[sizeof (atomic_int_least8_t) == sizeof (_Atomic int_least8_t) ? 1 : -1]; char array2[_Alignof (atomic_int_least8_t) == _Alignof (_Atomic int_least8_t) ? 1 : -1]; } while (0);
+                             ^
+
+"./c11-stdatomic-1.c", line 97: warning: variable "array1" was declared but never referenced
+    do { atomic_int_least8_t v; char array1[sizeof (atomic_int_least8_t) == sizeof (_Atomic int_least8_t) ? 1 : -1]; char array2[_Alignof (atomic_int_least8_t) == _Alignof (_Atomic int_least8_t) ? 1 : -1]; } while (0);
+                                     ^
+
+"./c11-stdatomic-1.c", line 97: warning: variable "array2" was declared but never referenced
+    do { atomic_int_least8_t v; char array1[sizeof (atomic_int_least8_t) == sizeof (_Atomic int_least8_t) ? 1 : -1]; char array2[_Alignof (atomic_int_least8_t) == _Alignof (_Atomic int_least8_t) ? 1 : -1]; } while (0);
+                                                                                                                          ^
+
+"./c11-stdatomic-1.c", line 98: warning: variable "v" was declared but never referenced
+    do { atomic_uint_least8_t v; char array1[sizeof (atomic_uint_least8_t) == sizeof (_Atomic uint_least8_t) ? 1 : -1]; char array2[_Alignof (atomic_uint_least8_t) == _Alignof (_Atomic uint_least8_t) ? 1 : -1]; } while (0);
+                              ^
+
+"./c11-stdatomic-1.c", line 98: warning: variable "array1" was declared but never referenced
+    do { atomic_uint_least8_t v; char array1[sizeof (atomic_uint_least8_t) == sizeof (_Atomic uint_least8_t) ? 1 : -1]; char array2[_Alignof (atomic_uint_least8_t) == _Alignof (_Atomic uint_least8_t) ? 1 : -1]; } while (0);
+                                      ^
+
+"./c11-stdatomic-1.c", line 98: warning: variable "array2" was declared but never referenced
+    do { atomic_uint_least8_t v; char array1[sizeof (atomic_uint_least8_t) == sizeof (_Atomic uint_least8_t) ? 1 : -1]; char array2[_Alignof (atomic_uint_least8_t) == _Alignof (_Atomic uint_least8_t) ? 1 : -1]; } while (0);
+                                                                                                                             ^
+
+"./c11-stdatomic-1.c", line 99: warning: variable "v" was declared but never referenced
+    do { atomic_int_least16_t v; char array1[sizeof (atomic_int_least16_t) == sizeof (_Atomic int_least16_t) ? 1 : -1]; char array2[_Alignof (atomic_int_least16_t) == _Alignof (_Atomic int_least16_t) ? 1 : -1]; } while (0);
+                              ^
+
+"./c11-stdatomic-1.c", line 99: warning: variable "array1" was declared but never referenced
+    do { atomic_int_least16_t v; char array1[sizeof (atomic_int_least16_t) == sizeof (_Atomic int_least16_t) ? 1 : -1]; char array2[_Alignof (atomic_int_least16_t) == _Alignof (_Atomic int_least16_t) ? 1 : -1]; } while (0);
+                                      ^
+
+"./c11-stdatomic-1.c", line 99: warning: variable "array2" was declared but never referenced
+    do { atomic_int_least16_t v; char array1[sizeof (atomic_int_least16_t) == sizeof (_Atomic int_least16_t) ? 1 : -1]; char array2[_Alignof (atomic_int_least16_t) == _Alignof (_Atomic int_least16_t) ? 1 : -1]; } while (0);
+                                                                                                                             ^
+
+"./c11-stdatomic-1.c", line 100: warning: variable "v" was declared but never referenced
+    do { atomic_uint_least16_t v; char array1[sizeof (atomic_uint_least16_t) == sizeof (_Atomic uint_least16_t) ? 1 : -1]; char array2[_Alignof (atomic_uint_least16_t) == _Alignof (_Atomic uint_least16_t) ? 1 : -1]; } while (0);
+                               ^
+
+"./c11-stdatomic-1.c", line 100: warning: variable "array1" was declared but never referenced
+    do { atomic_uint_least16_t v; char array1[sizeof (atomic_uint_least16_t) == sizeof (_Atomic uint_least16_t) ? 1 : -1]; char array2[_Alignof (atomic_uint_least16_t) == _Alignof (_Atomic uint_least16_t) ? 1 : -1]; } while (0);
+                                       ^
+
+"./c11-stdatomic-1.c", line 100: warning: variable "array2" was declared but never referenced
+    do { atomic_uint_least16_t v; char array1[sizeof (atomic_uint_least16_t) == sizeof (_Atomic uint_least16_t) ? 1 : -1]; char array2[_Alignof (atomic_uint_least16_t) == _Alignof (_Atomic uint_least16_t) ? 1 : -1]; } while (0);
+                                                                                                                                ^
+
+"./c11-stdatomic-1.c", line 101: warning: variable "v" was declared but never referenced
+    do { atomic_int_least32_t v; char array1[sizeof (atomic_int_least32_t) == sizeof (_Atomic int_least32_t) ? 1 : -1]; char array2[_Alignof (atomic_int_least32_t) == _Alignof (_Atomic int_least32_t) ? 1 : -1]; } while (0);
+                              ^
+
+"./c11-stdatomic-1.c", line 101: warning: variable "array1" was declared but never referenced
+    do { atomic_int_least32_t v; char array1[sizeof (atomic_int_least32_t) == sizeof (_Atomic int_least32_t) ? 1 : -1]; char array2[_Alignof (atomic_int_least32_t) == _Alignof (_Atomic int_least32_t) ? 1 : -1]; } while (0);
+                                      ^
+
+"./c11-stdatomic-1.c", line 101: warning: variable "array2" was declared but never referenced
+    do { atomic_int_least32_t v; char array1[sizeof (atomic_int_least32_t) == sizeof (_Atomic int_least32_t) ? 1 : -1]; char array2[_Alignof (atomic_int_least32_t) == _Alignof (_Atomic int_least32_t) ? 1 : -1]; } while (0);
+                                                                                                                             ^
+
+"./c11-stdatomic-1.c", line 102: warning: variable "v" was declared but never referenced
+    do { atomic_uint_least32_t v; char array1[sizeof (atomic_uint_least32_t) == sizeof (_Atomic uint_least32_t) ? 1 : -1]; char array2[_Alignof (atomic_uint_least32_t) == _Alignof (_Atomic uint_least32_t) ? 1 : -1]; } while (0);
+                               ^
+
+"./c11-stdatomic-1.c", line 102: warning: variable "array1" was declared but never referenced
+    do { atomic_uint_least32_t v; char array1[sizeof (atomic_uint_least32_t) == sizeof (_Atomic uint_least32_t) ? 1 : -1]; char array2[_Alignof (atomic_uint_least32_t) == _Alignof (_Atomic uint_least32_t) ? 1 : -1]; } while (0);
+                                       ^
+
+"./c11-stdatomic-1.c", line 102: warning: variable "array2" was declared but never referenced
+    do { atomic_uint_least32_t v; char array1[sizeof (atomic_uint_least32_t) == sizeof (_Atomic uint_least32_t) ? 1 : -1]; char array2[_Alignof (atomic_uint_least32_t) == _Alignof (_Atomic uint_least32_t) ? 1 : -1]; } while (0);
+                                                                                                                                ^
+
+"./c11-stdatomic-1.c", line 103: warning: variable "v" was declared but never referenced
+    do { atomic_int_least64_t v; char array1[sizeof (atomic_int_least64_t) == sizeof (_Atomic int_least64_t) ? 1 : -1]; char array2[_Alignof (atomic_int_least64_t) == _Alignof (_Atomic int_least64_t) ? 1 : -1]; } while (0);
+                              ^
+
+"./c11-stdatomic-1.c", line 103: warning: variable "array1" was declared but never referenced
+    do { atomic_int_least64_t v; char array1[sizeof (atomic_int_least64_t) == sizeof (_Atomic int_least64_t) ? 1 : -1]; char array2[_Alignof (atomic_int_least64_t) == _Alignof (_Atomic int_least64_t) ? 1 : -1]; } while (0);
+                                      ^
+
+"./c11-stdatomic-1.c", line 103: warning: variable "array2" was declared but never referenced
+    do { atomic_int_least64_t v; char array1[sizeof (atomic_int_least64_t) == sizeof (_Atomic int_least64_t) ? 1 : -1]; char array2[_Alignof (atomic_int_least64_t) == _Alignof (_Atomic int_least64_t) ? 1 : -1]; } while (0);
+                                                                                                                             ^
+
+"./c11-stdatomic-1.c", line 104: warning: variable "v" was declared but never referenced
+    do { atomic_uint_least64_t v; char array1[sizeof (atomic_uint_least64_t) == sizeof (_Atomic uint_least64_t) ? 1 : -1]; char array2[_Alignof (atomic_uint_least64_t) == _Alignof (_Atomic uint_least64_t) ? 1 : -1]; } while (0);
+                               ^
+
+"./c11-stdatomic-1.c", line 104: warning: variable "array1" was declared but never referenced
+    do { atomic_uint_least64_t v; char array1[sizeof (atomic_uint_least64_t) == sizeof (_Atomic uint_least64_t) ? 1 : -1]; char array2[_Alignof (atomic_uint_least64_t) == _Alignof (_Atomic uint_least64_t) ? 1 : -1]; } while (0);
+                                       ^
+
+"./c11-stdatomic-1.c", line 104: warning: variable "array2" was declared but never referenced
+    do { atomic_uint_least64_t v; char array1[sizeof (atomic_uint_least64_t) == sizeof (_Atomic uint_least64_t) ? 1 : -1]; char array2[_Alignof (atomic_uint_least64_t) == _Alignof (_Atomic uint_least64_t) ? 1 : -1]; } while (0);
+                                                                                                                                ^
+
+"./c11-stdatomic-1.c", line 105: warning: variable "v" was declared but never referenced
+    do { atomic_int_fast8_t v; char array1[sizeof (atomic_int_fast8_t) == sizeof (_Atomic int_fast8_t) ? 1 : -1]; char array2[_Alignof (atomic_int_fast8_t) == _Alignof (_Atomic int_fast8_t) ? 1 : -1]; } while (0);
+                            ^
+
+"./c11-stdatomic-1.c", line 105: warning: variable "array1" was declared but never referenced
+    do { atomic_int_fast8_t v; char array1[sizeof (atomic_int_fast8_t) == sizeof (_Atomic int_fast8_t) ? 1 : -1]; char array2[_Alignof (atomic_int_fast8_t) == _Alignof (_Atomic int_fast8_t) ? 1 : -1]; } while (0);
+                                    ^
+
+"./c11-stdatomic-1.c", line 105: warning: variable "array2" was declared but never referenced
+    do { atomic_int_fast8_t v; char array1[sizeof (atomic_int_fast8_t) == sizeof (_Atomic int_fast8_t) ? 1 : -1]; char array2[_Alignof (atomic_int_fast8_t) == _Alignof (_Atomic int_fast8_t) ? 1 : -1]; } while (0);
+                                                                                                                       ^
+
+"./c11-stdatomic-1.c", line 106: warning: variable "v" was declared but never referenced
+    do { atomic_uint_fast8_t v; char array1[sizeof (atomic_uint_fast8_t) == sizeof (_Atomic uint_fast8_t) ? 1 : -1]; char array2[_Alignof (atomic_uint_fast8_t) == _Alignof (_Atomic uint_fast8_t) ? 1 : -1]; } while (0);
+                             ^
+
+"./c11-stdatomic-1.c", line 106: warning: variable "array1" was declared but never referenced
+    do { atomic_uint_fast8_t v; char array1[sizeof (atomic_uint_fast8_t) == sizeof (_Atomic uint_fast8_t) ? 1 : -1]; char array2[_Alignof (atomic_uint_fast8_t) == _Alignof (_Atomic uint_fast8_t) ? 1 : -1]; } while (0);
+                                     ^
+
+"./c11-stdatomic-1.c", line 106: warning: variable "array2" was declared but never referenced
+    do { atomic_uint_fast8_t v; char array1[sizeof (atomic_uint_fast8_t) == sizeof (_Atomic uint_fast8_t) ? 1 : -1]; char array2[_Alignof (atomic_uint_fast8_t) == _Alignof (_Atomic uint_fast8_t) ? 1 : -1]; } while (0);
+                                                                                                                          ^
+
+"./c11-stdatomic-1.c", line 107: warning: variable "v" was declared but never referenced
+    do { atomic_int_fast16_t v; char array1[sizeof (atomic_int_fast16_t) == sizeof (_Atomic int_fast16_t) ? 1 : -1]; char array2[_Alignof (atomic_int_fast16_t) == _Alignof (_Atomic int_fast16_t) ? 1 : -1]; } while (0);
+                             ^
+
+"./c11-stdatomic-1.c", line 107: warning: variable "array1" was declared but never referenced
+    do { atomic_int_fast16_t v; char array1[sizeof (atomic_int_fast16_t) == sizeof (_Atomic int_fast16_t) ? 1 : -1]; char array2[_Alignof (atomic_int_fast16_t) == _Alignof (_Atomic int_fast16_t) ? 1 : -1]; } while (0);
+                                     ^
+
+"./c11-stdatomic-1.c", line 107: warning: variable "array2" was declared but never referenced
+    do { atomic_int_fast16_t v; char array1[sizeof (atomic_int_fast16_t) == sizeof (_Atomic int_fast16_t) ? 1 : -1]; char array2[_Alignof (atomic_int_fast16_t) == _Alignof (_Atomic int_fast16_t) ? 1 : -1]; } while (0);
+                                                                                                                          ^
+
+"./c11-stdatomic-1.c", line 108: warning: variable "v" was declared but never referenced
+    do { atomic_uint_fast16_t v; char array1[sizeof (atomic_uint_fast16_t) == sizeof (_Atomic uint_fast16_t) ? 1 : -1]; char array2[_Alignof (atomic_uint_fast16_t) == _Alignof (_Atomic uint_fast16_t) ? 1 : -1]; } while (0);
+                              ^
+
+"./c11-stdatomic-1.c", line 108: warning: variable "array1" was declared but never referenced
+    do { atomic_uint_fast16_t v; char array1[sizeof (atomic_uint_fast16_t) == sizeof (_Atomic uint_fast16_t) ? 1 : -1]; char array2[_Alignof (atomic_uint_fast16_t) == _Alignof (_Atomic uint_fast16_t) ? 1 : -1]; } while (0);
+                                      ^
+
+"./c11-stdatomic-1.c", line 108: warning: variable "array2" was declared but never referenced
+    do { atomic_uint_fast16_t v; char array1[sizeof (atomic_uint_fast16_t) == sizeof (_Atomic uint_fast16_t) ? 1 : -1]; char array2[_Alignof (atomic_uint_fast16_t) == _Alignof (_Atomic uint_fast16_t) ? 1 : -1]; } while (0);
+                                                                                                                             ^
+
+"./c11-stdatomic-1.c", line 109: warning: variable "v" was declared but never referenced
+    do { atomic_int_fast32_t v; char array1[sizeof (atomic_int_fast32_t) == sizeof (_Atomic int_fast32_t) ? 1 : -1]; char array2[_Alignof (atomic_int_fast32_t) == _Alignof (_Atomic int_fast32_t) ? 1 : -1]; } while (0);
+                             ^
+
+"./c11-stdatomic-1.c", line 109: warning: variable "array1" was declared but never referenced
+    do { atomic_int_fast32_t v; char array1[sizeof (atomic_int_fast32_t) == sizeof (_Atomic int_fast32_t) ? 1 : -1]; char array2[_Alignof (atomic_int_fast32_t) == _Alignof (_Atomic int_fast32_t) ? 1 : -1]; } while (0);
+                                     ^
+
+"./c11-stdatomic-1.c", line 109: warning: variable "array2" was declared but never referenced
+    do { atomic_int_fast32_t v; char array1[sizeof (atomic_int_fast32_t) == sizeof (_Atomic int_fast32_t) ? 1 : -1]; char array2[_Alignof (atomic_int_fast32_t) == _Alignof (_Atomic int_fast32_t) ? 1 : -1]; } while (0);
+                                                                                                                          ^
+
+"./c11-stdatomic-1.c", line 110: warning: variable "v" was declared but never referenced
+    do { atomic_uint_fast32_t v; char array1[sizeof (atomic_uint_fast32_t) == sizeof (_Atomic uint_fast32_t) ? 1 : -1]; char array2[_Alignof (atomic_uint_fast32_t) == _Alignof (_Atomic uint_fast32_t) ? 1 : -1]; } while (0);
+                              ^
+
+"./c11-stdatomic-1.c", line 110: warning: variable "array1" was declared but never referenced
+    do { atomic_uint_fast32_t v; char array1[sizeof (atomic_uint_fast32_t) == sizeof (_Atomic uint_fast32_t) ? 1 : -1]; char array2[_Alignof (atomic_uint_fast32_t) == _Alignof (_Atomic uint_fast32_t) ? 1 : -1]; } while (0);
+                                      ^
+
+"./c11-stdatomic-1.c", line 110: warning: variable "array2" was declared but never referenced
+    do { atomic_uint_fast32_t v; char array1[sizeof (atomic_uint_fast32_t) == sizeof (_Atomic uint_fast32_t) ? 1 : -1]; char array2[_Alignof (atomic_uint_fast32_t) == _Alignof (_Atomic uint_fast32_t) ? 1 : -1]; } while (0);
+                                                                                                                             ^
+
+"./c11-stdatomic-1.c", line 111: warning: variable "v" was declared but never referenced
+    do { atomic_int_fast64_t v; char array1[sizeof (atomic_int_fast64_t) == sizeof (_Atomic int_fast64_t) ? 1 : -1]; char array2[_Alignof (atomic_int_fast64_t) == _Alignof (_Atomic int_fast64_t) ? 1 : -1]; } while (0);
+                             ^
+
+"./c11-stdatomic-1.c", line 111: warning: variable "array1" was declared but never referenced
+    do { atomic_int_fast64_t v; char array1[sizeof (atomic_int_fast64_t) == sizeof (_Atomic int_fast64_t) ? 1 : -1]; char array2[_Alignof (atomic_int_fast64_t) == _Alignof (_Atomic int_fast64_t) ? 1 : -1]; } while (0);
+                                     ^
+
+"./c11-stdatomic-1.c", line 111: warning: variable "array2" was declared but never referenced
+    do { atomic_int_fast64_t v; char array1[sizeof (atomic_int_fast64_t) == sizeof (_Atomic int_fast64_t) ? 1 : -1]; char array2[_Alignof (atomic_int_fast64_t) == _Alignof (_Atomic int_fast64_t) ? 1 : -1]; } while (0);
+                                                                                                                          ^
+
+"./c11-stdatomic-1.c", line 112: warning: variable "v" was declared but never referenced
+    do { atomic_uint_fast64_t v; char array1[sizeof (atomic_uint_fast64_t) == sizeof (_Atomic uint_fast64_t) ? 1 : -1]; char array2[_Alignof (atomic_uint_fast64_t) == _Alignof (_Atomic uint_fast64_t) ? 1 : -1]; } while (0);
+                              ^
+
+"./c11-stdatomic-1.c", line 112: warning: variable "array1" was declared but never referenced
+    do { atomic_uint_fast64_t v; char array1[sizeof (atomic_uint_fast64_t) == sizeof (_Atomic uint_fast64_t) ? 1 : -1]; char array2[_Alignof (atomic_uint_fast64_t) == _Alignof (_Atomic uint_fast64_t) ? 1 : -1]; } while (0);
+                                      ^
+
+"./c11-stdatomic-1.c", line 112: warning: variable "array2" was declared but never referenced
+    do { atomic_uint_fast64_t v; char array1[sizeof (atomic_uint_fast64_t) == sizeof (_Atomic uint_fast64_t) ? 1 : -1]; char array2[_Alignof (atomic_uint_fast64_t) == _Alignof (_Atomic uint_fast64_t) ? 1 : -1]; } while (0);
+                                                                                                                             ^
+
+"./c11-stdatomic-1.c", line 113: warning: variable "v" was declared but never referenced
+    do { atomic_intptr_t v; char array1[sizeof (atomic_intptr_t) == sizeof (_Atomic intptr_t) ? 1 : -1]; char array2[_Alignof (atomic_intptr_t) == _Alignof (_Atomic intptr_t) ? 1 : -1]; } while (0);
+                         ^
+
+"./c11-stdatomic-1.c", line 113: warning: variable "array1" was declared but never referenced
+    do { atomic_intptr_t v; char array1[sizeof (atomic_intptr_t) == sizeof (_Atomic intptr_t) ? 1 : -1]; char array2[_Alignof (atomic_intptr_t) == _Alignof (_Atomic intptr_t) ? 1 : -1]; } while (0);
+                                 ^
+
+"./c11-stdatomic-1.c", line 113: warning: variable "array2" was declared but never referenced
+    do { atomic_intptr_t v; char array1[sizeof (atomic_intptr_t) == sizeof (_Atomic intptr_t) ? 1 : -1]; char array2[_Alignof (atomic_intptr_t) == _Alignof (_Atomic intptr_t) ? 1 : -1]; } while (0);
+                                                                                                              ^
+
+"./c11-stdatomic-1.c", line 114: warning: variable "v" was declared but never referenced
+    do { atomic_uintptr_t v; char array1[sizeof (atomic_uintptr_t) == sizeof (_Atomic uintptr_t) ? 1 : -1]; char array2[_Alignof (atomic_uintptr_t) == _Alignof (_Atomic uintptr_t) ? 1 : -1]; } while (0);
+                          ^
+
+"./c11-stdatomic-1.c", line 114: warning: variable "array1" was declared but never referenced
+    do { atomic_uintptr_t v; char array1[sizeof (atomic_uintptr_t) == sizeof (_Atomic uintptr_t) ? 1 : -1]; char array2[_Alignof (atomic_uintptr_t) == _Alignof (_Atomic uintptr_t) ? 1 : -1]; } while (0);
+                                  ^
+
+"./c11-stdatomic-1.c", line 114: warning: variable "array2" was declared but never referenced
+    do { atomic_uintptr_t v; char array1[sizeof (atomic_uintptr_t) == sizeof (_Atomic uintptr_t) ? 1 : -1]; char array2[_Alignof (atomic_uintptr_t) == _Alignof (_Atomic uintptr_t) ? 1 : -1]; } while (0);
+                                                                                                                 ^
+
+"./c11-stdatomic-1.c", line 115: warning: variable "v" was declared but never referenced
+    do { atomic_size_t v; char array1[sizeof (atomic_size_t) == sizeof (_Atomic size_t) ? 1 : -1]; char array2[_Alignof (atomic_size_t) == _Alignof (_Atomic size_t) ? 1 : -1]; } while (0);
+                       ^
+
+"./c11-stdatomic-1.c", line 115: warning: variable "array1" was declared but never referenced
+    do { atomic_size_t v; char array1[sizeof (atomic_size_t) == sizeof (_Atomic size_t) ? 1 : -1]; char array2[_Alignof (atomic_size_t) == _Alignof (_Atomic size_t) ? 1 : -1]; } while (0);
+                               ^
+
+"./c11-stdatomic-1.c", line 115: warning: variable "array2" was declared but never referenced
+    do { atomic_size_t v; char array1[sizeof (atomic_size_t) == sizeof (_Atomic size_t) ? 1 : -1]; char array2[_Alignof (atomic_size_t) == _Alignof (_Atomic size_t) ? 1 : -1]; } while (0);
+                                                                                                        ^
+
+"./c11-stdatomic-1.c", line 116: warning: variable "v" was declared but never referenced
+    do { atomic_ptrdiff_t v; char array1[sizeof (atomic_ptrdiff_t) == sizeof (_Atomic ptrdiff_t) ? 1 : -1]; char array2[_Alignof (atomic_ptrdiff_t) == _Alignof (_Atomic ptrdiff_t) ? 1 : -1]; } while (0);
+                          ^
+
+"./c11-stdatomic-1.c", line 116: warning: variable "array1" was declared but never referenced
+    do { atomic_ptrdiff_t v; char array1[sizeof (atomic_ptrdiff_t) == sizeof (_Atomic ptrdiff_t) ? 1 : -1]; char array2[_Alignof (atomic_ptrdiff_t) == _Alignof (_Atomic ptrdiff_t) ? 1 : -1]; } while (0);
+                                  ^
+
+"./c11-stdatomic-1.c", line 116: warning: variable "array2" was declared but never referenced
+    do { atomic_ptrdiff_t v; char array1[sizeof (atomic_ptrdiff_t) == sizeof (_Atomic ptrdiff_t) ? 1 : -1]; char array2[_Alignof (atomic_ptrdiff_t) == _Alignof (_Atomic ptrdiff_t) ? 1 : -1]; } while (0);
+                                                                                                                 ^
+
+"./c11-stdatomic-1.c", line 117: warning: variable "v" was declared but never referenced
+    do { atomic_intmax_t v; char array1[sizeof (atomic_intmax_t) == sizeof (_Atomic intmax_t) ? 1 : -1]; char array2[_Alignof (atomic_intmax_t) == _Alignof (_Atomic intmax_t) ? 1 : -1]; } while (0);
+                         ^
+
+"./c11-stdatomic-1.c", line 117: warning: variable "array1" was declared but never referenced
+    do { atomic_intmax_t v; char array1[sizeof (atomic_intmax_t) == sizeof (_Atomic intmax_t) ? 1 : -1]; char array2[_Alignof (atomic_intmax_t) == _Alignof (_Atomic intmax_t) ? 1 : -1]; } while (0);
+                                 ^
+
+"./c11-stdatomic-1.c", line 117: warning: variable "array2" was declared but never referenced
+    do { atomic_intmax_t v; char array1[sizeof (atomic_intmax_t) == sizeof (_Atomic intmax_t) ? 1 : -1]; char array2[_Alignof (atomic_intmax_t) == _Alignof (_Atomic intmax_t) ? 1 : -1]; } while (0);
+                                                                                                              ^
+
+"./c11-stdatomic-1.c", line 118: warning: variable "v" was declared but never referenced
+    do { atomic_uintmax_t v; char array1[sizeof (atomic_uintmax_t) == sizeof (_Atomic uintmax_t) ? 1 : -1]; char array2[_Alignof (atomic_uintmax_t) == _Alignof (_Atomic uintmax_t) ? 1 : -1]; } while (0);
+                          ^
+
+"./c11-stdatomic-1.c", line 118: warning: variable "array1" was declared but never referenced
+    do { atomic_uintmax_t v; char array1[sizeof (atomic_uintmax_t) == sizeof (_Atomic uintmax_t) ? 1 : -1]; char array2[_Alignof (atomic_uintmax_t) == _Alignof (_Atomic uintmax_t) ? 1 : -1]; } while (0);
+                                  ^
+
+"./c11-stdatomic-1.c", line 118: warning: variable "array2" was declared but never referenced
+    do { atomic_uintmax_t v; char array1[sizeof (atomic_uintmax_t) == sizeof (_Atomic uintmax_t) ? 1 : -1]; char array2[_Alignof (atomic_uintmax_t) == _Alignof (_Atomic uintmax_t) ? 1 : -1]; } while (0);
+                                                                                                                 ^
+

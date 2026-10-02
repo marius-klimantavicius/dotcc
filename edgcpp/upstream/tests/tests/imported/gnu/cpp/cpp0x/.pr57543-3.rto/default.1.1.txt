@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: error: a class or namespace qualified name is required
+    template <class T> struct A { using X = typename T::X; };  // { dg-error "not a class" }
+                                                     ^
+          detected during:
+            instantiation of class "C<<unnamed>>::A<T> [with <unnamed>=int, T=int]" at line 18
+            instantiation of "void C<<unnamed>>::h() [with <unnamed>=int]" at line 22
+
+"Test_name.c", line 9: error: expected a ";"
+    template <class T> struct A { using X = typename T::X; };  // { dg-error "not a class" }
+                                                      ^
+          detected during:
+            instantiation of class "C<<unnamed>>::A<T> [with <unnamed>=int, T=int]" at line 18
+            instantiation of "void C<<unnamed>>::h() [with <unnamed>=int]" at line 22
+
+2 errors detected in the compilation of "Test_name.c".

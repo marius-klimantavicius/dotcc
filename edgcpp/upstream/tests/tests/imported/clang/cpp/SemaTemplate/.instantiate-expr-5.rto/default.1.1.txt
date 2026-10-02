@@ -1,0 +1,20 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 11: error: class "PR5880::HasM" has no member "a"
+      static const int a  = __builtin_offsetof(T, a.array[5].m); // expected-error{{no member named 'a' in 'HasM'}}
+                                                  ^
+          detected during instantiation of class "PR5880::A<T> [with T=PR5880::HasM]" at line 23
+
+"Test_name.c", line 35: warning: variable "array1" was declared but never referenced
+      int array1[__builtin_offsetof(AnonymousUnion<T>, f) == 0? 1 : -1];
+          ^
+
+"Test_name.c", line 36: warning: variable "array2" was declared but never referenced
+      int array2[__builtin_offsetof(AnonymousUnion<int>, f) == 0? 1 : -1];
+          ^
+
+"Test_name.c", line 46: error: a nonstatic member reference must be relative to a specific object
+        +T::n; // expected-error {{invalid use of member}}
+            ^
+          detected during instantiation of "void AddrOfClassMember::S<T>::f() [with T=AddrOfClassMember::S<int>]" at line 49
+
+2 errors detected in the compilation of "Test_name.c".

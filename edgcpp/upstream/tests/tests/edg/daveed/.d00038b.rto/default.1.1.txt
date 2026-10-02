@@ -1,0 +1,7 @@
+fe_only -DTEST_NUMBER=1 -x Test_name.c
+"Test_name.c", line 19: error: exception specification is incompatible with that of previous member "X<T>::pmd" (declared at line 16):
+            previously specified: no exceptions will be thrown
+  template<typename T> void (X<T>::*X<T>::pmd)() throw (bool);
+                                          ^
+
+1 error detected in the compilation of "Test_name.c".

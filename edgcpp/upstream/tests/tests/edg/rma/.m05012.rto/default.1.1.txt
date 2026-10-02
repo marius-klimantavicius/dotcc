@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 7: error: no suitable constructor exists to convert from "int" to "X"
+  	X x = X(0, 1, 2);
+  	        ^
+
+"Test_name.c", line 7: error: expected a ")"
+  	X x = X(0, 1, 2);
+  	         ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,90 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++23 Test_name.c
+"Test_name.c", line 17: error: invalid type conversion
+    foo(auto());   // expected-error {{initializer for functional-style cast to 'auto' is empty}}
+        ^
+
+"Test_name.c", line 18: error: invalid type conversion
+    foo(auto{});   // expected-error {{initializer for functional-style cast to 'auto' is empty}}
+            ^
+
+"Test_name.c", line 19: error: a brace-enclosed list is not allowed here
+    foo(auto({})); // expected-error {{cannot deduce actual type for 'auto' from parenthesized initializer list}}
+             ^
+
+"Test_name.c", line 20: error: invalid type conversion
+    foo(auto{{}}); // expected-error {{cannot deduce actual type for 'auto' from nested initializer list}}
+            ^
+
+"Test_name.c", line 26: error: a brace-enclosed list is not allowed here
+    foo(auto({a})); // expected-error {{cannot deduce actual type for 'auto' from parenthesized initializer list}}
+             ^
+
+"Test_name.c", line 27: error: invalid type conversion
+    foo(auto{{a}}); // expected-error {{cannot deduce actual type for 'auto' from nested initializer list}}
+            ^
+
+"Test_name.c", line 29: error: cannot determine which instance of overloaded function "A::g" is intended
+    foo(auto(&A::g)); // expected-error {{functional-style cast to 'auto' has incompatible initializer of type '<overloaded function type>'}}
+             ^
+
+"Test_name.c", line 31: error: expected a ")"
+    foo(auto(a, 3.14));     // expected-error {{initializer for functional-style cast to 'auto' contains multiple expressions}}
+              ^
+
+"Test_name.c", line 32: error: invalid type conversion
+    foo(auto{a, 3.14});     // expected-error {{initializer for functional-style cast to 'auto' contains multiple expressions}}
+            ^
+
+"Test_name.c", line 32: error: too many initializer values
+    foo(auto{a, 3.14});     // expected-error {{initializer for functional-style cast to 'auto' contains multiple expressions}}
+                ^
+
+"Test_name.c", line 33: error: a brace-enclosed list is not allowed here
+    foo(auto({a, 3.14}));   // expected-error {{cannot deduce actual type for 'auto' from parenthesized initializer list}}
+             ^
+
+"Test_name.c", line 34: error: invalid type conversion
+    foo(auto{{a, 3.14}});   // expected-error {{cannot deduce actual type for 'auto' from nested initializer list}}
+            ^
+
+"Test_name.c", line 34: error: too many initializer values
+    foo(auto{{a, 3.14}});   // expected-error {{cannot deduce actual type for 'auto' from nested initializer list}}
+                 ^
+
+"Test_name.c", line 35: error: a brace-enclosed list is not allowed here
+    foo(auto({a}, {3.14})); // expected-error {{initializer for functional-style cast to 'auto' contains multiple expressions}}
+             ^
+
+"Test_name.c", line 35: error: expected a ")"
+    foo(auto({a}, {3.14})); // expected-error {{initializer for functional-style cast to 'auto' contains multiple expressions}}
+                ^
+
+"Test_name.c", line 36: error: invalid type conversion
+    foo(auto{{a}, {3.14}}); // expected-error {{initializer for functional-style cast to 'auto' contains multiple expressions}}
+            ^
+
+"Test_name.c", line 36: error: too many initializer values
+    foo(auto{{a}, {3.14}}); // expected-error {{initializer for functional-style cast to 'auto' contains multiple expressions}}
+                  ^
+
+"Test_name.c", line 38: error: invalid type conversion
+    foo(auto{1, 2});   // expected-error {{initializer for functional-style cast to 'auto' contains multiple expressions}}
+            ^
+
+"Test_name.c", line 38: error: too many initializer values
+    foo(auto{1, 2});   // expected-error {{initializer for functional-style cast to 'auto' contains multiple expressions}}
+                ^
+
+"Test_name.c", line 39: error: a brace-enclosed list is not allowed here
+    foo(auto({1, 2})); // expected-error {{cannot deduce actual type for 'auto' from parenthesized initializer list}}
+             ^
+
+"Test_name.c", line 40: error: invalid type conversion
+    foo(auto{{1, 2}}); // expected-error {{cannot deduce actual type for 'auto' from nested initializer list}}
+            ^
+
+"Test_name.c", line 40: error: too many initializer values
+    foo(auto{{1, 2}}); // expected-error {{cannot deduce actual type for 'auto' from nested initializer list}}
+                 ^
+
+22 errors detected in the compilation of "Test_name.c".

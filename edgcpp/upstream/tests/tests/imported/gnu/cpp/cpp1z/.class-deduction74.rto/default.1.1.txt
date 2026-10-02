@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 13: error: redeclaration of deduction guide "()->S<int>" (previous declaration at line 12)
+  S() -> S<int>; // { dg-error "redefinition" }
+  ^
+
+"Test_name.c", line 18: error: redeclaration of deduction guide "(bool)->S<int>" (previous declaration at line 17)
+  explicit S(bool) -> S<int>; // { dg-error "redefinition" }
+  ^
+
+"Test_name.c", line 21: error: redeclaration of deduction guide "(char)->S<int>" (previous declaration at line 20)
+  S(char) -> S<int>; // { dg-error "redefinition" }
+  ^
+
+"Test_name.c", line 25: error: redeclaration of deduction guide "(T, T)->S<int>" (previous declaration at line 23)
+  template<typename T> S(T, T) -> S<int>; // { dg-error "redefinition" }
+                       ^
+
+4 errors detected in the compilation of "Test_name.c".

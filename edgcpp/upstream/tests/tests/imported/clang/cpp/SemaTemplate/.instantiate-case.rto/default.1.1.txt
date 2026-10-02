@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 8: error: operand of "*" must be a pointer but has type "int"
+      return *c; // expected-error{{indirection requires pointer operand}}
+              ^
+          detected during:
+            instantiation of "int alpha(T) [with T=int]" at line 17
+            instantiation of "void _shexp_match<T>() [with T=char]" at line 21
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=2 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c11 Test_name.c
+"Test_name.c", line 21: warning: explicit type is missing ("int" assumed)
+  __typeof_unqual__(int) u = 12;
+  ^
+
+"Test_name.c", line 21: warning: unnamed prototyped parameters not allowed when body is present
+  __typeof_unqual__(int) u = 12;
+  ^
+
+"Test_name.c", line 21: error: expected a "{"
+  __typeof_unqual__(int) u = 12;
+                         ^
+
+At end of source: error: expected a "}"
+
+2 errors detected in the compilation of "Test_name.c".

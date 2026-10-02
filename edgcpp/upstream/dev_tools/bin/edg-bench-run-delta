@@ -1,0 +1,377 @@
+#!/usr/bin/env python3
+
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+import argparse
+import os
+import re
+import statistics
+import signal
+import subprocess
+import sys
+import tempfile
+
+import edgbench
+
+from pathlib import Path
+from typing import Any, Optional
+
+from edgacknowledg.client.bench import TOOL_PATH_CG_ANNOTATE
+from edgutil import eprint
+
+def _compute_percent_change(baseline_ops: int, run_ops: int) -> float:
+  return ((baseline_ops - run_ops) / max(1, baseline_ops)) * 100
+
+def _form_change_comment(percent_change: float) -> str:
+  if percent_change >= 0:
+    return f"{percent_change:.2f}% faster"
+  else:
+    return f"{abs(percent_change):.2f}% slower"
+
+class BenchmarkMetadata:
+  def __init__(self, rel_benchmark_path: Path, baseline_ops: int,
+               run_ops: int) -> None:
+    self.rel_benchmark_path = rel_benchmark_path
+    self.baseline_ops = baseline_ops
+    self.run_ops = run_ops
+
+  def is_faster(self) -> bool:
+    return self.run_ops <= self.baseline_ops
+
+  def percent_change(self) -> float:
+    return _compute_percent_change(self.baseline_ops, self.run_ops)
+
+# Cachegrind may list only Ir, or Ir plus cache-sim events. Always take Ir
+# (the first summary count).
+_REGEX_CGOUT_SUMMARY = re.compile(r'^summary: ([0-9]+)(?: [0-9]+)*\n$')
+
+def read_program_totals(file_path: Path) -> Optional[int]:
+  if not file_path.exists():
+    return None
+
+  with open(file_path, 'rb') as file_handle:
+    try:
+      # Advance to the last character of the file.
+      file_handle.seek(-2, os.SEEK_END)
+
+      # Check up to the last 10 lines.
+      for _ in range(10):
+        while file_handle.read(1) != b'\n':
+          file_handle.seek(-2, os.SEEK_CUR)
+
+        curr_pos = file_handle.tell()
+        last_line = file_handle.readline().decode()
+        re_match = _REGEX_CGOUT_SUMMARY.match(last_line)
+        if re_match is not None:
+          return int(re_match.group(1))
+
+        file_handle.seek(curr_pos - 2, os.SEEK_SET)
+    except OSError:
+      pass
+
+    return None
+
+def collect_benchmark_metadata(
+                            rel_benchmark_path: Path, run_dir: Path,
+                            baseline_dir: Path) -> Optional[BenchmarkMetadata]:
+  baseline_file = baseline_dir / rel_benchmark_path
+  run_file = run_dir / rel_benchmark_path
+
+  baseline_ops = read_program_totals(baseline_file)
+  run_ops = read_program_totals(run_file)
+
+  if baseline_ops is None or run_ops is None:
+    return None
+
+  return BenchmarkMetadata(
+    rel_benchmark_path,
+    baseline_ops,
+    run_ops
+  )
+
+def print_benchmark_analysis(benchmark_metadata: BenchmarkMetadata,
+                             run_dir: Path, baseline_dir: Path,
+                             *, meta_only: bool) -> None:
+  change_comment = _form_change_comment(
+    _compute_percent_change(
+      benchmark_metadata.baseline_ops,
+      benchmark_metadata.run_ops
+    )
+  )
+  op_delta = benchmark_metadata.run_ops - benchmark_metadata.baseline_ops
+  print(
+    f"{'=' * 80}\n"
+    f"-- EDG Benchmark Meta Analysis\n"
+    f"{'=' * 80}\n"
+    f"Benchmark:    {benchmark_metadata.rel_benchmark_path}\n"
+    f"Change:       {change_comment} ({op_delta:+,})\n"
+    f"Baseline OPs: {benchmark_metadata.baseline_ops:,}\n"
+    f"Run OPs:      {benchmark_metadata.run_ops:,}\n"
+  )
+  if meta_only:
+    return
+
+  with tempfile.TemporaryFile() as tmp_file:
+    proc = subprocess.run(
+      [
+        str(TOOL_PATH_CG_ANNOTATE),
+        '--no-annotate',
+        '--diff',
+        str(baseline_dir / benchmark_metadata.rel_benchmark_path),
+        str(run_dir / benchmark_metadata.rel_benchmark_path)
+      ],
+      stdout = tmp_file,
+      stderr = subprocess.STDOUT
+    )
+
+    tmp_file.seek(0, os.SEEK_SET)
+    for line in tmp_file:
+      print(line.decode(), end ='')
+
+def walk_files(bench_home: Path, run_dir: Path, tag: str,
+               threshold_slow: float, threshold_fast: float,
+               sort_mode: str, *, meta_only: bool) -> None:
+  '''Walk the files in the given run directory, for any relevant file,
+  print the cg_annotate output of the given file against the baseline recording
+  (if it exist; otherwise, print nothing).
+  '''
+
+  if tag.startswith('@'):
+    baseline_dir = bench_home / 'baselines' / 'user' / tag[1:]
+  else:
+    baseline_dir = bench_home / 'baselines' / 'project' / tag
+
+  def is_within_reporting_threshold(benchmark: BenchmarkMetadata) -> bool:
+    if benchmark.is_faster():
+      return benchmark.percent_change() >= threshold_fast
+    else:
+      return abs(benchmark.percent_change()) >= threshold_slow
+
+  benchmark_metadatas = []
+  for root, dirs, files in os.walk(run_dir):
+    for file in files:
+      file_path = Path(root, file)
+      if file_path.suffix != '.cgout':
+        continue
+
+      rel_benchmark_path = file_path.relative_to(run_dir)
+
+      benchmark_metadata = collect_benchmark_metadata(
+        rel_benchmark_path,
+        run_dir,
+        baseline_dir
+      )
+      if benchmark_metadata is None:
+        continue
+
+      benchmark_metadatas.append(benchmark_metadata)
+
+  benchmark_metadatas.sort(
+    key = lambda bm: bm.percent_change(),
+    reverse = sort_mode == 'greatest-speedup'
+  )
+
+  total_baseline_ops = 0
+  total_run_ops = 0
+  all_deltas = []
+  all_percent_changes = []
+  for benchmark_metadata in benchmark_metadatas:
+    total_baseline_ops += benchmark_metadata.baseline_ops
+    total_run_ops += benchmark_metadata.run_ops
+    all_deltas.append(
+      benchmark_metadata.run_ops - benchmark_metadata.baseline_ops
+    )
+    all_percent_changes.append(benchmark_metadata.percent_change())
+
+  summary_change_comment = _form_change_comment(
+    _compute_percent_change(total_baseline_ops, total_run_ops)
+  )
+  op_delta = total_run_ops - total_baseline_ops
+  print(
+    f"{'=' * 80}\n"
+    f"-- EDG Summary Meta Analysis\n"
+    f"{'=' * 80}\n"
+    f"Change:               {summary_change_comment} ({op_delta:+,})\n"
+    f"Baseline OPs:         {total_baseline_ops:,}\n"
+    f"Run OPs:              {total_run_ops:,}"
+  )
+
+  if len(all_percent_changes) != 0:
+    # statistics.fmean is 3.8+; mean is fine for our float lists.
+    if sys.version_info >= (3, 8):
+      avg_percent = statistics.fmean(all_percent_changes)
+      avg_delta = statistics.fmean(all_deltas)
+    else:
+      avg_percent = statistics.mean(all_percent_changes)
+      avg_delta = statistics.mean(all_deltas)
+    avg_percent_change = _form_change_comment(avg_percent)
+    percent_stdev = f"\u03C3 {statistics.pstdev(all_percent_changes):.2f}%"
+    median_percent_change = _form_change_comment(
+      statistics.median(all_percent_changes)
+    )
+    avg_delta_change = f"{avg_delta:+,.0f}"
+    delta_stdev = f"\u03C3 {statistics.pstdev(all_deltas):,.0f}"
+    median_delta = f"{statistics.median(all_deltas):+,.0f}"
+
+    print(
+      f"Average Change (%):   {avg_percent_change} {percent_stdev}\n"
+      f"Median  Change (%):   {median_percent_change}\n"
+      f"Average Change (OPs): {avg_delta_change} {delta_stdev}\n"
+      f"Median  Change (OPs): {median_delta}\n"
+    )
+  else:
+    print('')
+
+  for benchmark_metadata in benchmark_metadatas:
+    if not is_within_reporting_threshold(benchmark_metadata):
+      continue
+
+    try:
+      print_benchmark_analysis(
+        benchmark_metadata,
+        run_dir,
+        baseline_dir,
+        meta_only = meta_only
+      )
+    except BrokenPipeError:
+      # Ignore broken pipe errors, these can occur when a print flush is
+      # in progress and the program is exiting.
+      pass
+
+CMD_DESCRIPTION = f"""
+EDG tool for comparing benchmark output.
+
+This tool is used to compare the observed output of a benchmark run with the
+prior baseline. If no baseline exists for a given benchmark, no output will
+be printed for said benchmark.
+
+By default the latest edg-bench run's output will be observed.
+To go to the previous output add the "-b" flag to the command. This can be
+repeated to get even older output.
+
+For example, the following command will examine the 4th most recent
+benchmark run against the project release baseline:
+
+  edg-bench-run-diff -bbb release
+
+Alternatively, a root path to examine can be specified (this is incompatible
+with the -b flag):
+
+  # Examine all .rt files in $MY_RUNS/2024.08.16-20.58.06/
+  edg-bench-run-diff --root $MY_RUNS/2024.08.16-20.58.06/ release
+
+The root path must exist, otherwise an error will be issued.
+
+-----------------------------------------------------------------------------
+"""
+
+def parse_args() -> argparse.Namespace:
+  '''Parse the commandline arguments for this script.'''
+  parser = argparse.ArgumentParser(
+    description = CMD_DESCRIPTION,
+    formatter_class = argparse.RawDescriptionHelpFormatter
+  )
+  parser.add_argument(
+    '--faster-threshold',
+    '-f',
+    dest = 'threshold_fast',
+    type = float,
+    default = 0.01,
+    help = (
+      'the percentage faster a benchmark has to be to be individually printed'
+    )
+  )
+  parser.add_argument(
+    '--slower-threshold',
+    '-s',
+    dest = 'threshold_slow',
+    type = float,
+    default = 0.01,
+    help = (
+      'the percentage slower a benchmark has to be to be individually printed'
+    )
+  )
+  parser.add_argument(
+    '--sort',
+    dest = 'sort_mode',
+    choices = ['greatest-slowdown', 'greatest-speedup'],
+    default = 'greatest-slowdown',
+    help = 'select the ordering of benchmarks'
+  )
+  parser.add_argument(
+    '-b',
+    dest = 'num_runs_back',
+    action = 'count',
+    default = 0,
+    help = (
+      'examine the previous bench run (if this flag is repeated, go back the '
+      'number of times the flag was repeated)'
+    )
+  )
+  parser.add_argument(
+    '--root',
+    dest = 'root_path',
+    type = Path,
+    required = False,
+    help = 'the root path to examine'
+  )
+  parser.add_argument(
+    '--meta-only',
+    dest = 'meta_only',
+    action = 'store_true',
+    help = 'display only the EDG meta analysis blocks'
+  )
+  parser.add_argument(
+    'tag',
+    help = (
+      'the baseline tag to compare against (prefix with @ to reference '
+      'a user baseline instead of a project baseline)'
+    )
+  )
+  return parser.parse_args()
+
+def die(signum: Any, frame: Any) -> None:
+  sys.exit()
+
+def register_signal_handlers() -> None:
+  signal.signal(signal.SIGINT, die)
+  signal.signal(signal.SIGTERM, die)
+  signal.signal(signal.SIGPIPE, die)
+
+def main() -> None:
+  args = parse_args()
+
+  register_signal_handlers()
+
+  bench_home = edgbench.load_benchmark_home_or_exit()
+
+  TOOL_PATH_CG_ANNOTATE.exit_if_not_found()
+
+  previous_run_dirs = edgbench.get_benchmark_runs(bench_home)
+
+  benchmark_inspection = edgbench.BenchmarkRunInspection(
+    args.root_path,
+    args.num_runs_back,
+    previous_run_dirs
+  )
+  edgbench.validate_inspection(benchmark_inspection)
+
+  run_dir = benchmark_inspection.get_run_directory()
+  if not run_dir.exists():
+    eprint(f"Path does not exist: {run_dir}")
+    sys.exit(1)
+
+  walk_files(
+    bench_home,
+    run_dir,
+    args.tag,
+    args.threshold_slow,
+    args.threshold_fast,
+    args.sort_mode,
+    meta_only = args.meta_only
+  )
+
+main()

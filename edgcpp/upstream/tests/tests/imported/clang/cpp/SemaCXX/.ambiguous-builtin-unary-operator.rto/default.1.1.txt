@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 18: error: more than one operator "++" matches these operands:
+            built-in operator "++ pointer-to-object"
+            built-in operator "++ arithmetic"
+            operand types are: ++ C
+    ++c; // expected-error {{use of overloaded operator '++' is ambiguous}}\
+    ^
+
+"Test_name.c", line 32: error: more than one conversion function from "C1" to a built-in type applies:
+            function "B1::operator volatile long &()" (declared at line 27)
+            function "A1::operator volatile int &()" (declared at line 25)
+    ++c;	// expected-error {{use of overloaded operator '++' is ambiguous}} \
+      ^
+
+2 errors detected in the compilation of "Test_name.c".

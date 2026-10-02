@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 11: error: incomplete type "a::b" is not allowed
+    using a::c<>::c;		// { dg-prune-output "not a direct base" }
+          ^
+
+"Test_name.c", line 13: error: no instance of constructor "f" matches the argument list
+  template <template <typename> typename f> void g() { f(); }
+                                                         ^
+          detected during instantiation of "void g<f>() [with f=e]" at line 14
+
+"Test_name.c", line 13: error: cannot deduce class template arguments
+  template <template <typename> typename f> void g() { f(); }
+                                                       ^
+          detected during instantiation of "void g<f>() [with f=e]" at line 14
+
+3 errors detected in the compilation of "Test_name.c".

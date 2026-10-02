@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"pr29612-1.c", line 7: warning: multicharacter character literal (potential portability problem)
+  int foo (void) { return 'ab'; } /* { dg-warning "multi-character" } */
+                          ^
+
+"pr29612-1.c", line 15: warning: multicharacter character literal (potential portability problem)
+  int baz (void) { return 'ab'; } /* { dg-warning "multi-character" } */
+                          ^
+

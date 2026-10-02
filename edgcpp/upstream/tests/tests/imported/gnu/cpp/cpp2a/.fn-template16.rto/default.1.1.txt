@@ -1,0 +1,53 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 7: error: undeclared is not a template
+  struct undeclared<int> { }; // { dg-error "not a class template" }
+         ^
+
+"Test_name.c", line 16: error: expected an expression
+    a = foo<; // { dg-error "" }
+            ^
+
+"Test_name.c", line 17: error: expected a ">"
+    a = foo < b; // { dg-error "" }
+               ^
+
+"Test_name.c", line 18: error: no instance of overloaded function "foo" matches the required type
+    a = foo<b>; // { dg-error "" }
+      ^
+
+"Test_name.c", line 19: error: expected an expression
+    a = foo<b>(; // { dg-error "expected" }
+               ^
+
+"Test_name.c", line 19: error: expected a ")"
+    a = foo<b>(; // { dg-error "expected" }
+               ^
+
+"Test_name.c", line 19: error: no instance of overloaded function "foo" matches the argument list
+            argument types are: (<error-type>)
+    a = foo<b>(; // { dg-error "expected" }
+        ^
+
+"Test_name.c", line 20: error: expected a ")"
+    a = foo<b>(1; // { dg-error "expected" }
+                ^
+
+"Test_name.c", line 20: error: no instance of overloaded function "foo" matches the argument list
+            argument types are: (int)
+    a = foo<b>(1; // { dg-error "expected" }
+        ^
+
+"Test_name.c", line 21: error: no instance of overloaded function "foo" matches the argument list
+            argument types are: (int)
+    a = foo<b>(1); // { dg-error "no matching" }
+        ^
+
+"Test_name.c", line 15: warning: variable "a" was set but never used
+    int a, b = 10;
+        ^
+
+"Test_name.c", line 15: warning: variable "b" was set but never used
+    int a, b = 10;
+           ^
+
+10 errors detected in the compilation of "Test_name.c".

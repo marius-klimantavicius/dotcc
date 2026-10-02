@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 --strict_gnu -w Test_name.c
+"Test_name.c", line 30: error: integer constant is too large
+    __asm ("# %0 %1 %2 %3" : "=g" (w) : "g" (x), "g" (x + y), "g" (61832600368276133515125630254911797508782837275302959978515764023224306276632966792579100265310761247399417856504034834837841258576687802491886538775473291979151693037174783wb));
+                                                                   ^
+
+1 error detected in the compilation of "Test_name.c".

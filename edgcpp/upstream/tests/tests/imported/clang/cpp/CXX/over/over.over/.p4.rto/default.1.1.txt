@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 9: warning: variable "fp0" was declared but never referenced
+    int (*fp0)(int) = f0;
+          ^
+
+"Test_name.c", line 10: warning: variable "fp1" was declared but never referenced
+    int (*fp1)(int) = &f0;
+          ^
+
+"Test_name.c", line 11: warning: variable "fp2" was declared but never referenced
+    float (*fp2)(float) = &f0;
+            ^
+
+"Test_name.c", line 20: error: more than one instance of overloaded function "f0" matches the required type
+    int (*fp0)(int) = f0; // expected-error{{address of overloaded function 'f0' is ambiguous}}
+                      ^
+
+"Test_name.c", line 21: warning: variable "fp1" was declared but never referenced
+    float (*fp1)(float) = f0;
+            ^
+
+1 error detected in the compilation of "Test_name.c".

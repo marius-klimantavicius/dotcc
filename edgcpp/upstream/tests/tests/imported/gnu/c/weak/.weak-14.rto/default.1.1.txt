@@ -1,0 +1,6 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+eccp: diagnostics generated from compilation of Test_name.int.c:
+./weak/weak-14.c:25:48: error: 'Af1a' aliased to undefined symbol 'lf1'
+./weak/weak-14.c:21:23: error: 'Av1a' aliased to undefined symbol 'lv1'
+eccp: end of diagnostics from compilation of Test_name.int.c
+eccp: gcc compilation of Test_name.int.c returned an exit status of 1

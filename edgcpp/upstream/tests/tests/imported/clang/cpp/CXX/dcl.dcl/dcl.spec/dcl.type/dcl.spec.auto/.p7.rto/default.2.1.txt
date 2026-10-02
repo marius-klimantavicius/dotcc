@@ -1,0 +1,110 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --c++03 Test_name.c
+"Test_name.c", line 7: warning: "auto" as a type specifier is nonstandard in this mode
+    auto a = 0, b = 0, c = 0;
+    ^
+
+"Test_name.c", line 8: warning: "auto" as a type specifier is nonstandard in this mode
+    auto d = 0, e = 0.0; // expected-error {{'int' in declaration of 'd' and deduced as 'double' in declaration of 'e'}}
+    ^
+
+"Test_name.c", line 8: error: "auto" type is "double" for this entity, but was previously implied to be "int"
+    auto d = 0, e = 0.0; // expected-error {{'int' in declaration of 'd' and deduced as 'double' in declaration of 'e'}}
+                ^
+
+"Test_name.c", line 10: warning: "auto" as a type specifier is nonstandard in this mode
+    auto v1 = 0, *p1 = &v1;
+    ^
+
+"Test_name.c", line 11: warning: "auto" as a type specifier is nonstandard in this mode
+    auto *p2 = 0, v2 = *p2; // expected-error {{incompatible initializer}}
+    ^
+
+"Test_name.c", line 11: error: cannot deduce "auto" type
+    auto *p2 = 0, v2 = *p2; // expected-error {{incompatible initializer}}
+    ^
+
+"Test_name.c", line 14: warning: "auto" as a type specifier is nonstandard in this mode
+    auto &f = k, &g = a; // expected-error {{'const int' in declaration of 'f' and deduced as 'int' in declaration of 'g'}}
+    ^
+
+"Test_name.c", line 14: error: "auto" type is "int" for this entity, but was previously implied to be "const int"
+    auto &f = k, &g = a; // expected-error {{'const int' in declaration of 'f' and deduced as 'int' in declaration of 'g'}}
+                  ^
+
+"Test_name.c", line 18: warning: "auto" as a type specifier is nonstandard in this mode
+    auto xa = x, xb = 0;
+    ^
+
+"Test_name.c", line 18: warning: variable "x" is used before its value is set
+    auto xa = x, xb = 0;
+              ^
+
+"Test_name.c", line 20: warning: "auto" as a type specifier is nonstandard in this mode
+    auto &&ra1 = a, rb1 = b; // expected-error {{'int &' in declaration of 'ra1' and deduced as 'int' in declaration of 'rb1'}}
+    ^
+
+"Test_name.c", line 20: warning: rvalue references are a C++11 feature
+    auto &&ra1 = a, rb1 = b; // expected-error {{'int &' in declaration of 'ra1' and deduced as 'int' in declaration of 'rb1'}}
+         ^
+
+"Test_name.c", line 20: error: "auto" type is "int" for this entity, but was previously implied to be "int &"
+    auto &&ra1 = a, rb1 = b; // expected-error {{'int &' in declaration of 'ra1' and deduced as 'int' in declaration of 'rb1'}}
+                    ^
+
+"Test_name.c", line 21: warning: "auto" as a type specifier is nonstandard in this mode
+    auto &&ra2 = +a, rb2 = b;
+    ^
+
+"Test_name.c", line 7: warning: variable "c" was declared but never referenced
+    auto a = 0, b = 0, c = 0;
+                       ^
+
+"Test_name.c", line 8: warning: variable "d" was declared but never referenced
+    auto d = 0, e = 0.0; // expected-error {{'int' in declaration of 'd' and deduced as 'double' in declaration of 'e'}}
+         ^
+
+"Test_name.c", line 8: warning: variable "e" was declared but never referenced
+    auto d = 0, e = 0.0; // expected-error {{'int' in declaration of 'd' and deduced as 'double' in declaration of 'e'}}
+                ^
+
+"Test_name.c", line 10: warning: variable "p1" was declared but never referenced
+    auto v1 = 0, *p1 = &v1;
+                  ^
+
+"Test_name.c", line 14: warning: variable "f" was declared but never referenced
+    auto &f = k, &g = a; // expected-error {{'const int' in declaration of 'f' and deduced as 'int' in declaration of 'g'}}
+          ^
+
+"Test_name.c", line 14: warning: variable "g" was declared but never referenced
+    auto &f = k, &g = a; // expected-error {{'const int' in declaration of 'f' and deduced as 'int' in declaration of 'g'}}
+                  ^
+
+"Test_name.c", line 18: warning: variable "xa" was declared but never referenced
+    auto xa = x, xb = 0;
+         ^
+
+"Test_name.c", line 18: warning: variable "xb" was declared but never referenced
+    auto xa = x, xb = 0;
+                 ^
+
+"Test_name.c", line 20: warning: variable "ra1" was declared but never referenced
+    auto &&ra1 = a, rb1 = b; // expected-error {{'int &' in declaration of 'ra1' and deduced as 'int' in declaration of 'rb1'}}
+           ^
+
+"Test_name.c", line 20: warning: variable "rb1" was declared but never referenced
+    auto &&ra1 = a, rb1 = b; // expected-error {{'int &' in declaration of 'ra1' and deduced as 'int' in declaration of 'rb1'}}
+                    ^
+
+"Test_name.c", line 21: warning: variable "ra2" was declared but never referenced
+    auto &&ra2 = +a, rb2 = b;
+           ^
+
+"Test_name.c", line 21: warning: variable "rb2" was declared but never referenced
+    auto &&ra2 = +a, rb2 = b;
+                     ^
+
+"Test_name.c", line 62: warning: "auto" as a type specifier is nonstandard in this mode
+    auto a = T(), *b = &a;
+    ^
+
+4 errors detected in the compilation of "Test_name.c".

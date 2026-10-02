@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 25: error: array of functions is not allowed
+  extern func c[]; /* { dg-bogus "warning" "warning in place of error" } */
+              ^
+
+"Test_name.c", line 28: error: array of functions is not allowed
+  void h (func []); /* { dg-bogus "warning" "warning in place of error" } */
+               ^
+
+2 errors detected in the compilation of "Test_name.c".

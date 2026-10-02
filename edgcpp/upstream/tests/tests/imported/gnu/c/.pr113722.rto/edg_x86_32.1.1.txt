@@ -1,0 +1,82 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 10: error: expected a ";"
+    unsigned __int128 a = __builtin_bswap128 ((unsigned __int128) 2);
+                      ^
+
+"Test_name.c", line 11: error: identifier "a" is undefined
+    if (a != ((unsigned __int128) 2) << 120)
+        ^
+
+"Test_name.c", line 11: error: expected a ")"
+    if (a != ((unsigned __int128) 2) << 120)
+                        ^
+
+"Test_name.c", line 11: warning: shift count is too large
+    if (a != ((unsigned __int128) 2) << 120)
+                                        ^
+
+"Test_name.c", line 13: error: identifier "a" is undefined
+    a = __builtin_bswap128 ((unsigned __int128) 0xdeadbeefULL);
+    ^
+
+"Test_name.c", line 13: warning: function "__builtin_bswap128" declared implicitly
+    a = __builtin_bswap128 ((unsigned __int128) 0xdeadbeefULL);
+        ^
+
+"Test_name.c", line 13: error: expected a ")"
+    a = __builtin_bswap128 ((unsigned __int128) 0xdeadbeefULL);
+                                      ^
+
+"Test_name.c", line 14: error: expected a ")"
+    if (a != ((unsigned __int128) 0xefbeaddeULL) << 96)
+                        ^
+
+"Test_name.c", line 14: warning: shift count is too large
+    if (a != ((unsigned __int128) 0xefbeaddeULL) << 96)
+                                                    ^
+
+"Test_name.c", line 16: error: expected a ")"
+    a = __builtin_bswap128 (((unsigned __int128) 0xdeadbeefULL) << 64);
+                                       ^
+
+"Test_name.c", line 16: warning: shift count is too large
+    a = __builtin_bswap128 (((unsigned __int128) 0xdeadbeefULL) << 64);
+                                                                   ^
+
+"Test_name.c", line 17: error: expected a ")"
+    if (a != ((unsigned __int128) 0xefbeaddeULL) << 32)
+                        ^
+
+"Test_name.c", line 17: warning: shift count is too large
+    if (a != ((unsigned __int128) 0xefbeaddeULL) << 32)
+                                                    ^
+
+"Test_name.c", line 19: error: expected a ")"
+    a = __builtin_bswap128 ((((unsigned __int128) 0xdeadbeefULL) << 64)
+                                        ^
+
+"Test_name.c", line 19: warning: shift count is too large
+    a = __builtin_bswap128 ((((unsigned __int128) 0xdeadbeefULL) << 64)
+                                                                    ^
+
+"Test_name.c", line 21: error: expected a ")"
+    if (a != ((((unsigned __int128) 0xc1baedfe0dd0fecaULL) << 64)
+                          ^
+
+"Test_name.c", line 21: warning: shift count is too large
+    if (a != ((((unsigned __int128) 0xc1baedfe0dd0fecaULL) << 64)
+                                                              ^
+
+"Test_name.c", line 22: error: expected a ")"
+  	    | (((unsigned __int128) 0xefbeaddeULL) << 32)))
+  	                  ^
+
+"Test_name.c", line 22: warning: shift count is too large
+  	    | (((unsigned __int128) 0xefbeaddeULL) << 32)))
+  	                                              ^
+
+"Test_name.c", line 10: warning: variable "__int128" was declared but never referenced
+    unsigned __int128 a = __builtin_bswap128 ((unsigned __int128) 2);
+             ^
+
+11 errors detected in the compilation of "Test_name.c".

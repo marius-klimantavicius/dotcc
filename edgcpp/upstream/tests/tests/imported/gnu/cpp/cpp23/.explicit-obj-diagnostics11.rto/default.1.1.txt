@@ -1,0 +1,53 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++23 Test_name.c
+"Test_name.c", line 10: error: no instance of function template "A::f" matches the argument list
+      f(); // { dg-error "without object" }
+      ^
+"Test_name.c", line 7: note: number of parameters of function template "A::f" does not match the call
+    int f(this auto);
+        ^
+
+"Test_name.c", line 14: error: no instance of function template "A::f" matches the argument list
+  int n = A::f(); // { dg-error "without object" }
+          ^
+"Test_name.c", line 7: note: number of parameters of function template "A::f" does not match the call
+    int f(this auto);
+        ^
+
+"Test_name.c", line 22: error: no instance of function template "A::f" matches the argument list
+      A::f(); // { dg-error "without object" }
+      ^
+"Test_name.c", line 7: note: number of parameters of function template "A::f" does not match the call
+    int f(this auto);
+        ^
+
+"Test_name.c", line 34: error: no instance of function template "A::f" matches the argument list
+      A::f(); // { dg-error "without object" }
+      ^
+"Test_name.c", line 7: note: number of parameters of function template "A::f" does not match the call
+    int f(this auto);
+        ^
+
+"Test_name.c", line 35: error: no instance of function template "A::f" matches the argument list
+      T::f(); // { dg-error "without object" }
+      ^
+"Test_name.c", line 7: note: number of parameters of function template "A::f" does not match the call
+    int f(this auto);
+        ^
+          detected during instantiation of "void C<T>::s() [with T=A]" at line 39
+
+"Test_name.c", line 45: error: class "B" has no member "f"
+      T::f(); // { dg-error "not a member of 'B'" }
+         ^
+          detected during instantiation of "void D<T>::ns() [with T=B]" at line 49
+
+"Test_name.c", line 44: error: no suitable user-defined conversion from "A" to "D<A>" exists
+      A::f(); // { dg-error "without object" }
+      ^
+          detected during instantiation of "void D<T>::ns() [with T=A]" at line 50
+
+"Test_name.c", line 45: error: no suitable user-defined conversion from "A" to "D<A>" exists
+      T::f(); // { dg-error "not a member of 'B'" }
+      ^
+          detected during instantiation of "void D<T>::ns() [with T=A]" at line 50
+
+8 errors detected in the compilation of "Test_name.c".

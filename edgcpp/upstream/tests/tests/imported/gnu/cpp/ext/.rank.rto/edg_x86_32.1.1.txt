@@ -1,0 +1,7 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./ext/rank.C", line 22: error: function "f(T) [with T=unsigned int]" (declared at line 18) cannot be referenced -- it is a deleted function
+  void g() { f(__array_rank(T)); }
+             ^
+          detected during instantiation of "void g<T>() [with T=int]" at line 24
+
+1 error detected in the compilation of "Test_name.c".

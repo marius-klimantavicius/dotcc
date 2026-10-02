@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 10: error: non-consteval member cannot override consteval function "S::bar"
+    int bar () { return 44; }	// { dg-error "non-'consteval' function 'virtual int T::bar\\\(\\\)' overriding 'consteval' function" }
+        ^
+
+"Test_name.c", line 13: error: consteval member cannot override non-consteval function "S::foo"
+    consteval virtual int foo () { return 45; }	// { dg-error "'consteval' function 'virtual consteval int U::foo\\\(\\\)' overriding non-'consteval' function" }
+                          ^
+
+2 errors detected in the compilation of "Test_name.c".

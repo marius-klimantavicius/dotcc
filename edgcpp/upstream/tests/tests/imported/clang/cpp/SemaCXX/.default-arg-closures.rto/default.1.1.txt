@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 -w --exceptions --exceptions --ms_extensions --c++11 Test_name.c
+"Test_name.c", line 12: error: name followed by "::" must be a class or namespace name
+    DependentDefaultCtorArg(int n = T::error);
+                                    ^
+          detected during:
+            instantiation of "DependentDefaultCtorArg<T>::DependentDefaultCtorArg(int) [with T=int]" at line 18
+            implicit generation of "ExportDefaultCtorClosure::ExportDefaultCtorClosure()" at line 18
+
+1 error detected in the compilation of "Test_name.c".

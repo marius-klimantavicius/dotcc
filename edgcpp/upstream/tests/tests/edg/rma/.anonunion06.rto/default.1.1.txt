@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 10: error: identifier "val" is undefined
+          asdouble = val;
+                     ^
+
+"Test_name.c", line 11: error: return value type does not match the function type
+          return asint[0] ^ asint[1];
+                 ^
+
+2 errors detected in the compilation of "Test_name.c".

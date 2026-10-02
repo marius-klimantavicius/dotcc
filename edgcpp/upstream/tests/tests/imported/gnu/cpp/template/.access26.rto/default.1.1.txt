@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: error: type "B::X" (declared at line 7) is inaccessible
+  void f() { A<B::X>::i = 0; }	// { dg-error "this context" }
+                  ^
+
+1 error detected in the compilation of "Test_name.c".

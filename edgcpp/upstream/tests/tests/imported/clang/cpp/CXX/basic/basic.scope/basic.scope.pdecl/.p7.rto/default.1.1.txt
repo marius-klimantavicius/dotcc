@@ -1,0 +1,74 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 25: error: class "X" has no member "D"
+  using Test_XD = X::D; // expected-error {{no type named 'D' in 'X'}}
+                     ^
+
+"Test_name.c", line 27: error: class "X" has no member "E"
+  using Test_XE = X::E; // expected-error {{no type named 'E' in 'X'}}
+                     ^
+
+"Test_name.c", line 28: error: identifier "F" is undefined
+  using Test_F = F; // expected-error {{unknown type name 'F'}}
+                 ^
+
+"Test_name.c", line 30: error: identifier "G" is undefined
+  using Test_G = G; // expected-error {{unknown type name 'G'}}
+                 ^
+
+"Test_name.c", line 31: error: class "X" has no member "G"
+  using Test_XG = X::G; // expected-error {{no type named 'G' in 'X'}}
+                     ^
+
+"Test_name.c", line 42: error: class "X" has no member "H"
+      using Test_XH = X::H; // expected-error {{no type named}}
+                         ^
+
+"Test_name.c", line 44: error: class "X" has no member "I"
+      using Test_XI = X::I; // expected-error {{no type named}}
+                         ^
+
+"Test_name.c", line 45: error: identifier "J" is undefined
+      using Test_J = J; // expected-error {{unknown type name}}
+                     ^
+
+"Test_name.c", line 47: error: identifier "K" is undefined
+      using Test_K = K; // expected-error {{unknown type name}}
+                     ^
+
+"Test_name.c", line 48: error: class "X" has no member "K"
+      using Test_XK = X::K; // expected-error {{no type named}}
+                         ^
+
+"Test_name.c", line 50: error: identifier "H" is undefined
+    using Test_H = H; // expected-error {{unknown type name}}
+                   ^
+
+"Test_name.c", line 51: error: identifier "I" is undefined
+    using Test_I = I; // expected-error {{unknown type name}}
+                   ^
+
+"Test_name.c", line 52: error: identifier "J" is undefined
+    using Test_J = J; // expected-error {{unknown type name}}
+                   ^
+
+"Test_name.c", line 53: error: identifier "K" is undefined
+    using Test_K = K; // expected-error {{unknown type name}}
+                   ^
+
+"Test_name.c", line 55: error: identifier "H" is undefined
+  using Test_H = H; // expected-error {{unknown type name}}
+                 ^
+
+"Test_name.c", line 56: error: identifier "I" is undefined
+  using Test_I = I; // expected-error {{unknown type name}}
+                 ^
+
+"Test_name.c", line 57: error: identifier "J" is undefined
+  using Test_J = J; // expected-error {{unknown type name}}
+                 ^
+
+"Test_name.c", line 58: error: identifier "K" is undefined
+  using Test_K = K; // expected-error {{unknown type name}}
+                 ^
+
+18 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 14: error: too many recursive substitutions of function template signatures
+  decltype (ft<F> (F()))		// { dg-error "depth" }
+            ^
+          detected during:
+            instantiation of "ft" at line 18
+            instantiation of "ft" at line 18
+            instantiation of "ft" at line 18
+            instantiation of "ft" at line 18
+            instantiation of "ft" at line 18
+            [ 23 instantiation contexts not shown ]
+            instantiation of "ft" at line 18
+            instantiation of "ft" at line 18
+            instantiation of "ft" at line 18
+            instantiation of "ft" at line 18
+            instantiation of "ft" at line 18
+
+"Test_name.c", line 18: error: no instance of overloaded function "ft" matches the argument list
+            argument types are: (int)
+      ft<struct a*, 0>(0);		// { dg-message "from here" }
+      ^
+"Test_name.c", line 15: note: substituting explicit template arguments "<a *, 0>" for function template "ft<F,N>(F)" failed
+  ft(F) {}
+  ^
+"Test_name.c", line 11: note: substituting explicit template arguments "<a *, 0>" for function template "ft<x>()" failed
+  ft() {}
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,41 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: warning: expression has no effect
+    "\u0041";			// 'A' UCN is OK in string literal
+    ^
+
+"Test_name.c", line 10: warning: expression has no effect
+    '\u0041';			// also OK in character literal
+    ^
+
+"Test_name.c", line 12: warning: a universal character name cannot designate a character in the basic character set
+    int c\u0041c;		// { dg-error "not valid in an identifier" }
+         ^
+
+"Test_name.c", line 14: warning: this universal character is not allowed in an identifier
+    int c\u0024c;	// { dg-error "not valid in an identifier" "" { target { { powerpc-ibm-aix* } || c++26 } } }
+         ^
+
+"Test_name.c", line 16: warning: a universal character name cannot designate a surrogate code point
+    U"\uD800";		  // { dg-error "not a valid universal character" }
+      ^
+
+"Test_name.c", line 16: warning: expression has no effect
+    U"\uD800";		  // { dg-error "not a valid universal character" }
+    ^
+
+"Test_name.c", line 18: warning: a universal character name must designate a valid code point
+    U'\U00110000'; // { dg-warning "outside" "110000 outside UCS" { target c++2a } }
+      ^
+
+"Test_name.c", line 18: warning: expression has no effect
+    U'\U00110000'; // { dg-warning "outside" "110000 outside UCS" { target c++2a } }
+    ^
+
+"Test_name.c", line 12: warning: variable "c\u0041c" was declared but never referenced
+    int c\u0041c;		// { dg-error "not valid in an identifier" }
+        ^
+
+"Test_name.c", line 14: warning: variable "c\u0024c" was declared but never referenced
+    int c\u0024c;	// { dg-error "not valid in an identifier" "" { target { { powerpc-ibm-aix* } || c++26 } } }
+        ^
+

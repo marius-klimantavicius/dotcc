@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 15: error: a global-scope declaration may not have this storage class
+  register int b;			// { dg-bogus "ISO C\\+\\+17 does not allow 'register' storage class specifier" "" { target c++17 } }
+  ^
+
+"Test_name.c", line 16: error: invalid storage class for a function
+  register int c ();		// { dg-error "1:storage class 'register' invalid for function" }
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

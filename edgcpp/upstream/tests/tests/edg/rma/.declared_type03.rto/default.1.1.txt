@@ -1,0 +1,13 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 5: remark: parameter "x" was never referenced
+  void f(void x()) { }
+              ^
+
+"Test_name.c", line 8: remark: parameter "x" was never referenced
+    static void g(void x()) { }
+                       ^
+
+"Test_name.c", line 10: remark: parameter "x" was never referenced
+  void S::f(void x()) { }
+                 ^
+

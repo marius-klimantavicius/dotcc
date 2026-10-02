@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++23 Test_name.c
+"Test_name.c", line 10: warning: label "lab" was declared but never referenced
+  lab:
+  ^
+
+"Test_name.c", line 53: error: expression must have a constant value
+  constexpr int a = bar (1);	// { dg-message "in 'constexpr' expansion of" }
+                    ^
+"Test_name.c", line 18: note: 'goto' cannot be executed in constexpr contexts
+      goto lab;		// { dg-error "'goto' is not a constant expression" }
+      ^
+
+"Test_name.c", line 54: error: expression must have a constant value
+  constexpr int b = baz (1);	// { dg-message "in 'constexpr' expansion of" }
+                    ^
+"Test_name.c", line 29: note: constant-evaluation cannot go through the declaration of a variable with static or thread storage duration
+    static int a;		// { dg-error "control passes through definition of 'a' with static storage duration" }
+    ^
+
+"Test_name.c", line 55: error: expression must have a constant value
+  constexpr int c = qux (1);	// { dg-message "in 'constexpr' expansion of" }
+                    ^
+"Test_name.c", line 38: note: constant-evaluation cannot go through the declaration of a variable with static or thread storage duration
+    thread_local int a;	// { dg-error "control passes through definition of 'a' with thread storage duration" }
+    ^
+
+"Test_name.c", line 56: error: expression must have a constant value
+  constexpr int d = corge (1);	// { dg-message "in 'constexpr' expansion of" }
+                    ^
+"Test_name.c", line 49: note: cannot call non-constexpr function "S::S()" (declared at line 42)
+    S s;			// { dg-error "call to non-'constexpr' function 'S::S\\\(\\\)'" }
+      ^
+
+"Test_name.c", line 53: warning: variable "a" was declared but never referenced
+  constexpr int a = bar (1);	// { dg-message "in 'constexpr' expansion of" }
+                ^
+
+"Test_name.c", line 54: warning: variable "b" was declared but never referenced
+  constexpr int b = baz (1);	// { dg-message "in 'constexpr' expansion of" }
+                ^
+
+"Test_name.c", line 55: warning: variable "c" was declared but never referenced
+  constexpr int c = qux (1);	// { dg-message "in 'constexpr' expansion of" }
+                ^
+
+"Test_name.c", line 56: warning: variable "d" was declared but never referenced
+  constexpr int d = corge (1);	// { dg-message "in 'constexpr' expansion of" }
+                ^
+
+4 errors detected in the compilation of "Test_name.c".

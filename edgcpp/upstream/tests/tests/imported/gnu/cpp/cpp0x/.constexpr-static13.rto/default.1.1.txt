@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: warning: invalid narrowing conversion from "const char *" to "bool"
+  constexpr bool use_get_c_str_in_constexpr_context{get_c_str()}; // works
+                                                    ^
+
+"Test_name.c", line 20: warning: invalid narrowing conversion from "const char *" to "bool"
+  constexpr bool use_cstr_in_constexpr_context{cstr}; // doesn't work
+                                               ^
+
+"Test_name.c", line 9: warning: variable "use_get_c_str_in_constexpr_context" was declared but never referenced
+  constexpr bool use_get_c_str_in_constexpr_context{get_c_str()}; // works
+                 ^
+
+"Test_name.c", line 20: warning: variable "use_cstr_in_constexpr_context" was declared but never referenced
+  constexpr bool use_cstr_in_constexpr_context{cstr}; // doesn't work
+                 ^
+

@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 13: error: incorrectly formed universal character name
+    printf("%s\n", "\U"); // expected-error{{\U used with no following hex digits}}
+                      ^
+
+"Test_name.c", line 14: error: incorrectly formed universal character name
+    printf("%s\n", "\U00"); // expected-error{{incomplete universal character name}}
+                        ^
+
+"Test_name.c", line 15: error: incorrectly formed universal character name
+    printf("%s\n", "\U0001"); // expected-error{{incomplete universal character name}}
+                          ^
+
+"Test_name.c", line 16: warning: a universal character name cannot designate a character in the basic character set
+    printf("%s\n", "\u0001"); // expected-error{{universal character name refers to a control character}}
+                    ^
+
+"Test_name.c", line 8: warning: variable "a" was declared but never referenced
+    int a[sizeof("hello \u2192 \u2603 \u2190 world") == 24 ? 1 : -1];
+        ^
+
+3 errors detected in the compilation of "Test_name.c".

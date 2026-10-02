@@ -1,0 +1,22 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 5: error: invalid destructor declaration
+    ~A;
+    ^
+
+"Test_name.c", line 6: error: invalid destructor declaration
+    ~B();
+    ^
+
+"Test_name.c", line 7: error: qualified name is not allowed in member declaration
+    A::~A();
+    ^
+
+"Test_name.c", line 8: error: "static" is not allowed
+    static ~A();
+    ^
+
+"Test_name.c", line 8: error: invalid redeclaration of member function "A::~A()" (declared at line 7)
+    static ~A();
+           ^
+
+5 errors detected in the compilation of "Test_name.c".

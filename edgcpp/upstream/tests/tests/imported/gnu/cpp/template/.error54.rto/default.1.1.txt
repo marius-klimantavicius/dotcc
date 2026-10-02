@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: error: mutable is not allowed
+    mutable T x;  // { dg-error "cannot be declared" }
+    ^
+          detected during instantiation of class "X<T> [with T=const int]" at line 11
+
+"Test_name.c", line 8: warning: declaring a reference with "mutable" is nonstandard
+    mutable T x;  // { dg-error "cannot be declared" }
+    ^
+          detected during instantiation of class "X<T> [with T=int &]" at line 12
+
+1 error detected in the compilation of "Test_name.c".

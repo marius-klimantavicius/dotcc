@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 27: error: no instance of function template "A<<unnamed>>::f [with <unnamed>=Test<0>{}]" matches the argument list
+            argument types are: (int)
+            object type is: A<Test<0>{}>
+    a0.f(0); // { dg-error "no match" }
+       ^
+"Test_name.c", line 19: note: substituting "<int>" for function template "A<<unnamed>>::f [with <unnamed>=Test<0>{}]" failed constraints
+    template<class T> void f(T) requires specialize_value<T, A>;
+                           ^
+"Test_name.c", line 19: note: concept "specialize_value" not satisfied for "<int, A>"
+    template<class T> void f(T) requires specialize_value<T, A>;
+                                         ^
+"Test_name.c", line 13: note: atomic constraint evaluates to false
+  concept specialize_value = is_specialize_value_v<Target, T>;
+                             ^
+
+1 error detected in the compilation of "Test_name.c".

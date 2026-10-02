@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 6: error: class "A<int>" has no member "value"
+  template<typename T1, typename T2 = typename T1::value> using alias1 = A<T1>;
+                                                   ^
+          detected during:
+            processing of template argument list for "alias1" based on template argument <A<int>> at line 8
+            instantiation of class "B<T> [with T=int]" at line 11
+
+1 error detected in the compilation of "Test_name.c".

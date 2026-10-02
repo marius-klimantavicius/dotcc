@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c++11 Test_name.c
+"Test_name.c", line 11: error: no instance of function template "foo" matches the argument list
+            argument types are: (int)
+    foo<TemplatedIncomplete<int*, int*>>(0);
+    ^
+"Test_name.c", line 8: note: parameter number 1 of function template "foo" has type "TemplatedIncomplete<int *, int *>" which cannot be completed
+  template<typename T> void foo(T) { };
+                            ^
+
+1 error detected in the compilation of "Test_name.c".

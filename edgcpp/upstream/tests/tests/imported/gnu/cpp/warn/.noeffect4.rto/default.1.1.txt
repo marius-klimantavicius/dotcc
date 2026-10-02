@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 77: warning: expression has no effect
+    x, I;
+    ^
+
+"Test_name.c", line 81: error: invalid type conversion
+    reinterpret_cast<int> (x.Foo ()); // { dg-error "invalid cast" }
+    ^
+
+"Test_name.c", line 84: warning: expression has no effect
+    reinterpret_cast<int *> (&x);// { dg-warning "no effect" }
+    ^
+
+"Test_name.c", line 85: warning: expression has no effect
+    const_cast<X &> (x);         // { dg-warning "no effect" }
+    ^
+
+"Test_name.c", line 86: warning: expression has no effect
+    sizeof (x++);                // { dg-warning "no effect" }
+    ^
+
+"Test_name.c", line 87: warning: expression has no effect
+    __alignof__ (x++);           // { dg-warning "no effect" }
+    ^
+
+1 error detected in the compilation of "Test_name.c".

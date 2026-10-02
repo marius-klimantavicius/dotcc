@@ -1,0 +1,49 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 28: warning: variable "lgood1" was declared but never referenced
+    int lgood1;
+        ^
+
+"Test_name.c", line 29: warning: variable "lgood2" was declared but never referenced
+    static int lgood2;
+               ^
+
+"Test_name.c", line 32: warning: variable "lgood3" was declared but never referenced
+    int lgood3;
+        ^
+
+"Test_name.c", line 33: warning: variable "lgood4" was declared but never referenced
+    static int lgood4;
+               ^
+
+"Test_name.c", line 53: warning: variable "x" was declared but never referenced
+      static int x = 0; // no-warn
+                 ^
+
+"Test_name.c", line 18: warning: variable "vgood1" was declared but never referenced
+  static int vgood1;
+             ^
+
+"Test_name.c", line 23: warning: variable "vgood3" was declared but never referenced
+  } vgood3;
+    ^
+
+"Test_name.c", line 31: warning: function "fgood3" was declared but never referenced
+  static void fgood3(void) {
+              ^
+
+"Test_name.c", line 63: warning: variable "const_var" was declared but never referenced
+  const int const_var = 0;
+            ^
+
+"Test_name.c", line 64: warning: variable "constexpr_var" was declared but never referenced
+  constexpr int constexpr_var = 0;
+                ^
+
+"Test_name.c", line 48: warning: variable "<unnamed>::mgood4" was declared but never referenced
+    int mgood4;
+        ^
+
+"Test_name.c", line 59: warning: variable "<unnamed>::vgood4" was declared but never referenced
+    int vgood4;
+        ^
+

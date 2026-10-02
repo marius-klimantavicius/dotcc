@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++23 Test_name.c
+"Test_name.c", line 19: error: call to consteval function "ns1_1::lambda []() static->int::operator int (*)()" did not produce a valid constant expression
+    int (*f2)(void) = lstatic;
+                      ^
+"Test_name.c", line 19: note: address of consteval function "lambda []() static->int" in constant expression result
+    int (*f2)(void) = lstatic;
+                      ^
+
+"Test_name.c", line 33: warning: variable "L" was declared but never referenced
+      auto L = []() static { return x; };
+           ^
+
+1 error detected in the compilation of "Test_name.c".

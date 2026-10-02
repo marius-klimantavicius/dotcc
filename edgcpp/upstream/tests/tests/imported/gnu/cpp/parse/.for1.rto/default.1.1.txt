@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+At end of source: error: expected an expression
+
+At end of source: error: expected a ";"
+
+At end of source: error: expected a "}"
+"for1.C", line 1: note: to match this "{"
+  void foo() { for (;;)  // { dg-error "at end of input" "" { target *-*-* } 0 }
+             ^
+
+3 errors detected in the compilation of "Test_name.c".

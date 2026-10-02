@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c89 Test_name.c
+"Test_name.c", line 18: warning: unrecognized character escape sequence
+  #if L'\u00a1'		/* { dg-warning "only valid" "\u is unknown in C89" } */
+        ^
+
+"Test_name.c", line 18: warning: too many characters in character literal -- extra leading characters ignored
+  #if L'\u00a1'		/* { dg-warning "only valid" "\u is unknown in C89" } */
+      ^
+
+"Test_name.c", line 26: warning: unrecognized character escape sequence
+    c = L'\u00a1';	/* { dg-warning "only valid" "\u is unknown in C89" } */
+          ^
+
+"Test_name.c", line 26: warning: too many characters in character literal -- extra leading characters ignored
+    c = L'\u00a1';	/* { dg-warning "only valid" "\u is unknown in C89" } */
+        ^
+
+"Test_name.c", line 23: warning: variable "c" was set but never used
+    int c = '\a';		/* { dg-warning "traditional" "traditional bell" } */
+        ^
+

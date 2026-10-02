@@ -1,0 +1,6 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 7: error: type qualifier on a reference type is not allowed
+    char (&const constr)[32] = carray;
+           ^
+
+1 error detected in the compilation of "Test_name.c".

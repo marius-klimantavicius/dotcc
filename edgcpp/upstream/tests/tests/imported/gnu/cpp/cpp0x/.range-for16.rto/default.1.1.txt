@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 18: error: a range-based "for" statement cannot operate on an array of unknown size or incomplete type "int []"
+      for (int n : b); // { dg-error "incomplete type" }
+                   ^
+
+"Test_name.c", line 19: error: a range-based "for" statement cannot operate on an array of unknown size or incomplete type "S [10]"
+      for (S &n : c); // { dg-error "incomplete type" }
+                  ^
+
+"Test_name.c", line 20: error: a range-based "for" statement cannot operate on an array of unknown size or incomplete type "S []"
+      for (S &n : d); // { dg-error "incomplete type" }
+                  ^
+
+"Test_name.c", line 21: error: this range-based "for" statement requires a suitable "begin" function and none was found
+      for (int n : *c); // { dg-error "incomplete type" }
+                   ^
+
+"Test_name.c", line 21: error: this range-based "for" statement requires a suitable "end" function and none was found
+      for (int n : *c); // { dg-error "incomplete type" }
+                   ^
+
+5 errors detected in the compilation of "Test_name.c".

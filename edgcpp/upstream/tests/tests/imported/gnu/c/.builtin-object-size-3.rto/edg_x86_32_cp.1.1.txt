@@ -1,0 +1,48 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./builtin-object-size-common.h", line 1: warning: declaration of "size_t" does not match the expected type "unsigned int"
+  typedef long unsigned int size_t;
+                            ^
+
+"./builtin-object-size-3.c", line 117: warning: arithmetic on pointer to void or function type
+    r = memcpy (r + 2, "b", 2) + 2;
+                  ^
+
+"./builtin-object-size-3.c", line 117: warning: arithmetic on pointer to void or function type
+    r = memcpy (r + 2, "b", 2) + 2;
+                               ^
+
+"./builtin-object-size-3.c", line 131: warning: arithmetic on pointer to void or function type
+    r = memset (r + 2, 'b', 2) + 2;
+                  ^
+
+"./builtin-object-size-3.c", line 131: warning: arithmetic on pointer to void or function type
+    r = memset (r + 2, 'b', 2) + 2;
+                               ^
+
+"./builtin-object-size-3.c", line 140: warning: arithmetic on pointer to void or function type
+    r = strcpy (r + 2, "cd") + 2;
+                  ^
+
+"./builtin-object-size-3.c", line 198: warning: arithmetic on pointer to void or function type
+    if (__builtin_object_size (r + 2, 2) != sizeof (L"abcd\0efg") - 2)
+                                 ^
+
+"./builtin-object-size-3.c", line 544: warning: subscript out of range
+    char *p = &t.buf2[-4];
+                     ^
+
+"./builtin-object-size-3.c", line 555: warning: subscript out of range
+    p = &t.buf[-4];
+              ^
+
+"./builtin-object-size-3.c", line 719: warning: missing return statement at end of non-void function "test11"
+  }
+  ^
+
+eccp: diagnostics generated from compilation of Test_name.int.c:
+./builtin-object-size-common.h:10:14: error: conflicting types for 'memcpy'; have 'void *(void *, const void *, size_t)' {aka 'void *(void *, const void *, long unsigned int)'}
+eccptmp/Test_name.int.c:4:7: note: previous declaration of 'memcpy' with type 'void *(void *, const void *, unsigned int)'
+./builtin-object-size-common.h:11:14: error: conflicting types for 'memset'; have 'void *(void *, int,  size_t)' {aka 'void *(void *, int,  long unsigned int)'}
+eccptmp/Test_name.int.c:5:7: note: previous declaration of 'memset' with type 'void *(void *, int,  unsigned int)'
+eccp: end of diagnostics from compilation of Test_name.int.c
+eccp: gcc compilation of Test_name.int.c returned an exit status of 1

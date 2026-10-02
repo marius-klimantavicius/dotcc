@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --set_flag coroutines -tused --c++20 Test_name.c
+"Test_name.c", line 10: error: function "A::promise_type::return_value" must return void
+      int return_value(const A&) { return 1; }
+          ^
+
+1 error detected in the compilation of "Test_name.c".

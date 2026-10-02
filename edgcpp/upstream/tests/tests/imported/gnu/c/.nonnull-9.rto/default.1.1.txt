@@ -1,0 +1,45 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c17 --strict_gnu Test_name.c
+"Test_name.c", line 7: warning: unknown attribute "nonnull_if_nonzero"
+  extern void func1 () __attribute__((nonnull_if_nonzero)); /* { dg-error "wrong number of arguments specified for 'nonnull_if_nonzero' attribute" } */
+                                      ^
+
+"Test_name.c", line 10: warning: unknown attribute "nonnull_if_nonzero"
+  extern void func2 (char *) __attribute__((nonnull_if_nonzero(1))); /* { dg-error "wrong number of arguments specified for 'nonnull_if_nonzero' attribute" } */
+                                            ^
+
+"Test_name.c", line 13: warning: unknown attribute "nonnull_if_nonzero"
+  extern void func3 (char *) __attribute__((nonnull_if_nonzero(1, 2, 3))); /* { dg-error "wrong number of arguments specified for 'nonnull_if_nonzero' attribute" } */
+                                            ^
+
+"Test_name.c", line 16: warning: unknown attribute "nonnull_if_nonzero"
+  extern void func4 (char *, int) __attribute__((nonnull_if_nonzero(3, 2))); /* { dg-warning "'nonnull_if_nonzero' attribute argument 1 value '3' exceeds the number of function parameters 2" } */
+                                                 ^
+
+"Test_name.c", line 18: warning: unknown attribute "nonnull_if_nonzero"
+  extern void func5 (char *, int) __attribute__((nonnull_if_nonzero(1, 3))); /* { dg-warning "nonnull_if_nonzero' attribute argument 2 value '3' exceeds the number of function parameters 2" } */
+                                                 ^
+
+"Test_name.c", line 20: warning: unknown attribute "nonnull_if_nonzero"
+  extern void func6 (char *, int) __attribute__((nonnull_if_nonzero (foo, 2))); /* { dg-warning ".nonnull_if_nonzero. attribute argument 1 is invalid" } */
+                                                 ^
+
+"Test_name.c", line 23: warning: unknown attribute "nonnull_if_nonzero"
+  extern void func7 (char *, int) __attribute__((nonnull_if_nonzero (1, bar))); /* { dg-warning ".nonnull_if_nonzero. attribute argument 2 is invalid" } */
+                                                 ^
+
+"Test_name.c", line 26: warning: unknown attribute "nonnull_if_nonzero"
+  extern void func8 (int, int) __attribute__((nonnull_if_nonzero(1, 2))); /* { dg-warning "'nonnull_if_nonzero' attribute argument 1 value '1' refers to parameter type 'int'" } */
+                                              ^
+
+"Test_name.c", line 28: warning: unknown attribute "nonnull_if_nonzero"
+  extern void func9 (char *, float) __attribute__((nonnull_if_nonzero(1, 2))); /* { dg-warning "'nonnull_if_nonzero' attribute argument 2 value '2' refers to parameter type 'float'" } */
+                                                   ^
+
+"Test_name.c", line 30: warning: unknown attribute "nonnull_if_nonzero"
+  extern void func10 (char *, _Bool) __attribute__((nonnull_if_nonzero(1, 2))); /* { dg-warning "'nonnull_if_nonzero' attribute argument 2 value '2' refers to parameter type '_Bool'" } */
+                                                    ^
+
+"Test_name.c", line 32: warning: unknown attribute "nonnull_if_nonzero"
+  extern void func11 (char *, char *) __attribute__((nonnull_if_nonzero(1, 2))); /* { dg-warning "'nonnull_if_nonzero' attribute argument 2 value '2' refers to parameter type 'char \\\*'" } */
+                                                     ^
+

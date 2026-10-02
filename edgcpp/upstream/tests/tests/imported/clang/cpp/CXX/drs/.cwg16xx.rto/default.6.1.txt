@@ -1,0 +1,231 @@
+fe_only -DTEST_NUMBER=6 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++23 --exceptions --exceptions Test_name.c
+"Test_name.c", line 45: warning: variable "f" was set but never used
+      auto f = [=]{ return i + j; };
+           ^
+
+"Test_name.c", line 79: error: more than one instance of overloaded function "cwg1631::with_error::f" matches the argument list:
+            function "cwg1631::with_error::f(int, cwg1631::A)" (declared at line 75)
+            function "cwg1631::with_error::f(int, cwg1631::A, int)" (declared at line 76)
+            argument types are: ({...}, {...})
+        f({0}, {{1}});
+        ^
+"Test_name.c", line 74: note: function "cwg1631::with_error::f(cwg1631::B, int)" does not match because argument #2 does not match parameter
+      void f(B, int);           // TODO: expected- note {{candidate function}}
+           ^
+
+"Test_name.c", line 103: error: enum "cwg1638::A<T>::F [with T=short]" (declared at line 92) was previously declared with a different base type
+    template<> enum class A<short>::F;
+                                    ^
+
+"Test_name.c", line 106: error: enum "cwg1638::A<T>::E [with T=char]" (declared at line 91) was previously declared with a different base type
+    template<> enum class A<char>::E : char;
+                                   ^
+
+"Test_name.c", line 109: error: enum "cwg1638::A<T>::F [with T=char]" (declared at line 92) was previously declared with a different base type
+    template<> enum class A<char>::F : int;
+                                   ^
+
+"Test_name.c", line 115: error: enum "cwg1638::A<T>::E [with T=unsigned int]" is not an entity that can be instantiated
+    template enum class A<unsigned>::E;
+             ^
+
+"Test_name.c", line 117: error: "enum class" and "enum struct" cannot be used here (use plain "enum" instead)
+    enum class A<unsigned>::E *e;
+                            ^
+
+"Test_name.c", line 141: error: more than one instance of constructor "cwg1645::B::B" matches the argument list:
+            function "cwg1645::A::A(int, int)" (declared at line 133), inherited via using decl at line 138
+            function "cwg1645::A::A(int, float)" (declared at line 132), inherited via using decl at line 138
+            argument types are: (int)
+    constexpr B a(0);
+                  ^
+"Test_name.c", line 138: note: number of parameters of function "cwg1645::B::A(int, int, int)" does not match the call
+      using A::A; // #cwg1645-using
+      ^
+"Test_name.c", line 137: note: number of parameters of function "cwg1645::B::B()" does not match the call
+    struct B : A {
+           ^
+
+"Test_name.c", line 147: error: more than one instance of constructor "cwg1645::B::B" matches the argument list:
+            function "cwg1645::A::A(int, int, int)" (declared at line 134), inherited via using decl at line 138
+            function "cwg1645::A::A(int, int)" (declared at line 133), inherited via using decl at line 138
+            argument types are: (int, int)
+    constexpr B b(0, 0);
+                  ^
+"Test_name.c", line 137: note: number of parameters of function "cwg1645::B::B(const cwg1645::B &)" does not match the call
+    struct B : A {
+           ^
+"Test_name.c", line 137: note: number of parameters of function "cwg1645::B::B(cwg1645::B &&)" does not match the call
+    struct B : A {
+           ^
+"Test_name.c", line 137: note: number of parameters of function "cwg1645::B::B()" does not match the call
+    struct B : A {
+           ^
+
+"Test_name.c", line 158: error: static assertion failed with ""
+    static_assert(&a + 1 == &b, "");
+    ^
+
+"Test_name.c", line 165: error: incrementing a bool value is not allowed
+      ++b;
+        ^
+
+"Test_name.c", line 168: error: incrementing a bool value is not allowed
+      b++;
+      ^
+
+"Test_name.c", line 171: error: bool type is not allowed
+      --b;
+        ^
+
+"Test_name.c", line 173: error: bool type is not allowed
+      b--;
+      ^
+
+"Test_name.c", line 194: error: "cwg1658::DefCtor::A::A()" (declared at line 182) is inaccessible
+      struct E : A { E(); virtual void foo() = 0; }; // #cwg1658-E1
+                 ^
+
+"Test_name.c", line 202: error: "cwg1658::DefCtor::A::A()" (declared at line 182) is inaccessible
+      struct F : virtual A { F(); }; // #cwg1658-F1
+                         ^
+
+"Test_name.c", line 211: error: "cwg1658::DefCtor::B::~B() noexcept" (declared at line 183) is inaccessible
+      struct G : B { G(); virtual void foo() = 0; }; // #cwg1658-G1
+                 ^
+
+"Test_name.c", line 219: error: "cwg1658::DefCtor::B::~B() noexcept" (declared at line 183) is inaccessible
+      struct H : virtual B { H(); }; // #cwg1658-H1
+                         ^
+
+"Test_name.c", line 237: error: "cwg1658::Dtor::B::~B() noexcept" (declared at line 230) is inaccessible
+      G::~G() = default; // #cwg1658-G2-dtor
+         ^
+
+"Test_name.c", line 245: error: "cwg1658::Dtor::B::~B() noexcept" (declared at line 230) is inaccessible
+      H::~H() = default; // #cwg1658-H2-dtor
+         ^
+
+"Test_name.c", line 261: error: no default constructor exists for class "cwg1658::MemInit::A"
+        C() {}
+            ^
+
+"Test_name.c", line 274: warning: the "throw()" specification is not part of C++20 and later
+        friend B::B(const B&) throw();
+                              ^
+
+"Test_name.c", line 274: error: no instance of overloaded function "cwg1658::CopyCtorParamType::B::B" matches the specified type
+        friend B::B(const B&) throw();
+                  ^
+
+"Test_name.c", line 292: error: "cwg1658::CopyCtor::A::A(const cwg1658::CopyCtor::A &)" (declared at line 281) is inaccessible
+      struct E : A { E(const E&); E(E&&); virtual void foo() = 0; }; // #cwg1658-E5
+                 ^
+
+"Test_name.c", line 292: error: "cwg1658::CopyCtor::A::A(cwg1658::CopyCtor::A &&)" (declared at line 281) is inaccessible
+      struct E : A { E(const E&); E(E&&); virtual void foo() = 0; }; // #cwg1658-E5
+                 ^
+
+"Test_name.c", line 309: error: "cwg1658::CopyCtor::A::A(const cwg1658::CopyCtor::A &)" (declared at line 281) is inaccessible
+      struct F : virtual A { F(const F&); F(F&&); }; // #cwg1658-F5
+                         ^
+
+"Test_name.c", line 309: error: "cwg1658::CopyCtor::A::A(cwg1658::CopyCtor::A &&)" (declared at line 281) is inaccessible
+      struct F : virtual A { F(const F&); F(F&&); }; // #cwg1658-F5
+                         ^
+
+"Test_name.c", line 338: error: static assertion failed with ""
+    static_assert(!__is_standard_layout(C), "");
+    ^
+
+"Test_name.c", line 349: error: static assertion failed with ""
+    static_assert(!__is_standard_layout(Y<E>), "");
+    ^
+
+"Test_name.c", line 351: error: static assertion failed with ""
+    static_assert(!__is_standard_layout(Y<G>), "");
+    ^
+
+"Test_name.c", line 352: error: static assertion failed with ""
+    static_assert(!__is_standard_layout(Y<H>), "");
+    ^
+
+"Test_name.c", line 375: error: no operator "+" matches these operands
+            operand types are: cwg1687::To<int *> + double
+    int *a = To<int*>() + 100.0;
+                        ^
+"Test_name.c", line 375: note: built-in operator+(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    int *a = To<int*>() + 100.0;
+                        ^
+"Test_name.c", line 375: note: built-in operator+(<pointer to object>, <ptrdiff_t>) does not match because argument #2 does not match parameter
+    int *a = To<int*>() + 100.0;
+                        ^
+"Test_name.c", line 375: note: built-in operator+(<ptrdiff_t>, <pointer to object>) does not match because argument #1 does not match parameter
+    int *a = To<int*>() + 100.0;
+                        ^
+
+"Test_name.c", line 387: error: comparison between two different enum types ("cwg1687::E1" and "cwg1687::E2")
+    auto c = To<E1>() <=> To<E2>();
+                      ^
+
+"Test_name.c", line 387: error: no valid std::strong_ordering type found (<compare> must be included)
+    auto c = To<E1>() <=> To<E2>();
+                      ^
+
+"Test_name.c", line 420: warning: variable "e" is used before its value is set
+      f(e); // ok
+        ^
+
+"Test_name.c", line 421: error: identifier "g" is undefined
+      g(e);
+      ^
+
+"Test_name.c", line 449: error: the generated default constructor for "cwg1696::std_examples::A" cannot be used in an initializer for its own data member
+        const A &y = { A{} };
+                         ^
+
+"Test_name.c", line 527: error: the definition of std::initializer_list does not contain the expected constructor
+      haslist1(int i) : il{i, 2, 3} {}
+                          ^
+
+"Test_name.c", line 536: error: the definition of std::initializer_list does not contain the expected constructor
+    haslist2::haslist2() : il{1, 2} {}
+                             ^
+
+"Test_name.c", line 541: warning: creation of an std::initializer_list object in a field initializer is unlikely to work as expected because the underlying array will be destroyed at the end of the full expression
+      std::initializer_list<int> il = {1, 2, 3};
+                                      ^
+
+"Test_name.c", line 541: error: the definition of std::initializer_list does not contain the expected constructor
+      std::initializer_list<int> il = {1, 2, 3};
+                                      ^
+
+"Test_name.c", line 548: warning: creation of an std::initializer_list object in a field initializer is unlikely to work as expected because the underlying array will be destroyed at the end of the full expression
+      std::initializer_list<int> il = {1, 2, 3}; // #cwg1696-il-4
+                                      ^
+
+"Test_name.c", line 548: error: the definition of std::initializer_list does not contain the expected constructor
+      std::initializer_list<int> il = {1, 2, 3}; // #cwg1696-il-4
+                                      ^
+
+"Test_name.c", line 553: warning: creation of an std::initializer_list object in a field initializer is unlikely to work as expected because the underlying array will be destroyed at the end of the full expression
+      std::initializer_list<int> il = {1, 2, 3}; // #cwg1696-il-5
+                                      ^
+
+"Test_name.c", line 553: error: the definition of std::initializer_list does not contain the expected constructor
+      std::initializer_list<int> il = {1, 2, 3}; // #cwg1696-il-5
+                                      ^
+
+"Test_name.c", line 141: warning: variable "cwg1645::a" was declared but never referenced
+    constexpr B a(0);
+                ^
+
+"Test_name.c", line 147: warning: variable "cwg1645::b" was declared but never referenced
+    constexpr B b(0, 0);
+                ^
+
+"Test_name.c", line 398: error: function "cwg1690::N::f", declared using a local type, must be defined in this translation unit
+      void f(decltype(lambda()));
+           ^
+
+40 errors detected in the compilation of "Test_name.c".

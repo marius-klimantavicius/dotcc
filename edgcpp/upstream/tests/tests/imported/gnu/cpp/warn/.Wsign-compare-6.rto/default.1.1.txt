@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 13: warning: expression has no effect
+    i < 5u;  // { dg-warning "5:comparison of integer expressions of different signedness" }
+    ^
+
+"Test_name.c", line 14: warning: expression has no effect
+    ic < 5u;     
+    ^
+
+"Test_name.c", line 15: warning: expression has no effect
+    FIVE < 5u;
+    ^
+

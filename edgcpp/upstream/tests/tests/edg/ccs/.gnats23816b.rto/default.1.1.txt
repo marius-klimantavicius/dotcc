@@ -1,0 +1,9 @@
+cpfe -DTEST_NUMBER=1 --c++20 Test_name.c
+"Test_name.c", line 14: warning: variable "r" was declared but never referenced
+    int (&r)[] = arr;  // Now accepted
+          ^
+
+"Test_name.c", line 15: warning: variable "p" was declared but never referenced
+    int (*p)[] = &arr; // Now accepted
+          ^
+

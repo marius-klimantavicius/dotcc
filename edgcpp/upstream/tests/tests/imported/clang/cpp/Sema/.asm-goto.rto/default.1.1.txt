@@ -1,0 +1,23 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 14: error: transfer of control bypasses initialization of:
+            variable "s1" (declared at line 16)
+    goto DirectJump;
+    ^
+
+"Test_name.c", line 40: warning: statement is unreachable
+      p = &&FOO;
+      ^
+
+"Test_name.c", line 42: warning: statement is unreachable
+      return;
+      ^
+
+"Test_name.c", line 58: warning: variable "a" was declared but never referenced
+    return ({int a[n];label_true: 2;});
+                 ^
+
+"Test_name.c", line 60: warning: variable "b" was declared but never referenced
+    int b[n];
+        ^
+
+1 error detected in the compilation of "Test_name.c".

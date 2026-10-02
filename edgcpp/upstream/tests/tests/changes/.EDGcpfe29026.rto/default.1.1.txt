@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --c++26 --gnu=160100 Test_name.c
+"Test_name.c", line 28: warning: interpreter: a negative argument [negative]
+    if (i < 0) __builtin_constexpr_diag(1, "negative", "a negative argument");
+                                       ^
+
+"Test_name.c", line 31: warning: variable "j" was declared but never referenced
+  constexpr int j = f(-1);
+                ^
+

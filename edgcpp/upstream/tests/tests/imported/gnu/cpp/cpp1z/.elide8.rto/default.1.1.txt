@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 15: error: "immovable::immovable(immovable &&)" (declared at line 7), required for copy that was eliminated, cannot be referenced -- it is a deleted function
+    immovable m = A().f(); // { dg-error "deleted" "" { target c++14_down } }
+                  ^
+
+"Test_name.c", line 16: error: "immovable::immovable(immovable &&)" (declared at line 7), required for copy that was eliminated, cannot be referenced -- it is a deleted function
+    return A().f(); // { dg-error "deleted" "" { target c++14_down } }
+           ^
+
+"Test_name.c", line 25: error: "immovable::immovable(immovable &&)" (declared at line 7), required for copy that was eliminated, cannot be referenced -- it is a deleted function
+    immovable m = b->f(); // { dg-error "deleted" "" { target c++14_down } }
+                  ^
+
+"Test_name.c", line 26: error: "immovable::immovable(immovable &&)" (declared at line 7), required for copy that was eliminated, cannot be referenced -- it is a deleted function
+    return b->f(); // { dg-error "deleted" "" { target c++14_down } }
+           ^
+
+4 errors detected in the compilation of "Test_name.c".

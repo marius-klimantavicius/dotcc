@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=2 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 13: error: expected a ";"
+    x1: while (1) break x1; // disabled-error {{named 'break' is only supported in C2y}}
+                        ^
+
+"Test_name.c", line 14: error: expected a ";"
+    x2: while (1) continue x2; // disabled-error {{named 'continue' is only supported in C2y}}
+                           ^
+
+"Test_name.c", line 13: warning: label "x1" was declared but never referenced
+    x1: while (1) break x1; // disabled-error {{named 'break' is only supported in C2y}}
+    ^
+
+"Test_name.c", line 14: warning: label "x2" was declared but never referenced
+    x2: while (1) continue x2; // disabled-error {{named 'continue' is only supported in C2y}}
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

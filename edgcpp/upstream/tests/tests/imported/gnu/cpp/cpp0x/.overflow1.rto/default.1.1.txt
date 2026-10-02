@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: error: excessive recursion at instantiation of member "Fib<i>::value [with i=31LL]"
+      = Fib<i-1>::value + Fib<i-2>::value; // { dg-error "overflow" }
+        ^
+          detected during:
+            instantiation of class "Fib<i> [with i=32LL]" at line 9
+            instantiation of class "Fib<i> [with i=33LL]" at line 9
+            instantiation of class "Fib<i> [with i=34LL]" at line 9
+            instantiation of class "Fib<i> [with i=35LL]" at line 9
+            instantiation of class "Fib<i> [with i=36LL]" at line 9
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "Fib<i> [with i=91LL]" at line 9
+            instantiation of class "Fib<i> [with i=92LL]" at line 9
+            instantiation of class "Fib<i> [with i=93LL]" at line 9
+            instantiation of class "Fib<i> [with i=94LL]" at line 9
+            instantiation of class "Fib<i> [with i=95LL]" at line 26
+
+"Test_name.c", line 9: error: excessive recursion at instantiation of member "Fib<i>::value [with i=30LL]"
+      = Fib<i-1>::value + Fib<i-2>::value; // { dg-error "overflow" }
+                          ^
+          detected during:
+            instantiation of class "Fib<i> [with i=32LL]" at line 9
+            instantiation of class "Fib<i> [with i=33LL]" at line 9
+            instantiation of class "Fib<i> [with i=34LL]" at line 9
+            instantiation of class "Fib<i> [with i=35LL]" at line 9
+            instantiation of class "Fib<i> [with i=36LL]" at line 9
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "Fib<i> [with i=91LL]" at line 9
+            instantiation of class "Fib<i> [with i=92LL]" at line 9
+            instantiation of class "Fib<i> [with i=93LL]" at line 9
+            instantiation of class "Fib<i> [with i=94LL]" at line 9
+            instantiation of class "Fib<i> [with i=95LL]" at line 26
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: error: variable "a1" has an uninitialized const or reference member
+  A a1 = {};  // { dg-error "uninitialized reference" }
+    ^
+
+"Test_name.c", line 11: error: variable "a2" has an uninitialized const or reference member
+  A a2{};     // { dg-error "uninitialized reference" }
+    ^
+
+"Test_name.c", line 17: error: variable "b1" has an uninitialized const or reference member
+  B b1 = {};  // { dg-error "uninitialized reference" }
+    ^
+
+"Test_name.c", line 18: error: variable "b2" has an uninitialized const or reference member
+  B b2{};     // { dg-error "uninitialized reference" }
+    ^
+
+4 errors detected in the compilation of "Test_name.c".

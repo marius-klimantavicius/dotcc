@@ -1,0 +1,46 @@
+fe_only -DTEST_NUMBER=3 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c89 -DOMIT_VARIADIC_MACRO_ARGS Test_name.c
+"Test_name.c", line 18: error: expected a declaration
+  zero()
+  ^
+
+"Test_name.c", line 19: error: too many arguments in invocation of macro "zero"
+  zero(1);          /* expected-error {{too many arguments provided to function-like macro invocation}} */
+       ^
+
+"Test_name.c", line 20: error: too many arguments in invocation of macro "zero"
+  zero(1, 2, 3);    /* expected-error {{too many arguments provided to function-like macro invocation}} */
+       ^
+
+"Test_name.c", line 20: error: expected a declaration
+  zero(1, 2, 3);    /* expected-error {{too many arguments provided to function-like macro invocation}} */
+  ^
+
+"Test_name.c", line 22: error: expected a declaration
+  one()   /* ok */
+  ^
+
+"Test_name.c", line 24: error: too many arguments in invocation of macro "one"
+  one(a,)           /* expected-error {{too many arguments provided to function-like macro invocation}} \
+        ^
+
+"Test_name.c", line 26: error: too many arguments in invocation of macro "one"
+  one(a, b)         /* expected-error {{too many arguments provided to function-like macro invocation}} */
+         ^
+
+"Test_name.c", line 28: error: too few arguments in invocation of macro "two"
+  two()       /* expected-error {{too few arguments provided to function-like macro invocation}} */
+      ^
+
+"Test_name.c", line 29: error: too few arguments in invocation of macro "two"
+  two(a)      /* expected-error {{too few arguments provided to function-like macro invocation}} */
+       ^
+
+"Test_name.c", line 32: error: too many arguments in invocation of macro "two"
+  two(a,b,c)  /* expected-error {{too many arguments provided to function-like macro invocation}} */
+          ^
+
+"Test_name.c", line 37: error: too many arguments in invocation of macro "two"
+      )     /* expected-warning {{empty macro arguments are a C99 feature}} */
+      ^
+
+11 errors detected in the compilation of "Test_name.c".

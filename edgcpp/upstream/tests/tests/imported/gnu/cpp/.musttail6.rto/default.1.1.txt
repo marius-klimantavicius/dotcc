@@ -1,0 +1,41 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 --no_strict_gnu Test_name.c
+"Test_name.c", line 15: warning: unknown attribute "noclone"
+  Foo __attribute__((noinline,noclone,noipa))
+                              ^
+
+"Test_name.c", line 15: warning: unknown attribute "noipa"
+  Foo __attribute__((noinline,noclone,noipa))
+                                      ^
+
+"Test_name.c", line 21: warning: unknown attribute "noclone"
+  Foo __attribute__((noinline,noclone,noipa))
+                              ^
+
+"Test_name.c", line 21: warning: unknown attribute "noipa"
+  Foo __attribute__((noinline,noclone,noipa))
+                                      ^
+
+"Test_name.c", line 24: warning: unknown attribute "gnu::musttail"
+    [[gnu::musttail]] return callee (i + 1);
+      ^
+
+"Test_name.c", line 28: warning: unknown attribute "noclone"
+  T __attribute__((noinline,noclone,noipa)) foo (T i)
+                            ^
+
+"Test_name.c", line 28: warning: unknown attribute "noipa"
+  T __attribute__((noinline,noclone,noipa)) foo (T i)
+                                    ^
+
+"Test_name.c", line 36: warning: unknown attribute "gnu::musttail"
+    [[gnu::musttail]] return foo<int>(1);
+      ^
+
+"Test_name.c", line 47: warning: unknown attribute "gnu::musttail"
+    [[gnu::musttail]] return caller3<int>(i + 1);
+      ^
+
+"Test_name.c", line 42: warning: unknown attribute "gnu::musttail"
+    [[gnu::musttail]] return foo<T>(v);
+      ^
+

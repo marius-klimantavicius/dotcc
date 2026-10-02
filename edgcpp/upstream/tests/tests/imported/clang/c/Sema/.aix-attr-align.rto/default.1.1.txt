@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 31: warning: parameter "a" was set but never used
+  static void static_baz(int a, int b, int *c, int d, int *e, int f, struct S sp2) {
+                             ^
+

@@ -1,0 +1,5 @@
+./a.out
+a: 4
+b: 0
+int[]: 4
+const void: 1

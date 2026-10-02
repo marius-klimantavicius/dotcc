@@ -1,0 +1,105 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 6: warning: unrecognized #pragma
+  #pragma acc enter data copyin (a, b) async wait
+          ^
+
+"Test_name.c", line 7: warning: unrecognized #pragma
+  #pragma acc enter data create (b[20:30]) async wait
+          ^
+
+"Test_name.c", line 9: warning: unrecognized #pragma
+  #pragma acc enter data (a)
+          ^
+
+"Test_name.c", line 13: warning: unrecognized #pragma
+  #pragma acc enter data create (b(1:10)) /* { dg-error "expected '\\\)' before '\\\(' token" } */
+          ^
+
+"Test_name.c", line 14: warning: unrecognized #pragma
+  #pragma acc exit data delete (a) if (0)
+          ^
+
+"Test_name.c", line 15: warning: unrecognized #pragma
+  #pragma acc exit data copyout (b) if (a)
+          ^
+
+"Test_name.c", line 16: warning: unrecognized #pragma
+  #pragma acc exit data delete (b)
+          ^
+
+"Test_name.c", line 17: warning: unrecognized #pragma
+  #pragma acc enter /* { dg-error "expected 'data' after" } */
+          ^
+
+"Test_name.c", line 18: warning: unrecognized #pragma
+  #pragma acc exit /* { dg-error "expected 'data' after" } */
+          ^
+
+"Test_name.c", line 19: warning: unrecognized #pragma
+  #pragma acc enter data /* { dg-error "has no data movement clause" } */
+          ^
+
+"Test_name.c", line 20: warning: unrecognized #pragma
+  #pragma acc exit data /* { dg-error "has no data movement clause" } */
+          ^
+
+"Test_name.c", line 21: warning: unrecognized #pragma
+  #pragma acc enter Data /* { dg-error "expected 'data' after" } */
+          ^
+
+"Test_name.c", line 22: warning: unrecognized #pragma
+  #pragma acc exit copyout (b) /* { dg-error "expected 'data' after" } */
+          ^
+
+"Test_name.c", line 29: warning: unrecognized #pragma
+  #pragma acc enter data copyin (a, b) async wait
+          ^
+
+"Test_name.c", line 30: warning: unrecognized #pragma
+  #pragma acc enter data create (b[20:30]) async wait
+          ^
+
+"Test_name.c", line 32: warning: unrecognized #pragma
+  #pragma acc enter data (a)
+          ^
+
+"Test_name.c", line 36: warning: unrecognized #pragma
+  #pragma acc enter data create (b(1:10)) /* { dg-error "expected '\\\)' before '\\\(' token" } */
+          ^
+
+"Test_name.c", line 37: warning: unrecognized #pragma
+  #pragma acc exit data delete (a) if (0)
+          ^
+
+"Test_name.c", line 38: warning: unrecognized #pragma
+  #pragma acc exit data copyout (b) if (a)
+          ^
+
+"Test_name.c", line 39: warning: unrecognized #pragma
+  #pragma acc exit data delete (b)
+          ^
+
+"Test_name.c", line 40: warning: unrecognized #pragma
+  #pragma acc enter /* { dg-error "expected 'data' after" } */
+          ^
+
+"Test_name.c", line 41: warning: unrecognized #pragma
+  #pragma acc exit /* { dg-error "expected 'data' after" } */
+          ^
+
+"Test_name.c", line 42: warning: unrecognized #pragma
+  #pragma acc enter data /* { dg-error "has no data movement clause" } */
+          ^
+
+"Test_name.c", line 43: warning: unrecognized #pragma
+  #pragma acc exit data /* { dg-error "has no data movement clause" } */
+          ^
+
+"Test_name.c", line 44: warning: unrecognized #pragma
+  #pragma acc enter Data /* { dg-error "expected 'data' after" } */
+          ^
+
+"Test_name.c", line 45: warning: unrecognized #pragma
+  #pragma acc exit copyout (b) /* { dg-error "expected 'data' after" } */
+          ^
+

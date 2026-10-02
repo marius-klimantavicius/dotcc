@@ -1,0 +1,90 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --ms_extensions -w Test_name.c
+"Test_name.c", line 6: error: unknown attribute "code_seg"
+  struct __declspec(code_seg("my_base")) Base1 {};
+                    ^
+
+"Test_name.c", line 13: error: unknown attribute "code_seg"
+  struct __declspec(code_seg("my_derived")) D2 : Base2, Base1 {};
+                    ^
+
+"Test_name.c", line 20: error: unknown attribute "code_seg"
+  struct __declspec(code_seg("base_class")) BaseClass1 {};
+                    ^
+
+"Test_name.c", line 21: error: unknown attribute "code_seg"
+  struct __declspec(code_seg("base_class")) BaseClass2 {};
+                    ^
+
+"Test_name.c", line 29: error: unknown attribute "code_seg"
+  struct __declspec(code_seg("derived_class")) Derived2 : BaseClass2, BaseClass1 {};
+                    ^
+
+"Test_name.c", line 35: error: unknown attribute "code_seg"
+  struct __declspec(code_seg("base_class")) Derived3 : BaseClass2, BaseClass1 {}; //OK
+                    ^
+
+"Test_name.c", line 36: error: unknown attribute "code_seg"
+  struct __declspec(code_seg("base_class")) Derived4 : BaseClass1, BaseClass2 {}; //OK
+                    ^
+
+"Test_name.c", line 39: error: unknown attribute "code_seg"
+  struct __declspec(code_seg("foo_base")) B1 {};
+                    ^
+
+"Test_name.c", line 40: error: unknown attribute "code_seg"
+  struct __declspec(code_seg("foo_base")) B2 {};
+                    ^
+
+"Test_name.c", line 41: error: unknown attribute "code_seg"
+  struct __declspec(code_seg("foo_base")) Derived : B1, B2 {};
+                    ^
+
+"Test_name.c", line 44: error: unknown attribute "code_seg"
+  struct __declspec(code_seg("my_one")) Base {
+                    ^
+
+"Test_name.c", line 48: error: unknown attribute "code_seg"
+  struct __declspec(code_seg("my_two")) Derived5 : virtual Base {
+                    ^
+
+"Test_name.c", line 54: error: unknown attribute "code_seg"
+  struct __declspec(code_seg("my_three")) Derived6 : virtual Base {
+                    ^
+
+"Test_name.c", line 60: error: unknown attribute "code_seg"
+  struct __declspec(code_seg("my_four")) Derived7 : Derived5, Derived6 {};
+                    ^
+
+"Test_name.c", line 67: error: unknown attribute "code_seg"
+  struct __declspec(code_seg("my_class")) BaseClass {
+                    ^
+
+"Test_name.c", line 71: error: unknown attribute "code_seg"
+  struct __declspec(code_seg("my_class")) DerivedClass1 : virtual BaseClass { //OK
+                    ^
+
+"Test_name.c", line 75: error: unknown attribute "code_seg"
+  struct __declspec(code_seg("my_class")) DerivedClass2 : virtual BaseClass { //OK
+                    ^
+
+"Test_name.c", line 79: error: unknown attribute "code_seg"
+  struct __declspec(code_seg("my_derived_one")) DerivedClass3 : DerivedClass1, DerivedClass2 {};
+                    ^
+
+"Test_name.c", line 86: error: unknown attribute "code_seg"
+  struct __declspec(code_seg("foo_one")) Class {
+                    ^
+
+"Test_name.c", line 90: error: unknown attribute "code_seg"
+  struct __declspec(code_seg("foo_one")) Derived_One: virtual Class { //OK
+                    ^
+
+"Test_name.c", line 94: error: unknown attribute "code_seg"
+  struct __declspec(code_seg("foo_one")) Derived_Two : virtual Class { //OK
+                    ^
+
+"Test_name.c", line 98: error: unknown attribute "code_seg"
+  struct __declspec(code_seg("foo_one")) Derived_Three : Derived_One, Derived_Two {}; //OK
+                    ^
+
+22 errors detected in the compilation of "Test_name.c".

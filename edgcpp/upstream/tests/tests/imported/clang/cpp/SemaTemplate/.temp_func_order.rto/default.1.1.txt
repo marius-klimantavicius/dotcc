@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 54: error: more than one instance of overloaded function "f3" matches the argument list:
+            function template "int &f3(T *, U)" (declared at line 46)
+            function template "float &f3(T, U *)" (declared at line 49)
+            argument types are: (int *, int *)
+    f3(ip, ip); // expected-error{{ambiguous}}
+    ^
+
+"Test_name.c", line 75: error: more than one instance of overloaded function "f5" matches the argument list:
+            function template "int &f5(T &, const U &)" (declared at line 69)
+            function template "float &f5(const T &, U &)" (declared at line 72)
+            argument types are: (int, int)
+    f5(i, i); // expected-error{{ambiguous}}
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

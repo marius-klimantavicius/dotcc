@@ -1,0 +1,65 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 8: warning: unknown attribute "noclone"
+  __attribute__((noclone, noinline)) long
+                 ^
+
+"Test_name.c", line 11: warning: shift count is too large
+    long f = (x << 12) | (x >> (64 - 12));
+                               ^
+
+"Test_name.c", line 12: warning: variable "g" was declared but never referenced
+    long g = f;
+         ^
+
+"Test_name.c", line 18: warning: unknown attribute "noclone"
+  __attribute__((noclone, noinline)) long
+                 ^
+
+"Test_name.c", line 22: warning: variable "g" was declared but never referenced
+    long g = f;
+         ^
+
+"Test_name.c", line 28: warning: unknown attribute "noclone"
+  __attribute__((noclone, noinline)) long
+                 ^
+
+"Test_name.c", line 32: warning: variable "g" was declared but never referenced
+    long g = f;
+         ^
+
+"Test_name.c", line 38: warning: unknown attribute "noclone"
+  __attribute__((noclone, noinline)) unsigned int
+                 ^
+
+"Test_name.c", line 42: warning: variable "g" was declared but never referenced
+    unsigned int g = f;
+                 ^
+
+"Test_name.c", line 48: warning: unknown attribute "noclone"
+  __attribute__((noclone, noinline)) unsigned int
+                 ^
+
+"Test_name.c", line 52: warning: variable "g" was declared but never referenced
+    unsigned int g = f;
+                 ^
+
+"Test_name.c", line 58: warning: unknown attribute "noclone"
+  __attribute__((noclone, noinline)) unsigned int
+                 ^
+
+"Test_name.c", line 62: warning: variable "g" was declared but never referenced
+    unsigned int g = f;
+                 ^
+
+"Test_name.c", line 71: warning: integer conversion resulted in truncation
+    f1 (0x123456789abcde0fUL);
+        ^
+
+"Test_name.c", line 72: warning: integer conversion resulted in truncation
+    f2 (0x123456789abcde0fUL, 18);
+        ^
+
+"Test_name.c", line 73: warning: integer conversion resulted in truncation
+    f3 (0x123456789abcde0fUL, 17);
+        ^
+

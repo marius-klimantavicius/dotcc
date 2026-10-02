@@ -1,0 +1,105 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 47: warning: variable "s1" has an uninitialized const field
+    struct S s1; // unsafe-field-warning {{default initialization of an object of type 'struct S' with const member leaves the object uninitialized}} \
+             ^
+
+"Test_name.c", line 47: warning: variable "s1" was declared but never referenced
+    struct S s1; // unsafe-field-warning {{default initialization of an object of type 'struct S' with const member leaves the object uninitialized}} \
+             ^
+
+"Test_name.c", line 50: warning: variable "s2" was declared but never referenced
+    struct S s2 = { 0 };
+             ^
+
+"Test_name.c", line 53: warning: variable "t1" has an uninitialized const field
+    struct T t1; // unsafe-field-warning {{default initialization of an object of type 'struct T' with const member leaves the object uninitialized}} \
+             ^
+
+"Test_name.c", line 53: warning: variable "t1" was declared but never referenced
+    struct T t1; // unsafe-field-warning {{default initialization of an object of type 'struct T' with const member leaves the object uninitialized}} \
+             ^
+
+"Test_name.c", line 56: warning: variable "t2" was declared but never referenced
+    struct T t2 = { { 0 } };
+             ^
+
+"Test_name.c", line 59: warning: variable "u1" was declared but never referenced
+    struct U u1 = { { 0 } };
+             ^
+
+"Test_name.c", line 60: warning: variable "u2" was declared but never referenced
+    struct U u2 = { { 0 }, 0 };
+             ^
+
+"Test_name.c", line 63: warning: variable "v1" has an uninitialized const field
+    struct V v1; // unsafe-field-warning {{default initialization of an object of type 'struct V' with const member leaves the object uninitialized}} \
+             ^
+
+"Test_name.c", line 63: warning: variable "v1" was declared but never referenced
+    struct V v1; // unsafe-field-warning {{default initialization of an object of type 'struct V' with const member leaves the object uninitialized}} \
+             ^
+
+"Test_name.c", line 66: warning: variable "v2" was declared but never referenced
+    struct V v2 = { 0 };
+             ^
+
+"Test_name.c", line 67: warning: variable "v3" was declared but never referenced
+    struct V v3 = { 0, { 0 } };
+             ^
+
+"Test_name.c", line 70: warning: variable "w1" has an uninitialized const field
+    struct W w1; // unsafe-field-warning {{default initialization of an object of type 'struct W' with const member leaves the object uninitialized}} \
+             ^
+
+"Test_name.c", line 70: warning: variable "w1" was declared but never referenced
+    struct W w1; // unsafe-field-warning {{default initialization of an object of type 'struct W' with const member leaves the object uninitialized}} \
+             ^
+
+"Test_name.c", line 73: warning: variable "w2" was declared but never referenced
+    struct W w2 = { 0 };
+             ^
+
+"Test_name.c", line 74: warning: variable "w3" was declared but never referenced
+    struct W w3 = { { 0 }, 0 };
+             ^
+
+"Test_name.c", line 81: warning: variable "z1" was declared but never referenced
+    union Z1 z1;
+             ^
+
+"Test_name.c", line 82: warning: variable "z2" was declared but never referenced
+    union Z2 z2;
+             ^
+
+"Test_name.c", line 99: warning: const variable "a" requires an initializer
+    const int a;        // unsafe-var-warning {{default initialization of an object of type 'const int' leaves the object uninitialized}} \
+               ^
+
+"Test_name.c", line 102: warning: const variable "b" requires an initializer
+    static const int b; // zero-init-var-warning {{default initialization of an object of type 'const int' is incompatible with C++}} \
+                      ^
+
+"Test_name.c", line 99: warning: variable "a" was declared but never referenced
+    const int a;        // unsafe-var-warning {{default initialization of an object of type 'const int' leaves the object uninitialized}} \
+              ^
+
+"Test_name.c", line 102: warning: variable "b" was declared but never referenced
+    static const int b; // zero-init-var-warning {{default initialization of an object of type 'const int' is incompatible with C++}} \
+                     ^
+
+"Test_name.c", line 129: warning: variable "One" was declared but never referenced
+    struct RealFAM One;
+                   ^
+
+"Test_name.c", line 130: warning: variable "Two" was declared but never referenced
+    struct FakeFAM Two;
+                   ^
+
+"Test_name.c", line 131: warning: variable "Three" was declared but never referenced
+    struct NotTreatedAsAFAM Three;  // unsafe-field-restricted-flex-warning {{default initialization of an object of type 'struct NotTreatedAsAFAM' with const member leaves the object uninitialized}} \
+                            ^
+
+"Test_name.c", line 89: warning: variable "j" was declared but never referenced
+  static const int j; // zero-init-var-warning {{default initialization of an object of type 'const int' is incompatible with C++}} \
+                   ^
+

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++17 -tused -A Test_name.c
+"Test_name.c", line 10: error: function "X::g()" conflicts with using-declaration of function "X::M::g()"
+      void g();               // error: conflicts with X::M::g()
+           ^
+
+1 error detected in the compilation of "Test_name.c".

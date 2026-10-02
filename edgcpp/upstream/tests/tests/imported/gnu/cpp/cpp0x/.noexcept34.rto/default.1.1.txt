@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: warning: constexpr non-static member function will not be implicitly 'const' in C++14
+    constexpr int f () { return 0; }
+    ^
+
+"Test_name.c", line 15: error: a parameter is not allowed
+    void g4 (int i) noexcept (i) { } // { dg-error "use of parameter" }
+                              ^
+
+"Test_name.c", line 14: error: expression must have a constant value
+    void g3 () noexcept (b) { } // { dg-error "use of .this. in a constant expression|use of parameter|.this. is not a constant" }
+                         ^
+"Test_name.c", line 14: note: attempt to access run-time storage
+    void g3 () noexcept (b) { } // { dg-error "use of .this. in a constant expression|use of parameter|.this. is not a constant" }
+                         ^
+          detected during instantiation of "void A<<unnamed>>::g3() [with <unnamed>=int]" at line 26
+
+"Test_name.c", line 17: error: expression must have a constant value
+    void g6 () noexcept (foo(b)) { } // { dg-error "use of .this. in a constant expression|use of parameter|.this. is not a constant" }
+                         ^
+"Test_name.c", line 17: note: attempt to access run-time storage
+    void g6 () noexcept (foo(b)) { } // { dg-error "use of .this. in a constant expression|use of parameter|.this. is not a constant" }
+                             ^
+          detected during instantiation of "void A<<unnamed>>::g6() [with <unnamed>=int]" at line 29
+
+3 errors detected in the compilation of "Test_name.c".

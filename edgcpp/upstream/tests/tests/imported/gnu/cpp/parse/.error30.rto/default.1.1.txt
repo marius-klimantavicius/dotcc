@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++03 -W Test_name.c
+"Test_name.c", line 13: error: no operator "-" matches these operands
+            operand types are: - A
+  A a = -A();	// { dg-error "operand type is 'A'" }
+        ^
+"Test_name.c", line 13: note: built-in operator-(<promoted arithmetic>) does not match because argument #1 does not match parameter
+  A a = -A();	// { dg-error "operand type is 'A'" }
+        ^
+
+"Test_name.c", line 14: error: no operator "-" matches these operands
+            operand types are: - A
+  A b = -A(5);	// { dg-error "operand type is 'A'" }
+        ^
+"Test_name.c", line 14: note: built-in operator-(<promoted arithmetic>) does not match because argument #1 does not match parameter
+  A b = -A(5);	// { dg-error "operand type is 'A'" }
+        ^
+
+2 errors detected in the compilation of "Test_name.c".

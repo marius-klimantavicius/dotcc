@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 7: warning: function "_Countof" declared implicitly
+  void gh152826(char (*a)[*][5], int (*x)[_Countof(*a)]);
+                                          ^
+
+"Test_name.c", line 8: warning: function "_Countof" declared implicitly
+  void more_likely_in_practice(unsigned long size_one, int (*a)[*][5], int b[_Countof(*a)]);
+                                                                             ^
+
+"Test_name.c", line 9: warning: function "_Countof" declared implicitly
+  void f(int (*x)[*][1][*][2][*][*][3][*], int q[_Countof(*x)]);
+                                                 ^
+

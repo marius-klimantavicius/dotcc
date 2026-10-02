@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --c++23 -A Test_name.c
+"Test_name.c", line 4: error: expected a ")"
+  #if __has_include(<a> b)
+                        ^
+
+"Test_name.c", line 4: error: extra text after expected end of preprocessing directive
+  #if __has_include(<a> b)
+                         ^
+
+"Test_name.c", line 7: error: expected a file name
+  #if __has_include(a)
+                    ^
+
+"Test_name.c", line 7: error: extra text after expected end of preprocessing directive
+  #if __has_include(a)
+                     ^
+
+"Test_name.c", line 11: error: expected a file name
+  #if __has_include(NAME)
+                    ^
+
+"Test_name.c", line 11: error: extra text after expected end of preprocessing directive
+  #if __has_include(NAME)
+                        ^
+
+6 errors detected in the compilation of "Test_name.c".

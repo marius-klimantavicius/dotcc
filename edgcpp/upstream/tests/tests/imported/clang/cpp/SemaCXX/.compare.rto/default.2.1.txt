@@ -1,0 +1,60 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 208: warning: comparing a pointer to void and a pointer to a function is nonstandard
+    if (test1 == vp) { } // expected-warning{{equality comparison between function pointer and void pointer}}
+              ^
+
+"Test_name.c", line 209: error: no operator "==" matches these operands
+            operand types are: int (int) == E
+    if (test1 == e) { } // expected-error{{comparison between pointer and integer}}
+              ^
+"Test_name.c", line 209: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    if (test1 == e) { } // expected-error{{comparison between pointer and integer}}
+              ^
+"Test_name.c", line 209: note: built-in operator==(<pointer>, <pointer>) does not match because argument #2 does not match parameter
+    if (test1 == e) { } // expected-error{{comparison between pointer and integer}}
+              ^
+"Test_name.c", line 209: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    if (test1 == e) { } // expected-error{{comparison between pointer and integer}}
+              ^
+"Test_name.c", line 209: note: built-in operator==(<enum>, <enum>) does not match because argument #1 does not match parameter
+    if (test1 == e) { } // expected-error{{comparison between pointer and integer}}
+              ^
+
+"Test_name.c", line 211: error: no operator "<" matches these operands
+            operand types are: int (int) < E
+    if (test1 < e) { } // expected-error{{comparison between pointer and integer}}
+              ^
+"Test_name.c", line 211: note: built-in operator<(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    if (test1 < e) { } // expected-error{{comparison between pointer and integer}}
+              ^
+"Test_name.c", line 211: note: built-in operator<(<pointer>, <pointer>) does not match because argument #2 does not match parameter
+    if (test1 < e) { } // expected-error{{comparison between pointer and integer}}
+              ^
+"Test_name.c", line 211: note: built-in operator<(<enum>, <enum>) does not match because argument #1 does not match parameter
+    if (test1 < e) { } // expected-error{{comparison between pointer and integer}}
+              ^
+"Test_name.c", line 211: note: built-in operator<(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    if (test1 < e) { } // expected-error{{comparison between pointer and integer}}
+              ^
+
+"Test_name.c", line 225: warning: variable "a" is used before its value is set
+    (void) (true ? a : b);
+                   ^
+
+"Test_name.c", line 225: warning: variable "b" is used before its value is set
+    (void) (true ? a : b);
+                       ^
+
+"Test_name.c", line 249: warning: integer conversion resulted in a change of sign
+    const unsigned B = -1;
+                       ^
+
+"Test_name.c", line 321: warning: integer conversion resulted in a change of sign
+    (void)((unsigned long)other != (int)(0xffffffff));  // expected-warning{{different signs}}
+                                   ^
+
+"Test_name.c", line 397: warning: pointless comparison of unsigned integer with zero
+      return num < 0;  // expected-warning{{comparison of unsigned expression < 0 is always false}}
+                 ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 16: error: explicit type is missing ("int" assumed)
+  auto c = []{ return 42; };
+       ^
+
+"Test_name.c", line 16: error: a global-scope declaration may not have this storage class
+  auto c = []{ return 42; };
+  ^
+
+"Test_name.c", line 16: error: expected an expression
+  auto c = []{ return 42; };
+           ^
+
+"Test_name.c", line 17: error: a value of type "int" cannot be used to initialize an entity of type "int (*)()"
+  int (*pf)() = c;  // Implicit conversion of closure to function pointer.
+                ^
+
+4 errors detected in the compilation of "Test_name.c".

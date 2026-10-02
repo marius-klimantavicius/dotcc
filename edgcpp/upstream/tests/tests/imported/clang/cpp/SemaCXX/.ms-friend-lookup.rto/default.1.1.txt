@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 -w --c++11 --ms_compatibility -w Test_name.c
+"Test_name.c", line 67: error: "enclosing_friend_func::ns::A::A()" (declared at line 64) is inaccessible
+  void f() { ns::A x; } // expected-error {{calling a protected constructor of class 'enclosing_friend_func::ns::A'}}
+                   ^
+
+1 error detected in the compilation of "Test_name.c".

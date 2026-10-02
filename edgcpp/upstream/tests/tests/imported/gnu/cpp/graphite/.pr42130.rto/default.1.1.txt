@@ -1,0 +1,5 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./graphite/pr42130.C", line 9: warning: unknown attribute "noclone"
+  vector<unsigned> & __attribute__((noinline, noclone)) foo(unsigned n)
+                                              ^
+

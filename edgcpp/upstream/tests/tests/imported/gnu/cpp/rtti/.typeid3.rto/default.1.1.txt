@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./rtti/typeid3.C", line 5: error: argument list for template template parameter "T" is missing
+        typeid(T).name();
+               ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --c++20 -A Test_name.c
+"Test_name.c", line 4: error: invalid narrowing conversion from "int" to "unsigned int": constant value does not fit in destination type
+      unsigned{-1};     // ill-formed, narrowing conversion
+               ^
+
+"Test_name.c", line 6: error: list-initialization of an object type "void" is not allowed because the type is incomplete
+      void{0};          // ill-formed
+          ^
+
+"Test_name.c", line 7: error: expected a ")"
+      void(1, 2);       // ill-formed
+            ^
+
+"Test_name.c", line 8: error: expected a ")"
+      int(1, 2);        // ill-formed
+           ^
+
+"Test_name.c", line 8: warning: expression has no effect
+      int(1, 2);        // ill-formed
+      ^
+
+4 errors detected in the compilation of "Test_name.c".

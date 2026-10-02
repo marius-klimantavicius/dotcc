@@ -1,0 +1,74 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 52: error: no instance of function template "f1" matches the argument list
+    f1<int>(); // { dg-error "no match" }
+    ^
+"Test_name.c", line 14: note: substituting "<int>" for function template "f1" failed constraints
+  void f1() { }
+       ^
+"Test_name.c", line 13: note: concept "c1" not satisfied for "<int>"
+  template<c1 T>
+           ^
+"Test_name.c", line 9: note: atomic constraint evaluates to false
+  concept c1 = requires (T x) {
+               ^
+
+"Test_name.c", line 53: error: no instance of function template "f2" matches the argument list
+            argument types are: (int)
+    f2(0); // { dg-error "no match" }
+    ^
+"Test_name.c", line 17: note: substituting "<int>" for function template "f2" failed constraints
+  void f2(T x) requires requires { requires check_c<decltype(x)>; } { }
+       ^
+"Test_name.c", line 17: note: atomic constraint evaluates to false
+  void f2(T x) requires requires { requires check_c<decltype(x)>; } { }
+                        ^
+
+"Test_name.c", line 55: error: no instance of function template "f3" matches the argument list
+    f3<int>(); // { dg-error "no match" }
+    ^
+"Test_name.c", line 29: note: substituting "<int>" for function template "f3" failed constraints
+  void f3() { }
+       ^
+"Test_name.c", line 28: note: concept "c2" not satisfied for "<int>"
+  template<c2 T>
+           ^
+"Test_name.c", line 24: note: atomic constraint evaluates to false
+  concept c2 = requires (T x) {
+               ^
+
+"Test_name.c", line 56: error: no instance of function template "f4" matches the argument list
+            argument types are: (int)
+    f4(0); // { dg-error "no match" }
+    ^
+"Test_name.c", line 32: note: substituting "<int>" for function template "f4" failed constraints
+  void f4(T x) requires requires { requires check_f<decltype(x)>(); } { }
+       ^
+"Test_name.c", line 32: note: atomic constraint evaluates to false
+  void f4(T x) requires requires { requires check_f<decltype(x)>(); } { }
+                        ^
+
+"Test_name.c", line 58: error: no instance of function template "f5" matches the argument list
+    f5<int>(); // { dg-error "no match" }
+    ^
+"Test_name.c", line 44: note: substituting "<int>" for function template "f5" failed constraints
+  void f5() { }
+       ^
+"Test_name.c", line 43: note: concept "c3" not satisfied for "<int>"
+  template<c3 T>
+           ^
+"Test_name.c", line 39: note: atomic constraint evaluates to false
+  concept c3 = requires (T x) {
+               ^
+
+"Test_name.c", line 59: error: no instance of function template "f6" matches the argument list
+            argument types are: (int)
+    f6(0); // { dg-error "no match" }
+    ^
+"Test_name.c", line 47: note: substituting "<int>" for function template "f6" failed constraints
+  void f6(T x) requires requires { requires check_v<decltype(x)>; } { }
+       ^
+"Test_name.c", line 47: note: atomic constraint evaluates to false
+  void f6(T x) requires requires { requires check_v<decltype(x)>; } { }
+                        ^
+
+6 errors detected in the compilation of "Test_name.c".

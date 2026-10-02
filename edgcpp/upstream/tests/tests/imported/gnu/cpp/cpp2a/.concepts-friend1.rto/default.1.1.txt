@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 28: error: no instance of "f" matches the argument list
+            argument types are: (Nt)
+    f(nt); // { dg-error "" }
+    ^
+"Test_name.c", line 9: note: substituting "<Nt>" for function template "f" failed constraints
+    template<Eq T> friend void f(T) { }
+                               ^
+"Test_name.c", line 9: note: concept "Eq" not satisfied for "<Nt>"
+    template<Eq T> friend void f(T) { }
+             ^
+"Test_name.c", line 6: note: atomic constraint evaluates to false
+    concept Eq = requires(T t) { t == t; }; // { dg-message "in requirements" }
+                 ^
+
+"Test_name.c", line 29: error: identifier "f" is undefined
+    f(x);  // { dg-error "3:'f' was not declared" }
+    ^
+
+"Test_name.c", line 35: error: no operator "==" matches these operands
+            operand types are: S<X> == S<X>
+    sx == sx; // { dg-error "no match" }
+       ^
+"Test_name.c", line 19: note: constraint on candidate function "operator==(S<X>, S<X>)" not satisfied
+      friend bool operator==(S, S) requires Eq<T> { return true; }
+                  ^
+"Test_name.c", line 35: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    sx == sx; // { dg-error "no match" }
+       ^
+"Test_name.c", line 35: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    sx == sx; // { dg-error "no match" }
+       ^
+
+3 errors detected in the compilation of "Test_name.c".

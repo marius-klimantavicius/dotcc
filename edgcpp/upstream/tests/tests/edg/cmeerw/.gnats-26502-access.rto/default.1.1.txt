@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 -w --c++20 Test_name.c
+"Test_name.c", line 20: error: constant "ns::E1" (declared at line 7) is inaccessible
+      static inline auto i = E1;     // inaccessible
+                             ^
+
+"Test_name.c", line 38: error: constant "using_member_and_using_enumerator::C::E1" (declared at line 29) is inaccessible
+      using C::E1;                // inaccessible
+               ^
+
+"Test_name.c", line 46: error: constant "ns::E2" (declared at line 7) is inaccessible
+      static inline auto i2 = E2; // inaccessible
+                              ^
+
+"Test_name.c", line 49: error: constant "ns::E1" (declared at line 7) is inaccessible
+    auto i = (C::E1,              // inaccessible
+                 ^
+
+"Test_name.c", line 51: error: constant "ns::E2" (declared at line 7) is inaccessible
+              D1::E2);            // inaccessible
+                  ^
+
+5 errors detected in the compilation of "Test_name.c".

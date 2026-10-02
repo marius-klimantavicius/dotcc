@@ -1,0 +1,24 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 20: error: function template "std::allocator_traits<_Alloc>::construct [with _Alloc=std::allocator<std::__gnu_cxx::GdsPoint>]" (declared at line 12) is inaccessible
+        using _Base_type::construct; // { dg-error "within this context" }
+                          ^
+          detected during:
+            instantiation of class "std::__gnu_cxx::__alloc_traits<_Alloc> [with _Alloc=std::allocator<std::__gnu_cxx::GdsPoint>]" at line 22
+            instantiation of class "std::__gnu_cxx::_Vector_base<_Tp, _Alloc> [with _Tp=std::__gnu_cxx::GdsPoint, _Alloc=std::allocator<std::__gnu_cxx::GdsPoint>]" at line 23
+            instantiation of class "std::__gnu_cxx::vector<_Tp, _Alloc> [with _Tp=std::__gnu_cxx::GdsPoint, _Alloc=std::allocator<std::__gnu_cxx::GdsPoint>]" at line 26
+
+"Test_name.c", line 22: error: class "std::__gnu_cxx::__alloc_traits<std::allocator<std::__gnu_cxx::GdsPoint>>" has no member "rebind"
+      template < typename _Tp, typename _Alloc > struct _Vector_base { typedef typename __gnu_cxx::__alloc_traits < _Alloc >::template rebind < _Tp >::other _Tp_alloc_type; }; // { dg-error "no class template" }
+                                                                                                                                       ^
+          detected during:
+            instantiation of class "std::__gnu_cxx::_Vector_base<_Tp, _Alloc> [with _Tp=std::__gnu_cxx::GdsPoint, _Alloc=std::allocator<std::__gnu_cxx::GdsPoint>]" at line 23
+            instantiation of class "std::__gnu_cxx::vector<_Tp, _Alloc> [with _Tp=std::__gnu_cxx::GdsPoint, _Alloc=std::allocator<std::__gnu_cxx::GdsPoint>]" at line 26
+
+"Test_name.c", line 22: error: expected an identifier
+      template < typename _Tp, typename _Alloc > struct _Vector_base { typedef typename __gnu_cxx::__alloc_traits < _Alloc >::template rebind < _Tp >::other _Tp_alloc_type; }; // { dg-error "no class template" }
+                                                                                                                                              ^
+          detected during:
+            instantiation of class "std::__gnu_cxx::_Vector_base<_Tp, _Alloc> [with _Tp=std::__gnu_cxx::GdsPoint, _Alloc=std::allocator<std::__gnu_cxx::GdsPoint>]" at line 23
+            instantiation of class "std::__gnu_cxx::vector<_Tp, _Alloc> [with _Tp=std::__gnu_cxx::GdsPoint, _Alloc=std::allocator<std::__gnu_cxx::GdsPoint>]" at line 26
+
+3 errors detected in the compilation of "Test_name.c".

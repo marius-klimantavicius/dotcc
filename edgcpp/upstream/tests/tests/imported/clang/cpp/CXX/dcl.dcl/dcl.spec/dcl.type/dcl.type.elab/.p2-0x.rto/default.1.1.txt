@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 7: error: typedef "X" may not be used in an elaborated type specifier
+  struct X<int>* p2; // expected-error {{alias template 'X' cannot be referenced with the 'struct' specifier}}
+         ^
+
+"Test_name.c", line 18: error: typedef "U" may not be used in an elaborated type specifier
+    struct Y<F>::template U<char> k; // expected-error 2{{alias template 'U' cannot be referenced with the 'struct' specifier}}
+                          ^
+
+"Test_name.c", line 13: error: typedef "Id" may not be used in an elaborated type specifier
+    struct F<int> i; // expected-error {{alias template 'Id' cannot be referenced with the 'struct' specifier}}
+           ^
+          detected during instantiation of class "Y<F> [with F=Id]" at line 21
+
+3 errors detected in the compilation of "Test_name.c".

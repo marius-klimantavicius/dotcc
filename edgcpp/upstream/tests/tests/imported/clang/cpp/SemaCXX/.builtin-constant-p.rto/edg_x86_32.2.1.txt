@@ -1,0 +1,85 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 18: error: expression must have a constant value
+      (intptr_t)&ensure_fold_is_generally_not_enabled; // expected-note {{cast}}
+      ^
+"Test_name.c", line 18: note: conversion from "const intptr_t *" to "int" is invalid in constant-expression evaluation
+      (intptr_t)&ensure_fold_is_generally_not_enabled; // expected-note {{cast}}
+      ^
+
+"Test_name.c", line 50: error: static assertion failed
+  static_assert(!bcp(&x));
+  ^
+
+"Test_name.c", line 51: error: static assertion failed
+  static_assert(!bcp_fold(&x));
+  ^
+
+"Test_name.c", line 54: error: expression must have a constant value
+  static_assert(bcp(ptr_to_int("foo")));
+                ^
+"Test_name.c", line 21: note: conversion from "const void *" to "int" is invalid in constant-expression evaluation
+    return __builtin_constant_p(1) ? (intptr_t)p : (intptr_t)p;
+                                     ^
+
+"Test_name.c", line 55: error: expression must have a constant value
+  static_assert(bcp_fold(ptr_to_int("foo")));
+                ^
+"Test_name.c", line 21: note: conversion from "const void *" to "int" is invalid in constant-expression evaluation
+    return __builtin_constant_p(1) ? (intptr_t)p : (intptr_t)p;
+                                     ^
+
+"Test_name.c", line 56: error: expression must have a constant value
+  static_assert(!bcp(ptr_to_int(&x)));
+                ^
+"Test_name.c", line 21: note: conversion from "const void *" to "int" is invalid in constant-expression evaluation
+    return __builtin_constant_p(1) ? (intptr_t)p : (intptr_t)p;
+                                     ^
+
+"Test_name.c", line 57: error: expression must have a constant value
+  static_assert(!bcp_fold(ptr_to_int(&x)));
+                ^
+"Test_name.c", line 21: note: conversion from "const void *" to "int" is invalid in constant-expression evaluation
+    return __builtin_constant_p(1) ? (intptr_t)p : (intptr_t)p;
+                                     ^
+
+"Test_name.c", line 62: error: expression must have a constant value
+  static_assert(bcp(int_to_ptr(123)));      // GCC rejects these due to not recognizing
+                ^
+"Test_name.c", line 25: note: conversion from "int" to "int *" is invalid in constant-expression evaluation
+    return __builtin_constant_p(1) ? (int*)n : (int*)n;
+                                     ^
+
+"Test_name.c", line 63: error: expression must have a constant value
+  static_assert(bcp_fold(int_to_ptr(123))); // the bcp conditional in 'int_to_ptr' ...
+                ^
+"Test_name.c", line 25: note: conversion from "int" to "int *" is invalid in constant-expression evaluation
+    return __builtin_constant_p(1) ? (int*)n : (int*)n;
+                                     ^
+
+"Test_name.c", line 64: error: static assertion failed
+  static_assert(__builtin_constant_p((int*)123)); // ... but GCC accepts this
+  ^
+
+"Test_name.c", line 119: error: static assertion failed
+  static_assert(mutate5() == 11);
+  ^
+"Test_name.c", line 119: note: the final comparison was 10 == 11
+  static_assert(mutate5() == 11);
+                          ^
+
+"Test_name.c", line 133: error: static assertion failed
+  static_assert(mutate6(false) == 11);
+  ^
+"Test_name.c", line 133: note: the final comparison was 10 == 11
+  static_assert(mutate6(false) == 11);
+                               ^
+
+"Test_name.c", line 140: error: static assertion failed
+  static_assert(__builtin_constant_p(&typeid(int)));
+  ^
+
+"Test_name.c", line 168: error: static assertion failed
+    static_assert(!__builtin_constant_p(((void)A{Q().get()}, 123)));
+    ^
+
+14 errors detected in the compilation of "Test_name.c".

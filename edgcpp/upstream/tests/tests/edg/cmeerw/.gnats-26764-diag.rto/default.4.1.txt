@@ -1,0 +1,32 @@
+fe_only -DTEST_NUMBER=4 -tused --c++20 --clang_version 160000 Test_name.c
+"Test_name.c", line 15: error: no instance of function template "incompatible_templ_templ_parameters::f" matches the argument list
+    auto x2 = f<long, X>();       // error
+              ^
+"Test_name.c", line 12: note: substituting explicit template arguments "<long, incompatible_templ_templ_parameters::X>" for function template "incompatible_templ_templ_parameters::f" failed
+    int f();
+        ^
+
+"Test_name.c", line 22: error: class template "incompatible_templ_templ_parameters::X" is not compatible with template template parameter "C"
+    D<long, X> d2;                // error
+            ^
+
+"Test_name.c", line 29: error: class template "incompatible_templ_templ_parameters::X" is not compatible with template template parameter "C"
+    auto y2 = v<long, X>;         // error
+                      ^
+
+"Test_name.c", line 42: error: no instance of function template "different_auto_args::f" matches the argument list
+    auto x = f<X>();              // error, although commonly accepted, but not emulated
+             ^
+"Test_name.c", line 40: note: substituting explicit template arguments "<different_auto_args::X>" for function template "different_auto_args::f" failed
+    int f();
+        ^
+
+"Test_name.c", line 48: error: class template "different_auto_args::X" is not compatible with template template parameter "<unnamed>"
+    D<X> d;                       // error, although commonly accepted, but not emulated
+      ^
+
+"Test_name.c", line 54: error: class template "different_auto_args::X" is not compatible with template template parameter "<unnamed>"
+    auto y = v<X>;                // error, although commonly accepted, but not emulated
+               ^
+
+6 errors detected in the compilation of "Test_name.c".

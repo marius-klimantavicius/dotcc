@@ -1,0 +1,1 @@
+cpfe -DTEST_NUMBER=1 --no_wrap_diagnostics --c++20 --clang_version 170000 Test_name.c

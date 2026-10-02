@@ -1,0 +1,35 @@
+fe_only -DTEST_NUMBER=6 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --exceptions --exceptions -D__GLIBCXX__=20100000L -DCLASS=queue Test_name.c
+"SemaCXX/libstdcxx_pair_swap_hack.cpp", line 51: error: a reference of type "std::queue<X, X> &" (not const-qualified) cannot be initialized with a value of type "X"
+      void swap(CLASS &other) noexcept(noexcept(swap(member, other.member)));
+                                                     ^
+          detected during instantiation of "void std::queue<A, B>::swap(std::queue<A, B> &) [with A=X, B=X]" at line 78
+
+"SemaCXX/libstdcxx_pair_swap_hack.cpp", line 51: error: too many arguments in function call
+      void swap(CLASS &other) noexcept(noexcept(swap(member, other.member)));
+                                                             ^
+          detected during instantiation of "void std::queue<A, B>::swap(std::queue<A, B> &) [with A=X, B=X]" at line 78
+
+"SemaCXX/libstdcxx_pair_swap_hack.cpp", line 78: error: static assertion failed with ""
+  static_assert(noexcept(px.swap(px)), "");
+  ^
+
+"SemaCXX/libstdcxx_pair_swap_hack.cpp", line 51: error: a reference of type "std::queue<int, int> &" (not const-qualified) cannot be initialized with a value of type "int"
+      void swap(CLASS &other) noexcept(noexcept(swap(member, other.member)));
+                                                     ^
+          detected during instantiation of "void std::queue<A, B>::swap(std::queue<A, B> &) [with A=int, B=int]" at line 79
+
+"SemaCXX/libstdcxx_pair_swap_hack.cpp", line 51: error: too many arguments in function call
+      void swap(CLASS &other) noexcept(noexcept(swap(member, other.member)));
+                                                             ^
+          detected during instantiation of "void std::queue<A, B>::swap(std::queue<A, B> &) [with A=int, B=int]" at line 79
+
+"SemaCXX/libstdcxx_pair_swap_hack.cpp", line 86: error: too many arguments in function call
+        noexcept(noexcept(swap(*this, other)));
+                                      ^
+          detected during instantiation of "void sad::queue<A, B>::swap(sad::queue<A, B> &) [with A=int, B=int]" at line 92
+
+"SemaCXX/libstdcxx_pair_swap_hack.cpp", line 92: error: static assertion failed with ""
+    static_assert(!noexcept(pi.swap(pi)), "");
+    ^
+
+7 errors detected in the compilation of "Test_name.c".

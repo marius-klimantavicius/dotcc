@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 -tused --c++20 Test_name.c
+"Test_name.c", line 5: error: a lambda parameter cannot hide an explicit capture
+      auto g=[x](int x){return 0;};		//error: parameter and capture have the same name 
+                     ^
+
+"Test_name.c", line 6: error: a lambda template parameter cannot hide an explicit capture
+      auto h=[y=0]<typename y>(y){return 0;};	//error: parameter and capture have the same name
+                            ^
+
+"Test_name.c", line 5: warning: variable "g" was declared but never referenced
+      auto g=[x](int x){return 0;};		//error: parameter and capture have the same name 
+           ^
+
+"Test_name.c", line 6: warning: variable "h" was declared but never referenced
+      auto h=[y=0]<typename y>(y){return 0;};	//error: parameter and capture have the same name
+           ^
+
+2 errors detected in the compilation of "Test_name.c".

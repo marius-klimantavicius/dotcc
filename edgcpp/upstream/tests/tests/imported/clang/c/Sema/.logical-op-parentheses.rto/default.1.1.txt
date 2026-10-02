@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -DSILENCE --c Test_name.c
+"Test_name.c", line 41: warning: controlling expression is constant
+  	(void)(i || i && "w00t");
+  	                 ^
+
+"Test_name.c", line 42: warning: controlling expression is constant
+    (void)("w00t" && i || i);
+           ^
+
+"Test_name.c", line 43: warning: controlling expression is constant
+    (void)("w00t" && t || t);
+           ^
+
+"Test_name.c", line 73: warning: controlling expression is constant
+    (void)(i || i && "w00t" || i);
+                     ^
+
+"Test_name.c", line 81: warning: controlling expression is constant
+    (void)(i || "w00t" && i || i);
+                ^
+

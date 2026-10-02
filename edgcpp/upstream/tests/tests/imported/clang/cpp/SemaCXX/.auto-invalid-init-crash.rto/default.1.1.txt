@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 9: error: "auto" type is "std::initializer_list<int>" for this entity, but was previously implied to be "int"
+  auto c = a, &d = {a}; // expected-error {{'auto' deduced as 'int'}} \
+               ^
+
+"Test_name.c", line 9: error: the definition of std::initializer_list does not contain the expected constructor
+  auto c = a, &d = {a}; // expected-error {{'auto' deduced as 'int'}} \
+                   ^
+
+2 errors detected in the compilation of "Test_name.c".

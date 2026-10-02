@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 13: error: second operand of offsetof must be a field
+  int a = __builtin_offsetof(bar, foo);  // { dg-error "static data member" }
+                                  ^
+
+"Test_name.c", line 14: error: second operand of offsetof must be a field
+  int av = __builtin_offsetof(volatile bar, foo);  // { dg-error "static data member" }
+                                            ^
+
+"Test_name.c", line 15: error: second operand of offsetof must be a field
+  int b = __builtin_offsetof(bar, baz);  // { dg-error "member function" }
+                                  ^
+
+"Test_name.c", line 16: error: second operand of offsetof must be a field
+  int b0 = __builtin_offsetof(bar, baz[0]);  // { dg-error "single identifier nor|member function" }
+                                   ^
+
+"Test_name.c", line 17: error: second operand of offsetof must be a field
+  int bv0 = __builtin_offsetof(volatile bar, baz[0]);  // { dg-error "function" }
+                                             ^
+
+"Test_name.c", line 18: error: expected an identifier
+  int c = __builtin_offsetof(bar, ~bar);  // { dg-error "member function" }
+                                  ^
+
+"Test_name.c", line 23: error: expected a class, struct, or union type
+  int d = __builtin_offsetof(I, ~I);  // { dg-error "destructor" }
+                             ^
+
+"Test_name.c", line 23: error: expected an identifier
+  int d = __builtin_offsetof(I, ~I);  // { dg-error "destructor" }
+                                ^
+
+"Test_name.c", line 24: error: expected a class, struct, or union type
+  int e = __builtin_offsetof(E, ~E);  // { dg-error "destructor" }
+                             ^
+
+"Test_name.c", line 24: error: expected an identifier
+  int e = __builtin_offsetof(E, ~E);  // { dg-error "destructor" }
+                                ^
+
+10 errors detected in the compilation of "Test_name.c".

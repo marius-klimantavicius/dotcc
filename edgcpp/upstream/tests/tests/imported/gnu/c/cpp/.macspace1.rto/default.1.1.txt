@@ -1,0 +1,239 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu -E Test_name.c
+# 1 "Test_name.c"
+
+
+ 
+ 
+ 
+
+"Test_name.c", line 7: warning: white space is required between the macro name "a" and its replacement text
+  #define a!		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 8: warning: white space is required between the macro name "b" and its replacement text
+  #define b"		/* { dg-warning "missing whitespace" } */
+           ^
+
+
+
+ 
+"Test_name.c", line 10: warning: white space is required between the macro name "c" and its replacement text
+  #define c#		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 11: warning: white space is required between the macro name "d" and its replacement text
+  #define d%		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 12: warning: white space is required between the macro name "e" and its replacement text
+  #define e&		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 13: warning: white space is required between the macro name "f" and its replacement text
+  #define f'		/* { dg-warning "missing whitespace" } */
+           ^
+
+
+
+
+
+ 
+"Test_name.c", line 15: warning: white space is required between the macro name "g" and its replacement text
+  #define g)		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 16: warning: white space is required between the macro name "h" and its replacement text
+  #define h*		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 17: warning: white space is required between the macro name "i" and its replacement text
+  #define i+		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 18: warning: white space is required between the macro name "j" and its replacement text
+  #define j,		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 19: warning: white space is required between the macro name "k" and its replacement text
+  #define k-		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 20: warning: white space is required between the macro name "l" and its replacement text
+  #define l.		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 21: warning: white space is required between the macro name "m" and its replacement text
+  #define m/		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 22: warning: white space is required between the macro name "n" and its replacement text
+  #define n:		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 23: warning: white space is required between the macro name "o" and its replacement text
+  #define o;		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 24: warning: white space is required between the macro name "p" and its replacement text
+  #define p<		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 25: warning: white space is required between the macro name "q" and its replacement text
+  #define q=		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 26: warning: white space is required between the macro name "r" and its replacement text
+  #define r>		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 27: warning: white space is required between the macro name "s" and its replacement text
+  #define s?		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 28: warning: white space is required between the macro name "t" and its replacement text
+  #define t[		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 29: warning: white space is required between the macro name "u" and its replacement text
+  #define u]		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 30: warning: white space is required between the macro name "v" and its replacement text
+  #define v^		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 31: warning: white space is required between the macro name "w" and its replacement text
+  #define w{		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 32: warning: white space is required between the macro name "x" and its replacement text
+  #define x|		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 33: warning: white space is required between the macro name "y" and its replacement text
+  #define y}		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 34: warning: white space is required between the macro name "z" and its replacement text
+  #define z~		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 35: warning: white space is required between the macro name "A" and its replacement text
+  #define A>>		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 36: warning: white space is required between the macro name "B" and its replacement text
+  #define B<<		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 37: warning: white space is required between the macro name "E" and its replacement text
+  #define E&&		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 38: warning: white space is required between the macro name "F" and its replacement text
+  #define F||		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 39: warning: white space is required between the macro name "G" and its replacement text
+  #define G==		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 40: warning: white space is required between the macro name "H" and its replacement text
+  #define H!=		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 41: warning: white space is required between the macro name "I" and its replacement text
+  #define I>=		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 42: warning: white space is required between the macro name "J" and its replacement text
+  #define J<=		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 43: warning: white space is required between the macro name "K" and its replacement text
+  #define K+=		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 44: warning: white space is required between the macro name "L" and its replacement text
+  #define L-=		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 45: warning: white space is required between the macro name "M" and its replacement text
+  #define M*=		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 46: warning: white space is required between the macro name "N" and its replacement text
+  #define N/=		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 47: warning: white space is required between the macro name "O" and its replacement text
+  #define O%=		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 48: warning: white space is required between the macro name "P" and its replacement text
+  #define P&=		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 49: warning: white space is required between the macro name "Q" and its replacement text
+  #define Q|=		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 50: warning: white space is required between the macro name "R" and its replacement text
+  #define R^=		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 51: warning: white space is required between the macro name "S" and its replacement text
+  #define S>>=		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 52: warning: white space is required between the macro name "T" and its replacement text
+  #define T<<=		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 53: warning: white space is required between the macro name "W" and its replacement text
+  #define W...		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 54: warning: white space is required between the macro name "X" and its replacement text
+  #define X++		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 55: warning: white space is required between the macro name "Y" and its replacement text
+  #define Y--		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 56: warning: white space is required between the macro name "Z" and its replacement text
+  #define Z->		/* { dg-warning "missing whitespace" } */
+           ^
+
+"Test_name.c", line 57: warning: white space is required between the macro name "aa" and its replacement text
+  #define aa::		/* { dg-warning "missing whitespace" } */
+            ^
+
+"Test_name.c", line 58: warning: white space is required between the macro name "ab" and its replacement text
+  #define ab->*		/* { dg-warning "missing whitespace" } */
+            ^
+
+"Test_name.c", line 59: warning: white space is required between the macro name "ac" and its replacement text
+  #define ac.*		/* { dg-warning "missing whitespace" } */
+            ^
+
+"Test_name.c", line 60: warning: white space is required between the macro name "ad" and its replacement text
+  #define ad\x		/* { dg-warning "missing whitespace" } */
+            ^
+
+"Test_name.c", line 61: warning: white space is required between the macro name "ae" and its replacement text
+  #define ae\\x		/* { dg-warning "missing whitespace" } */
+            ^
+
+"Test_name.c", line 62: warning: white space is required between the macro name "af" and its replacement text
+  #define af'1'		/* { dg-warning "missing whitespace" } */
+            ^
+
+"Test_name.c", line 63: warning: white space is required between the macro name "ag" and its replacement text
+  #define ag"abc"		/* { dg-warning "missing whitespace" } */
+            ^
+
+# 64 "Test_name.c"
+
+int dummy;

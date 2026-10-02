@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 30: error: no operator "!" matches these operands
+            operand types are: ! S
+  bool b8 = !S(); //expected-error {{invalid argument type 'S'}}
+            ^
+"Test_name.c", line 30: note: built-in operator!(<bool>) does not match because argument #1 does not match parameter
+  bool b8 = !S(); //expected-error {{invalid argument type 'S'}}
+            ^
+
+"Test_name.c", line 34: warning: missing return statement at end of non-void function "PR8181::f"
+    bool f() { } // expected-note{{possible target for call}}
+               ^
+
+"Test_name.c", line 36: error: cannot determine which instance of overloaded function "PR8181::f" is intended
+    bool b = !&f;  //expected-error {{reference to overloaded function could not be resolved; did you mean to call it with no arguments?}}
+              ^
+
+2 errors detected in the compilation of "Test_name.c".

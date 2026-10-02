@@ -1,0 +1,316 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 95: warning: expression has no effect
+    TRY(b(0));
+    ^
+
+"Test_name.c", line 96: warning: expression has no effect
+    TRY(b[0]);
+    ^
+
+"Test_name.c", line 97: warning: expression has no effect
+    TRY(b=0);
+    ^
+
+"Test_name.c", line 98: warning: expression has no effect
+    TRY(b+=0);
+    ^
+
+"Test_name.c", line 99: warning: expression has no effect
+    TRY(b-=0);
+    ^
+
+"Test_name.c", line 100: warning: expression has no effect
+    TRY(b*=0);
+    ^
+
+"Test_name.c", line 101: warning: expression has no effect
+    TRY(b/=0);
+    ^
+
+"Test_name.c", line 102: warning: expression has no effect
+    TRY(b^=0);
+    ^
+
+"Test_name.c", line 103: warning: expression has no effect
+    TRY(b&=0);
+    ^
+
+"Test_name.c", line 104: warning: expression has no effect
+    TRY(b|=0);
+    ^
+
+"Test_name.c", line 105: warning: expression has no effect
+    TRY(b<<=0);
+    ^
+
+"Test_name.c", line 106: warning: expression has no effect
+    TRY(b>>=0);
+    ^
+
+"Test_name.c", line 108: warning: expression has no effect
+    TRY(-b);
+    ^
+
+"Test_name.c", line 109: warning: expression has no effect
+    TRY(+b);
+    ^
+
+"Test_name.c", line 110: warning: expression has no effect
+    TRY(*b);
+    ^
+
+"Test_name.c", line 111: warning: expression has no effect
+    TRY(&b);
+    ^
+
+"Test_name.c", line 112: warning: expression has no effect
+    TRY(!b);
+    ^
+
+"Test_name.c", line 113: warning: expression has no effect
+    TRY(~b);
+    ^
+
+"Test_name.c", line 114: warning: expression has no effect
+    TRY(++b);
+    ^
+
+"Test_name.c", line 115: warning: expression has no effect
+    TRY(--b);
+    ^
+
+"Test_name.c", line 117: warning: expression has no effect
+    TRY(b+b);
+    ^
+
+"Test_name.c", line 118: warning: expression has no effect
+    TRY(b-b);
+    ^
+
+"Test_name.c", line 119: warning: expression has no effect
+    TRY(b*b);
+    ^
+
+"Test_name.c", line 120: warning: expression has no effect
+    TRY(b/b);
+    ^
+
+"Test_name.c", line 121: warning: expression has no effect
+    TRY(b%b);
+    ^
+
+"Test_name.c", line 122: warning: expression has no effect
+    TRY(b^b);
+    ^
+
+"Test_name.c", line 123: warning: expression has no effect
+    TRY(b&b);
+    ^
+
+"Test_name.c", line 124: warning: expression has no effect
+    TRY(b|b);
+    ^
+
+"Test_name.c", line 125: warning: expression has no effect
+    TRY(b>b);
+    ^
+
+"Test_name.c", line 126: warning: expression has no effect
+    TRY(b<b);
+    ^
+
+"Test_name.c", line 127: warning: expression has no effect
+    TRY((b,b));
+    ^
+
+"Test_name.c", line 128: warning: expression has no effect
+    TRY(b<<b);
+    ^
+
+"Test_name.c", line 129: warning: expression has no effect
+    TRY(b>>b);
+    ^
+
+"Test_name.c", line 130: warning: expression has no effect
+    TRY(b==b);
+    ^
+
+"Test_name.c", line 131: warning: expression has no effect
+    TRY(b->*b);
+    ^
+
+"Test_name.c", line 53: warning: expression has no effect
+    TRY(b(0));
+    ^
+          detected during instantiation of "void f<B>() [with B=B]" at line 133
+
+"Test_name.c", line 54: warning: expression has no effect
+    TRY(b[0]);
+    ^
+          detected during instantiation of "void f<B>() [with B=B]" at line 133
+
+"Test_name.c", line 55: warning: expression has no effect
+    TRY(b=0);
+    ^
+          detected during instantiation of "void f<B>() [with B=B]" at line 133
+
+"Test_name.c", line 56: warning: expression has no effect
+    TRY(b+=0);
+    ^
+          detected during instantiation of "void f<B>() [with B=B]" at line 133
+
+"Test_name.c", line 57: warning: expression has no effect
+    TRY(b-=0);
+    ^
+          detected during instantiation of "void f<B>() [with B=B]" at line 133
+
+"Test_name.c", line 58: warning: expression has no effect
+    TRY(b*=0);
+    ^
+          detected during instantiation of "void f<B>() [with B=B]" at line 133
+
+"Test_name.c", line 59: warning: expression has no effect
+    TRY(b/=0);
+    ^
+          detected during instantiation of "void f<B>() [with B=B]" at line 133
+
+"Test_name.c", line 60: warning: expression has no effect
+    TRY(b^=0);
+    ^
+          detected during instantiation of "void f<B>() [with B=B]" at line 133
+
+"Test_name.c", line 61: warning: expression has no effect
+    TRY(b&=0);
+    ^
+          detected during instantiation of "void f<B>() [with B=B]" at line 133
+
+"Test_name.c", line 62: warning: expression has no effect
+    TRY(b|=0);
+    ^
+          detected during instantiation of "void f<B>() [with B=B]" at line 133
+
+"Test_name.c", line 63: warning: expression has no effect
+    TRY(b<<=0);
+    ^
+          detected during instantiation of "void f<B>() [with B=B]" at line 133
+
+"Test_name.c", line 64: warning: expression has no effect
+    TRY(b>>=0);
+    ^
+          detected during instantiation of "void f<B>() [with B=B]" at line 133
+
+"Test_name.c", line 66: warning: expression has no effect
+    TRY(-b);
+    ^
+          detected during instantiation of "void f<B>() [with B=B]" at line 133
+
+"Test_name.c", line 67: warning: expression has no effect
+    TRY(+b);
+    ^
+          detected during instantiation of "void f<B>() [with B=B]" at line 133
+
+"Test_name.c", line 68: warning: expression has no effect
+    TRY(*b);
+    ^
+          detected during instantiation of "void f<B>() [with B=B]" at line 133
+
+"Test_name.c", line 69: warning: expression has no effect
+    TRY(&b);
+    ^
+          detected during instantiation of "void f<B>() [with B=B]" at line 133
+
+"Test_name.c", line 70: warning: expression has no effect
+    TRY(!b);
+    ^
+          detected during instantiation of "void f<B>() [with B=B]" at line 133
+
+"Test_name.c", line 71: warning: expression has no effect
+    TRY(~b);
+    ^
+          detected during instantiation of "void f<B>() [with B=B]" at line 133
+
+"Test_name.c", line 72: warning: expression has no effect
+    TRY(++b);
+    ^
+          detected during instantiation of "void f<B>() [with B=B]" at line 133
+
+"Test_name.c", line 73: warning: expression has no effect
+    TRY(--b);
+    ^
+          detected during instantiation of "void f<B>() [with B=B]" at line 133
+
+"Test_name.c", line 75: warning: expression has no effect
+    TRY(b+b);
+    ^
+          detected during instantiation of "void f<B>() [with B=B]" at line 133
+
+"Test_name.c", line 76: warning: expression has no effect
+    TRY(b-b);
+    ^
+          detected during instantiation of "void f<B>() [with B=B]" at line 133
+
+"Test_name.c", line 77: warning: expression has no effect
+    TRY(b*b);
+    ^
+          detected during instantiation of "void f<B>() [with B=B]" at line 133
+
+"Test_name.c", line 78: warning: expression has no effect
+    TRY(b/b);
+    ^
+          detected during instantiation of "void f<B>() [with B=B]" at line 133
+
+"Test_name.c", line 79: warning: expression has no effect
+    TRY(b%b);
+    ^
+          detected during instantiation of "void f<B>() [with B=B]" at line 133
+
+"Test_name.c", line 80: warning: expression has no effect
+    TRY(b^b);
+    ^
+          detected during instantiation of "void f<B>() [with B=B]" at line 133
+
+"Test_name.c", line 81: warning: expression has no effect
+    TRY(b&b);
+    ^
+          detected during instantiation of "void f<B>() [with B=B]" at line 133
+
+"Test_name.c", line 82: warning: expression has no effect
+    TRY(b|b);
+    ^
+          detected during instantiation of "void f<B>() [with B=B]" at line 133
+
+"Test_name.c", line 83: warning: expression has no effect
+    TRY(b>b);
+    ^
+          detected during instantiation of "void f<B>() [with B=B]" at line 133
+
+"Test_name.c", line 84: warning: expression has no effect
+    TRY(b<b);
+    ^
+          detected during instantiation of "void f<B>() [with B=B]" at line 133
+
+"Test_name.c", line 85: warning: expression has no effect
+    TRY((b,b));
+    ^
+          detected during instantiation of "void f<B>() [with B=B]" at line 133
+
+"Test_name.c", line 86: warning: expression has no effect
+    TRY(b<<b);
+    ^
+          detected during instantiation of "void f<B>() [with B=B]" at line 133
+
+"Test_name.c", line 87: warning: expression has no effect
+    TRY(b>>b);
+    ^
+          detected during instantiation of "void f<B>() [with B=B]" at line 133
+
+"Test_name.c", line 88: warning: expression has no effect
+    TRY(b==b);
+    ^
+          detected during instantiation of "void f<B>() [with B=B]" at line 133
+
+"Test_name.c", line 89: warning: expression has no effect
+    TRY(b->*b);
+    ^
+          detected during instantiation of "void f<B>() [with B=B]" at line 133
+

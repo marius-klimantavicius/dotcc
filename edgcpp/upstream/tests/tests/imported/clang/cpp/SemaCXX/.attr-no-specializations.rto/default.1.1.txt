@@ -1,0 +1,55 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 9: warning: attribute "clang::no_specializations" does not apply here
+  struct [[clang::no_specializations]] S {}; // expected-warning {{'clang::no_specializations' attribute only applies to class templates, function templates, and variable templates}}
+           ^
+
+"Test_name.c", line 20: error: template with "no_specializations" attribute cannot be specialized
+  struct is_same<int, char> {}; // expected-error {{'is_same' cannot be specialized}}
+         ^
+"Test_name.c", line 12: note: attribute was declared here
+  struct [[clang::no_specializations]] is_same { // expected-note 2 {{marked 'clang::no_specializations' here}}
+           ^
+
+"Test_name.c", line 26: error: template with "no_specializations" attribute cannot be specialized
+  struct is_same<Template<T>, Template <T>> {}; // expected-error {{'is_same' cannot be specialized}}
+         ^
+"Test_name.c", line 12: note: attribute was declared here
+  struct [[clang::no_specializations]] is_same { // expected-note 2 {{marked 'clang::no_specializations' here}}
+           ^
+
+"Test_name.c", line 34: error: template with "no_specializations" attribute cannot be specialized
+  inline constexpr bool is_same_v<int, char> = false; // expected-error {{'is_same_v' cannot be specialized}}
+                        ^
+"Test_name.c", line 31: note: attribute was declared here
+  [[clang::no_specializations]] inline constexpr bool is_same_v = __is_same(T, U); // expected-note 2 {{marked 'clang::no_specializations' here}}
+    ^
+
+"Test_name.c", line 37: error: template with "no_specializations" attribute cannot be specialized
+  inline constexpr bool is_same_v<Template <T>, Template <T>> = true; // expected-error {{'is_same_v' cannot be specialized}}
+                        ^
+"Test_name.c", line 31: note: attribute was declared here
+  [[clang::no_specializations]] inline constexpr bool is_same_v = __is_same(T, U); // expected-note 2 {{marked 'clang::no_specializations' here}}
+    ^
+
+"Test_name.c", line 47: error: template with "no_specializations" attribute cannot be specialized
+  struct is_trivial<int> {}; // expected-error {{'is_trivial' cannot be specialized: specializing type traits results in undefined behaviour}}
+         ^
+"Test_name.c", line 42: note: attribute was declared here
+  struct [[clang::no_specializations("specializing type traits results in undefined behaviour")]] is_trivial { // expected-note {{marked 'clang::no_specializations' here}}
+           ^
+
+"Test_name.c", line 53: error: template with "no_specializations" attribute cannot be specialized
+  inline constexpr bool is_trivial_v<int> = false; // expected-error {{'is_trivial_v' cannot be specialized: specializing type traits results in undefined behaviour}}
+                        ^
+"Test_name.c", line 50: note: attribute was declared here
+  [[clang::no_specializations("specializing type traits results in undefined behaviour")]] inline constexpr bool is_trivial_v = __is_trivial(T); // expected-note {{marked 'clang::no_specializations' here}}
+    ^
+
+"Test_name.c", line 64: error: template with "no_specializations" attribute cannot be specialized
+  template <> void func<int>(); // expected-error {{'func' cannot be specialized}}
+                   ^
+"Test_name.c", line 62: note: attribute was declared here
+  [[clang::no_specializations]] void func(); // expected-note {{marked 'clang::no_specializations' here}}
+    ^
+
+7 errors detected in the compilation of "Test_name.c".

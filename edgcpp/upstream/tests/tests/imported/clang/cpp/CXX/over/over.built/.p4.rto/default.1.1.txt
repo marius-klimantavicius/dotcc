@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 9: error: incrementing a bool value is not allowed
+    (void)++b; // expected-error {{ISO C++17 does not allow incrementing expression of type bool}}
+            ^
+
+"Test_name.c", line 10: error: incrementing a bool value is not allowed
+    (void)b++; // expected-error {{ISO C++17 does not allow incrementing expression of type bool}}
+          ^
+
+2 errors detected in the compilation of "Test_name.c".

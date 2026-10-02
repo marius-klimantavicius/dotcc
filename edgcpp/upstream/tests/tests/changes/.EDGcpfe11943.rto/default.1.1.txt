@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --g++ --c++11 Test_name.c
+"Test_name.c", line 14: warning: variable attributes appearing after a parenthesized initializer are ignored
+  int i(3) __attribute((used)) [[]];  // Previously accepted in GNU C++0x
+                        ^
+
+"Test_name.c", line 14: error: variable attributes appearing after a parenthesized initializer are ignored
+  int i(3) __attribute((used)) [[]];  // Previously accepted in GNU C++0x
+                                 ^
+
+1 error detected in the compilation of "Test_name.c".

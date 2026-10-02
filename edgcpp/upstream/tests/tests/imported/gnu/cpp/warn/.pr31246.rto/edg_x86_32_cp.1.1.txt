@@ -1,0 +1,82 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --gnu_version=80200 -tused -e 200 --no_wrap Test_name.c
+"/home/gnu/gcc-8.2.0/include/c++/8.2.0/bits/stl_pair.h", line 437: error: argument list for class template "std::pair" is missing
+    template<typename _T1, typename _T2> pair(_T1, _T2) -> pair<_T1, _T2>;
+                                         ^
+
+"/home/gnu/gcc-8.2.0/include/c++/8.2.0/bits/stl_pair.h", line 437: error: expected a ")"
+    template<typename _T1, typename _T2> pair(_T1, _T2) -> pair<_T1, _T2>;
+                                                 ^
+
+"/home/gnu/gcc-8.2.0/include/c++/8.2.0/bits/stl_pair.h", line 437: error: template parameter "_T1" may not be redeclared in this scope
+    template<typename _T1, typename _T2> pair(_T1, _T2) -> pair<_T1, _T2>;
+                                              ^
+
+"/home/gnu/gcc-8.2.0/include/c++/8.2.0/bits/stl_pair.h", line 437: error: expected a ";"
+    template<typename _T1, typename _T2> pair(_T1, _T2) -> pair<_T1, _T2>;
+                                                        ^
+
+"/home/gnu/gcc-8.2.0/include/c++/8.2.0/new", line 120: error: first parameter of allocation function must be of type "size_t"
+  void* operator new(std::size_t)
+        ^
+
+"/home/gnu/gcc-8.2.0/include/c++/8.2.0/new", line 122: error: first parameter of allocation function must be of type "size_t"
+  void* operator new[](std::size_t)
+        ^
+
+"/home/gnu/gcc-8.2.0/include/c++/8.2.0/new", line 134: error: first parameter of allocation function must be of type "size_t"
+  void* operator new(std::size_t, const std::nothrow_t&) noexcept
+        ^
+
+"/home/gnu/gcc-8.2.0/include/c++/8.2.0/new", line 136: error: first parameter of allocation function must be of type "size_t"
+  void* operator new[](std::size_t, const std::nothrow_t&) noexcept
+        ^
+
+"/home/gnu/gcc-8.2.0/include/c++/8.2.0/new", line 143: error: first parameter of allocation function must be of type "size_t"
+  void* operator new(std::size_t, std::align_val_t)
+        ^
+
+"/home/gnu/gcc-8.2.0/include/c++/8.2.0/new", line 145: error: first parameter of allocation function must be of type "size_t"
+  void* operator new(std::size_t, std::align_val_t, const std::nothrow_t&)
+        ^
+
+"/home/gnu/gcc-8.2.0/include/c++/8.2.0/new", line 151: error: first parameter of allocation function must be of type "size_t"
+  void* operator new[](std::size_t, std::align_val_t)
+        ^
+
+"/home/gnu/gcc-8.2.0/include/c++/8.2.0/new", line 153: error: first parameter of allocation function must be of type "size_t"
+  void* operator new[](std::size_t, std::align_val_t, const std::nothrow_t&)
+        ^
+
+"/home/gnu/gcc-8.2.0/include/c++/8.2.0/new", line 168: error: first parameter of allocation function must be of type "size_t"
+  inline void* operator new(std::size_t, void* __p) noexcept
+               ^
+
+"/home/gnu/gcc-8.2.0/include/c++/8.2.0/new", line 170: error: first parameter of allocation function must be of type "size_t"
+  inline void* operator new[](std::size_t, void* __p) noexcept
+               ^
+
+"/home/gnu/gcc-8.2.0/include/c++/8.2.0/ext/new_allocator.h", line 108: error: too many arguments in function call
+       return static_cast<_Tp*>(::operator new(__n * sizeof(_Tp), __al));
+                                                                  ^
+
+"/home/gnu/gcc-8.2.0/include/c++/8.2.0/bits/stl_vector.h", line 1737: error: argument list for class template "std::vector" is missing
+      vector(_InputIterator, _InputIterator, _Allocator = _Allocator())
+      ^
+
+"/home/gnu/gcc-8.2.0/include/c++/8.2.0/bits/stl_vector.h", line 1737: error: expected a ")"
+      vector(_InputIterator, _InputIterator, _Allocator = _Allocator())
+                           ^
+
+"/home/gnu/gcc-8.2.0/include/c++/8.2.0/bits/stl_vector.h", line 1737: error: template parameter "_InputIterator" may not be redeclared in this scope
+      vector(_InputIterator, _InputIterator, _Allocator = _Allocator())
+             ^
+
+"/home/gnu/gcc-8.2.0/include/c++/8.2.0/bits/stl_vector.h", line 1738: error: expected a ";"
+        -> vector<_ValT, _Allocator>;
+        ^
+
+"./warn/pr31246.C", line 8: warning: variable "a" was declared but never referenced
+    std::vector<int>::iterator a;
+                               ^
+
+19 errors detected in the compilation of "Test_name.c".

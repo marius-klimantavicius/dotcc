@@ -1,0 +1,1064 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 37: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(short _Fract, sf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 37: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(short _Fract, sf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 37: error: expected a type specifier
+  FIXED_POINT_COMPOSITE_DECL(short _Fract, sf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 37: error: function returning array is not allowed
+  FIXED_POINT_COMPOSITE_DECL(short _Fract, sf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 37: error: declaration is incompatible with "short _Fract" (declared at line 37)
+  FIXED_POINT_COMPOSITE_DECL(short _Fract, sf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 37: error: declaration is incompatible with "<error-type> _Fract(<error-type>)" (declared at line 37)
+  FIXED_POINT_COMPOSITE_DECL(short _Fract, sf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 37: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(short _Fract, sf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 37: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(short _Fract, sf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 37: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(short _Fract, sf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 37: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(short _Fract, sf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 38: error: variable "_Fract" is not a type name
+  FIXED_POINT_COMPOSITE_DECL(_Fract, f);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 38: error: expected a type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Fract, f);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 38: error: function returning array is not allowed
+  FIXED_POINT_COMPOSITE_DECL(_Fract, f);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 38: error: declaration is incompatible with "short _Fract" (declared at line 37)
+  FIXED_POINT_COMPOSITE_DECL(_Fract, f);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 38: warning: expression has no effect
+  FIXED_POINT_COMPOSITE_DECL(_Fract, f);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 38: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Fract, f);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 38: error: identifier "f" is undefined
+  FIXED_POINT_COMPOSITE_DECL(_Fract, f);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 38: error: expected an expression
+  FIXED_POINT_COMPOSITE_DECL(_Fract, f);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 38: error: expected an expression
+  FIXED_POINT_COMPOSITE_DECL(_Fract, f);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 38: error: expression must have arithmetic type
+  FIXED_POINT_COMPOSITE_DECL(_Fract, f);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 38: error: expected a ")"
+  FIXED_POINT_COMPOSITE_DECL(_Fract, f);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 38: error: expected an expression
+  FIXED_POINT_COMPOSITE_DECL(_Fract, f);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 38: error: expected a ")"
+  FIXED_POINT_COMPOSITE_DECL(_Fract, f);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 39: error: declaration is incompatible with "<error-type> _Fract(<error-type>)" (declared at line 38)
+  FIXED_POINT_COMPOSITE_DECL(long _Fract, lf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 39: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(long _Fract, lf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 39: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(long _Fract, lf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 39: error: expected a type specifier
+  FIXED_POINT_COMPOSITE_DECL(long _Fract, lf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 39: error: function returning array is not allowed
+  FIXED_POINT_COMPOSITE_DECL(long _Fract, lf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 39: error: declaration is incompatible with "long _Fract" (declared at line 39)
+  FIXED_POINT_COMPOSITE_DECL(long _Fract, lf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 39: error: declaration is incompatible with "<error-type> _Fract(<error-type>)" (declared at line 39)
+  FIXED_POINT_COMPOSITE_DECL(long _Fract, lf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 39: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(long _Fract, lf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 39: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(long _Fract, lf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 39: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(long _Fract, lf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 39: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(long _Fract, lf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 40: error: declaration is incompatible with "long _Fract" (declared at line 39)
+  FIXED_POINT_COMPOSITE_DECL(long long _Fract, llf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 40: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(long long _Fract, llf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 40: error: declaration is incompatible with "long _Fract" (declared at line 40)
+  FIXED_POINT_COMPOSITE_DECL(long long _Fract, llf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 40: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(long long _Fract, llf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 40: error: expected a type specifier
+  FIXED_POINT_COMPOSITE_DECL(long long _Fract, llf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 40: error: function returning array is not allowed
+  FIXED_POINT_COMPOSITE_DECL(long long _Fract, llf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 40: error: declaration is incompatible with "long _Fract" (declared at line 40)
+  FIXED_POINT_COMPOSITE_DECL(long long _Fract, llf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 40: error: declaration is incompatible with "<error-type> _Fract(<error-type>)" (declared at line 40)
+  FIXED_POINT_COMPOSITE_DECL(long long _Fract, llf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 40: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(long long _Fract, llf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 40: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(long long _Fract, llf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 40: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(long long _Fract, llf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 40: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(long long _Fract, llf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 41: error: declaration is incompatible with "long long _Fract" (declared at line 40)
+  FIXED_POINT_COMPOSITE_DECL(unsigned short _Fract, usf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 41: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(unsigned short _Fract, usf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 41: error: declaration is incompatible with "long long _Fract" (declared at line 41)
+  FIXED_POINT_COMPOSITE_DECL(unsigned short _Fract, usf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 41: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(unsigned short _Fract, usf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 41: error: expected a type specifier
+  FIXED_POINT_COMPOSITE_DECL(unsigned short _Fract, usf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 41: error: function returning array is not allowed
+  FIXED_POINT_COMPOSITE_DECL(unsigned short _Fract, usf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 41: error: declaration is incompatible with "long long _Fract" (declared at line 41)
+  FIXED_POINT_COMPOSITE_DECL(unsigned short _Fract, usf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 41: error: declaration is incompatible with "<error-type> _Fract(<error-type>)" (declared at line 41)
+  FIXED_POINT_COMPOSITE_DECL(unsigned short _Fract, usf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 41: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(unsigned short _Fract, usf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 41: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(unsigned short _Fract, usf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 41: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(unsigned short _Fract, usf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 41: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(unsigned short _Fract, usf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 42: error: declaration is incompatible with "unsigned short _Fract" (declared at line 41)
+  FIXED_POINT_COMPOSITE_DECL(unsigned _Fract, uf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 42: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(unsigned _Fract, uf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 42: error: declaration is incompatible with "unsigned short _Fract" (declared at line 42)
+  FIXED_POINT_COMPOSITE_DECL(unsigned _Fract, uf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 42: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(unsigned _Fract, uf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 42: error: expected a type specifier
+  FIXED_POINT_COMPOSITE_DECL(unsigned _Fract, uf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 42: error: function returning array is not allowed
+  FIXED_POINT_COMPOSITE_DECL(unsigned _Fract, uf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 42: error: declaration is incompatible with "unsigned short _Fract" (declared at line 42)
+  FIXED_POINT_COMPOSITE_DECL(unsigned _Fract, uf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 42: error: declaration is incompatible with "<error-type> _Fract(<error-type>)" (declared at line 42)
+  FIXED_POINT_COMPOSITE_DECL(unsigned _Fract, uf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 42: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(unsigned _Fract, uf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 42: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(unsigned _Fract, uf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 42: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(unsigned _Fract, uf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 42: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(unsigned _Fract, uf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 43: error: declaration is incompatible with "unsigned int _Fract" (declared at line 42)
+  FIXED_POINT_COMPOSITE_DECL(unsigned long _Fract, ulf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 43: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(unsigned long _Fract, ulf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 43: error: declaration is incompatible with "unsigned int _Fract" (declared at line 43)
+  FIXED_POINT_COMPOSITE_DECL(unsigned long _Fract, ulf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 43: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(unsigned long _Fract, ulf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 43: error: expected a type specifier
+  FIXED_POINT_COMPOSITE_DECL(unsigned long _Fract, ulf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 43: error: function returning array is not allowed
+  FIXED_POINT_COMPOSITE_DECL(unsigned long _Fract, ulf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 43: error: declaration is incompatible with "unsigned int _Fract" (declared at line 43)
+  FIXED_POINT_COMPOSITE_DECL(unsigned long _Fract, ulf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 43: error: declaration is incompatible with "<error-type> _Fract(<error-type>)" (declared at line 43)
+  FIXED_POINT_COMPOSITE_DECL(unsigned long _Fract, ulf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 43: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(unsigned long _Fract, ulf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 43: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(unsigned long _Fract, ulf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 43: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(unsigned long _Fract, ulf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 43: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(unsigned long _Fract, ulf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 44: error: declaration is incompatible with "unsigned long _Fract" (declared at line 43)
+  FIXED_POINT_COMPOSITE_DECL(unsigned long long _Fract, ullf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 44: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(unsigned long long _Fract, ullf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 44: error: declaration is incompatible with "unsigned long _Fract" (declared at line 44)
+  FIXED_POINT_COMPOSITE_DECL(unsigned long long _Fract, ullf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 44: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(unsigned long long _Fract, ullf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 44: error: expected a type specifier
+  FIXED_POINT_COMPOSITE_DECL(unsigned long long _Fract, ullf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 44: error: function returning array is not allowed
+  FIXED_POINT_COMPOSITE_DECL(unsigned long long _Fract, ullf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 44: error: declaration is incompatible with "unsigned long _Fract" (declared at line 44)
+  FIXED_POINT_COMPOSITE_DECL(unsigned long long _Fract, ullf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 44: error: declaration is incompatible with "<error-type> _Fract(<error-type>)" (declared at line 44)
+  FIXED_POINT_COMPOSITE_DECL(unsigned long long _Fract, ullf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 44: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(unsigned long long _Fract, ullf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 44: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(unsigned long long _Fract, ullf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 44: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(unsigned long long _Fract, ullf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 44: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(unsigned long long _Fract, ullf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 45: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat short _Fract, Ssf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 45: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat short _Fract, Ssf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 45: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat short _Fract, Ssf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 45: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat short _Fract, Ssf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 45: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat short _Fract, Ssf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 45: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat short _Fract, Ssf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 45: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat short _Fract, Ssf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 45: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat short _Fract, Ssf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 45: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat short _Fract, Ssf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 45: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat short _Fract, Ssf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 45: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat short _Fract, Ssf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 45: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat short _Fract, Ssf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 45: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat short _Fract, Ssf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 45: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat short _Fract, Ssf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 45: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat short _Fract, Ssf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 45: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat short _Fract, Ssf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 45: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat short _Fract, Ssf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 45: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat short _Fract, Ssf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 46: error: variable "_Sat" is not a type name
+  FIXED_POINT_COMPOSITE_DECL(_Sat _Fract, Sf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 46: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat _Fract, Sf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 46: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat _Fract, Sf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 46: error: expected a type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat _Fract, Sf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 46: error: function returning array is not allowed
+  FIXED_POINT_COMPOSITE_DECL(_Sat _Fract, Sf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 46: error: declaration is incompatible with "<error-type> _Fract" (declared at line 44)
+  FIXED_POINT_COMPOSITE_DECL(_Sat _Fract, Sf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 46: error: declaration is incompatible with "<error-type> _Fract(<error-type>)" (declared at line 46)
+  FIXED_POINT_COMPOSITE_DECL(_Sat _Fract, Sf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 46: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat _Fract, Sf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 46: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat _Fract, Sf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 46: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat _Fract, Sf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 46: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat _Fract, Sf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 47: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat long _Fract, Slf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 47: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat long _Fract, Slf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 47: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat long _Fract, Slf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 47: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat long _Fract, Slf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 47: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat long _Fract, Slf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 47: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat long _Fract, Slf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 47: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat long _Fract, Slf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 47: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat long _Fract, Slf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 47: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat long _Fract, Slf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 47: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat long _Fract, Slf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 47: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat long _Fract, Slf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 47: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat long _Fract, Slf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 47: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat long _Fract, Slf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 47: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat long _Fract, Slf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 47: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat long _Fract, Slf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 47: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat long _Fract, Slf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 47: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat long _Fract, Slf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 47: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat long _Fract, Slf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 48: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat long long _Fract, Sllf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 48: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat long long _Fract, Sllf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 48: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat long long _Fract, Sllf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 48: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat long long _Fract, Sllf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 48: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat long long _Fract, Sllf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 48: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat long long _Fract, Sllf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 48: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat long long _Fract, Sllf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 48: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat long long _Fract, Sllf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 48: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat long long _Fract, Sllf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 48: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat long long _Fract, Sllf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 48: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat long long _Fract, Sllf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 48: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat long long _Fract, Sllf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 48: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat long long _Fract, Sllf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 48: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat long long _Fract, Sllf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 48: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat long long _Fract, Sllf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 48: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat long long _Fract, Sllf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 48: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat long long _Fract, Sllf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 48: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat long long _Fract, Sllf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 49: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned short _Fract, Susf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 49: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned short _Fract, Susf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 49: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned short _Fract, Susf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 49: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned short _Fract, Susf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 49: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned short _Fract, Susf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 49: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned short _Fract, Susf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 49: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned short _Fract, Susf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 49: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned short _Fract, Susf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 49: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned short _Fract, Susf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 49: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned short _Fract, Susf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 49: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned short _Fract, Susf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 49: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned short _Fract, Susf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 49: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned short _Fract, Susf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 49: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned short _Fract, Susf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 49: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned short _Fract, Susf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 49: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned short _Fract, Susf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 49: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned short _Fract, Susf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 49: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned short _Fract, Susf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 50: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned _Fract, Suf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 50: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned _Fract, Suf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 50: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned _Fract, Suf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 50: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned _Fract, Suf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 50: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned _Fract, Suf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 50: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned _Fract, Suf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 50: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned _Fract, Suf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 50: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned _Fract, Suf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 50: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned _Fract, Suf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 50: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned _Fract, Suf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 50: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned _Fract, Suf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 50: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned _Fract, Suf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 50: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned _Fract, Suf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 50: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned _Fract, Suf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 50: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned _Fract, Suf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 50: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned _Fract, Suf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 50: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned _Fract, Suf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 50: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned _Fract, Suf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 51: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned long _Fract, Sulf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 51: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned long _Fract, Sulf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 51: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned long _Fract, Sulf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 51: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned long _Fract, Sulf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 51: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned long _Fract, Sulf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 51: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned long _Fract, Sulf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 51: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned long _Fract, Sulf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 51: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned long _Fract, Sulf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 51: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned long _Fract, Sulf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 51: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned long _Fract, Sulf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 51: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned long _Fract, Sulf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 51: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned long _Fract, Sulf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 51: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned long _Fract, Sulf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 51: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned long _Fract, Sulf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 51: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned long _Fract, Sulf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 51: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned long _Fract, Sulf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 51: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned long _Fract, Sulf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 51: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned long _Fract, Sulf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 52: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned long long _Fract, Sullf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 52: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned long long _Fract, Sullf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 52: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned long long _Fract, Sullf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 52: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned long long _Fract, Sullf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 52: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned long long _Fract, Sullf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 52: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned long long _Fract, Sullf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 52: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned long long _Fract, Sullf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 52: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned long long _Fract, Sullf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 52: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned long long _Fract, Sullf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 52: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned long long _Fract, Sullf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 52: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned long long _Fract, Sullf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 52: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned long long _Fract, Sullf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 52: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned long long _Fract, Sullf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 52: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned long long _Fract, Sullf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 52: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned long long _Fract, Sullf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 52: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned long long _Fract, Sullf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 52: warning: this declaration has no storage class or type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned long long _Fract, Sullf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 52: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Sat unsigned long long _Fract, Sullf);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 54: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(short _Accum, sk);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 54: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(short _Accum, sk);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 54: error: expected a type specifier
+  FIXED_POINT_COMPOSITE_DECL(short _Accum, sk);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 54: error: function returning array is not allowed
+  FIXED_POINT_COMPOSITE_DECL(short _Accum, sk);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 54: error: declaration is incompatible with "short _Accum" (declared at line 54)
+  FIXED_POINT_COMPOSITE_DECL(short _Accum, sk);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 54: error: declaration is incompatible with "<error-type> _Accum(<error-type>)" (declared at line 54)
+  FIXED_POINT_COMPOSITE_DECL(short _Accum, sk);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 54: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(short _Accum, sk);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 54: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(short _Accum, sk);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 54: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(short _Accum, sk);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 54: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(short _Accum, sk);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 55: error: variable "_Accum" is not a type name
+  FIXED_POINT_COMPOSITE_DECL(_Accum, k);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 55: error: expected a type specifier
+  FIXED_POINT_COMPOSITE_DECL(_Accum, k);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 55: error: function returning array is not allowed
+  FIXED_POINT_COMPOSITE_DECL(_Accum, k);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 55: error: declaration is incompatible with "short _Accum" (declared at line 54)
+  FIXED_POINT_COMPOSITE_DECL(_Accum, k);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 55: warning: expression has no effect
+  FIXED_POINT_COMPOSITE_DECL(_Accum, k);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 55: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(_Accum, k);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 55: error: identifier "k" is undefined
+  FIXED_POINT_COMPOSITE_DECL(_Accum, k);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 55: error: expected an expression
+  FIXED_POINT_COMPOSITE_DECL(_Accum, k);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 55: error: expected an expression
+  FIXED_POINT_COMPOSITE_DECL(_Accum, k);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 55: error: expression must have arithmetic type
+  FIXED_POINT_COMPOSITE_DECL(_Accum, k);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 55: error: expected a ")"
+  FIXED_POINT_COMPOSITE_DECL(_Accum, k);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 55: error: expected an expression
+  FIXED_POINT_COMPOSITE_DECL(_Accum, k);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 55: error: expected a ")"
+  FIXED_POINT_COMPOSITE_DECL(_Accum, k);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 56: error: declaration is incompatible with "<error-type> _Accum(<error-type>)" (declared at line 55)
+  FIXED_POINT_COMPOSITE_DECL(long _Accum, lk);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 56: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(long _Accum, lk);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 56: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(long _Accum, lk);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 56: error: expected a type specifier
+  FIXED_POINT_COMPOSITE_DECL(long _Accum, lk);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 56: error: function returning array is not allowed
+  FIXED_POINT_COMPOSITE_DECL(long _Accum, lk);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 56: error: declaration is incompatible with "long _Accum" (declared at line 56)
+  FIXED_POINT_COMPOSITE_DECL(long _Accum, lk);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 56: error: declaration is incompatible with "<error-type> _Accum(<error-type>)" (declared at line 56)
+  FIXED_POINT_COMPOSITE_DECL(long _Accum, lk);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 56: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(long _Accum, lk);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 56: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(long _Accum, lk);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 56: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(long _Accum, lk);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+"Test_name.c", line 56: error: expected a ";"
+  FIXED_POINT_COMPOSITE_DECL(long _Accum, lk);  /* { dg-error "incompatible types when assigning" } */
+  ^
+
+Error limit reached.
+200 errors detected in the compilation of "Test_name.c".
+Compilation terminated.

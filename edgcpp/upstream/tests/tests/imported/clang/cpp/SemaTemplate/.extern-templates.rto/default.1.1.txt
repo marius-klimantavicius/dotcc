@@ -1,0 +1,19 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 -w -DMS -w Test_name.c
+"Test_name.c", line 81: error: expression must have a constant value
+    int arr[A<int>::n];
+            ^
+"Test_name.c", line 81: note: the value of member "static_const_member::A<T>::n [with T=int]" (declared at line 78) cannot be used as a constant
+    int arr[A<int>::n];
+            ^
+
+"Test_name.c", line 18: error: a value of type "int" cannot be assigned to an entity of type "long *"
+    t = 17; // expected-error{{incompatible}}
+      ^
+          detected during instantiation of "void X0<T>::f(T) [with T=long *]" at line 46
+
+"Test_name.c", line 28: error: a value of type "int" cannot be assigned to an entity of type "long *"
+    t = 17; // expected-error{{incompatible integer to pointer conversion assigning to 'long *'}} expected-error{{incompatible integer to pointer conversion assigning to 'int *'}}
+      ^
+          detected during instantiation of "void X0<T>::Inner::g(T) [with T=long *]" at line 47
+
+3 errors detected in the compilation of "Test_name.c".

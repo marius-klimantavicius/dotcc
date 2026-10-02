@@ -1,0 +1,14 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./ext/attr-ifunc-2.C", line 29: error: invalid type conversion
+    return reinterpret_cast<Func*>(&Klass::implementation);
+           ^
+
+"./ext/attr-ifunc-2.C", line 32: error: member function "Klass::magic" may not be redeclared outside its class
+  int Klass::magic (void) __attribute__ ((ifunc ("_ZN5Klass8resolverEv")));
+             ^
+
+"./ext/attr-ifunc-2.C", line 32: error: declaration aliased to undefined entity "_ZN5Klass8resolverEv"
+  int Klass::magic (void) __attribute__ ((ifunc ("_ZN5Klass8resolverEv")));
+                                          ^
+
+3 errors detected in the compilation of "Test_name.c".

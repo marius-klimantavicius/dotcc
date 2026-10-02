@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 6: error: the size of an array must be greater than zero
+  extern void foo (int[-1]); /* { dg-error "21:size of unnamed array is negative" } */
+                       ^
+
+"Test_name.c", line 11: error: the size of an array must be greater than zero
+    123 + sizeof (int[-1]); /* { dg-error "20:size of unnamed array is negative" } */
+                      ^
+
+"Test_name.c", line 12: warning: missing return statement at end of non-void function "bar"
+  }
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

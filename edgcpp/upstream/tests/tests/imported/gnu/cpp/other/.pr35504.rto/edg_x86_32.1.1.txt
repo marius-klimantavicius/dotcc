@@ -1,0 +1,41 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 36: warning: unknown attribute "__regparm__"
+    virtual ATTR0 struct long_struct method0 ()
+            ^
+
+"Test_name.c", line 41: warning: unknown attribute "__regparm__"
+    virtual ATTR1 struct long_struct method1 ()
+            ^
+
+"Test_name.c", line 46: warning: unknown attribute "__regparm__"
+    virtual ATTR2 struct long_struct method2 ()
+            ^
+
+"Test_name.c", line 51: warning: unknown attribute "__regparm__"
+    virtual ATTR3 struct long_struct method3 ()
+            ^
+
+"Test_name.c", line 76: warning: unknown attribute "__thiscall__"
+    virtual ATTR8 struct long_struct method8 ()
+            ^
+
+"Test_name.c", line 98: warning: unknown attribute "__regparm__"
+    virtual ATTR0 struct long_struct method0 ()
+            ^
+
+"Test_name.c", line 103: warning: unknown attribute "__regparm__"
+    virtual ATTR1 struct long_struct method1 ()
+            ^
+
+"Test_name.c", line 108: warning: unknown attribute "__regparm__"
+    virtual ATTR2 struct long_struct method2 ()
+            ^
+
+"Test_name.c", line 113: warning: unknown attribute "__regparm__"
+    virtual ATTR3 struct long_struct method3 ()
+            ^
+
+"Test_name.c", line 138: warning: unknown attribute "__thiscall__"
+    virtual ATTR8 struct long_struct method8 ()
+            ^
+

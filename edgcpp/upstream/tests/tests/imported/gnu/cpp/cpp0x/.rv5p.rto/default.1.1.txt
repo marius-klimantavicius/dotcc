@@ -1,0 +1,1469 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 47: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_12345(a))           == 1* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 48: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_12345(ca))          == 2* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 49: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_12345(va))          == 3* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 50: warning: variable "t4" was declared but never referenced
+      sa<sizeof(sink_5_12345(cva))         == 4* sizeof(long)> t4;
+                                                               ^
+
+"Test_name.c", line 51: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_12345(source()))    == 5* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 52: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_12345(c_source()))  == 2* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 68: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_12346(a))           == 1* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 69: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_12346(ca))          == 2* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 70: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_12346(va))          == 3* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 71: warning: variable "t4" was declared but never referenced
+      sa<sizeof(sink_5_12346(cva))         == 4* sizeof(long)> t4;
+                                                               ^
+
+"Test_name.c", line 72: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_12346(source()))    == 6* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 73: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_12346(c_source()))  == 6* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 89: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_12347(a))           == 1* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 90: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_12347(ca))          == 2* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 91: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_12347(va))          == 3* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 92: warning: variable "t4" was declared but never referenced
+      sa<sizeof(sink_5_12347(cva))         == 4* sizeof(long)> t4;
+                                                               ^
+
+"Test_name.c", line 93: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_12347(source()))    == 7* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 94: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_12347(c_source()))  == 2* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 95: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_12347(v_source()))  == 7* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 111: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_12348(a))           == 1* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 112: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_12348(ca))          == 2* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 113: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_12348(va))          == 3* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 114: warning: variable "t4" was declared but never referenced
+      sa<sizeof(sink_5_12348(cva))         == 4* sizeof(long)> t4;
+                                                               ^
+
+"Test_name.c", line 115: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_12348(source()))    == 8* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 116: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_12348(c_source()))  == 8* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 117: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_12348(v_source()))  == 8* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 118: warning: variable "t8" was declared but never referenced
+      sa<sizeof(sink_5_12348(cv_source())) == 8* sizeof(long)> t8;
+                                                               ^
+
+"Test_name.c", line 134: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_12356(a))           == 1* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 135: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_12356(ca))          == 2* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 136: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_12356(va))          == 3* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 137: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_12356(source()))    == 5* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 138: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_12356(c_source()))  == 6* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 154: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_12357(a))           == 1* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 155: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_12357(ca))          == 2* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 156: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_12357(va))          == 3* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 157: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_12357(source()))    == 5* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 158: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_12357(c_source()))  == 2* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 159: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_12357(v_source()))  == 7* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 175: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_12358(a))           == 1* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 176: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_12358(ca))          == 2* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 177: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_12358(va))          == 3* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 178: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_12358(source()))    == 5* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 179: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_12358(c_source()))  == 8* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 180: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_12358(v_source()))  == 8* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 181: warning: variable "t8" was declared but never referenced
+      sa<sizeof(sink_5_12358(cv_source())) == 8* sizeof(long)> t8;
+                                                               ^
+
+"Test_name.c", line 197: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_12367(a))           == 1* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 198: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_12367(ca))          == 2* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 199: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_12367(va))          == 3* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 200: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_12367(c_source()))  == 6* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 201: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_12367(v_source()))  == 7* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 217: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_12368(a))           == 1* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 218: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_12368(ca))          == 2* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 219: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_12368(va))          == 3* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 220: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_12368(source()))    == 6* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 221: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_12368(c_source()))  == 6* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 222: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_12368(v_source()))  == 8* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 223: warning: variable "t8" was declared but never referenced
+      sa<sizeof(sink_5_12368(cv_source())) == 8* sizeof(long)> t8;
+                                                               ^
+
+"Test_name.c", line 239: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_12378(a))           == 1* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 240: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_12378(ca))          == 2* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 241: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_12378(va))          == 3* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 242: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_12378(source()))    == 7* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 243: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_12378(c_source()))  == 8* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 244: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_12378(v_source()))  == 7* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 245: warning: variable "t8" was declared but never referenced
+      sa<sizeof(sink_5_12378(cv_source())) == 8* sizeof(long)> t8;
+                                                               ^
+
+"Test_name.c", line 261: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_12456(a))           == 1* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 262: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_12456(ca))          == 2* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 263: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_12456(va))          == 4* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 264: warning: variable "t4" was declared but never referenced
+      sa<sizeof(sink_5_12456(cva))         == 4* sizeof(long)> t4;
+                                                               ^
+
+"Test_name.c", line 265: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_12456(source()))    == 5* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 266: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_12456(c_source()))  == 6* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 282: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_12457(a))           == 1* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 283: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_12457(ca))          == 2* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 284: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_12457(va))          == 4* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 285: warning: variable "t4" was declared but never referenced
+      sa<sizeof(sink_5_12457(cva))         == 4* sizeof(long)> t4;
+                                                               ^
+
+"Test_name.c", line 286: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_12457(source()))    == 5* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 287: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_12457(c_source()))  == 2* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 288: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_12457(v_source()))  == 7* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 304: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_12458(a))           == 1* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 305: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_12458(ca))          == 2* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 306: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_12458(va))          == 4* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 307: warning: variable "t4" was declared but never referenced
+      sa<sizeof(sink_5_12458(cva))         == 4* sizeof(long)> t4;
+                                                               ^
+
+"Test_name.c", line 308: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_12458(source()))    == 5* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 309: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_12458(c_source()))  == 8* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 310: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_12458(v_source()))  == 8* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 311: warning: variable "t8" was declared but never referenced
+      sa<sizeof(sink_5_12458(cv_source())) == 8* sizeof(long)> t8;
+                                                               ^
+
+"Test_name.c", line 327: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_12467(a))           == 1* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 328: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_12467(ca))          == 2* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 329: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_12467(va))          == 4* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 330: warning: variable "t4" was declared but never referenced
+      sa<sizeof(sink_5_12467(cva))         == 4* sizeof(long)> t4;
+                                                               ^
+
+"Test_name.c", line 331: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_12467(c_source()))  == 6* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 332: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_12467(v_source()))  == 7* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 348: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_12468(a))           == 1* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 349: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_12468(ca))          == 2* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 350: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_12468(va))          == 4* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 351: warning: variable "t4" was declared but never referenced
+      sa<sizeof(sink_5_12468(cva))         == 4* sizeof(long)> t4;
+                                                               ^
+
+"Test_name.c", line 352: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_12468(source()))    == 6* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 353: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_12468(c_source()))  == 6* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 354: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_12468(v_source()))  == 8* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 355: warning: variable "t8" was declared but never referenced
+      sa<sizeof(sink_5_12468(cv_source())) == 8* sizeof(long)> t8;
+                                                               ^
+
+"Test_name.c", line 371: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_12478(a))           == 1* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 372: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_12478(ca))          == 2* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 373: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_12478(va))          == 4* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 374: warning: variable "t4" was declared but never referenced
+      sa<sizeof(sink_5_12478(cva))         == 4* sizeof(long)> t4;
+                                                               ^
+
+"Test_name.c", line 375: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_12478(source()))    == 7* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 376: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_12478(c_source()))  == 8* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 377: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_12478(v_source()))  == 7* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 378: warning: variable "t8" was declared but never referenced
+      sa<sizeof(sink_5_12478(cv_source())) == 8* sizeof(long)> t8;
+                                                               ^
+
+"Test_name.c", line 394: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_12567(a))           == 1* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 395: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_12567(ca))          == 2* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 396: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_12567(source()))    == 5* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 397: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_12567(c_source()))  == 6* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 398: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_12567(v_source()))  == 7* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 414: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_12568(a))           == 1* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 415: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_12568(ca))          == 2* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 416: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_12568(source()))    == 5* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 417: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_12568(c_source()))  == 6* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 418: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_12568(v_source()))  == 8* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 419: warning: variable "t8" was declared but never referenced
+      sa<sizeof(sink_5_12568(cv_source())) == 8* sizeof(long)> t8;
+                                                               ^
+
+"Test_name.c", line 435: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_12578(a))           == 1* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 436: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_12578(ca))          == 2* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 437: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_12578(source()))    == 5* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 438: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_12578(c_source()))  == 8* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 439: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_12578(v_source()))  == 7* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 440: warning: variable "t8" was declared but never referenced
+      sa<sizeof(sink_5_12578(cv_source())) == 8* sizeof(long)> t8;
+                                                               ^
+
+"Test_name.c", line 456: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_12678(a))           == 1* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 457: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_12678(ca))          == 2* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 458: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_12678(c_source()))  == 6* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 459: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_12678(v_source()))  == 7* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 460: warning: variable "t8" was declared but never referenced
+      sa<sizeof(sink_5_12678(cv_source())) == 8* sizeof(long)> t8;
+                                                               ^
+
+"Test_name.c", line 476: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_13456(a))           == 1* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 477: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_13456(ca))          == 4* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 478: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_13456(va))          == 3* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 479: warning: variable "t4" was declared but never referenced
+      sa<sizeof(sink_5_13456(cva))         == 4* sizeof(long)> t4;
+                                                               ^
+
+"Test_name.c", line 480: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_13456(source()))    == 5* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 481: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_13456(c_source()))  == 6* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 497: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_13457(a))           == 1* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 498: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_13457(ca))          == 4* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 499: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_13457(va))          == 3* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 500: warning: variable "t4" was declared but never referenced
+      sa<sizeof(sink_5_13457(cva))         == 4* sizeof(long)> t4;
+                                                               ^
+
+"Test_name.c", line 501: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_13457(source()))    == 5* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 502: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_13457(v_source()))  == 7* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 518: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_13458(a))           == 1* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 519: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_13458(ca))          == 4* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 520: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_13458(va))          == 3* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 521: warning: variable "t4" was declared but never referenced
+      sa<sizeof(sink_5_13458(cva))         == 4* sizeof(long)> t4;
+                                                               ^
+
+"Test_name.c", line 522: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_13458(source()))    == 5* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 523: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_13458(c_source()))  == 8* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 524: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_13458(v_source()))  == 8* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 525: warning: variable "t8" was declared but never referenced
+      sa<sizeof(sink_5_13458(cv_source())) == 8* sizeof(long)> t8;
+                                                               ^
+
+"Test_name.c", line 541: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_13467(a))           == 1* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 542: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_13467(ca))          == 4* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 543: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_13467(va))          == 3* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 544: warning: variable "t4" was declared but never referenced
+      sa<sizeof(sink_5_13467(cva))         == 4* sizeof(long)> t4;
+                                                               ^
+
+"Test_name.c", line 545: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_13467(c_source()))  == 6* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 546: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_13467(v_source()))  == 7* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 562: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_13468(a))           == 1* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 563: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_13468(ca))          == 4* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 564: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_13468(va))          == 3* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 565: warning: variable "t4" was declared but never referenced
+      sa<sizeof(sink_5_13468(cva))         == 4* sizeof(long)> t4;
+                                                               ^
+
+"Test_name.c", line 566: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_13468(source()))    == 6* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 567: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_13468(c_source()))  == 6* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 568: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_13468(v_source()))  == 8* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 569: warning: variable "t8" was declared but never referenced
+      sa<sizeof(sink_5_13468(cv_source())) == 8* sizeof(long)> t8;
+                                                               ^
+
+"Test_name.c", line 585: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_13478(a))           == 1* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 586: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_13478(ca))          == 4* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 587: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_13478(va))          == 3* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 588: warning: variable "t4" was declared but never referenced
+      sa<sizeof(sink_5_13478(cva))         == 4* sizeof(long)> t4;
+                                                               ^
+
+"Test_name.c", line 589: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_13478(source()))    == 7* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 590: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_13478(c_source()))  == 8* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 591: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_13478(v_source()))  == 7* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 592: warning: variable "t8" was declared but never referenced
+      sa<sizeof(sink_5_13478(cv_source())) == 8* sizeof(long)> t8;
+                                                               ^
+
+"Test_name.c", line 608: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_13567(a))           == 1* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 609: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_13567(va))          == 3* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 610: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_13567(source()))    == 5* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 611: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_13567(c_source()))  == 6* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 612: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_13567(v_source()))  == 7* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 628: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_13568(a))           == 1* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 629: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_13568(va))          == 3* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 630: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_13568(source()))    == 5* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 631: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_13568(c_source()))  == 6* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 632: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_13568(v_source()))  == 8* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 633: warning: variable "t8" was declared but never referenced
+      sa<sizeof(sink_5_13568(cv_source())) == 8* sizeof(long)> t8;
+                                                               ^
+
+"Test_name.c", line 649: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_13578(a))           == 1* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 650: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_13578(va))          == 3* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 651: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_13578(source()))    == 5* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 652: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_13578(c_source()))  == 8* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 653: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_13578(v_source()))  == 7* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 654: warning: variable "t8" was declared but never referenced
+      sa<sizeof(sink_5_13578(cv_source())) == 8* sizeof(long)> t8;
+                                                               ^
+
+"Test_name.c", line 670: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_13678(a))           == 1* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 671: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_13678(va))          == 3* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 672: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_13678(c_source()))  == 6* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 673: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_13678(v_source()))  == 7* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 674: warning: variable "t8" was declared but never referenced
+      sa<sizeof(sink_5_13678(cv_source())) == 8* sizeof(long)> t8;
+                                                               ^
+
+"Test_name.c", line 690: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_14567(a))           == 1* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 691: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_14567(ca))          == 4* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 692: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_14567(va))          == 4* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 693: warning: variable "t4" was declared but never referenced
+      sa<sizeof(sink_5_14567(cva))         == 4* sizeof(long)> t4;
+                                                               ^
+
+"Test_name.c", line 694: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_14567(source()))    == 5* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 695: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_14567(c_source()))  == 6* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 696: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_14567(v_source()))  == 7* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 712: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_14568(a))           == 1* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 713: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_14568(ca))          == 4* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 714: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_14568(va))          == 4* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 715: warning: variable "t4" was declared but never referenced
+      sa<sizeof(sink_5_14568(cva))         == 4* sizeof(long)> t4;
+                                                               ^
+
+"Test_name.c", line 716: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_14568(source()))    == 5* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 717: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_14568(c_source()))  == 6* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 718: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_14568(v_source()))  == 8* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 719: warning: variable "t8" was declared but never referenced
+      sa<sizeof(sink_5_14568(cv_source())) == 8* sizeof(long)> t8;
+                                                               ^
+
+"Test_name.c", line 735: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_14578(a))           == 1* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 736: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_14578(ca))          == 4* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 737: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_14578(va))          == 4* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 738: warning: variable "t4" was declared but never referenced
+      sa<sizeof(sink_5_14578(cva))         == 4* sizeof(long)> t4;
+                                                               ^
+
+"Test_name.c", line 739: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_14578(source()))    == 5* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 740: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_14578(c_source()))  == 8* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 741: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_14578(v_source()))  == 7* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 742: warning: variable "t8" was declared but never referenced
+      sa<sizeof(sink_5_14578(cv_source())) == 8* sizeof(long)> t8;
+                                                               ^
+
+"Test_name.c", line 758: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_14678(a))           == 1* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 759: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_14678(ca))          == 4* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 760: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_14678(va))          == 4* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 761: warning: variable "t4" was declared but never referenced
+      sa<sizeof(sink_5_14678(cva))         == 4* sizeof(long)> t4;
+                                                               ^
+
+"Test_name.c", line 762: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_14678(c_source()))  == 6* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 763: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_14678(v_source()))  == 7* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 764: warning: variable "t8" was declared but never referenced
+      sa<sizeof(sink_5_14678(cv_source())) == 8* sizeof(long)> t8;
+                                                               ^
+
+"Test_name.c", line 780: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_15678(a))           == 1* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 781: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_15678(source()))    == 5* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 782: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_15678(c_source()))  == 6* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 783: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_15678(v_source()))  == 7* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 784: warning: variable "t8" was declared but never referenced
+      sa<sizeof(sink_5_15678(cv_source())) == 8* sizeof(long)> t8;
+                                                               ^
+
+"Test_name.c", line 800: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_23456(ca))          == 2* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 801: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_23456(va))          == 3* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 802: warning: variable "t4" was declared but never referenced
+      sa<sizeof(sink_5_23456(cva))         == 4* sizeof(long)> t4;
+                                                               ^
+
+"Test_name.c", line 803: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_23456(source()))    == 5* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 804: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_23456(c_source()))  == 6* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 820: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_23457(ca))          == 2* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 821: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_23457(va))          == 3* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 822: warning: variable "t4" was declared but never referenced
+      sa<sizeof(sink_5_23457(cva))         == 4* sizeof(long)> t4;
+                                                               ^
+
+"Test_name.c", line 823: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_23457(source()))    == 5* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 824: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_23457(c_source()))  == 2* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 825: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_23457(v_source()))  == 7* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 841: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_23458(ca))          == 2* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 842: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_23458(va))          == 3* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 843: warning: variable "t4" was declared but never referenced
+      sa<sizeof(sink_5_23458(cva))         == 4* sizeof(long)> t4;
+                                                               ^
+
+"Test_name.c", line 844: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_23458(source()))    == 5* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 845: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_23458(c_source()))  == 8* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 846: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_23458(v_source()))  == 8* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 847: warning: variable "t8" was declared but never referenced
+      sa<sizeof(sink_5_23458(cv_source())) == 8* sizeof(long)> t8;
+                                                               ^
+
+"Test_name.c", line 863: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_23467(ca))          == 2* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 864: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_23467(va))          == 3* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 865: warning: variable "t4" was declared but never referenced
+      sa<sizeof(sink_5_23467(cva))         == 4* sizeof(long)> t4;
+                                                               ^
+
+"Test_name.c", line 866: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_23467(c_source()))  == 6* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 867: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_23467(v_source()))  == 7* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 883: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_23468(ca))          == 2* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 884: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_23468(va))          == 3* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 885: warning: variable "t4" was declared but never referenced
+      sa<sizeof(sink_5_23468(cva))         == 4* sizeof(long)> t4;
+                                                               ^
+
+"Test_name.c", line 886: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_23468(source()))    == 6* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 887: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_23468(c_source()))  == 6* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 888: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_23468(v_source()))  == 8* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 889: warning: variable "t8" was declared but never referenced
+      sa<sizeof(sink_5_23468(cv_source())) == 8* sizeof(long)> t8;
+                                                               ^
+
+"Test_name.c", line 905: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_23478(ca))          == 2* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 906: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_23478(va))          == 3* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 907: warning: variable "t4" was declared but never referenced
+      sa<sizeof(sink_5_23478(cva))         == 4* sizeof(long)> t4;
+                                                               ^
+
+"Test_name.c", line 908: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_23478(source()))    == 7* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 909: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_23478(c_source()))  == 8* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 910: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_23478(v_source()))  == 7* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 911: warning: variable "t8" was declared but never referenced
+      sa<sizeof(sink_5_23478(cv_source())) == 8* sizeof(long)> t8;
+                                                               ^
+
+"Test_name.c", line 927: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_23567(ca))          == 2* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 928: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_23567(va))          == 3* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 929: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_23567(source()))    == 5* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 930: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_23567(c_source()))  == 6* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 931: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_23567(v_source()))  == 7* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 947: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_23568(ca))          == 2* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 948: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_23568(va))          == 3* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 949: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_23568(source()))    == 5* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 950: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_23568(c_source()))  == 6* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 951: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_23568(v_source()))  == 8* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 952: warning: variable "t8" was declared but never referenced
+      sa<sizeof(sink_5_23568(cv_source())) == 8* sizeof(long)> t8;
+                                                               ^
+
+"Test_name.c", line 968: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_23578(ca))          == 2* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 969: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_23578(va))          == 3* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 970: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_23578(source()))    == 5* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 971: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_23578(c_source()))  == 8* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 972: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_23578(v_source()))  == 7* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 973: warning: variable "t8" was declared but never referenced
+      sa<sizeof(sink_5_23578(cv_source())) == 8* sizeof(long)> t8;
+                                                               ^
+
+"Test_name.c", line 989: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_23678(ca))          == 2* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 990: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_23678(va))          == 3* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 991: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_23678(c_source()))  == 6* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 992: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_23678(v_source()))  == 7* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 993: warning: variable "t8" was declared but never referenced
+      sa<sizeof(sink_5_23678(cv_source())) == 8* sizeof(long)> t8;
+                                                               ^
+
+"Test_name.c", line 1009: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_24567(a))           == 2* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 1010: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_24567(ca))          == 2* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 1011: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_24567(va))          == 4* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 1012: warning: variable "t4" was declared but never referenced
+      sa<sizeof(sink_5_24567(cva))         == 4* sizeof(long)> t4;
+                                                               ^
+
+"Test_name.c", line 1013: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_24567(source()))    == 5* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 1014: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_24567(c_source()))  == 6* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 1015: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_24567(v_source()))  == 7* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 1031: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_24568(a))           == 2* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 1032: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_24568(ca))          == 2* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 1033: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_24568(va))          == 4* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 1034: warning: variable "t4" was declared but never referenced
+      sa<sizeof(sink_5_24568(cva))         == 4* sizeof(long)> t4;
+                                                               ^
+
+"Test_name.c", line 1035: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_24568(source()))    == 5* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 1036: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_24568(c_source()))  == 6* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 1037: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_24568(v_source()))  == 8* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 1038: warning: variable "t8" was declared but never referenced
+      sa<sizeof(sink_5_24568(cv_source())) == 8* sizeof(long)> t8;
+                                                               ^
+
+"Test_name.c", line 1054: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_24578(a))           == 2* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 1055: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_24578(ca))          == 2* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 1056: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_24578(va))          == 4* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 1057: warning: variable "t4" was declared but never referenced
+      sa<sizeof(sink_5_24578(cva))         == 4* sizeof(long)> t4;
+                                                               ^
+
+"Test_name.c", line 1058: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_24578(source()))    == 5* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 1059: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_24578(c_source()))  == 8* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 1060: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_24578(v_source()))  == 7* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 1061: warning: variable "t8" was declared but never referenced
+      sa<sizeof(sink_5_24578(cv_source())) == 8* sizeof(long)> t8;
+                                                               ^
+
+"Test_name.c", line 1077: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_24678(a))           == 2* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 1078: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_24678(ca))          == 2* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 1079: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_24678(va))          == 4* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 1080: warning: variable "t4" was declared but never referenced
+      sa<sizeof(sink_5_24678(cva))         == 4* sizeof(long)> t4;
+                                                               ^
+
+"Test_name.c", line 1081: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_24678(c_source()))  == 6* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 1082: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_24678(v_source()))  == 7* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 1083: warning: variable "t8" was declared but never referenced
+      sa<sizeof(sink_5_24678(cv_source())) == 8* sizeof(long)> t8;
+                                                               ^
+
+"Test_name.c", line 1099: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_25678(a))           == 2* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 1100: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_25678(ca))          == 2* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 1101: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_25678(source()))    == 5* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 1102: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_25678(c_source()))  == 6* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 1103: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_25678(v_source()))  == 7* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 1104: warning: variable "t8" was declared but never referenced
+      sa<sizeof(sink_5_25678(cv_source())) == 8* sizeof(long)> t8;
+                                                               ^
+
+"Test_name.c", line 1120: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_34567(a))           == 3* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 1121: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_34567(ca))          == 4* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 1122: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_34567(va))          == 3* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 1123: warning: variable "t4" was declared but never referenced
+      sa<sizeof(sink_5_34567(cva))         == 4* sizeof(long)> t4;
+                                                               ^
+
+"Test_name.c", line 1124: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_34567(source()))    == 5* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 1125: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_34567(c_source()))  == 6* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 1126: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_34567(v_source()))  == 7* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 1142: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_34568(a))           == 3* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 1143: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_34568(ca))          == 4* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 1144: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_34568(va))          == 3* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 1145: warning: variable "t4" was declared but never referenced
+      sa<sizeof(sink_5_34568(cva))         == 4* sizeof(long)> t4;
+                                                               ^
+
+"Test_name.c", line 1146: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_34568(source()))    == 5* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 1147: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_34568(c_source()))  == 6* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 1148: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_34568(v_source()))  == 8* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 1149: warning: variable "t8" was declared but never referenced
+      sa<sizeof(sink_5_34568(cv_source())) == 8* sizeof(long)> t8;
+                                                               ^
+
+"Test_name.c", line 1165: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_34578(a))           == 3* sizeof(long)> t1;
+                                                               ^
+
+"Test_name.c", line 1166: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_34578(ca))          == 4* sizeof(long)> t2;
+                                                               ^
+
+"Test_name.c", line 1167: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_34578(va))          == 3* sizeof(long)> t3;
+                                                               ^
+
+"Test_name.c", line 1168: warning: variable "t4" was declared but never referenced
+      sa<sizeof(sink_5_34578(cva))         == 4* sizeof(long)> t4;
+                                                               ^
+
+"Test_name.c", line 1169: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_34578(source()))    == 5* sizeof(long)> t5;
+                                                               ^
+
+"Test_name.c", line 1170: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_34578(c_source()))  == 8* sizeof(long)> t6;
+                                                               ^
+
+"Test_name.c", line 1171: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_34578(v_source()))  == 7* sizeof(long)> t7;
+                                                               ^
+
+"Test_name.c", line 1172: warning: variable "t8" was declared but never referenced
+      sa<sizeof(sink_5_34578(cv_source())) == 8* sizeof(long)> t8;
+                                                               ^
+
+"Test_name.c", line 1188: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_34678(a))           == 3 * sizeof(long)> t1;
+                                                                ^
+
+"Test_name.c", line 1189: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_34678(ca))          == 4 * sizeof(long)> t2;
+                                                                ^
+
+"Test_name.c", line 1190: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_34678(va))          == 3 * sizeof(long)> t3;
+                                                                ^
+
+"Test_name.c", line 1191: warning: variable "t4" was declared but never referenced
+      sa<sizeof(sink_5_34678(cva))         == 4 * sizeof(long)> t4;
+                                                                ^
+
+"Test_name.c", line 1192: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_34678(c_source()))  == 6 * sizeof(long)> t6;
+                                                                ^
+
+"Test_name.c", line 1193: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_34678(v_source()))  == 7 * sizeof(long)> t7;
+                                                                ^
+
+"Test_name.c", line 1194: warning: variable "t8" was declared but never referenced
+      sa<sizeof(sink_5_34678(cv_source())) == 8 * sizeof(long)> t8;
+                                                                ^
+
+"Test_name.c", line 1210: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_35678(a))           == 3 * sizeof(long)> t1;
+                                                                ^
+
+"Test_name.c", line 1211: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_35678(va))          == 3 * sizeof(long)> t3;
+                                                                ^
+
+"Test_name.c", line 1212: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_35678(source()))    == 5 * sizeof(long)> t5;
+                                                                ^
+
+"Test_name.c", line 1213: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_35678(c_source()))  == 6 * sizeof(long)> t6;
+                                                                ^
+
+"Test_name.c", line 1214: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_35678(v_source()))  == 7 * sizeof(long)> t7;
+                                                                ^
+
+"Test_name.c", line 1215: warning: variable "t8" was declared but never referenced
+      sa<sizeof(sink_5_35678(cv_source())) == 8 * sizeof(long)> t8;
+                                                                ^
+
+"Test_name.c", line 1231: warning: variable "t1" was declared but never referenced
+      sa<sizeof(sink_5_45678(a))           == 4 * sizeof(long)> t1;
+                                                                ^
+
+"Test_name.c", line 1232: warning: variable "t2" was declared but never referenced
+      sa<sizeof(sink_5_45678(ca))          == 4 * sizeof(long)> t2;
+                                                                ^
+
+"Test_name.c", line 1233: warning: variable "t3" was declared but never referenced
+      sa<sizeof(sink_5_45678(va))          == 4 * sizeof(long)> t3;
+                                                                ^
+
+"Test_name.c", line 1234: warning: variable "t4" was declared but never referenced
+      sa<sizeof(sink_5_45678(cva))         == 4 * sizeof(long)> t4;
+                                                                ^
+
+"Test_name.c", line 1235: warning: variable "t5" was declared but never referenced
+      sa<sizeof(sink_5_45678(source()))    == 5 * sizeof(long)> t5;
+                                                                ^
+
+"Test_name.c", line 1236: warning: variable "t6" was declared but never referenced
+      sa<sizeof(sink_5_45678(c_source()))  == 6 * sizeof(long)> t6;
+                                                                ^
+
+"Test_name.c", line 1237: warning: variable "t7" was declared but never referenced
+      sa<sizeof(sink_5_45678(v_source()))  == 7 * sizeof(long)> t7;
+                                                                ^
+
+"Test_name.c", line 1238: warning: variable "t8" was declared but never referenced
+      sa<sizeof(sink_5_45678(cv_source())) == 8 * sizeof(long)> t8;
+                                                                ^
+

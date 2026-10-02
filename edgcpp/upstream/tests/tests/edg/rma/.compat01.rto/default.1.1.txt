@@ -1,0 +1,38 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 7: error: declaration is incompatible with "int (*p)[]" (declared at line 6)
+  int (*p)[3];                 // Incompatibility error
+        ^
+
+"Test_name.c", line 9: error: declaration is incompatible with "int (&r)[]" (declared at line 8)
+  int (&r)[3] = a;             // Incompatibility error
+        ^
+
+"Test_name.c", line 13: error: declaration is incompatible with "int (*p2)[3]" (declared at line 12)
+  int (*p2)[];                 // Incompatibility error
+        ^
+
+"Test_name.c", line 15: error: declaration is incompatible with "int (&r2)[3]" (declared at line 14)
+  int (&r2)[] = a2;            // Incompatibility error
+        ^
+
+"Test_name.c", line 15: error: a reference of type "int (&)[]" (not const-qualified) cannot be initialized with a value of type "int [3]"
+  int (&r2)[] = a2;            // Incompatibility error
+                ^
+
+"Test_name.c", line 22: error: declaration is incompatible with "int (*A::p)[]" (declared at line 18)
+  int (*A::p)[3];              // Incompatibility error
+           ^
+
+"Test_name.c", line 23: error: declaration is incompatible with "int (&A::r)[]" (declared at line 19)
+  int (&A::r)[3] = A::a;       // Incompatibility error
+           ^
+
+"Test_name.c", line 30: error: declaration is incompatible with "int (*B::p)[3]" (declared at line 26)
+  int (*B::p)[];              // Incompatibility error
+           ^
+
+"Test_name.c", line 31: error: declaration is incompatible with "int (&B::r)[3]" (declared at line 27)
+  int (&B::r)[] = B::a;       // Incompatibility error
+           ^
+
+9 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=2 --clang_version 180100 --target linux_aarch64 --c++ Test_name.c

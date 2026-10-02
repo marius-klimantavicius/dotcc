@@ -1,0 +1,77 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 201: warning: expression has no effect
+        c;
+        ^
+
+"Test_name.c", line 203: warning: expression has no effect
+        C::cc;
+        ^
+
+"Test_name.c", line 204: warning: expression has no effect
+        cd;
+        ^
+
+"Test_name.c", line 206: warning: expression has no effect
+        E::cde;
+        ^
+
+"Test_name.c", line 207: warning: expression has no effect
+        shadow;
+        ^
+
+"Test_name.c", line 209: warning: expression has no effect
+        cX;
+        ^
+
+"Test_name.c", line 210: warning: expression has no effect
+        F::cXf;
+        ^
+
+"Test_name.c", line 211: warning: expression has no effect
+        F::cXfX;
+        ^
+
+"Test_name.c", line 212: warning: expression has no effect
+        X;
+        ^
+
+"Test_name.c", line 213: warning: expression has no effect
+        G::Xg;
+        ^
+
+"Test_name.c", line 216: warning: expression has no effect
+        G::XgX;
+        ^
+
+"Test_name.c", line 217: warning: expression has no effect
+        I::h;
+        ^
+
+"Test_name.c", line 218: warning: expression has no effect
+        j;
+        ^
+
+"Test_name.c", line 219: warning: expression has no effect
+        L::k;
+        ^
+
+"Test_name.c", line 221: warning: expression has no effect
+        cdm;
+        ^
+
+"Test_name.c", line 222: warning: expression has no effect
+        Q::o;
+        ^
+
+"Test_name.c", line 224: warning: expression has no effect
+        r1;
+        ^
+
+"Test_name.c", line 236: warning: variable "c1" was set but never used
+    char c1;
+         ^
+
+"Test_name.c", line 244: warning: variable "ina" was set but never used
+    inA ina;
+        ^
+

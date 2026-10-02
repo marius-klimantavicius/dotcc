@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --c++20 -tused -A Test_name.c
+"Test_name.c", line 22: error: "i" has already been declared in the current scope
+    using B::i;       // error: i declared twiceconflicts
+             ^
+
+"Test_name.c", line 26: error: more than one instance of overloaded function "f" matches the argument list:
+            function "B::f(int)" (declared at line 15)
+            function "A::f(int)" (declared at line 6)
+            argument types are: (int)
+    f(1);             // error: ambiguous
+    ^
+
+"Test_name.c", line 32: error: "g" has already been declared in the current scope
+    using A::g;       // error: conflicts with B::g
+             ^
+
+"Test_name.c", line 34: error: using-declaration of function "A::h()" conflicts with function "h()" (declared at line 33)
+    using A::h;       // error: conflicts
+             ^
+
+"Test_name.c", line 21: warning: variable "i" was declared but never referenced
+    int i;
+        ^
+
+"Test_name.c", line 31: warning: variable "g1" was declared but never referenced
+    struct g g1;      // g1 has class type B::g
+             ^
+
+"Test_name.c", line 38: warning: variable "x1" was declared but never referenced
+    struct x x1;      // x1 has class type B::x
+             ^
+
+4 errors detected in the compilation of "Test_name.c".

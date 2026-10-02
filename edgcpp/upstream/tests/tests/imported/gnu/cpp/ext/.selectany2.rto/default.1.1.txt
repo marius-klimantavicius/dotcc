@@ -1,0 +1,74 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: error: this declaration has no storage class or type specifier
+  __declspec (selectany) int foo = 1;  // OK
+  ^
+
+"Test_name.c", line 9: error: identifier "selectany" is undefined
+  __declspec (selectany) int foo = 1;  // OK
+              ^
+
+"Test_name.c", line 9: error: expected a ";"
+  __declspec (selectany) int foo = 1;  // OK
+                         ^
+
+"Test_name.c", line 15: error: this declaration has no storage class or type specifier
+  __declspec (selectany) int d::foo = 1;  // OK 
+  ^
+
+"Test_name.c", line 15: error: variable "__declspec" has already been defined (previous definition at line 9)
+  __declspec (selectany) int d::foo = 1;  // OK 
+  ^
+
+"Test_name.c", line 15: error: expected a ";"
+  __declspec (selectany) int d::foo = 1;  // OK 
+                         ^
+
+"Test_name.c", line 21: error: this declaration has no storage class or type specifier
+  __declspec (selectany) struct f  F= {1}; // OK
+  ^
+
+"Test_name.c", line 21: error: variable "__declspec" has already been defined (previous definition at line 9)
+  __declspec (selectany) struct f  F= {1}; // OK
+  ^
+
+"Test_name.c", line 21: error: expected a ";"
+  __declspec (selectany) struct f  F= {1}; // OK
+                         ^
+
+"Test_name.c", line 23: error: this declaration has no storage class or type specifier
+  __declspec (selectany) int boo;	//  OK
+  ^
+
+"Test_name.c", line 23: error: variable "__declspec" has already been defined (previous definition at line 9)
+  __declspec (selectany) int boo;	//  OK
+  ^
+
+"Test_name.c", line 23: error: expected a ";"
+  __declspec (selectany) int boo;	//  OK
+                         ^
+
+"Test_name.c", line 25: error: this declaration has no storage class or type specifier
+  __declspec (selectany) static int bar = 1; // { dg-error "selectany" }
+  ^
+
+"Test_name.c", line 25: error: variable "__declspec" has already been defined (previous definition at line 9)
+  __declspec (selectany) static int bar = 1; // { dg-error "selectany" }
+  ^
+
+"Test_name.c", line 25: error: expected a ";"
+  __declspec (selectany) static int bar = 1; // { dg-error "selectany" }
+                         ^
+
+"Test_name.c", line 26: error: identifier "bar" is undefined
+  int use_bar = bar;  //  Avoid defined but not used warning. 
+                ^
+
+"Test_name.c", line 30: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+    __declspec (selectany)  int foo = 1;  // { dg-error "selectany" }
+    ^
+
+"Test_name.c", line 30: error: expected a ";"
+    __declspec (selectany)  int foo = 1;  // { dg-error "selectany" }
+                            ^
+
+18 errors detected in the compilation of "Test_name.c".

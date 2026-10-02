@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"./cpp2a/concepts-explicit-spec5.C", line 22: error: declaration is incompatible with "void S<T>::f() [with T=int]" (declared at line 19)
+  template<> void S<int>::f() { called = 1; }
+                          ^
+
+1 error detected in the compilation of "Test_name.c".

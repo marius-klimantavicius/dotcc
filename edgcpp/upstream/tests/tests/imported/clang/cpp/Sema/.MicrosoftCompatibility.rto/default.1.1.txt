@@ -1,0 +1,28 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --ms_compatibility Test_name.c
+"Test_name.c", line 6: error: identifier "xxx" is undefined
+  int foo(xxx); // expected-error{{unknown type name}}
+          ^
+
+"Test_name.c", line 12: error: __sptr and __uptr don't apply to pointer-to-member types
+  char * cls::* __uptr wrong2 = &cls::m; // expected-error {{'__uptr' attribute cannot be used with pointers to members}}
+                ^
+
+"Test_name.c", line 16: error: invalid storage class for an inline function
+  typedef int inline Foo1(int);       // expected-error {{'inline' can only appear on functions}}
+  ^
+
+"Test_name.c", line 16: error: inline specifier allowed on function declarations only
+  typedef int inline Foo1(int);       // expected-error {{'inline' can only appear on functions}}
+              ^
+
+"Test_name.c", line 17: error: invalid storage class for an inline function
+  typedef int __inline Foo2(int);     // expected-error {{'inline' can only appear on functions}}
+  ^
+
+"Test_name.c", line 17: error: inline specifier allowed on function declarations only
+  typedef int __inline Foo2(int);     // expected-error {{'inline' can only appear on functions}}
+              ^
+
+Error: inline specifier allowed on function declarations only
+
+7 errors detected in the compilation of "Test_name.c".

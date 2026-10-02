@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -w --c Test_name.c
+"Test_name.c", line 9: error: expected a type specifier
+  f(f(z)); 
+  ^
+
+"Test_name.c", line 17: error: identifier "A" is undefined
+  A 
+  ^
+
+"Test_name.c", line 17: error: expected a ";"
+  A 
+  ^
+
+"Test_name.c", line 35: error: expected a ";"
+  a: M_0(1)(2)(3)(4)(5);
+   ^
+
+"Test_name.c", line 36: error: expected a ";"
+  b: M_0(5)(4)(3)(2)(1);
+   ^
+
+"Test_name.c", line 44: error: expected a ";"
+  c: n(m) X
+   ^
+
+6 errors detected in the compilation of "Test_name.c".

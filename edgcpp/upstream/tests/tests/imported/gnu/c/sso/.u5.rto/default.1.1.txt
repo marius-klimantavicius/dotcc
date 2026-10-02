@@ -1,0 +1,9 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./sso/init5.h", line 1: warning: unknown attribute "scalar_storage_order"
+  struct __attribute__((scalar_storage_order("little-endian"))) R1
+                        ^
+
+"./sso/init5.h", line 7: warning: unknown attribute "scalar_storage_order"
+  struct __attribute__((scalar_storage_order("big-endian"))) R2
+                        ^
+

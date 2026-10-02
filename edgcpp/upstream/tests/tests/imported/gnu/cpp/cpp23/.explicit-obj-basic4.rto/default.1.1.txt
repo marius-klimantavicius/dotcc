@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++23 Test_name.c
+"Test_name.c", line 43: error: invalid redeclaration of member function "S0::fc(const S0 &&)" (declared at line 42)
+    void fc();
+         ^
+
+"Test_name.c", line 49: error: invalid redeclaration of member function "S0::fv(volatile S0 &&)" (declared at line 48)
+    void fv();
+         ^
+
+"Test_name.c", line 55: error: invalid redeclaration of member function "S0::fcv(const volatile S0 &&)" (declared at line 54)
+    void fcv();
+         ^
+
+"Test_name.c", line 72: error: invalid redeclaration of member function "S1::fc()" (declared at line 69)
+    void fc(this S1 const&);
+         ^
+
+"Test_name.c", line 73: error: invalid redeclaration of member function "S1::fc()" (declared at line 69)
+    void fc(this S1 const&&);
+         ^
+
+"Test_name.c", line 78: error: invalid redeclaration of member function "S1::fv()" (declared at line 75)
+    void fv(this S1 volatile&);
+         ^
+
+"Test_name.c", line 79: error: invalid redeclaration of member function "S1::fv()" (declared at line 75)
+    void fv(this S1 volatile&&);
+         ^
+
+"Test_name.c", line 84: error: invalid redeclaration of member function "S1::fcv()" (declared at line 81)
+    void fcv(this S1 const volatile&);
+         ^
+
+"Test_name.c", line 85: error: invalid redeclaration of member function "S1::fcv()" (declared at line 81)
+    void fcv(this S1 const volatile&&);
+         ^
+
+"Test_name.c", line 98: error: invalid redeclaration of member function "S2::fc()" (declared at line 97)
+    void fc(this S2 const&);
+         ^
+
+"Test_name.c", line 99: error: invalid redeclaration of member function "S2::fc()" (declared at line 97)
+    void fc(this S2 const&&);
+         ^
+
+"Test_name.c", line 105: error: invalid redeclaration of member function "S2::fv()" (declared at line 103)
+    void fv(this S2 volatile&);
+         ^
+
+"Test_name.c", line 106: error: invalid redeclaration of member function "S2::fv()" (declared at line 103)
+    void fv(this S2 volatile&&);
+         ^
+
+"Test_name.c", line 112: error: invalid redeclaration of member function "S2::fcv()" (declared at line 109)
+    void fcv(this S2 const volatile&);
+         ^
+
+"Test_name.c", line 113: error: invalid redeclaration of member function "S2::fcv()" (declared at line 109)
+    void fcv(this S2 const volatile&&);
+         ^
+
+15 errors detected in the compilation of "Test_name.c".

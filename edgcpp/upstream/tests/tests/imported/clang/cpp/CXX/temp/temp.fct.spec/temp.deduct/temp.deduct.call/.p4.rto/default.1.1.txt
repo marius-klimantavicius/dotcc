@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 25: error: no instance of function template "PR12132::fun" matches the argument list
+            argument types are: (char *PR12132::B::*)
+      fun(&B::x);
+      ^
+"Test_name.c", line 18: note: candidate function template "PR12132::fun" failed deduction
+    template<typename S> void fun(const int* const S::* member) {}
+                              ^
+
+"Test_name.c", line 55: error: no instance of function template "noexcept_conversion::h" matches the argument list
+            argument types are: (void () noexcept, void ())
+    int x = h(g1, g2); // expected-error {{no matching function}}
+            ^
+"Test_name.c", line 54: note: candidate function template "noexcept_conversion::h" failed deduction
+    template <class T> int h(T *, T *); // expected-note {{deduced conflicting types for parameter 'T' ('void () noexcept' vs. 'void ()')}}
+                           ^
+
+2 errors detected in the compilation of "Test_name.c".

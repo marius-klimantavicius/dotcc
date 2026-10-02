@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c++17 Test_name.c
+"Test_name.c", line 10: error: no suitable constructor exists to convert from "int" to "A"
+    (void)A(29);
+            ^
+
+"Test_name.c", line 11: error: no suitable constructor exists to convert from "int" to "A"
+    A a(29);
+        ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 35: error: a brace-enclosed list cannot be passed for an ellipsis parameter
+    printf("init list: %d", { 0 }); // expected-error {{cannot pass initializer list to variadic function; expected type from format string was 'int'}}
+                            ^
+
+"Test_name.c", line 36: error: incomplete type "void" is not allowed
+    printf("void: %d", f(sp, fp)); // expected-error {{cannot pass expression of type 'void' to variadic function; expected type from format string was 'int'}}
+                       ^
+
+"Test_name.c", line 37: error: a brace-enclosed list cannot be passed for an ellipsis parameter
+    printf(0, { 0 }); // expected-error {{cannot pass initializer list to variadic function}}
+              ^
+
+3 errors detected in the compilation of "Test_name.c".

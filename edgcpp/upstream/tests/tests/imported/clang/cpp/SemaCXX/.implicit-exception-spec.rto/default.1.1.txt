@@ -1,0 +1,224 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --exceptions --c++11 Test_name.c
+"Test_name.c", line 23: error: the generated default constructor for "InClassInitializers::ConstExpr" cannot be used in an initializer for its own data member
+        noexcept(ConstExpr()) && ThrowSomething(); // expected-note {{in evaluation of exception spec}}
+                 ^
+
+"Test_name.c", line 23: error: cannot determine the exception specification of the default constructor due to a circular dependency
+        noexcept(ConstExpr()) && ThrowSomething(); // expected-note {{in evaluation of exception spec}}
+                 ^
+
+"Test_name.c", line 30: error: incomplete type "InClassInitializers::TemplateArg" is not allowed
+        ExceptionIf<noexcept(TemplateArg())>::f(); // expected-note {{in evaluation of exception spec}}
+                             ^
+
+"Test_name.c", line 30: error: the generated default constructor for "InClassInitializers::TemplateArg" cannot be used in an initializer for its own data member
+        ExceptionIf<noexcept(TemplateArg())>::f(); // expected-note {{in evaluation of exception spec}}
+                             ^
+
+"Test_name.c", line 30: error: cannot determine the exception specification of the default constructor due to a circular dependency
+        ExceptionIf<noexcept(TemplateArg())>::f(); // expected-note {{in evaluation of exception spec}}
+                             ^
+
+"Test_name.c", line 37: error: incomplete type "InClassInitializers::Nested" is not allowed
+          ExceptionIf<noexcept(Nested())>::f(); // expected-note {{in evaluation of exception spec}}
+                               ^
+
+"Test_name.c", line 37: error: cannot determine the exception specification of the default constructor due to a circular dependency
+          ExceptionIf<noexcept(Nested())>::f(); // expected-note {{in evaluation of exception spec}}
+                               ^
+
+"Test_name.c", line 45: error: incomplete type "InClassInitializers::Nested2" is not allowed
+        int n = ExceptionIf<noexcept(Nested2())>::f(); // expected-note {{declared here}}
+                                     ^
+
+"Test_name.c", line 45: error: the generated default constructor for "InClassInitializers::Nested2" cannot be used in an initializer for its own data member
+        int n = ExceptionIf<noexcept(Nested2())>::f(); // expected-note {{declared here}}
+                                     ^
+
+"Test_name.c", line 45: error: cannot determine the exception specification of the default constructor due to a circular dependency
+        int n = ExceptionIf<noexcept(Nested2())>::f(); // expected-note {{declared here}}
+                                     ^
+
+"Test_name.c", line 63: error: incomplete type "DefaultArgument::Default" is not allowed
+        T(int = ExceptionIf<noexcept(Default())>::f());
+                                     ^
+
+"Test_name.c", line 88: error: exception specification for virtual function "ImplicitDtorExceptionSpec::D::~D" is incompatible with that of overridden function "ImplicitDtorExceptionSpec::B::~B"
+      ~D(); // expected-error {{more lax than base}}
+      ^
+
+"Test_name.c", line 129: warning: function "operator new(unsigned long, nothrow_t)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+      static_assert(noexcept(new (nothrow) T()) == A, ""); // expected-error 2{{abstract}}
+                             ^
+          detected during instantiation of "void PotentiallyConstructed::check<T,A,B,C,D,E,F>() [with T=PotentiallyConstructed::A<false>, A=false, B=false, C=false, D=false, E=false, F=false]" at line 134
+
+"Test_name.c", line 130: warning: function "operator new(unsigned long, nothrow_t)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+      static_assert(noexcept(new (nothrow) T(a)) == B, "");
+                             ^
+          detected during instantiation of "void PotentiallyConstructed::check<T,A,B,C,D,E,F>() [with T=PotentiallyConstructed::A<false>, A=false, B=false, C=false, D=false, E=false, F=false]" at line 134
+
+"Test_name.c", line 131: warning: function "operator new(unsigned long, nothrow_t)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+      static_assert(noexcept(new (nothrow) T(static_cast<T&&>(a))) == C, "");
+                             ^
+          detected during instantiation of "void PotentiallyConstructed::check<T,A,B,C,D,E,F>() [with T=PotentiallyConstructed::A<false>, A=false, B=false, C=false, D=false, E=false, F=false]" at line 134
+
+"Test_name.c", line 129: warning: function "operator new(unsigned long, nothrow_t)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+      static_assert(noexcept(new (nothrow) T()) == A, ""); // expected-error 2{{abstract}}
+                             ^
+          detected during instantiation of "void PotentiallyConstructed::check<T,A,B,C,D,E,F>() [with T=PotentiallyConstructed::A<true>, A=true, B=true, C=true, D=true, E=true, F=true]" at line 135
+
+"Test_name.c", line 130: warning: function "operator new(unsigned long, nothrow_t)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+      static_assert(noexcept(new (nothrow) T(a)) == B, "");
+                             ^
+          detected during instantiation of "void PotentiallyConstructed::check<T,A,B,C,D,E,F>() [with T=PotentiallyConstructed::A<true>, A=true, B=true, C=true, D=true, E=true, F=true]" at line 135
+
+"Test_name.c", line 131: warning: function "operator new(unsigned long, nothrow_t)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+      static_assert(noexcept(new (nothrow) T(static_cast<T&&>(a))) == C, "");
+                             ^
+          detected during instantiation of "void PotentiallyConstructed::check<T,A,B,C,D,E,F>() [with T=PotentiallyConstructed::A<true>, A=true, B=true, C=true, D=true, E=true, F=true]" at line 135
+
+"Test_name.c", line 129: warning: function "operator new(unsigned long, nothrow_t)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+      static_assert(noexcept(new (nothrow) T()) == A, ""); // expected-error 2{{abstract}}
+                             ^
+          detected during instantiation of "void PotentiallyConstructed::check<T,A,B,C,D,E,F>() [with T=PotentiallyConstructed::B<false>, A=false, B=false, C=false, D=false, E=false, F=false]" at line 136
+
+"Test_name.c", line 130: warning: function "operator new(unsigned long, nothrow_t)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+      static_assert(noexcept(new (nothrow) T(a)) == B, "");
+                             ^
+          detected during instantiation of "void PotentiallyConstructed::check<T,A,B,C,D,E,F>() [with T=PotentiallyConstructed::B<false>, A=false, B=false, C=false, D=false, E=false, F=false]" at line 136
+
+"Test_name.c", line 131: warning: function "operator new(unsigned long, nothrow_t)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+      static_assert(noexcept(new (nothrow) T(static_cast<T&&>(a))) == C, "");
+                             ^
+          detected during instantiation of "void PotentiallyConstructed::check<T,A,B,C,D,E,F>() [with T=PotentiallyConstructed::B<false>, A=false, B=false, C=false, D=false, E=false, F=false]" at line 136
+
+"Test_name.c", line 129: warning: function "operator new(unsigned long, nothrow_t)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+      static_assert(noexcept(new (nothrow) T()) == A, ""); // expected-error 2{{abstract}}
+                             ^
+          detected during instantiation of "void PotentiallyConstructed::check<T,A,B,C,D,E,F>() [with T=PotentiallyConstructed::B<true>, A=true, B=true, C=true, D=true, E=true, F=true]" at line 137
+
+"Test_name.c", line 130: warning: function "operator new(unsigned long, nothrow_t)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+      static_assert(noexcept(new (nothrow) T(a)) == B, "");
+                             ^
+          detected during instantiation of "void PotentiallyConstructed::check<T,A,B,C,D,E,F>() [with T=PotentiallyConstructed::B<true>, A=true, B=true, C=true, D=true, E=true, F=true]" at line 137
+
+"Test_name.c", line 131: warning: function "operator new(unsigned long, nothrow_t)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+      static_assert(noexcept(new (nothrow) T(static_cast<T&&>(a))) == C, "");
+                             ^
+          detected during instantiation of "void PotentiallyConstructed::check<T,A,B,C,D,E,F>() [with T=PotentiallyConstructed::B<true>, A=true, B=true, C=true, D=true, E=true, F=true]" at line 137
+
+"Test_name.c", line 129: error: object of abstract class type "PotentiallyConstructed::C<false>" is not allowed:
+            function "PotentiallyConstructed::C<NE>::f [with NE=false]" is a pure virtual function
+      static_assert(noexcept(new (nothrow) T()) == A, ""); // expected-error 2{{abstract}}
+                                           ^
+          detected during instantiation of "void PotentiallyConstructed::check<T,A,B,C,D,E,F>() [with T=PotentiallyConstructed::C<false>, A=true, B=true, C=true, D=false, E=false, F=false]" at line 138
+
+"Test_name.c", line 129: error: static assertion failed with ""
+      static_assert(noexcept(new (nothrow) T()) == A, ""); // expected-error 2{{abstract}}
+      ^
+"Test_name.c", line 129: note: the final comparison was 0 == 1
+      static_assert(noexcept(new (nothrow) T()) == A, ""); // expected-error 2{{abstract}}
+                                                ^
+          detected during instantiation of "void PotentiallyConstructed::check<T,A,B,C,D,E,F>() [with T=PotentiallyConstructed::C<false>, A=true, B=true, C=true, D=false, E=false, F=false]" at line 138
+
+"Test_name.c", line 130: error: object of abstract class type "PotentiallyConstructed::C<false>" is not allowed:
+            function "PotentiallyConstructed::C<NE>::f [with NE=false]" is a pure virtual function
+      static_assert(noexcept(new (nothrow) T(a)) == B, "");
+                                           ^
+          detected during instantiation of "void PotentiallyConstructed::check<T,A,B,C,D,E,F>() [with T=PotentiallyConstructed::C<false>, A=true, B=true, C=true, D=false, E=false, F=false]" at line 138
+
+"Test_name.c", line 130: error: static assertion failed with ""
+      static_assert(noexcept(new (nothrow) T(a)) == B, "");
+      ^
+"Test_name.c", line 130: note: the final comparison was 0 == 1
+      static_assert(noexcept(new (nothrow) T(a)) == B, "");
+                                                 ^
+          detected during instantiation of "void PotentiallyConstructed::check<T,A,B,C,D,E,F>() [with T=PotentiallyConstructed::C<false>, A=true, B=true, C=true, D=false, E=false, F=false]" at line 138
+
+"Test_name.c", line 131: error: object of abstract class type "PotentiallyConstructed::C<false>" is not allowed:
+            function "PotentiallyConstructed::C<NE>::f [with NE=false]" is a pure virtual function
+      static_assert(noexcept(new (nothrow) T(static_cast<T&&>(a))) == C, "");
+                                           ^
+          detected during instantiation of "void PotentiallyConstructed::check<T,A,B,C,D,E,F>() [with T=PotentiallyConstructed::C<false>, A=true, B=true, C=true, D=false, E=false, F=false]" at line 138
+
+"Test_name.c", line 131: error: static assertion failed with ""
+      static_assert(noexcept(new (nothrow) T(static_cast<T&&>(a))) == C, "");
+      ^
+"Test_name.c", line 131: note: the final comparison was 0 == 1
+      static_assert(noexcept(new (nothrow) T(static_cast<T&&>(a))) == C, "");
+                                                                   ^
+          detected during instantiation of "void PotentiallyConstructed::check<T,A,B,C,D,E,F>() [with T=PotentiallyConstructed::C<false>, A=true, B=true, C=true, D=false, E=false, F=false]" at line 138
+
+"Test_name.c", line 129: error: object of abstract class type "PotentiallyConstructed::C<true>" is not allowed:
+            function "PotentiallyConstructed::C<NE>::f [with NE=true]" is a pure virtual function
+      static_assert(noexcept(new (nothrow) T()) == A, ""); // expected-error 2{{abstract}}
+                                           ^
+          detected during instantiation of "void PotentiallyConstructed::check<T,A,B,C,D,E,F>() [with T=PotentiallyConstructed::C<true>, A=true, B=true, C=true, D=true, E=true, F=true]" at line 139
+
+"Test_name.c", line 129: error: static assertion failed with ""
+      static_assert(noexcept(new (nothrow) T()) == A, ""); // expected-error 2{{abstract}}
+      ^
+"Test_name.c", line 129: note: the final comparison was 0 == 1
+      static_assert(noexcept(new (nothrow) T()) == A, ""); // expected-error 2{{abstract}}
+                                                ^
+          detected during instantiation of "void PotentiallyConstructed::check<T,A,B,C,D,E,F>() [with T=PotentiallyConstructed::C<true>, A=true, B=true, C=true, D=true, E=true, F=true]" at line 139
+
+"Test_name.c", line 130: error: object of abstract class type "PotentiallyConstructed::C<true>" is not allowed:
+            function "PotentiallyConstructed::C<NE>::f [with NE=true]" is a pure virtual function
+      static_assert(noexcept(new (nothrow) T(a)) == B, "");
+                                           ^
+          detected during instantiation of "void PotentiallyConstructed::check<T,A,B,C,D,E,F>() [with T=PotentiallyConstructed::C<true>, A=true, B=true, C=true, D=true, E=true, F=true]" at line 139
+
+"Test_name.c", line 130: error: static assertion failed with ""
+      static_assert(noexcept(new (nothrow) T(a)) == B, "");
+      ^
+"Test_name.c", line 130: note: the final comparison was 0 == 1
+      static_assert(noexcept(new (nothrow) T(a)) == B, "");
+                                                 ^
+          detected during instantiation of "void PotentiallyConstructed::check<T,A,B,C,D,E,F>() [with T=PotentiallyConstructed::C<true>, A=true, B=true, C=true, D=true, E=true, F=true]" at line 139
+
+"Test_name.c", line 131: error: object of abstract class type "PotentiallyConstructed::C<true>" is not allowed:
+            function "PotentiallyConstructed::C<NE>::f [with NE=true]" is a pure virtual function
+      static_assert(noexcept(new (nothrow) T(static_cast<T&&>(a))) == C, "");
+                                           ^
+          detected during instantiation of "void PotentiallyConstructed::check<T,A,B,C,D,E,F>() [with T=PotentiallyConstructed::C<true>, A=true, B=true, C=true, D=true, E=true, F=true]" at line 139
+
+"Test_name.c", line 131: error: static assertion failed with ""
+      static_assert(noexcept(new (nothrow) T(static_cast<T&&>(a))) == C, "");
+      ^
+"Test_name.c", line 131: note: the final comparison was 0 == 1
+      static_assert(noexcept(new (nothrow) T(static_cast<T&&>(a))) == C, "");
+                                                                   ^
+          detected during instantiation of "void PotentiallyConstructed::check<T,A,B,C,D,E,F>() [with T=PotentiallyConstructed::C<true>, A=true, B=true, C=true, D=true, E=true, F=true]" at line 139
+
+"Test_name.c", line 129: warning: function "operator new(unsigned long, nothrow_t)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+      static_assert(noexcept(new (nothrow) T()) == A, ""); // expected-error 2{{abstract}}
+                             ^
+          detected during instantiation of "void PotentiallyConstructed::check<T,A,B,C,D,E,F>() [with T=PotentiallyConstructed::D<false>, A=false, B=false, C=false, D=false, E=false, F=false]" at line 140
+
+"Test_name.c", line 130: warning: function "operator new(unsigned long, nothrow_t)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+      static_assert(noexcept(new (nothrow) T(a)) == B, "");
+                             ^
+          detected during instantiation of "void PotentiallyConstructed::check<T,A,B,C,D,E,F>() [with T=PotentiallyConstructed::D<false>, A=false, B=false, C=false, D=false, E=false, F=false]" at line 140
+
+"Test_name.c", line 131: warning: function "operator new(unsigned long, nothrow_t)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+      static_assert(noexcept(new (nothrow) T(static_cast<T&&>(a))) == C, "");
+                             ^
+          detected during instantiation of "void PotentiallyConstructed::check<T,A,B,C,D,E,F>() [with T=PotentiallyConstructed::D<false>, A=false, B=false, C=false, D=false, E=false, F=false]" at line 140
+
+"Test_name.c", line 129: warning: function "operator new(unsigned long, nothrow_t)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+      static_assert(noexcept(new (nothrow) T()) == A, ""); // expected-error 2{{abstract}}
+                             ^
+          detected during instantiation of "void PotentiallyConstructed::check<T,A,B,C,D,E,F>() [with T=PotentiallyConstructed::D<true>, A=true, B=true, C=true, D=true, E=true, F=true]" at line 141
+
+"Test_name.c", line 130: warning: function "operator new(unsigned long, nothrow_t)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+      static_assert(noexcept(new (nothrow) T(a)) == B, "");
+                             ^
+          detected during instantiation of "void PotentiallyConstructed::check<T,A,B,C,D,E,F>() [with T=PotentiallyConstructed::D<true>, A=true, B=true, C=true, D=true, E=true, F=true]" at line 141
+
+"Test_name.c", line 131: warning: function "operator new(unsigned long, nothrow_t)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+      static_assert(noexcept(new (nothrow) T(static_cast<T&&>(a))) == C, "");
+                             ^
+          detected during instantiation of "void PotentiallyConstructed::check<T,A,B,C,D,E,F>() [with T=PotentiallyConstructed::D<true>, A=true, B=true, C=true, D=true, E=true, F=true]" at line 141
+
+24 errors detected in the compilation of "Test_name.c".

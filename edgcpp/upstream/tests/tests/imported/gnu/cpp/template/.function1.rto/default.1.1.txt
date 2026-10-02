@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 13: error: invalid nontype template argument of type "const char *"
+  template<int N> struct B<__FUNCTION__, N> {};	// { dg-error "cannot appear|is invalid|is not a valid|constant expression" }
+                           ^
+
+"Test_name.c", line 19: error: invalid nontype template argument of type "const char *"
+  template<int N> struct C<__PRETTY_FUNCTION__, N> {};	// { dg-error "cannot appear|is invalid|is not a valid|constant expression" }
+                           ^
+
+"Test_name.c", line 25: error: invalid nontype template argument of type "const char *"
+  template<int N> struct D<__func__, N> {};	// { dg-error "cannot appear|is invalid|is not a valid|function scope|constant expression" }
+                           ^
+
+3 errors detected in the compilation of "Test_name.c".

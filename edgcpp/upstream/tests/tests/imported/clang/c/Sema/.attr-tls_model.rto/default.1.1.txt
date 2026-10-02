@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 9: warning: attribute "tls_model" does not apply here
+  int f(void) __attribute((tls_model("global-dynamic"))); // expected-error {{'tls_model' attribute only applies to thread-local variables}}
+                           ^
+
+"Test_name.c", line 11: warning: attribute "tls_model" does not apply here
+  int x __attribute((tls_model("global-dynamic"))); // expected-error {{'tls_model' attribute only applies to thread-local variables}}
+                     ^
+
+"Test_name.c", line 14: error: expected a ")"
+  static __thread int y __attribute((tls_model("local", "dynamic"))); // expected-error {{'tls_model' attribute takes one argument}}
+                                                      ^
+
+"Test_name.c", line 14: error: expected an identifier
+  static __thread int y __attribute((tls_model("local", "dynamic"))); // expected-error {{'tls_model' attribute takes one argument}}
+                                                        ^
+
+"Test_name.c", line 14: error: the argument of the "tls_model" attribute must be "global-dynamic", "local-dynamic", "initial-exec", or "local-exec"
+  static __thread int y __attribute((tls_model("local", "dynamic"))); // expected-error {{'tls_model' attribute takes one argument}}
+                                     ^
+
+"Test_name.c", line 14: error: expected a ";"
+  static __thread int y __attribute((tls_model("local", "dynamic"))); // expected-error {{'tls_model' attribute takes one argument}}
+                                                                   ^
+
+"Test_name.c", line 15: error: expected a string literal
+  static __thread int y __attribute((tls_model(123))); // expected-error {{expected string literal as argument of 'tls_model' attribute}}
+                                               ^
+
+"Test_name.c", line 16: error: the argument of the "tls_model" attribute must be "global-dynamic", "local-dynamic", "initial-exec", or "local-exec"
+  static __thread int y __attribute((tls_model("foobar"))); // expected-error {{tls_model must be "global-dynamic", "local-dynamic", "initial-exec" or "local-exec"}}
+                                     ^
+
+"Test_name.c", line 12: warning: variable "y" was declared but never referenced
+  static __thread int y __attribute((tls_model("global-dynamic"))); // no-warning
+                      ^
+
+6 errors detected in the compilation of "Test_name.c".

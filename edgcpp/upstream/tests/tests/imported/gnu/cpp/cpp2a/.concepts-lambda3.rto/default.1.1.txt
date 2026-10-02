@@ -1,0 +1,59 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 9: error: identifier "concept" is undefined
+  concept C1 = __is_same_as(T, int)
+  ^
+
+"Test_name.c", line 14: error: identifier "concept" is undefined
+  concept IsNotLarge = !__is_same_as(T, long long);
+  ^
+
+"Test_name.c", line 17: error: identifier "concept" is undefined
+  concept IsNotTiny = !__is_same_as(T, char);
+  ^
+
+"Test_name.c", line 19: error: argument list for variable template "IsNotLarge" is missing
+  template<IsNotLarge T>
+           ^
+
+"Test_name.c", line 23: error: argument list for variable template "IsNotTiny" is missing
+    template<IsNotTiny S>
+             ^
+
+"Test_name.c", line 34: warning: explicit lambda template parameters are a C++20 feature
+    auto g = []<C1 T> requires IsNotTiny<T>(T t) -> T
+               ^
+
+"Test_name.c", line 34: error: argument list for variable template "C1" is missing
+    auto g = []<C1 T> requires IsNotTiny<T>(T t) -> T
+                ^
+
+"Test_name.c", line 34: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+    auto g = []<C1 T> requires IsNotTiny<T>(T t) -> T
+                      ^
+
+"Test_name.c", line 34: error: expected a "{"
+    auto g = []<C1 T> requires IsNotTiny<T>(T t) -> T
+                      ^
+
+"Test_name.c", line 35: error: identifier "t" is undefined
+      requires IsNotLarge<decltype(t)> { return t; };
+                                                ^
+
+At end of source: error: expected a "}"
+
+"Test_name.c", line 34: warning: constant "T" is not used in declaring the parameter types of function template "lambda []()->auto::operator auto (*)()"
+    auto g = []<C1 T> requires IsNotTiny<T>(T t) -> T
+                   ^
+
+At end of source: error: expected a ";"
+
+"Test_name.c", line 34: warning: variable "g" was declared but never referenced
+    auto g = []<C1 T> requires IsNotTiny<T>(T t) -> T
+         ^
+
+At end of source: error: expected a "}"
+"Test_name.c", line 33: note: to match this "{"
+  {
+  ^
+
+11 errors detected in the compilation of "Test_name.c".

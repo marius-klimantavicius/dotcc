@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 22: warning: incomplete type "void" is not allowed
+    typename enable_if<(sizeof(create_a<T>(), create_a<U>()) > 0),
+                              ^
+          detected during:
+            instantiation of "check_comma" based on template arguments <Y, Z> at line 32
+            instantiation of class "has_comma<T, U> [with T=Y, U=Z]" at line 55
+
+"Test_name.c", line 55: error: the size of an array must be greater than zero
+  STATIC_ASSERT((!has_comma<Y, Z>::value));
+  ^
+
+1 error detected in the compilation of "Test_name.c".

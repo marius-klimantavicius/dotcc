@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc -w Test_name.c
+"Test_name.c", line 7: error: expected a ";"
+  typedef unsigned __int128 U __attribute__ ((vector_size (64)));
+                            ^
+
+"Test_name.c", line 9: error: identifier "U" is undefined
+  U
+  ^
+
+"Test_name.c", line 10: error: identifier "U" is undefined
+  bar4 (U u0, U u1)
+        ^
+
+"Test_name.c", line 10: error: identifier "U" is undefined
+  bar4 (U u0, U u1)
+              ^
+
+"Test_name.c", line 18: error: identifier "U" is undefined
+  foo (U u, V v)
+       ^
+
+"Test_name.c", line 20: error: identifier "U" is undefined
+    v |= (unsigned)bar4(u, (U){})[0];
+                            ^
+
+"Test_name.c", line 20: error: expected a ")"
+    v |= (unsigned)bar4(u, (U){})[0];
+                              ^
+
+"Test_name.c", line 20: error: mixed vector-scalar operation not allowed
+    v |= (unsigned)bar4(u, (U){})[0];
+      ^
+
+8 errors detected in the compilation of "Test_name.c".

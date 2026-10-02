@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --c11 --no_c23_typeof Test_name.c
+"Test_name.c", line 5: error: explicit type is missing ("int" assumed)
+  typeof(a) b;
+  ^
+
+"Test_name.c", line 5: error: expected a declaration
+  typeof(a) b;
+            ^
+
+"Test_name.c", line 5: warning: standard requires that parameter "a" be given a type by a subsequent declaration ("int" assumed)
+  typeof(a) b;
+         ^
+
+At end of source: error: expected a "{"
+
+At end of source: error: expected a "}"
+
+4 errors detected in the compilation of "Test_name.c".

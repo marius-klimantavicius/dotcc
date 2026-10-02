@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./pr87600-1.c", line 48: warning: variable "var2" was set but never used
+    register long var2 asm ("rdx");
+                  ^
+

@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp0x/initlist70.C", line 24: warning: variable "eq1" was declared but never referenced
+    EqHelper<sizeof IsNullLiteralHelper(set<int>{1})> eq1;
+                                                      ^
+
+"./cpp0x/initlist70.C", line 25: warning: variable "eq2" was declared but never referenced
+    EqHelper<sizeof IsNullLiteralHelper(set<string>())> eq2;
+                                                        ^
+
+"./cpp0x/initlist70.C", line 26: warning: variable "eq3" was declared but never referenced
+    EqHelper<sizeof IsNullLiteralHelper(set<string>{"foo"})> eq3;
+                                                             ^
+

@@ -1,0 +1,23 @@
+fe_only -DTEST_NUMBER=4 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 33: error: a module declaration can only be preceded by a global module fragment
+  export module stuff;
+                ^
+
+"Test_name.c", line 34: error: an export declaration can only appear in a module interface unit
+  export template <typename T, typename U> void foo(T, U u) { auto v = u; }
+  ^
+
+"Test_name.c", line 35: error: an export declaration can only appear in a module interface unit
+  export template <typename T, typename U> void bar(T, U u) { auto v = *u; }
+  ^
+
+"Test_name.c", line 38: error: a module declaration can only be preceded by a global module fragment
+  export module M1;
+                ^
+
+"Test_name.c", line 39: catastrophic error: cannot find header "std-10-6-ex1-defn.h" to import
+  import "std-10-6-ex1-defn.h"; // provides struct X {};
+         ^
+
+4 errors and 1 catastrophic error detected in the compilation of "Test_name.c".
+Compilation terminated.

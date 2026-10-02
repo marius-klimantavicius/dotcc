@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++23 Test_name.c
+"Test_name.c", line 14: warning: statement is unreachable
+      switch(using foo = int; 0) { //expected-cxx20-warning {{alias declaration in this context is a C++23 extension}}
+      ^
+
+"Test_name.c", line 21: error: expected an expression
+      if (using enum ns::e; false){}  // expected-error {{expected '='}}
+          ^
+
+"Test_name.c", line 23: error: expected an expression
+      for (using ns::i; true;);  // expected-error {{expected '='}}
+           ^
+
+"Test_name.c", line 25: warning: statement is unreachable
+      if (using ns::i; false){}  // expected-error {{expected '='}}
+      ^
+
+"Test_name.c", line 25: error: expected an expression
+      if (using ns::i; false){}  // expected-error {{expected '='}}
+          ^
+
+"Test_name.c", line 27: error: expected an expression
+      switch(using ns::i; 0) {   // expected-error {{expected '='}}
+             ^
+
+4 errors detected in the compilation of "Test_name.c".

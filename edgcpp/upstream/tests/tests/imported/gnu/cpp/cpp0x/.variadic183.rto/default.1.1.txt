@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 12: warning: expression has no effect
+    static constexpr const int* a[2] = {(Ns, &idx)...};
+                                         ^
+          detected during:
+            instantiation of class "impl<Ns...> [with Ns=<0, 1>]" at line 13
+            instantiation of class "impl<Ns...> [with Ns=<0, 1>]" at line 16
+
+"Test_name.c", line 12: warning: expression has no effect
+    static constexpr const int* a[2] = {(Ns, &idx)...};
+                                         ^
+          detected during:
+            instantiation of class "impl<Ns...> [with Ns=<0, 1>]" at line 13
+            instantiation of class "impl<Ns...> [with Ns=<0, 1>]" at line 16
+

@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 50: error: static assertion failed
+  static_assert(Aggregate<S>); // { dg-error "assert" }
+  ^
+
+"Test_name.c", line 51: error: static assertion failed
+  static_assert(TriviallyCopyable<S>); // { dg-error "assert" }
+  ^
+
+"Test_name.c", line 52: error: static assertion failed
+  static_assert(Assignable<S, int>); // { dg-error "assert" }
+  ^
+
+"Test_name.c", line 53: error: static assertion failed
+  static_assert(TriviallyAssignable<S, int>); // { dg-error "assert" }
+  ^
+
+"Test_name.c", line 54: error: static assertion failed
+  static_assert(NothrowAssignable<S, int>); // { dg-error "assert" }
+  ^
+
+"Test_name.c", line 56: error: static assertion failed
+  static_assert(Constructible<S>); // { dg-error "assert" }
+  ^
+
+"Test_name.c", line 57: error: static assertion failed
+  static_assert(Constructible<S, int>); // { dg-error "assert" }
+  ^
+
+"Test_name.c", line 58: error: static assertion failed
+  static_assert(Constructible<S, int, char>); // { dg-error "assert" }
+  ^
+
+"Test_name.c", line 60: error: static assertion failed
+  static_assert(TriviallyConstructible<S>); // { dg-error "assert" }
+  ^
+
+"Test_name.c", line 61: error: static assertion failed
+  static_assert(TriviallyConstructible<S, int>); // { dg-error "assert" }
+  ^
+
+"Test_name.c", line 62: error: static assertion failed
+  static_assert(TriviallyConstructible<S, int, char>); // { dg-error "assert" }
+  ^
+
+"Test_name.c", line 64: error: static assertion failed
+  static_assert(NothrowConstructible<S>); // { dg-error "assert" }
+  ^
+
+"Test_name.c", line 65: error: static assertion failed
+  static_assert(NothrowConstructible<S, int>); // { dg-error "assert" }
+  ^
+
+"Test_name.c", line 66: error: static assertion failed
+  static_assert(NothrowConstructible<S, int, char>); // { dg-error "assert" }
+  ^
+
+"Test_name.c", line 68: error: static assertion failed
+  static_assert(UniqueObjReps<S>); // { dg-error "assert" }
+  ^
+
+15 errors detected in the compilation of "Test_name.c".

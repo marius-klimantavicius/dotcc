@@ -1,0 +1,82 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 19: warning: structured bindings are a C++17 feature
+    auto [ j ] = a;			// { dg-error "cannot decompose class type 'A' because it has an anonymous struct member" }
+         ^
+
+"Test_name.c", line 19: error: type "A" has no components to bind to
+    auto [ j ] = a;			// { dg-error "cannot decompose class type 'A' because it has an anonymous struct member" }
+         ^
+
+"Test_name.c", line 21: warning: structured bindings are a C++17 feature
+    auto [ k ] { b };			// { dg-error "cannot decompose class type 'B' because it has an anonymous union member" }
+         ^
+
+"Test_name.c", line 21: error: type "B" has no components to bind to
+    auto [ k ] { b };			// { dg-error "cannot decompose class type 'B' because it has an anonymous union member" }
+         ^
+
+"Test_name.c", line 23: warning: structured bindings are a C++17 feature
+    auto [ l, l2 ] = c;			// { dg-error "cannot decompose inaccessible member 'C::b' of 'C'" }
+         ^
+
+"Test_name.c", line 23: error: cannot bind to non-public member "C::b"
+    auto [ l, l2 ] = c;			// { dg-error "cannot decompose inaccessible member 'C::b' of 'C'" }
+              ^
+
+"Test_name.c", line 25: warning: structured bindings are a C++17 feature
+    auto [ m ] = d;			// { dg-warning "structured bindings only available with '-std=c..17' or '-std=gnu..17'" "" { target c++14_down } }
+         ^
+
+"Test_name.c", line 26: warning: structured bindings are a C++17 feature
+    auto [ n ] { e };			// { dg-error "cannot decompose inaccessible member 'E::a' of 'E'" }
+         ^
+
+"Test_name.c", line 26: error: cannot bind to non-public member "E::a"
+    auto [ n ] { e };			// { dg-error "cannot decompose inaccessible member 'E::a' of 'E'" }
+           ^
+
+"Test_name.c", line 28: warning: structured bindings are a C++17 feature
+    auto [ o ] { f };			// { dg-warning "structured bindings only available with '-std=c..17' or '-std=gnu..17'" "" { target c++14_down } }
+         ^
+
+"Test_name.c", line 29: warning: structured bindings are a C++17 feature
+    auto & [ p ] { g };			// { dg-error "cannot decompose class type 'G': both it and its base class 'F' have non-static data members" }
+           ^
+
+"Test_name.c", line 29: error: type "G" has no components to bind to
+    auto & [ p ] { g };			// { dg-error "cannot decompose class type 'G': both it and its base class 'F' have non-static data members" }
+           ^
+
+"Test_name.c", line 31: warning: structured bindings are a C++17 feature
+    auto [ q ] { h };			// { dg-warning "structured bindings only available with '-std=c..17' or '-std=gnu..17'" "" { target c++14_down } }
+         ^
+
+"Test_name.c", line 32: warning: structured bindings are a C++17 feature
+    auto [ r ] { i };			// { dg-error "cannot decompose class type 'I': its base classes 'F' and 'H' have non-static data members" }
+         ^
+
+"Test_name.c", line 32: error: type "I" has no components to bind to
+    auto [ r ] { i };			// { dg-error "cannot decompose class type 'I': its base classes 'F' and 'H' have non-static data members" }
+         ^
+
+"Test_name.c", line 23: warning: structured binding "l" was declared but never referenced
+    auto [ l, l2 ] = c;			// { dg-error "cannot decompose inaccessible member 'C::b' of 'C'" }
+           ^
+
+"Test_name.c", line 25: warning: structured binding "m" was declared but never referenced
+    auto [ m ] = d;			// { dg-warning "structured bindings only available with '-std=c..17' or '-std=gnu..17'" "" { target c++14_down } }
+           ^
+
+"Test_name.c", line 26: warning: structured binding "n" was declared but never referenced
+    auto [ n ] { e };			// { dg-error "cannot decompose inaccessible member 'E::a' of 'E'" }
+           ^
+
+"Test_name.c", line 28: warning: structured binding "o" was declared but never referenced
+    auto [ o ] { f };			// { dg-warning "structured bindings only available with '-std=c..17' or '-std=gnu..17'" "" { target c++14_down } }
+           ^
+
+"Test_name.c", line 31: warning: structured binding "q" was declared but never referenced
+    auto [ q ] { h };			// { dg-warning "structured bindings only available with '-std=c..17' or '-std=gnu..17'" "" { target c++14_down } }
+           ^
+
+6 errors detected in the compilation of "Test_name.c".

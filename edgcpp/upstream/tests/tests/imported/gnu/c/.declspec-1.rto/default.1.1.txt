@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c89 --strict_gnu Test_name.c
+"Test_name.c", line 13: error: invalid combination of type specifiers
+  struct s0 int x0, /* { dg-error "two or more data types" } */
+            ^
+
+"Test_name.c", line 17: error: invalid combination of type specifiers
+  char union u0 x2, /* { dg-error "two or more data types" } */
+       ^
+
+"Test_name.c", line 20: error: invalid combination of type specifiers
+  enum e0 struct s1 x4, /* { dg-error "two or more data types" } */
+          ^
+
+"Test_name.c", line 24: error: duplicate specifier in declaration
+  short short x6, /* { dg-error "duplicate" } */
+        ^
+
+"Test_name.c", line 27: error: invalid combination of type specifiers
+  t int x8, /* { dg-error "two or more data types" } */
+    ^
+
+"Test_name.c", line 30: error: invalid combination of type specifiers
+  long long long x10, /* { dg-error "long long long" } */
+            ^
+
+6 errors detected in the compilation of "Test_name.c".

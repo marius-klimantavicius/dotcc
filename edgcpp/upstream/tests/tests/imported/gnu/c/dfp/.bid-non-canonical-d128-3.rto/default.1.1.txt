@@ -1,0 +1,10 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 --strict_gnu Test_name.c
+"./dfp/bid-non-canonical-d128-1.c", line 11: error: identifier "_Decimal128" is undefined
+    _Decimal128 d128;
+    ^
+
+"./dfp/bid-non-canonical-d128-1.c", line 23: error: identifier "_Decimal128" is undefined
+    _Decimal128 d128;
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

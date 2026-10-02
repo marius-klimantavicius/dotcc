@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --set_flag coroutines -tused --microsoft_version 1900 Test_name.c
+"Test_name.c", line 17: error: the co_await expression calling function "std::generator<int>::promise_type::final_suspend" must be non-throwing
+        auto final_suspend() noexcept { return my_suspend{}; }
+             ^
+
+1 error detected in the compilation of "Test_name.c".

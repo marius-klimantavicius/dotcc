@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 7: error: expected an identifier
+  namespace inline foo1::foo2::foo3 { // expected-error {{expected identifier or '{'}} expected-error {{use of undeclared identifier 'foo1'}}
+            ^
+
+"Test_name.c", line 7: error: expected a "{"
+  namespace inline foo1::foo2::foo3 { // expected-error {{expected identifier or '{'}} expected-error {{use of undeclared identifier 'foo1'}}
+                       ^
+
+"Test_name.c", line 10: error: the "inline" keyword cannot be used on a nested namespace declaration
+  inline namespace foo4::foo5::foo6 { // expected-error {{nested namespace definition cannot be 'inline'}}}
+  ^
+
+"Test_name.c", line 21: warning: C++20-style nested inline namespaces are nonstandard in this mode
+  namespace valid1::valid2::inline valid3::inline valid4::valid5 {}
+                            ^
+
+3 errors detected in the compilation of "Test_name.c".

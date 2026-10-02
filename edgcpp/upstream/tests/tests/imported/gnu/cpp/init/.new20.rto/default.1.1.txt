@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 5: error: incomplete type "A" (aka "int []") is not allowed
+  A* p = new A;   // { dg-error "invalid use of array with unspecified bounds" }
+             ^
+
+"Test_name.c", line 6: error: incomplete type "A" (aka "int []") is not allowed
+  A* q = new (A); // { dg-error "invalid use of array with unspecified bounds" }
+              ^
+
+2 errors detected in the compilation of "Test_name.c".

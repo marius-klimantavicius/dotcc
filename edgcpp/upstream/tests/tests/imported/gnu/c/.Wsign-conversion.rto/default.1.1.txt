@@ -1,0 +1,53 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --signed_chars Test_name.c
+"./Wsign-conversion.c", line 45: warning: integer conversion resulted in a change of sign
+    uc = x ? 1U : -1;
+                  ^
+
+"./Wsign-conversion.c", line 49: warning: integer conversion resulted in a change of sign
+    ui = x ? 1U : -1;
+                  ^
+
+"./Wsign-conversion.c", line 52: warning: integer conversion resulted in a change of sign
+    ui = 1U * -1;
+              ^
+
+"./Wsign-conversion.c", line 57: warning: integer conversion resulted in a change of sign
+    fuc (-1);
+         ^
+
+"./Wsign-conversion.c", line 58: warning: integer conversion resulted in a change of sign
+    uc = -1;
+         ^
+
+"./Wsign-conversion.c", line 59: warning: integer conversion resulted in a change of sign
+    fui (-1);
+         ^
+
+"./Wsign-conversion.c", line 60: warning: integer conversion resulted in a change of sign
+    ui = -1;
+         ^
+
+"./Wsign-conversion.c", line 61: warning: integer conversion resulted in a change of sign
+    fuc ('\xa0');
+         ^
+
+"./Wsign-conversion.c", line 62: warning: integer conversion resulted in a change of sign
+    uc = '\xa0';
+         ^
+
+"./Wsign-conversion.c", line 63: warning: integer conversion resulted in a change of sign
+    fui ('\xa0');
+         ^
+
+"./Wsign-conversion.c", line 64: warning: integer conversion resulted in a change of sign
+    ui = '\xa0';
+         ^
+
+"./Wsign-conversion.c", line 19: warning: variable "si32" was set but never used
+    int si32 = 3;
+        ^
+
+"./Wsign-conversion.c", line 96: warning: integer conversion resulted in a change of sign
+  unsigned fui (unsigned a) { return a + -1; }
+                                         ^
+

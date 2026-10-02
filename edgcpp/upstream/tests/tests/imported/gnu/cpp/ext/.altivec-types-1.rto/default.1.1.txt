@@ -1,0 +1,804 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++03 Test_name.c
+"Test_name.c", line 9: error: this declaration has no storage class or type specifier
+  __vector char vc;
+  ^
+
+"Test_name.c", line 9: error: expected a ";"
+  __vector char vc;
+           ^
+
+"Test_name.c", line 10: error: this declaration has no storage class or type specifier
+  __vector unsigned char vuc;
+  ^
+
+"Test_name.c", line 10: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector unsigned char vuc;
+  ^
+
+"Test_name.c", line 10: error: expected a ";"
+  __vector unsigned char vuc;
+           ^
+
+"Test_name.c", line 11: error: this declaration has no storage class or type specifier
+  __vector signed char vsc;
+  ^
+
+"Test_name.c", line 11: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector signed char vsc;
+  ^
+
+"Test_name.c", line 11: error: expected a ";"
+  __vector signed char vsc;
+           ^
+
+"Test_name.c", line 12: error: variable "__vector" is not a type name
+  __vector __bool char vbc;
+  ^
+
+"Test_name.c", line 12: error: expected a ";"
+  __vector __bool char vbc;
+                  ^
+
+"Test_name.c", line 13: error: this declaration has no storage class or type specifier
+  __vector short vh;
+  ^
+
+"Test_name.c", line 13: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector short vh;
+  ^
+
+"Test_name.c", line 13: error: expected a ";"
+  __vector short vh;
+           ^
+
+"Test_name.c", line 14: error: this declaration has no storage class or type specifier
+  __vector signed short vsh;
+  ^
+
+"Test_name.c", line 14: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector signed short vsh;
+  ^
+
+"Test_name.c", line 14: error: expected a ";"
+  __vector signed short vsh;
+           ^
+
+"Test_name.c", line 15: error: this declaration has no storage class or type specifier
+  __vector unsigned short vuh;
+  ^
+
+"Test_name.c", line 15: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector unsigned short vuh;
+  ^
+
+"Test_name.c", line 15: error: expected a ";"
+  __vector unsigned short vuh;
+           ^
+
+"Test_name.c", line 16: error: this declaration has no storage class or type specifier
+  __vector short int vhi;
+  ^
+
+"Test_name.c", line 16: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector short int vhi;
+  ^
+
+"Test_name.c", line 16: error: expected a ";"
+  __vector short int vhi;
+           ^
+
+"Test_name.c", line 17: error: this declaration has no storage class or type specifier
+  __vector signed short int vshi;
+  ^
+
+"Test_name.c", line 17: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector signed short int vshi;
+  ^
+
+"Test_name.c", line 17: error: expected a ";"
+  __vector signed short int vshi;
+           ^
+
+"Test_name.c", line 18: error: this declaration has no storage class or type specifier
+  __vector unsigned short int vuhi;
+  ^
+
+"Test_name.c", line 18: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector unsigned short int vuhi;
+  ^
+
+"Test_name.c", line 18: error: expected a ";"
+  __vector unsigned short int vuhi;
+           ^
+
+"Test_name.c", line 19: error: variable "__vector" is not a type name
+  __vector __bool short vbh;
+  ^
+
+"Test_name.c", line 19: error: variable "__bool" has already been defined (previous definition at line 12)
+  __vector __bool short vbh;
+           ^
+
+"Test_name.c", line 19: error: expected a ";"
+  __vector __bool short vbh;
+                  ^
+
+"Test_name.c", line 20: error: variable "__vector" is not a type name
+  __vector __bool short int vbhi;
+  ^
+
+"Test_name.c", line 20: error: variable "__bool" has already been defined (previous definition at line 12)
+  __vector __bool short int vbhi;
+           ^
+
+"Test_name.c", line 20: error: expected a ";"
+  __vector __bool short int vbhi;
+                  ^
+
+"Test_name.c", line 21: error: this declaration has no storage class or type specifier
+  __vector int vi;
+  ^
+
+"Test_name.c", line 21: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector int vi;
+  ^
+
+"Test_name.c", line 21: error: expected a ";"
+  __vector int vi;
+           ^
+
+"Test_name.c", line 22: error: this declaration has no storage class or type specifier
+  __vector unsigned int vui;
+  ^
+
+"Test_name.c", line 22: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector unsigned int vui;
+  ^
+
+"Test_name.c", line 22: error: expected a ";"
+  __vector unsigned int vui;
+           ^
+
+"Test_name.c", line 23: error: this declaration has no storage class or type specifier
+  __vector signed int vsi;
+  ^
+
+"Test_name.c", line 23: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector signed int vsi;
+  ^
+
+"Test_name.c", line 23: error: expected a ";"
+  __vector signed int vsi;
+           ^
+
+"Test_name.c", line 24: error: variable "__vector" is not a type name
+  __vector __bool int vbi;
+  ^
+
+"Test_name.c", line 24: error: variable "__bool" has already been defined (previous definition at line 12)
+  __vector __bool int vbi;
+           ^
+
+"Test_name.c", line 24: error: expected a ";"
+  __vector __bool int vbi;
+                  ^
+
+"Test_name.c", line 25: error: this declaration has no storage class or type specifier
+  __vector unsigned vuj;
+  ^
+
+"Test_name.c", line 25: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector unsigned vuj;
+  ^
+
+"Test_name.c", line 25: error: expected a ";"
+  __vector unsigned vuj;
+           ^
+
+"Test_name.c", line 26: error: this declaration has no storage class or type specifier
+  __vector signed vsj;
+  ^
+
+"Test_name.c", line 26: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector signed vsj;
+  ^
+
+"Test_name.c", line 26: error: expected a ";"
+  __vector signed vsj;
+           ^
+
+"Test_name.c", line 27: error: variable "__vector" is not a type name
+  __vector __bool vbj;
+  ^
+
+"Test_name.c", line 27: error: variable "__bool" has already been defined (previous definition at line 12)
+  __vector __bool vbj;
+           ^
+
+"Test_name.c", line 27: error: expected a ";"
+  __vector __bool vbj;
+                  ^
+
+"Test_name.c", line 28: error: this declaration has no storage class or type specifier
+  __vector float vf;
+  ^
+
+"Test_name.c", line 28: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector float vf;
+  ^
+
+"Test_name.c", line 28: error: expected a ";"
+  __vector float vf;
+           ^
+
+"Test_name.c", line 32: error: this declaration has no storage class or type specifier
+  __vector bool vb;			/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 32: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector bool vb;			/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 32: error: expected a ";"
+  __vector bool vb;			/* { dg-error "AltiVec types" } */
+           ^
+
+"Test_name.c", line 33: error: this declaration has no storage class or type specifier
+  __vector long long vll;			/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 33: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector long long vll;			/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 33: error: expected a ";"
+  __vector long long vll;			/* { dg-error "AltiVec types" } */
+           ^
+
+"Test_name.c", line 34: error: this declaration has no storage class or type specifier
+  __vector unsigned long long vull;	/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 34: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector unsigned long long vull;	/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 34: error: expected a ";"
+  __vector unsigned long long vull;	/* { dg-error "AltiVec types" } */
+           ^
+
+"Test_name.c", line 35: error: this declaration has no storage class or type specifier
+  __vector signed long long vsll;		/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 35: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector signed long long vsll;		/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 35: error: expected a ";"
+  __vector signed long long vsll;		/* { dg-error "AltiVec types" } */
+           ^
+
+"Test_name.c", line 36: error: variable "__vector" is not a type name
+  __vector __bool long long vbll;		/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 36: error: variable "__bool" has already been defined (previous definition at line 12)
+  __vector __bool long long vbll;		/* { dg-error "AltiVec types" } */
+           ^
+
+"Test_name.c", line 36: error: expected a ";"
+  __vector __bool long long vbll;		/* { dg-error "AltiVec types" } */
+                  ^
+
+"Test_name.c", line 37: error: this declaration has no storage class or type specifier
+  __vector long long int vlli;		/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 37: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector long long int vlli;		/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 37: error: expected a ";"
+  __vector long long int vlli;		/* { dg-error "AltiVec types" } */
+           ^
+
+"Test_name.c", line 38: error: this declaration has no storage class or type specifier
+  __vector unsigned long long int vulli;	/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 38: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector unsigned long long int vulli;	/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 38: error: expected a ";"
+  __vector unsigned long long int vulli;	/* { dg-error "AltiVec types" } */
+           ^
+
+"Test_name.c", line 39: error: this declaration has no storage class or type specifier
+  __vector signed long long int vslli;	/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 39: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector signed long long int vslli;	/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 39: error: expected a ";"
+  __vector signed long long int vslli;	/* { dg-error "AltiVec types" } */
+           ^
+
+"Test_name.c", line 40: error: variable "__vector" is not a type name
+  __vector __bool long long int vblli;	/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 40: error: variable "__bool" has already been defined (previous definition at line 12)
+  __vector __bool long long int vblli;	/* { dg-error "AltiVec types" } */
+           ^
+
+"Test_name.c", line 40: error: expected a ";"
+  __vector __bool long long int vblli;	/* { dg-error "AltiVec types" } */
+                  ^
+
+"Test_name.c", line 41: error: this declaration has no storage class or type specifier
+  __vector double vd1;			/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 41: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector double vd1;			/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 41: error: expected a ";"
+  __vector double vd1;			/* { dg-error "AltiVec types" } */
+           ^
+
+"Test_name.c", line 42: error: this declaration has no storage class or type specifier
+  __vector long double vld;		/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 42: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector long double vld;		/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 42: error: expected a ";"
+  __vector long double vld;		/* { dg-error "AltiVec types" } */
+           ^
+
+"Test_name.c", line 43: error: this declaration has no storage class or type specifier
+  __vector _Complex float vcf;		/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 43: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector _Complex float vcf;		/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 43: error: expected a ";"
+  __vector _Complex float vcf;		/* { dg-error "AltiVec types" } */
+           ^
+
+"Test_name.c", line 44: error: this declaration has no storage class or type specifier
+  __vector _Complex double vcd;		/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 44: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector _Complex double vcd;		/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 44: error: expected a ";"
+  __vector _Complex double vcd;		/* { dg-error "AltiVec types" } */
+           ^
+
+"Test_name.c", line 45: error: this declaration has no storage class or type specifier
+  __vector _Complex long double vcld;	/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 45: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector _Complex long double vcld;	/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 45: error: expected a ";"
+  __vector _Complex long double vcld;	/* { dg-error "AltiVec types" } */
+           ^
+
+"Test_name.c", line 46: error: this declaration has no storage class or type specifier
+  __vector _Complex signed char vcsc;	/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 46: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector _Complex signed char vcsc;	/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 46: error: expected a ";"
+  __vector _Complex signed char vcsc;	/* { dg-error "AltiVec types" } */
+           ^
+
+"Test_name.c", line 47: error: this declaration has no storage class or type specifier
+  __vector _Complex unsigned char vcuc;	/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 47: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector _Complex unsigned char vcuc;	/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 47: error: expected a ";"
+  __vector _Complex unsigned char vcuc;	/* { dg-error "AltiVec types" } */
+           ^
+
+"Test_name.c", line 48: error: this declaration has no storage class or type specifier
+  __vector _Complex short vcss;		/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 48: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector _Complex short vcss;		/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 48: error: expected a ";"
+  __vector _Complex short vcss;		/* { dg-error "AltiVec types" } */
+           ^
+
+"Test_name.c", line 49: error: this declaration has no storage class or type specifier
+  __vector _Complex unsigned short vcus;	/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 49: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector _Complex unsigned short vcus;	/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 49: error: expected a ";"
+  __vector _Complex unsigned short vcus;	/* { dg-error "AltiVec types" } */
+           ^
+
+"Test_name.c", line 50: error: this declaration has no storage class or type specifier
+  __vector _Complex int vcsi;		/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 50: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector _Complex int vcsi;		/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 50: error: expected a ";"
+  __vector _Complex int vcsi;		/* { dg-error "AltiVec types" } */
+           ^
+
+"Test_name.c", line 51: error: this declaration has no storage class or type specifier
+  __vector _Complex unsigned int vcui;	/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 51: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector _Complex unsigned int vcui;	/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 51: error: expected a ";"
+  __vector _Complex unsigned int vcui;	/* { dg-error "AltiVec types" } */
+           ^
+
+"Test_name.c", line 52: error: this declaration has no storage class or type specifier
+  __vector _Complex long vcsl;		/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 52: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector _Complex long vcsl;		/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 52: error: expected a ";"
+  __vector _Complex long vcsl;		/* { dg-error "AltiVec types" } */
+           ^
+
+"Test_name.c", line 53: error: this declaration has no storage class or type specifier
+  __vector _Complex unsigned long vcul;	/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 53: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector _Complex unsigned long vcul;	/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 53: error: expected a ";"
+  __vector _Complex unsigned long vcul;	/* { dg-error "AltiVec types" } */
+           ^
+
+"Test_name.c", line 54: error: this declaration has no storage class or type specifier
+  __vector _Complex long long vcsll;	/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 54: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector _Complex long long vcsll;	/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 54: error: expected a ";"
+  __vector _Complex long long vcsll;	/* { dg-error "AltiVec types" } */
+           ^
+
+"Test_name.c", line 55: error: this declaration has no storage class or type specifier
+  __vector _Complex unsigned long long vcull; /* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 55: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector _Complex unsigned long long vcull; /* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 55: error: expected a ";"
+  __vector _Complex unsigned long long vcull; /* { dg-error "AltiVec types" } */
+           ^
+
+"Test_name.c", line 56: error: this declaration has no storage class or type specifier
+  __vector __complex float v_cf;		/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 56: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector __complex float v_cf;		/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 56: error: expected a ";"
+  __vector __complex float v_cf;		/* { dg-error "AltiVec types" } */
+           ^
+
+"Test_name.c", line 57: error: this declaration has no storage class or type specifier
+  __vector __complex double v_cd;		/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 57: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector __complex double v_cd;		/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 57: error: expected a ";"
+  __vector __complex double v_cd;		/* { dg-error "AltiVec types" } */
+           ^
+
+"Test_name.c", line 58: error: this declaration has no storage class or type specifier
+  __vector __complex long double v_cld;	/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 58: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector __complex long double v_cld;	/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 58: error: expected a ";"
+  __vector __complex long double v_cld;	/* { dg-error "AltiVec types" } */
+           ^
+
+"Test_name.c", line 59: error: this declaration has no storage class or type specifier
+  __vector __complex signed char v_csc;	/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 59: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector __complex signed char v_csc;	/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 59: error: expected a ";"
+  __vector __complex signed char v_csc;	/* { dg-error "AltiVec types" } */
+           ^
+
+"Test_name.c", line 60: error: this declaration has no storage class or type specifier
+  __vector __complex unsigned char v_cuc;	/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 60: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector __complex unsigned char v_cuc;	/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 60: error: expected a ";"
+  __vector __complex unsigned char v_cuc;	/* { dg-error "AltiVec types" } */
+           ^
+
+"Test_name.c", line 61: error: this declaration has no storage class or type specifier
+  __vector __complex short v_css;		/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 61: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector __complex short v_css;		/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 61: error: expected a ";"
+  __vector __complex short v_css;		/* { dg-error "AltiVec types" } */
+           ^
+
+"Test_name.c", line 62: error: this declaration has no storage class or type specifier
+  __vector __complex unsigned short v_cus; /* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 62: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector __complex unsigned short v_cus; /* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 62: error: expected a ";"
+  __vector __complex unsigned short v_cus; /* { dg-error "AltiVec types" } */
+           ^
+
+"Test_name.c", line 63: error: this declaration has no storage class or type specifier
+  __vector __complex int v_csi;		/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 63: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector __complex int v_csi;		/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 63: error: expected a ";"
+  __vector __complex int v_csi;		/* { dg-error "AltiVec types" } */
+           ^
+
+"Test_name.c", line 64: error: this declaration has no storage class or type specifier
+  __vector __complex unsigned int v_cui;	/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 64: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector __complex unsigned int v_cui;	/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 64: error: expected a ";"
+  __vector __complex unsigned int v_cui;	/* { dg-error "AltiVec types" } */
+           ^
+
+"Test_name.c", line 65: error: this declaration has no storage class or type specifier
+  __vector __complex long v_csl;		/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 65: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector __complex long v_csl;		/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 65: error: expected a ";"
+  __vector __complex long v_csl;		/* { dg-error "AltiVec types" } */
+           ^
+
+"Test_name.c", line 66: error: this declaration has no storage class or type specifier
+  __vector __complex unsigned long v_cul;	/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 66: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector __complex unsigned long v_cul;	/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 66: error: expected a ";"
+  __vector __complex unsigned long v_cul;	/* { dg-error "AltiVec types" } */
+           ^
+
+"Test_name.c", line 67: error: this declaration has no storage class or type specifier
+  __vector __complex long long v_csll;	/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 67: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector __complex long long v_csll;	/* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 67: error: expected a ";"
+  __vector __complex long long v_csll;	/* { dg-error "AltiVec types" } */
+           ^
+
+"Test_name.c", line 68: error: this declaration has no storage class or type specifier
+  __vector __complex unsigned long long v_cull; /* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 68: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector __complex unsigned long long v_cull; /* { dg-error "AltiVec types" } */
+  ^
+
+"Test_name.c", line 68: error: expected a ";"
+  __vector __complex unsigned long long v_cull; /* { dg-error "AltiVec types" } */
+           ^
+
+"Test_name.c", line 73: error: variable "__vector" is not a type name
+  __vector __bool unsigned char vbuc;	/* { dg-error "" } */
+  ^
+
+"Test_name.c", line 73: error: variable "__bool" has already been defined (previous definition at line 12)
+  __vector __bool unsigned char vbuc;	/* { dg-error "" } */
+           ^
+
+"Test_name.c", line 73: error: expected a ";"
+  __vector __bool unsigned char vbuc;	/* { dg-error "" } */
+                  ^
+
+"Test_name.c", line 74: error: variable "__vector" is not a type name
+  __vector __bool signed char vbsc;	/* { dg-error "" } */
+  ^
+
+"Test_name.c", line 74: error: variable "__bool" has already been defined (previous definition at line 12)
+  __vector __bool signed char vbsc;	/* { dg-error "" } */
+           ^
+
+"Test_name.c", line 74: error: expected a ";"
+  __vector __bool signed char vbsc;	/* { dg-error "" } */
+                  ^
+
+"Test_name.c", line 75: error: variable "__vector" is not a type name
+  __vector __bool unsigned short vbuh;	/* { dg-error "" } */
+  ^
+
+"Test_name.c", line 75: error: variable "__bool" has already been defined (previous definition at line 12)
+  __vector __bool unsigned short vbuh;	/* { dg-error "" } */
+           ^
+
+"Test_name.c", line 75: error: expected a ";"
+  __vector __bool unsigned short vbuh;	/* { dg-error "" } */
+                  ^
+
+"Test_name.c", line 76: error: variable "__vector" is not a type name
+  __vector __bool signed short vbsh;	/* { dg-error "" } */
+  ^
+
+"Test_name.c", line 76: error: variable "__bool" has already been defined (previous definition at line 12)
+  __vector __bool signed short vbsh;	/* { dg-error "" } */
+           ^
+
+"Test_name.c", line 76: error: expected a ";"
+  __vector __bool signed short vbsh;	/* { dg-error "" } */
+                  ^
+
+"Test_name.c", line 77: error: variable "__vector" is not a type name
+  __vector __bool unsigned int vbui;	/* { dg-error "" } */
+  ^
+
+"Test_name.c", line 77: error: variable "__bool" has already been defined (previous definition at line 12)
+  __vector __bool unsigned int vbui;	/* { dg-error "" } */
+           ^
+
+"Test_name.c", line 77: error: expected a ";"
+  __vector __bool unsigned int vbui;	/* { dg-error "" } */
+                  ^
+
+"Test_name.c", line 78: error: variable "__vector" is not a type name
+  __vector __bool signed int vbsi;	/* { dg-error "" } */
+  ^
+
+"Test_name.c", line 78: error: variable "__bool" has already been defined (previous definition at line 12)
+  __vector __bool signed int vbsi;	/* { dg-error "" } */
+           ^
+
+"Test_name.c", line 78: error: expected a ";"
+  __vector __bool signed int vbsi;	/* { dg-error "" } */
+                  ^
+
+"Test_name.c", line 79: error: variable "__vector" is not a type name
+  __vector __bool unsigned vbuj;		/* { dg-error "" } */
+  ^
+
+"Test_name.c", line 79: error: variable "__bool" has already been defined (previous definition at line 12)
+  __vector __bool unsigned vbuj;		/* { dg-error "" } */
+           ^
+
+"Test_name.c", line 79: error: expected a ";"
+  __vector __bool unsigned vbuj;		/* { dg-error "" } */
+                  ^
+
+"Test_name.c", line 80: error: variable "__vector" is not a type name
+  __vector __bool signed vbsj;		/* { dg-error "" } */
+  ^
+
+"Test_name.c", line 80: error: variable "__bool" has already been defined (previous definition at line 12)
+  __vector __bool signed vbsj;		/* { dg-error "" } */
+           ^
+
+"Test_name.c", line 80: error: expected a ";"
+  __vector __bool signed vbsj;		/* { dg-error "" } */
+                  ^
+
+"Test_name.c", line 81: error: this declaration has no storage class or type specifier
+  __vector signed float vsf;		/* { dg-error "" } */
+  ^
+
+"Test_name.c", line 81: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector signed float vsf;		/* { dg-error "" } */
+  ^
+
+"Test_name.c", line 81: error: expected a ";"
+  __vector signed float vsf;		/* { dg-error "" } */
+           ^
+
+"Test_name.c", line 82: error: this declaration has no storage class or type specifier
+  __vector unsigned float vuf;		/* { dg-error "" } */
+  ^
+
+"Test_name.c", line 82: error: variable "__vector" has already been defined (previous definition at line 9)
+  __vector unsigned float vuf;		/* { dg-error "" } */
+  ^
+
+"Test_name.c", line 82: error: expected a ";"
+  __vector unsigned float vuf;		/* { dg-error "" } */
+           ^
+
+"Test_name.c", line 83: error: this declaration has no storage class or type specifier
+  __vector short float vsf;		/* { dg-error "" } */
+  ^
+
+Error limit reached.
+200 errors detected in the compilation of "Test_name.c".
+Compilation terminated.

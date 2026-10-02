@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c --target linux_aarch64 Test_name.c
+"Test_name.c", line 7: error: invalid type conversion
+    return (__mfp8)in; // expected-error {{used type '__mfp8' where arithmetic or pointer type is required}}
+           ^
+
+"Test_name.c", line 11: error: invalid type conversion
+    return (unsigned)in; // expected-error {{operand of type '__mfp8' where arithmetic or pointer type is required}}
+           ^
+
+2 errors detected in the compilation of "Test_name.c".

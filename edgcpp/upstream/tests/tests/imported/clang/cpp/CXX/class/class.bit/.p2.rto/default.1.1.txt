@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 11: error: too many initializer values
+  A a2 = { 1 }; // expected-error{{excess elements in struct initializer}}
+           ^
+
+"Test_name.c", line 14: error: a qualified type is nonstandard for anonymous bit fields
+    const int : 0; // expected-error{{anonymous bit-field cannot have qualifiers}}
+    ^
+
+"Test_name.c", line 17: error: variable "b" has an uninitialized const or reference member
+  B b;
+    ^
+
+"Test_name.c", line 21: warning: variable "b3" was declared but never referenced
+    B b3(static_cast<B&&>(b2));
+      ^
+
+3 errors detected in the compilation of "Test_name.c".

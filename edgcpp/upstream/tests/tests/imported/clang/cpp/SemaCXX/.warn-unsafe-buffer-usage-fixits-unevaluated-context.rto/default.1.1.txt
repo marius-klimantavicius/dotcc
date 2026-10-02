@@ -1,0 +1,73 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 26: warning: expression has no effect
+    typeid(foo(*p));
+    ^
+
+"Test_name.c", line 29: warning: expression has no effect
+    _Generic(*p, int: 2, float: 3);
+    ^
+
+"Test_name.c", line 25: warning: variable "tmp" was declared but never referenced
+    int tmp = p[5];
+        ^
+
+"Test_name.c", line 41: warning: expression has no effect
+    typeid(foo(p[5]));
+    ^
+
+"Test_name.c", line 42: warning: expression has no effect
+    _Generic(p[2], int: 2, float: 3);
+    ^
+
+"Test_name.c", line 40: warning: variable "tmp" was declared but never referenced
+    int tmp = p[5];
+        ^
+
+"Test_name.c", line 52: warning: expression has no effect
+    typeid(bar(p));
+    ^
+
+"Test_name.c", line 51: warning: variable "tmp" was declared but never referenced
+    int tmp = p[5];
+        ^
+
+"Test_name.c", line 75: warning: expression has no effect
+    __is_pod(__typeof(*p));
+    ^
+
+"Test_name.c", line 76: warning: expression has no effect
+    __is_trivially_constructible(__typeof(*p), decltype(*p));
+    ^
+
+"Test_name.c", line 77: warning: expression has no effect
+    _Generic(*p, int: 2, float: 3);
+    ^
+
+"Test_name.c", line 78: warning: expression has no effect
+    _Generic(1, int: *p, float: 3);
+    ^
+
+"Test_name.c", line 79: warning: expression has no effect
+    _Generic(1, int: 2, float: *p);
+    ^
+
+"Test_name.c", line 81: warning: expression has no effect
+    noexcept(*p);
+    ^
+
+"Test_name.c", line 82: warning: expression has no effect
+    typeid(*p);
+    ^
+
+"Test_name.c", line 69: warning: variable "tmp" was declared but never referenced
+    int tmp = p[5];
+        ^
+
+"Test_name.c", line 72: warning: variable "x" was declared but never referenced
+    __typeof(*p) x;
+                 ^
+
+"Test_name.c", line 80: warning: variable "var" was declared but never referenced
+    decltype(*p) var = y;
+                 ^
+

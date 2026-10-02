@@ -1,0 +1,242 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 10: error: expected a ";"
+  short _Fract q0;
+               ^
+
+"Test_name.c", line 11: error: variable "_Fract" is not a type name
+  _Fract q1;
+  ^
+
+"Test_name.c", line 12: error: declaration is incompatible with "short _Fract" (declared at line 10)
+  long _Fract q2;
+       ^
+
+"Test_name.c", line 12: error: expected a ";"
+  long _Fract q2;
+              ^
+
+"Test_name.c", line 13: error: declaration is incompatible with "short _Fract" (declared at line 12)
+  long long _Fract q3;
+            ^
+
+"Test_name.c", line 13: error: expected a ";"
+  long long _Fract q3;
+                   ^
+
+"Test_name.c", line 14: error: declaration is incompatible with "short _Fract" (declared at line 13)
+  unsigned short _Fract q4;
+                 ^
+
+"Test_name.c", line 14: error: expected a ";"
+  unsigned short _Fract q4;
+                        ^
+
+"Test_name.c", line 15: error: declaration is incompatible with "short _Fract" (declared at line 14)
+  unsigned _Fract q5;
+           ^
+
+"Test_name.c", line 15: error: expected a ";"
+  unsigned _Fract q5;
+                  ^
+
+"Test_name.c", line 16: error: declaration is incompatible with "short _Fract" (declared at line 15)
+  unsigned long _Fract q6;
+                ^
+
+"Test_name.c", line 16: error: expected a ";"
+  unsigned long _Fract q6;
+                       ^
+
+"Test_name.c", line 17: error: declaration is incompatible with "short _Fract" (declared at line 16)
+  unsigned long long _Fract q7;
+                     ^
+
+"Test_name.c", line 17: error: expected a ";"
+  unsigned long long _Fract q7;
+                            ^
+
+"Test_name.c", line 18: warning: this declaration has no storage class or type specifier
+  _Sat short _Fract sq0;
+  ^
+
+"Test_name.c", line 18: error: expected a ";"
+  _Sat short _Fract sq0;
+       ^
+
+"Test_name.c", line 19: error: variable "_Sat" is not a type name
+  _Sat _Fract sq1;
+  ^
+
+"Test_name.c", line 19: error: expected a ";"
+  _Sat _Fract sq1;
+              ^
+
+"Test_name.c", line 20: warning: this declaration has no storage class or type specifier
+  _Sat long _Fract sq2;
+  ^
+
+"Test_name.c", line 20: error: expected a ";"
+  _Sat long _Fract sq2;
+       ^
+
+"Test_name.c", line 21: warning: this declaration has no storage class or type specifier
+  _Sat long long _Fract sq3;
+  ^
+
+"Test_name.c", line 21: error: expected a ";"
+  _Sat long long _Fract sq3;
+       ^
+
+"Test_name.c", line 22: warning: this declaration has no storage class or type specifier
+  _Sat unsigned short _Fract sq4;
+  ^
+
+"Test_name.c", line 22: error: expected a ";"
+  _Sat unsigned short _Fract sq4;
+       ^
+
+"Test_name.c", line 23: warning: this declaration has no storage class or type specifier
+  _Sat unsigned _Fract sq5;
+  ^
+
+"Test_name.c", line 23: error: expected a ";"
+  _Sat unsigned _Fract sq5;
+       ^
+
+"Test_name.c", line 24: warning: this declaration has no storage class or type specifier
+  _Sat unsigned long _Fract sq6;
+  ^
+
+"Test_name.c", line 24: error: expected a ";"
+  _Sat unsigned long _Fract sq6;
+       ^
+
+"Test_name.c", line 25: warning: this declaration has no storage class or type specifier
+  _Sat unsigned long long _Fract sq7;
+  ^
+
+"Test_name.c", line 25: error: expected a ";"
+  _Sat unsigned long long _Fract sq7;
+       ^
+
+"Test_name.c", line 27: error: expected a ";"
+  short _Accum a0;
+               ^
+
+"Test_name.c", line 28: error: variable "_Accum" is not a type name
+  _Accum a1;
+  ^
+
+"Test_name.c", line 29: error: declaration is incompatible with "short _Accum" (declared at line 27)
+  long _Accum a2;
+       ^
+
+"Test_name.c", line 29: error: expected a ";"
+  long _Accum a2;
+              ^
+
+"Test_name.c", line 30: error: declaration is incompatible with "short _Accum" (declared at line 29)
+  long long _Accum a3;
+            ^
+
+"Test_name.c", line 30: error: expected a ";"
+  long long _Accum a3;
+                   ^
+
+"Test_name.c", line 31: error: declaration is incompatible with "short _Accum" (declared at line 30)
+  unsigned short _Accum a4;
+                 ^
+
+"Test_name.c", line 31: error: expected a ";"
+  unsigned short _Accum a4;
+                        ^
+
+"Test_name.c", line 32: error: declaration is incompatible with "short _Accum" (declared at line 31)
+  unsigned _Accum a5;
+           ^
+
+"Test_name.c", line 32: error: expected a ";"
+  unsigned _Accum a5;
+                  ^
+
+"Test_name.c", line 33: error: declaration is incompatible with "short _Accum" (declared at line 32)
+  unsigned long _Accum a6;
+                ^
+
+"Test_name.c", line 33: error: expected a ";"
+  unsigned long _Accum a6;
+                       ^
+
+"Test_name.c", line 34: error: declaration is incompatible with "short _Accum" (declared at line 33)
+  unsigned long long _Accum a7;
+                     ^
+
+"Test_name.c", line 34: error: expected a ";"
+  unsigned long long _Accum a7;
+                            ^
+
+"Test_name.c", line 35: warning: this declaration has no storage class or type specifier
+  _Sat short _Accum sa0;
+  ^
+
+"Test_name.c", line 35: error: expected a ";"
+  _Sat short _Accum sa0;
+       ^
+
+"Test_name.c", line 36: error: variable "_Sat" is not a type name
+  _Sat _Accum sa1;
+  ^
+
+"Test_name.c", line 36: error: expected a ";"
+  _Sat _Accum sa1;
+              ^
+
+"Test_name.c", line 37: warning: this declaration has no storage class or type specifier
+  _Sat long _Accum sa2;
+  ^
+
+"Test_name.c", line 37: error: expected a ";"
+  _Sat long _Accum sa2;
+       ^
+
+"Test_name.c", line 38: warning: this declaration has no storage class or type specifier
+  _Sat long long _Accum sa3;
+  ^
+
+"Test_name.c", line 38: error: expected a ";"
+  _Sat long long _Accum sa3;
+       ^
+
+"Test_name.c", line 39: warning: this declaration has no storage class or type specifier
+  _Sat unsigned short _Accum sa4;
+  ^
+
+"Test_name.c", line 39: error: expected a ";"
+  _Sat unsigned short _Accum sa4;
+       ^
+
+"Test_name.c", line 40: warning: this declaration has no storage class or type specifier
+  _Sat unsigned _Accum sa5;
+  ^
+
+"Test_name.c", line 40: error: expected a ";"
+  _Sat unsigned _Accum sa5;
+       ^
+
+"Test_name.c", line 41: warning: this declaration has no storage class or type specifier
+  _Sat unsigned long _Accum sa6;
+  ^
+
+"Test_name.c", line 41: error: expected a ";"
+  _Sat unsigned long _Accum sa6;
+       ^
+
+"Test_name.c", line 42: warning: this declaration has no storage class or type specifier
+  _Sat unsigned long long _Accum sa7;
+  ^
+
+"Test_name.c", line 42: error: expected a ";"
+  _Sat unsigned long long _Accum sa7;
+       ^
+
+46 errors detected in the compilation of "Test_name.c".

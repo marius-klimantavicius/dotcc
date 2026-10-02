@@ -1,0 +1,45 @@
+fe_only -DTEST_NUMBER=1 --g++ Test_name.c
+"Test_name.c", line 50: warning: class "Deprecated" was declared deprecated
+      Deprecated a;
+                 ^
+"Test_name.c", line 14: note: because of a "deprecated" attribute
+  class __attribute__ ((__deprecated__)) Deprecated
+                        ^
+
+"Test_name.c", line 51: warning: class "DeprecatedTemplate<int>" was declared deprecated
+      DeprecatedTemplate<int> b;
+                              ^
+"Test_name.c", line 28: note: because of a "deprecated" attribute
+  class __attribute__ ((__deprecated__)) DeprecatedTemplate
+                        ^
+
+"Test_name.c", line 52: warning: class "DeprecatedDerivedTemplate<int>" was declared deprecated
+      DeprecatedDerivedTemplate<int> c;
+                                     ^
+"Test_name.c", line 35: note: because of a "deprecated" attribute
+  class __attribute__ ((__deprecated__)) DeprecatedDerivedTemplate :
+                        ^
+
+"Test_name.c", line 53: warning: class "DeprecatedDerivedDeprecatedTemplate<int>" was declared deprecated
+      DeprecatedDerivedDeprecatedTemplate<int> d;
+                                               ^
+"Test_name.c", line 43: note: because of a "deprecated" attribute
+  class __attribute__ ((__deprecated__))
+                        ^
+
+"Test_name.c", line 50: warning: variable "a" was set but never used
+      Deprecated a;
+                 ^
+
+"Test_name.c", line 51: warning: variable "b" was set but never used
+      DeprecatedTemplate<int> b;
+                              ^
+
+"Test_name.c", line 52: warning: variable "c" was set but never used
+      DeprecatedDerivedTemplate<int> c;
+                                     ^
+
+"Test_name.c", line 53: warning: variable "d" was set but never used
+      DeprecatedDerivedDeprecatedTemplate<int> d;
+                                               ^
+

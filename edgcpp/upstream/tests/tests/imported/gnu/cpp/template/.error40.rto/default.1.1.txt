@@ -1,0 +1,19 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 13: error: no suitable constructor exists to convert from "int" to "A<void, 0, 1>"
+    A<void> a = 0;		// { dg-error "A<void, 0, 1>" }
+                ^
+
+"Test_name.c", line 30: error: more than one instance of overloaded function "f" matches the argument list:
+            function template "T f(T)" (declared at line 16)
+            function template "T f(T, int)" (declared at line 17)
+            argument types are: (int)
+    f(1);				// { dg-error "" }
+    ^
+
+"Test_name.c", line 31: error: more than one instance of overloaded function "B<T>::f [with T=A<int, 0, 1>]" matches the argument list:
+            function "B<T>::f() [with T=A<int, 0, 1>]" (declared at line 24)
+            function "B<T>::f(int) [with T=A<int, 0, 1>]" (declared at line 25)
+    B<A<int> >().f();		// { dg-error "" }
+                 ^
+
+3 errors detected in the compilation of "Test_name.c".

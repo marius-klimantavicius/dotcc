@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=2 --microsoft --diag_error 1215 -DPOS Test_name.c

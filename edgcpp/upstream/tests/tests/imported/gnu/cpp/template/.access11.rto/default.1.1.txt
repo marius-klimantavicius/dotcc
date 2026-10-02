@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 19: error: type "A::X" (declared at line 10) is inaccessible
+    A::X x;			// { dg-error "this context" }
+       ^
+
+"Test_name.c", line 23: error: type "A::X" (declared at line 10) is inaccessible
+    typename T::X x;		// { dg-error "this context" }
+                ^
+          detected during instantiation of class "X::Y<T> [with T=A]" at line 26
+
+2 errors detected in the compilation of "Test_name.c".

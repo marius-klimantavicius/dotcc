@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 9: error: identifier "__amdgpu_texture_t" is undefined
+    __amdgpu_texture_t v = 0;           // expected-error {{cannot initialize a variable of type '__amdgpu_texture_t' with an rvalue of type 'int'}}
+    ^
+
+"Test_name.c", line 10: error: identifier "__amdgpu_texture_t" is undefined
+    static_cast<__amdgpu_texture_t>(n);  // expected-error {{static_cast from 'int' to '__amdgpu_texture_t' is not allowed}}
+                ^
+
+"Test_name.c", line 11: error: identifier "__amdgpu_texture_t" is undefined
+    reinterpret_cast<__amdgpu_texture_t>(n); // expected-error {{reinterpret_cast from 'int' to '__amdgpu_texture_t' is not allowed}}
+                     ^
+
+"Test_name.c", line 14: error: identifier "__amdgpu_texture_t" is undefined
+    __amdgpu_texture_t k;
+    ^
+
+"Test_name.c", line 18: error: identifier "__amdgpu_texture_t" is undefined
+  void use(__amdgpu_texture_t r) { bar(r); }
+           ^
+
+"Test_name.c", line 19: error: identifier "__amdgpu_texture_t" is undefined
+  struct S { __amdgpu_texture_t r; int a; };
+             ^
+
+6 errors detected in the compilation of "Test_name.c".

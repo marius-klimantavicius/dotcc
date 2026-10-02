@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 7: warning: variable "x" is used before its value is set
+    if ('A' == x) && ('B' == y)) { } /* { dg-error "" } */
+               ^
+
+"Test_name.c", line 7: error: expected an expression
+    if ('A' == x) && ('B' == y)) { } /* { dg-error "" } */
+                  ^
+
+"Test_name.c", line 9: error: expected a ";"
+  }
+  ^
+
+"Test_name.c", line 6: warning: variable "y" was declared but never referenced
+    char x, y;
+            ^
+
+2 errors detected in the compilation of "Test_name.c".

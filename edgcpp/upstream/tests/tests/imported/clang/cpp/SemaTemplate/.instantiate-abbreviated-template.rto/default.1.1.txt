@@ -1,0 +1,74 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 22: error: no instance of function template "S<T>::foo2 [with T=int]" matches the argument list
+            argument types are: (int, int)
+  using sf2 = decltype(S<int>::foo2(1, 2)); // expected-error{{no matching function}}
+                       ^
+"Test_name.c", line 13: note: substituting "<int>" for function template "S<T>::foo2 [with T=int]" failed constraints
+      static void foo2(T a, C<T> auto b);
+                  ^
+"Test_name.c", line 13: note: concept "C" not satisfied for "<int, int>"
+      static void foo2(T a, C<T> auto b);
+                            ^
+"Test_name.c", line 7: note: atomic constraint evaluates to false
+  concept C = false; // expected-note 9{{because}}
+              ^
+
+"Test_name.c", line 23: error: no instance of function template "S<T>::foo3 [with T=int]" matches the argument list
+            argument types are: (int, int)
+  using sf3 = decltype(S<int>::foo3(1, 2)); // expected-error{{no matching function}}
+                       ^
+"Test_name.c", line 15: note: substituting "<int>" for function template "S<T>::foo3 [with T=int]" failed constraints
+      static void foo3(T a, C<decltype(a)> auto b);
+                  ^
+"Test_name.c", line 15: note: concept "C" not satisfied for "<int, int>"
+      static void foo3(T a, C<decltype(a)> auto b);
+                            ^
+"Test_name.c", line 7: note: atomic constraint evaluates to false
+  concept C = false; // expected-note 9{{because}}
+              ^
+
+"Test_name.c", line 24: error: no instance of function template "S<T>::foo4 [with T=int]" matches the argument list
+            argument types are: (int, int, int)
+  using sf4 = decltype(S<int>::foo4(1, 2, 3)); // expected-error{{no matching function}}
+                       ^
+"Test_name.c", line 17: note: substituting "<int, int>" for function template "S<T>::foo4 [with T=int]" failed constraints
+      static void foo4(T a, C<decltype(a)> auto b, const C<decltype(b)> auto &&c);
+                  ^
+"Test_name.c", line 17: note: concept "C" not satisfied for "<int, int>"
+      static void foo4(T a, C<decltype(a)> auto b, const C<decltype(b)> auto &&c);
+                            ^
+"Test_name.c", line 7: note: atomic constraint evaluates to false
+  concept C = false; // expected-note 9{{because}}
+              ^
+
+"Test_name.c", line 31: error: parameter pack "T" was referenced but not expanded
+      static void foo2(auto a, const C<decltype(a), T> auto &&... b);
+                                                    ^
+
+"Test_name.c", line 35: error: no instance of function template "G<T...>::foo1 [with T=<int, char>]" matches the argument list
+            argument types are: (char, int, int, int, int)
+  using gf1 = decltype(G<int, char>::foo1('a', 1, 2, 3, 4)); // expected-error{{no matching function}}
+                       ^
+"Test_name.c", line 29: note: substituting "<char, int, int, int, int>" for function template "G<T...>::foo1 [with T=<int, char>]" failed constraints
+      static void foo1(auto a, const C<decltype(a)> auto &&... b);
+                  ^
+"Test_name.c", line 29: note: concept "C" not satisfied for "<int, char>"
+      static void foo1(auto a, const C<decltype(a)> auto &&... b);
+                                     ^
+"Test_name.c", line 7: note: atomic constraint evaluates to false
+  concept C = false; // expected-note 9{{because}}
+              ^
+
+"Test_name.c", line 36: error: no instance of function template "G<T...>::foo2 [with T=<int, char>]" matches the argument list
+            argument types are: (char, int, int)
+  using gf2 = decltype(G<int, char>::foo2('a', 1, 2)); // expected-error{{no matching function}}
+                       ^
+"Test_name.c", line 31: note: concept "C" not satisfied for "<int, auto, T>"
+      static void foo2(auto a, const C<decltype(a), T> auto &&... b);
+                                     ^
+
+"Test_name.c", line 48: warning: last line of file ends without a newline
+  static_assert((g<int>(), true));
+                                  ^
+
+6 errors detected in the compilation of "Test_name.c".

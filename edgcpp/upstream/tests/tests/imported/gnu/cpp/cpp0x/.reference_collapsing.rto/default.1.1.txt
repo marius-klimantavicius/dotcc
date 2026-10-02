@@ -1,0 +1,193 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 79: warning: type qualifiers are ignored (underlying type is a reference)
+      test<const          Alref&,  true, false, false, false>();
+           ^
+
+"Test_name.c", line 80: warning: type qualifiers are ignored (underlying type is a reference)
+      test<      volatile Alref&,  true, false, false, false>();
+                 ^
+
+"Test_name.c", line 81: warning: type qualifiers are ignored (underlying type is a reference)
+      test<const volatile Alref&,  true, false, false, false>();
+           ^
+
+"Test_name.c", line 85: warning: type qualifiers are ignored (underlying type is a reference)
+      test<const          cAlref&,  true, false,  true, false>();
+           ^
+
+"Test_name.c", line 86: warning: type qualifiers are ignored (underlying type is a reference)
+      test<      volatile cAlref&,  true, false,  true, false>();
+                 ^
+
+"Test_name.c", line 87: warning: type qualifiers are ignored (underlying type is a reference)
+      test<const volatile cAlref&,  true, false,  true, false>();
+           ^
+
+"Test_name.c", line 91: warning: type qualifiers are ignored (underlying type is a reference)
+      test<const          vAlref&,  true, false, false,  true>();
+           ^
+
+"Test_name.c", line 92: warning: type qualifiers are ignored (underlying type is a reference)
+      test<      volatile vAlref&,  true, false, false,  true>();
+                 ^
+
+"Test_name.c", line 93: warning: type qualifiers are ignored (underlying type is a reference)
+      test<const volatile vAlref&,  true, false, false,  true>();
+           ^
+
+"Test_name.c", line 97: warning: type qualifiers are ignored (underlying type is a reference)
+      test<const          cvAlref&,  true, false,  true,  true>();
+           ^
+
+"Test_name.c", line 98: warning: type qualifiers are ignored (underlying type is a reference)
+      test<      volatile cvAlref&,  true, false,  true,  true>();
+                 ^
+
+"Test_name.c", line 99: warning: type qualifiers are ignored (underlying type is a reference)
+      test<const volatile cvAlref&,  true, false,  true,  true>();
+           ^
+
+"Test_name.c", line 103: warning: type qualifiers are ignored (underlying type is a reference)
+      test<const          Arref&,  true, false, false, false>();
+           ^
+
+"Test_name.c", line 104: warning: type qualifiers are ignored (underlying type is a reference)
+      test<      volatile Arref&,  true, false, false, false>();
+                 ^
+
+"Test_name.c", line 105: warning: type qualifiers are ignored (underlying type is a reference)
+      test<const volatile Arref&,  true, false, false, false>();
+           ^
+
+"Test_name.c", line 109: warning: type qualifiers are ignored (underlying type is a reference)
+      test<const          cArref&,  true, false,  true, false>();
+           ^
+
+"Test_name.c", line 110: warning: type qualifiers are ignored (underlying type is a reference)
+      test<      volatile cArref&,  true, false,  true, false>();
+                 ^
+
+"Test_name.c", line 111: warning: type qualifiers are ignored (underlying type is a reference)
+      test<const volatile cArref&,  true, false,  true, false>();
+           ^
+
+"Test_name.c", line 115: warning: type qualifiers are ignored (underlying type is a reference)
+      test<const          vArref&,  true, false, false,  true>();
+           ^
+
+"Test_name.c", line 116: warning: type qualifiers are ignored (underlying type is a reference)
+      test<      volatile vArref&,  true, false, false,  true>();
+                 ^
+
+"Test_name.c", line 117: warning: type qualifiers are ignored (underlying type is a reference)
+      test<const volatile vArref&,  true, false, false,  true>();
+           ^
+
+"Test_name.c", line 121: warning: type qualifiers are ignored (underlying type is a reference)
+      test<const          cvArref&,  true, false,  true,  true>();
+           ^
+
+"Test_name.c", line 122: warning: type qualifiers are ignored (underlying type is a reference)
+      test<      volatile cvArref&,  true, false,  true,  true>();
+                 ^
+
+"Test_name.c", line 123: warning: type qualifiers are ignored (underlying type is a reference)
+      test<const volatile cvArref&,  true, false,  true,  true>();
+           ^
+
+"Test_name.c", line 129: warning: type qualifiers are ignored (underlying type is a reference)
+      test<const          Alref&&,  true, false, false, false>();
+           ^
+
+"Test_name.c", line 130: warning: type qualifiers are ignored (underlying type is a reference)
+      test<      volatile Alref&&,  true, false, false, false>();
+                 ^
+
+"Test_name.c", line 131: warning: type qualifiers are ignored (underlying type is a reference)
+      test<const volatile Alref&&,  true, false, false, false>();
+           ^
+
+"Test_name.c", line 135: warning: type qualifiers are ignored (underlying type is a reference)
+      test<const          cAlref&&,  true, false,  true, false>();
+           ^
+
+"Test_name.c", line 136: warning: type qualifiers are ignored (underlying type is a reference)
+      test<      volatile cAlref&&,  true, false,  true, false>();
+                 ^
+
+"Test_name.c", line 137: warning: type qualifiers are ignored (underlying type is a reference)
+      test<const volatile cAlref&&,  true, false,  true, false>();
+           ^
+
+"Test_name.c", line 141: warning: type qualifiers are ignored (underlying type is a reference)
+      test<const          vAlref&&,  true, false, false,  true>();
+           ^
+
+"Test_name.c", line 142: warning: type qualifiers are ignored (underlying type is a reference)
+      test<      volatile vAlref&&,  true, false, false,  true>();
+                 ^
+
+"Test_name.c", line 143: warning: type qualifiers are ignored (underlying type is a reference)
+      test<const volatile vAlref&&,  true, false, false,  true>();
+           ^
+
+"Test_name.c", line 147: warning: type qualifiers are ignored (underlying type is a reference)
+      test<const          cvAlref&&,  true, false,  true,  true>();
+           ^
+
+"Test_name.c", line 148: warning: type qualifiers are ignored (underlying type is a reference)
+      test<      volatile cvAlref&&,  true, false,  true,  true>();
+                 ^
+
+"Test_name.c", line 149: warning: type qualifiers are ignored (underlying type is a reference)
+      test<const volatile cvAlref&&,  true, false,  true,  true>();
+           ^
+
+"Test_name.c", line 153: warning: type qualifiers are ignored (underlying type is a reference)
+      test<const          Arref&&, false,  true, false, false>();
+           ^
+
+"Test_name.c", line 154: warning: type qualifiers are ignored (underlying type is a reference)
+      test<      volatile Arref&&, false,  true, false, false>();
+                 ^
+
+"Test_name.c", line 155: warning: type qualifiers are ignored (underlying type is a reference)
+      test<const volatile Arref&&, false,  true, false, false>();
+           ^
+
+"Test_name.c", line 159: warning: type qualifiers are ignored (underlying type is a reference)
+      test<const          cArref&&, false,  true,  true, false>();
+           ^
+
+"Test_name.c", line 160: warning: type qualifiers are ignored (underlying type is a reference)
+      test<      volatile cArref&&, false,  true,  true, false>();
+                 ^
+
+"Test_name.c", line 161: warning: type qualifiers are ignored (underlying type is a reference)
+      test<const volatile cArref&&, false,  true,  true, false>();
+           ^
+
+"Test_name.c", line 165: warning: type qualifiers are ignored (underlying type is a reference)
+      test<const          vArref&&, false,  true, false,  true>();
+           ^
+
+"Test_name.c", line 166: warning: type qualifiers are ignored (underlying type is a reference)
+      test<      volatile vArref&&, false,  true, false,  true>();
+                 ^
+
+"Test_name.c", line 167: warning: type qualifiers are ignored (underlying type is a reference)
+      test<const volatile vArref&&, false,  true, false,  true>();
+           ^
+
+"Test_name.c", line 171: warning: type qualifiers are ignored (underlying type is a reference)
+      test<const          cvArref&&, false,  true,  true,  true>();
+           ^
+
+"Test_name.c", line 172: warning: type qualifiers are ignored (underlying type is a reference)
+      test<      volatile cvArref&&, false,  true,  true,  true>();
+                 ^
+
+"Test_name.c", line 173: warning: type qualifiers are ignored (underlying type is a reference)
+      test<const volatile cvArref&&, false,  true,  true,  true>();
+           ^
+

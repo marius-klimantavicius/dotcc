@@ -1,0 +1,22 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./strlenopt.h", line 6: warning: declaration of "size_t" does not match the expected type "unsigned int"
+  typedef long unsigned int size_t;
+                            ^
+
+"./strlenopt-20.c", line 6: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) const char *
+                           ^
+
+"./strlenopt-20.c", line 35: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) size_t
+                           ^
+
+"./strlenopt-20.c", line 47: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) char *
+                           ^
+
+eccp: diagnostics generated from compilation of Test_name.int.c:
+./strlenopt.h:21:14: error: conflicting types for 'memset'; have 'void *(void *, int,  size_t)' {aka 'void *(void *, int,  long unsigned int)'}
+eccptmp/Test_name.int.c:5:7: note: previous declaration of 'memset' with type 'void *(void *, int,  unsigned int)'
+eccp: end of diagnostics from compilation of Test_name.int.c
+eccp: gcc compilation of Test_name.int.c returned an exit status of 1

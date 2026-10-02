@@ -1,0 +1,402 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 8: error: expected an identifier
+  typedef void (^CL)(void);
+                ^
+
+"Test_name.c", line 10: error: identifier "CL" is undefined
+  CL foo(void) {
+  ^
+
+"Test_name.c", line 12: error: expected an identifier
+    short (^add1)(void) = ^{ return y+1; }; // expected-error {{incompatible block pointer types initializing 'short (^)(void)' with an expression of type 'int (^)(void)'}}
+           ^
+
+"Test_name.c", line 12: error: function "<error>" may not be initialized
+    short (^add1)(void) = ^{ return y+1; }; // expected-error {{incompatible block pointer types initializing 'short (^)(void)' with an expression of type 'int (^)(void)'}}
+                        ^
+
+"Test_name.c", line 12: error: expected an expression
+    short (^add1)(void) = ^{ return y+1; }; // expected-error {{incompatible block pointer types initializing 'short (^)(void)' with an expression of type 'int (^)(void)'}}
+                          ^
+
+"Test_name.c", line 14: error: identifier "CL" is undefined
+    CL X = ^{
+    ^
+
+"Test_name.c", line 14: error: expected an expression
+    CL X = ^{
+           ^
+
+"Test_name.c", line 18: warning: parsing restarts here after previous syntax error
+    };
+     ^
+
+"Test_name.c", line 20: error: expected an identifier
+    int (^Y) (void)  = ^{
+         ^
+
+"Test_name.c", line 20: error: function "<error>" may not be initialized
+    int (^Y) (void)  = ^{
+                     ^
+
+"Test_name.c", line 20: error: expected an expression
+    int (^Y) (void)  = ^{
+                       ^
+
+"Test_name.c", line 25: warning: parsing restarts here after previous syntax error
+    };
+     ^
+
+"Test_name.c", line 27: error: expected an identifier
+    char *(^Z)(void) = ^{
+           ^
+
+"Test_name.c", line 27: error: function "<error>" may not be initialized
+    char *(^Z)(void) = ^{
+                     ^
+
+"Test_name.c", line 27: error: expected an expression
+    char *(^Z)(void) = ^{
+                       ^
+
+"Test_name.c", line 32: warning: parsing restarts here after previous syntax error
+    };
+     ^
+
+"Test_name.c", line 34: error: expected an identifier
+    double (^A)(void) = ^ { // expected-error {{incompatible block pointer types initializing 'double (^)(void)' with an expression of type 'float (^)(void)'}}
+            ^
+
+"Test_name.c", line 34: error: function "<error>" may not be initialized
+    double (^A)(void) = ^ { // expected-error {{incompatible block pointer types initializing 'double (^)(void)' with an expression of type 'float (^)(void)'}}
+                      ^
+
+"Test_name.c", line 34: error: expected an expression
+    double (^A)(void) = ^ { // expected-error {{incompatible block pointer types initializing 'double (^)(void)' with an expression of type 'float (^)(void)'}}
+                        ^
+
+"Test_name.c", line 41: warning: parsing restarts here after previous syntax error
+    };
+     ^
+
+"Test_name.c", line 42: error: expected an identifier
+    char *(^B)(void) = ^{
+           ^
+
+"Test_name.c", line 42: error: function "<error>" may not be initialized
+    char *(^B)(void) = ^{
+                     ^
+
+"Test_name.c", line 42: error: expected an expression
+    char *(^B)(void) = ^{
+                       ^
+
+"Test_name.c", line 47: warning: parsing restarts here after previous syntax error
+    };
+     ^
+
+"Test_name.c", line 49: error: expected an expression
+    return ^{ return 1; }; // expected-error {{incompatible block pointer types returning 'int (^)(void)' from a function with result type 'CL' (aka 'void (^)(void)')}}
+           ^
+
+"Test_name.c", line 11: warning: variable "y" was declared but never referenced
+    short y;
+          ^
+
+"Test_name.c", line 52: error: expected an identifier
+  typedef int (^CL2)(void);
+               ^
+
+"Test_name.c", line 54: error: identifier "CL2" is undefined
+  CL2 foo2(void) {
+  ^
+
+"Test_name.c", line 55: error: expected an expression
+    return ^{ return 1; };
+           ^
+
+"Test_name.c", line 65: error: expected an identifier
+      Boolean (^isEqual)(const CFBasicHash *, uintptr_t stack_value_or_key1, uintptr_t stack_value_or_key2, Boolean is_key);
+               ^
+
+"Test_name.c", line 65: error: a function type is not allowed here
+      Boolean (^isEqual)(const CFBasicHash *, uintptr_t stack_value_or_key1, uintptr_t stack_value_or_key2, Boolean is_key);
+               ^
+
+"Test_name.c", line 73: error: struct "<unnamed>" has no field "isEqual"
+      cb.isEqual = ^(const CFBasicHash *table, uintptr_t stack_value_or_key1, uintptr_t stack_value_or_key2, Boolean is_key) {
+         ^
+
+"Test_name.c", line 73: error: expected an expression
+      cb.isEqual = ^(const CFBasicHash *table, uintptr_t stack_value_or_key1, uintptr_t stack_value_or_key2, Boolean is_key) {
+                   ^
+
+"Test_name.c", line 76: warning: missing return statement at end of non-void function "foo3"
+  }
+  ^
+
+"Test_name.c", line 71: warning: variable "value_equal" was declared but never referenced
+      Boolean (*value_equal)(uintptr_t, uintptr_t) = 0;
+                ^
+
+"Test_name.c", line 79: error: expected an expression
+    if (^{} == ((void*)0))
+        ^
+
+"Test_name.c", line 86: error: expected an identifier
+    int (^xx)(const char *s) = ^(char *s) { return 1; }; // expected-error {{incompatible block pointer types initializing 'int (^)(const char *)' with an expression of type 'int (^)(char *)'}}
+         ^
+
+"Test_name.c", line 86: error: function "<error>" may not be initialized
+    int (^xx)(const char *s) = ^(char *s) { return 1; }; // expected-error {{incompatible block pointer types initializing 'int (^)(const char *)' with an expression of type 'int (^)(char *)'}}
+                             ^
+
+"Test_name.c", line 86: error: expected an expression
+    int (^xx)(const char *s) = ^(char *s) { return 1; }; // expected-error {{incompatible block pointer types initializing 'int (^)(const char *)' with an expression of type 'int (^)(char *)'}}
+                               ^
+
+"Test_name.c", line 87: warning: a value of type "int (*)(char *)" cannot be used to initialize an entity of type "int (*)(const char *)"
+    int (*yy)(const char *s) = funk; // expected-error {{incompatible function pointer types initializing 'int (*)(const char *)' with an expression of type 'int (char *)'}}
+                               ^
+
+"Test_name.c", line 89: error: expected an identifier
+    int (^nested)(char *s) = ^(char *str) { void (^nest)(void) = ^(void) { printf("%s\n", str); }; next(); return 1; };
+         ^
+
+"Test_name.c", line 89: error: function "<error>" may not be initialized
+    int (^nested)(char *s) = ^(char *str) { void (^nest)(void) = ^(void) { printf("%s\n", str); }; next(); return 1; };
+                           ^
+
+"Test_name.c", line 89: error: expected an expression
+    int (^nested)(char *s) = ^(char *str) { void (^nest)(void) = ^(void) { printf("%s\n", str); }; next(); return 1; };
+                             ^
+
+"Test_name.c", line 87: warning: variable "yy" was declared but never referenced
+    int (*yy)(const char *s) = funk; // expected-error {{incompatible function pointer types initializing 'int (*)(const char *)' with an expression of type 'int (char *)'}}
+          ^
+
+"Test_name.c", line 92: error: expected an identifier
+  typedef void (^bptr)(void);
+                ^
+
+"Test_name.c", line 94: error: identifier "bptr" is undefined
+  bptr foo5(int j) {
+  ^
+
+"Test_name.c", line 95: error: identifier "__block" is undefined
+    __block int i;
+    ^
+
+"Test_name.c", line 95: error: expected a ";"
+    __block int i;
+            ^
+
+"Test_name.c", line 97: error: expected an expression
+      return ^{ ^{ i=0; }(); };  // expected-error {{returning block that lives on the local stack}}
+             ^
+
+"Test_name.c", line 98: error: expected an expression
+    return ^{ i=0; };  // expected-error {{returning block that lives on the local stack}}
+           ^
+
+"Test_name.c", line 99: warning: statement is unreachable
+    return (^{ i=0; });  // expected-error {{returning block that lives on the local stack}}
+    ^
+
+"Test_name.c", line 99: error: expected an expression
+    return (^{ i=0; });  // expected-error {{returning block that lives on the local stack}}
+            ^
+
+"Test_name.c", line 100: warning: statement is unreachable
+    return (void*)(^{ i=0; });  // expected-error {{returning block that lives on the local stack}}
+    ^
+
+"Test_name.c", line 100: error: expected an expression
+    return (void*)(^{ i=0; });  // expected-error {{returning block that lives on the local stack}}
+                   ^
+
+"Test_name.c", line 104: error: expected an expression
+  int sz8 = sizeof(^int (*[5])(long) {return funcptr3;}); // expected-error {{block cannot return array type}} expected-error {{incompatible pointer to integer conversion}}
+                   ^
+
+"Test_name.c", line 105: error: expected an expression
+  int sz9 = sizeof(^int(*())()[3]{ }); // expected-error {{function cannot return array type}}
+                   ^
+
+"Test_name.c", line 109: error: expected an identifier
+    int (^b)(int) __attribute__((noreturn));
+         ^
+
+"Test_name.c", line 110: error: identifier "b" is undefined
+    b = ^ (int i) __attribute__((noreturn)) { return 1; };  // expected-error {{block declared 'noreturn' should not return}}
+    ^
+
+"Test_name.c", line 110: error: expected an expression
+    b = ^ (int i) __attribute__((noreturn)) { return 1; };  // expected-error {{block declared 'noreturn' should not return}}
+        ^
+
+"Test_name.c", line 112: error: expected an identifier
+    int (^c)(void) __attribute__((noreturn)) = ^ __attribute__((noreturn)) { return 100; }; // expected-error {{block declared 'noreturn' should not return}}
+         ^
+
+"Test_name.c", line 112: error: function "<error>" may not be initialized
+    int (^c)(void) __attribute__((noreturn)) = ^ __attribute__((noreturn)) { return 100; }; // expected-error {{block declared 'noreturn' should not return}}
+                                             ^
+
+"Test_name.c", line 112: error: expected an expression
+    int (^c)(void) __attribute__((noreturn)) = ^ __attribute__((noreturn)) { return 100; }; // expected-error {{block declared 'noreturn' should not return}}
+                                               ^
+
+"Test_name.c", line 118: error: expected an identifier
+   const int (^BB) (void) = ^{ const int i = 1; return i; }; // OK - initializing 'const int (^)(void)' with an expression of type 'int (^)(void)'
+              ^
+
+"Test_name.c", line 118: warning: type qualifier on return type is meaningless
+   const int (^BB) (void) = ^{ const int i = 1; return i; }; // OK - initializing 'const int (^)(void)' with an expression of type 'int (^)(void)'
+   ^
+
+"Test_name.c", line 118: error: function "<error>" may not be initialized
+   const int (^BB) (void) = ^{ const int i = 1; return i; }; // OK - initializing 'const int (^)(void)' with an expression of type 'int (^)(void)'
+                          ^
+
+"Test_name.c", line 118: error: expected an expression
+   const int (^BB) (void) = ^{ const int i = 1; return i; }; // OK - initializing 'const int (^)(void)' with an expression of type 'int (^)(void)'
+                            ^
+
+"Test_name.c", line 120: error: expected an identifier
+   const int (^CC) (void)  = ^const int{ const int i = 1; return i; };
+              ^
+
+"Test_name.c", line 120: warning: type qualifier on return type is meaningless
+   const int (^CC) (void)  = ^const int{ const int i = 1; return i; };
+   ^
+
+"Test_name.c", line 120: error: function "<error>" may not be initialized
+   const int (^CC) (void)  = ^const int{ const int i = 1; return i; };
+                           ^
+
+"Test_name.c", line 120: error: expected an expression
+   const int (^CC) (void)  = ^const int{ const int i = 1; return i; };
+                             ^
+
+"Test_name.c", line 124: error: expected an identifier
+    int (^FF) (void)  = ^{ return i; }; // OK
+         ^
+
+"Test_name.c", line 124: error: function "<error>" may not be initialized
+    int (^FF) (void)  = ^{ return i; }; // OK
+                      ^
+
+"Test_name.c", line 124: error: expected an expression
+    int (^FF) (void)  = ^{ return i; }; // OK
+                        ^
+
+"Test_name.c", line 125: error: expected an identifier
+    int (^EE) (void)  = ^{ return i+1; }; // OK
+         ^
+
+"Test_name.c", line 125: error: function "<error>" may not be initialized
+    int (^EE) (void)  = ^{ return i+1; }; // OK
+                      ^
+
+"Test_name.c", line 125: error: expected an expression
+    int (^EE) (void)  = ^{ return i+1; }; // OK
+                        ^
+
+"Test_name.c", line 127: error: identifier "__block" is undefined
+    __block int j;
+    ^
+
+"Test_name.c", line 127: error: expected a ";"
+    __block int j;
+            ^
+
+"Test_name.c", line 128: error: expected an identifier
+    int (^JJ) (void)  = ^{ return j; }; // OK
+         ^
+
+"Test_name.c", line 128: error: function "<error>" may not be initialized
+    int (^JJ) (void)  = ^{ return j; }; // OK
+                      ^
+
+"Test_name.c", line 128: error: expected an expression
+    int (^JJ) (void)  = ^{ return j; }; // OK
+                        ^
+
+"Test_name.c", line 129: error: expected an identifier
+    int (^KK) (void)  = ^{ return j+1; }; // OK
+         ^
+
+"Test_name.c", line 129: error: function "<error>" may not be initialized
+    int (^KK) (void)  = ^{ return j+1; }; // OK
+                      ^
+
+"Test_name.c", line 129: error: expected an expression
+    int (^KK) (void)  = ^{ return j+1; }; // OK
+                        ^
+
+"Test_name.c", line 131: error: expected a ";"
+    __block const int k = 0;
+            ^
+
+"Test_name.c", line 134: error: expected an identifier
+    int (^MM) (void)  = ^{ return k; };
+         ^
+
+"Test_name.c", line 134: error: function "<error>" may not be initialized
+    int (^MM) (void)  = ^{ return k; };
+                      ^
+
+"Test_name.c", line 134: error: expected an expression
+    int (^MM) (void)  = ^{ return k; };
+                        ^
+
+"Test_name.c", line 135: error: expected an identifier
+    int (^NN) (void)  = ^{ return cint; };
+         ^
+
+"Test_name.c", line 135: error: function "<error>" may not be initialized
+    int (^NN) (void)  = ^{ return cint; };
+                      ^
+
+"Test_name.c", line 135: error: expected an expression
+    int (^NN) (void)  = ^{ return cint; };
+                        ^
+
+"Test_name.c", line 123: warning: variable "i" was declared but never referenced
+    int i;
+        ^
+
+"Test_name.c", line 132: warning: variable "cint" was declared but never referenced
+    const int cint = 100;
+              ^
+
+"Test_name.c", line 138: error: expected an identifier
+  void (^blk)(void) = ^{
+        ^
+
+"Test_name.c", line 138: error: function "<error>" may not be initialized
+  void (^blk)(void) = ^{
+                    ^
+
+"Test_name.c", line 138: error: expected an expression
+  void (^blk)(void) = ^{
+                      ^
+
+"Test_name.c", line 144: error: expected a ")"
+    extern void test8_helper(int (^)(int));
+                                  ^
+
+"Test_name.c", line 145: error: expected an expression
+    test8_helper(^(int flag) { if (flag) return T8_a; return T8_b; });
+                 ^
+
+"Test_name.c", line 148: error: expected a ")"
+    extern void test8_helper2(char (^)(int)); // expected-note {{here}}
+                                    ^
+
+"Test_name.c", line 149: error: expected an expression
+    test8_helper2(^(int flag) { if (flag) return T8_a; return T8_b; }); // expected-error {{passing 'enum Test8 (^)(int)' to parameter of type 'char (^)(int)'}}
+                  ^
+
+84 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,85 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"./c90-intconst-1.c", line 432: warning: integer constant is too large
+    do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (int *)0 : (void *)(!(((((9223372036854775808)) <= 0x7fffffff
+                                                                                       ^
+
+"./c90-intconst-1.c", line 432: warning: integer constant is too large
+   ))))))0 : (__typeof__(0 ? (__typeof__(0 ? (long int *)0 : (void *)(!((!((((9223372036854775808)) <= 0x7fffffff
+                                                                             ^
+
+"./c90-intconst-1.c", line 432: warning: integer constant is too large
+   )) && ((((9223372036854775808)) <= 0x7fffffffffffffffL
+            ^
+
+"./c90-intconst-1.c", line 432: warning: integer constant is too large
+   )))))))0 : (__typeof__(0 ? (unsigned long int *)0 : (void *)(!((!((((9223372036854775808)) <= 0x7fffffff
+                                                                       ^
+
+"./c90-intconst-1.c", line 432: warning: integer constant is too large
+   )) && !((((9223372036854775808)) <= 0x7fffffffffffffffL
+             ^
+
+"./c90-intconst-1.c", line 432: warning: integer constant is too large
+   )) && ((((9223372036854775808)) <= 
+            ^
+
+"./c90-intconst-1.c", line 432: warning: integer constant is too large
+   )))))))0))0))0)) type; typedef type **typepp; typedef __typeof__(((9223372036854775808))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);
+                                                                     ^
+
+"./c90-intconst-1.c", line 432: warning: a value of type "ctypepp" (aka "int **") cannot be assigned to an entity of type "typepp" (aka "long **")
+   )))))))0))0))0)) type; typedef type **typepp; typedef __typeof__(((9223372036854775808))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);
+                                                                                                                                                            ^
+
+"./c90-intconst-1.c", line 432: warning: a value of type "typepp" (aka "long **") cannot be assigned to an entity of type "ctypepp" (aka "int **")
+   )))))))0))0))0)) type; typedef type **typepp; typedef __typeof__(((9223372036854775808))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);
+                                                                                                                                                                   ^
+
+"./c90-intconst-1.c", line 433: warning: integer constant is too large
+    do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (long int *)0 : (void *)(!(((((9223372036854775808l)) <= 0x7fffffffffffffffL
+                                                                                            ^
+
+"./c90-intconst-1.c", line 433: warning: integer constant is too large
+   ))))))0 : (__typeof__(0 ? (unsigned long int *)0 : (void *)(!((!((((9223372036854775808l)) <= 0x7fffffffffffffffL
+                                                                      ^
+
+"./c90-intconst-1.c", line 433: warning: integer constant is too large
+   )) && ((((9223372036854775808l)) <= 
+            ^
+
+"./c90-intconst-1.c", line 433: warning: integer constant is too large
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((9223372036854775808l))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);
+                                                                  ^
+
+"./c90-intconst-1.c", line 433: warning: a value of type "ctypepp" (aka "int **") cannot be assigned to an entity of type "typepp" (aka "long **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((9223372036854775808l))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);
+                                                                                                                                                          ^
+
+"./c90-intconst-1.c", line 433: warning: a value of type "typepp" (aka "long **") cannot be assigned to an entity of type "ctypepp" (aka "int **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((9223372036854775808l))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);
+                                                                                                                                                                 ^
+
+"./c90-intconst-1.c", line 434: warning: integer constant is too large
+    do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (long int *)0 : (void *)(!(((((9223372036854775808L)) <= 0x7fffffffffffffffL
+                                                                                            ^
+
+"./c90-intconst-1.c", line 434: warning: integer constant is too large
+   ))))))0 : (__typeof__(0 ? (unsigned long int *)0 : (void *)(!((!((((9223372036854775808L)) <= 0x7fffffffffffffffL
+                                                                      ^
+
+"./c90-intconst-1.c", line 434: warning: integer constant is too large
+   )) && ((((9223372036854775808L)) <= 
+            ^
+
+"./c90-intconst-1.c", line 434: warning: integer constant is too large
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((9223372036854775808L))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);
+                                                                  ^
+
+"./c90-intconst-1.c", line 434: warning: a value of type "ctypepp" (aka "int **") cannot be assigned to an entity of type "typepp" (aka "long **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((9223372036854775808L))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);
+                                                                                                                                                          ^
+
+"./c90-intconst-1.c", line 434: warning: a value of type "typepp" (aka "long **") cannot be assigned to an entity of type "ctypepp" (aka "int **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((9223372036854775808L))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);
+                                                                                                                                                                 ^
+

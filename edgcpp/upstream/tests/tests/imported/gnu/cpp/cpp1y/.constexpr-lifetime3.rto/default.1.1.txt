@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 15: error: expression must have a constant value
+  constexpr int i = f(0);  // { dg-message "in .constexpr. expansion" }
+                    ^
+"Test_name.c", line 12: note: attempt to access expired storage
+    return *p;  // { dg-error "accessing 'j' outside its lifetime" }
+           ^
+
+"Test_name.c", line 15: warning: variable "i" was declared but never referenced
+  constexpr int i = f(0);  // { dg-message "in .constexpr. expansion" }
+                ^
+
+1 error detected in the compilation of "Test_name.c".

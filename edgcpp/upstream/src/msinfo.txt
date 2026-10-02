@@ -1,0 +1,164 @@
+Building the EDG C++ front end for a Windows Environment
+--------------------------------------------------------
+
+- Use defines.h.win32 from the src directory of the release as
+  defines.h (see section 2.2.1 of the PLM internal documentation).
+
+  - If you are building for a 64-bit environment, add a definition for
+    _WIN64 to the beginning of defines.h or in the command-line
+    options for step 3 below.
+
+  - If you want to support C++/CLI (see PLM section 2.3.3), define
+    CPPCLI_ENABLING_POSSIBLE to TRUE.  Similarly, if you want to support
+    C++/CX, define CPPCX_ENABLING_POSSIBLE to TRUE. (As described in the
+    PLM, building for C++/CLI support requires the alink.h file, which is
+    not part of the front end release but is included with installations
+    of Visual Studio (beginning with Visual Studio 2012) as part of the
+    Windows 8 (and newer) and .NET Framework SDKs.
+
+  - If you want to link with the runtime library routines found in the
+    lib_src directory in the release, you must define
+    MICROSOFT_MODE_TYPE_INFO_IN_NAMESPACE_STD to TRUE.  Conversely, if
+    you wish to use the Microsoft-supplied <typeinfo> header, you must
+    define that configuration option to FALSE.
+
+- We use Microsoft Visual C++.  We don't use the IDE, however; we use
+  the command-line compiler along with the MKS toolkit, which gives us
+  a UNIX-like environment that understands our Makefiles.  If you
+  don't have something like that, here's what the Makefiles in the
+  src directory do:
+
+    1) Go to the misc directory and build the mk_errinfo
+       program:
+
+       cl -I..\src mk_errinfo.c
+
+    2) Go back to the src directory and run the mk_errinfo program
+       to build err_codes.h and err_data.h:
+
+       ..\misc\mk_errinfo error_msg.txt error_tag.txt err_codes.h err_data.h
+
+    3) Compile and link the source files.  If you are building without
+       C++/CLI support, as described above, use the command
+
+       cl -Feedgcpfe.exe *.c
+
+       If you are including C++/CLI support, use the command
+
+       cl -EHsc -Feedgcpfe.exe *.c *.cpp mscoree.lib oleaut32.lib
+
+- For configurations that enable C++/CLI and/or C++/CX, a C++ source file
+  ms_metadata.cpp must be compiled and linked into the front end (this
+  source file also resides in the src directory of the release).  Compiling
+  this file requires Visual C++ 2012 or later.  Unfortunately, the free
+  "Express" version of the Microsoft compiler is insufficient because it
+  does not include the ATLMFC library.
+
+- A predefined_macros.txt file must be created in the lib directory.
+  This file can be created by compiling misc/make_win_predef_macro.c with
+  the Microsoft compiler, running the executable, and using the output
+  as the predefined_macros.txt file.
+
+
+Compiling Microsoft Code with the EDG front end
+-----------------------------------------------
+
+- We have a C program called "edgcc" that can be used as a driver
+  under Windows to run the front end (which must be configured with
+  BACK_END_IS_C_GEN_BE set to TRUE) and compile the generated C code
+  using MSVC.  It provides a subset of the features provided by the
+  Unix eccp script, but enough of them to be useful.  If you don't
+  already have a copy, it can be found on the EDG download site in the
+  file nt_util.zip, along with a couple of other programs it uses,
+  pl_nm (the prelinker) and munch_nm (a munch-like program).  These
+  are distributed in source form and must be compiled before running.
+  You should unzip the files into a directory parallel with the src
+  directory.  There is a Makefile included in nt_util.zip; if you are
+  not using a Unix-style "make" utility, each of these programs can be
+  compiled using a command line of the form
+
+    cl -I..\src -D__WIN32__ edgcc.c
+
+  The resulting edgcc.exe should be copied into a directory in your
+  executable search path, and the other two executables should be
+  copied into $EDG_BASE/lib.
+
+  Among the limitations of edgcc are:
+
+  - The edgcc driver does not know whether a "--" option takes an
+    argument or not, so the form with "=" must be used (e.g.,
+    "--microsoft_version=1600").
+
+  - The "one instantiation per object" mode described in the PLM is
+    not supported.
+
+  - The object files produced by edgcc for C++ code cannot in general
+    be linked with object files compiled by MSVC++ from C++ code,
+    including code in system libraries.
+
+- "Microsoft mode" and "Microsoft bugs mode" must be used when
+  compiling the Microsoft header files.  With the settings given
+  above, that would be the default.  (If you use different settings
+  where those are not enabled by default -- see the configuration
+  options DEFAULT_MICROSOFT_MODE and DEFAULT_MICROSOFT_BUGS -- you can
+  use --microsoft and/or --microsoft_bugs to enable those modes.)
+
+- The "Microsoft version" should be set to match the version of MSVC++
+  to be emulated.  Its value matches the value of the _MSC_VER macro
+  defined by the Microsoft compiler, e.g., 1600 (the default) is
+  Visual C++ version 10.0, or Visual Studio 2010.  A different version
+  can be emulated by changing DEFAULT_MICROSOFT_VERSION or by using
+  --microsoft_version=xxxx.
+
+- If you are using edgcc and want to use the EDG versions of header
+  files such as <new>, <typeinfo>, etc., set the environment variable
+  EDG_INCLUDE to $EDG_BASE/include.  If you are compiling code with
+  the Microsoft headers, this variable should not be set.
+
+- If the Microsoft C compiler being used to compile the generated C code
+  is version 6 or earlier, set EDG_MSVC_VERSION to the version number (e.g.,
+  EDG_MSVC_VERSION=1200).
+
+- The following predefined macros are set by the front end:
+
+	_WIN32 is set to 1.
+
+	_WIN64 is set to 1 if a 64-bit configuration is being used.
+
+	_MSC_VER, _MSC_FULL_VER, and _MSC_BUILD are set to match
+	microsoft_version and microsoft_build_number.  The default is
+	1600 (for MSVC++ 10, i.e., Visual Studio 2010 compatibility).
+
+	__MSC_EXTENSIONS is set to 1.
+
+	_INTEGRAL_MAX_BITS is set based on the configuration, but is
+	usually 64.
+
+	_WCHAR_T_DEFINED is set to 1 (as is _NATIVE_WCHAR_T_DEFINED
+	for microsoft_version >= 1300) if wchar_t is enabled as a
+	keyword.
+
+	_CHAR_UNSIGNED is set to 1 if the char type is unsigned.
+
+	__BOOL_DEFINED is set to 1 if bool is enabled as a keyword.
+
+	_CPPRTTI is set to 1 if RTTI is enabled.
+
+	_NATIVE_NULLPTR_SUPPORTED is set to 1 for microsoft_version >=
+	1600 if nullptr is supported.
+
+	_RESUMABLE_FUNCTIONS_SUPPORTED is set 1 if coroutines are
+	enabled.
+
+	_MANAGED and _M_CEE are set to 1 in C++/CLI mode.
+
+- On non-Intel platforms, or when using other special features, there
+  are other macros that may need to be set (e.g., _DLL, _MT; see the
+  Microsoft documentation for more information).
+
+- The Visual C++ include directories must be specified in a 
+  --sys_include option.  edgcc provides these automatically (as
+  -I options, but that's usually good enough), assuming that 
+  EDG_MS_INCLUDE is set properly.  (EDG_MS_INCLUDE should be
+  set to the main MSVC++ include directory, the one that contains,
+  for example, stdio.h)

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 5: warning: function "f1" was referenced but not defined
+  inline static void f1(void); // { dg-warning "used but never" }
+                     ^
+
+"Test_name.c", line 8: warning: extern inline function "f2" was referenced but not defined
+  inline void f2(void); // { dg-warning "used but never" }
+              ^
+

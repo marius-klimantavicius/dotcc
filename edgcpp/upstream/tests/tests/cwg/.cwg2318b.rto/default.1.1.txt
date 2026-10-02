@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 -A --c++20 -tused -e 200 --no_wrap Test_name.c
+"Test_name.c", line 8: error: this declaration has no storage class or type specifier
+    o({ &f1, &f4 }); // OK, T deduced as int from first element, nothing deduced from second element, N deduced as 2
+    ^
+
+"Test_name.c", line 8: error: declaration is incompatible with function template "void o(T (*const (&)[N])(T))" (declared at line 4)
+    o({ &f1, &f4 }); // OK, T deduced as int from first element, nothing deduced from second element, N deduced as 2
+    ^
+
+"Test_name.c", line 8: error: a parenthesized initializer for a non-class entity must be an expression, not a brace-enclosed list
+    o({ &f1, &f4 }); // OK, T deduced as int from first element, nothing deduced from second element, N deduced as 2
+      ^
+
+"Test_name.c", line 8: error: too many initializer values
+    o({ &f1, &f4 }); // OK, T deduced as int from first element, nothing deduced from second element, N deduced as 2
+             ^
+
+4 errors detected in the compilation of "Test_name.c".

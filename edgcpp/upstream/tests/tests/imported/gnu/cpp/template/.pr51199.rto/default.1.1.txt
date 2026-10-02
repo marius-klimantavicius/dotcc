@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: error: cannot create a pointer or reference to qualified function type
+    typedef T& type;  // { dg-error "forming reference" }
+             ^
+          detected during instantiation of class "add_ref<T> [with T=FC]" at line 12
+
+"Test_name.c", line 16: error: cannot create a pointer or reference to qualified function type
+    typedef T* type;  // { dg-error "forming pointer" } 
+             ^
+          detected during instantiation of class "add_ptr<T> [with T=FC]" at line 19
+
+2 errors detected in the compilation of "Test_name.c".

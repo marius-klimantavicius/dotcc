@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 Test_name.c
+"Test_name.c", line 10: error: identifier "\u00e9" is undefined
+  void *p = &é; /* { dg-error "'\\\\U000000e9' undeclared" } */
+             ^
+
+"Test_name.c", line 11: error: identifier "\u1e00" is undefined
+  void *q = &Ḁ; /* { dg-error "'\\\\U00001e00' undeclared" } */
+             ^
+
+2 errors detected in the compilation of "Test_name.c".

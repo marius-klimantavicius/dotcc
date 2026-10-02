@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 7: warning: unknown attribute "gnu::no_dangling"
+  struct [[gnu::no_dangling]] Span {
+           ^
+
+"Test_name.c", line 13: warning: unknown attribute "nodiscard"
+      [[nodiscard]] constexpr auto operator[](int n) const noexcept -> T& { return data_[n]; }
+        ^
+
+"Test_name.c", line 14: warning: unknown attribute "nodiscard"
+      [[nodiscard]] constexpr auto front() const noexcept -> T& { return data_[0]; }
+        ^
+
+"Test_name.c", line 15: warning: unknown attribute "nodiscard"
+      [[nodiscard]] constexpr auto back() const noexcept -> T& { return data_[len_ - 1]; }
+        ^
+

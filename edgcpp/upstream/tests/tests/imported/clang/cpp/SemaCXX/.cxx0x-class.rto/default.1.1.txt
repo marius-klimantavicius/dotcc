@@ -1,0 +1,31 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 14: error: a member with an in-class initializer must be const
+    static int si = 0; // expected-error {{non-const static data member must be initialized out of line}}
+                  ^
+
+"Test_name.c", line 15: error: a member of type "const C::NestedC" cannot have an in-class initializer
+    static const NestedC ci = 0; // expected-error {{static data member of type 'const NestedC' must be initialized out of line}}
+                            ^
+
+"Test_name.c", line 16: error: expression must have a constant value
+    static const int nci = vs; // expected-error {{in-class initializer for static data member is not a constant expression}} \
+                           ^
+"Test_name.c", line 16: note: the value of variable "vs" (declared at line 5) cannot be used as a constant
+    static const int nci = vs; // expected-error {{in-class initializer for static data member is not a constant expression}} \
+                           ^
+
+"Test_name.c", line 27: error: expression must have a constant value
+      static const float y = foo(); // expected-warning {{requires 'constexpr'}} expected-note {{add 'constexpr'}} \
+                             ^
+"Test_name.c", line 27: note: cannot call non-constexpr function "rdar8367341::foo" (declared at line 23)
+      static const float y = foo(); // expected-warning {{requires 'constexpr'}} expected-note {{add 'constexpr'}} \
+                             ^
+
+"Test_name.c", line 31: error: expression must have a constant value
+      static constexpr float y2 = foo(); // expected-error {{must be initialized by a constant expression}} expected-note {{non-constexpr function 'foo'}}
+                                  ^
+"Test_name.c", line 31: note: cannot call non-constexpr function "rdar8367341::foo" (declared at line 23)
+      static constexpr float y2 = foo(); // expected-error {{must be initialized by a constant expression}} expected-note {{non-constexpr function 'foo'}}
+                                  ^
+
+5 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 10: warning: structured binding "x" was declared but never referenced
+       auto[x,y] = *this;
+            ^
+
+"Test_name.c", line 19: warning: structured binding "x" was declared but never referenced
+       auto[x,y] = other;
+            ^
+
+"Test_name.c", line 33: warning: variable "x" is used before its value is set
+    auto [a] = x;
+               ^
+
+"Test_name.c", line 33: warning: structured binding "a" was declared but never referenced
+    auto [a] = x;
+          ^
+
+"Test_name.c", line 48: warning: variable "x" is used before its value is set
+    auto [a] = x;
+               ^
+
+"Test_name.c", line 48: warning: structured binding "a" was declared but never referenced
+    auto [a] = x;
+          ^
+

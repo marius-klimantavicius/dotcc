@@ -1,0 +1,105 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 5: warning: unknown attribute "naked"
+  int a __attribute__((naked)); // expected-warning {{'naked' attribute only applies to functions}}
+                       ^
+
+"Test_name.c", line 7: warning: unknown attribute "naked"
+  __attribute__((naked)) int t0(void) {
+                 ^
+
+"Test_name.c", line 9: warning: missing return statement at end of non-void function "t0"
+  }
+  ^
+
+"Test_name.c", line 11: warning: unknown attribute "naked"
+  void t1(void) __attribute__((naked));
+                               ^
+
+"Test_name.c", line 13: warning: unknown attribute "naked"
+  void t2(void) __attribute__((naked(2))); // expected-error {{'naked' attribute takes no arguments}}
+                               ^
+
+"Test_name.c", line 15: warning: unknown attribute "naked"
+  __attribute__((naked)) int t3(void) { // expected-note{{attribute is here}}
+                 ^
+
+"Test_name.c", line 19: warning: unknown attribute "naked"
+  __attribute__((naked)) int t4(void) {
+                 ^
+
+"Test_name.c", line 22: warning: missing return statement at end of non-void function "t4"
+  }
+  ^
+
+"Test_name.c", line 24: warning: unknown attribute "naked"
+  __attribute__((naked)) int t5(int x) {
+                 ^
+
+"Test_name.c", line 27: warning: missing return statement at end of non-void function "t5"
+  }
+  ^
+
+"Test_name.c", line 29: warning: unknown attribute "naked"
+  __attribute__((naked)) void t6(void) {
+                 ^
+
+"Test_name.c", line 33: warning: unknown attribute "naked"
+  __attribute__((naked)) void t7(void) {
+                 ^
+
+"Test_name.c", line 40: warning: unknown attribute "naked"
+  __attribute__((naked)) void t8(int z) { // expected-note{{attribute is here}}
+                 ^
+
+"Test_name.c", line 40: warning: parameter "z" was set but never used
+  __attribute__((naked)) void t8(int z) { // expected-note{{attribute is here}}
+                                     ^
+
+"Test_name.c", line 47: warning: unknown attribute "naked"
+  __attribute__((naked)) void t9(int z) { // expected-note{{attribute is here}}
+                 ^
+
+"Test_name.c", line 54: warning: unknown attribute "naked"
+  __attribute__((naked)) void t10(void) {  // expected-note{{attribute is here}}
+                 ^
+
+"Test_name.c", line 55: warning: variable "a" was declared but never referenced
+    int a; // expected-error{{non-ASM statement in naked function is not supported}}
+        ^
+
+"Test_name.c", line 58: warning: unknown attribute "naked"
+  __attribute__((naked)) void t11(void) {  // expected-note{{attribute is here}}
+                 ^
+
+"Test_name.c", line 59: warning: variable "a" was declared but never referenced
+    register int a asm("eax") = x; // expected-error{{non-ASM statement in naked function is not supported}}
+                 ^
+
+"Test_name.c", line 62: warning: unknown attribute "naked"
+  __attribute__((naked)) void t12(void) {  // expected-note{{attribute is here}}
+                 ^
+
+"Test_name.c", line 63: warning: variable "a" was declared but never referenced
+    register int a asm("eax"), b asm("ebx") = x; // expected-error{{non-ASM statement in naked function is not supported}}
+                 ^
+
+"Test_name.c", line 63: warning: variable "b" was declared but never referenced
+    register int a asm("eax"), b asm("ebx") = x; // expected-error{{non-ASM statement in naked function is not supported}}
+                               ^
+
+"Test_name.c", line 66: warning: unknown attribute "naked"
+  __attribute__((naked)) void t13(void) {
+                 ^
+
+"Test_name.c", line 67: warning: variable "a" was declared but never referenced
+    register int a asm("eax");
+                 ^
+
+"Test_name.c", line 68: warning: variable "b" was declared but never referenced
+    register int b asm("ebx"), c asm("ecx");
+                 ^
+
+"Test_name.c", line 68: warning: variable "c" was declared but never referenced
+    register int b asm("ebx"), c asm("ecx");
+                               ^
+

@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 13: error: no valid std::strong_ordering type found (<compare> must be included)
+  auto a = 1 <=> 2;	// { dg-error "'std::strong_ordering' is not a type" }
+                 ^
+
+"Test_name.c", line 15: error: no valid std::weak_ordering type found (<compare> must be included)
+  auto b = 3.0 <=> 4.0;	// { dg-error "'std::partial_ordering::equivalent\\(\\)' is not a static data member" }
+           ^
+
+"Test_name.c", line 15: error: no constexpr static data member "equivalent" found in "std::partial_ordering"
+  auto b = 3.0 <=> 4.0;	// { dg-error "'std::partial_ordering::equivalent\\(\\)' is not a static data member" }
+           ^
+
+"Test_name.c", line 15: error: no constexpr static data member "less" found in "std::partial_ordering"
+  auto b = 3.0 <=> 4.0;	// { dg-error "'std::partial_ordering::equivalent\\(\\)' is not a static data member" }
+           ^
+
+"Test_name.c", line 15: error: no constexpr static data member "greater" found in "std::partial_ordering"
+  auto b = 3.0 <=> 4.0;	// { dg-error "'std::partial_ordering::equivalent\\(\\)' is not a static data member" }
+           ^
+
+"Test_name.c", line 15: error: no constexpr static data member "unordered" found in "std::partial_ordering"
+  auto b = 3.0 <=> 4.0;	// { dg-error "'std::partial_ordering::equivalent\\(\\)' is not a static data member" }
+           ^
+
+6 errors detected in the compilation of "Test_name.c".

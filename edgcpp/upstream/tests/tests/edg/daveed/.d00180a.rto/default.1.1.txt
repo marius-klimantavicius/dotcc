@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --upc Test_name.c
+"Test_name.c", line 18: warning: unrecognized #pragma
+  #pragma STDC FP_CONTRACT OFF
+          ^
+

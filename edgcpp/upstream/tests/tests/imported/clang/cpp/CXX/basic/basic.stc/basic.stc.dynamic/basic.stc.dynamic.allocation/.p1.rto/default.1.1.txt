@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"CXX/basic/basic.stc/basic.stc.dynamic/basic.stc.dynamic.allocation/p1.cpp", line 9: error: allocation operator may not be declared in a namespace
+    void *operator new(size_t);;
+          ^
+
+"CXX/basic/basic.stc/basic.stc.dynamic/basic.stc.dynamic.allocation/p1.cpp", line 12: warning: operator new and operator delete cannot be given internal linkage
+  static void *operator new(size_t);
+               ^
+
+"CXX/basic/basic.stc/basic.stc.dynamic/basic.stc.dynamic.allocation/p1.cpp", line 13: warning: operator new and operator delete cannot be given internal linkage
+  static void *operator new(size_t, int, int);
+               ^
+
+"CXX/basic/basic.stc/basic.stc.dynamic/basic.stc.dynamic.allocation/p1.cpp", line 16: error: allocation function requires "void *" return type
+    void operator new(size_t);
+         ^
+
+"CXX/basic/basic.stc/basic.stc.dynamic/basic.stc.dynamic.allocation/p1.cpp", line 20: error: too few parameters for this operator function
+    void *operator new();
+          ^
+
+"CXX/basic/basic.stc/basic.stc.dynamic/basic.stc.dynamic.allocation/p1.cpp", line 24: error: first parameter of allocation function must be of type "size_t"
+    void *operator new(bool);
+          ^
+
+"CXX/basic/basic.stc/basic.stc.dynamic/basic.stc.dynamic.allocation/p1.cpp", line 28: error: default argument is not allowed
+    void *operator new(size_t = 0);
+                              ^
+
+"CXX/basic/basic.stc/basic.stc.dynamic/basic.stc.dynamic.allocation/p1.cpp", line 36: error: allocation function requires "void *" return type
+    template<typename T> T operator new(size_t, int);
+                           ^
+
+"CXX/basic/basic.stc/basic.stc.dynamic/basic.stc.dynamic.allocation/p1.cpp", line 40: error: first parameter of allocation function must be of type "size_t"
+    template<typename T> void *operator new(T, int);
+                               ^
+
+"CXX/basic/basic.stc/basic.stc.dynamic/basic.stc.dynamic.allocation/p1.cpp", line 44: error: function template for operator new(size_t) is not allowed
+    template<typename T> void *operator new(size_t);
+                               ^
+
+8 errors detected in the compilation of "Test_name.c".

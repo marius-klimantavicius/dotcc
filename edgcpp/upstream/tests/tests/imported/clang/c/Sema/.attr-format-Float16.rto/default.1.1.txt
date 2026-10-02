@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c --target linux_aarch64 Test_name.c
+"Test_name.c", line 13: warning: "format" attribute requires an ellipsis parameter or parameter pack
+  void b(char *a, _Float16 b) __attribute__((format(printf, 1, 2))); // expected-warning {{GCC requires a function with the 'format' attribute to be variadic}}
+                                             ^
+
+"Test_name.c", line 16: warning: argument is incompatible with corresponding format string conversion (expected type "double" but argument has type "_Float16")
+    a("%f", (_Float16)1.0); // expected-warning{{format specifies type 'double' but the argument has type '_Float16'}}
+            ^
+
+"Test_name.c", line 17: warning: argument is incompatible with corresponding format string conversion (expected type "double" but argument has type "_Float16")
+    b("%f", (_Float16)1.0); // expected-warning{{format specifies type 'double' but the argument has type '_Float16'}}
+            ^
+

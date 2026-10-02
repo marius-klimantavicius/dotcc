@@ -1,0 +1,103 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 10: warning: unrecognized #pragma
+      #pragma clang __debug captured
+              ^
+
+"Test_name.c", line 13: error: expression must be a modifiable lvalue
+        y = z; // expected-error{{cannot assign to a variable captured by copy in a non-mutable lambda}}
+        ^
+
+"Test_name.c", line 13: warning: variable "z" is used before its value is set
+        y = z; // expected-error{{cannot assign to a variable captured by copy in a non-mutable lambda}}
+            ^
+
+"Test_name.c", line 19: warning: unrecognized #pragma
+    #pragma clang __debug captured
+            ^
+
+"Test_name.c", line 26: error: expression must be a modifiable lvalue
+        c = a; // expected-error{{cannot assign to a variable captured by copy in a non-mutable lambda}}
+        ^
+
+"Test_name.c", line 36: warning: unrecognized #pragma
+      #pragma clang __debug captured
+              ^
+
+"Test_name.c", line 38: warning: unrecognized #pragma
+      #pragma clang __debug captured
+              ^
+
+"Test_name.c", line 47: warning: unrecognized #pragma
+      #pragma clang __debug captured
+              ^
+
+"Test_name.c", line 49: warning: unrecognized #pragma
+      #pragma clang __debug captured
+              ^
+
+"Test_name.c", line 51: warning: unrecognized #pragma
+      #pragma clang __debug captured
+              ^
+
+"Test_name.c", line 59: warning: unrecognized #pragma
+    #pragma clang _debug captured
+            ^
+
+"Test_name.c", line 70: warning: unrecognized #pragma
+      #pragma clang __debug captured
+              ^
+
+"Test_name.c", line 87: warning: unrecognized #pragma
+    #pragma clang _debug captured
+            ^
+
+"Test_name.c", line 107: warning: unrecognized #pragma
+      #pragma clang __debug captured
+              ^
+
+"Test_name.c", line 125: warning: unrecognized #pragma
+    #pragma clang __debug captured
+            ^
+
+"Test_name.c", line 130: warning: unrecognized #pragma
+    #pragma clang __debug captured
+            ^
+
+"Test_name.c", line 145: warning: unrecognized #pragma
+    #pragma clang __debug captured
+            ^
+
+"Test_name.c", line 157: warning: unrecognized #pragma
+    #pragma clang __debug captured
+            ^
+
+"Test_name.c", line 172: warning: unrecognized #pragma
+    #pragma clang __debug captured
+            ^
+
+"Test_name.c", line 58: error: reference variable "x" requires an initializer
+    T x; // expected-error{{declaration of reference variable 'x' requires an initializer}}
+       ^
+          detected during instantiation of "void template_capture_var<T>() [with T=int &]" at line 79
+
+"Test_name.c", line 61: warning: variable "x" is used before its value is set
+      (void)x;
+            ^
+          detected during instantiation of "void template_capture_var<T>() [with T=int &]" at line 79
+
+"Test_name.c", line 90: error: expression must be a modifiable lvalue
+      y++;  // expected-error{{cannot assign to variable 'y' with const-qualified type 'const int'}}
+      ^
+          detected during instantiation of "S template_capture_var(S, T) [with S=int, T=const int]" at line 99
+
+"Test_name.c", line 109: warning: variable "y" is used before its value is set
+        y += x;
+        ^
+          detected during instantiation of "void template_capture_in_lambda<T>() [with T=int]" at line 115
+
+"Test_name.c", line 109: warning: variable "x" is used before its value is set
+        y += x;
+             ^
+          detected during instantiation of "void template_capture_in_lambda<T>() [with T=int]" at line 115
+
+4 errors detected in the compilation of "Test_name.c".

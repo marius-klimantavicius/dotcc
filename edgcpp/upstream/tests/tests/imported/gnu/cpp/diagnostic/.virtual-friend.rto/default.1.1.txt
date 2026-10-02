@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: error: "virtual" is not allowed
+    virtual friend void foo();  // { dg-error "3:virtual functions cannot be friends" }
+    ^
+
+"Test_name.c", line 13: error: "virtual" is not allowed
+    friend virtual void bar();  // { dg-error "10:virtual functions cannot be friends" }
+           ^
+
+2 errors detected in the compilation of "Test_name.c".

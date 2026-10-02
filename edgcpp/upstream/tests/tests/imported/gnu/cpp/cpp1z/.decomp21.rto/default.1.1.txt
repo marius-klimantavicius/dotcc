@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 16: error: expected an expression
+    auto [ u, v, w ] ( s, );      // { dg-error "expected primary-expression before '.' token" }
+                          ^
+
+"Test_name.c", line 16: error: too many initializer values
+    auto [ u, v, w ] ( s, );      // { dg-error "expected primary-expression before '.' token" }
+                          ^
+
+"Test_name.c", line 10: warning: structured binding "b" was declared but never referenced
+    auto [ b, c, d ] = a;
+           ^
+
+"Test_name.c", line 11: warning: structured binding "e" was declared but never referenced
+    auto [ e, f, g ] = s;
+           ^
+
+"Test_name.c", line 12: warning: structured binding "h" was declared but never referenced
+    auto [ h, i, j ] { s };
+           ^
+
+"Test_name.c", line 13: warning: structured binding "k" was declared but never referenced
+    auto [ k, l, m ] { s, };
+           ^
+
+"Test_name.c", line 14: warning: structured binding "n" was declared but never referenced
+    auto [ n, o, p ] { a };
+           ^
+
+"Test_name.c", line 15: warning: structured binding "q" was declared but never referenced
+    auto [ q, r, t ] ( s );
+           ^
+
+"Test_name.c", line 16: warning: structured binding "u" was declared but never referenced
+    auto [ u, v, w ] ( s, );      // { dg-error "expected primary-expression before '.' token" }
+           ^
+
+"Test_name.c", line 18: warning: structured binding "x" was declared but never referenced
+    auto [ x, y, z ] ( a );
+           ^
+
+2 errors detected in the compilation of "Test_name.c".

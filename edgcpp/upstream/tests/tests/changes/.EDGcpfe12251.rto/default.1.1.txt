@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --microsoft Test_name.c
+"Test_name.c", line 13: warning: enumeration value is outside the range of its underlying type ("signed char")
+    e = 1000  // Previously an error.  Now a warning, and e has the
+        ^
+

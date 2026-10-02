@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 --modules Test_name.c
+"Test_name.c", line 12: warning: variable "fp2" was declared but never referenced
+  static constexpr auto fp2 = fr;  // OK
+                        ^
+
+"Test_name.c", line 16: warning: variable "s2" was declared but never referenced
+  constexpr S s2{ f };  // { dg-error "initialized to a TU-local value" }
+              ^
+
+"Test_name.c", line 25: warning: variable "x" was declared but never referenced
+  constexpr X x { &a };  // OK
+              ^
+
+"Test_name.c", line 26: warning: variable "y" was declared but never referenced
+  constexpr X y { &a, &b };  // { dg-error "initialized to a TU-local value" }
+              ^
+

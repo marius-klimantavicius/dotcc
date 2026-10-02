@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: error: nonstandard local-class friend declaration -- no prior declaration in the enclosing scope
+      friend void bar () { } // { dg-error "17:cannot define friend function 'bar' in a local class definition" }
+                  ^
+
+"Test_name.c", line 9: error: function "bar" cannot be defined in the current scope
+      friend void bar () { } // { dg-error "17:cannot define friend function 'bar' in a local class definition" }
+                         ^
+
+2 errors detected in the compilation of "Test_name.c".

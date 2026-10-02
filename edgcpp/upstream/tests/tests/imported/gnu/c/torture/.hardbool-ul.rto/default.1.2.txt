@@ -1,0 +1,2 @@
+./a.out
+a.out: ./torture/hardbool.c:70: check_ptrue: Assertion `*(unsigned long*)p == (unsigned long)~0' failed.

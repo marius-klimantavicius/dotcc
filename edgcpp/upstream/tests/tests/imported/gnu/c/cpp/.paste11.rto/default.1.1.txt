@@ -1,0 +1,35 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc -E Test_name.c
+# 1 "Test_name.c"
+
+
+ 
+
+ 
+
+
+ 
+
+
+
+ident12		 
+ident12e3		 
+"Test_name.c", line 14: warning: concatenation with "12e+3" in macro "glue" does not create a valid token
+  glue (ident, 12e+3)		/* { dg-error "valid preprocessing tok" } */
+  ^
+
+ident12e+3		 
+"Test_name.c", line 15: warning: concatenation with "12e-3" in macro "glue" does not create a valid token
+  glue (ident, 12e-3)		/* { dg-error "valid preprocessing tok" } */
+  ^
+
+ident12e-3		 
+"Test_name.c", line 16: warning: concatenation with "1.2" in macro "glue" does not create a valid token
+  glue (ident, 1.2)		/* { dg-error "valid preprocessing tok" } */
+  ^
+
+ident1.2		 
+"Test_name.c", line 17: warning: concatenation with ".12" in macro "glue" does not create a valid token
+  glue (ident, .12)		/* { dg-error "valid preprocessing tok" } */
+  ^
+
+ident.12		 

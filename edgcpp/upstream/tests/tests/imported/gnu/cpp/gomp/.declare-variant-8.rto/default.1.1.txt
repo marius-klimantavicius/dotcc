@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 7: warning: unrecognized #pragma
+  #pragma omp declare variant (f01) match (user={condition((T) 1)})	// { dg-error "property must be constant integer expression" }
+          ^
+
+"Test_name.c", line 11: warning: unrecognized #pragma
+  #pragma omp declare variant (f03) match (user={condition(score((T) 1):1)})	// { dg-error "score argument must be constant integer expression" }
+          ^
+
+"Test_name.c", line 15: warning: unrecognized #pragma
+  #pragma omp declare variant (f05) match (user={condition(score(N):1)})	// { dg-error "score argument must be non-negative" }
+          ^
+
+"Test_name.c", line 19: warning: unrecognized #pragma
+  #pragma omp declare variant (f05) match (user={condition(score(N):1)})
+          ^
+

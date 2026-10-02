@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --microsoft --c++17 Test_name.c
+"Test_name.c", line 15: warning: enumeration value is outside the range of its underlying type ("i16" (aka "short"))
+  enum ViaTypedef : i16 { A = 0x7FFFFFFF };
+                              ^
+

@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 Test_name.c
+"Test_name.c", line 6: error: expected an expression
+  void fo(char buf[static]);	/* { dg-error "'static' may not be used without an array size" } */
+                         ^
+
+"Test_name.c", line 7: error: expected an expression
+  void fo(char buf[static]) { }	/* { dg-error "'static' may not be used without an array size" } */
+                         ^
+
+"Test_name.c", line 9: error: variable length array with unspecified bound is not allowed
+  void fu(char buf[static *]);	/* { dg-error "'static' may not be used with an unspecified variable length array size" } */
+                          ^
+
+"Test_name.c", line 10: error: variable length array with unspecified bound is not allowed
+  void fu(char buf[static *]) { }	/* { dg-error "'static' may not be used with an unspecified variable length array size" } */
+                          ^
+
+"Test_name.c", line 13: error: variable length array with unspecified bound is not allowed
+  void fe(int n, char buf[static *]) { }	/* { dg-error "'static' may not be used with an unspecified variable length array size" } */
+                                 ^
+
+5 errors detected in the compilation of "Test_name.c".

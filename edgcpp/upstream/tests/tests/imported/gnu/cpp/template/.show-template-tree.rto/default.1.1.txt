@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 17: error: no suitable constructor exists to convert from "int" to "vector<int>"
+    fn_1 (42); // { dg-error "could not convert '42' from 'int' to 'vector<int>'" }
+          ^
+
+"Test_name.c", line 18: error: no suitable user-defined conversion from "vector<double>" to "vector<int>" exists
+    fn_1 (vector<double> ()); // { dg-error "could not convert .* from 'vector<double>' to 'vector<int>'" }
+          ^
+
+"Test_name.c", line 23: error: no suitable user-defined conversion from "map<int, int>" to "vector<int>" exists
+    fn_1 (map<int, int> ()); // { dg-error "could not convert .* from 'map<int, int>' to 'vector<int>'" }
+          ^
+
+"Test_name.c", line 26: error: no suitable user-defined conversion from "map<int, double>" to "map<int, int>" exists
+    fn_2 (map<int, double>());  // { dg-error "could not convert .* from 'map<.\\.\\.\\..,double>. to .map<.\\.\\.\\..,int>'" }
+          ^
+
+"Test_name.c", line 32: error: no suitable user-defined conversion from "map<double, double>" to "map<int, int>" exists
+    fn_2 (map<double, double>());  // { dg-error "could not convert .* from .map<double,double>. to .map<int,int>." }
+          ^
+
+"Test_name.c", line 40: error: no suitable user-defined conversion from "vector<map<int, double>>" to "vector<map<int, float>>" exists
+    fn_3 (vector<map<int, double> >());  // { dg-error "could not convert .* from 'vector<map<.\\.\\.\\..,double>>' to 'vector<map<.\\.\\.\\..,float>>'" }
+          ^
+
+"Test_name.c", line 48: error: no suitable user-defined conversion from "arr<5>" to "arr<10>" exists
+    takes_arr_10 (arr<5>()); // { dg-error "could not convert '.*' from 'arr<5>' to 'arr<10>'" }
+                  ^
+
+7 errors detected in the compilation of "Test_name.c".

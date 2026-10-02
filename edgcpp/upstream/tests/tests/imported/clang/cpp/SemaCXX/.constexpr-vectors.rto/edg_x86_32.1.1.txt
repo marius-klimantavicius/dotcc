@@ -1,0 +1,594 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 Test_name.c
+"Test_name.c", line 13: error: identifier "__int128" is undefined
+  using FourI128VecSize __attribute__((vector_size(64))) = __int128;
+                                                           ^
+
+"Test_name.c", line 20: error: identifier "__int128" is undefined
+  using FourI128ExtVec __attribute__((ext_vector_type(4))) = __int128;
+                                                             ^
+
+"Test_name.c", line 76: warning: expression has no effect
+  MathShiftOps(FourCharsVecSize);
+  ^
+
+"Test_name.c", line 76: warning: expression has no effect
+  MathShiftOps(FourCharsVecSize);
+  ^
+
+"Test_name.c", line 76: warning: expression has no effect
+  MathShiftOps(FourCharsVecSize);
+  ^
+
+"Test_name.c", line 76: warning: expression has no effect
+  MathShiftOps(FourCharsVecSize);
+  ^
+
+"Test_name.c", line 76: warning: expression has no effect
+  MathShiftOps(FourCharsVecSize);
+  ^
+
+"Test_name.c", line 76: warning: expression has no effect
+  MathShiftOps(FourCharsVecSize);
+  ^
+
+"Test_name.c", line 76: warning: expression has no effect
+  MathShiftOps(FourCharsVecSize);
+  ^
+
+"Test_name.c", line 76: warning: expression has no effect
+  MathShiftOps(FourCharsVecSize);
+  ^
+
+"Test_name.c", line 76: warning: expression has no effect
+  MathShiftOps(FourCharsVecSize);
+  ^
+
+"Test_name.c", line 77: warning: expression has no effect
+  MathShiftOps(FourIntsVecSize);
+  ^
+
+"Test_name.c", line 77: warning: expression has no effect
+  MathShiftOps(FourIntsVecSize);
+  ^
+
+"Test_name.c", line 77: warning: expression has no effect
+  MathShiftOps(FourIntsVecSize);
+  ^
+
+"Test_name.c", line 77: warning: expression has no effect
+  MathShiftOps(FourIntsVecSize);
+  ^
+
+"Test_name.c", line 77: warning: expression has no effect
+  MathShiftOps(FourIntsVecSize);
+  ^
+
+"Test_name.c", line 77: warning: expression has no effect
+  MathShiftOps(FourIntsVecSize);
+  ^
+
+"Test_name.c", line 77: warning: expression has no effect
+  MathShiftOps(FourIntsVecSize);
+  ^
+
+"Test_name.c", line 77: warning: expression has no effect
+  MathShiftOps(FourIntsVecSize);
+  ^
+
+"Test_name.c", line 77: warning: expression has no effect
+  MathShiftOps(FourIntsVecSize);
+  ^
+
+"Test_name.c", line 78: warning: expression has no effect
+  MathShiftOps(FourLongLongsVecSize);
+  ^
+
+"Test_name.c", line 78: warning: expression has no effect
+  MathShiftOps(FourLongLongsVecSize);
+  ^
+
+"Test_name.c", line 78: warning: expression has no effect
+  MathShiftOps(FourLongLongsVecSize);
+  ^
+
+"Test_name.c", line 78: warning: expression has no effect
+  MathShiftOps(FourLongLongsVecSize);
+  ^
+
+"Test_name.c", line 78: warning: expression has no effect
+  MathShiftOps(FourLongLongsVecSize);
+  ^
+
+"Test_name.c", line 78: warning: expression has no effect
+  MathShiftOps(FourLongLongsVecSize);
+  ^
+
+"Test_name.c", line 78: warning: expression has no effect
+  MathShiftOps(FourLongLongsVecSize);
+  ^
+
+"Test_name.c", line 78: warning: expression has no effect
+  MathShiftOps(FourLongLongsVecSize);
+  ^
+
+"Test_name.c", line 78: warning: expression has no effect
+  MathShiftOps(FourLongLongsVecSize);
+  ^
+
+"Test_name.c", line 79: warning: expression has no effect
+  MathShiftOps(FourFloatsVecSize);
+  ^
+
+"Test_name.c", line 79: warning: expression has no effect
+  MathShiftOps(FourFloatsVecSize);
+  ^
+
+"Test_name.c", line 79: warning: expression has no effect
+  MathShiftOps(FourFloatsVecSize);
+  ^
+
+"Test_name.c", line 79: warning: expression has no effect
+  MathShiftOps(FourFloatsVecSize);
+  ^
+
+"Test_name.c", line 79: warning: expression has no effect
+  MathShiftOps(FourFloatsVecSize);
+  ^
+
+"Test_name.c", line 79: warning: expression has no effect
+  MathShiftOps(FourFloatsVecSize);
+  ^
+
+"Test_name.c", line 79: warning: expression has no effect
+  MathShiftOps(FourFloatsVecSize);
+  ^
+
+"Test_name.c", line 79: warning: expression has no effect
+  MathShiftOps(FourFloatsVecSize);
+  ^
+
+"Test_name.c", line 79: warning: expression has no effect
+  MathShiftOps(FourFloatsVecSize);
+  ^
+
+"Test_name.c", line 80: error: the floating-point vector operand type ("__attribute((vector_size(32))) double") has no matching integer vector type
+  MathShiftOps(FourDoublesVecSize);
+  ^
+
+"Test_name.c", line 80: warning: expression has no effect
+  MathShiftOps(FourDoublesVecSize);
+  ^
+
+"Test_name.c", line 80: error: the floating-point vector operand type ("__attribute((vector_size(32))) double") has no matching integer vector type
+  MathShiftOps(FourDoublesVecSize);
+  ^
+
+"Test_name.c", line 80: warning: expression has no effect
+  MathShiftOps(FourDoublesVecSize);
+  ^
+
+"Test_name.c", line 80: error: the floating-point vector operand type ("__attribute((vector_size(32))) double") has no matching integer vector type
+  MathShiftOps(FourDoublesVecSize);
+  ^
+
+"Test_name.c", line 80: warning: expression has no effect
+  MathShiftOps(FourDoublesVecSize);
+  ^
+
+"Test_name.c", line 80: error: the floating-point vector operand type ("__attribute((vector_size(32))) double") has no matching integer vector type
+  MathShiftOps(FourDoublesVecSize);
+  ^
+
+"Test_name.c", line 80: warning: expression has no effect
+  MathShiftOps(FourDoublesVecSize);
+  ^
+
+"Test_name.c", line 80: error: the floating-point vector operand type ("__attribute((vector_size(32))) double") has no matching integer vector type
+  MathShiftOps(FourDoublesVecSize);
+  ^
+
+"Test_name.c", line 80: warning: expression has no effect
+  MathShiftOps(FourDoublesVecSize);
+  ^
+
+"Test_name.c", line 80: error: the floating-point vector operand type ("__attribute((vector_size(32))) double") has no matching integer vector type
+  MathShiftOps(FourDoublesVecSize);
+  ^
+
+"Test_name.c", line 80: warning: expression has no effect
+  MathShiftOps(FourDoublesVecSize);
+  ^
+
+"Test_name.c", line 80: error: the floating-point vector operand type ("__attribute((vector_size(32))) double") has no matching integer vector type
+  MathShiftOps(FourDoublesVecSize);
+  ^
+
+"Test_name.c", line 80: error: the floating-point vector operand type ("__attribute((vector_size(32))) double") has no matching integer vector type
+  MathShiftOps(FourDoublesVecSize);
+  ^
+
+"Test_name.c", line 80: warning: expression has no effect
+  MathShiftOps(FourDoublesVecSize);
+  ^
+
+"Test_name.c", line 81: warning: expression has no effect
+  MathShiftOps(FourCharsExtVec);
+  ^
+
+"Test_name.c", line 81: warning: expression has no effect
+  MathShiftOps(FourCharsExtVec);
+  ^
+
+"Test_name.c", line 81: warning: expression has no effect
+  MathShiftOps(FourCharsExtVec);
+  ^
+
+"Test_name.c", line 81: warning: expression has no effect
+  MathShiftOps(FourCharsExtVec);
+  ^
+
+"Test_name.c", line 81: warning: expression has no effect
+  MathShiftOps(FourCharsExtVec);
+  ^
+
+"Test_name.c", line 81: warning: expression has no effect
+  MathShiftOps(FourCharsExtVec);
+  ^
+
+"Test_name.c", line 81: warning: expression has no effect
+  MathShiftOps(FourCharsExtVec);
+  ^
+
+"Test_name.c", line 81: warning: expression has no effect
+  MathShiftOps(FourCharsExtVec);
+  ^
+
+"Test_name.c", line 81: warning: expression has no effect
+  MathShiftOps(FourCharsExtVec);
+  ^
+
+"Test_name.c", line 82: warning: expression has no effect
+  MathShiftOps(FourIntsExtVec);
+  ^
+
+"Test_name.c", line 82: warning: expression has no effect
+  MathShiftOps(FourIntsExtVec);
+  ^
+
+"Test_name.c", line 82: warning: expression has no effect
+  MathShiftOps(FourIntsExtVec);
+  ^
+
+"Test_name.c", line 82: warning: expression has no effect
+  MathShiftOps(FourIntsExtVec);
+  ^
+
+"Test_name.c", line 82: warning: expression has no effect
+  MathShiftOps(FourIntsExtVec);
+  ^
+
+"Test_name.c", line 82: warning: expression has no effect
+  MathShiftOps(FourIntsExtVec);
+  ^
+
+"Test_name.c", line 82: warning: expression has no effect
+  MathShiftOps(FourIntsExtVec);
+  ^
+
+"Test_name.c", line 82: warning: expression has no effect
+  MathShiftOps(FourIntsExtVec);
+  ^
+
+"Test_name.c", line 82: warning: expression has no effect
+  MathShiftOps(FourIntsExtVec);
+  ^
+
+"Test_name.c", line 83: warning: expression has no effect
+  MathShiftOps(FourLongLongsExtVec);
+  ^
+
+"Test_name.c", line 83: warning: expression has no effect
+  MathShiftOps(FourLongLongsExtVec);
+  ^
+
+"Test_name.c", line 83: warning: expression has no effect
+  MathShiftOps(FourLongLongsExtVec);
+  ^
+
+"Test_name.c", line 83: warning: expression has no effect
+  MathShiftOps(FourLongLongsExtVec);
+  ^
+
+"Test_name.c", line 83: warning: expression has no effect
+  MathShiftOps(FourLongLongsExtVec);
+  ^
+
+"Test_name.c", line 83: warning: expression has no effect
+  MathShiftOps(FourLongLongsExtVec);
+  ^
+
+"Test_name.c", line 83: warning: expression has no effect
+  MathShiftOps(FourLongLongsExtVec);
+  ^
+
+"Test_name.c", line 83: warning: expression has no effect
+  MathShiftOps(FourLongLongsExtVec);
+  ^
+
+"Test_name.c", line 83: warning: expression has no effect
+  MathShiftOps(FourLongLongsExtVec);
+  ^
+
+"Test_name.c", line 84: warning: expression has no effect
+  MathShiftOps(FourFloatsExtVec);
+  ^
+
+"Test_name.c", line 84: warning: expression has no effect
+  MathShiftOps(FourFloatsExtVec);
+  ^
+
+"Test_name.c", line 84: warning: expression has no effect
+  MathShiftOps(FourFloatsExtVec);
+  ^
+
+"Test_name.c", line 84: warning: expression has no effect
+  MathShiftOps(FourFloatsExtVec);
+  ^
+
+"Test_name.c", line 84: warning: expression has no effect
+  MathShiftOps(FourFloatsExtVec);
+  ^
+
+"Test_name.c", line 84: warning: expression has no effect
+  MathShiftOps(FourFloatsExtVec);
+  ^
+
+"Test_name.c", line 84: warning: expression has no effect
+  MathShiftOps(FourFloatsExtVec);
+  ^
+
+"Test_name.c", line 84: warning: expression has no effect
+  MathShiftOps(FourFloatsExtVec);
+  ^
+
+"Test_name.c", line 84: warning: expression has no effect
+  MathShiftOps(FourFloatsExtVec);
+  ^
+
+"Test_name.c", line 85: error: the floating-point vector operand type ("__attribute((ext_vector_type(4))) double") has no matching integer vector type
+  MathShiftOps(FourDoublesExtVec);
+  ^
+
+"Test_name.c", line 85: warning: expression has no effect
+  MathShiftOps(FourDoublesExtVec);
+  ^
+
+"Test_name.c", line 85: error: the floating-point vector operand type ("__attribute((ext_vector_type(4))) double") has no matching integer vector type
+  MathShiftOps(FourDoublesExtVec);
+  ^
+
+"Test_name.c", line 85: warning: expression has no effect
+  MathShiftOps(FourDoublesExtVec);
+  ^
+
+"Test_name.c", line 85: error: the floating-point vector operand type ("__attribute((ext_vector_type(4))) double") has no matching integer vector type
+  MathShiftOps(FourDoublesExtVec);
+  ^
+
+"Test_name.c", line 85: warning: expression has no effect
+  MathShiftOps(FourDoublesExtVec);
+  ^
+
+"Test_name.c", line 85: error: the floating-point vector operand type ("__attribute((ext_vector_type(4))) double") has no matching integer vector type
+  MathShiftOps(FourDoublesExtVec);
+  ^
+
+"Test_name.c", line 85: warning: expression has no effect
+  MathShiftOps(FourDoublesExtVec);
+  ^
+
+"Test_name.c", line 85: error: the floating-point vector operand type ("__attribute((ext_vector_type(4))) double") has no matching integer vector type
+  MathShiftOps(FourDoublesExtVec);
+  ^
+
+"Test_name.c", line 85: warning: expression has no effect
+  MathShiftOps(FourDoublesExtVec);
+  ^
+
+"Test_name.c", line 85: error: the floating-point vector operand type ("__attribute((ext_vector_type(4))) double") has no matching integer vector type
+  MathShiftOps(FourDoublesExtVec);
+  ^
+
+"Test_name.c", line 85: warning: expression has no effect
+  MathShiftOps(FourDoublesExtVec);
+  ^
+
+"Test_name.c", line 85: error: the floating-point vector operand type ("__attribute((ext_vector_type(4))) double") has no matching integer vector type
+  MathShiftOps(FourDoublesExtVec);
+  ^
+
+"Test_name.c", line 85: error: the floating-point vector operand type ("__attribute((ext_vector_type(4))) double") has no matching integer vector type
+  MathShiftOps(FourDoublesExtVec);
+  ^
+
+"Test_name.c", line 85: warning: expression has no effect
+  MathShiftOps(FourDoublesExtVec);
+  ^
+
+"Test_name.c", line 87: warning: expression has no effect
+  MathShiftOpsInts(FourCharsVecSize);
+  ^
+
+"Test_name.c", line 87: warning: expression has no effect
+  MathShiftOpsInts(FourCharsVecSize);
+  ^
+
+"Test_name.c", line 87: warning: expression has no effect
+  MathShiftOpsInts(FourCharsVecSize);
+  ^
+
+"Test_name.c", line 88: warning: expression has no effect
+  MathShiftOpsInts(FourIntsVecSize);
+  ^
+
+"Test_name.c", line 88: warning: expression has no effect
+  MathShiftOpsInts(FourIntsVecSize);
+  ^
+
+"Test_name.c", line 88: warning: expression has no effect
+  MathShiftOpsInts(FourIntsVecSize);
+  ^
+
+"Test_name.c", line 89: warning: expression has no effect
+  MathShiftOpsInts(FourLongLongsVecSize);
+  ^
+
+"Test_name.c", line 89: warning: expression has no effect
+  MathShiftOpsInts(FourLongLongsVecSize);
+  ^
+
+"Test_name.c", line 89: warning: expression has no effect
+  MathShiftOpsInts(FourLongLongsVecSize);
+  ^
+
+"Test_name.c", line 90: warning: expression has no effect
+  MathShiftOpsInts(FourCharsExtVec);
+  ^
+
+"Test_name.c", line 90: warning: expression has no effect
+  MathShiftOpsInts(FourCharsExtVec);
+  ^
+
+"Test_name.c", line 90: warning: expression has no effect
+  MathShiftOpsInts(FourCharsExtVec);
+  ^
+
+"Test_name.c", line 91: warning: expression has no effect
+  MathShiftOpsInts(FourIntsExtVec);
+  ^
+
+"Test_name.c", line 91: warning: expression has no effect
+  MathShiftOpsInts(FourIntsExtVec);
+  ^
+
+"Test_name.c", line 91: warning: expression has no effect
+  MathShiftOpsInts(FourIntsExtVec);
+  ^
+
+"Test_name.c", line 92: warning: expression has no effect
+  MathShiftOpsInts(FourLongLongsExtVec);
+  ^
+
+"Test_name.c", line 92: warning: expression has no effect
+  MathShiftOpsInts(FourLongLongsExtVec);
+  ^
+
+"Test_name.c", line 92: warning: expression has no effect
+  MathShiftOpsInts(FourLongLongsExtVec);
+  ^
+
+"Test_name.c", line 575: error: static assertion failed with ""
+    static_assert(w[0] == -1 && w[1] == -1 && w[2] == 0 && w[3] == 0, "");
+    ^
+
+"Test_name.c", line 579: error: static assertion failed with ""
+    static_assert(x[0] == 0 && x[1] == 0 && x[2] == -1 && x[3] == -1, "");
+    ^
+
+"Test_name.c", line 583: error: static assertion failed with ""
+    static_assert(y[0] == -1 && y[1] == -1 && y[2] == -1 && y[3] == 0, "");
+    ^
+
+"Test_name.c", line 587: error: static assertion failed with ""
+    static_assert(z[0] == 0 && z[1] == 0 && z[2] == -1 && z[3] == -1, "");
+    ^
+
+"Test_name.c", line 591: error: static assertion failed with ""
+    static_assert(A[0] == 0 && A[1] == 0 && A[2] == -1 && A[3] == 0, "");
+    ^
+
+"Test_name.c", line 595: error: static assertion failed with ""
+    static_assert(B[0] == -1 && B[1] == -1 && B[2] == 0 && B[3] == -1, "");
+    ^
+
+"Test_name.c", line 598: error: static assertion failed with ""
+    static_assert(C[0] == -1 && C[1] == -1 && C[2] == 0 && C[3] == 0, "");
+    ^
+
+"Test_name.c", line 601: error: static assertion failed with ""
+    static_assert(D[0] == 0 && D[1] == 0 && D[2] == 0 && D[3] == -1, "");
+    ^
+
+"Test_name.c", line 604: error: static assertion failed with ""
+    static_assert(E[0] == -1 && E[1] == -1 && E[2] == -1 && E[3] == 0, "");
+    ^
+
+"Test_name.c", line 607: error: static assertion failed with ""
+    static_assert(F[0] == 0 && F[1] == 0 && F[2] == -1 && F[3] == -1, "");
+    ^
+
+"Test_name.c", line 610: error: static assertion failed with ""
+    static_assert(G[0] == 0 && G[1] == 0 && G[2] == -1 && G[3] == 0, "");
+    ^
+
+"Test_name.c", line 613: error: static assertion failed with ""
+    static_assert(H[0] == -1 && H[1] == -1 && H[2] == 0 && H[3] == -1, "");
+    ^
+
+"Test_name.c", line 624: error: static assertion failed with ""
+    static_assert(Q[0] == 1 && Q[1] == 0 && Q[2] == 1 && Q[3] == 0, "");
+    ^
+
+"Test_name.c", line 692: error: static assertion failed with ""
+    static_assert(w[0] == -1 && w[1] == -1 && w[2] == 0 && w[3] == 0, "");
+    ^
+
+"Test_name.c", line 696: error: static assertion failed with ""
+    static_assert(x[0] == 0 && x[1] == 0 && x[2] == -1 && x[2] == -1, "");
+    ^
+
+"Test_name.c", line 700: error: static assertion failed with ""
+    static_assert(y[0] == -1 && y[1] == -1 && y[2] == -1 && y[3] == 0, "");
+    ^
+
+"Test_name.c", line 704: error: static assertion failed with ""
+    static_assert(z[0] == 0 && z[1] == 0 && z[2] == -1 && z[3] == -1, "");
+    ^
+
+"Test_name.c", line 708: error: static assertion failed with ""
+    static_assert(A[0] == 0 && A[1] == 0 && A[2] == -1 && A[3] == 0, "");
+    ^
+
+"Test_name.c", line 712: error: static assertion failed with ""
+    static_assert(B[0] == -1 && B[1] == -1 && B[2] == 0 && B[3] == -1, "");
+    ^
+
+"Test_name.c", line 715: error: static assertion failed with ""
+    static_assert(C[0] == -1 && C[1] == -1 && C[2] == 0 && C[3] == 0, "");
+    ^
+
+"Test_name.c", line 718: error: static assertion failed with ""
+    static_assert(D[0] == 0 && D[1] == 0 && D[2] == 0 && D[3] == -1, "");
+    ^
+
+"Test_name.c", line 721: error: static assertion failed with ""
+    static_assert(E[0] == -1 && E[1] == -1 && E[2] == -1 && E[3] == 0, "");
+    ^
+
+"Test_name.c", line 724: error: static assertion failed with ""
+    static_assert(F[0] == 0 && F[1] == 0 && F[2] == -1 && F[3] == -1, "");
+    ^
+
+"Test_name.c", line 727: error: static assertion failed with ""
+    static_assert(G[0] == 0 && G[1] == 0 && G[2] == -1 && G[3] == 0, "");
+    ^
+
+"Test_name.c", line 730: error: static assertion failed with ""
+    static_assert(H[0] == -1 && H[1] == -1 && H[2] == 0 && H[3] == -1, "");
+    ^
+
+"Test_name.c", line 741: error: static assertion failed with ""
+    static_assert(Q[0] == 1 && Q[1] == 0 && Q[2] == 1 && Q[3] == 0, "");
+    ^
+
+44 errors detected in the compilation of "Test_name.c".

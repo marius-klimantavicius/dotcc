@@ -1,0 +1,101 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 15: warning: unknown attribute "access"
+  void RO (1) RO (1) rop1_ror2 (const int32_t*, const int32_t&);
+       ^
+
+"Test_name.c", line 15: warning: unknown attribute "access"
+  void RO (1) RO (1) rop1_ror2 (const int32_t*, const int32_t&);
+              ^
+
+"Test_name.c", line 16: warning: unknown attribute "access"
+  void RO (1) RO (2) rop1_ror2 (const int32_t*, const int32_t&);
+       ^
+
+"Test_name.c", line 16: warning: unknown attribute "access"
+  void RO (1) RO (2) rop1_ror2 (const int32_t*, const int32_t&);
+              ^
+
+"Test_name.c", line 17: warning: unknown attribute "access"
+  void RO (2) RO (1) rop1_ror2 (const int32_t*, const int32_t&);
+       ^
+
+"Test_name.c", line 17: warning: unknown attribute "access"
+  void RO (2) RO (1) rop1_ror2 (const int32_t*, const int32_t&);
+              ^
+
+"Test_name.c", line 18: warning: unknown attribute "access"
+  void RO (2) RO (2) rop1_ror2 (const int32_t*, const int32_t&);
+       ^
+
+"Test_name.c", line 18: warning: unknown attribute "access"
+  void RO (2) RO (2) rop1_ror2 (const int32_t*, const int32_t&);
+              ^
+
+"Test_name.c", line 20: warning: unknown attribute "access"
+  void RW (1) RW (1) rdwrp1_rdwrr2 (int32_t*, int32_t&);
+       ^
+
+"Test_name.c", line 20: warning: unknown attribute "access"
+  void RW (1) RW (1) rdwrp1_rdwrr2 (int32_t*, int32_t&);
+              ^
+
+"Test_name.c", line 21: warning: unknown attribute "access"
+  void RW (1) RW (2) rdwrp1_rdwrr2 (int32_t*, int32_t&);
+       ^
+
+"Test_name.c", line 21: warning: unknown attribute "access"
+  void RW (1) RW (2) rdwrp1_rdwrr2 (int32_t*, int32_t&);
+              ^
+
+"Test_name.c", line 22: warning: unknown attribute "access"
+  void RW (2) RW (1) rdwrp1_rdwrr2 (int32_t*, int32_t&);
+       ^
+
+"Test_name.c", line 22: warning: unknown attribute "access"
+  void RW (2) RW (1) rdwrp1_rdwrr2 (int32_t*, int32_t&);
+              ^
+
+"Test_name.c", line 23: warning: unknown attribute "access"
+  void RW (2) RW (2) rdwrp1_rdwrr2 (int32_t*, int32_t&);
+       ^
+
+"Test_name.c", line 23: warning: unknown attribute "access"
+  void RW (2) RW (2) rdwrp1_rdwrr2 (int32_t*, int32_t&);
+              ^
+
+"Test_name.c", line 25: warning: unknown attribute "access"
+  void WO (1) WO (1) wop1_wor2 (int32_t*, int32_t&);
+       ^
+
+"Test_name.c", line 25: warning: unknown attribute "access"
+  void WO (1) WO (1) wop1_wor2 (int32_t*, int32_t&);
+              ^
+
+"Test_name.c", line 26: warning: unknown attribute "access"
+  void WO (1) WO (2) wop1_wor2 (int32_t*, int32_t&);
+       ^
+
+"Test_name.c", line 26: warning: unknown attribute "access"
+  void WO (1) WO (2) wop1_wor2 (int32_t*, int32_t&);
+              ^
+
+"Test_name.c", line 27: warning: unknown attribute "access"
+  void WO (2) WO (1) wop1_wor2 (int32_t*, int32_t&);
+       ^
+
+"Test_name.c", line 27: warning: unknown attribute "access"
+  void WO (2) WO (1) wop1_wor2 (int32_t*, int32_t&);
+              ^
+
+"Test_name.c", line 28: warning: unknown attribute "access"
+  void WO (2) WO (2) wop1_wor2 (int32_t*, int32_t&);
+       ^
+
+"Test_name.c", line 28: warning: unknown attribute "access"
+  void WO (2) WO (2) wop1_wor2 (int32_t*, int32_t&);
+              ^
+
+"Test_name.c", line 63: warning: unrecognized GCC pragma
+  #pragma GCC optimize "1"
+              ^
+

@@ -1,0 +1,79 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 11: error: expression must have a constant value
+  static_assert(a[2]); // expected-error {{not an integral constant expression}} expected-note {{read of dereferenced one-past-the-end pointer}}
+                ^
+"Test_name.c", line 11: note: cannot access position 2 in array of 2 elements
+  static_assert(a[2]); // expected-error {{not an integral constant expression}} expected-note {{read of dereferenced one-past-the-end pointer}}
+                 ^
+
+"Test_name.c", line 22: error: expression must have a constant value
+  static_assert(c[2][3]); // expected-error {{not an integral constant expression}} expected-note {{cannot refer to element 3 of array of 2 elements}}
+                ^
+"Test_name.c", line 22: note: cannot access position 3 in array of 2 elements
+  static_assert(c[2][3]); // expected-error {{not an integral constant expression}} expected-note {{cannot refer to element 3 of array of 2 elements}}
+                    ^
+
+"Test_name.c", line 35: error: expression must have class type but it has type "const ExtVector::FourIntsExtVec"
+  static_assert(b.s0 == 1 && b.s1 == 2 && b.s2 == 3 && b.s3 == 4);
+                ^
+
+"Test_name.c", line 35: error: expression must have class type but it has type "const ExtVector::FourIntsExtVec"
+  static_assert(b.s0 == 1 && b.s1 == 2 && b.s2 == 3 && b.s3 == 4);
+                             ^
+
+"Test_name.c", line 35: error: expression must have class type but it has type "const ExtVector::FourIntsExtVec"
+  static_assert(b.s0 == 1 && b.s1 == 2 && b.s2 == 3 && b.s3 == 4);
+                                          ^
+
+"Test_name.c", line 35: error: expression must have class type but it has type "const ExtVector::FourIntsExtVec"
+  static_assert(b.s0 == 1 && b.s1 == 2 && b.s2 == 3 && b.s3 == 4);
+                                                       ^
+
+"Test_name.c", line 36: error: expression must have class type but it has type "const ExtVector::FourIntsExtVec"
+  static_assert(b.x == 1 && b.y == 2 && b.z == 3 && b.w == 4);
+                ^
+
+"Test_name.c", line 36: error: expression must have class type but it has type "const ExtVector::FourIntsExtVec"
+  static_assert(b.x == 1 && b.y == 2 && b.z == 3 && b.w == 4);
+                            ^
+
+"Test_name.c", line 36: error: expression must have class type but it has type "const ExtVector::FourIntsExtVec"
+  static_assert(b.x == 1 && b.y == 2 && b.z == 3 && b.w == 4);
+                                        ^
+
+"Test_name.c", line 36: error: expression must have class type but it has type "const ExtVector::FourIntsExtVec"
+  static_assert(b.x == 1 && b.y == 2 && b.z == 3 && b.w == 4);
+                                                    ^
+
+"Test_name.c", line 37: error: expression must have class type but it has type "const ExtVector::FourIntsExtVec"
+  static_assert(b.r == 1 && b.g == 2 && b.b == 3 && b.a == 4);
+                ^
+
+"Test_name.c", line 37: error: expression must have class type but it has type "const ExtVector::FourIntsExtVec"
+  static_assert(b.r == 1 && b.g == 2 && b.b == 3 && b.a == 4);
+                            ^
+
+"Test_name.c", line 37: error: expression must have class type but it has type "const ExtVector::FourIntsExtVec"
+  static_assert(b.r == 1 && b.g == 2 && b.b == 3 && b.a == 4);
+                                        ^
+
+"Test_name.c", line 37: error: expression must have class type but it has type "const ExtVector::FourIntsExtVec"
+  static_assert(b.r == 1 && b.g == 2 && b.b == 3 && b.a == 4);
+                                                    ^
+
+"Test_name.c", line 38: error: expression must have a constant value
+  static_assert(b[5]); // expected-error {{not an integral constant expression}} expected-note {{cannot refer to element 5 of array of 4 elements}}
+                ^
+"Test_name.c", line 38: note: cannot access position 5 in array of 4 elements
+  static_assert(b[5]); // expected-error {{not an integral constant expression}} expected-note {{cannot refer to element 5 of array of 4 elements}}
+                 ^
+
+"Test_name.c", line 41: error: expression must have class type but it has type "const ExtVector::FourIntsExtVec"
+  static_assert(b.lo.lo == 1); // expected-error {{not an integral constant expression}}
+                ^
+
+"Test_name.c", line 49: error: expression must have pointer-to-class type but it has type "const ExtVector::FourIntsExtVec *"
+  static_assert(p->x == 1);
+                ^
+
+17 errors detected in the compilation of "Test_name.c".

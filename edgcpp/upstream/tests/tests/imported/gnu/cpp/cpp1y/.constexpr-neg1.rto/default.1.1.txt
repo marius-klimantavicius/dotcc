@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 8: error: variable in constexpr function does not have automatic storage duration
+    static int j = i;		// { dg-error "static" "" { target c++20_down } }
+               ^
+
+"Test_name.c", line 11: error: label definitions cannot appear in constexpr functions
+   foo:
+   ^
+
+"Test_name.c", line 8: warning: variable "j" was declared but never referenced
+    static int j = i;		// { dg-error "static" "" { target c++20_down } }
+               ^
+
+"Test_name.c", line 9: warning: variable "l" was declared but never referenced
+    thread_local int l = i;	// { dg-error "thread_local" "" { target c++20_down } }
+                     ^
+
+"Test_name.c", line 13: warning: variable "k" was declared but never referenced
+    int k;			// { dg-error "uninitialized" "" { target c++17_down } }
+        ^
+
+2 errors detected in the compilation of "Test_name.c".

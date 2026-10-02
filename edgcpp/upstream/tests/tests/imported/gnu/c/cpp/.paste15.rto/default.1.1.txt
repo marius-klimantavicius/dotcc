@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc -E Test_name.c
+# 1 "Test_name.c"
+
+
+ 
+ 
+
+"Test_name.c", line 6: error: "##" may not be last in a macro definition
+  #define a   a ## ## /* { dg-error "end of a macro expansion" } */
+                                                                   ^
+
+"Test_name.c", line 7: error: "##" may not be last in a macro definition
+  #define b() b ## ## /* { dg-error "end of a macro expansion" } */
+                                                                   ^
+
+"Test_name.c", line 8: error: "##" may not be last in a macro definition
+  #define c   c ##    /* { dg-error "end of a macro expansion" } */
+                                                                   ^
+
+"Test_name.c", line 9: error: "##" may not be last in a macro definition
+  #define d() d ##    /* { dg-error "end of a macro expansion" } */
+                                                                   ^
+
+
+
+
+
+
+
+"Test_name.c", line 12: error: "##" may not be first in a macro definition
+  #define e   ## ## e /* { dg-error "end of a macro expansion" } */
+              ^
+
+"Test_name.c", line 12: error: "##" may not be first in a macro definition
+  #define e   ## ## e /* { dg-error "end of a macro expansion" } */
+                 ^
+
+"Test_name.c", line 13: error: "##" may not be first in a macro definition
+  #define f() ## ## f /* { dg-error "end of a macro expansion" } */
+              ^
+
+"Test_name.c", line 13: error: "##" may not be first in a macro definition
+  #define f() ## ## f /* { dg-error "end of a macro expansion" } */
+                 ^
+
+"Test_name.c", line 14: error: "##" may not be first in a macro definition
+  #define g   ## g    /* { dg-error "end of a macro expansion" } */
+              ^
+
+"Test_name.c", line 15: error: "##" may not be first in a macro definition
+  #define h() ## h    /* { dg-error "end of a macro expansion" } */
+              ^
+
+"Test_name.c", line 16: error: "##" may not be first in a macro definition
+  #define i   ##      /* { dg-error "end of a macro expansion" } */
+              ^
+
+"Test_name.c", line 17: error: "##" may not be first in a macro definition
+  #define j() ##      /* { dg-error "end of a macro expansion" } */
+              ^
+
+12 errors detected in the compilation of "Test_name.c".

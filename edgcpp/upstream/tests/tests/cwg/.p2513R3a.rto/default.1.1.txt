@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --c++20 -tused -A Test_name.c
+"Test_name.c", line 14: error: more than one instance of overloaded function "f" matches the argument list:
+            function "f(A)" (declared at line 10)
+            function "f(B)" (declared at line 11)
+            argument types are: ({...})
+  	f({u8""}); // ambiguous
+  	^
+
+1 error detected in the compilation of "Test_name.c".

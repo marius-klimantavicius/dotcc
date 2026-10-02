@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 --modules Test_name.c
+"dir-only-3.C", line 11: warning: "import" is parsed as an identifier rather than a keyword because the tokens that follow it do not match those of a preprocessor directive
+  import
+  ^
+

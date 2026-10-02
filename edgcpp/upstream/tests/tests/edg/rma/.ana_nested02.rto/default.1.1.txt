@@ -1,0 +1,26 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 10: error: return type "int" omitted in declaration of function "main"
+  main()
+  ^
+
+"Test_name.c", line 12: error: identifier "B" is undefined
+  	B	b;
+  	^
+
+"Test_name.c", line 13: error: identifier "E" is undefined
+  	E	e;
+  	^
+
+"Test_name.c", line 14: error: identifier "T" is undefined
+  	T	t;
+  	^
+
+"Test_name.c", line 19: error: identifier "e1" is undefined
+  	e = e1;		// This doesn't
+  	    ^
+
+"Test_name.c", line 20: error: identifier "e2" is undefined
+  	e = e2;		// This doesn't
+  	    ^
+
+6 errors detected in the compilation of "Test_name.c".

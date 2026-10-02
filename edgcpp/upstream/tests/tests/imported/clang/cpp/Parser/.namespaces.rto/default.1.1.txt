@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 9: error: namespace definition is not allowed
+    namespace a { typedef g::o o; } // expected-error{{namespaces can only be defined in global or namespace scope}}
+    ^
+
+"Test_name.c", line 14: error: expected an identifier
+  namespace = PR14085; // expected-error {{expected identifier}}
+            ^
+
+"Test_name.c", line 14: error: expected a "{"
+  namespace = PR14085; // expected-error {{expected identifier}}
+                     ^
+
+"Test_name.c", line 17: error: statement expressions are only allowed in block scope
+    int k = ({namespace {}}); // expected-error {{statement expression not allowed at file scope}}
+             ^
+
+"Test_name.c", line 17: warning: variable "<unnamed>::k" was declared but never referenced
+    int k = ({namespace {}}); // expected-error {{statement expression not allowed at file scope}}
+        ^
+
+4 errors detected in the compilation of "Test_name.c".

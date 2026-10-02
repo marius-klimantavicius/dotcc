@@ -1,0 +1,78 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 12: error: an initializer cannot be specified for a flexible array member with automatic storage duration
+    struct one x3 = {5, {1, 2, 3}}; // expected-error{{initialization of flexible array member is not allowed}}
+                        ^
+
+"Test_name.c", line 12: warning: variable "x3" was declared but never referenced
+    struct one x3 = {5, {1, 2, 3}}; // expected-error{{initialization of flexible array member is not allowed}}
+               ^
+
+"Test_name.c", line 13: warning: variable "x3a" was declared but never referenced
+    struct one x3a = { 5 };
+               ^
+
+"Test_name.c", line 14: warning: variable "x3b" was declared but never referenced
+    struct one x3b = { .a = 5 };
+               ^
+
+"Test_name.c", line 15: warning: variable "x3c" was declared but never referenced
+    struct one x3c = { 5, {} }; // expected-warning{{use of an empty initializer is a C23 extension}} \
+               ^
+
+"Test_name.c", line 27: error: an initializer cannot be specified for an indirect flexible array member
+  struct bar b = { { 1, { 2, 3, 4 } } };    // expected-error{{initialization of flexible array member is not allowed}}
+                        ^
+
+"Test_name.c", line 31: warning: array of elements containing a flexible array member is nonstandard
+  struct foo d[1] = { { 1, { 2, 3, 4 } } };  // expected-warning{{'struct foo' may not be used as an array element due to flexible array member}} \
+             ^
+
+"Test_name.c", line 31: error: an initializer cannot be specified for an indirect flexible array member
+  struct foo d[1] = { { 1, { 2, 3, 4 } } };  // expected-warning{{'struct foo' may not be used as an array element due to flexible array member}} \
+                           ^
+
+"Test_name.c", line 38: error: an initializer cannot be specified for an indirect flexible array member
+  struct bar desig_bar2 = { .z.y = { 2, 3, 4} }; // expected-error{{initialization of flexible array member is not allowed}}
+                                   ^
+
+"Test_name.c", line 65: warning: array of elements containing a flexible array member is nonstandard
+    struct X xs[]; // expected-warning{{'struct X' may not be used as an array element due to flexible array member}}
+             ^
+
+"Test_name.c", line 76: error: an initializer cannot be specified for a flexible array member with automatic storage duration
+    struct PR8217a foo1 = { .i = 0, .v = "foo" }; // expected-error {{initialization of flexible array member is not allowed}}
+                                         ^
+
+"Test_name.c", line 78: error: an initializer cannot be specified for a flexible array member with automatic storage duration
+    struct PR8217a foo3 = { .i = 0, .v = { 'b', 'a', 'r', '\0' } }; // expected-error {{initialization of flexible array member is not allowed}}
+                                         ^
+
+"Test_name.c", line 76: warning: variable "foo1" was declared but never referenced
+    struct PR8217a foo1 = { .i = 0, .v = "foo" }; // expected-error {{initialization of flexible array member is not allowed}}
+                   ^
+
+"Test_name.c", line 77: warning: variable "foo2" was declared but never referenced
+    struct PR8217a foo2 = { .i = 0 };
+                   ^
+
+"Test_name.c", line 78: warning: variable "foo3" was declared but never referenced
+    struct PR8217a foo3 = { .i = 0, .v = { 'b', 'a', 'r', '\0' } }; // expected-error {{initialization of flexible array member is not allowed}}
+                   ^
+
+"Test_name.c", line 79: warning: variable "bar" was declared but never referenced
+    struct PR8217a bar;
+                   ^
+
+"Test_name.c", line 87: error: an initializer cannot be specified for a flexible array member with automatic storage duration
+    return (PR10648){2, {3, 4}}.v[1]; // expected-error {{initialization of flexible array member is not allowed}}
+                        ^
+
+"Test_name.c", line 92: error: an initializer cannot be specified for a flexible array member with automatic storage duration
+    struct FlexWithUnnamedBitfield x = {10, {3}}; // expected-error {{initialization of flexible array member is not allowed}}
+                                            ^
+
+"Test_name.c", line 92: warning: variable "x" was declared but never referenced
+    struct FlexWithUnnamedBitfield x = {10, {3}}; // expected-error {{initialization of flexible array member is not allowed}}
+                                   ^
+
+8 errors detected in the compilation of "Test_name.c".

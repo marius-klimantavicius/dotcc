@@ -1,0 +1,57 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -DIOS14 --c Test_name.c
+"Test_name.c", line 6: warning: the "availability" attribute used here is ignored
+  void f0(void) __attribute__((availability(macOS, introduced = 10.11)));
+                               ^
+
+"Test_name.c", line 7: warning: the "availability" attribute used here is ignored
+  void f1(void) __attribute__((availability(macOS, introduced = 10.15)));
+                               ^
+
+"Test_name.c", line 9: warning: the "availability" attribute used here is ignored
+      availability(macOS, introduced = 10.11,
+      ^
+
+"Test_name.c", line 12: warning: the "availability" attribute used here is ignored
+      __attribute__((availability(macOS, introduced = 10.11, deprecated = 10.14)))
+                     ^
+
+"Test_name.c", line 13: warning: the "availability" attribute used here is ignored
+      __attribute__((availability(iOS, introduced = 11.0)));
+                     ^
+
+"Test_name.c", line 16: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(macOS, introduced = 10, deprecated = 100000)));
+                 ^
+
+"Test_name.c", line 18: warning: the "availability" attribute used here is ignored
+  void fAvail(void) __attribute__((availability(macOS, unavailable)));
+                                   ^
+
+"Test_name.c", line 20: warning: the "availability" attribute used here is ignored
+  void f16(void) __attribute__((availability(macOS, introduced = 11.0)));
+                                ^
+
+"Test_name.c", line 25: warning: the "availability" attribute used here is ignored
+  void fObs(void) __attribute__((availability(macOS, introduced = 10.11, obsoleted = 10.15))); // expected-note {{'fObs' has been explicitly marked unavailable here}}
+                                 ^
+
+"Test_name.c", line 27: warning: the "availability" attribute used here is ignored
+  void fAPItoDepr(void) __attribute__((availability(macOS, introduced = 10.11, deprecated = 100000)));
+                                       ^
+
+"Test_name.c", line 29: warning: the "availability" attribute used here is ignored
+  void dontRemapFutureVers(void) __attribute__((availability(macOS, introduced = 30)));
+                                                ^
+
+"Test_name.c", line 49: warning: the "availability" attribute used here is ignored
+  void f15_4(void) __attribute__((availability(macOS, introduced = 10.15, deprecated = 10.15.4))); // expected-note {{here}}
+                                  ^
+
+"Test_name.c", line 50: warning: the "availability" attribute used here is ignored
+  void f15_3(void) __attribute__((availability(macOS, introduced = 10.15, deprecated = 10.15.3))); // expected-note {{here}}
+                                  ^
+
+"Test_name.c", line 51: warning: the "availability" attribute used here is ignored
+  void f15_2(void) __attribute__((availability(macOS, introduced = 10.15, deprecated = 10.15.2))); // expected-note {{here}}
+                                  ^
+

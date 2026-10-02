@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 7: warning: unknown attribute "warn_if_not_aligned"
+  int foo1 __attribute__((warn_if_not_aligned(8))); /* { dg-error "5:'warn_if_not_aligned' may not be specified for 'foo1'" } */
+                          ^
+
+"Test_name.c", line 9: warning: unknown attribute "warn_if_not_aligned"
+  __attribute__((warn_if_not_aligned(8)))
+                 ^
+
+"Test_name.c", line 17: warning: unknown attribute "warn_if_not_aligned"
+    int i : 2 __attribute__((warn_if_not_aligned(8))); /* { dg-error "7:'warn_if_not_aligned' may not be specified for 'i'" } */
+                             ^
+
+"Test_name.c", line 21: warning: unknown attribute "warn_if_not_aligned"
+    __attribute__((aligned(4),warn_if_not_aligned(8)));
+                              ^
+

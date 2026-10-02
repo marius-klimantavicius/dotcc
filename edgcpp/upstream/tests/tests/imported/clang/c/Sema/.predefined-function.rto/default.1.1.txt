@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 14: error: declaration is incompatible with previous "eli" (declared at line 9)
+    int eli(int (int)); // expected-error {{conflicting types for 'eli'}}
+        ^
+
+"Test_name.c", line 24: error: function "bar" has already been defined (previous definition at line 20)
+  int bar() // expected-error {{conflicting types for 'bar'}}
+      ^
+
+"Test_name.c", line 30: error: declaration is incompatible with "int foobar(int)" (declared at line 29)
+  int foobar() // expected-error {{conflicting types for 'foobar'}}
+      ^
+
+"Test_name.c", line 36: error: declaration is incompatible with "int wibble()" (declared at line 35)
+  float wibble() // expected-error {{conflicting types for 'wibble'}}
+        ^
+
+4 errors detected in the compilation of "Test_name.c".

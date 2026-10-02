@@ -1,0 +1,113 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 9: warning: unknown attribute "access"
+  int  __attribute__ ((access))
+                       ^
+
+"Test_name.c", line 12: warning: unknown attribute "access"
+  int  __attribute__ ((access ()))
+                       ^
+
+"Test_name.c", line 15: warning: unknown attribute "access"
+  int  __attribute__ ((access (wronly)))
+                       ^
+
+"Test_name.c", line 18: warning: unknown attribute "access"
+  int  __attribute__ ((access (read_only)))
+                       ^
+
+"Test_name.c", line 21: warning: unknown attribute "access"
+  int  __attribute__ ((access (read_only ())))
+                       ^
+
+"Test_name.c", line 28: warning: unknown attribute "access"
+  int  __attribute__ ((access (wronly ())))
+                       ^
+
+"Test_name.c", line 33: warning: unknown attribute "access"
+  int WRONLY (1)
+      ^
+
+"Test_name.c", line 35: warning: unknown attribute "access"
+  int WRONLY (2)
+      ^
+
+"Test_name.c", line 37: warning: unknown attribute "access"
+  int WRONLY (3)
+      ^
+
+"Test_name.c", line 40: warning: unknown attribute "access"
+  int WRONLY (0 + 1)
+      ^
+
+"Test_name.c", line 43: warning: unknown attribute "access"
+  int WRONLY (2 - 1)
+      ^
+
+"Test_name.c", line 46: warning: unknown attribute "access"
+  int WRONLY (1, 1)
+      ^
+
+"Test_name.c", line 49: warning: unknown attribute "access"
+  int WRONLY (1, 2)
+      ^
+
+"Test_name.c", line 52: warning: unknown attribute "access"
+  int WRONLY (2, 1)
+      ^
+
+"Test_name.c", line 55: warning: unknown attribute "access"
+  int WRONLY (2, 2)
+      ^
+
+"Test_name.c", line 58: warning: unknown attribute "access"
+  int WRONLY (4)
+      ^
+
+"Test_name.c", line 61: warning: unknown attribute "access"
+  int WRONLY (1)
+      ^
+
+"Test_name.c", line 64: warning: unknown attribute "access"
+  int WRONLY (2)
+      ^
+
+"Test_name.c", line 67: warning: unknown attribute "access"
+  int WRONLY (-1)
+      ^
+
+"Test_name.c", line 70: warning: unknown attribute "access"
+  int WRONLY (1, -12345)
+      ^
+
+"Test_name.c", line 73: warning: unknown attribute "access"
+  int WRONLY ("blah")
+      ^
+
+"Test_name.c", line 76: warning: unknown attribute "access"
+  int WRONLY (1, "foobar")
+      ^
+
+"Test_name.c", line 82: warning: unknown attribute "access"
+  WRONLY (1) void wronly_pf_1 (F*);   // { dg-error "attribute 'access\\(write_only, 1\\)' positional argument 1 references argument of function type 'F' \\{aka 'int\\(int,  *int\\)'\\}" }
+  ^
+
+"Test_name.c", line 85: warning: unknown attribute "access"
+  void WRONLY(2) (*pwronly_pcv2)(int, void*);
+       ^
+
+"Test_name.c", line 86: warning: unknown attribute "access"
+  void WRONLY(3, 1) (*pwronly_pcv2_1)(int, void*, void*);
+       ^
+
+"Test_name.c", line 87: warning: unknown attribute "access"
+  void WRONLY(1, 2) (*pwronly_i_pcv_1_2)(int, void*);   // { dg-error "attribute 'access\\(write_only, 1, 2\\)' positional argument 1 references non-pointer argument type 'int'" }
+       ^
+
+"Test_name.c", line 90: warning: unknown attribute "access"
+  typedef WRONLY (2) void wronly_p2_t (const int*, char*, const void*);
+          ^
+
+"Test_name.c", line 91: warning: unknown attribute "access"
+  typedef WRONLY (2) void wronly_p2_1 (int, int*);
+          ^
+

@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 33: warning: variable "xMeasure" is used before its value is set
+    cellDimension = multiplier * (xMeasure * yMeasure * zMeasure);
+                                  ^
+
+"Test_name.c", line 33: warning: variable "yMeasure" is used before its value is set
+    cellDimension = multiplier * (xMeasure * yMeasure * zMeasure);
+                                             ^
+
+"Test_name.c", line 33: warning: variable "zMeasure" is used before its value is set
+    cellDimension = multiplier * (xMeasure * yMeasure * zMeasure);
+                                                        ^
+
+"Test_name.c", line 31: warning: variable "cellDimension" was set but never used
+    double cellDimension;
+           ^
+

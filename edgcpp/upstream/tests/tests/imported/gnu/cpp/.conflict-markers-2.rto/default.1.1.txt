@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 13: error: expected an expression
+  <<<<<<< HEAD // { dg-error "conflict marker" }
+  ^
+
+"Test_name.c", line 15: error: expected an expression
+  ======= // { dg-error "conflict marker" }
+  ^
+
+"Test_name.c", line 17: error: expected an expression
+  >>>>>>> 252be53... Some commit message // { dg-error "conflict marker" }
+  ^
+
+"Test_name.c", line 17: error: non-identifier character in user-defined literal suffix
+  >>>>>>> 252be53... Some commit message // { dg-error "conflict marker" }
+                 ^
+
+4 errors detected in the compilation of "Test_name.c".

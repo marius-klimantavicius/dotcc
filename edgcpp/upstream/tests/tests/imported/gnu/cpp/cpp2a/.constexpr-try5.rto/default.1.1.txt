@@ -1,0 +1,74 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 8: error: the body of a constexpr function cannot be a function try block
+  try {			// { dg-warning "function-try-block body of 'constexpr' function only available with" "" { target c++17_down } }
+  ^
+
+"Test_name.c", line 9: error: variable in constexpr function is uninitialized
+    int a;		// { dg-error "uninitialized variable 'a' in 'constexpr' function" "" { target c++17_down } }
+        ^
+
+"Test_name.c", line 12: error: label definitions cannot appear in constexpr functions
+    l:;
+    ^
+
+"Test_name.c", line 9: warning: variable "a" was declared but never referenced
+    int a;		// { dg-error "uninitialized variable 'a' in 'constexpr' function" "" { target c++17_down } }
+        ^
+
+"Test_name.c", line 10: warning: variable "b" was declared but never referenced
+    static double b = 1.0;// { dg-error "'b' defined 'static' in 'constexpr' function only available with" "" { target c++20_down } }
+                  ^
+
+"Test_name.c", line 18: error: label definitions cannot appear in constexpr functions
+    l2:;
+    ^
+
+"Test_name.c", line 15: warning: variable "c" was declared but never referenced
+    long int c;		// { dg-error "uninitialized variable 'c' in 'constexpr' function" "" { target c++17_down } }
+             ^
+
+"Test_name.c", line 16: warning: variable "d" was declared but never referenced
+    static float d = 2.0f;// { dg-error "'d' defined 'static' in 'constexpr' function only available with" "" { target c++20_down } }
+                 ^
+
+"Test_name.c", line 24: error: variable in constexpr function is uninitialized
+    int a;		// { dg-error "uninitialized variable 'a' in 'constexpr' function" "" { target c++17_down } }
+        ^
+
+"Test_name.c", line 27: error: label definitions cannot appear in constexpr functions
+    l:;
+    ^
+
+"Test_name.c", line 33: error: label definitions cannot appear in constexpr functions
+      l2:;
+      ^
+
+"Test_name.c", line 29: warning: variable "c" was declared but never referenced
+      short c;		// { dg-error "uninitialized variable 'c' in 'constexpr' function" "" { target c++17_down } }
+            ^
+
+"Test_name.c", line 30: warning: variable "d" was declared but never referenced
+      static float d;	// { dg-error "'d' defined 'static' in 'constexpr' function only available with" "" { target c++20_down } }
+                   ^
+
+"Test_name.c", line 39: error: label definitions cannot appear in constexpr functions
+      l3:;
+      ^
+
+"Test_name.c", line 36: warning: variable "e" was declared but never referenced
+      char e;		// { dg-error "uninitialized variable 'e' in 'constexpr' function" "" { target c++17_down } }
+           ^
+
+"Test_name.c", line 37: warning: variable "f" was declared but never referenced
+      static int f = 5;	// { dg-error "'f' defined 'static' in 'constexpr' function only available with" "" { target c++20_down } }
+                 ^
+
+"Test_name.c", line 24: warning: variable "a" was declared but never referenced
+    int a;		// { dg-error "uninitialized variable 'a' in 'constexpr' function" "" { target c++17_down } }
+        ^
+
+"Test_name.c", line 25: warning: variable "b" was declared but never referenced
+    static long double b = 3.0;// { dg-error "'b' defined 'static' in 'constexpr' function only available with" "" { target c++20_down } }
+                       ^
+
+8 errors detected in the compilation of "Test_name.c".

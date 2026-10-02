@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 11: error: expression must have a constant value
+  constinit const char *d = f(false); // { dg-error "variable .d. does not have a constant initializer" }
+                            ^
+"Test_name.c", line 8: note: cannot call non-constexpr function "g" (declared at line 7)
+  constexpr const char *f(bool p) { return p ? "constant init" : g(); } // { dg-error "call to non-.constexpr. function" }
+                                                                 ^
+
+"Test_name.c", line 18: error: expression must have a constant value
+    = foo(i); // { dg-error "not usable in a constant expression" }
+      ^
+"Test_name.c", line 18: note: the value of variable "i" (declared at line 16) cannot be used as a constant
+    = foo(i); // { dg-error "not usable in a constant expression" }
+          ^
+
+"Test_name.c", line 22: error: expression must have a constant value
+    = y; // { dg-error "not usable in a constant expression" }
+      ^
+"Test_name.c", line 22: note: the value of variable "y" (declared at line 20) cannot be used as a constant
+    = y; // { dg-error "not usable in a constant expression" }
+      ^
+
+"Test_name.c", line 32: error: expression must have a constant value
+      = foo(m); // { dg-error "not usable in a constant expression" }
+        ^
+"Test_name.c", line 32: note: the value of variable "m" (declared at line 30) cannot be used as a constant
+      = foo(m); // { dg-error "not usable in a constant expression" }
+            ^
+
+"Test_name.c", line 39: error: expression must be a modifiable lvalue
+    cst *= 2; // { dg-error "assignment of read-only variable" }
+    ^
+
+"Test_name.c", line 31: warning: variable "n" was declared but never referenced
+    static constinit int n // { dg-error "variable .n. does not have a constant initializer" }
+                         ^
+
+"Test_name.c", line 13: warning: variable "e" was declared but never referenced
+  static constinit const char *e = f(true);
+                               ^
+
+5 errors detected in the compilation of "Test_name.c".

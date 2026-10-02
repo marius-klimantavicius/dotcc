@@ -1,0 +1,186 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 12: error: structured binding is not allowed in a condition
+    for (; auto [ a, b ] = A (); )			// { dg-error "structured bindings in conditions only available with" "" { target c++23_down } }
+                ^
+
+"Test_name.c", line 14: error: type name is not allowed
+    for (; false; auto [ a, b ] = A ())			// { dg-error "expected" }
+                  ^
+
+"Test_name.c", line 14: warning: expression has no effect
+    for (; false; auto [ a, b ] = A ())			// { dg-error "expected" }
+                         ^
+
+"Test_name.c", line 16: error: structured binding is not allowed in a condition
+    if (auto [ a, b ] = A ())				// { dg-error "structured bindings in conditions only available with" "" { target c++23_down } }
+             ^
+
+"Test_name.c", line 18: error: structured binding is not allowed in a condition
+    if (auto [ a, b ] = A (); auto [ c, d ] = A ())	// { dg-error "structured bindings in conditions only available with" "" { target c++23_down } }
+                                   ^
+
+"Test_name.c", line 18: warning: structured binding "a" was declared but never referenced
+    if (auto [ a, b ] = A (); auto [ c, d ] = A ())	// { dg-error "structured bindings in conditions only available with" "" { target c++23_down } }
+               ^
+
+"Test_name.c", line 20: error: structured binding is not allowed in a condition
+    if (int d = 5; auto [ a, b ] = A ())			// { dg-error "structured bindings in conditions only available with" "" { target c++23_down } }
+                        ^
+
+"Test_name.c", line 20: warning: variable "d" was declared but never referenced
+    if (int d = 5; auto [ a, b ] = A ())			// { dg-error "structured bindings in conditions only available with" "" { target c++23_down } }
+            ^
+
+"Test_name.c", line 22: error: structured binding is not allowed in a condition
+    switch (auto [ a, b ] = B ())				// { dg-error "structured bindings in conditions only available with" "" { target c++23_down } }
+                 ^
+
+"Test_name.c", line 27: error: structured binding is not allowed in a condition
+    switch (int d = 5; auto [ a, b ] = B ())		// { dg-error "structured bindings in conditions only available with" "" { target c++23_down } }
+                            ^
+
+"Test_name.c", line 27: warning: variable "d" was declared but never referenced
+    switch (int d = 5; auto [ a, b ] = B ())		// { dg-error "structured bindings in conditions only available with" "" { target c++23_down } }
+                ^
+
+"Test_name.c", line 34: error: a structured binding cannot be combined with other declarators
+    auto [ i, j ] = A (), [ k, l ] = A ();		// { dg-error "expected" }
+         ^
+
+"Test_name.c", line 34: error: a structured binding cannot be combined with other declarators
+    auto [ i, j ] = A (), [ k, l ] = A ();		// { dg-error "expected" }
+                          ^
+
+"Test_name.c", line 35: error: a structured binding cannot be combined with other declarators
+    auto m = A (), [ n, o ] = A ();			// { dg-error "expected" }
+                   ^
+
+"Test_name.c", line 33: warning: structured binding "c" was declared but never referenced
+    auto && [ c, d ] = e;
+              ^
+
+"Test_name.c", line 34: warning: structured binding "i" was declared but never referenced
+    auto [ i, j ] = A (), [ k, l ] = A ();		// { dg-error "expected" }
+           ^
+
+"Test_name.c", line 35: warning: variable "m" was declared but never referenced
+    auto m = A (), [ n, o ] = A ();			// { dg-error "expected" }
+         ^
+
+"Test_name.c", line 35: warning: structured binding "n" was declared but never referenced
+    auto m = A (), [ n, o ] = A ();			// { dg-error "expected" }
+                     ^
+
+"Test_name.c", line 39: error: structured binding templates are not permitted
+  auto [ a, b ] = A ();					// { dg-error "expected" }
+       ^
+
+"Test_name.c", line 43: error: expected an identifier
+    auto [ e, f ] = A ();					// { dg-error "expected" }
+         ^
+
+"Test_name.c", line 43: error: identifier "e" is undefined
+    auto [ e, f ] = A ();					// { dg-error "expected" }
+           ^
+
+"Test_name.c", line 43: error: expected a "]"
+    auto [ e, f ] = A ();					// { dg-error "expected" }
+            ^
+
+"Test_name.c", line 43: warning: nonstandard use of "auto" to both deduce the type from an initializer and to announce a trailing return type
+    auto [ e, f ] = A ();					// { dg-error "expected" }
+    ^
+
+"Test_name.c", line 43: error: cannot deduce "auto" type (initializer required)
+    auto [ e, f ] = A ();					// { dg-error "expected" }
+              ^
+
+"Test_name.c", line 43: error: expected a ";"
+    auto [ e, f ] = A ();					// { dg-error "expected" }
+                ^
+
+"Test_name.c", line 44: error: expected an identifier
+    mutable auto [ g, h ] = A ();				// { dg-error "expected" }
+                 ^
+
+"Test_name.c", line 44: error: identifier "g" is undefined
+    mutable auto [ g, h ] = A ();				// { dg-error "expected" }
+                   ^
+
+"Test_name.c", line 44: error: expected a "]"
+    mutable auto [ g, h ] = A ();				// { dg-error "expected" }
+                    ^
+
+"Test_name.c", line 44: warning: nonstandard use of "auto" to both deduce the type from an initializer and to announce a trailing return type
+    mutable auto [ g, h ] = A ();				// { dg-error "expected" }
+            ^
+
+"Test_name.c", line 44: error: cannot deduce "auto" type (initializer required)
+    mutable auto [ g, h ] = A ();				// { dg-error "expected" }
+                      ^
+
+"Test_name.c", line 44: error: expected a ";"
+    mutable auto [ g, h ] = A ();				// { dg-error "expected" }
+                        ^
+
+"Test_name.c", line 45: error: expected an identifier
+    virtual auto [ i, j ] = A ();				// { dg-error "expected" }
+                 ^
+
+"Test_name.c", line 45: error: identifier "i" is undefined
+    virtual auto [ i, j ] = A ();				// { dg-error "expected" }
+                   ^
+
+"Test_name.c", line 45: error: expected a "]"
+    virtual auto [ i, j ] = A ();				// { dg-error "expected" }
+                    ^
+
+"Test_name.c", line 45: error: "virtual" is not allowed
+    virtual auto [ i, j ] = A ();				// { dg-error "expected" }
+    ^
+
+"Test_name.c", line 45: error: expected a ";"
+    virtual auto [ i, j ] = A ();				// { dg-error "expected" }
+                    ^
+
+"Test_name.c", line 46: error: "auto" is not allowed here
+    explicit auto [ k, l ] = A ();			// { dg-error "expected" }
+             ^
+
+"Test_name.c", line 46: error: expected an identifier
+    explicit auto [ k, l ] = A ();			// { dg-error "expected" }
+                  ^
+
+"Test_name.c", line 46: error: identifier "k" is undefined
+    explicit auto [ k, l ] = A ();			// { dg-error "expected" }
+                    ^
+
+"Test_name.c", line 46: error: expected a "]"
+    explicit auto [ k, l ] = A ();			// { dg-error "expected" }
+                     ^
+
+"Test_name.c", line 46: error: expected a ";"
+    explicit auto [ k, l ] = A ();			// { dg-error "expected" }
+                         ^
+
+"Test_name.c", line 47: error: expected an identifier
+    friend auto [ m, n ] = A ();				// { dg-error "expected" }
+                ^
+
+"Test_name.c", line 47: error: identifier "m" is undefined
+    friend auto [ m, n ] = A ();				// { dg-error "expected" }
+                  ^
+
+"Test_name.c", line 47: error: expected a "]"
+    friend auto [ m, n ] = A ();				// { dg-error "expected" }
+                   ^
+
+"Test_name.c", line 47: error: invalid friend declaration
+    friend auto [ m, n ] = A ();				// { dg-error "expected" }
+    ^
+
+"Test_name.c", line 47: error: expected a ";"
+    friend auto [ m, n ] = A ();				// { dg-error "expected" }
+                   ^
+
+36 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 5: error: a member of type "const int [1][1]" cannot have an in-class initializer
+    static const int t[1][1]={{0}}; // { dg-error "20:'constexpr' needed" "" { target c++11 } }
+                            ^
+
+1 error detected in the compilation of "Test_name.c".

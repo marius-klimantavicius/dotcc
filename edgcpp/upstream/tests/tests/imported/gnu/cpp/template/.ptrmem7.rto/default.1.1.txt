@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 30: error: no suitable user-defined conversion from "X<&S::j, S>" to "X<&S::i, S>" exists
+  X<&S::i,S> y  = X<&S::j,S>();  // { dg-error "" }
+                  ^
+
+"Test_name.c", line 31: error: argument of type "int R::*" is incompatible with template parameter of type "int S::*"
+  X<&S::i,S> z  = X<&R::i,S>();  // { dg-error "" }
+                    ^
+
+2 errors detected in the compilation of "Test_name.c".

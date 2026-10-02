@@ -1,0 +1,122 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 48: warning: out-of-order initializers are nonstandard in C++
+    foo n = {.y = 4, .x = 5};
+                      ^
+
+"Test_name.c", line 48: error: no instance of constructor "Reorder::X::X" matches the argument list
+    foo n = {.y = 4, .x = 5};
+                           ^
+"Test_name.c", line 37: note: number of parameters of function "Reorder::X::X(const Reorder::X &)" does not match the call
+    struct X {
+           ^
+"Test_name.c", line 37: note: number of parameters of function "Reorder::X::X(Reorder::X &&)" does not match the call
+    struct X {
+           ^
+"Test_name.c", line 38: note: number of parameters of function "Reorder::X::X(int)" does not match the call
+      X(int n);
+      ^
+
+"Test_name.c", line 78: warning: out-of-order initializers are nonstandard in C++
+          .it = 0,
+           ^
+
+"Test_name.c", line 79: error: no instance of constructor "Reorder2::PN::PN" matches the argument list
+      };
+      ^
+"Test_name.c", line 64: note: number of parameters of function "Reorder2::PN::PN" does not match the call
+      PN(const PN &);
+      ^
+
+"Test_name.c", line 88: warning: out-of-order initializers are nonstandard in C++
+      .a = 1, .c = s1.a, .b = s1.a
+                          ^
+
+"Test_name.c", line 87: error: variable "Reorder3::s1" has an uninitialized const or reference member
+    S s1 = {
+      ^
+
+"Test_name.c", line 94: warning: out-of-order initializers are nonstandard in C++
+      .b = s3.a, .a = 1,
+                  ^
+
+"Test_name.c", line 93: error: variable "Reorder3::s3" has an uninitialized const or reference member
+    S s3 = {
+      ^
+
+"Test_name.c", line 117: warning: out-of-order initializers are nonstandard in C++
+      .a = 1,
+       ^
+
+"Test_name.c", line 123: warning: out-of-order initializers are nonstandard in C++
+      .a = 1
+       ^
+
+"Test_name.c", line 101: error: a class or namespace qualified name is required
+    template<typename T> struct Error { using type = typename T::type; }; // expected-error 3{{'::'}}
+                                                              ^
+          detected during:
+            instantiation of class "NoCheckingFilledHoles::Error<T> [with T=int [2]]" at line 105
+            instantiation of "NoCheckingFilledHoles::DefaultInitIsError<N>::DefaultInitIsError(NoCheckingFilledHoles::Error<int [N]>) [with N=2]" at line 124
+
+"Test_name.c", line 101: error: expected a ";"
+    template<typename T> struct Error { using type = typename T::type; }; // expected-error 3{{'::'}}
+                                                               ^
+          detected during:
+            instantiation of class "NoCheckingFilledHoles::Error<T> [with T=int [2]]" at line 105
+            instantiation of "NoCheckingFilledHoles::DefaultInitIsError<N>::DefaultInitIsError(NoCheckingFilledHoles::Error<int [N]>) [with N=2]" at line 124
+
+"Test_name.c", line 127: warning: out-of-order initializers are nonstandard in C++
+      .a = 1
+       ^
+
+"Test_name.c", line 101: error: a class or namespace qualified name is required
+    template<typename T> struct Error { using type = typename T::type; }; // expected-error 3{{'::'}}
+                                                              ^
+          detected during:
+            instantiation of class "NoCheckingFilledHoles::Error<T> [with T=int [3]]" at line 105
+            instantiation of "NoCheckingFilledHoles::DefaultInitIsError<N>::DefaultInitIsError(NoCheckingFilledHoles::Error<int [N]>) [with N=3]" at line 128
+
+"Test_name.c", line 101: error: expected a ";"
+    template<typename T> struct Error { using type = typename T::type; }; // expected-error 3{{'::'}}
+                                                               ^
+          detected during:
+            instantiation of class "NoCheckingFilledHoles::Error<T> [with T=int [3]]" at line 105
+            instantiation of "NoCheckingFilledHoles::DefaultInitIsError<N>::DefaultInitIsError(NoCheckingFilledHoles::Error<int [N]>) [with N=3]" at line 128
+
+"Test_name.c", line 135: warning: out-of-order initializers are nonstandard in C++
+      .a = 1,
+       ^
+
+"Test_name.c", line 141: warning: out-of-order initializers are nonstandard in C++
+      .e = {4, 4}
+       ^
+
+"Test_name.c", line 101: error: a class or namespace qualified name is required
+    template<typename T> struct Error { using type = typename T::type; }; // expected-error 3{{'::'}}
+                                                              ^
+          detected during:
+            instantiation of class "NoCheckingFilledHoles::Error<T> [with T=int [8]]" at line 105
+            instantiation of "NoCheckingFilledHoles::DefaultInitIsError<N>::DefaultInitIsError(NoCheckingFilledHoles::Error<int [N]>) [with N=8]" at line 153
+
+"Test_name.c", line 101: error: expected a ";"
+    template<typename T> struct Error { using type = typename T::type; }; // expected-error 3{{'::'}}
+                                                               ^
+          detected during:
+            instantiation of class "NoCheckingFilledHoles::Error<T> [with T=int [8]]" at line 105
+            instantiation of "NoCheckingFilledHoles::DefaultInitIsError<N>::DefaultInitIsError(NoCheckingFilledHoles::Error<int [N]>) [with N=8]" at line 153
+
+"Test_name.c", line 166: error: subscript out of range
+      f({.arr[4] = 1});
+             ^
+
+"Test_name.c", line 28: warning: out-of-order initializers are nonstandard in C++
+                                      .bar1 = 20}; } // expected-warning 2 {{initializer overrides prior initialization of this subobject}}
+                                       ^
+          detected during instantiation of "void Bar<T>::Test() [with T=int]" at line 32
+
+"Test_name.c", line 28: warning: out-of-order initializers are nonstandard in C++
+                                      .bar1 = 20}; } // expected-warning 2 {{initializer overrides prior initialization of this subobject}}
+                                       ^
+          detected during instantiation of "void Bar<T>::Test() [with T=bool]" at line 33
+
+11 errors detected in the compilation of "Test_name.c".

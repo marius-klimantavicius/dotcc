@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c++11 Test_name.c
+"Test_name.c", line 10: error: a scoped enum type must have a name
+  enum class { e };  // Now triggers an error in C++0x mode.
+             ^
+
+"Test_name.c", line 10: warning: declaration does not declare anything
+  enum class { e };  // Now triggers an error in C++0x mode.
+  ^
+
+1 error detected in the compilation of "Test_name.c".

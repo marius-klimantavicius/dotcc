@@ -1,0 +1,174 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --c++03 Test_name.c
+"Test_name.c", line 6: warning: "auto" as a type specifier is nonstandard in this mode
+    auto a = a; // expected-error{{variable 'a' declared with deduced type 'auto' cannot appear in its own initializer}}
+    ^
+
+"Test_name.c", line 6: error: a variable declared with an auto type specifier cannot appear in its own initializer
+    auto a = a; // expected-error{{variable 'a' declared with deduced type 'auto' cannot appear in its own initializer}}
+             ^
+
+"Test_name.c", line 7: warning: "auto" as a type specifier is nonstandard in this mode
+    auto *b = b; // expected-error{{variable 'b' declared with deduced type 'auto *' cannot appear in its own initializer}}
+    ^
+
+"Test_name.c", line 7: error: a variable declared with an auto type specifier cannot appear in its own initializer
+    auto *b = b; // expected-error{{variable 'b' declared with deduced type 'auto *' cannot appear in its own initializer}}
+              ^
+
+"Test_name.c", line 7: error: cannot deduce "auto" type
+    auto *b = b; // expected-error{{variable 'b' declared with deduced type 'auto *' cannot appear in its own initializer}}
+    ^
+
+"Test_name.c", line 8: warning: "auto" as a type specifier is nonstandard in this mode
+    const auto c = c; // expected-error{{variable 'c' declared with deduced type 'const auto' cannot appear in its own initializer}}
+          ^
+
+"Test_name.c", line 8: error: a variable declared with an auto type specifier cannot appear in its own initializer
+    const auto c = c; // expected-error{{variable 'c' declared with deduced type 'const auto' cannot appear in its own initializer}}
+                   ^
+
+"Test_name.c", line 9: warning: "auto" as a type specifier is nonstandard in this mode
+    if (auto d = d) {} // expected-error {{variable 'd' declared with deduced type 'auto' cannot appear in its own initializer}}
+        ^
+
+"Test_name.c", line 9: error: a variable declared with an auto type specifier cannot appear in its own initializer
+    if (auto d = d) {} // expected-error {{variable 'd' declared with deduced type 'auto' cannot appear in its own initializer}}
+                 ^
+
+"Test_name.c", line 10: warning: "auto" as a type specifier is nonstandard in this mode
+    auto e = ({ auto f = e; 0; }); // expected-error {{variable 'e' declared with deduced type 'auto' cannot appear in its own initializer}}
+    ^
+
+"Test_name.c", line 10: warning: "auto" as a type specifier is nonstandard in this mode
+    auto e = ({ auto f = e; 0; }); // expected-error {{variable 'e' declared with deduced type 'auto' cannot appear in its own initializer}}
+                ^
+
+"Test_name.c", line 10: error: a variable declared with an auto type specifier cannot appear in its own initializer
+    auto e = ({ auto f = e; 0; }); // expected-error {{variable 'e' declared with deduced type 'auto' cannot appear in its own initializer}}
+                         ^
+
+"Test_name.c", line 14: warning: "auto" as a type specifier is nonstandard in this mode
+    auto a; // expected-error{{declaration of variable 'a' with deduced type 'auto' requires an initializer}}
+    ^
+
+"Test_name.c", line 14: error: cannot deduce "auto" type (initializer required)
+    auto a; // expected-error{{declaration of variable 'a' with deduced type 'auto' requires an initializer}}
+         ^
+
+"Test_name.c", line 16: warning: "auto" as a type specifier is nonstandard in this mode
+    auto *b; // expected-error{{declaration of variable 'b' with deduced type 'auto *' requires an initializer}}
+    ^
+
+"Test_name.c", line 16: error: cannot deduce "auto" type (initializer required)
+    auto *b; // expected-error{{declaration of variable 'b' with deduced type 'auto *' requires an initializer}}
+          ^
+
+"Test_name.c", line 18: warning: "auto" as a type specifier is nonstandard in this mode
+    if (auto b) {} // expected-error {{must have an initializer}}
+        ^
+
+"Test_name.c", line 18: error: cannot deduce "auto" type (initializer required)
+    if (auto b) {} // expected-error {{must have an initializer}}
+             ^
+
+"Test_name.c", line 18: error: a condition declaration must include an initializer
+    if (auto b) {} // expected-error {{must have an initializer}}
+             ^
+
+"Test_name.c", line 19: warning: "auto" as a type specifier is nonstandard in this mode
+    for (;auto b;) {} // expected-error {{must have an initializer}}
+          ^
+
+"Test_name.c", line 19: error: cannot deduce "auto" type (initializer required)
+    for (;auto b;) {} // expected-error {{must have an initializer}}
+               ^
+
+"Test_name.c", line 19: error: a condition declaration must include an initializer
+    for (;auto b;) {} // expected-error {{must have an initializer}}
+               ^
+
+"Test_name.c", line 20: warning: "auto" as a type specifier is nonstandard in this mode
+    while (auto b) {} // expected-error {{must have an initializer}}
+           ^
+
+"Test_name.c", line 20: error: cannot deduce "auto" type (initializer required)
+    while (auto b) {} // expected-error {{must have an initializer}}
+                ^
+
+"Test_name.c", line 20: error: a condition declaration must include an initializer
+    while (auto b) {} // expected-error {{must have an initializer}}
+                ^
+
+"Test_name.c", line 21: warning: "auto" as a type specifier is nonstandard in this mode
+    if (auto b = true) { (void)b; }
+        ^
+
+"Test_name.c", line 24: warning: "auto" as a type specifier is nonstandard in this mode
+  auto n(1,2,3); // expected-error{{initializer for variable 'n' with type 'auto' contains multiple expressions}}
+  ^
+
+"Test_name.c", line 24: error: too many initializer values
+  auto n(1,2,3); // expected-error{{initializer for variable 'n' with type 'auto' contains multiple expressions}}
+           ^
+
+"Test_name.c", line 28: warning: "auto" as a type specifier is nonstandard in this mode
+    auto a = "const char [16]", *p = &a;
+    ^
+
+"Test_name.c", line 32: warning: "auto" as a type specifier is nonstandard in this mode
+    auto b = 42ULL;
+    ^
+
+"Test_name.c", line 34: warning: "auto" as a type specifier is nonstandard in this mode
+    for (auto c = 0; c < b; ++c) {
+         ^
+
+"Test_name.c", line 42: warning: "auto" as a type specifier is nonstandard in this mode
+    auto x = 5;
+    ^
+
+"Test_name.c", line 43: warning: "auto" as a type specifier is nonstandard in this mode
+    const auto *v = &x, u = 6;
+          ^
+
+"Test_name.c", line 44: warning: "auto" as a type specifier is nonstandard in this mode
+    static auto y = 0.0;
+           ^
+
+"Test_name.c", line 43: warning: variable "v" was set but never used
+    const auto *v = &x, u = 6;
+                ^
+
+"Test_name.c", line 44: warning: variable "y" was set but never used
+    static auto y = 0.0;
+                ^
+
+"Test_name.c", line 47: warning: variable "r" was declared but never referenced
+    auto int r; // expected-warning {{'auto' storage class specifier}}
+             ^
+
+"Test_name.c", line 49: warning: variable "xHasTypeInt" was declared but never referenced
+    same<__typeof(x), int> xHasTypeInt;
+                           ^
+
+"Test_name.c", line 50: warning: variable "vHasTypeConstIntPtr" was declared but never referenced
+    same<__typeof(v), const int*> vHasTypeConstIntPtr;
+                                  ^
+
+"Test_name.c", line 51: warning: variable "uHasTypeConstInt" was declared but never referenced
+    same<__typeof(u), const int> uHasTypeConstInt;
+                                 ^
+
+"Test_name.c", line 52: warning: variable "yHasTypeDouble" was declared but never referenced
+    same<__typeof(y), double> yHasTypeDouble;
+                              ^
+
+"Test_name.c", line 92: warning: "auto" as a type specifier is nonstandard in this mode
+  auto fail((unknown)); // expected-error{{use of undeclared identifier 'unknown'}}
+  ^
+
+"Test_name.c", line 92: error: identifier "unknown" is undefined
+  auto fail((unknown)); // expected-error{{use of undeclared identifier 'unknown'}}
+             ^
+
+16 errors detected in the compilation of "Test_name.c".

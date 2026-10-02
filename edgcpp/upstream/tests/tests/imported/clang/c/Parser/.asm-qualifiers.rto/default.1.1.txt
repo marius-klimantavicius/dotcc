@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 14: error: expected a "("
+    asm noodle(""); // expected-error {{expected 'volatile', 'inline', 'goto', or '('}}
+        ^
+
+"Test_name.c", line 15: error: expected a "("
+    asm goto noodle("" ::::foo); // expected-error {{expected 'volatile', 'inline', 'goto', or '('}}
+             ^
+
+"Test_name.c", line 16: error: expected a "("
+    asm volatile noodle inline(""); // expected-error {{expected 'volatile', 'inline', 'goto', or '('}}
+                 ^
+
+"Test_name.c", line 45: warning: type qualifier specified more than once
+    asm volatile volatile("");             // expected-error {{duplicate asm qualifier 'volatile'}}
+                 ^
+
+"Test_name.c", line 46: warning: type qualifier specified more than once
+    __asm__ __volatile__ __volatile__(""); // expected-error {{duplicate asm qualifier 'volatile'}}
+                         ^
+
+"Test_name.c", line 47: error: duplicate 'asm' qualifier
+    asm inline inline("");                 // expected-error {{duplicate asm qualifier 'inline'}}
+               ^
+
+"Test_name.c", line 48: error: duplicate 'asm' qualifier
+    __asm__ __inline__ __inline__("");     // expected-error {{duplicate asm qualifier 'inline'}}
+                       ^
+
+"Test_name.c", line 49: error: duplicate 'asm' qualifier
+    asm goto goto("" ::::foo);             // expected-error {{duplicate asm qualifier 'goto'}}
+             ^
+
+"Test_name.c", line 50: error: duplicate 'asm' qualifier
+    __asm__ goto goto("" ::::foo);         // expected-error {{duplicate asm qualifier 'goto'}}
+                 ^
+
+"Test_name.c", line 57: error: expected an identifier
+  asm inline (""); // expected-error {{meaningless 'inline' on asm outside function}}
+              ^
+
+"Test_name.c", line 57: error: "asm" must be used with a function definition
+  asm inline (""); // expected-error {{meaningless 'inline' on asm outside function}}
+              ^
+
+"Test_name.c", line 57: warning: inline specifier allowed on function declarations only
+  asm inline (""); // expected-error {{meaningless 'inline' on asm outside function}}
+      ^
+
+"Test_name.c", line 58: error: expected an identifier
+  asm goto (""::::noodle); // expected-error {{meaningless 'goto' on asm outside function}}
+      ^
+
+"Test_name.c", line 58: error: expected a type specifier
+  asm goto (""::::noodle); // expected-error {{meaningless 'goto' on asm outside function}}
+            ^
+
+"Test_name.c", line 58: error: "asm" must be used with a function definition
+  asm goto (""::::noodle); // expected-error {{meaningless 'goto' on asm outside function}}
+                         ^
+
+12 errors detected in the compilation of "Test_name.c".

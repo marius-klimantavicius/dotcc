@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 5: warning: null (zero) character in input line ignored
+    /* { dg-warning "null character\\(s\\) ignored" } */
+  ^
+
+"Test_name.c", line 12: error: unrecognized token
+  € /* { dg-error "stray '.200' in program" } */
+  ^
+
+"Test_name.c", line 12: error: expected a declaration
+  € /* { dg-error "stray '.200' in program" } */
+  ^
+
+"Test_name.c", line 18: warning: unrecognized character escape sequence
+  const char *fmt = "\"; /* { dg-warning "unknown escape sequence: '.001'" } */
+                     ^
+
+"Test_name.c", line 18: warning: parsing restarts here after previous syntax error
+  const char *fmt = "\"; /* { dg-warning "unknown escape sequence: '.001'" } */
+                        ^
+
+2 errors detected in the compilation of "Test_name.c".

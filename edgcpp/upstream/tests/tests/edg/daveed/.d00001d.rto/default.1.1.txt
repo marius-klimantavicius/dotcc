@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c --designators Test_name.c
+"Test_name.c", line 25: error: expected an expression
+  Z n1 = { .p = .l = { 3, 4}};
+                ^
+
+"Test_name.c", line 26: error: expected an "="
+  Z n2 = { .p.l { 3, 4}};
+                ^
+
+2 errors detected in the compilation of "Test_name.c".

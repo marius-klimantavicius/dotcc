@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 18: warning: expression has no effect
+    x<int>;          // { dg-bogus "" }
+    ^
+
+"Test_name.c", line 19: warning: expression has no effect
+    y<0>;            // { dg-bogus "" }
+    ^
+
+"Test_name.c", line 10: error: the deduced placeholder type "char" failed the type constraint
+  template <auto V> same_as<int> auto y = V; // { dg-error "constraint" }
+                    ^
+"Test_name.c", line 5: note: atomic constraint evaluates to false
+  template <class T, class U> concept same_as = __is_same(T, U);
+                                                ^
+          detected during instantiation of "same_as<...> auto y [with V='0']" at line 20
+
+"Test_name.c", line 20: warning: expression has no effect
+    y<'0'>;          // { dg-message "required from here" }
+    ^
+
+"Test_name.c", line 21: warning: expression has no effect
+    A<void>::z<0>;   // { dg-bogus "" }
+    ^
+
+"Test_name.c", line 14: error: the deduced placeholder type "char" failed the type constraint
+    template <auto V> static inline same_as<int> auto z = V; // { dg-error "constraint" }
+                                    ^
+"Test_name.c", line 5: note: atomic constraint evaluates to false
+  template <class T, class U> concept same_as = __is_same(T, U);
+                                                ^
+          detected during instantiation of "same_as<...> auto A<<unnamed>>::z [with <unnamed>=void, V='0']" at line 14
+
+"Test_name.c", line 22: warning: expression has no effect
+    A<void>::z<'0'>; // { dg-message "required from here" }
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

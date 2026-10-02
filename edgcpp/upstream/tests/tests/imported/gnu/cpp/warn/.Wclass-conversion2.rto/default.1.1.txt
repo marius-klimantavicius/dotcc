@@ -1,0 +1,41 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 10: warning: "X::operator X()" will not be called for implicit or explicit conversions
+    operator X(); // { dg-bogus "3:converting .X. to the same type will never use a type conversion operator" }
+    ^
+
+"Test_name.c", line 11: warning: "X::operator X &()" will not be called for implicit or explicit conversions
+    operator X&(); // { dg-bogus "3:converting .X. to a reference to the same type will never use a type conversion operator" }
+    ^
+
+"Test_name.c", line 12: warning: "X::operator X() const" will not be called for implicit or explicit conversions
+    operator X() const; // { dg-bogus "3:converting .X. to the same type will never use a type conversion operator" }
+    ^
+
+"Test_name.c", line 13: warning: "X::operator const X()" will not be called for implicit or explicit conversions
+    operator const X(); // { dg-bogus "3:converting .X. to the same type will never use a type conversion operator" }
+    ^
+
+"Test_name.c", line 15: warning: "X::operator B()" will not be called for implicit or explicit conversions
+    operator B(); // { dg-bogus "3:converting .X. to a base class .B. will never use a type conversion operator" }
+    ^
+
+"Test_name.c", line 16: warning: "X::operator B &()" will not be called for implicit or explicit conversions
+    operator B&(); // { dg-bogus "3:converting .X. to a reference to a base class .B. will never use a type conversion operator" }
+    ^
+
+"Test_name.c", line 17: warning: "X::operator B() const" will not be called for implicit or explicit conversions
+    operator B() const; // { dg-bogus "3:converting .X. to a base class .B. will never use a type conversion operator" }
+    ^
+
+"Test_name.c", line 18: warning: "X::operator const B()" will not be called for implicit or explicit conversions
+    operator const B(); // { dg-bogus "3:converting .X. to a base class .const B. will never use a type conversion operator" }
+    ^
+
+"Test_name.c", line 20: warning: "X::operator void()" will not be called for implicit or explicit conversions
+    operator void(); // { dg-bogus "3:converting .X. to .void. will never use a type conversion operator" }
+    ^
+
+"Test_name.c", line 21: warning: "X::operator void() const" will not be called for implicit or explicit conversions
+    operator void() const; // { dg-bogus "3:converting .X. to .void. will never use a type conversion operator" }
+    ^
+

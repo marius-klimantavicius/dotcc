@@ -1,0 +1,85 @@
+fe_only -DTEST_NUMBER=1 --c++17 -w Test_name.c
+"Test_name.c", line 28: error: function "Noncopyable::Noncopyable(const Noncopyable &)" (declared at line 6) cannot be referenced -- it is a deleted function
+    return nrvo; // expected-error {{deleted constructor}}
+           ^
+
+"Test_name.c", line 32: error: function "Noncopyable::Noncopyable(const Noncopyable &)" (declared at line 6) cannot be referenced -- it is a deleted function
+  Noncopyable nc3 = Derived(); // expected-error {{deleted constructor}}
+                    ^
+
+"Test_name.c", line 34: error: function "Noncopyable::Noncopyable(const Noncopyable &)" (declared at line 6) cannot be referenced -- it is a deleted function
+  Noncopyable ref_conv1 = Convert<Noncopyable&>(); // expected-error {{deleted constructor}}
+                          ^
+
+"Test_name.c", line 35: error: function "Noncopyable::Noncopyable(const Noncopyable &)" (declared at line 6) cannot be referenced -- it is a deleted function
+  Noncopyable ref_conv2((Convert<Noncopyable&>())); // expected-error {{deleted constructor}}
+                        ^
+
+"Test_name.c", line 36: error: function "Noncopyable::Noncopyable(const Noncopyable &)" (declared at line 6) cannot be referenced -- it is a deleted function
+  Noncopyable ref_conv3 = {Convert<Noncopyable&>()}; // expected-error {{deleted constructor}}
+                          ^
+
+"Test_name.c", line 37: error: function "Noncopyable::Noncopyable(const Noncopyable &)" (declared at line 6) cannot be referenced -- it is a deleted function
+  Noncopyable ref_conv4{Convert<Noncopyable&>()}; // expected-error {{deleted constructor}}
+                       ^
+
+"Test_name.c", line 39: error: function "Noncopyable::Noncopyable(const Noncopyable &)" (declared at line 6) cannot be referenced -- it is a deleted function
+  Noncopyable derived_conv1 = Convert<Derived>(); // expected-error {{deleted constructor}}
+                              ^
+
+"Test_name.c", line 40: error: function "Noncopyable::Noncopyable(const Noncopyable &)" (declared at line 6) cannot be referenced -- it is a deleted function
+  Noncopyable derived_conv2((Convert<Derived>())); // expected-error {{deleted constructor}}
+                            ^
+
+"Test_name.c", line 41: error: function "Noncopyable::Noncopyable(const Noncopyable &)" (declared at line 6) cannot be referenced -- it is a deleted function
+  Noncopyable derived_conv3 = {Convert<Derived>()}; // expected-error {{deleted constructor}}
+                              ^
+
+"Test_name.c", line 42: error: function "Noncopyable::Noncopyable(const Noncopyable &)" (declared at line 6) cannot be referenced -- it is a deleted function
+  Noncopyable derived_conv4{Convert<Derived>()}; // expected-error {{deleted constructor}}
+                           ^
+
+"Test_name.c", line 44: error: no suitable user-defined conversion from "Convert<NoncopyableAggr>" to "Noncopyable" exists
+  NoncopyableAggr nc_aggr3 = {Convert<NoncopyableAggr>()}; // expected-error {{no viable conversion}}
+                              ^
+
+"Test_name.c", line 45: error: no suitable user-defined conversion from "Convert<NoncopyableAggr>" to "Noncopyable" exists
+  NoncopyableAggr nc_aggr4{Convert<NoncopyableAggr>()}; // expected-error {{no viable conversion}}
+                           ^
+
+"Test_name.c", line 46: error: no suitable user-defined conversion from "Convert<Noncopyable>" to "NoncopyableAggr" exists
+  NoncopyableAggr nc_aggr5 = Convert<Noncopyable>(); // expected-error {{no viable conversion}}
+                             ^
+
+"Test_name.c", line 47: error: no instance of constructor "NoncopyableAggr::NoncopyableAggr" matches the argument list
+            argument types are: (Convert<Noncopyable>)
+  NoncopyableAggr nc_aggr6((Convert<Noncopyable>())); // expected-error {{no matching constructor}}
+                           ^
+"Test_name.c", line 10: note: function "NoncopyableAggr::NoncopyableAggr(const NoncopyableAggr &)" does not match because argument #1 does not match parameter
+  struct NoncopyableAggr {
+         ^
+"Test_name.c", line 10: note: number of parameters of function "NoncopyableAggr::NoncopyableAggr()" does not match the call
+  struct NoncopyableAggr {
+         ^
+
+"Test_name.c", line 50: error: function "Noncopyable::Noncopyable(const Noncopyable &)" (declared at line 6) cannot be referenced -- it is a deleted function
+    Noncopyable sc2 = static_cast<Noncopyable>(nc1); // expected-error {{deleted}}
+                                               ^
+
+"Test_name.c", line 51: error: function "Noncopyable::Noncopyable(const Noncopyable &)" (declared at line 6) cannot be referenced -- it is a deleted function
+    Noncopyable sc3 = static_cast<Noncopyable&&>(Noncopyable()); // expected-error {{deleted}}
+                      ^
+
+"Test_name.c", line 52: error: function "Noncopyable::Noncopyable(const Noncopyable &)" (declared at line 6) cannot be referenced -- it is a deleted function
+    Noncopyable sc4 = static_cast<Noncopyable>(static_cast<Noncopyable&&>(Noncopyable())); // expected-error {{deleted}}
+                                               ^
+
+"Test_name.c", line 54: error: function "Noncopyable::Noncopyable(const Noncopyable &)" (declared at line 6) cannot be referenced -- it is a deleted function
+    Noncopyable cc2 = (Noncopyable)Derived(); // expected-error {{deleted}}
+                                   ^
+
+"Test_name.c", line 56: error: function "Noncopyable::Noncopyable(const Noncopyable &)" (declared at line 6) cannot be referenced -- it is a deleted function
+    Noncopyable fc2 = Noncopyable(Derived()); // expected-error {{deleted}}
+                      ^
+
+19 errors detected in the compilation of "Test_name.c".

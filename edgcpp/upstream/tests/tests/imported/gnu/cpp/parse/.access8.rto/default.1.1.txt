@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 10: error: type "foo::memfun" (declared at line 7) is inaccessible
+  template<foo::memfun> // { dg-error "context" }
+                ^
+
+"Test_name.c", line 13: error: type "foo::memfun" (declared at line 7) is inaccessible
+  template <typename T = foo::memfun> // { dg-error "context" }
+                              ^
+
+2 errors detected in the compilation of "Test_name.c".

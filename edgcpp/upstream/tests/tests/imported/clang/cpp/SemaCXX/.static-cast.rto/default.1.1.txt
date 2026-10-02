@@ -1,0 +1,110 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 62: error: invalid type conversion
+    (void)static_cast<void*>((const int*)0); // expected-error {{static_cast from 'const int *' to 'void *' is not allowed}}
+          ^
+
+"Test_name.c", line 63: error: conversion to inaccessible base class "A" is not allowed
+    (void)static_cast<A*>((E*)0); // expected-error {{cannot cast 'E' to its private base class 'A'}}
+                      ^
+
+"Test_name.c", line 64: error: base class "A" is ambiguous
+    (void)static_cast<A*>((H*)0); // expected-error {{ambiguous conversion}}
+                      ^
+
+"Test_name.c", line 65: error: invalid type conversion
+    (void)static_cast<int>((int*)0); // expected-error {{static_cast from 'int *' to 'int' is not allowed}}
+          ^
+
+"Test_name.c", line 66: error: invalid type conversion
+    (void)static_cast<A**>((B**)0); // expected-error {{static_cast from 'B **' to 'A **' is not allowed}}
+          ^
+
+"Test_name.c", line 67: error: invalid type conversion
+    (void)static_cast<char&>(i); // expected-error {{non-const lvalue reference to type 'char' cannot bind to a value of unrelated type 'int'}}
+          ^
+
+"Test_name.c", line 87: error: cannot convert pointer to base class "A" to pointer to derived class "C1" -- base class is virtual
+    (void)static_cast<C1*>((A*)0); // expected-error {{cannot cast 'A *' to 'C1 *' via virtual base 'B'}}
+                      ^
+
+"Test_name.c", line 88: error: cannot convert pointer to base class "A" to pointer to derived class "C1" -- base class is virtual
+    (void)static_cast<C1&>(*((A*)0)); // expected-error {{cannot cast 'A' to 'C1 &' via virtual base 'B'}}
+                           ^
+
+"Test_name.c", line 89: error: cannot convert pointer to base class "A" to pointer to derived class "D" -- base class is virtual
+    (void)static_cast<D*>((A*)0); // expected-error {{cannot cast 'A *' to 'D *' via virtual base 'B'}}
+                      ^
+
+"Test_name.c", line 90: error: cannot convert pointer to base class "A" to pointer to derived class "D" -- base class is virtual
+    (void)static_cast<D&>(*((A*)0)); // expected-error {{cannot cast 'A' to 'D &' via virtual base 'B'}}
+                          ^
+
+"Test_name.c", line 91: error: invalid type conversion
+    (void)static_cast<B*>((const A*)0); // expected-error {{static_cast from 'const A *' to 'B *' casts away qualifiers}}
+          ^
+
+"Test_name.c", line 92: error: invalid type conversion
+    (void)static_cast<B&>(*((const A*)0)); // expected-error {{static_cast from 'const A' to 'B &' casts away qualifiers}}
+          ^
+
+"Test_name.c", line 93: error: conversion from inaccessible base class "A" is not allowed
+    (void)static_cast<E*>((A*)0); // expected-error {{cannot cast private base class 'A' to 'E'}}
+          ^
+
+"Test_name.c", line 94: error: conversion from inaccessible base class "A" is not allowed
+    (void)static_cast<E&>(*((A*)0)); // expected-error {{cannot cast private base class 'A' to 'E'}}
+          ^
+
+"Test_name.c", line 95: error: derived class "H" contains more than one instance of class "A"
+    (void)static_cast<H*>((A*)0); // expected-error {{ambiguous cast from base 'A' to derived 'H':\n    A -> B -> G1 -> struct H\n    struct A -> B -> G2 -> struct H}}
+                      ^
+
+"Test_name.c", line 96: error: derived class "H" contains more than one instance of class "A"
+    (void)static_cast<H&>(*((A*)0)); // expected-error {{ambiguous cast from base 'A' to derived 'H':\n    A -> B -> G1 -> struct H\n    A -> B -> G2 -> struct H}}
+                          ^
+
+"Test_name.c", line 97: error: invalid type conversion
+    (void)static_cast<E*>((B*)0); // expected-error {{static_cast from 'B *' to 'E *', which are not related by inheritance, is not allowed}}
+          ^
+
+"Test_name.c", line 98: error: invalid type conversion
+    (void)static_cast<E&>(*((B*)0)); // expected-error {{non-const lvalue reference to type 'E' cannot bind to a value of unrelated type 'B'}}
+          ^
+
+"Test_name.c", line 101: error: invalid type conversion
+    (void)static_cast<E*>((J*)0); // expected-error {{static_cast from 'J *' to 'E *', which are not related by inheritance, is not allowed}}
+          ^
+
+"Test_name.c", line 102: error: invalid type conversion
+    (void)static_cast<I*>((B*)0); // expected-error {{static_cast from 'B *' to 'I *', which are not related by inheritance, is not allowed}}
+          ^
+
+"Test_name.c", line 119: error: invalid type conversion
+    (void)static_cast<Enum>((int*)0); // expected-error {{static_cast from 'int *' to 'Enum' is not allowed}}
+          ^
+
+"Test_name.c", line 130: error: invalid type conversion
+    (void)static_cast<int*>((const void*)0); // expected-error {{static_cast from 'const void *' to 'int *' casts away qualifiers}}
+          ^
+
+"Test_name.c", line 131: warning: invalid type conversion
+    (void)static_cast<void (*)()>((void*)0); // expected-error {{static_cast from 'void *' to 'void (*)()' is not allowed}}
+          ^
+
+"Test_name.c", line 140: error: base class "A" is ambiguous
+    (void)static_cast<int A::*>((int H::*)0); // expected-error {{ambiguous conversion from pointer to member of derived class 'H' to pointer to member of base class 'A':}}
+                      ^
+
+"Test_name.c", line 141: error: cannot convert pointer to member of derived class "F" to pointer to member of base class "A" -- base class is virtual
+    (void)static_cast<int A::*>((int F::*)0); // expected-error {{conversion from pointer to member of class 'F' to pointer to member of class 'A' via virtual base 'B' is not allowed}}
+                      ^
+
+"Test_name.c", line 142: error: invalid type conversion
+    (void)static_cast<int I::*>((int J::*)0); // expected-error {{static_cast from 'int J::*' to 'int I::*' is not allowed}}
+          ^
+
+"Test_name.c", line 204: error: cannot determine which instance of overloaded function "PR6072::B::f" is intended
+      (void)static_cast<void (D::*)()>(&B::f); // expected-error-re{{address of overloaded function 'f' cannot be static_cast to type 'void (D::*)(){{( __attribute__\(\(thiscall\)\))?}}'}}
+                                       ^
+
+26 errors detected in the compilation of "Test_name.c".

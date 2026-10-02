@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++26 Test_name.c
+"Test_name.c", line 3: error: too many initializer values
+  char cv[4] = { 'a', 's', 'd', 'f', 0 };     // error: too many initializers
+                                     ^
+
+1 error detected in the compilation of "Test_name.c".

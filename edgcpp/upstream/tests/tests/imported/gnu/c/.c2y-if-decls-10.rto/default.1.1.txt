@@ -1,0 +1,90 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 12: error: expected an expression
+    switch (;);	    /* { dg-error "expected" } */
+            ^
+
+"Test_name.c", line 13: error: expected an expression
+    switch (int);	    /* { dg-error "expected identifier" } */
+            ^
+
+"Test_name.c", line 15: error: expected an expression
+    switch (auto);    /* { dg-error "expected identifier" } */
+            ^
+
+"Test_name.c", line 17: error: expected an expression
+    switch (int;);    /* { dg-error "declaration" } */
+            ^
+
+"Test_name.c", line 18: error: expected an expression
+    switch (auto;);	    /* { dg-error "empty|initializer" } */
+            ^
+
+"Test_name.c", line 19: error: expected an expression
+    switch (int i);	    /* { dg-error "initializer" } */
+            ^
+
+"Test_name.c", line 20: error: expected an expression
+    switch (int i;);	    /* { dg-error "expected" } */
+            ^
+
+"Test_name.c", line 21: error: expected an expression
+    switch (int i = 0;);  /* { dg-error "expected" } */
+            ^
+
+"Test_name.c", line 23: error: expected an expression
+    switch (extern int i = 0);  /* { dg-error "both .extern. and initializer" } */
+            ^
+
+"Test_name.c", line 24: error: expected an expression
+    switch (extern int i);  /* { dg-error "initializer" } */
+            ^
+
+"Test_name.c", line 25: error: expected an expression
+    switch (thread_local int i = 0); /* { dg-error "function-scope" } */
+            ^
+
+"Test_name.c", line 26: error: expected an expression
+    switch (typedef int i); /* { dg-error "initializer" } */
+            ^
+
+"Test_name.c", line 27: error: expected an expression
+    switch (typedef int i = 0); /* { dg-error "initialized" } */
+            ^
+
+"Test_name.c", line 29: error: expected an expression
+    switch (int i = 2, j = 3);  /* { dg-error "only declare a single object" } */
+            ^
+
+"Test_name.c", line 31: error: expected an expression
+    switch (void (*fp)(int));  /* { dg-error "initializer" } */
+            ^
+
+"Test_name.c", line 32: error: expected an expression
+    switch ([[maybe_unused]] g);  /* { dg-error "expected" } */
+            ^
+
+"Test_name.c", line 33: error: expected an expression
+    switch ([[maybe_unused]] 42);  /* { dg-error "expected" } */
+            ^
+
+"Test_name.c", line 34: error: expected an expression
+    switch ([[maybe_unused]] int);  /* { dg-error "expected|initializer" } */
+            ^
+
+"Test_name.c", line 35: error: expected an expression
+    switch (__attribute__((unused)) g); /* { dg-error "initializer" } */
+            ^
+
+"Test_name.c", line 36: error: expected an expression
+    switch (__attribute__((unused)) 42);  /* { dg-error "expected|initializer" } */
+            ^
+
+"Test_name.c", line 37: error: expected an expression
+    switch (__attribute__((unused)) int);  /* { dg-error "expected|initializer" } */
+            ^
+
+"Test_name.c", line 39: error: expected an expression
+    switch (int arr[] = { 1 });  /* { dg-error "switch quantity not an integer" } */
+            ^
+
+22 errors detected in the compilation of "Test_name.c".

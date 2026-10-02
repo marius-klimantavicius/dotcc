@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 6: error: the template argument list of the partial specialization includes a nontype argument whose type depends on a template parameter
+  template <class T> struct C<T, 1>;              // { dg-error "depends on a template parameter" }
+                            ^
+
+"Test_name.c", line 10: error: the template argument list of the partial specialization includes a nontype argument whose type depends on a template parameter
+  template< int X > class A<X,&array> { };        // { dg-error "depends on a template parameter" }
+                          ^
+
+2 errors detected in the compilation of "Test_name.c".

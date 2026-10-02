@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=3 --c++17 -tused --clang_version 80000 Test_name.c
+"Test_name.c", line 8: error: incomplete type "X" is not allowed
+    template <class c> A(c &&, X = X());
+                                   ^
+
+1 error detected in the compilation of "Test_name.c".

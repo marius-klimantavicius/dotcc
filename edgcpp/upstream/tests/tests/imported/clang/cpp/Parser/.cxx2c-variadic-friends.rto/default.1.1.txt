@@ -1,0 +1,230 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++26 Test_name.c
+"Test_name.c", line 8: error: expected an identifier
+    friend int, int;
+              ^
+
+"Test_name.c", line 8: error: invalid friend declaration
+    friend int, int;
+    ^
+
+"Test_name.c", line 8: error: expected a ";"
+    friend int, int;
+              ^
+
+"Test_name.c", line 9: error: expected an identifier
+    friend int, long, char;
+              ^
+
+"Test_name.c", line 9: error: invalid friend declaration
+    friend int, long, char;
+    ^
+
+"Test_name.c", line 9: error: expected a ";"
+    friend int, long, char;
+              ^
+
+"Test_name.c", line 12: error: expected an identifier
+    friend float...; // expected-error {{pack expansion does not contain any unexpanded parameter packs}}
+                ^
+
+"Test_name.c", line 12: error: invalid friend declaration
+    friend float...; // expected-error {{pack expansion does not contain any unexpanded parameter packs}}
+    ^
+
+"Test_name.c", line 14: error: expected an identifier
+    friend short..., unsigned, unsigned short...; // expected-error 2 {{pack expansion does not contain any unexpanded parameter packs}}
+                ^
+
+"Test_name.c", line 14: error: invalid friend declaration
+    friend short..., unsigned, unsigned short...; // expected-error 2 {{pack expansion does not contain any unexpanded parameter packs}}
+    ^
+
+"Test_name.c", line 14: error: expected a ";"
+    friend short..., unsigned, unsigned short...; // expected-error 2 {{pack expansion does not contain any unexpanded parameter packs}}
+                   ^
+
+"Test_name.c", line 17: error: "TS" has already been declared in the current scope
+    friend struct TS, int; // expected-error {{a friend declaration that befriends a template must contain exactly one type-specifier}}
+                  ^
+
+"Test_name.c", line 17: error: expected an identifier
+    friend struct TS, int; // expected-error {{a friend declaration that befriends a template must contain exactly one type-specifier}}
+                    ^
+
+"Test_name.c", line 17: error: invalid friend declaration
+    friend struct TS, int; // expected-error {{a friend declaration that befriends a template must contain exactly one type-specifier}}
+                    ^
+
+"Test_name.c", line 20: error: expected an identifier
+    double friend, double; // expected-error {{expected member name or ';' after declaration specifiers}}
+                 ^
+
+"Test_name.c", line 20: error: invalid friend declaration
+    double friend, double; // expected-error {{expected member name or ';' after declaration specifiers}}
+    ^
+
+"Test_name.c", line 20: error: expected a ";"
+    double friend, double; // expected-error {{expected member name or ';' after declaration specifiers}}
+                 ^
+
+"Test_name.c", line 34: error: expected an identifier
+    friend Ts...;
+             ^
+
+"Test_name.c", line 34: error: invalid friend declaration
+    friend Ts...;
+    ^
+
+"Test_name.c", line 36: warning: template parameter "Ts" may not be used in an elaborated type specifier
+    friend class Ts...; // expected-error {{declaration of 'Ts' shadows template parameter}}
+                 ^
+
+"Test_name.c", line 36: error: expected an identifier
+    friend class Ts...; // expected-error {{declaration of 'Ts' shadows template parameter}}
+                   ^
+
+"Test_name.c", line 36: error: invalid friend declaration
+    friend class Ts...; // expected-error {{declaration of 'Ts' shadows template parameter}}
+    ^
+
+"Test_name.c", line 43: error: expected an identifier
+    friend Us...; // expected-error {{friend type templates must use an elaborated type}}
+             ^
+
+"Test_name.c", line 43: error: invalid friend declaration
+    friend Us...; // expected-error {{friend type templates must use an elaborated type}}
+             ^
+
+"Test_name.c", line 46: warning: template parameter "Us" may not be used in an elaborated type specifier
+    friend class Us...; // expected-error {{declaration of 'Us' shadows template parameter}}
+                 ^
+
+"Test_name.c", line 46: error: expected an identifier
+    friend class Us...; // expected-error {{declaration of 'Us' shadows template parameter}}
+                   ^
+
+"Test_name.c", line 46: error: invalid friend declaration
+    friend class Us...; // expected-error {{declaration of 'Us' shadows template parameter}}
+                   ^
+
+"Test_name.c", line 49: error: parameter pack "Ts" was referenced but not expanded
+    friend class C<Ts>::template Nested<U>...; // expected-error {{cannot specialize a dependent template}}
+                   ^
+
+"Test_name.c", line 49: error: expected an identifier
+    friend class C<Ts>::template Nested<U>...; // expected-error {{cannot specialize a dependent template}}
+                                          ^
+
+"Test_name.c", line 49: error: invalid friend declaration
+    friend class C<Ts>::template Nested<U>...; // expected-error {{cannot specialize a dependent template}}
+                                          ^
+
+"Test_name.c", line 52: error: parameter pack "Us" was referenced but not expanded
+    friend class C<Ts...>::template Nested<Us>...; // expected-error {{cannot specialize a dependent template}}
+                                           ^
+
+"Test_name.c", line 52: error: expected an identifier
+    friend class C<Ts...>::template Nested<Us>...; // expected-error {{cannot specialize a dependent template}}
+                                              ^
+
+"Test_name.c", line 52: error: invalid friend declaration
+    friend class C<Ts...>::template Nested<Us>...; // expected-error {{cannot specialize a dependent template}}
+                                              ^
+
+"Test_name.c", line 56: error: parameter pack "Us" was referenced but not expanded
+    friend class C<Us>::Nested...; // expected-error {{friend declaration expands pack 'Us' that is declared it its own template parameter list}}
+                   ^
+
+"Test_name.c", line 56: error: expected an identifier
+    friend class C<Us>::Nested...; // expected-error {{friend declaration expands pack 'Us' that is declared it its own template parameter list}}
+                              ^
+
+"Test_name.c", line 56: error: invalid friend declaration
+    friend class C<Us>::Nested...; // expected-error {{friend declaration expands pack 'Us' that is declared it its own template parameter list}}
+                              ^
+
+"Test_name.c", line 59: error: parameter pack "Bs" was referenced but not expanded
+    friend class E<Bs>::Nested...; // expected-error {{friend declaration expands pack 'Bs' that is declared it its own template parameter list}}
+                   ^
+
+"Test_name.c", line 59: error: expected an identifier
+    friend class E<Bs>::Nested...; // expected-error {{friend declaration expands pack 'Bs' that is declared it its own template parameter list}}
+                              ^
+
+"Test_name.c", line 59: error: invalid friend declaration
+    friend class E<Bs>::Nested...; // expected-error {{friend declaration expands pack 'Bs' that is declared it its own template parameter list}}
+                              ^
+
+"Test_name.c", line 64: error: class "TS" may not have a template argument list
+    friend class TS<Ts>::Nested...; // expected-warning {{dependent nested name specifier 'TS<Ts>' for friend template declaration is not supported; ignoring this friend declaration}}
+                 ^
+
+"Test_name.c", line 64: error: parameter pack "Ts" was referenced but not expanded
+    friend class TS<Ts>::Nested...; // expected-warning {{dependent nested name specifier 'TS<Ts>' for friend template declaration is not supported; ignoring this friend declaration}}
+                    ^
+
+"Test_name.c", line 64: error: invalid friend declaration
+    friend class TS<Ts>::Nested...; // expected-warning {{dependent nested name specifier 'TS<Ts>' for friend template declaration is not supported; ignoring this friend declaration}}
+    ^
+
+"Test_name.c", line 64: error: expected a ";"
+    friend class TS<Ts>::Nested...; // expected-warning {{dependent nested name specifier 'TS<Ts>' for friend template declaration is not supported; ignoring this friend declaration}}
+                               ^
+
+"Test_name.c", line 67: error: parameter pack "Ts" was referenced but not expanded
+    friend class D<T, Ts>::Nested...; // expected-warning {{dependent nested name specifier 'D<T, Ts>' for friend class declaration is not supported; turning off access control for 'VS'}}
+                      ^
+
+"Test_name.c", line 67: error: expected an identifier
+    friend class D<T, Ts>::Nested...; // expected-warning {{dependent nested name specifier 'D<T, Ts>' for friend class declaration is not supported; turning off access control for 'VS'}}
+                                 ^
+
+"Test_name.c", line 67: error: invalid friend declaration
+    friend class D<T, Ts>::Nested...; // expected-warning {{dependent nested name specifier 'D<T, Ts>' for friend class declaration is not supported; turning off access control for 'VS'}}
+                                 ^
+
+"Test_name.c", line 34: error: parameter pack "Ts" was referenced but not expanded
+    friend Ts...;
+           ^
+
+"Test_name.c", line 40: error: parameter pack "Ts" was referenced but not expanded
+    friend Ts; // expected-error {{friend declaration contains unexpanded parameter pack}}
+           ^
+
+"Test_name.c", line 43: error: parameter pack "Us" was referenced but not expanded
+    friend Us...; // expected-error {{friend type templates must use an elaborated type}}
+           ^
+
+"Test_name.c", line 83: error: parameter pack "Us" was referenced but not expanded
+      friend class Ts::template Nested<Us>::Foo...;
+                                       ^
+
+"Test_name.c", line 83: error: expected an identifier
+      friend class Ts::template Nested<Us>::Foo...;
+                                               ^
+
+"Test_name.c", line 83: error: invalid friend declaration
+      friend class Ts::template Nested<Us>::Foo...;
+      ^
+
+"Test_name.c", line 83: error: parameter pack "Ts" was referenced but not expanded
+      friend class Ts::template Nested<Us>::Foo...;
+                   ^
+
+"Test_name.c", line 88: warning: variable "s" was declared but never referenced
+    S<A>::T<int> s;
+                 ^
+
+"Test_name.c", line 89: warning: variable "s2" was declared but never referenced
+    S<A, A>::T<int, long> s2;
+                          ^
+
+"Test_name.c", line 90: warning: variable "s3" was declared but never referenced
+    S<A>::T<int, long> s3; // expected-note {{in instantiation of}}
+                       ^
+
+"Test_name.c", line 91: warning: variable "s4" was declared but never referenced
+    S<A, A>::T<int> s4; // expected-note {{in instantiation of}}
+                    ^
+
+51 errors detected in the compilation of "Test_name.c".

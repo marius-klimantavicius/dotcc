@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 --strict_gnu -w Test_name.c
+"Test_name.c", line 20: error: identifier "__seg_gs" is undefined
+  foo (SEG struct T *p)
+       ^
+
+"Test_name.c", line 20: error: invalid combination of type specifiers
+  foo (SEG struct T *p)
+           ^
+
+"Test_name.c", line 27: error: identifier "__seg_gs" is undefined
+  bar (SEG struct T *p, _BitInt(710) x, int y, double z)
+       ^
+
+"Test_name.c", line 27: error: invalid combination of type specifiers
+  bar (SEG struct T *p, _BitInt(710) x, int y, double z)
+           ^
+
+"Test_name.c", line 36: error: identifier "__seg_gs" is undefined
+  baz (SEG struct T *p, _BitInt(710) x, _BitInt(710) y)
+       ^
+
+"Test_name.c", line 36: error: invalid combination of type specifiers
+  baz (SEG struct T *p, _BitInt(710) x, _BitInt(710) y)
+           ^
+
+6 errors detected in the compilation of "Test_name.c".

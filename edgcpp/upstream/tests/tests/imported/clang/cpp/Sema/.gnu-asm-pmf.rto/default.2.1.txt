@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++23 Test_name.c
+"Test_name.c", line 27: error: identifier "__UINTPTR_TYPE__" is undefined
+    __UINTPTR_TYPE__ ptr;
+    ^
+
+"Test_name.c", line 28: error: identifier "__UINTPTR_TYPE__" is undefined
+    __UINTPTR_TYPE__ adj;
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

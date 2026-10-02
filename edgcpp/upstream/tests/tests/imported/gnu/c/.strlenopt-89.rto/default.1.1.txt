@@ -1,0 +1,145 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./strlenopt-89.c", line 29: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) void test_1_store_nul_0 (const char *s) { extern char a1[1]; char *d = a1; size_t len = 1 - 1; size_t idx = 0; if (strlen (s) == len) { strcpy (d, s); d[idx] = 0; if (strlen (d) != idx) abort (); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-89.c", line 31: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) void test_2_store_nul_0 (const char *s) { extern char a2[2]; char *d = a2; size_t len = 2 - 1; size_t idx = 0; if (strlen (s) == len) { strcpy (d, s); d[idx] = 0; if (strlen (d) != idx) abort (); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-89.c", line 32: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) void test_2_store_nul_1 (const char *s) { extern char a2[2]; char *d = a2; size_t len = 2 - 1; size_t idx = 1; if (strlen (s) == len) { strcpy (d, s); d[idx] = 0; if (strlen (d) != idx) abort (); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-89.c", line 35: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) void test_3_store_nul_0 (const char *s) { extern char a3[3]; char *d = a3; size_t len = 3 - 1; size_t idx = 0; if (strlen (s) == len) { strcpy (d, s); d[idx] = 0; if (strlen (d) != idx) abort (); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-89.c", line 36: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) void test_3_store_nul_1 (const char *s) { extern char a3[3]; char *d = a3; size_t len = 3 - 1; size_t idx = 1; if (strlen (s) == len) { strcpy (d, s); d[idx] = 0; if (strlen (d) != idx) abort (); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-89.c", line 37: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) void test_3_store_nul_2 (const char *s) { extern char a3[3]; char *d = a3; size_t len = 3 - 1; size_t idx = 2; if (strlen (s) == len) { strcpy (d, s); d[idx] = 0; if (strlen (d) != idx) abort (); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-89.c", line 39: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) void test_4_store_nul_0 (const char *s) { extern char a4[4]; char *d = a4; size_t len = 4 - 1; size_t idx = 0; if (strlen (s) == len) { strcpy (d, s); d[idx] = 0; if (strlen (d) != idx) abort (); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-89.c", line 40: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) void test_4_store_nul_1 (const char *s) { extern char a4[4]; char *d = a4; size_t len = 4 - 1; size_t idx = 1; if (strlen (s) == len) { strcpy (d, s); d[idx] = 0; if (strlen (d) != idx) abort (); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-89.c", line 41: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) void test_4_store_nul_2 (const char *s) { extern char a4[4]; char *d = a4; size_t len = 4 - 1; size_t idx = 2; if (strlen (s) == len) { strcpy (d, s); d[idx] = 0; if (strlen (d) != idx) abort (); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-89.c", line 42: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) void test_4_store_nul_3 (const char *s) { extern char a4[4]; char *d = a4; size_t len = 4 - 1; size_t idx = 3; if (strlen (s) == len) { strcpy (d, s); d[idx] = 0; if (strlen (d) != idx) abort (); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-89.c", line 44: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) void test_5_store_nul_0 (const char *s) { extern char a5[5]; char *d = a5; size_t len = 5 - 1; size_t idx = 0; if (strlen (s) == len) { strcpy (d, s); d[idx] = 0; if (strlen (d) != idx) abort (); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-89.c", line 45: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) void test_5_store_nul_1 (const char *s) { extern char a5[5]; char *d = a5; size_t len = 5 - 1; size_t idx = 1; if (strlen (s) == len) { strcpy (d, s); d[idx] = 0; if (strlen (d) != idx) abort (); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-89.c", line 46: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) void test_5_store_nul_2 (const char *s) { extern char a5[5]; char *d = a5; size_t len = 5 - 1; size_t idx = 2; if (strlen (s) == len) { strcpy (d, s); d[idx] = 0; if (strlen (d) != idx) abort (); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-89.c", line 47: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) void test_5_store_nul_3 (const char *s) { extern char a5[5]; char *d = a5; size_t len = 5 - 1; size_t idx = 3; if (strlen (s) == len) { strcpy (d, s); d[idx] = 0; if (strlen (d) != idx) abort (); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-89.c", line 48: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) void test_5_store_nul_4 (const char *s) { extern char a5[5]; char *d = a5; size_t len = 5 - 1; size_t idx = 4; if (strlen (s) == len) { strcpy (d, s); d[idx] = 0; if (strlen (d) != idx) abort (); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-89.c", line 50: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) void test_6_store_nul_0 (const char *s) { extern char a6[6]; char *d = a6; size_t len = 6 - 1; size_t idx = 0; if (strlen (s) == len) { strcpy (d, s); d[idx] = 0; if (strlen (d) != idx) abort (); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-89.c", line 51: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) void test_6_store_nul_1 (const char *s) { extern char a6[6]; char *d = a6; size_t len = 6 - 1; size_t idx = 1; if (strlen (s) == len) { strcpy (d, s); d[idx] = 0; if (strlen (d) != idx) abort (); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-89.c", line 52: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) void test_6_store_nul_2 (const char *s) { extern char a6[6]; char *d = a6; size_t len = 6 - 1; size_t idx = 2; if (strlen (s) == len) { strcpy (d, s); d[idx] = 0; if (strlen (d) != idx) abort (); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-89.c", line 53: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) void test_6_store_nul_3 (const char *s) { extern char a6[6]; char *d = a6; size_t len = 6 - 1; size_t idx = 3; if (strlen (s) == len) { strcpy (d, s); d[idx] = 0; if (strlen (d) != idx) abort (); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-89.c", line 54: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) void test_6_store_nul_4 (const char *s) { extern char a6[6]; char *d = a6; size_t len = 6 - 1; size_t idx = 4; if (strlen (s) == len) { strcpy (d, s); d[idx] = 0; if (strlen (d) != idx) abort (); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-89.c", line 55: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) void test_6_store_nul_5 (const char *s) { extern char a6[6]; char *d = a6; size_t len = 6 - 1; size_t idx = 5; if (strlen (s) == len) { strcpy (d, s); d[idx] = 0; if (strlen (d) != idx) abort (); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-89.c", line 57: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) void test_7_store_nul_0 (const char *s) { extern char a7[7]; char *d = a7; size_t len = 7 - 1; size_t idx = 0; if (strlen (s) == len) { strcpy (d, s); d[idx] = 0; if (strlen (d) != idx) abort (); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-89.c", line 58: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) void test_7_store_nul_1 (const char *s) { extern char a7[7]; char *d = a7; size_t len = 7 - 1; size_t idx = 1; if (strlen (s) == len) { strcpy (d, s); d[idx] = 0; if (strlen (d) != idx) abort (); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-89.c", line 59: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) void test_7_store_nul_2 (const char *s) { extern char a7[7]; char *d = a7; size_t len = 7 - 1; size_t idx = 2; if (strlen (s) == len) { strcpy (d, s); d[idx] = 0; if (strlen (d) != idx) abort (); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-89.c", line 60: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) void test_7_store_nul_3 (const char *s) { extern char a7[7]; char *d = a7; size_t len = 7 - 1; size_t idx = 3; if (strlen (s) == len) { strcpy (d, s); d[idx] = 0; if (strlen (d) != idx) abort (); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-89.c", line 61: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) void test_7_store_nul_4 (const char *s) { extern char a7[7]; char *d = a7; size_t len = 7 - 1; size_t idx = 4; if (strlen (s) == len) { strcpy (d, s); d[idx] = 0; if (strlen (d) != idx) abort (); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-89.c", line 62: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) void test_7_store_nul_5 (const char *s) { extern char a7[7]; char *d = a7; size_t len = 7 - 1; size_t idx = 5; if (strlen (s) == len) { strcpy (d, s); d[idx] = 0; if (strlen (d) != idx) abort (); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-89.c", line 63: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) void test_7_store_nul_6 (const char *s) { extern char a7[7]; char *d = a7; size_t len = 7 - 1; size_t idx = 6; if (strlen (s) == len) { strcpy (d, s); d[idx] = 0; if (strlen (d) != idx) abort (); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-89.c", line 65: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) void test_8_store_nul_0 (const char *s) { extern char a8[8]; char *d = a8; size_t len = 8 - 1; size_t idx = 0; if (strlen (s) == len) { strcpy (d, s); d[idx] = 0; if (strlen (d) != idx) abort (); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-89.c", line 66: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) void test_8_store_nul_1 (const char *s) { extern char a8[8]; char *d = a8; size_t len = 8 - 1; size_t idx = 1; if (strlen (s) == len) { strcpy (d, s); d[idx] = 0; if (strlen (d) != idx) abort (); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-89.c", line 67: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) void test_8_store_nul_2 (const char *s) { extern char a8[8]; char *d = a8; size_t len = 8 - 1; size_t idx = 2; if (strlen (s) == len) { strcpy (d, s); d[idx] = 0; if (strlen (d) != idx) abort (); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-89.c", line 68: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) void test_8_store_nul_3 (const char *s) { extern char a8[8]; char *d = a8; size_t len = 8 - 1; size_t idx = 3; if (strlen (s) == len) { strcpy (d, s); d[idx] = 0; if (strlen (d) != idx) abort (); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-89.c", line 69: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) void test_8_store_nul_4 (const char *s) { extern char a8[8]; char *d = a8; size_t len = 8 - 1; size_t idx = 4; if (strlen (s) == len) { strcpy (d, s); d[idx] = 0; if (strlen (d) != idx) abort (); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-89.c", line 70: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) void test_8_store_nul_5 (const char *s) { extern char a8[8]; char *d = a8; size_t len = 8 - 1; size_t idx = 5; if (strlen (s) == len) { strcpy (d, s); d[idx] = 0; if (strlen (d) != idx) abort (); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-89.c", line 71: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) void test_8_store_nul_6 (const char *s) { extern char a8[8]; char *d = a8; size_t len = 8 - 1; size_t idx = 6; if (strlen (s) == len) { strcpy (d, s); d[idx] = 0; if (strlen (d) != idx) abort (); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-89.c", line 72: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) void test_8_store_nul_7 (const char *s) { extern char a8[8]; char *d = a8; size_t len = 8 - 1; size_t idx = 7; if (strlen (s) == len) { strcpy (d, s); d[idx] = 0; if (strlen (d) != idx) abort (); } } typedef void dummy_type;
+                  ^
+

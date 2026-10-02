@@ -1,0 +1,430 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 6: error: identifier "_Fract" is undefined
+  typedef _Fract qq  __attribute__ ((mode (QQ)));
+          ^
+
+"Test_name.c", line 6: error: invalid argument to attribute "mode"
+  typedef _Fract qq  __attribute__ ((mode (QQ)));
+                                           ^
+
+"Test_name.c", line 7: error: identifier "_Fract" is undefined
+  typedef _Fract hq  __attribute__ ((mode (HQ)));
+          ^
+
+"Test_name.c", line 7: error: invalid argument to attribute "mode"
+  typedef _Fract hq  __attribute__ ((mode (HQ)));
+                                           ^
+
+"Test_name.c", line 8: error: identifier "_Fract" is undefined
+  typedef _Fract sq  __attribute__ ((mode (SQ)));
+          ^
+
+"Test_name.c", line 8: error: invalid argument to attribute "mode"
+  typedef _Fract sq  __attribute__ ((mode (SQ)));
+                                           ^
+
+"Test_name.c", line 9: error: identifier "_Fract" is undefined
+  typedef _Fract dq  __attribute__ ((mode (DQ)));
+          ^
+
+"Test_name.c", line 9: error: invalid argument to attribute "mode"
+  typedef _Fract dq  __attribute__ ((mode (DQ)));
+                                           ^
+
+"Test_name.c", line 10: error: expected a ";"
+  typedef unsigned _Fract uqq  __attribute__ ((mode (UQQ)));
+                          ^
+
+"Test_name.c", line 11: warning: typedef name has already been declared (with same type)
+  typedef unsigned _Fract uhq  __attribute__ ((mode (UHQ)));
+                   ^
+
+"Test_name.c", line 11: error: expected a ";"
+  typedef unsigned _Fract uhq  __attribute__ ((mode (UHQ)));
+                          ^
+
+"Test_name.c", line 12: warning: typedef name has already been declared (with same type)
+  typedef unsigned _Fract usq  __attribute__ ((mode (USQ)));
+                   ^
+
+"Test_name.c", line 12: error: expected a ";"
+  typedef unsigned _Fract usq  __attribute__ ((mode (USQ)));
+                          ^
+
+"Test_name.c", line 13: warning: typedef name has already been declared (with same type)
+  typedef unsigned _Fract udq  __attribute__ ((mode (UDQ)));
+                   ^
+
+"Test_name.c", line 13: error: expected a ";"
+  typedef unsigned _Fract udq  __attribute__ ((mode (UDQ)));
+                          ^
+
+"Test_name.c", line 14: error: identifier "_Sat" is undefined
+  typedef _Sat _Fract Sqq  __attribute__ ((mode (QQ)));
+          ^
+
+"Test_name.c", line 14: error: invalid redeclaration of type name "_Fract" (declared at line 10)
+  typedef _Sat _Fract Sqq  __attribute__ ((mode (QQ)));
+               ^
+
+"Test_name.c", line 14: error: expected a ";"
+  typedef _Sat _Fract Sqq  __attribute__ ((mode (QQ)));
+                      ^
+
+"Test_name.c", line 15: error: identifier "_Sat" is undefined
+  typedef _Sat _Fract Shq  __attribute__ ((mode (HQ)));
+          ^
+
+"Test_name.c", line 15: warning: typedef name has already been declared (with same type)
+  typedef _Sat _Fract Shq  __attribute__ ((mode (HQ)));
+               ^
+
+"Test_name.c", line 15: error: expected a ";"
+  typedef _Sat _Fract Shq  __attribute__ ((mode (HQ)));
+                      ^
+
+"Test_name.c", line 16: error: identifier "_Sat" is undefined
+  typedef _Sat _Fract Ssq  __attribute__ ((mode (SQ)));
+          ^
+
+"Test_name.c", line 16: warning: typedef name has already been declared (with same type)
+  typedef _Sat _Fract Ssq  __attribute__ ((mode (SQ)));
+               ^
+
+"Test_name.c", line 16: error: expected a ";"
+  typedef _Sat _Fract Ssq  __attribute__ ((mode (SQ)));
+                      ^
+
+"Test_name.c", line 17: error: identifier "_Sat" is undefined
+  typedef _Sat _Fract Sdq  __attribute__ ((mode (DQ)));
+          ^
+
+"Test_name.c", line 17: warning: typedef name has already been declared (with same type)
+  typedef _Sat _Fract Sdq  __attribute__ ((mode (DQ)));
+               ^
+
+"Test_name.c", line 17: error: expected a ";"
+  typedef _Sat _Fract Sdq  __attribute__ ((mode (DQ)));
+                      ^
+
+"Test_name.c", line 18: warning: explicit type is missing ("int" assumed)
+  typedef _Sat unsigned _Fract Suqq  __attribute__ ((mode (UQQ)));
+          ^
+
+"Test_name.c", line 18: error: expected a ";"
+  typedef _Sat unsigned _Fract Suqq  __attribute__ ((mode (UQQ)));
+               ^
+
+"Test_name.c", line 19: error: invalid combination of type specifiers
+  typedef _Sat unsigned _Fract Suhq  __attribute__ ((mode (UHQ)));
+  ^
+
+"Test_name.c", line 19: warning: typedef name has already been declared (with same type)
+  typedef _Sat unsigned _Fract Suhq  __attribute__ ((mode (UHQ)));
+                        ^
+
+"Test_name.c", line 19: error: expected a ";"
+  typedef _Sat unsigned _Fract Suhq  __attribute__ ((mode (UHQ)));
+                               ^
+
+"Test_name.c", line 20: error: invalid combination of type specifiers
+  typedef _Sat unsigned _Fract Susq  __attribute__ ((mode (USQ)));
+  ^
+
+"Test_name.c", line 20: warning: typedef name has already been declared (with same type)
+  typedef _Sat unsigned _Fract Susq  __attribute__ ((mode (USQ)));
+                        ^
+
+"Test_name.c", line 20: error: expected a ";"
+  typedef _Sat unsigned _Fract Susq  __attribute__ ((mode (USQ)));
+                               ^
+
+"Test_name.c", line 21: error: invalid combination of type specifiers
+  typedef _Sat unsigned _Fract Sudq  __attribute__ ((mode (UDQ)));
+  ^
+
+"Test_name.c", line 21: warning: typedef name has already been declared (with same type)
+  typedef _Sat unsigned _Fract Sudq  __attribute__ ((mode (UDQ)));
+                        ^
+
+"Test_name.c", line 21: error: expected a ";"
+  typedef _Sat unsigned _Fract Sudq  __attribute__ ((mode (UDQ)));
+                               ^
+
+"Test_name.c", line 22: error: identifier "_Accum" is undefined
+  typedef _Accum ha  __attribute__ ((mode (HA)));
+          ^
+
+"Test_name.c", line 22: error: invalid argument to attribute "mode"
+  typedef _Accum ha  __attribute__ ((mode (HA)));
+                                           ^
+
+"Test_name.c", line 23: error: identifier "_Accum" is undefined
+  typedef _Accum sa  __attribute__ ((mode (SA)));
+          ^
+
+"Test_name.c", line 23: error: invalid argument to attribute "mode"
+  typedef _Accum sa  __attribute__ ((mode (SA)));
+                                           ^
+
+"Test_name.c", line 24: error: identifier "_Accum" is undefined
+  typedef _Accum da  __attribute__ ((mode (DA)));
+          ^
+
+"Test_name.c", line 24: error: invalid argument to attribute "mode"
+  typedef _Accum da  __attribute__ ((mode (DA)));
+                                           ^
+
+"Test_name.c", line 25: error: expected a ";"
+  typedef unsigned _Accum uha  __attribute__ ((mode (UHA)));
+                          ^
+
+"Test_name.c", line 26: warning: typedef name has already been declared (with same type)
+  typedef unsigned _Accum usa  __attribute__ ((mode (USA)));
+                   ^
+
+"Test_name.c", line 26: error: expected a ";"
+  typedef unsigned _Accum usa  __attribute__ ((mode (USA)));
+                          ^
+
+"Test_name.c", line 27: warning: typedef name has already been declared (with same type)
+  typedef unsigned _Accum uda  __attribute__ ((mode (UDA)));
+                   ^
+
+"Test_name.c", line 27: error: expected a ";"
+  typedef unsigned _Accum uda  __attribute__ ((mode (UDA)));
+                          ^
+
+"Test_name.c", line 28: error: invalid redeclaration of type name "_Accum" (declared at line 25)
+  typedef _Sat _Accum Sha  __attribute__ ((mode (HA)));
+               ^
+
+"Test_name.c", line 28: error: expected a ";"
+  typedef _Sat _Accum Sha  __attribute__ ((mode (HA)));
+                      ^
+
+"Test_name.c", line 29: warning: typedef name has already been declared (with same type)
+  typedef _Sat _Accum Ssa  __attribute__ ((mode (SA)));
+               ^
+
+"Test_name.c", line 29: error: expected a ";"
+  typedef _Sat _Accum Ssa  __attribute__ ((mode (SA)));
+                      ^
+
+"Test_name.c", line 30: warning: typedef name has already been declared (with same type)
+  typedef _Sat _Accum Sda  __attribute__ ((mode (DA)));
+               ^
+
+"Test_name.c", line 30: error: expected a ";"
+  typedef _Sat _Accum Sda  __attribute__ ((mode (DA)));
+                      ^
+
+"Test_name.c", line 31: error: invalid combination of type specifiers
+  typedef _Sat unsigned _Accum Suha  __attribute__ ((mode (UHA)));
+  ^
+
+"Test_name.c", line 31: error: invalid redeclaration of type name "_Accum" (declared at line 28)
+  typedef _Sat unsigned _Accum Suha  __attribute__ ((mode (UHA)));
+                        ^
+
+"Test_name.c", line 31: error: expected a ";"
+  typedef _Sat unsigned _Accum Suha  __attribute__ ((mode (UHA)));
+                               ^
+
+"Test_name.c", line 32: error: invalid combination of type specifiers
+  typedef _Sat unsigned _Accum Susa  __attribute__ ((mode (USA)));
+  ^
+
+"Test_name.c", line 32: warning: typedef name has already been declared (with same type)
+  typedef _Sat unsigned _Accum Susa  __attribute__ ((mode (USA)));
+                        ^
+
+"Test_name.c", line 32: error: expected a ";"
+  typedef _Sat unsigned _Accum Susa  __attribute__ ((mode (USA)));
+                               ^
+
+"Test_name.c", line 33: error: invalid combination of type specifiers
+  typedef _Sat unsigned _Accum Suda  __attribute__ ((mode (UDA)));
+  ^
+
+"Test_name.c", line 33: warning: typedef name has already been declared (with same type)
+  typedef _Sat unsigned _Accum Suda  __attribute__ ((mode (UDA)));
+                        ^
+
+"Test_name.c", line 33: error: expected a ";"
+  typedef _Sat unsigned _Accum Suda  __attribute__ ((mode (UDA)));
+                               ^
+
+"Test_name.c", line 37: error: invalid argument to attribute "mode"
+  typedef _Fract tq  __attribute__ ((mode (TQ)));
+                                           ^
+
+"Test_name.c", line 38: warning: typedef name has already been declared (with similar type)
+  typedef unsigned _Fract utq  __attribute__ ((mode (UTQ)));
+                   ^
+
+"Test_name.c", line 38: error: expected a ";"
+  typedef unsigned _Fract utq  __attribute__ ((mode (UTQ)));
+                          ^
+
+"Test_name.c", line 39: warning: typedef name has already been declared (with similar type)
+  typedef _Sat _Fract Stq  __attribute__ ((mode (TQ)));
+               ^
+
+"Test_name.c", line 39: error: expected a ";"
+  typedef _Sat _Fract Stq  __attribute__ ((mode (TQ)));
+                      ^
+
+"Test_name.c", line 40: error: invalid combination of type specifiers
+  typedef _Sat unsigned _Fract Sutq  __attribute__ ((mode (UTQ)));
+  ^
+
+"Test_name.c", line 40: warning: typedef name has already been declared (with same type)
+  typedef _Sat unsigned _Fract Sutq  __attribute__ ((mode (UTQ)));
+                        ^
+
+"Test_name.c", line 40: error: expected a ";"
+  typedef _Sat unsigned _Fract Sutq  __attribute__ ((mode (UTQ)));
+                               ^
+
+"Test_name.c", line 41: error: invalid argument to attribute "mode"
+  typedef _Accum ta  __attribute__ ((mode (TA)));
+                                           ^
+
+"Test_name.c", line 42: warning: typedef name has already been declared (with similar type)
+  typedef unsigned _Accum uta  __attribute__ ((mode (UTA)));
+                   ^
+
+"Test_name.c", line 42: error: expected a ";"
+  typedef unsigned _Accum uta  __attribute__ ((mode (UTA)));
+                          ^
+
+"Test_name.c", line 43: warning: typedef name has already been declared (with similar type)
+  typedef _Sat _Accum Sta  __attribute__ ((mode (TA)));
+               ^
+
+"Test_name.c", line 43: error: expected a ";"
+  typedef _Sat _Accum Sta  __attribute__ ((mode (TA)));
+                      ^
+
+"Test_name.c", line 44: error: invalid combination of type specifiers
+  typedef _Sat unsigned _Accum Suta  __attribute__ ((mode (UTA)));
+  ^
+
+"Test_name.c", line 44: warning: typedef name has already been declared (with same type)
+  typedef _Sat unsigned _Accum Suta  __attribute__ ((mode (UTA)));
+                        ^
+
+"Test_name.c", line 44: error: expected a ";"
+  typedef _Sat unsigned _Accum Suta  __attribute__ ((mode (UTA)));
+                               ^
+
+"Test_name.c", line 47: error: identifier "utq" is undefined
+  int utqsize[sizeof (utq) == 16 ? 1 : -1];
+                      ^
+
+"Test_name.c", line 48: error: identifier "Stq" is undefined
+  int Stqsize[sizeof (Stq) == 16 ? 1 : -1];
+                      ^
+
+"Test_name.c", line 49: error: identifier "Sutq" is undefined
+  int Sutqsize[sizeof (Sutq) == 16 ? 1 : -1];
+                       ^
+
+"Test_name.c", line 51: error: identifier "uta" is undefined
+  int utasize[sizeof (uta) == 16 ? 1 : -1];
+                      ^
+
+"Test_name.c", line 52: error: identifier "Sta" is undefined
+  int Stasize[sizeof (Sta) == 16 ? 1 : -1];
+                      ^
+
+"Test_name.c", line 53: error: identifier "Suta" is undefined
+  int Sutasize[sizeof (Suta) == 16 ? 1 : -1];
+                       ^
+
+"Test_name.c", line 73: error: identifier "Sqq" is undefined
+  int Sqqsize[sizeof (Sqq) == 1 ? 1 : -1];
+                      ^
+
+"Test_name.c", line 74: error: identifier "Shq" is undefined
+  int Shqsize[sizeof (Shq) == 2 ? 1 : -1];
+                      ^
+
+"Test_name.c", line 75: error: identifier "Ssq" is undefined
+  int Ssqsize[sizeof (Ssq) == 4 ? 1 : -1];
+                      ^
+
+"Test_name.c", line 76: error: identifier "Sdq" is undefined
+  int Sdqsize[sizeof (Sdq) == 8 ? 1 : -1];
+                      ^
+
+"Test_name.c", line 84: error: identifier "uha" is undefined
+  int uhasize[sizeof (uha) == 2 ? 1 : -1];
+                      ^
+
+"Test_name.c", line 85: error: identifier "usa" is undefined
+  int usasize[sizeof (usa) == 4 ? 1 : -1];
+                      ^
+
+"Test_name.c", line 86: error: identifier "uda" is undefined
+  int udasize[sizeof (uda) == 8 ? 1 : -1];
+                      ^
+
+"Test_name.c", line 87: error: identifier "Sha" is undefined
+  int Shasize[sizeof (Sha) == 2 ? 1 : -1];
+                      ^
+
+"Test_name.c", line 88: error: identifier "Ssa" is undefined
+  int Ssasize[sizeof (Ssa) == 4 ? 1 : -1];
+                      ^
+
+"Test_name.c", line 89: error: identifier "Sda" is undefined
+  int Sdasize[sizeof (Sda) == 8 ? 1 : -1];
+                      ^
+
+"Test_name.c", line 90: error: identifier "Suha" is undefined
+  int Suhasize[sizeof (Suha) == 2 ? 1 : -1];
+                       ^
+
+"Test_name.c", line 91: error: identifier "Susa" is undefined
+  int Susasize[sizeof (Susa) == 4 ? 1 : -1];
+                       ^
+
+"Test_name.c", line 92: error: identifier "Suda" is undefined
+  int Sudasize[sizeof (Suda) == 8 ? 1 : -1];
+                       ^
+
+"Test_name.c", line 98: error: identifier "uqq" is undefined
+  int uqqalign = __alignof (uqq);
+                            ^
+
+"Test_name.c", line 99: error: identifier "uhq" is undefined
+  int uhqalign = __alignof (uhq);
+                            ^
+
+"Test_name.c", line 100: error: identifier "usq" is undefined
+  int usqalign = __alignof (usq);
+                            ^
+
+"Test_name.c", line 101: error: identifier "udq" is undefined
+  int udqalign = __alignof (udq);
+                            ^
+
+"Test_name.c", line 106: error: identifier "Suqq" is undefined
+  int Suqqalign = __alignof (Suqq);
+                             ^
+
+"Test_name.c", line 107: error: identifier "Suhq" is undefined
+  int Suhqalign = __alignof (Suhq);
+                             ^
+
+"Test_name.c", line 108: error: identifier "Susq" is undefined
+  int Susqalign = __alignof (Susq);
+                             ^
+
+"Test_name.c", line 109: error: identifier "Sudq" is undefined
+  int Sudqalign = __alignof (Sudq);
+                             ^
+
+85 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 27: error: concept "a::C1" is not a class template
+  static_assert(test<a::C1>); // expected-error {{template argument does not refer to a class or alias template, or template template parameter}} \
+                     ^
+
+"Test_name.c", line 29: error: concept "a::b::C2" is not a class template
+  static_assert(test<a::b::C2>); // expected-error {{template argument does not refer to a class or alias template, or template template parameter}} \
+                     ^
+
+"Test_name.c", line 31: error: concept "C3" is not a class template
+  static_assert(test<C3>); // expected-error {{template argument does not refer to a class or alias template, or template template parameter}} \
+                     ^
+
+"Test_name.c", line 34: error: variable template "a::V1" is not a class template
+  static_assert(test<a::V1>); // expected-error {{template argument does not refer to a class or alias template, or template template parameter}} \
+                     ^
+
+"Test_name.c", line 36: error: variable template "a::b::V2" is not a class template
+  static_assert(test<a::b::V2>); // expected-error {{template argument does not refer to a class or alias template, or template template parameter}} \
+                     ^
+
+"Test_name.c", line 38: error: variable template "V3" is not a class template
+  static_assert(test<V3>); // expected-error {{template argument does not refer to a class or alias template, or template template parameter}} \
+                     ^
+
+"Test_name.c", line 43: error: expected a "<"
+      C3 t1 = 0;  // expected-error {{expected 'auto' or 'decltype(auto)' after concept name}}
+         ^
+
+"Test_name.c", line 44: error: concept "a::C1" is not a type name
+      a::C1 t2 = 0; // expected-error {{expected 'auto' or 'decltype(auto)' after concept name}}
+      ^
+
+"Test_name.c", line 45: error: concept "a::b::C2" is not a type name
+      a::b::C2 t3 = 0; // expected-error {{expected 'auto' or 'decltype(auto)' after concept name}}
+      ^
+
+9 errors detected in the compilation of "Test_name.c".

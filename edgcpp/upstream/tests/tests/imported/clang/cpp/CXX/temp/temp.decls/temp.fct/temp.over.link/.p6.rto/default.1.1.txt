@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 12: error: function template "f0(A0<X, Y>)" has already been defined (previous definition at line 10)
+  template<int V1, int V2> void f0(A0<V1, V2>) { } // expected-error{{redefinition}}
+                                ^
+
+"Test_name.c", line 16: error: function template "f1<X,Y>(A0<0, <expression>>)" has already been defined (previous definition at line 14)
+  template<int A, int B> void f1(A0<0, (A + B)>) { } // expected-error{{redefinition}}
+                              ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 6: warning: the "always_inline" attribute is ignored on non-inline functions
+  __attribute__((always_inline))
+                 ^
+
+"Test_name.c", line 8: warning: function "__builtin_ttest" declared implicitly
+    *x = __builtin_ttest();
+         ^
+
+"Test_name.c", line 12: warning: target attribute not recognized
+  __attribute__((target("no-htm")))
+                        ^
+

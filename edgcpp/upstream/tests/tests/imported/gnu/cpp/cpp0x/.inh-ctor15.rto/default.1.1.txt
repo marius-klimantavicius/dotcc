@@ -1,0 +1,19 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 18: error: no instance of constructor "B::B" matches the argument list
+            argument types are: (A)
+  B b2 (a);			// not inherited { dg-error "no match" }
+        ^
+"Test_name.c", line 12: note: function "B::A(int)" does not match because argument #1 does not match parameter
+    using A::A;
+    ^
+"Test_name.c", line 10: note: function "B::B(const B &)" does not match because argument #1 does not match parameter
+  struct B: public A
+         ^
+"Test_name.c", line 10: note: function "B::B(B &&)" does not match because argument #1 does not match parameter
+  struct B: public A
+         ^
+"Test_name.c", line 10: note: number of parameters of function "B::B()" does not match the call
+  struct B: public A
+         ^
+
+1 error detected in the compilation of "Test_name.c".

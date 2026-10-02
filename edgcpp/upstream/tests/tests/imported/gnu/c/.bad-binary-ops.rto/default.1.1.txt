@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 12: error: expression must have arithmetic type
+    myvec[1]/ptr; /* { dg-error "invalid operands to binary /" } */
+             ^
+
+"Test_name.c", line 12: warning: variable "myvec" is used before its value is set
+    myvec[1]/ptr; /* { dg-error "invalid operands to binary /" } */
+    ^
+
+"Test_name.c", line 12: warning: variable "ptr" is used before its value is set
+    myvec[1]/ptr; /* { dg-error "invalid operands to binary /" } */
+             ^
+
+"Test_name.c", line 32: error: expression must have arithmetic or pointer type but has type "struct s"
+    return (some_function ()
+            ^
+
+"Test_name.c", line 49: error: expression must have arithmetic or pointer type but has type "struct s"
+    return param_s + param_t; // { dg-error "invalid operands to binary \+" }
+           ^
+
+"Test_name.c", line 66: error: expression must have arithmetic or pointer type but has type "S" (aka "struct s")
+    return callee_4a () + callee_4b (); /* { dg-error "invalid operands to binary \+" } */
+           ^
+
+4 errors detected in the compilation of "Test_name.c".

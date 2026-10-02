@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 17: error: identifier "TYPO" is undefined
+  void S::Foo(int (*f)(TYPO&o) ) // { dg-error "Foo|f|TYPO|o" }
+                       ^
+
+"Test_name.c", line 17: error: declaration is incompatible with function template "void S::Foo<I>(int (*)(S &))" (declared at line 13)
+  void S::Foo(int (*f)(TYPO&o) ) // { dg-error "Foo|f|TYPO|o" }
+          ^
+
+2 errors detected in the compilation of "Test_name.c".

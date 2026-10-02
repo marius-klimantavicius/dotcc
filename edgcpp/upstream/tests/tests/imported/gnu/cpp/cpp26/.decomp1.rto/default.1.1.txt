@@ -1,0 +1,58 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 27: warning: structured bindings are a C++17 feature
+    auto [ c [[]], d, e [[maybe_unused]] ] = a;		// { dg-warning "structured bindings with attributed identifiers only available with" "" { target { c++17 && c++23_down } } }
+         ^
+
+"Test_name.c", line 27: error: expected a "]"
+    auto [ c [[]], d, e [[maybe_unused]] ] = a;		// { dg-warning "structured bindings with attributed identifiers only available with" "" { target { c++17 && c++23_down } } }
+             ^
+
+"Test_name.c", line 27: error: there are more elements than there are binding names
+    auto [ c [[]], d, e [[maybe_unused]] ] = a;		// { dg-warning "structured bindings with attributed identifiers only available with" "" { target { c++17 && c++23_down } } }
+         ^
+
+"Test_name.c", line 29: warning: structured bindings are a C++17 feature
+    auto [ f, h [[maybe_unused]] [[]], i [[]], j ] = b;	// { dg-warning "structured bindings with attributed identifiers only available with" "" { target { c++17 && c++23_down } } }
+         ^
+
+"Test_name.c", line 29: error: expected a "]"
+    auto [ f, h [[maybe_unused]] [[]], i [[]], j ] = b;	// { dg-warning "structured bindings with attributed identifiers only available with" "" { target { c++17 && c++23_down } } }
+                ^
+
+"Test_name.c", line 29: error: there are more elements than there are binding names
+    auto [ f, h [[maybe_unused]] [[]], i [[]], j ] = b;	// { dg-warning "structured bindings with attributed identifiers only available with" "" { target { c++17 && c++23_down } } }
+         ^
+
+"Test_name.c", line 31: warning: structured bindings are a C++17 feature
+    for (auto [ k, l [[maybe_unused]], m, n [[]]] : z)	// { dg-warning "structured bindings with attributed identifiers only available with" "" { target { c++17 && c++23_down } } }
+              ^
+
+"Test_name.c", line 31: error: expected a "]"
+    for (auto [ k, l [[maybe_unused]], m, n [[]]] : z)	// { dg-warning "structured bindings with attributed identifiers only available with" "" { target { c++17 && c++23_down } } }
+                     ^
+
+"Test_name.c", line 31: error: there are more elements than there are binding names
+    for (auto [ k, l [[maybe_unused]], m, n [[]]] : z)	// { dg-warning "structured bindings with attributed identifiers only available with" "" { target { c++17 && c++23_down } } }
+              ^
+
+"Test_name.c", line 31: warning: structured binding "k" was declared but never referenced
+    for (auto [ k, l [[maybe_unused]], m, n [[]]] : z)	// { dg-warning "structured bindings with attributed identifiers only available with" "" { target { c++17 && c++23_down } } }
+                ^
+
+"Test_name.c", line 33: warning: structured bindings are a C++17 feature
+    auto &[o[[]][[]][[]], p[[]], q[[]]] = a;		// { dg-warning "structured bindings with attributed identifiers only available with" "" { target { c++17 && c++23_down } } }
+          ^
+
+"Test_name.c", line 33: error: expected a "]"
+    auto &[o[[]][[]][[]], p[[]], q[[]]] = a;		// { dg-warning "structured bindings with attributed identifiers only available with" "" { target { c++17 && c++23_down } } }
+            ^
+
+"Test_name.c", line 33: error: there are more elements than there are binding names
+    auto &[o[[]][[]][[]], p[[]], q[[]]] = a;		// { dg-warning "structured bindings with attributed identifiers only available with" "" { target { c++17 && c++23_down } } }
+          ^
+
+"Test_name.c", line 29: warning: structured binding "f" was declared but never referenced
+    auto [ f, h [[maybe_unused]] [[]], i [[]], j ] = b;	// { dg-warning "structured bindings with attributed identifiers only available with" "" { target { c++17 && c++23_down } } }
+           ^
+
+8 errors detected in the compilation of "Test_name.c".

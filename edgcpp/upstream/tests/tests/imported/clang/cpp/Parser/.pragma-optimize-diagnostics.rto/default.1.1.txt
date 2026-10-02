@@ -1,0 +1,37 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 5: warning: unrecognized #pragma
+  #pragma clang optimize off
+          ^
+
+"Test_name.c", line 7: warning: unrecognized #pragma
+  #pragma clang optimize on
+          ^
+
+"Test_name.c", line 10: warning: unrecognized #pragma
+  #pragma clang optimize on top of spaghetti  // expected-error {{unexpected extra argument 'top' to '#pragma clang optimize'}}
+          ^
+
+"Test_name.c", line 13: warning: unrecognized #pragma
+  #pragma clang optimize something_wrong  // expected-error {{unexpected argument 'something_wrong' to '#pragma clang optimize'; expected 'on' or 'off'}}
+          ^
+
+"Test_name.c", line 16: warning: unrecognized #pragma
+  #pragma clang optimize // expected-error {{missing argument to '#pragma clang optimize'; expected 'on' or 'off'}}
+          ^
+
+"Test_name.c", line 21: warning: unrecognized #pragma
+  #pragma clang optimize OFF
+          ^
+
+"Test_name.c", line 22: warning: unrecognized #pragma
+  #pragma clang optimize ON
+          ^
+
+"Test_name.c", line 29: warning: unrecognized #pragma
+  OPT_OFF
+  ^
+
+"Test_name.c", line 30: warning: unrecognized #pragma
+  OPT_ON
+  ^
+

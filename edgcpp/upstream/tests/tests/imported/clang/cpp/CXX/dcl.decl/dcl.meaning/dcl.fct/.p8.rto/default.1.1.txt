@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 6: error: type definition is not allowed
+  A::A (enum { e1 }) {} // expected-error{{cannot be defined in a parameter}}
+        ^
+
+"Test_name.c", line 6: error: no instance of overloaded function "A::A" matches the specified type
+  A::A (enum { e1 }) {} // expected-error{{cannot be defined in a parameter}}
+     ^
+
+"Test_name.c", line 7: error: class "A" has no member "f"
+  void A::f(enum { e2 }) {} // expected-error{{cannot be defined in a parameter}}
+          ^
+
+"Test_name.c", line 7: error: type definition is not allowed
+  void A::f(enum { e2 }) {} // expected-error{{cannot be defined in a parameter}}
+            ^
+
+"Test_name.c", line 9: error: class "A" has no member "g"
+  enum { e3 } A::g() { } // expected-error{{cannot be defined in the result type}} \
+                 ^
+
+"Test_name.c", line 9: error: type definition is not allowed in function return type declaration
+  enum { e3 } A::g() { } // expected-error{{cannot be defined in the result type}} \
+  ^
+
+"Test_name.c", line 9: warning: missing return statement at end of non-void function "A::g"
+  enum { e3 } A::g() { } // expected-error{{cannot be defined in the result type}} \
+                       ^
+
+6 errors detected in the compilation of "Test_name.c".

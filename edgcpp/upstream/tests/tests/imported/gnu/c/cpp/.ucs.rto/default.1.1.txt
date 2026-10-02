@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 Test_name.c
+"./cpp/ucs.c", line 55: error: incorrectly formed universal character name
+    c = L'\ubad';
+               ^
+
+"./cpp/ucs.c", line 56: error: incorrectly formed universal character name
+    c = L"\U1234"[0];
+                ^
+
+"./cpp/ucs.c", line 58: error: incorrectly formed universal character name
+    c = L'\u000x';
+               ^
+
+"./cpp/ucs.c", line 58: warning: too many characters in character constant
+    c = L'\u000x';
+        ^
+
+"./cpp/ucs.c", line 68: warning: a universal character name cannot designate a character in the basic character set
+    c = '\u0025';
+         ^
+
+"./cpp/ucs.c", line 69: warning: a universal character name cannot designate a surrogate code point
+    c = L"\uD800"[0];
+          ^
+
+"./cpp/ucs.c", line 70: warning: a universal character name cannot designate a surrogate code point
+    c = L'\U0000DFFF';
+          ^
+
+"./cpp/ucs.c", line 72: warning: a universal character name must designate a valid code point
+    c = L'\U00110000';
+          ^
+
+"./cpp/ucs.c", line 53: warning: variable "c" was set but never used
+    int c;
+        ^
+
+3 errors detected in the compilation of "Test_name.c".

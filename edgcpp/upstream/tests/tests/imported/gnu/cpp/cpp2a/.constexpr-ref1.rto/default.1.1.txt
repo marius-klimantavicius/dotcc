@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"./cpp2a/constexpr-ref1.C", line 15: warning: variable "gold" was declared but never referenced
+    constexpr auto gold = array_size(gold_medal_mel);
+                   ^
+
+"./cpp2a/constexpr-ref1.C", line 40: error: expression must have a constant value
+    static_assert(pswam->phelps() == 28);
+                  ^
+"./cpp2a/constexpr-ref1.C", line 40: note: the value of variable "pswam" (declared at line 39) cannot be used as a constant
+    static_assert(pswam->phelps() == 28);
+                  ^
+
+"./cpp2a/constexpr-ref1.C", line 45: error: expression must have a constant value
+    static_assert(swam.lochte() == 12);
+                  ^
+"./cpp2a/constexpr-ref1.C", line 45: note: attempt to access run-time storage
+    static_assert(swam.lochte() == 12);
+                             ^
+
+"./cpp2a/constexpr-ref1.C", line 47: error: expression must have a constant value
+    static_assert(swam.coughlin == 12);
+                  ^
+"./cpp2a/constexpr-ref1.C", line 47: note: attempt to access run-time storage
+    static_assert(swam.coughlin == 12);
+                      ^
+
+"./cpp2a/constexpr-ref1.C", line 54: error: expression must have a constant value
+  constexpr auto& gallagher = typeid(trident);
+                              ^
+"./cpp2a/constexpr-ref1.C", line 54: note: attempt to access run-time storage
+  constexpr auto& gallagher = typeid(trident);
+                              ^
+
+4 errors detected in the compilation of "Test_name.c".

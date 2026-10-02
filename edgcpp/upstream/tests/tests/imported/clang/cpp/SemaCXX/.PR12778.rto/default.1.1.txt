@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 5: error: dynamic exception specifications are not permitted in this mode
+  void operator delete() throw(void*); // expected-error{{'operator delete' must have at least one parameter}}
+                         ^
+
+"Test_name.c", line 5: error: too few parameters for this operator function
+  void operator delete() throw(void*); // expected-error{{'operator delete' must have at least one parameter}}
+       ^
+
+2 errors detected in the compilation of "Test_name.c".

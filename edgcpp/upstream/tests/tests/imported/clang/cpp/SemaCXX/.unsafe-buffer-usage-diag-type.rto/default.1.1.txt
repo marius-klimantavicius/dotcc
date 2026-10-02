@@ -1,0 +1,81 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 9: warning: variable "ptr" is used before its value is set
+    ptr + i;      // expected-note{{used in pointer arithmetic here}}
+    ^
+
+"Test_name.c", line 9: warning: expression has no effect
+    ptr + i;      // expected-note{{used in pointer arithmetic here}}
+    ^
+
+"Test_name.c", line 10: warning: expression has no effect
+    ptr[i];       // expected-note{{used in buffer access here}}
+    ^
+
+"Test_name.c", line 15: warning: expression has no effect
+    array[i/2];     // expected-note{{used in buffer access here}}
+    ^
+
+"Test_name.c", line 22: warning: expression has no effect
+    ptr + i;      // expected-note{{used in pointer arithmetic here}}
+    ^
+
+"Test_name.c", line 23: warning: expression has no effect
+    ptr[i];       // expected-note{{used in buffer access here}}
+    ^
+
+"Test_name.c", line 28: warning: expression has no effect
+    array[i/2];     // expected-note{{used in buffer access here}}
+    ^
+
+"Test_name.c", line 35: warning: expression has no effect
+    ptr + 5;      // expected-note{{used in pointer arithmetic here}}
+    ^
+
+"Test_name.c", line 36: warning: expression has no effect
+    ptr[5];       // expected-note{{used in buffer access here}}
+    ^
+
+"Test_name.c", line 42: warning: expression has no effect
+    array[2];     // expected-note{{used in buffer access here}}
+    ^
+
+"Test_name.c", line 53: warning: variable "s1" is used before its value is set
+    s1.ptr + i;     // expected-warning{{unsafe pointer arithmetic}}
+    ^
+
+"Test_name.c", line 53: warning: expression has no effect
+    s1.ptr + i;     // expected-warning{{unsafe pointer arithmetic}}
+    ^
+
+"Test_name.c", line 54: warning: expression has no effect
+    s1.ptr[i];      // expected-warning{{unsafe buffer access}}
+    ^
+
+"Test_name.c", line 63: warning: expression has no effect
+    s2.array[i/2];  // expected-warning{{unsafe buffer access}}
+    ^
+
+"Test_name.c", line 72: warning: expression has no effect
+      ptr + i;     // expected-warning{{unsafe pointer arithmetic}}
+      ^
+
+"Test_name.c", line 73: warning: expression has no effect
+      ptr[i];      // expected-warning{{unsafe buffer access}}
+      ^
+
+"Test_name.c", line 82: warning: expression has no effect
+      s2.array[i/2];  // expected-warning{{unsafe buffer access}}
+      ^
+
+"Test_name.c", line 93: warning: expression has no effect
+    Struct1::ptr + i;      // expected-note{{used in pointer arithmetic here}}
+    ^
+
+"Test_name.c", line 94: warning: expression has no effect
+    Struct1::ptr[i];       // expected-note{{used in buffer access here}}
+    ^
+
+"Test_name.c", line 102: warning: expression has no effect
+    Struct2::array[i/2];     // expected-note{{used in buffer access here}}
+    ^
+

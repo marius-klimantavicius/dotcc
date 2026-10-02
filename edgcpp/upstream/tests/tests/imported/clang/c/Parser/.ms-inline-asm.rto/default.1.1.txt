@@ -1,0 +1,167 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 11: error: expected a "("
+  void t1(void) { M }
+                  ^
+
+"Test_name.c", line 11: error: expected an asm string
+  void t1(void) { M }
+                    ^
+
+"Test_name.c", line 11: error: expected a ")"
+  void t1(void) { M }
+                    ^
+
+"Test_name.c", line 11: error: expected a ";"
+  void t1(void) { M }
+                    ^
+
+"Test_name.c", line 12: error: expected a "("
+  void t2(void) { __asm int 2ch }
+                        ^
+
+"Test_name.c", line 12: error: extra text after expected end of number
+  void t2(void) { __asm int 2ch }
+                             ^
+
+"Test_name.c", line 12: error: expected an asm string
+  void t2(void) { __asm int 2ch }
+                                ^
+
+"Test_name.c", line 12: error: expected a ")"
+  void t2(void) { __asm int 2ch }
+                                ^
+
+"Test_name.c", line 12: error: expected a ";"
+  void t2(void) { __asm int 2ch }
+                                ^
+
+"Test_name.c", line 13: error: expected a "("
+  void t3(void) { __asm M2 2ch }
+                        ^
+
+"Test_name.c", line 13: error: extra text after expected end of number
+  void t3(void) { __asm M2 2ch }
+                            ^
+
+"Test_name.c", line 13: error: expected an asm string
+  void t3(void) { __asm M2 2ch }
+                               ^
+
+"Test_name.c", line 13: error: expected a ")"
+  void t3(void) { __asm M2 2ch }
+                               ^
+
+"Test_name.c", line 13: error: expected a ";"
+  void t3(void) { __asm M2 2ch }
+                               ^
+
+"Test_name.c", line 14: error: expected a "("
+  void t4(void) { __asm mov eax, fs:[10h] }
+                        ^
+
+"Test_name.c", line 14: error: extra text after expected end of number
+  void t4(void) { __asm mov eax, fs:[10h] }
+                                       ^
+
+"Test_name.c", line 14: error: expected an asm string
+  void t4(void) { __asm mov eax, fs:[10h] }
+                                          ^
+
+"Test_name.c", line 14: error: expected a ")"
+  void t4(void) { __asm mov eax, fs:[10h] }
+                                          ^
+
+"Test_name.c", line 14: error: expected a ";"
+  void t4(void) { __asm mov eax, fs:[10h] }
+                                          ^
+
+"Test_name.c", line 16: error: expected a "("
+    __asm {
+          ^
+
+"Test_name.c", line 17: error: expected an asm string
+      int 0x2c ; } asm comments are fun! }{
+                                         ^
+
+"Test_name.c", line 17: error: expected a ")"
+      int 0x2c ; } asm comments are fun! }{
+                                         ^
+
+"Test_name.c", line 17: error: expected a ";"
+      int 0x2c ; } asm comments are fun! }{
+                                         ^
+
+"Test_name.c", line 17: error: expected a declaration
+      int 0x2c ; } asm comments are fun! }{
+                                          ^
+
+"Test_name.c", line 19: error: expected an identifier
+    __asm {}
+          ^
+
+"Test_name.c", line 19: error: "asm" must be used with a function definition
+    __asm {}
+          ^
+
+"Test_name.c", line 19: error: expected a ";"
+    __asm {}
+          ^
+
+"Test_name.c", line 26: warning: parsing restarts here after previous syntax error
+    return 10;
+             ^
+
+"Test_name.c", line 27: error: expected a declaration
+  }
+  ^
+
+"Test_name.c", line 31: error: extra text after expected end of number
+      mov ebx, 07h
+                 ^
+
+"Test_name.c", line 71: warning: parsing restarts here after previous syntax error
+  } S;
+     ^
+
+"Test_name.c", line 72: error: identifier "S" is undefined
+  void t15(S s) {
+           ^
+
+"Test_name.c", line 73: error: expected a "("
+    __asm {
+          ^
+
+"Test_name.c", line 77: warning: parsing restarts here after previous syntax error
+  }
+  ^
+
+"Test_name.c", line 77: error: expected an asm string
+  }
+  ^
+
+"Test_name.c", line 77: error: expected a ")"
+  }
+  ^
+
+"Test_name.c", line 77: error: expected a ";"
+  }
+  ^
+
+"Test_name.c", line 81: error: expected a "("
+    __asm { // expected-error 3 {{expected}} expected-note {{to match this}}
+    ^
+
+At end of source: error: expected an asm string
+
+At end of source: error: expected a ")"
+
+At end of source: error: expected a ";"
+
+At end of source: warning: missing return statement at end of non-void function "t_fail"
+
+At end of source: error: expected a "}"
+"Test_name.c", line 79: note: to match this "{"
+  int t_fail(void) { // expected-note {{to match this}}
+                   ^
+
+39 errors detected in the compilation of "Test_name.c".

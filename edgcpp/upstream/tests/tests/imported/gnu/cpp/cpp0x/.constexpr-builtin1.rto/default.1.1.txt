@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 20: warning: variable "num1" was declared but never referenced
+    constexpr long double num1 = __builtin_isinf(1.l); // Ok.
+                          ^
+
+"Test_name.c", line 22: warning: variable "num2" was declared but never referenced
+    constexpr long double num2 = isinf(1.l);           // Error.
+                          ^
+
+"Test_name.c", line 24: warning: variable "num3" was declared but never referenced
+    constexpr double      num3 = isinf(1.);            // Ok.
+                          ^
+
+"Test_name.c", line 26: warning: variable "num4" was declared but never referenced
+    constexpr long double num4 = isnan(1.l);           // Ok.
+                          ^
+

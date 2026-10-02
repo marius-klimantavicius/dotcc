@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 13: warning: declaration does not declare anything
+  struct N::A; // expected-error {{cannot have a nested name specifier}}
+  ^
+
+"Test_name.c", line 15: error: class template "N::B" may not be redeclared in the current scope
+  template<typename T> struct N::B; // expected-error {{cannot have a nested name specifier}}
+                                 ^
+
+"Test_name.c", line 25: error: class template "D::A" may not be redeclared in the current scope
+  template<typename T> struct D::A; // expected-error {{cannot have a nested name specifier}}
+                                 ^
+
+"Test_name.c", line 55: error: class template "qualified_decl::S0<T>::S1" may not be redeclared in the current scope
+    struct S0<T>::S1; // expected-error{{cannot have a nested name specifier}}
+                  ^
+
+"Test_name.c", line 62: error: class template "qualified_decl::S0<T>::S2" may not be redeclared in the current scope
+    struct S0<T>::S2; // expected-error{{cannot have a nested name specifier}}
+                  ^
+
+"Test_name.c", line 76: warning: declaration does not declare anything
+    struct S3::S4; // expected-error{{cannot have a nested name specifier}}
+    ^
+
+"Test_name.c", line 79: error: class template "qualified_decl::S3::S5" may not be redeclared in the current scope
+    struct S3::S5; // expected-error{{cannot have a nested name specifier}}
+               ^
+
+5 errors detected in the compilation of "Test_name.c".

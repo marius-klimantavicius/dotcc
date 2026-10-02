@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 7: error: this declaration has no storage class or type specifier
+  constinit int g = 42; // { dg-error ".constinit. does not name a type" "" { target c++17_down } }
+  ^
+
+"Test_name.c", line 7: error: expected a ";"
+  constinit int g = 42; // { dg-error ".constinit. does not name a type" "" { target c++17_down } }
+            ^
+
+"Test_name.c", line 14: error: explicit type is missing ("int" assumed)
+    static constinit int x = 69; // { dg-error ".constinit. does not name a type" "" { target c++17_down } }
+           ^
+
+"Test_name.c", line 14: error: expected a ";"
+    static constinit int x = 69; // { dg-error ".constinit. does not name a type" "" { target c++17_down } }
+                     ^
+
+"Test_name.c", line 14: warning: variable "constinit" was declared but never referenced
+    static constinit int x = 69; // { dg-error ".constinit. does not name a type" "" { target c++17_down } }
+           ^
+
+"Test_name.c", line 15: warning: variable "x2" was declared but never referenced
+    static __constinit int x2 = 69;
+                           ^
+
+"Test_name.c", line 9: warning: variable "g3" was declared but never referenced
+  static __constinit int g3 = 42;
+                         ^
+
+4 errors detected in the compilation of "Test_name.c".

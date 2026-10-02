@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 15: error: expression must be an lvalue
+    const_cast<int&>(xval<int>());   // { dg-error "3:invalid .const_cast. of an rvalue" }
+                     ^
+
+"Test_name.c", line 16: error: expression must be an lvalue
+    const_cast<int&>(prval<int>());  // { dg-error "3:invalid .const_cast. of an rvalue" }
+                     ^
+
+"Test_name.c", line 19: error: the operand of a const_cast to an rvalue reference type cannot be a non-class prvalue
+    const_cast<int&&>(prval<int>()); // { dg-error "3:invalid .const_cast. of an rvalue" }
+                      ^
+
+3 errors detected in the compilation of "Test_name.c".

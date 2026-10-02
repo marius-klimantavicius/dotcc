@@ -1,0 +1,2 @@
+fe_only -DTEST_NUMBER=3 -w --c++20 --il_display --clang_version 210100 --target linux_riscv64 Test_name.c
+/usr/bin/bash: line 1: enumerate_addrs: command not found

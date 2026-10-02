@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./gomp/ind-base-3.C", line 27: warning: unrecognized #pragma
+  #pragma omp target map(choose(&a, &b, i)->x[:10])
+          ^
+

@@ -1,0 +1,70 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 21: error: function "f" returns incomplete type "A"
+    f(); // expected-error {{calling 'f' with incomplete return type 'A'}}
+     ^
+
+"Test_name.c", line 25: error: function returns incomplete type "A"
+    fp(); // expected-error {{calling function with incomplete return type 'A'}}
+      ^
+
+"Test_name.c", line 25: warning: variable "fp" is used before its value is set
+    fp(); // expected-error {{calling function with incomplete return type 'A'}}
+    ^
+
+"Test_name.c", line 29: error: function "B::f" returns incomplete type "A"
+    b.f(); // expected-error {{calling 'f' with incomplete return type 'A'}}
+       ^
+
+"Test_name.c", line 31: error: function "B::operator()" returns incomplete type "A"
+    b.operator()(); // expected-error {{calling 'operator()' with incomplete return type 'A'}}
+                ^
+
+"Test_name.c", line 32: error: function "B::operator A" returns incomplete type "A"
+    b.operator A(); // expected-error {{calling 'operator A' with incomplete return type 'A'}}
+                ^
+
+"Test_name.c", line 33: error: function "B::operator!" returns incomplete type "A"
+    b.operator!(); // expected-error {{calling 'operator!' with incomplete return type 'A'}}
+               ^
+
+"Test_name.c", line 37: error: function "B::operator++" returns incomplete type "A"
+    b++; // expected-error {{calling 'operator++' with incomplete return type 'A'}}
+     ^
+
+"Test_name.c", line 38: error: function "B::operator[]" returns incomplete type "A"
+    b[0]; // expected-error {{calling 'operator[]' with incomplete return type 'A'}}
+     ^
+
+"Test_name.c", line 39: error: function "B::operator+" returns incomplete type "A"
+    b + 1; // expected-error {{calling 'operator+' with incomplete return type 'A'}}
+      ^
+
+"Test_name.c", line 40: error: function "B::operator->" returns incomplete type "A"
+    b->f(); // expected-error {{calling 'operator->' with incomplete return type 'A'}}
+     ^
+
+"Test_name.c", line 43: error: function returns incomplete type "A"
+    (b.*mfp)(); // expected-error {{calling function with incomplete return type 'A'}}
+            ^
+
+"Test_name.c", line 45: error: function "ft(T) [with T=int]" returns incomplete type "A"
+    ft(42); // expected-error {{calling 'ft<int>' with incomplete return type 'A'}}
+      ^
+
+"Test_name.c", line 52: error: call of an object of a class type without appropriate operator() or conversion functions to pointer-to-function type
+    c(); // expected-error{{incomplete type in call to object of type}}
+    ^
+
+"Test_name.c", line 56: error: invalid destructor name for type "C *"
+    p.~C(); // expected-error{{member reference type 'C *' is a pointer; did you mean to use '->'?}}
+      ^
+
+"Test_name.c", line 64: error: incomplete type "pr18542::X::basic_istream<CharT>" is not allowed
+        void basic_istream<CharT>::read() { // expected-error{{out-of-line definition of 'read' from class 'pr18542::X::basic_istream<CharT>' without definition}}
+             ^
+
+"Test_name.c", line 64: error: qualified name is not allowed
+        void basic_istream<CharT>::read() { // expected-error{{out-of-line definition of 'read' from class 'pr18542::X::basic_istream<CharT>' without definition}}
+             ^
+
+16 errors detected in the compilation of "Test_name.c".

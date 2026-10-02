@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 7: error: declaration is incompatible with "struct <unnamed> x" (declared at line 6)
+  extern struct {int a;} x; // expected-error {{redeclaration of 'x'}}
+                         ^
+
+"Test_name.c", line 13: warning: a value of type "struct x *" cannot be used to initialize an entity of type "struct x *"
+  struct x {int a;} *c = b; // expected-error {{incompatible pointer types}}
+                         ^
+
+"Test_name.c", line 14: warning: missing return statement at end of non-void function "a"
+  }
+  ^
+
+"Test_name.c", line 13: warning: variable "c" was declared but never referenced
+  struct x {int a;} *c = b; // expected-error {{incompatible pointer types}}
+                     ^
+
+"Test_name.c", line 18: error: a value of type "struct x" cannot be used to initialize an entity of type "struct x"
+  struct x {char x;} s = r; // expected-error {{initializing 'struct x' with an expression of incompatible type 'struct x'}}
+                         ^
+
+"Test_name.c", line 19: warning: missing return statement at end of non-void function "b"
+  }
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,138 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 32: warning: conversion may change the value
+  _Float32 t1d (double x) { return x + 2; }
+                                   ^
+
+"Test_name.c", line 33: warning: conversion may change the value
+  _Float32 t1l (long double x) { return x + 3; }
+                                        ^
+
+"Test_name.c", line 34: warning: conversion may change the value
+  _Float32 t1f64 (_Float64 x) { return x + 4; }
+                                       ^
+
+"Test_name.c", line 46: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1v (f), 2, var_f32);
+    ^
+
+"Test_name.c", line 46: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1v (f), 2, var_f32);
+    ^
+
+"Test_name.c", line 46: error: declaration is incompatible with previous "var_f32" (declared at line 26)
+    CHECK_CALL (t1v (f), 2, var_f32);
+    ^
+
+"Test_name.c", line 47: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1v (d), 4, var_f32);
+    ^
+
+"Test_name.c", line 47: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1v (d), 4, var_f32);
+    ^
+
+"Test_name.c", line 48: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1v (ld), 6, var_f32);
+    ^
+
+"Test_name.c", line 48: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1v (ld), 6, var_f32);
+    ^
+
+"Test_name.c", line 49: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1v (f64), 8, var_f32);
+    ^
+
+"Test_name.c", line 49: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1v (f64), 8, var_f32);
+    ^
+
+"Test_name.c", line 50: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1v (i), 7, var_f32);
+    ^
+
+"Test_name.c", line 50: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1v (i), 7, var_f32);
+    ^
+
+"Test_name.c", line 75: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t2v (f32x, i), 70005, var_f32x);
+    ^
+
+"Test_name.c", line 75: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t2v (f32x, i), 70005, var_f32x);
+    ^
+
+"Test_name.c", line 75: error: declaration is incompatible with previous "var_f32x" (declared at line 28)
+    CHECK_CALL (t2v (f32x, i), 70005, var_f32x);
+    ^
+
+"Test_name.c", line 76: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t2v (i, f32x), 50007, var_f32x);
+    ^
+
+"Test_name.c", line 76: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t2v (i, f32x), 50007, var_f32x);
+    ^
+
+"Test_name.c", line 77: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t2v (f64, i), 600005, var_f64);
+    ^
+
+"Test_name.c", line 77: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t2v (f64, i), 600005, var_f64);
+    ^
+
+"Test_name.c", line 77: error: declaration is incompatible with previous "var_f64" (declared at line 27)
+    CHECK_CALL (t2v (f64, i), 600005, var_f64);
+    ^
+
+"Test_name.c", line 78: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t2v (i, f64), 500006, var_f64);
+    ^
+
+"Test_name.c", line 78: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t2v (i, f64), 500006, var_f64);
+    ^
+
+"Test_name.c", line 79: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t2v (d, i), 305, var_d);
+    ^
+
+"Test_name.c", line 79: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t2v (d, i), 305, var_d);
+    ^
+
+"Test_name.c", line 79: error: declaration is incompatible with previous "var_d" (declared at line 25)
+    CHECK_CALL (t2v (d, i), 305, var_d);
+    ^
+
+"Test_name.c", line 80: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t2v (i, d), 503, var_d);
+    ^
+
+"Test_name.c", line 80: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t2v (i, d), 503, var_d);
+    ^
+
+"Test_name.c", line 81: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t2v (cf32x, i), 8000005, var_cf32x);
+    ^
+
+"Test_name.c", line 81: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t2v (cf32x, i), 8000005, var_cf32x);
+    ^
+
+"Test_name.c", line 81: error: declaration is incompatible with previous "var_cf32x" (declared at line 29)
+    CHECK_CALL (t2v (cf32x, i), 8000005, var_cf32x);
+    ^
+
+"Test_name.c", line 82: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t2v (i, cf32x), 5000008, var_cf32x);
+    ^
+
+"Test_name.c", line 82: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t2v (i, cf32x), 5000008, var_cf32x);
+    ^
+
+5 errors detected in the compilation of "Test_name.c".

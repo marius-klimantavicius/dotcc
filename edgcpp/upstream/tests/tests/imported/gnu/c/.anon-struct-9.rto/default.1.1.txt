@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 13: warning: this anonymous union/struct field is hidden by field "x" (declared at line 10)
+      int x; /* { dg-error "duplicate member" } */
+          ^
+
+"Test_name.c", line 29: warning: this anonymous union/struct field is hidden by field "b" (declared at line 24)
+      int b; /* { dg-error "duplicate member" } */
+          ^
+
+"Test_name.c", line 45: warning: this anonymous union/struct field is hidden by field "b" (declared at line 40)
+      int b; /* { dg-error "duplicate member" } */
+          ^
+
+"Test_name.c", line 64: warning: this anonymous union/struct field is hidden by field "x" (declared at line 61)
+      int x; /* { dg-error "duplicate member" } */
+          ^
+
+"Test_name.c", line 80: warning: this anonymous union/struct field is hidden by field "b" (declared at line 75)
+      int b; /* { dg-error "duplicate member" } */
+          ^
+
+"Test_name.c", line 96: warning: this anonymous union/struct field is hidden by field "b" (declared at line 91)
+      int b; /* { dg-error "duplicate member" } */
+          ^
+
+"Test_name.c", line 129: warning: this anonymous union/struct field is hidden by field "a123" (declared at line 117)
+      int a123; /* { dg-error "duplicate member" } */
+          ^
+

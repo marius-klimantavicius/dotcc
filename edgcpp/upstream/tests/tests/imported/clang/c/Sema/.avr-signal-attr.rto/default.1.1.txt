@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 6: warning: unknown attribute "signal"
+  struct a test __attribute__((signal)); // expected-warning {{'signal' attribute only applies to functions}}
+                               ^
+
+"Test_name.c", line 8: warning: unknown attribute "signal"
+  __attribute__((signal(12))) void foo(void) { } // expected-error {{'signal' attribute takes no arguments}}
+                 ^
+
+"Test_name.c", line 10: warning: unknown attribute "signal"
+  __attribute__((signal)) void food(void) {}
+                 ^
+

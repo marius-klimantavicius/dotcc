@@ -1,0 +1,4 @@
+./a.out
+foo==foo
+bar==bar
+foo==foo

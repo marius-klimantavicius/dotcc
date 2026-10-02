@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp0x/lambda/lambda-in-class-neg.C", line 12: error: the enclosing-function "this" cannot be referenced in a lambda body unless it is in the capture list
+        [] { this; } ();
+             ^
+
+"./cpp0x/lambda/lambda-in-class-neg.C", line 33: error: "this" may only be used inside a nonstatic member function
+    [this] () -> void {} ();
+     ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,16 @@
+[project]
+name = "edg-acknowledg"
+version = "2026.09.09.0"
+requires-python = ">=3.11"
+dependencies = [
+  "hypercorn",
+  "pyserde>=0.32.2",
+  "quart",
+]
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["acknowledg_server*", "edgacknowledg*"]

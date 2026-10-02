@@ -1,0 +1,5 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --exceptions Test_name.c
+"./torture/pr85334.C", line 22: warning: variable "status" was set but never used
+    int status;
+        ^
+

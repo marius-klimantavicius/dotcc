@@ -1,0 +1,41 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 15: warning: variable "s1" was declared but never referenced
+     constexpr S s1 = S{};
+                 ^
+
+"Test_name.c", line 16: warning: variable "s2" was declared but never referenced
+     constexpr S s2 = S{{}};
+                 ^
+
+"Test_name.c", line 17: warning: variable "s3" was declared but never referenced
+     constexpr S s3 = S{{{}}};
+                 ^
+
+"Test_name.c", line 18: warning: variable "s4" was declared but never referenced
+     constexpr S s4 = {};
+                 ^
+
+"Test_name.c", line 19: warning: variable "s5" was declared but never referenced
+     constexpr S s5 = {{}};
+                 ^
+
+"Test_name.c", line 20: warning: variable "s6" was declared but never referenced
+     constexpr S s6 = {{{}}};
+                 ^
+
+"Test_name.c", line 21: warning: variable "s7" was declared but never referenced
+     constexpr S s7{{}};
+                 ^
+
+"Test_name.c", line 25: warning: variable "s11" was declared but never referenced
+     constexpr S s11 = S();
+                 ^
+
+"Test_name.c", line 28: warning: variable "s14" was declared but never referenced
+     constexpr S s14 = {{}};
+                 ^
+
+"Test_name.c", line 29: warning: variable "s15" was declared but never referenced
+     constexpr S s15 = {{{}}};
+                 ^
+

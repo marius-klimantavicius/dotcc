@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 14: warning: type qualifier specified more than once
+  const const int i = 12; // expected-warning {{duplicate 'const' declaration specifier}}
+        ^
+
+"Test_name.c", line 16: warning: unknown attribute "address_space"
+  __attribute__((address_space(1)))
+                 ^
+
+"Test_name.c", line 17: warning: unknown attribute "address_space"
+  __attribute__((address_space(1))) // expected-warning {{multiple identical address spaces specified for type}}
+                 ^
+
+"Test_name.c", line 20: warning: type qualifier specified more than once
+  volatile const volatile const int x = 1; // expected-warning {{duplicate 'const' declaration specifier}} \
+                 ^
+
+"Test_name.c", line 20: warning: type qualifier specified more than once
+  volatile const volatile const int x = 1; // expected-warning {{duplicate 'const' declaration specifier}} \
+                          ^
+

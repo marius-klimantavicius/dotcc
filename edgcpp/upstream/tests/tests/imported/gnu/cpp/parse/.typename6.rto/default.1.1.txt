@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 12: error: expected an identifier
+    public typename T::Type  // { dg-error "not allowed in this context" }
+           ^
+
+"Test_name.c", line 18: error: expected an identifier
+    public typename A        // { dg-error "not allowed outside of templates" }
+           ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 30: error: class "X<T>::Inner<float *> [with T=long]" has no member "member"
+    xli.member = fp; // expected-error{{no member}}
+        ^
+
+"Test_name.c", line 23: warning: variable "xii" was set but never used
+    X<int>::Inner<float*> xii;
+                          ^
+
+"Test_name.c", line 18: warning: parameter "x" was set but never used
+  void X<int>::f(int x, U y) { 
+                     ^
+          detected during instantiation of "void X<int>::f(int, U) [with U=int]" at line 25
+
+"Test_name.c", line 18: warning: parameter "x" was set but never used
+  void X<int>::f(int x, U y) { 
+                     ^
+          detected during instantiation of "void X<int>::f(int, U) [with U=double]" at line 26
+
+"Test_name.c", line 19: error: a value of type "float *" cannot be assigned to an entity of type "int"
+    x = y; // expected-error{{incompatible pointer to integer conversion}}
+      ^
+          detected during instantiation of "void X<int>::f(int, U) [with U=float *]" at line 27
+
+"Test_name.c", line 18: warning: parameter "x" was set but never used
+  void X<int>::f(int x, U y) { 
+                     ^
+          detected during instantiation of "void X<int>::f(int, U) [with U=float *]" at line 27
+
+2 errors detected in the compilation of "Test_name.c".

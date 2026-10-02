@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 26: error: case label value has already appeared in this switch at line 25
+      case 3 ... 5 : return i + 3;       // { dg-error "duplicate" }
+           ^
+
+"Test_name.c", line 17: error: case label value has already appeared in this switch at line 16
+      case 5 : return i + 2;             // { dg-error "duplicate" }
+           ^
+          detected during instantiation of "T f2(T) [with T=int]" at line 27
+
+2 errors detected in the compilation of "Test_name.c".

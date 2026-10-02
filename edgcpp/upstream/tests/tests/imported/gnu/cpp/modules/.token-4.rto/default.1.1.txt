@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 --modules Test_name.c
+"Test_name.c", line 5: error: an export declaration can only appear in a module interface unit
+  export MODULE bob; // { dg-error "may only occur after" }
+  ^
+
+"Test_name.c", line 5: error: identifier "module" is undefined
+  export MODULE bob; // { dg-error "may only occur after" }
+         ^
+
+2 errors detected in the compilation of "Test_name.c".

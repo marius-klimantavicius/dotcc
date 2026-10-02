@@ -1,0 +1,24 @@
+fe_only -DTEST_NUMBER=1 --no_wrap_diagnostics --c++20 --g++ Test_name.c
+"Test_name.c", line 14: error: expression must have a constant value
+      current (const void *__p = __builtin_source_location ()) {
+                                                           ^
+"Test_name.c", line 1037: note: given line number is too large for "std::source_location" implementation
+    consteval source_location g() { return source_location::current(); }
+                                                                    ^
+
+"Test_name.c", line 14: error: expression must have a constant value
+      current (const void *__p = __builtin_source_location ()) {
+                                                           ^
+"Test_name.c", line 1045: note: given line number is too large for "std::source_location" implementation
+    consteval source_location g() { return source_location::current(); }
+                                                                    ^
+
+"Test_name.c", line 1039: warning: variable "a::p" was declared but never referenced
+    constexpr source_location p = [](int x) consteval {
+                              ^
+
+"Test_name.c", line 1047: warning: variable "b::p" was declared but never referenced
+    constexpr source_location p = []() consteval {
+                              ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./lookup/missing-std-include-3.C", line 10: error: namespace "std" has no member "string"
+    std::string test;
+         ^
+
+1 error detected in the compilation of "Test_name.c".

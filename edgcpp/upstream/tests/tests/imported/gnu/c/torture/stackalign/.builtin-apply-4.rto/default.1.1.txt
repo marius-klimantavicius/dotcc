@@ -1,0 +1,8 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 23: warning: argument of type "void (*)(void)" is incompatible with parameter of type "void (*)(...)"
+    __builtin_return (__builtin_apply ((void (*) ()) foo,
+                                       ^
+
+/usr/sbin/ld: Test_name.o: in function `main':
+Test_name.int.c:(.text+0xXX): undefined reference to `bar'
+collect2: error: ld returned 1 exit status

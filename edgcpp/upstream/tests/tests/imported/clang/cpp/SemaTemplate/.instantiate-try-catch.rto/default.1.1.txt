@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --exceptions --exceptions --c++11 Test_name.c
+"Test_name.c", line 8: error: an rvalue reference is not allowed as a catch type
+      } catch (T&&) { // expected-error 2{{cannot catch exceptions by rvalue reference}}
+               ^
+          detected during instantiation of "void TryCatch0<T>::f() [with T=int &&]" at line 14
+
+"Test_name.c", line 8: error: an rvalue reference is not allowed as a catch type
+      } catch (T&&) { // expected-error 2{{cannot catch exceptions by rvalue reference}}
+               ^
+          detected during instantiation of "void TryCatch0<T>::f() [with T=int]" at line 15
+
+"Test_name.c", line 27: error: "PR10232::Templated<T>::Exception::Exception(const PR10232::Templated<T>::Exception &) [with T=int]" (declared at line 23) is inaccessible
+        } catch(Exception e) {  // expected-error{{calling a private constructor of class 'PR10232::Templated<int>::Exception'}}
+                          ^
+          detected during instantiation of "void PR10232::Templated<T>::exception() [with T=int]" at line 32
+
+3 errors detected in the compilation of "Test_name.c".

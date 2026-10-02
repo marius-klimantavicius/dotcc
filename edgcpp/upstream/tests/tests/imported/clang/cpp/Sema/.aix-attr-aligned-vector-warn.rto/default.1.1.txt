@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 10: error: explicit type is missing ("int" assumed)
+  alignas(8) vector int V1; // expected-warning {{requested alignment is less than minimum alignment of 16 for type '__vector int' (vector of 4 'int' values)}}
+             ^
+
+"Test_name.c", line 10: error: expected a ";"
+  alignas(8) vector int V1; // expected-warning {{requested alignment is less than minimum alignment of 16 for type '__vector int' (vector of 4 'int' values)}}
+                    ^
+
+"Test_name.c", line 11: error: explicit type is missing ("int" assumed)
+  alignas(Align8) vector int V2; // expected-warning {{requested alignment is less than minimum alignment of 16 for type '__vector int' (vector of 4 'int' values)}}
+                  ^
+
+"Test_name.c", line 11: error: variable "vector" has already been defined (previous definition at line 10)
+  alignas(Align8) vector int V2; // expected-warning {{requested alignment is less than minimum alignment of 16 for type '__vector int' (vector of 4 'int' values)}}
+                  ^
+
+"Test_name.c", line 11: error: expected a ";"
+  alignas(Align8) vector int V2; // expected-warning {{requested alignment is less than minimum alignment of 16 for type '__vector int' (vector of 4 'int' values)}}
+                         ^
+
+5 errors detected in the compilation of "Test_name.c".

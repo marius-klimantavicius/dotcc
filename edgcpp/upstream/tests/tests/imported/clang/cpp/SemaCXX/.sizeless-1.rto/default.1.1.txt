@@ -1,0 +1,148 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --exceptions --c++03 --exceptions Test_name.c
+"Test_name.c", line 12: error: identifier "__SVInt8_t" is undefined
+  typedef __SVInt8_t svint8_t;
+          ^
+
+"Test_name.c", line 13: error: identifier "__SVInt16_t" is undefined
+  typedef __SVInt16_t svint16_t;
+          ^
+
+"Test_name.c", line 36: warning: the standard "alignof" operator does not accept an expression argument (use a type instead)
+  int alignof_int8_var = _Alignof(*extern_int8_ptr);    // expected-error {{invalid application of 'alignof' to sizeless type 'svint8_t'}} expected-warning {{GNU extension}}
+                                 ^
+
+"Test_name.c", line 37: warning: the standard "alignof" operator does not accept an expression argument (use a type instead)
+  int alignof_int8_var_ptr = _Alignof(extern_int8_ptr); // expected-warning {{GNU extension}}
+                                     ^
+
+"Test_name.c", line 76: error: expected a ";"
+    svint8_t _Alignas(int) aligned_int8_3;               // expected-error {{'_Alignas' attribute cannot be applied to sizeless type 'svint8_t'}}
+                           ^
+
+"Test_name.c", line 78: error: expected a ";"
+    int _Alignas(svint8_t) aligned_int; // expected-error {{invalid application of '_Alignas' to sizeless type 'svint8_t'}}
+                           ^
+
+"Test_name.c", line 82: error: expression must have a constant value
+    _Static_assert(__atomic_is_lock_free(1, &local_int8) == __atomic_is_lock_free(1, incomplete_ptr), "");
+                                                                                     ^
+
+"Test_name.c", line 83: error: expression must have a constant value
+    _Static_assert(__atomic_is_lock_free(2, &local_int8) == __atomic_is_lock_free(2, incomplete_ptr), ""); // expected-error {{static assertion expression is not an integral constant expression}}
+                                                                                     ^
+
+"Test_name.c", line 84: error: expression must have a constant value
+    _Static_assert(__atomic_always_lock_free(1, &local_int8) == __atomic_always_lock_free(1, incomplete_ptr), "");
+                                                                                             ^
+
+"Test_name.c", line 86: warning: expression has no effect
+    local_int8; // expected-warning {{expression result unused}}
+    ^
+
+"Test_name.c", line 90: warning: expression has no effect
+    local_int8, 0; // expected-warning {{left operand of comma operator has no effect}}
+    ^
+
+"Test_name.c", line 92: warning: expression has no effect
+    0, local_int8; // expected-warning {{left operand of comma operator has no effect}} expected-warning {{expression result unused}}
+    ^
+
+"Test_name.c", line 95: error: expected an expression
+    svint8_t bad_init_int8 = for; // expected-error {{expected expression}}
+                             ^
+
+"Test_name.c", line 101: error: expected an expression
+    int empty_brace_init_int = {}; // expected-error {{scalar initializer cannot be empty}}
+                                ^
+
+"Test_name.c", line 198: warning: expression has no effect
+    global_int8_ptr + 1;               // expected-error {{arithmetic on a pointer to sizeless type}}
+    ^
+
+"Test_name.c", line 199: warning: expression has no effect
+    global_int8_ptr - 1;               // expected-error {{arithmetic on a pointer to sizeless type}}
+    ^
+
+"Test_name.c", line 202: warning: expression has no effect
+    global_int8_ptr - global_int8_ptr; // expected-error {{arithmetic on a pointer to sizeless type}}
+    ^
+
+"Test_name.c", line 101: warning: variable "empty_brace_init_int" was declared but never referenced
+    int empty_brace_init_int = {}; // expected-error {{scalar initializer cannot be empty}}
+        ^
+
+"Test_name.c", line 126: warning: variable "test_int8" was declared but never referenced
+    bool test_int8 = init_int8; // expected-error {{cannot initialize a variable of type 'bool' with an lvalue of type 'svint8_t'}}
+         ^
+
+"Test_name.c", line 128: warning: variable "int_int8" was declared but never referenced
+    int int_int8 = init_int8; // expected-error {{cannot initialize a variable of type 'int' with an lvalue of type 'svint8_t'}}
+        ^
+
+"Test_name.c", line 364: warning: statement is unreachable
+    throw global_int8_ptr;
+    ^
+
+"Test_name.c", line 366: warning: statement is unreachable
+    try {
+    ^
+
+"Test_name.c", line 384: error: function "operator new" cannot be called with the given argument list
+            argument types are: (unsigned long, svint8_t *)
+    new (global_int8_ptr) svint8_t;     // expected-error {{allocation of sizeless type 'svint8_t'}}
+    ^
+Note: number of parameters of function "operator new" does not match the call
+
+"Test_name.c", line 385: error: function "operator new" cannot be called with the given argument list
+            argument types are: (unsigned long, svint8_t *)
+    new (global_int8_ptr) svint8_t();   // expected-error {{allocation of sizeless type 'svint8_t'}}
+    ^
+Note: number of parameters of function "operator new" does not match the call
+
+"Test_name.c", line 386: error: function "operator new[]" cannot be called with the given argument list
+            argument types are: (unsigned long, svint8_t *)
+    new (global_int8_ptr) svint8_t[10]; // expected-error {{allocation of sizeless type 'svint8_t'}}
+    ^
+Note: number of parameters of function "operator new[]" does not match the call
+
+"Test_name.c", line 391: error: "__SVInt8_t" is not a type name
+    local_int8.~__SVInt8_t(); // expected-error {{object expression of non-scalar type 'svint8_t' (aka '__SVInt8_t') cannot be used in a pseudo-destructor expression}}
+               ^
+
+"Test_name.c", line 447: error: identifier "__SVInt8_t" is undefined
+    (void)typeid(__SVInt8_t);
+                 ^
+
+"Test_name.c", line 448: error: expected an expression
+    (void)typeid(__SVInt8_t *);
+                             ^
+
+"Test_name.c", line 337: warning: parameter "sel" was set but never used
+  void cxx_only(int sel) {
+                    ^
+
+"Test_name.c", line 398: warning: variable "st_int" was declared but never referenced
+    s_template<int> st_int;
+                    ^
+
+"Test_name.c", line 399: warning: variable "st_svint8" was declared but never referenced
+    s_template<svint8_t> st_svint8; // expected-note {{in instantiation}}
+                         ^
+
+"Test_name.c", line 407: warning: variable "st_array_int" was declared but never referenced
+    s_array_template<int> st_array_int;
+                          ^
+
+"Test_name.c", line 408: warning: variable "st_array_svint8" was declared but never referenced
+    s_array_template<svint8_t> st_array_svint8; // expected-note {{in instantiation}}
+                               ^
+
+"Test_name.c", line 542: warning: variable "x" was declared but never referenced
+    s_ptr_template<int> &x = y;
+                         ^
+
+"Test_name.c", line 21: warning: variable "static_int8_ptr" was set but never used
+  static svint8_t *static_int8_ptr;
+                   ^
+
+15 errors detected in the compilation of "Test_name.c".

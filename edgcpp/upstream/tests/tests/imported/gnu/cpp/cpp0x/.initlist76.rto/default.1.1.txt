@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 7: error: only one level of braces is allowed on an initializer for an object of type "int"
+  int&& j{{ i }};			// { dg-error "too many braces" }
+          ^
+
+1 error detected in the compilation of "Test_name.c".

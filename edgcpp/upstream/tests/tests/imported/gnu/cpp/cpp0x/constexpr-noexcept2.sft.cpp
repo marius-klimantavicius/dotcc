@@ -1,0 +1,16 @@
+//type: fp
+//options: --c++11
+// { dg-do compile { target c++11 } }
+
+template<class T>
+constexpr T value(T t) { return t; }
+
+template<class T>
+struct is_funny {
+  static constexpr bool value = false;
+};
+
+template<class T>
+void eval() noexcept(value(is_funny<T>::value)) {}
+
+constexpr bool ok = noexcept(eval<int>()); // line 12

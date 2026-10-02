@@ -1,0 +1,70 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++26 Test_name.c
+"Test_name.c", line 12: error: expected a type specifier
+    void * __ptrauth(1, 0, 1234) p;
+                     ^
+
+"Test_name.c", line 12: error: expected a type specifier
+    void * __ptrauth(1, 0, 1234) p;
+                        ^
+
+"Test_name.c", line 12: error: expected a type specifier
+    void * __ptrauth(1, 0, 1234) p;
+                           ^
+
+"Test_name.c", line 12: error: expected a ";"
+    void * __ptrauth(1, 0, 1234) p;
+                                 ^
+
+"Test_name.c", line 15: error: type name is not allowed
+  static_assert(__builtin_is_cpp_trivially_relocatable(NonAddressDiscPtrauth));
+                                                       ^
+
+"Test_name.c", line 15: error: identifier "__builtin_is_cpp_trivially_relocatable" is undefined
+  static_assert(__builtin_is_cpp_trivially_relocatable(NonAddressDiscPtrauth));
+                ^
+
+"Test_name.c", line 18: error: expected a type specifier
+    void * __ptrauth(1, 1, 1234) p;
+                     ^
+
+"Test_name.c", line 18: error: expected a type specifier
+    void * __ptrauth(1, 1, 1234) p;
+                        ^
+
+"Test_name.c", line 18: error: expected a type specifier
+    void * __ptrauth(1, 1, 1234) p;
+                           ^
+
+"Test_name.c", line 18: error: expected a ";"
+    void * __ptrauth(1, 1, 1234) p;
+                                 ^
+
+"Test_name.c", line 21: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(AddressDiscPtrauth));
+                                                        ^
+
+"Test_name.c", line 27: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(MultipleBaseClasses));
+                                                        ^
+
+"Test_name.c", line 34: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(MultipleMembers1));
+                                                        ^
+
+"Test_name.c", line 41: error: type name is not allowed
+  static_assert(__builtin_is_cpp_trivially_relocatable(MultipleMembers2));
+                                                       ^
+
+"Test_name.c", line 50: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(UnionOfPtrauth));
+                                                        ^
+
+"Test_name.c", line 59: error: type name is not allowed
+  static_assert(__builtin_is_cpp_trivially_relocatable(UnionOfNonAddressDiscriminatedPtrauth));
+                                                       ^
+
+"Test_name.c", line 68: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(UnionOfAddressDisriminatedPtrauth));
+                                                        ^
+
+17 errors detected in the compilation of "Test_name.c".

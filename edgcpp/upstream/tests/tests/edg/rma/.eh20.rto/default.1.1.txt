@@ -1,0 +1,6 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 12: error: exception specification for virtual function "Y::g" is incompatible with that of overridden function "X::g"
+    virtual void g() throw(B);    // Error
+                 ^
+
+1 error detected in the compilation of "Test_name.c".

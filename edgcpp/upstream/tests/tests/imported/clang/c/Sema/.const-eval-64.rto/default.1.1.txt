@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 7: error: the size of an array must be greater than zero
+  EVAL_EXPR(1, ((char*)-1LL) + 1 == 0 ? 1 : -1) // expected-warning {{folded}}
+  ^
+
+"Test_name.c", line 8: error: the size of an array must be greater than zero
+  EVAL_EXPR(2, ((char*)-1LL) + 1 < (char*) -1 ? 1 : -1) // expected-warning {{folded}}
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

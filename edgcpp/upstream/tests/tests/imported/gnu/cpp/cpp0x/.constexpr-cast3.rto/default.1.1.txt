@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 7: warning: variable "q1" was declared but never referenced
+  constexpr int *q1 = const_cast<int*>(p);
+                 ^
+
+"Test_name.c", line 8: warning: variable "q2" was declared but never referenced
+  constexpr int *q2 = (int *)(const int *) nullptr;
+                 ^
+
+"Test_name.c", line 12: warning: variable "q3" was declared but never referenced
+  constexpr B *q3 = static_cast<B*>(nullptr);
+               ^
+
+"Test_name.c", line 15: warning: variable "q4" was declared but never referenced
+  constexpr B *q4 = static_cast<B*>(pd);
+               ^
+
+"Test_name.c", line 16: warning: variable "q5" was declared but never referenced
+  constexpr D *q5 = static_cast<D*>(pb);
+               ^
+

@@ -1,0 +1,45 @@
+//type: rp
+//options: --c23
+# 0 "./c23-float-4.c"
+# 0 "<built-in>"
+# 0 "<command-line>"
+# 1 "/usr/include/stdc-predef.h" 1 3 4
+# 0 "<command-line>" 2
+# 1 "./c23-float-4.c"
+
+
+
+
+
+# 1 "/mds/gnu/build/gcc-15-20250223/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/float.h" 1 3 4
+# 7 "./c23-float-4.c" 2
+# 17 "./c23-float-4.c"
+volatile float f = 
+# 17 "./c23-float-4.c" 3 4
+                  (__builtin_nanf (""))
+# 17 "./c23-float-4.c"
+                     ;
+
+extern void abort (void);
+extern void exit (int);
+
+int
+main (void)
+{
+  (void) _Generic (
+# 25 "./c23-float-4.c" 3 4
+                  (__builtin_nanf (""))
+# 25 "./c23-float-4.c"
+                     , float : 0);
+  if (!__builtin_isnan (
+# 26 "./c23-float-4.c" 3 4
+                       (__builtin_nanf (""))
+# 26 "./c23-float-4.c"
+                          ))
+    abort ();
+  if (!__builtin_isnan (f))
+    abort ();
+  if (!__builtin_isnan (f + f))
+    abort ();
+  exit (0);
+}

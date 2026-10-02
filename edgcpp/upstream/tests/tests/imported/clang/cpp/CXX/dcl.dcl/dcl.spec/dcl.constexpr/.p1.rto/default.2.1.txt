@@ -1,0 +1,220 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 Test_name.c
+"Test_name.c", line 30: error: missing initializer for constexpr variable
+  constexpr extern int i2; // expected-error {{constexpr variable declaration must be a definition}}
+  ^
+
+"Test_name.c", line 32: error: initialization is not constant
+  constexpr notlit nl1; // expected-error {{constexpr variable cannot have non-literal type 'const notlit'}}
+                   ^
+"Test_name.c", line 32: note: cannot call non-constexpr function "notlit::notlit()" (declared at line 13)
+  constexpr notlit nl1; // expected-error {{constexpr variable cannot have non-literal type 'const notlit'}}
+                   ^
+
+"Test_name.c", line 32: error: a constexpr variable must have a literal type or a reference type
+  constexpr notlit nl1; // expected-error {{constexpr variable cannot have non-literal type 'const notlit'}}
+  ^
+
+"Test_name.c", line 34: error: invalid specifier on a parameter
+  void f2(constexpr int i) {} // expected-error {{function parameter cannot be constexpr}}
+          ^
+
+"Test_name.c", line 37: error: "constexpr" is not valid here
+    constexpr int mi1; // expected-error {{non-static data member cannot be constexpr; did you intend to make it const?}}
+    ^
+
+"Test_name.c", line 38: error: a constexpr static data member declaration requires an in-class initializer
+    static constexpr int mi2;
+                            ^
+
+"Test_name.c", line 44: error: "constexpr" is not valid here
+    mutable constexpr int mi3 = 3; // expected-error-re {{non-static data member cannot be constexpr{{$}}}} expected-error {{'mutable' and 'const' cannot be mixed}}
+            ^
+
+"Test_name.c", line 47: error: "constexpr" is not valid here
+  typedef constexpr int CI; // expected-error {{typedef cannot be constexpr}}
+          ^
+
+"Test_name.c", line 49: error: "constexpr" is not valid here
+  constexpr class C1 {}; // expected-error {{class cannot be marked constexpr}}
+  ^
+
+"Test_name.c", line 50: error: "constexpr" is not valid here
+  constexpr struct S1 {}; // expected-error {{struct cannot be marked constexpr}}
+  ^
+
+"Test_name.c", line 51: error: "constexpr" is not valid here
+  constexpr union U1 {}; // expected-error {{union cannot be marked constexpr}}
+  ^
+
+"Test_name.c", line 52: error: "constexpr" is not valid here
+  constexpr enum E1 {}; // expected-error {{enum cannot be marked constexpr}}
+  ^
+
+"Test_name.c", line 53: error: expected an identifier
+  template <typename T> constexpr class TC1 {}; // expected-error {{class cannot be marked constexpr}}
+                                              ^
+
+"Test_name.c", line 53: error: "constexpr" is not valid here
+  template <typename T> constexpr class TC1 {}; // expected-error {{class cannot be marked constexpr}}
+                        ^
+
+"Test_name.c", line 54: error: expected an identifier
+  template <typename T> constexpr struct TS1 {}; // expected-error {{struct cannot be marked constexpr}}
+                                               ^
+
+"Test_name.c", line 54: error: "constexpr" is not valid here
+  template <typename T> constexpr struct TS1 {}; // expected-error {{struct cannot be marked constexpr}}
+                        ^
+
+"Test_name.c", line 55: error: expected an identifier
+  template <typename T> constexpr union TU1 {}; // expected-error {{union cannot be marked constexpr}}
+                                              ^
+
+"Test_name.c", line 55: error: "constexpr" is not valid here
+  template <typename T> constexpr union TU1 {}; // expected-error {{union cannot be marked constexpr}}
+                        ^
+
+"Test_name.c", line 56: error: "constexpr" is not valid here
+  class C2 {} constexpr; // expected-error {{class cannot be marked constexpr}}
+              ^
+
+"Test_name.c", line 57: error: "constexpr" is not valid here
+  struct S2 {} constexpr; // expected-error {{struct cannot be marked constexpr}}
+               ^
+
+"Test_name.c", line 58: error: "constexpr" is not valid here
+  union U2 {} constexpr; // expected-error {{union cannot be marked constexpr}}
+              ^
+
+"Test_name.c", line 59: error: "constexpr" is not valid here
+  enum E2 {} constexpr; // expected-error {{enum cannot be marked constexpr}}
+             ^
+
+"Test_name.c", line 68: warning: declaration does not declare anything
+  constexpr int; // expected-error {{constexpr can only be used in variable and function declarations}}
+  ^
+
+"Test_name.c", line 68: error: "constexpr" is not valid here
+  constexpr int; // expected-error {{constexpr can only be used in variable and function declarations}}
+  ^
+
+"Test_name.c", line 71: error: function "f3" (declared at line 70) was previously declared constexpr
+  int f3(); // expected-error {{non-constexpr declaration of 'f3' follows constexpr declaration}}
+      ^
+
+"Test_name.c", line 73: error: function "f4" (declared at line 72) was previously not declared constexpr
+  constexpr int f4(); // expected-error {{constexpr declaration of 'f4' follows non-constexpr declaration}}
+  ^
+
+"Test_name.c", line 76: error: function template "f5" (declared at line 74) was previously declared constexpr
+  template<typename T> T f5(T); // expected-error {{non-constexpr declaration of 'f5' follows constexpr declaration}}
+                       ^
+
+"Test_name.c", line 78: error: function template "f6" (declared at line 77) was previously not declared constexpr
+  template<typename T> constexpr T f6(T); // expected-error {{constexpr declaration of 'f6' follows non-constexpr declaration}}
+                       ^
+
+"Test_name.c", line 81: error: a destructor cannot be constexpr
+    constexpr ~ConstexprDtor() = default;
+    ^
+
+"Test_name.c", line 102: error: function "ft(T) [with T=char]" (declared at line 101) was previously not declared constexpr
+  template <> constexpr char ft(char nl); // expected-error {{constexpr declaration of 'ft<char>' follows non-constexpr declaration}}
+              ^
+
+"Test_name.c", line 104: error: no instance of function template "S::f" matches the specified type
+  template <> notlit S::f() const { return notlit(); }
+                        ^
+
+"Test_name.c", line 108: error: no instance of function template "S::g" matches the specified type
+  template <> constexpr int S::g() { return 0; }
+                               ^
+
+"Test_name.c", line 108: error: "constexpr" is not valid here
+  template <> constexpr int S::g() { return 0; }
+              ^
+
+"Test_name.c", line 120: error: no instance of function template "S::g" matches the specified type
+  template <> char S::g() { return 0; } // expected-error {{no function template matches}}
+                      ^
+
+"Test_name.c", line 135: error: "constexpr" is not valid here
+  constexpr struct pixel { // expected-error {{struct cannot be marked constexpr}}
+  ^
+
+"Test_name.c", line 145: error: expression must have a constant value
+  constexpr pixel small(2); // expected-error {{must be initialized by a constant expression}} expected-note {{in call to 'pixel(2)'}}
+                        ^
+"Test_name.c", line 142: note: constexpr function "square" (declared at line 132) is not defined
+    : x(square(a)), y(square(a)) // expected-note {{undefined function 'square' cannot be used in a constant expression}}
+        ^
+
+"Test_name.c", line 153: error: invalid specifier on a parameter
+  int next(constexpr int x) { // expected-error {{function parameter cannot be constexpr}}
+           ^
+
+"Test_name.c", line 157: error: missing initializer for constexpr variable
+  extern constexpr int memsz; // expected-error {{constexpr variable declaration must be a definition}}
+         ^
+
+"Test_name.c", line 20: warning: variable "i1" was declared but never referenced
+  constexpr int i1 = 0;
+                ^
+
+"Test_name.c", line 32: warning: variable "nl1" was declared but never referenced
+  constexpr notlit nl1; // expected-error {{constexpr variable cannot have non-literal type 'const notlit'}}
+                   ^
+
+"Test_name.c", line 60: warning: variable "c3" was declared but never referenced
+  constexpr class C3 {} c3 = C3();
+                        ^
+
+"Test_name.c", line 61: warning: variable "s3" was declared but never referenced
+  constexpr struct S3 {} s3 = S3();
+                         ^
+
+"Test_name.c", line 62: warning: variable "u3" was declared but never referenced
+  constexpr union U3 {} u3 = {};
+                        ^
+
+"Test_name.c", line 63: warning: variable "e3" was declared but never referenced
+  constexpr enum E3 { V3 } e3 = V3;
+                           ^
+
+"Test_name.c", line 64: warning: variable "c4" was declared but never referenced
+  class C4 {} constexpr c4 = C4();
+                        ^
+
+"Test_name.c", line 65: warning: variable "s4" was declared but never referenced
+  struct S4 {} constexpr s4 = S4();
+                         ^
+
+"Test_name.c", line 66: warning: variable "u4" was declared but never referenced
+  union U4 {} constexpr u4 = {};
+                        ^
+
+"Test_name.c", line 67: warning: variable "e4" was declared but never referenced
+  enum E4 { V4 } constexpr e4 = V4;
+                           ^
+
+"Test_name.c", line 123: warning: variable "i3" was declared but never referenced
+  constexpr int i3 = ft(1);
+                ^
+
+"Test_name.c", line 133: warning: variable "bufsz" was declared but never referenced
+  constexpr int bufsz = 1024;
+                ^
+
+"Test_name.c", line 145: warning: variable "small" was declared but never referenced
+  constexpr pixel small(2); // expected-error {{must be initialized by a constant expression}} expected-note {{in call to 'pixel(2)'}}
+                  ^
+
+"Test_name.c", line 151: warning: variable "large" was declared but never referenced
+  constexpr pixel large(4);
+                  ^
+
+"Test_name.c", line 164: warning: variable "<unnamed>::r" was declared but never referenced
+    const int &r = A::n;
+               ^
+
+37 errors detected in the compilation of "Test_name.c".

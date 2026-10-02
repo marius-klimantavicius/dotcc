@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 15: error: no instance of function template "g" matches the argument list
+            argument types are: (char)
+      g('0'); // { dg-error "no matching function" }
+      ^
+"Test_name.c", line 11: note: candidate function template "g" failed deduction
+  template<class T2> auto g(T2 t2) -> decltype(A<sizeof(t2)>::foo()); // { dg-error "dependent-name .A<sizeof .t2.>::foo" }
+                          ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++20 --module_interface Test_name.c
+"Test_name.c", line 4: error: the module declaration must be exported from this translation unit to create a module interface file
+  module foo;
+         ^
+
+1 error detected in the compilation of "Test_name.c".

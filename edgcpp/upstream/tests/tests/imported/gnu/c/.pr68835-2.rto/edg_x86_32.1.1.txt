@@ -1,0 +1,14 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 7: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) unsigned __int128
+                           ^
+
+"Test_name.c", line 7: warning: attribute "noinline" does not apply here
+  __attribute__((noinline, noclone)) unsigned __int128
+                 ^
+
+"Test_name.c", line 8: error: expected a ";"
+  foo (void)
+  ^
+
+1 error detected in the compilation of "Test_name.c".

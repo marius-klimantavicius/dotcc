@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 52: error: static assertion failed
+  static_assert (!std::is_pointer_interconvertible_with_class (&M::e));
+  ^
+
+"Test_name.c", line 53: error: static assertion failed
+  static_assert (!std::is_pointer_interconvertible_with_class (&M::f));
+  ^
+
+"Test_name.c", line 66: error: static assertion failed
+  static_assert (std::is_pointer_interconvertible_with_class (&Z::a));
+  ^
+
+"Test_name.c", line 67: error: static assertion failed
+  static_assert (std::is_pointer_interconvertible_with_class (&Z::d));
+  ^
+
+4 errors detected in the compilation of "Test_name.c".

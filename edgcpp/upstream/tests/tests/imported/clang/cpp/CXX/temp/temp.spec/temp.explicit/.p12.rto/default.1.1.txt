@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 48: error: class "test2::A::Private" (declared at line 35) is inaccessible
+    template <> class Temp<A::Private> Temp<int>::make() {
+                              ^
+
+"Test_name.c", line 54: error: class "test2::A::Private" (declared at line 35) is inaccessible
+      static Temp<A::Private> make() { // expected-error {{is a private member}}
+                     ^
+
+2 errors detected in the compilation of "Test_name.c".

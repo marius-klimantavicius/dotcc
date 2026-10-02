@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --exceptions Test_name.c
+"Test_name.c", line 8: error: "constexpr" is not valid here
+    operator constexpr int(); // expected-error{{type name does not allow constexpr}}
+             ^
+
+"Test_name.c", line 14: error: "constexpr" is not valid here
+      (void) new constexpr int; // expected-error{{type name does not allow constexpr}}
+                 ^
+
+"Test_name.c", line 15: error: "constexpr" is not valid here
+    } catch (constexpr int) { // expected-error{{type name does not allow constexpr}}
+             ^
+
+"Test_name.c", line 18: error: type definition is not allowed
+    (void) new struct S {};
+               ^
+
+"Test_name.c", line 19: error: type definition is not allowed
+    (void) new enum E { e };
+               ^
+
+"Test_name.c", line 24: error: identifier "unknown" is undefined
+  auto f() -> unknown; // expected-error{{unknown type name 'unknown'}}
+              ^
+
+"Test_name.c", line 24: error: cannot overload functions distinguished by return type alone
+  auto f() -> unknown; // expected-error{{unknown type name 'unknown'}}
+       ^
+
+7 errors detected in the compilation of "Test_name.c".

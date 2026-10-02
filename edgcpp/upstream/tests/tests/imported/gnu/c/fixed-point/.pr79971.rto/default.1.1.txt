@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 9: error: expected a ";"
+    unsigned _Accum b;
+                    ^
+
+"Test_name.c", line 10: error: identifier "b" is undefined
+    for (b = 0.1; b; b += 0.1uk)
+         ^
+
+"Test_name.c", line 10: error: extra text after expected end of number
+    for (b = 0.1; b; b += 0.1uk)
+                             ^
+
+"Test_name.c", line 12: error: identifier "_Sat" is undefined
+        _Sat unsigned _Accum b;
+        ^
+
+"Test_name.c", line 12: error: expected a ";"
+        _Sat unsigned _Accum b;
+             ^
+
+"Test_name.c", line 9: warning: variable "_Accum" was declared but never referenced
+    unsigned _Accum b;
+             ^
+
+5 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,99 @@
+cpfe -DTEST_NUMBER=3 --diag_suppress 174,177 -tused --set_flag=no_checking_pragmas --c++20 Test_name.c
+"Test_name.c", line 26: warning: a volatile operand to an increment expression is deprecated
+    vi++; // Deprecated
+    ^
+
+"Test_name.c", line 28: warning: a volatile operand to a decrement expression is deprecated
+    vi--; // Deprecated
+    ^
+
+"Test_name.c", line 31: warning: a volatile operand to an increment expression is deprecated
+    ++vi; // Deprecated
+      ^
+
+"Test_name.c", line 33: warning: a volatile operand to a decrement expression is deprecated
+    --vi; // Deprecated
+      ^
+
+"Test_name.c", line 76: warning: use of the result of an assignment to a volatile scalar object is deprecated
+    vi = vi = i; // Deprecated
+         ^
+
+"Test_name.c", line 47: warning: a volatile function parameter is deprecated
+  void templass(T t, U u) {
+                     ^
+          detected during instantiation of "templass" based on template arguments <int, volatile int> at line 81
+
+"Test_name.c", line 47: warning: a volatile function parameter is deprecated
+  void templass(T t, U u) {
+                     ^
+          detected during instantiation of "templass" based on template arguments <A, volatile A> at line 83
+
+"Test_name.c", line 86: warning: use of the result of an assignment to a volatile scalar object is deprecated
+    (int)(vi = i); // Deprecated
+          ^
+
+"Test_name.c", line 92: warning: use of the result of an assignment to a volatile scalar object is deprecated
+    if (vi, vi = i); // Deprecated
+            ^
+
+"Test_name.c", line 94: warning: use of the result of an assignment to a volatile scalar object is deprecated
+    if (vi = i); // Deprecated
+        ^
+
+"Test_name.c", line 135: warning: a volatile function parameter is deprecated
+            volatile int vi // Deprecated
+            ^
+
+"Test_name.c", line 142: warning: a volatile function parameter is deprecated
+            volint vi // Deprecated
+            ^
+
+"Test_name.c", line 140: warning: a volatile return type is deprecated
+  volint func2(       // Return type deprecated
+         ^
+
+"Test_name.c", line 145: warning: a volatile return type is deprecated
+  auto func3() -> volint; // Return type deprecated
+                  ^
+
+"Test_name.c", line 150: warning: a volatile function parameter is deprecated
+            volatile int vi // Deprecated
+            ^
+
+"Test_name.c", line 155: warning: a volatile function parameter is deprecated
+            volint vi // Deprecated
+            ^
+
+"Test_name.c", line 153: warning: a volatile return type is deprecated
+    volint func2(     // Return type deprecated
+           ^
+
+"Test_name.c", line 158: warning: a volatile return type is deprecated
+    auto func3() -> volint; // Return type deprecated
+                    ^
+
+"Test_name.c", line 165: warning: use of a volatile qualifier on a structured binding is deprecated
+    volatile auto [va,vb,vc] = arr; // Deprecated
+    ^
+
+"Test_name.c", line 51: warning: use of the result of an assignment to a volatile scalar object is deprecated
+    u = u = t; // Deprecated if u is volatile
+        ^
+          detected during instantiation of "void templass(T, U) [with T=int, U=volatile int]" at line 81
+
+"Test_name.c", line 53: warning: use of the result of an assignment to a volatile scalar object is deprecated
+    (T)(u = t); // Deprecated if u is volatile
+        ^
+          detected during instantiation of "void templass(T, U) [with T=int, U=volatile int]" at line 81
+
+"Test_name.c", line 59: warning: use of the result of an assignment to a volatile scalar object is deprecated
+    if (t, u = t); // Deprecated if u is volatile
+           ^
+          detected during instantiation of "void templass(T, U) [with T=int, U=volatile int]" at line 81
+
+"Test_name.c", line 61: warning: use of the result of an assignment to a volatile scalar object is deprecated
+    if (u = t); // Deprecated if u is volatile
+        ^
+          detected during instantiation of "void templass(T, U) [with T=int, U=volatile int]" at line 81
+

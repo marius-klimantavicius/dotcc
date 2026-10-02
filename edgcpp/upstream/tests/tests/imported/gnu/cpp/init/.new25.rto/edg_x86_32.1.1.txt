@@ -1,0 +1,82 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 --c++11 Test_name.c
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 137: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 140: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 155: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 158: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 206: error: first parameter of allocation function must be of type "size_t"
+  void* operator new(std::size_t, void* __p)
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 210: error: first parameter of allocation function must be of type "size_t"
+  void* operator new[](std::size_t, void* __p)
+        ^
+
+"./init/new25.C", line 7: error: default argument is not allowed
+    void* operator new(std::size_t = 32) throw (std::bad_alloc);
+                                   ^
+
+"./init/new25.C", line 7: error: first parameter of allocation function must be of type "size_t"
+    void* operator new(std::size_t = 32) throw (std::bad_alloc);
+          ^
+
+"./init/new25.C", line 10: error: default argument is not allowed
+    void* operator new[](std::size_t = 32) throw (std::bad_alloc);
+                                     ^
+
+"./init/new25.C", line 10: error: first parameter of allocation function must be of type "size_t"
+    void* operator new[](std::size_t = 32) throw (std::bad_alloc);
+          ^
+
+"./init/new25.C", line 13: error: default argument is not allowed
+    void* operator new(std::size_t = 32, const std::nothrow_t&) throw();
+                                   ^
+
+"./init/new25.C", line 13: error: first parameter of allocation function must be of type "size_t"
+    void* operator new(std::size_t = 32, const std::nothrow_t&) throw();
+          ^
+
+"./init/new25.C", line 14: error: default argument is not allowed
+    void* operator new[](std::size_t = 32, const std::nothrow_t&) throw();
+                                     ^
+
+"./init/new25.C", line 14: error: first parameter of allocation function must be of type "size_t"
+    void* operator new[](std::size_t = 32, const std::nothrow_t&) throw();
+          ^
+
+"./init/new25.C", line 20: error: first parameter of allocation function must be of type "size_t"
+    void* operator new(std::size_t,
+          ^
+
+"./init/new25.C", line 22: error: first parameter of allocation function must be of type "size_t"
+    void* operator new[](std::size_t,
+          ^
+
+"./init/new25.C", line 29: error: default argument is not allowed
+    void* operator new(std::size_t = 0,
+                                   ^
+
+"./init/new25.C", line 29: error: first parameter of allocation function must be of type "size_t"
+    void* operator new(std::size_t = 0,
+          ^
+
+"./init/new25.C", line 31: error: default argument is not allowed
+    void* operator new[](std::size_t = 0,
+                                     ^
+
+"./init/new25.C", line 31: error: first parameter of allocation function must be of type "size_t"
+    void* operator new[](std::size_t = 0,
+          ^
+
+20 errors detected in the compilation of "Test_name.c".

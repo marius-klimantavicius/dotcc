@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 --modules -E Test_name.c
+# 1 "Test_name.c"
+
+
+# 1 "./modules/legacy-6_d.C"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 1 "/usr/include/stdc-predef.h"
+# 1 "<command-line>"
+# 1 "./modules/legacy-6_d.C"
+
+
+
+# 1 "./modules/legacy-6_a.H"
+
+
+
+
+
+int frob (int);
+# 5 "./modules/legacy-6_d.C"
+int i;
+# 1 "./modules/legacy-6_b.H"
+
+
+
+
+
+int frob (float);
+# 7 "./modules/legacy-6_d.C"

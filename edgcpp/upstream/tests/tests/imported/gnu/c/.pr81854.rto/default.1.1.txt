@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 9: error: declaration does not match its alias variable "f0_target"
+  f0 (void);          /* { dg-error "alias between function and variable" } */
+  ^
+
+"Test_name.c", line 32: warning: the type of function "f3_resolver" ("void *(void)") is incompatible with an ifunc resolver type
+  int __attribute__ ((ifunc ("f3_resolver")))
+                      ^
+
+"Test_name.c", line 59: warning: the type of function "f6_resolver" ("int (void)") is incompatible with an ifunc resolver type
+  int __attribute__ ((ifunc ("f6_resolver")))
+                      ^
+
+1 error detected in the compilation of "Test_name.c".

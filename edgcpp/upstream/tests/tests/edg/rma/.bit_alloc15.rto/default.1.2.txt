@@ -1,0 +1,6 @@
+./a.out
+sizeof(A) = 8	(expecting 8)
+sizeof(B) = 4	(expecting 4)
+sizeof(B2) = 2	(expecting 2)
+sizeof(C) = 2	(expecting 2)
+sizeof(D) = 8	(expecting 4)

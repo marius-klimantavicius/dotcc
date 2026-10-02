@@ -1,0 +1,816 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++26 Test_name.c
+"Test_name.c", line 6: error: expected a ";"
+    void f() = delete("deleted (1)"); // expected-note {{explicitly marked deleted}}
+                     ^
+
+"Test_name.c", line 9: error: expected a ";"
+    T g() = delete("deleted (2)"); // expected-note {{explicitly deleted}}
+                  ^
+
+"Test_name.c", line 14: error: expected a ";"
+    T f() = delete("deleted (3)"); // expected-note {{explicitly marked deleted}}
+                  ^
+
+"Test_name.c", line 17: error: expected a ";"
+    T g(U) = delete("deleted (4)"); // expected-note {{explicitly deleted}}
+                   ^
+
+"Test_name.c", line 20: error: expected a ";"
+  void f() = delete("deleted (5)"); // expected-note {{explicitly deleted}}
+                   ^
+
+"Test_name.c", line 23: error: expected a ";"
+  T g() = delete("deleted (6)"); // expected-note {{explicitly deleted}}
+                ^
+
+"Test_name.c", line 27: error: expected a ";"
+    T f() = delete("deleted (7)"); // expected-note 2 {{explicitly marked deleted}}
+                  ^
+
+"Test_name.c", line 32: error: expected a ";"
+    T f() = delete("deleted (8)"); // expected-note {{explicitly marked deleted}}
+                  ^
+
+"Test_name.c", line 37: error: expected a ";"
+    int f() = delete("deleted (9)"); // expected-note {{explicitly marked deleted}}
+                    ^
+
+"Test_name.c", line 40: error: expected a ";"
+  void u1() = delete(L"\xFFFFFFFF"); // expected-error {{an unevaluated string literal cannot have an encoding prefix}} \
+                    ^
+
+"Test_name.c", line 42: error: expected a ";"
+  void u2() = delete(u"\U000317FF"); // expected-error {{an unevaluated string literal cannot have an encoding prefix}}
+                    ^
+
+"Test_name.c", line 44: error: expected a ";"
+  void u3() = delete("Ω"); // expected-note {{explicitly deleted}}
+                    ^
+
+"Test_name.c", line 45: error: expected a ";"
+  void u4() = delete("\u1234"); // expected-note {{explicitly deleted}}
+                    ^
+
+"Test_name.c", line 47: error: expected a ";"
+  void u5() = delete("\x1ff"       // expected-error {{hex escape sequence out of range}} \
+                    ^
+
+"Test_name.c", line 47: error: character value is out of range
+  void u5() = delete("\x1ff"       // expected-error {{hex escape sequence out of range}} \
+                      ^
+
+"Test_name.c", line 49: error: character value is out of range
+                       "0\x123"    // expected-error {{invalid escape sequence '\x123' in an unevaluated string literal}}
+                         ^
+
+"Test_name.c", line 50: error: character value is out of range
+                       "fx\xfffff" // expected-error {{invalid escape sequence '\xfffff' in an unevaluated string literal}}
+                          ^
+
+"Test_name.c", line 51: warning: parsing restarts here after previous syntax error
+                       "goop");
+                              ^
+
+"Test_name.c", line 53: error: expected a ";"
+  void u6() = delete("\'\"\?\\\a\b\f\n\r\t\v"); // expected-note {{explicitly deleted}}
+                    ^
+
+"Test_name.c", line 54: error: expected a ";"
+  void u7() = delete("\xFF"); // expected-error {{invalid escape sequence '\xFF' in an unevaluated string literal}}
+                    ^
+
+"Test_name.c", line 55: error: expected a ";"
+  void u8() = delete("\123"); // expected-error {{invalid escape sequence '\123' in an unevaluated string literal}}
+                    ^
+
+"Test_name.c", line 56: error: expected a ";"
+  void u9() = delete("\pOh no, a Pascal string!"); // expected-warning {{unknown escape sequence '\p'}} \
+                    ^
+
+"Test_name.c", line 56: warning: unrecognized character escape sequence
+  void u9() = delete("\pOh no, a Pascal string!"); // expected-warning {{unknown escape sequence '\p'}} \
+                      ^
+
+"Test_name.c", line 59: error: expected a ";"
+  void u10() = delete(R"(a
+                     ^
+
+"Test_name.c", line 62: warning: parsing restarts here after previous syntax error
+  )");
+     ^
+
+"Test_name.c", line 64: error: expected a ";"
+  void u11() = delete("\u0080\u0081\u0082\u0083\u0099\u009A\u009B\u009C\u009D\u009E\u009F"); // expected-note {{explicitly deleted}}
+                     ^
+
+"Test_name.c", line 68: error: expected a ";"
+  void u12() = delete("\u200Eabc\u200Fdef\u200Fgh"); // expected-note {{explicitly deleted}}
+                     ^
+
+"Test_name.c", line 71: error: expected a ";"
+  void u13() = delete("🏳️‍🌈 🏴󠁧󠁢󠁥󠁮󠁧󠁿 🇪🇺"); // expected-note {{explicitly deleted}}
+                     ^
+
+"Test_name.c", line 74: error: function "S::f()" (declared at line 6) cannot be referenced -- it is a deleted function
+    S{}.f(); // expected-error {{attempt to use a deleted function: deleted (1)}}
+        ^
+
+"Test_name.c", line 75: error: function "S::g<T>() [with T=int]" (declared at line 9) cannot be referenced -- it is a deleted function
+    S{}.g<int>(); // expected-error {{call to deleted member function 'g': deleted (2)}}
+        ^
+
+"Test_name.c", line 76: error: function "TS<T>::f() [with T=int]" (declared at line 14) cannot be referenced -- it is a deleted function
+    TS<int>{}.f(); // expected-error {{attempt to use a deleted function: deleted (3)}}
+              ^
+
+"Test_name.c", line 77: error: function "TS<T>::g(U) [with T=int, U=int]" (declared at line 17) cannot be referenced -- it is a deleted function
+    TS<int>{}.g<int>(0); // expected-error {{call to deleted member function 'g': deleted (4)}}
+              ^
+
+"Test_name.c", line 78: error: function "f()" (declared at line 20) cannot be referenced -- it is a deleted function
+    f(); // expected-error {{call to deleted function 'f': deleted (5)}}
+    ^
+
+"Test_name.c", line 79: error: function "g<T>() [with T=int]" (declared at line 23) cannot be referenced -- it is a deleted function
+    g<int>(); // expected-error {{call to deleted function 'g': deleted (6)}}
+    ^
+
+"Test_name.c", line 80: error: function "TSp<T, U>::f() [with T=double, U=double]" (declared at line 27) cannot be referenced -- it is a deleted function
+    TSp<double, double>{}.f(); // expected-error {{attempt to use a deleted function: deleted (7)}}
+                          ^
+
+"Test_name.c", line 81: error: function "TSp<T, U>::f() [with T=int, U=double]" (declared at line 27) cannot be referenced -- it is a deleted function
+    TSp<int, double>{}.f(); // expected-error {{attempt to use a deleted function: deleted (7)}}
+                       ^
+
+"Test_name.c", line 82: error: function "TSp<T, int>::f() [with T=double]" (declared at line 32) cannot be referenced -- it is a deleted function
+    TSp<double, int>{}.f(); // expected-error {{attempt to use a deleted function: deleted (8)}}
+                       ^
+
+"Test_name.c", line 83: error: function "TSp<int, int>::f()" (declared at line 37) cannot be referenced -- it is a deleted function
+    TSp<int, int>{}.f(); // expected-error {{attempt to use a deleted function: deleted (9)}}
+                    ^
+
+"Test_name.c", line 84: error: function "u3()" (declared at line 44) cannot be referenced -- it is a deleted function
+    u3(); // expected-error {{call to deleted function 'u3': Ω}}
+    ^
+
+"Test_name.c", line 85: error: function "u4()" (declared at line 45) cannot be referenced -- it is a deleted function
+    u4(); // expected-error {{call to deleted function 'u4': ሴ}}
+    ^
+
+"Test_name.c", line 86: error: function "u6()" (declared at line 53) cannot be referenced -- it is a deleted function
+    u6(); // expected-error {{call to deleted function 'u6': '"?\<U+0007><U+0008>}}
+    ^
+
+"Test_name.c", line 87: error: function "u10()" (declared at line 59) cannot be referenced -- it is a deleted function
+    u10(); // expected-error {{call to deleted function 'u10': a\n\tb\nc\n}}
+    ^
+
+"Test_name.c", line 88: error: function "u11()" (declared at line 64) cannot be referenced -- it is a deleted function
+    u11(); // expected-error {{call to deleted function 'u11': <U+0080><U+0081><U+0082><U+0083><U+0099><U+009A><U+009B><U+009C><U+009D><U+009E><U+009F>}}
+    ^
+
+"Test_name.c", line 89: error: function "u12()" (declared at line 68) cannot be referenced -- it is a deleted function
+    u12(); // expected-error {{call to deleted function 'u12': ‎abc‏def‏gh}}
+    ^
+
+"Test_name.c", line 90: error: function "u13()" (declared at line 71) cannot be referenced -- it is a deleted function
+    u13(); // expected-error {{call to deleted function 'u13': 🏳️‍🌈 🏴󠁧󠁢󠁥󠁮󠁧󠁿 🇪🇺}}
+    ^
+
+"Test_name.c", line 94: error: expected a ";"
+    C() = delete("deleted (C, Constructor)"); // expected-note {{explicitly marked deleted}}
+                ^
+
+"Test_name.c", line 95: error: expected a ";"
+    C(int) = delete("deleted (C, C(int))"); // expected-note {{explicitly marked deleted}}
+                   ^
+
+"Test_name.c", line 96: error: expected a ";"
+    C(const C&) = delete("deleted (C, Copy Constructor)"); // expected-note {{explicitly marked deleted}}
+                        ^
+
+"Test_name.c", line 97: error: expected a ";"
+    C(C&&) = delete("deleted (C, Move Constructor)"); // expected-note {{explicitly marked deleted}}
+                   ^
+
+"Test_name.c", line 98: error: expected a ";"
+    C& operator=(const C&) = delete("deleted (C, Copy Assignment)"); // expected-note 2 {{explicitly deleted}}
+                                   ^
+
+"Test_name.c", line 99: error: expected a ";"
+    C& operator=(C&&) = delete("deleted (C, Move Assignment)"); // expected-note {{explicitly deleted}} expected-note {{not viable}}
+                              ^
+
+"Test_name.c", line 100: error: expected a ";"
+    ~C() = delete("deleted (C, Destructor)"); // expected-note {{explicitly marked deleted}}
+                 ^
+
+"Test_name.c", line 101: error: expected a ";"
+    void* operator new(__SIZE_TYPE__) = delete("deleted (C, New)"); // expected-note {{explicitly deleted}}
+                                              ^
+
+"Test_name.c", line 102: error: expected a ";"
+    void operator delete(void*) = delete("deleted (C, Delete)"); // expected-note {{explicitly marked deleted}}
+                                        ^
+
+"Test_name.c", line 107: error: expected a ";"
+    TC() = delete("deleted (TC, Constructor)"); // expected-note {{explicitly marked deleted}}
+                 ^
+
+"Test_name.c", line 108: error: expected a ";"
+    TC(int) = delete("deleted (TC, TC(int))"); // expected-note {{explicitly marked deleted}}
+                    ^
+
+"Test_name.c", line 109: error: expected a ";"
+    TC(const TC&) = delete("deleted (TC, Copy Constructor)"); // expected-note {{explicitly marked deleted}}
+                          ^
+
+"Test_name.c", line 110: error: expected a ";"
+    TC(TC&&) = delete("deleted (TC, Move Constructor)"); // expected-note {{explicitly marked deleted}}
+                     ^
+
+"Test_name.c", line 111: error: expected a ";"
+    TC& operator=(const TC&) = delete("deleted (TC, Copy Assignment)"); // expected-note 2 {{explicitly deleted}}
+                                     ^
+
+"Test_name.c", line 112: error: expected a ";"
+    TC& operator=(TC&&) = delete("deleted (TC, Move Assignment)");  // expected-note {{explicitly deleted}} expected-note {{not viable}}
+                                ^
+
+"Test_name.c", line 113: error: expected a ";"
+    ~TC() = delete("deleted (TC, Destructor)"); // expected-note {{explicitly marked deleted}}
+                  ^
+
+"Test_name.c", line 114: error: expected a ";"
+    void* operator new(__SIZE_TYPE__) = delete("deleted (TC, New)"); // expected-note {{explicitly deleted}}
+                                              ^
+
+"Test_name.c", line 115: error: expected a ";"
+    void operator delete(void*) = delete("deleted (TC, Delete)"); // expected-note {{explicitly marked deleted}}
+                                        ^
+
+"Test_name.c", line 120: error: expected a ";"
+    TC() = delete("deleted (TC<T, int>, Constructor)"); // expected-note {{explicitly marked deleted}}
+                 ^
+
+"Test_name.c", line 121: error: expected a ";"
+    TC(int) = delete("deleted (TC<T, int>, TC(int))"); // expected-note {{explicitly marked deleted}}
+                    ^
+
+"Test_name.c", line 122: error: expected a ";"
+    TC(const TC&) = delete("deleted (TC<T, int>, Copy Constructor)"); // expected-note {{explicitly marked deleted}}
+                          ^
+
+"Test_name.c", line 123: error: expected a ";"
+    TC(TC&&) = delete("deleted (TC<T, int>, Move Constructor)"); // expected-note {{explicitly marked deleted}}
+                     ^
+
+"Test_name.c", line 124: error: expected a ";"
+    TC& operator=(const TC&) = delete("deleted (TC<T, int>, Copy Assignment)"); // expected-note 2 {{explicitly deleted}}
+                                     ^
+
+"Test_name.c", line 125: error: expected a ";"
+    TC& operator=(TC&&) = delete("deleted (TC<T, int>, Move Assignment)"); // expected-note {{explicitly deleted}} expected-note {{not viable}}
+                                ^
+
+"Test_name.c", line 126: error: expected a ";"
+    ~TC() = delete("deleted (TC<T, int>, Destructor)"); // expected-note {{explicitly marked deleted}}
+                  ^
+
+"Test_name.c", line 127: error: expected a ";"
+    void* operator new(__SIZE_TYPE__) = delete("deleted (TC<T, int>, New)"); // expected-note {{explicitly deleted}}
+                                              ^
+
+"Test_name.c", line 128: error: expected a ";"
+    void operator delete(void*) = delete("deleted (TC<T, int>, Delete)"); // expected-note {{explicitly marked deleted}}
+                                        ^
+
+"Test_name.c", line 133: error: expected a ";"
+    TC() = delete("deleted (TC<int, int>, Constructor)"); // expected-note {{explicitly marked deleted}}
+                 ^
+
+"Test_name.c", line 134: error: expected a ";"
+    TC(int) = delete("deleted (TC<int, int>, TC(int))"); // expected-note {{explicitly marked deleted}}
+                    ^
+
+"Test_name.c", line 135: error: expected a ";"
+    TC(const TC&) = delete("deleted (TC<int, int>, Copy Constructor)"); // expected-note {{explicitly marked deleted}}
+                          ^
+
+"Test_name.c", line 136: error: expected a ";"
+    TC(TC&&) = delete("deleted (TC<int, int>, Move Constructor)"); // expected-note {{explicitly marked deleted}}
+                     ^
+
+"Test_name.c", line 137: error: expected a ";"
+    TC& operator=(const TC&) = delete("deleted (TC<int, int>, Copy Assignment)"); // expected-note 2 {{explicitly deleted}}
+                                     ^
+
+"Test_name.c", line 138: error: expected a ";"
+    TC& operator=(TC&&) = delete("deleted (TC<int, int>, Move Assignment)"); // expected-note {{explicitly deleted}} expected-note {{not viable}}
+                                ^
+
+"Test_name.c", line 139: error: expected a ";"
+    ~TC() = delete("deleted (TC<int, int>, Destructor)"); // expected-note {{explicitly marked deleted}}
+                  ^
+
+"Test_name.c", line 140: error: expected a ";"
+    void* operator new(__SIZE_TYPE__) = delete("deleted (TC<int, int>, New)"); // expected-note {{explicitly deleted}}
+                                              ^
+
+"Test_name.c", line 141: error: expected a ";"
+    void operator delete(void*) = delete("deleted (TC<int, int>, Delete)"); // expected-note {{explicitly marked deleted}}
+                                        ^
+
+"Test_name.c", line 154: error: the default constructor of "C" cannot be referenced -- it is a deleted function
+    C{}; // expected-error {{call to deleted constructor of 'C': deleted (C, Constructor)}}
+     ^
+
+"Test_name.c", line 154: error: function "C::~C() noexcept" (declared at line 100) cannot be referenced -- it is a deleted function
+    C{}; // expected-error {{call to deleted constructor of 'C': deleted (C, Constructor)}}
+     ^
+
+"Test_name.c", line 155: error: function "C::C(const C &)" (declared at line 96) cannot be referenced -- it is a deleted function
+    C{c1}; // expected-error {{call to deleted constructor of 'C': deleted (C, Copy Constructor)}}
+      ^
+
+"Test_name.c", line 155: error: function "C::~C() noexcept" (declared at line 100) cannot be referenced -- it is a deleted function
+    C{c1}; // expected-error {{call to deleted constructor of 'C': deleted (C, Copy Constructor)}}
+      ^
+
+"Test_name.c", line 156: error: function "C::C(C &&)" (declared at line 97) cannot be referenced -- it is a deleted function
+    C{static_cast<C&&>(c1)}; // expected-error {{call to deleted constructor of 'C': deleted (C, Move Constructor)}}
+      ^
+
+"Test_name.c", line 156: error: function "C::~C() noexcept" (declared at line 100) cannot be referenced -- it is a deleted function
+    C{static_cast<C&&>(c1)}; // expected-error {{call to deleted constructor of 'C': deleted (C, Move Constructor)}}
+      ^
+
+"Test_name.c", line 157: error: function "C::operator=(const C &)" (declared at line 98) cannot be referenced -- it is a deleted function
+    c1 = c2; // expected-error {{overload resolution selected deleted operator '=': deleted (C, Copy Assignment)}}
+       ^
+
+"Test_name.c", line 158: error: function "C::operator=(C &&)" (declared at line 99) cannot be referenced -- it is a deleted function
+    c1 = static_cast<C&&>(c2); // expected-error {{overload resolution selected deleted operator '=': deleted (C, Move Assignment)}}
+       ^
+
+"Test_name.c", line 159: error: function "C::~C() noexcept" (declared at line 100) cannot be referenced -- it is a deleted function
+    c1.~C(); // expected-error {{attempt to use a deleted function: deleted (C, Destructor)}}
+       ^
+
+"Test_name.c", line 160: error: function "C::operator delete(void *) noexcept" (declared at line 102) cannot be referenced -- it is a deleted function
+    new C{}; // expected-error {{call to deleted function 'operator new': deleted (C, New)}}
+    ^
+
+"Test_name.c", line 160: error: function "C::operator new(unsigned int)" (declared at line 101) cannot be referenced -- it is a deleted function
+    new C{}; // expected-error {{call to deleted function 'operator new': deleted (C, New)}}
+    ^
+
+"Test_name.c", line 160: error: the default constructor of "C" cannot be referenced -- it is a deleted function
+    new C{}; // expected-error {{call to deleted function 'operator new': deleted (C, New)}}
+         ^
+
+"Test_name.c", line 161: error: function "C::operator delete(void *) noexcept" (declared at line 102) cannot be referenced -- it is a deleted function
+    delete &c2; // expected-error {{attempt to use a deleted function: deleted (C, Delete)}}
+    ^
+
+"Test_name.c", line 161: error: function "C::~C() noexcept" (declared at line 100) cannot be referenced -- it is a deleted function
+    delete &c2; // expected-error {{attempt to use a deleted function: deleted (C, Delete)}}
+           ^
+
+"Test_name.c", line 163: error: the default constructor of "TC<double, double>" cannot be referenced -- it is a deleted function
+    TC<double, double>{}; // expected-error {{call to deleted constructor of 'TC<double, double>': deleted (TC, Constructor)}}
+                      ^
+
+"Test_name.c", line 163: error: function "TC<T, U>::~TC() [with T=double, U=double]" (declared at line 113) cannot be referenced -- it is a deleted function
+    TC<double, double>{}; // expected-error {{call to deleted constructor of 'TC<double, double>': deleted (TC, Constructor)}}
+                      ^
+
+"Test_name.c", line 164: error: function "TC<T, U>::TC(const TC<T, U> &) [with T=double, U=double]" (declared at line 109) cannot be referenced -- it is a deleted function
+    TC<double, double>{tc1}; // expected-error {{call to deleted constructor of 'TC<double, double>': deleted (TC, Copy Constructor)}}
+                       ^
+
+"Test_name.c", line 164: error: function "TC<T, U>::~TC() [with T=double, U=double]" (declared at line 113) cannot be referenced -- it is a deleted function
+    TC<double, double>{tc1}; // expected-error {{call to deleted constructor of 'TC<double, double>': deleted (TC, Copy Constructor)}}
+                       ^
+
+"Test_name.c", line 165: error: function "TC<T, U>::TC(TC<T, U> &&) [with T=double, U=double]" (declared at line 110) cannot be referenced -- it is a deleted function
+    TC<double, double>{static_cast<TC<double, double>&&>(tc1)}; // expected-error {{call to deleted constructor of 'TC<double, double>': deleted (TC, Move Constructor)}}
+                       ^
+
+"Test_name.c", line 165: error: function "TC<T, U>::~TC() [with T=double, U=double]" (declared at line 113) cannot be referenced -- it is a deleted function
+    TC<double, double>{static_cast<TC<double, double>&&>(tc1)}; // expected-error {{call to deleted constructor of 'TC<double, double>': deleted (TC, Move Constructor)}}
+                       ^
+
+"Test_name.c", line 166: error: function "TC<T, U>::operator=(const TC<T, U> &) [with T=double, U=double]" (declared at line 111) cannot be referenced -- it is a deleted function
+    tc1 = tc2; // expected-error {{overload resolution selected deleted operator '=': deleted (TC, Copy Assignment)}}
+        ^
+
+"Test_name.c", line 167: error: function "TC<T, U>::operator=(TC<T, U> &&) [with T=double, U=double]" (declared at line 112) cannot be referenced -- it is a deleted function
+    tc1 = static_cast<TC<double, double>&&>(tc2); // expected-error {{overload resolution selected deleted operator '=': deleted (TC, Move Assignment)}}
+        ^
+
+"Test_name.c", line 168: error: function "TC<T, U>::~TC() [with T=double, U=double]" (declared at line 113) cannot be referenced -- it is a deleted function
+    tc1.~TC(); // expected-error {{attempt to use a deleted function: deleted (TC, Destructor)}}
+        ^
+
+"Test_name.c", line 169: error: function "TC<T, U>::operator delete(void *) [with T=double, U=double]" (declared at line 115) cannot be referenced -- it is a deleted function
+    new TC<double, double>{}; // expected-error {{call to deleted function 'operator new': deleted (TC, New)}}
+    ^
+
+"Test_name.c", line 169: error: function "TC<T, U>::operator new(unsigned int) [with T=double, U=double]" (declared at line 114) cannot be referenced -- it is a deleted function
+    new TC<double, double>{}; // expected-error {{call to deleted function 'operator new': deleted (TC, New)}}
+    ^
+
+"Test_name.c", line 169: error: the default constructor of "TC<double, double>" cannot be referenced -- it is a deleted function
+    new TC<double, double>{}; // expected-error {{call to deleted function 'operator new': deleted (TC, New)}}
+                          ^
+
+"Test_name.c", line 170: error: function "TC<T, U>::operator delete(void *) [with T=double, U=double]" (declared at line 115) cannot be referenced -- it is a deleted function
+    delete &tc2; // expected-error {{attempt to use a deleted function: deleted (TC, Delete)}}
+    ^
+
+"Test_name.c", line 170: error: function "TC<T, U>::~TC() [with T=double, U=double]" (declared at line 113) cannot be referenced -- it is a deleted function
+    delete &tc2; // expected-error {{attempt to use a deleted function: deleted (TC, Delete)}}
+           ^
+
+"Test_name.c", line 172: error: the default constructor of "TC<double, int>" cannot be referenced -- it is a deleted function
+    TC<double, int>{}; // expected-error {{call to deleted constructor of 'TC<double, int>': deleted (TC<T, int>, Constructor)}}
+                   ^
+
+"Test_name.c", line 172: error: function "TC<T, int>::~TC() [with T=double]" (declared at line 126) cannot be referenced -- it is a deleted function
+    TC<double, int>{}; // expected-error {{call to deleted constructor of 'TC<double, int>': deleted (TC<T, int>, Constructor)}}
+                   ^
+
+"Test_name.c", line 173: error: function "TC<T, int>::TC(const TC<T, int> &) [with T=double]" (declared at line 122) cannot be referenced -- it is a deleted function
+    TC<double, int>{tc_int1}; // expected-error {{call to deleted constructor of 'TC<double, int>': deleted (TC<T, int>, Copy Constructor)}}
+                    ^
+
+"Test_name.c", line 173: error: function "TC<T, int>::~TC() [with T=double]" (declared at line 126) cannot be referenced -- it is a deleted function
+    TC<double, int>{tc_int1}; // expected-error {{call to deleted constructor of 'TC<double, int>': deleted (TC<T, int>, Copy Constructor)}}
+                    ^
+
+"Test_name.c", line 174: error: function "TC<T, int>::TC(TC<T, int> &&) [with T=double]" (declared at line 123) cannot be referenced -- it is a deleted function
+    TC<double, int>{static_cast<TC<double, int>&&>(tc_int1)}; // expected-error {{call to deleted constructor of 'TC<double, int>': deleted (TC<T, int>, Move Constructor)}}
+                    ^
+
+"Test_name.c", line 174: error: function "TC<T, int>::~TC() [with T=double]" (declared at line 126) cannot be referenced -- it is a deleted function
+    TC<double, int>{static_cast<TC<double, int>&&>(tc_int1)}; // expected-error {{call to deleted constructor of 'TC<double, int>': deleted (TC<T, int>, Move Constructor)}}
+                    ^
+
+"Test_name.c", line 175: error: function "TC<T, int>::operator=(const TC<T, int> &) [with T=double]" (declared at line 124) cannot be referenced -- it is a deleted function
+    tc_int1 = tc_int2; // expected-error {{overload resolution selected deleted operator '=': deleted (TC<T, int>, Copy Assignment)}}
+            ^
+
+"Test_name.c", line 176: error: function "TC<T, int>::operator=(TC<T, int> &&) [with T=double]" (declared at line 125) cannot be referenced -- it is a deleted function
+    tc_int1 = static_cast<TC<double, int>&&>(tc_int2); // expected-error {{overload resolution selected deleted operator '=': deleted (TC<T, int>, Move Assignment)}}
+            ^
+
+"Test_name.c", line 177: error: function "TC<T, int>::~TC() [with T=double]" (declared at line 126) cannot be referenced -- it is a deleted function
+    tc_int1.~TC(); // expected-error {{attempt to use a deleted function: deleted (TC<T, int>, Destructor)}}
+            ^
+
+"Test_name.c", line 178: error: function "TC<T, int>::operator delete(void *) [with T=double]" (declared at line 128) cannot be referenced -- it is a deleted function
+    new TC<double, int>{}; // expected-error {{call to deleted function 'operator new': deleted (TC<T, int>, New)}}
+    ^
+
+"Test_name.c", line 178: error: function "TC<T, int>::operator new(unsigned int) [with T=double]" (declared at line 127) cannot be referenced -- it is a deleted function
+    new TC<double, int>{}; // expected-error {{call to deleted function 'operator new': deleted (TC<T, int>, New)}}
+    ^
+
+"Test_name.c", line 178: error: the default constructor of "TC<double, int>" cannot be referenced -- it is a deleted function
+    new TC<double, int>{}; // expected-error {{call to deleted function 'operator new': deleted (TC<T, int>, New)}}
+                       ^
+
+"Test_name.c", line 179: error: function "TC<T, int>::operator delete(void *) [with T=double]" (declared at line 128) cannot be referenced -- it is a deleted function
+    delete &tc_int2; // expected-error {{attempt to use a deleted function: deleted (TC<T, int>, Delete)}}
+    ^
+
+"Test_name.c", line 179: error: function "TC<T, int>::~TC() [with T=double]" (declared at line 126) cannot be referenced -- it is a deleted function
+    delete &tc_int2; // expected-error {{attempt to use a deleted function: deleted (TC<T, int>, Delete)}}
+           ^
+
+"Test_name.c", line 181: error: the default constructor of "TC<int, int>" cannot be referenced -- it is a deleted function
+    TC<int, int>{}; // expected-error {{call to deleted constructor of 'TC<int, int>': deleted (TC<int, int>, Constructor)}}
+                ^
+
+"Test_name.c", line 181: error: function "TC<int, int>::~TC() noexcept" (declared at line 139) cannot be referenced -- it is a deleted function
+    TC<int, int>{}; // expected-error {{call to deleted constructor of 'TC<int, int>': deleted (TC<int, int>, Constructor)}}
+                ^
+
+"Test_name.c", line 182: error: function "TC<int, int>::TC(const TC<int, int> &)" (declared at line 135) cannot be referenced -- it is a deleted function
+    TC<int, int>{tc_int_int1}; // expected-error {{call to deleted constructor of 'TC<int, int>': deleted (TC<int, int>, Copy Constructor)}}
+                 ^
+
+"Test_name.c", line 182: error: function "TC<int, int>::~TC() noexcept" (declared at line 139) cannot be referenced -- it is a deleted function
+    TC<int, int>{tc_int_int1}; // expected-error {{call to deleted constructor of 'TC<int, int>': deleted (TC<int, int>, Copy Constructor)}}
+                 ^
+
+"Test_name.c", line 183: error: function "TC<int, int>::TC(TC<int, int> &&)" (declared at line 136) cannot be referenced -- it is a deleted function
+    TC<int, int>{static_cast<TC<int, int>&&>(tc_int_int1)}; // expected-error {{call to deleted constructor of 'TC<int, int>': deleted (TC<int, int>, Move Constructor)}}
+                 ^
+
+"Test_name.c", line 183: error: function "TC<int, int>::~TC() noexcept" (declared at line 139) cannot be referenced -- it is a deleted function
+    TC<int, int>{static_cast<TC<int, int>&&>(tc_int_int1)}; // expected-error {{call to deleted constructor of 'TC<int, int>': deleted (TC<int, int>, Move Constructor)}}
+                 ^
+
+"Test_name.c", line 184: error: function "TC<int, int>::operator=(const TC<int, int> &)" (declared at line 137) cannot be referenced -- it is a deleted function
+    tc_int_int1 = tc_int_int2; // expected-error {{overload resolution selected deleted operator '=': deleted (TC<int, int>, Copy Assignment)}}
+                ^
+
+"Test_name.c", line 185: error: function "TC<int, int>::operator=(TC<int, int> &&)" (declared at line 138) cannot be referenced -- it is a deleted function
+    tc_int_int1 = static_cast<TC<int, int>&&>(tc_int_int2); // expected-error {{overload resolution selected deleted operator '=': deleted (TC<int, int>, Move Assignment)}}
+                ^
+
+"Test_name.c", line 186: error: function "TC<int, int>::~TC() noexcept" (declared at line 139) cannot be referenced -- it is a deleted function
+    tc_int_int1.~TC(); // expected-error {{attempt to use a deleted function: deleted (TC<int, int>, Destructor)}}
+                ^
+
+"Test_name.c", line 187: error: function "TC<int, int>::operator delete(void *) noexcept" (declared at line 141) cannot be referenced -- it is a deleted function
+    new TC<int, int>{}; // expected-error {{call to deleted function 'operator new': deleted (TC<int, int>, New)}}
+    ^
+
+"Test_name.c", line 187: error: function "TC<int, int>::operator new(unsigned int)" (declared at line 140) cannot be referenced -- it is a deleted function
+    new TC<int, int>{}; // expected-error {{call to deleted function 'operator new': deleted (TC<int, int>, New)}}
+    ^
+
+"Test_name.c", line 187: error: the default constructor of "TC<int, int>" cannot be referenced -- it is a deleted function
+    new TC<int, int>{}; // expected-error {{call to deleted function 'operator new': deleted (TC<int, int>, New)}}
+                    ^
+
+"Test_name.c", line 188: error: function "TC<int, int>::operator delete(void *) noexcept" (declared at line 141) cannot be referenced -- it is a deleted function
+    delete &tc_int_int2; // expected-error {{attempt to use a deleted function: deleted (TC<int, int>, Delete)}}
+    ^
+
+"Test_name.c", line 188: error: function "TC<int, int>::~TC() noexcept" (declared at line 139) cannot be referenced -- it is a deleted function
+    delete &tc_int_int2; // expected-error {{attempt to use a deleted function: deleted (TC<int, int>, Delete)}}
+           ^
+
+"Test_name.c", line 191: error: "C::~C() noexcept" (declared at line 100), required for copy that was eliminated, cannot be referenced -- it is a deleted function
+  C conv1() { return 1; } // expected-error {{conversion function from 'int' to 'C' invokes a deleted function: deleted (C, C(int))}}
+                     ^
+
+"Test_name.c", line 191: error: function "C::C(int)" (declared at line 95) cannot be referenced -- it is a deleted function
+  C conv1() { return 1; } // expected-error {{conversion function from 'int' to 'C' invokes a deleted function: deleted (C, C(int))}}
+                     ^
+
+"Test_name.c", line 192: error: "TC<T, U>::~TC() [with T=double, U=double]" (declared at line 113), required for copy that was eliminated, cannot be referenced -- it is a deleted function
+  TC<double, double> conv2() { return 1; } // expected-error {{conversion function from 'int' to 'TC<double, double>' invokes a deleted function: deleted (TC, TC(int))}}
+                                      ^
+
+"Test_name.c", line 192: error: function "TC<T, U>::TC(int) [with T=double, U=double]" (declared at line 108) cannot be referenced -- it is a deleted function
+  TC<double, double> conv2() { return 1; } // expected-error {{conversion function from 'int' to 'TC<double, double>' invokes a deleted function: deleted (TC, TC(int))}}
+                                      ^
+
+"Test_name.c", line 193: error: "TC<T, int>::~TC() [with T=double]" (declared at line 126), required for copy that was eliminated, cannot be referenced -- it is a deleted function
+  TC<double, int> conv3() { return 1; } // expected-error {{conversion function from 'int' to 'TC<double, int>' invokes a deleted function: deleted (TC<T, int>, TC(int))}}
+                                   ^
+
+"Test_name.c", line 193: error: function "TC<T, int>::TC(int) [with T=double]" (declared at line 121) cannot be referenced -- it is a deleted function
+  TC<double, int> conv3() { return 1; } // expected-error {{conversion function from 'int' to 'TC<double, int>' invokes a deleted function: deleted (TC<T, int>, TC(int))}}
+                                   ^
+
+"Test_name.c", line 194: error: "TC<int, int>::~TC() noexcept" (declared at line 139), required for copy that was eliminated, cannot be referenced -- it is a deleted function
+  TC<int, int> conv4() { return 1; } // expected-error {{conversion function from 'int' to 'TC<int, int>' invokes a deleted function: deleted (TC<int, int>, TC(int))}}
+                                ^
+
+"Test_name.c", line 194: error: function "TC<int, int>::TC(int)" (declared at line 134) cannot be referenced -- it is a deleted function
+  TC<int, int> conv4() { return 1; } // expected-error {{conversion function from 'int' to 'TC<int, int>' invokes a deleted function: deleted (TC<int, int>, TC(int))}}
+                                ^
+
+"Test_name.c", line 198: error: expected a ";"
+    int operator+() = delete("deleted (O, +)"); // expected-note {{explicitly deleted}}
+                            ^
+
+"Test_name.c", line 199: error: expected a ";"
+    O* operator->() = delete("deleted (O, ->)"); // expected-note {{explicitly deleted}}
+                            ^
+
+"Test_name.c", line 200: error: expected a ";"
+    int operator-(O) = delete("deleted (O, -)"); // expected-note {{explicitly deleted}}
+                             ^
+
+"Test_name.c", line 201: error: expected a ";"
+    int operator[](O) = delete("deleted (O, [])"); // expected-note {{explicitly deleted}}
+                              ^
+
+"Test_name.c", line 202: error: expected a ";"
+    int operator()(O) = delete("deleted (O, ())"); // expected-note {{explicitly marked deleted}} expected-note {{explicitly deleted}}
+                              ^
+
+"Test_name.c", line 203: error: expected a ";"
+    explicit operator bool() = delete("deleted (O, operator bool)"); // expected-note {{explicitly marked deleted}} expected-note {{explicitly deleted}}
+                                     ^
+
+"Test_name.c", line 209: error: expected a ";"
+    T operator+() = delete("deleted (TO, +)"); // expected-note {{explicitly deleted}}
+                          ^
+
+"Test_name.c", line 210: error: expected a ";"
+    T* operator->() = delete("deleted (TO, ->)"); // expected-note {{explicitly deleted}}
+                            ^
+
+"Test_name.c", line 211: error: expected a ";"
+    T operator-(TO) = delete("deleted (TO, -)"); // expected-note {{explicitly deleted}}
+                            ^
+
+"Test_name.c", line 212: error: expected a ";"
+    T operator[](TO) = delete("deleted (TO, [])"); // expected-note {{explicitly deleted}}
+                             ^
+
+"Test_name.c", line 213: error: expected a ";"
+    T operator()(TO) = delete("deleted (TO, ())"); // expected-note {{explicitly marked deleted}} expected-note {{explicitly deleted}}
+                             ^
+
+"Test_name.c", line 214: error: expected a ";"
+    explicit operator bool() = delete("deleted (TO, operator bool)"); // expected-note {{explicitly marked deleted}} expected-note {{explicitly deleted}}
+                                     ^
+
+"Test_name.c", line 220: error: expected a ";"
+    T operator+() = delete("deleted (TO<T, int>, +)"); // expected-note {{explicitly deleted}}
+                          ^
+
+"Test_name.c", line 221: error: expected a ";"
+    T* operator->() = delete("deleted (TO<T, int>, ->)"); // expected-note {{explicitly deleted}}
+                            ^
+
+"Test_name.c", line 222: error: expected a ";"
+    T operator-(TO) = delete("deleted (TO<T, int>, -)"); // expected-note {{explicitly deleted}}
+                            ^
+
+"Test_name.c", line 223: error: expected a ";"
+    T operator[](TO) = delete("deleted (TO<T, int>, [])"); // expected-note {{explicitly deleted}}
+                             ^
+
+"Test_name.c", line 224: error: expected a ";"
+    T operator()(TO) = delete("deleted (TO<T, int>, ())"); // expected-note {{explicitly marked deleted}} expected-note {{explicitly deleted}}
+                             ^
+
+"Test_name.c", line 225: error: expected a ";"
+    explicit operator bool() = delete("deleted (TO<T, int>, operator bool)"); // expected-note {{explicitly marked deleted}} expected-note {{explicitly deleted}}
+                                     ^
+
+"Test_name.c", line 231: error: expected a ";"
+    int operator+() = delete("deleted (TO<int, int>, +)"); // expected-note {{explicitly deleted}}
+                            ^
+
+"Test_name.c", line 232: error: expected a ";"
+    int* operator->() = delete("deleted (TO<int, int>, ->)"); // expected-note {{explicitly deleted}}
+                              ^
+
+"Test_name.c", line 233: error: expected a ";"
+    int operator-(TO) = delete("deleted (TO<int, int>, -)"); // expected-note {{explicitly deleted}}
+                              ^
+
+"Test_name.c", line 234: error: expected a ";"
+    int operator[](TO) = delete("deleted (TO<int, int>, [])"); // expected-note {{explicitly deleted}}
+                               ^
+
+"Test_name.c", line 235: error: expected a ";"
+    int operator()(TO) = delete("deleted (TO<int, int>, ())"); // expected-note {{explicitly marked deleted}} expected-note {{explicitly deleted}}
+                               ^
+
+"Test_name.c", line 236: error: expected a ";"
+    explicit operator bool() = delete("deleted (TO<int, int>, operator bool)"); // expected-note {{explicitly marked deleted}} expected-note {{explicitly deleted}}
+                                     ^
+
+"Test_name.c", line 241: error: function "O::operator+()" (declared at line 198) cannot be referenced -- it is a deleted function
+    +o; // expected-error {{overload resolution selected deleted operator '+': deleted (O, +)}}
+    ^
+
+"Test_name.c", line 242: error: function "O::operator->()" (declared at line 199) cannot be referenced -- it is a deleted function
+    o->x; // expected-error {{overload resolution selected deleted operator '->': deleted (O, ->)}}
+     ^
+
+"Test_name.c", line 243: error: function "O::operator-(O)" (declared at line 200) cannot be referenced -- it is a deleted function
+    o - o; // expected-error {{overload resolution selected deleted operator '-': deleted (O, -)}}
+      ^
+
+"Test_name.c", line 244: error: function "O::operator[](O)" (declared at line 201) cannot be referenced -- it is a deleted function
+    o[o]; // expected-error {{overload resolution selected deleted operator '[]': deleted (O, [])}}
+     ^
+
+"Test_name.c", line 245: error: function "O::operator()(O)" (declared at line 202) cannot be referenced -- it is a deleted function
+    o(o); // expected-error {{call to deleted function call operator in type 'O': deleted (O, ())}} expected-error {{attempt to use a deleted function: deleted (O, ())}}
+     ^
+
+"Test_name.c", line 246: error: function "O::operator bool()" (declared at line 203) cannot be referenced -- it is a deleted function
+    if (o) {} // expected-error {{attempt to use a deleted function: deleted (O, operator bool)}}
+        ^
+
+"Test_name.c", line 247: error: function "O::operator bool()" (declared at line 203) cannot be referenced -- it is a deleted function
+    static_cast<bool>(o); // expected-error {{static_cast from 'O' to 'bool' uses deleted function: deleted (O, operator bool)}}
+                      ^
+
+"Test_name.c", line 250: error: function "TO<T, U>::operator+() [with T=double, U=double]" (declared at line 209) cannot be referenced -- it is a deleted function
+    +to; // expected-error {{overload resolution selected deleted operator '+': deleted (TO, +)}}
+    ^
+
+"Test_name.c", line 251: error: expression must have pointer-to-class type but it has type "double *"
+    to->x; // expected-error {{overload resolution selected deleted operator '->': deleted (TO, ->)}}
+    ^
+
+"Test_name.c", line 251: error: function "TO<T, U>::operator->() [with T=double, U=double]" (declared at line 210) cannot be referenced -- it is a deleted function
+    to->x; // expected-error {{overload resolution selected deleted operator '->': deleted (TO, ->)}}
+      ^
+
+"Test_name.c", line 252: error: function "TO<T, U>::operator-(TO<T, U>) [with T=double, U=double]" (declared at line 211) cannot be referenced -- it is a deleted function
+    to - to; // expected-error {{overload resolution selected deleted operator '-': deleted (TO, -)}}
+       ^
+
+"Test_name.c", line 253: error: function "TO<T, U>::operator[](TO<T, U>) [with T=double, U=double]" (declared at line 212) cannot be referenced -- it is a deleted function
+    to[to]; // expected-error {{overload resolution selected deleted operator '[]': deleted (TO, [])}}
+      ^
+
+"Test_name.c", line 254: error: function "TO<T, U>::operator()(TO<T, U>) [with T=double, U=double]" (declared at line 213) cannot be referenced -- it is a deleted function
+    to(to); // expected-error {{call to deleted function call operator in type 'TO<double, double>': deleted (TO, ())}} expected-error {{attempt to use a deleted function: deleted (TO, ())}}
+      ^
+
+"Test_name.c", line 255: error: function "TO<T, U>::operator bool() [with T=double, U=double]" (declared at line 214) cannot be referenced -- it is a deleted function
+    if (to) {} // expected-error {{attempt to use a deleted function: deleted (TO, operator bool)}}
+        ^
+
+"Test_name.c", line 256: error: function "TO<T, U>::operator bool() [with T=double, U=double]" (declared at line 214) cannot be referenced -- it is a deleted function
+    static_cast<bool>(to); // expected-error {{static_cast from 'TO<double, double>' to 'bool' uses deleted function: deleted (TO, operator bool)}}
+                      ^
+
+"Test_name.c", line 259: error: function "TO<T, int>::operator+() [with T=double]" (declared at line 220) cannot be referenced -- it is a deleted function
+    +to_int; // expected-error {{overload resolution selected deleted operator '+': deleted (TO<T, int>, +)}}
+    ^
+
+"Test_name.c", line 260: error: expression must have pointer-to-class type but it has type "double *"
+    to_int->x; // expected-error {{overload resolution selected deleted operator '->': deleted (TO<T, int>, ->)}}
+    ^
+
+"Test_name.c", line 260: error: function "TO<T, int>::operator->() [with T=double]" (declared at line 221) cannot be referenced -- it is a deleted function
+    to_int->x; // expected-error {{overload resolution selected deleted operator '->': deleted (TO<T, int>, ->)}}
+          ^
+
+"Test_name.c", line 261: error: function "TO<T, int>::operator-(TO<T, int>) [with T=double]" (declared at line 222) cannot be referenced -- it is a deleted function
+    to_int - to_int; // expected-error {{overload resolution selected deleted operator '-': deleted (TO<T, int>, -)}}
+           ^
+
+"Test_name.c", line 262: error: function "TO<T, int>::operator[](TO<T, int>) [with T=double]" (declared at line 223) cannot be referenced -- it is a deleted function
+    to_int[to_int]; // expected-error {{overload resolution selected deleted operator '[]': deleted (TO<T, int>, [])}}
+          ^
+
+"Test_name.c", line 263: error: function "TO<T, int>::operator()(TO<T, int>) [with T=double]" (declared at line 224) cannot be referenced -- it is a deleted function
+    to_int(to_int); // expected-error {{call to deleted function call operator in type 'TO<double, int>': deleted (TO<T, int>, ())}} expected-error {{attempt to use a deleted function: deleted (TO<T, int>, ())}}
+          ^
+
+"Test_name.c", line 264: error: function "TO<T, int>::operator bool() [with T=double]" (declared at line 225) cannot be referenced -- it is a deleted function
+    if (to_int) {} // expected-error {{attempt to use a deleted function: deleted (TO<T, int>, operator bool)}}
+        ^
+
+"Test_name.c", line 265: error: function "TO<T, int>::operator bool() [with T=double]" (declared at line 225) cannot be referenced -- it is a deleted function
+    static_cast<bool>(to_int); // expected-error {{static_cast from 'TO<double, int>' to 'bool' uses deleted function: deleted (TO<T, int>, operator bool)}}
+                      ^
+
+"Test_name.c", line 268: error: function "TO<int, int>::operator+()" (declared at line 231) cannot be referenced -- it is a deleted function
+    +to_int_int; // expected-error {{overload resolution selected deleted operator '+': deleted (TO<int, int>, +)}}
+    ^
+
+"Test_name.c", line 269: error: expression must have pointer-to-class type but it has type "int *"
+    to_int_int->x; // expected-error {{overload resolution selected deleted operator '->': deleted (TO<int, int>, ->)}}
+    ^
+
+"Test_name.c", line 269: error: function "TO<int, int>::operator->()" (declared at line 232) cannot be referenced -- it is a deleted function
+    to_int_int->x; // expected-error {{overload resolution selected deleted operator '->': deleted (TO<int, int>, ->)}}
+              ^
+
+"Test_name.c", line 270: error: function "TO<int, int>::operator-(TO<int, int>)" (declared at line 233) cannot be referenced -- it is a deleted function
+    to_int_int - to_int_int; // expected-error {{overload resolution selected deleted operator '-': deleted (TO<int, int>, -)}}
+               ^
+
+"Test_name.c", line 271: error: function "TO<int, int>::operator[](TO<int, int>)" (declared at line 234) cannot be referenced -- it is a deleted function
+    to_int_int[to_int_int]; // expected-error {{overload resolution selected deleted operator '[]': deleted (TO<int, int>, [])}}
+              ^
+
+"Test_name.c", line 272: error: function "TO<int, int>::operator()(TO<int, int>)" (declared at line 235) cannot be referenced -- it is a deleted function
+    to_int_int(to_int_int); // expected-error {{call to deleted function call operator in type 'TO<int, int>': deleted (TO<int, int>, ())}} expected-error {{attempt to use a deleted function: deleted (TO<int, int>, ())}}
+              ^
+
+"Test_name.c", line 273: error: function "TO<int, int>::operator bool()" (declared at line 236) cannot be referenced -- it is a deleted function
+    if (to_int_int) {} // expected-error {{attempt to use a deleted function: deleted (TO<int, int>, operator bool)}}
+        ^
+
+"Test_name.c", line 274: error: function "TO<int, int>::operator bool()" (declared at line 236) cannot be referenced -- it is a deleted function
+    static_cast<bool>(to_int_int); // expected-error {{static_cast from 'TO<int, int>' to 'bool' uses deleted function: deleted (TO<int, int>, operator bool)}}
+                      ^
+
+"Test_name.c", line 284: error: function "gh135506::f" has already been defined (previous definition at line 283)
+    friend consteval int f() = delete("foo");
+                         ^
+
+"Test_name.c", line 284: error: expected a ";"
+    friend consteval int f() = delete("foo");
+                                     ^
+
+"Test_name.c", line 287: error: function "gh135506::g" has already been defined (previous definition at line 286)
+    friend consteval int g() = delete;
+                         ^
+
+Error limit reached.
+200 errors detected in the compilation of "Test_name.c".
+Compilation terminated.

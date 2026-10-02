@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 11: warning: constexpr non-static member function will not be implicitly 'const' in C++14
+    constexpr void f0<short>(); // cxx11-error {{conflicting types for 'f0'}}
+    ^
+
+"Test_name.c", line 11: error: no instance of function template "A::f0" matches the specified type
+    constexpr void f0<short>(); // cxx11-error {{conflicting types for 'f0'}}
+                   ^
+
+"Test_name.c", line 11: error: "constexpr" is not valid here
+    constexpr void f0<short>(); // cxx11-error {{conflicting types for 'f0'}}
+    ^
+
+"Test_name.c", line 19: warning: constexpr non-static member function will not be implicitly 'const' in C++14
+    constexpr void f1<short>(); // since-cxx14-error {{no function template matches function template specialization 'f1'}}
+    ^
+
+"Test_name.c", line 29: error: no instance of function template "A::f1" matches the specified type
+  constexpr void A::f1<long>(); // since-cxx14-error {{no function template matches function template specialization 'f1'}}
+                    ^
+
+"Test_name.c", line 29: error: "constexpr" is not valid here
+  constexpr void A::f1<long>(); // since-cxx14-error {{no function template matches function template specialization 'f1'}}
+  ^
+
+"Test_name.c", line 51: error: declaration is incompatible with "void B<T>::g0() [with T=short]" (declared at line 37)
+  constexpr void B<short>::g0(); // since-cxx14-error {{constexpr declaration of 'g0' follows non-constexpr declaration}}
+                           ^
+
+"Test_name.c", line 51: error: "constexpr" is not valid here
+  constexpr void B<short>::g0(); // since-cxx14-error {{constexpr declaration of 'g0' follows non-constexpr declaration}}
+  ^
+
+"Test_name.c", line 64: error: declaration is incompatible with function template "void B<T>::h0<U>() [with T=long]" (declared at line 44)
+  constexpr void B<long>::h0(); // since-cxx14-error {{constexpr declaration of 'h0' follows non-constexpr declaration}}
+                          ^
+
+"Test_name.c", line 70: error: function template "B<T>::h1 [with T=long]" (declared at line 47) was previously not declared constexpr
+  constexpr void B<long>::h1(); // since-cxx14-error {{out-of-line declaration of 'h1' does not match any declaration in 'B<long>'}}
+  ^
+
+8 errors detected in the compilation of "Test_name.c".

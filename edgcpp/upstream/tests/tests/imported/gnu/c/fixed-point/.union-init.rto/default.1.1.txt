@@ -1,0 +1,86 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 13: error: expected a ";"
+    long _Fract lf;
+                ^
+
+"Test_name.c", line 20: error: identifier "_Fract" is undefined
+    _Fract f;
+    ^
+
+"Test_name.c", line 25: error: extra text after expected end of number
+    static union u u1 = { 0.1lr };
+                              ^
+
+"Test_name.c", line 26: error: extra text after expected end of number
+    static union u u2 = { 0.2lr };
+                              ^
+
+"Test_name.c", line 29: error: extra text after expected end of number
+    static union n n1 = { 0.3r };
+                             ^
+
+"Test_name.c", line 32: error: expected a ";"
+    long _Fract lf;
+                ^
+
+"Test_name.c", line 33: warning: expression has no effect
+    _Fract f;
+    ^
+
+"Test_name.c", line 33: warning: variable "_Fract" is used before its value is set
+    _Fract f;
+    ^
+
+"Test_name.c", line 33: error: expected a ";"
+    _Fract f;
+           ^
+
+"Test_name.c", line 36: error: union "u" has no field "lf"
+    if (u1.lf != 0.1lr)
+           ^
+
+"Test_name.c", line 36: error: extra text after expected end of number
+    if (u1.lf != 0.1lr)
+                     ^
+
+"Test_name.c", line 39: error: union "u" has no field "lf"
+    if (u2.lf != 0.2lr)
+           ^
+
+"Test_name.c", line 39: error: extra text after expected end of number
+    if (u2.lf != 0.2lr)
+                     ^
+
+"Test_name.c", line 43: error: identifier "lf" is undefined
+    lf = 0.4lr;
+    ^
+
+"Test_name.c", line 43: error: extra text after expected end of number
+    lf = 0.4lr;
+             ^
+
+"Test_name.c", line 44: error: identifier "f" is undefined
+    f = 0.5r;
+    ^
+
+"Test_name.c", line 44: error: extra text after expected end of number
+    f = 0.5r;
+           ^
+
+"Test_name.c", line 48: error: union "u" has no field "lf"
+    if (u4.lf != 0.4lr)
+           ^
+
+"Test_name.c", line 48: error: extra text after expected end of number
+    if (u4.lf != 0.4lr)
+                     ^
+
+"Test_name.c", line 56: error: extra text after expected end of number
+    if (n1.f != 0.5r)
+                   ^
+
+"Test_name.c", line 30: warning: variable "n2" was declared but never referenced
+    static union n n2 = { 3.25 };
+                   ^
+
+18 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 13: warning: function "operator new(unsigned int, void *)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+    foo (T *x, U... y) { new (x) T(y...); }
+                         ^
+          detected during:
+            instantiation of "void C::foo(T *, U...) [with T=A, U=<int>]" at line 22
+            instantiation of "void E<D<T>>::bar(E<D<T>>::e, U, V...) [with T=int, U=H::I, V=<int>]" at line 30
+            instantiation of "void baz(T, U, V) [with T=int *, U=H::I, V=D<int>]" at line 71
+            instantiation of "void P<<unnamed>, <unnamed>>::corge(T) [with <unnamed>=int, <unnamed>=int, T=int *]" at line 58
+            instantiation of "P<<unnamed>, <unnamed>>::P(T, T, D<A>) [with <unnamed>=int, <unnamed>=int, T=int *]" at line 85
+

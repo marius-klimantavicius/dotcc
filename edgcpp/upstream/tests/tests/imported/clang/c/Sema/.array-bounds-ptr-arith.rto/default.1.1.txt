@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 16: warning: arithmetic on pointer to void or function type
+    return (void *)es->s_uuid + sizeof(int); // no-warning
+                              ^
+
+"Test_name.c", line 19: warning: arithmetic on pointer to void or function type
+    return (void *)es->s_uuid + 9; // expected-warning {{the pointer incremented by 9 refers past the end of the array (that has type 'unsigned char[8]')}}
+                              ^
+
+"Test_name.c", line 28: warning: variable "p" was declared but never referenced
+    int *p = a - s->n;
+         ^
+
+"Test_name.c", line 47: warning: variable "pRDar11387038_B" is used before its value is set
+    struct RDar11387038 *y = &(*pRDar11387038_B->x)->z[4]; // strict-warning {{array index 4 is past the end of the array (that has type 'struct RDar11387038[1]')}}
+                                ^
+
+"Test_name.c", line 47: warning: variable "y" was declared but never referenced
+    struct RDar11387038 *y = &(*pRDar11387038_B->x)->z[4]; // strict-warning {{array index 4 is past the end of the array (that has type 'struct RDar11387038[1]')}}
+                         ^
+
+"Test_name.c", line 56: warning: variable "arr" is used before its value is set
+      asm goto("" ::"r"(arr[42] >> 1)::failed);
+                        ^
+

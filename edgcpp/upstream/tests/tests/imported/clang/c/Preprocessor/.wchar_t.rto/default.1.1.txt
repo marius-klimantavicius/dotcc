@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -w -w -w -w -w CHECK-ARM64-DARWIN -w -w -w -w -w -w -w -w -w -w -w -w -w -w -w -w -w -w -w -w CHECK-DARWIN CHECK-DARWIN CHECK-DARWIN CHECK-DARWIN CHECK-DARWIN CHECK-DARWIN CHECK-DARWIN CHECK-DARWIN CHECK-DARWIN CHECK-DARWIN CHECK-DARWIN -w CHECK-DARWIN -w CHECK-DARWIN -w CHECK-DARWIN -w CHECK-DARWIN -w -w -w -w -w -w -w -w --c --target linux_aarch64 Test_name.c
+eccp: unrecognizable argument: CHECK-ARM64-DARWIN
+eccp: unrecognizable argument: CHECK-DARWIN
+eccp: unrecognizable argument: CHECK-DARWIN
+eccp: unrecognizable argument: CHECK-DARWIN
+eccp: unrecognizable argument: CHECK-DARWIN
+eccp: unrecognizable argument: CHECK-DARWIN
+eccp: unrecognizable argument: CHECK-DARWIN
+eccp: unrecognizable argument: CHECK-DARWIN
+eccp: unrecognizable argument: CHECK-DARWIN
+eccp: unrecognizable argument: CHECK-DARWIN
+eccp: unrecognizable argument: CHECK-DARWIN
+eccp: unrecognizable argument: CHECK-DARWIN
+eccp: unrecognizable argument: CHECK-DARWIN
+eccp: unrecognizable argument: CHECK-DARWIN
+eccp: unrecognizable argument: CHECK-DARWIN
+eccp: unrecognizable argument: CHECK-DARWIN

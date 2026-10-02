@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 334: error: class template "A0" has already been defined (previous definition at line 332)
+  template<typename T, T N> class A0<T, N, int> { }; // expected-error{{redef}}
+                                  ^
+
+"Test_name.c", line 361: error: invalid partial specialization -- class "PR6181::a<PR6181::s>" is already fully specialized
+    class a<s> // expected-error{{partial specialization of 'a' does not use any of its template parameters}}
+          ^
+
+"Test_name.c", line 376: error: invalid partial specialization -- class "<unnamed>::Bar<0>" is already fully specialized
+  class Bar<0> : public Foo<Z> { // expected-error{{partial specialization of 'Bar' does not use any of its template parameters}}
+        ^
+
+"Test_name.c", line 388: error: invalid partial specialization -- class "Crash::Foo<int>" is already fully specialized
+  class Foo<int> : public Base<T> {}; // expected-error{{partial specialization of 'Foo' does not use any of its template parameters}}
+        ^
+
+"Test_name.c", line 391: error: incomplete type "Crash::Foo<int>" is not allowed
+  constexpr int s = sizeof(Foo<int>);
+                           ^
+
+"Test_name.c", line 391: warning: variable "Crash::s" was declared but never referenced
+  constexpr int s = sizeof(Foo<int>);
+                ^
+
+5 errors detected in the compilation of "Test_name.c".

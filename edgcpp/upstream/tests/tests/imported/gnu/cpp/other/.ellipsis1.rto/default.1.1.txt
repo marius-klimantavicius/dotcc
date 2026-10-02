@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: error: ellipsis is not allowed in operator function parameter list
+      A& operator= (A,...);  // { dg-error "8:.A& A::operator=\\(A, ...\\). must not have variable number of arguments" }
+         ^
+
+"Test_name.c", line 9: error: ellipsis is not allowed in operator function parameter list
+      A operator+ (...);     // { dg-error "7:.A A::operator\\+\\(...\\). must not have variable number of arguments" }
+        ^
+
+"Test_name.c", line 10: error: no arguments allowed on user-defined conversion
+      operator int(...);     // { dg-error "5:.A::operator int\\(...\\). must not have variable number of arguments" }
+      ^
+
+"Test_name.c", line 14: error: ellipsis is not allowed in operator function parameter list
+  A operator- (A,...);       // { dg-error "3:.A operator-\\(A, ...\\). must not have variable number of arguments" }
+    ^
+
+4 errors detected in the compilation of "Test_name.c".

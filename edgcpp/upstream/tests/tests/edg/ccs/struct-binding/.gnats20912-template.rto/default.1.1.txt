@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --c++20 Test_name.c
+"Test_name.c", line 4: error: structured binding templates are not permitted
+  template<auto Var> auto [X, Y] = Var;
+                          ^
+
+"Test_name.c", line 9: error: identifier "X" is undefined
+    int x = X<arr>;
+            ^
+
+"Test_name.c", line 10: error: identifier "Y" is undefined
+    int y = Y<arr>;
+            ^
+
+"Test_name.c", line 7: warning: variable "arr" was declared but never referenced
+    const int arr[3] = {1, 2, 3};
+              ^
+
+3 errors detected in the compilation of "Test_name.c".

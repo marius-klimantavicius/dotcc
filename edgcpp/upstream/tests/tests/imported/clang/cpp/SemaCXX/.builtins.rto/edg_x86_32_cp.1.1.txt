@@ -1,0 +1,48 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --exceptions Test_name.c
+"Test_name.c", line 15: error: expression must have a constant value
+    constexpr bool a = CFSTR("Hello") == CFSTR("Hello");
+                       ^
+"Test_name.c", line 15: note: cannot call non-constexpr function "__builtin___CFStringMakeConstantString" (declared implicitly)
+    constexpr bool a = CFSTR("Hello") == CFSTR("Hello");
+                       ^
+
+"Test_name.c", line 18: error: expression must have a constant value
+    constexpr bool b = NSSTR("Hello") == NSSTR("Hello");
+                       ^
+"Test_name.c", line 18: note: cannot call non-constexpr function "__builtin___NSStringMakeConstantString" (declared implicitly)
+    constexpr bool b = NSSTR("Hello") == NSSTR("Hello");
+                       ^
+
+"Test_name.c", line 15: warning: variable "a" was declared but never referenced
+    constexpr bool a = CFSTR("Hello") == CFSTR("Hello");
+                   ^
+
+"Test_name.c", line 18: warning: variable "b" was declared but never referenced
+    constexpr bool b = NSSTR("Hello") == NSSTR("Hello");
+                   ^
+
+"Test_name.c", line 24: warning: variable "y" is used before its value is set
+  void a() { __builtin_va_list x, y; ::__builtin_va_copy(x, y); }
+                                                            ^
+
+"Test_name.c", line 24: warning: variable "x" was set but never used
+  void a() { __builtin_va_list x, y; ::__builtin_va_copy(x, y); }
+                               ^
+
+"Test_name.c", line 34: warning: expression has no effect
+    __builtin_isnan; // expected-error {{builtin functions must be directly called}}
+    ^
+
+"Test_name.c", line 50: error: taking the address of a bit field is not allowed
+    int *pbf = __builtin_addressof(u.n); // expected-error {{address of bit-field requested}}
+               ^
+
+"Test_name.c", line 50: internal error: assertion failed at: "folding.c", line <suppressed> in fold_builtin_operation_if_possible
+
+    int *pbf = __builtin_addressof(u.n); // expected-error {{address of bit-field requested}}
+                                   ^
+
+3 errors and 1 catastrophic error detected in the compilation of "Test_name.c".
+Compilation aborted.
+Aborted
+eccp: front end returned an exit status of 134

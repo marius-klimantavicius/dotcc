@@ -1,0 +1,46 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 Test_name.c
+"Test_name.c", line 5: error: variable length array with unspecified bound is not allowed
+  int a[*];			/* { dg-error "not allowed in other than function prototype scope" } */
+        ^
+
+"Test_name.c", line 6: error: variable length array with unspecified bound is not allowed
+  void foo1() { int a[*]; }	/* { dg-error "not allowed in other than function prototype scope" } */
+                      ^
+
+"Test_name.c", line 7: error: variable length array with unspecified bound is not allowed
+  void foo2() { int a[*]; }	/* { dg-error "not allowed in other than function prototype scope" } */
+                      ^
+
+"Test_name.c", line 8: error: variable length array with unspecified bound is not allowed
+  int foo3(int i)[*];		/* { dg-error "not allowed in other than function prototype scope" } */
+                  ^
+
+"Test_name.c", line 9: error: variable length array with unspecified bound is not allowed
+  void foo4(int o[*][4]) { }	/* { dg-error "not allowed in other than function prototype scope" } */
+            ^
+
+"Test_name.c", line 10: error: variable length array with unspecified bound is not allowed
+  void foo5(int o[4][*]) { }	/* { dg-error "not allowed in other than function prototype scope" } */
+            ^
+
+"Test_name.c", line 15: error: variable length array with unspecified bound is not allowed
+  void foo11(int x[sizeof(int (*)[*])]);	/* { dg-warning "not in a declaration" } */
+                                  ^
+
+"Test_name.c", line 24: error: a field declaration cannot have a type involving a variable length array
+      vla x;			/* { dg-error "a member of a structure or union cannot have a variably modified type" } */
+          ^
+
+"Test_name.c", line 26: error: a field declaration cannot have a type involving a variable length array
+      int (*y)[n];		/* { dg-error "a member of a structure or union cannot have a variably modified type" } */
+            ^
+
+"Test_name.c", line 27: warning: variable-length array field type will be treated as zero-length array field type
+      int z[n];			/* { dg-error "a member of a structure or union cannot have a variably modified type" } */
+            ^
+
+"Test_name.c", line 30: error: an entity with linkage cannot have a type involving a variable length array
+    extern int (*r)[m];		/* { dg-error "variably modified type must have no linkage" } */
+                 ^
+
+10 errors detected in the compilation of "Test_name.c".

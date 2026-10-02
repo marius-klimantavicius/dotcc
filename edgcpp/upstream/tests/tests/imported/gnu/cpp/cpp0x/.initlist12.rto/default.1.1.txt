@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 11: error: too many initializer values
+  A a({1,2});			// { dg-error "no match|cannot convert" }
+         ^
+
+"Test_name.c", line 18: error: too many initializer values
+  U u({1,2});			// { dg-error "no match|cannot convert" }
+         ^
+
+"Test_name.c", line 22: error: too many initializer values
+  V v({1});			// { dg-error "no match|too many initializers" }
+       ^
+
+3 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,7 @@
+# Import Linux Configuration
+import <support/platform/linux-i686/base>
+# Import GCC Configuration
+import <support/compiler/gcc/linux/base>
+
+# Import Debug Configuration
+import <support/simple-conf/debug/base>

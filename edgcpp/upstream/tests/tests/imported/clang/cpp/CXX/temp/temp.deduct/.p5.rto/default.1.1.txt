@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 8: warning: last line of file ends without a newline
+  int y = bar(
+              ^
+
+At end of source: error: expected an expression
+
+At end of source: error: expected a ")"
+
+"Test_name.c", line 8: error: no instance of function template "bar" matches the argument list
+            argument types are: (<error-type>)
+  int y = bar(
+          ^
+"Test_name.c", line 7: note: substituting "<<error-type>>" for function template "bar" failed constraints
+  void bar(C auto foo);
+       ^
+"Test_name.c", line 7: note: concept "C" not satisfied for "<<error-type>>"
+  void bar(C auto foo);
+           ^
+"Test_name.c", line 6: note: atomic constraint failed substitution
+  template <typename T> concept C = true;
+                                    ^
+
+At end of source: error: expected a ";"
+
+4 errors detected in the compilation of "Test_name.c".

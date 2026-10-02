@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 -tused -A --c++17 Test_name.c
+"Test_name.c", line 4: error: function "main" cannot be declared in a linkage-specification
+  extern "C++" int main() {}
+                   ^
+
+1 error detected in the compilation of "Test_name.c".

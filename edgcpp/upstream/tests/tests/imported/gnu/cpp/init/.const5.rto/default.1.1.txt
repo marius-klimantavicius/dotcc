@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: error: a value of type "const Bar *" cannot be used to initialize an entity of type "Bar *"
+  static Bar *bar = static_cast<const Bar*>(foo); // { dg-error "conversion" }
+                    ^
+
+"Test_name.c", line 12: error: a value of type "const Bar *" cannot be used to initialize an entity of type "Bar *"
+    Bar *bar = static_cast<const Bar*>(foo);  // { dg-error "conversion" }
+               ^
+
+"Test_name.c", line 9: warning: variable "bar" was declared but never referenced
+  static Bar *bar = static_cast<const Bar*>(foo); // { dg-error "conversion" }
+              ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,1 @@
+cpfe -DTEST_NUMBER=1 -tused Test_name.c

@@ -1,0 +1,78 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 -DCXX1Y Test_name.c
+"Test_name.c", line 8: error: a variable declared with an auto type specifier cannot appear in its own initializer
+    decltype(auto) a = a; // expected-error{{variable 'a' declared with deduced type 'decltype(auto)' cannot appear in its own initializer}}
+                       ^
+
+"Test_name.c", line 9: error: a variable declared with an auto type specifier cannot appear in its own initializer
+    if (decltype(auto) b = b) {} // expected-error {{variable 'b' declared with deduced type 'decltype(auto)' cannot appear in its own initializer}}
+                           ^
+
+"Test_name.c", line 10: error: a variable declared with an auto type specifier cannot appear in its own initializer
+    decltype(auto) c = ({ decltype(auto) d = c; 0; }); // expected-error {{variable 'c' declared with deduced type 'decltype(auto)' cannot appear in its own initializer}}
+                                             ^
+
+"Test_name.c", line 14: error: cannot deduce "decltype(auto)" (initializer required)
+    decltype(auto) a; // expected-error{{declaration of variable 'a' with deduced type 'decltype(auto)' requires an initializer}}
+                   ^
+
+"Test_name.c", line 16: error: cannot deduce "decltype(auto)" (initializer required)
+    decltype(auto) *b; // expected-error{{cannot form pointer to 'decltype(auto)'}} expected-error{{declaration of variable 'b' with deduced type 'decltype(auto) *' requires an initializer}}
+                    ^
+
+"Test_name.c", line 18: error: expected an expression
+    if (decltype(auto) b) {} // expected-error {{must have an initializer}}
+                 ^
+
+"Test_name.c", line 18: error: type name is not allowed
+    if (decltype(auto) b) {} // expected-error {{must have an initializer}}
+        ^
+
+"Test_name.c", line 18: error: expected a ")"
+    if (decltype(auto) b) {} // expected-error {{must have an initializer}}
+                       ^
+
+"Test_name.c", line 19: error: expected an expression
+    for (;decltype(auto) b;) {} // expected-error {{must have an initializer}}
+                   ^
+
+"Test_name.c", line 19: error: type name is not allowed
+    for (;decltype(auto) b;) {} // expected-error {{must have an initializer}}
+          ^
+
+"Test_name.c", line 19: error: expected a ";"
+    for (;decltype(auto) b;) {} // expected-error {{must have an initializer}}
+                         ^
+
+"Test_name.c", line 20: error: expected an expression
+    while (decltype(auto) b) {} // expected-error {{must have an initializer}}
+                    ^
+
+"Test_name.c", line 20: error: type name is not allowed
+    while (decltype(auto) b) {} // expected-error {{must have an initializer}}
+           ^
+
+"Test_name.c", line 20: error: expected a ")"
+    while (decltype(auto) b) {} // expected-error {{must have an initializer}}
+                          ^
+
+"Test_name.c", line 24: error: too many initializer values
+  decltype(auto) n(1,2,3); // expected-error{{initializer for variable 'n' with type 'decltype(auto)' contains multiple expressions}}
+                     ^
+
+"Test_name.c", line 44: error: invalid combination of type specifiers
+    decltype(auto) int r; // expected-error {{cannot combine with previous 'decltype(auto)' declaration specifier}} expected-error {{requires an initializer}}
+                   ^
+
+"Test_name.c", line 43: warning: variable "x" was declared but never referenced
+    decltype(auto) x = 5;
+                   ^
+
+"Test_name.c", line 61: error: invalid combination of type specifiers
+    auto int r;  // expected-warning {{storage class}} expected-error {{file-scope}}
+         ^
+
+"Test_name.c", line 60: warning: variable "p3_example::y" was set but never used
+    static auto y = 0.0;
+                ^
+
+17 errors detected in the compilation of "Test_name.c".

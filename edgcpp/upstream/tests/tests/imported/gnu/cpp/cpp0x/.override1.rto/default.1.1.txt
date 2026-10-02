@@ -1,0 +1,75 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 22: error: cannot override "final" function "B::y" (declared at line 12)
+    virtual void y() override final {} // { dg-error "virtual" }
+                 ^
+
+"Test_name.c", line 37: error: cannot override "final" function "D::g" (declared at line 21)
+    void g() {} // { dg-error "virtual function" }
+         ^
+
+"Test_name.c", line 42: error: duplicate function modifier
+    virtual void f() final final {} // { dg-error "duplicate virt-specifier" }
+                 ^
+
+"Test_name.c", line 47: error: nonvirtual function cannot be declared with "final" modifier
+    void f() final {} // { dg-error "marked 'final', but is not virtual" }
+         ^
+
+"Test_name.c", line 52: error: member function declared with "override" does not override a base class member
+    void ff() override {} // { dg-error "marked 'override', but does not override" }
+         ^
+
+"Test_name.c", line 53: error: member function declared with "override" does not override a base class member
+    virtual void fff() override {} // { dg-error "marked 'override', but does not override" }
+                 ^
+
+"Test_name.c", line 54: error: member function declared with "override" does not override a base class member
+    virtual void x() override {} // { dg-error "marked 'override', but does not override" }
+                 ^
+
+"Test_name.c", line 54: warning: function "B::x() const" is hidden by "D5::x" -- virtual function override intended?
+    virtual void x() override {} // { dg-error "marked 'override', but does not override" }
+                 ^
+
+"Test_name.c", line 58: error: expected a "{"
+  void D5::g() override {} // { dg-error "not allowed outside a class definition" }
+               ^
+
+"Test_name.c", line 59: error: expected a "{"
+  void g() override {} // { dg-error "not allowed outside a class definition" }
+           ^
+
+"Test_name.c", line 63: error: expected a ";"
+    friend void f() final; // { dg-error "may not have virt-specifiers" }
+                    ^
+
+"Test_name.c", line 64: error: expected a ";"
+    friend void g() override; // { dg-error "may not have virt-specifiers" }
+                    ^
+
+"Test_name.c", line 65: error: function modifier does not apply to member template declaration
+    template <class T> void h() final; // { dg-error "may not have virt-specifiers" }
+                                ^
+
+"Test_name.c", line 66: error: function modifier does not apply to member template declaration
+    template <class T> void i() override; // { dg-error "may not have virt-specifiers" }
+                                ^
+
+"Test_name.c", line 27: error: member function declared with "override" does not override a base class member
+    void h() override {} // { dg-error "marked 'override', but does not override" }
+         ^
+          detected during instantiation of class "D2<T> [with T=B]" at line 71
+
+"Test_name.c", line 71: warning: variable "d" was declared but never referenced
+    D2<B> d;
+          ^
+
+"Test_name.c", line 72: warning: variable "d2" was declared but never referenced
+    D2<B2> d2;
+           ^
+
+"Test_name.c", line 73: warning: variable "d3" was declared but never referenced
+    D3<B2> d3;
+           ^
+
+14 errors detected in the compilation of "Test_name.c".

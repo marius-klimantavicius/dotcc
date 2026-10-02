@@ -1,0 +1,73 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 11: warning: unrecognized #pragma
+    #pragma omp for		/* { dg-error "'_Atomic' iteration variable 'i'" } */
+            ^
+
+"Test_name.c", line 14: warning: unrecognized #pragma
+    #pragma omp parallel for	/* { dg-error "'_Atomic' iteration variable 'i'" } */
+            ^
+
+"Test_name.c", line 17: warning: unrecognized #pragma
+    #pragma omp simd		/* { dg-error "'_Atomic' iteration variable 'i'" } */
+            ^
+
+"Test_name.c", line 20: warning: unrecognized #pragma
+    #pragma omp parallel for simd	/* { dg-error "'_Atomic' iteration variable 'i'" } */
+            ^
+
+"Test_name.c", line 23: warning: unrecognized #pragma
+    #pragma omp for simd		/* { dg-error "'_Atomic' iteration variable 'i'" } */
+            ^
+
+"Test_name.c", line 26: warning: unrecognized #pragma
+    #pragma omp for		/* { dg-error "'_Atomic' iteration variable 'j'" } */
+            ^
+
+"Test_name.c", line 29: warning: unrecognized #pragma
+    #pragma omp parallel for	/* { dg-error "'_Atomic' iteration variable 'j'" } */
+            ^
+
+"Test_name.c", line 32: warning: unrecognized #pragma
+    #pragma omp simd		/* { dg-error "'_Atomic' iteration variable 'j'" } */
+            ^
+
+"Test_name.c", line 35: warning: unrecognized #pragma
+    #pragma omp parallel for simd	/* { dg-error "'_Atomic' iteration variable 'j'" } */
+            ^
+
+"Test_name.c", line 38: warning: unrecognized #pragma
+    #pragma omp for simd		/* { dg-error "'_Atomic' iteration variable 'j'" } */
+            ^
+
+"Test_name.c", line 47: warning: unrecognized #pragma
+    #pragma omp distribute		/* { dg-error "'_Atomic' iteration variable 'i'" } */
+            ^
+
+"Test_name.c", line 50: warning: unrecognized #pragma
+    #pragma omp distribute parallel for	/* { dg-error "'_Atomic' iteration variable 'i'" } */
+            ^
+
+"Test_name.c", line 53: warning: unrecognized #pragma
+    #pragma omp distribute parallel for simd /* { dg-error "'_Atomic' iteration variable 'i'" } */
+            ^
+
+"Test_name.c", line 56: warning: unrecognized #pragma
+    #pragma omp distribute		/* { dg-error "'_Atomic' iteration variable 'j'" } */
+            ^
+
+"Test_name.c", line 59: warning: unrecognized #pragma
+    #pragma omp distribute parallel for	/* { dg-error "'_Atomic' iteration variable 'j'" } */
+            ^
+
+"Test_name.c", line 62: warning: unrecognized #pragma
+    #pragma omp distribute parallel for simd /* { dg-error "'_Atomic' iteration variable 'j'" } */
+            ^
+
+"Test_name.c", line 72: warning: unrecognized #pragma
+    #pragma omp simd linear(j:2)		/* { dg-error "'_Atomic' 'j' in 'linear' clause" } */
+            ^
+
+"Test_name.c", line 75: warning: unrecognized #pragma
+    #pragma omp parallel for linear(j:1)	/* { dg-error "'_Atomic' 'j' in 'linear' clause" } */
+            ^
+

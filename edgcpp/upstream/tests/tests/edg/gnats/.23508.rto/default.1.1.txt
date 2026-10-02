@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --microsoft_version=1929 Test_name.c
+"Test_name.c", line 9: warning: allowing all exceptions is incompatible with previous function "S<T>::~S" (declared at line 5)
+  S<T>::~S() {} // now diagnoses a different exception specification
+             ^
+

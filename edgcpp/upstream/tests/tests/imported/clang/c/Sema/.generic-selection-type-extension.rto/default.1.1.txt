@@ -1,0 +1,130 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 10: error: expected an expression
+  static_assert(_Generic(int, int : 1, default : 0) == 1);
+                         ^
+
+"Test_name.c", line 11: error: expected an expression
+  static_assert(_Generic(_BitInt(12), int : 1, _BitInt(10) : 2, _BitInt(12) : 3) == 3);
+                         ^
+
+"Test_name.c", line 14: error: expected an expression
+  static_assert(_Generic(int, long : 1, default : 0) == 0);
+                         ^
+
+"Test_name.c", line 17: error: expected an expression
+  static_assert(_Generic(int[12], int[0] : 0, int * : 0, int[12] : 1, default : 0) == 1);
+                         ^
+
+"Test_name.c", line 17: error: duplicate association type ("int [12]") in _Generic selection
+  static_assert(_Generic(int[12], int[0] : 0, int * : 0, int[12] : 1, default : 0) == 1);
+                                                         ^
+
+"Test_name.c", line 20: error: expected an expression
+  static_assert(_Generic(int(int), void(void) : 0, int(void) : 0, void(int) : 0, int(int) : 1, default : 0) == 1);
+                         ^
+
+"Test_name.c", line 20: error: type must be an object type
+  static_assert(_Generic(int(int), void(void) : 0, int(void) : 0, void(int) : 0, int(int) : 1, default : 0) == 1);
+                                   ^
+
+"Test_name.c", line 20: error: type must be an object type
+  static_assert(_Generic(int(int), void(void) : 0, int(void) : 0, void(int) : 0, int(int) : 1, default : 0) == 1);
+                                                   ^
+
+"Test_name.c", line 20: error: type must be an object type
+  static_assert(_Generic(int(int), void(void) : 0, int(void) : 0, void(int) : 0, int(int) : 1, default : 0) == 1);
+                                                                  ^
+
+"Test_name.c", line 20: error: type must be an object type
+  static_assert(_Generic(int(int), void(void) : 0, int(void) : 0, void(int) : 0, int(int) : 1, default : 0) == 1);
+                                                                                 ^
+
+"Test_name.c", line 24: error: expected an expression
+  static_assert(_Generic(const int, long : 1)); // expected-error {{controlling expression type 'const int' not compatible with any generic association type}}
+                         ^
+
+"Test_name.c", line 28: error: expected an expression
+  static_assert(_Generic(const int, int : 0, const int : 1) == 1);
+                         ^
+
+"Test_name.c", line 29: error: expected an expression
+  static_assert(_Generic(int volatile _Atomic const, int : 0, const int : 0, volatile int : 0, _Atomic int : 0, _Atomic const volatile int : 1) == 1);
+                         ^
+
+"Test_name.c", line 33: error: expected an expression
+  static_assert(_Generic(__typeof__(ci), int : 0, const int : 1) == 1);
+                         ^
+
+"Test_name.c", line 40: error: expected an expression
+  static_assert(_Generic(struct incomplete, struct incomplete : 1, default : 0) == 1);
+                         ^
+
+"Test_name.c", line 40: error: type must be an object type
+  static_assert(_Generic(struct incomplete, struct incomplete : 1, default : 0) == 1);
+                                            ^
+
+"Test_name.c", line 41: error: expected an expression
+  static_assert(_Generic(struct another_incomplete, struct incomplete : 1, default : 0) == 0);
+                         ^
+
+"Test_name.c", line 41: error: type must be an object type
+  static_assert(_Generic(struct another_incomplete, struct incomplete : 1, default : 0) == 0);
+                                                    ^
+
+"Test_name.c", line 42: error: type must be an object type
+  static_assert(_Generic(1, struct also_incomplete : 1, default : 0) == 0);
+                            ^
+
+"Test_name.c", line 45: error: expected an expression
+  static_assert(_Generic(__typeof__(foo), void(int) : 1, default : 0) == 1);
+                         ^
+
+"Test_name.c", line 45: error: type must be an object type
+  static_assert(_Generic(__typeof__(foo), void(int) : 1, default : 0) == 1);
+                                          ^
+
+"Test_name.c", line 46: error: type must be an object type
+  static_assert(_Generic(foo, void(int) : 1, default : 0) == 0); // expected-error {{type 'void (int)' in generic association not an object type}}
+                              ^
+
+"Test_name.c", line 51: error: expected an expression
+  static_assert(_Generic(const int,
+                         ^
+
+"Test_name.c", line 54: error: duplicate association type ("const int") in _Generic selection
+                           const int : 3  // expected-error {{type 'const int' in generic association compatible with previously specified type 'const int'}}
+                           ^
+
+"Test_name.c", line 61: error: expected an expression
+  static_assert(_Generic(volatile CInt, const volatile int : 1, default : 0) == 1);
+                         ^
+
+"Test_name.c", line 62: error: expected an expression
+  static_assert(_Generic(const int, CInt : 1, default : 0) == 1);
+                         ^
+
+"Test_name.c", line 65: error: expected an expression
+  static_assert(_Generic(const int,
+                         ^
+
+"Test_name.c", line 68: error: duplicate association type ("OtherCInt" (aka "const Int")) in _Generic selection
+                           OtherCInt : 3 // expected-error {{type 'OtherCInt' (aka 'const int') in generic association compatible with previously specified type 'CInt' (aka 'const int')}}
+                           ^
+
+"Test_name.c", line 72: error: expected an expression
+  static_assert(_Generic(const int,
+                         ^
+
+"Test_name.c", line 74: error: duplicate association type ("int [12]") in _Generic selection
+                           int[12] : 0,  // expected-error {{type 'int[12]' in generic association compatible with previously specified type 'int[12]'}}
+                           ^
+
+"Test_name.c", line 75: error: type must be an object type
+                           int(int) : 0, // expected-note {{compatible type 'int (int)' specified here}}
+                           ^
+
+"Test_name.c", line 76: error: type must be an object type
+                           int(int) : 0, // expected-error {{type 'int (int)' in generic association compatible with previously specified type 'int (int)'}}
+                           ^
+
+32 errors detected in the compilation of "Test_name.c".

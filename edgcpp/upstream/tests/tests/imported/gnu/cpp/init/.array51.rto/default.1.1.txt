@@ -1,0 +1,21 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 22: warning: unknown attribute "noipa"
+  NOIPA B f__   () { return B{ }; }
+  ^
+
+"Test_name.c", line 23: warning: unknown attribute "noipa"
+  NOIPA B f0_   () { return B{ 0 }; }
+  ^
+
+"Test_name.c", line 24: warning: unknown attribute "noipa"
+  NOIPA B f00   () { return B{ 0, 0 }; }
+  ^
+
+"Test_name.c", line 42: warning: unknown attribute "noipa"
+  NOIPA void init_allones ()
+  ^
+
+"Test_name.c", line 47: warning: unknown attribute "noipa"
+  NOIPA int test_allones (const pam_t *p, unsigned n)
+  ^
+

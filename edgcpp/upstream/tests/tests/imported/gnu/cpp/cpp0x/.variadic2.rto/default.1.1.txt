@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 4: error: a parameter pack cannot have a default
+  template<typename... Args = int> // { dg-error "default argument" }
+                            ^
+
+"Test_name.c", line 7: error: a parameter pack cannot have a default
+  template<typename... = int> // { dg-error "default argument" }
+                       ^
+
+"Test_name.c", line 13: error: too few arguments for class template "two_or_more"
+  typedef two_or_more<int> bad; // { dg-error "at least 2" "at least 2" }
+                         ^
+
+"Test_name.c", line 17: error: no suitable constructor exists to convert from "int" to "two_or_more<int, float>"
+    two_or_more<int, float> z = 5; // { dg-error "two_or_more<int, float>" }
+                                ^
+
+4 errors detected in the compilation of "Test_name.c".

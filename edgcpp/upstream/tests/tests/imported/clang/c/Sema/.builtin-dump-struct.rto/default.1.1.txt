@@ -1,0 +1,46 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 19: warning: variable "b" is used before its value is set
+    __builtin_dump_struct(b, goodfunc); // expected-error {{expected pointer to struct as 1st argument to '__builtin_dump_struct', found 'void *'}}
+                          ^
+
+"Test_name.c", line 19: warning: variable "goodfunc" is used before its value is set
+    __builtin_dump_struct(b, goodfunc); // expected-error {{expected pointer to struct as 1st argument to '__builtin_dump_struct', found 'void *'}}
+                             ^
+
+"Test_name.c", line 20: warning: variable "badfunc1" is used before its value is set
+    __builtin_dump_struct(&a, badfunc1); // expected-error {{too many arguments to function call, expected 1, have 2}} expected-note  {{in call to printing function with arguments '("%s", "struct A")'}}
+                              ^
+
+"Test_name.c", line 21: warning: variable "badfunc2" is used before its value is set
+    __builtin_dump_struct(&a, badfunc2); // expected-error-re 1+{{incompatible pointer to integer conversion passing 'char[{{.*}}]' to parameter of type 'int'}}
+                              ^
+
+"Test_name.c", line 23: warning: variable "badfunc3" is used before its value is set
+    __builtin_dump_struct(&a, badfunc3); // expected-error {{too many arguments to function call, expected 0, have 2}} expected-note {{in call to printing function with arguments '("%s", "struct A")'}}
+                              ^
+
+"Test_name.c", line 39: error: expected an identifier
+    int (^goodblock)(const char*, ...);
+         ^
+
+"Test_name.c", line 45: warning: variable "goodfunc" is used before its value is set
+    __builtin_dump_struct(&a, goodfunc);
+                              ^
+
+"Test_name.c", line 47: warning: variable "goodfunc2" is used before its value is set
+    __builtin_dump_struct(&a, goodfunc2);
+                              ^
+
+"Test_name.c", line 48: warning: variable "goodfunc3" is used before its value is set
+    __builtin_dump_struct(&a, goodfunc3);
+                              ^
+
+"Test_name.c", line 49: warning: variable "goodfunc4" is used before its value is set
+    __builtin_dump_struct(&a, goodfunc4);
+                              ^
+
+"Test_name.c", line 50: error: identifier "goodblock" is undefined
+    __builtin_dump_struct(&a, goodblock);
+                              ^
+
+2 errors detected in the compilation of "Test_name.c".

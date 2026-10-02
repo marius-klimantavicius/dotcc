@@ -1,0 +1,22 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"./fixed-point/func-vararg-size0.c", line 15: error: identifier "_Fract" is undefined
+      _Fract e;
+      ^
+
+"./fixed-point/func-vararg-size0.c", line 23: warning: variable "d" was set but never used
+    double d;
+           ^
+
+"./fixed-point/func-vararg-size0.c", line 24: warning: variable "s1" was set but never used
+    struct S1 s1;
+              ^
+
+"./fixed-point/func-vararg-size0.c", line 42: warning: variable "s1" is used before its value is set
+    if (check_var(5, 1.0, s1, 2LL, a1[2], a1[2]) == 0)
+                          ^
+
+"./fixed-point/func-vararg-size0.c", line 42: warning: variable "a1" is used before its value is set
+    if (check_var(5, 1.0, s1, 2LL, a1[2], a1[2]) == 0)
+                                   ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 12: warning: variable "m" was declared but never referenced
+   int m = 0;     // { dg-message "shadowed declaration" }
+       ^
+
+"Test_name.c", line 29: warning: variable "y" was declared but never referenced
+  		 struct S y;   // { dg-warning "shadows a previous local" }
+  		          ^
+
+"Test_name.c", line 24: warning: variable "x" was declared but never referenced
+  	  struct S x;    // { dg-warning "shadows a member of" }
+  	           ^
+
+"Test_name.c", line 25: warning: variable "y" was declared but never referenced
+  	  struct S y;    // { dg-message "shadowed declaration" }
+  	           ^
+
+"Test_name.c", line 38: warning: variable "j" was declared but never referenced
+     int j = i;			// { dg-message "shadowed declaration" }
+         ^
+
+"Test_name.c", line 39: warning: variable "i" was set but never used
+     int i;			// { dg-warning "shadows a lambda capture" }
+         ^
+
+"Test_name.c", line 47: warning: variable "j" was declared but never referenced
+     int j = i;			// { dg-message "shadowed declaration" }
+         ^
+

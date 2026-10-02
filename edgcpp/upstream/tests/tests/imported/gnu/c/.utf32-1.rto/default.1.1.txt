@@ -1,0 +1,62 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 12: error: identifier "U" is undefined
+  char32_t	c0 = U'a';
+          	     ^
+
+"Test_name.c", line 12: error: expected a ";"
+  char32_t	c0 = U'a';
+          	      ^
+
+"Test_name.c", line 13: error: expected a ";"
+  char32_t	c1 = U'\0';
+          	      ^
+
+"Test_name.c", line 14: error: expected a ";"
+  char32_t	c2 = U'\u0024';
+          	      ^
+
+"Test_name.c", line 15: warning: multicharacter character literal (potential portability problem)
+  char32_t	c3 = U'\u2029';
+          	      ^
+
+"Test_name.c", line 15: error: expected a ";"
+  char32_t	c3 = U'\u2029';
+          	      ^
+
+"Test_name.c", line 16: warning: multicharacter character literal (potential portability problem)
+  char32_t	c4 = U'\U00064321';
+          	      ^
+
+"Test_name.c", line 16: error: expected a ";"
+  char32_t	c4 = U'\U00064321';
+          	      ^
+
+"Test_name.c", line 25: error: expected a ")"
+      if (sizeof (U'a') != sizeof (char32_t))
+                   ^
+
+"Test_name.c", line 27: error: expected a ")"
+      if (sizeof (U'\0') != sizeof (char32_t))
+                   ^
+
+"Test_name.c", line 29: error: expected a ")"
+      if (sizeof (U'\u0024') != sizeof (char32_t))
+                   ^
+
+"Test_name.c", line 31: warning: multicharacter character literal (potential portability problem)
+      if (sizeof (U'\u2029') != sizeof (char32_t))
+                   ^
+
+"Test_name.c", line 31: error: expected a ")"
+      if (sizeof (U'\u2029') != sizeof (char32_t))
+                   ^
+
+"Test_name.c", line 33: warning: multicharacter character literal (potential portability problem)
+      if (sizeof (U'\U00064321') != sizeof (char32_t))
+                   ^
+
+"Test_name.c", line 33: error: expected a ")"
+      if (sizeof (U'\U00064321') != sizeof (char32_t))
+                   ^
+
+11 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c --target linux_aarch64 Test_name.c
+"Test_name.c", line 8: error: expected a "{"
+  void streaming_openmp_captured_region(int * out) __arm_streaming {
+                                                   ^
+
+"Test_name.c", line 11: warning: unrecognized #pragma
+    #pragma omp parallel for num_threads(32)
+            ^
+
+"Test_name.c", line 17: warning: this declaration has no storage class or type specifier
+  __arm_locally_streaming void locally_streaming_openmp_captured_region(int * out) {
+  ^
+
+"Test_name.c", line 17: error: expected a ";"
+  __arm_locally_streaming void locally_streaming_openmp_captured_region(int * out) {
+                          ^
+
+"Test_name.c", line 20: warning: unrecognized #pragma
+    #pragma omp parallel for num_threads(32)
+            ^
+
+"Test_name.c", line 29: warning: unrecognized #pragma
+    #pragma omp parallel for num_threads(32)
+            ^
+
+"Test_name.c", line 38: warning: unrecognized #pragma
+    #pragma omp parallel for num_threads(32)
+            ^
+
+"Test_name.c", line 47: warning: unrecognized #pragma
+    #pragma omp parallel for num_threads(32)
+            ^
+
+"Test_name.c", line 56: warning: unrecognized #pragma
+    #pragma omp parallel for num_threads(32)
+            ^
+
+"Test_name.c", line 65: warning: unrecognized #pragma
+    #pragma omp unroll full
+            ^
+
+"Test_name.c", line 72: warning: unrecognized #pragma
+    #pragma omp unroll full
+            ^
+
+"Test_name.c", line 79: warning: unrecognized #pragma
+    #pragma omp unroll full
+            ^
+
+2 errors detected in the compilation of "Test_name.c".

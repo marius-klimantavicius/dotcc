@@ -1,0 +1,172 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 26: error: missing initializer for constexpr variable
+  constexpr int ni1; // expected-error {{constexpr variable 'ni1' must be initialized by a constant expression}}
+                   ^
+
+"Test_name.c", line 27: error: initialization is not constant
+  constexpr struct C { C(); } ni2; // expected-error {{cannot have non-literal type 'const struct C'}} expected-note 3{{has no constexpr constructors}}
+                              ^
+"Test_name.c", line 27: note: cannot call non-constexpr function "C::C()" (declared at line 27)
+  constexpr struct C { C(); } ni2; // expected-error {{cannot have non-literal type 'const struct C'}} expected-note 3{{has no constexpr constructors}}
+                              ^
+
+"Test_name.c", line 27: error: a constexpr variable must have a literal type or a reference type
+  constexpr struct C { C(); } ni2; // expected-error {{cannot have non-literal type 'const struct C'}} expected-note 3{{has no constexpr constructors}}
+  ^
+
+"Test_name.c", line 28: error: reference variable "ni3" requires an initializer
+  constexpr double &ni3; // expected-error {{declaration of reference variable 'ni3' requires an initializer}}
+                       ^
+
+"Test_name.c", line 30: error: expression must have a constant value
+  constexpr int nc1 = i; // expected-error {{constexpr variable 'nc1' must be initialized by a constant expression}} expected-note {{read of non-const variable 'i' is not allowed in a constant expression}}
+                      ^
+"Test_name.c", line 30: note: the value of variable "i" (declared at line 14) cannot be used as a constant
+  constexpr int nc1 = i; // expected-error {{constexpr variable 'nc1' must be initialized by a constant expression}} expected-note {{read of non-const variable 'i' is not allowed in a constant expression}}
+                      ^
+
+"Test_name.c", line 31: error: expression must have a constant value
+  constexpr C nc2 = C(); // expected-error {{cannot have non-literal type 'const C'}}
+                    ^
+
+"Test_name.c", line 31: error: a constexpr variable must have a literal type or a reference type
+  constexpr C nc2 = C(); // expected-error {{cannot have non-literal type 'const C'}}
+  ^
+
+"Test_name.c", line 33: error: expression must have a constant value
+  constexpr int &nc3 = f(); // expected-error {{constexpr variable 'nc3' must be initialized by a constant expression}} expected-note {{non-constexpr function 'f' cannot be used in a constant expression}}
+                       ^
+"Test_name.c", line 33: note: cannot call non-constexpr function "f" (declared at line 32)
+  constexpr int &nc3 = f(); // expected-error {{constexpr variable 'nc3' must be initialized by a constant expression}} expected-note {{non-constexpr function 'f' cannot be used in a constant expression}}
+                       ^
+
+"Test_name.c", line 34: error: expression must have a constant value
+  constexpr int nc4(i); // expected-error {{constexpr variable 'nc4' must be initialized by a constant expression}} expected-note {{read of non-const variable 'i' is not allowed in a constant expression}}
+                    ^
+"Test_name.c", line 34: note: the value of variable "i" (declared at line 14) cannot be used as a constant
+  constexpr int nc4(i); // expected-error {{constexpr variable 'nc4' must be initialized by a constant expression}} expected-note {{read of non-const variable 'i' is not allowed in a constant expression}}
+                    ^
+
+"Test_name.c", line 35: error: expression must have a constant value
+  constexpr C nc5((C())); // expected-error {{cannot have non-literal type 'const C'}}
+                   ^
+
+"Test_name.c", line 35: error: a constexpr variable must have a literal type or a reference type
+  constexpr C nc5((C())); // expected-error {{cannot have non-literal type 'const C'}}
+  ^
+
+"Test_name.c", line 36: error: expression must have a constant value
+  constexpr int &nc6(f()); // expected-error {{constexpr variable 'nc6' must be initialized by a constant expression}} expected-note {{non-constexpr function 'f'}}
+                     ^
+"Test_name.c", line 36: note: cannot call non-constexpr function "f" (declared at line 32)
+  constexpr int &nc6(f()); // expected-error {{constexpr variable 'nc6' must be initialized by a constant expression}} expected-note {{non-constexpr function 'f'}}
+                     ^
+
+"Test_name.c", line 42: error: const variable "origin" requires an initializer -- class "pixel" has no user-provided default constructor
+  constexpr pixel origin;              // expected-error {{default initialization of an object of const type 'const pixel' without a user-provided default constructor}}
+                        ^
+
+"Test_name.c", line 66: error: expression must have a constant value
+  static_assert(B(false).a[1].ok); // expected-error {{static assertion expression is not an integral constant expression}} \
+                ^
+"Test_name.c", line 51: note: cannot call non-constexpr function "oops" (declared at line 50)
+      if (!ok) oops(); // expected-note 6{{non-constexpr function}}
+               ^
+"Test_name.c", line 66: note: called from:
+  static_assert(B(false).a[1].ok); // expected-error {{static assertion expression is not an integral constant expression}} \
+                ^
+
+"Test_name.c", line 68: error: expression must have a constant value
+  static_assert(B(true).a[1].ok); // expected-error {{static assertion expression is not an integral constant expression}} \
+                ^
+"Test_name.c", line 51: note: cannot call non-constexpr function "oops" (declared at line 50)
+      if (!ok) oops(); // expected-note 6{{non-constexpr function}}
+               ^
+"Test_name.c", line 68: note: called from:
+  static_assert(B(true).a[1].ok); // expected-error {{static assertion expression is not an integral constant expression}} \
+                ^
+
+"Test_name.c", line 70: error: expression must have a constant value
+  static_assert(B(Cons().val[1]).a[1].ok); // expected-error {{static assertion expression is not an integral constant expression}} \
+                ^
+"Test_name.c", line 51: note: cannot call non-constexpr function "oops" (declared at line 50)
+      if (!ok) oops(); // expected-note 6{{non-constexpr function}}
+               ^
+"Test_name.c", line 70: note: called from:
+  static_assert(B(Cons().val[1]).a[1].ok); // expected-error {{static assertion expression is not an integral constant expression}} \
+                ^
+
+"Test_name.c", line 72: error: expression must have a constant value
+  static_assert(B((new Cons)->val[0]).a[1].ok); // expected-error {{static assertion expression is not an integral constant expression}} \
+                ^
+"Test_name.c", line 51: note: cannot call non-constexpr function "oops" (declared at line 50)
+      if (!ok) oops(); // expected-note 6{{non-constexpr function}}
+               ^
+"Test_name.c", line 72: note: called from:
+  static_assert(B((new Cons)->val[0]).a[1].ok); // expected-error {{static assertion expression is not an integral constant expression}} \
+                ^
+
+"Test_name.c", line 74: error: expression must have a constant value
+  constexpr A non_const_dtor(false); // expected-error {{must have constant destruction}} expected-note {{in call}}
+                             ^
+"Test_name.c", line 51: note: cannot call non-constexpr function "oops" (declared at line 50)
+      if (!ok) oops(); // expected-note 6{{non-constexpr function}}
+               ^
+
+"Test_name.c", line 11: warning: variable "a" was declared but never referenced
+  constexpr int a = 0;
+                ^
+
+"Test_name.c", line 15: warning: variable "b" was declared but never referenced
+  constexpr int *b = &i;
+                 ^
+
+"Test_name.c", line 21: warning: variable "d" was declared but never referenced
+  constexpr int (*d)(int) = 0;
+                  ^
+
+"Test_name.c", line 26: warning: variable "ni1" was declared but never referenced
+  constexpr int ni1; // expected-error {{constexpr variable 'ni1' must be initialized by a constant expression}}
+                ^
+
+"Test_name.c", line 27: warning: variable "ni2" was declared but never referenced
+  constexpr struct C { C(); } ni2; // expected-error {{cannot have non-literal type 'const struct C'}} expected-note 3{{has no constexpr constructors}}
+                              ^
+
+"Test_name.c", line 30: warning: variable "nc1" was declared but never referenced
+  constexpr int nc1 = i; // expected-error {{constexpr variable 'nc1' must be initialized by a constant expression}} expected-note {{read of non-const variable 'i' is not allowed in a constant expression}}
+                ^
+
+"Test_name.c", line 31: warning: variable "nc2" was declared but never referenced
+  constexpr C nc2 = C(); // expected-error {{cannot have non-literal type 'const C'}}
+              ^
+
+"Test_name.c", line 34: warning: variable "nc4" was declared but never referenced
+  constexpr int nc4(i); // expected-error {{constexpr variable 'nc4' must be initialized by a constant expression}} expected-note {{read of non-const variable 'i' is not allowed in a constant expression}}
+                ^
+
+"Test_name.c", line 35: warning: variable "nc5" was declared but never referenced
+  constexpr C nc5((C())); // expected-error {{cannot have non-literal type 'const C'}}
+              ^
+
+"Test_name.c", line 41: warning: variable "ur" was declared but never referenced
+  constexpr pixel ur = { 1294, 1024 }; // ok
+                  ^
+
+"Test_name.c", line 42: warning: variable "origin" was declared but never referenced
+  constexpr pixel origin;              // expected-error {{default initialization of an object of const type 'const pixel' without a user-provided default constructor}}
+                  ^
+
+"Test_name.c", line 65: warning: variable "const_dtor" was declared but never referenced
+  constexpr A const_dtor(true);
+              ^
+
+"Test_name.c", line 74: warning: variable "non_const_dtor" was declared but never referenced
+  constexpr A non_const_dtor(false); // expected-error {{must have constant destruction}} expected-note {{in call}}
+              ^
+
+"Test_name.c", line 75: warning: variable "arr_dtor" was declared but never referenced
+  constexpr A arr_dtor[5] = {true, true, true, false, true}; // expected-error {{must have constant destruction}} expected-note {{in call to 'arr_dtor[3].~A()'}}
+              ^
+
+18 errors detected in the compilation of "Test_name.c".

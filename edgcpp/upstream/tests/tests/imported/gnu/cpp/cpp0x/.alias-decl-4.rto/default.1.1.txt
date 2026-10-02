@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 12: error: class "A<short>" has no member "U"
+  template <class T> using B = typename A<T>::U; // { dg-error "type" }
+                                              ^
+          detected during:
+            instantiation of type "B<short>" at line 14
+            instantiation of class "A<T> [with T=short]" at line 12
+            instantiation of type "B<short>" at line 16
+
+1 error detected in the compilation of "Test_name.c".

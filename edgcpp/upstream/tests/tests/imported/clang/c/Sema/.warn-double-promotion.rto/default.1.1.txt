@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 54: warning: parameter "ld" was set but never used
+  void AssignmentWithExtraParens(float f, double d, long double ld) {
+                                                                ^
+

@@ -1,0 +1,45 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./analyzer/malloc-1.c", line 274: warning: missing return statement at end of non-void function "test_24"
+  }
+  ^
+
+"./analyzer/malloc-1.c", line 282: warning: missing return statement at end of non-void function "test_25"
+  }
+  ^
+
+"./analyzer/malloc-1.c", line 291: warning: missing return statement at end of non-void function "test_26"
+  }
+  ^
+
+"./analyzer/malloc-1.c", line 356: warning: variable "tmp" was set but never used
+    struct link tmp;
+                ^
+
+"./analyzer/malloc-1.c", line 363: warning: variable "tmp" was set but never used
+    struct link tmp;
+                ^
+
+"./analyzer/malloc-1.c", line 456: warning: parameter "i" was set but never used
+  test_40 (int i)
+               ^
+
+"./analyzer/malloc-1.c", line 484: warning: arithmetic on pointer to void or function type
+    free (p + 64);
+            ^
+
+"./analyzer/malloc-1.c", line 494: warning: arithmetic on pointer to void or function type
+    free (p - 64);
+            ^
+
+"./analyzer/malloc-1.c", line 504: warning: arithmetic on pointer to void or function type
+    void *q = p + 64;
+                ^
+
+"./analyzer/malloc-1.c", line 505: warning: arithmetic on pointer to void or function type
+    free (q - 64);
+            ^
+
+"./analyzer/malloc-1.c", line 512: warning: arithmetic on pointer to void or function type
+    void *q = p + 64;
+                ^
+

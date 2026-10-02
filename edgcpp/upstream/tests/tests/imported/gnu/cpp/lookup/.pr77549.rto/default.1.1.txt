@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 15: error: identifier "x" is undefined
+    x;			// { dg-error "'x' was not declared in this scope" }
+    ^
+
+"Test_name.c", line 27: error: identifier "baz" is undefined
+    baz++;		// { dg-error "'baz' was not declared in this scope; did you mean 'bar'\\?" }
+    ^
+
+"Test_name.c", line 49: error: identifier "baz" is undefined
+    baz ();		// { dg-error "'baz' was not declared in this scope; did you mean 'bar'\\?" }
+    ^
+
+"Test_name.c", line 75: error: identifier "fooo" is undefined
+    fooo ();		// { dg-error "'fooo' was not declared in this scope; did you mean 'foo'\\?" }
+    ^
+
+"Test_name.c", line 76: error: identifier "baz" is undefined
+    baz ();		// { dg-error "'baz' was not declared in this scope; did you mean 'bar'\\?" }
+    ^
+
+5 errors detected in the compilation of "Test_name.c".

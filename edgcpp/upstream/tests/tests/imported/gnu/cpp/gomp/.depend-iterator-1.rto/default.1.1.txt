@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 15: warning: unrecognized #pragma
+    #pragma omp task depend (iterator (T j=6:N:-2) , out : \
+            ^
+
+"Test_name.c", line 44: warning: unrecognized #pragma
+    #pragma omp task depend (iterator (j=N:2:m) , out : \
+            ^
+
+"Test_name.c", line 71: warning: unrecognized #pragma
+    #pragma omp parallel
+            ^
+
+"Test_name.c", line 72: warning: unrecognized #pragma
+    #pragma omp master
+            ^
+
+"Test_name.c", line 74: warning: unrecognized #pragma
+      #pragma omp task depend(iterator(T k = N : 2) , inout : \
+              ^
+
+"Test_name.c", line 42: warning: variable "m" was declared but never referenced
+    int m = j;
+        ^
+
+"Test_name.c", line 43: warning: variable "n" was declared but never referenced
+    int n = j + 2;
+        ^
+

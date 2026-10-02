@@ -1,0 +1,114 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 8: error: identifier "startwith" is undefined
+  void __RTL (startwith ("vregs")) foo ()
+              ^
+
+"Test_name.c", line 8: error: expected a ")"
+  void __RTL (startwith ("vregs")) foo ()
+                         ^
+
+"Test_name.c", line 8: error: expected a "{"
+  void __RTL (startwith ("vregs")) foo ()
+                                   ^
+
+"Test_name.c", line 10: error: identifier "function" is undefined
+    (function "foo"
+     ^
+
+"Test_name.c", line 10: error: expected a ")"
+    (function "foo"
+              ^
+
+"Test_name.c", line 14: warning: parsing restarts here after previous syntax error
+  	(cnote 3 [bb 2] NOTE_INSN_BASIC_BLOCK)
+  	                                     ^
+
+"Test_name.c", line 15: error: identifier "insn" is undefined
+  	(insn 4 (set (reg:V16QI <0>)
+  	 ^
+
+"Test_name.c", line 15: error: expected a ")"
+  	(insn 4 (set (reg:V16QI <0>)
+  	      ^
+
+"Test_name.c", line 18: warning: parsing restarts here after previous syntax error
+  					  (const_int 1) (const_int 1)
+  					              ^
+
+"Test_name.c", line 18: error: identifier "const_int" is undefined
+  					  (const_int 1) (const_int 1)
+  					                 ^
+
+"Test_name.c", line 18: error: expected a ")"
+  					  (const_int 1) (const_int 1)
+  					                           ^
+
+"Test_name.c", line 19: error: expected a ")"
+  					  (const_int 0) (const_int 0)
+  					             ^
+
+"Test_name.c", line 19: error: expected a ")"
+  					  (const_int 0) (const_int 0)
+  					                           ^
+
+"Test_name.c", line 20: error: expected a ")"
+  					  (const_int 1) (const_int 1)
+  					             ^
+
+"Test_name.c", line 20: error: expected a ")"
+  					  (const_int 1) (const_int 1)
+  					                           ^
+
+"Test_name.c", line 21: error: expected a ")"
+  					  (const_int 0) (const_int 0)
+  					             ^
+
+"Test_name.c", line 21: error: expected a ")"
+  					  (const_int 0) (const_int 0)
+  					                           ^
+
+"Test_name.c", line 22: error: expected a ")"
+  					  (const_int 1) (const_int 1)
+  					             ^
+
+"Test_name.c", line 22: error: expected a ")"
+  					  (const_int 1) (const_int 1)
+  					                           ^
+
+"Test_name.c", line 23: error: expected a ")"
+  					  (const_int 0) (const_int 0)])))
+  					             ^
+
+"Test_name.c", line 23: error: expected a ")"
+  					  (const_int 0) (const_int 0)])))
+  					                           ^
+
+"Test_name.c", line 23: error: expected a ";"
+  					  (const_int 0) (const_int 0)])))
+  					                             ^
+
+"Test_name.c", line 42: warning: parsing restarts here after previous syntax error
+        ) ;; block 2
+          ^
+
+"Test_name.c", line 42: error: identifier "block" is undefined
+        ) ;; block 2
+             ^
+
+"Test_name.c", line 42: error: expected a ";"
+        ) ;; block 2
+                   ^
+
+"Test_name.c", line 43: error: identifier "chain" is undefined
+      ) ;; insn-chain
+                ^
+
+"Test_name.c", line 44: error: expected a ";"
+    ) ;; function
+    ^
+
+"Test_name.c", line 45: error: expected a ";"
+  }
+  ^
+
+25 errors detected in the compilation of "Test_name.c".

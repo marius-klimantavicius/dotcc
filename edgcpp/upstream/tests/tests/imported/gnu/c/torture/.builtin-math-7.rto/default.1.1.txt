@@ -1,0 +1,550 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 67: error: complex integral types are not supported
+    TESTIT (double, 3.+4.i, *, 2, 6+8i);
+    ^
+
+"Test_name.c", line 67: error: complex integral types are not supported
+    TESTIT (double, 3.+4.i, *, 2, 6+8i);
+    ^
+
+"Test_name.c", line 67: error: complex integral types are not supported
+    TESTIT (double, 3.+4.i, *, 2, 6+8i);
+    ^
+
+"Test_name.c", line 68: error: complex integral types are not supported
+    TESTIT (double, 3.+4.i, /, 2, 1.5+2i);
+    ^
+
+"Test_name.c", line 68: error: complex integral types are not supported
+    TESTIT (double, 3.+4.i, /, 2, 1.5+2i);
+    ^
+
+"Test_name.c", line 68: error: complex integral types are not supported
+    TESTIT (double, 3.+4.i, /, 2, 1.5+2i);
+    ^
+
+"Test_name.c", line 69: error: _Complex can only be used with floating-point types
+    TESTIT (int, 3+4i, *, 2, 6+8i);
+    ^
+
+"Test_name.c", line 69: error: _Complex can only be used with floating-point types
+    TESTIT (int, 3+4i, *, 2, 6+8i);
+    ^
+
+"Test_name.c", line 69: error: complex integral types are not supported
+    TESTIT (int, 3+4i, *, 2, 6+8i);
+    ^
+
+"Test_name.c", line 69: error: _Complex can only be used with floating-point types
+    TESTIT (int, 3+4i, *, 2, 6+8i);
+    ^
+
+"Test_name.c", line 69: error: _Complex can only be used with floating-point types
+    TESTIT (int, 3+4i, *, 2, 6+8i);
+    ^
+
+"Test_name.c", line 69: error: complex integral types are not supported
+    TESTIT (int, 3+4i, *, 2, 6+8i);
+    ^
+
+"Test_name.c", line 69: error: _Complex can only be used with floating-point types
+    TESTIT (int, 3+4i, *, 2, 6+8i);
+    ^
+
+"Test_name.c", line 69: error: complex integral types are not supported
+    TESTIT (int, 3+4i, *, 2, 6+8i);
+    ^
+
+"Test_name.c", line 69: error: _Complex can only be used with floating-point types
+    TESTIT (int, 3+4i, *, 2, 6+8i);
+    ^
+
+"Test_name.c", line 69: error: _Complex can only be used with floating-point types
+    TESTIT (int, 3+4i, *, 2, 6+8i);
+    ^
+
+"Test_name.c", line 69: error: complex integral types are not supported
+    TESTIT (int, 3+4i, *, 2, 6+8i);
+    ^
+
+"Test_name.c", line 69: error: _Complex can only be used with floating-point types
+    TESTIT (int, 3+4i, *, 2, 6+8i);
+    ^
+
+"Test_name.c", line 69: error: _Complex can only be used with floating-point types
+    TESTIT (int, 3+4i, *, 2, 6+8i);
+    ^
+
+"Test_name.c", line 69: error: complex integral types are not supported
+    TESTIT (int, 3+4i, *, 2, 6+8i);
+    ^
+
+"Test_name.c", line 69: error: _Complex can only be used with floating-point types
+    TESTIT (int, 3+4i, *, 2, 6+8i);
+    ^
+
+"Test_name.c", line 69: error: _Complex can only be used with floating-point types
+    TESTIT (int, 3+4i, *, 2, 6+8i);
+    ^
+
+"Test_name.c", line 69: error: complex integral types are not supported
+    TESTIT (int, 3+4i, *, 2, 6+8i);
+    ^
+
+"Test_name.c", line 70: error: _Complex can only be used with floating-point types
+    TESTIT (int, 3+4i, /, 2, 1+2i);
+    ^
+
+"Test_name.c", line 70: error: _Complex can only be used with floating-point types
+    TESTIT (int, 3+4i, /, 2, 1+2i);
+    ^
+
+"Test_name.c", line 70: error: complex integral types are not supported
+    TESTIT (int, 3+4i, /, 2, 1+2i);
+    ^
+
+"Test_name.c", line 70: error: _Complex can only be used with floating-point types
+    TESTIT (int, 3+4i, /, 2, 1+2i);
+    ^
+
+"Test_name.c", line 70: error: _Complex can only be used with floating-point types
+    TESTIT (int, 3+4i, /, 2, 1+2i);
+    ^
+
+"Test_name.c", line 70: error: complex integral types are not supported
+    TESTIT (int, 3+4i, /, 2, 1+2i);
+    ^
+
+"Test_name.c", line 70: error: _Complex can only be used with floating-point types
+    TESTIT (int, 3+4i, /, 2, 1+2i);
+    ^
+
+"Test_name.c", line 70: error: complex integral types are not supported
+    TESTIT (int, 3+4i, /, 2, 1+2i);
+    ^
+
+"Test_name.c", line 70: error: _Complex can only be used with floating-point types
+    TESTIT (int, 3+4i, /, 2, 1+2i);
+    ^
+
+"Test_name.c", line 70: error: _Complex can only be used with floating-point types
+    TESTIT (int, 3+4i, /, 2, 1+2i);
+    ^
+
+"Test_name.c", line 70: error: complex integral types are not supported
+    TESTIT (int, 3+4i, /, 2, 1+2i);
+    ^
+
+"Test_name.c", line 70: error: _Complex can only be used with floating-point types
+    TESTIT (int, 3+4i, /, 2, 1+2i);
+    ^
+
+"Test_name.c", line 70: error: _Complex can only be used with floating-point types
+    TESTIT (int, 3+4i, /, 2, 1+2i);
+    ^
+
+"Test_name.c", line 70: error: complex integral types are not supported
+    TESTIT (int, 3+4i, /, 2, 1+2i);
+    ^
+
+"Test_name.c", line 70: error: _Complex can only be used with floating-point types
+    TESTIT (int, 3+4i, /, 2, 1+2i);
+    ^
+
+"Test_name.c", line 70: error: _Complex can only be used with floating-point types
+    TESTIT (int, 3+4i, /, 2, 1+2i);
+    ^
+
+"Test_name.c", line 70: error: complex integral types are not supported
+    TESTIT (int, 3+4i, /, 2, 1+2i);
+    ^
+
+"Test_name.c", line 72: error: complex integral types are not supported
+    TESTIT (double, 3.+4.i, *, 2+5i, -14+23i);
+    ^
+
+"Test_name.c", line 72: error: complex integral types are not supported
+    TESTIT (double, 3.+4.i, *, 2+5i, -14+23i);
+    ^
+
+"Test_name.c", line 72: error: complex integral types are not supported
+    TESTIT (double, 3.+4.i, *, 2+5i, -14+23i);
+    ^
+
+"Test_name.c", line 72: error: complex integral types are not supported
+    TESTIT (double, 3.+4.i, *, 2+5i, -14+23i);
+    ^
+
+"Test_name.c", line 72: error: complex integral types are not supported
+    TESTIT (double, 3.+4.i, *, 2+5i, -14+23i);
+    ^
+
+"Test_name.c", line 72: error: complex integral types are not supported
+    TESTIT (double, 3.+4.i, *, 2+5i, -14+23i);
+    ^
+
+"Test_name.c", line 73: error: complex integral types are not supported
+    TESTIT (double, 3.+4.i, /, 5i, .8-.6i);
+    ^
+
+"Test_name.c", line 73: error: complex integral types are not supported
+    TESTIT (double, 3.+4.i, /, 5i, .8-.6i);
+    ^
+
+"Test_name.c", line 73: error: complex integral types are not supported
+    TESTIT (double, 3.+4.i, /, 5i, .8-.6i);
+    ^
+
+"Test_name.c", line 74: error: _Complex can only be used with floating-point types
+    TESTIT (int, 3+4i, *, 2+5i, -14+23i);
+    ^
+
+"Test_name.c", line 74: error: _Complex can only be used with floating-point types
+    TESTIT (int, 3+4i, *, 2+5i, -14+23i);
+    ^
+
+"Test_name.c", line 74: error: complex integral types are not supported
+    TESTIT (int, 3+4i, *, 2+5i, -14+23i);
+    ^
+
+"Test_name.c", line 74: error: _Complex can only be used with floating-point types
+    TESTIT (int, 3+4i, *, 2+5i, -14+23i);
+    ^
+
+"Test_name.c", line 74: error: complex integral types are not supported
+    TESTIT (int, 3+4i, *, 2+5i, -14+23i);
+    ^
+
+"Test_name.c", line 74: error: _Complex can only be used with floating-point types
+    TESTIT (int, 3+4i, *, 2+5i, -14+23i);
+    ^
+
+"Test_name.c", line 74: error: complex integral types are not supported
+    TESTIT (int, 3+4i, *, 2+5i, -14+23i);
+    ^
+
+"Test_name.c", line 74: error: _Complex can only be used with floating-point types
+    TESTIT (int, 3+4i, *, 2+5i, -14+23i);
+    ^
+
+"Test_name.c", line 74: error: complex integral types are not supported
+    TESTIT (int, 3+4i, *, 2+5i, -14+23i);
+    ^
+
+"Test_name.c", line 74: error: _Complex can only be used with floating-point types
+    TESTIT (int, 3+4i, *, 2+5i, -14+23i);
+    ^
+
+"Test_name.c", line 74: error: complex integral types are not supported
+    TESTIT (int, 3+4i, *, 2+5i, -14+23i);
+    ^
+
+"Test_name.c", line 74: error: _Complex can only be used with floating-point types
+    TESTIT (int, 3+4i, *, 2+5i, -14+23i);
+    ^
+
+"Test_name.c", line 74: error: complex integral types are not supported
+    TESTIT (int, 3+4i, *, 2+5i, -14+23i);
+    ^
+
+"Test_name.c", line 74: error: _Complex can only be used with floating-point types
+    TESTIT (int, 3+4i, *, 2+5i, -14+23i);
+    ^
+
+"Test_name.c", line 74: error: _Complex can only be used with floating-point types
+    TESTIT (int, 3+4i, *, 2+5i, -14+23i);
+    ^
+
+"Test_name.c", line 74: error: complex integral types are not supported
+    TESTIT (int, 3+4i, *, 2+5i, -14+23i);
+    ^
+
+"Test_name.c", line 74: error: _Complex can only be used with floating-point types
+    TESTIT (int, 3+4i, *, 2+5i, -14+23i);
+    ^
+
+"Test_name.c", line 74: error: complex integral types are not supported
+    TESTIT (int, 3+4i, *, 2+5i, -14+23i);
+    ^
+
+"Test_name.c", line 74: error: _Complex can only be used with floating-point types
+    TESTIT (int, 3+4i, *, 2+5i, -14+23i);
+    ^
+
+"Test_name.c", line 74: error: complex integral types are not supported
+    TESTIT (int, 3+4i, *, 2+5i, -14+23i);
+    ^
+
+"Test_name.c", line 75: error: _Complex can only be used with floating-point types
+    TESTIT (int, 30+40i, /, 5i, 8-6i);
+    ^
+
+"Test_name.c", line 75: error: _Complex can only be used with floating-point types
+    TESTIT (int, 30+40i, /, 5i, 8-6i);
+    ^
+
+"Test_name.c", line 75: error: complex integral types are not supported
+    TESTIT (int, 30+40i, /, 5i, 8-6i);
+    ^
+
+"Test_name.c", line 75: error: _Complex can only be used with floating-point types
+    TESTIT (int, 30+40i, /, 5i, 8-6i);
+    ^
+
+"Test_name.c", line 75: error: complex integral types are not supported
+    TESTIT (int, 30+40i, /, 5i, 8-6i);
+    ^
+
+"Test_name.c", line 75: error: _Complex can only be used with floating-point types
+    TESTIT (int, 30+40i, /, 5i, 8-6i);
+    ^
+
+"Test_name.c", line 75: error: complex integral types are not supported
+    TESTIT (int, 30+40i, /, 5i, 8-6i);
+    ^
+
+"Test_name.c", line 75: error: _Complex can only be used with floating-point types
+    TESTIT (int, 30+40i, /, 5i, 8-6i);
+    ^
+
+"Test_name.c", line 75: error: complex integral types are not supported
+    TESTIT (int, 30+40i, /, 5i, 8-6i);
+    ^
+
+"Test_name.c", line 75: error: _Complex can only be used with floating-point types
+    TESTIT (int, 30+40i, /, 5i, 8-6i);
+    ^
+
+"Test_name.c", line 75: error: complex integral types are not supported
+    TESTIT (int, 30+40i, /, 5i, 8-6i);
+    ^
+
+"Test_name.c", line 75: error: _Complex can only be used with floating-point types
+    TESTIT (int, 30+40i, /, 5i, 8-6i);
+    ^
+
+"Test_name.c", line 75: error: complex integral types are not supported
+    TESTIT (int, 30+40i, /, 5i, 8-6i);
+    ^
+
+"Test_name.c", line 75: error: _Complex can only be used with floating-point types
+    TESTIT (int, 30+40i, /, 5i, 8-6i);
+    ^
+
+"Test_name.c", line 75: error: _Complex can only be used with floating-point types
+    TESTIT (int, 30+40i, /, 5i, 8-6i);
+    ^
+
+"Test_name.c", line 75: error: complex integral types are not supported
+    TESTIT (int, 30+40i, /, 5i, 8-6i);
+    ^
+
+"Test_name.c", line 75: error: _Complex can only be used with floating-point types
+    TESTIT (int, 30+40i, /, 5i, 8-6i);
+    ^
+
+"Test_name.c", line 75: error: complex integral types are not supported
+    TESTIT (int, 30+40i, /, 5i, 8-6i);
+    ^
+
+"Test_name.c", line 75: error: _Complex can only be used with floating-point types
+    TESTIT (int, 30+40i, /, 5i, 8-6i);
+    ^
+
+"Test_name.c", line 75: error: complex integral types are not supported
+    TESTIT (int, 30+40i, /, 5i, 8-6i);
+    ^
+
+"Test_name.c", line 76: error: _Complex can only be used with floating-point types
+    TESTIT (int, 14+6i, /, 7+3i, 2);
+    ^
+
+"Test_name.c", line 76: error: _Complex can only be used with floating-point types
+    TESTIT (int, 14+6i, /, 7+3i, 2);
+    ^
+
+"Test_name.c", line 76: error: complex integral types are not supported
+    TESTIT (int, 14+6i, /, 7+3i, 2);
+    ^
+
+"Test_name.c", line 76: error: _Complex can only be used with floating-point types
+    TESTIT (int, 14+6i, /, 7+3i, 2);
+    ^
+
+"Test_name.c", line 76: error: complex integral types are not supported
+    TESTIT (int, 14+6i, /, 7+3i, 2);
+    ^
+
+"Test_name.c", line 76: error: _Complex can only be used with floating-point types
+    TESTIT (int, 14+6i, /, 7+3i, 2);
+    ^
+
+"Test_name.c", line 76: error: _Complex can only be used with floating-point types
+    TESTIT (int, 14+6i, /, 7+3i, 2);
+    ^
+
+"Test_name.c", line 76: error: complex integral types are not supported
+    TESTIT (int, 14+6i, /, 7+3i, 2);
+    ^
+
+"Test_name.c", line 76: error: _Complex can only be used with floating-point types
+    TESTIT (int, 14+6i, /, 7+3i, 2);
+    ^
+
+"Test_name.c", line 76: error: complex integral types are not supported
+    TESTIT (int, 14+6i, /, 7+3i, 2);
+    ^
+
+"Test_name.c", line 76: error: _Complex can only be used with floating-point types
+    TESTIT (int, 14+6i, /, 7+3i, 2);
+    ^
+
+"Test_name.c", line 76: error: _Complex can only be used with floating-point types
+    TESTIT (int, 14+6i, /, 7+3i, 2);
+    ^
+
+"Test_name.c", line 76: error: _Complex can only be used with floating-point types
+    TESTIT (int, 14+6i, /, 7+3i, 2);
+    ^
+
+"Test_name.c", line 76: error: complex integral types are not supported
+    TESTIT (int, 14+6i, /, 7+3i, 2);
+    ^
+
+"Test_name.c", line 76: error: _Complex can only be used with floating-point types
+    TESTIT (int, 14+6i, /, 7+3i, 2);
+    ^
+
+"Test_name.c", line 76: error: complex integral types are not supported
+    TESTIT (int, 14+6i, /, 7+3i, 2);
+    ^
+
+"Test_name.c", line 76: error: _Complex can only be used with floating-point types
+    TESTIT (int, 14+6i, /, 7+3i, 2);
+    ^
+
+"Test_name.c", line 77: error: _Complex can only be used with floating-point types
+    TESTIT (int, 8+24i, /, 4+12i, 2);
+    ^
+
+"Test_name.c", line 77: error: _Complex can only be used with floating-point types
+    TESTIT (int, 8+24i, /, 4+12i, 2);
+    ^
+
+"Test_name.c", line 77: error: complex integral types are not supported
+    TESTIT (int, 8+24i, /, 4+12i, 2);
+    ^
+
+"Test_name.c", line 77: error: _Complex can only be used with floating-point types
+    TESTIT (int, 8+24i, /, 4+12i, 2);
+    ^
+
+"Test_name.c", line 77: error: complex integral types are not supported
+    TESTIT (int, 8+24i, /, 4+12i, 2);
+    ^
+
+"Test_name.c", line 77: error: _Complex can only be used with floating-point types
+    TESTIT (int, 8+24i, /, 4+12i, 2);
+    ^
+
+"Test_name.c", line 77: error: _Complex can only be used with floating-point types
+    TESTIT (int, 8+24i, /, 4+12i, 2);
+    ^
+
+"Test_name.c", line 77: error: complex integral types are not supported
+    TESTIT (int, 8+24i, /, 4+12i, 2);
+    ^
+
+"Test_name.c", line 77: error: _Complex can only be used with floating-point types
+    TESTIT (int, 8+24i, /, 4+12i, 2);
+    ^
+
+"Test_name.c", line 77: error: complex integral types are not supported
+    TESTIT (int, 8+24i, /, 4+12i, 2);
+    ^
+
+"Test_name.c", line 77: error: _Complex can only be used with floating-point types
+    TESTIT (int, 8+24i, /, 4+12i, 2);
+    ^
+
+"Test_name.c", line 77: error: _Complex can only be used with floating-point types
+    TESTIT (int, 8+24i, /, 4+12i, 2);
+    ^
+
+"Test_name.c", line 77: error: _Complex can only be used with floating-point types
+    TESTIT (int, 8+24i, /, 4+12i, 2);
+    ^
+
+"Test_name.c", line 77: error: complex integral types are not supported
+    TESTIT (int, 8+24i, /, 4+12i, 2);
+    ^
+
+"Test_name.c", line 77: error: _Complex can only be used with floating-point types
+    TESTIT (int, 8+24i, /, 4+12i, 2);
+    ^
+
+"Test_name.c", line 77: error: complex integral types are not supported
+    TESTIT (int, 8+24i, /, 4+12i, 2);
+    ^
+
+"Test_name.c", line 77: error: _Complex can only be used with floating-point types
+    TESTIT (int, 8+24i, /, 4+12i, 2);
+    ^
+
+"Test_name.c", line 87: error: complex integral types are not supported
+    COMPILETIME_TESTIT (double,
+    ^
+
+"Test_name.c", line 87: error: complex integral types are not supported
+    COMPILETIME_TESTIT (double,
+    ^
+
+"Test_name.c", line 87: error: complex integral types are not supported
+    COMPILETIME_TESTIT (double,
+    ^
+
+"Test_name.c", line 97: error: complex integral types are not supported
+    TEST_ONE_PART_INF ((VAL1) * (VAL1));
+    ^
+
+"Test_name.c", line 97: error: complex integral types are not supported
+    TEST_ONE_PART_INF ((VAL1) * (VAL1));
+    ^
+
+"Test_name.c", line 97: error: complex integral types are not supported
+    TEST_ONE_PART_INF ((VAL1) * (VAL1));
+    ^
+
+"Test_name.c", line 97: error: complex integral types are not supported
+    TEST_ONE_PART_INF ((VAL1) * (VAL1));
+    ^
+
+"Test_name.c", line 97: error: complex integral types are not supported
+    TEST_ONE_PART_INF ((VAL1) * (VAL1));
+    ^
+
+"Test_name.c", line 97: error: complex integral types are not supported
+    TEST_ONE_PART_INF ((VAL1) * (VAL1));
+    ^
+
+"Test_name.c", line 99: error: complex integral types are not supported
+    TEST_ONE_PART_INF ((VAL1) / (_Complex double)1);
+    ^
+
+"Test_name.c", line 99: error: complex integral types are not supported
+    TEST_ONE_PART_INF ((VAL1) / (_Complex double)1);
+    ^
+
+"Test_name.c", line 99: error: complex integral types are not supported
+    TEST_ONE_PART_INF ((VAL1) / (_Complex double)1);
+    ^
+
+"Test_name.c", line 101: error: complex integral types are not supported
+    RUNTIME_TESTIT (double, 1, /, VAL1, 0);
+    ^
+
+"Test_name.c", line 102: error: complex integral types are not supported
+    STATICINIT_TESTIT (double, 1, /, VAL1, 0);
+    ^
+
+137 errors detected in the compilation of "Test_name.c".

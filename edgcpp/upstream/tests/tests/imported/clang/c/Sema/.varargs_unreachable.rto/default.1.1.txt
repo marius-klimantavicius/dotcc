@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 15: warning: "short" would have been promoted to "int" when passed through the ellipsis parameter; use the latter type instead
+    return VA_ARG_RDAR12322000 (Marker, short); // no-warning
+           ^
+
+"Test_name.c", line 16: warning: last line of file ends without a newline
+  }
+   ^
+

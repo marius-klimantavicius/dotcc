@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 9: error: incomplete type "enum E" is not allowed
+  int i = a[e]; /* { dg-error "has an incomplete type" } */
+            ^
+
+"Test_name.c", line 7: error: variable "e" was declared with a never-completed type
+  enum E e;  /* { dg-error "storage size of 'e' isn't known" } */
+         ^
+
+2 errors detected in the compilation of "Test_name.c".

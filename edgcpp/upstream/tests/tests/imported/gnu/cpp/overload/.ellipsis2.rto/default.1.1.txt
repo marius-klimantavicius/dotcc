@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 16: warning: a class type that is not trivially copyable passed through ellipsis
+  B b(0, A());  // { dg-message "pass" }
+         ^
+

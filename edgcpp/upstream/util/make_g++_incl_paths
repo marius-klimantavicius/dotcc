@@ -1,0 +1,61 @@
+#!/bin/bash
+
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+# This script creates a file named g++_incl_paths, which is
+# used by the edg_eccp_config file to locate the g++ header files.
+# It must be run from $EDG_BASE/lib
+
+out=g++_incl_paths
+
+# Create temporary directories and setup cleanup for temporary files.
+tmp=$(mktemp 'src.XXXXXX.cpp')
+tmp2=$(mktemp)
+function cleanup() {
+  rm "$tmp" "$tmp2"
+}
+trap cleanup EXIT
+
+# Create a dummy file (as $tmp).  Then compile the dummy file with header
+# search path diagnostics enabled, storing the diagnostic output in $tmp2.
+echo '#include <iostream>' > "$tmp"
+g++ -v "$tmp" > "$tmp2" 2>&1
+
+# Pipe the raw diagnostic output ($tmp2) into sed.  The sed expression then
+# files the results only to the list of include paths.  Finally, the output of
+# sed is piped back to $tmp.
+sed -e '1,/#include <...>/ d' -e '/End of search/,$ d' < "$tmp2" > "$tmp"
+
+# On MacOS, there's a line for the MacOS frameworks directory, that looks akin
+# to "/a/b/etc.../ (framework directory)".  EDG does not support this search
+# path, and it breaks the operation that's about to be performed.
+#
+# To remove the line, feed the previous sed output ($tmp) back into sed where
+# the sed expression drops any line containing "(framework
+# directory)". Finally, pipe the sed output back to $tmp2.
+sed '/\(framework directory\)/d' "$tmp" > "$tmp2"
+
+# Collapse the contents of $tmp2 (i.e., the list of include paths) into a a
+# bash array (this will automatically turn each line of the file into an array
+# element with any surrounding whitespace on the line stripped away).
+paths=($(cat "$tmp2"))
+
+# Create or replace the output file.
+echo -n '' > "$out"
+
+# Add each path to the output file separated by colons (acting as path
+# separators).
+first=1
+for path in "${paths[@]}"; do
+  if (( $first != 1 )) ; then
+    echo -n ':' >> "$out"
+  fi
+  echo -n "$path" >> "$out"
+  first=0
+done
+
+# Terminate the file with a newline.
+echo '' >> "$out"

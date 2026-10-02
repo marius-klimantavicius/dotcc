@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 16: error: identifier "__int128" is undefined
+    __int128 i8;
+    ^
+
+"Test_name.c", line 17: error: expected a ";"
+    unsigned __int128 u8;
+                      ^
+
+"Test_name.c", line 18: error: variable "__int128" is not a type name
+    assert_same (decltype (ll+i8), __int128);
+    ^
+
+"Test_name.c", line 18: error: incomplete type "same<<error-type>, <error-type>>" is not allowed
+    assert_same (decltype (ll+i8), __int128);
+    ^
+
+"Test_name.c", line 19: error: variable "__int128" is not a type name
+    assert_same (decltype (ull+i8), __int128);
+    ^
+
+"Test_name.c", line 19: error: incomplete type "same<<error-type>, <error-type>>" is not allowed
+    assert_same (decltype (ull+i8), __int128);
+    ^
+
+"Test_name.c", line 20: error: identifier "u8" is undefined
+    assert_same (decltype (ll+u8), unsigned __int128);
+    ^
+
+"Test_name.c", line 20: error: expected a ">"
+    assert_same (decltype (ll+u8), unsigned __int128);
+    ^
+
+"Test_name.c", line 21: error: expected a ">"
+    assert_same (decltype (ull+u8), unsigned __int128);
+    ^
+
+"Test_name.c", line 17: warning: variable "__int128" was declared but never referenced
+    unsigned __int128 u8;
+             ^
+
+9 errors detected in the compilation of "Test_name.c".

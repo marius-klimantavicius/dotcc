@@ -1,0 +1,193 @@
+//type: rp
+//options:  --c++17 --c++11
+# 0 "./torture/stackalign/eh-vararg-1.C"
+# 0 "<built-in>"
+# 0 "<command-line>"
+# 1 "/usr/include/stdc-predef.h" 1 3 4
+# 0 "<command-line>" 2
+# 1 "./torture/stackalign/eh-vararg-1.C"
+
+
+
+
+# 1 "/mds/gnu/build/gcc-15-20250112/lib/gcc/x86_64-pc-linux-gnu/15.0.0/include/stdarg.h" 1 3 4
+# 40 "/mds/gnu/build/gcc-15-20250112/lib/gcc/x86_64-pc-linux-gnu/15.0.0/include/stdarg.h" 3 4
+
+# 40 "/mds/gnu/build/gcc-15-20250112/lib/gcc/x86_64-pc-linux-gnu/15.0.0/include/stdarg.h" 3 4
+typedef __builtin_va_list __gnuc_va_list;
+# 103 "/mds/gnu/build/gcc-15-20250112/lib/gcc/x86_64-pc-linux-gnu/15.0.0/include/stdarg.h" 3 4
+typedef __gnuc_va_list va_list;
+# 6 "./torture/stackalign/eh-vararg-1.C" 2
+# 1 "./torture/stackalign/check.h" 1
+# 1 "/mds/gnu/build/gcc-15-20250112/lib/gcc/x86_64-pc-linux-gnu/15.0.0/include/stddef.h" 1 3 4
+# 145 "/mds/gnu/build/gcc-15-20250112/lib/gcc/x86_64-pc-linux-gnu/15.0.0/include/stddef.h" 3 4
+typedef long int ptrdiff_t;
+# 214 "/mds/gnu/build/gcc-15-20250112/lib/gcc/x86_64-pc-linux-gnu/15.0.0/include/stddef.h" 3 4
+typedef long unsigned int size_t;
+# 425 "/mds/gnu/build/gcc-15-20250112/lib/gcc/x86_64-pc-linux-gnu/15.0.0/include/stddef.h" 3 4
+typedef struct {
+  long long __max_align_ll __attribute__((__aligned__(__alignof__(long long))));
+  long double __max_align_ld __attribute__((__aligned__(__alignof__(long double))));
+# 436 "/mds/gnu/build/gcc-15-20250112/lib/gcc/x86_64-pc-linux-gnu/15.0.0/include/stddef.h" 3 4
+} max_align_t;
+
+
+
+
+
+
+  typedef decltype(nullptr) nullptr_t;
+# 2 "./torture/stackalign/check.h" 2
+
+
+
+
+
+
+# 7 "./torture/stackalign/check.h"
+extern "C" void abort (void);
+
+
+
+
+int
+check_int (int *i, int align)
+{
+  *i = 20;
+  if ((((ptrdiff_t) i) & (align - 1)) != 0)
+    {
+
+
+
+      abort ();
+    }
+  return *i;
+}
+
+void
+check (void *p, int align)
+{
+  if ((((ptrdiff_t) p) & (align - 1)) != 0)
+    {
+
+
+
+      abort ();
+    }
+}
+# 7 "./torture/stackalign/eh-vararg-1.C" 2
+
+
+
+
+
+typedef int aligned __attribute__((aligned(64)));
+
+int global;
+
+void
+bar (char *p, int size)
+{
+  __builtin_strncpy (p, "good", size);
+}
+
+class Base {};
+
+struct A : virtual public Base
+{
+  A() {}
+};
+
+struct B {};
+
+void
+foo (const char *fmt, ...)
+
+throw (B,A)
+
+{
+  va_list arg;
+  char *p;
+  aligned i;
+  int size;
+  double x;
+
+  
+# 43 "./torture/stackalign/eh-vararg-1.C" 3 4
+ __builtin_va_start(
+# 43 "./torture/stackalign/eh-vararg-1.C"
+ arg
+# 43 "./torture/stackalign/eh-vararg-1.C" 3 4
+ ,
+# 43 "./torture/stackalign/eh-vararg-1.C"
+ fmt
+# 43 "./torture/stackalign/eh-vararg-1.C" 3 4
+ )
+# 43 "./torture/stackalign/eh-vararg-1.C"
+                    ;
+  size = 
+# 44 "./torture/stackalign/eh-vararg-1.C" 3 4
+        __builtin_va_arg(
+# 44 "./torture/stackalign/eh-vararg-1.C"
+        arg
+# 44 "./torture/stackalign/eh-vararg-1.C" 3 4
+        ,
+# 44 "./torture/stackalign/eh-vararg-1.C"
+        int
+# 44 "./torture/stackalign/eh-vararg-1.C" 3 4
+        )
+# 44 "./torture/stackalign/eh-vararg-1.C"
+                         ;
+  if (size != 5)
+    abort ();
+  p = (char *) __builtin_alloca (size + 1);
+
+  x = 
+# 49 "./torture/stackalign/eh-vararg-1.C" 3 4
+     __builtin_va_arg(
+# 49 "./torture/stackalign/eh-vararg-1.C"
+     arg
+# 49 "./torture/stackalign/eh-vararg-1.C" 3 4
+     ,
+# 49 "./torture/stackalign/eh-vararg-1.C"
+     double
+# 49 "./torture/stackalign/eh-vararg-1.C" 3 4
+     )
+# 49 "./torture/stackalign/eh-vararg-1.C"
+                         ;
+  if (x != 5.0)
+    abort ();
+
+  bar (p, size);
+  if (__builtin_strncmp (p, "good", size) != 0)
+    {
+
+
+
+
+      abort ();
+    }
+
+  if (check_int (&i, __alignof__(i)) != i)
+    abort ();
+
+  throw A();
+
+  
+# 68 "./torture/stackalign/eh-vararg-1.C" 3 4
+ __builtin_va_end(
+# 68 "./torture/stackalign/eh-vararg-1.C"
+ arg
+# 68 "./torture/stackalign/eh-vararg-1.C" 3 4
+ )
+# 68 "./torture/stackalign/eh-vararg-1.C"
+             ;
+}
+
+int
+main()
+{
+  try { foo ("foo", 5, 5.0); }
+  catch (A& a) { }
+  return 0;
+}

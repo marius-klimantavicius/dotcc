@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --c++17 -tused -A Test_name.c
+"Test_name.c", line 8: error: a value of type "int" cannot be assigned to an entity of type "char *"
+  p = i; // may be diagnosed even if X::f is not instantiated
+    ^
+
+"Test_name.c", line 9: error: a value of type "int" cannot be assigned to an entity of type "char *"
+  p = j; // may be diagnosed even if X::f is not instantiated
+    ^
+
+"Test_name.c", line 11: error: class template "X<T>" has no member "h"
+  X<T>::h(t):  // added with P178R6 maybe diagnosed even if X::f is not instantiated
+        ^
+
+"Test_name.c", line 11: error: expected a ";"
+  X<T>::h(t):  // added with P178R6 maybe diagnosed even if X::f is not instantiated
+            ^
+
+"Test_name.c", line 6: warning: parameter "p" was set but never used
+  void f(T t, int i, char* p) {
+                           ^
+
+"Test_name.c", line 14: error: expected an expression
+  +; // may be diagnosed even if X::g is not instantiated
+   ^
+
+5 errors detected in the compilation of "Test_name.c".

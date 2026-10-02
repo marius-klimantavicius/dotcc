@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=2 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c11 Test_name.c
+"Test_name.c", line 15: error: unrecognized token
+  extern char a﹅; // none
+               ^
+
+"Test_name.c", line 15: error: expected a ";"
+  extern char a﹅; // none
+               ^
+
+"Test_name.c", line 23: error: unrecognized token
+  extern char ̀; // disallowed initially in C11/C++, always in C99
+              ^
+
+"Test_name.c", line 23: error: expected an identifier
+  extern char ̀; // disallowed initially in C11/C++, always in C99
+              ^
+
+4 errors detected in the compilation of "Test_name.c".

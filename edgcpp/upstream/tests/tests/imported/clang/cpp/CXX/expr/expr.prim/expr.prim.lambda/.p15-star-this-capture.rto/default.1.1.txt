@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 10: error: function "NonCopyable::NonCopyable(const NonCopyable &)" (declared at line 6) cannot be referenced -- it is a deleted function
+      const auto &M = [*this] { return x; };//expected-error{{call to deleted}}
+                       ^
+
+"Test_name.c", line 14: error: expression must be a modifiable lvalue
+           return ++x; //expected-error{{read-only}}
+                    ^
+
+"Test_name.c", line 13: error: function "NonCopyable::NonCopyable(const NonCopyable &)" (declared at line 6) cannot be referenced -- it is a deleted function
+        return [*this] {  //expected-error{{call to deleted}} expected-warning{{reference to local}}
+                ^
+
+"Test_name.c", line 17: error: function "NonCopyable::NonCopyable(const NonCopyable &)" (declared at line 6) cannot be referenced -- it is a deleted function
+      const auto &M3 = [*this] () mutable -> auto&& { //expected-error{{call to deleted}}
+                        ^
+
+"Test_name.c", line 9: warning: variable "L" was declared but never referenced
+      auto L = [this] { return x; };
+           ^
+
+4 errors detected in the compilation of "Test_name.c".

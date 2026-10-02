@@ -1,0 +1,474 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c17 --strict_gnu Test_name.c
+"Test_name.c", line 47: error: expression must be a modifiable lvalue
+    v1.d = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 48: error: expression must be a modifiable lvalue
+    v1.e[0] = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 49: error: expression must be a modifiable lvalue
+    *v1.e = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 50: error: expression must be a modifiable lvalue
+    v1.f[0][0] = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 51: error: expression must be a modifiable lvalue
+    *v1.f[0] = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 52: error: expression must be a modifiable lvalue
+    **v1.f = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 60: error: expression must be a modifiable lvalue
+    v2->d = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 61: error: expression must be a modifiable lvalue
+    v2->e[0] = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 62: error: expression must be a modifiable lvalue
+    *v2->e = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 63: error: expression must be a modifiable lvalue
+    v2->f[0][0] = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 64: error: expression must be a modifiable lvalue
+    *v2->f[0] = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 65: error: expression must be a modifiable lvalue
+    **v2->f = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 67: error: expression must be a modifiable lvalue
+    v3->a = 0; /* { dg-error "assignment of member" } */
+    ^
+
+"Test_name.c", line 68: error: expression must be a modifiable lvalue
+    v3->b[0] = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 69: error: expression must be a modifiable lvalue
+    *v3->b = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 70: error: expression must be a modifiable lvalue
+    v3->c[0][0] = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 71: error: expression must be a modifiable lvalue
+    *v3->c[0] = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 72: error: expression must be a modifiable lvalue
+    **v3->c = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 73: error: expression must be a modifiable lvalue
+    v3->d = 0; /* { dg-error "assignment of member" } */
+    ^
+
+"Test_name.c", line 74: error: expression must be a modifiable lvalue
+    v3->e[0] = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 75: error: expression must be a modifiable lvalue
+    *v3->e = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 76: error: expression must be a modifiable lvalue
+    v3->f[0][0] = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 77: error: expression must be a modifiable lvalue
+    *v3->f[0] = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 78: error: expression must be a modifiable lvalue
+    **v3->f = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 80: error: expression must be a modifiable lvalue
+    v4.a = 0; /* { dg-error "assignment of member" } */
+    ^
+
+"Test_name.c", line 81: error: expression must be a modifiable lvalue
+    v4.b[0] = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 82: error: expression must be a modifiable lvalue
+    *v4.b = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 83: error: expression must be a modifiable lvalue
+    v4.c[0][0] = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 84: error: expression must be a modifiable lvalue
+    *v4.c[0] = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 85: error: expression must be a modifiable lvalue
+    **v4.c = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 86: error: expression must be a modifiable lvalue
+    v4.d = 0; /* { dg-error "assignment of member" } */
+    ^
+
+"Test_name.c", line 87: error: expression must be a modifiable lvalue
+    v4.e[0] = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 88: error: expression must be a modifiable lvalue
+    *v4.e = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 89: error: expression must be a modifiable lvalue
+    v4.f[0][0] = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 90: error: expression must be a modifiable lvalue
+    *v4.f[0] = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 91: error: expression must be a modifiable lvalue
+    **v4.f = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 93: error: expression must be a modifiable lvalue
+    v5.x.a = 0; /* { dg-error "assignment of member" } */
+    ^
+
+"Test_name.c", line 94: error: expression must be a modifiable lvalue
+    v5.x.b[0] = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 95: error: expression must be a modifiable lvalue
+    *v5.x.b = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 96: error: expression must be a modifiable lvalue
+    v5.x.c[0][0] = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 97: error: expression must be a modifiable lvalue
+    *v5.x.c[0] = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 98: error: expression must be a modifiable lvalue
+    **v5.x.c = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 99: error: expression must be a modifiable lvalue
+    v5.x.d = 0; /* { dg-error "assignment of member" } */
+    ^
+
+"Test_name.c", line 100: error: expression must be a modifiable lvalue
+    v5.x.e[0] = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 101: error: expression must be a modifiable lvalue
+    *v5.x.e = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 102: error: expression must be a modifiable lvalue
+    v5.x.f[0][0] = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 103: error: expression must be a modifiable lvalue
+    *v5.x.f[0] = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 104: error: expression must be a modifiable lvalue
+    **v5.x.f = 0; /* { dg-error "assignment of read-only" } */
+    ^
+
+"Test_name.c", line 115: warning: a value of type "int (*)[3]" cannot be used to initialize an entity of type "const int (*)[3]"
+      const int (*ff)[3] = v1.c; /* { dg-warning "pointers to arrays with different qualifiers" } */
+                           ^
+
+"Test_name.c", line 120: warning: a value of type "int (*)[3]" cannot be assigned to an entity of type "const int (*)[3]"
+      ff = v1.c; /* { dg-warning "pointers to arrays with different qualifiers" } */
+         ^
+
+"Test_name.c", line 111: warning: variable "a" was set but never used
+      int *a = &v1.a;
+           ^
+
+"Test_name.c", line 112: warning: variable "b" was set but never used
+      int (*b)[1] = &v1.b;
+            ^
+
+"Test_name.c", line 113: warning: variable "c" was set but never used
+      int (*c)[2][3] = &v1.c;
+            ^
+
+"Test_name.c", line 114: warning: variable "cc" was set but never used
+      int (*cc)[3] = v1.c;
+            ^
+
+"Test_name.c", line 115: warning: variable "ff" was set but never used
+      const int (*ff)[3] = v1.c; /* { dg-warning "pointers to arrays with different qualifiers" } */
+                  ^
+
+"Test_name.c", line 127: warning: a value of type "const int (*)[3]" cannot be used to initialize an entity of type "int (*)[3]"
+      int (*cc)[3] = v1.f; /* { dg-warning "pointers to arrays with different qualifiers|initialization discards" } */
+                     ^
+
+"Test_name.c", line 132: warning: a value of type "const int (*)[3]" cannot be assigned to an entity of type "int (*)[3]"
+      cc = v1.f; /* { dg-warning "pointers to arrays with different qualifiers|assignment discards" } */
+         ^
+
+"Test_name.c", line 123: warning: variable "d" was set but never used
+      const int *d = &v1.d;
+                 ^
+
+"Test_name.c", line 124: warning: variable "e" was set but never used
+      const int (*e)[1] = &v1.e;
+                  ^
+
+"Test_name.c", line 125: warning: variable "f" was set but never used
+      const int (*f)[2][3] = &v1.f;
+                  ^
+
+"Test_name.c", line 126: warning: variable "ff" was set but never used
+      const int (*ff)[3] = v1.f;
+                  ^
+
+"Test_name.c", line 127: warning: variable "cc" was set but never used
+      int (*cc)[3] = v1.f; /* { dg-warning "pointers to arrays with different qualifiers|initialization discards" } */
+            ^
+
+"Test_name.c", line 140: warning: a value of type "int (*)[3]" cannot be used to initialize an entity of type "const int (*)[3]"
+      const int (*ff)[3] = v2->c; /* { dg-warning "pointers to arrays with different qualifiers" } */
+                           ^
+
+"Test_name.c", line 145: warning: a value of type "int (*)[3]" cannot be assigned to an entity of type "const int (*)[3]"
+      ff = v2->c; /* { dg-warning "pointers to arrays with different qualifiers" } */
+         ^
+
+"Test_name.c", line 136: warning: variable "a" was set but never used
+      int *a = &v2->a;
+           ^
+
+"Test_name.c", line 137: warning: variable "b" was set but never used
+      int (*b)[1] = &v2->b;
+            ^
+
+"Test_name.c", line 138: warning: variable "c" was set but never used
+      int (*c)[2][3] = &v2->c;
+            ^
+
+"Test_name.c", line 139: warning: variable "cc" was set but never used
+      int (*cc)[3] = v2->c;
+            ^
+
+"Test_name.c", line 140: warning: variable "ff" was set but never used
+      const int (*ff)[3] = v2->c; /* { dg-warning "pointers to arrays with different qualifiers" } */
+                  ^
+
+"Test_name.c", line 152: warning: a value of type "const int (*)[3]" cannot be used to initialize an entity of type "int (*)[3]"
+      int (*cc)[3] = v2->f; /* { dg-warning "pointers to arrays with different qualifiers|initialization discards" } */
+                     ^
+
+"Test_name.c", line 157: warning: a value of type "const int (*)[3]" cannot be assigned to an entity of type "int (*)[3]"
+      cc = v2->f; /* { dg-warning "pointers to arrays with different qualifiers|assignment discards" } */
+         ^
+
+"Test_name.c", line 148: warning: variable "d" was set but never used
+      const int *d = &v2->d;
+                 ^
+
+"Test_name.c", line 149: warning: variable "e" was set but never used
+      const int (*e)[1] = &v2->e;
+                  ^
+
+"Test_name.c", line 150: warning: variable "f" was set but never used
+      const int (*f)[2][3] = &v2->f;
+                  ^
+
+"Test_name.c", line 151: warning: variable "ff" was set but never used
+      const int (*ff)[3] = v2->f;
+                  ^
+
+"Test_name.c", line 152: warning: variable "cc" was set but never used
+      int (*cc)[3] = v2->f; /* { dg-warning "pointers to arrays with different qualifiers|initialization discards" } */
+            ^
+
+"Test_name.c", line 165: warning: a value of type "const int (*)[3]" cannot be used to initialize an entity of type "int (*)[3]"
+      int (*cc)[3] = v3->c; /* { dg-warning "pointers to arrays with different qualifiers|initialization discards" } */
+                     ^
+
+"Test_name.c", line 170: warning: a value of type "const int (*)[3]" cannot be assigned to an entity of type "int (*)[3]"
+      cc = v3->c; /* { dg-warning "pointers to arrays with different qualifiers|assignment discards" } */
+         ^
+
+"Test_name.c", line 161: warning: variable "d" was set but never used
+      const int *d = &v3->a;
+                 ^
+
+"Test_name.c", line 162: warning: variable "e" was set but never used
+      const int (*e)[1] = &v3->b;
+                  ^
+
+"Test_name.c", line 163: warning: variable "f" was set but never used
+      const int (*f)[2][3] = &v3->c;
+                  ^
+
+"Test_name.c", line 164: warning: variable "ff" was set but never used
+      const int (*ff)[3] = v3->c;
+                  ^
+
+"Test_name.c", line 165: warning: variable "cc" was set but never used
+      int (*cc)[3] = v3->c; /* { dg-warning "pointers to arrays with different qualifiers|initialization discards" } */
+            ^
+
+"Test_name.c", line 177: warning: a value of type "const int (*)[3]" cannot be used to initialize an entity of type "int (*)[3]"
+      int (*cc)[3] = v3->f; /* { dg-warning "pointers to arrays with different qualifiers|initialization discards" } */
+                     ^
+
+"Test_name.c", line 182: warning: a value of type "const int (*)[3]" cannot be assigned to an entity of type "int (*)[3]"
+      cc = v3->f; /* { dg-warning "pointers to arrays with different qualifiers|assignment discards" } */
+         ^
+
+"Test_name.c", line 173: warning: variable "d" was set but never used
+      const int *d = &v3->d;
+                 ^
+
+"Test_name.c", line 174: warning: variable "e" was set but never used
+      const int (*e)[1] = &v3->e;
+                  ^
+
+"Test_name.c", line 175: warning: variable "f" was set but never used
+      const int (*f)[2][3] = &v3->f;
+                  ^
+
+"Test_name.c", line 176: warning: variable "ff" was set but never used
+      const int (*ff)[3] = v3->f;
+                  ^
+
+"Test_name.c", line 177: warning: variable "cc" was set but never used
+      int (*cc)[3] = v3->f; /* { dg-warning "pointers to arrays with different qualifiers|initialization discards" } */
+            ^
+
+"Test_name.c", line 190: warning: a value of type "const int (*)[3]" cannot be used to initialize an entity of type "int (*)[3]"
+      int (*cc)[3] = v4.c; /* { dg-warning "pointers to arrays with different qualifiers|initialization discards" } */
+                     ^
+
+"Test_name.c", line 195: warning: a value of type "const int (*)[3]" cannot be assigned to an entity of type "int (*)[3]"
+      cc = v4.c; /* { dg-warning "pointers to arrays with different qualifiers|assignment discards" } */
+         ^
+
+"Test_name.c", line 186: warning: variable "d" was set but never used
+      const int *d = &v4.a;
+                 ^
+
+"Test_name.c", line 187: warning: variable "e" was set but never used
+      const int (*e)[1] = &v4.b;
+                  ^
+
+"Test_name.c", line 188: warning: variable "f" was set but never used
+      const int (*f)[2][3] = &v4.c;
+                  ^
+
+"Test_name.c", line 189: warning: variable "ff" was set but never used
+      const int (*ff)[3] = v4.c;
+                  ^
+
+"Test_name.c", line 190: warning: variable "cc" was set but never used
+      int (*cc)[3] = v4.c; /* { dg-warning "pointers to arrays with different qualifiers|initialization discards" } */
+            ^
+
+"Test_name.c", line 202: warning: a value of type "const int (*)[3]" cannot be used to initialize an entity of type "int (*)[3]"
+      int (*cc)[3] = v4.f; /* { dg-warning "pointers to arrays with different qualifiers|initialization discards" } */
+                     ^
+
+"Test_name.c", line 207: warning: a value of type "const int (*)[3]" cannot be assigned to an entity of type "int (*)[3]"
+      cc = v4.f; /* { dg-warning "pointers to arrays with different qualifiers|assignment discards" } */
+         ^
+
+"Test_name.c", line 198: warning: variable "d" was set but never used
+      const int *d = &v4.d;
+                 ^
+
+"Test_name.c", line 199: warning: variable "e" was set but never used
+      const int (*e)[1] = &v4.e;
+                  ^
+
+"Test_name.c", line 200: warning: variable "f" was set but never used
+      const int (*f)[2][3] = &v4.f;
+                  ^
+
+"Test_name.c", line 201: warning: variable "ff" was set but never used
+      const int (*ff)[3] = v4.f;
+                  ^
+
+"Test_name.c", line 202: warning: variable "cc" was set but never used
+      int (*cc)[3] = v4.f; /* { dg-warning "pointers to arrays with different qualifiers|initialization discards" } */
+            ^
+
+"Test_name.c", line 215: warning: a value of type "const int (*)[3]" cannot be used to initialize an entity of type "int (*)[3]"
+      int (*cc)[3] = v5.x.c; /* { dg-warning "pointers to arrays with different qualifiers|initialization discards" } */
+                     ^
+
+"Test_name.c", line 220: warning: a value of type "const int (*)[3]" cannot be assigned to an entity of type "int (*)[3]"
+      cc = v5.x.c; /* { dg-warning "pointers to arrays with different qualifiers|assignment discards" } */
+         ^
+
+"Test_name.c", line 211: warning: variable "d" was set but never used
+      const int *d = &v5.x.a;
+                 ^
+
+"Test_name.c", line 212: warning: variable "e" was set but never used
+      const int (*e)[1] = &v5.x.b;
+                  ^
+
+"Test_name.c", line 213: warning: variable "f" was set but never used
+      const int (*f)[2][3] = &v5.x.c;
+                  ^
+
+"Test_name.c", line 214: warning: variable "ff" was set but never used
+      const int (*ff)[3] = v5.x.c;
+                  ^
+
+"Test_name.c", line 215: warning: variable "cc" was set but never used
+      int (*cc)[3] = v5.x.c; /* { dg-warning "pointers to arrays with different qualifiers|initialization discards" } */
+            ^
+
+"Test_name.c", line 227: warning: a value of type "const int (*)[3]" cannot be used to initialize an entity of type "int (*)[3]"
+      int (*cc)[3] = v5.x.f; /* { dg-warning "pointers to arrays with different qualifiers|initialization discards" } */
+                     ^
+
+"Test_name.c", line 232: warning: a value of type "const int (*)[3]" cannot be assigned to an entity of type "int (*)[3]"
+      cc = v5.x.f; /* { dg-warning "pointers to arrays with different qualifiers|assignment discards" } */
+         ^
+
+"Test_name.c", line 223: warning: variable "d" was set but never used
+      const int *d = &v5.x.d;
+                 ^
+
+"Test_name.c", line 224: warning: variable "e" was set but never used
+      const int (*e)[1] = &v5.x.e;
+                  ^
+
+"Test_name.c", line 225: warning: variable "f" was set but never used
+      const int (*f)[2][3] = &v5.x.f;
+                  ^
+
+"Test_name.c", line 226: warning: variable "ff" was set but never used
+      const int (*ff)[3] = v5.x.f;
+                  ^
+
+"Test_name.c", line 227: warning: variable "cc" was set but never used
+      int (*cc)[3] = v5.x.f; /* { dg-warning "pointers to arrays with different qualifiers|initialization discards" } */
+            ^
+
+48 errors detected in the compilation of "Test_name.c".

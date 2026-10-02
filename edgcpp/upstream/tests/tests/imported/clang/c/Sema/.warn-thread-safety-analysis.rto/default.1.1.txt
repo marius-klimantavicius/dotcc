@@ -1,0 +1,206 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -DLATE_PARSING --c Test_name.c
+"Test_name.c", line 35: warning: unknown attribute "lockable"
+  struct LOCKABLE Mutex {};
+         ^
+
+"Test_name.c", line 39: warning: unknown attribute "guarded_by"
+    int  a_value GUARDED_BY(mu_);
+                 ^
+
+"Test_name.c", line 42: warning: unknown attribute "acquired_after"
+      struct Mutex *other_mu ACQUIRED_AFTER(mu_); // Note: referencing the parent structure is convenient here, but this should probably be disallowed if the child structure is re-used outside of the parent.
+                             ^
+
+"Test_name.c", line 43: warning: unknown attribute "acquired_before"
+      struct Mutex *third_mu ACQUIRED_BEFORE(other_mu);
+                             ^
+
+"Test_name.c", line 46: warning: unknown attribute "pt_guarded_by"
+    int* a_ptr PT_GUARDED_BY(bar.other_mu);
+               ^
+
+"Test_name.c", line 49: warning: unknown attribute "lockable"
+  struct LOCKABLE Lock {};
+         ^
+
+"Test_name.c", line 53: warning: unknown attribute "guarded_by"
+                  int b __attribute__((guarded_by(lock))); // Note: referencing the parent structure is convenient here, but this should probably be disallowed if the child is re-used outside of the parent.
+                                       ^
+
+"Test_name.c", line 58: warning: unknown attribute "exclusive_lock_function"
+  void mutex_exclusive_lock(struct Mutex *mu) EXCLUSIVE_LOCK_FUNCTION(mu);
+                                              ^
+
+"Test_name.c", line 59: warning: unknown attribute "shared_lock_function"
+  void mutex_shared_lock(struct Mutex *mu) SHARED_LOCK_FUNCTION(mu);
+                                           ^
+
+"Test_name.c", line 60: warning: unknown attribute "unlock_function"
+  void mutex_unlock(struct Mutex *mu) UNLOCK_FUNCTION(mu);
+                                      ^
+
+"Test_name.c", line 61: warning: unknown attribute "release_shared_capability"
+  void mutex_shared_unlock(struct Mutex *mu) __attribute__((release_shared_capability(mu)));
+                                                            ^
+
+"Test_name.c", line 62: warning: unknown attribute "release_capability"
+  void mutex_exclusive_unlock(struct Mutex *mu) __attribute__((release_capability(mu)));
+                                                               ^
+
+"Test_name.c", line 66: warning: unknown attribute "acquired_after"
+  struct Mutex mu2 ACQUIRED_AFTER(mu1);
+                   ^
+
+"Test_name.c", line 68: warning: unknown attribute "guarded_by"
+  int a_ GUARDED_BY(foo_.mu_);
+         ^
+
+"Test_name.c", line 69: warning: unknown attribute "pt_guarded_by"
+  int *b_ PT_GUARDED_BY(foo_.mu_) = &a_;
+          ^
+
+"Test_name.c", line 70: warning: unknown attribute "guarded_var"
+  int c_ GUARDED_VAR;
+         ^
+
+"Test_name.c", line 71: warning: unknown attribute "pt_guarded_var"
+  int *d_ PT_GUARDED_VAR = &c_;
+          ^
+
+"Test_name.c", line 74: warning: unknown attribute "shared_locks_required"
+  int Foo_fun1(int i) SHARED_LOCKS_REQUIRED(mu2) EXCLUSIVE_LOCKS_REQUIRED(mu1) {
+                      ^
+
+"Test_name.c", line 74: warning: unknown attribute "exclusive_locks_required"
+  int Foo_fun1(int i) SHARED_LOCKS_REQUIRED(mu2) EXCLUSIVE_LOCKS_REQUIRED(mu1) {
+                                                 ^
+
+"Test_name.c", line 78: warning: unknown attribute "exclusive_locks_required"
+  int Foo_fun2(int i) EXCLUSIVE_LOCKS_REQUIRED(mu2) SHARED_LOCKS_REQUIRED(mu1) {
+                      ^
+
+"Test_name.c", line 78: warning: unknown attribute "shared_locks_required"
+  int Foo_fun2(int i) EXCLUSIVE_LOCKS_REQUIRED(mu2) SHARED_LOCKS_REQUIRED(mu1) {
+                                                    ^
+
+"Test_name.c", line 82: warning: unknown attribute "locks_excluded"
+  int Foo_func3(int i) LOCKS_EXCLUDED(mu1, mu2) {
+                       ^
+
+"Test_name.c", line 86: warning: unknown attribute "exclusive_locks_required"
+  static int Bar_fun1(int i) EXCLUSIVE_LOCKS_REQUIRED(mu1) {
+                             ^
+
+"Test_name.c", line 90: warning: unknown attribute "exclusive_locks_required"
+  void set_value(int *a, int value) EXCLUSIVE_LOCKS_REQUIRED(foo_.mu_) {
+                                    ^
+
+"Test_name.c", line 94: warning: unknown attribute "shared_locks_required"
+  int get_value(int *p) SHARED_LOCKS_REQUIRED(foo_.mu_){
+                        ^
+
+"Test_name.c", line 98: warning: unknown attribute "release_capability"
+  void unlock_scope(struct Mutex *const *mu) __attribute__((release_capability(**mu)));
+                                                            ^
+
+"Test_name.c", line 99: warning: unknown attribute "release_capability"
+  void unlock_scope_type_erased(int **priv) __attribute__((release_capability(*(struct Mutex **)priv)));
+                                                           ^
+
+"Test_name.c", line 104: warning: unknown attribute "guarded_by"
+    int a_value_defined_before GUARDED_BY(a_mutex_defined_late);
+                               ^
+
+"Test_name.c", line 105: warning: unknown attribute "pt_guarded_by"
+    int *a_ptr_defined_before PT_GUARDED_BY(a_mutex_defined_late);
+                              ^
+
+"Test_name.c", line 107: warning: unknown attribute "acquired_before"
+      ACQUIRED_BEFORE(a_mutex_defined_late);
+      ^
+
+"Test_name.c", line 109: warning: unknown attribute "acquired_after"
+      ACQUIRED_AFTER(a_mutex_defined_very_late);
+      ^
+
+"Test_name.c", line 200: error: identifier "__UINTPTR_TYPE__" is undefined
+         *priv __attribute__((cleanup(unlock_scope_type_erased))) = (int *)(__UINTPTR_TYPE__)(foo_.mu_);
+                                                                            ^
+
+"Test_name.c", line 235: warning: unknown attribute "lockable"
+  struct LOCKABLE REENTRANT_CAPABILITY ReentrantMutex {};
+         ^
+
+"Test_name.c", line 235: warning: unknown attribute "reentrant_capability"
+  struct LOCKABLE REENTRANT_CAPABILITY ReentrantMutex {};
+                  ^
+
+"Test_name.c", line 236: warning: unknown attribute "exclusive_lock_function"
+  void reentrant_mutex_lock(struct ReentrantMutex *mu) EXCLUSIVE_LOCK_FUNCTION(mu);
+                                                       ^
+
+"Test_name.c", line 237: warning: unknown attribute "unlock_function"
+  void reentrant_mutex_unlock(struct ReentrantMutex *mu) UNLOCK_FUNCTION(mu);
+                                                         ^
+
+"Test_name.c", line 240: warning: unknown attribute "guarded_by"
+  int r_ GUARDED_BY(&rmu);
+         ^
+
+"Test_name.c", line 260: warning: unknown attribute "assert_exclusive_lock"
+  void mutex_init(struct Mutex *mu) ASSERT_EXCLUSIVE_LOCK((struct ReentrantMutex *)mu);
+                                    ^
+
+"Test_name.c", line 264: warning: unknown attribute "guarded_by"
+    int a GUARDED_BY(&mu);
+          ^
+
+"Test_name.c", line 283: warning: unknown attribute "guarded_by"
+  void run(void) __attribute__((guarded_by(mu1), guarded_by(mu1))); // expected-warning 2{{only applies to non-static data members and global variables}}
+                                ^
+
+"Test_name.c", line 283: warning: unknown attribute "guarded_by"
+  void run(void) __attribute__((guarded_by(mu1), guarded_by(mu1))); // expected-warning 2{{only applies to non-static data members and global variables}}
+                                                 ^
+
+"Test_name.c", line 285: warning: unknown attribute "guarded_by"
+  int value_with_wrong_number_of_args GUARDED_BY(mu1, mu2); // expected-error{{'guarded_by' attribute takes one argument}}
+                                      ^
+
+"Test_name.c", line 287: warning: unknown attribute "pt_guarded_by"
+  int *ptr_with_wrong_number_of_args PT_GUARDED_BY(mu1, mu2); // expected-error{{'pt_guarded_by' attribute takes one argument}}
+                                     ^
+
+"Test_name.c", line 289: warning: unknown attribute "guarded_by"
+  int value_with_no_open_brace __attribute__((guarded_by)); // expected-error{{'guarded_by' attribute takes one argument}}
+                                              ^
+
+"Test_name.c", line 290: warning: unknown attribute "pt_guarded_by"
+  int *ptr_with_no_open_brace __attribute__((pt_guarded_by)); // expected-error{{'pt_guarded_by' attribute takes one argument}}
+                                             ^
+
+"Test_name.c", line 292: warning: unknown attribute "acquired_after"
+  int value_with_no_open_brace_on_acquire_after __attribute__((acquired_after)); // expected-error{{'acquired_after' attribute takes at least 1 argument}}
+                                                               ^
+
+"Test_name.c", line 293: warning: unknown attribute "acquired_before"
+  int value_with_no_open_brace_on_acquire_before __attribute__((acquired_before)); // expected-error{{'acquired_before' attribute takes at least 1 argument}}
+                                                                ^
+
+"Test_name.c", line 295: warning: unknown attribute "guarded_by"
+  int value_with_bad_expr GUARDED_BY(bad_expr); // expected-error{{use of undeclared identifier 'bad_expr'}}
+                          ^
+
+"Test_name.c", line 296: warning: unknown attribute "pt_guarded_by"
+  int *ptr_with_bad_expr PT_GUARDED_BY(bad_expr); // expected-error{{use of undeclared identifier 'bad_expr'}}
+                         ^
+
+"Test_name.c", line 298: warning: unknown attribute "acquired_after"
+  int value_with_bad_expr_on_acquire_after __attribute__((acquired_after(other_bad_expr))); //  expected-error{{use of undeclared identifier 'other_bad_expr'}}
+                                                          ^
+
+"Test_name.c", line 299: warning: unknown attribute "acquired_before"
+  int value_with_bad_expr_on_acquire_before __attribute__((acquired_before(other_bad_expr))); //  expected-error{{use of undeclared identifier 'other_bad_expr'}}
+                                                           ^
+
+1 error detected in the compilation of "Test_name.c".

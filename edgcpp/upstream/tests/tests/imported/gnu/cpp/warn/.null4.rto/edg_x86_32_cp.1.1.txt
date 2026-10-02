@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/cstddef", line 97: error: identifier "__int128" is undefined
+    template<> struct __byte_operand<__int128>
+                                     ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/cstddef", line 99: error: expected a ">"
+    template<> struct __byte_operand<unsigned __int128>
+                                              ^
+
+"./warn/null4.C", line 13: warning: statement is unreachable
+    if (
+    ^
+
+"./warn/null4.C", line 17: warning: statement is unreachable
+    if (
+    ^
+
+"./warn/null4.C", line 18: warning: statement is unreachable
+    if (1 + 
+    ^
+
+"./warn/null4.C", line 19: warning: statement is unreachable
+    return 0;
+    ^
+
+"./warn/null4.C", line 34: warning: statement is unreachable
+    if (!
+    ^
+
+"./warn/null4.C", line 35: warning: statement is unreachable
+    if (
+    ^
+
+"./warn/null4.C", line 38: warning: statement is unreachable
+    if (
+    ^
+
+"./warn/null4.C", line 40: warning: statement is unreachable
+    if (
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

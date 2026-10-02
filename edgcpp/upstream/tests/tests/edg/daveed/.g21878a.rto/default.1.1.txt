@@ -1,0 +1,5 @@
+eccp -DTEST_NUMBER=1 --c++17 Test_name.c
+"Test_name.c", line 29: warning: variable "g" was set but never used
+          int g;
+              ^
+

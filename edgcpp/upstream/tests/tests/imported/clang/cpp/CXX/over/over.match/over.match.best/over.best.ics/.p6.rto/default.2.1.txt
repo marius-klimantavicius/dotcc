@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 8: warning: operator may not be a static member function
+      static constexpr auto operator()() { return 4; };  // cxx20-warning {{is a C++23 extension}}
+                            ^
+

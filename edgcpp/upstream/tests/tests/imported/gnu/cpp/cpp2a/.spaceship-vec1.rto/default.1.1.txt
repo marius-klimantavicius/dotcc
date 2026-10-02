@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"./cpp2a/spaceship-vec1.C", line 10: error: invalid types ("__attribute((vector_size(16UL))) int" and "__attribute((vector_size(16UL))) int") for built-in operator<=>
+    a <=> b;
+      ^
+
+"./cpp2a/spaceship-vec1.C", line 10: warning: variable "a" is used before its value is set
+    a <=> b;
+    ^
+
+"./cpp2a/spaceship-vec1.C", line 10: warning: variable "b" is used before its value is set
+    a <=> b;
+          ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 6: warning: unknown attribute "clang::annotate"
+    [[clang::annotate("decl", 1)]] int i = 0;
+      ^
+
+"Test_name.c", line 7: warning: unknown attribute "clang::annotate"
+    [[clang::annotate("stmt", 2)]] i += 1;
+      ^
+
+"Test_name.c", line 8: warning: unknown attribute "clang::annotate"
+  [[clang::annotate("label", 3)]] label1:
+    ^
+
+"Test_name.c", line 8: warning: label "label1" was declared but never referenced
+  [[clang::annotate("label", 3)]] label1:
+                                  ^
+
+"Test_name.c", line 25: warning: unknown attribute "clang::annotate"
+    [[clang::annotate("tmpl_decl", 4)]] T j = 0;
+      ^
+
+"Test_name.c", line 26: warning: unknown attribute "clang::annotate"
+    [[clang::annotate("tmpl_stmt", 5)]] j += 1;
+      ^
+
+"Test_name.c", line 27: warning: unknown attribute "clang::annotate"
+  [[clang::annotate("tmpl_label", 6)]] label2:
+    ^
+
+"Test_name.c", line 27: warning: label "label2" was declared but never referenced
+  [[clang::annotate("tmpl_label", 6)]] label2:
+                                       ^
+

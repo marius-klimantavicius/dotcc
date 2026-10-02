@@ -1,0 +1,410 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 18: error: operator may not be a static member function
+    static int operator+(Y, Y); // expected-error{{overloaded 'operator+' cannot be a static member function}}
+               ^
+
+"Test_name.c", line 26: error: nonmember operator requires a parameter with class or enum type
+  X operator+(int, float); // expected-error{{overloaded 'operator+' must have at least one parameter of class or enumeration type}}
+    ^
+
+"Test_name.c", line 28: error: default argument is not allowed
+  X operator*(X, X = 5); // expected-error{{parameter of overloaded 'operator*' cannot have a default argument}}
+                   ^
+
+"Test_name.c", line 30: error: ellipsis is not allowed in operator function parameter list
+  X operator/(X, X, ...); // expected-error{{overloaded 'operator/' cannot be variadic}}
+    ^
+
+"Test_name.c", line 32: error: too few parameters for this operator function
+  X operator%(Y); // expected-error{{overloaded 'operator%' must be a binary operator (has 1 parameter)}}
+    ^
+
+"Test_name.c", line 34: error: "operator()" must be a member function
+  void operator()(Y&, int, int); // expected-error{{overloaded 'operator()' must be a non-static member function}}
+       ^
+
+"Test_name.c", line 40: error: extra parameter of postfix "operator++" must be of type "int"
+  X operator++(X&, FLOAT); // expected-error{{parameter of overloaded post-increment operator must have type 'int' (not 'FLOAT' (aka 'float'))}}
+    ^
+
+"Test_name.c", line 42: error: an operator name must be declared as a function
+  int operator+; // expected-error{{'operator+' cannot be the name of a variable or data member}}
+      ^
+
+"Test_name.c", line 51: error: an operator name must be declared as a function
+    operator int; // expected-error{{'operator int' cannot be the name of a variable or data member}}
+    ^
+
+"Test_name.c", line 52: error: an operator name must be declared as a function
+    int operator+; // expected-error{{'operator+' cannot be the name of a variable or data member}}
+        ^
+
+"Test_name.c", line 57: warning: operator may not be a static member function
+      static void operator()(int& i) { ++i; } // expected-warning{{is a C++23 extension}}
+                  ^
+
+"Test_name.c", line 67: error: ellipsis is not allowed in operator function parameter list
+    E& operator=(const E& rhs, ...); // expected-error{{overloaded 'operator=' cannot be variadic}}
+       ^
+
+"Test_name.c", line 68: error: ellipsis is not allowed in operator function parameter list
+    E& operator+=(const E& rhs, ...); // expected-error{{overloaded 'operator+=' cannot be variadic}}
+       ^
+
+"Test_name.c", line 71: error: ellipsis is not allowed in operator function parameter list
+  void operator+(E, ...) {} // expected-error{{overloaded 'operator+' cannot be variadic}}
+       ^
+
+"Test_name.c", line 72: error: ellipsis is not allowed in operator function parameter list
+  void operator-(E, ...) {} // expected-error{{overloaded 'operator-' cannot be variadic}}
+       ^
+
+"Test_name.c", line 73: error: ellipsis is not allowed in operator function parameter list
+  void operator*(E, ...) {} // expected-error{{overloaded 'operator*' cannot be variadic}}
+       ^
+
+"Test_name.c", line 74: error: ellipsis is not allowed in operator function parameter list
+  void operator/(E, ...) {} // expected-error{{overloaded 'operator/' must be a binary operator}}
+       ^
+
+"Test_name.c", line 75: error: ellipsis is not allowed in operator function parameter list
+  void operator/(E, E, ...) {} // expected-error{{overloaded 'operator/' cannot be variadic}}
+       ^
+
+"Test_name.c", line 76: error: ellipsis is not allowed in operator function parameter list
+  void operator%(E, ...) {} // expected-error{{overloaded 'operator%' must be a binary operator}}
+       ^
+
+"Test_name.c", line 77: error: ellipsis is not allowed in operator function parameter list
+  void operator%(E, E, ...) {} // expected-error{{overloaded 'operator%' cannot be variadic}}
+       ^
+
+"Test_name.c", line 78: error: ellipsis is not allowed in operator function parameter list
+  E& operator++(E&, ...); // expected-error{{overloaded 'operator++' cannot be variadic}}
+     ^
+
+"Test_name.c", line 79: error: ellipsis is not allowed in operator function parameter list
+  E& operator--(E&, ...); // expected-error{{overloaded 'operator--' cannot be variadic}}
+     ^
+
+"Test_name.c", line 80: error: ellipsis is not allowed in operator function parameter list
+  bool operator<(const E& lhs, ...); // expected-error{{overloaded 'operator<' must be a binary operator}}
+       ^
+
+"Test_name.c", line 81: error: ellipsis is not allowed in operator function parameter list
+  bool operator<(const E& lhs, const E& rhs, ...); // expected-error{{cannot be variadic}}
+       ^
+
+"Test_name.c", line 82: error: ellipsis is not allowed in operator function parameter list
+  bool operator>(const E& lhs, ...); // expected-error{{overloaded 'operator>' must be a binary operator}}
+       ^
+
+"Test_name.c", line 83: error: ellipsis is not allowed in operator function parameter list
+  bool operator>(const E& lhs, const E& rhs, ...); // expected-error{{cannot be variadic}}
+       ^
+
+"Test_name.c", line 84: error: ellipsis is not allowed in operator function parameter list
+  bool operator>=(const E& lhs, ...); // expected-error{{overloaded 'operator>=' must be a binary operator}}
+       ^
+
+"Test_name.c", line 85: error: ellipsis is not allowed in operator function parameter list
+  bool operator>=(const E& lhs, const E& rhs, ...); // expected-error{{cannot be variadic}}
+       ^
+
+"Test_name.c", line 86: error: ellipsis is not allowed in operator function parameter list
+  bool operator<=(const E& lhs, ...); // expected-error{{overloaded 'operator<=' must be a binary operator}}
+       ^
+
+"Test_name.c", line 87: error: ellipsis is not allowed in operator function parameter list
+  bool operator<=(const E& lhs, const E& rhs, ...); // expected-error{{cannot be variadic}}
+       ^
+
+"Test_name.c", line 88: error: ellipsis is not allowed in operator function parameter list
+  bool operator==(const E& lhs, ...); // expected-error{{overloaded 'operator==' must be a binary operator}}
+       ^
+
+"Test_name.c", line 89: error: ellipsis is not allowed in operator function parameter list
+  bool operator==(const E& lhs, const E& rhs, ...); // expected-error{{cannot be variadic}}
+       ^
+
+"Test_name.c", line 90: error: ellipsis is not allowed in operator function parameter list
+  bool operator!=(const E& lhs, ...); // expected-error{{overloaded 'operator!=' must be a binary operator}}
+       ^
+
+"Test_name.c", line 91: error: ellipsis is not allowed in operator function parameter list
+  bool operator!=(const E& lhs, const E& rhs, ...); // expected-error{{cannot be variadic}}
+       ^
+
+"Test_name.c", line 92: error: ellipsis is not allowed in operator function parameter list
+  bool operator&&(const E& lhs, ...); // expected-error{{overloaded 'operator&&' must be a binary operator}}
+       ^
+
+"Test_name.c", line 93: error: ellipsis is not allowed in operator function parameter list
+  bool operator&&(const E& lhs, const E& rhs, ...); // expected-error{{cannot be variadic}}
+       ^
+
+"Test_name.c", line 94: error: ellipsis is not allowed in operator function parameter list
+  bool operator||(const E& lhs, ...); // expected-error{{overloaded 'operator||' must be a binary operator}}
+       ^
+
+"Test_name.c", line 95: error: ellipsis is not allowed in operator function parameter list
+  bool operator||(const E& lhs, const E& rhs, ...); // expected-error{{cannot be variadic}}
+       ^
+
+"Test_name.c", line 96: error: ellipsis is not allowed in operator function parameter list
+  bool operator>>(const E& lhs, ...); // expected-error{{overloaded 'operator>>' must be a binary operator}}
+       ^
+
+"Test_name.c", line 97: error: ellipsis is not allowed in operator function parameter list
+  bool operator>>(const E& lhs, const E& rhs, ...); // expected-error{{cannot be variadic}}
+       ^
+
+"Test_name.c", line 98: error: ellipsis is not allowed in operator function parameter list
+  bool operator&(const E& lhs, ...); // expected-error{{cannot be variadic}}
+       ^
+
+"Test_name.c", line 100: error: ellipsis is not allowed in operator function parameter list
+  auto operator<=>(const E& lhs, ...);  // expected-error{{overloaded 'operator<=>' must be a binary operator}}
+       ^
+
+"Test_name.c", line 103: error: no operator "+" matches these operands
+            operand types are: GH42535::E + GH42535::E
+    E() + E();
+        ^
+"Test_name.c", line 10: note: function "operator+" does not match because argument #1 does not match parameter
+  X operator+(X, X);
+    ^
+"Test_name.c", line 103: note: built-in operator+(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    E() + E();
+        ^
+"Test_name.c", line 103: note: built-in operator+(<pointer to object>, <ptrdiff_t>) does not match because argument #1 does not match parameter
+    E() + E();
+        ^
+"Test_name.c", line 103: note: built-in operator+(<ptrdiff_t>, <pointer to object>) does not match because argument #1 does not match parameter
+    E() + E();
+        ^
+
+"Test_name.c", line 104: error: no operator "-" matches these operands
+            operand types are: GH42535::E - GH42535::E
+    E() - E();
+        ^
+"Test_name.c", line 11: note: function "operator-" does not match because argument #1 does not match parameter
+  X operator-(X, X) { X x; return x; }
+    ^
+"Test_name.c", line 104: note: built-in operator-(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    E() - E();
+        ^
+"Test_name.c", line 104: note: built-in operator-(<pointer to object>, <ptrdiff_t>) does not match because argument #1 does not match parameter
+    E() - E();
+        ^
+
+"Test_name.c", line 105: error: no operator "*" matches these operands
+            operand types are: GH42535::E * GH42535::E
+    E() * E();
+        ^
+"Test_name.c", line 28: note: function "operator*" does not match because argument #1 does not match parameter
+  X operator*(X, X = 5); // expected-error{{parameter of overloaded 'operator*' cannot have a default argument}}
+    ^
+"Test_name.c", line 105: note: built-in operator*(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    E() * E();
+        ^
+
+"Test_name.c", line 106: error: no operator "/" matches these operands
+            operand types are: GH42535::E / GH42535::E
+    E() / E();
+        ^
+"Test_name.c", line 106: note: built-in operator/(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    E() / E();
+        ^
+
+"Test_name.c", line 107: error: no operator "%" matches these operands
+            operand types are: GH42535::E % GH42535::E
+    E() % E();
+        ^
+"Test_name.c", line 107: note: built-in operator%(<promoted integral>, <promoted integral>) does not match because argument #1 does not match parameter
+    E() % E();
+        ^
+
+"Test_name.c", line 108: error: no operator "++" matches these operands
+            operand types are: ++ GH42535::E
+    ++E(); // expected-error{{cannot increment value of type 'E'}}
+    ^
+"Test_name.c", line 39: note: number of parameters of function "operator++(Y &, INT)" does not match the call
+  Y operator++(Y&, INT);
+    ^
+"Test_name.c", line 38: note: function "operator++(Y &)" does not match because argument #1 does not match parameter
+  Y& operator++(Y&);
+     ^
+"Test_name.c", line 108: note: built-in operator++(<non-bool arithmetic>) does not match because argument #1 does not match parameter
+    ++E(); // expected-error{{cannot increment value of type 'E'}}
+    ^
+"Test_name.c", line 108: note: built-in operator++(<pointer to object>) does not match because argument #1 does not match parameter
+    ++E(); // expected-error{{cannot increment value of type 'E'}}
+    ^
+
+"Test_name.c", line 109: error: no operator "--" matches these operands
+            operand types are: -- GH42535::E
+    --E(); // expected-error{{cannot decrement value of type 'E'}}
+    ^
+"Test_name.c", line 109: note: built-in operator--(<non-bool arithmetic>) does not match because argument #1 does not match parameter
+    --E(); // expected-error{{cannot decrement value of type 'E'}}
+    ^
+"Test_name.c", line 109: note: built-in operator--(<pointer to object>) does not match because argument #1 does not match parameter
+    --E(); // expected-error{{cannot decrement value of type 'E'}}
+    ^
+
+"Test_name.c", line 110: error: no operator "<" matches these operands
+            operand types are: GH42535::E < GH42535::E
+    E() < E();
+        ^
+"Test_name.c", line 110: note: built-in operator<(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    E() < E();
+        ^
+"Test_name.c", line 110: note: built-in operator<(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    E() < E();
+        ^
+"Test_name.c", line 110: note: built-in operator<=>(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    E() < E();
+        ^
+"Test_name.c", line 110: note: built-in operator<=>(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    E() < E();
+        ^
+
+"Test_name.c", line 111: error: no operator ">" matches these operands
+            operand types are: GH42535::E > GH42535::E
+    E() > E();
+        ^
+"Test_name.c", line 111: note: built-in operator>(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    E() > E();
+        ^
+"Test_name.c", line 111: note: built-in operator>(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    E() > E();
+        ^
+"Test_name.c", line 111: note: built-in operator<=>(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    E() > E();
+        ^
+"Test_name.c", line 111: note: built-in operator<=>(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    E() > E();
+        ^
+
+"Test_name.c", line 112: error: no operator "<=" matches these operands
+            operand types are: GH42535::E <= GH42535::E
+    E() <= E();
+        ^
+"Test_name.c", line 112: note: built-in operator<=(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    E() <= E();
+        ^
+"Test_name.c", line 112: note: built-in operator<=(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    E() <= E();
+        ^
+"Test_name.c", line 112: note: built-in operator<=>(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    E() <= E();
+        ^
+"Test_name.c", line 112: note: built-in operator<=>(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    E() <= E();
+        ^
+
+"Test_name.c", line 113: error: no operator ">=" matches these operands
+            operand types are: GH42535::E >= GH42535::E
+    E() >= E();
+        ^
+"Test_name.c", line 113: note: built-in operator>=(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    E() >= E();
+        ^
+"Test_name.c", line 113: note: built-in operator>=(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    E() >= E();
+        ^
+"Test_name.c", line 113: note: built-in operator<=>(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    E() >= E();
+        ^
+"Test_name.c", line 113: note: built-in operator<=>(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    E() >= E();
+        ^
+
+"Test_name.c", line 114: error: no operator "==" matches these operands
+            operand types are: GH42535::E == GH42535::E
+    E() == E();
+        ^
+"Test_name.c", line 114: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    E() == E();
+        ^
+"Test_name.c", line 114: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    E() == E();
+        ^
+
+"Test_name.c", line 115: error: no operator "!=" matches these operands
+            operand types are: GH42535::E != GH42535::E
+    E() != E();
+        ^
+"Test_name.c", line 115: note: built-in operator!=(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    E() != E();
+        ^
+"Test_name.c", line 115: note: built-in operator!=(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    E() != E();
+        ^
+"Test_name.c", line 115: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    E() != E();
+        ^
+"Test_name.c", line 115: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    E() != E();
+        ^
+
+"Test_name.c", line 117: error: no operator "<=>" matches these operands
+            operand types are: GH42535::E <=> GH42535::E
+    E() <=> E();
+        ^
+"Test_name.c", line 117: note: built-in operator<=>(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    E() <=> E();
+        ^
+"Test_name.c", line 117: note: built-in operator<=>(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    E() <=> E();
+        ^
+
+"Test_name.c", line 121: error: no operator "+=" matches these operands
+            operand types are: GH42535::E += GH42535::E
+    e += e1;
+      ^
+"Test_name.c", line 121: note: built-in operator+=(<arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    e += e1;
+      ^
+"Test_name.c", line 121: note: built-in operator+=(<pointer to object>, <ptrdiff_t>) does not match because argument #1 does not match parameter
+    e += e1;
+      ^
+
+"Test_name.c", line 122: error: no operator "&&" matches these operands
+            operand types are: GH42535::E && GH42535::E
+    E() && E();
+        ^
+"Test_name.c", line 122: note: built-in operator&&(<bool>, <bool>) does not match because argument #1 does not match parameter
+    E() && E();
+        ^
+
+"Test_name.c", line 123: error: no operator "||" matches these operands
+            operand types are: GH42535::E || GH42535::E
+    E() || E();
+        ^
+"Test_name.c", line 123: note: built-in operator||(<bool>, <bool>) does not match because argument #1 does not match parameter
+    E() || E();
+        ^
+
+"Test_name.c", line 124: error: no operator "&" matches these operands
+            operand types are: GH42535::E & GH42535::E
+    E() & E();
+        ^
+"Test_name.c", line 124: note: built-in operator&(<promoted integral>, <promoted integral>) does not match because argument #1 does not match parameter
+    E() & E();
+        ^
+
+"Test_name.c", line 125: error: no operator ">>" matches these operands
+            operand types are: GH42535::E >> GH42535::E
+    E() >> E();
+        ^
+"Test_name.c", line 125: note: built-in operator>>(<promoted integral>, <promoted integral>) does not match because argument #1 does not match parameter
+    E() >> E();
+        ^
+
+"Test_name.c", line 47: warning: variable "PR6238::plus" was declared but never referenced
+    } plus;
+      ^
+
+60 errors detected in the compilation of "Test_name.c".

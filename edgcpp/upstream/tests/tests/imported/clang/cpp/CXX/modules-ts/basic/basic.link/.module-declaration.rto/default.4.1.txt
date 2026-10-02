@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=4 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 36: error: identifier "EXPORT" is undefined
+  EXPORT module MODULE_NAME;
+  ^
+
+"Test_name.c", line 36: error: expected a ";"
+  EXPORT module MODULE_NAME;
+                ^
+
+2 errors detected in the compilation of "Test_name.c".

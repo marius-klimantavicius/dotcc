@@ -1,0 +1,82 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 --strict_gnu Test_name.c
+"Test_name.c", line 14: warning: integer conversion resulted in a change of sign
+      case -1:
+           ^
+
+"Test_name.c", line 16: warning: integer conversion resulted in truncation
+      case ~0U + 1ULL:			/* { dg-warning "conversion from 'long long unsigned int' to 'unsigned int' changes value from '\[0-9]*' to '0'" } */
+           ^
+
+"Test_name.c", line 28: warning: integer conversion resulted in a change of sign
+      case -2 ... -1:			/* { dg-warning "conversion of '-2' to 'unsigned int' in range expression changes value to '\[0-9]*'" } */
+           ^
+
+"Test_name.c", line 28: warning: integer conversion resulted in a change of sign
+      case -2 ... -1:			/* { dg-warning "conversion of '-2' to 'unsigned int' in range expression changes value to '\[0-9]*'" } */
+                  ^
+
+"Test_name.c", line 31: warning: integer conversion resulted in truncation
+      case ~0U + 1ULL ... ~0U + 2ULL:	/* { dg-warning "conversion of '\[0-9]*' to 'unsigned int' in range expression changes value to '0'" } */
+           ^
+
+"Test_name.c", line 31: warning: integer conversion resulted in truncation
+      case ~0U + 1ULL ... ~0U + 2ULL:	/* { dg-warning "conversion of '\[0-9]*' to 'unsigned int' in range expression changes value to '0'" } */
+                          ^
+
+"Test_name.c", line 36: error: the second constant in a case range must be larger than the first
+      case 80 ... 78:			/* { dg-warning "empty range specified" } */
+                  ^
+
+"Test_name.c", line 38: warning: integer conversion resulted in a change of sign
+      case -4 ... -4:			/* { dg-warning "conversion of '-4' to 'unsigned int' in range expression changes value to '\[0-9]*'" } */
+           ^
+
+"Test_name.c", line 38: warning: integer conversion resulted in a change of sign
+      case -4 ... -4:			/* { dg-warning "conversion of '-4' to 'unsigned int' in range expression changes value to '\[0-9]*'" } */
+                  ^
+
+"Test_name.c", line 40: warning: integer conversion resulted in truncation
+      case ~0U + 6ULL ... ~0U + 6ULL:	/* { dg-warning "conversion of '\[0-9]*' to 'unsigned int' in range expression changes value to '5'" } */
+           ^
+
+"Test_name.c", line 40: warning: integer conversion resulted in truncation
+      case ~0U + 6ULL ... ~0U + 6ULL:	/* { dg-warning "conversion of '\[0-9]*' to 'unsigned int' in range expression changes value to '5'" } */
+                          ^
+
+"Test_name.c", line 54: error: case label value has already appeared in this switch at line 52
+      case -31:				/* { dg-error "duplicate case value" } */
+           ^
+
+"Test_name.c", line 58: error: case label value has already appeared in this switch at line 56
+      case -43 ... -41:			/* { dg-error "duplicate \\\(or overlapping\\\) case value" } */
+           ^
+
+"Test_name.c", line 70: error: the second constant in a case range must be larger than the first
+      case -6 ... -8:			/* { dg-warning "empty range specified" } */
+                  ^
+
+"Test_name.c", line 72: error: case label value has already appeared in this switch at line 70
+      case -6:
+           ^
+
+"Test_name.c", line 82: error: the second constant in a case range must be larger than the first
+      case -10 ... -11:			/* { dg-warning "empty range specified" } */
+                   ^
+
+"Test_name.c", line 82: error: case label value has already appeared in this switch at line 80
+      case -10 ... -11:			/* { dg-warning "empty range specified" } */
+           ^
+
+"Test_name.c", line 84: error: the second constant in a case range must be larger than the first
+      case -14 ... -15:			/* { dg-warning "empty range specified" } */
+                   ^
+
+"Test_name.c", line 86: error: the second constant in a case range must be larger than the first
+      case -14 ... -15:			/* { dg-warning "empty range specified" } */
+                   ^
+
+"Test_name.c", line 86: error: case label value has already appeared in this switch at line 84
+      case -14 ... -15:			/* { dg-warning "empty range specified" } */
+           ^
+
+10 errors detected in the compilation of "Test_name.c".

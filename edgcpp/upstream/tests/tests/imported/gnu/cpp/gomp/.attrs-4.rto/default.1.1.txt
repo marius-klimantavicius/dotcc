@@ -1,0 +1,137 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (parallel)]]
+      ^
+
+"Test_name.c", line 9: warning: unrecognized #pragma
+    #pragma omp for						// { dg-error "mixing OpenMP directives with attribute and pragma syntax on the same statement" }
+            ^
+
+"Test_name.c", line 12: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (barrier)]]					// { dg-error "standalone OpenMP directives in 'omp::directive' attribute can only appear on an empty statement" }
+      ^
+
+"Test_name.c", line 13: warning: unrecognized #pragma
+    #pragma omp flush
+            ^
+
+"Test_name.c", line 15: warning: unrecognized #pragma
+    #pragma omp parallel
+            ^
+
+"Test_name.c", line 16: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (master)]]					// { dg-error "mixing OpenMP directives with attribute and pragma syntax on the same statement" }
+      ^
+
+"Test_name.c", line 18: warning: unrecognized #pragma
+    #pragma omp teams
+            ^
+
+"Test_name.c", line 19: warning: attribute namespace "omp" is unrecognized
+    [[omp::sequence (directive (parallel), directive (master))]]	// { dg-error "mixing OpenMP directives with attribute and pragma syntax on the same statement" }
+      ^
+
+"Test_name.c", line 21: warning: unrecognized #pragma
+    #pragma omp task
+            ^
+
+"Test_name.c", line 22: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (flush)]]					// { dg-error "mixing OpenMP directives with attribute and pragma syntax on the same statement" }
+      ^
+
+"Test_name.c", line 24: warning: unrecognized #pragma
+    #pragma omp master
+            ^
+
+"Test_name.c", line 25: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (flush)]]					// { dg-error "mixing OpenMP directives with attribute and pragma syntax on the same statement" }
+      ^
+
+"Test_name.c", line 27: warning: unrecognized #pragma
+    #pragma omp for ordered
+            ^
+
+"Test_name.c", line 29: warning: unrecognized #pragma
+      #pragma omp ordered
+              ^
+
+"Test_name.c", line 30: warning: attribute namespace "omp" is unrecognized
+      [[omp::directive (flush)]]					// { dg-error "mixing OpenMP directives with attribute and pragma syntax on the same statement" }
+        ^
+
+"Test_name.c", line 32: warning: unrecognized #pragma
+    #pragma omp single
+            ^
+
+"Test_name.c", line 33: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (flush)]]					// { dg-error "mixing OpenMP directives with attribute and pragma syntax on the same statement" }
+      ^
+
+"Test_name.c", line 35: warning: unrecognized #pragma
+    #pragma omp taskgroup
+            ^
+
+"Test_name.c", line 36: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (taskyield)]]				// { dg-error "mixing OpenMP directives with attribute and pragma syntax on the same statement" }
+      ^
+
+"Test_name.c", line 38: warning: unrecognized #pragma
+    #pragma omp target data map (tofrom: x)
+            ^
+
+"Test_name.c", line 39: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (flush)]]					// { dg-error "mixing OpenMP directives with attribute and pragma syntax on the same statement" }
+      ^
+
+"Test_name.c", line 41: warning: unrecognized #pragma
+    #pragma omp target
+            ^
+
+"Test_name.c", line 42: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (teams)]]					// { dg-error "mixing OpenMP directives with attribute and pragma syntax on the same statement" }
+      ^
+
+"Test_name.c", line 44: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (parallel)]]
+      ^
+
+"Test_name.c", line 45: warning: unrecognized #pragma
+    #pragma omp master						// { dg-error "mixing OpenMP directives with attribute and pragma syntax on the same statement" }
+            ^
+
+"Test_name.c", line 46: warning: attribute namespace "omp" is unrecognized
+    [[omp::sequence (omp::directive (taskloop))]]			// { dg-error "mixing OpenMP directives with attribute and pragma syntax on the same statement" }
+      ^
+
+"Test_name.c", line 49: warning: unrecognized #pragma
+    #pragma omp parallel
+            ^
+
+"Test_name.c", line 50: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (for)]]					// { dg-error "mixing OpenMP directives with attribute and pragma syntax on the same statement" }
+      ^
+
+"Test_name.c", line 53: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 54: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (master)]]					// { dg-error "loop nest expected before '\\\[' token" }
+      ^
+
+"Test_name.c", line 56: warning: unrecognized #pragma
+    #pragma omp target teams
+            ^
+
+"Test_name.c", line 57: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (parallel)]]					// { dg-error "mixing OpenMP directives with attribute and pragma syntax on the same statement" }
+      ^
+
+"Test_name.c", line 59: warning: unrecognized #pragma
+    #pragma omp parallel master
+            ^
+
+"Test_name.c", line 60: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (taskloop)]]					// { dg-error "mixing OpenMP directives with attribute and pragma syntax on the same statement" }
+      ^
+

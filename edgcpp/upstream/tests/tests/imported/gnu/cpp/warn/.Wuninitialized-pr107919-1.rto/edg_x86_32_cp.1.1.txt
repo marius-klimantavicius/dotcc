@@ -1,0 +1,223 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 100: error: enum "std::align_val_t" was previously declared with a different base type
+    enum class align_val_t: size_t {};
+               ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 137: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 140: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 155: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 158: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 168: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t, std::align_val_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 171: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t, std::align_val_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 179: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, std::align_val_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 182: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, std::align_val_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 206: error: first parameter of allocation function must be of type "size_t"
+  void* operator new(std::size_t, void* __p)
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 210: error: first parameter of allocation function must be of type "size_t"
+  void* operator new[](std::size_t, void* __p)
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/cpp_type_traits.h", line 553: error: identifier "__int128" is undefined
+      struct __memcpyable_integer<__int128> { enum { __width = 128 }; };
+                                  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/cpp_type_traits.h", line 556: error: expected a ">"
+      struct __memcpyable_integer<unsigned __int128> { enum { __width = 128 }; };
+                                           ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/ext/numeric_traits.h", line 132: error: identifier "__int128" is undefined
+    __extension__ template<> struct __is_integer_nonstrict<__int128> { enum { __value = 1 }; typedef std::__true_type __type; enum { __width = 128 }; }; __extension__ template<> struct __is_integer_nonstrict<unsigned __int128> { enum { __value = 1 }; typedef std::__true_type __type; enum { __width = 128 }; };
+                                                           ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/ext/numeric_traits.h", line 132: error: expected a ">"
+    __extension__ template<> struct __is_integer_nonstrict<__int128> { enum { __value = 1 }; typedef std::__true_type __type; enum { __width = 128 }; }; __extension__ template<> struct __is_integer_nonstrict<unsigned __int128> { enum { __value = 1 }; typedef std::__true_type __type; enum { __width = 128 }; };
+                                                                                                                                                                                                                         ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_tempbuf.h", line 94: error: no instance of overloaded function "operator new" matches the argument list
+            argument types are: (unsigned long, std::nothrow_t)
+   return (_Tp*) __builtin_operator_new(__len * sizeof(_Tp), nothrow_t());
+                 ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/variant", line 260: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, void *)
+     ::new ((void*)std::addressof(_M_storage))
+       ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+          detected during:
+            instantiation of "std::__detail::__variant::_Uninitialized<_Type, false>::_Uninitialized(std::in_place_index_t<0UL>, _Args &&...) [with _Type=std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, _Args=<>]" at line 404
+            instantiation of "std::__detail::__variant::_Variadic_union<__trivially_destructible, _First, _Rest...>::_Variadic_union(std::in_place_index_t<0UL>, _Args &&...) [with __trivially_destructible=false, _First=std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, _Rest=<int, char>, _Args=<>]" at line 481
+            instantiation of "std::__detail::__variant::_Variant_storage<false, _Types...>::_Variant_storage(std::in_place_index_t<_Np>, _Args &&...) [with _Types=<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char>, _Np=0UL, _Args=<>]" at line 768
+            implicit generation of "std::__detail::__variant::_Copy_ctor_base<false, std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char>::_Copy_ctor_base(std::in_place_index_t<_Np>, _Args &&...) [with _Np=0UL, _Args=<>]" at line 768
+            instantiation of class "std::__detail::__variant::_Copy_ctor_base<<unnamed>, _Types...> [with <unnamed>=false, _Types=<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char>]" at line 768
+            [ 4 instantiation contexts not shown ]
+            implicit generation of "std::__detail::__variant::_Move_assign_base<false, std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char>::_Move_assign_base(std::in_place_index_t<_Np>, _Args &&...) [with _Np=0UL, _Args=<>]" at line 768
+            instantiation of class "std::__detail::__variant::_Move_assign_base<<unnamed>, _Types...> [with <unnamed>=false, _Types=<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char>]" at line 768
+            instantiation of "std::__detail::__variant::_Variant_base<_Types...>::_Variant_base(std::in_place_index_t<_Np>, _Args &&...) [with _Types=<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char>, _Np=0UL, _Args=<>]" at line 763
+            instantiation of "std::__detail::__variant::_Variant_base<_Types...>::_Variant_base() [with _Types=<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char>]" at line 1483
+            instantiation of "std::variant<_Types...>::variant() [with _Types=<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char>, _Tp0=std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, <unnamed>=void]" at line 12 of "./warn/Wuninitialized-pr107919-1.C"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/variant", line 260: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, void *)
+     ::new ((void*)std::addressof(_M_storage))
+       ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+          detected during:
+            instantiation of "std::__detail::__variant::_Uninitialized<_Type, false>::_Uninitialized(std::in_place_index_t<0UL>, _Args &&...) [with _Type=std::tuple<std::unique_ptr<int, std::default_delete<int>>>, _Args=<>]" at line 404
+            instantiation of "std::__detail::__variant::_Variadic_union<__trivially_destructible, _First, _Rest...>::_Variadic_union(std::in_place_index_t<0UL>, _Args &&...) [with __trivially_destructible=false, _First=std::tuple<std::unique_ptr<int, std::default_delete<int>>>, _Rest=<>, _Args=<>]" at line 481
+            instantiation of "std::__detail::__variant::_Variant_storage<false, _Types...>::_Variant_storage(std::in_place_index_t<_Np>, _Args &&...) [with _Types=<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, _Np=0UL, _Args=<>]" at line 768
+            implicit generation of "std::__detail::__variant::_Copy_ctor_base<false, std::tuple<std::unique_ptr<int, std::default_delete<int>>>>::_Copy_ctor_base(std::in_place_index_t<_Np>, _Args &&...) [with _Np=0UL, _Args=<>]" at line 768
+            instantiation of class "std::__detail::__variant::_Copy_ctor_base<<unnamed>, _Types...> [with <unnamed>=false, _Types=<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>]" at line 768
+            [ 18 instantiation contexts not shown ]
+            implicit generation of "std::__detail::__variant::_Move_assign_base<false, std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char>::_Move_assign_base(std::in_place_index_t<_Np>, _Args &&...) [with _Np=0UL, _Args=<>]" at line 768
+            instantiation of class "std::__detail::__variant::_Move_assign_base<<unnamed>, _Types...> [with <unnamed>=false, _Types=<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char>]" at line 768
+            instantiation of "std::__detail::__variant::_Variant_base<_Types...>::_Variant_base(std::in_place_index_t<_Np>, _Args &&...) [with _Types=<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char>, _Np=0UL, _Args=<>]" at line 763
+            instantiation of "std::__detail::__variant::_Variant_base<_Types...>::_Variant_base() [with _Types=<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char>]" at line 1483
+            instantiation of "std::variant<_Types...>::variant() [with _Types=<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char>, _Tp0=std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, <unnamed>=void]" at line 12 of "./warn/Wuninitialized-pr107919-1.C"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_construct.h", line 133: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, void *)
+        ::new(static_cast<void*>(__p)) _Tp(std::forward<_Args>(__args)...);
+          ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+          detected during:
+            instantiation of "void std::_Construct(_Tp *, _Args &&...) [with _Tp=std::__detail::__variant::_Uninitialized<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, false>, _Args=<const std::in_place_index_t<0UL> &, std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>>]" at line 563 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/variant"
+            instantiation of "void std::__detail::__variant::__emplace<_Np,_Triv,_Types...,_Args...>(std::__detail::__variant::_Variant_storage<_Triv, _Types...> &, _Args &&...) [with _Np=0UL, _Triv=false, _Types=<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char>, _Args=<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>>]" at line 188 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/variant"
+            instantiation of "void std::__detail::__variant::__raw_idx_visit(_Visitor &&, _Variants &&...) [with _Visitor=lambda [](auto &&, auto) mutable->auto, _Variants=<std::variant<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char> &>]" at line 1736 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/variant"
+            instantiation of "void std::variant<_Types...>::swap(std::variant<_Types...> &) [with _Types=<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char>]" at line 1388 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/variant"
+            instantiation of "std::enable_if_t<<expression>, void> std::swap(std::variant<_Types...> &, std::variant<_Types...> &) [with _Types=<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char>]" at line 14 of "./warn/Wuninitialized-pr107919-1.C"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/variant", line 260: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, void *)
+     ::new ((void*)std::addressof(_M_storage))
+       ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+          detected during:
+            instantiation of "std::__detail::__variant::_Uninitialized<_Type, false>::_Uninitialized(std::in_place_index_t<0UL>, _Args &&...) [with _Type=std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, _Args=<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>>]" at line 133 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_construct.h"
+            instantiation of "void std::_Construct(_Tp *, _Args &&...) [with _Tp=std::__detail::__variant::_Uninitialized<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, false>, _Args=<const std::in_place_index_t<0UL> &, std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>>]" at line 563
+            instantiation of "void std::__detail::__variant::__emplace<_Np,_Triv,_Types...,_Args...>(std::__detail::__variant::_Variant_storage<_Triv, _Types...> &, _Args &&...) [with _Np=0UL, _Triv=false, _Types=<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char>, _Args=<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>>]" at line 188
+            instantiation of "void std::__detail::__variant::__raw_idx_visit(_Visitor &&, _Variants &&...) [with _Visitor=lambda [](auto &&, auto) mutable->auto, _Variants=<std::variant<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char> &>]" at line 1736
+            instantiation of "void std::variant<_Types...>::swap(std::variant<_Types...> &) [with _Types=<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char>]" at line 1388
+            instantiation of "std::enable_if_t<<expression>, void> std::swap(std::variant<_Types...> &, std::variant<_Types...> &) [with _Types=<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char>]" at line 14 of "./warn/Wuninitialized-pr107919-1.C"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_construct.h", line 133: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, void *)
+        ::new(static_cast<void*>(__p)) _Tp(std::forward<_Args>(__args)...);
+          ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+          detected during:
+            instantiation of "void std::_Construct(_Tp *, _Args &&...) [with _Tp=std::__detail::__variant::_Uninitialized<int, true>, _Args=<const std::in_place_index_t<0UL> &, int>]" at line 563 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/variant"
+            instantiation of "void std::__detail::__variant::__emplace<_Np,_Triv,_Types...,_Args...>(std::__detail::__variant::_Variant_storage<_Triv, _Types...> &, _Args &&...) [with _Np=1UL, _Triv=false, _Types=<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char>, _Args=<int>]" at line 188 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/variant"
+            instantiation of "void std::__detail::__variant::__raw_idx_visit(_Visitor &&, _Variants &&...) [with _Visitor=lambda [](auto &&, auto) mutable->auto, _Variants=<std::variant<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char> &>]" at line 1736 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/variant"
+            instantiation of "void std::variant<_Types...>::swap(std::variant<_Types...> &) [with _Types=<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char>]" at line 1388 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/variant"
+            instantiation of "std::enable_if_t<<expression>, void> std::swap(std::variant<_Types...> &, std::variant<_Types...> &) [with _Types=<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char>]" at line 14 of "./warn/Wuninitialized-pr107919-1.C"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_construct.h", line 133: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, void *)
+        ::new(static_cast<void*>(__p)) _Tp(std::forward<_Args>(__args)...);
+          ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+          detected during:
+            instantiation of "void std::_Construct(_Tp *, _Args &&...) [with _Tp=std::__detail::__variant::_Uninitialized<char, true>, _Args=<const std::in_place_index_t<0UL> &, char>]" at line 563 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/variant"
+            instantiation of "void std::__detail::__variant::__emplace<_Np,_Triv,_Types...,_Args...>(std::__detail::__variant::_Variant_storage<_Triv, _Types...> &, _Args &&...) [with _Np=2UL, _Triv=false, _Types=<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char>, _Args=<char>]" at line 188 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/variant"
+            instantiation of "void std::__detail::__variant::__raw_idx_visit(_Visitor &&, _Variants &&...) [with _Visitor=lambda [](auto &&, auto) mutable->auto, _Variants=<std::variant<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char> &>]" at line 1736 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/variant"
+            instantiation of "void std::variant<_Types...>::swap(std::variant<_Types...> &) [with _Types=<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char>]" at line 1388 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/variant"
+            instantiation of "std::enable_if_t<<expression>, void> std::swap(std::variant<_Types...> &, std::variant<_Types...> &) [with _Types=<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char>]" at line 14 of "./warn/Wuninitialized-pr107919-1.C"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_construct.h", line 133: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, void *)
+        ::new(static_cast<void*>(__p)) _Tp(std::forward<_Args>(__args)...);
+          ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+          detected during:
+            instantiation of "void std::_Construct(_Tp *, _Args &&...) [with _Tp=std::__detail::__variant::_Uninitialized<std::tuple<std::unique_ptr<int, std::default_delete<int>>>, false>, _Args=<const std::in_place_index_t<0UL> &, std::tuple<std::unique_ptr<int, std::default_delete<int>>>>]" at line 563 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/variant"
+            instantiation of "void std::__detail::__variant::__emplace<_Np,_Triv,_Types...,_Args...>(std::__detail::__variant::_Variant_storage<_Triv, _Types...> &, _Args &&...) [with _Np=0UL, _Triv=false, _Types=<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, _Args=<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>]" at line 188 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/variant"
+            instantiation of "void std::__detail::__variant::__raw_idx_visit(_Visitor &&, _Variants &&...) [with _Visitor=lambda [](auto &&, auto) mutable->auto, _Variants=<std::variant<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char> &>]" at line 1736 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/variant"
+            instantiation of "void std::variant<_Types...>::swap(std::variant<_Types...> &) [with _Types=<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char>]" at line 1388 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/variant"
+            instantiation of "std::enable_if_t<<expression>, void> std::swap(std::variant<_Types...> &, std::variant<_Types...> &) [with _Types=<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char>]" at line 14 of "./warn/Wuninitialized-pr107919-1.C"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/variant", line 260: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, void *)
+     ::new ((void*)std::addressof(_M_storage))
+       ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+          detected during:
+            instantiation of "std::__detail::__variant::_Uninitialized<_Type, false>::_Uninitialized(std::in_place_index_t<0UL>, _Args &&...) [with _Type=std::tuple<std::unique_ptr<int, std::default_delete<int>>>, _Args=<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>]" at line 133 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_construct.h"
+            instantiation of "void std::_Construct(_Tp *, _Args &&...) [with _Tp=std::__detail::__variant::_Uninitialized<std::tuple<std::unique_ptr<int, std::default_delete<int>>>, false>, _Args=<const std::in_place_index_t<0UL> &, std::tuple<std::unique_ptr<int, std::default_delete<int>>>>]" at line 563
+            instantiation of "void std::__detail::__variant::__emplace<_Np,_Triv,_Types...,_Args...>(std::__detail::__variant::_Variant_storage<_Triv, _Types...> &, _Args &&...) [with _Np=0UL, _Triv=false, _Types=<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, _Args=<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>]" at line 188
+            instantiation of "void std::__detail::__variant::__raw_idx_visit(_Visitor &&, _Variants &&...) [with _Visitor=lambda [](auto &&, auto) mutable->auto, _Variants=<std::variant<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char> &>]" at line 1736
+            instantiation of "void std::variant<_Types...>::swap(std::variant<_Types...> &) [with _Types=<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char>]" at line 1388
+            instantiation of "std::enable_if_t<<expression>, void> std::swap(std::variant<_Types...> &, std::variant<_Types...> &) [with _Types=<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char>]" at line 14 of "./warn/Wuninitialized-pr107919-1.C"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_construct.h", line 133: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, void *)
+        ::new(static_cast<void*>(__p)) _Tp(std::forward<_Args>(__args)...);
+          ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+          detected during:
+            instantiation of "void std::_Construct(_Tp *, _Args &&...) [with _Tp=std::__detail::__variant::_Variadic_union<false, std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, _Args=<const std::in_place_index_t<0UL> &, std::tuple<std::unique_ptr<int, std::default_delete<int>>>>]" at line 188 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/variant"
+            instantiation of "void std::__detail::__variant::__raw_idx_visit(_Visitor &&, _Variants &&...) [with _Visitor=lambda [](auto &&, auto) mutable->auto, _Variants=<std::variant<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char> &>]" at line 1736 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/variant"
+            instantiation of "void std::variant<_Types...>::swap(std::variant<_Types...> &) [with _Types=<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char>]" at line 1388 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/variant"
+            instantiation of "std::enable_if_t<<expression>, void> std::swap(std::variant<_Types...> &, std::variant<_Types...> &) [with _Types=<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char>]" at line 14 of "./warn/Wuninitialized-pr107919-1.C"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_construct.h", line 133: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, void *)
+        ::new(static_cast<void*>(__p)) _Tp(std::forward<_Args>(__args)...);
+          ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+          detected during:
+            instantiation of "void std::_Construct(_Tp *, _Args &&...) [with _Tp=std::__detail::__variant::_Variadic_union<false, int, char>, _Args=<>]" at line 188 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/variant"
+            instantiation of "void std::__detail::__variant::__raw_idx_visit(_Visitor &&, _Variants &&...) [with _Visitor=lambda [](auto &&, auto) mutable->auto, _Variants=<std::variant<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char> &>]" at line 1736 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/variant"
+            instantiation of "void std::variant<_Types...>::swap(std::variant<_Types...> &) [with _Types=<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char>]" at line 1388 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/variant"
+            instantiation of "std::enable_if_t<<expression>, void> std::swap(std::variant<_Types...> &, std::variant<_Types...> &) [with _Types=<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char>]" at line 14 of "./warn/Wuninitialized-pr107919-1.C"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_construct.h", line 133: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, void *)
+        ::new(static_cast<void*>(__p)) _Tp(std::forward<_Args>(__args)...);
+          ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+          detected during:
+            instantiation of "void std::_Construct(_Tp *, _Args &&...) [with _Tp=std::__detail::__variant::_Variadic_union<false, char>, _Args=<>]" at line 188 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/variant"
+            instantiation of "void std::__detail::__variant::__raw_idx_visit(_Visitor &&, _Variants &&...) [with _Visitor=lambda [](auto &&, auto) mutable->auto, _Variants=<std::variant<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char> &>]" at line 1736 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/variant"
+            instantiation of "void std::variant<_Types...>::swap(std::variant<_Types...> &) [with _Types=<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char>]" at line 1388 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/variant"
+            instantiation of "std::enable_if_t<<expression>, void> std::swap(std::variant<_Types...> &, std::variant<_Types...> &) [with _Types=<std::variant<std::tuple<std::unique_ptr<int, std::default_delete<int>>>>, int, char>]" at line 14 of "./warn/Wuninitialized-pr107919-1.C"
+
+27 errors detected in the compilation of "Test_name.c".

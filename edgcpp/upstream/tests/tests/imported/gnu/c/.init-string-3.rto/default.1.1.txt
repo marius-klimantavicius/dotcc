@@ -1,0 +1,37 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 24: warning: excess initializers are ignored
+  const char c[0] = { 1 };    /* { dg-warning "excess elements" } */
+                      ^
+
+"Test_name.c", line 31: warning: variable "a" was set but never used
+    const char a[] = { };
+               ^
+
+"Test_name.c", line 42: warning: excess initializers are ignored
+    const char b[0] = { 0 };    /* { dg-warning "excess elements" } */
+                        ^
+
+"Test_name.c", line 38: warning: variable "a" was set but never used
+    const char a[0] = { };
+               ^
+
+"Test_name.c", line 42: warning: variable "b" was set but never used
+    const char b[0] = { 0 };    /* { dg-warning "excess elements" } */
+               ^
+
+"Test_name.c", line 46: warning: variable "c" was set but never used
+    const char c[0] = "";
+               ^
+
+"Test_name.c", line 56: warning: excess initializers are ignored
+    A (sizeof (const char[0]){ 0 } == 0);   /* { dg-warning "excess elements" } */
+    ^
+
+"Test_name.c", line 57: warning: excess initializers are ignored
+    A (sizeof (const char[0]){ 1 } == 0);   /* { dg-warning "excess elements" } */
+    ^
+
+"Test_name.c", line 59: warning: string literal too long -- excess characters ignored
+    A (sizeof (const char[0]){ "1" } == 0);  /* { dg-warning "too long" } */
+    ^
+

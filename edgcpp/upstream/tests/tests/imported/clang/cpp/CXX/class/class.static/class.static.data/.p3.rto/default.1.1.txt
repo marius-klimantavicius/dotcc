@@ -1,0 +1,56 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 12: error: a constexpr static data member declaration requires an in-class initializer
+    static constexpr int b; // expected-error {{initializ}} expected-note 0-1{{previous}}
+                          ^
+
+"Test_name.c", line 20: error: a member of type "char *const" cannot have an in-class initializer
+    static char *const g = 0; // expected-error {{requires 'constexpr' specifier}}
+                         ^
+
+"Test_name.c", line 21: error: a member of type "const NonLit" cannot have an in-class initializer
+    static const NonLit h = NonLit(); // expected-error {{must be initialized out of line}}
+                          ^
+
+"Test_name.c", line 23: warning: inline variables are a C++17 feature
+    static inline int i; // expected-note {{previous}} expected-warning 0-1{{extension}}
+           ^
+
+"Test_name.c", line 35: error: member "S::i" has already been defined (previous definition at line 23)
+  int S::i; // expected-error {{redefinition}}
+         ^
+
+"Test_name.c", line 36: error: member "S::j" has already been defined (previous definition at line 24)
+  int S::j; // expected-error {{redefinition}}
+         ^
+
+"Test_name.c", line 42: error: a constexpr static data member declaration requires an in-class initializer
+    static constexpr int b; // expected-error {{initializ}}
+                          ^
+
+"Test_name.c", line 43: error: expression must have a constant value
+    static constexpr NonLit h = NonLit(); // expected-error {{cannot have non-literal type 'const NonLit'}}
+                                ^
+
+"Test_name.c", line 43: error: a constexpr variable must have a literal type or a reference type
+    static constexpr NonLit h = NonLit(); // expected-error {{cannot have non-literal type 'const NonLit'}}
+           ^
+
+"Test_name.c", line 44: error: a constexpr variable must have a literal type or a reference type
+    static constexpr T c = T(); // expected-error {{cannot have non-literal type}}
+           ^
+          detected during instantiation of class "U<T> [with T=NonLit]" at line 51
+
+"Test_name.c", line 55: warning: expression has no effect
+  constexpr int outofline = (U<NonLit>::d, 0); // expected-note {{here}}
+                             ^
+
+"Test_name.c", line 48: error: a constexpr variable must have a literal type or a reference type
+  template<typename T> constexpr T U<T>::d = T(); // expected-error {{non-literal type 'const NonLit'}}
+                       ^
+          detected during implicit definition of "const NonLit U<T>::d [with T=NonLit]" at line 55
+
+"Test_name.c", line 55: warning: variable "outofline" was declared but never referenced
+  constexpr int outofline = (U<NonLit>::d, 0); // expected-note {{here}}
+                ^
+
+10 errors detected in the compilation of "Test_name.c".

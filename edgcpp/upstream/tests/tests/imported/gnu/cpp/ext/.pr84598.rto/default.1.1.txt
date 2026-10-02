@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics -w Test_name.c
+"Test_name.c", line 5: error: expected a "("
+  template<int b> __attribute__ a([] { class c, __attribute__(vector_size(operator+()))) d; // { dg-error "before" }
+                                ^
+
+"Test_name.c", line 5: error: expected a "("
+  template<int b> __attribute__ a([] { class c, __attribute__(vector_size(operator+()))) d; // { dg-error "before" }
+                                  ^
+
+At end of source: error: expected an identifier
+
+At end of source: error: expected a ","
+
+At end of source: error: expected a ")"
+
+At end of source: error: expected a ";"
+
+6 errors detected in the compilation of "Test_name.c".

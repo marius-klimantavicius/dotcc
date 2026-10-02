@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./tree-ssa/builtin-snprintf-4.c", line 59: warning: use of a const variable in a constant expression is nonstandard in C
+  static const size_t imaxp1 = imax + 1;
+                               ^
+
+"./tree-ssa/builtin-snprintf-4.c", line 67: warning: use of a const variable in a constant expression is nonstandard in C
+  static const size_t dmaxp1 = dmax + 1;
+                               ^
+

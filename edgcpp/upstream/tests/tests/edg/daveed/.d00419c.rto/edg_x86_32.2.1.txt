@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=2 --microsoft -DNEG Test_name.c
+"Test_name.c", line 19: error: declaration is incompatible with "void __stdcall f()" (declared at line 18)
+  void f();
+       ^
+
+1 error detected in the compilation of "Test_name.c".

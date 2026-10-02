@@ -1,0 +1,23 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 7: error: a "final" class type cannot be used as a base class
+  class B : A { }; // expected-error {{base 'A' is marked 'final'}}
+            ^
+
+"Test_name.c", line 14: error: a "final" class type cannot be used as a base class
+  struct B : A<int> { }; // expected-error {{base 'A' is marked 'final'}}
+             ^
+
+"Test_name.c", line 16: error: a "final" class type cannot be used as a base class
+  template<typename T> struct C : A<T> { }; // expected-error {{base 'A' is marked 'final'}}
+                                  ^
+          detected during instantiation of class "Test2::C<T> [with T=int]" at line 17
+
+"Test_name.c", line 27: error: a "final" class type cannot be used as a base class
+  struct C : A<int> { }; // expected-error {{base 'A' is marked 'final'}}
+             ^
+
+"Test_name.c", line 33: warning: "final" applied to a pure virtual function
+  struct A final { virtual void func() = 0; }; // expected-warning {{abstract class is marked 'final'}} expected-note {{unimplemented pure virtual method 'func' in 'A'}}
+                                       ^
+
+4 errors detected in the compilation of "Test_name.c".

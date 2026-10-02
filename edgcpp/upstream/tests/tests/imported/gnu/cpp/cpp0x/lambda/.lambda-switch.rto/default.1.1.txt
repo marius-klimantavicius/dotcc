@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 17: error: a case label may only be used within a switch
+  	    case 4:		// { dg-error "case" }
+  	    ^
+
+"Test_name.c", line 18: error: a break statement may only be used within a loop or switch
+  	      break;		// { dg-error "break" }
+  	      ^
+
+"Test_name.c", line 21: warning: statement is unreachable
+  	  l = []()		// { dg-warning "statement will never be executed" }
+  	  ^
+
+"Test_name.c", line 23: error: a case label may only be used within a switch
+  	    case 3:		// { dg-error "case" }
+  	    ^
+
+"Test_name.c", line 24: error: a break statement may only be used within a loop or switch
+  	      break;		// { dg-error "break" }
+  	      ^
+
+"Test_name.c", line 9: warning: variable "l" was set but never used
+    void (*l)();
+           ^
+
+4 errors detected in the compilation of "Test_name.c".

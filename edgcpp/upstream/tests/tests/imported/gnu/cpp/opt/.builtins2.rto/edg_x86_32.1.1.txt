@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/cpp_type_traits.h", line 553: error: identifier "__int128" is undefined
+      struct __memcpyable_integer<__int128> { enum { __width = 128 }; };
+                                  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/cpp_type_traits.h", line 556: error: expected a ">"
+      struct __memcpyable_integer<unsigned __int128> { enum { __width = 128 }; };
+                                           ^
+
+2 errors detected in the compilation of "Test_name.c".

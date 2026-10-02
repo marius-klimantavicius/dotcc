@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 7: warning: nullability qualifiers are only permitted on pointer and pointer-to-member types
+  _Nullable int *ip1; // expected-error{{nullability specifier '_Nullable' cannot be applied to non-pointer type 'int'; did you mean to apply the specifier to the pointer?}}
+  ^
+
+"Test_name.c", line 8: warning: nullability qualifiers are only permitted on pointer and pointer-to-member types
+  _Nullable int (*fp1)(int); // expected-error{{nullability specifier '_Nullable' cannot be applied to non-pointer type 'int'; did you mean to apply the specifier to the function pointer?}}
+  ^
+
+"Test_name.c", line 9: warning: nullability qualifiers are only permitted on pointer and pointer-to-member types
+  _Nonnull int (^bp1)(int); // expected-error{{nullability specifier '_Nonnull' cannot be applied to non-pointer type 'int'; did you mean to apply the specifier to the block pointer?}}
+  ^
+
+"Test_name.c", line 9: error: expected an identifier
+  _Nonnull int (^bp1)(int); // expected-error{{nullability specifier '_Nonnull' cannot be applied to non-pointer type 'int'; did you mean to apply the specifier to the block pointer?}}
+                ^
+
+"Test_name.c", line 10: warning: nullability qualifiers are only permitted on pointer and pointer-to-member types
+  _Nonnull int X::*pmd1; // expected-error{{nullability specifier '_Nonnull' cannot be applied to non-pointer type 'int'; did you mean to apply the specifier to the member pointer?}}
+  ^
+
+"Test_name.c", line 11: warning: nullability qualifiers are only permitted on pointer and pointer-to-member types
+  _Nonnull int (X::*pmf1)(int); // expected-error{{nullability specifier '_Nonnull' cannot be applied to non-pointer type 'int'; did you mean to apply the specifier to the member function pointer?}}
+  ^
+
+1 error detected in the compilation of "Test_name.c".

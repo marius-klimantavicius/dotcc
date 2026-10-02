@@ -1,0 +1,49 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 7: warning: unknown attribute "nomips16"
+  void __attribute__((nomips16)) foo32(void);
+                      ^
+
+"Test_name.c", line 8: warning: unknown attribute "mips16"
+  void __attribute__((mips16)) foo16(void);
+                      ^
+
+"Test_name.c", line 10: warning: unknown attribute "nomips16"
+  void __attribute__((nomips16)) foo32_(void);
+                      ^
+
+"Test_name.c", line 11: warning: unknown attribute "mips16"
+  void __attribute__((mips16)) foo16_(void);
+                      ^
+
+"Test_name.c", line 15: warning: unknown attribute "nomips16"
+  void foo32__(void) __attribute__((nomips16));
+                                    ^
+
+"Test_name.c", line 16: warning: unknown attribute "mips16"
+  void foo32__(void) __attribute__((mips16));
+                                    ^
+
+"Test_name.c", line 18: warning: unknown attribute "nomips16"
+  void foo32a(void) __attribute__((nomips16(0))) ; // expected-error {{'nomips16' attribute takes no arguments}}
+                                   ^
+
+"Test_name.c", line 19: warning: unknown attribute "mips16"
+  void __attribute__((mips16(1))) foo16a(void); // expected-error {{'mips16' attribute takes no arguments}}
+                      ^
+
+"Test_name.c", line 21: warning: unknown attribute "nomips16"
+  void __attribute__((nomips16(1, 2))) foo32b(void); // expected-error {{'nomips16' attribute takes no arguments}}
+                      ^
+
+"Test_name.c", line 22: warning: unknown attribute "mips16"
+  void __attribute__((mips16(1, 2))) foo16b(void); // expected-error {{'mips16' attribute takes no arguments}}
+                      ^
+
+"Test_name.c", line 25: warning: unknown attribute "nomips16"
+  __attribute((nomips16)) int a; // expected-error {{attribute only applies to functions}}
+               ^
+
+"Test_name.c", line 27: warning: unknown attribute "mips16"
+  __attribute((mips16)) int b; // expected-error {{attribute only applies to functions}}
+               ^
+

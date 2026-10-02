@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 14: error: expression must have arithmetic, unscoped enum, or pointer type but has type "void"
+    (void)f2-f1;  // { dg-error "" "cannot subtract pointers to function" }
+    ^
+
+"Test_name.c", line 13: warning: variable "f2" was set but never used
+    fp f2 = foo;
+       ^
+
+1 error detected in the compilation of "Test_name.c".

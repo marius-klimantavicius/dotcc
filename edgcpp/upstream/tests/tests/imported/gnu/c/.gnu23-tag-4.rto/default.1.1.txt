@@ -1,0 +1,105 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 --strict_gnu Test_name.c
+"Test_name.c", line 10: warning: variable-length array field type will be treated as zero-length array field type
+  	struct f { int b; int a[n]; } *x;
+  	                        ^
+
+"Test_name.c", line 11: warning: variable-length array field type will be treated as zero-length array field type
+  	{ struct f { int b; int a[n]; } *x2 = x; }
+  	                          ^
+
+"Test_name.c", line 11: warning: variable "x" is used before its value is set
+  	{ struct f { int b; int a[n]; } *x2 = x; }
+  	                                      ^
+
+"Test_name.c", line 11: warning: variable "x2" was declared but never referenced
+  	{ struct f { int b; int a[n]; } *x2 = x; }
+  	                                 ^
+
+"Test_name.c", line 12: warning: variable-length array field type will be treated as zero-length array field type
+  	{ struct f { int b; int a[m]; } *x2 = x; }
+  	                          ^
+
+"Test_name.c", line 12: warning: variable "x2" was declared but never referenced
+  	{ struct f { int b; int a[m]; } *x2 = x; }
+  	                                 ^
+
+"Test_name.c", line 13: warning: variable "x2" was declared but never referenced
+  	{ struct f { int b; int a[5]; } *x2 = x; }
+  	                                 ^
+
+"Test_name.c", line 14: warning: variable "x2" was declared but never referenced
+  	{ struct f { int b; int a[0]; }  *x2 = x; }
+  	                                  ^
+
+"Test_name.c", line 15: warning: variable "x2" was declared but never referenced
+  	{ struct f { int b; int a[]; }  *x2 = x; }
+  	                                 ^
+
+"Test_name.c", line 17: warning: variable-length array field type will be treated as zero-length array field type
+  	struct g { int a[n]; int b; } *y;
+  	                 ^
+
+"Test_name.c", line 18: warning: variable-length array field type will be treated as zero-length array field type
+  	{ struct g { int a[n]; int b; } *y2 = y; }
+  	                   ^
+
+"Test_name.c", line 18: warning: variable "y" is used before its value is set
+  	{ struct g { int a[n]; int b; } *y2 = y; }
+  	                                      ^
+
+"Test_name.c", line 18: warning: variable "y2" was declared but never referenced
+  	{ struct g { int a[n]; int b; } *y2 = y; }
+  	                                 ^
+
+"Test_name.c", line 19: warning: variable-length array field type will be treated as zero-length array field type
+  	{ struct g { int a[m]; int b; } *y2 = y; }
+  	                   ^
+
+"Test_name.c", line 19: warning: variable "y2" was declared but never referenced
+  	{ struct g { int a[m]; int b; } *y2 = y; }
+  	                                 ^
+
+"Test_name.c", line 20: warning: variable "y2" was declared but never referenced
+  	{ struct g { int a[4]; int b; } *y2 = y; }
+  	                                 ^
+
+"Test_name.c", line 23: warning: variable "w" is used before its value is set
+  	{ struct h { int b; int a[5]; } *w2 = w; }
+  	                                      ^
+
+"Test_name.c", line 23: warning: variable "w2" was declared but never referenced
+  	{ struct h { int b; int a[5]; } *w2 = w; }
+  	                                 ^
+
+"Test_name.c", line 24: warning: variable-length array field type will be treated as zero-length array field type
+  	{ struct h { int b; int a[n]; } *w2 = w; }
+  	                          ^
+
+"Test_name.c", line 24: warning: variable "w2" was declared but never referenced
+  	{ struct h { int b; int a[n]; } *w2 = w; }
+  	                                 ^
+
+"Test_name.c", line 25: warning: variable-length array field type will be treated as zero-length array field type
+  	{ struct h { int b; int a[m]; } *w2 = w; }
+  	                          ^
+
+"Test_name.c", line 25: warning: variable "w2" was declared but never referenced
+  	{ struct h { int b; int a[m]; } *w2 = w; }
+  	                                 ^
+
+"Test_name.c", line 28: warning: variable "u" is used before its value is set
+  	{ struct i { int b; int (*a)(int c[4]); } *u2 = u; }
+  	                                                ^
+
+"Test_name.c", line 28: warning: variable "u2" was declared but never referenced
+  	{ struct i { int b; int (*a)(int c[4]); } *u2 = u; }
+  	                                           ^
+
+"Test_name.c", line 29: warning: variable "u2" was declared but never referenced
+  	{ struct i { int b; int (*a)(int c[]); } *u2 = u; }
+  	                                          ^
+
+"Test_name.c", line 30: warning: variable "u2" was declared but never referenced
+  	{ struct i { int b; int (*a)(int c[*]); } *u2 = u; }
+  	                                           ^
+

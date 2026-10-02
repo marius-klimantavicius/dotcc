@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --g++ Test_name.c
+"Test_name.c", line 15: warning: qualified name is not allowed in member declaration
+  	void S::g() {}
+  	     ^
+
+"Test_name.c", line 16: warning: qualified name is not allowed in member declaration
+  	template<typename T> void S::f() {}
+  	                          ^
+

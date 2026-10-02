@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --c++03 --gn 150100 Test_name.c
+"Test_name.c", line 7: warning: pack indexing is a C++26 feature
+    Ts ... [0] s;
+    ^
+
+"Test_name.c", line 8: warning: pack indexing is a C++26 feature
+    return vs ... [0];
+           ^
+

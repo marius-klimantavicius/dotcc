@@ -1,0 +1,3 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 %-DSIZE_T_64 %-DSIZE_T_64 --c Test_name.c
+eccp: unrecognizable argument: %-DSIZE_T_64
+eccp: unrecognizable argument: %-DSIZE_T_64

@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --upc --upc_threads=4 Test_name.c
+"Test_name.c", line 16: warning: expression has no effect
+  	upc_elemsizeof i;
+  	^
+
+"Test_name.c", line 17: warning: expression has no effect
+  	upc_elemsizeof(shared int [3]);
+  	^
+
+"Test_name.c", line 15: warning: variable "i" was set but never used
+  	static shared int i;
+  	                  ^
+

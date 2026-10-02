@@ -1,0 +1,49 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 10: warning: taking the address of a temporary
+  void f0() { (void)&X(); } // expected-warning{{taking the address of a temporary object}}
+                    ^
+
+"Test_name.c", line 11: warning: taking the address of a temporary
+  void f1() { (void)&X(1); } // expected-warning{{taking the address of a temporary object}}
+                    ^
+
+"Test_name.c", line 12: warning: taking the address of a temporary
+  void f2() { (void)&X(1, 2); } // expected-warning{{taking the address of a temporary object}}
+                    ^
+
+"Test_name.c", line 13: warning: taking the address of a temporary
+  void f3() { (void)&(X)1; } // expected-warning{{taking the address of a temporary object}}
+                    ^
+
+"Test_name.c", line 31: warning: variable "p" was declared but never referenced
+    void g0() { int *p = Y().a; } // expected-warning{{will be destroyed at the end of the full-expression}}
+                     ^
+
+"Test_name.c", line 32: warning: variable "p" was declared but never referenced
+    void g1() { int *p = Y{}.a; } // expected-warning{{will be destroyed at the end of the full-expression}}
+                     ^
+
+"Test_name.c", line 33: warning: variable "p" was declared but never referenced
+    void g2() { int *p = A{}; } // expected-warning{{will be destroyed at the end of the full-expression}}
+                     ^
+
+"Test_name.c", line 34: warning: variable "p" was declared but never referenced
+    void g3() { int *p = (A){}; } // expected-warning{{will be destroyed at the end of the full-expression}}
+                     ^
+
+"Test_name.c", line 44: warning: variable "s" was declared but never referenced
+    void i0() { S s = { Y().a }; } // expected-warning{{will be destroyed at the end of the full-expression}}
+                  ^
+
+"Test_name.c", line 45: warning: variable "s" was declared but never referenced
+    void i1() { S s = { Y{}.a }; } // expected-warning{{will be destroyed at the end of the full-expression}}
+                  ^
+
+"Test_name.c", line 46: warning: variable "s" was declared but never referenced
+    void i2() { S s = { A{} }; } // expected-warning{{will be destroyed at the end of the full-expression}}
+                  ^
+
+"Test_name.c", line 47: warning: variable "s" was declared but never referenced
+    void i3() { S s = { (A){} }; } // expected-warning{{will be destroyed at the end of the full-expression}}
+                  ^
+

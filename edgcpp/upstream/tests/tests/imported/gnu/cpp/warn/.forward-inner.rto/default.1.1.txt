@@ -1,0 +1,70 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: error: incomplete type "C1" is not allowed
+  class C1::C2;      // { dg-error "incomplete" }
+        ^
+
+"Test_name.c", line 9: error: incomplete type "C1" is not allowed
+  class C1::C2::C3;  // { dg-error "has not been declared" }
+        ^
+
+"Test_name.c", line 14: error: incomplete type "C1::C2" is not allowed
+    class C2::C3;    // { dg-error "incomplete" }
+          ^
+
+"Test_name.c", line 19: warning: invalid redeclaration of nested class
+      class C3;
+            ^
+
+"Test_name.c", line 21: warning: invalid redeclaration of nested class
+    class C2;
+          ^
+
+"Test_name.c", line 22: warning: declaration does not declare anything
+    class C2::C3;    // { dg-warning "declaration 'class C1::C2::C3' does not declare anything" }
+    ^
+
+"Test_name.c", line 26: warning: declaration does not declare anything
+  class C1::C2;      // { dg-warning "declaration 'class C1::C2' does not declare anything" }
+  ^
+
+"Test_name.c", line 27: warning: declaration does not declare anything
+  class C1::C2::C3;  // { dg-warning "declaration 'class C1::C2::C3' does not declare anything" }
+  ^
+
+"Test_name.c", line 31: warning: nonstandard qualified name in global scope declaration
+  class N1::C4;      // { dg-error "has not been declared" }
+          ^
+
+"Test_name.c", line 31: error: incomplete type "N1" is not allowed
+  class N1::C4;      // { dg-error "has not been declared" }
+            ^
+
+"Test_name.c", line 32: error: incomplete type "N1" is not allowed
+  class N1::N2::C5;  // { dg-error "has not been declared" }
+        ^
+
+"Test_name.c", line 34: error: "N1" has already been declared in the current scope
+  namespace N1 {
+            ^
+
+"Test_name.c", line 39: error: the global scope has no "C5"
+    class N2::C5;    // { dg-error "has not been declared" }
+              ^
+
+"Test_name.c", line 40: error: "N2" has already been declared in the current scope
+    namespace N2 {
+              ^
+
+"Test_name.c", line 45: warning: declaration does not declare anything
+    class N2::C5;    // { dg-warning "declaration 'class N1::N2::C5' does not declare anything" }
+    ^
+
+"Test_name.c", line 48: warning: declaration does not declare anything
+  class N1::C4;      // { dg-warning "declaration 'class N1::C4' does not declare anything" }
+  ^
+
+"Test_name.c", line 49: warning: declaration does not declare anything
+  class N1::N2::C5;  // { dg-warning "declaration 'class N1::N2::C5' does not declare anything" }
+  ^
+
+8 errors detected in the compilation of "Test_name.c".

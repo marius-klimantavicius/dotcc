@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"./format/ms_multattr-2.c", line 15: warning: unrecognized format function type "__ms_scanf__" ignored
+       __attribute__((__format__(__ms_scanf__, 3, 4)));
+                                 ^
+
+"./format/ms_multattr-2.c", line 13: warning: unrecognized format function type "__ms_printf__" ignored
+  extern __attribute__((__format__(__ms_printf__, 1, 0))) void
+                                   ^
+
+"./format/ms_multattr-2.c", line 17: warning: unrecognized format function type "__ms_printf__" ignored
+  extern void (__attribute__((__format__(__ms_printf__, 1, 0))) my_vprintf_scanf2)
+                                         ^
+
+"./format/ms_multattr-2.c", line 19: warning: unrecognized format function type "__ms_scanf__" ignored
+       __attribute__((__format__(__ms_scanf__, 3, 4)));
+                                 ^
+
+"./format/ms_multattr-2.c", line 22: warning: unrecognized format function type "__ms_printf__" ignored
+       (__attribute__((__format__(__ms_printf__, 1, 0))) my_vprintf_scanf3)
+                                  ^
+
+"./format/ms_multattr-2.c", line 21: warning: unrecognized format function type "__ms_scanf__" ignored
+  extern __attribute__((__format__(__ms_scanf__, 3, 4))) void
+                                   ^
+

@@ -1,0 +1,23 @@
+cpfe -DTEST_NUMBER=1 --il_display -w --c++20 --set_flag coroutines --no_il_lowering Test_name.c
+kind:                    stmk_coroutine
+traits:                  file-scope type@XXXXXXXX: std::coroutine_traits<coroutine_return_type, S *, int>
+handle:                  func-scope variable@XXXXXXXX
+promise:                 func-scope variable@XXXXXXXX
+init_await_resume:       func-scope variable@XXXXXXXX
+this_param_copy:         func-scope variable@XXXXXXXX
+paramter_copies:         func-scope variable@XXXXXXXX
+                         func-scope variable@XXXXXXXX
+final_suspend_label:     func-scope label@XXXXXXXX
+initial_suspend_call:    func-scope expr-node@XXXXXXXX
+final_suspend_call:      func-scope expr-node@XXXXXXXX
+unhandled_exception_call:
+                         func-scope expr-node@XXXXXXXX
+get_return_object_call:  func-scope expr-node@XXXXXXXX
+alloc_failure_gro_call:  NULL
+new_routine:             file-scope routine@XXXXXXXX: operator new
+delete_routine:          file-scope routine@XXXXXXXX: operator delete
+position.seq:            84
+position.column:         25
+has_return_void:         TRUE
+body_generated:          TRUE
+

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 --strict_gnu Test_name.c
+"Test_name.c", line 9: error: expression must have a constant value
+  _Static_assert (__atomic_always_lock_free (1, p), ""); /* { dg-warning "is not an integer constant" } */
+                                                ^
+"Test_name.c", line 9: note: the value of variable "p" (declared at line 8) cannot be used as a constant
+  _Static_assert (__atomic_always_lock_free (1, p), ""); /* { dg-warning "is not an integer constant" } */
+                                                ^
+
+1 error detected in the compilation of "Test_name.c".

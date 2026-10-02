@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 9: error: a requires-clause is not allowed here (not a templated function)
+    [] () requires (N != 0) { }(); // { dg-error "no match" }
+          ^
+
+"Test_name.c", line 10: error: a requires-clause is not allowed here (not a templated function)
+    [] () requires (N == 0) { }();
+          ^
+
+"Test_name.c", line 12: error: no instance of function template "lambda []()->auto" matches the argument list
+            object type is: lambda []()->auto
+    [] <int M=1> () requires (N == M) { }(); // { dg-error "no match" }
+    ^
+"Test_name.c", line 12: note: substituting "<1>" for function template "lambda []()->auto" failed constraints
+    [] <int M=1> () requires (N == M) { }(); // { dg-error "no match" }
+       ^
+"Test_name.c", line 12: note: atomic constraint evaluates to false
+    [] <int M=1> () requires (N == M) { }(); // { dg-error "no match" }
+                                ^
+          detected during instantiation of "auto foo<N>() [with N=0]" at line 18
+
+3 errors detected in the compilation of "Test_name.c".

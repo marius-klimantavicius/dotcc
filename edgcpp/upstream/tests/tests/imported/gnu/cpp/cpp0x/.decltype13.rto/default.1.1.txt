@@ -1,0 +1,27 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: error: expected a "("
+    __decltype;		// { dg-error "expected" }
+              ^
+
+"Test_name.c", line 10: error: expected an expression
+  }
+  ^
+
+"Test_name.c", line 10: error: expected a ")"
+  }
+  ^
+
+"Test_name.c", line 12: error: invalid combination of type specifiers
+  void
+  ^
+
+"Test_name.c", line 14: error: expected a ";"
+  {
+  ^
+
+At end of source: error: expected a "}"
+"Test_name.c", line 8: note: to match this "{"
+  {
+  ^
+
+6 errors detected in the compilation of "Test_name.c".

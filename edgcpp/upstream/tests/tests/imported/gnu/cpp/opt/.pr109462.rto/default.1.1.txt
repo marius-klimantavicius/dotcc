@@ -1,0 +1,57 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 16: warning: unknown attribute "gnu::noipa"
+  [[gnu::noipa]] A::A (const char *) {}
+    ^
+
+"Test_name.c", line 17: warning: unknown attribute "gnu::noipa"
+  [[gnu::noipa]] A::A (const char *, int) { __builtin_abort (); }
+    ^
+
+"Test_name.c", line 18: warning: unknown attribute "gnu::noipa"
+  [[gnu::noipa]] bool A::empty () { __builtin_abort (); }
+    ^
+
+"Test_name.c", line 19: warning: unknown attribute "gnu::noipa"
+  [[gnu::noipa]] int A::size () { __builtin_abort (); }
+    ^
+
+"Test_name.c", line 20: warning: unknown attribute "gnu::noipa"
+  [[gnu::noipa]] bool A::equals (A) { return true; }
+    ^
+
+"Test_name.c", line 21: warning: unknown attribute "gnu::noipa"
+  [[gnu::noipa]] A A::trim (char) { __builtin_abort (); }
+    ^
+
+"Test_name.c", line 22: warning: unknown attribute "gnu::noipa"
+  [[gnu::noipa]] A A::trim () { __builtin_abort (); }
+    ^
+
+"Test_name.c", line 25: warning: unknown attribute "gnu::noipa"
+  [[gnu::noipa]] bool isAnyIdentifier (B) { return true; }
+    ^
+
+"Test_name.c", line 26: warning: unknown attribute "gnu::noipa"
+  [[gnu::noipa]] bool isStringLiteral (B) { __builtin_abort (); }
+    ^
+
+"Test_name.c", line 40: warning: unknown attribute "gnu::noipa"
+  [[gnu::noipa]] const char *C::getLiteralData () { __builtin_abort (); }
+    ^
+
+"Test_name.c", line 46: warning: unknown attribute "gnu::noipa"
+  [[gnu::noipa]] D::D () {}
+    ^
+
+"Test_name.c", line 47: warning: unknown attribute "gnu::noipa"
+  [[gnu::noipa]] bool D::LexFromRawLexer (C &t) {
+    ^
+
+"Test_name.c", line 55: warning: unknown attribute "gnu::noipa"
+  [[gnu::noipa]] void reportEmptyContextError ()
+    ^
+
+"Test_name.c", line 60: warning: unknown attribute "gnu::noipa"
+  [[gnu::noipa]] void
+    ^
+

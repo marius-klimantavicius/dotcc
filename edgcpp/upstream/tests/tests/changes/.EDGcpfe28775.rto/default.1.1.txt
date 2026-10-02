@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --g++ --c++23 Test_name.c
+"Test_name.c", line 23: warning: variable "arr" was declared but never referenced
+    int arr[g(true).i];
+        ^
+

@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 --exceptions Test_name.c
+"Test_name.c", line 18: error: user-defined literal operator not found
+  double &i3 = L"foo"_x1; // expected-error {{no matching literal operator for call to 'operator""_x1' with arguments of types 'const wchar_t *' and '__size_t' (aka 'unsigned long')}}
+               ^
+
+"Test_name.c", line 57: error: a reference of type "float &" (not const-qualified) cannot be initialized with a value of type "double"
+    float &a = "foo"_s;
+               ^
+
+"Test_name.c", line 66: error: a reference of type "float &" (not const-qualified) cannot be initialized with a value of type "double"
+    float &b = "foo"_t;
+               ^
+
+"Test_name.c", line 86: error: function "operator ""_x(const char *, size_t)" (declared at line 76) cannot be referenced -- it is a deleted function
+    "foo"_x;
+    ^
+
+"Test_name.c", line 87: error: function "operator ""_y(const char *, size_t)" (declared at line 83) cannot be referenced -- it is a deleted function
+    "foo"_y;
+    ^
+
+"Test_name.c", line 91: error: function "operator ""_x(const char *, size_t)" (declared at line 76) cannot be referenced -- it is a deleted function
+    "fooo"_x; // expected-error {{no matching function}}
+    ^
+
+"Test_name.c", line 92: error: function "operator ""_y(const char *, size_t)" (declared at line 83) cannot be referenced -- it is a deleted function
+    "fooo"_y; // expected-error {{deleted function}}
+    ^
+
+7 errors detected in the compilation of "Test_name.c".

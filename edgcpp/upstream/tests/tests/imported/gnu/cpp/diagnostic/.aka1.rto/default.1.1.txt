@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 11: error: no suitable constructor exists to convert from "int" to "A"
+    A a = 0;			// { dg-error "type .A. requested" }
+          ^
+
+"Test_name.c", line 17: error: no suitable constructor exists to convert from "int" to "A"
+  B b = 0;			// { dg-error "'B' {aka 'A'}" }
+        ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --c++20 -tused -A Test_name.c
+"Test_name.c", line 17: error: name following "template" must be a template
+    p->template C<0>::f();  // error: A::C is not a template
+                ^
+          detected during instantiation of "void g(T *) [with T=A]" at line 21
+
+"Test_name.c", line 18: error: name followed by "::" must be a class or namespace name
+    p->template D<0>::f();  // error: A::D<0> is not a class type
+                ^
+          detected during instantiation of "void g(T *) [with T=A]" at line 21
+
+"Test_name.c", line 19: error: name followed by "::" must be a class or namespace name
+    p->T::f();              // error: A::T is not a class type
+       ^
+          detected during instantiation of "void g(T *) [with T=A]" at line 21
+
+3 errors detected in the compilation of "Test_name.c".

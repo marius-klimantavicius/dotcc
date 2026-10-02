@@ -1,0 +1,6 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"./torture/floatn-nan-floath.h", line 26: error: function call is not allowed in a constant expression
+                          (__builtin_nansf128 (""))
+                           ^
+
+1 error detected in the compilation of "Test_name.c".

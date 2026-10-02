@@ -1,0 +1,101 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 21: warning: unrecognized #pragma
+  #pragma omp dispatch
+          ^
+
+"Test_name.c", line 22: warning: variable "a" is used before its value is set
+    int c = f0 (a);	/* { dg-error "expected primary-expression before 'int'" } */
+                ^
+
+"Test_name.c", line 23: warning: unrecognized #pragma
+  #pragma omp dispatch
+          ^
+
+"Test_name.c", line 25: warning: unrecognized #pragma
+  #pragma omp dispatch
+          ^
+
+"Test_name.c", line 26: warning: variable "b" is used before its value is set
+    a = b;	/* { dg-error "expected target-function call" } */
+        ^
+
+"Test_name.c", line 27: warning: unrecognized #pragma
+  #pragma omp dispatch
+          ^
+
+"Test_name.c", line 29: warning: unrecognized #pragma
+  #pragma omp dispatch
+          ^
+
+"Test_name.c", line 31: warning: unrecognized #pragma
+  #pragma omp dispatch
+          ^
+
+"Test_name.c", line 33: warning: unrecognized #pragma
+  #pragma omp dispatch
+          ^
+
+"Test_name.c", line 34: warning: unrecognized #pragma
+  #pragma omp threadprivate(a)	/* { dg-error "'#pragma' is not allowed here" } */
+          ^
+
+"Test_name.c", line 36: warning: unrecognized #pragma
+  #pragma omp dispatch
+          ^
+
+"Test_name.c", line 37: warning: variable "x" is used before its value is set
+    a = s.f(x);   /* { dg-error "'f' is a virtual function but only a direct call is allowed in a dispatch construct" } */
+            ^
+
+"Test_name.c", line 39: warning: unrecognized #pragma
+  #pragma omp dispatch nocontext(s) /* { dg-error "could not convert 's' from 'S' to 'bool'" } */
+          ^
+
+"Test_name.c", line 41: warning: unrecognized #pragma
+  #pragma omp dispatch nocontext(a, b) /* { dg-error "expected '\\)' before ','" } */
+          ^
+
+"Test_name.c", line 43: warning: unrecognized #pragma
+  #pragma omp dispatch nocontext(a) nocontext(b) /* { dg-error "too many 'nocontext' clauses" } */
+          ^
+
+"Test_name.c", line 45: warning: unrecognized #pragma
+  #pragma omp dispatch novariants(s) /* { dg-error "could not convert 's' from 'S' to 'bool'" } */
+          ^
+
+"Test_name.c", line 47: warning: unrecognized #pragma
+  #pragma omp dispatch novariants(a, b) /* { dg-error "expected '\\)' before ','" } */
+          ^
+
+"Test_name.c", line 49: warning: unrecognized #pragma
+  #pragma omp dispatch novariants(a) novariants(b) /* { dg-error "too many 'novariants' clauses" } */
+          ^
+
+"Test_name.c", line 51: warning: unrecognized #pragma
+  #pragma omp dispatch nowait nowait /* { dg-error "too many 'nowait' clauses" } */
+          ^
+
+"Test_name.c", line 53: warning: unrecognized #pragma
+  #pragma omp dispatch device(x) /* { dg-error "'device' id must be integral" } */
+          ^
+
+"Test_name.c", line 55: warning: unrecognized #pragma
+  #pragma omp dispatch device(arr) /* { dg-error "'device' id must be integral" } */
+          ^
+
+"Test_name.c", line 57: warning: unrecognized #pragma
+  #pragma omp dispatch is_device_ptr(x) /* { dg-error "'is_device_ptr' variable is neither a pointer, nor an array nor reference to pointer" } */
+          ^
+
+"Test_name.c", line 59: warning: unrecognized #pragma
+  #pragma omp dispatch is_device_ptr(&x) /* { dg-error "expected unqualified-id before '&' token" } */
+          ^
+
+"Test_name.c", line 61: warning: unrecognized #pragma
+  #pragma omp dispatch depend(inout: s.f) /* { dg-error "'s.S::f' is not lvalue expression nor array section in 'depend' clause" } */
+          ^
+
+"Test_name.c", line 18: warning: variable "arr" was declared but never referenced
+    int arr[1];
+        ^
+

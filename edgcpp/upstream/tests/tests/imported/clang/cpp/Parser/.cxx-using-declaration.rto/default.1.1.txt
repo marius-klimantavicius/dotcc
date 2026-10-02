@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 19: warning: variable "x" was declared but never referenced
+      SA x;   //Still needs handling.
+         ^
+
+"Test_name.c", line 38: error: a template-id is not allowed
+  using E::funcE<int>; // expected-error{{using declaration cannot refer to a template specialization}}
+        ^
+
+"Test_name.c", line 60: error: function "ShadowedTagNotes::Bar" is not a type name
+     const Bar *x; // expected-error{{must use 'class' tag to refer to type 'Bar' in this scope}}
+           ^
+
+"Test_name.c", line 60: warning: variable "x" was declared but never referenced
+     const Bar *x; // expected-error{{must use 'class' tag to refer to type 'Bar' in this scope}}
+                ^
+
+2 errors detected in the compilation of "Test_name.c".

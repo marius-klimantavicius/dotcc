@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 18: error: "f0" is not a class or function template name in the current scope
+  void f0<int>(); // expected-error {{no function template matches}}
+       ^
+
+"Test_name.c", line 41: error: namespace "N1" has no actual member "f2"
+  void N1::f2<int>(); // expected-error {{no function template matches}}
+           ^
+
+"Test_name.c", line 66: error: namespace "N3" has no actual member "f4"
+  void N3::f4<int>(); // expected-error {{no function template matches}}
+           ^
+
+3 errors detected in the compilation of "Test_name.c".

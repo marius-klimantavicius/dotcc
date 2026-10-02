@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./goacc/pr107028-2.C", line 20: warning: unrecognized #pragma
+  #pragma acc data copyin(a[0:n], b, b.data[0:n])
+          ^
+

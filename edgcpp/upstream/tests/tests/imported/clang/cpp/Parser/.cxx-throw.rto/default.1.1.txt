@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --exceptions --exceptions Test_name.c
+"Test_name.c", line 11: warning: statement is unreachable
+    throw;
+    ^
+
+"Test_name.c", line 12: warning: statement is unreachable
+    throw 1;
+    ^
+
+"Test_name.c", line 13: warning: statement is unreachable
+    throw;
+    ^
+
+"Test_name.c", line 14: warning: statement is unreachable
+    1 ? throw : (void)42;
+    ^
+
+"Test_name.c", line 16: warning: statement is unreachable
+    (void)throw;              // expected-error {{expected expression}}
+    ^
+
+"Test_name.c", line 19: error: a storage class may not be specified here
+  void f() throw(static); // expected-error {{expected a type}} expected-error {{does not allow storage class}}
+                 ^
+
+"Test_name.c", line 19: error: explicit type is missing ("int" assumed)
+  void f() throw(static); // expected-error {{expected a type}} expected-error {{does not allow storage class}}
+                 ^
+
+"Test_name.c", line 19: error: dynamic exception specifications are not permitted in this mode
+  void f() throw(static); // expected-error {{expected a type}} expected-error {{does not allow storage class}}
+           ^
+
+3 errors detected in the compilation of "Test_name.c".

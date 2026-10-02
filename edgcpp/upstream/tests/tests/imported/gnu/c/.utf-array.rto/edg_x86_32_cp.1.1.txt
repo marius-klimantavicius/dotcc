@@ -1,0 +1,130 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"./utf-array.c", line 13: error: identifier "u" is undefined
+  const char s_1[] = u"ab";
+                     ^
+
+"./utf-array.c", line 13: error: expected a ";"
+  const char s_1[] = u"ab";
+                      ^
+
+"./utf-array.c", line 14: error: identifier "U" is undefined
+  const char s_2[] = U"ab";
+                     ^
+
+"./utf-array.c", line 14: error: expected a ";"
+  const char s_2[] = U"ab";
+                      ^
+
+"./utf-array.c", line 15: error: a value of type "long [3]" cannot be used to initialize an entity of type "const char []"
+  const char s_3[] = L"ab";
+                     ^
+
+"./utf-array.c", line 16: error: identifier "u8" is undefined
+  const char s_4[] = u8"ab";
+                     ^
+
+"./utf-array.c", line 16: error: expected a ";"
+  const char s_4[] = u8"ab";
+                       ^
+
+"./utf-array.c", line 18: error: a value of type "char [3]" cannot be used to initialize an entity of type "const char16_t []"
+  const char16_t s16_0[] = "ab";
+                           ^
+
+"./utf-array.c", line 19: error: expected a ";"
+  const char16_t s16_1[] = u"ab";
+                            ^
+
+"./utf-array.c", line 20: error: expected a ";"
+  const char16_t s16_2[] = U"ab";
+                            ^
+
+"./utf-array.c", line 21: error: a value of type "long [3]" cannot be used to initialize an entity of type "const char16_t []"
+  const char16_t s16_3[] = L"ab";
+                           ^
+
+"./utf-array.c", line 22: error: expected a ";"
+  const char16_t s16_4[] = u8"ab";
+                             ^
+
+"./utf-array.c", line 24: error: expected a ";"
+  const char16_t s16_5[0] = u"ab";
+                             ^
+
+"./utf-array.c", line 25: error: expected a ";"
+  const char16_t s16_6[1] = u"ab";
+                             ^
+
+"./utf-array.c", line 26: error: expected a ";"
+  const char16_t s16_7[2] = u"ab";
+                             ^
+
+"./utf-array.c", line 27: error: expected a ";"
+  const char16_t s16_8[3] = u"ab";
+                             ^
+
+"./utf-array.c", line 28: error: expected a ";"
+  const char16_t s16_9[4] = u"ab";
+                             ^
+
+"./utf-array.c", line 30: error: a value of type "char [3]" cannot be used to initialize an entity of type "const char32_t []"
+  const char32_t s32_0[] = "ab";
+                           ^
+
+"./utf-array.c", line 31: error: expected a ";"
+  const char32_t s32_1[] = u"ab";
+                            ^
+
+"./utf-array.c", line 32: error: expected a ";"
+  const char32_t s32_2[] = U"ab";
+                            ^
+
+"./utf-array.c", line 33: error: a value of type "long [3]" cannot be used to initialize an entity of type "const char32_t []"
+  const char32_t s32_3[] = L"ab";
+                           ^
+
+"./utf-array.c", line 34: error: expected a ";"
+  const char32_t s32_4[] = u8"ab";
+                             ^
+
+"./utf-array.c", line 36: error: expected a ";"
+  const char32_t s32_5[0] = U"ab";
+                             ^
+
+"./utf-array.c", line 37: error: expected a ";"
+  const char32_t s32_6[1] = U"ab";
+                             ^
+
+"./utf-array.c", line 38: error: expected a ";"
+  const char32_t s32_7[2] = U"ab";
+                             ^
+
+"./utf-array.c", line 39: error: expected a ";"
+  const char32_t s32_8[3] = U"ab";
+                             ^
+
+"./utf-array.c", line 40: error: expected a ";"
+  const char32_t s32_9[4] = U"ab";
+                             ^
+
+"./utf-array.c", line 42: error: a value of type "char [3]" cannot be used to initialize an entity of type "const wchar_t []"
+  const wchar_t sw_0[] = "ab";
+                         ^
+
+"./utf-array.c", line 43: error: expected a ";"
+  const wchar_t sw_1[] = u"ab";
+                          ^
+
+"./utf-array.c", line 44: error: expected a ";"
+  const wchar_t sw_2[] = U"ab";
+                          ^
+
+"./utf-array.c", line 45: error: a value of type "long [3]" cannot be used to initialize an entity of type "const wchar_t []"
+  const wchar_t sw_3[] = L"ab";
+                         ^
+
+"./utf-array.c", line 46: error: expected a ";"
+  const wchar_t sw_4[] = u8"ab";
+                           ^
+
+32 errors detected in the compilation of "Test_name.c".

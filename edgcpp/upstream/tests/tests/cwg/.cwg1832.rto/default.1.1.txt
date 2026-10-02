@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++17 -tused -A Test_name.c
+"Test_name.c", line 3: error: incomplete type "E" is not allowed
+  enum E { a, b = true ? 1 : ((E)a, 0) };
+                               ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,18 @@
+cpfe -DTEST_NUMBER=2 -r -x -tused Test_name.c
+"Test_name.c", line 6: error: initial value of reference to non-const must be an lvalue
+    S& operator->() { return this; }
+                             ^
+
+"Test_name.c", line 9: remark: return type "int" omitted in declaration of function "main"
+  main() {
+  ^
+
+"Test_name.c", line 10: error: loop in sequence of "operator->" functions starting at class "S"
+    int i = s->i;
+            ^
+
+"Test_name.c", line 10: remark: variable "i" was declared but never referenced
+    int i = s->i;
+        ^
+
+2 errors detected in the compilation of "Test_name.c".

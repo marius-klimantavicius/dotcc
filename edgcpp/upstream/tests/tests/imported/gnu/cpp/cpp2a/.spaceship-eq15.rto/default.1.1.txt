@@ -1,0 +1,144 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 39: error: more than one operator "!=" matches these operands:
+            function "D::operator==(const D &) const" (declared at line 36), with reversed arguments
+            built-in operator "pointer == pointer"
+            built-in operator "pointer != pointer"
+            operand types are: std::nullptr_t != D
+  bool d = nullptr != D{};	// { dg-error "ambiguous overload for 'operator!=' in 'nullptr != D\\\(\\\)' \\\(operand types are 'std::nullptr_t' and 'D'\\\)" }
+                   ^
+"Test_name.c", line 39: note: built-in operator!=(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+  bool d = nullptr != D{};	// { dg-error "ambiguous overload for 'operator!=' in 'nullptr != D\\\(\\\)' \\\(operand types are 'std::nullptr_t' and 'D'\\\)" }
+                   ^
+"Test_name.c", line 39: note: built-in operator!=(<nullptr>, <nullptr>) does not match because argument #2 does not match parameter
+  bool d = nullptr != D{};	// { dg-error "ambiguous overload for 'operator!=' in 'nullptr != D\\\(\\\)' \\\(operand types are 'std::nullptr_t' and 'D'\\\)" }
+                   ^
+"Test_name.c", line 39: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+  bool d = nullptr != D{};	// { dg-error "ambiguous overload for 'operator!=' in 'nullptr != D\\\(\\\)' \\\(operand types are 'std::nullptr_t' and 'D'\\\)" }
+                   ^
+"Test_name.c", line 39: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #2 does not match parameter
+  bool d = nullptr != D{};	// { dg-error "ambiguous overload for 'operator!=' in 'nullptr != D\\\(\\\)' \\\(operand types are 'std::nullptr_t' and 'D'\\\)" }
+                   ^
+
+"Test_name.c", line 49: error: function "operator==" (declared at line 47) selected for operator rewrite does not return type bool
+  unsigned char e = E{} != E{};	// { dg-error "return type of 'unsigned char operator==\\\(E, E\\\)' is not 'bool'" }
+                        ^
+
+"Test_name.c", line 60: error: no operator "==" matches these operands
+            operand types are: int == F
+  bool f2 = 0 == F ();		// { dg-error "no match for 'operator==' in '0 == F\\\(\\\)' \\\(operand types are 'int' and 'F'\\\)" }
+              ^
+"Test_name.c", line 55: note: function template "operator==(F, T)" does not match because argument #1 does not match parameter
+  bool operator== (F, T);		// { dg-message "candidate 1: 'template<class T> bool operator==\\\(F, T\\\)'" }
+       ^
+"Test_name.c", line 47: note: function "operator==(E, E)" does not match because argument #1 does not match parameter
+  unsigned char operator== (E, E);// { dg-message "candidate 2: 'unsigned char operator==\\\(E, E\\\)'" }
+                ^
+"Test_name.c", line 60: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #2 does not match parameter
+  bool f2 = 0 == F ();		// { dg-error "no match for 'operator==' in '0 == F\\\(\\\)' \\\(operand types are 'int' and 'F'\\\)" }
+              ^
+"Test_name.c", line 60: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+  bool f2 = 0 == F ();		// { dg-error "no match for 'operator==' in '0 == F\\\(\\\)' \\\(operand types are 'int' and 'F'\\\)" }
+              ^
+
+"Test_name.c", line 94: error: function "operator==(const double &, const I1 &)" (declared at line 91) selected for operator rewrite does not return type bool
+  bool i = I1{} == 0.;		// { dg-error "return type of 'int operator==\\\(const double&, const I1&\\\)' is not 'bool'" }
+                ^
+
+"Test_name.c", line 161: error: no operator "==" matches these operands
+            operand types are: int == Q
+  bool q = 0 == Q ();		// { dg-error "" }
+             ^
+"Test_name.c", line 158: note: function template "operator==(Q, T)" does not match because argument #1 does not match parameter
+  bool operator== (Q, T);
+       ^
+"Test_name.c", line 151: note: function template "operator==(P, T)" does not match because argument #1 does not match parameter
+  bool operator== (P, T);
+       ^
+"Test_name.c", line 76: note: function template "operator==(H, T)" does not match because argument #1 does not match parameter
+  bool operator== (H, T);
+       ^
+"Test_name.c", line 55: note: function template "operator==(F, T)" does not match because argument #1 does not match parameter
+  bool operator== (F, T);		// { dg-message "candidate 1: 'template<class T> bool operator==\\\(F, T\\\)'" }
+       ^
+"Test_name.c", line 47: note: function "operator==(E, E)" does not match because argument #1 does not match parameter
+  unsigned char operator== (E, E);// { dg-message "candidate 2: 'unsigned char operator==\\\(E, E\\\)'" }
+                ^
+"Test_name.c", line 161: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #2 does not match parameter
+  bool q = 0 == Q ();		// { dg-error "" }
+             ^
+"Test_name.c", line 161: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+  bool q = 0 == Q ();		// { dg-error "" }
+             ^
+
+"Test_name.c", line 188: error: no operator "==" matches these operands
+            operand types are: int == U
+  bool u3 = 0 == U ();		// { dg-error "" }
+              ^
+"Test_name.c", line 183: note: function "operator==(U, int)" does not match because argument #1 does not match parameter
+  bool operator== (U, int);
+       ^
+"Test_name.c", line 178: note: function template "operator==(T, int)" does not match because argument #1 does not match parameter
+  bool operator== (T, int);
+       ^
+"Test_name.c", line 158: note: function template "operator==(Q, T)" does not match because argument #1 does not match parameter
+  bool operator== (Q, T);
+       ^
+"Test_name.c", line 151: note: function template "operator==(P, T)" does not match because argument #1 does not match parameter
+  bool operator== (P, T);
+       ^
+"Test_name.c", line 76: note: function template "operator==(H, T)" does not match because argument #1 does not match parameter
+  bool operator== (H, T);
+       ^
+"Test_name.c", line 55: note: function template "operator==(F, T)" does not match because argument #1 does not match parameter
+  bool operator== (F, T);		// { dg-message "candidate 1: 'template<class T> bool operator==\\\(F, T\\\)'" }
+       ^
+"Test_name.c", line 47: note: function "operator==(E, E)" does not match because argument #1 does not match parameter
+  unsigned char operator== (E, E);// { dg-message "candidate 2: 'unsigned char operator==\\\(E, E\\\)'" }
+                ^
+"Test_name.c", line 188: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #2 does not match parameter
+  bool u3 = 0 == U ();		// { dg-error "" }
+              ^
+"Test_name.c", line 188: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+  bool u3 = 0 == U ();		// { dg-error "" }
+              ^
+
+"Test_name.c", line 197: error: no operator "==" matches these operands
+            operand types are: int == V
+  bool v3 = 0 == V ();		// { dg-error "" }
+              ^
+"Test_name.c", line 192: note: function template "operator==(V, T)" does not match because argument #1 does not match parameter
+  bool operator== (V, T);
+       ^
+"Test_name.c", line 183: note: function "operator==(U, int)" does not match because argument #1 does not match parameter
+  bool operator== (U, int);
+       ^
+"Test_name.c", line 178: note: function template "operator==(T, int)" does not match because argument #1 does not match parameter
+  bool operator== (T, int);
+       ^
+"Test_name.c", line 158: note: function template "operator==(Q, T)" does not match because argument #1 does not match parameter
+  bool operator== (Q, T);
+       ^
+"Test_name.c", line 151: note: function template "operator==(P, T)" does not match because argument #1 does not match parameter
+  bool operator== (P, T);
+       ^
+"Test_name.c", line 76: note: function template "operator==(H, T)" does not match because argument #1 does not match parameter
+  bool operator== (H, T);
+       ^
+"Test_name.c", line 55: note: function template "operator==(F, T)" does not match because argument #1 does not match parameter
+  bool operator== (F, T);		// { dg-message "candidate 1: 'template<class T> bool operator==\\\(F, T\\\)'" }
+       ^
+"Test_name.c", line 47: note: function "operator==(E, E)" does not match because argument #1 does not match parameter
+  unsigned char operator== (E, E);// { dg-message "candidate 2: 'unsigned char operator==\\\(E, E\\\)'" }
+                ^
+"Test_name.c", line 197: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #2 does not match parameter
+  bool v3 = 0 == V ();		// { dg-error "" }
+              ^
+"Test_name.c", line 197: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+  bool v3 = 0 == V ();		// { dg-error "" }
+              ^
+
+"Test_name.c", line 208: error: operator may not be a static member function
+    static bool operator!= (X const &, X const &);	// { dg-error "'static bool X::operator!=\\\(const X&, const X&\\\)' must be either a non-static member function or a non-member function" }
+                ^
+
+8 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,6 @@
+./a.out
+A1 : c2 7b f3 2a 5e 12 9a 95
+B1 : c2 7b f3 2a 5e 12 9a 95
+A2 : c2 7b f3 2a 5e 12 9a 95
+B2 : c2 7b f3 2a 5e 12 9a 95
+

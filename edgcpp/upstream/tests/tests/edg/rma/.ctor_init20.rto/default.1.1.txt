@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 8: error: default-initialization of reference is not allowed
+    S() : ri(), rx() { }
+             ^
+
+"Test_name.c", line 8: error: default-initialization of reference is not allowed
+    S() : ri(), rx() { }
+                   ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,110 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 10: error: expression must be a modifiable lvalue
+    x->a = 10;
+    ^
+
+"Test_name.c", line 18: error: expression must be a modifiable lvalue
+    b[4] = 1;         // expected-error {{cannot assign to variable 'b' with const-qualified type 'const arr' (aka 'const int[10]')}}
+    ^
+
+"Test_name.c", line 19: error: expression must be a modifiable lvalue
+    b2[4] = 1;        // expected-error {{cannot assign to variable 'b2' with const-qualified type 'const int[10]'}}
+    ^
+
+"Test_name.c", line 16: warning: variable "b" was set but never used
+    const arr b = {};      // expected-note {{variable 'b' declared const here}}
+              ^
+
+"Test_name.c", line 17: warning: variable "b2" was set but never used
+    const int b2[10] = {}; // expected-note {{variable 'b2' declared const here}}
+              ^
+
+"Test_name.c", line 34: error: expression must be a modifiable lvalue
+    i1 = i2; // expected-error {{cannot assign to variable 'i1' with const-qualified data member 'a'}}
+    ^
+
+"Test_name.c", line 33: warning: parameter "i1" was set but never used
+  void testI(struct I i1, struct I i2) {
+                      ^
+
+"Test_name.c", line 37: error: expression must be a modifiable lvalue
+    j1 = j2; // expected-error {{cannot assign to variable 'j1' with nested const-qualified data member 'a'}}
+    ^
+
+"Test_name.c", line 36: warning: parameter "j1" was set but never used
+  void testJ1(struct J j1, struct J j2) {
+                       ^
+
+"Test_name.c", line 40: error: expression must be a modifiable lvalue
+    j.i = i; // expected-error {{cannot assign to non-static data member 'i' with const-qualified data member 'a'}}
+    ^
+
+"Test_name.c", line 39: warning: parameter "j" was set but never used
+  void testJ2(struct J j, struct I i) {
+                       ^
+
+"Test_name.c", line 43: error: expression must be a modifiable lvalue
+    *(k.j) = j; // expected-error {{cannot assign to lvalue with nested const-qualified data member 'a'}}
+    ^
+
+"Test_name.c", line 46: error: expression must be a modifiable lvalue
+    k.j->i = i; // expected-error {{cannot assign to non-static data member 'i' with const-qualified data member 'a'}}
+    ^
+
+"Test_name.c", line 50: error: expression must be a modifiable lvalue
+    i1 = i2; // expected-error {{cannot assign to variable 'i1' with const-qualified data member 'a'}}
+    ^
+
+"Test_name.c", line 49: warning: parameter "i1" was set but never used
+  void testI_(I i1, I i2) {
+                ^
+
+"Test_name.c", line 53: error: expression must be a modifiable lvalue
+    j1 = j2; // expected-error {{cannot assign to variable 'j1' with nested const-qualified data member 'a'}}
+    ^
+
+"Test_name.c", line 52: warning: parameter "j1" was set but never used
+  void testJ1_(J j1, J j2) {
+                 ^
+
+"Test_name.c", line 56: error: expression must be a modifiable lvalue
+    j.i = i; // expected-error {{cannot assign to non-static data member 'i' with const-qualified data member 'a'}}
+    ^
+
+"Test_name.c", line 55: warning: parameter "j" was set but never used
+  void testJ2_(J j, I i) {
+                 ^
+
+"Test_name.c", line 59: error: expression must be a modifiable lvalue
+    *(k.j) = j; // expected-error {{cannot assign to lvalue with nested const-qualified data member 'a'}}
+    ^
+
+"Test_name.c", line 62: error: expression must be a modifiable lvalue
+    k.j->i = i; // expected-error {{cannot assign to non-static data member 'i' with const-qualified data member 'a'}}
+    ^
+
+"Test_name.c", line 67: error: incomplete type "struct L" is not allowed
+    struct L field; // expected-error {{field has incomplete type 'struct L'}}
+             ^
+
+"Test_name.c", line 70: error: a value of type "int" cannot be assigned to an entity of type "struct L"
+    *l = 0; // expected-error {{assigning to 'struct L' from incompatible type 'int'}}
+       ^
+
+"Test_name.c", line 77: error: incomplete type "const struct M1" is not allowed
+    const struct M1 field; // expected-error {{field has incomplete type 'const struct M1'}}
+                    ^
+
+"Test_name.c", line 84: error: a value of type "int" cannot be assigned to an entity of type "struct M1"
+    *l = 0; // expected-error {{cannot assign to lvalue with nested const-qualified data member 'field'}}
+       ^
+
+"Test_name.c", line 89: error: incomplete type "struct N1" is not allowed
+    struct N1 field; // expected-error {{field has incomplete type 'struct N1'}}
+              ^
+
+"Test_name.c", line 96: error: a value of type "int" cannot be assigned to an entity of type "struct N1"
+    *l = 0; // expected-error {{assigning to 'struct N1' from incompatible type 'int'}}
+       ^
+
+19 errors detected in the compilation of "Test_name.c".

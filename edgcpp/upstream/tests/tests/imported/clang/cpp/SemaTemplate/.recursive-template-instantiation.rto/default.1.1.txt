@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 6: error: no instance of function template "f" matches the argument list
+            argument types are: (int)
+    f(*t); // expected-error{{no matching function}}\
+    ^
+"Test_name.c", line 5: note: candidate function template "f" failed deduction
+  template<typename T> void f(T* t) { // expected-note{{could not match 'T *' against 'int'}}
+                            ^
+          detected during:
+            instantiation of "void f(T *) [with T=int]" at line 6
+            instantiation of "void f(T *) [with T=int *]" at line 6
+            instantiation of "void f(T *) [with T=int **]" at line 6
+            instantiation of "void f(T *) [with T=int ***]" at line 11
+
+1 error detected in the compilation of "Test_name.c".

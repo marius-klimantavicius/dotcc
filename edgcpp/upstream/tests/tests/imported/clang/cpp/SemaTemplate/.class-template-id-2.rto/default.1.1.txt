@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 16: error: incomplete type "N::A<float>" is not allowed
+  class C2 : public N::A<float> { }; // expected-error{{base class has incomplete type}}
+                    ^
+
+1 error detected in the compilation of "Test_name.c".

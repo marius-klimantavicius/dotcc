@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 16: error: duplicate parameter name
+      int _)
+          ^
+
+"Test_name.c", line 20: error: "_" has already been declared in the current scope
+      int _;
+          ^
+
+"Test_name.c", line 20: warning: variable "_" was declared but never referenced
+      int _;
+          ^
+
+2 errors detected in the compilation of "Test_name.c".

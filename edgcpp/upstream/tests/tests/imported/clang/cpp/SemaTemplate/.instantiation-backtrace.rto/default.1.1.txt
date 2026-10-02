@@ -1,0 +1,41 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 6: error: incomplete type "A<int (*)(int)>" is not allowed
+  template<typename T> struct B : A<T*> { }; // expected-error{{implicit instantiation of undefined template}} \
+                                  ^
+          detected during:
+            instantiation of class "B<T> [with T=int (int)]" at line 9
+            instantiation of class "C<T> [with T=int (int)]" at line 11
+            instantiation of class "D<T> [with T=int (int)]" at line 13
+            instantiation of class "E<T> [with T=int (int)]" at line 15
+            instantiation of class "F<T> [with T=int]" at line 18
+
+"Test_name.c", line 6: error: incomplete type "A<X *>" is not allowed
+  template<typename T> struct B : A<T*> { }; // expected-error{{implicit instantiation of undefined template}} \
+                                  ^
+          detected during instantiation of class "B<T> [with T=X]" at line 24
+
+"Test_name.c", line 28: error: incomplete type "A<int>" is not allowed
+  struct G : A<T>, // expected-error{{implicit instantiation of undefined template 'A<int>'}}
+             ^
+          detected during instantiation of class "G<T> [with T=int]" at line 33
+
+"Test_name.c", line 29: error: incomplete type "A<int *>" is not allowed
+    A<T*> // expected-error{{implicit instantiation of undefined template 'A<int *>'}}
+    ^
+          detected during instantiation of class "G<T> [with T=int]" at line 33
+
+"Test_name.c", line 37: warning: class "PR13365::ResultTy<int &>" defines no constructor to initialize the following:
+            reference member "PR13365::ResultTy<T>::t [with T=int &]"
+    template <class T> class ResultTy { // expected-warning {{does not declare any constructor}}
+                             ^
+          detected during instantiation of class "PR13365::ResultTy<T> [with T=int &]" at line 50
+
+"Test_name.c", line 50: error: no instance of function template "PR13365::Deduce" matches the argument list
+            argument types are: (void (PR13365::Cls::*)(int &))
+      Deduce(&Cls::method); // expected-error {{no matching function}} \
+      ^
+"Test_name.c", line 42: note: candidate function template "PR13365::Deduce" failed deduction
+      typename ResultTy<T2>::error Deduce( void (T1::*member)(T2) ) {} // \
+                                   ^
+
+5 errors detected in the compilation of "Test_name.c".

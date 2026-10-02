@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: warning: variable "y" was declared but never referenced
+    int y = 1;
+        ^
+
+"Test_name.c", line 15: warning: variable "fn" was declared but never referenced
+    auto fn = [x] () { extern int x; return 0; };	// { dg-warning "declaration of 'x' shadows a lambda capture" "" { target c++11 } }
+         ^
+

@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 --strict_gnu Test_name.c
+"Test_name.c", line 8: error: this declaration of struct "s" does not declare the same type as the declaration at line 7
+  struct s { int j; }; /* { dg-error "redefinition" } */
+         ^
+
+"Test_name.c", line 13: error: a field declaration cannot have a type involving a variable length array
+    struct t { int (*a)[x]; }; /* { dg-message "originally defined" } */
+                     ^
+
+"Test_name.c", line 14: error: a field declaration cannot have a type involving a variable length array
+    struct t { int (*a)[x]; }; /* { dg-error "redefinition" } */
+                     ^
+
+3 errors detected in the compilation of "Test_name.c".

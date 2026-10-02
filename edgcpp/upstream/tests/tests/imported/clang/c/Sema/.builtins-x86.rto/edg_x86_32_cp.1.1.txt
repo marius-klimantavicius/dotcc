@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 43: warning: integer conversion resulted in a change of sign
+    return __builtin_ia32_cmpps512_mask(__a, __b, 32, -1, 4); // expected-error {{argument value 32 is outside the valid range [0, 31]}}
+                                                      ^
+
+"Test_name.c", line 47: warning: integer conversion resulted in a change of sign
+    return __builtin_ia32_cmppd512_mask(__a, __b, 32, -1, 4); // expected-error {{argument value 32 is outside the valid range [0, 31]}}
+                                                      ^
+
+"Test_name.c", line 192: warning: function "__builtin_ia32_lwpins64" declared implicitly
+    return __builtin_ia32_lwpins64(data2, data1, flags); // expected-error {{argument to '__builtin_ia32_lwpins64' must be a constant integer}}
+           ^
+
+"Test_name.c", line 196: warning: function "__builtin_ia32_lwpval64" declared implicitly
+    __builtin_ia32_lwpval64(data2, data1, flags); // expected-error {{argument to '__builtin_ia32_lwpval64' must be a constant integer}}
+    ^
+

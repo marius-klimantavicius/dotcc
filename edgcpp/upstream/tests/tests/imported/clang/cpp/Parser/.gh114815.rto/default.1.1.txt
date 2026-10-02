@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 6: error: expected a "("
+  extern int ID(decltype);
+                         ^
+
+"Test_name.c", line 6: error: expected an expression
+  extern int ID(decltype);
+                         ^
+
+"Test_name.c", line 6: error: expected a ")"
+  extern int ID(decltype);
+                         ^
+
+At end of source: error: expected an identifier
+
+At end of source: error: expected a ";"
+
+5 errors detected in the compilation of "Test_name.c".

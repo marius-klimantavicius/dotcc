@@ -1,0 +1,58 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 17: warning: declaration is not visible outside of function
+  	void g1(int m, struct foo { char p[++m]; }* b)	/* { dg-warning "struct" } */
+  	                      ^
+
+"Test_name.c", line 17: warning: variable-length array field type will be treated as zero-length array field type
+  	void g1(int m, struct foo { char p[++m]; }* b)	/* { dg-warning "struct" } */
+  	                                   ^
+
+"Test_name.c", line 18: error: expected a ";"
+  	{
+  	^
+
+"Test_name.c", line 55: warning: parsing restarts here after previous syntax error
+  		__builtin_abort();
+  		                 ^
+
+"Test_name.c", line 58: warning: function "g2" declared implicitly
+  	g2(p);
+  	^
+
+"Test_name.c", line 59: warning: function "g2b" declared implicitly
+  	g2b(p);
+  	^
+
+"Test_name.c", line 67: error: a field declaration cannot have a type involving a variable length array
+  	struct foo { char (*p)[++n]; } x;
+  	                    ^
+
+"Test_name.c", line 75: error: a field declaration cannot have a type involving a variable length array
+  	struct bar { char (*p)[++n]; };
+  	                    ^
+
+"Test_name.c", line 80: error: a field declaration cannot have a type involving a variable length array
+  	auto struct z { char (*p)[++n]; } g3(void);
+  	                       ^
+
+"Test_name.c", line 80: error: invalid storage class for a function
+  	auto struct z { char (*p)[++n]; } g3(void);
+  	^
+
+"Test_name.c", line 85: error: expected a ";"
+  	struct z g3(void) { };
+  	                  ^
+
+"Test_name.c", line 90: error: a field declaration cannot have a type involving a variable length array
+  	struct { char (*p)[++n]; } g4(void) { };
+  	                ^
+
+"Test_name.c", line 90: error: expected a ";"
+  	struct { char (*p)[++n]; } g4(void) { };
+  	                                    ^
+
+"Test_name.c", line 67: warning: variable "x" was set but never used
+  	struct foo { char (*p)[++n]; } x;
+  	                               ^
+
+8 errors detected in the compilation of "Test_name.c".

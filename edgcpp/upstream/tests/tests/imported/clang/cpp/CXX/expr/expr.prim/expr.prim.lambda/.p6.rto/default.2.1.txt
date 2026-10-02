@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 16: error: no suitable conversion function from "const volatile lambda [](int)->void" to "void (*)(int)" exists
+    void (*fp4)(int) = lambda2; // expected-error{{no viable conversion}}
+                       ^
+
+"Test_name.c", line 18: error: no suitable conversion function from "lambda [](int)->void" to "void (*)(int) noexcept" exists
+    void (*fp5)(int) noexcept = [](int x) { };
+                                ^
+
+"Test_name.c", line 21: error: no suitable conversion function from "lambda [](auto)->auto" to "void (*)(int) noexcept" exists
+    void (*fp5a)(int) noexcept = [](auto x) { };
+                                 ^
+
+"Test_name.c", line 9: warning: variable "fp1" was declared but never referenced
+    int (*fp1)(int) = [](int x) { return x + 1; };
+          ^
+
+"Test_name.c", line 10: warning: variable "fp2" was declared but never referenced
+    void (*fp2)(int) = [](int x) { };
+           ^
+
+"Test_name.c", line 13: warning: variable "fp3" was declared but never referenced
+    void (*fp3)(int) = lambda;
+           ^
+
+"Test_name.c", line 23: warning: variable "fp5b" was declared but never referenced
+    void (*fp5b)(int) noexcept = [](auto x) noexcept { };
+           ^
+
+"Test_name.c", line 25: warning: variable "fp6" was declared but never referenced
+    void (*fp6)(int) noexcept = [](int x) noexcept { };
+           ^
+
+"Test_name.c", line 29: error: no suitable conversion function from "lambda [](int)->int" to "int (*)(int)" exists
+    int (*fp1)(int) = [=](int x) { return x + 1; }; // expected-error{{no viable conversion}}
+                      ^
+
+"Test_name.c", line 30: error: no suitable conversion function from "lambda [](int)->void" to "void (*)(int)" exists
+    void (*fp2)(int) = [&](int x) { }; // expected-error{{no viable conversion}}
+                       ^
+
+5 errors detected in the compilation of "Test_name.c".

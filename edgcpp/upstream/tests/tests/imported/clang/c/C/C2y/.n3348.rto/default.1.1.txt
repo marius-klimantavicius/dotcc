@@ -1,0 +1,94 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 17: warning: function "static_assert" declared implicitly
+    static_assert(1 == _Generic(int[3][2], int[3][*]: 1, int[2][*]: 0));  /* expected-error {{star modifier used outside of function prototype}}
+    ^
+
+"Test_name.c", line 17: error: expected an expression
+    static_assert(1 == _Generic(int[3][2], int[3][*]: 1, int[2][*]: 0));  /* expected-error {{star modifier used outside of function prototype}}
+                                ^
+
+"Test_name.c", line 17: error: variable length array with unspecified bound is not allowed
+    static_assert(1 == _Generic(int[3][2], int[3][*]: 1, int[2][*]: 0));  /* expected-error {{star modifier used outside of function prototype}}
+                                                  ^
+
+"Test_name.c", line 17: error: variable length array with unspecified bound is not allowed
+    static_assert(1 == _Generic(int[3][2], int[3][*]: 1, int[2][*]: 0));  /* expected-error {{star modifier used outside of function prototype}}
+                                                                ^
+
+"Test_name.c", line 20: error: expected an expression
+    static_assert(1 == _Generic(int[3][2], int[*][2]: 1, int[*][3]: 0));  // expected-error {{star modifier used outside of function prototype}}
+                                ^
+
+"Test_name.c", line 20: error: variable length array with unspecified bound is not allowed
+    static_assert(1 == _Generic(int[3][2], int[*][2]: 1, int[*][3]: 0));  // expected-error {{star modifier used outside of function prototype}}
+                                               ^
+
+"Test_name.c", line 20: error: variable length array with unspecified bound is not allowed
+    static_assert(1 == _Generic(int[3][2], int[*][2]: 1, int[*][3]: 0));  // expected-error {{star modifier used outside of function prototype}}
+                                                             ^
+
+"Test_name.c", line 21: error: expected an expression
+    static_assert(1 == _Generic(int[3][n], int[3][*]: 1, int[2][*]: 0));  /* expected-error {{star modifier used outside of function prototype}}
+                                ^
+
+"Test_name.c", line 21: error: variable length array with unspecified bound is not allowed
+    static_assert(1 == _Generic(int[3][n], int[3][*]: 1, int[2][*]: 0));  /* expected-error {{star modifier used outside of function prototype}}
+                                                  ^
+
+"Test_name.c", line 21: error: variable length array with unspecified bound is not allowed
+    static_assert(1 == _Generic(int[3][n], int[3][*]: 1, int[2][*]: 0));  /* expected-error {{star modifier used outside of function prototype}}
+                                                                ^
+
+"Test_name.c", line 24: error: expected an expression
+    static_assert(1 == _Generic(int[n][m], int[*][*]: 1, char[*][*]: 0)); /* expected-error 2 {{star modifier used outside of function prototype}}
+                                ^
+
+"Test_name.c", line 24: error: variable length array with unspecified bound is not allowed
+    static_assert(1 == _Generic(int[n][m], int[*][*]: 1, char[*][*]: 0)); /* expected-error 2 {{star modifier used outside of function prototype}}
+                                               ^
+
+"Test_name.c", line 24: error: variable length array with unspecified bound is not allowed
+    static_assert(1 == _Generic(int[n][m], int[*][*]: 1, char[*][*]: 0)); /* expected-error 2 {{star modifier used outside of function prototype}}
+                                                  ^
+
+"Test_name.c", line 24: error: variable length array with unspecified bound is not allowed
+    static_assert(1 == _Generic(int[n][m], int[*][*]: 1, char[*][*]: 0)); /* expected-error 2 {{star modifier used outside of function prototype}}
+                                                              ^
+
+"Test_name.c", line 24: error: variable length array with unspecified bound is not allowed
+    static_assert(1 == _Generic(int[n][m], int[*][*]: 1, char[*][*]: 0)); /* expected-error 2 {{star modifier used outside of function prototype}}
+                                                                 ^
+
+"Test_name.c", line 27: error: expected an expression
+    static_assert(1 == _Generic(int(*)[2], int(*)[*]: 1));                // expected-error {{star modifier used outside of function prototype}}
+                                ^
+
+"Test_name.c", line 27: error: variable length array with unspecified bound is not allowed
+    static_assert(1 == _Generic(int(*)[2], int(*)[*]: 1));                // expected-error {{star modifier used outside of function prototype}}
+                                                  ^
+
+"Test_name.c", line 35: warning: function "static_assert" declared implicitly
+    static_assert(1 == _Generic(int[*][*], int[2][100]: 1)); /* expected-error 2 {{star modifier used outside of function prototype}}
+    ^
+
+"Test_name.c", line 35: error: expected an expression
+    static_assert(1 == _Generic(int[*][*], int[2][100]: 1)); /* expected-error 2 {{star modifier used outside of function prototype}}
+                                ^
+
+"Test_name.c", line 40: error: expected an expression
+    (void)_Generic(int[*][*], /* expected-error 2 {{star modifier used outside of function prototype}}
+                   ^
+
+"Test_name.c", line 45: error: expected a type specifier
+    );
+    ^
+
+"Test_name.c", line 45: error: expected a ":"
+    );
+    ^
+
+"Test_name.c", line 45: error: expected an expression
+    );
+    ^
+
+21 errors detected in the compilation of "Test_name.c".

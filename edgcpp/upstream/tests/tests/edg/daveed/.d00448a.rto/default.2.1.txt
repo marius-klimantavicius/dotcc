@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=2 --sun --no_sun_linker_scope Test_name.c
+"Test_name.c", line 14: error: this declaration has no storage class or type specifier
+  __global int *p;
+  ^
+
+"Test_name.c", line 14: error: expected a ";"
+  __global int *p;
+           ^
+
+2 errors detected in the compilation of "Test_name.c".

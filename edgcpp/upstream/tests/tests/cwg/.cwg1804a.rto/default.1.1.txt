@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --c++17 -tused -A Test_name.c
+"Test_name.c", line 28: error: member "C_::member" (declared at line 23) is inaccessible
+  int A_<int>::f(const C_& c) { return 10+c.member; }
+                                            ^
+
+At end of source: error: expected a "}"
+"Test_name.c", line 30: note: to match this "{"
+  {
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

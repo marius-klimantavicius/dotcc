@@ -1,0 +1,21 @@
+eccp -DTEST_NUMBER=2 -r -x -tused Test_name.c
+"Test_name.c", line 11: remark: destructor for base class "base1" (declared at line 6) is not virtual
+  struct base2: base1 {
+                ^
+
+"Test_name.c", line 16: remark: destructor for base class "base1" (declared at line 6) is not virtual
+  struct base3: base1 {
+                ^
+
+"Test_name.c", line 21: remark: destructor for base class "base2" (declared at line 11) is not virtual
+  struct derived: base2, base3 {
+                  ^
+
+"Test_name.c", line 21: remark: destructor for base class "base3" (declared at line 16) is not virtual
+  struct derived: base2, base3 {
+                         ^
+
+"Test_name.c", line 37: remark: return type "int" omitted in declaration of function "main"
+  main()
+  ^
+

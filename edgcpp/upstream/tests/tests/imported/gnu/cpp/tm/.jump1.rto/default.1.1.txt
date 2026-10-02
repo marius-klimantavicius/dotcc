@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 10: error: identifier "synchronized" is undefined
+    synchronized {
+    ^
+
+"Test_name.c", line 10: error: expected a ";"
+    synchronized {
+                 ^
+
+"Test_name.c", line 15: warning: parsing restarts here after previous syntax error
+    goto inside;			// { dg-message "" }
+               ^
+
+"Test_name.c", line 19: warning: statement is unreachable
+        synchronized {
+        ^
+
+"Test_name.c", line 19: error: expected a ";"
+        synchronized {
+                     ^
+
+"Test_name.c", line 24: warning: parsing restarts here after previous syntax error
+      }
+      ^
+
+3 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=4 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 --target linux_aarch64 Test_name.c
+"SemaCXX/builtin_vectorelements.cpp", line 18: error: type name is not allowed
+    (void) __builtin_vectorelements(veci4);
+                                    ^
+
+"SemaCXX/builtin_vectorelements.cpp", line 21: error: type name is not allowed
+    (void) __builtin_vectorelements(some_other_vec);
+                                    ^
+
+"SemaCXX/builtin_vectorelements.cpp", line 24: error: type name is not allowed
+    (void) __builtin_vectorelements(some_int);
+                                    ^
+
+"SemaCXX/builtin_vectorelements.cpp", line 27: error: type name is not allowed
+    __builtin_vectorelements(Foo);
+                             ^
+
+"SemaCXX/builtin_vectorelements.cpp", line 33: error: type name is not allowed
+    (void) __builtin_vectorelements(Baz::VecT);
+                                    ^
+
+"SemaCXX/builtin_vectorelements.cpp", line 35: error: type name is not allowed
+    (void) __builtin_vectorelements(FooT::VecT<long>);
+                                    ^
+
+"SemaCXX/builtin_vectorelements.cpp", line 36: error: type name is not allowed
+    (void) __builtin_vectorelements(VecT<char>);
+                                    ^
+
+"SemaCXX/builtin_vectorelements.cpp", line 38: error: type name is not allowed
+    constexpr int i4 = __builtin_vectorelements(veci4);
+                                                ^
+
+"SemaCXX/builtin_vectorelements.cpp", line 39: error: type name is not allowed
+    constexpr int i4p8 = __builtin_vectorelements(veci4) + 8;
+                                                  ^
+
+9 errors detected in the compilation of "Test_name.c".

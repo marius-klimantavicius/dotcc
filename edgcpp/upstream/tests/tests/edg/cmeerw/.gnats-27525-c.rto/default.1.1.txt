@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=1 --c11 -w --target linux_i686 --clang_version 190100 Test_name.c

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"./pr115109.c", line 7: error: no association matches the selector type "long long"
+                                    - 5), b = _Generic(a, enum E: 2) };
+                                              ^
+
+"./pr115109.c", line 7: error: this declaration of enum "E" does not declare the same type as the declaration at line 6
+  enum E { a = 1ULL << (64 
+       ^
+
+2 errors detected in the compilation of "Test_name.c".

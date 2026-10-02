@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 27: warning: argument of type "unsigned long *" is incompatible with parameter of type "long *"
+   	  DES_encrypt1 (tin, ks3, 1);
+   	                ^
+
+"Test_name.c", line 28: warning: argument of type "unsigned long *" is incompatible with parameter of type "long *"
+   	  DES_encrypt1 (tin, ks1, 1);
+   	                ^
+
+"Test_name.c", line 40: warning: argument of type "unsigned long *" is incompatible with parameter of type "long *"
+   	  DES_encrypt1 (tin, ks3, 1);
+   	                ^
+
+"Test_name.c", line 54: warning: variable "xor0" is used before its value is set
+         (*((iv2)++) = (unsigned char) (((xor0)) & 0xff), *((iv2)++) =        (unsigned char) (((xor0) >> 8L) & 0xff), *((iv2)++) =        (unsigned char) (((xor0) >> 16L) & 0xff), *((iv2)++) =        (unsigned char) (((xor0) >> 24L) & 0xff));
+                                          ^
+

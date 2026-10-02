@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=2 -r -x -tused --diag_warning=949 Test_name.c
+"Test_name.c", line 9: warning: specifying a default argument on this declaration is nonstandard
+    static A*(*ptr)(int = 4);
+                        ^
+
+"Test_name.c", line 20: remark: return type "int" omitted in declaration of function "main"
+  main()
+  ^
+
+"Test_name.c", line 22: warning: variable "foo" was declared but never referenced
+    A foo;
+      ^
+

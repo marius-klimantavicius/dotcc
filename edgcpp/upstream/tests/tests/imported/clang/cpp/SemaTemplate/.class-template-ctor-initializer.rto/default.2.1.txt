@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 28: error: "TmplB" is not a nonstatic data member or base class of class "TmplC"
+               TmplB<int>() { } // expected-error {{type 'TmplB<int>' is not a direct or virtual base of 'TmplC'}}
+               ^
+
+"Test_name.c", line 34: error: "Tmpl" is not a nonstatic data member or base class of class "TmplD"
+              Tmpl<int>(), // expected-error {{type 'Tmpl<int>' is not a direct or virtual base of 'TmplD'}}
+              ^
+
+"Test_name.c", line 70: error: no instance of constructor "NonDependentError::Base::Base" matches the argument list
+            argument types are: (int, int)
+      Derived1() : Base(1, 2) {} // expected-error {{no matching constructor}}
+                       ^
+"Test_name.c", line 62: note: number of parameters of function "NonDependentError::Base::Base(const NonDependentError::Base &)" does not match the call
+    struct Base { Base(int); }; // expected-note {{candidate constructor not viable}}
+           ^
+"Test_name.c", line 62: note: number of parameters of function "NonDependentError::Base::Base(NonDependentError::Base &&)" does not match the call
+    struct Base { Base(int); }; // expected-note {{candidate constructor not viable}}
+           ^
+"Test_name.c", line 62: note: number of parameters of function "NonDependentError::Base::Base(int)" does not match the call
+    struct Base { Base(int); }; // expected-note {{candidate constructor not viable}}
+                  ^
+
+"Test_name.c", line 75: error: "BaseClass" is not a nonstatic data member or base class of class "NonDependentError::Derived2<T>"
+      Derived2() : BaseClass(1) {} // expected-error {{does not name a non-static data member or base}}
+                   ^
+
+"Test_name.c", line 75: error: no default constructor exists for class "NonDependentError::Base"
+      Derived2() : BaseClass(1) {} // expected-error {{does not name a non-static data member or base}}
+                                ^
+          detected during instantiation of "NonDependentError::Derived2<T>::Derived2() [with T=void]" at line 79
+
+5 errors detected in the compilation of "Test_name.c".

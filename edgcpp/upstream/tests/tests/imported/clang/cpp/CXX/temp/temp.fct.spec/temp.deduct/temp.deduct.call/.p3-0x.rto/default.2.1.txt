@@ -1,0 +1,44 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 15: error: no instance of constructor "ClassTemplateParamNotForwardingRef::A" matches the argument list
+            argument types are: (int)
+    A a = n; // expected-error {{no viable constructor or deduction guide}}
+      ^
+
+"Test_name.c", line 15: error: cannot deduce class template arguments
+    A a = n; // expected-error {{no viable constructor or deduction guide}}
+    ^
+
+"Test_name.c", line 64: error: no instance of function template "f1" matches the argument list
+            argument types are: (int)
+    f1(lvalue<int>()); // expected-error{{no matching function for call to 'f1'}}
+    ^
+"Test_name.c", line 58: note: function template "f1" does not match because argument #1 does not match parameter
+  template<typename T> X<T> f1(const T&&); // expected-note{{candidate function [with T = int] not viable: expects an rvalue for 1st argument}} \
+                            ^
+
+"Test_name.c", line 67: error: no instance of function template "f1" matches the argument list
+            argument types are: (Y)
+    f1(lvalue<Y>()); // expected-error{{no matching function for call to 'f1'}}
+    ^
+"Test_name.c", line 58: note: function template "f1" does not match because argument #1 does not match parameter
+  template<typename T> X<T> f1(const T&&); // expected-note{{candidate function [with T = int] not viable: expects an rvalue for 1st argument}} \
+                            ^
+
+"Test_name.c", line 77: error: no instance of function template "std_example::g" matches the argument list
+            argument types are: (int)
+    int n3 = g(i); // expected-error{{no matching function for call to 'g'}}
+             ^
+"Test_name.c", line 72: note: function template "std_example::g" does not match because argument #1 does not match parameter
+    template <class T> int g(const T&&); // expected-note{{candidate function [with T = int] not viable: expects an rvalue for 1st argument}}
+                           ^
+
+"Test_name.c", line 90: error: no instance of constructor "std_example::A" matches the argument list
+            argument types are: (int, int, int *)
+    A a{i, 0, ip};  // expected-error {{no viable constructor or deduction guide}}
+      ^
+
+"Test_name.c", line 90: error: cannot deduce class template arguments
+    A a{i, 0, ip};  // expected-error {{no viable constructor or deduction guide}}
+    ^
+
+7 errors detected in the compilation of "Test_name.c".

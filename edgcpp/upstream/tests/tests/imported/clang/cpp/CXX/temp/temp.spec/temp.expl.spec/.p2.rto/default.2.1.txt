@@ -1,0 +1,39 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 41: error: function "N0::f0(T) [with T=long]" cannot be specialized in the current scope
+    template<> void N0::f0(long) { } // expected-error{{does not enclose namespace}}
+                        ^
+
+"Test_name.c", line 89: error: class "N0::X0<const void>" cannot be specialized in the current scope
+    template<> struct N0::X0<const void> { }; // expected-error{{not in a namespace enclosing 'N0'}}
+                      ^
+
+"Test_name.c", line 108: error: "void N0::X0<volatile void>::f1(void *)" is not an entity that can be explicitly specialized
+    template<> void X0<volatile void>::f1(void *) { } // expected-error{{no function template matches}}
+                                       ^
+
+"Test_name.c", line 139: warning: member "N0::X0<T>::member [with T=double]" cannot be specialized in the current scope
+    template<> double N0::X0<double>::member = 3.14; // expected-error{{does not enclose namespace}}
+                                      ^
+
+"Test_name.c", line 172: error: class "N0::X0<T>::Inner [with T=unsigned long]" cannot be specialized in the current scope
+    struct N0::X0<unsigned long>::Inner { }; // expected-error{{member class specialization}}
+           ^
+
+"Test_name.c", line 179: error: incomplete type "N0::X0<double>::Inner" is not allowed
+  N0::X0<double>::Inner inner4; // expected-error{{incomplete}}
+                        ^
+
+"Test_name.c", line 209: error: incomplete type "N0::X0<int>::InnerTemplate<int>" is not allowed
+  N0::X0<int>::InnerTemplate<int> inner_template1; // expected-error{{incomplete}}
+                                  ^
+
+"Test_name.c", line 68: error: not a class or struct name
+    struct InnerTemplate : public T { }; // expected-note {{explicitly specialized declaration is here}}
+                                  ^
+          detected during instantiation of class "N0::X0<T>::InnerTemplate<U> [with T=int, U=unsigned long]" at line 211
+
+"Test_name.c", line 237: error: function "N0::X0<T>::ft1(T, U) [with T=void *, U=long]" cannot be specialized in the current scope
+    void N0::X0<void*>::ft1(void *, long) { } // expected-error{{does not enclose namespace}}
+                        ^
+
+8 errors detected in the compilation of "Test_name.c".

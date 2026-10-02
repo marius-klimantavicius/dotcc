@@ -1,0 +1,91 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 11: error: expression must have a constant value
+  constexpr int i1 = fn1 (1, -1); // { dg-message "in .constexpr. expansion of " }
+                     ^
+"Test_name.c", line 8: note: shift count is negative
+    return i << j; // { dg-error "is negative" }
+                ^
+
+"Test_name.c", line 19: error: expression must have a constant value
+  constexpr int i2 = fn2 (1, 200); // { dg-message "in .constexpr. expansion of " }
+                     ^
+"Test_name.c", line 16: note: shift count is too large
+    return i << j; // { dg-error "is greater than or equal to the precision .. of the left operand" }
+                ^
+
+"Test_name.c", line 27: error: expression must have a constant value
+  constexpr int i3 = fn3 (-1, 2); // { dg-message "in .constexpr. expansion of " "" { target c++17_down } }
+                     ^
+"Test_name.c", line 24: note: left-shifting a negative value has undefined behavior
+    return i << j; // { dg-error "is negative" "" { target c++17_down } }
+             ^
+
+"Test_name.c", line 35: error: expression must have a constant value
+  constexpr int i4 = fn4 (__INT_MAX__, 2); // { dg-message "in .constexpr. expansion of " "" { target c++17_down } }
+                     ^
+"Test_name.c", line 32: note: value exceeds range of "int"
+    return i << j; // { dg-error "overflows" "" { target c++17_down } }
+             ^
+
+"Test_name.c", line 51: warning: integer conversion resulted in a change of sign
+  constexpr int i6 = fn6 (1, -1); // { dg-message "in .constexpr. expansion of " }
+                             ^
+
+"Test_name.c", line 51: error: expression must have a constant value
+  constexpr int i6 = fn6 (1, -1); // { dg-message "in .constexpr. expansion of " }
+                     ^
+"Test_name.c", line 48: note: shift count is too large
+    return i << j; // { dg-error "is greater than or equal to the precision .. of the left operand" }
+                ^
+
+"Test_name.c", line 59: error: expression must have a constant value
+  constexpr int i7 = fn7 (1, -1); // { dg-message "in .constexpr. expansion of " }
+                     ^
+"Test_name.c", line 56: note: shift count is negative
+    return i >> j; // { dg-error "is negative" }
+                ^
+
+"Test_name.c", line 75: error: expression must have a constant value
+  constexpr int i9 = fn9 (1, 200); // { dg-message "in .constexpr. expansion of " }
+                     ^
+"Test_name.c", line 72: note: shift count is too large
+    return i >> j;  // { dg-error "is greater than or equal to the precision .. of the left operand" }
+                ^
+
+"Test_name.c", line 11: warning: variable "i1" was declared but never referenced
+  constexpr int i1 = fn1 (1, -1); // { dg-message "in .constexpr. expansion of " }
+                ^
+
+"Test_name.c", line 19: warning: variable "i2" was declared but never referenced
+  constexpr int i2 = fn2 (1, 200); // { dg-message "in .constexpr. expansion of " }
+                ^
+
+"Test_name.c", line 27: warning: variable "i3" was declared but never referenced
+  constexpr int i3 = fn3 (-1, 2); // { dg-message "in .constexpr. expansion of " "" { target c++17_down } }
+                ^
+
+"Test_name.c", line 35: warning: variable "i4" was declared but never referenced
+  constexpr int i4 = fn4 (__INT_MAX__, 2); // { dg-message "in .constexpr. expansion of " "" { target c++17_down } }
+                ^
+
+"Test_name.c", line 43: warning: variable "i5" was declared but never referenced
+  constexpr int i5 = fn5 (__INT_MAX__, 1);
+                ^
+
+"Test_name.c", line 51: warning: variable "i6" was declared but never referenced
+  constexpr int i6 = fn6 (1, -1); // { dg-message "in .constexpr. expansion of " }
+                ^
+
+"Test_name.c", line 59: warning: variable "i7" was declared but never referenced
+  constexpr int i7 = fn7 (1, -1); // { dg-message "in .constexpr. expansion of " }
+                ^
+
+"Test_name.c", line 67: warning: variable "i8" was declared but never referenced
+  constexpr int i8 = fn8 (-1, 1);
+                ^
+
+"Test_name.c", line 75: warning: variable "i9" was declared but never referenced
+  constexpr int i9 = fn9 (1, 200); // { dg-message "in .constexpr. expansion of " }
+                ^
+
+7 errors detected in the compilation of "Test_name.c".

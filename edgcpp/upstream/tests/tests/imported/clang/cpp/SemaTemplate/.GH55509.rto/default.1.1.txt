@@ -1,0 +1,27 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++26 Test_name.c
+"Test_name.c", line 18: error: cannot deduce the return type of function "t1::cica(const t1::A<0> &, C) [with C=int]" (declared at line 13); it has not been defined
+      cica(A<0>{}, 0);
+      ^
+
+"Test_name.c", line 44: error: more than one instance of overloaded function "t2::MakeCica" matches the argument list:
+            function template "void t2::MakeCica<N,<unnamed>>()" (declared at line 37)
+            function template "void t2::MakeCica<N>(t2::A<<expression>>)" (declared at line 40)
+      MakeCica<0>();
+      ^
+
+"Test_name.c", line 46: error: more than one instance of overloaded function "t2::MakeCica" matches the argument list:
+            function template "void t2::MakeCica<N,<unnamed>>()" (declared at line 37)
+            function template "void t2::MakeCica<N>(t2::A<<expression>>)" (declared at line 40)
+      MakeCica<0>();
+      ^
+
+"Test_name.c", line 134: error: specializing function "GH139226::operator<<(GH139226::FakeStream &, GH139226::BinaryTree<T> &) [with T=int]" requires "template<>" syntax
+    friend FakeStream& operator<< <T>(FakeStream& os, BinaryTree&) {
+                       ^
+          detected during instantiation of class "GH139226::BinaryTree<T> [with T=int]" at line 144
+
+"Test_name.c", line 70: warning: variable "t3::cica2" was declared but never referenced
+    constexpr bool cica2 = has_cica<0> || has_cica<0>;
+                   ^
+
+4 errors detected in the compilation of "Test_name.c".

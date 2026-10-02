@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 5: error: template parameter "T" may not be redeclared in this scope
+  template < class T, class T >  // { dg-error "conflicting" }
+                            ^
+
+"Test_name.c", line 9: error: expected a ")"
+    explicit A (T (S::*f) ()) {}  // { dg-error "expected" }
+                    ^
+
+"Test_name.c", line 15: error: no instance of constructor "A<T, T>::A [with T=void, T=B]" matches the argument list
+            argument types are: (void (B::*)())
+    return A < T, S > (f);
+           ^
+"Test_name.c", line 6: note: function "A<T, T>::A(const A<void, B> &) [with T=void, T=B]" does not match because argument #1 does not match parameter
+  class A
+        ^
+"Test_name.c", line 6: note: function "A<T, T>::A(A<void, B> &&) [with T=void, T=B]" does not match because argument #1 does not match parameter
+  class A
+        ^
+"Test_name.c", line 9: note: function "A<T, T>::A(T (*)()) [with T=void, T=B]" does not match because argument #1 does not match parameter
+    explicit A (T (S::*f) ()) {}  // { dg-error "expected" }
+             ^
+          detected during instantiation of "A<T, S> foo(T (S::*)()) [with T=void, S=B]" at line 27
+
+3 errors detected in the compilation of "Test_name.c".

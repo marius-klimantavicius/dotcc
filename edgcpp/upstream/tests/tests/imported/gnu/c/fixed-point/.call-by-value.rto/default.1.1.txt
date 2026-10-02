@@ -1,0 +1,976 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 29: error: expected a ")"
+  FOO_FUN (sf, short _Fract, 0.2hr)
+  ^
+
+"Test_name.c", line 29: error: identifier "z" is undefined
+  FOO_FUN (sf, short _Fract, 0.2hr)
+  ^
+
+"Test_name.c", line 29: error: extra text after expected end of number
+  FOO_FUN (sf, short _Fract, 0.2hr)
+  ^
+
+"Test_name.c", line 29: warning: missing return statement at end of non-void function "foosf"
+  FOO_FUN (sf, short _Fract, 0.2hr)
+  ^
+
+"Test_name.c", line 30: error: identifier "_Fract" is undefined
+  FOO_FUN (f, _Fract, 0.2r)
+  ^
+
+"Test_name.c", line 30: error: extra text after expected end of number
+  FOO_FUN (f, _Fract, 0.2r)
+  ^
+
+"Test_name.c", line 30: warning: missing return statement at end of non-void function "foof"
+  FOO_FUN (f, _Fract, 0.2r)
+  ^
+
+"Test_name.c", line 31: error: expected a ")"
+  FOO_FUN (lf, long _Fract, 0.2lr)
+  ^
+
+"Test_name.c", line 31: error: identifier "z" is undefined
+  FOO_FUN (lf, long _Fract, 0.2lr)
+  ^
+
+"Test_name.c", line 31: error: extra text after expected end of number
+  FOO_FUN (lf, long _Fract, 0.2lr)
+  ^
+
+"Test_name.c", line 31: warning: missing return statement at end of non-void function "foolf"
+  FOO_FUN (lf, long _Fract, 0.2lr)
+  ^
+
+"Test_name.c", line 32: error: expected a ")"
+  FOO_FUN (llf, long long _Fract, 0.2llr)
+  ^
+
+"Test_name.c", line 32: error: identifier "z" is undefined
+  FOO_FUN (llf, long long _Fract, 0.2llr)
+  ^
+
+"Test_name.c", line 32: error: extra text after expected end of number
+  FOO_FUN (llf, long long _Fract, 0.2llr)
+  ^
+
+"Test_name.c", line 32: warning: missing return statement at end of non-void function "foollf"
+  FOO_FUN (llf, long long _Fract, 0.2llr)
+  ^
+
+"Test_name.c", line 33: error: expected a ")"
+  FOO_FUN (usf, unsigned short _Fract, 0.2uhr)
+  ^
+
+"Test_name.c", line 33: error: identifier "z" is undefined
+  FOO_FUN (usf, unsigned short _Fract, 0.2uhr)
+  ^
+
+"Test_name.c", line 33: error: extra text after expected end of number
+  FOO_FUN (usf, unsigned short _Fract, 0.2uhr)
+  ^
+
+"Test_name.c", line 33: warning: missing return statement at end of non-void function "foousf"
+  FOO_FUN (usf, unsigned short _Fract, 0.2uhr)
+  ^
+
+"Test_name.c", line 34: error: expected a ")"
+  FOO_FUN (uf, unsigned _Fract, 0.2ur)
+  ^
+
+"Test_name.c", line 34: error: identifier "z" is undefined
+  FOO_FUN (uf, unsigned _Fract, 0.2ur)
+  ^
+
+"Test_name.c", line 34: error: extra text after expected end of number
+  FOO_FUN (uf, unsigned _Fract, 0.2ur)
+  ^
+
+"Test_name.c", line 34: warning: missing return statement at end of non-void function "foouf"
+  FOO_FUN (uf, unsigned _Fract, 0.2ur)
+  ^
+
+"Test_name.c", line 35: error: expected a ")"
+  FOO_FUN (ulf, unsigned long _Fract, 0.2ulr)
+  ^
+
+"Test_name.c", line 35: error: identifier "z" is undefined
+  FOO_FUN (ulf, unsigned long _Fract, 0.2ulr)
+  ^
+
+"Test_name.c", line 35: error: extra text after expected end of number
+  FOO_FUN (ulf, unsigned long _Fract, 0.2ulr)
+  ^
+
+"Test_name.c", line 35: warning: missing return statement at end of non-void function "fooulf"
+  FOO_FUN (ulf, unsigned long _Fract, 0.2ulr)
+  ^
+
+"Test_name.c", line 36: error: expected a ")"
+  FOO_FUN (ullf, unsigned long long _Fract, 0.2ullr)
+  ^
+
+"Test_name.c", line 36: error: identifier "z" is undefined
+  FOO_FUN (ullf, unsigned long long _Fract, 0.2ullr)
+  ^
+
+"Test_name.c", line 36: error: extra text after expected end of number
+  FOO_FUN (ullf, unsigned long long _Fract, 0.2ullr)
+  ^
+
+"Test_name.c", line 36: warning: missing return statement at end of non-void function "fooullf"
+  FOO_FUN (ullf, unsigned long long _Fract, 0.2ullr)
+  ^
+
+"Test_name.c", line 37: error: identifier "_Sat" is undefined
+  FOO_FUN (Ssf, _Sat short _Fract, 0.2hr)
+  ^
+
+"Test_name.c", line 37: error: invalid combination of type specifiers
+  FOO_FUN (Ssf, _Sat short _Fract, 0.2hr)
+  ^
+
+"Test_name.c", line 37: error: expected a ")"
+  FOO_FUN (Ssf, _Sat short _Fract, 0.2hr)
+  ^
+
+"Test_name.c", line 37: error: extra text after expected end of number
+  FOO_FUN (Ssf, _Sat short _Fract, 0.2hr)
+  ^
+
+"Test_name.c", line 37: warning: missing return statement at end of non-void function "fooSsf"
+  FOO_FUN (Ssf, _Sat short _Fract, 0.2hr)
+  ^
+
+"Test_name.c", line 38: error: identifier "_Sat" is undefined
+  FOO_FUN (Sf, _Sat _Fract, 0.2r)
+  ^
+
+"Test_name.c", line 38: error: expected a ")"
+  FOO_FUN (Sf, _Sat _Fract, 0.2r)
+  ^
+
+"Test_name.c", line 38: error: extra text after expected end of number
+  FOO_FUN (Sf, _Sat _Fract, 0.2r)
+  ^
+
+"Test_name.c", line 38: warning: missing return statement at end of non-void function "fooSf"
+  FOO_FUN (Sf, _Sat _Fract, 0.2r)
+  ^
+
+"Test_name.c", line 39: error: identifier "_Sat" is undefined
+  FOO_FUN (Slf, _Sat long _Fract, 0.2lr)
+  ^
+
+"Test_name.c", line 39: error: invalid combination of type specifiers
+  FOO_FUN (Slf, _Sat long _Fract, 0.2lr)
+  ^
+
+"Test_name.c", line 39: error: expected a ")"
+  FOO_FUN (Slf, _Sat long _Fract, 0.2lr)
+  ^
+
+"Test_name.c", line 39: error: extra text after expected end of number
+  FOO_FUN (Slf, _Sat long _Fract, 0.2lr)
+  ^
+
+"Test_name.c", line 39: warning: missing return statement at end of non-void function "fooSlf"
+  FOO_FUN (Slf, _Sat long _Fract, 0.2lr)
+  ^
+
+"Test_name.c", line 40: error: identifier "_Sat" is undefined
+  FOO_FUN (Sllf, _Sat long long _Fract, 0.2llr)
+  ^
+
+"Test_name.c", line 40: error: invalid combination of type specifiers
+  FOO_FUN (Sllf, _Sat long long _Fract, 0.2llr)
+  ^
+
+"Test_name.c", line 40: error: expected a ")"
+  FOO_FUN (Sllf, _Sat long long _Fract, 0.2llr)
+  ^
+
+"Test_name.c", line 40: error: extra text after expected end of number
+  FOO_FUN (Sllf, _Sat long long _Fract, 0.2llr)
+  ^
+
+"Test_name.c", line 40: warning: missing return statement at end of non-void function "fooSllf"
+  FOO_FUN (Sllf, _Sat long long _Fract, 0.2llr)
+  ^
+
+"Test_name.c", line 41: error: identifier "_Sat" is undefined
+  FOO_FUN (Susf, _Sat unsigned short _Fract, 0.2uhr)
+  ^
+
+"Test_name.c", line 41: error: invalid combination of type specifiers
+  FOO_FUN (Susf, _Sat unsigned short _Fract, 0.2uhr)
+  ^
+
+"Test_name.c", line 41: error: expected a ")"
+  FOO_FUN (Susf, _Sat unsigned short _Fract, 0.2uhr)
+  ^
+
+"Test_name.c", line 41: error: extra text after expected end of number
+  FOO_FUN (Susf, _Sat unsigned short _Fract, 0.2uhr)
+  ^
+
+"Test_name.c", line 41: warning: missing return statement at end of non-void function "fooSusf"
+  FOO_FUN (Susf, _Sat unsigned short _Fract, 0.2uhr)
+  ^
+
+"Test_name.c", line 42: error: identifier "_Sat" is undefined
+  FOO_FUN (Suf, _Sat unsigned _Fract, 0.2ur)
+  ^
+
+"Test_name.c", line 42: error: invalid combination of type specifiers
+  FOO_FUN (Suf, _Sat unsigned _Fract, 0.2ur)
+  ^
+
+"Test_name.c", line 42: error: expected a ")"
+  FOO_FUN (Suf, _Sat unsigned _Fract, 0.2ur)
+  ^
+
+"Test_name.c", line 42: error: extra text after expected end of number
+  FOO_FUN (Suf, _Sat unsigned _Fract, 0.2ur)
+  ^
+
+"Test_name.c", line 42: warning: missing return statement at end of non-void function "fooSuf"
+  FOO_FUN (Suf, _Sat unsigned _Fract, 0.2ur)
+  ^
+
+"Test_name.c", line 43: error: identifier "_Sat" is undefined
+  FOO_FUN (Sulf, _Sat unsigned long _Fract, 0.2ulr)
+  ^
+
+"Test_name.c", line 43: error: invalid combination of type specifiers
+  FOO_FUN (Sulf, _Sat unsigned long _Fract, 0.2ulr)
+  ^
+
+"Test_name.c", line 43: error: expected a ")"
+  FOO_FUN (Sulf, _Sat unsigned long _Fract, 0.2ulr)
+  ^
+
+"Test_name.c", line 43: error: extra text after expected end of number
+  FOO_FUN (Sulf, _Sat unsigned long _Fract, 0.2ulr)
+  ^
+
+"Test_name.c", line 43: warning: missing return statement at end of non-void function "fooSulf"
+  FOO_FUN (Sulf, _Sat unsigned long _Fract, 0.2ulr)
+  ^
+
+"Test_name.c", line 44: error: identifier "_Sat" is undefined
+  FOO_FUN (Sullf, _Sat unsigned long long _Fract, 0.2ullr)
+  ^
+
+"Test_name.c", line 44: error: invalid combination of type specifiers
+  FOO_FUN (Sullf, _Sat unsigned long long _Fract, 0.2ullr)
+  ^
+
+"Test_name.c", line 44: error: expected a ")"
+  FOO_FUN (Sullf, _Sat unsigned long long _Fract, 0.2ullr)
+  ^
+
+"Test_name.c", line 44: error: extra text after expected end of number
+  FOO_FUN (Sullf, _Sat unsigned long long _Fract, 0.2ullr)
+  ^
+
+"Test_name.c", line 44: warning: missing return statement at end of non-void function "fooSullf"
+  FOO_FUN (Sullf, _Sat unsigned long long _Fract, 0.2ullr)
+  ^
+
+"Test_name.c", line 45: error: expected a ")"
+  FOO_FUN (sa, short _Accum, 0.2hk)
+  ^
+
+"Test_name.c", line 45: error: identifier "z" is undefined
+  FOO_FUN (sa, short _Accum, 0.2hk)
+  ^
+
+"Test_name.c", line 45: error: extra text after expected end of number
+  FOO_FUN (sa, short _Accum, 0.2hk)
+  ^
+
+"Test_name.c", line 45: warning: missing return statement at end of non-void function "foosa"
+  FOO_FUN (sa, short _Accum, 0.2hk)
+  ^
+
+"Test_name.c", line 46: error: identifier "_Accum" is undefined
+  FOO_FUN (a, _Accum, 0.2k)
+  ^
+
+"Test_name.c", line 46: error: extra text after expected end of number
+  FOO_FUN (a, _Accum, 0.2k)
+  ^
+
+"Test_name.c", line 46: warning: missing return statement at end of non-void function "fooa"
+  FOO_FUN (a, _Accum, 0.2k)
+  ^
+
+"Test_name.c", line 47: error: expected a ")"
+  FOO_FUN (la, long _Accum, 0.2lk)
+  ^
+
+"Test_name.c", line 47: error: identifier "z" is undefined
+  FOO_FUN (la, long _Accum, 0.2lk)
+  ^
+
+"Test_name.c", line 47: error: extra text after expected end of number
+  FOO_FUN (la, long _Accum, 0.2lk)
+  ^
+
+"Test_name.c", line 47: warning: missing return statement at end of non-void function "foola"
+  FOO_FUN (la, long _Accum, 0.2lk)
+  ^
+
+"Test_name.c", line 48: error: expected a ")"
+  FOO_FUN (lla, long long _Accum, 0.2llk)
+  ^
+
+"Test_name.c", line 48: error: identifier "z" is undefined
+  FOO_FUN (lla, long long _Accum, 0.2llk)
+  ^
+
+"Test_name.c", line 48: error: extra text after expected end of number
+  FOO_FUN (lla, long long _Accum, 0.2llk)
+  ^
+
+"Test_name.c", line 48: warning: missing return statement at end of non-void function "foolla"
+  FOO_FUN (lla, long long _Accum, 0.2llk)
+  ^
+
+"Test_name.c", line 49: error: expected a ")"
+  FOO_FUN (usa, unsigned short _Accum, 0.2uhk)
+  ^
+
+"Test_name.c", line 49: error: identifier "z" is undefined
+  FOO_FUN (usa, unsigned short _Accum, 0.2uhk)
+  ^
+
+"Test_name.c", line 49: error: extra text after expected end of number
+  FOO_FUN (usa, unsigned short _Accum, 0.2uhk)
+  ^
+
+"Test_name.c", line 49: warning: missing return statement at end of non-void function "foousa"
+  FOO_FUN (usa, unsigned short _Accum, 0.2uhk)
+  ^
+
+"Test_name.c", line 50: error: expected a ")"
+  FOO_FUN (ua, unsigned _Accum, 0.2uk)
+  ^
+
+"Test_name.c", line 50: error: identifier "z" is undefined
+  FOO_FUN (ua, unsigned _Accum, 0.2uk)
+  ^
+
+"Test_name.c", line 50: error: extra text after expected end of number
+  FOO_FUN (ua, unsigned _Accum, 0.2uk)
+  ^
+
+"Test_name.c", line 50: warning: missing return statement at end of non-void function "fooua"
+  FOO_FUN (ua, unsigned _Accum, 0.2uk)
+  ^
+
+"Test_name.c", line 51: error: expected a ")"
+  FOO_FUN (ula, unsigned long _Accum, 0.2ulk)
+  ^
+
+"Test_name.c", line 51: error: identifier "z" is undefined
+  FOO_FUN (ula, unsigned long _Accum, 0.2ulk)
+  ^
+
+"Test_name.c", line 51: error: extra text after expected end of number
+  FOO_FUN (ula, unsigned long _Accum, 0.2ulk)
+  ^
+
+"Test_name.c", line 51: warning: missing return statement at end of non-void function "fooula"
+  FOO_FUN (ula, unsigned long _Accum, 0.2ulk)
+  ^
+
+"Test_name.c", line 52: error: expected a ")"
+  FOO_FUN (ulla, unsigned long long _Accum, 0.2ullk)
+  ^
+
+"Test_name.c", line 52: error: identifier "z" is undefined
+  FOO_FUN (ulla, unsigned long long _Accum, 0.2ullk)
+  ^
+
+"Test_name.c", line 52: error: extra text after expected end of number
+  FOO_FUN (ulla, unsigned long long _Accum, 0.2ullk)
+  ^
+
+"Test_name.c", line 52: warning: missing return statement at end of non-void function "fooulla"
+  FOO_FUN (ulla, unsigned long long _Accum, 0.2ullk)
+  ^
+
+"Test_name.c", line 53: error: identifier "_Sat" is undefined
+  FOO_FUN (Ssa, _Sat short _Accum, 0.2hk)
+  ^
+
+"Test_name.c", line 53: error: invalid combination of type specifiers
+  FOO_FUN (Ssa, _Sat short _Accum, 0.2hk)
+  ^
+
+"Test_name.c", line 53: error: expected a ")"
+  FOO_FUN (Ssa, _Sat short _Accum, 0.2hk)
+  ^
+
+"Test_name.c", line 53: error: extra text after expected end of number
+  FOO_FUN (Ssa, _Sat short _Accum, 0.2hk)
+  ^
+
+"Test_name.c", line 53: warning: missing return statement at end of non-void function "fooSsa"
+  FOO_FUN (Ssa, _Sat short _Accum, 0.2hk)
+  ^
+
+"Test_name.c", line 54: error: identifier "_Sat" is undefined
+  FOO_FUN (Sa, _Sat _Accum, 0.2k)
+  ^
+
+"Test_name.c", line 54: error: expected a ")"
+  FOO_FUN (Sa, _Sat _Accum, 0.2k)
+  ^
+
+"Test_name.c", line 54: error: extra text after expected end of number
+  FOO_FUN (Sa, _Sat _Accum, 0.2k)
+  ^
+
+"Test_name.c", line 54: warning: missing return statement at end of non-void function "fooSa"
+  FOO_FUN (Sa, _Sat _Accum, 0.2k)
+  ^
+
+"Test_name.c", line 55: error: identifier "_Sat" is undefined
+  FOO_FUN (Sla, _Sat long _Accum, 0.2lk)
+  ^
+
+"Test_name.c", line 55: error: invalid combination of type specifiers
+  FOO_FUN (Sla, _Sat long _Accum, 0.2lk)
+  ^
+
+"Test_name.c", line 55: error: expected a ")"
+  FOO_FUN (Sla, _Sat long _Accum, 0.2lk)
+  ^
+
+"Test_name.c", line 55: error: extra text after expected end of number
+  FOO_FUN (Sla, _Sat long _Accum, 0.2lk)
+  ^
+
+"Test_name.c", line 55: warning: missing return statement at end of non-void function "fooSla"
+  FOO_FUN (Sla, _Sat long _Accum, 0.2lk)
+  ^
+
+"Test_name.c", line 56: error: identifier "_Sat" is undefined
+  FOO_FUN (Slla, _Sat long long _Accum, 0.2llk)
+  ^
+
+"Test_name.c", line 56: error: invalid combination of type specifiers
+  FOO_FUN (Slla, _Sat long long _Accum, 0.2llk)
+  ^
+
+"Test_name.c", line 56: error: expected a ")"
+  FOO_FUN (Slla, _Sat long long _Accum, 0.2llk)
+  ^
+
+"Test_name.c", line 56: error: extra text after expected end of number
+  FOO_FUN (Slla, _Sat long long _Accum, 0.2llk)
+  ^
+
+"Test_name.c", line 56: warning: missing return statement at end of non-void function "fooSlla"
+  FOO_FUN (Slla, _Sat long long _Accum, 0.2llk)
+  ^
+
+"Test_name.c", line 57: error: identifier "_Sat" is undefined
+  FOO_FUN (Susa, _Sat unsigned short _Accum, 0.2uhk)
+  ^
+
+"Test_name.c", line 57: error: invalid combination of type specifiers
+  FOO_FUN (Susa, _Sat unsigned short _Accum, 0.2uhk)
+  ^
+
+"Test_name.c", line 57: error: expected a ")"
+  FOO_FUN (Susa, _Sat unsigned short _Accum, 0.2uhk)
+  ^
+
+"Test_name.c", line 57: error: extra text after expected end of number
+  FOO_FUN (Susa, _Sat unsigned short _Accum, 0.2uhk)
+  ^
+
+"Test_name.c", line 57: warning: missing return statement at end of non-void function "fooSusa"
+  FOO_FUN (Susa, _Sat unsigned short _Accum, 0.2uhk)
+  ^
+
+"Test_name.c", line 58: error: identifier "_Sat" is undefined
+  FOO_FUN (Sua, _Sat unsigned _Accum, 0.2uk)
+  ^
+
+"Test_name.c", line 58: error: invalid combination of type specifiers
+  FOO_FUN (Sua, _Sat unsigned _Accum, 0.2uk)
+  ^
+
+"Test_name.c", line 58: error: expected a ")"
+  FOO_FUN (Sua, _Sat unsigned _Accum, 0.2uk)
+  ^
+
+"Test_name.c", line 58: error: extra text after expected end of number
+  FOO_FUN (Sua, _Sat unsigned _Accum, 0.2uk)
+  ^
+
+"Test_name.c", line 58: warning: missing return statement at end of non-void function "fooSua"
+  FOO_FUN (Sua, _Sat unsigned _Accum, 0.2uk)
+  ^
+
+"Test_name.c", line 59: error: identifier "_Sat" is undefined
+  FOO_FUN (Sula, _Sat unsigned long _Accum, 0.2ulk)
+  ^
+
+"Test_name.c", line 59: error: invalid combination of type specifiers
+  FOO_FUN (Sula, _Sat unsigned long _Accum, 0.2ulk)
+  ^
+
+"Test_name.c", line 59: error: expected a ")"
+  FOO_FUN (Sula, _Sat unsigned long _Accum, 0.2ulk)
+  ^
+
+"Test_name.c", line 59: error: extra text after expected end of number
+  FOO_FUN (Sula, _Sat unsigned long _Accum, 0.2ulk)
+  ^
+
+"Test_name.c", line 59: warning: missing return statement at end of non-void function "fooSula"
+  FOO_FUN (Sula, _Sat unsigned long _Accum, 0.2ulk)
+  ^
+
+"Test_name.c", line 60: error: identifier "_Sat" is undefined
+  FOO_FUN (Sulla, _Sat unsigned long long _Accum, 0.2ullk)
+  ^
+
+"Test_name.c", line 60: error: invalid combination of type specifiers
+  FOO_FUN (Sulla, _Sat unsigned long long _Accum, 0.2ullk)
+  ^
+
+"Test_name.c", line 60: error: expected a ")"
+  FOO_FUN (Sulla, _Sat unsigned long long _Accum, 0.2ullk)
+  ^
+
+"Test_name.c", line 60: error: extra text after expected end of number
+  FOO_FUN (Sulla, _Sat unsigned long long _Accum, 0.2ullk)
+  ^
+
+"Test_name.c", line 60: warning: missing return statement at end of non-void function "fooSulla"
+  FOO_FUN (Sulla, _Sat unsigned long long _Accum, 0.2ullk)
+  ^
+
+"Test_name.c", line 65: error: expected a ";"
+    FOO_TEST (sf, short _Fract, 0.2hr)
+    ^
+
+"Test_name.c", line 65: error: extra text after expected end of number
+    FOO_TEST (sf, short _Fract, 0.2hr)
+    ^
+
+"Test_name.c", line 65: error: identifier "sf" is undefined
+    FOO_TEST (sf, short _Fract, 0.2hr)
+    ^
+
+"Test_name.c", line 65: error: extra text after expected end of number
+    FOO_TEST (sf, short _Fract, 0.2hr)
+    ^
+
+"Test_name.c", line 65: warning: variable "_Fract" was declared but never referenced
+    FOO_TEST (sf, short _Fract, 0.2hr)
+    ^
+
+"Test_name.c", line 66: error: identifier "_Fract" is undefined
+    FOO_TEST (f, _Fract, 0.2r)
+    ^
+
+"Test_name.c", line 66: error: extra text after expected end of number
+    FOO_TEST (f, _Fract, 0.2r)
+    ^
+
+"Test_name.c", line 66: error: extra text after expected end of number
+    FOO_TEST (f, _Fract, 0.2r)
+    ^
+
+"Test_name.c", line 67: error: expected a ";"
+    FOO_TEST (lf, long _Fract, 0.2lr)
+    ^
+
+"Test_name.c", line 67: error: extra text after expected end of number
+    FOO_TEST (lf, long _Fract, 0.2lr)
+    ^
+
+"Test_name.c", line 67: error: identifier "lf" is undefined
+    FOO_TEST (lf, long _Fract, 0.2lr)
+    ^
+
+"Test_name.c", line 67: error: extra text after expected end of number
+    FOO_TEST (lf, long _Fract, 0.2lr)
+    ^
+
+"Test_name.c", line 67: warning: variable "_Fract" was declared but never referenced
+    FOO_TEST (lf, long _Fract, 0.2lr)
+    ^
+
+"Test_name.c", line 68: error: expected a ";"
+    FOO_TEST (llf, long long _Fract, 0.2llr)
+    ^
+
+"Test_name.c", line 68: error: extra text after expected end of number
+    FOO_TEST (llf, long long _Fract, 0.2llr)
+    ^
+
+"Test_name.c", line 68: error: identifier "llf" is undefined
+    FOO_TEST (llf, long long _Fract, 0.2llr)
+    ^
+
+"Test_name.c", line 68: error: extra text after expected end of number
+    FOO_TEST (llf, long long _Fract, 0.2llr)
+    ^
+
+"Test_name.c", line 68: warning: variable "_Fract" was declared but never referenced
+    FOO_TEST (llf, long long _Fract, 0.2llr)
+    ^
+
+"Test_name.c", line 69: error: expected a ";"
+    FOO_TEST (usf, unsigned short _Fract, 0.2uhr)
+    ^
+
+"Test_name.c", line 69: error: extra text after expected end of number
+    FOO_TEST (usf, unsigned short _Fract, 0.2uhr)
+    ^
+
+"Test_name.c", line 69: error: identifier "usf" is undefined
+    FOO_TEST (usf, unsigned short _Fract, 0.2uhr)
+    ^
+
+"Test_name.c", line 69: error: extra text after expected end of number
+    FOO_TEST (usf, unsigned short _Fract, 0.2uhr)
+    ^
+
+"Test_name.c", line 69: warning: variable "_Fract" was declared but never referenced
+    FOO_TEST (usf, unsigned short _Fract, 0.2uhr)
+    ^
+
+"Test_name.c", line 70: error: expected a ";"
+    FOO_TEST (uf, unsigned _Fract, 0.2ur)
+    ^
+
+"Test_name.c", line 70: error: extra text after expected end of number
+    FOO_TEST (uf, unsigned _Fract, 0.2ur)
+    ^
+
+"Test_name.c", line 70: error: identifier "uf" is undefined
+    FOO_TEST (uf, unsigned _Fract, 0.2ur)
+    ^
+
+"Test_name.c", line 70: error: extra text after expected end of number
+    FOO_TEST (uf, unsigned _Fract, 0.2ur)
+    ^
+
+"Test_name.c", line 70: warning: variable "_Fract" was declared but never referenced
+    FOO_TEST (uf, unsigned _Fract, 0.2ur)
+    ^
+
+"Test_name.c", line 71: error: expected a ";"
+    FOO_TEST (ulf, unsigned long _Fract, 0.2ulr)
+    ^
+
+"Test_name.c", line 71: error: extra text after expected end of number
+    FOO_TEST (ulf, unsigned long _Fract, 0.2ulr)
+    ^
+
+"Test_name.c", line 71: error: identifier "ulf" is undefined
+    FOO_TEST (ulf, unsigned long _Fract, 0.2ulr)
+    ^
+
+"Test_name.c", line 71: error: extra text after expected end of number
+    FOO_TEST (ulf, unsigned long _Fract, 0.2ulr)
+    ^
+
+"Test_name.c", line 71: warning: variable "_Fract" was declared but never referenced
+    FOO_TEST (ulf, unsigned long _Fract, 0.2ulr)
+    ^
+
+"Test_name.c", line 72: error: expected a ";"
+    FOO_TEST (ullf, unsigned long long _Fract, 0.2ullr)
+    ^
+
+"Test_name.c", line 72: error: extra text after expected end of number
+    FOO_TEST (ullf, unsigned long long _Fract, 0.2ullr)
+    ^
+
+"Test_name.c", line 72: error: identifier "ullf" is undefined
+    FOO_TEST (ullf, unsigned long long _Fract, 0.2ullr)
+    ^
+
+"Test_name.c", line 72: error: extra text after expected end of number
+    FOO_TEST (ullf, unsigned long long _Fract, 0.2ullr)
+    ^
+
+"Test_name.c", line 72: warning: variable "_Fract" was declared but never referenced
+    FOO_TEST (ullf, unsigned long long _Fract, 0.2ullr)
+    ^
+
+"Test_name.c", line 73: error: identifier "_Sat" is undefined
+    FOO_TEST (Ssf, _Sat short _Fract, 0.2hr)
+    ^
+
+"Test_name.c", line 73: error: expected a ";"
+    FOO_TEST (Ssf, _Sat short _Fract, 0.2hr)
+    ^
+
+"Test_name.c", line 73: error: extra text after expected end of number
+    FOO_TEST (Ssf, _Sat short _Fract, 0.2hr)
+    ^
+
+"Test_name.c", line 73: error: identifier "Ssf" is undefined
+    FOO_TEST (Ssf, _Sat short _Fract, 0.2hr)
+    ^
+
+"Test_name.c", line 73: error: extra text after expected end of number
+    FOO_TEST (Ssf, _Sat short _Fract, 0.2hr)
+    ^
+
+"Test_name.c", line 74: error: identifier "_Sat" is undefined
+    FOO_TEST (Sf, _Sat _Fract, 0.2r)
+    ^
+
+"Test_name.c", line 74: error: expected a ";"
+    FOO_TEST (Sf, _Sat _Fract, 0.2r)
+    ^
+
+"Test_name.c", line 74: error: extra text after expected end of number
+    FOO_TEST (Sf, _Sat _Fract, 0.2r)
+    ^
+
+"Test_name.c", line 74: error: identifier "Sf" is undefined
+    FOO_TEST (Sf, _Sat _Fract, 0.2r)
+    ^
+
+"Test_name.c", line 74: error: extra text after expected end of number
+    FOO_TEST (Sf, _Sat _Fract, 0.2r)
+    ^
+
+"Test_name.c", line 75: error: identifier "_Sat" is undefined
+    FOO_TEST (Slf, _Sat long _Fract, 0.2lr)
+    ^
+
+"Test_name.c", line 75: error: expected a ";"
+    FOO_TEST (Slf, _Sat long _Fract, 0.2lr)
+    ^
+
+"Test_name.c", line 75: error: extra text after expected end of number
+    FOO_TEST (Slf, _Sat long _Fract, 0.2lr)
+    ^
+
+"Test_name.c", line 75: error: identifier "Slf" is undefined
+    FOO_TEST (Slf, _Sat long _Fract, 0.2lr)
+    ^
+
+"Test_name.c", line 75: error: extra text after expected end of number
+    FOO_TEST (Slf, _Sat long _Fract, 0.2lr)
+    ^
+
+"Test_name.c", line 76: error: identifier "_Sat" is undefined
+    FOO_TEST (Sllf, _Sat long long _Fract, 0.2llr)
+    ^
+
+"Test_name.c", line 76: error: expected a ";"
+    FOO_TEST (Sllf, _Sat long long _Fract, 0.2llr)
+    ^
+
+"Test_name.c", line 76: error: extra text after expected end of number
+    FOO_TEST (Sllf, _Sat long long _Fract, 0.2llr)
+    ^
+
+"Test_name.c", line 76: error: identifier "Sllf" is undefined
+    FOO_TEST (Sllf, _Sat long long _Fract, 0.2llr)
+    ^
+
+"Test_name.c", line 76: error: extra text after expected end of number
+    FOO_TEST (Sllf, _Sat long long _Fract, 0.2llr)
+    ^
+
+"Test_name.c", line 77: error: identifier "_Sat" is undefined
+    FOO_TEST (Susf, _Sat unsigned short _Fract, 0.2uhr)
+    ^
+
+"Test_name.c", line 77: error: expected a ";"
+    FOO_TEST (Susf, _Sat unsigned short _Fract, 0.2uhr)
+    ^
+
+"Test_name.c", line 77: error: extra text after expected end of number
+    FOO_TEST (Susf, _Sat unsigned short _Fract, 0.2uhr)
+    ^
+
+"Test_name.c", line 77: error: identifier "Susf" is undefined
+    FOO_TEST (Susf, _Sat unsigned short _Fract, 0.2uhr)
+    ^
+
+"Test_name.c", line 77: error: extra text after expected end of number
+    FOO_TEST (Susf, _Sat unsigned short _Fract, 0.2uhr)
+    ^
+
+"Test_name.c", line 78: error: identifier "_Sat" is undefined
+    FOO_TEST (Suf, _Sat unsigned _Fract, 0.2ur)
+    ^
+
+"Test_name.c", line 78: error: expected a ";"
+    FOO_TEST (Suf, _Sat unsigned _Fract, 0.2ur)
+    ^
+
+"Test_name.c", line 78: error: extra text after expected end of number
+    FOO_TEST (Suf, _Sat unsigned _Fract, 0.2ur)
+    ^
+
+"Test_name.c", line 78: error: identifier "Suf" is undefined
+    FOO_TEST (Suf, _Sat unsigned _Fract, 0.2ur)
+    ^
+
+"Test_name.c", line 78: error: extra text after expected end of number
+    FOO_TEST (Suf, _Sat unsigned _Fract, 0.2ur)
+    ^
+
+"Test_name.c", line 79: error: identifier "_Sat" is undefined
+    FOO_TEST (Sulf, _Sat unsigned long _Fract, 0.2ulr)
+    ^
+
+"Test_name.c", line 79: error: expected a ";"
+    FOO_TEST (Sulf, _Sat unsigned long _Fract, 0.2ulr)
+    ^
+
+"Test_name.c", line 79: error: extra text after expected end of number
+    FOO_TEST (Sulf, _Sat unsigned long _Fract, 0.2ulr)
+    ^
+
+"Test_name.c", line 79: error: identifier "Sulf" is undefined
+    FOO_TEST (Sulf, _Sat unsigned long _Fract, 0.2ulr)
+    ^
+
+"Test_name.c", line 79: error: extra text after expected end of number
+    FOO_TEST (Sulf, _Sat unsigned long _Fract, 0.2ulr)
+    ^
+
+"Test_name.c", line 80: error: identifier "_Sat" is undefined
+    FOO_TEST (Sullf, _Sat unsigned long long _Fract, 0.2ullr)
+    ^
+
+"Test_name.c", line 80: error: expected a ";"
+    FOO_TEST (Sullf, _Sat unsigned long long _Fract, 0.2ullr)
+    ^
+
+"Test_name.c", line 80: error: extra text after expected end of number
+    FOO_TEST (Sullf, _Sat unsigned long long _Fract, 0.2ullr)
+    ^
+
+"Test_name.c", line 80: error: identifier "Sullf" is undefined
+    FOO_TEST (Sullf, _Sat unsigned long long _Fract, 0.2ullr)
+    ^
+
+"Test_name.c", line 80: error: extra text after expected end of number
+    FOO_TEST (Sullf, _Sat unsigned long long _Fract, 0.2ullr)
+    ^
+
+"Test_name.c", line 81: error: expected a ";"
+    FOO_TEST (sa, short _Accum, 0.2hk)
+    ^
+
+"Test_name.c", line 81: error: extra text after expected end of number
+    FOO_TEST (sa, short _Accum, 0.2hk)
+    ^
+
+"Test_name.c", line 81: error: identifier "sa" is undefined
+    FOO_TEST (sa, short _Accum, 0.2hk)
+    ^
+
+"Test_name.c", line 81: error: extra text after expected end of number
+    FOO_TEST (sa, short _Accum, 0.2hk)
+    ^
+
+"Test_name.c", line 81: warning: variable "_Accum" was declared but never referenced
+    FOO_TEST (sa, short _Accum, 0.2hk)
+    ^
+
+"Test_name.c", line 82: error: identifier "_Accum" is undefined
+    FOO_TEST (a, _Accum, 0.2k)
+    ^
+
+"Test_name.c", line 82: error: extra text after expected end of number
+    FOO_TEST (a, _Accum, 0.2k)
+    ^
+
+"Test_name.c", line 82: error: extra text after expected end of number
+    FOO_TEST (a, _Accum, 0.2k)
+    ^
+
+"Test_name.c", line 83: error: expected a ";"
+    FOO_TEST (la, long _Accum, 0.2lk)
+    ^
+
+"Test_name.c", line 83: error: extra text after expected end of number
+    FOO_TEST (la, long _Accum, 0.2lk)
+    ^
+
+"Test_name.c", line 83: error: identifier "la" is undefined
+    FOO_TEST (la, long _Accum, 0.2lk)
+    ^
+
+"Test_name.c", line 83: error: extra text after expected end of number
+    FOO_TEST (la, long _Accum, 0.2lk)
+    ^
+
+"Test_name.c", line 83: warning: variable "_Accum" was declared but never referenced
+    FOO_TEST (la, long _Accum, 0.2lk)
+    ^
+
+"Test_name.c", line 84: error: expected a ";"
+    FOO_TEST (lla, long long _Accum, 0.2llk)
+    ^
+
+"Test_name.c", line 84: error: extra text after expected end of number
+    FOO_TEST (lla, long long _Accum, 0.2llk)
+    ^
+
+"Test_name.c", line 84: error: identifier "lla" is undefined
+    FOO_TEST (lla, long long _Accum, 0.2llk)
+    ^
+
+"Test_name.c", line 84: error: extra text after expected end of number
+    FOO_TEST (lla, long long _Accum, 0.2llk)
+    ^
+
+"Test_name.c", line 84: warning: variable "_Accum" was declared but never referenced
+    FOO_TEST (lla, long long _Accum, 0.2llk)
+    ^
+
+"Test_name.c", line 85: error: expected a ";"
+    FOO_TEST (usa, unsigned short _Accum, 0.2uhk)
+    ^
+
+"Test_name.c", line 85: error: extra text after expected end of number
+    FOO_TEST (usa, unsigned short _Accum, 0.2uhk)
+    ^
+
+"Test_name.c", line 85: error: identifier "usa" is undefined
+    FOO_TEST (usa, unsigned short _Accum, 0.2uhk)
+    ^
+
+"Test_name.c", line 85: error: extra text after expected end of number
+    FOO_TEST (usa, unsigned short _Accum, 0.2uhk)
+    ^
+
+"Test_name.c", line 85: warning: variable "_Accum" was declared but never referenced
+    FOO_TEST (usa, unsigned short _Accum, 0.2uhk)
+    ^
+
+"Test_name.c", line 86: error: expected a ";"
+    FOO_TEST (ua, unsigned _Accum, 0.2uk)
+    ^
+
+"Test_name.c", line 86: error: extra text after expected end of number
+    FOO_TEST (ua, unsigned _Accum, 0.2uk)
+    ^
+
+Error limit reached.
+200 errors detected in the compilation of "Test_name.c".
+Compilation terminated.

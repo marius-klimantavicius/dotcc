@@ -1,0 +1,47 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 8: error: no instance of constructor "A::A" matches the argument list
+  int a = A().n; // expected-error {{no matching constructor}}
+          ^
+"Test_name.c", line 4: note: number of parameters of function "A::A(const A &)" does not match the call
+  struct A { // expected-note 2{{candidate}}
+         ^
+"Test_name.c", line 4: note: number of parameters of function "A::A(A &&)" does not match the call
+  struct A { // expected-note 2{{candidate}}
+         ^
+"Test_name.c", line 5: note: number of parameters of function "A::A(int)" does not match the call
+    A(int); // expected-note {{candidate}}
+    ^
+
+"Test_name.c", line 14: error: the default constructor of "B" cannot be referenced -- it is a deleted function
+  int b = B().n; // expected-error {{call to deleted}}
+          ^
+
+"Test_name.c", line 19: error: the default constructor of "C" cannot be referenced -- it is a deleted function
+  int c = C().b.n; // expected-error {{call to implicitly-deleted default}}
+          ^
+
+"Test_name.c", line 25: error: the default constructor of "D" cannot be referenced -- it is a deleted function
+  int d = D().b.n; // expected-error {{call to implicitly-deleted default}}
+          ^
+
+"Test_name.c", line 42: error: the default constructor of "G" cannot be referenced -- it is a deleted function
+  int g = G().f.n; // expected-error {{call to implicitly-deleted default}}
+          ^
+
+"Test_name.c", line 49: error: "H::H()" (declared at line 47) is inaccessible
+  int h = H().n; // expected-error {{private constructor}}
+          ^
+
+"Test_name.c", line 54: error: the default constructor of "I" cannot be referenced -- it is a deleted function
+  int i = I().h.n; // expected-error {{call to implicitly-deleted default}}
+          ^
+
+"Test_name.c", line 68: error: the default constructor of "K" cannot be referenced -- it is a deleted function
+  int k1 = K().j.n; // expected-error {{call to implicitly-deleted default}}
+           ^
+
+"Test_name.c", line 69: error: the default constructor of "K" cannot be referenced -- it is a deleted function
+  int k2 = K().j.f(); // expected-error {{call to implicitly-deleted default}}
+           ^
+
+9 errors detected in the compilation of "Test_name.c".

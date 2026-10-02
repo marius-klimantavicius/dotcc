@@ -1,0 +1,68 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 28: error: expression must have a constant value
+  constexpr B i = std::bit_cast<B> (A{});	// { dg-message "in 'constexpr' expansion of 'std::bit_cast<" }
+                  ^
+"Test_name.c", line 11: note: a union, pointer, or pointer-to-member type "U" prevents constexpr evaluation of __builtin_bit_cast
+    return __builtin_bit_cast (T, f);
+           ^
+
+"Test_name.c", line 29: error: expression must have a constant value
+  constexpr A j = std::bit_cast<A> (B{});	// { dg-message "in 'constexpr' expansion of 'std::bit_cast<" }
+                  ^
+"Test_name.c", line 29: note: a union, pointer, or pointer-to-member type "U" prevents constexpr evaluation of __builtin_bit_cast
+  constexpr A j = std::bit_cast<A> (B{});	// { dg-message "in 'constexpr' expansion of 'std::bit_cast<" }
+                  ^
+
+"Test_name.c", line 30: error: expression must have a constant value
+  constexpr D k = std::bit_cast<D> (C{});	// { dg-message "in 'constexpr' expansion of 'std::bit_cast<" }
+                  ^
+"Test_name.c", line 11: note: a union, pointer, or pointer-to-member type "U" prevents constexpr evaluation of __builtin_bit_cast
+    return __builtin_bit_cast (T, f);
+           ^
+
+"Test_name.c", line 31: error: expression must have a constant value
+  constexpr C l = std::bit_cast<C> (D{});	// { dg-message "in 'constexpr' expansion of 'std::bit_cast<" }
+                  ^
+"Test_name.c", line 31: note: a union, pointer, or pointer-to-member type "U" prevents constexpr evaluation of __builtin_bit_cast
+  constexpr C l = std::bit_cast<C> (D{});	// { dg-message "in 'constexpr' expansion of 'std::bit_cast<" }
+                  ^
+
+"Test_name.c", line 32: error: expression must have a constant value
+  constexpr F m = std::bit_cast<F> (E{});	// { dg-message "in 'constexpr' expansion of 'std::bit_cast<" }
+                  ^
+"Test_name.c", line 11: note: a union, pointer, or pointer-to-member type "int *" prevents constexpr evaluation of __builtin_bit_cast
+    return __builtin_bit_cast (T, f);
+           ^
+
+"Test_name.c", line 33: error: expression must have a constant value
+  constexpr E n = std::bit_cast<E> (F{});	// { dg-message "in 'constexpr' expansion of 'std::bit_cast<" }
+                  ^
+"Test_name.c", line 33: note: a union, pointer, or pointer-to-member type "int *" prevents constexpr evaluation of __builtin_bit_cast
+  constexpr E n = std::bit_cast<E> (F{});	// { dg-message "in 'constexpr' expansion of 'std::bit_cast<" }
+                  ^
+
+"Test_name.c", line 28: warning: variable "i" was declared but never referenced
+  constexpr B i = std::bit_cast<B> (A{});	// { dg-message "in 'constexpr' expansion of 'std::bit_cast<" }
+              ^
+
+"Test_name.c", line 29: warning: variable "j" was declared but never referenced
+  constexpr A j = std::bit_cast<A> (B{});	// { dg-message "in 'constexpr' expansion of 'std::bit_cast<" }
+              ^
+
+"Test_name.c", line 30: warning: variable "k" was declared but never referenced
+  constexpr D k = std::bit_cast<D> (C{});	// { dg-message "in 'constexpr' expansion of 'std::bit_cast<" }
+              ^
+
+"Test_name.c", line 31: warning: variable "l" was declared but never referenced
+  constexpr C l = std::bit_cast<C> (D{});	// { dg-message "in 'constexpr' expansion of 'std::bit_cast<" }
+              ^
+
+"Test_name.c", line 32: warning: variable "m" was declared but never referenced
+  constexpr F m = std::bit_cast<F> (E{});	// { dg-message "in 'constexpr' expansion of 'std::bit_cast<" }
+              ^
+
+"Test_name.c", line 33: warning: variable "n" was declared but never referenced
+  constexpr E n = std::bit_cast<E> (F{});	// { dg-message "in 'constexpr' expansion of 'std::bit_cast<" }
+              ^
+
+6 errors detected in the compilation of "Test_name.c".

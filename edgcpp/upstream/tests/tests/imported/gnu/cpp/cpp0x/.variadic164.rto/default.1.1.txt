@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 11: error: parameter pack "ElementIndices" was referenced but not expanded
+                typename tuple<slice_result<ElementIndices, Tuples...>,
+                                            ^
+
+"Test_name.c", line 9: warning: constant "ElementIndices" cannot be used because it follows a parameter pack and cannot be deduced from the parameters of function template "zip_with"
+  template <typename Tuple, typename... Tuples, int... ElementIndices,
+                                                       ^
+
+"Test_name.c", line 14: error: no instance of function template "zip_with" matches the argument list
+            argument types are: (int)
+  decltype(zip_with(0)) d;	// { dg-error "no match" }
+           ^
+"Test_name.c", line 13: note: candidate function template "zip_with" failed deduction
+  void zip_with(Tuple...);	// { dg-warning "omission of ',' before varargs '...' is deprecated" "" { target c++26 } }
+       ^
+
+2 errors detected in the compilation of "Test_name.c".

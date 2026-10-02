@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 13: warning: call to is_constant_evaluated appearing in a constant expression always produces "true"
+    if constexpr (std::is_constant_evaluated()) // expected-warning {{'std::is_constant_evaluated' will always evaluate to 'true' in a manifestly constant-evaluated expression}}
+                                            ^
+
+"Test_name.c", line 20: warning: call to is_constant_evaluated appearing in a constant expression always produces "true"
+    if constexpr (!std::is_constant_evaluated()) // expected-warning {{'std::is_constant_evaluated' will always evaluate to 'true' in a manifestly constant-evaluated expression}}
+                                             ^
+
+"Test_name.c", line 27: warning: call to is_constant_evaluated appearing in a constant expression always produces "true"
+    if constexpr (std::is_constant_evaluated() == false) // expected-warning {{'std::is_constant_evaluated' will always evaluate to 'true' in a manifestly constant-evaluated expression}}
+                                            ^
+
+"Test_name.c", line 34: warning: call to __builtin_is_constant_evaluated appearing in a constant expression always produces "true"
+    if constexpr (__builtin_is_constant_evaluated() == true) // expected-warning {{'__builtin_is_constant_evaluated' will always evaluate to 'true' in a manifestly constant-evaluated expression}}
+                                                 ^
+
+"Test_name.c", line 41: warning: call to __builtin_is_constant_evaluated appearing in a constant expression always produces "true"
+    if constexpr (__builtin_is_constant_evaluated()) // expected-warning {{'__builtin_is_constant_evaluated' will always evaluate to 'true' in a manifestly constant-evaluated expression}}
+                                                 ^
+

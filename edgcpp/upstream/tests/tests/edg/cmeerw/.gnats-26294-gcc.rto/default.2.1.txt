@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=2 --c++03 --clang_version 210100 Test_name.c
+"Test_name.c", line 14: error: a template argument may not reference an unnamed type
+      f0( &f1<__typeof__(E1)>);
+      ^
+
+"Test_name.c", line 16: warning: variable "fp" was declared but never referenced
+      void (*fp)(int, __typeof__(E1)) = f2;
+             ^
+
+"Test_name.c", line 29: error: a template argument may not reference an unnamed type
+      f0( &f1<__typeof__(x)>);
+      ^
+
+"Test_name.c", line 30: warning: variable "fp" was declared but never referenced
+      void (*fp)(int, __typeof__(x)) = f2;
+             ^
+
+"Test_name.c", line 45: warning: variable "fp" was declared but never referenced
+      void (*fp)(int, X) = f2;
+             ^
+
+2 errors detected in the compilation of "Test_name.c".

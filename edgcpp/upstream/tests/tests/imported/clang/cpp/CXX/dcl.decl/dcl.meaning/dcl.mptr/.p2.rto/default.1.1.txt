@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 25: error: nontype "A0<T>::C0 [with T=T]" is not a template
+  int A0<T>::C0<int>::* f2(); // expected-error {{expected unqualified-id}}
+             ^
+
+"Test_name.c", line 28: error: nontype "A0<T>::C1" is not a template
+  int A0<T>::C1<int>::* f3(); // expected-error {{no member named 'C1' in 'A0<T>'}}
+             ^
+
+"Test_name.c", line 41: error: nontype "A0<T>::C0<U>::E0 [with U=int]" is not a template
+  int A0<T>::template C0<int>::E0<int>::* f7(); // expected-error {{use 'template' keyword to treat 'E0' as a dependent template name}}
+                               ^
+
+"Test_name.c", line 45: error: nontype "A0<T>::C2<int>::E1" is not a template
+  int A0<T>::template C2<int>::E1<int>::* f8(); // expected-error {{no member named 'C2' in 'A0<T>'}}
+                               ^
+
+"Test_name.c", line 64: error: nontype "TypoCorrection::A<T>::typo" is not a template
+    int A<T>::typo<int>::* g(); // expected-error {{no template named 'typo' in 'TypoCorrection::A<T>'; did you mean 'Typo'?}}
+              ^
+
+5 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 --no_exceptions Test_name.c
+"Test_name.c", line 13: error: support for exception handling is disabled
+    auto au = [] () -> DI { return *new auto (true ? yp : throw); }; // { dg-error "exception handling disabled" }
+                                                          ^
+          detected during instantiation of "DI zl<DI>() [with DI=lambda []()->int]" at line 21
+
+"Test_name.c", line 13: error: ambiguous "?" operation: second operand of type "lambda []()->int" can be converted to third operand type "<error-type>", and vice versa
+    auto au = [] () -> DI { return *new auto (true ? yp : throw); }; // { dg-error "exception handling disabled" }
+                                                        ^
+          detected during instantiation of "DI zl<DI>() [with DI=lambda []()->int]" at line 21
+
+2 errors detected in the compilation of "Test_name.c".

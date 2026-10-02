@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 25: error: static assertion failed with ""
+  static_assert(A<int>::has_type_member<Child>, "");
+  ^
+
+"Test_name.c", line 27: error: invalid redeclaration of type name "type1" (declared at line 26)
+  using type1 = decltype(A<int>::has_type_member<Child>);
+        ^
+
+2 errors detected in the compilation of "Test_name.c".

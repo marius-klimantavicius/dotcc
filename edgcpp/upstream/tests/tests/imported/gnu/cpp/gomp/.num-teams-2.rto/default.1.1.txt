@@ -1,0 +1,65 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 7: warning: unrecognized #pragma
+    #pragma omp teams num_teams (6 : 4)		// { dg-warning "'num_teams' lower bound '6' bigger than upper bound '4'" }
+            ^
+
+"Test_name.c", line 9: warning: unrecognized #pragma
+    #pragma omp teams num_teams (-7)		// { dg-warning "'num_teams' value must be positive" }
+            ^
+
+"Test_name.c", line 11: warning: unrecognized #pragma
+    #pragma omp teams num_teams (i : -7)		// { dg-warning "'num_teams' value must be positive" }
+            ^
+
+"Test_name.c", line 13: warning: unrecognized #pragma
+    #pragma omp teams num_teams (-7 : 8)		// { dg-warning "'num_teams' value must be positive" }
+            ^
+
+"Test_name.c", line 21: warning: unrecognized #pragma
+    #pragma omp target teams num_teams (6 : 4)	// { dg-warning "'num_teams' lower bound '6' bigger than upper bound '4'" }
+            ^
+
+"Test_name.c", line 23: warning: unrecognized #pragma
+    #pragma omp target teams num_teams (-7)	// { dg-warning "'num_teams' value must be positive" }
+            ^
+
+"Test_name.c", line 25: warning: unrecognized #pragma
+    #pragma omp target teams num_teams (i : -7)	// { dg-warning "'num_teams' value must be positive" }
+            ^
+
+"Test_name.c", line 27: warning: unrecognized #pragma
+    #pragma omp target teams num_teams (-7 : 8)	// { dg-warning "'num_teams' value must be positive" }
+            ^
+
+"Test_name.c", line 35: warning: unrecognized #pragma
+    #pragma omp teams num_teams (N6 : N4)		// { dg-warning "'num_teams' lower bound '6' bigger than upper bound '4'" }
+            ^
+
+"Test_name.c", line 37: warning: unrecognized #pragma
+    #pragma omp teams num_teams (NM7)		// { dg-warning "'num_teams' value must be positive" }
+            ^
+
+"Test_name.c", line 39: warning: unrecognized #pragma
+    #pragma omp teams num_teams (i : NM7)		// { dg-warning "'num_teams' value must be positive" }
+            ^
+
+"Test_name.c", line 41: warning: unrecognized #pragma
+    #pragma omp teams num_teams (NM7 : N8)	// { dg-warning "'num_teams' value must be positive" }
+            ^
+
+"Test_name.c", line 49: warning: unrecognized #pragma
+    #pragma omp target teams num_teams (N6 : N4)	// { dg-warning "'num_teams' lower bound '6' bigger than upper bound '4'" }
+            ^
+
+"Test_name.c", line 51: warning: unrecognized #pragma
+    #pragma omp target teams num_teams (NM7)	// { dg-warning "'num_teams' value must be positive" }
+            ^
+
+"Test_name.c", line 53: warning: unrecognized #pragma
+    #pragma omp target teams num_teams (i : NM7)	// { dg-warning "'num_teams' value must be positive" }
+            ^
+
+"Test_name.c", line 55: warning: unrecognized #pragma
+    #pragma omp target teams num_teams (NM7 : N8)	// { dg-warning "'num_teams' value must be positive" }
+            ^
+

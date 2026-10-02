@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 9: error: a nonstatic data member cannot be declared as inline
+  struct c {inline int a;}; // expected-error{{'inline' can only appear on functions}}
+            ^
+
+"Test_name.c", line 12: warning: "inline" is not allowed
+    inline int a; // expected-error{{inline declaration of 'a' not allowed in block scope}}
+    ^
+
+"Test_name.c", line 12: warning: variable "a" was declared but never referenced
+    inline int a; // expected-error{{inline declaration of 'a' not allowed in block scope}}
+               ^
+
+1 error detected in the compilation of "Test_name.c".

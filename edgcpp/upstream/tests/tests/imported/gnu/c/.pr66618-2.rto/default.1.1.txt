@@ -1,0 +1,28 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 9: warning: integer operation result is out of range
+  int c = "baz"[__INT_MAX__ * -2];	/* { dg-error "initializer element is not constant" } */
+                            ^
+
+"Test_name.c", line 11: warning: subscript out of range
+  int e = "str"[4];			/* { dg-error "initializer element is not constant" } */
+          ^
+
+"Test_name.c", line 11: error: expression must have a constant value
+  int e = "str"[4];			/* { dg-error "initializer element is not constant" } */
+          ^
+"Test_name.c", line 11: note: attempt to access storage one position past the end of an array of 4 elements
+  int e = "str"[4];			/* { dg-error "initializer element is not constant" } */
+               ^
+
+"Test_name.c", line 12: warning: subscript out of range
+  int f = "str"[-1];			/* { dg-error "initializer element is not constant" } */
+               ^
+
+"Test_name.c", line 12: error: expression must have a constant value
+  int f = "str"[-1];			/* { dg-error "initializer element is not constant" } */
+          ^
+"Test_name.c", line 12: note: cannot access position -1 in array of 4 elements
+  int f = "str"[-1];			/* { dg-error "initializer element is not constant" } */
+               ^
+
+2 errors detected in the compilation of "Test_name.c".

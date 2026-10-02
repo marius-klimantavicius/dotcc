@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --microsoft Test_name.c
+"Test_name.c", line 26: error: member member "B<T>::s [with T=int]" (declared at line 21) already has an explicit dllexport/dllimport specifier
+  struct EXPORT D : B<int>
+                    ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --c++14 -tused --gn 60000 Test_name.c
+"Test_name.c", line 25: warning: variable "c" was declared but never referenced
+  C constexpr c;  // Previously an error in some configurations.  Now okay.
+              ^
+

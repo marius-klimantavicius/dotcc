@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=2 --multi_trans --g++ Test_name.c d00385a_2.c

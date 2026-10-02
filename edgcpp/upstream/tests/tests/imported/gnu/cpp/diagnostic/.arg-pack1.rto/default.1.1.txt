@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 11: error: no suitable user-defined conversion from "index_sequence<1>" to "index_sequence<5>" exists
+      index_sequence<5> bar = index_sequence<1>(); // { dg-error {conversion from 'index_sequence<\{1\}>' to non-scalar type 'index_sequence<\{5\}>' requested} }
+                              ^
+
+1 error detected in the compilation of "Test_name.c".

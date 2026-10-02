@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 8: error: a value of type "B1 *" cannot be used to initialize an entity of type "A1 *"
+  A1 *a1 = b1; // expected-error{{cannot initialize a variable of type 'A1 *' with an lvalue of type 'B1 *'}}
+           ^
+
+"Test_name.c", line 13: error: a value of type "B2<int> *" cannot be used to initialize an entity of type "A2<int> *"
+  A2<int> *a2 = b2; // expected-error{{cannot initialize a variable of type 'A2<int> *' with an lvalue of type 'B2<int> *'}}
+                ^
+
+"Test_name.c", line 17: error: return value type does not match the function type
+  s *g1() { return f(); } // expected-error{{cannot initialize return object of type 's *' (aka 'struct S *') with an rvalue of type 'const s *' (aka 'const struct S *')}}
+                   ^
+
+"Test_name.c", line 19: error: return value type does not match the function type
+  B1 *g2() { return f(); } // expected-error{{cannot initialize return object of type 'B1 *' with an rvalue of type 'const s *' (aka 'const struct S *')}}
+                    ^
+
+4 errors detected in the compilation of "Test_name.c".

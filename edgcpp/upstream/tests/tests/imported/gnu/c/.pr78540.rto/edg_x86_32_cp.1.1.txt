@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 8: error: expected a ";"
+  typedef unsigned __int128 V __attribute__ ((vector_size (64)));
+                            ^
+
+"Test_name.c", line 9: error: identifier "V" is undefined
+  V g;
+  ^
+
+"Test_name.c", line 11: error: identifier "V" is undefined
+  static inline V
+                ^
+
+"Test_name.c", line 12: error: identifier "V" is undefined
+  foo (V a)
+       ^
+
+"Test_name.c", line 14: error: identifier "V" is undefined
+    V b, c;
+    ^
+
+"Test_name.c", line 22: error: identifier "V" is undefined
+  V
+  ^
+
+"Test_name.c", line 25: error: identifier "V" is undefined
+    V a = g, b = g;
+    ^
+
+7 errors detected in the compilation of "Test_name.c".

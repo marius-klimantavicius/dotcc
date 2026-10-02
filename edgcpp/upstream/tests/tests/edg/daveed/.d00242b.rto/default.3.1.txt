@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=3 -A Test_name.c
+"Test_name.c", line 24: error: identifier "__alignof" is undefined
+  	printf("a: %d\n", __alignof(a));
+  	                  ^
+
+"Test_name.c", line 26: error: type name is not allowed
+  	printf("int[]: %d\nconst void: %d\n", __alignof(int[]),
+  	                                                ^
+
+"Test_name.c", line 26: error: expected an expression
+  	printf("int[]: %d\nconst void: %d\n", __alignof(int[]),
+  	                                                    ^
+
+"Test_name.c", line 27: error: expected an expression
+                                           __alignof(const void));
+                                                     ^
+
+"Test_name.c", line 28: error: expected an expression
+    __alignof(struct S);
+              ^
+
+5 errors detected in the compilation of "Test_name.c".

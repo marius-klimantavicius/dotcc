@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 340: warning: missing return statement at end of non-void function "__gnu_pbds::detail::rb_tree_no_data_<Key, Mapped, Cmp_Fn, Node_And_It_Traits, Allocator>::insert"
+      }
+      ^
+
+"Test_name.c", line 338: warning: variable "ins_pair" is used before its value is set
+  	insert_fixup (ins_pair.first.m_p_nd);
+  	              ^
+          detected during instantiation of "std::pair<__gnu_pbds::detail::rb_tree_no_data_<Key, Mapped, Cmp_Fn, Node_And_It_Traits, Allocator>::point_iterator, bool> __gnu_pbds::detail::rb_tree_no_data_<Key, Mapped, Cmp_Fn, Node_And_It_Traits, Allocator>::insert(__gnu_pbds::detail::rb_tree_no_data_<Key, Mapped, Cmp_Fn, Node_And_It_Traits, Allocator>::const_reference) [with Key=int, Mapped=__gnu_pbds::null_mapped_type, Cmp_Fn=std::less<int>, Node_And_It_Traits=__gnu_pbds::detail::tree_traits<int, __gnu_pbds::null_mapped_type, std::less<int>, __gnu_pbds::tree_order_statistics_node_update, __gnu_pbds::rb_tree_tag, std::allocator<char>>, Allocator=std::allocator<char>]" at line 712
+

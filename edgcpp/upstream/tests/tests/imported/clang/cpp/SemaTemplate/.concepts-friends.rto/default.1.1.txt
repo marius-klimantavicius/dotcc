@@ -1,0 +1,246 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 19: error: a friend declaration with a trailing-requires-clause must be a definition
+      requires true;
+      ^
+
+"Test_name.c", line 24: error: a requires-clause is not allowed here (not a templated function)
+      requires true; // expected-error {{non-templated function cannot have a requires clause}}
+      ^
+
+"Test_name.c", line 14: error: function "temp_friend_9::foo" has already been defined (previous definition at line 14)
+    friend void foo()
+                ^
+          detected during instantiation of class "temp_friend_9::NonTemplateFriend<T> [with T=float]" at line 118
+
+"Test_name.c", line 54: error: function template "temp_friend_9::foo4" has already been defined (previous definition at line 53)
+    friend void foo4()
+                ^
+          detected during instantiation of class "temp_friend_9::TemplateFromEnclosing<T> [with T=float]" at line 121
+
+"Test_name.c", line 79: error: function "temp_friend_9::foo9" has already been defined (previous definition at line 79)
+      friend void foo9()
+                  ^
+          detected during instantiation of class "temp_friend_9::TemplateFromEnclosing<T>::ChildOfEnclosing [with T=float]" at line 122
+
+"Test_name.c", line 97: error: function template "temp_friend_9::foo<U>()" has already been defined (previous definition at line 96)
+    friend void foo() // #REDEF
+                ^
+          detected during instantiation of class "temp_friend_9::Redefinition<T> [with T=float]" at line 124
+
+"Test_name.c", line 103: error: function template "temp_friend_9::foo2<U>()" has already been defined (previous definition at line 102)
+      friend void foo2() // #REDEF2
+                  ^
+          detected during instantiation of class "temp_friend_9::Redefinition<T>::ChildOfRedef [with T=float]" at line 129
+
+"Test_name.c", line 110: error: function template "temp_friend_9::foo3<U>()" has already been defined (previous definition at line 109)
+      friend void foo3() // #REDEF3
+                  ^
+          detected during instantiation of class "temp_friend_9::Redefinition<T>::ChildOfRedef2<T2> [with T=float, T2=float]" at line 135
+
+"Test_name.c", line 117: warning: variable "S1" was declared but never referenced
+    NonTemplateFriend<int> S1;
+                           ^
+
+"Test_name.c", line 118: warning: variable "S2" was declared but never referenced
+    NonTemplateFriend<float> S2;
+                             ^
+
+"Test_name.c", line 119: warning: variable "S3" was declared but never referenced
+    TemplateFromEnclosing<int> S3;
+                               ^
+
+"Test_name.c", line 120: warning: variable "S3b" was declared but never referenced
+    TemplateFromEnclosing<int>::ChildOfEnclosing S3b;
+                                                 ^
+
+"Test_name.c", line 121: warning: variable "S4" was declared but never referenced
+    TemplateFromEnclosing<float> S4;
+                                 ^
+
+"Test_name.c", line 122: warning: variable "S4b" was declared but never referenced
+    TemplateFromEnclosing<float>::ChildOfEnclosing S4b;
+                                                   ^
+
+"Test_name.c", line 123: warning: variable "S5" was declared but never referenced
+    Redefinition<int> S5;
+                      ^
+
+"Test_name.c", line 124: warning: variable "S6" was declared but never referenced
+    Redefinition<float> S6;
+                        ^
+
+"Test_name.c", line 128: warning: variable "S7" was declared but never referenced
+    Redefinition<int>::ChildOfRedef S7;
+                                    ^
+
+"Test_name.c", line 129: warning: variable "S8" was declared but never referenced
+    Redefinition<float>::ChildOfRedef S8;
+                                      ^
+
+"Test_name.c", line 134: warning: variable "S9" was declared but never referenced
+    Redefinition<int>::ChildOfRedef2<int> S9;
+                                          ^
+
+"Test_name.c", line 135: warning: variable "S10" was declared but never referenced
+    Redefinition<float>::ChildOfRedef2<float> S10;
+                                              ^
+
+"Test_name.c", line 148: error: function "SameScopeRedefs::foo" has already been defined (previous definition at line 145)
+    friend void foo() // #NTF2
+                ^
+          detected during instantiation of class "SameScopeRedefs::NonTemplateFriend<T> [with T=int]" at line 177
+
+"Test_name.c", line 160: error: function template "SameScopeRedefs::foo<U>()" has already been defined (previous definition at line 155)
+    friend void foo() // #TFE2
+                ^
+          detected during instantiation of class "SameScopeRedefs::TemplateFromEnclosing<T> [with T=int]" at line 182
+
+"Test_name.c", line 172: error: function template "SameScopeRedefs::foo<U>()" has already been defined (previous definition at line 167)
+    friend void foo() // #RD2
+                ^
+          detected during instantiation of class "SameScopeRedefs::Redefinition<T> [with T=int]" at line 187
+
+"Test_name.c", line 177: warning: variable "S1" was declared but never referenced
+    NonTemplateFriend<int> S1;
+                           ^
+
+"Test_name.c", line 182: warning: variable "S2" was declared but never referenced
+    TemplateFromEnclosing<int> S2;
+                               ^
+
+"Test_name.c", line 187: warning: variable "S3" was declared but never referenced
+    Redefinition<int> S3;
+                      ^
+
+"Test_name.c", line 230: error: function template "LibCXXOperatorRedef::R2func1" has already been defined (previous definition at line 228)
+    friend constexpr decltype(auto) R2func1(_View &&__view, // #FUNC1
+                                    ^
+          detected during instantiation of class "LibCXXOperatorRedef::__range_adaptor_closure2<_Tp> [with _Tp=LibCXXOperatorRedef::B2]" at line 243
+
+"Test_name.c", line 233: error: function template "LibCXXOperatorRedef::R2func2" has already been defined (previous definition at line 232)
+    friend constexpr decltype(auto) R2func2(_View &&__view, // #FUNC2
+                                    ^
+          detected during instantiation of class "LibCXXOperatorRedef::__range_adaptor_closure2<_Tp> [with _Tp=LibCXXOperatorRedef::B2]" at line 243
+
+"Test_name.c", line 238: error: function template "LibCXXOperatorRedef::R2func3" has already been defined (previous definition at line 237)
+    friend constexpr decltype(auto) R2func3(_View &&__view, // #FUNC3
+                                    ^
+          detected during instantiation of class "LibCXXOperatorRedef::__range_adaptor_closure2<_Tp> [with _Tp=LibCXXOperatorRedef::B2]" at line 243
+
+"Test_name.c", line 256: error: incomplete type "LibCXXOperatorRedef::A3" is not allowed
+      requires same_as<typename _Tp::type, _Closure>
+                                ^
+          detected during instantiation of class "LibCXXOperatorRedef::__range_adaptor_closure3<_Tp> [with _Tp=LibCXXOperatorRedef::A3]" at line 269
+
+"Test_name.c", line 262: error: incomplete type "LibCXXOperatorRedef::A3" is not allowed
+      requires same_as<typename _Tp::type, _Closure>
+                                ^
+          detected during instantiation of class "LibCXXOperatorRedef::__range_adaptor_closure3<_Tp> [with _Tp=LibCXXOperatorRedef::A3]" at line 269
+
+"Test_name.c", line 264: error: incomplete type "LibCXXOperatorRedef::A3" is not allowed
+    template <same_as<typename _Tp::type> _View, typename _Closure>
+                               ^
+          detected during instantiation of class "LibCXXOperatorRedef::__range_adaptor_closure3<_Tp> [with _Tp=LibCXXOperatorRedef::A3]" at line 269
+
+"Test_name.c", line 257: error: function template "LibCXXOperatorRedef::R3func1" has already been defined (previous definition at line 255)
+    friend constexpr decltype(auto) R3func1(_View &&__view,
+                                    ^
+          detected during instantiation of class "LibCXXOperatorRedef::__range_adaptor_closure3<_Tp> [with _Tp=LibCXXOperatorRedef::B3]" at line 270
+
+"Test_name.c", line 260: error: function template "LibCXXOperatorRedef::R3func2" has already been defined (previous definition at line 259)
+    friend constexpr decltype(auto) R3func2(_View &&__view,
+                                    ^
+          detected during instantiation of class "LibCXXOperatorRedef::__range_adaptor_closure3<_Tp> [with _Tp=LibCXXOperatorRedef::B3]" at line 270
+
+"Test_name.c", line 265: error: function template "LibCXXOperatorRedef::R3func3" has already been defined (previous definition at line 264)
+    friend constexpr decltype(auto) R3func3(_View &&__view,
+                                    ^
+          detected during instantiation of class "LibCXXOperatorRedef::__range_adaptor_closure3<_Tp> [with _Tp=LibCXXOperatorRedef::B3]" at line 270
+
+"Test_name.c", line 280: error: invalid redeclaration of member function template "void LibCXXOperatorRedef::__range_adaptor_closure4<_Tp>::foo1(_View &&, _Closure &&)" (declared at line 276)
+    void foo1(_View &&, _Closure &&) {}
+         ^
+
+"Test_name.c", line 289: error: invalid redeclaration of member function template "void LibCXXOperatorRedef::__range_adaptor_closure4<_Tp>::foo2(_View &&, _Closure &&)" (declared at line 284)
+    void foo2(_View &&, _Closure &&)
+         ^
+
+"Test_name.c", line 298: error: invalid redeclaration of member function template "void LibCXXOperatorRedef::__range_adaptor_closure4<_Tp>::foo3(_View &&, _Closure &&)" (declared at line 295)
+    void foo3(_View &&, _Closure &&) {}
+         ^
+
+"Test_name.c", line 313: error: function template "LibCXXOperatorRedef::foo" has already been defined (previous definition at line 310)
+    friend void foo() {} // #RAC6FOO2
+                ^
+          detected during instantiation of class "LibCXXOperatorRedef::__range_adaptor_closure6<_Tp> [with _Tp=LibCXXOperatorRedef::A6]" at line 315
+
+"Test_name.c", line 330: error: function template "LibCXXOperatorRedef::dupe" has already been defined (previous definition at line 321)
+    friend void dupe() {} // #S2DUPE
+                ^
+          detected during instantiation of class "LibCXXOperatorRedef::S2<T> [with T=double]" at line 368
+
+"Test_name.c", line 334: error: function template "LibCXXOperatorRedef::dupe2" has already been defined (previous definition at line 324)
+    friend void dupe2() {} // #S2DUPE2
+                ^
+          detected during instantiation of class "LibCXXOperatorRedef::S2<T> [with T=double]" at line 368
+
+"Test_name.c", line 345: error: function template "LibCXXOperatorRedef::dupe<U>()" has already been defined (previous definition at line 338)
+    friend void dupe() {}
+                ^
+          detected during instantiation of class "LibCXXOperatorRedef::S4<T> [with T=int]" at line 377
+
+"Test_name.c", line 367: warning: variable "s1" was declared but never referenced
+    S1<int> s1;
+            ^
+
+"Test_name.c", line 368: warning: variable "s2" was declared but never referenced
+    S2<double> s2;
+               ^
+
+"Test_name.c", line 376: warning: variable "s3" was declared but never referenced
+    S3<int> s3;
+            ^
+
+"Test_name.c", line 377: warning: variable "s4" was declared but never referenced
+    S4<int> s4;
+            ^
+
+"Test_name.c", line 380: warning: variable "s5" was declared but never referenced
+    S5<int> s5;
+            ^
+
+"Test_name.c", line 381: warning: variable "s6" was declared but never referenced
+    S6<double> s6;
+               ^
+
+"Test_name.c", line 383: warning: variable "s7" was declared but never referenced
+    S7<int> s7;
+            ^
+
+"Test_name.c", line 401: error: function template "NamedDeclRefs::NoRefOuter" has already been defined (previous definition at line 400)
+          friend constexpr void NoRefOuter() // #NOREFOUTER
+                                ^
+          detected during instantiation of class "NamedDeclRefs::Proxy<T> [with T=float]" at line 406
+
+"Test_name.c", line 405: warning: variable "p" was declared but never referenced
+      Proxy<int> p;
+                 ^
+
+"Test_name.c", line 406: warning: variable "p2" was declared but never referenced
+      Proxy<float> p2;
+                   ^
+
+"Test_name.c", line 425: warning: variable "x" was declared but never referenced
+      S<int> x;
+             ^
+
+"Test_name.c", line 426: warning: variable "y" was declared but never referenced
+      S<long> y;
+              ^
+
+"Test_name.c", line 501: warning: default argument is not allowed on a friend class template declaration
+    template <X U = void> friend struct Y;
+                                        ^
+          detected during instantiation of class "GH86769::Z<T> [with T=int]" at line 505
+
+28 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: error: an opaque enum declaration cannot be part of another declaration
+    enum : int a alignas;		// { dg-error "declaration of enum" }
+         ^
+
+"Test_name.c", line 9: error: expected a "("
+    enum : int a alignas;		// { dg-error "declaration of enum" }
+                        ^
+
+"Test_name.c", line 9: warning: variable "a" was declared but never referenced
+    enum : int a alignas;		// { dg-error "declaration of enum" }
+               ^
+
+"Test_name.c", line 16: error: an opaque enum declaration cannot be part of another declaration
+    enum : int a;			// { dg-error "declaration of enum" }
+         ^
+
+"Test_name.c", line 16: warning: variable "a" was declared but never referenced
+    enum : int a;			// { dg-error "declaration of enum" }
+               ^
+
+"Test_name.c", line 22: error: an opaque enum declaration cannot be part of another declaration
+    enum class a : int b alignas;	// { dg-error "declaration of enum" }
+               ^
+
+"Test_name.c", line 22: error: expected a "("
+    enum class a : int b alignas;	// { dg-error "declaration of enum" }
+                                ^
+
+"Test_name.c", line 22: warning: variable "b" was declared but never referenced
+    enum class a : int b alignas;	// { dg-error "declaration of enum" }
+                       ^
+
+"Test_name.c", line 29: error: an opaque enum declaration cannot be part of another declaration
+    enum class a : int b;		// { dg-error "declaration of enum" }
+               ^
+
+"Test_name.c", line 29: warning: variable "b" was declared but never referenced
+    enum class a : int b;		// { dg-error "declaration of enum" }
+                       ^
+
+6 errors detected in the compilation of "Test_name.c".

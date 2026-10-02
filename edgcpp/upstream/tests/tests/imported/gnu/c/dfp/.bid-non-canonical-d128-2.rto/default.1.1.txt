@@ -1,0 +1,30 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 --strict_gnu Test_name.c
+"Test_name.c", line 14: error: identifier "_Decimal128" is undefined
+    _Decimal128 d128;
+    ^
+
+"Test_name.c", line 26: error: identifier "_Decimal128" is undefined
+    _Decimal128 d128;
+    ^
+
+"Test_name.c", line 33: error: identifier "_Decimal128" is undefined
+    _Decimal128 t1233 = 0.e1233DL, t1234 = 0.e1234DL, t1235 = 0.e1235DL;
+    ^
+
+"Test_name.c", line 33: error: extra text after expected end of number
+    _Decimal128 t1233 = 0.e1233DL, t1234 = 0.e1234DL, t1235 = 0.e1235DL;
+                               ^
+
+"Test_name.c", line 33: error: extra text after expected end of number
+    _Decimal128 t1233 = 0.e1233DL, t1234 = 0.e1234DL, t1235 = 0.e1235DL;
+                                                  ^
+
+"Test_name.c", line 33: error: extra text after expected end of number
+    _Decimal128 t1233 = 0.e1233DL, t1234 = 0.e1234DL, t1235 = 0.e1235DL;
+                                                                     ^
+
+"Test_name.c", line 34: error: identifier "_Decimal128" is undefined
+    _Decimal128 dx;
+    ^
+
+7 errors detected in the compilation of "Test_name.c".

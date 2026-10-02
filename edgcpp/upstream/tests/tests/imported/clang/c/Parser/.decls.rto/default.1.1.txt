@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 12: warning: variable "b" was declared but never referenced
+      int b;
+          ^
+
+"Test_name.c", line 24: error: a dependent statement may not be a declaration
+      int x; // expected-error {{expected expression}}
+      ^
+
+"Test_name.c", line 24: warning: variable "x" was declared but never referenced
+      int x; // expected-error {{expected expression}}
+          ^
+
+"Test_name.c", line 26: error: a dependent statement may not be a declaration
+      int c; // expected-error {{expected expression}}
+      ^
+
+"Test_name.c", line 26: warning: variable "c" was declared but never referenced
+      int c; // expected-error {{expected expression}}
+          ^
+
+"Test_name.c", line 29: warning: a declaration cannot have a label
+      int y; // expected-warning {{label followed by a declaration is a C23 extension}}
+      ^
+
+"Test_name.c", line 35: error: identifier "b" is undefined
+    (void)b; // expected-error {{use of undeclared identifier 'b'}}
+          ^
+
+"Test_name.c", line 36: error: identifier "w" is undefined
+    (void)w; // expected-error {{use of undeclared identifier 'w'}}
+          ^
+
+"Test_name.c", line 37: error: identifier "x" is undefined
+    (void)x; // expected-error {{use of undeclared identifier 'x'}}
+          ^
+
+"Test_name.c", line 38: error: identifier "c" is undefined
+    (void)c; // expected-error {{use of undeclared identifier 'c'}}
+          ^
+
+"Test_name.c", line 39: warning: variable "y" is used before its value is set
+    (void)y;
+          ^
+
+"Test_name.c", line 28: warning: label "label" was declared but never referenced
+    label:
+    ^
+
+6 errors detected in the compilation of "Test_name.c".

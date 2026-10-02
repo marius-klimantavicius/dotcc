@@ -1,0 +1,26 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --set_flag=no_checking_pragmas --strict Test_name.c
+"Test_name.c", line 4: error: explicit type is missing ("int" assumed)
+  extern f() {
+         ^
+
+"Test_name.c", line 7: warning: statement is unreachable
+    return;
+    ^
+
+"Test_name.c", line 7: error: non-void function "f" should return a value
+    return;
+          ^
+
+"Test_name.c", line 9: warning: missing return statement at end of non-void function "f"
+  }
+  ^
+
+"Test_name.c", line 10: error: explicit type is missing ("int" assumed)
+  extern g() {
+         ^
+
+"Test_name.c", line 11: error: non-void function "g" should return a value
+    return;
+          ^
+
+4 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=4 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 -DFOO= Test_name.c
+"Test_name.c", line 11: error: identifier "module" is undefined
+  FOO module foo; // expected-note {{previous module declaration is here}}
+      ^
+
+1 error detected in the compilation of "Test_name.c".

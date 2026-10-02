@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 22: error: expression must have a constant value
+  static_assert (foo () == 0, "");	// { dg-error "non-constant condition for static assertion" }
+                 ^
+"Test_name.c", line 10: note: access to uninitialized object
+    u.b[1] = 4;		// { dg-error "change of the active member of a union from" "" { target c++17_down } }
+       ^
+
+"Test_name.c", line 24: error: expression must have a constant value
+  static_assert (bar () == 4, "");	// { dg-error "non-constant condition for static assertion" "" { target c++17_down } }
+                 ^
+"Test_name.c", line 18: note: access to uninitialized object
+    u.b[1] = 4;		// { dg-error "change of the active member of a union from" "" { target c++17_down } }
+       ^
+
+2 errors detected in the compilation of "Test_name.c".

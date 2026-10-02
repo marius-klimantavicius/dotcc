@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 7: error: too many arguments in function call
+    __builtin_LINE(42); // expected-error {{expected ')'}}
+                   ^
+
+"Test_name.c", line 8: error: expected an expression
+    __builtin_LINE(double); // expected-error {{expected ')'}}
+                   ^
+
+"Test_name.c", line 8: error: too many arguments in function call
+    __builtin_LINE(double); // expected-error {{expected ')'}}
+                         ^
+
+"Test_name.c", line 11: error: too many arguments in function call
+    __builtin_COLUMN(42); // expected-error {{expected ')'}}
+                     ^
+
+"Test_name.c", line 12: error: expected an expression
+    __builtin_COLUMN(double); // expected-error {{expected ')'}}
+                     ^
+
+"Test_name.c", line 12: error: too many arguments in function call
+    __builtin_COLUMN(double); // expected-error {{expected ')'}}
+                           ^
+
+"Test_name.c", line 15: error: too many arguments in function call
+    __builtin_FUNCTION(42); // expected-error {{expected ')'}}
+                       ^
+
+"Test_name.c", line 16: error: expected an expression
+    __builtin_FUNCTION(double); // expected-error {{expected ')'}}
+                       ^
+
+"Test_name.c", line 16: error: too many arguments in function call
+    __builtin_FUNCTION(double); // expected-error {{expected ')'}}
+                             ^
+
+"Test_name.c", line 19: error: too many arguments in function call
+    __builtin_FILE(42); // expected-error {{expected ')'}}
+                   ^
+
+"Test_name.c", line 20: error: expected an expression
+    __builtin_FILE(double); // expected-error {{expected ')'}}
+                   ^
+
+"Test_name.c", line 20: error: too many arguments in function call
+    __builtin_FILE(double); // expected-error {{expected ')'}}
+                         ^
+
+"Test_name.c", line 6: warning: variable "line" was declared but never referenced
+    int line = __builtin_LINE();
+        ^
+
+"Test_name.c", line 10: warning: variable "column" was declared but never referenced
+    int column = __builtin_COLUMN();
+        ^
+
+"Test_name.c", line 14: warning: variable "func" was declared but never referenced
+    const char *func = __builtin_FUNCTION();
+                ^
+
+"Test_name.c", line 18: warning: variable "file" was declared but never referenced
+    const char *file = __builtin_FILE();
+                ^
+
+12 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: warning: unknown attribute "gnu::counted_by"
+    int field [[gnu::counted_by (count)]] []; /* { dg-warning "attribute is not supported for C\\+\\+ for now, ignored" } */
+                ^
+
+"Test_name.c", line 14: warning: unknown attribute "gnu::counted_by"
+    [[gnu::counted_by (count)]] int field []; /* { dg-warning "attribute is not supported for C\\+\\+ for now, ignored" } */
+      ^
+

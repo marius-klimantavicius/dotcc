@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 5: error: "green" has already been declared in the current scope
+  enum color { blue, green, aqua };	/* ERROR */
+                     ^
+
+"Test_name.c", line 11: error: "blue" has already been declared in the current scope
+  	enum color { red, blue };	/* ERROR */
+  	                  ^
+
+2 errors detected in the compilation of "Test_name.c".

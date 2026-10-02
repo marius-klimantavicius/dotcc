@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 5: warning: unknown attribute "matrix_type"
+  typedef float sx5x10_t __attribute__((matrix_type(5, 10)));
+                                        ^
+
+"Test_name.c", line 8: error: a value of type "void" cannot be used to initialize an entity of type "sx5x10_t" (aka "float")
+    sx5x10_t a1 = __builtin_matrix_column_major_load(p1, 5, 11, 5);
+                  ^
+
+1 error detected in the compilation of "Test_name.c".

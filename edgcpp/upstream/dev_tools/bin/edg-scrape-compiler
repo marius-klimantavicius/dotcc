@@ -1,0 +1,157 @@
+#!/usr/bin/env python3
+
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+import argparse
+import re
+import subprocess
+import tempfile
+
+from pathlib import Path
+
+def _get_compiler_path(args) -> Path:
+  compiler_path = args.compiler_path
+  if compiler_path is None:
+    compiler_path = args.compiler
+  return compiler_path
+
+def _is_accepted_include_path(path: str) -> bool:
+  if '(framework directory)' in path:
+    return False
+  return True
+
+def _scrape_includes(args) -> None:
+  compiler_path = _get_compiler_path(args)
+
+  with tempfile.TemporaryDirectory() as tmp_dir:
+    scrape_file = Path(tmp_dir, 'scrape')
+    with open(scrape_file, 'w+') as tmp_file:
+      if args.language == 'c++':
+        tmp_file.write('#include <iostream>\n')
+      elif args.language == 'c':
+        tmp_file.write('#include <stdio.h>\n')
+
+    output = subprocess.run(
+      [
+        str(compiler_path),
+        '-x',
+        args.language,
+        '-c',
+        str(scrape_file),
+        '-v'
+      ],
+      stdout = subprocess.PIPE,
+      stderr = subprocess.STDOUT,
+      cwd = tmp_dir,
+      check = True
+    ).stdout.decode()
+    # Print out the raw output if the debug flag is set.
+    if args.debug:
+      print(output)
+    # Extract the include lines.
+    search_match = re.search(
+      r'> search starts here:\s+(.+)\s+End of search list',
+      output,
+      re.DOTALL
+    )
+    assert search_match is not None
+    include_text = search_match.group(1)
+    # Convert the lines into a list splitting on newlines followed by optional
+    # whitespace.
+    include_list = re.split('\n[ ]*', include_text)
+    # Strip out anything quirky that's not supposed to be there/not useful to
+    # us.
+    include_list = [p for p in include_list if _is_accepted_include_path(p)]
+    # Rewrite the list resolving all paths to their true directory.
+    include_list = [str(Path(p).resolve()) for p in include_list]
+    # Join with the : path separator.
+    print(':'.join(include_list))
+
+def _add_parse_include(subparsers) -> None:
+  parser = subparsers.add_parser(
+    'includes',
+    help = 'extract the include path'
+  )
+  parser.set_defaults(handler = _scrape_includes)
+
+def _scrape_version(args) -> None:
+  compiler_path = _get_compiler_path(args)
+
+  output = subprocess.run(
+    [
+      str(compiler_path),
+      '-v'
+    ],
+    stdout = subprocess.PIPE,
+    stderr = subprocess.STDOUT,
+    check = True
+  ).stdout.decode()
+  # Print out the raw output if the debug flag is set.
+  if args.debug:
+    print(output)
+
+  version_match = re.search(r'version ([0-9]+)\.([0-9]+)\.([0-9]+)', output)
+  assert version_match is not None
+
+  version_major = int(version_match.group(1))
+  version_minor = int(version_match.group(2))
+  version_patch = int(version_match.group(3))
+
+  edg_version = version_major * 10000
+  edg_version += version_minor * 100
+  edg_version += version_patch
+
+  print(edg_version)
+
+def _add_parse_version(subparsers):
+  parser = subparsers.add_parser(
+    'version',
+    help = 'extract the EDG style version number'
+  )
+  parser.set_defaults(handler = _scrape_version)
+
+def _parse_args():
+  parser = argparse.ArgumentParser(
+    description = 'EDG compiler information scrapper.'
+  )
+  parser.add_argument(
+    '-d',
+    '--debug',
+    dest = 'debug',
+    action = 'store_true',
+    help = 'print additional information for debugging purposes'
+  )
+  parser.add_argument(
+    'compiler',
+    choices = ['clang', 'gcc'],
+    help = 'the compiler family parse information from (clang, gcc)'
+  )
+  parser.add_argument(
+    '--compiler-path',
+    dest = 'compiler_path',
+    default = None,
+    help = 'the exact path to the compiler (if not relying on path resolution)'
+  )
+  parser.add_argument(
+    '--lang',
+    dest = 'language',
+    default = 'c++',
+    choices = ['c', 'c++'],
+    help = 'the language to use for resolution'
+  )
+  parser.set_defaults(handler = lambda args: print('Select a sub-command'))
+
+  subparsers = parser.add_subparsers(help = 'sub-command help')
+  _add_parse_include(subparsers)
+  _add_parse_version(subparsers)
+
+  return parser.parse_args()
+
+def main() -> None:
+  args = _parse_args()
+  args.handler(args)
+
+main()

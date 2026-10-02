@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 19: warning: variable-length array field type will be treated as zero-length array field type
+        struct { char a[n]; } s;
+                        ^
+
+"Test_name.c", line 20: error: too many arguments in function call
+        fn2 (s);
+             ^
+
+"Test_name.c", line 22: warning: variable-length array field type will be treated as zero-length array field type
+      struct { unsigned a[x]; } s;
+                          ^
+
+"Test_name.c", line 26: error: too many arguments in function call
+      fn2 (s);
+           ^
+
+"Test_name.c", line 28: warning: variable-length array field type will be treated as zero-length array field type
+        struct { char a[n]; } s;
+                        ^
+
+"Test_name.c", line 32: error: too many arguments in function call
+        fn3 (s, s);
+             ^
+
+"Test_name.c", line 28: warning: variable "s" was set but never used
+        struct { char a[n]; } s;
+                              ^
+
+"Test_name.c", line 36: warning: variable-length array field type will be treated as zero-length array field type
+        struct { unsigned a[n]; } s;
+                            ^
+
+"Test_name.c", line 37: error: too many arguments in function call
+        fn5 (s);
+             ^
+
+"Test_name.c", line 40: warning: variable "b" is used before its value is set
+        struct { char a[b]; } s;
+                        ^
+
+"Test_name.c", line 40: warning: variable-length array field type will be treated as zero-length array field type
+        struct { char a[b]; } s;
+                        ^
+
+"Test_name.c", line 43: error: too many arguments in function call
+        fn6 (s);
+             ^
+
+"Test_name.c", line 40: warning: variable "s" was set but never used
+        struct { char a[b]; } s;
+                              ^
+
+5 errors detected in the compilation of "Test_name.c".

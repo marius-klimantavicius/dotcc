@@ -1,0 +1,107 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 16: warning: variable "s" was declared but never referenced
+    S s = __builtin_bit_cast (S, t);
+      ^
+
+"Test_name.c", line 24: warning: variable "s" was declared but never referenced
+    S s = __builtin_bit_cast (S, t);
+      ^
+
+"Test_name.c", line 32: warning: variable "s" was declared but never referenced
+    S s = __builtin_bit_cast (S, t);
+      ^
+
+"Test_name.c", line 40: warning: variable "s" was declared but never referenced
+    S s = __builtin_bit_cast (S, t);	// { dg-error "accessing uninitialized byte" }
+      ^
+
+"Test_name.c", line 49: warning: variable "a" was declared but never referenced
+    unsigned char a = s.a;		// { dg-error "accessing uninitialized member" }
+                  ^
+
+"Test_name.c", line 58: warning: variable "b" was declared but never referenced
+    unsigned char b = s.b;		// { dg-error "accessing uninitialized member" }
+                  ^
+
+"Test_name.c", line 67: warning: variable "c" was declared but never referenced
+    unsigned char c = s.c;		// { dg-error "accessing uninitialized member" }
+                  ^
+
+"Test_name.c", line 71: error: expression must have a constant value
+  constexpr bool a = f1 ();
+                     ^
+"Test_name.c", line 7: note: class types with bitfields "T1" are not currently supported for constexpr evaluation of __builtin_bit_cast
+  struct T1 { unsigned char a : 1, : 7, b : 5, c : 3, d, e; unsigned int f : 8, g : 24; };
+         ^
+
+"Test_name.c", line 72: error: expression must have a constant value
+  constexpr bool b = f2 ();
+                     ^
+"Test_name.c", line 8: note: class types with bitfields "T2" are not currently supported for constexpr evaluation of __builtin_bit_cast
+  struct T2 { unsigned char a : 8, b : 1, : 4, c : 3, d, e; unsigned int f : 8, g : 24; };
+         ^
+
+"Test_name.c", line 73: error: expression must have a constant value
+  constexpr bool c = f3 ();
+                     ^
+"Test_name.c", line 9: note: class types with bitfields "T3" are not currently supported for constexpr evaluation of __builtin_bit_cast
+  struct T3 { unsigned char a : 8, b : 5, c : 1, : 2, d, e; unsigned int f : 8, g : 24; };
+         ^
+
+"Test_name.c", line 74: error: expression must have a constant value
+  constexpr bool d = f4 ();	// { dg-message "in .constexpr. expansion" }
+                     ^
+"Test_name.c", line 10: note: class types with bitfields "T4" are not currently supported for constexpr evaluation of __builtin_bit_cast
+  struct T4 { unsigned char a : 8, b : 5, c : 3, d, e; unsigned int f : 1, : 7, g : 24; };
+         ^
+
+"Test_name.c", line 75: error: expression must have a constant value
+  constexpr bool e = f5 ();	// { dg-message "in .constexpr. expansion" }
+                     ^
+"Test_name.c", line 7: note: class types with bitfields "T1" are not currently supported for constexpr evaluation of __builtin_bit_cast
+  struct T1 { unsigned char a : 1, : 7, b : 5, c : 3, d, e; unsigned int f : 8, g : 24; };
+         ^
+
+"Test_name.c", line 76: error: expression must have a constant value
+  constexpr bool f = f6 ();	// { dg-message "in .constexpr. expansion" }
+                     ^
+"Test_name.c", line 8: note: class types with bitfields "T2" are not currently supported for constexpr evaluation of __builtin_bit_cast
+  struct T2 { unsigned char a : 8, b : 1, : 4, c : 3, d, e; unsigned int f : 8, g : 24; };
+         ^
+
+"Test_name.c", line 77: error: expression must have a constant value
+  constexpr bool g = f7 ();	// { dg-message "in .constexpr. expansion" }
+                     ^
+"Test_name.c", line 9: note: class types with bitfields "T3" are not currently supported for constexpr evaluation of __builtin_bit_cast
+  struct T3 { unsigned char a : 8, b : 5, c : 1, : 2, d, e; unsigned int f : 8, g : 24; };
+         ^
+
+"Test_name.c", line 71: warning: variable "a" was declared but never referenced
+  constexpr bool a = f1 ();
+                 ^
+
+"Test_name.c", line 72: warning: variable "b" was declared but never referenced
+  constexpr bool b = f2 ();
+                 ^
+
+"Test_name.c", line 73: warning: variable "c" was declared but never referenced
+  constexpr bool c = f3 ();
+                 ^
+
+"Test_name.c", line 74: warning: variable "d" was declared but never referenced
+  constexpr bool d = f4 ();	// { dg-message "in .constexpr. expansion" }
+                 ^
+
+"Test_name.c", line 75: warning: variable "e" was declared but never referenced
+  constexpr bool e = f5 ();	// { dg-message "in .constexpr. expansion" }
+                 ^
+
+"Test_name.c", line 76: warning: variable "f" was declared but never referenced
+  constexpr bool f = f6 ();	// { dg-message "in .constexpr. expansion" }
+                 ^
+
+"Test_name.c", line 77: warning: variable "g" was declared but never referenced
+  constexpr bool g = f7 ();	// { dg-message "in .constexpr. expansion" }
+                 ^
+
+7 errors detected in the compilation of "Test_name.c".

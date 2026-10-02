@@ -1,0 +1,47 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 9: warning: type "INT1" was declared deprecated ("Please avoid INT1")
+  typedef INT1 INT1a; // expected-warning {{'INT1' is deprecated: Please avoid INT1}}
+               ^
+"Test_name.c", line 5: note: because of a "deprecated" attribute
+  typedef int INT1 __attribute__((deprecated("Please avoid INT1"))); // expected-note 3 {{'INT1' has been explicitly marked deprecated here}}
+                                  ^
+
+"Test_name.c", line 13: warning: type "INT1" was declared deprecated ("Please avoid INT1")
+  INT1 should_be_unavailable; // expected-warning {{'INT1' is deprecated: Please avoid INT1}}
+       ^
+"Test_name.c", line 5: note: because of a "deprecated" attribute
+  typedef int INT1 __attribute__((deprecated("Please avoid INT1"))); // expected-note 3 {{'INT1' has been explicitly marked deprecated here}}
+                                  ^
+
+"Test_name.c", line 17: warning: type "INT1" was declared deprecated ("Please avoid INT1")
+  INT1 f2(void); // expected-warning {{'INT1' is deprecated: Please avoid INT1}}
+       ^
+"Test_name.c", line 5: note: because of a "deprecated" attribute
+  typedef int INT1 __attribute__((deprecated("Please avoid INT1"))); // expected-note 3 {{'INT1' has been explicitly marked deprecated here}}
+                                  ^
+
+"Test_name.c", line 22: warning: type "Color" was declared deprecated ("Please avoid Color")
+  Color c1; // expected-warning {{'Color' is deprecated: Please avoid Color}}
+        ^
+"Test_name.c", line 19: note: because of a "deprecated" attribute
+  typedef enum {red, green, blue} Color __attribute__((deprecated("Please avoid Color"))); // expected-note {{'Color' has been explicitly marked deprecated here}}
+                                                       ^
+
+"Test_name.c", line 29: warning: function "f1" was declared deprecated ("Please avoid f1")
+     int (*pf)(void) = f1; // expected-warning {{'f1' is deprecated: Please avoid f1}}
+                       ^
+"Test_name.c", line 16: note: because of a "deprecated" attribute
+  INT1 f1(void) __attribute__ ((deprecated("Please avoid f1"))); // expected-note {{'f1' has been explicitly marked deprecated here}}
+                                ^
+
+"Test_name.c", line 31: warning: variable "g2" was declared deprecated ("Please avoid g2")
+     return g1 + g2; // expected-warning {{'g2' is deprecated: Please avoid g2}}
+                 ^
+"Test_name.c", line 25: note: because of a "deprecated" attribute
+  int g2 __attribute__ ((deprecated("Please avoid g2"))); // expected-note {{'g2' has been explicitly marked deprecated here}}
+                         ^
+
+"Test_name.c", line 29: warning: variable "pf" was declared but never referenced
+     int (*pf)(void) = f1; // expected-warning {{'f1' is deprecated: Please avoid f1}}
+           ^
+

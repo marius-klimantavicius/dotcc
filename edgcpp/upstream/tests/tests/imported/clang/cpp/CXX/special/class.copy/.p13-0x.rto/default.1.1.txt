@@ -1,0 +1,81 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 43: error: expression must have a constant value
+  constexpr NonConstexprCopy ncc2 = ncc1; // expected-error {{constant expression}} expected-note {{non-constexpr constructor}}
+                                    ^
+"Test_name.c", line 43: note: cannot call non-constexpr function "NonConstexprCopy::NonConstexprCopy(const NonConstexprCopy &)" (declared at line 40)
+  constexpr NonConstexprCopy ncc2 = ncc1; // expected-error {{constant expression}} expected-note {{non-constexpr constructor}}
+                                    ^
+
+"Test_name.c", line 116: error: exception specification is incompatible with that of previous function "PR13052::S<T>::S(const PR13052::S<T> &) [with T=PR13052::W]" (declared at line 71)
+      friend constexpr S<W>::S(const S<W>&) noexcept;
+                                            ^
+
+"Test_name.c", line 115: error: exception specification is incompatible with that of previous function "PR13052::S<T>::S(PR13052::S<T> &&) [with T=PR13052::W]" (declared at line 70)
+      friend constexpr S<W>::S(S<W>&&) noexcept;
+                                       ^
+
+"Test_name.c", line 113: error: exception specification is incompatible with that of previous function "PR13052::S<T>::S(const PR13052::S<T> &) [with T=PR13052::V]" (declared at line 71)
+      friend constexpr S<V>::S(const S<V>&) noexcept;
+                                            ^
+
+"Test_name.c", line 112: error: exception specification is incompatible with that of previous function "PR13052::S<T>::S(PR13052::S<T> &&) [with T=PR13052::V]" (declared at line 70)
+      friend constexpr S<V>::S(S<V>&&) noexcept;
+                                       ^
+
+"Test_name.c", line 110: error: exception specification is incompatible with that of previous function "PR13052::S<T>::S(const PR13052::S<T> &) [with T=PR13052::U]" (declared at line 71)
+      friend constexpr S<U>::S(const S<U>&) noexcept;
+                                            ^
+
+"Test_name.c", line 109: error: exception specification is incompatible with that of previous function "PR13052::S<T>::S(PR13052::S<T> &&) [with T=PR13052::U]" (declared at line 70)
+      friend constexpr S<U>::S(S<U>&&) noexcept;
+                                       ^
+
+"Test_name.c", line 108: error: exception specification is incompatible with that of previous function "PR13052::S<T>::S() [with T=PR13052::U]" (declared at line 69)
+      friend constexpr S<U>::S() noexcept;
+                                 ^
+
+"Test_name.c", line 104: error: exception specification is incompatible with that of previous function "PR13052::V::V(const PR13052::V &)" (declared at line 84)
+      friend constexpr V::V(const V&) noexcept;
+                                      ^
+
+"Test_name.c", line 103: error: exception specification is incompatible with that of previous function "PR13052::V::V(PR13052::V &&)" (declared at line 83)
+      friend constexpr V::V(V&&) noexcept;
+                                 ^
+
+"Test_name.c", line 101: error: exception specification is incompatible with that of previous function "PR13052::U::U(const PR13052::U &)" (declared at line 78)
+      friend constexpr U::U(const U&) noexcept;
+                                      ^
+
+"Test_name.c", line 100: error: exception specification is incompatible with that of previous function "PR13052::U::U(PR13052::U &&)" (declared at line 77)
+      friend constexpr U::U(U&&) noexcept;
+                                 ^
+
+"Test_name.c", line 99: error: exception specification is incompatible with that of previous function "PR13052::U::U()" (declared at line 76)
+      friend constexpr U::U() noexcept;
+                              ^
+
+"Test_name.c", line 12: warning: variable "c1b" was declared but never referenced
+  constexpr Constexpr1 c1b = Constexpr1(Constexpr1(c1a)); // ok
+                       ^
+
+"Test_name.c", line 22: warning: variable "c2b" was declared but never referenced
+  constexpr Constexpr2 c2b = Constexpr2(Constexpr2(c2a)); // ok
+                       ^
+
+"Test_name.c", line 30: warning: variable "c3b" was declared but never referenced
+  constexpr Constexpr3 c3b = Constexpr3(Constexpr3(c3a)); // ok
+                       ^
+
+"Test_name.c", line 43: warning: variable "ncc2" was declared but never referenced
+  constexpr NonConstexprCopy ncc2 = ncc1; // expected-error {{constant expression}} expected-note {{non-constexpr constructor}}
+                             ^
+
+"Test_name.c", line 57: warning: variable "c4c" was declared but never referenced
+  constexpr Constexpr4 c4c = Constexpr4(static_cast<Constexpr4&&>(const_cast<Constexpr4&>(c4b)));
+                       ^
+
+"Test_name.c", line 62: warning: variable "ce5copy" was declared but never referenced
+  constexpr Constexpr5 ce5copy = ce5move;
+                       ^
+
+13 errors detected in the compilation of "Test_name.c".

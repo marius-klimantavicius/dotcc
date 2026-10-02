@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 8: warning: operand types are incompatible ("int *" and "double *")
+    return a - b;    /* expected-error{{not pointers to compatible types}} */
+             ^
+
+"Test_name.c", line 8: warning: subtraction of pointer types "int *" and "double *" is nonstandard
+    return a - b;    /* expected-error{{not pointers to compatible types}} */
+             ^
+
+"Test_name.c", line 12: error: expression must be a pointer to a complete object type
+    return P-4;      /* expected-error{{arithmetic on a pointer to an incomplete type 'struct incomplete'}} */
+           ^
+
+"Test_name.c", line 16: warning: arithmetic on pointer to void or function type
+    return P-4;      /* expected-warning{{arithmetic on a pointer to void is a GNU extension}} */
+            ^
+
+"Test_name.c", line 20: warning: arithmetic on pointer to void or function type
+    return P-Q;      /* expected-warning{{arithmetic on pointers to void is a GNU extension}} */
+            ^
+
+"Test_name.c", line 24: error: expression must be a pointer to a complete object type
+    return P-Q;      /* expected-error{{not pointers to compatible types}} */
+           ^
+
+"Test_name.c", line 28: error: expression must have arithmetic or pointer type
+    return a && (void)a; /* expected-error{{invalid operands}} */
+                ^
+
+3 errors detected in the compilation of "Test_name.c".

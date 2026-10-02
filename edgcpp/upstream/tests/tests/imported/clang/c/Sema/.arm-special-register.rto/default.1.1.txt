@@ -1,0 +1,125 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 6: warning: function "__builtin_arm_wsr" declared implicitly
+    __builtin_arm_wsr(0, v); // expected-error {{expression is not a string literal}}
+    ^
+
+"Test_name.c", line 10: warning: function "__builtin_arm_wsr" declared implicitly
+    __builtin_arm_wsr("sysreg", v);
+    ^
+
+"Test_name.c", line 14: warning: function "__builtin_arm_wsrp" declared implicitly
+    __builtin_arm_wsrp("sysreg", v);
+    ^
+
+"Test_name.c", line 18: warning: function "__builtin_arm_wsr64" declared implicitly
+    __builtin_arm_wsr64("sysreg", v); //expected-error {{invalid special register for builtin}}
+    ^
+
+"Test_name.c", line 22: warning: function "__builtin_arm_rsr" declared implicitly
+    return __builtin_arm_rsr("sysreg");
+           ^
+
+"Test_name.c", line 26: warning: function "__builtin_arm_rsrp" declared implicitly
+    return __builtin_arm_rsrp("sysreg");
+           ^
+
+"Test_name.c", line 26: warning: return value type does not match the function type
+    return __builtin_arm_rsrp("sysreg");
+           ^
+
+"Test_name.c", line 30: warning: function "__builtin_arm_rsr64" declared implicitly
+    return __builtin_arm_rsr64("sysreg"); //expected-error {{invalid special register for builtin}}
+           ^
+
+"Test_name.c", line 34: warning: function "__builtin_arm_wsr" declared implicitly
+    __builtin_arm_wsr("cp0:1:c2:c3:4", v);
+    ^
+
+"Test_name.c", line 38: warning: function "__builtin_arm_wsrp" declared implicitly
+    __builtin_arm_wsrp("cp0:1:c2:c3:4", v);
+    ^
+
+"Test_name.c", line 42: warning: function "__builtin_arm_wsr64" declared implicitly
+    __builtin_arm_wsr64("cp0:1:c2:c3:4", v); //expected-error {{invalid special register for builtin}}
+    ^
+
+"Test_name.c", line 46: warning: function "__builtin_arm_rsr" declared implicitly
+    return __builtin_arm_rsr("cp0:1:c15:c15:4");
+           ^
+
+"Test_name.c", line 50: warning: function "__builtin_arm_rsrp" declared implicitly
+    return __builtin_arm_rsrp("cp0:1:c2:c3:4");
+           ^
+
+"Test_name.c", line 50: warning: return value type does not match the function type
+    return __builtin_arm_rsrp("cp0:1:c2:c3:4");
+           ^
+
+"Test_name.c", line 54: warning: function "__builtin_arm_rsr64" declared implicitly
+    return __builtin_arm_rsr64("cp0:1:c2:c3:4"); //expected-error {{invalid special register for builtin}}
+           ^
+
+"Test_name.c", line 58: warning: function "__builtin_arm_wsr" declared implicitly
+    __builtin_arm_wsr("cp0:1:c2", v); //expected-error {{invalid special register for builtin}}
+    ^
+
+"Test_name.c", line 62: warning: function "__builtin_arm_wsrp" declared implicitly
+    __builtin_arm_wsrp("cp0:1:c2", v); //expected-error {{invalid special register for builtin}}
+    ^
+
+"Test_name.c", line 66: warning: function "__builtin_arm_wsr64" declared implicitly
+    __builtin_arm_wsr64("cp0:1:c2", v);
+    ^
+
+"Test_name.c", line 70: warning: function "__builtin_arm_rsr" declared implicitly
+    return __builtin_arm_rsr("cp0:1:c2"); //expected-error {{invalid special register for builtin}}
+           ^
+
+"Test_name.c", line 74: warning: function "__builtin_arm_rsrp" declared implicitly
+    return __builtin_arm_rsrp("cp0:1:c2"); //expected-error {{invalid special register for builtin}}
+           ^
+
+"Test_name.c", line 74: warning: return value type does not match the function type
+    return __builtin_arm_rsrp("cp0:1:c2"); //expected-error {{invalid special register for builtin}}
+           ^
+
+"Test_name.c", line 78: warning: function "__builtin_arm_rsr64" declared implicitly
+    return __builtin_arm_rsr64("cp0:1:c15");
+           ^
+
+"Test_name.c", line 82: warning: function "__builtin_arm_rsr" declared implicitly
+    return __builtin_arm_rsr("0:1:2:3:4"); //expected-error {{invalid special register for builtin}}
+           ^
+
+"Test_name.c", line 86: warning: function "__builtin_arm_rsr" declared implicitly
+    return __builtin_arm_rsr("cp0:1:c2:c3:8"); //expected-error {{invalid special register for builtin}}
+           ^
+
+"Test_name.c", line 90: warning: function "__builtin_arm_rsr" declared implicitly
+    return __builtin_arm_rsr("cp0:8:c1:c2:3"); //expected-error {{invalid special register for builtin}}
+           ^
+
+"Test_name.c", line 94: warning: function "__builtin_arm_rsr" declared implicitly
+    return __builtin_arm_rsr("cp0:1:c16:c16:2"); //expected-error {{invalid special register for builtin}}
+           ^
+
+"Test_name.c", line 98: warning: function "__builtin_arm_rsrp" declared implicitly
+    return __builtin_arm_rsrp("0:1:2:3:4"); //expected-error {{invalid special register for builtin}}
+           ^
+
+"Test_name.c", line 98: warning: return value type does not match the function type
+    return __builtin_arm_rsrp("0:1:2:3:4"); //expected-error {{invalid special register for builtin}}
+           ^
+
+"Test_name.c", line 102: warning: function "__builtin_arm_rsr64" declared implicitly
+    return __builtin_arm_rsr64("0:1:2"); //expected-error {{invalid special register for builtin}}
+           ^
+
+"Test_name.c", line 106: warning: function "__builtin_arm_rsr64" declared implicitly
+    return __builtin_arm_rsr64("cp0:8:c1"); //expected-error {{invalid special register for builtin}}
+           ^
+
+"Test_name.c", line 110: warning: function "__builtin_arm_rsr64" declared implicitly
+    return __builtin_arm_rsr64("cp0:1:c16"); //expected-error {{invalid special register for builtin}}
+           ^
+

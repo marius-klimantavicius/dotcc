@@ -1,0 +1,46 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: error: the body of a constexpr function cannot be a function try block
+  try {			// { dg-warning "function-try-block body of 'constexpr' function only available with" "" { target c++17_down } }
+  ^
+
+"Test_name.c", line 11: error: a constexpr function must contain exactly one return statement
+    return false;
+    ^
+
+"Test_name.c", line 15: error: the body of a constexpr function cannot be a function try block
+  try {			// { dg-warning "function-try-block body of 'constexpr' function only available with" "" { target c++17_down } }
+  ^
+
+"Test_name.c", line 19: error: a constexpr function must contain exactly one return statement
+      return false;
+      ^
+
+"Test_name.c", line 16: error: statement may not appear in a constexpr function
+    try {			// { dg-warning "'try' in 'constexpr' function only available with" "" { target c++17_down } }
+    ^
+
+"Test_name.c", line 22: error: a constexpr function must contain exactly one return statement
+    return false;
+    ^
+
+"Test_name.c", line 27: error: a constexpr function must contain exactly one return statement
+    try { return true; } catch (...) { return false; }	// { dg-warning "'try' in 'constexpr' function only available with" "" { target c++17_down } }
+                                       ^
+
+"Test_name.c", line 27: error: statement may not appear in a constexpr function
+    try { return true; } catch (...) { return false; }	// { dg-warning "'try' in 'constexpr' function only available with" "" { target c++17_down } }
+    ^
+
+"Test_name.c", line 31: error: the body of a constexpr constructor cannot be a function try block
+    constexpr S () try : m (1)	// { dg-warning "function-try-block body of 'constexpr' constructor only available with" "" { target c++17_down } }
+                   ^
+
+"Test_name.c", line 33: error: statement may not appear in a constexpr constructor
+      try {		// { dg-warning "'try' in 'constexpr' function only available with" "" { target c++17_down } }
+      ^
+
+"Test_name.c", line 43: error: the body of a constexpr constructor cannot be a function try block
+    try {			// { dg-warning "function-try-block body of 'constexpr' constructor only available with" "" { target c++17_down } }
+    ^
+
+11 errors detected in the compilation of "Test_name.c".

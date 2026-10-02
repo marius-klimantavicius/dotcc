@@ -1,0 +1,45 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 7: error: a type qualifier is not allowed on a nonmember function
+  void f() const; // expected-error {{non-member function cannot have 'const' qualifier}}
+           ^
+
+"Test_name.c", line 8: error: a qualified function type cannot be used to declare a nonmember function or a static member function
+  F g; // expected-error {{non-member function of type 'F' (aka 'void () const') cannot have 'const' qualifier}}
+    ^
+
+"Test_name.c", line 12: error: a type qualifier is not allowed on a nonmember function
+    friend void g() const; // expected-error {{non-member function cannot have 'const' qualifier}}
+                    ^
+
+"Test_name.c", line 13: error: a type qualifier is not allowed on a static member function
+    static void h() const; // expected-error {{static member function cannot have 'const' qualifier}}
+                    ^
+
+"Test_name.c", line 15: error: a qualified function type cannot be used to declare a nonmember function or a static member function
+    friend F j; // expected-error {{non-member function of type 'F' (aka 'void () const') cannot have 'const' qualifier}}
+             ^
+
+"Test_name.c", line 16: error: a qualified function type cannot be used to declare a nonmember function or a static member function
+    static F k; // expected-error {{static member function of type 'F' (aka 'void () const') cannot have 'const' qualifier}}
+             ^
+
+"Test_name.c", line 21: error: a type qualifier is not allowed on a nonmember function
+    friend void ::f() const; // expected-error {{non-member function cannot have 'const' qualifier}}
+                      ^
+
+"Test_name.c", line 26: error: cannot create a pointer or reference to qualified function type
+    typedef T *P; // expected-error {{pointer to function type 'void () const' cannot have 'const' qualifier}}
+              ^
+          detected during instantiation of class "S<T> [with T=F]" at line 29
+
+"Test_name.c", line 27: error: cannot create a pointer or reference to qualified function type
+    typedef T &R; // expected-error {{reference to function type 'void () const' cannot have 'const' qualifier}}
+              ^
+          detected during instantiation of class "S<T> [with T=F]" at line 29
+
+"Test_name.c", line 33: error: a qualified function type cannot be used to declare a parameter
+    void f(T);
+           ^
+          detected during instantiation of class "U<T> [with T=F]" at line 35
+
+10 errors detected in the compilation of "Test_name.c".

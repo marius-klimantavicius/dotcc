@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 25: warning: expression has no effect
+  void g3(void) { sizeof(f3()); }
+                  ^
+
+"Test_name.c", line 29: warning: expression has no effect
+  void g4(void) { sizeof(int (*)[f4()]); }
+                  ^
+
+"Test_name.c", line 33: warning: expression has no effect
+  void g5(void) { sizeof(int [0 ? f5() : 1]); }
+                  ^
+
+"Test_name.c", line 37: warning: expression has no effect
+  void g6(void) { sizeof(sizeof(int [f6()])); }
+                  ^
+
+"Test_name.c", line 12: warning: static function "f0" treated as extern because it was referenced but not defined
+  static void f0(void); /* { dg-error "used but never defined" } */
+              ^
+
+"Test_name.c", line 16: warning: static function "f1" treated as extern because it was referenced but not defined
+  static void f1(void); /* { dg-error "used but never defined" } */
+              ^
+
+"Test_name.c", line 20: warning: static function "f2" treated as extern because it was referenced but not defined
+  static int f2(void); /* { dg-error "used but never defined" } */
+             ^
+
+"Test_name.c", line 32: warning: static function "f5" treated as extern because it was referenced but not defined
+  static int f5(void); /* { dg-error "used but never defined" "VLA" } */
+             ^
+

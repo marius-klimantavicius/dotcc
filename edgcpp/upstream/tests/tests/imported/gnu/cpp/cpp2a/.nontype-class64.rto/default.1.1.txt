@@ -1,0 +1,20 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 10: error: cannot deduce "auto" template parameter type "auto" from "void"
+  B<void(0)> b4;		       // { dg-error "void" }
+    ^
+
+"Test_name.c", line 18: error: expression must have a constant value
+  B<J1{}> j1;  // { dg-error "not a constant expression" }
+    ^
+"Test_name.c", line 18: note: reference or pointer to temporary with limited lifetime
+  B<J1{}> j1;  // { dg-error "not a constant expression" }
+    ^
+
+"Test_name.c", line 25: error: expression must have a constant value
+  B<J2{}> j2;  // { dg-error "" }
+    ^
+"Test_name.c", line 25: note: reference or pointer to temporary with limited lifetime
+  B<J2{}> j2;  // { dg-error "" }
+    ^
+
+3 errors detected in the compilation of "Test_name.c".

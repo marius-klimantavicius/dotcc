@@ -1,0 +1,194 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/bmi2intrin.h", line 86: error: expected a ";"
+    unsigned __int128 __res = (unsigned __int128) __X * __Y;
+                      ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/bmi2intrin.h", line 87: error: identifier "__res" is undefined
+    *__P = (unsigned long long) (__res >> 64);
+                                 ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/xmmintrin.h", line 666: error: invalid type conversion
+    return (__m128) __builtin_ia32_cvtsi642ss ((__v4sf) __A, __B);
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/xmmintrin.h", line 673: error: invalid type conversion
+    return (__m128) __builtin_ia32_cvtsi642ss ((__v4sf) __A, __B);
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/emmintrin.h", line 933: error: invalid type conversion
+    return (__m128d)__builtin_ia32_cvtsi642sd ((__v2df) __A, __B);
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/emmintrin.h", line 940: error: invalid type conversion
+    return (__m128d)__builtin_ia32_cvtsi642sd ((__v2df) __A, __B);
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/avx512fintrin.h", line 3117: error: invalid type conversion
+    return (__m128) __builtin_ia32_cvtusi2ss64 ((__v4sf) __A, __B,
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/avx512fintrin.h", line 3125: error: invalid type conversion
+    return (__m128d) __builtin_ia32_cvtusi2sd64 ((__v2df) __A, __B,
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/avx512fintrin.h", line 3368: error: invalid type conversion
+    return (__m128d) __builtin_ia32_cvtsi642sd ((__v2df) __A, __B);
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/avx512fintrin.h", line 3375: error: invalid type conversion
+    return (__m128) __builtin_ia32_cvtsi642ss ((__v4sf) __A, __B);
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/avx512fp16intrin.h", line 1629: error: return value type does not match the function type
+    return __builtin_ia32_vcvtsi2sh64_round (__A, __B, 0x04);
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/avx512fp16intrin.h", line 1636: error: return value type does not match the function type
+    return __builtin_ia32_vcvtusi2sh64_round (__A, __B, 0x04);
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/movrsintrin.h", line 92: error: invalid type conversion
+    return (__m256i) __builtin_ia32_vmovrsb256_mask ((const __v32qi *) __A,
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/movrsintrin.h", line 102: error: invalid type conversion
+    return (__m256i) __builtin_ia32_vmovrsb256_mask ((const __v32qi *) __A,
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/movrsintrin.h", line 111: error: invalid type conversion
+    return (__m256i) __builtin_ia32_vmovrsb256_mask ((const __v32qi *) __A,
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/movrsintrin.h", line 121: error: invalid type conversion
+    return (__m256i) __builtin_ia32_vmovrsd256_mask ((const __v8si *) __A,
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/movrsintrin.h", line 131: error: invalid type conversion
+    return (__m256i) __builtin_ia32_vmovrsd256_mask ((const __v8si *) __A,
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/movrsintrin.h", line 140: error: invalid type conversion
+    return (__m256i) __builtin_ia32_vmovrsd256_mask ((const __v8si *) __A,
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/movrsintrin.h", line 150: error: invalid type conversion
+    return (__m256i) __builtin_ia32_vmovrsq256_mask ((const __v4di *) __A,
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/movrsintrin.h", line 160: error: invalid type conversion
+    return (__m256i) __builtin_ia32_vmovrsq256_mask ((const __v4di *) __A,
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/movrsintrin.h", line 169: error: invalid type conversion
+    return (__m256i) __builtin_ia32_vmovrsq256_mask ((const __v4di *) __A,
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/movrsintrin.h", line 179: error: invalid type conversion
+    return (__m256i) __builtin_ia32_vmovrsw256_mask ((const __v16hi *) __A,
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/movrsintrin.h", line 189: error: invalid type conversion
+    return (__m256i) __builtin_ia32_vmovrsw256_mask ((const __v16hi *) __A,
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/movrsintrin.h", line 198: error: invalid type conversion
+    return (__m256i) __builtin_ia32_vmovrsw256_mask ((const __v16hi *) __A,
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/movrsintrin.h", line 208: error: invalid type conversion
+    return (__m128i) __builtin_ia32_vmovrsb128_mask ((const __v16qi *) __A,
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/movrsintrin.h", line 218: error: invalid type conversion
+    return (__m128i) __builtin_ia32_vmovrsb128_mask ((const __v16qi *) __A,
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/movrsintrin.h", line 227: error: invalid type conversion
+    return (__m128i) __builtin_ia32_vmovrsb128_mask ((const __v16qi *) __A,
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/movrsintrin.h", line 237: error: invalid type conversion
+    return (__m128i) __builtin_ia32_vmovrsd128_mask ((const __v4si *) __A,
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/movrsintrin.h", line 247: error: invalid type conversion
+    return (__m128i) __builtin_ia32_vmovrsd128_mask ((const __v4si *) __A,
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/movrsintrin.h", line 256: error: invalid type conversion
+    return (__m128i) __builtin_ia32_vmovrsd128_mask ((const __v4si *) __A,
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/movrsintrin.h", line 266: error: invalid type conversion
+    return (__m128i) __builtin_ia32_vmovrsq128_mask ((const __v2di *) __A,
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/movrsintrin.h", line 276: error: invalid type conversion
+    return (__m128i) __builtin_ia32_vmovrsq128_mask ((const __v2di *) __A,
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/movrsintrin.h", line 285: error: invalid type conversion
+    return (__m128i) __builtin_ia32_vmovrsq128_mask ((const __v2di *) __A,
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/movrsintrin.h", line 295: error: invalid type conversion
+    return (__m128i) __builtin_ia32_vmovrsw128_mask ((const __v8hi *) __A,
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/movrsintrin.h", line 305: error: invalid type conversion
+    return (__m128i) __builtin_ia32_vmovrsw128_mask ((const __v8hi *) __A,
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/movrsintrin.h", line 314: error: invalid type conversion
+    return (__m128i) __builtin_ia32_vmovrsw128_mask ((const __v8hi *) __A,
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/movrsintrin.h", line 324: error: invalid type conversion
+    return (__m512i) __builtin_ia32_vmovrsb512_mask ((const __v64qi *) __A,
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/movrsintrin.h", line 334: error: invalid type conversion
+    return (__m512i) __builtin_ia32_vmovrsb512_mask ((const __v64qi *) __A,
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/movrsintrin.h", line 343: error: invalid type conversion
+    return (__m512i) __builtin_ia32_vmovrsb512_mask ((const __v64qi *) __A,
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/movrsintrin.h", line 353: error: invalid type conversion
+    return (__m512i) __builtin_ia32_vmovrsd512_mask ((const __v16si *) __A,
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/movrsintrin.h", line 362: error: invalid type conversion
+    return (__m512i) __builtin_ia32_vmovrsd512_mask ((const __v16si *) __A,
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/movrsintrin.h", line 371: error: invalid type conversion
+    return (__m512i) __builtin_ia32_vmovrsd512_mask ((const __v16si *) __A,
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/movrsintrin.h", line 381: error: invalid type conversion
+    return (__m512i) __builtin_ia32_vmovrsq512_mask ((const __v8di *) __A,
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/movrsintrin.h", line 391: error: invalid type conversion
+    return (__m512i) __builtin_ia32_vmovrsq512_mask ((const __v8di *) __A,
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/movrsintrin.h", line 400: error: invalid type conversion
+    return (__m512i) __builtin_ia32_vmovrsq512_mask ((const __v8di *) __A,
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/movrsintrin.h", line 410: error: invalid type conversion
+    return (__m512i) __builtin_ia32_vmovrsw512_mask ((const __v32hi *) __A,
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/movrsintrin.h", line 420: error: invalid type conversion
+    return (__m512i) __builtin_ia32_vmovrsw512_mask ((const __v32hi *) __A,
+           ^
+
+"/mds/gnu/build/gcc-15-20250413/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/movrsintrin.h", line 429: error: invalid type conversion
+    return (__m512i) __builtin_ia32_vmovrsw512_mask ((const __v32hi *) __A,
+           ^
+
+48 errors detected in the compilation of "Test_name.c".

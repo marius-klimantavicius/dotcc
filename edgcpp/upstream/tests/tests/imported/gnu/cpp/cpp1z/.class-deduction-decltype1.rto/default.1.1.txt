@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 9: error: a nonstatic member reference must be relative to a specific object
+    using c = decltype (foo ());
+                        ^
+
+"Test_name.c", line 12: error: no instance of constructor "A" matches the argument list
+  A d;				// { dg-error "deduction failed" }
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

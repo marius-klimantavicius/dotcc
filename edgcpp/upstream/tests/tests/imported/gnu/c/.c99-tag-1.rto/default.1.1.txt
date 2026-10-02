@@ -1,0 +1,162 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 15: warning: variable "x0" was declared but never referenced
+      struct s1 *x0;
+                 ^
+
+"Test_name.c", line 17: warning: variable "x1" was declared but never referenced
+      union u1 *x1;
+                ^
+
+"Test_name.c", line 20: warning: variable "x2" was declared but never referenced
+      enum e1 *x2; /* { dg-bogus "warning" "warning in place of error" } */
+               ^
+
+"Test_name.c", line 36: error: "s0" has already been declared in the current scope
+      struct s0 { int i; }; /* { dg-bogus "warning" "warning in place of error" } */
+             ^
+
+"Test_name.c", line 45: error: "u0" has already been declared in the current scope
+      union u0 { int i; }; /* { dg-bogus "warning" "warning in place of error" } */
+            ^
+
+"Test_name.c", line 54: error: enum "e0" has already been defined (previous definition at line 47)
+      enum e0 { E0B }; /* { dg-bogus "warning" "warning in place of error" } */
+           ^
+
+"Test_name.c", line 72: error: tag kind of union is incompatible with declaration of struct "s0" (declared at line 59)
+      union s0; /* { dg-bogus "warning" "warning in place of error" } */
+            ^
+
+"Test_name.c", line 74: error: tag kind of union is incompatible with declaration of struct "s1" (declared at line 60)
+      union s1 { int i; }; /* { dg-bogus "warning" "warning in place of error" } */
+            ^
+
+"Test_name.c", line 76: error: tag kind of union is incompatible with declaration of struct "s2" (declared at line 61)
+      union s2; /* { dg-bogus "warning" "warning in place of error" } */
+            ^
+
+"Test_name.c", line 78: error: "s3" has already been declared in the current scope
+      union s3 { int i; }; /* { dg-bogus "warning" "warning in place of error" } */
+            ^
+
+"Test_name.c", line 80: error: tag kind of enum is incompatible with declaration of union "u0" (declared at line 65)
+      enum u0 { U0A }; /* { dg-bogus "warning" "warning in place of error" } */
+           ^
+
+"Test_name.c", line 82: error: tag kind of enum is incompatible with declaration of union "u2" (declared at line 66)
+      enum u2 { U2A }; /* { dg-bogus "warning" "warning in place of error" } */
+           ^
+
+"Test_name.c", line 84: error: tag kind of class or struct is incompatible with declaration of enum "e0" (declared at line 69)
+      struct e0; /* { dg-bogus "warning" "warning in place of error" } */
+             ^
+
+"Test_name.c", line 86: error: "e1" has already been declared in the current scope
+      struct e1 { int i; }; /* { dg-bogus "warning" "warning in place of error" } */
+             ^
+
+"Test_name.c", line 64: warning: variable "sv" was declared but never referenced
+      struct s2 sv;
+                ^
+
+"Test_name.c", line 68: warning: variable "uv" was declared but never referenced
+      union u2 uv;
+               ^
+
+"Test_name.c", line 116: error: tag kind of union is incompatible with declaration of struct "s0" (declared at line 93)
+        union s0 *x0; /* { dg-bogus "warning" "warning in place of error" } */
+              ^
+
+"Test_name.c", line 118: error: tag kind of union is incompatible with declaration of struct "s1" (declared at line 94)
+        int x1[sizeof (union s1 *)]; /* { dg-bogus "warning" "warning in place of error" } */
+                             ^
+
+"Test_name.c", line 121: error: tag kind of union is incompatible with declaration of struct "s2" (declared at line 95)
+        union s2 *x2;
+              ^
+
+"Test_name.c", line 123: error: tag kind of union is incompatible with declaration of struct "s3" (declared at line 97)
+        int x3[sizeof (union s3 *)]; /* { dg-bogus "warning" "warning in place of error" } */
+                             ^
+
+"Test_name.c", line 126: error: tag kind of enum is incompatible with declaration of union "u0" (declared at line 99)
+        enum u0 *y0; /* { dg-bogus "warning" "warning in place of error" } */
+             ^
+
+"Test_name.c", line 128: error: tag kind of enum is incompatible with declaration of union "u2" (declared at line 100)
+        int y1[sizeof (enum u2 *)]; /* { dg-bogus "warning" "warning in place of error" } */
+                            ^
+
+"Test_name.c", line 131: error: tag kind of class or struct is incompatible with declaration of enum "e0" (declared at line 103)
+        struct e0 *z0; /* { dg-bogus "warning" "warning in place of error" } */
+               ^
+
+"Test_name.c", line 133: error: tag kind of class or struct is incompatible with declaration of enum "e1" (declared at line 104)
+        int z1[sizeof (struct e1 *)]; /* { dg-bogus "warning" "warning in place of error" } */
+                              ^
+
+"Test_name.c", line 116: warning: variable "x0" was declared but never referenced
+        union s0 *x0; /* { dg-bogus "warning" "warning in place of error" } */
+                  ^
+
+"Test_name.c", line 118: warning: variable "x1" was declared but never referenced
+        int x1[sizeof (union s1 *)]; /* { dg-bogus "warning" "warning in place of error" } */
+            ^
+
+"Test_name.c", line 121: warning: variable "x2" was declared but never referenced
+        union s2 *x2;
+                  ^
+
+"Test_name.c", line 123: warning: variable "x3" was declared but never referenced
+        int x3[sizeof (union s3 *)]; /* { dg-bogus "warning" "warning in place of error" } */
+            ^
+
+"Test_name.c", line 126: warning: variable "y0" was declared but never referenced
+        enum u0 *y0; /* { dg-bogus "warning" "warning in place of error" } */
+                 ^
+
+"Test_name.c", line 128: warning: variable "y1" was declared but never referenced
+        int y1[sizeof (enum u2 *)]; /* { dg-bogus "warning" "warning in place of error" } */
+            ^
+
+"Test_name.c", line 131: warning: variable "z0" was declared but never referenced
+        struct e0 *z0; /* { dg-bogus "warning" "warning in place of error" } */
+                   ^
+
+"Test_name.c", line 133: warning: variable "z1" was declared but never referenced
+        int z1[sizeof (struct e1 *)]; /* { dg-bogus "warning" "warning in place of error" } */
+            ^
+
+"Test_name.c", line 144: error: tag kind of class or struct is incompatible with declaration of union "s1" (declared at line 143)
+        struct s1 *x1; /* { dg-bogus "warning" "warning in place of error" } */
+               ^
+
+"Test_name.c", line 149: error: tag kind of class or struct is incompatible with declaration of union "s3" (declared at line 148)
+        struct s3 *x3; /* { dg-bogus "warning" "warning in place of error" } */
+               ^
+
+"Test_name.c", line 142: warning: variable "x0" was declared but never referenced
+        union s0 *x0;
+                  ^
+
+"Test_name.c", line 144: warning: variable "x1" was declared but never referenced
+        struct s1 *x1; /* { dg-bogus "warning" "warning in place of error" } */
+                   ^
+
+"Test_name.c", line 147: warning: variable "x2" was declared but never referenced
+        union s2 *x2;
+                  ^
+
+"Test_name.c", line 149: warning: variable "x3" was declared but never referenced
+        struct s3 *x3; /* { dg-bogus "warning" "warning in place of error" } */
+                   ^
+
+"Test_name.c", line 98: warning: variable "sv" was declared but never referenced
+      struct s2 sv;
+                ^
+
+"Test_name.c", line 102: warning: variable "uv" was declared but never referenced
+      union u2 uv;
+               ^
+
+21 errors detected in the compilation of "Test_name.c".

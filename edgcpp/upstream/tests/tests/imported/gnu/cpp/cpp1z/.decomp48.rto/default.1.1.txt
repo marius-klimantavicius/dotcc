@@ -1,0 +1,129 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 14: warning: structured bindings are a C++17 feature
+    auto& [s, t] = v;	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+          ^
+
+"Test_name.c", line 15: warning: returning reference to local variable
+    return s;		// { dg-bogus "reference to local variable '.' returned" }
+           ^
+
+"Test_name.c", line 22: warning: structured bindings are a C++17 feature
+    auto& [s, t] = v;	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+          ^
+
+"Test_name.c", line 23: warning: returning reference to local variable
+    return s;		// { dg-warning "reference to local variable 'v' returned" }
+           ^
+
+"Test_name.c", line 29: warning: structured bindings are a C++17 feature
+    auto& [s, t, u] = a;	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+          ^
+
+"Test_name.c", line 30: warning: returning reference to local variable
+    return s;		// { dg-bogus "reference to local variable '.' returned" }
+           ^
+
+"Test_name.c", line 37: warning: structured bindings are a C++17 feature
+    auto& [s, t, u] = a;	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+          ^
+
+"Test_name.c", line 38: warning: returning reference to local variable
+    return s;		// { dg-warning "reference to local variable 'a' returned" }
+           ^
+
+"Test_name.c", line 44: warning: structured bindings are a C++17 feature
+    auto [s, t] = v;	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+         ^
+
+"Test_name.c", line 45: warning: returning reference to local variable
+    return s;		// { dg-warning "reference to local variable 's' returned" }
+           ^
+
+"Test_name.c", line 52: warning: structured bindings are a C++17 feature
+    auto [s, t] = v;	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+         ^
+
+"Test_name.c", line 53: warning: returning reference to local variable
+    return s;		// { dg-warning "reference to local variable 's' returned" }
+           ^
+
+"Test_name.c", line 59: warning: structured bindings are a C++17 feature
+    auto [s, t, u] = a;	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+         ^
+
+"Test_name.c", line 60: warning: returning reference to local variable
+    return s;		// { dg-warning "reference to local variable 's' returned" }
+           ^
+
+"Test_name.c", line 67: warning: structured bindings are a C++17 feature
+    auto [s, t, u] = a;	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+         ^
+
+"Test_name.c", line 68: warning: returning reference to local variable
+    return s;		// { dg-warning "reference to local variable 's' returned" }
+           ^
+
+"Test_name.c", line 74: warning: structured bindings are a C++17 feature
+    auto& [s, t] = v;	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+          ^
+
+"Test_name.c", line 75: warning: returning pointer to local variable
+    return &s;		// { dg-bogus "address of local variable '.' returned" }
+           ^
+
+"Test_name.c", line 82: warning: structured bindings are a C++17 feature
+    auto& [s, t] = v;	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+          ^
+
+"Test_name.c", line 83: warning: returning pointer to local variable
+    return &s;		// { dg-warning "address of local variable 'v' returned" }
+           ^
+
+"Test_name.c", line 89: warning: structured bindings are a C++17 feature
+    auto& [s, t, u] = a;	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+          ^
+
+"Test_name.c", line 90: warning: returning pointer to local variable
+    return &s;		// { dg-bogus "address of local variable '.' returned" }
+           ^
+
+"Test_name.c", line 97: warning: structured bindings are a C++17 feature
+    auto& [s, t, u] = a;	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+          ^
+
+"Test_name.c", line 98: warning: returning pointer to local variable
+    return &s;		// { dg-warning "address of local variable 'a' returned" }
+           ^
+
+"Test_name.c", line 104: warning: structured bindings are a C++17 feature
+    auto [s, t] = v;	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+         ^
+
+"Test_name.c", line 105: warning: returning pointer to local variable
+    return &s;		// { dg-warning "address of local variable 's' returned" }
+           ^
+
+"Test_name.c", line 112: warning: structured bindings are a C++17 feature
+    auto [s, t] = v;	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+         ^
+
+"Test_name.c", line 113: warning: returning pointer to local variable
+    return &s;		// { dg-warning "address of local variable 's' returned" }
+           ^
+
+"Test_name.c", line 119: warning: structured bindings are a C++17 feature
+    auto [s, t, u] = a;	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+         ^
+
+"Test_name.c", line 120: warning: returning pointer to local variable
+    return &s;		// { dg-warning "address of local variable 's' returned" }
+           ^
+
+"Test_name.c", line 127: warning: structured bindings are a C++17 feature
+    auto [s, t, u] = a;	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+         ^
+
+"Test_name.c", line 128: warning: returning pointer to local variable
+    return &s;		// { dg-warning "address of local variable 's' returned" }
+           ^
+

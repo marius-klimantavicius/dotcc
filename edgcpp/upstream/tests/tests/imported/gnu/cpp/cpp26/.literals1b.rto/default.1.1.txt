@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 -W Test_name.c
+"Test_name.c", line 9: error: too many characters in character constant
+  wchar_t g = L'abcd';					// { dg-error "multi-character literal cannot have an encoding prefix" "" { target c++23 } }
+              ^
+
+"Test_name.c", line 11: error: too many characters in character constant
+  wchar_t h = L'\x61\x62\x63\x64';			// { dg-error "multi-character literal cannot have an encoding prefix" "" { target c++23 } }
+              ^
+
+2 errors detected in the compilation of "Test_name.c".

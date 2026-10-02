@@ -1,0 +1,28 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 23: error: a value of type "void" cannot be used to initialize an entity of type "const int &"
+  const int& ri = (void)0; // expected-error {{reference to type 'const int' could not bind to an rvalue of type 'void'}}
+                  ^
+
+"Test_name.c", line 26: error: more than one conversion function from "B" to "const A" applies:
+            function "BASE::operator A()" (declared at line 8)
+            function "BASE1::operator A()" (declared at line 12)
+          const A& rca = f(); // expected-error {{reference initialization of type 'const A &' with initializer of type 'B' is ambiguous}}
+                         ^
+
+"Test_name.c", line 27: error: initial value of reference to non-const must be an lvalue
+          A& ra = f(); // expected-error {{non-const lvalue reference to type 'A' cannot bind to a temporary of type 'B'}}
+                  ^
+
+"Test_name.c", line 31: error: initial value of reference to non-const must be an lvalue
+  PR6139 x = {{A()}}; // expected-error{{non-const lvalue reference to type 'A[1]' cannot bind to an initializer list temporary}}
+              ^
+
+"Test_name.c", line 34: error: initial value of reference to non-const must be an lvalue
+  PR6139b y = {A()}; // expected-error{{non-const lvalue reference to type 'A[1]' cannot bind to a temporary of type 'A'}}
+               ^
+
+"Test_name.c", line 45: error: cannot convert to incomplete class "IncompleteTest::String"
+    void takeString(const String& = "") {} // expected-note {{passing argument to parameter here}}
+                                    ^
+
+6 errors detected in the compilation of "Test_name.c".

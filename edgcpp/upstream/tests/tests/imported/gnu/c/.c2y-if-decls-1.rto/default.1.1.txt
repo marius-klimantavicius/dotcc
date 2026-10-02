@@ -1,0 +1,290 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 18: error: expected an expression
+    if (int i = get ())  /* { dg-warning "if declarations before C2Y" } */
+        ^
+
+"Test_name.c", line 19: error: identifier "i" is undefined
+      foo (i);
+           ^
+
+"Test_name.c", line 23: error: expected an expression
+    if (int i = 0)  /* { dg-warning "if declarations before C2Y" } */
+        ^
+
+"Test_name.c", line 26: error: identifier "i" is undefined
+      foo (i);
+           ^
+
+"Test_name.c", line 28: error: expected an expression
+    if (auto i = get ())  /* { dg-warning "if declarations before C2Y" } */
+        ^
+
+"Test_name.c", line 29: error: identifier "i" is undefined
+      foo (i);
+           ^
+
+"Test_name.c", line 33: error: expected an expression
+    if (__typeof__(get ()) i = get ())  /* { dg-warning "if declarations before C2Y" } */
+        ^
+
+"Test_name.c", line 34: error: identifier "i" is undefined
+      foo (i);
+           ^
+
+"Test_name.c", line 38: error: expected an expression
+    if (auto i = 0)  /* { dg-warning "if declarations before C2Y" } */
+        ^
+
+"Test_name.c", line 41: error: identifier "i" is undefined
+      foo (i);
+           ^
+
+"Test_name.c", line 43: error: expected an expression
+    if (int (*f)(int) = foo)  /* { dg-warning "if declarations before C2Y" } */
+        ^
+
+"Test_name.c", line 44: warning: function "f" declared implicitly
+      f (1);
+      ^
+
+"Test_name.c", line 48: error: expected an expression
+    if ([[maybe_unused]] int i = get ())  /* { dg-warning "if declarations before C2Y" } */
+        ^
+
+"Test_name.c", line 49: error: identifier "i" is undefined
+      foo (i);
+           ^
+
+"Test_name.c", line 53: error: expected an expression
+    if (__attribute__((unused)) int i = get ())  /* { dg-warning "if declarations before C2Y" } */
+        ^
+
+"Test_name.c", line 54: error: identifier "i" is undefined
+      foo (i);
+           ^
+
+"Test_name.c", line 58: error: expected an expression
+    if (enum E e = X)  /* { dg-warning "if declarations before C2Y" } */
+        ^
+
+"Test_name.c", line 59: error: identifier "e" is undefined
+      foo (e);
+           ^
+
+"Test_name.c", line 63: error: identifier "constexpr" is undefined
+    if (constexpr int i = 42)  /* { dg-warning "if declarations before C2Y" } */
+        ^
+
+"Test_name.c", line 63: error: expected a ")"
+    if (constexpr int i = 42)  /* { dg-warning "if declarations before C2Y" } */
+                  ^
+
+"Test_name.c", line 64: error: identifier "i" is undefined
+      foo (i);
+           ^
+
+"Test_name.c", line 68: error: expected an expression
+    if (int i = 1)  /* { dg-warning "if declarations before C2Y" } */
+        ^
+
+"Test_name.c", line 69: error: expected an expression
+      if (int j = 2)  /* { dg-warning "if declarations before C2Y" } */
+          ^
+
+"Test_name.c", line 70: error: expected an expression
+        if (int k = 3)  /* { dg-warning "if declarations before C2Y" } */
+            ^
+
+"Test_name.c", line 71: error: identifier "i" is undefined
+  	foo (i + j + k);
+  	     ^
+
+"Test_name.c", line 71: error: identifier "j" is undefined
+  	foo (i + j + k);
+  	         ^
+
+"Test_name.c", line 71: error: identifier "k" is undefined
+  	foo (i + j + k);
+  	             ^
+
+"Test_name.c", line 73: error: expected an expression
+    if (register int i = 0);  /* { dg-warning "if declarations before C2Y" } */
+        ^
+
+"Test_name.c", line 74: error: expected an expression
+    if (static int i = 0);  /* { dg-warning "if declarations before C2Y" } */
+        ^
+
+"Test_name.c", line 75: error: expected an expression
+    if (static int arr[3] = {});  /* { dg-warning "if declarations before C2Y" } */
+        ^
+
+"Test_name.c", line 76: error: expected an expression
+    if (_Atomic int i = 0);  /* { dg-warning "if declarations before C2Y" } */
+        ^
+
+"Test_name.c", line 78: error: expected an expression
+    if (int arr[] = { 1 })  /* { dg-warning "if declarations before C2Y" } */
+        ^
+
+"Test_name.c", line 79: error: identifier "arr" is undefined
+      foo (arr[0]);
+           ^
+
+"Test_name.c", line 83: warning: variable "i" was declared but never referenced
+    double i;
+           ^
+
+"Test_name.c", line 89: error: expected an expression
+    if (int i = get (); i == 42)	/* { dg-warning "if declarations before C2Y" } */
+        ^
+
+"Test_name.c", line 90: error: identifier "i" is undefined
+      foo (i);
+           ^
+
+"Test_name.c", line 94: error: expected an expression
+    if (int i = get (); i != 42)  /* { dg-warning "if declarations before C2Y" } */
+        ^
+
+"Test_name.c", line 97: error: identifier "i" is undefined
+      foo (i);
+           ^
+
+"Test_name.c", line 99: error: expected an expression
+    if (auto i = get (); i == 42)  /* { dg-warning "if declarations before C2Y" } */
+        ^
+
+"Test_name.c", line 100: error: identifier "i" is undefined
+      foo (i);
+           ^
+
+"Test_name.c", line 104: error: expected an expression
+    if (__typeof__(get ()) i = get (); i == 42)  /* { dg-warning "if declarations before C2Y" } */
+        ^
+
+"Test_name.c", line 105: error: identifier "i" is undefined
+      foo (i);
+           ^
+
+"Test_name.c", line 109: error: expected an expression
+    if (auto i = get (); i != 42)  /* { dg-warning "if declarations before C2Y" } */
+        ^
+
+"Test_name.c", line 112: error: identifier "i" is undefined
+      foo (i);
+           ^
+
+"Test_name.c", line 114: error: expected an expression
+    if (int (*f)(int) = foo; f (42))  /* { dg-warning "if declarations before C2Y" } */
+        ^
+
+"Test_name.c", line 115: warning: function "f" declared implicitly
+      f (1);
+      ^
+
+"Test_name.c", line 119: error: expected an expression
+    if ([[maybe_unused]] int i = get (); i == 42)  /* { dg-warning "if declarations before C2Y" } */
+        ^
+
+"Test_name.c", line 120: error: identifier "i" is undefined
+      foo (i);
+           ^
+
+"Test_name.c", line 124: error: expected an expression
+    if (__attribute__((unused)) int i = get (); i == 42)  /* { dg-warning "if declarations before C2Y" } */
+        ^
+
+"Test_name.c", line 125: error: identifier "i" is undefined
+      foo (i);
+           ^
+
+"Test_name.c", line 129: error: expected an expression
+    if (enum E e = X; e == X)  /* { dg-warning "if declarations before C2Y" } */
+        ^
+
+"Test_name.c", line 130: error: identifier "e" is undefined
+      foo (e);
+           ^
+
+"Test_name.c", line 134: error: identifier "constexpr" is undefined
+    if (constexpr int i = 42; i == 42)  /* { dg-warning "if declarations before C2Y" } */
+        ^
+
+"Test_name.c", line 134: error: expected a ")"
+    if (constexpr int i = 42; i == 42)  /* { dg-warning "if declarations before C2Y" } */
+                  ^
+
+"Test_name.c", line 135: error: identifier "i" is undefined
+      foo (i);
+           ^
+
+"Test_name.c", line 139: error: expected an expression
+    if (int i = 1; i)  /* { dg-warning "if declarations before C2Y" } */
+        ^
+
+"Test_name.c", line 140: error: expected an expression
+      if (int j = 2; j)  /* { dg-warning "if declarations before C2Y" } */
+          ^
+
+"Test_name.c", line 141: error: expected an expression
+        if (int k = 3; k)  /* { dg-warning "if declarations before C2Y" } */
+            ^
+
+"Test_name.c", line 142: error: identifier "i" is undefined
+  	foo (i + j + k);
+  	     ^
+
+"Test_name.c", line 142: error: identifier "j" is undefined
+  	foo (i + j + k);
+  	         ^
+
+"Test_name.c", line 142: error: identifier "k" is undefined
+  	foo (i + j + k);
+  	             ^
+
+"Test_name.c", line 144: error: expected an expression
+    if (int i = 2, j = get (); i + j > 0)  /* { dg-warning "if declarations before C2Y" } */
+        ^
+
+"Test_name.c", line 145: error: identifier "i" is undefined
+      foo (i + j);
+           ^
+
+"Test_name.c", line 145: error: identifier "j" is undefined
+      foo (i + j);
+               ^
+
+"Test_name.c", line 149: error: expected an expression
+    if (int i; i = 1)  /* { dg-warning "if declarations before C2Y" } */
+        ^
+
+"Test_name.c", line 150: error: identifier "i" is undefined
+      foo (i);
+           ^
+
+"Test_name.c", line 154: error: expected an expression
+    if (int arr[] = { 1, 2, 3}; arr[0])  /* { dg-warning "if declarations before C2Y" } */
+        ^
+
+"Test_name.c", line 155: error: identifier "arr" is undefined
+      foo (arr[0]);
+           ^
+
+"Test_name.c", line 159: error: expected an expression
+    if (register int i = 0; i);  /* { dg-warning "if declarations before C2Y" } */
+        ^
+
+"Test_name.c", line 160: error: expected an expression
+    if (static int i = 0; i);  /* { dg-warning "if declarations before C2Y" } */
+        ^
+
+"Test_name.c", line 161: error: expected an expression
+    if (_Atomic int i = 0; i);  /* { dg-warning "if declarations before C2Y" } */
+        ^
+
+"Test_name.c", line 163: warning: variable "i" was declared but never referenced
+    double i;
+           ^
+
+68 errors detected in the compilation of "Test_name.c".

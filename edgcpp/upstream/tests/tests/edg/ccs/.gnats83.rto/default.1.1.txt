@@ -1,0 +1,5 @@
+cpfe -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 6: warning: "delete" applied to a pointer-to-array type treated as delete[]
+    delete /*[]*/ p;
+                  ^
+

@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: error: invalid specifier outside a class declaration
+  virtual void A::foo() {}  // { dg-error "'virtual' outside class" }
+  ^
+
+"Test_name.c", line 17: error: invalid specifier outside a class declaration
+  virtual void B<T>::foo() {}  // { dg-error "'virtual' outside class" }
+  ^
+
+"Test_name.c", line 21: error: "virtual" is not allowed in a function template declaration
+    virtual void foo();  // { dg-error "templates may not be 'virtual'" }
+    ^
+
+"Test_name.c", line 25: error: invalid specifier outside a class declaration
+  virtual void C::foo() {}  // { dg-error "'virtual' outside class" }
+  ^
+
+"Test_name.c", line 30: error: "virtual" is not allowed in a function template declaration
+    virtual void foo();  // { dg-error "templates may not be 'virtual'" }
+    ^
+
+"Test_name.c", line 35: error: invalid specifier outside a class declaration
+  virtual void D<T>::foo() {}  // { dg-error "'virtual' outside class" }
+  ^
+
+6 errors detected in the compilation of "Test_name.c".

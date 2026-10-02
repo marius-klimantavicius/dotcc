@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -DMULTIVALUE --c Test_name.c
+"Test_name.c", line 8: error: identifier "__externref_t" is undefined
+  static __externref_t table[0];
+         ^
+
+"Test_name.c", line 10: error: expected a ")"
+  typedef void (*__funcref funcref_t)();
+                           ^
+
+"Test_name.c", line 12: error: identifier "funcref_t" is undefined
+    funcref_t func = __builtin_wasm_ref_null_func(0); // expected-error {{too many arguments to function call, expected 0, have 1}}
+    ^
+
+"Test_name.c", line 12: warning: function "__builtin_wasm_ref_null_func" declared implicitly
+    funcref_t func = __builtin_wasm_ref_null_func(0); // expected-error {{too many arguments to function call, expected 0, have 1}}
+                     ^
+
+"Test_name.c", line 13: error: identifier "__externref_t" is undefined
+    __externref_t ref = __builtin_wasm_ref_null_extern(0); // expected-error {{too many arguments to function call, expected 0, have 1}}
+    ^
+
+"Test_name.c", line 13: warning: function "__builtin_wasm_ref_null_extern" declared implicitly
+    __externref_t ref = __builtin_wasm_ref_null_extern(0); // expected-error {{too many arguments to function call, expected 0, have 1}}
+                        ^
+
+"Test_name.c", line 14: warning: function "__builtin_wasm_ref_is_null_extern" declared implicitly
+    __builtin_wasm_ref_is_null_extern(ref, 1); // expected-error {{too many arguments to function call, expected 1, have 2}}
+    ^
+
+"Test_name.c", line 19: error: identifier "__externref_t" is undefined
+  void test_table_size(__externref_t ref, void *ptr, int arr[]) {
+                       ^
+
+"Test_name.c", line 20: warning: function "__builtin_wasm_table_size" declared implicitly
+    __builtin_wasm_table_size();                        // expected-error {{too few arguments to function call, expected 1, have 0}}
+    ^
+
+"Test_name.c", line 27: error: static assertion failed with ""
+    _Static_assert(EXPR_HAS_TYPE(__builtin_wasm_table_size(table), unsigned long), "");
+    ^
+
+"Test_name.c", line 30: error: identifier "__externref_t" is undefined
+  void test_table_grow(__externref_t ref, int size) {
+                       ^
+
+"Test_name.c", line 31: warning: function "__builtin_wasm_table_grow" declared implicitly
+    __builtin_wasm_table_grow();                           // expected-error {{too few arguments to function call, expected 3, have 0}}
+    ^
+
+"Test_name.c", line 40: error: identifier "__externref_t" is undefined
+  void test_table_fill(int index, __externref_t ref, int nelem) {
+                                  ^
+
+"Test_name.c", line 41: warning: function "__builtin_wasm_table_fill" declared implicitly
+    __builtin_wasm_table_fill();                                   // expected-error {{too few arguments to function call, expected 4, have 0}}
+    ^
+
+"Test_name.c", line 51: warning: function "__builtin_wasm_table_copy" declared implicitly
+    __builtin_wasm_table_copy();                                         // expected-error {{too few arguments to function call, expected 5, have 0}}
+    ^
+
+"Test_name.c", line 68: warning: function "__builtin_wasm_test_function_pointer_signature" declared implicitly
+    (void)__builtin_wasm_test_function_pointer_signature(); // expected-error {{too few arguments to function call, expected 1, have 0}}
+          ^
+
+8 errors detected in the compilation of "Test_name.c".

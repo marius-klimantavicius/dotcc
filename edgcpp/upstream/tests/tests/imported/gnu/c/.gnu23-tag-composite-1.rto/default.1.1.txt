@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 45: warning: a value of type "struct foo *" cannot be used to initialize an entity of type "struct foo *"
+  	}* z = &x;		/* { dg-error "incompatible" } */
+  	       ^
+
+"Test_name.c", line 45: warning: variable "z" was declared but never referenced
+  	}* z = &x;		/* { dg-error "incompatible" } */
+  	   ^
+

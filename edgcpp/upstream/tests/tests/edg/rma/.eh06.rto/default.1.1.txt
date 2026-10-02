@@ -1,0 +1,85 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 6: error: exception specification is incompatible with that of previous function "a" (declared at line 5)
+  void a() throw ();                        // Error
+           ^
+
+"Test_name.c", line 8: error: allowing all exceptions is incompatible with previous function "b" (declared at line 7)
+  void b();                                 // Error
+          ^
+
+"Test_name.c", line 12: error: exception specification is incompatible with that of previous function "c" (declared at line 11)
+  void c() throw (int);                     // Error
+           ^
+
+"Test_name.c", line 14: error: allowing all exceptions is incompatible with previous function "d" (declared at line 13)
+  void d();                                 // Error
+          ^
+
+"Test_name.c", line 18: error: exception specification is incompatible with that of previous function "e" (declared at line 17):
+            previously specified: no exceptions will be thrown
+  void e() throw (int);                     // Error
+           ^
+
+"Test_name.c", line 20: error: exception specification is incompatible with that of previous function "f" (declared at line 19):
+            previously specified but omitted here: "int"
+  void f() throw ();                        // Error
+           ^
+
+"Test_name.c", line 24: error: exception specification is incompatible with that of previous function "g" (declared at line 23):
+            previously specified but omitted here: "char"
+  void g() throw (int);                     // Error
+           ^
+
+"Test_name.c", line 25: error: exception specification is incompatible with that of previous function "g" (declared at line 23):
+            previously omitted: "float"
+  void g() throw (int,char,float);          // Error
+           ^
+
+"Test_name.c", line 26: error: exception specification is incompatible with that of previous function "g" (declared at line 23):
+            previously omitted: "float"
+            previously omitted: "double"
+            previously specified but omitted here: "int"
+            previously specified but omitted here: "char"
+  void g() throw (float,double);            // Error
+           ^
+
+"Test_name.c", line 29: remark: redundant type in exception specification
+  void h() throw (int,char,char,int);
+                           ^
+
+"Test_name.c", line 29: remark: redundant type in exception specification
+  void h() throw (int,char,char,int);
+                                ^
+
+"Test_name.c", line 31: remark: redundant type in exception specification
+  void h() throw (char,char,int);
+                       ^
+
+"Test_name.c", line 32: remark: redundant type in exception specification
+  void h() throw (char,char,char);          // Error
+                       ^
+
+"Test_name.c", line 32: remark: redundant type in exception specification
+  void h() throw (char,char,char);          // Error
+                            ^
+
+"Test_name.c", line 32: error: exception specification is incompatible with that of previous function "h" (declared at line 29):
+            previously specified but omitted here: "int"
+  void h() throw (char,char,char);          // Error
+           ^
+
+"Test_name.c", line 35: remark: redundant type in exception specification
+  void i() throw (int,I,II);
+                      ^
+
+"Test_name.c", line 35: remark: redundant type in exception specification
+  void i() throw (int,I,II);
+                        ^
+
+"Test_name.c", line 37: error: exception specification is incompatible with that of previous function "i" (declared at line 35):
+            previously omitted: "char"
+            previously specified but omitted here: "int"
+  void i() throw (char);                    // Error
+           ^
+
+11 errors detected in the compilation of "Test_name.c".

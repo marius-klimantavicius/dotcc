@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 -DMAX_TOKENS -DMAX_TOKENS_OVERRIDE Test_name.c
+"Test_name.c", line 9: warning: unrecognized #pragma
+  #pragma clang max_tokens_here         // expected-error  {{missing argument to '#pragma clang max_tokens_here'; expected integer}}
+          ^
+
+"Test_name.c", line 10: warning: unrecognized #pragma
+  #pragma clang max_tokens_here foo     // expected-error  {{expected an integer argument in '#pragma clang max_tokens_here'}}
+          ^
+
+"Test_name.c", line 11: warning: unrecognized #pragma
+  #pragma clang max_tokens_here 123 456 // expected-warning{{extra tokens at end of '#pragma clang max_tokens_here' - ignored}}
+          ^
+
+"Test_name.c", line 13: warning: unrecognized #pragma
+  #pragma clang max_tokens_here 1 // expected-warning{{the number of preprocessor source tokens (7) exceeds this token limit (1)}}
+          ^
+
+"Test_name.c", line 16: warning: unrecognized #pragma
+  #pragma clang max_tokens_total // expected-error{{missing argument to '#pragma clang max_tokens_total'; expected integer}}
+          ^
+
+"Test_name.c", line 17: warning: unrecognized #pragma
+  #pragma clang max_tokens_total foo // expected-error{{expected an integer argument in '#pragma clang max_tokens_total'}}
+          ^
+
+"Test_name.c", line 18: warning: unrecognized #pragma
+  #pragma clang max_tokens_total 123 456 // expected-warning{{extra tokens at end of '#pragma clang max_tokens_total' - ignored}}
+          ^
+
+"Test_name.c", line 21: warning: unrecognized #pragma
+  #pragma clang max_tokens_total 3 // expected-warning@+4{{the total number of preprocessor source tokens (8) exceeds the token limit (3)}}
+          ^
+

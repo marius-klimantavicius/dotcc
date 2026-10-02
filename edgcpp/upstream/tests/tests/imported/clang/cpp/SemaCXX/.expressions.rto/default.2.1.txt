@@ -1,0 +1,110 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 18: warning: use of the "register" storage class specifier is deprecated
+    register int x;
+    ^
+
+"Test_name.c", line 40: error: this operation on an enumerated type requires an applicable user-defined operator function
+      bar(x += E_zero); // expected-error {{incompatible type}}
+            ^
+
+"Test_name.c", line 49: warning: statement is unreachable
+    return x && sizeof(int) == 4;  // no warning, RHS is logical op.
+    ^
+
+"Test_name.c", line 50: warning: statement is unreachable
+    return x && true;
+    ^
+
+"Test_name.c", line 51: warning: statement is unreachable
+    return x && false;
+    ^
+
+"Test_name.c", line 52: warning: statement is unreachable
+    return x || true;
+    ^
+
+"Test_name.c", line 53: warning: statement is unreachable
+    return x || false;
+    ^
+
+"Test_name.c", line 55: warning: statement is unreachable
+    return x && (unsigned)0; // expected-warning {{use of logical '&&' with constant operand}} \
+    ^
+
+"Test_name.c", line 59: warning: statement is unreachable
+    return x || (unsigned)1; // expected-warning {{use of logical '||' with constant operand}} \
+    ^
+
+"Test_name.c", line 62: warning: statement is unreachable
+    return x || 0; // expected-warning {{use of logical '||' with constant operand}} \
+    ^
+
+"Test_name.c", line 64: warning: statement is unreachable
+    return x || 1; // expected-warning {{use of logical '||' with constant operand}} \
+    ^
+
+"Test_name.c", line 66: warning: statement is unreachable
+    return x || -1; // expected-warning {{use of logical '||' with constant operand}} \
+    ^
+
+"Test_name.c", line 68: warning: statement is unreachable
+    return x || 5; // expected-warning {{use of logical '||' with constant operand}} \
+    ^
+
+"Test_name.c", line 70: warning: statement is unreachable
+    return x && 0; // expected-warning {{use of logical '&&' with constant operand}} \
+    ^
+
+"Test_name.c", line 73: warning: statement is unreachable
+    return x && 1; // expected-warning {{use of logical '&&' with constant operand}} \
+    ^
+
+"Test_name.c", line 76: warning: statement is unreachable
+    return x && -1; // expected-warning {{use of logical '&&' with constant operand}} \
+    ^
+
+"Test_name.c", line 79: warning: statement is unreachable
+    return x && 5; // expected-warning {{use of logical '&&' with constant operand}} \
+    ^
+
+"Test_name.c", line 82: warning: statement is unreachable
+    return x || (0); // expected-warning {{use of logical '||' with constant operand}} \
+    ^
+
+"Test_name.c", line 84: warning: statement is unreachable
+    return x || (1); // expected-warning {{use of logical '||' with constant operand}} \
+    ^
+
+"Test_name.c", line 86: warning: statement is unreachable
+    return x || (-1); // expected-warning {{use of logical '||' with constant operand}} \
+    ^
+
+"Test_name.c", line 88: warning: statement is unreachable
+    return x || (5); // expected-warning {{use of logical '||' with constant operand}} \
+    ^
+
+"Test_name.c", line 90: warning: statement is unreachable
+    return x && (0); // expected-warning {{use of logical '&&' with constant operand}} \
+    ^
+
+"Test_name.c", line 93: warning: statement is unreachable
+    return x && (1); // expected-warning {{use of logical '&&' with constant operand}} \
+    ^
+
+"Test_name.c", line 96: warning: statement is unreachable
+    return x && (-1); // expected-warning {{use of logical '&&' with constant operand}} \
+    ^
+
+"Test_name.c", line 99: warning: statement is unreachable
+    return x && (5); // expected-warning {{use of logical '&&' with constant operand}} \
+    ^
+
+"Test_name.c", line 140: warning: variable "r1" was declared but never referenced
+    bool r1 = X || Y;
+         ^
+
+"Test_name.c", line 143: warning: variable "r2" was declared but never referenced
+    bool r2 = X || Y2; // expected-warning {{use of logical '||' with constant operand}} \
+         ^
+
+1 error detected in the compilation of "Test_name.c".

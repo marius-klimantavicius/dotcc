@@ -1,0 +1,5 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --set_flag=no_checking_pragmas --strict Test_name.c
+"Test_name.c", line 8: warning: variable "a" was declared but never referenced
+    static struct A a = {32};
+                    ^
+

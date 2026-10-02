@@ -1,0 +1,57 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 Test_name.c
+"Test_name.c", line 15: warning: access to member of _Atomic object
+    int e = 0 && p.x;
+                 ^
+
+"Test_name.c", line 16: warning: access to member of _Atomic object
+    return p.x + e; /* { dg-warning "accessing a member .x. of an atomic structure" } */
+           ^
+
+"Test_name.c", line 22: warning: access to member of _Atomic object
+    int e = 1 || p->x;
+                 ^
+
+"Test_name.c", line 23: warning: access to member of _Atomic object
+    return p->x + e; /* { dg-warning "accessing a member .x. of an atomic structure" } */
+           ^
+
+"Test_name.c", line 29: warning: access to member of _Atomic object
+    p.x = x; /* { dg-warning "accessing a member .x. of an atomic structure" } */
+    ^
+
+"Test_name.c", line 27: warning: parameter "p" was set but never used
+  fn3 (_Atomic struct S p, int x)
+                        ^
+
+"Test_name.c", line 35: warning: access to member of _Atomic object
+    p->x = x; /* { dg-warning "accessing a member .x. of an atomic structure" } */
+    ^
+
+"Test_name.c", line 57: warning: access to member of _Atomic object
+    int e = 0 && p.x;
+                 ^
+
+"Test_name.c", line 58: warning: access to member of _Atomic object
+    return p.x + e; /* { dg-warning "accessing a member .x. of an atomic union" } */
+           ^
+
+"Test_name.c", line 64: warning: access to member of _Atomic object
+    int e = 1 || p->x;
+                 ^
+
+"Test_name.c", line 65: warning: access to member of _Atomic object
+    return p->x + e; /* { dg-warning "accessing a member .x. of an atomic union" } */
+           ^
+
+"Test_name.c", line 71: warning: access to member of _Atomic object
+    p.x = x; /* { dg-warning "accessing a member .x. of an atomic union" } */
+    ^
+
+"Test_name.c", line 69: warning: parameter "p" was set but never used
+  fn9 (_Atomic union U p, int x)
+                       ^
+
+"Test_name.c", line 77: warning: access to member of _Atomic object
+    p->x = x; /* { dg-warning "accessing a member .x. of an atomic union" } */
+    ^
+

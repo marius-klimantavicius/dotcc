@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 Test_name.c
+"Test_name.c", line 8: error: identifier "q" is undefined
+      q(); // expected-error {{undeclared}}
+      ^
+
+"Test_name.c", line 12: error: identifier "q" is undefined
+      q(); // expected-error {{undeclared}}
+      ^
+
+"Test_name.c", line 26: error: declaration is incompatible with previous "Test1::a" (declared at line 23)
+    double a; // expected-error {{different type: 'double' vs 'int'}}
+           ^
+
+"Test_name.c", line 27: error: declaration is incompatible with previous "Test1::g" (declared at line 24)
+    double g(); // expected-error {{differ only in their return type}}
+           ^
+
+"Test_name.c", line 36: error: declaration is incompatible with previous "Test2::a" (declared at line 32)
+      extern double a; // expected-error {{different type: 'double' vs 'int'}}
+                    ^
+
+"Test_name.c", line 37: error: declaration is incompatible with previous "Test2::g" (declared at line 33)
+      double g(void); // expected-error {{differ only in their return type}}
+             ^
+
+6 errors detected in the compilation of "Test_name.c".

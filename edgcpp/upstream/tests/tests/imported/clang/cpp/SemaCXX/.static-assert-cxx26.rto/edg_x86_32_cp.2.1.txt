@@ -1,0 +1,295 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++26 Test_name.c
+"Test_name.c", line 7: error: expected a string literal
+  static_assert(true, 0); // expected-error {{the message in a static assertion must be a string literal or an object with 'data()' and 'size()' member functions}}
+                      ^
+
+"Test_name.c", line 9: error: expected a string literal
+  static_assert(true, Empty{}); // expected-error {{the message object in this static assertion is missing 'data()' and 'size()' member functions}}
+                      ^
+
+"Test_name.c", line 16: error: expected a string literal
+  static_assert(true, NoData{}); // expected-error {{the message object in this static assertion is missing a 'data()' member function}}
+                      ^
+
+"Test_name.c", line 17: error: expected a string literal
+  static_assert(true, NoSize{}); // expected-error {{the message object in this static assertion is missing a 'size()' member function}}
+                      ^
+
+"Test_name.c", line 23: error: expected a string literal
+  static_assert(true, InvalidSize{}); // expected-error {{the message in a static assertion must have a 'size()' member function returning an object convertible to 'std::size_t'}} \
+                      ^
+
+"Test_name.c", line 29: error: expected a string literal
+  static_assert(true, InvalidData{}); // expected-error {{the message in a static assertion must have a 'data()' member function returning an object convertible to 'const char *'}} \
+                      ^
+
+"Test_name.c", line 37: error: expected a string literal
+  static_assert(true, NonConstexprSize{}); // expected-error {{the message in this static assertion is not a constant expression}} \
+                      ^
+
+"Test_name.c", line 40: error: expected a string literal
+  static_assert(false, NonConstexprSize{}); // expected-error {{the message in a static assertion must be produced by a constant expression}} \
+                       ^
+
+"Test_name.c", line 51: error: expected a string literal
+  static_assert(true, NonConstexprData{});  // expected-error {{the message in this static assertion is not a constant expression}} \
+                      ^
+
+"Test_name.c", line 54: error: expected a string literal
+  static_assert(false, NonConstexprData{}); // expected-error {{the message in a static assertion must be produced by a constant expression}} \
+                       ^
+
+"Test_name.c", line 88: error: expected a string literal
+  static_assert(false, string_view("test")); // expected-error {{static assertion failed: test}}
+                       ^
+
+"Test_name.c", line 89: error: expected a ")"
+  static_assert(false, "Literal" + string_view("test")); // expected-error {{static assertion failed: test}}
+                                 ^
+
+"Test_name.c", line 89: error: static assertion failed with "Literal"
+  static_assert(false, "Literal" + string_view("test")); // expected-error {{static assertion failed: test}}
+  ^
+
+"Test_name.c", line 90: error: expected a ")"
+  static_assert(false, L"Wide Literal" + string_view("test")); // expected-error {{static assertion failed: test}}
+                                       ^
+
+"Test_name.c", line 90: error: static assertion failed with "Wide Literal"
+  static_assert(false, L"Wide Literal" + string_view("test")); // expected-error {{static assertion failed: test}}
+  ^
+
+"Test_name.c", line 91: error: expected a ")"
+  static_assert(false, "Wild" "Literal" "Concatenation" + string_view("test")); // expected-error {{static assertion failed: test}}
+                                                        ^
+
+"Test_name.c", line 91: error: static assertion failed with "WildLiteralConcatenation"
+  static_assert(false, "Wild" "Literal" "Concatenation" + string_view("test")); // expected-error {{static assertion failed: test}}
+  ^
+
+"Test_name.c", line 92: error: expected a ")"
+  static_assert(false, "Wild" "Literal" L"Concatenation" + string_view("test")); // expected-error {{static assertion failed: test}}
+                                                         ^
+
+"Test_name.c", line 92: error: static assertion failed with "WildLiteralConcatenation"
+  static_assert(false, "Wild" "Literal" L"Concatenation" + string_view("test")); // expected-error {{static assertion failed: test}}
+  ^
+
+"Test_name.c", line 93: error: string literals with different character kinds cannot be concatenated
+  static_assert(false, "Wild" u"Literal" L"Concatenation" + string_view("test")); // expected-error {{unsupported non-standard concatenation of string literals}}
+                                         ^
+
+"Test_name.c", line 93: error: expected a ")"
+  static_assert(false, "Wild" u"Literal" L"Concatenation" + string_view("test")); // expected-error {{unsupported non-standard concatenation of string literals}}
+                                                          ^
+
+"Test_name.c", line 94: error: expected a string literal
+  static_assert(false, string_view("😀")); // expected-error {{static assertion failed: 😀}}
+                       ^
+
+"Test_name.c", line 95: error: expected a string literal
+  static_assert(false, string_view(0, nullptr)); // expected-error {{static assertion failed:}}
+                       ^
+
+"Test_name.c", line 96: error: expected a string literal
+  static_assert(false, string_view(1, "ABC")); // expected-error {{static assertion failed: A}}
+                       ^
+
+"Test_name.c", line 97: error: expected a string literal
+  static_assert(false, string_view(42, "ABC")); // expected-error {{static assertion failed: ABC}} \
+                       ^
+
+"Test_name.c", line 100: error: expected a string literal
+  static_assert(false, array<char, 2>{'a', 'b'}); // expected-error {{static assertion failed: ab}}
+                       ^
+
+"Test_name.c", line 123: error: expected a string literal
+  static_assert(true, MessageFromConvertible{});
+                      ^
+
+"Test_name.c", line 124: error: expected a string literal
+  static_assert(false, MessageFromConvertible{}); // expected-error{{static assertion failed: test}}
+                       ^
+
+"Test_name.c", line 137: error: expected a string literal
+  static_assert(false, Leaks{}); //expected-error {{the message in a static assertion must be produced by a constant expression}} \
+                       ^
+
+"Test_name.c", line 154: error: expected a string literal
+  static_assert(false, RAII{}); // expected-error {{static assertion failed: ok}}
+                       ^
+
+"Test_name.c", line 180: error: expected a string literal
+  static_assert(false, Message{}); // expected-error {{static assertion failed: Hello}}
+                       ^
+
+"Test_name.c", line 193: error: expected a string literal
+  static_assert(false, MessageInvalidSize{});  // expected-error {{static assertion failed}} \
+                       ^
+
+"Test_name.c", line 196: error: expected a string literal
+  static_assert(false, MessageInvalidData{});  // expected-error {{static assertion failed}} \
+                       ^
+
+"Test_name.c", line 209: error: expected a string literal
+  static_assert(false, NonConstMembers{}); // expected-error {{static assertion failed: A}}
+                       ^
+
+"Test_name.c", line 220: error: expected a string literal
+  static_assert(false, DefaultArgs{}); // expected-error {{static assertion failed: OK}}
+                       ^
+
+"Test_name.c", line 231: error: expected a string literal
+  static_assert(false, Variadic{}); // expected-error {{static assertion failed: OK}}
+                       ^
+
+"Test_name.c", line 238: error: expected a string literal
+  static_assert(false, DeleteAndRequires<void>{});
+                       ^
+
+"Test_name.c", line 253: error: expected a string literal
+  static_assert(false, Private{}); // expected-error {{'data' is a private member of 'Private'}}\
+                       ^
+
+"Test_name.c", line 269: error: expected a string literal
+  static_assert(false, MessageOverload{}); // expected-error {{static assertion failed: A}}
+                       ^
+
+"Test_name.c", line 277: warning: variable "ptr" is used before its value is set
+      return ptr; // expected-note {{read of uninitialized object is not allowed in a constant expression}}
+             ^
+
+"Test_name.c", line 281: error: expected a string literal
+  static_assert(false, InvalidPtr{}); // expected-error{{the message in a static assertion must be produced by a constant expression}} \
+                       ^
+
+"Test_name.c", line 288: error: expected a string literal
+    static_assert(false, Ty{}); // expected-error {{static assertion failed: hello}}
+                         ^
+
+"Test_name.c", line 293: error: expected a string literal
+    static_assert(false, Ty{}); // expected-error {{the message in a static assertion must be a string literal or an object with 'data()' and 'size()' member functions}} \
+                         ^
+
+"Test_name.c", line 302: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+  constexpr Frobble operator ""_myd (const char *, unsigned long) { return Frobble{}; }
+                    ^
+
+"Test_name.c", line 303: error: expected a string literal
+  static_assert (false, "foo"_myd); // expected-error {{static assertion failed: hello}}
+                        ^
+
+"Test_name.c", line 311: error: static assertion failed with ""
+  static_assert('\u{9}' == (char)1, ""); // expected-error {{failed}} \
+  ^
+"Test_name.c", line 311: note: the final comparison was 9 == 1
+  static_assert('\u{9}' == (char)1, ""); // expected-error {{failed}} \
+                        ^
+
+"Test_name.c", line 313: error: static assertion failed with ""
+  static_assert((char8_t)-128 == (char8_t)-123, ""); // expected-error {{failed}} \
+  ^
+"Test_name.c", line 313: note: the final comparison was 128 == 133
+  static_assert((char8_t)-128 == (char8_t)-123, ""); // expected-error {{failed}} \
+                              ^
+
+"Test_name.c", line 315: error: static assertion failed with ""
+  static_assert((char16_t)0xFEFF == (char16_t)0xDB93, ""); // expected-error {{failed}} \
+  ^
+"Test_name.c", line 315: note: the final comparison was 65279 == 56211
+  static_assert((char16_t)0xFEFF == (char16_t)0xDB93, ""); // expected-error {{failed}} \
+                                 ^
+
+"Test_name.c", line 323: error: expected a string literal
+  static_assert(false, Static{}); // expected-error {{static assertion failed: hello}}
+                       ^
+
+"Test_name.c", line 329: error: expected a string literal
+  static_assert(false, Data{}); // expected-error {{called object type 'unsigned long' is not a function or function pointer}} \
+                       ^
+
+"Test_name.c", line 346: error: expected a string literal
+  static_assert(false, Callable{}); // expected-error {{static assertion failed: hello}}
+                       ^
+
+"Test_name.c", line 350: warning: integer conversion resulted in a change of sign
+    constexpr __SIZE_TYPE__ size() const { return -1; }
+                                                  ^
+
+"Test_name.c", line 355: warning: integer conversion resulted in a change of sign
+    constexpr long long size() const { return 18446744073709551615U; }
+                                              ^
+
+"Test_name.c", line 360: error: identifier "__int128" is undefined
+    constexpr __int128 size() const { return -1; }
+              ^
+
+"Test_name.c", line 365: error: "constexpr" is not valid here
+    constexpr unsigned __int128 size() const { return -1; }
+    ^
+
+"Test_name.c", line 365: error: expected a ";"
+    constexpr unsigned __int128 size() const { return -1; }
+                                ^
+
+"Test_name.c", line 370: warning: integer conversion resulted in truncation
+    constexpr __SIZE_TYPE__ size() const { return 18446744073709551615U; }
+                                                  ^
+
+"Test_name.c", line 374: error: expected a string literal
+  static_assert(true, A{}); // expected-error {{the message in this static assertion is not a constant expression}}
+                      ^
+
+"Test_name.c", line 376: error: expected a string literal
+  static_assert(true, B{}); // expected-error {{call to 'size()' evaluates to -1, which cannot be narrowed to type '__size_t' (aka 'unsigned long')}}
+                      ^
+
+"Test_name.c", line 379: error: expected a string literal
+  static_assert(true, C{}); // expected-error {{call to 'size()' evaluates to -1, which cannot be narrowed to type '__size_t' (aka 'unsigned long')}}
+                      ^
+
+"Test_name.c", line 382: error: expected a string literal
+  static_assert(true, D{}); // expected-error {{call to 'size()' evaluates to 340282366920938463463374607431768211455, which cannot be narrowed to type '__size_t' (aka 'unsigned long')}}
+                      ^
+
+"Test_name.c", line 385: error: expected a string literal
+  static_assert(true, E{}); // expected-error {{the message in this static assertion is not a constant expression}}
+                      ^
+
+"Test_name.c", line 390: error: expected a string literal
+    A{} // expected-error {{the message in a static assertion must be produced by a constant expression}}
+    ^
+
+"Test_name.c", line 396: error: expected a string literal
+    B{} // expected-error {{call to 'size()' evaluates to -1, which cannot be narrowed to type '__size_t' (aka 'unsigned long')}}
+    ^
+
+"Test_name.c", line 399: warning: parsing restarts here after previous syntax error
+  );
+  ^
+
+"Test_name.c", line 403: error: expected a string literal
+    C{} // expected-error {{call to 'size()' evaluates to -1, which cannot be narrowed to type '__size_t' (aka 'unsigned long')}}
+    ^
+
+"Test_name.c", line 406: warning: parsing restarts here after previous syntax error
+  );
+  ^
+
+"Test_name.c", line 410: error: expected a string literal
+    D{} // expected-error {{call to 'size()' evaluates to 340282366920938463463374607431768211455, which cannot be narrowed to type '__size_t' (aka 'unsigned long')}}
+    ^
+
+"Test_name.c", line 413: warning: parsing restarts here after previous syntax error
+  );
+  ^
+
+"Test_name.c", line 417: error: expected a string literal
+    E{} // expected-error {{the message in a static assertion must be produced by a constant expression}}
+    ^
+
+"Test_name.c", line 75: warning: variable "g_" was declared but never referenced
+  constexpr const char g_[] = "long string";
+                       ^
+
+63 errors detected in the compilation of "Test_name.c".

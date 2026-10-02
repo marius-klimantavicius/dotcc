@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c99 --embedded_c Test_name.c
+"Test_name.c", line 14: error: arrays cannot be declared with named-register storage class
+  register _EDG_REG_3 float x[3];
+  ^
+
+1 error detected in the compilation of "Test_name.c".

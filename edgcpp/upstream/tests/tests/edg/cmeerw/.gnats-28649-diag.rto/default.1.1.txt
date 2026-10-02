@@ -1,0 +1,58 @@
+fe_only -DTEST_NUMBER=1 --clang_version 220100 -w --c++20 Test_name.c
+"Test_name.c", line 10: error: too few arguments in function call
+    __builtin_elementwise_fshl(v16si, v16si);
+                                           ^
+
+"Test_name.c", line 11: error: type "float" is invalid as an argument for this builtin
+    __builtin_elementwise_fshl(v16f, v16f, v16f);
+                               ^
+
+"Test_name.c", line 12: error: too many arguments in function call
+    __builtin_elementwise_fshl(v16si, v16si, v16si, v16si);
+                                                    ^
+
+"Test_name.c", line 14: error: too few arguments in function call
+    __builtin_elementwise_fshr(v16si, v16si);
+                                           ^
+
+"Test_name.c", line 15: error: type "float" is invalid as an argument for this builtin
+    __builtin_elementwise_fshr(v16f, v16f, v16f);
+                               ^
+
+"Test_name.c", line 16: error: too many arguments in function call
+    __builtin_elementwise_fshr(v16si, v16si, v16si, v16si);
+                                                    ^
+
+"Test_name.c", line 18: error: too few arguments in function call
+    __builtin_elementwise_clzg();
+                               ^
+
+"Test_name.c", line 19: error: type "float" is invalid as an argument for this builtin
+    __builtin_elementwise_clzg(v16f);
+                               ^
+
+"Test_name.c", line 20: error: type "float" is invalid as an argument for this builtin
+    __builtin_elementwise_clzg(v16f, v16f);
+                               ^
+
+"Test_name.c", line 21: error: too many arguments in function call
+    __builtin_elementwise_clzg(v16si, v16si, v16si);
+                                             ^
+
+"Test_name.c", line 22: error: too few arguments in function call
+    __builtin_elementwise_ctzg();
+                               ^
+
+"Test_name.c", line 23: error: type "float" is invalid as an argument for this builtin
+    __builtin_elementwise_ctzg(v16f);
+                               ^
+
+"Test_name.c", line 24: error: type "float" is invalid as an argument for this builtin
+    __builtin_elementwise_ctzg(v16f, v16f);
+                               ^
+
+"Test_name.c", line 25: error: too many arguments in function call
+    __builtin_elementwise_ctzg(v16si, v16si, v16si);
+                                             ^
+
+14 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 7: error: the number of elements in a vector must be a power of two
+  int vs (-1) a;			/* { dg-error ".vector_size. attribute argument value '-1' is negative" } */
+      ^
+
+"Test_name.c", line 8: error: the number of elements in a vector must be a power of two
+  int vs (0) b;			/* { dg-error "zero vector size" } */
+      ^
+
+"Test_name.c", line 9: error: vector size must be a multiple of the element size
+  int vs (1) c;			/* { dg-error "multiple of component size" } */
+      ^
+
+"Test_name.c", line 10: error: vector size must be a multiple of the element size
+  int vs (sizeof (int) / 2) d;	/* { dg-error "multiple of component size" } */
+      ^
+
+4 errors detected in the compilation of "Test_name.c".

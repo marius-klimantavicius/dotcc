@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"/mds/clang/clang-22.1.0/build/lib/clang/22/include/__stddef_size_t.h", line 18: warning: declaration of "size_t" does not match the expected type "unsigned int"
+  typedef long unsigned int size_t;
+                            ^
+
+"SemaTemplate/fun-template-def.cpp", line 37: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+    i1(u1, t1);
+    ^
+
+"SemaTemplate/fun-template-def.cpp", line 49: error: no suitable constructor exists to convert from "unsigned int" to "dummy"
+    dummy d1 = sizeof(t1);
+               ^
+
+"SemaTemplate/fun-template-def.cpp", line 50: error: no suitable constructor exists to convert from "unsigned int" to "dummy"
+    dummy d2 = __builtin_offsetof(T, foo);
+               ^
+
+"SemaTemplate/fun-template-def.cpp", line 51: error: no suitable constructor exists to convert from "unsigned int" to "dummy"
+    dummy d3 = __alignof(u1);
+               ^
+
+"SemaTemplate/fun-template-def.cpp", line 32: warning: variable "i2" was declared but never referenced
+    int i2 = u1;
+        ^
+
+4 errors detected in the compilation of "Test_name.c".

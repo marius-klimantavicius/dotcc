@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 11: warning: unrecognized #pragma
+    #pragma omp atomic	// { dg-error "invalid" }
+            ^
+
+"Test_name.c", line 17: warning: unrecognized #pragma
+    #pragma omp atomic	// { dg-error "invalid" }
+            ^
+
+"Test_name.c", line 24: warning: unrecognized #pragma
+    #pragma omp atomic	// { dg-error "invalid" }
+            ^
+
+"Test_name.c", line 31: warning: unrecognized #pragma
+    #pragma omp atomic
+            ^
+
+"Test_name.c", line 40: warning: unrecognized #pragma
+    #pragma omp atomic	// { dg-error "invalid" "" { xfail *-*-* } }
+            ^
+

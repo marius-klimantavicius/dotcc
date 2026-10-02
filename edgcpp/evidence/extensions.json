@@ -1,0 +1,46 @@
+[
+  {
+    "probe": "cpp26-reflection",
+    "exit": 0
+  },
+  {
+    "probe": "gnu",
+    "exit": 0
+  },
+  {
+    "probe": "clang",
+    "exit": 0
+  },
+  {
+    "probe": "microsoft",
+    "exit": 0
+  },
+  {
+    "probe": "sun",
+    "exit": 0
+  },
+  {
+    "probe": "upc",
+    "exit": 0
+  },
+  {
+    "probe": "embedded-c",
+    "exit": 0
+  },
+  {
+    "probe": "vla",
+    "exit": 0
+  },
+  {
+    "probe": "cppcli",
+    "exit": 4
+  },
+  {
+    "probe": "cppcx",
+    "exit": 4
+  },
+  {
+    "probe": "coroutine",
+    "exit": 0
+  }
+]

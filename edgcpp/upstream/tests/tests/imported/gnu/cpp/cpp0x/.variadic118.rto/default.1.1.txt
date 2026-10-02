@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 11: error: no instance of function template "f" matches the argument list
+            argument types are: (B, int)
+    f<int>(B(), 1);		// { dg-error "" }
+    ^
+"Test_name.c", line 6: note: function template "f" does not match because argument #1 does not match parameter
+  void f(T... ts);
+       ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=2 --c++17 -A Test_name.c
+"Test_name.c", line 6: error: expected a "{"
+      template < typename T > Struct1( T a ) : m_int(a);
+                                                       ^
+
+"Test_name.c", line 6: error: expected a "}"
+      template < typename T > Struct1( T a ) : m_int(a);
+                                                       ^
+
+2 errors detected in the compilation of "Test_name.c".

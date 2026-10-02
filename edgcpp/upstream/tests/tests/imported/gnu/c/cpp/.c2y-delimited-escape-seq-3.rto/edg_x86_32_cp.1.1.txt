@@ -1,0 +1,74 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 10: error: a delimited escape sequence must have at least one character
+  const char32_t *a = U"\u{}";				/* { dg-error "empty delimited escape sequence" } */
+                           ^
+
+"Test_name.c", line 11: error: unterminated delimited escape sequence
+  const char32_t *b = U"\u{12" "34}";			/* { dg-error "'\\\\u\\{' not terminated with '\\}' after" } */
+                             ^
+
+"Test_name.c", line 12: warning: a universal character name must designate a valid code point
+  const char32_t *c = U"\u{0000ffffffff}";		/* { dg-error "is not a valid universal character" } */
+                        ^
+
+"Test_name.c", line 15: error: unterminated delimited escape sequence
+  const char32_t *f = U"\u{123ghij}";			/* { dg-error "'\\\\u\\{' not terminated with '\\}' after" } */
+                              ^
+
+"Test_name.c", line 16: error: unterminated delimited escape sequence
+  const char32_t *g = U"\u{123.}";			/* { dg-error "'\\\\u\\{' not terminated with '\\}' after" } */
+                              ^
+
+"Test_name.c", line 17: error: unterminated delimited escape sequence
+  const char32_t *h = U"\u{.}";				/* { dg-error "'\\\\u\\{' not terminated with '\\}' after" } */
+                           ^
+
+"Test_name.c", line 18: error: a delimited escape sequence must have at least one character
+  const char32_t *i = U"\x{}";				/* { dg-error "empty delimited escape sequence" } */
+                           ^
+
+"Test_name.c", line 19: error: unterminated delimited escape sequence
+  const char32_t *j = U"\x{12" "34}";			/* { dg-error "'\\\\x\\{' not terminated with '\\}' after" } */
+                             ^
+
+"Test_name.c", line 21: warning: character value is out of range
+  const char32_t *l = U"\x{010000edcb}";			/* { dg-error "hex escape sequence out of range" } */
+                        ^
+
+"Test_name.c", line 22: warning: character value is out of range
+  const char32_t *m = U"\x{02000000000000000000edcb}";	/* { dg-error "hex escape sequence out of range" } */
+                        ^
+
+"Test_name.c", line 23: error: unterminated delimited escape sequence
+  const char32_t *n = U"\x{123ghij}";			/* { dg-error "'\\\\x\\{' not terminated with '\\}' after" } */
+                              ^
+
+"Test_name.c", line 24: error: unterminated delimited escape sequence
+  const char32_t *o = U"\x{123.}";			/* { dg-error "'\\\\x\\{' not terminated with '\\}' after" } */
+                              ^
+
+"Test_name.c", line 25: error: a delimited escape sequence must have at least one character
+  const char32_t *p = U"\o{}";				/* { dg-error "empty delimited escape sequence" } */
+                           ^
+
+"Test_name.c", line 26: error: unterminated delimited escape sequence
+  const char32_t *q = U"\o{12" "34}";			/* { dg-error "'\\\\o\\{' not terminated with '\\}' after" } */
+                             ^
+
+"Test_name.c", line 28: warning: character value is out of range
+  const char32_t *s = U"\o{040000166713}";		/* { dg-error "octal escape sequence out of range" } */
+                        ^
+
+"Test_name.c", line 29: warning: character value is out of range
+  const char32_t *t = U"\o{02000000000000000000000166713}";/* { dg-error "octal escape sequence out of range" } */
+                        ^
+
+"Test_name.c", line 30: error: unterminated delimited escape sequence
+  const char32_t *u = U"\o{1238}";			/* { dg-error "'\\\\o\\{' not terminated with '\\}' after" } */
+                              ^
+
+"Test_name.c", line 31: error: unterminated delimited escape sequence
+  const char32_t *v = U"\o{.}";				/* { dg-error "'\\\\o\\{' not terminated with '\\}' after" } */
+                           ^
+
+13 errors detected in the compilation of "Test_name.c".

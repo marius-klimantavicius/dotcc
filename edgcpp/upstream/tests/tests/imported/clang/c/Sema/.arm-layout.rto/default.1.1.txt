@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 13: error: the size of an array must be greater than zero
+  check(s0_size, sizeof(struct s0) == 12);
+  ^
+
+"Test_name.c", line 20: error: the size of an array must be greater than zero
+  check(s1_size, sizeof(struct s1) == 12);
+  ^
+
+"Test_name.c", line 33: error: the size of an array must be greater than zero
+  check(s2_size, sizeof(struct s2) == 6);
+  ^
+
+"Test_name.c", line 35: error: the size of an array must be greater than zero
+  check(s2_offset_1, __builtin_offsetof(struct s2, field2) == 5);
+  ^
+
+"Test_name.c", line 54: error: the size of an array must be greater than zero
+  check(s4_size, sizeof(struct s4) == 1);
+  ^
+
+"Test_name.c", line 55: error: the size of an array must be greater than zero
+  check(s4_align, __alignof(struct s4) == 1);
+  ^
+
+6 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,129 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 6: warning: unknown attribute "os_returns_retained"
+    __attribute__((os_returns_retained)) S* method_returns_retained() {
+                   ^
+
+"Test_name.c", line 10: warning: unknown attribute "os_consumes_this"
+    __attribute__((os_consumes_this)) void method_consumes_this();
+                   ^
+
+"Test_name.c", line 12: warning: unknown attribute "os_consumes_this"
+    __attribute__((os_consumes_this)) static void rejected_on_static(); // expected-warning{{'os_consumes_this' attribute only applies to non-static member functions}}
+                   ^
+
+"Test_name.c", line 14: warning: unknown attribute "os_returns_retained"
+  __attribute__((os_returns_retained)) S *ret_retained() {
+                 ^
+
+"Test_name.c", line 18: warning: unknown attribute "os_returns_retained"
+  __attribute__((os_returns_retained)) S ret_retained_value() { // expected-warning{{'os_returns_retained' attribute only applies to functions that return a pointer}}
+                 ^
+
+"Test_name.c", line 22: warning: unknown attribute "os_returns_not_retained"
+  __attribute__((os_returns_not_retained)) S *ret_not_retained() {
+                 ^
+
+"Test_name.c", line 26: warning: unknown attribute "os_returns_not_retained"
+  __attribute__((os_returns_not_retained)) S ret_not_retained_value() { // expected-warning{{'os_returns_not_retained' attribute only applies to functions that return a pointer}}
+                 ^
+
+"Test_name.c", line 30: warning: unknown attribute "os_consumed"
+  void accept_consumed_arg(__attribute__((os_consumed)) S *arg) {}
+                                          ^
+
+"Test_name.c", line 32: warning: unknown attribute "os_consumed"
+  void accept_consumed_arg_by_value(__attribute__((os_consumed)) S arg) {} // expected-warning{{os_consumed attribute only applies to pointer parameters}}
+                                                   ^
+
+"Test_name.c", line 34: warning: unknown attribute "os_consumed"
+  void accept_consumed_arg_no_extra_arg(__attribute__((os_consumed(10))) S *arg) {} // expected-error{{'os_consumed' attribute takes no arguments}}
+                                                       ^
+
+"Test_name.c", line 36: warning: unknown attribute "os_consumed"
+  struct __attribute__((os_consumed)) NoAttrOnStruct {}; // expected-warning{{'os_consumed' attribute only applies to parameters}}
+                        ^
+
+"Test_name.c", line 38: warning: unknown attribute "os_returns_retained"
+  __attribute__((os_returns_retained(10))) S* returns_retained_no_extra_arg() { // expected-error{{'os_returns_retained' attribute takes no arguments}}
+                 ^
+
+"Test_name.c", line 42: warning: unknown attribute "os_returns_retained"
+  struct __attribute__((os_returns_retained)) NoRetainAttrOnStruct {}; // expected-warning{{'os_returns_retained' attribute only applies to functions, Objective-C methods, Objective-C properties, and parameters}}
+                        ^
+
+"Test_name.c", line 44: warning: unknown attribute "os_returns_not_retained"
+  __attribute__((os_returns_not_retained(10))) S* os_returns_no_retained_no_extra_args( S *arg) { // expected-error{{'os_returns_not_retained' attribute takes no arguments}}
+                 ^
+
+"Test_name.c", line 48: warning: unknown attribute "os_returns_not_retained"
+  struct __attribute__((os_returns_not_retained)) NoNotRetainedAttrOnStruct {}; // expected-warning{{'os_returns_not_retained' attribute only applies to functions, Objective-C methods, Objective-C properties, and parameters}}
+                        ^
+
+"Test_name.c", line 50: warning: unknown attribute "os_consumes_this"
+  __attribute__((os_consumes_this)) void no_consumes_this_on_function() {} // expected-warning{{'os_consumes_this' attribute only applies to non-static member functions}}
+                 ^
+
+"Test_name.c", line 52: warning: unknown attribute "os_returns_retained"
+  void write_into_out_parameter(__attribute__((os_returns_retained)) S** out) {}
+                                               ^
+
+"Test_name.c", line 54: warning: unknown attribute "os_returns_retained_on_non_zero"
+  bool write_into_out_parameter_on_nonzero(__attribute__((os_returns_retained_on_non_zero)) S** out) {}
+                                                          ^
+
+"Test_name.c", line 54: warning: missing return statement at end of non-void function "write_into_out_parameter_on_nonzero"
+  bool write_into_out_parameter_on_nonzero(__attribute__((os_returns_retained_on_non_zero)) S** out) {}
+                                                                                                      ^
+
+"Test_name.c", line 56: warning: unknown attribute "os_returns_retained_on_non_zero"
+  bool write_into_out_parameter_on_nonzero_invalid(__attribute__((os_returns_retained_on_non_zero)) S* out) {} // expected-warning{{'os_returns_retained_on_non_zero' attribute only applies to pointer/reference-to-OSObject-pointer parameters}}
+                                                                  ^
+
+"Test_name.c", line 56: warning: missing return statement at end of non-void function "write_into_out_parameter_on_nonzero_invalid"
+  bool write_into_out_parameter_on_nonzero_invalid(__attribute__((os_returns_retained_on_non_zero)) S* out) {} // expected-warning{{'os_returns_retained_on_non_zero' attribute only applies to pointer/reference-to-OSObject-pointer parameters}}
+                                                                                                             ^
+
+"Test_name.c", line 58: warning: unknown attribute "os_returns_retained_on_zero"
+  bool write_into_out_parameter_on_zero(__attribute__((os_returns_retained_on_zero)) S** out) {}
+                                                       ^
+
+"Test_name.c", line 58: warning: missing return statement at end of non-void function "write_into_out_parameter_on_zero"
+  bool write_into_out_parameter_on_zero(__attribute__((os_returns_retained_on_zero)) S** out) {}
+                                                                                               ^
+
+"Test_name.c", line 60: warning: unknown attribute "os_returns_retained_on_zero"
+  bool write_into_out_parameter_on_zero_invalid(__attribute__((os_returns_retained_on_zero)) S* out) {} // expected-warning{{'os_returns_retained_on_zero' attribute only applies to pointer/reference-to-OSObject-pointer parameters}}
+                                                               ^
+
+"Test_name.c", line 60: warning: missing return statement at end of non-void function "write_into_out_parameter_on_zero_invalid"
+  bool write_into_out_parameter_on_zero_invalid(__attribute__((os_returns_retained_on_zero)) S* out) {} // expected-warning{{'os_returns_retained_on_zero' attribute only applies to pointer/reference-to-OSObject-pointer parameters}}
+                                                                                                      ^
+
+"Test_name.c", line 62: warning: unknown attribute "os_returns_retained"
+  void write_into_out_parameter_ref(__attribute__((os_returns_retained)) S*& out) {}
+                                                   ^
+
+"Test_name.c", line 66: warning: unknown attribute "os_returns_retained"
+  void write_into_out_parameter_typedef(__attribute__((os_returns_retained)) SPtr* out) {}
+                                                       ^
+
+"Test_name.c", line 68: warning: unknown attribute "os_returns_retained"
+  void write_into_out_parameter_invalid(__attribute__((os_returns_retained)) S* out) {} // expected-warning{{'os_returns_retained' attribute only applies to pointer/reference-to-OSObject-pointer parameters}}
+                                                       ^
+
+"Test_name.c", line 70: warning: unknown attribute "os_returns_not_retained"
+  void write_into_out_parameter_not_retained(__attribute__((os_returns_not_retained)) S **out) {}
+                                                            ^
+
+"Test_name.c", line 72: warning: unknown attribute "os_returns_not_retained"
+  void write_into_out_parameter_not_retained(__attribute__((os_returns_not_retained)) S volatile * const * const out) {}
+                                                            ^
+
+"Test_name.c", line 74: warning: unknown attribute "os_returns_not_retained"
+  void write_into_not_retainedout_parameter_invalid(__attribute__((os_returns_not_retained)) S* out) {} // expected-warning{{'os_returns_not_retained' attribute only applies to pointer/reference-to-OSObject-pointer parameters}}
+                                                                   ^
+
+"Test_name.c", line 76: warning: unknown attribute "os_returns_not_retained"
+  void write_into_not_retainedout_parameter_too_many_pointers(__attribute__((os_returns_not_retained)) S*** out) {} // expected-warning{{'os_returns_not_retained' attribute only applies to pointer/reference-to-OSObject-pointer parameters}}
+                                                                             ^
+

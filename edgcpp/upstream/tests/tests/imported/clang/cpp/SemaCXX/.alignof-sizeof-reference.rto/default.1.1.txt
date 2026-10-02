@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 6: error: incomplete type "s0" is not allowed
+  char ar[sizeof(s0&)]; // expected-error {{invalid application of 'sizeof' to an incomplete type}}
+                 ^
+
+"Test_name.c", line 9: warning: the standard "alignof" operator does not accept an expression argument (use a type instead)
+    static_assert(alignof(r) == 1, "bad alignment"); // expected-warning {{GNU extension}}
+                         ^
+
+"Test_name.c", line 18: error: cannot determine which instance of overloaded function "f" is intended
+    sizeof(&f); // expected-error{{reference to overloaded function could not be resolved; did you mean to call it with no arguments?}} \
+          ^
+
+"Test_name.c", line 25: warning: the standard "alignof" operator does not accept an expression argument (use a type instead)
+    (void)alignof(f_template<int>); // expected-error{{reference to overloaded function could not be resolved; did you mean to call it?}} expected-warning {{GNU extension}}
+                 ^
+
+"Test_name.c", line 25: error: cannot determine which instance of overloaded function "f_template" is intended
+    (void)alignof(f_template<int>); // expected-error{{reference to overloaded function could not be resolved; did you mean to call it?}} expected-warning {{GNU extension}}
+                 ^
+
+3 errors detected in the compilation of "Test_name.c".

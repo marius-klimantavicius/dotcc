@@ -1,0 +1,238 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 548: error: an rvalue reference cannot be bound to an lvalue
+    l0001(l); // { dg-error "" }
+          ^
+
+"Test_name.c", line 549: error: an rvalue reference cannot be bound to an lvalue
+    l0010(l); // { dg-error "" }
+          ^
+
+"Test_name.c", line 550: error: no instance of overloaded function "l0011" matches the argument list
+            argument types are: (S)
+    l0011(l); // { dg-error "" }
+    ^
+"Test_name.c", line 32: note: function "l0011(const S &&)" does not match because argument #1 does not match parameter
+  void l0011(const S&&);
+       ^
+"Test_name.c", line 31: note: function "l0011(S &&)" does not match because argument #1 does not match parameter
+  void l0011(S&&) {} // { dg-message "" }
+       ^
+
+"Test_name.c", line 563: error: an rvalue reference cannot be bound to an lvalue
+    cl0001(cl); // { dg-error "lvalue" }
+           ^
+
+"Test_name.c", line 564: error: no instance of overloaded function "cl0011" matches the argument list
+            argument types are: (const S)
+    cl0011(cl); // { dg-error "lvalue" }
+    ^
+"Test_name.c", line 77: note: function "cl0011(const S &&)" does not match because argument #1 does not match parameter
+  void cl0011(const S&&) {} // { dg-message "" }
+       ^
+"Test_name.c", line 76: note: function "cl0011(S &&)" does not match because argument #1 does not match parameter
+  void cl0011(S&&);
+       ^
+
+"Test_name.c", line 569: error: no instance of overloaded function "cl1001" matches the argument list
+            argument types are: (const S)
+    cl1001(cl); // { dg-error "" }
+    ^
+"Test_name.c", line 92: note: function "cl1001(const S &&)" does not match because argument #1 does not match parameter
+  void cl1001(const S&&) {} // { dg-message "" }
+       ^
+"Test_name.c", line 91: note: function "cl1001(S &)" does not match because argument #1 does not match parameter
+  void cl1001(S&);
+       ^
+
+"Test_name.c", line 570: error: no instance of overloaded function "cl1011" matches the argument list
+            argument types are: (const S)
+    cl1011(cl); // { dg-error "" }
+    ^
+"Test_name.c", line 96: note: function "cl1011(const S &&)" does not match because argument #1 does not match parameter
+  void cl1011(const S&&) {} // { dg-message "" }
+       ^
+"Test_name.c", line 95: note: function "cl1011(S &&)" does not match because argument #1 does not match parameter
+  void cl1011(S&&);
+       ^
+"Test_name.c", line 94: note: function "cl1011(S &)" does not match because argument #1 does not match parameter
+  void cl1011(S&);
+       ^
+
+"Test_name.c", line 601: error: an rvalue reference cannot be bound to an lvalue
+    nl0001(nl); // { dg-error "lvalue" }
+           ^
+
+"Test_name.c", line 602: error: an rvalue reference cannot be bound to an lvalue
+    nl0010(nl); // { dg-error "lvalue" }
+           ^
+
+"Test_name.c", line 603: error: no instance of overloaded function "nl0011" matches the argument list
+            argument types are: (S)
+    nl0011(nl); // { dg-error "lvalue" }
+    ^
+"Test_name.c", line 204: note: function "nl0011(const S &&)" does not match because argument #1 does not match parameter
+  void nl0011(const S&&);
+       ^
+"Test_name.c", line 203: note: function "nl0011(S &&)" does not match because argument #1 does not match parameter
+  void nl0011(S&&) {} // { dg-message "" }
+       ^
+
+"Test_name.c", line 616: error: an rvalue reference cannot be bound to an lvalue
+    ncl0001(ncl); // { dg-error "lvalue" }
+            ^
+
+"Test_name.c", line 617: error: no instance of overloaded function "ncl0011" matches the argument list
+            argument types are: (const S)
+    ncl0011(ncl); // { dg-error "lvalue" }
+    ^
+"Test_name.c", line 249: note: function "ncl0011(const S &&)" does not match because argument #1 does not match parameter
+  void ncl0011(const S&&) {} // { dg-message "" }
+       ^
+"Test_name.c", line 248: note: function "ncl0011(S &&)" does not match because argument #1 does not match parameter
+  void ncl0011(S&&);
+       ^
+
+"Test_name.c", line 622: error: no instance of overloaded function "ncl1001" matches the argument list
+            argument types are: (const S)
+    ncl1001(ncl); // { dg-error "" }
+    ^
+"Test_name.c", line 264: note: function "ncl1001(const S &&)" does not match because argument #1 does not match parameter
+  void ncl1001(const S&&) {} // { dg-message "" }
+       ^
+"Test_name.c", line 263: note: function "ncl1001(S &)" does not match because argument #1 does not match parameter
+  void ncl1001(S&);
+       ^
+
+"Test_name.c", line 623: error: no instance of overloaded function "ncl1011" matches the argument list
+            argument types are: (const S)
+    ncl1011(ncl); // { dg-error "" }
+    ^
+"Test_name.c", line 268: note: function "ncl1011(const S &&)" does not match because argument #1 does not match parameter
+  void ncl1011(const S&&) {} // { dg-message "" }
+       ^
+"Test_name.c", line 267: note: function "ncl1011(S &&)" does not match because argument #1 does not match parameter
+  void ncl1011(S&&);
+       ^
+"Test_name.c", line 266: note: function "ncl1011(S &)" does not match because argument #1 does not match parameter
+  void ncl1011(S&);
+       ^
+
+"Test_name.c", line 628: error: an rvalue reference cannot be bound to an lvalue
+    nr0001(nr); // { dg-error "lvalue" }
+           ^
+
+"Test_name.c", line 629: error: an rvalue reference cannot be bound to an lvalue
+    nr0010(nr); // { dg-error "lvalue" }
+           ^
+
+"Test_name.c", line 630: error: no instance of overloaded function "nr0011" matches the argument list
+            argument types are: (S)
+    nr0011(nr); // { dg-error "lvalue" }
+    ^
+"Test_name.c", line 291: note: function "nr0011(const S &&)" does not match because argument #1 does not match parameter
+  void nr0011(const S&&);
+       ^
+"Test_name.c", line 290: note: function "nr0011(S &&)" does not match because argument #1 does not match parameter
+  void nr0011(S&&) {} // { dg-message "" }
+       ^
+
+"Test_name.c", line 643: error: an rvalue reference cannot be bound to an lvalue
+    ncr0001(ncr); // { dg-error "lvalue" }
+            ^
+
+"Test_name.c", line 644: error: no instance of overloaded function "ncr0011" matches the argument list
+            argument types are: (const S)
+    ncr0011(ncr); // { dg-error "lvalue" }
+    ^
+"Test_name.c", line 336: note: function "ncr0011(const S &&)" does not match because argument #1 does not match parameter
+  void ncr0011(const S&&) {} // { dg-message "" }
+       ^
+"Test_name.c", line 335: note: function "ncr0011(S &&)" does not match because argument #1 does not match parameter
+  void ncr0011(S&&);
+       ^
+
+"Test_name.c", line 649: error: no instance of overloaded function "ncr1001" matches the argument list
+            argument types are: (const S)
+    ncr1001(ncr); // { dg-error "" }
+    ^
+"Test_name.c", line 351: note: function "ncr1001(const S &&)" does not match because argument #1 does not match parameter
+  void ncr1001(const S&&) {} // { dg-message "" }
+       ^
+"Test_name.c", line 350: note: function "ncr1001(S &)" does not match because argument #1 does not match parameter
+  void ncr1001(S&);
+       ^
+
+"Test_name.c", line 650: error: no instance of overloaded function "ncr1011" matches the argument list
+            argument types are: (const S)
+    ncr1011(ncr); // { dg-error "" }
+    ^
+"Test_name.c", line 355: note: function "ncr1011(const S &&)" does not match because argument #1 does not match parameter
+  void ncr1011(const S&&) {} // { dg-message "" }
+       ^
+"Test_name.c", line 354: note: function "ncr1011(S &&)" does not match because argument #1 does not match parameter
+  void ncr1011(S&&);
+       ^
+"Test_name.c", line 353: note: function "ncr1011(S &)" does not match because argument #1 does not match parameter
+  void ncr1011(S&);
+       ^
+
+"Test_name.c", line 655: error: an rvalue reference cannot be bound to an lvalue
+    ul0001(ul()); // { dg-error "lvalue" }
+           ^
+
+"Test_name.c", line 656: error: an rvalue reference cannot be bound to an lvalue
+    ul0010(ul()); // { dg-error "lvalue" }
+           ^
+
+"Test_name.c", line 657: error: no instance of overloaded function "ul0011" matches the argument list
+            argument types are: (S)
+    ul0011(ul()); // { dg-error "lvalue" }
+    ^
+"Test_name.c", line 378: note: function "ul0011(const S &&)" does not match because argument #1 does not match parameter
+  void ul0011(const S&&);
+       ^
+"Test_name.c", line 377: note: function "ul0011(S &&)" does not match because argument #1 does not match parameter
+  void ul0011(S&&) {} // { dg-message "" }
+       ^
+
+"Test_name.c", line 670: error: an rvalue reference cannot be bound to an lvalue
+    ucl0001(ucl()); // { dg-error "lvalue" }
+            ^
+
+"Test_name.c", line 671: error: no instance of overloaded function "ucl0011" matches the argument list
+            argument types are: (const S)
+    ucl0011(ucl()); // { dg-error "lvalue" }
+    ^
+"Test_name.c", line 423: note: function "ucl0011(const S &&)" does not match because argument #1 does not match parameter
+  void ucl0011(const S&&) {} // { dg-message "" }
+       ^
+"Test_name.c", line 422: note: function "ucl0011(S &&)" does not match because argument #1 does not match parameter
+  void ucl0011(S&&);
+       ^
+
+"Test_name.c", line 676: error: no instance of overloaded function "ucl1001" matches the argument list
+            argument types are: (const S)
+    ucl1001(ucl()); // { dg-error "" }
+    ^
+"Test_name.c", line 438: note: function "ucl1001(const S &&)" does not match because argument #1 does not match parameter
+  void ucl1001(const S&&) {} // { dg-message "" }
+       ^
+"Test_name.c", line 437: note: function "ucl1001(S &)" does not match because argument #1 does not match parameter
+  void ucl1001(S&);
+       ^
+
+"Test_name.c", line 677: error: no instance of overloaded function "ucl1011" matches the argument list
+            argument types are: (const S)
+    ucl1011(ucl()); // { dg-error "" }
+    ^
+"Test_name.c", line 442: note: function "ucl1011(const S &&)" does not match because argument #1 does not match parameter
+  void ucl1011(const S&&) {} // { dg-message "" }
+       ^
+"Test_name.c", line 441: note: function "ucl1011(S &&)" does not match because argument #1 does not match parameter
+  void ucl1011(S&&);
+       ^
+"Test_name.c", line 440: note: function "ucl1011(S &)" does not match because argument #1 does not match parameter
+  void ucl1011(S&);
+       ^
+
+28 errors detected in the compilation of "Test_name.c".

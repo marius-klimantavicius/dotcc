@@ -1,0 +1,105 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 20: error: a class-qualified name is not allowed
+  using Bob::Kevin::Stuart;
+        ^
+
+"Test_name.c", line 45: error: invalid base class
+    using button::up;
+          ^
+
+"Test_name.c", line 67: error: a class-qualified name is required
+    using One::e2;
+          ^
+
+"Test_name.c", line 83: error: a class-qualified name is required
+    using Three::e3; // expected-error{{using declaration in class}}
+          ^
+
+"Test_name.c", line 89: error: a class-qualified name is not allowed
+  using S::e5;
+        ^
+
+"Test_name.c", line 90: error: a class-qualified name is not allowed
+  using S::E4::e4;
+        ^
+
+"Test_name.c", line 116: error: a class-qualified name is not allowed
+  using TPL<int>::E1::e1;
+        ^
+
+"Test_name.c", line 143: error: invalid base class
+    using E4::e4;
+          ^
+
+"Test_name.c", line 131: error: invalid base class
+    using TPL<T>::E1::e1;
+          ^
+          detected during instantiation of class "Four::DER<T> [with T=float]" at line 153
+
+"Test_name.c", line 137: error: enum "Four::TPL<T>::E3 [with T=float]" (declared at line 113) is inaccessible
+    using TPL<T>::E3::e3; // expected-error{{is a protected member}}
+                  ^
+          detected during instantiation of class "Four::DER<T> [with T=float]" at line 153
+
+"Test_name.c", line 137: error: invalid base class
+    using TPL<T>::E3::e3; // expected-error{{is a protected member}}
+          ^
+          detected during instantiation of class "Four::DER<T> [with T=float]" at line 153
+
+"Test_name.c", line 131: error: invalid base class
+    using TPL<T>::E1::e1;
+          ^
+          detected during instantiation of class "Four::DER<T> [with T=int]" at line 154
+
+"Test_name.c", line 137: error: invalid base class
+    using TPL<T>::E3::e3; // expected-error{{is a protected member}}
+          ^
+          detected during instantiation of class "Four::DER<T> [with T=int]" at line 154
+
+"Test_name.c", line 171: error: enum "Five::Quux<I, K>::Q [with I=1U, K=2U]" has no member "nothing"
+  using Quux<1, 2>::Q::nothing; // expected-error{{implicit instantiation of undefined}}
+                       ^
+
+"Test_name.c", line 172: error: a class-qualified name is not allowed
+  using Quux<1, 2>::R::i;
+        ^
+
+"Test_name.c", line 190: error: enum "Six::Quux<I, K>::Q [with I=2U, K=2U]" has no member "nothing"
+    using Quux<I, I>::Q::nothing; // expected-error{{implicit instantiation of undefined}}
+                         ^
+          detected during instantiation of class "Six::Fido<I> [with I=2U]" at line 193
+
+"Test_name.c", line 205: error: invalid base class
+    using Quux<I, I>::R::i;
+          ^
+          detected during instantiation of class "Seven::Toto<I> [with I=2U]" at line 214
+
+"Test_name.c", line 227: error: a class-qualified name is not allowed
+  using Kevin::B::a;
+        ^
+
+"Test_name.c", line 233: error: a class-qualified name is not allowed
+  using Kevin::B::a;
+        ^
+
+"Test_name.c", line 241: error: invalid base class
+    using Kevin::B::a; // expected-note{{previous using declaration}}
+          ^
+
+"Test_name.c", line 246: error: invalid base class
+    using Kevin::B::a; // expected-error{{redeclaration of using declaration}}
+          ^
+
+"Test_name.c", line 254: error: a class-qualified name is not allowed
+  using Bob::a;
+        ^
+
+"Test_name.c", line 260: error: namespace "Nine::Q" has no member "a"
+  using Q::a;
+           ^
+
+"Test_name.c", line 261: error: a class-qualified name is not allowed
+  using Q::Bob::a;
+        ^
+
+24 errors detected in the compilation of "Test_name.c".

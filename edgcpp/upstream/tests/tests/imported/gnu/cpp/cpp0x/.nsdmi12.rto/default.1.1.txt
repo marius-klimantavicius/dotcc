@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp0x/nsdmi12.C", line 10: warning: creation of an std::initializer_list object in a field initializer is unlikely to work as expected because the underlying array will be destroyed at the end of the full expression
+      std::initializer_list< dt > f = { {} };
+                                      ^
+

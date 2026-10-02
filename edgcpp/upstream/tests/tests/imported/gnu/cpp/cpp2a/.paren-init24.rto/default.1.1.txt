@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"./cpp2a/paren-init24.C", line 11: error: static assertion failed
+    static_assert(__is_constructible(T, int));
+    ^
+
+"./cpp2a/paren-init24.C", line 13: error: static assertion failed
+    static_assert(std::is_constructible_v<T, int>);
+    ^
+
+"./cpp2a/paren-init24.C", line 14: error: static assertion failed
+    static_assert(std::is_nothrow_constructible_v<T, int>);
+    ^
+
+"./cpp2a/paren-init24.C", line 20: error: static assertion failed
+    static_assert(__is_constructible(T2, int));
+    ^
+
+"./cpp2a/paren-init24.C", line 21: error: static assertion failed
+    static_assert(__is_constructible(T2, int, int));
+    ^
+
+"./cpp2a/paren-init24.C", line 22: error: static assertion failed
+    static_assert(std::is_constructible_v<T2, int, int>);
+    ^
+
+"./cpp2a/paren-init24.C", line 23: error: static assertion failed
+    static_assert(std::is_nothrow_constructible_v<T2, int, int>);
+    ^
+
+"./cpp2a/paren-init24.C", line 9: warning: variable "t" was declared but never referenced
+    T t(1);
+      ^
+
+"./cpp2a/paren-init24.C", line 17: warning: variable "t2" was declared but never referenced
+    T2 t2(1);
+       ^
+
+"./cpp2a/paren-init24.C", line 18: warning: variable "t3" was declared but never referenced
+    T2 t3(1, 2);
+       ^
+
+7 errors detected in the compilation of "Test_name.c".

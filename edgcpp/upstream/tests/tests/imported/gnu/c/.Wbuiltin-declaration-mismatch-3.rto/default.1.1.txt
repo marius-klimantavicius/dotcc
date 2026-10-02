@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c17 --strict_gnu Test_name.c
+"Test_name.c", line 84: warning: variable "pmemset" was declared but never referenced
+    memset_t *pmemset = memset;
+              ^
+
+"Test_name.c", line 88: warning: variable "pmemcpy" was declared but never referenced
+    memcpy_t *pmemcpy = memset;           /* { dg-warning "\\\[-Wincompatible-pointer-types]" } */
+              ^
+
+"Test_name.c", line 95: warning: variable "pmemset" was set but never used
+    memset_t *pmemset;
+              ^
+
+"Test_name.c", line 98: warning: variable "pmemcpy" was set but never used
+    memcpy_t *pmemcpy;
+              ^
+

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 -A --c++20 -tused -e 200 --no_wrap Test_name.c
+"Test_name.c", line 15: error: nontype "Iter::value_type" is not a type name
+        return X<Iter::value_type>(b, e); // Must specify what we want
+                 ^
+
+1 error detected in the compilation of "Test_name.c".

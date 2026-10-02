@@ -1,0 +1,4 @@
+./a.out
+Calling A::A(...)
+Calling A::A(...)
+5 20 5 20

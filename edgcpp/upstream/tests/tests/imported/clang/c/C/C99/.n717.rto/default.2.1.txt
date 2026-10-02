@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=2 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c99 Test_name.c
+"Test_name.c", line 29: warning: a universal character name must designate a valid code point
+  M(\U12345678)  // Okay
+    ^
+
+"Test_name.c", line 30: warning: a universal character name must designate a valid code point
+  M(\U123456789) // Okay-ish, two tokens (valid-per-spec-but-actually-invalid UCN followed by 9)
+    ^
+
+"Test_name.c", line 40: warning: a universal character name cannot designate a character in the basic character set
+  M(\u0024) // expected-error {{character '$' cannot be specified by a universal character name}}
+    ^
+
+"Test_name.c", line 41: warning: a universal character name cannot designate a character in the basic character set
+  M(\U00000024) // expected-error {{character '$' cannot be specified by a universal character name}}
+    ^
+
+"Test_name.c", line 57: warning: a universal character name must designate a valid code point
+  const char *c1 = "\U00110000"; // expected-error {{invalid universal character}}
+                    ^
+
+"Test_name.c", line 76: warning: a universal character name cannot designate a surrogate code point
+  M(\uD800) // expected-error {{invalid universal character}}
+    ^
+
+"Test_name.c", line 77: warning: a universal character name cannot designate a surrogate code point
+  const char *c10  = "\U0000DFFF"; // expected-error {{invalid universal character}}
+                      ^
+

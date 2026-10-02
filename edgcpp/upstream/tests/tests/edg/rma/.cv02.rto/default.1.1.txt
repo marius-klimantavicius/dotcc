@@ -1,0 +1,69 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 4: warning: type qualifier on return type is meaningless
+  const void a();
+  ^
+
+"Test_name.c", line 5: warning: type qualifier on return type is meaningless
+  volatile void b();
+  ^
+
+"Test_name.c", line 5: remark: a volatile return type is deprecated
+  volatile void b();
+                ^
+
+"Test_name.c", line 6: warning: type qualifier on return type is meaningless
+  const volatile void c();
+  ^
+
+"Test_name.c", line 6: remark: a volatile return type is deprecated
+  const volatile void c();
+                      ^
+
+"Test_name.c", line 8: warning: type qualifier on return type is meaningless
+  const int d();
+  ^
+
+"Test_name.c", line 9: warning: type qualifier on return type is meaningless
+  volatile int e();
+  ^
+
+"Test_name.c", line 9: remark: a volatile return type is deprecated
+  volatile int e();
+               ^
+
+"Test_name.c", line 10: warning: type qualifier on return type is meaningless
+  const volatile int f();
+  ^
+
+"Test_name.c", line 10: remark: a volatile return type is deprecated
+  const volatile int f();
+                     ^
+
+"Test_name.c", line 13: warning: type qualifier on return type is meaningless
+    operator const int();
+             ^
+
+"Test_name.c", line 14: warning: type qualifier on return type is meaningless
+    operator volatile int();
+             ^
+
+"Test_name.c", line 14: remark: a volatile return type is deprecated
+    operator volatile int();
+    ^
+
+"Test_name.c", line 14: remark: a volatile return type is deprecated
+    operator volatile int();
+    ^
+
+"Test_name.c", line 15: warning: type qualifier on return type is meaningless
+    operator const volatile int();
+             ^
+
+"Test_name.c", line 15: remark: a volatile return type is deprecated
+    operator const volatile int();
+    ^
+
+"Test_name.c", line 15: remark: a volatile return type is deprecated
+    operator const volatile int();
+    ^
+

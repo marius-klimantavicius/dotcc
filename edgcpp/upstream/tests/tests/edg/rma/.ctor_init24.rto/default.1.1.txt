@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 8: error: only one member of a union may be specified in a constructor initializer list
+      U() : j(1), s("a") {}
+                  ^
+
+"Test_name.c", line 15: error: only one member of a union may be specified in a constructor initializer list
+    S() : i(1), s("a") { }
+                ^
+
+2 errors detected in the compilation of "Test_name.c".

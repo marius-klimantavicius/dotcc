@@ -1,0 +1,26 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 12: error: static data member declaration is not allowed in this class
+  	static int xxx;
+  	^
+
+"Test_name.c", line 9: error: types cannot be declared in anonymous unions
+  	enum E {ee};
+  	     ^
+
+"Test_name.c", line 10: error: types cannot be declared in anonymous unions
+  	typedef char*& T;
+  	               ^
+
+"Test_name.c", line 11: error: types cannot be declared in anonymous unions
+  	struct A {};
+  	       ^
+
+"Test_name.c", line 19: error: use of a type with no linkage to declare a variable with linkage
+  enum E e;
+         ^
+
+"Test_name.c", line 20: error: use of a type with no linkage to declare a variable with linkage
+  struct A a;
+           ^
+
+6 errors detected in the compilation of "Test_name.c".

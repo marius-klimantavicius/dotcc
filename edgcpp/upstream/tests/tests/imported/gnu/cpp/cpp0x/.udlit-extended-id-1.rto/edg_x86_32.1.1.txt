@@ -1,0 +1,46 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp0x/udlit-extended-id-1.C", line 28: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+  const char * operator ""_1σ (const char *s, size_t)
+               ^
+
+"./cpp0x/udlit-extended-id-1.C", line 33: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+  const char * operator ""_Σ2 (const char *s, size_t)
+               ^
+
+"./cpp0x/udlit-extended-id-1.C", line 38: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+  const char * operator ""_æ1 (const char *s, size_t)
+               ^
+
+"./cpp0x/udlit-extended-id-1.C", line 43: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+  const char* operator ""_œ2 (const char *s, size_t)
+              ^
+
+"./cpp0x/udlit-extended-id-1.C", line 60: error: user-defined literal operator not found
+    if (strcmp ("abc"_1σ, "bc"))
+                ^
+
+"./cpp0x/udlit-extended-id-1.C", line 62: error: user-defined literal operator not found
+    if (strcmp ("abcd"_Σ2, "cd"))
+                ^
+
+"./cpp0x/udlit-extended-id-1.C", line 64: error: user-defined literal operator not found
+    if (strcmp (R"(abcdef)"_1σ, "bcdef"))
+                ^
+
+"./cpp0x/udlit-extended-id-1.C", line 66: error: user-defined literal operator not found
+    if (strcmp (R"(abc
+                ^
+
+"./cpp0x/udlit-extended-id-1.C", line 69: error: user-defined literal operator not found
+    if (strcmp (R"(abcdef)"_Σ2, "cdef"))
+                ^
+
+"./cpp0x/udlit-extended-id-1.C", line 71: error: user-defined literal operator not found
+    if (strcmp ("xyz"_æ1, "ae"))
+                ^
+
+"./cpp0x/udlit-extended-id-1.C", line 73: error: user-defined literal operator not found
+    if (strcmp ("xyz"_œ2, "oe"))
+                ^
+
+11 errors detected in the compilation of "Test_name.c".

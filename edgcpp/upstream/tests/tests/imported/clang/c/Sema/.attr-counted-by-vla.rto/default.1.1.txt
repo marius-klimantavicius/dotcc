@@ -1,0 +1,126 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 12: warning: unknown attribute "counted_by"
+    struct bar *fam[] __counted_by(bork); // expected-error {{use of undeclared identifier 'bork'}}
+                      ^
+
+"Test_name.c", line 20: warning: unknown attribute "counted_by"
+      int array[] __counted_by(count); // expected-error {{'counted_by' field 'count' isn't within the same struct as the annotated flexible array}}
+                  ^
+
+"Test_name.c", line 28: warning: unknown attribute "counted_by"
+      int array[] __counted_by(count); // expected-error {{'counted_by' field 'count' isn't within the same struct as the annotated flexible array}}
+                  ^
+
+"Test_name.c", line 38: warning: unknown attribute "counted_by"
+      int array[] __counted_by(count); // expected-error {{'counted_by' field 'count' isn't within the same struct as the annotated flexible array}}
+                  ^
+
+"Test_name.c", line 49: warning: unknown attribute "counted_by"
+      int array[] __counted_by(count); // expected-error {{use of undeclared identifier 'count'}}
+                  ^
+
+"Test_name.c", line 60: warning: unknown attribute "counted_by"
+      int array[] __counted_by(count); // expected-error {{use of undeclared identifier 'count'}}
+                  ^
+
+"Test_name.c", line 69: warning: unknown attribute "counted_by"
+    int array[] __counted_by(count); // expected-error {{use of undeclared identifier 'count'}}
+                ^
+
+"Test_name.c", line 74: warning: unknown attribute "counted_by"
+    struct bar *fam[] __counted_by(blork); // expected-error {{use of undeclared identifier 'blork'}}
+                      ^
+
+"Test_name.c", line 81: warning: unknown attribute "counted_by"
+    struct bar *fam[] __counted_by(global); // expected-error {{field 'global' in 'counted_by' not inside structure}}
+                      ^
+
+"Test_name.c", line 88: warning: unknown attribute "counted_by"
+    struct bar *self[] __counted_by(self);
+                       ^
+
+"Test_name.c", line 93: warning: unknown attribute "counted_by"
+    struct bar *fam[] __counted_by(dbl_count); // expected-error {{'counted_by' requires a non-boolean integer type argument}}
+                      ^
+
+"Test_name.c", line 98: warning: unknown attribute "counted_by"
+    struct bar *fam[] __counted_by(integers); // expected-error {{'counted_by' requires a non-boolean integer type argument}}
+                      ^
+
+"Test_name.c", line 103: warning: unknown attribute "counted_by"
+    struct bar *non_fam __counted_by(count); // ok
+                        ^
+
+"Test_name.c", line 108: warning: unknown attribute "counted_by"
+    struct bar *non_c99_fam[0] __counted_by(count); // expected-error {{'counted_by' on arrays only applies to C99 flexible array members}}
+                               ^
+
+"Test_name.c", line 115: warning: unknown attribute "counted_by"
+      int array[] __counted_by(crount); // expected-error {{use of undeclared identifier 'crount'}}
+                  ^
+
+"Test_name.c", line 128: warning: unknown attribute "counted_by"
+    struct size_unknown buf[] __counted_by(count);
+                              ^
+
+"Test_name.c", line 128: error: incomplete type "struct size_unknown []" is not allowed
+    struct size_unknown buf[] __counted_by(count);
+                        ^
+
+"Test_name.c", line 135: warning: unknown attribute "counted_by"
+    const struct size_unknown buf[] __counted_by(count);
+                                    ^
+
+"Test_name.c", line 135: error: incomplete type "const struct size_unknown []" is not allowed
+    const struct size_unknown buf[] __counted_by(count);
+                              ^
+
+"Test_name.c", line 142: warning: unknown attribute "counted_by"
+    void buf[] __counted_by(count);
+               ^
+
+"Test_name.c", line 142: error: array of void is not allowed
+    void buf[] __counted_by(count);
+         ^
+
+"Test_name.c", line 150: warning: unknown attribute "counted_by"
+    fn_ty* buf[] __counted_by(count);
+                 ^
+
+"Test_name.c", line 158: warning: unknown attribute "counted_by"
+    fn_ty buf[] __counted_by(count);
+                ^
+
+"Test_name.c", line 158: error: array of functions is not allowed
+    fn_ty buf[] __counted_by(count);
+          ^
+
+"Test_name.c", line 175: warning: unknown attribute "counted_by"
+    char buffer[] __counted_by(count);
+                  ^
+
+"Test_name.c", line 182: warning: unknown attribute "counted_by"
+    struct has_unannotated_VLA Arr[] __counted_by(count);
+                                     ^
+
+"Test_name.c", line 182: warning: array of elements containing a flexible array member is nonstandard
+    struct has_unannotated_VLA Arr[] __counted_by(count);
+                               ^
+
+"Test_name.c", line 190: warning: unknown attribute "counted_by"
+    struct has_annotated_VLA Arr[] __counted_by(count);
+                                   ^
+
+"Test_name.c", line 190: warning: array of elements containing a flexible array member is nonstandard
+    struct has_annotated_VLA Arr[] __counted_by(count);
+                             ^
+
+"Test_name.c", line 198: warning: unknown attribute "counted_by"
+    const struct has_annotated_VLA Arr[] __counted_by(count);
+                                         ^
+
+"Test_name.c", line 198: warning: array of elements containing a flexible array member is nonstandard
+    const struct has_annotated_VLA Arr[] __counted_by(count);
+                                   ^
+
+4 errors detected in the compilation of "Test_name.c".

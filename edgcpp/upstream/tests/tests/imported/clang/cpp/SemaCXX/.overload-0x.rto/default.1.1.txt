@@ -1,0 +1,48 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 15: error: no operator "=" matches these operands
+            operand types are: const test0::A = const char [5]
+      a = "help"; // expected-error {{no viable overloaded '='}}
+        ^
+"Test_name.c", line 7: note: function "test0::A::operator=(test0::A &&)" does not match because argument #1 does not match parameter
+    struct A { // expected-note {{candidate function (the implicit copy assignment operator) not viable: 'this' argument has type 'const A', but method is not marked const}}
+           ^
+"Test_name.c", line 7: note: function "test0::A::operator=(const test0::A &)" does not match because argument #1 does not match parameter
+    struct A { // expected-note {{candidate function (the implicit copy assignment operator) not viable: 'this' argument has type 'const A', but method is not marked const}}
+           ^
+"Test_name.c", line 11: note: function "test0::A::operator=(void *)" does not match because argument #1 does not match parameter
+      A &operator=(void*); // expected-note {{candidate function not viable: 'this' argument has type 'const A', but method is not marked const}}
+         ^
+
+"Test_name.c", line 24: warning: conversion from a string literal to "char *" is deprecated
+      int &n = f("foo");
+                 ^
+
+"Test_name.c", line 24: error: initial value of reference to non-const must be an lvalue
+      int &n = f("foo");
+               ^
+
+"Test_name.c", line 37: warning: conversion from a string literal to "char *" is deprecated
+      int n = f("foo");
+                ^
+
+"Test_name.c", line 53: warning: conversion from a string literal to "char *" is deprecated
+      double d = f("foo");
+                   ^
+
+"Test_name.c", line 53: error: a value of type "void *" cannot be used to initialize an entity of type "double"
+      double d = f("foo");
+                 ^
+
+"Test_name.c", line 87: error: no instance of function template "sfinae_test::cxx11_ignored" matches the argument list
+            argument types are: (int, int)
+    int a = cxx11_ignored(0, 0);
+            ^
+"Test_name.c", line 72: note: candidate function template "sfinae_test::cxx11_ignored" failed deduction
+    template<typename T> int cxx11_ignored(T, typename S<sizeof(f(T(), "foo"))>::type *);
+                             ^
+
+"Test_name.c", line 88: error: a value of type "void" cannot be used to initialize an entity of type "int"
+    int b = g(0, 0);
+            ^
+
+5 errors detected in the compilation of "Test_name.c".

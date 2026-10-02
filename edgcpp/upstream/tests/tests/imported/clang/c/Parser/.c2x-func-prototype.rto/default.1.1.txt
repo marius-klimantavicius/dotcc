@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 8: error: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+  void ident_list(a) // c2x-error {{expected ';' after top level declarator}} \
+                  ^
+
+1 error detected in the compilation of "Test_name.c".

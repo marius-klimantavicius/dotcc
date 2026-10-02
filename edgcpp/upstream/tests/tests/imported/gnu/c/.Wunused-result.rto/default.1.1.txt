@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 12: warning: result of call is not used
+    fwur1 ();         // { dg-warning "\\\[-Wunused-result" }
+    ^
+
+"Test_name.c", line 29: warning: result of call is not used
+    fwur2 ();         // { dg-warning "\\\[-Wunused-result" }
+    ^
+
+"Test_name.c", line 44: warning: result of call is not used
+    fwur3 ();         // { dg-warning "\\\[-Wunused-result" }
+    ^
+

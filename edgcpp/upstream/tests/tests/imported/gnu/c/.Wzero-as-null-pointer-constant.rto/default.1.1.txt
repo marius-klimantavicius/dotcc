@@ -1,0 +1,169 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 51: warning: expression has no effect
+  	1 ? 0 : 0;
+  	^
+
+"Test_name.c", line 52: warning: expression has no effect
+  	1 ? i : 0;
+  	^
+
+"Test_name.c", line 53: warning: expression has no effect
+  	1 ? 0 : p;			/* { dg-warning "zero as null pointer constant" } */
+  	^
+
+"Test_name.c", line 54: warning: expression has no effect
+  	1 ? p : 0;			/* { dg-warning "zero as null pointer constant" } */
+  	^
+
+"Test_name.c", line 55: warning: expression has no effect
+  	1 ? 0 : NULL;			/* { dg-warning "zero as null pointer constant" } */
+  	^
+
+"Test_name.c", line 56: warning: expression has no effect
+  	1 ? NULL : 0;			/* { dg-warning "zero as null pointer constant" } */
+  	^
+
+"Test_name.c", line 58: warning: expression has no effect
+  	0 ? 0 : 1;
+  	^
+
+"Test_name.c", line 59: warning: controlling expression is constant
+  	(void*)0 ? 0 : 1;
+  	^
+
+"Test_name.c", line 59: warning: expression has no effect
+  	(void*)0 ? 0 : 1;
+  	^
+
+"Test_name.c", line 60: warning: controlling expression is constant
+  	NULL ? 0 : 1;
+  	^
+
+"Test_name.c", line 60: warning: expression has no effect
+  	NULL ? 0 : 1;
+  	^
+
+"Test_name.c", line 61: warning: expression has no effect
+  	nullptr ? 0 : 1;
+  	^
+
+"Test_name.c", line 84: warning: controlling expression is constant
+  	if (NULL);
+  	    ^
+
+"Test_name.c", line 85: warning: controlling expression is constant
+  	if ((void*)0);
+  	    ^
+
+"Test_name.c", line 88: warning: controlling expression is constant
+  	if (!NULL);
+  	     ^
+
+"Test_name.c", line 89: warning: controlling expression is constant
+  	if (!(void*)0);
+  	     ^
+
+"Test_name.c", line 93: warning: expression has no effect
+  	p ? 0 : 1;
+  	^
+
+"Test_name.c", line 95: warning: expression has no effect
+  	(!p) ? 0 : 1;
+  	^
+
+"Test_name.c", line 98: warning: variable "v" is used before its value is set
+  	if (v);
+  	    ^
+
+"Test_name.c", line 99: warning: expression has no effect
+  	v ? 1 : 0;
+  	^
+
+"Test_name.c", line 101: warning: expression has no effect
+  	(!v) ? 1 : 0;
+  	^
+
+"Test_name.c", line 17: warning: variable "a" was declared but never referenced
+  	int a = 0;
+  	    ^
+
+"Test_name.c", line 19: warning: variable "b" was declared but never referenced
+  	bool b = 0;
+  	     ^
+
+"Test_name.c", line 20: warning: variable "c" was declared but never referenced
+  	bool c = (void*)0;
+  	     ^
+
+"Test_name.c", line 21: warning: variable "d" was declared but never referenced
+  	bool d = NULL;
+  	     ^
+
+"Test_name.c", line 22: warning: variable "e" was declared but never referenced
+  	bool e = nullptr;
+  	     ^
+
+"Test_name.c", line 24: warning: variable "f" was declared but never referenced
+  	bool f = (bool)0;
+  	     ^
+
+"Test_name.c", line 25: warning: variable "g" was declared but never referenced
+  	bool g = (bool)(void*)0;
+  	     ^
+
+"Test_name.c", line 26: warning: variable "h" was declared but never referenced
+  	bool h = (bool)NULL;
+  	     ^
+
+"Test_name.c", line 39: warning: variable "r" was declared but never referenced
+  	void *r = NULL;
+  	      ^
+
+"Test_name.c", line 40: warning: variable "t" was declared but never referenced
+  	void *t = nullptr;
+  	      ^
+
+"Test_name.c", line 41: warning: variable "o" was declared but never referenced
+  	void *o = { };
+  	      ^
+
+"Test_name.c", line 42: warning: variable "q" was declared but never referenced
+  	void *q = { 0 };		/* { dg-warning "zero as null pointer constant" } */
+  	      ^
+
+"Test_name.c", line 43: warning: variable "s" was declared but never referenced
+  	void *s = { NULL };
+  	      ^
+
+"Test_name.c", line 44: warning: variable "u" was declared but never referenced
+  	void *u = { nullptr };
+  	      ^
+
+"Test_name.c", line 45: warning: variable "x" was declared but never referenced
+  	struct { void *q; } x = { 0 };	/* { dg-warning "zero as null pointer constant" } */
+  	                    ^
+
+"Test_name.c", line 46: warning: variable "y" was declared but never referenced
+  	struct { void *q; } y = { NULL };
+  	                    ^
+
+"Test_name.c", line 47: warning: variable "z" was declared but never referenced
+  	struct { void *q; } z = { nullptr };
+  	                    ^
+
+"Test_name.c", line 48: warning: variable "n" was declared but never referenced
+  	struct { int a; void *b; } n = { 0 };
+  	                           ^
+
+"Test_name.c", line 49: warning: variable "m" was declared but never referenced
+  	struct { int a; int b; void *c; } m = { 0, 0 };
+  	                                  ^
+
+"Test_name.c", line 103: warning: variable "j" was declared but never referenced
+  	bool j = p;
+  	     ^
+
+"Test_name.c", line 104: warning: variable "k" was declared but never referenced
+  	bool k = (bool)p;
+  	     ^
+

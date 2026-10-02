@@ -1,0 +1,122 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 12: warning: integer conversion resulted in a change of sign
+    _BitInt(27) b = 76117358uwb;				/* { dg-warning "signed conversion from 'unsigned _BitInt\\\(27\\\)' to '_BitInt\\\(27\\\)' changes value from '76117358' to '-58100370'" } */
+                    ^
+
+"Test_name.c", line 13: warning: integer conversion resulted in a change of sign
+    unsigned _BitInt(27) c = -15wb;			/* { dg-warning "unsigned conversion from '_BitInt\\\(5\\\)' to 'unsigned _BitInt\\\(27\\\)' changes value from '-15' to '134217713'" } */
+                             ^
+
+"Test_name.c", line 14: warning: integer conversion resulted in truncation
+    _BitInt(27) d = -390288573wb;				/* { dg-warning "overflow in conversion from '_BitInt\\\(30\\\)' to '_BitInt\\\(27\\\)' changes value from '-390288573' to '12364611'" } */
+                    ^
+
+"Test_name.c", line 15: warning: integer conversion resulted in truncation
+    unsigned _BitInt(27) e = 309641337uwb;		/* { dg-warning "conversion from 'unsigned _BitInt\\\(29\\\)' to 'unsigned _BitInt\\\(27\\\)' changes value from '309641337' to '41205881'" } */
+                             ^
+
+"Test_name.c", line 16: warning: integer conversion resulted in a change of sign
+    _BitInt(27) f = 76117358U;				/* { dg-warning "signed conversion from 'unsigned int' to '_BitInt\\\(27\\\)' changes value from '76117358' to '-58100370'" } */
+                    ^
+
+"Test_name.c", line 17: warning: integer conversion resulted in a change of sign
+    unsigned _BitInt(27) g = -15;				/* { dg-warning "unsigned conversion from 'int' to 'unsigned _BitInt\\\(27\\\)' changes value from '-15' to '134217713'" } */
+                             ^
+
+"Test_name.c", line 18: warning: integer conversion resulted in truncation
+    _BitInt(27) h = -390288573;				/* { dg-warning "overflow in conversion from 'int' to '_BitInt\\\(27\\\)' changes value from '-390288573' to '12364611'" } */
+                    ^
+
+"Test_name.c", line 19: warning: integer conversion resulted in truncation
+    unsigned _BitInt(27) i = 309641337U;			/* { dg-warning "conversion from 'unsigned int' to 'unsigned _BitInt\\\(27\\\)' changes value from '309641337' to '41205881'" } */
+                             ^
+
+"Test_name.c", line 20: warning: integer conversion resulted in a change of sign
+    int j = 2936216298uwb;				/* { dg-warning "signed conversion from 'unsigned _BitInt\\\(32\\\)' to 'int' changes value from '2936216298' to '-1358750998'" } */
+            ^
+
+"Test_name.c", line 21: warning: integer conversion resulted in a change of sign
+    unsigned int k = -15wb;				/* { dg-warning "unsigned conversion from '_BitInt\\\(5\\\)' to 'unsigned int' changes value from '-15' to '4294967281'" } */
+                     ^
+
+"Test_name.c", line 22: warning: integer conversion resulted in truncation
+    int l = -8087431137529383656wb;			/* { dg-warning "overflow in conversion from '_BitInt\\\(64\\\)' to 'int' changes value from '-8087431137529383656' to '-1105152744'" } */
+            ^
+
+"Test_name.c", line 23: warning: integer conversion resulted in truncation
+    unsigned int m = 1664073919553255778uwb;		/* { dg-warning "conversion from 'unsigned _BitInt\\\(61\\\)' to 'unsigned int' changes value from '1664073919553255778' to '3338058082'" } */
+                     ^
+
+"Test_name.c", line 25: error: integer constant is too large
+    _Float32 n = 51441631083309184313435496923626431699697406185384986811300218556561965470218425783308778801748592322915101142266821623326688106425864884688172114173397118407357447763009120wb;	/* { dg-warning "conversion from '_BitInt\\\(575\\\)' to '_Float32' changes value from '0x353eab28b46b03ea99b84f9736cd8dbe5e986915a0383c3cb381c0da41e31b3621c75fd53262bfcb1b0e6251dbf00f3988784e29b08b65640c263e4d0959832a20e2ff5245be1e60' to '\\\+Inff32'" "" { target bitint575 } } */
+                 ^
+
+"Test_name.c", line 11: warning: variable "a" was declared but never referenced
+    _BitInt(57) a = 1.5F32;				/* { dg-warning "conversion from '_Float32' to '_BitInt\\\(57\\\)' changes value from '1.5e\\\+0f32' to '1'" } */
+                ^
+
+"Test_name.c", line 12: warning: variable "b" was declared but never referenced
+    _BitInt(27) b = 76117358uwb;				/* { dg-warning "signed conversion from 'unsigned _BitInt\\\(27\\\)' to '_BitInt\\\(27\\\)' changes value from '76117358' to '-58100370'" } */
+                ^
+
+"Test_name.c", line 13: warning: variable "c" was declared but never referenced
+    unsigned _BitInt(27) c = -15wb;			/* { dg-warning "unsigned conversion from '_BitInt\\\(5\\\)' to 'unsigned _BitInt\\\(27\\\)' changes value from '-15' to '134217713'" } */
+                         ^
+
+"Test_name.c", line 14: warning: variable "d" was declared but never referenced
+    _BitInt(27) d = -390288573wb;				/* { dg-warning "overflow in conversion from '_BitInt\\\(30\\\)' to '_BitInt\\\(27\\\)' changes value from '-390288573' to '12364611'" } */
+                ^
+
+"Test_name.c", line 15: warning: variable "e" was declared but never referenced
+    unsigned _BitInt(27) e = 309641337uwb;		/* { dg-warning "conversion from 'unsigned _BitInt\\\(29\\\)' to 'unsigned _BitInt\\\(27\\\)' changes value from '309641337' to '41205881'" } */
+                         ^
+
+"Test_name.c", line 16: warning: variable "f" was declared but never referenced
+    _BitInt(27) f = 76117358U;				/* { dg-warning "signed conversion from 'unsigned int' to '_BitInt\\\(27\\\)' changes value from '76117358' to '-58100370'" } */
+                ^
+
+"Test_name.c", line 17: warning: variable "g" was declared but never referenced
+    unsigned _BitInt(27) g = -15;				/* { dg-warning "unsigned conversion from 'int' to 'unsigned _BitInt\\\(27\\\)' changes value from '-15' to '134217713'" } */
+                         ^
+
+"Test_name.c", line 18: warning: variable "h" was declared but never referenced
+    _BitInt(27) h = -390288573;				/* { dg-warning "overflow in conversion from 'int' to '_BitInt\\\(27\\\)' changes value from '-390288573' to '12364611'" } */
+                ^
+
+"Test_name.c", line 19: warning: variable "i" was declared but never referenced
+    unsigned _BitInt(27) i = 309641337U;			/* { dg-warning "conversion from 'unsigned int' to 'unsigned _BitInt\\\(27\\\)' changes value from '309641337' to '41205881'" } */
+                         ^
+
+"Test_name.c", line 20: warning: variable "j" was declared but never referenced
+    int j = 2936216298uwb;				/* { dg-warning "signed conversion from 'unsigned _BitInt\\\(32\\\)' to 'int' changes value from '2936216298' to '-1358750998'" } */
+        ^
+
+"Test_name.c", line 21: warning: variable "k" was declared but never referenced
+    unsigned int k = -15wb;				/* { dg-warning "unsigned conversion from '_BitInt\\\(5\\\)' to 'unsigned int' changes value from '-15' to '4294967281'" } */
+                 ^
+
+"Test_name.c", line 22: warning: variable "l" was declared but never referenced
+    int l = -8087431137529383656wb;			/* { dg-warning "overflow in conversion from '_BitInt\\\(64\\\)' to 'int' changes value from '-8087431137529383656' to '-1105152744'" } */
+        ^
+
+"Test_name.c", line 23: warning: variable "m" was declared but never referenced
+    unsigned int m = 1664073919553255778uwb;		/* { dg-warning "conversion from 'unsigned _BitInt\\\(61\\\)' to 'unsigned int' changes value from '1664073919553255778' to '3338058082'" } */
+                 ^
+
+"Test_name.c", line 29: warning: variable "q" was declared but never referenced
+    unsigned _BitInt(15) q = (_BitInt(42)) p;
+                         ^
+
+"Test_name.c", line 31: warning: variable "s" was declared but never referenced
+    _BitInt(17) s = ((_BitInt(42)) r) & 32767wb;
+                ^
+
+"Test_name.c", line 37: warning: variable "w" was declared but never referenced
+    unsigned _BitInt(17) w = v;				/* { dg-warning "conversion from '_BitInt\\\(42\\\)' to 'unsigned _BitInt\\\(17\\\)' may change value" } */
+                         ^
+
+"Test_name.c", line 38: warning: variable "y" was declared but never referenced
+    _BitInt(17) y = v;					/* { dg-warning "conversion from '_BitInt\\\(42\\\)' to '_BitInt\\\(17\\\)' may change value" } */
+                ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,120 @@
+fe_only -DTEST_NUMBER=5 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 227: warning: anonymous non-C-like type given name for linkage purposes by typedef or alias declaration
+    } A; // expected-note {{this typedef}}
+      ^
+"Test_name.c", line 223: note: type is not C-like because of this member declaration
+      void bar(); // expected-note {{this member}}
+           ^
+
+"Test_name.c", line 23: warning: function "test1::foo" was referenced but not defined
+    static void foo(); // expected-warning {{function 'test1::foo' has internal linkage but is not defined}}
+                ^
+
+"Test_name.c", line 34: warning: function "test2::<unnamed>::foo" was referenced but not defined
+      void foo(); // expected-warning {{function 'test2::(anonymous namespace)::foo' has internal linkage but is not defined}}
+           ^
+
+"Test_name.c", line 199: warning: function "OverloadUse::<unnamed>::f" was referenced but not defined
+      void f(int); // expected-warning {{function 'OverloadUse::(anonymous namespace)::f' has internal linkage but is not defined}}
+           ^
+
+"Test_name.c", line 200: warning: function "OverloadUse::<unnamed>::f" was referenced but not defined
+      void f(int, int); // expected-warning {{function 'OverloadUse::(anonymous namespace)::f' has internal linkage but is not defined}}
+           ^
+
+"Test_name.c", line 24: warning: function "test1::bar<T>() [with T=int]" was referenced but not defined
+    template <class T> static void bar(); // expected-warning {{function 'test1::bar<int>' has internal linkage but is not defined}}
+                                   ^
+
+"Test_name.c", line 35: warning: variable "test2::<unnamed>::var" was referenced but not defined
+      extern int var; // expected-warning {{variable 'test2::(anonymous namespace)::var' has internal linkage but is not defined}}
+                 ^
+
+"Test_name.c", line 36: warning: function "test2::<unnamed>::bar<T>() [with T=int]" was referenced but not defined
+      template <class T> void bar(); // expected-warning {{function 'test2::(anonymous namespace)::bar<int>' has internal linkage but is not defined}}
+                              ^
+
+"Test_name.c", line 68: warning: function "test4::<unnamed>::A::A()" was referenced but not defined
+        A(); // expected-warning {{function 'test4::(anonymous namespace)::A::A' has internal linkage but is not defined}}
+        ^
+
+"Test_name.c", line 69: warning: function "test4::<unnamed>::A::~A" was referenced but not defined
+        ~A();// expected-warning {{function 'test4::(anonymous namespace)::A::~A' has internal linkage but is not defined}}
+        ^
+
+"Test_name.c", line 70: warning: virtual function "test4::<unnamed>::A::foo" was not defined (and cannot be defined elsewhere because it is a member of an unnamed namespace)
+        virtual void foo(); // expected-warning {{function 'test4::(anonymous namespace)::A::foo' has internal linkage but is not defined}}
+                     ^
+
+"Test_name.c", line 72: warning: virtual function "test4::<unnamed>::A::baz" was not defined (and cannot be defined elsewhere because it is a member of an unnamed namespace)
+        virtual void baz(); // expected-warning {{function 'test4::(anonymous namespace)::A::baz' has internal linkage but is not defined}}
+                     ^
+
+"Test_name.c", line 94: warning: function "test5::B<N>::foo [with N=test5::<unnamed>::A]" was referenced but not defined
+      static void foo(); // expected-warning {{function 'test5::B<test5::(anonymous namespace)::A>::foo' has internal linkage but is not defined}}
+                  ^
+
+"Test_name.c", line 198: warning: function "OverloadUse::<unnamed>::f()" was declared but never referenced
+      void f();
+           ^
+
+"Test_name.c", line 232: warning: function "test8::<unnamed>::bar" was referenced but not defined
+      void bar(); // expected-warning {{function 'test8::(unnamed struct)::bar' has internal linkage but is not defined}}
+           ^
+
+"Test_name.c", line 243: warning: virtual function "test9::<unnamed>::X::used" was not defined (and cannot be defined elsewhere because it is a member of an unnamed namespace)
+        virtual void used() = 0; // expected-warning {{function 'test9::(anonymous namespace)::X::used' has internal linkage but is not defined}}
+                     ^
+
+"Test_name.c", line 256: warning: virtual function "test10::<unnamed>::X::used" was not defined (and cannot be defined elsewhere because it is a member of an unnamed namespace)
+        virtual void used() = 0; // expected-warning {{function 'test10::(anonymous namespace)::X::used' has internal linkage but is not defined}}
+                     ^
+
+"Test_name.c", line 258: warning: function "test10::<unnamed>::X::test" was declared but never referenced
+        void test() {
+             ^
+
+"Test_name.c", line 283: warning: function "test11::<unnamed>::B::operator()" was referenced but not defined
+        bool operator()() const;  // expected-warning {{function 'test11::(anonymous namespace)::B::operator()' has internal linkage but is not defined}}
+             ^
+
+"Test_name.c", line 284: warning: function "test11::<unnamed>::B::operator!" was referenced but not defined
+        void operator!() const;  // expected-warning {{function 'test11::(anonymous namespace)::B::operator!' has internal linkage but is not defined}}
+             ^
+
+"Test_name.c", line 285: warning: function "test11::<unnamed>::B::operator+" was referenced but not defined
+        bool operator+(const B&) const;  // expected-warning {{function 'test11::(anonymous namespace)::B::operator+' has internal linkage but is not defined}}
+             ^
+
+"Test_name.c", line 286: warning: function "test11::<unnamed>::B::operator[]" was referenced but not defined
+        int operator[](int) const;  // expected-warning {{function 'test11::(anonymous namespace)::B::operator[]' has internal linkage but is not defined}}
+            ^
+
+"Test_name.c", line 287: warning: function "test11::<unnamed>::B::operator->" was referenced but not defined
+        const B* operator->() const;  // expected-warning {{function 'test11::(anonymous namespace)::B::operator->' has internal linkage but is not defined}}
+                 ^
+
+"Test_name.c", line 317: warning: function "test12::<unnamed>::Cls::g(int)" was referenced but not defined
+        void g(int);  // expected-warning {{function 'test12::(anonymous namespace)::Cls::g' has internal linkage but is not defined}}
+             ^
+
+"Test_name.c", line 318: warning: function "test12::<unnamed>::Cls::g(int, double)" was declared but never referenced
+        void g(int, double);
+             ^
+
+"Test_name.c", line 322: warning: function "test12::<unnamed>::Cls::operator test12::T4" was referenced but not defined
+        operator T4();  // expected-warning {{function 'test12::(anonymous namespace)::Cls::operator T4' has internal linkage but is not defined}}
+        ^
+
+"Test_name.c", line 323: warning: function "test12::<unnamed>::Cls::operator test12::T5" was referenced but not defined
+        operator T5();  // expected-warning {{function 'test12::(anonymous namespace)::Cls::operator T5' has internal linkage but is not defined}}
+        ^
+
+"Test_name.c", line 324: warning: function "test12::<unnamed>::Cls::operator test12::T6 &" was referenced but not defined
+        operator T6&();  // expected-warning {{function 'test12::(anonymous namespace)::Cls::operator test12::T6 &' has internal linkage but is not defined}}
+        ^
+
+"Test_name.c", line 328: warning: function "test12::<unnamed>::Cls2::Cls2(test12::T7)" was referenced but not defined
+        Cls2(T7);  // expected-warning {{function 'test12::(anonymous namespace)::Cls2::Cls2' has internal linkage but is not defined}}
+        ^
+

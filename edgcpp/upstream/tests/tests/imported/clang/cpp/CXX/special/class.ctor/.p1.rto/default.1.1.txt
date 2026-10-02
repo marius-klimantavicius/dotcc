@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 48: warning: qualified name is not allowed in member declaration
+    X2::X2(); // expected-error {{extra qualification on member 'X2'}}
+    ^
+
+"Test_name.c", line 55: warning: qualified name is not allowed in member declaration
+    X3::X3(T1()); // expected-error {{extra qualification on member 'X3'}}
+    ^
+

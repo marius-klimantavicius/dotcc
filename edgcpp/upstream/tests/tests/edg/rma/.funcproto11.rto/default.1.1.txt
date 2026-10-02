@@ -1,0 +1,18 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 5: error: use of a local type to declare a function
+    extern void g(struct X *);
+                ^
+
+"Test_name.c", line 6: error: use of a local type to declare a nonlocal variable
+    extern struct X *px;
+                     ^
+
+"Test_name.c", line 9: error: declaration is incompatible with previous "px" (declared at line 6)
+  struct X { int i; } *px;
+                       ^
+
+"Test_name.c", line 10: error: return type "int" omitted in declaration of function "main"
+  main() {
+  ^
+
+4 errors detected in the compilation of "Test_name.c".

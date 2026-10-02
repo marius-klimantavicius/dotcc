@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --c++20 -tused --set_flag coroutines -tused Test_name.c
+"Test_name.c", line 36: error: the default constructor of "A::promise_type" cannot be referenced -- it is a deleted function
+    T g(double) {
+      ^
+          detected during instantiation of "T B::g<T>(double) [with T=A]" at line 67
+
+"Test_name.c", line 41: error: the default constructor of "A::promise_type" cannot be referenced -- it is a deleted function
+    A h(T) {
+      ^
+          detected during instantiation of "A B::h(T) [with T=int]" at line 69
+
+"Test_name.c", line 48: error: the default constructor of "A::promise_type" cannot be referenced -- it is a deleted function
+    T f(int, float) {
+      ^
+          detected during instantiation of "T C<T>::f(int, float) [with T=A]" at line 71
+
+"Test_name.c", line 56: error: the default constructor of "A::promise_type" cannot be referenced -- it is a deleted function
+    A h(T, T) {
+      ^
+          detected during instantiation of "A C<T>::h(T, T) [with T=int]" at line 74
+
+4 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 27: error: function "f7" (declared at line 26) was previously not declared consteval
+    consteval void f7();	// { dg-error "differs in .consteval." }
+    ^
+
+"Test_name.c", line 33: error: function "f9" (declared at line 32) was previously not declared constexpr
+    constexpr void f9();	// { dg-error "differs in .constexpr." }
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,74 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 9: error: the last argument in a call to __builtin_fpclassify must have a real floating-point type
+    if (x.x ==  1) return __builtin_fpclassify(1,2,3,4,5,x); /* { dg-error "non-floating-point argument" } */
+                                              ^
+
+"Test_name.c", line 10: error: function call requires a real floating-point argument
+    if (x.x ==  2) return __builtin_isfinite(x); /* { dg-error "non-floating-point argument" } */
+                                            ^
+
+"Test_name.c", line 12: error: function call requires a real floating-point argument
+    if (x.x ==  4) return __builtin_isinf(x); /* { dg-error "non-floating-point argument" } */
+                                         ^
+
+"Test_name.c", line 13: error: function call requires a real floating-point argument
+    if (x.x ==  5) return __builtin_isnan(x); /* { dg-error "non-floating-point argument" } */
+                                         ^
+
+"Test_name.c", line 14: error: function call requires a real floating-point argument
+    if (x.x ==  6) return __builtin_isnormal(x); /* { dg-error "non-floating-point argument" } */
+                                            ^
+
+"Test_name.c", line 21: error: function call requires a real floating-point argument
+    if (x.x == 13) return __builtin_signbit(x); /* { dg-error "non-floating-point argument" } */
+                                           ^
+
+"Test_name.c", line 28: error: a call to __builtin_fpclassify requires five integral arguments followed by one floating-point argument
+    if (x ==  1) return __builtin_fpclassify(1,2,3,4,5); /* { dg-error "too few arguments" } */
+                                            ^
+
+"Test_name.c", line 29: error: function call requires one argument
+    if (x ==  2) return __builtin_isfinite(); /* { dg-error "too few arguments" } */
+                                          ^
+
+"Test_name.c", line 31: error: function call requires one argument
+    if (x ==  4) return __builtin_isinf(); /* { dg-error "too few arguments" } */
+                                       ^
+
+"Test_name.c", line 32: error: function call requires one argument
+    if (x ==  5) return __builtin_isnan(); /* { dg-error "too few arguments" } */
+                                       ^
+
+"Test_name.c", line 33: error: function call requires one argument
+    if (x ==  6) return __builtin_isnormal(); /* { dg-error "too few arguments" } */
+                                          ^
+
+"Test_name.c", line 40: error: function call requires one argument
+    if (x == 13) return __builtin_signbit(); /* { dg-error "too few arguments" } */
+                                         ^
+
+"Test_name.c", line 46: error: a call to __builtin_fpclassify requires five integral arguments followed by one floating-point argument
+    if (x ==  1) return __builtin_fpclassify(1,2,3,4,5,x,x); /* { dg-error "too many arguments" } */
+                                            ^
+
+"Test_name.c", line 47: error: function call requires one argument
+    if (x ==  2) return __builtin_isfinite(x, x); /* { dg-error "too many arguments" } */
+                                          ^
+
+"Test_name.c", line 49: error: function call requires one argument
+    if (x ==  4) return __builtin_isinf(x, x); /* { dg-error "too many arguments" } */
+                                       ^
+
+"Test_name.c", line 50: error: function call requires one argument
+    if (x ==  5) return __builtin_isnan(x, x); /* { dg-error "too many arguments" } */
+                                       ^
+
+"Test_name.c", line 51: error: function call requires one argument
+    if (x ==  6) return __builtin_isnormal(x, x); /* { dg-error "too many arguments" } */
+                                          ^
+
+"Test_name.c", line 58: error: function call requires one argument
+    if (x == 13) return __builtin_signbit(x, x); /* { dg-error "too many arguments" } */
+                                         ^
+
+18 errors detected in the compilation of "Test_name.c".

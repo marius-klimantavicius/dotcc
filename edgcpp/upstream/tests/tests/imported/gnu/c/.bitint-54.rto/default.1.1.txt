@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 11: error: integer constant is too large
+    return __builtin_mul_overflow_p (x, 1046555807606105294475452482332716433408wb, 0);
+                                        ^
+
+"Test_name.c", line 18: error: integer constant is too large
+    return __builtin_sub_overflow_p (340282366920938463463374607431768211457uwb, x, 0);
+                                     ^
+
+2 errors detected in the compilation of "Test_name.c".

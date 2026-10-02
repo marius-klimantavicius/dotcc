@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./optimize-bswapdi-1.c", line 25: warning: shift count is too large
+    return ((uint64_t)( (((uint64_t)(in) & (uint64_t)0x00000000000000ffULL) << 56) | (((uint64_t)(in) & (uint64_t)0x000000000000ff00ULL) << 40) | (((uint64_t)(in) & (uint64_t)0x0000000000ff0000ULL) << 24) | (((uint64_t)(in) & (uint64_t)0x00000000ff000000ULL) << 8) | (((uint64_t)(in) & (uint64_t)0x000000ff00000000ULL) >> 8) | (((uint64_t)(in) & (uint64_t)0x0000ff0000000000ULL) >> 24) | (((uint64_t)(in) & (uint64_t)0x00ff000000000000ULL) >> 40) | (((uint64_t)(in) & (uint64_t)0xff00000000000000ULL) >> 56)));
+                                                                               ^
+
+"./optimize-bswapdi-1.c", line 25: warning: shift count is too large
+    return ((uint64_t)( (((uint64_t)(in) & (uint64_t)0x00000000000000ffULL) << 56) | (((uint64_t)(in) & (uint64_t)0x000000000000ff00ULL) << 40) | (((uint64_t)(in) & (uint64_t)0x0000000000ff0000ULL) << 24) | (((uint64_t)(in) & (uint64_t)0x00000000ff000000ULL) << 8) | (((uint64_t)(in) & (uint64_t)0x000000ff00000000ULL) >> 8) | (((uint64_t)(in) & (uint64_t)0x0000ff0000000000ULL) >> 24) | (((uint64_t)(in) & (uint64_t)0x00ff000000000000ULL) >> 40) | (((uint64_t)(in) & (uint64_t)0xff00000000000000ULL) >> 56)));
+                                                                                                                                            ^
+
+"./optimize-bswapdi-1.c", line 25: warning: shift count is too large
+    return ((uint64_t)( (((uint64_t)(in) & (uint64_t)0x00000000000000ffULL) << 56) | (((uint64_t)(in) & (uint64_t)0x000000000000ff00ULL) << 40) | (((uint64_t)(in) & (uint64_t)0x0000000000ff0000ULL) << 24) | (((uint64_t)(in) & (uint64_t)0x00000000ff000000ULL) << 8) | (((uint64_t)(in) & (uint64_t)0x000000ff00000000ULL) >> 8) | (((uint64_t)(in) & (uint64_t)0x0000ff0000000000ULL) >> 24) | (((uint64_t)(in) & (uint64_t)0x00ff000000000000ULL) >> 40) | (((uint64_t)(in) & (uint64_t)0xff00000000000000ULL) >> 56)));
+                                                                                                                                                                                                                                                                                                                                                                                                                                                           ^
+
+"./optimize-bswapdi-1.c", line 25: warning: shift count is too large
+    return ((uint64_t)( (((uint64_t)(in) & (uint64_t)0x00000000000000ffULL) << 56) | (((uint64_t)(in) & (uint64_t)0x000000000000ff00ULL) << 40) | (((uint64_t)(in) & (uint64_t)0x0000000000ff0000ULL) << 24) | (((uint64_t)(in) & (uint64_t)0x00000000ff000000ULL) << 8) | (((uint64_t)(in) & (uint64_t)0x000000ff00000000ULL) >> 8) | (((uint64_t)(in) & (uint64_t)0x0000ff0000000000ULL) >> 24) | (((uint64_t)(in) & (uint64_t)0x00ff000000000000ULL) >> 40) | (((uint64_t)(in) & (uint64_t)0xff00000000000000ULL) >> 56)));
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ^
+
+"./optimize-bswapdi-1.c", line 52: warning: shift count is too large
+    uint32_t a = x >> 32;
+                      ^
+
+"./optimize-bswapdi-1.c", line 55: warning: shift count is too large
+          | (((((b)) << (8)) | (((b)) >> (32 - (8)))) & 0x00ff00ffL)) << 32)
+                                                                         ^
+

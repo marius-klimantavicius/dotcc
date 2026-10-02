@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=4 --il_display --c++17 --clang -DATOMIC -DARRAY Test_name.c

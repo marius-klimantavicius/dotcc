@@ -1,0 +1,77 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 22: warning: argument of type "char *" is incompatible with parameter of type "int"
+    foo (__FILE__); /* { dg-error "8:passing argument" } */
+         ^
+
+"Test_name.c", line 23: warning: argument of type "char *" is incompatible with parameter of type "int"
+    foo (__BASE_FILE__); /* { dg-error "8:passing argument" } */
+         ^
+
+"Test_name.c", line 24: warning: argument of type "char *" is incompatible with parameter of type "int"
+    foo (__TIME__); /* { dg-error "8:passing argument" } */
+         ^
+
+"Test_name.c", line 25: warning: argument of type "char *" is incompatible with parameter of type "int"
+    foo (__DATE__); /* { dg-error "8:passing argument" } */
+         ^
+
+"Test_name.c", line 26: warning: argument of type "char *" is incompatible with parameter of type "int"
+    foo (__TIMESTAMP__); /* { dg-error "8:passing argument" } */
+         ^
+
+"Test_name.c", line 27: warning: argument of type "int" is incompatible with parameter of type "char *"
+    bar (1, __LINE__); /* { dg-error "11:passing argument" } */
+            ^
+
+"Test_name.c", line 27: warning: conversion of nonzero integer to pointer
+    bar (1, __LINE__); /* { dg-error "11:passing argument" } */
+            ^
+
+"Test_name.c", line 28: warning: argument of type "int" is incompatible with parameter of type "char *"
+    bar (__COUNTER__, __COUNTER__); /* { dg-error "21:passing argument" } */
+                      ^
+
+"Test_name.c", line 28: warning: conversion of nonzero integer to pointer
+    bar (__COUNTER__, __COUNTER__); /* { dg-error "21:passing argument" } */
+                      ^
+
+"Test_name.c", line 30: warning: argument of type "char *" is incompatible with parameter of type "int"
+    foo (F); /* { dg-message "8:in expansion of" } */
+         ^
+
+"Test_name.c", line 31: warning: argument of type "char *" is incompatible with parameter of type "int"
+    foo (T); /* { dg-message "8:in expansion of" } */
+         ^
+
+"Test_name.c", line 32: warning: argument of type "char *" is incompatible with parameter of type "int"
+    foo (D); /* { dg-message "8:in expansion of" } */
+         ^
+
+"Test_name.c", line 33: warning: argument of type "int" is incompatible with parameter of type "char *"
+    bar (1, L); /* { dg-message "11:in expansion of" } */
+            ^
+
+"Test_name.c", line 33: warning: conversion of nonzero integer to pointer
+    bar (1, L); /* { dg-message "11:in expansion of" } */
+            ^
+
+"Test_name.c", line 35: warning: argument of type "char *" is incompatible with parameter of type "int"
+    foo (F2); /* { dg-message "8:in expansion of" } */
+         ^
+
+"Test_name.c", line 36: warning: argument of type "char *" is incompatible with parameter of type "int"
+    foo (T2); /* { dg-message "8:in expansion of" } */
+         ^
+
+"Test_name.c", line 37: warning: argument of type "char *" is incompatible with parameter of type "int"
+    foo (D2); /* { dg-message "8:in expansion of" } */
+         ^
+
+"Test_name.c", line 38: warning: argument of type "int" is incompatible with parameter of type "char *"
+    bar (1, L2); /* { dg-message "11:in expansion of" } */
+            ^
+
+"Test_name.c", line 38: warning: conversion of nonzero integer to pointer
+    bar (1, L2); /* { dg-message "11:in expansion of" } */
+            ^
+

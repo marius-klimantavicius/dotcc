@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 21: error: more than one instance of overloaded function "Y::f" matches the argument list:
+            function template "void Y::f(T, Y::A)" (declared at line 18)
+            function template "void Y::f(T *, Y::B)" (declared at line 19)
+            argument types are: (int *, int)
+    void g(int *p) { f(p, 0); }	// { dg-error "ambiguous" }
+                     ^
+
+1 error detected in the compilation of "Test_name.c".

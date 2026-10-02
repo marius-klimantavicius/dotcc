@@ -1,0 +1,908 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 11: error: identifier "__vector_quad" is undefined
+  using vq_t = __vector_quad;
+               ^
+
+"Test_name.c", line 21: error: identifier "__vector_quad" is undefined
+    void testVQArg1(__vector_quad vq, int *ptr) { // expected-error {{invalid use of PPC MMA type}}
+                    ^
+
+"Test_name.c", line 26: error: identifier "__vector_quad" is undefined
+    void testVQArg2(const __vector_quad vq, int *ptr) { // expected-error {{invalid use of PPC MMA type}}
+                          ^
+
+"Test_name.c", line 31: error: identifier "__vector_quad" is undefined
+    void testVQArg3(__vector_quad *vq, int *ptr) {
+                    ^
+
+"Test_name.c", line 36: error: identifier "__vector_quad" is undefined
+    void testVQArg4(const __vector_quad *const vq, int *ptr) {
+                          ^
+
+"Test_name.c", line 41: error: identifier "__vector_quad" is undefined
+    void testVQArg5(__vector_quad vqa[], int *ptr) {
+                    ^
+
+"Test_name.c", line 58: error: identifier "__vector_quad" is undefined
+    __vector_quad testVQRet1(int *ptr) { // expected-error {{invalid use of PPC MMA type}}
+    ^
+
+"Test_name.c", line 64: error: identifier "__vector_quad" is undefined
+    __vector_quad *testVQRet2(int *ptr) {
+    ^
+
+"Test_name.c", line 70: error: identifier "__vector_quad" is undefined
+    const __vector_quad *testVQRet3(int *ptr) {
+          ^
+
+"Test_name.c", line 76: warning: type qualifier on return type is meaningless
+    const vq_t testVQRet4(int *ptr) { // expected-error {{invalid use of PPC MMA type}}
+    ^
+
+"Test_name.c", line 89: error: identifier "__vector_quad" is undefined
+    template <typename T = __vector_quad>
+                           ^
+
+"Test_name.c", line 97: error: identifier "__vector_quad" is undefined
+    __vector_quad vq1; // expected-error {{invalid use of PPC MMA type}}
+    ^
+
+"Test_name.c", line 98: error: identifier "__vector_quad" is undefined
+    __vector_quad *vqp1;
+    ^
+
+"Test_name.c", line 22: error: identifier "__vector_quad" is undefined
+      __vector_quad *vqp = (__vector_quad *)ptr;
+      ^
+
+"Test_name.c", line 22: error: identifier "vqp" is undefined
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                     ^
+
+"Test_name.c", line 22: error: expected an expression
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                                           ^
+
+"Test_name.c", line 22: error: expected a ";"
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                                            ^
+
+"Test_name.c", line 27: error: identifier "__vector_quad" is undefined
+      __vector_quad *vqp = (__vector_quad *)ptr;
+      ^
+
+"Test_name.c", line 27: error: identifier "vqp" is undefined
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                     ^
+
+"Test_name.c", line 27: error: expected an expression
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                                           ^
+
+"Test_name.c", line 27: error: expected a ";"
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                                            ^
+
+"Test_name.c", line 32: error: identifier "__vector_quad" is undefined
+      __vector_quad *vqp = (__vector_quad *)ptr;
+      ^
+
+"Test_name.c", line 32: error: identifier "vqp" is undefined
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                     ^
+
+"Test_name.c", line 32: error: expected an expression
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                                           ^
+
+"Test_name.c", line 32: error: expected a ";"
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                                            ^
+
+"Test_name.c", line 37: error: identifier "__vector_quad" is undefined
+      __vector_quad *vqp = (__vector_quad *)ptr;
+      ^
+
+"Test_name.c", line 37: error: identifier "vqp" is undefined
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                     ^
+
+"Test_name.c", line 37: error: expected an expression
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                                           ^
+
+"Test_name.c", line 37: error: expected a ";"
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                                            ^
+
+"Test_name.c", line 42: error: identifier "__vector_quad" is undefined
+      __vector_quad *vqp = (__vector_quad *)ptr;
+      ^
+
+"Test_name.c", line 42: error: identifier "vqp" is undefined
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                     ^
+
+"Test_name.c", line 42: error: expected an expression
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                                           ^
+
+"Test_name.c", line 42: error: expected a ";"
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                                            ^
+
+"Test_name.c", line 47: error: identifier "__vector_quad" is undefined
+      __vector_quad *vqp = (__vector_quad *)ptr;
+      ^
+
+"Test_name.c", line 47: error: identifier "vqp" is undefined
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                     ^
+
+"Test_name.c", line 47: error: expected an expression
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                                           ^
+
+"Test_name.c", line 47: error: expected a ";"
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                                            ^
+
+"Test_name.c", line 52: error: identifier "__vector_quad" is undefined
+      __vector_quad *vqp = (__vector_quad *)ptr;
+      ^
+
+"Test_name.c", line 52: error: identifier "vqp" is undefined
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                     ^
+
+"Test_name.c", line 52: error: expected an expression
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                                           ^
+
+"Test_name.c", line 52: error: expected a ";"
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                                            ^
+
+"Test_name.c", line 59: error: identifier "__vector_quad" is undefined
+      __vector_quad *vqp = (__vector_quad *)ptr;
+      ^
+
+"Test_name.c", line 59: error: identifier "vqp" is undefined
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                     ^
+
+"Test_name.c", line 59: error: expected an expression
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                                           ^
+
+"Test_name.c", line 59: error: expected a ";"
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                                            ^
+
+"Test_name.c", line 65: error: identifier "__vector_quad" is undefined
+      __vector_quad *vqp = (__vector_quad *)ptr;
+      ^
+
+"Test_name.c", line 65: error: identifier "vqp" is undefined
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                     ^
+
+"Test_name.c", line 65: error: expected an expression
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                                           ^
+
+"Test_name.c", line 65: error: expected a ";"
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                                            ^
+
+"Test_name.c", line 71: error: identifier "__vector_quad" is undefined
+      __vector_quad *vqp = (__vector_quad *)ptr;
+      ^
+
+"Test_name.c", line 71: error: identifier "vqp" is undefined
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                     ^
+
+"Test_name.c", line 71: error: expected an expression
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                                           ^
+
+"Test_name.c", line 71: error: expected a ";"
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                                            ^
+
+"Test_name.c", line 77: error: identifier "__vector_quad" is undefined
+      __vector_quad *vqp = (__vector_quad *)ptr;
+      ^
+
+"Test_name.c", line 77: error: identifier "vqp" is undefined
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                     ^
+
+"Test_name.c", line 77: error: expected an expression
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                                           ^
+
+"Test_name.c", line 77: error: expected a ";"
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                                            ^
+
+"Test_name.c", line 83: error: identifier "__vector_quad" is undefined
+      __vector_quad *vqp = (__vector_quad *)ptr;
+      ^
+
+"Test_name.c", line 83: error: identifier "vqp" is undefined
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                     ^
+
+"Test_name.c", line 83: error: expected an expression
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                                           ^
+
+"Test_name.c", line 83: error: expected a ";"
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                                            ^
+
+"Test_name.c", line 124: error: identifier "__vector_quad" is undefined
+    ClassTemplateVQ1<__vector_quad> t1; // expected-note {{in instantiation of template class 'ClassTemplateVQ1<__vector_quad>' requested here}}
+                     ^
+
+"Test_name.c", line 125: error: identifier "__vector_quad" is undefined
+    ClassTemplateVQ1<__vector_quad *> t2;
+                     ^
+
+"Test_name.c", line 126: error: identifier "__vector_quad" is undefined
+    ClassTemplateVQ2<__vector_quad> t3;
+                     ^
+
+"Test_name.c", line 127: error: identifier "__vector_quad" is undefined
+    ClassTemplateVQ2<__vector_quad *> t4;
+                     ^
+
+"Test_name.c", line 132: error: identifier "__vector_quad" is undefined
+    ClassTemplateVQ3<__vector_quad(int, int, int)> t6;
+                     ^
+
+"Test_name.c", line 133: error: expected a ")"
+    ClassTemplateVQ3<int(__vector_quad, int, int)> t7; // expected-error {{invalid use of PPC MMA type}}
+                         ^
+
+"Test_name.c", line 133: error: too many arguments for class template "ClassTemplateVQ3"
+    ClassTemplateVQ3<int(__vector_quad, int, int)> t7; // expected-error {{invalid use of PPC MMA type}}
+                                        ^
+
+"Test_name.c", line 135: error: identifier "__vector_quad" is undefined
+    ClassTemplateVQ4<int, int, int, __vector_quad> t8; // expected-note {{in instantiation of template class 'ClassTemplateVQ4<int, int, int, __vector_quad>' requested here}}
+                                    ^
+
+"Test_name.c", line 136: error: identifier "__vector_quad" is undefined
+    ClassTemplateVQ4<int, int, int, __vector_quad *> t9;
+                                    ^
+
+"Test_name.c", line 139: error: identifier "__vector_quad" is undefined
+    __vector_quad vq;
+    ^
+
+"Test_name.c", line 140: error: identifier "__vector_quad" is undefined
+    __vector_quad *vqp = &vq;
+    ^
+
+"Test_name.c", line 140: error: identifier "vqp" is undefined
+    __vector_quad *vqp = &vq;
+                   ^
+
+"Test_name.c", line 141: error: no instance of function template "TestClassVQ::testVQTemplate" matches the argument list
+            argument types are: (<error-type>, <error-type>)
+            object type is: TestClassVQ
+    tc.testVQTemplate(&vq, &vqp);
+       ^
+"Test_name.c", line 90: note: candidate function template "TestClassVQ::testVQTemplate" failed deduction
+    void testVQTemplate(T v, T *p) { // expected-note {{candidate template ignored: substitution failure [with T = vq_t]: invalid use of PPC MMA type}} \
+         ^
+
+"Test_name.c", line 143: error: no instance of function template "TestClassVQ::testVQTemplate" matches the argument list
+            argument types are: (<error-type>, <error-type>)
+            object type is: TestClassVQ
+    tc.testVQTemplate(vq, vqp);       // expected-error {{no matching member function for call to 'testVQTemplate'}}
+       ^
+"Test_name.c", line 90: note: candidate function template "TestClassVQ::testVQTemplate" failed deduction
+    void testVQTemplate(T v, T *p) { // expected-note {{candidate template ignored: substitution failure [with T = vq_t]: invalid use of PPC MMA type}} \
+         ^
+
+"Test_name.c", line 124: warning: variable "t1" was declared but never referenced
+    ClassTemplateVQ1<__vector_quad> t1; // expected-note {{in instantiation of template class 'ClassTemplateVQ1<__vector_quad>' requested here}}
+                                    ^
+
+"Test_name.c", line 125: warning: variable "t2" was declared but never referenced
+    ClassTemplateVQ1<__vector_quad *> t2;
+                                      ^
+
+"Test_name.c", line 126: warning: variable "t3" was declared but never referenced
+    ClassTemplateVQ2<__vector_quad> t3;
+                                    ^
+
+"Test_name.c", line 127: warning: variable "t4" was declared but never referenced
+    ClassTemplateVQ2<__vector_quad *> t4;
+                                      ^
+
+"Test_name.c", line 129: warning: variable "t5" was declared but never referenced
+    ClassTemplateVQ3<int(int, int, int)> t5;
+                                         ^
+
+"Test_name.c", line 132: warning: variable "t6" was declared but never referenced
+    ClassTemplateVQ3<__vector_quad(int, int, int)> t6;
+                                                   ^
+
+"Test_name.c", line 135: warning: variable "t8" was declared but never referenced
+    ClassTemplateVQ4<int, int, int, __vector_quad> t8; // expected-note {{in instantiation of template class 'ClassTemplateVQ4<int, int, int, __vector_quad>' requested here}}
+                                                   ^
+
+"Test_name.c", line 136: warning: variable "t9" was declared but never referenced
+    ClassTemplateVQ4<int, int, int, __vector_quad *> t9;
+                                                     ^
+
+"Test_name.c", line 149: error: identifier "__vector_quad" is undefined
+    __vector_quad vq;
+    ^
+
+"Test_name.c", line 153: error: identifier "__vector_quad" is undefined
+    __vector_quad *vqp;
+    ^
+
+"Test_name.c", line 153: error: identifier "vqp" is undefined
+    __vector_quad *vqp;
+                   ^
+
+"Test_name.c", line 157: error: identifier "__vector_quad" is undefined
+    __vector_quad vq;
+    ^
+
+"Test_name.c", line 161: error: identifier "__vector_quad" is undefined
+    __vector_quad *vqp;
+    ^
+
+"Test_name.c", line 161: error: identifier "vqp" is undefined
+    __vector_quad *vqp;
+                   ^
+
+"Test_name.c", line 167: error: identifier "__vector_quad" is undefined
+    __vector_quad *vqp1 = new __vector_quad;
+    ^
+
+"Test_name.c", line 167: error: identifier "vqp1" is undefined
+    __vector_quad *vqp1 = new __vector_quad;
+                   ^
+
+"Test_name.c", line 167: error: expected a type specifier
+    __vector_quad *vqp1 = new __vector_quad;
+                              ^
+
+"Test_name.c", line 168: error: identifier "vqp2" is undefined
+    __vector_quad *vqp2 = new __vector_quad[100];
+                   ^
+
+"Test_name.c", line 168: error: expected a type specifier
+    __vector_quad *vqp2 = new __vector_quad[100];
+                              ^
+
+"Test_name.c", line 175: error: identifier "__vector_quad" is undefined
+    auto f1 = [](void *ptr) -> __vector_quad {
+                               ^
+
+"Test_name.c", line 176: error: identifier "__vector_quad" is undefined
+      __vector_quad *vqp = (__vector_quad *)ptr;
+      ^
+
+"Test_name.c", line 176: error: identifier "vqp" is undefined
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                     ^
+
+"Test_name.c", line 176: error: expected an expression
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                                           ^
+
+"Test_name.c", line 176: error: expected a ";"
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                                            ^
+
+"Test_name.c", line 180: error: identifier "__vector_quad" is undefined
+      __vector_quad *vqp = (__vector_quad *)ptr;
+      ^
+
+"Test_name.c", line 180: error: identifier "vqp" is undefined
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                     ^
+
+"Test_name.c", line 180: error: expected an expression
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                                           ^
+
+"Test_name.c", line 180: error: expected a ";"
+      __vector_quad *vqp = (__vector_quad *)ptr;
+                                            ^
+
+"Test_name.c", line 183: error: identifier "__vector_quad" is undefined
+    auto f3 = [] { __vector_quad vq; __builtin_mma_xxsetaccz(&vq); return vq; }; // expected-error {{invalid use of PPC MMA type}}
+                   ^
+
+"Test_name.c", line 183: error: identifier "__builtin_mma_xxsetaccz" is undefined
+    auto f3 = [] { __vector_quad vq; __builtin_mma_xxsetaccz(&vq); return vq; }; // expected-error {{invalid use of PPC MMA type}}
+                                     ^
+
+"Test_name.c", line 175: warning: variable "f1" was declared but never referenced
+    auto f1 = [](void *ptr) -> __vector_quad {
+         ^
+
+"Test_name.c", line 179: warning: variable "f2" was declared but never referenced
+    auto f2 = [](void *ptr) {
+         ^
+
+"Test_name.c", line 183: warning: variable "f3" was declared but never referenced
+    auto f3 = [] { __vector_quad vq; __builtin_mma_xxsetaccz(&vq); return vq; }; // expected-error {{invalid use of PPC MMA type}}
+         ^
+
+"Test_name.c", line 188: error: identifier "__vector_quad" is undefined
+    __vector_quad vq;
+    ^
+
+"Test_name.c", line 190: error: identifier "__vector_quad" is undefined
+    __vector_quad *vq2 = reinterpret_cast<__vector_quad *>(ip);
+    ^
+
+"Test_name.c", line 190: error: identifier "vq2" is undefined
+    __vector_quad *vq2 = reinterpret_cast<__vector_quad *>(ip);
+                   ^
+
+"Test_name.c", line 190: error: "__vector_quad" is not a type name
+    __vector_quad *vq2 = reinterpret_cast<__vector_quad *>(ip);
+                                          ^
+
+"Test_name.c", line 195: error: identifier "__vector_quad" is undefined
+    __vector_quad vq;
+    ^
+
+"Test_name.c", line 202: error: identifier "__vector_pair" is undefined
+  using vp_t = __vector_pair;
+               ^
+
+"Test_name.c", line 212: error: identifier "__vector_pair" is undefined
+    void testVPArg1(__vector_pair vp, int *ptr) { // expected-error {{invalid use of PPC MMA type}}
+                    ^
+
+"Test_name.c", line 217: error: identifier "__vector_pair" is undefined
+    void testVPArg2(const __vector_pair vp, int *ptr) { // expected-error {{invalid use of PPC MMA type}}
+                          ^
+
+"Test_name.c", line 222: error: identifier "__vector_pair" is undefined
+    void testVPArg3(__vector_pair *vp, int *ptr) {
+                    ^
+
+"Test_name.c", line 227: error: identifier "__vector_pair" is undefined
+    void testVPArg4(const __vector_pair *const vp, int *ptr) {
+                          ^
+
+"Test_name.c", line 232: error: identifier "__vector_pair" is undefined
+    void testVPArg5(__vector_pair vpa[], int *ptr) {
+                    ^
+
+"Test_name.c", line 249: error: identifier "__vector_pair" is undefined
+    __vector_pair testVPRet1(int *ptr) { // expected-error {{invalid use of PPC MMA type}}
+    ^
+
+"Test_name.c", line 255: error: identifier "__vector_pair" is undefined
+    __vector_pair *testVPRet2(int *ptr) {
+    ^
+
+"Test_name.c", line 261: error: identifier "__vector_pair" is undefined
+    const __vector_pair *testVPRet3(int *ptr) {
+          ^
+
+"Test_name.c", line 267: warning: type qualifier on return type is meaningless
+    const vp_t testVPRet4(int *ptr) { // expected-error {{invalid use of PPC MMA type}}
+    ^
+
+"Test_name.c", line 280: error: identifier "__vector_pair" is undefined
+    template <typename T = __vector_pair>
+                           ^
+
+"Test_name.c", line 288: error: identifier "__vector_pair" is undefined
+    __vector_pair vp1; // expected-error {{invalid use of PPC MMA type}}
+    ^
+
+"Test_name.c", line 289: error: identifier "__vector_pair" is undefined
+    __vector_pair *vpp1;
+    ^
+
+"Test_name.c", line 213: error: identifier "__vector_pair" is undefined
+      __vector_pair *vpp = (__vector_pair *)ptr;
+      ^
+
+"Test_name.c", line 213: error: identifier "vpp" is undefined
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                     ^
+
+"Test_name.c", line 213: error: expected an expression
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                                           ^
+
+"Test_name.c", line 213: error: expected a ";"
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                                            ^
+
+"Test_name.c", line 218: error: identifier "__vector_pair" is undefined
+      __vector_pair *vpp = (__vector_pair *)ptr;
+      ^
+
+"Test_name.c", line 218: error: identifier "vpp" is undefined
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                     ^
+
+"Test_name.c", line 218: error: expected an expression
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                                           ^
+
+"Test_name.c", line 218: error: expected a ";"
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                                            ^
+
+"Test_name.c", line 223: error: identifier "__vector_pair" is undefined
+      __vector_pair *vpp = (__vector_pair *)ptr;
+      ^
+
+"Test_name.c", line 223: error: identifier "vpp" is undefined
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                     ^
+
+"Test_name.c", line 223: error: expected an expression
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                                           ^
+
+"Test_name.c", line 223: error: expected a ";"
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                                            ^
+
+"Test_name.c", line 228: error: identifier "__vector_pair" is undefined
+      __vector_pair *vpp = (__vector_pair *)ptr;
+      ^
+
+"Test_name.c", line 228: error: identifier "vpp" is undefined
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                     ^
+
+"Test_name.c", line 228: error: expected an expression
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                                           ^
+
+"Test_name.c", line 228: error: expected a ";"
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                                            ^
+
+"Test_name.c", line 233: error: identifier "__vector_pair" is undefined
+      __vector_pair *vpp = (__vector_pair *)ptr;
+      ^
+
+"Test_name.c", line 233: error: identifier "vpp" is undefined
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                     ^
+
+"Test_name.c", line 233: error: expected an expression
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                                           ^
+
+"Test_name.c", line 233: error: expected a ";"
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                                            ^
+
+"Test_name.c", line 238: error: identifier "__vector_pair" is undefined
+      __vector_pair *vpp = (__vector_pair *)ptr;
+      ^
+
+"Test_name.c", line 238: error: identifier "vpp" is undefined
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                     ^
+
+"Test_name.c", line 238: error: expected an expression
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                                           ^
+
+"Test_name.c", line 238: error: expected a ";"
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                                            ^
+
+"Test_name.c", line 243: error: identifier "__vector_pair" is undefined
+      __vector_pair *vpp = (__vector_pair *)ptr;
+      ^
+
+"Test_name.c", line 243: error: identifier "vpp" is undefined
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                     ^
+
+"Test_name.c", line 243: error: expected an expression
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                                           ^
+
+"Test_name.c", line 243: error: expected a ";"
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                                            ^
+
+"Test_name.c", line 250: error: identifier "__vector_pair" is undefined
+      __vector_pair *vpp = (__vector_pair *)ptr;
+      ^
+
+"Test_name.c", line 250: error: identifier "vpp" is undefined
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                     ^
+
+"Test_name.c", line 250: error: expected an expression
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                                           ^
+
+"Test_name.c", line 250: error: expected a ";"
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                                            ^
+
+"Test_name.c", line 256: error: identifier "__vector_pair" is undefined
+      __vector_pair *vpp = (__vector_pair *)ptr;
+      ^
+
+"Test_name.c", line 256: error: identifier "vpp" is undefined
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                     ^
+
+"Test_name.c", line 256: error: expected an expression
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                                           ^
+
+"Test_name.c", line 256: error: expected a ";"
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                                            ^
+
+"Test_name.c", line 262: error: identifier "__vector_pair" is undefined
+      __vector_pair *vpp = (__vector_pair *)ptr;
+      ^
+
+"Test_name.c", line 262: error: identifier "vpp" is undefined
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                     ^
+
+"Test_name.c", line 262: error: expected an expression
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                                           ^
+
+"Test_name.c", line 262: error: expected a ";"
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                                            ^
+
+"Test_name.c", line 268: error: identifier "__vector_pair" is undefined
+      __vector_pair *vpp = (__vector_pair *)ptr;
+      ^
+
+"Test_name.c", line 268: error: identifier "vpp" is undefined
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                     ^
+
+"Test_name.c", line 268: error: expected an expression
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                                           ^
+
+"Test_name.c", line 268: error: expected a ";"
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                                            ^
+
+"Test_name.c", line 274: error: identifier "__vector_pair" is undefined
+      __vector_pair *vpp = (__vector_pair *)ptr;
+      ^
+
+"Test_name.c", line 274: error: identifier "vpp" is undefined
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                     ^
+
+"Test_name.c", line 274: error: expected an expression
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                                           ^
+
+"Test_name.c", line 274: error: expected a ";"
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                                            ^
+
+"Test_name.c", line 315: error: identifier "__vector_pair" is undefined
+    ClassTemplateVP1<__vector_pair> t1; // expected-note {{in instantiation of template class 'ClassTemplateVP1<__vector_pair>' requested here}}
+                     ^
+
+"Test_name.c", line 316: error: identifier "__vector_pair" is undefined
+    ClassTemplateVP1<__vector_pair *> t2;
+                     ^
+
+"Test_name.c", line 317: error: identifier "__vector_pair" is undefined
+    ClassTemplateVP2<__vector_pair> t3;
+                     ^
+
+"Test_name.c", line 318: error: identifier "__vector_pair" is undefined
+    ClassTemplateVP2<__vector_pair *> t4;
+                     ^
+
+"Test_name.c", line 323: error: identifier "__vector_pair" is undefined
+    ClassTemplateVP3<__vector_pair(int, int, int)> t6;
+                     ^
+
+"Test_name.c", line 324: error: expected a ")"
+    ClassTemplateVP3<int(__vector_pair, int, int)> t7; // expected-error {{invalid use of PPC MMA type}}
+                         ^
+
+"Test_name.c", line 324: error: too many arguments for class template "ClassTemplateVP3"
+    ClassTemplateVP3<int(__vector_pair, int, int)> t7; // expected-error {{invalid use of PPC MMA type}}
+                                        ^
+
+"Test_name.c", line 326: error: identifier "__vector_pair" is undefined
+    ClassTemplateVP4<int, int, int, __vector_pair> t8; // expected-note {{in instantiation of template class 'ClassTemplateVP4<int, int, int, __vector_pair>' requested here}}
+                                    ^
+
+"Test_name.c", line 327: error: identifier "__vector_pair" is undefined
+    ClassTemplateVP4<int, int, int, __vector_pair *> t9;
+                                    ^
+
+"Test_name.c", line 330: error: identifier "__vector_pair" is undefined
+    __vector_pair vp;
+    ^
+
+"Test_name.c", line 331: error: identifier "__vector_pair" is undefined
+    __vector_pair *vpp = &vp;
+    ^
+
+"Test_name.c", line 331: error: identifier "vpp" is undefined
+    __vector_pair *vpp = &vp;
+                   ^
+
+"Test_name.c", line 332: error: no instance of function template "TestClassVP::testVPTemplate" matches the argument list
+            argument types are: (<error-type>, <error-type>)
+            object type is: TestClassVP
+    tc.testVPTemplate(&vp, &vpp);
+       ^
+"Test_name.c", line 281: note: candidate function template "TestClassVP::testVPTemplate" failed deduction
+    void testVPTemplate(T v, T *p) { // expected-note {{candidate template ignored: substitution failure [with T = vp_t]: invalid use of PPC MMA type}} \
+         ^
+
+"Test_name.c", line 334: error: no instance of function template "TestClassVP::testVPTemplate" matches the argument list
+            argument types are: (<error-type>, <error-type>)
+            object type is: TestClassVP
+    tc.testVPTemplate(vp, vpp);       // expected-error {{no matching member function for call to 'testVPTemplate'}}
+       ^
+"Test_name.c", line 281: note: candidate function template "TestClassVP::testVPTemplate" failed deduction
+    void testVPTemplate(T v, T *p) { // expected-note {{candidate template ignored: substitution failure [with T = vp_t]: invalid use of PPC MMA type}} \
+         ^
+
+"Test_name.c", line 315: warning: variable "t1" was declared but never referenced
+    ClassTemplateVP1<__vector_pair> t1; // expected-note {{in instantiation of template class 'ClassTemplateVP1<__vector_pair>' requested here}}
+                                    ^
+
+"Test_name.c", line 316: warning: variable "t2" was declared but never referenced
+    ClassTemplateVP1<__vector_pair *> t2;
+                                      ^
+
+"Test_name.c", line 317: warning: variable "t3" was declared but never referenced
+    ClassTemplateVP2<__vector_pair> t3;
+                                    ^
+
+"Test_name.c", line 318: warning: variable "t4" was declared but never referenced
+    ClassTemplateVP2<__vector_pair *> t4;
+                                      ^
+
+"Test_name.c", line 320: warning: variable "t5" was declared but never referenced
+    ClassTemplateVP3<int(int, int, int)> t5;
+                                         ^
+
+"Test_name.c", line 323: warning: variable "t6" was declared but never referenced
+    ClassTemplateVP3<__vector_pair(int, int, int)> t6;
+                                                   ^
+
+"Test_name.c", line 326: warning: variable "t8" was declared but never referenced
+    ClassTemplateVP4<int, int, int, __vector_pair> t8; // expected-note {{in instantiation of template class 'ClassTemplateVP4<int, int, int, __vector_pair>' requested here}}
+                                                   ^
+
+"Test_name.c", line 327: warning: variable "t9" was declared but never referenced
+    ClassTemplateVP4<int, int, int, __vector_pair *> t9;
+                                                     ^
+
+"Test_name.c", line 340: error: identifier "__vector_pair" is undefined
+    __vector_pair vp;
+    ^
+
+"Test_name.c", line 344: error: identifier "__vector_pair" is undefined
+    __vector_pair *vpp;
+    ^
+
+"Test_name.c", line 344: error: identifier "vpp" is undefined
+    __vector_pair *vpp;
+                   ^
+
+"Test_name.c", line 348: error: identifier "__vector_pair" is undefined
+    __vector_pair vp;
+    ^
+
+"Test_name.c", line 352: error: identifier "__vector_pair" is undefined
+    __vector_pair *vpp;
+    ^
+
+"Test_name.c", line 352: error: identifier "vpp" is undefined
+    __vector_pair *vpp;
+                   ^
+
+"Test_name.c", line 358: error: identifier "__vector_pair" is undefined
+    __vector_pair *vpp1 = new __vector_pair;
+    ^
+
+"Test_name.c", line 358: error: identifier "vpp1" is undefined
+    __vector_pair *vpp1 = new __vector_pair;
+                   ^
+
+"Test_name.c", line 358: error: expected a type specifier
+    __vector_pair *vpp1 = new __vector_pair;
+                              ^
+
+"Test_name.c", line 359: error: identifier "vpp2" is undefined
+    __vector_pair *vpp2 = new __vector_pair[100];
+                   ^
+
+"Test_name.c", line 359: error: expected a type specifier
+    __vector_pair *vpp2 = new __vector_pair[100];
+                              ^
+
+"Test_name.c", line 366: error: identifier "__vector_pair" is undefined
+    auto f1 = [](void *ptr) -> __vector_pair {
+                               ^
+
+"Test_name.c", line 367: error: identifier "__vector_pair" is undefined
+      __vector_pair *vpp = (__vector_pair *)ptr;
+      ^
+
+"Test_name.c", line 367: error: identifier "vpp" is undefined
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                     ^
+
+"Test_name.c", line 367: error: expected an expression
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                                           ^
+
+"Test_name.c", line 367: error: expected a ";"
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                                            ^
+
+"Test_name.c", line 371: error: identifier "__vector_pair" is undefined
+      __vector_pair *vpp = (__vector_pair *)ptr;
+      ^
+
+"Test_name.c", line 371: error: identifier "vpp" is undefined
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                     ^
+
+"Test_name.c", line 371: error: expected an expression
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                                           ^
+
+"Test_name.c", line 371: error: expected a ";"
+      __vector_pair *vpp = (__vector_pair *)ptr;
+                                            ^
+
+"Test_name.c", line 374: error: identifier "vector" is undefined
+    auto f3 = [](vector unsigned char vc) { __vector_pair vp; __builtin_vsx_assemble_pair(&vp, vc, vc); return vp; }; // expected-error {{invalid use of PPC MMA type}}
+                 ^
+
+"Test_name.c", line 374: error: invalid combination of type specifiers
+    auto f3 = [](vector unsigned char vc) { __vector_pair vp; __builtin_vsx_assemble_pair(&vp, vc, vc); return vp; }; // expected-error {{invalid use of PPC MMA type}}
+                                 ^
+
+"Test_name.c", line 374: error: identifier "__vector_pair" is undefined
+    auto f3 = [](vector unsigned char vc) { __vector_pair vp; __builtin_vsx_assemble_pair(&vp, vc, vc); return vp; }; // expected-error {{invalid use of PPC MMA type}}
+                                            ^
+
+"Test_name.c", line 374: error: identifier "__builtin_vsx_assemble_pair" is undefined
+    auto f3 = [](vector unsigned char vc) { __vector_pair vp; __builtin_vsx_assemble_pair(&vp, vc, vc); return vp; }; // expected-error {{invalid use of PPC MMA type}}
+                                                              ^
+
+"Test_name.c", line 375: error: identifier "vector" is undefined
+    auto f4 = [](vector unsigned char vc) { __vector_pair vp; __builtin_vsx_build_pair(&vp, vc, vc); return vp; }; // expected-error {{invalid use of PPC MMA type}}
+                 ^
+
+Error limit reached.
+200 errors detected in the compilation of "Test_name.c".
+Compilation terminated.

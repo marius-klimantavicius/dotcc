@@ -1,0 +1,70 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 7: error: expected a ";"
+  typedef unsigned __int128 T;
+                            ^
+
+"Test_name.c", line 11: error: identifier "T" is undefined
+  T
+  ^
+
+"Test_name.c", line 12: error: identifier "T" is undefined
+  foo (T b, T c)
+       ^
+
+"Test_name.c", line 12: error: identifier "T" is undefined
+  foo (T b, T c)
+            ^
+
+"Test_name.c", line 14: error: identifier "T" is undefined
+    T a;
+    ^
+
+"Test_name.c", line 20: error: identifier "T" is undefined
+    if (a < 49 || a > (((T) 0xfffffffffffffffeULL << 64) | 1))
+                         ^
+
+"Test_name.c", line 20: error: expected a ")"
+    if (a < 49 || a > (((T) 0xfffffffffffffffeULL << 64) | 1))
+                            ^
+
+"Test_name.c", line 25: error: identifier "T" is undefined
+  T
+  ^
+
+"Test_name.c", line 26: error: identifier "T" is undefined
+  bar (T b, T c)
+       ^
+
+"Test_name.c", line 26: error: identifier "T" is undefined
+  bar (T b, T c)
+            ^
+
+"Test_name.c", line 28: error: identifier "T" is undefined
+    T a;
+    ^
+
+"Test_name.c", line 39: error: identifier "T" is undefined
+  T
+  ^
+
+"Test_name.c", line 40: error: identifier "T" is undefined
+  baz (T b, T c)
+       ^
+
+"Test_name.c", line 40: error: identifier "T" is undefined
+  baz (T b, T c)
+            ^
+
+"Test_name.c", line 42: error: identifier "T" is undefined
+    T a;
+    ^
+
+"Test_name.c", line 48: error: identifier "T" is undefined
+    if (a == (((T) 0xfffffffffffffffeULL << 64) | 1))
+                ^
+
+"Test_name.c", line 48: error: expected a ")"
+    if (a == (((T) 0xfffffffffffffffeULL << 64) | 1))
+                   ^
+
+17 errors detected in the compilation of "Test_name.c".

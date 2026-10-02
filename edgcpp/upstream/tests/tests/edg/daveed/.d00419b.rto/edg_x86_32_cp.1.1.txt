@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --microsoft Test_name.c
+"Test_name.c", line 15: error: declaration is incompatible with "int __stdcall main()" (declared at line 14)
+  int __cdecl main() {
+              ^
+
+1 error detected in the compilation of "Test_name.c".

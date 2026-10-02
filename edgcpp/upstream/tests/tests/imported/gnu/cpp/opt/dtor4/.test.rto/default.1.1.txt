@@ -1,0 +1,9 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics dtor4-aux.cc Test_name.c
+dtor4-aux.cc:
+"dtor4.h", line 1: catastrophic error: cannot open source file "cassert"
+  #include <cassert>
+                    ^
+
+1 catastrophic error detected in the compilation of "dtor4-aux.cc".
+Compilation terminated.
+Test_name.c:

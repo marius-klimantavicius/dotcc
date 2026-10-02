@@ -1,0 +1,46 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 12: error: __underlying_type only applies to enum types
+  __underlying_type(int) i1; // { dg-error "not an enumeration|invalid" }
+                    ^
+
+"Test_name.c", line 13: error: identifier "A" is undefined
+  __underlying_type(A)   i2; // { dg-error "expected|type" }
+                    ^
+
+"Test_name.c", line 13: error: __underlying_type only applies to enum types
+  __underlying_type(A)   i2; // { dg-error "expected|type" }
+                    ^
+
+"Test_name.c", line 14: error: __underlying_type only applies to enum types
+  __underlying_type(B)   i3; // { dg-error "not an enumeration|invalid" }
+                    ^
+
+"Test_name.c", line 15: error: __underlying_type only applies to enum types
+  __underlying_type(U)   i4; // { dg-error "not an enumeration|invalid" }
+                    ^
+
+"Test_name.c", line 10: error: __underlying_type only applies to enum types
+    { typedef __underlying_type(T) type; }; // { dg-error "not an enumeration" }
+                                ^
+          detected during instantiation of class "underlying_type<T> [with T=int]" at line 17
+
+"Test_name.c", line 18: error: identifier "A" is undefined
+  underlying_type<A>::type   i6; // { dg-error "not declared|template|expected" }
+                  ^
+
+"Test_name.c", line 10: error: __underlying_type only applies to enum types
+    { typedef __underlying_type(T) type; }; // { dg-error "not an enumeration" }
+                                ^
+          detected during instantiation of class "underlying_type<T> [with T=<error-type>]" at line 18
+
+"Test_name.c", line 10: error: __underlying_type only applies to enum types
+    { typedef __underlying_type(T) type; }; // { dg-error "not an enumeration" }
+                                ^
+          detected during instantiation of class "underlying_type<T> [with T=B]" at line 19
+
+"Test_name.c", line 10: error: __underlying_type only applies to enum types
+    { typedef __underlying_type(T) type; }; // { dg-error "not an enumeration" }
+                                ^
+          detected during instantiation of class "underlying_type<T> [with T=U]" at line 20
+
+10 errors detected in the compilation of "Test_name.c".

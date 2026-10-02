@@ -1,0 +1,186 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 5: error: expected a ")"
+  void I( void (^)(void));
+                ^
+
+"Test_name.c", line 6: error: expected an identifier
+  void (^noop)(void);
+        ^
+
+"Test_name.c", line 11: error: expected an identifier
+  typedef void (^T) (void);
+                ^
+
+"Test_name.c", line 13: warning: identifier-list parameters may only be used in a function definition
+  void takeblock(T);
+       ^
+
+"Test_name.c", line 14: error: expected a ")"
+  int takeintint(int (^C)(int)) { return C(4); }
+                      ^
+
+"Test_name.c", line 14: warning: unnamed prototyped parameters not allowed when body is present
+  int takeintint(int (^C)(int)) { return C(4); }
+      ^
+
+"Test_name.c", line 14: warning: function "C" declared implicitly
+  int takeintint(int (^C)(int)) { return C(4); }
+                                         ^
+
+"Test_name.c", line 16: error: identifier "T" is undefined
+  T somefunction(void) {
+  ^
+
+"Test_name.c", line 17: error: expected an expression
+    if (^{ })
+        ^
+
+"Test_name.c", line 20: error: identifier "noop" is undefined
+    noop = ^{};
+    ^
+
+"Test_name.c", line 20: error: expected an expression
+    noop = ^{};
+           ^
+
+"Test_name.c", line 22: error: expected an expression
+    noop = ^{printf("\nClosure\n"); };
+           ^
+
+"Test_name.c", line 24: error: expected an expression
+    I(^{ });
+      ^
+
+"Test_name.c", line 26: error: expected an expression
+    return ^{printf("\nClosure\n"); };
+           ^
+
+"Test_name.c", line 31: error: expected an expression
+    takeblock(^{ printf("%d\n", x); });
+              ^
+
+"Test_name.c", line 34: error: expected an expression
+      takeblock(^{
+                ^
+
+"Test_name.c", line 40: warning: parsing restarts here after previous syntax error
+        });
+         ^
+
+"Test_name.c", line 45: error: expected an expression
+    takeblock(^{ x = 4; });  // expected-error {{variable is not assignable (missing __block type specifier)}}
+              ^
+
+"Test_name.c", line 46: error: identifier "__block" is undefined
+    __block y = 7;    // expected-error {{type specifier missing, defaults to 'int'}}
+    ^
+
+"Test_name.c", line 47: error: expected an expression
+    takeblock(^{ y = 8; });
+              ^
+
+"Test_name.c", line 29: warning: variable "x" was declared but never referenced
+    int x = 4;
+        ^
+
+"Test_name.c", line 44: warning: label "foo" was declared but never referenced
+    foo:
+    ^
+
+"Test_name.c", line 51: error: expected an identifier
+  void (^test3(void))(void) {
+        ^
+
+"Test_name.c", line 51: error: function returning function is not allowed
+  void (^test3(void))(void) {
+                      ^
+
+"Test_name.c", line 52: error: expected an expression
+    return ^{};
+           ^
+
+"Test_name.c", line 56: error: expected an identifier
+    void (^noop)(void) = ^{};
+          ^
+
+"Test_name.c", line 56: error: function "<error>" may not be initialized
+    void (^noop)(void) = ^{};
+                       ^
+
+"Test_name.c", line 56: error: expected an expression
+    void (^noop)(void) = ^{};
+                         ^
+
+"Test_name.c", line 57: warning: variable "noop2" was declared but never referenced
+    void (*noop2)(void) = 0;
+           ^
+
+"Test_name.c", line 60: error: expected a ")"
+  void myfunc(int (^block)(int)) {}
+                   ^
+
+"Test_name.c", line 60: warning: unnamed prototyped parameters not allowed when body is present
+  void myfunc(int (^block)(int)) {}
+       ^
+
+"Test_name.c", line 67: error: expected an expression
+    myfunc(^(int abcd) {
+           ^
+
+"Test_name.c", line 70: warning: parsing restarts here after previous syntax error
+      });
+       ^
+
+"Test_name.c", line 65: warning: variable "a" was declared but never referenced
+    int a;
+        ^
+
+"Test_name.c", line 77: error: expected an identifier
+    int (^c)(char);
+         ^
+
+"Test_name.c", line 78: error: identifier "c" is undefined
+    (1 ? c : 0)('x');
+         ^
+
+"Test_name.c", line 76: warning: variable "y" was declared but never referenced
+    int y;
+        ^
+
+"Test_name.c", line 85: error: expected an identifier
+  void (^global_block)(void) = ^{ printf("global x is %d\n", global_x); };
+        ^
+
+"Test_name.c", line 85: error: function "<error>" may not be initialized
+  void (^global_block)(void) = ^{ printf("global x is %d\n", global_x); };
+                             ^
+
+"Test_name.c", line 85: error: expected an expression
+  void (^global_block)(void) = ^{ printf("global x is %d\n", global_x); };
+                               ^
+
+"Test_name.c", line 87: error: expected an identifier
+  typedef void (^void_block_t)(void);
+                ^
+
+"Test_name.c", line 89: error: identifier "void_block_t" is undefined
+  static const void_block_t myBlock = ^{ };
+               ^
+
+"Test_name.c", line 89: error: expected an expression
+  static const void_block_t myBlock = ^{ };
+                                      ^
+
+"Test_name.c", line 91: error: identifier "void_block_t" is undefined
+  static const void_block_t myBlock2 = ^ void(void) { };
+               ^
+
+"Test_name.c", line 91: error: expected an expression
+  static const void_block_t myBlock2 = ^ void(void) { };
+                                       ^
+
+"Test_name.c", line 84: warning: variable "global_x" was declared but never referenced
+  static int global_x = 10;
+             ^
+
+34 errors detected in the compilation of "Test_name.c".

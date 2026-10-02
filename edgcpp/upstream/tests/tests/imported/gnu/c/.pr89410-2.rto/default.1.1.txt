@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 8: error: invalid line number
+  #line 9223372036854775807 /* { dg-warning "line number out of range" } */
+        ^
+
+"Test_name.c", line 9: warning: #warning directive: msg
+  #warning msg
+   ^
+
+1 error detected in the compilation of "Test_name.c".

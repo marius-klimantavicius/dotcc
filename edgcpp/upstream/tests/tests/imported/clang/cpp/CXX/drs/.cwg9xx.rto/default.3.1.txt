@@ -1,0 +1,107 @@
+fe_only -DTEST_NUMBER=3 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 --exceptions --exceptions Test_name.c
+"Test_name.c", line 70: error: type "cwg952::example1::A::I" (declared at line 59) is inaccessible
+    I i2;
+    ^
+
+"Test_name.c", line 75: error: type "cwg952::example1::A::I" (declared at line 59) is inaccessible
+      I i3;
+      ^
+
+"Test_name.c", line 65: error: type "cwg952::example1::A::I" (declared at line 59) is inaccessible
+      I i1;
+      ^
+
+"Test_name.c", line 65: warning: variable "i1" was declared but never referenced
+      I i1;
+        ^
+
+"Test_name.c", line 80: error: type "cwg952::example1::A::I" (declared at line 59) is inaccessible
+        I i4;
+        ^
+
+"Test_name.c", line 80: warning: variable "i4" was declared but never referenced
+        I i4;
+          ^
+
+"Test_name.c", line 121: error: return type is not identical to nor covariant with return type "cwg960::a &" of overridden virtual function "cwg960::A::rvalue_vs_lvalue_ref"
+    a&& rvalue_vs_lvalue_ref() override; 
+        ^
+
+"Test_name.c", line 121: error: member function declared with "override" does not override a base class member
+    a&& rvalue_vs_lvalue_ref() override; 
+        ^
+
+"Test_name.c", line 125: error: return type is not identical to nor covariant with return type "cwg960::a &&" of overridden virtual function "cwg960::A::lvalue_vs_rvalue_ref"
+    a& lvalue_vs_rvalue_ref() override;
+       ^
+
+"Test_name.c", line 125: error: member function declared with "override" does not override a base class member
+    a& lvalue_vs_rvalue_ref() override;
+       ^
+
+"Test_name.c", line 129: error: return type is not identical to nor covariant with return type "cwg960::a &" of overridden virtual function "cwg960::A::rvalue_ref_vs_pointer"
+    a* rvalue_ref_vs_pointer() override;
+       ^
+
+"Test_name.c", line 129: error: member function declared with "override" does not override a base class member
+    a* rvalue_ref_vs_pointer() override;
+       ^
+
+"Test_name.c", line 133: error: return type is not identical to nor covariant with return type "cwg960::a *" of overridden virtual function "cwg960::A::pointer_vs_rvalue_ref"
+    a& pointer_vs_rvalue_ref() override;
+       ^
+
+"Test_name.c", line 133: error: member function declared with "override" does not override a base class member
+    a& pointer_vs_rvalue_ref() override;
+       ^
+
+"Test_name.c", line 137: error: return type is not identical to nor covariant with return type "cwg960::a &&" of overridden virtual function "cwg960::A::lvalue_ref_vs_pointer"
+    a* lvalue_ref_vs_pointer() override;
+       ^
+
+"Test_name.c", line 137: error: member function declared with "override" does not override a base class member
+    a* lvalue_ref_vs_pointer() override;
+       ^
+
+"Test_name.c", line 141: error: return type is not identical to nor covariant with return type "cwg960::a *" of overridden virtual function "cwg960::A::pointer_vs_lvalue_ref"
+    a&& pointer_vs_lvalue_ref() override;
+        ^
+
+"Test_name.c", line 141: error: member function declared with "override" does not override a base class member
+    a&& pointer_vs_lvalue_ref() override;
+        ^
+
+"Test_name.c", line 152: warning: variable "lam" was declared but never referenced
+      auto lam = [](int x = 42) { return x; };
+           ^
+
+"Test_name.c", line 158: error: incomplete type "cwg977::E" is not allowed
+  enum E { e = E() }; // #cwg977-E
+               ^
+
+"Test_name.c", line 165: error: incomplete type "cwg977::E3" is not allowed
+  enum struct E3 { e = static_cast<int>(E3()) };
+                                        ^
+
+"Test_name.c", line 178: error: no instance of constructor "cwg990::A::A" matches the argument list
+    B b1 { };
+           ^
+"Test_name.c", line 173: note: function "cwg990::A::A(std::initializer_list<int>)" does not match because argument #1 does not match parameter
+      A(std::initializer_list<int>); // #cwg990-A-init-list
+      ^
+"Test_name.c", line 172: note: number of parameters of function "cwg990::A::A(const cwg990::A &)" does not match the call
+    struct A { // #cwg990-A
+           ^
+"Test_name.c", line 172: note: number of parameters of function "cwg990::A::A(cwg990::A &&)" does not match the call
+    struct A { // #cwg990-A
+           ^
+
+"Test_name.c", line 179: error: no suitable constructor exists to convert from "int" to "cwg990::A"
+    B b2 { 1 };
+           ^
+
+"Test_name.c", line 192: error: function "cwg990::C::C(std::initializer_list<int>)" (declared at line 189) cannot be referenced -- it is a deleted function
+    C c2[3] { 1, {2} };
+                 ^
+
+21 errors detected in the compilation of "Test_name.c".

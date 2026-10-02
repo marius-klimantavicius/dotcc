@@ -1,0 +1,65 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 19: warning: variable "y" was declared but never referenced
+    int y = 0;
+        ^
+
+"Test_name.c", line 100: warning: variable "buffer" is used before its value is set
+    x = (-7 > 0) ? (buffer[-7]) : 0;
+                    ^
+
+"Test_name.c", line 98: warning: variable "x" was set but never used
+    int x;
+        ^
+
+"Test_name.c", line 119: warning: variable "a" was declared but never referenced
+    int a = x > 4 || x < 10;
+        ^
+
+"Test_name.c", line 121: warning: variable "b" was declared but never referenced
+    int b = x < 2 && x > 5;
+        ^
+
+"Test_name.c", line 124: warning: variable "c" was declared but never referenced
+    int c = x != 1 || x != 3;
+        ^
+
+"Test_name.c", line 126: warning: variable "d" was declared but never referenced
+    int d = x == 1 && x == 2;
+        ^
+
+"Test_name.c", line 129: warning: variable "e" was declared but never referenced
+    int e = x < 1 || x != 0;
+        ^
+
+"Test_name.c", line 136: warning: statement is unreachable
+    return x < 2 && x > 5;
+    ^
+
+"Test_name.c", line 139: warning: statement is unreachable
+    return x != 1 || x != 3;
+    ^
+
+"Test_name.c", line 141: warning: statement is unreachable
+    return x == 1 && x == 2;
+    ^
+
+"Test_name.c", line 144: warning: statement is unreachable
+    return x < 1 || x != 0;
+    ^
+
+"Test_name.c", line 151: warning: statement is unreachable
+    return y > 4u || y < 10u;
+    ^
+
+"Test_name.c", line 161: warning: pointless comparison of unsigned integer with zero
+    return x >= 0 || x == 1;
+             ^
+
+"Test_name.c", line 173: warning: statement is unreachable
+    return a.x > 5 && a.x < 1;
+    ^
+
+"Test_name.c", line 175: warning: statement is unreachable
+    return a.y == 1 || a.y != 1;
+    ^
+

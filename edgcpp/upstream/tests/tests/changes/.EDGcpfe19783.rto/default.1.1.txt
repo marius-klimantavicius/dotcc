@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c++11 Test_name.c
+"Test_name.c", line 17: error: invalid nontype template argument of type "B *"
+    f<bp>();  // Previously incorrectly accepted, now an error
+      ^
+
+"Test_name.c", line 16: warning: variable "bp" was declared but never referenced
+    constexpr B *bp = &d;
+                 ^
+
+1 error detected in the compilation of "Test_name.c".

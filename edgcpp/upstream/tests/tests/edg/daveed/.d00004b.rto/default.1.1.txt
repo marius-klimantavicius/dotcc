@@ -1,0 +1,27 @@
+fe_only -DTEST_NUMBER=1 -P --extended_variadic_macros Test_name.c
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+ 
+
+extern "C"
+int printf(char const*, ...);
+
+
+int main() {
+	(printf("DEBUG: "), printf("%s %s %s?\n", "is", "this", "working"));
+	return 0;
+}
+

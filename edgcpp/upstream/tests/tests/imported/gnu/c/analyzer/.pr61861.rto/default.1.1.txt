@@ -1,0 +1,77 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./analyzer/../../gcc.dg/pr61861.c", line 20: warning: argument of type "char *" is incompatible with parameter of type "int"
+    foo ("./analyzer/../../gcc.dg/pr61861.c");
+         ^
+
+"./analyzer/../../gcc.dg/pr61861.c", line 21: warning: argument of type "char *" is incompatible with parameter of type "int"
+    foo ("./analyzer/pr61861.c");
+         ^
+
+"./analyzer/../../gcc.dg/pr61861.c", line 22: warning: argument of type "char *" is incompatible with parameter of type "int"
+    foo ("07:43:48");
+         ^
+
+"./analyzer/../../gcc.dg/pr61861.c", line 23: warning: argument of type "char *" is incompatible with parameter of type "int"
+    foo ("Feb 28 2025");
+         ^
+
+"./analyzer/../../gcc.dg/pr61861.c", line 24: warning: argument of type "char *" is incompatible with parameter of type "int"
+    foo ("Sun Feb 23 17:32:21 2025");
+         ^
+
+"./analyzer/../../gcc.dg/pr61861.c", line 25: warning: argument of type "int" is incompatible with parameter of type "char *"
+    bar (1, 25);
+            ^
+
+"./analyzer/../../gcc.dg/pr61861.c", line 25: warning: conversion of nonzero integer to pointer
+    bar (1, 25);
+            ^
+
+"./analyzer/../../gcc.dg/pr61861.c", line 26: warning: argument of type "int" is incompatible with parameter of type "char *"
+    bar (0, 1);
+            ^
+
+"./analyzer/../../gcc.dg/pr61861.c", line 26: warning: conversion of nonzero integer to pointer
+    bar (0, 1);
+            ^
+
+"./analyzer/../../gcc.dg/pr61861.c", line 28: warning: argument of type "char *" is incompatible with parameter of type "int"
+    foo ("./analyzer/../../gcc.dg/pr61861.c");
+         ^
+
+"./analyzer/../../gcc.dg/pr61861.c", line 29: warning: argument of type "char *" is incompatible with parameter of type "int"
+    foo ("07:43:48");
+         ^
+
+"./analyzer/../../gcc.dg/pr61861.c", line 30: warning: argument of type "char *" is incompatible with parameter of type "int"
+    foo ("Feb 28 2025");
+         ^
+
+"./analyzer/../../gcc.dg/pr61861.c", line 31: warning: argument of type "int" is incompatible with parameter of type "char *"
+    bar (1, 31);
+            ^
+
+"./analyzer/../../gcc.dg/pr61861.c", line 31: warning: conversion of nonzero integer to pointer
+    bar (1, 31);
+            ^
+
+"./analyzer/../../gcc.dg/pr61861.c", line 33: warning: argument of type "char *" is incompatible with parameter of type "int"
+    foo ("foo");
+         ^
+
+"./analyzer/../../gcc.dg/pr61861.c", line 34: warning: argument of type "char *" is incompatible with parameter of type "int"
+    foo ("foo");
+         ^
+
+"./analyzer/../../gcc.dg/pr61861.c", line 35: warning: argument of type "char *" is incompatible with parameter of type "int"
+    foo ("foo");
+         ^
+
+"./analyzer/../../gcc.dg/pr61861.c", line 36: warning: argument of type "int" is incompatible with parameter of type "char *"
+    bar (1, 42);
+            ^
+
+"./analyzer/../../gcc.dg/pr61861.c", line 36: warning: conversion of nonzero integer to pointer
+    bar (1, 42);
+            ^
+

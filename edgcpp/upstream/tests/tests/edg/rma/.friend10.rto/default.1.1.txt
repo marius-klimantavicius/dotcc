@@ -1,0 +1,50 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 9: error: a storage class is not allowed in a friend declaration
+    friend static int A::f();  // error, according to Cfront
+           ^
+
+"Test_name.c", line 9: error: function "A::f" (declared at line 5) is inaccessible
+    friend static int A::f();  // error, according to Cfront
+                         ^
+
+"Test_name.c", line 10: error: function "A::g" (declared at line 6) is inaccessible
+    friend int A::g();
+                  ^
+
+"Test_name.c", line 13: error: function "A::f" (declared at line 5) is inaccessible
+    friend int A::f();
+                  ^
+
+"Test_name.c", line 14: error: function "A::g" (declared at line 6) is inaccessible
+    friend int A::g();
+                  ^
+
+"Test_name.c", line 17: error: a storage class is not allowed in a friend declaration
+    friend static int A::g();  // error, according to Cfront
+           ^
+
+"Test_name.c", line 17: error: function "A::g" (declared at line 6) is inaccessible
+    friend static int A::g();  // error, according to Cfront
+                         ^
+
+"Test_name.c", line 18: error: a storage class is not allowed in a friend declaration
+    friend static int A::f();  // error, according to Cfront
+           ^
+
+"Test_name.c", line 18: error: function "A::f" (declared at line 5) is inaccessible
+    friend static int A::f();  // error, according to Cfront
+                         ^
+
+"Test_name.c", line 23: error: a storage class is not allowed in a friend declaration
+    friend static int f();         // error, according to Cfront
+           ^
+
+"Test_name.c", line 24: error: a storage class is not allowed in a friend declaration
+    friend extern int g();         // error, according to Cfront
+           ^
+
+"Test_name.c", line 20: warning: function "f" was declared but never referenced
+  static int f();
+             ^
+
+11 errors detected in the compilation of "Test_name.c".

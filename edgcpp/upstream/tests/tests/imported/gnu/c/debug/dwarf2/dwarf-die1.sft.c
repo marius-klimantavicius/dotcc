@@ -1,0 +1,10 @@
+//type: fp
+//options: 
+/* Verify that inline function never actually inlined has no abstract DIE.  */
+/* { dg-do compile } */
+/* { dg-options "-O2 -gdwarf -dA" } */
+/* { dg-final { scan-assembler-not "DW_AT_inline" } } */
+inline int t()
+{
+}
+int (*q)()=t;

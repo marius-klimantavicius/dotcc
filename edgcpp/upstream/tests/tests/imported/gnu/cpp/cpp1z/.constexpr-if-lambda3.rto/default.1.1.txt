@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 27: warning: expression has no effect
+  auto q() { o<0, 1>; }
+             ^
+
+"Test_name.c", line 23: error: class "a<42>" has no member "t"
+      if constexpr (typename a<i>::t{});	// { dg-error "" }
+                                   ^
+          detected during:
+            instantiation of function "lambda [](auto)->auto [with <auto-1>=a<0>]" at line 13
+            instantiation of "void apply(j, e<k, index...>) [with j=lambda [](auto)->auto, k=int, index=<0>]" at line 18
+            instantiation of "void m<l,j>(j) [with l=1, j=lambda [](auto)->auto]" at line 25
+            instantiation of "void o<<unnamed>,c>() [with <unnamed>=0, c=1]" 
+
+1 error detected in the compilation of "Test_name.c".

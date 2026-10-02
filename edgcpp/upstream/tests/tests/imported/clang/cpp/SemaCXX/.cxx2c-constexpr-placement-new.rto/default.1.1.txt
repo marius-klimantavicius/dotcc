@@ -1,0 +1,116 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++26 Test_name.c
+"Test_name.c", line 32: warning: variable "indeterminate" is used before its value is set
+      new (indeterminate) int(0);
+           ^
+
+"Test_name.c", line 63: warning: function "operator new(std::size_t, void *)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+      new (s) S();
+      ^
+
+"Test_name.c", line 70: warning: function "operator new(std::size_t, void *)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+      new (s) S();
+      ^
+
+"Test_name.c", line 76: error: call to consteval function "ok" did not produce a valid constant expression
+  int a = ok();
+            ^
+"Test_name.c", line 17: note: a placement new-expression cannot be constant-evaluated
+      new (&i) int(0);
+      ^
+
+"Test_name.c", line 77: error: call to consteval function "conversion" did not produce a valid constant expression
+  int b = conversion(); // expected-error {{call to consteval function 'conversion' is not a constant expression}} \
+                    ^
+"Test_name.c", line 25: note: a placement new-expression cannot be constant-evaluated
+      new (static_cast<void*>(&i)) float(0);
+      ^
+
+"Test_name.c", line 79: error: call to consteval function "indeterminate" did not produce a valid constant expression
+  int c = indeterminate(); // expected-error {{call to consteval function 'indeterminate' is not a constant expression}} \
+                       ^
+"Test_name.c", line 32: note: a placement new-expression cannot be constant-evaluated
+      new (indeterminate) int(0);
+      ^
+
+"Test_name.c", line 81: error: call to consteval function "array1" did not produce a valid constant expression
+  int d = array1();
+                ^
+"Test_name.c", line 39: note: a placement new-expression cannot be constant-evaluated
+      new (&i) int[]{1,2};
+      ^
+
+"Test_name.c", line 82: error: call to consteval function "array2" did not produce a valid constant expression
+  int e = array2(); // expected-error {{call to consteval function 'array2' is not a constant expression}} \
+                ^
+"Test_name.c", line 49: note: a placement new-expression cannot be constant-evaluated
+      new (&i) int[2];
+      ^
+
+"Test_name.c", line 84: error: call to consteval function "alloc" did not produce a valid constant expression
+  int alloc1 = (alloc(), 0);
+                     ^
+"Test_name.c", line 63: note: a placement new-expression cannot be constant-evaluated
+      new (s) S();
+      ^
+
+"Test_name.c", line 85: error: call to consteval function "alloc_err" did not produce a valid constant expression
+  int alloc2 = (alloc_err(), 0); // expected-error {{call to consteval function 'alloc_err' is not a constant expression}}
+                         ^
+"Test_name.c", line 70: note: a placement new-expression cannot be constant-evaluated
+      new (s) S();
+      ^
+
+"Test_name.c", line 98: error: expression must have a constant value
+  static_assert(yay());
+                ^
+"Test_name.c", line 93: note: a placement new-expression cannot be constant-evaluated
+    int *ptr = new (intptr()) int(42);
+               ^
+
+"Test_name.c", line 106: error: expression must have a constant value
+  static_assert(blah()); // expected-error {{not an integral constant expression}} \
+                ^
+"Test_name.c", line 101: note: a placement new-expression cannot be constant-evaluated
+    int *ptr = new (intptr()) int[3]{ 1, 2, 3 }; // expected-note {{placement new would change type of storage from 'int' to 'int[3]'}}
+               ^
+
+"Test_name.c", line 111: warning: variable "evil" is used before its value is set
+    return evil; // expected-note {{read of uninitialized object is not allowed in a constant expression}}
+           ^
+
+"Test_name.c", line 118: error: expression must have a constant value
+  static_assert(bleh()); // expected-error {{not an integral constant expression}} \
+                ^
+"Test_name.c", line 115: note: a placement new-expression cannot be constant-evaluated
+    int *ptr = new (get_indeterminate()) int;  // expected-note {{in call to 'get_indeterminate()'}}
+               ^
+
+"Test_name.c", line 126: error: expression must have a constant value
+  static_assert(modify_const_variable()); // expected-error {{not an integral constant expression}} \
+                ^
+"Test_name.c", line 123: note: a placement new-expression cannot be constant-evaluated
+    new ((int *)&a) int(12); // expected-note {{modification of object of const-qualified type 'const int' is not allowed in a constant expression}}
+    ^
+
+"Test_name.c", line 136: error: expression must have a constant value
+  static_assert(modify_const_variable_td()); // expected-error {{not an integral constant expression}} \
+                ^
+"Test_name.c", line 133: note: a placement new-expression cannot be constant-evaluated
+    new ((int *)&a) int(12); // expected-note {{modification of object of const-qualified type 'T1' (aka 'const int') is not allowed in a constant expression}}
+    ^
+
+"Test_name.c", line 145: error: expression must have a constant value
+  static_assert(modify_const_variable_tmpl<const int>()); // expected-error {{not an integral constant expression}} \
+                ^
+"Test_name.c", line 142: note: a placement new-expression cannot be constant-evaluated
+    new ((int *)&a) int(12); // expected-note {{modification of object of const-qualified type 'const int' is not allowed in a constant expression}}
+    ^
+
+"Test_name.c", line 157: error: expression must have a constant value
+    static_assert(modify_mutable_member() == 12);
+                  ^
+"Test_name.c", line 154: note: a placement new-expression cannot be constant-evaluated
+      new ((int *)&s.a) int(12);
+      ^
+
+14 errors detected in the compilation of "Test_name.c".

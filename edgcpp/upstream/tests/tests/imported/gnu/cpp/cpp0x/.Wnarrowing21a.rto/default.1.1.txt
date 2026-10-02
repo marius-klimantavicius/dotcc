@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 -W Test_name.c
+"Test_name.c", line 7: error: invalid narrowing conversion from "int" to "float": constant value cannot be represented exactly in destination type
+  float f1{123456789}; /* { dg-error "-Wnarrowing" } */
+           ^
+
+"Test_name.c", line 8: error: invalid narrowing conversion from "int" to "float"
+  float f2{g ()}; /* { dg-warning "-Wnarrowing" } */
+           ^
+
+"Test_name.c", line 9: error: unrecognized GCC pragma
+  #pragma GCC diagnostic push
+              ^
+
+"Test_name.c", line 10: error: unrecognized GCC pragma
+  #pragma GCC diagnostic ignored "-Wnarrowing"
+              ^
+
+"Test_name.c", line 11: error: invalid narrowing conversion from "int" to "float": constant value cannot be represented exactly in destination type
+  float f3{123456789}; /* { dg-bogus "-Wnarrowing" } */
+           ^
+
+"Test_name.c", line 12: error: invalid narrowing conversion from "int" to "float"
+  float f4{g ()}; /* { dg-bogus "-Wnarrowing" } */
+           ^
+
+"Test_name.c", line 13: error: unrecognized GCC pragma
+  #pragma GCC diagnostic pop
+              ^
+
+"Test_name.c", line 14: error: invalid narrowing conversion from "int" to "float": constant value cannot be represented exactly in destination type
+  float f5{123456789}; /* { dg-bogus "warning" "warning in place of error" } */
+           ^
+
+"Test_name.c", line 16: error: invalid narrowing conversion from "int" to "float"
+  float f6{g ()}; /* { dg-warning "-Wnarrowing" } */
+           ^
+
+9 errors detected in the compilation of "Test_name.c".

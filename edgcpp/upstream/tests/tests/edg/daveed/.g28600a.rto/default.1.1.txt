@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --c++17 --gnu=140200 Test_name.c
+"Test_name.c", line 4: warning: auto(<expr>) and auto{<expr>} are a C++23 feature
+  template<typename T> void f() noexcept(noexcept((auto(T{}))));
+                                                   ^
+

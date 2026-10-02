@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 8: error: space required between adjacent ">" delimiters of nested template argument lists (">>" is the right shift operator)
+  X<X<int>> *x2; // expected-error{{a space is required between consecutive right angle brackets (use '> >')}}
+         ^
+
+"Test_name.c", line 10: error: space required between adjacent ">" delimiters of nested template argument lists (">>" is the right shift operator)
+  X<X<X<X<int>> // expected-error{{a space is required between consecutive right angle brackets (use '> >')}}
+             ^
+
+"Test_name.c", line 11: error: space required between adjacent ">" delimiters of nested template argument lists (">>" is the right shift operator)
+      >> *x3;   // expected-error{{a space is required between consecutive right angle brackets (use '> >')}}
+      ^
+
+3 errors detected in the compilation of "Test_name.c".

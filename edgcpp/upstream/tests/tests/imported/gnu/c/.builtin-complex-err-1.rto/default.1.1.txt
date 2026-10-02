@@ -1,0 +1,61 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 Test_name.c
+"Test_name.c", line 13: error: expression must have a constant value
+  _Complex double dc2 = __builtin_complex (d, 0.0); /* { dg-error "not constant" } */
+                                           ^
+"Test_name.c", line 13: note: the value of variable "d" (declared at line 9) cannot be used as a constant
+  _Complex double dc2 = __builtin_complex (d, 0.0); /* { dg-error "not constant" } */
+                                           ^
+
+"Test_name.c", line 13: error: expression must have a constant value
+  _Complex double dc2 = __builtin_complex (d, 0.0); /* { dg-error "not constant" } */
+                        ^
+
+"Test_name.c", line 15: error: expected an operand of real floating-point type (not "int")
+  _Complex float fc = __builtin_complex (1.0f, 1); /* { dg-error "not of real binary floating-point type" } */
+                                               ^
+
+"Test_name.c", line 17: error: expected an operand of real floating-point type (not "int")
+  _Complex float fc2 = __builtin_complex (1, 1.0f); /* { dg-error "not of real binary floating-point type" } */
+                                          ^
+
+"Test_name.c", line 19: error: __builtin_complex requires operands of compatible types (unlike "float" and "double")
+  _Complex float fc3 = __builtin_complex (1.0f, 1.0); /* { dg-error "different types" } */
+                       ^
+
+"Test_name.c", line 24: error: expected a ","
+    __builtin_complex (0.0); /* { dg-error "wrong number of arguments" } */
+                          ^
+
+"Test_name.c", line 24: error: expected an expression
+    __builtin_complex (0.0); /* { dg-error "wrong number of arguments" } */
+                          ^
+
+"Test_name.c", line 25: error: expected a ")"
+    __builtin_complex (0.0, 0.0, 0.0); /* { dg-error "wrong number of arguments" } */
+                               ^
+
+"Test_name.c", line 25: warning: expression has no effect
+    __builtin_complex (0.0, 0.0, 0.0); /* { dg-error "wrong number of arguments" } */
+    ^
+
+"Test_name.c", line 28: error: expected a "("
+  void (*p) (void) = __builtin_complex; /* { dg-error "cannot take address" } */
+                                      ^
+
+"Test_name.c", line 28: error: expected an expression
+  void (*p) (void) = __builtin_complex; /* { dg-error "cannot take address" } */
+                                      ^
+
+"Test_name.c", line 28: error: expected a ","
+  void (*p) (void) = __builtin_complex; /* { dg-error "cannot take address" } */
+                                      ^
+
+"Test_name.c", line 28: error: expected an expression
+  void (*p) (void) = __builtin_complex; /* { dg-error "cannot take address" } */
+                                      ^
+
+"Test_name.c", line 28: error: expected a ")"
+  void (*p) (void) = __builtin_complex; /* { dg-error "cannot take address" } */
+                                      ^
+
+13 errors detected in the compilation of "Test_name.c".

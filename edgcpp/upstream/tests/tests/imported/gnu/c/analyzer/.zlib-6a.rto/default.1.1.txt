@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 32: warning: variable "k" is used before its value is set
+    while (k < (3)) { /* { dg-warning "use of uninitialized value 'k'" } */
+           ^
+
+"Test_name.c", line 51: warning: missing return statement at end of non-void function "inflate_blocks"
+  }
+  ^
+
+"Test_name.c", line 24: warning: variable "t" was declared but never referenced
+    uInt t;
+         ^
+
+"Test_name.c", line 30: warning: variable "m" was declared but never referenced
+    uInt m;
+         ^
+

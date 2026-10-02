@@ -1,0 +1,74 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 137: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 140: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 155: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 158: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 206: error: first parameter of allocation function must be of type "size_t"
+  void* operator new(std::size_t, void* __p)
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 210: error: first parameter of allocation function must be of type "size_t"
+  void* operator new[](std::size_t, void* __p)
+        ^
+
+"./warn/Wmismatched-new-delete-9.C", line 12: error: first parameter of allocation function must be of type "size_t"
+    void* operator new (std::size_t sz, Args&&...);
+          ^
+
+"./warn/Wmismatched-new-delete-9.C", line 14: error: first parameter of allocation function must be of type "size_t"
+    void* operator new[] (std::size_t sz, Args&&...);
+          ^
+
+"./warn/Wmismatched-new-delete-9.C", line 28: error: function "operator new" cannot be called with the given argument list
+            argument types are: (unsigned int, int, bool)
+    delete (new (123, true) foo);
+            ^
+Note: number of parameters of function "operator new" does not match the call
+
+"./warn/Wmismatched-new-delete-9.C", line 29: error: function "operator new[]" cannot be called with the given argument list
+            argument types are: (unsigned int, int, bool)
+    delete[] (new (123, true) foo[123]);
+              ^
+Note: number of parameters of function "operator new[]" does not match the call
+
+"./warn/Wmismatched-new-delete-9.C", line 31: error: function "operator new[]" cannot be called with the given argument list
+            argument types are: (unsigned int, int, bool)
+    delete (new (123, true) foo[123]);
+            ^
+Note: number of parameters of function "operator new[]" does not match the call
+
+"./warn/Wmismatched-new-delete-9.C", line 34: error: function "operator new" cannot be called with the given argument list
+            argument types are: (unsigned int, int, bool)
+    delete[] (new (123, true) foo);
+              ^
+Note: number of parameters of function "operator new" does not match the call
+
+"./warn/Wmismatched-new-delete-9.C", line 38: error: class "foo" has no member "operator new"
+    foo::operator delete (foo::operator new (1, 123, true), 123, true);
+                               ^
+
+"./warn/Wmismatched-new-delete-9.C", line 39: error: class "foo" has no member "operator new[]"
+    foo::operator delete[] (foo::operator new[] (123, 123, true), 123, true);
+                                 ^
+
+"./warn/Wmismatched-new-delete-9.C", line 41: error: class "foo" has no member "operator new[]"
+    foo::operator delete (foo::operator new[] (123, 123, true), 123, true);
+                               ^
+
+"./warn/Wmismatched-new-delete-9.C", line 44: error: class "foo" has no member "operator new"
+    foo::operator delete[] (foo::operator new (1, 123, true), 123, true);
+                                 ^
+
+16 errors detected in the compilation of "Test_name.c".

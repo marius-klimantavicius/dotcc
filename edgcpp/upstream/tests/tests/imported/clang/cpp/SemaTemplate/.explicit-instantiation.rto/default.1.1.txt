@@ -1,0 +1,153 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --exceptions --exceptions Test_name.c
+"Test_name.c", line 5: error: expected an identifier
+  template void *; // expected-error{{expected unqualified-id}}
+                 ^
+
+"Test_name.c", line 5: error: invalid explicit instantiation declaration
+  template void *; // expected-error{{expected unqualified-id}}
+           ^
+
+"Test_name.c", line 7: error: invalid explicit instantiation declaration
+  template typedef void f0; // expected-error{{explicit instantiation of typedef}}
+           ^
+
+"Test_name.c", line 7: error: "typedef" may not be specified here
+  template typedef void f0; // expected-error{{explicit instantiation of typedef}}
+           ^
+
+"Test_name.c", line 10: error: "int v0" is not an entity that can be instantiated
+  template int v0; // expected-error{{does not refer}}
+               ^
+
+"Test_name.c", line 40: error: no instance of overloaded function "X0<T>::f0 [with T=int]" matches the specified type
+  template int X0<int>::f0(int) const; // expected-error{{does not refer}}
+                        ^
+
+"Test_name.c", line 41: error: no instance of overloaded function "X0<T>::f0 [with T=int]" matches the specified type
+  template int* X0<int>::f0(int*, float*); // expected-error{{does not refer}}
+                         ^
+
+"Test_name.c", line 58: error: "int X2::f0(int)" is not an entity that can be instantiated
+  template int X2::f0(int); // expected-error{{not an instantiation}}
+                   ^
+
+"Test_name.c", line 62: error: more than one instance of overloaded function "X2::f2" matches the argument list:
+  template void X2::f2(int *, int *); // expected-error{{ambiguous}}
+                    ^
+
+"Test_name.c", line 74: error: no instance of overloaded function "print_type" matches the specified type
+  template void print_type<int>(float*); // expected-error{{does not refer}}
+                ^
+
+"Test_name.c", line 92: error: "template" is not allowed
+  static template struct X3<float>; // expected-warning{{ignoring 'static' keyword on explicit template instantiation}}
+         ^
+
+"Test_name.c", line 92: error: invalid combination of type specifiers
+  static template struct X3<float>; // expected-warning{{ignoring 'static' keyword on explicit template instantiation}}
+                  ^
+
+"Test_name.c", line 92: error: specializing class "X3<float>" requires "template<>" syntax
+  static template struct X3<float>; // expected-warning{{ignoring 'static' keyword on explicit template instantiation}}
+                         ^
+
+"Test_name.c", line 99: error: bob is not a template
+    struct basic_streambuf{friend bob<>()}; // expected-error{{no template named 'bob'}} \
+                                  ^
+
+"Test_name.c", line 99: error: expected an identifier
+    struct basic_streambuf{friend bob<>()}; // expected-error{{no template named 'bob'}} \
+                                        ^
+
+"Test_name.c", line 99: error: invalid friend declaration
+    struct basic_streambuf{friend bob<>()}; // expected-error{{no template named 'bob'}} \
+                           ^
+
+"Test_name.c", line 99: error: expected a ";"
+    struct basic_streambuf{friend bob<>()}; // expected-error{{no template named 'bob'}} \
+                                        ^
+
+"Test_name.c", line 107: error: explicit instantiation is not allowed in the current scope
+      template
+      ^
+
+"Test_name.c", line 109: error: expected a ";"
+     };
+     ^
+
+"Test_name.c", line 115: error: "PR8020::X<int>::X()" is not an entity that can be instantiated
+    template X<int>::X() {}  // expected-error{{function cannot be defined in an explicit instantiation}}
+                     ^
+
+"Test_name.c", line 115: error: expected a ";"
+    template X<int>::X() {}  // expected-error{{function cannot be defined in an explicit instantiation}}
+                         ^
+
+"Test_name.c", line 119: error: "foobar" is not a class or function template name in the current scope
+    template void foobar(int i) {}  // expected-error{{function cannot be defined in an explicit instantiation}}
+                  ^
+
+"Test_name.c", line 119: error: expected a ";"
+    template void foobar(int i) {}  // expected-error{{function cannot be defined in an explicit instantiation}}
+                                ^
+
+"Test_name.c", line 123: warning: parsing restarts here after previous syntax error
+  }
+  ^
+
+"Test_name.c", line 156: error: dynamic exception specifications are not permitted in this mode
+  template <class T> void Foo(T i) throw(T) { throw i; }
+                                   ^
+
+"Test_name.c", line 158: error: dynamic exception specifications are not permitted in this mode
+  template void Foo(int a) throw(char);
+                           ^
+
+"Test_name.c", line 160: error: exception specification is incompatible with that of previous function "Foo(T) [with T=double]" (declared at line 156)
+  template void Foo(double a) throw();
+                              ^
+
+"Test_name.c", line 162: error: dynamic exception specifications are not permitted in this mode
+  template void Foo(long a) throw(long, char);
+                            ^
+
+"Test_name.c", line 166: error: function "Foo(T) [with T=double]" explicitly instantiated more than once
+  template void Foo(double a) noexcept;
+                ^
+
+"Test_name.c", line 166: error: exception specification is incompatible with that of previous function "Foo(T) [with T=double]" (declared at line 156)
+  template void Foo(double a) noexcept;
+                              ^
+
+"Test_name.c", line 180: error: cannot override "final" function "PR21942::A<<unnamed>>::foo [with <unnamed>=0]" (declared at line 177)
+    virtual void foo() override; // expected-error{{declaration of 'foo' overrides a 'final' function}}
+                 ^
+
+"Test_name.c", line 19: error: return value type does not match the function type
+    T *f0(T *, T *) { return T(); } // expected-warning 0-1 {{expression which evaluates to zero treated as a null pointer constant of type 'int *'}} expected-error 0-1 {{cannot initialize return object of type 'int *' with an rvalue of type 'int'}}
+                             ^
+          detected during instantiation of "T *X0<T>::f0(T *, T *) [with T=int]" at line 37
+
+"Test_name.c", line 26: error: no default constructor exists for class "NotDefaultConstructible"
+  T X0<T>::value; // expected-error{{no matching constructor}}
+           ^
+          detected during implicit definition of "NotDefaultConstructible X0<T>::value [with T=NotDefaultConstructible]" at line 34
+
+"Test_name.c", line 17: error: expression must have arithmetic, unscoped enum, or pointer type but has type "MemPtr" (aka "int X1::*")
+      return x + 1;  // expected-error{{invalid operands}}
+             ^
+          detected during instantiation of "T X0<T>::f0(T) [with T=MemPtr]" at line 46
+
+"Test_name.c", line 134: error: member "undefined_static_data_member::A<T>::a [with T=int]" cannot be instantiated -- no template definition was supplied
+    template int A<int>::a; // expected-error {{explicit instantiation of undefined static data member 'a' of class template 'undefined_static_data_member::A<int>'}}
+             ^
+
+"Test_name.c", line 135: error: variable "undefined_static_data_member::A<T>::b<int> [with T=int]" cannot be instantiated -- no template definition was supplied
+    template int A<int>::b<int>; // expected-error {{explicit instantiation of undefined variable template 'undefined_static_data_member::A<int>::b<int>'}}
+             ^
+
+"Test_name.c", line 136: error: variable "undefined_static_data_member::B::c<int>" cannot be instantiated -- no template definition was supplied
+    template int B::c<int>; // expected-error {{explicit instantiation of undefined variable template 'undefined_static_data_member::B::c<int>'}}
+             ^
+
+36 errors detected in the compilation of "Test_name.c".

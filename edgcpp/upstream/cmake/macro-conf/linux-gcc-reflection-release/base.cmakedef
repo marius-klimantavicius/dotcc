@@ -1,0 +1,6 @@
+# Start with the normal linux gcc release configuration
+import <linux-gcc-release/base>
+
+# Enable reflection
+REFLECTION_ENABLING_POSSIBLE=1
+DEFAULT_REFLECTION_ENABLED=1

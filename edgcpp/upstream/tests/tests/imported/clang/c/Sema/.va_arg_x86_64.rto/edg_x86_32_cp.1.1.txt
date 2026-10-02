@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 17: warning: variable "v" is used before its value is set
+    s = g (p, __builtin_va_arg(v, int));
+                               ^
+
+"Test_name.c", line 15: warning: variable "s" was set but never used
+    char *s;
+          ^
+
+"Test_name.c", line 14: warning: function "f" was declared but never referenced
+  static void f (char * (*g) (char **, int), char **p, ...) {
+              ^
+

@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 11: error: invalid type conversion
+    int *q = (int *const &)T{1, 2, 3}; // expected-warning {{temporary whose address is used as value of local variable 'q' will be destroyed at the end of the full-expression}}
+             ^
+
+"Test_name.c", line 12: error: invalid type conversion
+    q = (int *const &)T{1, 2, 3}; // expected-warning {{object backing the pointer 'q' will be destroyed at the end of the full-expression}}
+        ^
+
+"Test_name.c", line 17: error: invalid type conversion
+    int *r = (int *&&)T{1, 2, 3};
+             ^
+
+"Test_name.c", line 23: error: invalid type conversion
+    int *const &s = (int *const &)T{1, 2, 3}; // expected-warning {{temporary bound to local reference 's' will be destroyed at the end of the full-expression}}
+                    ^
+
+"Test_name.c", line 8: warning: variable "p" was set but never used
+    int *p = &(int&)(int&&)0; // expected-warning {{temporary whose address is used as value of local variable 'p' will be destroyed at the end of the full-expression}}
+         ^
+
+"Test_name.c", line 28: warning: variable "a" is used before its value is set
+    const int a[] = {a[0]};
+                     ^
+
+"Test_name.c", line 29: warning: variable "b" was declared but never referenced
+    const int b[] = {a[0]};
+              ^
+
+"Test_name.c", line 38: warning: parameter "a" was set but never used
+  void test(const char* a) {
+                        ^
+
+4 errors detected in the compilation of "Test_name.c".

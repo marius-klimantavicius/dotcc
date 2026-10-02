@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 6: warning: unknown attribute "alloc_align"
+    void* Foo(int a) __attribute__((alloc_align(1))); // expected-error {{'alloc_align' attribute is invalid for the implicit this argument}}
+                                    ^
+
+"Test_name.c", line 12: warning: unknown attribute "alloc_align"
+    T *Foo(unsigned long long a) __attribute__((alloc_align(2))); // no-warning, ends up being int**.
+                                                ^
+
+"Test_name.c", line 13: warning: unknown attribute "alloc_align"
+    T Foo2(unsigned long long a) __attribute__((alloc_align(2))); // expected-warning {{'alloc_align' attribute only applies to return values that are pointers or references}}
+                                                ^
+
+"Test_name.c", line 19: warning: unknown attribute "alloc_align"
+    void* Foo(T param) __attribute__((alloc_align(2))); // expected-error {{'alloc_align' attribute argument may only refer to a function parameter of integer type}}
+                                      ^
+
+"Test_name.c", line 23: warning: unknown attribute "alloc_align"
+  void* dependent_param_func(T param) __attribute__((alloc_align(1)));// expected-error {{'alloc_align' attribute argument may only refer to a function parameter of integer type}}
+                                                     ^
+
+"Test_name.c", line 26: warning: unknown attribute "alloc_align"
+  void* illegal_align_param(int p) __attribute__((alloc_align(T))); // expected-error {{'alloc_align' attribute requires parameter 1 to be an integer constant}}
+                                                  ^
+
+"Test_name.c", line 29: warning: unknown attribute "alloc_align"
+  T dependent_return_type(int p) __attribute__((alloc_align(1)));
+                                                ^
+
+"Test_name.c", line 58: warning: unknown attribute "alloc_align"
+  __attribute__((alloc_align(1))) T f(T x); // expected-warning {{'alloc_align' attribute only applies to return values that are pointers or references}}
+                 ^
+

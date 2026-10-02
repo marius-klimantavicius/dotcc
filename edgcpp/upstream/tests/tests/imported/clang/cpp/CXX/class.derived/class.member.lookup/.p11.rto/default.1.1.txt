@@ -1,0 +1,32 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 20: error: base class "B1" is ambiguous
+      f(); // expected-error {{ambiguous conversion from derived class 'D' to base class 'B1'}}
+      ^
+
+"Test_name.c", line 24: error: "D::i" is ambiguous
+      int B1::* mpB1 = &D::i; // expected-error {{non-static member 'i' found in multiple base-class subobjects of type 'B1'}}
+                           ^
+
+"Test_name.c", line 25: error: "D::i" is ambiguous
+      int D::* mpD = &D::i; // expected-error {{non-static member 'i' found in multiple base-class subobjects of type 'B1'}}
+                         ^
+
+"Test_name.c", line 40: error: "GH80435::C::data" is ambiguous
+  decltype(C().data) x; // expected-error {{member 'data' found in multiple base classes of different types}}
+               ^
+
+"Test_name.c", line 48: error: no instance of constructor "GH80435::D::D" matches the argument list
+            argument types are: (GH80435::C)
+  D y(C{}); // expected-error {{no matching constructor for initialization of 'D'}}
+      ^
+"Test_name.c", line 42: note: function "GH80435::D::D(const GH80435::D &)" does not match because argument #1 does not match parameter
+  struct D { // expected-note {{candidate constructor (the implicit copy constructor) not viable: no known conversion from 'C' to 'const D' for 1st argument}}
+         ^
+"Test_name.c", line 42: note: function "GH80435::D::D(GH80435::D &&)" does not match because argument #1 does not match parameter
+  struct D { // expected-note {{candidate constructor (the implicit copy constructor) not viable: no known conversion from 'C' to 'const D' for 1st argument}}
+         ^
+"Test_name.c", line 45: note: candidate function template "GH80435::D::D(Container)" failed deduction
+    D(Container); // expected-note {{candidate template ignored: substitution failure [with Container = C]: member 'data' found in multiple base classes of different types}}
+    ^
+
+5 errors detected in the compilation of "Test_name.c".

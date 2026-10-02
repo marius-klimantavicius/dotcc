@@ -1,0 +1,6 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --set_flag=no_checking_pragmas --strict Test_name.c
+"Test_name.c", line 19: error: nontype "A::size_type" is not a type name
+      typedef A::size_type my_size_type;
+              ^
+
+1 error detected in the compilation of "Test_name.c".

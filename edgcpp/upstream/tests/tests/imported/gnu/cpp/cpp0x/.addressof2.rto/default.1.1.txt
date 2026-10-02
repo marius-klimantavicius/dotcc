@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 13: error: expression must be an lvalue or a function designator
+  auto a = __builtin_addressof (1);		// { dg-error "31:lvalue required as unary" }
+                                ^
+
+"Test_name.c", line 14: error: no instance of function template "addressof" matches the argument list
+            argument types are: (int)
+  auto b = addressof (1);				// { dg-error "21:cannot bind non-const lvalue reference of type" }
+           ^
+"Test_name.c", line 8: note: function template "addressof" does not match because argument #1 does not match parameter
+  addressof (T &x) noexcept
+  ^
+
+"Test_name.c", line 20: error: taking the address of a bit field is not allowed
+  auto e = __builtin_addressof (s.s);		// { dg-error "33:attempt to take address of bit-field" }
+           ^
+
+"Test_name.c", line 20: internal error: assertion failed at: "folding.c", line <suppressed> in fold_builtin_operation_if_possible
+
+  auto e = __builtin_addressof (s.s);		// { dg-error "33:attempt to take address of bit-field" }
+                                ^
+
+3 errors and 1 catastrophic error detected in the compilation of "Test_name.c".
+Compilation aborted.
+Aborted
+eccp: front end returned an exit status of 134

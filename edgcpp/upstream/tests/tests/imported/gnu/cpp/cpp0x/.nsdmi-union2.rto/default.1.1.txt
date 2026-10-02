@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: error: a union can have at most one field initializer -- member "A::i" (declared at line 8) also has an initializer
+    int j = 2;
+        ^
+
+"Test_name.c", line 17: error: only one member of a union may be specified in a constructor initializer list
+    B(): i(1), j(2) {}		// { dg-error "multiple" }
+               ^
+
+2 errors detected in the compilation of "Test_name.c".

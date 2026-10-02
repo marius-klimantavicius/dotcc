@@ -1,0 +1,8 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 20: error: more than one instance of overloaded function "C::f" matches the argument list:
+            function "A::f()" (declared at line 5)
+            function "B::f()" (declared at line 10)
+    C().f();			// { dg-error "ambiguous" }
+        ^
+
+1 error detected in the compilation of "Test_name.c".

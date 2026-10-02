@@ -1,0 +1,82 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --exceptions --exceptions Test_name.c
+"Test_name.c", line 26: error: expected an identifier
+  int (...f2)(int); // expected-error{{only function and template parameters can be parameter packs}}
+       ^
+
+"Test_name.c", line 29: error: expected an identifier
+    int ...x; // expected-error{{only function and template parameters can be parameter packs}}
+        ^
+
+"Test_name.c", line 30: error: expected an identifier
+    if (int ...y = 17) { }  // expected-error{{only function and template parameters can be parameter packs}}
+            ^
+
+"Test_name.c", line 32: error: expected an identifier
+    for (int ...z = 0; z < 10; ++z) { }  // expected-error{{only function and template parameters can be parameter packs}}
+             ^
+
+"Test_name.c", line 32: error: identifier "z" is undefined
+    for (int ...z = 0; z < 10; ++z) { }  // expected-error{{only function and template parameters can be parameter packs}}
+                       ^
+
+"Test_name.c", line 35: error: expected a ")"
+    } catch (int ...e) { // expected-error{{only function and template parameters can be parameter packs}}
+                 ^
+
+"Test_name.c", line 41: error: expected an identifier
+    Types ...members; // expected-error{{only function and template parameters can be parameter packs}} \
+          ^
+
+"Test_name.c", line 41: error: parameter pack "Types" was referenced but not expanded
+    Types ...members; // expected-error{{only function and template parameters can be parameter packs}} \
+    ^
+
+"Test_name.c", line 49: error: pack expansion does not make use of any argument packs
+  void f4(T ...args); // expected-error{{type 'T' of function parameter pack does not contain any unexpanded parameter packs}}
+            ^
+
+"Test_name.c", line 51: error: expected a ")"
+  void f4i(int ... x); // expected-error{{type 'int' of function parameter pack does not contain any unexpanded parameter packs}}
+                   ^
+
+"Test_name.c", line 56: error: expected a ")"
+  void a(T[] ... x); // expected-error{{expected ')'}} expected-note{{to match this '('}}
+                 ^
+
+"Test_name.c", line 62: error: pack expansion does not make use of any argument packs
+  void c(T ... []); // expected-error {{type 'T[]' of function parameter pack does not contain any unexpanded parameter packs}}
+           ^
+
+"Test_name.c", line 69: error: pack expansion does not make use of any argument packs
+  void d(T ... x[]); // expected-error{{type 'T[]' of function parameter pack does not contain any unexpanded parameter packs}}
+           ^
+
+"Test_name.c", line 71: error: expected a ")"
+  void ai(int[] ... x); // expected-error{{expected ')'}} expected-note{{to match this '('}}
+                    ^
+
+"Test_name.c", line 73: error: expected a ")"
+  void ci(int ... []); // expected-error{{type 'int[]' of function parameter pack does not contain any unexpanded parameter packs}}
+                  ^
+
+"Test_name.c", line 74: error: expected a ")"
+  void di(int ... x[]); // expected-error{{type 'int[]' of function parameter pack does not contain any unexpanded parameter packs}}
+                  ^
+
+"Test_name.c", line 77: error: identifier "unk" is undefined
+  void f5a(auto fp(int)->unk ...) {} // expected-error{{unknown type name 'unk'}}
+                         ^
+
+"Test_name.c", line 78: error: "auto" is not allowed here
+  void f5b(auto fp(int)->auto ...) {} // expected-error{{'auto' not allowed in function return type}}
+                         ^
+
+"Test_name.c", line 79: error: a parameter pack declaration is not allowed here
+  void f5c(auto fp()->...) {} // expected-error{{expected a type}}
+                      ^
+
+"Test_name.c", line 79: error: explicit type is missing ("int" assumed)
+  void f5c(auto fp()->...) {} // expected-error{{expected a type}}
+                      ^
+
+20 errors detected in the compilation of "Test_name.c".

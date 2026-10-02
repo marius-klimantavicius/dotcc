@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp0x/initlist-deduce.C", line 20: error: no instance of function template "g" matches the argument list
+            argument types are: ({...})
+    g({1});
+    ^
+"./cpp0x/initlist-deduce.C", line 13: note: candidate function template "g" failed deduction
+  auto g (T&& t) -> decltype (f(t))
+       ^
+
+1 error detected in the compilation of "Test_name.c".

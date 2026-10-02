@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 7: error: identifier "TYPE" is undefined
+                                    void(*AddFunction)(const TYPE&,bool&,
+                                                             ^
+
+"Test_name.c", line 6: warning: function "InstantiateConstraint" was declared but never referenced
+  static void InstantiateConstraint(const float&, unsigned,
+              ^
+
+1 error detected in the compilation of "Test_name.c".

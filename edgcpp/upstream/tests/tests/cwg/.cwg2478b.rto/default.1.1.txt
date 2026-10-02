@@ -1,0 +1,9 @@
+cpfe -DTEST_NUMBER=1 --c++20 -tused -A Test_name.c
+"Test_name.c", line 7: error: expression must have a constant value
+    template<> char S<char>::x = c;  // error, c not constant?
+                                 ^
+"Test_name.c", line 7: note: the value of variable "c" (declared at line 6) cannot be used as a constant
+    template<> char S<char>::x = c;  // error, c not constant?
+                                 ^
+
+1 error detected in the compilation of "Test_name.c".

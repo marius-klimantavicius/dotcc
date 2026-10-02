@@ -1,0 +1,212 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 5: error: a requires-expression must specify at least one requirement
+  bool r1 = requires () {};
+                         ^
+
+"Test_name.c", line 10: error: an ellipsis parameter is not permitted in a requires-expression
+  bool r3 = requires (int a, ...) { requires true; };
+                             ^
+
+"Test_name.c", line 18: error: identifier "d" is undefined
+  bool r6 = requires (bool c, int d) { c; d; } && decltype(d){};
+                                                           ^
+
+"Test_name.c", line 21: error: identifier "c" is undefined
+  bool r7 = requires (bool c) { c; (requires (int d) { c; d; }); d; } && decltype(c){} && decltype(d){};
+                                                                                  ^
+
+"Test_name.c", line 25: warning: unnamed parameter in requires-expression has no effect
+  bool r8 = requires (bool, int) { requires true; };
+                          ^
+
+"Test_name.c", line 25: warning: unnamed parameter in requires-expression has no effect
+  bool r8 = requires (bool, int) { requires true; };
+                               ^
+
+"Test_name.c", line 27: error: duplicate parameter name
+  bool r9 = requires (bool a, int a) { requires true; };
+                                  ^
+
+"Test_name.c", line 31: error: type definition is not allowed
+  bool r10 = requires (struct new_struct { int x; } s) { requires true; };
+                       ^
+
+"Test_name.c", line 34: error: expected a type specifier
+  bool r11 = requires (int x(1)) { requires true; };
+                             ^
+
+"Test_name.c", line 39: error: default argument is not allowed
+  bool r12 = requires (int x = 10) { requires true; };
+                             ^
+
+"Test_name.c", line 46: error: expected a type specifier
+  bool r15 = requires (10) { requires true; };
+                       ^
+
+"Test_name.c", line 46: warning: unnamed parameter in requires-expression has no effect
+  bool r15 = requires (10) { requires true; };
+                         ^
+
+"Test_name.c", line 50: error: "auto" is not allowed here
+  bool r16 = requires (auto x) { requires true; };
+                       ^
+
+"Test_name.c", line 53: error: identifier "x" is undefined
+  bool r17 = requires (auto [x, y]) { requires true; };
+                             ^
+
+"Test_name.c", line 53: error: expected a "]"
+  bool r17 = requires (auto [x, y]) { requires true; };
+                              ^
+
+"Test_name.c", line 53: warning: unnamed parameter in requires-expression has no effect
+  bool r17 = requires (auto [x, y]) { requires true; };
+                            ^
+
+"Test_name.c", line 53: error: identifier "y" is undefined
+  bool r17 = requires (auto [x, y]) { requires true; };
+                                ^
+
+"Test_name.c", line 53: warning: unnamed parameter in requires-expression has no effect
+  bool r17 = requires (auto [x, y]) { requires true; };
+                                 ^
+
+"Test_name.c", line 53: error: expected a ")"
+  bool r17 = requires (auto [x, y]) { requires true; };
+                                 ^
+
+"Test_name.c", line 75: error: expected a type name
+  bool r21 = requires { typename s::operator==; };
+                                 ^
+
+"Test_name.c", line 78: error: expected a type name
+  bool r22 = requires { typename s::~s; };
+                                 ^
+
+"Test_name.c", line 82: error: nontype "identity<T>::temp [with T=T]" is not a template
+  bool r23 = requires { typename identity<T>::temp<T>; };
+                                              ^
+
+"Test_name.c", line 82: error: expected a type name
+  bool r23 = requires { typename identity<T>::temp<T>; };
+                                 ^
+
+"Test_name.c", line 91: error: expected a "}"
+  bool r25 = requires { ; };
+                        ^
+"Test_name.c", line 91: note: to match this "{"
+  bool r25 = requires { ; };
+                      ^
+
+"Test_name.c", line 91: error: expected a declaration
+  bool r25 = requires { ; };
+                          ^
+
+"Test_name.c", line 94: error: expected an expression
+  bool r26 = requires { {}; };
+                         ^
+
+"Test_name.c", line 99: error: expected a ";"
+  bool r28 = requires { { 0 } noexcept noexcept; };
+                                       ^
+
+"Test_name.c", line 109: error: expected a ";"
+  bool r29 = requires { { 0 } noexcept C1; };
+                                       ^
+
+"Test_name.c", line 121: error: expected a ";"
+  bool r32 = requires { requires false, 1; };
+                                      ^
+
+"Test_name.c", line 121: error: expected a "}"
+  bool r32 = requires { requires false, 1; };
+                                      ^
+"Test_name.c", line 121: note: to match this "{"
+  bool r32 = requires { requires false, 1; };
+                      ^
+
+"Test_name.c", line 121: error: expected an identifier
+  bool r32 = requires { requires false, 1; };
+                                        ^
+
+"Test_name.c", line 121: error: expected a declaration
+  bool r32 = requires { requires false, 1; };
+                                           ^
+
+"Test_name.c", line 124: error: expected a ";"
+  bool r33 = requires { 0 noexcept; };
+                          ^
+
+"Test_name.c", line 127: error: expected a ";"
+  bool r34 = requires { 0 int; };
+                          ^
+
+"Test_name.c", line 130: error: expected a ";"
+  bool r35 = requires { requires true };
+                                      ^
+
+"Test_name.c", line 136: error: expected a ";"
+  void r37(bool b) requires requires { 1 } {}
+                                         ^
+
+"Test_name.c", line 139: error: expected an expression
+  bool r38 = requires { requires { 1; }; };
+                                 ^
+
+"Test_name.c", line 142: error: expected an expression
+  bool r39 = requires { requires () { 1; }; };
+                                  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  bool r39 = requires { requires () { 1; }; };
+                                    ^
+
+"Test_name.c", line 145: error: expected a ")"
+  bool r40 = requires { requires (int i) { i; }; };
+                                      ^
+
+"Test_name.c", line 145: error: identifier "i" is undefined
+  bool r40 = requires { requires (int i) { i; }; };
+                                           ^
+
+"Test_name.c", line 145: error: expected a "}"
+  bool r40 = requires { requires (int i) { i; }; };
+                                            ^
+
+"Test_name.c", line 145: error: atomic constraint must have type bool
+  bool r40 = requires { requires (int i) { i; }; };
+                                 ^
+
+"Test_name.c", line 145: error: expected a declaration
+  bool r40 = requires { requires (int i) { i; }; };
+                                                 ^
+
+"Test_name.c", line 148: error: expected an expression
+  bool r41 = requires { requires (); };
+                                  ^
+
+"Test_name.c", line 151: error: expected a type name
+  bool r42 = requires { typename long; }; // expected-error {{expected a qualified name after 'typename'}}
+                                 ^
+
+"Test_name.c", line 155: error: expected a type name
+   typename _BitInt(N); // expected-error {{expected a qualified name after 'typename'}}
+            ^
+
+"Test_name.c", line 168: error: expected a ")"
+      requires { requires(int; } // expected-error {{expected ')'}} \
+                             ^
+
+"Test_name.c", line 168: error: expected an expression
+      requires { requires(int; } // expected-error {{expected ')'}} \
+                             ^
+
+"Test_name.c", line 168: warning: expression has no effect
+      requires { requires(int; } // expected-error {{expected ')'}} \
+      ^
+
+"Test_name.c", line 171: error: expected a ";"
+  }
+  ^
+
+45 errors detected in the compilation of "Test_name.c".

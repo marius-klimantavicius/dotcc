@@ -1,0 +1,53 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: warning: variable "i" is used before its value is set
+    auto lam = [i]{};		// { dg-message "" }
+                ^
+
+"Test_name.c", line 9: error: no instance of constructor "lambda []()->void::<unnamed>" matches the argument list
+            argument types are: (int)
+    decltype(lam) lam2 = { 1 };	// { dg-error "" "not an aggregate" }
+                         ^
+"Test_name.c", line 8: note: function "lambda []()->void::<unnamed>(const lambda []()->void &)" does not match because argument #1 does not match parameter
+    auto lam = [i]{};		// { dg-message "" }
+               ^
+"Test_name.c", line 8: note: function "lambda []()->void::<unnamed>(lambda []()->void &&)" does not match because argument #1 does not match parameter
+    auto lam = [i]{};		// { dg-message "" }
+               ^
+"Test_name.c", line 8: note: number of parameters of function "lambda []()->void::<unnamed>()" does not match the call
+    auto lam = [i]{};		// { dg-message "" }
+               ^
+
+"Test_name.c", line 10: error: the default constructor of "lambda []()->void" cannot be referenced -- it is a deleted function
+    decltype(lam) lam3;		// { dg-error "" "deleted default ctor" }
+                  ^
+
+"Test_name.c", line 11: error: function "lambda []()->void::operator=(const lambda []()->void &)" (declared implicitly) cannot be referenced -- it is a deleted function
+    lam3 = lam;			// { dg-error "" "deleted assignment op" }
+         ^
+
+"Test_name.c", line 18: error: no instance of constructor "lambda []()->void::<unnamed>" matches the argument list
+            argument types are: (int)
+    decltype(lam) lam2 = { 1 };	// { dg-error "" "not an aggregate" }
+                         ^
+"Test_name.c", line 17: note: function "lambda []()->void::<unnamed>(const lambda []()->void &)" does not match because argument #1 does not match parameter
+    auto lam = [i]{};		// { dg-message "" }
+               ^
+"Test_name.c", line 17: note: function "lambda []()->void::<unnamed>(lambda []()->void &&)" does not match because argument #1 does not match parameter
+    auto lam = [i]{};		// { dg-message "" }
+               ^
+"Test_name.c", line 17: note: number of parameters of function "lambda []()->void::<unnamed>()" does not match the call
+    auto lam = [i]{};		// { dg-message "" }
+               ^
+          detected during instantiation of "void g(T) [with T=int]" at line 26
+
+"Test_name.c", line 19: error: the default constructor of "lambda []()->void" cannot be referenced -- it is a deleted function
+    decltype(lam) lam3;		// { dg-error "" "deleted default ctor" }
+                  ^
+          detected during instantiation of "void g(T) [with T=int]" at line 26
+
+"Test_name.c", line 20: error: function "lambda []()->void::operator=(const lambda []()->void &)" (declared implicitly) cannot be referenced -- it is a deleted function
+    lam3 = lam;			// { dg-error "" "deleted assignment op" }
+         ^
+          detected during instantiation of "void g(T) [with T=int]" at line 26
+
+6 errors detected in the compilation of "Test_name.c".

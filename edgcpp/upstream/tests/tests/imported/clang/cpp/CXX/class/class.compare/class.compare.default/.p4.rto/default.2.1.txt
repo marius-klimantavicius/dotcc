@@ -1,0 +1,107 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++23 Test_name.c
+"Test_name.c", line 26: error: identifier "operator<=>" is undefined
+    constexpr std::strong_ordering (*test_a_threeway_not_found)(const A&, const A&) = &operator<=>; // expected-error {{undeclared}}
+                                                                                       ^
+
+"Test_name.c", line 28: error: exception specification is incompatible with that of previous function "N::operator<=>" (declared at line 23)
+    constexpr std::strong_ordering operator<=>(const A&, const A&) noexcept;
+                                                                   ^
+
+"Test_name.c", line 33: error: identifier "operator==" is undefined
+    constexpr bool (*test_a_equal_not_found)(const A&, const A&) = &operator==; // expected-error {{undeclared}}
+                                                                    ^
+
+"Test_name.c", line 35: error: function "N::operator==" (declared implicitly) was previously declared constexpr
+    constexpr bool operator==(const A&, const A&) noexcept;
+                   ^
+
+"Test_name.c", line 56: error: member function declared with "override" does not override a base class member
+    bool operator==(const B2&) const override; // expected-error {{only virtual member functions}}
+         ^
+
+"Test_name.c", line 69: error: no valid std::weak_ordering type found (<compare> must be included)
+  struct F {
+         ^
+
+"Test_name.c", line 69: error: no valid std::partial_ordering type found (<compare> must be included)
+  struct F {
+         ^
+
+"Test_name.c", line 73: warning: function "F::operator<=>" was declared deprecated ("oh no")
+    void(f <=> f); // expected-warning {{oh no}}
+           ^
+"Test_name.c", line 70: note: because of a "deprecated" attribute
+    [[deprecated("oh no")]] std::strong_ordering operator<=>(const F&) const = default; // expected-note 4{{deprecated}}
+      ^
+
+"Test_name.c", line 74: warning: function "F::operator<=>" was declared deprecated ("oh no")
+    void(f < f); // expected-warning {{oh no}}
+           ^
+"Test_name.c", line 70: note: because of a "deprecated" attribute
+    [[deprecated("oh no")]] std::strong_ordering operator<=>(const F&) const = default; // expected-note 4{{deprecated}}
+      ^
+
+"Test_name.c", line 86: error: function "G::operator<=>" (declared at line 82) is inaccessible
+    void(g <=> g); // expected-error {{private}}
+           ^
+
+"Test_name.c", line 87: error: function "G::operator==" (declared implicitly) is inaccessible
+    void(g == g); // expected-error {{private}}
+           ^
+
+"Test_name.c", line 133: error: no operator "==" matches these operands
+            operand types are: NoInjectionIfOperatorEqualsDeclared::A == NoInjectionIfOperatorEqualsDeclared::A
+    bool test_a = A() == A(); // expected-error {{invalid operands}}
+                      ^
+"Test_name.c", line 130: note: function "NoInjectionIfOperatorEqualsDeclared::A::operator==" does not match because argument #1 does not match parameter
+      void operator==(int); // expected-note 2{{not viable}}
+           ^
+"Test_name.c", line 133: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    bool test_a = A() == A(); // expected-error {{invalid operands}}
+                      ^
+"Test_name.c", line 133: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    bool test_a = A() == A(); // expected-error {{invalid operands}}
+                      ^
+
+"Test_name.c", line 139: error: no operator "==" matches these operands
+            operand types are: NoInjectionIfOperatorEqualsDeclared::B == NoInjectionIfOperatorEqualsDeclared::B
+    bool test_b = B() == B(); // expected-error {{invalid operands}}
+                      ^
+"Test_name.c", line 136: note: function "NoInjectionIfOperatorEqualsDeclared::operator==" does not match because argument #1 does not match parameter
+      friend void operator==(int, struct Q); // expected-note 2{{not viable}}
+                  ^
+"Test_name.c", line 139: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    bool test_b = B() == B(); // expected-error {{invalid operands}}
+                      ^
+"Test_name.c", line 139: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    bool test_b = B() == B(); // expected-error {{invalid operands}}
+                      ^
+
+"Test_name.c", line 145: error: no operator "==" matches these operands
+            operand types are: NoInjectionIfOperatorEqualsDeclared::C == NoInjectionIfOperatorEqualsDeclared::C
+    bool test_c = C() == C(); // expected-error {{invalid operands}}
+                      ^
+"Test_name.c", line 142: note: function "NoInjectionIfOperatorEqualsDeclared::C::operator==" does not match because argument #1 does not match parameter
+      void operator==(int); // expected-note 2{{not viable}}
+           ^
+"Test_name.c", line 145: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    bool test_c = C() == C(); // expected-error {{invalid operands}}
+                      ^
+"Test_name.c", line 145: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    bool test_c = C() == C(); // expected-error {{invalid operands}}
+                      ^
+
+"Test_name.c", line 163: error: default constexpr comparison function calls non-constexpr function function "GH61238::operator==(GH61238::non_constexpr_type, GH61238::non_constexpr_type) noexcept" (declared at line 167)
+      constexpr friend bool operator==(const my_struct &, const my_struct &) noexcept = default; // cxx2a-error {{cannot be declared constexpr}}
+                            ^
+          detected during instantiation of class "GH61238::my_struct<A> [with A=GH61238::non_constexpr_type]" at line 172
+
+"Test_name.c", line 26: warning: variable "N::test_a_threeway_not_found" was declared but never referenced
+    constexpr std::strong_ordering (*test_a_threeway_not_found)(const A&, const A&) = &operator<=>; // expected-error {{undeclared}}
+                                     ^
+
+"Test_name.c", line 33: warning: variable "N::test_a_equal_not_found" was declared but never referenced
+    constexpr bool (*test_a_equal_not_found)(const A&, const A&) = &operator==; // expected-error {{undeclared}}
+                     ^
+
+13 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"C/C2y/n3482.c", line 14: error: va_start can appear only in a function with an ellipsis parameter
+    __builtin_va_start(list, a);
+    ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=5 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c11 --ms_extensions -DMS Test_name.c
+"Test_name.c", line 49: error: enum "BadFwd" (declared at line 42) was previously declared with a different base type
+  enum BadFwd : char { e3 };
+       ^
+
+1 error detected in the compilation of "Test_name.c".

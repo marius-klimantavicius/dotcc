@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 11: error: declaration of a member with the same name as its class
+      template<int> struct A {};	// { dg-error "same name" }
+                           ^
+
+"Test_name.c", line 14: error: overloaded function "A::A" is not a template
+  A::A<0> a;	// { dg-error "not a template|constructor" }
+     ^
+
+2 errors detected in the compilation of "Test_name.c".

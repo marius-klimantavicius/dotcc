@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 7: warning: the alignment of an array of unspecified bound is nonstandard in C
+  int a = alignof(int[]); /* { dg-error "incomplete" } */
+                  ^
+
+"Test_name.c", line 8: warning: the alignment of an array of unspecified bound is nonstandard in C
+  int b = alignof(int[][1]); /* { dg-error "incomplete" } */
+                  ^
+

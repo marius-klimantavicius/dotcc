@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 Test_name.c
+"./init-string-1.c", line 31: warning: a value of type "long *" cannot be used to initialize an entity of type "wchar_t" (aka "int")
+    (L"j")
+    ^
+
+"./init-string-1.c", line 39: warning: a value of type "long *" cannot be used to initialize an entity of type "wchar_t" (aka "int")
+    L"k"
+    ^
+
+"./init-string-1.c", line 43: warning: a value of type "long *" cannot be used to initialize an entity of type "wchar_t" (aka "int")
+    .c = (L"l"),
+         ^
+
+"./init-string-1.c", line 49: warning: a value of type "long *" cannot be used to initialize an entity of type "wchar_t" (aka "int")
+    .c = L"m",
+         ^
+
+"./init-string-1.c", line 59: warning: a value of type "long *" cannot be used to initialize an entity of type "wchar_t" (aka "int")
+  wchar_t *p = (wchar_t [5]){ (L"p") };
+                              ^
+

@@ -1,0 +1,5 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 Test_name.c
+"./c11-align-2.c", line 43: warning: variable "auto_ll" was declared but never referenced
+           (max_align_t) long long auto_ll;
+                                   ^
+

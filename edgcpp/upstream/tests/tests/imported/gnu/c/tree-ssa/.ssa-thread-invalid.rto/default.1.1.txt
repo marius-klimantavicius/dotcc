@@ -1,0 +1,78 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 11: warning: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+  void __GIMPLE (ssa)
+                 ^
+
+"Test_name.c", line 12: error: expected a declaration
+  f1 ()
+  ^
+
+"Test_name.c", line 34: warning: parsing restarts here after previous syntax error
+    return;
+          ^
+
+"Test_name.c", line 11: warning: standard requires that parameter "ssa" be given a type by a subsequent declaration ("int" assumed)
+  void __GIMPLE (ssa)
+                 ^
+
+"Test_name.c", line 36: error: expected a "{"
+  }
+  ^
+
+"Test_name.c", line 40: warning: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+  void __GIMPLE (ssa)
+                 ^
+
+"Test_name.c", line 41: error: expected a declaration
+  f2 ()
+  ^
+
+"Test_name.c", line 63: warning: parsing restarts here after previous syntax error
+    return;
+          ^
+
+"Test_name.c", line 40: warning: standard requires that parameter "ssa" be given a type by a subsequent declaration ("int" assumed)
+  void __GIMPLE (ssa)
+                 ^
+
+"Test_name.c", line 40: error: function "__GIMPLE" has already been defined (previous definition at line 11)
+  void __GIMPLE (ssa)
+       ^
+
+"Test_name.c", line 65: error: expected a "{"
+  }
+  ^
+
+"Test_name.c", line 69: warning: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+  int __GIMPLE (ssa)
+                ^
+
+"Test_name.c", line 70: error: expected a declaration
+  f3 (int a)
+  ^
+
+"Test_name.c", line 93: warning: parsing restarts here after previous syntax error
+    i_1 = __PHI (__BB2: 1, __BB5: i_7);
+                                      ^
+
+"Test_name.c", line 69: warning: standard requires that parameter "ssa" be given a type by a subsequent declaration ("int" assumed)
+  int __GIMPLE (ssa)
+                ^
+
+"Test_name.c", line 69: error: function "__GIMPLE" has already been defined (previous definition at line 11)
+  int __GIMPLE (ssa)
+      ^
+
+"Test_name.c", line 94: error: expected a "{"
+    if (i_1 <= 99)
+    ^
+
+"Test_name.c", line 102: warning: parsing restarts here after previous syntax error
+  }
+  ^
+
+"Test_name.c", line 102: warning: missing return statement at end of non-void function "__GIMPLE"
+  }
+  ^
+
+8 errors detected in the compilation of "Test_name.c".

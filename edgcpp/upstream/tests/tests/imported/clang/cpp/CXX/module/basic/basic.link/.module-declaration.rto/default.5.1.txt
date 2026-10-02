@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=5 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 32: error: cannot declare more than one module
+  export module x.y;
+                ^
+
+"Test_name.c", line 36: error: cannot declare more than one module
+  module z; // expected-error {{module 'z' not found}}
+         ^
+
+"Test_name.c", line 40: error: cannot declare more than one module
+  module x;
+         ^
+
+"Test_name.c", line 44: error: cannot declare more than one module
+  export module z;
+                ^
+
+"Test_name.c", line 48: error: cannot declare more than one module
+  export module x;
+                ^
+
+"Test_name.c", line 51: error: cannot declare more than one module
+  export module z elderberry; // expected-error {{expected ';'}} \
+                ^
+
+"Test_name.c", line 56: error: cannot declare more than one module
+  export module z [[]];
+                ^
+
+"Test_name.c", line 56: error: expected a ";"
+  export module z [[]];
+                  ^
+
+"Test_name.c", line 59: error: cannot declare more than one module
+  export module z [[fancy]]; // expected-warning {{unknown attribute 'fancy' ignored}}
+                ^
+
+"Test_name.c", line 59: error: expected a ";"
+  export module z [[fancy]]; // expected-warning {{unknown attribute 'fancy' ignored}}
+                  ^
+
+"Test_name.c", line 62: error: cannot declare more than one module
+  export module z [[maybe_unused]]; // expected-error-re {{'maybe_unused' attribute cannot be applied to a module{{$}}}}
+                ^
+
+"Test_name.c", line 62: error: expected a ";"
+  export module z [[maybe_unused]]; // expected-error-re {{'maybe_unused' attribute cannot be applied to a module{{$}}}}
+                  ^
+
+12 errors detected in the compilation of "Test_name.c".

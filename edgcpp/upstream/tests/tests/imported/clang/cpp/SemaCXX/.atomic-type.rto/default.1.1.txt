@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 55: warning: type qualifiers are meaningless here
+  typedef _Atomic atomic_int_ref atomic_int_ref; // expected-warning {{'_Atomic' qualifier on reference type 'atomic_int_ref' (aka '_Atomic(int) &') has no effect}} \
+          ^
+
+"Test_name.c", line 58: warning: type qualifier on a reference type is not allowed
+  typedef int &_Atomic atomic_reference_to_int; // expected-error {{'_Atomic' qualifier may not be applied to a reference}} \
+               ^
+
+"Test_name.c", line 64: warning: anonymous union qualifier is ignored
+    _Atomic union { int n; }; // expected-warning {{anonymous union cannot be '_Atomic'}} \
+    ^
+
+"Test_name.c", line 98: warning: extra braces are nonstandard
+    Y y3 = { X(0), { 4 } }; // expected-error {{illegal initializer type}}
+                   ^
+
+"Test_name.c", line 99: error: initialization with "{...}" is not allowed for object of type "_Atomic(copy_init::X)"
+    Y y4 = { { X(0) }, 4 };
+             ^
+
+"Test_name.c", line 102: error: initialization with "{...}" is not allowed for object of type "_Atomic(copy_init::X)"
+    _Atomic(X) ax = { X(0) }; // expected-warning {{'_Atomic' is a C11 extension}}
+                    ^
+
+2 errors detected in the compilation of "Test_name.c".

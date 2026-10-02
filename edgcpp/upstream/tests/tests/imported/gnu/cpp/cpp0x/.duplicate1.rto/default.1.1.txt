@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 11: error: duplicate class modifier
+  struct B final final : A  /* { dg-error "duplicate virt-specifier" }
+                 ^
+
+"Test_name.c", line 18: error: duplicate function modifier
+    virtual void foo() const override final override;  /* { dg-error "duplicate virt-specifier" }
+                 ^
+
+"Test_name.c", line 26: error: duplicate specifier in declaration
+  thread_local thread_local int i = 0;  /* { dg-error "duplicate" }
+                            ^
+
+3 errors detected in the compilation of "Test_name.c".

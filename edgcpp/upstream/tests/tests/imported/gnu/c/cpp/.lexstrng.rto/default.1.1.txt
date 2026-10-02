@@ -1,0 +1,44 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 28: warning: support for trigraphs is disabled
+  r??/
+   ^
+
+"Test_name.c", line 25: error: missing closing quote
+  const char *str1 = "s\
+                     ^
+
+"Test_name.c", line 29: error: expected a ";"
+    1";
+    ^
+
+"Test_name.c", line 29: error: missing closing quote
+    1";
+     ^
+
+"Test_name.c", line 31: error: missing closing quote
+  const char x = '\
+                 ^
+
+"Test_name.c", line 33: error: missing closing quote
+  b';
+   ^
+
+"Test_name.c", line 36: warning: parsing restarts here after previous syntax error
+  const char *term = "\"\\\"\\";
+                               ^
+
+"Test_name.c", line 47: error: missing closing quote
+  const char *t = "??/\??<??>??=??)??\
+                  ^
+
+"Test_name.c", line 49: error: missing closing quote
+  ?-";
+    ^
+
+"Test_name.c", line 51: error: expected a ":"
+  int main (int argc, char *argv[])
+  ^
+
+At end of source: error: expected a ";"
+
+9 errors detected in the compilation of "Test_name.c".

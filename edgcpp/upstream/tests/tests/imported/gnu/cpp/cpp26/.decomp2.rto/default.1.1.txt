@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 27: warning: structured bindings are a C++17 feature
+    auto [ c [[]], d, e [[gnu::deprecated]] ] = a;	// { dg-warning "structured bindings with attributed identifiers only available with" "" { target { c++17 && c++23_down } } }
+         ^
+
+"Test_name.c", line 27: error: expected a "]"
+    auto [ c [[]], d, e [[gnu::deprecated]] ] = a;	// { dg-warning "structured bindings with attributed identifiers only available with" "" { target { c++17 && c++23_down } } }
+             ^
+
+"Test_name.c", line 27: error: there are more elements than there are binding names
+    auto [ c [[]], d, e [[gnu::deprecated]] ] = a;	// { dg-warning "structured bindings with attributed identifiers only available with" "" { target { c++17 && c++23_down } } }
+         ^
+
+"Test_name.c", line 31: error: identifier "d" is undefined
+    ++d;
+      ^
+
+"Test_name.c", line 32: error: identifier "e" is undefined
+    ++e;							// { dg-warning "'e' is deprecated" }
+      ^
+
+"Test_name.c", line 33: warning: structured bindings are a C++17 feature
+    auto [ f, h [[gnu::deprecated]] [[]], i [[]], j ] = b;// { dg-warning "structured bindings with attributed identifiers only available with" "" { target { c++17 && c++23_down } } }
+         ^
+
+"Test_name.c", line 33: error: expected a "]"
+    auto [ f, h [[gnu::deprecated]] [[]], i [[]], j ] = b;// { dg-warning "structured bindings with attributed identifiers only available with" "" { target { c++17 && c++23_down } } }
+                ^
+
+"Test_name.c", line 33: error: there are more elements than there are binding names
+    auto [ f, h [[gnu::deprecated]] [[]], i [[]], j ] = b;// { dg-warning "structured bindings with attributed identifiers only available with" "" { target { c++17 && c++23_down } } }
+         ^
+
+"Test_name.c", line 38: error: identifier "i" is undefined
+    ++i;
+      ^
+
+"Test_name.c", line 39: error: identifier "j" is undefined
+    ++j;
+      ^
+
+"Test_name.c", line 40: warning: structured bindings are a C++17 feature
+    for (auto [ k, l [[gnu::deprecated]], m, n [[]]] : z)	// { dg-warning "structured bindings with attributed identifiers only available with" "" { target { c++17 && c++23_down } } }
+              ^
+
+"Test_name.c", line 40: error: expected a "]"
+    for (auto [ k, l [[gnu::deprecated]], m, n [[]]] : z)	// { dg-warning "structured bindings with attributed identifiers only available with" "" { target { c++17 && c++23_down } } }
+                     ^
+
+"Test_name.c", line 40: error: there are more elements than there are binding names
+    for (auto [ k, l [[gnu::deprecated]], m, n [[]]] : z)	// { dg-warning "structured bindings with attributed identifiers only available with" "" { target { c++17 && c++23_down } } }
+              ^
+
+"Test_name.c", line 45: error: identifier "m" is undefined
+        ++m;
+          ^
+
+"Test_name.c", line 46: error: identifier "n" is undefined
+        ++n;
+          ^
+
+12 errors detected in the compilation of "Test_name.c".

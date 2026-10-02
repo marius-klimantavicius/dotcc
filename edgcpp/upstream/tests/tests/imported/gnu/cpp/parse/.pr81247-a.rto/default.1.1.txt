@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 7: error: expected a "{"
+  template < typename T > class A
+  ^
+
+"Test_name.c", line 9: error: identifier "T" is undefined
+    template < T > friend class N;
+               ^
+
+"Test_name.c", line 9: error: invalid specifier outside a class declaration
+    template < T > friend class N;
+                   ^
+
+"Test_name.c", line 14: error: identifier "A" is undefined
+    A < int > a1; //  { dg-message "required from here" }
+    ^
+
+"Test_name.c", line 14: error: type name is not allowed
+    A < int > a1; //  { dg-message "required from here" }
+        ^
+
+"Test_name.c", line 14: error: identifier "a1" is undefined
+    A < int > a1; //  { dg-message "required from here" }
+              ^
+
+6 errors detected in the compilation of "Test_name.c".

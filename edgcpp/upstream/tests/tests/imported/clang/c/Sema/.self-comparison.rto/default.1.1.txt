@@ -1,0 +1,45 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 58: warning: statement is unreachable
+    return array1 != array1; // expected-warning{{self-comparison always evaluates to false}}
+    ^
+
+"Test_name.c", line 59: warning: statement is unreachable
+    return array1 < array1; // expected-warning{{self-comparison always evaluates to false}}
+    ^
+
+"Test_name.c", line 60: warning: statement is unreachable
+    return array1 <= array1; // expected-warning{{self-comparison always evaluates to true}}
+    ^
+
+"Test_name.c", line 61: warning: statement is unreachable
+    return array1 > array1; // expected-warning{{self-comparison always evaluates to false}}
+    ^
+
+"Test_name.c", line 62: warning: statement is unreachable
+    return array1 >= array1; // expected-warning{{self-comparison always evaluates to true}}
+    ^
+
+"Test_name.c", line 67: warning: statement is unreachable
+    return array1 == array2; // expected-warning{{array comparison always evaluates to false}}
+    ^
+
+"Test_name.c", line 68: warning: statement is unreachable
+    return array1 != array2; // expected-warning{{array comparison always evaluates to true}}
+    ^
+
+"Test_name.c", line 73: warning: statement is unreachable
+    return array1 < array2; // expected-warning{{array comparison always evaluates to a constant}}
+    ^
+
+"Test_name.c", line 74: warning: statement is unreachable
+    return array1 <= array2; // expected-warning{{array comparison always evaluates to a constant}}
+    ^
+
+"Test_name.c", line 75: warning: statement is unreachable
+    return array1 > array2; // expected-warning{{array comparison always evaluates to a constant}}
+    ^
+
+"Test_name.c", line 76: warning: statement is unreachable
+    return array1 >= array2; // expected-warning{{array comparison always evaluates to a constant}}
+    ^
+

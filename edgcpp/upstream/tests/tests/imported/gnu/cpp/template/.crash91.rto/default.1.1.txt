@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: error: an explicit template argument list is not allowed on this declaration
+    typedef void foo<0>(); // { dg-error "16:explicit template argument list not allowed" } 
+                 ^
+
+1 error detected in the compilation of "Test_name.c".

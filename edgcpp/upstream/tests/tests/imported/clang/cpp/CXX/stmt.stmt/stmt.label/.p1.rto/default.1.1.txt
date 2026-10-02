@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 14: error: label "label1" has already been defined (previous definition at line 10)
+  label1: // expected-error{{redefinition of label 'label1'}}
+  ^
+
+"Test_name.c", line 7: warning: variable "x" was set but never used
+    int x = 0;
+        ^
+
+"Test_name.c", line 12: error: label "label2" was referenced but not defined
+    goto label2; // expected-error{{use of undeclared label 'label2'}}
+         ^
+
+"Test_name.c", line 25: error: default label has already appeared in this switch
+      default:; // expected-note{{previous case defined here}}
+      ^
+
+3 errors detected in the compilation of "Test_name.c".

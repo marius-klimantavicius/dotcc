@@ -1,0 +1,8 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 26: error: more than one conversion function from "const B" to "int" applies:
+            function "A1::operator int() const" (declared at line 12)
+            function "A2::operator int() const" (declared at line 17)
+    return b; // { dg-error "ambiguous" }
+           ^
+
+1 error detected in the compilation of "Test_name.c".

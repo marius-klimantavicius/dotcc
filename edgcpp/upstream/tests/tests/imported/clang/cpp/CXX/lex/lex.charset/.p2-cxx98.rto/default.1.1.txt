@@ -1,0 +1,129 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 5: warning: universal character name specifies an invalid character
+  char c00 = '\u0000'; // expected-error {{universal character name refers to a control character}}
+              ^
+
+"Test_name.c", line 6: warning: universal character name specifies an invalid character
+  char c01 = '\u0001'; // expected-error {{universal character name refers to a control character}}
+              ^
+
+"Test_name.c", line 7: warning: universal character name specifies an invalid character
+  char c1f = '\u001f'; // expected-error {{universal character name refers to a control character}}
+              ^
+
+"Test_name.c", line 8: warning: a universal character name cannot designate a character in the basic character set
+  char c20 = '\u0020'; // ' ', expected-error {{character ' ' cannot be specified by a universal character name}}
+              ^
+
+"Test_name.c", line 9: warning: a universal character name cannot designate a character in the basic character set
+  char c22 = '\u0022'; // ", expected-error {{character '"' cannot be specified by a universal character name}}
+              ^
+
+"Test_name.c", line 10: warning: a universal character name cannot designate a character in the basic character set
+  char c23 = '\u0023'; // #, expected-error {{character '#' cannot be specified by a universal character name}}
+              ^
+
+"Test_name.c", line 12: warning: a universal character name cannot designate a character in the basic character set
+  char c25 = '\u0025'; // %, expected-error {{character '%' cannot be specified by a universal character name}}
+              ^
+
+"Test_name.c", line 13: warning: a universal character name cannot designate a character in the basic character set
+  char c27 = '\u0027'; // ', expected-error {{character ''' cannot be specified by a universal character name}}
+              ^
+
+"Test_name.c", line 14: warning: a universal character name cannot designate a character in the basic character set
+  char c3f = '\u003f'; // ?, expected-error {{character '?' cannot be specified by a universal character name}}
+              ^
+
+"Test_name.c", line 16: warning: a universal character name cannot designate a character in the basic character set
+  char c41 = '\u0041'; // A, expected-error {{character 'A' cannot be specified by a universal character name}}
+              ^
+
+"Test_name.c", line 17: warning: a universal character name cannot designate a character in the basic character set
+  char c5f = '\u005f'; // _, expected-error {{character '_' cannot be specified by a universal character name}}
+              ^
+
+"Test_name.c", line 19: warning: a universal character name cannot designate a character in the basic character set
+  char c7e = '\u007e'; // ~, expected-error {{character '~' cannot be specified by a universal character name}}
+              ^
+
+"Test_name.c", line 20: warning: universal character name specifies an invalid character
+  char c7f = '\u007f'; // expected-error {{universal character name refers to a control character}}
+              ^
+
+"Test_name.c", line 22: warning: universal character name specifies an invalid character
+  wchar_t w007f = L'\u007f'; // expected-error {{universal character name refers to a control character}}
+                    ^
+
+"Test_name.c", line 23: warning: universal character name specifies an invalid character
+  wchar_t w0080 = L'\u0080'; // expected-error {{universal character name refers to a control character}}
+                    ^
+
+"Test_name.c", line 24: warning: universal character name specifies an invalid character
+  wchar_t w009f = L'\u009f'; // expected-error {{universal character name refers to a control character}}
+                    ^
+
+"Test_name.c", line 32: warning: universal character name specifies an invalid character
+  const char *s00 = "\u0000"; // expected-error {{universal character name refers to a control character}}
+                     ^
+
+"Test_name.c", line 33: warning: universal character name specifies an invalid character
+  const char *s01 = "\u0001"; // expected-error {{universal character name refers to a control character}}
+                     ^
+
+"Test_name.c", line 34: warning: universal character name specifies an invalid character
+  const char *s1f = "\u001f"; // expected-error {{universal character name refers to a control character}}
+                     ^
+
+"Test_name.c", line 35: warning: a universal character name cannot designate a character in the basic character set
+  const char *s20 = "\u0020"; // ' ', expected-error {{character ' ' cannot be specified by a universal character name}}
+                     ^
+
+"Test_name.c", line 36: warning: a universal character name cannot designate a character in the basic character set
+  const char *s22 = "\u0022"; // ", expected-error {{character '"' cannot be specified by a universal character name}}
+                     ^
+
+"Test_name.c", line 37: warning: a universal character name cannot designate a character in the basic character set
+  const char *s23 = "\u0023"; // #, expected-error {{character '#' cannot be specified by a universal character name}}
+                     ^
+
+"Test_name.c", line 39: warning: a universal character name cannot designate a character in the basic character set
+  const char *s25 = "\u0025"; // %, expected-error {{character '%' cannot be specified by a universal character name}}
+                     ^
+
+"Test_name.c", line 40: warning: a universal character name cannot designate a character in the basic character set
+  const char *s27 = "\u0027"; // ', expected-error {{character ''' cannot be specified by a universal character name}}
+                     ^
+
+"Test_name.c", line 41: warning: a universal character name cannot designate a character in the basic character set
+  const char *s3f = "\u003f"; // ?, expected-error {{character '?' cannot be specified by a universal character name}}
+                     ^
+
+"Test_name.c", line 43: warning: a universal character name cannot designate a character in the basic character set
+  const char *s41 = "\u0041"; // A, expected-error {{character 'A' cannot be specified by a universal character name}}
+                     ^
+
+"Test_name.c", line 44: warning: a universal character name cannot designate a character in the basic character set
+  const char *s5f = "\u005f"; // _, expected-error {{character '_' cannot be specified by a universal character name}}
+                     ^
+
+"Test_name.c", line 46: warning: a universal character name cannot designate a character in the basic character set
+  const char *s7e = "\u007e"; // ~, expected-error {{character '~' cannot be specified by a universal character name}}
+                     ^
+
+"Test_name.c", line 47: warning: universal character name specifies an invalid character
+  const char *s7f = "\u007f"; // expected-error {{universal character name refers to a control character}}
+                     ^
+
+"Test_name.c", line 49: warning: universal character name specifies an invalid character
+  const wchar_t *ws007f = L"\u007f"; // expected-error {{universal character name refers to a control character}}
+                            ^
+
+"Test_name.c", line 50: warning: universal character name specifies an invalid character
+  const wchar_t *ws0080 = L"\u0080"; // expected-error {{universal character name refers to a control character}}
+                            ^
+
+"Test_name.c", line 51: warning: universal character name specifies an invalid character
+  const wchar_t *ws009f = L"\u009f"; // expected-error {{universal character name refers to a control character}}
+                            ^
+

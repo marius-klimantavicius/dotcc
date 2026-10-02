@@ -1,0 +1,86 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/std_abs.h", line 90: error: identifier "__int128" is undefined
+    __extension__ inline constexpr __int128
+                                   ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/std_abs.h", line 91: error: identifier "__int128" is undefined
+    abs(__int128 __x) { return __x >= 0 ? __x : -__x; }
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 100: error: enum "std::align_val_t" was previously declared with a different base type
+    enum class align_val_t: size_t {};
+               ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 137: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 140: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 155: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 158: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 168: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t, std::align_val_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 171: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t, std::align_val_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 179: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, std::align_val_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 182: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, std::align_val_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 206: error: first parameter of allocation function must be of type "size_t"
+  void* operator new(std::size_t, void* __p)
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 210: error: first parameter of allocation function must be of type "size_t"
+  void* operator new[](std::size_t, void* __p)
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 421: error: identifier "__int128" is undefined
+      struct __is_integral_helper<__int128>
+                                  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 426: error: expected a ">"
+      struct __is_integral_helper<unsigned __int128>
+                                           ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 812: error: expected a ">"
+     , signed __int128
+              ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 832: error: expected a ">"
+     , unsigned __int128
+                ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 1877: error: identifier "__int128" is undefined
+      struct __make_unsigned<__int128>
+                             ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 1878: error: expected a ";"
+      { using __type = unsigned __int128; };
+                                ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 2037: error: expected a ">"
+      struct __make_signed<unsigned __int128>
+                                    ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 2038: error: identifier "__int128" is undefined
+      { using __type = __int128; };
+                       ^
+
+21 errors detected in the compilation of "Test_name.c".

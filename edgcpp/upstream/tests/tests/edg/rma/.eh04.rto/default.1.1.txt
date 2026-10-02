@@ -1,0 +1,38 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 11: error: incomplete type "A" is not allowed
+      case 0:  throw *pa;  break;
+                     ^
+
+"Test_name.c", line 11: warning: statement is unreachable
+      case 0:  throw *pa;  break;
+                           ^
+
+"Test_name.c", line 12: error: incomplete type "B<int>" is not allowed
+      case 1:  throw *pbi; break;
+                     ^
+
+"Test_name.c", line 12: warning: statement is unreachable
+      case 1:  throw *pbi; break;
+                           ^
+
+"Test_name.c", line 13: warning: variable "pc" is used before its value is set
+      default: throw *pc;  break;
+                      ^
+
+"Test_name.c", line 13: warning: statement is unreachable
+      default: throw *pc;  break;
+                           ^
+
+"Test_name.c", line 21: error: incomplete type "A" is not allowed
+    catch (A) { }
+           ^
+
+"Test_name.c", line 22: error: incomplete type "B<int>" is not allowed
+    catch (B<int>) { }
+           ^
+
+"Test_name.c", line 23: remark: use of a local type to specify an exception
+    catch (C) { }
+           ^
+
+4 errors detected in the compilation of "Test_name.c".

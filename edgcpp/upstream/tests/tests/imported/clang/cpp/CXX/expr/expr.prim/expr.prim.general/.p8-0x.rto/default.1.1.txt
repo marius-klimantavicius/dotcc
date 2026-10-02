@@ -1,0 +1,51 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 35: error: qualified name is not a member of class "PR10127::outer::middle::inner" or its base classes
+      a.decltype(outer::middle())::mfunc(); // expected-error{{'PR10127::outer::middle::mfunc' is not a member of class 'decltype(outer::middle::inner())'}}
+        ^
+
+"Test_name.c", line 46: error: class "PR10127::outer" has no member "fail"
+    decltype(outer())::fail d; // expected-error{{no type named 'fail' in 'PR10127::outer'}}
+                       ^
+
+"Test_name.c", line 47: error: name followed by "::" must be a class or namespace name
+    decltype(outer())::fail::inner e; // expected-error{{no member named 'fail' in 'PR10127::outer'}}
+                       ^
+
+"Test_name.c", line 48: error: expected an expression
+    decltype()::fail f; // expected-error{{expected expression}}
+             ^
+
+"Test_name.c", line 49: error: expected an expression
+    decltype()::middle::fail g; // expected-error{{expected expression}}
+             ^
+
+"Test_name.c", line 52: error: result of decltype qualifier "int" is not a class or enumeration
+    decltype(int())::PR10127::outer i; // expected-error{{'decltype(int())' (aka 'int') is not a class, namespace, or enumeration}}
+    ^
+
+"Test_name.c", line 53: error: result of decltype qualifier "int" is not a class or enumeration
+    decltype(int())::global j; // expected-error{{'decltype(int())' (aka 'int') is not a class, namespace, or enumeration}}
+    ^
+
+"Test_name.c", line 60: error: result of decltype qualifier "int" is not a class or enumeration
+      typename decltype(T())::middle::inner x; // expected-error{{type 'decltype(int())' (aka 'int') cannot be used prior to '::' because it has no members}}
+               ^
+          detected during instantiation of class "PR10127::templ<T> [with T=int]" at line 63
+
+"Test_name.c", line 78: error: expected a "("
+      enum G : decltype; // expected-error{{expected '(' after 'decltype'}}
+                       ^
+
+"Test_name.c", line 78: error: expected an expression
+      enum G : decltype; // expected-error{{expected '(' after 'decltype'}}
+                       ^
+
+"Test_name.c", line 78: error: expected a ")"
+      enum G : decltype; // expected-error{{expected '(' after 'decltype'}}
+                       ^
+
+"Test_name.c", line 79: error: invalid combination of type specifiers
+      enum H : 4; // expected-error {{anonymous bit-field}}
+      ^
+
+12 errors detected in the compilation of "Test_name.c".

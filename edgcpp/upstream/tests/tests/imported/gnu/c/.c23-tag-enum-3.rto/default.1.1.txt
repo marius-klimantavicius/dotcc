@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 7: error: this declaration of enum "A" does not declare the same type as the declaration at line 7
+  enum A { N = 0 * sizeof(enum A { M = 1 }) }; 	/* { dg-error "nested" } */
+                               ^
+
+"Test_name.c", line 7: error: incomplete type "enum A" is not allowed
+  enum A { N = 0 * sizeof(enum A { M = 1 }) }; 	/* { dg-error "nested" } */
+                          ^
+
+2 errors detected in the compilation of "Test_name.c".

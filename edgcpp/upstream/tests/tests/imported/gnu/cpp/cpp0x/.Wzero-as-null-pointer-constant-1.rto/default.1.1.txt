@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 24: warning: variable "pmfn" was declared but never referenced
+    pointmemfun pmfn(nullptr);
+                ^
+
+"Test_name.c", line 25: warning: variable "pdmn" was declared but never referenced
+    pointdmem   pdmn(nullptr);
+                ^
+
+"Test_name.c", line 26: warning: variable "pfn" was declared but never referenced
+    pointfun    pfn(nullptr);
+                ^
+
+"Test_name.c", line 27: warning: variable "pn" was declared but never referenced
+    int*        pn(nullptr);
+                ^
+

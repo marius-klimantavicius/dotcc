@@ -1,0 +1,10 @@
+//options_all:-r -x -tused
+//options: --strict;cn
+
+struct A {
+  A();
+  void A();
+};
+A a;
+
+

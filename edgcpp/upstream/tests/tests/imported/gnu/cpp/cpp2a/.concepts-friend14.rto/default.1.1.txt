@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 22: error: declaration is incompatible with template parameter "T" (declared at line 20)
+    template<class U> friend struct D; // { dg-error "different constraints" }
+                   ^
+
+"Test_name.c", line 8: error: requires-clause incompatible with class template "A" (declared at line 7)
+    template<class U> friend struct A;                   // { dg-error "different constraints" }
+                                    ^
+          detected during instantiation of class "A<T> [with T=int]" at line 26
+
+"Test_name.c", line 15: error: requires-clause incompatible with class template "B" (declared at line 13)
+    template<class U> requires true friend struct B; // { dg-error "different constraints" }
+                      ^
+          detected during instantiation of class "B<T> [with T=int]" at line 27
+
+3 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: warning: variable "b0" was declared but never referenced
+  const bool b0 = &i == 0; // { dg-warning "the address of .i. will never be NULL" }
+             ^
+
+"Test_name.c", line 11: warning: variable "b1" was declared but never referenced
+  const bool b1 = p == 0; // { dg-warning "the address of .i. will never be NULL" }
+             ^
+
+"Test_name.c", line 12: warning: variable "b2" was declared but never referenced
+  const bool b2 = 0 == p; // { dg-warning "the address of .i. will never be NULL" }
+             ^
+
+"Test_name.c", line 13: warning: variable "b3" was declared but never referenced
+  const bool b3 = p != 0; // { dg-warning "the address of .i. will never be NULL" }
+             ^
+
+"Test_name.c", line 14: warning: variable "b4" was declared but never referenced
+  const bool b4 = 0 != p; // { dg-warning "the address of .i. will never be NULL" }
+             ^
+

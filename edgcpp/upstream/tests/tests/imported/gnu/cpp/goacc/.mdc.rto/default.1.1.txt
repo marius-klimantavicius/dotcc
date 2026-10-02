@@ -1,0 +1,113 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 21: warning: unrecognized #pragma
+  #pragma acc enter data copyin(rs) detach(rz) /* { dg-error ".detach. is not valid for" } */
+          ^
+
+"Test_name.c", line 23: warning: unrecognized #pragma
+  #pragma acc data copy(rs.a[0:10]) copy(rz[0:10])
+          ^
+
+"Test_name.c", line 26: warning: unrecognized #pragma
+  #pragma acc parallel loop attach(rs.e) detach(rs.b) /* { dg-error ".detach. is not valid for" } */
+          ^
+
+"Test_name.c", line 31: warning: unrecognized #pragma
+  #pragma acc enter data attach(ra) detach(rs.c) /* { dg-error ".detach. is not valid for" } */
+          ^
+
+"Test_name.c", line 32: warning: unrecognized #pragma
+  #pragma acc exit data detach(ra)
+          ^
+
+"Test_name.c", line 35: warning: unrecognized #pragma
+  #pragma acc enter data attach(rz[:5]) /* { dg-error "expected single pointer in .attach. clause" } */
+          ^
+
+"Test_name.c", line 37: warning: unrecognized #pragma
+  #pragma acc exit data detach(rz[:5]) /* { dg-error "expected single pointer in .detach. clause" } */
+          ^
+
+"Test_name.c", line 39: warning: unrecognized #pragma
+  #pragma acc enter data attach(rz[1:]) /* { dg-error "expected single pointer in .attach. clause" } */
+          ^
+
+"Test_name.c", line 41: warning: unrecognized #pragma
+  #pragma acc exit data detach(rz[1:]) /* { dg-error "expected single pointer in .detach. clause" } */
+          ^
+
+"Test_name.c", line 43: warning: unrecognized #pragma
+  #pragma acc enter data attach(rz[:]) /* { dg-error "expected single pointer in .attach. clause" } */
+          ^
+
+"Test_name.c", line 45: warning: unrecognized #pragma
+  #pragma acc exit data detach(rz[:]) /* { dg-error "expected single pointer in .detach. clause" } */
+          ^
+
+"Test_name.c", line 47: warning: unrecognized #pragma
+  #pragma acc enter data attach(rz[3]) /* { dg-error "expected pointer in .attach. clause" } */
+          ^
+
+"Test_name.c", line 49: warning: unrecognized #pragma
+  #pragma acc exit data detach(rz[3]) /* { dg-error "expected pointer in .detach. clause" } */
+          ^
+
+"Test_name.c", line 52: warning: unrecognized #pragma
+  #pragma acc enter data attach(rs.e)
+          ^
+
+"Test_name.c", line 53: warning: unrecognized #pragma
+  #pragma acc exit data detach(rs.e) attach(rz) /* { dg-error ".attach. is not valid for" } */
+          ^
+
+"Test_name.c", line 55: warning: unrecognized #pragma
+  #pragma acc data attach(rs.e)
+          ^
+
+"Test_name.c", line 58: warning: unrecognized #pragma
+  #pragma acc exit data delete(ra) attach(rs.a) /* { dg-error ".attach. is not valid for" } */
+          ^
+
+"Test_name.c", line 60: warning: unrecognized #pragma
+  #pragma acc enter data attach(rscalar) /* { dg-error "expected pointer in .attach. clause" } */
+          ^
+
+"Test_name.c", line 62: warning: unrecognized #pragma
+  #pragma acc exit data detach(rscalar) /* { dg-error "expected pointer in .detach. clause" } */
+          ^
+
+"Test_name.c", line 64: warning: unrecognized #pragma
+  #pragma acc enter data attach(rs) /* { dg-error "expected pointer in .attach. clause" } */
+          ^
+
+"Test_name.c", line 66: warning: unrecognized #pragma
+  #pragma acc exit data detach(rs) /* { dg-error "expected pointer in .detach. clause" } */
+          ^
+
+"Test_name.c", line 70: warning: unrecognized #pragma
+  #pragma acc enter data attach(ry[10])
+          ^
+
+"Test_name.c", line 71: warning: unrecognized #pragma
+  #pragma acc exit data detach(ry[10])
+          ^
+
+"Test_name.c", line 13: warning: variable "rs" was declared but never referenced
+    struct foo& rs = s;
+                ^
+
+"Test_name.c", line 16: warning: variable "ra" was declared but never referenced
+    int* const &ra = a;
+                ^
+
+"Test_name.c", line 17: warning: variable "rz" was declared but never referenced
+    int* const &rz = z;
+                ^
+
+"Test_name.c", line 18: warning: variable "rscalar" was declared but never referenced
+    int& rscalar = scalar;
+         ^
+
+"Test_name.c", line 19: warning: variable "ry" was declared but never referenced
+    int** const &ry = y;
+                 ^
+

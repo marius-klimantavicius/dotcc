@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 12: error: this constant expression has type "double" instead of the required "int" type
+      case 1.0:;    // { dg-error "could not convert|conversion from" }
+           ^
+
+"Test_name.c", line 17: error: this constant expression has type "double" instead of the required "int" type
+      case g():;    // { dg-error "could not convert|conversion from" }
+           ^
+
+2 errors detected in the compilation of "Test_name.c".

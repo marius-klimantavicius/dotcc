@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 68: warning: unrecognized GCC pragma
+  #pragma GCC optimize ("-O0")
+              ^
+
+"Test_name.c", line 52: warning: function "Triangulation<dim>::end [with dim=3]" cannot be instantiated -- it has been explicitly specialized
+  template class Triangulation<3>;
+           ^
+

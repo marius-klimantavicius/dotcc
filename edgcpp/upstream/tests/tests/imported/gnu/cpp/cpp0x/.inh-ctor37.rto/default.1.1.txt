@@ -1,0 +1,19 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics -w Test_name.c
+"Test_name.c", line 19: error: no instance of constructor "B<T>::C::C [with T=A]" matches the argument list
+            argument types are: (const char [4])
+    C c{ "foo" }; // { dg-error "invalid conversion" }
+       ^
+"Test_name.c", line 15: note: function "B<T>::C::C(const B<A>::C &) [with T=A]" does not match because argument #1 does not match parameter
+    struct C {
+           ^
+"Test_name.c", line 15: note: function "B<T>::C::C(B<A>::C &&) [with T=A]" does not match because argument #1 does not match parameter
+    struct C {
+           ^
+"Test_name.c", line 16: note: function "B<T>::C::C(int) [with T=A]" does not match because argument #1 does not match parameter
+      C(int);
+      ^
+          detected during:
+            implicit generation of "B<T>::A(float) [with T=A]" at line 27
+            instantiation of class "B<T> [with T=A]" at line 27
+
+1 error detected in the compilation of "Test_name.c".

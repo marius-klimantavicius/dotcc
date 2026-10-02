@@ -1,0 +1,41 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 7: warning: unrecognized #pragma
+  #pragma clang fp
+          ^
+
+"Test_name.c", line 14: warning: unrecognized #pragma
+  #pragma clang fp blah
+          ^
+
+"Test_name.c", line 22: warning: unrecognized #pragma
+  #pragma clang fp contract on
+          ^
+
+"Test_name.c", line 30: warning: unrecognized #pragma
+  #pragma clang fp contract(while)
+          ^
+
+"Test_name.c", line 38: warning: unrecognized #pragma
+  #pragma clang fp contract(maybe)
+          ^
+
+"Test_name.c", line 46: warning: unrecognized #pragma
+  #pragma clang fp contract(fast
+          ^
+
+"Test_name.c", line 54: warning: unrecognized #pragma
+  #pragma clang fp contract(fast) *
+          ^
+
+"Test_name.c", line 64: warning: unrecognized #pragma
+  #pragma clang fp contract(fast)
+          ^
+
+"Test_name.c", line 70: warning: unrecognized #pragma
+  #pragma clang fp exceptions(on)
+          ^
+
+"Test_name.c", line 75: warning: unrecognized #pragma
+  #pragma clang fp exceptions(maytrap) contract(fast) reassociate(on)
+          ^
+

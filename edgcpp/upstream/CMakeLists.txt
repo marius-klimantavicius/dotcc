@@ -1,0 +1,122 @@
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+cmake_minimum_required(VERSION 3.19)
+
+if(CMAKE_BUILD_TYPE STREQUAL "Release" AND APPLE)
+  # Release builds on MacOS are built for both the ARM and x86_64
+  # architectures.
+  set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64")
+endif()
+
+# set the project name
+project(cpfe)
+
+# Set a common directory for "binaries"
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR
+    CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  if (UNIX AND NOT APPLE)
+    # Perform static linking of the binary.
+    add_link_options("$<$<CONFIG:Release>:-static>")
+  endif()
+  # If we're building with GCC or any variant of Clang, use -g3 as our debug
+  # flag to include macro information in our debug builds.
+  add_compile_options("$<$<CONFIG:Debug>:-g3>")
+endif()
+
+# Attempt to determine the best linker
+if(NOT DEFINED EDG_PREFERRED_LINKER)
+  if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR
+      CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    if(NOT DEFINED EDG_PREFERRED_LINKER_TRIAL)
+      find_program(MOLD_LINKER ld.mold NO_CACHE)
+      if(NOT MOLD_LINKER STREQUAL "MOLD_LINKER-NOTFOUND")
+        set(EDG_PREFERRED_LINKER_TRIAL mold)
+      endif()
+    endif()
+
+    # Only use lld with Clang, it doesn't understand GCC's LTO format well (at
+    # least at the time of writing).
+    if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+      if(NOT DEFINED EDG_PREFERRED_LINKER_TRIAL)
+        find_program(LLD_LINKER ld.lld NO_CACHE)
+        if(NOT LLD_LINKER STREQUAL "LLD_LINKER-NOTFOUND")
+          set(EDG_PREFERRED_LINKER_TRIAL lld)
+        endif()
+      endif()
+    endif()
+
+    if(NOT DEFINED EDG_PREFERRED_LINKER_TRIAL)
+      find_program(GOLD_LINKER ld.gold NO_CACHE)
+      if(NOT GOLD_LINKER STREQUAL "GOLD_LINKER-NOTFOUND")
+        set(EDG_PREFERRED_LINKER_TRIAL gold)
+      endif()
+    endif()
+  endif() # GCC OR CLANG
+
+  if(DEFINED EDG_PREFERRED_LINKER_TRIAL)
+    set(EDG_PREFERRED_LINKER "${EDG_PREFERRED_LINKER_TRIAL}" CACHE STRING
+        "The preferred linker")
+  endif()
+endif() # EDG_PREFERRED_LINKER CACHE CHECK
+
+if(DEFINED EDG_PREFERRED_LINKER)
+  message(STATUS "Preferring linker: ${EDG_PREFERRED_LINKER}")
+endif()
+
+# Require EDG_BASE and attempt to build the library by default.
+if(NOT WIN32)
+  set(EDG_BUILD_LIB TRUE CACHE BOOL "Enable the EDG library build")
+endif()
+
+# For GCC and Clang provide an (off by default) option for colored output.
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR
+    CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  set(FORCE_COLORED_OUTPUT FALSE CACHE BOOL "Enable colored output")
+else()
+  unset(FORCE_COLORED_OUTPUT CACHE)
+endif()
+
+set(EDG_EAGER_REBUILD_LIB FALSE CACHE BOOL
+    "Make changes to the front end binary result in library source be rebuilt")
+
+# Support for 32-bit build
+set(32BIT_BUILD FALSE CACHE BOOL "Build cpfe as a 32-bit executable")
+
+# Include and initialize supporting logic for EDG cmake macro configurations.
+include(${CMAKE_SOURCE_DIR}/cmake/macro-conf.cmake)
+init_macro_configuration_support()
+
+add_subdirectory(util)
+add_subdirectory(src)
+
+if($CACHE{EDG_BUILD_LIB})
+  if(NOT WIN32)
+    add_subdirectory(lib_src)
+    # Check edg_eccp_config/EDG_BASE setup
+    message(STATUS "Checking for edg_eccp_config in \"$ENV{EDG_BASE}\".")
+    if(NOT DEFINED ENV{EDG_BASE} OR NOT EXISTS $ENV{EDG_BASE}/edg_eccp_config)
+      message(FATAL_ERROR
+              "Please set EDG_BASE to a folder with an \"edg_eccp_config\".")
+    endif()
+  else()
+    # The runtime library build is not currently supported on Windows
+    # due to the driver being a bash script.
+    message(FATAL_ERROR
+            "The EDG library build is not currently supported on Windows.")
+  endif()
+endif()
+
+# Pull in support for wrapping scripts. Note this must be done before test
+# integration setup, as test integration also depends on this functionality.
+include(${CMAKE_SOURCE_DIR}/cmake/wrapper.cmake)
+
+# Handle wrapping eccp, needed for building the C library, and general
+# development
+add_edg_wrapper_script(eccp "." ${CMAKE_SOURCE_DIR}/util/eccp.sh)

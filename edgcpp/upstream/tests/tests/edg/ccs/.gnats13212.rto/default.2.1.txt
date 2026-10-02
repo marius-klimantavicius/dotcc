@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=2 -tused --c++11 -DNEG Test_name.c
+"Test_name.c", line 26: error: more than one instance of overloaded function "f" matches the argument list:
+            function template "auto f(T...)->A<T...>" (declared at line 12)
+            function template "auto f(T...)->B<T...>" (declared at line 18)
+            argument types are: (int)
+    f<int>(1);
+    ^
+
+1 error detected in the compilation of "Test_name.c".

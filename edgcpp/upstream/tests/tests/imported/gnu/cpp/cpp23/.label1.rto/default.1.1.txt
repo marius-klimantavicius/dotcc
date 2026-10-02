@@ -1,0 +1,113 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 --c++11 Test_name.c
+"Test_name.c", line 16: warning: expected a statement
+  } // { dg-error "label at end of compound statement only available with" "" { target c++20_down } }
+  ^
+
+"Test_name.c", line 11: warning: label "first" was declared but never referenced
+  first:
+  ^
+
+"Test_name.c", line 12: warning: variable "x" was set but never used
+    int x; 
+        ^
+
+"Test_name.c", line 13: warning: label "second" was declared but never referenced
+  second:
+  ^
+
+"Test_name.c", line 15: warning: label "last" was declared but never referenced
+  last:
+  ^
+
+"Test_name.c", line 22: warning: expected a statement
+  } // { dg-error "label at end of compound statement only available with" "" { target c++20_down } }
+  ^
+
+"Test_name.c", line 21: warning: label "l1" was declared but never referenced
+    l1:
+    ^
+
+"Test_name.c", line 30: warning: expected a statement
+      } // { dg-error "label at end of compound statement only available with" "" { target c++20_down } }
+      ^
+
+"Test_name.c", line 29: warning: label "l1" was declared but never referenced
+  l1:
+  ^
+
+"Test_name.c", line 39: warning: expected a statement
+      } // { dg-error "label at end of compound statement only available with" "" { target c++20_down } }
+      ^
+
+"Test_name.c", line 38: warning: label "label" was declared but never referenced
+  label:
+  ^
+
+"Test_name.c", line 49: warning: expected a statement
+      } // { dg-error "label at end of compound statement only available with" "" { target c++20_down } }
+      ^
+
+"Test_name.c", line 48: warning: label "lab" was declared but never referenced
+  lab:
+  ^
+
+"Test_name.c", line 58: warning: expected a statement
+  } // { dg-error "label at end of compound statement only available with" "" { target c++20_down } }
+  ^
+
+"Test_name.c", line 55: warning: label "l1" was declared but never referenced
+  l1:
+  ^
+
+"Test_name.c", line 56: warning: label "l2" was declared but never referenced
+  l2:
+  ^
+
+"Test_name.c", line 57: warning: label "l3" was declared but never referenced
+  l3:
+  ^
+
+"Test_name.c", line 67: warning: expected a statement
+  } // { dg-error "label at end of compound statement only available with" "" { target c++20_down } }
+  ^
+
+"Test_name.c", line 64: warning: label "l1" was declared but never referenced
+  l1:
+  ^
+
+"Test_name.c", line 65: warning: label "l2" was declared but never referenced
+  l2:
+  ^
+
+"Test_name.c", line 66: warning: label "l3" was declared but never referenced
+  l3:
+  ^
+
+"Test_name.c", line 76: warning: expected a statement
+    }; // { dg-error "label at end of compound statement only available with" "" { target { c++20_down && c++11 } } }
+    ^
+
+"Test_name.c", line 75: warning: label "lab" was declared but never referenced
+      lab:
+      ^
+
+"Test_name.c", line 74: warning: variable "l" was declared but never referenced
+    auto l = [](){
+         ^
+
+"Test_name.c", line 86: warning: expected a statement
+      } // { dg-error "label at end of compound statement only available with" "" { target c++20_down } }
+      ^
+
+"Test_name.c", line 90: warning: expected a statement
+      } // { dg-error "label at end of compound statement only available with" "" { target c++20_down } }
+      ^
+
+"Test_name.c", line 85: warning: label "lab1" was declared but never referenced
+  lab1:
+  ^
+
+"Test_name.c", line 89: warning: label "lab2" was declared but never referenced
+  lab2:
+  ^
+

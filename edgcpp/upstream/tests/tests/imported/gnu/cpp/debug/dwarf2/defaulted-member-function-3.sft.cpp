@@ -1,0 +1,15 @@
+//type: fp
+//options:  --c++11
+// { dg-do compile }
+// { dg-options "-O -std=c++11 -g -dA -gno-strict-dwarf" }
+// { dg-final { scan-assembler-not " DW_AT_defaulted" } }
+
+struct Foo
+{
+};
+
+void
+bar ()
+{
+  Foo foo;
+}

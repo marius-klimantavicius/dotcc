@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp0x/constexpr-initlist11a.C", line 7: warning: variable "l" was declared but never referenced
+    constexpr std::initializer_list<int> l { 42 };
+                                         ^
+
+"./cpp0x/constexpr-initlist11a.C", line 7: error: expression must have a constant value
+    constexpr std::initializer_list<int> l { 42 };
+                                           ^
+"./cpp0x/constexpr-initlist11a.C", line 7: note: reference or pointer to temporary with limited lifetime
+    constexpr std::initializer_list<int> l { 42 };
+                                           ^
+          detected during instantiation of "void b<<unnamed>>() [with <unnamed>=int]" at line 10
+
+1 error detected in the compilation of "Test_name.c".

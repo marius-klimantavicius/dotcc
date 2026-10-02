@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 12: error: an operator name must be declared as a function
+    for (auto operator new : X); // expected-error{{'operator new' cannot be the name of a variable or data member}}
+              ^
+
+"Test_name.c", line 12: error: identifier "X" is undefined
+    for (auto operator new : X); // expected-error{{'operator new' cannot be the name of a variable or data member}}
+                             ^
+
+"Test_name.c", line 17: error: identifier "a" is undefined
+    for (a operator== :) // expected-error{{'operator==' cannot be the name of a variable or data member}}
+         ^
+
+"Test_name.c", line 17: error: an operator name must be declared as a function
+    for (a operator== :) // expected-error{{'operator==' cannot be the name of a variable or data member}}
+           ^
+
+"Test_name.c", line 17: error: expected an expression
+    for (a operator== :) // expected-error{{'operator==' cannot be the name of a variable or data member}}
+                       ^
+
+"Test_name.c", line 20: error: expected a statement
+  } // expected-error{{expected statement}}
+  ^
+
+6 errors detected in the compilation of "Test_name.c".

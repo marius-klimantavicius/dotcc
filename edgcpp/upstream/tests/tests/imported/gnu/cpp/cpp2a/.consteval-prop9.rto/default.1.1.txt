@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 56: error: the address of a consteval function cannot be used here
+  auto p1 = &f5<int>; // { dg-error "taking address" }
+            ^
+
+"Test_name.c", line 57: error: the address of a consteval function cannot be used here
+  static auto p2 = &f4<int>; // { dg-error "taking address" }
+                   ^
+
+"Test_name.c", line 66: error: the address of a consteval function cannot be used here
+    static auto q1 = &f4<int>; // { dg-error "taking address" }
+                     ^
+
+"Test_name.c", line 66: warning: variable "q1" was declared but never referenced
+    static auto q1 = &f4<int>; // { dg-error "taking address" }
+                ^
+
+"Test_name.c", line 67: warning: variable "q2" was declared but never referenced
+    static auto q2 = &f6<int>;
+                ^
+
+"Test_name.c", line 68: warning: variable "q3" was declared but never referenced
+    static auto q3 = &f7<int>;
+                ^
+
+"Test_name.c", line 57: warning: variable "p2" was declared but never referenced
+  static auto p2 = &f4<int>; // { dg-error "taking address" }
+              ^
+
+"Test_name.c", line 59: warning: variable "p4" was declared but never referenced
+  static auto p4 = &f6<int>;
+              ^
+
+"Test_name.c", line 61: warning: variable "p6" was declared but never referenced
+  static auto p6 = &f7<int>;
+              ^
+
+3 errors detected in the compilation of "Test_name.c".

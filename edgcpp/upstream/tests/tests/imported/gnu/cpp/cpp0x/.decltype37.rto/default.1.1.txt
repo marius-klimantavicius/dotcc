@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 11: error: not a class or struct name
+  struct holder : decltype(*foo((T*)0)) // { dg-error "class type" }
+                  ^
+          detected during instantiation of class "holder<T> [with T=int]" at line 16
+
+"Test_name.c", line 13: error: result of decltype qualifier "wrap<int> &" is not a class or enumeration
+      using decltype(*foo((T*)0))::bar; // { dg-error "is not a class" }
+            ^
+          detected during instantiation of class "holder<T> [with T=int]" at line 16
+
+2 errors detected in the compilation of "Test_name.c".

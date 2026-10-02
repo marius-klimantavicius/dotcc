@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 18: warning: shift count is too large
+    return i == (1 << M); /* { dg-warning "left shift count" } */
+                      ^
+
+"Test_name.c", line 30: warning: shift count is negative
+    return i == 1 << -1; /* { dg-warning "left shift count" } */
+                     ^
+
+"Test_name.c", line 36: warning: shift count is too large
+    return i == 1 >> M; /* { dg-warning "right shift count" } */
+                     ^
+
+"Test_name.c", line 42: warning: shift count is negative
+    return i == 1 >> -1; /* { dg-warning "right shift count" } */
+                     ^
+

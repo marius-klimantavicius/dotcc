@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 23: error: expression must have a constant value
+  constexpr C foo {};  // { dg-error "" "" { target c++17 } }
+                  ^
+"Test_name.c", line 15: note: conversion from "B *" to "char *" is invalid in constant-expression evaluation
+      *c = reinterpret_cast<char *>(this) - reinterpret_cast<char *>(c);	// { dg-error "reinterpret_cast" "" { target c++20_down } }
+           ^
+"Test_name.c", line 18: note: called from:
+  struct C : A {  // { dg-error "" "" { target c++14_down } }
+         ^
+
+"Test_name.c", line 23: warning: variable "foo" was declared but never referenced
+  constexpr C foo {};  // { dg-error "" "" { target c++17 } }
+              ^
+
+1 error detected in the compilation of "Test_name.c".

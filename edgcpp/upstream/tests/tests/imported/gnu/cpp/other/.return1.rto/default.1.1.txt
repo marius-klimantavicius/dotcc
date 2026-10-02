@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 12: error: function "GetHeader" returns incomplete type "wxString"
+  struct wxString GetHeader() // { dg-error "return type" }
+                  ^
+
+"Test_name.c", line 14: error: cannot convert to incomplete class "wxString"
+    return *wxGetEmptyString();
+           ^
+
+2 errors detected in the compilation of "Test_name.c".

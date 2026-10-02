@@ -1,0 +1,20 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 25: error: no instance of function template "g1" matches the argument list
+            argument types are: (int)
+    g1(0); // { dg-error "" }
+    ^
+"Test_name.c", line 19: note: substituting "<int>" for function template "g1" failed constraints
+  void g1(T t);
+       ^
+"Test_name.c", line 18: note: concept "C1" not satisfied for "<int>"
+  template<C1 T>
+           ^
+"Test_name.c", line 9: note: atomic constraint evaluates to false
+  concept C1 = requires (T t) { // { dg-message "in requirements" }
+               ^
+
+"Test_name.c", line 27: warning: last line of file ends without a newline
+  }
+   ^
+
+1 error detected in the compilation of "Test_name.c".

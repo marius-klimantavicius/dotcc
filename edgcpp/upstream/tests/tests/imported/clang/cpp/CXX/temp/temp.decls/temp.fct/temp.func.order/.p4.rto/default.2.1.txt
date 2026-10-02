@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 19: warning: variable "p" is used before its value is set
+    double &dr1 = f(p); 
+                    ^
+
+"Test_name.c", line 21: error: more than one instance of overloaded function "g" matches the argument list:
+            function template "void g(T)" (declared at line 11)
+            function template "void g(T &)" (declared at line 12)
+            argument types are: (float)
+    g(x); // expected-error{{ambiguous}}
+    ^
+
+"Test_name.c", line 37: error: more than one instance of overloaded function "core_26909::f" matches the argument list:
+            function template "void core_26909::f(T &, U)" (declared at line 31)
+            function template "void core_26909::f(T &&, core_26909::A<U>)" (declared at line 32)
+            argument types are: (int, core_26909::A<int>)
+      f(a, c); // expected-error{{ambiguous}}
+      ^
+
+"Test_name.c", line 38: error: more than one instance of overloaded function "core_26909::g" matches the argument list:
+            function template "void core_26909::g(const T &, U)" (declared at line 33)
+            function template "void core_26909::g(T &, core_26909::A<U>)" (declared at line 34)
+            argument types are: (const char, core_26909::A<int>)
+      g(b, c); // expected-error{{ambiguous}}
+      ^
+
+"Test_name.c", line 45: error: more than one instance of overloaded function "PR22435::foo" matches the argument list:
+            function template "void PR22435::foo(void (*)(T), const U &)" (declared at line 43)
+            function template "bool PR22435::foo(void (*)(T &), U &)" (declared at line 44)
+            argument types are: (int, const int)
+    void bar(const int x) { bool b = foo<char>(0, x); } // expected-error {{ambiguous}}
+                                     ^
+
+4 errors detected in the compilation of "Test_name.c".

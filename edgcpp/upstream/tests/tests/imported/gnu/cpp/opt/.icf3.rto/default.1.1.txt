@@ -1,0 +1,5 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./opt/icf3.C", line 8: warning: unknown attribute "gnu::noipa"
+  [[gnu::noipa]] void f (std::initializer_list<T> a,
+    ^
+

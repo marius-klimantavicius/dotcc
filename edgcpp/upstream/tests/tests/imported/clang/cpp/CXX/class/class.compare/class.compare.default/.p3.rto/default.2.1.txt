@@ -1,0 +1,278 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++23 Test_name.c
+"Test_name.c", line 31: error: exception specification is incompatible with that of previous function "operator==" (declared at line 21)
+    friend constexpr bool operator==(const A&, const A&) noexcept;
+                                                         ^
+
+"Test_name.c", line 31: error: function "operator==" (declared at line 21) was previously declared constexpr
+    friend constexpr bool operator==(const A&, const A&) noexcept;
+                          ^
+
+"Test_name.c", line 32: error: exception specification is incompatible with that of previous function "operator!=" (declared at line 22)
+    friend constexpr bool operator!=(const A&, const A&) noexcept;
+                                                         ^
+
+"Test_name.c", line 32: error: function "operator!=" (declared at line 22) was previously declared constexpr
+    friend constexpr bool operator!=(const A&, const A&) noexcept;
+                          ^
+
+"Test_name.c", line 34: error: exception specification is incompatible with that of previous function "operator<=>" (declared at line 24)
+    friend constexpr std::strong_ordering operator<=>(const A&, const A&) noexcept;
+                                                                          ^
+
+"Test_name.c", line 34: error: function "operator<=>" (declared at line 24) was previously declared constexpr
+    friend constexpr std::strong_ordering operator<=>(const A&, const A&) noexcept;
+                                          ^
+
+"Test_name.c", line 35: error: function "operator<" (declared at line 25) was previously declared constexpr
+    friend constexpr bool operator<(const A&, const A&);
+                          ^
+
+"Test_name.c", line 36: error: function "operator<=" (declared at line 26) was previously declared constexpr
+    friend constexpr bool operator<=(const A&, const A&);
+                          ^
+
+"Test_name.c", line 37: error: function "operator>" (declared at line 27) was previously declared constexpr
+    friend constexpr bool operator>(const A&, const A&);
+                          ^
+
+"Test_name.c", line 38: error: function "operator>=" (declared at line 28) was previously declared constexpr
+    friend constexpr bool operator>=(const A&, const A&);
+                          ^
+
+"Test_name.c", line 54: error: function "operator>=(const ReversedA &, const ReversedA &)" (declared at line 44) was previously declared constexpr
+    friend constexpr bool operator>=(const ReversedA&, const ReversedA&);
+                          ^
+
+"Test_name.c", line 55: error: function "operator>(const ReversedA &, const ReversedA &)" (declared at line 45) was previously declared constexpr
+    friend constexpr bool operator>(const ReversedA&, const ReversedA&);
+                          ^
+
+"Test_name.c", line 56: error: function "operator<=(const ReversedA &, const ReversedA &)" (declared at line 46) was previously declared constexpr
+    friend constexpr bool operator<=(const ReversedA&, const ReversedA&);
+                          ^
+
+"Test_name.c", line 57: error: function "operator<(const ReversedA &, const ReversedA &)" (declared at line 47) was previously declared constexpr
+    friend constexpr bool operator<(const ReversedA&, const ReversedA&);
+                          ^
+
+"Test_name.c", line 58: error: exception specification is incompatible with that of previous function "operator<=>(const ReversedA &, const ReversedA &)" (declared at line 48)
+    friend constexpr std::strong_ordering operator<=>(const ReversedA&, const ReversedA&) noexcept;
+                                                                                          ^
+
+"Test_name.c", line 58: error: function "operator<=>(const ReversedA &, const ReversedA &) noexcept" (declared at line 48) was previously declared constexpr
+    friend constexpr std::strong_ordering operator<=>(const ReversedA&, const ReversedA&) noexcept;
+                                          ^
+
+"Test_name.c", line 60: error: exception specification is incompatible with that of previous function "operator!=(const ReversedA &, const ReversedA &)" (declared at line 50)
+    friend constexpr bool operator!=(const ReversedA&, const ReversedA&) noexcept;
+                                                                         ^
+
+"Test_name.c", line 60: error: function "operator!=(const ReversedA &, const ReversedA &) noexcept" (declared at line 50) was previously declared constexpr
+    friend constexpr bool operator!=(const ReversedA&, const ReversedA&) noexcept;
+                          ^
+
+"Test_name.c", line 61: error: exception specification is incompatible with that of previous function "operator==(const ReversedA &, const ReversedA &)" (declared at line 51)
+    friend constexpr bool operator==(const ReversedA&, const ReversedA&) noexcept;
+                                                                         ^
+
+"Test_name.c", line 61: error: function "operator==(const ReversedA &, const ReversedA &) noexcept" (declared at line 51) was previously declared constexpr
+    friend constexpr bool operator==(const ReversedA&, const ReversedA&) noexcept;
+                          ^
+
+"Test_name.c", line 76: error: exception specification is incompatible with that of previous function "operator==(const B &, const B &)" (declared at line 66)
+    friend constexpr bool operator==(const B&, const B&) noexcept;
+                                                         ^
+
+"Test_name.c", line 76: error: function "operator==(const B &, const B &) noexcept" (declared at line 66) was previously declared constexpr
+    friend constexpr bool operator==(const B&, const B&) noexcept;
+                          ^
+
+"Test_name.c", line 77: error: exception specification is incompatible with that of previous function "operator!=(const B &, const B &)" (declared at line 67)
+    friend constexpr bool operator!=(const B&, const B&) noexcept;
+                                                         ^
+
+"Test_name.c", line 77: error: function "operator!=(const B &, const B &) noexcept" (declared at line 67) was previously declared constexpr
+    friend constexpr bool operator!=(const B&, const B&) noexcept;
+                          ^
+
+"Test_name.c", line 79: error: function "operator<=>(const B &, const B &)" (declared at line 69) was previously declared constexpr
+    friend constexpr std::strong_ordering operator<=>(const B&, const B&);
+                                          ^
+
+"Test_name.c", line 80: error: function "operator<(const B &, const B &)" (declared at line 70) was previously declared constexpr
+    friend constexpr bool operator<(const B&, const B&);
+                          ^
+
+"Test_name.c", line 81: error: function "operator<=(const B &, const B &)" (declared at line 71) was previously declared constexpr
+    friend constexpr bool operator<=(const B&, const B&);
+                          ^
+
+"Test_name.c", line 82: error: function "operator>(const B &, const B &)" (declared at line 72) was previously declared constexpr
+    friend constexpr bool operator>(const B&, const B&);
+                          ^
+
+"Test_name.c", line 83: error: function "operator>=(const B &, const B &)" (declared at line 73) was previously declared constexpr
+    friend constexpr bool operator>=(const B&, const B&);
+                          ^
+
+"Test_name.c", line 99: error: function "operator==(const C &, const C &)" (declared at line 87) was previously not declared constexpr
+    friend constexpr bool operator==(const C&, const C&); // expected-error {{non-constexpr}}
+           ^
+
+"Test_name.c", line 100: error: function "operator!=(const C &, const C &)" (declared at line 89) was previously not declared constexpr
+    friend constexpr bool operator!=(const C&, const C&); // expected-error {{non-constexpr}}
+           ^
+
+"Test_name.c", line 102: error: function "operator<=>(const C &, const C &)" (declared at line 91) was previously not declared constexpr
+    friend constexpr std::strong_ordering operator<=>(const C&, const C&); // expected-error {{non-constexpr}}
+           ^
+
+"Test_name.c", line 103: error: function "operator<(const C &, const C &)" (declared at line 93) was previously not declared constexpr
+    friend constexpr bool operator<(const C&, const C&); // expected-error {{non-constexpr}}
+           ^
+
+"Test_name.c", line 104: error: function "operator<=(const C &, const C &)" (declared at line 94) was previously not declared constexpr
+    friend constexpr bool operator<=(const C&, const C&); // expected-error {{non-constexpr}}
+           ^
+
+"Test_name.c", line 105: error: function "operator>(const C &, const C &)" (declared at line 95) was previously not declared constexpr
+    friend constexpr bool operator>(const C&, const C&); // expected-error {{non-constexpr}}
+           ^
+
+"Test_name.c", line 106: error: function "operator>=(const C &, const C &)" (declared at line 96) was previously not declared constexpr
+    friend constexpr bool operator>=(const C&, const C&); // expected-error {{non-constexpr}}
+           ^
+
+"Test_name.c", line 123: error: function "operator==(const D &, const D &)" (declared at line 113) was previously not declared constexpr
+    friend constexpr bool operator==(const D&, const D&); // expected-error {{non-constexpr}}
+           ^
+
+"Test_name.c", line 124: error: function "operator!=(const D &, const D &)" (declared at line 114) was previously declared constexpr
+    friend constexpr bool operator!=(const D&, const D&); // expected-error {{non-constexpr}}
+                          ^
+
+"Test_name.c", line 126: error: function "operator<=>(const D &, const D &)" (declared at line 116) was previously not declared constexpr
+    friend constexpr std::strong_ordering operator<=>(const D&, const D&); // expected-error {{non-constexpr}}
+           ^
+
+"Test_name.c", line 127: error: function "operator<(const D &, const D &)" (declared at line 117) was previously not declared constexpr
+    friend constexpr bool operator<(const D&, const D&); // expected-error {{non-constexpr}}
+           ^
+
+"Test_name.c", line 128: error: function "operator<=(const D &, const D &)" (declared at line 118) was previously not declared constexpr
+    friend constexpr bool operator<=(const D&, const D&); // expected-error {{non-constexpr}}
+           ^
+
+"Test_name.c", line 129: error: function "operator>(const D &, const D &)" (declared at line 119) was previously not declared constexpr
+    friend constexpr bool operator>(const D&, const D&); // expected-error {{non-constexpr}}
+           ^
+
+"Test_name.c", line 130: error: function "operator>=(const D &, const D &)" (declared at line 120) was previously not declared constexpr
+    friend constexpr bool operator>=(const D&, const D&); // expected-error {{non-constexpr}}
+           ^
+
+"Test_name.c", line 141: error: default constexpr comparison function calls non-constexpr function function "operator<=>(const C &, const C &)" (declared at line 91)
+    friend constexpr std::strong_ordering operator<=>(const E&, const E&) = default; // cxx2a-error {{cannot be declared constexpr}}
+                                          ^
+
+"Test_name.c", line 145: error: default constexpr comparison function calls non-constexpr function function "operator<=>(const E &, const E &)" (declared at line 141)
+    friend constexpr bool operator>=(const E&, const E&) = default;
+                          ^
+
+"Test_name.c", line 144: error: default constexpr comparison function calls non-constexpr function function "operator<=>(const E &, const E &)" (declared at line 141)
+    friend constexpr bool operator>(const E&, const E&) = default;
+                          ^
+
+"Test_name.c", line 143: error: default constexpr comparison function calls non-constexpr function function "operator<=>(const E &, const E &)" (declared at line 141)
+    friend constexpr bool operator<=(const E&, const E&) = default;
+                          ^
+
+"Test_name.c", line 142: error: default constexpr comparison function calls non-constexpr function function "operator<=>(const E &, const E &)" (declared at line 141)
+    friend constexpr bool operator<(const E&, const E&) = default;
+                          ^
+
+"Test_name.c", line 138: error: default constexpr comparison function calls non-constexpr function function "operator==(const C &, const C &)" (declared at line 87)
+    friend constexpr bool operator==(const E&, const E&) = default; // cxx2a-error {{cannot be declared constexpr}}
+                          ^
+
+"Test_name.c", line 152: error: default constexpr comparison function calls non-constexpr function function "operator<=>(const C &, const C &)" (declared at line 91)
+    friend constexpr std::strong_ordering operator<=>(const E2&, const E2&) = default; // cxx2a-error {{cannot be declared constexpr}}
+                                          ^
+
+"Test_name.c", line 156: error: default constexpr comparison function calls non-constexpr function function "operator<=>(const E2 &, const E2 &)" (declared at line 152)
+    friend constexpr bool operator>=(const E2&, const E2&) = default;
+                          ^
+
+"Test_name.c", line 155: error: default constexpr comparison function calls non-constexpr function function "operator<=>(const E2 &, const E2 &)" (declared at line 152)
+    friend constexpr bool operator>(const E2&, const E2&) = default;
+                          ^
+
+"Test_name.c", line 154: error: default constexpr comparison function calls non-constexpr function function "operator<=>(const E2 &, const E2 &)" (declared at line 152)
+    friend constexpr bool operator<=(const E2&, const E2&) = default;
+                          ^
+
+"Test_name.c", line 153: error: default constexpr comparison function calls non-constexpr function function "operator<=>(const E2 &, const E2 &)" (declared at line 152)
+    friend constexpr bool operator<(const E2&, const E2&) = default;
+                          ^
+
+"Test_name.c", line 149: error: default constexpr comparison function calls non-constexpr function function "operator==(const C &, const C &)" (declared at line 87)
+    friend constexpr bool operator==(const E2&, const E2&) = default; // cxx2a-error {{cannot be declared constexpr}}
+                          ^
+
+"Test_name.c", line 167: error: default constexpr comparison function calls non-constexpr function function "operator<=>(const F &, const F &)" (declared at line 163)
+    friend constexpr bool operator>=(const F&, const F&) = default; // cxx2a-error {{cannot be declared constexpr}}
+                          ^
+
+"Test_name.c", line 166: error: default constexpr comparison function calls non-constexpr function function "operator<=>(const F &, const F &)" (declared at line 163)
+    friend constexpr bool operator>(const F&, const F&) = default; // cxx2a-error {{cannot be declared constexpr}}
+                          ^
+
+"Test_name.c", line 165: error: default constexpr comparison function calls non-constexpr function function "operator<=>(const F &, const F &)" (declared at line 163)
+    friend constexpr bool operator<=(const F&, const F&) = default; // cxx2a-error {{cannot be declared constexpr}}
+                          ^
+
+"Test_name.c", line 164: error: default constexpr comparison function calls non-constexpr function function "operator<=>(const F &, const F &)" (declared at line 163)
+    friend constexpr bool operator<(const F&, const F&) = default; // cxx2a-error {{cannot be declared constexpr}}
+                          ^
+
+"Test_name.c", line 161: error: default constexpr comparison function calls non-constexpr function function "operator==(const F &, const F &)" (declared at line 160)
+    friend constexpr bool operator!=(const F&, const F&) = default; // cxx2a-error {{cannot be declared constexpr}}
+                          ^
+
+"Test_name.c", line 182: error: a comparison operator defaulted in a class definition must be the first declaration of that comparison operator (function "operator==(const G &, const G &)" (declared at line 174))
+    friend bool operator==(const G&, const G&) = default; // expected-error {{because it was already declared outside}}
+                ^
+
+"Test_name.c", line 183: error: a comparison operator defaulted in a class definition must be the first declaration of that comparison operator (function "operator!=(const G &, const G &)" (declared at line 175))
+    friend bool operator!=(const G&, const G&) = default; // expected-error {{because it was already declared outside}}
+                ^
+
+"Test_name.c", line 185: error: a comparison operator defaulted in a class definition must be the first declaration of that comparison operator (function "operator<=>(const G &, const G &)" (declared at line 176))
+    friend std::strong_ordering operator<=>(const G&, const G&) = default; // expected-error {{because it was already declared outside}}
+                                ^
+
+"Test_name.c", line 186: error: a comparison operator defaulted in a class definition must be the first declaration of that comparison operator (function "operator<(const G &, const G &)" (declared at line 177))
+    friend bool operator<(const G&, const G&) = default; // expected-error {{because it was already declared outside}}
+                ^
+
+"Test_name.c", line 187: error: a comparison operator defaulted in a class definition must be the first declaration of that comparison operator (function "operator<=(const G &, const G &)" (declared at line 178))
+    friend bool operator<=(const G&, const G&) = default; // expected-error {{because it was already declared outside}}
+                ^
+
+"Test_name.c", line 188: error: a comparison operator defaulted in a class definition must be the first declaration of that comparison operator (function "operator>(const G &, const G &)" (declared at line 179))
+    friend bool operator>(const G&, const G&) = default; // expected-error {{because it was already declared outside}}
+                ^
+
+"Test_name.c", line 189: error: a comparison operator defaulted in a class definition must be the first declaration of that comparison operator (function "operator>=(const G &, const G &)" (declared at line 180))
+    friend bool operator>=(const G&, const G&) = default; // expected-error {{because it was already declared outside}}
+                ^
+
+"Test_name.c", line 205: error: no valid std::partial_ordering type found (<compare> must be included)
+    struct S {
+           ^
+
+"Test_name.c", line 205: error: no valid std::weak_ordering type found (<compare> must be included)
+    struct S {
+           ^
+
+69 errors detected in the compilation of "Test_name.c".

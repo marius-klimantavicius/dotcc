@@ -1,0 +1,959 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 24: error: the definition of std::initializer_list does not contain the expected constructor
+    F = Foo{1,2};
+           ^
+
+"Test_name.c", line 24: error: no instance of constructor "Foo::Foo" matches the argument list
+            argument types are: (int, int)
+    F = Foo{1,2};
+           ^
+"Test_name.c", line 16: note: function "Foo::Foo(std::initializer_list<int>)" does not match because argument #1 does not match parameter
+    Foo(std::initializer_list<int>);
+    ^
+"Test_name.c", line 13: note: number of parameters of function "Foo::Foo(const Foo &)" does not match the call
+  class Foo {
+        ^
+"Test_name.c", line 13: note: number of parameters of function "Foo::Foo(Foo &&)" does not match the call
+  class Foo {
+        ^
+"Test_name.c", line 15: note: number of parameters of function "Foo::Foo()" does not match the call
+    Foo();
+    ^
+
+"Test_name.c", line 28: error: the definition of std::initializer_list does not contain the expected constructor
+    EQ(F,Foo({1,2,3}));
+    ^
+
+"Test_name.c", line 28: error: the definition of std::initializer_list does not contain the expected constructor
+    EQ(F,Foo({1,2,3}));
+    ^
+
+"Test_name.c", line 28: error: the definition of std::initializer_list does not contain the expected constructor
+    EQ(F,Foo({1,2,3}));
+    ^
+
+"Test_name.c", line 28: error: no instance of constructor "Foo::Foo" matches the argument list
+            argument types are: ({...})
+    EQ(F,Foo({1,2,3}));
+    ^
+"Test_name.c", line 13: note: function "Foo::Foo(const Foo &)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 13: note: function "Foo::Foo(Foo &&)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 16: note: function "Foo::Foo(std::initializer_list<int>)" does not match because argument #1 does not match parameter
+    Foo(std::initializer_list<int>);
+    ^
+"Test_name.c", line 15: note: number of parameters of function "Foo::Foo()" does not match the call
+    Foo();
+    ^
+
+"Test_name.c", line 29: error: the definition of std::initializer_list does not contain the expected constructor
+    EQ(Foo({1,2,3}),F);
+    ^
+
+"Test_name.c", line 29: error: the definition of std::initializer_list does not contain the expected constructor
+    EQ(Foo({1,2,3}),F);
+    ^
+
+"Test_name.c", line 29: error: the definition of std::initializer_list does not contain the expected constructor
+    EQ(Foo({1,2,3}),F);
+    ^
+
+"Test_name.c", line 29: error: no instance of constructor "Foo::Foo" matches the argument list
+            argument types are: ({...})
+    EQ(Foo({1,2,3}),F);
+    ^
+"Test_name.c", line 13: note: function "Foo::Foo(const Foo &)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 13: note: function "Foo::Foo(Foo &&)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 16: note: function "Foo::Foo(std::initializer_list<int>)" does not match because argument #1 does not match parameter
+    Foo(std::initializer_list<int>);
+    ^
+"Test_name.c", line 15: note: number of parameters of function "Foo::Foo()" does not match the call
+    Foo();
+    ^
+
+"Test_name.c", line 30: error: the definition of std::initializer_list does not contain the expected constructor
+    EQ((Foo{1,2,3}),(Foo{1,2,3}));
+    ^
+
+"Test_name.c", line 30: error: no instance of constructor "Foo::Foo" matches the argument list
+            argument types are: (int, int, int)
+    EQ((Foo{1,2,3}),(Foo{1,2,3}));
+    ^
+"Test_name.c", line 16: note: function "Foo::Foo(std::initializer_list<int>)" does not match because argument #1 does not match parameter
+    Foo(std::initializer_list<int>);
+    ^
+"Test_name.c", line 13: note: number of parameters of function "Foo::Foo(const Foo &)" does not match the call
+  class Foo {
+        ^
+"Test_name.c", line 13: note: number of parameters of function "Foo::Foo(Foo &&)" does not match the call
+  class Foo {
+        ^
+"Test_name.c", line 15: note: number of parameters of function "Foo::Foo()" does not match the call
+    Foo();
+    ^
+
+"Test_name.c", line 30: error: the definition of std::initializer_list does not contain the expected constructor
+    EQ((Foo{1,2,3}),(Foo{1,2,3}));
+    ^
+
+"Test_name.c", line 30: error: no instance of constructor "Foo::Foo" matches the argument list
+            argument types are: (int, int, int)
+    EQ((Foo{1,2,3}),(Foo{1,2,3}));
+    ^
+"Test_name.c", line 16: note: function "Foo::Foo(std::initializer_list<int>)" does not match because argument #1 does not match parameter
+    Foo(std::initializer_list<int>);
+    ^
+"Test_name.c", line 13: note: number of parameters of function "Foo::Foo(const Foo &)" does not match the call
+  class Foo {
+        ^
+"Test_name.c", line 13: note: number of parameters of function "Foo::Foo(Foo &&)" does not match the call
+  class Foo {
+        ^
+"Test_name.c", line 15: note: number of parameters of function "Foo::Foo()" does not match the call
+    Foo();
+    ^
+
+"Test_name.c", line 32: error: the definition of std::initializer_list does not contain the expected constructor
+    EQ(F, Foo({1,2,3}) + Foo({1,2,3}));
+    ^
+
+"Test_name.c", line 32: error: the definition of std::initializer_list does not contain the expected constructor
+    EQ(F, Foo({1,2,3}) + Foo({1,2,3}));
+    ^
+
+"Test_name.c", line 32: error: the definition of std::initializer_list does not contain the expected constructor
+    EQ(F, Foo({1,2,3}) + Foo({1,2,3}));
+    ^
+
+"Test_name.c", line 32: error: no instance of constructor "Foo::Foo" matches the argument list
+            argument types are: ({...})
+    EQ(F, Foo({1,2,3}) + Foo({1,2,3}));
+    ^
+"Test_name.c", line 13: note: function "Foo::Foo(const Foo &)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 13: note: function "Foo::Foo(Foo &&)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 16: note: function "Foo::Foo(std::initializer_list<int>)" does not match because argument #1 does not match parameter
+    Foo(std::initializer_list<int>);
+    ^
+"Test_name.c", line 15: note: number of parameters of function "Foo::Foo()" does not match the call
+    Foo();
+    ^
+
+"Test_name.c", line 32: error: the definition of std::initializer_list does not contain the expected constructor
+    EQ(F, Foo({1,2,3}) + Foo({1,2,3}));
+    ^
+
+"Test_name.c", line 32: error: the definition of std::initializer_list does not contain the expected constructor
+    EQ(F, Foo({1,2,3}) + Foo({1,2,3}));
+    ^
+
+"Test_name.c", line 32: error: the definition of std::initializer_list does not contain the expected constructor
+    EQ(F, Foo({1,2,3}) + Foo({1,2,3}));
+    ^
+
+"Test_name.c", line 32: error: no instance of constructor "Foo::Foo" matches the argument list
+            argument types are: ({...})
+    EQ(F, Foo({1,2,3}) + Foo({1,2,3}));
+    ^
+"Test_name.c", line 13: note: function "Foo::Foo(const Foo &)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 13: note: function "Foo::Foo(Foo &&)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 16: note: function "Foo::Foo(std::initializer_list<int>)" does not match because argument #1 does not match parameter
+    Foo(std::initializer_list<int>);
+    ^
+"Test_name.c", line 15: note: number of parameters of function "Foo::Foo()" does not match the call
+    Foo();
+    ^
+
+"Test_name.c", line 33: error: the definition of std::initializer_list does not contain the expected constructor
+    EQ(F, (Foo{1,2,3} + Foo{1,2,3}));
+    ^
+
+"Test_name.c", line 33: error: no instance of constructor "Foo::Foo" matches the argument list
+            argument types are: (int, int, int)
+    EQ(F, (Foo{1,2,3} + Foo{1,2,3}));
+    ^
+"Test_name.c", line 16: note: function "Foo::Foo(std::initializer_list<int>)" does not match because argument #1 does not match parameter
+    Foo(std::initializer_list<int>);
+    ^
+"Test_name.c", line 13: note: number of parameters of function "Foo::Foo(const Foo &)" does not match the call
+  class Foo {
+        ^
+"Test_name.c", line 13: note: number of parameters of function "Foo::Foo(Foo &&)" does not match the call
+  class Foo {
+        ^
+"Test_name.c", line 15: note: number of parameters of function "Foo::Foo()" does not match the call
+    Foo();
+    ^
+
+"Test_name.c", line 33: error: the definition of std::initializer_list does not contain the expected constructor
+    EQ(F, (Foo{1,2,3} + Foo{1,2,3}));
+    ^
+
+"Test_name.c", line 33: error: no instance of constructor "Foo::Foo" matches the argument list
+            argument types are: (int, int, int)
+    EQ(F, (Foo{1,2,3} + Foo{1,2,3}));
+    ^
+"Test_name.c", line 16: note: function "Foo::Foo(std::initializer_list<int>)" does not match because argument #1 does not match parameter
+    Foo(std::initializer_list<int>);
+    ^
+"Test_name.c", line 13: note: number of parameters of function "Foo::Foo(const Foo &)" does not match the call
+  class Foo {
+        ^
+"Test_name.c", line 13: note: number of parameters of function "Foo::Foo(Foo &&)" does not match the call
+  class Foo {
+        ^
+"Test_name.c", line 15: note: number of parameters of function "Foo::Foo()" does not match the call
+    Foo();
+    ^
+
+"Test_name.c", line 35: error: too many arguments in invocation of macro "EQ"
+    EQ(F,Foo{1,2,3});
+               ^
+
+"Test_name.c", line 35: error: expected a "}"
+    EQ(F,Foo{1,2,3});
+    ^
+
+"Test_name.c", line 35: error: the definition of std::initializer_list does not contain the expected constructor
+    EQ(F,Foo{1,2,3});
+    ^
+
+"Test_name.c", line 35: error: no instance of constructor "Foo::Foo" matches the argument list
+            argument types are: (int)
+    EQ(F,Foo{1,2,3});
+    ^
+"Test_name.c", line 16: note: function "Foo::Foo(std::initializer_list<int>)" does not match because argument #1 does not match parameter
+    Foo(std::initializer_list<int>);
+    ^
+"Test_name.c", line 13: note: function "Foo::Foo(const Foo &)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 13: note: function "Foo::Foo(Foo &&)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 15: note: number of parameters of function "Foo::Foo()" does not match the call
+    Foo();
+    ^
+
+"Test_name.c", line 38: error: too many arguments in invocation of macro "EQ"
+    EQ(Foo{1,2,3},F);
+               ^
+
+"Test_name.c", line 38: error: expected a "}"
+    EQ(Foo{1,2,3},F);
+    ^
+
+"Test_name.c", line 38: error: the definition of std::initializer_list does not contain the expected constructor
+    EQ(Foo{1,2,3},F);
+    ^
+
+"Test_name.c", line 38: error: no instance of constructor "Foo::Foo" matches the argument list
+            argument types are: (bool)
+    EQ(Foo{1,2,3},F);
+    ^
+"Test_name.c", line 16: note: function "Foo::Foo(std::initializer_list<int>)" does not match because argument #1 does not match parameter
+    Foo(std::initializer_list<int>);
+    ^
+"Test_name.c", line 13: note: function "Foo::Foo(const Foo &)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 13: note: function "Foo::Foo(Foo &&)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 15: note: number of parameters of function "Foo::Foo()" does not match the call
+    Foo();
+    ^
+
+"Test_name.c", line 41: error: too many arguments in invocation of macro "EQ"
+    EQ(Foo{1,2,3},Foo{1,2,3});
+               ^
+
+"Test_name.c", line 41: error: expected a "}"
+    EQ(Foo{1,2,3},Foo{1,2,3});
+    ^
+
+"Test_name.c", line 41: error: the definition of std::initializer_list does not contain the expected constructor
+    EQ(Foo{1,2,3},Foo{1,2,3});
+    ^
+
+"Test_name.c", line 41: error: no instance of constructor "Foo::Foo" matches the argument list
+            argument types are: (bool)
+    EQ(Foo{1,2,3},Foo{1,2,3});
+    ^
+"Test_name.c", line 16: note: function "Foo::Foo(std::initializer_list<int>)" does not match because argument #1 does not match parameter
+    Foo(std::initializer_list<int>);
+    ^
+"Test_name.c", line 13: note: function "Foo::Foo(const Foo &)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 13: note: function "Foo::Foo(Foo &&)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 15: note: number of parameters of function "Foo::Foo()" does not match the call
+    Foo();
+    ^
+
+"Test_name.c", line 45: error: too many arguments in invocation of macro "EQ"
+    EQ(Foo{1,2,3} + Foo{1,2,3}, F);
+               ^
+
+"Test_name.c", line 45: error: expected a "}"
+    EQ(Foo{1,2,3} + Foo{1,2,3}, F);
+    ^
+
+"Test_name.c", line 45: error: the definition of std::initializer_list does not contain the expected constructor
+    EQ(Foo{1,2,3} + Foo{1,2,3}, F);
+    ^
+
+"Test_name.c", line 45: error: no instance of constructor "Foo::Foo" matches the argument list
+            argument types are: (bool)
+    EQ(Foo{1,2,3} + Foo{1,2,3}, F);
+    ^
+"Test_name.c", line 16: note: function "Foo::Foo(std::initializer_list<int>)" does not match because argument #1 does not match parameter
+    Foo(std::initializer_list<int>);
+    ^
+"Test_name.c", line 13: note: function "Foo::Foo(const Foo &)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 13: note: function "Foo::Foo(Foo &&)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 15: note: number of parameters of function "Foo::Foo()" does not match the call
+    Foo();
+    ^
+
+"Test_name.c", line 48: error: too many arguments in invocation of macro "EQ"
+    EQ(F, Foo({1,2,3}) + Foo{1,2,3});
+                               ^
+
+"Test_name.c", line 48: error: the definition of std::initializer_list does not contain the expected constructor
+    EQ(F, Foo({1,2,3}) + Foo{1,2,3});
+    ^
+
+"Test_name.c", line 48: error: the definition of std::initializer_list does not contain the expected constructor
+    EQ(F, Foo({1,2,3}) + Foo{1,2,3});
+    ^
+
+"Test_name.c", line 48: error: the definition of std::initializer_list does not contain the expected constructor
+    EQ(F, Foo({1,2,3}) + Foo{1,2,3});
+    ^
+
+"Test_name.c", line 48: error: no instance of constructor "Foo::Foo" matches the argument list
+            argument types are: ({...})
+    EQ(F, Foo({1,2,3}) + Foo{1,2,3});
+    ^
+"Test_name.c", line 13: note: function "Foo::Foo(const Foo &)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 13: note: function "Foo::Foo(Foo &&)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 16: note: function "Foo::Foo(std::initializer_list<int>)" does not match because argument #1 does not match parameter
+    Foo(std::initializer_list<int>);
+    ^
+"Test_name.c", line 15: note: number of parameters of function "Foo::Foo()" does not match the call
+    Foo();
+    ^
+
+"Test_name.c", line 48: error: expected a "}"
+    EQ(F, Foo({1,2,3}) + Foo{1,2,3});
+    ^
+
+"Test_name.c", line 48: error: the definition of std::initializer_list does not contain the expected constructor
+    EQ(F, Foo({1,2,3}) + Foo{1,2,3});
+    ^
+
+"Test_name.c", line 48: error: no instance of constructor "Foo::Foo" matches the argument list
+            argument types are: (int)
+    EQ(F, Foo({1,2,3}) + Foo{1,2,3});
+    ^
+"Test_name.c", line 16: note: function "Foo::Foo(std::initializer_list<int>)" does not match because argument #1 does not match parameter
+    Foo(std::initializer_list<int>);
+    ^
+"Test_name.c", line 13: note: function "Foo::Foo(const Foo &)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 13: note: function "Foo::Foo(Foo &&)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 15: note: number of parameters of function "Foo::Foo()" does not match the call
+    Foo();
+    ^
+
+"Test_name.c", line 51: error: too many arguments in invocation of macro "EQ"
+    EQ(F, Foo{1,2,3} + Foo{1,2,3});
+                ^
+
+"Test_name.c", line 51: error: expected a "}"
+    EQ(F, Foo{1,2,3} + Foo{1,2,3});
+    ^
+
+"Test_name.c", line 51: error: the definition of std::initializer_list does not contain the expected constructor
+    EQ(F, Foo{1,2,3} + Foo{1,2,3});
+    ^
+
+"Test_name.c", line 51: error: no instance of constructor "Foo::Foo" matches the argument list
+            argument types are: (int)
+    EQ(F, Foo{1,2,3} + Foo{1,2,3});
+    ^
+"Test_name.c", line 16: note: function "Foo::Foo(std::initializer_list<int>)" does not match because argument #1 does not match parameter
+    Foo(std::initializer_list<int>);
+    ^
+"Test_name.c", line 13: note: function "Foo::Foo(const Foo &)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 13: note: function "Foo::Foo(Foo &&)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 15: note: number of parameters of function "Foo::Foo()" does not match the call
+    Foo();
+    ^
+
+"Test_name.c", line 82: error: no operator "!=" matches these operands
+            operand types are: Foo != Foo
+    NE(F,F);
+    ^
+"Test_name.c", line 82: note: built-in operator!=(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    NE(F,F);
+    ^
+"Test_name.c", line 82: note: built-in operator!=(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    NE(F,F);
+    ^
+
+"Test_name.c", line 84: error: no operator "!=" matches these operands
+            operand types are: Foo != Foo
+    NE(F,Foo());
+    ^
+"Test_name.c", line 84: note: built-in operator!=(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    NE(F,Foo());
+    ^
+"Test_name.c", line 84: note: built-in operator!=(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    NE(F,Foo());
+    ^
+
+"Test_name.c", line 86: error: the definition of std::initializer_list does not contain the expected constructor
+    NE(F,Foo({1,2,3}));
+    ^
+
+"Test_name.c", line 86: error: the definition of std::initializer_list does not contain the expected constructor
+    NE(F,Foo({1,2,3}));
+    ^
+
+"Test_name.c", line 86: error: the definition of std::initializer_list does not contain the expected constructor
+    NE(F,Foo({1,2,3}));
+    ^
+
+"Test_name.c", line 86: error: no instance of constructor "Foo::Foo" matches the argument list
+            argument types are: ({...})
+    NE(F,Foo({1,2,3}));
+    ^
+"Test_name.c", line 13: note: function "Foo::Foo(const Foo &)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 13: note: function "Foo::Foo(Foo &&)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 16: note: function "Foo::Foo(std::initializer_list<int>)" does not match because argument #1 does not match parameter
+    Foo(std::initializer_list<int>);
+    ^
+"Test_name.c", line 15: note: number of parameters of function "Foo::Foo()" does not match the call
+    Foo();
+    ^
+
+"Test_name.c", line 88: error: the definition of std::initializer_list does not contain the expected constructor
+    NE((Foo{1,2,3}),(Foo{1,2,3}));
+    ^
+
+"Test_name.c", line 88: error: no instance of constructor "Foo::Foo" matches the argument list
+            argument types are: (int, int, int)
+    NE((Foo{1,2,3}),(Foo{1,2,3}));
+    ^
+"Test_name.c", line 16: note: function "Foo::Foo(std::initializer_list<int>)" does not match because argument #1 does not match parameter
+    Foo(std::initializer_list<int>);
+    ^
+"Test_name.c", line 13: note: number of parameters of function "Foo::Foo(const Foo &)" does not match the call
+  class Foo {
+        ^
+"Test_name.c", line 13: note: number of parameters of function "Foo::Foo(Foo &&)" does not match the call
+  class Foo {
+        ^
+"Test_name.c", line 15: note: number of parameters of function "Foo::Foo()" does not match the call
+    Foo();
+    ^
+
+"Test_name.c", line 88: error: the definition of std::initializer_list does not contain the expected constructor
+    NE((Foo{1,2,3}),(Foo{1,2,3}));
+    ^
+
+"Test_name.c", line 88: error: no instance of constructor "Foo::Foo" matches the argument list
+            argument types are: (int, int, int)
+    NE((Foo{1,2,3}),(Foo{1,2,3}));
+    ^
+"Test_name.c", line 16: note: function "Foo::Foo(std::initializer_list<int>)" does not match because argument #1 does not match parameter
+    Foo(std::initializer_list<int>);
+    ^
+"Test_name.c", line 13: note: number of parameters of function "Foo::Foo(const Foo &)" does not match the call
+  class Foo {
+        ^
+"Test_name.c", line 13: note: number of parameters of function "Foo::Foo(Foo &&)" does not match the call
+  class Foo {
+        ^
+"Test_name.c", line 15: note: number of parameters of function "Foo::Foo()" does not match the call
+    Foo();
+    ^
+
+"Test_name.c", line 91: error: too many arguments in invocation of macro "NE"
+    NE(F,Foo{1,2,3});
+               ^
+
+"Test_name.c", line 91: error: expected a "}"
+    NE(F,Foo{1,2,3});
+    ^
+
+"Test_name.c", line 91: error: the definition of std::initializer_list does not contain the expected constructor
+    NE(F,Foo{1,2,3});
+    ^
+
+"Test_name.c", line 91: error: no instance of constructor "Foo::Foo" matches the argument list
+            argument types are: (int)
+    NE(F,Foo{1,2,3});
+    ^
+"Test_name.c", line 16: note: function "Foo::Foo(std::initializer_list<int>)" does not match because argument #1 does not match parameter
+    Foo(std::initializer_list<int>);
+    ^
+"Test_name.c", line 13: note: function "Foo::Foo(const Foo &)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 13: note: function "Foo::Foo(Foo &&)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 15: note: number of parameters of function "Foo::Foo()" does not match the call
+    Foo();
+    ^
+
+"Test_name.c", line 95: error: too many arguments in invocation of macro "NE"
+    NE(Foo{1,2,3},F);
+               ^
+
+"Test_name.c", line 95: error: expected a "}"
+    NE(Foo{1,2,3},F);
+    ^
+
+"Test_name.c", line 95: error: the definition of std::initializer_list does not contain the expected constructor
+    NE(Foo{1,2,3},F);
+    ^
+
+"Test_name.c", line 95: error: no instance of constructor "Foo::Foo" matches the argument list
+            argument types are: (bool)
+    NE(Foo{1,2,3},F);
+    ^
+"Test_name.c", line 16: note: function "Foo::Foo(std::initializer_list<int>)" does not match because argument #1 does not match parameter
+    Foo(std::initializer_list<int>);
+    ^
+"Test_name.c", line 13: note: function "Foo::Foo(const Foo &)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 13: note: function "Foo::Foo(Foo &&)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 15: note: number of parameters of function "Foo::Foo()" does not match the call
+    Foo();
+    ^
+
+"Test_name.c", line 99: error: too many arguments in invocation of macro "NE"
+    NE(Foo{1,2,3},Foo{1,2,3});
+               ^
+
+"Test_name.c", line 99: error: expected a "}"
+    NE(Foo{1,2,3},Foo{1,2,3});
+    ^
+
+"Test_name.c", line 99: error: the definition of std::initializer_list does not contain the expected constructor
+    NE(Foo{1,2,3},Foo{1,2,3});
+    ^
+
+"Test_name.c", line 99: error: no instance of constructor "Foo::Foo" matches the argument list
+            argument types are: (bool)
+    NE(Foo{1,2,3},Foo{1,2,3});
+    ^
+"Test_name.c", line 16: note: function "Foo::Foo(std::initializer_list<int>)" does not match because argument #1 does not match parameter
+    Foo(std::initializer_list<int>);
+    ^
+"Test_name.c", line 13: note: function "Foo::Foo(const Foo &)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 13: note: function "Foo::Foo(Foo &&)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 15: note: number of parameters of function "Foo::Foo()" does not match the call
+    Foo();
+    ^
+
+"Test_name.c", line 104: error: too many arguments in invocation of macro "NE"
+    NE(Foo{1,2,3} + Foo{1,2,3}, F);
+               ^
+
+"Test_name.c", line 104: error: expected a "}"
+    NE(Foo{1,2,3} + Foo{1,2,3}, F);
+    ^
+
+"Test_name.c", line 104: error: the definition of std::initializer_list does not contain the expected constructor
+    NE(Foo{1,2,3} + Foo{1,2,3}, F);
+    ^
+
+"Test_name.c", line 104: error: no instance of constructor "Foo::Foo" matches the argument list
+            argument types are: (bool)
+    NE(Foo{1,2,3} + Foo{1,2,3}, F);
+    ^
+"Test_name.c", line 16: note: function "Foo::Foo(std::initializer_list<int>)" does not match because argument #1 does not match parameter
+    Foo(std::initializer_list<int>);
+    ^
+"Test_name.c", line 13: note: function "Foo::Foo(const Foo &)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 13: note: function "Foo::Foo(Foo &&)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 15: note: number of parameters of function "Foo::Foo()" does not match the call
+    Foo();
+    ^
+
+"Test_name.c", line 108: error: too many arguments in invocation of macro "NE"
+    NE(F, Foo({1,2,3}) + Foo{1,2,3});
+                               ^
+
+"Test_name.c", line 108: error: the definition of std::initializer_list does not contain the expected constructor
+    NE(F, Foo({1,2,3}) + Foo{1,2,3});
+    ^
+
+"Test_name.c", line 108: error: the definition of std::initializer_list does not contain the expected constructor
+    NE(F, Foo({1,2,3}) + Foo{1,2,3});
+    ^
+
+"Test_name.c", line 108: error: the definition of std::initializer_list does not contain the expected constructor
+    NE(F, Foo({1,2,3}) + Foo{1,2,3});
+    ^
+
+"Test_name.c", line 108: error: no instance of constructor "Foo::Foo" matches the argument list
+            argument types are: ({...})
+    NE(F, Foo({1,2,3}) + Foo{1,2,3});
+    ^
+"Test_name.c", line 13: note: function "Foo::Foo(const Foo &)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 13: note: function "Foo::Foo(Foo &&)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 16: note: function "Foo::Foo(std::initializer_list<int>)" does not match because argument #1 does not match parameter
+    Foo(std::initializer_list<int>);
+    ^
+"Test_name.c", line 15: note: number of parameters of function "Foo::Foo()" does not match the call
+    Foo();
+    ^
+
+"Test_name.c", line 108: error: expected a "}"
+    NE(F, Foo({1,2,3}) + Foo{1,2,3});
+    ^
+
+"Test_name.c", line 108: error: the definition of std::initializer_list does not contain the expected constructor
+    NE(F, Foo({1,2,3}) + Foo{1,2,3});
+    ^
+
+"Test_name.c", line 108: error: no instance of constructor "Foo::Foo" matches the argument list
+            argument types are: (int)
+    NE(F, Foo({1,2,3}) + Foo{1,2,3});
+    ^
+"Test_name.c", line 16: note: function "Foo::Foo(std::initializer_list<int>)" does not match because argument #1 does not match parameter
+    Foo(std::initializer_list<int>);
+    ^
+"Test_name.c", line 13: note: function "Foo::Foo(const Foo &)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 13: note: function "Foo::Foo(Foo &&)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 15: note: number of parameters of function "Foo::Foo()" does not match the call
+    Foo();
+    ^
+
+"Test_name.c", line 112: error: too many arguments in invocation of macro "NE"
+    NE(F, Foo{1,2,3} + Foo{1,2,3});
+                ^
+
+"Test_name.c", line 112: error: expected a "}"
+    NE(F, Foo{1,2,3} + Foo{1,2,3});
+    ^
+
+"Test_name.c", line 112: error: the definition of std::initializer_list does not contain the expected constructor
+    NE(F, Foo{1,2,3} + Foo{1,2,3});
+    ^
+
+"Test_name.c", line 112: error: no instance of constructor "Foo::Foo" matches the argument list
+            argument types are: (int)
+    NE(F, Foo{1,2,3} + Foo{1,2,3});
+    ^
+"Test_name.c", line 16: note: function "Foo::Foo(std::initializer_list<int>)" does not match because argument #1 does not match parameter
+    Foo(std::initializer_list<int>);
+    ^
+"Test_name.c", line 13: note: function "Foo::Foo(const Foo &)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 13: note: function "Foo::Foo(Foo &&)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 15: note: number of parameters of function "Foo::Foo()" does not match the call
+    Foo();
+    ^
+
+"Test_name.c", line 144: error: the definition of std::initializer_list does not contain the expected constructor
+    INIT(b, Foo({1, 2, 3}));
+    ^
+
+"Test_name.c", line 144: error: the definition of std::initializer_list does not contain the expected constructor
+    INIT(b, Foo({1, 2, 3}));
+    ^
+
+"Test_name.c", line 144: error: the definition of std::initializer_list does not contain the expected constructor
+    INIT(b, Foo({1, 2, 3}));
+    ^
+
+"Test_name.c", line 144: error: no instance of constructor "Foo::Foo" matches the argument list
+            argument types are: ({...})
+    INIT(b, Foo({1, 2, 3}));
+    ^
+"Test_name.c", line 13: note: function "Foo::Foo(const Foo &)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 13: note: function "Foo::Foo(Foo &&)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 16: note: function "Foo::Foo(std::initializer_list<int>)" does not match because argument #1 does not match parameter
+    Foo(std::initializer_list<int>);
+    ^
+"Test_name.c", line 15: note: number of parameters of function "Foo::Foo()" does not match the call
+    Foo();
+    ^
+
+"Test_name.c", line 147: error: too many arguments in invocation of macro "INIT"
+    INIT(d, Foo{1, 2, 3});
+                   ^
+
+"Test_name.c", line 147: error: expected a "}"
+    INIT(d, Foo{1, 2, 3});
+    ^
+
+"Test_name.c", line 147: error: the definition of std::initializer_list does not contain the expected constructor
+    INIT(d, Foo{1, 2, 3});
+    ^
+
+"Test_name.c", line 147: error: no instance of constructor "Foo::Foo" matches the argument list
+            argument types are: (int)
+    INIT(d, Foo{1, 2, 3});
+    ^
+"Test_name.c", line 16: note: function "Foo::Foo(std::initializer_list<int>)" does not match because argument #1 does not match parameter
+    Foo(std::initializer_list<int>);
+    ^
+"Test_name.c", line 13: note: function "Foo::Foo(const Foo &)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 13: note: function "Foo::Foo(Foo &&)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 15: note: number of parameters of function "Foo::Foo()" does not match the call
+    Foo();
+    ^
+
+"Test_name.c", line 152: error: too many arguments in invocation of macro "INIT"
+    INIT(e, {1, 2, 3});
+                ^
+
+"Test_name.c", line 152: error: expected a "}"
+    INIT(e, {1, 2, 3});
+    ^
+
+"Test_name.c", line 152: error: the definition of std::initializer_list does not contain the expected constructor
+    INIT(e, {1, 2, 3});
+    ^
+
+"Test_name.c", line 152: error: no instance of constructor "Foo::Foo" matches the argument list
+            argument types are: (int)
+    INIT(e, {1, 2, 3});
+    ^
+"Test_name.c", line 16: note: function "Foo::Foo(std::initializer_list<int>)" does not match because argument #1 does not match parameter
+    Foo(std::initializer_list<int>);
+    ^
+"Test_name.c", line 13: note: function "Foo::Foo(const Foo &)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 13: note: function "Foo::Foo(Foo &&)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 15: note: number of parameters of function "Foo::Foo()" does not match the call
+    Foo();
+    ^
+
+"Test_name.c", line 158: error: too many arguments in invocation of macro "INIT"
+    INIT(e, {1, 2, 3} + {1, 2, 3});
+                ^
+
+"Test_name.c", line 158: error: "e" has already been declared in the current scope
+    INIT(e, {1, 2, 3} + {1, 2, 3});
+    ^
+
+"Test_name.c", line 158: error: expected a "}"
+    INIT(e, {1, 2, 3} + {1, 2, 3});
+    ^
+
+"Test_name.c", line 158: error: the definition of std::initializer_list does not contain the expected constructor
+    INIT(e, {1, 2, 3} + {1, 2, 3});
+    ^
+
+"Test_name.c", line 158: error: no instance of constructor "Foo::Foo" matches the argument list
+            argument types are: (int)
+    INIT(e, {1, 2, 3} + {1, 2, 3});
+    ^
+"Test_name.c", line 16: note: function "Foo::Foo(std::initializer_list<int>)" does not match because argument #1 does not match parameter
+    Foo(std::initializer_list<int>);
+    ^
+"Test_name.c", line 13: note: function "Foo::Foo(const Foo &)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 13: note: function "Foo::Foo(Foo &&)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 15: note: number of parameters of function "Foo::Foo()" does not match the call
+    Foo();
+    ^
+
+"Test_name.c", line 174: error: too many arguments in invocation of macro "M"
+    M(F2, Foo{1,2,3}, Foo{1,2,3}, Foo{1,2,3}, Foo{1,2,3}, Foo{1,2,3}, Foo{1,2,3},
+                                                          ^
+
+"Test_name.c", line 174: error: the definition of std::initializer_list does not contain the expected constructor
+    M(F2, Foo{1,2,3}, Foo{1,2,3}, Foo{1,2,3}, Foo{1,2,3}, Foo{1,2,3}, Foo{1,2,3},
+    ^
+
+"Test_name.c", line 174: error: no instance of constructor "Foo::Foo" matches the argument list
+            argument types are: (int)
+    M(F2, Foo{1,2,3}, Foo{1,2,3}, Foo{1,2,3}, Foo{1,2,3}, Foo{1,2,3}, Foo{1,2,3},
+    ^
+"Test_name.c", line 16: note: function "Foo::Foo(std::initializer_list<int>)" does not match because argument #1 does not match parameter
+    Foo(std::initializer_list<int>);
+    ^
+"Test_name.c", line 13: note: function "Foo::Foo(const Foo &)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 13: note: function "Foo::Foo(Foo &&)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 15: note: number of parameters of function "Foo::Foo()" does not match the call
+    Foo();
+    ^
+
+"Test_name.c", line 174: error: the definition of std::initializer_list does not contain the expected constructor
+    M(F2, Foo{1,2,3}, Foo{1,2,3}, Foo{1,2,3}, Foo{1,2,3}, Foo{1,2,3}, Foo{1,2,3},
+    ^
+
+"Test_name.c", line 174: error: no instance of constructor "Foo::Foo" matches the argument list
+            argument types are: (int)
+    M(F2, Foo{1,2,3}, Foo{1,2,3}, Foo{1,2,3}, Foo{1,2,3}, Foo{1,2,3}, Foo{1,2,3},
+    ^
+"Test_name.c", line 16: note: function "Foo::Foo(std::initializer_list<int>)" does not match because argument #1 does not match parameter
+    Foo(std::initializer_list<int>);
+    ^
+"Test_name.c", line 13: note: function "Foo::Foo(const Foo &)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 13: note: function "Foo::Foo(Foo &&)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 15: note: number of parameters of function "Foo::Foo()" does not match the call
+    Foo();
+    ^
+
+"Test_name.c", line 174: error: the definition of std::initializer_list does not contain the expected constructor
+    M(F2, Foo{1,2,3}, Foo{1,2,3}, Foo{1,2,3}, Foo{1,2,3}, Foo{1,2,3}, Foo{1,2,3},
+    ^
+
+"Test_name.c", line 174: error: no instance of constructor "Foo::Foo" matches the argument list
+            argument types are: (int)
+    M(F2, Foo{1,2,3}, Foo{1,2,3}, Foo{1,2,3}, Foo{1,2,3}, Foo{1,2,3}, Foo{1,2,3},
+    ^
+"Test_name.c", line 16: note: function "Foo::Foo(std::initializer_list<int>)" does not match because argument #1 does not match parameter
+    Foo(std::initializer_list<int>);
+    ^
+"Test_name.c", line 13: note: function "Foo::Foo(const Foo &)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 13: note: function "Foo::Foo(Foo &&)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 15: note: number of parameters of function "Foo::Foo()" does not match the call
+    Foo();
+    ^
+
+"Test_name.c", line 174: error: the definition of std::initializer_list does not contain the expected constructor
+    M(F2, Foo{1,2,3}, Foo{1,2,3}, Foo{1,2,3}, Foo{1,2,3}, Foo{1,2,3}, Foo{1,2,3},
+    ^
+
+"Test_name.c", line 174: error: no instance of constructor "Foo::Foo" matches the argument list
+            argument types are: (int)
+    M(F2, Foo{1,2,3}, Foo{1,2,3}, Foo{1,2,3}, Foo{1,2,3}, Foo{1,2,3}, Foo{1,2,3},
+    ^
+"Test_name.c", line 16: note: function "Foo::Foo(std::initializer_list<int>)" does not match because argument #1 does not match parameter
+    Foo(std::initializer_list<int>);
+    ^
+"Test_name.c", line 13: note: function "Foo::Foo(const Foo &)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 13: note: function "Foo::Foo(Foo &&)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 15: note: number of parameters of function "Foo::Foo()" does not match the call
+    Foo();
+    ^
+
+"Test_name.c", line 179: error: too many arguments in invocation of macro "M"
+    M(F3, {1,2,3}, {1,2,3}, {1,2,3}, {1,2,3}, {1,2,3}, {1,2,3},
+                                              ^
+
+"Test_name.c", line 179: error: the definition of std::initializer_list does not contain the expected constructor
+    M(F3, {1,2,3}, {1,2,3}, {1,2,3}, {1,2,3}, {1,2,3}, {1,2,3},
+    ^
+
+"Test_name.c", line 179: error: no instance of constructor "Foo::Foo" matches the argument list
+            argument types are: (int)
+    M(F3, {1,2,3}, {1,2,3}, {1,2,3}, {1,2,3}, {1,2,3}, {1,2,3},
+    ^
+"Test_name.c", line 16: note: function "Foo::Foo(std::initializer_list<int>)" does not match because argument #1 does not match parameter
+    Foo(std::initializer_list<int>);
+    ^
+"Test_name.c", line 13: note: function "Foo::Foo(const Foo &)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 13: note: function "Foo::Foo(Foo &&)" does not match because argument #1 does not match parameter
+  class Foo {
+        ^
+"Test_name.c", line 15: note: number of parameters of function "Foo::Foo()" does not match the call
+    Foo();
+    ^
+
+"Test_name.c", line 179: error: expected a ";"
+    M(F3, {1,2,3}, {1,2,3}, {1,2,3}, {1,2,3}, {1,2,3}, {1,2,3},
+    ^
+
+122 errors detected in the compilation of "Test_name.c".

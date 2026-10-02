@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 8: error: a function type is not allowed here
+      T member; // expected-error{{with function type}}
+        ^
+          detected during instantiation of class "X0<T>::MemberClass [with T=int (int)]" at line 23
+
+"Test_name.c", line 12: warning: arithmetic on pointer to void or function type
+      return ptr + 1; // expected-error{{pointer to the function}}
+                 ^
+          detected during instantiation of "T *X0<T>::f0(T *) [with T=int (int)]" at line 23
+
+"Test_name.c", line 19: warning: arithmetic on pointer to void or function type
+  T* X0<T>::static_member = ((T*)0) + 1; // expected-error{{pointer to the function}}
+                                    ^
+          detected during implicit definition of "int (*X0<T>::static_member)(int) [with T=int (int)]" at line 23
+
+1 error detected in the compilation of "Test_name.c".

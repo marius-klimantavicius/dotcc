@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./vect/pr97081.c", line 21: warning: integer conversion resulted in truncation
+    long unsigned int pvd[4], pva[4] = { 0x0102030405060708, 0x0102030405060708, 0x0102030405060708, 0x0102030405060708 };
+                                         ^
+
+"./vect/pr97081.c", line 21: warning: integer conversion resulted in truncation
+    long unsigned int pvd[4], pva[4] = { 0x0102030405060708, 0x0102030405060708, 0x0102030405060708, 0x0102030405060708 };
+                                                             ^
+
+"./vect/pr97081.c", line 21: warning: integer conversion resulted in truncation
+    long unsigned int pvd[4], pva[4] = { 0x0102030405060708, 0x0102030405060708, 0x0102030405060708, 0x0102030405060708 };
+                                                                                 ^
+
+"./vect/pr97081.c", line 21: warning: integer conversion resulted in truncation
+    long unsigned int pvd[4], pva[4] = { 0x0102030405060708, 0x0102030405060708, 0x0102030405060708, 0x0102030405060708 };
+                                                                                                     ^
+

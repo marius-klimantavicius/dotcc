@@ -1,0 +1,19 @@
+fe_only -DTEST_NUMBER=1 --c++11 --diag_warning 2361 Test_name.c
+"user.h", line 10: warning: invalid narrowing conversion from "double" to "float"
+    auto v{ float{ d } };
+                   ^
+
+"user.h", line 4: warning: invalid narrowing conversion from "double" to "float"
+    auto f(T t, U u, int) -> decltype(T{u}, void());
+                                        ^
+          detected during instantiation of "user::f" based on template arguments <float, double> at line 1 of "main.cpp"
+
+"main.cpp", line 1: error: a value of type "void" cannot be used to initialize an entity of type "int"
+  int i = user::f(0.0f, 0.0, 0);
+          ^
+
+"main.cpp", line 2: error: a value of type "void" cannot be used to initialize an entity of type "int"
+  int j = system::f(0.0f, 0.0, 0);
+          ^
+
+2 errors detected in the compilation of "Test_name.c".

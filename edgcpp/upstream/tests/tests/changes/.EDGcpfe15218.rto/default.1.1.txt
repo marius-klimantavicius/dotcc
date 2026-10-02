@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --microsoft Test_name.c
+"Test_name.c", line 15: warning: variable "b" was declared but never referenced
+  bool const b = __is_literal_type(S);  // Previously aborted in some
+             ^
+

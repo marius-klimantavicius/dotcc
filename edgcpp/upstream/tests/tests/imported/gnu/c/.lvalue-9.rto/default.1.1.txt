@@ -1,0 +1,126 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 Test_name.c
+"Test_name.c", line 17: error: incomplete type "struct S" is not allowed
+    var; /* { dg-error "has an incomplete type" } */
+    ^
+
+"Test_name.c", line 18: error: incomplete type "struct S" is not allowed
+    var, (void) 0; /* { dg-error "has an incomplete type" } */
+    ^
+
+"Test_name.c", line 20: error: incomplete type "struct S" is not allowed
+     ? var /* { dg-error "has an incomplete type" } */
+       ^
+
+"Test_name.c", line 21: error: incomplete type "struct S" is not allowed
+     : var); /* { dg-error "has an incomplete type" } */
+       ^
+
+"Test_name.c", line 27: error: incomplete type "struct S" is not allowed
+    (void) var; /* { dg-error "has an incomplete type" } */
+           ^
+
+"Test_name.c", line 28: error: incomplete type "struct S" is not allowed
+    (void) (var, (void) 0); /* { dg-error "has an incomplete type" } */
+            ^
+
+"Test_name.c", line 30: error: incomplete type "struct S" is not allowed
+  	  ? var /* { dg-error "has an incomplete type" } */
+  	    ^
+
+"Test_name.c", line 31: error: incomplete type "struct S" is not allowed
+  	  : var); /* { dg-error "has an incomplete type" } */
+  	    ^
+
+"Test_name.c", line 37: warning: type qualifier is meaningless on cast type
+    (const void) var; /* { dg-error "has an incomplete type" } */
+     ^
+
+"Test_name.c", line 37: error: incomplete type "struct S" is not allowed
+    (const void) var; /* { dg-error "has an incomplete type" } */
+                 ^
+
+"Test_name.c", line 38: warning: type qualifier is meaningless on cast type
+    (const void) (var, (void) 0); /* { dg-error "has an incomplete type" } */
+     ^
+
+"Test_name.c", line 38: error: incomplete type "struct S" is not allowed
+    (const void) (var, (void) 0); /* { dg-error "has an incomplete type" } */
+                  ^
+
+"Test_name.c", line 39: warning: type qualifier is meaningless on cast type
+    (const void) (i
+     ^
+
+"Test_name.c", line 40: error: incomplete type "struct S" is not allowed
+  		? var /* { dg-error "has an incomplete type" } */
+  		  ^
+
+"Test_name.c", line 41: error: incomplete type "struct S" is not allowed
+  		: var); /* { dg-error "has an incomplete type" } */
+  		  ^
+
+"Test_name.c", line 47: error: incomplete type "struct S" is not allowed
+    *vp; /* { dg-error "invalid use of undefined type" } */
+    ^
+
+"Test_name.c", line 48: error: incomplete type "struct S" is not allowed
+    *vp, (void) 0; /* { dg-error "invalid use of undefined type" } */
+    ^
+
+"Test_name.c", line 50: error: incomplete type "struct S" is not allowed
+     ? *vp /* { dg-error "invalid use of undefined type" } */
+       ^
+
+"Test_name.c", line 51: error: incomplete type "struct S" is not allowed
+     : *vp); /* { dg-error "invalid use of undefined type" } */
+       ^
+
+"Test_name.c", line 57: error: incomplete type "struct S" is not allowed
+    (void) *vp; /* { dg-error "invalid use of undefined type" } */
+           ^
+
+"Test_name.c", line 58: error: incomplete type "struct S" is not allowed
+    (void) (*vp, (void) 0); /* { dg-error "invalid use of undefined type" } */
+            ^
+
+"Test_name.c", line 60: error: incomplete type "struct S" is not allowed
+  	  ? *vp /* { dg-error "invalid use of undefined type" } */
+  	    ^
+
+"Test_name.c", line 61: error: incomplete type "struct S" is not allowed
+  	  : *vp); /* { dg-error "invalid use of undefined type" } */
+  	    ^
+
+"Test_name.c", line 67: warning: type qualifier is meaningless on cast type
+    (const void) *vp; /* { dg-error "invalid use of undefined type" } */
+     ^
+
+"Test_name.c", line 67: error: incomplete type "struct S" is not allowed
+    (const void) *vp; /* { dg-error "invalid use of undefined type" } */
+                 ^
+
+"Test_name.c", line 68: warning: type qualifier is meaningless on cast type
+    (const void) (*vp, (void) 0); /* { dg-error "invalid use of undefined type" } */
+     ^
+
+"Test_name.c", line 68: error: incomplete type "struct S" is not allowed
+    (const void) (*vp, (void) 0); /* { dg-error "invalid use of undefined type" } */
+                  ^
+
+"Test_name.c", line 69: warning: type qualifier is meaningless on cast type
+    (const void) (i
+     ^
+
+"Test_name.c", line 70: error: incomplete type "struct S" is not allowed
+  		? *vp /* { dg-error "invalid use of undefined type" } */
+  		  ^
+
+"Test_name.c", line 71: error: incomplete type "struct S" is not allowed
+  		: *vp); /* { dg-error "invalid use of undefined type" } */
+  		  ^
+
+"Test_name.c", line 78: error: expression must be a pointer to a complete object type
+    &vp[0]; /* { dg-error "invalid use of undefined type" } */
+     ^
+
+25 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --c++ Test_name.c
+"Test_name.c", line 9: error: class or struct definition is missing
+    struct D : B;
+                ^
+
+"Test_name.c", line 19: error: class or struct definition is missing
+    struct D : B;
+                ^
+
+"Test_name.c", line 40: error: class or struct definition is missing
+    struct D : virtual B;
+                        ^
+
+"Test_name.c", line 48: error: class or struct definition is missing
+    struct D : B;
+                ^
+
+4 errors detected in the compilation of "Test_name.c".

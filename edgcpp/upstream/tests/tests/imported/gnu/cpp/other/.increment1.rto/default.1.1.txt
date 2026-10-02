@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 13: error: expression must be a modifiable lvalue
+    ((char *) p)++;	// { dg-error "lvalue" }
+    ^
+
+"Test_name.c", line 14: error: expression must be a modifiable lvalue
+    ((char *) q)++;	// { dg-error "lvalue" }
+    ^
+
+"Test_name.c", line 15: error: expression must be a modifiable lvalue
+    ((char *) p)--;	// { dg-error "lvalue" }
+    ^
+
+"Test_name.c", line 16: error: expression must be a modifiable lvalue
+    ((char *) q)--;	// { dg-error "lvalue" }
+    ^
+
+"Test_name.c", line 17: error: expression must be a modifiable lvalue
+    ++(char *) p;		// { dg-error "lvalue" }
+      ^
+
+"Test_name.c", line 18: error: expression must be a modifiable lvalue
+    ++(char *) q;		// { dg-error "lvalue" }
+      ^
+
+"Test_name.c", line 19: error: expression must be a modifiable lvalue
+    --(char *) p;		// { dg-error "lvalue" }
+      ^
+
+"Test_name.c", line 20: error: expression must be a modifiable lvalue
+    --(char *) q;		// { dg-error "lvalue" }
+      ^
+
+8 errors detected in the compilation of "Test_name.c".

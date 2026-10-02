@@ -1,0 +1,266 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 10: error: expression must have arithmetic, unscoped enum, or pointer type but has type "std::nullptr_t"
+    a = 0 ? nullptr + a : a + nullptr; // expected-error 2{{invalid operands to binary expression}}
+            ^
+
+"Test_name.c", line 10: warning: variable "a" is used before its value is set
+    a = 0 ? nullptr + a : a + nullptr; // expected-error 2{{invalid operands to binary expression}}
+                      ^
+
+"Test_name.c", line 10: error: expression must have arithmetic or unscoped enum type
+    a = 0 ? nullptr + a : a + nullptr; // expected-error 2{{invalid operands to binary expression}}
+                              ^
+
+"Test_name.c", line 11: error: expression must have arithmetic, unscoped enum, or pointer type but has type "std::nullptr_t"
+    a = 0 ? nullptr - a : a - nullptr; // expected-error 2{{invalid operands to binary expression}}
+            ^
+
+"Test_name.c", line 11: error: expression must have arithmetic or unscoped enum type
+    a = 0 ? nullptr - a : a - nullptr; // expected-error 2{{invalid operands to binary expression}}
+                              ^
+
+"Test_name.c", line 12: error: expression must have arithmetic or unscoped enum type
+    a = 0 ? nullptr / a : a / nullptr; // expected-error 2{{invalid operands to binary expression}}
+            ^
+
+"Test_name.c", line 12: error: expression must have arithmetic or unscoped enum type
+    a = 0 ? nullptr / a : a / nullptr; // expected-error 2{{invalid operands to binary expression}}
+                              ^
+
+"Test_name.c", line 13: error: expression must have arithmetic or unscoped enum type
+    a = 0 ? nullptr * a : a * nullptr; // expected-error 2{{invalid operands to binary expression}}
+            ^
+
+"Test_name.c", line 13: error: expression must have arithmetic or unscoped enum type
+    a = 0 ? nullptr * a : a * nullptr; // expected-error 2{{invalid operands to binary expression}}
+                              ^
+
+"Test_name.c", line 14: error: expression must have integral or unscoped enum type
+    a = 0 ? nullptr >> a : a >> nullptr; // expected-error 2{{invalid operands to binary expression}}
+            ^
+
+"Test_name.c", line 14: error: expression must have integral or unscoped enum type
+    a = 0 ? nullptr >> a : a >> nullptr; // expected-error 2{{invalid operands to binary expression}}
+                                ^
+
+"Test_name.c", line 15: error: expression must have integral or unscoped enum type
+    a = 0 ? nullptr << a : a << nullptr; // expected-error 2{{invalid operands to binary expression}}
+            ^
+
+"Test_name.c", line 15: error: expression must have integral or unscoped enum type
+    a = 0 ? nullptr << a : a << nullptr; // expected-error 2{{invalid operands to binary expression}}
+                                ^
+
+"Test_name.c", line 16: error: expression must have integral or unscoped enum type
+    a = 0 ? nullptr % a : a % nullptr; // expected-error 2{{invalid operands to binary expression}}
+            ^
+
+"Test_name.c", line 16: error: expression must have integral or unscoped enum type
+    a = 0 ? nullptr % a : a % nullptr; // expected-error 2{{invalid operands to binary expression}}
+                              ^
+
+"Test_name.c", line 17: error: expression must have integral or unscoped enum type
+    a = 0 ? nullptr & a : a & nullptr; // expected-error 2{{invalid operands to binary expression}}
+            ^
+
+"Test_name.c", line 17: error: expression must have integral or unscoped enum type
+    a = 0 ? nullptr & a : a & nullptr; // expected-error 2{{invalid operands to binary expression}}
+                              ^
+
+"Test_name.c", line 18: error: expression must have integral or unscoped enum type
+    a = 0 ? nullptr | a : a | nullptr; // expected-error 2{{invalid operands to binary expression}}
+            ^
+
+"Test_name.c", line 18: error: expression must have integral or unscoped enum type
+    a = 0 ? nullptr | a : a | nullptr; // expected-error 2{{invalid operands to binary expression}}
+                              ^
+
+"Test_name.c", line 19: error: expression must have integral or unscoped enum type
+    a = 0 ? nullptr ^ a : a ^ nullptr; // expected-error 2{{invalid operands to binary expression}}
+            ^
+
+"Test_name.c", line 19: error: expression must have integral or unscoped enum type
+    a = 0 ? nullptr ^ a : a ^ nullptr; // expected-error 2{{invalid operands to binary expression}}
+                              ^
+
+"Test_name.c", line 22: error: expression must have arithmetic, unscoped enum, or pointer type but has type "std::nullptr_t"
+    a = nullptr + nullptr; // expected-error{{invalid operands to binary expression}}
+        ^
+
+"Test_name.c", line 23: error: expression must have arithmetic, unscoped enum, or pointer type but has type "std::nullptr_t"
+    a = nullptr - nullptr; // expected-error{{invalid operands to binary expression}}
+        ^
+
+"Test_name.c", line 24: error: expression must have arithmetic or unscoped enum type
+    a = nullptr / nullptr; // expected-error{{invalid operands to binary expression}}
+        ^
+
+"Test_name.c", line 24: error: expression must have arithmetic or unscoped enum type
+    a = nullptr / nullptr; // expected-error{{invalid operands to binary expression}}
+                  ^
+
+"Test_name.c", line 25: error: expression must have arithmetic or unscoped enum type
+    a = nullptr * nullptr; // expected-error{{invalid operands to binary expression}}
+        ^
+
+"Test_name.c", line 25: error: expression must have arithmetic or unscoped enum type
+    a = nullptr * nullptr; // expected-error{{invalid operands to binary expression}}
+                  ^
+
+"Test_name.c", line 26: error: expression must have integral or unscoped enum type
+    a = nullptr >> nullptr; // expected-error{{invalid operands to binary expression}}
+        ^
+
+"Test_name.c", line 26: error: expression must have integral or unscoped enum type
+    a = nullptr >> nullptr; // expected-error{{invalid operands to binary expression}}
+                   ^
+
+"Test_name.c", line 27: error: expression must have integral or unscoped enum type
+    a = nullptr << nullptr; // expected-error{{invalid operands to binary expression}}
+        ^
+
+"Test_name.c", line 27: error: expression must have integral or unscoped enum type
+    a = nullptr << nullptr; // expected-error{{invalid operands to binary expression}}
+                   ^
+
+"Test_name.c", line 28: error: expression must have integral or unscoped enum type
+    a = nullptr % nullptr; // expected-error{{invalid operands to binary expression}}
+        ^
+
+"Test_name.c", line 28: error: expression must have integral or unscoped enum type
+    a = nullptr % nullptr; // expected-error{{invalid operands to binary expression}}
+                  ^
+
+"Test_name.c", line 29: error: expression must have integral or unscoped enum type
+    a = nullptr & nullptr; // expected-error{{invalid operands to binary expression}}
+        ^
+
+"Test_name.c", line 29: error: expression must have integral or unscoped enum type
+    a = nullptr & nullptr; // expected-error{{invalid operands to binary expression}}
+                  ^
+
+"Test_name.c", line 30: error: expression must have integral or unscoped enum type
+    a = nullptr | nullptr; // expected-error{{invalid operands to binary expression}}
+        ^
+
+"Test_name.c", line 30: error: expression must have integral or unscoped enum type
+    a = nullptr | nullptr; // expected-error{{invalid operands to binary expression}}
+                  ^
+
+"Test_name.c", line 31: error: expression must have integral or unscoped enum type
+    a = nullptr ^ nullptr; // expected-error{{invalid operands to binary expression}}
+        ^
+
+"Test_name.c", line 31: error: expression must have integral or unscoped enum type
+    a = nullptr ^ nullptr; // expected-error{{invalid operands to binary expression}}
+                  ^
+
+"Test_name.c", line 33: error: expression must have arithmetic or unscoped enum type
+    a += nullptr; // expected-error{{invalid operands to binary expression}}
+         ^
+
+"Test_name.c", line 34: error: expression must have arithmetic or unscoped enum type
+    a -= nullptr; // expected-error{{invalid operands to binary expression}}
+         ^
+
+"Test_name.c", line 35: error: expression must have arithmetic or unscoped enum type
+    a /= nullptr; // expected-error{{invalid operands to binary expression}}
+         ^
+
+"Test_name.c", line 36: error: expression must have arithmetic or unscoped enum type
+    a *= nullptr; // expected-error{{invalid operands to binary expression}}
+         ^
+
+"Test_name.c", line 37: error: expression must have integral or unscoped enum type
+    a >>= nullptr; // expected-error{{invalid operands to binary expression}}
+          ^
+
+"Test_name.c", line 38: error: expression must have integral or unscoped enum type
+    a <<= nullptr; // expected-error{{invalid operands to binary expression}}
+          ^
+
+"Test_name.c", line 39: error: expression must have integral or unscoped enum type
+    a %= nullptr; // expected-error{{invalid operands to binary expression}}
+         ^
+
+"Test_name.c", line 40: error: expression must have integral or unscoped enum type
+    a &= nullptr; // expected-error{{invalid operands to binary expression}}
+         ^
+
+"Test_name.c", line 41: error: expression must have integral or unscoped enum type
+    a |= nullptr; // expected-error{{invalid operands to binary expression}}
+         ^
+
+"Test_name.c", line 42: error: expression must have integral or unscoped enum type
+    a ^= nullptr; // expected-error{{invalid operands to binary expression}}
+         ^
+
+"Test_name.c", line 44: error: operand types are incompatible ("int" and "std::nullptr_t")
+    b = a < nullptr || nullptr < a; // expected-error 2{{invalid operands to binary expression}}
+          ^
+
+"Test_name.c", line 44: error: operand types are incompatible ("std::nullptr_t" and "int")
+    b = a < nullptr || nullptr < a; // expected-error 2{{invalid operands to binary expression}}
+                               ^
+
+"Test_name.c", line 45: error: operand types are incompatible ("int" and "std::nullptr_t")
+    b = a > nullptr || nullptr > a; // expected-error 2{{invalid operands to binary expression}}
+          ^
+
+"Test_name.c", line 45: error: operand types are incompatible ("std::nullptr_t" and "int")
+    b = a > nullptr || nullptr > a; // expected-error 2{{invalid operands to binary expression}}
+                               ^
+
+"Test_name.c", line 46: error: operand types are incompatible ("int" and "std::nullptr_t")
+    b = a <= nullptr || nullptr <= a; // expected-error 2{{invalid operands to binary expression}}
+          ^
+
+"Test_name.c", line 46: error: operand types are incompatible ("std::nullptr_t" and "int")
+    b = a <= nullptr || nullptr <= a; // expected-error 2{{invalid operands to binary expression}}
+                                ^
+
+"Test_name.c", line 47: error: operand types are incompatible ("int" and "std::nullptr_t")
+    b = a >= nullptr || nullptr >= a; // expected-error 2{{invalid operands to binary expression}}
+          ^
+
+"Test_name.c", line 47: error: operand types are incompatible ("std::nullptr_t" and "int")
+    b = a >= nullptr || nullptr >= a; // expected-error 2{{invalid operands to binary expression}}
+                                ^
+
+"Test_name.c", line 48: error: operand types are incompatible ("int" and "std::nullptr_t")
+    b = a == nullptr || nullptr == a; // expected-error 2{{invalid operands to binary expression}}
+          ^
+
+"Test_name.c", line 48: error: operand types are incompatible ("std::nullptr_t" and "int")
+    b = a == nullptr || nullptr == a; // expected-error 2{{invalid operands to binary expression}}
+                                ^
+
+"Test_name.c", line 49: error: operand types are incompatible ("int" and "std::nullptr_t")
+    b = a != nullptr || nullptr != a; // expected-error 2{{invalid operands to binary expression}}
+          ^
+
+"Test_name.c", line 49: error: operand types are incompatible ("std::nullptr_t" and "int")
+    b = a != nullptr || nullptr != a; // expected-error 2{{invalid operands to binary expression}}
+                                ^
+
+"Test_name.c", line 59: error: operand types are incompatible ("std::nullptr_t" and "int")
+    b = ((nullptr)) != a;  // expected-error{{invalid operands to binary expression}}
+                    ^
+
+"Test_name.c", line 61: error: expected an expression
+    void (^c)();
+          ^
+
+"Test_name.c", line 61: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+    void (^c)();
+    ^
+
+"Test_name.c", line 62: error: identifier "c" is undefined
+    c = nullptr;
+    ^
+
+"Test_name.c", line 8: warning: variable "b" was set but never used
+    bool b;
+         ^
+
+64 errors detected in the compilation of "Test_name.c".

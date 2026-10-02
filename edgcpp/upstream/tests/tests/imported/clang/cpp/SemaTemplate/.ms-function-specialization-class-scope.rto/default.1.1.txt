@@ -1,0 +1,1109 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --ms_extensions --ms_extensions Test_name.c
+"Test_name.c", line 21: warning: variable "b" is used before its value is set
+    a.f(b);
+        ^
+
+"Test_name.c", line 43: warning: variable "ptr" is used before its value is set
+    b.f(ptr);
+        ^
+
+"Test_name.c", line 57: warning: variable "t" was declared but never referenced
+    void f() { TemplateClass<int> t; }
+                                  ^
+
+"Test_name.c", line 64: error: function "Duplicates::A<T>::f<U>() [with T=int, U=int]" has already been defined (previous definition at line 63)
+      template<> void f<T>() {}
+                      ^
+          detected during instantiation of class "Duplicates::A<T> [with T=int]" at line 69
+
+"Test_name.c", line 104: warning: expression has no effect
+        x; // expected-error {{invalid use of member 'x' in static member function}}
+        ^
+
+"Test_name.c", line 105: warning: expression has no effect
+        A::x; // expected-error {{invalid use of member 'x' in static member function}}
+        ^
+
+"Test_name.c", line 106: warning: expression has no effect
+        +x; // expected-error {{invalid use of member 'x' in static member function}}
+        ^
+
+"Test_name.c", line 107: warning: expression has no effect
+        +A::x; // expected-error {{invalid use of member 'x' in static member function}}
+        ^
+
+"Test_name.c", line 108: warning: expression has no effect
+        &x; // expected-error {{invalid use of member 'x' in static member function}}
+        ^
+
+"Test_name.c", line 111: warning: expression has no effect
+        y;
+        ^
+
+"Test_name.c", line 112: warning: expression has no effect
+        A::y;
+        ^
+
+"Test_name.c", line 113: warning: expression has no effect
+        +y;
+        ^
+
+"Test_name.c", line 114: warning: expression has no effect
+        +A::y;
+        ^
+
+"Test_name.c", line 115: warning: expression has no effect
+        &y;
+        ^
+
+"Test_name.c", line 116: warning: expression has no effect
+        &A::y;
+        ^
+
+"Test_name.c", line 123: error: nonstandard form for taking the address of a member function
+        &i; // expected-error 2{{must explicitly qualify name of member function when taking its address}}
+        ^
+
+"Test_name.c", line 132: warning: expression has no effect
+        x;
+        ^
+
+"Test_name.c", line 133: warning: expression has no effect
+        A::x;
+        ^
+
+"Test_name.c", line 134: warning: expression has no effect
+        +x;
+        ^
+
+"Test_name.c", line 135: warning: expression has no effect
+        +A::x;
+        ^
+
+"Test_name.c", line 136: warning: expression has no effect
+        &x;
+        ^
+
+"Test_name.c", line 139: warning: expression has no effect
+        y;
+        ^
+
+"Test_name.c", line 140: warning: expression has no effect
+        A::y;
+        ^
+
+"Test_name.c", line 141: warning: expression has no effect
+        +y;
+        ^
+
+"Test_name.c", line 142: warning: expression has no effect
+        +A::y;
+        ^
+
+"Test_name.c", line 143: warning: expression has no effect
+        &y;
+        ^
+
+"Test_name.c", line 144: warning: expression has no effect
+        &A::y;
+        ^
+
+"Test_name.c", line 151: error: nonstandard form for taking the address of a member function
+        &i; // expected-error 2{{must explicitly qualify name of member function when taking its address}}
+        ^
+
+"Test_name.c", line 230: warning: expression has no effect
+        &z;
+        ^
+
+"Test_name.c", line 231: warning: expression has no effect
+        &x0;
+        ^
+
+"Test_name.c", line 232: warning: expression has no effect
+        &x1;
+        ^
+
+"Test_name.c", line 233: warning: expression has no effect
+        &x2;
+        ^
+
+"Test_name.c", line 234: warning: expression has no effect
+        &y0;
+        ^
+
+"Test_name.c", line 235: warning: expression has no effect
+        &y1;
+        ^
+
+"Test_name.c", line 236: warning: expression has no effect
+        &y2;
+        ^
+
+"Test_name.c", line 238: error: nonstandard form for taking the address of a member function
+        &f0; // expected-error {{must explicitly qualify name of member function when taking its address}}
+        ^
+
+"Test_name.c", line 238: warning: expression has no effect
+        &f0; // expected-error {{must explicitly qualify name of member function when taking its address}}
+        ^
+
+"Test_name.c", line 239: error: nonstandard form for taking the address of a member function
+        &f1; // expected-error 2{{must explicitly qualify name of member function when taking its address}}
+        ^
+
+"Test_name.c", line 240: error: nonstandard form for taking the address of a member function
+        &f2; // expected-error 2{{must explicitly qualify name of member function when taking its address}}
+        ^
+
+"Test_name.c", line 240: warning: expression has no effect
+        &f2; // expected-error 2{{must explicitly qualify name of member function when taking its address}}
+        ^
+
+"Test_name.c", line 241: warning: expression has no effect
+        &g0;
+        ^
+
+"Test_name.c", line 243: warning: expression has no effect
+        &g2;
+        ^
+
+"Test_name.c", line 245: warning: expression has no effect
+        &B::x0;
+        ^
+
+"Test_name.c", line 247: warning: expression has no effect
+        &B::x2;
+        ^
+
+"Test_name.c", line 248: warning: expression has no effect
+        &B::y0;
+        ^
+
+"Test_name.c", line 249: warning: expression has no effect
+        &D::y1;
+        ^
+
+"Test_name.c", line 250: warning: expression has no effect
+        &B::y2;
+        ^
+
+"Test_name.c", line 251: warning: expression has no effect
+        &B::f0;
+        ^
+
+"Test_name.c", line 253: warning: expression has no effect
+        &B::f2;
+        ^
+
+"Test_name.c", line 254: warning: expression has no effect
+        &B::g0;
+        ^
+
+"Test_name.c", line 256: warning: expression has no effect
+        &B::g2;
+        ^
+
+"Test_name.c", line 320: warning: expression has no effect
+        &z;
+        ^
+
+"Test_name.c", line 321: warning: expression has no effect
+        &x0; // expected-error {{invalid use of member 'x0' in static member function}}
+        ^
+
+"Test_name.c", line 322: warning: expression has no effect
+        &x1; // expected-error {{invalid use of member 'x1' in static member function}}
+        ^
+
+"Test_name.c", line 323: warning: expression has no effect
+        &x2; // expected-error {{invalid use of member 'x2' in static member function}}
+        ^
+
+"Test_name.c", line 324: warning: expression has no effect
+        &y0;
+        ^
+
+"Test_name.c", line 325: warning: expression has no effect
+        &y1;
+        ^
+
+"Test_name.c", line 326: warning: expression has no effect
+        &y2;
+        ^
+
+"Test_name.c", line 328: error: nonstandard form for taking the address of a member function
+        &f0; // expected-error {{must explicitly qualify name of member function when taking its address}}
+        ^
+
+"Test_name.c", line 328: warning: expression has no effect
+        &f0; // expected-error {{must explicitly qualify name of member function when taking its address}}
+        ^
+
+"Test_name.c", line 329: error: nonstandard form for taking the address of a member function
+        &f1; // expected-error 2{{must explicitly qualify name of member function when taking its address}}
+        ^
+
+"Test_name.c", line 330: error: nonstandard form for taking the address of a member function
+        &f2; // expected-error 2{{must explicitly qualify name of member function when taking its address}}
+        ^
+
+"Test_name.c", line 330: warning: expression has no effect
+        &f2; // expected-error 2{{must explicitly qualify name of member function when taking its address}}
+        ^
+
+"Test_name.c", line 331: warning: expression has no effect
+        &g0;
+        ^
+
+"Test_name.c", line 333: warning: expression has no effect
+        &g2;
+        ^
+
+"Test_name.c", line 335: warning: expression has no effect
+        &B::x0;
+        ^
+
+"Test_name.c", line 337: warning: expression has no effect
+        &B::x2;
+        ^
+
+"Test_name.c", line 338: warning: expression has no effect
+        &B::y0;
+        ^
+
+"Test_name.c", line 339: warning: expression has no effect
+        &D::y1;
+        ^
+
+"Test_name.c", line 340: warning: expression has no effect
+        &B::y2;
+        ^
+
+"Test_name.c", line 341: warning: expression has no effect
+        &B::f0;
+        ^
+
+"Test_name.c", line 343: warning: expression has no effect
+        &B::f2;
+        ^
+
+"Test_name.c", line 344: warning: expression has no effect
+        &B::g0;
+        ^
+
+"Test_name.c", line 346: warning: expression has no effect
+        &B::g2;
+        ^
+
+"Test_name.c", line 435: warning: expression has no effect
+        &z;
+        ^
+
+"Test_name.c", line 437: warning: expression has no effect
+        &x1;
+        ^
+
+"Test_name.c", line 439: warning: expression has no effect
+        &y1;
+        ^
+
+"Test_name.c", line 442: error: nonstandard form for taking the address of a member function
+        &f1; // expected-error 2{{must explicitly qualify name of member function when taking its address}}
+        ^
+
+"Test_name.c", line 449: warning: expression has no effect
+        &E::y1;
+        ^
+
+"Test_name.c", line 516: warning: expression has no effect
+        &z;
+        ^
+
+"Test_name.c", line 518: warning: expression has no effect
+        &x1; // expected-error {{invalid use of member 'x1' in static member function}}
+        ^
+
+"Test_name.c", line 520: warning: expression has no effect
+        &y1;
+        ^
+
+"Test_name.c", line 523: error: nonstandard form for taking the address of a member function
+        &f1; // expected-error 2{{must explicitly qualify name of member function when taking its address}}
+        ^
+
+"Test_name.c", line 530: warning: expression has no effect
+        &E::y1;
+        ^
+
+"Test_name.c", line 37: warning: variable "a" was declared but never referenced
+    void f(int p) { T a = 3; }
+                      ^
+          detected during instantiation of "void B<T>::f(int) [with T=char]" at line 45
+
+"Test_name.c", line 31: warning: variable "y" was declared but never referenced
+    template<class U> void f(U p) { T y = 9; }
+                                      ^
+          detected during instantiation of "void B<T>::f(U) [with T=char, U=char *]" at line 43
+
+"Test_name.c", line 34: warning: variable "a" was declared but never referenced
+      T a = 3;
+        ^
+          detected during instantiation of class "B<T> [with T=char]" 
+
+"Test_name.c", line 103: error: "this" may only be used inside a nonstatic member function
+        this->x; // expected-error {{invalid use of 'this' outside of a non-static member function}}
+        ^
+          detected during instantiation of class "UsesThis::A<T> [with T=int]" 
+
+"Test_name.c", line 104: error: a nonstatic member reference must be relative to a specific object
+        x; // expected-error {{invalid use of member 'x' in static member function}}
+        ^
+          detected during instantiation of class "UsesThis::A<T> [with T=int]" 
+
+"Test_name.c", line 105: error: a nonstatic member reference must be relative to a specific object
+        A::x; // expected-error {{invalid use of member 'x' in static member function}}
+           ^
+          detected during instantiation of class "UsesThis::A<T> [with T=int]" 
+
+"Test_name.c", line 106: error: a nonstatic member reference must be relative to a specific object
+        +x; // expected-error {{invalid use of member 'x' in static member function}}
+         ^
+          detected during instantiation of class "UsesThis::A<T> [with T=int]" 
+
+"Test_name.c", line 107: error: a nonstatic member reference must be relative to a specific object
+        +A::x; // expected-error {{invalid use of member 'x' in static member function}}
+            ^
+          detected during instantiation of class "UsesThis::A<T> [with T=int]" 
+
+"Test_name.c", line 108: error: a nonstatic member reference must be relative to a specific object
+        &x; // expected-error {{invalid use of member 'x' in static member function}}
+         ^
+          detected during instantiation of class "UsesThis::A<T> [with T=int]" 
+
+"Test_name.c", line 109: warning: expression has no effect
+        &A::x;
+        ^
+          detected during instantiation of class "UsesThis::A<T> [with T=int]" 
+
+"Test_name.c", line 110: error: "this" may only be used inside a nonstatic member function
+        this->y; // expected-error {{invalid use of 'this' outside of a non-static member function}}
+        ^
+          detected during instantiation of class "UsesThis::A<T> [with T=int]" 
+
+"Test_name.c", line 119: error: a nonstatic member reference must be relative to a specific object
+        g(); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::A<T> [with T=int]" 
+
+"Test_name.c", line 120: error: a nonstatic member reference must be relative to a specific object
+        g<void>(); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::A<T> [with T=int]" 
+
+"Test_name.c", line 121: error: a nonstatic member reference must be relative to a specific object
+        i(); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::A<T> [with T=int]" 
+
+"Test_name.c", line 123: warning: expression has no effect
+        &i; // expected-error 2{{must explicitly qualify name of member function when taking its address}}
+        ^
+          detected during instantiation of class "UsesThis::A<T> [with T=int]" 
+
+"Test_name.c", line 124: warning: expression has no effect
+        &j;
+        ^
+          detected during instantiation of class "UsesThis::A<T> [with T=int]" 
+
+"Test_name.c", line 125: warning: expression has no effect
+        &A::i;
+        ^
+          detected during instantiation of class "UsesThis::A<T> [with T=int]" 
+
+"Test_name.c", line 126: warning: expression has no effect
+        &A::j;
+        ^
+          detected during instantiation of class "UsesThis::A<T> [with T=int]" 
+
+"Test_name.c", line 131: warning: expression has no effect
+        this->x;
+        ^
+          detected during instantiation of class "UsesThis::A<T> [with T=int]" 
+
+"Test_name.c", line 137: warning: expression has no effect
+        &A::x;
+        ^
+          detected during instantiation of class "UsesThis::A<T> [with T=int]" 
+
+"Test_name.c", line 138: warning: expression has no effect
+        this->y;
+        ^
+          detected during instantiation of class "UsesThis::A<T> [with T=int]" 
+
+"Test_name.c", line 151: warning: expression has no effect
+        &i; // expected-error 2{{must explicitly qualify name of member function when taking its address}}
+        ^
+          detected during instantiation of class "UsesThis::A<T> [with T=int]" 
+
+"Test_name.c", line 152: warning: expression has no effect
+        &j;
+        ^
+          detected during instantiation of class "UsesThis::A<T> [with T=int]" 
+
+"Test_name.c", line 153: warning: expression has no effect
+        &A::i;
+        ^
+          detected during instantiation of class "UsesThis::A<T> [with T=int]" 
+
+"Test_name.c", line 154: warning: expression has no effect
+        &A::j;
+        ^
+          detected during instantiation of class "UsesThis::A<T> [with T=int]" 
+
+"Test_name.c", line 239: warning: expression has no effect
+        &f1; // expected-error 2{{must explicitly qualify name of member function when taking its address}}
+        ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 242: warning: expression has no effect
+        &g1;
+        ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 246: warning: expression has no effect
+        &D::x1;
+        ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 252: warning: expression has no effect
+        &D::f1;
+        ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 255: warning: expression has no effect
+        &D::g1;
+        ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 313: error: a nonstatic member reference must be relative to a specific object
+        ++x0; // expected-error {{invalid use of member 'x0' in static member function}}
+          ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 314: error: a nonstatic member reference must be relative to a specific object
+        ++x1; // expected-error {{invalid use of member 'x1' in static member function}}
+          ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 315: error: a nonstatic member reference must be relative to a specific object
+        ++x2; // expected-error {{invalid use of member 'x2' in static member function}}
+          ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 321: error: a nonstatic member reference must be relative to a specific object
+        &x0; // expected-error {{invalid use of member 'x0' in static member function}}
+         ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 322: error: a nonstatic member reference must be relative to a specific object
+        &x1; // expected-error {{invalid use of member 'x1' in static member function}}
+         ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 323: error: a nonstatic member reference must be relative to a specific object
+        &x2; // expected-error {{invalid use of member 'x2' in static member function}}
+         ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 329: warning: expression has no effect
+        &f1; // expected-error 2{{must explicitly qualify name of member function when taking its address}}
+        ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 332: warning: expression has no effect
+        &g1;
+        ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 336: warning: expression has no effect
+        &D::x1;
+        ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 342: warning: expression has no effect
+        &D::f1;
+        ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 345: warning: expression has no effect
+        &D::g1;
+        ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 348: error: a nonstatic member reference must be relative to a specific object
+        f0(0); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 349: error: a nonstatic member reference must be relative to a specific object
+        f0(z); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 350: error: a nonstatic member reference must be relative to a specific object
+        f0(x0); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 350: error: a nonstatic member reference must be relative to a specific object
+        f0(x0); // expected-error {{call to non-static member function without an object argument}}
+           ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 351: error: a nonstatic member reference must be relative to a specific object
+        f0(x1); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 351: error: a nonstatic member reference must be relative to a specific object
+        f0(x1); // expected-error {{call to non-static member function without an object argument}}
+           ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 352: error: a nonstatic member reference must be relative to a specific object
+        f0(x2); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 352: error: a nonstatic member reference must be relative to a specific object
+        f0(x2); // expected-error {{call to non-static member function without an object argument}}
+           ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 353: error: a nonstatic member reference must be relative to a specific object
+        f0(y0); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 354: error: a nonstatic member reference must be relative to a specific object
+        f0(y1); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 355: error: a nonstatic member reference must be relative to a specific object
+        f0(y2); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 358: error: a nonstatic member reference must be relative to a specific object
+        g0(x0); // expected-error {{invalid use of member 'x0' in static member function}}
+           ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 359: error: a nonstatic member reference must be relative to a specific object
+        g0(x1); // expected-error {{invalid use of member 'x1' in static member function}}
+           ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 360: error: a nonstatic member reference must be relative to a specific object
+        g0(x2); // expected-error {{invalid use of member 'x2' in static member function}}
+           ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 365: error: a nonstatic member reference must be relative to a specific object
+        f1(0); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 366: error: a nonstatic member reference must be relative to a specific object
+        f1(z); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 367: error: a nonstatic member reference must be relative to a specific object
+        f1(x0); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 367: error: a nonstatic member reference must be relative to a specific object
+        f1(x0); // expected-error {{call to non-static member function without an object argument}}
+           ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 368: error: a nonstatic member reference must be relative to a specific object
+        f1(x1); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 368: error: a nonstatic member reference must be relative to a specific object
+        f1(x1); // expected-error {{call to non-static member function without an object argument}}
+           ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 369: error: a nonstatic member reference must be relative to a specific object
+        f1(x2); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 369: error: a nonstatic member reference must be relative to a specific object
+        f1(x2); // expected-error {{call to non-static member function without an object argument}}
+           ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 370: error: a nonstatic member reference must be relative to a specific object
+        f1(y0); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 371: error: a nonstatic member reference must be relative to a specific object
+        f1(y1); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 372: error: a nonstatic member reference must be relative to a specific object
+        f1(y2); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 375: error: a nonstatic member reference must be relative to a specific object
+        g1(x0); // expected-error {{invalid use of member 'x0' in static member function}}
+           ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 376: error: a nonstatic member reference must be relative to a specific object
+        g1(x1); // expected-error {{invalid use of member 'x1' in static member function}}
+           ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 377: error: a nonstatic member reference must be relative to a specific object
+        g1(x2); // expected-error {{invalid use of member 'x2' in static member function}}
+           ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 382: error: a nonstatic member reference must be relative to a specific object
+        f2(0); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 383: error: a nonstatic member reference must be relative to a specific object
+        f2(z); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 384: error: a nonstatic member reference must be relative to a specific object
+        f2(x0); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 384: error: a nonstatic member reference must be relative to a specific object
+        f2(x0); // expected-error {{call to non-static member function without an object argument}}
+           ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 385: error: a nonstatic member reference must be relative to a specific object
+        f2(x1); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 385: error: a nonstatic member reference must be relative to a specific object
+        f2(x1); // expected-error {{call to non-static member function without an object argument}}
+           ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 386: error: a nonstatic member reference must be relative to a specific object
+        f2(x2); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 386: error: a nonstatic member reference must be relative to a specific object
+        f2(x2); // expected-error {{call to non-static member function without an object argument}}
+           ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 387: error: a nonstatic member reference must be relative to a specific object
+        f2(y0); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 388: error: a nonstatic member reference must be relative to a specific object
+        f2(y1); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 389: error: a nonstatic member reference must be relative to a specific object
+        f2(y2); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 392: error: a nonstatic member reference must be relative to a specific object
+        g2(x0); // expected-error {{invalid use of member 'x0' in static member function}}
+           ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 393: error: a nonstatic member reference must be relative to a specific object
+        g2(x1); // expected-error {{invalid use of member 'x1' in static member function}}
+           ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 394: error: a nonstatic member reference must be relative to a specific object
+        g2(x2); // expected-error {{invalid use of member 'x2' in static member function}}
+           ^
+          detected during instantiation of class "UsesThis::D<T> [with T=int]" 
+
+"Test_name.c", line 436: warning: expression has no effect
+        &x0;
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 438: warning: expression has no effect
+        &y0;
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 441: error: nonstandard form for taking the address of a member function
+        &f0; // expected-error {{must explicitly qualify name of member function when taking its address}}
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 441: warning: expression has no effect
+        &f0; // expected-error {{must explicitly qualify name of member function when taking its address}}
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 442: warning: expression has no effect
+        &f1; // expected-error 2{{must explicitly qualify name of member function when taking its address}}
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 443: warning: expression has no effect
+        &g0;
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 444: warning: expression has no effect
+        &g1;
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 446: warning: expression has no effect
+        &T::x0;
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 447: warning: expression has no effect
+        &E::x1;
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 448: warning: expression has no effect
+        &T::y0;
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 450: warning: expression has no effect
+        &T::f0;
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 451: warning: expression has no effect
+        &E::f1;
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 452: warning: expression has no effect
+        &T::g0;
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 453: warning: expression has no effect
+        &E::g1;
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 511: error: a nonstatic member reference must be relative to a specific object
+        ++x0; // expected-error {{invalid use of member 'x0' in static member function}}
+          ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 512: error: a nonstatic member reference must be relative to a specific object
+        ++x1; // expected-error {{invalid use of member 'x1' in static member function}}
+          ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 517: error: a nonstatic member reference must be relative to a specific object
+        &x0; // expected-error {{invalid use of member 'x0' in static member function}}
+         ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 518: error: a nonstatic member reference must be relative to a specific object
+        &x1; // expected-error {{invalid use of member 'x1' in static member function}}
+         ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 519: warning: expression has no effect
+        &y0;
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 522: error: nonstandard form for taking the address of a member function
+        &f0; // expected-error {{must explicitly qualify name of member function when taking its address}}
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 522: warning: expression has no effect
+        &f0; // expected-error {{must explicitly qualify name of member function when taking its address}}
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 523: warning: expression has no effect
+        &f1; // expected-error 2{{must explicitly qualify name of member function when taking its address}}
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 524: warning: expression has no effect
+        &g0;
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 525: warning: expression has no effect
+        &g1;
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 527: warning: expression has no effect
+        &T::x0;
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 528: warning: expression has no effect
+        &E::x1;
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 529: warning: expression has no effect
+        &T::y0;
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 531: warning: expression has no effect
+        &T::f0;
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 532: warning: expression has no effect
+        &E::f1;
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 533: warning: expression has no effect
+        &T::g0;
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 534: warning: expression has no effect
+        &E::g1;
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 536: error: a nonstatic member reference must be relative to a specific object
+        f0(0); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 537: error: a nonstatic member reference must be relative to a specific object
+        f0(z); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 538: error: a nonstatic member reference must be relative to a specific object
+        f0(x0); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 538: error: a nonstatic member reference must be relative to a specific object
+        f0(x0); // expected-error {{call to non-static member function without an object argument}}
+           ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 539: error: a nonstatic member reference must be relative to a specific object
+        f0(x1); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 539: error: a nonstatic member reference must be relative to a specific object
+        f0(x1); // expected-error {{call to non-static member function without an object argument}}
+           ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 540: error: a nonstatic member reference must be relative to a specific object
+        f0(y0); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 541: error: a nonstatic member reference must be relative to a specific object
+        f0(y1); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 544: error: a nonstatic member reference must be relative to a specific object
+        g0(x0); // expected-error {{invalid use of member 'x0' in static member function}}
+           ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 545: error: a nonstatic member reference must be relative to a specific object
+        g0(x1); // expected-error {{invalid use of member 'x1' in static member function}}
+           ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 549: error: a nonstatic member reference must be relative to a specific object
+        f1(0); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 550: error: a nonstatic member reference must be relative to a specific object
+        f1(z); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 551: error: a nonstatic member reference must be relative to a specific object
+        f1(x0); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 551: error: a nonstatic member reference must be relative to a specific object
+        f1(x0); // expected-error {{call to non-static member function without an object argument}}
+           ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 552: error: a nonstatic member reference must be relative to a specific object
+        f1(x1); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 552: error: a nonstatic member reference must be relative to a specific object
+        f1(x1); // expected-error {{call to non-static member function without an object argument}}
+           ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 553: error: a nonstatic member reference must be relative to a specific object
+        f1(y0); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 554: error: a nonstatic member reference must be relative to a specific object
+        f1(y1); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 557: error: a nonstatic member reference must be relative to a specific object
+        g1(x0); // expected-error {{invalid use of member 'x0' in static member function}}
+           ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 558: error: a nonstatic member reference must be relative to a specific object
+        g1(x1); // expected-error {{invalid use of member 'x1' in static member function}}
+           ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 562: error: a nonstatic member reference must be relative to a specific object
+        T::f0(0); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 563: error: a nonstatic member reference must be relative to a specific object
+        T::f0(z); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 564: error: a nonstatic member reference must be relative to a specific object
+        T::f0(x0); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 564: error: a nonstatic member reference must be relative to a specific object
+        T::f0(x0); // expected-error {{call to non-static member function without an object argument}}
+              ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 565: error: a nonstatic member reference must be relative to a specific object
+        T::f0(x1); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 565: error: a nonstatic member reference must be relative to a specific object
+        T::f0(x1); // expected-error {{call to non-static member function without an object argument}}
+              ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 566: error: a nonstatic member reference must be relative to a specific object
+        T::f0(y0); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 567: error: a nonstatic member reference must be relative to a specific object
+        T::f0(y1); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 570: error: a nonstatic member reference must be relative to a specific object
+        T::g0(x0); // expected-error {{invalid use of member 'x0' in static member function}}
+              ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 571: error: a nonstatic member reference must be relative to a specific object
+        T::g0(x1); // expected-error {{invalid use of member 'x1' in static member function}}
+              ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 575: error: a nonstatic member reference must be relative to a specific object
+        E::f1(0); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 576: error: a nonstatic member reference must be relative to a specific object
+        E::f1(z); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 577: error: a nonstatic member reference must be relative to a specific object
+        E::f1(x0); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 577: error: a nonstatic member reference must be relative to a specific object
+        E::f1(x0); // expected-error {{call to non-static member function without an object argument}}
+              ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 578: error: a nonstatic member reference must be relative to a specific object
+        E::f1(x1); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 578: error: a nonstatic member reference must be relative to a specific object
+        E::f1(x1); // expected-error {{call to non-static member function without an object argument}}
+              ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 579: error: a nonstatic member reference must be relative to a specific object
+        E::f1(y0); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 580: error: a nonstatic member reference must be relative to a specific object
+        E::f1(y1); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 583: error: a nonstatic member reference must be relative to a specific object
+        E::g1(x0); // expected-error {{invalid use of member 'x0' in static member function}}
+              ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+"Test_name.c", line 584: error: a nonstatic member reference must be relative to a specific object
+        E::g1(x1); // expected-error {{invalid use of member 'x1' in static member function}}
+              ^
+          detected during instantiation of class "UsesThis::E<T> [with T=UsesThis::B]" 
+
+115 errors detected in the compilation of "Test_name.c".

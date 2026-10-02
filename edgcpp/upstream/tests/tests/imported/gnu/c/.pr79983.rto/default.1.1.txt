@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c17 --strict_gnu Test_name.c
+"Test_name.c", line 9: error: "S" has already been declared in the current scope
+  struct S { int i, j; }; /* { dg-error "redefinition of 'struct S'" } */
+         ^
+
+"Test_name.c", line 13: error: enum "E" has already been defined (previous definition at line 12)
+  enum E { D, F }; /* { dg-error "redeclaration of 'enum E'" } */
+       ^
+
+"Test_name.c", line 17: error: "U" has already been declared in the current scope
+  union U { int i; double d; }; /* { dg-error "redefinition of 'union U'" } */
+        ^
+
+3 errors detected in the compilation of "Test_name.c".

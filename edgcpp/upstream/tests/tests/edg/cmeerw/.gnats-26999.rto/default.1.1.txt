@@ -1,0 +1,229 @@
+fe_only -DTEST_NUMBER=1 -w -tused --c++17 -A Test_name.c
+"Test_name.c", line 20: error: more than one instance of constructor "minimal::C1::C1" matches the argument list:
+            function "minimal::C1::C1(const minimal::C1 &)" (declared at line 8)
+            function "minimal::C1::C1(int)" (declared at line 9)
+            argument types are: (minimal::D)
+    C1 c1{D{}};
+         ^
+
+"Test_name.c", line 21: error: more than one instance of constructor "minimal::C2::C2" matches the argument list:
+            function "minimal::C2::C2(minimal::C2 &&)" (declared at line 12)
+            function "minimal::C2::C2(int)" (declared at line 13)
+            argument types are: (minimal::D)
+    C2 c2{D{}};
+         ^
+
+"Test_name.c", line 41: error: more than one instance of constructor "copy_ctor::C::C" matches the argument list:
+            function "copy_ctor::C::C(const copy_ctor::C &)" (declared at line 28)
+            function "copy_ctor::C::C(int)" (declared at line 29)
+            argument types are: (copy_ctor::D)
+      C c2(d);                    // error: strict
+           ^
+
+"Test_name.c", line 42: error: more than one instance of constructor "copy_ctor::C::C" matches the argument list:
+            function "copy_ctor::C::C(const copy_ctor::C &)" (declared at line 28)
+            function "copy_ctor::C::C(int)" (declared at line 29)
+            argument types are: (copy_ctor::D)
+      C c3{d};                    // error: strict
+          ^
+
+"Test_name.c", line 43: error: more than one instance of constructor "copy_ctor::C::C" matches the argument list:
+            function "copy_ctor::C::C(const copy_ctor::C &)" (declared at line 28)
+            function "copy_ctor::C::C(int)" (declared at line 29)
+            argument types are: (copy_ctor::D)
+      C c4 = { d };               // error: strict
+             ^
+
+"Test_name.c", line 52: error: more than one instance of constructor "copy_ctor::C::C" matches the argument list:
+            function "copy_ctor::C::C(const copy_ctor::C &)" (declared at line 28)
+            function "copy_ctor::C::C(int)" (declared at line 29)
+            argument types are: (copy_ctor::D)
+        return { d };             // error: strict
+               ^
+
+"Test_name.c", line 74: error: more than one instance of constructor "move_ctor::C::C" matches the argument list:
+            function "move_ctor::C::C(move_ctor::C &&)" (declared at line 61)
+            function "move_ctor::C::C(int)" (declared at line 62)
+            argument types are: (move_ctor::D)
+      C c2(d);                    // error: strict, MSVC
+           ^
+
+"Test_name.c", line 75: error: more than one instance of constructor "move_ctor::C::C" matches the argument list:
+            function "move_ctor::C::C(move_ctor::C &&)" (declared at line 61)
+            function "move_ctor::C::C(int)" (declared at line 62)
+            argument types are: (move_ctor::D)
+      C c3{d};                    // error: strict, MSVC
+          ^
+
+"Test_name.c", line 76: error: more than one instance of constructor "move_ctor::C::C" matches the argument list:
+            function "move_ctor::C::C(move_ctor::C &&)" (declared at line 61)
+            function "move_ctor::C::C(int)" (declared at line 62)
+            argument types are: (move_ctor::D)
+      C c4 = { d };               // error: strict, MSVC
+             ^
+
+"Test_name.c", line 85: error: more than one instance of constructor "move_ctor::C::C" matches the argument list:
+            function "move_ctor::C::C(move_ctor::C &&)" (declared at line 61)
+            function "move_ctor::C::C(int)" (declared at line 62)
+            argument types are: (move_ctor::D)
+        return { d };             // error: strict, MSVC
+               ^
+
+"Test_name.c", line 119: error: more than one user-defined conversion from "const direct_and_copy_init::S" to "direct_and_copy_init::D" applies:
+            function "direct_and_copy_init::D::D(const direct_and_copy_init::D &)" (declared at line 98)
+            function "direct_and_copy_init::D::D(char)" (declared at line 102)
+    static_assert( ((D) s).v == -1 ); // error: strict
+                        ^
+
+"Test_name.c", line 120: error: more than one user-defined conversion from "const direct_and_copy_init::S" to "direct_and_copy_init::D" applies:
+            function "direct_and_copy_init::D::D(const direct_and_copy_init::D &)" (declared at line 98)
+            function "direct_and_copy_init::D::D(char)" (declared at line 102)
+    static_assert( (static_cast<D>(s)).v == -1 ); // error: strict
+                                   ^
+
+"Test_name.c", line 124: error: more than one instance of constructor "direct_and_copy_init::D::D" matches the argument list:
+            function "direct_and_copy_init::D::D(const direct_and_copy_init::D &)" (declared at line 98)
+            function "direct_and_copy_init::D::D(char)" (declared at line 102)
+            argument types are: (const direct_and_copy_init::S)
+      D d(s);                     // error: strict
+          ^
+"Test_name.c", line 94: note: number of parameters of function "direct_and_copy_init::D::D()" does not match the call
+      constexpr D()
+                ^
+
+"Test_name.c", line 130: error: more than one instance of constructor "direct_and_copy_init::D::D" matches the argument list:
+            function "direct_and_copy_init::D::D(const direct_and_copy_init::D &)" (declared at line 98)
+            function "direct_and_copy_init::D::D(char)" (declared at line 102)
+            argument types are: (const direct_and_copy_init::S)
+      D d{s};                     // error: strict
+         ^
+"Test_name.c", line 94: note: number of parameters of function "direct_and_copy_init::D::D()" does not match the call
+      constexpr D()
+                ^
+
+"Test_name.c", line 163: error: more than one instance of constructor "tmpl_conversion_move_ctor::A::A" matches the argument list:
+            function "tmpl_conversion_move_ctor::A::A(tmpl_conversion_move_ctor::A &&)" (declared at line 152)
+            function "tmpl_conversion_move_ctor::A::A(tmpl_conversion_move_ctor::X)" (declared at line 153)
+            argument types are: (tmpl_conversion_move_ctor::B)
+    A v1( g );                    // error: strict, MSVC
+          ^
+
+"Test_name.c", line 164: error: more than one instance of constructor "tmpl_conversion_move_ctor::A::A" matches the argument list:
+            function "tmpl_conversion_move_ctor::A::A(tmpl_conversion_move_ctor::A &&)" (declared at line 152)
+            function "tmpl_conversion_move_ctor::A::A(tmpl_conversion_move_ctor::X)" (declared at line 153)
+            argument types are: (tmpl_conversion_move_ctor::B)
+    A v2{ g };                    // error: strict, MSVC
+        ^
+
+"Test_name.c", line 165: error: more than one instance of constructor "tmpl_conversion_move_ctor::A::A" matches the argument list:
+            function "tmpl_conversion_move_ctor::A::A(tmpl_conversion_move_ctor::A &&)" (declared at line 152)
+            function "tmpl_conversion_move_ctor::A::A(tmpl_conversion_move_ctor::X)" (declared at line 153)
+            argument types are: (tmpl_conversion_move_ctor::B)
+    A v3 = { g };                 // error: strict, MSVC
+           ^
+
+"Test_name.c", line 187: error: more than one instance of constructor "non_tmpl_conversion_copy_ctor::A::A" matches the argument list:
+            function "non_tmpl_conversion_copy_ctor::A::A(const non_tmpl_conversion_copy_ctor::A &)" (declared at line 175)
+            function "non_tmpl_conversion_copy_ctor::A::A(non_tmpl_conversion_copy_ctor::X)" (declared at line 176)
+            argument types are: (non_tmpl_conversion_copy_ctor::B)
+    A v1( g );                    // error: strict
+          ^
+
+"Test_name.c", line 188: error: more than one instance of constructor "non_tmpl_conversion_copy_ctor::A::A" matches the argument list:
+            function "non_tmpl_conversion_copy_ctor::A::A(const non_tmpl_conversion_copy_ctor::A &)" (declared at line 175)
+            function "non_tmpl_conversion_copy_ctor::A::A(non_tmpl_conversion_copy_ctor::X)" (declared at line 176)
+            argument types are: (non_tmpl_conversion_copy_ctor::B)
+    A v2{ g };                    // error: strict
+        ^
+
+"Test_name.c", line 189: error: more than one instance of constructor "non_tmpl_conversion_copy_ctor::A::A" matches the argument list:
+            function "non_tmpl_conversion_copy_ctor::A::A(const non_tmpl_conversion_copy_ctor::A &)" (declared at line 175)
+            function "non_tmpl_conversion_copy_ctor::A::A(non_tmpl_conversion_copy_ctor::X)" (declared at line 176)
+            argument types are: (non_tmpl_conversion_copy_ctor::B)
+    A v3 = { g };                 // error: strict
+           ^
+
+"Test_name.c", line 211: error: more than one instance of constructor "non_tmpl_conversion_move_ctor::A::A" matches the argument list:
+            function "non_tmpl_conversion_move_ctor::A::A(non_tmpl_conversion_move_ctor::A &&)" (declared at line 199)
+            function "non_tmpl_conversion_move_ctor::A::A(non_tmpl_conversion_move_ctor::X)" (declared at line 200)
+            argument types are: (non_tmpl_conversion_move_ctor::B)
+    A v1( g );                    // error: strict, MSVC
+          ^
+
+"Test_name.c", line 212: error: more than one instance of constructor "non_tmpl_conversion_move_ctor::A::A" matches the argument list:
+            function "non_tmpl_conversion_move_ctor::A::A(non_tmpl_conversion_move_ctor::A &&)" (declared at line 199)
+            function "non_tmpl_conversion_move_ctor::A::A(non_tmpl_conversion_move_ctor::X)" (declared at line 200)
+            argument types are: (non_tmpl_conversion_move_ctor::B)
+    A v2{ g };                    // error: strict, MSVC
+        ^
+
+"Test_name.c", line 213: error: more than one instance of constructor "non_tmpl_conversion_move_ctor::A::A" matches the argument list:
+            function "non_tmpl_conversion_move_ctor::A::A(non_tmpl_conversion_move_ctor::A &&)" (declared at line 199)
+            function "non_tmpl_conversion_move_ctor::A::A(non_tmpl_conversion_move_ctor::X)" (declared at line 200)
+            argument types are: (non_tmpl_conversion_move_ctor::B)
+    A v3 = { g };                 // error: strict, MSVC
+           ^
+
+"Test_name.c", line 248: error: more than one instance of constructor "copy_list_init::D::D" matches the argument list:
+            function "copy_list_init::D::D(const copy_list_init::D &)" (declared at line 224)
+            function "copy_list_init::D::D(char)" (declared at line 228)
+            argument types are: (const copy_list_init::S)
+      D d = { s };                // error: strict
+            ^
+"Test_name.c", line 220: note: number of parameters of function "copy_list_init::D::D()" does not match the call
+      constexpr D()
+                ^
+
+"Test_name.c", line 270: error: more than one instance of constructor "aggr_init::Y::Y" matches the argument list:
+            function "aggr_init::Y::Y(int)" (declared at line 258)
+            function "aggr_init::Y::Y(aggr_init::Y &&) noexcept" (declared implicitly)
+            argument types are: (aggr_init::U)
+    S s{ { U{} } };                 // error: strict, MSVC
+         ^
+
+"Test_name.c", line 275: error: more than one instance of constructor "aggr_init::Y::Y" matches the argument list:
+            function "aggr_init::Y::Y(int)" (declared at line 258)
+            function "aggr_init::Y::Y(aggr_init::Y &&) noexcept" (declared implicitly)
+            argument types are: (aggr_init::U)
+      s = { { U{} } };            // error: strict, MSVC
+            ^
+
+"Test_name.c", line 276: error: more than one instance of constructor "aggr_init::Y::Y" matches the argument list:
+            function "aggr_init::Y::Y(int)" (declared at line 258)
+            function "aggr_init::Y::Y(aggr_init::Y &&) noexcept" (declared implicitly)
+            argument types are: (aggr_init::U)
+      s.y = { U{} };              // error: strict, MSVC
+            ^
+
+"Test_name.c", line 277: error: copy-list-initialization cannot use a constructor marked "explicit"
+      s.y = { { U{} } };          // error: strict, MSVC, clang
+            ^
+
+"Test_name.c", line 280: error: more than one instance of constructor "aggr_init::Y::Y" matches the argument list:
+            function "aggr_init::Y::Y(int)" (declared at line 258)
+            function "aggr_init::Y::Y(aggr_init::Y &&) noexcept" (declared implicitly)
+            argument types are: (aggr_init::U)
+      S{ { U{} } };               // error: strict, MSVC
+         ^
+
+"Test_name.c", line 305: error: more than one instance of constructor "ref_udc::C::C" matches the argument list:
+            function "ref_udc::C::C(const ref_udc::C &)" (declared at line 289)
+            function "ref_udc::C::C(int)" (declared at line 290)
+            argument types are: (ref_udc::D1)
+    C c1{D1{}};                   // error: strict, clang
+        ^
+"Test_name.c", line 288: note: function "ref_udc::C::C(ref_udc::C &&)" does not match because argument #1 does not match parameter
+      C(C &&);
+      ^
+
+"Test_name.c", line 306: error: more than one instance of constructor "ref_udc::C::C" matches the argument list:
+            function "ref_udc::C::C(const ref_udc::C &)" (declared at line 289)
+            function "ref_udc::C::C(int)" (declared at line 290)
+            argument types are: (ref_udc::D2)
+    C c2{D2{}};                   // error: strict, clang
+        ^
+"Test_name.c", line 288: note: function "ref_udc::C::C(ref_udc::C &&)" does not match because argument #1 does not match parameter
+      C(C &&);
+      ^
+
+31 errors detected in the compilation of "Test_name.c".

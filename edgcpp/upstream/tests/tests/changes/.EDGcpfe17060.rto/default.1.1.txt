@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 24: error: expected a type specifier
+  template<typename T> decltype(V<int (T::*)(), &T::f>(), 42) g(T);  // (1)
+                                                          ^
+
+"Test_name.c", line 24: error: explicit type is missing ("int" assumed)
+  template<typename T> decltype(V<int (T::*)(), &T::f>(), 42) g(T);  // (1)
+                       ^
+
+"Test_name.c", line 24: error: expected a ";"
+  template<typename T> decltype(V<int (T::*)(), &T::f>(), 42) g(T);  // (1)
+                                                              ^
+
+"Test_name.c", line 26: error: this declaration has no storage class or type specifier
+  static_assert(sizeof(g<D>(D{})) == 1, "Unexpected!");
+  ^
+
+"Test_name.c", line 26: error: type name is not allowed
+  static_assert(sizeof(g<D>(D{})) == 1, "Unexpected!");
+                            ^
+
+"Test_name.c", line 26: error: expected a ")"
+  static_assert(sizeof(g<D>(D{})) == 1, "Unexpected!");
+                             ^
+
+"Test_name.c", line 26: error: too many initializer values
+  static_assert(sizeof(g<D>(D{})) == 1, "Unexpected!");
+                                        ^
+
+7 errors detected in the compilation of "Test_name.c".

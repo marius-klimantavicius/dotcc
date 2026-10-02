@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 149: warning: variable "c" is used before its value is set
+      temp_buffer[temp_buffer_len++] = c;
+                                       ^
+
+"Test_name.c", line 172: warning: statement is unreachable
+        (void) raw_suffix_len;
+        ^
+
+"Test_name.c", line 177: warning: statement is unreachable
+    create_literal(pfile, token, base, cur - base, type);
+    ^
+
+"Test_name.c", line 177: warning: variable "type" is used before its value is set
+    create_literal(pfile, token, base, cur - base, type);
+                                                   ^
+
+"Test_name.c", line 178: warning: variable "total_len" is used before its value is set
+    uchar *dest = _cpp_unaligned_alloc(pfile, total_len + (cur - base));
+                                              ^
+

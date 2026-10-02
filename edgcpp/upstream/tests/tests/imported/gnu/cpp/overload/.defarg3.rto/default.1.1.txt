@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 16: error: function "C::f(int)" (declared at line 8) is inaccessible
+    static void g(int (*)(int) = C::f); // { dg-error "context" }
+                                    ^
+
+1 error detected in the compilation of "Test_name.c".

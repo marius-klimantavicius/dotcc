@@ -1,0 +1,113 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./overflow-warn-8.c", line 6: warning: integer operation result is out of range
+    int i1 = (int)(double)1.0 + 0x7fffffff
+                              ^
+
+"./overflow-warn-8.c", line 7: warning: integer operation result is out of range
+    int i2 = (int)(double)1 + 0x7fffffff
+                            ^
+
+"./overflow-warn-8.c", line 8: warning: integer operation result is out of range
+    int i3 = 1 + 0x7fffffff
+               ^
+
+"./overflow-warn-8.c", line 9: warning: integer operation result is out of range
+    int i4 = +1 + 0x7fffffff
+                ^
+
+"./overflow-warn-8.c", line 11: warning: floating-point value does not fit in required integral type
+    int i6 = (double)1.0 + 0x7fffffff
+             ^
+
+"./overflow-warn-8.c", line 14: warning: integer operation result is out of range
+    int i9 = j ? (int)(double)1.0 + 0x7fffffff 
+                                  ^
+
+"./overflow-warn-8.c", line 17: warning: integer operation result is out of range
+    unsigned int i12 = j ? (int)(double)1.0 + 0x7fffffff 
+                                            ^
+
+"./overflow-warn-8.c", line 17: warning: integer conversion resulted in a change of sign
+    unsigned int i12 = j ? (int)(double)1.0 + 0x7fffffff 
+                           ^
+
+"./overflow-warn-8.c", line 20: warning: integer operation result is out of range
+    int i15 = 0 || (int)(double)1.0 + 0x7fffffff 
+                                    ^
+
+"./overflow-warn-8.c", line 21: warning: integer operation result is out of range
+    int i16 = 1 && (int)(double)1.0 + 0x7fffffff 
+                                    ^
+
+"./overflow-warn-8.c", line 22: warning: integer operation result is out of range
+    int i17 = j || (int)(double)1.0 + 0x7fffffff 
+                                    ^
+
+"./overflow-warn-8.c", line 23: warning: integer operation result is out of range
+    int i18 = j && (int)(double)1.0 + 0x7fffffff 
+                                    ^
+
+"./overflow-warn-8.c", line 6: warning: variable "i1" was declared but never referenced
+    int i1 = (int)(double)1.0 + 0x7fffffff
+        ^
+
+"./overflow-warn-8.c", line 7: warning: variable "i2" was declared but never referenced
+    int i2 = (int)(double)1 + 0x7fffffff
+        ^
+
+"./overflow-warn-8.c", line 8: warning: variable "i3" was declared but never referenced
+    int i3 = 1 + 0x7fffffff
+        ^
+
+"./overflow-warn-8.c", line 9: warning: variable "i4" was declared but never referenced
+    int i4 = +1 + 0x7fffffff
+        ^
+
+"./overflow-warn-8.c", line 12: warning: variable "i7" was declared but never referenced
+    int i7 = 0 ? (int)(double)1.0 + 0x7fffffff 
+        ^
+
+"./overflow-warn-8.c", line 13: warning: variable "i8" was declared but never referenced
+    int i8 = 1 ? 1 : (int)(double)1.0 + 0x7fffffff
+        ^
+
+"./overflow-warn-8.c", line 14: warning: variable "i9" was declared but never referenced
+    int i9 = j ? (int)(double)1.0 + 0x7fffffff 
+        ^
+
+"./overflow-warn-8.c", line 15: warning: variable "i10" was declared but never referenced
+    unsigned int i10 = 0 ? (int)(double)1.0 + 0x7fffffff 
+                 ^
+
+"./overflow-warn-8.c", line 16: warning: variable "i11" was declared but never referenced
+    unsigned int i11 = 1 ? 9U : (int)(double)1.0 + 0x7fffffff
+                 ^
+
+"./overflow-warn-8.c", line 17: warning: variable "i12" was declared but never referenced
+    unsigned int i12 = j ? (int)(double)1.0 + 0x7fffffff 
+                 ^
+
+"./overflow-warn-8.c", line 18: warning: variable "i13" was declared but never referenced
+    int i13 = 1 || (int)(double)1.0 + 0x7fffffff 
+        ^
+
+"./overflow-warn-8.c", line 19: warning: variable "i14" was declared but never referenced
+    int i14 = 0 && (int)(double)1.0 + 0x7fffffff 
+        ^
+
+"./overflow-warn-8.c", line 20: warning: variable "i15" was declared but never referenced
+    int i15 = 0 || (int)(double)1.0 + 0x7fffffff 
+        ^
+
+"./overflow-warn-8.c", line 21: warning: variable "i16" was declared but never referenced
+    int i16 = 1 && (int)(double)1.0 + 0x7fffffff 
+        ^
+
+"./overflow-warn-8.c", line 22: warning: variable "i17" was declared but never referenced
+    int i17 = j || (int)(double)1.0 + 0x7fffffff 
+        ^
+
+"./overflow-warn-8.c", line 23: warning: variable "i18" was declared but never referenced
+    int i18 = j && (int)(double)1.0 + 0x7fffffff 
+        ^
+

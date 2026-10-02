@@ -1,0 +1,24 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 15: error: member "B<V>::ir" has already been initialized
+    constexpr static V& ir = i;
+                        ^
+
+"Test_name.c", line 38: error: no instance of constructor "B" matches the argument list
+            argument types are: (A1<1>, int)
+  B u1 { A1<1>(), 42 };
+    ^
+
+"Test_name.c", line 38: error: cannot deduce class template arguments
+  B u1 { A1<1>(), 42 };
+  ^
+
+"Test_name.c", line 39: error: no instance of constructor "B" matches the argument list
+            argument types are: (A2<j>, int)
+  B u2 { A2<j>(), 42 };
+    ^
+
+"Test_name.c", line 39: error: cannot deduce class template arguments
+  B u2 { A2<j>(), 42 };
+  ^
+
+5 errors detected in the compilation of "Test_name.c".

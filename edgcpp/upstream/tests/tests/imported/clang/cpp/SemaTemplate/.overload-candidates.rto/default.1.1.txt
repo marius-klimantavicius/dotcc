@@ -1,0 +1,115 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 11: error: no instance of function template "min" matches the argument list
+            argument types are: (int, long)
+    (void)min(1, 2l); // expected-error{{no matching function for call to 'min'}}
+          ^
+"Test_name.c", line 8: note: candidate function template "min" failed deduction
+  const T& min(const T&, const T&); // expected-note{{candidate template ignored: deduced conflicting types for parameter 'T' ('int' vs. 'long')}}
+           ^
+
+"Test_name.c", line 18: error: no instance of function template "dyn_cast" matches the argument list
+            argument types are: (int *)
+    (void)dyn_cast(ptr); // expected-error{{no matching function for call to 'dyn_cast'}}
+          ^
+"Test_name.c", line 15: note: candidate function template "dyn_cast" failed deduction
+  R *dyn_cast(const T&); // expected-note{{candidate template ignored: couldn't infer template argument 'R'}}
+     ^
+
+"Test_name.c", line 27: error: no instance of overloaded function "get" matches the argument list
+            argument types are: (void *)
+    get<int>(ptr); // expected-error{{no matching function for call to 'get'}}
+    ^
+"Test_name.c", line 24: note: substituting explicit template arguments "<int>" for function template "get<<unnamed>,T>(const T &)" failed
+    void get(const T&); // expected-note{{candidate template ignored: invalid explicitly-specified argument for 1st template parameter}}
+         ^
+"Test_name.c", line 22: note: substituting explicit template arguments "<int>" for function template "get<I,T>(const T &)" failed
+    void get(const T&); // expected-note{{candidate template ignored: invalid explicitly-specified argument for template parameter 'I'}}
+         ^
+
+"Test_name.c", line 36: error: no instance of overloaded function "get_type" matches the argument list
+            argument types are: (int *)
+    (void)get_type(ptr); // expected-error{{no matching function for call to 'get_type'}}
+          ^
+"Test_name.c", line 33: note: candidate function template "get_type(T *, int *)" failed deduction
+    void get_type(T *, int[(int)sizeof(T) - 9] = 0); // expected-note{{candidate template ignored: substitution failure [with T = int]: array size is negative}}
+         ^
+"Test_name.c", line 31: note: candidate function template "get_type(const T &)" failed deduction
+    typename T::type get_type(const T&); // expected-note{{candidate template ignored: substitution failure [with T = int *]: type 'int *' cannot be used prior to '::'}}
+                     ^
+
+"Test_name.c", line 45: error: no instance of function template "X::min" matches the argument list
+            argument types are: (int, long)
+            object type is: X
+    (void)x.min(1, 2l); // expected-error{{no matching member function for call to 'min'}}
+            ^
+"Test_name.c", line 41: note: candidate function template "X::min" failed deduction
+    const T& min(const T&, const T&); // expected-note{{candidate template ignored: deduced conflicting types for parameter 'T' ('int' vs. 'long')}}
+             ^
+
+"Test_name.c", line 53: error: no instance of function template "if_size_4" matches the argument list
+  int k = if_size_4<char>(); // expected-error{{no matching function}}
+          ^
+"Test_name.c", line 52: note: substituting explicit template arguments "<char>" for function template "if_size_4" failed
+  template<typename T> typename boost::enable_if<sizeof(T) == 4, int>::type if_size_4(); // expected-note{{candidate template ignored: requirement 'sizeof(char) == 4' was not satisfied [with T = char]}}
+                                                                            ^
+
+"Test_name.c", line 62: error: no instance of function template "if_int" matches the argument list
+    if_int<char>(); // expected-error{{no matching function}}
+    ^
+"Test_name.c", line 60: note: substituting explicit template arguments "<char>" for function template "if_int" failed
+  template<typename T> typename llvm::enable_if<is_int<T> >::type if_int(); // expected-note{{candidate template ignored: disabled by 'enable_if' [with T = char]}}
+                                                                  ^
+
+"Test_name.c", line 66: error: class "boost::enable_if<false, int>" has no member "type"
+    typename boost::enable_if<sizeof(T) == 4, int>::type f(); // expected-error{{failed requirement 'sizeof(char) == 4'; 'enable_if' cannot be used to disable this declaration}}
+                                                    ^
+          detected during instantiation of class "NonTemplateFunction<T> [with T=char]" at line 68
+
+"Test_name.c", line 84: error: no instance of function template "foo" matches the argument list
+            argument types are: (NS1::array<int>)
+    foo(NS1::array<int>()); // expected-error{{no matching function for call to 'foo'}}
+    ^
+"Test_name.c", line 81: note: candidate function template "foo" failed deduction
+  void foo(NS2::array<A>); // expected-note{{candidate template ignored: could not match 'NS2::array' against 'NS1::array'}}
+       ^
+
+"Test_name.c", line 107: error: no instance of function template "PR15673::foo" matches the argument list
+    void bar() { foo<int>(); } // expected-error {{no matching function for call to 'foo'}}
+                 ^
+"Test_name.c", line 106: note: candidate function template "PR15673::foo" failed deduction
+    void foo() {}
+         ^
+
+"Test_name.c", line 124: error: no instance of function template "PR15673::baz" matches the argument list
+    void quux() { baz<int>(); } // expected-error {{no matching function for call to 'baz'}}
+                  ^
+"Test_name.c", line 123: note: candidate function template "PR15673::baz" failed deduction
+    void baz() { } // expected-note {{candidate template ignored: substitution failure [with T = int]: no type named 'type' in 'PR15673::a_pony<int>'}}
+         ^
+
+"Test_name.c", line 129: warning: alias templates are a C++11 feature
+    using unicorns = typename std::enable_if<some_trait<T>::value>::type;
+    ^
+
+"Test_name.c", line 141: error: no instance of function template "PR15673::wibble" matches the argument list
+    void wobble() { wibble<int>(); } // expected-error {{no matching function for call to 'wibble'}}
+                    ^
+"Test_name.c", line 140: note: candidate function template "PR15673::wibble" failed deduction
+    void wibble() {}
+         ^
+
+"Test_name.c", line 154: error: no instance of function template "PR15673::almost_rangesv3" matches the argument list
+    void test_almost_rangesv3() { almost_rangesv3<int>(); } // expected-error{{no matching function for call to 'almost_rangesv3'}}
+                                  ^
+"Test_name.c", line 153: note: candidate function template "PR15673::almost_rangesv3" failed deduction
+    void almost_rangesv3(); // expected-note{{candidate template ignored: requirement '42 == 43 || (PR15673::some_passing_trait<int>::value && PR15673::some_trait<int>::value)' was not satisfied}}
+         ^
+
+"Test_name.c", line 167: error: no instance of function template "PR15673::rangesv3" matches the argument list
+    void test_rangesv3() { rangesv3<int>(); } // expected-error{{no matching function for call to 'rangesv3'}}
+                           ^
+"Test_name.c", line 166: note: candidate function template "PR15673::rangesv3" failed deduction
+    void rangesv3(); // expected-note{{candidate template ignored: requirement 'PR15673::some_trait<int>::value' was not satisfied [with T = int, x = 42]}}
+         ^
+
+14 errors detected in the compilation of "Test_name.c".

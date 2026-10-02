@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 16: error: overloaded function "X<T>::X [with T=float]" is not a template
+  X<float>::X<int> xi = x; // expected-error{{qualified reference to 'X' is a constructor name rather than a template name}}
+            ^
+
+"Test_name.c", line 18: warning: variable "xi" was declared but never referenced
+    X<float>::X<int> xi = x; // expected-error{{qualified reference to 'X' is a constructor name rather than a template name}}
+                     ^
+
+"Test_name.c", line 32: error: invalid redeclaration of member function "X0<T, U>::f0(const X0<T, U> &)" (declared at line 30)
+    void f0(const X0<T, U>&); // expected-error{{redecl}}
+         ^
+
+"Test_name.c", line 36: error: invalid redeclaration of member function "X0<T, U>::f1(const X0<T, U> &)" (declared at line 34)
+    void f1(const X0<type, U_type2>&); // expected-error{{redecl}}
+         ^
+
+"Test_name.c", line 40: error: invalid redeclaration of member function "X0<T, U>::f2(const X0<T, U> &)" (declared at line 38)
+    void f2(const ::X0<type, U_type2>&); // expected-error{{redecl}}
+         ^
+
+"Test_name.c", line 47: error: invalid redeclaration of member function "X1<T, N>::f0(const X1<T, N> &)" (declared at line 45)
+    void f0(const X1<T, N>&); // expected-error{{redecl}}
+         ^
+
+"Test_name.c", line 52: warning: pointless friend declaration
+      friend class A;
+      ^
+
+"Test_name.c", line 71: error: declaration of a member with the same name as its class
+      template<typename> struct Nested; // expected-error {{member 'Nested' has the same name as its class}}
+                                ^
+
+6 errors detected in the compilation of "Test_name.c".

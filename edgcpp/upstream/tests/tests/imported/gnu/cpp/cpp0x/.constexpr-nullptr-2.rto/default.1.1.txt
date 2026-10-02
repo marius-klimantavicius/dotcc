@@ -1,0 +1,627 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 17: error: expression must have a constant value
+  constexpr int* ptr2 = ptr + 1;   // { dg-error "null pointer|not a constant" }
+                        ^
+"Test_name.c", line 17: note: operation not allowed on null pointer
+  constexpr int* ptr2 = ptr + 1;   // { dg-error "null pointer|not a constant" }
+                            ^
+
+"Test_name.c", line 36: warning: NULL reference is not allowed
+  constexpr const int &r = *p;   // { dg-error "dereferencing a null pointer" }
+                           ^
+
+"Test_name.c", line 77: error: expression must have a constant value
+  constexpr int i2 = pa2->pa1->pa0->i;	    // { dg-error "null pointer|not a constant" }
+                     ^
+"Test_name.c", line 77: note: attempt to access run-time storage
+  constexpr int i2 = pa2->pa1->pa0->i;	    // { dg-error "null pointer|not a constant" }
+                                  ^
+
+"Test_name.c", line 80: error: expression must have a constant value
+  constexpr const A *pa4 = pa2->pa1->pa0 + 1;     // { dg-error "null pointer|not a constant" }
+                           ^
+"Test_name.c", line 80: note: operation not allowed on null pointer
+  constexpr const A *pa4 = pa2->pa1->pa0 + 1;     // { dg-error "null pointer|not a constant" }
+                                         ^
+
+"Test_name.c", line 118: error: expression must have a constant value
+  constexpr int* p5 = p0 + 1;       // { dg-error "null pointer|not a constant" }
+                      ^
+"Test_name.c", line 118: note: operation not allowed on null pointer
+  constexpr int* p5 = p0 + 1;       // { dg-error "null pointer|not a constant" }
+                         ^
+
+"Test_name.c", line 119: error: expression must have a constant value
+  constexpr int* p6 = 1 + p0;       // { dg-error "null pointer|not a constant" }
+                      ^
+"Test_name.c", line 119: note: operation not allowed on null pointer
+  constexpr int* p6 = 1 + p0;       // { dg-error "null pointer|not a constant" }
+                        ^
+
+"Test_name.c", line 120: error: expression must have a constant value
+  constexpr int* p7 = p0 - 1;       // { dg-error "null pointer|not a constant" }
+                      ^
+"Test_name.c", line 120: note: operation not allowed on null pointer
+  constexpr int* p7 = p0 - 1;       // { dg-error "null pointer|not a constant" }
+                         ^
+
+"Test_name.c", line 124: error: expression must have a constant value
+  constexpr int* p10 = null () + 2; // { dg-error "null pointer|not a constant" }
+                       ^
+"Test_name.c", line 124: note: operation not allowed on null pointer
+  constexpr int* p10 = null () + 2; // { dg-error "null pointer|not a constant" }
+                               ^
+
+"Test_name.c", line 125: error: expression must have a constant value
+  constexpr int* p11 = 3 + null (); // { dg-error "null pointer|not a constant" }
+                       ^
+"Test_name.c", line 125: note: operation not allowed on null pointer
+  constexpr int* p11 = 3 + null (); // { dg-error "null pointer|not a constant" }
+                         ^
+
+"Test_name.c", line 126: error: expression must have a constant value
+  constexpr int* p12 = null () - 4; // { dg-error "null pointer|not a constant" }
+                       ^
+"Test_name.c", line 126: note: operation not allowed on null pointer
+  constexpr int* p12 = null () - 4; // { dg-error "null pointer|not a constant" }
+                               ^
+
+"Test_name.c", line 127: error: expression must have a constant value
+  constexpr int* p13 = &null ()[4]; // { dg-error "null pointer|not a constant" }
+                       ^
+"Test_name.c", line 127: note: cannot access position 4 in array of 0 elements
+  constexpr int* p13 = &null ()[4]; // { dg-error "null pointer|not a constant" }
+                               ^
+
+"Test_name.c", line 128: error: expression must have a constant value
+  constexpr int* p14 = &3[null ()]; // { dg-error "null pointer|not a constant" }
+                       ^
+"Test_name.c", line 128: note: cannot access position 3 in array of 0 elements
+  constexpr int* p14 = &3[null ()]; // { dg-error "null pointer|not a constant" }
+                         ^
+
+"Test_name.c", line 132: error: expression must have a constant value
+  constexpr int* q3 = q0 + 1;       // { dg-error "null pointer|not a constant" }
+                      ^
+"Test_name.c", line 132: note: operation not allowed on null pointer
+  constexpr int* q3 = q0 + 1;       // { dg-error "null pointer|not a constant" }
+                         ^
+
+"Test_name.c", line 133: error: expression must have a constant value
+  constexpr int* q4 = q0 + 2;       // { dg-error "null pointer|not a constant" }
+                      ^
+"Test_name.c", line 133: note: operation not allowed on null pointer
+  constexpr int* q4 = q0 + 2;       // { dg-error "null pointer|not a constant" }
+                         ^
+
+"Test_name.c", line 158: error: expression must be a pointer to a complete object type
+  constexpr X *px1 = px0 + 0;     // { dg-error "invalid use of incomplete type"  }
+                     ^
+
+"Test_name.c", line 159: error: expression must be a pointer to a complete object type
+  constexpr X *px2 = px0 - 0;     // { dg-error "invalid use of incomplete type"  }
+                     ^
+
+"Test_name.c", line 160: error: expression must be a pointer to a complete object type
+  constexpr X *px3 = px0 - px0;   // { dg-error "invalid use of incomplete type"  }
+                     ^
+
+"Test_name.c", line 165: error: a value of type "const void *" cannot be used to initialize an entity of type "void *const"
+  constexpr void *pv3 = pv2;      // { dg-error "invalid conversion|not a constant expression" }
+                        ^
+
+"Test_name.c", line 168: error: a value of type "void *" cannot be used to initialize an entity of type "IncompleteTypeTests::X *const"
+  constexpr X *px4 = pv0;	 // { dg-error "cast from|invalid conversion|not a constant expression" }
+                     ^
+
+"Test_name.c", line 227: error: base class "BaseAndDerivedTests::A" is ambiguous
+  constexpr A *pa3 = pd0;		   // { dg-error "ambiguous base" }
+                     ^
+
+"Test_name.c", line 228: error: base class "BaseAndDerivedTests::A" is ambiguous
+  constexpr A *pa4 = static_cast<A*>(pd0);  // { dg-error "ambiguous base" }
+                                 ^
+
+"Test_name.c", line 230: error: a value of type "BaseAndDerivedTests::A *" cannot be used to initialize an entity of type "BaseAndDerivedTests::B *const"
+  constexpr B *pb1 = pa0;		   // { dg-error "invalid conversion|not a constant expression" }
+                     ^
+
+"Test_name.c", line 233: error: a value of type "BaseAndDerivedTests::A *" cannot be used to initialize an entity of type "BaseAndDerivedTests::C *const"
+  constexpr C *pc1 = pa0;		   // { dg-error "invalid conversion|not a constant expression" }
+                     ^
+
+"Test_name.c", line 234: error: a value of type "BaseAndDerivedTests::A *" cannot be used to initialize an entity of type "BaseAndDerivedTests::D *const"
+  constexpr D *pd1 = pa0;		   // { dg-error "ambiguous base|invalid conversion" }
+                     ^
+
+"Test_name.c", line 239: error: conversion to inaccessible base class "BaseAndDerivedTests::A" is not allowed
+  constexpr A *pa5 = pe0;		 // { dg-error "inaccessible base of" }
+                     ^
+
+"Test_name.c", line 254: error: a value of type "BaseAndDerivedTests::VA *" cannot be used to initialize an entity of type "BaseAndDerivedTests::VB *const"
+  constexpr VB *pvb1 = pva0;	      // { dg-error "invalid conversion|cannot convert from pointer to base class" }
+                       ^
+
+"Test_name.c", line 265: warning: arithmetic on pointer to void or function type
+  constexpr Func *pf1 = pf0 + 0;  // triggers -Wpointer-arith
+                            ^
+
+"Test_name.c", line 266: warning: arithmetic on pointer to void or function type
+  constexpr Func *pf2 = pf0 - 0;  // triggers -Wpointer-arith
+                            ^
+
+"Test_name.c", line 267: error: expression must be a pointer to a complete object type
+  constexpr Func *pf3 = 0 + pf0;  // triggers -Wpointer-arith
+                            ^
+
+"Test_name.c", line 268: warning: arithmetic on pointer to void or function type
+  constexpr Func *pf4 = pf0 + 1;  // { dg-error "null pointer|not a constant" }
+                            ^
+
+"Test_name.c", line 268: error: expression must have a constant value
+  constexpr Func *pf4 = pf0 + 1;  // { dg-error "null pointer|not a constant" }
+                        ^
+"Test_name.c", line 268: note: operation not allowed on null pointer
+  constexpr Func *pf4 = pf0 + 1;  // { dg-error "null pointer|not a constant" }
+                            ^
+
+"Test_name.c", line 269: error: expression must be a pointer to a complete object type
+  constexpr Func *pf5 = 2 + pf0;  // { dg-error "null pointer|not a constant" }
+                            ^
+
+"Test_name.c", line 270: warning: arithmetic on pointer to void or function type
+  constexpr Func *pf6 = pf0 - 3;  // { dg-error "null pointer|not a constant" }
+                            ^
+
+"Test_name.c", line 270: error: expression must have a constant value
+  constexpr Func *pf6 = pf0 - 3;  // { dg-error "null pointer|not a constant" }
+                        ^
+"Test_name.c", line 270: note: operation not allowed on null pointer
+  constexpr Func *pf6 = pf0 - 3;  // { dg-error "null pointer|not a constant" }
+                            ^
+
+"Test_name.c", line 277: error: expression must have arithmetic, unscoped enum, or pointer type but has type "FunctionTests::MemFuncPtr" (aka "void (FunctionTests::S::*)()")
+  constexpr MemFuncPtr pmf1 = pmf0 + 0;   // { dg-error "invalid operands" }
+                              ^
+
+"Test_name.c", line 278: error: expression must have arithmetic or unscoped enum type
+  constexpr MemFuncPtr pmf2 = 0 + pmf0;   // { dg-error "invalid operands" }
+                                  ^
+
+"Test_name.c", line 279: error: expression must have arithmetic, unscoped enum, or pointer type but has type "FunctionTests::MemFuncPtr" (aka "void (FunctionTests::S::*)()")
+  constexpr MemFuncPtr pmf3 = pmf0 + 1;   // { dg-error "invalid operands" }
+                              ^
+
+"Test_name.c", line 280: error: expression must have arithmetic or unscoped enum type
+  constexpr MemFuncPtr pmf4 = 1 + pmf0;   // { dg-error "invalid operands" }
+                                  ^
+
+"Test_name.c", line 281: error: expression must have arithmetic, unscoped enum, or pointer type but has type "FunctionTests::MemFuncPtr" (aka "void (FunctionTests::S::*)()")
+  constexpr MemFuncPtr pmf5 = pmf0 - 1;   // { dg-error "invalid operands" }
+                              ^
+
+"Test_name.c", line 17: warning: variable "PR_60760_comment_0::ptr2" was declared but never referenced
+  constexpr int* ptr2 = ptr + 1;   // { dg-error "null pointer|not a constant" }
+                 ^
+
+"Test_name.c", line 27: warning: variable "PR_60760_comment_1::ptr2" was declared but never referenced
+  constexpr int* ptr2 = ptr + zero;   // Adding zero is valid.
+                 ^
+
+"Test_name.c", line 28: warning: variable "PR_60760_comment_1::ptr3" was declared but never referenced
+  constexpr int* ptr3 = ptr - zero;   // As is subtracting zero.
+                 ^
+
+"Test_name.c", line 47: warning: variable "C::r0" was declared but never referenced
+  constexpr int *r0 = p1->b;   // { dg-error "null pointer|constant expression" }
+                 ^
+
+"Test_name.c", line 61: warning: variable "C::d1" was declared but never referenced
+  constexpr int d1 = pcs - p0;
+                ^
+
+"Test_name.c", line 62: warning: variable "C::d2" was declared but never referenced
+  constexpr int d2 = p0 - pcs;
+                ^
+
+"Test_name.c", line 64: warning: variable "C::b" was declared but never referenced
+  constexpr bool b = !p1 && !pcs;
+                 ^
+
+"Test_name.c", line 75: warning: variable "D::i0" was declared but never referenced
+  constexpr int i0 = pa2->i;
+                ^
+
+"Test_name.c", line 76: warning: variable "D::i1" was declared but never referenced
+  constexpr int i1 = pa2->pa1->i;
+                ^
+
+"Test_name.c", line 77: warning: variable "D::i2" was declared but never referenced
+  constexpr int i2 = pa2->pa1->pa0->i;	    // { dg-error "null pointer|not a constant" }
+                ^
+
+"Test_name.c", line 79: warning: variable "D::pa3" was declared but never referenced
+  constexpr const A *pa3 = &*pa2->pa1->pa0;
+                     ^
+
+"Test_name.c", line 80: warning: variable "D::pa4" was declared but never referenced
+  constexpr const A *pa4 = pa2->pa1->pa0 + 1;     // { dg-error "null pointer|not a constant" }
+                     ^
+
+"Test_name.c", line 82: warning: variable "D::pi0" was declared but never referenced
+  constexpr const int *pi0 = &pa2->pa1->pa0->i;   // { dg-error "null pointer|not a constant" }
+                       ^
+
+"Test_name.c", line 85: warning: variable "D::pi1" was declared but never referenced
+  constexpr const int *pi1 = &pa5->i;	     // { dg-error "null pointer|not a constant" }
+                       ^
+
+"Test_name.c", line 97: warning: variable "SimpleTests::pv0" was declared but never referenced
+  constexpr void* pv0 = p0;
+                  ^
+
+"Test_name.c", line 98: warning: variable "SimpleTests::pv1" was declared but never referenced
+  constexpr const void* pv1 = p0;
+                        ^
+
+"Test_name.c", line 99: warning: variable "SimpleTests::pv2" was declared but never referenced
+  constexpr volatile void* pv2 = p0;
+                           ^
+
+"Test_name.c", line 100: warning: variable "SimpleTests::pv3" was declared but never referenced
+  constexpr const volatile void* pv3 = p0;
+                                 ^
+
+"Test_name.c", line 101: warning: variable "SimpleTests::pv4" was declared but never referenced
+  constexpr void* pv4 = static_cast<void*>(p0);
+                  ^
+
+"Test_name.c", line 102: warning: variable "SimpleTests::pv5" was declared but never referenced
+  constexpr const void* pv5 = static_cast<const void*>(p0);
+                        ^
+
+"Test_name.c", line 105: warning: variable "SimpleTests::pv6" was declared but never referenced
+  constexpr void* pv6 = reinterpret_cast<void*>(p0);   // { dg-error "not a constant expression" }
+                  ^
+
+"Test_name.c", line 108: warning: variable "SimpleTests::p1" was declared but never referenced
+  constexpr int* p1 = p0 + 0;
+                 ^
+
+"Test_name.c", line 109: warning: variable "SimpleTests::p2" was declared but never referenced
+  constexpr int* p2 = p0 - 0;
+                 ^
+
+"Test_name.c", line 110: warning: variable "SimpleTests::p3" was declared but never referenced
+  constexpr int* p3 = 0 + p0;
+                 ^
+
+"Test_name.c", line 117: warning: variable "SimpleTests::p4" was declared but never referenced
+  constexpr int* p4 = &*p0;
+                 ^
+
+"Test_name.c", line 118: warning: variable "SimpleTests::p5" was declared but never referenced
+  constexpr int* p5 = p0 + 1;       // { dg-error "null pointer|not a constant" }
+                 ^
+
+"Test_name.c", line 119: warning: variable "SimpleTests::p6" was declared but never referenced
+  constexpr int* p6 = 1 + p0;       // { dg-error "null pointer|not a constant" }
+                 ^
+
+"Test_name.c", line 120: warning: variable "SimpleTests::p7" was declared but never referenced
+  constexpr int* p7 = p0 - 1;       // { dg-error "null pointer|not a constant" }
+                 ^
+
+"Test_name.c", line 121: warning: variable "SimpleTests::p8" was declared but never referenced
+  constexpr int* p8 = &p0 [0];
+                 ^
+
+"Test_name.c", line 122: warning: variable "SimpleTests::p9" was declared but never referenced
+  constexpr int* p9 = &0 [p0];
+                 ^
+
+"Test_name.c", line 124: warning: variable "SimpleTests::p10" was declared but never referenced
+  constexpr int* p10 = null () + 2; // { dg-error "null pointer|not a constant" }
+                 ^
+
+"Test_name.c", line 125: warning: variable "SimpleTests::p11" was declared but never referenced
+  constexpr int* p11 = 3 + null (); // { dg-error "null pointer|not a constant" }
+                 ^
+
+"Test_name.c", line 126: warning: variable "SimpleTests::p12" was declared but never referenced
+  constexpr int* p12 = null () - 4; // { dg-error "null pointer|not a constant" }
+                 ^
+
+"Test_name.c", line 127: warning: variable "SimpleTests::p13" was declared but never referenced
+  constexpr int* p13 = &null ()[4]; // { dg-error "null pointer|not a constant" }
+                 ^
+
+"Test_name.c", line 128: warning: variable "SimpleTests::p14" was declared but never referenced
+  constexpr int* p14 = &3[null ()]; // { dg-error "null pointer|not a constant" }
+                 ^
+
+"Test_name.c", line 130: warning: variable "SimpleTests::q1" was declared but never referenced
+  constexpr int* q1 = q0 + 0;
+                 ^
+
+"Test_name.c", line 131: warning: variable "SimpleTests::q2" was declared but never referenced
+  constexpr int* q2 = q0 - 0;
+                 ^
+
+"Test_name.c", line 132: warning: variable "SimpleTests::q3" was declared but never referenced
+  constexpr int* q3 = q0 + 1;       // { dg-error "null pointer|not a constant" }
+                 ^
+
+"Test_name.c", line 133: warning: variable "SimpleTests::q4" was declared but never referenced
+  constexpr int* q4 = q0 + 2;       // { dg-error "null pointer|not a constant" }
+                 ^
+
+"Test_name.c", line 134: warning: variable "SimpleTests::q5" was declared but never referenced
+  constexpr int* q5 = &q0 [0];
+                 ^
+
+"Test_name.c", line 137: warning: variable "SimpleTests::i0" was declared but never referenced
+  constexpr int i0 = p0 - (int*)0;
+                ^
+
+"Test_name.c", line 138: warning: variable "SimpleTests::i1" was declared but never referenced
+  constexpr int i1 = p0 - static_cast<int*>(0);
+                ^
+
+"Test_name.c", line 139: warning: variable "SimpleTests::i2" was declared but never referenced
+  constexpr int i2 = p0 - (int*)nullptr;
+                ^
+
+"Test_name.c", line 140: warning: variable "SimpleTests::i3" was declared but never referenced
+  constexpr int i3 = p0 - static_cast<int*>(nullptr);
+                ^
+
+"Test_name.c", line 141: warning: variable "SimpleTests::i4" was declared but never referenced
+  constexpr int i4 = p0 - p0;
+                ^
+
+"Test_name.c", line 142: warning: variable "SimpleTests::i5" was declared but never referenced
+  constexpr int i5 = p0 - q0;
+                ^
+
+"Test_name.c", line 143: warning: variable "SimpleTests::i6" was declared but never referenced
+  constexpr int i6 = p0 - r0;
+                ^
+
+"Test_name.c", line 144: warning: variable "SimpleTests::i7" was declared but never referenced
+  constexpr int i7 = (int*)0 - p0;
+                ^
+
+"Test_name.c", line 145: warning: variable "SimpleTests::i8" was declared but never referenced
+  constexpr int i8 = static_cast<int*>(0) - p0;
+                ^
+
+"Test_name.c", line 146: warning: variable "SimpleTests::i9" was declared but never referenced
+  constexpr int i9 = (int*)nullptr - p0;
+                ^
+
+"Test_name.c", line 147: warning: variable "SimpleTests::i10" was declared but never referenced
+  constexpr int i10 = static_cast<int*>(nullptr) - p0;
+                ^
+
+"Test_name.c", line 148: warning: variable "SimpleTests::i11" was declared but never referenced
+  constexpr int i11 = q0 - p0;
+                ^
+
+"Test_name.c", line 149: warning: variable "SimpleTests::i12" was declared but never referenced
+  constexpr int i12 = r0 - p0;
+                ^
+
+"Test_name.c", line 158: warning: variable "IncompleteTypeTests::px1" was declared but never referenced
+  constexpr X *px1 = px0 + 0;     // { dg-error "invalid use of incomplete type"  }
+               ^
+
+"Test_name.c", line 159: warning: variable "IncompleteTypeTests::px2" was declared but never referenced
+  constexpr X *px2 = px0 - 0;     // { dg-error "invalid use of incomplete type"  }
+               ^
+
+"Test_name.c", line 160: warning: variable "IncompleteTypeTests::px3" was declared but never referenced
+  constexpr X *px3 = px0 - px0;   // { dg-error "invalid use of incomplete type"  }
+               ^
+
+"Test_name.c", line 163: warning: variable "IncompleteTypeTests::pv1" was declared but never referenced
+  constexpr void *pv1 = pv0;
+                  ^
+
+"Test_name.c", line 165: warning: variable "IncompleteTypeTests::pv3" was declared but never referenced
+  constexpr void *pv3 = pv2;      // { dg-error "invalid conversion|not a constant expression" }
+                  ^
+
+"Test_name.c", line 166: warning: variable "IncompleteTypeTests::pv4" was declared but never referenced
+  constexpr const void *pv4 = pv2;
+                        ^
+
+"Test_name.c", line 168: warning: variable "IncompleteTypeTests::px4" was declared but never referenced
+  constexpr X *px4 = pv0;	 // { dg-error "cast from|invalid conversion|not a constant expression" }
+               ^
+
+"Test_name.c", line 179: warning: variable "IndirectTests::b0" was declared but never referenced
+  constexpr bool b0 = ps == ps;
+                 ^
+
+"Test_name.c", line 180: warning: variable "IndirectTests::b1" was declared but never referenced
+  constexpr bool b1 = ps != ps;
+                 ^
+
+"Test_name.c", line 181: warning: variable "IndirectTests::b2" was declared but never referenced
+  constexpr bool b2 = ps <  ps;
+                 ^
+
+"Test_name.c", line 182: warning: variable "IndirectTests::b3" was declared but never referenced
+  constexpr bool b3 = ps <= ps;
+                 ^
+
+"Test_name.c", line 183: warning: variable "IndirectTests::b4" was declared but never referenced
+  constexpr bool b4 = ps >  ps;
+                 ^
+
+"Test_name.c", line 184: warning: variable "IndirectTests::b5" was declared but never referenced
+  constexpr bool b5 = ps >= ps;
+                 ^
+
+"Test_name.c", line 186: warning: variable "IndirectTests::b6" was declared but never referenced
+  constexpr bool b6 = ps == (S*)0;
+                 ^
+
+"Test_name.c", line 187: warning: variable "IndirectTests::b7" was declared but never referenced
+  constexpr bool b7 = ps != (S*)0;
+                 ^
+
+"Test_name.c", line 188: warning: variable "IndirectTests::b8" was declared but never referenced
+  constexpr bool b8 = ps <  (S*)0;
+                 ^
+
+"Test_name.c", line 189: warning: variable "IndirectTests::b9" was declared but never referenced
+  constexpr bool b9 = ps <= (S*)0;
+                 ^
+
+"Test_name.c", line 190: warning: variable "IndirectTests::b10" was declared but never referenced
+  constexpr bool b10 = ps >  (S*)0;
+                 ^
+
+"Test_name.c", line 191: warning: variable "IndirectTests::b11" was declared but never referenced
+  constexpr bool b11 = ps >= (S*)0;
+                 ^
+
+"Test_name.c", line 194: warning: variable "IndirectTests::ps2" was declared but never referenced
+  constexpr S* ps2 = ps1;
+               ^
+
+"Test_name.c", line 196: warning: variable "IndirectTests::pi0" was declared but never referenced
+  constexpr int* pi0 = &((S*)0)->i;	// { dg-error "null pointer|not a constant" }
+                 ^
+
+"Test_name.c", line 197: warning: variable "IndirectTests::pi1" was declared but never referenced
+  constexpr int* pi1 = &((S*)nullptr)->i;	// { dg-error "null pointer|not a constant" }
+                 ^
+
+"Test_name.c", line 199: warning: variable "IndirectTests::pj0" was declared but never referenced
+  constexpr int* pj0 = &((S*)0)->j;	// { dg-error "null pointer|not a constant" }
+                 ^
+
+"Test_name.c", line 200: warning: variable "IndirectTests::pj1" was declared but never referenced
+  constexpr int* pj1 = &((S*)nullptr)->j;	// { dg-error "null pointer|not a constant" }
+                 ^
+
+"Test_name.c", line 202: warning: variable "IndirectTests::psi" was declared but never referenced
+  constexpr int* psi = &ps->i;	    // { dg-error "null pointer|not a constant" }
+                 ^
+
+"Test_name.c", line 203: warning: variable "IndirectTests::psj" was declared but never referenced
+  constexpr int* psj = &ps->j;	    // { dg-error "null pointer|not a constant" }
+                 ^
+
+"Test_name.c", line 205: warning: variable "IndirectTests::ps1i" was declared but never referenced
+  constexpr int* ps1i = &ps1->i;	  // { dg-error "null pointer|not a constant" }
+                 ^
+
+"Test_name.c", line 206: warning: variable "IndirectTests::ps2i" was declared but never referenced
+  constexpr int* ps2i = &ps1->i;	  // { dg-error "null pointer|not a constant" }
+                 ^
+
+"Test_name.c", line 208: warning: variable "IndirectTests::ps1j" was declared but never referenced
+  constexpr int* ps1j = &ps1->j;	  // { dg-error "null pointer|not a constant" }
+                 ^
+
+"Test_name.c", line 209: warning: variable "IndirectTests::ps2j" was declared but never referenced
+  constexpr int* ps2j = &ps1->j;	  // { dg-error "null pointer|not a constant" }
+                 ^
+
+"Test_name.c", line 225: warning: variable "BaseAndDerivedTests::pa1" was declared but never referenced
+  constexpr A *pa1 = static_cast<A*>(pb0);
+               ^
+
+"Test_name.c", line 226: warning: variable "BaseAndDerivedTests::pa2" was declared but never referenced
+  constexpr A *pa2 = pc0;
+               ^
+
+"Test_name.c", line 227: warning: variable "BaseAndDerivedTests::pa3" was declared but never referenced
+  constexpr A *pa3 = pd0;		   // { dg-error "ambiguous base" }
+               ^
+
+"Test_name.c", line 228: warning: variable "BaseAndDerivedTests::pa4" was declared but never referenced
+  constexpr A *pa4 = static_cast<A*>(pd0);  // { dg-error "ambiguous base" }
+               ^
+
+"Test_name.c", line 230: warning: variable "BaseAndDerivedTests::pb1" was declared but never referenced
+  constexpr B *pb1 = pa0;		   // { dg-error "invalid conversion|not a constant expression" }
+               ^
+
+"Test_name.c", line 231: warning: variable "BaseAndDerivedTests::pb2" was declared but never referenced
+  constexpr B *pb2 = static_cast<B*>(pa0);
+               ^
+
+"Test_name.c", line 233: warning: variable "BaseAndDerivedTests::pc1" was declared but never referenced
+  constexpr C *pc1 = pa0;		   // { dg-error "invalid conversion|not a constant expression" }
+               ^
+
+"Test_name.c", line 234: warning: variable "BaseAndDerivedTests::pd1" was declared but never referenced
+  constexpr D *pd1 = pa0;		   // { dg-error "ambiguous base|invalid conversion" }
+               ^
+
+"Test_name.c", line 239: warning: variable "BaseAndDerivedTests::pa5" was declared but never referenced
+  constexpr A *pa5 = pe0;		 // { dg-error "inaccessible base of" }
+               ^
+
+"Test_name.c", line 251: warning: variable "BaseAndDerivedTests::pva1" was declared but never referenced
+  constexpr VA *pva1 = pvc0;
+                ^
+
+"Test_name.c", line 252: warning: variable "BaseAndDerivedTests::pva2" was declared but never referenced
+  constexpr VA *pva2 = pvd0;
+                ^
+
+"Test_name.c", line 254: warning: variable "BaseAndDerivedTests::pvb1" was declared but never referenced
+  constexpr VB *pvb1 = pva0;	      // { dg-error "invalid conversion|cannot convert from pointer to base class" }
+                ^
+
+"Test_name.c", line 265: warning: variable "FunctionTests::pf1" was declared but never referenced
+  constexpr Func *pf1 = pf0 + 0;  // triggers -Wpointer-arith
+                  ^
+
+"Test_name.c", line 266: warning: variable "FunctionTests::pf2" was declared but never referenced
+  constexpr Func *pf2 = pf0 - 0;  // triggers -Wpointer-arith
+                  ^
+
+"Test_name.c", line 267: warning: variable "FunctionTests::pf3" was declared but never referenced
+  constexpr Func *pf3 = 0 + pf0;  // triggers -Wpointer-arith
+                  ^
+
+"Test_name.c", line 268: warning: variable "FunctionTests::pf4" was declared but never referenced
+  constexpr Func *pf4 = pf0 + 1;  // { dg-error "null pointer|not a constant" }
+                  ^
+
+"Test_name.c", line 269: warning: variable "FunctionTests::pf5" was declared but never referenced
+  constexpr Func *pf5 = 2 + pf0;  // { dg-error "null pointer|not a constant" }
+                  ^
+
+"Test_name.c", line 270: warning: variable "FunctionTests::pf6" was declared but never referenced
+  constexpr Func *pf6 = pf0 - 3;  // { dg-error "null pointer|not a constant" }
+                  ^
+
+"Test_name.c", line 277: warning: variable "FunctionTests::pmf1" was declared but never referenced
+  constexpr MemFuncPtr pmf1 = pmf0 + 0;   // { dg-error "invalid operands" }
+                       ^
+
+"Test_name.c", line 278: warning: variable "FunctionTests::pmf2" was declared but never referenced
+  constexpr MemFuncPtr pmf2 = 0 + pmf0;   // { dg-error "invalid operands" }
+                       ^
+
+"Test_name.c", line 279: warning: variable "FunctionTests::pmf3" was declared but never referenced
+  constexpr MemFuncPtr pmf3 = pmf0 + 1;   // { dg-error "invalid operands" }
+                       ^
+
+"Test_name.c", line 280: warning: variable "FunctionTests::pmf4" was declared but never referenced
+  constexpr MemFuncPtr pmf4 = 1 + pmf0;   // { dg-error "invalid operands" }
+                       ^
+
+"Test_name.c", line 281: warning: variable "FunctionTests::pmf5" was declared but never referenced
+  constexpr MemFuncPtr pmf5 = pmf0 - 1;   // { dg-error "invalid operands" }
+                       ^
+
+34 errors detected in the compilation of "Test_name.c".

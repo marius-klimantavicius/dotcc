@@ -1,0 +1,86 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++23 Test_name.c
+"Test_name.c", line 21: error: argument for attribute "nonnull" is larger than number of parameters
+    void k(this S* self, const char*) __attribute__((nonnull(3))); // \
+                                                     ^
+
+"Test_name.c", line 28: warning: null argument provided for parameter marked with attribute "nonnull"
+    s.f(0, ""); // expected-warning{{null passed}}
+        ^
+
+"Test_name.c", line 30: warning: null argument provided for parameter marked with attribute "nonnull"
+    s.g("", 0, ""); // expected-warning{{null passed}}
+            ^
+
+"Test_name.c", line 35: warning: no parameter has pointer type
+    __attribute__((nonnull)) void f0(int *&p);
+                   ^
+
+"Test_name.c", line 36: warning: no parameter has pointer type
+    __attribute__((nonnull)) void f1(int * const &p);
+                   ^
+
+"Test_name.c", line 37: error: attribute "nonnull" references nonpointer parameter
+    __attribute__((nonnull(2))) void f2(int i, int * const &p);
+                   ^
+
+"Test_name.c", line 49: warning: null argument provided for parameter marked with attribute "nonnull"
+    f(static_cast<char*>((void*)0));  // expected-warning{{null passed}}
+      ^
+
+"Test_name.c", line 50: warning: null argument provided for parameter marked with attribute "nonnull"
+    f(static_cast<char*>(0));  // expected-warning{{null passed}}
+      ^
+
+"Test_name.c", line 75: warning: null argument provided for parameter marked with attribute "nonnull"
+  constexpr int i12 = f1(&c, 0); //expected-error {{constant expression}} expected-note {{null passed}}
+                             ^
+
+"Test_name.c", line 86: warning: null argument provided for parameter marked with attribute "nonnull"
+  constexpr int i3 = f3(&c, 0); //expected-error {{constant expression}} expected-note {{null passed}}
+                            ^
+
+"Test_name.c", line 89: error: argument for attribute "nonnull" is larger than number of parameters
+  __attribute__((nonnull(4))) __attribute__((nonnull)) //expected-error {{out of bounds}}
+                 ^
+
+"Test_name.c", line 93: warning: null argument provided for parameter marked with attribute "nonnull"
+  constexpr int i4 = f4(&c, 0, 0); //expected-error {{constant expression}} expected-note {{null passed}}
+                            ^
+
+"Test_name.c", line 94: warning: null argument provided for parameter marked with attribute "nonnull"
+  constexpr int i42 = f4(0, &c, 1); //expected-error {{constant expression}} expected-note {{null passed}}
+                         ^
+
+"Test_name.c", line 74: warning: variable "test5::i1" was declared but never referenced
+  constexpr int i1 = f1(&c, &c);
+                ^
+
+"Test_name.c", line 75: warning: variable "test5::i12" was declared but never referenced
+  constexpr int i12 = f1(&c, 0); //expected-error {{constant expression}} expected-note {{null passed}}
+                ^
+
+"Test_name.c", line 80: warning: variable "test5::i2" was declared but never referenced
+  constexpr int i2 = f2(0, 0);
+                ^
+
+"Test_name.c", line 86: warning: variable "test5::i3" was declared but never referenced
+  constexpr int i3 = f3(&c, 0); //expected-error {{constant expression}} expected-note {{null passed}}
+                ^
+
+"Test_name.c", line 87: warning: variable "test5::i32" was declared but never referenced
+  constexpr int i32 = f3(0, &c);
+                ^
+
+"Test_name.c", line 93: warning: variable "test5::i4" was declared but never referenced
+  constexpr int i4 = f4(&c, 0, 0); //expected-error {{constant expression}} expected-note {{null passed}}
+                ^
+
+"Test_name.c", line 94: warning: variable "test5::i42" was declared but never referenced
+  constexpr int i42 = f4(0, &c, 1); //expected-error {{constant expression}} expected-note {{null passed}}
+                ^
+
+"Test_name.c", line 95: warning: variable "test5::i43" was declared but never referenced
+  constexpr int i43 = f4(&c, &c, 0);
+                ^
+
+3 errors detected in the compilation of "Test_name.c".

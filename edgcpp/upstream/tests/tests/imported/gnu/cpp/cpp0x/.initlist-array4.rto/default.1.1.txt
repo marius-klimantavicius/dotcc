@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/initializer_list", line 54: error: pointer to reference is not allowed
+        typedef const _E* iterator;
+                        ^
+          detected during instantiation of class "std::initializer_list<_E> [with _E=int &&]" at line 9 of "./cpp0x/initlist-array4.C"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/initializer_list", line 55: error: pointer to reference is not allowed
+        typedef const _E* const_iterator;
+                        ^
+          detected during instantiation of class "std::initializer_list<_E> [with _E=int &&]" at line 9 of "./cpp0x/initlist-array4.C"
+
+"./cpp0x/initlist-array4.C", line 9: error: "int &&" cannot be the element type of an initializer list because it is not a complete object type
+  int i = foo({ 0 });
+              ^
+
+3 errors detected in the compilation of "Test_name.c".

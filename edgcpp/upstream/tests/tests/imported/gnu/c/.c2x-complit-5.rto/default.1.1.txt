@@ -1,0 +1,146 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 7: error: a storage class may not be specified here
+  int *p = &(register int) { 0 }; /* { dg-error "file-scope compound literal specifies" } */
+             ^
+
+"Test_name.c", line 14: error: a storage class may not be specified here
+    int *q = &(thread_local int) { 0 }; /* { dg-error "compound literal implicitly auto and declared" } */
+               ^
+
+"Test_name.c", line 15: error: a storage class may not be specified here
+    int *pc = &(static int) { v }; /* { dg-error "not constant" } */
+                ^
+
+"Test_name.c", line 16: error: a storage class may not be specified here
+    int *pt = &(static thread_local int) { v }; /* { dg-error "not constant" } */
+                ^
+
+"Test_name.c", line 16: error: a storage class may not be specified here
+    int *pt = &(static thread_local int) { v }; /* { dg-error "not constant" } */
+                       ^
+
+"Test_name.c", line 17: error: a storage class may not be specified here
+    &(register int) { 0 }; /* { dg-error "address of register compound literal requested" } */
+      ^
+
+"Test_name.c", line 19: error: a storage class may not be specified here
+    &((register struct s) { 1, 2 }.b); /* { dg-error "address of register compound literal requested" } */
+       ^
+
+"Test_name.c", line 14: warning: variable "q" was declared but never referenced
+    int *q = &(thread_local int) { 0 }; /* { dg-error "compound literal implicitly auto and declared" } */
+         ^
+
+"Test_name.c", line 15: warning: variable "pc" was declared but never referenced
+    int *pc = &(static int) { v }; /* { dg-error "not constant" } */
+         ^
+
+"Test_name.c", line 16: warning: variable "pt" was declared but never referenced
+    int *pt = &(static thread_local int) { v }; /* { dg-error "not constant" } */
+         ^
+
+"Test_name.c", line 22: error: a storage class may not be specified here
+  int *s = &(static static int) { 0 }; /* { dg-error "duplicate" } */
+             ^
+
+"Test_name.c", line 22: error: a storage class may not be specified here
+  int *s = &(static static int) { 0 }; /* { dg-error "duplicate" } */
+                    ^
+
+"Test_name.c", line 27: error: a storage class may not be specified here
+    (void) (register register int) { 0 }; /* { dg-error "duplicate" } */
+            ^
+
+"Test_name.c", line 27: error: a storage class may not be specified here
+    (void) (register register int) { 0 }; /* { dg-error "duplicate" } */
+                     ^
+
+"Test_name.c", line 28: error: a storage class may not be specified here
+    (void) (static static int) { 0 }; /* { dg-error "duplicate" } */
+            ^
+
+"Test_name.c", line 28: error: a storage class may not be specified here
+    (void) (static static int) { 0 }; /* { dg-error "duplicate" } */
+                   ^
+
+"Test_name.c", line 29: error: a storage class may not be specified here
+    (void) (static thread_local thread_local int) { 0 }; /* { dg-error "duplicate" } */
+            ^
+
+"Test_name.c", line 29: error: a storage class may not be specified here
+    (void) (static thread_local thread_local int) { 0 }; /* { dg-error "duplicate" } */
+                   ^
+
+"Test_name.c", line 29: error: a storage class may not be specified here
+    (void) (static thread_local thread_local int) { 0 }; /* { dg-error "duplicate" } */
+                                ^
+
+"Test_name.c", line 30: error: a storage class may not be specified here
+    (void) (static register int) { 0 }; /* { dg-error "multiple storage classes in declaration specifiers" } */
+            ^
+
+"Test_name.c", line 30: error: a storage class may not be specified here
+    (void) (static register int) { 0 }; /* { dg-error "multiple storage classes in declaration specifiers" } */
+                   ^
+
+"Test_name.c", line 31: error: a storage class may not be specified here
+    (void) (register static int) { 0 }; /* { dg-error "multiple storage classes in declaration specifiers" } */
+            ^
+
+"Test_name.c", line 31: error: a storage class may not be specified here
+    (void) (register static int) { 0 }; /* { dg-error "multiple storage classes in declaration specifiers" } */
+                     ^
+
+"Test_name.c", line 32: error: a storage class may not be specified here
+    (void) (register thread_local int) { 0 }; /* { dg-error "used with" } */
+            ^
+
+"Test_name.c", line 32: error: a storage class may not be specified here
+    (void) (register thread_local int) { 0 }; /* { dg-error "used with" } */
+                     ^
+
+"Test_name.c", line 33: error: a storage class may not be specified here
+    (void) (thread_local register int) { 0 }; /* { dg-error "used with" } */
+            ^
+
+"Test_name.c", line 33: error: a storage class may not be specified here
+    (void) (thread_local register int) { 0 }; /* { dg-error "used with" } */
+                         ^
+
+"Test_name.c", line 41: error: a storage class may not be specified here
+    (static int) 0; /* { dg-error "storage class specifier in cast" } */
+     ^
+
+"Test_name.c", line 41: warning: expression has no effect
+    (static int) 0; /* { dg-error "storage class specifier in cast" } */
+    ^
+
+"Test_name.c", line 42: error: a storage class may not be specified here
+    sizeof (static int); /* { dg-error "storage class specifier in" } */
+            ^
+
+"Test_name.c", line 42: warning: expression has no effect
+    sizeof (static int); /* { dg-error "storage class specifier in" } */
+    ^
+
+"Test_name.c", line 43: error: a storage class may not be specified here
+    alignof (static int); /* { dg-error "storage class specifier in" } */
+             ^
+
+"Test_name.c", line 43: warning: expression has no effect
+    alignof (static int); /* { dg-error "storage class specifier in" } */
+    ^
+
+"Test_name.c", line 51: error: a storage class may not be specified here
+    (typedef int) { 0 }; /* { dg-error "expected" } */
+     ^
+
+"Test_name.c", line 52: error: a storage class may not be specified here
+    (auto int) { 0 }; /* { dg-error "expected" } */
+     ^
+
+"Test_name.c", line 53: error: a storage class may not be specified here
+    (extern int) { 0 }; /* { dg-error "expected" } */
+     ^
+
+30 errors detected in the compilation of "Test_name.c".

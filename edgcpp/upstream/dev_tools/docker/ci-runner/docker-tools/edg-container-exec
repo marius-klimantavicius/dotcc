@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+# This script is used to invoke container commands. It provides an entry point
+# for setting up the environment for various tasks.
+
+#
+# Configure important environment variables.
+#
+
+# Configure EDG compiler scraping exports
+export EDG_GCC_INCL_SCRAPE=$(edg-scrape-compiler gcc --lang c++ includes)
+export EDG_GCC_CINCL_SCRAPE=$(edg-scrape-compiler gcc --lang c includes)
+export EDG_GCC_VER_SCRAPE=$(edg-scrape-compiler gcc version)
+export EDG_CLANG_INCL_SCRAPE=$(edg-scrape-compiler clang --lang c++ includes)
+export EDG_CLANG_CINCL_SCRAPE=$(edg-scrape-compiler clang --lang c includes)
+export EDG_CLANG_VER_SCRAPE=$(edg-scrape-compiler clang version)
+
+#
+# Run the forwarded bash command line.
+#
+exec /bin/bash -c "$@"

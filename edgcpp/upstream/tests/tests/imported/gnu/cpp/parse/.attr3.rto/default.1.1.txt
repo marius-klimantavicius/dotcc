@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++23 --c++20 Test_name.c
+"Test_name.c", line 9: warning: enum "E" was declared deprecated
+      E x;	// { dg-warning "'E' is deprecated" }
+        ^
+"Test_name.c", line 5: note: because of a "deprecated" attribute
+  enum __attribute__ ((deprecated)) E { e };
+                       ^
+
+"Test_name.c", line 12: warning: enum "S::F" was declared deprecated
+      S::F y;	// { dg-warning "'F' is deprecated" }
+           ^
+"Test_name.c", line 6: note: because of a "deprecated" attribute
+  struct S { enum __attribute__ ((deprecated)) F { f = e }; };
+                                  ^
+

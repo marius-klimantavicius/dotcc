@@ -1,0 +1,101 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 13: warning: unknown attribute "btf_decl_tag"
+  struct __tag1 __tag2 t1;
+         ^
+
+"Test_name.c", line 13: warning: unknown attribute "btf_decl_tag"
+  struct __tag1 __tag2 t1;
+                ^
+
+"Test_name.c", line 15: warning: unknown attribute "btf_decl_tag"
+    int a __tag1;
+          ^
+
+"Test_name.c", line 16: warning: unknown attribute "btf_decl_tag"
+  } __tag3;
+    ^
+
+"Test_name.c", line 18: warning: unknown attribute "btf_decl_tag"
+  struct __tag1 t2;
+         ^
+
+"Test_name.c", line 19: warning: unknown attribute "btf_decl_tag"
+  struct __tag2 __tag3 t2 {
+         ^
+
+"Test_name.c", line 19: warning: unknown attribute "btf_decl_tag"
+  struct __tag2 __tag3 t2 {
+                ^
+
+"Test_name.c", line 20: warning: unknown attribute "btf_decl_tag"
+    int a __tag1;
+          ^
+
+"Test_name.c", line 23: warning: unknown attribute "btf_decl_tag"
+  int g1 __tag1;
+         ^
+
+"Test_name.c", line 24: warning: unknown attribute "btf_decl_tag"
+  int g2 __tag_no_arg; // expected-error {{'btf_decl_tag' attribute takes one argument}}
+         ^
+
+"Test_name.c", line 25: warning: unknown attribute "btf_decl_tag"
+  int g3 __tag_2_arg; // expected-error {{'btf_decl_tag' attribute takes one argument}}
+         ^
+
+"Test_name.c", line 26: warning: unknown attribute "btf_decl_tag"
+  int i1 __invalid; // expected-error {{expected string literal as argument of 'btf_decl_tag' attribute}}
+         ^
+
+"Test_name.c", line 30: warning: unknown attribute "btf_decl_tag"
+  } __tag1; // expected-error {{'btf_decl_tag' attribute only applies to variables, functions, structs, unions, classes, non-static data members, and typedefs}}
+    ^
+
+"Test_name.c", line 34: warning: unknown attribute "btf_decl_tag"
+  } __tag_no_arg; // expected-error {{'btf_decl_tag' attribute only applies to variables, functions, structs, unions, classes, non-static data members, and typedefs}}
+    ^
+
+"Test_name.c", line 38: warning: unknown attribute "btf_decl_tag"
+  } __tag_2_arg; // expected-error {{'btf_decl_tag' attribute only applies to variables, functions, structs, unions, classes, non-static data members, and typedefs}}
+    ^
+
+"Test_name.c", line 40: warning: unknown attribute "btf_decl_tag"
+  int __tag1 __tag2 foo(struct t1 *arg, struct t2 *arg2);
+      ^
+
+"Test_name.c", line 40: warning: unknown attribute "btf_decl_tag"
+  int __tag1 __tag2 foo(struct t1 *arg, struct t2 *arg2);
+             ^
+
+"Test_name.c", line 41: warning: unknown attribute "btf_decl_tag"
+  int __tag2 __tag3 foo(struct t1 *arg, struct t2 *arg2);
+      ^
+
+"Test_name.c", line 41: warning: unknown attribute "btf_decl_tag"
+  int __tag2 __tag3 foo(struct t1 *arg, struct t2 *arg2);
+             ^
+
+"Test_name.c", line 42: warning: unknown attribute "btf_decl_tag"
+  int __tag1 foo(struct t1 *arg __tag1, struct t2 *arg2) {
+      ^
+
+"Test_name.c", line 42: warning: unknown attribute "btf_decl_tag"
+  int __tag1 foo(struct t1 *arg __tag1, struct t2 *arg2) {
+                                ^
+
+"Test_name.c", line 46: warning: unknown attribute "btf_decl_tag"
+  typedef unsigned * __u1 __tag1 __tag2;
+                          ^
+
+"Test_name.c", line 46: warning: unknown attribute "btf_decl_tag"
+  typedef unsigned * __u1 __tag1 __tag2;
+                                 ^
+
+"Test_name.c", line 49: warning: unknown attribute "btf_decl_tag"
+  } __t2 __tag1 __tag2;
+         ^
+
+"Test_name.c", line 49: warning: unknown attribute "btf_decl_tag"
+  } __t2 __tag1 __tag2;
+                ^
+

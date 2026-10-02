@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 321: error: expression must be an lvalue or a function designator
+      new (&fsc ().c) int32_t;                // { dg-warning "18:taking address|placement" }
+            ^
+
+"Test_name.c", line 322: error: expression must be an lvalue or a function designator
+      new (&fasc1 ().ac) int32_t;             // { dg-warning "20:taking address|placement" }
+            ^
+
+"Test_name.c", line 323: error: expression must be an lvalue or a function designator
+      new (&fasc2 ().ac) int32_t;             // { dg-warning "20:taking address|placement" }
+            ^
+
+"Test_name.c", line 324: error: expression must be an lvalue or a function designator
+      new (&fasc3 ().ac) int32_t;             // { dg-warning "20:taking address|placement" }
+            ^
+
+"Test_name.c", line 325: error: expression must be an lvalue or a function designator
+      new (&fasc4 ().ac) int32_t;             // { dg-warning "20:taking address|placement" }
+            ^
+
+"Test_name.c", line 404: warning: function "ClassWithMemberNew::operator new" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+          new (&c) ClassWithMemberNew;
+          ^
+
+"Test_name.c", line 405: warning: function "ClassWithMemberNew::operator new[]" has no corresponding operator delete[] (to be called if an exception is thrown during initialization of an allocated object)
+          new (&x) ClassWithMemberNew[2];
+          ^
+
+"Test_name.c", line 411: warning: function "operator new(size_t, void *)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+          new (&c) ClassWithGlobalNew;    // { dg-warning "placement" }
+          ^
+
+"Test_name.c", line 412: warning: function "operator new[](size_t, ClassWithGlobalNew *)" has no corresponding operator delete[] (to be called if an exception is thrown during initialization of an allocated object)
+          new (&x) ClassWithGlobalNew[2];
+          ^
+
+5 errors detected in the compilation of "Test_name.c".

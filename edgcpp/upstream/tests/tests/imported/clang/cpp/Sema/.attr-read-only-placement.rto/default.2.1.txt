@@ -1,0 +1,101 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 7: warning: unknown attribute "enforce_read_only_placement"
+  struct __attribute__((enforce_read_only_placement)) A { // #A_DECL
+                        ^
+
+"Test_name.c", line 19: warning: unknown attribute "enforce_read_only_placement"
+  struct __attribute__((enforce_read_only_placement)) B { //#B_DECL
+                        ^
+
+"Test_name.c", line 34: warning: variable "b6" was declared but never referenced
+      static const B b6;
+                     ^
+
+"Test_name.c", line 35: warning: variable "b7" was declared but never referenced
+      static B b7;// expected-warning {{object of type 'B' cannot be placed in read-only memory}}
+               ^
+
+"Test_name.c", line 37: warning: variable "b8" was declared but never referenced
+      B b8; // no-warning
+        ^
+
+"Test_name.c", line 38: warning: variable "b9" was declared but never referenced
+      const B b9; // no-warning
+              ^
+
+"Test_name.c", line 42: warning: unknown attribute "enforce_read_only_placement"
+  struct __attribute__((enforce_read_only_placement)) C; // expected-note {{type was declared read-only here}}
+                        ^
+
+"Test_name.c", line 55: warning: unknown attribute "enforce_read_only_placement"
+  struct __attribute__((enforce_read_only_placement)) D; // #3
+                        ^
+
+"Test_name.c", line 78: warning: unknown attribute "enforce_read_only_placement"
+  struct  __attribute__((enforce_read_only_placement)) J : BaseWithoutAttribute { // no-warning
+                         ^
+
+"Test_name.c", line 81: warning: unknown attribute "enforce_read_only_placement"
+  struct __attribute__((enforce_read_only_placement)) BaseWithAttribute {
+                        ^
+
+"Test_name.c", line 85: warning: unknown attribute "enforce_read_only_placement"
+  struct __attribute__((enforce_read_only_placement)) Derived : BaseWithAttribute { // no-warning
+                        ^
+
+"Test_name.c", line 89: warning: unknown attribute "enforce_read_only_placement"
+  struct __attribute__((enforce_read_only_placement)) WrapperToAttributeInstance { // no-warning
+                        ^
+
+"Test_name.c", line 93: warning: unknown attribute "enforce_read_only_placement"
+  struct __attribute__((enforce_read_only_placement)) WrapperToNoAttributeInstance { // no-warning
+                        ^
+
+"Test_name.c", line 101: warning: unknown attribute "enforce_read_only_placement"
+  struct __attribute__((enforce_read_only_placement)) G {
+                        ^
+
+"Test_name.c", line 105: warning: unknown attribute "enforce_read_only_placement"
+  struct __attribute__((enforce_read_only_placement)) H : public G { // FIXME: Warn the user type `H`
+                        ^
+
+"Test_name.c", line 109: warning: unknown attribute "enforce_read_only_placement"
+  struct __attribute__((enforce_read_only_placement)) K { // FIXME : Warn the user type `K` w on't be
+                        ^
+
+"Test_name.c", line 116: warning: unknown attribute "enforce_read_only_placement"
+  struct  __attribute__((enforce_read_only_placement)) L {
+                         ^
+
+"Test_name.c", line 123: warning: unknown attribute "enforce_read_only_placement"
+  struct __attribute__((enforce_read_only_placement)) ConstInClassInitializers { // no-warning
+                        ^
+
+"Test_name.c", line 130: warning: unknown attribute "enforce_read_only_placement"
+  struct __attribute__((enforce_read_only_placement)) NonConstInClassInitializers {
+                        ^
+
+"Test_name.c", line 146: warning: unknown attribute "enforce_read_only_placement"
+  struct __attribute__((enforce_read_only_placement)) ConstExprCtor { // no-warning
+                        ^
+
+"Test_name.c", line 167: warning: variable "c" was declared but never referenced
+      C c; // FIXME: warn the user the instance of 'C' won't be placed in the read only program memory
+        ^
+
+"Test_name.c", line 12: warning: variable "a2" was declared but never referenced
+  const A a2[10]; // no-warning
+          ^
+
+"Test_name.c", line 24: warning: variable "b2" was declared but never referenced
+  const B b2; // no-warning
+          ^
+
+"Test_name.c", line 25: warning: variable "b3" was declared but never referenced
+  const B b3[4]; // no-warning
+          ^
+
+"Test_name.c", line 152: warning: variable "cec1" was declared but never referenced
+  constexpr ConstExprCtor cec1(10); // no-warning
+                          ^
+

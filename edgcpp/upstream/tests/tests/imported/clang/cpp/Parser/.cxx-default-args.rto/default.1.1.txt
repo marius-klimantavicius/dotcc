@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 9: error: identifier "undecl" is undefined
+    void m(int x = undecl + 0); // expected-error {{use of undeclared identifier 'undecl'}}
+                   ^
+
+"Test_name.c", line 17: error: unexpected end of default argument expression
+    void f(int x = 1:); // expected-error {{unexpected end of default argument expression}}
+                    ^
+
+"Test_name.c", line 38: error: identifier "error" is undefined
+    void f(int &r = error);  // expected-error {{use of undeclared identifier 'error'}}
+                    ^
+
+"Test_name.c", line 42: error: expected an expression
+    void i(int x = ) {} // expected-error{{expected expression}}
+                   ^
+
+"Test_name.c", line 43: error: specifying a default argument on this declaration is nonstandard
+    typedef int *fp(int x = ); // expected-error{{default arguments can only be specified for parameters in a function declaration}}
+                          ^
+
+"Test_name.c", line 43: error: expected an expression
+    typedef int *fp(int x = ); // expected-error{{default arguments can only be specified for parameters in a function declaration}}
+                            ^
+
+6 errors detected in the compilation of "Test_name.c".

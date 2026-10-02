@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 45: error: the size of an array must be greater than zero
+  SA(6, sizeof(S1) == 24);
+  ^
+
+"Test_name.c", line 50: error: the size of an array must be greater than zero
+  SA(7, sizeof(S2) == 24);
+  ^
+
+"Test_name.c", line 69: error: the size of an array must be greater than zero
+  SA(11, sizeof(S7) == 8);
+  ^
+
+"Test_name.c", line 87: error: the size of an array must be greater than zero
+  SA(0, sizeof(F) == 24);
+  ^
+
+"Test_name.c", line 134: error: the size of an array must be greater than zero
+  SA(0, sizeof(B) == 16);
+  ^
+
+"Test_name.c", line 147: error: the size of an array must be greater than zero
+  SA(0, sizeof(B) == 16);
+  ^
+
+6 errors detected in the compilation of "Test_name.c".

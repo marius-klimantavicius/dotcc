@@ -1,0 +1,121 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 49: warning: missing return statement at end of non-void function "tree_check"
+  }
+  ^
+
+"Test_name.c", line 96: warning: missing return statement at end of non-void function "cp_lexer_next_token_is"
+  }
+  ^
+
+"Test_name.c", line 124: warning: variable "token" is used before its value is set
+  		if (token->type == CPP_SEMICOLON) {
+  		    ^
+
+"Test_name.c", line 137: warning: missing return statement at end of non-void function "cp_parser_type_id_1"
+  }
+  ^
+
+"Test_name.c", line 181: warning: missing return statement at end of non-void function "cp_parser_omp_for_loop_init"
+  }
+  ^
+
+"Test_name.c", line 199: warning: missing return statement at end of non-void function "cp_parser_omp_for_loop"
+  }
+  ^
+
+"Test_name.c", line 187: warning: variable "cond" was declared but never referenced
+  	tree init, cond, incr, body, decl, pre_body = (tree) __null, ret;
+  	           ^
+
+"Test_name.c", line 187: warning: variable "incr" was declared but never referenced
+  	tree init, cond, incr, body, decl, pre_body = (tree) __null, ret;
+  	                 ^
+
+"Test_name.c", line 187: warning: variable "body" was declared but never referenced
+  	tree init, cond, incr, body, decl, pre_body = (tree) __null, ret;
+  	                       ^
+
+"Test_name.c", line 187: warning: variable "pre_body" was declared but never referenced
+  	tree init, cond, incr, body, decl, pre_body = (tree) __null, ret;
+  	                                   ^
+
+"Test_name.c", line 187: warning: variable "ret" was declared but never referenced
+  	tree init, cond, incr, body, decl, pre_body = (tree) __null, ret;
+  	                                                             ^
+
+"Test_name.c", line 188: warning: variable "initv" was declared but never referenced
+  	tree real_decl, initv, condv, incrv, declv;
+  	                ^
+
+"Test_name.c", line 188: warning: variable "condv" was declared but never referenced
+  	tree real_decl, initv, condv, incrv, declv;
+  	                       ^
+
+"Test_name.c", line 188: warning: variable "incrv" was declared but never referenced
+  	tree real_decl, initv, condv, incrv, declv;
+  	                              ^
+
+"Test_name.c", line 188: warning: variable "declv" was declared but never referenced
+  	tree real_decl, initv, condv, incrv, declv;
+  	                                     ^
+
+"Test_name.c", line 189: warning: variable "cl" was declared but never referenced
+  	tree this_pre_body, cl;
+  	                    ^
+
+"Test_name.c", line 190: warning: variable "nbraces" was declared but never referenced
+  	int i, collapse = 1, nbraces = 0;
+  	                     ^
+
+"Test_name.c", line 206: warning: variable "clauses" is used before its value is set
+  	ret = cp_parser_omp_for_loop(parser, OMP_SIMD, clauses, cclauses);
+  	                                               ^
+
+"Test_name.c", line 207: warning: missing return statement at end of non-void function "cp_parser_omp_simd"
+  }
+  ^
+
+"Test_name.c", line 205: warning: variable "sb" was declared but never referenced
+  	tree clauses, sb, ret;
+  	              ^
+
+"Test_name.c", line 205: warning: variable "ret" was set but never used
+  	tree clauses, sb, ret;
+  	                  ^
+
+"Test_name.c", line 235: warning: missing return statement at end of non-void function "cp_parser_omp_distribute"
+  }
+  ^
+
+"Test_name.c", line 257: warning: missing return statement at end of non-void function "cp_parser_omp_teams"
+  }
+  ^
+
+"Test_name.c", line 293: warning: missing return statement at end of non-void function "cp_parser_omp_target"
+  }
+  ^
+
+"Test_name.c", line 299: warning: variable "reduc_id" was declared but never referenced
+  	tree reduc_id = (tree) __null, orig_reduc_id = (tree) __null, type;
+  	     ^
+
+"Test_name.c", line 299: warning: variable "orig_reduc_id" was declared but never referenced
+  	tree reduc_id = (tree) __null, orig_reduc_id = (tree) __null, type;
+  	                               ^
+
+"Test_name.c", line 299: warning: variable "type" was set but never used
+  	tree reduc_id = (tree) __null, orig_reduc_id = (tree) __null, type;
+  	                                                              ^
+
+"Test_name.c", line 329: warning: variable "id" is used before its value is set
+  	switch (id) {
+  	        ^
+
+"Test_name.c", line 331: warning: variable "pragma_tok" is used before its value is set
+  		cp_parser_omp_declare(parser, pragma_tok, context);
+  		                              ^
+
+"Test_name.c", line 335: warning: missing return statement at end of non-void function "cp_parser_pragma"
+  }
+  ^
+

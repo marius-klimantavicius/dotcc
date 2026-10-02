@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 19: warning: unrecognized GCC pragma
+  #pragma GCC optimize ("0")
+              ^
+
+"Test_name.c", line 48: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) void test_var (void *p)
+                  ^
+
+"Test_name.c", line 73: warning: unrecognized GCC pragma
+  #pragma GCC optimize ("2")
+              ^
+
+"Test_name.c", line 80: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) void test_range (void *p, size_t range)
+                  ^
+

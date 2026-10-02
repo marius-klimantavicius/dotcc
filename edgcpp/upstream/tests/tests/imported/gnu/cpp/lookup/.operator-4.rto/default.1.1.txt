@@ -1,0 +1,586 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"./lookup/operator-4.C", line 6: error: no operator "->*" matches these operands
+            operand types are: N::A ->* N::A
+    (xs->*...);
+       ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 7: error: no operator "->*" matches these operands
+            operand types are: N::A ->* N::A
+    (...->*xs);
+        ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 8: error: no operator "/" matches these operands
+            operand types are: N::A / N::A
+    (xs / ...);
+        ^
+"./lookup/operator-4.C", line 8: note: built-in operator/(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (xs / ...);
+        ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 9: error: no operator "/" matches these operands
+            operand types are: N::A / N::A
+    (... / xs);
+         ^
+"./lookup/operator-4.C", line 9: note: built-in operator/(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (... / xs);
+         ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 10: error: no operator "*" matches these operands
+            operand types are: N::A * N::A
+    (xs * ...);
+        ^
+"./lookup/operator-4.C", line 10: note: built-in operator*(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (xs * ...);
+        ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 11: error: no operator "*" matches these operands
+            operand types are: N::A * N::A
+    (... * xs);
+         ^
+"./lookup/operator-4.C", line 11: note: built-in operator*(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (... * xs);
+         ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 12: error: no operator "+" matches these operands
+            operand types are: N::A + N::A
+    (xs + ...);
+        ^
+"./lookup/operator-4.C", line 12: note: built-in operator+(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (xs + ...);
+        ^
+"./lookup/operator-4.C", line 12: note: built-in operator+(<pointer to object>, <ptrdiff_t>) does not match because argument #1 does not match parameter
+    (xs + ...);
+        ^
+"./lookup/operator-4.C", line 12: note: built-in operator+(<ptrdiff_t>, <pointer to object>) does not match because argument #1 does not match parameter
+    (xs + ...);
+        ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 13: error: no operator "+" matches these operands
+            operand types are: N::A + N::A
+    (... + xs);
+         ^
+"./lookup/operator-4.C", line 13: note: built-in operator+(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (... + xs);
+         ^
+"./lookup/operator-4.C", line 13: note: built-in operator+(<pointer to object>, <ptrdiff_t>) does not match because argument #1 does not match parameter
+    (... + xs);
+         ^
+"./lookup/operator-4.C", line 13: note: built-in operator+(<ptrdiff_t>, <pointer to object>) does not match because argument #1 does not match parameter
+    (... + xs);
+         ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 14: error: no operator "-" matches these operands
+            operand types are: N::A - N::A
+    (xs - ...);
+        ^
+"./lookup/operator-4.C", line 14: note: built-in operator-(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (xs - ...);
+        ^
+"./lookup/operator-4.C", line 14: note: built-in operator-(<pointer to object>, <ptrdiff_t>) does not match because argument #1 does not match parameter
+    (xs - ...);
+        ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 15: error: no operator "-" matches these operands
+            operand types are: N::A - N::A
+    (... - xs);
+         ^
+"./lookup/operator-4.C", line 15: note: built-in operator-(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (... - xs);
+         ^
+"./lookup/operator-4.C", line 15: note: built-in operator-(<pointer to object>, <ptrdiff_t>) does not match because argument #1 does not match parameter
+    (... - xs);
+         ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 16: error: no operator "%" matches these operands
+            operand types are: N::A % N::A
+    (xs % ...);
+        ^
+"./lookup/operator-4.C", line 16: note: built-in operator%(<promoted integral>, <promoted integral>) does not match because argument #1 does not match parameter
+    (xs % ...);
+        ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 17: error: no operator "%" matches these operands
+            operand types are: N::A % N::A
+    (... % xs);
+         ^
+"./lookup/operator-4.C", line 17: note: built-in operator%(<promoted integral>, <promoted integral>) does not match because argument #1 does not match parameter
+    (... % xs);
+         ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 18: error: no operator "&" matches these operands
+            operand types are: N::A & N::A
+    (xs & ...);
+        ^
+"./lookup/operator-4.C", line 18: note: built-in operator&(<promoted integral>, <promoted integral>) does not match because argument #1 does not match parameter
+    (xs & ...);
+        ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 19: error: no operator "&" matches these operands
+            operand types are: N::A & N::A
+    (... & xs);
+         ^
+"./lookup/operator-4.C", line 19: note: built-in operator&(<promoted integral>, <promoted integral>) does not match because argument #1 does not match parameter
+    (... & xs);
+         ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 20: error: no operator "|" matches these operands
+            operand types are: N::A | N::A
+    (xs | ...);
+        ^
+"./lookup/operator-4.C", line 20: note: built-in operator|(<promoted integral>, <promoted integral>) does not match because argument #1 does not match parameter
+    (xs | ...);
+        ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 21: error: no operator "|" matches these operands
+            operand types are: N::A | N::A
+    (... | xs);
+         ^
+"./lookup/operator-4.C", line 21: note: built-in operator|(<promoted integral>, <promoted integral>) does not match because argument #1 does not match parameter
+    (... | xs);
+         ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 22: error: no operator "^" matches these operands
+            operand types are: N::A ^ N::A
+    (xs ^ ...);
+        ^
+"./lookup/operator-4.C", line 22: note: built-in operator^(<promoted integral>, <promoted integral>) does not match because argument #1 does not match parameter
+    (xs ^ ...);
+        ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 23: error: no operator "^" matches these operands
+            operand types are: N::A ^ N::A
+    (... ^ xs);
+         ^
+"./lookup/operator-4.C", line 23: note: built-in operator^(<promoted integral>, <promoted integral>) does not match because argument #1 does not match parameter
+    (... ^ xs);
+         ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 24: error: no operator "<<" matches these operands
+            operand types are: N::A << N::A
+    (xs << ...);
+        ^
+"./lookup/operator-4.C", line 24: note: built-in operator<<(<promoted integral>, <promoted integral>) does not match because argument #1 does not match parameter
+    (xs << ...);
+        ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 25: error: no operator "<<" matches these operands
+            operand types are: N::A << N::A
+    (... << xs);
+         ^
+"./lookup/operator-4.C", line 25: note: built-in operator<<(<promoted integral>, <promoted integral>) does not match because argument #1 does not match parameter
+    (... << xs);
+         ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 26: error: no operator ">>" matches these operands
+            operand types are: N::A >> N::A
+    (xs >> ...);
+        ^
+"./lookup/operator-4.C", line 26: note: built-in operator>>(<promoted integral>, <promoted integral>) does not match because argument #1 does not match parameter
+    (xs >> ...);
+        ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 27: error: no operator ">>" matches these operands
+            operand types are: N::A >> N::A
+    (... >> xs);
+         ^
+"./lookup/operator-4.C", line 27: note: built-in operator>>(<promoted integral>, <promoted integral>) does not match because argument #1 does not match parameter
+    (... >> xs);
+         ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 28: error: no operator "&&" matches these operands
+            operand types are: N::A && N::A
+    (xs && ...);
+        ^
+"./lookup/operator-4.C", line 28: note: built-in operator&&(<bool>, <bool>) does not match because argument #1 does not match parameter
+    (xs && ...);
+        ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 29: error: no operator "&&" matches these operands
+            operand types are: N::A && N::A
+    (... && xs);
+         ^
+"./lookup/operator-4.C", line 29: note: built-in operator&&(<bool>, <bool>) does not match because argument #1 does not match parameter
+    (... && xs);
+         ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 30: error: no operator "||" matches these operands
+            operand types are: N::A || N::A
+    (xs || ...);
+        ^
+"./lookup/operator-4.C", line 30: note: built-in operator||(<bool>, <bool>) does not match because argument #1 does not match parameter
+    (xs || ...);
+        ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 31: error: no operator "||" matches these operands
+            operand types are: N::A || N::A
+    (... || xs);
+         ^
+"./lookup/operator-4.C", line 31: note: built-in operator||(<bool>, <bool>) does not match because argument #1 does not match parameter
+    (... || xs);
+         ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 32: warning: expression has no effect
+    (xs, ...);
+     ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 32: warning: expression has no effect
+    (xs, ...);
+    ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 33: warning: expression has no effect
+    (..., xs);
+          ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 33: warning: expression has no effect
+    (..., xs);
+    ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 35: error: no operator "==" matches these operands
+            operand types are: N::A == N::A
+    (xs == ...);
+        ^
+"./lookup/operator-4.C", line 35: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (xs == ...);
+        ^
+"./lookup/operator-4.C", line 35: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    (xs == ...);
+        ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 36: error: no operator "==" matches these operands
+            operand types are: N::A == N::A
+    (... == xs);
+         ^
+"./lookup/operator-4.C", line 36: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (... == xs);
+         ^
+"./lookup/operator-4.C", line 36: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    (... == xs);
+         ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 37: error: no operator "!=" matches these operands
+            operand types are: N::A != N::A
+    (xs != ...);
+        ^
+"./lookup/operator-4.C", line 37: note: built-in operator!=(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (xs != ...);
+        ^
+"./lookup/operator-4.C", line 37: note: built-in operator!=(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    (xs != ...);
+        ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 38: error: no operator "!=" matches these operands
+            operand types are: N::A != N::A
+    (... != xs);
+         ^
+"./lookup/operator-4.C", line 38: note: built-in operator!=(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (... != xs);
+         ^
+"./lookup/operator-4.C", line 38: note: built-in operator!=(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    (... != xs);
+         ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 39: error: no operator "<" matches these operands
+            operand types are: N::A < N::A
+    (xs < ...);
+        ^
+"./lookup/operator-4.C", line 39: note: built-in operator<(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (xs < ...);
+        ^
+"./lookup/operator-4.C", line 39: note: built-in operator<(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    (xs < ...);
+        ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 40: error: no operator "<" matches these operands
+            operand types are: N::A < N::A
+    (... < xs);
+         ^
+"./lookup/operator-4.C", line 40: note: built-in operator<(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (... < xs);
+         ^
+"./lookup/operator-4.C", line 40: note: built-in operator<(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    (... < xs);
+         ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 41: error: no operator ">" matches these operands
+            operand types are: N::A > N::A
+    (xs > ...);
+        ^
+"./lookup/operator-4.C", line 41: note: built-in operator>(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (xs > ...);
+        ^
+"./lookup/operator-4.C", line 41: note: built-in operator>(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    (xs > ...);
+        ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 42: error: no operator ">" matches these operands
+            operand types are: N::A > N::A
+    (... > xs);
+         ^
+"./lookup/operator-4.C", line 42: note: built-in operator>(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (... > xs);
+         ^
+"./lookup/operator-4.C", line 42: note: built-in operator>(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    (... > xs);
+         ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 43: error: no operator "<=" matches these operands
+            operand types are: N::A <= N::A
+    (xs <= ...);
+        ^
+"./lookup/operator-4.C", line 43: note: built-in operator<=(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (xs <= ...);
+        ^
+"./lookup/operator-4.C", line 43: note: built-in operator<=(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    (xs <= ...);
+        ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 44: error: no operator "<=" matches these operands
+            operand types are: N::A <= N::A
+    (... <= xs);
+         ^
+"./lookup/operator-4.C", line 44: note: built-in operator<=(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (... <= xs);
+         ^
+"./lookup/operator-4.C", line 44: note: built-in operator<=(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    (... <= xs);
+         ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 45: error: no operator ">=" matches these operands
+            operand types are: N::A >= N::A
+    (xs >= ...);
+        ^
+"./lookup/operator-4.C", line 45: note: built-in operator>=(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (xs >= ...);
+        ^
+"./lookup/operator-4.C", line 45: note: built-in operator>=(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    (xs >= ...);
+        ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 46: error: no operator ">=" matches these operands
+            operand types are: N::A >= N::A
+    (... >= xs);
+         ^
+"./lookup/operator-4.C", line 46: note: built-in operator>=(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (... >= xs);
+         ^
+"./lookup/operator-4.C", line 46: note: built-in operator>=(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    (... >= xs);
+         ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 48: error: no operator "+=" matches these operands
+            operand types are: N::A += N::A
+    (xs += ...);
+        ^
+"./lookup/operator-4.C", line 48: note: built-in operator+=(<arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (xs += ...);
+        ^
+"./lookup/operator-4.C", line 48: note: built-in operator+=(<pointer to object>, <ptrdiff_t>) does not match because argument #1 does not match parameter
+    (xs += ...);
+        ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 49: error: no operator "+=" matches these operands
+            operand types are: N::A += N::A
+    (... += xs);
+         ^
+"./lookup/operator-4.C", line 49: note: built-in operator+=(<arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (... += xs);
+         ^
+"./lookup/operator-4.C", line 49: note: built-in operator+=(<pointer to object>, <ptrdiff_t>) does not match because argument #1 does not match parameter
+    (... += xs);
+         ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 50: error: no operator "-=" matches these operands
+            operand types are: N::A -= N::A
+    (xs -= ...);
+        ^
+"./lookup/operator-4.C", line 50: note: built-in operator-=(<arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (xs -= ...);
+        ^
+"./lookup/operator-4.C", line 50: note: built-in operator-=(<pointer to object>, <ptrdiff_t>) does not match because argument #1 does not match parameter
+    (xs -= ...);
+        ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 51: error: no operator "-=" matches these operands
+            operand types are: N::A -= N::A
+    (... -= xs);
+         ^
+"./lookup/operator-4.C", line 51: note: built-in operator-=(<arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (... -= xs);
+         ^
+"./lookup/operator-4.C", line 51: note: built-in operator-=(<pointer to object>, <ptrdiff_t>) does not match because argument #1 does not match parameter
+    (... -= xs);
+         ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 52: error: no operator "*=" matches these operands
+            operand types are: N::A *= N::A
+    (xs *= ...);
+        ^
+"./lookup/operator-4.C", line 52: note: built-in operator*=(<arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (xs *= ...);
+        ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 53: error: no operator "*=" matches these operands
+            operand types are: N::A *= N::A
+    (... *= xs);
+         ^
+"./lookup/operator-4.C", line 53: note: built-in operator*=(<arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (... *= xs);
+         ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 54: error: no operator "/=" matches these operands
+            operand types are: N::A /= N::A
+    (xs /= ...);
+        ^
+"./lookup/operator-4.C", line 54: note: built-in operator/=(<arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (xs /= ...);
+        ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 55: error: no operator "/=" matches these operands
+            operand types are: N::A /= N::A
+    (... /= xs);
+         ^
+"./lookup/operator-4.C", line 55: note: built-in operator/=(<arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (... /= xs);
+         ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 56: error: no operator "%=" matches these operands
+            operand types are: N::A %= N::A
+    (xs %= ...);
+        ^
+"./lookup/operator-4.C", line 56: note: built-in operator%=(<integral>, <promoted integral>) does not match because argument #1 does not match parameter
+    (xs %= ...);
+        ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 57: error: no operator "%=" matches these operands
+            operand types are: N::A %= N::A
+    (... %= xs);
+         ^
+"./lookup/operator-4.C", line 57: note: built-in operator%=(<integral>, <promoted integral>) does not match because argument #1 does not match parameter
+    (... %= xs);
+         ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 58: error: no operator "|=" matches these operands
+            operand types are: N::A |= N::A
+    (xs |= ...);
+        ^
+"./lookup/operator-4.C", line 58: note: built-in operator|=(<integral>, <promoted integral>) does not match because argument #1 does not match parameter
+    (xs |= ...);
+        ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 59: error: no operator "|=" matches these operands
+            operand types are: N::A |= N::A
+    (... |= xs);
+         ^
+"./lookup/operator-4.C", line 59: note: built-in operator|=(<integral>, <promoted integral>) does not match because argument #1 does not match parameter
+    (... |= xs);
+         ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 60: error: no operator "^=" matches these operands
+            operand types are: N::A ^= N::A
+    (xs ^= ...);
+        ^
+"./lookup/operator-4.C", line 60: note: built-in operator^=(<integral>, <promoted integral>) does not match because argument #1 does not match parameter
+    (xs ^= ...);
+        ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 61: error: no operator "^=" matches these operands
+            operand types are: N::A ^= N::A
+    (... ^= xs);
+         ^
+"./lookup/operator-4.C", line 61: note: built-in operator^=(<integral>, <promoted integral>) does not match because argument #1 does not match parameter
+    (... ^= xs);
+         ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 62: error: no operator "<<=" matches these operands
+            operand types are: N::A <<= N::A
+    (xs <<= ...);
+        ^
+"./lookup/operator-4.C", line 62: note: built-in operator<<=(<integral>, <promoted integral>) does not match because argument #1 does not match parameter
+    (xs <<= ...);
+        ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 63: error: no operator "<<=" matches these operands
+            operand types are: N::A <<= N::A
+    (... <<= xs);
+         ^
+"./lookup/operator-4.C", line 63: note: built-in operator<<=(<integral>, <promoted integral>) does not match because argument #1 does not match parameter
+    (... <<= xs);
+         ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 64: error: no operator ">>=" matches these operands
+            operand types are: N::A >>= N::A
+    (xs >>= ...);
+        ^
+"./lookup/operator-4.C", line 64: note: built-in operator>>=(<integral>, <promoted integral>) does not match because argument #1 does not match parameter
+    (xs >>= ...);
+        ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+"./lookup/operator-4.C", line 65: error: no operator ">>=" matches these operands
+            operand types are: N::A >>= N::A
+    (... >>= xs);
+         ^
+"./lookup/operator-4.C", line 65: note: built-in operator>>=(<integral>, <promoted integral>) does not match because argument #1 does not match parameter
+    (... >>= xs);
+         ^
+          detected during instantiation of "void f(Ts...) [with Ts=<N::A, N::A>]" at line 73
+
+56 errors detected in the compilation of "Test_name.c".

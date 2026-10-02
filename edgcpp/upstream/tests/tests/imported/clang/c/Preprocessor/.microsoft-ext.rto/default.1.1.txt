@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --ms_compatibility --c Test_name.c
+"Test_name.c", line 9: warning: this declaration has no storage class or type specifier
+  M(a, b) // CHECK: a + {a, b}
+  ^
+
+"Test_name.c", line 9: error: expected a ";"
+  M(a, b) // CHECK: a + {a, b}
+  ^
+
+"Test_name.c", line 26: warning: parsing restarts here after previous syntax error
+                  AND_2_VALUE_PARAMS(p0, p1));
+                                             ^
+
+"Test_name.c", line 36: warning: the auto specifier is ignored here (invalid in standard C/C++)
+  auto packed = TEST(,);
+  ^
+
+"Test_name.c", line 36: warning: explicit type is missing ("int" assumed)
+  auto packed = TEST(,);
+       ^
+
+"Test_name.c", line 37: warning: the auto specifier is ignored here (invalid in standard C/C++)
+  auto unpacked = WRAPPED_TEST(,);
+  ^
+
+"Test_name.c", line 37: warning: explicit type is missing ("int" assumed)
+  auto unpacked = WRAPPED_TEST(,);
+       ^
+
+"Test_name.c", line 58: warning: too few arguments in invocation of macro "macro"
+  COMMA_ELIDER();
+  ^
+
+"Test_name.c", line 58: error: expected a ")"
+  COMMA_ELIDER();
+  ^
+
+"Test_name.c", line 58: warning: this declaration has no storage class or type specifier
+  COMMA_ELIDER();
+  ^
+
+"Test_name.c", line 58: warning: this declaration has no storage class or type specifier
+  COMMA_ELIDER();
+  ^
+
+"Test_name.c", line 58: warning: identifier-list parameters may only be used in a function definition
+  COMMA_ELIDER();
+  ^
+
+"Test_name.c", line 58: error: declaration is incompatible with "void function(int)" (declared at line 54)
+  COMMA_ELIDER();
+  ^
+
+3 errors detected in the compilation of "Test_name.c".

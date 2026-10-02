@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 20: error: expected an expression
+    return g((BASE_CLASS::BASE_VALUE &)rValue);
+                                      ^
+
+"Test_name.c", line 20: error: expected a ")"
+    return g((BASE_CLASS::BASE_VALUE &)rValue);
+                                       ^
+
+"Test_name.c", line 65: error: nontype "wt::scatterer_type" is not a type name
+          .def(init<site_symmetry_ops const &, wt::scatterer_type *>());
+                                               ^
+
+3 errors detected in the compilation of "Test_name.c".

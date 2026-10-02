@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 10: error: invalid specifier for structured binding declaration
+  [][[h]]l
+  ^
+
+"Test_name.c", line 10: error: missing initializer
+  [][[h]]l
+    ^
+
+"Test_name.c", line 10: error: this declaration has no storage class or type specifier
+  [][[h]]l
+  ^
+
+"Test_name.c", line 10: error: expected a ";"
+  [][[h]]l
+    ^
+
+4 errors detected in the compilation of "Test_name.c".

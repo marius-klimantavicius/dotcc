@@ -1,0 +1,86 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 12: error: storage class must be auto or register
+    for (typedef int T;;)
+         ^
+
+"Test_name.c", line 12: warning: variable "T" was declared but never referenced
+    for (typedef int T;;)
+                     ^
+
+"Test_name.c", line 15: warning: statement is unreachable
+    T *x; /* { dg-error "undeclared" } */
+    ^
+
+"Test_name.c", line 15: error: identifier "x" is undefined
+    T *x; /* { dg-error "undeclared" } */
+       ^
+
+"Test_name.c", line 21: error: storage class must be auto or register
+    for (typedef int T;;)
+         ^
+
+"Test_name.c", line 21: warning: variable "T" was set but never used
+    for (typedef int T;;)
+                     ^
+
+"Test_name.c", line 24: warning: statement is unreachable
+    T *x; /* { dg-error "undeclared" } */
+    ^
+
+"Test_name.c", line 24: error: identifier "x" is undefined
+    T *x; /* { dg-error "undeclared" } */
+       ^
+
+"Test_name.c", line 30: error: storage class must be auto or register
+    for (typedef int T;;)
+         ^
+
+"Test_name.c", line 30: warning: variable "T" was declared but never referenced
+    for (typedef int T;;)
+                     ^
+
+"Test_name.c", line 34: warning: statement is unreachable
+    T *x; /* { dg-error "undeclared" } */
+    ^
+
+"Test_name.c", line 34: error: identifier "x" is undefined
+    T *x; /* { dg-error "undeclared" } */
+       ^
+
+"Test_name.c", line 40: error: storage class must be auto or register
+    for (typedef int T;;)
+         ^
+
+"Test_name.c", line 40: warning: variable "T" was declared but never referenced
+    for (typedef int T;;)
+                     ^
+
+"Test_name.c", line 44: warning: statement is unreachable
+    T *x; /* { dg-error "undeclared" } */
+    ^
+
+"Test_name.c", line 44: error: identifier "x" is undefined
+    T *x; /* { dg-error "undeclared" } */
+       ^
+
+"Test_name.c", line 42: warning: label "L" was declared but never referenced
+  L:
+  ^
+
+"Test_name.c", line 50: error: storage class must be auto or register
+    for (typedef int T;;)
+         ^
+
+"Test_name.c", line 50: warning: variable "T" was declared but never referenced
+    for (typedef int T;;)
+                     ^
+
+"Test_name.c", line 55: warning: statement is unreachable
+    T *x; /* { dg-error "undeclared" } */
+    ^
+
+"Test_name.c", line 55: error: identifier "x" is undefined
+    T *x; /* { dg-error "undeclared" } */
+       ^
+
+10 errors detected in the compilation of "Test_name.c".

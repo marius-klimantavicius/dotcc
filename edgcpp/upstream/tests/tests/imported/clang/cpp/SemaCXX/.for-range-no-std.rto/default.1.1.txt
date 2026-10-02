@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --c++03 Test_name.c
+"Test_name.c", line 35: warning: a range-based "for" statement is nonstandard in this mode
+    for (auto b : S()) {} // ok
+         ^
+
+"Test_name.c", line 35: warning: "auto" as a type specifier is nonstandard in this mode
+    for (auto b : S()) {} // ok
+         ^
+
+"Test_name.c", line 36: warning: a range-based "for" statement is nonstandard in this mode
+    for (auto b : T()) {} // expected-error {{invalid range expression of type 'T'}}
+         ^
+
+"Test_name.c", line 36: warning: "auto" as a type specifier is nonstandard in this mode
+    for (auto b : T()) {} // expected-error {{invalid range expression of type 'T'}}
+         ^
+
+"Test_name.c", line 36: error: this range-based "for" statement requires a suitable "begin" function and none was found
+    for (auto b : T()) {} // expected-error {{invalid range expression of type 'T'}}
+                  ^
+
+"Test_name.c", line 36: error: this range-based "for" statement requires a suitable "end" function and none was found
+    for (auto b : T()) {} // expected-error {{invalid range expression of type 'T'}}
+                  ^
+
+"Test_name.c", line 37: warning: a range-based "for" statement is nonstandard in this mode
+    for (auto b : a) {} // ok
+         ^
+
+"Test_name.c", line 37: warning: "auto" as a type specifier is nonstandard in this mode
+    for (auto b : a) {} // ok
+         ^
+
+"Test_name.c", line 38: warning: a range-based "for" statement is nonstandard in this mode
+    for (int b : NS::ADL()) {} // ok
+         ^
+
+"Test_name.c", line 39: warning: a range-based "for" statement is nonstandard in this mode
+    for (int b : NS::NoADL()) {} // expected-error {{invalid range expression of type 'NS::NoADL'}}
+         ^
+
+"Test_name.c", line 39: error: this range-based "for" statement requires a suitable "begin" function and none was found
+    for (int b : NS::NoADL()) {} // expected-error {{invalid range expression of type 'NS::NoADL'}}
+                 ^
+
+"Test_name.c", line 39: error: this range-based "for" statement requires a suitable "end" function and none was found
+    for (int b : NS::NoADL()) {} // expected-error {{invalid range expression of type 'NS::NoADL'}}
+                 ^
+
+"Test_name.c", line 44: warning: a range-based "for" statement is nonstandard in this mode
+    for (void (*i)() : vv) i();
+         ^
+
+4 errors detected in the compilation of "Test_name.c".

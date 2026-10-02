@@ -1,0 +1,13 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./torture/pr98640.c", line 6: warning: integer conversion resulted in truncation
+  uint64_t var_0 = 18128133247277979402ULL;
+                   ^
+
+"./torture/pr98640.c", line 7: warning: integer conversion resulted in truncation
+  int64_t var_14 = 6557021550272328915LL;
+                   ^
+
+"./torture/pr98640.c", line 8: warning: integer conversion resulted in truncation
+  uint64_t var_83 = 10966786425750692026ULL;
+                    ^
+

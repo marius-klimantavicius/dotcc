@@ -1,0 +1,332 @@
+fe_only -DTEST_NUMBER=3 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c99 Test_name.c
+"Test_name.c", line 9: error: expected a type specifier
+  _Static_assert("foo", "string is nonzero"); // ext-warning {{'_Static_assert' is a C11 extension}}
+                 ^
+
+"Test_name.c", line 9: error: expected a type specifier
+  _Static_assert("foo", "string is nonzero"); // ext-warning {{'_Static_assert' is a C11 extension}}
+                        ^
+
+"Test_name.c", line 9: warning: this declaration has no storage class or type specifier
+  _Static_assert("foo", "string is nonzero"); // ext-warning {{'_Static_assert' is a C11 extension}}
+  ^
+
+"Test_name.c", line 14: error: expected a type specifier
+  _Static_assert(1, "1 is nonzero"); // ext-warning {{'_Static_assert' is a C11 extension}}
+                 ^
+
+"Test_name.c", line 14: error: expected a type specifier
+  _Static_assert(1, "1 is nonzero"); // ext-warning {{'_Static_assert' is a C11 extension}}
+                    ^
+
+"Test_name.c", line 14: warning: this declaration has no storage class or type specifier
+  _Static_assert(1, "1 is nonzero"); // ext-warning {{'_Static_assert' is a C11 extension}}
+  ^
+
+"Test_name.c", line 15: error: expected a type specifier
+  _Static_assert(0, "0 is nonzero"); // expected-error {{static assertion failed: 0 is nonzero}} \
+                 ^
+
+"Test_name.c", line 15: error: expected a type specifier
+  _Static_assert(0, "0 is nonzero"); // expected-error {{static assertion failed: 0 is nonzero}} \
+                    ^
+
+"Test_name.c", line 15: warning: this declaration has no storage class or type specifier
+  _Static_assert(0, "0 is nonzero"); // expected-error {{static assertion failed: 0 is nonzero}} \
+  ^
+
+"Test_name.c", line 31: error: expected a type specifier
+  _Static_assert(1, invalid); // ext-warning {{'_Static_assert' is a C11 extension}}
+                 ^
+
+"Test_name.c", line 31: error: identifier "invalid" is undefined
+  _Static_assert(1, invalid); // ext-warning {{'_Static_assert' is a C11 extension}}
+                    ^
+
+"Test_name.c", line 31: warning: this declaration has no storage class or type specifier
+  _Static_assert(1, invalid); // ext-warning {{'_Static_assert' is a C11 extension}}
+  ^
+
+"Test_name.c", line 40: error: expected a type specifier
+    _Static_assert(1, "1 is nonzero"); // ext-warning {{'_Static_assert' is a C11 extension}}
+                   ^
+
+"Test_name.c", line 40: error: expected a type specifier
+    _Static_assert(1, "1 is nonzero"); // ext-warning {{'_Static_assert' is a C11 extension}}
+                      ^
+
+"Test_name.c", line 40: warning: this declaration has no storage class or type specifier
+    _Static_assert(1, "1 is nonzero"); // ext-warning {{'_Static_assert' is a C11 extension}}
+    ^
+
+"Test_name.c", line 40: error: a function type is not allowed here
+    _Static_assert(1, "1 is nonzero"); // ext-warning {{'_Static_assert' is a C11 extension}}
+    ^
+
+"Test_name.c", line 41: error: expected a type specifier
+    _Static_assert(0, "0 is nonzero"); // expected-error {{static assertion failed: 0 is nonzero}} \
+                   ^
+
+"Test_name.c", line 41: error: expected a type specifier
+    _Static_assert(0, "0 is nonzero"); // expected-error {{static assertion failed: 0 is nonzero}} \
+                      ^
+
+"Test_name.c", line 41: warning: this declaration has no storage class or type specifier
+    _Static_assert(0, "0 is nonzero"); // expected-error {{static assertion failed: 0 is nonzero}} \
+    ^
+
+"Test_name.c", line 41: error: a function type is not allowed here
+    _Static_assert(0, "0 is nonzero"); // expected-error {{static assertion failed: 0 is nonzero}} \
+    ^
+
+"Test_name.c", line 41: error: "_Static_assert" has already been declared in the current scope
+    _Static_assert(0, "0 is nonzero"); // expected-error {{static assertion failed: 0 is nonzero}} \
+    ^
+
+"Test_name.c", line 62: error: expected a type specifier
+  typedef UNION(unsigned, struct A) U1; // ext-warning 3 {{'_Static_assert' is a C11 extension}}
+          ^
+
+"Test_name.c", line 62: error: expected a type specifier
+  typedef UNION(unsigned, struct A) U1; // ext-warning 3 {{'_Static_assert' is a C11 extension}}
+          ^
+
+"Test_name.c", line 62: warning: this declaration has no storage class or type specifier
+  typedef UNION(unsigned, struct A) U1; // ext-warning 3 {{'_Static_assert' is a C11 extension}}
+          ^
+
+"Test_name.c", line 62: error: a function type is not allowed here
+  typedef UNION(unsigned, struct A) U1; // ext-warning 3 {{'_Static_assert' is a C11 extension}}
+          ^
+
+"Test_name.c", line 62: error: expected a type specifier
+  typedef UNION(unsigned, struct A) U1; // ext-warning 3 {{'_Static_assert' is a C11 extension}}
+          ^
+
+"Test_name.c", line 62: error: expected a type specifier
+  typedef UNION(unsigned, struct A) U1; // ext-warning 3 {{'_Static_assert' is a C11 extension}}
+          ^
+
+"Test_name.c", line 62: warning: this declaration has no storage class or type specifier
+  typedef UNION(unsigned, struct A) U1; // ext-warning 3 {{'_Static_assert' is a C11 extension}}
+          ^
+
+"Test_name.c", line 62: error: a function type is not allowed here
+  typedef UNION(unsigned, struct A) U1; // ext-warning 3 {{'_Static_assert' is a C11 extension}}
+          ^
+
+"Test_name.c", line 62: error: "_Static_assert" has already been declared in the current scope
+  typedef UNION(unsigned, struct A) U1; // ext-warning 3 {{'_Static_assert' is a C11 extension}}
+          ^
+
+"Test_name.c", line 62: error: expected a type specifier
+  typedef UNION(unsigned, struct A) U1; // ext-warning 3 {{'_Static_assert' is a C11 extension}}
+          ^
+
+"Test_name.c", line 62: error: expected a type specifier
+  typedef UNION(unsigned, struct A) U1; // ext-warning 3 {{'_Static_assert' is a C11 extension}}
+          ^
+
+"Test_name.c", line 62: warning: this declaration has no storage class or type specifier
+  typedef UNION(unsigned, struct A) U1; // ext-warning 3 {{'_Static_assert' is a C11 extension}}
+          ^
+
+"Test_name.c", line 62: error: a function type is not allowed here
+  typedef UNION(unsigned, struct A) U1; // ext-warning 3 {{'_Static_assert' is a C11 extension}}
+          ^
+
+"Test_name.c", line 62: error: "_Static_assert" has already been declared in the current scope
+  typedef UNION(unsigned, struct A) U1; // ext-warning 3 {{'_Static_assert' is a C11 extension}}
+          ^
+
+"Test_name.c", line 63: error: expected a type specifier
+  UNION(char[2], short) u2 = { .one = { 'a', 'b' } }; // ext-warning 3 {{'_Static_assert' is a C11 extension}} cxx-warning {{designated initializers are a C++20 extension}}
+  ^
+
+"Test_name.c", line 63: error: expected a type specifier
+  UNION(char[2], short) u2 = { .one = { 'a', 'b' } }; // ext-warning 3 {{'_Static_assert' is a C11 extension}} cxx-warning {{designated initializers are a C++20 extension}}
+  ^
+
+"Test_name.c", line 63: warning: this declaration has no storage class or type specifier
+  UNION(char[2], short) u2 = { .one = { 'a', 'b' } }; // ext-warning 3 {{'_Static_assert' is a C11 extension}} cxx-warning {{designated initializers are a C++20 extension}}
+  ^
+
+"Test_name.c", line 63: error: a function type is not allowed here
+  UNION(char[2], short) u2 = { .one = { 'a', 'b' } }; // ext-warning 3 {{'_Static_assert' is a C11 extension}} cxx-warning {{designated initializers are a C++20 extension}}
+  ^
+
+"Test_name.c", line 63: error: expected a type specifier
+  UNION(char[2], short) u2 = { .one = { 'a', 'b' } }; // ext-warning 3 {{'_Static_assert' is a C11 extension}} cxx-warning {{designated initializers are a C++20 extension}}
+  ^
+
+"Test_name.c", line 63: error: expected a type specifier
+  UNION(char[2], short) u2 = { .one = { 'a', 'b' } }; // ext-warning 3 {{'_Static_assert' is a C11 extension}} cxx-warning {{designated initializers are a C++20 extension}}
+  ^
+
+"Test_name.c", line 63: warning: this declaration has no storage class or type specifier
+  UNION(char[2], short) u2 = { .one = { 'a', 'b' } }; // ext-warning 3 {{'_Static_assert' is a C11 extension}} cxx-warning {{designated initializers are a C++20 extension}}
+  ^
+
+"Test_name.c", line 63: error: a function type is not allowed here
+  UNION(char[2], short) u2 = { .one = { 'a', 'b' } }; // ext-warning 3 {{'_Static_assert' is a C11 extension}} cxx-warning {{designated initializers are a C++20 extension}}
+  ^
+
+"Test_name.c", line 63: error: "_Static_assert" has already been declared in the current scope
+  UNION(char[2], short) u2 = { .one = { 'a', 'b' } }; // ext-warning 3 {{'_Static_assert' is a C11 extension}} cxx-warning {{designated initializers are a C++20 extension}}
+  ^
+
+"Test_name.c", line 63: error: expected a type specifier
+  UNION(char[2], short) u2 = { .one = { 'a', 'b' } }; // ext-warning 3 {{'_Static_assert' is a C11 extension}} cxx-warning {{designated initializers are a C++20 extension}}
+  ^
+
+"Test_name.c", line 63: error: expected a type specifier
+  UNION(char[2], short) u2 = { .one = { 'a', 'b' } }; // ext-warning 3 {{'_Static_assert' is a C11 extension}} cxx-warning {{designated initializers are a C++20 extension}}
+  ^
+
+"Test_name.c", line 63: warning: this declaration has no storage class or type specifier
+  UNION(char[2], short) u2 = { .one = { 'a', 'b' } }; // ext-warning 3 {{'_Static_assert' is a C11 extension}} cxx-warning {{designated initializers are a C++20 extension}}
+  ^
+
+"Test_name.c", line 63: error: a function type is not allowed here
+  UNION(char[2], short) u2 = { .one = { 'a', 'b' } }; // ext-warning 3 {{'_Static_assert' is a C11 extension}} cxx-warning {{designated initializers are a C++20 extension}}
+  ^
+
+"Test_name.c", line 63: error: "_Static_assert" has already been declared in the current scope
+  UNION(char[2], short) u2 = { .one = { 'a', 'b' } }; // ext-warning 3 {{'_Static_assert' is a C11 extension}} cxx-warning {{designated initializers are a C++20 extension}}
+  ^
+
+"Test_name.c", line 64: error: expected a type specifier
+  typedef UNION(char, short) U3; // expected-error {{static assertion failed due to requirement 'sizeof(char) == sizeof(short)': type size mismatch}} \
+          ^
+
+"Test_name.c", line 64: error: expected a type specifier
+  typedef UNION(char, short) U3; // expected-error {{static assertion failed due to requirement 'sizeof(char) == sizeof(short)': type size mismatch}} \
+          ^
+
+"Test_name.c", line 64: warning: this declaration has no storage class or type specifier
+  typedef UNION(char, short) U3; // expected-error {{static assertion failed due to requirement 'sizeof(char) == sizeof(short)': type size mismatch}} \
+          ^
+
+"Test_name.c", line 64: error: a function type is not allowed here
+  typedef UNION(char, short) U3; // expected-error {{static assertion failed due to requirement 'sizeof(char) == sizeof(short)': type size mismatch}} \
+          ^
+
+"Test_name.c", line 64: error: expected a type specifier
+  typedef UNION(char, short) U3; // expected-error {{static assertion failed due to requirement 'sizeof(char) == sizeof(short)': type size mismatch}} \
+          ^
+
+"Test_name.c", line 64: error: expected a type specifier
+  typedef UNION(char, short) U3; // expected-error {{static assertion failed due to requirement 'sizeof(char) == sizeof(short)': type size mismatch}} \
+          ^
+
+"Test_name.c", line 64: warning: this declaration has no storage class or type specifier
+  typedef UNION(char, short) U3; // expected-error {{static assertion failed due to requirement 'sizeof(char) == sizeof(short)': type size mismatch}} \
+          ^
+
+"Test_name.c", line 64: error: a function type is not allowed here
+  typedef UNION(char, short) U3; // expected-error {{static assertion failed due to requirement 'sizeof(char) == sizeof(short)': type size mismatch}} \
+          ^
+
+"Test_name.c", line 64: error: "_Static_assert" has already been declared in the current scope
+  typedef UNION(char, short) U3; // expected-error {{static assertion failed due to requirement 'sizeof(char) == sizeof(short)': type size mismatch}} \
+          ^
+
+"Test_name.c", line 64: error: expected a type specifier
+  typedef UNION(char, short) U3; // expected-error {{static assertion failed due to requirement 'sizeof(char) == sizeof(short)': type size mismatch}} \
+          ^
+
+"Test_name.c", line 64: error: expected a type specifier
+  typedef UNION(char, short) U3; // expected-error {{static assertion failed due to requirement 'sizeof(char) == sizeof(short)': type size mismatch}} \
+          ^
+
+"Test_name.c", line 64: warning: this declaration has no storage class or type specifier
+  typedef UNION(char, short) U3; // expected-error {{static assertion failed due to requirement 'sizeof(char) == sizeof(short)': type size mismatch}} \
+          ^
+
+"Test_name.c", line 64: error: a function type is not allowed here
+  typedef UNION(char, short) U3; // expected-error {{static assertion failed due to requirement 'sizeof(char) == sizeof(short)': type size mismatch}} \
+          ^
+
+"Test_name.c", line 64: error: "_Static_assert" has already been declared in the current scope
+  typedef UNION(char, short) U3; // expected-error {{static assertion failed due to requirement 'sizeof(char) == sizeof(short)': type size mismatch}} \
+          ^
+
+"Test_name.c", line 67: error: expected a type specifier
+  typedef UNION(float, 0.5f) U4; // expected-error {{expected a type}} \
+          ^
+
+"Test_name.c", line 67: error: expected a type specifier
+  typedef UNION(float, 0.5f) U4; // expected-error {{expected a type}} \
+          ^
+
+"Test_name.c", line 67: warning: this declaration has no storage class or type specifier
+  typedef UNION(float, 0.5f) U4; // expected-error {{expected a type}} \
+          ^
+
+"Test_name.c", line 67: error: a function type is not allowed here
+  typedef UNION(float, 0.5f) U4; // expected-error {{expected a type}} \
+          ^
+
+"Test_name.c", line 67: error: expected a type specifier
+  typedef UNION(float, 0.5f) U4; // expected-error {{expected a type}} \
+          ^
+
+"Test_name.c", line 67: error: expected a type specifier
+  typedef UNION(float, 0.5f) U4; // expected-error {{expected a type}} \
+          ^
+
+"Test_name.c", line 67: warning: this declaration has no storage class or type specifier
+  typedef UNION(float, 0.5f) U4; // expected-error {{expected a type}} \
+          ^
+
+"Test_name.c", line 67: error: a function type is not allowed here
+  typedef UNION(float, 0.5f) U4; // expected-error {{expected a type}} \
+          ^
+
+"Test_name.c", line 67: error: "_Static_assert" has already been declared in the current scope
+  typedef UNION(float, 0.5f) U4; // expected-error {{expected a type}} \
+          ^
+
+"Test_name.c", line 67: error: expected a type specifier
+  typedef UNION(float, 0.5f) U4; // expected-error {{expected a type}} \
+          ^
+
+"Test_name.c", line 67: error: expected a type specifier
+  typedef UNION(float, 0.5f) U4; // expected-error {{expected a type}} \
+          ^
+
+"Test_name.c", line 67: warning: this declaration has no storage class or type specifier
+  typedef UNION(float, 0.5f) U4; // expected-error {{expected a type}} \
+          ^
+
+"Test_name.c", line 67: error: a function type is not allowed here
+  typedef UNION(float, 0.5f) U4; // expected-error {{expected a type}} \
+          ^
+
+"Test_name.c", line 67: error: "_Static_assert" has already been declared in the current scope
+  typedef UNION(float, 0.5f) U4; // expected-error {{expected a type}} \
+          ^
+
+"Test_name.c", line 93: error: expected a type specifier
+  _Static_assert(1 , "") // expected-error {{expected ';' after '_Static_assert'}} \
+                 ^
+
+"Test_name.c", line 93: error: expected a type specifier
+  _Static_assert(1 , "") // expected-error {{expected ';' after '_Static_assert'}} \
+                     ^
+
+"Test_name.c", line 93: warning: explicit type is missing ("int" assumed)
+  _Static_assert(1 , "") // expected-error {{expected ';' after '_Static_assert'}} \
+  ^
+
+"Test_name.c", line 93: warning: unnamed prototyped parameters not allowed when body is present
+  _Static_assert(1 , "") // expected-error {{expected ';' after '_Static_assert'}} \
+  ^
+
+"Test_name.c", line 96: error: expected a "{"
+  static int static_var;
+  ^
+
+At end of source: error: expected a "}"
+
+63 errors detected in the compilation of "Test_name.c".

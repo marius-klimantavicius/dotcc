@@ -1,0 +1,88 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 88: error: no operator "+=" matches these operands
+            operand types are: A += A
+    na += a; // expected-error{{no viable overloaded '+='}}
+       ^
+"Test_name.c", line 88: note: built-in operator+=(<arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    na += a; // expected-error{{no viable overloaded '+='}}
+       ^
+"Test_name.c", line 88: note: built-in operator+=(<pointer to object>, <ptrdiff_t>) does not match because argument #1 does not match parameter
+    na += a; // expected-error{{no viable overloaded '+='}}
+       ^
+
+"Test_name.c", line 91: error: no operator "=" matches these operands
+            operand types are: B = const B
+    nb = constB;  // expected-error{{no viable overloaded '='}}
+       ^
+"Test_name.c", line 26: note: function "B::operator=" does not match because argument #1 does not match parameter
+    B& operator=(B&);  // expected-note 4 {{candidate function}}
+       ^
+
+"Test_name.c", line 92: error: no operator "=" matches these operands
+            operand types are: B = ConvertibleToB
+    nb = convertibleToB; // expected-error{{no viable overloaded '='}}
+       ^
+"Test_name.c", line 26: note: function "B::operator=" does not match because argument #1 does not match parameter
+    B& operator=(B&);  // expected-note 4 {{candidate function}}
+       ^
+
+"Test_name.c", line 94: error: no operator "=" matches these operands
+            operand types are: B = ConvertibleToConstB
+    nb = convertibleToConstB; // expected-error{{no viable overloaded '='}}
+       ^
+"Test_name.c", line 26: note: function "B::operator=" does not match because argument #1 does not match parameter
+    B& operator=(B&);  // expected-note 4 {{candidate function}}
+       ^
+
+"Test_name.c", line 95: error: no operator "=" matches these operands
+            operand types are: B = ConvertibleToConstBref
+    nb = convertibleToConstBref; // expected-error{{no viable overloaded '='}}
+       ^
+"Test_name.c", line 26: note: function "B::operator=" does not match because argument #1 does not match parameter
+    B& operator=(B&);  // expected-note 4 {{candidate function}}
+       ^
+
+"Test_name.c", line 101: error: more than one operator "=" matches these operands:
+            function "C::operator=(int)" (declared at line 46)
+            function "C::operator=(long)" (declared at line 47)
+            operand types are: C = double
+    nc = 1.0; // expected-error{{use of overloaded operator '=' is ambiguous}}
+       ^
+"Test_name.c", line 45: note: function "C::operator=(const C &)" does not match because argument #1 does not match parameter
+  struct C {
+         ^
+
+"Test_name.c", line 104: error: more than one operator "+=" matches these operands:
+            function "C::operator+=(int)" (declared at line 48)
+            function "C::operator+=(long)" (declared at line 49)
+            operand types are: C += double
+    nc += 1.0; // expected-error{{use of overloaded operator '+=' is ambiguous}}
+       ^
+"Test_name.c", line 104: note: built-in operator+=(<arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    nc += 1.0; // expected-error{{use of overloaded operator '+=' is ambiguous}}
+       ^
+"Test_name.c", line 104: note: built-in operator+=(<pointer to object>, <ptrdiff_t>) does not match because argument #1 does not match parameter
+    nc += 1.0; // expected-error{{use of overloaded operator '+=' is ambiguous}}
+       ^
+
+"Test_name.c", line 112: error: no suitable conversion function from "A" to "int" exists
+    i = a; // expected-error{{assigning to 'int' from incompatible type 'A'}}
+        ^
+
+"Test_name.c", line 110: warning: variable "i" was set but never used
+    int i;
+        ^
+
+"Test_name.c", line 117: error: not a class or struct name
+    template<typename T> class A : public unknown::X { // expected-error {{undeclared identifier 'unknown'}} expected-error {{expected class name}}
+                                          ^
+
+"Test_name.c", line 117: error: class or struct definition is missing
+    template<typename T> class A : public unknown::X { // expected-error {{undeclared identifier 'unknown'}} expected-error {{expected class name}}
+                                                 ^
+
+"Test_name.c", line 120: warning: parsing restarts here after previous syntax error
+    };
+     ^
+
+10 errors detected in the compilation of "Test_name.c".

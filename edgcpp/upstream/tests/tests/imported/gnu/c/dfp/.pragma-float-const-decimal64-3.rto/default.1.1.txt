@@ -1,0 +1,58 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 23: warning: unrecognized STDC pragma
+  #pragma STDC FLOAT_CONST_DECIMAL64 ON
+               ^
+
+"Test_name.c", line 24: error: extra text after expected end of number
+    a = 1.0dd + 2.0;
+           ^
+
+"Test_name.c", line 30: warning: unrecognized STDC pragma
+  #pragma STDC FLOAT_CONST_DECIMAL64 OFF
+               ^
+
+"Test_name.c", line 31: error: extra text after expected end of number
+    a = 2.0d + 3.0;
+           ^
+
+"Test_name.c", line 37: warning: unrecognized STDC pragma
+  #pragma STDC FLOAT_CONST_DECIMAL64 DEFAULT
+               ^
+
+"Test_name.c", line 38: error: extra text after expected end of number
+    a = 3.0d + 4.0;
+           ^
+
+"Test_name.c", line 50: warning: unrecognized STDC pragma
+    DEFAULT_FLOAT_IS_DECIMAL
+    ^
+
+"Test_name.c", line 51: error: extra text after expected end of number
+    a = 5.0 * 6.0dd;
+                 ^
+
+"Test_name.c", line 57: warning: unrecognized STDC pragma
+    DEFAULT_FLOAT_IS_BINARY
+    ^
+
+"Test_name.c", line 58: error: extra text after expected end of number
+    a = 6.0 * 7.0d;
+                 ^
+
+"Test_name.c", line 76: warning: unrecognized STDC pragma
+    FLOAT_CONST_DECIMAL64(SWITCH)
+    ^
+
+"Test_name.c", line 77: error: extra text after expected end of number
+    a = 1.0 * 7.0dd;
+                 ^
+
+"Test_name.c", line 83: warning: unrecognized STDC pragma
+    FLOAT_CONST_DECIMAL64(OFF)
+    ^
+
+"Test_name.c", line 84: error: extra text after expected end of number
+    a = 1.0 + 2.0d;
+                 ^
+
+7 errors detected in the compilation of "Test_name.c".

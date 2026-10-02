@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 12: error: namespace "outer" has no member "inner_ms"
+  using namespace outer::inner_ms; // { dg-error "'inner_ms' is not a namespace-name; did you mean 'inner_ns'" }
+                         ^
+
+"Test_name.c", line 19: error: namespace "outer" has no member "some_typedfe"
+  outer::some_typedfe var; // { dg-error "'some_typedfe' in namespace 'outer' does not name a type; did you mean 'some_typedef'" }
+         ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 8: error: expected a "]"
+  void bar (void) { sizeof (int [0 ? foo () : 1); }	/* { dg-error "expected" } */
+                                               ^
+
+"Test_name.c", line 8: warning: expression has no effect
+  void bar (void) { sizeof (int [0 ? foo () : 1); }	/* { dg-error "expected" } */
+                    ^
+
+"Test_name.c", line 10: warning: expression has no effect
+  void qux (void) { sizeof (sizeof (int[baz ()])); }
+                    ^
+
+"Test_name.c", line 7: warning: static function "foo" treated as extern because it was referenced but not defined
+  static int foo (void);
+             ^
+
+1 error detected in the compilation of "Test_name.c".

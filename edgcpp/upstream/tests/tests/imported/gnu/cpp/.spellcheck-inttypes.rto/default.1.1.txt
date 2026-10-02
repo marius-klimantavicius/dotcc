@@ -1,0 +1,106 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./spellcheck-inttypes.C", line 19: error: identifier "PRIx8" is undefined
+  const char *hex8_fmt = PRIx8;
+                         ^
+
+"./spellcheck-inttypes.C", line 21: error: identifier "PRIx16" is undefined
+  const char *hex16_fmt = PRIx16;
+                          ^
+
+"./spellcheck-inttypes.C", line 23: error: identifier "PRIx32" is undefined
+  const char *hex32_fmt = PRIx32;
+                          ^
+
+"./spellcheck-inttypes.C", line 25: error: identifier "PRIx64" is undefined
+  const char *hex64_fmt = PRIx64;
+                          ^
+
+"./spellcheck-inttypes.C", line 27: error: identifier "PRIxPTR" is undefined
+  const char *hexptr_fmt = PRIxPTR;
+                           ^
+
+"./spellcheck-inttypes.C", line 31: error: expected a ";"
+  const char *dec8msg_fmt = "Provide %" PRId8 "\n";
+                                        ^
+
+"./spellcheck-inttypes.C", line 33: error: expected a ";"
+  const char *dec16msg_fmt = "Provide %" PRId16 "\n";
+                                         ^
+
+"./spellcheck-inttypes.C", line 35: error: expected a ";"
+  const char *dec32msg_fmt = "Provide %" PRId32 "\n";
+                                         ^
+
+"./spellcheck-inttypes.C", line 37: error: expected a ";"
+  const char *dec64msg_fmt = "Provide %" PRId64 "\n";
+                                         ^
+
+"./spellcheck-inttypes.C", line 39: error: expected a ";"
+  const char *decptrmsg_fmt = "Provide %" PRIdPTR "\n";
+                                          ^
+
+"./spellcheck-inttypes.C", line 45: error: identifier "PRId8" is undefined
+     PRId8,
+     ^
+
+"./spellcheck-inttypes.C", line 47: error: identifier "PRIi16" is undefined
+     PRIi16,
+     ^
+
+"./spellcheck-inttypes.C", line 49: error: identifier "PRIo32" is undefined
+     PRIo32,
+     ^
+
+"./spellcheck-inttypes.C", line 51: error: identifier "PRIu64" is undefined
+     PRIu64,
+     ^
+
+"./spellcheck-inttypes.C", line 55: error: identifier "PRIoPTR" is undefined
+     PRIoPTR);
+     ^
+
+"./spellcheck-inttypes.C", line 58: error: expected a ")"
+    printf ("%" PRIo8 "\n", i8);
+                ^
+
+"./spellcheck-inttypes.C", line 60: error: expected a ")"
+    printf ("%" PRIo16 "\n", i16);
+                ^
+
+"./spellcheck-inttypes.C", line 62: error: expected a ")"
+    printf ("%" PRIo32 "\n", i32);
+                ^
+
+"./spellcheck-inttypes.C", line 64: error: expected a ")"
+    printf ("%" PRIo64 "\n", i64);
+                ^
+
+"./spellcheck-inttypes.C", line 66: error: expected a ")"
+    printf ("%" PRIoPTR "\n", ip);
+                ^
+
+"./spellcheck-inttypes.C", line 72: error: expected a ")"
+    scanf ("%" SCNu8 "\n", &i8);
+               ^
+
+"./spellcheck-inttypes.C", line 74: error: expected a ")"
+    scanf ("%" SCNu16 "\n", &i16);
+               ^
+
+"./spellcheck-inttypes.C", line 76: error: expected a ")"
+    scanf ("%" SCNu32 "\n", &i32);
+               ^
+
+"./spellcheck-inttypes.C", line 78: error: expected a ")"
+    scanf ("%" SCNu64 "\n", &i64);
+               ^
+
+"./spellcheck-inttypes.C", line 80: error: expected a ")"
+    scanf ("%" SCNuPTR "\n", &ip);
+               ^
+
+"./spellcheck-inttypes.C", line 82: error: expected a ")"
+    scanf ("%" SCNxPTR "\n", &up);
+               ^
+
+26 errors detected in the compilation of "Test_name.c".

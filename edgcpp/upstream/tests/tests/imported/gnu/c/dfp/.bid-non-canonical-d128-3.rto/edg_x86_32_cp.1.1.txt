@@ -1,0 +1,30 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 --strict_gnu Test_name.c
+"./dfp/bid-non-canonical-d128-1.c", line 11: error: identifier "_Decimal128" is undefined
+    _Decimal128 d128;
+    ^
+
+"./dfp/bid-non-canonical-d128-1.c", line 12: error: expected a ";"
+    unsigned __int128 u128;
+                      ^
+
+"./dfp/bid-non-canonical-d128-1.c", line 21: error: expected a ";"
+    unsigned __int128 i = (((unsigned __int128) 0x378d8e6400000001ULL) | (((unsigned __int128) 0x3041ed09bead87c0ULL) << 64));
+                      ^
+
+"./dfp/bid-non-canonical-d128-1.c", line 23: error: identifier "_Decimal128" is undefined
+    _Decimal128 d128;
+    ^
+
+"./dfp/bid-non-canonical-d128-1.c", line 24: error: union "u" has no field "u128"
+    x.u128 = i;
+      ^
+
+"./dfp/bid-non-canonical-d128-1.c", line 24: error: identifier "i" is undefined
+    x.u128 = i;
+             ^
+
+"./dfp/bid-non-canonical-d128-1.c", line 21: warning: variable "__int128" was declared but never referenced
+    unsigned __int128 i = (((unsigned __int128) 0x378d8e6400000001ULL) | (((unsigned __int128) 0x3041ed09bead87c0ULL) << 64));
+             ^
+
+6 errors detected in the compilation of "Test_name.c".

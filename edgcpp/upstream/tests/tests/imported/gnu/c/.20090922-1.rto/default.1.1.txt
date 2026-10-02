@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 42: warning: variable "j" is used before its value is set
+  	for (int j; j < v->v1;)
+  	            ^
+

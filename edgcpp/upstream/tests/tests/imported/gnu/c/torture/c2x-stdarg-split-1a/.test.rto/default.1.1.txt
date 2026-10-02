@@ -1,0 +1,9 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c c2x-stdarg-split-1b.c
+Test_name.c:
+c2x-stdarg-split-1b.c:
+"c2x-stdarg-split-1b.c", line 7: catastrophic error: cannot open source file "stdarg.h"
+  #include <stdarg.h>
+                     ^
+
+1 catastrophic error detected in the compilation of "c2x-stdarg-split-1b.c".
+Compilation terminated.

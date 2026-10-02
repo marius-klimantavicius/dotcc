@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 9: error: incomplete type "PR6948::X<char>" is not allowed
+      X<char> str (read_from_file()); // expected-error{{use of undeclared identifier 'read_from_file'}} \
+              ^
+
+"Test_name.c", line 9: error: identifier "read_from_file" is undefined
+      X<char> str (read_from_file()); // expected-error{{use of undeclared identifier 'read_from_file'}} \
+                   ^
+
+2 errors detected in the compilation of "Test_name.c".

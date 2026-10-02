@@ -1,0 +1,294 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 6: error: _Complex can only be used with floating-point types
+  __complex__ int arr;
+  ^
+
+"Test_name.c", line 7: error: invalid combination of type specifiers
+  __complex__ short brr;
+  ^
+
+"Test_name.c", line 8: error: invalid combination of type specifiers
+  __complex__ unsigned xx;
+  ^
+
+"Test_name.c", line 9: error: invalid combination of type specifiers
+  __complex__ signed yy;
+  ^
+
+"Test_name.c", line 10: error: _Complex can only be used with floating-point types
+  __complex__ int result;
+  ^
+
+"Test_name.c", line 14: error: complex integral types are not supported
+  bb += 1i;
+         ^
+
+"Test_name.c", line 19: warning: variable "ii" is used before its value is set
+  result = arr*ii;
+               ^
+
+"Test_name.c", line 12: warning: variable "aa" was declared but never referenced
+  int aa = 1 + 1.0iF;
+      ^
+
+"Test_name.c", line 17: warning: variable "cc" was declared but never referenced
+  int cc = 1 + (ComplexFloat)(1.0iF);
+      ^
+
+"Test_name.c", line 36: error: invalid combination of type specifiers
+  __complex short a1;
+  ^
+
+"Test_name.c", line 37: error: _Complex can only be used with floating-point types
+  __complex int a2;
+  ^
+
+"Test_name.c", line 49: warning: variable "a3" is used before its value is set
+  TestPairs(1); TestPairs(2);
+  ^
+
+"Test_name.c", line 49: warning: variable "a4" is used before its value is set
+  TestPairs(1); TestPairs(2);
+  ^
+
+"Test_name.c", line 49: warning: variable "a5" is used before its value is set
+  TestPairs(1); TestPairs(2);
+  ^
+
+"Test_name.c", line 49: warning: variable "a6" is used before its value is set
+  TestPairs(1); TestPairs(2);
+  ^
+
+"Test_name.c", line 49: warning: variable "a7" is used before its value is set
+  TestPairs(1); TestPairs(2);
+  ^
+
+"Test_name.c", line 49: warning: variable "a8" is used before its value is set
+  TestPairs(1); TestPairs(2);
+  ^
+
+"Test_name.c", line 50: warning: variable "x33" was declared but never referenced
+  TestPairs(3); TestPairs(4);
+  ^
+
+"Test_name.c", line 50: warning: variable "x34" was declared but never referenced
+  TestPairs(3); TestPairs(4);
+  ^
+
+"Test_name.c", line 50: warning: variable "x35" was declared but never referenced
+  TestPairs(3); TestPairs(4);
+  ^
+
+"Test_name.c", line 50: warning: variable "x36" was declared but never referenced
+  TestPairs(3); TestPairs(4);
+  ^
+
+"Test_name.c", line 50: warning: variable "x37" was declared but never referenced
+  TestPairs(3); TestPairs(4);
+  ^
+
+"Test_name.c", line 50: warning: variable "x38" was declared but never referenced
+  TestPairs(3); TestPairs(4);
+  ^
+
+"Test_name.c", line 50: warning: variable "x43" was declared but never referenced
+  TestPairs(3); TestPairs(4);
+                ^
+
+"Test_name.c", line 50: warning: variable "x44" was declared but never referenced
+  TestPairs(3); TestPairs(4);
+                ^
+
+"Test_name.c", line 50: warning: variable "x45" was declared but never referenced
+  TestPairs(3); TestPairs(4);
+                ^
+
+"Test_name.c", line 50: warning: variable "x46" was declared but never referenced
+  TestPairs(3); TestPairs(4);
+                ^
+
+"Test_name.c", line 50: warning: variable "x47" was declared but never referenced
+  TestPairs(3); TestPairs(4);
+                ^
+
+"Test_name.c", line 50: warning: variable "x48" was declared but never referenced
+  TestPairs(3); TestPairs(4);
+                ^
+
+"Test_name.c", line 51: warning: variable "x53" was declared but never referenced
+  TestPairs(5); TestPairs(6);
+  ^
+
+"Test_name.c", line 51: warning: variable "x54" was declared but never referenced
+  TestPairs(5); TestPairs(6);
+  ^
+
+"Test_name.c", line 51: warning: variable "x55" was declared but never referenced
+  TestPairs(5); TestPairs(6);
+  ^
+
+"Test_name.c", line 51: warning: variable "x56" was declared but never referenced
+  TestPairs(5); TestPairs(6);
+  ^
+
+"Test_name.c", line 51: warning: variable "x57" was declared but never referenced
+  TestPairs(5); TestPairs(6);
+  ^
+
+"Test_name.c", line 51: warning: variable "x58" was declared but never referenced
+  TestPairs(5); TestPairs(6);
+  ^
+
+"Test_name.c", line 51: warning: variable "x63" was declared but never referenced
+  TestPairs(5); TestPairs(6);
+                ^
+
+"Test_name.c", line 51: warning: variable "x64" was declared but never referenced
+  TestPairs(5); TestPairs(6);
+                ^
+
+"Test_name.c", line 51: warning: variable "x65" was declared but never referenced
+  TestPairs(5); TestPairs(6);
+                ^
+
+"Test_name.c", line 51: warning: variable "x66" was declared but never referenced
+  TestPairs(5); TestPairs(6);
+                ^
+
+"Test_name.c", line 51: warning: variable "x67" was declared but never referenced
+  TestPairs(5); TestPairs(6);
+                ^
+
+"Test_name.c", line 51: warning: variable "x68" was declared but never referenced
+  TestPairs(5); TestPairs(6);
+                ^
+
+"Test_name.c", line 52: warning: variable "x73" was declared but never referenced
+  TestPairs(7); TestPairs(8);
+  ^
+
+"Test_name.c", line 52: warning: variable "x74" was declared but never referenced
+  TestPairs(7); TestPairs(8);
+  ^
+
+"Test_name.c", line 52: warning: variable "x75" was declared but never referenced
+  TestPairs(7); TestPairs(8);
+  ^
+
+"Test_name.c", line 52: warning: variable "x76" was declared but never referenced
+  TestPairs(7); TestPairs(8);
+  ^
+
+"Test_name.c", line 52: warning: variable "x77" was declared but never referenced
+  TestPairs(7); TestPairs(8);
+  ^
+
+"Test_name.c", line 52: warning: variable "x78" was declared but never referenced
+  TestPairs(7); TestPairs(8);
+  ^
+
+"Test_name.c", line 52: warning: variable "x83" was declared but never referenced
+  TestPairs(7); TestPairs(8);
+                ^
+
+"Test_name.c", line 52: warning: variable "x84" was declared but never referenced
+  TestPairs(7); TestPairs(8);
+                ^
+
+"Test_name.c", line 52: warning: variable "x85" was declared but never referenced
+  TestPairs(7); TestPairs(8);
+                ^
+
+"Test_name.c", line 52: warning: variable "x86" was declared but never referenced
+  TestPairs(7); TestPairs(8);
+                ^
+
+"Test_name.c", line 52: warning: variable "x87" was declared but never referenced
+  TestPairs(7); TestPairs(8);
+                ^
+
+"Test_name.c", line 52: warning: variable "x88" was declared but never referenced
+  TestPairs(7); TestPairs(8);
+                ^
+
+"Test_name.c", line 55: error: _Complex can only be used with floating-point types
+  void test3(_Complex int *x) {
+             ^
+
+"Test_name.c", line 63: error: _Complex can only be used with floating-point types
+  void test5(_Complex int *x) {
+             ^
+
+"Test_name.c", line 69: error: complex integral types are not supported
+  int i1[(2+3i)*(5+7i) == 29i-11 ? 1 : -1]; // expected-warning {{fold}}
+             ^
+
+"Test_name.c", line 69: error: complex integral types are not supported
+  int i1[(2+3i)*(5+7i) == 29i-11 ? 1 : -1]; // expected-warning {{fold}}
+                    ^
+
+"Test_name.c", line 69: error: complex integral types are not supported
+  int i1[(2+3i)*(5+7i) == 29i-11 ? 1 : -1]; // expected-warning {{fold}}
+                            ^
+
+"Test_name.c", line 70: error: complex integral types are not supported
+  int i2[(29i-11)/(5+7i) == 2+3i ? 1 : -1]; // expected-warning {{fold}}
+            ^
+
+"Test_name.c", line 70: error: complex integral types are not supported
+  int i2[(29i-11)/(5+7i) == 2+3i ? 1 : -1]; // expected-warning {{fold}}
+                      ^
+
+"Test_name.c", line 70: error: complex integral types are not supported
+  int i2[(29i-11)/(5+7i) == 2+3i ? 1 : -1]; // expected-warning {{fold}}
+                               ^
+
+"Test_name.c", line 71: error: complex integral types are not supported
+  int i3[-(2+3i) == +(-3i-2) ? 1 : -1]; // expected-warning {{fold}}
+              ^
+
+"Test_name.c", line 71: error: complex integral types are not supported
+  int i3[-(2+3i) == +(-3i-2) ? 1 : -1]; // expected-warning {{fold}}
+                        ^
+
+"Test_name.c", line 72: error: complex integral types are not supported
+  int i4[~(2+3i) == 2-3i ? 1 : -1]; // expected-warning {{fold}}
+              ^
+
+"Test_name.c", line 72: error: complex integral types are not supported
+  int i4[~(2+3i) == 2-3i ? 1 : -1]; // expected-warning {{fold}}
+                       ^
+
+"Test_name.c", line 73: error: complex integral types are not supported
+  int i5[(3i == -(-3i) ? ((void)3, 1i - 1) : 0) == 1i - 1 ? 1 : -1]; // expected-warning {{fold}}
+           ^
+
+"Test_name.c", line 73: error: complex integral types are not supported
+  int i5[(3i == -(-3i) ? ((void)3, 1i - 1) : 0) == 1i - 1 ? 1 : -1]; // expected-warning {{fold}}
+                    ^
+
+"Test_name.c", line 73: error: type of cast must be arithmetic or pointer
+  int i5[(3i == -(-3i) ? ((void)3, 1i - 1) : 0) == 1i - 1 ? 1 : -1]; // expected-warning {{fold}}
+                           ^
+
+"Test_name.c", line 73: error: this operator is not allowed in a constant expression
+  int i5[(3i == -(-3i) ? ((void)3, 1i - 1) : 0) == 1i - 1 ? 1 : -1]; // expected-warning {{fold}}
+                                 ^
+
+"Test_name.c", line 73: error: complex integral types are not supported
+  int i5[(3i == -(-3i) ? ((void)3, 1i - 1) : 0) == 1i - 1 ? 1 : -1]; // expected-warning {{fold}}
+                                    ^
+
+"Test_name.c", line 73: error: complex integral types are not supported
+  int i5[(3i == -(-3i) ? ((void)3, 1i - 1) : 0) == 1i - 1 ? 1 : -1]; // expected-warning {{fold}}
+                                                    ^
+
+"Test_name.c", line 79: error: type of cast must be arithmetic or pointer
+  int f5[(3.0i == -(-3.0i) ? ((void)3.0, __extension__ (1.0i - 1.0)) : 0) == 1.0i - 1.0 ? 1 : -1]; // expected-warning {{fold}}
+                               ^
+
+"Test_name.c", line 79: error: this operator is not allowed in a constant expression
+  int f5[(3.0i == -(-3.0i) ? ((void)3.0, __extension__ (1.0i - 1.0)) : 0) == 1.0i - 1.0 ? 1 : -1]; // expected-warning {{fold}}
+                                       ^
+
+28 errors detected in the compilation of "Test_name.c".

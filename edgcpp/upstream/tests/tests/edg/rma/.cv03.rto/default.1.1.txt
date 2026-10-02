@@ -1,0 +1,41 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 5: warning: type qualifier on return type is meaningless
+  const void a();
+  ^
+
+"Test_name.c", line 6: warning: type qualifier on return type is meaningless
+  volatile void b();
+  ^
+
+"Test_name.c", line 6: remark: a volatile return type is deprecated
+  volatile void b();
+                ^
+
+"Test_name.c", line 7: warning: type qualifier on return type is meaningless
+  const volatile void c();
+  ^
+
+"Test_name.c", line 7: remark: a volatile return type is deprecated
+  const volatile void c();
+                      ^
+
+"Test_name.c", line 9: warning: type qualifier on return type is meaningless
+  const void a() { }               /* error in strict C mode */
+  ^
+
+"Test_name.c", line 10: warning: type qualifier on return type is meaningless
+  volatile void b() { }            /* error in strict C mode */
+  ^
+
+"Test_name.c", line 10: remark: a volatile return type is deprecated
+  volatile void b() { }            /* error in strict C mode */
+                ^
+
+"Test_name.c", line 11: warning: type qualifier on return type is meaningless
+  const volatile void c() { }      /* error in strict C mode */
+  ^
+
+"Test_name.c", line 11: remark: a volatile return type is deprecated
+  const volatile void c() { }      /* error in strict C mode */
+                      ^
+

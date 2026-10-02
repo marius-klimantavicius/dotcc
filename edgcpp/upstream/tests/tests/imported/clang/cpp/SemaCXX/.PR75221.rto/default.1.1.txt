@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 5: error: type definition is not allowed
+  template <class T> using foo = struct foo { // expected-error {{'foo' cannot be defined in a type alias template}}
+                                 ^
+
+"Test_name.c", line 8: error: argument list for alias template "foo" is missing
+  foo a;
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

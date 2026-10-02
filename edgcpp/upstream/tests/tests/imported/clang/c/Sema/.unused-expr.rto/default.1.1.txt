@@ -1,0 +1,105 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 12: warning: expression has no effect
+    VP < P;              // expected-warning {{relational comparison result unused}}
+    ^
+
+"Test_name.c", line 21: warning: expression has no effect
+    *P;                  // expected-warning {{expression result unused}}
+    ^
+
+"Test_name.c", line 23: warning: expression has no effect
+    P[4];                // expected-warning {{expression result unused}}
+    ^
+
+"Test_name.c", line 26: warning: expression has no effect
+    __real__ C;          // expected-warning {{expression result unused}}
+    ^
+
+"Test_name.c", line 52: warning: variable "x" is used before its value is set
+    ((void)0), y = x;
+                   ^
+
+"Test_name.c", line 51: warning: variable "y" was set but never used
+    int y, x;
+        ^
+
+"Test_name.c", line 59: warning: expression has no effect
+      b < 1; // expected-warning{{relational comparison result unused}}
+      ^
+
+"Test_name.c", line 61: warning: expression has no effect
+      b < 2; // expected-warning{{relational comparison result unused}}
+      ^
+
+"Test_name.c", line 64: warning: expression has no effect
+      b < 3; // expected-warning{{relational comparison result unused}}
+      ^
+
+"Test_name.c", line 67: warning: expression has no effect
+      b < 4; // expected-warning{{relational comparison result unused}}
+      ^
+
+"Test_name.c", line 66: warning: loop is not reachable
+    do
+    ^
+
+"Test_name.c", line 71: warning: expression has no effect
+      b < 5; // expected-warning{{relational comparison result unused}}
+      ^
+
+"Test_name.c", line 70: warning: loop is not reachable
+    for (;;)
+    ^
+
+"Test_name.c", line 73: warning: expression has no effect
+    for (b < 1;;) {} // expected-warning{{relational comparison result unused}}
+         ^
+
+"Test_name.c", line 73: warning: loop is not reachable
+    for (b < 1;;) {} // expected-warning{{relational comparison result unused}}
+    ^
+
+"Test_name.c", line 74: warning: loop is not reachable
+    for (;b < 1;) {}
+    ^
+
+"Test_name.c", line 75: warning: expression has no effect
+    for (;;b < 1) {} // expected-warning{{relational comparison result unused}}
+           ^
+
+"Test_name.c", line 80: warning: result of call is not used
+    t5f();   // expected-warning {{ignoring return value of function declared with 'warn_unused_result' attribute}}
+    ^
+
+"Test_name.c", line 91: warning: result of call is not used
+    fn1();  // expected-warning {{ignoring return value of function declared with 'warn_unused_result' attribute}}
+    ^
+
+"Test_name.c", line 99: warning: attribute "warn_unused_result" does not apply to non-function type "int"
+  int t7 __attribute__ ((warn_unused_result)); // expected-warning {{'warn_unused_result' attribute only applies to Objective-C methods, enums, structs, unions, classes, functions, function pointers, and typedefs}}
+                         ^
+
+"Test_name.c", line 104: warning: result of call is not used
+    fn4(); // expected-warning {{ignoring return value of function declared with 'warn_unused_result' attribute}}
+    ^
+
+"Test_name.c", line 107: warning: attribute "warn_unused_result" is ignored for void return type
+  void t9(void) __attribute__((warn_unused_result)); // expected-warning {{attribute 'warn_unused_result' cannot be applied to functions without return value}}
+                               ^
+
+"Test_name.c", line 139: warning: expression has no effect
+    M2;  // no warning
+    ^
+
+"Test_name.c", line 140: warning: expression has no effect
+    NOP((long)0); // expected-warning {{expression result unused}}
+    ^
+
+"Test_name.c", line 147: warning: result of call is not used
+    M6(); // expected-warning {{ignoring return value}}
+    ^
+
+"Test_name.c", line 164: warning: expression has no effect
+    UNREFERENCED_PARAMETER(a);
+    ^
+

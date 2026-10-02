@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 5: error: function "A::f" (declared at line 4) is inaccessible
+  class B { friend void A::f(); void g(); };
+                           ^
+
+"Test_name.c", line 7: error: function "B::g" (declared at line 5) is inaccessible
+  void f() { B b; b.g(); }     // B::g() is inaccessible
+                    ^
+
+2 errors detected in the compilation of "Test_name.c".

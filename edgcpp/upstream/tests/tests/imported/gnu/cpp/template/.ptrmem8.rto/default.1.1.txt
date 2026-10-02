@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 20: error: no instance of function template "Get" matches the argument list
+    Get<&B::I>();   // { dg-error "template argument|convert" "not valid" }
+    ^
+"Test_name.c", line 16: note: substituting explicit template arguments "<<expression>>" for function template "Get" failed
+  template <int (D::*fun)() const> int Get(); // { dg-message "note" }
+                                       ^
+
+"Test_name.c", line 22: error: no instance of function template "Get" matches the argument list
+    Get<&D::I>();   // { dg-error "template argument|convert" "not valid" }
+    ^
+"Test_name.c", line 16: note: substituting explicit template arguments "<<expression>>" for function template "Get" failed
+  template <int (D::*fun)() const> int Get(); // { dg-message "note" }
+                                       ^
+
+2 errors detected in the compilation of "Test_name.c".

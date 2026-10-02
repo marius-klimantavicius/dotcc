@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 -w --c++11 Test_name.c
+"Test_name.c", line 9: error: function "S::~S()" (declared at line 6) cannot be referenced -- it is a deleted function
+  } s; // expected-error {{attempt to use a deleted function}}
+    ^
+
+"Test_name.c", line 12: error: a non-placement operator delete must be visible in a class with a virtual destructor
+    virtual ~T() = default; // expected-note {{explicitly defaulted function was implicitly deleted here}} expected-warning {{implicitly deleted}} expected-note{{replace 'default'}}
+            ^
+          detected during implicit generation of "T::T()" at line 15
+
+2 errors detected in the compilation of "Test_name.c".

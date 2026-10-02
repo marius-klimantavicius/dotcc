@@ -1,0 +1,190 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 Test_name.c
+"Test_name.c", line 9: error: identifier "h1" is undefined
+  decltype(h1) h1() { // expected-error {{use of undeclared identifier 'h1'}}
+           ^
+
+"Test_name.c", line 20: warning: statement is unreachable
+    return; // expected-error {{'auto' in return type deduced as 'void' here but deduced as 'int' in earlier return statement}}
+    ^
+
+"Test_name.c", line 20: warning: non-void function "JustAuto::f4" should return a value
+    return; // expected-error {{'auto' in return type deduced as 'void' here but deduced as 'int' in earlier return statement}}
+          ^
+
+"Test_name.c", line 24: warning: statement is unreachable
+    return void(); // expected-error {{'auto' in return type deduced as 'void' here but deduced as 'int' in earlier return statement}}
+    ^
+
+"Test_name.c", line 24: error: deduced return type "void" conflicts with previously deduced type "int"
+    return void(); // expected-error {{'auto' in return type deduced as 'void' here but deduced as 'int' in earlier return statement}}
+           ^
+
+"Test_name.c", line 32: warning: statement is unreachable
+    return; // expected-error {{return type 'void' must match previous return type 'int' when lambda expression has unspecified explicit return type}}
+    ^
+
+"Test_name.c", line 32: warning: non-void function "lambda []()->int" should return a value
+    return; // expected-error {{return type 'void' must match previous return type 'int' when lambda expression has unspecified explicit return type}}
+          ^
+
+"Test_name.c", line 36: warning: statement is unreachable
+    return void(); // expected-error {{return type 'void' must match previous return type 'int' when lambda expression has unspecified explicit return type}}
+    ^
+
+"Test_name.c", line 36: error: deduced return type "void" conflicts with previously deduced type "int"
+    return void(); // expected-error {{return type 'void' must match previous return type 'int' when lambda expression has unspecified explicit return type}}
+           ^
+
+"Test_name.c", line 48: warning: statement is unreachable
+    return; // expected-error {{'decltype(auto)' in return type deduced as 'void' here but deduced as 'int' in earlier return statement}}
+    ^
+
+"Test_name.c", line 48: warning: non-void function "DecltypeAuto::f4" should return a value
+    return; // expected-error {{'decltype(auto)' in return type deduced as 'void' here but deduced as 'int' in earlier return statement}}
+          ^
+
+"Test_name.c", line 52: warning: statement is unreachable
+    return void(); // expected-error {{'decltype(auto)' in return type deduced as 'void' here but deduced as 'int' in earlier return statement}}
+    ^
+
+"Test_name.c", line 52: error: deduced return type "void" conflicts with previously deduced type "int"
+    return void(); // expected-error {{'decltype(auto)' in return type deduced as 'void' here but deduced as 'int' in earlier return statement}}
+           ^
+
+"Test_name.c", line 60: warning: statement is unreachable
+    return; // expected-error {{'decltype(auto)' in return type deduced as 'void' here but deduced as 'int' in earlier return statement}}
+    ^
+
+"Test_name.c", line 60: warning: non-void function "lambda []()->int" should return a value
+    return; // expected-error {{'decltype(auto)' in return type deduced as 'void' here but deduced as 'int' in earlier return statement}}
+          ^
+
+"Test_name.c", line 64: warning: statement is unreachable
+    return void(); // expected-error {{'decltype(auto)' in return type deduced as 'void' here but deduced as 'int' in earlier return statement}}
+    ^
+
+"Test_name.c", line 64: error: deduced return type "void" conflicts with previously deduced type "int"
+    return void(); // expected-error {{'decltype(auto)' in return type deduced as 'void' here but deduced as 'int' in earlier return statement}}
+           ^
+
+"Test_name.c", line 71: error: cannot deduce "auto" type
+  auto *f1() { } // expected-error {{cannot deduce return type 'auto *' for function with no return statements}}
+               ^
+
+"Test_name.c", line 73: error: cannot deduce "auto" type
+    return; // expected-error {{cannot deduce return type 'auto *' from omitted return expression}}
+          ^
+
+"Test_name.c", line 76: error: cannot deduce "auto" type
+    return void(); // expected-error {{cannot deduce return type 'auto *' from returned value of type 'void'}}
+           ^
+
+"Test_name.c", line 80: warning: statement is unreachable
+    return; // expected-error {{cannot deduce return type 'auto *' from omitted return expression}}
+    ^
+
+"Test_name.c", line 80: warning: non-void function "AutoPtr::f4" should return a value
+    return; // expected-error {{cannot deduce return type 'auto *' from omitted return expression}}
+          ^
+
+"Test_name.c", line 84: warning: statement is unreachable
+    return void(); // expected-error {{cannot deduce return type 'auto *' from returned value of type 'void'}}
+    ^
+
+"Test_name.c", line 84: error: cannot deduce "auto" type
+    return void(); // expected-error {{cannot deduce return type 'auto *' from returned value of type 'void'}}
+           ^
+
+"Test_name.c", line 87: error: cannot deduce "auto" type
+  auto l1 = []() -> auto* { }; // expected-error {{cannot deduce return type 'auto *' for function with no return statements}}
+                            ^
+
+"Test_name.c", line 89: error: cannot deduce "auto" type
+    return; // expected-error {{cannot deduce return type 'auto *' from omitted return expression}}
+          ^
+
+"Test_name.c", line 92: error: cannot deduce "auto" type
+    return void(); // expected-error {{cannot deduce return type 'auto *' from returned value of type 'void'}}
+           ^
+
+"Test_name.c", line 96: warning: statement is unreachable
+    return; // expected-error {{cannot deduce return type 'auto *' from omitted return expression}}
+    ^
+
+"Test_name.c", line 96: warning: non-void function "lambda []()->int *" should return a value
+    return; // expected-error {{cannot deduce return type 'auto *' from omitted return expression}}
+          ^
+
+"Test_name.c", line 100: warning: statement is unreachable
+    return void(); // expected-error {{cannot deduce return type 'auto *' from returned value of type 'void'}}
+    ^
+
+"Test_name.c", line 100: error: cannot deduce "auto" type
+    return void(); // expected-error {{cannot deduce return type 'auto *' from returned value of type 'void'}}
+           ^
+
+"Test_name.c", line 107: error: cannot deduce "auto" type
+  }
+  ^
+
+"Test_name.c", line 109: error: cannot deduce "auto" type
+    return; // expected-error {{cannot deduce return type 'auto &' from omitted return expression}}
+          ^
+
+"Test_name.c", line 112: error: cannot deduce "auto" type
+    return void(); // expected-error@-1 {{cannot form a reference to 'void'}}
+           ^
+
+"Test_name.c", line 116: warning: statement is unreachable
+    return; // expected-error {{cannot deduce return type 'auto &' from omitted return expression}}
+    ^
+
+"Test_name.c", line 116: warning: non-void function "AutoRef::f4" should return a value
+    return; // expected-error {{cannot deduce return type 'auto &' from omitted return expression}}
+          ^
+
+"Test_name.c", line 120: warning: statement is unreachable
+    return void(); // expected-error {{deduced as 'int' in earlier return statement}}
+    ^
+
+"Test_name.c", line 120: error: cannot deduce "auto" type
+    return void(); // expected-error {{deduced as 'int' in earlier return statement}}
+           ^
+
+"Test_name.c", line 122: error: initial value of reference to non-const must be an lvalue
+  auto& f6() { return 42; } // expected-error {{non-const lvalue reference to type 'int' cannot bind to a temporary of type 'int'}}
+                      ^
+
+"Test_name.c", line 124: error: cannot deduce "auto" type
+  auto l1 = []() -> auto& { }; // expected-error {{cannot deduce return type 'auto &' for function with no return statements}}
+                            ^
+
+"Test_name.c", line 126: error: cannot deduce "auto" type
+    return; // expected-error {{cannot deduce return type 'auto &' from omitted return expression}}
+          ^
+
+"Test_name.c", line 129: error: cannot deduce "auto" type
+    return void();
+           ^
+
+"Test_name.c", line 133: warning: statement is unreachable
+    return; // expected-error {{cannot deduce return type 'auto &' from omitted return expression}}
+    ^
+
+"Test_name.c", line 133: warning: non-void function "lambda []()->int &" should return a value
+    return; // expected-error {{cannot deduce return type 'auto &' from omitted return expression}}
+          ^
+
+"Test_name.c", line 137: warning: statement is unreachable
+    return void(); // expected-error {{deduced as 'int' in earlier return statement}}
+    ^
+
+"Test_name.c", line 137: error: cannot deduce "auto" type
+    return void(); // expected-error {{deduced as 'int' in earlier return statement}}
+           ^
+
+"Test_name.c", line 140: error: initial value of reference to non-const must be an lvalue
+    return 42; // expected-error {{non-const lvalue reference to type 'int' cannot bind to a temporary of type 'int'}}
+           ^
+
+23 errors detected in the compilation of "Test_name.c".

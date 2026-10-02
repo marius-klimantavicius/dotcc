@@ -1,0 +1,60 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 17: error: identifier "constexpr" is undefined
+    constexpr int j = 100, k = 200;
+    ^
+
+"Test_name.c", line 17: error: expected a ";"
+    constexpr int j = 100, k = 200;
+              ^
+
+"Test_name.c", line 24: error: the second constant in a case range must be larger than the first
+    case 15 ... 11: break;  /* expected-warning {{empty case range specified}}
+                ^
+
+"Test_name.c", line 34: error: identifier "j" is undefined
+    case j ... k: break;   /* gnu-warning {{case ranges are a GNU extension}}
+         ^
+
+"Test_name.c", line 34: error: identifier "k" is undefined
+    case j ... k: break;   /* gnu-warning {{case ranges are a GNU extension}}
+               ^
+
+"Test_name.c", line 46: error: expression must have a constant value
+    case i ... 10: break;    /* c-expected-error {{expression is not an integer constant expression}}
+         ^
+"Test_name.c", line 46: note: the value of parameter "i" (declared at line 41) cannot be used as a constant
+    case i ... 10: break;    /* c-expected-error {{expression is not an integer constant expression}}
+         ^
+
+"Test_name.c", line 50: error: expression must have a constant value
+    case 10 ... i: break;    /* c-expected-error {{expression is not an integer constant expression}}
+                ^
+"Test_name.c", line 50: note: the value of parameter "i" (declared at line 41) cannot be used as a constant
+    case 10 ... i: break;    /* c-expected-error {{expression is not an integer constant expression}}
+                ^
+
+"Test_name.c", line 57: error: expression must be an integral constant expression
+    case 1.3f ... 10: break; /* c-expected-error {{integer constant expression must have integer type, not 'float'}}
+         ^
+
+"Test_name.c", line 60: error: expression must be an integral constant expression
+    case 10 ... "a": break;  /* c-expected-error {{integer constant expression must have integer type, not 'char[2]'}}
+                ^
+
+"Test_name.c", line 60: error: case label value has already appeared in this switch at line 50
+    case 10 ... "a": break;  /* c-expected-error {{integer constant expression must have integer type, not 'char[2]'}}
+         ^
+
+"Test_name.c", line 80: error: case label value has already appeared in this switch at line 74
+    case 11: break;        /* expected-note {{previous case defined here}}
+         ^
+
+"Test_name.c", line 82: error: case label value has already appeared in this switch at line 74
+    case 11 ... 14: break; /* expected-error {{duplicate case value '20'}}
+         ^
+
+"Test_name.c", line 82: error: case label value has already appeared in this switch at line 80
+    case 11 ... 14: break; /* expected-error {{duplicate case value '20'}}
+         ^
+
+13 errors detected in the compilation of "Test_name.c".

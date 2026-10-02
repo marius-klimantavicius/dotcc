@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 10: error: "= delete" can only appear on the first declaration of a function
+  template<> void func2<int>() = delete; // expected-error {{deleted definition must be first declaration}}
+                                 ^
+
+1 error detected in the compilation of "Test_name.c".

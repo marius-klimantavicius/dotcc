@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 10: warning: variable "i" is used before its value is set
+    double d = i;
+               ^
+
+"Test_name.c", line 10: warning: variable "d" was set but never used
+    double d = i;
+           ^
+
+"Test_name.c", line 19: warning: a value of type "int (*)(void)" cannot be assigned to an entity of type "int"
+    a[0] = test3; // expected-error{{incompatible pointer to integer conversion assigning to 'int' from 'int (void)'}}
+         ^
+
+"Test_name.c", line 18: warning: variable "a" was set but never used
+    int a[2];
+        ^
+

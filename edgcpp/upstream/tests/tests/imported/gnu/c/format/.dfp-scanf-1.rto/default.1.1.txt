@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./format/dfp-scanf-1.c", line 11: error: identifier "_Decimal32" is undefined
+  voo (_Decimal32 *x, _Decimal64 *y, _Decimal128 *z, int *i, unsigned int *j,
+       ^
+
+"./format/dfp-scanf-1.c", line 11: error: identifier "_Decimal64" is undefined
+  voo (_Decimal32 *x, _Decimal64 *y, _Decimal128 *z, int *i, unsigned int *j,
+                      ^
+
+"./format/dfp-scanf-1.c", line 11: error: identifier "_Decimal128" is undefined
+  voo (_Decimal32 *x, _Decimal64 *y, _Decimal128 *z, int *i, unsigned int *j,
+                                     ^
+
+3 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,19 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 26: warning: variable "z" was declared but never referenced
+        { int z[b]; }
+              ^
+
+"Test_name.c", line 29: warning: variable "w" was declared but never referenced
+        int w[b];
+            ^
+
+"Test_name.c", line 20: warning: variable "v" was declared but never referenced
+      int v[b];
+          ^
+
+"Test_name.c", line 19: error: transfer of control bypasses initialization of:
+            variable length array "v" (declared at line 20)
+    switch (a) { /* { dg-warning "statement will never be executed" } */
+    ^
+
+1 error detected in the compilation of "Test_name.c".

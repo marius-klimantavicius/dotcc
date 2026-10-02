@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"C/C23/n2934.c", line 64: error: attributes may not appear here
+    char a5 alignas(8);
+            ^
+
+"C/C23/n2934.c", line 65: error: attributes may not appear here
+    char a6 _Alignas(8);
+            ^
+
+"C/C23/n2934.c", line 71: error: attributes may not appear here
+  struct alignas(8) Reject1 {
+         ^
+
+"C/C23/n2934.c", line 76: error: attributes may not appear here
+  struct _Alignas(8) Reject2 {
+         ^
+
+4 errors detected in the compilation of "Test_name.c".

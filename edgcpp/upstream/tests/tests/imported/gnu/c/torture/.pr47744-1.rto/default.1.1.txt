@@ -1,0 +1,41 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 18: warning: variable "jz" is used before its value is set
+   for(i=0,j=jz,z=q[jz];j>0;i++,j--) {
+             ^
+
+"Test_name.c", line 10: warning: variable "jv" was declared but never referenced
+   int32_t jz,jx,jv,jp,jk,carry,n,iq[20],i,j,k,m,q0,ih;
+                 ^
+
+"Test_name.c", line 10: warning: variable "jp" was set but never used
+   int32_t jz,jx,jv,jp,jk,carry,n,iq[20],i,j,k,m,q0,ih;
+                    ^
+
+"Test_name.c", line 10: warning: variable "carry" was declared but never referenced
+   int32_t jz,jx,jv,jp,jk,carry,n,iq[20],i,j,k,m,q0,ih;
+                          ^
+
+"Test_name.c", line 10: warning: variable "iq" was declared but never referenced
+   int32_t jz,jx,jv,jp,jk,carry,n,iq[20],i,j,k,m,q0,ih;
+                                  ^
+
+"Test_name.c", line 10: warning: variable "k" was declared but never referenced
+   int32_t jz,jx,jv,jp,jk,carry,n,iq[20],i,j,k,m,q0,ih;
+                                             ^
+
+"Test_name.c", line 10: warning: variable "m" was declared but never referenced
+   int32_t jz,jx,jv,jp,jk,carry,n,iq[20],i,j,k,m,q0,ih;
+                                               ^
+
+"Test_name.c", line 10: warning: variable "q0" was declared but never referenced
+   int32_t jz,jx,jv,jp,jk,carry,n,iq[20],i,j,k,m,q0,ih;
+                                                 ^
+
+"Test_name.c", line 10: warning: variable "ih" was declared but never referenced
+   int32_t jz,jx,jv,jp,jk,carry,n,iq[20],i,j,k,m,q0,ih;
+                                                    ^
+
+"Test_name.c", line 11: warning: variable "fq" was declared but never referenced
+   double z,fw,f[20],fq[20],q[20];
+                     ^
+

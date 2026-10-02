@@ -1,0 +1,13 @@
+cpfe -DTEST_NUMBER=3 --c++11 --clang Test_name.c
+"Test_name.c", line 8: warning: function "<unnamed>::A::B::f" was referenced but not defined
+        static void f();
+                    ^
+
+"Test_name.c", line 9: warning: virtual function "<unnamed>::A::B::g" was not defined (and cannot be defined elsewhere because it is a member of an unnamed namespace)
+        virtual void g();
+                     ^
+
+"Test_name.c", line 12: warning: function "<unnamed>::g" was declared but never referenced
+    void g() { A::B::f(); }
+         ^
+

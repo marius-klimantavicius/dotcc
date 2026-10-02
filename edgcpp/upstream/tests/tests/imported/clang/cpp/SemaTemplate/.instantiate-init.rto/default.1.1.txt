@@ -1,0 +1,94 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 104: error: a value of type "int" cannot be used to initialize an entity of type "int *"
+    const Data<T> Description<T>::data[] = {{ 1 }}; // expected-error{{cannot initialize a member subobject of type 'int *' with an rvalue of type 'int'}}
+                                              ^
+          detected during implicit definition of "const PR7985::Data<int *> PR7985::Description<T>::data[] [with T=int *]" at line 114
+
+"Test_name.c", line 113: error: no instance of function template "PR7985::array_lengthof" matches the argument list
+            argument types are: (<error-type>)
+      (void)sizeof(array_lengthof( // expected-error{{no matching function for call to 'array_lengthof'}}
+                   ^
+"Test_name.c", line 91: note: candidate function template "PR7985::array_lengthof" failed deduction
+    integral_c<N> array_lengthof(T (&x)[N]) { return integral_c<N>(); } // expected-note 2{{candidate template ignored: could not match 'T[N]' against 'const Data<}}
+                  ^
+
+"Test_name.c", line 117: error: no instance of function template "PR7985::array_lengthof" matches the argument list
+            argument types are: (const PR7985::Data<float *> [])
+      array_lengthof(Description<float*>::data); // expected-error{{no matching function for call to 'array_lengthof'}}
+      ^
+"Test_name.c", line 91: note: candidate function template "PR7985::array_lengthof" failed deduction
+    integral_c<N> array_lengthof(T (&x)[N]) { return integral_c<N>(); } // expected-note 2{{candidate template ignored: could not match 'T[N]' against 'const Data<}}
+                  ^
+
+"Test_name.c", line 129: error: copy-list-initialization cannot use a constructor marked "explicit"
+      T a = {0}; // expected-error{{explicit}}
+            ^
+          detected during:
+            implicit generation of "PR13064::C<T>::C() [with T=PR13064::A]" at line 131
+            instantiation of class "PR13064::C<T> [with T=PR13064::A]" at line 131
+
+"Test_name.c", line 146: warning: missing return statement at end of non-void function "PR16903::test"
+    }
+    ^
+
+"Test_name.c", line 19: error: no instance of constructor "X0::X0" matches the argument list
+            argument types are: (int *, double *)
+    X0 x0(t, u); // expected-error{{no matching}}
+          ^
+"Test_name.c", line 13: note: number of parameters of function "X0::X0(const X0 &)" does not match the call
+  struct X0 { // expected-note 8{{candidate}}
+         ^
+"Test_name.c", line 13: note: number of parameters of function "X0::X0(X0 &&)" does not match the call
+  struct X0 { // expected-note 8{{candidate}}
+         ^
+"Test_name.c", line 14: note: function "X0::X0(int *, float *)" does not match because argument #2 does not match parameter
+    X0(int*, float*); // expected-note 4{{candidate}}
+    ^
+          detected during instantiation of "X0 f0(T, U) [with T=int *, U=double *]" at line 25
+
+"Test_name.c", line 20: error: no instance of constructor "X0::X0" matches the argument list
+            argument types are: (int *, double *)
+    return X0(t, u); // expected-error{{no matching}}
+           ^
+"Test_name.c", line 13: note: number of parameters of function "X0::X0(const X0 &)" does not match the call
+  struct X0 { // expected-note 8{{candidate}}
+         ^
+"Test_name.c", line 13: note: number of parameters of function "X0::X0(X0 &&)" does not match the call
+  struct X0 { // expected-note 8{{candidate}}
+         ^
+"Test_name.c", line 14: note: function "X0::X0(int *, float *)" does not match because argument #2 does not match parameter
+    X0(int*, float*); // expected-note 4{{candidate}}
+    ^
+          detected during instantiation of "X0 f0(T, U) [with T=int *, U=double *]" at line 25
+
+"Test_name.c", line 30: error: no instance of constructor "X0::X0" matches the argument list
+            argument types are: (int *, double *)
+    Ret r0(t, u); // expected-error{{no matching}}
+           ^
+"Test_name.c", line 13: note: number of parameters of function "X0::X0(const X0 &)" does not match the call
+  struct X0 { // expected-note 8{{candidate}}
+         ^
+"Test_name.c", line 13: note: number of parameters of function "X0::X0(X0 &&)" does not match the call
+  struct X0 { // expected-note 8{{candidate}}
+         ^
+"Test_name.c", line 14: note: function "X0::X0(int *, float *)" does not match because argument #2 does not match parameter
+    X0(int*, float*); // expected-note 4{{candidate}}
+    ^
+          detected during instantiation of "Ret f1(Ret *, T, U) [with Ret=X0, T=int *, U=double *]" at line 36
+
+"Test_name.c", line 31: error: no instance of constructor "X0::X0" matches the argument list
+            argument types are: (int *, double *)
+    return Ret(t, u); // expected-error{{no matching}}
+           ^
+"Test_name.c", line 13: note: number of parameters of function "X0::X0(const X0 &)" does not match the call
+  struct X0 { // expected-note 8{{candidate}}
+         ^
+"Test_name.c", line 13: note: number of parameters of function "X0::X0(X0 &&)" does not match the call
+  struct X0 { // expected-note 8{{candidate}}
+         ^
+"Test_name.c", line 14: note: function "X0::X0(int *, float *)" does not match because argument #2 does not match parameter
+    X0(int*, float*); // expected-note 4{{candidate}}
+    ^
+          detected during instantiation of "Ret f1(Ret *, T, U) [with Ret=X0, T=int *, U=double *]" at line 36
+
+8 errors detected in the compilation of "Test_name.c".

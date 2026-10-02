@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=2 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 --c++ Test_name.c
+"Test_name.c", line 13: error: type name is not allowed
+    _Generic(int, int : 0);
+             ^
+
+"Test_name.c", line 19: error: expected an expression
+    _Generic(struct S, default : 0);
+             ^
+
+"Test_name.c", line 20: error: expected an expression
+    _Generic(enum E, default : 0);
+             ^
+
+"Test_name.c", line 21: error: expected an expression
+    _Generic(union U, default : 0);
+             ^
+
+"Test_name.c", line 24: error: type name is not allowed
+    _Generic(int[12], default : 0);
+             ^
+
+"Test_name.c", line 27: error: expected an expression
+    _Generic(int(*)[12], default : 0);
+                  ^
+
+"Test_name.c", line 30: error: expected an expression
+    _Generic((int), int : 0); // expected-error {{expected expression}}
+                  ^
+
+"Test_name.c", line 35: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+    _Generic(__typeof__(foo())(*)(__typeof__(&foo)), int (*)(int (*)()) : 0); // cpp-error {{expected expression}} \
+                        ^
+
+"Test_name.c", line 35: error: expected an expression
+    _Generic(__typeof__(foo())(*)(__typeof__(&foo)), int (*)(int (*)()) : 0); // cpp-error {{expected expression}} \
+                                ^
+
+"Test_name.c", line 35: error: type name is not allowed
+    _Generic(__typeof__(foo())(*)(__typeof__(&foo)), int (*)(int (*)()) : 0); // cpp-error {{expected expression}} \
+                                  ^
+
+"Test_name.c", line 35: error: type name is not allowed
+    _Generic(__typeof__(foo())(*)(__typeof__(&foo)), int (*)(int (*)()) : 0); // cpp-error {{expected expression}} \
+             ^
+
+"Test_name.c", line 40: error: expected an expression
+    _Generic(struct T { int a; }, default : 0); // cpp-error {{'T' cannot be defined in a type specifier}}
+             ^
+
+"Test_name.c", line 59: error: type name is not allowed
+    _Generic(S<int>::T<inst>::foo, int : 1);
+             ^
+
+"Test_name.c", line 63: warning: expression has no effect
+    _Generic(S<int>::T<inst>::foo{}, int : 1);
+    ^
+
+"Test_name.c", line 66: error: type name is not allowed
+  template <typename Ty, int N = _Generic(Ty, int : 0, default : 1)>
+                                          ^
+
+14 errors detected in the compilation of "Test_name.c".

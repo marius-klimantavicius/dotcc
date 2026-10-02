@@ -1,0 +1,7 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 4: remark: class "S" defines no constructor to initialize the following:
+            const member "S::i"
+            const member "S::j"
+    struct S {
+           ^
+

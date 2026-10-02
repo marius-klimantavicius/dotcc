@@ -1,0 +1,5 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 --c++11 Test_name.c
+"./torture/stackalign/eh-fastcall-1.C", line 22: warning: attribute is supported only in 32-bit x86 configurations
+  __attribute__ ((fastcall))
+                  ^
+

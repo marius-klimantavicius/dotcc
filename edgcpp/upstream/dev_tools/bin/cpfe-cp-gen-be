@@ -1,0 +1,223 @@
+#!/bin/bash
+
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+# Run the cp_gen_be version of the front end, which should be an
+# identity transformation, followed by the normal front end to
+# compile the generated source code to K&R C.
+#
+# CPFEA must be set to the cp_gen_be front-end
+# CPFEB must be set to the c_gen_be front-end
+#
+# No need to worry about multi trans, you can't do that with cp_gen_be
+#
+if [[ -z "${CPFEA}" ]]; then
+   echo "CPFEA must be set to the CPFE cp_gen_be front-end";
+   exit 1;
+fi
+if [[ -z "${CPFEB}" ]]; then
+   echo "CPFEB must be set to the CPFE c_gen_be front-end";
+   exit 1;
+fi
+status=0
+argsa=()
+filelist=
+argsb=()
+preprocess_only=0
+save_interm_file=0
+temp_dir=$(mktemp -d)
+trap "rm -fr $temp_dir" EXIT
+dir=`pwd`
+dir2=`dirname $dir`
+if [ "$dir2" = "/tmp" ]; then
+  # We're probably in run_test.  Use a temporary directory under the
+  # current one, and save the intermediate file in case there are
+  # exported templates.  The intermediate file and directory will
+  # be deleted when run_test cleans up.
+  temp_dir="./cpfe-cp-gen-be"
+  if [ ! -d $temp_dir ]; then
+    mkdir $temp_dir
+  fi
+  save_interm_file=1
+fi
+
+derive_generated_file_name() {
+  src=`basename $1`
+  echo "$temp_dir/$src"
+}
+
+for arg in "$@"
+do
+  case $arg in
+    --version)
+	# this for run_my_tests
+	exit 0
+	;;
+    -i* | \
+    --no_defer* |\
+    --inlining | --no_inl*| \
+    -n | --no_code_gen | \
+    --ii_file=* | \
+    --gen_c_file_name=* | \
+    --template_info_file=* | \
+    --one_instantiation_per_object | \
+    --one | \
+    --instantiation_dir=* | \
+    -T |\
+    --auto_instantiation | \
+    --no_auto_instantiation | \
+    --template_dir | \
+    --definition_list_file=*)
+      # Options that only go on the second compilation.
+      argsb+=("$arg")
+      ;;
+    -d-dump_builtins | \
+    --module_interface | \
+    --preinclude=*)
+      # Options that only go on the first compilation.
+      argsa+=("$arg")
+      ;;
+    --il*)
+      # --il_display either goes on the first or second compilation.
+      if [ -z "$CPFEA_IL_DISPLAY" ]; then
+        argsb+=("$arg")
+      else
+        argsa+=("$arg")
+      fi
+      ;;
+    -N | --no_il*)
+      # --no_il either gets dropped or goes on the second compilation.
+      if [ -z "$CPFEB_IS_CPGEN" ]; then
+        argsb+=("$arg")
+      fi
+      ;;
+    -E | --preprocess | \
+    -H | --trace_includes | \
+    -M | --dependencies | \
+    -P | --no_line_commands)
+      # Preprocessing-only options suppress the second compilation.
+      argsa+=("$arg")
+      preprocess_only=1
+      ;;
+    --no_preproc_only)
+      # Turn the second compilation back on.
+      argsa+=("$arg")
+      argsb+=("$arg")
+      preprocess_only=0
+      ;;
+      --cpfe_only | \
+      -c)
+	# does not go on either line
+	;;
+      -*)
+      # Other options go on both lists.  This must be tested before *.c
+      # etc.  because some options end with file name arguments.
+      argsa+=("$arg")
+      argsb+=("$arg")
+      ;;
+    *\.c | *\.C | *\.cc | *\.cpp | *\.CPP | *\.cxx | *\.CXX | *\.ixx)
+      # Source file: filelist gets the original form, argsb gets the form
+      # with the directory changed to the temp_dir directory.
+      if [ "$filelist" = "" ]; then
+        # Stick a -w into the argsb list at this point so it appears before the
+        # source file name but after any other options that affect the level
+        # of diagnostics.
+        argsb+=("-w")
+      fi
+      filelist=$filelist" "$arg
+      int_file=$(derive_generated_file_name "$arg")
+      argsa+=("--gen_c_file_name=$int_file")
+      argsb+=("$int_file")
+      ;;
+    *)
+      # Anything else goes on both lists.
+      argsa+=("$arg")
+      argsb+=("$arg")
+      ;;
+  esac
+done
+if [ "$filelist" = "" ]; then
+  exec $CPFEA "${argsa[@]}"
+fi
+for ff in $filelist
+do
+  # If there is a .ti or .ii file for the current file in the current
+  # directory, save it and restore it later.  While most cp_gen_be versions
+  # don't do template instantiation, SSI versions do and might incorrectly
+  # delete the files because they don't see all of the source files at
+  # once when we're in multi-trans-unit mode.
+  base=$(basename "$ff" | cut -d. -f1)
+  rm -f $temp_dir/$base.ii $temp_dir/$base.ti
+  if [ -f $base.ii ]; then
+    cp $base.ii $temp_dir/$base.ii
+  fi
+  if [ -f $base.ti ]; then
+    cp $base.ti $temp_dir/$base.ti
+  fi
+  # Compile the source file to a .int.c file in the current directory,
+  # the .int.c file containing source code in the same language as the source
+  # file (source-to-source translation).
+  #
+  # The line below is used in normalize_test_output for "Aborted"
+  $CPFEA "${argsa[@]}" $ff
+  # Note if there were errors on the compilation.
+  local_status=$?
+  if [ $local_status -gt 1 -a $local_status -gt $status ]; then
+    # Some error on the compilation.
+    status=$local_status
+  fi
+  if [ $preprocess_only -eq 0 ]; then
+    # Move or delete the generated file.
+    if [ $local_status -gt 1 ]; then
+      rm -f $base.int.c
+    else
+      if [ "$EDG_TEST_DUMP_GENERATED_CODE" == "1" ] ; then
+        echo "Generated file content for \"$ff\":"
+        cat $(derive_generated_file_name "$ff") | sed 's/^/  /g'
+      fi
+      # Move the generated .int.c file to the temporary directory with the
+      # original (.c or .C) file name.
+#      src=`basename $ff`
+#      temp_src=$temp_dir/$src
+#      rm -f $temp_src
+#      mv $base.int.c $temp_src
+      # Make sure the intermediate C file has the same time as its original.
+      touch -r $ff $int_file
+    fi
+  fi
+  # Restore the .ti and .ii files
+  if [ -f $temp_dir/$base.ii ]; then
+    rm -f $base.ii
+    mv $temp_dir/$base.ii $base.ii
+  fi
+  if [ -f $temp_dir/$base.ti ]; then
+    rm -f $base.ti
+    mv $temp_dir/$base.ti $base.ti
+  fi
+done
+# Skip the second compilation if preprocessing only is being done.
+if [ $preprocess_only -eq 0 ]; then
+  if [ $status -eq 0 ]; then
+    # Compile the generated file to get C code in a .int.c file in the current
+    # directory.
+    # This doesn't use $CPFE on purpose, since $CPFE is likely to point at
+    # the present script.
+    $CPFEB "${argsb[@]}"
+    status=$?
+  fi
+  # Get rid of generated files.
+  # The intermediate files are saved when exported templates might be
+  # involved, in run_tests.
+  if [ $save_interm_file -eq 0 ]; then
+    for ff in $filelist
+    do
+      src=`basename $ff`
+      temp_src=$temp_dir/$src
+      rm -f $temp_src
+    done
+  fi
+fi
+exit $status

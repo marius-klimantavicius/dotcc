@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 21: error: incomplete type "same<const int **, const int *const *>" is not allowed
+    same<decltype(true ? fn<T>() : fn<U>()), RES> s;
+                                                  ^
+          detected during instantiation of "void test<T,U,RES>() [with T=int **, U=const int **, RES=const int *const *]" at line 46
+
+"Test_name.c", line 21: error: incomplete type "same<const int *volatile *, const int *const volatile *>" is not allowed
+    same<decltype(true ? fn<T>() : fn<U>()), RES> s;
+                                                  ^
+          detected during instantiation of "void test<T,U,RES>() [with T=int *volatile *, U=const int **, RES=const int *const volatile *]" at line 47
+
+"Test_name.c", line 21: error: incomplete type "same<volatile int **, volatile int *const *>" is not allowed
+    same<decltype(true ? fn<T>() : fn<U>()), RES> s;
+                                                  ^
+          detected during instantiation of "void test<T,U,RES>() [with T=int **, U=volatile int **, RES=volatile int *const *]" at line 48
+
+"Test_name.c", line 21: error: incomplete type "same<const volatile int *A::*, const volatile int *const A::*>" is not allowed
+    same<decltype(true ? fn<T>() : fn<U>()), RES> s;
+                                                  ^
+          detected during instantiation of "void test<T,U,RES>() [with T=const int *A::*, U=volatile int *A::*, RES=const volatile int *const A::*]" at line 56
+
+4 errors detected in the compilation of "Test_name.c".

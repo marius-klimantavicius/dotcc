@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 10: warning: variable "b" is used before its value is set
+      char c[b];
+             ^
+
+"Test_name.c", line 10: warning: variable-length array field type will be treated as zero-length array field type
+      char c[b];
+             ^
+
+"Test_name.c", line 11: error: expected a ";"
+    } bar() {
+            ^
+
+"Test_name.c", line 15: warning: parsing restarts here after previous syntax error
+    } (*d)();
+            ^
+
+"Test_name.c", line 16: error: expected a ";"
+    struct bar e() { struct bar f; }
+                   ^
+
+"Test_name.c", line 18: warning: function "d" declared implicitly
+    sizeof(d());
+           ^
+
+"Test_name.c", line 18: warning: expression has no effect
+    sizeof(d());
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

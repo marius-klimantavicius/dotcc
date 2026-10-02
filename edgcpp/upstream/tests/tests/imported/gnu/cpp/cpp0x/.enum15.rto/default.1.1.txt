@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 13: error: this constant expression has type "int" instead of the required "A" type
+      case 1: break;		// { dg-error "" }
+           ^
+
+"Test_name.c", line 18: error: this constant expression has type "A" instead of the required "int" type
+      case A::Val0: break;	// { dg-error "" }
+           ^
+
+"Test_name.c", line 20: error: this constant expression has type "double" instead of the required "int" type
+      case 2.0: break;            // { dg-error "" }
+           ^
+
+3 errors detected in the compilation of "Test_name.c".

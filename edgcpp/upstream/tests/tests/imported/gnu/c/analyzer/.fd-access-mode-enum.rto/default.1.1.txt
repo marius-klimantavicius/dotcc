@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 19: warning: unknown attribute "fd_arg"
+  void f (int fd) __attribute__((fd_arg(1))); /* { dg-message "argument 1 of 'f' must be an open file descriptor, due to '__attribute__\\(\\(fd_arg\\(1\\)\\)\\)'" } */
+                                 ^
+
+"Test_name.c", line 30: warning: unknown attribute "fd_arg_read"
+  void g (int fd) __attribute__((fd_arg_read(1))); /* { dg-message "argument 1 of 'g' must be a readable file descriptor, due to '__attribute__\\(\\(fd_arg_read\\(1\\)\\)\\)'" } */
+                                 ^
+
+"Test_name.c", line 43: warning: unknown attribute "fd_arg_write"
+  void h (int fd) __attribute__((fd_arg_write(1))); /* { dg-message "argument 1 of 'h' must be a writable file descriptor, due to '__attribute__\\(\\(fd_arg_write\\(1\\)\\)\\)'" } */
+                                 ^
+
+"Test_name.c", line 55: warning: unknown attribute "fd_arg"
+  void ff (int fd) __attribute__((fd_arg(1))); /* { dg-message "argument 1 of 'ff' must be an open file descriptor, due to '__attribute__\\(\\(fd_arg\\(1\\)\\)\\)'" } */
+                                  ^
+

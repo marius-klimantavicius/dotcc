@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 6: warning: unknown attribute "noescape"
+  void noescapefunc(__attribute__((noescape)) int *);
+                                   ^
+
+"Test_name.c", line 8: warning: unknown attribute "noescape"
+  void (*noescapefuncptr)(__attribute__((noescape)) int *);
+                                         ^
+
+"Test_name.c", line 10: warning: unknown attribute "noescape"
+  void func_ne(__attribute__((noescape)) int *, int *);
+                              ^
+
+"Test_name.c", line 11: warning: unknown attribute "noescape"
+  void func_en(int *, __attribute__((noescape)) int *);
+                                     ^
+
+"Test_name.c", line 14: warning: unknown attribute "noescape"
+  void (*funcptr_nn)(__attribute__((noescape)) int *, __attribute__((noescape)) int *);
+                                    ^
+
+"Test_name.c", line 14: warning: unknown attribute "noescape"
+  void (*funcptr_nn)(__attribute__((noescape)) int *, __attribute__((noescape)) int *);
+                                                                     ^
+

@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./tree-ssa/vrp98.c", line 9: error: expected a ";"
+  typedef unsigned __int128 bigger_than_word;
+                            ^
+
+"./tree-ssa/vrp98.c", line 12: error: identifier "bigger_than_word" is undefined
+  foo (bigger_than_word a, word b, uint8_t c)
+       ^
+
+"./tree-ssa/vrp98.c", line 21: warning: type qualifier is meaningless on cast type
+    const uint32_t t3 = (const uint32_t)(c >> 1);
+                         ^
+
+2 errors detected in the compilation of "Test_name.c".

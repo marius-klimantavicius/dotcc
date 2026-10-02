@@ -1,0 +1,58 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 44: error: a module cannot have an interface dependency on itself
+  import p7;
+         ^
+
+"Test_name.c", line 49: warning: variable "c" was declared but never referenced
+    int c = reachable.value;
+        ^
+
+"Test_name.c", line 51: warning: variable "e" was declared but never referenced
+    int e = decltype(reachable)::a;
+        ^
+
+"Test_name.c", line 53: warning: variable "g" was declared but never referenced
+    typename decltype(reachable)::typedef_type g;
+                                               ^
+
+"Test_name.c", line 54: warning: variable "h" was declared but never referenced
+    typename decltype(reachable)::using_type h;
+                                             ^
+
+"Test_name.c", line 55: warning: variable "j" was declared but never referenced
+    typename decltype(reachable)::template templ_using_type<int> j;
+                                                                 ^
+
+"Test_name.c", line 60: warning: variable "a" was declared but never referenced
+    auto a = E1::e1;               // OK, namespace-scope name E1 is visible and e1 is reachable
+         ^
+
+"Test_name.c", line 61: warning: variable "b" was declared but never referenced
+    auto b = e1;                   // OK, namespace-scope name e1 is visible
+         ^
+
+"Test_name.c", line 62: warning: variable "c" was declared but never referenced
+    auto c = E2::e2;               // expected-error {{use of undeclared identifier 'E2'}}
+         ^
+
+"Test_name.c", line 63: warning: variable "d" was declared but never referenced
+    auto d = e2;                   // expected-error {{use of undeclared identifier 'e2'}}
+         ^
+
+"Test_name.c", line 64: warning: variable "e" was declared but never referenced
+    auto e = E2U::e2;              // OK, namespace-scope name E2U is visible and E2::e2 is reachable
+         ^
+
+"Test_name.c", line 65: warning: variable "f" was declared but never referenced
+    auto f = E3::e3;               // expected-error {{use of undeclared identifier 'E3'}}
+         ^
+
+"Test_name.c", line 66: warning: variable "g" was declared but never referenced
+    auto g = e3;                   // expected-error {{use of undeclared identifier 'e3'}}
+         ^
+
+"Test_name.c", line 67: warning: variable "h" was declared but never referenced
+    auto h = decltype(func())::e3; // OK, namespace-scope name f is visible and E3::e3 is reachable
+         ^
+
+1 error detected in the compilation of "Test_name.c".

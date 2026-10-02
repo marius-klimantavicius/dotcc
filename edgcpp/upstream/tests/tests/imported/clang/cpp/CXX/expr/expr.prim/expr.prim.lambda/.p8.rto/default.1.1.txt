@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 9: error: a name cannot appear more than once in a capture-list
+      (void)[foo, foo] () {}; // expected-error {{'foo' can appear only once}}
+                  ^
+
+"Test_name.c", line 9: warning: variable "foo" is used before its value is set
+      (void)[foo, foo] () {}; // expected-error {{'foo' can appear only once}}
+             ^
+
+"Test_name.c", line 10: error: a name cannot appear more than once in a capture-list
+      (void)[this, this] () {}; // expected-error {{'this' can appear only once}}
+                   ^
+
+"Test_name.c", line 11: error: explicit capture matches default
+      (void)[=, foo] () {}; // expected-error {{'&' must precede a capture when}}
+                ^
+
+"Test_name.c", line 13: error: explicit capture matches default
+      (void)[=, this] () {}; // expected-warning {{C++20 extension}}
+                ^
+
+"Test_name.c", line 15: error: explicit capture matches default
+      (void)[&, &foo] () {}; // expected-error {{'&' cannot precede a capture when}} 
+                ^
+
+"Test_name.c", line 27: error: explicit capture matches default
+    (void)[&, &i]{ }; // expected-error{{'&' cannot precede a capture when the capture default is '&'}}
+              ^
+
+"Test_name.c", line 28: error: explicit capture matches default
+    (void)[=, this]{ }; // expected-warning{{C++20 extension}}
+              ^
+
+"Test_name.c", line 30: error: a name cannot appear more than once in a capture-list
+    (void)[i, i]{ }; // expected-error{{'i' can appear only once in a capture list}}
+              ^
+
+"Test_name.c", line 31: error: a name cannot appear more than once in a capture-list
+    (void)[i(0), i(1)]{ }; // expected-error{{'i' can appear only once in a capture list}}
+                 ^
+
+"Test_name.c", line 32: error: a name cannot appear more than once in a capture-list
+    (void)[i, i(1)]{ }; // expected-error{{'i' can appear only once in a capture list}}
+              ^
+
+"Test_name.c", line 33: error: a name cannot appear more than once in a capture-list
+    (void)[i(0), i]{ }; // expected-error{{'i' can appear only once in a capture list}}
+                 ^
+
+11 errors detected in the compilation of "Test_name.c".

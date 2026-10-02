@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 36: warning: statement is unreachable
+    return std::move (A()); // { dg-warning "moving a temporary object prevents copy elision" }
+    ^
+
+"Test_name.c", line 37: warning: statement is unreachable
+    return std::move (foo ()); // { dg-warning "moving a temporary object prevents copy elision" }
+    ^
+
+"Test_name.c", line 43: warning: statement is unreachable
+    return std::move (A{}); // { dg-warning "moving a temporary object prevents copy elision" }
+    ^
+
+"Test_name.c", line 44: warning: statement is unreachable
+    return std::move (foo ()); // { dg-warning "moving a temporary object prevents copy elision" }
+    ^
+
+"Test_name.c", line 30: warning: function "foo" was referenced but not defined
+  static A foo ();
+           ^
+

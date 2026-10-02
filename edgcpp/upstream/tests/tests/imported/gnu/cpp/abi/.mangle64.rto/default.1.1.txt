@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 --no_strict_gnu Test_name.c
+"Test_name.c", line 7: error: identifier "__int20" is undefined
+  __int20 x;
+  ^
+
+"Test_name.c", line 9: error: identifier "__int20" is undefined
+  __int20 foo (__int20 a, unsigned __int20 b)
+  ^
+
+"Test_name.c", line 9: error: identifier "__int20" is undefined
+  __int20 foo (__int20 a, unsigned __int20 b)
+               ^
+
+"Test_name.c", line 9: error: expected a ")"
+  __int20 foo (__int20 a, unsigned __int20 b)
+                                           ^
+
+"Test_name.c", line 11: error: identifier "b" is undefined
+    return a + b;
+               ^
+
+5 errors detected in the compilation of "Test_name.c".

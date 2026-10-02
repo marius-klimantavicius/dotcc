@@ -1,0 +1,59 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 --exceptions --exceptions Test_name.c
+"Test_name.c", line 92: warning: dynamic exception specifications are deprecated
+    void f0(void p() throw(int));
+                     ^
+
+"Test_name.c", line 115: warning: dynamic exception specifications are deprecated
+    template<typename T> void g(void() throw(T)); // expected-note {{substitution failure}}
+                                       ^
+
+"Test_name.c", line 115: error: incomplete type "void" is not allowed
+    template<typename T> void g(void() throw(T)); // expected-note {{substitution failure}}
+                                             ^
+          detected during instantiation of "CompatWarning::g" based on template argument <void> at line 117
+
+"Test_name.c", line 121: error: expression must have bool type (or be convertible to bool)
+    template<typename T> void h(void() noexcept(T())); // expected-note {{substitution failure}}
+                                                ^
+          detected during instantiation of "CompatWarning::h" based on template argument <void> at line 123
+
+"Test_name.c", line 140: error: expression must have a constant value
+    typedef int arr[strcmp("bar", "foo") + 4 * strncmp("foo", "bar", 4)]; // expected-warning {{variable length array folded to constant array as an extension}} \
+                    ^
+"Test_name.c", line 140: note: cannot call non-constexpr function "Builtins::strcmp" (declared at line 136)
+    typedef int arr[strcmp("bar", "foo") + 4 * strncmp("foo", "bar", 4)]; // expected-warning {{variable length array folded to constant array as an extension}} \
+                    ^
+
+"Test_name.c", line 179: error: function "operator delete(void *, OperatorDelete::W)" (declared at line 168) cannot be referenced -- it is a deleted function
+    A *w = new (W{}) A; // expected-error {{deleted function}}
+           ^
+
+"Test_name.c", line 180: error: function "operator delete(void *, OperatorDelete::X)" (declared at line 170) cannot be referenced -- it is a deleted function
+    A *x = new (X{}) A; // expected-error {{deleted function}}
+           ^
+
+"Test_name.c", line 181: error: function "operator delete(void *, OperatorDelete::Y)" (declared at line 172) cannot be referenced -- it is a deleted function
+    A *y = new (Y{}) A; // expected-error {{deleted function}}
+           ^
+
+"Test_name.c", line 182: error: function "operator delete(void *, OperatorDelete::Z)" (declared at line 174) cannot be referenced -- it is a deleted function
+    A *z = new (Z{}) A; // expected-error {{deleted function}}
+           ^
+
+"Test_name.c", line 184: error: function "operator delete(void *, OperatorDelete::T<N, D>) [with N=false, D=false]" (declared at line 176) cannot be referenced -- it is a deleted function
+    A *t00 = new (T<false, false>{}) A; // expected-error {{deleted function}}
+             ^
+
+"Test_name.c", line 185: error: function "operator delete(void *, OperatorDelete::T<N, D>) [with N=false, D=true]" (declared at line 176) cannot be referenced -- it is a deleted function
+    A *t01 = new (T<false, true>{}) A; // expected-error {{deleted function}}
+             ^
+
+"Test_name.c", line 186: error: function "operator delete(void *, OperatorDelete::T<N, D>) [with N=true, D=false]" (declared at line 176) cannot be referenced -- it is a deleted function
+    A *t10 = new (T<true, false>{}) A; // expected-error {{deleted function}}
+             ^
+
+"Test_name.c", line 187: error: function "operator delete(void *, OperatorDelete::T<N, D>) [with N=true, D=true]" (declared at line 176) cannot be referenced -- it is a deleted function
+    A *t11 = new (T<true, true>{}) A; // expected-error {{deleted function}}
+             ^
+
+11 errors detected in the compilation of "Test_name.c".

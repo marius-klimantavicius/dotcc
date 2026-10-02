@@ -1,0 +1,31 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc -E Test_name.c
+# 1 "Test_name.c"
+
+
+ 
+
+#pragma GCC poison foo
+foo			 
+#pragma GCC poison foo2 foo3
+foo2			 
+foo3			 
+#pragma GCC poison	foo4 	foo5
+foo4			 
+foo5			 
+#pragma GCC poison +++	 
+
+#pragma GCC poison foo6	 
+"Test_name.c", line 16: warning: incompatible redefinition of macro "foo6" (declared at line 14)
+  #define foo6 345	/* { dg-error "foo6" "def of foo6" } */
+          ^
+
+"Test_name.c", line 17: warning: incompatible redefinition of macro "foo6" (declared at line 16)
+  #define foo6 456	/* { dg-error "foo6" "redef of foo6" } */
+          ^
+
+"Test_name.c", line 19: catastrophic error: #error directive: hey! foo6 defined!
+  #error hey! foo6 defined!
+   ^
+
+1 catastrophic error detected in the compilation of "Test_name.c".
+Compilation terminated.

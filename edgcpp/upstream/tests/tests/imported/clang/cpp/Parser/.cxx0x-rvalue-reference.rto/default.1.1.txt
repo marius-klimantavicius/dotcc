@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 8: warning: type qualifiers are meaningless here
+  void r2(const R a) { // expected-warning {{'const' qualifier on reference type 'R' (aka 'int &&') has no effect}}
+          ^
+
+"Test_name.c", line 9: error: reference to reference is not allowed
+    int & &&ar = a; // expected-error{{'ar' declared as a reference to a reference}}
+          ^
+
+1 error detected in the compilation of "Test_name.c".

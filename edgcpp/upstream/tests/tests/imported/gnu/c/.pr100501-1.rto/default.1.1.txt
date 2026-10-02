@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 23: warning: statement is unreachable
+    __asm__ ("" : : "m" (({ return; }))); /* { dg-error "memory input 0 is not directly addressable" } */
+    ^
+
+"Test_name.c", line 24: warning: statement is unreachable
+    __asm__ ("" : : "m" (({ while (1); }))); /* { dg-error "memory input 0 is not directly addressable" } */
+    ^
+
+"Test_name.c", line 25: warning: statement is unreachable
+    __asm__ ("" : : "m" (({ do {} while (1); }))); /* { dg-error "memory input 0 is not directly addressable" } */
+    ^
+
+"Test_name.c", line 26: warning: statement is unreachable
+    __asm__ ("" : : "m" (({ for (;;); }))); /* { dg-error "memory input 0 is not directly addressable" } */
+    ^
+
+"Test_name.c", line 27: warning: statement is unreachable
+    __asm__ ("" : : "m" (({ switch (x); }))); /* { dg-error "memory input 0 is not directly addressable" } */
+    ^
+

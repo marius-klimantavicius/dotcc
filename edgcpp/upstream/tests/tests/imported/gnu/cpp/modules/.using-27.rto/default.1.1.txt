@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 --modules Test_name.c
+"Test_name.c", line 14: warning: using-declaration ignored -- it refers to the current namespace
+  export using ::x;  // { dg-error "does not have external linkage" }
+               ^
+
+"Test_name.c", line 15: warning: using-declaration ignored -- it refers to the current namespace
+  export using ::f;  // { dg-error "does not have external linkage" }
+               ^
+
+"Test_name.c", line 16: warning: using-declaration ignored -- it refers to the current namespace
+  export using ::T;  // { dg-error "does not have external linkage" }
+               ^
+
+"Test_name.c", line 8: warning: variable "x" was declared but never referenced
+  static int x = 123;   // { dg-message "declared here with internal linkage" }
+             ^
+
+"Test_name.c", line 9: warning: function "f" was declared but never referenced
+  static void f() {}    // { dg-message "declared here with internal linkage" }
+              ^
+

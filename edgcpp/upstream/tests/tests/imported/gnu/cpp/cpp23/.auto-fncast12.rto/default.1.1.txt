@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++23 Test_name.c
+"Test_name.c", line 9: error: expected a "<"
+  auto y = C auto(1);   // { dg-error "cannot be constrained" }
+             ^
+
+"Test_name.c", line 10: error: expected a "<"
+  auto z = C auto{1};   // { dg-error "cannot be constrained" }
+             ^
+
+2 errors detected in the compilation of "Test_name.c".

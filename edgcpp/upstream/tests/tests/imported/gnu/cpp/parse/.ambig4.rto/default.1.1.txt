@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 19: error: "hide" is ambiguous
+    F(hide::j); // { dg-error "ambiguous" }
+      ^
+
+"Test_name.c", line 10: warning: variable "<unnamed>::i" was declared but never referenced
+    int i; 
+        ^
+
+"Test_name.c", line 12: warning: variable "<unnamed>::hide::j" was declared but never referenced
+      int j; 
+          ^
+
+1 error detected in the compilation of "Test_name.c".

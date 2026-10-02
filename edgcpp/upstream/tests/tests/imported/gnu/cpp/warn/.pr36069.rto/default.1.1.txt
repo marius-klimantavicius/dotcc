@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 10: warning: use of the result of an assignment to a volatile scalar object is deprecated
+    foo() { a = b = c = false; } // { dg-bogus "parentheses" }
+                    ^
+
+"Test_name.c", line 10: warning: use of the result of an assignment to a volatile scalar object is deprecated
+    foo() { a = b = c = false; } // { dg-bogus "parentheses" }
+                ^
+
+"Test_name.c", line 17: warning: use of the result of an assignment to a volatile scalar object is deprecated
+    a = b = c = false; // { dg-bogus "parentheses" }
+            ^
+
+"Test_name.c", line 17: warning: use of the result of an assignment to a volatile scalar object is deprecated
+    a = b = c = false; // { dg-bogus "parentheses" }
+        ^
+
+"Test_name.c", line 15: warning: variable "a" was set but never used
+    bool a;
+         ^
+

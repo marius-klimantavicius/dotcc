@@ -1,0 +1,17 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 16: warning: unknown attribute "gnu::noipa"
+  [[gnu::noipa]] void
+    ^
+
+"Test_name.c", line 35: warning: function "operator new(unsigned long, void *)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+    B *b2 = new (m2) B (1, 2);
+            ^
+
+"Test_name.c", line 47: warning: unknown attribute "gnu::noipa"
+  [[gnu::noipa]] void
+    ^
+
+"Test_name.c", line 53: warning: unknown attribute "gnu::noipa"
+  [[gnu::noipa]] void
+    ^
+

@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 6: error: identifier "_Decimal128" is undefined
+  foo(_Decimal128 x, _Decimal128 y)
+      ^
+
+"Test_name.c", line 6: error: identifier "_Decimal128" is undefined
+  foo(_Decimal128 x, _Decimal128 y)
+                     ^
+
+"Test_name.c", line 15: error: identifier "_Decimal128" is undefined
+  bar(_Decimal128 x)
+      ^
+
+"Test_name.c", line 17: error: extra text after expected end of number
+    return foo (x, -1.0DL * __builtin_infd32());
+                       ^
+
+"Test_name.c", line 17: warning: function "__builtin_infd32" declared implicitly
+    return foo (x, -1.0DL * __builtin_infd32());
+                            ^
+
+"Test_name.c", line 23: error: extra text after expected end of number
+    int res = bar (0.0DL);
+                      ^
+
+5 errors detected in the compilation of "Test_name.c".

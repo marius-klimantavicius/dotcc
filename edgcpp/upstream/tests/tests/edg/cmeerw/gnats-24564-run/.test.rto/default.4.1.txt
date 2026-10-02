@@ -1,0 +1,3 @@
+eccp -DTEST_NUMBER=4 -tused tu2.cpp --ms_c++17 --microsoft_version 1927 Test_name.c
+tu2.cpp:
+Test_name.c:

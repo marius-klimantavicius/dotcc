@@ -1,0 +1,53 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 29: error: static assertion failed with ""
+    static_assert(C1<S1>, ""); // { dg-error "static assertion failed" }
+    ^
+
+"Test_name.c", line 30: error: static assertion failed with ""
+    static_assert(C2<S1>, ""); // { dg-error "static assertion failed" }
+    ^
+
+"Test_name.c", line 31: error: static assertion failed with ""
+    static_assert(C3<S1>, ""); // { dg-error "static assertion failed" }
+    ^
+
+"Test_name.c", line 47: error: no instance of function template "f1" matches the argument list
+    f1<S1>(); // { dg-error "no match" }
+    ^
+"Test_name.c", line 36: note: substituting "<S1>" for function template "f1" failed constraints
+  void f1() { }
+       ^
+"Test_name.c", line 35: note: concept "C1" not satisfied for "<S1>"
+    requires C1<T>
+             ^
+"Test_name.c", line 8: note: atomic constraint evaluates to false
+  concept C1 = requires (T& t) { // { dg-message "in requirements" }
+               ^
+
+"Test_name.c", line 48: error: no instance of function template "f2" matches the argument list
+    f2<S1>(); // { dg-error "no match" }
+    ^
+"Test_name.c", line 40: note: substituting "<S1>" for function template "f2" failed constraints
+  void f2() { }
+       ^
+"Test_name.c", line 39: note: concept "C2" not satisfied for "<S1>"
+    requires C2<T>
+             ^
+"Test_name.c", line 13: note: atomic constraint evaluates to false
+  concept C2 = requires (T& t) { // { dg-message "in requirements" }
+               ^
+
+"Test_name.c", line 49: error: no instance of function template "f3" matches the argument list
+    f3<S1>(); // { dg-error "no match" }
+    ^
+"Test_name.c", line 44: note: substituting "<S1>" for function template "f3" failed constraints
+  void f3() { }
+       ^
+"Test_name.c", line 43: note: concept "C3" not satisfied for "<S1>"
+    requires C3<T>
+             ^
+"Test_name.c", line 18: note: atomic constraint evaluates to false
+  concept C3 = requires { // { dg-message "in requirements" }
+               ^
+
+6 errors detected in the compilation of "Test_name.c".

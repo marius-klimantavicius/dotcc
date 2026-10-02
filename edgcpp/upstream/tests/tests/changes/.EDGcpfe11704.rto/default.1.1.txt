@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gcc Test_name.c
+"Test_name.c", line 12: error: identifier "MISSING" is undefined
+      case MISSING ... 10:    // had resulted in a segmentation violation
+           ^
+
+1 error detected in the compilation of "Test_name.c".

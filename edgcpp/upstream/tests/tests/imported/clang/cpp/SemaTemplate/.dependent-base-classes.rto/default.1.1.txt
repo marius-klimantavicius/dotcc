@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 11: error: nontype "T::apply" is not a template
+  struct X1 : T::apply<U> { }; // expected-error{{use 'template' keyword to treat 'apply' as a dependent template name}}
+                 ^
+
+"Test_name.c", line 14: error: vector is not a template
+  struct X2 : vector<T> { }; // expected-error{{no template named 'vector'}}
+              ^
+
+"Test_name.c", line 78: error: "Ambig::Derived<T>::type [with T=int]" is ambiguous
+      typedef typename Derived::type type; // expected-error{{member 'type' found in multiple base classes of different types}}
+                                ^
+          detected during instantiation of class "Ambig::Derived<T> [with T=int]" at line 82
+
+3 errors detected in the compilation of "Test_name.c".

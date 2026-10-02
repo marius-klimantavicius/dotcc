@@ -1,0 +1,102 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 62: warning: expression has no effect
+    __builtin_trap;                              // okay (if pointless)
+    ^
+
+"Test_name.c", line 98: error: invalid type conversion
+    a = static_cast<uintptr_t>(__builtin_trap);       // { dg-error "7:invalid .static_cast." }
+        ^
+
+"Test_name.c", line 99: error: invalid type conversion
+    a = static_cast<UINTPTR_E>(__builtin_trap);       // { dg-error "7:invalid .static_cast." }
+        ^
+
+"Test_name.c", line 104: error: invalid type conversion
+    a = reinterpret_cast<UINTPTR_E>(__builtin_trap);  // { dg-error "built-in" }
+        ^
+
+"Test_name.c", line 107: warning: arithmetic on pointer to void or function type
+    p = __builtin_trap + 0;            // { dg-error "built-in" }
+                       ^
+
+"Test_name.c", line 108: warning: arithmetic on pointer to void or function type
+    p = __builtin_trap - 0;            // { dg-error "built-in" }
+                       ^
+
+"Test_name.c", line 109: error: expression must be a pointer to a complete object type
+    a = __builtin_trap - p;            // { dg-error "built-in" }
+        ^
+
+"Test_name.c", line 110: error: expression must be a pointer to a complete object type
+    a = p - __builtin_trap;            // { dg-error "built-in" }
+        ^
+
+"Test_name.c", line 165: warning: variable "tp" was declared but never referenced
+      TestPointer<__builtin_trap> tp;         // { dg-error "built-in|could not convert" }
+                                  ^
+
+"Test_name.c", line 166: warning: variable "tr" was declared but never referenced
+      TestReference<__builtin_trap> tr;       // { dg-error "built-in|could not convert" }
+                                    ^
+
+"Test_name.c", line 168: warning: variable "tp1" was declared but never referenced
+      TestPointers<__builtin_trap> tp1;       // { dg-error "built-in|could not convert" }
+                                   ^
+
+"Test_name.c", line 169: warning: variable "tr1" was declared but never referenced
+      TestReferences<__builtin_trap> tr1;     // { dg-error "built-in|could not convert" }
+                                     ^
+
+"Test_name.c", line 171: warning: variable "tp2" was declared but never referenced
+      TestPointers<f, __builtin_trap> tp2;    // { dg-error "built-in|could not convert" }
+                                      ^
+
+"Test_name.c", line 172: warning: variable "tr2" was declared but never referenced
+      TestReferences<f, __builtin_trap> tr2;  // { dg-error "built-in|could not convert" }
+                                        ^
+
+"Test_name.c", line 174: warning: variable "tp3" was declared but never referenced
+      TestPointers<__builtin_trap, f> tp3;    // { dg-error "built-in|could not convert" }
+                                      ^
+
+"Test_name.c", line 175: warning: variable "tr3" was declared but never referenced
+      TestReferences<__builtin_trap, f> tr3;  // { dg-error "built-in|could not convert" }
+                                        ^
+
+"Test_name.c", line 185: warning: statement is unreachable
+    (void)a;
+    ^
+
+"Test_name.c", line 201: warning: variable "newp" was set but never used
+    OpNew *newp = &operator new;
+           ^
+
+"Test_name.c", line 206: warning: variable "delp" was set but never used
+    OpDelete *delp = &operator delete;
+              ^
+
+"Test_name.c", line 233: warning: variable "p" was set but never used
+      F *p = __builtin_abs;
+         ^
+
+"Test_name.c", line 246: warning: variable "p" was set but never used
+      F *p = abs;
+         ^
+
+"Test_name.c", line 259: warning: variable "p" was set but never used
+      F *p = __builtin_strlen;
+         ^
+
+"Test_name.c", line 271: warning: variable "p" was set but never used
+      F *p = strlen;
+         ^
+
+"Test_name.c", line 25: warning: function "func_arg" was referenced but not defined
+  static void func_arg (F*, ...);
+              ^
+
+"Test_name.c", line 52: warning: function "test_taking_address_of_gcc_builtin" was declared but never referenced
+  static F* test_taking_address_of_gcc_builtin ()
+            ^
+
+5 errors detected in the compilation of "Test_name.c".

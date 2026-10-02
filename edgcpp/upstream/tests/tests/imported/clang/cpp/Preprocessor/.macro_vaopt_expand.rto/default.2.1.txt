@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 -w -w Test_name.c
+"Test_name.c", line 23: error: expected a declaration
+  1: ELLIP_FUNC(F, LPAREN, 'a', 'b', RPAREN);
+  ^
+
+"Test_name.c", line 24: error: expected a declaration
+  2: ELLIP_FUNC(F LPAREN 'a', 'b' RPAREN);
+  ^
+
+"Test_name.c", line 32: error: expected a declaration
+  3: F(a, b, c) // replaced by f(0, a, b, c)
+  ^
+
+"Test_name.c", line 96: error: expected a declaration
+  17: SDEF(bar, 1, 2); // replaced by S bar = { 1, 2 };
+  ^
+
+"Test_name.c", line 104: error: expected a declaration
+  18: F()
+  ^
+
+5 errors detected in the compilation of "Test_name.c".

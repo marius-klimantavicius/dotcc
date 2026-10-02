@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 16: warning: unknown attribute "transaction_safe"
+  	__attribute__((transaction_safe)) Building (InputStream *stream);
+  	               ^
+
+"Test_name.c", line 17: warning: unknown attribute "transaction_safe"
+  	__attribute__((transaction_safe)) void freeGradients ();
+  	               ^
+

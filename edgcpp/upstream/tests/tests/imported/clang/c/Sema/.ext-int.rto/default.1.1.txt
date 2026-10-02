@@ -1,0 +1,98 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 9: warning: expression has no effect
+    b ? s30 : s31a;
+    ^
+
+"Test_name.c", line 10: warning: expression has no effect
+    b ? s31a : s30;
+    ^
+
+"Test_name.c", line 11: warning: expression has no effect
+    b ? s32 : 0;
+    ^
+
+"Test_name.c", line 53: error: static assertion failed with ""
+    _Static_assert(EXPR_HAS_TYPE(x32_s + x_int, int), "");
+    ^
+
+"Test_name.c", line 54: error: static assertion failed with ""
+    _Static_assert(EXPR_HAS_TYPE(x32_u + x_int, unsigned int), "");
+    ^
+
+"Test_name.c", line 55: error: static assertion failed with ""
+    _Static_assert(EXPR_HAS_TYPE(x32_s + x_uint, unsigned int), "");
+    ^
+
+"Test_name.c", line 56: error: static assertion failed with ""
+    _Static_assert(EXPR_HAS_TYPE(x32_u + x_uint, unsigned int), "");
+    ^
+
+"Test_name.c", line 57: error: static assertion failed with ""
+    _Static_assert(EXPR_HAS_TYPE(x4_s + x_int, int), "");
+    ^
+
+"Test_name.c", line 58: error: static assertion failed with ""
+    _Static_assert(EXPR_HAS_TYPE(x4_u + x_int, int), "");
+    ^
+
+"Test_name.c", line 59: error: static assertion failed with ""
+    _Static_assert(EXPR_HAS_TYPE(x4_s + x_uint, unsigned int), "");
+    ^
+
+"Test_name.c", line 60: error: static assertion failed with ""
+    _Static_assert(EXPR_HAS_TYPE(x4_u + x_uint, unsigned int), "");
+    ^
+
+"Test_name.c", line 23: warning: variable "x4_s" was set but never used
+    _BitInt(4) x4_s = 1;
+               ^
+
+"Test_name.c", line 24: warning: variable "x32_s" was set but never used
+    _BitInt(32) x32_s = 1;
+                ^
+
+"Test_name.c", line 25: warning: variable "x43_s" was set but never used
+    _BitInt(43) x43_s = 1;
+                ^
+
+"Test_name.c", line 26: warning: variable "x4_u" was set but never used
+    unsigned _BitInt(4) x4_u = 1;
+                        ^
+
+"Test_name.c", line 27: warning: variable "x43_u" was set but never used
+    unsigned _BitInt(43) x43_u = 1;
+                         ^
+
+"Test_name.c", line 28: warning: variable "x32_u" was set but never used
+    unsigned _BitInt(32) x32_u = 1;
+                         ^
+
+"Test_name.c", line 29: warning: variable "x_int" was set but never used
+    int x_int = 1;
+        ^
+
+"Test_name.c", line 30: warning: variable "x_uint" was set but never used
+    unsigned x_uint = 1;
+             ^
+
+"Test_name.c", line 71: error: static assertion failed with ""
+    _Static_assert(EXPR_HAS_TYPE(a2 * c, int), "");
+    ^
+
+"Test_name.c", line 65: warning: variable "a2" was set but never used
+    _BitInt(2) a2 = 1;
+               ^
+
+"Test_name.c", line 66: warning: variable "a3" was set but never used
+    _BitInt(3) a3 = 2;
+               ^
+
+"Test_name.c", line 67: warning: variable "a33" was set but never used
+    _BitInt(33) a33 = 1;
+                ^
+
+"Test_name.c", line 68: warning: variable "c" was set but never used
+    char c = 3;
+         ^
+
+9 errors detected in the compilation of "Test_name.c".

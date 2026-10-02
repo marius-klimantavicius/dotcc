@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 6: warning: unknown attribute "gnu::no_stack_protector"
+  [[gnu::no_stack_protector]] void test1() {}
+    ^
+
+"Test_name.c", line 7: warning: unknown attribute "clang::no_stack_protector"
+  [[clang::no_stack_protector]] void test2() {}
+    ^
+

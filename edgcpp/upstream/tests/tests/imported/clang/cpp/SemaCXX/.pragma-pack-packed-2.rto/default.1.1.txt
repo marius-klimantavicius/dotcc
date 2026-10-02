@@ -1,0 +1,58 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 7: warning: current value of pragma pack is not set
+  #pragma pack(show) // expected-warning {{value of #pragma pack(show) == 8}}
+               ^
+
+"Test_name.c", line 8: error: expected an integer constant
+  #pragma pack(twobyte)
+               ^
+
+"Test_name.c", line 8: warning: expected a ")"
+  #pragma pack(twobyte)
+               ^
+
+"Test_name.c", line 8: error: extra text after expected end of preprocessing directive
+  #pragma pack(twobyte)
+               ^
+
+"Test_name.c", line 9: error: expected an integer constant
+  #pragma pack(packed)
+               ^
+
+"Test_name.c", line 9: warning: expected a ")"
+  #pragma pack(packed)
+               ^
+
+"Test_name.c", line 9: error: extra text after expected end of preprocessing directive
+  #pragma pack(packed)
+               ^
+
+"Test_name.c", line 10: warning: current value of pragma pack is not set
+  #pragma pack(show) // expected-warning {{value of #pragma pack(show) == 1}}
+               ^
+
+"Test_name.c", line 11: error: expected an integer constant
+  #pragma pack(reset)
+               ^
+
+"Test_name.c", line 11: warning: expected a ")"
+  #pragma pack(reset)
+               ^
+
+"Test_name.c", line 11: error: extra text after expected end of preprocessing directive
+  #pragma pack(reset)
+               ^
+
+"Test_name.c", line 12: warning: current value of pragma pack is not set
+  #pragma pack(show) // expected-warning {{value of #pragma pack(show) == 2}}
+               ^
+
+"Test_name.c", line 13: warning: empty pack alignment stack
+  #pragma pack(pop)
+               ^
+
+"Test_name.c", line 14: warning: current value of pragma pack is not set
+  #pragma pack(show) // expected-warning {{value of #pragma pack(show) == 8}}
+               ^
+
+6 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --c++17 Test_name.c
+"Test_name.c", line 20: warning: variable "L" was declared but never referenced
+      auto L = [*this]{ return i; };  // lambda captures the entire S object
+           ^
+

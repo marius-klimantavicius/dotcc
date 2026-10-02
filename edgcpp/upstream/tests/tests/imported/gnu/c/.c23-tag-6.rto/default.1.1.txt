@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 28: error: type must be an object type
+  	_Static_assert(_Generic(0, struct bar: 0, default: 1));	/* { dg-error "incomplete type" } */
+  	                           ^
+
+"Test_name.c", line 43: error: type must be an object type
+  		_Static_assert(_Generic(0, struct foo: 0, default: 1));	/* { dg-error "incomplete type" } */
+  		                           ^
+
+"Test_name.c", line 53: error: type must be an object type
+  		_Static_assert(_Generic(0, struct h: 0, default: 1));	/* { dg-error "incomplete type" } */
+  		                           ^
+
+3 errors detected in the compilation of "Test_name.c".

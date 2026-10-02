@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 7: error: unrecognized preprocessing directive
+  #endfi /* { dg-error "invalid preprocessing directive #endfi; did you mean #endif?" } */
+   ^
+
+"Test_name.c", line 12: error: unrecognized preprocessing directive
+  #deifne FOO /* { dg-error "invalid preprocessing directive #deifne; did you mean #define?" } */ 
+   ^
+
+"Test_name.c", line 3: error: the #endif for this directive is missing
+  #ifndef SOME_GUARD /* { dg-error "-:unterminated" } */
+   ^
+
+3 errors detected in the compilation of "Test_name.c".

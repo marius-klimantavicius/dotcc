@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 15: error: the default constructor of "lambda []()->void" cannot be referenced -- it is a deleted function
+    decltype(lambda1) lambda2; // expected-error{{no matching constructor}}
+                      ^
+
+"Test_name.c", line 18: error: function "lambda []()->void::operator=(const lambda []()->void &)" (declared implicitly) cannot be referenced -- it is a deleted function
+    lambda1 = lambda1; // expected-error{{copy assignment operator is implicitly deleted}}
+            ^
+
+"Test_name.c", line 21: error: function "lambda []()->void::operator=(const lambda []()->void &)" (declared implicitly) cannot be referenced -- it is a deleted function
+    lambda1 = move(lambda1); // expected-error{{copy assignment operator is implicitly deleted}}
+            ^
+
+"Test_name.c", line 24: warning: variable "lambda3" was declared but never referenced
+    decltype(lambda1) lambda3 = lambda1;
+                      ^
+
+"Test_name.c", line 25: warning: variable "lambda4" was declared but never referenced
+    decltype(lambda1) lambda4(lambda1);
+                      ^
+
+3 errors detected in the compilation of "Test_name.c".

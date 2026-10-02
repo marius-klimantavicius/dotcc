@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./ext/vla4.C", line 10: error: a variable-length array type is not allowed
+      throw &a;
+            ^
+
+"./ext/vla4.C", line 11: error: a variable-length array type is not allowed
+    } catch (int (*)[i]) {
+             ^
+
+"./ext/vla4.C", line 19: error: a variable-length array type is not allowed
+    const std::type_info& info(typeid(&va));
+                                      ^
+
+3 errors detected in the compilation of "Test_name.c".

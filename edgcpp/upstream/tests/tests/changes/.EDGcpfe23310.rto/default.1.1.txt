@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu=70300 Test_name.c
+"Test_name.c", line 16: warning: variable "b" was declared but never referenced
+      static void *b[] = { &&L };
+                   ^
+
+"Test_name.c", line 17: warning: variable "x" was declared but never referenced
+      const char *x = __FUNCTION__;
+                  ^
+

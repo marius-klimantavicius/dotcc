@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc -E Test_name.c
+# 1 "Test_name.c"
+
+
+ 
+
+ 
+
+
+ 
+
+"Test_name.c", line 10: warning: white space between backslash and newline in line splice ignored
+  foo \  
+       ^
+
+foo bar
+
+ 
+
+"Test_name.c", line 14: warning: white space between backslash and newline in line splice ignored
+  /* foo \   
+          ^
+
+ 
+
+ 

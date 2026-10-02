@@ -1,0 +1,37 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 7: warning: unknown attribute "callback"
+  __attribute__((callback(1))) void no_args(void (*callback)(void));
+                 ^
+
+"Test_name.c", line 8: warning: unknown attribute "callback"
+  __attribute__((callback(1, 2, 3))) void args_1(void (*callback)(int, double), int a, double b);
+                 ^
+
+"Test_name.c", line 9: warning: unknown attribute "callback"
+  __attribute__((callback(2, 3, 3))) void args_2(int a, void (*callback)(double, double), double b);
+                 ^
+
+"Test_name.c", line 10: warning: unknown attribute "callback"
+  __attribute__((callback(2, -1, -1))) void args_3(int a, void (*callback)(double, double), double b);
+                 ^
+
+"Test_name.c", line 12: warning: unknown attribute "callback"
+  __attribute__((callback(callback))) void no_argsb(void (*callback)(void));
+                 ^
+
+"Test_name.c", line 13: warning: unknown attribute "callback"
+  __attribute__((callback(callback, a, 3))) void args_1b(void (*callback)(int, double), int a, double b);
+                 ^
+
+"Test_name.c", line 14: warning: unknown attribute "callback"
+  __attribute__((callback(callback, b, b))) void args_2b(int a, void (*callback)(double, double), double b);
+                 ^
+
+"Test_name.c", line 15: warning: unknown attribute "callback"
+  __attribute__((callback(2, __, __))) void args_3b(int a, void (*callback)(double, double), double b);
+                 ^
+
+"Test_name.c", line 16: warning: unknown attribute "callback"
+  __attribute__((callback(callback, -1, __))) void args_3c(int a, void (*callback)(double, double), double b);
+                 ^
+

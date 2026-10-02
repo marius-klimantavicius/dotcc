@@ -1,0 +1,8 @@
+./a.out
+Local_R1 : 8c 16 22 aa fd 90 10 40
+Local_R2 : 8c 16 22 aa fd 90 10 40
+Local_R1 : 18 2d 44 54 fb 21 09 40
+Local_R2 : 18 2d 44 54 fb 21 09 40
+Local_R1 : 8c 16 22 aa fd 90 10 40
+Local_R2 : 8c 16 22 aa fd 90 10 40
+

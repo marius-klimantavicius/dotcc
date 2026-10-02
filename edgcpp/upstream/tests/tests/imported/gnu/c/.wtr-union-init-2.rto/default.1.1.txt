@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 27: warning: variable "f1" was declared but never referenced
+    static union foo1 f1 = {0};
+                      ^
+
+"Test_name.c", line 28: warning: variable "f2" was declared but never referenced
+    static union foo2 f2 = {0};
+                      ^
+
+"Test_name.c", line 29: warning: variable "f3" was declared but never referenced
+    static union foo1 f3 = {1}; /* { dg-warning "traditional C rejects initialization of unions" "initialization of unions" } */
+                      ^
+
+"Test_name.c", line 30: warning: variable "f4" was declared but never referenced
+    static union foo2 f4 = {1}; /* { dg-warning "traditional C rejects initialization of unions" "initialization of unions" } */
+                      ^
+
+"Test_name.c", line 31: warning: variable "f5" was declared but never referenced
+    static union foo1 f5 = {0.0};
+                      ^
+
+"Test_name.c", line 32: warning: variable "f6" was declared but never referenced
+    static union foo2 f6 = {0.0};
+                      ^
+
+"Test_name.c", line 33: warning: variable "f7" was declared but never referenced
+    static union foo1 f7 = {1.0}; /* { dg-warning "traditional C rejects initialization of unions" "initialization of unions" } */
+                      ^
+
+"Test_name.c", line 34: warning: variable "f8" was declared but never referenced
+    static union foo2 f8 = {1.0}; /* { dg-warning "traditional C rejects initialization of unions" "initialization of unions" } */
+                      ^
+

@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c --target linux_aarch64 Test_name.c
+"Test_name.c", line 51: warning: function "_Countof" declared implicitly
+    return _Countof(array);
+           ^
+
+"Test_name.c", line 72: warning: function "_Countof" declared implicitly
+    return _Countof(int[n]);
+           ^
+
+"Test_name.c", line 72: error: expected an expression
+    return _Countof(int[n]);
+                    ^
+
+"Test_name.c", line 126: warning: function "_Countof" declared implicitly
+    int x = _Countof(array);
+            ^
+
+"Test_name.c", line 164: warning: function "_Countof" declared implicitly
+    int x = _Countof(int[7][n++]);
+            ^
+
+"Test_name.c", line 164: error: expected an expression
+    int x = _Countof(int[7][n++]);
+                     ^
+
+"Test_name.c", line 166: error: expected an expression
+    int y = _Countof(int[n++][7]);
+                     ^
+
+"Test_name.c", line 217: warning: use of a const variable in a constant expression is nonstandard in C
+    int arr[1][j + 2][j + 3][j + 4];
+               ^
+
+"Test_name.c", line 217: warning: use of a const variable in a constant expression is nonstandard in C
+    int arr[1][j + 2][j + 3][j + 4];
+                      ^
+
+"Test_name.c", line 217: warning: use of a const variable in a constant expression is nonstandard in C
+    int arr[1][j + 2][j + 3][j + 4];
+                             ^
+
+"Test_name.c", line 218: error: identifier "_Countof" is undefined
+    int a = _Countof arr;
+            ^
+
+"Test_name.c", line 218: error: expected a ";"
+    int a = _Countof arr;
+                     ^
+
+"Test_name.c", line 219: error: expression must have arithmetic type
+    int b = _Countof *arr;
+                      ^
+
+"Test_name.c", line 220: error: expression must have arithmetic type
+    int c = _Countof **arr;
+                      ^
+
+"Test_name.c", line 221: error: expression must have arithmetic type
+    int d = _Countof ***arr;
+                      ^
+
+8 errors detected in the compilation of "Test_name.c".

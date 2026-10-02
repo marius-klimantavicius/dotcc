@@ -1,0 +1,47 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --exceptions Test_name.c
+"Test_name.c", line 6: warning: function declared with "noreturn" does return
+    return; // expected-warning {{function 'a' declared 'noreturn' should not return}}
+    ^
+
+"Test_name.c", line 9: warning: function declared with "noreturn" does return
+    return; // expected-warning {{function 'a2' declared 'noreturn' should not return}}
+    ^
+
+"Test_name.c", line 13: warning: function declared with "noreturn" does return
+  template <> void a3<int>() { return; } // expected-warning {{function 'a3<int>' declared 'noreturn' should not return}}
+                               ^
+
+"Test_name.c", line 22: error: attribute "noreturn" does not take arguments
+  [[noreturn()]] void c(); // expected-error {{attribute 'noreturn' cannot have an argument list}}
+            ^
+
+"Test_name.c", line 24: error: attribute "noreturn" does not apply here
+  void d() [[noreturn]]; // expected-error {{'noreturn' attribute cannot be applied to types}}
+             ^
+
+"Test_name.c", line 25: error: attribute "noreturn" does not apply here
+  int d2 [[noreturn]]; // expected-error {{'noreturn' attribute only applies to functions}}
+           ^
+
+"Test_name.c", line 30: error: attribute "noreturn" did not appear on original declaration
+  [[noreturn]] int f(); // expected-error {{'noreturn' attribute does not appear on the first declaration}}
+    ^
+
+"Test_name.c", line 63: warning: missing return statement at end of non-void function "GH63009::test_no_return_constructor"
+  int test_no_return_constructor() { S1(); } // ok
+                                           ^
+
+"Test_name.c", line 64: warning: missing return statement at end of non-void function "GH63009::test_no_return_destructor"
+  int test_no_return_destructor() { S2(); } // ok
+                                          ^
+
+"Test_name.c", line 69: warning: missing return statement at end of non-void function "GH63009::main"
+  }
+  ^
+
+"Test_name.c", line 15: warning: function declared with "noreturn" does return
+  template <typename T> void a4 [[noreturn]] () { return; } // expected-warning {{function 'a4' declared 'noreturn' should not return}}
+                                                  ^
+          detected during instantiation of "void a4<T>() [with T=long]" at line 17
+
+4 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -DERR -DEXT -DERR -DEXT --c Test_name.c
+"Test_name.c", line 86: error: operation requires two vectors of the same size
+    vi8 = vi8 << vuc8; // expected-error {{vector operands do not have the same elements sizes}}
+              ^
+
+"Test_name.c", line 87: error: operation requires two vectors of the same size
+    vuc8 = vuc8 << vi8; // expected-error {{vector operands do not have the same elements sizes}}
+                ^
+
+"Test_name.c", line 88: error: operation requires two vectors of the same size
+    vus8 = vus8 << vui8; // expected-error {{vector operands do not have the same elements sizes}}
+                ^
+
+"Test_name.c", line 89: error: operation requires two vectors of the same size
+    vui8 = vui8 << vs8; // expected-error {{vector operands do not have the same elements sizes}}
+                ^
+
+"Test_name.c", line 99: error: operation requires two vectors of the same size
+    vi8 <<= vuc8; // expected-error {{vector operands do not have the same elements sizes}}
+        ^
+
+"Test_name.c", line 100: error: operation requires two vectors of the same size
+    vuc8 <<= vi8; // expected-error {{vector operands do not have the same elements sizes}}
+         ^
+
+"Test_name.c", line 101: error: operation requires two vectors of the same size
+    vus8 <<= vui8; // expected-error {{vector operands do not have the same elements sizes}}
+         ^
+
+"Test_name.c", line 102: error: operation requires two vectors of the same size
+    vui8 <<= vs8; // expected-error {{vector operands do not have the same elements sizes}}
+         ^
+
+"Test_name.c", line 110: error: mixed vector-scalar operation not allowed
+    c <<= vc8; // expected-error {{assigning to 'char' from incompatible type}}
+      ^
+
+"Test_name.c", line 111: error: mixed vector-scalar operation not allowed
+    i <<= vuc8; // expected-error {{assigning to 'int' from incompatible type}}
+      ^
+
+"Test_name.c", line 112: error: mixed vector-scalar operation not allowed
+    uc <<= vi8; // expected-error {{assigning to 'unsigned char' from incompatible type}}
+       ^
+
+"Test_name.c", line 113: error: mixed vector-scalar operation not allowed
+    us <<= vui8; // expected-error {{assigning to 'unsigned short' from incompatible type}}
+       ^
+
+"Test_name.c", line 114: error: mixed vector-scalar operation not allowed
+    ui <<= vs8; // expected-error {{assigning to 'unsigned int' from incompatible type}}
+       ^
+
+13 errors detected in the compilation of "Test_name.c".

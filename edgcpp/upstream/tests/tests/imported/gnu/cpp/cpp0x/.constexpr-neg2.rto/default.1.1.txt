@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 23: error: constexpr function return is non-constant
+  constexpr int correct_error() { return nonconst_func(0); } // { dg-error "nonconst_func" "" { target c++20_down } }
+                                         ^
+
+"Test_name.c", line 26: error: expression must have a constant value
+  constexpr int z = bogus();	// { dg-error "" }
+                    ^
+"Test_name.c", line 20: note: cannot call non-constexpr function "nonconst_func" (declared at line 7)
+  constexpr int bogus() { return zero () ? 3 : nonconst_func(0); } // { dg-error "nonconst_func" }
+                                               ^
+
+"Test_name.c", line 13: warning: variable "three" was declared but never referenced
+  constexpr int three = one() ? 3 : nonconst_func(0);
+                ^
+
+"Test_name.c", line 26: warning: variable "z" was declared but never referenced
+  constexpr int z = bogus();	// { dg-error "" }
+                ^
+
+2 errors detected in the compilation of "Test_name.c".

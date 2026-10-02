@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 15: warning: a value of type "const struct C *" cannot be used to initialize an entity of type "void *"
+  struct E { void *e; } e = { &( &(const struct D) { (void *) &d })->d };
+                              ^
+
+"Test_name.c", line 16: warning: a value of type "const struct C *" cannot be used to initialize an entity of type "int *"
+  struct C f = { &( &(const struct D) { (void *) &d })->d };
+                 ^
+
+"Test_name.c", line 17: warning: a value of type "struct E *" cannot be used to initialize an entity of type "int *"
+  struct A g[] = { &e, &f };
+                   ^
+
+"Test_name.c", line 17: warning: a value of type "struct C *" cannot be used to initialize an entity of type "int *"
+  struct A g[] = { &e, &f };
+                       ^
+
+"Test_name.c", line 21: error: too many arguments in function call
+  int baz () { bar (h); }
+                    ^
+
+"Test_name.c", line 21: warning: missing return statement at end of non-void function "baz"
+  int baz () { bar (h); }
+                        ^
+
+"Test_name.c", line 24: error: too many arguments in function call
+  void corge () { qux (i); }
+                       ^
+
+2 errors detected in the compilation of "Test_name.c".

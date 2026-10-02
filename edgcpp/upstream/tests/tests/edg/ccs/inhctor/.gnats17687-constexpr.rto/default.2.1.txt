@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=2 --c++17 -DNEG Test_name.c
+"Test_name.c", line 26: error: expression must have a constant value
+    B b2 = test(argc);
+           ^
+"Test_name.c", line 26: note: the value of parameter "argc" (declared at line 21) cannot be used as a constant
+    B b2 = test(argc);
+                ^
+
+1 error detected in the compilation of "Test_name.c".

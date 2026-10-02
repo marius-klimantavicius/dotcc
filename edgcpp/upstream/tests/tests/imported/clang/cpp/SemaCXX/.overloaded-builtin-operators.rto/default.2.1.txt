@@ -1,0 +1,79 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 108: error: no operator "--" matches these operands
+            operand types are: BoolRef --
+    bool b2 = br--; // expected-error{{cannot decrement value of type 'BoolRef'}}
+                ^
+"Test_name.c", line 108: note: built-in operator--(<non-bool arithmetic>, <integral>) does not match because argument #1 does not match parameter
+    bool b2 = br--; // expected-error{{cannot decrement value of type 'BoolRef'}}
+                ^
+"Test_name.c", line 108: note: built-in operator--(<pointer to object>, <integral>) does not match because argument #1 does not match parameter
+    bool b2 = br--; // expected-error{{cannot decrement value of type 'BoolRef'}}
+                ^
+
+"Test_name.c", line 118: error: no operator "=" matches these operands
+            operand types are: XpmfRef = void (X::*)()
+    pmf &pmr = (pmf_ref = &X::f); // expected-error{{no viable overloaded '='}}
+                        ^
+"Test_name.c", line 86: note: function "XpmfRef::operator=(XpmfRef &&)" does not match because argument #1 does not match parameter
+  struct XpmfRef { // expected-note{{candidate function (the implicit copy assignment operator) not viable}}
+         ^
+"Test_name.c", line 86: note: function "XpmfRef::operator=(const XpmfRef &)" does not match because argument #1 does not match parameter
+  struct XpmfRef { // expected-note{{candidate function (the implicit copy assignment operator) not viable}}
+         ^
+
+"Test_name.c", line 115: warning: variable "e2r2" was set but never used
+    E2 e2r2;
+       ^
+
+"Test_name.c", line 119: warning: variable "pmr2" was set but never used
+    pmf pmr2;
+        ^
+
+"Test_name.c", line 176: error: no operator "=" matches these operands
+            operand types are: ShortRef = short
+    sr = (short)0; // expected-error{{no viable overloaded '='}}
+       ^
+"Test_name.c", line 71: note: function "ShortRef::operator=(ShortRef &&)" does not match because argument #1 does not match parameter
+  struct ShortRef { // expected-note{{candidate function (the implicit copy assignment operator) not viable}}
+         ^
+"Test_name.c", line 71: note: function "ShortRef::operator=(const ShortRef &)" does not match because argument #1 does not match parameter
+  struct ShortRef { // expected-note{{candidate function (the implicit copy assignment operator) not viable}}
+         ^
+
+"Test_name.c", line 190: error: no operator "==" matches these operands
+            operand types are: ConvertibleToPtrOf<Derived1> == ConvertibleToPtrOf<Derived2>
+    return d1 == d2; // expected-error{{invalid operands}}
+              ^
+"Test_name.c", line 190: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    return d1 == d2; // expected-error{{invalid operands}}
+              ^
+"Test_name.c", line 190: note: built-in operator==(<pointer>, <pointer>) does not match because argument #2 does not match parameter
+    return d1 == d2; // expected-error{{invalid operands}}
+              ^
+"Test_name.c", line 190: note: built-in operator==(<pointer>, <pointer>) does not match because argument #1 does not match parameter
+    return d1 == d2; // expected-error{{invalid operands}}
+              ^
+"Test_name.c", line 190: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    return d1 == d2; // expected-error{{invalid operands}}
+              ^
+
+"Test_name.c", line 223: warning: variable "e1" is used before its value is set
+      if (e1 > e2) {}
+          ^
+
+"Test_name.c", line 223: warning: variable "e2" is used before its value is set
+      if (e1 > e2) {}
+               ^
+
+"Test_name.c", line 241: error: more than one operator "-" matches these operands:
+            built-in operator "pointer-to-object - pointer-to-object"
+            built-in operator "arithmetic - arithmetic"
+            operand types are: PR8477::Foo - PR8477::Foo
+      (void)(foo - foo); // expected-error{{use of overloaded operator '-' is ambiguous}} \
+                 ^
+
+"Test_name.c", line 269: warning: variable "py" is used before its value is set
+      py += size;
+      ^
+
+5 errors detected in the compilation of "Test_name.c".

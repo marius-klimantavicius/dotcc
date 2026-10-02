@@ -1,0 +1,5 @@
+eccp -DTEST_NUMBER=1 --c++20 Test_name.c
+"Test_name.c", line 8: warning: use of a volatile qualifier on a structured binding is deprecated
+  const volatile auto [cva, cvb, cvc] = arr;
+  ^
+

@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 --strict_gnu Test_name.c
+"Test_name.c", line 17: error: invalid storage class for a function
+    auto int fi_ci ();
+    ^
+
+"Test_name.c", line 18: warning: type qualifier on return type is meaningless
+    const int fi_ci () { return 0; }
+    ^
+
+"Test_name.c", line 18: error: declaration is incompatible with "int fi_ci()" (declared at line 17)
+    const int fi_ci () { return 0; }
+              ^
+
+"Test_name.c", line 18: error: expected a ";"
+    const int fi_ci () { return 0; }
+                       ^
+
+"Test_name.c", line 23: warning: type qualifier on return type is meaningless
+    const enum E fe_ce () { return 0; }
+    ^
+
+"Test_name.c", line 23: error: expected a ";"
+    const enum E fe_ce () { return 0; }
+                          ^
+
+"Test_name.c", line 26: error: expected a ";"
+    volatile void fv_vv () { }
+                           ^
+
+"Test_name.c", line 29: error: expected a ";"
+    void fvv_v () { }
+                  ^
+
+6 errors detected in the compilation of "Test_name.c".

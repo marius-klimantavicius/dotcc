@@ -1,0 +1,41 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 -DMSABI Test_name.c
+"Test_name.c", line 41: warning: variable "a" is used before its value is set
+    while (a == name1::F1);
+           ^
+
+"Test_name.c", line 43: warning: variable "b" is used before its value is set
+    while (a == b);
+                ^
+
+"Test_name.c", line 44: warning: variable "c" is used before its value is set
+    while (a == c);
+                ^
+
+"Test_name.c", line 76: warning: variable "td" is used before its value is set
+    while (td == Anon1);
+           ^
+
+"Test_name.c", line 113: warning: loop is not reachable
+    while (FooB >= BarD); // expected-warning  {{comparison of different enumeration types ('Foo' and 'Bar')}}
+    ^
+
+"Test_name.c", line 114: warning: loop is not reachable
+    while (FooB <= BarD); // expected-warning  {{comparison of different enumeration types ('Foo' and 'Bar')}}
+    ^
+
+"Test_name.c", line 116: warning: loop is not reachable
+    while (FooB < BarD); // expected-warning  {{comparison of different enumeration types ('Foo' and 'Bar')}}
+    ^
+
+"Test_name.c", line 178: warning: loop is not reachable
+    while (BarD >= FooB); // expected-warning  {{comparison of different enumeration types ('Bar' and 'Foo')}}
+    ^
+
+"Test_name.c", line 180: warning: loop is not reachable
+    while (BarD > FooB); // expected-warning  {{comparison of different enumeration types ('Bar' and 'Foo')}}
+    ^
+
+"Test_name.c", line 183: warning: loop is not reachable
+    while (BarD == x); // expected-warning  {{comparison of different enumeration types ('Bar' and 'Foo')}}
+    ^
+

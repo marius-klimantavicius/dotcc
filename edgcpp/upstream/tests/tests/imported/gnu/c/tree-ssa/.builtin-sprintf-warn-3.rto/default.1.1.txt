@@ -1,0 +1,53 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 60: warning: unknown attribute "noipa"
+  NOIPA void test_sprintf_chk_string (const char *s, const char *t)
+  ^
+
+"Test_name.c", line 91: warning: unknown attribute "noipa"
+  NOIPA void test_sprintf_chk_integer_value (void)
+  ^
+
+"Test_name.c", line 189: warning: unknown attribute "noipa"
+  NOIPA void test_sprintf_chk_range_schar (void)
+  ^
+
+"Test_name.c", line 246: warning: unknown attribute "noipa"
+  NOIPA void test_sprintf_chk_range_uchar (void)
+  ^
+
+"Test_name.c", line 260: warning: unknown attribute "noipa"
+  NOIPA void test_sprintf_chk_range_sshrt (void)
+  ^
+
+"Test_name.c", line 283: warning: unknown attribute "noipa"
+  NOIPA void test_sprintf_chk_range_ushrt (void)
+  ^
+
+"Test_name.c", line 305: warning: unknown attribute "noipa"
+  NOIPA void test_sprintf_chk_range_sint (void)
+  ^
+
+"Test_name.c", line 328: warning: unknown attribute "noipa"
+  NOIPA void test_sprintf_chk_range_uint (void)
+  ^
+
+"Test_name.c", line 358: warning: unknown attribute "noipa"
+  NOIPA void test_too_large (char *d, int x, __builtin_va_list va)
+  ^
+
+"Test_name.c", line 400: warning: unknown attribute "noipa"
+  NOIPA void test_sprintf_malloc (const char *s, const char *t)
+  ^
+
+"Test_name.c", line 428: warning: unknown attribute "noipa"
+  NOIPA void test_sprintf_alloca (const char *s, const char *t)
+  ^
+
+"Test_name.c", line 456: warning: unknown attribute "noipa"
+  NOIPA void test_sprintf_vla (const char *s, const char *t)
+  ^
+
+"Test_name.c", line 48: warning: function "s" was declared but never referenced
+  static const char* s (const char *str) { return str; }
+                     ^
+

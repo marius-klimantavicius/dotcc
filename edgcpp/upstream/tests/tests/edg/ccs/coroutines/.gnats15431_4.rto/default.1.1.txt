@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=1 --microsoft_version 1900 --set_flag coroutines -tused Test_name.c
+"Test_name.c", line 62: error: function "std::experimental::generator<T, N...>::promise_type::yield_value [with T=int, N=<>]" cannot be called with the given argument list
+            argument types are: (std::experimental::generator<int>)
+            object type is: std::experimental::generator<int>::promise_type
+      co_yield f(n-1, m+1);
+               ^
+"Test_name.c", line 35: note: function "std::experimental::generator<T, N...>::promise_type::yield_value [with T=int, N=<>]" does not match because argument #1 does not match parameter
+          auto yield_value(T) { return suspend_always{}; }
+               ^
+
+"Test_name.c", line 65: error: "std::experimental::coroutine_traits<std::experimental::generator<int>, int, int>::promise_type" (aka "std::experimental::generator<int>::promise_type") has no member "return_void"
+    co_return;
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./range.h", line 13: warning: declaration of "size_t" does not match the expected type "unsigned int"
+  typedef long unsigned int size_t;
+                            ^
+
+"./warn-sprintf-no-nul.c", line 29: warning: string literal too long -- excess characters ignored
+    "", "1", "12", "123", "123\000"
+                          ^
+
+"./warn-sprintf-no-nul.c", line 82: error: a value of type "long [6]" cannot be used to initialize an entity of type "const wchar_t [5]"
+  const wchar_t wa[5] = L"12345";
+                        ^
+
+1 error detected in the compilation of "Test_name.c".

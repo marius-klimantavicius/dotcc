@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --exceptions Test_name.c
+"Test_name.c", line 14: error: exception specification is incompatible with that of previous function "S::a" (declared at line 9)
+  void S::a() noexcept {} // expected-error {{does not match previous}}
+              ^
+
+"Test_name.c", line 24: error: allowing all exceptions is incompatible with previous function "T::a" (declared at line 19)
+  void T::a() {} // expected-error {{missing exception specification 'noexcept'}}
+              ^
+
+"Test_name.c", line 37: error: exception specification is incompatible with that of previous function "U<T>::~U" (declared at line 33)
+  template<typename T> U<T>::~U() noexcept(true) {} // expected-error {{exception specification in declaration does not match previous declaration}}
+                                  ^
+
+3 errors detected in the compilation of "Test_name.c".

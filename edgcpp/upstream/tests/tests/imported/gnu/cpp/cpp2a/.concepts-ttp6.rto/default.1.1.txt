@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 17: error: no instance of function template "f" matches the argument list
+    f<true, A>();
+    ^
+"Test_name.c", line 11: note: candidate function template "f" failed deduction
+  void f();
+       ^
+
+"Test_name.c", line 18: error: no instance of function template "f" matches the argument list
+    f<false, A>(); // { dg-error "no match|constraint mismatch" }
+    ^
+"Test_name.c", line 11: note: candidate function template "f" failed deduction
+  void f();
+       ^
+
+2 errors detected in the compilation of "Test_name.c".

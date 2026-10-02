@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 12: warning: unknown attribute "leaf"
+  extern double cos (double) __attribute__ ((nothrow, leaf, simd ("notinbranch")));
+                                                      ^
+
+"Test_name.c", line 12: warning: unknown attribute "simd"
+  extern double cos (double) __attribute__ ((nothrow, leaf, simd ("notinbranch")));
+                                                            ^
+
+"Test_name.c", line 13: warning: unknown attribute "leaf"
+  extern double sin (double) __attribute__ ((nothrow, leaf, simd ("notinbranch")));
+                                                      ^
+
+"Test_name.c", line 13: warning: unknown attribute "simd"
+  extern double sin (double) __attribute__ ((nothrow, leaf, simd ("notinbranch")));
+                                                            ^
+

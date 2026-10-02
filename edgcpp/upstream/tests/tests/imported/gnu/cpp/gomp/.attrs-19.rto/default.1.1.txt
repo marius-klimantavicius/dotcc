@@ -1,0 +1,157 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: warning: attribute namespace "omp" is unrecognized
+    [[omp::decl (declare variant (foo1) match (construct={parallel,for}))]]
+      ^
+
+"Test_name.c", line 12: warning: attribute namespace "omp" is unrecognized
+    [[omp::sequence (directive (parallel), directive (for))]]
+      ^
+
+"Test_name.c", line 15: warning: attribute namespace "omp" is unrecognized
+    [[omp::decl (declare simd simdlen(4) linear(l) aligned(p:4) uniform(p) inbranch),
+      ^
+
+"Test_name.c", line 16: warning: attribute namespace "omp" is unrecognized
+      omp::directive (declare simd simdlen(8) notinbranch)]]
+      ^
+
+"Test_name.c", line 18: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (declare simd simdlen(4) linear(l) aligned(p:4) uniform(p) inbranch),
+      ^
+
+"Test_name.c", line 19: warning: attribute namespace "omp" is unrecognized
+      omp::decl (declare simd simdlen(8) notinbranch)]]
+      ^
+
+"Test_name.c", line 21: warning: attribute namespace "omp" is unrecognized
+    [[omp::decl (declare simd simdlen(4) linear(l) aligned(p:4) uniform(p) inbranch),
+      ^
+
+"Test_name.c", line 22: warning: attribute namespace "omp" is unrecognized
+      omp::decl (declare simd simdlen(8) notinbranch)]]
+      ^
+
+"Test_name.c", line 31: warning: C++17-style "using" attribute prefix is nonstandard in this mode
+    [[using omp : decl (declare variant (bar1), match (construct={parallel,for}))]]	// { dg-warning "attribute using prefix only available with" "" { target c++14_down } }
+            ^
+
+"Test_name.c", line 31: warning: attribute namespace "omp" is unrecognized
+    [[using omp : decl (declare variant (bar1), match (construct={parallel,for}))]]	// { dg-warning "attribute using prefix only available with" "" { target c++14_down } }
+            ^
+
+"Test_name.c", line 33: warning: attribute namespace "omp" is unrecognized
+    [[using omp : sequence (directive (parallel), directive (for))]]			// { dg-warning "attribute using prefix only available with" "" { target c++14_down } }
+            ^
+
+"Test_name.c", line 36: warning: attribute namespace "omp" is unrecognized
+    [[omp::decl (declare simd, simdlen(4), linear(l), aligned(p:4),uniform(p),inbranch),
+      ^
+
+"Test_name.c", line 37: warning: attribute namespace "omp" is unrecognized
+      omp::directive (declare simd simdlen(8) notinbranch)]]
+      ^
+
+"Test_name.c", line 39: warning: attribute namespace "omp" is unrecognized
+    [[using omp : directive (declare simd,simdlen(4),linear(l),aligned(p:4),uniform(p),inbranch),	// { dg-warning "attribute using prefix only available with" "" { target c++14_down } }
+            ^
+
+"Test_name.c", line 42: warning: attribute namespace "omp" is unrecognized
+    [[omp::decl (declare simd, simdlen(4), linear(l), aligned(p:4), uniform(p), inbranch),
+      ^
+
+"Test_name.c", line 43: warning: attribute namespace "omp" is unrecognized
+      omp::decl (declare simd, simdlen(8), notinbranch)]]
+      ^
+
+"Test_name.c", line 49: warning: attribute namespace "omp" is unrecognized
+  [[omp::decl (threadprivate)]] int t1, t2;
+    ^
+
+"Test_name.c", line 50: warning: attribute namespace "omp" is unrecognized
+  int x1, t3 [[omp::decl (threadprivate)]], x2, t4 [[omp::decl (threadprivate)]] [5];
+               ^
+
+"Test_name.c", line 50: warning: attribute namespace "omp" is unrecognized
+  int x1, t3 [[omp::decl (threadprivate)]], x2, t4 [[omp::decl (threadprivate)]] [5];
+                                                     ^
+
+"Test_name.c", line 51: warning: attribute namespace "omp" is unrecognized
+  [[maybe_unused, omp::decl (threadprivate)]] int t5, t6;
+                  ^
+
+"Test_name.c", line 52: warning: attribute namespace "omp" is unrecognized
+  [[using omp : decl (threadprivate)]] S t7, t8;	// { dg-warning "attribute using prefix only available with" "" { target c++14_down } }
+          ^
+
+"Test_name.c", line 53: warning: attribute namespace "omp" is unrecognized
+  [[using omp : decl (declare target enter device_type (host))]] int d1, d2, d3 (int, int), d4;	// { dg-warning "attribute using prefix only available with" "" { target c++14_down } }
+          ^
+
+"Test_name.c", line 54: warning: attribute namespace "omp" is unrecognized
+  int x3, d5 [[omp::decl (declare target, enter, device_type (any))]], d6 [[omp::decl (declare target link)]], x4;
+               ^
+
+"Test_name.c", line 54: warning: attribute namespace "omp" is unrecognized
+  int x3, d5 [[omp::decl (declare target, enter, device_type (any))]], d6 [[omp::decl (declare target link)]], x4;
+                                                                            ^
+
+"Test_name.c", line 55: warning: attribute namespace "omp" is unrecognized
+  int d7 [[omp::decl (declare target)]];
+           ^
+
+"Test_name.c", line 56: warning: attribute namespace "omp" is unrecognized
+  [[using omp : decl (declare target), decl (declare target)]] int d8, d9;	// { dg-warning "attribute using prefix only available with" "" { target c++14_down } }
+          ^
+
+"Test_name.c", line 61: warning: attribute namespace "omp" is unrecognized
+    [[omp::decl (threadprivate)]] static int t1, t2;
+      ^
+
+"Test_name.c", line 62: warning: attribute namespace "omp" is unrecognized
+    static int x1, t3 [[omp::decl (threadprivate)]], x2, t4 [[omp::decl (threadprivate)]] [5];
+                        ^
+
+"Test_name.c", line 62: warning: attribute namespace "omp" is unrecognized
+    static int x1, t3 [[omp::decl (threadprivate)]], x2, t4 [[omp::decl (threadprivate)]] [5];
+                                                              ^
+
+"Test_name.c", line 63: warning: attribute namespace "omp" is unrecognized
+    [[maybe_unused, omp::decl (threadprivate)]] extern int t5, t6;
+                    ^
+
+"Test_name.c", line 64: warning: attribute namespace "omp" is unrecognized
+    [[using omp : decl (declare target enter)]] extern int d1, d2, d3 (int, int), d4;		// { dg-warning "attribute using prefix only available with" "" { target c++14_down } }
+            ^
+
+"Test_name.c", line 65: warning: attribute namespace "omp" is unrecognized
+    static int x3, d5 [[omp::decl (declare target, enter, device_type (any))]], d6 [[omp::decl (declare target link)]], x4;
+                        ^
+
+"Test_name.c", line 65: warning: attribute namespace "omp" is unrecognized
+    static int x3, d5 [[omp::decl (declare target, enter, device_type (any))]], d6 [[omp::decl (declare target link)]], x4;
+                                                                                     ^
+
+"Test_name.c", line 62: warning: variable "x1" was declared but never referenced
+    static int x1, t3 [[omp::decl (threadprivate)]], x2, t4 [[omp::decl (threadprivate)]] [5];
+               ^
+
+"Test_name.c", line 62: warning: variable "x2" was declared but never referenced
+    static int x1, t3 [[omp::decl (threadprivate)]], x2, t4 [[omp::decl (threadprivate)]] [5];
+                                                     ^
+
+"Test_name.c", line 65: warning: variable "x3" was declared but never referenced
+    static int x3, d5 [[omp::decl (declare target, enter, device_type (any))]], d6 [[omp::decl (declare target link)]], x4;
+               ^
+
+"Test_name.c", line 65: warning: variable "d5" was declared but never referenced
+    static int x3, d5 [[omp::decl (declare target, enter, device_type (any))]], d6 [[omp::decl (declare target link)]], x4;
+                   ^
+
+"Test_name.c", line 65: warning: variable "d6" was declared but never referenced
+    static int x3, d5 [[omp::decl (declare target, enter, device_type (any))]], d6 [[omp::decl (declare target link)]], x4;
+                                                                                ^
+
+"Test_name.c", line 65: warning: variable "x4" was declared but never referenced
+    static int x3, d5 [[omp::decl (declare target, enter, device_type (any))]], d6 [[omp::decl (declare target link)]], x4;
+                                                                                                                        ^
+

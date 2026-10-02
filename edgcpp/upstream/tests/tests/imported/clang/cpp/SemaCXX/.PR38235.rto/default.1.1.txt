@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 7: warning: requested constructor/destructor priority is reserved for internal use
+  void f() __attribute__((constructor(E::Foo))); // expected-error{{'constructor' attribute requires an integer constant}}
+                          ^
+
+"Test_name.c", line 8: error: invalid argument to attribute "constructor"
+  void f2() __attribute__((constructor(E::Bar)));// expected-error{{'constructor' attribute requires an integer constant}}
+                                       ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 6: warning: unknown attribute "clang::unsafe_buffer_usage"
+  [[clang::unsafe_buffer_usage]]
+    ^
+
+"Test_name.c", line 8: warning: unknown attribute "clang::unsafe_buffer_usage"
+  void g(int *buffer [[clang::unsafe_buffer_usage("buffer")]], int size); // expected-warning {{'clang::unsafe_buffer_usage' attribute only applies to functions}}
+                       ^
+

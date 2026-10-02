@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 6: error: function "f" has already been defined (previous definition at line 4)
+  int f(int a) { return 0; } // expected-error {{redefinition of 'f'}}
+      ^
+
+"Test_name.c", line 8: warning: standard requires that parameter "x" be given a type by a subsequent declaration ("int" assumed)
+  int foo(x) { // expected-error {{parameter 'x' was not declared, defaults to 'int'; ISO C99 and later do not support implicit int}}
+          ^
+
+"Test_name.c", line 14: error: function "g" has already been defined (previous definition at line 13)
+  int g(void) { return 0; } // expected-error{{redefinition of a 'extern inline' function 'g' is not supported in C99 mode}}
+      ^
+
+2 errors detected in the compilation of "Test_name.c".

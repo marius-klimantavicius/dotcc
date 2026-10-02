@@ -1,0 +1,26 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 37: error: member "B::a" (declared at line 11) is inaccessible
+    a = 0;   // access error
+    ^
+
+"Test_name.c", line 61: error: member "B::a" (declared at line 11) is inaccessible
+    a = 0;   // access error
+    ^
+
+"Test_name.c", line 62: error: member "B::b" (declared at line 13) is inaccessible
+    b = 0;   // access error
+    ^
+
+"Test_name.c", line 65: error: member "B::y" (declared at line 17) is inaccessible
+    y = 0;   // access error
+    ^
+
+"Test_name.c", line 66: error: member "D::d" (declared at line 20) is inaccessible
+    d = 0;   // access error
+    ^
+
+"Test_name.c", line 69: error: function "B::bf" (declared at line 48) is inaccessible
+    bf();   // access error
+    ^
+
+6 errors detected in the compilation of "Test_name.c".

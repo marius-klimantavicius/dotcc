@@ -1,0 +1,14 @@
+# Import Linux Configuration
+import <support/platform/linux-x86_64/base>
+# Import GCC Configuration
+import <support/compiler/gcc/linux/base>
+
+# Import Simple Release Configuration
+import <support/simple-conf/release/base>
+
+# Allow Microsoft extensions (off by default).
+import <support/feature/microsoft-extensions/on>
+DEFAULT_MICROSOFT_MODE=0
+
+# Allow C++/CLI and C++/CX to be enabled.
+import <support/feature/cppcli/on>

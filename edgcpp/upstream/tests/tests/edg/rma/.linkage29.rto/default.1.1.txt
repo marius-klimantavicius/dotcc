@@ -1,0 +1,22 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 4: error: return type "int" omitted in declaration of function "main"
+    void f() { extern main(); }
+                      ^
+
+"Test_name.c", line 5: error: return type "int" omitted in declaration of function "main"
+    extern main();
+           ^
+
+"Test_name.c", line 6: error: return type "int" omitted in declaration of function "main"
+    main() {}
+    ^
+
+"Test_name.c", line 7: error: return type "int" omitted in declaration of function "main"
+    void g() { extern main(); }
+                      ^
+
+"Test_name.c", line 8: error: return type "int" omitted in declaration of function "main"
+    extern main();
+           ^
+
+5 errors detected in the compilation of "Test_name.c".

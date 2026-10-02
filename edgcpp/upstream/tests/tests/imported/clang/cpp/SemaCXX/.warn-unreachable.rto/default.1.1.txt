@@ -1,0 +1,41 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --exceptions --exceptions --c++11 Test_name.c
+"Test_name.c", line 37: warning: statement is unreachable
+    dead();       // expected-warning {{will never be executed}}
+    ^
+
+"Test_name.c", line 135: warning: statement is unreachable
+      return PR19040_TEST_FAILURE; // expected-warning {{will never be executed}}
+      ^
+
+"Test_name.c", line 168: warning: statement is unreachable
+    return 0; // no-warning
+    ^
+
+"Test_name.c", line 193: warning: statement is unreachable
+    return 2;
+    ^
+
+"Test_name.c", line 199: warning: statement is unreachable
+    return 2; // expected-warning {{never be executed}}
+    ^
+
+"Test_name.c", line 205: warning: statement is unreachable
+    return 2; // expected-warning {{never be executed}}
+    ^
+
+"Test_name.c", line 212: warning: statement is unreachable
+    test_treat_const_bool_local_as_config_value(); // no-warning
+    ^
+
+"Test_name.c", line 243: warning: statement is unreachable
+    return Frobozz(42);  // expected-warning {{'return' will never be executed}}
+    ^
+
+"Test_name.c", line 248: warning: statement is unreachable
+    return Frobozz(flag ? 42 : 24); // expected-warning {{code will never be executed}}
+    ^
+
+"Test_name.c", line 260: warning: statement is unreachable
+   somethingToCall(); // no-warning
+   ^
+

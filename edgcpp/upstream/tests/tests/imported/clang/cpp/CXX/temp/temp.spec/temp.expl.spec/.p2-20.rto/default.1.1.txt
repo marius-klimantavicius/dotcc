@@ -1,0 +1,82 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 27: error: a storage class is not allowed in an explicit specialization
+  static void f<int>(); // expected-warning {{explicit specialization cannot have a storage class}}
+  ^
+
+"Test_name.c", line 33: error: a storage class is not allowed in an explicit specialization
+  static void g<int>(); // expected-warning {{explicit specialization cannot have a storage class}}
+  ^
+
+"Test_name.c", line 47: error: a storage class may not be specified here
+  static int A::y = 0; // expected-error {{'static' can only be specified inside the class definition}}
+  ^
+
+"Test_name.c", line 51: error: a storage class may not be specified here
+  static void A::g() { } // expected-error {{'static' can only be specified inside the class definition}}
+  ^
+
+"Test_name.c", line 61: error: member "B::z" is not a valid class member template
+    int z; // expected-error {{non-static data member 'z' cannot be declared as a template}}
+        ^
+
+"Test_name.c", line 70: error: member "B::x" is not a valid class member template
+    int x<T**>; // expected-error {{non-static data member 'x' cannot be declared as a template}}
+        ^
+
+"Test_name.c", line 88: error: a storage class is not allowed in an explicit specialization
+    static void f<long>(); // expected-warning {{explicit specialization cannot have a storage class}}
+    ^
+
+"Test_name.c", line 113: error: a storage class is not allowed in an explicit specialization
+  static int B::y<unsigned>; // expected-warning {{explicit specialization cannot have a storage class}}
+  ^
+
+"Test_name.c", line 120: error: a storage class may not be specified here
+  static void B::g() { } // expected-error {{'static' can only be specified inside the class definition}}
+  ^
+
+"Test_name.c", line 126: error: a storage class is not allowed in an explicit specialization
+  static void B::g<unsigned>(); // expected-warning {{explicit specialization cannot have a storage class}}
+  ^
+
+"Test_name.c", line 144: error: a storage class may not be specified here
+  static int C<T>::y = 0; // expected-error {{'static' can only be specified inside the class definition}}
+                   ^
+
+"Test_name.c", line 150: error: a storage class may not be specified here
+  static void C<T>::g() { } // expected-warning {{'static' can only be specified inside the class definition}}
+  ^
+
+"Test_name.c", line 156: error: a storage class is not allowed in an explicit specialization
+  static int C<int>::y = 0; // expected-warning {{explicit specialization cannot have a storage class}}
+  ^
+
+"Test_name.c", line 163: error: a storage class is not allowed in an explicit specialization
+  static void C<int>::g(); // expected-warning {{explicit specialization cannot have a storage class}}
+  ^
+
+"Test_name.c", line 174: error: member "D<T>::z" is not a valid class member template
+    int z; // expected-error {{non-static data member 'z' cannot be declared as a template}}
+        ^
+
+"Test_name.c", line 183: error: member "D<T>::x" is not a valid class member template
+    int x<U**>; // expected-error {{non-static data member 'x' cannot be declared as a template}}
+        ^
+
+"Test_name.c", line 201: error: a storage class is not allowed in an explicit specialization
+    static void f<long>(); // expected-warning {{explicit specialization cannot have a storage class}}
+    ^
+
+"Test_name.c", line 230: error: expected an identifier
+  int D<int>::x;
+              ^
+
+"Test_name.c", line 230: error: variable template "D<T>::x [with T=int]" has already been defined
+  int D<int>::x;
+              ^
+
+"Test_name.c", line 230: error: expected a ";"
+  int D<int>::x;
+              ^
+
+20 errors detected in the compilation of "Test_name.c".

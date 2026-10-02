@@ -1,0 +1,154 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --ms_compatibility Test_name.c
+"Test_name.c", line 5: warning: unknown attribute "optnone"
+  int foo() __attribute__((optnone));
+                           ^
+
+"Test_name.c", line 6: warning: unknown attribute "optnone"
+  int bar() __attribute__((optnone)) __attribute__((noinline));
+                           ^
+
+"Test_name.c", line 8: warning: unknown attribute "optnone"
+  int baz() __attribute__((always_inline)) __attribute__((optnone)); // expected-warning{{'always_inline' attribute ignored}} expected-note{{conflicting attribute is here}}
+                                                          ^
+
+"Test_name.c", line 9: warning: unknown attribute "optnone"
+  int quz() __attribute__((optnone)) __attribute__((always_inline)); // expected-warning{{'always_inline' attribute ignored}} expected-note{{conflicting attribute is here}}
+                           ^
+
+"Test_name.c", line 12: warning: unknown attribute "optnone"
+  __attribute__((optnone)) int baz1() { return 1; } // expected-note{{conflicting attribute is here}}
+                 ^
+
+"Test_name.c", line 14: warning: unknown attribute "optnone"
+  __attribute__((optnone)) int quz1(); // expected-note{{conflicting attribute is here}}
+                 ^
+
+"Test_name.c", line 15: warning: the "always_inline" attribute is ignored on non-inline functions
+  __attribute__((always_inline)) int quz1() { return 1; } // expected-warning{{'always_inline' attribute ignored}}
+                 ^
+
+"Test_name.c", line 17: warning: unknown attribute "minsize"
+  int bay() __attribute__((minsize)) __attribute__((optnone)); // expected-warning{{'minsize' attribute ignored}} expected-note{{conflicting}}
+                           ^
+
+"Test_name.c", line 17: warning: unknown attribute "optnone"
+  int bay() __attribute__((minsize)) __attribute__((optnone)); // expected-warning{{'minsize' attribute ignored}} expected-note{{conflicting}}
+                                                    ^
+
+"Test_name.c", line 18: warning: unknown attribute "optnone"
+  int quy() __attribute__((optnone)) __attribute__((minsize)); // expected-warning{{'minsize' attribute ignored}} expected-note{{conflicting}}
+                           ^
+
+"Test_name.c", line 18: warning: unknown attribute "minsize"
+  int quy() __attribute__((optnone)) __attribute__((minsize)); // expected-warning{{'minsize' attribute ignored}} expected-note{{conflicting}}
+                                                    ^
+
+"Test_name.c", line 20: warning: unknown attribute "minsize"
+  __attribute__((minsize)) int bay1(); // expected-warning{{'minsize' attribute ignored}}
+                 ^
+
+"Test_name.c", line 21: warning: unknown attribute "optnone"
+  __attribute__((optnone)) int bay1() { return 1; } // expected-note{{conflicting attribute is here}}
+                 ^
+
+"Test_name.c", line 23: warning: unknown attribute "optnone"
+  __attribute__((optnone)) int quy1(); // expected-note{{conflicting attribute is here}}
+                 ^
+
+"Test_name.c", line 24: warning: unknown attribute "minsize"
+  __attribute__((minsize)) int quy1() { return 1; } // expected-warning{{'minsize' attribute ignored}}
+                 ^
+
+"Test_name.c", line 27: warning: unknown attribute "minsize"
+    __attribute__((minsize)) // expected-warning{{'minsize' attribute ignored}}
+                   ^
+
+"Test_name.c", line 29: warning: unknown attribute "optnone"
+  __attribute__((optnone)) // expected-note 2 {{conflicting}}
+                 ^
+
+"Test_name.c", line 32: warning: unknown attribute "optnone"
+  __forceinline __attribute__((optnone)) int bax(); // expected-warning{{'__forceinline' attribute ignored}} expected-note{{conflicting}}
+                               ^
+
+"Test_name.c", line 33: warning: unknown attribute "optnone"
+  __attribute__((optnone)) __forceinline int qux(); // expected-warning{{'__forceinline' attribute ignored}} expected-note{{conflicting}}
+                 ^
+
+"Test_name.c", line 36: warning: unknown attribute "optnone"
+  __attribute__((optnone)) int bax2() { return 1; } // expected-note{{conflicting}}
+                 ^
+
+"Test_name.c", line 37: warning: unknown attribute "optnone"
+  __attribute__((optnone)) int qux2(); // expected-note{{conflicting}}
+                 ^
+
+"Test_name.c", line 40: warning: unknown attribute "optnone"
+  int globalVar __attribute__((optnone)); // expected-warning{{'optnone' attribute only applies to functions}}
+                               ^
+
+"Test_name.c", line 42: warning: unknown attribute "optnone"
+  int fubar(int __attribute__((optnone)), int); // expected-warning{{'optnone' attribute only applies to functions}}
+                               ^
+
+"Test_name.c", line 45: warning: unknown attribute "optnone"
+    int aField __attribute__((optnone));  // expected-warning{{'optnone' attribute only applies to functions}}
+                              ^
+
+"Test_name.c", line 49: warning: unknown attribute "optnone"
+    void foo() __attribute__((optnone));
+                              ^
+
+"Test_name.c", line 50: warning: unknown attribute "optnone"
+    static void bar() __attribute__((optnone));
+                                     ^
+
+"Test_name.c", line 55: warning: unknown attribute "clang::optnone"
+  [[clang::optnone]]
+    ^
+
+"Test_name.c", line 57: warning: unknown attribute "clang::optnone"
+  [[clang::optnone]]
+    ^
+
+"Test_name.c", line 60: warning: unknown attribute "clang::optnone"
+  [[clang::optnone]] // expected-note {{conflicting}}
+    ^
+
+"Test_name.c", line 63: warning: unknown attribute "clang::optnone"
+  [[clang::optnone]] int globalVar2; //expected-warning{{'clang::optnone' attribute only applies to functions}}
+    ^
+
+"Test_name.c", line 66: warning: unknown attribute "clang::optnone"
+    [[clang::optnone]] int aField; // expected-warning{{'clang::optnone' attribute only applies to functions}}
+      ^
+
+"Test_name.c", line 70: warning: unknown attribute "clang::optnone"
+    [[clang::optnone]]
+      ^
+
+"Test_name.c", line 72: warning: unknown attribute "clang::optnone"
+    [[clang::optnone]]
+      ^
+
+"Test_name.c", line 78: warning: unknown attribute "_Clang::optnone"
+  [[_Clang::optnone]] int foo3();
+    ^
+
+"Test_name.c", line 79: error: expected an identifier
+  [[__clang__::optnone]] int foo4(); // expected-warning {{'__clang__' is a predefined macro name, not an attribute scope specifier; did you mean '_Clang' instead?}}
+    ^
+
+"Test_name.c", line 80: warning: unknown attribute "clang::__optnone__"
+  [[clang::__optnone__]] int foo5();
+    ^
+
+"Test_name.c", line 81: warning: unknown attribute "_Clang::__optnone__"
+  [[_Clang::__optnone__]] int foo6();
+    ^
+
+"Test_name.c", line 83: warning: unknown attribute "_Clang::optnone"
+  [[_Clang::optnone]] int foo7; // expected-warning {{'clang::optnone' attribute only applies to functions}}
+    ^
+
+1 error detected in the compilation of "Test_name.c".

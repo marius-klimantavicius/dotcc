@@ -1,0 +1,3 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 -w pr82353-2-aux.cc Test_name.c
+pr82353-2-aux.cc:
+Test_name.c:

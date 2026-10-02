@@ -1,0 +1,13 @@
+./a.out
+in constructor((101))
+in constructor((500))
+in constructor(())
+in constructor((65535))
+In Test::Test
+In main
+In foo
+In Test::~Test
+in destructor((65535))
+in destructor(())
+in destructor((500))
+in destructor((101))

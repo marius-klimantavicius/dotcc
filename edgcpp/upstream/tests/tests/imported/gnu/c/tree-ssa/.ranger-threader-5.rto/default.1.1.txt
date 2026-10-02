@@ -1,0 +1,102 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 35: warning: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+  int __GIMPLE (ssa,startwith("thread1"))
+                ^
+
+"Test_name.c", line 35: error: expected a ")"
+  int __GIMPLE (ssa,startwith("thread1"))
+                             ^
+
+"Test_name.c", line 36: error: expected a declaration
+  foo (int key)
+  ^
+
+"Test_name.c", line 58: warning: parsing restarts here after previous syntax error
+    bar();  bar();  bar();  bar();  bar();  bar();  bar();  bar();  bar();  bar();
+         ^
+
+"Test_name.c", line 58: error: expected a declaration
+    bar();  bar();  bar();  bar();  bar();  bar();  bar();  bar();  bar();  bar();
+            ^
+
+"Test_name.c", line 58: error: expected a declaration
+    bar();  bar();  bar();  bar();  bar();  bar();  bar();  bar();  bar();  bar();
+                    ^
+
+"Test_name.c", line 58: error: expected a declaration
+    bar();  bar();  bar();  bar();  bar();  bar();  bar();  bar();  bar();  bar();
+                            ^
+
+"Test_name.c", line 58: error: expected a declaration
+    bar();  bar();  bar();  bar();  bar();  bar();  bar();  bar();  bar();  bar();
+                                    ^
+
+"Test_name.c", line 58: error: expected a declaration
+    bar();  bar();  bar();  bar();  bar();  bar();  bar();  bar();  bar();  bar();
+                                            ^
+
+"Test_name.c", line 58: error: expected a declaration
+    bar();  bar();  bar();  bar();  bar();  bar();  bar();  bar();  bar();  bar();
+                                                    ^
+
+"Test_name.c", line 58: error: expected a declaration
+    bar();  bar();  bar();  bar();  bar();  bar();  bar();  bar();  bar();  bar();
+                                                            ^
+
+"Test_name.c", line 58: error: expected a declaration
+    bar();  bar();  bar();  bar();  bar();  bar();  bar();  bar();  bar();  bar();
+                                                                    ^
+
+"Test_name.c", line 58: error: expected a declaration
+    bar();  bar();  bar();  bar();  bar();  bar();  bar();  bar();  bar();  bar();
+                                                                            ^
+
+"Test_name.c", line 35: warning: standard requires that parameter "ssa" be given a type by a subsequent declaration ("int" assumed)
+  int __GIMPLE (ssa,startwith("thread1"))
+                ^
+
+"Test_name.c", line 35: warning: standard requires that parameter "startwith" be given a type by a subsequent declaration ("int" assumed)
+  int __GIMPLE (ssa,startwith("thread1"))
+                    ^
+
+"Test_name.c", line 59: error: expected a "{"
+    switch (context_448) {default: L5; case 0: L999; }
+    ^
+
+"Test_name.c", line 59: error: a default label may only be used within a switch
+    switch (context_448) {default: L5; case 0: L999; }
+                          ^
+
+"Test_name.c", line 59: error: identifier "L5" is undefined
+    switch (context_448) {default: L5; case 0: L999; }
+                                   ^
+
+"Test_name.c", line 59: error: a case label may only be used within a switch
+    switch (context_448) {default: L5; case 0: L999; }
+                                       ^
+
+"Test_name.c", line 59: error: identifier "L999" is undefined
+    switch (context_448) {default: L5; case 0: L999; }
+                                               ^
+
+"Test_name.c", line 59: warning: missing return statement at end of non-void function "__GIMPLE"
+    switch (context_448) {default: L5; case 0: L999; }
+                                                     ^
+
+"Test_name.c", line 61: error: expected a type specifier
+   __BB(5):
+        ^
+
+"Test_name.c", line 61: warning: explicit type is missing ("int" assumed)
+   __BB(5):
+   ^
+
+"Test_name.c", line 61: error: expected a "{"
+   __BB(5):
+          ^
+
+"Test_name.c", line 80: warning: parsing restarts here after previous syntax error
+  }
+  ^
+
+18 errors detected in the compilation of "Test_name.c".

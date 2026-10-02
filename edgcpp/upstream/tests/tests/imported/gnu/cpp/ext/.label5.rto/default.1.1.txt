@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 7: error: no operator "&&" matches these operands
+            operand types are: A && void *
+  int main() { b: A() && && b; } // { dg-error "operand types are 'A' and 'void\\*'" }
+                      ^
+"Test_name.c", line 7: note: built-in operator&&(<bool>, <bool>) does not match because argument #1 does not match parameter
+  int main() { b: A() && && b; } // { dg-error "operand types are 'A' and 'void\\*'" }
+                      ^
+
+1 error detected in the compilation of "Test_name.c".

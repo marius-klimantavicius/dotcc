@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 Test_name.c
+"./c11-align-4.c", line 9: error: alignment cannot be set to less than the default alignment
+  _Alignas (_Alignof (char)) max_align_t x;
+  ^
+
+1 error detected in the compilation of "Test_name.c".

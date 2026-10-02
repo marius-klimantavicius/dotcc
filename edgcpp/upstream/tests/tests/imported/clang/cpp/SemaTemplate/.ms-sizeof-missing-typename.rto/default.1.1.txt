@@ -1,0 +1,20 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --ms_compatibility Test_name.c
+"Test_name.c", line 36: error: template parameter "T::InnerTemplate" may not have a template argument list
+      x1 = sizeof(typename T::/*template*/ InnerTemplate<sizeof(/*typename*/ T::InnerType)>),
+                                           ^
+
+"Test_name.c", line 40: error: template parameter "T::InnerTemplate" may not have a template argument list
+      y1 = sizeof(typename T::/*template*/ InnerTemplate<sizeof(T::InnerVar)>),
+                                           ^
+
+"Test_name.c", line 11: error: expected an expression
+  template <typename T> int type_h() { return sizeof((T::type)); }  // expected-error {{missing 'typename' prior to dependent type name 'basic::X::type'}}
+                                                              ^
+          detected during instantiation of "int basic::type_h<T>() [with T=basic::X]" at line 23
+
+"Test_name.c", line 56: warning: variable "a" was declared but never referenced
+  template <typename T> void f() { int a = sizeof T::template U<0> + 4; }
+                                       ^
+          detected during instantiation of "void ambiguous_missing_parens::f<T>() [with T=ambiguous_missing_parens::Q]" at line 62
+
+3 errors detected in the compilation of "Test_name.c".

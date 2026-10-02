@@ -1,0 +1,6 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 32: warning: transfer of control bypasses initialization of:
+            variable "i" (declared at line 11)
+      goto my_label;
+      ^
+

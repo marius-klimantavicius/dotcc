@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 14: error: no instance of overloaded function "tag_invoke" matches the argument list
+            argument types are: (<unknown-type>, int)
+  auto try_tag_invoke() noexcept(tag_invoke(declval<CPO>, declval<Args>()...)) // { dg-error "no matching function for call" }
+                                 ^
+"Test_name.c", line 11: note: function template "tag_invoke(print_tag_, auto)" does not match because argument #1 does not match parameter
+  bool tag_invoke(print_tag_, auto obj) requires requires { *obj; };
+       ^
+"Test_name.c", line 10: note: function template "tag_invoke(print_tag_, auto)" does not match because argument #1 does not match parameter
+  bool tag_invoke(print_tag_, auto);
+       ^
+          detected during:
+            instantiation of "auto try_tag_invoke<CPO,Args...>()->decltype((<expression>)) [with CPO=print_tag_, Args=<int>]" at line 18
+            instantiation of "void print_tag_::operator()(auto...) [with <auto-1>=<int>]" at line 22
+
+1 error detected in the compilation of "Test_name.c".

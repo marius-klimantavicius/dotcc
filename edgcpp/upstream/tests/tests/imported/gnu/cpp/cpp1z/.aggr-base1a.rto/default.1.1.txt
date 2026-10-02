@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 16: error: no instance of constructor "derived::derived" matches the argument list
+            argument types are: ({...}, {...}, int)
+  derived d1{{1, 2}, {}, 4};	// { dg-error "" }
+            ^
+"Test_name.c", line 12: note: number of parameters of function "derived::derived(const derived &)" does not match the call
+  struct derived : base1, base2 {
+         ^
+"Test_name.c", line 12: note: number of parameters of function "derived::derived(derived &&)" does not match the call
+  struct derived : base1, base2 {
+         ^
+"Test_name.c", line 12: note: number of parameters of function "derived::derived()" does not match the call
+  struct derived : base1, base2 {
+         ^
+
+"Test_name.c", line 17: error: no instance of constructor "derived::derived" matches the argument list
+            argument types are: ({...}, {...}, int)
+  derived d2{{}, {}, 4};		// { dg-error "" }
+            ^
+"Test_name.c", line 12: note: number of parameters of function "derived::derived(const derived &)" does not match the call
+  struct derived : base1, base2 {
+         ^
+"Test_name.c", line 12: note: number of parameters of function "derived::derived(derived &&)" does not match the call
+  struct derived : base1, base2 {
+         ^
+"Test_name.c", line 12: note: number of parameters of function "derived::derived()" does not match the call
+  struct derived : base1, base2 {
+         ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 14: warning: subscript out of range
+        for (short o(l[m][m][m][m][m] / i[m][m] ?: e[m][m][4][m][2]); o; o = g)
+                                                          ^
+
+"Test_name.c", line 15: warning: variable "p" is used before its value is set
+  	for (char p; p < (c && i[g]) + 7; p += 2)
+  	             ^
+

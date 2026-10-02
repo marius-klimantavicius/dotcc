@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 195: warning: missing return statement at end of non-void function "process_switch"
+  }
+  ^
+
+"Test_name.c", line 191: warning: variable "i" was declared but never referenced
+    unsigned int i, branch_num = gimple_switch_num_labels (swtch);
+                 ^
+
+"Test_name.c", line 192: warning: variable "index_type" was declared but never referenced
+    tree index_type;
+         ^
+
+"Test_name.c", line 46: warning: function "VEC_edge_must_be_pointer_type" was declared but never referenced
+  VEC_edge_must_be_pointer_type (void)
+  ^
+

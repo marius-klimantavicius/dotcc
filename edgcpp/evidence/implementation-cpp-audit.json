@@ -1,0 +1,304 @@
+{
+  "scope": "cpfe target only; unique EDG source locations, declarations and definitions counted separately",
+  "translation_units": 75,
+  "source_files_including_headers": 156,
+  "physical_source_lines_including_comments": 1511492,
+  "error_diagnostics": 0,
+  "counts": {
+    "alias_template_declarations": 10,
+    "auto_typed_declarations": 83,
+    "base_specifiers": 640,
+    "catch_statements": 0,
+    "class_template_declarations": 117,
+    "const_cast_expressions": 8,
+    "constexpr_declarations": 156,
+    "constructor_declarations": 240,
+    "conversion_function_declarations": 2,
+    "copy_constructors": 29,
+    "delete_expressions": 0,
+    "destructor_declarations": 83,
+    "dynamic_cast_expressions": 0,
+    "explicit_enum_underlying_types": 743,
+    "function_template_declarations": 1332,
+    "lambda_expressions": 354,
+    "lvalue_reference_declarations": 9896,
+    "member_function_declarations": 861,
+    "move_constructors": 29,
+    "namespace_blocks": 275,
+    "new_expressions": 52,
+    "operator_declarations": 373,
+    "pack_expansion_expressions": 48,
+    "partial_specializations": 12,
+    "range_for_loops": 104,
+    "reinterpret_cast_expressions": 0,
+    "rvalue_reference_declarations": 102,
+    "scoped_enums": 1,
+    "static_assert_declarations": 3579,
+    "static_cast_expressions": 14,
+    "template_reference_sites": 3135,
+    "template_template_parameters": 128,
+    "throw_expressions": 0,
+    "try_statements": 0,
+    "type_alias_declarations": 3123,
+    "typeid_expressions": 0,
+    "virtual_bases": 0,
+    "virtual_methods": 0
+  },
+  "overloaded_free_function_names": 459,
+  "edg_commit": "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f",
+  "method": {
+    "tool": "libclang 21 with Python bindings 21.1.7",
+    "script": "edgcpp/audit_cpp.py",
+    "flags": "cpfe build definitions/includes/C++14/no-exceptions/no-RTTI; GCC resource includes added for quadmath.h",
+    "scope": "75 cpfe translation units and active source headers under upstream/src; includes checked-in generated IFC code; excludes runtime, tests, system headers, build-generated headers and inactive preprocessor branches",
+    "deduplication": "category + physical source file + byte offset; declarations and out-of-line definitions counted separately; counts describe observed syntax sites, not unique semantic types or instantiated functions",
+    "caveat": "Clang predefined host macros differ from the GCC native build; this is a source audit under matching configuration, not a GCC AST dump."
+  },
+  "top_files_per_category": {
+    "alias_template_declarations": {
+      "upstream/src/util.h": 9,
+      "upstream/src/ifc_modules_read.c": 1
+    },
+    "auto_typed_declarations": {
+      "upstream/src/ifc_modules_read.c": 29,
+      "upstream/src/util.h": 15,
+      "upstream/src/scope_stk.c": 12,
+      "upstream/src/error.c": 3,
+      "upstream/src/lexical.c": 3
+    },
+    "base_specifiers": {
+      "upstream/src/ifc_map.h": 513,
+      "upstream/src/util.h": 67,
+      "upstream/src/ifc_modules.h": 10,
+      "upstream/src/il.h": 8,
+      "upstream/src/ifc_modules_read.c": 6
+    },
+    "catch_statements": {},
+    "class_template_declarations": {
+      "upstream/src/ifc_map_functions.h": 59,
+      "upstream/src/util.h": 41,
+      "upstream/src/ifc_modules_read.c": 6,
+      "upstream/src/ifc_map.h": 5,
+      "upstream/src/header_util.h": 2
+    },
+    "const_cast_expressions": {
+      "upstream/src/lexical.c": 4,
+      "upstream/src/header_util.h": 1,
+      "upstream/src/error.h": 1,
+      "upstream/src/lexical.h": 1,
+      "upstream/src/error.c": 1
+    },
+    "constexpr_declarations": {
+      "upstream/src/builtin_defs.h": 30,
+      "upstream/src/util.h": 23,
+      "upstream/src/lower_c99.c": 21,
+      "upstream/src/sys_predef.c": 14,
+      "upstream/src/ifc_map_functions.h": 9
+    },
+    "constructor_declarations": {
+      "upstream/src/lexical.h": 54,
+      "upstream/src/util.h": 46,
+      "upstream/src/ifc_modules_read.c": 37,
+      "upstream/src/ifc_map.h": 16,
+      "upstream/src/header_util.h": 14
+    },
+    "conversion_function_declarations": {
+      "upstream/src/util.h": 1,
+      "upstream/src/ifc_map.h": 1
+    },
+    "copy_constructors": {
+      "upstream/src/lexical.h": 13,
+      "upstream/src/util.h": 6,
+      "upstream/src/header_util.h": 2,
+      "upstream/src/modules.h": 2,
+      "upstream/src/interpret.c": 2
+    },
+    "delete_expressions": {},
+    "destructor_declarations": {
+      "upstream/src/lexical.h": 22,
+      "upstream/src/ifc_modules_read.c": 17,
+      "upstream/src/util.h": 16,
+      "upstream/src/modules.h": 6,
+      "upstream/src/header_util.h": 4
+    },
+    "dynamic_cast_expressions": {},
+    "explicit_enum_underlying_types": {
+      "upstream/src/ifc_map.h": 654,
+      "upstream/src/il_def.h": 68,
+      "upstream/src/symbol_tbl.h": 5,
+      "upstream/src/exprutil.h": 3,
+      "upstream/src/lexical.h": 2
+    },
+    "function_template_declarations": {
+      "upstream/src/ifc_map_functions.h": 929,
+      "upstream/src/util.h": 152,
+      "upstream/src/ifc_modules_read.c": 111,
+      "upstream/src/ifc_modules_write.c": 44,
+      "upstream/src/error.h": 22
+    },
+    "lambda_expressions": {
+      "upstream/src/interpret.c": 171,
+      "upstream/src/walk_entry.h": 127,
+      "upstream/src/ifc_modules_read.c": 23,
+      "upstream/src/il_walk.c": 7,
+      "upstream/src/util.h": 6
+    },
+    "lvalue_reference_declarations": {
+      "upstream/src/ifc_map_functions.h": 4887,
+      "upstream/src/ifc_map_functions_acc.c": 2400,
+      "upstream/src/ifc_map_functions_mut.c": 1200,
+      "upstream/src/ifc_modules_read.c": 372,
+      "upstream/src/ifc_map_functions_val.c": 347
+    },
+    "member_function_declarations": {
+      "upstream/src/util.h": 209,
+      "upstream/src/ifc_modules_write.c": 203,
+      "upstream/src/lexical.h": 149,
+      "upstream/src/ifc_modules_read.c": 119,
+      "upstream/src/lexical.c": 38
+    },
+    "move_constructors": {
+      "upstream/src/lexical.h": 10,
+      "upstream/src/util.h": 7,
+      "upstream/src/modules.c": 3,
+      "upstream/src/header_util.h": 2,
+      "upstream/src/overload.h": 2
+    },
+    "namespace_blocks": {
+      "upstream/src/ifc_modules_read.c": 18,
+      "upstream/src/util.h": 12,
+      "upstream/src/target.c": 10,
+      "upstream/src/ifc_modules_write.c": 10,
+      "upstream/src/floating.c": 8
+    },
+    "new_expressions": {
+      "upstream/src/lexical.h": 18,
+      "upstream/src/util.h": 9,
+      "upstream/src/lexical.c": 7,
+      "upstream/src/symbol_tbl.c": 5,
+      "upstream/src/header_util.h": 4
+    },
+    "operator_declarations": {
+      "upstream/src/expr.c": 85,
+      "upstream/src/ifc_map.h": 62,
+      "upstream/src/util.h": 58,
+      "upstream/src/lexical.h": 40,
+      "upstream/src/header_util.h": 19
+    },
+    "pack_expansion_expressions": {
+      "upstream/src/error.h": 22,
+      "upstream/src/util.h": 19,
+      "upstream/src/ifc_modules_read.c": 3,
+      "upstream/src/exprutil.h": 2,
+      "upstream/src/float_pt.c": 1
+    },
+    "partial_specializations": {
+      "upstream/src/util.h": 12
+    },
+    "range_for_loops": {
+      "upstream/src/ifc_modules_read.c": 55,
+      "upstream/src/pragma.c": 9,
+      "upstream/src/interpret.c": 6,
+      "upstream/src/lookup.c": 5,
+      "upstream/src/decl_inits.c": 4
+    },
+    "reinterpret_cast_expressions": {},
+    "rvalue_reference_declarations": {
+      "upstream/src/util.h": 31,
+      "upstream/src/lexical.h": 29,
+      "upstream/src/modules.c": 13,
+      "upstream/src/modules.h": 12,
+      "upstream/src/header_util.h": 7
+    },
+    "scoped_enums": {
+      "upstream/src/exprutil.c": 1
+    },
+    "static_assert_declarations": {
+      "upstream/src/ifc_map_functions_acc.c": 1329,
+      "upstream/src/ifc_map_functions_mut.c": 1138,
+      "upstream/src/ifc_map_functions_val.c": 1063,
+      "upstream/src/il_def.h": 16,
+      "upstream/src/ifc_modules_read.c": 9
+    },
+    "static_cast_expressions": {
+      "upstream/src/header_util.h": 5,
+      "upstream/src/lexical.h": 4,
+      "upstream/src/util.h": 2,
+      "upstream/src/templates.c": 2,
+      "upstream/src/ifc_modules_read.c": 1
+    },
+    "template_reference_sites": {
+      "upstream/src/ifc_map.h": 1018,
+      "upstream/src/ifc_modules_read.c": 752,
+      "upstream/src/util.h": 498,
+      "upstream/src/ifc_map_functions.c": 309,
+      "upstream/src/ifc_map_functions.h": 59
+    },
+    "template_template_parameters": {
+      "upstream/src/util.h": 127,
+      "upstream/src/ifc_modules_read.c": 1
+    },
+    "throw_expressions": {},
+    "try_statements": {},
+    "type_alias_declarations": {
+      "upstream/src/ifc_map.h": 1879,
+      "upstream/src/ifc_map_functions.h": 725,
+      "upstream/src/ifc_map_functions.c": 393,
+      "upstream/src/ifc_modules_read.c": 34,
+      "upstream/src/util.h": 22
+    },
+    "typeid_expressions": {},
+    "virtual_bases": {},
+    "virtual_methods": {}
+  },
+  "placement_new_review": "All 52 observed new-expression sites use placement construction into existing storage; reviewed source at each site.",
+  "self_lowering_probe": {
+    "configuration": "Native cpfe, --c++14 --gnu_version=130300 --no_exceptions --no_rtti --instantiate used --set_flag skip_il_read, build definitions/includes, scraped GCC C++ system includes. Exact invocations in artifacts/cpp-audit/self-lowering/*.log.",
+    "sources": [
+      "cfe.c",
+      "const_ints.c",
+      "ifc_modules_read.c"
+    ],
+    "edg_lowering_exit_codes": [
+      0,
+      0,
+      0
+    ],
+    "gcc_compile": [
+      {
+        "source": "cfe",
+        "native_compile_exit": 0,
+        "diagnostic": ""
+      },
+      {
+        "source": "const_ints",
+        "native_compile_exit": 0,
+        "diagnostic": ""
+      },
+      {
+        "source": "ifc_modules_read",
+        "native_compile_exit": 0,
+        "diagnostic": ""
+      }
+    ],
+    "dotcc_normalized_emit": [
+      {
+        "source": "cfe",
+        "normalized_dotcc_exit": 0,
+        "diagnostic": "dotcc: wrote 1 C# source file(s) + cfe-managed/cfe-managed.csproj\n"
+      },
+      {
+        "source": "const_ints",
+        "normalized_dotcc_exit": 2,
+        "diagnostic": "dotcc: parse failed in const_ints-normalized.c: parse error at line 4266, column 11 (byte offset 165851): unexpected ';' (id=30) in state 68; expected one of: 'int' (id=21), '(' (id=26), '{' (id=28), '*' (id=43), 'ID' (id=46), 'char' (id=59), 'float' (id=60), 'double' (id=61), 'void' (id=62), 'TYPE_NAME' (id=106), 'short' (id=126), 'long' (id=127), 'unsigned' (id=128), 'signed' (id=129), '_Bool' (id=133), '_Float128' (id=136), 'const' (id=141), 'volatile' (id=142), 'inline' (id=154), '_Noreturn' (id=155), '_Complex' (id=157), '__int128' (id=173), '_Thread_local' (id=184), 'constexpr' (id=185), '__attribute__' (id=196)\n"
+      },
+      {
+        "source": "ifc_modules_read",
+        "normalized_dotcc_exit": 2,
+        "diagnostic": "dotcc: parse failed in ifc_modules_read-normalized.c: parse error at line 1170, column 44 (byte offset 41595): unexpected ';' (id=30) in state 68; expected one of: 'int' (id=21), '(' (id=26), '{' (id=28), '*' (id=43), 'ID' (id=46), 'char' (id=59), 'float' (id=60), 'double' (id=61), 'void' (id=62), 'TYPE_NAME' (id=106), 'short' (id=126), 'long' (id=127), 'unsigned' (id=128), 'signed' (id=129), '_Bool' (id=133), '_Float128' (id=136), 'const' (id=141), 'volatile' (id=142), 'inline' (id=154), '_Noreturn' (id=155), '_Complex' (id=157), '__int128' (id=173), '_Thread_local' (id=184), 'constexpr' (id=185), '__attribute__' (id=196)\n"
+      }
+    ],
+    "normalization": "Diagnostic-only: strip numeric line directives, replace __inline__ with inline, remove auto storage specifier and exact .align 2 inline assembly. Not a production-safe general normalizer.",
+    "cfe_managed_build": "Fails with unresolved references to other EDG translation units; only cfe.c was emitted. No working managed compiler has been built."
+  }
+}

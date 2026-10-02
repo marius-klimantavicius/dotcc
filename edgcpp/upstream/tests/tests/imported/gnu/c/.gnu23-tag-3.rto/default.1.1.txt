@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 --strict_gnu Test_name.c
+"Test_name.c", line 12: warning: variable-length array field type will be treated as zero-length array field type
+  	struct f { int b; int a[n]; };
+  	                        ^
+
+"Test_name.c", line 13: warning: variable-length array field type will be treated as zero-length array field type
+  	struct f { int b; int a[n]; };	/* { dg-error "redefinition of struct or union" } */
+  	                        ^
+
+"Test_name.c", line 14: warning: variable-length array field type will be treated as zero-length array field type
+  	struct f { int b; int a[m]; };	/* { dg-error "redefinition of struct or union" } */
+  	                        ^
+
+"Test_name.c", line 15: error: this declaration of struct "f" does not declare the same type as the declaration at line 12
+  	struct f { int b; int a[5]; };	/* { dg-error "redefinition of struct or union" } */
+  	       ^
+
+"Test_name.c", line 18: warning: variable-length array field type will be treated as zero-length array field type
+  	struct g { int a[n]; int b; };
+  	                 ^
+
+"Test_name.c", line 19: warning: variable-length array field type will be treated as zero-length array field type
+  	struct g { int a[n]; int b; };	/* { dg-error "redefinition of struct or union" } */
+  	                 ^
+
+"Test_name.c", line 20: warning: variable-length array field type will be treated as zero-length array field type
+  	struct g { int a[m]; int b; };	/* { dg-error "redefinition of struct or union" } */
+  	                 ^
+
+"Test_name.c", line 21: error: this declaration of struct "g" does not declare the same type as the declaration at line 18
+  	struct g { int a[4]; int b; };	/* { dg-error "redefinition of struct or union" } */
+  	       ^
+
+"Test_name.c", line 23: error: a field declaration cannot have a type involving a variable length array
+  	struct h { int (*a)[n]; int b; };
+  	                 ^
+
+"Test_name.c", line 24: error: a field declaration cannot have a type involving a variable length array
+  	struct h { int (*a)[n]; int b; };	/* { dg-error "redefinition of struct or union" } */
+  	                 ^
+
+"Test_name.c", line 25: error: a field declaration cannot have a type involving a variable length array
+  	struct h { int (*a)[m]; int b; };	/* { dg-error "redefinition of struct or union" } */
+  	                 ^
+
+"Test_name.c", line 26: error: this declaration of struct "h" does not declare the same type as the declaration at line 23
+  	struct h { int (*a)[4]; int b; };	/* { dg-error "redefinition of struct or union" } */
+  	       ^
+
+"Test_name.c", line 27: error: this declaration of struct "h" does not declare the same type as the declaration at line 23
+  	struct h { int (*a)[]; int b; };	/* { dg-error "redefinition of struct or union" } */
+  	       ^
+
+7 errors detected in the compilation of "Test_name.c".

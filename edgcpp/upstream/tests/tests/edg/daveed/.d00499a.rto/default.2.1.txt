@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=2 --c Test_name.c
+"Test_name.c", line 18: error: extra braces are nonstandard
+  struct foo bar = {{{1}}};
+                    ^
+
+"Test_name.c", line 19: error: extra braces are nonstandard
+  struct foo baz = {{{1},},};
+                    ^
+
+2 errors detected in the compilation of "Test_name.c".

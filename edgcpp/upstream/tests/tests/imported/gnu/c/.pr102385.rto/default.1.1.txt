@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c17 --strict_gnu Test_name.c
+"Test_name.c", line 12: warning: use of "=" where "==" may have been intended
+      c[a] || (*f = 0);
+              ^
+
+"Test_name.c", line 13: warning: too many arguments in function call
+      d(c[a + 2]);
+        ^
+

@@ -1,0 +1,1293 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 20: warning: expression has no effect
+    *p->a;
+    ^
+
+"Test_name.c", line 21: warning: expression has no effect
+    *q.a;
+    ^
+
+"Test_name.c", line 22: warning: expression has no effect
+    *r[1];
+    ^
+
+"Test_name.c", line 26: warning: expression has no effect
+    +j[0];
+    ^
+
+"Test_name.c", line 27: warning: expression has no effect
+    -j[0];
+    ^
+
+"Test_name.c", line 28: warning: expression has no effect
+    ~j[0];
+    ^
+
+"Test_name.c", line 29: warning: expression has no effect
+    !j[0];
+    ^
+
+"Test_name.c", line 30: warning: expression has no effect
+    __real__ c[1];
+    ^
+
+"Test_name.c", line 31: warning: expression has no effect
+    __imag__ c[1];
+    ^
+
+"Test_name.c", line 32: warning: variable "x" was declared but never referenced
+    ASSERT ((sizeof p++) == (sizeof p));
+    ^
+
+"Test_name.c", line 33: warning: variable "x" was declared but never referenced
+    ASSERT ((sizeof (int) + 1) == ((sizeof (int)) + 1));
+    ^
+
+"Test_name.c", line 34: warning: variable "x" was declared but never referenced
+    ASSERT ((__alignof p++) == (__alignof p));
+    ^
+
+"Test_name.c", line 35: warning: variable "x" was declared but never referenced
+    ASSERT ((__alignof (int) + 1) == ((__alignof (int)) + 1));
+    ^
+
+"Test_name.c", line 36: warning: variable "x" was declared but never referenced
+    ASSERT ((sizeof __extension__ 1 + 1) == ((sizeof 1) + 1));
+    ^
+
+"Test_name.c", line 38: warning: variable "x" was declared but never referenced
+    ASSERT (((_Bool) 1 * 2) == 2);
+    ^
+
+"Test_name.c", line 39: warning: variable "x" was declared but never referenced
+    ASSERT (((_Bool) 8 / 4) == 0);
+    ^
+
+"Test_name.c", line 40: warning: variable "x" was declared but never referenced
+    ASSERT (((_Bool) 8 % 4) == 1);
+    ^
+
+"Test_name.c", line 47: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, *, 2, *, 3, 6, 6, 6);
+    ^
+
+"Test_name.c", line 47: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, *, 2, *, 3, 6, 6, 6);
+    ^
+
+"Test_name.c", line 47: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, *, 2, *, 3, 6, 6, 6);
+    ^
+
+"Test_name.c", line 48: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, *, 2, /, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 48: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, *, 2, /, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 48: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, *, 2, /, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 49: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, *, 2, %, 3, 1, 1, 4);
+    ^
+
+"Test_name.c", line 49: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, *, 2, %, 3, 1, 1, 4);
+    ^
+
+"Test_name.c", line 49: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, *, 2, %, 3, 1, 1, 4);
+    ^
+
+"Test_name.c", line 50: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, /, 2, *, 3, 3, 3, 0);
+    ^
+
+"Test_name.c", line 50: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, /, 2, *, 3, 3, 3, 0);
+    ^
+
+"Test_name.c", line 50: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, /, 2, *, 3, 3, 3, 0);
+    ^
+
+"Test_name.c", line 51: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, /, 2, /, 2, 0, 0, 2);
+    ^
+
+"Test_name.c", line 51: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, /, 2, /, 2, 0, 0, 2);
+    ^
+
+"Test_name.c", line 51: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, /, 2, /, 2, 0, 0, 2);
+    ^
+
+"Test_name.c", line 52: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, /, 4, %, 3, 0, 0, 2);
+    ^
+
+"Test_name.c", line 52: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, /, 4, %, 3, 0, 0, 2);
+    ^
+
+"Test_name.c", line 52: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, /, 4, %, 3, 0, 0, 2);
+    ^
+
+"Test_name.c", line 53: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, %, 2, *, 3, 0, 0, 2);
+    ^
+
+"Test_name.c", line 53: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, %, 2, *, 3, 0, 0, 2);
+    ^
+
+"Test_name.c", line 53: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, %, 2, *, 3, 0, 0, 2);
+    ^
+
+"Test_name.c", line 54: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, %, 9, /, 3, 0, 0, 2);
+    ^
+
+"Test_name.c", line 54: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, %, 9, /, 3, 0, 0, 2);
+    ^
+
+"Test_name.c", line 54: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, %, 9, /, 3, 0, 0, 2);
+    ^
+
+"Test_name.c", line 55: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, %, 4, %, 3, 2, 2, 0);
+    ^
+
+"Test_name.c", line 55: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, %, 4, %, 3, 2, 2, 0);
+    ^
+
+"Test_name.c", line 55: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, %, 4, %, 3, 2, 2, 0);
+    ^
+
+"Test_name.c", line 56: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, *, 3, +, 4, 10, 10, 14);
+    ^
+
+"Test_name.c", line 56: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, *, 3, +, 4, 10, 10, 14);
+    ^
+
+"Test_name.c", line 56: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, *, 3, +, 4, 10, 10, 14);
+    ^
+
+"Test_name.c", line 57: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, *, 3, -, 4, 2, 2, -2);
+    ^
+
+"Test_name.c", line 57: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, *, 3, -, 4, 2, 2, -2);
+    ^
+
+"Test_name.c", line 57: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, *, 3, -, 4, 2, 2, -2);
+    ^
+
+"Test_name.c", line 58: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, /, 3, +, 4, 4, 4, 0);
+    ^
+
+"Test_name.c", line 58: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, /, 3, +, 4, 4, 4, 0);
+    ^
+
+"Test_name.c", line 58: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, /, 3, +, 4, 4, 4, 0);
+    ^
+
+"Test_name.c", line 59: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, /, 3, -, 4, -4, -4, -2);
+    ^
+
+"Test_name.c", line 59: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, /, 3, -, 4, -4, -4, -2);
+    ^
+
+"Test_name.c", line 59: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, /, 3, -, 4, -4, -4, -2);
+    ^
+
+"Test_name.c", line 60: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, %, 3, +, 4, 6, 6, 2);
+    ^
+
+"Test_name.c", line 60: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, %, 3, +, 4, 6, 6, 2);
+    ^
+
+"Test_name.c", line 60: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, %, 3, +, 4, 6, 6, 2);
+    ^
+
+"Test_name.c", line 61: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, %, 3, -, 4, -2, -2, 0);
+    ^
+
+"Test_name.c", line 61: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, %, 3, -, 4, -2, -2, 0);
+    ^
+
+"Test_name.c", line 61: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, %, 3, -, 4, -2, -2, 0);
+    ^
+
+"Test_name.c", line 62: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, +, 3, *, 4, 14, 20, 14);
+    ^
+
+"Test_name.c", line 62: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, +, 3, *, 4, 14, 20, 14);
+    ^
+
+"Test_name.c", line 62: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, +, 3, *, 4, 14, 20, 14);
+    ^
+
+"Test_name.c", line 63: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, +, 3, /, 4, 2, 1, 2);
+    ^
+
+"Test_name.c", line 63: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, +, 3, /, 4, 2, 1, 2);
+    ^
+
+"Test_name.c", line 63: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, +, 3, /, 4, 2, 1, 2);
+    ^
+
+"Test_name.c", line 64: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, +, 3, %, 4, 5, 1, 5);
+    ^
+
+"Test_name.c", line 64: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, +, 3, %, 4, 5, 1, 5);
+    ^
+
+"Test_name.c", line 64: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, +, 3, %, 4, 5, 1, 5);
+    ^
+
+"Test_name.c", line 65: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, -, 3, *, 4, -10, -4, -10);
+    ^
+
+"Test_name.c", line 65: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, -, 3, *, 4, -10, -4, -10);
+    ^
+
+"Test_name.c", line 65: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, -, 3, *, 4, -10, -4, -10);
+    ^
+
+"Test_name.c", line 66: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, -, 3, /, 4, 2, 0, 2);
+    ^
+
+"Test_name.c", line 66: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, -, 3, /, 4, 2, 0, 2);
+    ^
+
+"Test_name.c", line 66: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, -, 3, /, 4, 2, 0, 2);
+    ^
+
+"Test_name.c", line 67: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, -, 4, %, 4, 2, -2, 2);
+    ^
+
+"Test_name.c", line 67: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, -, 4, %, 4, 2, -2, 2);
+    ^
+
+"Test_name.c", line 67: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, -, 4, %, 4, 2, -2, 2);
+    ^
+
+"Test_name.c", line 68: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, +, 3, +, 4, 9, 9, 9);
+    ^
+
+"Test_name.c", line 68: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, +, 3, +, 4, 9, 9, 9);
+    ^
+
+"Test_name.c", line 68: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, +, 3, +, 4, 9, 9, 9);
+    ^
+
+"Test_name.c", line 69: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, +, 3, -, 4, 1, 1, 1);
+    ^
+
+"Test_name.c", line 69: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, +, 3, -, 4, 1, 1, 1);
+    ^
+
+"Test_name.c", line 69: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, +, 3, -, 4, 1, 1, 1);
+    ^
+
+"Test_name.c", line 70: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, -, 3, +, 4, 3, 3, -5);
+    ^
+
+"Test_name.c", line 70: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, -, 3, +, 4, 3, 3, -5);
+    ^
+
+"Test_name.c", line 70: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, -, 3, +, 4, 3, 3, -5);
+    ^
+
+"Test_name.c", line 71: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, -, 3, -, 4, -5, -5, 3);
+    ^
+
+"Test_name.c", line 71: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, -, 3, -, 4, -5, -5, 3);
+    ^
+
+"Test_name.c", line 71: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, -, 3, -, 4, -5, -5, 3);
+    ^
+
+"Test_name.c", line 72: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (3, +, 2, <<, 4, 80, 80, 35);
+    ^
+
+"Test_name.c", line 72: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (3, +, 2, <<, 4, 80, 80, 35);
+    ^
+
+"Test_name.c", line 72: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (3, +, 2, <<, 4, 80, 80, 35);
+    ^
+
+"Test_name.c", line 73: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (3, +, 2, >>, 4, 0, 0, 3);
+    ^
+
+"Test_name.c", line 73: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (3, +, 2, >>, 4, 0, 0, 3);
+    ^
+
+"Test_name.c", line 73: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (3, +, 2, >>, 4, 0, 0, 3);
+    ^
+
+"Test_name.c", line 74: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (3, -, 2, <<, 4, 16, 16, -29);
+    ^
+
+"Test_name.c", line 74: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (3, -, 2, <<, 4, 16, 16, -29);
+    ^
+
+"Test_name.c", line 74: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (3, -, 2, <<, 4, 16, 16, -29);
+    ^
+
+"Test_name.c", line 75: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (3, -, 2, >>, 4, 0, 0, 3);
+    ^
+
+"Test_name.c", line 75: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (3, -, 2, >>, 4, 0, 0, 3);
+    ^
+
+"Test_name.c", line 75: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (3, -, 2, >>, 4, 0, 0, 3);
+    ^
+
+"Test_name.c", line 76: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, <<, 4, +, 3, 256, 35, 256);
+    ^
+
+"Test_name.c", line 76: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, <<, 4, +, 3, 256, 35, 256);
+    ^
+
+"Test_name.c", line 76: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, <<, 4, +, 3, 256, 35, 256);
+    ^
+
+"Test_name.c", line 77: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, <<, 4, -, 3, 4, 29, 4);
+    ^
+
+"Test_name.c", line 77: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, <<, 4, -, 3, 4, 29, 4);
+    ^
+
+"Test_name.c", line 77: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, <<, 4, -, 3, 4, 29, 4);
+    ^
+
+"Test_name.c", line 78: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, >>, 4, +, 3, 0, 3, 0);
+    ^
+
+"Test_name.c", line 78: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, >>, 4, +, 3, 0, 3, 0);
+    ^
+
+"Test_name.c", line 78: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, >>, 4, +, 3, 0, 3, 0);
+    ^
+
+"Test_name.c", line 79: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, >>, 4, -, 3, 1, -3, 1);
+    ^
+
+"Test_name.c", line 79: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, >>, 4, -, 3, 1, -3, 1);
+    ^
+
+"Test_name.c", line 79: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, >>, 4, -, 3, 1, -3, 1);
+    ^
+
+"Test_name.c", line 80: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (4L, <<, 2L, <<, 3L, 128L, 128L, 262144L);
+    ^
+
+"Test_name.c", line 80: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (4L, <<, 2L, <<, 3L, 128L, 128L, 262144L);
+    ^
+
+"Test_name.c", line 80: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (4L, <<, 2L, <<, 3L, 128L, 128L, 262144L);
+    ^
+
+"Test_name.c", line 81: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (4L, <<, 2L, >>, 3L, 2L, 2L, 4L);
+    ^
+
+"Test_name.c", line 81: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (4L, <<, 2L, >>, 3L, 2L, 2L, 4L);
+    ^
+
+"Test_name.c", line 81: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (4L, <<, 2L, >>, 3L, 2L, 2L, 4L);
+    ^
+
+"Test_name.c", line 82: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (4L, >>, 2L, <<, 3L, 8L, 8L, 0L);
+    ^
+
+"Test_name.c", line 82: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (4L, >>, 2L, <<, 3L, 8L, 8L, 0L);
+    ^
+
+"Test_name.c", line 82: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (4L, >>, 2L, <<, 3L, 8L, 8L, 0L);
+    ^
+
+"Test_name.c", line 83: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (4L, >>, 2L, >>, 3L, 0L, 0L, 4L);
+    ^
+
+"Test_name.c", line 83: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (4L, >>, 2L, >>, 3L, 0L, 0L, 4L);
+    ^
+
+"Test_name.c", line 83: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (4L, >>, 2L, >>, 3L, 0L, 0L, 4L);
+    ^
+
+"Test_name.c", line 84: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, <<, 5, <, 4, 0, 0, 2);
+    ^
+
+"Test_name.c", line 84: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, <<, 5, <, 4, 0, 0, 2);
+    ^
+
+"Test_name.c", line 84: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, <<, 5, <, 4, 0, 0, 2);
+    ^
+
+"Test_name.c", line 85: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, <<, 5, >, 4, 1, 1, 4);
+    ^
+
+"Test_name.c", line 85: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, <<, 5, >, 4, 1, 1, 4);
+    ^
+
+"Test_name.c", line 85: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, <<, 5, >, 4, 1, 1, 4);
+    ^
+
+"Test_name.c", line 86: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, <<, 5, <=, 4, 0, 0, 2);
+    ^
+
+"Test_name.c", line 86: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, <<, 5, <=, 4, 0, 0, 2);
+    ^
+
+"Test_name.c", line 86: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, <<, 5, <=, 4, 0, 0, 2);
+    ^
+
+"Test_name.c", line 87: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, <<, 5, >=, 4, 1, 1, 4);
+    ^
+
+"Test_name.c", line 87: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, <<, 5, >=, 4, 1, 1, 4);
+    ^
+
+"Test_name.c", line 87: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, <<, 5, >=, 4, 1, 1, 4);
+    ^
+
+"Test_name.c", line 88: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, >>, 5, <, 4, 1, 1, 2);
+    ^
+
+"Test_name.c", line 88: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, >>, 5, <, 4, 1, 1, 2);
+    ^
+
+"Test_name.c", line 88: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, >>, 5, <, 4, 1, 1, 2);
+    ^
+
+"Test_name.c", line 89: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, >>, 5, >, 4, 0, 0, 1);
+    ^
+
+"Test_name.c", line 89: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, >>, 5, >, 4, 0, 0, 1);
+    ^
+
+"Test_name.c", line 89: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, >>, 5, >, 4, 0, 0, 1);
+    ^
+
+"Test_name.c", line 90: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, >>, 5, <=, 4, 1, 1, 2);
+    ^
+
+"Test_name.c", line 90: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, >>, 5, <=, 4, 1, 1, 2);
+    ^
+
+"Test_name.c", line 90: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, >>, 5, <=, 4, 1, 1, 2);
+    ^
+
+"Test_name.c", line 91: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, >>, 5, >=, 4, 0, 0, 1);
+    ^
+
+"Test_name.c", line 91: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, >>, 5, >=, 4, 0, 0, 1);
+    ^
+
+"Test_name.c", line 91: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, >>, 5, >=, 4, 0, 0, 1);
+    ^
+
+"Test_name.c", line 92: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (4, <, 3, <<, 2, 1, 0, 1);
+    ^
+
+"Test_name.c", line 92: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (4, <, 3, <<, 2, 1, 0, 1);
+    ^
+
+"Test_name.c", line 92: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (4, <, 3, <<, 2, 1, 0, 1);
+    ^
+
+"Test_name.c", line 93: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (4, <, 20, >>, 2, 1, 0, 1);
+    ^
+
+"Test_name.c", line 93: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (4, <, 20, >>, 2, 1, 0, 1);
+    ^
+
+"Test_name.c", line 93: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (4, <, 20, >>, 2, 1, 0, 1);
+    ^
+
+"Test_name.c", line 94: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (4, >, 3, <<, 2, 0, 4, 0);
+    ^
+
+"Test_name.c", line 94: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (4, >, 3, <<, 2, 0, 4, 0);
+    ^
+
+"Test_name.c", line 94: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (4, >, 3, <<, 2, 0, 4, 0);
+    ^
+
+"Test_name.c", line 95: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (4, >, 3, >>, 2, 1, 0, 1);
+    ^
+
+"Test_name.c", line 95: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (4, >, 3, >>, 2, 1, 0, 1);
+    ^
+
+"Test_name.c", line 95: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (4, >, 3, >>, 2, 1, 0, 1);
+    ^
+
+"Test_name.c", line 96: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (4, <=, 3, <<, 2, 1, 0, 1);
+    ^
+
+"Test_name.c", line 96: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (4, <=, 3, <<, 2, 1, 0, 1);
+    ^
+
+"Test_name.c", line 96: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (4, <=, 3, <<, 2, 1, 0, 1);
+    ^
+
+"Test_name.c", line 97: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (4, <=, 20, >>, 2, 1, 0, 1);
+    ^
+
+"Test_name.c", line 97: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (4, <=, 20, >>, 2, 1, 0, 1);
+    ^
+
+"Test_name.c", line 97: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (4, <=, 20, >>, 2, 1, 0, 1);
+    ^
+
+"Test_name.c", line 98: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (4, >=, 3, <<, 2, 0, 4, 0);
+    ^
+
+"Test_name.c", line 98: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (4, >=, 3, <<, 2, 0, 4, 0);
+    ^
+
+"Test_name.c", line 98: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (4, >=, 3, <<, 2, 0, 4, 0);
+    ^
+
+"Test_name.c", line 99: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (4, >=, 3, >>, 2, 1, 0, 1);
+    ^
+
+"Test_name.c", line 99: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (4, >=, 3, >>, 2, 1, 0, 1);
+    ^
+
+"Test_name.c", line 99: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (4, >=, 3, >>, 2, 1, 0, 1);
+    ^
+
+"Test_name.c", line 100: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, <, 2, <, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 100: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, <, 2, <, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 100: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, <, 2, <, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 101: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, <, 2, >, 0, 1, 1, 0);
+    ^
+
+"Test_name.c", line 101: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, <, 2, >, 0, 1, 1, 0);
+    ^
+
+"Test_name.c", line 101: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, <, 2, >, 0, 1, 1, 0);
+    ^
+
+"Test_name.c", line 102: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, <, 2, <=, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 102: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, <, 2, <=, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 102: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, <, 2, <=, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 103: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (0, <, 4, >=, 3, 0, 0, 1);
+    ^
+
+"Test_name.c", line 103: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (0, <, 4, >=, 3, 0, 0, 1);
+    ^
+
+"Test_name.c", line 103: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (0, <, 4, >=, 3, 0, 0, 1);
+    ^
+
+"Test_name.c", line 104: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, >, 2, <, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 104: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, >, 2, <, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 104: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, >, 2, <, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 105: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, >, 2, >, 3, 0, 0, 1);
+    ^
+
+"Test_name.c", line 105: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, >, 2, >, 3, 0, 0, 1);
+    ^
+
+"Test_name.c", line 105: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, >, 2, >, 3, 0, 0, 1);
+    ^
+
+"Test_name.c", line 106: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, >, 2, <=, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 106: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, >, 2, <=, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 106: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, >, 2, <=, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 107: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, >, 2, >=, 3, 0, 0, 1);
+    ^
+
+"Test_name.c", line 107: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, >, 2, >=, 3, 0, 0, 1);
+    ^
+
+"Test_name.c", line 107: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, >, 2, >=, 3, 0, 0, 1);
+    ^
+
+"Test_name.c", line 108: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (3, <=, 2, <, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 108: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (3, <=, 2, <, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 108: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (3, <=, 2, <, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 109: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, <=, 3, >, 0, 1, 1, 0);
+    ^
+
+"Test_name.c", line 109: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, <=, 3, >, 0, 1, 1, 0);
+    ^
+
+"Test_name.c", line 109: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, <=, 3, >, 0, 1, 1, 0);
+    ^
+
+"Test_name.c", line 110: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, <=, 3, <=, 4, 1, 1, 0);
+    ^
+
+"Test_name.c", line 110: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, <=, 3, <=, 4, 1, 1, 0);
+    ^
+
+"Test_name.c", line 110: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, <=, 3, <=, 4, 1, 1, 0);
+    ^
+
+"Test_name.c", line 111: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, <=, 3, >=, 1, 1, 1, 0);
+    ^
+
+"Test_name.c", line 111: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, <=, 3, >=, 1, 1, 1, 0);
+    ^
+
+"Test_name.c", line 111: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, <=, 3, >=, 1, 1, 1, 0);
+    ^
+
+"Test_name.c", line 112: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (0, >=, 2, <, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 112: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (0, >=, 2, <, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 112: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (0, >=, 2, <, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 113: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, >=, 2, >, 3, 0, 0, 1);
+    ^
+
+"Test_name.c", line 113: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, >=, 2, >, 3, 0, 0, 1);
+    ^
+
+"Test_name.c", line 113: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, >=, 2, >, 3, 0, 0, 1);
+    ^
+
+"Test_name.c", line 114: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (0, >=, 2, <=, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 114: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (0, >=, 2, <=, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 114: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (0, >=, 2, <=, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 115: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, >=, 2, >=, 3, 0, 0, 1);
+    ^
+
+"Test_name.c", line 115: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, >=, 2, >=, 3, 0, 0, 1);
+    ^
+
+"Test_name.c", line 115: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, >=, 2, >=, 3, 0, 0, 1);
+    ^
+
+"Test_name.c", line 116: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (-1, <, 2, ==, 3, 0, 0, 1);
+    ^
+
+"Test_name.c", line 116: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (-1, <, 2, ==, 3, 0, 0, 1);
+    ^
+
+"Test_name.c", line 116: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (-1, <, 2, ==, 3, 0, 0, 1);
+    ^
+
+"Test_name.c", line 117: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, <, 2, !=, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 117: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, <, 2, !=, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 117: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, <, 2, !=, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 118: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, >, 2, ==, 3, 0, 0, 1);
+    ^
+
+"Test_name.c", line 118: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, >, 2, ==, 3, 0, 0, 1);
+    ^
+
+"Test_name.c", line 118: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, >, 2, ==, 3, 0, 0, 1);
+    ^
+
+"Test_name.c", line 119: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, >, 2, !=, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 119: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, >, 2, !=, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 119: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, >, 2, !=, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 120: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (0, <=, 2, ==, 3, 0, 0, 1);
+    ^
+
+"Test_name.c", line 120: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (0, <=, 2, ==, 3, 0, 0, 1);
+    ^
+
+"Test_name.c", line 120: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (0, <=, 2, ==, 3, 0, 0, 1);
+    ^
+
+"Test_name.c", line 121: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, <=, 2, !=, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 121: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, <=, 2, !=, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 121: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, <=, 2, !=, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 122: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, >=, 2, ==, 3, 0, 0, 1);
+    ^
+
+"Test_name.c", line 122: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, >=, 2, ==, 3, 0, 0, 1);
+    ^
+
+"Test_name.c", line 122: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, >=, 2, ==, 3, 0, 0, 1);
+    ^
+
+"Test_name.c", line 123: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (0, >=, 2, !=, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 123: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (0, >=, 2, !=, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 123: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (0, >=, 2, !=, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 124: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, ==, 3, <, 2, 0, 1, 0);
+    ^
+
+"Test_name.c", line 124: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, ==, 3, <, 2, 0, 1, 0);
+    ^
+
+"Test_name.c", line 124: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, ==, 3, <, 2, 0, 1, 0);
+    ^
+
+"Test_name.c", line 125: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, ==, 3, >, 2, 1, 0, 1);
+    ^
+
+"Test_name.c", line 125: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, ==, 3, >, 2, 1, 0, 1);
+    ^
+
+"Test_name.c", line 125: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, ==, 3, >, 2, 1, 0, 1);
+    ^
+
+"Test_name.c", line 126: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, ==, 3, <=, 2, 0, 1, 0);
+    ^
+
+"Test_name.c", line 126: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, ==, 3, <=, 2, 0, 1, 0);
+    ^
+
+"Test_name.c", line 126: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, ==, 3, <=, 2, 0, 1, 0);
+    ^
+
+"Test_name.c", line 127: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, ==, 3, >=, 2, 1, 0, 1);
+    ^
+
+"Test_name.c", line 127: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, ==, 3, >=, 2, 1, 0, 1);
+    ^
+
+"Test_name.c", line 127: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, ==, 3, >=, 2, 1, 0, 1);
+    ^
+
+"Test_name.c", line 128: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, !=, 2, <, 3, 0, 1, 0);
+    ^
+
+"Test_name.c", line 128: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, !=, 2, <, 3, 0, 1, 0);
+    ^
+
+"Test_name.c", line 128: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, !=, 2, <, 3, 0, 1, 0);
+    ^
+
+"Test_name.c", line 129: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, !=, 2, >, 3, 1, 0, 1);
+    ^
+
+"Test_name.c", line 129: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, !=, 2, >, 3, 1, 0, 1);
+    ^
+
+"Test_name.c", line 129: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, !=, 2, >, 3, 1, 0, 1);
+    ^
+
+"Test_name.c", line 130: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, !=, 2, <=, 3, 0, 1, 0);
+    ^
+
+"Test_name.c", line 130: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, !=, 2, <=, 3, 0, 1, 0);
+    ^
+
+"Test_name.c", line 130: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, !=, 2, <=, 3, 0, 1, 0);
+    ^
+
+"Test_name.c", line 131: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, !=, 2, >=, 3, 1, 0, 1);
+    ^
+
+"Test_name.c", line 131: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, !=, 2, >=, 3, 1, 0, 1);
+    ^
+
+"Test_name.c", line 131: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, !=, 2, >=, 3, 1, 0, 1);
+    ^
+
+"Test_name.c", line 132: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, ==, 2, ==, 0, 1, 1, 0);
+    ^
+
+"Test_name.c", line 132: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, ==, 2, ==, 0, 1, 1, 0);
+    ^
+
+"Test_name.c", line 132: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, ==, 2, ==, 0, 1, 1, 0);
+    ^
+
+"Test_name.c", line 133: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, ==, 2, !=, 0, 0, 0, 1);
+    ^
+
+"Test_name.c", line 133: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, ==, 2, !=, 0, 0, 0, 1);
+    ^
+
+"Test_name.c", line 133: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, ==, 2, !=, 0, 0, 0, 1);
+    ^
+
+"Test_name.c", line 134: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, !=, 2, ==, 3, 0, 0, 1);
+    ^
+
+"Test_name.c", line 134: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, !=, 2, ==, 3, 0, 0, 1);
+    ^
+
+"Test_name.c", line 134: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, !=, 2, ==, 3, 0, 0, 1);
+    ^
+
+"Test_name.c", line 135: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, !=, 2, !=, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 135: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, !=, 2, !=, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 135: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, !=, 2, !=, 3, 1, 1, 0);
+    ^
+
+"Test_name.c", line 136: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (0, ==, 2, &, 1, 0, 0, 1);
+    ^
+
+"Test_name.c", line 136: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (0, ==, 2, &, 1, 0, 0, 1);
+    ^
+
+"Test_name.c", line 136: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (0, ==, 2, &, 1, 0, 0, 1);
+    ^
+
+"Test_name.c", line 137: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (0, !=, 2, &, 1, 1, 1, 0);
+    ^
+
+"Test_name.c", line 137: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (0, !=, 2, &, 1, 1, 1, 0);
+    ^
+
+"Test_name.c", line 137: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (0, !=, 2, &, 1, 1, 1, 0);
+    ^
+
+"Test_name.c", line 138: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, &, 2, ==, 0, 0, 1, 0);
+    ^
+
+"Test_name.c", line 138: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, &, 2, ==, 0, 0, 1, 0);
+    ^
+
+"Test_name.c", line 138: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, &, 2, ==, 0, 0, 1, 0);
+    ^
+
+"Test_name.c", line 139: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, &, 2, !=, 0, 1, 0, 1);
+    ^
+
+"Test_name.c", line 139: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, &, 2, !=, 0, 1, 0, 1);
+    ^
+
+"Test_name.c", line 139: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, &, 2, !=, 0, 1, 0, 1);
+    ^
+
+"Test_name.c", line 140: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, &, 0x2, ^, 3, 3, 3, 1);
+    ^
+
+"Test_name.c", line 140: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, &, 0x2, ^, 3, 3, 3, 1);
+    ^
+
+"Test_name.c", line 140: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, &, 0x2, ^, 3, 3, 3, 1);
+    ^
+
+"Test_name.c", line 141: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (3, ^, 2, &, 1, 3, 1, 3);
+    ^
+
+"Test_name.c", line 141: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (3, ^, 2, &, 1, 3, 1, 3);
+    ^
+
+"Test_name.c", line 141: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (3, ^, 2, &, 1, 3, 1, 3);
+    ^
+
+"Test_name.c", line 142: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (3, ^, 2, |, 1, 1, 1, 0);
+    ^
+
+"Test_name.c", line 142: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (3, ^, 2, |, 1, 1, 1, 0);
+    ^
+
+"Test_name.c", line 142: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (3, ^, 2, |, 1, 1, 1, 0);
+    ^
+
+"Test_name.c", line 143: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (3, |, 0x2, ^, 1, 3, 2, 3);
+    ^
+
+"Test_name.c", line 143: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (3, |, 0x2, ^, 1, 3, 2, 3);
+    ^
+
+"Test_name.c", line 143: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (3, |, 0x2, ^, 1, 3, 2, 3);
+    ^
+
+"Test_name.c", line 144: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, |, 0, &&, 2, 1, 1, 2);
+    ^
+
+"Test_name.c", line 144: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, |, 0, &&, 2, 1, 1, 2);
+    ^
+
+"Test_name.c", line 144: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, |, 0, &&, 2, 1, 1, 2);
+    ^
+
+"Test_name.c", line 145: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, &&, 0, |, 2, 1, 2, 1);
+    ^
+
+"Test_name.c", line 145: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, &&, 0, |, 2, 1, 2, 1);
+    ^
+
+"Test_name.c", line 145: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (2, &&, 0, |, 2, 1, 2, 1);
+    ^
+
+"Test_name.c", line 146: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (0, &&, 0, ||, 1, 1, 1, 0);
+    ^
+
+"Test_name.c", line 146: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (0, &&, 0, ||, 1, 1, 1, 0);
+    ^
+
+"Test_name.c", line 146: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (0, &&, 0, ||, 1, 1, 1, 0);
+    ^
+
+"Test_name.c", line 147: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, ||, 0, &&, 0, 1, 0, 1);
+    ^
+
+"Test_name.c", line 147: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, ||, 0, &&, 0, 1, 0, 1);
+    ^
+
+"Test_name.c", line 147: warning: variable "x" was declared but never referenced
+    ASSERT_BIN (1, ||, 0, &&, 0, 1, 0, 1);
+    ^
+
+"Test_name.c", line 149: warning: variable "x" was declared but never referenced
+    ASSERT ((1 || 2 ? 3 : 4) == 3);
+    ^
+
+"Test_name.c", line 150: warning: variable "x" was declared but never referenced
+    ASSERT ((1 || (2 ? 3 : 4)) == 1);
+    ^
+
+"Test_name.c", line 154: warning: expression has no effect
+    p, p = p;
+    ^
+

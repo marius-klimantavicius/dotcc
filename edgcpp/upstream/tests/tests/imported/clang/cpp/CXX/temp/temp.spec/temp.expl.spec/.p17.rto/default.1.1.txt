@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 14: warning: template nesting depth does not match the previous declaration of function "A<T1>::B<T2>::mf [with T1=char, T2=int]"
+  template<> void A<char>::B<int>::mf(); // expected-error{{requires 'template<>'}}
+                                   ^
+
+"Test_name.c", line 24: error: specializing member "test1::A<<unnamed>>::bar [with <unnamed>=int]" requires "template<>" syntax
+    int AA::bar = 1; // expected-error {{template specialization requires 'template<>'}}
+            ^
+
+"Test_name.c", line 25: error: specializing member "test1::A<<unnamed>>::bar [with <unnamed>=float]" requires "template<>" syntax
+    int A<float>::bar = 2; // expected-error {{template specialization requires 'template<>'}}
+                  ^
+
+"Test_name.c", line 34: error: "int test1::A<double>::foo" is not an entity that can be explicitly specialized
+    template <> int AB::foo = 0; // expected-error{{extraneous 'template<>'}}
+                        ^
+
+"Test_name.c", line 41: error: i is not a template
+    int i<0>;   // expected-error  {{member 'i' cannot have template arguments}}
+        ^
+
+"Test_name.c", line 42: error: j is not a template
+    int j<int>; // expected-error  {{member 'j' cannot have template arguments}}
+        ^
+
+"Test_name.c", line 44: error: k is not a template
+    static int k<12>; // expected-error {{template specialization requires 'template<>'}} \
+               ^
+
+"Test_name.c", line 47: error: f is not a template
+    void f<12>();     // expected-error {{template specialization requires 'template<>'}} \
+         ^
+
+"Test_name.c", line 53: error: i is not a template
+    int i<N>; // expected-error {{member 'i' cannot have template arguments}}
+        ^
+
+"Test_name.c", line 54: error: j is not a template
+    int j<T>; // expected-error {{member 'j' cannot have template arguments}}
+        ^
+
+9 errors detected in the compilation of "Test_name.c".

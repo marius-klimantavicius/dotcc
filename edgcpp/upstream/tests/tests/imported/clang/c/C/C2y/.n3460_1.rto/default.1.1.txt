@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 70: warning: variable "a" was declared but never referenced
+    _Complex double a  = __builtin_complex(0.0, __builtin_inf()) * 2.0;
+                    ^
+
+"Test_name.c", line 71: warning: variable "b" was declared but never referenced
+    _Complex double b = __builtin_complex(0.0, 1.0) * -0.0;
+                    ^
+
+"Test_name.c", line 72: warning: variable "c" was declared but never referenced
+    _Complex double c = __builtin_complex(0.0, __builtin_inf()) / 2.0;
+                    ^
+
+"Test_name.c", line 73: warning: variable "d" was declared but never referenced
+    _Complex double d = __builtin_complex(2.0, 3.0) * 2.0;
+                    ^
+
+"Test_name.c", line 74: warning: variable "e" was declared but never referenced
+    _Complex double e = __builtin_complex(2.0, 4.0) / 2.0;
+                    ^
+
+"Test_name.c", line 75: warning: variable "f" was declared but never referenced
+    _Complex double f = __builtin_complex(2.0, 3.0) * __builtin_complex(4.0, 5.0);
+                    ^
+
+"Test_name.c", line 76: warning: variable "g" was declared but never referenced
+    _Complex double g = __builtin_complex(2.0, 3.0) / __builtin_complex(4.0, 5.0);
+                    ^
+
+"Test_name.c", line 77: warning: variable "h" was declared but never referenced
+    _Complex double h = 2.0 / __builtin_complex(2.0, 4.0);
+                    ^
+

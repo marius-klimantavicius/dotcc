@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: error: qualified name is not allowed
+    enum D1::A : int { foo } c; // { dg-error "extra qualification not allowed" }
+             ^
+
+"Test_name.c", line 17: error: qualified name is not allowed
+    enum D2<T>::A : int { foo } c; // { dg-error "extra qualification not allowed" }
+                ^
+
+"Test_name.c", line 23: error: qualified name is not allowed
+    enum D3::A { foo } c; // { dg-error "does not name an enumeration" }
+             ^
+
+"Test_name.c", line 29: error: qualified name is not allowed
+    enum D4<T>::A { foo } c; // { dg-error "does not name an enumeration" }
+                ^
+
+"Test_name.c", line 37: error: qualified name is not allowed
+      enum D6::A { foo } c; // { dg-error "does not name an enumeration" }
+               ^
+
+"Test_name.c", line 47: error: qualified name is not allowed
+      enum D8::A : int { foo } c; // { dg-error "extra qualification not allowed" }
+               ^
+
+6 errors detected in the compilation of "Test_name.c".

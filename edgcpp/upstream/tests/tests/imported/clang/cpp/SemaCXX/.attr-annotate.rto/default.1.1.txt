@@ -1,0 +1,101 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 34: warning: unknown attribute "clang::annotate"
+      [[clang::annotate("test", fail_on_int(v))]] void t() {}
+        ^
+
+"Test_name.c", line 36: warning: unknown attribute "clang::annotate"
+      [[clang::annotate("test", (typename enable_if<!is_same<long, T>::value, int>::type)v)]] void t1() {}
+        ^
+
+"Test_name.c", line 47: warning: unknown attribute "clang::annotate"
+      [[clang::annotate("test", ((void)T{}, 9))]] void t() {}
+        ^
+
+"Test_name.c", line 58: warning: unknown attribute "clang::annotate"
+  [[clang::annotate("test", "arg")]] void t3() {}
+    ^
+
+"Test_name.c", line 68: warning: unknown attribute "annotate"
+      int v __attribute__((annotate("v_ann_0", str(), 90, V, g_i))) __attribute__((annotate("v_ann_1", V1)));
+                           ^
+
+"Test_name.c", line 68: warning: unknown attribute "annotate"
+      int v __attribute__((annotate("v_ann_0", str(), 90, V, g_i))) __attribute__((annotate("v_ann_1", V1)));
+                                                                                   ^
+
+"Test_name.c", line 71: warning: unknown attribute "clang::annotate"
+      [[clang::annotate("qdwqwd", cf, cb)]] void t() {}
+        ^
+
+"Test_name.c", line 72: warning: unknown attribute "clang::annotate"
+      [[clang::annotate("qdwqwd", f, cb)]] void t1() {}
+        ^
+
+"Test_name.c", line 75: warning: unknown attribute "clang::annotate"
+      [[clang::annotate("jui", b, cf)]] void t2() {}
+        ^
+
+"Test_name.c", line 78: warning: unknown attribute "clang::annotate"
+      [[clang::annotate("jui", ((void)b, 0), cf)]] [[clang::annotate("jui", &b, cf, &foo::t2, str())]] void t3() {}
+        ^
+
+"Test_name.c", line 78: warning: unknown attribute "clang::annotate"
+      [[clang::annotate("jui", ((void)b, 0), cf)]] [[clang::annotate("jui", &b, cf, &foo::t2, str())]] void t3() {}
+                                                     ^
+
+"Test_name.c", line 108: warning: unknown attribute "clang::annotate"
+    [[clang::annotate("vlas are awful", sizeof(vla))]] int i = 0; // reject, the sizeof is not unevaluated
+      ^
+
+"Test_name.c", line 111: warning: unknown attribute "clang::annotate"
+    [[clang::annotate("_Generic selection expression should be fine", _Generic(n, int : 0, default : 1))]]
+      ^
+
+"Test_name.c", line 106: warning: variable "vla" was declared but never referenced
+    int vla[n];
+        ^
+
+"Test_name.c", line 108: warning: variable "i" was declared but never referenced
+    [[clang::annotate("vlas are awful", sizeof(vla))]] int i = 0; // reject, the sizeof is not unevaluated
+                                                           ^
+
+"Test_name.c", line 112: warning: variable "j" was declared but never referenced
+    int j = 0; // second arg should resolve to 0 fine
+        ^
+
+"Test_name.c", line 115: warning: unknown attribute "clang::annotate"
+  [[clang::annotate("function designators?", designator)]] int k = 0; // Should work?
+    ^
+
+"Test_name.c", line 118: warning: unknown attribute "clang::annotate"
+    [[clang::annotate("function designators?", self)]] int k = 0;
+      ^
+
+"Test_name.c", line 118: warning: variable "k" was declared but never referenced
+    [[clang::annotate("function designators?", self)]] int k = 0;
+                                                           ^
+
+"Test_name.c", line 130: warning: unknown attribute "clang::annotate"
+  [[clang::annotate("", foldable_but_invalid())]] void f1() {}
+    ^
+
+"Test_name.c", line 133: warning: unknown attribute "clang::annotate"
+  [[clang::annotate()]] void f2() {}
+    ^
+
+"Test_name.c", line 136: warning: unknown attribute "clang::annotate"
+  template <typename T> [[clang::annotate()]] void f2() {}
+                          ^
+
+"Test_name.c", line 141: warning: unknown attribute "clang::annotate"
+    void bir [[clang::annotate("B", (void)1)]] ();
+               ^
+
+"Test_name.c", line 82: warning: variable "test1::gf" was declared but never referenced
+  static B<int long, -1>::foo<unsigned, 9> gf; // expected-note {{in instantiation of}}
+                                           ^
+
+"Test_name.c", line 83: warning: variable "test1::gf1" was declared but never referenced
+  static B<int long, -2> gf1;
+                         ^
+

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=2 --microsoft_v=1934 --ms_c++17 -DNEG Test_name.c
+"Test_name.c", line 13: error: exception specification for virtual function "D::f" is incompatible with that of overridden function "B::f"
+               void f();  // Error.
+                    ^
+
+1 error detected in the compilation of "Test_name.c".

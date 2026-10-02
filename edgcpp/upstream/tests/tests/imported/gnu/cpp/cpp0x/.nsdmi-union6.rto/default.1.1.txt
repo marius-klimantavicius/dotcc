@@ -1,0 +1,36 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: error: incomplete type "U [1]" is not allowed
+    U u[1] = { 0 };  // { dg-error "5:field .u. has incomplete type" }
+      ^
+
+"Test_name.c", line 16: error: incomplete type "UT<int> [1]" is not allowed
+    UT u[1] = { 0 }; // { dg-error "incomplete type" }
+       ^
+          detected during instantiation of union "UT<T> [with T=int]" at line 19
+
+"Test_name.c", line 23: error: incomplete type "F [1]" is not allowed
+    F u[1] = { 0 };  // { dg-error "5:field .u. has incomplete type" }
+      ^
+
+"Test_name.c", line 29: error: incomplete type "F [1]" is not allowed
+    F u[1] = { 0 };  // { dg-error "5:field .u. has incomplete type" }
+      ^
+
+"Test_name.c", line 36: error: incomplete type "S [1]" is not allowed
+    S s[1] = { 0 };  // { dg-error "5:field .s. has incomplete type" }
+      ^
+
+"Test_name.c", line 42: error: incomplete type "ST<int> [1]" is not allowed
+    ST s[1] = { 0 }; // { dg-error "incomplete type" }
+       ^
+          detected during instantiation of class "ST<T> [with T=int]" at line 45
+
+"Test_name.c", line 49: error: incomplete type "F [1]" is not allowed
+    F s[1] = { 0 };  // { dg-error "5:field .s. has incomplete type" }
+      ^
+
+"Test_name.c", line 55: error: incomplete type "F [1]" is not allowed
+    F s[1] = { 0 };  // { dg-error "5:field .s. has incomplete type" }
+      ^
+
+8 errors detected in the compilation of "Test_name.c".

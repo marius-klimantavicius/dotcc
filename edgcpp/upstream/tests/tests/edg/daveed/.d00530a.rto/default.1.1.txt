@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=1 --diag_error=nonstd_void_param_list --c99 Test_name.c

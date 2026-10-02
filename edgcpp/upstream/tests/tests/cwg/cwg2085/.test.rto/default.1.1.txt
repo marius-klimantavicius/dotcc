@@ -1,0 +1,3 @@
+fe_only -DTEST_NUMBER=1 --c++17 -A -tused Test_name.c cwg2085b.C
+Test_name.c:
+cwg2085b.C:

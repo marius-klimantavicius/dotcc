@@ -1,0 +1,8 @@
+./a.out
+non-template 0
+template 1
+partial specialization 1
+inline non-template 1
+inline template 1
+inline partial specialization 1
+inline explicit specialization 1

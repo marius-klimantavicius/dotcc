@@ -1,0 +1,5 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 --c++11 Test_name.c
+"./torture/stackalign/eh-thiscall-1.C", line 22: warning: unknown attribute "thiscall"
+  __attribute__ ((thiscall))
+                  ^
+

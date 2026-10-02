@@ -1,0 +1,41 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 62: warning: loop is not reachable
+    do
+    ^
+
+"Test_name.c", line 66: warning: loop is not reachable
+    for (;;) // OK
+    ^
+
+"Test_name.c", line 70: warning: statement is unreachable
+    switch (my_enum) {
+    ^
+
+"Test_name.c", line 70: warning: variable "my_enum" is used before its value is set
+    switch (my_enum) {
+            ^
+
+"Test_name.c", line 40: warning: variable "v0" was declared but never referenced
+    GOODMACRO(v0); // OK
+    ^
+
+"Test_name.c", line 42: warning: variable "v1" was declared but never referenced
+    GOODMACRO(v1;) // OK
+    ^
+
+"Test_name.c", line 44: warning: variable "v2" was declared but never referenced
+    BETTERMACRO(v2) // OK
+    ^
+
+"Test_name.c", line 46: warning: variable "v3" was declared but never referenced
+    BETTERMACRO(v3;) // Extra ';', but within macro expansion, so ignored.
+    ^
+
+"Test_name.c", line 48: warning: variable "v4" was declared but never referenced
+    BETTERMACRO(v4); // expected-warning {{empty expression statement has no effect; remove unnecessary ';' to silence this warning}}
+    ^
+
+"Test_name.c", line 50: warning: variable "v5" was declared but never referenced
+    BETTERMACRO(v5;); // expected-warning {{empty expression statement has no effect; remove unnecessary ';' to silence this warning}}
+    ^
+

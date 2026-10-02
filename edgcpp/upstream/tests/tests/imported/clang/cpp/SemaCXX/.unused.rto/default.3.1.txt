@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=3 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 56: warning: expression has no effect
+      int(1); // expected-warning {{expression result unused}}
+      ^
+
+"Test_name.c", line 79: warning: variable "x" is used before its value is set
+      auto [a, b] = x; // expected-warning {{unused variable '[a, b]'}}
+                    ^
+
+"Test_name.c", line 79: warning: structured binding "a" was declared but never referenced
+      auto [a, b] = x; // expected-warning {{unused variable '[a, b]'}}
+            ^
+
+"Test_name.c", line 119: error: expected a "]"
+    auto [a [[maybe_unused]], b] = x; // expected-warning {{an attribute specifier sequence attached to a structured binding declaration is a C++2c extension}} \
+            ^
+
+"Test_name.c", line 119: warning: variable "x" is used before its value is set
+    auto [a [[maybe_unused]], b] = x; // expected-warning {{an attribute specifier sequence attached to a structured binding declaration is a C++2c extension}} \
+                                   ^
+
+"Test_name.c", line 119: error: there are more elements than there are binding names
+    auto [a [[maybe_unused]], b] = x; // expected-warning {{an attribute specifier sequence attached to a structured binding declaration is a C++2c extension}} \
+         ^
+
+"Test_name.c", line 119: warning: structured binding "a" was declared but never referenced
+    auto [a [[maybe_unused]], b] = x; // expected-warning {{an attribute specifier sequence attached to a structured binding declaration is a C++2c extension}} \
+          ^
+
+2 errors detected in the compilation of "Test_name.c".

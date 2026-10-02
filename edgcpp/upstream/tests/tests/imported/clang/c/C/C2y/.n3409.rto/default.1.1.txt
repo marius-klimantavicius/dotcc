@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 23: error: type must be an object type
+    _Generic(x, void: 1);      /* pre-c2y-warning {{use of incomplete type 'void' in a '_Generic' association is incompatible with C standards before C2y}}
+                ^
+
+"Test_name.c", line 26: error: type must be an object type
+    _Generic(x, typeof(x): 1); /* pre-c2y-warning {{use of incomplete type 'typeof (x)' (aka 'void') in a '_Generic' association is incompatible with C standards before C2y}}
+                ^
+
+"Test_name.c", line 29: error: expected an expression
+    (void)_Generic(void, default : 1); /* pre-c2y-warning {{passing a type argument as the first operand to '_Generic' is incompatible with C standards before C2y}}
+                   ^
+
+"Test_name.c", line 43: error: expected an expression
+      void,    /* ext-warning {{passing a type argument as the first operand to '_Generic' is a C2y extension}}
+      ^
+
+"Test_name.c", line 46: error: type must be an object type
+      void : 1,
+      ^
+
+"Test_name.c", line 54: error: type must be an object type
+      void : 1, /* ext-warning {{incomplete type 'void' in a '_Generic' association is a C2y extension}}
+      ^
+
+6 errors detected in the compilation of "Test_name.c".

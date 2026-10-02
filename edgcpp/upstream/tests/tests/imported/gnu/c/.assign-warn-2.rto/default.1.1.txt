@@ -1,0 +1,418 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 20: warning: variable "y" was set but never used
+  TESTASS(fqc, nrfp, fp); /* { dg-error "assignment makes '__attribute__..noreturn..' qualified function pointer from unqualified" } */
+  ^
+
+"Test_name.c", line 21: warning: variable "y" was declared but never referenced
+  TESTINI(fqd, nrfp, fp); /* { dg-error "initialization makes '__attribute__..noreturn..' qualified function pointer from unqualified" } */
+  ^
+
+"Test_name.c", line 26: warning: variable "y" was set but never used
+  TESTASS(ofqc, fp, nrfp);
+  ^
+
+"Test_name.c", line 27: warning: variable "y" was declared but never referenced
+  TESTINI(ofqd, fp, nrfp);
+  ^
+
+"Test_name.c", line 30: warning: argument of type "const char *" is incompatible with parameter of type "char *"
+  TESTARG(qa, char *, const char *); /* { dg-error "passing argument 1 of 'qaF' discards 'const' qualifier from pointer target type" } */
+  ^
+
+"Test_name.c", line 31: warning: argument of type "const char *" is incompatible with parameter of type "char *"
+  TESTARP(qb, char *, const char *); /* { dg-error "passing argument 1 of 'qbFp.x' discards 'const' qualifier from pointer target type" } */
+  ^
+
+"Test_name.c", line 32: warning: a value of type "const char *" cannot be assigned to an entity of type "char *"
+  TESTASS(qc, char *, const char *); /* { dg-error "assignment discards 'const' qualifier from pointer target type" } */
+  ^
+
+"Test_name.c", line 32: warning: variable "y" was set but never used
+  TESTASS(qc, char *, const char *); /* { dg-error "assignment discards 'const' qualifier from pointer target type" } */
+  ^
+
+"Test_name.c", line 33: warning: a value of type "const char *" cannot be used to initialize an entity of type "char *"
+  TESTINI(qd, char *, const char *); /* { dg-error "initialization discards 'const' qualifier from pointer target type" } */
+  ^
+
+"Test_name.c", line 33: warning: variable "y" was declared but never referenced
+  TESTINI(qd, char *, const char *); /* { dg-error "initialization discards 'const' qualifier from pointer target type" } */
+  ^
+
+"Test_name.c", line 34: warning: return value type does not match the function type
+  TESTRET(qe, char *, const char *); /* { dg-error "return discards 'const' qualifier from pointer target type" } */
+  ^
+
+"Test_name.c", line 38: warning: variable "y" was set but never used
+  TESTASS(oqc, const char *, char *);
+  ^
+
+"Test_name.c", line 39: warning: variable "y" was declared but never referenced
+  TESTINI(oqd, const char *, char *);
+  ^
+
+"Test_name.c", line 42: warning: argument of type "void *" is incompatible with parameter of type "fp" (aka "void (*)(void)")
+  TESTARG(fda, fp, void *); /* { dg-error "ISO C forbids passing argument 1 of 'fdaF' between function pointer and 'void \\*'" } */
+  ^
+
+"Test_name.c", line 43: warning: argument of type "void *" is incompatible with parameter of type "fp" (aka "void (*)(void)")
+  TESTARP(fdb, fp, void *); /* { dg-error "ISO C forbids passing argument 1 of 'fdbFp.x' between function pointer and 'void \\*'" } */
+  ^
+
+"Test_name.c", line 44: warning: a value of type "void *" cannot be assigned to an entity of type "fp" (aka "void (*)(void)")
+  TESTASS(fdc, fp, void *); /* { dg-error "ISO C forbids assignment between function pointer and 'void \\*'" } */
+  ^
+
+"Test_name.c", line 44: warning: variable "y" was set but never used
+  TESTASS(fdc, fp, void *); /* { dg-error "ISO C forbids assignment between function pointer and 'void \\*'" } */
+  ^
+
+"Test_name.c", line 45: warning: a value of type "void *" cannot be used to initialize an entity of type "fp" (aka "void (*)(void)")
+  TESTINI(fdd, fp, void *); /* { dg-error "ISO C forbids initialization between function pointer and 'void \\*'" } */
+  ^
+
+"Test_name.c", line 45: warning: variable "y" was declared but never referenced
+  TESTINI(fdd, fp, void *); /* { dg-error "ISO C forbids initialization between function pointer and 'void \\*'" } */
+  ^
+
+"Test_name.c", line 46: warning: return value type does not match the function type
+  TESTRET(fde, fp, void *); /* { dg-error "ISO C forbids return between function pointer and 'void \\*'" } */
+  ^
+
+"Test_name.c", line 50: warning: variable "y" was set but never used
+  TESTASS(dfc, void *, fp); /* { dg-error "ISO C forbids assignment between function pointer and 'void \\*'" } */
+  ^
+
+"Test_name.c", line 51: warning: variable "y" was declared but never referenced
+  TESTINI(dfd, void *, fp); /* { dg-error "ISO C forbids initialization between function pointer and 'void \\*'" } */
+  ^
+
+"Test_name.c", line 54: warning: argument of type "unsigned int *" is incompatible with parameter of type "int *"
+  TESTARG(sua, int *, unsigned int *); /* { dg-error "pointer targets in passing argument 1 of 'suaF' differ in signedness" } */
+  ^
+
+"Test_name.c", line 55: warning: argument of type "unsigned int *" is incompatible with parameter of type "int *"
+  TESTARP(sub, int *, unsigned int *); /* { dg-error "pointer targets in passing argument 1 of 'subFp.x' differ in signedness" } */
+  ^
+
+"Test_name.c", line 56: warning: a value of type "unsigned int *" cannot be assigned to an entity of type "int *"
+  TESTASS(suc, int *, unsigned int *); /* { dg-error "pointer targets in assignment from 'unsigned int \\*' to 'int \\*' differ in signedness" } */
+  ^
+
+"Test_name.c", line 56: warning: variable "y" was set but never used
+  TESTASS(suc, int *, unsigned int *); /* { dg-error "pointer targets in assignment from 'unsigned int \\*' to 'int \\*' differ in signedness" } */
+  ^
+
+"Test_name.c", line 57: warning: a value of type "unsigned int *" cannot be used to initialize an entity of type "int *"
+  TESTINI(sud, int *, unsigned int *); /* { dg-error "pointer targets in initialization of 'int \\*' from 'unsigned int \\*' differ in signedness" } */
+  ^
+
+"Test_name.c", line 57: warning: variable "y" was declared but never referenced
+  TESTINI(sud, int *, unsigned int *); /* { dg-error "pointer targets in initialization of 'int \\*' from 'unsigned int \\*' differ in signedness" } */
+  ^
+
+"Test_name.c", line 58: warning: return value type does not match the function type
+  TESTRET(sue, int *, unsigned int *); /* { dg-error "pointer targets in returning 'unsigned int \\*' from a function with return type 'int \\*' differ in signedness" } */
+  ^
+
+"Test_name.c", line 60: warning: argument of type "int *" is incompatible with parameter of type "unsigned int *"
+  TESTARG(usa, unsigned int *, int *); /* { dg-error "pointer targets in passing argument 1 of 'usaF' differ in signedness" } */
+  ^
+
+"Test_name.c", line 61: warning: argument of type "int *" is incompatible with parameter of type "unsigned int *"
+  TESTARP(usb, unsigned int *, int *); /* { dg-error "pointer targets in passing argument 1 of 'usbFp.x' differ in signedness" } */
+  ^
+
+"Test_name.c", line 62: warning: a value of type "int *" cannot be assigned to an entity of type "unsigned int *"
+  TESTASS(usc, unsigned int *, int *); /* { dg-error "pointer targets in assignment from 'int \\*' to 'unsigned int \\*' differ in signedness" } */
+  ^
+
+"Test_name.c", line 62: warning: variable "y" was set but never used
+  TESTASS(usc, unsigned int *, int *); /* { dg-error "pointer targets in assignment from 'int \\*' to 'unsigned int \\*' differ in signedness" } */
+  ^
+
+"Test_name.c", line 63: warning: a value of type "int *" cannot be used to initialize an entity of type "unsigned int *"
+  TESTINI(usd, unsigned int *, int *); /* { dg-error "pointer targets in initialization of 'unsigned int \\*' from 'int \\*' differ in signedness" } */
+  ^
+
+"Test_name.c", line 63: warning: variable "y" was declared but never referenced
+  TESTINI(usd, unsigned int *, int *); /* { dg-error "pointer targets in initialization of 'unsigned int \\*' from 'int \\*' differ in signedness" } */
+  ^
+
+"Test_name.c", line 64: warning: return value type does not match the function type
+  TESTRET(use, unsigned int *, int *); /* { dg-error "pointer targets in returning 'int \\*' from a function with return type 'unsigned int \\*' differ in signedness" } */
+  ^
+
+"Test_name.c", line 66: warning: argument of type "unsigned char *" is incompatible with parameter of type "char *"
+  TESTARG(cua, char *, unsigned char *); /* { dg-error "pointer targets in passing argument 1 of 'cuaF' differ in signedness" } */
+  ^
+
+"Test_name.c", line 67: warning: argument of type "unsigned char *" is incompatible with parameter of type "char *"
+  TESTARP(cub, char *, unsigned char *); /* { dg-error "pointer targets in passing argument 1 of 'cubFp.x' differ in signedness" } */
+  ^
+
+"Test_name.c", line 68: warning: a value of type "unsigned char *" cannot be assigned to an entity of type "char *"
+  TESTASS(cuc, char *, unsigned char *); /* { dg-error "pointer targets in assignment from 'unsigned char \\*' to 'char \\*' differ in signedness" } */
+  ^
+
+"Test_name.c", line 68: warning: variable "y" was set but never used
+  TESTASS(cuc, char *, unsigned char *); /* { dg-error "pointer targets in assignment from 'unsigned char \\*' to 'char \\*' differ in signedness" } */
+  ^
+
+"Test_name.c", line 69: warning: a value of type "unsigned char *" cannot be used to initialize an entity of type "char *"
+  TESTINI(cud, char *, unsigned char *); /* { dg-error "pointer targets in initialization of 'char \\*' from 'unsigned char \\*' differ in signedness" } */
+  ^
+
+"Test_name.c", line 69: warning: variable "y" was declared but never referenced
+  TESTINI(cud, char *, unsigned char *); /* { dg-error "pointer targets in initialization of 'char \\*' from 'unsigned char \\*' differ in signedness" } */
+  ^
+
+"Test_name.c", line 70: warning: return value type does not match the function type
+  TESTRET(cue, char *, unsigned char *); /* { dg-error "pointer targets in returning 'unsigned char \\*' from a function with return type 'char \\*' differ in signedness" } */
+  ^
+
+"Test_name.c", line 72: warning: argument of type "char *" is incompatible with parameter of type "unsigned char *"
+  TESTARG(uca, unsigned char *, char *); /* { dg-error "pointer targets in passing argument 1 of 'ucaF' differ in signedness" } */
+  ^
+
+"Test_name.c", line 73: warning: argument of type "char *" is incompatible with parameter of type "unsigned char *"
+  TESTARP(ucb, unsigned char *, char *); /* { dg-error "pointer targets in passing argument 1 of 'ucbFp.x' differ in signedness" } */
+  ^
+
+"Test_name.c", line 74: warning: a value of type "char *" cannot be assigned to an entity of type "unsigned char *"
+  TESTASS(ucc, unsigned char *, char *); /* { dg-error "pointer targets in assignment from 'char \\*' to 'unsigned char \\*' differ in signedness" } */
+  ^
+
+"Test_name.c", line 74: warning: variable "y" was set but never used
+  TESTASS(ucc, unsigned char *, char *); /* { dg-error "pointer targets in assignment from 'char \\*' to 'unsigned char \\*' differ in signedness" } */
+  ^
+
+"Test_name.c", line 75: warning: a value of type "char *" cannot be used to initialize an entity of type "unsigned char *"
+  TESTINI(ucd, unsigned char *, char *); /* { dg-error "pointer targets in initialization of 'unsigned char \\*' from 'char \\*' differ in signedness" } */
+  ^
+
+"Test_name.c", line 75: warning: variable "y" was declared but never referenced
+  TESTINI(ucd, unsigned char *, char *); /* { dg-error "pointer targets in initialization of 'unsigned char \\*' from 'char \\*' differ in signedness" } */
+  ^
+
+"Test_name.c", line 76: warning: return value type does not match the function type
+  TESTRET(uce, unsigned char *, char *); /* { dg-error "pointer targets in returning 'char \\*' from a function with return type 'unsigned char \\*' differ in signedness" } */
+  ^
+
+"Test_name.c", line 78: warning: argument of type "signed char *" is incompatible with parameter of type "char *"
+  TESTARG(csa, char *, signed char *); /* { dg-error "pointer targets in passing argument 1 of 'csaF' differ in signedness" } */
+  ^
+
+"Test_name.c", line 79: warning: argument of type "signed char *" is incompatible with parameter of type "char *"
+  TESTARP(csb, char *, signed char *); /* { dg-error "pointer targets in passing argument 1 of 'csbFp.x' differ in signedness" } */
+  ^
+
+"Test_name.c", line 80: warning: a value of type "signed char *" cannot be assigned to an entity of type "char *"
+  TESTASS(csc, char *, signed char *); /* { dg-error "pointer targets in assignment from 'signed char \\*' to 'char \\*' differ in signedness" } */
+  ^
+
+"Test_name.c", line 80: warning: variable "y" was set but never used
+  TESTASS(csc, char *, signed char *); /* { dg-error "pointer targets in assignment from 'signed char \\*' to 'char \\*' differ in signedness" } */
+  ^
+
+"Test_name.c", line 81: warning: a value of type "signed char *" cannot be used to initialize an entity of type "char *"
+  TESTINI(csd, char *, signed char *); /* { dg-error "pointer targets in initialization of 'char \\*' from 'signed char \\*' differ in signedness" } */
+  ^
+
+"Test_name.c", line 81: warning: variable "y" was declared but never referenced
+  TESTINI(csd, char *, signed char *); /* { dg-error "pointer targets in initialization of 'char \\*' from 'signed char \\*' differ in signedness" } */
+  ^
+
+"Test_name.c", line 82: warning: return value type does not match the function type
+  TESTRET(cse, char *, signed char *); /* { dg-error "pointer targets in returning 'signed char \\*' from a function with return type 'char \\*' differ in signedness" } */
+  ^
+
+"Test_name.c", line 84: warning: argument of type "char *" is incompatible with parameter of type "signed char *"
+  TESTARG(sca, signed char *, char *); /* { dg-error "pointer targets in passing argument 1 of 'scaF' differ in signedness" } */
+  ^
+
+"Test_name.c", line 85: warning: argument of type "char *" is incompatible with parameter of type "signed char *"
+  TESTARP(scb, signed char *, char *); /* { dg-error "pointer targets in passing argument 1 of 'scbFp.x' differ in signedness" } */
+  ^
+
+"Test_name.c", line 86: warning: a value of type "char *" cannot be assigned to an entity of type "signed char *"
+  TESTASS(scc, signed char *, char *); /* { dg-error "pointer targets in assignment from 'char \\*' to 'signed char \\*' differ in signedness" } */
+  ^
+
+"Test_name.c", line 86: warning: variable "y" was set but never used
+  TESTASS(scc, signed char *, char *); /* { dg-error "pointer targets in assignment from 'char \\*' to 'signed char \\*' differ in signedness" } */
+  ^
+
+"Test_name.c", line 87: warning: a value of type "char *" cannot be used to initialize an entity of type "signed char *"
+  TESTINI(scd, signed char *, char *); /* { dg-error "pointer targets in initialization of 'signed char \\*' from 'char \\*' differ in signedness" } */
+  ^
+
+"Test_name.c", line 87: warning: variable "y" was declared but never referenced
+  TESTINI(scd, signed char *, char *); /* { dg-error "pointer targets in initialization of 'signed char \\*' from 'char \\*' differ in signedness" } */
+  ^
+
+"Test_name.c", line 88: warning: return value type does not match the function type
+  TESTRET(sce, signed char *, char *); /* { dg-error "pointer targets in returning 'char \\*' from a function with return type 'signed char \\*' differ in signedness" } */
+  ^
+
+"Test_name.c", line 90: warning: argument of type "int *" is incompatible with parameter of type "char *"
+  TESTARG(cia, char *, int *); /* { dg-error "passing argument 1 of 'ciaF' from incompatible pointer type" } */
+  ^
+
+"Test_name.c", line 91: warning: argument of type "int *" is incompatible with parameter of type "char *"
+  TESTARP(cib, char *, int *); /* { dg-error "passing argument 1 of 'cibFp.x' from incompatible pointer type" } */
+  ^
+
+"Test_name.c", line 92: warning: a value of type "int *" cannot be assigned to an entity of type "char *"
+  TESTASS(cic, char *, int *); /* { dg-error "assignment to 'char \\*' from incompatible pointer type 'int \\*'" } */
+  ^
+
+"Test_name.c", line 92: warning: variable "y" was set but never used
+  TESTASS(cic, char *, int *); /* { dg-error "assignment to 'char \\*' from incompatible pointer type 'int \\*'" } */
+  ^
+
+"Test_name.c", line 93: warning: a value of type "int *" cannot be used to initialize an entity of type "char *"
+  TESTINI(cid, char *, int *); /* { dg-error "initialization of 'char \\*' from incompatible pointer type 'int \\*'" } */
+  ^
+
+"Test_name.c", line 93: warning: variable "y" was declared but never referenced
+  TESTINI(cid, char *, int *); /* { dg-error "initialization of 'char \\*' from incompatible pointer type 'int \\*'" } */
+  ^
+
+"Test_name.c", line 94: warning: return value type does not match the function type
+  TESTRET(cie, char *, int *); /* { dg-error "returning 'int \\*' from a function with incompatible return type 'char \\*'" } */
+  ^
+
+"Test_name.c", line 96: warning: argument of type "char *" is incompatible with parameter of type "int *"
+  TESTARG(ica, int *, char *); /* { dg-error "passing argument 1 of 'icaF' from incompatible pointer type" } */
+  ^
+
+"Test_name.c", line 97: warning: argument of type "char *" is incompatible with parameter of type "int *"
+  TESTARP(icb, int *, char *); /* { dg-error "passing argument 1 of 'icbFp.x' from incompatible pointer type" } */
+  ^
+
+"Test_name.c", line 98: warning: a value of type "char *" cannot be assigned to an entity of type "int *"
+  TESTASS(icc, int *, char *); /* { dg-error "assignment to 'int \\*' from incompatible pointer type 'char \\*'" } */
+  ^
+
+"Test_name.c", line 98: warning: variable "y" was set but never used
+  TESTASS(icc, int *, char *); /* { dg-error "assignment to 'int \\*' from incompatible pointer type 'char \\*'" } */
+  ^
+
+"Test_name.c", line 99: warning: a value of type "char *" cannot be used to initialize an entity of type "int *"
+  TESTINI(icd, int *, char *); /* { dg-error "initialization of 'int \\*' from incompatible pointer type 'char \\*'" } */
+  ^
+
+"Test_name.c", line 99: warning: variable "y" was declared but never referenced
+  TESTINI(icd, int *, char *); /* { dg-error "initialization of 'int \\*' from incompatible pointer type 'char \\*'" } */
+  ^
+
+"Test_name.c", line 100: warning: return value type does not match the function type
+  TESTRET(ice, int *, char *); /* { dg-error "returning 'char \\*' from a function with incompatible return type 'int \\*'" } */
+  ^
+
+"Test_name.c", line 102: warning: argument of type "int" is incompatible with parameter of type "char *"
+  TESTARG(ciia, char *, int); /* { dg-error "passing argument 1 of 'ciiaF' makes pointer from integer without a cast" } */
+  ^
+
+"Test_name.c", line 103: warning: argument of type "int" is incompatible with parameter of type "char *"
+  TESTARP(ciib, char *, int); /* { dg-error "passing argument 1 of 'ciibFp.x' makes pointer from integer without a cast" } */
+  ^
+
+"Test_name.c", line 104: warning: a value of type "int" cannot be assigned to an entity of type "char *"
+  TESTASS(ciic, char *, int); /* { dg-error "assignment to 'char \\*' from 'int' makes pointer from integer without a cast" } */
+  ^
+
+"Test_name.c", line 104: warning: variable "y" was set but never used
+  TESTASS(ciic, char *, int); /* { dg-error "assignment to 'char \\*' from 'int' makes pointer from integer without a cast" } */
+  ^
+
+"Test_name.c", line 105: warning: a value of type "int" cannot be used to initialize an entity of type "char *"
+  TESTINI(ciid, char *, int); /* { dg-error "initialization of 'char \\*' from 'int' makes pointer from integer without a cast" } */
+  ^
+
+"Test_name.c", line 105: warning: variable "y" was declared but never referenced
+  TESTINI(ciid, char *, int); /* { dg-error "initialization of 'char \\*' from 'int' makes pointer from integer without a cast" } */
+  ^
+
+"Test_name.c", line 106: warning: return value type does not match the function type
+  TESTRET(ciie, char *, int); /* { dg-error "returning 'int' from a function with return type 'char \\*' makes pointer from integer without a cast" } */
+  ^
+
+"Test_name.c", line 108: warning: argument of type "char *" is incompatible with parameter of type "int"
+  TESTARG(iica, int, char *); /* { dg-error "passing argument 1 of 'iicaF' makes integer from pointer without a cast" } */
+  ^
+
+"Test_name.c", line 109: warning: argument of type "char *" is incompatible with parameter of type "int"
+  TESTARP(iicb, int, char *); /* { dg-error "passing argument 1 of 'iicbFp.x' makes integer from pointer without a cast" } */
+  ^
+
+"Test_name.c", line 110: warning: a value of type "char *" cannot be assigned to an entity of type "int"
+  TESTASS(iicc, int, char *); /* { dg-error "assignment to 'int' from 'char \\*' makes integer from pointer without a cast" } */
+  ^
+
+"Test_name.c", line 110: warning: variable "y" was set but never used
+  TESTASS(iicc, int, char *); /* { dg-error "assignment to 'int' from 'char \\*' makes integer from pointer without a cast" } */
+  ^
+
+"Test_name.c", line 111: warning: a value of type "char *" cannot be used to initialize an entity of type "int"
+  TESTINI(iicd, int, char *); /* { dg-error "initialization of 'int' from 'char \\*' makes integer from pointer without a cast" } */
+  ^
+
+"Test_name.c", line 111: warning: variable "y" was declared but never referenced
+  TESTINI(iicd, int, char *); /* { dg-error "initialization of 'int' from 'char \\*' makes integer from pointer without a cast" } */
+  ^
+
+"Test_name.c", line 112: warning: return value type does not match the function type
+  TESTRET(iice, int, char *); /* { dg-error "returning 'char \\*' from a function with return type 'int' makes integer from pointer without a cast" } */
+  ^
+
+"Test_name.c", line 116: error: argument of type "int" is incompatible with parameter of type "struct s"
+  TESTARG(stria, struct s, int); /* { dg-error "incompatible type for argument 1 of 'striaF'" } */
+  ^
+
+"Test_name.c", line 117: error: argument of type "int" is incompatible with parameter of type "struct s"
+  TESTARP(strib, struct s, int); /* { dg-error "incompatible type for argument 1 of 'stribFp.x'" } */
+  ^
+
+"Test_name.c", line 118: error: a value of type "int" cannot be assigned to an entity of type "struct s"
+  TESTASS(stric, struct s, int); /* { dg-error "incompatible types when assigning to type 'struct s' from type 'int'" } */
+  ^
+
+"Test_name.c", line 118: warning: variable "y" was set but never used
+  TESTASS(stric, struct s, int); /* { dg-error "incompatible types when assigning to type 'struct s' from type 'int'" } */
+  ^
+
+"Test_name.c", line 119: error: a value of type "int" cannot be used to initialize an entity of type "struct s"
+  TESTINI(strid, struct s, int); /* { dg-error "invalid initializer" } */
+  ^
+
+"Test_name.c", line 120: error: return value type does not match the function type
+  TESTRET(strie, struct s, int); /* { dg-error "incompatible types when returning type 'int' but 'struct s' was expected" } */
+  ^
+
+"Test_name.c", line 122: error: argument of type "struct s" is incompatible with parameter of type "int"
+  TESTARG(istra, int, struct s); /* { dg-error "incompatible type for argument 1 of 'istraF'" } */
+  ^
+
+"Test_name.c", line 123: error: argument of type "struct s" is incompatible with parameter of type "int"
+  TESTARP(istrb, int, struct s); /* { dg-error "incompatible type for argument 1 of 'istrbFp.x'" } */
+  ^
+
+"Test_name.c", line 124: error: a value of type "struct s" cannot be assigned to an entity of type "int"
+  TESTASS(istrc, int, struct s); /* { dg-error "incompatible types when assigning to type 'int' from type 'struct s'" } */
+  ^
+
+"Test_name.c", line 124: warning: variable "y" was set but never used
+  TESTASS(istrc, int, struct s); /* { dg-error "incompatible types when assigning to type 'int' from type 'struct s'" } */
+  ^
+
+"Test_name.c", line 125: error: a value of type "struct s" cannot be used to initialize an entity of type "int"
+  TESTINI(istrd, int, struct s); /* { dg-error "incompatible types when initializing type 'int' using type 'struct s'" } */
+  ^
+
+"Test_name.c", line 126: error: return value type does not match the function type
+  TESTRET(istre, int, struct s); /* { dg-error "incompatible types when returning type 'struct s' but 'int' was expected" } */
+  ^
+
+10 errors detected in the compilation of "Test_name.c".

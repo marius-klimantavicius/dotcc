@@ -1,0 +1,39 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 60: warning: missing return statement at end of non-void function "C::parseRegisterLiveOutMask"
+  }
+  ^
+
+"Test_name.c", line 15: warning: variable "a" is used before its value is set
+      long b = p1 - a;
+                    ^
+          detected during:
+            instantiation of "_BI2 B::__copy_move_b(_BI1, _BI2) [with _BI1=C::D *, _BI2=C::D *]" at line 22
+            instantiation of "void __copy_move_backward_a<<unnamed>,_BI1,_BI2>(_BI1, _BI2) [with <unnamed>=0, _BI1=C::D *, _BI2=C::D *]" at line 26
+            instantiation of "void __copy_move_backward_a2<<unnamed>,_BI1,_BI2>(_BI1, _BI2) [with <unnamed>=0, _BI1=C::D *, _BI2=C::D *]" at line 29
+            instantiation of "void move_backward(_BI1, _BI2) [with _BI1=C::D *, _BI2=C::D *]" at line 35
+            instantiation of "void __insertion_sort(_RandomAccessIterator, _Compare) [with _RandomAccessIterator=C::D *, _Compare=A]" at line 40
+            instantiation of "void __final_insertion_sort(_RandomAccessIterator, _Compare) [with _RandomAccessIterator=C::D *, _Compare=A]" at line 44
+            instantiation of "void __sort(_RandomAccessIterator, _Compare) [with _RandomAccessIterator=C::D *, _Compare=A]" at line 49
+            instantiation of "void sort(_RandomAccessIterator, _RandomAccessIterator, _Compare) [with _RandomAccessIterator=C::D *, _Compare=lambda []()->void]" at line 59
+
+"Test_name.c", line 18: warning: missing return statement at end of non-void function "B::__copy_move_b(_BI1, _BI2) [with _BI1=C::D *, _BI2=C::D *]"
+    }
+    ^
+          detected during:
+            instantiation of "_BI2 B::__copy_move_b(_BI1, _BI2) [with _BI1=C::D *, _BI2=C::D *]" at line 22
+            instantiation of "void __copy_move_backward_a<<unnamed>,_BI1,_BI2>(_BI1, _BI2) [with <unnamed>=0, _BI1=C::D *, _BI2=C::D *]" at line 26
+            instantiation of "void __copy_move_backward_a2<<unnamed>,_BI1,_BI2>(_BI1, _BI2) [with <unnamed>=0, _BI1=C::D *, _BI2=C::D *]" at line 29
+            instantiation of "void move_backward(_BI1, _BI2) [with _BI1=C::D *, _BI2=C::D *]" at line 35
+            instantiation of "void __insertion_sort(_RandomAccessIterator, _Compare) [with _RandomAccessIterator=C::D *, _Compare=A]" at line 40
+            instantiation of "void __final_insertion_sort(_RandomAccessIterator, _Compare) [with _RandomAccessIterator=C::D *, _Compare=A]" at line 44
+            instantiation of "void __sort(_RandomAccessIterator, _Compare) [with _RandomAccessIterator=C::D *, _Compare=A]" at line 49
+            instantiation of "void sort(_RandomAccessIterator, _RandomAccessIterator, _Compare) [with _RandomAccessIterator=C::D *, _Compare=lambda []()->void]" at line 59
+
+"Test_name.c", line 40: warning: variable "d" is used before its value is set
+    __insertion_sort(d, p2);
+                     ^
+          detected during:
+            instantiation of "void __final_insertion_sort(_RandomAccessIterator, _Compare) [with _RandomAccessIterator=C::D *, _Compare=A]" at line 44
+            instantiation of "void __sort(_RandomAccessIterator, _Compare) [with _RandomAccessIterator=C::D *, _Compare=A]" at line 49
+            instantiation of "void sort(_RandomAccessIterator, _RandomAccessIterator, _Compare) [with _RandomAccessIterator=C::D *, _Compare=lambda []()->void]" at line 59
+

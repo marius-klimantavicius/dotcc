@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --microsoft_v 1921 --ms_c++17 Test_name.c
+"Test_name.c", line 12: warning: conversion from scoped enumeration type "X" is nonstandard
+  enum class Y { y = X::x };  // Now accepted with a warning in some modes.
+                     ^
+

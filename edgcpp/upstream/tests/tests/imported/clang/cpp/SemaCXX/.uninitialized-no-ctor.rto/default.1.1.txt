@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 8: warning: class template "RefMem<T>" defines no constructor to initialize the following:
+            reference member "RefMem<T>::M"
+  class RefMem { // expected-warning {{class 'RefMem<int &>' does not declare any constructor to initialize its non-modifiable members}}
+        ^
+

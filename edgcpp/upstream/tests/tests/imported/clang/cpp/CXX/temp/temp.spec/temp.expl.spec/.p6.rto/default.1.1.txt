@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 22: warning: variable "nested" was declared but never referenced
+    X0<int>::Nested nested; // expected-note{{implicit instantiation first required here}}
+                    ^
+
+"Test_name.c", line 27: error: explicit specialization of function "X0<T>::f [with T=int]" must precede its first use (at line 20)
+  void X0<int>::f() { // expected-error{{after instantiation}}
+                ^
+
+"Test_name.c", line 31: error: explicit specialization of function "X0<T>::g(U) [with T=int, U=int]" must precede its first use (at line 21)
+  void X0<int>::g(int) { // expected-error{{after instantiation}}
+                ^
+
+"Test_name.c", line 35: error: explicit specialization of class "X0<T>::Nested [with T=int]" must precede its first use (at line 22)
+  struct X0<int>::Nested { }; // expected-error{{after instantiation}}
+         ^
+
+"Test_name.c", line 38: warning: explicit specialization of member "X0<T>::member [with T=int]" must precede its first use (at line 23)
+  int X0<int>::member = 17; // expected-error{{after instantiation}}
+               ^
+
+"Test_name.c", line 41: error: explicit specialization of class "X0<int>" must precede its first use (at line 19)
+  struct X0<int> { }; // expected-error{{after instantiation}}
+         ^
+
+"Test_name.c", line 57: error: explicit specialization of function "sort(Array<T> &) [with T=String]" must precede its first use (at line 52)
+  template<> void sort<String>(Array<String>& v); // // expected-error{{after instantiation}}
+                  ^
+
+5 errors detected in the compilation of "Test_name.c".

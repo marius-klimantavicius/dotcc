@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc -w Test_name.c
+"Test_name.c", line 6: error: expected a ";"
+  typedef unsigned __int128 u128;
+                            ^
+
+"Test_name.c", line 7: error: expected a ";"
+  typedef unsigned __int128 V __attribute__ ((vector_size (64)));
+                            ^
+
+"Test_name.c", line 9: error: identifier "V" is undefined
+  V x4;
+  ^
+
+"Test_name.c", line 11: error: identifier "V" is undefined
+  static V
+         ^
+
+"Test_name.c", line 12: error: identifier "u128" is undefined
+  bar (u128 x2, u128 x3)
+       ^
+
+"Test_name.c", line 12: error: identifier "u128" is undefined
+  bar (u128 x2, u128 x3)
+                ^
+
+6 errors detected in the compilation of "Test_name.c".

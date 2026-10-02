@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 7: error: expected either a definition or a tag name
+    typedef struct typename T::X X;       // { dg-error "expected identifier|two or more" }
+                   ^
+
+"Test_name.c", line 7: warning: declaration requires a typedef name
+    typedef struct typename T::X X;       // { dg-error "expected identifier|two or more" }
+                                  ^
+
+"Test_name.c", line 10: error: "A<T>::X" is not a class template
+  template<typename T> A<T>::X::X() {}    // { dg-error "expected|not a type|forbids declaration|invalid use of" }
+                       ^
+
+2 errors detected in the compilation of "Test_name.c".

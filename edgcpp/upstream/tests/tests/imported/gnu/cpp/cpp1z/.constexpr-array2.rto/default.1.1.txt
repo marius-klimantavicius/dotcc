@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp1z/constexpr-array2.C", line 11: error: expression must have a constant value
+      mat {{ {1.0, 2.0, 3.0}, {4.0, 5.0, 6.0} }};
+          ^
+"./cpp1z/constexpr-array2.C", line 11: note: constexpr function "Matrix<N, M>::Matrix(const double (&)[N][M]) [with N=2U, M=3U]" (declared at line 6) is not defined
+      mat {{ {1.0, 2.0, 3.0}, {4.0, 5.0, 6.0} }};
+          ^
+
+"./cpp1z/constexpr-array2.C", line 11: warning: variable "mat" was declared but never referenced
+      mat {{ {1.0, 2.0, 3.0}, {4.0, 5.0, 6.0} }};
+      ^
+
+"./cpp1z/constexpr-array2.C", line 6: warning: function "Matrix<N, M>::Matrix(const double (&)[N][M]) [with N=2U, M=3U]" was referenced but not defined
+    constexpr Matrix(double const (&arr)[N][M]);
+              ^
+
+1 error detected in the compilation of "Test_name.c".

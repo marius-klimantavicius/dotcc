@@ -1,0 +1,101 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 16: warning: function declared with "noreturn" does return
+  }
+  ^
+
+"Test_name.c", line 21: warning: function declared with "noreturn" does return
+  }
+  ^
+
+"Test_name.c", line 26: warning: function declared with "noreturn" does return
+  }
+  ^
+
+"Test_name.c", line 31: warning: function declared with "noreturn" does return
+  }
+  ^
+
+"Test_name.c", line 36: warning: function declared with "noreturn" does return
+  }
+  ^
+
+"Test_name.c", line 43: warning: function declared with "noreturn" does return
+  } // expected-warning {{function declared 'noreturn' should not return}}
+  ^
+
+"Test_name.c", line 48: warning: function declared with "noreturn" does return
+  } // expected-warning {{function declared 'noreturn' should not return}}
+  ^
+
+"Test_name.c", line 55: warning: function declared with "noreturn" does return
+  }
+  ^
+
+"Test_name.c", line 61: warning: function declared with "noreturn" does return
+  }
+  ^
+
+"Test_name.c", line 68: warning: function declared with "noreturn" does return
+  }
+  ^
+
+"Test_name.c", line 77: warning: function declared with "noreturn" does return
+  }
+  ^
+
+"Test_name.c", line 86: warning: function declared with "noreturn" does return
+  } // expected-warning {{function declared 'noreturn' should not return}}
+  ^
+
+"Test_name.c", line 93: warning: function declared with "noreturn" does return
+  } // expected-warning {{function declared 'noreturn' should not return}}
+  ^
+
+"Test_name.c", line 100: warning: function declared with "noreturn" does return
+  } // expected-warning {{function declared 'noreturn' should not return}}
+  ^
+
+"Test_name.c", line 116: warning: function declared with "noreturn" does return
+  }
+  ^
+
+"Test_name.c", line 132: warning: function declared with "noreturn" does return
+  } // expected-warning {{function declared 'noreturn' should not return}}
+  ^
+
+"Test_name.c", line 145: warning: function declared with "noreturn" does return
+  }
+  ^
+
+"Test_name.c", line 158: warning: function declared with "noreturn" does return
+  } // expected-warning {{function declared 'noreturn' should not return}}
+  ^
+
+"Test_name.c", line 170: warning: function declared with "noreturn" does return
+  }
+  ^
+
+"Test_name.c", line 186: warning: function declared with "noreturn" does return
+  }
+  ^
+
+"Test_name.c", line 202: warning: function declared with "noreturn" does return
+  } // expected-warning {{function declared 'noreturn' should not return}}
+  ^
+
+"Test_name.c", line 208: warning: function declared with "noreturn" does return
+  } // expected-warning {{function declared 'noreturn' should not return}}
+  ^
+
+"Test_name.c", line 212: warning: function declared with "noreturn" does return
+  } // expected-warning {{function declared 'noreturn' should not return}}
+  ^
+
+"Test_name.c", line 223: warning: function declared with "noreturn" does return
+  } // expected-warning {{function declared 'noreturn' should not return}}
+  ^
+
+"Test_name.c", line 229: warning: function declared with "noreturn" does return
+  } // expected-warning {{function declared 'noreturn' should not return}}
+  ^
+

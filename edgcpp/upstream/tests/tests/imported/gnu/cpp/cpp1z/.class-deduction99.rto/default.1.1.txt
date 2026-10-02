@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 26: error: type "ty1" has already been defined (previous definition at line 24)
+  using ty1 = decltype(tuple(B<int>{}));
+        ^
+
+1 error detected in the compilation of "Test_name.c".

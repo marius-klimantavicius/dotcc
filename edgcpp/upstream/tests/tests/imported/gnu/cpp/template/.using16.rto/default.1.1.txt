@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 43: warning: duplicate using-declaration of "D<T>::type [with T=T]" ignored
+      using typename D<T>::type; // { dg-error "redeclaration" }
+      ^
+
+"Test_name.c", line 27: error: "B<T>::type::type() [with T=int]" (declared at line 16) is inaccessible
+  	type j; // { dg-error "context" }
+  	     ^
+          detected during instantiation of "void C<T>::f() [with T=int]" at line 31
+
+1 error detected in the compilation of "Test_name.c".

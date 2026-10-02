@@ -1,0 +1,46 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 11: error: member "EnumeratorRange<T>::end_reached_ [with T=int]" (declared at line 19) is inaccessible
+        i.range_.end_reached_;
+                 ^
+          detected during instantiation of class "EnumeratorRange<T>::Iterator [with T=int]" at line 27
+
+"Test_name.c", line 11: warning: expression has no effect
+        i.range_.end_reached_;
+        ^
+          detected during instantiation of class "EnumeratorRange<T>::Iterator [with T=int]" at line 27
+
+"Test_name.c", line 12: error: member "EnumeratorRange<T>::end_reached_ [with T=int]" (declared at line 19) is inaccessible
+        i.range_.EnumeratorRange::end_reached_;
+                                  ^
+          detected during instantiation of class "EnumeratorRange<T>::Iterator [with T=int]" at line 27
+
+"Test_name.c", line 12: warning: expression has no effect
+        i.range_.EnumeratorRange::end_reached_;
+        ^
+          detected during instantiation of class "EnumeratorRange<T>::Iterator [with T=int]" at line 27
+
+"Test_name.c", line 13: error: member "EnumeratorRange<T>::end_reached_ [with T=int]" (declared at line 19) is inaccessible
+        &i.range_.end_reached_;
+                  ^
+          detected during instantiation of class "EnumeratorRange<T>::Iterator [with T=int]" at line 27
+
+"Test_name.c", line 13: warning: expression has no effect
+        &i.range_.end_reached_;
+        ^
+          detected during instantiation of class "EnumeratorRange<T>::Iterator [with T=int]" at line 27
+
+"Test_name.c", line 14: error: member "EnumeratorRange<T>::end_reached_ [with T=int]" (declared at line 19) is inaccessible
+        &i.range_.EnumeratorRange::end_reached_;
+                                   ^
+          detected during instantiation of class "EnumeratorRange<T>::Iterator [with T=int]" at line 27
+
+"Test_name.c", line 14: warning: expression has no effect
+        &i.range_.EnumeratorRange::end_reached_;
+        ^
+          detected during instantiation of class "EnumeratorRange<T>::Iterator [with T=int]" at line 27
+
+"Test_name.c", line 27: warning: variable "i" is used before its value is set
+    f(i);
+      ^
+
+4 errors detected in the compilation of "Test_name.c".

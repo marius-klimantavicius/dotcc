@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: error: a member of type "const int []" cannot have an in-class initializer
+    static const int x[] = 0;	// { dg-error "in-class initialization|initializer fails" }
+                         ^
+
+1 error detected in the compilation of "Test_name.c".

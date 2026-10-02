@@ -1,0 +1,17 @@
+eccp -DTEST_NUMBER=2 -r -x -tused Test_name.c
+"Test_name.c", line 6: remark: return type "int" omitted in declaration of function "main"
+  main() {
+  ^
+
+"Test_name.c", line 7: warning: nonstandard local-class friend declaration -- no prior declaration in the enclosing scope
+    class B { int g(); friend int gg(); };
+                                  ^
+
+"Test_name.c", line 4: warning: function "gg" was declared but never referenced
+  static int gg(); static int ff();
+             ^
+
+"Test_name.c", line 4: warning: function "ff" was declared but never referenced
+  static int gg(); static int ff();
+                              ^
+

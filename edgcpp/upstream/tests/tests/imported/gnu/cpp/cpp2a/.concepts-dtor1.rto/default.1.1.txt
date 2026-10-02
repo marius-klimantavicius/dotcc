@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 9: error: invalid redeclaration of member function "A<T>::~A()" (declared at line 8)
+    ~A() requires (!!true);
+    ^
+
+"Test_name.c", line 17: error: invalid redeclaration of member function "B<T>::~B()" (declared at line 16)
+    ~B() requires (!!false);
+    ^
+
+"Test_name.c", line 15: error: destructor for "B<int>" is ineligible because of failed constraints
+  struct B { // { dg-error "no viable destructor for 'B<int>'" }
+         ^
+          detected during instantiation of class "B<T> [with T=int]" at line 20
+
+3 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,114 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 Test_name.c
+"Test_name.c", line 15: error: expression must be a pointer to a complete object type
+    a++; /* { dg-error "increment of pointer to an incomplete type" } */
+    ^
+
+"Test_name.c", line 16: error: expression must be a pointer to a complete object type
+    ++a; /* { dg-error "increment of pointer to an incomplete type" } */
+      ^
+
+"Test_name.c", line 17: error: expression must be a pointer to a complete object type
+    a--; /* { dg-error "decrement of pointer to an incomplete type" } */
+    ^
+
+"Test_name.c", line 18: error: expression must be a pointer to a complete object type
+    --a; /* { dg-error "decrement of pointer to an incomplete type" } */
+      ^
+
+"Test_name.c", line 19: error: expression must be a pointer to a complete object type
+    a += 1; /* { dg-error "invalid use of array with unspecified bounds" } */
+    ^
+
+"Test_name.c", line 20: error: expression must be a pointer to a complete object type
+    a -= 1; /* { dg-error "invalid use of array with unspecified bounds" } */
+    ^
+
+"Test_name.c", line 21: error: expression must be a pointer to a complete object type
+    a - a; /* { dg-error "arithmetic on pointer to an incomplete type" } */
+    ^
+
+"Test_name.c", line 23: error: expression must be a pointer to a complete object type
+    s++; /* { dg-error "increment of pointer to an incomplete type" } */
+    ^
+
+"Test_name.c", line 24: error: expression must be a pointer to a complete object type
+    ++s; /* { dg-error "increment of pointer to an incomplete type" } */
+      ^
+
+"Test_name.c", line 25: error: expression must be a pointer to a complete object type
+    s--; /* { dg-error "decrement of pointer to an incomplete type" } */
+    ^
+
+"Test_name.c", line 26: error: expression must be a pointer to a complete object type
+    --s; /* { dg-error "decrement of pointer to an incomplete type" } */
+      ^
+
+"Test_name.c", line 27: error: expression must be a pointer to a complete object type
+    s += 1; /* { dg-error "invalid use of undefined type" } */
+    ^
+
+"Test_name.c", line 28: error: expression must be a pointer to a complete object type
+    s -= 1; /* { dg-error "invalid use of undefined type" } */
+    ^
+
+"Test_name.c", line 29: error: expression must be a pointer to a complete object type
+    s - s; /* { dg-error "arithmetic on pointer to an incomplete type" } */
+    ^
+
+"Test_name.c", line 31: error: expression must be a pointer to a complete object type
+    u++; /* { dg-error "increment of pointer to an incomplete type" } */
+    ^
+
+"Test_name.c", line 32: error: expression must be a pointer to a complete object type
+    ++u; /* { dg-error "increment of pointer to an incomplete type" } */
+      ^
+
+"Test_name.c", line 33: error: expression must be a pointer to a complete object type
+    u--; /* { dg-error "decrement of pointer to an incomplete type" } */
+    ^
+
+"Test_name.c", line 34: error: expression must be a pointer to a complete object type
+    --u; /* { dg-error "decrement of pointer to an incomplete type" } */
+      ^
+
+"Test_name.c", line 35: error: expression must be a pointer to a complete object type
+    u += 1; /* { dg-error "invalid use of undefined type" } */
+    ^
+
+"Test_name.c", line 36: error: expression must be a pointer to a complete object type
+    u -= 1; /* { dg-error "invalid use of undefined type" } */
+    ^
+
+"Test_name.c", line 37: error: expression must be a pointer to a complete object type
+    u - u; /* { dg-error "arithmetic on pointer to an incomplete type" } */
+    ^
+
+"Test_name.c", line 39: error: expression must be a pointer to a complete object type
+    e++; /* { dg-error "increment of pointer to an incomplete type" } */
+    ^
+
+"Test_name.c", line 40: error: expression must be a pointer to a complete object type
+    ++e; /* { dg-error "increment of pointer to an incomplete type" } */
+      ^
+
+"Test_name.c", line 41: error: expression must be a pointer to a complete object type
+    e--; /* { dg-error "decrement of pointer to an incomplete type" } */
+    ^
+
+"Test_name.c", line 42: error: expression must be a pointer to a complete object type
+    --e; /* { dg-error "decrement of pointer to an incomplete type" } */
+      ^
+
+"Test_name.c", line 43: error: expression must be a pointer to a complete object type
+    e += 1; /* { dg-error "invalid use of undefined type" } */
+    ^
+
+"Test_name.c", line 44: error: expression must be a pointer to a complete object type
+    e -= 1; /* { dg-error "invalid use of undefined type" } */
+    ^
+
+"Test_name.c", line 45: error: expression must be a pointer to a complete object type
+    e - e; /* { dg-error "arithmetic on pointer to an incomplete type" } */
+    ^
+
+28 errors detected in the compilation of "Test_name.c".

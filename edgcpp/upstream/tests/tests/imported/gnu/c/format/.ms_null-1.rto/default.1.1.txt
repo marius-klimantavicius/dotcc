@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"./format/ms_null-1.c", line 9: warning: unrecognized format function type "ms_printf" ignored
+  extern void my_printf (const char *, ...) __attribute__((format(ms_printf,1,2)));
+                                                                  ^
+

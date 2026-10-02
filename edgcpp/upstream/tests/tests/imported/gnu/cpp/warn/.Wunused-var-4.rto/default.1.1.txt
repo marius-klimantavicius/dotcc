@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 11: warning: variable "a" was set but never used
+    int a;
+        ^
+
+"Test_name.c", line 12: warning: variable "b" was set but never used
+    int b;
+        ^
+
+"Test_name.c", line 13: warning: variable "c" was set but never used
+    int c;
+        ^
+
+"Test_name.c", line 14: warning: variable "d" was set but never used
+    int d;
+        ^
+
+"Test_name.c", line 15: warning: variable "s" was set but never used
+    S s;
+      ^
+
+"Test_name.c", line 21: warning: variable "e" was set but never used
+    __typeof (c) e;	// { dg-warning "set but not used" }
+                 ^
+
+"Test_name.c", line 22: warning: variable "f" was set but never used
+    __decltype (d) f;	// { dg-warning "set but not used" }
+                   ^
+
+"Test_name.c", line 23: warning: variable "g" was set but never used
+    __decltype (s.e) g;	// { dg-warning "set but not used" }
+                     ^
+

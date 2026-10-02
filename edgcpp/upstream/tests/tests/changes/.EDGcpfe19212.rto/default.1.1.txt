@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --microsoft Test_name.c
+"Test_name.c", line 14: warning: variable "x" was declared but never referenced
+  constexpr int x = f(3-3);  // Now accepted in GNU and Microsoft C++11 modes.
+                ^
+

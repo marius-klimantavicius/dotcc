@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 91: warning: function "set_value_regno" declared implicitly
+      set_value_regno (sr, vd->e[dr].mode, vd);
+      ^
+
+"Test_name.c", line 112: warning: function "validate_value_data" declared implicitly
+    validate_value_data (vd);
+    ^
+
+"Test_name.c", line 59: warning: function "copy_value" was declared but never referenced
+  copy_value (rtx dest, rtx src, struct value_data *vd)
+  ^
+

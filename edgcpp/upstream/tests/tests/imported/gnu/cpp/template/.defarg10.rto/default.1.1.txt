@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 6: error: template parameter "T" is not a class template
+  template<typename T, template<int> class = T>  // { dg-error "invalid use of type" }
+                                             ^
+
+"Test_name.c", line 10: error: type "I" is not a class template
+  template<template<int> class = I>  // { dg-error "invalid use of type" }
+                                 ^
+
+"Test_name.c", line 14: error: class "S" is not a class template
+  template<template<int> class = S>  // { dg-error "invalid use of type" }
+                                 ^
+
+3 errors detected in the compilation of "Test_name.c".

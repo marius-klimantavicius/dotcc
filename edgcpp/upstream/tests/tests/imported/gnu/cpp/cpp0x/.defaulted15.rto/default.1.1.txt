@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 11: error: a copy constructor with a default argument cannot be defaulted
+    A (const A& = 1) = default;	// { dg-error "default argument" }
+    ^
+
+"Test_name.c", line 12: error: invalid type for defaulted assignment operator
+    void operator= (const A&) = default; // { dg-error "defaulted|match" }
+         ^
+
+2 errors detected in the compilation of "Test_name.c".

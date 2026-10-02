@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 Test_name.c
+"Test_name.c", line 9: warning: operand types are incompatible ("void *(*)(void *, const void *, unsigned long)" and "int (*)(const void *, const void *, unsigned long)")
+    return flag ? __builtin_memcpy : __builtin_memcmp; /* { dg-warning "pointer type mismatch in conditional expression \\\[-Wincompatible-pointer-types\\\]" } */
+                                   ^
+

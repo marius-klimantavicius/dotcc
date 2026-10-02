@@ -1,0 +1,74 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 7: error: expected a ";"
+  struct S { unsigned a : 4, b : 4; unsigned __int128 c : 70; } d;
+                                                      ^
+
+"Test_name.c", line 10: error: expected a ")"
+  foo (unsigned __int128 x, unsigned char y, unsigned char z)
+                         ^
+
+"Test_name.c", line 12: error: identifier "y" is undefined
+    d.a = y;
+          ^
+
+"Test_name.c", line 13: error: identifier "z" is undefined
+    d.b = z;
+          ^
+
+"Test_name.c", line 14: error: struct "S" has no field "c"
+    d.c = x;
+      ^
+
+"Test_name.c", line 14: error: identifier "x" is undefined
+    d.c = x;
+          ^
+
+"Test_name.c", line 20: warning: integer conversion resulted in a change of sign
+    foo (-1, 12, 5);
+         ^
+
+"Test_name.c", line 20: error: too many arguments in function call
+    foo (-1, 12, 5);
+             ^
+
+"Test_name.c", line 23: error: struct "S" has no field "c"
+        || d.c != (-1ULL | (((unsigned __int128) 0x3f) << 64)))
+             ^
+
+"Test_name.c", line 23: error: expected a ")"
+        || d.c != (-1ULL | (((unsigned __int128) 0x3f) << 64)))
+                                       ^
+
+"Test_name.c", line 23: warning: shift count is too large
+        || d.c != (-1ULL | (((unsigned __int128) 0x3f) << 64)))
+                                                          ^
+
+"Test_name.c", line 25: error: expected a ")"
+    foo (0x123456789abcdef0ULL | (((unsigned __int128) 26) << 64), 7, 11);
+                                             ^
+
+"Test_name.c", line 25: warning: shift count is too large
+    foo (0x123456789abcdef0ULL | (((unsigned __int128) 26) << 64), 7, 11);
+                                                              ^
+
+"Test_name.c", line 25: warning: integer conversion resulted in truncation
+    foo (0x123456789abcdef0ULL | (((unsigned __int128) 26) << 64), 7, 11);
+         ^
+
+"Test_name.c", line 25: error: too many arguments in function call
+    foo (0x123456789abcdef0ULL | (((unsigned __int128) 26) << 64), 7, 11);
+                                                                   ^
+
+"Test_name.c", line 28: error: struct "S" has no field "c"
+        || d.c != (0x123456789abcdef0ULL | (((unsigned __int128) 26) << 64)))
+             ^
+
+"Test_name.c", line 28: error: expected a ")"
+        || d.c != (0x123456789abcdef0ULL | (((unsigned __int128) 26) << 64)))
+                                                       ^
+
+"Test_name.c", line 28: warning: shift count is too large
+        || d.c != (0x123456789abcdef0ULL | (((unsigned __int128) 26) << 64)))
+                                                                        ^
+
+13 errors detected in the compilation of "Test_name.c".

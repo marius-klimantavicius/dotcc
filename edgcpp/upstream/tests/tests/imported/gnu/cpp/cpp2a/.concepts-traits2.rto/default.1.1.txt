@@ -1,0 +1,223 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 83: error: no instance of function template "f1" matches the argument list
+    f1<void>(); // { dg-error "" }
+    ^
+"Test_name.c", line 62: note: substituting "<void>" for function template "f1" failed constraints
+  template<Nothrow_assignable T> void f1();
+                                      ^
+"Test_name.c", line 62: note: concept "Nothrow_assignable" not satisfied for "<void>"
+  template<Nothrow_assignable T> void f1();
+           ^
+"Test_name.c", line 6: note: atomic constraint evaluates to false
+    concept Nothrow_assignable = __has_nothrow_assign(T);
+                                 ^
+
+"Test_name.c", line 84: error: no instance of function template "f2" matches the argument list
+    f2<void>(); // { dg-error "" }
+    ^
+"Test_name.c", line 63: note: substituting "<void>" for function template "f2" failed constraints
+  template<Nothrow_copyable T> void f2();
+                                    ^
+"Test_name.c", line 63: note: concept "Nothrow_copyable" not satisfied for "<void>"
+  template<Nothrow_copyable T> void f2();
+           ^
+"Test_name.c", line 12: note: atomic constraint evaluates to false
+    concept Nothrow_copyable = __has_nothrow_copy(T);
+                               ^
+
+"Test_name.c", line 85: error: no instance of function template "f3" matches the argument list
+    f3<void>(); // { dg-error "" }
+    ^
+"Test_name.c", line 64: note: substituting "<void>" for function template "f3" failed constraints
+  template<Nothrow_constructible T> void f3();
+                                         ^
+"Test_name.c", line 64: note: concept "Nothrow_constructible" not satisfied for "<void>"
+  template<Nothrow_constructible T> void f3();
+           ^
+"Test_name.c", line 9: note: atomic constraint evaluates to false
+    concept Nothrow_constructible = __has_nothrow_constructor(T);
+                                    ^
+
+"Test_name.c", line 86: error: no instance of function template "f4" matches the argument list
+    f4<void>(); // { dg-error "" }
+    ^
+"Test_name.c", line 65: note: substituting "<void>" for function template "f4" failed constraints
+  template<Trivially_assignable T> void f4();
+                                        ^
+"Test_name.c", line 65: note: concept "Trivially_assignable" not satisfied for "<void>"
+  template<Trivially_assignable T> void f4();
+           ^
+"Test_name.c", line 15: note: atomic constraint evaluates to false
+    concept Trivially_assignable = __has_trivial_assign(T);
+                                   ^
+
+"Test_name.c", line 87: error: no instance of function template "f5" matches the argument list
+    f5<void>(); // { dg-error "" }
+    ^
+"Test_name.c", line 66: note: substituting "<void>" for function template "f5" failed constraints
+  template<Trivially_copyable T> void f5();
+                                      ^
+"Test_name.c", line 66: note: concept "Trivially_copyable" not satisfied for "<void>"
+  template<Trivially_copyable T> void f5();
+           ^
+"Test_name.c", line 21: note: atomic constraint evaluates to false
+    concept Trivially_copyable = __has_trivial_copy(T);
+                                 ^
+
+"Test_name.c", line 88: error: no instance of function template "f6" matches the argument list
+    f6<void>(); // { dg-error "" }
+    ^
+"Test_name.c", line 67: note: substituting "<void>" for function template "f6" failed constraints
+  template<Trivially_constructible T> void f6();
+                                           ^
+"Test_name.c", line 67: note: concept "Trivially_constructible" not satisfied for "<void>"
+  template<Trivially_constructible T> void f6();
+           ^
+"Test_name.c", line 18: note: atomic constraint evaluates to false
+    concept Trivially_constructible = __has_trivial_constructor(T);
+                                      ^
+
+"Test_name.c", line 89: error: no instance of function template "f7" matches the argument list
+    f7<void>(); // { dg-error "" }
+    ^
+"Test_name.c", line 68: note: substituting "<void>" for function template "f7" failed constraints
+  template<Trivially_destructible T> void f7();
+                                          ^
+"Test_name.c", line 68: note: concept "Trivially_destructible" not satisfied for "<void>"
+  template<Trivially_destructible T> void f7();
+           ^
+"Test_name.c", line 24: note: atomic constraint evaluates to false
+    concept Trivially_destructible = __has_trivial_destructor(T);
+                                     ^
+
+"Test_name.c", line 90: error: no instance of function template "f8" matches the argument list
+    f8<void>(); // { dg-error "" }
+    ^
+"Test_name.c", line 69: note: substituting "<void>" for function template "f8" failed constraints
+  template<Dynamically_destructible T> void f8();
+                                            ^
+"Test_name.c", line 69: note: concept "Dynamically_destructible" not satisfied for "<void>"
+  template<Dynamically_destructible T> void f8();
+           ^
+"Test_name.c", line 27: note: atomic constraint evaluates to false
+    concept Dynamically_destructible = __has_virtual_destructor(T);
+                                       ^
+
+"Test_name.c", line 91: error: no instance of function template "f9" matches the argument list
+    f9<void>(); // { dg-error "" }
+    ^
+"Test_name.c", line 70: note: substituting "<void>" for function template "f9" failed constraints
+  template<Class T> void f9();
+                         ^
+"Test_name.c", line 70: note: concept "Class" not satisfied for "<void>"
+  template<Class T> void f9();
+           ^
+"Test_name.c", line 36: note: atomic constraint evaluates to false
+    concept Class = __is_class(T);
+                    ^
+
+"Test_name.c", line 92: error: no instance of function template "f10" matches the argument list
+    f10<void>(); // { dg-error "" }
+    ^
+"Test_name.c", line 71: note: substituting "<void>" for function template "f10" failed constraints
+  template<Empty T> void f10();
+                         ^
+"Test_name.c", line 71: note: concept "Empty" not satisfied for "<void>"
+  template<Empty T> void f10();
+           ^
+"Test_name.c", line 39: note: atomic constraint evaluates to false
+    concept Empty = __is_empty(T);
+                    ^
+
+"Test_name.c", line 93: error: no instance of function template "f11" matches the argument list
+    f11<void>(); // { dg-error "" }
+    ^
+"Test_name.c", line 72: note: substituting "<void>" for function template "f11" failed constraints
+  template<Standard_layout T> void f11();
+                                   ^
+"Test_name.c", line 72: note: concept "Standard_layout" not satisfied for "<void>"
+  template<Standard_layout T> void f11();
+           ^
+"Test_name.c", line 54: note: atomic constraint evaluates to false
+    concept Standard_layout = __is_standard_layout(T);
+                              ^
+
+"Test_name.c", line 94: error: no instance of function template "f12" matches the argument list
+    f12<void>(); // { dg-error "" }
+    ^
+"Test_name.c", line 73: note: substituting "<void>" for function template "f12" failed constraints
+  template<Pod T> void f12();
+                       ^
+"Test_name.c", line 73: note: concept "Pod" not satisfied for "<void>"
+  template<Pod T> void f12();
+           ^
+"Test_name.c", line 51: note: atomic constraint evaluates to false
+    concept Pod = __is_pod(T);
+                  ^
+
+"Test_name.c", line 95: error: no instance of function template "f13" matches the argument list
+    f13<void>(); // { dg-error "" }
+    ^
+"Test_name.c", line 74: note: substituting "<void>" for function template "f13" failed constraints
+  template<Trivial T> void f13();
+                           ^
+"Test_name.c", line 74: note: concept "Trivial" not satisfied for "<void>"
+  template<Trivial T> void f13();
+           ^
+"Test_name.c", line 57: note: atomic constraint evaluates to false
+    concept Trivial = __is_trivial(T);
+                      ^
+
+"Test_name.c", line 96: error: no instance of function template "f14" matches the argument list
+    f14<void>(); // { dg-error "" }
+    ^
+"Test_name.c", line 75: note: substituting "<void>" for function template "f14" failed constraints
+  template<Polymorphic T> void f14();
+                               ^
+"Test_name.c", line 75: note: concept "Polymorphic" not satisfied for "<void>"
+  template<Polymorphic T> void f14();
+           ^
+"Test_name.c", line 33: note: atomic constraint evaluates to false
+    concept Polymorphic = __is_polymorphic(T);
+                          ^
+
+"Test_name.c", line 97: error: no instance of function template "f15" matches the argument list
+    f15<void>(); // { dg-error "" }
+    ^
+"Test_name.c", line 76: note: substituting "<void>" for function template "f15" failed constraints
+  template<Abstract T> void f15();
+                            ^
+"Test_name.c", line 76: note: concept "Abstract" not satisfied for "<void>"
+  template<Abstract T> void f15();
+           ^
+"Test_name.c", line 30: note: atomic constraint evaluates to false
+    concept Abstract = __is_abstract(T);
+                       ^
+
+"Test_name.c", line 98: error: no instance of function template "f16" matches the argument list
+    f16<void>(); // { dg-error "" }
+    ^
+"Test_name.c", line 77: note: substituting "<void>" for function template "f16" failed constraints
+  template<Final T> void f16();
+                         ^
+"Test_name.c", line 77: note: concept "Final" not satisfied for "<void>"
+  template<Final T> void f16();
+           ^
+"Test_name.c", line 45: note: atomic constraint evaluates to false
+    concept Final = __is_final(T);
+                    ^
+
+"Test_name.c", line 99: error: no instance of function template "f17" matches the argument list
+    f17<void>(); // { dg-error "" }
+    ^
+"Test_name.c", line 78: note: substituting "<void>" for function template "f17" failed constraints
+  template<Union T> void f17();
+                         ^
+"Test_name.c", line 78: note: concept "Union" not satisfied for "<void>"
+  template<Union T> void f17();
+           ^
+"Test_name.c", line 60: note: atomic constraint evaluates to false
+    concept Union = __is_union(T);
+                    ^
+
+17 errors detected in the compilation of "Test_name.c".

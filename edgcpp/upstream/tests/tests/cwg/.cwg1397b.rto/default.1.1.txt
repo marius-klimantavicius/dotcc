@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++14 -tused -A Test_name.c
+"Test_name.c", line 5: error: the generated default constructor for "A" cannot be used in an initializer for its own data member
+      void *p = A{};
+                  ^
+
+1 error detected in the compilation of "Test_name.c".

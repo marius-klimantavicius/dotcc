@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp0x/inh-ctor38.C", line 19: error: static assertion failed with ""
+  static_assert (std::is_trivially_constructible<B>::value, "");
+  ^
+
+1 error detected in the compilation of "Test_name.c".

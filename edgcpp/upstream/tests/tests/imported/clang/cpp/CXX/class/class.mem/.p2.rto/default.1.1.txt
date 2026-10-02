@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 17: error: incomplete type "test0::A" is not allowed
+      A x; // expected-error {{field has incomplete type 'A'}}
+        ^
+
+"Test_name.c", line 23: error: incomplete type "test1::A<int>" is not allowed
+      A<int> x; // expected-error {{implicit instantiation of template 'test1::A<int>' within its own definition}}
+             ^
+
+"Test_name.c", line 65: error: identifier "U" is undefined
+      static int ((((((g))))() throw(U)));
+                                     ^
+
+"Test_name.c", line 68: error: identifier "U" is undefined
+      static int (*j)() throw(U); // expected-error {{unknown type name 'U'}}
+                              ^
+
+"Test_name.c", line 69: error: identifier "U" is undefined
+      static int (k)() throw(U);
+                             ^
+
+"Test_name.c", line 83: error: identifier "nonsense" is undefined
+      nonsense S() throw (more_nonsense); // \
+      ^
+
+"Test_name.c", line 83: error: identifier "more_nonsense" is undefined
+      nonsense S() throw (more_nonsense); // \
+                          ^
+
+"Test_name.c", line 83: error: member function with the same name as its class must be a constructor
+      nonsense S() throw (more_nonsense); // \
+               ^
+
+8 errors detected in the compilation of "Test_name.c".

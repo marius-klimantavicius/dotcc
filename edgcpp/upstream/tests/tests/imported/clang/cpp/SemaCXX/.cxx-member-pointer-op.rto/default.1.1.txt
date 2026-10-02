@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 13: error: a pointer to a bound function may only be used to call the function
+    c->*pmfc(); // expected-error {{invalid use of pointer to member type after ->*}}
+        ^
+
+"Test_name.c", line 13: warning: variable "c" is used before its value is set
+    c->*pmfc(); // expected-error {{invalid use of pointer to member type after ->*}}
+    ^
+
+"Test_name.c", line 15: error: a pointer to a bound function may only be used to call the function
+    c1.*pmfc(); // expected-error {{invalid use of pointer to member type after .*}}
+        ^
+
+"Test_name.c", line 16: error: a pointer to a bound function may only be used to call the function
+    c->*(pmfc()); // expected-error {{invalid use of pointer to member type after ->*}}
+        ^
+
+"Test_name.c", line 17: error: a pointer to a bound function may only be used to call the function
+    c1.*((pmfc())); // expected-error {{invalid use of pointer to member type after .*}}
+        ^
+
+4 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,6 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 --c++11 Test_name.c
+eccp: diagnostics generated from compilation of Test_name.int.c:
+./eh/async-unwind2.C: Assembler messages:
+./eh/async-unwind2.C:254: Error: operand type mismatch for `mov'
+eccp: end of diagnostics from compilation of Test_name.int.c
+eccp: gcc compilation of Test_name.int.c returned an exit status of 1

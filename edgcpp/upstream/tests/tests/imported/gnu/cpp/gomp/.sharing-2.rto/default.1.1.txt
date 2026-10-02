@@ -1,0 +1,61 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 31: warning: unrecognized #pragma
+    #pragma omp parallel firstprivate (x)
+            ^
+
+"Test_name.c", line 33: warning: unrecognized #pragma
+    #pragma omp parallel firstprivate (d)
+            ^
+
+"Test_name.c", line 35: warning: unrecognized #pragma
+    #pragma omp parallel firstprivate (y)
+            ^
+
+"Test_name.c", line 37: warning: unrecognized #pragma
+    #pragma omp parallel firstprivate (e)	// { dg-error "is predetermined" }
+            ^
+
+"Test_name.c", line 39: warning: unrecognized #pragma
+    #pragma omp parallel firstprivate (f)
+            ^
+
+"Test_name.c", line 41: warning: unrecognized #pragma
+    #pragma omp parallel shared (x)
+            ^
+
+"Test_name.c", line 43: warning: unrecognized #pragma
+    #pragma omp parallel shared (d)	// { dg-error "is predetermined" }
+            ^
+
+"Test_name.c", line 45: warning: unrecognized #pragma
+    #pragma omp parallel shared (e)	// { dg-error "is predetermined" }
+            ^
+
+"Test_name.c", line 47: warning: unrecognized #pragma
+    #pragma omp parallel shared (f)	// { dg-error "is predetermined" }
+            ^
+
+"Test_name.c", line 49: warning: unrecognized #pragma
+    #pragma omp parallel shared (y)
+            ^
+
+"Test_name.c", line 51: warning: unrecognized #pragma
+    #pragma omp parallel private (x)	// { dg-error "may appear only in 'shared' or 'firstprivate' clauses" }
+            ^
+
+"Test_name.c", line 53: warning: unrecognized #pragma
+    #pragma omp parallel private (d)	// { dg-error "is predetermined" }
+            ^
+
+"Test_name.c", line 55: warning: unrecognized #pragma
+    #pragma omp parallel private (y)
+            ^
+
+"Test_name.c", line 57: warning: unrecognized #pragma
+    #pragma omp parallel private (e)	// { dg-error "is predetermined" }
+            ^
+
+"Test_name.c", line 59: warning: unrecognized #pragma
+    #pragma omp parallel private (f)	// { dg-error "is predetermined" }
+            ^
+

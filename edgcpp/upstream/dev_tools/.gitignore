@@ -1,0 +1,11 @@
+# C-based tools
+bin/check-closing-comments
+bin/check-defines
+bin/get-comments
+bin/process-unicode-names
+bin/remove-escapes
+cpp_tools/build/
+
+# Python
+__pycache__/
+.mypy_cache/

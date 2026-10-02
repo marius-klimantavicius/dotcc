@@ -1,0 +1,8 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./asan/interception-malloc-test-1.C", line 13: warning: allowing all exceptions is incompatible with previous function "malloc" (declared at line 465 of "/usr/include/stdlib.h")
+  extern "C" void *malloc(size_t size) {
+                                       ^
+
+/usr/sbin/ld: Test_name.o: in function `malloc':
+Test_name.int.c:(.text+0xXX): undefined reference to `__interceptor_malloc'
+collect2: error: ld returned 1 exit status

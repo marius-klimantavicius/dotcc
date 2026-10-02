@@ -1,0 +1,105 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 10: warning: the implicit by-copy capture of "this" is deprecated
+      auto a1 = [=] { x = n; }; // { dg-bogus "implicit capture" }
+                      ^
+
+"Test_name.c", line 19: warning: the implicit by-copy capture of "this" is deprecated
+  	 auto a2 = [=] { x = n; }; // { dg-bogus "implicit capture" }
+  	                 ^
+
+"Test_name.c", line 19: warning: variable "a2" was declared but never referenced
+  	 auto a2 = [=] { x = n; }; // { dg-bogus "implicit capture" }
+  	      ^
+
+"Test_name.c", line 18: warning: variable "a" was declared but never referenced
+        auto a = [=] { // { dg-bogus "implicit capture" }
+             ^
+
+"Test_name.c", line 25: warning: variable "a2" was declared but never referenced
+  	 auto a2 = [=, this] { x = n; };
+  	      ^
+
+"Test_name.c", line 24: warning: variable "a" was declared but never referenced
+        auto a = [=, this] {
+             ^
+
+"Test_name.c", line 31: warning: variable "a2" was declared but never referenced
+  	 auto a2 = [=, *this]() mutable { x = n; };
+  	      ^
+
+"Test_name.c", line 30: warning: variable "a" was declared but never referenced
+        auto a = [=, *this]() mutable {
+             ^
+
+"Test_name.c", line 37: warning: variable "a2" was declared but never referenced
+  	 auto a2 = [&] { x = n; };
+  	      ^
+
+"Test_name.c", line 36: warning: variable "a" was declared but never referenced
+        auto a = [&] {
+             ^
+
+"Test_name.c", line 43: warning: variable "a2" was declared but never referenced
+  	 auto a2 = [&, this] { x = n; };
+  	      ^
+
+"Test_name.c", line 42: warning: variable "a" was declared but never referenced
+        auto a = [&, this] {
+             ^
+
+"Test_name.c", line 49: warning: variable "a2" was declared but never referenced
+  	 auto a2 = [&, *this]() mutable { x = n; };
+  	      ^
+
+"Test_name.c", line 48: warning: variable "a" was declared but never referenced
+        auto a = [&, *this]() mutable {
+             ^
+
+"Test_name.c", line 10: warning: variable "a1" was declared but never referenced
+      auto a1 = [=] { x = n; }; // { dg-bogus "implicit capture" }
+           ^
+
+"Test_name.c", line 11: warning: variable "a2" was declared but never referenced
+      auto a2 = [=, this] { x = n; };
+           ^
+
+"Test_name.c", line 12: warning: variable "a3" was declared but never referenced
+      auto a3 = [=, *this]() mutable { x = n; };
+           ^
+
+"Test_name.c", line 13: warning: variable "a4" was declared but never referenced
+      auto a4 = [&] { x = n; };
+           ^
+
+"Test_name.c", line 14: warning: variable "a5" was declared but never referenced
+      auto a5 = [&, this] { x = n; };
+           ^
+
+"Test_name.c", line 15: warning: variable "a6" was declared but never referenced
+      auto a6 = [&, *this]() mutable { x = n; };
+           ^
+
+"Test_name.c", line 17: warning: variable "a7" was declared but never referenced
+      auto a7 = [=] { // { dg-bogus "implicit capture" }
+           ^
+
+"Test_name.c", line 23: warning: variable "a8" was declared but never referenced
+      auto a8 = [=, this] {
+           ^
+
+"Test_name.c", line 29: warning: variable "a9" was declared but never referenced
+      auto a9 = [=, *this]() mutable {
+           ^
+
+"Test_name.c", line 35: warning: variable "a10" was declared but never referenced
+      auto a10 = [&] {
+           ^
+
+"Test_name.c", line 41: warning: variable "a11" was declared but never referenced
+      auto a11 = [&, this] {
+           ^
+
+"Test_name.c", line 47: warning: variable "a12" was declared but never referenced
+      auto a12 = [&, *this]() mutable {
+           ^
+

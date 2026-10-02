@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 35: error: namespace "outer_ns" has no member "var_in_inner_ns_a"
+    return outer_ns::var_in_inner_ns_a; // { dg-error "did you mean 'var_in_outer_ns'" }
+                     ^
+
+"Test_name.c", line 47: error: namespace "outer_ns" has no member "a"
+    return outer_ns::a; // { dg-error "did you mean 'outer_ns::inner_ns_a::a'" }
+                     ^
+
+"Test_name.c", line 63: error: namespace "outer_ns::inner_ns_a" has no member "var_in_outer_ns"
+    return outer_ns::inner_ns_a::var_in_outer_ns; // { dg-error "did you mean 'var_in_inner_ns_a'" }
+                                 ^
+
+"Test_name.c", line 75: error: namespace "outer_ns::inner_ns_a" has no member "o"
+    return outer_ns::inner_ns_a::o; // { dg-error "did you mean 'outer_ns::o'" }
+                                 ^
+
+"Test_name.c", line 91: error: namespace "outer_ns::inner_ns_a" has no member "var_in_inner_ns_b"
+    return outer_ns::inner_ns_a::var_in_inner_ns_b; // { dg-error "did you mean 'var_in_inner_ns_a'" }
+                                 ^
+
+"Test_name.c", line 103: error: namespace "outer_ns::inner_ns_a" has no member "b"
+    return outer_ns::inner_ns_a::b; // { dg-error "did you mean 'outer_ns::inner_ns_b::b'" }
+                                 ^
+
+"Test_name.c", line 119: error: the global scope has no "var_in_outer_ns"
+    return ::var_in_outer_ns; // { dg-error "did you mean 'outer_ns::var_in_outer_ns'" }
+             ^
+
+7 errors detected in the compilation of "Test_name.c".

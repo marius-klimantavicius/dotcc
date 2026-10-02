@@ -1,0 +1,5 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: warning: operator may not be a static member function
+    static int &operator[] (int x) { n[0] |= (1 << x); return n[2]; }	// { dg-warning "may be a static member function only with" "" { target c++20_down } }
+                ^
+

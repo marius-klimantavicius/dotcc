@@ -1,0 +1,114 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 Test_name.c
+"./atomic/stdatomic-vm.c", line 26: error: a variable-length array is not allowed inside of a statement expression
+                 __extension__ ({ __auto_type __kill_dependency_tmp = (
+                                              ^
+
+"./atomic/stdatomic-vm.c", line 26: error: the result of a statement expression cannot have a type involving a variable-length array
+                 __extension__ ({ __auto_type __kill_dependency_tmp = (
+                                ^
+
+"./atomic/stdatomic-vm.c", line 30: error: a variable-length array is not allowed inside of a statement expression
+   __extension__ ({ __auto_type __atomic_store_ptr = (
+                                ^
+
+"./atomic/stdatomic-vm.c", line 30: error: a variable-length array is not allowed inside of a statement expression
+   ); __typeof__ ((void)0, *__atomic_store_ptr) __atomic_store_tmp = (
+                                                ^
+
+"./atomic/stdatomic-vm.c", line 33: error: a variable-length array is not allowed inside of a statement expression
+   __extension__ ({ __auto_type __atomic_store_ptr = (
+                                ^
+
+"./atomic/stdatomic-vm.c", line 33: error: a variable-length array is not allowed inside of a statement expression
+   ); __typeof__ ((void)0, *__atomic_store_ptr) __atomic_store_tmp = (
+                                                ^
+
+"./atomic/stdatomic-vm.c", line 36: error: a variable-length array is not allowed inside of a statement expression
+          __extension__ ({ __auto_type __atomic_load_ptr = (
+                                       ^
+
+"./atomic/stdatomic-vm.c", line 36: error: a variable-length array is not allowed inside of a statement expression
+          ); __typeof__ ((void)0, *__atomic_load_ptr) __atomic_load_tmp; __atomic_load (__atomic_load_ptr, &__atomic_load_tmp, (
+                                                      ^
+
+"./atomic/stdatomic-vm.c", line 36: error: the result of a statement expression cannot have a type involving a variable-length array
+          __extension__ ({ __auto_type __atomic_load_ptr = (
+                         ^
+
+"./atomic/stdatomic-vm.c", line 39: error: a variable-length array is not allowed inside of a statement expression
+          __extension__ ({ __auto_type __atomic_load_ptr = (
+                                       ^
+
+"./atomic/stdatomic-vm.c", line 39: error: a variable-length array is not allowed inside of a statement expression
+          ); __typeof__ ((void)0, *__atomic_load_ptr) __atomic_load_tmp; __atomic_load (__atomic_load_ptr, &__atomic_load_tmp, (5)); __atomic_load_tmp; })
+                                                      ^
+
+"./atomic/stdatomic-vm.c", line 39: error: the result of a statement expression cannot have a type involving a variable-length array
+          __extension__ ({ __auto_type __atomic_load_ptr = (
+                         ^
+
+"./atomic/stdatomic-vm.c", line 42: error: a variable-length array is not allowed inside of a statement expression
+          __extension__ ({ __auto_type __atomic_exchange_ptr = (
+                                       ^
+
+"./atomic/stdatomic-vm.c", line 42: error: a variable-length array is not allowed inside of a statement expression
+          ); __typeof__ ((void)0, *__atomic_exchange_ptr) __atomic_exchange_val = (
+                                                          ^
+
+"./atomic/stdatomic-vm.c", line 42: error: a variable-length array is not allowed inside of a statement expression
+          ); __typeof__ ((void)0, *__atomic_exchange_ptr) __atomic_exchange_tmp; __atomic_exchange (__atomic_exchange_ptr, &__atomic_exchange_val, &__atomic_exchange_tmp, (
+                                                          ^
+
+"./atomic/stdatomic-vm.c", line 42: error: the result of a statement expression cannot have a type involving a variable-length array
+          __extension__ ({ __auto_type __atomic_exchange_ptr = (
+                         ^
+
+"./atomic/stdatomic-vm.c", line 45: error: a variable-length array is not allowed inside of a statement expression
+          __extension__ ({ __auto_type __atomic_exchange_ptr = (
+                                       ^
+
+"./atomic/stdatomic-vm.c", line 45: error: a variable-length array is not allowed inside of a statement expression
+          ); __typeof__ ((void)0, *__atomic_exchange_ptr) __atomic_exchange_val = (
+                                                          ^
+
+"./atomic/stdatomic-vm.c", line 45: error: a variable-length array is not allowed inside of a statement expression
+          ); __typeof__ ((void)0, *__atomic_exchange_ptr) __atomic_exchange_tmp; __atomic_exchange (__atomic_exchange_ptr, &__atomic_exchange_val, &__atomic_exchange_tmp, (5)); __atomic_exchange_tmp; })
+                                                          ^
+
+"./atomic/stdatomic-vm.c", line 45: error: the result of a statement expression cannot have a type involving a variable-length array
+          __extension__ ({ __auto_type __atomic_exchange_ptr = (
+                         ^
+
+"./atomic/stdatomic-vm.c", line 51: error: a variable-length array is not allowed inside of a statement expression
+          __extension__ ({ __auto_type __atomic_compare_exchange_ptr = (
+                                       ^
+
+"./atomic/stdatomic-vm.c", line 51: error: a variable-length array is not allowed inside of a statement expression
+          ); __typeof__ ((void)0, *__atomic_compare_exchange_ptr) __atomic_compare_exchange_tmp = (
+                                                                  ^
+
+"./atomic/stdatomic-vm.c", line 56: error: a variable-length array is not allowed inside of a statement expression
+          __extension__ ({ __auto_type __atomic_compare_exchange_ptr = (
+                                       ^
+
+"./atomic/stdatomic-vm.c", line 56: error: a variable-length array is not allowed inside of a statement expression
+          ); __typeof__ ((void)0, *__atomic_compare_exchange_ptr) __atomic_compare_exchange_tmp = (
+                                                                  ^
+
+"./atomic/stdatomic-vm.c", line 59: error: a variable-length array is not allowed inside of a statement expression
+          __extension__ ({ __auto_type __atomic_compare_exchange_ptr = (
+                                       ^
+
+"./atomic/stdatomic-vm.c", line 59: error: a variable-length array is not allowed inside of a statement expression
+          ); __typeof__ ((void)0, *__atomic_compare_exchange_ptr) __atomic_compare_exchange_tmp = (
+                                                                  ^
+
+"./atomic/stdatomic-vm.c", line 64: error: a variable-length array is not allowed inside of a statement expression
+          __extension__ ({ __auto_type __atomic_compare_exchange_ptr = (
+                                       ^
+
+"./atomic/stdatomic-vm.c", line 64: error: a variable-length array is not allowed inside of a statement expression
+          ); __typeof__ ((void)0, *__atomic_compare_exchange_ptr) __atomic_compare_exchange_tmp = (
+                                                                  ^
+
+28 errors detected in the compilation of "Test_name.c".

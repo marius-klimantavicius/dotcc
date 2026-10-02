@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 58: error: no suitable conversion function from "ExplicitConvToBool" to "bool" exists
+    bool b2 = ecb; // expected-error{{no viable conversion from 'ExplicitConvToBool' to 'bool'}}
+              ^
+
+"Test_name.c", line 59: error: no suitable conversion function from "ExplicitConvToBool" to "bool" exists
+    accepts_bool(ecb); // expected-error{{no matching function for call to}}
+                 ^
+
+"Test_name.c", line 63: error: a reference of type "int &" (not const-qualified) cannot be initialized with a value of type "ExplicitConvToRef"
+    int& i1 = ecr; // expected-error{{no viable conversion from 'ExplicitConvToRef' to 'int'}}
+              ^
+
+"Test_name.c", line 78: error: a reference of type "A &" (not const-qualified) cannot be initialized with a value of type "C"
+    A &a = c; // expected-error{{no viable conversion from 'C' to 'A'}}
+           ^
+
+4 errors detected in the compilation of "Test_name.c".

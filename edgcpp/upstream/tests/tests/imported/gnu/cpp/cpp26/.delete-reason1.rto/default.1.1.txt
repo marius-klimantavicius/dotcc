@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 7: error: expected a ";"
+  void foo () = delete ("reason");		// { dg-warning "'delete' reason only available with" "" { target c++23_down } }
+                       ^
+
+"Test_name.c", line 10: error: expected a ";"
+    void bar () = delete ("another reason");	// { dg-warning "'delete' reason only available with" "" { target c++23_down } }
+                         ^
+
+"Test_name.c", line 12: error: expected a ";"
+  int baz (int) = delete ("yet another reason");	// { dg-warning "'delete' reason only available with" "" { target c++23_down } }
+                         ^
+
+"Test_name.c", line 15: error: expected a ";"
+  void qux (T) = delete ("some other reason");	// { dg-warning "'delete' reason only available with" "" { target c++23_down } }
+                        ^
+
+"Test_name.c", line 19: error: expected a ";"
+    U () = delete ("my reasons");			// { dg-warning "'delete' reason only available with" "" { target c++23_down } }
+                  ^
+
+"Test_name.c", line 21: error: expected a ";"
+    ~U () = delete ("your reasons");		// { dg-warning "'delete' reason only available with" "" { target c++23_down } }
+                   ^
+
+"Test_name.c", line 28: error: expected a ";"
+  void corge (double) = delete ("their reasons");	// { dg-warning "'delete' reason only available with" "" { target c++23_down } }
+                               ^
+
+"Test_name.c", line 34: error: function "foo()" (declared at line 7) cannot be referenced -- it is a deleted function
+    foo ();					// { dg-error "use of deleted function 'void foo\\\(\\\)': reason" }
+    ^
+
+"Test_name.c", line 35: error: function "S::bar()" (declared at line 10) cannot be referenced -- it is a deleted function
+    S{}.bar ();					// { dg-error "use of deleted function 'void S::bar\\\(\\\)': another reason" }
+        ^
+
+"Test_name.c", line 36: error: function "baz(int)" (declared at line 12) cannot be referenced -- it is a deleted function
+    baz (0);					// { dg-error "use of deleted function 'int baz\\\(int\\\)': yet another reason" }
+    ^
+
+"Test_name.c", line 37: error: function "qux(T) [with T=long]" (declared at line 15) cannot be referenced -- it is a deleted function
+    qux (0L);					// { dg-error "use of deleted function 'void qux\\\(T\\\) \\\[with T = long int\\\]': some other reason" }
+    ^
+
+"Test_name.c", line 38: error: function "qux(T) [with T=long long]" (declared at line 24) cannot be referenced -- it is a deleted function
+    qux (0LL);					// { dg-error "use of deleted function 'void qux\\\(T\\\) \\\[with T = long long int\\\]'" }
+    ^
+
+"Test_name.c", line 39: error: the default constructor of "U<long>" cannot be referenced -- it is a deleted function
+    U<long> u;					// { dg-error "use of deleted function 'U<T>::U\\\(\\\) \\\[with T = long int\\\]': my reasons" }
+            ^
+
+"Test_name.c", line 39: error: function "U<T>::~U() [with T=long]" (declared at line 21) cannot be referenced -- it is a deleted function
+    U<long> u;					// { dg-error "use of deleted function 'U<T>::U\\\(\\\) \\\[with T = long int\\\]': my reasons" }
+            ^
+
+"Test_name.c", line 41: error: function "corge(T) [with T=int]" (declared at line 26) cannot be referenced -- it is a deleted function
+    corge (0);					// { dg-error "use of deleted function 'void corge\\\(T\\\) \\\[with T = int\\\]'" }
+    ^
+
+"Test_name.c", line 42: error: function "corge(T) [with T=double]" (declared at line 28) cannot be referenced -- it is a deleted function
+    corge (0.0);					// { dg-error "use of deleted function 'void corge\\\(T\\\) \\\[with T = double\\\]': their reasons" }
+    ^
+
+16 errors detected in the compilation of "Test_name.c".

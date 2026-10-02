@@ -1,0 +1,161 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 5: warning: unrecognized #pragma
+  #pragma acc routine nohost
+          ^
+
+"Test_name.c", line 21: warning: unrecognized #pragma
+  #pragma acc parallel num_gangs (a) num_workers (a) vector_length (a) default (none) copyout (b) copyin (a)
+          ^
+
+"Test_name.c", line 22: warning: unrecognized #pragma
+  #pragma acc loop gang worker vector
+          ^
+
+"Test_name.c", line 26: warning: unrecognized #pragma
+  #pragma acc parallel num_gangs (a) copy (w, x, y, z)
+          ^
+
+"Test_name.c", line 27: warning: unrecognized #pragma
+  #pragma acc loop
+          ^
+
+"Test_name.c", line 36: warning: unrecognized #pragma
+  #pragma acc parallel num_gangs (a) if (1)
+          ^
+
+"Test_name.c", line 38: warning: unrecognized #pragma
+  #pragma acc loop independent collapse (2)
+          ^
+
+"Test_name.c", line 43: warning: unrecognized #pragma
+  #pragma acc loop auto tile (I, 3)
+          ^
+
+"Test_name.c", line 48: warning: unrecognized #pragma
+  #pragma acc loop seq
+          ^
+
+"Test_name.c", line 55: warning: unrecognized #pragma
+  #pragma acc parallel num_workers (10)
+          ^
+
+"Test_name.c", line 56: warning: unrecognized #pragma
+  #pragma acc loop worker
+          ^
+
+"Test_name.c", line 59: warning: unrecognized #pragma
+  #pragma acc atomic capture
+          ^
+
+"Test_name.c", line 62: warning: unrecognized #pragma
+  #pragma acc atomic update
+          ^
+
+"Test_name.c", line 65: warning: unrecognized #pragma
+  #pragma acc atomic read
+          ^
+
+"Test_name.c", line 68: warning: unrecognized #pragma
+  #pragma acc atomic write
+          ^
+
+"Test_name.c", line 72: warning: unrecognized #pragma
+  #pragma acc parallel reduction (+:c)
+          ^
+
+"Test_name.c", line 75: warning: unrecognized #pragma
+  #pragma acc data if (1) copy (b)
+          ^
+
+"Test_name.c", line 77: warning: unrecognized #pragma
+  #pragma acc parallel
+          ^
+
+"Test_name.c", line 83: warning: unrecognized #pragma
+  #pragma acc enter data copyin (b)
+          ^
+
+"Test_name.c", line 84: warning: unrecognized #pragma
+  #pragma acc parallel present (b)
+          ^
+
+"Test_name.c", line 89: warning: unrecognized #pragma
+  #pragma acc update host (b)
+          ^
+
+"Test_name.c", line 90: warning: unrecognized #pragma
+  #pragma acc update self (b)
+          ^
+
+"Test_name.c", line 91: warning: unrecognized #pragma
+  #pragma acc update device (b)
+          ^
+
+"Test_name.c", line 92: warning: unrecognized #pragma
+  #pragma acc exit data delete (b)
+          ^
+
+"Test_name.c", line 93: warning: unrecognized #pragma
+  #pragma acc exit data finalize copyout (b)
+          ^
+
+"Test_name.c", line 94: warning: unrecognized #pragma
+  #pragma acc exit data delete (b) finalize
+          ^
+
+"Test_name.c", line 109: warning: unrecognized #pragma
+  #pragma acc kernels num_gangs (a) num_workers (a) vector_length (a) default (none) copyout (b) copyin (a)
+          ^
+
+"Test_name.c", line 113: warning: unrecognized #pragma
+  #pragma acc kernels copy (w, x, y, z)
+          ^
+
+"Test_name.c", line 121: warning: unrecognized #pragma
+  #pragma acc kernels copyout (b) copyin (a)
+          ^
+
+"Test_name.c", line 124: warning: unrecognized #pragma
+  #pragma acc kernels loop reduction (+:c)
+          ^
+
+"Test_name.c", line 128: warning: unrecognized #pragma
+  #pragma acc data if (1) copy (b)
+          ^
+
+"Test_name.c", line 130: warning: unrecognized #pragma
+      #pragma acc kernels
+              ^
+
+"Test_name.c", line 136: warning: unrecognized #pragma
+  #pragma acc enter data copyin (b)
+          ^
+
+"Test_name.c", line 137: warning: unrecognized #pragma
+  #pragma acc kernels present (b)
+          ^
+
+"Test_name.c", line 142: warning: unrecognized #pragma
+  #pragma acc update host (b)
+          ^
+
+"Test_name.c", line 143: warning: unrecognized #pragma
+  #pragma acc update self (b)
+          ^
+
+"Test_name.c", line 144: warning: unrecognized #pragma
+  #pragma acc update device (b)
+          ^
+
+"Test_name.c", line 145: warning: unrecognized #pragma
+  #pragma acc exit data delete (b)
+          ^
+
+"Test_name.c", line 146: warning: unrecognized #pragma
+  #pragma acc exit data finalize copyout (b)
+          ^
+
+"Test_name.c", line 147: warning: unrecognized #pragma
+  #pragma acc exit data delete (b) finalize
+          ^
+

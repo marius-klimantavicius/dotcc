@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 11: warning: unknown attribute "__leaf__"
+      __attribute__((__nothrow__, __leaf__)) __attribute__((__malloc__))
+                                  ^
+
+"Test_name.c", line 13: warning: unknown attribute "__leaf__"
+  extern char *strdup(const char *__s) __attribute__((__nothrow__, __leaf__))
+                                                                   ^
+
+"Test_name.c", line 16: warning: unknown attribute "__leaf__"
+      __attribute__((__nothrow__, __leaf__)) __attribute__((__pure__))
+                                  ^
+
+"Test_name.c", line 18: warning: unknown attribute "__leaf__"
+  extern size_t strlen(const char *__s) __attribute__((__nothrow__, __leaf__))
+                                                                    ^
+

@@ -1,0 +1,21 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 Test_name.c
+"Test_name.c", line 91: warning: variable "wc_array" was declared but never referenced
+      const wchar_t* wc_array = glue(L, "wide string");
+                     ^
+
+"Test_name.c", line 92: warning: variable "wc" was declared but never referenced
+      wchar_t wc = glue(L, 'w');
+              ^
+
+"Test_name.c", line 50: warning: variable "fifty" was declared but never referenced
+    fifty = 50, m3, __muldi3;
+    ^
+
+"Test_name.c", line 50: warning: variable "m3" was declared but never referenced
+    fifty = 50, m3, __muldi3;
+                ^
+
+"Test_name.c", line 50: warning: variable "__muldi3" was declared but never referenced
+    fifty = 50, m3, __muldi3;
+                    ^
+

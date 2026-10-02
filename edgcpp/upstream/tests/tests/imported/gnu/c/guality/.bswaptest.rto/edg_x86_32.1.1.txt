@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 8: warning: unknown attribute "noclone"
+  __attribute__((noclone, noinline)) long
+                 ^
+
+"Test_name.c", line 12: warning: variable "g" was declared but never referenced
+    long g = f;
+         ^
+
+"Test_name.c", line 18: warning: unknown attribute "noclone"
+  __attribute__((noclone, noinline)) int
+                 ^
+
+"Test_name.c", line 22: warning: variable "g" was declared but never referenced
+    int g = f;
+        ^
+
+"Test_name.c", line 31: warning: integer conversion resulted in truncation
+    foo (0x123456789abcde0fUL);
+         ^
+

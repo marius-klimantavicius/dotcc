@@ -1,0 +1,129 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./compat/struct-by-value-9_y.c", line 110: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-9_y.c", line 112: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-9_y.c", line 113: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-9_y.c", line 114: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-9_y.c", line 115: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-9_y.c", line 116: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-9_y.c", line 117: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-9_y.c", line 118: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-9_y.c", line 119: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-9_y.c", line 120: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-9_y.c", line 121: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-9_y.c", line 122: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-9_y.c", line 123: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-9_y.c", line 124: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-9_y.c", line 125: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-9_y.c", line 126: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-9_y.c", line 128: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-9_y.c", line 130: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-9_y.c", line 131: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-9_y.c", line 132: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-9_y.c", line 133: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-9_y.c", line 134: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-9_y.c", line 135: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-9_y.c", line 136: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-9_y.c", line 137: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-9_y.c", line 138: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-9_y.c", line 139: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-9_y.c", line 140: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-9_y.c", line 141: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-9_y.c", line 142: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-9_y.c", line 143: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-9_y.c", line 144: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+

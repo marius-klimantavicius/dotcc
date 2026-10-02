@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 --c++14 Test_name.c
+"Test_name.c", line 11: error: invalid nontype template argument of type "int *"
+  X<&a[2]> x3;                    // { dg-error "3:.& a\\\[2\\\]. is not a valid template argument" "" { target c++17_only } }
+    ^
+
+"Test_name.c", line 13: error: invalid nontype template argument of type "int *"
+  X<&s.m> x4;                     // { dg-error "3:.& s.S::m. is not a valid template argument" "" { target c++17_only } }
+    ^
+
+"Test_name.c", line 15: error: invalid nontype template argument of type "int *"
+  X<&s.s> x5;                     // { dg-error "" "" { target { ! c++17 } } } &S::s must be used
+    ^
+
+3 errors detected in the compilation of "Test_name.c".

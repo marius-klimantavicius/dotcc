@@ -1,0 +1,43 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 13: error: no instance of function template "Foo2" matches the argument list
+            argument types are: (vector2<int *>)
+    Foo2(vector2<int*>());  // expected-error{{no matching function for call to 'Foo2'}}
+    ^
+"Test_name.c", line 9: note: candidate function template "Foo2" failed deduction
+  template<typename T> void Foo2(vector2<const T*> V) {}  // expected-note{{candidate template ignored: cannot deduce a type for 'T' that would make 'const T' equal 'int'}}
+                            ^
+
+"Test_name.c", line 14: error: no instance of function template "Foo" matches the argument list
+            argument types are: (vector<int *>)
+    Foo(vector<int*>());  // expected-error{{no matching function for call to 'Foo'}}
+    ^
+"Test_name.c", line 10: note: candidate function template "Foo" failed deduction
+  template<typename T> void Foo(vector<const T*> V) {} // expected-note {{candidate template ignored: cannot deduce a type for 'T' that would make 'const T' equal 'int'}}
+                            ^
+
+"Test_name.c", line 19: error: this declaration has no storage class or type specifier
+      BaseTy; // expected-error{{a type specifier is required for all declarations}}
+      ^
+
+"Test_name.c", line 24: warning: class "rdar13267210::B" defines no constructor to initialize the following:
+            reference member "rdar13267210::B::Record"
+    class B {
+          ^
+
+"Test_name.c", line 30: error: conversion to inaccessible base class "rdar13267210::A<long>" is not allowed
+        AddSourceLocation(Record); // expected-error{{non-const lvalue reference to type}}
+                          ^
+
+"Test_name.c", line 38: error: incomplete type "PR16292::IncompleteClass" is not allowed
+      IncompleteClass Foo;  // expected-error{{field has incomplete type}}
+                      ^
+
+"Test_name.c", line 46: error: incomplete type "rdar14183893::Typ" is not allowed
+      Typ x; // expected-error {{incomplete type}}
+          ^
+
+"Test_name.c", line 54: warning: expression has no effect
+      void Enable() { 0, A(); } // expected-warning {{left operand of comma operator has no effect}}
+                      ^
+
+6 errors detected in the compilation of "Test_name.c".

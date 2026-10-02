@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 15: warning: variable "d" was declared but never referenced
+    constexpr double d = 0x1.0p+100 + 0x1.0p-100;
+                     ^
+
+"Test_name.c", line 16: warning: variable "e" was declared but never referenced
+    const double e = 0x1.0p+100 + 0x1.0p-100;
+                 ^
+
+"Test_name.c", line 17: warning: variable "f" was declared but never referenced
+    const double &&f = 0x1.0p+100 + 0x1.0p-100;
+                   ^
+

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 10: error: static assertion failed
+  static_assert(c1<int>); // { dg-error "failed" }
+  ^
+
+"Test_name.c", line 18: error: static assertion failed
+  static_assert(c2<int, char>); // { dg-error "failed" }
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

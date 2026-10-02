@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --c++20 -A Test_name.c
+"Test_name.c", line 5: error: this declaration has no storage class or type specifier
+  template C<int> auto f();
+           ^
+
+"Test_name.c", line 5: error: invalid explicit instantiation declaration
+  template C<int> auto f();
+           ^
+
+"Test_name.c", line 5: error: expected a ";"
+  template C<int> auto f();
+            ^
+
+3 errors detected in the compilation of "Test_name.c".

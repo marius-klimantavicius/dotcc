@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 7: error: constexpr function return is non-constant
+  constexpr const void *f1 (const char *p, int q) { return __builtin_memchr (p, q, __builtin_strlen (p) + 1); }
+                                                           ^
+
+"Test_name.c", line 8: error: constexpr function return is non-constant
+  constexpr const void *f2 (const char *p, int q, size_t r) { return __builtin_memchr (p, q, r); }
+                                                                     ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 14: error: struct "foo" has no field "m_bar"
+    return ptr->m_bar; /* { dg-error "'struct foo' has no member named 'm_bar'; did you mean 'bar'?" } */
+                ^
+
+"Test_name.c", line 20: error: struct "foo" has no field "m_bar"
+    return instance.m_bar; /* { dg-error "'struct foo' has no member named 'm_bar'; did you mean 'bar'?" } */
+                    ^
+
+"Test_name.c", line 30: error: struct "s" has no field "ac"
+    x.ac;  /* { dg-error "'struct s' has no member named 'ac'; did you mean 'ab'?" } */
+      ^
+
+"Test_name.c", line 35: error: struct "foo" has no field "foa"
+    return sizeof (ptr->foa); /* { dg-error "'struct foo' has no member named 'foa'; did you mean 'foo'?" } */
+                        ^
+
+"Test_name.c", line 42: error: struct "foo" has no field "this_is_unlike_any_of_the_fields"
+    return ptr->this_is_unlike_any_of_the_fields;   /* { dg-bogus "did you mean" } */
+                ^
+
+"Test_name.c", line 54: error: union "u" has no field "colour"
+    return ptr->colour; /* { dg-error "'union u' has no member named 'colour'; did you mean 'color'?" } */
+                ^
+
+"Test_name.c", line 64: error: struct "<unnamed>" has no field "colour"
+    return ptr->s.colour; /* { dg-error "'struct <anonymous>' has no member named 'colour'; did you mean 'color'?" } */
+                  ^
+
+7 errors detected in the compilation of "Test_name.c".

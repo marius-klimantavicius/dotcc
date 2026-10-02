@@ -1,0 +1,32 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: warning: subscript out of range
+  constexpr int k = n[-1];            // { dg-error "array subscript" }
+                     ^
+
+"Test_name.c", line 8: error: expression must have a constant value
+  constexpr int k = n[-1];            // { dg-error "array subscript" }
+                    ^
+"Test_name.c", line 8: note: cannot access position -1 in array of 3 elements
+  constexpr int k = n[-1];            // { dg-error "array subscript" }
+                     ^
+
+"Test_name.c", line 11: warning: subscript out of range
+  constexpr char c = "foo"[-1000];    // { dg-error "array subscript" }
+                          ^
+
+"Test_name.c", line 11: error: expression must have a constant value
+  constexpr char c = "foo"[-1000];    // { dg-error "array subscript" }
+                     ^
+"Test_name.c", line 11: note: cannot access position -1000 in array of 4 elements
+  constexpr char c = "foo"[-1000];    // { dg-error "array subscript" }
+                          ^
+
+"Test_name.c", line 8: warning: variable "k" was declared but never referenced
+  constexpr int k = n[-1];            // { dg-error "array subscript" }
+                ^
+
+"Test_name.c", line 11: warning: variable "c" was declared but never referenced
+  constexpr char c = "foo"[-1000];    // { dg-error "array subscript" }
+                 ^
+
+2 errors detected in the compilation of "Test_name.c".

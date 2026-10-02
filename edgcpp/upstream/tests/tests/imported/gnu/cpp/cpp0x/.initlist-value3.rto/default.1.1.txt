@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 15: warning: variable "s" was declared but never referenced
+    constexpr auto s = S();
+                   ^
+
+"Test_name.c", line 16: warning: variable "s2" was declared but never referenced
+    constexpr auto s2 = S{};
+                   ^
+
+"Test_name.c", line 17: warning: variable "r" was declared but never referenced
+    constexpr auto r = R<4>();
+                   ^
+
+"Test_name.c", line 18: warning: variable "r2" was declared but never referenced
+    constexpr auto r2 = R<4>{};
+                   ^
+

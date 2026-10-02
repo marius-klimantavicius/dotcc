@@ -1,0 +1,365 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 --exceptions --exceptions --c++03 --exceptions Test_name.c
+"Test_name.c", line 15: warning: declaration does not declare anything
+    enum {}; // expected-warning{{declaration does not declare anything}}
+    ^
+
+"Test_name.c", line 16: error: declaration does not declare anything
+    int; // expected-warning {{declaration does not declare anything}}
+    ^
+
+"Test_name.c", line 25: warning: extra ";" ignored
+    };; // expected-warning{{extra ';' after member function definition}}
+      ^
+
+"Test_name.c", line 28: warning: extra ";" ignored
+    ;
+    ^
+
+"Test_name.c", line 29: warning: extra ";" ignored
+    ; // expected-warning{{extra ';' inside a class}}
+    ^
+
+"Test_name.c", line 34: error: badly-formed pure specifier (only "= 0" is allowed)
+    virtual int vf1() = 1; // expected-error {{does not look like a pure-specifier}}
+                        ^
+
+"Test_name.c", line 37: error: badly-formed pure specifier (only "= 0" is allowed)
+    virtual int vf4() = 0.0; // expected-error {{does not look like a pure-specifier}}
+                        ^
+
+"Test_name.c", line 40: error: expected a type specifier
+    virtual int vf6()(0); // expected-error +{{}} expected-note +{{}}
+                      ^
+
+"Test_name.c", line 40: error: function returning function is not allowed
+    virtual int vf6()(0); // expected-error +{{}} expected-note +{{}}
+                      ^
+
+"Test_name.c", line 41: error: badly-formed pure specifier (only "= 0" is allowed)
+    virtual int vf7() = { 0 }; // expected-error {{does not look like a pure-specifier}}
+                        ^
+
+"Test_name.c", line 24: warning: variable "l" was declared but never referenced
+      int l = 2;
+          ^
+
+"Test_name.c", line 38: warning: expression has no effect
+    virtual int vf5(){0}; // expected-error +{{}} expected-warning {{unused}}
+                      ^
+
+"Test_name.c", line 38: error: expected a ";"
+    virtual int vf5(){0}; // expected-error +{{}} expected-warning {{unused}}
+                       ^
+
+"Test_name.c", line 38: warning: missing return statement at end of non-void function "C::vf5"
+    virtual int vf5(){0}; // expected-error +{{}} expected-warning {{unused}}
+                       ^
+
+"Test_name.c", line 39: warning: expression has no effect
+    virtual int vf5a(){0;}; // function definition, expected-warning {{unused}}
+                       ^
+
+"Test_name.c", line 39: warning: missing return statement at end of non-void function "C::vf5a"
+    virtual int vf5a(){0;}; // function definition, expected-warning {{unused}}
+                         ^
+
+"Test_name.c", line 68: error: expected a ":"
+    int i;
+    ^
+
+"Test_name.c", line 74: error: expected a ":"
+  public; // expected-error{{expected ':'}}
+        ^
+
+"Test_name.c", line 74: warning: extra ";" ignored
+  public; // expected-error{{expected ':'}}
+        ^
+
+"Test_name.c", line 79: warning: field initializers are a C++11 feature
+      int F1 { return 1; }
+             ^
+
+"Test_name.c", line 99: error: expected a ";"
+  };
+  ^
+
+"Test_name.c", line 79: error: expected an expression
+      int F1 { return 1; }
+               ^
+
+"Test_name.c", line 89: error: expected a ";"
+      void F2 {}
+      ^
+
+"Test_name.c", line 107: error: member function "ctor_error::Foo::Foo" may not be redeclared outside its class
+    Foo::Foo (F) = F(); // expected-error{{does not match any declaration in 'ctor_error::Foo'}}
+         ^
+
+"Test_name.c", line 107: error: function "ctor_error::<error>" may not be initialized
+    Foo::Foo (F) = F(); // expected-error{{does not match any declaration in 'ctor_error::Foo'}}
+                 ^
+
+"Test_name.c", line 113: error: incomplete type "ctor_error::Ctor [5]" is not allowed
+      Ctor(x[5]); // expected-error{{incomplete type}}
+           ^
+
+"Test_name.c", line 115: error: identifier "UnknownType" is undefined
+      Ctor(UnknownType *); // expected-error{{unknown type name 'UnknownType'}}
+           ^
+
+"Test_name.c", line 116: error: identifier "UnknownType" is undefined
+      void operator+(UnknownType*); // expected-error{{unknown type name 'UnknownType'}}
+                     ^
+
+"Test_name.c", line 119: error: member "ctor_error::Ctor::x" is not a type name
+    Ctor::Ctor (x) = { 0 }; // \
+                ^
+
+"Test_name.c", line 119: error: member function "ctor_error::Ctor::Ctor" may not be redeclared outside its class
+    Ctor::Ctor (x) = { 0 }; // \
+          ^
+
+"Test_name.c", line 119: error: function "ctor_error::<error>" may not be initialized
+    Ctor::Ctor (x) = { 0 }; // \
+                   ^
+
+"Test_name.c", line 119: error: expected an expression
+    Ctor::Ctor (x) = { 0 }; // \
+                     ^
+
+"Test_name.c", line 122: error: identifier "UnknownType" is undefined
+    Ctor::Ctor(UnknownType *) {} // \
+               ^
+
+"Test_name.c", line 124: error: identifier "UnknownType" is undefined
+    void Ctor::operator+(UnknownType*) {} // \
+                         ^
+
+"Test_name.c", line 135: warning: declaration does not declare anything
+    struct A::B; // expected-error {{forward declaration of struct cannot have a nested name specifier}}
+    ^
+
+"Test_name.c", line 136: warning: declaration does not declare anything
+    union N::C; // expected-error {{forward declaration of union cannot have a nested name specifier}}
+    ^
+
+"Test_name.c", line 149: error: nonstandard form for taking the address of a member function
+      baz x(); // expected-error 3{{}}
+      ^
+
+"Test_name.c", line 149: warning: expression has no effect
+      baz x(); // expected-error 3{{}}
+      ^
+
+"Test_name.c", line 149: error: expected a ";"
+      baz x(); // expected-error 3{{}}
+          ^
+
+"Test_name.c", line 159: error: qualified name is not allowed
+      void C2::f() {} // expected-error{{function definition is not allowed here}}
+           ^
+
+"Test_name.c", line 159: error: expected a ";"
+      void C2::f() {} // expected-error{{function definition is not allowed here}}
+                   ^
+
+"Test_name.c", line 165: error: incomplete type "CtorErrors::A" is not allowed
+      A(NonExistent); // expected-error {{unknown type name 'NonExistent'}}
+        ^
+
+"Test_name.c", line 168: error: function call is not allowed in a constant expression
+      B(NonExistent) : n(0) {} // expected-error {{unknown type name 'NonExistent'}}
+                       ^
+
+"Test_name.c", line 168: warning: a default bit-field initializer is a C++20 feature
+      B(NonExistent) : n(0) {} // expected-error {{unknown type name 'NonExistent'}}
+                            ^
+
+"Test_name.c", line 168: error: incomplete type "CtorErrors::B" is not allowed
+      B(NonExistent) : n(0) {} // expected-error {{unknown type name 'NonExistent'}}
+        ^
+
+"Test_name.c", line 168: error: expected an expression
+      B(NonExistent) : n(0) {} // expected-error {{unknown type name 'NonExistent'}}
+                             ^
+
+"Test_name.c", line 169: error: expected a ";"
+      int n;
+      ^
+
+"Test_name.c", line 172: error: incomplete type "CtorErrors::C" is not allowed
+      C(NonExistent) try {} catch (...) {} // expected-error {{unknown type name 'NonExistent'}}
+        ^
+
+"Test_name.c", line 172: error: expected a ";"
+      C(NonExistent) try {} catch (...) {} // expected-error {{unknown type name 'NonExistent'}}
+                     ^
+
+"Test_name.c", line 175: error: incomplete type "CtorErrors::D" is not allowed
+      D(NonExistent) {} // expected-error {{unknown type name 'NonExistent'}}
+        ^
+
+"Test_name.c", line 176: error: expected a ";"
+    };
+    ^
+
+"Test_name.c", line 181: error: expected a declaration
+    ~A::A() { n = 0; } // expected-error {{'~' in destructor name should be after nested name specifier}} expected-note {{previous}}
+    ^
+
+"Test_name.c", line 184: warning: parsing restarts here after previous syntax error
+    struct B { ~B(); } *b;
+                         ^
+
+"Test_name.c", line 185: error: expected an identifier
+    DtorErrors::~B::B() {} // expected-error {{'~' in destructor name should be after nested name specifier}}
+                ^
+
+"Test_name.c", line 185: error: expected a ";"
+    DtorErrors::~B::B() {} // expected-error {{'~' in destructor name should be after nested name specifier}}
+                ^
+
+"Test_name.c", line 192: warning: parsing restarts here after previous syntax error
+    struct C; // expected-note {{forward decl}}
+            ^
+
+"Test_name.c", line 193: error: expected a declaration
+    ~C::C() {} // expected-error {{incomplete}} expected-error {{'~' in destructor name should be after nested name specifier}}
+    ^
+
+"Test_name.c", line 196: error: expected a declaration
+    ~D::D() throw(X) {} // expected-error {{'~' in destructor name should be after nested name specifier}}
+    ^
+
+"Test_name.c", line 214: warning: parsing restarts here after previous syntax error
+    };
+     ^
+
+"Test_name.c", line 217: error: type "DtorErrors::T::T" may not have a template argument list
+    T t1 = t1.T::~T<int>; // expected-error {{destructor name 'T' does not refer to a template}}
+                  ^
+
+"Test_name.c", line 217: error: invalid destructor name for type "DtorErrors::T"
+    T t1 = t1.T::~T<int>; // expected-error {{destructor name 'T' does not refer to a template}}
+                  ^
+
+"Test_name.c", line 219: error: overloaded function "DtorErrors::T::T" is not a template
+    T t2 = t2.~T::T<int>; // expected-error {{'~' in destructor name should be after nested name specifier}} expected-error {{destructor name 'T' does not refer to a template}}
+                  ^
+
+"Test_name.c", line 219: error: qualified name is not allowed
+    T t2 = t2.~T::T<int>; // expected-error {{'~' in destructor name should be after nested name specifier}} expected-error {{destructor name 'T' does not refer to a template}}
+               ^
+
+"Test_name.c", line 219: error: invalid destructor name for type "DtorErrors::T"
+    T t2 = t2.~T::T<int>; // expected-error {{'~' in destructor name should be after nested name specifier}} expected-error {{destructor name 'T' does not refer to a template}}
+                  ^
+
+"Test_name.c", line 224: error: invalid friend declaration
+      friend int : 3; // expected-error {{friends can only be classes or functions}}
+      ^
+
+"Test_name.c", line 224: error: expected a ";"
+      friend int : 3; // expected-error {{friends can only be classes or functions}}
+                 ^
+
+"Test_name.c", line 225: error: pure specifier ("= 0") allowed only on virtual functions
+      friend void f() = 123; // expected-error {{illegal initializer}}
+                      ^
+
+"Test_name.c", line 225: error: badly-formed pure specifier (only "= 0" is allowed)
+      friend void f() = 123; // expected-error {{illegal initializer}}
+                        ^
+
+"Test_name.c", line 226: error: "virtual" is not allowed
+      friend virtual void f(); // expected-error {{'virtual' is invalid in friend declarations}}
+             ^
+
+"Test_name.c", line 227: error: expected a ";"
+      friend void f() final; // expected-error {{'final' is invalid in friend declarations}}
+                      ^
+
+"Test_name.c", line 228: error: expected a ";"
+      friend void f() override; // expected-error {{'override' is invalid in friend declarations}}
+                      ^
+
+"Test_name.c", line 238: error: expected a ";"
+    int b = }; // expected-error {{expected expression}}
+            ^
+
+"Test_name.c", line 233: error: expected an expression
+    int a = ); // expected-error {{expected expression}}
+            ^
+
+"Test_name.c", line 238: error: expected an expression
+    int b = }; // expected-error {{expected expression}}
+            ^
+
+"Test_name.c", line 243: error: expected an expression
+    int c = ]; // expected-error {{expected expression}}
+            ^
+
+"Test_name.c", line 248: error: expected a declaration
+  };
+  ^
+
+"Test_name.c", line 265: error: expected a ";"
+  };
+  ^
+
+"Test_name.c", line 250: error: expected a ";"
+    int d = d); // expected-error {{expected ';'}}
+             ^
+
+"Test_name.c", line 255: error: expected a ";"
+    int e = d]; // expected-error {{expected ';'}}
+             ^
+
+"Test_name.c", line 268: error: this declaration has no storage class or type specifier
+  class X1 { a::operator=; }; // expected-error {{undeclared identifier 'a'}}
+             ^
+
+"Test_name.c", line 268: error: expected a ";"
+  class X1 { a::operator=; }; // expected-error {{undeclared identifier 'a'}}
+              ^
+
+"Test_name.c", line 269: error: this declaration has no storage class or type specifier
+  class X2 { a::a; }; // expected-error {{undeclared identifier 'a'}}
+             ^
+
+"Test_name.c", line 269: error: expected a ";"
+  class X2 { a::a; }; // expected-error {{undeclared identifier 'a'}}
+              ^
+
+"Test_name.c", line 273: error: expected a ")"
+    void f() throw(int; // expected-error {{expected ')'}} expected-note {{to match}}
+                      ^
+
+"Test_name.c", line 276: error: expected a ")"
+            ; // expected-error {{unexpected ';' before ')'}}
+            ^
+
+"Test_name.c", line 277: error: expected a declaration
+            ));
+            ^
+
+"Test_name.c", line 298: warning: variable "cond" was declared but never referenced
+      bool cond = a->x < 10 && a->x > 0;
+           ^
+
+"Test_name.c", line 306: error: undeclared is not a template
+    template<class T> struct is_member_function_pointer : undeclared<imp<T>::member> {}; // expected-error {{unknown template name 'undeclared'}}
+                                                          ^
+
+At end of source: error: expected a ":"
+
+At end of source: error: expected a declaration
+
+At end of source: error: expected a "}"
+"Test_name.c", line 310: note: to match this "{"
+  class pr11109r3 { // expected-note{{to match this '{'}}
+                  ^
+
+At end of source: error: expected a ";"
+
+73 errors detected in the compilation of "Test_name.c".

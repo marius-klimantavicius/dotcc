@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=4 -DNEGPP --g++ --gnu=40800 Test_name.c
+"Test_name.c", line 17: error: an initializer cannot be specified for a flexible array member
+  } s = { 1, {
+             ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++23 Test_name.c
+"Test_name.c", line 12: error: static assertion failed
+    static_assert(comparable(D{}));
+    ^
+
+1 error detected in the compilation of "Test_name.c".

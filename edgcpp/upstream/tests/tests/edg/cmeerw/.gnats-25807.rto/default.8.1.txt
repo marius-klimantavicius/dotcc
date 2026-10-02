@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=8 -tused --no_defer --c++11 --g++ -DFAIL Test_name.c
+"Test_name.c", line 22: error: call of an object of a class type without appropriate operator() or conversion functions to pointer-to-function type
+      d();  // error even in gcc/clang modes with --no_defer
+      ^
+
+1 error detected in the compilation of "Test_name.c".

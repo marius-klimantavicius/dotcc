@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 -A Test_name.c
+"Test_name.c", line 6: error: a pseudo-destructor reference can only be used for a pseudo-destructor call
+      (p->~I)();  // Always an error in versions 6.0 and 6.1 of the front end.
+          ^
+
+1 error detected in the compilation of "Test_name.c".

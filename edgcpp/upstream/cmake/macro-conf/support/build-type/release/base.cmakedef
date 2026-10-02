@@ -1,0 +1,18 @@
+# Needs explicitly set as only NDEBUG=1 is implicit
+DEBUG=0
+
+USE_EDG_NAMESPACE=1
+
+# Use the bool type for a_boolean as the integer representation is deprecated
+# (as it results in build warnings when used with the GCC and Clang
+# -Wconversion and -Wsign-conversion flags).
+USE_BOOL_FOR_BOOLEAN_IN_CPLUSPLUS=1
+
+# Ensure switches always have a default case.
+CHECK_SWITCH_DEFAULT_UNEXPECTED=1
+
+# Do not write IL to a file for release builds.
+IL_SHOULD_BE_WRITTEN_TO_FILE=0
+
+OVERWRITE_FREED_MEM_BLOCKS=0
+DEFAULT_DISPLAY_ERROR_CONTEXT_ON_CATASTROPHE=0

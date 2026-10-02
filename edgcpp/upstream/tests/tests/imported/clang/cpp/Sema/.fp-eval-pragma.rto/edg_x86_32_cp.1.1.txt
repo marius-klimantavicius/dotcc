@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 48: warning: variable "b" was declared but never referenced
+      auto b = __FLT_EVAL_METHOD__;
+           ^
+
+"Test_name.c", line 43: warning: variable "a" was declared but never referenced
+    auto a = __FLT_EVAL_METHOD__;
+         ^
+
+"Test_name.c", line 50: warning: variable "c" was declared but never referenced
+    auto c = __FLT_EVAL_METHOD__;
+         ^
+
+"Test_name.c", line 58: warning: variable "i" was declared but never referenced
+      int i = __FLT_EVAL_METHOD__; // ok, not in a scope changed by the pragma
+          ^
+
+"Test_name.c", line 64: warning: variable "i" was declared but never referenced
+      int i = __FLT_EVAL_METHOD__;
+          ^
+

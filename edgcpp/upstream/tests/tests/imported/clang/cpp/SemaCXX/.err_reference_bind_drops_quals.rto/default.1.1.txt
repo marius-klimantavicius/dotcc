@@ -1,0 +1,130 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 11: error: qualifiers dropped in binding reference of type "ptr &" (aka "int *&") to initializer of type "const ptr"
+    ptr& p2 = cp;   // expected-error {{drops 'const' qualifier}}
+              ^
+
+"Test_name.c", line 12: error: qualifiers dropped in binding reference of type "ptr &" (aka "int *&") to initializer of type "__restrict__ ptr"
+    ptr& p3 = rp;   // expected-error {{drops '__restrict' qualifier}}
+              ^
+
+"Test_name.c", line 13: error: qualifiers dropped in binding reference of type "ptr &" (aka "int *&") to initializer of type "const __restrict__ ptr"
+    ptr& p4 = crp;  // expected-error {{drops 'const __restrict' qualifiers}}
+              ^
+
+"Test_name.c", line 14: error: qualifiers dropped in binding reference of type "ptr &" (aka "int *&") to initializer of type "volatile ptr"
+    ptr& p5 = vp;   // expected-error {{drops 'volatile' qualifier}}
+              ^
+
+"Test_name.c", line 15: error: qualifiers dropped in binding reference of type "ptr &" (aka "int *&") to initializer of type "const volatile ptr"
+    ptr& p6 = cvp;  // expected-error {{drops 'const volatile' qualifiers}}
+              ^
+
+"Test_name.c", line 16: error: qualifiers dropped in binding reference of type "ptr &" (aka "int *&") to initializer of type "volatile __restrict__ ptr"
+    ptr& p7 = rvp;  // expected-error {{drops 'volatile __restrict' qualifiers}}
+              ^
+
+"Test_name.c", line 17: error: qualifiers dropped in binding reference of type "ptr &" (aka "int *&") to initializer of type "const volatile __restrict__ ptr"
+    ptr& p8 = crvp; // expected-error {{drops 'const volatile __restrict' qualifiers}}
+              ^
+
+"Test_name.c", line 21: error: qualifiers dropped in binding reference of type "const ptr &" to initializer of type "__restrict__ ptr"
+    const ptr& cp3 = rp;   // expected-error {{drops '__restrict' qualifier}}
+                     ^
+
+"Test_name.c", line 22: error: qualifiers dropped in binding reference of type "const ptr &" to initializer of type "const __restrict__ ptr"
+    const ptr& cp4 = crp;  // expected-error {{drops '__restrict' qualifier}}
+                     ^
+
+"Test_name.c", line 23: error: qualifiers dropped in binding reference of type "const ptr &" to initializer of type "volatile ptr"
+    const ptr& cp5 = vp;   // expected-error {{drops 'volatile' qualifier}}
+                     ^
+
+"Test_name.c", line 24: error: qualifiers dropped in binding reference of type "const ptr &" to initializer of type "const volatile ptr"
+    const ptr& cp6 = cvp;  // expected-error {{drops 'volatile' qualifier}}
+                     ^
+
+"Test_name.c", line 25: error: qualifiers dropped in binding reference of type "const ptr &" to initializer of type "volatile __restrict__ ptr"
+    const ptr& cp7 = rvp;  // expected-error {{drops 'volatile __restrict' qualifiers}}
+                     ^
+
+"Test_name.c", line 26: error: qualifiers dropped in binding reference of type "const ptr &" to initializer of type "const volatile __restrict__ ptr"
+    const ptr& cp8 = crvp; // expected-error {{drops 'volatile __restrict' qualifiers}}
+                     ^
+
+"Test_name.c", line 30: error: qualifiers dropped in binding reference of type "const volatile ptr &" to initializer of type "__restrict__ ptr"
+    const volatile ptr& cvp3 = rp;  // expected-error {{drops '__restrict' qualifier}}
+                               ^
+
+"Test_name.c", line 31: error: qualifiers dropped in binding reference of type "const volatile ptr &" to initializer of type "const __restrict__ ptr"
+    const volatile ptr& cvp4 = crp; // expected-error {{drops '__restrict' qualifier}}
+                               ^
+
+"Test_name.c", line 34: error: qualifiers dropped in binding reference of type "const volatile ptr &" to initializer of type "volatile __restrict__ ptr"
+    const volatile ptr& cvp7 = rvp;  // expected-error {{drops '__restrict' qualifier}}
+                               ^
+
+"Test_name.c", line 35: error: qualifiers dropped in binding reference of type "const volatile ptr &" to initializer of type "const volatile __restrict__ ptr"
+    const volatile ptr& cvp8 = crvp; // expected-error {{drops '__restrict' qualifier}}
+                               ^
+
+"Test_name.c", line 10: warning: variable "p1" was declared but never referenced
+    ptr& p1 = p;
+         ^
+
+"Test_name.c", line 19: warning: variable "cp1" was declared but never referenced
+    const ptr& cp1 = p;
+               ^
+
+"Test_name.c", line 20: warning: variable "cp2" was declared but never referenced
+    const ptr& cp2 = cp;
+               ^
+
+"Test_name.c", line 28: warning: variable "cvp1" was declared but never referenced
+    const volatile ptr& cvp1 = p;
+                        ^
+
+"Test_name.c", line 29: warning: variable "cvp2" was declared but never referenced
+    const volatile ptr& cvp2 = cp;
+                        ^
+
+"Test_name.c", line 32: warning: variable "cvp5" was declared but never referenced
+    const volatile ptr& cvp5 = vp;
+                        ^
+
+"Test_name.c", line 33: warning: variable "cvp6" was declared but never referenced
+    const volatile ptr& cvp6 = cvp;
+                        ^
+
+"Test_name.c", line 37: warning: variable "crvp1" was declared but never referenced
+    const restrict volatile ptr& crvp1 = p;
+                                 ^
+
+"Test_name.c", line 38: warning: variable "crvp2" was declared but never referenced
+    const restrict volatile ptr& crvp2 = cp;
+                                 ^
+
+"Test_name.c", line 39: warning: variable "crvp3" was declared but never referenced
+    const restrict volatile ptr& crvp3 = rp;
+                                 ^
+
+"Test_name.c", line 40: warning: variable "crvp4" was declared but never referenced
+    const restrict volatile ptr& crvp4 = crp;
+                                 ^
+
+"Test_name.c", line 41: warning: variable "crvp5" was declared but never referenced
+    const restrict volatile ptr& crvp5 = vp;
+                                 ^
+
+"Test_name.c", line 42: warning: variable "crvp6" was declared but never referenced
+    const restrict volatile ptr& crvp6 = cvp;
+                                 ^
+
+"Test_name.c", line 43: warning: variable "crvp7" was declared but never referenced
+    const restrict volatile ptr& crvp7 = rvp;
+                                 ^
+
+"Test_name.c", line 44: warning: variable "crvp8" was declared but never referenced
+    const restrict volatile ptr& crvp8 = crvp;
+                                 ^
+
+17 errors detected in the compilation of "Test_name.c".

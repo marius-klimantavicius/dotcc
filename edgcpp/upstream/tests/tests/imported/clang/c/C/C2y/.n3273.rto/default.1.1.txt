@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 11: warning: the alignment of an array of unspecified bound is nonstandard in C
+    alignof(int[]) == /* pre-c2y-warning {{'alignof' on an incomplete array type is a C2y extension}}
+            ^
+

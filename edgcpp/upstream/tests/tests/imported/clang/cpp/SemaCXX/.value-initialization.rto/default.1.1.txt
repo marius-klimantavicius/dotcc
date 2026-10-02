@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 5: warning: class "A" defines no constructor to initialize the following:
+            const member "A::i"
+  struct A { // expected-warning {{does not declare any constructor to initialize}}
+         ^
+
+"Test_name.c", line 11: error: the default constructor of "A" cannot be referenced -- it is a deleted function
+        (void)A(); // expected-error {{call to implicitly-deleted default constructor}}
+              ^
+
+1 error detected in the compilation of "Test_name.c".

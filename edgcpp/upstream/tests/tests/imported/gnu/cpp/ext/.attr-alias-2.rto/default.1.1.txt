@@ -1,0 +1,10 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./ext/attr-alias-2.C", line 17: error: member function "Klass::magic" may not be redeclared outside its class
+  int Klass::magic () const
+             ^
+
+"./ext/attr-alias-2.C", line 18: error: declaration aliased to undefined entity "_ZNK5Klass14implementationEv"
+    __attribute__ ((alias ("_ZNK5Klass14implementationEv")));
+                    ^
+
+2 errors detected in the compilation of "Test_name.c".

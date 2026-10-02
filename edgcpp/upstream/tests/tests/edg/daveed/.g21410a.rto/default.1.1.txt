@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --c++17 Test_name.c
+"Test_name.c", line 28: error: no instance of constructor "X" matches the argument list
+            argument types are: (Z)
+  X xz = {z};     //clang rejects, g++ and EDG accept -- SHOULD REJECT?
+    ^
+
+"Test_name.c", line 28: error: cannot deduce class template arguments
+  X xz = {z};     //clang rejects, g++ and EDG accept -- SHOULD REJECT?
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

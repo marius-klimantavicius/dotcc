@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 9: error: expected an identifier
+    template<class> friend concept x = requires { requires true; }; // expected-error {{friend declaration cannot be a concept}}
+                           ^
+
+"Test_name.c", line 9: error: invalid friend declaration
+    template<class> friend concept x = requires { requires true; }; // expected-error {{friend declaration cannot be a concept}}
+                           ^
+
+"Test_name.c", line 10: error: invalid specifier outside a class declaration
+    template<class> friend concept fooable; // expected-error {{friend declaration cannot be a concept}}
+                    ^
+
+"Test_name.c", line 10: error: expected an identifier
+    template<class> friend concept fooable; // expected-error {{friend declaration cannot be a concept}}
+                           ^
+
+"Test_name.c", line 11: error: expected an identifier
+    template<class> concept friend fooable; // expected-error {{expected unqualified-id}}
+                            ^
+
+"Test_name.c", line 12: error: invalid redeclaration of concept "fooable" (declared at line 6)
+    friend concept fooable; // expected-error {{friend declaration cannot be a concept}}
+                   ^
+
+"Test_name.c", line 11: error: expected an "="
+    template<class> concept friend fooable; // expected-error {{expected unqualified-id}}
+                                          ^
+
+"Test_name.c", line 11: error: expected an expression
+    template<class> concept friend fooable; // expected-error {{expected unqualified-id}}
+                                          ^
+
+"Test_name.c", line 12: error: invalid specifier outside a class declaration
+    friend concept fooable; // expected-error {{friend declaration cannot be a concept}}
+    ^
+
+"Test_name.c", line 12: error: expected an identifier
+    friend concept fooable; // expected-error {{friend declaration cannot be a concept}}
+           ^
+
+"Test_name.c", line 13: error: expected a declaration
+    concept friend fooable; // expected-error {{friend declaration cannot be a concept}}
+    ^
+
+"Test_name.c", line 14: error: expected a declaration
+    concept fooable; // expected-error {{concept declarations may only appear in global or namespace scope}}
+    ^
+
+"Test_name.c", line 15: error: expected a declaration
+  };
+  ^
+
+13 errors detected in the compilation of "Test_name.c".

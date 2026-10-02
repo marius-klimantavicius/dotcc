@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 15: error: expression must be an lvalue
+    int &&ir1 = reinterpret_cast<int &&>(0); // expected-error {{rvalue to reference type}}
+                                         ^
+
+"Test_name.c", line 16: error: expression must be an lvalue
+    int &&ir2 = reinterpret_cast<int &&>('a'); // expected-error {{rvalue to reference type}}
+                                         ^
+
+"Test_name.c", line 17: error: expression must be an lvalue
+    int &&ir3 = reinterpret_cast<int &&>(xvalue<char>());
+                                         ^
+
+"Test_name.c", line 19: error: expression must be an lvalue
+    int &ir4 = reinterpret_cast<int &>(xvalue<char>());
+                                       ^
+
+"Test_name.c", line 13: warning: variable "fr0" was declared but never referenced
+    int (&fr0)(int) = reinterpret_cast<int (&&)(int)>(f);
+          ^
+
+"Test_name.c", line 14: warning: variable "ir0" was declared but never referenced
+    int &&ir0 = reinterpret_cast<int &&>(*ptr);
+          ^
+
+"Test_name.c", line 20: warning: variable "ir5" was declared but never referenced
+    int &&ir5 = reinterpret_cast<int &&>(*ptr);
+          ^
+
+4 errors detected in the compilation of "Test_name.c".

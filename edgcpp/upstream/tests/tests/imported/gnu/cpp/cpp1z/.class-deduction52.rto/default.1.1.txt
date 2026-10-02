@@ -1,0 +1,19 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 10: error: identifier "X" is undefined
+    template<X Y> B(A<T>);  // { dg-error "declared" }
+             ^
+
+"Test_name.c", line 10: warning: constant "Y" is not used in declaring the parameter types of function template "B<T>::B"
+    template<X Y> B(A<T>);  // { dg-error "declared" }
+               ^
+
+"Test_name.c", line 13: error: no instance of constructor "B" matches the argument list
+            argument types are: (A<void>)
+  B b = A<void>();
+    ^
+
+"Test_name.c", line 13: error: cannot deduce class template arguments
+  B b = A<void>();
+  ^
+
+3 errors detected in the compilation of "Test_name.c".

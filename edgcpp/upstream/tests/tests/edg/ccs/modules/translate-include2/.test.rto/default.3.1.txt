@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=3 -r --microsoft --modules --set_flag skip_module_version_check --ms_header_unit foo.h=foo.h.ifc --ms_translate_include --no_ms_translate_include Test_name.c

@@ -1,0 +1,16 @@
+cpfe -DTEST_NUMBER=1 --no_wrap_diagnostics --c++20 --g++ Test_name.c
+"Test_name.c", line 43: error: static assertion failed
+    static_assert(p.column() == 16);
+    ^
+"Test_name.c", line 43: note: the final comparison was 18 == 16
+    static_assert(p.column() == 16);
+                             ^
+
+"Test_name.c", line 53: error: static assertion failed
+    static_assert(p.column() == 16);
+    ^
+"Test_name.c", line 53: note: the final comparison was 17 == 16
+    static_assert(p.column() == 16);
+                             ^
+
+2 errors detected in the compilation of "Test_name.c".

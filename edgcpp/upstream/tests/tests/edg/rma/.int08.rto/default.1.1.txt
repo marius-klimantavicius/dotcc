@@ -1,0 +1,42 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 4: error: identifier "__int8" is undefined
+  __int8 a;
+  ^
+
+"Test_name.c", line 5: error: expected a ";"
+  signed __int8 b;
+                ^
+
+"Test_name.c", line 6: error: variable "__int8" has already been defined (previous definition at line 5)
+  unsigned __int8 c;
+           ^
+
+"Test_name.c", line 6: error: expected a ";"
+  unsigned __int8 c;
+                  ^
+
+"Test_name.c", line 7: error: this declaration has no storage class or type specifier
+  __int8 signed d;
+  ^
+
+"Test_name.c", line 7: error: variable "__int8" has already been defined (previous definition at line 5)
+  __int8 signed d;
+  ^
+
+"Test_name.c", line 7: error: expected a ";"
+  __int8 signed d;
+         ^
+
+"Test_name.c", line 8: error: this declaration has no storage class or type specifier
+  __int8 unsigned e;
+  ^
+
+"Test_name.c", line 8: error: variable "__int8" has already been defined (previous definition at line 5)
+  __int8 unsigned e;
+  ^
+
+"Test_name.c", line 8: error: expected a ";"
+  __int8 unsigned e;
+         ^
+
+10 errors detected in the compilation of "Test_name.c".

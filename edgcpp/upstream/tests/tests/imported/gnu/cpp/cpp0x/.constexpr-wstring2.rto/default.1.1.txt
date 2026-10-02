@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 6: warning: subscript out of range
+  constexpr wchar_t c1 = L"hi"[3];	// { dg-error "array subscript" }
+                         ^
+
+"Test_name.c", line 6: error: expression must have a constant value
+  constexpr wchar_t c1 = L"hi"[3];	// { dg-error "array subscript" }
+                         ^
+"Test_name.c", line 6: note: attempt to access storage one position past the end of an array of 3 elements
+  constexpr wchar_t c1 = L"hi"[3];	// { dg-error "array subscript" }
+                              ^
+
+"Test_name.c", line 7: warning: subscript out of range
+  constexpr char16_t c2 = u"hi"[3];	// { dg-error "array subscript" }
+                          ^
+
+"Test_name.c", line 7: error: expression must have a constant value
+  constexpr char16_t c2 = u"hi"[3];	// { dg-error "array subscript" }
+                          ^
+"Test_name.c", line 7: note: attempt to access storage one position past the end of an array of 3 elements
+  constexpr char16_t c2 = u"hi"[3];	// { dg-error "array subscript" }
+                               ^
+
+"Test_name.c", line 8: warning: subscript out of range
+  constexpr char32_t c3 = U"hi"[3];	// { dg-error "array subscript" }
+                          ^
+
+"Test_name.c", line 8: error: expression must have a constant value
+  constexpr char32_t c3 = U"hi"[3];	// { dg-error "array subscript" }
+                          ^
+"Test_name.c", line 8: note: attempt to access storage one position past the end of an array of 3 elements
+  constexpr char32_t c3 = U"hi"[3];	// { dg-error "array subscript" }
+                               ^
+
+"Test_name.c", line 9: warning: subscript out of range
+  constexpr char c4 = u8"hi"[3];		// { dg-error "array subscript" }
+                      ^
+
+"Test_name.c", line 9: error: expression must have a constant value
+  constexpr char c4 = u8"hi"[3];		// { dg-error "array subscript" }
+                      ^
+"Test_name.c", line 9: note: attempt to access storage one position past the end of an array of 3 elements
+  constexpr char c4 = u8"hi"[3];		// { dg-error "array subscript" }
+                            ^
+
+"Test_name.c", line 6: warning: variable "c1" was declared but never referenced
+  constexpr wchar_t c1 = L"hi"[3];	// { dg-error "array subscript" }
+                    ^
+
+"Test_name.c", line 7: warning: variable "c2" was declared but never referenced
+  constexpr char16_t c2 = u"hi"[3];	// { dg-error "array subscript" }
+                     ^
+
+"Test_name.c", line 8: warning: variable "c3" was declared but never referenced
+  constexpr char32_t c3 = U"hi"[3];	// { dg-error "array subscript" }
+                     ^
+
+"Test_name.c", line 9: warning: variable "c4" was declared but never referenced
+  constexpr char c4 = u8"hi"[3];		// { dg-error "array subscript" }
+                 ^
+
+4 errors detected in the compilation of "Test_name.c".

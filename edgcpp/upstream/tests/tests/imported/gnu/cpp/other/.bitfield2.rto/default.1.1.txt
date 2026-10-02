@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: error: invalid type for a bit field
+    double d : 2;  // { dg-error "10:bit-field .d. with non-integral type .double." }
+    ^
+
+1 error detected in the compilation of "Test_name.c".

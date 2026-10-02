@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 7: error: a class or namespace qualified name is required
+  template<class T> struct A { typedef typename T::type type; };
+                                                ^
+          detected during instantiation of class "A<T> [with T=int]" at line 17
+
+"Test_name.c", line 7: error: global-scope qualifier (leading "::") is not allowed
+  template<class T> struct A { typedef typename T::type type; };
+                                                 ^
+          detected during instantiation of class "A<T> [with T=int]" at line 17
+
+"Test_name.c", line 7: error: expected a ";"
+  template<class T> struct A { typedef typename T::type type; };
+                                                        ^
+          detected during instantiation of class "A<T> [with T=int]" at line 17
+
+"Test_name.c", line 17: error: no instance of function template "f" matches the argument list
+            argument types are: (int)
+    f(1);				// { dg-message "required from here" }
+    ^
+"Test_name.c", line 10: note: candidate function template "f" failed deduction
+  void f(T);
+       ^
+
+"Test_name.c", line 18: error: no instance of function template "g" matches the argument list
+            argument types are: (int)
+    g(1);				// { dg-bogus "required from here" }
+    ^
+"Test_name.c", line 13: note: candidate function template "g" failed deduction
+  void g(T);
+       ^
+
+5 errors detected in the compilation of "Test_name.c".

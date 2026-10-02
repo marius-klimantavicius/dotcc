@@ -1,0 +1,254 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 9: warning: variable "auto_int" was declared but never referenced
+    auto int auto_int = 12;
+             ^
+
+"Test_name.c", line 16: warning: a value of type "const int *" cannot be used to initialize an entity of type "int *"
+    int* pa = &a; // expected-warning {{initializing 'int *' with an expression of type 'const int *' discards qualifiers}}
+              ^
+
+"Test_name.c", line 18: warning: a value of type "unsigned long *" cannot be used to initialize an entity of type "int *"
+    int* pc = &c; // expected-error {{incompatible pointer types initializing 'int *' with an expression of type 'unsigned long *'}}
+              ^
+
+"Test_name.c", line 16: warning: variable "pa" was set but never used
+    int* pa = &a; // expected-warning {{initializing 'int *' with an expression of type 'const int *' discards qualifiers}}
+         ^
+
+"Test_name.c", line 17: warning: variable "pb" was set but never used
+    const int* pb = &b;
+               ^
+
+"Test_name.c", line 18: warning: variable "pc" was declared but never referenced
+    int* pc = &c; // expected-error {{incompatible pointer types initializing 'int *' with an expression of type 'unsigned long *'}}
+         ^
+
+"Test_name.c", line 21: warning: variable "yup" was set but never used
+    auto yup = ci;
+         ^
+
+"Test_name.c", line 24: warning: variable "r_test" was set but never used
+    auto r_test = z;
+         ^
+
+"Test_name.c", line 35: error: "auto" is not allowed here
+    _Atomic(auto) j = 12; // expected-error {{'auto' not allowed here}} \
+            ^
+
+"Test_name.c", line 41: error: "auto" is not allowed here
+    _Static_assert(_Generic(&i, _Atomic auto *: 1)); // expected-error {{_Atomic cannot be applied to type 'auto' in C23}} \
+                                        ^
+
+"Test_name.c", line 34: warning: variable "i" was set but never used
+    _Atomic auto i = 12;  // expected-error {{_Atomic cannot be applied to type 'auto' in C23}}
+                 ^
+
+"Test_name.c", line 48: warning: variable "pA" was set but never used
+    auto pA = A;
+         ^
+
+"Test_name.c", line 49: warning: variable "qA" was set but never used
+    auto qA = &A;
+         ^
+
+"Test_name.c", line 50: warning: variable "pi" was set but never used
+    auto pi = 3.14;
+         ^
+
+"Test_name.c", line 58: error: "auto" is not allowed here
+  int test_auto_param(auto a) { // expected-error {{'auto' not allowed in function prototype}}
+                      ^
+
+"Test_name.c", line 62: error: "auto" type cannot appear in top-level function type
+  auto test_auto_return(float a, int b) { // expected-error {{'auto' not allowed in function return type}}
+  ^
+
+"Test_name.c", line 66: error: "auto" is not allowed here
+  [[clang::overloadable]] auto test(auto x) { // expected-error {{'auto' not allowed in function prototype}} \
+                                    ^
+
+"Test_name.c", line 66: error: "auto" type cannot appear in top-level function type
+  [[clang::overloadable]] auto test(auto x) { // expected-error {{'auto' not allowed in function prototype}} \
+                          ^
+
+"Test_name.c", line 72: error: "auto" is not allowed here
+    (void)sizeof(auto);       // expected-error {{expected expression}}
+                 ^
+
+"Test_name.c", line 73: error: "auto" is not allowed here
+    _Alignas(auto) int a[4];  // expected-error {{expected expression}}
+             ^
+
+"Test_name.c", line 73: warning: variable "a" was declared but never referenced
+    _Alignas(auto) int a[4];  // expected-error {{expected expression}}
+                       ^
+
+"Test_name.c", line 77: error: "auto" type cannot appear in top-level array type
+    auto a[4];          // expected-error {{'auto' not allowed in array declaration}}
+    ^
+
+"Test_name.c", line 78: error: "auto" type cannot appear in top-level array type
+    auto b[] = {1, 2};  // expected-error {{cannot use 'auto' with array in C}}
+    ^
+
+"Test_name.c", line 82: error: initialization with "{...}" is not allowed for "auto"
+    auto a = {};        // expected-error {{cannot use 'auto' with array in C}}
+             ^
+
+"Test_name.c", line 83: error: initialization with "{...}" is not allowed for "auto"
+    auto b = { 0 };     // expected-error {{cannot use 'auto' with array in C}}
+             ^
+
+"Test_name.c", line 84: error: initialization with "{...}" is not allowed for "auto"
+    auto c = { 1, };    // expected-error {{cannot use 'auto' with array in C}}
+             ^
+
+"Test_name.c", line 85: error: initialization with "{...}" is not allowed for "auto"
+    auto d = { 1 , 2 }; // expected-error {{cannot use 'auto' with array in C}}
+             ^
+
+"Test_name.c", line 86: warning: variable "e" was declared but never referenced
+    auto e = (int [3]){ 1, 2, 3 };
+         ^
+
+"Test_name.c", line 96: error: "auto" not allowed here
+    struct B { auto b; };   // expected-error {{'auto' not allowed in struct member}}
+               ^
+
+"Test_name.c", line 92: warning: variable "p1" was declared but never referenced
+    auto p1 = (struct { int a; } *)0;
+         ^
+
+"Test_name.c", line 94: warning: variable "p2" was declared but never referenced
+    auto p2 = (struct s { int a; } *)0;
+         ^
+
+"Test_name.c", line 100: error: "auto" is not allowed here
+    typedef auto auto_type;   // expected-error {{'auto' not allowed in typedef}}
+            ^
+
+"Test_name.c", line 102: error: "auto" is not allowed here
+    typedef auto (*fp)(void); // expected-error {{'auto' not allowed in typedef}}
+            ^
+
+"Test_name.c", line 103: error: "auto" is not allowed here
+    typedef void (*fp)(auto); // expected-error {{'auto' not allowed in function prototype}}
+                       ^
+
+"Test_name.c", line 103: warning: typedef name has already been declared (with similar type)
+    typedef void (*fp)(auto); // expected-error {{'auto' not allowed in function prototype}}
+                   ^
+
+"Test_name.c", line 105: error: "auto" is not allowed here
+    _Generic(0, auto : 1);    // expected-error {{'auto' not allowed here}}
+                ^
+
+"Test_name.c", line 109: error: a variable declared with "auto" requires an initializer
+    auto something;                           // expected-error {{declaration of variable 'something' with deduced type 'auto' requires an initializer}}
+    ^
+
+"Test_name.c", line 112: error: "auto" type cannot appear in top-level array type
+    auto test_char_ptr2[] = "another test";   // expected-warning {{type inference of a declaration other than a plain identifier with optional trailing attributes is a Clang extension}}
+    ^
+
+"Test_name.c", line 112: warning: initialization with "{...}" expected for aggregate object
+    auto test_char_ptr2[] = "another test";   // expected-warning {{type inference of a declaration other than a plain identifier with optional trailing attributes is a Clang extension}}
+                            ^
+
+"Test_name.c", line 113: error: "auto" is not allowed here
+    auto auto_size = sizeof(auto);            // expected-error {{expected expression}}
+                            ^
+
+"Test_name.c", line 110: warning: variable "test_char" was set but never used
+    auto test_char = 'A';
+         ^
+
+"Test_name.c", line 111: warning: variable "test_char_ptr" was set but never used
+    auto test_char_ptr = "test";
+         ^
+
+"Test_name.c", line 122: warning: variable "s" is used before its value is set
+    auto a = s;
+             ^
+
+"Test_name.c", line 123: error: no association matches the selector type "short"
+    _Generic(a, int : 1); // expected-error {{controlling expression type 'short' not compatible with any generic association type}}
+    ^
+
+"Test_name.c", line 122: warning: variable "a" was set but never used
+    auto a = s;
+         ^
+
+"Test_name.c", line 130: warning: excess initializers are ignored
+    auto d = (int){ 0, 1 };       // expected-warning {{excess elements in scalar initializer}}
+                       ^
+
+"Test_name.c", line 132: error: "auto" is not allowed here
+    auto auto_cl = (auto){13};    // expected-error {{expected expression}}
+                    ^
+
+"Test_name.c", line 127: warning: variable "a" was set but never used
+    auto a = (int){};
+         ^
+
+"Test_name.c", line 128: warning: variable "b" was set but never used
+    auto b = (int){ 0 };
+         ^
+
+"Test_name.c", line 129: warning: variable "c" was set but never used
+    auto c = (int){ 0, };
+         ^
+
+"Test_name.c", line 130: warning: variable "d" was declared but never referenced
+    auto d = (int){ 0, 1 };       // expected-warning {{excess elements in scalar initializer}}
+         ^
+
+"Test_name.c", line 141: error: "auto" must be a placeholder for the complete type of the variable (not for a component of that type)
+    auto *ptr = &a; // expected-warning {{type inference of a declaration other than a plain identifier with optional trailing attributes is a Clang extension}}
+    ^
+
+"Test_name.c", line 142: error: "auto" must be a placeholder for the complete type of the variable (not for a component of that type)
+    auto *ptr2 = a; // expected-error {{variable 'ptr2' with type 'auto *' has incompatible initializer of type 'int'}} \
+    ^
+
+"Test_name.c", line 142: warning: a value of type "int" cannot be used to initialize an entity of type "<error-type> *"
+    auto *ptr2 = a; // expected-error {{variable 'ptr2' with type 'auto *' has incompatible initializer of type 'int'}} \
+                 ^
+
+"Test_name.c", line 141: warning: variable "ptr" was set but never used
+    auto *ptr = &a; // expected-warning {{type inference of a declaration other than a plain identifier with optional trailing attributes is a Clang extension}}
+          ^
+
+"Test_name.c", line 142: warning: variable "ptr2" was set but never used
+    auto *ptr2 = a; // expected-error {{variable 'ptr2' with type 'auto *' has incompatible initializer of type 'int'}} \
+          ^
+
+"Test_name.c", line 144: warning: variable "nptr" was declared but never referenced
+    auto nptr = nullptr;
+         ^
+
+"Test_name.c", line 154: error: a variable declared with an auto type specifier cannot appear in its own initializer
+      auto a = a * a; // expected-error {{variable 'a' declared with deduced type 'auto' cannot appear in its own initializer}} \
+               ^
+
+"Test_name.c", line 154: error: a variable declared with an auto type specifier cannot appear in its own initializer
+      auto a = a * a; // expected-error {{variable 'a' declared with deduced type 'auto' cannot appear in its own initializer}} \
+                   ^
+
+"Test_name.c", line 159: warning: variable "a" was set but never used
+      auto a = b;
+           ^
+
+"Test_name.c", line 152: warning: variable "b" was declared but never referenced
+    double b = 9;
+           ^
+
+"Test_name.c", line 184: error: expression must have integral type
+    AUTO_INT_MACRO(not_valid, 51.5, 25, 0xff); // expected-error {{invalid operands to binary expression ('double' and 'int')}}
+    ^
+
+"Test_name.c", line 186: warning: variable "result" was set but never used
+    auto result = (a + (int)b) - c;
+         ^
+
+29 errors detected in the compilation of "Test_name.c".

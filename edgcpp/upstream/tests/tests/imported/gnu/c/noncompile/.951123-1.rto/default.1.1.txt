@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 4: error: expected an expression
+  struct S x = { 0, [0]; };    /* { dg-error "array index|near|parse|syntax|expected" } */
+                       ^
+
+"Test_name.c", line 4: error: expected a "}"
+  struct S x = { 0, [0]; };    /* { dg-error "array index|near|parse|syntax|expected" } */
+                       ^
+
+"Test_name.c", line 4: error: invalid designator kind
+  struct S x = { 0, [0]; };    /* { dg-error "array index|near|parse|syntax|expected" } */
+                    ^
+
+"Test_name.c", line 4: error: expected a declaration
+  struct S x = { 0, [0]; };    /* { dg-error "array index|near|parse|syntax|expected" } */
+                         ^
+
+4 errors detected in the compilation of "Test_name.c".

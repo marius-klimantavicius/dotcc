@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 27: warning: expression has no effect
+    A::orange, A::apple;
+    ^
+
+"Test_name.c", line 27: warning: expression has no effect
+    A::orange, A::apple;
+    ^
+
+"Test_name.c", line 28: error: constant "fruit::orange" (declared at line 6) is inaccessible
+    B::orange, B::apple; // { dg-error "protected" }
+       ^
+
+"Test_name.c", line 28: error: constant "fruit::apple" (declared at line 6) is inaccessible
+    B::orange, B::apple; // { dg-error "protected" }
+                  ^
+
+"Test_name.c", line 28: warning: expression has no effect
+    B::orange, B::apple; // { dg-error "protected" }
+    ^
+
+"Test_name.c", line 28: warning: expression has no effect
+    B::orange, B::apple; // { dg-error "protected" }
+    ^
+
+"Test_name.c", line 29: error: constant "fruit::orange" (declared at line 6) is inaccessible
+    C::orange, C::apple; // { dg-error "private" }
+       ^
+
+"Test_name.c", line 29: error: constant "fruit::apple" (declared at line 6) is inaccessible
+    C::orange, C::apple; // { dg-error "private" }
+                  ^
+
+"Test_name.c", line 29: warning: expression has no effect
+    C::orange, C::apple; // { dg-error "private" }
+    ^
+
+"Test_name.c", line 29: warning: expression has no effect
+    C::orange, C::apple; // { dg-error "private" }
+    ^
+
+4 errors detected in the compilation of "Test_name.c".

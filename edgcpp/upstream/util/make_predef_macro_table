@@ -1,0 +1,277 @@
+#!/bin/sh
+
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+###############################################################################
+#
+# Usage: make_predef_macro_table [--gcc gcc] [--g++ g++] [--clang clang] [opts]
+#
+# If no arguments are specified, the default "gcc" and "g++" are used
+# as the gcc and g++ command names.  If --clang is specified, the specified
+# executable is used for both C and C++ compilations.  Any options other than
+# "--gcc", "--g++", and "--clang" are passed to gcc/g++/clang.
+#
+# The output is a file named "predefined_macros.txt" in the current directory.
+#
+# This script is used to create a file that is used by the EDG C++ front end
+# to specify the macros that should be predefined.  The script should be run
+# from the $EDG_BASE/lib directory.  The script invokes the GNU or clang
+# compilers and captures the macros that are predefined.  The list of
+# macro definitions produced by each of the compilers is translated into
+# the format described below.
+#
+# Note that this tool can be run for both GNU and clang compilers and the
+# output combined in order to create a predefined_macros.txt file that will
+# work with both GNU and clang emulation modes.
+#
+# Note also that many of the macro values are target-specific, and as such
+# it may be necessary to create multiple predefined_macros.txt files, one
+# for each target, with various target-specific options passed to the
+# GNU or clang compilers (e.g., -m32, -m64, etc.).
+#
+# The format of the entries in the file is:
+# 
+# mode,!mode,mode   cannot_redefine   macro_name   macro_value
+# 
+# - "mode" is a label from the predefined macro modes table.  The macro is
+#   defined if the mode is set, or if the mode is not set when "!mode" is
+#   used.  The macro is defined if any of the mode tests is TRUE.  The set
+#   of mode values is specified in host_envir.h.
+# 
+# - cannot_redefine indicates whether the predefined macro may later be
+#   redefined.  The value must be "yes" or "no".
+# 
+# - macro_name is the name of the macro to be defined.
+# 
+# - macro_value is the value to which the macro should be defined.  All of
+#   the characters until the end of the line are used as the macro value.
+# 
+# For example:
+# 
+# gcc no  __GXX_ABI_VERSION 102
+# gpp no  __DBL_DENORM_MIN__ 4.9406564584124654e-324
+# 
+# The file may also contain comments (lines that begin with a #) and
+# empty lines.  The fields of each line are separated by white space.
+# The DEFAULT_USE_PREDEFINED_MACRO_FILE macro specifies whether or not
+# a predefined macro file should be used.
+
+
+#
+# Invoke the specified compiler to get a list of the predefined macros.  The
+# compiler must support the -dM command-line option.
+#
+get_predefined_macros()
+{
+  cmd=$1
+  output=$2
+  header=$3
+  file=$4
+  echo $header >>info.tmp
+  echo "command: `which $cmd` $extra_opts" >>info.tmp
+  echo  >>info.tmp
+  $cmd $extra_opts -v 2>>info.tmp
+  result=$?
+  echo  >>info.tmp
+  if [ $result -eq 0 ] ; then
+    $cmd $extra_opts -E -dM $file >$output
+  else
+    echo "make_predef_macro_table: $cmd returned a non-zero status."
+    echo "make_predef_macro_table: $header omitted."
+    touch $output
+  fi
+}
+
+#
+# Reformat the list of #defines to the form expected by the front end.
+#
+reformat_info()
+{
+  ri_file=$1
+  sed -e "s/#define /:/" -e "s/ /:/" $ri_file >ri.tmp
+  sort ri.tmp >$ri_file
+  rm -f ri.tmp
+}
+
+#
+# Use the Unix comm command to identify the macros that are either
+# used in both C and C++ mode or just in one mode.
+#
+make_entries()
+{
+  opts=$1
+  mode=$2
+  comm $opts c.tmp cpp.tmp | sed -e "s/^/$mode no /" >>output.tmp
+}
+
+#
+# Remove macros that are specially defined by the front end.
+#
+delete_unneeded_entries()
+{
+  unneeded=""
+  if [ $common_tag = clang ] ; then
+    unneeded="$unneeded __clang__"
+    unneeded="$unneeded __clang_major__"
+    unneeded="$unneeded __clang_minor__"
+    unneeded="$unneeded __clang_patchlevel__"
+    unneeded="$unneeded __clang_version__"
+  else
+    unneeded="$unneeded __GNUC__"
+    unneeded="$unneeded __GNUC_MINOR__"
+    unneeded="$unneeded __GNUC_PATCHLEVEL__"
+    unneeded="$unneeded __GNUG__"
+    unneeded="$unneeded __VERSION__"
+  fi
+  unneeded="$unneeded __cplusplus"
+  unneeded="$unneeded __STDC_HOSTED__"
+  unneeded="$unneeded __STDC_VERSION__"
+  unneeded="$unneeded __STDC__"
+  unneeded="$unneeded __STDC_IEC_559__"
+  unneeded="$unneeded __STDC_IEC_559_COMPLEX__"
+  unneeded="$unneeded __STDC_MB_MIGHT_NEQ_WC__"
+  unneeded="$unneeded __STDC_NO_ATOMICS__"
+  unneeded="$unneeded __STDC_NO_THREADS__"
+  unneeded="$unneeded __STDC_NO_VLA__"
+  unneeded="$unneeded __STDC_UTF_16__"
+  unneeded="$unneeded __STDC_UTF_32__"
+  unneeded="$unneeded __STDCPP_THREADS__"
+  unneeded="$unneeded __STDCPP_DEFAULT_NEW_ALIGNMENT__"
+  unneeded="$unneeded __GXX_RTTI"
+  unneeded="$unneeded __GNUC_GNU_INLINE__"
+  unneeded="$unneeded __GNUC_STDC_INLINE__"
+  unneeded="$unneeded __CHAR16_TYPE__"
+  unneeded="$unneeded __CHAR32_TYPE__"
+  unneeded="$unneeded __EXCEPTIONS"
+  unneeded="$unneeded __has_include(STR)"
+  unneeded="$unneeded __has_include_next(STR)"
+  unneeded="$unneeded __GLIBCXX_BITSIZE_INT_N_0"
+  unneeded="$unneeded __GLIBCXX_TYPE_INT_N_0"
+  unneeded="$unneeded __CHAR8_TYPE__"
+  unneeded="$unneeded __GCC_ATOMIC_CHAR8_T_LOCK_FREE"
+  for name in $unneeded
+  do
+    sed -e "/:$name:/ d" output.tmp >$$
+    mv -f $$ output.tmp
+  done
+  # Delete all feature test macros (i.e., __cpp_*):
+  sed -e "/:__cpp_/ d" output.tmp >$$
+  mv -f $$ output.tmp
+}
+
+common_tag=gnu
+c_tag=gcc
+cpp_tag=gpp
+c_command=gcc
+cpp_command=g++
+extra_opts=
+while [ -n "$1" ]
+do
+  arg=$1
+  case $arg in
+    --clang)
+      if [ $# -lt 2 ] ; then
+        echo "make_predef_macro_table: missing argument for --clang"
+        exit 1
+      fi
+      c_command=$2
+      cpp_command=$2
+      common_tag=clang
+      c_tag=clang_c
+      cpp_tag=clang_cpp
+      shift;shift;
+      ;;
+    --gcc)
+      if [ $# -lt 2 ] ; then
+        echo "make_predef_macro_table: missing argument for --gcc"
+        exit 1
+      fi
+      c_command=$2
+      shift;shift;
+      ;;
+    --g++)
+      if [ $# -lt 2 ] ; then
+        echo "make_predef_macro_table: missing argument for --g++"
+        exit 1
+      fi
+      cpp_command=$2
+      shift;shift;
+      ;;
+    *)
+      # Pass any unrecognized options to gcc/g++/clang.
+      extra_opts=$extra_opts" $arg";
+      shift;
+      ;;
+  esac
+done
+
+output_file=predefined_macros.txt
+rm -f output.tmp info.tmp $output_file
+
+cat <<XXX >>info.tmp
+EDG C/C++ predefined macro definition file.
+
+The format of the entries in this file is:
+
+mode,!mode,mode   cannot_redefine   macro_name   macro_value
+
+- "mode" is a label from the predefined macro modes table.  The macro is
+  defined if the mode is set, or if the mode is not set when "!mode" is
+  used.  The macro is defined if any of the mode tests is TRUE.  The
+  mode table can be customized, but the current set of supported modes is:
+
+    gnu:          gcc or g++ mode
+    gcc:          gcc mode
+    gpp:          g++ mode
+    clang:        clang C or C++ mode
+    clang_c:      clang C mode
+    clang_cpp:    clang C++ mode
+    gnu_or_clang: any GNU or clang mode
+    microsoft:    Microsoft mode
+    strict:       strict C or C++ mode
+    cpp:          any C++ mode
+    all:          all modes
+
+- cannot_redefine indicates whether the predefined macro may later be
+  redefined.  The value must be "yes" or "no".
+
+- macro_name is the name of the macro to be defined.
+
+- macro_value is the value to which the macro should be defined.  All of
+  the characters until the end of the line are used as the macro value.
+
+Created by make_predef_macro_table
+XXX
+date >>info.tmp
+echo >>info.tmp
+
+echo "int main(){}" >tmp.c
+echo "int main(){}" >tmp.cpp
+
+get_predefined_macros $c_command c.tmp "C compiler information" tmp.c
+get_predefined_macros $cpp_command cpp.tmp "C++ compiler information" tmp.cpp
+
+reformat_info c.tmp
+reformat_info cpp.tmp
+
+sed -e "s/^/# /" info.tmp >>$output_file
+
+make_entries -23 $c_tag
+make_entries -13 $cpp_tag
+make_entries -12 $common_tag
+
+# The entries are created with the macro name bracketed in colons so
+# that the delete routine can delete certain entries without
+# affecting those names when used in macro values.
+
+delete_unneeded_entries
+
+# Remove the colons bracketing the macro names.
+sed -e "s/:/ /" -e "s/:/ /" output.tmp >>$output_file
+
+rm -f c.tmp cpp.tmp tmp.c tmp.cpp info.tmp output.tmp
+
+

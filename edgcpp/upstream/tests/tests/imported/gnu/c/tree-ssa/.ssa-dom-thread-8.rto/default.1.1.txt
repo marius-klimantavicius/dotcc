@@ -1,0 +1,57 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 12: warning: unknown attribute "noclone"
+  __attribute__ ((noinline, noclone)) int f3 (struct A *x, struct A *z) { asm volatile ("" : : "g" (x), "g" (z) : "memory"); return 0; }
+                            ^
+
+"Test_name.c", line 13: warning: unknown attribute "noclone"
+  __attribute__ ((noinline, noclone)) void f4 (struct A *x, char *y, struct A *z) { asm volatile ("" : : "g" (x), "g" (z), "g" (y) : "memory"); }
+                            ^
+
+"Test_name.c", line 14: warning: unknown attribute "noclone"
+  __attribute__ ((noinline, noclone)) struct B *f5 (void) { static char b[32]; static struct B f3 = { b, 0, 32 }; return &f3; }
+                            ^
+
+"Test_name.c", line 15: warning: unknown attribute "noclone"
+  __attribute__ ((noinline, noclone)) int f6 (struct B *p, char *w, int z) { asm volatile ("" : : "g" (p), "g" (w), "g" (z) : "memory"); return 0; }
+                            ^
+
+"Test_name.c", line 16: warning: unknown attribute "noclone"
+  __attribute__ ((noinline, noclone)) void f7 (struct B *p) { asm volatile ("" : : "g" (p) : "memory"); }
+                            ^
+
+"Test_name.c", line 17: warning: unknown attribute "noclone"
+  __attribute__ ((noinline, noclone)) void f8 (struct B *p) { asm volatile ("" : : "g" (p) : "memory"); }
+                            ^
+
+"Test_name.c", line 18: warning: unknown attribute "noclone"
+  __attribute__ ((noinline, noclone)) void f9 (struct A *x) { asm volatile ("" : : "g" (x) : "memory"); }
+                            ^
+
+"Test_name.c", line 19: warning: unknown attribute "noclone"
+  __attribute__ ((noinline, noclone)) struct A *f10 (void) { static struct A j; asm volatile ("" : :  : "memory"); return &j; }
+                            ^
+
+"Test_name.c", line 20: warning: unknown attribute "noclone"
+  __attribute__ ((noinline, noclone)) struct A *f11 (void) { static struct A j; asm volatile ("" : :  : "memory"); return &j; }
+                            ^
+
+"Test_name.c", line 21: warning: unknown attribute "noclone"
+  __attribute__ ((noinline, noclone)) struct A *f12 (int b) { static struct A j; asm volatile ("" : : "g" (b) : "memory"); return &j; }
+                            ^
+
+"Test_name.c", line 22: warning: unknown attribute "noclone"
+  __attribute__ ((noinline, noclone)) struct A *f13 (int i) { static struct A j; asm volatile ("" : : "g" (i) : "memory"); return &j; }
+                            ^
+
+"Test_name.c", line 23: warning: unknown attribute "noclone"
+  __attribute__ ((noinline, noclone)) struct A *f14 (double d) { static struct A j; asm volatile ("" : : "g" (&d) : "memory"); return &j; }
+                            ^
+
+"Test_name.c", line 24: warning: unknown attribute "noclone"
+  __attribute__ ((noinline, noclone)) struct A *f15 (char *s) { static struct A j; asm volatile ("" : : "g" (s) : "memory"); return &j; }
+                            ^
+
+"Test_name.c", line 28: warning: unknown attribute "noclone"
+  __attribute__ ((noinline, noclone)) struct A *
+                            ^
+

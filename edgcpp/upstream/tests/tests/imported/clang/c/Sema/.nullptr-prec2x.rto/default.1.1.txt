@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c17 Test_name.c
+"Sema/nullptr-prec2x.c", line 7: error: identifier "nullptr_t" is undefined
+  nullptr_t val;
+  ^
+
+"Sema/nullptr-prec2x.c", line 10: error: identifier "__nullptr" is undefined
+  void bar() { foo(__nullptr); }
+                   ^
+
+"Sema/nullptr-prec2x.c", line 11: error: identifier "__nullptr" is undefined
+  _Static_assert(__nullptr == 0, "value of __nullptr");
+                 ^
+
+"Sema/nullptr-prec2x.c", line 12: error: expected an expression
+  _Static_assert(_Generic(__typeof(__nullptr), int : 0, void * : 0, default : 1), "type of __nullptr");
+                          ^
+
+4 errors detected in the compilation of "Test_name.c".

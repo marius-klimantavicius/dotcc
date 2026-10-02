@@ -1,0 +1,4 @@
+./a.out
+Struct values are: 5, 6, 7
+Array values are: 40, 50, 60
+Tuple values are: 300, 400, 500

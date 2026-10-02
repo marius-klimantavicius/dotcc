@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 11: warning: variable "a" is used before its value is set
+    while (a) ;
+           ^
+
+"Test_name.c", line 12: error: a condition declaration must include an initializer
+    while (int x) ; // expected-error {{variable declaration in condition must have an initializer}}
+               ^
+
+"Test_name.c", line 12: warning: variable "x" was declared but never referenced
+    while (int x) ; // expected-error {{variable declaration in condition must have an initializer}}
+               ^
+
+"Test_name.c", line 22: error: type name is not allowed
+    if (S(n)) {} // expected-error {{unexpected type name 'n': expected expression}}
+          ^
+
+"Test_name.c", line 24: error: type name is not allowed
+    if (S(n) == 0) {} // expected-error {{unexpected type name 'n': expected expression}}
+          ^
+
+"Test_name.c", line 26: error: a parenthesized initializer is not permitted for a condition declaration
+    if (S b(a)) {} // expected-error {{variable declaration in condition cannot have a parenthesized initializer}}
+          ^
+
+"Test_name.c", line 28: error: a condition declaration must declare a variable
+    if (S b(n)) {} // expected-error {{a function type is not allowed here}}
+          ^
+
+"Test_name.c", line 29: error: function "b" may not be initialized
+    if (S b(n) = 0) {} // expected-error {{a function type is not allowed here}}
+               ^
+
+"Test_name.c", line 29: error: a condition declaration must declare a variable
+    if (S b(n) = 0) {} // expected-error {{a function type is not allowed here}}
+          ^
+
+"Test_name.c", line 30: error: a condition declaration must declare a variable
+    if (S b(n) == 0) {} // expected-error {{a function type is not allowed here}}
+          ^
+
+"Test_name.c", line 30: error: expected a ")"
+    if (S b(n) == 0) {} // expected-error {{a function type is not allowed here}}
+               ^
+
+"Test_name.c", line 36: error: no default constructor exists for class "S"
+    if (S a == {s}) {} // expected-error {{did you mean '='?}}
+          ^
+
+"Test_name.c", line 36: error: a condition declaration must include an initializer
+    if (S a == {s}) {} // expected-error {{did you mean '='?}}
+          ^
+
+"Test_name.c", line 36: error: expected a ")"
+    if (S a == {s}) {} // expected-error {{did you mean '='?}}
+            ^
+
+"Test_name.c", line 36: warning: variable "a" was declared but never referenced
+    if (S a == {s}) {} // expected-error {{did you mean '='?}}
+          ^
+
+12 errors detected in the compilation of "Test_name.c".

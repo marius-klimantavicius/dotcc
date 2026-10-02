@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 19: warning: attribute "maybe_unused" does not apply here
+  namespace [[maybe_unused]] N {} // expected-warning {{'maybe_unused' attribute only applies to}}
+              ^
+

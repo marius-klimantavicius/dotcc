@@ -1,0 +1,65 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Sema/diagnose_if.c", line 6: error: expected an expression
+  void failure1(void) __attribute__((diagnose_if()));
+                                                 ^
+
+"Sema/diagnose_if.c", line 6: error: missing arguments for attribute "diagnose_if"
+  void failure1(void) __attribute__((diagnose_if()));
+                                                 ^
+
+"Sema/diagnose_if.c", line 7: error: missing arguments for attribute "diagnose_if"
+  void failure2(void) __attribute__((diagnose_if(0)));
+                                                  ^
+
+"Sema/diagnose_if.c", line 8: error: missing arguments for attribute "diagnose_if"
+  void failure3(void) __attribute__((diagnose_if(0, "")));
+                                                      ^
+
+"Sema/diagnose_if.c", line 9: error: expected a string literal
+  void failure4(void) __attribute__((diagnose_if(0, "", "error", 1)));
+                                                                 ^
+
+"Sema/diagnose_if.c", line 10: error: expected a string literal
+  void failure5(void) __attribute__((diagnose_if(0, 0, "error")));
+                                                    ^
+
+"Sema/diagnose_if.c", line 14: error: identifier "a" is undefined
+  void failure9(void) __attribute__((diagnose_if(a, "", "")));
+                                                 ^
+
+"Sema/diagnose_if.c", line 29: warning: variable "m" is used before its value is set
+    alwaysok(m);
+             ^
+
+"Sema/diagnose_if.c", line 32: warning: variable "pok" was set but never used
+      int (*pok)(int) = alwaysok;
+            ^
+
+"Sema/diagnose_if.c", line 40: warning: variable "pok" was set but never used
+      int (*pok)(int) = neverok;
+            ^
+
+"Sema/diagnose_if.c", line 48: warning: variable "pok" was set but never used
+      int (*pok)(int) = alwayswarn;
+            ^
+
+"Sema/diagnose_if.c", line 56: warning: variable "pok" was set but never used
+      int (*pok)(int) = neverwarn;
+            ^
+
+"Sema/diagnose_if.c", line 66: warning: variable "m" is used before its value is set
+    abs(m);
+        ^
+
+"Sema/diagnose_if.c", line 68: warning: variable "pabs" was set but never used
+    int (*pabs)(int) = abs;
+          ^
+
+"Sema/diagnose_if.c", line 83: error: more than one instance of overloaded function "ovl2" matches the argument list:
+            function "ovl2(const char *) C++" (declared at line 77)
+            function "ovl2(char *) C++" (declared at line 78)
+            argument types are: (void *)
+    ovl2((void *)0);
+    ^
+
+8 errors detected in the compilation of "Test_name.c".

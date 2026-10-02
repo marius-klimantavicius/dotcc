@@ -1,0 +1,23 @@
+fe_only -DTEST_NUMBER=1 --microsoft Test_name.c
+"Test_name.c", line 15: error: interface types cannot have data members
+  	int a;
+  	    ^
+
+"Test_name.c", line 20: error: interface types cannot have static member functions
+  	static void f();
+  	^
+
+"Test_name.c", line 21: error: interface types cannot have data members
+  	static int i;
+  	           ^
+
+"Test_name.c", line 27: error: interface types cannot have data members
+  	static int const i = 23;
+  	                 ^
+
+"Test_name.c", line 32: error: abstract class type "X" is not allowed as catch type:
+            "X" is an interface type
+  	} catch (X) {}
+  	         ^
+
+5 errors detected in the compilation of "Test_name.c".

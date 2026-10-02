@@ -1,0 +1,53 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 25: error: const variable "s2" requires an initializer -- class "S2" has no user-provided default constructor
+  constexpr S2 s2; // { dg-error "uninitialized .const s2." }
+               ^
+
+"Test_name.c", line 32: error: const variable "u2" requires an initializer -- class "U2" has no user-provided default constructor
+  constexpr U2 u2; // { dg-error "uninitialized .const u2." }
+               ^
+
+"Test_name.c", line 42: error: const variable "s3" requires an initializer -- class "S3" has no user-provided default constructor
+  constexpr S3 s3; // { dg-error "uninitialized .const s3." }
+               ^
+
+"Test_name.c", line 52: error: const variable "s4" requires an initializer -- class "S4" has no user-provided default constructor
+  constexpr S4 s4; // { dg-error "uninitialized .const s4." }
+               ^
+
+"Test_name.c", line 65: error: initialization is not constant
+  constexpr S5 s5; // { dg-error "uninitialized .const s5.|not a constant expression" }
+               ^
+"Test_name.c", line 65: note: access to uninitialized subobject (member "S5::u")
+  constexpr S5 s5; // { dg-error "uninitialized .const s5.|not a constant expression" }
+               ^
+
+"Test_name.c", line 11: warning: variable "s" was declared but never referenced
+  constexpr S s;
+              ^
+
+"Test_name.c", line 18: warning: variable "u" was declared but never referenced
+  constexpr U u;
+              ^
+
+"Test_name.c", line 25: warning: variable "s2" was declared but never referenced
+  constexpr S2 s2; // { dg-error "uninitialized .const s2." }
+               ^
+
+"Test_name.c", line 32: warning: variable "u2" was declared but never referenced
+  constexpr U2 u2; // { dg-error "uninitialized .const u2." }
+               ^
+
+"Test_name.c", line 42: warning: variable "s3" was declared but never referenced
+  constexpr S3 s3; // { dg-error "uninitialized .const s3." }
+               ^
+
+"Test_name.c", line 52: warning: variable "s4" was declared but never referenced
+  constexpr S4 s4; // { dg-error "uninitialized .const s4." }
+               ^
+
+"Test_name.c", line 65: warning: variable "s5" was declared but never referenced
+  constexpr S5 s5; // { dg-error "uninitialized .const s5.|not a constant expression" }
+               ^
+
+5 errors detected in the compilation of "Test_name.c".

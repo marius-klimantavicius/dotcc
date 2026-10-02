@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: error: "AA0" has already been declared in the current scope
+  template<class T> struct AA0<int, T> {}; // { dg-error "specialization" }
+                           ^
+
+"Test_name.c", line 13: error: "Ptr" has already been declared in the current scope
+  template<class U> struct Ptr<U*> {}; // { dg-error "specialization" }
+                           ^
+
+"Test_name.c", line 16: error: declaration of a member with the same name as its class
+      using A = int;  // { dg-error "11:ISO C\\+\\+ forbids nested type .A." }
+            ^
+
+3 errors detected in the compilation of "Test_name.c".

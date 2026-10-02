@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 26: warning: missing return statement at end of non-void function "Periodic_3_triangulation_ds_cell_base_3<TDS>::vertex"
+      }
+      ^
+          detected during instantiation of "Periodic_3_Delaunay_triangulation_3<<unnamed>>::Vertex_handle Periodic_3_Delaunay_triangulation_3<<unnamed>>::nearest_vertex() const [with <unnamed>=TDS1]" at line 55
+
+"Test_name.c", line 41: warning: missing return statement at end of non-void function "Periodic_3_Delaunay_triangulation_3<<unnamed>>::compare_distance"
+      }
+      ^
+          detected during instantiation of "Periodic_3_Delaunay_triangulation_3<<unnamed>>::Vertex_handle Periodic_3_Delaunay_triangulation_3<<unnamed>>::nearest_vertex() const [with <unnamed>=TDS1]" at line 55
+

@@ -1,0 +1,35 @@
+fe_only -DTEST_NUMBER=2 --c++17 Test_name.c
+"Test_name.c", line 14: error: a reference of type "int (&)[]" (not const-qualified) cannot be initialized with a value of type "int [1]"
+    int (&r)[] = arr;  // Now accepted
+                 ^
+
+"Test_name.c", line 15: error: a value of type "int (*)[1]" cannot be used to initialize an entity of type "int (*)[]"
+    int (*p)[] = &arr; // Now accepted
+                 ^
+
+"Test_name.c", line 16: error: no instance of overloaded function "f" matches the argument list
+            argument types are: (int [1])
+    f(arr);            // Now accepted
+    ^
+"Test_name.c", line 11: note: number of parameters of function "f()" does not match the call
+  void f() {
+       ^
+"Test_name.c", line 4: note: function "f(int (&)[])" does not match because argument #1 does not match parameter
+  void f(int(&)[]);
+       ^
+
+"Test_name.c", line 17: error: argument of type "int (*)[1]" is incompatible with parameter of type "int (*)[]"
+    g(&arr);           // Now accepted
+      ^
+
+"Test_name.c", line 21: error: more than one instance of overloaded function "h" matches the argument list:
+            function "h(int (&&)[])" (declared at line 6)
+            function "h(int (&&)[2])" (declared at line 8)
+            argument types are: ({...})
+    h( {1, 2} );       // Calls #3
+    ^
+"Test_name.c", line 9: note: function "h(int *)" does not match because argument #1 does not match parameter
+  void h(int*);              // #4
+       ^
+
+5 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./warn/Wsystem-headers1.C", line 3: warning: allowing all exceptions is incompatible with previous function "atof" (declared at line 144 of "/usr/include/stdlib.h")
+  extern "C" double atof (const char *);
+                                       ^
+

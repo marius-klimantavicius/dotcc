@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 8: error: identifier "__int128" is undefined
+  enum e1 { e1a = (__int128) (((unsigned __int128) -1) >> 1), e1b }; /* { dg-error "overflow in enumeration values" } */
+                   ^
+
+"Test_name.c", line 8: error: function call is not allowed in a constant expression
+  enum e1 { e1a = (__int128) (((unsigned __int128) -1) >> 1), e1b }; /* { dg-error "overflow in enumeration values" } */
+                  ^
+
+"Test_name.c", line 8: error: expected a ")"
+  enum e1 { e1a = (__int128) (((unsigned __int128) -1) >> 1), e1b }; /* { dg-error "overflow in enumeration values" } */
+                                         ^
+
+"Test_name.c", line 10: error: expected a ")"
+  enum e2 { e2a = (unsigned __int128) -1, e2b }; /* { dg-error "overflow in enumeration values" } */
+                            ^
+
+"Test_name.c", line 15: error: function call is not allowed in a constant expression
+  enum e3 { e3a = -(__int128) (((unsigned __int128) -1) >> 1) - 1,
+                   ^
+
+"Test_name.c", line 15: error: expected a ")"
+  enum e3 { e3a = -(__int128) (((unsigned __int128) -1) >> 1) - 1,
+                                          ^
+
+"Test_name.c", line 16: error: expected a ")"
+  	  e3b = (unsigned __int128) -1 }; /* { dg-warning "enumeration values exceed range of largest integer" } */
+  	                  ^
+
+7 errors detected in the compilation of "Test_name.c".

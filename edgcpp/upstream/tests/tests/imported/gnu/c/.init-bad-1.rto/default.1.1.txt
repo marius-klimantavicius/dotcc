@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 9: error: function "g" may not be initialized
+  void g(void) = f; /* { dg-error "function 'g' is initialized like a variable" } */
+               ^
+
+"Test_name.c", line 12: error: a parameter declaration may not have an initializer
+       int a = 1; /* { dg-error "parameter 'a' is initialized" } */
+           ^
+
+"Test_name.c", line 14: error: incomplete type "struct s" is not allowed
+    struct s x = { 0 }; /* { dg-error "variable 'x' has initializer but incomplete type" } */
+             ^
+
+"Test_name.c", line 21: warning: a value of type "char [3]" cannot be used to initialize an entity of type "char [1]"
+  char t[1] = "xy"; /* { dg-warning "initializer-string for array of 'char' is too long" } */
+              ^
+
+"Test_name.c", line 22: warning: string literal too long -- excess characters ignored
+  char t1[1] = { "xy" }; /* { dg-warning "initializer-string for array of 'char' is too long" } */
+                 ^
+
+"Test_name.c", line 23: warning: a value of type "char *" cannot be used to initialize an entity of type "char"
+  char u[1] = { "x", "x" }; /* { dg-error "excess elements in 'char.1.' initializer" } */
+                ^
+
+"Test_name.c", line 23: error: integer conversion resulted in truncation
+  char u[1] = { "x", "x" }; /* { dg-error "excess elements in 'char.1.' initializer" } */
+                ^
+
+"Test_name.c", line 23: warning: excess initializers are ignored
+  char u[1] = { "x", "x" }; /* { dg-error "excess elements in 'char.1.' initializer" } */
+                     ^
+
+"Test_name.c", line 30: warning: excess initializers are ignored
+  int k = { 1, 2 }; /* { dg-warning "excess elements in scalar initializer" } */
+               ^
+
+"Test_name.c", line 33: error: subscript out of range
+  int a1[1] = { [1] = 0 }; /* { dg-error "array index in initializer exceeds array bounds" } */
+                ^
+
+"Test_name.c", line 35: error: subscript out of range
+  int a2[1] = { [-1] = 0 }; /* { dg-error "array index in initializer exceeds array bounds" } */
+                 ^
+
+"Test_name.c", line 37: error: subscript out of range
+  int a3[1] = { [0 ... 1] = 0 }; /* { dg-error "array index range in initializer exceeds array bounds" } */
+                ^
+
+"Test_name.c", line 39: error: the second subscript must not be smaller than the first
+  int a4[2] = { [1 ... 0] = 0 }; /* { dg-error "empty index range in initializer" } */
+                       ^
+
+"Test_name.c", line 41: error: subscript out of range
+  int a5[2] = { [0 ... 2] = 0 }; /* { dg-error "array index range in initializer exceeds array bounds" } */
+                ^
+
+"Test_name.c", line 43: error: subscript out of range
+  int a6[2] = { [-1 ... 1] = 0 }; /* { dg-error "array index in initializer exceeds array bounds" } */
+                 ^
+
+"Test_name.c", line 45: error: subscript out of range
+  int a7[] = { [-1 ... 1] = 0 }; /* { dg-error "array index in initializer exceeds array bounds" } */
+                ^
+
+11 errors detected in the compilation of "Test_name.c".

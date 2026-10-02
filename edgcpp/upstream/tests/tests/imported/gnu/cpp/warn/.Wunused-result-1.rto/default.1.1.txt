@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 10: warning: result of call is not used
+  void f(C* pc) { int i; pc->f(&i); }  // { dg-warning "ignoring return value" }
+                         ^
+

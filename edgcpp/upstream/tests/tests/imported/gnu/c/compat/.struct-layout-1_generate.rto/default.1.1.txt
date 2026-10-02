@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./compat/struct-layout-1_generate.c", line 1048: warning: variable "q" was declared but never referenced
+    const char *p, *q;
+                    ^
+
+"./compat/struct-layout-1_generate.c", line 1425: warning: integer conversion resulted in a change of sign
+        attriblen = e[i].attrib ? strlen (e[i].attrib) : -1;
+                                                         ^
+
+"./compat/struct-layout-1_generate.c", line 1685: warning: variable "ret" was declared but never referenced
+    int r, i, j, ret = 1, n, incr, sametype;
+                 ^
+
+"./compat/struct-layout-1_generate.c", line 1910: warning: variable "i" was declared but never referenced
+    int i, r;
+        ^
+
+"./compat/struct-layout-1_generate.c", line 1936: warning: enumerated type mixed with another type
+  { "normal", 0 },
+              ^
+
+"./compat/struct-layout-1_generate.c", line 1939: warning: enumerated type mixed with another type
+  { "[0] :0", FEATURE_ZEROARRAY | FEATURE_ZEROBITFLD },
+              ^
+
+"./compat/struct-layout-1_generate.c", line 1941: warning: enumerated type mixed with another type
+    FEATURE_COMPLEX | FEATURE_VECTOR | FEATURE_ZEROARRAY },
+    ^
+
+"./compat/struct-layout-1_generate.c", line 1943: warning: enumerated type mixed with another type
+    FEATURE_COMPLEX | FEATURE_VECTOR | FEATURE_ZEROARRAY
+    ^
+

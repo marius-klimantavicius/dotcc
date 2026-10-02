@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 7: error: this operator cannot appear at the top level (without parentheses) in a requires-clause
+    requires true != false // { dg-error "must be enclosed" }
+                  ^
+
+"Test_name.c", line 12: error: this operator cannot appear at the top level (without parentheses) in a requires-clause
+  void f3(T) requires true != false // { dg-error "must be enclosed" }
+                           ^
+
+"Test_name.c", line 23: error: expected an identifier
+  concept bool C1 = true; // { dg-error "bool|variable concepts" }
+          ^
+
+"Test_name.c", line 25: error: expected an identifier
+  bool concept C2 = true; // { dg-error "concept definition syntax|variable concepts" }
+       ^
+
+"Test_name.c", line 30: error: invalid redeclaration of concept "C3" (declared at line 28)
+  concept C3 = true; // { dg-error "redefinition" }
+          ^
+
+"Test_name.c", line 32: error: invalid redeclaration of concept "C3" (declared at line 28)
+  concept C3 = true; // { dg-error "different template parameters" }
+          ^
+
+"Test_name.c", line 34: error: invalid redeclaration of concept "C3" (declared at line 28)
+  concept C3 = true; // { dg-error "different template parameters" }
+          ^
+
+"Test_name.c", line 35: error: "C3" has already been declared in the current scope
+  int C3 = 0; // { dg-error "different kind of entity" }
+      ^
+
+"Test_name.c", line 39: error: invalid redeclaration of variable "C4" (declared at line 37)
+  concept C4 = true; // { dg-error "different kind of entity" }
+          ^
+
+"Test_name.c", line 50: error: static assertion failed
+  static_assert(False<int>); // { dg-error "static assertion failed" }
+  ^
+
+"Test_name.c", line 54: error: a concept template cannot have associated constraints
+  template<True T> concept C5 = true; // { dg-error "cannot be constrained" }
+           ^
+
+"Test_name.c", line 58: error: identifier "Recursive" is undefined
+  concept Recursive = Recursive<T>; // { dg-error "not declared|expected" }
+                      ^
+
+12 errors detected in the compilation of "Test_name.c".

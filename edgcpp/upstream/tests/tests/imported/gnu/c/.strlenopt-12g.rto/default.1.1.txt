@@ -1,0 +1,25 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./strlenopt-12.c", line 6: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) char *
+                           ^
+
+"./strlenopt-12.c", line 14: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) char *
+                           ^
+
+"./strlenopt-12.c", line 24: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) char *
+                           ^
+
+"./strlenopt-12.c", line 32: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) char *
+                           ^
+
+"./strlenopt-12.c", line 40: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) char *
+                           ^
+
+"./strlenopt-12.c", line 52: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) char *
+                           ^
+

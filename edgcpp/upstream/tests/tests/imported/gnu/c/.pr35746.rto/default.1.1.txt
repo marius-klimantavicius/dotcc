@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 10: error: _Complex can only be used with floating-point types
+    __complex__ int i;
+    ^
+
+"Test_name.c", line 11: error: identifier "X" is undefined
+    X j;			/* { dg-error "unknown" } */
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

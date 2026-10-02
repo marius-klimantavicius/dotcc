@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++03 -W Test_name.c
+"Test_name.c", line 11: error: expected a ">"
+      foo<foo<int> j; // { dg-error "18:template argument 1 is invalid" }
+                   ^
+
+"Test_name.c", line 9: error: variable "i" was declared but never referenced
+      foo<int> i;
+               ^
+
+"Test_name.c", line 12: error: variable "k" was declared but never referenced
+      int k;
+          ^
+
+"Test_name.c", line 13: error: variable "l" was declared but never referenced
+      int l;
+          ^
+
+"Test_name.c", line 14: error: variable "m" was declared but never referenced
+      foo<int> m;
+               ^
+
+5 errors detected in the compilation of "Test_name.c".

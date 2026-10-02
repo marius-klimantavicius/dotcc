@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 Test_name.c
+"Test_name.c", line 11: error: "auto" type cannot appear in top-level array type
+    auto e[] = {0}; // expected-error{{cannot deduce actual type for variable 'e' with type 'auto[]' from initializer list}}
+    ^
+
+"Test_name.c", line 8: warning: variable "b" was set but never used
+    auto (*b)[5] = &a;
+           ^
+
+"Test_name.c", line 9: warning: variable "c" was set but never used
+    auto (&c)[5] = a;
+           ^
+
+"Test_name.c", line 10: warning: variable "d" was set but never used
+    auto (&&d)[5] = static_cast<int(&&)[5]>(a);
+            ^
+
+1 error detected in the compilation of "Test_name.c".

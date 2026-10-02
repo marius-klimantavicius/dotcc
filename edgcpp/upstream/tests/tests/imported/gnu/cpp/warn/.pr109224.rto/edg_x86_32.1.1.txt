@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"./warn/pr109224.C", line 13: error: first parameter of allocation function must be of type "size_t"
+          void* operator new(std::size_t sz, I);
+                ^
+
+"./warn/pr109224.C", line 19: error: no viable "operator delete" found for coroutine state deallocation
+  Task f(int) {
+       ^
+
+2 errors detected in the compilation of "Test_name.c".

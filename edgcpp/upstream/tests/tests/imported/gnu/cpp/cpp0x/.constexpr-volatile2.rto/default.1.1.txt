@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 13: error: expression must have a constant value
+    return (sizeof(X<decltype(a), a>) // { dg-error "lvalue-to-rvalue conversion of a volatile lvalue" }
+                                  ^
+"Test_name.c", line 13: note: attempt to read from volatile storage
+    return (sizeof(X<decltype(a), a>) // { dg-error "lvalue-to-rvalue conversion of a volatile lvalue" }
+                                  ^
+
+"Test_name.c", line 14: error: expression must have a constant value
+  	  + sizeof(X<decltype(b), b>)); // { dg-error "lvalue-to-rvalue conversion of a volatile lvalue" }
+  	                          ^
+"Test_name.c", line 14: note: attempt to read from volatile storage
+  	  + sizeof(X<decltype(b), b>)); // { dg-error "lvalue-to-rvalue conversion of a volatile lvalue" }
+  	                          ^
+
+2 errors detected in the compilation of "Test_name.c".

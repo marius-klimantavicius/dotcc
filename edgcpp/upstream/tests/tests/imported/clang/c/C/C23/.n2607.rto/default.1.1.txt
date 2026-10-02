@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 21: warning: argument of type "float (*)[N]" is incompatible with parameter of type "const float (*)[*]"
+    matrix_fun(N, x);
+                  ^
+
+"Test_name.c", line 44: error: type "array" (aka "int [1]") cannot be _Atomic because it is an array or function type
+    _Atomic array atomic_array;       // expected-error {{_Atomic cannot be applied to array type 'array'}}
+    ^
+
+"Test_name.c", line 45: error: type "array" (aka "int [1]") cannot be _Atomic because it is an array or function type
+    _Atomic(array) also_atomic_array; // expected-error {{_Atomic cannot be applied to array type 'array'}}
+            ^
+
+"Test_name.c", line 29: warning: variable "const_array" was set but never used
+    const array const_array = { 0 };
+                ^
+
+"Test_name.c", line 48: warning: variable "array_of_restricted_ptrs" was declared but never referenced
+    int *restrict array_of_restricted_ptrs[1];
+                  ^
+
+"Test_name.c", line 49: warning: variable "md_array_of_restricted_ptrs" was declared but never referenced
+    int *restrict md_array_of_restricted_ptrs[1][1];
+                  ^
+
+"Test_name.c", line 64: warning: operand types are incompatible ("const int (*)[1]" and "int (*)[1]")
+    (void)_Generic(1 ? &const_array : &array, const int (*)[1] : 1);   /* expected-error {{controlling expression type 'void *' not compatible with any generic association type}}
+                                    ^
+
+"Test_name.c", line 55: warning: variable "const_array" was set but never used
+    const int const_array[1] = { 0 };
+              ^
+
+2 errors detected in the compilation of "Test_name.c".

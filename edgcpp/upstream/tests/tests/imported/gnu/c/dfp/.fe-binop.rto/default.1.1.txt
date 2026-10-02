@@ -1,0 +1,254 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./dfp/fe-binop.c", line 8: error: identifier "_Decimal32" is undefined
+  volatile _Decimal32 a32, b32, c32;
+           ^
+
+"./dfp/fe-binop.c", line 9: error: identifier "_Decimal64" is undefined
+  volatile _Decimal64 a64, b64, c64;
+           ^
+
+"./dfp/fe-binop.c", line 10: error: identifier "_Decimal128" is undefined
+  volatile _Decimal128 a128, b128, c128;
+           ^
+
+"./dfp/fe-binop.c", line 11: error: identifier "_Decimal32" is undefined
+  _Decimal32 inf32;
+  ^
+
+"./dfp/fe-binop.c", line 12: error: identifier "_Decimal64" is undefined
+  _Decimal64 inf64;
+  ^
+
+"./dfp/fe-binop.c", line 13: error: identifier "_Decimal128" is undefined
+  _Decimal128 inf128;
+  ^
+
+"./dfp/fe-binop.c", line 15: error: extra text after expected end of number
+  void binop_100 (void) { a32 = 2.0df; b32 = 0.df; __dfp_clear_except(
+                                   ^
+
+"./dfp/fe-binop.c", line 15: error: extra text after expected end of number
+  void binop_100 (void) { a32 = 2.0df; b32 = 0.df; __dfp_clear_except(
+                                               ^
+
+"./dfp/fe-binop.c", line 16: error: extra text after expected end of number
+  void binop_101 (void) { a64 = 2.0dd; b64 = 0.dd; __dfp_clear_except(
+                                   ^
+
+"./dfp/fe-binop.c", line 16: error: extra text after expected end of number
+  void binop_101 (void) { a64 = 2.0dd; b64 = 0.dd; __dfp_clear_except(
+                                               ^
+
+"./dfp/fe-binop.c", line 17: error: extra text after expected end of number
+  void binop_102 (void) { a128 = 2.0dl; b128 = 0.dl; __dfp_clear_except(
+                                    ^
+
+"./dfp/fe-binop.c", line 17: error: extra text after expected end of number
+  void binop_102 (void) { a128 = 2.0dl; b128 = 0.dl; __dfp_clear_except(
+                                                 ^
+
+"./dfp/fe-binop.c", line 19: error: extra text after expected end of number
+  void binop_200 (void) { a32 = 0.df; b32 = 0.df; __dfp_clear_except(
+                                  ^
+
+"./dfp/fe-binop.c", line 19: error: extra text after expected end of number
+  void binop_200 (void) { a32 = 0.df; b32 = 0.df; __dfp_clear_except(
+                                              ^
+
+"./dfp/fe-binop.c", line 20: error: extra text after expected end of number
+  void binop_201 (void) { a64 = 0.dd; b64 = 0.dd; __dfp_clear_except(
+                                  ^
+
+"./dfp/fe-binop.c", line 20: error: extra text after expected end of number
+  void binop_201 (void) { a64 = 0.dd; b64 = 0.dd; __dfp_clear_except(
+                                              ^
+
+"./dfp/fe-binop.c", line 21: error: extra text after expected end of number
+  void binop_202 (void) { a128 = 0.dl; b128 = 0.dl; __dfp_clear_except(
+                                   ^
+
+"./dfp/fe-binop.c", line 21: error: extra text after expected end of number
+  void binop_202 (void) { a128 = 0.dl; b128 = 0.dl; __dfp_clear_except(
+                                                ^
+
+"./dfp/fe-binop.c", line 25: error: extra text after expected end of number
+  void binop_206 (void) { a32 = 0.df; b32 = __builtin_infd32(); __dfp_clear_except(
+                                  ^
+
+"./dfp/fe-binop.c", line 25: warning: function "__builtin_infd32" declared implicitly
+  void binop_206 (void) { a32 = 0.df; b32 = __builtin_infd32(); __dfp_clear_except(
+                                            ^
+
+"./dfp/fe-binop.c", line 26: warning: function "__builtin_infd32" declared implicitly
+  void binop_207 (void) { a32 = __builtin_infd32(); b32 = 0.df; __dfp_clear_except(
+                                ^
+
+"./dfp/fe-binop.c", line 26: error: extra text after expected end of number
+  void binop_207 (void) { a32 = __builtin_infd32(); b32 = 0.df; __dfp_clear_except(
+                                                            ^
+
+"./dfp/fe-binop.c", line 27: error: extra text after expected end of number
+  void binop_208 (void) { a64 = 0.df; b64 = __builtin_infd64(); __dfp_clear_except(
+                                  ^
+
+"./dfp/fe-binop.c", line 27: warning: function "__builtin_infd64" declared implicitly
+  void binop_208 (void) { a64 = 0.df; b64 = __builtin_infd64(); __dfp_clear_except(
+                                            ^
+
+"./dfp/fe-binop.c", line 28: warning: function "__builtin_infd64" declared implicitly
+  void binop_209 (void) { a64 = __builtin_infd64(); b64 = 0.df; __dfp_clear_except(
+                                ^
+
+"./dfp/fe-binop.c", line 28: error: extra text after expected end of number
+  void binop_209 (void) { a64 = __builtin_infd64(); b64 = 0.df; __dfp_clear_except(
+                                                            ^
+
+"./dfp/fe-binop.c", line 29: error: extra text after expected end of number
+  void binop_210 (void) { a128 = 0.df; b128 = __builtin_infd128(); __dfp_clear_except(
+                                   ^
+
+"./dfp/fe-binop.c", line 29: warning: function "__builtin_infd128" declared implicitly
+  void binop_210 (void) { a128 = 0.df; b128 = __builtin_infd128(); __dfp_clear_except(
+                                              ^
+
+"./dfp/fe-binop.c", line 30: warning: function "__builtin_infd128" declared implicitly
+  void binop_211 (void) { a128 = __builtin_infd128(); b128 = 0.df; __dfp_clear_except(
+                                 ^
+
+"./dfp/fe-binop.c", line 30: error: extra text after expected end of number
+  void binop_211 (void) { a128 = __builtin_infd128(); b128 = 0.df; __dfp_clear_except(
+                                                               ^
+
+"./dfp/fe-binop.c", line 38: error: extra text after expected end of number
+  void binop_300 (void) { a32 = 9.9e94df; b32 = 1.e-3df; __dfp_clear_except(
+                                      ^
+
+"./dfp/fe-binop.c", line 38: error: extra text after expected end of number
+  void binop_300 (void) { a32 = 9.9e94df; b32 = 1.e-3df; __dfp_clear_except(
+                                                     ^
+
+"./dfp/fe-binop.c", line 39: error: extra text after expected end of number
+  void binop_301 (void) { a64 = 9.9e382dd; b64 = 1.e-3dd; __dfp_clear_except(
+                                       ^
+
+"./dfp/fe-binop.c", line 39: error: extra text after expected end of number
+  void binop_301 (void) { a64 = 9.9e382dd; b64 = 1.e-3dd; __dfp_clear_except(
+                                                      ^
+
+"./dfp/fe-binop.c", line 40: error: extra text after expected end of number
+  void binop_302 (void) { a128 = 9.9e6142dl; b128 = 1.e-3dl; __dfp_clear_except(
+                                         ^
+
+"./dfp/fe-binop.c", line 40: error: extra text after expected end of number
+  void binop_302 (void) { a128 = 9.9e6142dl; b128 = 1.e-3dl; __dfp_clear_except(
+                                                         ^
+
+"./dfp/fe-binop.c", line 41: error: extra text after expected end of number
+  void binop_303 (void) { a32 = 9.9e96df; b32 = 1.e96df; __dfp_clear_except(
+                                      ^
+
+"./dfp/fe-binop.c", line 41: error: extra text after expected end of number
+  void binop_303 (void) { a32 = 9.9e96df; b32 = 1.e96df; __dfp_clear_except(
+                                                     ^
+
+"./dfp/fe-binop.c", line 42: error: extra text after expected end of number
+  void binop_304 (void) { a64 = 9.9e384dd; b64 = 1.e384dd; __dfp_clear_except(
+                                       ^
+
+"./dfp/fe-binop.c", line 42: error: extra text after expected end of number
+  void binop_304 (void) { a64 = 9.9e384dd; b64 = 1.e384dd; __dfp_clear_except(
+                                                       ^
+
+"./dfp/fe-binop.c", line 43: error: extra text after expected end of number
+  void binop_305 (void) { a128 = 9.9e6144dl; b128 = 1.e6144dl; __dfp_clear_except(
+                                         ^
+
+"./dfp/fe-binop.c", line 43: error: extra text after expected end of number
+  void binop_305 (void) { a128 = 9.9e6144dl; b128 = 1.e6144dl; __dfp_clear_except(
+                                                           ^
+
+"./dfp/fe-binop.c", line 45: error: extra text after expected end of number
+  void binop_400 (void) { a32 = 1.e-3df; b32 = 9.9e94df; __dfp_clear_except(
+                                     ^
+
+"./dfp/fe-binop.c", line 45: error: extra text after expected end of number
+  void binop_400 (void) { a32 = 1.e-3df; b32 = 9.9e94df; __dfp_clear_except(
+                                                     ^
+
+"./dfp/fe-binop.c", line 46: error: extra text after expected end of number
+  void binop_401 (void) { a64 = 1.e-3dd; b64 = 9.9e382dd; __dfp_clear_except(
+                                     ^
+
+"./dfp/fe-binop.c", line 46: error: extra text after expected end of number
+  void binop_401 (void) { a64 = 1.e-3dd; b64 = 9.9e382dd; __dfp_clear_except(
+                                                      ^
+
+"./dfp/fe-binop.c", line 47: error: extra text after expected end of number
+  void binop_402 (void) { a128 = 1.e-3dl; b128 = 9.9e6142dl; __dfp_clear_except(
+                                      ^
+
+"./dfp/fe-binop.c", line 47: error: extra text after expected end of number
+  void binop_402 (void) { a128 = 1.e-3dl; b128 = 9.9e6142dl; __dfp_clear_except(
+                                                         ^
+
+"./dfp/fe-binop.c", line 48: error: extra text after expected end of number
+  void binop_403 (void) { a32 = 1.e-95df; b32 = 1.e-7df; __dfp_clear_except(
+                                      ^
+
+"./dfp/fe-binop.c", line 48: error: extra text after expected end of number
+  void binop_403 (void) { a32 = 1.e-95df; b32 = 1.e-7df; __dfp_clear_except(
+                                                     ^
+
+"./dfp/fe-binop.c", line 49: error: extra text after expected end of number
+  void binop_404 (void) { a64 = 1.e-383dd; b64 = 1.e-16dd; __dfp_clear_except(
+                                       ^
+
+"./dfp/fe-binop.c", line 49: error: extra text after expected end of number
+  void binop_404 (void) { a64 = 1.e-383dd; b64 = 1.e-16dd; __dfp_clear_except(
+                                                       ^
+
+"./dfp/fe-binop.c", line 50: error: extra text after expected end of number
+  void binop_405 (void) { a128 = 1.e-6143dl; b128 = 1.e-34dl; __dfp_clear_except(
+                                         ^
+
+"./dfp/fe-binop.c", line 50: error: extra text after expected end of number
+  void binop_405 (void) { a128 = 1.e-6143dl; b128 = 1.e-34dl; __dfp_clear_except(
+                                                          ^
+
+"./dfp/fe-binop.c", line 52: error: extra text after expected end of number
+  void binop_500 (void) { a32 = 1.df; b32 = 3.df; __dfp_clear_except(
+                                  ^
+
+"./dfp/fe-binop.c", line 52: error: extra text after expected end of number
+  void binop_500 (void) { a32 = 1.df; b32 = 3.df; __dfp_clear_except(
+                                              ^
+
+"./dfp/fe-binop.c", line 53: error: extra text after expected end of number
+  void binop_501 (void) { a64 = 1.dd; b64 = 3.dd; __dfp_clear_except(
+                                  ^
+
+"./dfp/fe-binop.c", line 53: error: extra text after expected end of number
+  void binop_501 (void) { a64 = 1.dd; b64 = 3.dd; __dfp_clear_except(
+                                              ^
+
+"./dfp/fe-binop.c", line 54: error: extra text after expected end of number
+  void binop_502 (void) { a128 = 1.dl; b128 = 3.dl; __dfp_clear_except(
+                                   ^
+
+"./dfp/fe-binop.c", line 54: error: extra text after expected end of number
+  void binop_502 (void) { a128 = 1.dl; b128 = 3.dl; __dfp_clear_except(
+                                                ^
+
+"./dfp/fe-binop.c", line 59: warning: function "__builtin_infd32" declared implicitly
+    inf32 = __builtin_infd32();
+            ^
+
+"./dfp/fe-binop.c", line 60: warning: function "__builtin_infd64" declared implicitly
+    inf64 = __builtin_infd64();
+            ^
+
+"./dfp/fe-binop.c", line 61: warning: function "__builtin_infd128" declared implicitly
+    inf128 = __builtin_infd128();
+             ^
+
+54 errors detected in the compilation of "Test_name.c".

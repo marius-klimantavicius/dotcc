@@ -1,0 +1,57 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./analyzer/data-model-1.c", line 45: warning: variable "tmp" was declared but never referenced
+    struct foo *tmp = global_foo_ptr;
+                ^
+
+"./analyzer/data-model-1.c", line 155: warning: variable "i" is used before its value is set
+    return i;
+           ^
+
+"./analyzer/data-model-1.c", line 168: warning: variable "i" is used before its value is set
+    j = i;
+        ^
+
+"./analyzer/data-model-1.c", line 191: warning: missing return statement at end of non-void function "test_12d"
+  }
+  ^
+
+"./analyzer/data-model-1.c", line 353: warning: variable "i" is used before its value is set
+      __analyzer_eval (i == j);
+                       ^
+
+"./analyzer/data-model-1.c", line 353: warning: variable "j" is used before its value is set
+      __analyzer_eval (i == j);
+                            ^
+
+"./analyzer/data-model-1.c", line 740: warning: variable "j" was set but never used
+    int j, k;
+        ^
+
+"./analyzer/data-model-1.c", line 740: warning: variable "k" was set but never used
+    int j, k;
+           ^
+
+"./analyzer/data-model-1.c", line 814: warning: variable "ptr" is used before its value is set
+    return *ptr;
+            ^
+
+"./analyzer/data-model-1.c", line 822: warning: variable "ptr" is used before its value is set
+    *ptr = i;
+     ^
+
+"./analyzer/data-model-1.c", line 841: warning: missing return statement at end of non-void function "test_38a"
+  }
+  ^
+
+"./analyzer/data-model-1.c", line 866: warning: missing return statement at end of non-void function "test_40"
+  }
+  ^
+
+"./analyzer/data-model-1.c", line 927: warning: signed bit field of length 1
+    signed int b0 : 1;
+               ^
+
+"./analyzer/data-model-1.c", line 930: warning: signed bit field of length 1
+    signed int b7 : 1;
+               ^
+

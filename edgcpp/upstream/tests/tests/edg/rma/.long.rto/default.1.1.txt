@@ -1,0 +1,14 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 5: error: class "T" has already been defined (previous definition at line 5)
+  struct T {}; typedef long T;
+                            ^
+
+"Test_name.c", line 6: error: invalid redeclaration of type name "I" (declared at line 6)
+  typedef int I; typedef long I J;
+                              ^
+
+"Test_name.c", line 6: error: expected a ";"
+  typedef int I; typedef long I J;
+                                ^
+
+3 errors detected in the compilation of "Test_name.c".

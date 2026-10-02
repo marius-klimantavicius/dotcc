@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 164: error: static assertion failed with "1 ? CAT (uaddll, __LINE__)(1ULL, (9223372036854775807LL * 2LLU + 1)).v : CAT (uaddll, __LINE__)(1ULL, (9223372036854775807LL * 2LLU + 1)) == Res<unsigned long long>(uaddll (1ULL, (9223372036854775807LL * 2LLU + 1)), 1)"
+  TEST (uaddll, unsigned long long, 1ULL,       ULLONG_MAX, 1);
+  ^
+
+"Test_name.c", line 165: error: static assertion failed with "1 ? CAT (uaddll, __LINE__)((9223372036854775807LL * 2LLU + 1), (9223372036854775807LL * 2LLU + 1)).v : CAT (uaddll, __LINE__)((9223372036854775807LL * 2LLU + 1), (9223372036854775807LL * 2LLU + 1)) == Res<unsigned long long>(uaddll ((9223372036854775807LL * 2LLU + 1), (9223372036854775807LL * 2LLU + 1)), 1)"
+  TEST (uaddll, unsigned long long, ULLONG_MAX, ULLONG_MAX, 1);
+  ^
+
+"Test_name.c", line 233: error: static assertion failed with "1 ? CAT (usubll, __LINE__)(0ULL, (9223372036854775807LL * 2LLU + 1)).v : CAT (usubll, __LINE__)(0ULL, (9223372036854775807LL * 2LLU + 1)) == Res<unsigned long long>(usubll (0ULL, (9223372036854775807LL * 2LLU + 1)), 1)"
+  TEST (usubll, unsigned long long,  0ULL,       ULLONG_MAX, 1);
+  ^
+
+"Test_name.c", line 234: error: static assertion failed with "1 ? CAT (usubll, __LINE__)(1ULL, (9223372036854775807LL * 2LLU + 1)).v : CAT (usubll, __LINE__)(1ULL, (9223372036854775807LL * 2LLU + 1)) == Res<unsigned long long>(usubll (1ULL, (9223372036854775807LL * 2LLU + 1)), 1)"
+  TEST (usubll, unsigned long long,  1ULL,       ULLONG_MAX, 1);
+  ^
+
+4 errors detected in the compilation of "Test_name.c".

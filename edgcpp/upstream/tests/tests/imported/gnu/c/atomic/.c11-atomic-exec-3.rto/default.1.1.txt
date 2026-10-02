@@ -1,0 +1,363 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 Test_name.c
+"Test_name.c", line 69: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (0);
+    ^
+
+"Test_name.c", line 69: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (0);
+    ^
+
+"Test_name.c", line 69: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (0);
+    ^
+
+"Test_name.c", line 69: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (0);
+    ^
+
+"Test_name.c", line 69: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (0);
+    ^
+
+"Test_name.c", line 69: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (0);
+    ^
+
+"Test_name.c", line 69: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (0);
+    ^
+
+"Test_name.c", line 69: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (0);
+    ^
+
+"Test_name.c", line 69: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (0);
+    ^
+
+"Test_name.c", line 70: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (1);
+    ^
+
+"Test_name.c", line 70: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (1);
+    ^
+
+"Test_name.c", line 70: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (1);
+    ^
+
+"Test_name.c", line 70: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (1);
+    ^
+
+"Test_name.c", line 70: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (1);
+    ^
+
+"Test_name.c", line 70: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (1);
+    ^
+
+"Test_name.c", line 70: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (1);
+    ^
+
+"Test_name.c", line 70: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (1);
+    ^
+
+"Test_name.c", line 70: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (1);
+    ^
+
+"Test_name.c", line 71: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (2);
+    ^
+
+"Test_name.c", line 71: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (2);
+    ^
+
+"Test_name.c", line 71: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (2);
+    ^
+
+"Test_name.c", line 71: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (2);
+    ^
+
+"Test_name.c", line 71: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (2);
+    ^
+
+"Test_name.c", line 71: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (2);
+    ^
+
+"Test_name.c", line 71: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (2);
+    ^
+
+"Test_name.c", line 71: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (2);
+    ^
+
+"Test_name.c", line 71: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (2);
+    ^
+
+"Test_name.c", line 72: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (-1);
+    ^
+
+"Test_name.c", line 72: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (-1);
+    ^
+
+"Test_name.c", line 72: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (-1);
+    ^
+
+"Test_name.c", line 72: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (-1);
+    ^
+
+"Test_name.c", line 72: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (-1);
+    ^
+
+"Test_name.c", line 72: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (-1);
+    ^
+
+"Test_name.c", line 72: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (-1);
+    ^
+
+"Test_name.c", line 72: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (-1);
+    ^
+
+"Test_name.c", line 72: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (-1);
+    ^
+
+"Test_name.c", line 73: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (1ULL << 60);
+    ^
+
+"Test_name.c", line 73: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (1ULL << 60);
+    ^
+
+"Test_name.c", line 73: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (1ULL << 60);
+    ^
+
+"Test_name.c", line 73: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (1ULL << 60);
+    ^
+
+"Test_name.c", line 73: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (1ULL << 60);
+    ^
+
+"Test_name.c", line 73: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (1ULL << 60);
+    ^
+
+"Test_name.c", line 73: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (1ULL << 60);
+    ^
+
+"Test_name.c", line 73: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (1ULL << 60);
+    ^
+
+"Test_name.c", line 73: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (1ULL << 60);
+    ^
+
+"Test_name.c", line 74: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (1.5);
+    ^
+
+"Test_name.c", line 74: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (1.5);
+    ^
+
+"Test_name.c", line 74: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (1.5);
+    ^
+
+"Test_name.c", line 74: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (1.5);
+    ^
+
+"Test_name.c", line 74: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (1.5);
+    ^
+
+"Test_name.c", line 74: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (1.5);
+    ^
+
+"Test_name.c", line 74: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (1.5);
+    ^
+
+"Test_name.c", line 74: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (1.5);
+    ^
+
+"Test_name.c", line 74: warning: integer conversion resulted in a change of sign
+    TEST_ALL_INCDEC_ARITH (1.5);
+    ^
+
+/usr/sbin/ld: Test_name.o: in function `test_incdec':
+Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_compare_exchange_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_compare_exchange_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_compare_exchange_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_compare_exchange_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_compare_exchange_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_compare_exchange_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_compare_exchange_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_compare_exchange_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_compare_exchange_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_compare_exchange_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_compare_exchange_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_compare_exchange_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_compare_exchange_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_compare_exchange_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_compare_exchange_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_compare_exchange_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_compare_exchange_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_compare_exchange_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_compare_exchange_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_compare_exchange_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_compare_exchange_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_compare_exchange_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_compare_exchange_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_compare_exchange_16'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_feraiseexcept'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load_16'
+collect2: error: ld returned 1 exit status

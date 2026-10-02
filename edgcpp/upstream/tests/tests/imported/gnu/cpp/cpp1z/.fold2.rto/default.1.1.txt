@@ -1,0 +1,51 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 65: warning: expression has no effect
+  MAKE_FNS (comma, COMMA);
+  ^
+          detected during instantiation of "auto unary_left_comma(Ts...) [with Ts=<int, int, int>]" at line 104
+
+"Test_name.c", line 65: warning: expression has no effect
+  MAKE_FNS (comma, COMMA);
+  ^
+          detected during instantiation of "auto unary_left_comma(Ts...) [with Ts=<int, int, int>]" at line 104
+
+"Test_name.c", line 65: warning: expression has no effect
+  MAKE_FNS (comma, COMMA);
+  ^
+          detected during instantiation of "auto unary_right_comma(Ts...) [with Ts=<int, int, int>]" at line 104
+
+"Test_name.c", line 65: warning: expression has no effect
+  MAKE_FNS (comma, COMMA);
+  ^
+          detected during instantiation of "auto unary_right_comma(Ts...) [with Ts=<int, int, int>]" at line 104
+
+"Test_name.c", line 65: warning: expression has no effect
+  MAKE_FNS (comma, COMMA);
+  ^
+          detected during instantiation of "auto binary_left_comma(T, Ts...) [with T=int, Ts=<int, int, int>]" at line 104
+
+"Test_name.c", line 65: warning: expression has no effect
+  MAKE_FNS (comma, COMMA);
+  ^
+          detected during instantiation of "auto binary_left_comma(T, Ts...) [with T=int, Ts=<int, int, int>]" at line 104
+
+"Test_name.c", line 65: warning: expression has no effect
+  MAKE_FNS (comma, COMMA);
+  ^
+          detected during instantiation of "auto binary_left_comma(T, Ts...) [with T=int, Ts=<int, int, int>]" at line 104
+
+"Test_name.c", line 65: warning: expression has no effect
+  MAKE_FNS (comma, COMMA);
+  ^
+          detected during instantiation of "auto binary_right_comma(T, Ts...) [with T=int, Ts=<int, int, int>]" at line 104
+
+"Test_name.c", line 65: warning: expression has no effect
+  MAKE_FNS (comma, COMMA);
+  ^
+          detected during instantiation of "auto binary_right_comma(T, Ts...) [with T=int, Ts=<int, int, int>]" at line 104
+
+"Test_name.c", line 65: warning: expression has no effect
+  MAKE_FNS (comma, COMMA);
+  ^
+          detected during instantiation of "auto binary_right_comma(T, Ts...) [with T=int, Ts=<int, int, int>]" at line 104
+

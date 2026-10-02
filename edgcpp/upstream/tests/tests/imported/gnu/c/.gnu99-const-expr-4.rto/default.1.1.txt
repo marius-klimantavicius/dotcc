@@ -1,0 +1,55 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 27: error: expression must have a constant value
+  static int (*a2)[] = (__typeof__(int (*)[n]))sa;
+                                           ^
+"Test_name.c", line 27: note: the value of variable "n" (declared at line 24) cannot be used as a constant
+  static int (*a2)[] = (__typeof__(int (*)[n]))sa;
+                                           ^
+
+"Test_name.c", line 28: error: expression must have a constant value
+  static int (*a4)[] = (__typeof__((int (*)[n])sa))sa;
+                                            ^
+"Test_name.c", line 28: note: the value of variable "n" (declared at line 24) cannot be used as a constant
+  static int (*a4)[] = (__typeof__((int (*)[n])sa))sa;
+                                            ^
+
+"Test_name.c", line 29: error: this operator is not allowed in a constant expression
+  static int (*a5)[] = (__typeof__((int (*)[m++])sa))sa; /* { dg-error "constant" } */
+                                             ^
+
+"Test_name.c", line 30: error: this operator is not allowed in a constant expression
+  static int (*a6)[] = (__typeof__((int (*)[100])(int (*)[m++])sa))sa;
+                                                           ^
+
+"Test_name.c", line 31: error: expression must have a constant value
+  static int (*a7)[] = (__typeof__((int (*)[n])sa + m++))sa; /* { dg-error "constant" } */
+                                            ^
+"Test_name.c", line 31: note: the value of variable "n" (declared at line 24) cannot be used as a constant
+  static int (*a7)[] = (__typeof__((int (*)[n])sa + m++))sa; /* { dg-error "constant" } */
+                                            ^
+
+"Test_name.c", line 26: warning: variable "a1" was declared but never referenced
+  static int (*a1)[] = &sa;
+               ^
+
+"Test_name.c", line 27: warning: variable "a2" was declared but never referenced
+  static int (*a2)[] = (__typeof__(int (*)[n]))sa;
+               ^
+
+"Test_name.c", line 28: warning: variable "a4" was declared but never referenced
+  static int (*a4)[] = (__typeof__((int (*)[n])sa))sa;
+               ^
+
+"Test_name.c", line 29: warning: variable "a5" was declared but never referenced
+  static int (*a5)[] = (__typeof__((int (*)[m++])sa))sa; /* { dg-error "constant" } */
+               ^
+
+"Test_name.c", line 30: warning: variable "a6" was declared but never referenced
+  static int (*a6)[] = (__typeof__((int (*)[100])(int (*)[m++])sa))sa;
+               ^
+
+"Test_name.c", line 31: warning: variable "a7" was declared but never referenced
+  static int (*a7)[] = (__typeof__((int (*)[n])sa + m++))sa; /* { dg-error "constant" } */
+               ^
+
+5 errors detected in the compilation of "Test_name.c".

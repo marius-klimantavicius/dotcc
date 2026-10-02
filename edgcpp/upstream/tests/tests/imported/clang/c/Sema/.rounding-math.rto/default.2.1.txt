@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=2 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c17 --c17 --strict_gnu Test_name.c
+"Test_name.c", line 31: error: the size of an array must be greater than zero
+    typedef int vla1[(int)(-3 * (1.0 / 3.0))];
+                     ^
+
+"Test_name.c", line 35: error: the size of an array must be greater than zero
+    typedef int vla2[fold((int)(-3 * (1.0 / 3.0)))]; // expected-error {{negative size}}
+                     ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 13: error: expected a "," or ">"
+  template <char... cs>
+                ^
+
+"Test_name.c", line 14: error: expected an expression
+    typename enable_if<sizeof...(cs) == 1, int>::type operator""X();
+                             ^
+
+"Test_name.c", line 14: error: expected an operator
+    typename enable_if<sizeof...(cs) == 1, int>::type operator""X();
+                                                              ^
+
+"Test_name.c", line 15: error: expected a "," or ">"
+  template <char... cs>
+                ^
+
+"Test_name.c", line 16: error: expected an expression
+    typename enable_if<sizeof...(cs) >= 2, int>::type operator""X();
+                             ^
+
+"Test_name.c", line 16: error: expected an operator
+    typename enable_if<sizeof...(cs) >= 2, int>::type operator""X();
+                                                              ^
+
+"Test_name.c", line 17: error: expected a ";"
+  int r = 42X;  // Previously triggered a spurious error.  Now okay.
+            ^
+
+7 errors detected in the compilation of "Test_name.c".

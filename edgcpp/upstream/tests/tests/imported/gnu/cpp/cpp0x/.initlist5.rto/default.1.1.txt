@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp0x/initlist5.C", line 7: warning: invalid narrowing conversion from "double" to "int"
+  A a2 { 1.2 };
+         ^
+
+"./cpp0x/initlist5.C", line 13: error: invalid narrowing conversion from "double" to "int"
+  B b2 { 1, 2.0 };
+            ^
+
+"./cpp0x/initlist5.C", line 18: warning: invalid narrowing conversion from "double" to "int"
+  C c2 = { 1.1, 2 };
+           ^
+
+"./cpp0x/initlist5.C", line 25: warning: invalid narrowing conversion from "double" to "float"
+  float fa[] = { d, 1.1 };
+                 ^
+
+"./cpp0x/initlist5.C", line 30: error: invalid narrowing conversion from "int" to "unsigned int": constant value does not fit in destination type
+  unsigned u{ -1 };
+              ^
+
+"./cpp0x/initlist5.C", line 31: warning: invalid narrowing conversion from "unsigned int" to "char"
+  char c = char{ u };
+                 ^
+
+2 errors detected in the compilation of "Test_name.c".

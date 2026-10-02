@@ -1,0 +1,117 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 Test_name.c
+"Test_name.c", line 9: error: alignment-of operator applied to incomplete type
+  int b = _Alignof (struct s); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 10: warning: alignment-of operator applied to incomplete type
+  int c = _Alignof (void); /* { dg-error "void" } */
+          ^
+
+"Test_name.c", line 11: warning: the standard "alignof" operator does not accept an expression argument (use a type instead)
+  int d = _Alignof (a); /* { dg-error "expression" } */
+                   ^
+
+"Test_name.c", line 13: error: a function type is not allowed here
+  _Alignas (void (void)) char e; /* { dg-error "function" } */
+            ^
+
+"Test_name.c", line 14: error: incomplete type "struct s" is not allowed
+  _Alignas (struct s) char f; /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 15: error: incomplete type "void" is not allowed
+  _Alignas (void) char g; /* { dg-error "void" } */
+            ^
+
+"Test_name.c", line 17: error: invalid argument to attribute "_Alignas"
+  _Alignas (-__INT_MAX__-1) char h; /* { dg-error "too large|power of 2" } */
+            ^
+
+"Test_name.c", line 18: error: invalid argument to attribute "_Alignas"
+  _Alignas (-__INT_MAX__) char h2; /* { dg-error "too large|power of 2" } */
+            ^
+
+"Test_name.c", line 19: error: invalid argument to attribute "_Alignas"
+  _Alignas ((-__INT_MAX__-1)/2) char h3; /* { dg-error "too large|power of 2" } */
+            ^
+
+"Test_name.c", line 20: error: invalid argument to attribute "_Alignas"
+  _Alignas ((-__INT_MAX__-1)/4) char h4; /* { dg-error "too large|power of 2" } */
+            ^
+
+"Test_name.c", line 21: error: invalid argument to attribute "_Alignas"
+  _Alignas ((-__INT_MAX__-1)/8) char h5; /* { dg-error "too large|power of 2" } */
+            ^
+
+"Test_name.c", line 22: error: invalid argument to attribute "_Alignas"
+  _Alignas (-__LONG_LONG_MAX__-1) char i; /* { dg-error "too large|power of 2" } */
+            ^
+
+"Test_name.c", line 23: error: invalid argument to attribute "_Alignas"
+  _Alignas (-(__LONG_LONG_MAX__-1)/2) char i2; /* { dg-error "too large|power of 2" } */
+            ^
+
+"Test_name.c", line 24: error: invalid argument to attribute "_Alignas"
+  _Alignas (-(__LONG_LONG_MAX__-1)/4) char i3; /* { dg-error "too large|power of 2" } */
+            ^
+
+"Test_name.c", line 25: error: invalid argument to attribute "_Alignas"
+  _Alignas (-(__LONG_LONG_MAX__-1)/8) char i4; /* { dg-error "too large|power of 2" } */
+            ^
+
+"Test_name.c", line 26: error: invalid argument to attribute "_Alignas"
+  _Alignas (-(__LONG_LONG_MAX__-1)/16) char i5; /* { dg-error "too large|power of 2" } */
+            ^
+
+"Test_name.c", line 27: error: invalid argument to attribute "_Alignas"
+  _Alignas (-1) char j; /* { dg-error "power of 2" } */
+            ^
+
+"Test_name.c", line 28: error: invalid argument to attribute "_Alignas"
+  _Alignas (-2) char j; /* { dg-error "positive power of 2" } */
+            ^
+
+"Test_name.c", line 29: error: invalid alignment value specified by attribute
+  _Alignas (3) char k; /* { dg-error "power of 2" } */
+            ^
+
+"Test_name.c", line 31: error: expression must be an integral constant expression
+  _Alignas ((void *) 1) char k; /* { dg-error "integer constant" } */
+            ^
+
+"Test_name.c", line 33: error: expression must have a constant value
+  _Alignas (x) char l; /* { dg-error "integer constant" } */
+            ^
+"Test_name.c", line 33: note: the value of variable "x" (declared at line 32) cannot be used as a constant
+  _Alignas (x) char l; /* { dg-error "integer constant" } */
+            ^
+
+"Test_name.c", line 35: warning: attribute does not apply to any entity
+  _Alignas (0) struct s; /* { dg-error "does not redeclare tag" } */
+  ^
+
+"Test_name.c", line 37: error: alignas does not apply here
+  _Alignas (0) typedef int T; /* { dg-error "alignment specified for typedef" } */
+  ^
+
+"Test_name.c", line 38: error: alignas does not apply here
+  void func (_Alignas (0) int); /* { dg-error "alignment specified for unnamed parameter" } */
+             ^
+
+"Test_name.c", line 39: error: alignas does not apply here
+  void f2 (_Alignas (0) int parm2) {} /* { dg-error "alignment specified for parameter" } */
+           ^
+
+"Test_name.c", line 43: error: attribute "_Alignas" does not apply to register variables
+    register _Alignas (0) int reg; /* { dg-error "register" } */
+             ^
+
+"Test_name.c", line 43: warning: variable "reg" was declared but never referenced
+    register _Alignas (0) int reg; /* { dg-error "register" } */
+                              ^
+
+"Test_name.c", line 45: error: alignas does not apply here
+  _Alignas (0) void f4 (void); /* { dg-error "alignment specified for function" } */
+  ^
+
+24 errors detected in the compilation of "Test_name.c".

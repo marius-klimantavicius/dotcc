@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 43: error: expected a ")"
+  S4<int(1)> y; // expected-error{{must be a type}}
+         ^
+
+"Test_name.c", line 49: warning: operand of sizeof may not be a function
+    (void)sizeof(int()); // expected-error{{function type}}
+                 ^
+
+"Test_name.c", line 56: error: cast to type "int ()" is not allowed
+    (void)(int())1; // expected-error{{to 'int ()'}}
+           ^
+
+"Test_name.c", line 64: error: argument of type "int" is incompatible with parameter of type "int (*)(C7)"
+    f7(1); // expected-error{{no matching function}}
+       ^
+
+"Test_name.c", line 69: error: function "h7" has already been defined (previous definition at line 68)
+  void h7(int *(*_fp)(C7 _parm[10])) { } // expected-error{{redefinition}}
+       ^
+
+"Test_name.c", line 76: warning: missing return statement at end of non-void function "foo8"
+  }
+  ^
+
+"Test_name.c", line 75: warning: variable "v" was declared but never referenced
+    int v(int(S5::value)); // expected-warning{{disambiguated as a function declaration}} expected-note{{add a pair of parentheses}} expected-error{{parameter declarator cannot be qualified}}
+        ^
+
+4 errors detected in the compilation of "Test_name.c".

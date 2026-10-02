@@ -1,0 +1,146 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c --target linux_aarch64 Test_name.c
+"Test_name.c", line 5: warning: unknown attribute "target_clones"
+  void __attribute__((target_clones("fp16+sve2-aes", "sb+sve2-sha3+rcpc3+mops", "rdma"))) no_def(void);
+                      ^
+
+"Test_name.c", line 8: warning: unknown attribute "target_clones"
+  void __attribute__((target_clones("default+sha3"))) warn1(void);
+                      ^
+
+"Test_name.c", line 12: warning: unknown attribute "target_version"
+  void __attribute__((target_version("sve"), target_clones("sme+memtag"))) not_compat(void);
+                      ^
+
+"Test_name.c", line 12: warning: unknown attribute "target_clones"
+  void __attribute__((target_version("sve"), target_clones("sme+memtag"))) not_compat(void);
+                                             ^
+
+"Test_name.c", line 15: warning: unknown attribute "target_clones"
+  int __attribute__((target_clones("frintts", "simd+fp", "default"))) redecl(void) { return 1; }
+                     ^
+
+"Test_name.c", line 17: warning: unknown attribute "target_clones"
+  int __attribute__((target_clones("jscvt+fcma", "rcpc", "default"))) redecl2(void);
+                     ^
+
+"Test_name.c", line 20: warning: unknown attribute "target_clones"
+  int __attribute__((target_clones("jscvt+fcma", "rcpc"))) redecl2(void) { return 1; }
+                     ^
+
+"Test_name.c", line 22: warning: unknown attribute "target_clones"
+  int __attribute__((target_clones("sve+dotprod"))) redecl3(void);
+                     ^
+
+"Test_name.c", line 25: warning: unknown attribute "target_clones"
+  int __attribute__((target_clones("rng", "fp16fml+fp", "default"))) redecl4(void);
+                     ^
+
+"Test_name.c", line 28: warning: unknown attribute "target_clones"
+  int __attribute__((target_clones("dit", "bf16+dpb", "default"))) redecl4(void) { return 1; }
+                     ^
+
+"Test_name.c", line 30: warning: unknown attribute "target_version"
+  int __attribute__((target_version("flagm2"))) redef2(void) { return 1; }
+                     ^
+
+"Test_name.c", line 33: warning: unknown attribute "target_clones"
+  int __attribute__((target_clones("flagm2", "default"))) redef2(void) { return 1; }
+                     ^
+
+"Test_name.c", line 33: error: function "redef2" has already been defined (previous definition at line 30)
+  int __attribute__((target_clones("flagm2", "default"))) redef2(void) { return 1; }
+                                                          ^
+
+"Test_name.c", line 35: warning: unknown attribute "target_clones"
+  int __attribute__((target_clones("f32mm", "f64mm", "sha2+fp"))) redef3(void) { return 1; }
+                     ^
+
+"Test_name.c", line 38: warning: unknown attribute "target_clones"
+  int __attribute__((target_clones("f32mm", "sha2+fp", "f64mm"))) redef3(void) { return 1; }
+                     ^
+
+"Test_name.c", line 38: error: function "redef3" has already been defined (previous definition at line 35)
+  int __attribute__((target_clones("f32mm", "sha2+fp", "f64mm"))) redef3(void) { return 1; }
+                                                                  ^
+
+"Test_name.c", line 40: warning: unknown attribute "target_clones"
+  int __attribute__((target_clones("rdm+lse+rdm", "lse+rdm"))) dup1(void) { return 1; }
+                     ^
+
+"Test_name.c", line 42: warning: unknown attribute "target_clones"
+  int __attribute__((target_clones("rdm+lse+rdm", "rdm+lse+rdm"))) dup2(void) { return 2; }
+                     ^
+
+"Test_name.c", line 44: warning: unknown attribute "target_clones"
+  int __attribute__((target_clones("rcpc2+sve2-aes", "rcpc2+sve2-aes"))) dup3(void) { return 3; }
+                     ^
+
+"Test_name.c", line 46: warning: unknown attribute "target_clones"
+  void __attribute__((target_clones("sha3", "default", "default"))) dup4(void);
+                      ^
+
+"Test_name.c", line 49: warning: unknown attribute "target_clones"
+  int __attribute__((target_clones("fp", "fp", "crc+dotprod", "dotprod+crc"))) dup5(void) { return 5; }
+                     ^
+
+"Test_name.c", line 52: warning: unknown attribute "target_clones"
+  int __attribute__((target_clones("fp16+memtag", "memtag+fp16"))) dup6(void) { return 6; }
+                     ^
+
+"Test_name.c", line 55: warning: unknown attribute "target_clones"
+  void __attribute__((target_clones(""))) empty_target_1(void);
+                      ^
+
+"Test_name.c", line 59: warning: unknown attribute "target_clones"
+  void __attribute__((target_clones("default+default"))) empty_target_2(void);
+                      ^
+
+"Test_name.c", line 61: warning: unknown attribute "target_clones"
+  void __attribute__((target_clones("+sve2")))
+                      ^
+
+"Test_name.c", line 64: warning: unknown attribute "target_clones"
+  void __attribute__((target_clones("sb+bs")))
+                      ^
+
+"Test_name.c", line 68: warning: unknown attribute "target_clones"
+  void __attribute__((target_clones("default", "")))
+                      ^
+
+"Test_name.c", line 72: warning: unknown attribute "target_clones"
+  void __attribute__((target_clones("sve2-bitperm", "sve2-bitperm")))
+                      ^
+
+"Test_name.c", line 75: warning: unknown attribute "target_clones"
+  void __attribute__((target_clones("default"), target_clones("memtag+bti"))) dupe_normal2(void);
+                      ^
+
+"Test_name.c", line 75: warning: unknown attribute "target_clones"
+  void __attribute__((target_clones("default"), target_clones("memtag+bti"))) dupe_normal2(void);
+                                                ^
+
+"Test_name.c", line 82: warning: unknown attribute "target_clones"
+  int __attribute__((target_clones("sve2-sha3+ssbs", "sm4"))) mv_after_use(void) { return 1; }
+                     ^
+
+"Test_name.c", line 84: warning: unknown attribute "target_clones"
+  int __attribute__((target_clones("i8mm"))) main() { return 1; }
+                     ^
+
+"Test_name.c", line 86: warning: unknown attribute "target_clones"
+  int __attribute__((target_clones("aes + sve2 ; priority=100", "default"))) priority_whitespace(void) { return 0; }
+                     ^
+
+"Test_name.c", line 90: warning: unknown attribute "target_clones"
+  int __attribute__((target_clones("priority=10;aes", "default"))) priority_before_features(void) { return 0; }
+                     ^
+
+"Test_name.c", line 93: warning: unknown attribute "target_clones"
+  int __attribute__((target_clones("aes;priority=0", "default"))) priority_out_of_range(void) { return 0; }
+                     ^
+
+"Test_name.c", line 96: warning: unknown attribute "target_clones"
+  int __attribute__((target_clones("aes", "default;priority=10"))) priority_default_version(void) { return 0; }
+                     ^
+
+2 errors detected in the compilation of "Test_name.c".

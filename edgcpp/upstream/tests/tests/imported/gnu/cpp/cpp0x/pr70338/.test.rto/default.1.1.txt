@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 13: error: this range-based "for" statement requires a suitable "begin" function and none was found
+    auto b = [&]() { for (auto &c: a) c = 0.; };
+                                   ^
+          detected during instantiation of "void foo<T>(int) [with T=double]" at line 19
+
+"Test_name.c", line 13: error: this range-based "for" statement requires a suitable "end" function and none was found
+    auto b = [&]() { for (auto &c: a) c = 0.; };
+                                   ^
+          detected during instantiation of "void foo<T>(int) [with T=double]" at line 19
+
+2 errors detected in the compilation of "Test_name.c".

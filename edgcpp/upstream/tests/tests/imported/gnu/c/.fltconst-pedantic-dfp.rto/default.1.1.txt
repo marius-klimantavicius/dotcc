@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c17 --strict_gnu Test_name.c
+"Test_name.c", line 6: error: extra text after expected end of number
+  double a = 1.dl;	/* { dg-warning "decimal float" } */
+               ^
+
+"Test_name.c", line 8: error: extra text after expected end of number
+  double b = 1.df;	/* { dg-warning "decimal float" } */
+               ^
+
+"Test_name.c", line 10: error: extra text after expected end of number
+  double c = 1.dd;	/* { dg-warning "decimal float" } */
+               ^
+
+3 errors detected in the compilation of "Test_name.c".

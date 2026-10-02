@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 11: error: declaration is incompatible with template parameter "T" (declared at line 10)
+  template<typename T> struct X1t; // expected-error{{template type parameter conflicts with previous template type parameter pack}}
+                    ^
+
+"Test_name.c", line 14: error: declaration is incompatible with template parameter "T" (declared at line 13)
+  template<typename ...T> struct X2t; // expected-error{{template type parameter pack conflicts with previous template type parameter}}
+                       ^
+
+"Test_name.c", line 20: error: declaration is incompatible with template template parameter "<unnamed>" (declared at line 19)
+  template<template<typename T> class> struct X1t_intt; // expected-error{{template type parameter conflicts with previous template type parameter pack}}
+                                     ^
+
+"Test_name.c", line 23: error: declaration is incompatible with template template parameter "<unnamed>" (declared at line 22)
+  template<template<typename ...T> class> struct X2t_intt; // expected-error{{template type parameter pack conflicts with previous template type parameter}}
+                                        ^
+
+"Test_name.c", line 26: error: declaration is incompatible with constant "int Values" (declared at line 25)
+  template<int Values> struct X1nt; // expected-error{{non-type template parameter conflicts with previous non-type template parameter pack}}
+               ^
+
+"Test_name.c", line 29: error: declaration is incompatible with template template parameter "<unnamed>" (declared at line 28)
+  template<template<class T> class...> class X1tt; // expected-error{{template template parameter pack conflicts with previous template template parameter}}
+                                     ^
+
+6 errors detected in the compilation of "Test_name.c".

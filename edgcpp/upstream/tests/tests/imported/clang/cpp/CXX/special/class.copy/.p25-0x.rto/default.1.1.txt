@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 136: error: static assertion failed with ""
+  static_assert(__has_trivial_assign(DerivedFromTNT), "");
+  ^
+
+"Test_name.c", line 137: error: static assertion failed with ""
+  static_assert(__is_trivially_assignable(DerivedFromTNT, DerivedFromTNT), "");
+  ^
+
+"Test_name.c", line 138: error: static assertion failed with ""
+  static_assert(__is_trivially_assignable(DerivedFromTNT, DerivedFromTNT &), "");
+  ^
+
+"Test_name.c", line 139: error: static assertion failed with ""
+  static_assert(__is_trivially_assignable(DerivedFromTNT, const DerivedFromTNT &), "");
+  ^
+
+"Test_name.c", line 141: error: static assertion failed with ""
+  static_assert(__is_trivially_assignable(DerivedFromTNT, DerivedFromTNT &&), "");
+  ^
+
+"Test_name.c", line 142: error: static assertion failed with ""
+  static_assert(__is_trivially_assignable(DerivedFromTNT, const DerivedFromTNT &&), "");
+  ^
+
+"Test_name.c", line 150: error: static assertion failed with ""
+  static_assert(__has_trivial_assign(TNTMember), "");
+  ^
+
+"Test_name.c", line 151: error: static assertion failed with ""
+  static_assert(__is_trivially_assignable(TNTMember, TNTMember), "");
+  ^
+
+"Test_name.c", line 152: error: static assertion failed with ""
+  static_assert(__is_trivially_assignable(TNTMember, TNTMember &), "");
+  ^
+
+"Test_name.c", line 153: error: static assertion failed with ""
+  static_assert(__is_trivially_assignable(TNTMember, const TNTMember &), "");
+  ^
+
+"Test_name.c", line 155: error: static assertion failed with ""
+  static_assert(__is_trivially_assignable(TNTMember, TNTMember &&), "");
+  ^
+
+"Test_name.c", line 156: error: static assertion failed with ""
+  static_assert(__is_trivially_assignable(TNTMember, const TNTMember &&), "");
+  ^
+
+"Test_name.c", line 194: error: static assertion failed with ""
+  static_assert(__is_trivially_assignable(DerivedFromRefQualifier&, const DerivedFromRefQualifier&), "");
+  ^
+
+"Test_name.c", line 195: error: static assertion failed with ""
+  static_assert(__is_trivially_assignable(DerivedFromRefQualifier&&, const DerivedFromRefQualifier&), "");
+  ^
+
+"Test_name.c", line 244: error: static assertion failed with ""
+    static_assert(__is_trivially_assignable(TopNoAccess, TopNoAccess &&), "");
+    ^
+
+15 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 5: warning: unrecognized GCC visibility pragma directive
+  #pragma GCC visibility foo // expected-warning{{expected identifier in '#pragma visibility' - ignored}}
+                         ^
+
+"Test_name.c", line 6: warning: no matching visibility push
+  #pragma GCC visibility pop foo // expected-warning{{extra tokens at end of '#pragma visibility' - ignored}}
+                         ^
+
+"Test_name.c", line 6: warning: extra text after expected end of preprocessing directive
+  #pragma GCC visibility pop foo // expected-warning{{extra tokens at end of '#pragma visibility' - ignored}}
+                             ^
+
+"Test_name.c", line 7: warning: expected a "("
+  #pragma GCC visibility push // expected-warning{{missing '(' after '#pragma visibility'}}
+                                                                                           ^
+
+"Test_name.c", line 8: warning: unrecognized visibility kind
+  #pragma GCC visibility push( // expected-warning{{expected identifier in '#pragma visibility' - ignored}}
+                                                                                                           ^
+
+"Test_name.c", line 8: warning: expected a ")"
+  #pragma GCC visibility push( // expected-warning{{expected identifier in '#pragma visibility' - ignored}}
+                                                                                                           ^
+
+"Test_name.c", line 9: warning: expected a ")"
+  #pragma GCC visibility push(hidden // expected-warning{{missing ')' after '#pragma visibility' - ignoring}}
+                                                                                                             ^
+

@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 11: error: invalid reference to class template "A" (union/nonunion mismatch)
+  union A<int> a; // { dg-error "'union' tag" }
+  ^
+
+"Test_name.c", line 13: error: invalid reference to class template "A" (union/nonunion mismatch)
+  template <> union A<float> {}; // { dg-error "'union' tag" }
+              ^
+
+"Test_name.c", line 16: error: tag kind of union is incompatible with declaration of class "B" (declared at line 15)
+  union B b;	// { dg-error "'union' tag" }
+        ^
+
+"Test_name.c", line 19: error: tag kind of class or struct is incompatible with declaration of union "C" (declared at line 18)
+  class C c;	// { dg-error "'class' tag" }
+        ^
+
+4 errors detected in the compilation of "Test_name.c".

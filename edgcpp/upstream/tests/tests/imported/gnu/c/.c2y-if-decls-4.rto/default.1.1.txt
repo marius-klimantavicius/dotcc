@@ -1,0 +1,174 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 18: error: expected an expression
+    switch (int i = get ())  /* { dg-warning "if declarations before C2Y" } */
+            ^
+
+"Test_name.c", line 21: error: identifier "i" is undefined
+        foo (i);
+             ^
+
+"Test_name.c", line 27: error: expected an expression
+    switch (int i = 0)  /* { dg-warning "if declarations before C2Y" } */
+            ^
+
+"Test_name.c", line 30: error: identifier "i" is undefined
+        foo (i);
+             ^
+
+"Test_name.c", line 36: error: expected an expression
+    switch (auto i = get ())  /* { dg-warning "if declarations before C2Y" } */
+            ^
+
+"Test_name.c", line 39: error: identifier "i" is undefined
+        foo (i);
+             ^
+
+"Test_name.c", line 45: error: expected an expression
+    switch (__typeof__(get ()) i = get ())  /* { dg-warning "if declarations before C2Y" } */
+            ^
+
+"Test_name.c", line 48: error: identifier "i" is undefined
+        foo (i);
+             ^
+
+"Test_name.c", line 54: error: expected an expression
+    switch (auto i = 0)  /* { dg-warning "if declarations before C2Y" } */
+            ^
+
+"Test_name.c", line 57: error: identifier "i" is undefined
+        foo (i);
+             ^
+
+"Test_name.c", line 63: error: expected an expression
+    switch ([[maybe_unused]] int i = get ())  /* { dg-warning "if declarations before C2Y" } */
+            ^
+
+"Test_name.c", line 66: error: identifier "i" is undefined
+        foo (i);
+             ^
+
+"Test_name.c", line 72: error: expected an expression
+    switch (__attribute__((unused)) int i = get ())  /* { dg-warning "if declarations before C2Y" } */
+            ^
+
+"Test_name.c", line 75: error: identifier "i" is undefined
+        foo (i);
+             ^
+
+"Test_name.c", line 81: error: expected an expression
+    switch (enum E e = X)  /* { dg-warning "if declarations before C2Y" } */
+            ^
+
+"Test_name.c", line 90: error: identifier "constexpr" is undefined
+    switch (constexpr int i = 42)  /* { dg-warning "if declarations before C2Y" } */
+            ^
+
+"Test_name.c", line 90: error: expected a ")"
+    switch (constexpr int i = 42)  /* { dg-warning "if declarations before C2Y" } */
+                      ^
+
+"Test_name.c", line 93: error: identifier "i" is undefined
+        foo (i);
+             ^
+
+"Test_name.c", line 99: error: expected an expression
+    switch (register int i = 0); /* { dg-warning "if declarations before C2Y" } */
+            ^
+
+"Test_name.c", line 100: error: expected an expression
+    switch (static int i = 0);  /* { dg-warning "if declarations before C2Y" } */
+            ^
+
+"Test_name.c", line 101: error: expected an expression
+    switch (_Atomic int i = 0);  /* { dg-warning "if declarations before C2Y" } */
+            ^
+
+"Test_name.c", line 103: warning: variable "i" was declared but never referenced
+    double i;
+           ^
+
+"Test_name.c", line 109: error: expected an expression
+    switch (int i = get (); i)	/* { dg-warning "if declarations before C2Y" } */
+            ^
+
+"Test_name.c", line 112: error: identifier "i" is undefined
+        foo (i);
+             ^
+
+"Test_name.c", line 118: error: expected an expression
+    switch (auto i = get (); i)  /* { dg-warning "if declarations before C2Y" } */
+            ^
+
+"Test_name.c", line 121: error: identifier "i" is undefined
+        foo (i);
+             ^
+
+"Test_name.c", line 127: error: expected an expression
+    switch (__typeof__(get ()) i = get (); i)  /* { dg-warning "if declarations before C2Y" } */
+            ^
+
+"Test_name.c", line 130: error: identifier "i" is undefined
+        foo (i);
+             ^
+
+"Test_name.c", line 136: error: expected an expression
+    switch (int (*f)(int) = foo; f (42))  /* { dg-warning "if declarations before C2Y" } */
+            ^
+
+"Test_name.c", line 145: error: expected an expression
+    switch ([[maybe_unused]] int i = get (); i)  /* { dg-warning "if declarations before C2Y" } */
+            ^
+
+"Test_name.c", line 148: error: identifier "i" is undefined
+        foo (i);
+             ^
+
+"Test_name.c", line 154: error: expected an expression
+    switch (__attribute__((unused)) int i = get (); i)  /* { dg-warning "if declarations before C2Y" } */
+            ^
+
+"Test_name.c", line 157: error: identifier "i" is undefined
+        foo (i);
+             ^
+
+"Test_name.c", line 163: error: expected an expression
+    switch (enum E e = X; e)  /* { dg-warning "if declarations before C2Y" } */
+            ^
+
+"Test_name.c", line 172: error: identifier "constexpr" is undefined
+    switch (constexpr int i = 42; i)  /* { dg-warning "if declarations before C2Y" } */
+            ^
+
+"Test_name.c", line 172: error: expected a ")"
+    switch (constexpr int i = 42; i)  /* { dg-warning "if declarations before C2Y" } */
+                      ^
+
+"Test_name.c", line 175: error: identifier "i" is undefined
+        foo (i);
+             ^
+
+"Test_name.c", line 181: error: expected an expression
+    switch (int arr[] = { 1, 2, 3}; arr[0])  /* { dg-warning "if declarations before C2Y" } */
+            ^
+
+"Test_name.c", line 184: error: identifier "arr" is undefined
+        foo (arr[0]);
+             ^
+
+"Test_name.c", line 190: error: expected an expression
+    switch (register int i = 0; i); /* { dg-warning "if declarations before C2Y" } */
+            ^
+
+"Test_name.c", line 191: error: expected an expression
+    switch (static int i = 0; i);  /* { dg-warning "if declarations before C2Y" } */
+            ^
+
+"Test_name.c", line 192: error: expected an expression
+    switch (_Atomic int i = 0; i);  /* { dg-warning "if declarations before C2Y" } */
+            ^
+
+"Test_name.c", line 194: warning: variable "i" was declared but never referenced
+    double i;
+           ^
+
+41 errors detected in the compilation of "Test_name.c".

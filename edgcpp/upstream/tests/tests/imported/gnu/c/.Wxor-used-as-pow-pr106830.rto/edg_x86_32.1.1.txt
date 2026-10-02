@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 7: error: identifier "__int128" is undefined
+    (__int128)(18302628885633695743 << 4) ^ 0; /* { dg-warning "integer constant is so large that it is unsigned" } */
+     ^
+
+"Test_name.c", line 7: warning: constant is too large for long long; given unsigned long long type (nonstandard)
+    (__int128)(18302628885633695743 << 4) ^ 0; /* { dg-warning "integer constant is so large that it is unsigned" } */
+               ^
+
+1 error detected in the compilation of "Test_name.c".

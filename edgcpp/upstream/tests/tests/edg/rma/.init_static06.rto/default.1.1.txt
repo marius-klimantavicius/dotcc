@@ -1,0 +1,14 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 7: error: explicit type is missing ("int" assumed)
+                      static const size;
+                                   ^
+
+"Test_name.c", line 10: error: explicit type is missing ("int" assumed)
+                  const alpha::size = 4;
+                        ^
+
+"Test_name.c", line 13: error: return type "int" omitted in declaration of function "main"
+                  main(){}
+                  ^
+
+3 errors detected in the compilation of "Test_name.c".

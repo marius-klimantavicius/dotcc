@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=2 --microsoft --microsoft_version=1300 -DM=IMP Test_name.c
+"Test_name.c", line 24: error: redeclaration cannot add dllexport/dllimport to "S::f" (declared at line 19)
+  void M S::f()
+            ^
+
+"Test_name.c", line 24: error: a function declared "dllimport" may not be defined
+  void M S::f()
+            ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,6 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 4: error: a nonstatic data member may not be defined outside its class
+  class A { int i; }; int A::i = 1;
+                             ^
+
+1 error detected in the compilation of "Test_name.c".

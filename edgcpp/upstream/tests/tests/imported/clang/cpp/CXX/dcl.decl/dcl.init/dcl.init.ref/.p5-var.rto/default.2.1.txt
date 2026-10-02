@@ -1,0 +1,122 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 61: error: a reference of type "Derived &" (not const-qualified) cannot be initialized with a value of type "Base"
+    Derived &dr2 = b; // expected-error{{non-const lvalue reference to type 'Derived' cannot bind to a value of unrelated type 'Base'}}
+                   ^
+
+"Test_name.c", line 62: error: qualifiers dropped in binding reference of type "Base &" to initializer of type "const Base"
+    Base &br3 = bc; // expected-error{{drops 'const' qualifier}}
+                ^
+
+"Test_name.c", line 63: error: qualifiers dropped in binding reference of type "Base &" to initializer of type "const Derived"
+    Base &br4 = dc; // expected-error{{drops 'const' qualifier}}
+                ^
+
+"Test_name.c", line 64: error: base class "Base" is ambiguous
+    Base &br5 = diamond; // expected-error{{ambiguous conversion from derived class 'Diamond' to base class 'Base':}}
+                ^
+
+"Test_name.c", line 66: error: a reference of type "long &" (not const-qualified) cannot be initialized with a value of type "int"
+    long &lr = i; // expected-error{{non-const lvalue reference to type 'long' cannot bind to a value of unrelated type 'int'}}
+               ^
+
+"Test_name.c", line 58: warning: variable "br1" was declared but never referenced
+    Base &br1 = b;
+          ^
+
+"Test_name.c", line 59: warning: variable "br2" was declared but never referenced
+    Base &br2 = d;
+          ^
+
+"Test_name.c", line 60: warning: variable "dr1" was declared but never referenced
+    Derived &dr1 = d;
+             ^
+
+"Test_name.c", line 65: warning: variable "ir" was declared but never referenced
+    int &ir = i;
+         ^
+
+"Test_name.c", line 74: error: qualifiers dropped in binding reference of type "volatile Base &" to initializer of type "const volatile Base"
+    volatile Base &bvr3 = bvc; // expected-error{{binding reference of type 'volatile Base' to value of type 'const volatile Base' drops 'const' qualifier}}
+                          ^
+
+"Test_name.c", line 75: error: qualifiers dropped in binding reference of type "volatile Base &" to initializer of type "const volatile Derived"
+    volatile Base &bvr4 = dvc; // expected-error{{binding reference of type 'volatile Base' to value of type 'const volatile Derived' drops 'const' qualifier}}
+                          ^
+
+"Test_name.c", line 77: error: qualifiers dropped in binding reference of type "volatile int &" to initializer of type "const volatile int"
+    volatile int &ir = ivc; // expected-error{{binding reference of type 'volatile int' to value of type 'const volatile int' drops 'const' qualifier}}
+                       ^
+
+"Test_name.c", line 72: warning: variable "bvr1" was declared but never referenced
+    volatile Base &bvr1 = b;
+                   ^
+
+"Test_name.c", line 73: warning: variable "bvr2" was declared but never referenced
+    volatile Base &bvr2 = d;
+                   ^
+
+"Test_name.c", line 79: warning: variable "bcvr1" was declared but never referenced
+    const volatile Base &bcvr1 = b;
+                         ^
+
+"Test_name.c", line 80: warning: variable "bcvr2" was declared but never referenced
+    const volatile Base &bcvr2 = d;
+                         ^
+
+"Test_name.c", line 84: error: initial value of reference to non-const must be an lvalue
+    Base &br1 = Base(); // expected-error{{non-const lvalue reference to type 'Base' cannot bind to a temporary of type 'Base'}}
+                ^
+
+"Test_name.c", line 85: error: initial value of reference to non-const must be an lvalue
+    Base &br2 = Derived(); // expected-error{{non-const lvalue reference to type 'Base' cannot bind to a temporary of type 'Derived'}}
+                ^
+
+"Test_name.c", line 86: error: initial value of reference to const volatile must be an lvalue
+    const volatile Base &br3 = Base(); // expected-error{{volatile lvalue reference to type 'const volatile Base' cannot bind to a temporary of type 'Base'}}
+                               ^
+
+"Test_name.c", line 87: error: initial value of reference to const volatile must be an lvalue
+    const volatile Base &br4 = Derived(); // expected-error{{volatile lvalue reference to type 'const volatile Base' cannot bind to a temporary of type 'Derived'}}
+                               ^
+
+"Test_name.c", line 89: error: initial value of reference to non-const must be an lvalue
+    int &ir = 17; // expected-error{{non-const lvalue reference to type 'int' cannot bind to a temporary of type 'int'}}
+              ^
+
+"Test_name.c", line 93: error: a reference of type "Base &" (not const-qualified) cannot be initialized with a value of type "Unrelated"
+    Base &br1 = ur; // expected-error{{non-const lvalue reference to type 'Base' cannot bind to a value of unrelated type 'Unrelated'}}
+                ^
+
+"Test_name.c", line 94: error: a reference of type "const volatile Base &" cannot be initialized with a value of type "Unrelated"
+    const volatile Base &br2 = ur; // expected-error{{volatile lvalue reference to type 'const volatile Base' cannot bind to a value of unrelated type 'Unrelated'}}
+                               ^
+
+"Test_name.c", line 107: error: more than one conversion function from "ConvertibleToBothDerivedRef" to "Base" applies:
+            function "ConvertibleToBothDerivedRef::operator Derived &()" (declared at line 25)
+            function "ConvertibleToBothDerivedRef::operator Derived2 &()" (declared at line 26)
+    Base &br1 = both; // expected-error{{reference initialization of type 'Base &' with initializer of type 'ConvertibleToBothDerivedRef' is ambiguous}}
+                ^
+
+"Test_name.c", line 115: error: taking the address of a bit field is not allowed
+    int & ir1 = (ib.i); // expected-error{{non-const reference cannot bind to bit-field 'i'}}
+                ^
+
+"Test_name.c", line 123: error: no suitable user-defined conversion from "Base" to "const Derived" exists
+    const Derived &dr1 = create<Base>(); // expected-error{{no viable conversion}}
+                         ^
+
+"Test_name.c", line 128: error: qualifiers dropped in binding reference of type "const Base &" to initializer of type "const volatile Base"
+    const Base &br5 = create<const volatile Base>();    // expected-error{{binding reference of type 'const Base' to value of type 'const volatile Base' drops 'volatile' qualifier}}
+                      ^
+
+"Test_name.c", line 129: error: qualifiers dropped in binding reference of type "const Base &" to initializer of type "const volatile Derived"
+    const Base &br6 = create<const volatile Derived>(); // expected-error{{binding reference of type 'const Base' to value of type 'const volatile Derived' drops 'volatile' qualifier}}
+                      ^
+
+"Test_name.c", line 141: error: more than one conversion function from "ConvertibleToBothDerived" to "const Base" applies:
+            function "ConvertibleToBothDerived::operator Derived()" (declared at line 42)
+            function "ConvertibleToBothDerived::operator Derived2()" (declared at line 43)
+    const Base &br1 = both; // expected-error{{reference initialization of type 'const Base &' with initializer of type 'ConvertibleToBothDerived' is ambiguous}}
+                      ^
+
+21 errors detected in the compilation of "Test_name.c".

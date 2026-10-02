@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 41: warning: a reduction in alignment without the "packed" attribute is ignored
+  struct __attribute__((aligned(2))) U4 {
+                        ^
+
+"Test_name.c", line 56: warning: a reduction in alignment without the "packed" attribute is ignored
+    struct T1 c __attribute__((aligned(2)));
+              ^
+
+"Test_name.c", line 87: warning: a reduction in alignment without the "packed" attribute is ignored
+  struct __attribute__((aligned(2))) U11 {
+                        ^
+

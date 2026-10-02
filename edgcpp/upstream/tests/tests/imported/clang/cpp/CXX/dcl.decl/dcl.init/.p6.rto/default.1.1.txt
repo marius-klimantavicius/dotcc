@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 15: error: const variable "x1" requires an initializer -- class "NoUserDefault" has no user-provided default constructor
+    const NoUserDefault x1; // expected-error{{default initialization of an object of const type 'const NoUserDefault' without a user-provided default constructor}}
+                        ^
+
+"Test_name.c", line 17: error: const variable "x3" requires an initializer
+    const int x3; // expected-error{{default initialization of an object of const type 'const int'}}
+                ^
+
+"Test_name.c", line 17: warning: variable "x3" was declared but never referenced
+    const int x3; // expected-error{{default initialization of an object of const type 'const int'}}
+              ^
+
+"Test_name.c", line 22: error: const member "s1::foo" requires an initializer -- class "s0" has no user-provided default constructor
+  const struct s0 s1::foo; // expected-error{{default initialization of an object of const type 'const struct s0' without a user-provided default constructor}}
+                         ^
+
+3 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,46 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 6: error: a value of type "const char *" cannot be used to initialize an entity of type "char"
+  char g[] = { [7] = "abcd" };	     // { dg-error "15:designator .7." }
+                     ^
+
+"Test_name.c", line 7: error: a designator cannot be used with a non-aggregate type "int"
+  int a = { .foo = 6 };		     // { dg-error "designator" }
+             ^
+
+"Test_name.c", line 8: error: a designator cannot be used with a non-aggregate type "int"
+  int b = { [0] = 1 };		     // { dg-error "12:designator .0." }
+            ^
+
+"Test_name.c", line 9: error: mixing designated and non-designated initializers is nonstandard in C++
+  _Complex float c = { .foo = 0,  1 }; // { dg-error "designator" }
+                                  ^
+
+"Test_name.c", line 9: error: a designator cannot be used with a non-aggregate type "float"
+  _Complex float c = { .foo = 0,  1 }; // { dg-error "designator" }
+                        ^
+
+"Test_name.c", line 11: error: mixing designated and non-designated initializers is nonstandard in C++
+  _Complex float d = { [0] = 0,  1 };  // { dg-error "23:designator .0." }
+                                 ^
+
+"Test_name.c", line 11: error: a designator cannot be used with a non-aggregate type "float"
+  _Complex float d = { [0] = 0,  1 };  // { dg-error "23:designator .0." }
+                       ^
+
+"Test_name.c", line 13: error: mixing designated and non-designated initializers is nonstandard in C++
+  _Complex float e = { 0, .foo = 1 };  // { dg-error "designator" }
+                                 ^
+
+"Test_name.c", line 13: error: a designator cannot be used with a non-aggregate type "float"
+  _Complex float e = { 0, .foo = 1 };  // { dg-error "designator" }
+                           ^
+
+"Test_name.c", line 15: error: mixing designated and non-designated initializers is nonstandard in C++
+  _Complex float f = { 0, [0] = 1 };   // { dg-error "26:designator .0." }
+                                ^
+
+"Test_name.c", line 15: error: a designator cannot be used with a non-aggregate type "float"
+  _Complex float f = { 0, [0] = 1 };   // { dg-error "26:designator .0." }
+                          ^
+
+11 errors detected in the compilation of "Test_name.c".

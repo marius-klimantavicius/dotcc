@@ -1,0 +1,152 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 18: error: type name is not allowed
+    x.E; // expected-error{{cannot refer to type member 'E' in 'X' with '.'}}
+      ^
+
+"Test_name.c", line 19: error: type name is not allowed
+    xp->E; // expected-error{{cannot refer to type member 'E' in 'X' with '->'}}
+        ^
+
+"Test_name.c", line 20: warning: variable "i3" was declared but never referenced
+    int i3 = x.Enumerator;
+        ^
+
+"Test_name.c", line 21: warning: variable "i4" was declared but never referenced
+    int i4 = xp->Enumerator;
+        ^
+
+"Test_name.c", line 35: error: a pointer to a bound function may only be used to call the function
+    return b->f0->f0; // expected-error{{did you mean to call it with no arguments}}
+              ^
+
+"Test_name.c", line 45: error: "i" is not a class member
+    xp->::i = 7; // expected-error{{'i' is not a member of class 'X'}}
+        ^
+
+"Test_name.c", line 46: error: "C::i" is not a class member
+    xp->C::i = 7; // expected-error{{'C::i' is not a member of class 'X'}}
+        ^
+
+"Test_name.c", line 86: error: expression must have class type but it has type "int"
+      x.A::foo<int>(); // expected-error {{'int' is not a structure or union}}
+      ^
+
+"Test_name.c", line 90: error: expression must have class type but it has type "test5::A *"
+      x.A::foo<int>(); // expected-error {{'A *' is a pointer}}
+      ^
+
+"Test_name.c", line 94: error: operator -> or ->* applied to "test5::A" instead of to a pointer type
+      x->A::foo<int>(); // expected-error {{'A' is not a pointer; did you mean to use '.'?}}
+      ^
+
+"Test_name.c", line 105: error: class "PR7508::A" has no member "PopCleanupScope"
+      a.PopCleanupScope(); // expected-error{{no member named 'PopCleanupScope' in 'PR7508::A'}}
+        ^
+
+"Test_name.c", line 121: error: "rdar8231724::N::X1<int>" is not a class member
+      y->N::X1<int>; // expected-error{{'rdar8231724::N::X1' is not a member of class 'Y'}}
+         ^
+
+"Test_name.c", line 122: error: qualified name is not a member of class "rdar8231724::Y" or its base classes
+      y->Z<int>::n; // expected-error{{'rdar8231724::Z<int>::n' is not a member of class 'Y'}}
+         ^
+
+"Test_name.c", line 123: error: qualified name is not a member of class "rdar8231724::Y" or its base classes
+      y->template Z<int>::n; // expected-error{{'rdar8231724::Z<int>::n' is not a member of class 'Y'}}
+                  ^
+
+"Test_name.c", line 135: error: cannot determine which instance of overloaded function "PR9025::fun" is intended
+      return fun.x; // expected-error{{reference to overloaded function could not be resolved; did you mean to call it with no arguments?}}
+             ^
+
+"Test_name.c", line 141: error: cannot determine which instance of overloaded function "PR9025::fun2" is intended
+      return fun2.x; // expected-error{{reference to overloaded function could not be resolved; did you mean to call it with no arguments?}}
+             ^
+
+"Test_name.c", line 147: error: cannot determine which instance of overloaded function "PR9025::fun3" is intended
+      return fun3.x; // expected-error{{reference to overloaded function could not be resolved; did you mean to call it with no arguments?}}
+             ^
+
+"Test_name.c", line 152: error: cannot determine which instance of function template "PR9025::fun4" is intended
+      return fun4.x; // expected-error{{reference to overloaded function could not be resolved; did you mean to call it?}}
+             ^
+
+"Test_name.c", line 158: error: cannot determine which instance of overloaded function "PR9025::fun5" is intended
+      return fun5.x; // expected-error{{reference to overloaded function could not be resolved; did you mean to call it?}}
+             ^
+
+"Test_name.c", line 165: error: expression must have class type but it has type "FuncInMemberExpr::Vec (*)()"
+    int test1() { return fun1.size(); } // expected-error {{base of member reference is a function; perhaps you meant to call it with no arguments}}
+                         ^
+
+"Test_name.c", line 167: error: expression must have pointer-to-class type but it has type "FuncInMemberExpr::Vec *(*)()"
+    int test2() { return fun2->size(); } // expected-error {{base of member reference is a function; perhaps you meant to call it with no arguments}}
+                         ^
+
+"Test_name.c", line 169: error: expression must have class type but it has type "FuncInMemberExpr::Vec (*)(int)"
+    int test3() { return fun3.size(); } // expected-error {{base of member reference is a function; perhaps you meant to call it with no arguments}}
+                         ^
+
+"Test_name.c", line 177: error: expression must have class type but it has type "int"
+    int j = i. // expected-error {{member reference base type 'int' is not a structure or union}}
+            ^
+
+"Test_name.c", line 190: error: operator -> or ->* applied to "PR15045::Cl0" instead of to a pointer type
+      return c->a;  // expected-error {{member reference type 'Cl0' is not a pointer; did you mean to use '.'?}}
+             ^
+
+"Test_name.c", line 190: warning: variable "c" is used before its value is set
+      return c->a;  // expected-error {{member reference type 'Cl0' is not a pointer; did you mean to use '.'?}}
+             ^
+
+"Test_name.c", line 211: error: operator -> or ->* applied to "PR15045::bar" instead of to a pointer type
+      e->Func();  // expected-error {{member reference type 'bar' is not a pointer; did you mean to use '.'?}} \
+      ^
+
+"Test_name.c", line 216: error: operator -> or ->* applied to "PR15045::bar" instead of to a pointer type
+      f->func();  // expected-error-re {{member reference type 'bar' is not a pointer{{$}}}}
+      ^
+
+"Test_name.c", line 229: error: a pointer to a bound function may only be used to call the function
+      return t.get_s  // expected-error {{reference to non-static member function must be called; did you mean to call it with no arguments?}}
+               ^
+
+"Test_name.c", line 238: warning: missing return statement at end of non-void function "LookupTemplateNameAssert::f2"
+  const at& f2(){}
+                 ^
+
+"Test_name.c", line 241: error: expression must have class type but it has type "void"
+    f().junk<int>(); // expected-error {{member reference base type 'void' is not a structure or union}}
+    ^
+
+"Test_name.c", line 241: error: type name is not allowed
+    f().junk<int>(); // expected-error {{member reference base type 'void' is not a structure or union}}
+             ^
+
+"Test_name.c", line 241: error: expected an expression
+    f().junk<int>(); // expected-error {{member reference base type 'void' is not a structure or union}}
+                  ^
+
+"Test_name.c", line 244: error: expression must have class type but it has type "const int *"
+    f2().junk<int>(); // expected-error {{member reference base type 'const at' (aka 'const int[]') is not a structure or union}}
+    ^
+
+"Test_name.c", line 244: error: type name is not allowed
+    f2().junk<int>(); // expected-error {{member reference base type 'const at' (aka 'const int[]') is not a structure or union}}
+              ^
+
+"Test_name.c", line 244: error: expected an expression
+    f2().junk<int>(); // expected-error {{member reference base type 'const at' (aka 'const int[]') is not a structure or union}}
+                   ^
+
+"Test_name.c", line 202: error: operator -> or ->* applied to "PR15045::bar" instead of to a pointer type
+      t->func();  // expected-error-re 2 {{member reference type '{{(PR15045::)?}}bar' is not a pointer{{$}}}} \
+      ^
+          detected during instantiation of "void PR15045::call_func(T) [with T=PR15045::bar]" at line 218
+
+"Test_name.c", line 202: error: operator -> or ->* applied to "PR15045::bar" instead of to a pointer type
+      t->func();  // expected-error-re 2 {{member reference type '{{(PR15045::)?}}bar' is not a pointer{{$}}}} \
+      ^
+          detected during instantiation of "void PR15045::call_func(T) [with T=PR15045::foo]" at line 220
+
+33 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,80 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --exceptions --exceptions Test_name.c
+"Test_name.c", line 23: error: a parameter pack declaration is not allowed here
+  extern void (*r4)() throw(...);
+                            ^
+
+"Test_name.c", line 23: error: explicit type is missing ("int" assumed)
+  extern void (*r4)() throw(...);
+                            ^
+
+"Test_name.c", line 23: error: exception specification is incompatible with that of previous variable "r4" (declared at line 22)
+  extern void (*r4)() throw(...);
+                ^
+
+"Test_name.c", line 27: error: allowing all exceptions is incompatible with previous variable "r5" (declared at line 26)
+  extern void (*r5)(); // expected-error {{exception specification in declaration does not match}}
+                ^
+
+"Test_name.c", line 31: error: allowing all exceptions is incompatible with previous function "f5" (declared at line 30)
+  extern void f5(); // expected-error {{missing exception specification}}
+                  ^
+
+"Test_name.c", line 35: error: exception specification is incompatible with that of previous variable "r7" (declared at line 34):
+            previously omitted: "float"
+            previously specified but omitted here: "int"
+  extern void (*r7)() throw(float); // expected-error {{exception specification in declaration does not match}}
+                ^
+
+"Test_name.c", line 56: error: exception specification is incompatible with that of previous variable "r12" (declared at line 55):
+            previously specified: no exceptions will be thrown
+  extern void (*r12)() noexcept(false); // expected-error {{does not match}}
+                ^
+
+"Test_name.c", line 64: error: exception specification is incompatible with that of previous variable "r14" (declared at line 63):
+            previously specified: no exceptions will be thrown
+  extern void (*r14)() noexcept(false); // expected-error {{does not match}}
+                ^
+
+"Test_name.c", line 72: error: a parameter pack declaration is not allowed here
+  extern void (*r16)() throw(...);
+                             ^
+
+"Test_name.c", line 72: error: explicit type is missing ("int" assumed)
+  extern void (*r16)() throw(...);
+                             ^
+
+"Test_name.c", line 72: error: exception specification is incompatible with that of previous variable "r16" (declared at line 71)
+  extern void (*r16)() throw(...);
+                ^
+
+"Test_name.c", line 93: error: exception specification is incompatible with that of previous variable "r20" (declared at line 92):
+            previously specified: no exceptions will be thrown
+  extern void (*r20)() noexcept(false); // expected-error {{does not match}}
+                ^
+
+"Test_name.c", line 96: error: exception specification is incompatible with that of previous variable "r21" (declared at line 95):
+            previously specified but omitted here: "int"
+  extern void (*r21)() noexcept(true); // expected-error {{does not match}}
+                ^
+
+"Test_name.c", line 104: error: exception specification is incompatible with that of previous function "operator new" (declared implicitly)
+  void* operator new(mysize_t) throw(std::bad_alloc);
+                               ^
+
+"Test_name.c", line 105: warning: allowing all exceptions is incompatible with previous function "operator new" (declared at line 104)
+  void* operator new(mysize_t);
+                              ^
+
+"Test_name.c", line 107: error: exception specification is incompatible with that of previous function "operator new[]" (declared at line 106)
+  void* operator new[](mysize_t) throw(std::bad_alloc);
+                                 ^
+
+"Test_name.c", line 113: error: exception specification is incompatible with that of previous function template "not_equivalent" (declared at line 112)
+  template<bool X, bool Y> void not_equivalent() noexcept (Y); // expected-error {{does not match}}
+                                                 ^
+
+"Test_name.c", line 118: error: exception specification is incompatible with that of previous function template "missing" (declared at line 115)
+  template<bool P> void missing(); // expected-error {{missing exception specification 'noexcept(X)'}}
+                                 ^
+
+17 errors detected in the compilation of "Test_name.c".

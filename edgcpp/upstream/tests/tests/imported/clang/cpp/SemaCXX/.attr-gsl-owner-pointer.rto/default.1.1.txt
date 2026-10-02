@@ -1,0 +1,133 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 6: warning: attribute namespace "gsl" is unrecognized
+  int [[gsl::Owner]] i;
+        ^
+
+"Test_name.c", line 8: warning: attribute namespace "gsl" is unrecognized
+  void [[gsl::Owner]] f();
+         ^
+
+"Test_name.c", line 11: warning: attribute namespace "gsl" is unrecognized
+  [[gsl::Owner]] void f();
+    ^
+
+"Test_name.c", line 14: warning: attribute namespace "gsl" is unrecognized
+  union [[gsl::Owner(int)]] Union{};
+          ^
+
+"Test_name.c", line 20: warning: attribute namespace "gsl" is unrecognized
+  S [[gsl::Owner]] Instance;
+      ^
+
+"Test_name.c", line 23: warning: attribute namespace "gsl" is unrecognized
+  class [[gsl::Owner(7)]] OwnerDerefNoType{};
+          ^
+
+"Test_name.c", line 26: warning: attribute namespace "gsl" is unrecognized
+  class [[gsl::Pointer("int")]] PointerDerefNoType{};
+          ^
+
+"Test_name.c", line 29: warning: attribute namespace "gsl" is unrecognized
+  class [[gsl::Owner(int)]] [[gsl::Pointer(int)]] BothOwnerPointer{};
+          ^
+
+"Test_name.c", line 29: warning: attribute namespace "gsl" is unrecognized
+  class [[gsl::Owner(int)]] [[gsl::Pointer(int)]] BothOwnerPointer{};
+                              ^
+
+"Test_name.c", line 35: warning: attribute namespace "gsl" is unrecognized
+  class [[gsl::Owner(void)]] OwnerVoidDerefType{};
+          ^
+
+"Test_name.c", line 38: warning: attribute namespace "gsl" is unrecognized
+  class [[gsl::Pointer(void)]] PointerVoidDerefType{};
+          ^
+
+"Test_name.c", line 42: warning: attribute namespace "gsl" is unrecognized
+  class [[gsl::Pointer(int)]] AddConflictLater{};
+          ^
+
+"Test_name.c", line 45: warning: attribute namespace "gsl" is unrecognized
+  class [[gsl::Owner(int)]] AddConflictLater;
+          ^
+
+"Test_name.c", line 51: warning: attribute namespace "gsl" is unrecognized
+  class [[gsl::Owner(int)]] AddConflictLater2{};
+          ^
+
+"Test_name.c", line 54: warning: attribute namespace "gsl" is unrecognized
+  class [[gsl::Owner(float)]] AddConflictLater2;
+          ^
+
+"Test_name.c", line 60: warning: attribute namespace "gsl" is unrecognized
+  class [[gsl::Owner()]] [[gsl::Owner(int)]] WithAndWithoutParameter{};
+          ^
+
+"Test_name.c", line 60: warning: attribute namespace "gsl" is unrecognized
+  class [[gsl::Owner()]] [[gsl::Owner(int)]] WithAndWithoutParameter{};
+                           ^
+
+"Test_name.c", line 66: warning: attribute namespace "gsl" is unrecognized
+  class [[gsl::Owner(int &)]] ReferenceType{};
+          ^
+
+"Test_name.c", line 69: warning: attribute namespace "gsl" is unrecognized
+  class [[gsl::Pointer(int[])]] ArrayType{};
+          ^
+
+"Test_name.c", line 72: warning: attribute namespace "gsl" is unrecognized
+  class [[gsl::Owner]] OwnerMissingParameter{};
+          ^
+
+"Test_name.c", line 76: warning: attribute namespace "gsl" is unrecognized
+  class [[gsl::Pointer]] PointerMissingParameter{};
+          ^
+
+"Test_name.c", line 80: warning: attribute namespace "gsl" is unrecognized
+  class [[gsl::Owner()]] OwnerWithEmptyParameterList{};
+          ^
+
+"Test_name.c", line 84: warning: attribute namespace "gsl" is unrecognized
+  class [[gsl::Pointer()]] PointerWithEmptyParameterList{};
+          ^
+
+"Test_name.c", line 88: warning: attribute namespace "gsl" is unrecognized
+  struct [[gsl::Owner(int)]] AnOwner{};
+           ^
+
+"Test_name.c", line 93: warning: attribute namespace "gsl" is unrecognized
+  class [[gsl::Pointer(S)]] APointer{};
+          ^
+
+"Test_name.c", line 97: warning: attribute namespace "gsl" is unrecognized
+  class [[gsl::Owner(int)]] [[gsl::Owner(int)]] DuplicateOwner{};
+          ^
+
+"Test_name.c", line 97: warning: attribute namespace "gsl" is unrecognized
+  class [[gsl::Owner(int)]] [[gsl::Owner(int)]] DuplicateOwner{};
+                              ^
+
+"Test_name.c", line 101: warning: attribute namespace "gsl" is unrecognized
+  class [[gsl::Pointer(int)]] [[gsl::Pointer(int)]] DuplicatePointer{};
+          ^
+
+"Test_name.c", line 101: warning: attribute namespace "gsl" is unrecognized
+  class [[gsl::Pointer(int)]] [[gsl::Pointer(int)]] DuplicatePointer{};
+                                ^
+
+"Test_name.c", line 105: warning: attribute namespace "gsl" is unrecognized
+  class [[gsl::Owner(int)]] AddTheSameLater{};
+          ^
+
+"Test_name.c", line 109: warning: attribute namespace "gsl" is unrecognized
+  class [[gsl::Owner(int)]] AddTheSameLater;
+          ^
+
+"Test_name.c", line 114: warning: attribute namespace "gsl" is unrecognized
+  class [[gsl::Owner]] ForwardDeclared;
+          ^
+
+"Test_name.c", line 122: warning: attribute namespace "gsl" is unrecognized
+  class [[gsl::Owner]] ForwardDeclared {
+          ^
+

@@ -1,0 +1,97 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 14: warning: expression has no effect
+    x > (tf?64:128); /* { dg-bogus "changes signedness" "case 1" } */
+    ^
+
+"Test_name.c", line 15: warning: expression has no effect
+    y > (tf?64:128); /* { dg-bogus "changes signedness" "case 2" } */
+    ^
+
+"Test_name.c", line 18: warning: expression has no effect
+    x > (tf?64:(tf?128:256)); /* { dg-bogus "changes signedness" "case 3" } */
+    ^
+
+"Test_name.c", line 19: warning: expression has no effect
+    y > (tf?64:(tf?128:256)); /* { dg-bogus "changes signedness" "case 4" } */
+    ^
+
+"Test_name.c", line 22: warning: expression has no effect
+    x > (tf?64:-1); /* { dg-bogus "changes signedness" "case 5" } */
+    ^
+
+"Test_name.c", line 23: warning: expression has no effect
+    y > (tf?64:-1); /* { dg-warning "different signedness" "case 6" } */
+    ^
+
+"Test_name.c", line 26: warning: expression has no effect
+    x > (tf?64:(tf?128:-1)); /* { dg-bogus "changes signedness" "case 7" } */
+    ^
+
+"Test_name.c", line 27: warning: expression has no effect
+    y > (tf?64:(tf?128:-1)); /* { dg-warning "different signedness" "case 8" } */
+    ^
+
+"Test_name.c", line 30: warning: expression has no effect
+    x > ({tf; 64;}); /* { dg-bogus "changes signedness" "case 9" } */
+          ^
+
+"Test_name.c", line 31: warning: expression has no effect
+    y > ({tf; 64;}); /* { dg-bogus "changes signedness" "case 10" } */
+          ^
+
+"Test_name.c", line 34: warning: expression has no effect
+    x > ({tf; tf?64:(tf?128:256);}); /* { dg-bogus "changes signedness" "case 11" } */
+          ^
+
+"Test_name.c", line 35: warning: expression has no effect
+    y > ({tf; tf?64:(tf?128:256);}); /* { dg-bogus "changes signedness" "case 12" } */
+          ^
+
+"Test_name.c", line 38: warning: expression has no effect
+    x > ({tf; tf?64:-1;}); /* { dg-bogus "changes signedness" "case 13" } */
+          ^
+
+"Test_name.c", line 39: warning: expression has no effect
+    y > ({tf; tf?64:-1;}); /* { dg-warning "different signedness" "case 14" } */
+          ^
+
+"Test_name.c", line 42: warning: expression has no effect
+    x > ({tf; tf?64:(tf?128:-1);}); /* { dg-bogus "changes signedness" "case 15" } */
+          ^
+
+"Test_name.c", line 43: warning: expression has no effect
+    y > ({tf; tf?64:(tf?128:-1);}); /* { dg-warning "different signedness" "case 16" } */
+          ^
+
+"Test_name.c", line 46: warning: expression has no effect
+    tf ? x : (tf?64:32); /* { dg-bogus "changes signedness" "case 17" } */
+    ^
+
+"Test_name.c", line 47: warning: expression has no effect
+    tf ? y : (tf?64:32); /* { dg-bogus "changes signedness" "case 18" } */
+    ^
+
+"Test_name.c", line 50: warning: expression has no effect
+    tf ? x : (tf?64:-1); /* { dg-bogus "changes signedness" "case 19" } */
+    ^
+
+"Test_name.c", line 51: warning: expression has no effect
+    tf ? y : (tf?64:-1); /* { dg-warning "changes signedness" "case 20" } */
+    ^
+
+"Test_name.c", line 54: warning: expression has no effect
+    tf ? x : (tf?64:(tf?128:256)); /* { dg-bogus "changes signedness" "case 21" } */
+    ^
+
+"Test_name.c", line 55: warning: expression has no effect
+    tf ? y : (tf?64:(tf?128:256)); /* { dg-bogus "changes signedness" "case 22" } */
+    ^
+
+"Test_name.c", line 58: warning: expression has no effect
+    tf ? x : (tf?64:(tf?128:-1)); /* { dg-bogus "changes signedness" "case 23" } */
+    ^
+
+"Test_name.c", line 59: warning: expression has no effect
+    tf ? y : (tf?64:(tf?128:-1)); /* { dg-warning "changes signedness" "case 24" } */
+    ^
+

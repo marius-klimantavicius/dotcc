@@ -1,0 +1,122 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./rtl/x86_64/ira.c", line 8: error: identifier "startwith" is undefined
+  int __RTL (startwith ("ira")) test_1 (int i, int j, int k)
+             ^
+
+"./rtl/x86_64/ira.c", line 8: error: expected a ")"
+  int __RTL (startwith ("ira")) test_1 (int i, int j, int k)
+                        ^
+
+"./rtl/x86_64/ira.c", line 8: error: expected a "{"
+  int __RTL (startwith ("ira")) test_1 (int i, int j, int k)
+                                ^
+
+"./rtl/x86_64/ira.c", line 10: error: identifier "function" is undefined
+  (function "test_1"
+   ^
+
+"./rtl/x86_64/ira.c", line 10: error: expected a ")"
+  (function "test_1"
+            ^
+
+"./rtl/x86_64/ira.c", line 14: warning: parsing restarts here after previous syntax error
+      (DECL_RTL_INCOMING (reg:SI di [ i ])))
+                                          ^
+
+"./rtl/x86_64/ira.c", line 14: error: expected a ";"
+      (DECL_RTL_INCOMING (reg:SI di [ i ])))
+                                           ^
+
+"./rtl/x86_64/ira.c", line 52: warning: parsing restarts here after previous syntax error
+      ) ;; block 2
+        ^
+
+"./rtl/x86_64/ira.c", line 52: error: identifier "block" is undefined
+      ) ;; block 2
+           ^
+
+"./rtl/x86_64/ira.c", line 52: error: expected a ";"
+      ) ;; block 2
+                 ^
+
+"./rtl/x86_64/ira.c", line 71: warning: parsing restarts here after previous syntax error
+      ) ;; block 3
+        ^
+
+"./rtl/x86_64/ira.c", line 71: error: expected a ";"
+      ) ;; block 3
+                 ^
+
+"./rtl/x86_64/ira.c", line 88: warning: parsing restarts here after previous syntax error
+      ) ;; block 4
+        ^
+
+"./rtl/x86_64/ira.c", line 88: error: expected a ";"
+      ) ;; block 4
+                 ^
+
+"./rtl/x86_64/ira.c", line 100: warning: parsing restarts here after previous syntax error
+      ) ;; block 5
+        ^
+
+"./rtl/x86_64/ira.c", line 100: error: expected a ";"
+      ) ;; block 5
+                 ^
+
+"./rtl/x86_64/ira.c", line 101: error: identifier "insn" is undefined
+    ) ;; insn-chain
+         ^
+
+"./rtl/x86_64/ira.c", line 101: warning: function "chain" declared implicitly
+    ) ;; insn-chain
+              ^
+
+"./rtl/x86_64/ira.c", line 102: warning: function "crtl" declared implicitly
+    (crtl
+     ^
+
+"./rtl/x86_64/ira.c", line 103: warning: function "return_rtx" declared implicitly
+      (return_rtx
+       ^
+
+"./rtl/x86_64/ira.c", line 104: error: identifier "reg" is undefined
+        (reg/i:SI ax)
+         ^
+
+"./rtl/x86_64/ira.c", line 104: error: identifier "i" is undefined
+        (reg/i:SI ax)
+             ^
+
+"./rtl/x86_64/ira.c", line 104: error: expected a ")"
+        (reg/i:SI ax)
+              ^
+
+"./rtl/x86_64/ira.c", line 105: error: expected a ")"
+      ) ;; return_rtx
+        ^
+
+"./rtl/x86_64/ira.c", line 105: warning: expression has no effect
+      ) ;; return_rtx
+           ^
+
+"./rtl/x86_64/ira.c", line 106: error: expected a ";"
+    ) ;; crtl
+    ^
+
+"./rtl/x86_64/ira.c", line 106: warning: expression has no effect
+    ) ;; crtl
+         ^
+
+"./rtl/x86_64/ira.c", line 107: error: expected a ";"
+  ) ;; function "test_1"
+  ^
+
+"./rtl/x86_64/ira.c", line 107: error: expected a ";"
+  ) ;; function "test_1"
+                ^
+
+"./rtl/x86_64/ira.c", line 108: warning: missing return statement at end of non-void function "__RTL"
+  }
+  ^
+
+19 errors detected in the compilation of "Test_name.c".

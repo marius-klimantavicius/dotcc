@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --user_defined_literals --no_microsoft_bugs Test_name.c
+"Test_name.c", line 15: warning: variable "p" was declared but never referenced
+      const char *p = __FUNCTION__;
+                  ^
+          detected during instantiation of "void S<T>::f(int) [with T=int]" at line 20
+

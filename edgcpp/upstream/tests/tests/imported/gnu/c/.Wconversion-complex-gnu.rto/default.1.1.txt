@@ -1,0 +1,134 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"./Wconversion-complex-gnu.c", line 21: error: _Complex can only be used with floating-point types
+  void fsic (int _Complex);
+             ^
+
+"./Wconversion-complex-gnu.c", line 22: error: invalid combination of type specifiers
+  void fuic (unsigned _Complex);
+             ^
+
+"./Wconversion-complex-gnu.c", line 24: error: _Complex can only be used with floating-point types
+  int _Complex vsic;
+  ^
+
+"./Wconversion-complex-gnu.c", line 25: error: invalid combination of type specifiers
+  unsigned _Complex vuic;
+  ^
+
+"./Wconversion-complex-gnu.c", line 47: error: _Complex can only be used with floating-point types
+    int _Complex ic = 0;
+    ^
+
+"./Wconversion-complex-gnu.c", line 48: error: invalid combination of type specifiers
+    unsigned _Complex uc = 0;
+    ^
+
+"./Wconversion-complex-gnu.c", line 49: error: invalid combination of type specifiers
+    unsigned long long _Complex ullc = 0;
+    ^
+
+"./Wconversion-complex-gnu.c", line 88: error: complex integral types are not supported
+    fsi (-1 + 0i);
+               ^
+
+"./Wconversion-complex-gnu.c", line 89: error: complex integral types are not supported
+    fui (1 + 0i);
+              ^
+
+"./Wconversion-complex-gnu.c", line 90: error: complex integral types are not supported
+    vsi = -1 + 0i;
+                ^
+
+"./Wconversion-complex-gnu.c", line 91: error: complex integral types are not supported
+    vui = 1 + 0i;
+               ^
+
+"./Wconversion-complex-gnu.c", line 93: error: complex integral types are not supported
+    fui (1 + 1i);
+              ^
+
+"./Wconversion-complex-gnu.c", line 94: error: complex integral types are not supported
+    vui = 1 + 1i;
+               ^
+
+"./Wconversion-complex-gnu.c", line 96: error: complex integral types are not supported
+                 + 1ull + 0i);
+                           ^
+
+"./Wconversion-complex-gnu.c", line 97: error: complex integral types are not supported
+                  + 1ull + 0i;
+                            ^
+
+"./Wconversion-complex-gnu.c", line 99: error: complex integral types are not supported
+                    + 0i);
+                       ^
+
+"./Wconversion-complex-gnu.c", line 100: error: complex integral types are not supported
+                     + 0i;
+                        ^
+
+"./Wconversion-complex-gnu.c", line 106: error: complex integral types are not supported
+    fsic (1 - 1i);
+               ^
+
+"./Wconversion-complex-gnu.c", line 107: error: complex integral types are not supported
+    fuic (1 + 1i);
+               ^
+
+"./Wconversion-complex-gnu.c", line 108: error: complex integral types are not supported
+    vsic = 1 - 1i;
+                ^
+
+"./Wconversion-complex-gnu.c", line 109: error: complex integral types are not supported
+    vuic = 1 + 1i;
+                ^
+
+"./Wconversion-complex-gnu.c", line 111: error: complex integral types are not supported
+                  + 1ull + 1i);
+                            ^
+
+"./Wconversion-complex-gnu.c", line 112: error: complex integral types are not supported
+                   + 1ull) * 1i);
+                              ^
+
+"./Wconversion-complex-gnu.c", line 113: error: complex integral types are not supported
+                                       + 1ull) * 1i);
+                                                  ^
+
+"./Wconversion-complex-gnu.c", line 115: error: complex integral types are not supported
+                    + 1ull) * 1i;
+                               ^
+
+"./Wconversion-complex-gnu.c", line 116: error: complex integral types are not supported
+                    + 1ull) + 1i;
+                               ^
+
+"./Wconversion-complex-gnu.c", line 117: error: complex integral types are not supported
+                                        + 1ull) * 1i;
+                                                   ^
+
+"./Wconversion-complex-gnu.c", line 119: error: complex integral types are not supported
+                     * 1i);
+                        ^
+
+"./Wconversion-complex-gnu.c", line 120: error: complex integral types are not supported
+                     + 1i);
+                        ^
+
+"./Wconversion-complex-gnu.c", line 121: error: complex integral types are not supported
+                                * 1i);
+                                   ^
+
+"./Wconversion-complex-gnu.c", line 123: error: complex integral types are not supported
+                      * 1i;
+                         ^
+
+"./Wconversion-complex-gnu.c", line 124: error: complex integral types are not supported
+                      + 1i;
+                         ^
+
+"./Wconversion-complex-gnu.c", line 125: error: complex integral types are not supported
+                                 * 1i;
+                                    ^
+
+33 errors detected in the compilation of "Test_name.c".

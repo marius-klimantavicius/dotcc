@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 12: error: identifier "constexpr" is undefined
+    constexpr B() {}
+    ^
+
+"Test_name.c", line 12: error: member function with the same name as its class must be a constructor
+    constexpr B() {}
+              ^
+
+"Test_name.c", line 13: error: identifier "constexpr" is undefined
+    constexpr B(B const&) {}
+    ^
+
+"Test_name.c", line 13: error: member function with the same name as its class must be a constructor
+    constexpr B(B const&) {}
+              ^
+
+"Test_name.c", line 16: error: identifier "constexpr" is undefined
+    constexpr D(): B() {}
+    ^
+
+"Test_name.c", line 16: error: member function with the same name as its class must be a constructor
+    constexpr D(): B() {}
+              ^
+
+"Test_name.c", line 16: error: expected a ";"
+    constexpr D(): B() {}
+                 ^
+
+"Test_name.c", line 19: error: identifier "constexpr" is undefined
+  constexpr D d1, d2(d1);   // Previously an error.  Now okay.
+  ^
+
+"Test_name.c", line 19: error: expected a ";"
+  constexpr D d1, d2(d1);   // Previously an error.  Now okay.
+              ^
+
+9 errors detected in the compilation of "Test_name.c".

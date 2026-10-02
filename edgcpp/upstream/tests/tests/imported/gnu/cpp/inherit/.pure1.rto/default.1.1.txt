@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 7: error: function "foo0" may not be initialized
+  void foo0() = 0;                   // { dg-error "6:function .void foo0\\(\\). is initialized like a variable" }
+              ^
+
+"Test_name.c", line 8: error: invalid specifier outside a class declaration
+  virtual void foo1() = 0;           // { dg-error "1:'virtual' outside class" }
+  ^
+
+"Test_name.c", line 8: error: function "foo1" may not be initialized
+  virtual void foo1() = 0;           // { dg-error "1:'virtual' outside class" }
+                      ^
+
+"Test_name.c", line 12: error: pure specifier ("= 0") allowed only on virtual functions
+    void foo2() = 0;                 // { dg-error "8:initializer specified for non-virtual method" }
+                ^
+
+"Test_name.c", line 13: error: pure specifier ("= 0") allowed only on virtual functions
+    static void foo3() = 0;          // { dg-error "15:initializer specified for static member function" }
+                       ^
+
+"Test_name.c", line 14: error: only nonstatic member functions may be virtual
+    virtual static void foo4() = 0;  // { dg-error "both 'virtual' and 'static'" }
+    ^
+
+"Test_name.c", line 20: error: only nonstatic member functions may be virtual
+    static void foo5() = 0;          // { dg-error "15:initializer specified for static member function" }
+                ^
+
+"Test_name.c", line 20: error: pure specifier ("= 0") allowed only on virtual functions
+    static void foo5() = 0;          // { dg-error "15:initializer specified for static member function" }
+                       ^
+
+8 errors detected in the compilation of "Test_name.c".

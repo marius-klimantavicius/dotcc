@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --microsoft Test_name.c
+"Test_name.c", line 27: warning: dllimport/dllexport applied to a member of an unnamed namespace
+  	EXP void f3() {}
+  	         ^
+
+"Test_name.c", line 28: warning: dllimport/dllexport applied to a member of an unnamed namespace
+  	IMP void f4();
+  	         ^
+
+"Test_name.c", line 30: warning: dllimport/dllexport applied to a member of an unnamed namespace
+  	EXP int v3;
+  	        ^
+
+"Test_name.c", line 31: warning: dllimport/dllexport applied to a member of an unnamed namespace
+  	IMP extern int v4;
+  	               ^
+
+"Test_name.c", line 27: warning: function "<unnamed>::f3" was declared but never referenced
+  	EXP void f3() {}
+  	         ^
+
+"Test_name.c", line 28: warning: function "<unnamed>::f4" was declared but never referenced
+  	IMP void f4();
+  	         ^
+
+"Test_name.c", line 30: warning: variable "<unnamed>::v3" was declared but never referenced
+  	EXP int v3;
+  	        ^
+
+"Test_name.c", line 31: warning: variable "<unnamed>::v4" was declared but never referenced
+  	IMP extern int v4;
+  	               ^
+

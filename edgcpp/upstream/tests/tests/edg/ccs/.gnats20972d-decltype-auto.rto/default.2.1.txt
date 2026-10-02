@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=2 --c++14 --sys_include $RUN_TEST_CURR_DIR/include --clang_version 30300 Test_name.c
+"Test_name.c", line 11: error: cannot deduce "decltype(auto)" type
+    decltype(auto) a({2});
+    ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --microsoft Test_name.c
+"Test_name.c", line 15: error: interface types cannot have user-declared constructors or destructors
+  	M();
+  	^
+
+"Test_name.c", line 16: error: interface types cannot have user-declared constructors or destructors
+  	M(M const&);
+  	^
+
+"Test_name.c", line 17: error: interface types cannot have user-declared constructors or destructors
+  	~M();
+  	^
+
+"Test_name.c", line 18: error: interface types cannot have user-declared member operators
+  	void operator+(int);
+  	     ^
+
+"Test_name.c", line 19: error: interface types cannot have user-declared member operators
+  	operator int();
+  	^
+
+5 errors detected in the compilation of "Test_name.c".

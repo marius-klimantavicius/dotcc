@@ -1,0 +1,70 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 5: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(xros, unavailable))) // visionos-warning {{unknown platform 'xros' in availability macro}}
+                 ^
+
+"Test_name.c", line 8: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(xros_app_extension, unavailable))) // visionos-warning {{unknown platform 'xros_app_extension' in availability macro}}
+                 ^
+
+"Test_name.c", line 11: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(visionOSApplicationExtension, unavailable)))
+                 ^
+
+"Test_name.c", line 20: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(visionOS, introduced=1.0)))
+                 ^
+
+"Test_name.c", line 23: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(visionos, introduced=1.1)))
+                 ^
+
+"Test_name.c", line 27: warning: function "__builtin_available" declared implicitly
+    if (__builtin_available(iOS 16.1, *))
+        ^
+
+"Test_name.c", line 27: error: identifier "iOS" is undefined
+    if (__builtin_available(iOS 16.1, *))
+                            ^
+
+"Test_name.c", line 27: error: expected a ")"
+    if (__builtin_available(iOS 16.1, *))
+                                ^
+
+"Test_name.c", line 30: warning: function "__builtin_available" declared implicitly
+    if (__builtin_available(xrOS 1.1, *)) // visionos-error {{unrecognized platform name xrOS}}
+        ^
+
+"Test_name.c", line 30: error: identifier "xrOS" is undefined
+    if (__builtin_available(xrOS 1.1, *)) // visionos-error {{unrecognized platform name xrOS}}
+                            ^
+
+"Test_name.c", line 30: error: expected a ")"
+    if (__builtin_available(xrOS 1.1, *)) // visionos-error {{unrecognized platform name xrOS}}
+                                 ^
+
+"Test_name.c", line 33: warning: function "__builtin_available" declared implicitly
+    if (__builtin_available(xros_app_extension 1, *)) // visionos-error {{unrecognized platform name xros_app_extension}}
+        ^
+
+"Test_name.c", line 33: error: identifier "xros_app_extension" is undefined
+    if (__builtin_available(xros_app_extension 1, *)) // visionos-error {{unrecognized platform name xros_app_extension}}
+                            ^
+
+"Test_name.c", line 33: error: expected a ")"
+    if (__builtin_available(xros_app_extension 1, *)) // visionos-error {{unrecognized platform name xros_app_extension}}
+                                               ^
+
+"Test_name.c", line 36: warning: function "__builtin_available" declared implicitly
+    if (__builtin_available(visionOS 1.1, *))
+        ^
+
+"Test_name.c", line 36: error: identifier "visionOS" is undefined
+    if (__builtin_available(visionOS 1.1, *))
+                            ^
+
+"Test_name.c", line 36: error: expected a ")"
+    if (__builtin_available(visionOS 1.1, *))
+                                     ^
+
+8 errors detected in the compilation of "Test_name.c".

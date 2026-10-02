@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 11: warning: variable "a" was declared but never referenced
+    ~Lock() { int a[x]; } // expected-error {{declared as an array with a negative size}}
+                  ^
+
+"Test_name.c", line 11: error: the size of an array must be greater than zero
+    ~Lock() { int a[x]; } // expected-error {{declared as an array with a negative size}}
+                    ^
+          detected during instantiation of "Lock<x>::~Lock() [with x=-1]" at line 20
+
+1 error detected in the compilation of "Test_name.c".

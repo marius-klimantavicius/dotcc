@@ -1,0 +1,96 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 11: error: expression must have a constant value
+  static struct foo t3 = t2; // expected-error {{initializer element is not a compile-time constant}}
+                         ^
+"Test_name.c", line 11: note: the value of variable "t2" (declared at line 10) cannot be used as a constant
+  static struct foo t3 = t2; // expected-error {{initializer element is not a compile-time constant}}
+                         ^
+
+"Test_name.c", line 15: error: expression must have a constant value
+  static int *p2 = (int []){2,x}; // expected-error {{initializer element is not a compile-time constant}}
+                              ^
+"Test_name.c", line 15: note: the value of variable "x" (declared at line 13) cannot be used as a constant
+  static int *p2 = (int []){2,x}; // expected-error {{initializer element is not a compile-time constant}}
+                              ^
+
+"Test_name.c", line 16: warning: a value of type "char *" cannot be used to initialize an entity of type "long"
+  static long *p3 = (long []){2,"x"}; // expected-error {{incompatible pointer to integer conversion initializing 'long' with an expression of type 'char[2]'}}
+                                ^
+
+"Test_name.c", line 27: warning: variable "l" was declared but never referenced
+   int *l = (int []){x, *p, *p2};
+        ^
+
+"Test_name.c", line 32: error: a compound literal of type "struct Incomplete" is not allowed
+  struct Incomplete* I1 = &(struct Incomplete){1, 2, 3}; // expected-error {{variable has incomplete type}}
+                            ^
+
+"Test_name.c", line 34: error: a variable-length array type is not allowed
+    struct Incomplete* I2 = (struct foo[x]){1, 2, 3}; // expected-error {{compound literal cannot be of variable-length array type}}
+                             ^
+
+"Test_name.c", line 35: error: a compound literal of type "void" is not allowed
+    (void){1,2,3}; // expected-error {{variable has incomplete type}}
+     ^
+
+"Test_name.c", line 36: error: a compound literal of type "void (void)" is not allowed
+    (void(void)) { 0 }; // expected-error{{illegal initializer type 'void (void)'}}
+     ^
+
+"Test_name.c", line 43: error: expected an identifier
+  int (^block)(int) = ^(int i) {
+       ^
+
+"Test_name.c", line 43: error: function "<error>" may not be initialized
+  int (^block)(int) = ^(int i) {
+                    ^
+
+"Test_name.c", line 43: error: expected an expression
+  int (^block)(int) = ^(int i) {
+                      ^
+
+"Test_name.c", line 46: warning: parsing restarts here after previous syntax error
+  };
+   ^
+
+"Test_name.c", line 52: error: a variable-length array type is not allowed
+    (void)(int[size]){}; // expected-warning {{use of an empty initializer is a C23 extension}}
+           ^
+
+"Test_name.c", line 54: error: a variable-length array type is not allowed
+    (void)(int[size]){1}; // expected-error {{compound literal cannot be of variable-length array type}}
+           ^
+
+"Test_name.c", line 55: error: a variable-length array type is not allowed
+    (void)(int[size]){1,2,3}; // expected-error {{compound literal cannot be of variable-length array type}}
+           ^
+
+"Test_name.c", line 56: error: a variable-length array type is not allowed
+    (void)(int[size]){1,2,3,4,5}; // expected-error {{compound literal cannot be of variable-length array type}}
+           ^
+
+"Test_name.c", line 8: warning: variable "t" was declared but never referenced
+  static struct foo t = (struct foo){0,0};
+                    ^
+
+"Test_name.c", line 9: warning: variable "t1" was declared but never referenced
+  static struct foo t1 = __builtin_choose_expr(0, (struct foo){0,0}, (struct foo){0,0});
+                    ^
+
+"Test_name.c", line 11: warning: variable "t3" was declared but never referenced
+  static struct foo t3 = t2; // expected-error {{initializer element is not a compile-time constant}}
+                    ^
+
+"Test_name.c", line 16: warning: variable "p3" was declared but never referenced
+  static long *p3 = (long []){2,"x"}; // expected-error {{incompatible pointer to integer conversion initializing 'long' with an expression of type 'char[2]'}}
+               ^
+
+"Test_name.c", line 19: warning: variable "clo_I1_cache" was declared but never referenced
+  static cache_t clo_I1_cache = ((cache_t) { } ); // expected-warning{{use of an empty initializer is a C23 extension}}
+                 ^
+
+"Test_name.c", line 22: warning: variable "ll" was declared but never referenced
+  static Test* ll = &(Test) {0,0};
+               ^
+
+13 errors detected in the compilation of "Test_name.c".

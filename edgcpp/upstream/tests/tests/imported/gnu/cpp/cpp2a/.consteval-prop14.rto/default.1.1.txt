@@ -1,0 +1,44 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 62: error: call to consteval function "f1(auto) [with <auto-1>=int]" did not produce a valid constant expression
+    f1 (i); // { dg-error "call to consteval function .f1<int>\\(i\\). is not a constant expression" }
+       ^
+"Test_name.c", line 62: note: the value of parameter "i" (declared at line 60) cannot be used as a constant
+    f1 (i); // { dg-error "call to consteval function .f1<int>\\(i\\). is not a constant expression" }
+        ^
+
+"Test_name.c", line 65: error: call to consteval function "f2(auto) [with <auto-1>=int]" did not produce a valid constant expression
+    f2 (i); // { dg-error "call to consteval function .f2<int>\\(i\\). is not a constant expression" }
+       ^
+"Test_name.c", line 65: note: the value of parameter "i" (declared at line 60) cannot be used as a constant
+    f2 (i); // { dg-error "call to consteval function .f2<int>\\(i\\). is not a constant expression" }
+        ^
+
+"Test_name.c", line 68: error: call to consteval function "f3(auto) [with <auto-1>=int]" did not produce a valid constant expression
+    f3 (i); // { dg-error "call to consteval function .f3<int>\\(i\\). is not a constant expression" }
+       ^
+"Test_name.c", line 68: note: the value of parameter "i" (declared at line 60) cannot be used as a constant
+    f3 (i); // { dg-error "call to consteval function .f3<int>\\(i\\). is not a constant expression" }
+        ^
+
+"Test_name.c", line 71: error: call to consteval function "f4(auto) [with <auto-1>=int]" did not produce a valid constant expression
+    f4 (i); // { dg-error "call to consteval function .f4<int>\\(i\\). is not a constant expression" }
+       ^
+"Test_name.c", line 71: note: the value of parameter "i" (declared at line 60) cannot be used as a constant
+    f4 (i); // { dg-error "call to consteval function .f4<int>\\(i\\). is not a constant expression" }
+        ^
+
+"Test_name.c", line 74: error: call to consteval function "f5(auto) [with <auto-1>=int]" did not produce a valid constant expression
+    f5 (i); // { dg-error "call to consteval function .f5<int>\\(i\\). is not a constant expression" }
+       ^
+"Test_name.c", line 74: note: the value of parameter "i" (declared at line 60) cannot be used as a constant
+    f5 (i); // { dg-error "call to consteval function .f5<int>\\(i\\). is not a constant expression" }
+        ^
+
+"Test_name.c", line 77: error: call to consteval function "f6(auto) [with <auto-1>=int]" did not produce a valid constant expression
+    f6 (i); // { dg-error "call to consteval function .f6<int>\\(i\\). is not a constant expression" }
+       ^
+"Test_name.c", line 77: note: the value of parameter "i" (declared at line 60) cannot be used as a constant
+    f6 (i); // { dg-error "call to consteval function .f6<int>\\(i\\). is not a constant expression" }
+        ^
+
+6 errors detected in the compilation of "Test_name.c".

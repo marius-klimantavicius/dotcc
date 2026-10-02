@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --c++17 Test_name.c
+"Test_name.c", line 4: error: this declaration has no storage class or type specifier
+  constinit int i = 42;
+  ^
+
+"Test_name.c", line 4: error: expected a ";"
+  constinit int i = 42;
+            ^
+
+"Test_name.c", line 5: error: this declaration has no storage class or type specifier
+  constinit int j;
+  ^
+
+"Test_name.c", line 5: error: variable "constinit" has already been defined (previous definition at line 4)
+  constinit int j;
+  ^
+
+"Test_name.c", line 5: error: expected a ";"
+  constinit int j;
+            ^
+
+5 errors detected in the compilation of "Test_name.c".

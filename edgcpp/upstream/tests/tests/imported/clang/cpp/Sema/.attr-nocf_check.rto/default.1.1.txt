@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 6: warning: unknown attribute "gnu::nocf_check"
+  [[gnu::nocf_check]] typedef void (*FuncPointerWithNoCfCheck)(void); // no-warning
+    ^
+
+"Test_name.c", line 10: warning: unknown attribute "gnu::nocf_check"
+  [[gnu::nocf_check]] void testNoCfCheck();   // expected-note {{previous declaration is here}}
+    ^
+
+"Test_name.c", line 14: warning: unknown attribute "gnu::nocf_check"
+  int [[gnu::nocf_check]] i;                              // expected-error {{'gnu::nocf_check' attribute cannot be applied to types}}
+        ^
+
+"Test_name.c", line 15: warning: unknown attribute "gnu::nocf_check"
+  void testNoCfCheckImpl(double i [[gnu::nocf_check]]) {} // expected-warning {{'gnu::nocf_check' attribute only applies to functions and function pointers}}
+                                    ^
+
+"Test_name.c", line 25: warning: unknown attribute "gnu::nocf_check"
+  [[gnu::nocf_check(1)]] int testNoCfCheckParams(); // expected-error {{'gnu::nocf_check' attribute takes no arguments}}
+    ^
+

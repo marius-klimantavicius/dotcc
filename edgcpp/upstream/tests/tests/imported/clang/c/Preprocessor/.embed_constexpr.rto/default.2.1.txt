@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=2 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 6: warning: explicit type is missing ("int" assumed)
+  static constexpr unsigned char data[] = {
+         ^
+
+"Test_name.c", line 6: error: expected a ";"
+  static constexpr unsigned char data[] = {
+                   ^
+
+"Test_name.c", line 7: catastrophic error: cannot open embed file "big_char.txt"
+  #embed "big_char.txt"
+         ^
+
+1 error and 1 catastrophic error detected in the compilation of "Test_name.c".
+Compilation terminated.

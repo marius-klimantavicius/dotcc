@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 15: error: incomplete type "A<int>" is not allowed
+    static const int i = A<T>::i;  // { dg-error "incomplete" }
+                         ^
+          detected during:
+            instantiation of class "C<T> [with T=int]" at line 16
+            instantiation of class "C<T> [with T=int]" at line 17
+            instantiation of class "C<T> [with T=int]" at line 20
+
+1 error detected in the compilation of "Test_name.c".

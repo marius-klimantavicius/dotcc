@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c89 --strict_gnu Test_name.c
+"Test_name.c", line 11: warning: declaration does not declare anything
+       int; /* { dg-error "empty declaration" } */
+       ^
+
+"Test_name.c", line 12: warning: declaration does not declare anything
+       register; /* { dg-error "empty declaration" } */
+       ^
+
+"Test_name.c", line 12: warning: a storage class may not be specified here
+       register; /* { dg-error "empty declaration" } */
+       ^
+

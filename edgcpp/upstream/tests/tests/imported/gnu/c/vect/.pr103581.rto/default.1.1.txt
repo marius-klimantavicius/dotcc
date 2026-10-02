@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./vect/pr103581.c", line 19: warning: unknown attribute "noipa"
+  unsigned long long * __attribute__((noipa)) maskgatherudiusi (int n, unsigned int *indices, unsigned long long *data) { unsigned long long *out = __builtin_malloc (sizeof (unsigned long long) * n); for (int i = 0; i < n; ++i) { unsigned int d = indices[i]; if (d > 1) out[i] = data[d]; } return out; }
+                                      ^
+
+"./vect/pr103581.c", line 20: warning: unknown attribute "noipa"
+  unsigned int * __attribute__((noipa)) maskgatherusiusi (int n, unsigned int *indices, unsigned int *data) { unsigned int *out = __builtin_malloc (sizeof (unsigned int) * n); for (int i = 0; i < n; ++i) { unsigned int d = indices[i]; if (d > 1) out[i] = data[d]; } return out; }
+                                ^
+
+"./vect/pr103581.c", line 21: warning: unknown attribute "noipa"
+  unsigned long long * __attribute__((noipa)) maskgatherudiudi (int n, unsigned long long *indices, unsigned long long *data) { unsigned long long *out = __builtin_malloc (sizeof (unsigned long long) * n); for (int i = 0; i < n; ++i) { unsigned long long d = indices[i]; if (d > 1) out[i] = data[d]; } return out; }
+                                      ^
+
+"./vect/pr103581.c", line 22: warning: unknown attribute "noipa"
+  unsigned int * __attribute__((noipa)) maskgatherusiudi (int n, unsigned long long *indices, unsigned int *data) { unsigned int *out = __builtin_malloc (sizeof (unsigned int) * n); for (int i = 0; i < n; ++i) { unsigned long long d = indices[i]; if (d > 1) out[i] = data[d]; } return out; }
+                                ^
+
+"./vect/pr103581.c", line 42: warning: unrecognized GCC pragma
+  #pragma GCC novector
+              ^
+

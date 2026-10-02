@@ -1,0 +1,128 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 -w --ms_extensions --exceptions --exceptions -DTEST1 Test_name.c
+"Test_name.c", line 78: error: function "foo_unaligned(int)" has already been defined (previous definition at line 77)
+  void foo_unaligned(__unaligned int arg) {} // expected-error {{redefinition of 'foo_unaligned'}} \
+       ^
+
+"Test_name.c", line 90: error: no instance of overloaded function "foo_unaligned" matches the argument list
+            argument types are: (const __unaligned int *)
+    foo_unaligned(const_p1); // expected-error {{no matching function for call to 'foo_unaligned'}}
+    ^
+"Test_name.c", line 83: note: function "foo_unaligned(B_unaligned *)" does not match because argument #1 does not match parameter
+  void *foo_unaligned(B_unaligned *arg) { return 0; } // expected-note {{not viable: no known conversion from 'const __unaligned int *' to 'B_unaligned *'}}
+        ^
+"Test_name.c", line 82: note: function "foo_unaligned(__unaligned A_unaligned *)" does not match because argument #1 does not match parameter
+  int foo_unaligned(__unaligned A_unaligned *arg) { return 0; } // expected-note {{not viable: no known conversion from 'const __unaligned int *' to '__unaligned A_unaligned *'}}
+      ^
+"Test_name.c", line 77: note: function "foo_unaligned(int)" does not match because argument #1 does not match parameter
+  void foo_unaligned(int arg) {} // expected-note {{previous definition is here}}
+       ^
+"Test_name.c", line 76: note: function "foo_unaligned(__unaligned int *)" does not match because argument #1 does not match parameter
+  void foo_unaligned(__unaligned int *arg) {} // expected-note {{not viable: 1st argument ('const __unaligned int *') would lose const qualifier}}
+       ^
+"Test_name.c", line 75: note: function "foo_unaligned(int *)" does not match because argument #1 does not match parameter
+  void foo_unaligned(int *arg) {} // expected-note {{not viable: 1st argument ('const __unaligned int *') would lose const qualifier}}
+       ^
+
+"Test_name.c", line 99: error: a value of type "__unaligned B_unaligned *" cannot be used to initialize an entity of type "B_unaligned *"
+    B_unaligned *p5 = p3;
+                      ^
+
+"Test_name.c", line 105: error: a value of type "__unaligned int aligned_type4::*" cannot be assigned to an entity of type "int aligned_type4::*"
+    p2_aligned_type4 = p1_aligned_type4;
+                     ^
+
+"Test_name.c", line 110: error: a value of type "__unaligned int *" cannot be used to initialize an entity of type "int *"
+    int *b = a;
+             ^
+
+"Test_name.c", line 121: error: argument of type "LPITEMIDLIST" (aka "__unaligned ITEMIDLIST *") is incompatible with parameter of type "void *"
+    CoTaskMemFree(*ppidls);
+                  ^
+
+"Test_name.c", line 123: error: a value of type "__unaligned int *" cannot be used to initialize an entity of type "void *"
+    void *y = x;
+              ^
+
+"Test_name.c", line 135: error: class "in_addr" has no suitable copy constructor
+    IN_ADDR local_addr = *a;
+                         ^
+
+"Test_name.c", line 138: error: no suitable constructor exists to convert from "__unaligned IN_ADDR *" to "in_addr"
+    IN_ADDR local_addr2 = a; // precxx17-error {{no viable constructor copying variable of type 'IN_ADDR' (aka 'struct in_addr')}}
+                          ^
+
+"Test_name.c", line 140: error: no instance of constructor "in_addr::in_addr" matches the argument list
+            argument types are: (__unaligned IN_ADDR *)
+    IN_ADDR local_addr3(a);
+                        ^
+"Test_name.c", line 131: note: function "in_addr::in_addr(in_addr *)" does not match because argument #1 does not match parameter
+    in_addr(in_addr *a) {} // precxx17-note {{candidate constructor not viable: no known conversion from 'IN_ADDR' (aka 'struct in_addr') to 'in_addr *' for 1st argument}}
+    ^
+"Test_name.c", line 130: note: function "in_addr::in_addr(in_addr &)" does not match because argument #1 does not match parameter
+    in_addr(in_addr &a) {} // precxx17-note {{candidate constructor not viable: expects an lvalue for 1st argument}}
+    ^
+
+"Test_name.c", line 158: error: more than one instance of overloaded function "signed_hex_i64::f" matches the argument list:
+            function "signed_hex_i64::f(long long)" (declared at line 153)
+            function "signed_hex_i64::f(int)" (declared at line 154)
+            argument types are: (unsigned long long)
+    f(0xffffffffffffffffLL); // expected-error {{call to 'f' is ambiguous}}
+    ^
+
+"Test_name.c", line 192: error: redeclaration cannot add dllexport/dllimport to "AAA::f2" (declared at line 189)
+  __declspec(dllimport) void AAA::f2(void) { // expected-error{{dllimport cannot be applied to non-inline function definition}}
+                                  ^
+
+"Test_name.c", line 192: error: a function declared "dllimport" may not be defined
+  __declspec(dllimport) void AAA::f2(void) { // expected-error{{dllimport cannot be applied to non-inline function definition}}
+                                  ^
+
+"Test_name.c", line 258: error: expected an identifier
+  void f() { int __except = 0; }
+                 ^
+
+"Test_name.c", line 278: error: member is declared with __declspec(property), but no "get" function was specified
+    int i = sp.V2; // expected-error{{no getter defined for property 'V2'}}
+            ^
+
+"Test_name.c", line 279: error: member is declared with __declspec(property), but no "put" function was specified
+    sp.V1 = 12; // expected-error{{no setter defined for property 'V1'}}
+    ^
+
+"Test_name.c", line 280: error: the __declspec(property) "get" function "GetV_NotExist" is missing
+    int j = sp.V4; // expected-error{{no member named 'GetV_NotExist' in 'StructWithProperty'}} expected-error{{cannot find suitable getter for property 'V4'}}
+            ^
+
+"Test_name.c", line 281: error: the __declspec(property) "put" function "SetV_NotExist" is missing
+    sp.V3 = 14; // expected-error{{no member named 'SetV_NotExist' in 'StructWithProperty'}} expected-error{{cannot find suitable setter for property 'V3'}}
+    ^
+
+"Test_name.c", line 409: error: __declspec(property) is not allowed on this declaration
+    __declspec(property(get=GetV)) int : 10; // expected-error {{anonymous property is not supported}}
+               ^
+
+"Test_name.c", line 418: error: expression must be an lvalue or a function designator
+    return &x.n; // expected-error {{address of property expression requested}}
+            ^
+
+"Test_name.c", line 461: error: cannot override sealed function "SomeBase::SealedFunction" (declared at line 453)
+    virtual void SealedFunction(); // expected-warning {{'SealedFunction' overrides a member function but is not marked 'override'}}
+                 ^
+
+"Test_name.c", line 470: error: a sealed class type cannot be used as a base class
+  struct InheritFromSealed : SealedType {};
+                             ^
+
+"Test_name.c", line 474: error: modifier is not allowed on a destructor
+      virtual ~SealedDestructor() sealed; // expected-warning {{class with destructor marked 'sealed' cannot be inherited from}}
+                                  ^
+
+"Test_name.c", line 483: internal error: assertion failed at: "class_decl.c", line <suppressed> in abstract_class_diagnostic
+
+  AbstractClass abstractInstance;
+                ^
+
+23 errors and 1 catastrophic error detected in the compilation of "Test_name.c".
+Compilation aborted.
+Aborted
+eccp: front end returned an exit status of 134

@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 9: error: identifier "_Decimal32" is undefined
+  _Decimal32 sd1;
+  ^
+
+"Test_name.c", line 10: error: identifier "_Decimal64" is undefined
+  _Decimal64 dd2;
+  ^
+
+"Test_name.c", line 11: error: identifier "_Decimal128" is undefined
+  _Decimal128 td3;
+  ^
+
+"Test_name.c", line 15: error: identifier "_Decimal32" is undefined
+  static _Decimal32 d32[ARRAY_SIZE];
+         ^
+
+"Test_name.c", line 16: error: identifier "_Decimal64" is undefined
+  static _Decimal64 d64[ARRAY_SIZE];
+         ^
+
+"Test_name.c", line 17: error: identifier "_Decimal128" is undefined
+  static _Decimal128 d128[ARRAY_SIZE];
+         ^
+
+"Test_name.c", line 19: error: identifier "_Decimal32" is undefined
+  extern _Decimal32 ext_d32[ARRAY_SIZE];
+         ^
+
+"Test_name.c", line 20: error: identifier "_Decimal64" is undefined
+  extern _Decimal64 ext_d64[ARRAY_SIZE];
+         ^
+
+"Test_name.c", line 21: error: identifier "_Decimal128" is undefined
+  extern _Decimal128 ext_d128[ARRAY_SIZE];
+         ^
+
+"Test_name.c", line 24: error: identifier "_Decimal32" is undefined
+  int ssize[sizeof (_Decimal32) == 4 ? 1 : -1];
+                    ^
+
+"Test_name.c", line 25: error: identifier "_Decimal64" is undefined
+  int dsize[sizeof (_Decimal64) == 8 ? 1 : -1];
+                    ^
+
+"Test_name.c", line 26: error: identifier "_Decimal128" is undefined
+  int tsize[sizeof (_Decimal128) == 16 ? 1 : -1];
+                    ^
+
+"Test_name.c", line 47: error: expected a ";"
+    _Decimal32 d32[ARRAY_SIZE];
+               ^
+
+"Test_name.c", line 48: error: expected a ";"
+    _Decimal64 d64[ARRAY_SIZE];
+               ^
+
+"Test_name.c", line 49: error: expected a ";"
+    _Decimal128 d128[ARRAY_SIZE];
+                ^
+
+15 errors detected in the compilation of "Test_name.c".

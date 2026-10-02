@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 --modules Test_name.c
+"Test_name.c", line 17: warning: function "<unnamed>::g" was referenced but not defined
+    decltype(f()) g();  // { dg-error "used but never defined" }
+                  ^
+
+"Test_name.c", line 20: warning: function "<unnamed>::h" was referenced but not defined
+    decltype(s) h();  // { dg-error "used but never defined" }
+                ^
+

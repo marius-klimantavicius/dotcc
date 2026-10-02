@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 6: warning: constant "<unnamed>" cannot be used because it follows a parameter pack and cannot be deduced from the parameters of function template "foo"
+  template<typename..., int> void foo();
+                           ^
+
+"Test_name.c", line 10: error: cannot determine which instance of function template "foo" is intended
+    foo<0>;			// { dg-error "" }
+    ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 24: error: more than one instance of overloaded function "test_property" matches the argument list:
+            function template "bool test_property<Property,Type>(Property<Type>::value_type)" (declared at line 8)
+            function template "bool test_property<Property,Type1,Types...>(Property<Type1, Types...>::value_type)" (declared at line 12)
+            argument types are: (int)
+    test_property<X,int>(42);	// { dg-error "ambiguous" }
+    ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 6: error: a statement expression is not allowed inside of a default argument
+    void fn(int i, int = ({ 1; })); // expected-error {{default argument may not use a GNU statement expression}}
+                          ^
+
+"Test_name.c", line 8: error: a statement expression is not allowed inside of a default argument
+    auto a = [](int = ({ 1; })) {}; // expected-error {{default argument may not use a GNU statement expression}}
+                       ^
+
+"Test_name.c", line 10: error: statement expressions are only allowed in block scope
+    auto b = []<int = ({ 1; })>(){}; // expected-error {{default non-type template argument may not use a GNU statement expression}}
+                       ^
+
+"Test_name.c", line 12: error: a statement expression is not allowed inside of a default argument
+    void fn(int i, int j = ({{}, {}, {,}}), int k = ""); // expected-error {{default argument may not use a GNU statement expression}} expected-error {{cannot initialize a parameter of type 'int' with an lvalue of type 'const char[1]'}} expected-note {{passing argument to parameter 'k' here}}
+                            ^
+
+"Test_name.c", line 12: error: default argument of type "const char *" is incompatible with parameter of type "int"
+    void fn(int i, int j = ({{}, {}, {,}}), int k = ""); // expected-error {{default argument may not use a GNU statement expression}} expected-error {{cannot initialize a parameter of type 'int' with an lvalue of type 'const char[1]'}} expected-note {{passing argument to parameter 'k' here}}
+                                                    ^
+
+"Test_name.c", line 8: warning: variable "a" was declared but never referenced
+    auto a = [](int = ({ 1; })) {}; // expected-error {{default argument may not use a GNU statement expression}}
+         ^
+
+"Test_name.c", line 10: warning: variable "b" was declared but never referenced
+    auto b = []<int = ({ 1; })>(){}; // expected-error {{default non-type template argument may not use a GNU statement expression}}
+         ^
+
+"Test_name.c", line 15: error: statement expressions are only allowed in block scope
+  template <int foo = ({ 1; })> // expected-error {{default non-type template argument may not use a GNU statement expression}}
+                       ^
+
+"Test_name.c", line 18: error: statement expressions are only allowed in block scope
+  template <int bar = ({ 1; })> // expected-error {{default non-type template argument may not use a GNU statement expression}}
+                       ^
+
+"Test_name.c", line 27: error: a statement expression is not allowed inside of a default argument
+    auto l = [](int a = ({ int x = 12; x; })) { // expected-error {{default argument may not use a GNU statement expression}}
+                         ^
+
+8 errors detected in the compilation of "Test_name.c".

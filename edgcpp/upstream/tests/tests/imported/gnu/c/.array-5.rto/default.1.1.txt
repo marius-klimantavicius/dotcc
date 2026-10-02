@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 29: warning: a value of type "int (*)[6][m]" cannot be assigned to an entity of type "int (*)[4][<expression>]"
+      p = a;			/* { dg-warning "incompatible" } */
+        ^
+
+"Test_name.c", line 28: warning: variable "p" was set but never used
+      int (*p)[4][n+1];
+            ^
+
+"Test_name.c", line 34: warning: variable "r" was set but never used
+      int (*r)[n][n][n+1];
+            ^
+
+"Test_name.c", line 40: warning: expression has no effect
+      int a[6][(2, 2)];
+                ^
+
+"Test_name.c", line 42: warning: a value of type "int (*)[2]" cannot be assigned to an entity of type "int (*)[3]"
+      p = a; /* { dg-bogus "incompatible" "bad vla handling" } */
+        ^
+
+"Test_name.c", line 41: warning: variable "p" was set but never used
+      int (*p)[3];
+            ^
+

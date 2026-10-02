@@ -1,0 +1,290 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 27: error: enum "EnumBase::E" has already been defined (previous definition at line 23)
+    static_assert(_Generic(e, enum E : int{}, int: 1) == 0); // expected-error {{C11 extension}}
+                                   ^
+
+"Test_name.c", line 27: error: type definition is not allowed
+    static_assert(_Generic(e, enum E : int{}, int: 1) == 0); // expected-error {{C11 extension}}
+                              ^
+
+"Test_name.c", line 27: error: expected a ":"
+    static_assert(_Generic(e, enum E : int{}, int: 1) == 0); // expected-error {{C11 extension}}
+                                            ^
+
+"Test_name.c", line 27: error: expected an expression
+    static_assert(_Generic(e, enum E : int{}, int: 1) == 0); // expected-error {{C11 extension}}
+                                            ^
+
+"Test_name.c", line 27: error: duplicate association type ("int") in _Generic selection
+    static_assert(_Generic(e, enum E : int{}, int: 1) == 0); // expected-error {{C11 extension}}
+                                              ^
+
+"Test_name.c", line 28: error: enum "EnumBase::E" has already been defined (previous definition at line 23)
+    static_assert(_Generic(1, enum E : int{}, int: 1) == 1); // expected-error {{C11 extension}}
+                                   ^
+
+"Test_name.c", line 28: error: type definition is not allowed
+    static_assert(_Generic(1, enum E : int{}, int: 1) == 1); // expected-error {{C11 extension}}
+                              ^
+
+"Test_name.c", line 28: error: expected a ":"
+    static_assert(_Generic(1, enum E : int{}, int: 1) == 1); // expected-error {{C11 extension}}
+                                            ^
+
+"Test_name.c", line 28: error: expected an expression
+    static_assert(_Generic(1, enum E : int{}, int: 1) == 1); // expected-error {{C11 extension}}
+                                            ^
+
+"Test_name.c", line 28: error: duplicate association type ("int") in _Generic selection
+    static_assert(_Generic(1, enum E : int{}, int: 1) == 1); // expected-error {{C11 extension}}
+                                              ^
+
+"Test_name.c", line 43: warning: an opaque enum declaration is nonstandard in this context
+    using T = enum E : int; // expected-error {{non-defining declaration of enumeration with a fixed underlying type is only permitted as a standalone declaration}}
+                   ^
+
+"Test_name.c", line 46: warning: an opaque enum declaration is nonstandard in this context
+    int x[sizeof(enum E : int)]; // expected-error {{non-defining declaration of enumeration with a fixed underlying type is only permitted as a standalone declaration}}
+                      ^
+
+"Test_name.c", line 49: error: "enum class" and "enum struct" cannot be used here (use plain "enum" instead)
+      enum struct E a; // expected-error {{must use 'enum' not 'enum struct'}}
+                  ^
+
+"Test_name.c", line 50: error: incomplete type "OpaqueEnumDecl::PR24297::F" is not allowed
+      enum class F b; // expected-error {{must use 'enum' not 'enum class'}}
+                   ^
+
+"Test_name.c", line 54: error: forward declaration of enum type is nonstandard
+      enum X x; // expected-error {{ISO C++ forbids forward reference}} expected-error {{incomplete}} expected-note {{forward declaration}}
+           ^
+
+"Test_name.c", line 54: error: incomplete type "OpaqueEnumDecl::PR24297::X" is not allowed
+      enum X x; // expected-error {{ISO C++ forbids forward reference}} expected-error {{incomplete}} expected-note {{forward declaration}}
+             ^
+
+"Test_name.c", line 56: error: "enum class" and "enum struct" cannot be used here (use plain "enum" instead)
+      enum struct E *pa; // expected-error {{must use 'enum' not 'enum struct'}}
+                  ^
+
+"Test_name.c", line 57: error: "enum class" and "enum struct" cannot be used here (use plain "enum" instead)
+      enum class F *pb; // expected-error {{must use 'enum' not 'enum class'}}
+                 ^
+
+"Test_name.c", line 58: error: underlying type of enum type must be an integral type
+      enum G : int *pc; // expected-error {{only permitted as a standalone declaration}}
+               ^
+
+"Test_name.c", line 58: error: enum "OpaqueEnumDecl::PR24297::G" (declared at line 51) was previously declared with a different base type
+      enum G : int *pc; // expected-error {{only permitted as a standalone declaration}}
+           ^
+
+"Test_name.c", line 58: error: expected a "{"
+      enum G : int *pc; // expected-error {{only permitted as a standalone declaration}}
+                    ^
+
+"Test_name.c", line 58: error: expected an identifier
+      enum G : int *pc; // expected-error {{only permitted as a standalone declaration}}
+                      ^
+
+"Test_name.c", line 58: error: expected a "}"
+      enum G : int *pc; // expected-error {{only permitted as a standalone declaration}}
+                      ^
+
+"Test_name.c", line 59: error: underlying type of enum type must be an integral type
+      enum struct H : int *pd; // expected-error {{only permitted as a standalone declaration}}
+                      ^
+
+"Test_name.c", line 59: error: expected a "{"
+      enum struct H : int *pd; // expected-error {{only permitted as a standalone declaration}}
+                           ^
+
+"Test_name.c", line 59: error: expected an identifier
+      enum struct H : int *pd; // expected-error {{only permitted as a standalone declaration}}
+                             ^
+
+"Test_name.c", line 59: error: expected a "}"
+      enum struct H : int *pd; // expected-error {{only permitted as a standalone declaration}}
+                             ^
+
+"Test_name.c", line 60: error: underlying type of enum type must be an integral type
+      enum class I : int *pe; // expected-error {{only permitted as a standalone declaration}}
+                     ^
+
+"Test_name.c", line 60: error: expected a "{"
+      enum class I : int *pe; // expected-error {{only permitted as a standalone declaration}}
+                          ^
+
+"Test_name.c", line 60: error: expected an identifier
+      enum class I : int *pe; // expected-error {{only permitted as a standalone declaration}}
+                            ^
+
+"Test_name.c", line 60: error: expected a "}"
+      enum class I : int *pe; // expected-error {{only permitted as a standalone declaration}}
+                            ^
+
+"Test_name.c", line 61: error: forward declaration of enum type is nonstandard
+      enum Y *py; // expected-error {{ISO C++ forbids forward reference}}
+           ^
+
+"Test_name.c", line 71: error: expected a ";"
+    void g() = delete; // ok
+    ^
+
+"Test_name.c", line 76: warning: type qualifier specified more than once
+  int *const const p = 0; // expected-error {{duplicate 'const' declaration specifier}}
+             ^
+
+"Test_name.c", line 77: warning: type qualifier specified more than once
+  const const int *q = 0; // expected-error {{duplicate 'const' declaration specifier}}
+        ^
+
+"Test_name.c", line 80: warning: type qualifier specified more than once
+    void f() const const; // expected-error {{duplicate 'const' declaration specifier}}
+                   ^
+
+"Test_name.c", line 83: error: identifier "something" is undefined
+  static_assert(something, ""); // expected-error {{undeclared identifier}}
+                ^
+
+"Test_name.c", line 87: error: expected a ";"
+    typedef void d() = default; // expected-error {{function definition declared 'typedef'}} expected-error {{only special member functions and comparison operators may be defaulted}}
+                     ^
+
+"Test_name.c", line 90: error: expected an identifier
+  using PR14855 = int S::; // expected-error {{expected ';' after alias declaration}}
+                         ^
+
+"Test_name.c", line 90: error: expected a ";"
+  using PR14855 = int S::; // expected-error {{expected ';' after alias declaration}}
+                      ^
+
+"Test_name.c", line 125: error: expected a ")"
+    using T = int (*f)(); // expected-error {{type-id cannot have a name}}
+                    ^
+
+"Test_name.c", line 126: error: expected a ")"
+    template<typename T> using U = int (*f)(); // expected-error {{type-id cannot have a name}}
+                                         ^
+
+"Test_name.c", line 127: error: expected a ")"
+    auto f() -> int (*f)(); // expected-error {{only variables can be initialized}} expected-error {{expected ';'}}
+                      ^
+
+"Test_name.c", line 128: error: expected a ")"
+    auto g = []() -> int (*f)() {}; // expected-error {{type-id cannot have a name}}
+                           ^
+
+"Test_name.c", line 128: warning: missing return statement at end of non-void function "lambda []()->int (*)()"
+    auto g = []() -> int (*f)() {}; // expected-error {{type-id cannot have a name}}
+                                 ^
+
+"Test_name.c", line 151: error: expected an identifier
+    using [[gnu::aligned(1)]] T = int; // expected-error {{an attribute list cannot appear here}}
+          ^
+
+"Test_name.c", line 156: error: duplicate specifier in declaration
+    constexpr constexpr int f(); // expected-error {{duplicate 'constexpr' declaration specifier}}
+              ^
+
+"Test_name.c", line 157: error: duplicate specifier in declaration
+    constexpr int constexpr a = 0; // expected-error {{duplicate 'constexpr' declaration specifier}}
+                  ^
+
+"Test_name.c", line 160: error: duplicate specifier in declaration
+      friend constexpr int constexpr friend f(); // expected-warning {{duplicate 'friend' declaration specifier}} \
+                           ^
+
+"Test_name.c", line 160: error: duplicate specifier in declaration
+      friend constexpr int constexpr friend f(); // expected-warning {{duplicate 'friend' declaration specifier}} \
+                                     ^
+
+"Test_name.c", line 162: error: duplicate specifier in declaration
+      friend struct A friend; // expected-warning {{duplicate 'friend'}}
+                      ^
+
+"Test_name.c", line 162: warning: pointless friend declaration
+      friend struct A friend; // expected-warning {{duplicate 'friend'}}
+      ^
+
+"Test_name.c", line 165: error: only one of "constexpr", "consteval", and "constinit" can appear on a declaration
+    constinit constexpr int n1 = 0; // expected-error {{cannot combine with previous 'constinit'}}
+              ^
+
+"Test_name.c", line 166: error: only one of "constexpr", "consteval", and "constinit" can appear on a declaration
+    constexpr constinit int n2 = 0; // expected-error {{cannot combine with previous 'constexpr'}}
+              ^
+
+"Test_name.c", line 167: error: duplicate specifier in declaration
+    constinit constinit int n3 = 0; // expected-error {{duplicate 'constinit' declaration specifier}}
+              ^
+
+"Test_name.c", line 169: error: only one of "constexpr", "consteval", and "constinit" can appear on a declaration
+    consteval constexpr int f1(); // expected-error {{cannot combine with previous 'consteval'}}
+              ^
+
+"Test_name.c", line 170: error: only one of "constexpr", "consteval", and "constinit" can appear on a declaration
+    constexpr consteval int f2(); // expected-error {{cannot combine with previous 'constexpr'}}
+              ^
+
+"Test_name.c", line 171: error: duplicate specifier in declaration
+    consteval consteval int f3(); // expected-error {{duplicate 'consteval' declaration specifier}}
+              ^
+
+"Test_name.c", line 173: error: only one of "constexpr", "consteval", and "constinit" can appear on a declaration
+    constinit consteval int wat = 0; // expected-error {{cannot combine with previous 'constinit'}}
+              ^
+
+"Test_name.c", line 174: error: only one of "constexpr", "consteval", and "constinit" can appear on a declaration
+    consteval constinit int huh(); // expected-error {{cannot combine with previous 'consteval'}}
+              ^
+
+"Test_name.c", line 179: error: expected an identifier
+    ::decltype(S())::T invalid; // expected-error {{expected unqualified-id}}
+      ^
+
+"Test_name.c", line 179: error: a decltype-qualified name is nonstandard in this declaration context
+    ::decltype(S())::T invalid; // expected-error {{expected unqualified-id}}
+                     ^
+
+"Test_name.c", line 179: error: declaration is incompatible with class "ColonColonDecltype::S::T" (declared at line 178)
+    ::decltype(S())::T invalid; // expected-error {{expected unqualified-id}}
+                     ^
+
+"Test_name.c", line 179: error: expected a ";"
+    ::decltype(S())::T invalid; // expected-error {{expected unqualified-id}}
+                       ^
+
+"Test_name.c", line 188: error: expected a ";"
+      +;
+      ^
+
+"Test_name.c", line 190: error: expected a ";"
+      >\
+      ^
+
+"Test_name.c", line 197: error: expected a ";"
+    using E = AliasDeclEndLocation::A<int>>;
+    ^
+
+"Test_name.c", line 199: error: expected a ";"
+    using F = AliasDeclEndLocation::A<int GGG;
+                                          ^
+
+At end of source: error: expected an identifier
+
+At end of source: error: expected a ";"
+
+"Test_name.c", line 76: warning: variable "p" was declared but never referenced
+  int *const const p = 0; // expected-error {{duplicate 'const' declaration specifier}}
+                   ^
+
+"Test_name.c", line 157: warning: variable "DuplicateSpecifier::a" was declared but never referenced
+    constexpr int constexpr a = 0; // expected-error {{duplicate 'constexpr' declaration specifier}}
+                            ^
+
+"Test_name.c", line 166: warning: variable "DuplicateSpecifier::n2" was declared but never referenced
+    constexpr constinit int n2 = 0; // expected-error {{cannot combine with previous 'constexpr'}}
+                            ^
+
+63 errors detected in the compilation of "Test_name.c".

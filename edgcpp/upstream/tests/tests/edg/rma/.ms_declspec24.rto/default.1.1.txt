@@ -1,0 +1,19 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --microsoft -n Test_name.c
+"Test_name.c", line 6: warning: conversion from a string literal to "char *" is deprecated
+    __declspec(dllimport) inline void f() { printf("in A::f()\n");}
+                                                   ^
+
+"Test_name.c", line 9: warning: conversion from a string literal to "char *" is deprecated
+  __declspec(dllimport) inline void A::g() { printf("in A::g()\n");
+                                                    ^
+
+"Test_name.c", line 12: error: expected a ";"
+  {
+  ^
+
+At end of source: error: expected a "}"
+"Test_name.c", line 9: note: to match this "{"
+  __declspec(dllimport) inline void A::g() { printf("in A::g()\n");
+                                           ^
+
+2 errors detected in the compilation of "Test_name.c".

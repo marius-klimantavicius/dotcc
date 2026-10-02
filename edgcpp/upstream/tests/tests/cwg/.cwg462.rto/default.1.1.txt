@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++17 -tused -A -w Test_name.c
+"Test_name.c", line 10: error: external/internal linkage conflict with previous declaration at line 4
+        extern int i;     // #3 external linkage, ill-formed
+                   ^
+
+1 error detected in the compilation of "Test_name.c".

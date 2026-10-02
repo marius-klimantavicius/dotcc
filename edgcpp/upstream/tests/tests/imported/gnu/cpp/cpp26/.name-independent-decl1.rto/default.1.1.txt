@@ -1,0 +1,246 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 19: error: "_" has already been declared in the current scope
+      int _ = 4;			// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+          ^
+
+"Test_name.c", line 19: warning: variable "_" was declared but never referenced
+      int _ = 4;			// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+          ^
+
+"Test_name.c", line 24: error: "_" has already been declared in the current scope
+      int _ = 6;			// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+          ^
+
+"Test_name.c", line 25: error: "_" has already been declared in the current scope
+      int _ = 7;			// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+          ^
+
+"Test_name.c", line 24: warning: variable "_" was declared but never referenced
+      int _ = 6;			// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+          ^
+
+"Test_name.c", line 25: warning: variable "_" was declared but never referenced
+      int _ = 7;			// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+          ^
+
+"Test_name.c", line 28: warning: structured bindings are a C++17 feature
+      auto [i, j, _] = a;		// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+           ^
+
+"Test_name.c", line 33: warning: structured bindings are a C++17 feature
+      auto [_, _, k] = a;		// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+           ^
+
+"Test_name.c", line 33: error: "_" has already been declared in the current scope
+      auto [_, _, k] = a;		// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+               ^
+
+"Test_name.c", line 37: warning: structured bindings are a C++17 feature
+      auto [i, j, _] = a;		// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+           ^
+
+"Test_name.c", line 38: warning: structured bindings are a C++17 feature
+      auto [_, k, l] = a;		// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+           ^
+
+"Test_name.c", line 38: error: "_" has already been declared in the current scope
+      auto [_, k, l] = a;		// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+            ^
+
+"Test_name.c", line 43: warning: variable "_" was set but never used
+      int _;
+          ^
+
+"Test_name.c", line 47: warning: variable "_" was declared but never referenced
+      int _ = 1;
+          ^
+
+"Test_name.c", line 50: warning: variable "_" was declared but never referenced
+      int _;
+          ^
+
+"Test_name.c", line 54: error: "_" has already been declared in the current scope
+      int _ = 1;			// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+          ^
+
+"Test_name.c", line 53: warning: variable "_" was declared but never referenced
+      static int _;		// { dg-warning "unused variable" }
+                 ^
+
+"Test_name.c", line 54: warning: variable "_" was declared but never referenced
+      int _ = 1;			// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+          ^
+
+"Test_name.c", line 60: error: "_" has already been declared in the current scope
+      int _ = 1;			// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+          ^
+
+"Test_name.c", line 60: warning: variable "_" was declared but never referenced
+      int _ = 1;			// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+          ^
+
+"Test_name.c", line 65: error: "_" has already been declared in the current scope
+      int _ = 1;			// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+          ^
+
+"Test_name.c", line 66: error: "_" has already been declared in the current scope
+      int _ = 2;			// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+          ^
+
+"Test_name.c", line 65: warning: variable "_" was declared but never referenced
+      int _ = 1;			// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+          ^
+
+"Test_name.c", line 66: warning: variable "_" was declared but never referenced
+      int _ = 2;			// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+          ^
+
+"Test_name.c", line 79: warning: structured bindings are a C++17 feature
+        auto [i, j, _] = a;	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+             ^
+
+"Test_name.c", line 69: warning: variable "_" was declared but never referenced
+      int _ = 1;
+          ^
+
+"Test_name.c", line 88: error: "_" has already been declared in the current scope
+    int _ = 1;			// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+        ^
+
+"Test_name.c", line 88: warning: variable "_" was declared but never referenced
+    int _ = 1;			// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+        ^
+
+"Test_name.c", line 96: error: "_", declared in condition, may not be redeclared in this scope
+      int _ = 2;			// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+          ^
+
+"Test_name.c", line 96: warning: variable "_" was declared but never referenced
+      int _ = 2;			// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+          ^
+
+"Test_name.c", line 98: error: "_", declared in condition, may not be redeclared in this scope
+      int _ = 3;			// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+          ^
+
+"Test_name.c", line 98: warning: variable "_" was declared but never referenced
+      int _ = 3;			// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+          ^
+
+"Test_name.c", line 100: error: "_", declared in condition, may not be redeclared in this scope
+      int _ = 4;			// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+          ^
+
+"Test_name.c", line 100: warning: variable "_" was declared but never referenced
+      int _ = 4;			// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+          ^
+
+"Test_name.c", line 102: error: "_", declared in for-loop initialization, may not be redeclared in this scope
+      int _ = 5;			// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+          ^
+
+"Test_name.c", line 102: warning: variable "_" was declared but never referenced
+      int _ = 5;			// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+          ^
+
+"Test_name.c", line 105: error: "_", declared in condition, may not be redeclared in this scope
+        int _ = 6;		// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+            ^
+
+"Test_name.c", line 105: warning: variable "_" was declared but never referenced
+        int _ = 6;		// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+            ^
+
+"Test_name.c", line 109: error: "_", declared in condition, may not be redeclared in this scope
+        int _ = 7;		// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+            ^
+
+"Test_name.c", line 109: warning: variable "_" was declared but never referenced
+        int _ = 7;		// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+            ^
+
+"Test_name.c", line 113: error: "_", declared in condition, may not be redeclared in this scope
+        int _ = 8;		// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+            ^
+
+"Test_name.c", line 113: warning: variable "_" was declared but never referenced
+        int _ = 8;		// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+            ^
+
+"Test_name.c", line 117: error: "_", declared in for-loop initialization, may not be redeclared in this scope
+        int _ = 9;		// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+            ^
+
+"Test_name.c", line 117: warning: variable "_" was declared but never referenced
+        int _ = 9;		// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+            ^
+
+"Test_name.c", line 125: warning: variable "_" was declared but never referenced
+      long _ = 1;
+           ^
+
+"Test_name.c", line 134: error: a name cannot appear more than once in a capture-list
+    auto c = [_ = 2, _ = 3] () {};// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+                     ^
+
+"Test_name.c", line 139: error: a name cannot appear more than once in a capture-list
+      auto d = [_, _ = 5] () {};	// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+                   ^
+
+"Test_name.c", line 139: warning: variable "d" was declared but never referenced
+      auto d = [_, _ = 5] () {};	// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+           ^
+
+"Test_name.c", line 143: warning: variable "_" was declared but never referenced
+      int _ = 5;
+          ^
+
+"Test_name.c", line 144: warning: variable "e" was declared but never referenced
+      auto e = [_ = 6] () {};	// { dg-warning "lambda capture initializers only available with" "" { target c++11_down } }
+           ^
+
+"Test_name.c", line 132: warning: variable "b" was declared but never referenced
+    auto b = [_ = 1] () { (void) _; };	// { dg-warning "lambda capture initializers only available with" "" { target c++11_down } }
+         ^
+
+"Test_name.c", line 134: warning: variable "c" was declared but never referenced
+    auto c = [_ = 2, _ = 3] () {};// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+         ^
+
+"Test_name.c", line 164: warning: declaration of "_" hides handler parameter
+      int _ = 5;			// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+          ^
+
+"Test_name.c", line 164: warning: variable "_" was declared but never referenced
+      int _ = 5;			// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+          ^
+
+"Test_name.c", line 173: warning: parameter "_" may not be redeclared in a catch clause of function try block
+  catch (int _)			// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+             ^
+
+"Test_name.c", line 175: warning: parameter "_" may not be redeclared in a catch clause of function try block
+    int _ = 7;
+        ^
+
+"Test_name.c", line 175: warning: declaration of "_" hides handler parameter
+    int _ = 7;
+        ^
+
+"Test_name.c", line 175: warning: variable "_" was declared but never referenced
+    int _ = 7;
+        ^
+
+"Test_name.c", line 185: warning: parameter "_" may not be redeclared in a catch clause of function try block
+    int _ = 8;			// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+        ^
+
+"Test_name.c", line 185: warning: variable "_" was declared but never referenced
+    int _ = 8;			// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+        ^
+
+"Test_name.c", line 192: warning: variable "_" was declared but never referenced
+    int _ = 1;			// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+        ^
+
+20 errors detected in the compilation of "Test_name.c".

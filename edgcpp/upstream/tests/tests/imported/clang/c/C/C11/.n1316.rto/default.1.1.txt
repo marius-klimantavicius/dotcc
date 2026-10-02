@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 13: error: a value of type "void *" cannot be used to initialize an entity of type "float"
+    float f = in_vp; // expected-error {{initializing 'float' with an expression of incompatible type 'void *'}}
+              ^
+
+"Test_name.c", line 14: error: a value of type "float" cannot be used to initialize an entity of type "void *"
+    void *vp = in_f; // expected-error {{initializing 'void *' with an expression of incompatible type 'float'}}
+               ^
+
+"Test_name.c", line 16: error: argument of type "float" is incompatible with parameter of type "void *"
+    call_ptr(f);    // expected-error {{passing 'float' to parameter of incompatible type 'void *'}}
+             ^
+
+"Test_name.c", line 17: error: argument of type "void *" is incompatible with parameter of type "float"
+    call_float(vp); // expected-error {{passing 'void *' to parameter of incompatible type 'float'}}
+               ^
+
+"Test_name.c", line 19: error: a value of type "float" cannot be assigned to an entity of type "void *"
+    vp = f; // expected-error {{assigning to 'void *' from incompatible type 'float'}}
+       ^
+
+"Test_name.c", line 20: error: a value of type "void *" cannot be assigned to an entity of type "float"
+    f = vp; // expected-error {{assigning to 'float' from incompatible type 'void *'}}
+      ^
+
+"Test_name.c", line 25: error: a value of type "float" cannot be used to initialize an entity of type "void *"
+    } s = { f, vp }; // expected-error {{initializing 'void *' with an expression of incompatible type 'float'}} \
+            ^
+
+"Test_name.c", line 25: error: a value of type "void *" cannot be used to initialize an entity of type "float"
+    } s = { f, vp }; // expected-error {{initializing 'void *' with an expression of incompatible type 'float'}} \
+               ^
+
+8 errors detected in the compilation of "Test_name.c".

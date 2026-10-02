@@ -1,0 +1,46 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 30: warning: expression has no effect
+      ({ "MUTEX     ", "BARB_SEM 1", "BARB_SEM 2", "CUST_SEM 1",
+         ^
+
+"Test_name.c", line 30: warning: expression has no effect
+      ({ "MUTEX     ", "BARB_SEM 1", "BARB_SEM 2", "CUST_SEM 1",
+         ^
+
+"Test_name.c", line 30: warning: expression has no effect
+      ({ "MUTEX     ", "BARB_SEM 1", "BARB_SEM 2", "CUST_SEM 1",
+         ^
+
+"Test_name.c", line 30: warning: expression has no effect
+      ({ "MUTEX     ", "BARB_SEM 1", "BARB_SEM 2", "CUST_SEM 1",
+         ^
+
+"Test_name.c", line 30: warning: expression has no effect
+      ({ "MUTEX     ", "BARB_SEM 1", "BARB_SEM 2", "CUST_SEM 1",
+         ^
+
+"Test_name.c", line 30: warning: expression has no effect
+      ({ "MUTEX     ", "BARB_SEM 1", "BARB_SEM 2", "CUST_SEM 1",
+         ^
+
+"Test_name.c", line 30: warning: expression has no effect
+      ({ "MUTEX     ", "BARB_SEM 1", "BARB_SEM 2", "CUST_SEM 1",
+         ^
+
+"Test_name.c", line 30: warning: expression has no effect
+      ({ "MUTEX     ", "BARB_SEM 1", "BARB_SEM 2", "CUST_SEM 1",
+         ^
+
+"Test_name.c", line 32: error: expected a ";"
+         "WAIT_SEM 4"}	 /* { dg-error "expected" } */
+                     ^
+
+"Test_name.c", line 33: error: expected a ")"
+  	[( sb.sem_num )]) );
+  	^
+
+"Test_name.c", line 22: warning: function "up" was declared but never referenced
+  static void up(int sem){
+              ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,6 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+eccp: diagnostics generated from compilation of Test_name.int.c:
+/usr/include/string.h:42:43: error: conflicting types for 'memcpy'; have 'void *(void *, const void *, size_t)' {aka 'void *(void *, const void *, long unsigned int)'}
+eccptmp/Test_name.int.c:4:7: note: previous declaration of 'memcpy' with type 'void *(void *, const void *, unsigned int)'
+eccp: end of diagnostics from compilation of Test_name.int.c
+eccp: gcc compilation of Test_name.int.c returned an exit status of 1

@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 7: error: invalid start of expression in requires clause
+  template<typename T> requires { typename T::type; } struct S<T> { };
+                                ^
+
+"Test_name.c", line 7: error: expected an expression
+  template<typename T> requires { typename T::type; } struct S<T> { };
+                                ^
+
+At end of source: error: expected a declaration
+
+At end of source: error: expected a ";"
+
+4 errors detected in the compilation of "Test_name.c".

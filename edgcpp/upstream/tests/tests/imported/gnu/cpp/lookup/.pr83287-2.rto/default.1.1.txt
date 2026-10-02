@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 15: error: no instance of overloaded function "foo" matches the required type
+    new T (foo); // { dg-error "cannot resolve" }
+           ^
+          detected during instantiation of "void bar<T>() [with T=double]" at line 21
+
+"Test_name.c", line 8: warning: function "<unnamed>::foo" was declared but never referenced
+    void foo ();
+         ^
+
+1 error detected in the compilation of "Test_name.c".

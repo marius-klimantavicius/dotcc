@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"./cpp1z/nontype2.C", line 11: error: invalid nontype template argument of type "int *"
+  X<&s.m> x7;
+    ^
+
+"./cpp1z/nontype2.C", line 12: error: invalid nontype template argument of type "const char *"
+  Y<"foo"> y1;
+    ^
+
+"./cpp1z/nontype2.C", line 13: error: identifier "p" is undefined
+  Z<typeid(p)> z1;
+           ^
+
+"./cpp1z/nontype2.C", line 13: error: a nontype template argument of reference type must bind to a function or to a complete object
+  Z<typeid(p)> z1;
+    ^
+
+"./cpp1z/nontype2.C", line 17: error: a template argument may not reference a non-external entity
+    Y<__func__> y;
+      ^
+
+"./cpp1z/nontype2.C", line 17: warning: variable "y" was declared but never referenced
+    Y<__func__> y;
+                ^
+
+5 errors detected in the compilation of "Test_name.c".

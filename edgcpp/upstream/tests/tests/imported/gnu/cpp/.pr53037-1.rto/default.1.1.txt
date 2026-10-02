@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: warning: unknown attribute "warn_if_not_aligned"
+    __attribute__((aligned(4),warn_if_not_aligned(8)));
+                              ^
+
+"Test_name.c", line 43: warning: unknown attribute "warn_if_not_aligned"
+    int x __attribute__((warn_if_not_aligned(16))); /* { dg-warning "'foo5::x' offset 4 in 'foo5' isn't aligned to 16" } */
+                         ^
+
+"Test_name.c", line 49: warning: unknown attribute "warn_if_not_aligned"
+    int x __attribute__((warn_if_not_aligned(16))); /* { dg-warning "'foo6::x' offset 4 in 'foo6' isn't aligned to 16" } */
+                         ^
+
+"Test_name.c", line 58: warning: unknown attribute "warn_if_not_aligned"
+    int x __attribute__((warn_if_not_aligned(16)));
+                         ^
+
+"Test_name.c", line 76: warning: unknown attribute "warn_if_not_aligned"
+    int x __attribute__((warn_if_not_aligned(16))); 
+                         ^
+
+"Test_name.c", line 82: warning: unknown attribute "warn_if_not_aligned"
+    int x __attribute__((warn_if_not_aligned(16)));
+                         ^
+

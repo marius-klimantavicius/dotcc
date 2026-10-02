@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -w --ms_compatibility -w Test_name.c
+"Test_name.c", line 13: error: this declaration has no storage class or type specifier
+  MS: #define static_assert _Static_assert
+  ^
+
+"Test_name.c", line 13: error: expected a ";"
+  MS: #define static_assert _Static_assert
+    ^
+
+"Test_name.c", line 13: error: "#" not expected here
+  MS: #define static_assert _Static_assert
+      ^
+
+"Test_name.c", line 14: error: "#" not expected here
+  NOMS-NOT: #define static_assert _Static_assert
+            ^
+
+4 errors detected in the compilation of "Test_name.c".

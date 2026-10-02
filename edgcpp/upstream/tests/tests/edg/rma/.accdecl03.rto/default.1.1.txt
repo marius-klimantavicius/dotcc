@@ -1,0 +1,82 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 22: error: type "A::A" (declared at line 4) is inaccessible
+    A::a = 0;
+    ^
+
+"Test_name.c", line 22: error: conversion to inaccessible base class "A" is not allowed
+    A::a = 0;
+       ^
+
+"Test_name.c", line 25: error: type "A::A" (declared at line 4) is inaccessible
+    A::b = 0;
+    ^
+
+"Test_name.c", line 25: error: conversion to inaccessible base class "A" is not allowed
+    A::b = 0;
+       ^
+
+"Test_name.c", line 26: error: member "A::c" (declared at line 4) is inaccessible
+    c = 0;     // inaccessible
+    ^
+
+"Test_name.c", line 27: error: member "A::c" (declared at line 4) is inaccessible
+    B::c = 0;  // inaccessible
+       ^
+
+"Test_name.c", line 28: error: type "A::A" (declared at line 4) is inaccessible
+    A::c = 0;  // inaccessible
+    ^
+
+"Test_name.c", line 28: error: conversion to inaccessible base class "A" is not allowed
+    A::c = 0;  // inaccessible
+       ^
+
+"Test_name.c", line 33: error: type "B::B" (declared at line 5) is inaccessible
+    B::x = 0;
+    ^
+
+"Test_name.c", line 33: error: conversion to inaccessible base class "B" is not allowed
+    B::x = 0;
+       ^
+
+"Test_name.c", line 36: error: type "B::B" (declared at line 5) is inaccessible
+    B::a = 0;
+    ^
+
+"Test_name.c", line 36: error: conversion to inaccessible base class "B" is not allowed
+    B::a = 0;
+       ^
+
+"Test_name.c", line 37: error: type "A::A" (declared at line 4) is inaccessible
+    A::a = 0;
+    ^
+
+"Test_name.c", line 37: error: conversion to inaccessible base class "B" is not allowed
+    A::a = 0;
+       ^
+
+"Test_name.c", line 38: error: member "A::b" (declared at line 4) is inaccessible
+    b = 0;     // inaccessible
+    ^
+
+"Test_name.c", line 39: error: member "A::b" (declared at line 4) is inaccessible
+    C::b = 0;  // inaccessible
+       ^
+
+"Test_name.c", line 40: error: type "B::B" (declared at line 5) is inaccessible
+    B::b = 0;  // inaccessible
+    ^
+
+"Test_name.c", line 40: error: conversion to inaccessible base class "B" is not allowed
+    B::b = 0;  // inaccessible
+       ^
+
+"Test_name.c", line 41: error: type "A::A" (declared at line 4) is inaccessible
+    A::b = 0;  // inaccessible
+    ^
+
+"Test_name.c", line 41: error: conversion to inaccessible base class "B" is not allowed
+    A::b = 0;  // inaccessible
+       ^
+
+20 errors detected in the compilation of "Test_name.c".

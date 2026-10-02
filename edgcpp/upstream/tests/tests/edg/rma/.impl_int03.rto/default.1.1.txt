@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 5: error: this declaration has no storage class or type specifier
+    i;
+    ^
+
+"Test_name.c", line 7: error: return type "int" omitted in declaration of function "main"
+  main() {
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

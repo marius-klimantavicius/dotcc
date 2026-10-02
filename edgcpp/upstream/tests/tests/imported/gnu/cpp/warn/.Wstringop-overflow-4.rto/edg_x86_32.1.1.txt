@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./warn/../../gcc.dg/range.h", line 13: warning: declaration of "size_t" does not match the expected type "unsigned int"
+  typedef long unsigned int size_t;
+                            ^
+
+"./warn/Wstringop-overflow-4.C", line 43: warning: integer conversion resulted in truncation
+    size_t r_2_smax = unsigned_range ((2), (0xffffffffffffffffUL));
+                                           ^
+
+"./warn/Wstringop-overflow-4.C", line 69: warning: integer conversion resulted in truncation
+    ptrdiff_t r_dmin_dmax = signed_range (((-0x7fffffffffffffffL - 1)), (0x7fffffffffffffffL));
+                                          ^
+
+"./warn/Wstringop-overflow-4.C", line 69: warning: integer conversion resulted in truncation
+    ptrdiff_t r_dmin_dmax = signed_range (((-0x7fffffffffffffffL - 1)), (0x7fffffffffffffffL));
+                                                                        ^
+
+"./warn/Wstringop-overflow-4.C", line 111: warning: pointless comparison of unsigned integer with zero
+    size_t r_0_1 = (++idx, (vals[idx] < 0 || 1 < vals[idx] ? 0 : vals[idx]));
+                                      ^
+
+"./warn/Wstringop-overflow-4.C", line 164: warning: integer conversion resulted in truncation
+    ptrdiff_t r_dmin_dmax = signed_range (((-0x7fffffffffffffffL - 1)), (0x7fffffffffffffffL));
+                                          ^
+
+"./warn/Wstringop-overflow-4.C", line 164: warning: integer conversion resulted in truncation
+    ptrdiff_t r_dmin_dmax = signed_range (((-0x7fffffffffffffffL - 1)), (0x7fffffffffffffffL));
+                                                                        ^
+

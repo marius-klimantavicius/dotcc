@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++23 Test_name.c
+"SemaCXX/attr-format.cpp", line 21: error: first substitution argument is not the first variable argument
+    void h2(const char*, ...) __attribute__((format(printf, 2, 1)));
+                                                               ^
+
+"SemaCXX/attr-format.cpp", line 25: error: format argument does not have string type
+    void h4(this S&, const char *, ...) __attribute__((format(printf, 1, 3)));
+                                                                      ^
+
+"SemaCXX/attr-format.cpp", line 80: warning: "format" attribute requires an ellipsis parameter or parameter pack
+      __attribute__((format(printf, 1, 2)));
+                     ^
+
+"SemaCXX/attr-format.cpp", line 101: warning: argument is incompatible with corresponding format string conversion (expected type "int" but argument has type "foo")
+    format_invalid_nonpod("hello %i", f);
+                                      ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 76: error: function template "OutOfLine::A<T>::g" has already been defined (previous definition at line 48)
+    void A<T>::g() { } // expected-error {{redefinition of 'g'}}
+               ^
+
+"Test_name.c", line 88: error: variable template "OutOfLine::A<T>::x" has already been defined (previous definition at line 57)
+    int A<T>::x<U&, V> = 0; // expected-error {{redefinition of 'x<U &, V>'}}
+              ^
+
+"Test_name.c", line 100: error: class template "OutOfLine::A<T>::C" has already been defined (previous definition at line 66)
+    struct A<T>::C<U&, V> { }; // expected-error {{redefinition of 'C<U &, V>'}}
+                 ^
+
+"Test_name.c", line 113: error: function template "OutOfLine::A<T>::g [with T=int]" has already been defined (previous definition at line 107)
+    void A<int>::g() { } // expected-error {{redefinition of 'g'}}
+                 ^
+
+"Test_name.c", line 117: error: variable template "OutOfLine::A<T>::x [with T=int]" has already been defined
+    int A<int>::x = 0;
+                ^
+
+"Test_name.c", line 121: error: variable template "OutOfLine::A<T>::x [with T=int]" has already been defined
+    int A<int>::x<U*, V> = 0;
+                ^
+
+"Test_name.c", line 125: error: variable template "OutOfLine::A<T>::x [with T=int]" has already been defined (previous definition at line 57)
+    int A<int>::x<U&, V> = 0; // expected-note {{previous definition is here}}
+                ^
+
+"Test_name.c", line 129: error: variable template "OutOfLine::A<T>::x [with T=int]" has already been defined (previous definition at line 57)
+    int A<int>::x<U&, V> = 0; // expected-error {{redefinition of 'x<U &, V>'}}
+                ^
+
+"Test_name.c", line 145: error: class template "OutOfLine::A<T>::C [with T=int]" has already been defined (previous definition at line 139)
+    struct A<int>::C<U&, V> { }; // expected-error {{redefinition of 'C<U &, V>'}}
+                   ^
+
+9 errors detected in the compilation of "Test_name.c".

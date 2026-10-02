@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 14: error: identifier "constexpr" is undefined
+     constexpr D(D const &src): B2(src) {}  // This corrupted memory, likely
+     ^
+
+"Test_name.c", line 14: error: member function with the same name as its class must be a constructor
+     constexpr D(D const &src): B2(src) {}  // This corrupted memory, likely
+               ^
+
+"Test_name.c", line 14: error: expected a ";"
+     constexpr D(D const &src): B2(src) {}  // This corrupted memory, likely
+                              ^
+
+"Test_name.c", line 18: error: no suitable constructor exists to convert from "int" to "D"
+    D d(42);
+        ^
+
+"Test_name.c", line 19: warning: variable "e" was declared but never referenced
+    D e = d;  // Address of d is passed as a "run-time" address.
+      ^
+
+4 errors detected in the compilation of "Test_name.c".

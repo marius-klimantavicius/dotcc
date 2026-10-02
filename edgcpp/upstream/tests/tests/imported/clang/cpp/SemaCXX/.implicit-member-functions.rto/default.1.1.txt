@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 6: error: defining an implicitly declared member function is not allowed
+  A::A() { } // expected-error {{definition of implicitly declared default constructor}}
+     ^
+
+"Test_name.c", line 6: error: allowing all exceptions is incompatible with previous function "A::A"
+  A::A() { } // expected-error {{definition of implicitly declared default constructor}}
+         ^
+
+"Test_name.c", line 9: error: defining an implicitly declared member function is not allowed
+  B::B(const B&) { } // expected-error {{definition of implicitly declared copy constructor}}
+     ^
+
+"Test_name.c", line 9: error: allowing all exceptions is incompatible with previous function "B::B"
+  B::B(const B&) { } // expected-error {{definition of implicitly declared copy constructor}}
+                 ^
+
+"Test_name.c", line 12: error: defining an implicitly declared member function is not allowed
+  C& C::operator=(const C&) { return *this; } // expected-error {{definition of implicitly declared copy assignment operator}}
+        ^
+
+"Test_name.c", line 12: error: allowing all exceptions is incompatible with previous function "C::operator=(const C &)" (declared at line 11)
+  C& C::operator=(const C&) { return *this; } // expected-error {{definition of implicitly declared copy assignment operator}}
+                            ^
+
+"Test_name.c", line 15: error: defining an implicitly declared member function is not allowed
+  D::~D() { } // expected-error {{definition of implicitly declared destructor}}
+     ^
+
+7 errors detected in the compilation of "Test_name.c".

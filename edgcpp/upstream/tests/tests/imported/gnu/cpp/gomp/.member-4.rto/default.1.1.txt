@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 10: warning: unrecognized #pragma
+    #pragma omp parallel shared (a, a)	// { dg-error "appears more than once in data clauses" }
+            ^
+
+"Test_name.c", line 12: warning: unrecognized #pragma
+    #pragma omp parallel shared (a) private (b) shared(C::a)	// { dg-error "appears more than once in data clauses" }
+            ^
+
+"Test_name.c", line 14: warning: unrecognized #pragma
+    #pragma omp task private (a) private (b)
+            ^
+
+"Test_name.c", line 16: warning: unrecognized #pragma
+    #pragma omp task firstprivate (a) shared (C::a)	// { dg-error "appears more than once in data clauses" }
+            ^
+
+"Test_name.c", line 18: warning: unrecognized #pragma
+    #pragma omp parallel for lastprivate (b) firstprivate (a) lastprivate (b)	// { dg-error "appears more than once in data clauses" }
+            ^
+
+"Test_name.c", line 21: warning: unrecognized #pragma
+    #pragma omp parallel for lastprivate (b) firstprivate (b)
+            ^
+

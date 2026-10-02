@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --microsoft Test_name.c
+"Test_name.c", line 20: warning: dllexport/dllimport conflict with "cc" (declared at line 19); dllexport assumed
+  char cc;
+       ^
+
+"Test_name.c", line 24: warning: dllexport/dllimport conflict with "cp" (declared at line 23); dllimport/dllexport dropped
+  extern char cp;
+              ^
+
+"Test_name.c", line 27: warning: dllexport/dllimport conflict with "cp2" (declared at line 26); dllexport assumed
+  char cp2;
+       ^
+

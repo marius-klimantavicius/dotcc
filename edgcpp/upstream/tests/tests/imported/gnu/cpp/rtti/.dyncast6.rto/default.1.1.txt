@@ -1,0 +1,114 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 14: warning: variable "b" is used before its value is set
+    a1 = dynamic_cast<A*>(b);
+                          ^
+
+"Test_name.c", line 15: error: a value of type "const A *" cannot be assigned to an entity of type "A *"
+    a1 = dynamic_cast<const A*>(b);          // { dg-error "invalid" }
+       ^
+
+"Test_name.c", line 16: error: a value of type "volatile A *" cannot be assigned to an entity of type "A *"
+    a1 = dynamic_cast<volatile A*>(b);       // { dg-error "invalid" }
+       ^
+
+"Test_name.c", line 17: error: a value of type "const volatile A *" cannot be assigned to an entity of type "A *"
+    a1 = dynamic_cast<const volatile A*>(b); // { dg-error "invalid" }
+       ^
+
+"Test_name.c", line 22: error: a value of type "volatile A *" cannot be assigned to an entity of type "const A *"
+    a2 = dynamic_cast<volatile A*>(b);       // { dg-error "invalid" }
+       ^
+
+"Test_name.c", line 23: error: a value of type "const volatile A *" cannot be assigned to an entity of type "const A *"
+    a2 = dynamic_cast<const volatile A*>(b); // { dg-error "invalid" }
+       ^
+
+"Test_name.c", line 27: error: a value of type "const A *" cannot be assigned to an entity of type "volatile A *"
+    a3 = dynamic_cast<const A*>(b);          // { dg-error "invalid" }
+       ^
+
+"Test_name.c", line 29: error: a value of type "const volatile A *" cannot be assigned to an entity of type "volatile A *"
+    a3 = dynamic_cast<const volatile A*>(b); // { dg-error "invalid" }
+       ^
+
+"Test_name.c", line 13: warning: variable "a1" was set but never used
+    A* a1;
+       ^
+
+"Test_name.c", line 19: warning: variable "a2" was set but never used
+    const A* a2;
+             ^
+
+"Test_name.c", line 25: warning: variable "a3" was set but never used
+    volatile A* a3;
+                ^
+
+"Test_name.c", line 31: warning: variable "a4" was set but never used
+    const volatile A* a4;
+                      ^
+
+"Test_name.c", line 43: error: qualifiers dropped in binding reference of type "A &" to initializer of type "const A"
+    A& a2 = dynamic_cast<const A&>(b);                // { dg-error "" }
+            ^
+
+"Test_name.c", line 44: error: qualifiers dropped in binding reference of type "A &" to initializer of type "volatile A"
+    A& a3 = dynamic_cast<volatile A&>(b);             // { dg-error "" }
+            ^
+
+"Test_name.c", line 45: error: qualifiers dropped in binding reference of type "A &" to initializer of type "const volatile A"
+    A& a4 = dynamic_cast<const volatile A&>(b);       // { dg-error "" }
+            ^
+
+"Test_name.c", line 49: error: qualifiers dropped in binding reference of type "const A &" to initializer of type "volatile A"
+    const A& ca3 = dynamic_cast<volatile A&>(b);       // { dg-error "" }
+                   ^
+
+"Test_name.c", line 50: error: qualifiers dropped in binding reference of type "const A &" to initializer of type "const volatile A"
+    const A& ca4 = dynamic_cast<const volatile A&>(b); // { dg-error "" }
+                   ^
+
+"Test_name.c", line 53: error: qualifiers dropped in binding reference of type "volatile A &" to initializer of type "const A"
+    volatile A& va2 = dynamic_cast<const A&>(b);       // { dg-error "" }
+                      ^
+
+"Test_name.c", line 55: error: qualifiers dropped in binding reference of type "volatile A &" to initializer of type "const volatile A"
+    volatile A& va4 = dynamic_cast<const volatile A&>(b);// { dg-error "" }
+                      ^
+
+"Test_name.c", line 42: warning: variable "a1" was declared but never referenced
+    A& a1 = dynamic_cast<A&>(b);
+       ^
+
+"Test_name.c", line 47: warning: variable "ca1" was declared but never referenced
+    const A& ca1 = dynamic_cast<A&>(b);
+             ^
+
+"Test_name.c", line 48: warning: variable "ca2" was declared but never referenced
+    const A& ca2 = dynamic_cast<const A&>(b);
+             ^
+
+"Test_name.c", line 52: warning: variable "va1" was declared but never referenced
+    volatile A& va1 = dynamic_cast<A&>(b);
+                ^
+
+"Test_name.c", line 54: warning: variable "va3" was declared but never referenced
+    volatile A& va3 = dynamic_cast<volatile A&>(b);
+                ^
+
+"Test_name.c", line 57: warning: variable "cva1" was declared but never referenced
+    const volatile A& cva1 = dynamic_cast<A&>(b);
+                      ^
+
+"Test_name.c", line 58: warning: variable "cva2" was declared but never referenced
+    const volatile A& cva2 = dynamic_cast<const A&>(b);
+                      ^
+
+"Test_name.c", line 59: warning: variable "cva3" was declared but never referenced
+    const volatile A& cva3 = dynamic_cast<volatile A&>(b);
+                      ^
+
+"Test_name.c", line 60: warning: variable "cva4" was declared but never referenced
+    const volatile A& cva4 = dynamic_cast<const volatile A&>(b);
+                      ^
+
+14 errors detected in the compilation of "Test_name.c".

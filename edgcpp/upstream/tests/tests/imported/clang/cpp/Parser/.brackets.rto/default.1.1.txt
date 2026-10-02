@@ -1,0 +1,178 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 -DFIXIT -DFIXIT -w Test_name.c
+"Test_name.c", line 11: error: invalid specifier for structured binding declaration
+    int []b = {0,1,4,9,16};
+    ^
+
+"Test_name.c", line 11: error: missing initializer
+    int []b = {0,1,4,9,16};
+          ^
+
+"Test_name.c", line 11: error: expected a ";"
+    int []b = {0,1,4,9,16};
+          ^
+
+"Test_name.c", line 20: error: identifier "b" is undefined
+    int d = b[0];  // No undeclared identifier error here.
+            ^
+
+"Test_name.c", line 25: error: invalid specifier for structured binding declaration
+    int[1] g[2];
+    ^
+
+"Test_name.c", line 25: error: missing initializer
+    int[1] g[2];
+           ^
+
+"Test_name.c", line 25: error: expected a ";"
+    int[1] g[2];
+           ^
+
+"Test_name.c", line 35: error: invalid specifier for structured binding declaration
+    int [3] (*a) = 0;
+    ^
+
+"Test_name.c", line 35: error: identifier "a" is undefined
+    int [3] (*a) = 0;
+              ^
+
+"Test_name.c", line 35: error: expected a ";"
+    int [3] (*a) = 0;
+                 ^
+
+"Test_name.c", line 51: error: expected an identifier
+    static int [1][1]x;
+               ^
+
+"Test_name.c", line 51: error: expected a ";"
+    static int [1][1]x;
+                     ^
+
+"Test_name.c", line 60: error: invalid specifier for structured binding declaration
+  int [1][1]A::x = { {42} };
+  ^
+
+"Test_name.c", line 60: error: missing initializer
+  int [1][1]A::x = { {42} };
+         ^
+
+"Test_name.c", line 60: error: expected a ";"
+  int [1][1]A::x = { {42} };
+         ^
+
+"Test_name.c", line 69: error: invalid specifier for structured binding declaration
+  int [5] *B::x = 0;
+  ^
+
+"Test_name.c", line 69: error: missing initializer
+  int [5] *B::x = 0;
+          ^
+
+"Test_name.c", line 69: error: expected a ";"
+  int [5] *B::x = 0;
+          ^
+
+"Test_name.c", line 79: error: invalid specifier for structured binding declaration
+    int [3] *a;
+    ^
+
+"Test_name.c", line 79: error: missing initializer
+    int [3] *a;
+            ^
+
+"Test_name.c", line 79: error: expected a ";"
+    int [3] *a;
+            ^
+
+"Test_name.c", line 88: error: identifier "a" is undefined
+    int (*b)[3] = a;  // no error
+                  ^
+
+"Test_name.c", line 92: error: invalid specifier for structured binding declaration
+    int [2] a;
+    ^
+
+"Test_name.c", line 92: error: missing initializer
+    int [2] a;
+            ^
+
+"Test_name.c", line 92: error: expected a ";"
+    int [2] a;
+            ^
+
+"Test_name.c", line 100: error: invalid specifier for structured binding declaration
+    int [2] &b = a;
+    ^
+
+"Test_name.c", line 100: error: missing initializer
+    int [2] &b = a;
+            ^
+
+"Test_name.c", line 100: error: expected a ";"
+    int [2] &b = a;
+            ^
+
+"Test_name.c", line 132: error: invalid specifier for structured binding declaration
+  int [3] ::test6::A::arr = {1,2,3};
+  ^
+
+"Test_name.c", line 132: error: missing initializer
+  int [3] ::test6::A::arr = {1,2,3};
+          ^
+
+"Test_name.c", line 132: error: expected a ";"
+  int [3] ::test6::A::arr = {1,2,3};
+          ^
+
+"Test_name.c", line 145: error: invalid specifier for structured binding declaration
+    int [3] A::*a;
+    ^
+
+"Test_name.c", line 145: error: missing initializer
+    int [3] A::*a;
+            ^
+
+"Test_name.c", line 145: error: expected a ";"
+    int [3] A::*a;
+            ^
+
+"Test_name.c", line 160: error: invalid specifier for structured binding declaration
+  const char[] A::f = "f";
+  ^
+
+"Test_name.c", line 160: error: missing initializer
+  const char[] A::f = "f";
+               ^
+
+"Test_name.c", line 160: error: const variable "test8::<struct binding 11>" requires an initializer
+  const char[] A::f = "f";
+               ^
+
+"Test_name.c", line 160: error: expected a ";"
+  const char[] A::f = "f";
+               ^
+
+"Test_name.c", line 167: error: invalid specifier for structured binding declaration
+      template<> constexpr inline char[] to_print_fmt<unsigned, 'x'> = "0x%x";
+                 ^
+
+"Test_name.c", line 167: error: a structured binding cannot be declared "inline"
+      template<> constexpr inline char[] to_print_fmt<unsigned, 'x'> = "0x%x";
+                           ^
+
+"Test_name.c", line 167: error: missing initializer
+      template<> constexpr inline char[] to_print_fmt<unsigned, 'x'> = "0x%x";
+                                         ^
+
+"Test_name.c", line 167: error: "<struct binding 12>" is not a class or function template name in the current scope
+      template<> constexpr inline char[] to_print_fmt<unsigned, 'x'> = "0x%x";
+                                      ^
+
+"Test_name.c", line 167: error: "constexpr" is not valid here
+      template<> constexpr inline char[] to_print_fmt<unsigned, 'x'> = "0x%x";
+                 ^
+
+"Test_name.c", line 167: error: expected a ";"
+      template<> constexpr inline char[] to_print_fmt<unsigned, 'x'> = "0x%x";
+                                         ^
+
+44 errors detected in the compilation of "Test_name.c".

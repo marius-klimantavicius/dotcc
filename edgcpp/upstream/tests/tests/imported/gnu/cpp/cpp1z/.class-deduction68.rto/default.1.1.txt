@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 12: error: no instance of constructor "ref_view" matches the argument list
+            argument types are: (int)
+  ref_view r{1};			// { dg-error "no match|deduction failed" }
+           ^
+
+"Test_name.c", line 12: error: cannot deduce class template arguments
+  ref_view r{1};			// { dg-error "no match|deduction failed" }
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

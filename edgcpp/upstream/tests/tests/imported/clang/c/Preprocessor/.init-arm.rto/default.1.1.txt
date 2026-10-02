@@ -1,0 +1,2 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -w ARM-DARWIN-CXX -w --c Test_name.c
+eccp: unrecognizable argument: ARM-DARWIN-CXX

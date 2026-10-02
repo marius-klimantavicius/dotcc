@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 6: error: too many arguments in function call
+    return __builtin_preserve_access_index(&arg[1], 1); // expected-error {{too many arguments to function call, expected 1, have 2}}
+                                                    ^
+
+"Test_name.c", line 6: error: return value type does not match the function type
+    return __builtin_preserve_access_index(&arg[1], 1); // expected-error {{too many arguments to function call, expected 1, have 2}}
+           ^
+
+"Test_name.c", line 14: warning: return value type does not match the function type
+    return __builtin_preserve_access_index(&arg[1]); // expected-warning {{returning 'const int *' from a function with result type 'void *' discards qualifiers}}
+           ^
+
+"Test_name.c", line 18: warning: return value type does not match the function type
+    return __builtin_preserve_access_index(arg); // expected-warning {{returning 'const volatile int *' from a function with result type 'const void *' discards qualifiers}}
+           ^
+
+2 errors detected in the compilation of "Test_name.c".

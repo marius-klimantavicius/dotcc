@@ -1,0 +1,186 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 7: error: a variable declared with "auto" requires an initializer
+    auto undefined;     // expected-error {{declaration of variable 'undefined' with deduced type 'auto' requires an initializer}}
+    ^
+
+"Test_name.c", line 8: warning: variable "auto_int" was set but never used
+    auto auto_int = 4;
+         ^
+
+"Test_name.c", line 9: warning: variable "auto_long" was set but never used
+    auto auto_long = 4UL;
+         ^
+
+"Test_name.c", line 10: warning: variable "auto_int_ts" was declared but never referenced
+    auto int auto_int_ts = 12;
+             ^
+
+"Test_name.c", line 11: warning: variable "a" was declared but never referenced
+    signed auto a = 1L; // expected-error {{'auto' cannot be signed or unsigned}}
+                ^
+
+"Test_name.c", line 18: error: _Complex can only be used with floating-point types
+    _Complex auto i = 12.0; // expected-error {{'_Complex auto' is invalid}}
+    ^
+
+"Test_name.c", line 18: error: a variable declared with "auto" requires an initializer
+    _Complex auto i = 12.0; // expected-error {{'_Complex auto' is invalid}}
+             ^
+
+"Test_name.c", line 22: warning: variable "t" was set but never used
+    auto t = ({ // expected-warning {{use of GNU statement expression extension}}
+         ^
+
+"Test_name.c", line 30: error: "auto" is not allowed here
+    auto auto_size = sizeof(auto);  // expected-error {{expected expression}}
+                            ^
+
+"Test_name.c", line 31: error: "auto" is not allowed here
+    typeof(auto) tpof = 4;          // expected-error {{expected expression}}
+           ^
+
+"Test_name.c", line 38: error: "auto" is not allowed here
+    auto auto_cast = (auto)(4 + 3); // expected-error {{expected expression}}
+                      ^
+
+"Test_name.c", line 35: warning: variable "int_cast" was set but never used
+    auto int_cast = (int)(4 + 3);
+         ^
+
+"Test_name.c", line 36: warning: variable "double_cast" was set but never used
+    auto double_cast = (double)(1 / 3);
+         ^
+
+"Test_name.c", line 37: warning: variable "long_cast" was set but never used
+    auto long_cast = (long)(4UL + 3UL);
+         ^
+
+"Test_name.c", line 48: error: "auto" type cannot appear in top-level array type
+    auto array[] = { 1, 2, 3 }; // expected-error {{cannot use 'auto' with array in C}}
+    ^
+
+"Test_name.c", line 50: error: "auto" is not allowed here
+    auto auto_cl = (auto){13};  // expected-error {{expected expression}}
+                    ^
+
+"Test_name.c", line 46: warning: variable "int_cl" was set but never used
+    auto int_cl = (int){13};
+         ^
+
+"Test_name.c", line 47: warning: variable "double_cl" was set but never used
+    auto double_cl = (double){2.5};
+         ^
+
+"Test_name.c", line 58: warning: variable "a" was set but never used
+    auto a = array;
+         ^
+
+"Test_name.c", line 59: warning: variable "b" was set but never used
+    auto b = &array;
+         ^
+
+"Test_name.c", line 68: warning: variable "result" was set but never used
+    auto result = (typeof(typeof_target())){12};
+         ^
+
+"Test_name.c", line 77: warning: a value of type "const int *" cannot be used to initialize an entity of type "int *"
+    int* pa = &a; // expected-warning {{initializing 'int *' with an expression of type 'const int *' discards qualifiers}}
+              ^
+
+"Test_name.c", line 79: warning: a value of type "unsigned long *" cannot be used to initialize an entity of type "int *"
+    int* pc = &c; // expected-error {{incompatible pointer types initializing 'int *' with an expression of type 'unsigned long *'}}
+              ^
+
+"Test_name.c", line 77: warning: variable "pa" was set but never used
+    int* pa = &a; // expected-warning {{initializing 'int *' with an expression of type 'const int *' discards qualifiers}}
+         ^
+
+"Test_name.c", line 78: warning: variable "pb" was set but never used
+    const int* pb = &b;
+               ^
+
+"Test_name.c", line 79: warning: variable "pc" was set but never used
+    int* pc = &c; // expected-error {{incompatible pointer types initializing 'int *' with an expression of type 'unsigned long *'}}
+         ^
+
+"Test_name.c", line 91: error: "auto" type cannot appear in top-level array type
+    auto str2[] = "this is a string";       // expected-warning {{type inference of a declaration other than a plain identifier with optional trailing attributes is a Clang extension}}
+    ^
+
+"Test_name.c", line 91: warning: initialization with "{...}" expected for aggregate object
+    auto str2[] = "this is a string";       // expected-warning {{type inference of a declaration other than a plain identifier with optional trailing attributes is a Clang extension}}
+                  ^
+
+"Test_name.c", line 90: warning: variable "str" was set but never used
+    auto str = "this is a string";
+         ^
+
+"Test_name.c", line 92: warning: variable "str3" was set but never used
+    auto (str3) = "this is a string";
+          ^
+
+"Test_name.c", line 93: warning: variable "str4" was set but never used
+    auto (((str4))) = "this is a string";
+            ^
+
+"Test_name.c", line 103: error: "auto" must be a placeholder for the complete type of the variable (not for a component of that type)
+    auto *ptr = &a;                         // expected-warning {{type inference of a declaration other than a plain identifier with optional trailing attributes is a Clang extension}}
+    ^
+
+"Test_name.c", line 104: error: "auto" must be a placeholder for the complete type of the variable (not for a component of that type)
+    auto *str = "this is a string";         // expected-warning {{type inference of a declaration other than a plain identifier with optional trailing attributes is a Clang extension}}
+    ^
+
+"Test_name.c", line 105: error: "auto" must be a placeholder for the complete type of the variable (not for a component of that type)
+    const auto *str2 = "this is a string";  // expected-warning {{type inference of a declaration other than a plain identifier with optional trailing attributes is a Clang extension}}
+          ^
+
+"Test_name.c", line 106: error: "auto" must be a placeholder for the complete type of the variable (not for a component of that type)
+    auto *b = &a;                           // expected-warning {{type inference of a declaration other than a plain identifier with optional trailing attributes is a Clang extension}}
+    ^
+
+"Test_name.c", line 103: warning: variable "ptr" was set but never used
+    auto *ptr = &a;                         // expected-warning {{type inference of a declaration other than a plain identifier with optional trailing attributes is a Clang extension}}
+          ^
+
+"Test_name.c", line 104: warning: variable "str" was set but never used
+    auto *str = "this is a string";         // expected-warning {{type inference of a declaration other than a plain identifier with optional trailing attributes is a Clang extension}}
+          ^
+
+"Test_name.c", line 105: warning: variable "str2" was set but never used
+    const auto *str2 = "this is a string";  // expected-warning {{type inference of a declaration other than a plain identifier with optional trailing attributes is a Clang extension}}
+                ^
+
+"Test_name.c", line 108: warning: variable "nptr" was set but never used
+    auto nptr = nullptr;
+         ^
+
+"Test_name.c", line 119: error: statement expressions are only allowed in block scope
+    extern void foo(int a, int array[({ auto x = 12; x;})]);  // expected-warning {{use of GNU statement expression extension}}
+                                      ^
+
+"Test_name.c", line 126: error: a variable declared with an auto type specifier cannot appear in its own initializer
+      auto a = a * a; // expected-error {{variable 'a' declared with deduced type 'auto' cannot appear in its own initializer}} \
+               ^
+
+"Test_name.c", line 126: error: a variable declared with an auto type specifier cannot appear in its own initializer
+      auto a = a * a; // expected-error {{variable 'a' declared with deduced type 'auto' cannot appear in its own initializer}} \
+                   ^
+
+"Test_name.c", line 131: warning: variable "a" was set but never used
+      auto a = b;
+           ^
+
+"Test_name.c", line 124: warning: variable "b" was declared but never referenced
+    double b = 9;
+           ^
+
+"Test_name.c", line 138: error: "auto" is not allowed here
+  [[clang::overloadable]] auto test(auto x) { // expected-error {{'auto' not allowed in function prototype}} \
+                                    ^
+
+"Test_name.c", line 138: error: "auto" type cannot appear in top-level function type
+  [[clang::overloadable]] auto test(auto x) { // expected-error {{'auto' not allowed in function prototype}} \
+                          ^
+
+18 errors detected in the compilation of "Test_name.c".

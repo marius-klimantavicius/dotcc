@@ -1,0 +1,9 @@
+./a.out
+In constructor
+In constructor
+In copy constructor, x = 132
+In constructor
+In copy constructor, x = 352
+In constructor
+In copy constructor, x = 132
+In copy constructor, x = 13252

@@ -1,0 +1,22 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: error: invalid argument to attribute "mode"
+  typedef float dec32 __attribute__((mode(SD)));
+                                          ^
+
+"Test_name.c", line 10: error: invalid argument to attribute "mode"
+  typedef float dec64 __attribute__((mode(DD)));
+                                          ^
+
+"Test_name.c", line 11: error: invalid argument to attribute "mode"
+  typedef float dec128 __attribute__((mode(TD)));
+                                           ^
+
+"Test_name.c", line 37: warning: handler is potentially masked by previous handler for type "dec32"
+    catch (dec64 dd)
+           ^
+
+"Test_name.c", line 42: warning: handler is potentially masked by previous handler for type "dec32"
+    catch (dec128 dl)
+           ^
+
+3 errors detected in the compilation of "Test_name.c".

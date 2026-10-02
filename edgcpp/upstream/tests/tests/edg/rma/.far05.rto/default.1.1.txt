@@ -1,0 +1,270 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 6: error: expected a ";"
+  typedef int near NI;
+                   ^
+
+"Test_name.c", line 7: error: expected a ";"
+  typedef int far FI;
+                  ^
+
+"Test_name.c", line 8: error: "near" has already been declared in the current scope
+  I near ni;
+    ^
+
+"Test_name.c", line 8: error: expected a ";"
+  I near ni;
+         ^
+
+"Test_name.c", line 9: error: "far" has already been declared in the current scope
+  I far fi;
+    ^
+
+"Test_name.c", line 9: error: expected a ";"
+  I far fi;
+        ^
+
+"Test_name.c", line 11: error: identifier "NI" is undefined
+  NI near *nip;
+  ^
+
+"Test_name.c", line 11: error: variable "near" has already been defined (previous definition at line 8)
+  NI near *nip;
+     ^
+
+"Test_name.c", line 11: error: expected a ";"
+  NI near *nip;
+          ^
+
+"Test_name.c", line 12: error: identifier "NI" is undefined
+  NI far *fip;
+  ^
+
+"Test_name.c", line 12: error: variable "far" has already been defined (previous definition at line 9)
+  NI far *fip;
+     ^
+
+"Test_name.c", line 12: error: expected a ";"
+  NI far *fip;
+         ^
+
+"Test_name.c", line 13: error: identifier "NI" is undefined
+  NI *ip;
+  ^
+
+"Test_name.c", line 14: error: identifier "NI" is undefined
+  NI near ni2;
+  ^
+
+"Test_name.c", line 14: error: variable "near" has already been defined (previous definition at line 8)
+  NI near ni2;
+     ^
+
+"Test_name.c", line 14: error: expected a ";"
+  NI near ni2;
+          ^
+
+"Test_name.c", line 15: error: identifier "NI" is undefined
+  NI far fi2;
+  ^
+
+"Test_name.c", line 15: error: variable "far" has already been defined (previous definition at line 9)
+  NI far fi2;
+     ^
+
+"Test_name.c", line 15: error: expected a ";"
+  NI far fi2;
+         ^
+
+"Test_name.c", line 16: error: identifier "NI" is undefined
+  NI i2;
+  ^
+
+"Test_name.c", line 17: error: identifier "FI" is undefined
+  FI near ni3;
+  ^
+
+"Test_name.c", line 17: error: variable "near" has already been defined (previous definition at line 8)
+  FI near ni3;
+     ^
+
+"Test_name.c", line 17: error: expected a ";"
+  FI near ni3;
+          ^
+
+"Test_name.c", line 18: error: identifier "FI" is undefined
+  FI far fi3;
+  ^
+
+"Test_name.c", line 18: error: variable "far" has already been defined (previous definition at line 9)
+  FI far fi3;
+     ^
+
+"Test_name.c", line 18: error: expected a ";"
+  FI far fi3;
+         ^
+
+"Test_name.c", line 19: error: identifier "FI" is undefined
+  FI i3;
+  ^
+
+"Test_name.c", line 20: error: this declaration has no storage class or type specifier
+  FI (near x);
+  ^
+
+"Test_name.c", line 20: error: expected a ")"
+  FI (near x);
+           ^
+
+"Test_name.c", line 21: error: this declaration has no storage class or type specifier
+  FI (near *xx);
+  ^
+
+"Test_name.c", line 21: error: variable "FI" has already been defined (previous definition at line 20)
+  FI (near *xx);
+  ^
+
+"Test_name.c", line 21: error: identifier "xx" is undefined
+  FI (near *xx);
+            ^
+
+"Test_name.c", line 22: error: this declaration has no storage class or type specifier
+  FI (near xxx());
+  ^
+
+"Test_name.c", line 22: error: variable "FI" has already been defined (previous definition at line 20)
+  FI (near xxx());
+  ^
+
+"Test_name.c", line 22: error: expected a ")"
+  FI (near xxx());
+           ^
+
+"Test_name.c", line 23: error: this declaration has no storage class or type specifier
+  FI (near *a1)[5];
+  ^
+
+"Test_name.c", line 23: error: variable "FI" has already been defined (previous definition at line 20)
+  FI (near *a1)[5];
+  ^
+
+"Test_name.c", line 23: error: identifier "a1" is undefined
+  FI (near *a1)[5];
+            ^
+
+"Test_name.c", line 23: error: expected a ";"
+  FI (near *a1)[5];
+               ^
+
+"Test_name.c", line 24: error: this declaration has no storage class or type specifier
+  FI (near *a1b)[5][3];
+  ^
+
+"Test_name.c", line 24: error: variable "FI" has already been defined (previous definition at line 20)
+  FI (near *a1b)[5][3];
+  ^
+
+"Test_name.c", line 24: error: identifier "a1b" is undefined
+  FI (near *a1b)[5][3];
+            ^
+
+"Test_name.c", line 24: error: expected a ";"
+  FI (near *a1b)[5][3];
+                ^
+
+"Test_name.c", line 25: error: this declaration has no storage class or type specifier
+  FI ((near *a1c)[5])[3];
+  ^
+
+"Test_name.c", line 25: error: variable "FI" has already been defined (previous definition at line 20)
+  FI ((near *a1c)[5])[3];
+  ^
+
+"Test_name.c", line 25: error: identifier "a1c" is undefined
+  FI ((near *a1c)[5])[3];
+             ^
+
+"Test_name.c", line 25: error: expected a ";"
+  FI ((near *a1c)[5])[3];
+                     ^
+
+"Test_name.c", line 26: error: this declaration has no storage class or type specifier
+  FI (near a2)[5];
+  ^
+
+"Test_name.c", line 26: error: variable "FI" has already been defined (previous definition at line 20)
+  FI (near a2)[5];
+  ^
+
+"Test_name.c", line 26: error: expected a ")"
+  FI (near a2)[5];
+           ^
+
+"Test_name.c", line 26: error: expected a ";"
+  FI (near a2)[5];
+              ^
+
+"Test_name.c", line 27: error: this declaration has no storage class or type specifier
+  FI (far *a3)[5];
+  ^
+
+"Test_name.c", line 27: error: variable "FI" has already been defined (previous definition at line 20)
+  FI (far *a3)[5];
+  ^
+
+"Test_name.c", line 27: error: identifier "a3" is undefined
+  FI (far *a3)[5];
+           ^
+
+"Test_name.c", line 27: error: expected a ";"
+  FI (far *a3)[5];
+              ^
+
+"Test_name.c", line 28: error: this declaration has no storage class or type specifier
+  FI (far a4)[5];
+  ^
+
+"Test_name.c", line 28: error: variable "FI" has already been defined (previous definition at line 20)
+  FI (far a4)[5];
+  ^
+
+"Test_name.c", line 28: error: expected a ")"
+  FI (far a4)[5];
+          ^
+
+"Test_name.c", line 28: error: expected a ";"
+  FI (far a4)[5];
+             ^
+
+"Test_name.c", line 29: error: this declaration has no storage class or type specifier
+  FI (far *a5)();
+  ^
+
+"Test_name.c", line 29: error: variable "FI" has already been defined (previous definition at line 20)
+  FI (far *a5)();
+  ^
+
+"Test_name.c", line 29: error: identifier "a5" is undefined
+  FI (far *a5)();
+           ^
+
+"Test_name.c", line 29: error: expected a ";"
+  FI (far *a5)();
+              ^
+
+"Test_name.c", line 30: error: this declaration has no storage class or type specifier
+  FI (far a6)();
+  ^
+
+"Test_name.c", line 30: error: variable "FI" has already been defined (previous definition at line 20)
+  FI (far a6)();
+  ^
+
+"Test_name.c", line 30: error: expected a ")"
+  FI (far a6)();
+          ^
+
+"Test_name.c", line 30: error: expected a ";"
+  FI (far a6)();
+             ^
+
+67 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: error: expression must be a pointer to a complete object type
+    delete (b);  // { dg-error "11:type .bool. argument" }
+           ^
+
+"Test_name.c", line 9: warning: variable "b" is used before its value is set
+    delete (b);  // { dg-error "11:type .bool. argument" }
+            ^
+
+"Test_name.c", line 12: error: a pointer to function may not be deleted
+    delete (g);  // { dg-error "11:cannot delete a function" }
+           ^
+
+"Test_name.c", line 15: warning: expression must be a pointer to a complete object type
+    delete (p);  // { dg-warning "11:deleting .void*." }
+           ^
+
+"Test_name.c", line 15: warning: variable "p" is used before its value is set
+    delete (p);  // { dg-warning "11:deleting .void*." }
+            ^
+
+2 errors detected in the compilation of "Test_name.c".

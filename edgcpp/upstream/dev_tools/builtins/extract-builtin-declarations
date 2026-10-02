@@ -1,0 +1,390 @@
+#!/bin/bash
+
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+#
+# FIXME: Script only generates C++ builtins (not C)
+#
+#  This script is used to extract the declarations of builtin functions from
+#  GCC/clang executables.  It takes one or more full path names to g++ and/or
+#  clang executables for which to obtain builtin declarations.  For each
+#  executable, up to four output files are produced (in the current directory),
+#  for -m32, -m64, -a32, and -a64.  Doesn't work for clang versions earlier
+#  than 3.6.0.  For a32 and a64 with GCC, a corresponding arm-linux-gnueabihf
+#  or aarch64-linux-gnu cross compilers need to be installed in directories
+#  named with "-arm" and "-aarch64" suffixes, e.g., if gcc is installed in
+#  /build/gcc-13.2.0/bin/g++, corresponding cross compiler need to be installed
+#  as /build/gcc-13.2.0-arm/bin/arm-linux-gnueabihf-g++ and
+#  /build/gcc-13.2.0-aarch64/bin/aarch64-linux-gnu-g++.
+#
+#  Invoked on lin6, for example, with these arguments to build all possible
+#  clang and g++ versions (4.0.0 and later):
+#
+#    extract-builtin-declarations \
+#      /mds/clang/clang-*.?.?/build/Release+Asserts/bin/clang \
+#      /mds/clang/clang-*.?.?/build/bin/clang \
+#      /mds/gnu/build/gcc-*.?.?/bin/g++
+#
+
+# Note that (at least on lin6) clang 8.0 and later is built with g++ 7.5.0
+# (4.9.2 was used for earlier version) so use that version when building the
+# clang plugin as well.  Also, the shared library must match that version.
+export gcc_for_clang=${gcc_for_clang-/mds/gnu/build/gcc-12.2.0/bin/g++}
+export LD_LIBRARY_PATH=/mds/gnu/build/gcc-12.2.0/lib64:/mds/gnu/build/gcc-7.5.0/lib64:/mds/gnu/build/gcc-4.9.2/lib64:$LD_LIBRARY_PATH
+if [ ! -x "${gcc_for_clang}" ] ; then
+  echo "Need to specify an appropriate value for \$gcc_for_clang."
+  exit 1
+fi
+
+# Make sure $BUILTIN_HOME is set properly.
+if [ ! -z "${BUILTIN_HOME}" ] ; then
+  # Specified in the environment.
+  :
+else
+  # Assume...
+  BUILTIN_HOME=$PWD
+fi
+export BUILTIN_HOME
+
+# Make sure we can find the source code for the GCC/clang builtins.
+export gcc_plugin=${BUILTIN_HOME}/print-gcc-builtins.cpp
+export gcc_plugin_so=${gcc_plugin##*/}.so
+export clang_plugin=${BUILTIN_HOME}/print-clang-builtins.cpp
+export clang_plugin_so=${clang_plugin##*/}.so
+if [ ! -f ${gcc_plugin} ] ; then
+  echo "Missing ${gcc_plugin} (check BUILTIN_HOME setting)."
+  exit 1
+fi
+if [ ! -f ${clang_plugin} ] ; then
+  echo "Missing ${clang_plugin} (check BUILTIN_HOME setting)."
+  exit 1
+fi
+
+export additional_opts=
+# Some rudimentary command-line parsing.
+if [ $# = 0 ] ; then
+  echo "Must specify the full path name to one or more gcc/clang executables."
+  exit 1
+fi
+while [ $# != 0 ]
+do
+  case "$1" in
+    -*)
+      # Could be useful for additional options like -mfoo
+      additional_opts="${additional_opts} $1"
+      shift
+      ;;
+    /*)
+      break
+      ;;
+    *)
+      echo "Unknown argument: $1 (not a path name to GCC/clang)."
+      exit 1
+      ;;
+  esac
+done
+
+# Options accepted by all versions of GCC/clang:
+export common_opts="-mmmx -msse -msse2 -msse3 -mssse3 -msse4.1 -msse4.2 -msse4 -mavx -maes -mpclmul -msse4a -mfma4 -mxop -m3dnow -mpopcnt -mfma"
+# Options accepted by at least one of the GCC/clang versions:
+export conditional_opts="-fcoroutines -mlwp -mabm -mf16c -mbmi -mfsgsbase -mrdrnd -mavx2 -mbmi2 -mrdseed -mxsaveopt -mavx512f -mavx512cd -msha -mrtm -mavx512vl -mavx512bw -mavx512dq -mavx512ifma -mavx512vbmi -mclwb -mpcommit -mclflushopt -mxsaves -mxsavec -mmwaitx -mclzero -mpku -mavx512er -mavx512pf -mtbm -mavx5124fmaps -mavx5124vnniw -mavx512vpopcntdq -mrdpid -m3dnowa -mavx512vbmi2 -mavx512vnni -mavx512bitalg -mshstk -mgfni -mvaes -mvpclmulqdq -mwbnoinvd -mwbnoinvdi -mmovdiri -mmovdir64b -mwaitpkg -mcldemote -mptwrite -mavx512vp2intersect -mavx512bf16 -mavx512bf -mavx512bmm -menqcmd -mtsxldtrk -muintr -mhreset -mkl -mwidekl -mserialize -mavx512fp16 -mprefetchi -mraoint -mavxvnni -mavxvnniint8 -mavxvnniint16 -mavxneconvert -mcmpccxadd -mamx-tile -musermsr -msm3 -msm4 -msha512 -mmovrs -mamx-avx512 -mamx-fp8 -mamx-movrs -mamx-tf32 -mamx-transpose -mavx10.2 -mavx10.2-256 -mavx10.2-512"
+
+# This function determines, through trial and error, which -m options are
+# supported by the GCC/clang compiler specified by ${cc} and returns that
+# string.  $1 is the "architecture" option (i.e., -m32 or -m64); use that
+# when testing options for validity because some are only valid with one or the
+# other.
+function options_for_version() {
+  good_options="$1 ${common_opts}"
+  for option in ${conditional_opts}
+  do
+    echo "" | ${cc} -x c++ -S -o /dev/null $1 ${option} - >/dev/null 2>&1
+    if [ $? = 0 ] ; then
+      good_options="${good_options} ${option}"
+    fi
+  done
+  echo ${good_options}
+}
+export -f options_for_version
+
+# Extract builtin declarations from $1 and put them in separate files (for
+# -m32, -m64, -a32, and -a64) in the original directory.
+function extract_builtins() {
+  cc=$1
+  if [ ! -x ${cc} ] ; then
+    echo "Arguments need to be full paths to gcc/clang executables (${cc})."
+    return 1
+  fi
+  base=${cc##*/}
+  if [ "${base}" = g++ -o "${base}" = gcc ] ; then
+    version=$(${cc} --version | grep "^${base} (GCC)" | cut -d' ' -f3)
+    if [ -z "${version}" ] ; then
+      echo "Can't determine version from ${cc} --version".
+      return 1
+    fi
+    cc_string=gx
+  elif [ "${base}" = clang ] ; then
+    version=$(${cc} --version | grep "^clang version" | cut -d' ' -f3 | cut -d- -f1)
+    if [ -z "${version}" ] ; then
+      echo "Can't determine version from ${cc} --version".
+      return 1
+    fi
+    cc_string=Lx
+    clang_base=${cc%%/build*}
+    if [ ! -d "${clang_base}" ] ; then
+      echo "Can't find 'build' directory for clang (${cc})."
+      return 1
+    fi
+  else
+    echo "Argument doesn't appear to be a GCC/clang executable (${cc})."
+    return 1
+  fi
+  version=${version/rc/}
+  version=${version%%/*}
+  version=${version//\./0}
+  let i_version=${version}
+  # Do the compilations in a separate directory (to avoid collisions).
+  mkdir ${cc_string}.${version}
+  cd ${cc_string}.${version}
+  # Only GCC 4.5.0 and later support the plugin architecture:
+  if [ "${cc_string}" = gx -a ${i_version} -ge 40500 ] ; then
+    # Build the GCC plugin for the specified version.
+    ${cc} -I$(${cc} -print-file-name=plugin)/include -fPIC -shared \
+           ${gcc_plugin} -o ${gcc_plugin_so}
+  elif [ "${cc_string}" = Lx ] ; then
+    if [ ${i_version} -lt 30600 ] ; then
+      echo "WARNING: Can't build clang plugin for version earlier than 3.6.0".
+      return 1
+    fi
+    # Clang 16.0.0 and later is required for RISC-V vector C API extraction.
+    if [ ${i_version} -lt 160000 ] ; then
+      std_ver=c++14
+    else
+      std_ver=c++17
+    fi
+    # Build the clang plugin for the specified version.
+    ${gcc_for_clang} \
+      -I${clang_base}/build/include \
+      -I${clang_base}/llvm/include \
+      -I${clang_base}/llvm/llvm/include \
+      -I${clang_base}/llvm/tools/clang/include \
+      -I${clang_base}/llvm/clang/include \
+      -I${clang_base}/build/tools/clang/include \
+      -D_DEBUG -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS \
+      -D__STDC_LIMIT_MACROS -O3 -fomit-frame-pointer -std=${std_ver} \
+      -fvisibility-inlines-hidden -fno-exceptions -fno-rtti -fPIC \
+      -ffunction-sections -fdata-sections -Wcast-qual -fno-strict-aliasing \
+      -pedantic -Wno-long-long -Wall -W -Wno-unused-parameter -Wwrite-strings \
+      -Wno-c++20-extensions \
+      -Wno-maybe-uninitialized -Wno-missing-field-initializers -Wno-comment \
+      -shared -o ${clang_plugin_so} \
+      ${clang_plugin}
+  fi
+  if [ $? != 0 ] ; then
+    echo "Couldn't build plugin for ${base} version ${version}."
+    return 1
+  fi
+  # Do both 32-bit and 64-bit architectures.
+  for arch in m32 m64 a32 a64 r32 r64
+  do
+    decl_file=${orig_dir}/builtins_${cc_string}_${version}_${arch}.txt
+    if [ "${cc_string}" = gx ] ; then
+      if [ ${i_version} -lt 40500 ] ; then
+        echo "GCC version ${i_version} is too old (must be at least 40500 to use plugins)"
+        return 1
+      elif [ ${i_version} -ge 100000 ] ; then
+        # GCC will only emit the __builtin_coro_* signatures when using
+        # -fcoroutines.
+        additional_opts="$additional_opts -fcoroutines"
+      fi
+      if [ "${arch}" = a64 -o "${arch}" = a32 ]; then
+        # Check for a corresponding ARM32/ARM64 cross compiler
+        if [ "${arch}" = a64 ]; then
+          arm_cc=${cc/\/bin\//-aarch64\/bin\/aarch64-linux-gnu-}
+          arm_opts=""
+          arm_opts_2=""
+        else
+          arm_cc=${cc/\/bin\//-arm\/bin\/arm-linux-gnueabihf-}
+          arm_opts="-march=armv8-a -mfloat-abi=hard -mfpu=crypto-neon-fp-armv8"
+          if [ ${i_version} -ge 100000 ]; then
+            # Also use an M-profile configuration.
+            arm_opts_2="-march=armv8.1-m.main+mve.fp -mfloat-abi=hard -mfpu=crypto-neon-fp-armv8"
+          else
+            arm_opts_2=""
+          fi
+        fi
+        if [ -e "${arm_cc}" ]; then
+          # Use the GCC plugin to dump the builtins for this version.
+          arm_lib="${arm_cc%/*}/../lib"
+          # Extract any pragmas that declare additional functions (only need to
+          # do this for 64-bit ARM here).
+          find "${arm_lib}" -name "arm_*.h" |
+            xargs grep -hoE '^(#pragma GCC aarch64 "[^"]+")' |
+            sort -r | uniq |
+            sed -e 's/#pragma GCC [a-z0-9]\+ "\([^"]\+\)"/#line 1 "\1"\n\0/' |
+            ${arm_cc} -x c++ -S -o /dev/null \
+                 ${arm_opts} ${additional_opts} \
+                 -fplugin=${PWD}/${gcc_plugin_so} \
+                 - > ${decl_file}.new
+          plugin_ret=${PIPESTATUS[5]}
+          if [ -n "${arm_opts_2}" -a ${plugin_ret} == 0 ] ; then
+            # Append builtins from a secondary configuration.
+            # For 32-bit ARM we only need to look for the MVE configuration for
+            # special pragmas
+            find "${arm_lib}" -name "arm_*.h" |
+              xargs grep -hoE '^(#pragma GCC arm "[^"]+")' |
+              sort -r | uniq |
+              sed -e 's/"arm_mve[.]h"/"arm_mve.h" false/' \
+                  -e 's/#pragma GCC [a-z0-9]\+ "\([^"]\+\)"/#line 1 "\1"\n\0/' |
+              ${arm_cc} -x c++ -S -o /dev/null \
+                   ${arm_opts_2} ${additional_opts} \
+                   -fplugin=${PWD}/${gcc_plugin_so} \
+                   - >> ${decl_file}.new
+            plugin_ret=${PIPESTATUS[5]}
+          fi
+        else
+          plugin_ret=1
+        fi
+      elif [ "${arch}" = r64 -o "${arch}" = r32 ]; then
+        # Check for a corresponding RISC-V cross compiler
+        if [ "${arch}" = r64 ]; then
+          riscv_cc=${cc/\/bin\//-riscv64\/bin\/riscv64-linux-gnu-}
+          riscv_opts=""
+          if [ ${i_version} -ge 90000 ]; then
+            # Enable vector extensions
+            riscv_opts="-march=rv64gcv"
+          else
+            riscv_opts="-march=rv64gc"
+          fi
+        else
+          riscv_cc=${cc/\/bin\//-riscv32\/bin\/riscv32-linux-gnu-}
+          riscv_opts=""
+          if [ ${i_version} -ge 90000 ]; then
+            # Enable vector extensions
+            riscv_opts="-march=rv32gcv"
+          else
+            riscv_opts="-march=rv32gc"
+          fi
+        fi
+        if [ -e "${riscv_cc}" ]; then
+          if [ ${i_version} -ge 140000 ]; then
+            # Try to use as many extensions as possible (but we have to
+            # disable conflicting combinations)
+            riscv_extensions="`${riscv_cc} --print-supported-extensions |
+              tail -n +3 | cut -f2 | grep -E -o '^(z[a-z0-9]*)' |
+              grep -E -v '^(zce|zcf|z.*inx|zcmp|zcmt|z.lsd|zvl([2-9][0-9]{2,}|[0-9]{4,}))' |
+              tr \\\\n _`"
+            riscv_opts="${riscv_opts}_${riscv_extensions::-1}"
+          elif [ ${i_version} -ge 120000 ]; then
+            # Use a static list of extensions
+            riscv_opts="${riscv_opts}_zic64b_zicbom_zicbop_zicboz_ziccamoa_ziccif_zicclsm_ziccrse_zicfilp_zicfiss_zicntr_zicond_zicsr_zifencei_zihintntl_zihintpause_zihpm_zimop_zmmul_za128rs_za64rs_zaamo_zabha_zacas_zalrsc_zawrs_zfa_zfbfmin_zfh_zfhmin_zca_zcb_zcd_zcmop_zba_zbb_zbc_zbkb_zbkc_zbkx_zbs_zk_zkn_zknd_zkne_zknh_zkr_zks_zksed_zksh_zkt_ztso_zvbb_zvbc_zve32f_zve32x_zve64d_zve64f_zve64x_zvfbfmin_zvfbfwma_zvfh_zvfhmin_zvkb_zvkg_zvkn_zvknc_zvkned_zvkng_zvknha_zvknhb_zvks_zvksc_zvksed_zvksg_zvksh_zvkt_zvl128b_zvl32b_zvl64b"
+          fi
+
+          # Use the GCC plugin to dump the builtins for this version.
+          riscv_lib="${riscv_cc%/*}/../lib"
+          # Extract any pragmas that declare additional functions.
+          find "${riscv_lib}" -name "riscv_*.h" |
+            xargs grep -hoE '^(#pragma riscv intrinsic "[^"]+")' |
+            grep -vF xtheadvector | sort -r | uniq |
+            sed -e 's/#pragma riscv intrinsic "\([^"]\+\)"/#line 1 "\1"\n\0/' |
+            ${riscv_cc} -x c++ -S -o /dev/null \
+                 ${riscv_opts} ${additional_opts} \
+                 -fplugin=${PWD}/${gcc_plugin_so} \
+                 - > ${decl_file}.new
+          plugin_ret=${PIPESTATUS[5]}
+        else
+          plugin_ret=1
+        fi
+      else
+        # Use the GCC plugin to dump the builtins for this version.
+        echo "" |
+          ${cc} -x c++ -S -o /dev/null \
+               $(options_for_version -${arch}) ${additional_opts} \
+               -fplugin=${PWD}/${gcc_plugin_so} \
+               - > ${decl_file}.new
+        plugin_ret=${PIPESTATUS[1]}
+      fi
+    else
+      # Dump the clang builtin signatures.
+      if [ ${i_version} -ge 130000 ] ; then
+        # Clang 13.0.0 and later will only emit the __builtin_coro_*
+        # signatures in C++20 mode, so add that (as -std=gnu++20).
+        additional_opts="$additional_opts -std=gnu++20"
+      fi
+      if [ "${arch}" = a64 ]; then
+        target_opts="-target aarch64-linux-gnu"
+      elif [ "${arch}" = a32 ]; then
+        target_opts="-target armv8-linux-gnueabihf"
+      elif [ "${arch}" = r64 ]; then
+        target_opts="-target riscv64-linux-gnu"
+      elif [ "${arch}" = r32 ]; then
+        target_opts="-target riscv32-linux-gnu"
+      else
+        target_opts="-target x86_64 -${arch}"
+      fi
+      # RISC-V vector C API functions are extracted by the plugin when the
+      # target is riscv32/riscv64.  Enable the V extension (and common extras on
+      # newer Clang) via -march; no input pragmas are required.
+      if [ "${arch}" = r64 -o "${arch}" = r32 ]; then
+        if [ ${i_version} -ge 140000 ]; then
+          if [ "${arch}" = r64 ]; then
+            riscv_march="rv64gcv"
+          else
+            riscv_march="rv32gcv"
+          fi
+          # Extra extensions needed for f16/bf16 and crypto vector types.
+          riscv_march="${riscv_march}_zfh_zfhmin_zfbfmin_zvfh_zvfhmin_zvfbfmin_zvfbfwma_zvbb_zvbc_zve32f_zve32x"
+          if [ "${arch}" = r64 ]; then
+            riscv_march="${riscv_march}_zve64d_zve64f_zve64x"
+          fi
+          target_opts="${target_opts} -march=${riscv_march}"
+        fi
+      fi
+      echo "" |
+        ${cc} -x c++ -S -o /dev/null ${target_opts} ${additional_opts} \
+            -Xclang -load \
+            -Xclang ${PWD}/${clang_plugin_so} \
+            -Xclang -plugin \
+            -Xclang print-builtins \
+            - > ${decl_file}.new
+      plugin_ret=${PIPESTATUS[1]}
+      if [ ${plugin_ret} != 0 -a \( "${arch}" = r64 -o "${arch}" = r32 \) -a \
+           ${i_version} -ge 140000 ] ; then
+        # Older Clang may reject extra extensions.
+        if [ "${arch}" = r64 ]; then
+          target_opts="-target riscv64-linux-gnu -march=rv64gcv"
+        else
+          target_opts="-target riscv32-linux-gnu -march=rv32gcv"
+        fi
+        echo "" |
+          ${cc} -x c++ -S -o /dev/null ${target_opts} ${arch_opts} \
+              -Xclang -load \
+              -Xclang ${PWD}/${clang_plugin_so} \
+              -Xclang -plugin \
+              -Xclang print-builtins \
+              - > ${decl_file}.new
+        plugin_ret=${PIPESTATUS[1]}
+      fi
+    fi
+    if [ ${plugin_ret} != 0 ] ; then
+      echo "Couldn't run plugin for ${base} version ${version} (arch ${arch})."
+    else
+      sort < ${decl_file}.new | uniq > ${decl_file}
+    fi
+    rm -f ${decl_file}.new
+  done
+}
+export -f extract_builtins
+
+export orig_dir=$PWD
+# Create a temporary directory to do all the work:
+export tmp_dir=$(mktemp -d)
+trap "rm -fr ${tmp_dir}" EXIT
+cd $tmp_dir
+
+# Use a separate thread for each argument.  Exit status will be non-zero if
+# any thread fails.
+parallel extract_builtins ::: "$@"

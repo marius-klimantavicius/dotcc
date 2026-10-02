@@ -1,0 +1,374 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 100: error: enum "std::align_val_t" was previously declared with a different base type
+    enum class align_val_t: size_t {};
+               ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 137: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 140: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 155: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 158: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 168: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t, std::align_val_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 171: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t, std::align_val_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 179: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, std::align_val_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 182: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, std::align_val_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 206: error: first parameter of allocation function must be of type "size_t"
+  void* operator new(std::size_t, void* __p)
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 210: error: first parameter of allocation function must be of type "size_t"
+  void* operator new[](std::size_t, void* __p)
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/iterator_concepts.h", line 201: error: identifier "__int128" is undefined
+      struct incrementable_traits<__int128>
+                                  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/iterator_concepts.h", line 202: error: identifier "__int128" is undefined
+      { using difference_type = __int128; };
+                                ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/iterator_concepts.h", line 205: error: expected a ">"
+      struct incrementable_traits<unsigned __int128>
+                                           ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/iterator_concepts.h", line 206: error: identifier "__int128" is undefined
+      { using difference_type = __int128; };
+                                ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/iterator_concepts.h", line 599: error: identifier "__int128" is undefined
+   = same_as<_Tp, __int128>;
+                  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/iterator_concepts.h", line 608: error: expected a ">"
+   = same_as<_Tp, unsigned __int128>;
+                           ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/iterator_concepts.h", line 608: error: expected an expression
+   = same_as<_Tp, unsigned __int128>;
+                                    ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_construct.h", line 97: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, void *)
+      noexcept(noexcept(::new((void*)0) _Tp(std::declval<_Args>()...)))
+                          ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+          detected during instantiation of "_Tp *std::construct_at(_Tp *, _Args &&...) [with _Tp=char, _Args=<const char &>]" at line 349 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/char_traits.h"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_construct.h", line 110: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, void *)
+   return ::new(__loc) _Tp(std::forward<_Args>(__args)...);
+            ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+          detected during instantiation of "_Tp *std::construct_at(_Tp *, _Args &&...) [with _Tp=char, _Args=<const char &>]" at line 349 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/char_traits.h"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_construct.h", line 97: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, void *)
+      noexcept(noexcept(::new((void*)0) _Tp(std::declval<_Args>()...)))
+                          ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+          detected during:
+            instantiation of "_Tp *std::construct_at(_Tp *, _Args &&...) [with _Tp=char, _Args=<char &>]" at line 282 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/char_traits.h"
+            instantiation of "__gnu_cxx::char_traits<_CharT>::char_type *__gnu_cxx::char_traits<_CharT>::assign(__gnu_cxx::char_traits<_CharT>::char_type *, std::size_t, __gnu_cxx::char_traits<_CharT>::char_type) [with _CharT=char]" at line 439 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/char_traits.h"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_construct.h", line 110: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, void *)
+   return ::new(__loc) _Tp(std::forward<_Args>(__args)...);
+            ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+          detected during:
+            instantiation of "_Tp *std::construct_at(_Tp *, _Args &&...) [with _Tp=char, _Args=<char &>]" at line 282 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/char_traits.h"
+            instantiation of "__gnu_cxx::char_traits<_CharT>::char_type *__gnu_cxx::char_traits<_CharT>::assign(__gnu_cxx::char_traits<_CharT>::char_type *, std::size_t, __gnu_cxx::char_traits<_CharT>::char_type) [with _CharT=char]" at line 439 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/char_traits.h"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_construct.h", line 97: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, void *)
+      noexcept(noexcept(::new((void*)0) _Tp(std::declval<_Args>()...)))
+                          ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+          detected during instantiation of "_Tp *std::construct_at(_Tp *, _Args &&...) [with _Tp=wchar_t, _Args=<const wchar_t &>]" at line 491 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/char_traits.h"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_construct.h", line 110: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, void *)
+   return ::new(__loc) _Tp(std::forward<_Args>(__args)...);
+            ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+          detected during instantiation of "_Tp *std::construct_at(_Tp *, _Args &&...) [with _Tp=wchar_t, _Args=<const wchar_t &>]" at line 491 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/char_traits.h"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_construct.h", line 97: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, void *)
+      noexcept(noexcept(::new((void*)0) _Tp(std::declval<_Args>()...)))
+                          ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+          detected during:
+            instantiation of "_Tp *std::construct_at(_Tp *, _Args &&...) [with _Tp=wchar_t, _Args=<wchar_t &>]" at line 282 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/char_traits.h"
+            instantiation of "__gnu_cxx::char_traits<_CharT>::char_type *__gnu_cxx::char_traits<_CharT>::assign(__gnu_cxx::char_traits<_CharT>::char_type *, std::size_t, __gnu_cxx::char_traits<_CharT>::char_type) [with _CharT=wchar_t]" at line 570 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/char_traits.h"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_construct.h", line 110: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, void *)
+   return ::new(__loc) _Tp(std::forward<_Args>(__args)...);
+            ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+          detected during:
+            instantiation of "_Tp *std::construct_at(_Tp *, _Args &&...) [with _Tp=wchar_t, _Args=<wchar_t &>]" at line 282 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/char_traits.h"
+            instantiation of "__gnu_cxx::char_traits<_CharT>::char_type *__gnu_cxx::char_traits<_CharT>::assign(__gnu_cxx::char_traits<_CharT>::char_type *, std::size_t, __gnu_cxx::char_traits<_CharT>::char_type) [with _CharT=wchar_t]" at line 570 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/char_traits.h"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_construct.h", line 97: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, void *)
+      noexcept(noexcept(::new((void*)0) _Tp(std::declval<_Args>()...)))
+                          ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+          detected during instantiation of "_Tp *std::construct_at(_Tp *, _Args &&...) [with _Tp=char8_t, _Args=<const char8_t &>]" at line 623 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/char_traits.h"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_construct.h", line 110: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, void *)
+   return ::new(__loc) _Tp(std::forward<_Args>(__args)...);
+            ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+          detected during instantiation of "_Tp *std::construct_at(_Tp *, _Args &&...) [with _Tp=char8_t, _Args=<const char8_t &>]" at line 623 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/char_traits.h"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_construct.h", line 97: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, void *)
+      noexcept(noexcept(::new((void*)0) _Tp(std::declval<_Args>()...)))
+                          ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+          detected during:
+            instantiation of "_Tp *std::construct_at(_Tp *, _Args &&...) [with _Tp=char8_t, _Args=<char8_t &>]" at line 282 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/char_traits.h"
+            instantiation of "__gnu_cxx::char_traits<_CharT>::char_type *__gnu_cxx::char_traits<_CharT>::assign(__gnu_cxx::char_traits<_CharT>::char_type *, std::size_t, __gnu_cxx::char_traits<_CharT>::char_type) [with _CharT=char8_t]" at line 702 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/char_traits.h"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_construct.h", line 110: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, void *)
+   return ::new(__loc) _Tp(std::forward<_Args>(__args)...);
+            ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+          detected during:
+            instantiation of "_Tp *std::construct_at(_Tp *, _Args &&...) [with _Tp=char8_t, _Args=<char8_t &>]" at line 282 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/char_traits.h"
+            instantiation of "__gnu_cxx::char_traits<_CharT>::char_type *__gnu_cxx::char_traits<_CharT>::assign(__gnu_cxx::char_traits<_CharT>::char_type *, std::size_t, __gnu_cxx::char_traits<_CharT>::char_type) [with _CharT=char8_t]" at line 702 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/char_traits.h"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_construct.h", line 97: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, void *)
+      noexcept(noexcept(::new((void*)0) _Tp(std::declval<_Args>()...)))
+                          ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+          detected during instantiation of "_Tp *std::construct_at(_Tp *, _Args &&...) [with _Tp=char16_t, _Args=<const char16_t &>]" at line 763 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/char_traits.h"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_construct.h", line 110: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, void *)
+   return ::new(__loc) _Tp(std::forward<_Args>(__args)...);
+            ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+          detected during instantiation of "_Tp *std::construct_at(_Tp *, _Args &&...) [with _Tp=char16_t, _Args=<const char16_t &>]" at line 763 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/char_traits.h"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_construct.h", line 97: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, void *)
+      noexcept(noexcept(::new((void*)0) _Tp(std::declval<_Args>()...)))
+                          ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+          detected during instantiation of "_Tp *std::construct_at(_Tp *, _Args &&...) [with _Tp=char32_t, _Args=<const char32_t &>]" at line 890 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/char_traits.h"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_construct.h", line 110: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, void *)
+   return ::new(__loc) _Tp(std::forward<_Args>(__args)...);
+            ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+          detected during instantiation of "_Tp *std::construct_at(_Tp *, _Args &&...) [with _Tp=char32_t, _Args=<const char32_t &>]" at line 890 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/char_traits.h"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/cpp_type_traits.h", line 553: error: identifier "__int128" is undefined
+      struct __memcpyable_integer<__int128> { enum { __width = 128 }; };
+                                  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/cpp_type_traits.h", line 556: error: expected a ">"
+      struct __memcpyable_integer<unsigned __int128> { enum { __width = 128 }; };
+                                           ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/ext/numeric_traits.h", line 132: error: identifier "__int128" is undefined
+    __extension__ template<> struct __is_integer_nonstrict<__int128> { enum { __value = 1 }; typedef std::__true_type __type; enum { __width = 128 }; }; __extension__ template<> struct __is_integer_nonstrict<unsigned __int128> { enum { __value = 1 }; typedef std::__true_type __type; enum { __width = 128 }; };
+                                                           ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/ext/numeric_traits.h", line 132: error: expected a ">"
+    __extension__ template<> struct __is_integer_nonstrict<__int128> { enum { __value = 1 }; typedef std::__true_type __type; enum { __width = 128 }; }; __extension__ template<> struct __is_integer_nonstrict<unsigned __int128> { enum { __value = 1 }; typedef std::__true_type __type; enum { __width = 128 }; };
+                                                                                                                                                                                                                         ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/max_size_type.h", line 423: error: expected a ";"
+        using __rep = unsigned __int128;
+                               ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/ranges_base.h", line 82: error: missing initializer for constexpr variable
+      __to_unsigned_like(__int128 __t) noexcept
+      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/ranges_base.h", line 82: error: expected a ";"
+      __to_unsigned_like(__int128 __t) noexcept
+      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/string_view", line 869: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+      operator""sv(const char* __str, size_t __len) noexcept
+      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/string_view", line 873: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+      operator""sv(const wchar_t* __str, size_t __len) noexcept
+      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/string_view", line 878: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+      operator""sv(const char8_t* __str, size_t __len) noexcept
+      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/string_view", line 883: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+      operator""sv(const char16_t* __str, size_t __len) noexcept
+      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/string_view", line 887: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+      operator""sv(const char32_t* __str, size_t __len) noexcept
+      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/basic_string.h", line 4774: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+      operator""s(const char* __str, size_t __len)
+      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/basic_string.h", line 4779: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+      operator""s(const wchar_t* __str, size_t __len)
+      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/basic_string.h", line 4785: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+      operator""s(const char8_t* __str, size_t __len)
+      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/basic_string.h", line 4791: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+      operator""s(const char16_t* __str, size_t __len)
+      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/basic_string.h", line 4796: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+      operator""s(const char32_t* __str, size_t __len)
+      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/ranges_util.h", line 275: error: namespace "std::ranges::__detail" has no member "__make_unsigned_like_t"
+   = __detail::__make_unsigned_like_t<iter_difference_t<_It>>;
+               ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/ranges_util.h", line 275: error: expected a ";"
+   = __detail::__make_unsigned_like_t<iter_difference_t<_It>>;
+                                     ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/ranges_util.h", line 427: error: namespace "std::ranges::__detail" has no member "__make_unsigned_like_t"
+        __detail::__make_unsigned_like_t<iter_difference_t<_It>>)
+                  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/ranges_util.h", line 427: error: expected a ")"
+        __detail::__make_unsigned_like_t<iter_difference_t<_It>>)
+                                        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/ranges_util.h", line 439: error: namespace "std::ranges::__detail" has no member "__make_unsigned_like_t"
+        __detail::__make_unsigned_like_t<range_difference_t<_Rng>>)
+                  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/ranges_util.h", line 439: error: expected a ")"
+        __detail::__make_unsigned_like_t<range_difference_t<_Rng>>)
+                                        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/memory_resource.h", line 78: error: no instance of overloaded function "operator new" matches the argument list
+            argument types are: (std::size_t, void *)
+      { return ::operator new(__bytes, do_allocate(__bytes, __alignment)); }
+               ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_tree.h", line 1236: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, std::_Rb_tree_node<std::pair<const int, std::string>> *)
+         ::new(std::addressof(*__node)) _Node;
+           ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+          detected during:
+            instantiation of "void std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_M_construct_node(std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Node_ptr, _Args &&...) [with _Key=int, _Val=std::pair<const int, std::string>, _KeyOfValue=std::_Select1st<std::pair<const int, std::string>>, _Compare=std::less<int>, _Alloc=std::allocator<std::pair<const int, std::string>>, _Args=<const std::piecewise_construct_t &, std::tuple<int &&>, std::tuple<>>]" at line 1254
+            instantiation of "std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Node_ptr std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_M_create_node(_Args &&...) [with _Key=int, _Val=std::pair<const int, std::string>, _KeyOfValue=std::_Select1st<std::pair<const int, std::string>>, _Compare=std::less<int>, _Alloc=std::allocator<std::pair<const int, std::string>>, _Args=<const std::piecewise_construct_t &, std::tuple<int &&>, std::tuple<>>]" at line 2285
+            instantiation of "std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Auto_node::_Auto_node(std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc> &, _Args &&...) [with _Key=int, _Val=std::pair<const int, std::string>, _KeyOfValue=std::_Select1st<std::pair<const int, std::string>>, _Compare=std::less<int>, _Alloc=std::allocator<std::pair<const int, std::string>>, _Args=<const std::piecewise_construct_t &, std::tuple<int &&>, std::tuple<>>]" at line 3082
+            instantiation of "std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::iterator std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_M_emplace_hint_unique(std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::const_iterator, _Args &&...) [with _Key=int, _Val=std::pair<const int, std::string>, _KeyOfValue=std::_Select1st<std::pair<const int, std::string>>, _Compare=std::less<int>, _Alloc=std::allocator<std::pair<const int, std::string>>, _Args=<const std::piecewise_construct_t &, std::tuple<int &&>, std::tuple<>>]" at line 534 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_map.h"
+            instantiation of "std::map<_Key, _Tp, _Compare, _Alloc>::mapped_type &std::map<_Key, _Tp, _Compare, _Alloc>::operator[](std::map<_Key, _Tp, _Compare, _Alloc>::key_type &&) [with _Key=int, _Tp=std::string, _Compare=std::less<int>, _Alloc=std::allocator<std::pair<const int, std::string>>]" at line 17 of "./opt/../cpp1z/init-statement6.C"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 1671: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, void *)
+   noexcept(::new(std::declval<void*>()) _Tp(std::declval<_Args>()...))
+              ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+          detected during:
+            instantiation of class "std::__is_nothrow_new_constructible_impl<_Tp, _Args...> [with _Tp=std::pair<const int, std::string>, _Args=<const std::piecewise_construct_t &, std::tuple<int &&>, std::tuple<>>]" at line 204
+            instantiation of class "std::__and_<_Bn...> [with _Bn=<std::is_constructible<std::pair<const int, std::string>, const std::piecewise_construct_t &, std::tuple<int &&>, std::tuple<>>, std::__is_nothrow_new_constructible_impl<std::pair<const int, std::string>, const std::piecewise_construct_t &, std::tuple<int &&>, std::tuple<>>>]" at line 1678
+            instantiation of "const bool std::__is_nothrow_new_constructible [with _Tp=std::pair<const int, std::string>, _Args=<const std::piecewise_construct_t &, std::tuple<int &&>, std::tuple<>>]" at line 670 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/alloc_traits.h"
+            instantiation of "void std::allocator_traits<std::allocator<_Tp>>::construct(std::allocator_traits<std::allocator<_Tp>>::allocator_type &, _Up *, _Args &&...) [with _Tp=std::_Rb_tree_node<std::pair<const int, std::string>>, _Up=std::pair<const int, std::string>, _Args=<const std::piecewise_construct_t &, std::tuple<int &&>, std::tuple<>>]" at line 672 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/alloc_traits.h"
+            instantiation of "void std::allocator_traits<std::allocator<_Tp>>::construct(std::allocator_traits<std::allocator<_Tp>>::allocator_type &, _Up *, _Args &&...) [with _Tp=std::_Rb_tree_node<std::pair<const int, std::string>>, _Up=std::pair<const int, std::string>, _Args=<const std::piecewise_construct_t &, std::tuple<int &&>, std::tuple<>>]" at line 1239 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_tree.h"
+            instantiation of "void std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_M_construct_node(std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Node_ptr, _Args &&...) [with _Key=int, _Val=std::pair<const int, std::string>, _KeyOfValue=std::_Select1st<std::pair<const int, std::string>>, _Compare=std::less<int>, _Alloc=std::allocator<std::pair<const int, std::string>>, _Args=<const std::piecewise_construct_t &, std::tuple<int &&>, std::tuple<>>]" at line 1254 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_tree.h"
+            instantiation of "std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Node_ptr std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_M_create_node(_Args &&...) [with _Key=int, _Val=std::pair<const int, std::string>, _KeyOfValue=std::_Select1st<std::pair<const int, std::string>>, _Compare=std::less<int>, _Alloc=std::allocator<std::pair<const int, std::string>>, _Args=<const std::piecewise_construct_t &, std::tuple<int &&>, std::tuple<>>]" at line 2285 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_tree.h"
+            instantiation of "std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Auto_node::_Auto_node(std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc> &, _Args &&...) [with _Key=int, _Val=std::pair<const int, std::string>, _KeyOfValue=std::_Select1st<std::pair<const int, std::string>>, _Compare=std::less<int>, _Alloc=std::allocator<std::pair<const int, std::string>>, _Args=<const std::piecewise_construct_t &, std::tuple<int &&>, std::tuple<>>]" at line 3082 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_tree.h"
+            instantiation of "std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::iterator std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_M_emplace_hint_unique(std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::const_iterator, _Args &&...) [with _Key=int, _Val=std::pair<const int, std::string>, _KeyOfValue=std::_Select1st<std::pair<const int, std::string>>, _Compare=std::less<int>, _Alloc=std::allocator<std::pair<const int, std::string>>, _Args=<const std::piecewise_construct_t &, std::tuple<int &&>, std::tuple<>>]" at line 534 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_map.h"
+            instantiation of "std::map<_Key, _Tp, _Compare, _Alloc>::mapped_type &std::map<_Key, _Tp, _Compare, _Alloc>::operator[](std::map<_Key, _Tp, _Compare, _Alloc>::key_type &&) [with _Key=int, _Tp=std::string, _Compare=std::less<int>, _Alloc=std::allocator<std::pair<const int, std::string>>]" at line 17 of "./opt/../cpp1z/init-statement6.C"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_construct.h", line 97: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, void *)
+      noexcept(noexcept(::new((void*)0) _Tp(std::declval<_Args>()...)))
+                          ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+          detected during:
+            instantiation of "_Tp *std::construct_at(_Tp *, _Args &&...) [with _Tp=std::pair<const int, std::string>, _Args=<const std::piecewise_construct_t &, std::tuple<int &&>, std::tuple<>>]" at line 676 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/alloc_traits.h"
+            instantiation of "void std::allocator_traits<std::allocator<_Tp>>::construct(std::allocator_traits<std::allocator<_Tp>>::allocator_type &, _Up *, _Args &&...) [with _Tp=std::_Rb_tree_node<std::pair<const int, std::string>>, _Up=std::pair<const int, std::string>, _Args=<const std::piecewise_construct_t &, std::tuple<int &&>, std::tuple<>>]" at line 1239 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_tree.h"
+            instantiation of "void std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_M_construct_node(std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Node_ptr, _Args &&...) [with _Key=int, _Val=std::pair<const int, std::string>, _KeyOfValue=std::_Select1st<std::pair<const int, std::string>>, _Compare=std::less<int>, _Alloc=std::allocator<std::pair<const int, std::string>>, _Args=<const std::piecewise_construct_t &, std::tuple<int &&>, std::tuple<>>]" at line 1254 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_tree.h"
+            instantiation of "std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Node_ptr std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_M_create_node(_Args &&...) [with _Key=int, _Val=std::pair<const int, std::string>, _KeyOfValue=std::_Select1st<std::pair<const int, std::string>>, _Compare=std::less<int>, _Alloc=std::allocator<std::pair<const int, std::string>>, _Args=<const std::piecewise_construct_t &, std::tuple<int &&>, std::tuple<>>]" at line 2285 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_tree.h"
+            instantiation of "std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Auto_node::_Auto_node(std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc> &, _Args &&...) [with _Key=int, _Val=std::pair<const int, std::string>, _KeyOfValue=std::_Select1st<std::pair<const int, std::string>>, _Compare=std::less<int>, _Alloc=std::allocator<std::pair<const int, std::string>>, _Args=<const std::piecewise_construct_t &, std::tuple<int &&>, std::tuple<>>]" at line 3082 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_tree.h"
+            instantiation of "std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::iterator std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_M_emplace_hint_unique(std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::const_iterator, _Args &&...) [with _Key=int, _Val=std::pair<const int, std::string>, _KeyOfValue=std::_Select1st<std::pair<const int, std::string>>, _Compare=std::less<int>, _Alloc=std::allocator<std::pair<const int, std::string>>, _Args=<const std::piecewise_construct_t &, std::tuple<int &&>, std::tuple<>>]" at line 534 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_map.h"
+            instantiation of "std::map<_Key, _Tp, _Compare, _Alloc>::mapped_type &std::map<_Key, _Tp, _Compare, _Alloc>::operator[](std::map<_Key, _Tp, _Compare, _Alloc>::key_type &&) [with _Key=int, _Tp=std::string, _Compare=std::less<int>, _Alloc=std::allocator<std::pair<const int, std::string>>]" at line 17 of "./opt/../cpp1z/init-statement6.C"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_construct.h", line 110: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, void *)
+   return ::new(__loc) _Tp(std::forward<_Args>(__args)...);
+            ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+          detected during:
+            instantiation of "_Tp *std::construct_at(_Tp *, _Args &&...) [with _Tp=std::pair<const int, std::string>, _Args=<const std::piecewise_construct_t &, std::tuple<int &&>, std::tuple<>>]" at line 676 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/alloc_traits.h"
+            instantiation of "void std::allocator_traits<std::allocator<_Tp>>::construct(std::allocator_traits<std::allocator<_Tp>>::allocator_type &, _Up *, _Args &&...) [with _Tp=std::_Rb_tree_node<std::pair<const int, std::string>>, _Up=std::pair<const int, std::string>, _Args=<const std::piecewise_construct_t &, std::tuple<int &&>, std::tuple<>>]" at line 1239 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_tree.h"
+            instantiation of "void std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_M_construct_node(std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Node_ptr, _Args &&...) [with _Key=int, _Val=std::pair<const int, std::string>, _KeyOfValue=std::_Select1st<std::pair<const int, std::string>>, _Compare=std::less<int>, _Alloc=std::allocator<std::pair<const int, std::string>>, _Args=<const std::piecewise_construct_t &, std::tuple<int &&>, std::tuple<>>]" at line 1254 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_tree.h"
+            instantiation of "std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Node_ptr std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_M_create_node(_Args &&...) [with _Key=int, _Val=std::pair<const int, std::string>, _KeyOfValue=std::_Select1st<std::pair<const int, std::string>>, _Compare=std::less<int>, _Alloc=std::allocator<std::pair<const int, std::string>>, _Args=<const std::piecewise_construct_t &, std::tuple<int &&>, std::tuple<>>]" at line 2285 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_tree.h"
+            instantiation of "std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Auto_node::_Auto_node(std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc> &, _Args &&...) [with _Key=int, _Val=std::pair<const int, std::string>, _KeyOfValue=std::_Select1st<std::pair<const int, std::string>>, _Compare=std::less<int>, _Alloc=std::allocator<std::pair<const int, std::string>>, _Args=<const std::piecewise_construct_t &, std::tuple<int &&>, std::tuple<>>]" at line 3082 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_tree.h"
+            instantiation of "std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::iterator std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_M_emplace_hint_unique(std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::const_iterator, _Args &&...) [with _Key=int, _Val=std::pair<const int, std::string>, _KeyOfValue=std::_Select1st<std::pair<const int, std::string>>, _Compare=std::less<int>, _Alloc=std::allocator<std::pair<const int, std::string>>, _Args=<const std::piecewise_construct_t &, std::tuple<int &&>, std::tuple<>>]" at line 534 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_map.h"
+            instantiation of "std::map<_Key, _Tp, _Compare, _Alloc>::mapped_type &std::map<_Key, _Tp, _Compare, _Alloc>::operator[](std::map<_Key, _Tp, _Compare, _Alloc>::key_type &&) [with _Key=int, _Tp=std::string, _Compare=std::less<int>, _Alloc=std::allocator<std::pair<const int, std::string>>]" at line 17 of "./opt/../cpp1z/init-statement6.C"
+
+62 errors detected in the compilation of "Test_name.c".

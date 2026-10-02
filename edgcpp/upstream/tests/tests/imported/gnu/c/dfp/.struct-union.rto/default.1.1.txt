@@ -1,0 +1,90 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 10: error: identifier "_Decimal32" is undefined
+  struct s {_Decimal32 d32; const _Decimal64 d64;};
+            ^
+
+"Test_name.c", line 10: error: identifier "_Decimal64" is undefined
+  struct s {_Decimal32 d32; const _Decimal64 d64;};
+                                  ^
+
+"Test_name.c", line 11: error: identifier "_Decimal32" is undefined
+  struct sv { volatile _Decimal32 d32; volatile _Decimal64 d64; };
+                       ^
+
+"Test_name.c", line 11: error: identifier "_Decimal64" is undefined
+  struct sv { volatile _Decimal32 d32; volatile _Decimal64 d64; };
+                                                ^
+
+"Test_name.c", line 14: error: identifier "_Decimal64" is undefined
+    const _Decimal64 d64; 
+          ^
+
+"Test_name.c", line 15: error: identifier "_Decimal32" is undefined
+    _Decimal32 d32; 
+    ^
+
+"Test_name.c", line 38: error: extra text after expected end of number
+    cs.d32 = 1.23dd; /* { dg-error "assignment of member 'd32' in read-only object" } */
+                 ^
+
+"Test_name.c", line 39: error: extra text after expected end of number
+    cs.d64 = 1.23df; /* { dg-error "assignment of member 'd64' in read-only object" } */
+                 ^
+
+"Test_name.c", line 40: error: extra text after expected end of number
+    s.d64 = 1.23df;  /* { dg-error "assignment of read-only member" } */
+                ^
+
+"Test_name.c", line 42: error: extra text after expected end of number
+    s.d32 = 1.23dd;
+                ^
+
+"Test_name.c", line 43: error: extra text after expected end of number
+    u.d32 = 1.23dd;
+                ^
+
+"Test_name.c", line 45: error: extra text after expected end of number
+    u.d64 = 1.23df;    /* { dg-error "assignment of read-only member" } */
+                ^
+
+"Test_name.c", line 46: error: extra text after expected end of number
+    u.cs.d32 = 1.23dd; /* { dg-error "assignment of member 'd32' in read-only object" } */
+                   ^
+
+"Test_name.c", line 47: error: extra text after expected end of number
+    u.cs.d64 = 1.23df; /* { dg-error "assignment of member 'd64' in read-only object" } */
+                   ^
+
+"Test_name.c", line 49: error: extra text after expected end of number
+    cu.d32 = 1.23dd;   /* { dg-error "assignment of member 'd32' in read-only object" } */
+                 ^
+
+"Test_name.c", line 51: error: extra text after expected end of number
+    cu.d64 = 1.23df;    /* { dg-error "assignment of member 'd64' in read-only object" } */
+                 ^
+
+"Test_name.c", line 52: error: extra text after expected end of number
+    cu.cs.d32 = 1.23dd; /* { dg-error "assignment of member 'd32' in read-only object" } */
+                    ^
+
+"Test_name.c", line 53: error: extra text after expected end of number
+    cu.cs.d64 = 1.23df; /* { dg-error "assignment of member 'd64' in read-only object" } */
+                    ^
+
+"Test_name.c", line 57: error: extra text after expected end of number
+    g(s).d32 = 1.23dd;  /* { dg-error "lvalue required" } */
+                   ^
+
+"Test_name.c", line 58: error: extra text after expected end of number
+    h(u).d64 = 1.23df;  /* { dg-error "lvalue required" } */
+                   ^
+
+"Test_name.c", line 61: error: extra text after expected end of number
+    sv.d32 = 1.1df;
+                ^
+
+"Test_name.c", line 62: error: extra text after expected end of number
+    sv.d64 = 1.1dd;
+                ^
+
+22 errors detected in the compilation of "Test_name.c".

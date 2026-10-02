@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++26 Test_name.c
+"Test_name.c", line 14: error: delete of pointer to incomplete class
+    delete p;	// { dg-warning "operator 'delete' used on incomplete type" }
+           ^
+
+"Test_name.c", line 15: error: delete of pointer to incomplete class
+    delete q;	// { dg-warning "operator 'delete' used on incomplete type" }
+           ^
+
+"Test_name.c", line 16: error: delete of pointer to incomplete class
+    delete r;	// { dg-warning "operator 'delete' used on incomplete type" }
+           ^
+
+"Test_name.c", line 17: error: delete of pointer to incomplete class
+    delete[] s;	// { dg-warning "operator 'delete \\\[\\\]' used on incomplete type" }
+             ^
+
+"Test_name.c", line 18: error: delete of pointer to incomplete class
+    delete[] t;	// { dg-warning "operator 'delete \\\[\\\]' used on incomplete type" }
+             ^
+
+"Test_name.c", line 19: error: delete of pointer to incomplete class
+    delete[] u;	// { dg-warning "operator 'delete \\\[\\\]' used on incomplete type" }
+             ^
+
+6 errors detected in the compilation of "Test_name.c".

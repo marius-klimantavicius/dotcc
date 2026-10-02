@@ -1,0 +1,45 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 8: warning: unknown attribute "preserve_static_offset"
+  struct foo { int a; } __pso;
+                        ^
+
+"Test_name.c", line 9: warning: unknown attribute "preserve_static_offset"
+  union quux { int a; } __pso;
+                        ^
+
+"Test_name.c", line 10: warning: unknown attribute "preserve_static_offset"
+  struct doug { int a; } __pso __attribute__((packed));
+                         ^
+
+"Test_name.c", line 13: warning: unknown attribute "preserve_static_offset"
+  typedef int bar __pso;    // expected-error{{attribute only applies to}}
+                  ^
+
+"Test_name.c", line 15: warning: unknown attribute "preserve_static_offset"
+    int a __pso;            // expected-error{{attribute only applies to}}
+          ^
+
+"Test_name.c", line 17: warning: unknown attribute "preserve_static_offset"
+  int g __pso;              // expected-error{{attribute only applies to}}
+        ^
+
+"Test_name.c", line 18: warning: unknown attribute "preserve_static_offset"
+  __pso void ffunc1(void);  // expected-error{{attribute only applies to}}
+  ^
+
+"Test_name.c", line 19: warning: unknown attribute "preserve_static_offset"
+  void ffunc2(int a __pso); // expected-error{{attribute only applies to}}
+                    ^
+
+"Test_name.c", line 21: warning: unknown attribute "preserve_static_offset"
+    int a __pso;            // expected-error{{attribute only applies to}}
+          ^
+
+"Test_name.c", line 21: warning: variable "a" was declared but never referenced
+    int a __pso;            // expected-error{{attribute only applies to}}
+        ^
+
+"Test_name.c", line 24: warning: unknown attribute "preserve_static_offset"
+  struct buz { int a; } __attribute__((preserve_static_offset("hello"))); // \
+                                       ^
+

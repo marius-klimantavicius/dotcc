@@ -1,0 +1,2 @@
+fe_only -DTEST_NUMBER=9 --no_il_lower --il_display --c++20 Test_name.c
+/usr/bin/bash: line 1: enumerate_addrs: command not found

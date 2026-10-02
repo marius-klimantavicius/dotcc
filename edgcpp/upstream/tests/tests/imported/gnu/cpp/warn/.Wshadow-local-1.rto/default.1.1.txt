@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 26: error: "d" has already been declared in the current scope
+    double d;			// { dg-error "shadows a parameter" }
+           ^
+
+"Test_name.c", line 26: warning: variable "d" was declared but never referenced
+    double d;			// { dg-error "shadows a parameter" }
+           ^
+
+"Test_name.c", line 35: warning: variable "local" was declared but never referenced
+      int local;			// { dg-warning "shadows a previous local" }
+          ^
+
+"Test_name.c", line 31: warning: variable "member" was declared but never referenced
+    int member;			// { dg-bogus "shadows a member" }
+        ^
+
+"Test_name.c", line 32: warning: variable "decl2" was declared but never referenced
+    int decl2;			// { dg-bogus "shadows a global" }
+        ^
+
+"Test_name.c", line 33: warning: variable "local" was declared but never referenced
+    int local;			// { dg-message "note: shadowed declaration is here" }
+        ^
+
+1 error detected in the compilation of "Test_name.c".

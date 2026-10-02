@@ -1,0 +1,8 @@
+./a.out
+CTOR CALLED, setting 1
+CTOR CALLED, setting 2
+CTOR CALLED, setting 3
+CTOR CALLED, setting 4
+CTOR CALLED, setting 5
+CTOR CALLED, setting 6
+Value of s.a = 5, sg.a = 6

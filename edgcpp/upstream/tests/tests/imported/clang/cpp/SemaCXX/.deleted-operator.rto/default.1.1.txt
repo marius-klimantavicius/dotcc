@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 13: error: function "PR10757::operator~()" (declared at line 6) cannot be referenced -- it is a deleted function
+    if(~a1) {} // expected-error {{overload resolution selected deleted operator}} expected-note 6-8 {{built-in candidate}}
+       ^
+
+"Test_name.c", line 14: error: function "PR10757::operator==(const PR10757 &)" (declared at line 7) cannot be referenced -- it is a deleted function
+    if(a1==a1) {} // expected-error {{overload resolution selected deleted operator}} expected-note 1-144 {{built-in candidate}}
+         ^
+
+"Test_name.c", line 15: warning: missing return statement at end of non-void function "PR10757f"
+  }
+  ^
+
+"Test_name.c", line 19: error: function "DelOpDel::operator delete(void *)" (declared at line 20) cannot be referenced -- it is a deleted function
+    virtual ~DelOpDel() {} // expected-error 1-2 {{attempt to use a deleted function}}
+            ^
+
+3 errors detected in the compilation of "Test_name.c".

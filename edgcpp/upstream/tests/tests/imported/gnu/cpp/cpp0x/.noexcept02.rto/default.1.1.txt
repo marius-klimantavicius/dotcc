@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 18: error: exception specification is incompatible with that of previous function "g" (declared at line 15):
+            previously specified but omitted here: "int"
+  void g() noexcept(false);	// { dg-error "different exception" "" { target { ! c++17 } } }
+           ^
+
+"Test_name.c", line 19: error: allowing all exceptions is incompatible with previous function "g" (declared at line 15)
+  void g();
+          ^
+
+"Test_name.c", line 29: error: exception specification is incompatible with that of previous function template "g(T)" (declared at line 27)
+  void g (T) noexcept(noexcept(T(0))); // { dg-error "different exception" }
+             ^
+
+"Test_name.c", line 51: warning: expression has no effect
+  void f (T1, T2) noexcept(noexcept(T1(), T2()));
+                                    ^
+          detected during:
+            instantiation of "void f(T1, T2) [with T1=int, T2=B]" at line 45
+            instantiation of "void f3(Ts...) [with Ts=<int, B>]" at line 55
+
+"Test_name.c", line 51: warning: expression has no effect
+  void f (T1, T2) noexcept(noexcept(T1(), T2()));
+                                    ^
+          detected during:
+            instantiation of "void f(T1, T2) [with T1=int, T2=A]" at line 45
+            instantiation of "void f3(Ts...) [with Ts=<int, A>]" at line 56
+
+3 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 9: warning: missing return statement at end of non-void function "f"
+  }
+  ^
+
+"Test_name.c", line 11: error: expression must have a constant value
+  constexpr int i = f(42);	// { dg-error "flows off the end|in .constexpr. expansion of " }
+                    ^
+"Test_name.c", line 9: note: missing return value
+  }
+  ^
+
+"Test_name.c", line 11: warning: variable "i" was declared but never referenced
+  constexpr int i = f(42);	// { dg-error "flows off the end|in .constexpr. expansion of " }
+                ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 6: error: dynamic exception specifications are not permitted in this mode
+  void (*p)() throw(int);	       // { dg-error "dynamic exception specification" }
+              ^
+
+"Test_name.c", line 7: error: a value of type "void (**)()" cannot be used to initialize an entity of type "void (**)() noexcept"
+  void (**pp)() noexcept = &p;   // { dg-error "" } cannot convert to pointer to noexcept function
+                           ^
+
+"Test_name.c", line 10: error: no suitable conversion function from "S" to "void (*)() noexcept" exists
+  void (*q)() noexcept = S();   // { dg-error "" } cannot convert to pointer to noexcept function
+                         ^
+
+3 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++17 -tused -A Test_name.c
+"Test_name.c", line 5: error: no instance of function template "f" matches the specified type
+     template void f<int>();      // error: function with deduced return type redeclared with non-deduced return type (9.1.8.5 [dcl.spec.auto])
+                   ^
+
+1 error detected in the compilation of "Test_name.c".

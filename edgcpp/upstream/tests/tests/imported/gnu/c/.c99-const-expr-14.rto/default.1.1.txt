@@ -1,0 +1,94 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 28: error: expression must have a constant value
+  static int (*a2)[] = (int (*)[n])sa;
+                                ^
+"Test_name.c", line 28: note: the value of variable "n" (declared at line 25) cannot be used as a constant
+  static int (*a2)[] = (int (*)[n])sa;
+                                ^
+
+"Test_name.c", line 29: error: this operator is not allowed in a constant expression
+  static int (*a8)[] = (int (*)[(m=n)])sa; /* { dg-error "constant" } */
+                                  ^
+
+"Test_name.c", line 30: error: this operator is not allowed in a constant expression
+  static int (*a9)[] = (int (*)[(m+=n)])sa; /* { dg-error "constant" } */
+                                  ^
+
+"Test_name.c", line 31: error: function call is not allowed in a constant expression
+  static int (*a10)[] = (int (*)[f(m,n)])sa; /* { dg-error "constant" } */
+                                 ^
+
+"Test_name.c", line 32: error: this operator is not allowed in a constant expression
+  static int (*a11)[] = (int (*)[(m,n)])sa; /* { dg-error "constant" } */
+                                   ^
+
+"Test_name.c", line 33: error: expression must have a constant value
+  static int (*a12)[] = (int (*)[sizeof(int[n])])sa;
+                                            ^
+"Test_name.c", line 33: note: the value of variable "n" (declared at line 25) cannot be used as a constant
+  static int (*a12)[] = (int (*)[sizeof(int[n])])sa;
+                                            ^
+
+"Test_name.c", line 34: error: this operator is not allowed in a constant expression
+  static int (*a13)[] = (int (*)[sizeof(int[m++])])sa; /* { dg-error "constant" } */
+                                             ^
+
+"Test_name.c", line 35: error: expression must have a constant value
+  static int (*a15)[] = (int (*)[sizeof(*(int (*)[n])sa)])sa;
+                                                  ^
+"Test_name.c", line 35: note: the value of variable "n" (declared at line 25) cannot be used as a constant
+  static int (*a15)[] = (int (*)[sizeof(*(int (*)[n])sa)])sa;
+                                                  ^
+
+"Test_name.c", line 36: error: this operator is not allowed in a constant expression
+  static int (*a16)[] = (int (*)[sizeof(*(int (*)[m++])sa)])sa; /* { dg-error "constant" } */
+                                                   ^
+
+"Test_name.c", line 37: error: expression must have a constant value
+  static int (*a17)[] = (int (*)[nv])sa;
+                                 ^
+"Test_name.c", line 37: note: attempt to read from volatile storage
+  static int (*a17)[] = (int (*)[nv])sa;
+                                 ^
+
+"Test_name.c", line 28: warning: variable "a2" was declared but never referenced
+  static int (*a2)[] = (int (*)[n])sa;
+               ^
+
+"Test_name.c", line 29: warning: variable "a8" was declared but never referenced
+  static int (*a8)[] = (int (*)[(m=n)])sa; /* { dg-error "constant" } */
+               ^
+
+"Test_name.c", line 30: warning: variable "a9" was declared but never referenced
+  static int (*a9)[] = (int (*)[(m+=n)])sa; /* { dg-error "constant" } */
+               ^
+
+"Test_name.c", line 31: warning: variable "a10" was declared but never referenced
+  static int (*a10)[] = (int (*)[f(m,n)])sa; /* { dg-error "constant" } */
+               ^
+
+"Test_name.c", line 32: warning: variable "a11" was declared but never referenced
+  static int (*a11)[] = (int (*)[(m,n)])sa; /* { dg-error "constant" } */
+               ^
+
+"Test_name.c", line 33: warning: variable "a12" was declared but never referenced
+  static int (*a12)[] = (int (*)[sizeof(int[n])])sa;
+               ^
+
+"Test_name.c", line 34: warning: variable "a13" was declared but never referenced
+  static int (*a13)[] = (int (*)[sizeof(int[m++])])sa; /* { dg-error "constant" } */
+               ^
+
+"Test_name.c", line 35: warning: variable "a15" was declared but never referenced
+  static int (*a15)[] = (int (*)[sizeof(*(int (*)[n])sa)])sa;
+               ^
+
+"Test_name.c", line 36: warning: variable "a16" was declared but never referenced
+  static int (*a16)[] = (int (*)[sizeof(*(int (*)[m++])sa)])sa; /* { dg-error "constant" } */
+               ^
+
+"Test_name.c", line 37: warning: variable "a17" was declared but never referenced
+  static int (*a17)[] = (int (*)[nv])sa;
+               ^
+
+10 errors detected in the compilation of "Test_name.c".

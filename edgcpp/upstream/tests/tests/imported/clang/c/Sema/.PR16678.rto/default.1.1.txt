@@ -1,0 +1,4 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 %-DX32TYPE=ULONG --c89 %-DX32TYPE=ULONG %-DX32TYPE=ULONG Test_name.c
+eccp: unrecognizable argument: %-DX32TYPE=ULONG
+eccp: unrecognizable argument: %-DX32TYPE=ULONG
+eccp: unrecognizable argument: %-DX32TYPE=ULONG

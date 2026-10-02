@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 9: error: declaration is incompatible with "int a2[]" (declared at line 8)
+  float a2[1]; // expected-error {{redefinition of 'a2'}}
+        ^
+
+"Test_name.c", line 15: error: declaration is incompatible with "int a4[][2]" (declared at line 14)
+  int a4[2]; // expected-error {{redefinition of 'a4'}}
+      ^
+
+"Test_name.c", line 18: error: declaration is incompatible with "int a5[1][2][3]" (declared at line 17)
+  int a5[3][2][1]; // expected-error {{redefinition of 'a5'}}
+      ^
+
+3 errors detected in the compilation of "Test_name.c".

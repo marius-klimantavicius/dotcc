@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 10: warning: integer conversion resulted in a change of sign
+    __builtin_alloca_with_align(a, -32); // expected-error {{requested alignment is not a power of 2}}
+                                   ^
+
+"Test_name.c", line 14: warning: argument of type "unsigned int *" is incompatible with parameter of type "unsigned int"
+    __builtin_alloca_with_align(b, 32); // expected-error {{incompatible pointer to integer conversion passing 'unsigned int *' to parameter of type}}
+                                ^
+
+"Test_name.c", line 18: error: too many arguments in function call
+    __builtin_alloca_with_align(a, 32, 0); // expected-error {{too many arguments to function call, expected 2, have 3}}
+                                       ^
+
+1 error detected in the compilation of "Test_name.c".

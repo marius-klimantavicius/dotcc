@@ -1,0 +1,114 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 12: error: invalid redeclaration of member function "Foo::Foo(int)" (declared at line 9)
+    ((Foo))(INT); // expected-error{{cannot be redeclared}}
+      ^
+
+"Test_name.c", line 14: error: copy constructor for class "Foo" may not have a parameter of type "Foo"
+    Foo(Foo foo, int i = 17, int j = 42); // expected-error{{copy constructor must pass its first argument by reference}}
+        ^
+
+"Test_name.c", line 16: error: "static" is not allowed
+    static Foo(short, short); // expected-error{{constructor cannot be declared 'static'}}
+    ^
+
+"Test_name.c", line 17: error: "virtual" is not allowed
+    virtual Foo(double); // expected-error{{constructor cannot be declared 'virtual'}}
+    ^
+
+"Test_name.c", line 18: error: a type qualifier is not allowed on a constructor or destructor
+    Foo(long) const; // expected-error{{'const' qualifier is not allowed on a constructor}}
+              ^
+
+"Test_name.c", line 20: error: member function with the same name as its class must be a constructor
+    int Foo(int, int); // expected-error{{constructor cannot have a return type}}
+        ^
+
+"Test_name.c", line 22: error: expected an identifier
+    volatile Foo(float); // expected-error{{constructor cannot have a return type}}
+                 ^
+
+"Test_name.c", line 94: error: incomplete type "PR38286::A<<unnamed>>" is not allowed
+    template<typename T> A<T>::A() {} // expected-error {{incomplete type 'A' named in nested name specifier}}
+                         ^
+
+"Test_name.c", line 94: warning: missing "typename" is nonstandard here
+    template<typename T> A<T>::A() {} // expected-error {{incomplete type 'A' named in nested name specifier}}
+                         ^
+
+"Test_name.c", line 94: error: expected an identifier
+    template<typename T> A<T>::A() {} // expected-error {{incomplete type 'A' named in nested name specifier}}
+                                 ^
+
+"Test_name.c", line 97: error: incomplete type "PR38286::B<<unnamed>>" is not allowed
+    template<typename T> void B<T>::f() {} // expected-error {{out-of-line definition of 'f' from class 'PR38286::B<type-parameter-0-0>'}}
+                              ^
+
+"Test_name.c", line 99: error: incomplete type "PR38286::C<<unnamed>>" is not allowed
+    template<typename T> C<T>::~C() {} // expected-error {{identifier 'C' after '~' in destructor name does not name a type}}
+                         ^
+
+"Test_name.c", line 105: error: invalid constructor declaration
+    *&A(); // expected-error {{invalid constructor declaration}}
+    ^
+
+"Test_name.c", line 109: error: invalid constructor declaration
+    *&&B(); // expected-error {{invalid constructor declaration}}
+    ^
+
+"Test_name.c", line 113: error: invalid constructor declaration
+    *const C(); // expected-error {{invalid constructor declaration}}
+    ^
+
+"Test_name.c", line 117: error: invalid constructor declaration
+    *const *D(); // expected-error {{invalid constructor declaration}}
+    ^
+
+"Test_name.c", line 121: error: invalid constructor declaration
+    *E::*E(); // expected-error {{invalid constructor declaration}}
+    ^
+
+"Test_name.c", line 125: error: invalid constructor declaration
+    *F::*const F(); // expected-error {{invalid constructor declaration}}
+    ^
+
+"Test_name.c", line 129: error: invalid constructor declaration
+    ****G(); // expected-error {{invalid constructor declaration}}
+    ^
+
+"Test_name.c", line 133: error: invalid constructor declaration
+    **H(const H &); // expected-error {{invalid constructor declaration}}
+    ^
+
+"Test_name.c", line 137: error: invalid constructor declaration
+    *I(I &&); // expected-error {{invalid constructor declaration}}
+    ^
+
+"Test_name.c", line 141: error: invalid constructor declaration
+    *&(J)(); // expected-error {{invalid constructor declaration}}
+    ^
+
+"Test_name.c", line 145: error: invalid constructor declaration
+    **&&(K)(); // expected-error {{invalid constructor declaration}}
+    ^
+
+"Test_name.c", line 149: error: invalid constructor declaration
+    *L(L&& other); // expected-error {{invalid constructor declaration}}
+    ^
+
+"Test_name.c", line 153: error: invalid constructor declaration
+    *M(M& other); // expected-error {{invalid constructor declaration}}
+    ^
+
+"Test_name.c", line 157: error: member function with the same name as its class must be a constructor
+    int N(); // expected-error {{constructor cannot have a return type}}
+        ^
+
+"Test_name.c", line 161: error: "static" is not allowed
+    static O(); // expected-error {{constructor cannot be declared 'static'}}
+    ^
+
+"Test_name.c", line 174: warning: pointless friend declaration
+    friend R::R();
+              ^
+
+26 errors detected in the compilation of "Test_name.c".

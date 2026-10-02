@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 19: error: no instance of constructor "structured_rna::structured_rna" matches the argument list
+            argument types are: (dna4)
+  structured_rna t2{dna4{}}; // { dg-error "no match" }
+                   ^
+"Test_name.c", line 16: note: substituting "<dna4>" for function template "structured_rna::structured_rna(component_type)" failed constraints
+      using alphabet_tuple_base::alphabet_tuple_base;
+      ^
+"Test_name.c", line 11: note: atomic constraint evaluates to false
+          requires __is_same(component_type, rna4)
+                   ^
+"Test_name.c", line 15: note: function "structured_rna::structured_rna(const structured_rna &)" does not match because argument #1 does not match parameter
+  struct structured_rna : alphabet_tuple_base {
+         ^
+"Test_name.c", line 15: note: function "structured_rna::structured_rna(structured_rna &&)" does not match because argument #1 does not match parameter
+  struct structured_rna : alphabet_tuple_base {
+         ^
+"Test_name.c", line 15: note: number of parameters of function "structured_rna::structured_rna()" does not match the call
+  struct structured_rna : alphabet_tuple_base {
+         ^
+
+1 error detected in the compilation of "Test_name.c".

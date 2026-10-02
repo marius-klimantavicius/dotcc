@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gcc Test_name.c
+"Test_name.c", line 18: error: case label value has already appeared in this switch at line 17
+          case 1 ... 10:
+               ^
+
+1 error detected in the compilation of "Test_name.c".

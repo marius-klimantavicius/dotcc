@@ -1,0 +1,86 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 14: error: declaration is incompatible with previous "outer1" (declared at line 5)
+    extern float outer1; // expected-error{{redeclaration of 'outer1' with a different type}}
+                 ^
+
+"Test_name.c", line 15: error: declaration is incompatible with previous "outer2" (declared at line 6)
+    extern float outer2; // expected-error{{redeclaration of 'outer2' with a different type}}
+                 ^
+
+"Test_name.c", line 19: error: declaration is incompatible with previous "outer6" (declared at line 10)
+    extern int outer6; // expected-error{{redefinition of 'outer6' as different kind of symbol}}
+               ^
+
+"Test_name.c", line 17: warning: variable "outer4" was declared but never referenced
+    double outer4;
+           ^
+
+"Test_name.c", line 20: warning: variable "outer7" was declared but never referenced
+    int outer7;
+        ^
+
+"Test_name.c", line 28: error: declaration is incompatible with previous "outer3" (declared at line 16)
+  int outer3; // expected-error{{redefinition of 'outer3' with a different type}}
+      ^
+
+"Test_name.c", line 29: error: declaration is incompatible with "int outer4" (declared at line 7)
+  float outer4; // expected-error{{redefinition of 'outer4' with a different type}}
+        ^
+
+"Test_name.c", line 30: error: declaration is incompatible with "int outer5" (declared at line 9)
+  float outer5;  // expected-error{{redefinition of 'outer5' with a different type}}
+        ^
+
+"Test_name.c", line 31: error: declaration is incompatible with previous "outer8" (declared at line 21)
+  int outer8(int); // expected-error{{redefinition of 'outer8' as different kind of symbol}}
+      ^
+
+"Test_name.c", line 32: error: declaration is incompatible with previous "outer9" (declared at line 22)
+  float outer9; // expected-error{{redefinition of 'outer9' with a different type}}
+        ^
+
+"Test_name.c", line 45: error: declaration is incompatible with previous "outer11" (declared at line 37)
+        extern float outer11; // expected-error{{redeclaration of 'outer11' with a different type}}
+                     ^
+
+"Test_name.c", line 48: error: declaration is incompatible with previous "outer12" (declared at line 38)
+          extern float outer12; // expected-error{{redeclaration of 'outer12' with a different type}}
+                       ^
+
+"Test_name.c", line 49: error: declaration is incompatible with previous "outer13" (declared at line 34)
+          extern float outer13; // expected-error{{redeclaration of 'outer13' with a different type}}
+                       ^
+
+"Test_name.c", line 46: warning: variable "outer12" was declared but never referenced
+        static double outer12;
+                      ^
+
+"Test_name.c", line 40: warning: variable "outer10" was declared but never referenced
+      float outer10;
+            ^
+
+"Test_name.c", line 41: warning: variable "outer11" was declared but never referenced
+      float outer11;
+            ^
+
+"Test_name.c", line 42: warning: variable "outer12" was declared but never referenced
+      float outer12;
+            ^
+
+"Test_name.c", line 58: error: identifier "g19" is undefined
+  int *p=&g19; // expected-error{{use of undeclared identifier 'g19'}} \
+          ^
+
+"Test_name.c", line 64: error: external/internal linkage conflict with previous declaration at line 62
+  int a;	// expected-error {{non-static declaration of 'a' follows static declaration}}
+      ^
+
+"Test_name.c", line 67: error: "x" has already been declared in the current scope
+    extern int x; // expected-error {{extern declaration of 'x' follows non-extern declaration}}
+               ^
+
+"Test_name.c", line 72: error: declaration is incompatible with previous "b" (declared at line 70)
+  void g21(void) { extern int b[4]; } // expected-error{{redeclaration of 'b' with a different type: 'int[4]' vs 'int[3]'}}
+                              ^
+
+15 errors detected in the compilation of "Test_name.c".

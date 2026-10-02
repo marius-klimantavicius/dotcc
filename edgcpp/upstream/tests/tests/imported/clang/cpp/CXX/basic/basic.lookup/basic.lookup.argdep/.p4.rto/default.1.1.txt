@@ -1,0 +1,48 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 48: error: identifier "func" is undefined
+      func(B::B()); // expected-error {{use of undeclared identifier 'func'; did you mean 'C::func'?}} \
+      ^
+
+"Test_name.c", line 54: error: no operator "+" matches these operands
+            operand types are: D::D + D::D
+      D::D() + D::D(); // expected-error {{invalid operands to binary expression ('D::D' and 'D::D')}}
+             ^
+"Test_name.c", line 54: note: built-in operator+(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+      D::D() + D::D(); // expected-error {{invalid operands to binary expression ('D::D' and 'D::D')}}
+             ^
+"Test_name.c", line 54: note: built-in operator+(<pointer to object>, <ptrdiff_t>) does not match because argument #1 does not match parameter
+      D::D() + D::D(); // expected-error {{invalid operands to binary expression ('D::D' and 'D::D')}}
+             ^
+"Test_name.c", line 54: note: built-in operator+(<ptrdiff_t>, <pointer to object>) does not match because argument #1 does not match parameter
+      D::D() + D::D(); // expected-error {{invalid operands to binary expression ('D::D' and 'D::D')}}
+             ^
+
+"Test_name.c", line 69: error: no instance of "foo" matches the argument list
+            argument types are: (const test1::A<int>, int)
+      foo(a, 10); // expected-error {{no matching function for call to 'foo'}}
+      ^
+"Test_name.c", line 61: note: function template "test1::foo" does not match because argument #1 does not match parameter
+      template <class U> friend void foo(A &, U); // expected-note {{not viable: 1st argument ('const A<int>') would lose const qualifier}}
+                                     ^
+
+"Test_name.c", line 90: error: identifier "f" is undefined
+      f(s); // expected-error {{use of undeclared}}
+      ^
+
+"Test_name.c", line 113: error: identifier "f" is undefined
+      f(s); // expected-error {{use of undeclared}}
+      ^
+
+"Test_name.c", line 141: error: identifier "foo" is undefined
+      foo(c); // #1 is not visible since A is not an associated class
+      ^
+
+"Test_name.c", line 162: error: identifier "Callable" is undefined
+      Callable(s); // expected-error {{use of undeclared}}
+      ^
+
+"Test_name.c", line 157: warning: variable "test_other_names::N::Callable" was declared but never referenced
+      static struct Callable Callable;
+                             ^
+
+7 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp0x/alignof7.C", line 10: warning: the standard "alignof" operator does not accept an expression argument (use a type instead)
+  template <class T> void f2(decltype(alignof(T{}))) { }
+                                             ^
+
+"./cpp0x/alignof7.C", line 14: error: no instance of function template "f1" matches the specified type
+  template void f1<int>(std::size_t);
+                ^
+
+"./cpp0x/alignof7.C", line 15: error: no instance of function template "f2" matches the specified type
+  template void f2<int>(std::size_t);
+                ^
+
+"./cpp0x/alignof7.C", line 16: error: no instance of function template "f3" matches the specified type
+  template void f3<int>(std::size_t);
+                ^
+
+"./cpp0x/alignof7.C", line 17: error: no instance of function template "f4" matches the specified type
+  template void f4<int>(std::size_t);
+                ^
+
+4 errors detected in the compilation of "Test_name.c".

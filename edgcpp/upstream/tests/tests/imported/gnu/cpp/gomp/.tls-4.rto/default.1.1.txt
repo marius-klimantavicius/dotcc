@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 15: warning: unrecognized #pragma
+  #pragma omp thr (s)	// { dg-error "directive not in" }
+          ^
+
+"Test_name.c", line 18: warning: unrecognized #pragma
+  #pragma omp thr (T::t)	// { dg-error "directive not in" }
+          ^
+

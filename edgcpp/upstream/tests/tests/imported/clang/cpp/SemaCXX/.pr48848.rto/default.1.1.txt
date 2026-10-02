@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 -DSHOW_MS --ms_compatibility Test_name.c
+"Test_name.c", line 6: error: identifier "j" is undefined
+    [=](auto i) { ep[i] = sp[i + j]; };
+                                 ^
+          detected during:
+            instantiation of "void Decider(const RT &, ET &) [with RT=int, ET=int *]" at line 12
+            instantiation of "void LS<EMT>() [with EMT=int]" at line 16
+
+1 error detected in the compilation of "Test_name.c".

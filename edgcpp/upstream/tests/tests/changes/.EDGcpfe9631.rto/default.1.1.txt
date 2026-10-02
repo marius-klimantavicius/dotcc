@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --g++ Test_name.c
+"Test_name.c", line 13: warning: declaration does not declare anything
+    struct ::X;  // Now accepted in g++ mode.
+    ^
+

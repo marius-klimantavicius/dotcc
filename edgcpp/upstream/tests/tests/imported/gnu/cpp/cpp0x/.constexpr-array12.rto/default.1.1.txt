@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: warning: variable "a1" is used before its value is set
+    constexpr A a1 = { 0, a1.ar[0] };
+                          ^
+
+"Test_name.c", line 9: warning: variable "a2" is used before its value is set
+    constexpr A a2 = { a2.ar[0] };	// { dg-error "uninitialized" }
+                       ^
+
+"Test_name.c", line 9: error: expression must have a constant value
+    constexpr A a2 = { a2.ar[0] };	// { dg-error "uninitialized" }
+                     ^
+"Test_name.c", line 9: note: access to uninitialized object
+    constexpr A a2 = { a2.ar[0] };	// { dg-error "uninitialized" }
+                            ^
+
+1 error detected in the compilation of "Test_name.c".

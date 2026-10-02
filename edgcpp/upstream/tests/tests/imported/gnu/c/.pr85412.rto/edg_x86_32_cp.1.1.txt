@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc -w Test_name.c
+"Test_name.c", line 8: error: identifier "__int128" is undefined
+  __int128 jv;
+  ^
+
+"Test_name.c", line 11: error: identifier "__int128" is undefined
+  zm (__int128 g9, unsigned short int sm, short int hk)
+      ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,45 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 21: warning: variable "vec4floats" is used before its value is set
+    (void)__builtin_ia32_cvtss2si64(vec4floats);                       // expected-error{{use of unknown builtin}}
+                                    ^
+
+"Test_name.c", line 23: warning: variable "vec2doubles" is used before its value is set
+    (void)__builtin_ia32_cvtsd2si64(vec2doubles);                      // expected-error{{use of unknown builtin}}
+                                    ^
+
+"Test_name.c", line 30: warning: variable "vp" is used before its value is set
+    (void)__builtin_ia32_fxrstor64(vp);                                // expected-error{{use of unknown builtin}}
+                                   ^
+
+"Test_name.c", line 38: warning: variable "ullp" is used before its value is set
+    (void)__builtin_ia32_addcarryx_u64(4, 4, 4, ullp);                 // expected-error{{use of unknown builtin}}
+                                                ^
+
+"Test_name.c", line 39: warning: function "__builtin_ia32_addcarry_u64" declared implicitly
+    (void)__builtin_ia32_addcarry_u64(4, 4, 4, ullp);                  // expected-error{{use of unknown builtin}}
+          ^
+
+"Test_name.c", line 47: warning: function "__builtin_ia32_pbroadcastq512_gpr_mask" declared implicitly
+    (void)__builtin_ia32_pbroadcastq512_gpr_mask(4, vec8longlongs, 4); // expected-error{{use of unknown builtin}}
+          ^
+
+"Test_name.c", line 47: warning: variable "vec8longlongs" is used before its value is set
+    (void)__builtin_ia32_pbroadcastq512_gpr_mask(4, vec8longlongs, 4); // expected-error{{use of unknown builtin}}
+                                                    ^
+
+"Test_name.c", line 48: warning: function "__builtin_ia32_pbroadcastq128_gpr_mask" declared implicitly
+    (void)__builtin_ia32_pbroadcastq128_gpr_mask(4, vec2longlongs, 4); // expected-error{{use of unknown builtin}}
+          ^
+
+"Test_name.c", line 48: warning: variable "vec2longlongs" is used before its value is set
+    (void)__builtin_ia32_pbroadcastq128_gpr_mask(4, vec2longlongs, 4); // expected-error{{use of unknown builtin}}
+                                                    ^
+
+"Test_name.c", line 49: warning: function "__builtin_ia32_pbroadcastq256_gpr_mask" declared implicitly
+    (void)__builtin_ia32_pbroadcastq256_gpr_mask(4, vec4longlongs, 4); // expected-error{{use of unknown builtin}}
+          ^
+
+"Test_name.c", line 49: warning: variable "vec4longlongs" is used before its value is set
+    (void)__builtin_ia32_pbroadcastq256_gpr_mask(4, vec4longlongs, 4); // expected-error{{use of unknown builtin}}
+                                                    ^
+

@@ -1,0 +1,21 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 10: error: copy constructor for class "T" may not have a parameter of type "T"
+          T(T& t, T t1=5){a=t.a; tp= &t1; }
+                  ^
+
+"Test_name.c", line 16: error: no instance of constructor "T::T" matches the argument list
+            argument types are: (T, T)
+          T z(T(3),T(4));
+              ^
+"Test_name.c", line 10: note: function "T::T(T &, <error-type>)" does not match because argument #1 does not match parameter
+          T(T& t, T t1=5){a=t.a; tp= &t1; }
+          ^
+"Test_name.c", line 9: note: number of parameters of function "T::T(int)" does not match the call
+          T(int i=0) : a(i){ tp=0; }
+          ^
+
+"Test_name.c", line 16: remark: variable "z" was declared but never referenced
+          T z(T(3),T(4));
+            ^
+
+2 errors detected in the compilation of "Test_name.c".

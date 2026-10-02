@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 8: error: only "()" is allowed as initializer for array member "A::a"
+    A() : a(0,0,0), s(0,0,0) { }
+            ^
+
+"Test_name.c", line 8: error: only "()" is allowed as initializer for array member "A::s"
+    A() : a(0,0,0), s(0,0,0) { }
+                      ^
+
+2 errors detected in the compilation of "Test_name.c".

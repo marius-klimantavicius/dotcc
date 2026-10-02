@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 13: error: function "X<<unnamed>>::f [with <unnamed>=int]" (declared at line 8) is inaccessible
+    friend void X<int>::f();	// { dg-error "private" }
+                        ^
+
+"Test_name.c", line 19: error: function "X<<unnamed>>::f [with <unnamed>=int]" (declared at line 8) is inaccessible
+    t.f();			// { dg-error "private" }
+      ^
+
+"Test_name.c", line 20: warning: variable "b" was declared but never referenced
+    Y b;
+      ^
+
+2 errors detected in the compilation of "Test_name.c".

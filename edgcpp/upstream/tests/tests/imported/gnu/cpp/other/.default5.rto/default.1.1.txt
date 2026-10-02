@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: error: default argument not at end of parameter list
+  void f1(int = 0, int, int, int, int);    // { dg-error "default" }
+                ^
+
+"Test_name.c", line 14: error: default argument not at end of parameter list
+  void f2(int = 0, int, int, int, int);    // { dg-error "default" }
+                ^
+
+"Test_name.c", line 19: error: default argument not at end of parameter list
+  void f3(int = 0, int, int, int, int);    // { dg-error "default" }
+                ^
+
+"Test_name.c", line 24: error: default argument not at end of parameter list
+  void f4(int = 0, int, int, int, int);    // { dg-error "default" }
+                ^
+
+"Test_name.c", line 29: error: default argument not at end of parameter list
+  void f5(int = 0, int, int, int, int) {}  // { dg-error "default" }
+                ^
+
+"Test_name.c", line 39: error: default argument not at end of parameter list
+  void A::F2(int = 0, int, int) {}  // { dg-error "default" }
+          ^
+
+"Test_name.c", line 44: error: redefinition of default argument
+    void F1(int, int, int = 0);
+                            ^
+
+"Test_name.c", line 49: error: default argument not at end of parameter list
+  template<int N> void B<N>::F2(int = 0, int, int) {}  // { dg-error "default arguments|parameter 2" }
+                             ^
+
+"Test_name.c", line 45: error: redefinition of default argument
+    void F2(int, int, int = 0);
+                            ^
+
+9 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,98 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 Test_name.c
+"Test_name.c", line 16: error: alignment cannot be set to less than the default alignment
+  _Alignas (char) short int sc; /* { dg-error "cannot reduce alignment" } */
+  ^
+
+"Test_name.c", line 25: error: alignment cannot be set to less than the default alignment
+  _Alignas (char) int ic; /* { dg-error "cannot reduce alignment" } */
+  ^
+
+"Test_name.c", line 26: error: alignment cannot be set to less than the default alignment
+  _Alignas (short int) int is; /* { dg-error "cannot reduce alignment" } */
+  ^
+
+"Test_name.c", line 34: error: alignment cannot be set to less than the default alignment
+  _Alignas (char) long int lic; /* { dg-error "cannot reduce alignment" } */
+  ^
+
+"Test_name.c", line 35: error: alignment cannot be set to less than the default alignment
+  _Alignas (short int) long int lis; /* { dg-error "cannot reduce alignment" } */
+  ^
+
+"Test_name.c", line 36: error: alignment cannot be set to less than the default alignment
+  _Alignas (int) long int lii; /* { dg-error "cannot reduce alignment" "" { target { ! { ilp32 } } } } */
+  ^
+
+"Test_name.c", line 39: error: alignment cannot be set to less than the default alignment
+  _Alignas (float) long int lif; /* { dg-error "cannot reduce alignment" "" { target { ! { ilp32 } } } } */
+  ^
+
+"Test_name.c", line 43: error: alignment cannot be set to less than the default alignment
+  _Alignas (char) long long int llic; /* { dg-error "cannot reduce alignment" } */
+  ^
+
+"Test_name.c", line 44: error: alignment cannot be set to less than the default alignment
+  _Alignas (short int) long long int llis; /* { dg-error "cannot reduce alignment" } */
+  ^
+
+"Test_name.c", line 45: error: alignment cannot be set to less than the default alignment
+  _Alignas (int) long long int llii; /* { dg-error "cannot reduce alignment" "" { target { ! { ia32 } } } } */
+  ^
+
+"Test_name.c", line 48: error: alignment cannot be set to less than the default alignment
+  _Alignas (float) long long int llif; /* { dg-error "cannot reduce alignment" "" { target { ! { ia32 } } } } */
+  ^
+
+"Test_name.c", line 52: error: alignment cannot be set to less than the default alignment
+  _Alignas (char) float fc; /* { dg-error "cannot reduce alignment" } */
+  ^
+
+"Test_name.c", line 53: error: alignment cannot be set to less than the default alignment
+  _Alignas (short int) float fs; /* { dg-error "cannot reduce alignment" } */
+  ^
+
+"Test_name.c", line 61: error: alignment cannot be set to less than the default alignment
+  _Alignas (char) double dc; /* { dg-error "cannot reduce alignment" } */
+  ^
+
+"Test_name.c", line 62: error: alignment cannot be set to less than the default alignment
+  _Alignas (short int) double ds; /* { dg-error "cannot reduce alignment" } */
+  ^
+
+"Test_name.c", line 63: error: alignment cannot be set to less than the default alignment
+  _Alignas (int) double di; /* { dg-error "cannot reduce alignment" "" { target { ! { ia32 } } } } */
+  ^
+
+"Test_name.c", line 66: error: alignment cannot be set to less than the default alignment
+  _Alignas (float) double df; /* { dg-error "cannot reduce alignment" "" { target { ! { ia32 } } } } */
+  ^
+
+"Test_name.c", line 70: error: alignment cannot be set to less than the default alignment
+  _Alignas (char) long double ldc; /* { dg-error "cannot reduce alignment" } */
+  ^
+
+"Test_name.c", line 71: error: alignment cannot be set to less than the default alignment
+  _Alignas (short int) long double lds; /* { dg-error "cannot reduce alignment" } */
+  ^
+
+"Test_name.c", line 82: error: alignment cannot be set to less than the default alignment
+  _Alignas (X (int)) long double ldi; /* { dg-error "cannot reduce alignment" } */
+  ^
+
+"Test_name.c", line 83: error: alignment cannot be set to less than the default alignment
+  _Alignas (X (long int)) long double ldl; /* { dg-error "cannot reduce alignment" } */
+  ^
+
+"Test_name.c", line 84: error: alignment cannot be set to less than the default alignment
+  _Alignas (X (long long int)) long double ldll; /* { dg-error "cannot reduce alignment" } */
+  ^
+
+"Test_name.c", line 85: error: alignment cannot be set to less than the default alignment
+  _Alignas (X (float)) long double ldf; /* { dg-error "cannot reduce alignment" } */
+  ^
+
+"Test_name.c", line 86: error: alignment cannot be set to less than the default alignment
+  _Alignas (X (double)) long double ldd; /* { dg-error "cannot reduce alignment" } */
+  ^
+
+24 errors detected in the compilation of "Test_name.c".

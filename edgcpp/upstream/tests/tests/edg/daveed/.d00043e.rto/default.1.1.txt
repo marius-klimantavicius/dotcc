@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 28: error: class "A::S" (declared at line 15) is inaccessible
+  	void mf2() { struct S s; }
+  	                    ^
+
+"Test_name.c", line 28: warning: variable "s" was declared but never referenced
+  	void mf2() { struct S s; }
+  	                      ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --diag_suppress=102 --strict Test_name.c
+"Test_name.c", line 7: error: incomplete type "A::E" is not allowed
+    E e;
+      ^
+
+"Test_name.c", line 9: error: incomplete type "A::EE" is not allowed
+    EE ee;
+       ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,141 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --exceptions -DUSE_CAPABILITY=0 Test_name.c
+"SemaCXX/warn-thread-safety-negative.cpp", line 9: warning: unknown attribute "lockable"
+  class __attribute__((lockable)) Mutex {
+                       ^
+
+"SemaCXX/warn-thread-safety-negative.cpp", line 11: warning: unknown attribute "exclusive_lock_function"
+    void Lock() __attribute__((exclusive_lock_function()));
+                               ^
+
+"SemaCXX/warn-thread-safety-negative.cpp", line 12: warning: unknown attribute "shared_lock_function"
+    void ReaderLock() __attribute__((shared_lock_function()));
+                                     ^
+
+"SemaCXX/warn-thread-safety-negative.cpp", line 13: warning: unknown attribute "unlock_function"
+    void Unlock() __attribute__((unlock_function()));
+                                 ^
+
+"SemaCXX/warn-thread-safety-negative.cpp", line 14: warning: unknown attribute "exclusive_trylock_function"
+    bool TryLock() __attribute__((exclusive_trylock_function(true)));
+                                  ^
+
+"SemaCXX/warn-thread-safety-negative.cpp", line 15: warning: unknown attribute "shared_trylock_function"
+    bool ReaderTryLock() __attribute__((shared_trylock_function(true)));
+                                        ^
+
+"SemaCXX/warn-thread-safety-negative.cpp", line 20: warning: unknown attribute "assert_exclusive_lock"
+    void AssertHeld() __attribute__((assert_exclusive_lock()));
+                                     ^
+
+"SemaCXX/warn-thread-safety-negative.cpp", line 21: warning: unknown attribute "assert_shared_lock"
+    void AssertReaderHeld() __attribute__((assert_shared_lock()));
+                                           ^
+
+"SemaCXX/warn-thread-safety-negative.cpp", line 24: warning: unknown attribute "lockable"
+  class __attribute__((lockable)) __attribute__((reentrant_capability)) ReentrantMutex {
+                       ^
+
+"SemaCXX/warn-thread-safety-negative.cpp", line 24: warning: unknown attribute "reentrant_capability"
+  class __attribute__((lockable)) __attribute__((reentrant_capability)) ReentrantMutex {
+                                                 ^
+
+"SemaCXX/warn-thread-safety-negative.cpp", line 26: warning: unknown attribute "exclusive_lock_function"
+    void Lock() __attribute__((exclusive_lock_function()));
+                               ^
+
+"SemaCXX/warn-thread-safety-negative.cpp", line 27: warning: unknown attribute "unlock_function"
+    void Unlock() __attribute__((unlock_function()));
+                                 ^
+
+"SemaCXX/warn-thread-safety-negative.cpp", line 33: warning: unknown attribute "scoped_lockable"
+  class __attribute__((scoped_lockable)) MutexLock {
+                       ^
+
+"SemaCXX/warn-thread-safety-negative.cpp", line 35: warning: unknown attribute "exclusive_lock_function"
+    MutexLock(Mutex *mu) __attribute__((exclusive_lock_function(mu)));
+                                        ^
+
+"SemaCXX/warn-thread-safety-negative.cpp", line 36: warning: unknown attribute "exclusive_locks_required"
+    MutexLock(Mutex *mu, bool adopt) __attribute__((exclusive_locks_required(mu)));
+                                                    ^
+
+"SemaCXX/warn-thread-safety-negative.cpp", line 37: warning: unknown attribute "unlock_function"
+    ~MutexLock() __attribute__((unlock_function()));
+                                ^
+
+"SemaCXX/warn-thread-safety-negative.cpp", line 44: warning: unknown attribute "guarded_by"
+    int a __attribute__((guarded_by(mu)));
+                         ^
+
+"SemaCXX/warn-thread-safety-negative.cpp", line 47: warning: unknown attribute "exclusive_locks_required"
+    void baz() __attribute__((exclusive_locks_required(!mu))) {
+                              ^
+
+"SemaCXX/warn-thread-safety-negative.cpp", line 57: warning: unknown attribute "guarded_by"
+    int a __attribute__((guarded_by(mu)));
+                         ^
+
+"SemaCXX/warn-thread-safety-negative.cpp", line 71: warning: unknown attribute "exclusive_locks_required"
+    void baz() __attribute__((exclusive_locks_required(!mu))) {
+                              ^
+
+"SemaCXX/warn-thread-safety-negative.cpp", line 89: warning: unknown attribute "exclusive_locks_required"
+    void test3() __attribute__((exclusive_locks_required(!mu))) {
+                                ^
+
+"SemaCXX/warn-thread-safety-negative.cpp", line 110: warning: unknown attribute "exclusive_locks_required"
+    void requireNegative() __attribute__((exclusive_locks_required(!mu))) {
+                                          ^
+
+"SemaCXX/warn-thread-safety-negative.cpp", line 119: warning: unknown attribute "exclusive_locks_required"
+    void callHaveNegative() __attribute__((exclusive_locks_required(!mu))) {
+                                           ^
+
+"SemaCXX/warn-thread-safety-negative.cpp", line 130: warning: unknown attribute "exclusive_locks_required"
+  void f() __attribute__((exclusive_locks_required(!globalMutex)));
+                          ^
+
+"SemaCXX/warn-thread-safety-negative.cpp", line 131: warning: unknown attribute "exclusive_locks_required"
+  void fq() __attribute__((exclusive_locks_required(!::globalMutex)));
+                           ^
+
+"SemaCXX/warn-thread-safety-negative.cpp", line 135: warning: unknown attribute "exclusive_locks_required"
+    void f() __attribute__((exclusive_locks_required(!globalMutex)));
+                            ^
+
+"SemaCXX/warn-thread-safety-negative.cpp", line 136: warning: unknown attribute "exclusive_locks_required"
+    void fq() __attribute__((exclusive_locks_required(!ns::globalMutex)));
+                             ^
+
+"SemaCXX/warn-thread-safety-negative.cpp", line 139: warning: unknown attribute "exclusive_locks_required"
+  void testGlobals() __attribute__((exclusive_locks_required(!ns::globalMutex))) {
+                                    ^
+
+"SemaCXX/warn-thread-safety-negative.cpp", line 146: warning: unknown attribute "exclusive_locks_required"
+  void testNamespaceGlobals() __attribute__((exclusive_locks_required(!globalMutex))) {
+                                             ^
+
+"SemaCXX/warn-thread-safety-negative.cpp", line 155: warning: unknown attribute "exclusive_locks_required"
+    void pub() __attribute__((exclusive_locks_required(!publicMutex)));
+                              ^
+
+"SemaCXX/warn-thread-safety-negative.cpp", line 156: warning: unknown attribute "exclusive_locks_required"
+    void prot() __attribute__((exclusive_locks_required(!protectedMutex)));
+                               ^
+
+"SemaCXX/warn-thread-safety-negative.cpp", line 157: warning: unknown attribute "exclusive_locks_required"
+    void priv() __attribute__((exclusive_locks_required(!privateMutex)));
+                               ^
+
+"SemaCXX/warn-thread-safety-negative.cpp", line 192: warning: unknown attribute "exclusive_locks_required"
+        __attribute__((exclusive_locks_required(F->mutex()))) __attribute__((unlock_function(F->mutex()))) {}
+                       ^
+
+"SemaCXX/warn-thread-safety-negative.cpp", line 192: warning: unknown attribute "unlock_function"
+        __attribute__((exclusive_locks_required(F->mutex()))) __attribute__((unlock_function(F->mutex()))) {}
+                                                                             ^
+
+"SemaCXX/warn-thread-safety-negative.cpp", line 195: warning: variable "TC" was declared but never referenced
+  void test() { TemplateClass<int> TC; }
+                                   ^
+

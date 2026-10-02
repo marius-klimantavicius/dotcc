@@ -1,0 +1,45 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 10: error: expression must have bool type (or be convertible to bool)
+    return ({ return true; }) && false;	// { dg-error "could not convert" }
+           ^
+
+"Test_name.c", line 17: warning: statement is unreachable
+      constexpr bool b = ({ break; false; }) && false;	// { dg-error "is not a constant expression" }
+                                   ^
+
+"Test_name.c", line 17: error: expression must have a constant value
+      constexpr bool b = ({ break; false; }) && false;	// { dg-error "is not a constant expression" }
+                         ^
+"Test_name.c", line 17: note: cannot branch out of a constant-evaluation context
+      constexpr bool b = ({ break; false; }) && false;	// { dg-error "is not a constant expression" }
+                         ^
+
+"Test_name.c", line 17: warning: variable "b" was declared but never referenced
+      constexpr bool b = ({ break; false; }) && false;	// { dg-error "is not a constant expression" }
+                     ^
+
+"Test_name.c", line 25: error: a value of type "void" cannot be assigned to an entity of type "bool"
+      b = ({ break; });	// { dg-error "void value not ignored as it ought to be" }
+        ^
+
+"Test_name.c", line 34: error: expression must have bool type (or be convertible to bool)
+    constexpr bool b = ({ return true; }) && false;	// { dg-error "could not convert" }
+                       ^
+
+"Test_name.c", line 34: warning: dynamic initialization in unreachable code
+    constexpr bool b = ({ return true; }) && false;	// { dg-error "could not convert" }
+                   ^
+
+"Test_name.c", line 41: warning: expression has no effect
+    constexpr bool b = ({ switch (x) case 0: true; }) && false;	// { dg-error "could not convert" }
+                                             ^
+
+"Test_name.c", line 41: error: expression must have bool type (or be convertible to bool)
+    constexpr bool b = ({ switch (x) case 0: true; }) && false;	// { dg-error "could not convert" }
+                       ^
+
+"Test_name.c", line 29: warning: variable "b" was declared but never referenced
+  constexpr bool b = f3 (4);
+                 ^
+
+5 errors detected in the compilation of "Test_name.c".

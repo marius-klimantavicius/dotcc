@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./lookup/missing-std-include.C", line 3: error: namespace "std" has no member "string"
+    std::string s ("hello world");
+         ^
+
+"./lookup/missing-std-include.C", line 6: error: namespace "std" has no member "wstring"
+    std::wstring ws ("hello world");
+         ^
+
+"./lookup/missing-std-include.C", line 9: error: namespace "std" has no member "cout"
+    std::cout << 10;
+         ^
+
+"./lookup/missing-std-include.C", line 13: error: namespace "std" has no member "cin"
+    std::cin >> i;
+         ^
+
+"./lookup/missing-std-include.C", line 16: error: namespace "std" has no member "deque"
+    std::deque a;
+         ^
+
+"./lookup/missing-std-include.C", line 19: error: namespace "std" has no member "vector"
+    std::vector<int> v;
+         ^
+
+"./lookup/missing-std-include.C", line 19: error: type name is not allowed
+    std::vector<int> v;
+                ^
+
+"./lookup/missing-std-include.C", line 19: error: identifier "v" is undefined
+    std::vector<int> v;
+                     ^
+
+"./lookup/missing-std-include.C", line 23: error: namespace "std" has no member "list"
+    std::list<int> lst;
+         ^
+
+"./lookup/missing-std-include.C", line 23: error: type name is not allowed
+    std::list<int> lst;
+              ^
+
+"./lookup/missing-std-include.C", line 23: error: identifier "lst" is undefined
+    std::list<int> lst;
+                   ^
+
+"./lookup/missing-std-include.C", line 27: error: namespace "std" has no member "pair"
+    std::pair<int,float> p;
+         ^
+
+"./lookup/missing-std-include.C", line 27: error: type name is not allowed
+    std::pair<int,float> p;
+              ^
+
+"./lookup/missing-std-include.C", line 27: error: type name is not allowed
+    std::pair<int,float> p;
+                  ^
+
+"./lookup/missing-std-include.C", line 27: error: identifier "p" is undefined
+    std::pair<int,float> p;
+                         ^
+
+15 errors detected in the compilation of "Test_name.c".

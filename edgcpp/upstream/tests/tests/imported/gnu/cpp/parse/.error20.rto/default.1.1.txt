@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++03 -W Test_name.c
+"Test_name.c", line 17: error: expression must have class type but it has type "B *"
+    A(c.p.i); // { dg-error "9:request for member 'i' in 'c.C::p', which is of pointer type 'B" }
+      ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --no_exc_spec_in_func_type Test_name.c
+"Test_name.c", line 39: error: incomplete type "void" is not allowed
+  void h(void (*)() noexcept);
+       ^
+
+"Test_name.c", line 39: error: expected an expression
+  void h(void (*)() noexcept);
+                ^
+
+"Test_name.c", line 39: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+  void h(void (*)() noexcept);
+         ^
+
+"Test_name.c", line 39: error: expected a ")"
+  void h(void (*)() noexcept);
+                    ^
+
+4 errors detected in the compilation of "Test_name.c".

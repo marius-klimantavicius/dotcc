@@ -1,0 +1,115 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"./c23-stdarg-10.c", line 13: warning: variable "ap" is used before its value is set
+   ap
+   ^
+
+"./c23-stdarg-10.c", line 21: warning: variable "ap" is used before its value is set
+   ap, i
+   ^
+
+"./c23-stdarg-10.c", line 30: warning: variable "ap" is used before its value is set
+   ap, j
+   ^
+
+"./c23-stdarg-10.c", line 38: warning: variable "ap" is used before its value is set
+   ap, k
+   ^
+
+"./c23-stdarg-10.c", line 46: warning: variable "ap" is used before its value is set
+   ap, l
+   ^
+
+"./c23-stdarg-10.c", line 54: warning: variable "ap" is used before its value is set
+   ap, (int) l
+   ^
+
+"./c23-stdarg-10.c", line 62: warning: variable "ap" is used before its value is set
+   ap, l + 0
+   ^
+
+"./c23-stdarg-10.c", line 70: error: expected an expression
+   ap, ()()(), [][][], {}{}{}, *+-/1({[_*_]})%&&!?!?
+        ^
+
+"./c23-stdarg-10.c", line 70: error: expected an expression
+   ap, ()()(), [][][], {}{}{}, *+-/1({[_*_]})%&&!?!?
+               ^
+
+"./c23-stdarg-10.c", line 70: error: expected an expression
+   ap, ()()(), [][][], {}{}{}, *+-/1({[_*_]})%&&!?!?
+                       ^
+
+"./c23-stdarg-10.c", line 70: error: expected an expression
+   ap, ()()(), [][][], {}{}{}, *+-/1({[_*_]})%&&!?!?
+                                  ^
+
+"./c23-stdarg-10.c", line 70: warning: variable "ap" is used before its value is set
+   ap, ()()(), [][][], {}{}{}, *+-/1({[_*_]})%&&!?!?
+   ^
+
+"./c23-stdarg-10.c", line 78: error: expected an expression
+   )
+   ^
+
+"./c23-stdarg-10.c", line 78: warning: variable "ap" is used before its value is set
+   ap,
+   ^
+
+"./c23-stdarg-10.c", line 86: error: operand of "*" must be a pointer but has type "int"
+   ap, k+l+****2
+               ^
+
+"./c23-stdarg-10.c", line 86: warning: variable "ap" is used before its value is set
+   ap, k+l+****2
+   ^
+
+"./c23-stdarg-10.c", line 94: warning: variable "ap" is used before its value is set
+   ap, m
+   ^
+
+"./c23-stdarg-10.c", line 102: error: expected an expression
+   ap, ()()()[[[}}}
+        ^
+
+"./c23-stdarg-10.c", line 102: error: two consecutive left square brackets always introduce an attribute list but an attribute list cannot appear here
+   ap, ()()()[[[}}}
+             ^
+
+"./c23-stdarg-10.c", line 102: error: expected an expression
+   ap, ()()()[[[}}}
+              ^
+
+"./c23-stdarg-10.c", line 103: warning: parsing restarts here after previous syntax error
+              ;
+              ^
+
+"./c23-stdarg-10.c", line 103: error: expected a "]"
+              ;
+              ^
+
+"./c23-stdarg-10.c", line 103: error: expected a ")"
+              ;
+              ^
+
+"./c23-stdarg-10.c", line 102: warning: variable "ap" is used before its value is set
+   ap, ()()()[[[}}}
+   ^
+
+"./c23-stdarg-10.c", line 110: error: expected an expression
+   ap, ]]]]]]{{{{{{
+       ^
+
+At end of source: error: expected a ")"
+
+"./c23-stdarg-10.c", line 110: warning: variable "ap" is used before its value is set
+   ap, ]]]]]]{{{{{{
+   ^
+
+At end of source: error: expected a ";"
+
+At end of source: error: expected a "}"
+"./c23-stdarg-10.c", line 108: note: to match this "{"
+  {
+  ^
+
+15 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,9 @@
+eccp -DTEST_NUMBER=2 -r -x -tused Test_name.c
+"Test_name.c", line 6: warning: unrecognized #pragma
+  #pragma zzz
+          ^
+
+"Test_name.c", line 8: remark: return type "int" omitted in declaration of function "main"
+  main() {
+  ^
+

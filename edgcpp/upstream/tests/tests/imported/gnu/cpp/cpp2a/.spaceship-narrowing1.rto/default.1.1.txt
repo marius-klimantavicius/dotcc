@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 33: warning: invalid narrowing conversion from "long" to "int"
+     (void) int{b.i};  // Not narrowing anymore
+                ^
+
+"Test_name.c", line 34: error: invalid narrowing conversion from "long" to "int"
+     b.i <=> b.i;  // Not narrowing anymore
+     ^
+
+"Test_name.c", line 34: error: invalid narrowing conversion from "long" to "int"
+     b.i <=> b.i;  // Not narrowing anymore
+             ^
+
+"Test_name.c", line 35: error: invalid narrowing conversion from "long" to "int"
+     b <=> b;  // Not deleted anymore
+            ^
+
+"Test_name.c", line 35: error: invalid narrowing conversion from "long" to "int"
+     b <=> b;  // Not deleted anymore
+            ^
+
+"Test_name.c", line 35: error: no valid std::weak_ordering type found (<compare> must be included)
+     b <=> b;  // Not deleted anymore
+            ^
+
+"Test_name.c", line 35: error: no valid std::partial_ordering type found (<compare> must be included)
+     b <=> b;  // Not deleted anymore
+            ^
+
+6 errors detected in the compilation of "Test_name.c".

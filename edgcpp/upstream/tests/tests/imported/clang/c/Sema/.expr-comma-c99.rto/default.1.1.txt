@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c99 Test_name.c
+"Test_name.c", line 15: warning: expression has no effect
+  int X[sizeof(0, (foo().c)) == sizeof(char*) ? 1 : -1];
+               ^
+
+"Test_name.c", line 16: warning: expression has no effect
+  int Y[sizeof(0, (a,b).c) == sizeof(char*) ? 1 : -1];
+                   ^
+
+"Test_name.c", line 16: warning: expression has no effect
+  int Y[sizeof(0, (a,b).c) == sizeof(char*) ? 1 : -1];
+               ^
+
+"Test_name.c", line 17: warning: expression has no effect
+  int Z[sizeof(0, (a=b).c) == sizeof(char*) ? 1 : -1]; // expected-warning {{expression with side effects has no effect in an unevaluated context}}
+               ^
+

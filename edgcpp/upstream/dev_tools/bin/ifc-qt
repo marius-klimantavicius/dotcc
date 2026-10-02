@@ -1,0 +1,860 @@
+#!/usr/bin/env python3
+
+# This program is free software: you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option) any later
+# version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+# details.
+#
+# You should have received a copy of the GNU General Public License along with
+# this program.  If not, see <https://www.gnu.org/licenses/>.
+
+import argparse
+import io
+import os
+import random
+import shutil
+import subprocess
+import sys
+import tempfile
+import traceback
+
+import edgifc.decoration
+
+from enum import IntEnum
+from pathlib import Path
+
+from PySide6 import QtCore, QtWidgets, QtGui  # type: ignore[import-not-found,import]
+
+from edgifc import (
+  IFCReader,
+  IFCRegistryTypeRole,
+  IFCUnsupportedValue,
+  StreamReader
+)
+
+class IFCContextModel(QtCore.QObject):
+  partition_element_selected = QtCore.Signal(int, int)
+
+  def __init__(self, ifc_reader: IFCReader):
+    super().__init__()
+
+    self.ifc_reader = ifc_reader
+    self._curr_partiton_idx = None
+
+  def get_selected_partition(self):
+    return self._curr_partiton_idx
+
+  def set_selected_partition(self, partition_idx, element_idx = -1):
+    self._curr_partiton_idx = partition_idx
+    # Notify listeners that the model has changed.
+    self.partition_element_selected.emit(partition_idx, element_idx)
+
+class PartitionListWidget(QtWidgets.QWidget):
+  def __init__(self, model):
+    super().__init__()
+
+    self.model = model
+
+    self.layout = QtWidgets.QHBoxLayout(self)
+
+    self.partition_list = QtWidgets.QListWidget()
+
+    # Add the partitions to the list in sorted order.
+    partition_names = model.ifc_reader.get_partition_names()
+    partition_names.sort()
+    for partition_name in partition_names:
+      self.partition_list.addItem(partition_name)
+
+    self.layout.addWidget(self.partition_list)
+
+    self.partition_list.currentItemChanged.connect(self.update_model_selection)
+
+  @QtCore.Slot()
+  def update_model_selection(self, current):
+    '''A slot used to glue together the UI to the underlying context model.'''
+    partition_idx = self.model.ifc_reader.get_partition_index(current.text())
+    self.model.set_selected_partition(partition_idx)
+
+class PartitionIndexSelectorWidget(QtWidgets.QWidget):
+  def __init__(self, model):
+    super().__init__()
+
+    self.model = model
+
+    self.type_selector = QtWidgets.QComboBox()
+
+    ifc_reader = model.ifc_reader
+
+    # Add the partition types to the type selector.
+    partition_types = list(ifc_reader.get_all_registered_partition_types())
+    partition_types.sort()
+    # Get the partition names that are present in this IFC file.
+    partition_names = ifc_reader.get_partition_names()
+    for partition_type in partition_types:
+      # Skip partition types that aren't present in this IFC file.
+      partition_name = ifc_reader.get_partition_name_by_type(partition_type)
+      if partition_name not in partition_names:
+        continue
+
+      self.type_selector.addItem(partition_type)
+
+    self.index_input = QtWidgets.QLineEdit()
+    self.go_button = QtWidgets.QPushButton("->")
+
+    self.layout = QtWidgets.QHBoxLayout(self)
+    self.layout.addWidget(self.type_selector)
+    self.layout.addWidget(self.index_input)
+    self.layout.addWidget(self.go_button)
+    self.layout.setContentsMargins(0, 0, 0, 0)
+
+    self.index_input.returnPressed.connect(self.go)
+    self.go_button.clicked.connect(self.go)
+
+  @QtCore.Slot()
+  def go(self):
+    ifc_reader = self.model.ifc_reader
+
+    selected_part_type = self.type_selector.currentText()
+    partition = ifc_reader.get_partition_name_by_type(selected_part_type)
+    partition_idx = ifc_reader.get_partition_index(partition)
+    entered_index = int(self.index_input.text())
+    self.model.set_selected_partition(partition_idx, entered_index)
+
+  def populate(self, type_name, index):
+    self.type_selector.setCurrentText(type_name)
+    self.index_input.setText(index)
+
+class PartitionJumpWidget(QtWidgets.QWidget):
+  def __init__(self, model):
+    super().__init__()
+
+    self.model = model
+
+    self.index_selector = PartitionIndexSelectorWidget(model)
+    self.jump_history = QtWidgets.QListWidget()
+
+    self.layout = QtWidgets.QVBoxLayout(self)
+    self.layout.addWidget(self.index_selector)
+    self.layout.addWidget(self.jump_history)
+
+    self.jump_history.itemClicked.connect(self.focus_index_from_str)
+    self.jump_history.itemDoubleClicked.connect(self.go_index_from_str)
+
+  @QtCore.Slot()
+  def focus_index_from_str(self, selected_list_item):
+    # Update the selection, but don't go.
+    type_name, index_str = selected_list_item.text().split(' - ')
+    self.index_selector.populate(type_name, index_str)
+
+  @QtCore.Slot()
+  def go_index_from_str(self, selected_list_item):
+    # Update the selection, then automatically go.
+    self.focus_index_from_str(selected_list_item)
+    self.index_selector.go()
+
+  @QtCore.Slot()
+  def record_jump(self, partition_idx, element_idx):
+    # Ignore non-specific partition changes (for now anyways).
+    if element_idx == -1:
+      return
+
+    # Retrieve the partition's respective type name from the partition index.
+    ifc_reader = self.model.ifc_reader
+    partition_name = ifc_reader.get_partition_name_by_index(partition_idx)
+    type_name = ifc_reader.get_type_name_for_partition_name(partition_name)
+
+    # Add an entry to the top of the "history" with the correct type name and
+    # element index.
+    self.jump_history.insertItem(0, f"{type_name} - {element_idx}")
+
+class PartitionBrowserSelection(IntEnum):
+  NONE           = 0
+  ALL_PARTITIONS = 1
+  INDEX_JUMPER   = 2
+
+DEFAULT_PARTITION_BROWSER_SELECTION = PartitionBrowserSelection.ALL_PARTITIONS
+
+class PartitionBrowserSelectedWidget(QtWidgets.QWidget):
+  def __init__(self, model):
+    super().__init__()
+
+    self.partition_list = PartitionListWidget(model)
+    self.partition_jumper = PartitionJumpWidget(model)
+
+    self.layout = QtWidgets.QStackedLayout(self)
+    self.layout.addWidget(self.partition_list)
+    self.layout.addWidget(self.partition_jumper)
+
+    model.partition_element_selected.connect(self.partition_jumper.record_jump)
+
+  @QtCore.Slot(int)
+  def set_active(self, widget_id):
+    if widget_id != PartitionBrowserSelection.NONE:
+      self.setVisible(True)
+      if widget_id == PartitionBrowserSelection.ALL_PARTITIONS:
+        self.layout.setCurrentWidget(self.partition_list)
+      elif widget_id == PartitionBrowserSelection.INDEX_JUMPER:
+        self.layout.setCurrentWidget(self.partition_jumper)
+    else:
+      self.setVisible(False)
+
+class PartitionSideBarPanelWidget(QtWidgets.QWidget):
+  selectionChanged = QtCore.Signal(int)
+
+  def __init__(self, model):
+    super().__init__()
+
+    self.button_group = QtWidgets.QButtonGroup()
+    self.show_all_widget = QtWidgets.QPushButton('A')
+    self.show_all_widget.setFixedSize(QtCore.QSize(24, 24))
+    self.show_jumper_widget = QtWidgets.QPushButton('J')
+    self.show_jumper_widget.setFixedSize(QtCore.QSize(24, 24))
+
+    self.button_group.addButton(
+      self.show_all_widget,
+      PartitionBrowserSelection.ALL_PARTITIONS
+    )
+    self.button_group.addButton(
+      self.show_jumper_widget,
+      PartitionBrowserSelection.INDEX_JUMPER
+    )
+
+    self.curr_selection = DEFAULT_PARTITION_BROWSER_SELECTION
+
+    self.layout = QtWidgets.QVBoxLayout(self)
+    self.layout.addWidget(self.show_all_widget)
+    self.layout.addWidget(self.show_jumper_widget)
+    self.layout.addStretch()
+
+    # Adjust the content margins on the layout to prevent wasted space in the
+    # sidebar.
+    content_margins = self.layout.contentsMargins()
+    content_margins.setLeft(0)
+    content_margins.setRight(0)
+    self.layout.setContentsMargins(content_margins)
+
+    self.button_group.buttonClicked.connect(self.update_selection)
+
+  @QtCore.Slot(QtWidgets.QPushButton)
+  def update_selection(self, button_clicked):
+    id_clicked = self.button_group.id(button_clicked)
+    if id_clicked == self.curr_selection:
+      self.selectionChanged.emit(PartitionBrowserSelection.NONE)
+      self.curr_selection = PartitionBrowserSelection.NONE
+    else:
+      self.selectionChanged.emit(id_clicked)
+      self.curr_selection = id_clicked
+
+class PartitionBrowserWidget(QtWidgets.QWidget):
+  def __init__(self, model):
+    super().__init__()
+
+    self.model = model
+
+    self.sidebar_widget = PartitionSideBarPanelWidget(model)
+    self.browser_widget = PartitionBrowserSelectedWidget(model)
+
+    self.layout = QtWidgets.QHBoxLayout(self)
+    self.layout.addWidget(self.sidebar_widget)
+    self.layout.addWidget(self.browser_widget)
+    self.layout.setSpacing(0)
+    self.layout.setContentsMargins(0, 0, 0, 0)
+
+    self.sidebar_widget.selectionChanged.connect(
+      self.browser_widget.set_active
+    )
+    self.model.partition_element_selected.connect(
+      self.focus_jumper
+    )
+
+  @QtCore.Slot()
+  def focus_jumper(self, _partition_idx, element_idx):
+    if element_idx != -1:
+      self.browser_widget.set_active(PartitionBrowserSelection.INDEX_JUMPER)
+
+class ColumnDescriptor:
+  def __init__(self, label):
+    self.label = label
+
+class RealColumnDescriptor(ColumnDescriptor):
+  def __init__(self, label, field_name, field_type_name, parents):
+    super().__init__(label)
+    self.field_name = field_name
+    self.field_type_name = field_type_name
+    self.parents = parents
+
+class DecoratedColumnDescriptor(ColumnDescriptor):
+  '''This class represents a column corresponding to a descriptor.
+
+  real_field_index can be used to find the column that contains the
+  non-decorator value and type information.
+  '''
+  def __init__(self, label, real_field_index):
+    super().__init__(label)
+    self.real_field_index = real_field_index
+
+class PartitionNodeFormatter:
+  def __init__(self, decorator_map: edgifc.decoration.DecoratorMap):
+    self._decorator_map = decorator_map
+
+  def _gen_label(self, path_info, qualifiers):
+    if len(qualifiers) > 0:
+      qualifiers_str = ' - '.join(qualifiers)
+      return f"{path_info} ({qualifiers_str})"
+    else:
+      return path_info
+
+  def _append_column_info(self, column_info, parents, field_name, field_type,
+                          *, extra_quals = []):
+    '''Extend the column information with the appropriate ColumnDescriptors.'''
+    path_info = '.'.join([*parents, field_name])
+
+    column_info.append(RealColumnDescriptor(
+      self._gen_label(path_info, extra_quals),
+      field_name,
+      field_type,
+      parents
+    ))
+    real_column_index = len(column_info) - 1
+
+    if field_type in self._decorator_map:
+      for decorator in self._decorator_map[field_type]:
+        column_info.append(DecoratedColumnDescriptor(
+          self._gen_label(
+            path_info,
+            [decorator.name(), *extra_quals]
+          ),
+          real_column_index
+        ))
+
+  def _append_true_field_column_info(self, column_info, parents, fields):
+    '''Extend the column information for a "true" fields with the appropriate
+    ColumnDescriptors.
+    '''
+    for field in fields:
+      field_name = field.name()
+      field_type = field.type_name()
+      subfields = field.subfields()
+      if len(subfields) > 0:
+        self._append_true_field_column_info(
+          column_info,
+          [*parents, field_name],
+          subfields
+        )
+      else:
+        self._append_column_info(
+          column_info,
+          parents,
+          field_name,
+          field_type
+        )
+
+  def _append_tacit_field_column_info(self, column_info, tacit_fields):
+    '''Extend the column information for the given "tacit" fields with the
+    appropriate ColumnDescriptors.
+    '''
+    for tacit_field in tacit_fields:
+      field_name = tacit_field.name()
+      field_type = tacit_field.type_name()
+      self._append_column_info(
+        column_info,
+        [],
+        field_name,
+        field_type,
+        extra_quals = ['TF']
+      )
+
+  def get_column_info(self, fields, tacit_fields):
+    column_info = []
+    self._append_true_field_column_info(column_info, '', fields)
+    self._append_tacit_field_column_info(column_info, tacit_fields)
+    return column_info
+
+  def _append_value_with_fallback(self, format_fn, values, value):
+    # Used to handle bad values without breaking the function.
+    try:
+      if isinstance(value, IFCUnsupportedValue):
+        template_string = edgifc.decoration.UNSUPPORTED_VALUE
+        values.append(template_string.format(value.description))
+      else:
+        values.append(format_fn(value))
+    except:
+      traceback.print_exc()
+      values.append(edgifc.decoration.UNKNOWN_VALUE)
+
+  def _append_values(self, ifc_reader, values, field_value, field_type):
+    def auto_format_value(value):
+      return ifc_reader.render_python_value(value, field_type)
+    self._append_value_with_fallback(auto_format_value, values, field_value)
+
+    if field_type in self._decorator_map:
+      for decorator in self._decorator_map[field_type]:
+        def decorator_format_value(value):
+          return str(decorator.decorate(ifc_reader, value))
+        self._append_value_with_fallback(
+          decorator_format_value,
+          values,
+          field_value
+        )
+
+  def _append_true_field_values(self, ifc_reader, values, fields, value):
+    for field in fields:
+      field_value = value.get(field.name())
+      subfields = field.subfields()
+      if len(subfields) > 0:
+        self._append_true_field_values(
+          ifc_reader,
+          values,
+          subfields,
+          field_value
+        )
+      else:
+        field_type = field.type_name()
+        self._append_values(ifc_reader, values, field_value, field_type)
+
+  def _append_tacit_field_values(self, ifc_reader, values, tacit_fields,
+                                 value):
+    stream_reader = StreamReader(ifc_reader)
+    for tacit_field in tacit_fields:
+      # FIXME: Improve this handling.
+      try:
+        field_value = value.get_tacit(
+          {},
+          stream_reader,
+          tacit_field.name()
+        )
+      except:
+        traceback.print_exc()
+        field_value = 0
+
+      field_type = tacit_field.type_name()
+      self._append_values(ifc_reader, values, field_value, field_type)
+
+  def get_values(self, ifc_reader, fields, tacit_fields, value):
+    values = []
+    self._append_true_field_values(ifc_reader, values, fields, value)
+    self._append_tacit_field_values(
+      ifc_reader,
+      values,
+      tacit_fields,
+      value
+    )
+    return values
+
+class TableSizeCalculator:
+  def __init__(self):
+    self.widths = {}
+
+  def update_width(self, column_idx, text):
+    font_metrics = QtGui.QFontMetrics(QtWidgets.QApplication.font())
+    self.widths[column_idx] = max(
+      self.widths.get(column_idx, 0),
+      font_metrics.boundingRect(text).width()
+    )
+
+class PartitionTableModel(QtCore.QAbstractTableModel):
+  def __init__(self, ifc_reader, partition_idx):
+    super().__init__()
+
+    self.partition_name, self.partition = ifc_reader.get_partition_by_index(
+      partition_idx
+    )
+
+    self.formatter = self._get_formatter(ifc_reader)
+
+    type_info = ifc_reader.get_type_for_partition(self.partition_name)
+    self.fields = type_info.fields()
+    self.tacit_fields = type_info.tacit_fields()
+    self.column_info = self.formatter.get_column_info(
+      self.fields,
+      self.tacit_fields
+    )
+
+    self.ifc_reader = ifc_reader
+
+    self._row_cache_index = None
+    self._row_cache = None
+
+  def _get_formatter(self, ifc_reader):
+    decorator_map = edgifc.decoration.full_decoration_map(ifc_reader)
+    return PartitionNodeFormatter(decorator_map)
+
+  def rowCount(self, parent = None):
+    return self.partition.cardinality()
+
+  def columnCount(self, parent = None):
+    return len(self.column_info)
+
+  def _set_row_cache(self, row_idx):
+    stream_reader = StreamReader(self.ifc_reader)
+    value = stream_reader.read(self.partition_name, row_idx)
+
+    self._row_cache = self.formatter.get_values(
+      self.ifc_reader,
+      self.fields,
+      self.tacit_fields,
+      value
+    )
+    self._row_cache_index = row_idx
+
+  def _data_for_row_element(self, row_idx, col_idx):
+    # Update the row cache to the current row.  It's assumed this is called by
+    # row, then by column.
+    if self._row_cache_index != row_idx:
+      self._set_row_cache(row_idx)
+
+    return self._row_cache[col_idx]
+
+  def data(self, qt_idx, role = QtCore.Qt.DisplayRole):
+    # Always ignore invalid indexes
+    if not qt_idx.isValid():
+      return None
+
+    # Designate different queries
+    if role == QtCore.Qt.DisplayRole:
+      return self._data_for_row_element(qt_idx.row(), qt_idx.column())
+    if role == QtCore.Qt.TextAlignmentRole:
+      return QtCore.Qt.AlignRight
+
+    # Fallback to a default value
+    return None
+
+  def get_primary_data(self, index: QtCore.QModelIndex):
+    row_num = index.row()
+    column_num = index.column()
+
+    # Check to see if this is a decorated column, if so, fetch the real column
+    # information.
+    info = self.column_info[column_num]
+    if isinstance(info, DecoratedColumnDescriptor):
+      column_num = info.real_field_index
+      info = self.column_info[column_num]
+
+    stream_reader = StreamReader(self.ifc_reader)
+    row_ifc_value = stream_reader.read(self.partition_name, row_num)
+    for parent in info.parents:
+      row_ifc_value = row_ifc_value.get(parent)
+    return (row_ifc_value.get(info.field_name), info.field_type_name)
+
+  def _data_for_header_element(self, idx, orientation):
+    if orientation == QtCore.Qt.Horizontal:
+      return self.column_info[idx].label
+    if orientation == QtCore.Qt.Vertical:
+      return idx
+    return None
+
+  def _alignment_for_header_element(self, orientation):
+    if orientation == QtCore.Qt.Vertical:
+      return QtCore.Qt.AlignRight
+
+    return QtCore.Qt.AlignCenter
+
+  def headerData(self, idx, orientation, role):
+    if role == QtCore.Qt.DisplayRole:
+      return self._data_for_header_element(idx, orientation)
+    if role == QtCore.Qt.TextAlignmentRole:
+      return self._alignment_for_header_element(orientation)
+    return None
+
+class PartitionValueTableWidget(QtWidgets.QWidget):
+  def __init__(self, model):
+    super().__init__()
+
+    self.model = model
+    self.table = QtWidgets.QTableView()
+
+    self.layout = QtWidgets.QHBoxLayout(self)
+    self.layout.addWidget(self.table)
+
+    self.table.doubleClicked.connect(self.handle_double_click)
+
+  def resize_columns(self):
+    model = self.table.model()
+
+    size_calculator = TableSizeCalculator()
+
+    header = self.table.horizontalHeader()
+    for idx in range(header.count()):
+      text = model.headerData(idx, QtCore.Qt.Horizontal, QtCore.Qt.DisplayRole)
+      size_calculator.update_width(idx, text)
+
+    # Determine the total number of rows, and how many to sample.
+    row_count = model.rowCount()
+    row_samples = min(100, row_count)
+
+    # Seed the random to get a consistent result, then sample.
+    random.seed(row_count)
+    row_sample = random.sample(range(row_count), row_samples)
+
+    # Check the sampled rows.
+    for row_idx in row_sample:
+      for column_idx in range(header.count()):
+        text = model.data(model.index(row_idx, column_idx))
+        size_calculator.update_width(column_idx, text)
+
+    # Update the header sizes
+    for idx, size in size_calculator.widths.items():
+      header.resizeSection(idx, size + 15)
+
+  def set_contents(self, ifc_reader, partition_idx):
+    self.table.setModel(PartitionTableModel(ifc_reader, partition_idx))
+    self.resize_columns()
+
+  def show_row(self, row_idx):
+    self.table.selectRow(row_idx)
+
+  @QtCore.Slot(QtCore.QModelIndex)
+  def handle_double_click(self, index: QtCore.QModelIndex) -> None:
+    '''Handle a double click on the given cell index.'''
+    table_model = self.table.model()
+    field_value, field_type_name = table_model.get_primary_data(index)
+
+    ifc_reader = table_model.ifc_reader
+    type_role = ifc_reader.get_type_role(field_type_name)
+    if type_role == IFCRegistryTypeRole.INDEX_SORT:
+      part_type_name, row_index = ifc_reader.get_decomposed_index_sort_by_type(
+        field_type_name,
+        field_value
+      )
+
+      # Check to see if the IFC reader can read a partition for this type.
+      if not ifc_reader.has_partition_for_type(part_type_name):
+        return
+
+      partition = ifc_reader.get_partition_name_by_type(part_type_name)
+      partition_idx = ifc_reader.get_partition_index(partition)
+      self.model.set_selected_partition(partition_idx, row_index)
+    elif type_role == IFCRegistryTypeRole.NODE_OFFSET:
+      part_type_name = ifc_reader.get_node_offset_backing_type_name_by_type(
+        field_type_name
+      )
+
+      # Check to see if the IFC reader can read a partition for this type.
+      if not ifc_reader.has_partition_for_type(part_type_name):
+        return
+
+      partition = ifc_reader.get_partition_name_by_type(part_type_name)
+      partition_idx = ifc_reader.get_partition_index(partition)
+
+      row_index = field_value
+      if not ifc_reader.is_node_offset_non_null_by_type(field_type_name):
+        row_index -= 1
+      self.model.set_selected_partition(partition_idx, row_index)
+
+class PartitionBrokenValueTableWidget(QtWidgets.QWidget):
+  def __init__(self):
+    super().__init__()
+
+    self.unimplemented_label = QtWidgets.QLabel('Unimplemented Partition')
+
+    self.layout = QtWidgets.QVBoxLayout(self)
+    self.layout.addWidget(self.unimplemented_label)
+    self.layout.addStretch(10)
+
+class PartitionViewerWidget(QtWidgets.QWidget):
+  def __init__(self, model):
+    super().__init__()
+
+    self.model = model
+
+    self.layout = QtWidgets.QStackedLayout(self)
+
+    self.primary_widget = PartitionValueTableWidget(model)
+    self.broken_widget = PartitionBrokenValueTableWidget()
+
+    self.layout.addWidget(self.primary_widget)
+    self.layout.addWidget(self.broken_widget)
+
+  @QtCore.Slot()
+  def change_partition(self, partition_idx, element_idx):
+    ifc_reader = self.model.ifc_reader
+
+    try:
+      if ifc_reader.supports_partition_at_index(partition_idx):
+        self.layout.setCurrentWidget(self.primary_widget)
+        self.primary_widget.set_contents(ifc_reader, partition_idx)
+
+        # Update the selected area
+        if element_idx == -1:
+          self.primary_widget.show_row(0)
+        else:
+          self.primary_widget.show_row(element_idx)
+      else:
+        self.layout.setCurrentWidget(self.broken_widget)
+    except KeyError:
+      traceback.print_exc()
+      self.layout.setCurrentWidget(self.broken_widget)
+
+class IFCPartitionNavigatorWidget(QtWidgets.QWidget):
+  def __init__(self, model):
+    super().__init__()
+
+    self.model = model
+
+    self.partition_browser = PartitionBrowserWidget(self.model)
+    self.partition_viewer = PartitionViewerWidget(self.model)
+
+    self.layout = QtWidgets.QHBoxLayout(self)
+    self.layout.addWidget(self.partition_browser)
+    self.layout.addWidget(self.partition_viewer, stretch = 10)
+    self.layout.setSpacing(0)
+
+    self.model.partition_element_selected.connect(
+      self.partition_viewer.change_partition
+    )
+
+class IFCSummaryWidget(QtWidgets.QWidget):
+  def __init__(self, model):
+    super().__init__()
+
+    self.model = model
+
+    ifc_reader = self.model.ifc_reader
+    stream_reader = StreamReader(ifc_reader)
+
+    header = ifc_reader.get_header()
+
+    version_string = f"{header.major_version()}.{header.minor_version()}"
+    self.version_label = QtWidgets.QLabel('Version')
+    self.version_value = QtWidgets.QLabel(version_string)
+    self.layout_version = QtWidgets.QHBoxLayout()
+    self.layout_version.addWidget(self.version_label)
+    self.layout_version.addWidget(self.version_value)
+
+    arch_string = ifc_reader.get_sort_tag('Architecture', header.arch())
+    self.arch_label = QtWidgets.QLabel('Architecture')
+    self.arch_value = QtWidgets.QLabel(arch_string)
+    self.layout_arch = QtWidgets.QHBoxLayout()
+    self.layout_arch.addWidget(self.arch_label)
+    self.layout_arch.addWidget(self.arch_value)
+
+    source_path = stream_reader.read_text(header.src_path())
+    self.src_path_label = QtWidgets.QLabel('Source Path')
+    self.src_path_value = QtWidgets.QLabel(source_path)
+    self.layout_src_path = QtWidgets.QHBoxLayout()
+    self.layout_src_path.addWidget(self.src_path_label)
+    self.layout_src_path.addWidget(self.src_path_value)
+
+    self.global_scope_label = QtWidgets.QLabel('Global Scope')
+    self.global_scope_value = QtWidgets.QLabel(
+      f"scope.desc - {header.global_scope() - 1}"
+    )
+    self.layout_global_scope = QtWidgets.QHBoxLayout()
+    self.layout_global_scope.addWidget(self.global_scope_label)
+    self.layout_global_scope.addWidget(self.global_scope_value)
+
+    self.partition_count_label = QtWidgets.QLabel('Partition Count')
+    self.partition_count_value = QtWidgets.QLabel(
+      str(header.partition_count())
+    )
+    self.layout_partition_count = QtWidgets.QHBoxLayout()
+    self.layout_partition_count.addWidget(self.partition_count_label)
+    self.layout_partition_count.addWidget(self.partition_count_value)
+
+    self.internal_label = QtWidgets.QLabel('Internal')
+    self.internal_value = QtWidgets.QLabel(str(header.internal()))
+    self.layout_internal = QtWidgets.QHBoxLayout()
+    self.layout_internal.addWidget(self.internal_label)
+    self.layout_internal.addWidget(self.internal_value)
+
+    self.layout = QtWidgets.QVBoxLayout(self)
+    self.layout.addLayout(self.layout_version)
+    self.layout.addLayout(self.layout_arch)
+    self.layout.addLayout(self.layout_src_path)
+    self.layout.addLayout(self.layout_global_scope)
+    self.layout.addLayout(self.layout_partition_count)
+    self.layout.addLayout(self.layout_internal)
+    self.layout.addStretch(10)
+
+class IFCVizWidget(QtWidgets.QWidget):
+  def __init__(self, ifc_reader):
+    super().__init__()
+
+    self.model = IFCContextModel(ifc_reader)
+
+    self.update_window_title()
+
+    self.tabs = QtWidgets.QTabWidget()
+
+    self.summary_widget = IFCSummaryWidget(self.model)
+    self.partition_nav_widget = IFCPartitionNavigatorWidget(self.model)
+    self.tabs.addTab(self.summary_widget, "Summary")
+    self.tabs.addTab(self.partition_nav_widget, "Partitions")
+
+    self.layout = QtWidgets.QHBoxLayout(self)
+    self.layout.addWidget(self.tabs)
+
+  def update_window_title(self):
+    ifc_reader = self.model.ifc_reader
+    stream_reader = StreamReader(ifc_reader)
+
+    header = ifc_reader.get_header()
+
+    # Use up the last 25 characters of the source path
+    source_path = stream_reader.read_text(header.src_path())
+    source_path = source_path[-25:]
+
+    # Build a version string from the header version elements
+    version_string = f"{header.major_version()}.{header.minor_version()}"
+
+    self.setWindowTitle(f"{source_path} - {version_string}")
+
+def parse_args():
+  parser = argparse.ArgumentParser(description='EDG IFC Visualizer (Qt).')
+  parser.add_argument(
+    '--foreground',
+    dest = 'foreground',
+    action = 'store_true',
+    help = 'run the program in the foreground'
+  )
+  parser.add_argument(
+    'file_path',
+    type = Path,
+    help = 'the IFC file to open'
+  )
+  return parser.parse_args()
+
+def visualize_file(file_path):
+  app = QtWidgets.QApplication([])
+  ifc_reader = None
+
+  with open(file_path, 'rb') as file_handle:
+    ifc_bytes = io.BytesIO(file_handle.read())
+    ifc_reader = IFCReader(ifc_bytes)
+
+  try:
+    ifc_reader.init_file()
+  except Exception as e:
+    print(f"ERROR: {e}")
+    sys.exit(1)
+
+  widget = IFCVizWidget(ifc_reader)
+
+  # Set a nice initial layout.
+  primary_screen = QtWidgets.QApplication.primaryScreen()
+  window_size = primary_screen.availableGeometry().size()
+  window_size.scale(
+    window_size.width() * .8,
+    window_size.height() * .6,
+    QtCore.Qt.AspectRatioMode.IgnoreAspectRatio
+  )
+  widget.resize(window_size);
+
+  # Show the application, transitioning evaluation to the Qt event loop.
+  widget.show()
+  sys.exit(app.exec())
+
+def main() -> None:
+  args = parse_args()
+  if args.foreground:
+    visualize_file(args.file_path)
+  else:
+    relaunch_args = [sys.executable, __file__, '--foreground', *sys.argv[1:]]
+    subprocess.Popen(relaunch_args)
+
+main()

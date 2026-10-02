@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=4 --ms_c++20 --microsoft_version 1942 Test_name.c
+"Test_name.c", line 38: warning: unnamed parameter in requires-expression has no effect
+    int f(T ... t) requires requires (T ...) { g(t ...); };
+                                        ^
+

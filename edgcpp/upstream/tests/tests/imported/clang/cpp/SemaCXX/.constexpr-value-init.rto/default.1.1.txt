@@ -1,0 +1,121 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 15: error: initialization is not constant
+  constexpr A a1; // expected-error {{constant expression}} expected-note {{in call to 'A()'}}
+              ^
+"Test_name.c", line 7: note: access to uninitialized object
+    constexpr A() : a(b + 1), b(a + 1) {} // expected-note 5{{outside its lifetime}}
+                      ^
+
+"Test_name.c", line 16: error: expression must have a constant value
+  constexpr A a2 = A(); // expected-error {{constant expression}} expected-note {{in call to 'A()'}}
+                   ^
+"Test_name.c", line 7: note: access to uninitialized object
+    constexpr A() : a(b + 1), b(a + 1) {} // expected-note 5{{outside its lifetime}}
+                      ^
+
+"Test_name.c", line 18: error: initialization is not constant
+    constexpr A a; // expected-error {{constant expression}} expected-note {{in call to 'A()'}}
+                ^
+"Test_name.c", line 7: note: access to uninitialized object
+    constexpr A() : a(b + 1), b(a + 1) {} // expected-note 5{{outside its lifetime}}
+                      ^
+
+"Test_name.c", line 21: error: initialization is not constant
+  constexpr B b1; // expected-error {{constant expression}} expected-note {{in call to 'B()'}}
+              ^
+"Test_name.c", line 7: note: access to uninitialized object
+    constexpr A() : a(b + 1), b(a + 1) {} // expected-note 5{{outside its lifetime}}
+                      ^
+"Test_name.c", line 11: note: called from:
+  struct B { // expected-note {{in call to 'A()'}}
+         ^
+
+"Test_name.c", line 22: error: expression must have a constant value
+  constexpr B b2 = B(); // ok
+                   ^
+"Test_name.c", line 7: note: access to uninitialized object
+    constexpr A() : a(b + 1), b(a + 1) {} // expected-note 5{{outside its lifetime}}
+                      ^
+"Test_name.c", line 11: note: called from:
+  struct B { // expected-note {{in call to 'A()'}}
+         ^
+
+"Test_name.c", line 30: error: const variable "c1" requires an initializer -- class "C" has no user-provided default constructor
+  constexpr C c1; // expected-error {{without a user-provided default constructor}}
+                ^
+
+"Test_name.c", line 32: error: const variable "d1" requires an initializer -- class "D" has no user-provided default constructor
+  constexpr D d1; // expected-error {{without a user-provided default constructor}}
+                ^
+
+"Test_name.c", line 39: error: a constructor for a class with virtual bases cannot be constexpr
+    constexpr Z() : V() {}
+    ^
+          detected during instantiation of class "Z<T> [with T=V]" at line 41
+
+"Test_name.c", line 41: error: expression must have a constant value
+  constexpr int n = Z<V>().c; // expected-error {{constant expression}} expected-note {{non-literal type 'Z<V>'}}
+                    ^
+
+"Test_name.c", line 46: error: initialization is not constant
+  constexpr E e1; // expected-error {{constant expression}} expected-note {{in call to 'E()'}}
+              ^
+"Test_name.c", line 7: note: access to uninitialized object
+    constexpr A() : a(b + 1), b(a + 1) {} // expected-note 5{{outside its lifetime}}
+                      ^
+"Test_name.c", line 46: note: called from:
+  constexpr E e1; // expected-error {{constant expression}} expected-note {{in call to 'E()'}}
+                ^
+
+"Test_name.c", line 47: error: expression must have a constant value
+  constexpr E e2 = E();
+                   ^
+"Test_name.c", line 7: note: access to uninitialized object
+    constexpr A() : a(b + 1), b(a + 1) {} // expected-note 5{{outside its lifetime}}
+                      ^
+"Test_name.c", line 46: note: called from:
+  constexpr E e1; // expected-error {{constant expression}} expected-note {{in call to 'E()'}}
+                ^
+
+"Test_name.c", line 59: error: incomplete type "InvalidDeclInsideConstExpr::i<1>" is not allowed
+    i<x> g; // expected-error {{implicit instantiation of undefined template 'InvalidDeclInsideConstExpr::i<1>'}}
+         ^
+          detected during instantiation of "auto InvalidDeclInsideConstExpr::c<x>() [with x=1]" at line 63
+
+"Test_name.c", line 15: warning: variable "a1" was declared but never referenced
+  constexpr A a1; // expected-error {{constant expression}} expected-note {{in call to 'A()'}}
+              ^
+
+"Test_name.c", line 16: warning: variable "a2" was declared but never referenced
+  constexpr A a2 = A(); // expected-error {{constant expression}} expected-note {{in call to 'A()'}}
+              ^
+
+"Test_name.c", line 21: warning: variable "b1" was declared but never referenced
+  constexpr B b1; // expected-error {{constant expression}} expected-note {{in call to 'B()'}}
+              ^
+
+"Test_name.c", line 30: warning: variable "c1" was declared but never referenced
+  constexpr C c1; // expected-error {{without a user-provided default constructor}}
+              ^
+
+"Test_name.c", line 31: warning: variable "c2" was declared but never referenced
+  constexpr C c2 = C(); // ok
+              ^
+
+"Test_name.c", line 32: warning: variable "d1" was declared but never referenced
+  constexpr D d1; // expected-error {{without a user-provided default constructor}}
+              ^
+
+"Test_name.c", line 33: warning: variable "d2" was declared but never referenced
+  constexpr D d2 = D(); // ok with DR1452
+              ^
+
+"Test_name.c", line 41: warning: variable "n" was declared but never referenced
+  constexpr int n = Z<V>().c; // expected-error {{constant expression}} expected-note {{non-literal type 'Z<V>'}}
+                ^
+
+"Test_name.c", line 46: warning: variable "e1" was declared but never referenced
+  constexpr E e1; // expected-error {{constant expression}} expected-note {{in call to 'E()'}}
+              ^
+
+12 errors detected in the compilation of "Test_name.c".

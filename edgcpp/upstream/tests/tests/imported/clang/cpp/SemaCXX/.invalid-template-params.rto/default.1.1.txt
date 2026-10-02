@@ -1,0 +1,57 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 9: error: invalid combination of type specifiers
+    void foo1(); // expected-error {{non-type template parameter has incomplete type 'class UBar'}}
+    ^
+
+"Test_name.c", line 9: error: expected a "," or ">"
+    void foo1(); // expected-error {{non-type template parameter has incomplete type 'class UBar'}}
+               ^
+
+"Test_name.c", line 9: error: expected a declaration
+    void foo1(); // expected-error {{non-type template parameter has incomplete type 'class UBar'}}
+               ^
+
+"Test_name.c", line 12: error: expected a "}"
+  };
+   ^
+"Test_name.c", line 5: note: to match this "{"
+  template<class> class Foo {
+                            ^
+
+"Test_name.c", line 14: error: class "Foo<int>" has no member "UBar"
+  Foo<int>::UBar g1; // expected-error {{no type named 'UBar' in 'Foo<int>'}}
+            ^
+
+"Test_name.c", line 18: error: mismatched delimiters in default argument expression
+    template<typename T0, typename T1 = T0 // missing closing angle bracket
+                                        ^
+
+"Test_name.c", line 19: error: expected a "," or ">"
+    struct S0 {}; // expected-error {{'S0' cannot be defined in a type specifier}}
+                ^
+
+"Test_name.c", line 19: error: invalid combination of type specifiers
+    struct S0 {}; // expected-error {{'S0' cannot be defined in a type specifier}}
+    ^
+
+"Test_name.c", line 19: error: expected a declaration
+    struct S0 {}; // expected-error {{'S0' cannot be defined in a type specifier}}
+                ^
+
+"Test_name.c", line 24: error: S0 is not a template
+    S0<int> *m; // expected-error {{expected member name or ';' after declaration specifiers}}
+    ^
+
+"Test_name.c", line 22: error: expected a type specifier
+    C0() : m(new S0<int>) {} // expected-error {{expected '(' for function-style cast or type construction}}
+                 ^
+
+"Test_name.c", line 22: error: type name is not allowed
+    C0() : m(new S0<int>) {} // expected-error {{expected '(' for function-style cast or type construction}}
+                    ^
+
+"Test_name.c", line 22: error: expected an expression
+    C0() : m(new S0<int>) {} // expected-error {{expected '(' for function-style cast or type construction}}
+                        ^
+
+13 errors detected in the compilation of "Test_name.c".

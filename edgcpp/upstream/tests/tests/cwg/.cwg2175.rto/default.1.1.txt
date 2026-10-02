@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c++17 -tused -A Test_name.c
+"Test_name.c", line 5: error: attribute "noreturn" does not apply here
+  operator int [[noreturn]] (); // error: noreturn attribute applied to a type
+                 ^
+
+"Test_name.c", line 5: error: conversion function must be a nonstatic member function
+  operator int [[noreturn]] (); // error: noreturn attribute applied to a type
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

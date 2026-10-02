@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 7: error: function "g" returns incomplete type "Incomplete"
+  Incomplete g(Incomplete) {}        // expected-error{{incomplete result type 'Incomplete' in function definition}}\
+             ^
+
+"Test_name.c", line 7: error: incomplete type "Incomplete" is not allowed
+  Incomplete g(Incomplete) {}        // expected-error{{incomplete result type 'Incomplete' in function definition}}\
+               ^
+
+"Test_name.c", line 7: warning: missing return statement at end of non-void function "g"
+  Incomplete g(Incomplete) {}        // expected-error{{incomplete result type 'Incomplete' in function definition}}\
+                            ^
+
+2 errors detected in the compilation of "Test_name.c".

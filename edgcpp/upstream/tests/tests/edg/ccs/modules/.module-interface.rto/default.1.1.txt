@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --modules --set_flag skip_module_imports Test_name.c
+"Test_name.c", line 5: error: an export declaration can only appear in a module interface unit
+  export int x;
+  ^
+
+1 error detected in the compilation of "Test_name.c".

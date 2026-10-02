@@ -1,0 +1,166 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 109: error: initialization is not constant
+  constexpr T t;	// { dg-error "the type 'const T' of 'constexpr' variable 't' is not literal" "" { target { ! implicit_constexpr } } }
+              ^
+"Test_name.c", line 109: note: cannot call non-constexpr function "T::~T" (declared at line 15)
+  constexpr T t;	// { dg-error "the type 'const T' of 'constexpr' variable 't' is not literal" "" { target { ! implicit_constexpr } } }
+              ^
+
+"Test_name.c", line 109: error: a constexpr variable must have a literal type or a reference type
+  constexpr T t;	// { dg-error "the type 'const T' of 'constexpr' variable 't' is not literal" "" { target { ! implicit_constexpr } } }
+  ^
+
+"Test_name.c", line 112: error: expression must have a constant value
+  constexpr W1 w3 = 5;	// { dg-message "in 'constexpr' expansion of" }
+                    ^
+"Test_name.c", line 42: note: statement cannot be interpreted
+    constexpr ~W1 () { if (w == 5) asm (""); w = 3; }	// { dg-error "inline assembly is not a constant expression" }
+                                   ^
+
+"Test_name.c", line 122: error: expression must have a constant value
+    constexpr W3 w8 = 5;	// { dg-message "in 'constexpr' expansion of" }
+                      ^
+"Test_name.c", line 58: note: statement cannot be interpreted
+    constexpr ~W3 () { if (w == 5) asm (""); w = 3; }	// { dg-error "inline assembly is not a constant expression" }
+                                   ^
+
+"Test_name.c", line 119: warning: variable "s2" was declared but never referenced
+    constexpr S s2;
+                ^
+
+"Test_name.c", line 120: warning: variable "w6" was declared but never referenced
+    constexpr W0 w6;
+                 ^
+
+"Test_name.c", line 121: warning: variable "w7" was declared but never referenced
+    constexpr W0 w7 = 12;
+                 ^
+
+"Test_name.c", line 122: warning: variable "w8" was declared but never referenced
+    constexpr W3 w8 = 5;	// { dg-message "in 'constexpr' expansion of" }
+                 ^
+
+"Test_name.c", line 123: warning: variable "w9" was declared but never referenced
+    constexpr W0 w9[3] = { 1, 2, 3 };
+                 ^
+
+"Test_name.c", line 124: warning: variable "w10" was declared but never referenced
+    constexpr W4 w10[3] = { 4, 5, 6 };	// { dg-message "in 'constexpr' expansion of" }
+                 ^
+
+"Test_name.c", line 133: error: expression must have a constant value
+    constexpr W5 w13 = 5;	// { dg-message "in 'constexpr' expansion of" }
+                       ^
+"Test_name.c", line 74: note: statement cannot be interpreted
+    constexpr ~W5 () { if (w == 5) asm (""); w = 3; }	// { dg-error "inline assembly is not a constant expression" }
+                                   ^
+
+"Test_name.c", line 130: warning: variable "s3" was declared but never referenced
+    constexpr S s3;
+                ^
+
+"Test_name.c", line 131: warning: variable "w11" was declared but never referenced
+    constexpr W0 w11;
+                 ^
+
+"Test_name.c", line 132: warning: variable "w12" was declared but never referenced
+    constexpr W0 w12 = 12;
+                 ^
+
+"Test_name.c", line 133: warning: variable "w13" was declared but never referenced
+    constexpr W5 w13 = 5;	// { dg-message "in 'constexpr' expansion of" }
+                 ^
+
+"Test_name.c", line 134: warning: variable "w14" was declared but never referenced
+    constexpr W0 w14[3] = { 1, 2, 3 };
+                 ^
+
+"Test_name.c", line 135: warning: variable "w15" was declared but never referenced
+    constexpr W6 w15[3] = { 4, 5, 6 };	// { dg-message "in 'constexpr' expansion of" }
+                 ^
+
+"Test_name.c", line 145: warning: variable "w14" was declared but never referenced
+    W0 w14[3] = { 1, 2, 3 };
+       ^
+
+"Test_name.c", line 158: error: expression must have a constant value
+  constexpr int x4 = f4 ();	// { dg-message "in 'constexpr' expansion of" }
+                     ^
+"Test_name.c", line 90: note: statement cannot be interpreted
+    constexpr ~W7 () { if (w == 5) asm (""); w = 3; }	// { dg-error "inline assembly is not a constant expression" }
+                                   ^
+"Test_name.c", line 154: note: called from:
+    W7 w13 = 5;
+           ^
+
+"Test_name.c", line 163: warning: variable "w15" was declared but never referenced
+    W8 w15[3] = { 4, 5, 6 };	// { dg-message "in 'constexpr' expansion of" }
+       ^
+
+"Test_name.c", line 172: error: initialization is not constant
+    constexpr T t2;	// { dg-error "the type 'const T' of 'constexpr' variable 't2' is not literal" "" { target { ! implicit_constexpr } } }
+                ^
+"Test_name.c", line 172: note: cannot call non-constexpr function "T::~T" (declared at line 15)
+    constexpr T t2;	// { dg-error "the type 'const T' of 'constexpr' variable 't2' is not literal" "" { target { ! implicit_constexpr } } }
+                ^
+
+"Test_name.c", line 172: error: a constexpr variable must have a literal type or a reference type
+    constexpr T t2;	// { dg-error "the type 'const T' of 'constexpr' variable 't2' is not literal" "" { target { ! implicit_constexpr } } }
+    ^
+
+"Test_name.c", line 178: error: initialization is not constant
+    constexpr T t3;	// { dg-error "the type 'const T' of 'constexpr' variable 't3' is not literal" "" { target { ! implicit_constexpr } } }
+                ^
+"Test_name.c", line 178: note: cannot call non-constexpr function "T::~T" (declared at line 15)
+    constexpr T t3;	// { dg-error "the type 'const T' of 'constexpr' variable 't3' is not literal" "" { target { ! implicit_constexpr } } }
+                ^
+
+"Test_name.c", line 178: error: variable type "const T" in constexpr function is not a literal type
+    constexpr T t3;	// { dg-error "the type 'const T' of 'constexpr' variable 't3' is not literal" "" { target { ! implicit_constexpr } } }
+                ^
+
+"Test_name.c", line 185: error: variable type "T" in constexpr function is not a literal type
+    T t4;			// { dg-error "variable 't4' of non-literal type 'T' in 'constexpr' function only available with" "" { target { c++20_down && { ! implicit_constexpr } } } }
+      ^
+
+"Test_name.c", line 108: warning: variable "s" was declared but never referenced
+  constexpr S s;
+              ^
+
+"Test_name.c", line 109: warning: variable "t" was declared but never referenced
+  constexpr T t;	// { dg-error "the type 'const T' of 'constexpr' variable 't' is not literal" "" { target { ! implicit_constexpr } } }
+              ^
+
+"Test_name.c", line 110: warning: variable "w1" was declared but never referenced
+  constexpr W0 w1;
+               ^
+
+"Test_name.c", line 111: warning: variable "w2" was declared but never referenced
+  constexpr W0 w2 = 12;
+               ^
+
+"Test_name.c", line 112: warning: variable "w3" was declared but never referenced
+  constexpr W1 w3 = 5;	// { dg-message "in 'constexpr' expansion of" }
+               ^
+
+"Test_name.c", line 113: warning: variable "w4" was declared but never referenced
+  constexpr W0 w4[3] = { 1, 2, 3 };
+               ^
+
+"Test_name.c", line 114: warning: variable "w5" was declared but never referenced
+  constexpr W2 w5[3] = { 4, 5, 6 };	// { dg-message "in 'constexpr' expansion of" }
+               ^
+
+"Test_name.c", line 149: warning: variable "x3" was declared but never referenced
+  constexpr int x3 = f3 ();
+                ^
+
+"Test_name.c", line 158: warning: variable "x4" was declared but never referenced
+  constexpr int x4 = f4 ();	// { dg-message "in 'constexpr' expansion of" }
+                ^
+
+"Test_name.c", line 167: warning: variable "x5" was declared but never referenced
+  constexpr int x5 = f5 ();	// { dg-message "in 'constexpr' expansion of" }
+                ^
+
+11 errors detected in the compilation of "Test_name.c".

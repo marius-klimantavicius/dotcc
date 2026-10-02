@@ -1,0 +1,5 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 8: remark: parameter "x" was never referenced
+    void g(float x=0) { }
+                 ^
+

@@ -1,0 +1,68 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 12: error: too many parameters for this operator function
+    constexpr int operator[](int a, int b) { // cxx20-error {{overloaded 'operator[]' cannot have more than one parameter before C++23}}
+                  ^
+
+"Test_name.c", line 15: error: too few parameters for this operator function
+    constexpr int operator[]() { // cxx20-error {{overloaded 'operator[]' cannot have no parameter before C++23}}
+                  ^
+
+"Test_name.c", line 21: error: default argument is not allowed
+    constexpr int operator[](int i = 0) { // cxx20-error {{overloaded 'operator[]' cannot have a defaulted parameter before C++23}}
+                                   ^
+
+"Test_name.c", line 24: error: default argument is not allowed
+    constexpr int operator[](int a, int b, int c = 0) { // cxx20-error {{overloaded 'operator[]' cannot have a defaulted parameter before C++23}}\
+                                                 ^
+
+"Test_name.c", line 24: error: too many parameters for this operator function
+    constexpr int operator[](int a, int b, int c = 0) { // cxx20-error {{overloaded 'operator[]' cannot have a defaulted parameter before C++23}}\
+                  ^
+
+"Test_name.c", line 32: error: too few parameters for this operator function
+    constexpr auto operator[](T &&...arg); // cxx20-error {{overloaded 'operator[]' cannot have no parameter before C++23}} \
+                   ^
+          detected during instantiation of class "T1<T...> [with T=<>]" at line 36
+
+"Test_name.c", line 32: error: too many parameters for this operator function
+    constexpr auto operator[](T &&...arg); // cxx20-error {{overloaded 'operator[]' cannot have no parameter before C++23}} \
+                   ^
+          detected during instantiation of class "T1<T...> [with T=<int, int>]" at line 37
+
+"Test_name.c", line 47: warning: an unparenthesized comma operator in an array subscript expression is deprecated
+    (void)s[1, 2]; // cxx20-warning {{left operand of comma operator has no effect}}\
+             ^
+
+"Test_name.c", line 47: warning: expression has no effect
+    (void)s[1, 2]; // cxx20-warning {{left operand of comma operator has no effect}}\
+            ^
+
+"Test_name.c", line 49: error: expected an expression
+    (void)S{}[];   // cxx20-error {{expected expression}}
+              ^
+
+"Test_name.c", line 52: error: expected an expression
+    (void)Defaults{}[];     // cxx20-error {{expected expression}}
+                     ^
+
+"Test_name.c", line 53: warning: an unparenthesized comma operator in an array subscript expression is deprecated
+    (void)Defaults{}[1, 2]; // cxx20-warning {{left operand of comma operator has no effect}}\
+                      ^
+
+"Test_name.c", line 53: warning: expression has no effect
+    (void)Defaults{}[1, 2]; // cxx20-warning {{left operand of comma operator has no effect}}\
+                     ^
+
+"Test_name.c", line 56: error: expected an expression
+    Variadic{}[]; // cxx20-error {{expected expression}}
+               ^
+
+"Test_name.c", line 58: warning: an unparenthesized comma operator in an array subscript expression is deprecated
+    Variadic{}[1, 2]; // cxx20-warning {{left operand of comma operator has no effect}}\
+                ^
+
+"Test_name.c", line 58: warning: expression has no effect
+    Variadic{}[1, 2]; // cxx20-warning {{left operand of comma operator has no effect}}\
+               ^
+
+10 errors detected in the compilation of "Test_name.c".

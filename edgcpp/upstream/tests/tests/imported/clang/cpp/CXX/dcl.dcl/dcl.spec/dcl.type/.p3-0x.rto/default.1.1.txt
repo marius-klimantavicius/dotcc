@@ -1,0 +1,82 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --exceptions Test_name.c
+"Test_name.c", line 7: error: type definition is not allowed
+  template<typename T> using Y = struct { // expected-error {{cannot be defined in a type alias template}}
+                                 ^
+
+"Test_name.c", line 12: error: an operator name must be declared as a function
+    operator struct S {} (); // expected-error{{'K::S' cannot be defined in a type specifier}}
+    ^
+
+"Test_name.c", line 12: error: expected a ";"
+    operator struct S {} (); // expected-error{{'K::S' cannot be defined in a type specifier}}
+                      ^
+
+"Test_name.c", line 20: error: type definition is not allowed
+    for (struct S { S(int) {} } s : arr) { // expected-error {{types may not be defined in a for range declaration}}
+         ^
+
+"Test_name.c", line 23: error: type definition is not allowed
+    for (struct S { S(int) {} } s : Undeclared); // expected-error{{types may not be defined in a for range declaration}}
+         ^
+
+"Test_name.c", line 23: error: identifier "Undeclared" is undefined
+    for (struct S { S(int) {} } s : Undeclared); // expected-error{{types may not be defined in a for range declaration}}
+                                    ^
+
+"Test_name.c", line 26: error: type definition is not allowed
+    new struct T {}; // expected-error {{allocation of incomplete type 'struct T'}} //expected-note{{forward declaration of 'T'}}
+        ^
+
+"Test_name.c", line 27: error: type definition is not allowed
+    new struct A {};
+        ^
+
+"Test_name.c", line 29: error: type definition is not allowed
+    try {} catch (struct U {}) {} // expected-error {{'U' cannot be defined in a type specifier}}
+                  ^
+
+"Test_name.c", line 31: error: type definition is not allowed
+    (void)(struct V { V(int); })0; // expected-error {{'V' cannot be defined in a type specifier}}
+           ^
+
+"Test_name.c", line 33: error: type definition is not allowed
+    (void)dynamic_cast<struct W {}*>((K*)0); // expected-error {{'W' cannot be defined in a type specifier}}
+                       ^
+
+"Test_name.c", line 34: error: type definition is not allowed
+    (void)static_cast<struct X {}*>(0); // expected-error {{'X' cannot be defined in a type specifier}}
+                      ^
+
+"Test_name.c", line 35: error: type definition is not allowed
+    (void)reinterpret_cast<struct Y {}*>(0); // expected-error {{'Y' cannot be defined in a type specifier}}
+                           ^
+
+"Test_name.c", line 36: error: type definition is not allowed
+    (void)const_cast<struct Z {}*>((const Z*)0); // expected-error {{'Z' cannot be defined in a type specifier}}
+                     ^
+
+"Test_name.c", line 31: warning: local class member function "V::V(int)" requires a definition
+    (void)(struct V { V(int); })0; // expected-error {{'V' cannot be defined in a type specifier}}
+                      ^
+
+"Test_name.c", line 39: error: type definition is not allowed
+  void g() throw (struct Ex {}) { // expected-error {{'Ex' cannot be defined in a type specifier}}
+                  ^
+
+"Test_name.c", line 42: error: type definition is not allowed
+  alignas(struct Aa {}) int x; // expected-error {{'Aa' cannot be defined in a type specifier}}
+          ^
+
+"Test_name.c", line 44: error: type definition is not allowed
+  int a = sizeof(struct So {}); // expected-error {{'So' cannot be defined in a type specifier}}
+                 ^
+
+"Test_name.c", line 45: error: type definition is not allowed
+  int b = alignof(struct Ao {}); // expected-error {{'Ao' cannot be defined in a type specifier}}
+                  ^
+
+"Test_name.c", line 48: error: type definition is not allowed
+  const std::type_info &ti = typeid(struct Ti {}); // expected-error {{'Ti' cannot be defined in a type specifier}}
+                                    ^
+
+19 errors detected in the compilation of "Test_name.c".

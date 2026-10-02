@@ -1,0 +1,1 @@
+eccp -DTEST_NUMBER=1 -w --ms_c++20 --microsoft_version 1936 --target linux_aarch64 Test_name.c

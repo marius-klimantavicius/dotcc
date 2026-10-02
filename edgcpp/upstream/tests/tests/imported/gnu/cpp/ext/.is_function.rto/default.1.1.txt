@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 30: warning: type qualifier on return type is meaningless
+  SA_TEST_FN(__is_function, int (int), true);
+  ^
+
+"Test_name.c", line 32: warning: type qualifier on return type is meaningless
+  SA_TEST_FN(__is_function, float (int, float, int[], int&), true);
+  ^
+
+"Test_name.c", line 33: warning: type qualifier on return type is meaningless
+  SA_TEST_FN(__is_function, int (int, ...), true);
+  ^
+
+"Test_name.c", line 34: warning: type qualifier on return type is meaningless
+  SA_TEST_FN(__is_function, bool (ClassType) const, true);
+  ^
+
+"Test_name.c", line 35: warning: type qualifiers on function types are ignored
+  SA_TEST_FN(__is_function, AHolder<decltype(&A::fn)>::type, true);
+  ^
+
+"Test_name.c", line 38: warning: type qualifiers on function types are ignored
+  SA_TEST_FN(__is_function, decltype(fn), true);
+  ^
+
+"Test_name.c", line 54: warning: type qualifier on return type is meaningless
+  SA_TEST_FN(__is_function, int(&)(int), false);
+  ^
+
+"Test_name.c", line 55: warning: type qualifier on return type is meaningless
+  SA_TEST_FN(__is_function, int(*)(int), false);
+  ^
+

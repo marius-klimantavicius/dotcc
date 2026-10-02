@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=2 --c++11 -DNEG Test_name.c
+"Test_name.c", line 12: error: no instance of function template "f" matches the argument list
+            argument types are: (double)
+    int j = f(5.6);        // ill-formed: X cannot be deduced
+            ^
+"Test_name.c", line 5: note: candidate function template "f" failed deduction
+  template<class X, class Y> X f(Y);
+                               ^
+
+"Test_name.c", line 16: error: no instance of function template "f" matches the argument list
+            argument types are: (<unknown-type>)
+    f<void>(f<int>);       // ill-formed: f<int> does not denote a single function template specialization
+    ^
+"Test_name.c", line 5: note: candidate function template "f" failed deduction
+  template<class X, class Y> X f(Y);
+                               ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 92: error: expression must have a constant value
+  	constexpr auto s = fixbuf<13, 0, 1>();
+  	                   ^
+"Test_name.c", line 34: note: cannot access position 1 in array of 0 elements
+  		++cur;
+  		^
+"Test_name.c", line 46: note: called from:
+  		*this << static_cast<C>(r + '0');
+  		      ^
+"Test_name.c", line 79: note: called from:
+  		ob << i << static_cast<char>(i == N ? 0 : ' ');
+  		   ^
+
+"Test_name.c", line 93: error: no instance of function template "fixbuf" matches the argument list
+  	constexpr auto x = fixbuf<13, s>();
+  	                   ^
+"Test_name.c", line 74: note: substituting explicit template arguments "<13, <expression>>" for function template "fixbuf" failed
+  auto fixbuf()
+       ^
+
+"Test_name.c", line 92: warning: variable "s" was declared but never referenced
+  	constexpr auto s = fixbuf<13, 0, 1>();
+  	               ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,94 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 --exceptions Test_name.c
+"Test_name.c", line 17: error: a trailing return type requires the "auto" type specifier
+  *A(int(&)[3]) -> A<int>; // expected-error {{cannot specify any part of a return type in the declaration of a deduction guide}}
+                ^
+
+"Test_name.c", line 17: error: "A" has already been declared in the current scope
+  *A(int(&)[3]) -> A<int>; // expected-error {{cannot specify any part of a return type in the declaration of a deduction guide}}
+   ^
+
+"Test_name.c", line 18: error: a trailing return type requires the "auto" type specifier
+  &A(int(&)[4]) -> A<int>; // expected-error {{cannot specify any part of a return type in the declaration of a deduction guide}}
+                ^
+
+"Test_name.c", line 18: error: function "A" is not a type name
+  &A(int(&)[4]) -> A<int>; // expected-error {{cannot specify any part of a return type in the declaration of a deduction guide}}
+                   ^
+
+"Test_name.c", line 18: error: expected a "{"
+  &A(int(&)[4]) -> A<int>; // expected-error {{cannot specify any part of a return type in the declaration of a deduction guide}}
+                    ^
+
+"Test_name.c", line 53: warning: parsing restarts here after previous syntax error
+  template<typename T> struct B {}; // expected-note {{here}}
+                                ^
+
+"Test_name.c", line 54: error: B is not a template
+  auto B(int) -> B<int>; // expected-error {{redefinition of 'B' as different kind of symbol}}
+                 ^
+
+"Test_name.c", line 57: error: invalid specifier outside a class declaration
+  friend A(int(&)[20]) -> A<int>;
+  ^
+
+"Test_name.c", line 57: error: a trailing return type requires the "auto" type specifier
+  friend A(int(&)[20]) -> A<int>;
+                       ^
+
+"Test_name.c", line 57: error: overloaded function "A" is not a template
+  friend A(int(&)[20]) -> A<int>;
+                          ^
+
+"Test_name.c", line 63: error: a trailing return type requires the "auto" type specifier
+  typedef A(int(&)[21]) -> A<int>; // expected-error {{deduction guide cannot be declared 'typedef'}}
+                        ^
+
+"Test_name.c", line 63: error: overloaded function "A" is not a template
+  typedef A(int(&)[21]) -> A<int>; // expected-error {{deduction guide cannot be declared 'typedef'}}
+                           ^
+
+"Test_name.c", line 63: error: "A" has already been declared in the current scope
+  typedef A(int(&)[21]) -> A<int>; // expected-error {{deduction guide cannot be declared 'typedef'}}
+          ^
+
+"Test_name.c", line 64: error: expected an identifier
+  constexpr A(int(&)[22]) -> A<int>; // expected-error {{deduction guide cannot be declared 'constexpr'}}
+              ^
+
+"Test_name.c", line 64: error: expected a type specifier
+  constexpr A(int(&)[22]) -> A<int>; // expected-error {{deduction guide cannot be declared 'constexpr'}}
+                  ^
+
+"Test_name.c", line 64: error: function returning array is not allowed
+  constexpr A(int(&)[22]) -> A<int>; // expected-error {{deduction guide cannot be declared 'constexpr'}}
+                    ^
+
+"Test_name.c", line 64: error: expected a "{"
+  constexpr A(int(&)[22]) -> A<int>; // expected-error {{deduction guide cannot be declared 'constexpr'}}
+                          ^
+
+"Test_name.c", line 83: warning: parsing restarts here after previous syntax error
+  A(int(&)[40]) -> A<int> {} // expected-error {{deduction guide cannot have a function definition}}
+                          ^
+
+"Test_name.c", line 84: error: expected an identifier
+  A(int(&)[41]) -> A<int> = default; // expected-error {{deduction guide cannot have a function definition}} expected-error {{only special member functions may be defaulted}}
+    ^
+
+"Test_name.c", line 84: error: expected a type specifier
+  A(int(&)[41]) -> A<int> = default; // expected-error {{deduction guide cannot have a function definition}} expected-error {{only special member functions may be defaulted}}
+        ^
+
+"Test_name.c", line 84: error: function returning array is not allowed
+  A(int(&)[41]) -> A<int> = default; // expected-error {{deduction guide cannot have a function definition}} expected-error {{only special member functions may be defaulted}}
+          ^
+
+"Test_name.c", line 84: error: expected a "{"
+  A(int(&)[41]) -> A<int> = default; // expected-error {{deduction guide cannot have a function definition}} expected-error {{only special member functions may be defaulted}}
+                ^
+
+"Test_name.c", line 86: error: expected a declaration
+  A(int(&)[43]) -> A<int> try {} catch (...) {} // expected-error {{deduction guide cannot have a function definition}}
+                                 ^
+
+21 errors detected in the compilation of "Test_name.c".

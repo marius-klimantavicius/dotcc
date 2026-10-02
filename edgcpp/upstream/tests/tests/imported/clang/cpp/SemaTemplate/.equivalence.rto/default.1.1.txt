@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 15: error: function template "PostIncDec::inc" has already been defined (previous definition at line 8)
+    template<typename T> auto inc(T &a) -> decltype(a++) {} // expected-error {{redefinition}} expected-note {{candidate}}
+                              ^
+
+"Test_name.c", line 16: error: function template "PostIncDec::dec" has already been defined (previous definition at line 9)
+    template<typename T> auto dec(T &a) -> decltype(a--) {} // expected-error {{redefinition}} expected-note {{candidate}}
+                              ^
+
+2 errors detected in the compilation of "Test_name.c".

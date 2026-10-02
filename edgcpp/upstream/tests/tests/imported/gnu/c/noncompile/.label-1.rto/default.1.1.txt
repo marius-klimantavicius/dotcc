@@ -1,0 +1,116 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 12: error: label "l" was referenced but not defined
+    goto l;   /* { dg-error "used but not defined" "no label" } */
+         ^
+
+"Test_name.c", line 19: warning: label "l" was declared but never referenced
+   l:  /* { dg-warning "defined but not used"  "no goto 1" } */
+   ^
+
+"Test_name.c", line 20: warning: label "m" was declared but never referenced
+   m:  /* { dg-warning "defined but not used"  "no goto 2" } */
+   ^
+
+Error: label "l" was referenced but not defined
+
+"Test_name.c", line 34: error: label "l" has already been defined (previous definition at line 33)
+   l: dummy();  /* { dg-error "duplicate label" "dup label same scope" } */
+   ^
+
+"Test_name.c", line 43: error: label "l" has already been defined (previous definition at line 41)
+    l: dummy();	/* { dg-error "duplicate label" "dup label diff scope" } */
+    ^
+
+"Test_name.c", line 54: warning: label "l" was declared but never referenced
+      l: dummy();	  /* { dg-warning "defined but not used" "unused shadow 1" } */
+      ^
+
+"Test_name.c", line 68: warning: statement is unreachable
+    goto l;  /* { dg-error "used but not defined" "label ref out of scope" } */
+    ^
+
+"Test_name.c", line 68: error: label "l" was referenced but not defined
+    goto l;  /* { dg-error "used but not defined" "label ref out of scope" } */
+         ^
+
+"Test_name.c", line 78: error: label "l" was referenced but not defined
+    goto l;  /* { dg-error "used but not defined" "used, only __label__" } */
+         ^
+
+"Test_name.c", line 84: error: invalid storage class for a function
+    auto void nest(void);
+    ^
+
+"Test_name.c", line 89: error: expected a ";"
+      {
+      ^
+
+"Test_name.c", line 93: warning: parsing restarts here after previous syntax error
+    goto l; /* reaches the outer l */
+          ^
+
+"Test_name.c", line 86: warning: label "l" was declared but never referenced
+   l: nest();
+   ^
+
+"Test_name.c", line 100: error: invalid storage class for a function
+    auto void nest(void);
+    ^
+
+"Test_name.c", line 105: error: expected a ";"
+      {
+      ^
+
+"Test_name.c", line 109: warning: parsing restarts here after previous syntax error
+    goto l; /* reaches the outer l */
+          ^
+
+"Test_name.c", line 102: warning: label "l" was declared but never referenced
+   l: nest();
+   ^
+
+"Test_name.c", line 117: error: expected a ";"
+    {
+    ^
+
+"Test_name.c", line 121: warning: parsing restarts here after previous syntax error
+    goto l; /* { dg-error "used but not defined" "outer use nest label" } */
+          ^
+
+"Test_name.c", line 129: error: expected a ";"
+    {
+    ^
+
+"Test_name.c", line 134: warning: parsing restarts here after previous syntax error
+    goto l; /* { dg-error "used but not defined" "outer use nest __label__" } */
+          ^
+
+"Test_name.c", line 144: error: expected a ";"
+    void nest(void) { goto l; }
+                    ^
+
+"Test_name.c", line 147: warning: label "l" was declared but never referenced
+   l:;
+   ^
+
+"Test_name.c", line 157: error: expected a ";"
+      {
+      ^
+
+"Test_name.c", line 162: warning: parsing restarts here after previous syntax error
+    nest();
+          ^
+
+Error: label "l" was referenced but not defined
+
+"Test_name.c", line 170: error: expected a ";"
+      {
+      ^
+
+"Test_name.c", line 175: warning: parsing restarts here after previous syntax error
+   l: goto l;
+            ^
+
+Error: label "l" was referenced but not defined
+
+17 errors detected in the compilation of "Test_name.c".

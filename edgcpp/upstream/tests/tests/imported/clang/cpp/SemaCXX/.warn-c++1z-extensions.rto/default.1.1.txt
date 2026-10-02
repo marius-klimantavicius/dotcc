@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 Test_name.c
+"Test_name.c", line 6: warning: C++17-style initializer is nonstandard in this mode
+    if (bool b = true; b) {} // expected-warning {{'if' initialization statements are a C++17 extension}}
+                     ^
+

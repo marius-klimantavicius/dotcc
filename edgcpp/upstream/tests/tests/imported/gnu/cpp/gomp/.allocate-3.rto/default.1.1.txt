@@ -1,0 +1,241 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: warning: unrecognized #pragma
+  #pragma omp parallel reduction (+: s) allocate(s)
+          ^
+
+"Test_name.c", line 11: warning: unrecognized #pragma
+  #pragma omp parallel reduction (+: s[0:3]) allocate(s)
+          ^
+
+"Test_name.c", line 13: warning: unrecognized #pragma
+  #pragma omp parallel reduction (+: s[2:2]) allocate(s)
+          ^
+
+"Test_name.c", line 15: warning: unrecognized #pragma
+  #pragma omp parallel reduction (+: p[:2]) allocate(p)
+          ^
+
+"Test_name.c", line 17: warning: unrecognized #pragma
+  #pragma omp parallel reduction (+: p[2:2]) allocate(p)
+          ^
+
+"Test_name.c", line 21: warning: unrecognized #pragma
+  #pragma omp parallel reduction (+: s2) allocate(s2)
+          ^
+
+"Test_name.c", line 23: warning: unrecognized #pragma
+  #pragma omp parallel reduction (+: s2[0:3]) allocate(s2)
+          ^
+
+"Test_name.c", line 25: warning: unrecognized #pragma
+  #pragma omp parallel reduction (+: s2[2:2]) allocate(s2)
+          ^
+
+"Test_name.c", line 27: warning: unrecognized #pragma
+  #pragma omp parallel reduction (+: p2[:2]) allocate(p2)
+          ^
+
+"Test_name.c", line 29: warning: unrecognized #pragma
+  #pragma omp parallel reduction (+: p2[2:2]) allocate(p2)
+          ^
+
+"Test_name.c", line 31: warning: unrecognized #pragma
+  #pragma omp parallel reduction (+: x) allocate(x)
+          ^
+
+"Test_name.c", line 33: warning: unrecognized #pragma
+  #pragma omp parallel reduction (+: y) allocate(y)
+          ^
+
+"Test_name.c", line 35: warning: unrecognized #pragma
+  #pragma omp parallel reduction (+: y[0:3]) allocate(y)
+          ^
+
+"Test_name.c", line 37: warning: unrecognized #pragma
+  #pragma omp parallel reduction (+: y[2:2]) allocate(y)
+          ^
+
+"Test_name.c", line 39: warning: unrecognized #pragma
+  #pragma omp parallel reduction (+: z[:2]) allocate(z)
+          ^
+
+"Test_name.c", line 41: warning: unrecognized #pragma
+  #pragma omp parallel reduction (+: z[2:2]) allocate(z)
+          ^
+
+"Test_name.c", line 43: warning: unrecognized #pragma
+  #pragma omp parallel reduction (+: u) allocate(u)
+          ^
+
+"Test_name.c", line 45: warning: unrecognized #pragma
+  #pragma omp parallel reduction (+: v) allocate(v)
+          ^
+
+"Test_name.c", line 47: warning: unrecognized #pragma
+  #pragma omp parallel reduction (+: v[0:3]) allocate(v)
+          ^
+
+"Test_name.c", line 49: warning: unrecognized #pragma
+  #pragma omp parallel reduction (+: v[2:2]) allocate(v)
+          ^
+
+"Test_name.c", line 51: warning: unrecognized #pragma
+  #pragma omp parallel reduction (+: w[:2]) allocate(w)
+          ^
+
+"Test_name.c", line 53: warning: unrecognized #pragma
+  #pragma omp parallel reduction (+: w[2:2]) allocate(w)
+          ^
+
+"Test_name.c", line 64: warning: unrecognized #pragma
+  #pragma omp teams distribute parallel for reduction (+: s) allocate(s)
+          ^
+
+"Test_name.c", line 67: warning: unrecognized #pragma
+  #pragma omp teams distribute parallel for reduction (+: s[0:3]) allocate(s)
+          ^
+
+"Test_name.c", line 70: warning: unrecognized #pragma
+  #pragma omp teams distribute parallel for reduction (+: s[2:2]) allocate(s)
+          ^
+
+"Test_name.c", line 73: warning: unrecognized #pragma
+  #pragma omp teams distribute parallel for reduction (+: p[:2]) allocate(p)
+          ^
+
+"Test_name.c", line 76: warning: unrecognized #pragma
+  #pragma omp teams distribute parallel for reduction (+: p[2:2]) allocate(p)
+          ^
+
+"Test_name.c", line 81: warning: unrecognized #pragma
+  #pragma omp teams distribute parallel for reduction (+: s2) allocate(s2)
+          ^
+
+"Test_name.c", line 84: warning: unrecognized #pragma
+  #pragma omp teams distribute parallel for reduction (+: s2[0:3]) allocate(s2)
+          ^
+
+"Test_name.c", line 87: warning: unrecognized #pragma
+  #pragma omp teams distribute parallel for reduction (+: s2[2:2]) allocate(s2)
+          ^
+
+"Test_name.c", line 90: warning: unrecognized #pragma
+  #pragma omp teams distribute parallel for reduction (+: p2[:2]) allocate(p2)
+          ^
+
+"Test_name.c", line 93: warning: unrecognized #pragma
+  #pragma omp teams distribute parallel for reduction (+: p2[2:2]) allocate(p2)
+          ^
+
+"Test_name.c", line 96: warning: unrecognized #pragma
+  #pragma omp teams distribute parallel for reduction (+: x) allocate(x)
+          ^
+
+"Test_name.c", line 99: warning: unrecognized #pragma
+  #pragma omp teams distribute parallel for reduction (+: y) allocate(y)
+          ^
+
+"Test_name.c", line 102: warning: unrecognized #pragma
+  #pragma omp teams distribute parallel for reduction (+: y[0:3]) allocate(y)
+          ^
+
+"Test_name.c", line 105: warning: unrecognized #pragma
+  #pragma omp teams distribute parallel for reduction (+: y[2:2]) allocate(y)
+          ^
+
+"Test_name.c", line 108: warning: unrecognized #pragma
+  #pragma omp teams distribute parallel for reduction (+: z[:2]) allocate(z)
+          ^
+
+"Test_name.c", line 111: warning: unrecognized #pragma
+  #pragma omp teams distribute parallel for reduction (+: z[2:2]) allocate(z)
+          ^
+
+"Test_name.c", line 114: warning: unrecognized #pragma
+  #pragma omp teams distribute parallel for reduction (+: u) allocate(u)
+          ^
+
+"Test_name.c", line 117: warning: unrecognized #pragma
+  #pragma omp teams distribute parallel for reduction (+: v) allocate(v)
+          ^
+
+"Test_name.c", line 120: warning: unrecognized #pragma
+  #pragma omp teams distribute parallel for reduction (+: v[0:3]) allocate(v)
+          ^
+
+"Test_name.c", line 123: warning: unrecognized #pragma
+  #pragma omp teams distribute parallel for reduction (+: v[2:2]) allocate(v)
+          ^
+
+"Test_name.c", line 126: warning: unrecognized #pragma
+  #pragma omp teams distribute parallel for reduction (+: w[:2]) allocate(w)
+          ^
+
+"Test_name.c", line 129: warning: unrecognized #pragma
+  #pragma omp teams distribute parallel for reduction (+: w[2:2]) allocate(w)
+          ^
+
+"Test_name.c", line 137: warning: unrecognized #pragma
+  #pragma omp parallel reduction (+: x) allocate(x)
+          ^
+
+"Test_name.c", line 139: warning: unrecognized #pragma
+  #pragma omp parallel reduction (+: y) allocate(y)
+          ^
+
+"Test_name.c", line 141: warning: unrecognized #pragma
+  #pragma omp parallel reduction (+: y[0:3]) allocate(y)
+          ^
+
+"Test_name.c", line 143: warning: unrecognized #pragma
+  #pragma omp parallel reduction (+: y[2:2]) allocate(y)
+          ^
+
+"Test_name.c", line 145: warning: unrecognized #pragma
+  #pragma omp parallel reduction (+: z[:2]) allocate(z)
+          ^
+
+"Test_name.c", line 147: warning: unrecognized #pragma
+  #pragma omp parallel reduction (+: z[2:2]) allocate(z)
+          ^
+
+"Test_name.c", line 155: warning: unrecognized #pragma
+  #pragma omp teams distribute parallel for reduction (+: x) allocate(x)
+          ^
+
+"Test_name.c", line 158: warning: unrecognized #pragma
+  #pragma omp teams distribute parallel for reduction (+: y) allocate(y)
+          ^
+
+"Test_name.c", line 161: warning: unrecognized #pragma
+  #pragma omp teams distribute parallel for reduction (+: y[0:3]) allocate(y)
+          ^
+
+"Test_name.c", line 164: warning: unrecognized #pragma
+  #pragma omp teams distribute parallel for reduction (+: y[2:2]) allocate(y)
+          ^
+
+"Test_name.c", line 167: warning: unrecognized #pragma
+  #pragma omp teams distribute parallel for reduction (+: z[:2]) allocate(z)
+          ^
+
+"Test_name.c", line 170: warning: unrecognized #pragma
+  #pragma omp teams distribute parallel for reduction (+: z[2:2]) allocate(z)
+          ^
+
+"Test_name.c", line 197: warning: unrecognized #pragma
+      #pragma omp parallel firstprivate (N::a) allocate (a)
+              ^
+
+"Test_name.c", line 199: warning: unrecognized #pragma
+      #pragma omp parallel firstprivate (a) allocate (N::a)
+              ^
+
+"Test_name.c", line 201: warning: unrecognized #pragma
+      #pragma omp teams distribute parallel for firstprivate (N::a) allocate (a)
+              ^
+
+"Test_name.c", line 204: warning: unrecognized #pragma
+      #pragma omp teams distribute parallel for firstprivate (a) allocate (N::a)
+              ^
+

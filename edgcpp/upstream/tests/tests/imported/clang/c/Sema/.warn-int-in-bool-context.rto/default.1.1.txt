@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 82: warning: statement is unreachable
+    return SHIFT(1, a);
+    ^
+
+"Test_name.c", line 89: warning: statement is unreachable
+    if ((64 > 32) && (32 < 64))
+    ^
+
+"Test_name.c", line 92: warning: statement is unreachable
+    if ((1 == 1) && (arg == 1)) return 1;
+    ^
+

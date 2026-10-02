@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 18: error: "auto_ptr" has already been declared in the current scope
+  inline counted_ptr<_Tp>::counted_ptr(class auto_ptr& __a)
+                                             ^
+
+"Test_name.c", line 18: error: declaration is incompatible with "counted_ptr<_Tp>::counted_ptr(auto_ptr<_Tp> &)" (declared at line 13)
+  inline counted_ptr<_Tp>::counted_ptr(class auto_ptr& __a)
+                           ^
+
+"Test_name.c", line 25: error: class "auto_ptr" may not have a template argument list
+  inline class auto_ptr<_Tp> counted_ptr<_Tp>::auto_ptr() 
+               ^
+
+"Test_name.c", line 25: error: declaration is incompatible with "auto_ptr<_Tp> counted_ptr<_Tp>::auto_ptr()" (declared at line 14)
+  inline class auto_ptr<_Tp> counted_ptr<_Tp>::auto_ptr() 
+                                               ^
+
+4 errors detected in the compilation of "Test_name.c".

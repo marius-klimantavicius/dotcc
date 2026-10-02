@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 4: warning: unknown attribute "warn_unused"
+  struct __attribute__((warn_unused)) Test {
+                        ^
+
+"Test_name.c", line 20: warning: unknown attribute "warn_unused"
+    int i __attribute__((warn_unused)) = 12; // expected-warning {{'warn_unused' attribute only applies to structs, unions, and classes}}
+                         ^
+

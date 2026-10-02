@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --clang_v 999999 Test_name.c
+"Test_name.c", line 12: error: an incomplete class type is not allowed
+  static_assert(!__is_trivially_equality_comparable(FwdDecl), "");
+                 ^
+
+1 error detected in the compilation of "Test_name.c".

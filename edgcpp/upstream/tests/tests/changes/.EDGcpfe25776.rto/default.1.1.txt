@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --microsoft_v 1938 --ms_c++latest Test_name.c
+"Test_name.c", line 12: warning: variable "lm" was declared but never referenced
+    auto lm = [&](this auto&&) {
+         ^
+

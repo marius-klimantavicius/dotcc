@@ -1,0 +1,70 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 100: error: enum "std::align_val_t" was previously declared with a different base type
+    enum class align_val_t: size_t {};
+               ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 137: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 140: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 155: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 158: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 168: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t, std::align_val_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 171: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t, std::align_val_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 179: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, std::align_val_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 182: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, std::align_val_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 206: error: first parameter of allocation function must be of type "size_t"
+  void* operator new(std::size_t, void* __p)
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 210: error: first parameter of allocation function must be of type "size_t"
+  void* operator new[](std::size_t, void* __p)
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_construct.h", line 133: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, void *)
+        ::new(static_cast<void*>(__p)) _Tp(std::forward<_Args>(__args)...);
+          ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+          detected during:
+            instantiation of "void std::_Construct(_Tp *, _Args &&...) [with _Tp=A, _Args=<>]" at line 299 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/optional"
+            instantiation of "void std::_Optional_payload_base<_Tp>::_M_construct(_Args &&...) [with _Tp=A, _Args=<>]" at line 550 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/optional"
+            instantiation of "void std::_Optional_base<_Tp, <unnamed>, <unnamed>>::_M_construct(_Args &&...) [with _Tp=A, <unnamed>=false, <unnamed>=false, _Args=<>]" at line 1120 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/optional"
+            instantiation of "std::enable_if_t<std::is_constructible_v<_Tp, _Args...>, _Tp &> std::optional<_Tp>::emplace(_Args &&...) [with _Tp=A, _Args=<>]" at line 29 of "./warn/pr80635-2.C"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_construct.h", line 133: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, void *)
+        ::new(static_cast<void*>(__p)) _Tp(std::forward<_Args>(__args)...);
+          ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+          detected during:
+            instantiation of "void std::_Construct(_Tp *, _Args &&...) [with _Tp=B, _Args=<>]" at line 299 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/optional"
+            instantiation of "void std::_Optional_payload_base<_Tp>::_M_construct(_Args &&...) [with _Tp=B, _Args=<>]" at line 550 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/optional"
+            instantiation of "void std::_Optional_base<_Tp, <unnamed>, <unnamed>>::_M_construct(_Args &&...) [with _Tp=B, <unnamed>=false, <unnamed>=false, _Args=<>]" at line 1120 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/optional"
+            instantiation of "std::enable_if_t<std::is_constructible_v<_Tp, _Args...>, _Tp &> std::optional<_Tp>::emplace(_Args &&...) [with _Tp=B, _Args=<>]" at line 30 of "./warn/pr80635-2.C"
+
+13 errors detected in the compilation of "Test_name.c".

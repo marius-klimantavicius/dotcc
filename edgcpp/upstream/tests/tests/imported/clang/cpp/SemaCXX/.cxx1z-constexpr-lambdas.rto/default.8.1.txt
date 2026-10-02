@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=8 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 -DCPP14_AND_EARLIER --exceptions Test_name.c
+"Test_name.c", line 19: error: a constexpr function cannot have a parameter of nonliteral type "lambda []()->void"
+  constexpr int foo(decltype(L) l) { return 0; }
+                ^
+
+1 error detected in the compilation of "Test_name.c".

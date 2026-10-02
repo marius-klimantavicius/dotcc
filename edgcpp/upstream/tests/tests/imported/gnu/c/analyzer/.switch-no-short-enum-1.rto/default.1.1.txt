@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./analyzer/switch-no-short-enum-1.c", line 31: warning: missing return statement at end of non-void function "test_all_values_covered_implicit_default_1"
+  }
+  ^
+
+"./analyzer/switch-no-short-enum-1.c", line 110: warning: statement is unreachable
+    __analyzer_dump_path ();
+    ^
+
+"./analyzer/switch-no-short-enum-1.c", line 126: warning: statement is unreachable
+    __analyzer_dump_path ();
+    ^
+
+"./analyzer/switch-no-short-enum-1.c", line 138: warning: statement is unreachable
+    __analyzer_dump_path ();
+    ^
+

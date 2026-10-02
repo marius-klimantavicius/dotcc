@@ -1,0 +1,46 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 8: error: exception specification is not allowed
+  void (**ppf1)() throw();		// error
+                  ^
+
+"Test_name.c", line 9: error: exception specification is not allowed
+  void ((**ppf2))() throw();		// error
+                    ^
+
+"Test_name.c", line 10: error: exception specification is not allowed
+  void (*(*ppf3))() throw();		// error
+                    ^
+
+"Test_name.c", line 11: error: exception specification is not allowed
+  void (**(ppf4))() throw();		// error
+                    ^
+
+"Test_name.c", line 14: error: exception specification is not allowed
+         void (**)() throw());		// error
+                     ^
+
+"Test_name.c", line 18: error: exception specification is not allowed
+  void (A::**ppmf1)() throw();		// error
+                      ^
+
+"Test_name.c", line 20: error: exception specification is not allowed
+  void (*pfa1[10])() throw();		// error
+                     ^
+
+"Test_name.c", line 21: error: exception specification is not allowed
+  void (*(pfa1[10]))() throw();		// error
+                       ^
+
+"Test_name.c", line 21: error: variable "pfa1" has already been defined (previous definition at line 20)
+  void (*(pfa1[10]))() throw();		// error
+          ^
+
+"Test_name.c", line 23: error: exception specification is not allowed
+  void (**ppfa1[10])() throw();           // error
+                       ^
+
+"Test_name.c", line 24: error: exception specification is not allowed
+  void (*(*(ppfa2[10])))() throw();       // error
+                           ^
+
+11 errors detected in the compilation of "Test_name.c".

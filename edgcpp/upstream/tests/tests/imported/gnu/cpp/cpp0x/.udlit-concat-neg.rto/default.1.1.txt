@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp0x/udlit-concat-neg.C", line 10: error: user-defined literal suffix does not match the earlier "_xxx"
+  std::string concat = "Hello, "_xxx "World!"_yyy;
+                                             ^
+
+1 error detected in the compilation of "Test_name.c".

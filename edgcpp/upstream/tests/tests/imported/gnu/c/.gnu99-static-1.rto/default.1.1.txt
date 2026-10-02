@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 16: warning: expression has no effect
+  void g0(void) { __alignof__(f0()); }
+                  ^
+
+"Test_name.c", line 20: warning: variable "x" was declared but never referenced
+  void g1(void) { __typeof__(f1()) x; }
+                                   ^
+
+"Test_name.c", line 24: warning: variable "x" was declared but never referenced
+  void g2(void) { __typeof__(int [f2()]) x; }
+                                         ^
+
+"Test_name.c", line 28: warning: variable "x" was declared but never referenced
+  void g3(void) { __typeof__(int (*)[f3()]) x; }
+                                            ^
+
+"Test_name.c", line 32: warning: expression has no effect
+  void g4(void) { sizeof(__typeof__(int (*)[f3()])); }
+                  ^
+
+"Test_name.c", line 23: warning: static function "f2" treated as extern because it was referenced but not defined
+  static int f2(void); /* { dg-error "used but never defined" } */
+             ^
+
+"Test_name.c", line 27: warning: static function "f3" treated as extern because it was referenced but not defined
+  static int f3(void); /* { dg-error "used but never defined" } */
+             ^
+
+"Test_name.c", line 31: warning: function "f4" was declared but never referenced
+  static int f4(void);
+             ^
+

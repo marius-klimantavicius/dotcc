@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 Test_name.c
+"Test_name.c", line 15: error: storage class must be auto or register
+    for (static int i = 1; i <= 10; i++) /* /* { dg-warning "static" } */
+         ^
+
+"Test_name.c", line 15: warning: nested comment is not allowed
+    for (static int i = 1; i <= 10; i++) /* /* { dg-warning "static" } */
+                                            ^
+
+"Test_name.c", line 18: error: storage class must be auto or register
+    for (extern int i; j <= 500; j++) /* { dg-warning "extern" } */
+         ^
+
+"Test_name.c", line 18: warning: variable "i" was declared but never referenced
+    for (extern int i; j <= 500; j++) /* { dg-warning "extern" } */
+                    ^
+
+"Test_name.c", line 27: error: storage class must be auto or register
+    for (typedef int T;;) /* { dg-warning "non-variable" } */
+         ^
+
+"Test_name.c", line 27: warning: variable "T" was declared but never referenced
+    for (typedef int T;;) /* { dg-warning "non-variable" } */
+                     ^
+
+3 errors detected in the compilation of "Test_name.c".

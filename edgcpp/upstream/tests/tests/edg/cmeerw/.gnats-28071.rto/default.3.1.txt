@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=3 --c++11 --gn 140200 Test_name.c
+"Test_name.c", line 44: error: name followed by "::" must be a class or namespace name
+    template<typename T> struct C : A<T>::X { }; // error
+                                    ^
+
+"Test_name.c", line 46: error: not a class or struct name
+    template<typename T> struct D : A<T> // error
+                                    ^
+
+"Test_name.c", line 53: error: name followed by "::" must be a class or namespace name
+    template<typename T> struct C : A<T>::X { }; // error
+                                    ^
+
+"Test_name.c", line 55: error: not a class or struct name
+    template<typename T> struct D : A<T> // error
+                                    ^
+
+"Test_name.c", line 62: error: name followed by "::" must be a class or namespace name
+    template<typename T> struct C : A<T>::X { }; // error
+                                    ^
+
+"Test_name.c", line 64: error: not a class or struct name
+    template<typename T> struct D : A<T> // error
+                                    ^
+
+"Test_name.c", line 84: error: name followed by "::" must be a class or namespace name
+    template<typename T> struct C : A<T>::X { }; // error
+                                    ^
+
+"Test_name.c", line 86: error: not a class or struct name
+    template<typename T> struct D : A<T> // error
+                                    ^
+
+8 errors detected in the compilation of "Test_name.c".

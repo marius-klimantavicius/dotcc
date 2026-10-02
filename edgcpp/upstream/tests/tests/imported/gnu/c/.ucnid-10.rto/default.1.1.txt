@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 11: warning: "\u00f3" not found on pack alignment stack
+  #pragma pack(pop, \u00f3) /* { dg-warning "pop, \\\\U000000f3.*push, \\\\U000000f3" } */
+                    ^
+
+"Test_name.c", line 12: error: expected an integer constant
+  #pragma pack(\u00e7) /* { dg-warning "unknown action '\\\\U000000e7'" } */
+               ^
+
+"Test_name.c", line 12: warning: expected a ")"
+  #pragma pack(\u00e7) /* { dg-warning "unknown action '\\\\U000000e7'" } */
+               ^
+
+"Test_name.c", line 12: error: extra text after expected end of preprocessing directive
+  #pragma pack(\u00e7) /* { dg-warning "unknown action '\\\\U000000e7'" } */
+               ^
+
+2 errors detected in the compilation of "Test_name.c".

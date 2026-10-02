@@ -1,0 +1,114 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 49: error: static assertion failed with ""
+    static_assert(!noexcept(HasCopyConstructor((HasCopyConstructor()))), "");
+    ^
+
+"Test_name.c", line 53: error: static assertion failed with ""
+    static_assert(!noexcept(HasCopyAssignment((HasCopyAssignment()))), "");
+    ^
+
+"Test_name.c", line 59: error: function "HasMoveConstructor::operator=(const HasMoveConstructor &)" (declared implicitly) cannot be referenced -- it is a deleted function
+    hmc = HasMoveConstructor(); // expected-error {{object of type 'HasMoveConstructor' cannot be assigned because its copy assignment operator is implicitly deleted}}
+        ^
+
+"Test_name.c", line 61: error: "HasMoveAssignment::HasMoveAssignment(const HasMoveAssignment &)" (declared implicitly), required for copy that was eliminated, cannot be referenced -- it is a deleted function
+    (HasMoveAssignment(HasMoveAssignment())); // expected-error {{uses deleted function}}
+     ^
+
+"Test_name.c", line 65: error: static assertion failed with ""
+    static_assert(!noexcept(HasDestructor((HasDestructor()))), "");
+    ^
+
+"Test_name.c", line 129: error: static assertion failed with ""
+    static_assert(!noexcept(InheritsPrivateMove(InheritsPrivateMove())), "");
+    ^
+
+"Test_name.c", line 130: error: static assertion failed with ""
+    static_assert(!noexcept(ContainsPrivateMove(ContainsPrivateMove())), "");
+    ^
+
+"Test_name.c", line 136: error: the default constructor of "InheritsPrivateDestructor" cannot be referenced -- it is a deleted function
+    (InheritsPrivateDestructor(InheritsPrivateDestructor())); // expected-error {{call to implicitly-deleted default constructor}}
+                               ^
+
+"Test_name.c", line 136: error: function "InheritsPrivateDestructor::~InheritsPrivateDestructor()" (declared implicitly) cannot be referenced -- it is a deleted function
+    (InheritsPrivateDestructor(InheritsPrivateDestructor())); // expected-error {{call to implicitly-deleted default constructor}}
+                               ^
+
+"Test_name.c", line 136: error: "InheritsPrivateDestructor::InheritsPrivateDestructor(const InheritsPrivateDestructor &)" (declared implicitly), required for copy that was eliminated, cannot be referenced -- it is a deleted function
+    (InheritsPrivateDestructor(InheritsPrivateDestructor())); // expected-error {{call to implicitly-deleted default constructor}}
+     ^
+
+"Test_name.c", line 136: error: "InheritsPrivateDestructor::~InheritsPrivateDestructor()" (declared implicitly), required for copy that was eliminated, cannot be referenced -- it is a deleted function
+    (InheritsPrivateDestructor(InheritsPrivateDestructor())); // expected-error {{call to implicitly-deleted default constructor}}
+     ^
+
+"Test_name.c", line 137: error: the default constructor of "ContainsPrivateDestructor" cannot be referenced -- it is a deleted function
+    (ContainsPrivateDestructor(ContainsPrivateDestructor())); // expected-error {{call to implicitly-deleted default constructor}}
+                               ^
+
+"Test_name.c", line 137: error: function "ContainsPrivateDestructor::~ContainsPrivateDestructor()" (declared implicitly) cannot be referenced -- it is a deleted function
+    (ContainsPrivateDestructor(ContainsPrivateDestructor())); // expected-error {{call to implicitly-deleted default constructor}}
+                               ^
+
+"Test_name.c", line 137: error: "ContainsPrivateDestructor::ContainsPrivateDestructor(const ContainsPrivateDestructor &)" (declared implicitly), required for copy that was eliminated, cannot be referenced -- it is a deleted function
+    (ContainsPrivateDestructor(ContainsPrivateDestructor())); // expected-error {{call to implicitly-deleted default constructor}}
+     ^
+
+"Test_name.c", line 137: error: "ContainsPrivateDestructor::~ContainsPrivateDestructor()" (declared implicitly), required for copy that was eliminated, cannot be referenced -- it is a deleted function
+    (ContainsPrivateDestructor(ContainsPrivateDestructor())); // expected-error {{call to implicitly-deleted default constructor}}
+     ^
+
+"Test_name.c", line 139: error: static assertion failed with ""
+    static_assert(!noexcept(InheritsNonTrivialCopyOnly(InheritsNonTrivialCopyOnly())), "");
+    ^
+
+"Test_name.c", line 140: error: static assertion failed with ""
+    static_assert(!noexcept(ContainsNonTrivialCopyOnly(ContainsNonTrivialCopyOnly())), "");
+    ^
+
+"Test_name.c", line 147: error: no operator "=" matches these operands
+            operand types are: ContainsConst = ContainsConst
+    cc = ContainsConst(); // expected-error {{no viable}} 
+       ^
+"Test_name.c", line 111: note: function "ContainsConst::operator=" does not match because argument #1 does not match parameter
+    ContainsConst & operator =(ContainsConst &); // expected-note {{not viable}}
+                    ^
+
+"Test_name.c", line 150: error: no operator "=" matches these operands
+            operand types are: ContainsRef = ContainsRef
+    cr = ContainsRef(); // expected-error {{no viable}} 
+       ^
+"Test_name.c", line 117: note: function "ContainsRef::operator=" does not match because argument #1 does not match parameter
+    ContainsRef & operator =(ContainsRef &); // expected-note {{not viable}}
+                  ^
+
+"Test_name.c", line 153: error: no operator "=" matches these operands
+            operand types are: DirectVirtualBase = DirectVirtualBase
+    dvb = DirectVirtualBase(); // expected-error {{no viable}} 
+        ^
+"Test_name.c", line 123: note: function "DirectVirtualBase::operator=" does not match because argument #1 does not match parameter
+  struct DirectVirtualBase : virtual Base {}; // expected-note {{copy assignment operator) not viable}}
+         ^
+
+"Test_name.c", line 156: error: no operator "=" matches these operands
+            operand types are: IndirectVirtualBase = IndirectVirtualBase
+    ivb = IndirectVirtualBase(); // expected-error {{no viable}} 
+        ^
+"Test_name.c", line 124: note: function "IndirectVirtualBase::operator=" does not match because argument #1 does not match parameter
+  struct IndirectVirtualBase : DirectVirtualBase {}; // expected-note {{copy assignment operator) not viable}}
+         ^
+
+"Test_name.c", line 245: error: function "DR1402::CopyAndMove::CopyAndMove(const DR1402::CopyAndMove &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      (void)CopyAndMove(cm); // expected-error {{deleted}}
+            ^
+
+"Test_name.c", line 246: error: function "DR1402::CopyAndMove::operator=(const DR1402::CopyAndMove &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      cm = cm; // expected-error {{deleted}}
+         ^
+
+"Test_name.c", line 308: error: incomplete type "PR12625::X" is not allowed
+      X x; // expected-error {{incomplete}}
+        ^
+
+24 errors detected in the compilation of "Test_name.c".

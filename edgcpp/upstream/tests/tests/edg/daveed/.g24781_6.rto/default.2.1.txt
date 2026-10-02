@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=2 --c++23 -DNEG Test_name.c
+"Test_name.c", line 9: error: too many parameters for this operator function
+      void operator+(this C, int, int); // EXPECT: error: too many parameters for this operator function
+           ^
+
+"Test_name.c", line 15: error: too many parameters for this operator function
+      void operator-(this C, int, int); // EXPECT: error: too many parameters for this operator function
+           ^
+
+"Test_name.c", line 21: error: too many parameters for this operator function
+      void operator*(this C, int, int); // EXPECT: error: too many parameters for this operator function
+           ^
+
+"Test_name.c", line 27: error: invalid redeclaration of member function "C::operator[](C, int)" (declared at line 25)
+      static void operator[](int); // EXPECT: error: operator may not be a static member function
+                  ^
+
+"Test_name.c", line 31: error: too few parameters for this operator function
+      void operator=(this C&); // EXPECT: error: too few parameters for this operator function
+           ^
+
+"Test_name.c", line 35: error: too many parameters for this operator function
+      void operator=(this C&, C const&, int); // EXPECT: error: too many parameters for this operator function
+           ^
+
+"Test_name.c", line 44: error: bad type "D" for parameter of defaulted comparison operator (must be "reference to const X" where X is the enclosing class type)
+      bool operator==(this D, D&) = default; // EXPECT: error
+           ^
+
+7 errors detected in the compilation of "Test_name.c".

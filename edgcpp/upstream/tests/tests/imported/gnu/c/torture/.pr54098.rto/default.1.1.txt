@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 70: warning: variable "min_align" is used before its value is set
+  	size1 = (!realloc_head || (realloc_head && !add_size)) ? size0 : calculate_memsize(size, min_size+add_size, 0, b_res->end - b_res->start + 1, min_align);
+  	                                                                                                                                              ^
+
+"Test_name.c", line 70: warning: variable "size0" is used before its value is set
+  	size1 = (!realloc_head || (realloc_head && !add_size)) ? size0 : calculate_memsize(size, min_size+add_size, 0, b_res->end - b_res->start + 1, min_align);
+  	                                                         ^
+

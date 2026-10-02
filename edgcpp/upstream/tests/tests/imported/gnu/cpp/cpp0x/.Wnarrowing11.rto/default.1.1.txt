@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 28: warning: invalid narrowing conversion from "double" to "bool"
+    X x{1.2}; // { dg-error "narrowing conversion" }
+        ^
+
+"Test_name.c", line 29: warning: invalid narrowing conversion from "double" to "char"
+    Y y{1.2}; // { dg-error "narrowing conversion" }
+        ^
+
+"Test_name.c", line 30: warning: invalid narrowing conversion from "double" to "char16_t"
+    Z z{1.2}; // { dg-error "narrowing conversion" }
+        ^
+
+"Test_name.c", line 31: warning: invalid narrowing conversion from "double" to "char32_t"
+    W w{1.2}; // { dg-error "narrowing conversion" }
+        ^
+

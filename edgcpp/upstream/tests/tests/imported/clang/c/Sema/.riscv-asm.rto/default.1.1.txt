@@ -1,0 +1,550 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 7: error: unknown register name "x0"
+    asm volatile ("" ::: "x0",  "x1",  "x2",  "x3",  "x4",  "x5",  "x6",  "x7");
+                         ^
+
+"Test_name.c", line 7: error: unknown register name "x1"
+    asm volatile ("" ::: "x0",  "x1",  "x2",  "x3",  "x4",  "x5",  "x6",  "x7");
+                                ^
+
+"Test_name.c", line 7: error: unknown register name "x2"
+    asm volatile ("" ::: "x0",  "x1",  "x2",  "x3",  "x4",  "x5",  "x6",  "x7");
+                                       ^
+
+"Test_name.c", line 7: error: unknown register name "x3"
+    asm volatile ("" ::: "x0",  "x1",  "x2",  "x3",  "x4",  "x5",  "x6",  "x7");
+                                              ^
+
+"Test_name.c", line 7: error: unknown register name "x4"
+    asm volatile ("" ::: "x0",  "x1",  "x2",  "x3",  "x4",  "x5",  "x6",  "x7");
+                                                     ^
+
+"Test_name.c", line 7: error: unknown register name "x5"
+    asm volatile ("" ::: "x0",  "x1",  "x2",  "x3",  "x4",  "x5",  "x6",  "x7");
+                                                            ^
+
+"Test_name.c", line 7: error: unknown register name "x6"
+    asm volatile ("" ::: "x0",  "x1",  "x2",  "x3",  "x4",  "x5",  "x6",  "x7");
+                                                                   ^
+
+"Test_name.c", line 7: error: unknown register name "x7"
+    asm volatile ("" ::: "x0",  "x1",  "x2",  "x3",  "x4",  "x5",  "x6",  "x7");
+                                                                          ^
+
+"Test_name.c", line 8: error: unknown register name "x8"
+    asm volatile ("" ::: "x8",  "x9",  "x10", "x11", "x12", "x13", "x14", "x15");
+                         ^
+
+"Test_name.c", line 8: error: unknown register name "x9"
+    asm volatile ("" ::: "x8",  "x9",  "x10", "x11", "x12", "x13", "x14", "x15");
+                                ^
+
+"Test_name.c", line 8: error: unknown register name "x10"
+    asm volatile ("" ::: "x8",  "x9",  "x10", "x11", "x12", "x13", "x14", "x15");
+                                       ^
+
+"Test_name.c", line 8: error: unknown register name "x11"
+    asm volatile ("" ::: "x8",  "x9",  "x10", "x11", "x12", "x13", "x14", "x15");
+                                              ^
+
+"Test_name.c", line 8: error: unknown register name "x12"
+    asm volatile ("" ::: "x8",  "x9",  "x10", "x11", "x12", "x13", "x14", "x15");
+                                                     ^
+
+"Test_name.c", line 8: error: unknown register name "x13"
+    asm volatile ("" ::: "x8",  "x9",  "x10", "x11", "x12", "x13", "x14", "x15");
+                                                            ^
+
+"Test_name.c", line 8: error: unknown register name "x14"
+    asm volatile ("" ::: "x8",  "x9",  "x10", "x11", "x12", "x13", "x14", "x15");
+                                                                   ^
+
+"Test_name.c", line 8: error: unknown register name "x15"
+    asm volatile ("" ::: "x8",  "x9",  "x10", "x11", "x12", "x13", "x14", "x15");
+                                                                          ^
+
+"Test_name.c", line 9: error: unknown register name "x16"
+    asm volatile ("" ::: "x16", "x17", "x18", "x19", "x20", "x21", "x22", "x23");
+                         ^
+
+"Test_name.c", line 9: error: unknown register name "x17"
+    asm volatile ("" ::: "x16", "x17", "x18", "x19", "x20", "x21", "x22", "x23");
+                                ^
+
+"Test_name.c", line 9: error: unknown register name "x18"
+    asm volatile ("" ::: "x16", "x17", "x18", "x19", "x20", "x21", "x22", "x23");
+                                       ^
+
+"Test_name.c", line 9: error: unknown register name "x19"
+    asm volatile ("" ::: "x16", "x17", "x18", "x19", "x20", "x21", "x22", "x23");
+                                              ^
+
+"Test_name.c", line 9: error: unknown register name "x20"
+    asm volatile ("" ::: "x16", "x17", "x18", "x19", "x20", "x21", "x22", "x23");
+                                                     ^
+
+"Test_name.c", line 9: error: unknown register name "x21"
+    asm volatile ("" ::: "x16", "x17", "x18", "x19", "x20", "x21", "x22", "x23");
+                                                            ^
+
+"Test_name.c", line 9: error: unknown register name "x22"
+    asm volatile ("" ::: "x16", "x17", "x18", "x19", "x20", "x21", "x22", "x23");
+                                                                   ^
+
+"Test_name.c", line 9: error: unknown register name "x23"
+    asm volatile ("" ::: "x16", "x17", "x18", "x19", "x20", "x21", "x22", "x23");
+                                                                          ^
+
+"Test_name.c", line 10: error: unknown register name "x24"
+    asm volatile ("" ::: "x24", "x25", "x26", "x27", "x28", "x29", "x30", "x31");
+                         ^
+
+"Test_name.c", line 10: error: unknown register name "x25"
+    asm volatile ("" ::: "x24", "x25", "x26", "x27", "x28", "x29", "x30", "x31");
+                                ^
+
+"Test_name.c", line 10: error: unknown register name "x26"
+    asm volatile ("" ::: "x24", "x25", "x26", "x27", "x28", "x29", "x30", "x31");
+                                       ^
+
+"Test_name.c", line 10: error: unknown register name "x27"
+    asm volatile ("" ::: "x24", "x25", "x26", "x27", "x28", "x29", "x30", "x31");
+                                              ^
+
+"Test_name.c", line 10: error: unknown register name "x28"
+    asm volatile ("" ::: "x24", "x25", "x26", "x27", "x28", "x29", "x30", "x31");
+                                                     ^
+
+"Test_name.c", line 10: error: unknown register name "x29"
+    asm volatile ("" ::: "x24", "x25", "x26", "x27", "x28", "x29", "x30", "x31");
+                                                            ^
+
+"Test_name.c", line 10: error: unknown register name "x30"
+    asm volatile ("" ::: "x24", "x25", "x26", "x27", "x28", "x29", "x30", "x31");
+                                                                   ^
+
+"Test_name.c", line 10: error: unknown register name "x31"
+    asm volatile ("" ::: "x24", "x25", "x26", "x27", "x28", "x29", "x30", "x31");
+                                                                          ^
+
+"Test_name.c", line 12: error: unknown register name "zero"
+    asm volatile ("" ::: "zero", "ra", "sp",  "gp",  "tp", "t0", "t1", "t2");
+                         ^
+
+"Test_name.c", line 12: error: unknown register name "ra"
+    asm volatile ("" ::: "zero", "ra", "sp",  "gp",  "tp", "t0", "t1", "t2");
+                                 ^
+
+"Test_name.c", line 12: error: unknown register name "gp"
+    asm volatile ("" ::: "zero", "ra", "sp",  "gp",  "tp", "t0", "t1", "t2");
+                                              ^
+
+"Test_name.c", line 12: error: unknown register name "tp"
+    asm volatile ("" ::: "zero", "ra", "sp",  "gp",  "tp", "t0", "t1", "t2");
+                                                     ^
+
+"Test_name.c", line 12: error: unknown register name "t0"
+    asm volatile ("" ::: "zero", "ra", "sp",  "gp",  "tp", "t0", "t1", "t2");
+                                                           ^
+
+"Test_name.c", line 12: error: unknown register name "t1"
+    asm volatile ("" ::: "zero", "ra", "sp",  "gp",  "tp", "t0", "t1", "t2");
+                                                                 ^
+
+"Test_name.c", line 12: error: unknown register name "t2"
+    asm volatile ("" ::: "zero", "ra", "sp",  "gp",  "tp", "t0", "t1", "t2");
+                                                                       ^
+
+"Test_name.c", line 12: error: register "sp" has a fixed purpose and may not be clobbered in an asm statement
+    asm volatile ("" ::: "zero", "ra", "sp",  "gp",  "tp", "t0", "t1", "t2");
+    ^
+
+"Test_name.c", line 13: error: unknown register name "s0"
+    asm volatile ("" ::: "s0",   "s1", "a0",  "a1",  "a2", "a3", "a4", "a5");
+                         ^
+
+"Test_name.c", line 13: error: unknown register name "s1"
+    asm volatile ("" ::: "s0",   "s1", "a0",  "a1",  "a2", "a3", "a4", "a5");
+                                 ^
+
+"Test_name.c", line 13: error: unknown register name "a0"
+    asm volatile ("" ::: "s0",   "s1", "a0",  "a1",  "a2", "a3", "a4", "a5");
+                                       ^
+
+"Test_name.c", line 13: error: unknown register name "a1"
+    asm volatile ("" ::: "s0",   "s1", "a0",  "a1",  "a2", "a3", "a4", "a5");
+                                              ^
+
+"Test_name.c", line 13: error: unknown register name "a2"
+    asm volatile ("" ::: "s0",   "s1", "a0",  "a1",  "a2", "a3", "a4", "a5");
+                                                     ^
+
+"Test_name.c", line 13: error: unknown register name "a3"
+    asm volatile ("" ::: "s0",   "s1", "a0",  "a1",  "a2", "a3", "a4", "a5");
+                                                           ^
+
+"Test_name.c", line 13: error: unknown register name "a4"
+    asm volatile ("" ::: "s0",   "s1", "a0",  "a1",  "a2", "a3", "a4", "a5");
+                                                                 ^
+
+"Test_name.c", line 13: error: unknown register name "a5"
+    asm volatile ("" ::: "s0",   "s1", "a0",  "a1",  "a2", "a3", "a4", "a5");
+                                                                       ^
+
+"Test_name.c", line 14: error: unknown register name "a6"
+    asm volatile ("" ::: "a6",   "a7", "s2",  "s3",  "s4", "s5", "s6", "s7");
+                         ^
+
+"Test_name.c", line 14: error: unknown register name "a7"
+    asm volatile ("" ::: "a6",   "a7", "s2",  "s3",  "s4", "s5", "s6", "s7");
+                                 ^
+
+"Test_name.c", line 14: error: unknown register name "s2"
+    asm volatile ("" ::: "a6",   "a7", "s2",  "s3",  "s4", "s5", "s6", "s7");
+                                       ^
+
+"Test_name.c", line 14: error: unknown register name "s3"
+    asm volatile ("" ::: "a6",   "a7", "s2",  "s3",  "s4", "s5", "s6", "s7");
+                                              ^
+
+"Test_name.c", line 14: error: unknown register name "s4"
+    asm volatile ("" ::: "a6",   "a7", "s2",  "s3",  "s4", "s5", "s6", "s7");
+                                                     ^
+
+"Test_name.c", line 14: error: unknown register name "s5"
+    asm volatile ("" ::: "a6",   "a7", "s2",  "s3",  "s4", "s5", "s6", "s7");
+                                                           ^
+
+"Test_name.c", line 14: error: unknown register name "s6"
+    asm volatile ("" ::: "a6",   "a7", "s2",  "s3",  "s4", "s5", "s6", "s7");
+                                                                 ^
+
+"Test_name.c", line 14: error: unknown register name "s7"
+    asm volatile ("" ::: "a6",   "a7", "s2",  "s3",  "s4", "s5", "s6", "s7");
+                                                                       ^
+
+"Test_name.c", line 15: error: unknown register name "s8"
+    asm volatile ("" ::: "s8",   "s9", "s10", "s11", "t3", "t4", "t5", "t6");
+                         ^
+
+"Test_name.c", line 15: error: unknown register name "s9"
+    asm volatile ("" ::: "s8",   "s9", "s10", "s11", "t3", "t4", "t5", "t6");
+                                 ^
+
+"Test_name.c", line 15: error: unknown register name "s10"
+    asm volatile ("" ::: "s8",   "s9", "s10", "s11", "t3", "t4", "t5", "t6");
+                                       ^
+
+"Test_name.c", line 15: error: unknown register name "s11"
+    asm volatile ("" ::: "s8",   "s9", "s10", "s11", "t3", "t4", "t5", "t6");
+                                              ^
+
+"Test_name.c", line 15: error: unknown register name "t3"
+    asm volatile ("" ::: "s8",   "s9", "s10", "s11", "t3", "t4", "t5", "t6");
+                                                     ^
+
+"Test_name.c", line 15: error: unknown register name "t4"
+    asm volatile ("" ::: "s8",   "s9", "s10", "s11", "t3", "t4", "t5", "t6");
+                                                           ^
+
+"Test_name.c", line 15: error: unknown register name "t5"
+    asm volatile ("" ::: "s8",   "s9", "s10", "s11", "t3", "t4", "t5", "t6");
+                                                                 ^
+
+"Test_name.c", line 15: error: unknown register name "t6"
+    asm volatile ("" ::: "s8",   "s9", "s10", "s11", "t3", "t4", "t5", "t6");
+                                                                       ^
+
+"Test_name.c", line 19: error: unknown register name "f0"
+    asm volatile ("" ::: "f0",  "f1",  "f2",  "f3",  "f4",  "f5",  "f6",  "f7");
+                         ^
+
+"Test_name.c", line 19: error: unknown register name "f1"
+    asm volatile ("" ::: "f0",  "f1",  "f2",  "f3",  "f4",  "f5",  "f6",  "f7");
+                                ^
+
+"Test_name.c", line 19: error: unknown register name "f2"
+    asm volatile ("" ::: "f0",  "f1",  "f2",  "f3",  "f4",  "f5",  "f6",  "f7");
+                                       ^
+
+"Test_name.c", line 19: error: unknown register name "f3"
+    asm volatile ("" ::: "f0",  "f1",  "f2",  "f3",  "f4",  "f5",  "f6",  "f7");
+                                              ^
+
+"Test_name.c", line 19: error: unknown register name "f4"
+    asm volatile ("" ::: "f0",  "f1",  "f2",  "f3",  "f4",  "f5",  "f6",  "f7");
+                                                     ^
+
+"Test_name.c", line 19: error: unknown register name "f5"
+    asm volatile ("" ::: "f0",  "f1",  "f2",  "f3",  "f4",  "f5",  "f6",  "f7");
+                                                            ^
+
+"Test_name.c", line 19: error: unknown register name "f6"
+    asm volatile ("" ::: "f0",  "f1",  "f2",  "f3",  "f4",  "f5",  "f6",  "f7");
+                                                                   ^
+
+"Test_name.c", line 19: error: unknown register name "f7"
+    asm volatile ("" ::: "f0",  "f1",  "f2",  "f3",  "f4",  "f5",  "f6",  "f7");
+                                                                          ^
+
+"Test_name.c", line 20: error: unknown register name "f8"
+    asm volatile ("" ::: "f8",  "f9",  "f10", "f11", "f12", "f13", "f14", "f15");
+                         ^
+
+"Test_name.c", line 20: error: unknown register name "f9"
+    asm volatile ("" ::: "f8",  "f9",  "f10", "f11", "f12", "f13", "f14", "f15");
+                                ^
+
+"Test_name.c", line 20: error: unknown register name "f10"
+    asm volatile ("" ::: "f8",  "f9",  "f10", "f11", "f12", "f13", "f14", "f15");
+                                       ^
+
+"Test_name.c", line 20: error: unknown register name "f11"
+    asm volatile ("" ::: "f8",  "f9",  "f10", "f11", "f12", "f13", "f14", "f15");
+                                              ^
+
+"Test_name.c", line 20: error: unknown register name "f12"
+    asm volatile ("" ::: "f8",  "f9",  "f10", "f11", "f12", "f13", "f14", "f15");
+                                                     ^
+
+"Test_name.c", line 20: error: unknown register name "f13"
+    asm volatile ("" ::: "f8",  "f9",  "f10", "f11", "f12", "f13", "f14", "f15");
+                                                            ^
+
+"Test_name.c", line 20: error: unknown register name "f14"
+    asm volatile ("" ::: "f8",  "f9",  "f10", "f11", "f12", "f13", "f14", "f15");
+                                                                   ^
+
+"Test_name.c", line 20: error: unknown register name "f15"
+    asm volatile ("" ::: "f8",  "f9",  "f10", "f11", "f12", "f13", "f14", "f15");
+                                                                          ^
+
+"Test_name.c", line 21: error: unknown register name "f16"
+    asm volatile ("" ::: "f16", "f17", "f18", "f19", "f20", "f21", "f22", "f23");
+                         ^
+
+"Test_name.c", line 21: error: unknown register name "f17"
+    asm volatile ("" ::: "f16", "f17", "f18", "f19", "f20", "f21", "f22", "f23");
+                                ^
+
+"Test_name.c", line 21: error: unknown register name "f18"
+    asm volatile ("" ::: "f16", "f17", "f18", "f19", "f20", "f21", "f22", "f23");
+                                       ^
+
+"Test_name.c", line 21: error: unknown register name "f19"
+    asm volatile ("" ::: "f16", "f17", "f18", "f19", "f20", "f21", "f22", "f23");
+                                              ^
+
+"Test_name.c", line 21: error: unknown register name "f20"
+    asm volatile ("" ::: "f16", "f17", "f18", "f19", "f20", "f21", "f22", "f23");
+                                                     ^
+
+"Test_name.c", line 21: error: unknown register name "f21"
+    asm volatile ("" ::: "f16", "f17", "f18", "f19", "f20", "f21", "f22", "f23");
+                                                            ^
+
+"Test_name.c", line 21: error: unknown register name "f22"
+    asm volatile ("" ::: "f16", "f17", "f18", "f19", "f20", "f21", "f22", "f23");
+                                                                   ^
+
+"Test_name.c", line 21: error: unknown register name "f23"
+    asm volatile ("" ::: "f16", "f17", "f18", "f19", "f20", "f21", "f22", "f23");
+                                                                          ^
+
+"Test_name.c", line 22: error: unknown register name "f24"
+    asm volatile ("" ::: "f24", "f25", "f26", "f27", "f28", "f29", "f30", "f31");
+                         ^
+
+"Test_name.c", line 22: error: unknown register name "f25"
+    asm volatile ("" ::: "f24", "f25", "f26", "f27", "f28", "f29", "f30", "f31");
+                                ^
+
+"Test_name.c", line 22: error: unknown register name "f26"
+    asm volatile ("" ::: "f24", "f25", "f26", "f27", "f28", "f29", "f30", "f31");
+                                       ^
+
+"Test_name.c", line 22: error: unknown register name "f27"
+    asm volatile ("" ::: "f24", "f25", "f26", "f27", "f28", "f29", "f30", "f31");
+                                              ^
+
+"Test_name.c", line 22: error: unknown register name "f28"
+    asm volatile ("" ::: "f24", "f25", "f26", "f27", "f28", "f29", "f30", "f31");
+                                                     ^
+
+"Test_name.c", line 22: error: unknown register name "f29"
+    asm volatile ("" ::: "f24", "f25", "f26", "f27", "f28", "f29", "f30", "f31");
+                                                            ^
+
+"Test_name.c", line 22: error: unknown register name "f30"
+    asm volatile ("" ::: "f24", "f25", "f26", "f27", "f28", "f29", "f30", "f31");
+                                                                   ^
+
+"Test_name.c", line 22: error: unknown register name "f31"
+    asm volatile ("" ::: "f24", "f25", "f26", "f27", "f28", "f29", "f30", "f31");
+                                                                          ^
+
+"Test_name.c", line 24: error: unknown register name "ft0"
+    asm volatile ("" ::: "ft0", "ft1", "ft2",  "ft3",  "ft4", "ft5", "ft6",  "ft7");
+                         ^
+
+"Test_name.c", line 24: error: unknown register name "ft1"
+    asm volatile ("" ::: "ft0", "ft1", "ft2",  "ft3",  "ft4", "ft5", "ft6",  "ft7");
+                                ^
+
+"Test_name.c", line 24: error: unknown register name "ft2"
+    asm volatile ("" ::: "ft0", "ft1", "ft2",  "ft3",  "ft4", "ft5", "ft6",  "ft7");
+                                       ^
+
+"Test_name.c", line 24: error: unknown register name "ft3"
+    asm volatile ("" ::: "ft0", "ft1", "ft2",  "ft3",  "ft4", "ft5", "ft6",  "ft7");
+                                               ^
+
+"Test_name.c", line 24: error: unknown register name "ft4"
+    asm volatile ("" ::: "ft0", "ft1", "ft2",  "ft3",  "ft4", "ft5", "ft6",  "ft7");
+                                                       ^
+
+"Test_name.c", line 24: error: unknown register name "ft5"
+    asm volatile ("" ::: "ft0", "ft1", "ft2",  "ft3",  "ft4", "ft5", "ft6",  "ft7");
+                                                              ^
+
+"Test_name.c", line 24: error: unknown register name "ft6"
+    asm volatile ("" ::: "ft0", "ft1", "ft2",  "ft3",  "ft4", "ft5", "ft6",  "ft7");
+                                                                     ^
+
+"Test_name.c", line 24: error: unknown register name "ft7"
+    asm volatile ("" ::: "ft0", "ft1", "ft2",  "ft3",  "ft4", "ft5", "ft6",  "ft7");
+                                                                             ^
+
+"Test_name.c", line 25: error: unknown register name "fs0"
+    asm volatile ("" ::: "fs0", "fs1", "fa0",  "fa1",  "fa2", "fa3", "fa4",  "fa5");
+                         ^
+
+"Test_name.c", line 25: error: unknown register name "fs1"
+    asm volatile ("" ::: "fs0", "fs1", "fa0",  "fa1",  "fa2", "fa3", "fa4",  "fa5");
+                                ^
+
+"Test_name.c", line 25: error: unknown register name "fa0"
+    asm volatile ("" ::: "fs0", "fs1", "fa0",  "fa1",  "fa2", "fa3", "fa4",  "fa5");
+                                       ^
+
+"Test_name.c", line 25: error: unknown register name "fa1"
+    asm volatile ("" ::: "fs0", "fs1", "fa0",  "fa1",  "fa2", "fa3", "fa4",  "fa5");
+                                               ^
+
+"Test_name.c", line 25: error: unknown register name "fa2"
+    asm volatile ("" ::: "fs0", "fs1", "fa0",  "fa1",  "fa2", "fa3", "fa4",  "fa5");
+                                                       ^
+
+"Test_name.c", line 25: error: unknown register name "fa3"
+    asm volatile ("" ::: "fs0", "fs1", "fa0",  "fa1",  "fa2", "fa3", "fa4",  "fa5");
+                                                              ^
+
+"Test_name.c", line 25: error: unknown register name "fa4"
+    asm volatile ("" ::: "fs0", "fs1", "fa0",  "fa1",  "fa2", "fa3", "fa4",  "fa5");
+                                                                     ^
+
+"Test_name.c", line 25: error: unknown register name "fa5"
+    asm volatile ("" ::: "fs0", "fs1", "fa0",  "fa1",  "fa2", "fa3", "fa4",  "fa5");
+                                                                             ^
+
+"Test_name.c", line 26: error: unknown register name "fa6"
+    asm volatile ("" ::: "fa6", "fa7", "fs2",  "fs3",  "fs4", "fs5", "fs6",  "fs7");
+                         ^
+
+"Test_name.c", line 26: error: unknown register name "fa7"
+    asm volatile ("" ::: "fa6", "fa7", "fs2",  "fs3",  "fs4", "fs5", "fs6",  "fs7");
+                                ^
+
+"Test_name.c", line 26: error: unknown register name "fs2"
+    asm volatile ("" ::: "fa6", "fa7", "fs2",  "fs3",  "fs4", "fs5", "fs6",  "fs7");
+                                       ^
+
+"Test_name.c", line 26: error: unknown register name "fs3"
+    asm volatile ("" ::: "fa6", "fa7", "fs2",  "fs3",  "fs4", "fs5", "fs6",  "fs7");
+                                               ^
+
+"Test_name.c", line 26: error: unknown register name "fs4"
+    asm volatile ("" ::: "fa6", "fa7", "fs2",  "fs3",  "fs4", "fs5", "fs6",  "fs7");
+                                                       ^
+
+"Test_name.c", line 26: error: unknown register name "fs5"
+    asm volatile ("" ::: "fa6", "fa7", "fs2",  "fs3",  "fs4", "fs5", "fs6",  "fs7");
+                                                              ^
+
+"Test_name.c", line 26: error: unknown register name "fs6"
+    asm volatile ("" ::: "fa6", "fa7", "fs2",  "fs3",  "fs4", "fs5", "fs6",  "fs7");
+                                                                     ^
+
+"Test_name.c", line 26: error: unknown register name "fs7"
+    asm volatile ("" ::: "fa6", "fa7", "fs2",  "fs3",  "fs4", "fs5", "fs6",  "fs7");
+                                                                             ^
+
+"Test_name.c", line 27: error: unknown register name "fs8"
+    asm volatile ("" ::: "fs8", "fs9", "fs10", "fs11", "ft8", "ft9", "ft10", "ft11");
+                         ^
+
+"Test_name.c", line 27: error: unknown register name "fs9"
+    asm volatile ("" ::: "fs8", "fs9", "fs10", "fs11", "ft8", "ft9", "ft10", "ft11");
+                                ^
+
+"Test_name.c", line 27: error: unknown register name "fs10"
+    asm volatile ("" ::: "fs8", "fs9", "fs10", "fs11", "ft8", "ft9", "ft10", "ft11");
+                                       ^
+
+"Test_name.c", line 27: error: unknown register name "fs11"
+    asm volatile ("" ::: "fs8", "fs9", "fs10", "fs11", "ft8", "ft9", "ft10", "ft11");
+                                               ^
+
+"Test_name.c", line 27: error: unknown register name "ft8"
+    asm volatile ("" ::: "fs8", "fs9", "fs10", "fs11", "ft8", "ft9", "ft10", "ft11");
+                                                       ^
+
+"Test_name.c", line 27: error: unknown register name "ft9"
+    asm volatile ("" ::: "fs8", "fs9", "fs10", "fs11", "ft8", "ft9", "ft10", "ft11");
+                                                              ^
+
+"Test_name.c", line 27: error: unknown register name "ft10"
+    asm volatile ("" ::: "fs8", "fs9", "fs10", "fs11", "ft8", "ft9", "ft10", "ft11");
+                                                                     ^
+
+"Test_name.c", line 27: error: unknown register name "ft11"
+    asm volatile ("" ::: "fs8", "fs9", "fs10", "fs11", "ft8", "ft9", "ft10", "ft11");
+                                                                             ^
+
+"Test_name.c", line 30: error: unknown register name "x1"
+  register char i1 __asm__ ("x1"); // expected-error {{size of register 'x1' does not match variable size}}
+                            ^
+
+"Test_name.c", line 35: error: unknown register name "x4"
+  register long l3 __asm__ ("x4");
+                            ^
+
+"Test_name.c", line 36: error: unknown register name "ra"
+  register long ra __asm__ ("ra");
+                            ^
+
+"Test_name.c", line 38: error: unknown register name "gp"
+  register int *gp __asm__ ("gp");
+                            ^
+
+"Test_name.c", line 39: error: unknown register name "tp"
+  register char *tp __asm__ ("tp");
+                             ^
+
+"Test_name.c", line 40: error: unknown register name "a7"
+  register long a7 __asm__ ("a7");
+                            ^
+
+"Test_name.c", line 41: error: unknown register name "s11"
+  register long s11 __asm__ ("s11");
+                             ^
+
+"Test_name.c", line 42: error: unknown register name "t5"
+  register long t5 __asm__ ("t5");
+                            ^
+
+"Test_name.c", line 43: error: unknown register name "f1"
+  register long* f1 __asm__ ("f1"); // expected-error {{register 'f1' unsuitable for global register variables on this target}}
+                             ^
+
+137 errors detected in the compilation of "Test_name.c".

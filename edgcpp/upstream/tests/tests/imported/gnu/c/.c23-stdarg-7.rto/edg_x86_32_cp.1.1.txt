@@ -1,0 +1,46 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"./c23-stdarg-4.c", line 15: warning: variable "ap" is used before its value is set
+   ap
+   ^
+
+"./c23-stdarg-4.c", line 28: error: identifier "random" is undefined
+   ap, random ! ignored, ignored ** text
+       ^
+
+"./c23-stdarg-4.c", line 28: error: expected a ")"
+   ap, random ! ignored, ignored ** text
+              ^
+
+"./c23-stdarg-4.c", line 28: warning: variable "ap" is used before its value is set
+   ap, random ! ignored, ignored ** text
+   ^
+
+"./c23-stdarg-4.c", line 39: warning: variable "ap" is used before its value is set
+   ap
+   ^
+
+"./c23-stdarg-4.c", line 55: warning: variable "ap" is used before its value is set
+   ap
+   ^
+
+"./c23-stdarg-4.c", line 71: warning: variable "ap" is used before its value is set
+   ap
+   ^
+
+"./c23-stdarg-4.c", line 87: warning: variable "ap" is used before its value is set
+   ap
+   ^
+
+"./c23-stdarg-4.c", line 103: warning: variable "ap" is used before its value is set
+   ap
+   ^
+
+"./c23-stdarg-4.c", line 119: warning: variable "ap" is used before its value is set
+   ap
+   ^
+
+"./c23-stdarg-4.c", line 137: warning: variable "ap" is used before its value is set
+   ap
+   ^
+
+2 errors detected in the compilation of "Test_name.c".

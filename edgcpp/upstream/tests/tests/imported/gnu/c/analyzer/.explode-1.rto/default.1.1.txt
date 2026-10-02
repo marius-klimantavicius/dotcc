@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./analyzer/explode-1.c", line 13: warning: variable "p8" was declared but never referenced
+    void *p0, *p1, *p2, *p3, *p4, *p5, *p6, *p7, *p8;
+                                                  ^
+

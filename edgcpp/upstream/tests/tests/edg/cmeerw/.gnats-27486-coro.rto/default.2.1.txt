@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=2 --c++ --gn 140100 --target linux_i686 Test_name.c

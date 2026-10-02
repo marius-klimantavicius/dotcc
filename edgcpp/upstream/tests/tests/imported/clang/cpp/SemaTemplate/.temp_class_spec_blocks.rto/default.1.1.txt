@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 11: error: expected a ")"
+  struct is_unary_block<T (^)(U)> {
+                           ^
+
+"Test_name.c", line 16: error: expected a ")"
+  int is_unary_block1[is_unary_block<int (^)()>::value ? -1 : 1];
+                                          ^
+
+"Test_name.c", line 17: error: expected a ")"
+  int is_unary_block2[is_unary_block<int (^)(int, bool)>::value ? -1 : 1];
+                                          ^
+
+"Test_name.c", line 18: error: expected a ")"
+  int is_unary_block3[is_unary_block<int (^)(bool)>::value ? 1 : -1];
+                                          ^
+
+"Test_name.c", line 19: error: expected a ")"
+  int is_unary_block4[is_unary_block<int (^)(int)>::value ? 1 : -1];
+                                          ^
+
+"Test_name.c", line 27: error: expected a ")"
+  struct is_unary_block_with_same_return_type_as_argument_type<T (^)(T)> {
+                                                                  ^
+
+"Test_name.c", line 32: error: expected a ")"
+  int is_unary_block6[is_unary_block_with_same_return_type_as_argument_type<int (^)()>::value ? -1 : 1];
+                                                                                 ^
+
+"Test_name.c", line 33: error: expected a ")"
+  int is_unary_block7[is_unary_block_with_same_return_type_as_argument_type<int (^)(int, bool)>::value ? -1 : 1];
+                                                                                 ^
+
+"Test_name.c", line 34: error: expected a ")"
+  int is_unary_block8[is_unary_block_with_same_return_type_as_argument_type<int (^)(bool)>::value ? -1 : 1];
+                                                                                 ^
+
+"Test_name.c", line 35: error: expected a ")"
+  int is_unary_block9[is_unary_block_with_same_return_type_as_argument_type<int (^)(int)>::value ? 1 : -1];
+                                                                                 ^
+
+"Test_name.c", line 36: error: expected a ")"
+  int is_unary_block10[is_unary_block_with_same_return_type_as_argument_type<int (^)(int, ...)>::value ? -1 : 1];
+                                                                                  ^
+
+"Test_name.c", line 37: error: expected a ")"
+  int is_unary_block11[is_unary_block_with_same_return_type_as_argument_type<int (^ const)(int)>::value ? -1 : 1];
+                                                                                  ^
+
+"Test_name.c", line 37: error: the size of an array must be greater than zero
+  int is_unary_block11[is_unary_block_with_same_return_type_as_argument_type<int (^ const)(int)>::value ? -1 : 1];
+                       ^
+
+13 errors detected in the compilation of "Test_name.c".

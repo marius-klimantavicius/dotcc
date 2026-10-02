@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 17: error: nonstandard local-class friend declaration -- no prior declaration in the enclosing scope
+        friend void bar(); // expected-error {{cannot define friend function in a local class definition}}
+                    ^
+
+"Test_name.c", line 27: error: nonstandard local-class friend declaration -- no prior declaration in the enclosing scope
+        friend void foo(); // expected-error {{cannot define friend function 'foo' in a local class definition; did you mean '::test2::foo'?}}
+                    ^
+
+"Test_name.c", line 37: error: nonstandard local-class friend declaration -- no prior declaration in the enclosing scope
+          friend void foo(); // expected-error {{cannot define friend function in a local class definition}}
+                      ^
+
+"Test_name.c", line 44: error: declaration is incompatible with previous "foo" (declared at line 42)
+          friend void foo(); // expected-error {{cannot define friend function 'foo' in a local class definition; did you mean '::test2::foo'?}}
+                      ^
+
+"Test_name.c", line 42: warning: variable "foo" was declared but never referenced
+        int foo;
+            ^
+
+"Test_name.c", line 49: error: nonstandard local-class friend declaration -- no prior declaration in the enclosing scope
+        friend void bar(); // expected-error {{cannot define friend function 'bar' in a local class definition; did you mean '::test2::bar'?}}
+                    ^
+
+"Test_name.c", line 54: error: nonstandard local-class friend declaration -- no prior declaration in the enclosing scope
+        friend void bar(); // expected-error {{cannot define friend function 'bar' in a local class definition; did you mean '::test2::bar'?}}
+                    ^
+
+"Test_name.c", line 81: error: nonstandard local-class friend declaration -- no prior declaration in the enclosing scope
+          friend void baz(); // expected-error {{cannot define friend function 'baz' in a local class definition; did you mean 'bar'?}}
+                      ^
+
+"Test_name.c", line 89: error: nonstandard local-class friend declaration -- no prior declaration in the enclosing scope
+            friend void bar(); // expected-error {{cannot define friend function 'bar' in a local class definition; did you mean '::test2::bar'?}}
+                        ^
+
+"Test_name.c", line 90: error: nonstandard local-class friend declaration -- no prior declaration in the enclosing scope
+            friend void quux(); // expected-error {{cannot define friend function in a local class definition}}
+                        ^
+
+9 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,42 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 34: warning: unknown attribute "assert"
+    [[ assert: fun1(-1, -5) ]];
+       ^
+
+"Test_name.c", line 34: error: expected a ","
+    [[ assert: fun1(-1, -5) ]];
+             ^
+
+"Test_name.c", line 35: warning: unknown attribute "assert"
+    [[ assert: test<int>::fun(10, -6) ]];
+       ^
+
+"Test_name.c", line 35: error: expected a ","
+    [[ assert: test<int>::fun(10, -6) ]];
+             ^
+
+"Test_name.c", line 36: warning: unknown attribute "assert"
+    [[ assert: test<double>::fun(10.0, -7) ]];
+       ^
+
+"Test_name.c", line 36: error: expected a ","
+    [[ assert: test<double>::fun(10.0, -7) ]];
+             ^
+
+"Test_name.c", line 13: warning: unknown attribute "assert"
+    [[ assert: a > 0 ]];
+       ^
+
+"Test_name.c", line 13: error: expected a ","
+    [[ assert: a > 0 ]];
+             ^
+
+"Test_name.c", line 14: warning: unknown attribute "assert"
+    [[ assert: (long long)b > 0 ]];
+       ^
+
+"Test_name.c", line 14: error: expected a ","
+    [[ assert: (long long)b > 0 ]];
+             ^
+
+5 errors detected in the compilation of "Test_name.c".

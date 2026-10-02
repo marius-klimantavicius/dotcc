@@ -1,0 +1,58 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 41: error: class "N::Outer::Inner::InnerTemplate<INT>" has no tag member named "UeberInner"
+  template struct N::Outer::Inner::InnerTemplate<INT>::UeberInner; // expected-error{{no struct named 'UeberInner' in 'N::Outer::Inner::InnerTemplate<int>'}}
+                                                       ^
+
+"Test_name.c", line 41: error: invalid explicit instantiation declaration
+  template struct N::Outer::Inner::InnerTemplate<INT>::UeberInner; // expected-error{{no struct named 'UeberInner' in 'N::Outer::Inner::InnerTemplate<int>'}}
+           ^
+
+"Test_name.c", line 48: warning: variable "k1" was declared but never referenced
+          enum { K1Val = sizeof(T) } k1;
+                                     ^
+
+"Test_name.c", line 49: warning: variable "k2a" was declared but never referenced
+          enum K2 { K2Val = sizeof(T)*2 } k2a;
+                                          ^
+
+"Test_name.c", line 51: warning: variable "k2b" was declared but never referenced
+          K2 k2b = K2Val;
+             ^
+
+"Test_name.c", line 55: warning: variable "s2" is used before its value is set
+          s1.x = s2.x; // expected-error{{incompatible}}
+                 ^
+          detected during instantiation of "void N2::Outer2::Inner<T, U>::foo() [with T=float, U=float]" at line 72
+
+"Test_name.c", line 55: error: a value of type "float *" cannot be assigned to an entity of type "int *"
+          s1.x = s2.x; // expected-error{{incompatible}}
+               ^
+          detected during instantiation of "void N2::Outer2::Inner<T, U>::foo() [with T=int *, U=float *]" at line 73
+
+"Test_name.c", line 55: warning: variable "s2" is used before its value is set
+          s1.x = s2.x; // expected-error{{incompatible}}
+                 ^
+          detected during instantiation of "void N2::Outer2::Inner<T, U>::foo() [with T=int *, U=float *]" at line 73
+
+"Test_name.c", line 55: warning: variable "s2" is used before its value is set
+          s1.x = s2.x; // expected-error{{incompatible}}
+                 ^
+          detected during:
+            instantiation of "void N2::Outer2::Inner<T, U>::foo() [with T=int *, U=int *]" at line 66
+            instantiation of "void N2::Outer2::Inner<T, U>::foo() [with T=int *, U=float *]" at line 64
+
+"Test_name.c", line 105: error: name followed by "::" must be a class or namespace name
+      T::foo(); // expected-error {{has no members}}
+      ^
+          detected during instantiation of "void test1::f(const T &) [with T=int]" at line 107
+
+"Test_name.c", line 112: error: name followed by "::" must be a class or namespace name
+      T::error; // expected-error {{no member}}
+      ^
+          detected during instantiation of "void test2::f<T>() [with T=int]" at line 116
+
+"Test_name.c", line 13: error: member "N::Outer::Inner::InnerTemplate<T>::VeryInner::Kind2 [with T=INT]", declared using a type with no linkage, must be defined in this translation unit
+            static enum { K2Val = sizeof(T)*2 } Kind2;
+                                                ^
+
+6 errors detected in the compilation of "Test_name.c".

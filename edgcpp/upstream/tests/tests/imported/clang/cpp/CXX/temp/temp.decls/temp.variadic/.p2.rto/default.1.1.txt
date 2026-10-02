@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 16: error: no instance of function template "recurse_until_fail" matches the argument list
+    recurse_until_fail(tail...); // expected-error{{no matching function for call to 'recurse_until_fail'}} \
+    ^
+"Test_name.c", line 15: note: number of parameters of function template "recurse_until_fail" does not match the call
+  void recurse_until_fail(const Head &, const Tail &...tail) { // expected-note{{candidate function template not viable: requires at least 1 argument, but 0 were provided}}
+       ^
+          detected during:
+            instantiation of "void recurse_until_fail(const Head &, const Tail &...) [with Head=char [7], Tail=<>]" at line 16
+            instantiation of "void recurse_until_fail(const Head &, const Tail &...) [with Head=double, Tail=<char [7]>]" at line 16
+            instantiation of "void recurse_until_fail(const Head &, const Tail &...) [with Head=int, Tail=<double, char [7]>]" at line 22
+
+1 error detected in the compilation of "Test_name.c".

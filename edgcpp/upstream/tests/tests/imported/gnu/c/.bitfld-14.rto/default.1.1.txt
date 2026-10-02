@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 10: error: expression must be an integral constant expression
+    int a : (void *)4; /* { dg-error "bit-field 'a' width not an integer constant" } */
+            ^
+
+"Test_name.c", line 11: warning: signed bit field of length 1
+    int b : (enum e)F;
+        ^
+
+"Test_name.c", line 12: warning: signed bit field of length 1
+    int c : (_Bool)1;
+        ^
+
+1 error detected in the compilation of "Test_name.c".

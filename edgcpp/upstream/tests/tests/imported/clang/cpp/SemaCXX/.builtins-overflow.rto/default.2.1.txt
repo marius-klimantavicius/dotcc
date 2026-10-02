@@ -1,0 +1,128 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"SemaCXX/builtins-overflow.cpp", line 114: error: expression must have a constant value
+  static_assert(addcb(120, 10, 0) == CarryResult<unsigned char>{0, 130});
+                ^
+"SemaCXX/builtins-overflow.cpp", line 110: note: cannot call non-constexpr function "__builtin_addcb" (declared implicitly)
+    sum = __builtin_addcb(lhs, rhs, carry, &carry_out);
+          ^
+
+"SemaCXX/builtins-overflow.cpp", line 115: error: expression must have a constant value
+  static_assert(addcb(250, 10, 0) == CarryResult<unsigned char>{1, 4});
+                ^
+"SemaCXX/builtins-overflow.cpp", line 110: note: cannot call non-constexpr function "__builtin_addcb" (declared implicitly)
+    sum = __builtin_addcb(lhs, rhs, carry, &carry_out);
+          ^
+
+"SemaCXX/builtins-overflow.cpp", line 116: error: expression must have a constant value
+  static_assert(addcb(255, 255, 0) == CarryResult<unsigned char>{1, 254});
+                ^
+"SemaCXX/builtins-overflow.cpp", line 110: note: cannot call non-constexpr function "__builtin_addcb" (declared implicitly)
+    sum = __builtin_addcb(lhs, rhs, carry, &carry_out);
+          ^
+
+"SemaCXX/builtins-overflow.cpp", line 117: error: expression must have a constant value
+  static_assert(addcb(255, 255, 1) == CarryResult<unsigned char>{1, 255});
+                ^
+"SemaCXX/builtins-overflow.cpp", line 110: note: cannot call non-constexpr function "__builtin_addcb" (declared implicitly)
+    sum = __builtin_addcb(lhs, rhs, carry, &carry_out);
+          ^
+
+"SemaCXX/builtins-overflow.cpp", line 118: error: expression must have a constant value
+  static_assert(addcb(255, 0, 1) == CarryResult<unsigned char>{1, 0});
+                ^
+"SemaCXX/builtins-overflow.cpp", line 110: note: cannot call non-constexpr function "__builtin_addcb" (declared implicitly)
+    sum = __builtin_addcb(lhs, rhs, carry, &carry_out);
+          ^
+
+"SemaCXX/builtins-overflow.cpp", line 119: error: expression must have a constant value
+  static_assert(addcb(255, 1, 0) == CarryResult<unsigned char>{1, 0});
+                ^
+"SemaCXX/builtins-overflow.cpp", line 110: note: cannot call non-constexpr function "__builtin_addcb" (declared implicitly)
+    sum = __builtin_addcb(lhs, rhs, carry, &carry_out);
+          ^
+
+"SemaCXX/builtins-overflow.cpp", line 120: error: expression must have a constant value
+  static_assert(addcb(255, 1, 1) == CarryResult<unsigned char>{1, 1});
+                ^
+"SemaCXX/builtins-overflow.cpp", line 110: note: cannot call non-constexpr function "__builtin_addcb" (declared implicitly)
+    sum = __builtin_addcb(lhs, rhs, carry, &carry_out);
+          ^
+
+"SemaCXX/builtins-overflow.cpp", line 124: error: expression must have a constant value
+  static_assert(addcb(255, 255, 2) == CarryResult<unsigned char>{1, 0});
+                ^
+"SemaCXX/builtins-overflow.cpp", line 110: note: cannot call non-constexpr function "__builtin_addcb" (declared implicitly)
+    sum = __builtin_addcb(lhs, rhs, carry, &carry_out);
+          ^
+
+"SemaCXX/builtins-overflow.cpp", line 133: error: expression must have a constant value
+  static_assert(subcb(20, 10, 0) == CarryResult<unsigned char>{0, 10});
+                ^
+"SemaCXX/builtins-overflow.cpp", line 129: note: cannot call non-constexpr function "__builtin_subcb" (declared implicitly)
+    sum = __builtin_subcb(lhs, rhs, carry, &carry_out);
+          ^
+
+"SemaCXX/builtins-overflow.cpp", line 134: error: expression must have a constant value
+  static_assert(subcb(10, 10, 0) == CarryResult<unsigned char>{0, 0});
+                ^
+"SemaCXX/builtins-overflow.cpp", line 129: note: cannot call non-constexpr function "__builtin_subcb" (declared implicitly)
+    sum = __builtin_subcb(lhs, rhs, carry, &carry_out);
+          ^
+
+"SemaCXX/builtins-overflow.cpp", line 135: error: expression must have a constant value
+  static_assert(subcb(10, 15, 0) == CarryResult<unsigned char>{1, 251});
+                ^
+"SemaCXX/builtins-overflow.cpp", line 129: note: cannot call non-constexpr function "__builtin_subcb" (declared implicitly)
+    sum = __builtin_subcb(lhs, rhs, carry, &carry_out);
+          ^
+
+"SemaCXX/builtins-overflow.cpp", line 137: error: expression must have a constant value
+  static_assert(subcb(10, 15, 1) == CarryResult<unsigned char>{1, 250});
+                ^
+"SemaCXX/builtins-overflow.cpp", line 129: note: cannot call non-constexpr function "__builtin_subcb" (declared implicitly)
+    sum = __builtin_subcb(lhs, rhs, carry, &carry_out);
+          ^
+
+"SemaCXX/builtins-overflow.cpp", line 138: error: expression must have a constant value
+  static_assert(subcb(0, 0, 1) == CarryResult<unsigned char>{1, 255});
+                ^
+"SemaCXX/builtins-overflow.cpp", line 129: note: cannot call non-constexpr function "__builtin_subcb" (declared implicitly)
+    sum = __builtin_subcb(lhs, rhs, carry, &carry_out);
+          ^
+
+"SemaCXX/builtins-overflow.cpp", line 139: error: expression must have a constant value
+  static_assert(subcb(0, 1, 0) == CarryResult<unsigned char>{1, 255});
+                ^
+"SemaCXX/builtins-overflow.cpp", line 129: note: cannot call non-constexpr function "__builtin_subcb" (declared implicitly)
+    sum = __builtin_subcb(lhs, rhs, carry, &carry_out);
+          ^
+
+"SemaCXX/builtins-overflow.cpp", line 140: error: expression must have a constant value
+  static_assert(subcb(0, 1, 1) == CarryResult<unsigned char>{1, 254});
+                ^
+"SemaCXX/builtins-overflow.cpp", line 129: note: cannot call non-constexpr function "__builtin_subcb" (declared implicitly)
+    sum = __builtin_subcb(lhs, rhs, carry, &carry_out);
+          ^
+
+"SemaCXX/builtins-overflow.cpp", line 141: error: expression must have a constant value
+  static_assert(subcb(0, 255, 0) == CarryResult<unsigned char>{1, 1});
+                ^
+"SemaCXX/builtins-overflow.cpp", line 129: note: cannot call non-constexpr function "__builtin_subcb" (declared implicitly)
+    sum = __builtin_subcb(lhs, rhs, carry, &carry_out);
+          ^
+
+"SemaCXX/builtins-overflow.cpp", line 142: error: expression must have a constant value
+  static_assert(subcb(0, 255, 1) == CarryResult<unsigned char>{1, 0});
+                ^
+"SemaCXX/builtins-overflow.cpp", line 129: note: cannot call non-constexpr function "__builtin_subcb" (declared implicitly)
+    sum = __builtin_subcb(lhs, rhs, carry, &carry_out);
+          ^
+
+"SemaCXX/builtins-overflow.cpp", line 146: error: expression must have a constant value
+  static_assert(subcb(0, 255, 2) == CarryResult<unsigned char>{1, 255});
+                ^
+"SemaCXX/builtins-overflow.cpp", line 129: note: cannot call non-constexpr function "__builtin_subcb" (declared implicitly)
+    sum = __builtin_subcb(lhs, rhs, carry, &carry_out);
+          ^
+
+18 errors detected in the compilation of "Test_name.c".

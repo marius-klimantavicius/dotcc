@@ -1,0 +1,7 @@
+fe_only -DTEST_NUMBER=2 --c++17 Test_name.c
+"Test_name.c", line 11: error: function template "C::f" (declared at line 5) is inaccessible
+    using T::f;
+             ^
+          detected during instantiation of class "D<T> [with T=C]" at line 14
+
+1 error detected in the compilation of "Test_name.c".

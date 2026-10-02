@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 20: error: the element type of the vector condition ("char") must have the same size as the element type of the result ("long long")
+    return (*a<0)?3LL:42UL; // { dg-error "inferred scalar type" }
+                 ^
+
+"Test_name.c", line 23: error: the floating-point vector operand type ("__attribute((vector_size(32U))) double") has no matching integer vector type
+    return (*a<0)?'a':'c'; // { dg-error "inferred scalar type \[^\\n\]*double" }
+               ^
+
+"Test_name.c", line 26: error: the element type of the vector condition ("char") must have the same size as the element type of the result ("double")
+    return (*a<0)?1:0.; // { dg-error "inferred scalar type" }
+                 ^
+
+3 errors detected in the compilation of "Test_name.c".

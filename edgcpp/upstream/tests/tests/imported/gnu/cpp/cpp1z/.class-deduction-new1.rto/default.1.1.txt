@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 11: error: class template name must be a placeholder for the complete type being initialized (not for a component of that type)
+  auto p1 = new A[]{1}; // { dg-error "creating array of template placeholder type" }
+                ^
+
+"Test_name.c", line 11: error: "auto" type cannot appear in top-level array type
+  auto p1 = new A[]{1}; // { dg-error "creating array of template placeholder type" }
+                ^
+
+"Test_name.c", line 12: error: class template name must be a placeholder for the complete type being initialized (not for a component of that type)
+  auto p2 = new A[1]{1}; // { dg-error "invalid use of placeholder" }
+                ^
+
+"Test_name.c", line 12: error: "auto" type cannot appear in top-level array type
+  auto p2 = new A[1]{1}; // { dg-error "invalid use of placeholder" }
+                ^
+
+"Test_name.c", line 15: error: class template name must be a placeholder for the complete type being initialized (not for a component of that type)
+  auto p5 = new A[]{1, 2}; // { dg-error "creating array of template placeholder type" }
+                ^
+
+"Test_name.c", line 15: error: "auto" type cannot appear in top-level array type
+  auto p5 = new A[]{1, 2}; // { dg-error "creating array of template placeholder type" }
+                ^
+
+"Test_name.c", line 15: error: too many initializer values
+  auto p5 = new A[]{1, 2}; // { dg-error "creating array of template placeholder type" }
+                       ^
+
+7 errors detected in the compilation of "Test_name.c".

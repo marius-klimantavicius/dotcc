@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 6: error: exception specification is not allowed
+    typedef void F() throw (A);
+                     ^
+
+"Test_name.c", line 11: error: use of a local type to declare a function
+    extern void g() throw (A);      // Error
+                ^
+
+2 errors detected in the compilation of "Test_name.c".

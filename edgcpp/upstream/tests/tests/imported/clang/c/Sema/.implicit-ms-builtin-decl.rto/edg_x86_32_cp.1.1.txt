@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --ms_extensions --ms_extensions --c Test_name.c
+"Test_name.c", line 7: warning: function "_byteswap_ushort" declared implicitly
+    (void)_byteswap_ushort(42); // expected-error{{call to undeclared library function '_byteswap_ushort'}} \
+          ^
+
+"Test_name.c", line 9: warning: function "_byteswap_uint64" declared implicitly
+    (void)_byteswap_uint64(42LL); // expected-error{{call to undeclared library function '_byteswap_uint64'}} \
+          ^
+
+"Test_name.c", line 16: warning: declaration is incompatible with previous "_byteswap_ushort" (declared implicitly)
+  unsigned short _byteswap_ushort(unsigned short);
+                 ^
+
+"Test_name.c", line 17: warning: declaration is incompatible with previous "_byteswap_uint64" (declared implicitly)
+  unsigned long long _byteswap_uint64(unsigned long long);
+                     ^
+
+"Test_name.c", line 43: warning: function "__mulh" declared implicitly
+    (void)__mulh(21LL, 2LL);  // expected-error{{call to undeclared function '__mulh'; ISO C99 and later do not support implicit function declarations}}
+          ^
+
+"Test_name.c", line 44: warning: function "__umulh" declared implicitly
+    (void)__umulh(21ULL, 2ULL);  // expected-error{{call to undeclared function '__umulh'; ISO C99 and later do not support implicit function declarations}}
+          ^
+

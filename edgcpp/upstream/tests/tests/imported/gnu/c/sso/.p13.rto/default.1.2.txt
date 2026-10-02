@@ -1,0 +1,10 @@
+./a.out
+My_R1    : db 0f 49 40 db 0f 49 c0
+My_R2    : db 0f 49 40 db 0f 49 c0
+Local_R1 : db 0f 49 40 db 0f 49 c0
+Local_R2 : db 0f 49 40 db 0f 49 c0
+Local_R1 : db 0f 49 40 db 0f 49 c0
+Local_R2 : db 0f 49 40 db 0f 49 c0
+Local_R1 : db 0f 49 40 db 0f 49 c0
+Local_R2 : db 0f 49 40 db 0f 49 c0
+

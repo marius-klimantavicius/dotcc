@@ -1,0 +1,70 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Sema/bitfield-layout.c", line 39: error: the size of an array must be greater than zero
+  extern int a2_1[sizeof(struct a2) == 5 ? 1 : -1];
+                  ^
+
+"Sema/bitfield-layout.c", line 54: error: the size of an array must be greater than zero
+  extern int a3_1[sizeof(struct a3) == 4 ? 1 : -1];
+                  ^
+
+"Sema/bitfield-layout.c", line 118: warning: signed bit field of length 1
+    __attribute__((aligned(16))) int b : 1;
+                                     ^
+
+"Sema/bitfield-layout.c", line 135: warning: signed bit field of length 1
+    __attribute__((aligned(2))) int b : 1;
+                                    ^
+
+"Sema/bitfield-layout.c", line 135: warning: a reduction in alignment without the "packed" attribute is ignored
+    __attribute__((aligned(2))) int b : 1;
+                                    ^
+
+"Sema/bitfield-layout.c", line 139: error: the size of an array must be greater than zero
+  extern int g1_1[sizeof(struct g1) == 4 ? 1 : -1];;
+                  ^
+
+"Sema/bitfield-layout.c", line 144: error: the size of an array must be greater than zero
+  extern int g1_3[__builtin_offsetof(struct g1, c) == 3 ? 1 : -1];;
+                  ^
+
+"Sema/bitfield-layout.c", line 150: warning: signed bit field of length 1
+    int b : 1;
+        ^
+
+"Sema/bitfield-layout.c", line 162: warning: signed bit field of length 1
+    __attribute__((aligned(16))) int b : 1;
+                                     ^
+
+"Sema/bitfield-layout.c", line 177: warning: signed bit field of length 1
+    __attribute__((aligned(2))) int b : 1;
+                                    ^
+
+"Sema/bitfield-layout.c", line 191: warning: a reduction in alignment without the "packed" attribute is ignored
+    __attribute__((aligned(1))) int n : 24;
+                                    ^
+
+"Sema/bitfield-layout.c", line 195: error: the size of an array must be greater than zero
+  extern int g5_1[sizeof(struct g5) == 4 ? 1 : -1];;
+                  ^
+
+"Sema/bitfield-layout.c", line 209: warning: a reduction in alignment without the "packed" attribute is ignored
+    __attribute__((aligned(1))) int n : 25;
+                                    ^
+
+"Sema/bitfield-layout.c", line 257: warning: a reduction in alignment without the "packed" attribute is ignored
+    __attribute__((aligned(1))) long long b : 62;
+                                          ^
+
+"Sema/bitfield-layout.c", line 281: warning: a reduction in alignment without the "packed" attribute is ignored
+    __attribute__((aligned(1))) long long : 0;
+                                          ^
+
+"Sema/bitfield-layout.c", line 308: error: the size of an array must be greater than zero
+  extern int g14_1[sizeof(struct g14) == 9 ? 1 : -1];;
+                   ^
+
+"Sema/bitfield-layout.c", line 310: error: the size of an array must be greater than zero
+  extern int g14_3[__builtin_offsetof(struct g14, c) == 8 ? 1 : -1];;
+                   ^
+
+7 errors detected in the compilation of "Test_name.c".

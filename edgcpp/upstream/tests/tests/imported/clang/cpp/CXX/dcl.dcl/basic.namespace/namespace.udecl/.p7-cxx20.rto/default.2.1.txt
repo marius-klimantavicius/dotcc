@@ -1,0 +1,48 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 30: error: enumerator "Zero::Bob::Kevin::Stuart" conflicts with variable "Zero::Foo::Stuart"
+  using Bob::Kevin::Stuart; // expected-error{{target of using declaration conflicts}}
+                    ^
+
+"Test_name.c", line 33: error: "AlsoStuart" has already been declared in the current scope
+  int AlsoStuart;               // expected-error{{declaration conflicts with target}}
+      ^
+
+"Test_name.c", line 67: error: a class-qualified name is required
+    using One::e2;
+          ^
+
+"Test_name.c", line 71: error: identifier "e2" is undefined
+    One::E2 c = e2;
+                ^
+
+"Test_name.c", line 83: error: a class-qualified name is required
+    using Three::e3; // expected-error{{using declaration in class}}
+          ^
+
+"Test_name.c", line 137: error: enum "Four::TPL<T>::E3 [with T=float]" (declared at line 113) is inaccessible
+    using TPL<T>::E3::e3; // expected-error{{is a protected member}}
+                  ^
+          detected during instantiation of class "Four::DER<T> [with T=float]" at line 153
+
+"Test_name.c", line 171: error: enum "Five::Quux<I, K>::Q [with I=1U, K=2U]" has no member "nothing"
+  using Quux<1, 2>::Q::nothing; // expected-error{{implicit instantiation of undefined}}
+                       ^
+
+"Test_name.c", line 190: error: enum "Six::Quux<I, K>::Q [with I=2U, K=2U]" has no member "nothing"
+    using Quux<I, I>::Q::nothing; // expected-error{{implicit instantiation of undefined}}
+                         ^
+          detected during instantiation of class "Six::Fido<I> [with I=2U]" at line 193
+
+"Test_name.c", line 246: error: enumerator "Eight::Kevin::B::a" has already been declared in this scope at line 223
+    using Kevin::B::a; // expected-error{{redeclaration of using declaration}}
+                    ^
+
+"Test_name.c", line 268: error: a class-qualified name is required
+    using Q::a; // expected-note{{previous using declaration}}
+          ^
+
+"Test_name.c", line 270: error: a class-qualified name is required
+    using Q::a; // expected-error{{redeclaration of using declaration}}
+          ^
+
+11 errors detected in the compilation of "Test_name.c".

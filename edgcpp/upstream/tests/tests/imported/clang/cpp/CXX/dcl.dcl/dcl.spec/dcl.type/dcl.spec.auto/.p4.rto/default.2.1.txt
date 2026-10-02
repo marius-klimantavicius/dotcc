@@ -1,0 +1,74 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --c++03 Test_name.c
+"Test_name.c", line 10: warning: deleted functions are a C++11 feature
+    template<typename U> only(U) = delete;
+                                   ^
+
+"Test_name.c", line 14: warning: "auto" as a type specifier is nonstandard in this mode
+    if (auto a = true) {
+        ^
+
+"Test_name.c", line 17: warning: "auto" as a type specifier is nonstandard in this mode
+    switch (auto a = 0) {
+            ^
+
+"Test_name.c", line 20: warning: "auto" as a type specifier is nonstandard in this mode
+    while (auto a = false) {
+           ^
+
+"Test_name.c", line 23: warning: "auto" as a type specifier is nonstandard in this mode
+    for (; auto a = false; ) {
+           ^
+
+"Test_name.c", line 26: error: "auto" is not allowed here
+    new const auto (0);
+              ^
+
+"Test_name.c", line 27: error: "auto" is not allowed here
+    new (auto) (0.0);
+         ^
+
+"Test_name.c", line 30: warning: a range-based "for" statement is nonstandard in this mode
+    for (auto i : arr) {
+         ^
+
+"Test_name.c", line 30: warning: "auto" as a type specifier is nonstandard in this mode
+    for (auto i : arr) {
+         ^
+
+"Test_name.c", line 35: error: "auto" is not allowed here
+    static const auto n = 'x';
+                 ^
+
+"Test_name.c", line 37: error: "auto" is not allowed here
+    auto m = 0; // expected-error {{'auto' not allowed in non-static class member}}
+    ^
+
+"Test_name.c", line 37: warning: field initializers are a C++11 feature
+    auto m = 0; // expected-error {{'auto' not allowed in non-static class member}}
+           ^
+
+"Test_name.c", line 41: error: "auto" is not allowed here
+    static const auto a; // expected-error {{declaration of variable 'a' with deduced type 'const auto' requires an initializer}}
+                 ^
+
+"Test_name.c", line 42: error: "auto" is not allowed here
+    static const auto b = 0;
+                 ^
+
+"Test_name.c", line 46: warning: "auto" as a type specifier is nonstandard in this mode
+  const auto S::c = 0;
+        ^
+
+"Test_name.c", line 52: warning: "auto" as a type specifier is nonstandard in this mode
+  auto parens1(1);
+  ^
+
+"Test_name.c", line 53: warning: "auto" as a type specifier is nonstandard in this mode
+  auto parens2(2, 3); // expected-error {{initializer for variable 'parens2' with type 'auto' contains multiple expressions}}
+  ^
+
+"Test_name.c", line 53: error: too many initializer values
+  auto parens2(2, 3); // expected-error {{initializer for variable 'parens2' with type 'auto' contains multiple expressions}}
+                  ^
+
+7 errors detected in the compilation of "Test_name.c".

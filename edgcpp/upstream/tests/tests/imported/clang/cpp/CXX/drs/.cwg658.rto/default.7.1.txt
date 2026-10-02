@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=7 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++26 --exceptions --exceptions Test_name.c
+"Test_name.c", line 14: warning: variable "p2" was declared but never referenced
+    char* p2 = reinterpret_cast<char*>(p1);
+          ^
+

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 11: error: X is not a template
+  template<> class X<int> { /* ... */ };	// expected-error {{no template named 'X'; did you mean 'N::X'?}}
+                   ^
+
+1 error detected in the compilation of "Test_name.c".

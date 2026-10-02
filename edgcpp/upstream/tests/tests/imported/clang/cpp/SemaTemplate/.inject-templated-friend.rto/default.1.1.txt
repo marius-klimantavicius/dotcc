@@ -1,0 +1,7 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 -DREDEFINE Test_name.c
+"Test_name.c", line 19: error: function "operator<<" has already been defined (previous definition at line 36)
+      friend std_ostream& operator << (std_ostream& o, const Streamer& f) // expected-error{{redefinition of 'operator<<'}}
+                          ^
+          detected during instantiation of class "Streamer<STRUCT_TYPE> [with STRUCT_TYPE=Foo]" at line 44
+
+1 error detected in the compilation of "Test_name.c".

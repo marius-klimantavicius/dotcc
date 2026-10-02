@@ -1,0 +1,106 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 --exceptions Test_name.c
+"Test_name.c", line 6: warning: unknown attribute "clang::annotate_type"
+    void f() [[clang::annotate_type("foo")]];
+               ^
+
+"Test_name.c", line 7: warning: unknown attribute "clang::annotate_type"
+    [[clang::annotate_type("foo")]] void g(); // expected-error {{'clang::annotate_type' attribute cannot be applied to a declaration}}
+      ^
+
+"Test_name.c", line 18: warning: unknown attribute "clang::annotate_type"
+  static_assert(is_same<int, int [[clang::annotate_type("foo")]]>::value);
+                                   ^
+
+"Test_name.c", line 19: warning: unknown attribute "clang::annotate_type"
+  static_assert(is_same<int [[clang::annotate_type("foo")]],
+                              ^
+
+"Test_name.c", line 20: warning: unknown attribute "clang::annotate_type"
+                        int [[clang::annotate_type("bar")]]>::value);
+                              ^
+
+"Test_name.c", line 21: warning: unknown attribute "clang::annotate_type"
+  static_assert(is_same<int *, int *[[clang::annotate_type("foo")]]>::value);
+                                      ^
+
+"Test_name.c", line 25: warning: unknown attribute "clang::annotate_type"
+  void f(int [[clang::annotate_type("foo")]]) {} // expected-error {{redefinition of 'f'}}
+               ^
+
+"Test_name.c", line 25: error: function "f" has already been defined (previous definition at line 24)
+  void f(int [[clang::annotate_type("foo")]]) {} // expected-error {{redefinition of 'f'}}
+       ^
+
+"Test_name.c", line 33: warning: unknown attribute "clang::annotate_type"
+  struct S2<int [[clang::annotate_type("foo")]]> {}; // expected-error {{redefinition of 'S2<int>'}}
+                  ^
+
+"Test_name.c", line 33: error: class "S2<int>" has already been defined (previous definition at line 30)
+  struct S2<int [[clang::annotate_type("foo")]]> {}; // expected-error {{redefinition of 'S2<int>'}}
+         ^
+
+"Test_name.c", line 39: warning: missing return statement at end of non-void function "f2"
+  int f2() { variadic_func_template<1, 2, 3>(); }
+                                                ^
+
+"Test_name.c", line 45: warning: unknown attribute "clang::annotate_type"
+    func_template<int [[clang::annotate_type()]]>(); // expected-error {{'clang::annotate_type' attribute takes at least 1 argument}}
+                        ^
+
+"Test_name.c", line 50: warning: unknown attribute "clang::annotate_type"
+  namespace [[clang::annotate_type("foo")]] my_namespace {} // expected-error {{'clang::annotate_type' attribute cannot be applied to a declaration}}
+              ^
+
+"Test_name.c", line 51: warning: unknown attribute "clang::annotate_type"
+  struct [[clang::annotate_type("foo")]] S3; // expected-error {{'clang::annotate_type' attribute cannot be applied to a declaration}}
+           ^
+
+"Test_name.c", line 52: warning: unknown attribute "clang::annotate_type"
+  struct [[clang::annotate_type("foo")]] S3{ // expected-error {{'clang::annotate_type' attribute cannot be applied to a declaration}}
+           ^
+
+"Test_name.c", line 53: warning: unknown attribute "clang::annotate_type"
+    [[clang::annotate_type("foo")]] int member; // expected-error {{'clang::annotate_type' attribute cannot be applied to a declaration}}
+      ^
+
+"Test_name.c", line 56: warning: unknown attribute "clang::annotate_type"
+    for ([[clang::annotate_type("foo")]] int i = 0; i < 42; ++i) {} // expected-error {{'clang::annotate_type' attribute cannot be applied to a declaration}}
+           ^
+
+"Test_name.c", line 57: warning: unknown attribute "clang::annotate_type"
+    for (; [[clang::annotate_type("foo")]] bool b = false;) {} // expected-error {{'clang::annotate_type' attribute cannot be applied to a declaration}}
+             ^
+
+"Test_name.c", line 58: warning: unknown attribute "clang::annotate_type"
+    while ([[clang::annotate_type("foo")]] bool b = false) {} // expected-error {{'clang::annotate_type' attribute cannot be applied to a declaration}}
+             ^
+
+"Test_name.c", line 59: warning: unknown attribute "clang::annotate_type"
+    if ([[clang::annotate_type("foo")]] bool b = false) {} // expected-error {{'clang::annotate_type' attribute cannot be applied to a declaration}}
+          ^
+
+"Test_name.c", line 61: warning: unknown attribute "clang::annotate_type"
+    } catch ([[clang::annotate_type("foo")]] int i) { // expected-error {{'clang::annotate_type' attribute cannot be applied to a declaration}}
+               ^
+
+"Test_name.c", line 65: warning: unknown attribute "clang::annotate_type"
+  [[clang::annotate_type("foo")]] T var_template; // expected-error {{'clang::annotate_type' attribute cannot be applied to a declaration}}
+    ^
+
+"Test_name.c", line 66: warning: unknown attribute "clang::annotate_type"
+  [[clang::annotate_type("foo")]] extern "C" int extern_c_func(); // expected-error {{an attribute list cannot appear here}}
+    ^
+
+"Test_name.c", line 67: warning: unknown attribute "clang::annotate_type"
+  extern "C" [[clang::annotate_type("foo")]] int extern_c_func(); // expected-error {{'clang::annotate_type' attribute cannot be applied to a declaration}}
+               ^
+
+"Test_name.c", line 37: warning: unknown attribute "clang::annotate_type"
+    int [[clang::annotate_type("foo", Is...)]] val;
+          ^
+
+"Test_name.c", line 37: warning: variable "val" was declared but never referenced
+    int [[clang::annotate_type("foo", Is...)]] val;
+                                               ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 -A --c++23 Test_name.c
+"Test_name.c", line 20: error: function "D::i(B &)" (declared at line 12) cannot be referenced -- it is a deleted function
+    p->i();         // calls B::i, because B::i as a member of D is a better match than D::i
+       ^
+
+1 error detected in the compilation of "Test_name.c".

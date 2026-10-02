@@ -1,0 +1,37 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 6: warning: the "availability" attribute used here is ignored
+   __attribute__((availability(macosx,introduced=16, deprecated=20))) 
+                  ^
+
+"Test_name.c", line 10: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(macosx,introduced=15,  obsoleted=19)))
+                 ^
+
+"Test_name.c", line 14: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(macosx,introduced=24)))
+                 ^
+
+"Test_name.c", line 18: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(watchos,introduced=24)))
+                 ^
+
+"Test_name.c", line 22: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(maccatalyst, introduced=18.1, deprecated=21.1)))
+                 ^
+
+"Test_name.c", line 26: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(macos, introduced=15, deprecated=26)))
+                 ^
+
+"Test_name.c", line 27: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(watchos, introduced=15)))
+                 ^
+
+"Test_name.c", line 28: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(ios, introduced=15, deprecated=18)))
+                 ^
+
+"Test_name.c", line 32: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(macCatalyst, introduced=19.2, deprecated=22.2))) 
+                 ^
+

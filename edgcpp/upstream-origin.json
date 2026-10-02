@@ -1,0 +1,6 @@
+{
+  "repository": "https://github.com/edgcpp/compiler.git",
+  "revision": "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f",
+  "tracked_files": 111061,
+  "integration": "Embedded sources with dot_gen backend overlays; revision identifies the imported base, not a pristine working tree."
+}

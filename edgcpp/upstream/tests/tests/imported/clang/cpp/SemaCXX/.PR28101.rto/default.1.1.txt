@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 7: error: an explicit template argument list is not allowed on this declaration
+    T(A<T>){}; // expected-error{{member 'A' cannot have template arguments}}\
+      ^
+
+"Test_name.c", line 7: error: expected a ";"
+    T(A<T>){}; // expected-error{{member 'A' cannot have template arguments}}\
+           ^
+
+"Test_name.c", line 15: error: an explicit template argument list is not allowed on this declaration
+    T B<T>{}; // expected-error{{member 'B' cannot have template arguments}}\
+      ^
+
+"Test_name.c", line 15: error: expected a ";"
+    T B<T>{}; // expected-error{{member 'B' cannot have template arguments}}\
+          ^
+
+"Test_name.c", line 25: error: an explicit template argument list is not allowed on this declaration
+    T S<T>{}; // expected-error{{member 'S' cannot have template arguments}}
+      ^
+
+"Test_name.c", line 25: error: expected a ";"
+    T S<T>{}; // expected-error{{member 'S' cannot have template arguments}}
+          ^
+
+"Test_name.c", line 33: error: class "U<T>" is not a class template
+    T(D<T, U<T>>) {} // expected-error{{member 'D' cannot have template arguments}}\
+           ^
+
+"Test_name.c", line 33: error: an explicit template argument list is not allowed on this declaration
+    T(D<T, U<T>>) {} // expected-error{{member 'D' cannot have template arguments}}\
+      ^
+
+"Test_name.c", line 33: error: expected a ";"
+    T(D<T, U<T>>) {} // expected-error{{member 'D' cannot have template arguments}}\
+                  ^
+
+"Test_name.c", line 36: warning: parsing restarts here after previous syntax error
+  };
+  ^
+
+9 errors detected in the compilation of "Test_name.c".

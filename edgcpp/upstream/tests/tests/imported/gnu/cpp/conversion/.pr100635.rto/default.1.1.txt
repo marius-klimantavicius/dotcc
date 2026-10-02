@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 --c++11 Test_name.c
+"Test_name.c", line 9: error: initial value of reference to const volatile must be an lvalue
+  const volatile S& svol = v(); // { dg-error "cannot bind lvalue reference of type 'const volatile S&' to an rvalue of type 'volatile S'" }
+                           ^
+
+"Test_name.c", line 13: error: initial value of reference to const volatile must be an lvalue
+  const volatile int& voli = declvol(); // { dg-error "cannot bind lvalue reference of type 'const volatile int&' to an rvalue of type 'volatile int'" "" { target c++11} }
+                             ^
+
+2 errors detected in the compilation of "Test_name.c".

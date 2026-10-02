@@ -1,0 +1,41 @@
+fe_only -DTEST_NUMBER=3 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 Test_name.c
+"Test_name.c", line 56: error: expression must have a constant value
+    constexpr int* q = static_cast<int*>(p); // #cwg2819-q
+                                   ^
+
+"Test_name.c", line 78: error: expression must have a constant value
+    constexpr int *s1 = &*(r + 32);
+                        ^
+"Test_name.c", line 78: note: attempt to access storage one position past the end of an array of 0 elements
+    constexpr int *s1 = &*(r + 32);
+                         ^
+
+"Test_name.c", line 143: error: identifier "adl_only" is undefined
+    adl_only(a, d);
+    ^
+
+"Test_name.c", line 336: warning: "cwg2882::C::operator void()" will not be called for implicit or explicit conversions
+    operator void() = delete;
+    ^
+
+"Test_name.c", line 392: error: static assertion failed with ""
+  static_assert(noexcept(C()), "");
+  ^
+
+"Test_name.c", line 69: warning: variable "cwg2823::q1" was declared but never referenced
+    constexpr int *q1 = &*p;
+                   ^
+
+"Test_name.c", line 73: warning: variable "cwg2823::q2" was declared but never referenced
+    constexpr int *q2 = &p[0];
+                   ^
+
+"Test_name.c", line 78: warning: variable "cwg2823::s1" was declared but never referenced
+    constexpr int *s1 = &*(r + 32);
+                   ^
+
+"Test_name.c", line 80: warning: variable "cwg2823::s2" was declared but never referenced
+    constexpr int *s2 = &r[32];
+                   ^
+
+4 errors detected in the compilation of "Test_name.c".

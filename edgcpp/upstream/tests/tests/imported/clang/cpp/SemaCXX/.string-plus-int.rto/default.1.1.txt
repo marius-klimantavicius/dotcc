@@ -1,0 +1,37 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 33: warning: pointer points outside of underlying object
+    consume("foo" + 5);  // expected-warning {{adding 'int' to a string does not append to the string}} expected-note {{use array indexing to silence this warning}}
+                  ^
+
+"Test_name.c", line 35: warning: pointer points outside of underlying object
+    consume("foo" + kMyEnum);  // expected-warning {{adding 'MyEnum' to a string does not append to the string}} expected-note {{use array indexing to silence this warning}}
+                  ^
+
+"Test_name.c", line 38: warning: pointer points outside of underlying object
+    consume(5 + "foo");  // expected-warning {{adding 'int' to a string does not append to the string}} expected-note {{use array indexing to silence this warning}}
+              ^
+
+"Test_name.c", line 40: warning: pointer points outside of underlying object
+    consume(kMyEnum + "foo");  // expected-warning {{adding 'MyEnum' to a string does not append to the string}} expected-note {{use array indexing to silence this warning}}
+                    ^
+
+"Test_name.c", line 44: warning: pointer points outside of underlying object
+    consumeChar(*("foo" + 5));  // expected-warning {{adding 'int' to a string does not append to the string}} expected-note {{use array indexing to silence this warning}}
+                        ^
+
+"Test_name.c", line 45: warning: pointer points outside of underlying object
+    consumeChar(*(5 + "foo"));  // expected-warning {{adding 'int' to a string does not append to the string}} expected-note {{use array indexing to silence this warning}}
+                    ^
+
+"Test_name.c", line 47: warning: pointer points outside of underlying object
+    consume(L"foo" + 5);  // expected-warning {{adding 'int' to a string does not append to the string}} expected-note {{use array indexing to silence this warning}}
+                   ^
+
+"Test_name.c", line 52: warning: unrecognized character escape sequence
+    consume("\pfoo" + 4);  // expected-warning {{adding 'int' to a string does not append to the string}} expected-note {{use array indexing to silence this warning}}
+             ^
+
+"Test_name.c", line 61: warning: subscript out of range
+    consume(&("foo"[kMyEnum]));
+                   ^
+

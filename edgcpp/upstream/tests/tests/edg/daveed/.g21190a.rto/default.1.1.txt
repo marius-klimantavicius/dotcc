@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c++17 Test_name.c
+"Test_name.c", line 6: error: const member "A::var1" requires an initializer
+    static inline const int var1;     //clang and g++ give error, EDG accepts
+                            ^
+
+"Test_name.c", line 15: error: const member "B<N>::var5" requires an initializer
+    static inline const int var5;    //clang and g++ give error, EDG accepts
+                            ^
+
+2 errors detected in the compilation of "Test_name.c".

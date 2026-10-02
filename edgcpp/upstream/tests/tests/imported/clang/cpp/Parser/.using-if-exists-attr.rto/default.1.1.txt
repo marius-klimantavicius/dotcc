@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 13: warning: only GNU-style attributes are permitted here
+  using NS::x [[clang::using_if_exists]]; // expected-warning{{ISO C++ does not allow an attribute list to appear here}}
+                ^
+
+"Test_name.c", line 15: warning: only GNU-style attributes are permitted here
+  [[clang::using_if_exists]] // expected-warning{{ISO C++ does not allow an attribute list to appear here}}
+    ^
+
+"Test_name.c", line 19: error: namespace "NS" has no member "not_there3"
+  using NS::not_there3,                          // expected-error {{no member named 'not_there3' in namespace 'NS'}}
+            ^
+
+"Test_name.c", line 20: warning: only GNU-style attributes are permitted here
+      NS::not_there4 [[clang::using_if_exists]]; // expected-warning{{C++ does not allow an attribute list to appear here}}
+                       ^
+
+"Test_name.c", line 22: warning: only GNU-style attributes are permitted here
+  [[clang::using_if_exists]] using NS::not_there5 [[clang::using_if_exists]]; // expected-warning 2 {{ISO C++ does not allow}}
+    ^
+
+"Test_name.c", line 22: warning: only GNU-style attributes are permitted here
+  [[clang::using_if_exists]] using NS::not_there5 [[clang::using_if_exists]]; // expected-warning 2 {{ISO C++ does not allow}}
+                                                    ^
+
+"Test_name.c", line 27: warning: only GNU-style attributes are permitted here
+    using Base::y [[clang::using_if_exists]];          // expected-warning {{ISO C++ does not allow an attribute list to appear here}}
+                    ^
+
+1 error detected in the compilation of "Test_name.c".

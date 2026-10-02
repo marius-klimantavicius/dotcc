@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 64: error: declaration is incompatible with "void blapp(int)" (declared at line 63)
+  void blapp() { } // both-error {{conflicting types for 'blapp'}} \
+       ^
+
+"Test_name.c", line 68: warning: unrecognized GCC pragma
+  #pragma GCC diagnostic push
+              ^
+
+"Test_name.c", line 69: warning: unrecognized GCC pragma
+  #pragma GCC diagnostic ignored "-Wdeprecated-non-prototype"
+              ^
+
+"Test_name.c", line 71: warning: unrecognized GCC pragma
+  #pragma GCC diagnostic pop
+              ^
+
+"Test_name.c", line 75: warning: unrecognized GCC pragma
+  #pragma GCC diagnostic push
+              ^
+
+"Test_name.c", line 76: warning: unrecognized GCC pragma
+  #pragma GCC diagnostic ignored "-Wstrict-prototypes"
+              ^
+
+"Test_name.c", line 78: warning: unrecognized GCC pragma
+  #pragma GCC diagnostic pop
+              ^
+
+"Test_name.c", line 97: warning: variable "f" is used before its value is set
+    f(); // OK
+    ^
+
+"Test_name.c", line 108: warning: too many arguments in function call
+    func(1, 2, 3); // both-warning {{too many arguments in call to 'func'}}
+               ^
+
+"Test_name.c", line 115: warning: function "GH58181" was declared but never referenced
+  static int GH58181(x, y) // both-warning {{a function definition without a prototype is deprecated in all versions of C and is not supported in C23}}
+             ^
+
+1 error detected in the compilation of "Test_name.c".

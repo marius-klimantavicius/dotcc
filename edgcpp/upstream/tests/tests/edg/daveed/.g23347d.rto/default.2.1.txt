@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=2 --microsoft_v=1924 Test_name.c
+"Test_name.c", line 6: warning: nonstandard use of explicit constructor "S::S" (declared at line 4) for default aggregate element initialization
+  X x = {};  // Normally an error, but okay in Microsoft mode.
+         ^
+

@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gn 130201 --c11 Test_name.c
+"Test_name.c", line 16: warning: variable "y" was declared but never referenced
+    static A y = { x.c };
+             ^
+

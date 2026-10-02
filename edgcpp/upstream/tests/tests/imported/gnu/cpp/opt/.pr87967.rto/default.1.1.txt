@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 36: warning: variable "a" is used before its value is set
+    while (*a) {
+            ^
+
+"Test_name.c", line 43: warning: variable "e" is used before its value is set
+        for (t::ad d = b.m_fn2(), e; d != e; d++) {
+                                          ^
+

@@ -1,0 +1,41 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 Test_name.c
+"./overflow-warn-9.c", line 62: warning: integer operation result is out of range
+                  + 1LU,
+                  ^
+
+"./overflow-warn-9.c", line 34: warning: integer conversion resulted in a change of sign
+    .uc = -1,
+          ^
+
+"./overflow-warn-9.c", line 48: warning: integer conversion resulted in a change of sign
+    .sc = 0x7f 
+          ^
+
+"./overflow-warn-9.c", line 49: warning: integer conversion resulted in a change of sign
+    .sc = 0x7f 
+          ^
+
+"./overflow-warn-9.c", line 50: warning: integer conversion resulted in a change of sign
+    .sc = 0x7f 
+          ^
+
+"./overflow-warn-9.c", line 51: warning: integer conversion resulted in truncation
+    .sc = 0x7f 
+          ^
+
+"./overflow-warn-9.c", line 52: warning: integer conversion resulted in truncation
+    .sc = 0x7f 
+          ^
+
+"./overflow-warn-9.c", line 55: warning: integer conversion resulted in a change of sign
+    .ss = 0x7fff 
+          ^
+
+"./overflow-warn-9.c", line 58: warning: integer conversion resulted in a change of sign
+    .si = 0x7fffffff 
+          ^
+
+"./overflow-warn-9.c", line 62: warning: integer conversion resulted in truncation
+    .sl = 0x7fffffffffffffffL 
+          ^
+

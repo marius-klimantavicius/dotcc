@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --c++23 Test_name.c
+"Test_name.c", line 4: error: a defaulted comparison operator must be a member or a friend of the class it applies to
+    bool operator==(S, S) = default;  // error: S is not complete
+                            ^
+
+"Test_name.c", line 6: error: bad type "S" for parameter of defaulted comparison operator (must be "reference to const X" where X is the enclosing class type)
+      friend bool operator==(S, const S&) = default; // error: parameters of different types
+                                          ^
+
+"Test_name.c", line 9: error: a defaulted comparison operator must be a member or a friend of the class it applies to
+    bool operator==(E, E) = default;  // error: not a member or friend of a class
+                            ^
+
+3 errors detected in the compilation of "Test_name.c".

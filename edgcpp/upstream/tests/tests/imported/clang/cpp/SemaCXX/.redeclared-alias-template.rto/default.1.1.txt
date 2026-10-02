@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 6: error: alias template type "char" is incompatible with the previous type of "int" in the redeclaration of alias template "A" (declared at line 5)
+  template<typename T> using A = char; // expected-error {{type alias template redefinition with different types ('char' vs 'int')}}
+                             ^
+
+"Test_name.c", line 7: error: too many template parameters -- does not match previous declaration (declared at line 5)
+  template<typename T1, typename T2> using A = T1; // expected-error {{too many template parameters in template redeclaration}}
+                                 ^
+
+"Test_name.c", line 7: error: alias template type "T1" is incompatible with the previous type of "int" in the redeclaration of alias template "A" (declared at line 5)
+  template<typename T1, typename T2> using A = T1; // expected-error {{too many template parameters in template redeclaration}}
+                                           ^
+
+"Test_name.c", line 10: error: alias template type "T1" is incompatible with the previous type of "T1" in the redeclaration of alias template "B" (declared at line 9)
+  template<typename T2, typename T1> using B = T1; // expected-error {{type alias template redefinition with different types ('T1' (aka 'type-parameter-0-1') vs 'T1' (aka 'type-parameter-0-0'))}}
+                                           ^
+
+"Test_name.c", line 24: error: cannot overload functions distinguished by return type alone
+    TT<A> f(); // expected-error {{functions that differ only in their return type cannot be overloaded}}
+          ^
+
+5 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 6: error: expected a "{"
+  int __GIMPLE () foo ()
+                  ^
+
+"Test_name.c", line 9: warning: function "a_1" declared implicitly
+    return a_1(D);  /* { dg-error "cannot have default definition" } */
+           ^
+
+"Test_name.c", line 9: error: identifier "D" is undefined
+    return a_1(D);  /* { dg-error "cannot have default definition" } */
+               ^
+
+"Test_name.c", line 8: warning: variable "_1" was declared but never referenced
+    int _1;
+        ^
+
+2 errors detected in the compilation of "Test_name.c".

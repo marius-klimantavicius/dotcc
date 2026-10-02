@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=1 --c++20 --gnu_version 110100 -tused -w Test_name.c

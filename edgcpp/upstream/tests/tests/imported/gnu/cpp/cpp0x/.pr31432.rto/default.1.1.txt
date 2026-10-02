@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 4: error: template parameter pack not at end of parameter list
+  template<typename..., typename> struct A // { dg-error "parameter pack" }
+                      ^
+
+"Test_name.c", line 9: error: too few arguments for class template "A"
+  A<int, int> a;
+            ^
+
+"Test_name.c", line 10: error: too few arguments for class template "A"
+  A<char,int> b;
+            ^
+
+3 errors detected in the compilation of "Test_name.c".

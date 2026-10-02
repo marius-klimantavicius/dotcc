@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++23 Test_name.c
+"Test_name.c", line 25: error: class "F" has no suitable copy constructor
+    auto i = [&] { F g; g.g = 1; auto h = [&](auto) { g.g = 0; }; f.foo (h); return g; }; // { dg-error "use of deleted function" "" { target c++23 } }
+                                                                                    ^
+
+"Test_name.c", line 25: warning: variable "i" was declared but never referenced
+    auto i = [&] { F g; g.g = 1; auto h = [&](auto) { g.g = 0; }; f.foo (h); return g; }; // { dg-error "use of deleted function" "" { target c++23 } }
+         ^
+
+1 error detected in the compilation of "Test_name.c".

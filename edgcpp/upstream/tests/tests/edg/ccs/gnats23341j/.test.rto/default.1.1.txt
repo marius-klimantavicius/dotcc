@@ -1,0 +1,1 @@
+cpfe -DTEST_NUMBER=1 --definition_list_file=def_list Test_name.c

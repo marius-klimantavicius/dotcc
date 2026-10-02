@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 29: warning: variable "elim_cost" is used before its value is set
+    bar (elim_cost, express_cost);
+         ^
+
+"Test_name.c", line 29: warning: variable "express_cost" is used before its value is set
+    bar (elim_cost, express_cost);
+                    ^
+
+"Test_name.c", line 28: warning: variable "bound_cost" was declared but never referenced
+    comp_cost elim_cost, express_cost, bound_cost;
+                                       ^
+

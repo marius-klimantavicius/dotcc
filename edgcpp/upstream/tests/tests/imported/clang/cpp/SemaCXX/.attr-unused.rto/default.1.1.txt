@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 12: warning: variable "i1" was declared but never referenced
+    ns_not_unused::Int_not_unused i1; // expected-warning {{unused variable}}
+                                  ^
+
+"Test_name.c", line 13: warning: variable "i0" was declared but never referenced
+    ns_unused::Int_unused i0; // expected-warning {{'Int_unused' was marked unused but was used}}
+                          ^
+

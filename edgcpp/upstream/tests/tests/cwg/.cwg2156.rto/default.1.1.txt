@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --c++17 -tused -A Test_name.c
+"Test_name.c", line 7: error: enum "color" has already been defined (previous definition at line 3)
+  enum N::color {red, blue};
+          ^
+
+"Test_name.c", line 7: error: "red" has already been declared in the current scope
+  enum N::color {red, blue};
+                 ^
+
+"Test_name.c", line 7: error: "blue" has already been declared in the current scope
+  enum N::color {red, blue};
+                      ^
+
+3 errors detected in the compilation of "Test_name.c".

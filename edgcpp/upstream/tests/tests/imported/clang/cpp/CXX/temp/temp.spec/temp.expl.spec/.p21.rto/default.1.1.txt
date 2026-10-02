@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 12: error: default argument is not allowed
+  void X<int>::mf1(int i = 17) // expected-error{{default}}
+                         ^
+
+"Test_name.c", line 17: error: default argument is not allowed
+  void X<int>::mf2(int, int = 17) // expected-error{{default}}
+                            ^
+
+"Test_name.c", line 21: error: default argument is not allowed
+  void X<int>::mf2(int, U = U()) // expected-error{{default}}
+                          ^
+
+3 errors detected in the compilation of "Test_name.c".

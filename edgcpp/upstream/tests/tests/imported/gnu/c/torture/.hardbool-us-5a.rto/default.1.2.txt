@@ -1,0 +1,2 @@
+./a.out
+a.out: ./torture/hardbool.c:63: check_pfalse: Assertion `*(unsigned short*)p == (unsigned short)0xa55a' failed.

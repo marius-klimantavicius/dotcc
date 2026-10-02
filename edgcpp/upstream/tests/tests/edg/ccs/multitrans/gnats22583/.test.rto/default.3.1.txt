@@ -1,0 +1,1 @@
+cpfe -DTEST_NUMBER=3 --gnu_version 80999 --multi_trans_unit -DINLINE= -DDEFAULT== default Test_name.c gnats22583-p2.C

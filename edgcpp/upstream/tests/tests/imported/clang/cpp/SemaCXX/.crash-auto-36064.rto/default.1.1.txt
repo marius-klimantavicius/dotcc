@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 7: error: data member initializer is not allowed
+    static auto c = ;              // expected-error{{expected expression}}
+                  ^
+
+"Test_name.c", line 7: error: cannot deduce "auto" type (initializer required)
+    static auto c = ;              // expected-error{{expected expression}}
+                ^
+
+"Test_name.c", line 10: error: type name is not allowed
+    decltype(b<decltype(c), int>); // expected-error{{expected '(' for function-style cast or type construction}}
+                            ^
+
+"Test_name.c", line 10: error: type name is not allowed
+    decltype(b<decltype(c), int>); // expected-error{{expected '(' for function-style cast or type construction}}
+             ^
+
+"Test_name.c", line 10: error: declaration does not declare anything
+    decltype(b<decltype(c), int>); // expected-error{{expected '(' for function-style cast or type construction}}
+    ^
+
+5 errors detected in the compilation of "Test_name.c".

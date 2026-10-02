@@ -1,0 +1,122 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 15: warning: variable "a" was declared but never referenced
+    {ns::D auto a = 1;}
+                ^
+
+"Test_name.c", line 16: warning: variable "a" was declared but never referenced
+    {C auto a = 1;}
+            ^
+
+"Test_name.c", line 17: warning: variable "a" was declared but never referenced
+    {C<> auto a = 1;}
+              ^
+
+"Test_name.c", line 18: warning: variable "a" was declared but never referenced
+    {C<int> auto a = 1;}
+                 ^
+
+"Test_name.c", line 19: warning: variable "a" was declared but never referenced
+    {ns::D<int> auto a = 1;}
+                     ^
+
+"Test_name.c", line 20: warning: variable "a" was declared but never referenced
+    {const ns::D auto &a = 1;}
+                       ^
+
+"Test_name.c", line 21: warning: variable "a" was declared but never referenced
+    {const C auto &a = 1;}
+                   ^
+
+"Test_name.c", line 22: warning: variable "a" was declared but never referenced
+    {const C<> auto &a = 1;}
+                     ^
+
+"Test_name.c", line 23: warning: variable "a" was declared but never referenced
+    {const C<int> auto &a = 1;}
+                        ^
+
+"Test_name.c", line 24: warning: variable "a" was declared but never referenced
+    {const ns::D<int> auto &a = 1;}
+                            ^
+
+"Test_name.c", line 25: warning: variable "a" was declared but never referenced
+    {C decltype(auto) a = 1;}
+                      ^
+
+"Test_name.c", line 26: warning: variable "a" was declared but never referenced
+    {C<> decltype(auto) a = 1;}
+                        ^
+
+"Test_name.c", line 27: warning: variable "a" was declared but never referenced
+    {C<int> decltype(auto) a = 1;}
+                           ^
+
+"Test_name.c", line 28: error: decltype(auto) cannot have added type qualifiers
+    {const C<> decltype(auto) &a = 1;} // expected-error{{'decltype(auto)' cannot be combined with other type specifiers}}
+               ^
+
+"Test_name.c", line 28: error: "decltype(auto)" must be a placeholder for the complete type of the variable (not for a component of that type)
+    {const C<> decltype(auto) &a = 1;} // expected-error{{'decltype(auto)' cannot be combined with other type specifiers}}
+               ^
+
+"Test_name.c", line 28: warning: variable "a" was declared but never referenced
+    {const C<> decltype(auto) &a = 1;} // expected-error{{'decltype(auto)' cannot be combined with other type specifiers}}
+                               ^
+
+"Test_name.c", line 30: error: decltype(auto) cannot have added type qualifiers
+    {const C<int> decltype(auto) &a = 1;} // expected-error{{'decltype(auto)' cannot be combined with other type specifiers}}
+                  ^
+
+"Test_name.c", line 30: error: "decltype(auto)" must be a placeholder for the complete type of the variable (not for a component of that type)
+    {const C<int> decltype(auto) &a = 1;} // expected-error{{'decltype(auto)' cannot be combined with other type specifiers}}
+                  ^
+
+"Test_name.c", line 30: warning: variable "a" was declared but never referenced
+    {const C<int> decltype(auto) &a = 1;} // expected-error{{'decltype(auto)' cannot be combined with other type specifiers}}
+                                  ^
+
+"Test_name.c", line 32: error: expected a "<"
+    {C a = 1;}
+       ^
+
+"Test_name.c", line 34: error: expected a "<"
+    {C const a2 = 1;}
+       ^
+
+"Test_name.c", line 36: error: expected a "<"
+    {C &a3 = I;}
+       ^
+
+"Test_name.c", line 38: error: expected a "<"
+    {C &&a4 = 1;}
+       ^
+
+"Test_name.c", line 40: error: expected a "<"
+    {C decltype a19 = 1;}
+       ^
+
+"Test_name.c", line 42: error: expected a "<"
+    {C decltype(1) a20 = 1;}
+       ^
+
+"Test_name.c", line 44: warning: missing return statement at end of non-void function "foo"
+  }
+  ^
+
+"Test_name.c", line 14: warning: variable "I" was declared but never referenced
+    int I;
+        ^
+
+"Test_name.c", line 47: error: incomplete type "void" is not allowed
+  void foo2(C const &a){}
+       ^
+
+"Test_name.c", line 47: error: expected a "<"
+  void foo2(C const &a){}
+              ^
+
+"Test_name.c", line 47: error: expected a ";"
+  void foo2(C const &a){}
+                       ^
+
+13 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,38 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 15: error: exception specification for virtual function "A::f4()" is incompatible with that of overridden function "X::f4"
+    void f4();                            // Error
+         ^
+
+"Test_name.c", line 13: error: exception specification for virtual function "A::f3" is incompatible with that of overridden function "X::f3"
+    void f3();                            // Error
+         ^
+
+"Test_name.c", line 12: error: exception specification for virtual function "A::f2" is incompatible with that of overridden function "X::f2"
+    void f2();                            // Error
+         ^
+
+"Test_name.c", line 22: error: exception specification for virtual function "B::f4()" is incompatible with that of overridden function "X::f4"
+    void f4() throw(int,char,short);      // Error
+         ^
+
+"Test_name.c", line 20: error: exception specification for virtual function "B::f3" is incompatible with that of overridden function "X::f3"
+    void f3() throw(int,char,short);      // Error
+         ^
+
+"Test_name.c", line 19: error: exception specification for virtual function "B::f2" is incompatible with that of overridden function "X::f2"
+    void f2() throw(int,char,short);      // Error
+         ^
+
+"Test_name.c", line 29: error: exception specification for virtual function "C::f4()" is incompatible with that of overridden function "X::f4"
+    void f4() throw(int,char);            // Error
+         ^
+
+"Test_name.c", line 27: error: exception specification for virtual function "C::f3" is incompatible with that of overridden function "X::f3"
+    void f3() throw(int,char);            // Error
+         ^
+
+"Test_name.c", line 36: error: exception specification for virtual function "D::f4()" is incompatible with that of overridden function "X::f4"
+    void f4() throw(int);                 // Error
+         ^
+
+9 errors detected in the compilation of "Test_name.c".

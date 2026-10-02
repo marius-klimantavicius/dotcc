@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 17: error: nonstandard form for taking the address of a member function
+    Quux (Foo); // { dg-error "no matches" }
+          ^
+
+"Test_name.c", line 17: error: argument of type "void (X::*)(X *)" is incompatible with parameter of type "void (X::*)()"
+    Quux (Foo); // { dg-error "no matches" }
+          ^
+
+"Test_name.c", line 18: error: nonstandard form for taking the address of a member function
+    Quux (Bar);
+          ^
+
+3 errors detected in the compilation of "Test_name.c".

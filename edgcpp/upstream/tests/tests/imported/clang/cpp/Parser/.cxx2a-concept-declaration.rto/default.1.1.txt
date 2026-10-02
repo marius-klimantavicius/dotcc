@@ -1,0 +1,102 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 8: error: invalid redeclaration of concept "C1" (declared at line 6)
+  template<typename T> concept C1 = true; // expected-error{{redefinition}}
+                               ^
+
+"Test_name.c", line 10: error: expected a type specifier
+  template<concept T> concept D1 = true;
+           ^
+
+"Test_name.c", line 15: error: concept definition cannot appear in this scope
+    template<typename T> concept C1 = true; // expected-error {{concept declarations may only appear in global or namespace scope}}
+                         ^
+
+"Test_name.c", line 19: error: invalid redeclaration of concept "C1" (declared at line 6)
+    template<typename T> concept C1 = true; // expected-error{{redefinition}}
+                                 ^
+
+"Test_name.c", line 27: error: "C3" has already been declared in the current scope
+  int C3; // expected-error {{redefinition}}
+      ^
+
+"Test_name.c", line 28: error: "C3" has already been declared in the current scope
+  struct C3 {}; // expected-error {{redefinition}}
+         ^
+
+"Test_name.c", line 31: error: invalid redeclaration of class "C4" (declared at line 30)
+  template<typename T> concept C4 = true;
+                               ^
+
+"Test_name.c", line 45: error: identifier "wor" is undefined
+  template <bool word> concept C6 = integral_constant<bool, wor>::value;
+                                                            ^
+
+"Test_name.c", line 49: error: expected an identifier
+  template<typename T> concept bool C7 = true;
+                               ^
+
+"Test_name.c", line 52: error: expected an identifier
+  template<> concept C8 = false;
+             ^
+
+"Test_name.c", line 55: error: expected an identifier
+  template<> concept C7<int> = false;
+             ^
+
+"Test_name.c", line 58: error: invalid redeclaration of namespace "N" (declared at line 40)
+  template<typename T> concept N::C9 = false;
+                               ^
+
+"Test_name.c", line 58: error: expected an "="
+  template<typename T> concept N::C9 = false;
+                                ^
+
+"Test_name.c", line 64: error: invalid redeclaration of class "A" (declared at line 61)
+  template<typename T> concept A::C10 = false;
+                               ^
+
+"Test_name.c", line 64: error: expected an "="
+  template<typename T> concept A::C10 = false;
+                                ^
+
+"Test_name.c", line 67: error: expected an identifier
+  template<typename T> concept operator int = false;
+                               ^
+
+"Test_name.c", line 70: error: atomic constraint must have type bool
+  template<bool x> concept C11 = 2; // expected-error {{atomic constraint must be of type 'bool' (found 'int')}}
+                                 ^
+
+"Test_name.c", line 71: error: atomic constraint must have type bool
+  template<bool x> concept C12 = 2 && x; // expected-error {{atomic constraint must be of type 'bool' (found 'int')}}
+                                 ^
+
+"Test_name.c", line 72: error: atomic constraint must have type bool
+  template<bool x> concept C13 = x || 2 || x; // expected-error {{atomic constraint must be of type 'bool' (found 'int')}}
+                                      ^
+
+"Test_name.c", line 73: error: atomic constraint must have type bool
+  template<bool x> concept C14 = 8ull && x || x; // expected-error {{atomic constraint must be of type 'bool' (found 'unsigned long long')}}
+                                 ^
+
+"Test_name.c", line 74: error: atomic constraint must have type bool
+  template<typename T> concept C15 = sizeof(T); // expected-error {{atomic constraint must be of type 'bool'}}
+                                     ^
+
+"Test_name.c", line 75: error: atomic constraint must have type bool
+  template<typename T> concept C16 = true && (0 && 0); // expected-error {{atomic constraint must be of type 'bool' (found 'int')}}
+                                              ^
+
+"Test_name.c", line 75: error: atomic constraint must have type bool
+  template<typename T> concept C16 = true && (0 && 0); // expected-error {{atomic constraint must be of type 'bool' (found 'int')}}
+                                                   ^
+
+"Test_name.c", line 85: warning: type qualifier is meaningless on cast type
+  template<typename T> concept C20 = (const bool)true;
+                                      ^
+
+"Test_name.c", line 94: error: identifier "wor" is undefined
+  template <bool word> concept C23 = integral_constant<bool, wor>::value;
+                                                             ^
+
+24 errors detected in the compilation of "Test_name.c".

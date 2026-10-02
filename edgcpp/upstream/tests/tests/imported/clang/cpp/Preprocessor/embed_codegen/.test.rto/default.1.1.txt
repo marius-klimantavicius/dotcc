@@ -1,0 +1,37 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 50: warning: expression has no effect
+  #embed<jk.txt>
+   ^
+
+"Test_name.c", line 13: warning: variable "ca" was declared but never referenced
+  int ca[] = {
+      ^
+
+"Test_name.c", line 22: warning: variable "notca" was declared but never referenced
+  int notca[] = {
+      ^
+
+"Test_name.c", line 32: warning: variable "sc" was declared but never referenced
+  S1 sc = {
+     ^
+
+"Test_name.c", line 43: warning: variable "s" was declared but never referenced
+  S1 s = {
+     ^
+
+"Test_name.c", line 49: warning: variable "b" was declared but never referenced
+  int b = (
+      ^
+
+"Test_name.c", line 61: warning: variable "t" was declared but never referenced
+  constexpr struct T t[] = {
+                     ^
+
+"Test_name.c", line 83: warning: variable "tnonc" was declared but never referenced
+  struct T tnonc[] = {
+           ^
+
+"Test_name.c", line 91: warning: variable "W" was declared but never referenced
+  constexpr struct Wrapper W = {
+                           ^
+

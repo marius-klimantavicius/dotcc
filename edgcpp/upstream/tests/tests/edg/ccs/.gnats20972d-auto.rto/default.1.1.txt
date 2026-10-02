@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --c++11 --sys_include $RUN_TEST_CURR_DIR/include --gnu_version 40600 Test_name.c
+"Test_name.c", line 11: warning: a "new" of an std::initializer_list object is unlikely to work as expected because the underlying array will be destroyed at the end of the full expression
+    auto a = new auto {2};
+                      ^
+

@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 7: error: parameter pack "T" was referenced but not expanded
+  template<typename...T> struct A<T*> // { dg-error "parameter packs|T" }
+                                  ^
+
+"Test_name.c", line 12: error: parameter pack "T" was referenced but not expanded
+  template<typename...T> void A<T*>::foo() {} // { dg-error "invalid declarator" }
+                                ^
+
+"Test_name.c", line 18: error: parameter pack "T" was referenced but not expanded
+  template<typename...T> struct B<T&> // { dg-error "parameter packs|T" }
+                                  ^
+
+"Test_name.c", line 23: error: parameter pack "T" was referenced but not expanded
+  template<typename...T> void B<T&>::foo() {} // { dg-error "invalid declarator" }
+                                ^
+
+"Test_name.c", line 28: error: parameter pack "T" was referenced but not expanded
+  template<typename...T> struct C<T()> // { dg-error "parameter packs|T" }
+                                  ^
+
+"Test_name.c", line 33: error: parameter pack "T" was referenced but not expanded
+  template<typename...T> void C<T()>::foo() {} // { dg-error "invalid declarator" }
+                                ^
+
+6 errors detected in the compilation of "Test_name.c".

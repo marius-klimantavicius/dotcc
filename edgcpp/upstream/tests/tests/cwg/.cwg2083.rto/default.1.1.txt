@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 -A --c++20 -tused -e 200 --no_wrap -A Test_name.c
+"Test_name.c", line 12: warning: variable "aq" was declared but never referenced
+      constexpr int aq = a.q;
+                    ^
+

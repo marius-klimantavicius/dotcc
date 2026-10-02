@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=5 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 -DBAR=export Test_name.c
+"Test_name.c", line 15: error: exported templates are no longer in the standard C++ language
+  BAR module bar; // expected-error {{translation unit contains multiple module declarations}}
+  ^
+
+"Test_name.c", line 15: error: expected "template"
+  BAR module bar; // expected-error {{translation unit contains multiple module declarations}}
+      ^
+
+2 errors detected in the compilation of "Test_name.c".

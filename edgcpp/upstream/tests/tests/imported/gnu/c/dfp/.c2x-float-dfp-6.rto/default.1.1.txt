@@ -1,0 +1,10 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"./dfp/c2x-float-dfp-6.c", line 16: error: identifier "_Decimal32" is undefined
+  volatile _Decimal32 d = 
+           ^
+
+"./dfp/c2x-float-dfp-6.c", line 16: error: function call is not allowed in a constant expression
+                         (__builtin_nand32 (""))
+                          ^
+
+2 errors detected in the compilation of "Test_name.c".

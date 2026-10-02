@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 13: warning: variable "s" was declared but never referenced
+  constexpr S s;
+              ^
+
+"Test_name.c", line 14: warning: variable "s2" was declared but never referenced
+  constexpr S s2[4];
+              ^
+
+"Test_name.c", line 21: warning: variable "w" was declared but never referenced
+  constexpr W w;
+              ^
+
+"Test_name.c", line 22: warning: variable "w2" was declared but never referenced
+  constexpr W w2[4];
+              ^
+
+"Test_name.c", line 30: warning: variable "y" was declared but never referenced
+  constexpr Y y;
+              ^
+
+"Test_name.c", line 31: warning: variable "y2" was declared but never referenced
+  constexpr Y y2[4];
+              ^
+
+"Test_name.c", line 39: warning: variable "z" was declared but never referenced
+  constexpr Z z(42);
+              ^
+

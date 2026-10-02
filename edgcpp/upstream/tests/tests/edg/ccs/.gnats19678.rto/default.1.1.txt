@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c++11 Test_name.c
+"Test_name.c", line 10: error: invalid narrowing conversion from "char" to "bool"
+  S s{c};
+      ^
+
+"Test_name.c", line 11: error: invalid narrowing conversion from "char" to "bool"
+  S* p = new S{c};
+               ^
+
+2 errors detected in the compilation of "Test_name.c".

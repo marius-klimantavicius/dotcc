@@ -1,0 +1,37 @@
+fe_only -DTEST_NUMBER=1 --c++20 Test_name.c
+"Test_name.c", line 10: error: invalid narrowing conversion from "int" to "signed char": constant value does not fit in destination type
+    C<{ 1024 }> c1024;            // error
+        ^
+
+"Test_name.c", line 35: error: no default constructor exists for class "explicit_ctor_init::B"
+    C<{}> c0;                     // error
+      ^
+
+"Test_name.c", line 36: error: copy-list-initialization cannot use a constructor marked "explicit"
+    C<{1}> c1;                    // error
+      ^
+
+"Test_name.c", line 37: error: copy-list-initialization cannot use a constructor marked "explicit"
+    C<{1, 1}> c11;                // error
+      ^
+
+"Test_name.c", line 55: error: copy-list-initialization cannot use "explicit" deduction guide "explicit_deduction_guide::B(T) [with T=int]"
+    C<{1}> c1;                    // error
+      ^
+
+"Test_name.c", line 55: error: copy-list-initialization cannot use a constructor marked "explicit"
+    C<{1}> c1;                    // error
+      ^
+
+"Test_name.c", line 64: error: cannot deduce "auto" template parameter type "decltype(auto)" from "<unknown-type>"
+    C<{1}> c1;                    // error
+      ^
+
+"Test_name.c", line 72: error: no instance of function template "potential_internal_error::f" matches the argument list
+    int i = f<{g()}>();           // error
+            ^
+"Test_name.c", line 71: note: substituting explicit template arguments "<<expression>>" for function template "potential_internal_error::f" failed
+    template<S> int f();
+                    ^
+
+8 errors detected in the compilation of "Test_name.c".

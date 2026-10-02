@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=3 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c11 Test_name.c
+"Test_name.c", line 34: error: a flexible array member cannot be declared in an otherwise-empty type
+      struct { int a[]; }; /* expected-warning {{flexible array member 'a' in otherwise empty struct is a GNU extension}}
+                      ^
+
+1 error detected in the compilation of "Test_name.c".

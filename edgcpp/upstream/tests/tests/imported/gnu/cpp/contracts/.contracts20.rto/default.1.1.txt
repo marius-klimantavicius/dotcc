@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 7: warning: unknown attribute "pre"
+    [[ pre: a > 0 ]] // { dg-error "contracts are only available with .-fcontracts." }
+       ^
+
+"Test_name.c", line 7: error: expected a ","
+    [[ pre: a > 0 ]] // { dg-error "contracts are only available with .-fcontracts." }
+          ^
+
+"Test_name.c", line 8: warning: unknown attribute "post"
+    [[ post r: r < 0 ]] // { dg-error "contracts are only available with .-fcontracts." }
+       ^
+
+"Test_name.c", line 8: error: expected a ","
+    [[ post r: r < 0 ]] // { dg-error "contracts are only available with .-fcontracts." }
+            ^
+
+"Test_name.c", line 10: warning: unknown attribute "assert"
+    [[ assert: a != 0 ]]; // { dg-error "contracts are only available with .-fcontracts." }
+       ^
+
+"Test_name.c", line 10: error: expected a ","
+    [[ assert: a != 0 ]]; // { dg-error "contracts are only available with .-fcontracts." }
+             ^
+
+3 errors detected in the compilation of "Test_name.c".

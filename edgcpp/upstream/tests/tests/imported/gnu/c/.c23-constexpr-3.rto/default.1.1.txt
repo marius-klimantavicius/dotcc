@@ -1,0 +1,1288 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 7: warning: explicit type is missing ("int" assumed)
+  extern constexpr int v0 = 0; /* { dg-error "'constexpr' used with 'extern'" } */
+         ^
+
+"Test_name.c", line 7: error: expected a ";"
+  extern constexpr int v0 = 0; /* { dg-error "'constexpr' used with 'extern'" } */
+                   ^
+
+"Test_name.c", line 9: warning: this declaration has no storage class or type specifier
+  constexpr extern int v1 = 0; /* { dg-error "'constexpr' used with 'extern'" } */
+  ^
+
+"Test_name.c", line 9: error: expected a ";"
+  constexpr extern int v1 = 0; /* { dg-error "'constexpr' used with 'extern'" } */
+            ^
+
+"Test_name.c", line 11: warning: explicit type is missing ("int" assumed)
+  typedef constexpr int v2; /* { dg-error "'constexpr' used with 'typedef'" } */
+          ^
+
+"Test_name.c", line 11: error: "constexpr" has already been declared in the current scope
+  typedef constexpr int v2; /* { dg-error "'constexpr' used with 'typedef'" } */
+          ^
+
+"Test_name.c", line 11: error: expected a ";"
+  typedef constexpr int v2; /* { dg-error "'constexpr' used with 'typedef'" } */
+                    ^
+
+"Test_name.c", line 12: error: invalid combination of type specifiers
+  constexpr typedef int v3; /* { dg-error "'constexpr' used with 'typedef'" } */
+                    ^
+
+"Test_name.c", line 13: error: invalid combination of type specifiers
+  thread_local constexpr int v4 = 0; /* { dg-error "'constexpr' used with '_Thread_local'" } */
+                         ^
+
+"Test_name.c", line 14: error: invalid combination of type specifiers
+  constexpr thread_local int v5 = 0; /* { dg-error "'thread_local' used with 'constexpr'" } */
+                         ^
+
+"Test_name.c", line 15: error: "constexpr" has already been declared in the current scope
+  constexpr constexpr int v6 = 1; /* { dg-error "duplicate 'constexpr'" } */
+            ^
+
+"Test_name.c", line 15: error: expected a ";"
+  constexpr constexpr int v6 = 1; /* { dg-error "duplicate 'constexpr'" } */
+                      ^
+
+"Test_name.c", line 16: warning: this declaration has no storage class or type specifier
+  constexpr struct v7; /* { dg-error "'constexpr' in empty declaration" } */
+  ^
+
+"Test_name.c", line 16: error: expected a ";"
+  constexpr struct v7; /* { dg-error "'constexpr' in empty declaration" } */
+            ^
+
+"Test_name.c", line 18: warning: this declaration has no storage class or type specifier
+  constexpr union v8; /* { dg-error "'constexpr' in empty declaration" } */
+  ^
+
+"Test_name.c", line 18: error: expected a ";"
+  constexpr union v8; /* { dg-error "'constexpr' in empty declaration" } */
+            ^
+
+"Test_name.c", line 20: warning: this declaration has no storage class or type specifier
+  constexpr struct v9 { int a; }; /* { dg-error "'constexpr' in empty declaration" } */
+  ^
+
+"Test_name.c", line 20: error: expected a ";"
+  constexpr struct v9 { int a; }; /* { dg-error "'constexpr' in empty declaration" } */
+            ^
+
+"Test_name.c", line 22: warning: this declaration has no storage class or type specifier
+  constexpr union v10 { int a; }; /* { dg-error "'constexpr' in empty declaration" } */
+  ^
+
+"Test_name.c", line 22: error: expected a ";"
+  constexpr union v10 { int a; }; /* { dg-error "'constexpr' in empty declaration" } */
+            ^
+
+"Test_name.c", line 24: warning: this declaration has no storage class or type specifier
+  constexpr; /* { dg-error "'constexpr' in empty declaration" } */
+  ^
+
+"Test_name.c", line 25: warning: this declaration has no storage class or type specifier
+  constexpr int; /* { dg-error "empty declaration" } */
+  ^
+
+"Test_name.c", line 25: error: expected a ";"
+  constexpr int; /* { dg-error "empty declaration" } */
+            ^
+
+"Test_name.c", line 26: warning: this declaration has no storage class or type specifier
+  constexpr const; /* { dg-error "empty declaration" } */
+  ^
+
+"Test_name.c", line 26: error: expected a ";"
+  constexpr const; /* { dg-error "empty declaration" } */
+            ^
+
+"Test_name.c", line 27: warning: this declaration has no storage class or type specifier
+  constexpr int v11; /* { dg-error "initialized data declaration" } */
+  ^
+
+"Test_name.c", line 27: error: expected a ";"
+  constexpr int v11; /* { dg-error "initialized data declaration" } */
+            ^
+
+"Test_name.c", line 28: warning: this declaration has no storage class or type specifier
+  constexpr int v12 { } /* { dg-error "initialized data declaration" } */
+  ^
+
+"Test_name.c", line 28: error: expected a ";"
+  constexpr int v12 { } /* { dg-error "initialized data declaration" } */
+            ^
+
+"Test_name.c", line 30: warning: this declaration has no storage class or type specifier
+  constexpr int v15 = sizeof (struct v16 *); /* { dg-error "declared in underspecified object initializer" } */
+  ^
+
+"Test_name.c", line 30: error: expected a ";"
+  constexpr int v15 = sizeof (struct v16 *); /* { dg-error "declared in underspecified object initializer" } */
+            ^
+
+"Test_name.c", line 31: warning: this declaration has no storage class or type specifier
+  constexpr int v17 = sizeof (union v18 *); /* { dg-error "declared in underspecified object initializer" } */
+  ^
+
+"Test_name.c", line 31: error: expected a ";"
+  constexpr int v17 = sizeof (union v18 *); /* { dg-error "declared in underspecified object initializer" } */
+            ^
+
+"Test_name.c", line 32: warning: this declaration has no storage class or type specifier
+  constexpr int v19 = sizeof (struct v20 { int a; }); /* { dg-error "defined in underspecified object initializer" } */
+  ^
+
+"Test_name.c", line 32: error: expected a ";"
+  constexpr int v19 = sizeof (struct v20 { int a; }); /* { dg-error "defined in underspecified object initializer" } */
+            ^
+
+"Test_name.c", line 33: warning: this declaration has no storage class or type specifier
+  constexpr int v21 = sizeof (struct { int a; }); /* { dg-error "defined in underspecified object initializer" } */
+  ^
+
+"Test_name.c", line 33: error: expected a ";"
+  constexpr int v21 = sizeof (struct { int a; }); /* { dg-error "defined in underspecified object initializer" } */
+            ^
+
+"Test_name.c", line 34: warning: this declaration has no storage class or type specifier
+  constexpr int v22 = sizeof (union v23 { int a; }); /* { dg-error "defined in underspecified object initializer" } */
+  ^
+
+"Test_name.c", line 34: error: expected a ";"
+  constexpr int v22 = sizeof (union v23 { int a; }); /* { dg-error "defined in underspecified object initializer" } */
+            ^
+
+"Test_name.c", line 35: warning: this declaration has no storage class or type specifier
+  constexpr int v24 = sizeof (union { int a; }); /* { dg-error "defined in underspecified object initializer" } */
+  ^
+
+"Test_name.c", line 35: error: expected a ";"
+  constexpr int v24 = sizeof (union { int a; }); /* { dg-error "defined in underspecified object initializer" } */
+            ^
+
+"Test_name.c", line 36: warning: this declaration has no storage class or type specifier
+  constexpr int v25 = sizeof (enum v26 { A }); /* { dg-error "defined in underspecified object initializer" } */
+  ^
+
+"Test_name.c", line 36: error: expected a ";"
+  constexpr int v25 = sizeof (enum v26 { A }); /* { dg-error "defined in underspecified object initializer" } */
+            ^
+
+"Test_name.c", line 39: warning: this declaration has no storage class or type specifier
+  constexpr int v27 = sizeof (enum { B }); /* { dg-error "defined in underspecified object initializer" } */
+  ^
+
+"Test_name.c", line 39: error: expected a ";"
+  constexpr int v27 = sizeof (enum { B }); /* { dg-error "defined in underspecified object initializer" } */
+            ^
+
+"Test_name.c", line 42: warning: this declaration has no storage class or type specifier
+  constexpr int v29 = sizeof (struct v28 { int a; }); /* { dg-error "defined in underspecified object initializer" } */
+  ^
+
+"Test_name.c", line 42: error: expected a ";"
+  constexpr int v29 = sizeof (struct v28 { int a; }); /* { dg-error "defined in underspecified object initializer" } */
+            ^
+
+"Test_name.c", line 44: warning: this declaration has no storage class or type specifier
+  constexpr int v31 = sizeof (union v30 { int a; }); /* { dg-error "defined in underspecified object initializer" } */
+  ^
+
+"Test_name.c", line 44: error: expected a ";"
+  constexpr int v31 = sizeof (union v30 { int a; }); /* { dg-error "defined in underspecified object initializer" } */
+            ^
+
+"Test_name.c", line 45: warning: this declaration has no storage class or type specifier
+  constexpr int v32 = sizeof (v32); /* { dg-error "underspecified 'v32' referenced in its initializer" } */
+  ^
+
+"Test_name.c", line 45: error: expected a ";"
+  constexpr int v32 = sizeof (v32); /* { dg-error "underspecified 'v32' referenced in its initializer" } */
+            ^
+
+"Test_name.c", line 47: warning: this declaration has no storage class or type specifier
+  constexpr const int v33 = 1; /* { dg-error "underspecified declaration of 'v33', which is already declared in this scope" } */
+  ^
+
+"Test_name.c", line 47: error: expected a ";"
+  constexpr const int v33 = 1; /* { dg-error "underspecified declaration of 'v33', which is already declared in this scope" } */
+            ^
+
+"Test_name.c", line 48: warning: this declaration has no storage class or type specifier
+  constexpr void v34 () {} /* { dg-error "'constexpr' requires an initialized data declaration" } */
+  ^
+
+"Test_name.c", line 48: error: expected a ";"
+  constexpr void v34 () {} /* { dg-error "'constexpr' requires an initialized data declaration" } */
+            ^
+
+"Test_name.c", line 50: error: variable "constexpr" is not a type name
+  void v37 (constexpr short); /* { dg-error "storage class specified for unnamed parameter" } */
+            ^
+
+"Test_name.c", line 50: error: invalid combination of type specifiers
+  void v37 (constexpr short); /* { dg-error "storage class specified for unnamed parameter" } */
+            ^
+
+"Test_name.c", line 51: error: variable "constexpr" is not a type name
+  void v38 (constexpr register int v39); /* { dg-error "storage class specified for parameter 'v39'" } */
+            ^
+
+"Test_name.c", line 51: error: invalid combination of type specifiers
+  void v38 (constexpr register int v39); /* { dg-error "storage class specified for parameter 'v39'" } */
+                               ^
+
+"Test_name.c", line 52: error: variable "constexpr" is not a type name
+  void v40 (constexpr register short); /* { dg-error "storage class specified for unnamed parameter" } */
+            ^
+
+"Test_name.c", line 52: error: invalid combination of type specifiers
+  void v40 (constexpr register short); /* { dg-error "storage class specified for unnamed parameter" } */
+            ^
+
+"Test_name.c", line 56: warning: this declaration has no storage class or type specifier
+  constexpr int v41 (); /* { dg-error "'constexpr' requires an initialized data declaration" } */
+  ^
+
+"Test_name.c", line 56: error: expected a ";"
+  constexpr int v41 (); /* { dg-error "'constexpr' requires an initialized data declaration" } */
+            ^
+
+"Test_name.c", line 63: error: variable "constexpr" is not a type name
+  constexpr t42 v48 = {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+  ^
+
+"Test_name.c", line 63: error: "t42" has already been declared in the current scope
+  constexpr t42 v48 = {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+            ^
+
+"Test_name.c", line 63: error: expected a ";"
+  constexpr t42 v48 = {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+                ^
+
+"Test_name.c", line 64: error: variable "constexpr" is not a type name
+  constexpr t43 v49 = {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+  ^
+
+"Test_name.c", line 64: error: "t43" has already been declared in the current scope
+  constexpr t43 v49 = {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+            ^
+
+"Test_name.c", line 64: error: expected a ";"
+  constexpr t43 v49 = {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+                ^
+
+"Test_name.c", line 65: error: variable "constexpr" is not a type name
+  constexpr t44 v50 = {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+  ^
+
+"Test_name.c", line 65: error: "t44" has already been declared in the current scope
+  constexpr t44 v50 = {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+            ^
+
+"Test_name.c", line 65: error: expected a ";"
+  constexpr t44 v50 = {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+                ^
+
+"Test_name.c", line 66: warning: this declaration has no storage class or type specifier
+  constexpr volatile double v51 = {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+  ^
+
+"Test_name.c", line 66: error: expected a ";"
+  constexpr volatile double v51 = {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+            ^
+
+"Test_name.c", line 67: warning: this declaration has no storage class or type specifier
+  constexpr int *restrict v52 = {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+  ^
+
+"Test_name.c", line 67: error: expected a ";"
+  constexpr int *restrict v52 = {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+            ^
+
+"Test_name.c", line 68: warning: this declaration has no storage class or type specifier
+  constexpr _Atomic (short) v53 = {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+  ^
+
+"Test_name.c", line 68: error: expected a ";"
+  constexpr _Atomic (short) v53 = {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+            ^
+
+"Test_name.c", line 69: warning: this declaration has no storage class or type specifier
+  constexpr long *volatile v54 = {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+  ^
+
+"Test_name.c", line 69: error: expected a ";"
+  constexpr long *volatile v54 = {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+            ^
+
+"Test_name.c", line 70: warning: this declaration has no storage class or type specifier
+  constexpr struct t45 v55 = {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+  ^
+
+"Test_name.c", line 70: error: expected a ";"
+  constexpr struct t45 v55 = {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+            ^
+
+"Test_name.c", line 71: warning: this declaration has no storage class or type specifier
+  constexpr struct t46 v56 = {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+  ^
+
+"Test_name.c", line 71: error: expected a ";"
+  constexpr struct t46 v56 = {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+            ^
+
+"Test_name.c", line 72: warning: this declaration has no storage class or type specifier
+  constexpr struct t47 v57 = {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+  ^
+
+"Test_name.c", line 72: error: expected a ";"
+  constexpr struct t47 v57 = {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+            ^
+
+"Test_name.c", line 73: error: variable "t42" is not a type name
+  union t58 { struct { union { t42 a[1]; } a; } a; };
+                               ^
+
+"Test_name.c", line 76: warning: this declaration has no storage class or type specifier
+  constexpr union t58 v61 = {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+  ^
+
+"Test_name.c", line 76: error: expected a ";"
+  constexpr union t58 v61 = {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+            ^
+
+"Test_name.c", line 77: warning: this declaration has no storage class or type specifier
+  constexpr union t59 v62 = {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+  ^
+
+"Test_name.c", line 77: error: expected a ";"
+  constexpr union t59 v62 = {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+            ^
+
+"Test_name.c", line 78: warning: this declaration has no storage class or type specifier
+  constexpr union t60 v63 = {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+  ^
+
+"Test_name.c", line 78: error: expected a ";"
+  constexpr union t60 v63 = {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+            ^
+
+"Test_name.c", line 79: error: variable "constexpr" is not a type name
+  constexpr t42 v64[1][2][3] = {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+  ^
+
+"Test_name.c", line 79: error: expected a ";"
+  constexpr t42 v64[1][2][3] = {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+                ^
+
+"Test_name.c", line 80: warning: this declaration has no storage class or type specifier
+  constexpr volatile int v65[1][2][3] = {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+  ^
+
+"Test_name.c", line 80: error: expected a ";"
+  constexpr volatile int v65[1][2][3] = {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+            ^
+
+"Test_name.c", line 81: warning: this declaration has no storage class or type specifier
+  constexpr struct t45 v66[2][2][4] = {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+  ^
+
+"Test_name.c", line 81: error: expected a ";"
+  constexpr struct t45 v66[2][2][4] = {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+            ^
+
+"Test_name.c", line 82: warning: this declaration has no storage class or type specifier
+  constexpr union t60 v67[2][2][4] = {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+  ^
+
+"Test_name.c", line 82: error: expected a ";"
+  constexpr union t60 v67[2][2][4] = {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+            ^
+
+"Test_name.c", line 84: warning: this declaration has no storage class or type specifier
+  constexpr int v69 = v68; /* { dg-error "initializer element is not constant" } */
+  ^
+
+"Test_name.c", line 84: error: expected a ";"
+  constexpr int v69 = v68; /* { dg-error "initializer element is not constant" } */
+            ^
+
+"Test_name.c", line 86: warning: this declaration has no storage class or type specifier
+  constexpr double v70 = exp (0); /* { dg-error "initializer element is not a constant expression" } */
+  ^
+
+"Test_name.c", line 86: error: expected a ";"
+  constexpr double v70 = exp (0); /* { dg-error "initializer element is not a constant expression" } */
+            ^
+
+"Test_name.c", line 88: warning: this declaration has no storage class or type specifier
+  constexpr struct s71 v72 = { 0, exp (0) }; /* { dg-error "initializer element is not a constant expression" } */
+  ^
+
+"Test_name.c", line 88: error: expected a ";"
+  constexpr struct s71 v72 = { 0, exp (0) }; /* { dg-error "initializer element is not a constant expression" } */
+            ^
+
+"Test_name.c", line 90: warning: this declaration has no storage class or type specifier
+  constexpr struct s71 v73 = { v68, 0 }; /* { dg-error "initializer element is not constant" } */
+  ^
+
+"Test_name.c", line 90: error: expected a ";"
+  constexpr struct s71 v73 = { v68, 0 }; /* { dg-error "initializer element is not constant" } */
+            ^
+
+"Test_name.c", line 92: warning: this declaration has no storage class or type specifier
+  constexpr union u74 v75 = { v68 }; /* { dg-error "initializer element is not constant" } */
+  ^
+
+"Test_name.c", line 92: error: expected a ";"
+  constexpr union u74 v75 = { v68 }; /* { dg-error "initializer element is not constant" } */
+            ^
+
+"Test_name.c", line 93: warning: this declaration has no storage class or type specifier
+  constexpr union u74 v76 = { .b = exp (0) }; /* { dg-error "initializer element is not a constant expression" } */
+  ^
+
+"Test_name.c", line 93: error: expected a ";"
+  constexpr union u74 v76 = { .b = exp (0) }; /* { dg-error "initializer element is not a constant expression" } */
+            ^
+
+"Test_name.c", line 95: warning: this declaration has no storage class or type specifier
+  constexpr struct s77 *v77 = 0; /* { dg-error "'struct s77' declared in underspecified object declaration" } */
+  ^
+
+"Test_name.c", line 95: error: expected a ";"
+  constexpr struct s77 *v77 = 0; /* { dg-error "'struct s77' declared in underspecified object declaration" } */
+            ^
+
+"Test_name.c", line 96: warning: this declaration has no storage class or type specifier
+  constexpr union u78 *v78 = 0; /* { dg-error "'union u78' declared in underspecified object declaration" } */
+  ^
+
+"Test_name.c", line 96: error: expected a ";"
+  constexpr union u78 *v78 = 0; /* { dg-error "'union u78' declared in underspecified object declaration" } */
+            ^
+
+"Test_name.c", line 97: warning: this declaration has no storage class or type specifier
+  constexpr struct s79 { int a; } v79 = { 0 }; /* { dg-error "'struct s79' defined in underspecified object declaration" } */
+  ^
+
+"Test_name.c", line 97: error: expected a ";"
+  constexpr struct s79 { int a; } v79 = { 0 }; /* { dg-error "'struct s79' defined in underspecified object declaration" } */
+            ^
+
+"Test_name.c", line 98: warning: this declaration has no storage class or type specifier
+  constexpr union u80 { int a; } v80 = { 0 }; /* { dg-error "'union u80' defined in underspecified object declaration" } */
+  ^
+
+"Test_name.c", line 98: error: expected a ";"
+  constexpr union u80 { int a; } v80 = { 0 }; /* { dg-error "'union u80' defined in underspecified object declaration" } */
+            ^
+
+"Test_name.c", line 99: warning: this declaration has no storage class or type specifier
+  constexpr enum e81 { E81 } v81 = E81; /* { dg-error "'enum e81' defined in underspecified object declaration" } */
+  ^
+
+"Test_name.c", line 99: error: expected a ";"
+  constexpr enum e81 { E81 } v81 = E81; /* { dg-error "'enum e81' defined in underspecified object declaration" } */
+            ^
+
+"Test_name.c", line 100: warning: this declaration has no storage class or type specifier
+  constexpr enum { E82 } v82 = E82; /* { dg-error "defined in underspecified object declaration" } */
+  ^
+
+"Test_name.c", line 100: error: expected a ";"
+  constexpr enum { E82 } v82 = E82; /* { dg-error "defined in underspecified object declaration" } */
+            ^
+
+"Test_name.c", line 101: error: declaration is incompatible with "int constexpr" (declared at line 15)
+  struct s83 constexpr *v83 = 0; /* { dg-error "'struct s83' declared in underspecified object declaration" } */
+             ^
+
+"Test_name.c", line 101: error: expected a ";"
+  struct s83 constexpr *v83 = 0; /* { dg-error "'struct s83' declared in underspecified object declaration" } */
+                       ^
+
+"Test_name.c", line 102: error: declaration is incompatible with "int constexpr" (declared at line 101)
+  union u84 constexpr *v84 = 0; /* { dg-error "'union u84' declared in underspecified object declaration" } */
+            ^
+
+"Test_name.c", line 102: error: expected a ";"
+  union u84 constexpr *v84 = 0; /* { dg-error "'union u84' declared in underspecified object declaration" } */
+                      ^
+
+"Test_name.c", line 103: error: declaration is incompatible with "int constexpr" (declared at line 102)
+  struct s85 { int a; } constexpr v85 = { 0 }; /* { dg-error "'struct s85' defined in underspecified object declaration" } */
+                        ^
+
+"Test_name.c", line 103: error: expected a ";"
+  struct s85 { int a; } constexpr v85 = { 0 }; /* { dg-error "'struct s85' defined in underspecified object declaration" } */
+                                  ^
+
+"Test_name.c", line 104: error: declaration is incompatible with "int constexpr" (declared at line 103)
+  union u86 { int a; } constexpr v86 = { 0 }; /* { dg-error "'union u86' defined in underspecified object declaration" } */
+                       ^
+
+"Test_name.c", line 104: error: expected a ";"
+  union u86 { int a; } constexpr v86 = { 0 }; /* { dg-error "'union u86' defined in underspecified object declaration" } */
+                                 ^
+
+"Test_name.c", line 105: error: declaration is incompatible with "int constexpr" (declared at line 104)
+  enum e87 { E87 } constexpr v87 = E87; /* { dg-error "'enum e87' defined in underspecified object declaration" } */
+                   ^
+
+"Test_name.c", line 105: error: expected a ";"
+  enum e87 { E87 } constexpr v87 = E87; /* { dg-error "'enum e87' defined in underspecified object declaration" } */
+                             ^
+
+"Test_name.c", line 106: error: declaration is incompatible with "int constexpr" (declared at line 105)
+  enum { E88 } constexpr v88 = E88; /* { dg-error "defined in underspecified object declaration" } */
+               ^
+
+"Test_name.c", line 106: error: expected a ";"
+  enum { E88 } constexpr v88 = E88; /* { dg-error "defined in underspecified object declaration" } */
+                         ^
+
+"Test_name.c", line 107: warning: this declaration has no storage class or type specifier
+  constexpr void *v89 = (void *) 64; /* { dg-error "'constexpr' pointer initializer is not null" } */
+  ^
+
+"Test_name.c", line 107: error: expected a ";"
+  constexpr void *v89 = (void *) 64; /* { dg-error "'constexpr' pointer initializer is not null" } */
+            ^
+
+"Test_name.c", line 108: warning: this declaration has no storage class or type specifier
+  constexpr int *v90 = (int *) 64; /* { dg-error "'constexpr' pointer initializer is not null" } */
+  ^
+
+"Test_name.c", line 108: error: expected a ";"
+  constexpr int *v90 = (int *) 64; /* { dg-error "'constexpr' pointer initializer is not null" } */
+            ^
+
+"Test_name.c", line 109: warning: this declaration has no storage class or type specifier
+  constexpr int v91 = (int) (double) 1.0; /* { dg-error "constexpr' integer initializer is not an integer constant expression" } */
+  ^
+
+"Test_name.c", line 109: error: expected a ";"
+  constexpr int v91 = (int) (double) 1.0; /* { dg-error "constexpr' integer initializer is not an integer constant expression" } */
+            ^
+
+"Test_name.c", line 110: warning: this declaration has no storage class or type specifier
+  constexpr struct s71 v92 = { (int) (double) 1.0, 0 }; /* { dg-error "constexpr' integer initializer is not an integer constant expression" } */
+  ^
+
+"Test_name.c", line 110: error: expected a ";"
+  constexpr struct s71 v92 = { (int) (double) 1.0, 0 }; /* { dg-error "constexpr' integer initializer is not an integer constant expression" } */
+            ^
+
+"Test_name.c", line 112: warning: this declaration has no storage class or type specifier
+  constexpr struct s93 v94 = { (int *) 16 }; /* { dg-error "'constexpr' pointer initializer is not null" } */
+  ^
+
+"Test_name.c", line 112: error: expected a ";"
+  constexpr struct s93 v94 = { (int *) 16 }; /* { dg-error "'constexpr' pointer initializer is not null" } */
+            ^
+
+"Test_name.c", line 113: warning: this declaration has no storage class or type specifier
+  constexpr int v95 = (unsigned int) -1; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+  ^
+
+"Test_name.c", line 113: error: expected a ";"
+  constexpr int v95 = (unsigned int) -1; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+            ^
+
+"Test_name.c", line 114: warning: this declaration has no storage class or type specifier
+  constexpr unsigned char v96 = -1; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+  ^
+
+"Test_name.c", line 114: error: expected a ";"
+  constexpr unsigned char v96 = -1; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+            ^
+
+"Test_name.c", line 115: warning: this declaration has no storage class or type specifier
+  constexpr signed char v97 = 1234567LL; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+  ^
+
+"Test_name.c", line 115: error: expected a ";"
+  constexpr signed char v97 = 1234567LL; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+            ^
+
+"Test_name.c", line 117: warning: this declaration has no storage class or type specifier
+  constexpr double v98 = __builtin_complex (1.0, 0.0); /* { dg-error "'constexpr' initializer for a real type is of complex type" } */
+  ^
+
+"Test_name.c", line 117: error: expected a ";"
+  constexpr double v98 = __builtin_complex (1.0, 0.0); /* { dg-error "'constexpr' initializer for a real type is of complex type" } */
+            ^
+
+"Test_name.c", line 118: warning: this declaration has no storage class or type specifier
+  constexpr double v99 = __builtin_complex (1.0, 1.0); /* { dg-error "'constexpr' initializer for a real type is of complex type" } */
+  ^
+
+"Test_name.c", line 118: error: expected a ";"
+  constexpr double v99 = __builtin_complex (1.0, 1.0); /* { dg-error "'constexpr' initializer for a real type is of complex type" } */
+            ^
+
+"Test_name.c", line 119: warning: this declaration has no storage class or type specifier
+  constexpr double v100 = __builtin_complex (1.0, -0.0); /* { dg-error "'constexpr' initializer for a real type is of complex type" } */
+  ^
+
+"Test_name.c", line 119: error: expected a ";"
+  constexpr double v100 = __builtin_complex (1.0, -0.0); /* { dg-error "'constexpr' initializer for a real type is of complex type" } */
+            ^
+
+"Test_name.c", line 120: warning: this declaration has no storage class or type specifier
+  constexpr float v102 = (unsigned long long) -1; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+  ^
+
+"Test_name.c", line 120: error: expected a ";"
+  constexpr float v102 = (unsigned long long) -1; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+            ^
+
+"Test_name.c", line 121: warning: this declaration has no storage class or type specifier
+  constexpr double v103 = (unsigned long long) -1; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+  ^
+
+"Test_name.c", line 121: error: expected a ";"
+  constexpr double v103 = (unsigned long long) -1; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+            ^
+
+"Test_name.c", line 122: warning: this declaration has no storage class or type specifier
+  constexpr float v104 = __LONG_LONG_MAX__; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+  ^
+
+"Test_name.c", line 122: error: expected a ";"
+  constexpr float v104 = __LONG_LONG_MAX__; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+            ^
+
+"Test_name.c", line 123: warning: this declaration has no storage class or type specifier
+  constexpr double v105 = __LONG_LONG_MAX__; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+  ^
+
+"Test_name.c", line 123: error: expected a ";"
+  constexpr double v105 = __LONG_LONG_MAX__; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+            ^
+
+"Test_name.c", line 124: warning: this declaration has no storage class or type specifier
+  constexpr signed char v106[] = u8"\xff"; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+  ^
+
+"Test_name.c", line 124: error: expected a ";"
+  constexpr signed char v106[] = u8"\xff"; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+            ^
+
+"Test_name.c", line 128: warning: this declaration has no storage class or type specifier
+  constexpr union u107 v108 = { };
+  ^
+
+"Test_name.c", line 128: error: expected a ";"
+  constexpr union u107 v108 = { };
+            ^
+
+"Test_name.c", line 129: warning: this declaration has no storage class or type specifier
+  constexpr union u107 v109 = { .a = 0 };
+  ^
+
+"Test_name.c", line 129: error: expected a ";"
+  constexpr union u107 v109 = { .a = 0 };
+            ^
+
+"Test_name.c", line 130: warning: this declaration has no storage class or type specifier
+  constexpr union u107 v110 = { .b = 0 };
+  ^
+
+"Test_name.c", line 130: error: expected a ";"
+  constexpr union u107 v110 = { .b = 0 };
+            ^
+
+"Test_name.c", line 131: warning: this declaration has no storage class or type specifier
+  constexpr int v111 = v108.b; /* { dg-error "initializer" } */
+  ^
+
+"Test_name.c", line 131: error: expected a ";"
+  constexpr int v111 = v108.b; /* { dg-error "initializer" } */
+            ^
+
+"Test_name.c", line 132: warning: this declaration has no storage class or type specifier
+  constexpr int v112 = v109.b; /* { dg-error "initializer" } */
+  ^
+
+"Test_name.c", line 132: error: expected a ";"
+  constexpr int v112 = v109.b; /* { dg-error "initializer" } */
+            ^
+
+"Test_name.c", line 133: warning: this declaration has no storage class or type specifier
+  constexpr int v113 = v110.a; /* { dg-error "initializer" } */
+  ^
+
+"Test_name.c", line 133: error: expected a ";"
+  constexpr int v113 = v110.a; /* { dg-error "initializer" } */
+            ^
+
+"Test_name.c", line 138: warning: this declaration has no storage class or type specifier
+  constexpr struct s114 v115 = { "abc" };
+  ^
+
+"Test_name.c", line 138: error: expected a ";"
+  constexpr struct s114 v115 = { "abc" };
+            ^
+
+"Test_name.c", line 139: warning: this declaration has no storage class or type specifier
+  constexpr struct s114 v116 = { v115.c }; /* { dg-error "initializer" } */
+  ^
+
+"Test_name.c", line 139: error: expected a ";"
+  constexpr struct s114 v116 = { v115.c }; /* { dg-error "initializer" } */
+            ^
+
+"Test_name.c", line 145: error: expected a ")"
+    (constexpr constexpr int) { 1 }; /* { dg-error "duplicate 'constexpr'" } */
+               ^
+
+"Test_name.c", line 145: warning: expression has no effect
+    (constexpr constexpr int) { 1 }; /* { dg-error "duplicate 'constexpr'" } */
+    ^
+
+"Test_name.c", line 145: error: expected a ";"
+    (constexpr constexpr int) { 1 }; /* { dg-error "duplicate 'constexpr'" } */
+                              ^
+
+"Test_name.c", line 146: error: expected a ")"
+    (constexpr thread_local int) { 1 }; /* { dg-error "'thread_local' used with 'constexpr'" } */
+               ^
+
+"Test_name.c", line 146: warning: expression has no effect
+    (constexpr thread_local int) { 1 }; /* { dg-error "'thread_local' used with 'constexpr'" } */
+    ^
+
+"Test_name.c", line 146: error: expected a ";"
+    (constexpr thread_local int) { 1 }; /* { dg-error "'thread_local' used with 'constexpr'" } */
+                                 ^
+
+"Test_name.c", line 147: error: a storage class may not be specified here
+    (thread_local constexpr static int) { 1 }; /* { dg-error "'constexpr' used with '_Thread_local'" } */
+     ^
+
+"Test_name.c", line 147: warning: explicit type is missing ("int" assumed)
+    (thread_local constexpr static int) { 1 }; /* { dg-error "'constexpr' used with '_Thread_local'" } */
+     ^
+
+"Test_name.c", line 147: error: expected a ")"
+    (thread_local constexpr static int) { 1 }; /* { dg-error "'constexpr' used with '_Thread_local'" } */
+                  ^
+
+"Test_name.c", line 148: error: expected a ")"
+    (constexpr int) { sizeof (struct fs1 *) }; /* { dg-error "declared in underspecified object initializer" } */
+               ^
+
+"Test_name.c", line 148: warning: expression has no effect
+    (constexpr int) { sizeof (struct fs1 *) }; /* { dg-error "declared in underspecified object initializer" } */
+    ^
+
+"Test_name.c", line 148: error: expected a ";"
+    (constexpr int) { sizeof (struct fs1 *) }; /* { dg-error "declared in underspecified object initializer" } */
+                    ^
+
+"Test_name.c", line 149: error: expected a ")"
+    (constexpr int) { sizeof (union fs2 *) }; /* { dg-error "declared in underspecified object initializer" } */
+               ^
+
+"Test_name.c", line 149: warning: expression has no effect
+    (constexpr int) { sizeof (union fs2 *) }; /* { dg-error "declared in underspecified object initializer" } */
+    ^
+
+"Test_name.c", line 149: error: expected a ";"
+    (constexpr int) { sizeof (union fs2 *) }; /* { dg-error "declared in underspecified object initializer" } */
+                    ^
+
+"Test_name.c", line 150: error: expected a ")"
+    (constexpr int) { sizeof (struct fs3 { int a; }) }; /* { dg-error "defined in underspecified object initializer" } */
+               ^
+
+"Test_name.c", line 150: warning: expression has no effect
+    (constexpr int) { sizeof (struct fs3 { int a; }) }; /* { dg-error "defined in underspecified object initializer" } */
+    ^
+
+"Test_name.c", line 150: error: expected a ";"
+    (constexpr int) { sizeof (struct fs3 { int a; }) }; /* { dg-error "defined in underspecified object initializer" } */
+                    ^
+
+"Test_name.c", line 151: error: expected a ")"
+    (constexpr int) { sizeof (struct { int a; }) }; /* { dg-error "defined in underspecified object initializer" } */
+               ^
+
+"Test_name.c", line 151: warning: expression has no effect
+    (constexpr int) { sizeof (struct { int a; }) }; /* { dg-error "defined in underspecified object initializer" } */
+    ^
+
+"Test_name.c", line 151: error: expected a ";"
+    (constexpr int) { sizeof (struct { int a; }) }; /* { dg-error "defined in underspecified object initializer" } */
+                    ^
+
+"Test_name.c", line 152: error: expected a ")"
+    (constexpr int) { sizeof (union fs4 { int a; }) }; /* { dg-error "defined in underspecified object initializer" } */
+               ^
+
+"Test_name.c", line 152: warning: expression has no effect
+    (constexpr int) { sizeof (union fs4 { int a; }) }; /* { dg-error "defined in underspecified object initializer" } */
+    ^
+
+"Test_name.c", line 152: error: expected a ";"
+    (constexpr int) { sizeof (union fs4 { int a; }) }; /* { dg-error "defined in underspecified object initializer" } */
+                    ^
+
+"Test_name.c", line 153: error: expected a ")"
+    (constexpr int) { sizeof (union { int a; }) }; /* { dg-error "defined in underspecified object initializer" } */
+               ^
+
+"Test_name.c", line 153: warning: expression has no effect
+    (constexpr int) { sizeof (union { int a; }) }; /* { dg-error "defined in underspecified object initializer" } */
+    ^
+
+"Test_name.c", line 153: error: expected a ";"
+    (constexpr int) { sizeof (union { int a; }) }; /* { dg-error "defined in underspecified object initializer" } */
+                    ^
+
+"Test_name.c", line 154: error: expected a ")"
+    (constexpr int) { sizeof (enum fs5 { A }) }; /* { dg-error "defined in underspecified object initializer" } */
+               ^
+
+"Test_name.c", line 154: warning: expression has no effect
+    (constexpr int) { sizeof (enum fs5 { A }) }; /* { dg-error "defined in underspecified object initializer" } */
+    ^
+
+"Test_name.c", line 154: error: expected a ";"
+    (constexpr int) { sizeof (enum fs5 { A }) }; /* { dg-error "defined in underspecified object initializer" } */
+                    ^
+
+"Test_name.c", line 157: error: expected a ")"
+    (constexpr int) { sizeof (enum { B }) }; /* { dg-error "defined in underspecified object initializer" } */
+               ^
+
+"Test_name.c", line 157: warning: expression has no effect
+    (constexpr int) { sizeof (enum { B }) }; /* { dg-error "defined in underspecified object initializer" } */
+    ^
+
+"Test_name.c", line 157: error: expected a ";"
+    (constexpr int) { sizeof (enum { B }) }; /* { dg-error "defined in underspecified object initializer" } */
+                    ^
+
+"Test_name.c", line 160: error: expected a ")"
+    (constexpr int) { sizeof (struct fs6 { int a; }) }; /* { dg-error "defined in underspecified object initializer" } */
+               ^
+
+"Test_name.c", line 160: warning: expression has no effect
+    (constexpr int) { sizeof (struct fs6 { int a; }) }; /* { dg-error "defined in underspecified object initializer" } */
+    ^
+
+"Test_name.c", line 160: error: expected a ";"
+    (constexpr int) { sizeof (struct fs6 { int a; }) }; /* { dg-error "defined in underspecified object initializer" } */
+                    ^
+
+"Test_name.c", line 162: error: expected a ")"
+    (constexpr int) { sizeof (union fs7 { int a; }) }; /* { dg-error "defined in underspecified object initializer" } */
+               ^
+
+"Test_name.c", line 162: warning: expression has no effect
+    (constexpr int) { sizeof (union fs7 { int a; }) }; /* { dg-error "defined in underspecified object initializer" } */
+    ^
+
+"Test_name.c", line 162: error: expected a ";"
+    (constexpr int) { sizeof (union fs7 { int a; }) }; /* { dg-error "defined in underspecified object initializer" } */
+                    ^
+
+"Test_name.c", line 163: warning: expression has no effect
+    constexpr int fv32 = sizeof (fv32); /* { dg-error "underspecified 'fv32' referenced in its initializer" } */
+    ^
+
+"Test_name.c", line 163: error: expected a ";"
+    constexpr int fv32 = sizeof (fv32); /* { dg-error "underspecified 'fv32' referenced in its initializer" } */
+              ^
+
+"Test_name.c", line 165: warning: expression has no effect
+    constexpr int x = (constexpr int) { 1 } + sizeof (struct fs8 *); /* { dg-error "declared in underspecified object initializer" } */
+    ^
+
+"Test_name.c", line 165: error: expected a ";"
+    constexpr int x = (constexpr int) { 1 } + sizeof (struct fs8 *); /* { dg-error "declared in underspecified object initializer" } */
+              ^
+
+"Test_name.c", line 166: error: expected a ")"
+    auto y = (constexpr int) { 1 } + sizeof (struct fs9 *); /* { dg-error "declared in underspecified object initializer" } */
+                        ^
+
+"Test_name.c", line 166: error: expected a ";"
+    auto y = (constexpr int) { 1 } + sizeof (struct fs9 *); /* { dg-error "declared in underspecified object initializer" } */
+                             ^
+
+"Test_name.c", line 168: warning: expression has no effect
+    constexpr const int z = 1; /* { dg-error "underspecified declaration of 'z', which is already declared in this scope" } */
+    ^
+
+"Test_name.c", line 168: error: expected a ";"
+    constexpr const int z = 1; /* { dg-error "underspecified declaration of 'z', which is already declared in this scope" } */
+              ^
+
+"Test_name.c", line 172: warning: expression has no effect
+    constexpr VLA *pnc = nullptr; /* { dg-error "'constexpr' object has variably modified type" } */
+    ^
+
+"Test_name.c", line 172: error: expected a ";"
+    constexpr VLA *pnc = nullptr; /* { dg-error "'constexpr' object has variably modified type" } */
+              ^
+
+"Test_name.c", line 173: error: expected a ")"
+    (constexpr t42) {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+               ^
+
+"Test_name.c", line 173: warning: expression has no effect
+    (constexpr t42) {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+    ^
+
+"Test_name.c", line 173: error: expected a ";"
+    (constexpr t42) {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+                    ^
+
+"Test_name.c", line 174: error: expected a ")"
+    (constexpr t43) {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+               ^
+
+"Test_name.c", line 174: warning: expression has no effect
+    (constexpr t43) {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+    ^
+
+"Test_name.c", line 174: error: expected a ";"
+    (constexpr t43) {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+                    ^
+
+"Test_name.c", line 175: error: expected a ")"
+    (constexpr t44) {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+               ^
+
+"Test_name.c", line 175: warning: expression has no effect
+    (constexpr t44) {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+    ^
+
+"Test_name.c", line 175: error: expected a ";"
+    (constexpr t44) {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+                    ^
+
+"Test_name.c", line 176: error: expected a ")"
+    (constexpr volatile double) {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+               ^
+
+"Test_name.c", line 176: warning: expression has no effect
+    (constexpr volatile double) {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+    ^
+
+"Test_name.c", line 176: error: expected a ";"
+    (constexpr volatile double) {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+                                ^
+
+"Test_name.c", line 177: error: expected a ")"
+    (constexpr int *restrict) {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+               ^
+
+"Test_name.c", line 177: warning: expression has no effect
+    (constexpr int *restrict) {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+    ^
+
+"Test_name.c", line 177: error: expected a ";"
+    (constexpr int *restrict) {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+                              ^
+
+"Test_name.c", line 178: error: expected a ")"
+    (constexpr _Atomic (short)) {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+               ^
+
+"Test_name.c", line 178: warning: expression has no effect
+    (constexpr _Atomic (short)) {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+    ^
+
+"Test_name.c", line 178: error: expected a ";"
+    (constexpr _Atomic (short)) {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+                                ^
+
+"Test_name.c", line 179: error: expected a ")"
+    (constexpr long *volatile) {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+               ^
+
+"Test_name.c", line 179: warning: expression has no effect
+    (constexpr long *volatile) {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+    ^
+
+"Test_name.c", line 179: error: expected a ";"
+    (constexpr long *volatile) {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+                               ^
+
+"Test_name.c", line 180: error: expected a ")"
+    (constexpr struct t45) {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+               ^
+
+"Test_name.c", line 180: warning: expression has no effect
+    (constexpr struct t45) {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+    ^
+
+"Test_name.c", line 180: error: expected a ";"
+    (constexpr struct t45) {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+                           ^
+
+"Test_name.c", line 181: error: expected a ")"
+    (constexpr struct t46) {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+               ^
+
+"Test_name.c", line 181: warning: expression has no effect
+    (constexpr struct t46) {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+    ^
+
+"Test_name.c", line 181: error: expected a ";"
+    (constexpr struct t46) {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+                           ^
+
+"Test_name.c", line 182: error: expected a ")"
+    (constexpr struct t47) {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+               ^
+
+"Test_name.c", line 182: warning: expression has no effect
+    (constexpr struct t47) {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+    ^
+
+"Test_name.c", line 182: error: expected a ";"
+    (constexpr struct t47) {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+                           ^
+
+"Test_name.c", line 183: error: expected a ")"
+    (constexpr union t58) {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+               ^
+
+"Test_name.c", line 183: warning: expression has no effect
+    (constexpr union t58) {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+    ^
+
+"Test_name.c", line 183: error: expected a ";"
+    (constexpr union t58) {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+                          ^
+
+"Test_name.c", line 184: error: expected a ")"
+    (constexpr union t59) {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+               ^
+
+"Test_name.c", line 184: warning: expression has no effect
+    (constexpr union t59) {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+    ^
+
+"Test_name.c", line 184: error: expected a ";"
+    (constexpr union t59) {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+                          ^
+
+"Test_name.c", line 185: error: expected a ")"
+    (constexpr union t60) {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+               ^
+
+"Test_name.c", line 185: warning: expression has no effect
+    (constexpr union t60) {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+    ^
+
+"Test_name.c", line 185: error: expected a ";"
+    (constexpr union t60) {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+                          ^
+
+"Test_name.c", line 186: error: expected a ")"
+    (constexpr t42 [1][2][3]) {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+               ^
+
+"Test_name.c", line 186: warning: expression has no effect
+    (constexpr t42 [1][2][3]) {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+    ^
+
+"Test_name.c", line 186: error: expected a ";"
+    (constexpr t42 [1][2][3]) {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+                              ^
+
+"Test_name.c", line 187: error: expected a ")"
+    (constexpr volatile int [1][2][3]) {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+               ^
+
+"Test_name.c", line 187: warning: expression has no effect
+    (constexpr volatile int [1][2][3]) {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+    ^
+
+"Test_name.c", line 187: error: expected a ";"
+    (constexpr volatile int [1][2][3]) {}; /* { dg-error "invalid qualifiers for 'constexpr' object" } */
+                                       ^
+
+"Test_name.c", line 188: error: expected a ")"
+    (constexpr struct t45 [2][2][4]) {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+               ^
+
+"Test_name.c", line 188: warning: expression has no effect
+    (constexpr struct t45 [2][2][4]) {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+    ^
+
+"Test_name.c", line 188: error: expected a ";"
+    (constexpr struct t45 [2][2][4]) {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+                                     ^
+
+"Test_name.c", line 189: error: expected a ")"
+    (constexpr union t60 [2][2][4]) {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+               ^
+
+"Test_name.c", line 189: warning: expression has no effect
+    (constexpr union t60 [2][2][4]) {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+    ^
+
+"Test_name.c", line 189: error: expected a ";"
+    (constexpr union t60 [2][2][4]) {}; /* { dg-error "invalid qualifiers for field of 'constexpr' object" } */
+                                    ^
+
+"Test_name.c", line 190: error: expected a ")"
+    (constexpr int) { v68 }; /* { dg-error "initializer element is not constant" } */
+               ^
+
+"Test_name.c", line 190: warning: expression has no effect
+    (constexpr int) { v68 }; /* { dg-error "initializer element is not constant" } */
+    ^
+
+"Test_name.c", line 190: error: expected a ";"
+    (constexpr int) { v68 }; /* { dg-error "initializer element is not constant" } */
+                    ^
+
+"Test_name.c", line 191: error: expected a ")"
+    (constexpr double) { exp (0) }; /* { dg-error "initializer element is not a constant expression" } */
+               ^
+
+"Test_name.c", line 191: warning: expression has no effect
+    (constexpr double) { exp (0) }; /* { dg-error "initializer element is not a constant expression" } */
+    ^
+
+"Test_name.c", line 191: error: expected a ";"
+    (constexpr double) { exp (0) }; /* { dg-error "initializer element is not a constant expression" } */
+                       ^
+
+"Test_name.c", line 193: error: expected a ")"
+    (constexpr struct s71) { 0, exp (0) }; /* { dg-error "initializer element is not a constant expression" } */
+               ^
+
+"Test_name.c", line 193: warning: expression has no effect
+    (constexpr struct s71) { 0, exp (0) }; /* { dg-error "initializer element is not a constant expression" } */
+    ^
+
+"Test_name.c", line 193: error: expected a ";"
+    (constexpr struct s71) { 0, exp (0) }; /* { dg-error "initializer element is not a constant expression" } */
+                           ^
+
+"Test_name.c", line 195: error: expected a ")"
+    (constexpr struct s71) { v68, 0 }; /* { dg-error "initializer element is not constant" } */
+               ^
+
+"Test_name.c", line 195: warning: expression has no effect
+    (constexpr struct s71) { v68, 0 }; /* { dg-error "initializer element is not constant" } */
+    ^
+
+"Test_name.c", line 195: error: expected a ";"
+    (constexpr struct s71) { v68, 0 }; /* { dg-error "initializer element is not constant" } */
+                           ^
+
+"Test_name.c", line 196: error: expected a ")"
+    (constexpr union u74) { v68 }; /* { dg-error "initializer element is not constant" } */
+               ^
+
+"Test_name.c", line 196: warning: expression has no effect
+    (constexpr union u74) { v68 }; /* { dg-error "initializer element is not constant" } */
+    ^
+
+"Test_name.c", line 196: error: expected a ";"
+    (constexpr union u74) { v68 }; /* { dg-error "initializer element is not constant" } */
+                          ^
+
+"Test_name.c", line 197: error: expected a ")"
+    (constexpr union u74) { .b = exp (0) }; /* { dg-error "initializer element is not a constant expression" } */
+               ^
+
+"Test_name.c", line 197: warning: expression has no effect
+    (constexpr union u74) { .b = exp (0) }; /* { dg-error "initializer element is not a constant expression" } */
+    ^
+
+"Test_name.c", line 197: error: expected a ";"
+    (constexpr union u74) { .b = exp (0) }; /* { dg-error "initializer element is not a constant expression" } */
+                          ^
+
+"Test_name.c", line 199: error: expected a ")"
+    (constexpr struct fs10 *) { 0 }; /* { dg-error "declared in 'constexpr' compound literal" } */
+               ^
+
+"Test_name.c", line 199: warning: expression has no effect
+    (constexpr struct fs10 *) { 0 }; /* { dg-error "declared in 'constexpr' compound literal" } */
+    ^
+
+"Test_name.c", line 199: error: expected a ";"
+    (constexpr struct fs10 *) { 0 }; /* { dg-error "declared in 'constexpr' compound literal" } */
+                              ^
+
+"Test_name.c", line 200: error: expected a ")"
+    (constexpr union fs11 *) { 0 }; /* { dg-error "declared in 'constexpr' compound literal" } */
+               ^
+
+"Test_name.c", line 200: warning: expression has no effect
+    (constexpr union fs11 *) { 0 }; /* { dg-error "declared in 'constexpr' compound literal" } */
+    ^
+
+"Test_name.c", line 200: error: expected a ";"
+    (constexpr union fs11 *) { 0 }; /* { dg-error "declared in 'constexpr' compound literal" } */
+                             ^
+
+"Test_name.c", line 201: error: expected a ")"
+    (constexpr struct fs12 { int a; }) { 0 }; /* { dg-error "defined in 'constexpr' compound literal" } */
+               ^
+
+"Test_name.c", line 201: warning: expression has no effect
+    (constexpr struct fs12 { int a; }) { 0 }; /* { dg-error "defined in 'constexpr' compound literal" } */
+    ^
+
+"Test_name.c", line 201: error: expected a ";"
+    (constexpr struct fs12 { int a; }) { 0 }; /* { dg-error "defined in 'constexpr' compound literal" } */
+                                       ^
+
+"Test_name.c", line 202: error: expected a ")"
+    (constexpr union fs13 { int a; }) { 0 }; /* { dg-error "defined in 'constexpr' compound literal" } */
+               ^
+
+"Test_name.c", line 202: warning: expression has no effect
+    (constexpr union fs13 { int a; }) { 0 }; /* { dg-error "defined in 'constexpr' compound literal" } */
+    ^
+
+"Test_name.c", line 202: error: expected a ";"
+    (constexpr union fs13 { int a; }) { 0 }; /* { dg-error "defined in 'constexpr' compound literal" } */
+                                      ^
+
+"Test_name.c", line 203: error: expected a ")"
+    (constexpr enum fs14 { FS14 }) { FS14 }; /* { dg-error "defined in 'constexpr' compound literal" } */
+               ^
+
+"Test_name.c", line 203: warning: expression has no effect
+    (constexpr enum fs14 { FS14 }) { FS14 }; /* { dg-error "defined in 'constexpr' compound literal" } */
+    ^
+
+"Test_name.c", line 203: error: expected a ";"
+    (constexpr enum fs14 { FS14 }) { FS14 }; /* { dg-error "defined in 'constexpr' compound literal" } */
+                                   ^
+
+"Test_name.c", line 204: error: expected a ")"
+    (constexpr enum { FS15 }) { FS15 }; /* { dg-error "defined in 'constexpr' compound literal" } */
+               ^
+
+"Test_name.c", line 204: warning: expression has no effect
+    (constexpr enum { FS15 }) { FS15 }; /* { dg-error "defined in 'constexpr' compound literal" } */
+    ^
+
+"Test_name.c", line 204: error: expected a ";"
+    (constexpr enum { FS15 }) { FS15 }; /* { dg-error "defined in 'constexpr' compound literal" } */
+                              ^
+
+Error limit reached.
+200 errors detected in the compilation of "Test_name.c".
+Compilation terminated.

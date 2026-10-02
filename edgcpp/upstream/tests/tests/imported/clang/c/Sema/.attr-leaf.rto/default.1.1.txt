@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 5: warning: unknown attribute "leaf"
+  void f1(void) __attribute__((leaf));
+                               ^
+
+"Test_name.c", line 7: warning: unknown attribute "leaf"
+  void f2(void) __attribute__((leaf("abc"))); // expected-error {{'leaf' attribute takes no argument}}
+                               ^
+
+"Test_name.c", line 9: warning: unknown attribute "leaf"
+  int var __attribute__ ((leaf())); // expected-warning {{'leaf' attribute only applies to functions}}
+                          ^
+
+"Test_name.c", line 13: warning: unknown attribute "leaf"
+  __attribute__((leaf)) void f3(void) {
+                 ^
+

@@ -1,0 +1,7 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 13: error: class "A" has no member "y"
+  void f(T, U*) noexcept(T::y); // expected-error {{no member named 'y' in 'A'}}
+                            ^
+          detected during instantiation of "void f(T, U *) [with T=A, U=int]" at line 16
+
+1 error detected in the compilation of "Test_name.c".

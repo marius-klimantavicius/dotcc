@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"./cpp1z/decomp29.C", line 16: warning: structured binding "i" was declared but never referenced
+      auto [i,j,k] = f();
+            ^
+
+"./cpp1z/decomp29.C", line 26: warning: structured binding "i" was set but never used
+      auto [i,j,k] = f();
+            ^
+
+"./cpp1z/decomp29.C", line 44: warning: structured binding "i" was declared but never referenced
+      auto [i,j,k] = p;
+            ^
+
+"./cpp1z/decomp29.C", line 54: warning: structured binding "i" was set but never used
+      auto [i,j,k] = p;
+            ^
+

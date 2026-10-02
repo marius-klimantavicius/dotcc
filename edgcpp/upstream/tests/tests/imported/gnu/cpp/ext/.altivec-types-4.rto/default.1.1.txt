@@ -1,0 +1,78 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics -w Test_name.c
+"Test_name.c", line 11: error: this declaration has no storage class or type specifier
+  __vector long vl;
+  ^
+
+"Test_name.c", line 11: error: expected a ";"
+  __vector long vl;
+           ^
+
+"Test_name.c", line 12: error: this declaration has no storage class or type specifier
+  __vector unsigned long vul;
+  ^
+
+"Test_name.c", line 12: error: variable "__vector" has already been defined (previous definition at line 11)
+  __vector unsigned long vul;
+  ^
+
+"Test_name.c", line 12: error: expected a ";"
+  __vector unsigned long vul;
+           ^
+
+"Test_name.c", line 13: error: this declaration has no storage class or type specifier
+  __vector signed long vsl;
+  ^
+
+"Test_name.c", line 13: error: variable "__vector" has already been defined (previous definition at line 11)
+  __vector signed long vsl;
+  ^
+
+"Test_name.c", line 13: error: expected a ";"
+  __vector signed long vsl;
+           ^
+
+"Test_name.c", line 14: error: variable "__vector" is not a type name
+  __vector __bool long int vbli;
+  ^
+
+"Test_name.c", line 14: error: expected a ";"
+  __vector __bool long int vbli;
+                  ^
+
+"Test_name.c", line 15: error: this declaration has no storage class or type specifier
+  __vector long int vli;
+  ^
+
+"Test_name.c", line 15: error: variable "__vector" has already been defined (previous definition at line 11)
+  __vector long int vli;
+  ^
+
+"Test_name.c", line 15: error: expected a ";"
+  __vector long int vli;
+           ^
+
+"Test_name.c", line 16: error: this declaration has no storage class or type specifier
+  __vector unsigned long int vuli;
+  ^
+
+"Test_name.c", line 16: error: variable "__vector" has already been defined (previous definition at line 11)
+  __vector unsigned long int vuli;
+  ^
+
+"Test_name.c", line 16: error: expected a ";"
+  __vector unsigned long int vuli;
+           ^
+
+"Test_name.c", line 17: error: this declaration has no storage class or type specifier
+  __vector signed long int vsli;
+  ^
+
+"Test_name.c", line 17: error: variable "__vector" has already been defined (previous definition at line 11)
+  __vector signed long int vsli;
+  ^
+
+"Test_name.c", line 17: error: expected a ";"
+  __vector signed long int vsli;
+           ^
+
+19 errors detected in the compilation of "Test_name.c".

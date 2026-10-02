@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --ms_compatibility --ms_compatibility --c Test_name.c
+"Test_name.c", line 54: warning: excess initializers are ignored
+    { 'c' },   /* c-warning {{excess elements in struct initializer}}
+    ^
+
+"Test_name.c", line 72: error: an initializer cannot be specified for an indirect flexible array member
+    .x = { 'c' }, /* stock-error {{initialization of flexible array member is not allowed}}
+         ^
+
+"Test_name.c", line 186: error: an initializer cannot be specified for an indirect flexible array member
+           {5},  /* stock-error {{initialization of flexible array member is not allowed}} */
+            ^
+
+2 errors detected in the compilation of "Test_name.c".

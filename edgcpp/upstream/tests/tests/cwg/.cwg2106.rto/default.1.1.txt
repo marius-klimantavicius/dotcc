@@ -1,0 +1,7 @@
+fe_only -DTEST_NUMBER=1 --c++17 -tused -A Test_name.c
+"Test_name.c", line 5: error: a function type is not allowed here
+       static T t;
+                ^
+          detected during instantiation of class "A<T> [with T=function]" at line 8
+
+1 error detected in the compilation of "Test_name.c".

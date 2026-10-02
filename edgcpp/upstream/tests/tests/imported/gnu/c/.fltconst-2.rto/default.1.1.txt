@@ -1,0 +1,86 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 8: error: extra text after expected end of number
+  double d = 0.5d;
+                ^
+
+"Test_name.c", line 9: error: extra text after expected end of number
+  double D = 0.5D;
+                ^
+
+"Test_name.c", line 13: error: extra text after expected end of number
+  double hd1 = 0x1.8p1d;
+                      ^
+
+"Test_name.c", line 14: error: extra text after expected end of number
+  double hd2 = 0x1.p+1D;
+                      ^
+
+"Test_name.c", line 15: error: extra text after expected end of number
+  double hd3 = 0x0.8p-1d;
+                       ^
+
+"Test_name.c", line 27: error: extra text after expected end of number
+  double di = 0.5di;
+                 ^
+
+"Test_name.c", line 28: error: extra text after expected end of number
+  double dI = 0.5dI;
+                 ^
+
+"Test_name.c", line 29: error: extra text after expected end of number
+  double Di = 0.5Di;
+                 ^
+
+"Test_name.c", line 30: error: extra text after expected end of number
+  double DI = 0.5DI;
+                 ^
+
+"Test_name.c", line 31: error: extra text after expected end of number
+  double dj = 0.5dj;
+                 ^
+
+"Test_name.c", line 32: error: extra text after expected end of number
+  double dJ = 0.5dJ;
+                 ^
+
+"Test_name.c", line 33: error: extra text after expected end of number
+  double Dj = 0.5Dj;
+                 ^
+
+"Test_name.c", line 34: error: extra text after expected end of number
+  double DJ = 0.5DJ;
+                 ^
+
+"Test_name.c", line 35: error: extra text after expected end of number
+  double id = 0.5id;
+                  ^
+
+"Test_name.c", line 36: error: extra text after expected end of number
+  double iD = 0.5iD;
+                  ^
+
+"Test_name.c", line 37: error: extra text after expected end of number
+  double Id = 0.5Id;
+                  ^
+
+"Test_name.c", line 38: error: extra text after expected end of number
+  double ID = 0.5ID;
+                  ^
+
+"Test_name.c", line 39: error: extra text after expected end of number
+  double jd = 0.5jd;
+                  ^
+
+"Test_name.c", line 40: error: extra text after expected end of number
+  double jD = 0.5jD;
+                  ^
+
+"Test_name.c", line 41: error: extra text after expected end of number
+  double Jd = 0.5Jd;
+                  ^
+
+"Test_name.c", line 42: error: extra text after expected end of number
+  double JD = 0.5JD;
+                  ^
+
+21 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: error: "this" cannot be captured by reference
+        auto l1 = [&this] { }; // { dg-error ".this. cannot be captured by reference" }
+                   ^
+
+"Test_name.c", line 10: error: "this" cannot be captured by reference
+        auto l2 = [=, &this] { }; // { dg-error ".this. cannot be captured by reference" }
+                      ^
+
+"Test_name.c", line 9: warning: variable "l1" was declared but never referenced
+        auto l1 = [&this] { }; // { dg-error ".this. cannot be captured by reference" }
+             ^
+
+"Test_name.c", line 10: warning: variable "l2" was declared but never referenced
+        auto l2 = [=, &this] { }; // { dg-error ".this. cannot be captured by reference" }
+             ^
+
+2 errors detected in the compilation of "Test_name.c".

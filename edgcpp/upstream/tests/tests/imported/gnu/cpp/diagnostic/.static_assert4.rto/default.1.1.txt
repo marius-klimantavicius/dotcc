@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 22: error: static assertion failed with "has foo"
+      static_assert( has_foo<T>::value, "has foo" ); // { dg-error "has foo" }
+      ^
+          detected during instantiation of "void maybe_foo(T) [with T=X]" at line 31
+
+"Test_name.c", line 15: error: class "X" has no member "foo"
+    foo(T t) noexcept(noexcept(t.foo()))
+                                 ^
+          detected during:
+            instantiation of "bool foo(T) [with T=X]" at line 23
+            instantiation of "void maybe_foo(T) [with T=X]" at line 31
+
+"Test_name.c", line 16: error: class "X" has no member "foo"
+    { return t.foo(); }
+               ^
+          detected during:
+            instantiation of "bool foo(T) [with T=X]" at line 23
+            instantiation of "void maybe_foo(T) [with T=X]" at line 31
+
+3 errors detected in the compilation of "Test_name.c".

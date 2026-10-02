@@ -1,0 +1,238 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --exceptions --c++11 --exceptions Test_name.c
+"Test_name.c", line 39: error: a function cannot be both constexpr and virtual in this mode
+    virtual constexpr int ExplicitlyVirtual() const { return 0; } // beforecxx20-error {{virtual function cannot be constexpr}}
+            ^
+
+"Test_name.c", line 41: error: a function cannot be both constexpr and virtual in this mode
+    constexpr int ImplicitlyVirtual() const { return 0; } // beforecxx20-error {{virtual function cannot be constexpr}}
+                  ^
+
+"Test_name.c", line 43: error: a function cannot be both constexpr and virtual in this mode
+    virtual constexpr int OutOfLineVirtual() const; // beforecxx20-error {{virtual function cannot be constexpr}}
+            ^
+
+"Test_name.c", line 50: error: a destructor cannot be constexpr
+    constexpr ~T();                                              // beforecxx20-error {{destructor cannot be declared constexpr}}
+    ^
+
+"Test_name.c", line 69: warning: constexpr non-static member function will not be implicitly 'const' in C++14
+    constexpr T &operator=(const T &) = default; // beforecxx14-error {{an explicitly-defaulted copy assignment operator may not have 'const', 'constexpr' or 'volatile' qualifiers}} \
+    ^
+
+"Test_name.c", line 69: error: invalid type for defaulted assignment operator
+    constexpr T &operator=(const T &) = default; // beforecxx14-error {{an explicitly-defaulted copy assignment operator may not have 'const', 'constexpr' or 'volatile' qualifiers}} \
+                 ^
+
+"Test_name.c", line 48: error: a constexpr function cannot have a nonliteral return type "NonLiteral"
+    constexpr NonLiteral NonLiteralReturn() const { return {}; } // beforecxx23-error {{constexpr function's return type 'NonLiteral' is not a literal type}}
+                         ^
+
+"Test_name.c", line 49: error: a constexpr function cannot have a nonliteral return type "void"
+    constexpr void VoidReturn() const { return; }                // beforecxx14-error {{constexpr function's return type 'void' is not a literal type}}
+                   ^
+
+"Test_name.c", line 57: error: a constexpr function cannot have a parameter of nonliteral type "NonLiteral"
+    constexpr int NonLiteralParam(NonLiteral) const { return 0; } // beforecxx23-error {{constexpr function's 1st parameter type 'NonLiteral' is not a literal type}}
+                  ^
+
+"Test_name.c", line 74: error: function "T::OutOfLineVirtual" (declared at line 43) was previously not declared constexpr
+  constexpr int T::OutOfLineVirtual() const { return 0; }
+  ^
+
+"Test_name.c", line 110: error: statement may not appear in a constexpr function
+    struct U;
+    ^
+
+"Test_name.c", line 126: error: statement may not appear in a constexpr function
+      asm("int3"); // beforecxx20-warning {{use of this statement in a constexpr function is a C++20 extension}}
+      ^
+
+"Test_name.c", line 125: error: statement may not appear in a constexpr function
+    if (b)
+    ^
+
+"Test_name.c", line 132: warning: statement is unreachable
+    goto x; // beforecxx23-warning {{use of this statement in a constexpr function is a C++23 extension}}
+    ^
+
+"Test_name.c", line 132: error: statement may not appear in a constexpr function
+    goto x; // beforecxx23-warning {{use of this statement in a constexpr function is a C++23 extension}}
+    ^
+
+"Test_name.c", line 133: error: statement may not appear in a constexpr function
+    x:;
+    ^
+
+"Test_name.c", line 134: error: a constexpr function must contain exactly one return statement
+      return 0; // beforecxx14-warning {{multiple return}}
+      ^
+
+"Test_name.c", line 137: error: statement may not appear in a constexpr function
+  merp: // beforecxx23-warning {{use of this statement in a constexpr function is a C++23 extension}}
+  ^
+
+"Test_name.c", line 137: warning: label "merp" was declared but never referenced
+  merp: // beforecxx23-warning {{use of this statement in a constexpr function is a C++23 extension}}
+  ^
+
+"Test_name.c", line 142: error: statement may not appear in a constexpr function
+    try {  }  // beforecxx20-warning {{use of this statement in a constexpr function is a C++20 extension}}
+    ^
+
+"Test_name.c", line 149: warning: dynamic initialization in unreachable code
+    NonLiteral nl; // beforecxx23-error {{variable of non-literal type 'NonLiteral' cannot be defined in a constexpr function before C++23}} \
+               ^
+
+"Test_name.c", line 149: error: statement may not appear in a constexpr function
+    NonLiteral nl; // beforecxx23-error {{variable of non-literal type 'NonLiteral' cannot be defined in a constexpr function before C++23}} \
+    ^
+
+"Test_name.c", line 156: error: statement may not appear in a constexpr function
+    static constexpr int n = 123; // beforecxx23-warning {{definition of a static variable in a constexpr function is a C++23 extension}} \
+    ^
+
+"Test_name.c", line 156: warning: variable "n" was declared but never referenced
+    static constexpr int n = 123; // beforecxx23-warning {{definition of a static variable in a constexpr function is a C++23 extension}} \
+                         ^
+
+"Test_name.c", line 163: error: statement may not appear in a constexpr function
+    thread_local constexpr int n = 123; // beforecxx14-warning {{variable declaration in a constexpr function is a C++14 extension}} \
+    ^
+
+"Test_name.c", line 163: warning: variable "n" was declared but never referenced
+    thread_local constexpr int n = 123; // beforecxx14-warning {{variable declaration in a constexpr function is a C++14 extension}} \
+                               ^
+
+"Test_name.c", line 169: error: statement may not appear in a constexpr function
+    int n; // beforecxx20-warning {{uninitialized variable in a constexpr function}}
+    ^
+
+"Test_name.c", line 169: warning: variable "n" was declared but never referenced
+    int n; // beforecxx20-warning {{uninitialized variable in a constexpr function}}
+        ^
+
+"Test_name.c", line 173: error: statement may not appear in a constexpr function
+    for (int n = 0; n < 10; ++n) {} // beforecxx14-error {{statement not allowed in constexpr function}}
+    ^
+
+"Test_name.c", line 178: error: statement may not appear in a constexpr function
+    int a = 0; // beforecxx14-warning {{variable declaration in a constexpr function is a C++14 extension}}
+    ^
+
+"Test_name.c", line 178: warning: variable "a" was declared but never referenced
+    int a = 0; // beforecxx14-warning {{variable declaration in a constexpr function is a C++14 extension}}
+        ^
+
+"Test_name.c", line 182: error: statement may not appear in a constexpr function
+    constexpr int a = 0; // beforecxx14-warning {{variable declaration in a constexpr function is a C++14 extension}}
+    ^
+
+"Test_name.c", line 182: warning: variable "a" was declared but never referenced
+    constexpr int a = 0; // beforecxx14-warning {{variable declaration in a constexpr function is a C++14 extension}}
+                  ^
+
+"Test_name.c", line 186: error: statement may not appear in a constexpr function
+    Literal a; // beforecxx14-warning {{variable declaration in a constexpr function is a C++14 extension}}
+    ^
+
+"Test_name.c", line 186: warning: variable "a" was declared but never referenced
+    Literal a; // beforecxx14-warning {{variable declaration in a constexpr function is a C++14 extension}}
+            ^
+
+"Test_name.c", line 192: error: statement may not appear in a constexpr function
+    extern NonLiteral nl; // beforecxx14-warning {{variable declaration in a constexpr function is a C++14 extension}}
+    ^
+
+"Test_name.c", line 195: error: expression must have a constant value
+  static_assert(&ExternNonLiteralVarDecl() == &nl, "");
+                ^
+"Test_name.c", line 195: note: this call cannot be evaluated because the target function function "ExternNonLiteralVarDecl" (declared at line 191) is not constexpr or not completely defined yet
+  static_assert(&ExternNonLiteralVarDecl() == &nl, "");
+                                        ^
+
+"Test_name.c", line 198: error: statement may not appear in a constexpr function
+    constexpr int ForwardDecl(int); // beforecxx14-warning {{use of this statement in a constexpr function is a C++14 extension}}
+    ^
+
+"Test_name.c", line 199: error: constexpr function return is non-constant
+    return ForwardDecl(42);
+           ^
+
+"Test_name.c", line 213: error: statement may not appear in a constexpr function
+    struct S3 {}; // beforecxx14-warning {{type definition in a constexpr function is a C++14 extension}}
+    ^
+
+"Test_name.c", line 217: error: a constexpr function must contain exactly one return statement
+  constexpr int NoReturn() {} // beforecxx23-error {{no return statement in constexpr function}}
+                            ^
+
+"Test_name.c", line 220: warning: statement is unreachable
+    return 0; // beforecxx14-warning {{multiple return statements in constexpr function}}
+    ^
+
+"Test_name.c", line 220: error: a constexpr function must contain exactly one return statement
+    return 0; // beforecxx14-warning {{multiple return statements in constexpr function}}
+    ^
+
+"Test_name.c", line 265: error: statement may not appear in a constexpr function
+        x = -x;
+        ^
+
+"Test_name.c", line 264: error: statement may not appear in a constexpr function
+      if (x < 0) // beforecxx14-warning {{C++14}}
+      ^
+
+"Test_name.c", line 270: warning: dynamic initialization in unreachable code
+      static int value = n; // beforecxx23-warning {{definition of a static variable in a constexpr function is a C++23 extension}} \
+                 ^
+
+"Test_name.c", line 270: error: statement may not appear in a constexpr function
+      static int value = n; // beforecxx23-warning {{definition of a static variable in a constexpr function is a C++23 extension}} \
+      ^
+
+"Test_name.c", line 270: warning: variable "value" was declared but never referenced
+      static int value = n; // beforecxx23-warning {{definition of a static variable in a constexpr function is a C++23 extension}} \
+                 ^
+
+"Test_name.c", line 274: error: statement may not appear in a constexpr function
+      int a; // beforecxx20-warning {{uninitialized}}
+      ^
+
+"Test_name.c", line 275: warning: variable "a" is used before its value is set
+      return a;
+             ^
+
+"Test_name.c", line 278: error: constexpr function return is non-constant
+      return --x;               // beforecxx14-note {{subexpression}}
+             ^
+
+"Test_name.c", line 282: error: statement may not appear in a constexpr function
+      int r = 1; // beforecxx14-warning{{C++14}}
+      ^
+
+"Test_name.c", line 284: error: statement may not appear in a constexpr function
+        r *= x;
+        ^
+
+"Test_name.c", line 283: error: statement may not appear in a constexpr function
+      while (--n > 0) // beforecxx14-error {{statement not allowed in constexpr function}}
+      ^
+
+"Test_name.c", line 293: error: a constructor for a class with virtual bases cannot be constexpr
+    constexpr Derived() = default; // expected-error {{default constructor cannot be 'constexpr' in a class with virtual base class}}
+    ^
+
+"Test_name.c", line 294: error: a constructor for a class with virtual bases cannot be constexpr
+    constexpr Derived(const Derived&) = default; // expected-error {{copy constructor cannot be 'constexpr' in a class with virtual base class}}
+    ^
+
+"Test_name.c", line 295: error: a constructor for a class with virtual bases cannot be constexpr
+    constexpr Derived(Derived&&) = default; // expected-error {{move constructor cannot be 'constexpr' in a class with virtual base class}}
+    ^
+
+"Test_name.c", line 244: warning: missing return statement at end of non-void function "rdar13584715::X<T>::value [with T=long]"
+      static T value() {};
+                        ^
+          detected during instantiation of "T rdar13584715::X<T>::value() [with T=long]" at line 249
+
+43 errors detected in the compilation of "Test_name.c".

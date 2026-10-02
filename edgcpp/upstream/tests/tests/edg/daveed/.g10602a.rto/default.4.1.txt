@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=4 -A Test_name.c
+"Test_name.c", line 4: error: identifier "T" is undefined
+  using T = enum {t1};
+        ^
+
+"Test_name.c", line 4: error: expected a ";"
+  using T = enum {t1};
+          ^
+
+"Test_name.c", line 5: error: identifier "T" is undefined
+  T x = t1;
+  ^
+
+"Test_name.c", line 5: error: identifier "t1" is undefined
+  T x = t1;
+        ^
+
+"Test_name.c", line 7: error: identifier "U" is undefined
+  using U = enum : class { u1 } ; 
+        ^
+
+"Test_name.c", line 7: error: expected a ";"
+  using U = enum : class { u1 } ; 
+          ^
+
+"Test_name.c", line 8: error: identifier "U" is undefined
+  U y = U::u1;
+  ^
+
+"Test_name.c", line 8: error: name followed by "::" must be a class or namespace name
+  U y = U::u1;
+        ^
+
+8 errors detected in the compilation of "Test_name.c".

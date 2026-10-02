@@ -1,0 +1,750 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++23 Test_name.c
+"Test_name.c", line 9: error: a type qualifier is not allowed on a static member function
+      void f_value_0(this S) const;             // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have cv-qualifier" }
+                             ^
+
+"Test_name.c", line 10: error: a type qualifier is not allowed on a static member function
+      void f_value_1(this S) volatile;          // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have cv-qualifier" }
+                             ^
+
+"Test_name.c", line 11: error: a type qualifier is not allowed on a static member function
+      void f_value_2(this S) const volatile;    // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have cv-qualifier" }
+                             ^
+
+"Test_name.c", line 12: error: a ref-qualifier is not allowed here
+      void f_value_3(this S) &;                 // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have ref-qualifier" }
+                             ^
+
+"Test_name.c", line 13: error: a ref-qualifier is not allowed here
+      void f_value_4(this S) &&;                // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have ref-qualifier" }
+                             ^
+
+"Test_name.c", line 14: error: a type qualifier is not allowed on a static member function
+      void f_value_5(this S) const &;           // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                             ^
+
+"Test_name.c", line 14: error: a ref-qualifier is not allowed here
+      void f_value_5(this S) const &;           // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                   ^
+
+"Test_name.c", line 15: error: a type qualifier is not allowed on a static member function
+      void f_value_6(this S) const &&;          // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                             ^
+
+"Test_name.c", line 15: error: a ref-qualifier is not allowed here
+      void f_value_6(this S) const &&;          // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                   ^
+
+"Test_name.c", line 16: error: a type qualifier is not allowed on a static member function
+      void f_value_7(this S) volatile &;        // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                             ^
+
+"Test_name.c", line 16: error: a ref-qualifier is not allowed here
+      void f_value_7(this S) volatile &;        // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                      ^
+
+"Test_name.c", line 17: error: a type qualifier is not allowed on a static member function
+      void f_value_8(this S) volatile &&;       // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                             ^
+
+"Test_name.c", line 17: error: a ref-qualifier is not allowed here
+      void f_value_8(this S) volatile &&;       // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                      ^
+
+"Test_name.c", line 18: error: a type qualifier is not allowed on a static member function
+      void f_value_9(this S) const volatile &;  // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                             ^
+
+"Test_name.c", line 18: error: a ref-qualifier is not allowed here
+      void f_value_9(this S) const volatile &;  // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                            ^
+
+"Test_name.c", line 19: error: a type qualifier is not allowed on a static member function
+      void f_value_A(this S) const volatile &&; // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                             ^
+
+"Test_name.c", line 19: error: a ref-qualifier is not allowed here
+      void f_value_A(this S) const volatile &&; // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                            ^
+
+"Test_name.c", line 21: error: a type qualifier is not allowed on a static member function
+      void f_ref_0(this S&) const;             // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have cv-qualifier" }
+                            ^
+
+"Test_name.c", line 22: error: a type qualifier is not allowed on a static member function
+      void f_ref_1(this S&) volatile;          // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have cv-qualifier" }
+                            ^
+
+"Test_name.c", line 23: error: a type qualifier is not allowed on a static member function
+      void f_ref_2(this S&) const volatile;    // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have cv-qualifier" }
+                            ^
+
+"Test_name.c", line 24: error: a ref-qualifier is not allowed here
+      void f_ref_3(this S&) &;                 // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have ref-qualifier" }
+                            ^
+
+"Test_name.c", line 25: error: a ref-qualifier is not allowed here
+      void f_ref_4(this S&) &&;                // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have ref-qualifier" }
+                            ^
+
+"Test_name.c", line 26: error: a type qualifier is not allowed on a static member function
+      void f_ref_5(this S&) const &;           // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                            ^
+
+"Test_name.c", line 26: error: a ref-qualifier is not allowed here
+      void f_ref_5(this S&) const &;           // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                  ^
+
+"Test_name.c", line 27: error: a type qualifier is not allowed on a static member function
+      void f_ref_6(this S&) const &&;          // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                            ^
+
+"Test_name.c", line 27: error: a ref-qualifier is not allowed here
+      void f_ref_6(this S&) const &&;          // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                  ^
+
+"Test_name.c", line 28: error: a type qualifier is not allowed on a static member function
+      void f_ref_7(this S&) volatile &;        // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                            ^
+
+"Test_name.c", line 28: error: a ref-qualifier is not allowed here
+      void f_ref_7(this S&) volatile &;        // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                     ^
+
+"Test_name.c", line 29: error: a type qualifier is not allowed on a static member function
+      void f_ref_8(this S&) volatile &&;       // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                            ^
+
+"Test_name.c", line 29: error: a ref-qualifier is not allowed here
+      void f_ref_8(this S&) volatile &&;       // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                     ^
+
+"Test_name.c", line 30: error: a type qualifier is not allowed on a static member function
+      void f_ref_9(this S&) const volatile &;  // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                            ^
+
+"Test_name.c", line 30: error: a ref-qualifier is not allowed here
+      void f_ref_9(this S&) const volatile &;  // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                           ^
+
+"Test_name.c", line 31: error: a type qualifier is not allowed on a static member function
+      void f_ref_A(this S&) const volatile &&; // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                            ^
+
+"Test_name.c", line 31: error: a ref-qualifier is not allowed here
+      void f_ref_A(this S&) const volatile &&; // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                           ^
+
+"Test_name.c", line 33: error: a type qualifier is not allowed on a static member function
+      void f_refref_0(this S&&) const;             // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have cv-qualifier" }
+                                ^
+
+"Test_name.c", line 34: error: a type qualifier is not allowed on a static member function
+      void f_refref_1(this S&&) volatile;          // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have cv-qualifier" }
+                                ^
+
+"Test_name.c", line 35: error: a type qualifier is not allowed on a static member function
+      void f_refref_2(this S&&) const volatile;    // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have cv-qualifier" }
+                                ^
+
+"Test_name.c", line 36: error: a ref-qualifier is not allowed here
+      void f_refref_3(this S&&) &;                 // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have ref-qualifier" }
+                                ^
+
+"Test_name.c", line 37: error: a ref-qualifier is not allowed here
+      void f_refref_4(this S&&) &&;                // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have ref-qualifier" }
+                                ^
+
+"Test_name.c", line 38: error: a type qualifier is not allowed on a static member function
+      void f_refref_5(this S&&) const &;           // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                ^
+
+"Test_name.c", line 38: error: a ref-qualifier is not allowed here
+      void f_refref_5(this S&&) const &;           // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                      ^
+
+"Test_name.c", line 39: error: a type qualifier is not allowed on a static member function
+      void f_refref_6(this S&&) const &&;          // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                ^
+
+"Test_name.c", line 39: error: a ref-qualifier is not allowed here
+      void f_refref_6(this S&&) const &&;          // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                      ^
+
+"Test_name.c", line 40: error: a type qualifier is not allowed on a static member function
+      void f_refref_7(this S&&) volatile &;        // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                ^
+
+"Test_name.c", line 40: error: a ref-qualifier is not allowed here
+      void f_refref_7(this S&&) volatile &;        // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                         ^
+
+"Test_name.c", line 41: error: a type qualifier is not allowed on a static member function
+      void f_refref_8(this S&&) volatile &&;       // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                ^
+
+"Test_name.c", line 41: error: a ref-qualifier is not allowed here
+      void f_refref_8(this S&&) volatile &&;       // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                         ^
+
+"Test_name.c", line 42: error: a type qualifier is not allowed on a static member function
+      void f_refref_9(this S&&) const volatile &;  // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                ^
+
+"Test_name.c", line 42: error: a ref-qualifier is not allowed here
+      void f_refref_9(this S&&) const volatile &;  // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                               ^
+
+"Test_name.c", line 43: error: a type qualifier is not allowed on a static member function
+      void f_refref_A(this S&&) const volatile &&; // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                ^
+
+"Test_name.c", line 43: error: a ref-qualifier is not allowed here
+      void f_refref_A(this S&&) const volatile &&; // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                               ^
+
+"Test_name.c", line 45: error: a type qualifier is not allowed on a static member function
+      void f_cref_0(this S const&) const;             // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have cv-qualifier" }
+                                   ^
+
+"Test_name.c", line 46: error: a type qualifier is not allowed on a static member function
+      void f_cref_1(this S const&) volatile;          // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have cv-qualifier" }
+                                   ^
+
+"Test_name.c", line 47: error: a type qualifier is not allowed on a static member function
+      void f_cref_2(this S const&) const volatile;    // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have cv-qualifier" }
+                                   ^
+
+"Test_name.c", line 48: error: a ref-qualifier is not allowed here
+      void f_cref_3(this S const&) &;                 // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have ref-qualifier" }
+                                   ^
+
+"Test_name.c", line 49: error: a ref-qualifier is not allowed here
+      void f_cref_4(this S const&) &&;                // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have ref-qualifier" }
+                                   ^
+
+"Test_name.c", line 50: error: a type qualifier is not allowed on a static member function
+      void f_cref_5(this S const&) const &;           // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                   ^
+
+"Test_name.c", line 50: error: a ref-qualifier is not allowed here
+      void f_cref_5(this S const&) const &;           // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                         ^
+
+"Test_name.c", line 51: error: a type qualifier is not allowed on a static member function
+      void f_cref_6(this S const&) const &&;          // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                   ^
+
+"Test_name.c", line 51: error: a ref-qualifier is not allowed here
+      void f_cref_6(this S const&) const &&;          // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                         ^
+
+"Test_name.c", line 52: error: a type qualifier is not allowed on a static member function
+      void f_cref_7(this S const&) volatile &;        // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                   ^
+
+"Test_name.c", line 52: error: a ref-qualifier is not allowed here
+      void f_cref_7(this S const&) volatile &;        // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                            ^
+
+"Test_name.c", line 53: error: a type qualifier is not allowed on a static member function
+      void f_cref_8(this S const&) volatile &&;       // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                   ^
+
+"Test_name.c", line 53: error: a ref-qualifier is not allowed here
+      void f_cref_8(this S const&) volatile &&;       // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                            ^
+
+"Test_name.c", line 54: error: a type qualifier is not allowed on a static member function
+      void f_cref_9(this S const&) const volatile &;  // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                   ^
+
+"Test_name.c", line 54: error: a ref-qualifier is not allowed here
+      void f_cref_9(this S const&) const volatile &;  // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                  ^
+
+"Test_name.c", line 55: error: a type qualifier is not allowed on a static member function
+      void f_cref_A(this S const&) const volatile &&; // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                   ^
+
+"Test_name.c", line 55: error: a ref-qualifier is not allowed here
+      void f_cref_A(this S const&) const volatile &&; // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                  ^
+
+"Test_name.c", line 57: error: a type qualifier is not allowed on a static member function
+      void f_crefref_0(this S const&&) const;             // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have cv-qualifier" }
+                                       ^
+
+"Test_name.c", line 58: error: a type qualifier is not allowed on a static member function
+      void f_crefref_1(this S const&&) volatile;          // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have cv-qualifier" }
+                                       ^
+
+"Test_name.c", line 59: error: a type qualifier is not allowed on a static member function
+      void f_crefref_2(this S const&&) const volatile;    // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have cv-qualifier" }
+                                       ^
+
+"Test_name.c", line 60: error: a ref-qualifier is not allowed here
+      void f_crefref_3(this S const&&) &;                 // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have ref-qualifier" }
+                                       ^
+
+"Test_name.c", line 61: error: a ref-qualifier is not allowed here
+      void f_crefref_4(this S const&&) &&;                // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have ref-qualifier" }
+                                       ^
+
+"Test_name.c", line 62: error: a type qualifier is not allowed on a static member function
+      void f_crefref_5(this S const&&) const &;           // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                       ^
+
+"Test_name.c", line 62: error: a ref-qualifier is not allowed here
+      void f_crefref_5(this S const&&) const &;           // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                             ^
+
+"Test_name.c", line 63: error: a type qualifier is not allowed on a static member function
+      void f_crefref_6(this S const&&) const &&;          // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                       ^
+
+"Test_name.c", line 63: error: a ref-qualifier is not allowed here
+      void f_crefref_6(this S const&&) const &&;          // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                             ^
+
+"Test_name.c", line 64: error: a type qualifier is not allowed on a static member function
+      void f_crefref_7(this S const&&) volatile &;        // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                       ^
+
+"Test_name.c", line 64: error: a ref-qualifier is not allowed here
+      void f_crefref_7(this S const&&) volatile &;        // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                ^
+
+"Test_name.c", line 65: error: a type qualifier is not allowed on a static member function
+      void f_crefref_8(this S const&&) volatile &&;       // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                       ^
+
+"Test_name.c", line 65: error: a ref-qualifier is not allowed here
+      void f_crefref_8(this S const&&) volatile &&;       // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                ^
+
+"Test_name.c", line 66: error: a type qualifier is not allowed on a static member function
+      void f_crefref_9(this S const&&) const volatile &;  // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                       ^
+
+"Test_name.c", line 66: error: a ref-qualifier is not allowed here
+      void f_crefref_9(this S const&&) const volatile &;  // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                      ^
+
+"Test_name.c", line 67: error: a type qualifier is not allowed on a static member function
+      void f_crefref_A(this S const&&) const volatile &&; // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                       ^
+
+"Test_name.c", line 67: error: a ref-qualifier is not allowed here
+      void f_crefref_A(this S const&&) const volatile &&; // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                      ^
+
+"Test_name.c", line 69: error: a type qualifier is not allowed on a static member function
+      void f_vref_0(this S volatile&) const;             // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have cv-qualifier" }
+                                      ^
+
+"Test_name.c", line 70: error: a type qualifier is not allowed on a static member function
+      void f_vref_1(this S volatile&) volatile;          // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have cv-qualifier" }
+                                      ^
+
+"Test_name.c", line 71: error: a type qualifier is not allowed on a static member function
+      void f_vref_2(this S volatile&) const volatile;    // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have cv-qualifier" }
+                                      ^
+
+"Test_name.c", line 72: error: a ref-qualifier is not allowed here
+      void f_vref_3(this S volatile&) &;                 // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have ref-qualifier" }
+                                      ^
+
+"Test_name.c", line 73: error: a ref-qualifier is not allowed here
+      void f_vref_4(this S volatile&) &&;                // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have ref-qualifier" }
+                                      ^
+
+"Test_name.c", line 74: error: a type qualifier is not allowed on a static member function
+      void f_vref_5(this S volatile&) const &;           // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                      ^
+
+"Test_name.c", line 74: error: a ref-qualifier is not allowed here
+      void f_vref_5(this S volatile&) const &;           // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                            ^
+
+"Test_name.c", line 75: error: a type qualifier is not allowed on a static member function
+      void f_vref_6(this S volatile&) const &&;          // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                      ^
+
+"Test_name.c", line 75: error: a ref-qualifier is not allowed here
+      void f_vref_6(this S volatile&) const &&;          // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                            ^
+
+"Test_name.c", line 76: error: a type qualifier is not allowed on a static member function
+      void f_vref_7(this S volatile&) volatile &;        // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                      ^
+
+"Test_name.c", line 76: error: a ref-qualifier is not allowed here
+      void f_vref_7(this S volatile&) volatile &;        // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                               ^
+
+"Test_name.c", line 77: error: a type qualifier is not allowed on a static member function
+      void f_vref_8(this S volatile&) volatile &&;       // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                      ^
+
+"Test_name.c", line 77: error: a ref-qualifier is not allowed here
+      void f_vref_8(this S volatile&) volatile &&;       // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                               ^
+
+"Test_name.c", line 78: error: a type qualifier is not allowed on a static member function
+      void f_vref_9(this S volatile&) const volatile &;  // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                      ^
+
+"Test_name.c", line 78: error: a ref-qualifier is not allowed here
+      void f_vref_9(this S volatile&) const volatile &;  // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                     ^
+
+"Test_name.c", line 79: error: a type qualifier is not allowed on a static member function
+      void f_vref_A(this S volatile&) const volatile &&; // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                      ^
+
+"Test_name.c", line 79: error: a ref-qualifier is not allowed here
+      void f_vref_A(this S volatile&) const volatile &&; // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                     ^
+
+"Test_name.c", line 81: error: a type qualifier is not allowed on a static member function
+      void f_vrefref_0(this S volatile&&) const;             // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have cv-qualifier" }
+                                          ^
+
+"Test_name.c", line 82: error: a type qualifier is not allowed on a static member function
+      void f_vrefref_1(this S volatile&&) volatile;          // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have cv-qualifier" }
+                                          ^
+
+"Test_name.c", line 83: error: a type qualifier is not allowed on a static member function
+      void f_vrefref_2(this S volatile&&) const volatile;    // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have cv-qualifier" }
+                                          ^
+
+"Test_name.c", line 84: error: a ref-qualifier is not allowed here
+      void f_vrefref_3(this S volatile&&) &;                 // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have ref-qualifier" }
+                                          ^
+
+"Test_name.c", line 85: error: a ref-qualifier is not allowed here
+      void f_vrefref_4(this S volatile&&) &&;                // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have ref-qualifier" }
+                                          ^
+
+"Test_name.c", line 86: error: a type qualifier is not allowed on a static member function
+      void f_vrefref_5(this S volatile&&) const &;           // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                          ^
+
+"Test_name.c", line 86: error: a ref-qualifier is not allowed here
+      void f_vrefref_5(this S volatile&&) const &;           // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                ^
+
+"Test_name.c", line 87: error: a type qualifier is not allowed on a static member function
+      void f_vrefref_6(this S volatile&&) const &&;          // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                          ^
+
+"Test_name.c", line 87: error: a ref-qualifier is not allowed here
+      void f_vrefref_6(this S volatile&&) const &&;          // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                ^
+
+"Test_name.c", line 88: error: a type qualifier is not allowed on a static member function
+      void f_vrefref_7(this S volatile&&) volatile &;        // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                          ^
+
+"Test_name.c", line 88: error: a ref-qualifier is not allowed here
+      void f_vrefref_7(this S volatile&&) volatile &;        // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                   ^
+
+"Test_name.c", line 89: error: a type qualifier is not allowed on a static member function
+      void f_vrefref_8(this S volatile&&) volatile &&;       // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                          ^
+
+"Test_name.c", line 89: error: a ref-qualifier is not allowed here
+      void f_vrefref_8(this S volatile&&) volatile &&;       // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                   ^
+
+"Test_name.c", line 90: error: a type qualifier is not allowed on a static member function
+      void f_vrefref_9(this S volatile&&) const volatile &;  // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                          ^
+
+"Test_name.c", line 90: error: a ref-qualifier is not allowed here
+      void f_vrefref_9(this S volatile&&) const volatile &;  // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                         ^
+
+"Test_name.c", line 91: error: a type qualifier is not allowed on a static member function
+      void f_vrefref_A(this S volatile&&) const volatile &&; // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                          ^
+
+"Test_name.c", line 91: error: a ref-qualifier is not allowed here
+      void f_vrefref_A(this S volatile&&) const volatile &&; // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                         ^
+
+"Test_name.c", line 93: error: a type qualifier is not allowed on a static member function
+      void f_cvref_0(this S const volatile&) const;             // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have cv-qualifier" }
+                                             ^
+
+"Test_name.c", line 94: error: a type qualifier is not allowed on a static member function
+      void f_cvref_1(this S const volatile&) volatile;          // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have cv-qualifier" }
+                                             ^
+
+"Test_name.c", line 95: error: a type qualifier is not allowed on a static member function
+      void f_cvref_2(this S const volatile&) const volatile;    // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have cv-qualifier" }
+                                             ^
+
+"Test_name.c", line 96: error: a ref-qualifier is not allowed here
+      void f_cvref_3(this S const volatile&) &;                 // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have ref-qualifier" }
+                                             ^
+
+"Test_name.c", line 97: error: a ref-qualifier is not allowed here
+      void f_cvref_4(this S const volatile&) &&;                // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have ref-qualifier" }
+                                             ^
+
+"Test_name.c", line 98: error: a type qualifier is not allowed on a static member function
+      void f_cvref_5(this S const volatile&) const &;           // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                             ^
+
+"Test_name.c", line 98: error: a ref-qualifier is not allowed here
+      void f_cvref_5(this S const volatile&) const &;           // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                   ^
+
+"Test_name.c", line 99: error: a type qualifier is not allowed on a static member function
+      void f_cvref_6(this S const volatile&) const &&;          // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                             ^
+
+"Test_name.c", line 99: error: a ref-qualifier is not allowed here
+      void f_cvref_6(this S const volatile&) const &&;          // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                   ^
+
+"Test_name.c", line 100: error: a type qualifier is not allowed on a static member function
+      void f_cvref_7(this S const volatile&) volatile &;        // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                             ^
+
+"Test_name.c", line 100: error: a ref-qualifier is not allowed here
+      void f_cvref_7(this S const volatile&) volatile &;        // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                      ^
+
+"Test_name.c", line 101: error: a type qualifier is not allowed on a static member function
+      void f_cvref_8(this S const volatile&) volatile &&;       // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                             ^
+
+"Test_name.c", line 101: error: a ref-qualifier is not allowed here
+      void f_cvref_8(this S const volatile&) volatile &&;       // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                      ^
+
+"Test_name.c", line 102: error: a type qualifier is not allowed on a static member function
+      void f_cvref_9(this S const volatile&) const volatile &;  // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                             ^
+
+"Test_name.c", line 102: error: a ref-qualifier is not allowed here
+      void f_cvref_9(this S const volatile&) const volatile &;  // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                            ^
+
+"Test_name.c", line 103: error: a type qualifier is not allowed on a static member function
+      void f_cvref_A(this S const volatile&) const volatile &&; // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                             ^
+
+"Test_name.c", line 103: error: a ref-qualifier is not allowed here
+      void f_cvref_A(this S const volatile&) const volatile &&; // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                            ^
+
+"Test_name.c", line 105: error: a type qualifier is not allowed on a static member function
+      void f_cvrefref_0(this S const volatile&&) const;             // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have cv-qualifier" }
+                                                 ^
+
+"Test_name.c", line 106: error: a type qualifier is not allowed on a static member function
+      void f_cvrefref_1(this S const volatile&&) volatile;          // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have cv-qualifier" }
+                                                 ^
+
+"Test_name.c", line 107: error: a type qualifier is not allowed on a static member function
+      void f_cvrefref_2(this S const volatile&&) const volatile;    // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have cv-qualifier" }
+                                                 ^
+
+"Test_name.c", line 108: error: a ref-qualifier is not allowed here
+      void f_cvrefref_3(this S const volatile&&) &;                 // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have ref-qualifier" }
+                                                 ^
+
+"Test_name.c", line 109: error: a ref-qualifier is not allowed here
+      void f_cvrefref_4(this S const volatile&&) &&;                // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have ref-qualifier" }
+                                                 ^
+
+"Test_name.c", line 110: error: a type qualifier is not allowed on a static member function
+      void f_cvrefref_5(this S const volatile&&) const &;           // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                 ^
+
+"Test_name.c", line 110: error: a ref-qualifier is not allowed here
+      void f_cvrefref_5(this S const volatile&&) const &;           // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                       ^
+
+"Test_name.c", line 111: error: a type qualifier is not allowed on a static member function
+      void f_cvrefref_6(this S const volatile&&) const &&;          // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                 ^
+
+"Test_name.c", line 111: error: a ref-qualifier is not allowed here
+      void f_cvrefref_6(this S const volatile&&) const &&;          // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                       ^
+
+"Test_name.c", line 112: error: a type qualifier is not allowed on a static member function
+      void f_cvrefref_7(this S const volatile&&) volatile &;        // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                 ^
+
+"Test_name.c", line 112: error: a ref-qualifier is not allowed here
+      void f_cvrefref_7(this S const volatile&&) volatile &;        // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                          ^
+
+"Test_name.c", line 113: error: a type qualifier is not allowed on a static member function
+      void f_cvrefref_8(this S const volatile&&) volatile &&;       // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                 ^
+
+"Test_name.c", line 113: error: a ref-qualifier is not allowed here
+      void f_cvrefref_8(this S const volatile&&) volatile &&;       // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                          ^
+
+"Test_name.c", line 114: error: a type qualifier is not allowed on a static member function
+      void f_cvrefref_9(this S const volatile&&) const volatile &;  // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                 ^
+
+"Test_name.c", line 114: error: a ref-qualifier is not allowed here
+      void f_cvrefref_9(this S const volatile&&) const volatile &;  // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                                ^
+
+"Test_name.c", line 115: error: a type qualifier is not allowed on a static member function
+      void f_cvrefref_A(this S const volatile&&) const volatile &&; // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                 ^
+
+"Test_name.c", line 115: error: a ref-qualifier is not allowed here
+      void f_cvrefref_A(this S const volatile&&) const volatile &&; // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                                ^
+
+"Test_name.c", line 117: error: a type qualifier is not allowed on a static member function
+      template<typename Self> void d_templ_0(this Self&&) const;             // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have cv-qualifier" }
+                                                          ^
+
+"Test_name.c", line 118: error: a type qualifier is not allowed on a static member function
+      template<typename Self> void d_templ_1(this Self&&) volatile;          // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have cv-qualifier" }
+                                                          ^
+
+"Test_name.c", line 119: error: a type qualifier is not allowed on a static member function
+      template<typename Self> void d_templ_2(this Self&&) const volatile;    // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have cv-qualifier" }
+                                                          ^
+
+"Test_name.c", line 120: error: a ref-qualifier is not allowed here
+      template<typename Self> void d_templ_3(this Self&&) &;                 // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have ref-qualifier" }
+                                                          ^
+
+"Test_name.c", line 121: error: a ref-qualifier is not allowed here
+      template<typename Self> void d_templ_4(this Self&&) &&;                // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have ref-qualifier" }
+                                                          ^
+
+"Test_name.c", line 122: error: a type qualifier is not allowed on a static member function
+      template<typename Self> void d_templ_5(this Self&&) const &;           // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                          ^
+
+"Test_name.c", line 122: error: a ref-qualifier is not allowed here
+      template<typename Self> void d_templ_5(this Self&&) const &;           // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                                ^
+
+"Test_name.c", line 123: error: a type qualifier is not allowed on a static member function
+      template<typename Self> void d_templ_6(this Self&&) const &&;          // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                          ^
+
+"Test_name.c", line 123: error: a ref-qualifier is not allowed here
+      template<typename Self> void d_templ_6(this Self&&) const &&;          // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                                ^
+
+"Test_name.c", line 124: error: a type qualifier is not allowed on a static member function
+      template<typename Self> void d_templ_7(this Self&&) volatile &;        // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                          ^
+
+"Test_name.c", line 124: error: a ref-qualifier is not allowed here
+      template<typename Self> void d_templ_7(this Self&&) volatile &;        // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                                   ^
+
+"Test_name.c", line 125: error: a type qualifier is not allowed on a static member function
+      template<typename Self> void d_templ_8(this Self&&) volatile &&;       // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                          ^
+
+"Test_name.c", line 125: error: a ref-qualifier is not allowed here
+      template<typename Self> void d_templ_8(this Self&&) volatile &&;       // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                                   ^
+
+"Test_name.c", line 126: error: a type qualifier is not allowed on a static member function
+      template<typename Self> void d_templ_9(this Self&&) const volatile &;  // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                          ^
+
+"Test_name.c", line 126: error: a ref-qualifier is not allowed here
+      template<typename Self> void d_templ_9(this Self&&) const volatile &;  // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                                         ^
+
+"Test_name.c", line 127: error: a type qualifier is not allowed on a static member function
+      template<typename Self> void d_templ_A(this Self&&) const volatile &&; // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                          ^
+
+"Test_name.c", line 127: error: a ref-qualifier is not allowed here
+      template<typename Self> void d_templ_A(this Self&&) const volatile &&; // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                                         ^
+
+"Test_name.c", line 129: error: a type qualifier is not allowed on a static member function
+      void d_auto_0(this auto&&) const;             // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have cv-qualifier" }
+                                 ^
+
+"Test_name.c", line 130: error: a type qualifier is not allowed on a static member function
+      void d_auto_1(this auto&&) volatile;          // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have cv-qualifier" }
+                                 ^
+
+"Test_name.c", line 131: error: a type qualifier is not allowed on a static member function
+      void d_auto_2(this auto&&) const volatile;    // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have cv-qualifier" }
+                                 ^
+
+"Test_name.c", line 132: error: a ref-qualifier is not allowed here
+      void d_auto_3(this auto&&) &;                 // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have ref-qualifier" }
+                                 ^
+
+"Test_name.c", line 133: error: a ref-qualifier is not allowed here
+      void d_auto_4(this auto&&) &&;                // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have ref-qualifier" }
+                                 ^
+
+"Test_name.c", line 134: error: a type qualifier is not allowed on a static member function
+      void d_auto_5(this auto&&) const &;           // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                 ^
+
+"Test_name.c", line 134: error: a ref-qualifier is not allowed here
+      void d_auto_5(this auto&&) const &;           // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                       ^
+
+"Test_name.c", line 135: error: a type qualifier is not allowed on a static member function
+      void d_auto_6(this auto&&) const &&;          // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                 ^
+
+"Test_name.c", line 135: error: a ref-qualifier is not allowed here
+      void d_auto_6(this auto&&) const &&;          // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                       ^
+
+"Test_name.c", line 136: error: a type qualifier is not allowed on a static member function
+      void d_auto_7(this auto&&) volatile &;        // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                 ^
+
+"Test_name.c", line 136: error: a ref-qualifier is not allowed here
+      void d_auto_7(this auto&&) volatile &;        // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                          ^
+
+"Test_name.c", line 137: error: a type qualifier is not allowed on a static member function
+      void d_auto_8(this auto&&) volatile &&;       // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                 ^
+
+"Test_name.c", line 137: error: a ref-qualifier is not allowed here
+      void d_auto_8(this auto&&) volatile &&;       // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                          ^
+
+"Test_name.c", line 138: error: a type qualifier is not allowed on a static member function
+      void d_auto_9(this auto&&) const volatile &;  // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                 ^
+
+"Test_name.c", line 138: error: a ref-qualifier is not allowed here
+      void d_auto_9(this auto&&) const volatile &;  // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                ^
+
+"Test_name.c", line 139: error: a type qualifier is not allowed on a static member function
+      void d_auto_A(this auto&&) const volatile &&; // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                 ^
+
+"Test_name.c", line 139: error: a ref-qualifier is not allowed here
+      void d_auto_A(this auto&&) const volatile &&; // { dg-error "explicit object member function '(?!static)\[^\n\r\]+' cannot have (ref|cv)-qualifier" }
+                                                ^
+
+187 errors detected in the compilation of "Test_name.c".

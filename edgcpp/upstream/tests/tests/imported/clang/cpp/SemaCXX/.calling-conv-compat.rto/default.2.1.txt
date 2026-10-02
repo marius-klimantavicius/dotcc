@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --ms_extensions -w Test_name.c
+"Test_name.c", line 259: error: __thiscall not allowed on function with ellipsis parameter
+    void __thiscall member_thiscall(int, ...);
+                    ^
+
+"Test_name.c", line 302: error: argument of type "void (Variadic::A::*)(int, ...)" is incompatible with parameter of type "Variadic::memb_c_default" (aka "void (Variadic::C::*)(int, ...)")
+    cb_memb_c_default(&A::member_default); // expected-error {{no matching function for call to 'cb_memb_c_default'}}
+                      ^
+
+"Test_name.c", line 303: error: argument of type "void (__cdecl Variadic::A::*)(int, ...)" is incompatible with parameter of type "Variadic::memb_c_default" (aka "void (Variadic::C::*)(int, ...)")
+    cb_memb_c_default(&A::member_cdecl); // expected-error {{no matching function for call to 'cb_memb_c_default'}}
+                      ^
+
+"Test_name.c", line 307: error: argument of type "void (Variadic::A::*)(int, ...)" is incompatible with parameter of type "Variadic::memb_c_cdecl" (aka "void (__cdecl Variadic::C::*)(int, ...)")
+    cb_memb_c_cdecl(&A::member_default); // expected-error {{no matching function for call to 'cb_memb_c_cdecl'}}
+                    ^
+
+"Test_name.c", line 308: error: argument of type "void (__cdecl Variadic::A::*)(int, ...)" is incompatible with parameter of type "Variadic::memb_c_cdecl" (aka "void (__cdecl Variadic::C::*)(int, ...)")
+    cb_memb_c_cdecl(&A::member_cdecl); // expected-error {{no matching function for call to 'cb_memb_c_cdecl'}}
+                    ^
+
+5 errors detected in the compilation of "Test_name.c".

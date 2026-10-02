@@ -1,0 +1,214 @@
+fe_only -DTEST_NUMBER=1 --c --extended_designators Test_name.c
+"Test_name.c", line 44: error: identifier "b" is undefined
+  X p2 = { a:b: 4, a:.a = 5 };
+             ^
+
+"Test_name.c", line 44: error: expected a "}"
+  X p2 = { a:b: 4, a:.a = 5 };
+              ^
+
+"Test_name.c", line 44: error: expected a ";"
+  X p2 = { a:b: 4, a:.a = 5 };
+                    ^
+
+"Test_name.c", line 48: error: expected an "="
+  X p3 = { .c = { [1][1][1][1][1] 13, [2][2][2][2][2] = 27,
+                                  ^
+
+"Test_name.c", line 49: error: expected an expression
+                  [3 ... 4] = [5] 7, [6][7] = 71, [8] = [9] = 73 } };
+                              ^
+
+"Test_name.c", line 49: error: expected an expression
+                  [3 ... 4] = [5] 7, [6][7] = 71, [8] = [9] = 73 } };
+                                                        ^
+
+"Test_name.c", line 48: error: a designator cannot be used with a non-aggregate type "int"
+  X p3 = { .c = { [1][1][1][1][1] 13, [2][2][2][2][2] = 27,
+                     ^
+
+"Test_name.c", line 48: error: a designator cannot be used with a non-aggregate type "int"
+  X p3 = { .c = { [1][1][1][1][1] 13, [2][2][2][2][2] = 27,
+                                         ^
+
+"Test_name.c", line 49: error: a designator cannot be used with a non-aggregate type "int"
+                  [3 ... 4] = [5] 7, [6][7] = 71, [8] = [9] = 73 } };
+                                        ^
+
+"Test_name.c", line 57: error: expected a "}"
+  Y n3 = { p:a: 42 };
+              ^
+
+"Test_name.c", line 57: error: expression must have a constant value
+  Y n3 = { p:a: 42 };
+             ^
+
+"Test_name.c", line 58: error: expected an expression
+  Y n4 = { p:.a = 42 };
+             ^
+
+"Test_name.c", line 87: error: expected a "}"
+  	X r2 = { a:b: 4, a:.a = 5 };
+  	            ^
+
+"Test_name.c", line 87: error: expected a ";"
+  	X r2 = { a:b: 4, a:.a = 5 };
+  	                  ^
+
+"Test_name.c", line 87: warning: variable "a" was declared but never referenced
+  	X r2 = { a:b: 4, a:.a = 5 };
+  	                 ^
+
+"Test_name.c", line 92: error: expected an "="
+  	X r3 = { .c = { [1][1][1][1][1] 13, [2][2][2][2][2] = 27,
+  	                                ^
+
+"Test_name.c", line 93: error: expected an expression
+  	                [3 ... 4] = [5] 7, [6][7] = 71, [8] = [9] = 73 } };
+  	                            ^
+
+"Test_name.c", line 93: error: expected an expression
+  	                [3 ... 4] = [5] 7, [6][7] = 71, [8] = [9] = 73 } };
+  	                                                      ^
+
+"Test_name.c", line 92: error: a designator cannot be used with a non-aggregate type "int"
+  	X r3 = { .c = { [1][1][1][1][1] 13, [2][2][2][2][2] = 27,
+  	                   ^
+
+"Test_name.c", line 92: error: a designator cannot be used with a non-aggregate type "int"
+  	X r3 = { .c = { [1][1][1][1][1] 13, [2][2][2][2][2] = 27,
+  	                                       ^
+
+"Test_name.c", line 93: error: a designator cannot be used with a non-aggregate type "int"
+  	                [3 ... 4] = [5] 7, [6][7] = 71, [8] = [9] = 73 } };
+  	                                      ^
+
+"Test_name.c", line 94: error: expected a type specifier
+  	printf("p0 = \n");
+  	       ^
+
+"Test_name.c", line 94: warning: this declaration has no storage class or type specifier
+  	printf("p0 = \n");
+  	^
+
+"Test_name.c", line 94: error: declaration is incompatible with "int printf(const char *, ...)" (declared at line 64)
+  	printf("p0 = \n");
+  	^
+
+"Test_name.c", line 95: error: expected a type specifier
+  	printY(&p0);
+  	       ^
+
+"Test_name.c", line 95: warning: this declaration has no storage class or type specifier
+  	printY(&p0);
+  	^
+
+"Test_name.c", line 95: error: declaration is incompatible with "void printY(Y *)" (declared at line 75)
+  	printY(&p0);
+  	^
+
+"Test_name.c", line 96: error: expected a type specifier
+  	printf("p1 = \n");
+  	       ^
+
+"Test_name.c", line 96: warning: this declaration has no storage class or type specifier
+  	printf("p1 = \n");
+  	^
+
+"Test_name.c", line 97: error: expected a type specifier
+  	printY(&p1);
+  	       ^
+
+"Test_name.c", line 97: warning: this declaration has no storage class or type specifier
+  	printY(&p1);
+  	^
+
+"Test_name.c", line 98: error: expected a type specifier
+  	printf("r1 = \n");
+  	       ^
+
+"Test_name.c", line 98: warning: this declaration has no storage class or type specifier
+  	printf("r1 = \n");
+  	^
+
+"Test_name.c", line 99: error: expected a type specifier
+  	printY(&r1);
+  	       ^
+
+"Test_name.c", line 99: warning: this declaration has no storage class or type specifier
+  	printY(&r1);
+  	^
+
+"Test_name.c", line 102: error: expected a type specifier
+  	printf("p2 = \n");
+  	       ^
+
+"Test_name.c", line 102: warning: this declaration has no storage class or type specifier
+  	printf("p2 = \n");
+  	^
+
+"Test_name.c", line 103: error: expected a type specifier
+  	printX(&p2);
+  	       ^
+
+"Test_name.c", line 103: warning: this declaration has no storage class or type specifier
+  	printX(&p2);
+  	^
+
+"Test_name.c", line 103: error: declaration is incompatible with "void printX(X *)" (declared at line 67)
+  	printX(&p2);
+  	^
+
+"Test_name.c", line 104: error: expected a type specifier
+  	printf("r2 = \n");
+  	       ^
+
+"Test_name.c", line 104: warning: this declaration has no storage class or type specifier
+  	printf("r2 = \n");
+  	^
+
+"Test_name.c", line 105: error: expected a type specifier
+  	printX(&r2);
+  	       ^
+
+"Test_name.c", line 105: warning: this declaration has no storage class or type specifier
+  	printX(&r2);
+  	^
+
+"Test_name.c", line 108: error: expected a type specifier
+  	printf("p3 = \n");
+  	       ^
+
+"Test_name.c", line 108: warning: this declaration has no storage class or type specifier
+  	printf("p3 = \n");
+  	^
+
+"Test_name.c", line 109: error: expected a type specifier
+  	printX(&p3);
+  	       ^
+
+"Test_name.c", line 109: warning: this declaration has no storage class or type specifier
+  	printX(&p3);
+  	^
+
+"Test_name.c", line 110: error: expected a type specifier
+  	printf("r3 = \n");
+  	       ^
+
+"Test_name.c", line 110: warning: this declaration has no storage class or type specifier
+  	printf("r3 = \n");
+  	^
+
+"Test_name.c", line 111: error: expected a type specifier
+  	printX(&r3);
+  	       ^
+
+"Test_name.c", line 111: warning: this declaration has no storage class or type specifier
+  	printX(&r3);
+  	^
+
+"Test_name.c", line 113: error: expected a declaration
+  }
+  ^
+
+38 errors detected in the compilation of "Test_name.c".

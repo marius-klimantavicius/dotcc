@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++11 Test_name.c
+"Test_name.c", line 16: error: enumerator already declared (see constant "S::e" (declared at line 16))
+  enum S::E: int { e, e };  // Previously accepted with no diagnostic.
+                      ^
+
+1 error detected in the compilation of "Test_name.c".

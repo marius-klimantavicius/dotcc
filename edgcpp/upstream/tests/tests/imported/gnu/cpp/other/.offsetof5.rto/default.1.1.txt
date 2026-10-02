@@ -1,0 +1,19 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./other/offsetof5.C", line 12: warning: offsetof applied to a type other than a standard-layout class
+         A
+         ^
+
+"./other/offsetof5.C", line 12: error: second operand of offsetof may not be a field with reference type
+         i
+         ^
+
+"./other/offsetof5.C", line 19: error: second operand of offsetof may not be a field with reference type
+                        i
+                        ^
+
+"./other/offsetof5.C", line 19: warning: offsetof applied to a type other than a standard-layout class
+                        S
+                        ^
+          detected during instantiation of class "S<T> [with T=int]" at line 22
+
+2 errors detected in the compilation of "Test_name.c".

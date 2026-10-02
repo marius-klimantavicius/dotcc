@@ -1,0 +1,228 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --exceptions --exceptions Test_name.c
+"Test_name.c", line 92: error: expression must have arithmetic or unscoped enum type
+    i1 ? 0 : test(); // expected-error {{right operand to ? is void, but left operand is of type 'int'}}
+             ^
+
+"Test_name.c", line 93: error: operand types are incompatible ("void" and "int")
+    i1 ? test() : 0; // expected-error {{left operand to ? is void, but right operand is of type 'int'}}
+                ^
+
+"Test_name.c", line 98: error: operand types are incompatible ("void" and "int")
+    (i1 ? (void)(throw 0) : i1) = 0; // expected-error {{left operand to ? is void, but right operand is of type 'int'}}
+                          ^
+
+"Test_name.c", line 99: error: expression must have arithmetic or unscoped enum type
+    (i1 ? i1 : (void)(throw 0)) = 0; // expected-error {{right operand to ? is void, but left operand is of type 'int'}}
+               ^
+
+"Test_name.c", line 102: error: taking the address of a bit field is not allowed
+    int &throwRef3 = (i1 ? flds.b1 : throw 0); // expected-error {{non-const reference cannot bind to bit-field}}
+                     ^
+
+"Test_name.c", line 103: error: taking the address of a bit field is not allowed
+    int &throwRef4 = (i1 ? throw 0 : flds.b1); // expected-error {{non-const reference cannot bind to bit-field}}
+                     ^
+
+"Test_name.c", line 117: error: ambiguous "?" operation: second operand of type "BadBase" can be converted to third operand type "BadDerived", and vice versa
+    (void)(i1 ? bb : bd); // expected-error {{conditional expression is ambiguous; 'BadBase' can be converted to 'BadDerived' and vice versa}}
+                   ^
+
+"Test_name.c", line 118: error: ambiguous "?" operation: second operand of type "BadDerived" can be converted to third operand type "BadBase", and vice versa
+    (void)(i1 ? bd : bb); // expected-error {{conditional expression is ambiguous}}
+                   ^
+
+"Test_name.c", line 138: error: operand types are incompatible ("Base" and "const Derived")
+    (void)(i1 ? Base() : constder()); // expected-error {{incompatible operand types ('Base' and 'const Derived')}}
+                       ^
+
+"Test_name.c", line 139: error: operand types are incompatible ("const Derived" and "Base")
+    (void)(i1 ? constder() : Base()); // expected-error {{incompatible operand types ('const Derived' and 'Base')}}
+                           ^
+
+"Test_name.c", line 143: error: conversion to inaccessible base class "Base" is not allowed
+    (void)(i1 ? Base() : Priv()); // expected-error{{private base class}}
+                         ^
+
+"Test_name.c", line 144: error: conversion to inaccessible base class "Base" is not allowed
+    (void)(i1 ? Priv() : Base()); // expected-error{{private base class}}
+                ^
+
+"Test_name.c", line 145: error: base class "Base" is ambiguous
+    (void)(i1 ? Base() : Fin()); // expected-error{{ambiguous conversion from derived class 'Fin' to base class 'Base':}}
+                         ^
+
+"Test_name.c", line 146: error: base class "Base" is ambiguous
+    (void)(i1 ? Fin() : Base()); // expected-error{{ambiguous conversion from derived class 'Fin' to base class 'Base':}}
+                ^
+
+"Test_name.c", line 147: error: conversion to inaccessible base class "Base" is not allowed
+    (void)(i1 ? base : priv); // expected-error {{private base class}}
+                       ^
+
+"Test_name.c", line 148: error: conversion to inaccessible base class "Base" is not allowed
+    (void)(i1 ? priv : base); // expected-error {{private base class}}
+                ^
+
+"Test_name.c", line 149: error: base class "Base" is ambiguous
+    (void)(i1 ? base : fin); // expected-error {{ambiguous conversion from derived class 'Fin' to base class 'Base':}}
+                       ^
+
+"Test_name.c", line 150: error: base class "Base" is ambiguous
+    (void)(i1 ? fin : base); // expected-error {{ambiguous conversion from derived class 'Fin' to base class 'Base':}}
+                ^
+
+"Test_name.c", line 160: error: more than one user-defined conversion from "B" to "A" applies:
+            function "B::operator A() const" (declared at line 19)
+            function "A::A(const B &)" (declared at line 17)
+    (void)(i1 ? A() : B()); // expected-error {{conversion from 'B' to 'A' is ambiguous}}
+                      ^
+
+"Test_name.c", line 161: error: more than one user-defined conversion from "B" to "A" applies:
+            function "B::operator A() const" (declared at line 19)
+            function "A::A(const B &)" (declared at line 17)
+    (void)(i1 ? B() : A()); // expected-error {{conversion from 'B' to 'A' is ambiguous}}
+                ^
+
+"Test_name.c", line 162: error: more than one user-defined conversion from "Ambig" to "int" applies:
+            function "Ambig::operator short()" (declared at line 61)
+            function "Ambig::operator signed char()" (declared at line 62)
+    (void)(i1 ? 1 : Ambig()); // expected-error {{conversion from 'Ambig' to 'int' is ambiguous}}
+                    ^
+
+"Test_name.c", line 163: error: more than one user-defined conversion from "Ambig" to "int" applies:
+            function "Ambig::operator short()" (declared at line 61)
+            function "Ambig::operator signed char()" (declared at line 62)
+    (void)(i1 ? Ambig() : 1); // expected-error {{conversion from 'Ambig' to 'int' is ambiguous}}
+                ^
+
+"Test_name.c", line 165: error: expression must be an lvalue or a function designator
+    &(i1 ? i1 : i2); // expected-error {{cannot take the address of an rvalue}}
+     ^
+
+"Test_name.c", line 201: error: expression must be an lvalue or a function designator
+    &(i1 ? i1 : d1); // expected-error {{cannot take the address of an rvalue}}
+     ^
+
+"Test_name.c", line 203: error: taking the address of a bit field is not allowed
+    (void)&(i1 ? flds.b1 : flds.i1); // expected-error {{address of bit-field requested}}
+          ^
+
+"Test_name.c", line 204: error: taking the address of a bit field is not allowed
+    (void)&(i1 ? flds.i1 : flds.b1); // expected-error {{address of bit-field requested}}
+          ^
+
+"Test_name.c", line 235: error: object of abstract class type "Abstract" is not allowed:
+            function "Abstract::~Abstract" is a pure virtual function
+    const Abstract &abstract1 = true ? static_cast<const Abstract&>(Derived1()) : Derived2(); // expected-error {{allocating an object of abstract class type 'const Abstract'}}
+                                                                                  ^
+
+"Test_name.c", line 235: error: object of abstract class type "Abstract" is not allowed:
+            function "Abstract::~Abstract" is a pure virtual function
+    const Abstract &abstract1 = true ? static_cast<const Abstract&>(Derived1()) : Derived2(); // expected-error {{allocating an object of abstract class type 'const Abstract'}}
+                                       ^
+
+"Test_name.c", line 110: warning: variable "bar1" was declared but never referenced
+    Base &bar1 = i1 ? base : derived;
+          ^
+
+"Test_name.c", line 111: warning: variable "bar2" was declared but never referenced
+    Base &bar2 = i1 ? derived : base;
+          ^
+
+"Test_name.c", line 177: warning: variable "pfm" was set but never used
+    DFnPtr pfm;
+           ^
+
+"Test_name.c", line 183: warning: variable "pi1" was set but never used
+    int *pi1 = i1 ? &i1 : 0;
+         ^
+
+"Test_name.c", line 189: warning: variable "pb" was set but never used
+    Base *pb = i1 ? (Base*)0 : (Derived*)0;
+          ^
+
+"Test_name.c", line 195: warning: variable "mp1" was declared but never referenced
+    const int (MixedFieldsDerived::*mp1) =
+                                    ^
+
+"Test_name.c", line 197: warning: variable "mp2" was declared but never referenced
+    const volatile int (MixedFields::*mp2) =
+                                      ^
+
+"Test_name.c", line 283: error: class "PR6757::Foo3" has no copy constructor to copy a const object
+      (void)(true ? Bar() : Foo3()); // expected-error{{no viable constructor copying temporary}}
+                    ^
+
+"Test_name.c", line 319: error: "rdar7998817::X::X(rdar7998817::X &)" (declared at line 306) is inaccessible
+      (void)(B? x // expected-error{{calling a private constructor of class 'rdar7998817::X'}}
+                ^
+
+"Test_name.c", line 329: warning: type qualifier on return type is meaningless
+    const Enum g() {
+    ^
+
+"Test_name.c", line 333: warning: type qualifier on return type is meaningless
+    const volatile Enum g2() {
+    ^
+
+"Test_name.c", line 339: warning: variable "e" was declared but never referenced
+      Enum e = false ? g() : v;
+           ^
+
+"Test_name.c", line 340: warning: variable "e2" was declared but never referenced
+      Enum e2 = false ? v2 : v;
+           ^
+
+"Test_name.c", line 341: warning: variable "e3" was declared but never referenced
+      Enum e3 = false ? g2() : v;
+           ^
+
+"Test_name.c", line 350: error: operand types are incompatible ("A" and "long")
+      (void)(true ? A() : NULL); // expected-error{{non-pointer operand type 'A' incompatible with NULL}}
+                        ^
+
+"Test_name.c", line 351: error: expression must have arithmetic or unscoped enum type
+      (void)(true ? NULL : A()); // expected-error{{non-pointer operand type 'A' incompatible with NULL}}
+                           ^
+
+"Test_name.c", line 352: error: expression must have arithmetic or unscoped enum type
+      (void)(true ? 0 : A()); // expected-error{{incompatible operand types}}
+                        ^
+
+"Test_name.c", line 353: error: operand types are incompatible ("std::nullptr_t" and "A")
+      (void)(true ? nullptr : A()); // expected-error{{non-pointer operand type 'A' incompatible with nullptr}}
+                            ^
+
+"Test_name.c", line 354: error: operand types are incompatible ("std::nullptr_t" and "int")
+      (void)(true ? nullptr : i); // expected-error{{non-pointer operand type 'int' incompatible with nullptr}}
+                            ^
+
+"Test_name.c", line 354: warning: variable "i" is used before its value is set
+      (void)(true ? nullptr : i); // expected-error{{non-pointer operand type 'int' incompatible with nullptr}}
+                              ^
+
+"Test_name.c", line 355: error: expression must have arithmetic or unscoped enum type
+      (void)(true ? __null : A()); // expected-error{{non-pointer operand type 'A' incompatible with NULL}}
+                             ^
+
+"Test_name.c", line 356: error: operand types are incompatible ("void *" and "A")
+      (void)(true ? (void*)0 : A()); // expected-error{{incompatible operand types}}
+                             ^
+
+"Test_name.c", line 381: error: initial value of reference to const volatile must be an lvalue
+    const volatile int &cvir3 = b ? ci : vi; // expected-error{{volatile lvalue reference to type 'const volatile int' cannot bind to a temporary of type 'int'}}
+                                ^
+
+"Test_name.c", line 399: error: type "PR26448::x" has already been defined (previous definition at line 398)
+  typedef Base &&x;
+                 ^
+
+"Test_name.c", line 423: error: expected a ";"
+  int a long b = a = b ? throw 0 1
+        ^
+
+"Test_name.c", line 433: warning: parsing restarts here after previous syntax error
+  } // namespace PR46484
+  ^
+
+40 errors detected in the compilation of "Test_name.c".

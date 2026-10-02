@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 12: error: template constraint not satisfied
+  Y<Z> z; // { dg-error "constraint" }
+     ^
+"Test_name.c", line 8: note: type constraint failed for "Z"
+  template <Int>                    struct Y : X<Y> { };
+            ^
+"Test_name.c", line 6: note: atomic constraint evaluates to false
+  template <class T> concept Int = requires { T{0}; };
+                                   ^
+
+1 error detected in the compilation of "Test_name.c".

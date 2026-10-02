@@ -1,0 +1,90 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 70: error: expected a ";"
+  			      break label7;
+  			            ^
+
+"Test_name.c", line 72: error: expected a ";"
+  			      break label6;
+  			            ^
+
+"Test_name.c", line 74: error: expected a ";"
+  			      continue label6;
+  			               ^
+
+"Test_name.c", line 76: error: expected a ";"
+  			      break label5;
+  			            ^
+
+"Test_name.c", line 78: error: expected a ";"
+  			      continue label5;
+  			               ^
+
+"Test_name.c", line 80: error: expected a ";"
+  			      break label4;
+  			            ^
+
+"Test_name.c", line 82: error: expected a ";"
+  			      continue label4;
+  			               ^
+
+"Test_name.c", line 84: error: expected a ";"
+  			      break label3;
+  			            ^
+
+"Test_name.c", line 86: error: expected a ";"
+  			      continue label3;
+  			               ^
+
+"Test_name.c", line 88: error: expected a ";"
+  			      break label2;
+  			            ^
+
+"Test_name.c", line 90: error: expected a ";"
+  			      break label1;
+  			            ^
+
+"Test_name.c", line 92: error: expected a ";"
+  			      continue label1;
+  			               ^
+
+"Test_name.c", line 13: warning: label "label1" was declared but never referenced
+   label1:
+   ^
+
+"Test_name.c", line 22: warning: label "label2" was declared but never referenced
+       label2:
+       ^
+
+"Test_name.c", line 25: warning: label "label3" was declared but never referenced
+  	 label3:
+  	 ^
+
+"Test_name.c", line 35: warning: label "label4" was declared but never referenced
+  	     label4:
+  	     ^
+
+"Test_name.c", line 45: warning: label "label5" was declared but never referenced
+  		 label5:
+  		 ^
+
+"Test_name.c", line 56: warning: label "label6" was declared but never referenced
+  		     label6:
+  		     ^
+
+"Test_name.c", line 66: warning: label "label7" was declared but never referenced
+  			 label7:
+  			 ^
+
+"Test_name.c", line 143: error: expected a ";"
+  	  break label1;
+  	        ^
+
+"Test_name.c", line 145: error: expected a ";"
+  	  continue label1;
+  	           ^
+
+"Test_name.c", line 130: warning: label "label1" was declared but never referenced
+   label1:
+   ^
+
+14 errors detected in the compilation of "Test_name.c".

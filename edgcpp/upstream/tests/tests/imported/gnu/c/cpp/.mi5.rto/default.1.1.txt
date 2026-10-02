@@ -1,0 +1,20 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc -E Test_name.c
+# 1 "Test_name.c"
+
+
+# 1 "./cpp/mi5.c"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 1 "/usr/include/stdc-predef.h"
+# 1 "<command-line>"
+# 1 "./cpp/mi5.c"
+# 12 "./cpp/mi5.c"
+# 1 "./cpp/mi1c.h"
+
+
+
+
+
+
+int a;
+# 13 "./cpp/mi5.c"

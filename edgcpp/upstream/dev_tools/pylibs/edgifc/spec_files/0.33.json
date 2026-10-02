@@ -1,0 +1,4341 @@
+{
+  "primitives": {
+    "integer": {
+      "Abi": 1,
+      "ActiveMember": 4,
+      "Associativity": 1,
+      "ByteOffset": 4,
+      "Cardinality": 4,
+      "Column": 4,
+      "DestructorSort": 1,
+      "EHFlags": 2,
+      "EntitySize": 4,
+      "FormOperatorSort": 2,
+      "GuideTraitsBitfield": 1,
+      "Index": 4,
+      "LanguageVersion": 4,
+      "LineNumber": 4,
+      "PackSize": 2,
+      "ParameterLevel": 4,
+      "ParameterPosition": 4,
+      "SegmentTraits": 4,
+      "SegmentType": 4,
+      "SentenceIndex": 4,
+      "SourceUnknownIdentifier": 4,
+      "SourceUnknownLiteral": 4,
+      "SourceUnknownWord": 2,
+      "UniqueID": 4,
+      "Version": 1,
+      "bool": 1,
+      "u16": 2,
+      "u64": 8
+    },
+    "byte": {
+      "SHA256": 32,
+      "StorageClass": 4,
+      "Uuid": 2,
+      "VariadicArity": 4
+    }
+  },
+  "simple_sorts": {
+    "Access": {
+      "size": 1,
+      "values": {
+        "0x0": "None",
+        "0x1": "Private",
+        "0x2": "Protected",
+        "0x3": "Public"
+      }
+    },
+    "Architecture": {
+      "size": 1,
+      "values": {
+        "0x0": "Unknown",
+        "0x1": "X86",
+        "0x2": "X64",
+        "0x3": "ARM32",
+        "0x4": "ARM64",
+        "0x5": "HybridX86ARM64"
+      }
+    },
+    "CallingConvention": {
+      "size": 1,
+      "values": {
+        "0x0": "Cdecl",
+        "0x1": "Fast",
+        "0x2": "Std",
+        "0x3": "This",
+        "0x4": "Clr",
+        "0x5": "Vector",
+        "0x6": "Eabi"
+      }
+    },
+    "Delimiter": {
+      "size": 1,
+      "values": {
+        "0x0": "Unknown",
+        "0x1": "Brace",
+        "0x2": "Parenthesis"
+      }
+    },
+    "DyadicOperator": {
+      "size": 2,
+      "values": {
+        "0x0": "Unknown",
+        "0x1": "Plus",
+        "0x2": "Minus",
+        "0x3": "Mult",
+        "0x4": "Slash",
+        "0x5": "Modulo",
+        "0x6": "Remainder",
+        "0x7": "Bitand",
+        "0x8": "Bitor",
+        "0x9": "Bitxor",
+        "0xA": "Lshift",
+        "0xB": "Rshift",
+        "0xC": "Equal",
+        "0xD": "NotEqual",
+        "0xE": "Less",
+        "0xF": "LessEqual",
+        "0x10": "Greater",
+        "0x11": "GreaterEqual",
+        "0x12": "Compare",
+        "0x13": "LogicAnd",
+        "0x14": "LogicOr",
+        "0x15": "Assign",
+        "0x16": "PlusAssign",
+        "0x17": "MinusAssign",
+        "0x18": "MultAssign",
+        "0x19": "SlashAssign",
+        "0x1A": "ModuloAssign",
+        "0x1B": "BitandAssign",
+        "0x1C": "BitorAssign",
+        "0x1D": "BitxorAssign",
+        "0x1E": "LshiftAssign",
+        "0x1F": "RshiftAssign",
+        "0x20": "Comma",
+        "0x21": "Dot",
+        "0x22": "Arrow",
+        "0x23": "DotStar",
+        "0x24": "ArrowStar",
+        "0x25": "Curry",
+        "0x26": "Apply",
+        "0x27": "Index",
+        "0x28": "DefaultAt",
+        "0x29": "New",
+        "0x2A": "NewArray",
+        "0x2B": "Destruct",
+        "0x2C": "DestructAt",
+        "0x2D": "Cleanup",
+        "0x2E": "Qualification",
+        "0x2F": "Promote",
+        "0x30": "Demote",
+        "0x31": "Coerce",
+        "0x32": "Rewrite",
+        "0x33": "Bless",
+        "0x34": "Cast",
+        "0x35": "ExplicitConversion",
+        "0x36": "ReinterpretCast",
+        "0x37": "StaticCast",
+        "0x38": "ConstCast",
+        "0x39": "DynamicCast",
+        "0x3A": "Narrow",
+        "0x3B": "Widen",
+        "0x3C": "Pretend",
+        "0x3D": "Closure",
+        "0x3E": "ZeroInitialize",
+        "0x3F": "ClearStorage",
+        "0x40": "Select",
+        "0x400": "Msvc",
+        "0x401": "MsvcTryCast",
+        "0x402": "MsvcCurry",
+        "0x403": "MsvcVirtualCurry",
+        "0x404": "MsvcAlign",
+        "0x405": "MsvcBitSpan",
+        "0x406": "MsvcBitfieldAccess",
+        "0x407": "MsvcObscureBitfieldAccess",
+        "0x408": "MsvcInitialize",
+        "0x409": "MsvcBuiltinOffsetOf",
+        "0x40A": "MsvcIsBaseOf",
+        "0x40B": "MsvcIsConvertibleTo",
+        "0x40C": "MsvcIsTriviallyAssignable",
+        "0x40D": "MsvcIsNothrowAssignable",
+        "0x40E": "MsvcIsAssignable",
+        "0x40F": "MsvcIsAssignableNocheck",
+        "0x410": "MsvcBuiltinBitCast",
+        "0x411": "MsvcBuiltinIsLayoutCompatible",
+        "0x412": "MsvcBuiltinIsPointerInterconvertibleBaseOf",
+        "0x413": "MsvcBuiltinIsPointerInterconvertibleWithClass",
+        "0x414": "MsvcBuiltinIsCorrespondingMember",
+        "0x415": "MsvcIntrinsic",
+        "0x416": "MsvcSaturatedArithmetic"
+      }
+    },
+    "ExpansionMode": {
+      "size": 1,
+      "values": {
+        "0x0": "Full",
+        "0x1": "Partial"
+      }
+    },
+    "FoldDirection": {
+      "size": 4,
+      "values": {
+        "0x0": "Unknown",
+        "0x1": "Left",
+        "0x2": "Right"
+      }
+    },
+    "Initializer": {
+      "size": 1,
+      "values": {
+        "0x0": "Unknown",
+        "0x1": "Direct",
+        "0x2": "Copy"
+      }
+    },
+    "Keyword": {
+      "size": 4,
+      "values": {
+        "0x0": "Nothing",
+        "0x1": "Class",
+        "0x2": "Struct",
+        "0x3": "Union",
+        "0x4": "Public",
+        "0x5": "Protected",
+        "0x6": "Private",
+        "0x7": "Default",
+        "0x8": "Delete",
+        "0x9": "Mutable",
+        "0xA": "Constexpr",
+        "0xB": "Consteval",
+        "0xC": "Typename"
+      }
+    },
+    "Label": {
+      "size": 4,
+      "values": {
+        "0x0": "Unknown",
+        "0x1": "Case",
+        "0x2": "Default",
+        "0x3": "Label"
+      }
+    },
+    "MonadicOperator": {
+      "size": 2,
+      "values": {
+        "0x0": "Unknown",
+        "0x1": "Plus",
+        "0x2": "Negate",
+        "0x3": "Deref",
+        "0x4": "Address",
+        "0x5": "Complement",
+        "0x6": "Not",
+        "0x7": "PreIncrement",
+        "0x8": "PreDecrement",
+        "0x9": "PostIncrement",
+        "0xA": "PostDecrement",
+        "0xB": "Truncate",
+        "0xC": "Ceil",
+        "0xD": "Floor",
+        "0xE": "Paren",
+        "0xF": "Brace",
+        "0x10": "Alignas",
+        "0x11": "Alignof",
+        "0x12": "Sizeof",
+        "0x13": "Cardinality",
+        "0x14": "Typeid",
+        "0x15": "Noexcept",
+        "0x16": "Requires",
+        "0x17": "CoReturn",
+        "0x18": "Await",
+        "0x19": "Yield",
+        "0x1A": "Throw",
+        "0x1B": "New",
+        "0x1C": "Delete",
+        "0x1D": "DeleteArray",
+        "0x1E": "Expand",
+        "0x1F": "Read",
+        "0x20": "Materialize",
+        "0x21": "PseudoDtorCall",
+        "0x22": "LookupGlobally",
+        "0x400": "Msvc",
+        "0x401": "MsvcAssume",
+        "0x402": "MsvcAlignof",
+        "0x403": "MsvcUuidof",
+        "0x404": "MsvcIsClass",
+        "0x405": "MsvcIsUnion",
+        "0x406": "MsvcIsEnum",
+        "0x407": "MsvcIsPolymorphic",
+        "0x408": "MsvcIsEmpty",
+        "0x409": "MsvcIsTriviallyCopyConstructible",
+        "0x40A": "MsvcIsTriviallyCopyAssignable",
+        "0x40B": "MsvcIsTriviallyDestructible",
+        "0x40C": "MsvcHasVirtualDestructor",
+        "0x40D": "MsvcIsNothrowCopyConstructible",
+        "0x40E": "MsvcIsNothrowCopyAssignable",
+        "0x40F": "MsvcIsPod",
+        "0x410": "MsvcIsAbstract",
+        "0x411": "MsvcIsTrivial",
+        "0x412": "MsvcIsTriviallyCopyable",
+        "0x413": "MsvcIsStandardLayout",
+        "0x414": "MsvcIsLiteralType",
+        "0x415": "MsvcIsTriviallyMoveConstructible",
+        "0x416": "MsvcHasTrivialMoveAssign",
+        "0x417": "MsvcIsTriviallyMoveAssignable",
+        "0x418": "MsvcIsNothrowMoveAssignable",
+        "0x419": "MsvcUnderlyingType",
+        "0x41A": "MsvcIsDestructible",
+        "0x41B": "MsvcIsNothrowDestructible",
+        "0x41C": "MsvcHasUniqueObjectRepresentations",
+        "0x41D": "MsvcIsAggregate",
+        "0x41E": "MsvcBuiltinAddressOf",
+        "0x41F": "MsvcIsRefClass",
+        "0x420": "MsvcIsValueClass",
+        "0x421": "MsvcIsSimpleValueClass",
+        "0x422": "MsvcIsInterfaceClass",
+        "0x423": "MsvcIsDelegate",
+        "0x424": "MsvcIsFinal",
+        "0x425": "MsvcIsSealed",
+        "0x426": "MsvcHasFinalizer",
+        "0x427": "MsvcHasCopy",
+        "0x428": "MsvcHasAssign",
+        "0x429": "MsvcHasUserDestructor",
+        "0xFE0": "MsvcConfusion",
+        "0xFE1": "MsvcConfusedExpand",
+        "0xFE2": "MsvcConfusedDependentSizeof"
+      }
+    },
+    "NiladicOperator": {
+      "size": 2,
+      "values": {
+        "0x0": "Unknown",
+        "0x1": "Phantom",
+        "0x2": "Constant",
+        "0x3": "Nil",
+        "0x400": "Msvc",
+        "0x401": "MsvcConstantObject",
+        "0x402": "MsvcLambda"
+      }
+    },
+    "Noexcept": {
+      "size": 1,
+      "values": {
+        "0x0": "None",
+        "0x1": "False",
+        "0x2": "True",
+        "0x3": "Expression",
+        "0x4": "Inferred",
+        "0x5": "Unenforced"
+      }
+    },
+    "Operator": {
+      "size": 2,
+      "values": {
+        "0x0": "NiladicOperator",
+        "0x1": "MonadicOperator",
+        "0x2": "DyadicOperator",
+        "0x3": "TriadicOperator",
+        "0xE": "StorageInstructionOperator",
+        "0xF": "VariadicOperator"
+      }
+    },
+    "Parameter": {
+      "size": 1,
+      "values": {
+        "0x0": "Object",
+        "0x1": "Type",
+        "0x2": "NonType",
+        "0x3": "Template"
+      }
+    },
+    "PointerDeclarator": {
+      "size": 1,
+      "values": {
+        "0x0": "None",
+        "0x1": "Pointer",
+        "0x2": "LvalueReference",
+        "0x3": "RvalueReference",
+        "0x4": "PointerToMember"
+      }
+    },
+    "ReadConversion": {
+      "size": 1,
+      "values": {
+        "0x0": "Identity",
+        "0x1": "Indirection",
+        "0x2": "Dereference",
+        "0x3": "LvalueToRvalue",
+        "0x4": "IntegralConversion"
+      }
+    },
+    "Return": {
+      "size": 1,
+      "values": {
+        "0x0": "Return",
+        "0x1": "Co_return"
+      }
+    },
+    "SourceDirective": {
+      "size": 2,
+      "values": {
+        "0x1FFF": "Msvc",
+        "0x2000": "MsvcPragmaPush",
+        "0x2001": "MsvcPragmaPop",
+        "0x2002": "MsvcDirectiveStart",
+        "0x2003": "MsvcDirectiveEnd",
+        "0x2004": "MsvcPragmaAllocText",
+        "0x2005": "MsvcPragmaAutoInline",
+        "0x2006": "MsvcPragmaBssSeg",
+        "0x2007": "MsvcPragmaCheckStack",
+        "0x2008": "MsvcPragmaCodeSeg",
+        "0x2009": "MsvcPragmaComment",
+        "0x200A": "MsvcPragmaComponent",
+        "0x200B": "MsvcPragmaConform",
+        "0x200C": "MsvcPragmaConstSeg",
+        "0x200D": "MsvcPragmaDataSeg",
+        "0x200E": "MsvcPragmaDeprecated",
+        "0x200F": "MsvcPragmaDetectMismatch",
+        "0x2010": "MsvcPragmaEndregion",
+        "0x2011": "MsvcPragmaExecutionCharacterSet",
+        "0x2012": "MsvcPragmaFenvAccess",
+        "0x2013": "MsvcPragmaFileHash",
+        "0x2014": "MsvcPragmaFloatControl",
+        "0x2015": "MsvcPragmaFpContract",
+        "0x2016": "MsvcPragmaFunction",
+        "0x2017": "MsvcPragmaBGI",
+        "0x2018": "MsvcPragmaIdent",
+        "0x2019": "MsvcPragmaImplementationKey",
+        "0x201A": "MsvcPragmaIncludeAlias",
+        "0x201B": "MsvcPragmaInitSeq",
+        "0x201C": "MsvcPragmaInlineDepth",
+        "0x201D": "MsvcPragmaInlineRecursion",
+        "0x201E": "MsvcPragmaIntrinsic",
+        "0x201F": "MsvcPragmaLoop",
+        "0x2020": "MsvcPragmaMakePublic",
+        "0x2021": "MsvcPragmaManaged",
+        "0x2022": "MsvcPragmaMessage",
+        "0x2023": "MsvcPragmaOMP",
+        "0x2024": "MsvcPragmaOptimize",
+        "0x2025": "MsvcPragmaPack",
+        "0x2026": "MsvcPragmaPointerToMembers",
+        "0x2027": "MsvcPragmaPopMacro",
+        "0x2028": "MsvcPragmaPrefast",
+        "0x2029": "MsvcPragmaPushMacro",
+        "0x202A": "MsvcPragmaRegion",
+        "0x202B": "MsvcPragmaRuntimeChecks",
+        "0x202C": "MsvcPragmaSameSeg",
+        "0x202D": "MsvcPragmaSection",
+        "0x202E": "MsvcPragmaSegment",
+        "0x202F": "MsvcPragmaSetlocale",
+        "0x2030": "MsvcPragmaStartMapRegion",
+        "0x2031": "MsvcPragmaStopMapRegion",
+        "0x2032": "MsvcPragmaStrictGSCheck",
+        "0x2033": "MsvcPragmaSystemHeader",
+        "0x2034": "MsvcPragmaUnmanaged",
+        "0x2035": "MsvcPragmaVtordisp",
+        "0x2036": "MsvcPragmaWarning",
+        "0x2037": "MsvcPragmaP0include",
+        "0x2038": "MsvcPragmaP0line"
+      }
+    },
+    "SourceIdentifier": {
+      "size": 2,
+      "values": {
+        "0x0": "Plain",
+        "0x1FFF": "Msvc",
+        "0x2000": "MsvcBuiltinHugeVal",
+        "0x2001": "MsvcBuiltinHugeValf",
+        "0x2002": "MsvcBuiltinNan",
+        "0x2003": "MsvcBuiltinNanf",
+        "0x2004": "MsvcBuiltinNans",
+        "0x2005": "MsvcBuiltinNansf"
+      }
+    },
+    "SourceKeyword": {
+      "size": 2,
+      "values": {
+        "0x0": "Unknown",
+        "0x1": "Alignas",
+        "0x2": "Alignof",
+        "0x3": "Asm",
+        "0x4": "Auto",
+        "0x5": "Bool",
+        "0x6": "Break",
+        "0x7": "Case",
+        "0x8": "Catch",
+        "0x9": "Char",
+        "0xA": "Char8T",
+        "0xB": "Char16T",
+        "0xC": "Char32T",
+        "0xD": "Class",
+        "0xE": "Concept",
+        "0xF": "Const",
+        "0x10": "Consteval",
+        "0x11": "Constexpr",
+        "0x12": "Constinit",
+        "0x13": "ConstCast",
+        "0x14": "Continue",
+        "0x15": "CoAwait",
+        "0x16": "CoReturn",
+        "0x17": "CoYield",
+        "0x18": "Decltype",
+        "0x19": "Default",
+        "0x1A": "Delete",
+        "0x1B": "Do",
+        "0x1C": "Double",
+        "0x1D": "DynamicCast",
+        "0x1E": "Else",
+        "0x1F": "Enum",
+        "0x20": "Explicit",
+        "0x21": "Export",
+        "0x22": "Extern",
+        "0x23": "False",
+        "0x24": "Float",
+        "0x25": "For",
+        "0x26": "Friend",
+        "0x27": "Generic",
+        "0x28": "Goto",
+        "0x29": "If",
+        "0x2A": "Inline",
+        "0x2B": "Int",
+        "0x2C": "Long",
+        "0x2D": "Mutable",
+        "0x2E": "Namespace",
+        "0x2F": "New",
+        "0x30": "Noexcept",
+        "0x31": "Nullptr",
+        "0x32": "Operator",
+        "0x33": "Pragma",
+        "0x34": "Private",
+        "0x35": "Protected",
+        "0x36": "Public",
+        "0x37": "Register",
+        "0x38": "ReinterpretCast",
+        "0x39": "Requires",
+        "0x3A": "Restrict",
+        "0x3B": "Return",
+        "0x3C": "Short",
+        "0x3D": "Signed",
+        "0x3E": "Sizeof",
+        "0x3F": "Static",
+        "0x40": "StaticAssert",
+        "0x41": "StaticCast",
+        "0x42": "Struct",
+        "0x43": "Switch",
+        "0x44": "Template",
+        "0x45": "This",
+        "0x46": "ThreadLocal",
+        "0x47": "Throw",
+        "0x48": "True",
+        "0x49": "Try",
+        "0x4A": "Typedef",
+        "0x4B": "Typeid",
+        "0x4C": "Typename",
+        "0x4D": "Union",
+        "0x4E": "Unsigned",
+        "0x4F": "Using",
+        "0x50": "Virtual",
+        "0x51": "Void",
+        "0x52": "Volatile",
+        "0x53": "WcharT",
+        "0x54": "While",
+        "0x1FFF": "Msvc",
+        "0x2000": "MsvcAsm",
+        "0x2001": "MsvcAssume",
+        "0x2002": "MsvcAlignof",
+        "0x2003": "MsvcBased",
+        "0x2004": "MsvcCdecl",
+        "0x2005": "MsvcClrcall",
+        "0x2006": "MsvcDeclspec",
+        "0x2007": "MsvcEabi",
+        "0x2008": "MsvcEvent",
+        "0x2009": "MsvcSehExcept",
+        "0x200A": "MsvcFastcall",
+        "0x200B": "MsvcSehFinally",
+        "0x200C": "MsvcForceinline",
+        "0x200D": "MsvcHook",
+        "0x200E": "MsvcIdentifier",
+        "0x200F": "MsvcIfExists",
+        "0x2010": "MsvcIfNotExists",
+        "0x2011": "MsvcInt8",
+        "0x2012": "MsvcInt16",
+        "0x2013": "MsvcInt32",
+        "0x2014": "MsvcInt64",
+        "0x2015": "MsvcInt128",
+        "0x2016": "MsvcInterface",
+        "0x2017": "MsvcLeave",
+        "0x2018": "MsvcMultipleInheritance",
+        "0x2019": "MsvcNullptr",
+        "0x201A": "MsvcNovtordisp",
+        "0x201B": "MsvcPragma",
+        "0x201C": "MsvcPtr32",
+        "0x201D": "MsvcPtr64",
+        "0x201E": "MsvcRestrict",
+        "0x201F": "MsvcSingleInheritance",
+        "0x2020": "MsvcSptr",
+        "0x2021": "MsvcStdcall",
+        "0x2022": "MsvcSuper",
+        "0x2023": "MsvcThiscall",
+        "0x2024": "MsvcSehTry",
+        "0x2025": "MsvcUptr",
+        "0x2026": "MsvcUuidof",
+        "0x2027": "MsvcUnaligned",
+        "0x2028": "MsvcUnhook",
+        "0x2029": "MsvcVectorcall",
+        "0x202A": "MsvcVirtualInheritance",
+        "0x202B": "MsvcW64",
+        "0x202C": "MsvcIsClass",
+        "0x202D": "MsvcIsUnion",
+        "0x202E": "MsvcIsEnum",
+        "0x202F": "MsvcIsPolymorphic",
+        "0x2030": "MsvcIsEmpty",
+        "0x2031": "MsvcHasTrivialConstructor",
+        "0x2032": "MsvcIsTriviallyConstructible",
+        "0x2033": "MsvcIsTriviallyCopyConstructible",
+        "0x2034": "MsvcIsTriviallyCopyAssignable",
+        "0x2035": "MsvcIsTriviallyDestructible",
+        "0x2036": "MsvcHasVirtualDestructor",
+        "0x2037": "MsvcIsNothrowConstructible",
+        "0x2038": "MsvcIsNothrowCopyConstructible",
+        "0x2039": "MsvcIsNothrowCopyAssignable",
+        "0x203A": "MsvcIsPod",
+        "0x203B": "MsvcIsAbstract",
+        "0x203C": "MsvcIsBaseOf",
+        "0x203D": "MsvcIsConvertibleto",
+        "0x203E": "MsvcIsTrivial",
+        "0x203F": "MsvcIsTriviallyCopyable",
+        "0x2040": "MsvcIsStandardLayout",
+        "0x2041": "MsvcIsLiteralType",
+        "0x2042": "MsvcIsTriviallyMoveConstructible",
+        "0x2043": "MsvcHasTrivialMoveAssign",
+        "0x2044": "MsvcIsTriviallyMoveAssignable",
+        "0x2045": "MsvcIsNothrowMoveAssignable",
+        "0x2046": "MsvcIsConstructible",
+        "0x2047": "MsvcUnderlyingType",
+        "0x2048": "MsvcIsTriviallyAssignable",
+        "0x2049": "MsvcIsNothrowAssignable",
+        "0x204A": "MsvcIsDestructible",
+        "0x204B": "MsvcIsNothrowDestructible",
+        "0x204C": "MsvcIsAssignable",
+        "0x204D": "MsvcIsAssignableNoCheck",
+        "0x204E": "MsvcHasUniqueObjectRepresentations",
+        "0x204F": "MsvcIsAggregate",
+        "0x2050": "MsvcBuiltinAddressOf",
+        "0x2051": "MsvcBuiltinOffsetOf",
+        "0x2052": "MsvcBuiltinBitCast",
+        "0x2053": "MsvcBuiltinIsLayoutCompatible",
+        "0x2054": "MsvcBuiltinIsPointerInterconvertibleBaseOf",
+        "0x2055": "MsvcBuiltinIsPointerInterconvertibleWithClass",
+        "0x2056": "MsvcBuiltinIsCorrespondingMember",
+        "0x2057": "MsvcIsRefClass",
+        "0x2058": "MsvcIsValueClass",
+        "0x2059": "MsvcIsSimpleValueClass",
+        "0x205A": "MsvcIsInterfaceClass",
+        "0x205B": "MsvcIsDelegate",
+        "0x205C": "MsvcIsFinal",
+        "0x205D": "MsvcIsSealed",
+        "0x205E": "MsvcHasFinalizer",
+        "0x205F": "MsvcHasCopy",
+        "0x2060": "MsvcHasAssign",
+        "0x2061": "MsvcHasUserDestructor",
+        "0x2062": "MsvcPackCardinality",
+        "0x2063": "MsvcConfusedSizeof",
+        "0x2064": "MsvcConfusedAlignas"
+      }
+    },
+    "SourceLiteral": {
+      "size": 2,
+      "values": {
+        "0x0": "Unknown",
+        "0x1": "Scalar",
+        "0x2": "String",
+        "0x3": "DefinedString",
+        "0x1FFF": "Msvc",
+        "0x2000": "MsvcFunctionNameMacro",
+        "0x2001": "MsvcStringPrefixMacro",
+        "0x2002": "MsvcBinding",
+        "0x2003": "MsvcResolvedType",
+        "0x2004": "MsvcDefinedConstant",
+        "0x2005": "MsvcCastTargetType"
+      }
+    },
+    "SourceOperator": {
+      "size": 2,
+      "values": {
+        "0x0": "Unknown",
+        "0x1": "Equal",
+        "0x2": "Comma",
+        "0x3": "Exclaim",
+        "0x4": "Plus",
+        "0x5": "Dash",
+        "0x6": "Star",
+        "0x7": "Slash",
+        "0x8": "Percent",
+        "0x9": "LeftChevron",
+        "0xA": "RightChevron",
+        "0xB": "Tilde",
+        "0xC": "Caret",
+        "0xD": "Bar",
+        "0xE": "Ampersand",
+        "0xF": "PlusPlus",
+        "0x10": "DashDash",
+        "0x11": "Less",
+        "0x12": "LessEqual",
+        "0x13": "Greater",
+        "0x14": "GreaterEqual",
+        "0x15": "EqualEqual",
+        "0x16": "ExclaimEqual",
+        "0x17": "Diamond",
+        "0x18": "PlusEqual",
+        "0x19": "DashEqual",
+        "0x1A": "StarEqual",
+        "0x1B": "SlashEqual",
+        "0x1C": "PercentEqual",
+        "0x1D": "AmpersandEqual",
+        "0x1E": "BarEqual",
+        "0x1F": "CaretEqual",
+        "0x20": "LeftChevronEqual",
+        "0x21": "RightChevronEqual",
+        "0x22": "AmpersandAmpersand",
+        "0x23": "BarBar",
+        "0x24": "Ellipsis",
+        "0x25": "Dot",
+        "0x26": "Arrow",
+        "0x27": "DotStar",
+        "0x28": "ArrowStar"
+      }
+    },
+    "SourcePunctuator": {
+      "size": 2,
+      "values": {
+        "0x0": "Unknown",
+        "0x1": "LeftParenthesis",
+        "0x2": "RightParenthesis",
+        "0x3": "LeftBracket",
+        "0x4": "RightBracket",
+        "0x5": "LeftBrace",
+        "0x6": "RightBrace",
+        "0x7": "Colon",
+        "0x8": "Question",
+        "0x9": "Semicolon",
+        "0xA": "ColonColon",
+        "0x1FFF": "Msvc",
+        "0x2000": "MsvcZeroWidthSpace",
+        "0x2001": "MsvcEndOfPhrase",
+        "0x2002": "MsvcFullStop",
+        "0x2003": "MsvcNestedTemplateStart",
+        "0x2004": "MsvcDefaultArgumentStart",
+        "0x2005": "MsvcAlignasEdictStart",
+        "0x2006": "MsvcDefaultInitStart"
+      }
+    },
+    "StorageInstructionOperator": {
+      "size": 2,
+      "values": {
+        "0x0": "Unknown",
+        "0x1": "AllocateSingle",
+        "0x2": "AllocateArray",
+        "0x3": "DeallocateSingle",
+        "0x4": "DeallocateArray",
+        "0x7DE": "Msvc"
+      }
+    },
+    "TriadicOperator": {
+      "size": 2,
+      "values": {
+        "0x0": "Unknown",
+        "0x1": "Choice",
+        "0x2": "ConstructAt",
+        "0x3": "Initialize",
+        "0x400": "Msvc"
+      }
+    },
+    "TypeBasis": {
+      "size": 1,
+      "values": {
+        "0x0": "Void",
+        "0x1": "Bool",
+        "0x2": "Char",
+        "0x3": "Wchar_t",
+        "0x4": "Int",
+        "0x5": "Float",
+        "0x6": "Double",
+        "0x7": "Nullptr",
+        "0x8": "Ellipsis",
+        "0x9": "SegmentType",
+        "0xA": "Class",
+        "0xB": "Struct",
+        "0xC": "Union",
+        "0xD": "Enum",
+        "0xE": "Typename",
+        "0xF": "Namespace",
+        "0x10": "Interface",
+        "0x11": "Function",
+        "0x12": "Empty",
+        "0x13": "VariableTemplate",
+        "0x14": "Concept",
+        "0x15": "Auto",
+        "0x16": "DecltypeAuto",
+        "0x17": "Overload"
+      }
+    },
+    "TypePrecision": {
+      "size": 1,
+      "values": {
+        "0x0": "Default",
+        "0x1": "Short",
+        "0x2": "Long",
+        "0x3": "Bit8",
+        "0x4": "Bit16",
+        "0x5": "Bit32",
+        "0x6": "Bit64",
+        "0x7": "Bit128"
+      }
+    },
+    "TypeSign": {
+      "size": 1,
+      "values": {
+        "0x0": "Plain",
+        "0x1": "Signed",
+        "0x2": "Unsigned"
+      }
+    },
+    "VariadicOperator": {
+      "size": 2,
+      "values": {
+        "0x0": "Unknown",
+        "0x1": "Collection",
+        "0x2": "Sequence",
+        "0x400": "Msvc",
+        "0x401": "MsvcHasTrivialConstructor",
+        "0x402": "MsvcIsConstructible",
+        "0x403": "MsvcIsNothrowConstructible",
+        "0x404": "MsvcIsTriviallyConstructible"
+      }
+    },
+    "Word": {
+      "size": 1,
+      "values": {
+        "0x0": "Unknown",
+        "0x1": "SourceDirective",
+        "0x2": "SourcePunctuator",
+        "0x3": "SourceLiteral",
+        "0x4": "SourceOperator",
+        "0x5": "SourceKeyword",
+        "0x6": "SourceIdentifier"
+      }
+    }
+  },
+  "index_sorts": {
+    "Attr": {
+      "size": 4,
+      "bitwidth": 4,
+      "non_null": false,
+      "values": {
+        "0x0": "AttrNothing",
+        "0x1": "AttrBasic",
+        "0x2": "AttrScoped",
+        "0x3": "AttrLabeled",
+        "0x4": "AttrCalled",
+        "0x5": "AttrExpanded",
+        "0x6": "AttrFactored",
+        "0x7": "AttrElaborated",
+        "0x8": "AttrTuple"
+      }
+    },
+    "Chart": {
+      "size": 4,
+      "bitwidth": 2,
+      "non_null": false,
+      "values": {
+        "0x0": "ChartNone",
+        "0x1": "ChartUnilevel",
+        "0x2": "ChartMultilevel"
+      }
+    },
+    "Decl": {
+      "size": 4,
+      "bitwidth": 5,
+      "non_null": false,
+      "values": {
+        "0x0": "DeclVendorExtension",
+        "0x1": "DeclEnumerator",
+        "0x2": "DeclVariable",
+        "0x3": "DeclParameter",
+        "0x4": "DeclField",
+        "0x5": "DeclBitfield",
+        "0x6": "DeclScope",
+        "0x7": "DeclEnumeration",
+        "0x8": "DeclAlias",
+        "0x9": "DeclTemploid",
+        "0xA": "DeclTemplate",
+        "0xB": "DeclPartialSpecialization",
+        "0xC": "DeclExplicitSpecialization",
+        "0xD": "DeclExplicitInstantiation",
+        "0xE": "DeclConcept",
+        "0xF": "DeclFunction",
+        "0x10": "DeclMethod",
+        "0x11": "DeclConstructor",
+        "0x12": "DeclInheritedConstructor",
+        "0x13": "DeclDestructor",
+        "0x14": "DeclReference",
+        "0x15": "DeclUsingDeclaration",
+        "0x16": "DeclUsingDirective",
+        "0x17": "DeclFriend",
+        "0x18": "DeclExpansion",
+        "0x19": "DeclDeductionGuide",
+        "0x1A": "DeclBarren",
+        "0x1B": "DeclTuple",
+        "0x1C": "DeclSyntaxTree",
+        "0x1D": "DeclIntrinsic",
+        "0x1E": "DeclProperty",
+        "0x1F": "DeclOutputSegment"
+      }
+    },
+    "Expr": {
+      "size": 4,
+      "bitwidth": 6,
+      "non_null": false,
+      "values": {
+        "0x0": "ExprVendorExtension",
+        "0x1": "ExprEmpty",
+        "0x2": "ExprLiteral",
+        "0x3": "ExprLambda",
+        "0x4": "ExprType",
+        "0x5": "ExprNamedDecl",
+        "0x6": "ExprUnresolvedId",
+        "0x7": "ExprTemplateId",
+        "0x8": "ExprUnqualifiedId",
+        "0x9": "ExprSimpleIdentifier",
+        "0xA": "ExprPointer",
+        "0xB": "ExprQualifiedName",
+        "0xC": "ExprPath",
+        "0xD": "ExprRead",
+        "0xE": "ExprMonad",
+        "0xF": "ExprDyad",
+        "0x10": "ExprTriad",
+        "0x11": "ExprString",
+        "0x12": "ExprTemporary",
+        "0x13": "ExprCall",
+        "0x14": "ExprMemberInitializer",
+        "0x15": "ExprMemberAccess",
+        "0x16": "ExprInheritancePath",
+        "0x17": "ExprInitializerList",
+        "0x18": "ExprCast",
+        "0x19": "ExprCondition",
+        "0x1A": "ExprExpressionList",
+        "0x1B": "ExprSizeofType",
+        "0x1C": "ExprAlignof",
+        "0x1D": "ExprNew",
+        "0x1E": "ExprDelete",
+        "0x1F": "ExprTypeid",
+        "0x20": "ExprDestructorCall",
+        "0x21": "ExprSyntaxTree",
+        "0x22": "ExprFunctionString",
+        "0x23": "ExprCompoundString",
+        "0x24": "ExprStringSequence",
+        "0x25": "ExprInitializer",
+        "0x26": "ExprRequires",
+        "0x27": "ExprUnaryFold",
+        "0x28": "ExprBinaryFold",
+        "0x29": "ExprHierarchyConversion",
+        "0x2A": "ExprProductTypeValue",
+        "0x2B": "ExprSumTypeValue",
+        "0x2C": "ExprSubobjectValue",
+        "0x2D": "ExprArrayValue",
+        "0x2E": "ExprDynamicDispatch",
+        "0x2F": "ExprVirtualFunctionConversion",
+        "0x30": "ExprPlaceholder",
+        "0x31": "ExprExpansion",
+        "0x32": "ExprGeneric",
+        "0x33": "ExprTuple",
+        "0x34": "ExprNullptr",
+        "0x35": "ExprThis",
+        "0x36": "ExprTemplateReference",
+        "0x37": "ExprPushState",
+        "0x38": "ExprTypeTraitIntrinsic",
+        "0x39": "ExprDesignatedInitializer",
+        "0x3A": "ExprPackedTemplateArguments",
+        "0x3B": "ExprTokens",
+        "0x3C": "ExprAssignInitializer"
+      }
+    },
+    "Form": {
+      "size": 4,
+      "bitwidth": 4,
+      "non_null": true,
+      "values": {
+        "0x0": "FormIdentifier",
+        "0x1": "FormNumber",
+        "0x2": "FormCharacter",
+        "0x3": "FormString",
+        "0x4": "FormOperator",
+        "0x5": "FormKeyword",
+        "0x6": "FormWhitespace",
+        "0x7": "FormParameter",
+        "0x8": "FormStringize",
+        "0x9": "FormCatenate",
+        "0xA": "FormPragma",
+        "0xB": "FormHeader",
+        "0xC": "FormParenthesized",
+        "0xD": "FormTuple",
+        "0xE": "FormJunk"
+      }
+    },
+    "Lit": {
+      "size": 4,
+      "bitwidth": 2,
+      "non_null": true,
+      "values": {
+        "0x0": "Immediate",
+        "0x1": "Integer",
+        "0x2": "FloatingPoint"
+      }
+    },
+    "Macro": {
+      "size": 4,
+      "bitwidth": 1,
+      "non_null": true,
+      "values": {
+        "0x0": "MacroObjectLike",
+        "0x1": "MacroFunctionLike"
+      }
+    },
+    "Name": {
+      "size": 4,
+      "bitwidth": 3,
+      "non_null": true,
+      "values": {
+        "0x0": "TextOffset",
+        "0x1": "NameOperator",
+        "0x2": "NameConversion",
+        "0x3": "NameLiteral",
+        "0x4": "NameTemplate",
+        "0x5": "NameSpecialization",
+        "0x6": "NameSourceFile",
+        "0x7": "NameGuide"
+      }
+    },
+    "Pragma": {
+      "size": 4,
+      "bitwidth": 1,
+      "non_null": true,
+      "values": {
+        "0x0": "VendorExtension"
+      }
+    },
+    "Stmt": {
+      "size": 4,
+      "bitwidth": 5,
+      "non_null": false,
+      "values": {
+        "0x0": "StmtVendorExtension",
+        "0x1": "StmtEmpty",
+        "0x2": "StmtIf",
+        "0x3": "StmtFor",
+        "0x4": "StmtCase",
+        "0x5": "StmtWhile",
+        "0x6": "StmtBlock",
+        "0x7": "StmtBreak",
+        "0x8": "StmtSwitch",
+        "0x9": "StmtDoWhile",
+        "0xA": "StmtDefault",
+        "0xB": "StmtContinue",
+        "0xC": "StmtExpression",
+        "0xD": "StmtReturn",
+        "0xE": "StmtVariableDecl",
+        "0xF": "StmtExpansion",
+        "0x10": "StmtSyntaxTree"
+      }
+    },
+    "String": {
+      "size": 4,
+      "bitwidth": 3,
+      "non_null": true,
+      "values": {
+        "0x0": "Ordinary",
+        "0x1": "UTF8",
+        "0x2": "Char16",
+        "0x3": "Char32",
+        "0x4": "Wide"
+      }
+    },
+    "Syntax": {
+      "size": 4,
+      "bitwidth": 7,
+      "non_null": false,
+      "values": {
+        "0x0": "SyntaxVendorExtension",
+        "0x1": "SyntaxSimpleTypeSpecifier",
+        "0x2": "SyntaxDecltypeSpecifier",
+        "0x3": "SyntaxPlaceholderTypeSpecifier",
+        "0x4": "SyntaxTypeSpecifierSeq",
+        "0x5": "SyntaxDeclSpecifierSeq",
+        "0x6": "SyntaxVirtualSpecifierSeq",
+        "0x7": "SyntaxNoexceptSpecification",
+        "0x8": "SyntaxExplicitSpecifier",
+        "0x9": "SyntaxEnumSpecifier",
+        "0xA": "SyntaxEnumeratorDefinition",
+        "0xB": "SyntaxClassSpecifier",
+        "0xC": "SyntaxMemberSpecification",
+        "0xD": "SyntaxMemberDeclaration",
+        "0xE": "SyntaxMemberDeclarator",
+        "0xF": "SyntaxAccessSpecifier",
+        "0x10": "SyntaxBaseSpecifierList",
+        "0x11": "SyntaxBaseSpecifier",
+        "0x12": "SyntaxTypeId",
+        "0x13": "SyntaxTrailingReturnType",
+        "0x14": "SyntaxDeclarator",
+        "0x15": "SyntaxPointerDeclarator",
+        "0x16": "SyntaxArrayDeclarator",
+        "0x17": "SyntaxFunctionDeclarator",
+        "0x18": "SyntaxArrayOrFunctionDeclarator",
+        "0x19": "SyntaxParameterDeclarator",
+        "0x1A": "SyntaxInitDeclarator",
+        "0x1B": "SyntaxNewDeclarator",
+        "0x1C": "SyntaxSimpleDeclaration",
+        "0x1D": "SyntaxExceptionDeclaration",
+        "0x1E": "SyntaxConditionDeclaration",
+        "0x1F": "SyntaxStaticAssertDeclaration",
+        "0x20": "SyntaxAliasDeclaration",
+        "0x21": "SyntaxConceptDefinition",
+        "0x22": "SyntaxCompoundStatement",
+        "0x23": "SyntaxReturnStatement",
+        "0x24": "SyntaxIfStatement",
+        "0x25": "SyntaxWhileStatement",
+        "0x26": "SyntaxDoWhileStatement",
+        "0x27": "SyntaxForStatement",
+        "0x28": "SyntaxInitStatement",
+        "0x29": "SyntaxRangeBasedForStatement",
+        "0x2A": "SyntaxForRangeDeclaration",
+        "0x2B": "SyntaxLabeledStatement",
+        "0x2C": "SyntaxBreakStatement",
+        "0x2D": "SyntaxContinueStatement",
+        "0x2E": "SyntaxSwitchStatement",
+        "0x2F": "SyntaxGotoStatement",
+        "0x30": "SyntaxDeclarationStatement",
+        "0x31": "SyntaxExpressionStatement",
+        "0x32": "SyntaxTryBlock",
+        "0x33": "SyntaxHandler",
+        "0x34": "SyntaxHandlerSeq",
+        "0x35": "SyntaxFunctionTryBlock",
+        "0x36": "SyntaxTypeIdListElement",
+        "0x37": "SyntaxDynamicExceptionSpec",
+        "0x38": "SyntaxStatementSeq",
+        "0x39": "SyntaxFunctionBody",
+        "0x3A": "SyntaxExpression",
+        "0x3B": "SyntaxFunctionDefinition",
+        "0x3C": "SyntaxMemberFunctionDeclaration",
+        "0x3D": "SyntaxTemplateDeclaration",
+        "0x3E": "SyntaxRequiresClause",
+        "0x3F": "SyntaxSimpleRequirement",
+        "0x40": "SyntaxTypeRequirement",
+        "0x41": "SyntaxCompoundRequirement",
+        "0x42": "SyntaxNestedRequirement",
+        "0x43": "SyntaxRequirementBody",
+        "0x44": "SyntaxTypeTemplateParameter",
+        "0x45": "SyntaxTemplateTemplateParameter",
+        "0x46": "SyntaxTypeTemplateArgument",
+        "0x47": "SyntaxNonTypeTemplateArgument",
+        "0x48": "SyntaxTemplateParameterList",
+        "0x49": "SyntaxTemplateArgumentList",
+        "0x4A": "SyntaxTemplateId",
+        "0x4B": "SyntaxMemInitializer",
+        "0x4C": "SyntaxCtorInitializer",
+        "0x4D": "SyntaxLambdaIntroducer",
+        "0x4E": "SyntaxLambdaDeclarator",
+        "0x4F": "SyntaxCaptureDefault",
+        "0x50": "SyntaxSimpleCapture",
+        "0x51": "SyntaxInitCapture",
+        "0x52": "SyntaxThisCapture",
+        "0x53": "SyntaxAttributedStatement",
+        "0x54": "SyntaxAttributedDeclaration",
+        "0x55": "SyntaxAttributeSpecifierSeq",
+        "0x56": "SyntaxAttributeSpecifier",
+        "0x57": "SyntaxAttributeUsingPrefix",
+        "0x58": "SyntaxAttribute",
+        "0x59": "SyntaxAttributeArgumentClause",
+        "0x5A": "SyntaxAlignas",
+        "0x5B": "SyntaxUsingDeclaration",
+        "0x5C": "SyntaxUsingDeclarator",
+        "0x5D": "SyntaxUsingDirective",
+        "0x5E": "SyntaxArrayIndex",
+        "0x5F": "SyntaxSEHTry",
+        "0x60": "SyntaxSEHExcept",
+        "0x61": "SyntaxSEHFinally",
+        "0x62": "SyntaxSEHLeave",
+        "0x63": "SyntaxTypeTraitIntrinsic",
+        "0x64": "SyntaxTuple",
+        "0x65": "SyntaxAsmStatement",
+        "0x66": "SyntaxNamespaceAliasDefinition",
+        "0x67": "SyntaxSuper",
+        "0x68": "SyntaxUnaryFoldExpression",
+        "0x69": "SyntaxBinaryFoldExpression",
+        "0x6A": "SyntaxEmptyStatement",
+        "0x6B": "SyntaxStructuredBindingDeclaration",
+        "0x6C": "SyntaxStructuredBindingIdentifier",
+        "0x6D": "SyntaxUsingEnumDeclaration"
+      }
+    },
+    "Type": {
+      "size": 4,
+      "bitwidth": 5,
+      "non_null": false,
+      "values": {
+        "0x0": "TypeVendorExtension",
+        "0x1": "TypeFundamental",
+        "0x2": "TypeDesignated",
+        "0x3": "TypeTor",
+        "0x4": "TypeSyntactic",
+        "0x5": "TypeExpansion",
+        "0x6": "TypePointer",
+        "0x7": "TypePointerToMember",
+        "0x8": "TypeLvalueReference",
+        "0x9": "TypeRvalueReference",
+        "0xA": "TypeFunction",
+        "0xB": "TypeMethod",
+        "0xC": "TypeArray",
+        "0xD": "TypeTypename",
+        "0xE": "TypeQualified",
+        "0xF": "TypeBase",
+        "0x10": "TypeDecltype",
+        "0x11": "TypePlaceholder",
+        "0x12": "TypeTuple",
+        "0x13": "TypeForall",
+        "0x14": "TypeUnaligned",
+        "0x15": "TypeSyntaxTree"
+      }
+    },
+    "Unit": {
+      "size": 4,
+      "bitwidth": 3,
+      "non_null": true,
+      "values": {
+        "0x0": "Source",
+        "0x1": "Primary",
+        "0x2": "Partition",
+        "0x3": "Header",
+        "0x4": "ExportedTU"
+      }
+    }
+  },
+  "node_offsets": {
+    "FormSpec": {
+      "size": 4,
+      "type": "FormSpec",
+      "non_null": true
+    },
+    "Line": {
+      "size": 4,
+      "type": "SourceLine",
+      "non_null": true
+    },
+    "Scope": {
+      "size": 4,
+      "type": "ScopeDescriptor",
+      "non_null": false
+    }
+  },
+  "foreign_indexes": {
+    "Decl": 4
+  },
+  "bitfields": {
+    "BasicSpecifiers": {
+      "size": 1,
+      "empty": "Cxx",
+      "position": {
+        "0": "C",
+        "1": "Internal",
+        "2": "Vague",
+        "3": "External",
+        "4": "Deprecated",
+        "5": "InitializedInClass",
+        "6": "NonExported",
+        "7": "IsMemberOfGlobalModule"
+      },
+      "special_values": {}
+    },
+    "FunctionTraits": {
+      "size": 2,
+      "empty": "None",
+      "position": {
+        "0": "Inline",
+        "1": "Constexpr",
+        "2": "Explicit",
+        "3": "Virtual",
+        "4": "NoReturn",
+        "5": "PureVirtual",
+        "6": "HiddenFriend",
+        "7": "Defaulted",
+        "8": "Deleted",
+        "9": "Constrained",
+        "10": "Immediate"
+      },
+      "special_values": {}
+    },
+    "FunctionTypeTraits": {
+      "size": 1,
+      "empty": "None",
+      "position": {
+        "0": "Const",
+        "1": "Volatile",
+        "2": "Lvalue",
+        "3": "Rvalue"
+      },
+      "special_values": {}
+    },
+    "MsvcTraits": {
+      "size": 4,
+      "empty": "None",
+      "position": {
+        "0": "ForceInline",
+        "1": "Naked",
+        "2": "NoAlias",
+        "3": "NoInline",
+        "4": "Restrict",
+        "5": "SafeBuffers",
+        "6": "DllExport",
+        "7": "DllImport",
+        "8": "CodeSegment",
+        "9": "Novtable",
+        "10": "IntrinsicType",
+        "11": "EmptyBases",
+        "12": "Process",
+        "13": "Allocate",
+        "14": "SelectAny",
+        "15": "Comdat",
+        "16": "Uuid"
+      },
+      "special_values": {}
+    },
+    "ObjectTraits": {
+      "size": 1,
+      "empty": "None",
+      "position": {
+        "0": "Constexpr",
+        "1": "Mutable",
+        "2": "ThreadLocal",
+        "3": "Inline",
+        "4": "InitializerExported",
+        "7": "Vendor"
+      },
+      "special_values": {}
+    },
+    "Qualifier": {
+      "size": 1,
+      "empty": "None",
+      "position": {
+        "0": "Const",
+        "1": "Volatile",
+        "2": "Restrict"
+      },
+      "special_values": {}
+    },
+    "ReachableProperties": {
+      "size": 1,
+      "empty": "None",
+      "position": {
+        "0": "Initializer",
+        "1": "DefaultArguments",
+        "2": "Attributes"
+      },
+      "special_values": {
+        "0xFF": "All"
+      }
+    },
+    "ScopeTraits": {
+      "size": 1,
+      "empty": "None",
+      "position": {
+        "0": "Unnamed",
+        "1": "Inline",
+        "2": "InitializerExported",
+        "3": "ClosureType",
+        "4": "Final",
+        "7": "Vendor"
+      },
+      "special_values": {}
+    }
+  },
+  "value_categories": {
+    "Operator": {
+      "size": 2,
+      "bitwidth": 4,
+      "sort": "Operator",
+      "variants": {
+        "NiladicOperator": "NiladicOperatorSort",
+        "MonadicOperator": "MonadicOperatorSort",
+        "DyadicOperator": "DyadicOperatorSort",
+        "TriadicOperator": "TriadicOperatorSort",
+        "StorageInstructionOperator": "StorageInstructionOperatorSort",
+        "VariadicOperator": "VariadicOperatorSort"
+      }
+    },
+    "SourceIdentifier": {
+      "size": 8,
+      "bitwidth": 16,
+      "sort": "SourceIdentifier",
+      "variants": {
+        "Plain": "TextOffset",
+        "Msvc": "SourceUnknownIdentifier",
+        "MsvcBuiltinHugeVal": "SourceUnknownIdentifier",
+        "MsvcBuiltinHugeValf": "SourceUnknownIdentifier",
+        "MsvcBuiltinNan": "SourceUnknownIdentifier",
+        "MsvcBuiltinNanf": "SourceUnknownIdentifier",
+        "MsvcBuiltinNans": "SourceUnknownIdentifier",
+        "MsvcBuiltinNansf": "SourceUnknownIdentifier"
+      }
+    },
+    "SourceLiteral": {
+      "size": 8,
+      "bitwidth": 16,
+      "sort": "SourceLiteral",
+      "variants": {
+        "Unknown": "SourceUnknownLiteral",
+        "Scalar": "ExprIndex",
+        "String": "StringIndex",
+        "DefinedString": "StringIndex",
+        "Msvc": "SourceUnknownLiteral",
+        "MsvcFunctionNameMacro": "TextOffset",
+        "MsvcStringPrefixMacro": "TextOffset",
+        "MsvcBinding": "ExprIndex",
+        "MsvcResolvedType": "TypeIndex",
+        "MsvcDefinedConstant": "ExprIndex",
+        "MsvcCastTargetType": "TypeIndex"
+      }
+    },
+    "Word": {
+      "size": 8,
+      "bitwidth": 8,
+      "sort": "Word",
+      "variants": {
+        "Unknown": "SourceUnknownWord",
+        "SourceDirective": "SourceDirectiveSort",
+        "SourcePunctuator": "SourcePunctuatorSort",
+        "SourceLiteral": "SourceLiteralCategory",
+        "SourceOperator": "SourceOperatorSort",
+        "SourceKeyword": "SourceKeywordSort",
+        "SourceIdentifier": "SourceIdentifierCategory"
+      }
+    }
+  },
+  "nodes": {
+    "AttrBasic": {
+      "padding": 0,
+      "fields": {
+        "word": "NestableWord"
+      }
+    },
+    "AttrCalled": {
+      "padding": 0,
+      "fields": {
+        "function": "AttrIndex",
+        "arguments": "AttrIndex"
+      }
+    },
+    "AttrElaborated": {
+      "padding": 0,
+      "fields": {
+        "expression": "ExprIndex"
+      }
+    },
+    "AttrExpanded": {
+      "padding": 0,
+      "fields": {
+        "operand": "AttrIndex"
+      }
+    },
+    "AttrFactored": {
+      "padding": 0,
+      "fields": {
+        "factor": "NestableWord",
+        "terms": "AttrIndex"
+      }
+    },
+    "AttrLabeled": {
+      "padding": 0,
+      "fields": {
+        "label": "NestableWord",
+        "attribute": "AttrIndex"
+      }
+    },
+    "AttrScoped": {
+      "padding": 0,
+      "fields": {
+        "scope": "NestableWord",
+        "member": "NestableWord"
+      }
+    },
+    "AttrTuple": {
+      "padding": 0,
+      "fields": {
+        "start": "Index",
+        "cardinality": "Cardinality"
+      }
+    },
+    "ChartMultilevel": {
+      "padding": 0,
+      "fields": {
+        "start": "Index",
+        "cardinality": "Cardinality"
+      }
+    },
+    "ChartUnilevel": {
+      "padding": 0,
+      "fields": {
+        "start": "Index",
+        "cardinality": "Cardinality",
+        "constraint": "ExprIndex"
+      }
+    },
+    "ConstF64": {
+      "padding": 4,
+      "fields": {
+        "value": "IEEELEFloat"
+      }
+    },
+    "ConstI64": {
+      "padding": 0,
+      "fields": {
+        "value": "u64"
+      }
+    },
+    "ConstStr": {
+      "padding": 0,
+      "fields": {
+        "start": "TextOffset",
+        "length": "Cardinality",
+        "suffix": "TextOffset"
+      }
+    },
+    "DeclAlias": {
+      "padding": 2,
+      "fields": {
+        "name": "TextOffset",
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "home_scope": "DeclIndex",
+        "aliasee": "TypeIndex",
+        "specifiers": "BasicSpecifiersBitfield",
+        "access": "AccessSort"
+      }
+    },
+    "DeclBitfield": {
+      "padding": 0,
+      "fields": {
+        "name": "TextOffset",
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "home_scope": "DeclIndex",
+        "width": "ExprIndex",
+        "initializer": "ExprIndex",
+        "traits": "ObjectTraitsBitfield",
+        "specifiers": "BasicSpecifiersBitfield",
+        "access": "AccessSort",
+        "properties": "ReachablePropertiesBitfield"
+      }
+    },
+    "DeclConcept": {
+      "padding": 0,
+      "fields": {
+        "name": "TextOffset",
+        "locus": "SourceLocation",
+        "home_scope": "DeclIndex",
+        "type": "TypeIndex",
+        "chart": "ChartIndex",
+        "constraint": "ExprIndex",
+        "specifiers": "BasicSpecifiersBitfield",
+        "access": "AccessSort",
+        "unknown": "u16",
+        "head": "SentenceIndex",
+        "body": "SentenceIndex"
+      }
+    },
+    "DeclConstructor": {
+      "padding": 3,
+      "fields": {
+        "name": "TextOffset",
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "home_scope": "DeclIndex",
+        "chart": "ChartIndex",
+        "traits": "FunctionTraitsBitfield",
+        "specifiers": "BasicSpecifiersBitfield",
+        "access": "AccessSort",
+        "properties": "ReachablePropertiesBitfield"
+      }
+    },
+    "DeclDeductionGuide": {
+      "padding": 2,
+      "fields": {
+        "name": "TextOffset",
+        "locus": "SourceLocation",
+        "home_scope": "DeclIndex",
+        "source": "ChartIndex",
+        "target": "ExprIndex",
+        "traits": "GuideTraitsBitfield",
+        "specifiers": "BasicSpecifiersBitfield"
+      }
+    },
+    "DeclDestructor": {
+      "padding": 2,
+      "fields": {
+        "name": "TextOffset",
+        "locus": "SourceLocation",
+        "home_scope": "DeclIndex",
+        "eh_spec": "NoexceptSpecification",
+        "traits": "FunctionTraitsBitfield",
+        "specifiers": "BasicSpecifiersBitfield",
+        "access": "AccessSort",
+        "convention": "CallingConventionSort",
+        "properties": "ReachablePropertiesBitfield"
+      }
+    },
+    "DeclEnumeration": {
+      "padding": 1,
+      "fields": {
+        "name": "TextOffset",
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "base": "TypeIndex",
+        "initializer": "Sequence",
+        "home_scope": "DeclIndex",
+        "alignment": "ExprIndex",
+        "specifiers": "BasicSpecifiersBitfield",
+        "access": "AccessSort",
+        "properties": "ReachablePropertiesBitfield"
+      }
+    },
+    "DeclEnumerator": {
+      "padding": 2,
+      "fields": {
+        "name": "TextOffset",
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "initializer": "ExprIndex",
+        "specifiers": "BasicSpecifiersBitfield",
+        "access": "AccessSort"
+      }
+    },
+    "DeclExpansion": {
+      "padding": 0,
+      "fields": {
+        "operand": "DeclIndex",
+        "locus": "SourceLocation"
+      }
+    },
+    "DeclExplicitInstantiation": {
+      "padding": 0,
+      "fields": {
+        "form": "FormSpecOffset",
+        "decl": "DeclIndex"
+      }
+    },
+    "DeclExplicitSpecialization": {
+      "padding": 0,
+      "fields": {
+        "form": "FormSpecOffset",
+        "decl": "DeclIndex"
+      }
+    },
+    "DeclField": {
+      "padding": 0,
+      "fields": {
+        "name": "TextOffset",
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "home_scope": "DeclIndex",
+        "initializer": "ExprIndex",
+        "alignment": "ExprIndex",
+        "traits": "ObjectTraitsBitfield",
+        "specifiers": "BasicSpecifiersBitfield",
+        "access": "AccessSort",
+        "properties": "ReachablePropertiesBitfield"
+      }
+    },
+    "DeclFriend": {
+      "padding": 0,
+      "fields": {
+        "entity": "ExprIndex"
+      }
+    },
+    "DeclFunction": {
+      "padding": 3,
+      "fields": {
+        "name": "NameIndex",
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "home_scope": "DeclIndex",
+        "chart": "ChartIndex",
+        "traits": "FunctionTraitsBitfield",
+        "specifiers": "BasicSpecifiersBitfield",
+        "access": "AccessSort",
+        "properties": "ReachablePropertiesBitfield"
+      }
+    },
+    "DeclInheritedConstructor": {
+      "padding": 0,
+      "fields": {
+        "name": "TextOffset",
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "home_scope": "DeclIndex",
+        "chart": "ChartIndex",
+        "traits": "FunctionTraitsBitfield",
+        "specifiers": "BasicSpecifiersBitfield",
+        "access": "AccessSort",
+        "base_ctor": "DeclIndex"
+      }
+    },
+    "DeclIntrinsic": {
+      "padding": 2,
+      "fields": {
+        "name": "TextOffset",
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "home_scope": "DeclIndex",
+        "specifiers": "BasicSpecifiersBitfield",
+        "access": "AccessSort"
+      }
+    },
+    "DeclMethod": {
+      "padding": 3,
+      "fields": {
+        "name": "NameIndex",
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "home_scope": "DeclIndex",
+        "chart": "ChartIndex",
+        "traits": "FunctionTraitsBitfield",
+        "specifiers": "BasicSpecifiersBitfield",
+        "access": "AccessSort",
+        "properties": "ReachablePropertiesBitfield"
+      }
+    },
+    "DeclOutputSegment": {
+      "padding": 0,
+      "fields": {
+        "name": "TextOffset",
+        "ID": "TextOffset",
+        "traits": "SegmentTraits",
+        "type": "SegmentType"
+      }
+    },
+    "DeclParameter": {
+      "padding": 1,
+      "fields": {
+        "name": "TextOffset",
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "constraint": "ExprIndex",
+        "initializer": "ExprIndex",
+        "level": "ParameterLevel",
+        "position": "ParameterPosition",
+        "sort": "ParameterSort",
+        "properties": "ReachablePropertiesBitfield",
+        "pack": "bool"
+      }
+    },
+    "DeclPartialSpecialization": {
+      "padding": 1,
+      "fields": {
+        "name": "NameIndex",
+        "locus": "SourceLocation",
+        "home_scope": "DeclIndex",
+        "chart": "ChartIndex",
+        "entity": "ParameterizedEntity",
+        "form": "FormSpecOffset",
+        "specifiers": "BasicSpecifiersBitfield",
+        "access": "AccessSort",
+        "properties": "ReachablePropertiesBitfield"
+      }
+    },
+    "DeclProperty": {
+      "padding": 0,
+      "fields": {
+        "member": "DeclIndex",
+        "getter": "TextOffset",
+        "setter": "TextOffset"
+      }
+    },
+    "DeclReference": {
+      "padding": 0,
+      "fields": {
+        "unit": "ModuleReference",
+        "local_index": "DeclForeignIndex"
+      }
+    },
+    "DeclScope": {
+      "padding": 2,
+      "fields": {
+        "name": "NameIndex",
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "base": "TypeIndex",
+        "initializer": "ScopeOffset",
+        "home_scope": "DeclIndex",
+        "alignment": "ExprIndex",
+        "pack_size": "PackSize",
+        "specifiers": "BasicSpecifiersBitfield",
+        "traits": "ScopeTraitsBitfield",
+        "access": "AccessSort",
+        "properties": "ReachablePropertiesBitfield"
+      }
+    },
+    "DeclTemplate": {
+      "padding": 1,
+      "fields": {
+        "name": "NameIndex",
+        "locus": "SourceLocation",
+        "home_scope": "DeclIndex",
+        "chart": "ChartIndex",
+        "entity": "ParameterizedEntity",
+        "type": "TypeIndex",
+        "specifiers": "BasicSpecifiersBitfield",
+        "access": "AccessSort",
+        "properties": "ReachablePropertiesBitfield"
+      }
+    },
+    "DeclTemploid": {
+      "padding": 3,
+      "fields": {
+        "entity": "ParameterizedEntity",
+        "chart": "ChartIndex",
+        "properties": "ReachablePropertiesBitfield"
+      }
+    },
+    "DeclTuple": {
+      "padding": 0,
+      "fields": {
+        "start": "Index",
+        "cardinality": "Cardinality"
+      }
+    },
+    "DeclUsingDeclaration": {
+      "padding": 1,
+      "fields": {
+        "name": "TextOffset",
+        "locus": "SourceLocation",
+        "home_scope": "DeclIndex",
+        "resolution": "DeclIndex",
+        "parent": "ExprIndex",
+        "name2": "TextOffset",
+        "specifiers": "BasicSpecifiersBitfield",
+        "access": "AccessSort",
+        "hidden": "bool"
+      }
+    },
+    "DeclVariable": {
+      "padding": 0,
+      "fields": {
+        "name": "NameIndex",
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "home_scope": "DeclIndex",
+        "initializer": "ExprIndex",
+        "alignment": "ExprIndex",
+        "traits": "ObjectTraitsBitfield",
+        "specifiers": "BasicSpecifiersBitfield",
+        "access": "AccessSort",
+        "properties": "ReachablePropertiesBitfield"
+      }
+    },
+    "ExprAlignof": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "operand": "SyntaxIndex"
+      }
+    },
+    "ExprArrayValue": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "elements": "ExprIndex",
+        "element_type": "TypeIndex"
+      }
+    },
+    "ExprAssignInitializer": {
+      "padding": 0,
+      "fields": {
+        "equal": "SourceLocation",
+        "initializer": "ExprIndex"
+      }
+    },
+    "ExprBinaryFold": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "left": "ExprIndex",
+        "right": "ExprIndex",
+        "operation": "DyadicOperatorSort",
+        "associativity": "Associativity"
+      }
+    },
+    "ExprCall": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "operation": "ExprIndex",
+        "arguments": "ExprIndex"
+      }
+    },
+    "ExprCast": {
+      "padding": 2,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "source": "ExprIndex",
+        "target": "TypeIndex",
+        "op": "DyadicOperatorSort"
+      }
+    },
+    "ExprCompoundString": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "prefix": "TextOffset",
+        "string": "ExprIndex"
+      }
+    },
+    "ExprCondition": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "expr": "ExprIndex"
+      }
+    },
+    "ExprDesignatedInitializer": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "member": "TextOffset",
+        "initializer": "ExprIndex"
+      }
+    },
+    "ExprDestructorCall": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "name": "ExprIndex",
+        "decltype_specifier": "SyntaxIndex",
+        "cleanup": "DestructorSort"
+      }
+    },
+    "ExprDyad": {
+      "padding": 2,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "impl": "DeclIndex",
+        "argument_0": "ExprIndex",
+        "argument_1": "ExprIndex",
+        "assoc": "DyadicOperatorSort"
+      }
+    },
+    "ExprDynamicDispatch": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "pivot": "ExprIndex"
+      }
+    },
+    "ExprEmpty": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex"
+      }
+    },
+    "ExprExpansion": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "operand": "ExprIndex"
+      }
+    },
+    "ExprExpressionList": {
+      "padding": 3,
+      "fields": {
+        "left": "SourceLocation",
+        "right": "SourceLocation",
+        "contents": "ExprIndex",
+        "delimiter": "DelimiterSort"
+      }
+    },
+    "ExprFunctionString": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "macro": "TextOffset"
+      }
+    },
+    "ExprHierarchyConversion": {
+      "padding": 2,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "source": "ExprIndex",
+        "target": "TypeIndex",
+        "inheritance": "ExprIndex",
+        "override": "ExprIndex",
+        "op": "DyadicOperatorSort"
+      }
+    },
+    "ExprInheritancePath": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "path": "ExprIndex"
+      }
+    },
+    "ExprInitializer": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "expr": "ExprIndex",
+        "sort": "InitializerSort"
+      }
+    },
+    "ExprInitializerList": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "elements": "ExprIndex"
+      }
+    },
+    "ExprLambda": {
+      "padding": 0,
+      "fields": {
+        "introducer": "SyntaxIndex",
+        "template_parameters": "SyntaxIndex",
+        "declarator": "SyntaxIndex",
+        "constraint": "SyntaxIndex",
+        "body": "SyntaxIndex"
+      }
+    },
+    "ExprLiteral": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "value": "LitIndex"
+      }
+    },
+    "ExprMemberAccess": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "offset": "ExprIndex",
+        "enclosing": "TypeIndex",
+        "name": "TextOffset"
+      }
+    },
+    "ExprMemberInitializer": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "member": "DeclIndex",
+        "base": "TypeIndex",
+        "initializer": "ExprIndex"
+      }
+    },
+    "ExprMonad": {
+      "padding": 2,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "impl": "DeclIndex",
+        "argument": "ExprIndex",
+        "assoc": "MonadicOperatorSort"
+      }
+    },
+    "ExprNamedDecl": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "resolution": "DeclIndex"
+      }
+    },
+    "ExprNullptr": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex"
+      }
+    },
+    "ExprPackedTemplateArguments": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "arguments": "ExprIndex"
+      }
+    },
+    "ExprPath": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "scope": "ExprIndex",
+        "member": "ExprIndex"
+      }
+    },
+    "ExprPlaceholder": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex"
+      }
+    },
+    "ExprPointer": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation"
+      }
+    },
+    "ExprProductTypeValue": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "class_decl": "TypeIndex",
+        "members": "ExprIndex",
+        "base_subobjects": "ExprIndex"
+      }
+    },
+    "ExprPushState": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "ctor_call": "ExprIndex",
+        "dtor_call": "ExprIndex",
+        "flags": "EHFlags"
+      }
+    },
+    "ExprQualifiedName": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "elements": "ExprIndex",
+        "typename_keyword": "SourceLocation"
+      }
+    },
+    "ExprRead": {
+      "padding": 3,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "address": "ExprIndex",
+        "sort": "ReadConversionSort"
+      }
+    },
+    "ExprRequires": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "parameters": "SyntaxIndex",
+        "body": "SyntaxIndex"
+      }
+    },
+    "ExprSimpleIdentifier": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "name": "NameIndex"
+      }
+    },
+    "ExprSizeofType": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "operand": "TypeIndex"
+      }
+    },
+    "ExprString": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "string_index": "StringIndex"
+      }
+    },
+    "ExprStringSequence": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "strings": "ExprIndex"
+      }
+    },
+    "ExprSubobjectValue": {
+      "padding": 0,
+      "fields": {
+        "value": "ExprIndex"
+      }
+    },
+    "ExprSumTypeValue": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "variant": "DeclIndex",
+        "discriminant": "ActiveMember",
+        "value": "ExprIndex"
+      }
+    },
+    "ExprSyntaxTree": {
+      "padding": 0,
+      "fields": {
+        "syntax": "SyntaxIndex"
+      }
+    },
+    "ExprTemplateId": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "primary": "ExprIndex",
+        "arguments": "ExprIndex"
+      }
+    },
+    "ExprTemplateReference": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "member_name": "NameIndex",
+        "member_locus": "SourceLocation",
+        "scope": "TypeIndex",
+        "arguments": "ExprIndex"
+      }
+    },
+    "ExprTemporary": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "id": "UniqueID"
+      }
+    },
+    "ExprThis": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex"
+      }
+    },
+    "ExprTokens": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "words": "SentenceIndex"
+      }
+    },
+    "ExprTriad": {
+      "padding": 2,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "impl": "DeclIndex",
+        "argument_0": "ExprIndex",
+        "argument_1": "ExprIndex",
+        "argument_2": "ExprIndex",
+        "assoc": "TriadicOperatorSort"
+      }
+    },
+    "ExprTuple": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "start": "Index",
+        "cardinality": "Cardinality"
+      }
+    },
+    "ExprType": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "denotation": "TypeIndex"
+      }
+    },
+    "ExprTypeTraitIntrinsic": {
+      "padding": 2,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "arguments": "TypeIndex",
+        "intrinsic": "OperatorCategory"
+      }
+    },
+    "ExprTypeid": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "operand": "TypeIndex"
+      }
+    },
+    "ExprUnaryFold": {
+      "padding": 1,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "expr": "ExprIndex",
+        "operation": "DyadicOperatorSort",
+        "associativity": "Associativity"
+      }
+    },
+    "ExprUnqualifiedId": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "name": "NameIndex",
+        "resolution": "ExprIndex",
+        "template_keyword": "SourceLocation"
+      }
+    },
+    "ExprUnresolvedId": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "name": "NameIndex"
+      }
+    },
+    "ExprVirtualFunctionConversion": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "type": "TypeIndex",
+        "function": "DeclIndex"
+      }
+    },
+    "FileHeader": {
+      "padding": 0,
+      "fields": {
+        "checksum": "SHA256",
+        "major_version": "Version",
+        "minor_version": "Version",
+        "abi": "Abi",
+        "arch": "ArchitectureSort",
+        "dialect": "LanguageVersion",
+        "string_table_bytes": "ByteOffset",
+        "string_table_size": "Cardinality",
+        "unit": "UnitIndex",
+        "src_path": "TextOffset",
+        "global_scope": "ScopeOffset",
+        "toc": "ByteOffset",
+        "partition_count": "Cardinality",
+        "internal": "bool"
+      }
+    },
+    "FormCatenate": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "first": "FormIndex",
+        "second": "FormIndex"
+      }
+    },
+    "FormCharacter": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "spelling": "TextOffset"
+      }
+    },
+    "FormHeader": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "spelling": "TextOffset"
+      }
+    },
+    "FormIdentifier": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "spelling": "TextOffset"
+      }
+    },
+    "FormJunk": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "spelling": "TextOffset"
+      }
+    },
+    "FormKeyword": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "spelling": "TextOffset"
+      }
+    },
+    "FormNumber": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "spelling": "TextOffset"
+      }
+    },
+    "FormOperator": {
+      "padding": 2,
+      "fields": {
+        "locus": "SourceLocation",
+        "spelling": "TextOffset",
+        "op": "FormOperatorSort"
+      }
+    },
+    "FormParameter": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "spelling": "TextOffset"
+      }
+    },
+    "FormParenthesized": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "operand": "FormIndex"
+      }
+    },
+    "FormPragma": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "operand": "FormIndex"
+      }
+    },
+    "FormSpec": {
+      "padding": 0,
+      "fields": {
+        "primary_template": "DeclIndex",
+        "arguments": "ExprIndex"
+      }
+    },
+    "FormString": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "spelling": "TextOffset"
+      }
+    },
+    "FormStringize": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "operand": "FormIndex"
+      }
+    },
+    "FormTuple": {
+      "padding": 0,
+      "fields": {
+        "start": "Index",
+        "cardinality": "Cardinality"
+      }
+    },
+    "FormWhitespace": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation"
+      }
+    },
+    "HeapAttr": {
+      "padding": 0,
+      "fields": {
+        "value": "AttrIndex"
+      }
+    },
+    "HeapChart": {
+      "padding": 0,
+      "fields": {
+        "value": "ChartIndex"
+      }
+    },
+    "HeapDecl": {
+      "padding": 0,
+      "fields": {
+        "value": "DeclIndex"
+      }
+    },
+    "HeapExpr": {
+      "padding": 0,
+      "fields": {
+        "value": "ExprIndex"
+      }
+    },
+    "HeapForm": {
+      "padding": 0,
+      "fields": {
+        "value": "FormIndex"
+      }
+    },
+    "HeapPPForm": {
+      "padding": 0,
+      "fields": {
+        "value": "FormIndex"
+      }
+    },
+    "HeapStmt": {
+      "padding": 0,
+      "fields": {
+        "value": "StmtIndex"
+      }
+    },
+    "HeapSyntax": {
+      "padding": 0,
+      "fields": {
+        "value": "SyntaxIndex"
+      }
+    },
+    "HeapType": {
+      "padding": 0,
+      "fields": {
+        "value": "TypeIndex"
+      }
+    },
+    "KeywordSyntax": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "value": "KeywordSort"
+      }
+    },
+    "MacroFunctionLike": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "name": "TextOffset",
+        "parameters": "FormIndex",
+        "body": "FormIndex",
+        "arity_variadic": "VariadicArity"
+      }
+    },
+    "MacroObjectLike": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "name": "TextOffset",
+        "body": "FormIndex"
+      }
+    },
+    "ModuleExportReference": {
+      "padding": 0,
+      "fields": {
+        "reference": "ModuleReference"
+      }
+    },
+    "ModuleImportReference": {
+      "padding": 0,
+      "fields": {
+        "reference": "ModuleReference"
+      }
+    },
+    "ModuleReference": {
+      "padding": 0,
+      "fields": {
+        "owner": "TextOffset",
+        "partition": "TextOffset"
+      }
+    },
+    "NameConversion": {
+      "padding": 0,
+      "fields": {
+        "target": "TypeIndex",
+        "encoded": "TextOffset"
+      }
+    },
+    "NameGuide": {
+      "padding": 0,
+      "fields": {
+        "primary_template": "DeclIndex"
+      }
+    },
+    "NameLiteral": {
+      "padding": 0,
+      "fields": {
+        "encoded": "TextOffset"
+      }
+    },
+    "NameOperator": {
+      "padding": 2,
+      "fields": {
+        "encoded": "TextOffset",
+        "operator": "OperatorCategory"
+      }
+    },
+    "NameSourceFile": {
+      "padding": 0,
+      "fields": {
+        "path": "TextOffset",
+        "guard": "TextOffset"
+      }
+    },
+    "NameSpecialization": {
+      "padding": 0,
+      "fields": {
+        "primary": "NameIndex",
+        "arguments": "ExprIndex"
+      }
+    },
+    "NameTemplate": {
+      "padding": 0,
+      "fields": {
+        "name": "NameIndex"
+      }
+    },
+    "NestableWord": {
+      "padding": 1,
+      "fields": {
+        "locus": "SourceLocation",
+        "index": "Index",
+        "value": "u16",
+        "sort": "WordSort"
+      }
+    },
+    "NoexceptSpecification": {
+      "padding": 3,
+      "fields": {
+        "words": "SentenceIndex",
+        "sort": "NoexceptSort"
+      }
+    },
+    "ParameterizedEntity": {
+      "padding": 0,
+      "fields": {
+        "decl": "DeclIndex",
+        "head": "SentenceIndex",
+        "body": "SentenceIndex",
+        "attributes": "SentenceIndex"
+      }
+    },
+    "Partition": {
+      "padding": 0,
+      "fields": {
+        "name": "TextOffset",
+        "offset": "ByteOffset",
+        "cardinality": "Cardinality",
+        "entry_size": "EntitySize"
+      }
+    },
+    "ScopeDescriptor": {
+      "padding": 0,
+      "fields": {
+        "start": "Index",
+        "cardinality": "Cardinality"
+      }
+    },
+    "ScopeMember": {
+      "padding": 0,
+      "fields": {
+        "index": "DeclIndex"
+      }
+    },
+    "Sequence": {
+      "padding": 0,
+      "fields": {
+        "start": "Index",
+        "cardinality": "Cardinality"
+      }
+    },
+    "SourceLine": {
+      "padding": 0,
+      "fields": {
+        "file": "NameIndex",
+        "line": "LineNumber"
+      }
+    },
+    "SourceLocation": {
+      "padding": 0,
+      "fields": {
+        "line": "LineOffset",
+        "column": "Column"
+      }
+    },
+    "SourceSentence": {
+      "padding": 0,
+      "fields": {
+        "start": "Index",
+        "cardinality": "Cardinality",
+        "locus": "SourceLocation"
+      }
+    },
+    "SourceWord": {
+      "padding": 1,
+      "fields": {
+        "locus": "SourceLocation",
+        "index": "Index",
+        "value": "u16",
+        "sort": "WordSort"
+      }
+    },
+    "StmtBlock": {
+      "padding": 0,
+      "fields": {
+        "start": "Index",
+        "cardinality": "Cardinality"
+      }
+    },
+    "StmtBreak": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation"
+      }
+    },
+    "StmtCase": {
+      "padding": 0,
+      "fields": {
+        "expr": "ExprIndex",
+        "locus": "SourceLocation"
+      }
+    },
+    "StmtContinue": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation"
+      }
+    },
+    "StmtDefault": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation"
+      }
+    },
+    "StmtDoWhile": {
+      "padding": 0,
+      "fields": {
+        "condition": "StmtIndex",
+        "body": "StmtIndex",
+        "locus": "SourceLocation"
+      }
+    },
+    "StmtEmpty": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation"
+      }
+    },
+    "StmtExpansion": {
+      "padding": 0,
+      "fields": {
+        "operand": "StmtIndex"
+      }
+    },
+    "StmtExpression": {
+      "padding": 0,
+      "fields": {
+        "expr": "ExprIndex",
+        "locus": "SourceLocation"
+      }
+    },
+    "StmtFor": {
+      "padding": 0,
+      "fields": {
+        "initialization": "StmtIndex",
+        "condition": "StmtIndex",
+        "continuation": "StmtIndex",
+        "body": "StmtIndex",
+        "locus": "SourceLocation"
+      }
+    },
+    "StmtIf": {
+      "padding": 0,
+      "fields": {
+        "initialization": "StmtIndex",
+        "condition": "StmtIndex",
+        "consequence": "StmtIndex",
+        "alternative": "StmtIndex",
+        "locus": "SourceLocation"
+      }
+    },
+    "StmtReturn": {
+      "padding": 0,
+      "fields": {
+        "expr": "ExprIndex",
+        "function_type": "TypeIndex",
+        "type": "TypeIndex",
+        "locus": "SourceLocation"
+      }
+    },
+    "StmtSwitch": {
+      "padding": 0,
+      "fields": {
+        "initialization": "StmtIndex",
+        "condition": "ExprIndex",
+        "body": "StmtIndex",
+        "locus": "SourceLocation"
+      }
+    },
+    "StmtVariableDecl": {
+      "padding": 0,
+      "fields": {
+        "decl": "DeclIndex",
+        "locus": "SourceLocation"
+      }
+    },
+    "StmtWhile": {
+      "padding": 0,
+      "fields": {
+        "condition": "StmtIndex",
+        "body": "StmtIndex",
+        "locus": "SourceLocation"
+      }
+    },
+    "SyntaxAccessSpecifier": {
+      "padding": 0,
+      "fields": {
+        "designator": "ExprIndex",
+        "access": "KeywordSyntax",
+        "virtual_kw": "SourceLocation",
+        "locus": "SourceLocation",
+        "virtual_kw2": "SourceLocation",
+        "comma": "SourceLocation"
+      }
+    },
+    "SyntaxAliasDeclaration": {
+      "padding": 0,
+      "fields": {
+        "name": "ExprIndex",
+        "aliasee": "SyntaxIndex",
+        "locus": "SourceLocation",
+        "equal": "SourceLocation",
+        "semicolon": "SourceLocation"
+      }
+    },
+    "SyntaxAlignas": {
+      "padding": 0,
+      "fields": {
+        "operand": "SyntaxIndex",
+        "locus": "SourceLocation",
+        "left_paren": "SourceLocation",
+        "right_paren": "SourceLocation"
+      }
+    },
+    "SyntaxArrayDeclarator": {
+      "padding": 0,
+      "fields": {
+        "bound": "ExprIndex",
+        "left_bracket": "SourceLocation",
+        "right_bracket": "SourceLocation"
+      }
+    },
+    "SyntaxArrayIndex": {
+      "padding": 0,
+      "fields": {
+        "array": "ExprIndex",
+        "index": "ExprIndex",
+        "left_bracket": "SourceLocation",
+        "right_bracket": "SourceLocation"
+      }
+    },
+    "SyntaxArrayOrFunctionDeclarator": {
+      "padding": 0,
+      "fields": {
+        "declarator": "SyntaxIndex",
+        "next": "SyntaxIndex"
+      }
+    },
+    "SyntaxAsmStatement": {
+      "padding": 0,
+      "fields": {
+        "tokens": "SentenceIndex",
+        "locus": "SourceLocation"
+      }
+    },
+    "SyntaxAttribute": {
+      "padding": 0,
+      "fields": {
+        "name": "ExprIndex",
+        "scope": "ExprIndex",
+        "argument_clause": "SyntaxIndex",
+        "colons": "SourceLocation",
+        "expander": "SourceLocation",
+        "comma": "SourceLocation"
+      }
+    },
+    "SyntaxAttributeArgumentClause": {
+      "padding": 0,
+      "fields": {
+        "tokens": "SentenceIndex",
+        "left_paren": "SourceLocation",
+        "right_paren": "SourceLocation"
+      }
+    },
+    "SyntaxAttributeSpecifier": {
+      "padding": 0,
+      "fields": {
+        "prefix": "SyntaxIndex",
+        "attributes": "SyntaxIndex",
+        "left_paren_1": "SourceLocation",
+        "left_paren_2": "SourceLocation",
+        "right_paren_1": "SourceLocation",
+        "right_paren_2": "SourceLocation"
+      }
+    },
+    "SyntaxAttributeSpecifierSeq": {
+      "padding": 0,
+      "fields": {
+        "attributes": "SyntaxIndex"
+      }
+    },
+    "SyntaxAttributeUsingPrefix": {
+      "padding": 0,
+      "fields": {
+        "scope": "SourceLocation",
+        "locus": "SourceLocation"
+      }
+    },
+    "SyntaxAttributedDeclaration": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "decl": "SyntaxIndex",
+        "attributes": "SyntaxIndex"
+      }
+    },
+    "SyntaxAttributedStatement": {
+      "padding": 0,
+      "fields": {
+        "pragma": "SentenceIndex",
+        "stmt": "SyntaxIndex",
+        "attributes": "SyntaxIndex"
+      }
+    },
+    "SyntaxBaseSpecifier": {
+      "padding": 0,
+      "fields": {
+        "access": "KeywordSyntax",
+        "colon": "SourceLocation"
+      }
+    },
+    "SyntaxBaseSpecifierList": {
+      "padding": 0,
+      "fields": {
+        "base_specifiers": "SyntaxIndex",
+        "colon": "SourceLocation"
+      }
+    },
+    "SyntaxBinaryFoldExpression": {
+      "padding": 0,
+      "fields": {
+        "direction": "FoldDirectionSort",
+        "operand_1": "ExprIndex",
+        "operand_2": "ExprIndex",
+        "dyad": "DyadicOperatorSort",
+        "locus": "SourceLocation",
+        "ellipsis": "SourceLocation",
+        "glyph_loci_1": "SourceLocation",
+        "glyph_loci_2": "SourceLocation",
+        "right_paren": "SourceLocation"
+      }
+    },
+    "SyntaxBreakStatement": {
+      "padding": 0,
+      "fields": {
+        "break": "SourceLocation",
+        "semicolon": "SourceLocation"
+      }
+    },
+    "SyntaxCaptureDefault": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "comma": "SourceLocation",
+        "by_ref": "bool"
+      }
+    },
+    "SyntaxClassSpecifier": {
+      "padding": 0,
+      "fields": {
+        "name": "ExprIndex",
+        "class_key": "KeywordSyntax",
+        "bases": "SyntaxIndex",
+        "members": "SyntaxIndex",
+        "left_paren": "SyntaxIndex",
+        "right_paren": "SyntaxIndex"
+      }
+    },
+    "SyntaxCompoundRequirement": {
+      "padding": 0,
+      "fields": {
+        "condition": "ExprIndex",
+        "constraint": "ExprIndex",
+        "locus": "SourceLocation",
+        "right_curly": "SourceLocation",
+        "noexcept_loc": "SourceLocation"
+      }
+    },
+    "SyntaxCompoundStatement": {
+      "padding": 0,
+      "fields": {
+        "pragam": "SentenceIndex",
+        "stmts": "SyntaxIndex",
+        "left_curly": "SourceLocation",
+        "right_curly": "SourceLocation"
+      }
+    },
+    "SyntaxConceptDefinition": {
+      "padding": 0,
+      "fields": {
+        "parameters": "SyntaxIndex",
+        "locus": "SourceLocation",
+        "name": "TextOffset",
+        "initializer": "ExprIndex",
+        "concept_keyword": "SourceLocation",
+        "equal": "SourceLocation",
+        "semicolon": "SourceLocation"
+      }
+    },
+    "SyntaxConditionDeclaration": {
+      "padding": 0,
+      "fields": {
+        "decl_specifier": "SyntaxIndex",
+        "initializaerion": "SyntaxIndex",
+        "locus": "SourceLocation"
+      }
+    },
+    "SyntaxContinueStatement": {
+      "padding": 0,
+      "fields": {
+        "continue": "SourceLocation",
+        "semicolon": "SourceLocation"
+      }
+    },
+    "SyntaxCtorInitializer": {
+      "padding": 0,
+      "fields": {
+        "initializers": "SyntaxIndex",
+        "colon": "SourceLocation"
+      }
+    },
+    "SyntaxDeclSpecifierSeq": {
+      "padding": 3,
+      "fields": {
+        "type": "TypeIndex",
+        "type_name": "SyntaxIndex",
+        "locus": "SourceLocation",
+        "storage_class": "StorageClass",
+        "declspec": "SentenceIndex",
+        "explicit_kw": "SyntaxIndex",
+        "qualifiers": "QualifierBitfield"
+      }
+    },
+    "SyntaxDeclarationStatement": {
+      "padding": 0,
+      "fields": {
+        "pragma": "SentenceIndex",
+        "decl": "SyntaxIndex"
+      }
+    },
+    "SyntaxDeclarator": {
+      "padding": 1,
+      "fields": {
+        "pointer": "SyntaxIndex",
+        "parenthesized": "SyntaxIndex",
+        "array_or_function": "SyntaxIndex",
+        "trailing_target": "SyntaxIndex",
+        "virtual_specifiers": "SyntaxIndex",
+        "name": "ExprIndex",
+        "ellipsis": "SourceLocation",
+        "locus": "SourceLocation",
+        "qualifiers": "QualifierBitfield",
+        "convention": "CallingConventionSort",
+        "callable": "bool"
+      }
+    },
+    "SyntaxDecltypeSpecifier": {
+      "padding": 0,
+      "fields": {
+        "expr": "ExprIndex",
+        "decltype_keyword": "SourceLocation",
+        "left_paren": "SourceLocation",
+        "right_paren": "SourceLocation"
+      }
+    },
+    "SyntaxDoWhileStatement": {
+      "padding": 0,
+      "fields": {
+        "pragma": "SentenceIndex",
+        "condition": "ExprIndex",
+        "body": "SyntaxIndex",
+        "do": "SourceLocation",
+        "while": "SourceLocation",
+        "semicolon": "SourceLocation"
+      }
+    },
+    "SyntaxDynamicExceptionSpec": {
+      "padding": 0,
+      "fields": {
+        "type_list": "SyntaxIndex",
+        "throw": "SourceLocation",
+        "left_paren": "SourceLocation",
+        "expander": "SourceLocation",
+        "right_paren": "SourceLocation"
+      }
+    },
+    "SyntaxEmptyStatement": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation"
+      }
+    },
+    "SyntaxEnumSpecifier": {
+      "padding": 0,
+      "fields": {
+        "name": "ExprIndex",
+        "class_key": "KeywordSyntax",
+        "enumerators": "SyntaxIndex",
+        "base": "SyntaxIndex",
+        "locus": "SourceLocation",
+        "colon": "SourceLocation",
+        "left_brace": "SourceLocation",
+        "right_brace": "SourceLocation"
+      }
+    },
+    "SyntaxEnumeratorDefinition": {
+      "padding": 0,
+      "fields": {
+        "name": "TextOffset",
+        "initializer": "ExprIndex",
+        "locus": "SourceLocation",
+        "equal": "SourceLocation",
+        "comma": "SourceLocation"
+      }
+    },
+    "SyntaxExceptionDeclaration": {
+      "padding": 0,
+      "fields": {
+        "type_specifiers": "SyntaxIndex",
+        "declarator": "SyntaxIndex",
+        "locus": "SourceLocation",
+        "ellipsis": "SourceLocation"
+      }
+    },
+    "SyntaxExplicitSpecifier": {
+      "padding": 0,
+      "fields": {
+        "condition": "ExprIndex",
+        "locus": "SourceLocation",
+        "left_paren": "SourceLocation",
+        "right_paren": "SourceLocation"
+      }
+    },
+    "SyntaxExpression": {
+      "padding": 0,
+      "fields": {
+        "expression": "ExprIndex"
+      }
+    },
+    "SyntaxExpressionStatement": {
+      "padding": 0,
+      "fields": {
+        "pragma": "SentenceIndex",
+        "expr": "ExprIndex",
+        "semicolon": "SourceLocation"
+      }
+    },
+    "SyntaxForRangeDeclaration": {
+      "padding": 0,
+      "fields": {
+        "specifiers": "SyntaxIndex",
+        "declarator": "SyntaxIndex"
+      }
+    },
+    "SyntaxForStatement": {
+      "padding": 0,
+      "fields": {
+        "pragma": "SentenceIndex",
+        "initialization": "SyntaxIndex",
+        "condition": "ExprIndex",
+        "continuation": "ExprIndex",
+        "body": "SyntaxIndex",
+        "for": "SourceLocation",
+        "left_paren": "SourceLocation",
+        "right_paren": "SourceLocation",
+        "semicolon": "SourceLocation"
+      }
+    },
+    "SyntaxFunctionBody": {
+      "padding": 0,
+      "fields": {
+        "stmts": "SyntaxIndex",
+        "try_block": "SyntaxIndex",
+        "initializers": "SyntaxIndex",
+        "generate": "KeywordSyntax",
+        "assign": "SourceLocation",
+        "semicolon": "SourceLocation"
+      }
+    },
+    "SyntaxFunctionDeclarator": {
+      "padding": 3,
+      "fields": {
+        "parameters": "SyntaxIndex",
+        "eh_spec": "SyntaxIndex",
+        "left_paren": "SourceLocation",
+        "right_paren": "SourceLocation",
+        "ellipsis": "SourceLocation",
+        "ref": "SourceLocation",
+        "traits": "FunctionTypeTraitsBitfield"
+      }
+    },
+    "SyntaxFunctionDefinition": {
+      "padding": 0,
+      "fields": {
+        "stmts": "SyntaxIndex",
+        "try_block": "SyntaxIndex",
+        "initializers": "SyntaxIndex",
+        "synthesis": "KeywordSyntax",
+        "assign": "SourceLocation",
+        "semicolon": "SourceLocation"
+      }
+    },
+    "SyntaxFunctionTryBlock": {
+      "padding": 0,
+      "fields": {
+        "body": "SyntaxIndex",
+        "handlers": "SyntaxIndex",
+        "initializers": "SyntaxIndex"
+      }
+    },
+    "SyntaxGotoStatement": {
+      "padding": 0,
+      "fields": {
+        "pragma": "SentenceIndex",
+        "target": "TextOffset",
+        "locus": "SourceLocation",
+        "label": "SourceLocation",
+        "semicolon": "SourceLocation"
+      }
+    },
+    "SyntaxHandler": {
+      "padding": 0,
+      "fields": {
+        "pragma": "SentenceIndex",
+        "exception": "SyntaxIndex",
+        "body": "SyntaxIndex",
+        "catch": "SourceLocation",
+        "left_paren": "SourceLocation",
+        "right_paren": "SourceLocation"
+      }
+    },
+    "SyntaxHandlerSeq": {
+      "padding": 0,
+      "fields": {
+        "handlers": "SyntaxIndex"
+      }
+    },
+    "SyntaxIfStatement": {
+      "padding": 0,
+      "fields": {
+        "pragma": "SentenceIndex",
+        "initialization": "SyntaxIndex",
+        "condition": "Index",
+        "consequence": "SyntaxIndex",
+        "alternative": "SyntaxIndex",
+        "if": "SourceLocation",
+        "constexpr": "SourceLocation",
+        "else": "SourceLocation"
+      }
+    },
+    "SyntaxInitCapture": {
+      "padding": 0,
+      "fields": {
+        "name": "ExprIndex",
+        "initializer": "ExprIndex",
+        "expander": "SourceLocation",
+        "ampersand": "SourceLocation",
+        "comma": "SourceLocation"
+      }
+    },
+    "SyntaxInitDeclarator": {
+      "padding": 0,
+      "fields": {
+        "declarator": "SyntaxIndex",
+        "constraint": "SyntaxIndex",
+        "initializer": "ExprIndex",
+        "comma": "SourceLocation"
+      }
+    },
+    "SyntaxInitStatement": {
+      "padding": 0,
+      "fields": {
+        "pragma": "SentenceIndex",
+        "init": "SyntaxIndex"
+      }
+    },
+    "SyntaxLabeledStatement": {
+      "padding": 0,
+      "fields": {
+        "pragma": "SentenceIndex",
+        "label": "ExprIndex",
+        "stmt": "SyntaxIndex",
+        "locus": "KeywordSort",
+        "sort": "LabelSort"
+      }
+    },
+    "SyntaxLambdaDeclarator": {
+      "padding": 8,
+      "fields": {
+        "parameters": "SyntaxIndex",
+        "eh_spec": "SyntaxIndex",
+        "trailing_target": "SyntaxIndex",
+        "modifier": "KeywordSort",
+        "left_paren": "SourceLocation",
+        "right_paren": "SourceLocation",
+        "expander": "SourceLocation"
+      }
+    },
+    "SyntaxLambdaIntroducer": {
+      "padding": 0,
+      "fields": {
+        "captures": "SyntaxIndex",
+        "left_bracket": "SourceLocation",
+        "right_bracket": "SourceLocation"
+      }
+    },
+    "SyntaxMemInitializer": {
+      "padding": 0,
+      "fields": {
+        "member": "ExprIndex",
+        "initializer": "ExprIndex",
+        "expander": "SourceLocation",
+        "comma": "SourceLocation"
+      }
+    },
+    "SyntaxMemberDeclaration": {
+      "padding": 0,
+      "fields": {
+        "decl_specifiers": "SyntaxIndex",
+        "declarations": "SyntaxIndex",
+        "semicolon": "SourceLocation"
+      }
+    },
+    "SyntaxMemberDeclarator": {
+      "padding": 0,
+      "fields": {
+        "declarator": "SyntaxIndex",
+        "constraint": "SyntaxIndex",
+        "bitwidth": "ExprIndex",
+        "initializer": "ExprIndex",
+        "locus": "SourceLocation",
+        "colon": "SourceLocation",
+        "comma": "SourceLocation"
+      }
+    },
+    "SyntaxMemberFunctionDeclaration": {
+      "padding": 0,
+      "fields": {
+        "definition": "SyntaxIndex"
+      }
+    },
+    "SyntaxMemberSpecification": {
+      "padding": 0,
+      "fields": {
+        "member_declarations": "SyntaxIndex"
+      }
+    },
+    "SyntaxNamespaceAliasDefinition": {
+      "padding": 0,
+      "fields": {
+        "name": "ExprIndex",
+        "target": "ExprIndex",
+        "namespace_kw": "SourceLocation",
+        "assign": "SourceLocation",
+        "semicolon": "SourceLocation"
+      }
+    },
+    "SyntaxNestedRequirement": {
+      "padding": 0,
+      "fields": {
+        "condition": "ExprIndex",
+        "locus": "SourceLocation"
+      }
+    },
+    "SyntaxNewDeclarator": {
+      "padding": 0,
+      "fields": {
+        "declarator": "SyntaxIndex"
+      }
+    },
+    "SyntaxNoexceptSpecification": {
+      "padding": 0,
+      "fields": {
+        "expr": "SyntaxIndex",
+        "locus": "SourceLocation",
+        "left_paren": "SourceLocation",
+        "right_paren": "SourceLocation"
+      }
+    },
+    "SyntaxNonTypeTemplateArgument": {
+      "padding": 0,
+      "fields": {
+        "argument": "ExprIndex",
+        "ellipsis": "SourceLocation",
+        "comma": "SourceLocation"
+      }
+    },
+    "SyntaxParameterDeclarator": {
+      "padding": 3,
+      "fields": {
+        "decl_specifiers": "SyntaxIndex",
+        "declarator": "SyntaxIndex",
+        "default_expr": "ExprIndex",
+        "locus": "SourceLocation",
+        "sort": "ParameterSort"
+      }
+    },
+    "SyntaxPlaceholderTypeSpecifier": {
+      "padding": 0,
+      "fields": {
+        "constraint": "ExprIndex",
+        "basis": "TypeBasisSort",
+        "keyword": "SourceLocation",
+        "locus": "SourceLocation"
+      }
+    },
+    "SyntaxPointerDeclarator": {
+      "padding": 0,
+      "fields": {
+        "whole": "SyntaxIndex",
+        "next": "SyntaxIndex",
+        "locus": "SourceLocation",
+        "sort": "PointerDeclaratorSort",
+        "qualifiers": "QualifierBitfield",
+        "convention": "CallingConventionSort",
+        "callable": "bool"
+      }
+    },
+    "SyntaxRangeBasedForStatement": {
+      "padding": 0,
+      "fields": {
+        "pragma": "SentenceIndex",
+        "init": "SyntaxIndex",
+        "decl": "SyntaxIndex",
+        "initializer": "SyntaxIndex",
+        "body": "SyntaxIndex",
+        "for": "SourceLocation",
+        "left_paren": "SourceLocation",
+        "right_paren": "SourceLocation",
+        "colon": "SourceLocation"
+      }
+    },
+    "SyntaxRequirementBody": {
+      "padding": 0,
+      "fields": {
+        "requirements": "SyntaxIndex",
+        "locus": "SourceLocation",
+        "right_curly": "SourceLocation"
+      }
+    },
+    "SyntaxRequiresClause": {
+      "padding": 0,
+      "fields": {
+        "condition": "ExprIndex",
+        "locus": "SourceLocation"
+      }
+    },
+    "SyntaxReturnStatement": {
+      "padding": 3,
+      "fields": {
+        "pragma": "SentenceIndex",
+        "expr": "ExprIndex",
+        "sort": "ReturnSort",
+        "return": "SourceLocation",
+        "semicolon": "SourceLocation"
+      }
+    },
+    "SyntaxSEHExcept": {
+      "padding": 0,
+      "fields": {
+        "condition": "ExprIndex",
+        "body": "SyntaxIndex",
+        "except_kw": "SourceLocation",
+        "left_paren": "SourceLocation",
+        "right_paren": "SourceLocation"
+      }
+    },
+    "SyntaxSEHFinally": {
+      "padding": 0,
+      "fields": {
+        "body": "SyntaxIndex",
+        "finally_kw": "SourceLocation"
+      }
+    },
+    "SyntaxSEHLeave": {
+      "padding": 0,
+      "fields": {
+        "leave_kw": "SourceLocation",
+        "semicolon": "SourceLocation"
+      }
+    },
+    "SyntaxSEHTry": {
+      "padding": 0,
+      "fields": {
+        "body": "SyntaxIndex",
+        "handler": "SyntaxIndex",
+        "try_kw": "SourceLocation"
+      }
+    },
+    "SyntaxSimpleCapture": {
+      "padding": 0,
+      "fields": {
+        "name": "ExprIndex",
+        "ampersand": "SourceLocation",
+        "expander": "SourceLocation",
+        "comma": "SourceLocation"
+      }
+    },
+    "SyntaxSimpleDeclaration": {
+      "padding": 0,
+      "fields": {
+        "decl_specifiers": "SyntaxIndex",
+        "declarators": "SyntaxIndex",
+        "locus": "SourceLocation",
+        "semicolon": "SourceLocation"
+      }
+    },
+    "SyntaxSimpleRequirement": {
+      "padding": 0,
+      "fields": {
+        "condition": "ExprIndex",
+        "locus": "SourceLocation"
+      }
+    },
+    "SyntaxSimpleTypeSpecifier": {
+      "padding": 0,
+      "fields": {
+        "type": "TypeIndex",
+        "expr": "ExprIndex",
+        "locus": "SourceLocation"
+      }
+    },
+    "SyntaxStatementSeq": {
+      "padding": 0,
+      "fields": {
+        "stmts": "SyntaxIndex"
+      }
+    },
+    "SyntaxStaticAssertDeclaration": {
+      "padding": 0,
+      "fields": {
+        "condition": "ExprIndex",
+        "message": "ExprIndex",
+        "locus": "SourceLocation",
+        "left_paren": "SourceLocation",
+        "right_paren": "SourceLocation",
+        "semicolon": "SourceLocation",
+        "comma": "SourceLocation"
+      }
+    },
+    "SyntaxStructuredBindingDeclaration": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "ref": "SourceLocation",
+        "specifiers": "SyntaxIndex",
+        "names": "SyntaxIndex",
+        "initializer": "ExprIndex"
+      }
+    },
+    "SyntaxStructuredBindingIdentifier": {
+      "padding": 0,
+      "fields": {
+        "name": "ExprIndex",
+        "comma": "SourceLocation"
+      }
+    },
+    "SyntaxSuper": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation"
+      }
+    },
+    "SyntaxSwitchStatement": {
+      "padding": 0,
+      "fields": {
+        "pragma": "SentenceIndex",
+        "init": "SyntaxIndex",
+        "condition": "SyntaxIndex",
+        "body": "SyntaxIndex",
+        "switch": "SourceLocation"
+      }
+    },
+    "SyntaxTemplateArgumentList": {
+      "padding": 0,
+      "fields": {
+        "arguments": "SyntaxIndex",
+        "left_angle": "SourceLocation",
+        "right_angle": "SourceLocation"
+      }
+    },
+    "SyntaxTemplateDeclaration": {
+      "padding": 0,
+      "fields": {
+        "parameters": "SyntaxIndex",
+        "subject": "SyntaxIndex",
+        "locus": "SourceLocation"
+      }
+    },
+    "SyntaxTemplateId": {
+      "padding": 0,
+      "fields": {
+        "name": "SyntaxIndex",
+        "symbol": "ExprIndex",
+        "arguments": "SyntaxIndex",
+        "locus": "SourceLocation",
+        "template_kw": "SourceLocation"
+      }
+    },
+    "SyntaxTemplateParameterList": {
+      "padding": 0,
+      "fields": {
+        "parameters": "SyntaxIndex",
+        "clause": "SyntaxIndex",
+        "left_angle": "SourceLocation",
+        "right_angle": "SourceLocation"
+      }
+    },
+    "SyntaxTemplateTemplateParameter": {
+      "padding": 0,
+      "fields": {
+        "name": "TextOffset",
+        "argument": "SyntaxIndex",
+        "parameters": "SyntaxIndex",
+        "locus": "SourceLocation",
+        "ellipsis": "SourceLocation",
+        "comma": "SourceLocation",
+        "key": "KeywordSyntax"
+      }
+    },
+    "SyntaxThisCapture": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "asterisk": "SourceLocation",
+        "comma": "SourceLocation"
+      }
+    },
+    "SyntaxTrailingReturnType": {
+      "padding": 0,
+      "fields": {
+        "target": "SyntaxIndex",
+        "arrow": "SourceLocation"
+      }
+    },
+    "SyntaxTryBlock": {
+      "padding": 0,
+      "fields": {
+        "pragma": "SentenceIndex",
+        "body": "SyntaxIndex",
+        "handlers": "SyntaxIndex",
+        "try": "SourceLocation"
+      }
+    },
+    "SyntaxTuple": {
+      "padding": 0,
+      "fields": {
+        "start": "Index",
+        "cardinality": "Cardinality"
+      }
+    },
+    "SyntaxTypeId": {
+      "padding": 0,
+      "fields": {
+        "type_specifier": "SyntaxIndex",
+        "abstract_declarator": "SyntaxIndex",
+        "locus": "SourceLocation"
+      }
+    },
+    "SyntaxTypeIdListElement": {
+      "padding": 0,
+      "fields": {
+        "type_id": "SyntaxIndex",
+        "ellipsis": "SourceLocation"
+      }
+    },
+    "SyntaxTypeRequirement": {
+      "padding": 0,
+      "fields": {
+        "type": "ExprIndex",
+        "locus": "SourceLocation"
+      }
+    },
+    "SyntaxTypeSpecifierSeq": {
+      "padding": 2,
+      "fields": {
+        "type_name": "SyntaxIndex",
+        "type": "TypeIndex",
+        "locus": "SourceLocation",
+        "qualifiers": "QualifierBitfield",
+        "unhashed": "bool"
+      }
+    },
+    "SyntaxTypeTemplateArgument": {
+      "padding": 0,
+      "fields": {
+        "argument": "SyntaxIndex",
+        "ellipsis": "SourceLocation",
+        "comma": "SourceLocation"
+      }
+    },
+    "SyntaxTypeTemplateParameter": {
+      "padding": 0,
+      "fields": {
+        "name": "TextOffset",
+        "constraint": "SyntaxIndex",
+        "argument": "SyntaxIndex",
+        "locus": "SourceLocation",
+        "ellipsis": "SourceLocation"
+      }
+    },
+    "SyntaxTypeTraitIntrinsic": {
+      "padding": 2,
+      "fields": {
+        "arguments": "SyntaxIndex",
+        "locus": "SourceLocation",
+        "intrinsic": "OperatorCategory"
+      }
+    },
+    "SyntaxUnaryFoldExpression": {
+      "padding": 2,
+      "fields": {
+        "direction": "FoldDirectionSort",
+        "operand": "ExprIndex",
+        "dyad": "DyadicOperatorSort",
+        "locus": "SourceLocation",
+        "ellipsis": "SourceLocation",
+        "glyph_locus": "SourceLocation",
+        "right_paren": "SourceLocation"
+      }
+    },
+    "SyntaxUsingDeclaration": {
+      "padding": 0,
+      "fields": {
+        "declarators": "SyntaxIndex",
+        "keyword": "SourceLocation",
+        "semicolon": "SourceLocation"
+      }
+    },
+    "SyntaxUsingDeclarator": {
+      "padding": 0,
+      "fields": {
+        "qualified_name": "ExprIndex",
+        "typename_kw": "SourceLocation",
+        "expander": "SourceLocation",
+        "comma": "SourceLocation"
+      }
+    },
+    "SyntaxUsingDirective": {
+      "padding": 0,
+      "fields": {
+        "qualified_name": "ExprIndex",
+        "using_kw": "SourceLocation",
+        "namespace_kw": "SourceLocation",
+        "semicolon": "SourceLocation"
+      }
+    },
+    "SyntaxUsingEnumDeclaration": {
+      "padding": 0,
+      "fields": {
+        "name": "ExprIndex",
+        "using_kw": "SourceLocation",
+        "enum_kw": "SourceLocation",
+        "semicolon": "SourceLocation"
+      }
+    },
+    "SyntaxVirtualSpecifierSeq": {
+      "padding": 0,
+      "fields": {
+        "locus": "SourceLocation",
+        "final_kw": "SourceLocation",
+        "override_kw": "SourceLocation",
+        "pure": "bool"
+      }
+    },
+    "SyntaxWhileStatement": {
+      "padding": 0,
+      "fields": {
+        "pragma": "SentenceIndex",
+        "condition": "ExprIndex",
+        "body": "SyntaxIndex",
+        "while": "SourceLocation"
+      }
+    },
+    "TraitAliasTemplate": {
+      "padding": 0,
+      "fields": {
+        "decl": "DeclIndex",
+        "trait": "SyntaxIndex"
+      }
+    },
+    "TraitAttribute": {
+      "padding": 0,
+      "fields": {
+        "decl": "DeclIndex",
+        "trait": "AttrIndex"
+      }
+    },
+    "TraitDeductionGuide": {
+      "padding": 0,
+      "fields": {
+        "decl": "DeclIndex",
+        "trait": "DeclIndex"
+      }
+    },
+    "TraitDeprecated": {
+      "padding": 0,
+      "fields": {
+        "decl": "DeclIndex",
+        "trait": "TextOffset"
+      }
+    },
+    "TraitFriend": {
+      "padding": 0,
+      "fields": {
+        "decl": "DeclIndex",
+        "trait": "Sequence"
+      }
+    },
+    "TraitFunctionDefinition": {
+      "padding": 0,
+      "fields": {
+        "decl": "DeclIndex",
+        "parameters": "ChartIndex",
+        "initializers": "ExprIndex",
+        "body": "StmtIndex"
+      }
+    },
+    "TraitMsvcDeclAttrs": {
+      "padding": 0,
+      "fields": {
+        "decl": "DeclIndex",
+        "trait": "AttrIndex"
+      }
+    },
+    "TraitMsvcFuncParams": {
+      "padding": 0,
+      "fields": {
+        "decl": "DeclIndex",
+        "params": "ChartIndex"
+      }
+    },
+    "TraitMsvcUuid": {
+      "padding": 2,
+      "fields": {
+        "decl": "DeclIndex",
+        "uuid": "Uuid"
+      }
+    },
+    "TraitMsvcVendorTrait": {
+      "padding": 0,
+      "fields": {
+        "decl": "DeclIndex",
+        "trait": "MsvcTraitsBitfield"
+      }
+    },
+    "TraitRequires": {
+      "padding": 0,
+      "fields": {
+        "decl": "DeclIndex",
+        "trait": "SyntaxIndex"
+      }
+    },
+    "TraitSpecialization": {
+      "padding": 0,
+      "fields": {
+        "decl": "DeclIndex",
+        "trait": "Sequence"
+      }
+    },
+    "TypeArray": {
+      "padding": 0,
+      "fields": {
+        "element": "TypeIndex",
+        "extent": "ExprIndex"
+      }
+    },
+    "TypeBase": {
+      "padding": 1,
+      "fields": {
+        "type": "TypeIndex",
+        "access": "AccessSort",
+        "shared": "bool",
+        "pack_expanded": "bool"
+      }
+    },
+    "TypeDecltype": {
+      "padding": 0,
+      "fields": {
+        "expr": "SyntaxIndex"
+      }
+    },
+    "TypeDesignated": {
+      "padding": 0,
+      "fields": {
+        "decl": "DeclIndex"
+      }
+    },
+    "TypeExpansion": {
+      "padding": 3,
+      "fields": {
+        "pack": "TypeIndex",
+        "mode": "ExpansionModeSort"
+      }
+    },
+    "TypeForall": {
+      "padding": 0,
+      "fields": {
+        "chart": "ChartIndex",
+        "subject": "TypeIndex"
+      }
+    },
+    "TypeFunction": {
+      "padding": 2,
+      "fields": {
+        "target": "TypeIndex",
+        "source": "TypeIndex",
+        "eh_spec": "NoexceptSpecification",
+        "convention": "CallingConventionSort",
+        "traits": "FunctionTypeTraitsBitfield"
+      }
+    },
+    "TypeFundamental": {
+      "padding": 1,
+      "fields": {
+        "basis": "TypeBasisSort",
+        "precision": "TypePrecisionSort",
+        "sign": "TypeSignSort"
+      }
+    },
+    "TypeLvalueReference": {
+      "padding": 0,
+      "fields": {
+        "referee": "TypeIndex"
+      }
+    },
+    "TypeMethod": {
+      "padding": 2,
+      "fields": {
+        "target": "TypeIndex",
+        "source": "TypeIndex",
+        "scope": "TypeIndex",
+        "eh_spec": "NoexceptSpecification",
+        "convention": "CallingConventionSort",
+        "traits": "FunctionTypeTraitsBitfield"
+      }
+    },
+    "TypePlaceholder": {
+      "padding": 0,
+      "fields": {
+        "constraint": "ExprIndex",
+        "basis": "TypePlaceholderBasisWrapper",
+        "elaboration": "TypeIndex"
+      }
+    },
+    "TypePlaceholderBasisWrapper": {
+      "padding": 3,
+      "fields": {
+        "value": "TypeBasisSort"
+      }
+    },
+    "TypePointer": {
+      "padding": 0,
+      "fields": {
+        "pointee": "TypeIndex"
+      }
+    },
+    "TypePointerToMember": {
+      "padding": 0,
+      "fields": {
+        "scope": "TypeIndex",
+        "member": "TypeIndex"
+      }
+    },
+    "TypeQualified": {
+      "padding": 3,
+      "fields": {
+        "unqualified": "TypeIndex",
+        "qualifiers": "QualifierBitfield"
+      }
+    },
+    "TypeRvalueReference": {
+      "padding": 0,
+      "fields": {
+        "referee": "TypeIndex"
+      }
+    },
+    "TypeSyntactic": {
+      "padding": 0,
+      "fields": {
+        "expr": "ExprIndex"
+      }
+    },
+    "TypeSyntaxTree": {
+      "padding": 0,
+      "fields": {
+        "syntax": "SyntaxIndex"
+      }
+    },
+    "TypeTor": {
+      "padding": 3,
+      "fields": {
+        "source": "TypeIndex",
+        "eh_spec": "NoexceptSpecification",
+        "convention": "CallingConventionSort"
+      }
+    },
+    "TypeTuple": {
+      "padding": 0,
+      "fields": {
+        "start": "Index",
+        "cardinality": "Cardinality"
+      }
+    },
+    "TypeTypename": {
+      "padding": 0,
+      "fields": {
+        "path": "ExprIndex"
+      }
+    },
+    "TypeUnaligned": {
+      "padding": 0,
+      "fields": {
+        "type": "TypeIndex"
+      }
+    }
+  },
+  "string_table_offsets": {
+    "Text": {
+      "size": 4,
+      "type": "Text"
+    }
+  },
+  "partitions": {
+    ".msvc.trait.decl-attrs": "TraitMsvcDeclAttrs",
+    ".msvc.trait.named-function-parameters": "TraitMsvcFuncParams",
+    ".msvc.trait.uuid": "TraitMsvcUuid",
+    ".msvc.trait.vendor-traits": "TraitMsvcVendorTrait",
+    "attr.basic": "AttrBasic",
+    "attr.called": "AttrCalled",
+    "attr.elaborated": "AttrElaborated",
+    "attr.expanded": "AttrExpanded",
+    "attr.factored": "AttrFactored",
+    "attr.labeled": "AttrLabeled",
+    "attr.scoped": "AttrScoped",
+    "attr.tuple": "AttrTuple",
+    "chart.multilevel": "ChartMultilevel",
+    "chart.unilevel": "ChartUnilevel",
+    "const.f64": "ConstF64",
+    "const.i64": "ConstI64",
+    "const.str": "ConstStr",
+    "decl.alias": "DeclAlias",
+    "decl.bitfield": "DeclBitfield",
+    "decl.concept": "DeclConcept",
+    "decl.constructor": "DeclConstructor",
+    "decl.deduction-guide": "DeclDeductionGuide",
+    "decl.destructor": "DeclDestructor",
+    "decl.enum": "DeclEnumeration",
+    "decl.enumerator": "DeclEnumerator",
+    "decl.expansion": "DeclExpansion",
+    "decl.explicit-instantiation": "DeclExplicitInstantiation",
+    "decl.explicit-specialization": "DeclExplicitSpecialization",
+    "decl.field": "DeclField",
+    "decl.friend": "DeclFriend",
+    "decl.function": "DeclFunction",
+    "decl.inherited-constructor": "DeclInheritedConstructor",
+    "decl.intrinsic": "DeclIntrinsic",
+    "decl.method": "DeclMethod",
+    "decl.parameter": "DeclParameter",
+    "decl.partial-specialization": "DeclPartialSpecialization",
+    "decl.property": "DeclProperty",
+    "decl.reference": "DeclReference",
+    "decl.scope": "DeclScope",
+    "decl.segment": "DeclOutputSegment",
+    "decl.template": "DeclTemplate",
+    "decl.temploid": "DeclTemploid",
+    "decl.tuple": "DeclTuple",
+    "decl.using-declaration": "DeclUsingDeclaration",
+    "decl.variable": "DeclVariable",
+    "expr.alignof-type-id": "ExprAlignof",
+    "expr.array-value": "ExprArrayValue",
+    "expr.assign-initializer": "ExprAssignInitializer",
+    "expr.binary-fold": "ExprBinaryFold",
+    "expr.call": "ExprCall",
+    "expr.cast": "ExprCast",
+    "expr.class-subobject-value": "ExprSubobjectValue",
+    "expr.compound-string": "ExprCompoundString",
+    "expr.condition": "ExprCondition",
+    "expr.decl": "ExprNamedDecl",
+    "expr.designated-init": "ExprDesignatedInitializer",
+    "expr.destructor-call": "ExprDestructorCall",
+    "expr.dyad": "ExprDyad",
+    "expr.dynamic-dispatch": "ExprDynamicDispatch",
+    "expr.empty": "ExprEmpty",
+    "expr.expansion": "ExprExpansion",
+    "expr.expression-list": "ExprExpressionList",
+    "expr.function-string": "ExprFunctionString",
+    "expr.hierarchy-conversion": "ExprHierarchyConversion",
+    "expr.inheritance-path": "ExprInheritancePath",
+    "expr.initializer": "ExprInitializer",
+    "expr.initializer-list": "ExprInitializerList",
+    "expr.lambda": "ExprLambda",
+    "expr.literal": "ExprLiteral",
+    "expr.member-access": "ExprMemberAccess",
+    "expr.member-initializer": "ExprMemberInitializer",
+    "expr.monad": "ExprMonad",
+    "expr.nullptr": "ExprNullptr",
+    "expr.packed-template-arguments": "ExprPackedTemplateArguments",
+    "expr.path": "ExprPath",
+    "expr.placeholder": "ExprPlaceholder",
+    "expr.pointer": "ExprPointer",
+    "expr.product-type-value": "ExprProductTypeValue",
+    "expr.push-state": "ExprPushState",
+    "expr.qualified-name": "ExprQualifiedName",
+    "expr.read": "ExprRead",
+    "expr.requires": "ExprRequires",
+    "expr.simple-identifier": "ExprSimpleIdentifier",
+    "expr.sizeof-type": "ExprSizeofType",
+    "expr.string-sequence": "ExprStringSequence",
+    "expr.strings": "ExprString",
+    "expr.sum-type-value": "ExprSumTypeValue",
+    "expr.syntax-tree": "ExprSyntaxTree",
+    "expr.template-id": "ExprTemplateId",
+    "expr.template-reference": "ExprTemplateReference",
+    "expr.temporary": "ExprTemporary",
+    "expr.this": "ExprThis",
+    "expr.tokens": "ExprTokens",
+    "expr.triad": "ExprTriad",
+    "expr.tuple": "ExprTuple",
+    "expr.type": "ExprType",
+    "expr.type-trait": "ExprTypeTraitIntrinsic",
+    "expr.typeid": "ExprTypeid",
+    "expr.unary-fold": "ExprUnaryFold",
+    "expr.unqualified-id": "ExprUnqualifiedId",
+    "expr.unresolved": "ExprUnresolvedId",
+    "expr.virtual-function-conversion": "ExprVirtualFunctionConversion",
+    "form.spec": "FormSpec",
+    "heap.attr": "HeapAttr",
+    "heap.chart": "HeapChart",
+    "heap.decl": "HeapDecl",
+    "heap.expr": "HeapExpr",
+    "heap.form": "HeapForm",
+    "heap.pp": "HeapPPForm",
+    "heap.stmt": "HeapStmt",
+    "heap.syn": "HeapSyntax",
+    "heap.type": "HeapType",
+    "macro.function-like": "MacroFunctionLike",
+    "macro.object-like": "MacroObjectLike",
+    "module.exported": "ModuleExportReference",
+    "module.imported": "ModuleImportReference",
+    "name.conversion": "NameConversion",
+    "name.guide": "NameGuide",
+    "name.literal": "NameLiteral",
+    "name.operator": "NameOperator",
+    "name.source-file": "NameSourceFile",
+    "name.specialization": "NameSpecialization",
+    "name.template": "NameTemplate",
+    "pp.catenate": "FormCatenate",
+    "pp.char": "FormCharacter",
+    "pp.header": "FormHeader",
+    "pp.ident": "FormIdentifier",
+    "pp.junk": "FormJunk",
+    "pp.key": "FormKeyword",
+    "pp.num": "FormNumber",
+    "pp.op": "FormOperator",
+    "pp.param": "FormParameter",
+    "pp.paren": "FormParenthesized",
+    "pp.pragma": "FormPragma",
+    "pp.space": "FormWhitespace",
+    "pp.string": "FormString",
+    "pp.to-string": "FormStringize",
+    "pp.tuple": "FormTuple",
+    "scope.desc": "ScopeDescriptor",
+    "scope.member": "ScopeMember",
+    "src.line": "SourceLine",
+    "src.sentence": "SourceSentence",
+    "src.word": "SourceWord",
+    "stmt.block": "StmtBlock",
+    "stmt.break": "StmtBreak",
+    "stmt.case": "StmtCase",
+    "stmt.continue": "StmtContinue",
+    "stmt.default": "StmtDefault",
+    "stmt.do-while": "StmtDoWhile",
+    "stmt.empty": "StmtEmpty",
+    "stmt.expansion": "StmtExpansion",
+    "stmt.expression": "StmtExpression",
+    "stmt.for": "StmtFor",
+    "stmt.if": "StmtIf",
+    "stmt.return": "StmtReturn",
+    "stmt.switch": "StmtSwitch",
+    "stmt.variable": "StmtVariableDecl",
+    "stmt.while": "StmtWhile",
+    "syntax.access-specifier": "SyntaxAccessSpecifier",
+    "syntax.alias-declaration": "SyntaxAliasDeclaration",
+    "syntax.alignas": "SyntaxAlignas",
+    "syntax.array-declarator": "SyntaxArrayDeclarator",
+    "syntax.array-index": "SyntaxArrayIndex",
+    "syntax.array-or-function-declarator": "SyntaxArrayOrFunctionDeclarator",
+    "syntax.asm-statement": "SyntaxAsmStatement",
+    "syntax.attribute": "SyntaxAttribute",
+    "syntax.attribute-argument-clause": "SyntaxAttributeArgumentClause",
+    "syntax.attribute-specifier": "SyntaxAttributeSpecifier",
+    "syntax.attribute-specifier-seq": "SyntaxAttributeSpecifierSeq",
+    "syntax.attribute-using-prefix": "SyntaxAttributeUsingPrefix",
+    "syntax.attributed-declaration": "SyntaxAttributedDeclaration",
+    "syntax.attributed-statement": "SyntaxAttributedStatement",
+    "syntax.base-specifier": "SyntaxBaseSpecifier",
+    "syntax.base-specifier-list": "SyntaxBaseSpecifierList",
+    "syntax.binary-fold-expression": "SyntaxBinaryFoldExpression",
+    "syntax.break-statement": "SyntaxBreakStatement",
+    "syntax.capture-default": "SyntaxCaptureDefault",
+    "syntax.class-specifier": "SyntaxClassSpecifier",
+    "syntax.compound-requirement": "SyntaxCompoundRequirement",
+    "syntax.compound-statement": "SyntaxCompoundStatement",
+    "syntax.concept-definition": "SyntaxConceptDefinition",
+    "syntax.condition-declaration": "SyntaxConditionDeclaration",
+    "syntax.continue-statement": "SyntaxContinueStatement",
+    "syntax.ctor-initializer": "SyntaxCtorInitializer",
+    "syntax.decl-specifier-seq": "SyntaxDeclSpecifierSeq",
+    "syntax.declaration-statement": "SyntaxDeclarationStatement",
+    "syntax.declarator": "SyntaxDeclarator",
+    "syntax.decltype-specifier": "SyntaxDecltypeSpecifier",
+    "syntax.do-statement": "SyntaxDoWhileStatement",
+    "syntax.dynamic-exception-spec": "SyntaxDynamicExceptionSpec",
+    "syntax.empty-statement": "SyntaxEmptyStatement",
+    "syntax.enum-specifier": "SyntaxEnumSpecifier",
+    "syntax.enumerator-definition": "SyntaxEnumeratorDefinition",
+    "syntax.exception-declaration": "SyntaxExceptionDeclaration",
+    "syntax.explicit-specifier": "SyntaxExplicitSpecifier",
+    "syntax.expression": "SyntaxExpression",
+    "syntax.expression-statement": "SyntaxExpressionStatement",
+    "syntax.for-range-declaration": "SyntaxForRangeDeclaration",
+    "syntax.for-statement": "SyntaxForStatement",
+    "syntax.function-body": "SyntaxFunctionBody",
+    "syntax.function-declarator": "SyntaxFunctionDeclarator",
+    "syntax.function-definition": "SyntaxFunctionDefinition",
+    "syntax.function-try-block": "SyntaxFunctionTryBlock",
+    "syntax.goto-statement": "SyntaxGotoStatement",
+    "syntax.handler": "SyntaxHandler",
+    "syntax.handler-seq": "SyntaxHandlerSeq",
+    "syntax.if-statement": "SyntaxIfStatement",
+    "syntax.init-capture": "SyntaxInitCapture",
+    "syntax.init-declarator": "SyntaxInitDeclarator",
+    "syntax.init-statement": "SyntaxInitStatement",
+    "syntax.labeled-statement": "SyntaxLabeledStatement",
+    "syntax.lambda-declarator": "SyntaxLambdaDeclarator",
+    "syntax.lambda-introducer": "SyntaxLambdaIntroducer",
+    "syntax.mem-initializer": "SyntaxMemInitializer",
+    "syntax.member-declaration": "SyntaxMemberDeclaration",
+    "syntax.member-declarator": "SyntaxMemberDeclarator",
+    "syntax.member-function-declaration": "SyntaxMemberFunctionDeclaration",
+    "syntax.member-specification": "SyntaxMemberSpecification",
+    "syntax.namespace-alias-definition": "SyntaxNamespaceAliasDefinition",
+    "syntax.nested-requirement": "SyntaxNestedRequirement",
+    "syntax.new-declarator": "SyntaxNewDeclarator",
+    "syntax.noexcept-specification": "SyntaxNoexceptSpecification",
+    "syntax.non-type-template-argument": "SyntaxNonTypeTemplateArgument",
+    "syntax.parameter-declarator": "SyntaxParameterDeclarator",
+    "syntax.placeholder-type-specifier": "SyntaxPlaceholderTypeSpecifier",
+    "syntax.pointer-declarator": "SyntaxPointerDeclarator",
+    "syntax.range-based-for-statement": "SyntaxRangeBasedForStatement",
+    "syntax.requirement-body": "SyntaxRequirementBody",
+    "syntax.requires-clause": "SyntaxRequiresClause",
+    "syntax.return-statement": "SyntaxReturnStatement",
+    "syntax.seh-except": "SyntaxSEHExcept",
+    "syntax.seh-finally": "SyntaxSEHFinally",
+    "syntax.seh-leave": "SyntaxSEHLeave",
+    "syntax.seh-try": "SyntaxSEHTry",
+    "syntax.simple-capture": "SyntaxSimpleCapture",
+    "syntax.simple-declaration": "SyntaxSimpleDeclaration",
+    "syntax.simple-requirement": "SyntaxSimpleRequirement",
+    "syntax.simple-type-specifier": "SyntaxSimpleTypeSpecifier",
+    "syntax.statement-seq": "SyntaxStatementSeq",
+    "syntax.static-assert-declaration": "SyntaxStaticAssertDeclaration",
+    "syntax.structured-binding-declaration": "SyntaxStructuredBindingDeclaration",
+    "syntax.structured-binding-identifier": "SyntaxStructuredBindingIdentifier",
+    "syntax.super": "SyntaxSuper",
+    "syntax.switch-statement": "SyntaxSwitchStatement",
+    "syntax.template-argument-list": "SyntaxTemplateArgumentList",
+    "syntax.template-declaration": "SyntaxTemplateDeclaration",
+    "syntax.template-id": "SyntaxTemplateId",
+    "syntax.template-parameter-list": "SyntaxTemplateParameterList",
+    "syntax.template-template-parameter": "SyntaxTemplateTemplateParameter",
+    "syntax.this-capture": "SyntaxThisCapture",
+    "syntax.trailing-return-type": "SyntaxTrailingReturnType",
+    "syntax.try-block": "SyntaxTryBlock",
+    "syntax.tuple": "SyntaxTuple",
+    "syntax.type-id": "SyntaxTypeId",
+    "syntax.type-id-list-element": "SyntaxTypeIdListElement",
+    "syntax.type-requirement": "SyntaxTypeRequirement",
+    "syntax.type-specifier-seq": "SyntaxTypeSpecifierSeq",
+    "syntax.type-template-argument": "SyntaxTypeTemplateArgument",
+    "syntax.type-template-parameter": "SyntaxTypeTemplateParameter",
+    "syntax.type-trait-intrinsic": "SyntaxTypeTraitIntrinsic",
+    "syntax.unary-fold-expression": "SyntaxUnaryFoldExpression",
+    "syntax.using-declaration": "SyntaxUsingDeclaration",
+    "syntax.using-declarator": "SyntaxUsingDeclarator",
+    "syntax.using-directive": "SyntaxUsingDirective",
+    "syntax.using-enum-declaration": "SyntaxUsingEnumDeclaration",
+    "syntax.virtual-specifier-seq": "SyntaxVirtualSpecifierSeq",
+    "syntax.while-statement": "SyntaxWhileStatement",
+    "trait.alias-template": "TraitAliasTemplate",
+    "trait.attribute": "TraitAttribute",
+    "trait.deduction-guides": "TraitDeductionGuide",
+    "trait.deprecated": "TraitDeprecated",
+    "trait.friend": "TraitFriend",
+    "trait.mapping-expr": "TraitFunctionDefinition",
+    "trait.requires": "TraitRequires",
+    "trait.specialization": "TraitSpecialization",
+    "type.array": "TypeArray",
+    "type.base": "TypeBase",
+    "type.decltype": "TypeDecltype",
+    "type.designated": "TypeDesignated",
+    "type.expansion": "TypeExpansion",
+    "type.forall": "TypeForall",
+    "type.function": "TypeFunction",
+    "type.fundamental": "TypeFundamental",
+    "type.lvalue-reference": "TypeLvalueReference",
+    "type.nonstatic-member-function": "TypeMethod",
+    "type.placeholder": "TypePlaceholder",
+    "type.pointer": "TypePointer",
+    "type.pointer-to-member": "TypePointerToMember",
+    "type.qualified": "TypeQualified",
+    "type.rvalue-reference": "TypeRvalueReference",
+    "type.syntactic": "TypeSyntactic",
+    "type.syntax-tree": "TypeSyntaxTree",
+    "type.tor": "TypeTor",
+    "type.tuple": "TypeTuple",
+    "type.typename": "TypeTypename",
+    "type.unaligned": "TypeUnaligned"
+  }
+}

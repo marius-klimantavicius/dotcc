@@ -1,0 +1,28 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 32: warning: "extern template" cannot follow explicit instantiation of function "X0<T>::f [with T=int]"
+  extern template void X0<int>::f(int&); // expected-error{{follows explicit instantiation definition}}
+                                ^
+
+"Test_name.c", line 33: warning: "extern template" cannot follow explicit instantiation of class "X0<T>::Inner [with T=int]"
+  extern template struct X0<int>::Inner; // expected-error{{follows explicit instantiation definition}}
+                  ^
+
+"Test_name.c", line 34: warning: "extern template" cannot follow explicit instantiation of member "X0<T>::static_var [with T=int]"
+  extern template int X0<int>::static_var; // expected-error{{follows explicit instantiation definition}}
+                               ^
+
+"Test_name.c", line 35: warning: "extern template" cannot follow explicit instantiation of class "X0<int>"
+  extern template struct X0<int>; // expected-error{{follows explicit instantiation definition}}
+                  ^
+
+"Test_name.c", line 16: error: a value of type "int" cannot be assigned to an entity of type "void *"
+    t = 1; // expected-error{{incompatible integer to pointer conversion}}
+      ^
+          detected during instantiation of "void X0<T>::f(T &) [with T=void *]" at line 28
+
+"Test_name.c", line 25: error: a value of type "int" cannot be used to initialize an entity of type "void *"
+  T X0<T>::static_var = 1; // expected-error{{cannot initialize}}
+                        ^
+          detected during implicit definition of "void *X0<T>::static_var [with T=void *]" at line 28
+
+2 errors detected in the compilation of "Test_name.c".

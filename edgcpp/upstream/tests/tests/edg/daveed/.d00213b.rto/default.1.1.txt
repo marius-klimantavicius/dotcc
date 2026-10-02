@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 -A Test_name.c
+"Test_name.c", line 34: error: override of virtual function "A::f" is ambiguous
+  struct D: public C, public B {};
+         ^
+
+"Test_name.c", line 36: error: override of virtual function "A::f" is ambiguous
+  struct E : public B, public D {};
+         ^
+
+2 errors detected in the compilation of "Test_name.c".

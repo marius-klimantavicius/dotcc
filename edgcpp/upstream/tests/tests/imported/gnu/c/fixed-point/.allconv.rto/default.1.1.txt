@@ -1,0 +1,314 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 136: error: expected a ")"
+  CONV(short _Fract, sf);
+  ^
+
+"Test_name.c", line 136: error: identifier "a" is undefined
+  CONV(short _Fract, sf);
+  ^
+
+"Test_name.c", line 136: error: identifier "_Sat" is undefined
+  CONV(short _Fract, sf);
+  ^
+
+"Test_name.c", line 136: error: invalid combination of type specifiers
+  CONV(short _Fract, sf);
+  ^
+
+"Test_name.c", line 136: error: expected a ";"
+  CONV(short _Fract, sf);
+  ^
+
+"Test_name.c", line 137: error: variable "_Fract" is not a type name
+  CONV(_Fract, f);
+  ^
+
+"Test_name.c", line 137: error: identifier "_Sat" is undefined
+  CONV(_Fract, f);
+  ^
+
+"Test_name.c", line 137: error: expected a ")"
+  CONV(_Fract, f);
+  ^
+
+"Test_name.c", line 137: error: expected a ";"
+  CONV(_Fract, f);
+  ^
+
+"Test_name.c", line 138: error: expected a ")"
+  CONV(long _Fract, lf);
+  ^
+
+"Test_name.c", line 138: error: identifier "a" is undefined
+  CONV(long _Fract, lf);
+  ^
+
+"Test_name.c", line 138: error: identifier "_Sat" is undefined
+  CONV(long _Fract, lf);
+  ^
+
+"Test_name.c", line 138: error: invalid combination of type specifiers
+  CONV(long _Fract, lf);
+  ^
+
+"Test_name.c", line 138: error: expected a ";"
+  CONV(long _Fract, lf);
+  ^
+
+"Test_name.c", line 139: error: expected a ")"
+  CONV(long long _Fract, llf);
+  ^
+
+"Test_name.c", line 139: error: identifier "a" is undefined
+  CONV(long long _Fract, llf);
+  ^
+
+"Test_name.c", line 139: error: identifier "_Sat" is undefined
+  CONV(long long _Fract, llf);
+  ^
+
+"Test_name.c", line 139: error: invalid combination of type specifiers
+  CONV(long long _Fract, llf);
+  ^
+
+"Test_name.c", line 139: error: expected a ";"
+  CONV(long long _Fract, llf);
+  ^
+
+"Test_name.c", line 140: error: expected a ")"
+  CONV(unsigned short _Fract, usf);
+  ^
+
+"Test_name.c", line 140: error: identifier "a" is undefined
+  CONV(unsigned short _Fract, usf);
+  ^
+
+"Test_name.c", line 140: error: identifier "_Sat" is undefined
+  CONV(unsigned short _Fract, usf);
+  ^
+
+"Test_name.c", line 140: error: invalid combination of type specifiers
+  CONV(unsigned short _Fract, usf);
+  ^
+
+"Test_name.c", line 140: error: expected a ";"
+  CONV(unsigned short _Fract, usf);
+  ^
+
+"Test_name.c", line 141: error: expected a ")"
+  CONV(unsigned _Fract, uf);
+  ^
+
+"Test_name.c", line 141: error: identifier "a" is undefined
+  CONV(unsigned _Fract, uf);
+  ^
+
+"Test_name.c", line 141: error: identifier "_Sat" is undefined
+  CONV(unsigned _Fract, uf);
+  ^
+
+"Test_name.c", line 141: error: invalid combination of type specifiers
+  CONV(unsigned _Fract, uf);
+  ^
+
+"Test_name.c", line 141: error: expected a ";"
+  CONV(unsigned _Fract, uf);
+  ^
+
+"Test_name.c", line 142: error: expected a ")"
+  CONV(unsigned long _Fract, ulf);
+  ^
+
+"Test_name.c", line 142: error: identifier "a" is undefined
+  CONV(unsigned long _Fract, ulf);
+  ^
+
+"Test_name.c", line 142: error: identifier "_Sat" is undefined
+  CONV(unsigned long _Fract, ulf);
+  ^
+
+"Test_name.c", line 142: error: invalid combination of type specifiers
+  CONV(unsigned long _Fract, ulf);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  CONV(unsigned long _Fract, ulf);
+  ^
+
+"Test_name.c", line 143: error: expected a ")"
+  CONV(unsigned long long _Fract, ullf);
+  ^
+
+"Test_name.c", line 143: error: identifier "a" is undefined
+  CONV(unsigned long long _Fract, ullf);
+  ^
+
+"Test_name.c", line 143: error: identifier "_Sat" is undefined
+  CONV(unsigned long long _Fract, ullf);
+  ^
+
+"Test_name.c", line 143: error: invalid combination of type specifiers
+  CONV(unsigned long long _Fract, ullf);
+  ^
+
+"Test_name.c", line 143: error: expected a ";"
+  CONV(unsigned long long _Fract, ullf);
+  ^
+
+"Test_name.c", line 145: error: expected a ")"
+  CONV(short _Accum, sk);
+  ^
+
+"Test_name.c", line 145: error: identifier "a" is undefined
+  CONV(short _Accum, sk);
+  ^
+
+"Test_name.c", line 145: error: identifier "_Sat" is undefined
+  CONV(short _Accum, sk);
+  ^
+
+"Test_name.c", line 145: error: invalid combination of type specifiers
+  CONV(short _Accum, sk);
+  ^
+
+"Test_name.c", line 145: error: expected a ";"
+  CONV(short _Accum, sk);
+  ^
+
+"Test_name.c", line 146: error: variable "_Accum" is not a type name
+  CONV(_Accum, k);
+  ^
+
+"Test_name.c", line 146: error: identifier "_Sat" is undefined
+  CONV(_Accum, k);
+  ^
+
+"Test_name.c", line 146: error: expected a ")"
+  CONV(_Accum, k);
+  ^
+
+"Test_name.c", line 146: error: expected a ";"
+  CONV(_Accum, k);
+  ^
+
+"Test_name.c", line 147: error: expected a ")"
+  CONV(long _Accum, lk);
+  ^
+
+"Test_name.c", line 147: error: identifier "a" is undefined
+  CONV(long _Accum, lk);
+  ^
+
+"Test_name.c", line 147: error: identifier "_Sat" is undefined
+  CONV(long _Accum, lk);
+  ^
+
+"Test_name.c", line 147: error: invalid combination of type specifiers
+  CONV(long _Accum, lk);
+  ^
+
+"Test_name.c", line 147: error: expected a ";"
+  CONV(long _Accum, lk);
+  ^
+
+"Test_name.c", line 148: error: expected a ")"
+  CONV(long long _Accum, llk);
+  ^
+
+"Test_name.c", line 148: error: identifier "a" is undefined
+  CONV(long long _Accum, llk);
+  ^
+
+"Test_name.c", line 148: error: identifier "_Sat" is undefined
+  CONV(long long _Accum, llk);
+  ^
+
+"Test_name.c", line 148: error: invalid combination of type specifiers
+  CONV(long long _Accum, llk);
+  ^
+
+"Test_name.c", line 148: error: expected a ";"
+  CONV(long long _Accum, llk);
+  ^
+
+"Test_name.c", line 149: error: expected a ")"
+  CONV(unsigned short _Accum, usk);
+  ^
+
+"Test_name.c", line 149: error: identifier "a" is undefined
+  CONV(unsigned short _Accum, usk);
+  ^
+
+"Test_name.c", line 149: error: identifier "_Sat" is undefined
+  CONV(unsigned short _Accum, usk);
+  ^
+
+"Test_name.c", line 149: error: invalid combination of type specifiers
+  CONV(unsigned short _Accum, usk);
+  ^
+
+"Test_name.c", line 149: error: expected a ";"
+  CONV(unsigned short _Accum, usk);
+  ^
+
+"Test_name.c", line 150: error: expected a ")"
+  CONV(unsigned _Accum, uk);
+  ^
+
+"Test_name.c", line 150: error: identifier "a" is undefined
+  CONV(unsigned _Accum, uk);
+  ^
+
+"Test_name.c", line 150: error: identifier "_Sat" is undefined
+  CONV(unsigned _Accum, uk);
+  ^
+
+"Test_name.c", line 150: error: invalid combination of type specifiers
+  CONV(unsigned _Accum, uk);
+  ^
+
+"Test_name.c", line 150: error: expected a ";"
+  CONV(unsigned _Accum, uk);
+  ^
+
+"Test_name.c", line 151: error: expected a ")"
+  CONV(unsigned long _Accum, ulk);
+  ^
+
+"Test_name.c", line 151: error: identifier "a" is undefined
+  CONV(unsigned long _Accum, ulk);
+  ^
+
+"Test_name.c", line 151: error: identifier "_Sat" is undefined
+  CONV(unsigned long _Accum, ulk);
+  ^
+
+"Test_name.c", line 151: error: invalid combination of type specifiers
+  CONV(unsigned long _Accum, ulk);
+  ^
+
+"Test_name.c", line 151: error: expected a ";"
+  CONV(unsigned long _Accum, ulk);
+  ^
+
+"Test_name.c", line 152: error: expected a ")"
+  CONV(unsigned long long _Accum, ullk);
+  ^
+
+"Test_name.c", line 152: error: identifier "a" is undefined
+  CONV(unsigned long long _Accum, ullk);
+  ^
+
+"Test_name.c", line 152: error: identifier "_Sat" is undefined
+  CONV(unsigned long long _Accum, ullk);
+  ^
+
+"Test_name.c", line 152: error: invalid combination of type specifiers
+  CONV(unsigned long long _Accum, ullk);
+  ^
+
+"Test_name.c", line 152: error: expected a ";"
+  CONV(unsigned long long _Accum, ullk);
+  ^
+
+78 errors detected in the compilation of "Test_name.c".

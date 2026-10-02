@@ -1,0 +1,70 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 22: warning: declaration does not declare anything
+  struct { int a; }; /* { dg-warning "unnamed struct/union that defines no instances" } */
+  ^
+
+"Test_name.c", line 23: warning: declaration does not declare anything
+  int; /* { dg-warning "useless type name in empty declaration" } */
+  ^
+
+"Test_name.c", line 24: warning: declaration does not declare anything
+  long; /* { dg-warning "useless type name in empty declaration" } */
+  ^
+
+"Test_name.c", line 25: warning: declaration does not declare anything
+  T; /* { dg-warning "useless type name in empty declaration" } */
+  ^
+
+"Test_name.c", line 26: warning: declaration does not declare anything
+  static const; /* { dg-warning "useless storage class specifier in empty declaration" } */
+  ^
+
+"Test_name.c", line 26: warning: a storage class may not be specified here
+  static const; /* { dg-warning "useless storage class specifier in empty declaration" } */
+  ^
+
+"Test_name.c", line 26: warning: type qualifiers are meaningless in this declaration
+  static const; /* { dg-warning "useless storage class specifier in empty declaration" } */
+  ^
+
+"Test_name.c", line 28: warning: declaration does not declare anything
+  union { long b; }; /* { dg-warning "unnamed struct/union that defines no instances" } */
+  ^
+
+"Test_name.c", line 31: error: invalid combination of type specifiers
+  struct s1 int; /* { dg-error "two or more data types in declaration specifiers" } */
+            ^
+
+"Test_name.c", line 32: error: invalid combination of type specifiers
+  char union u1; /* { dg-error "two or more data types in declaration specifiers" } */
+       ^
+
+"Test_name.c", line 34: error: invalid combination of type specifiers
+  double enum { E2 }; /* { dg-error "two or more data types in declaration specifiers" } */
+         ^
+
+"Test_name.c", line 36: error: invalid combination of type specifiers
+  T struct s2; /* { dg-error "two or more data types in declaration specifiers" } */
+    ^
+
+"Test_name.c", line 38: error: invalid combination of type specifiers
+  long union u2; /* { dg-error "two or more data types in declaration specifiers" } */
+  ^
+
+"Test_name.c", line 40: error: invalid combination of type specifiers
+  struct s3 short; /* { dg-error "two or more data types in declaration specifiers" } */
+  ^
+
+"Test_name.c", line 41: error: invalid combination of type specifiers
+  union u3 signed; /* { dg-error "two or more data types in declaration specifiers" } */
+  ^
+
+"Test_name.c", line 42: error: invalid combination of type specifiers
+  unsigned struct s4; /* { dg-error "two or more data types in declaration specifiers" } */
+  ^
+
+"Test_name.c", line 44: error: _Complex can only be used with floating-point types
+  _Complex enum { E3 }; /* { dg-error "two or more data types in declaration specifiers" } */
+  ^
+
+9 errors detected in the compilation of "Test_name.c".

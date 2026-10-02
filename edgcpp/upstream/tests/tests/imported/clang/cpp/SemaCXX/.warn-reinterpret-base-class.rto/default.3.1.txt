@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=3 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 51: error: incomplete type "BaseMalformed::A" is not allowed
+      A a; // expected-error {{field has incomplete type 'A'}}
+        ^
+
+"Test_name.c", line 62: error: incomplete type "ChildMalformed::A" is not allowed
+      A a; // expected-error {{field has incomplete type 'A'}}
+        ^
+
+"Test_name.c", line 71: error: incomplete type "BaseBaseMalformed::A" is not allowed
+    struct X { A a; }; // expected-error {{field has incomplete type 'A'}}
+                 ^
+
+"Test_name.c", line 79: error: incomplete type "InheritanceMalformed::A" is not allowed
+    struct B : A {}; // expected-error {{base class has incomplete type}}
+               ^
+
+"Test_name.c", line 87: error: incomplete type "VBaseMalformed::A" is not allowed
+    struct X { A a; };  // expected-error {{field has incomplete type 'A'}}
+                 ^
+
+5 errors detected in the compilation of "Test_name.c".

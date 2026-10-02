@@ -1,0 +1,1 @@
+cpfe -DTEST_NUMBER=1 --microsoft_version 1924 -tused --multi_trans_unit Test_name.c gnats25127-2.C

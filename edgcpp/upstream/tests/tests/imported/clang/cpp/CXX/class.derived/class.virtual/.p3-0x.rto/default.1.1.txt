@@ -1,0 +1,88 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 12: error: member function declared with "override" does not override a base class member
+    virtual void f(long) override; // expected-error {{'f' marked 'override' but does not override any member functions}}
+                 ^
+
+"Test_name.c", line 44: error: member function declared with "override" does not override a base class member
+    virtual void f(Args...) override; // expected-error {{'f' marked 'override' but does not override any member functions}}
+                 ^
+          detected during instantiation of class "Test3::B<Args...> [with Args=<int>]" at line 48
+
+"Test_name.c", line 44: warning: function "Test3::A::f(int, char, int)" is hidden by "Test3::B<Args...>::f [with Args=<int>]" -- virtual function override intended?
+    virtual void f(Args...) override; // expected-error {{'f' marked 'override' but does not override any member functions}}
+                 ^
+          detected during instantiation of class "Test3::B<Args...> [with Args=<int>]" at line 48
+
+"Test_name.c", line 58: error: cannot override "final" function "Test4::B::f" (declared at line 54)
+    void f() const; // expected-error {{declaration of 'f' overrides a 'final' function}}
+         ^
+
+"Test_name.c", line 73: error: member function declared with "override" does not override a base class member
+      void g() override; // expected-error {{only virtual member functions can be marked 'override'}}
+           ^
+          detected during instantiation of class "PR13499::B<T> [with T=int]" at line 76
+
+"Test_name.c", line 74: error: nonvirtual function cannot be declared with "final" modifier
+      void i() final; // expected-error {{only virtual member functions can be marked 'final'}}
+           ^
+          detected during instantiation of class "PR13499::B<T> [with T=int]" at line 76
+
+"Test_name.c", line 87: error: member function declared with "override" does not override a base class member
+      void g(T...) override; // expected-error {{only virtual member functions can be marked 'override'}}
+           ^
+          detected during instantiation of class "PR13499::E<T...> [with T=<>]" at line 92
+
+"Test_name.c", line 89: error: nonvirtual function cannot be declared with "final" modifier
+      void i(T...) final; // expected-error {{only virtual member functions can be marked 'final'}}
+           ^
+          detected during instantiation of class "PR13499::E<T...> [with T=<>]" at line 92
+
+"Test_name.c", line 99: error: member function declared with "override" does not override a base class member
+      void g() override; // expected-error {{only virtual member functions can be marked 'override'}}
+           ^
+          detected during instantiation of class "PR13499::Z<T> [with T=PR13499::X]" at line 103
+
+"Test_name.c", line 100: error: nonvirtual function cannot be declared with "final" modifier
+      void i() final; // expected-error {{only virtual member functions can be marked 'final'}}
+           ^
+          detected during instantiation of class "PR13499::Z<T> [with T=PR13499::X]" at line 103
+
+"Test_name.c", line 110: error: member function declared with "override" does not override a base class member
+        void f() override;
+             ^
+          detected during instantiation of class "MemberOfUnknownSpecialization::A<T>::C [with T=char]" at line 125
+
+"Test_name.c", line 110: error: cannot override "final" function "MemberOfUnknownSpecialization::A<double>::B::f" (declared at line 128)
+        void f() override;
+             ^
+          detected during instantiation of class "MemberOfUnknownSpecialization::A<T>::C [with T=double]" at line 133
+
+"Test_name.c", line 145: error: member function declared with "override" does not override a base class member
+      void foo(int x, int y) override; // expected-error {{non-virtual member function marked 'override' hides virtual member function}}
+           ^
+
+"Test_name.c", line 146: error: member function declared with "override" does not override a base class member
+      void bar(double) override; // expected-error {{non-virtual member function marked 'override' hides virtual member functions}}
+           ^
+
+"Test_name.c", line 147: error: nonvirtual function cannot be declared with "final" modifier
+      void bar(long double) final; // expected-error {{non-virtual member function marked 'final' hides virtual member functions}}
+           ^
+
+"Test_name.c", line 145: warning: function "DiagnosticsQOI::X::foo(int)" is hidden by "DiagnosticsQOI::Y::foo" -- virtual function override intended?
+      void foo(int x, int y) override; // expected-error {{non-virtual member function marked 'override' hides virtual member function}}
+           ^
+
+"Test_name.c", line 146: warning: overloaded function "DiagnosticsQOI::X::bar" is hidden by "DiagnosticsQOI::Y::bar" -- virtual function override intended?
+      void bar(double) override; // expected-error {{non-virtual member function marked 'override' hides virtual member functions}}
+           ^
+
+"Test_name.c", line 147: warning: overloaded function "DiagnosticsQOI::X::bar" is hidden by "DiagnosticsQOI::Y::bar" -- virtual function override intended?
+      void bar(long double) final; // expected-error {{non-virtual member function marked 'final' hides virtual member functions}}
+           ^
+
+"Test_name.c", line 152: error: function modifier does not apply to static member declaration
+      static void foo() override; // expected-error {{only virtual member functions can be marked 'override'}}
+                        ^
+
+15 errors detected in the compilation of "Test_name.c".

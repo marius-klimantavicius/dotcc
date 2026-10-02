@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 -DTEST9 Test_name.c
+"Test_name.c", line 82: error: function "main" may not be declared constexpr
+  constexpr int main() { } // expected-error{{'main' is not allowed to be declared constexpr}}
+                ^
+
+1 error detected in the compilation of "Test_name.c".

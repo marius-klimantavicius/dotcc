@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./lookup/missing-std-include-2.C", line 18: error: namespace "std" has no member "string"
+    std::string s ("hello world");
+         ^
+
+"./lookup/missing-std-include-2.C", line 21: error: namespace "std" has no member "cout"
+    std::cout << 10;
+         ^
+
+"./lookup/missing-std-include-2.C", line 29: error: namespace "std" has no member "string"
+    std::string s ("hello again");
+         ^
+
+"./lookup/missing-std-include-2.C", line 32: error: namespace "std" has no member "cout"
+    std::cout << 10;
+         ^
+
+4 errors detected in the compilation of "Test_name.c".

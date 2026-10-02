@@ -1,0 +1,121 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 8: warning: unrecognized #pragma
+  #pragma omp threadprivate (t)
+          ^
+
+"Test_name.c", line 15: warning: unrecognized #pragma
+    #pragma omp parallel sections num_threads (a) shared (b) private (c) firstprivate (d) lastprivate (e)
+            ^
+
+"Test_name.c", line 17: warning: unrecognized #pragma
+    #pragma omp section
+            ^
+
+"Test_name.c", line 27: warning: unrecognized #pragma
+    #pragma omp section
+            ^
+
+"Test_name.c", line 40: warning: unrecognized #pragma
+    #pragma omp parallel copyin (t) private (e)
+            ^
+
+"Test_name.c", line 44: warning: unrecognized #pragma
+      #pragma omp single copyprivate (e)
+              ^
+
+"Test_name.c", line 63: warning: unrecognized #pragma
+    #pragma omp target teams map (tofrom: a[b:c]) num_teams (b) thread_limit (c)
+            ^
+
+"Test_name.c", line 65: warning: unrecognized #pragma
+    #pragma omp target device(h)
+            ^
+
+"Test_name.c", line 67: warning: unrecognized #pragma
+    #pragma omp task depend (inout: a[b:c])
+            ^
+
+"Test_name.c", line 69: warning: unrecognized #pragma
+    #pragma omp task depend (out: d, e[b:c]) priority (b)
+            ^
+
+"Test_name.c", line 71: warning: unrecognized #pragma
+    #pragma omp task depend (out: p[b:c])
+            ^
+
+"Test_name.c", line 73: warning: unrecognized #pragma
+    #pragma omp task depend (out: q[b:c])
+            ^
+
+"Test_name.c", line 75: warning: unrecognized #pragma
+    #pragma omp taskloop num_tasks (c)
+            ^
+
+"Test_name.c", line 78: warning: unrecognized #pragma
+    #pragma omp taskloop grainsize (c)
+            ^
+
+"Test_name.c", line 81: warning: unrecognized #pragma
+    #pragma omp parallel for schedule (dynamic, b)
+            ^
+
+"Test_name.c", line 85: warning: unrecognized #pragma
+    #pragma omp simd linear(j:b)
+            ^
+
+"Test_name.c", line 89: warning: unrecognized #pragma
+    #pragma omp atomic read
+            ^
+
+"Test_name.c", line 91: warning: unrecognized #pragma
+    #pragma omp atomic write
+            ^
+
+"Test_name.c", line 93: warning: unrecognized #pragma
+    #pragma omp atomic
+            ^
+
+"Test_name.c", line 95: warning: unrecognized #pragma
+    #pragma omp atomic capture
+            ^
+
+"Test_name.c", line 97: warning: unrecognized #pragma
+    #pragma omp atomic capture
+            ^
+
+"Test_name.c", line 99: warning: unrecognized #pragma
+    #pragma omp atomic capture
+            ^
+
+"Test_name.c", line 101: warning: unrecognized #pragma
+    #pragma omp atomic capture
+            ^
+
+"Test_name.c", line 103: warning: unrecognized #pragma
+    #pragma omp atomic capture
+            ^
+
+"Test_name.c", line 56: warning: variable "f" was declared but never referenced
+    _Atomic int b = 1, c = 2, f = 8, g = 8, h = 0;
+                              ^
+
+"Test_name.c", line 56: warning: variable "g" was declared but never referenced
+    _Atomic int b = 1, c = 2, f = 8, g = 8, h = 0;
+                                     ^
+
+"Test_name.c", line 56: warning: variable "h" was declared but never referenced
+    _Atomic int b = 1, c = 2, f = 8, g = 8, h = 0;
+                                            ^
+
+"Test_name.c", line 57: warning: variable "d" was declared but never referenced
+    _Atomic int d, e[3];
+                ^
+
+"Test_name.c", line 58: warning: variable "p" was set but never used
+    int *_Atomic p;
+                 ^
+
+"Test_name.c", line 59: warning: variable "q" was set but never used
+    _Atomic int *_Atomic q;
+                         ^
+

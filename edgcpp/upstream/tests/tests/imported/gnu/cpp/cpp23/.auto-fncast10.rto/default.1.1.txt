@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++23 Test_name.c
+"Test_name.c", line 16: warning: variable "r1" was declared but never referenced
+  static constexpr R r1 = { auto(23) };
+                     ^
+
+"Test_name.c", line 17: warning: variable "r2" was declared but never referenced
+  static constexpr R r2 = { auto{23} };
+                     ^
+

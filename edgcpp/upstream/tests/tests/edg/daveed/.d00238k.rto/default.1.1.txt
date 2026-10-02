@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --microsoft Test_name.c
+"Test_name.c", line 15: error: interface types cannot be nested class types
+      __interface Y {};
+      ^
+
+1 error detected in the compilation of "Test_name.c".

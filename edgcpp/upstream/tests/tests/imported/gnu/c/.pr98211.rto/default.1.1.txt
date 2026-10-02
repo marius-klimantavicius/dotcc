@@ -1,0 +1,74 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c89 --strict_gnu Test_name.c
+"Test_name.c", line 8: error: expected a ")"
+  void __GIMPLE (ssa,startwith("slp"))
+                              ^
+
+"Test_name.c", line 9: error: expected a declaration
+  test (int var_1, short int a, short int b, short int c, short int d)
+  ^
+
+"Test_name.c", line 31: warning: parsing restarts here after previous syntax error
+    arr_20[8u] = _32;
+                    ^
+
+"Test_name.c", line 32: error: expected a declaration
+    arr_20[1u] = _30;
+    ^
+
+"Test_name.c", line 33: error: expected a declaration
+    arr_20[9u] = _32;
+    ^
+
+"Test_name.c", line 34: error: expected a declaration
+    arr_20[2u] = _30;
+    ^
+
+"Test_name.c", line 35: error: expected a declaration
+    arr_20[10u] = _32;
+    ^
+
+"Test_name.c", line 36: error: expected a declaration
+    arr_20[3u] = _30;
+    ^
+
+"Test_name.c", line 37: error: expected a declaration
+    arr_20[11u] = _32;
+    ^
+
+"Test_name.c", line 38: error: expected a declaration
+    arr_20[4u] = _30;
+    ^
+
+"Test_name.c", line 39: error: expected a declaration
+    arr_20[12u] = _32;
+    ^
+
+"Test_name.c", line 40: error: expected a declaration
+    arr_20[5u] = _30;
+    ^
+
+"Test_name.c", line 41: error: expected a declaration
+    arr_20[13u] = _32;
+    ^
+
+"Test_name.c", line 42: error: expected a declaration
+    arr_20[6u] = _30;
+    ^
+
+"Test_name.c", line 43: error: expected a declaration
+    arr_20[14u] = _32;
+    ^
+
+"Test_name.c", line 44: error: expected a declaration
+    arr_20[7u] = _30;
+    ^
+
+"Test_name.c", line 45: error: expected a declaration
+    arr_20[15u] = _32;
+    ^
+
+"Test_name.c", line 46: error: expected a "{"
+    return;
+    ^
+
+17 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --exceptions --exceptions --c++03 -DERRORS --exceptions --exceptions --c++03 Test_name.c
+"Test_name.c", line 18: error: incompatible exception specifications
+    void (*q)() throw(char) = p; // expected-error {{target exception spec}}
+                              ^
+
+"Test_name.c", line 21: error: incompatible exception specifications
+    void (*q2)() throw(char) = p2; // expected-error {{target exception spec}}
+                               ^
+
+"Test_name.c", line 24: error: incompatible exception specifications
+    void (*q3)() throw(T) = p3; // expected-error {{target exception spec}}
+                            ^
+
+"Test_name.c", line 18: warning: variable "q" was declared but never referenced
+    void (*q)() throw(char) = p; // expected-error {{target exception spec}}
+           ^
+
+"Test_name.c", line 21: warning: variable "q2" was declared but never referenced
+    void (*q2)() throw(char) = p2; // expected-error {{target exception spec}}
+           ^
+
+"Test_name.c", line 24: warning: variable "q3" was declared but never referenced
+    void (*q3)() throw(T) = p3; // expected-error {{target exception spec}}
+           ^
+
+"Test_name.c", line 26: warning: variable "q4" was declared but never referenced
+    void (*q4)() throw(T) = p2; // ok
+           ^
+
+3 errors detected in the compilation of "Test_name.c".

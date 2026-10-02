@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 --modules Test_name.c
+"Test_name.c", line 5: warning: this appears to be the start of a preprocessor directive, but the lack of a ';' followed immediately by a newline prevents that
+  import bob SEMI
+  ^
+
+"Test_name.c", line 5: error: identifier "import" is undefined
+  import bob SEMI
+  ^
+
+"Test_name.c", line 7: error: identifier "import" is undefined
+  IMPORT bob ;
+  ^
+
+"Test_name.c", line 7: error: variable "bob" has already been defined (previous definition at line 5)
+  IMPORT bob ;
+         ^
+
+3 errors detected in the compilation of "Test_name.c".

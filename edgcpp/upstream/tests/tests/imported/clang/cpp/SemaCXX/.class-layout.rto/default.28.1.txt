@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=28 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 495: warning: signed bit field of length 1
+        char a:1;
+             ^
+
+"Test_name.c", line 499: warning: signed bit field of length 1
+        char e:1;
+             ^
+
+"Test_name.c", line 623: error: static assertion failed with ""
+    _Static_assert(_Alignof(B) == _Alignof(int), "");
+    ^
+"Test_name.c", line 623: note: the final comparison was 1 == 4
+    _Static_assert(_Alignof(B) == _Alignof(int), "");
+                               ^
+
+"Test_name.c", line 624: warning: offsetof applied to a type other than a standard-layout class
+    _Static_assert(__builtin_offsetof(B, n) == 4, "");
+                                      ^
+
+"Test_name.c", line 624: error: static assertion failed with ""
+    _Static_assert(__builtin_offsetof(B, n) == 4, "");
+    ^
+"Test_name.c", line 624: note: the final comparison was 1 == 4
+    _Static_assert(__builtin_offsetof(B, n) == 4, "");
+                                            ^
+
+"Test_name.c", line 631: warning: offsetof applied to a type other than a standard-layout class
+    _Static_assert(__builtin_offsetof(C, n) == 2, "");
+                                      ^
+
+"Test_name.c", line 638: error: static assertion failed with ""
+    _Static_assert(_Alignof(D) == 2, "");
+    ^
+"Test_name.c", line 638: note: the final comparison was 1 == 2
+    _Static_assert(_Alignof(D) == 2, "");
+                               ^
+
+"Test_name.c", line 639: warning: offsetof applied to a type other than a standard-layout class
+    _Static_assert(__builtin_offsetof(D, n) == 2, "");
+                                      ^
+
+"Test_name.c", line 639: error: static assertion failed with ""
+    _Static_assert(__builtin_offsetof(D, n) == 2, "");
+    ^
+"Test_name.c", line 639: note: the final comparison was 1 == 2
+    _Static_assert(__builtin_offsetof(D, n) == 2, "");
+                                            ^
+
+"Test_name.c", line 656: warning: packing attribute on the parent type is ignored for this field of class type "non_pod::t1" that is not standard-layout
+    t1 v1;
+       ^
+
+4 errors detected in the compilation of "Test_name.c".

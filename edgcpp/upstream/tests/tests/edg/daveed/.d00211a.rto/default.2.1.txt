@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=2 -A Test_name.c
+"Test_name.c", line 17: error: identifier "__builtin_dwarf_cfa" is undefined
+  	__builtin_dwarf_cfa();
+  	^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 23: warning: unrecognized #pragma
+  #pragma omp declare variant(variant_fn1) match(construct={dispatch}) append_args(interop(target)) \
+          ^
+
+"Test_name.c", line 30: warning: unrecognized #pragma
+  #pragma omp declare variant(variant_fn2) match(construct={dispatch}) append_args(interop(target))
+          ^
+
+"Test_name.c", line 39: warning: unrecognized #pragma
+  #pragma omp declare variant(variant_fn3) match(construct={dispatch}) append_args(interop(target)) \
+          ^
+
+"Test_name.c", line 48: warning: unrecognized #pragma
+  #pragma omp declare variant(variant_fn4) match(construct={dispatch}) append_args(interop(target))
+          ^
+
+"Test_name.c", line 57: warning: unrecognized #pragma
+  #pragma omp declare variant(variant_fn5) match(construct={dispatch}) append_args(interop(target)) \
+          ^
+
+"Test_name.c", line 64: warning: unrecognized #pragma
+  #pragma omp declare variant(variant_fn6) match(construct={dispatch}) append_args(interop(target))
+          ^
+
+"Test_name.c", line 70: warning: unrecognized #pragma
+  #pragma omp declare variant(variant_fn7) match(construct={dispatch}) append_args(interop(target))
+          ^
+

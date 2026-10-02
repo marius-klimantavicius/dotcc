@@ -1,0 +1,12 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp0x/initlist53.C", line 6: error: first parameter of allocation function must be of type "size_t"
+  void * operator new[] (long unsigned int, void *p) { return p; }
+         ^
+
+"./cpp0x/initlist53.C", line 18: error: function "operator new[]" cannot be called with the given argument list
+            argument types are: (unsigned int, int [1])
+    int *p = new (space) int[1]{};
+             ^
+Note: number of parameters of function "operator new[]" does not match the call
+
+2 errors detected in the compilation of "Test_name.c".

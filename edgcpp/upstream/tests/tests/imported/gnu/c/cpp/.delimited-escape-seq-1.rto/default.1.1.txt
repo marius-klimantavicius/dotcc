@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 10: error: identifier "U" is undefined
+  const char32_t *a = U"\u{1234}";	/* { dg-warning "delimited escape sequences are only valid in" } */
+                      ^
+
+"Test_name.c", line 10: error: expected a ";"
+  const char32_t *a = U"\u{1234}";	/* { dg-warning "delimited escape sequences are only valid in" } */
+                       ^
+
+"Test_name.c", line 11: warning: character value is out of range
+  const char32_t *b = U"\x{1234}";	/* { dg-warning "delimited escape sequences are only valid in" } */
+                        ^
+
+"Test_name.c", line 11: error: expected a ";"
+  const char32_t *b = U"\x{1234}";	/* { dg-warning "delimited escape sequences are only valid in" } */
+                       ^
+
+"Test_name.c", line 12: warning: character value is out of range
+  const char32_t *c = U"\o{1234}";	/* { dg-warning "delimited escape sequences are only valid in" } */
+                        ^
+
+"Test_name.c", line 12: error: expected a ";"
+  const char32_t *c = U"\o{1234}";	/* { dg-warning "delimited escape sequences are only valid in" } */
+                       ^
+
+4 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 17: error: unknown register name "nosuchreg"
+    register struct S c __asm__("nosuchreg"); /* { dg-error "object with volatile field" "explicit reg name" } */
+                                ^
+
+"Test_name.c", line 18: warning: taking the address of a register variable is not allowed
+    &a; /* { dg-error "address of register" "explicit address" } */
+     ^
+
+"Test_name.c", line 18: warning: expression has no effect
+    &a; /* { dg-error "address of register" "explicit address" } */
+    ^
+
+"Test_name.c", line 19: warning: taking the address of a register variable is not allowed
+    b; /* { dg-error "address of register" "implicit address" } */
+    ^
+
+"Test_name.c", line 19: warning: expression has no effect
+    b; /* { dg-error "address of register" "implicit address" } */
+    ^
+
+1 error detected in the compilation of "Test_name.c".

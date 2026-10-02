@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 11: error: class "X" is not a class template
+  template<template<int> class = X > struct B1 {};     // { dg-error "as a default value" }
+                                 ^
+
+"Test_name.c", line 12: error: class "A<0>" is not a class template
+  template<template<int> class = A<0> > struct B2 {};  // { dg-error "as a default value" }
+                                 ^
+
+2 errors detected in the compilation of "Test_name.c".

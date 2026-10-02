@@ -1,0 +1,57 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 7: warning: argument of type "unsigned int *" is incompatible with parameter of type "int *"
+  int b(unsigned* y) { return a(y); } // expected-warning {{passing 'unsigned int *' to parameter of type 'int *' converts between pointers to integer types with different sign}}
+                                ^
+
+"Test_name.c", line 11: warning: a value of type "char *" cannot be used to initialize an entity of type "signed char *"
+    signed char *p = &c; // expected-warning {{converts between pointers to integer types where one is of the unique plain 'char' type and the other is not}}
+                     ^
+
+"Test_name.c", line 12: warning: a value of type "char *" cannot be used to initialize an entity of type "signed char *"
+    struct { signed char *p; } s = { &c }; // expected-warning {{converts between pointers to integer types where one is of the unique plain 'char' type and the other is not}}
+                                     ^
+
+"Test_name.c", line 13: warning: a value of type "char *" cannot be assigned to an entity of type "signed char *"
+    p = &c; // expected-warning {{converts between pointers to integer types where one is of the unique plain 'char' type and the other is not}}
+      ^
+
+"Test_name.c", line 14: warning: argument of type "char *" is incompatible with parameter of type "signed char *"
+    plainCharToSignedChar(&c); // expected-warning {{converts between pointers to integer types where one is of the unique plain 'char' type and the other is not}}
+                          ^
+
+"Test_name.c", line 15: warning: return value type does not match the function type
+    return &c; // expected-warning {{converts between pointers to integer types where one is of the unique plain 'char' type and the other is not}}
+           ^
+
+"Test_name.c", line 11: warning: variable "p" was set but never used
+    signed char *p = &c; // expected-warning {{converts between pointers to integer types where one is of the unique plain 'char' type and the other is not}}
+                 ^
+
+"Test_name.c", line 12: warning: variable "s" was declared but never referenced
+    struct { signed char *p; } s = { &c }; // expected-warning {{converts between pointers to integer types where one is of the unique plain 'char' type and the other is not}}
+                               ^
+
+"Test_name.c", line 20: warning: a value of type "unsigned char *" cannot be used to initialize an entity of type "char *"
+    char *p = uc; // expected-warning {{converts between pointers to integer types where one is of the unique plain 'char' type and the other is not}}
+              ^
+
+"Test_name.c", line 21: warning: a value of type "unsigned char *" cannot be used to initialize an entity of type "char *"
+    (void) (char *[]){ [42] = uc }; // expected-warning {{converts between pointers to integer types where one is of the unique plain 'char' type and the other is not}}
+                              ^
+
+"Test_name.c", line 22: warning: a value of type "unsigned char *" cannot be assigned to an entity of type "char *"
+    p = uc; // expected-warning {{converts between pointers to integer types where one is of the unique plain 'char' type and the other is not}}
+      ^
+
+"Test_name.c", line 23: warning: argument of type "unsigned char *" is incompatible with parameter of type "char *"
+    unsignedCharToPlainChar(uc); // expected-warning {{converts between pointers to integer types where one is of the unique plain 'char' type and the other is not}}
+                            ^
+
+"Test_name.c", line 24: warning: return value type does not match the function type
+    return uc; // expected-warning {{converts between pointers to integer types where one is of the unique plain 'char' type and the other is not}}
+           ^
+
+"Test_name.c", line 20: warning: variable "p" was set but never used
+    char *p = uc; // expected-warning {{converts between pointers to integer types where one is of the unique plain 'char' type and the other is not}}
+          ^
+

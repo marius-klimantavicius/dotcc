@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 6: warning: a user-provided literal suffix must begin with "_"
+  constexpr int operator""wb (unsigned long long) { return 0; }	// { dg-warning "reserved for future standardization" }
+                        ^
+
+"Test_name.c", line 7: warning: a user-provided literal suffix must begin with "_"
+  constexpr int operator""uwb (unsigned long long) { return 1; }	// { dg-warning "reserved for future standardization" }
+                        ^
+

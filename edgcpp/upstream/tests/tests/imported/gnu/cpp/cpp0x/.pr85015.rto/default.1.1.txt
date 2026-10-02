@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: error: identifier "v" is undefined
+    int &&c = v + 1;		// { dg-error "was not declared in this scope" }
+              ^
+
+"Test_name.c", line 12: error: reference to local variable of enclosing function is not allowed
+      void bar () { int a[c]; }	// { dg-error "use of local variable with automatic storage from containing function" }
+                          ^
+
+"Test_name.c", line 13: warning: variable "e" was declared but never referenced
+    } e;
+      ^
+
+2 errors detected in the compilation of "Test_name.c".

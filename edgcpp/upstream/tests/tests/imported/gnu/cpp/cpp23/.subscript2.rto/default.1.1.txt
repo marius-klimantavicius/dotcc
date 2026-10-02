@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++23 Test_name.c
+"Test_name.c", line 44: error: expected an expression
+    auto &a = buf[];		// { dg-error "built-in subscript operator without expression list" }
+                  ^
+
+"Test_name.c", line 45: error: too many array bounds
+    auto &b = buf[1, 2];		// { dg-warning "top-level comma expression in array subscript changed meaning in" }
+                     ^
+
+"Test_name.c", line 46: error: no instance of overloaded function "S::operator[]" matches the argument list
+            argument types are: (int, int, int)
+            object type is: S
+    auto &c = s[1, 2, 3];		// { dg-warning "top-level comma expression in array subscript changed meaning in" }
+              ^
+"Test_name.c", line 12: note: number of parameters of function "S::operator[](int, long)" does not match the call
+    int &operator[] (int x, long y) { return a[x + y * 8]; }
+         ^
+"Test_name.c", line 11: note: number of parameters of function "S::operator[](int)" does not match the call
+    int &operator[] (int x) { return a[x]; }
+         ^
+"Test_name.c", line 10: note: number of parameters of function "S::operator[]()" does not match the call
+    int &operator[] () { return a[0]; }
+         ^
+
+"Test_name.c", line 47: error: no operator "[]" matches these operands
+            operand types are: V [ int ]
+    auto &d = v[1];		// { dg-error "no match for 'operator\\\[\\\]' in 'v\\\[1\\\]' \\\(operand types are 'V' and 'int'\\\)" }
+               ^
+"Test_name.c", line 33: note: number of parameters of function "V::operator[](int, long)" does not match the call
+    int &operator[] (int x, long y) { return a[x + y * 8]; }	// { dg-message "candidate" }
+         ^
+"Test_name.c", line 32: note: number of parameters of function "V::operator[]()" does not match the call
+    int &operator[] () { return a[0]; }				// { dg-message "candidate" }
+         ^
+"Test_name.c", line 47: note: built-in operator[](<pointer to object>, <ptrdiff_t>) does not match because argument #1 does not match parameter
+    auto &d = v[1];		// { dg-error "no match for 'operator\\\[\\\]' in 'v\\\[1\\\]' \\\(operand types are 'V' and 'int'\\\)" }
+               ^
+"Test_name.c", line 47: note: built-in operator[](<ptrdiff_t>, <pointer to object>) does not match because argument #1 does not match parameter
+    auto &d = v[1];		// { dg-error "no match for 'operator\\\[\\\]' in 'v\\\[1\\\]' \\\(operand types are 'V' and 'int'\\\)" }
+               ^
+
+"Test_name.c", line 48: error: no instance of overloaded function "V::operator[]" matches the argument list
+            argument types are: (int, int, int)
+            object type is: V
+    auto &e = v[1, 2, 3];		// { dg-error "no match for call to 'V::operator\\\[\\\] \\\(int, int, int\\\)'" }
+              ^
+"Test_name.c", line 33: note: number of parameters of function "V::operator[](int, long)" does not match the call
+    int &operator[] (int x, long y) { return a[x + y * 8]; }	// { dg-message "candidate" }
+         ^
+"Test_name.c", line 32: note: number of parameters of function "V::operator[]()" does not match the call
+    int &operator[] () { return a[0]; }				// { dg-message "candidate" }
+         ^
+
+"Test_name.c", line 49: error: call of an object of a class type without appropriate operator() or conversion functions to pointer-to-function type
+    auto &f = t[42, u];		// { dg-warning "top-level comma expression in array subscript changed meaning in" }
+              ^
+
+"Test_name.c", line 50: error: call of an object of a class type without appropriate operator() or conversion functions to pointer-to-function type
+    auto &g = u[42, t];		// { dg-warning "top-level comma expression in array subscript changed meaning in" }
+              ^
+
+"Test_name.c", line 51: error: too many array bounds
+    auto &h = buf[42, 2.5];	// { dg-warning "top-level comma expression in array subscript changed meaning in" }
+                      ^
+
+8 errors detected in the compilation of "Test_name.c".

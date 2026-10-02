@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 --c++20 Test_name.c
+"Test_name.c", line 19: error: more than one partial specialization matches the template argument list of class "B<T>::N<int *> [with T=int]"
+            "B<T>::N<U *> [with T=int]" (declared at line 12)
+            "B<T>::N<U *> [with T=int]" (declared at line 16)
+  B<int>::N<int *>::type2 i;
+                    ^
+
+"Test_name.c", line 19: error: class "B<T>::N<int *> [with T=int]" has no member "type2"
+  B<int>::N<int *>::type2 i;
+                    ^
+
+2 errors detected in the compilation of "Test_name.c".

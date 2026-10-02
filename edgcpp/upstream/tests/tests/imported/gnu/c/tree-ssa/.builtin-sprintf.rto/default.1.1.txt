@@ -1,0 +1,73 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 26: warning: unknown attribute "noclone"
+  void __attribute__ ((noclone, noinline))
+                       ^
+
+"Test_name.c", line 75: warning: unknown attribute "noclone"
+  void __attribute__ ((noclone, noinline))
+                       ^
+
+"Test_name.c", line 141: warning: unknown attribute "noclone"
+  static void __attribute__ ((noinline, noclone))
+                                        ^
+
+"Test_name.c", line 178: warning: unknown attribute "noclone"
+  unsigned __attribute__ ((noclone, noinline))
+                           ^
+
+"Test_name.c", line 187: warning: unknown attribute "noclone"
+  int __attribute__ ((noclone, noinline))
+                      ^
+
+"Test_name.c", line 218: warning: unknown attribute "noclone"
+  static void __attribute__ ((noinline, noclone))
+                                        ^
+
+"Test_name.c", line 407: warning: unknown attribute "noclone"
+  static void __attribute__ ((noinline, noclone))
+                                        ^
+
+"Test_name.c", line 471: warning: unknown attribute "noclone"
+  static void __attribute__ ((noinline, noclone))
+                                        ^
+
+"Test_name.c", line 494: warning: unknown attribute "noclone"
+  static void __attribute__ ((noinline, noclone))
+                                        ^
+
+"Test_name.c", line 505: warning: unknown attribute "noclone"
+  static void __attribute__ ((noinline, noclone))
+                                        ^
+
+"Test_name.c", line 557: warning: unknown attribute "noclone"
+  static void __attribute__ ((noinline, noclone))
+                                        ^
+
+"Test_name.c", line 617: warning: unknown attribute "noclone"
+  static void __attribute__ ((noinline, noclone))
+                                        ^
+
+"Test_name.c", line 643: warning: unknown attribute "noclone"
+  static void __attribute__ ((noinline, noclone))
+                                        ^
+
+"Test_name.c", line 664: warning: unknown attribute "noclone"
+  static void __attribute__ ((noinline, noclone))
+                                        ^
+
+"Test_name.c", line 719: warning: unknown attribute "noclone"
+  static void __attribute__ ((noinline, noclone))
+                                        ^
+
+"Test_name.c", line 752: warning: unknown attribute "noclone"
+  static void __attribute__ ((noinline, noclone))
+                                        ^
+
+"Test_name.c", line 788: warning: unknown attribute "noclone"
+  static void __attribute__ ((noinline, noclone))
+                                        ^
+
+"Test_name.c", line 803: warning: unknown attribute "noclone"
+  static void __attribute__ ((noinline, noclone))
+                                        ^
+

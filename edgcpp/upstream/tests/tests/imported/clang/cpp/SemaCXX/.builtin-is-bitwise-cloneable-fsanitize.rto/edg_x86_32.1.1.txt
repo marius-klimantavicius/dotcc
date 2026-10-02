@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 -DSANITIZER_ENABLED Test_name.c
+"Test_name.c", line 24: error: static assertion failed
+  static_assert(sizeof(S) > 16);
+  ^
+"Test_name.c", line 24: note: the final comparison was 12 > 16
+  static_assert(sizeof(S) > 16);
+                          ^
+
+"Test_name.c", line 25: error: static assertion failed
+  static_assert(!__is_bitwise_cloneable(S));
+  ^
+
+"Test_name.c", line 27: error: static assertion failed
+  static_assert(!__is_bitwise_cloneable(U));
+  ^
+
+"Test_name.c", line 28: error: static assertion failed
+  static_assert(!__is_bitwise_cloneable(S[2]));
+  ^
+
+"Test_name.c", line 29: error: static assertion failed
+  static_assert(!__is_bitwise_cloneable(Derived));
+  ^
+
+5 errors detected in the compilation of "Test_name.c".

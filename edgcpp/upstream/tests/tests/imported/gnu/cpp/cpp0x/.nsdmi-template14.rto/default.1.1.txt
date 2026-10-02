@@ -1,0 +1,23 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: error: the generated default constructor for "A<0>" cannot be used in an initializer for its own data member
+    int i = (A<0>(), 0); // { dg-error "recursive instantiation of default" }
+             ^
+          detected during:
+            implicit generation of "A<<unnamed>>::A() [with <unnamed>=0]" at line 8
+            instantiation of class "A<<unnamed>> [with <unnamed>=0]" at line 8
+
+"Test_name.c", line 15: error: the generated default constructor for "B<1>" cannot be used in an initializer for its own data member
+    B* p = new B<N>; // { dg-error "recursive instantiation of default" }
+               ^
+          detected during:
+            implicit generation of "B<N>::B() [with N=1]" at line 18
+            instantiation of class "B<N> [with N=1]" at line 18
+
+"Test_name.c", line 24: error: the generated default constructor for "C::D<0>" cannot be used in an initializer for its own data member
+      D* p = new D<0>;		// { dg-error "" }
+                 ^
+          detected during:
+            implicit generation of "C::D<N>::D() [with N=0]" at line 24
+            instantiation of class "C::D<N> [with N=0]" at line 24
+
+3 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,129 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 10: warning: variable "tmp" was set but never used
+    int tmp;
+        ^
+
+"Test_name.c", line 21: warning: variable "tmp" was set but never used
+    int tmp;
+        ^
+
+"Test_name.c", line 29: warning: variable "tmp" was declared but never referenced
+    int tmp;
+        ^
+
+"Test_name.c", line 36: warning: variable "tmp" was set but never used
+    int tmp;
+        ^
+
+"Test_name.c", line 49: warning: variable "tmp" was declared but never referenced
+    int tmp = d[2];  // expected-note{{used in buffer access here}}
+        ^
+
+"Test_name.c", line 55: warning: variable "y" is used before its value is set
+    y[5] = 10;  // expected-note{{used in buffer access here}}
+    ^
+
+"Test_name.c", line 72: warning: variable "r" was declared but never referenced
+    int *r = q; // FIXME: we do not fix `int *r = q` here as the `.data()` fix-it is not generally correct
+         ^
+
+"Test_name.c", line 77: warning: variable "tmp" was set but never used
+    int tmp;
+        ^
+
+"Test_name.c", line 84: warning: variable "w" was declared but never referenced
+    int *w = z;
+         ^
+
+"Test_name.c", line 88: warning: variable "tmp" was set but never used
+    int tmp;
+        ^
+
+"Test_name.c", line 104: warning: variable "tmp" was declared but never referenced
+    int tmp = p[9];  // expected-note{{used in buffer access here}}
+        ^
+
+"Test_name.c", line 105: warning: variable "q" was set but never used
+    int *q;
+         ^
+
+"Test_name.c", line 113: warning: variable "tmp" was set but never used
+    int tmp = p[9];  // expected-note{{used in buffer access here}}
+        ^
+
+"Test_name.c", line 123: warning: variable "tmp" was set but never used
+    int tmp = r[9];  // expected-note{{used in buffer access here}}
+        ^
+
+"Test_name.c", line 134: warning: variable "tmp" was declared but never referenced
+    int tmp = p[8];  // expected-note{{used in buffer access here}}
+        ^
+
+"Test_name.c", line 143: warning: variable "tmp" was declared but never referenced
+    int tmp = q[8];  // expected-note{{used in buffer access here}}
+        ^
+
+"Test_name.c", line 152: warning: variable "tmp" was set but never used
+    int tmp = p[8];  // expected-note{{used in buffer access here}}
+        ^
+
+"Test_name.c", line 162: warning: variable "tmp" was declared but never referenced
+    int tmp = p[8];  // expected-note{{used in buffer access here}}
+        ^
+
+"Test_name.c", line 171: warning: variable "tmp" was declared but never referenced
+    int tmp = q[8];  // expected-note{{used in buffer access here}}
+        ^
+
+"Test_name.c", line 180: warning: variable "tmp" was declared but never referenced
+    int tmp = p[9];  // expected-note{{used in buffer access here}}
+        ^
+
+"Test_name.c", line 186: warning: variable "ptr" is used before its value is set
+    local = ptr;
+            ^
+
+"Test_name.c", line 196: warning: variable "x" is used before its value is set
+    r = x;
+        ^
+
+"Test_name.c", line 203: warning: variable "x" is used before its value is set
+    r = x;
+        ^
+
+"Test_name.c", line 210: warning: variable "x" is used before its value is set
+    x++;  // expected-note{{used in pointer arithmetic here}}
+    ^
+
+"Test_name.c", line 219: warning: variable "x" is used before its value is set
+    x++;  // expected-note{{used in pointer arithmetic here}}
+    ^
+
+"Test_name.c", line 227: warning: variable "x" is used before its value is set
+    x++;  // expected-note{{used in pointer arithmetic here}}
+    ^
+
+"Test_name.c", line 234: warning: variable "x" is used before its value is set
+    r = x;
+        ^
+
+"Test_name.c", line 243: warning: variable "x" is used before its value is set
+    r = x;
+        ^
+
+"Test_name.c", line 251: warning: variable "x" is used before its value is set
+    r = x;
+        ^
+
+"Test_name.c", line 258: warning: variable "x" is used before its value is set
+    r = x;
+        ^
+
+"Test_name.c", line 266: warning: variable "x" is used before its value is set
+    r = x;
+        ^
+
+"Test_name.c", line 280: warning: variable "x" is used before its value is set
+    x[7] = 9;  // expected-note{{used in buffer access here}}
+    ^
+

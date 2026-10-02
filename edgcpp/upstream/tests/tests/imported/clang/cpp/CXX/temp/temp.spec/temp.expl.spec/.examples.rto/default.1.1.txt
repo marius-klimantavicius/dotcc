@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 168: error: "const int PR9877::X<1>::Y::Z" is not an entity that can be explicitly specialized
+    template<> const int X<1>::Y::Z;  // expected-error{{extraneous 'template<>' in declaration of variable 'Z'}}
+                                  ^
+
+"Test_name.c", line 235: error: incomplete type "spec_vs_expl_inst::ISD::BasicStringPiece<int>" is not allowed
+      template class BasicStringPiece<int>;  // expected-error {{explicit instantiation of undefined template 'spec_vs_expl_inst::ISD::BasicStringPiece<int>'}}
+               ^
+
+"Test_name.c", line 242: error: incomplete type "spec_vs_expl_inst::IDS::BasicStringPiece<int>" is not allowed
+      template class BasicStringPiece<int>;  // expected-error {{explicit instantiation of undefined template 'spec_vs_expl_inst::IDS::BasicStringPiece<int>'}}  // expected-note {{explicit instantiation definition is here}}
+               ^
+
+"Test_name.c", line 243: error: incomplete type "spec_vs_expl_inst::IDS::BasicStringPiece<int>" is not allowed
+      extern template class BasicStringPiece<int>;  // expected-error {{explicit instantiation declaration (with 'extern') follows explicit instantiation definition (without 'extern')}}
+                      ^
+
+"Test_name.c", line 249: error: incomplete type "spec_vs_expl_inst::DIS::BasicStringPiece<int>" is not allowed
+      extern template class BasicStringPiece<int>;  // expected-error {{explicit instantiation of undefined template 'spec_vs_expl_inst::DIS::BasicStringPiece<int>'}}
+                      ^
+
+"Test_name.c", line 250: error: incomplete type "spec_vs_expl_inst::DIS::BasicStringPiece<int>" is not allowed
+      template class BasicStringPiece<int>;
+               ^
+
+"Test_name.c", line 256: error: incomplete type "spec_vs_expl_inst::DSI::BasicStringPiece<int>" is not allowed
+      extern template class BasicStringPiece<int>;  // expected-error {{explicit instantiation of undefined template 'spec_vs_expl_inst::DSI::BasicStringPiece<int>'}}
+                      ^
+
+"Test_name.c", line 280: error: explicit specialization of class "spec_vs_expl_inst::ISD_WithDefinedTemplate::BasicStringPiece<int>" must precede its first use (at line 279)
+      template <> class BasicStringPiece<int> { };  // expected-error {{explicit specialization of 'spec_vs_expl_inst::ISD_WithDefinedTemplate::BasicStringPiece<int>' after instantiation}}
+                        ^
+
+"Test_name.c", line 281: warning: "extern template" cannot follow explicit instantiation of class "spec_vs_expl_inst::ISD_WithDefinedTemplate::BasicStringPiece<int>"
+      extern template class BasicStringPiece<int>;
+                      ^
+
+"Test_name.c", line 287: warning: "extern template" cannot follow explicit instantiation of class "spec_vs_expl_inst::IDS_WithDefinedTemplate::BasicStringPiece<int>"
+      extern template class BasicStringPiece<int>;  // expected-error {{explicit instantiation declaration (with 'extern') follows explicit instantiation definition (without 'extern')}}
+                      ^
+
+"Test_name.c", line 288: error: explicit specialization of class "spec_vs_expl_inst::IDS_WithDefinedTemplate::BasicStringPiece<int>" must precede its first use (at line 286)
+      template <> class BasicStringPiece<int> { };  // expected-error {{redefinition of 'BasicStringPiece<int>'}}
+                        ^
+
+"Test_name.c", line 295: error: explicit specialization of class "spec_vs_expl_inst::DIS_WithDefinedTemplate::BasicStringPiece<int>" must precede its first use (at line 293)
+      template <> class BasicStringPiece<int> { };  // expected-error {{explicit specialization of 'spec_vs_expl_inst::DIS_WithDefinedTemplate::BasicStringPiece<int>' after instantiation}}
+                        ^
+
+"Test_name.c", line 301: error: explicit specialization of class "spec_vs_expl_inst::DSI_WithDefinedTemplate::BasicStringPiece<int>" must precede its first use (at line 300)
+      template <> class BasicStringPiece<int> { };  // expected-error {{explicit specialization of 'spec_vs_expl_inst::DSI_WithDefinedTemplate::BasicStringPiece<int>' after instantiation}}
+                        ^
+
+"Test_name.c", line 318: error: class "spec_vs_expl_inst::SIS::BasicStringPiece<int>" has already been defined (previous definition at line 316)
+      template <> class BasicStringPiece<int> { };  // expected-error {{redefinition of 'BasicStringPiece<int>'}}
+                        ^
+
+"Test_name.c", line 325: error: class "spec_vs_expl_inst::SDS::BasicStringPiece<int>" has already been defined (previous definition at line 323)
+      template <> class BasicStringPiece<int> { };  // expected-error {{redefinition of 'BasicStringPiece<int>'}}
+                        ^
+
+"Test_name.c", line 333: error: class "spec_vs_expl_inst::SDIS::BasicStringPiece<int>" has already been defined (previous definition at line 330)
+      template <> class BasicStringPiece<int> { };  // expected-error {{redefinition of 'BasicStringPiece<int>'}}
+                        ^
+
+14 errors detected in the compilation of "Test_name.c".

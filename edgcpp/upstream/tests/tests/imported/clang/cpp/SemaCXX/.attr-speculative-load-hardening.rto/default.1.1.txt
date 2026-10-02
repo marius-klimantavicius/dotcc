@@ -1,0 +1,113 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 5: warning: unknown attribute "speculative_load_hardening"
+  int i __attribute__((speculative_load_hardening)); // expected-error {{'speculative_load_hardening' attribute only applies to functions}}
+                       ^
+
+"Test_name.c", line 7: warning: unknown attribute "speculative_load_hardening"
+  void f1() __attribute__((speculative_load_hardening));
+                           ^
+
+"Test_name.c", line 8: warning: unknown attribute "speculative_load_hardening"
+  void f2() __attribute__((speculative_load_hardening(1))); // expected-error {{'speculative_load_hardening' attribute takes no arguments}}
+                           ^
+
+"Test_name.c", line 11: warning: unknown attribute "speculative_load_hardening"
+  void tf1() __attribute__((speculative_load_hardening));
+                            ^
+
+"Test_name.c", line 13: warning: unknown attribute "speculative_load_hardening"
+  int f3(int __attribute__((speculative_load_hardening)), int); // expected-error {{'speculative_load_hardening' attribute only applies to functions}}
+                            ^
+
+"Test_name.c", line 16: warning: unknown attribute "speculative_load_hardening"
+    int f __attribute__((speculative_load_hardening));  // expected-error {{'speculative_load_hardening' attribute only applies to functions}}
+                         ^
+
+"Test_name.c", line 17: warning: unknown attribute "speculative_load_hardening"
+    void mf1() __attribute__((speculative_load_hardening));
+                              ^
+
+"Test_name.c", line 18: warning: unknown attribute "speculative_load_hardening"
+    static void mf2() __attribute__((speculative_load_hardening));
+                                     ^
+
+"Test_name.c", line 21: warning: unknown attribute "no_speculative_load_hardening"
+  void f4() __attribute__((no_speculative_load_hardening, speculative_load_hardening)); // expected-error {{attributes are not compatible}}
+                           ^
+
+"Test_name.c", line 21: warning: unknown attribute "speculative_load_hardening"
+  void f4() __attribute__((no_speculative_load_hardening, speculative_load_hardening)); // expected-error {{attributes are not compatible}}
+                                                          ^
+
+"Test_name.c", line 24: warning: unknown attribute "speculative_load_hardening"
+  void f5() __attribute__((speculative_load_hardening, no_speculative_load_hardening)); // expected-error {{attributes are not compatible}}
+                           ^
+
+"Test_name.c", line 24: warning: unknown attribute "no_speculative_load_hardening"
+  void f5() __attribute__((speculative_load_hardening, no_speculative_load_hardening)); // expected-error {{attributes are not compatible}}
+                                                       ^
+
+"Test_name.c", line 27: warning: unknown attribute "no_speculative_load_hardening"
+  void f6() __attribute__((no_speculative_load_hardening)); // expected-note {{conflicting attribute is here}}
+                           ^
+
+"Test_name.c", line 29: warning: unknown attribute "speculative_load_hardening"
+  void f6() __attribute__((speculative_load_hardening)); // expected-error {{'speculative_load_hardening' and 'no_speculative_load_hardening' attributes are not compatible}}
+                           ^
+
+"Test_name.c", line 31: warning: unknown attribute "clang::speculative_load_hardening"
+  int ci [[clang::speculative_load_hardening]]; // expected-error {{'clang::speculative_load_hardening' attribute only applies to functions}}
+           ^
+
+"Test_name.c", line 33: warning: unknown attribute "clang::speculative_load_hardening"
+  [[clang::speculative_load_hardening]] void cf1();
+    ^
+
+"Test_name.c", line 34: warning: unknown attribute "clang::speculative_load_hardening"
+  [[clang::speculative_load_hardening(1)]] void cf2(); // expected-error {{'clang::speculative_load_hardening' attribute takes no arguments}}
+    ^
+
+"Test_name.c", line 37: warning: unknown attribute "clang::speculative_load_hardening"
+  [[clang::speculative_load_hardening]]
+    ^
+
+"Test_name.c", line 40: warning: unknown attribute "clang::speculative_load_hardening"
+  int cf3(int c[[clang::speculative_load_hardening]], int); // expected-error {{'clang::speculative_load_hardening' attribute only applies to functions}}
+                 ^
+
+"Test_name.c", line 43: warning: unknown attribute "clang::speculative_load_hardening"
+    int f [[clang::speculative_load_hardening]];  // expected-error {{'clang::speculative_load_hardening' attribute only applies to functions}}
+            ^
+
+"Test_name.c", line 44: warning: unknown attribute "clang::speculative_load_hardening"
+    [[clang::speculative_load_hardening]] void mf1();
+      ^
+
+"Test_name.c", line 45: warning: unknown attribute "clang::speculative_load_hardening"
+    [[clang::speculative_load_hardening]] static void mf2();
+      ^
+
+"Test_name.c", line 48: warning: unknown attribute "clang::speculative_load_hardening"
+  [[clang::speculative_load_hardening, clang::no_speculative_load_hardening]] void cf4();  // expected-error {{attributes are not compatible}}
+    ^
+
+"Test_name.c", line 48: warning: unknown attribute "clang::no_speculative_load_hardening"
+  [[clang::speculative_load_hardening, clang::no_speculative_load_hardening]] void cf4();  // expected-error {{attributes are not compatible}}
+                                       ^
+
+"Test_name.c", line 51: warning: unknown attribute "clang::no_speculative_load_hardening"
+  [[clang::no_speculative_load_hardening, clang::speculative_load_hardening]] void cf5();  // expected-error {{attributes are not compatible}}
+    ^
+
+"Test_name.c", line 51: warning: unknown attribute "clang::speculative_load_hardening"
+  [[clang::no_speculative_load_hardening, clang::speculative_load_hardening]] void cf5();  // expected-error {{attributes are not compatible}}
+                                          ^
+
+"Test_name.c", line 54: warning: unknown attribute "clang::speculative_load_hardening"
+  [[clang::speculative_load_hardening]]
+    ^
+
+"Test_name.c", line 57: warning: unknown attribute "clang::no_speculative_load_hardening"
+  [[clang::no_speculative_load_hardening]]
+    ^
+

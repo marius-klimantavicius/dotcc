@@ -1,0 +1,1 @@
+//require:SKIP THIS we do not have -fdelete-null-pointer-check

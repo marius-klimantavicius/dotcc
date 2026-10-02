@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c++20 -tused -A Test_name.c
+"Test_name.c", line 14: error: variable "T2" is not a type name
+  (*(*b)(T2(c)))(int(d)); // allow the last part of the declaration to parse properly,
+         ^
+
+"Test_name.c", line 14: warning: variable "b" was declared but never referenced
+  (*(*b)(T2(c)))(int(d)); // allow the last part of the declaration to parse properly,
+      ^
+
+1 error detected in the compilation of "Test_name.c".

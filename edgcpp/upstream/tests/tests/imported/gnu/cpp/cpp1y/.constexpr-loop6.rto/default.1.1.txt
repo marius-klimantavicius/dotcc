@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 10: warning: statement is unreachable
+    return 0;
+    ^
+
+"Test_name.c", line 13: error: expression must have a constant value
+  constexpr int i = foo();	// { dg-message "" }
+                    ^
+"Test_name.c", line 13: note: expression not folded to a constant due to excessive constexpr function call complexity
+  constexpr int i = foo();	// { dg-message "" }
+                    ^
+
+"Test_name.c", line 13: warning: variable "i" was declared but never referenced
+  constexpr int i = foo();	// { dg-message "" }
+                ^
+
+1 error detected in the compilation of "Test_name.c".

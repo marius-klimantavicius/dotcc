@@ -1,0 +1,86 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 50: error: call to consteval function "f1(T) [with T=int]" did not produce a valid constant expression
+  auto a1 = f1 (non_const); // { dg-error "call to consteval function|not usable" }
+               ^
+"Test_name.c", line 50: note: the value of variable "non_const" (declared at line 48) cannot be used as a constant
+  auto a1 = f1 (non_const); // { dg-error "call to consteval function|not usable" }
+                ^
+
+"Test_name.c", line 51: error: expression must have a constant value
+  constexpr auto a2 = f2 (non_const); // { dg-error "not a constant|not usable" }
+                      ^
+"Test_name.c", line 51: note: the value of variable "non_const" (declared at line 48) cannot be used as a constant
+  constexpr auto a2 = f2 (non_const); // { dg-error "not a constant|not usable" }
+                          ^
+
+"Test_name.c", line 58: error: call to consteval function "f5(T) [with T=int]" did not produce a valid constant expression
+     auto a5 = f5 (non_const); // { dg-error "not a constant|not usable" }
+                  ^
+"Test_name.c", line 58: note: the value of variable "non_const" (declared at line 48) cannot be used as a constant
+     auto a5 = f5 (non_const); // { dg-error "not a constant|not usable" }
+                   ^
+
+"Test_name.c", line 59: error: expression must have a constant value
+     constexpr auto a6 = f6 (non_const); // { dg-error "not usable" }
+                         ^
+"Test_name.c", line 59: note: the value of variable "non_const" (declared at line 48) cannot be used as a constant
+     constexpr auto a6 = f6 (non_const); // { dg-error "not usable" }
+                             ^
+
+"Test_name.c", line 62: error: call to consteval function "f9(T) [with T=int]" did not produce a valid constant expression
+     (void) f9 (non_const); // { dg-error "not a constant|not usable" }
+               ^
+"Test_name.c", line 62: note: the value of variable "non_const" (declared at line 48) cannot be used as a constant
+     (void) f9 (non_const); // { dg-error "not a constant|not usable" }
+                ^
+
+"Test_name.c", line 64: error: call to consteval function "g1(T) [with T=int]" did not produce a valid constant expression
+     (void) g1 (non_const); // { dg-error "not a constant|not usable" }
+               ^
+"Test_name.c", line 64: note: the value of variable "non_const" (declared at line 48) cannot be used as a constant
+     (void) g1 (non_const); // { dg-error "not a constant|not usable" }
+                ^
+
+"Test_name.c", line 59: warning: variable "a6" was declared but never referenced
+     constexpr auto a6 = f6 (non_const); // { dg-error "not usable" }
+                    ^
+
+"Test_name.c", line 60: warning: variable "a7" was declared but never referenced
+     auto a7 = f7 (42);
+          ^
+
+"Test_name.c", line 61: warning: variable "a8" was declared but never referenced
+     constexpr auto a8 = f8 (42);
+                    ^
+
+"Test_name.c", line 76: error: call to consteval function "S::S(T) [with T=int]" did not produce a valid constant expression
+  S s2(non_const); // { dg-error "call to consteval function|not usable" }
+       ^
+"Test_name.c", line 76: note: the value of variable "non_const" (declared at line 48) cannot be used as a constant
+  S s2(non_const); // { dg-error "call to consteval function|not usable" }
+       ^
+
+"Test_name.c", line 78: error: expression must have a constant value
+  constexpr S s4(non_const); // { dg-error "not usable" }
+                 ^
+"Test_name.c", line 78: note: the value of variable "non_const" (declared at line 48) cannot be used as a constant
+  constexpr S s4(non_const); // { dg-error "not usable" }
+                 ^
+
+"Test_name.c", line 51: warning: variable "a2" was declared but never referenced
+  constexpr auto a2 = f2 (non_const); // { dg-error "not a constant|not usable" }
+                 ^
+
+"Test_name.c", line 53: warning: variable "a4" was declared but never referenced
+  constexpr auto a4 = f4 (42);
+                 ^
+
+"Test_name.c", line 77: warning: variable "s3" was declared but never referenced
+  constexpr S s3(1);
+              ^
+
+"Test_name.c", line 78: warning: variable "s4" was declared but never referenced
+  constexpr S s4(non_const); // { dg-error "not usable" }
+              ^
+
+8 errors detected in the compilation of "Test_name.c".

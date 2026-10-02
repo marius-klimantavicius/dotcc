@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 16: warning: missing return statement at end of non-void function "nsTreeRows::Link::operator="
+          }
+          ^
+
+"Test_name.c", line 40: warning: missing return statement at end of non-void function "nsTreeRows::EnsureSubtreeFor"
+  }
+  ^
+
+"Test_name.c", line 47: warning: missing return statement at end of non-void function "nsTreeRows::iterator::operator="
+  }
+  ^
+

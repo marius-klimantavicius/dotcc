@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 6: error: copy constructor for class "b<int, int>" may not have a parameter of type "b<int, int>"
+  { b(); b(b &); b(b< a, a >); };  // { dg-error "16:invalid constructor" }
+                   ^
+          detected during instantiation of class "b<a, <unnamed>> [with a=int, <unnamed>=int]" at line 7
+
+"Test_name.c", line 7: error: no suitable conversion function from "b<int, int>" to "int" exists
+  int c(b< int, int >(b< int, int >());  // { dg-error "" }
+        ^
+
+"Test_name.c", line 7: error: expected a ")"
+  int c(b< int, int >(b< int, int >());  // { dg-error "" }
+                                      ^
+
+3 errors detected in the compilation of "Test_name.c".

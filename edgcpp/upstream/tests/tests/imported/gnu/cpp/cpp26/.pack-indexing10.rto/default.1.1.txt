@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++26 Test_name.c
+"Test_name.c", line 9: warning: constant "N" is not used in declaring the parameter types of function template "lambda []()->auto::operator auto (*)()"
+    return []<int N>() { return Vs...[N]; }.template operator()<1>();
+                  ^
+          detected during instantiation of "auto f<Vs...>() [with Vs=<1, 2, 3>]" at line 11
+

@@ -1,0 +1,25 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./init/new39.C", line 16: warning: integer conversion resulted in a change of sign
+      if (sz != -1)
+                ^
+
+"./init/new39.C", line 49: warning: integer conversion resulted in a change of sign
+    test<T>(-1);
+            ^
+          detected during instantiation of "void all_tests<T>() [with T=without_new]" at line 65
+
+"./init/new39.C", line 52: warning: integer conversion resulted in a change of sign
+    test_noopt<T>(-1);
+                  ^
+          detected during instantiation of "void all_tests<T>() [with T=without_new]" at line 65
+
+"./init/new39.C", line 49: warning: integer conversion resulted in a change of sign
+    test<T>(-1);
+            ^
+          detected during instantiation of "void all_tests<T>() [with T=with_new]" at line 66
+
+"./init/new39.C", line 52: warning: integer conversion resulted in a change of sign
+    test_noopt<T>(-1);
+                  ^
+          detected during instantiation of "void all_tests<T>() [with T=with_new]" at line 66
+

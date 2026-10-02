@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 13: error: no instance of function template "f" matches the specified type
+  void f() { } // { dg-error "template-id" }
+       ^
+
+"Test_name.c", line 8: error: no instance of function template "f" matches the argument list
+    f<T...>(); // { dg-error "no matching" }
+    ^
+"Test_name.c", line 6: note: candidate function template "f" failed deduction
+  void f()			// { dg-message "note" }
+       ^
+          detected during instantiation of "void f<U,T...>() [with U=char, T=<>]" at line 17
+
+2 errors detected in the compilation of "Test_name.c".

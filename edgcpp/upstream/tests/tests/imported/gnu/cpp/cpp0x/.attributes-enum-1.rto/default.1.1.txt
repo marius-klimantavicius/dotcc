@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 18: warning: constant "F::B" was declared deprecated
+    F f1 = F::B; // { dg-warning ".B. is deprecated" }
+              ^
+"Test_name.c", line 11: note: because of a "deprecated" attribute
+    B [[gnu::deprecated]],
+        ^
+
+"Test_name.c", line 19: warning: constant "F::C" was declared deprecated
+    F f2 = F::C; // { dg-warning ".C. is deprecated" }
+              ^
+"Test_name.c", line 12: note: because of a "deprecated" attribute
+    C __attribute__ ((deprecated))
+                      ^
+
+"Test_name.c", line 20: warning: constant "A" was declared deprecated
+    i += A; // { dg-warning ".A. is deprecated" }
+         ^
+"Test_name.c", line 7: note: because of a "deprecated" attribute
+    A [[gnu::deprecated]]
+        ^
+
+"Test_name.c", line 18: warning: variable "f1" was declared but never referenced
+    F f1 = F::B; // { dg-warning ".B. is deprecated" }
+      ^
+
+"Test_name.c", line 19: warning: variable "f2" was declared but never referenced
+    F f2 = F::C; // { dg-warning ".C. is deprecated" }
+      ^
+

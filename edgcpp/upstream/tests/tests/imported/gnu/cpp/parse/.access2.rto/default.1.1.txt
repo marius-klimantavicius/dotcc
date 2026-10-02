@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 17: error: type "A::X" (declared at line 10) is inaccessible
+  A::X z;			// { dg-error "this context" }
+     ^
+
+1 error detected in the compilation of "Test_name.c".

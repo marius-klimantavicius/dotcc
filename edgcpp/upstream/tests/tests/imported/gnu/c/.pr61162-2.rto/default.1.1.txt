@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 13: warning: enumerated type mixed with another type
+    return 0; /* { dg-warning "10:enum conversion from 'int' to 'enum e' in return" } */
+           ^
+
+"Test_name.c", line 19: error: return value type does not match the function type
+    return s; /* { dg-error "10:incompatible types when returning" } */
+           ^
+
+"Test_name.c", line 25: warning: return value type does not match the function type
+    return 3; /* { dg-warning "10:in function returning void" } */
+           ^
+
+"Test_name.c", line 31: warning: return value type does not match the function type
+    return a; /* { dg-warning "10:returning 'int \\*' from a function with return type 'int' makes integer from pointer without a cast" } */
+           ^
+
+"Test_name.c", line 37: warning: return value type does not match the function type
+    return a; /* { dg-warning "10:returning 'int' from a function with return type 'int \\*' makes pointer from integer without a cast" } */
+           ^
+
+"Test_name.c", line 43: warning: return value type does not match the function type
+    return i; /* { dg-warning "10:pointer targets in returning 'int \\*' from a function with return type 'unsigned int \\*' differ" } */
+           ^
+
+1 error detected in the compilation of "Test_name.c".

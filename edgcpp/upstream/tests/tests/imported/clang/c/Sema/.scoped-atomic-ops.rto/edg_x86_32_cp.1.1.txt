@@ -1,0 +1,250 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 11: error: identifier "__MEMORY_SCOPE_SYSTEM" is undefined
+    __scoped_atomic_load(i, &v, __ATOMIC_RELAXED, __MEMORY_SCOPE_SYSTEM);
+                                                  ^
+
+"Test_name.c", line 16: error: a value of type "void" cannot be assigned to an entity of type "int"
+    *i = __scoped_atomic_load_n(i, __ATOMIC_RELAXED); // expected-error {{too few arguments to function call, expected 3, have 2}}
+       ^
+
+"Test_name.c", line 17: error: a value of type "void" cannot be assigned to an entity of type "int"
+    *i = __scoped_atomic_load_n(i, __ATOMIC_RELAXED, 42); // expected-error {{synchronization scope argument to atomic operation is invalid}}
+       ^
+
+"Test_name.c", line 18: error: identifier "__MEMORY_SCOPE_SYSTEM" is undefined
+    *i = __scoped_atomic_load_n(i, __ATOMIC_RELAXED, __MEMORY_SCOPE_SYSTEM);
+                                                     ^
+
+"Test_name.c", line 18: error: a value of type "void" cannot be assigned to an entity of type "int"
+    *i = __scoped_atomic_load_n(i, __ATOMIC_RELAXED, __MEMORY_SCOPE_SYSTEM);
+       ^
+
+"Test_name.c", line 26: error: identifier "__MEMORY_SCOPE_SYSTEM" is undefined
+    __scoped_atomic_store(i, &v, __ATOMIC_RELAXED, __MEMORY_SCOPE_SYSTEM);
+                                                   ^
+
+"Test_name.c", line 33: error: identifier "__MEMORY_SCOPE_SYSTEM" is undefined
+    __scoped_atomic_store_n(i, 1, __ATOMIC_RELAXED, __MEMORY_SCOPE_SYSTEM);
+                                                    ^
+
+"Test_name.c", line 37: error: identifier "__MEMORY_SCOPE_SYSTEM" is undefined
+    *a = __scoped_atomic_fetch_add(a, 1, __ATOMIC_RELAXED, __MEMORY_SCOPE_SYSTEM);
+                                                           ^
+
+"Test_name.c", line 37: error: a value of type "void" cannot be assigned to an entity of type "int"
+    *a = __scoped_atomic_fetch_add(a, 1, __ATOMIC_RELAXED, __MEMORY_SCOPE_SYSTEM);
+       ^
+
+"Test_name.c", line 38: error: a value of type "void" cannot be assigned to an entity of type "int"
+    *b = __scoped_atomic_fetch_sub(b, 1, __ATOMIC_RELAXED, __MEMORY_SCOPE_SYSTEM);
+       ^
+
+"Test_name.c", line 39: error: a value of type "void" cannot be assigned to an entity of type "int"
+    *c = __scoped_atomic_fetch_and(c, 1, __ATOMIC_RELAXED, __MEMORY_SCOPE_SYSTEM);
+       ^
+
+"Test_name.c", line 40: error: a value of type "void" cannot be assigned to an entity of type "int"
+    *d = __scoped_atomic_fetch_or(d, 1, __ATOMIC_RELAXED, __MEMORY_SCOPE_SYSTEM);
+       ^
+
+"Test_name.c", line 41: error: a value of type "void" cannot be assigned to an entity of type "int"
+    *e = __scoped_atomic_fetch_xor(e, 1, __ATOMIC_RELAXED, __MEMORY_SCOPE_SYSTEM);
+       ^
+
+"Test_name.c", line 42: error: a value of type "void" cannot be assigned to an entity of type "int"
+    *f = __scoped_atomic_fetch_nand(f, 1, __ATOMIC_RELAXED, __MEMORY_SCOPE_SYSTEM);
+       ^
+
+"Test_name.c", line 43: error: a value of type "void" cannot be assigned to an entity of type "int"
+    *g = __scoped_atomic_fetch_min(g, 1, __ATOMIC_RELAXED, __MEMORY_SCOPE_SYSTEM);
+       ^
+
+"Test_name.c", line 44: error: a value of type "void" cannot be assigned to an entity of type "int"
+    *h = __scoped_atomic_fetch_max(h, 1, __ATOMIC_RELAXED, __MEMORY_SCOPE_SYSTEM);
+       ^
+
+"Test_name.c", line 45: error: a value of type "void" cannot be assigned to an entity of type "unsigned int"
+    *i = __scoped_atomic_fetch_uinc(i, 1u, __ATOMIC_RELAXED, __MEMORY_SCOPE_SYSTEM);
+       ^
+
+"Test_name.c", line 46: error: a value of type "void" cannot be assigned to an entity of type "unsigned int"
+    *j = __scoped_atomic_fetch_udec(j, 1u, __ATOMIC_RELAXED, __MEMORY_SCOPE_SYSTEM);
+       ^
+
+"Test_name.c", line 50: error: identifier "__MEMORY_SCOPE_SYSTEM" is undefined
+    *a = __scoped_atomic_fetch_add(1, 1, __ATOMIC_RELAXED, __MEMORY_SCOPE_SYSTEM); // expected-error {{address argument to atomic builtin must be a pointer ('int' invalid)}}
+                                                           ^
+
+"Test_name.c", line 50: error: a value of type "void" cannot be assigned to an entity of type "int"
+    *a = __scoped_atomic_fetch_add(1, 1, __ATOMIC_RELAXED, __MEMORY_SCOPE_SYSTEM); // expected-error {{address argument to atomic builtin must be a pointer ('int' invalid)}}
+       ^
+
+"Test_name.c", line 51: error: a value of type "void" cannot be assigned to an entity of type "int"
+    *b = __scoped_atomic_fetch_sub(1, 1, __ATOMIC_RELAXED, __MEMORY_SCOPE_SYSTEM); // expected-error {{address argument to atomic builtin must be a pointer ('int' invalid)}}
+       ^
+
+"Test_name.c", line 52: error: a value of type "void" cannot be assigned to an entity of type "int"
+    *c = __scoped_atomic_fetch_and(1, 1, __ATOMIC_RELAXED, __MEMORY_SCOPE_SYSTEM); // expected-error {{address argument to atomic builtin must be a pointer ('int' invalid)}}
+       ^
+
+"Test_name.c", line 53: error: a value of type "void" cannot be assigned to an entity of type "int"
+    *d = __scoped_atomic_fetch_or(1, 1, __ATOMIC_RELAXED, __MEMORY_SCOPE_SYSTEM); // expected-error {{address argument to atomic builtin must be a pointer ('int' invalid)}}
+       ^
+
+"Test_name.c", line 54: error: a value of type "void" cannot be assigned to an entity of type "int"
+    *e = __scoped_atomic_fetch_xor(1, 1, __ATOMIC_RELAXED, __MEMORY_SCOPE_SYSTEM); // expected-error {{address argument to atomic builtin must be a pointer ('int' invalid)}}
+       ^
+
+"Test_name.c", line 55: error: a value of type "void" cannot be assigned to an entity of type "int"
+    *f = __scoped_atomic_fetch_nand(1, 1, __ATOMIC_RELAXED, __MEMORY_SCOPE_SYSTEM); // expected-error {{address argument to atomic builtin must be a pointer ('int' invalid)}}
+       ^
+
+"Test_name.c", line 56: error: a value of type "void" cannot be assigned to an entity of type "int"
+    *g = __scoped_atomic_fetch_min(1, 1, __ATOMIC_RELAXED, __MEMORY_SCOPE_SYSTEM); // expected-error {{address argument to atomic builtin must be a pointer ('int' invalid)}}
+       ^
+
+"Test_name.c", line 57: error: a value of type "void" cannot be assigned to an entity of type "int"
+    *h = __scoped_atomic_fetch_max(1, 1, __ATOMIC_RELAXED, __MEMORY_SCOPE_SYSTEM); // expected-error {{address argument to atomic builtin must be a pointer ('int' invalid)}}
+       ^
+
+"Test_name.c", line 58: error: a value of type "void" cannot be assigned to an entity of type "unsigned int"
+    *i = __scoped_atomic_fetch_uinc(1, 1u, __ATOMIC_RELAXED, __MEMORY_SCOPE_SYSTEM); // expected-error {{address argument to atomic builtin must be a pointer ('int' invalid)}}
+       ^
+
+"Test_name.c", line 59: error: a value of type "void" cannot be assigned to an entity of type "int"
+    *g = __scoped_atomic_fetch_udec(1, 1u, __ATOMIC_RELAXED, __MEMORY_SCOPE_SYSTEM); // expected-error {{address argument to atomic builtin must be a pointer ('int' invalid)}}
+       ^
+
+"Test_name.c", line 63: error: a value of type "void" cannot be assigned to an entity of type "int"
+    *a = __scoped_atomic_fetch_add(a, 1, __ATOMIC_RELAXED); // expected-error {{too few arguments to function call, expected 4, have 3}}
+       ^
+
+"Test_name.c", line 64: error: a value of type "void" cannot be assigned to an entity of type "int"
+    *b = __scoped_atomic_fetch_sub(b, 1, __ATOMIC_RELAXED); // expected-error {{too few arguments to function call, expected 4, have 3}}
+       ^
+
+"Test_name.c", line 65: error: a value of type "void" cannot be assigned to an entity of type "int"
+    *c = __scoped_atomic_fetch_and(c, 1, __ATOMIC_RELAXED); // expected-error {{too few arguments to function call, expected 4, have 3}}
+       ^
+
+"Test_name.c", line 66: error: a value of type "void" cannot be assigned to an entity of type "int"
+    *d = __scoped_atomic_fetch_or(d, 1, __ATOMIC_RELAXED); // expected-error {{too few arguments to function call, expected 4, have 3}}
+       ^
+
+"Test_name.c", line 67: error: a value of type "void" cannot be assigned to an entity of type "int"
+    *e = __scoped_atomic_fetch_xor(e, 1, __ATOMIC_RELAXED); // expected-error {{too few arguments to function call, expected 4, have 3}}
+       ^
+
+"Test_name.c", line 68: error: a value of type "void" cannot be assigned to an entity of type "int"
+    *f = __scoped_atomic_fetch_nand(f, 1, __ATOMIC_RELAXED); // expected-error {{too few arguments to function call, expected 4, have 3}}
+       ^
+
+"Test_name.c", line 69: error: a value of type "void" cannot be assigned to an entity of type "int"
+    *g = __scoped_atomic_fetch_min(g, 1, __ATOMIC_RELAXED); // expected-error {{too few arguments to function call, expected 4, have 3}}
+       ^
+
+"Test_name.c", line 70: error: a value of type "void" cannot be assigned to an entity of type "int"
+    *h = __scoped_atomic_fetch_max(h, 1, __ATOMIC_RELAXED); // expected-error {{too few arguments to function call, expected 4, have 3}}
+       ^
+
+"Test_name.c", line 71: error: a value of type "void" cannot be assigned to an entity of type "unsigned int"
+    *i = __scoped_atomic_fetch_uinc(i, 1u, __ATOMIC_RELAXED); // expected-error {{too few arguments to function call, expected 4, have 3}}
+       ^
+
+"Test_name.c", line 72: error: a value of type "void" cannot be assigned to an entity of type "unsigned int"
+    *j = __scoped_atomic_fetch_udec(j, 1u, __ATOMIC_RELAXED); // expected-error {{too few arguments to function call, expected 4, have 3}}
+       ^
+
+"Test_name.c", line 76: error: a value of type "void" cannot be assigned to an entity of type "int"
+    *a = __scoped_atomic_fetch_add(a, 1, __ATOMIC_RELAXED, 42); // expected-error {{synchronization scope argument to atomic operation is invalid}}
+       ^
+
+"Test_name.c", line 77: error: a value of type "void" cannot be assigned to an entity of type "int"
+    *b = __scoped_atomic_fetch_sub(b, 1, __ATOMIC_RELAXED, 42); // expected-error {{synchronization scope argument to atomic operation is invalid}}
+       ^
+
+"Test_name.c", line 78: error: a value of type "void" cannot be assigned to an entity of type "int"
+    *c = __scoped_atomic_fetch_and(c, 1, __ATOMIC_RELAXED, 42); // expected-error {{synchronization scope argument to atomic operation is invalid}}
+       ^
+
+"Test_name.c", line 79: error: a value of type "void" cannot be assigned to an entity of type "int"
+    *d = __scoped_atomic_fetch_or(d, 1, __ATOMIC_RELAXED, 42); // expected-error {{synchronization scope argument to atomic operation is invalid}}
+       ^
+
+"Test_name.c", line 80: error: a value of type "void" cannot be assigned to an entity of type "int"
+    *e = __scoped_atomic_fetch_xor(e, 1, __ATOMIC_RELAXED, 42); // expected-error {{synchronization scope argument to atomic operation is invalid}}
+       ^
+
+"Test_name.c", line 81: error: a value of type "void" cannot be assigned to an entity of type "int"
+    *f = __scoped_atomic_fetch_nand(f, 1, __ATOMIC_RELAXED, 42); // expected-error {{synchronization scope argument to atomic operation is invalid}}
+       ^
+
+"Test_name.c", line 82: error: a value of type "void" cannot be assigned to an entity of type "int"
+    *g = __scoped_atomic_fetch_min(g, 1, __ATOMIC_RELAXED, 42); // expected-error {{synchronization scope argument to atomic operation is invalid}}
+       ^
+
+"Test_name.c", line 83: error: a value of type "void" cannot be assigned to an entity of type "int"
+    *h = __scoped_atomic_fetch_max(h, 1, __ATOMIC_RELAXED, 42); // expected-error {{synchronization scope argument to atomic operation is invalid}}
+       ^
+
+"Test_name.c", line 84: error: a value of type "void" cannot be assigned to an entity of type "unsigned int"
+    *i = __scoped_atomic_fetch_uinc(i, 1u, __ATOMIC_RELAXED, 42); // expected-error {{synchronization scope argument to atomic operation is invalid}}
+       ^
+
+"Test_name.c", line 85: error: a value of type "void" cannot be assigned to an entity of type "unsigned int"
+    *j = __scoped_atomic_fetch_udec(j, 1u, __ATOMIC_RELAXED, 42); // expected-error {{synchronization scope argument to atomic operation is invalid}}
+       ^
+
+"Test_name.c", line 89: error: a value of type "void" cannot be assigned to an entity of type "float"
+    *a = __scoped_atomic_fetch_and(a, 1, __ATOMIC_RELAXED, 42); // expected-error {{address argument to atomic operation must be a pointer to integer ('float *' invalid)}}
+       ^
+
+"Test_name.c", line 90: error: a value of type "void" cannot be assigned to an entity of type "float"
+    *b = __scoped_atomic_fetch_or(b, 1, __ATOMIC_RELAXED, 42); // expected-error {{address argument to atomic operation must be a pointer to integer ('float *' invalid)}}
+       ^
+
+"Test_name.c", line 91: error: a value of type "void" cannot be assigned to an entity of type "float"
+    *c = __scoped_atomic_fetch_xor(c, 1, __ATOMIC_RELAXED, 42); // expected-error {{address argument to atomic operation must be a pointer to integer ('float *' invalid)}}
+       ^
+
+"Test_name.c", line 92: error: a value of type "void" cannot be assigned to an entity of type "float"
+    *d = __scoped_atomic_fetch_nand(d, 1, __ATOMIC_RELAXED, 42); // expected-error {{address argument to atomic operation must be a pointer to integer ('float *' invalid)}}
+       ^
+
+"Test_name.c", line 93: error: a value of type "void" cannot be assigned to an entity of type "float"
+    *f = __scoped_atomic_fetch_uinc(f, 1u, __ATOMIC_RELAXED, 42); // expected-error {{address argument to atomic operation must be a pointer to integer ('float *' invalid)}}
+       ^
+
+"Test_name.c", line 94: error: a value of type "void" cannot be assigned to an entity of type "float"
+    *e = __scoped_atomic_fetch_udec(e, 1u, __ATOMIC_RELAXED, 42); // expected-error {{address argument to atomic operation must be a pointer to integer ('float *' invalid)}}
+       ^
+
+"Test_name.c", line 102: error: identifier "__MEMORY_SCOPE_SYSTEM" is undefined
+                                            __MEMORY_SCOPE_SYSTEM);
+                                            ^
+
+"Test_name.c", line 100: error: return value type does not match the function type
+    return __scoped_atomic_compare_exchange(i, &cmp, &desired, 0,
+           ^
+
+"Test_name.c", line 109: error: identifier "__MEMORY_SCOPE_SYSTEM" is undefined
+                                              __MEMORY_SCOPE_SYSTEM);
+                                              ^
+
+"Test_name.c", line 107: error: return value type does not match the function type
+    return __scoped_atomic_compare_exchange_n(i, &cmp, 1, 1, __ATOMIC_ACQUIRE,
+           ^
+
+"Test_name.c", line 114: error: identifier "__MEMORY_SCOPE_SYSTEM" is undefined
+    __scoped_atomic_exchange(c, d, &ret, __ATOMIC_RELAXED, __MEMORY_SCOPE_SYSTEM);
+                                                           ^
+
+"Test_name.c", line 120: error: identifier "__MEMORY_SCOPE_SYSTEM" is undefined
+                                      __MEMORY_SCOPE_SYSTEM);
+                                      ^
+
+"Test_name.c", line 119: error: return value type does not match the function type
+    return __scoped_atomic_exchange_n(c, 1, __ATOMIC_RELAXED,
+           ^
+
+62 errors detected in the compilation of "Test_name.c".

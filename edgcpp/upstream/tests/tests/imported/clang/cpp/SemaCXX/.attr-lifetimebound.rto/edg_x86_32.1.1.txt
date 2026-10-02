@@ -1,0 +1,221 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++23 Test_name.c
+"Test_name.c", line 6: warning: unknown attribute "clang::lifetimebound"
+    void void_return(int &param [[clang::lifetimebound]]); // expected-error {{'lifetimebound' attribute cannot be applied to a parameter of a function that returns void; did you mean 'lifetime_capture_by(X)'}}
+                                  ^
+
+"Test_name.c", line 8: warning: unknown attribute "clang::lifetimebound"
+    int *not_class_member() [[clang::lifetimebound]]; // expected-error {{non-member function has no implicit object parameter}}
+                              ^
+
+"Test_name.c", line 10: warning: unknown attribute "clang::lifetimebound"
+      A() [[clang::lifetimebound]]; // expected-error {{cannot be applied to a constructor}}
+            ^
+
+"Test_name.c", line 11: warning: unknown attribute "clang::lifetimebound"
+      ~A() [[clang::lifetimebound]]; // expected-error {{cannot be applied to a destructor}}
+             ^
+
+"Test_name.c", line 12: warning: unknown attribute "clang::lifetimebound"
+      static int *static_class_member() [[clang::lifetimebound]]; // expected-error {{static member function has no implicit object parameter}}
+                                          ^
+
+"Test_name.c", line 13: warning: unknown attribute "clang::lifetimebound"
+      int *explicit_object(this A&) [[clang::lifetimebound]]; // expected-error {{explicit object member function has no implicit object parameter}}
+                                      ^
+
+"Test_name.c", line 14: warning: unknown attribute "clang::lifetimebound"
+      int attr_on_var [[clang::lifetimebound]]; // expected-error {{only applies to parameters and implicit object parameters}}
+                        ^
+
+"Test_name.c", line 15: warning: unknown attribute "clang::lifetimebound"
+      int [[clang::lifetimebound]] attr_on_int; // expected-error {{'clang::lifetimebound' attribute only applies to parameters and implicit object parameters}}
+            ^
+
+"Test_name.c", line 16: warning: unknown attribute "clang::lifetimebound"
+      int * [[clang::lifetimebound]] attr_on_int_ptr; // expected-error {{'clang::lifetimebound' attribute only applies to parameters and implicit object parameters}}
+              ^
+
+"Test_name.c", line 17: warning: unknown attribute "clang::lifetimebound"
+      int * [[clang::lifetimebound]] * attr_on_int_ptr_ptr; // expected-error {{'clang::lifetimebound' attribute only applies to parameters and implicit object parameters}}
+              ^
+
+"Test_name.c", line 18: warning: unknown attribute "clang::lifetimebound"
+      int (* [[clang::lifetimebound]] attr_on_func_ptr)(); // expected-error {{'clang::lifetimebound' attribute only applies to parameters and implicit object parameters}}
+               ^
+
+"Test_name.c", line 19: warning: unknown attribute "clang::lifetimebound"
+      void void_return_member() [[clang::lifetimebound]]; // expected-error {{'lifetimebound' attribute cannot be applied to an implicit object parameter of a function that returns void; did you mean 'lifetime_capture_by(X)'}}
+                                  ^
+
+"Test_name.c", line 21: warning: unknown attribute "clang::lifetimebound"
+    int *attr_with_param(int &param [[clang::lifetimebound(42)]]); // expected-error {{takes no arguments}}
+                                      ^
+
+"Test_name.c", line 23: warning: unknown attribute "clang::lifetimebound"
+    void attr_on_ptr_arg(int * [[clang::lifetimebound]] ptr); // expected-error {{'clang::lifetimebound' attribute only applies to parameters and implicit object parameters}}
+                                 ^
+
+"Test_name.c", line 24: warning: unknown attribute "clang::lifetimebound"
+    static_assert((int [[clang::lifetimebound]]) 12); // expected-error {{'clang::lifetimebound' attribute only applies to parameters and implicit object parameters}}
+                         ^
+
+"Test_name.c", line 25: warning: unknown attribute "clang::lifetimebound"
+    int* attr_on_unnamed_arg(const int& [[clang::lifetimebound]]); // expected-error {{'clang::lifetimebound' attribute only applies to parameters and implicit object parameters}}
+                                          ^
+
+"Test_name.c", line 27: warning: unknown attribute "clang::lifetimebound"
+    int* attr_on_template_ptr_arg(T * [[clang::lifetimebound]] ptr); // expected-error {{'clang::lifetimebound' attribute only applies to parameters and implicit object parameters}}
+                                        ^
+
+"Test_name.c", line 29: warning: unknown attribute "clang::lifetimebound"
+    int (*func_ptr)(int) [[clang::lifetimebound]]; // expected-error {{'clang::lifetimebound' attribute only applies to parameters and implicit object parameters}}
+                           ^
+
+"Test_name.c", line 30: warning: unknown attribute "clang::lifetimebound"
+    int (*(*func_ptr_ptr)(int) [[clang::lifetimebound]])(int); // expected-error {{'clang::lifetimebound' attribute only applies to parameters and implicit object parameters}}
+                                 ^
+
+"Test_name.c", line 32: warning: unknown attribute "clang::lifetimebound"
+    int (X::*member_func_ptr)(int) [[clang::lifetimebound]]; // expected-error {{'clang::lifetimebound' attribute only applies to parameters and implicit object parameters}}
+                                     ^
+
+"Test_name.c", line 40: warning: unknown attribute "clang::lifetimebound"
+    const int &crefparam(const int &param [[clang::lifetimebound]]); // Add LB
+                                            ^
+
+"Test_name.c", line 42: warning: unknown attribute "clang::lifetimebound"
+    int &refparam(int &param [[clang::lifetimebound]]);
+                               ^
+
+"Test_name.c", line 43: warning: unknown attribute "clang::lifetimebound"
+    int &classparam(IntRef param [[clang::lifetimebound]]);
+                                   ^
+
+"Test_name.c", line 46: warning: unknown attribute "clang::lifetimebound"
+    long long ptrintcast(int &param [[clang::lifetimebound]]) {
+                                      ^
+
+"Test_name.c", line 50: warning: unknown attribute "clang::lifetimebound"
+    int &intptrcast(long long param [[clang::lifetimebound]]) {
+                                      ^
+
+"Test_name.c", line 51: warning: conversion from integer to smaller pointer
+      return *(int*)param;
+              ^
+
+"Test_name.c", line 54: warning: unknown attribute "clang::lifetimebound"
+    template <class T, class R = void> R dependent_void(const T& t [[clang::lifetimebound]]);
+                                                                     ^
+
+"Test_name.c", line 64: warning: unknown attribute "clang::lifetimebound"
+      int *class_member() [[clang::lifetimebound]];
+                            ^
+
+"Test_name.c", line 65: warning: unknown attribute "clang::lifetimebound"
+      operator int*() [[clang::lifetimebound]];
+                        ^
+
+"Test_name.c", line 82: warning: unknown attribute "clang::lifetimebound"
+      int *method() [[clang::lifetimebound]];
+                      ^
+
+"Test_name.c", line 92: warning: unknown attribute "clang::lifetimebound"
+    int *C::method() [[clang::lifetimebound]] { return &i; }
+                       ^
+
+"Test_name.c", line 113: warning: unknown attribute "clang::lifetimebound"
+      Pair& getR() [[clang::lifetimebound]] { return p; }
+                     ^
+
+"Test_name.c", line 114: warning: unknown attribute "clang::lifetimebound"
+      Pair* getP() [[clang::lifetimebound]] { return &p; }
+                     ^
+
+"Test_name.c", line 134: warning: unknown attribute "clang::lifetimebound"
+      char &operator[](size_t) const [[clang::lifetimebound]];
+                                       ^
+
+"Test_name.c", line 137: warning: a user-provided literal suffix must begin with "_"
+    string operator""s(const char *, size_t); // expected-warning {{user-defined literal suffixes not starting with '_' are reserved}}
+                   ^
+
+"Test_name.c", line 143: warning: unknown attribute "clang::lifetimebound"
+      basic_string_view(const string &s [[clang::lifetimebound]]);
+                                          ^
+
+"Test_name.c", line 146: warning: a user-provided literal suffix must begin with "_"
+    string_view operator""sv(const char *, size_t); // expected-warning {{user-defined literal suffixes not starting with '_' are reserved}}
+                        ^
+
+"Test_name.c", line 161: warning: unknown attribute "clang::lifetimebound"
+    const int *defaultparam1(const int &def1 [[clang::lifetimebound]] = 0); // #def1
+                                               ^
+
+"Test_name.c", line 162: warning: unknown attribute "clang::lifetimebound"
+    const int &defaultparam_array([[clang::lifetimebound]] const int *p = IntArray{1, 2, 3}); // #def2
+                                    ^
+
+"Test_name.c", line 164: warning: unknown attribute "clang::lifetimebound"
+      A(const char *, const int &def3 [[clang::lifetimebound]] = 0); // #def3
+                                        ^
+
+"Test_name.c", line 166: warning: unknown attribute "clang::lifetimebound"
+    const int &defaultparam2(const int &def4 [[clang::lifetimebound]] = 0); // #def4
+                                               ^
+
+"Test_name.c", line 167: warning: unknown attribute "clang::lifetimebound"
+    const int &defaultparam3(const int &def5 [[clang::lifetimebound]] = defaultparam2(), const int &def6 [[clang::lifetimebound]] = 0); // #def5 #def6
+                                               ^
+
+"Test_name.c", line 167: warning: unknown attribute "clang::lifetimebound"
+    const int &defaultparam3(const int &def5 [[clang::lifetimebound]] = defaultparam2(), const int &def6 [[clang::lifetimebound]] = 0); // #def5 #def6
+                                                                                                           ^
+
+"Test_name.c", line 168: warning: unknown attribute "clang::lifetimebound"
+    std::string_view defaultparam4(std::string_view s [[clang::lifetimebound]] = std::string()); // #def7
+                                                        ^
+
+"Test_name.c", line 201: warning: unknown attribute "clang::lifetimebound"
+    const int &f(const X &x [[clang::lifetimebound]]) { return x.a; }
+                              ^
+
+"Test_name.c", line 212: warning: unknown attribute "clang::lifetimebound"
+    template <typename R> reversed_range reversed(R &&r [[clang::lifetimebound]]) {
+                                                          ^
+
+"Test_name.c", line 224: warning: unknown attribute "clang::lifetimebound"
+    const V &findOrDefault(const std::map<K, V> &m [[clang::lifetimebound]],
+                                                     ^
+
+"Test_name.c", line 226: warning: unknown attribute "clang::lifetimebound"
+                           const V &defvalue [[clang::lifetimebound]]);
+                                               ^
+
+"Test_name.c", line 296: warning: type qualifiers are meaningless here
+                                         const T, T>::type;
+                                         ^
+          detected during:
+            instantiation of type "std::foo::CopyConst<U, auto &&>" at line 305
+            instantiation of type "std::foo::ForwardLikeRetType<U, auto &&>" at line 308
+
+"Test_name.c", line 334: warning: unknown attribute "clang::lifetimebound"
+      S &self() [[clang::lifetimebound]] { return *this; }
+                  ^
+
+"Test_name.c", line 248: warning: returning reference to local temporary
+      return static_cast<typename remove_reference<T>::type>(t);
+             ^
+          detected during instantiation of "std::foo::remove_reference<T>::type &&std::foo::move(T &&) [with T=move_forward_et_al_examples::S]" at line 337
+
+"Test_name.c", line 370: warning: attribute namespace "gsl" is unrecognized
+  class [[gsl::Owner]] Foo {};
+          ^
+
+"Test_name.c", line 371: warning: attribute namespace "gsl" is unrecognized
+  class [[gsl::Pointer]] FooView {};
+          ^
+
+"Test_name.c", line 379: warning: unknown attribute "clang::lifetimebound"
+    StatusOr& operator=(U&& v [[clang::lifetimebound]]);
+                                ^
+

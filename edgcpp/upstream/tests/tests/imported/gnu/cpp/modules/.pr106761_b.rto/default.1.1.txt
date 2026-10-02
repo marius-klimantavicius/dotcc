@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 --modules Test_name.c
+"./modules/pr106761.h", line 12: error: pack "Us" does not have the same number of elements as "Ts"
+    using __constructible = __and_<is_convertible<Ts, Us>...>;
+                                                      ^
+          detected during:
+            instantiation of type "_TupleConstraints<Ts...>::__constructible<Us...> [with Ts=<int, int>]" at line 19
+            instantiation of class "tuple<Ts...> [with Ts=<int, int>]" at line 22
+
+"./modules/pr106761_b.C", line 5: catastrophic error: cannot find header "pr106761_a.H" to import
+  import "pr106761_a.H";
+         ^
+
+1 error and 1 catastrophic error detected in the compilation of "Test_name.c".
+Compilation terminated.

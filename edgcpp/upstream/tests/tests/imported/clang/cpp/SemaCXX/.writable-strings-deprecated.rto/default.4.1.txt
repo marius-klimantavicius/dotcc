@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=4 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 -DERROR Test_name.c
+"Test_name.c", line 17: warning: conversion from a string literal to "char *" is deprecated
+     return "foo";
+            ^
+
+"Test_name.c", line 36: warning: incrementing a bool value is deprecated
+    ++b; // expected-warning {{incrementing expression of type bool is deprecated}}
+      ^
+

@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 5: error: type definition is not allowed in function return type declaration
+  struct S {} f(); // { dg-error "return" "err" }
+  ^
+
+"Test_name.c", line 7: error: type definition is not allowed in function return type declaration
+  struct T {} *g(); // { dg-error "return" }
+  ^
+
+"Test_name.c", line 9: error: type definition is not allowed in function return type declaration
+  struct U {} h() {} // { dg-error "return" }
+  ^
+
+"Test_name.c", line 9: warning: missing return statement at end of non-void function "h"
+  struct U {} h() {} // { dg-error "return" }
+                   ^
+
+"Test_name.c", line 11: error: type definition is not allowed in function return type declaration
+  struct V {} *i() {} // { dg-error "return" }
+  ^
+
+"Test_name.c", line 11: warning: missing return statement at end of non-void function "i"
+  struct V {} *i() {} // { dg-error "return" }
+                    ^
+
+"Test_name.c", line 13: error: type definition is not allowed in function return type declaration
+  struct W {} (*p) (); // { dg-error "return" }
+  ^
+
+5 errors detected in the compilation of "Test_name.c".

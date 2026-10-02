@@ -1,0 +1,30 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 6: error: expected a ";"
+  typedef unsigned __int128 __attribute__((__vector_size__ (16))) V;
+                                                                  ^
+
+"Test_name.c", line 8: error: identifier "V" is undefined
+  V
+  ^
+
+"Test_name.c", line 9: error: identifier "V" is undefined
+  foo (unsigned c, V v)
+                   ^
+
+"Test_name.c", line 11: error: identifier "V" is undefined
+    return (V) (c <= v) == 0;
+            ^
+
+"Test_name.c", line 17: error: identifier "V" is undefined
+    V x = foo (0, (V) { });
+    ^
+
+"Test_name.c", line 17: error: identifier "V" is undefined
+    V x = foo (0, (V) { });
+                   ^
+
+"Test_name.c", line 17: error: expected a ")"
+    V x = foo (0, (V) { });
+                      ^
+
+7 errors detected in the compilation of "Test_name.c".

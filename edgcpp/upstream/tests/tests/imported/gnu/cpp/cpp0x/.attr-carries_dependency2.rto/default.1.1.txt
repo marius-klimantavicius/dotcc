@@ -1,0 +1,458 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 11: warning: the "carries_dependency" attribute is ignored
+  xyzzy (int *a [[carries_dependency]],			// { dg-warning "'carries_dependency' attribute ignored" }
+                  ^
+
+"Test_name.c", line 12: error: attribute "carries_dependency" does not take arguments
+         int *b [[carries_dependency (1)]])		// { dg-error "'carries_dependency' attribute does not take any arguments" }
+                                     ^
+
+"Test_name.c", line 19: warning: attribute "carries_dependency" does not apply here
+    [[carries_dependency]] int x1;			// { dg-warning "'carries_dependency' attribute can only be applied to functions or parameters" }
+      ^
+
+"Test_name.c", line 21: warning: the "carries_dependency" attribute is ignored
+    auto a = [] [[carries_dependency]] () {};		// { dg-warning "'carries_dependency' attribute ignored" }
+                  ^
+
+"Test_name.c", line 22: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+    auto b = [] constexpr [[carries_dependency]] {};	// { dg-warning "'carries_dependency' attribute does not apply to types" }
+                ^
+
+"Test_name.c", line 22: error: constexpr lambdas are not enabled in this mode
+    auto b = [] constexpr [[carries_dependency]] {};	// { dg-warning "'carries_dependency' attribute does not apply to types" }
+                ^
+
+"Test_name.c", line 22: warning: attribute "carries_dependency" does not apply here
+    auto b = [] constexpr [[carries_dependency]] {};	// { dg-warning "'carries_dependency' attribute does not apply to types" }
+                            ^
+
+"Test_name.c", line 25: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+    auto c = [] noexcept [[carries_dependency]] {};	// { dg-warning "'carries_dependency' attribute does not apply to types" }
+                ^
+
+"Test_name.c", line 25: warning: attribute "carries_dependency" does not apply here
+    auto c = [] noexcept [[carries_dependency]] {};	// { dg-warning "'carries_dependency' attribute does not apply to types" }
+                           ^
+
+"Test_name.c", line 27: warning: attribute "carries_dependency" does not apply here
+    auto d = [] () [[carries_dependency]] {};		// { dg-warning "'carries_dependency' attribute does not apply to types" }
+                     ^
+
+"Test_name.c", line 28: warning: attribute "carries_dependency" does not apply here
+    auto e = new int [n] [[carries_dependency]];		// { dg-warning "attributes ignored on outermost array type in new expression" }
+                           ^
+
+"Test_name.c", line 29: warning: attribute "carries_dependency" does not apply here
+    auto e2 = new int [n] [[carries_dependency]] [42];	// { dg-warning "attributes ignored on outermost array type in new expression" }
+                            ^
+
+"Test_name.c", line 30: warning: attribute "carries_dependency" does not apply here
+    auto f = new int [n][42] [[carries_dependency]];	// { dg-warning "'carries_dependency' attribute does not apply to types" }
+                               ^
+
+"Test_name.c", line 31: warning: attribute "carries_dependency" does not apply here
+    [[carries_dependency]];				// { dg-warning "attributes at the beginning of statement are ignored" }
+      ^
+
+"Test_name.c", line 32: warning: attribute "carries_dependency" does not apply here
+    [[carries_dependency]] {}				// { dg-warning "attributes at the beginning of statement are ignored" }
+      ^
+
+"Test_name.c", line 33: warning: attribute "carries_dependency" does not apply here
+    [[carries_dependency]] if (true) {}			// { dg-warning "attributes at the beginning of statement are ignored" }
+      ^
+
+"Test_name.c", line 34: warning: attribute "carries_dependency" does not apply here
+    [[carries_dependency]] while (false) {}		// { dg-warning "attributes at the beginning of statement are ignored" }
+      ^
+
+"Test_name.c", line 35: warning: attribute "carries_dependency" does not apply here
+    [[carries_dependency]] goto lab;			// { dg-warning "attributes at the beginning of statement are ignored" }
+      ^
+
+"Test_name.c", line 36: warning: attribute "carries_dependency" does not apply here
+    [[carries_dependency]] lab:;				// { dg-warning "'carries_dependency' attribute can only be applied to functions or parameters" }
+      ^
+
+"Test_name.c", line 37: warning: attribute "carries_dependency" does not apply here
+    [[carries_dependency]] try {} catch (int) {}		// { dg-warning "attributes at the beginning of statement are ignored" }
+      ^
+
+"Test_name.c", line 38: warning: attribute "carries_dependency" does not apply here
+    if ([[carries_dependency]] int x = 0) {}		// { dg-warning "'carries_dependency' attribute can only be applied to functions or parameters" }
+          ^
+
+"Test_name.c", line 41: warning: attribute "carries_dependency" does not apply here
+      [[carries_dependency]] case 1:			// { dg-warning "'carries_dependency' attribute can only be applied to functions or parameters" }
+        ^
+
+"Test_name.c", line 42: warning: attribute "carries_dependency" does not apply here
+      [[carries_dependency]] break;			// { dg-warning "attributes at the beginning of statement are ignored" }
+        ^
+
+"Test_name.c", line 43: warning: attribute "carries_dependency" does not apply here
+      [[carries_dependency]] default:			// { dg-warning "'carries_dependency' attribute can only be applied to functions or parameters" }
+        ^
+
+"Test_name.c", line 46: warning: attribute "carries_dependency" does not apply here
+    for ([[carries_dependency]] auto a : arr) {}		// { dg-warning "'carries_dependency' attribute can only be applied to functions or parameters" }
+           ^
+
+"Test_name.c", line 47: warning: structured bindings are a C++17 feature
+    for ([[carries_dependency]] auto [a, b] : arr2) {}	// { dg-warning "'carries_dependency' attribute can only be applied to functions or parameters" }
+                                     ^
+
+"Test_name.c", line 47: warning: attribute "carries_dependency" does not apply here
+    for ([[carries_dependency]] auto [a, b] : arr2) {}	// { dg-warning "'carries_dependency' attribute can only be applied to functions or parameters" }
+           ^
+
+"Test_name.c", line 47: warning: structured binding "a" was declared but never referenced
+    for ([[carries_dependency]] auto [a, b] : arr2) {}	// { dg-warning "'carries_dependency' attribute can only be applied to functions or parameters" }
+                                      ^
+
+"Test_name.c", line 49: warning: attribute "carries_dependency" does not apply here
+    [[carries_dependency]] asm ("");			// { dg-warning "attributes ignored on 'asm' declaration" }
+      ^
+
+"Test_name.c", line 50: warning: attribute "carries_dependency" does not apply here
+    try {} catch ([[carries_dependency]] int x) {}	// { dg-warning "'carries_dependency' attribute can only be applied to functions or parameters" }
+                    ^
+
+"Test_name.c", line 51: warning: attribute "carries_dependency" does not apply here
+    try {} catch ([[carries_dependency]] int) {}		// { dg-warning "'carries_dependency' attribute can only be applied to functions or parameters" }
+                    ^
+
+"Test_name.c", line 52: warning: attributes may not appear here
+    try {} catch (int [[carries_dependency]] x) {}	// { dg-warning "attribute ignored" }
+                        ^
+
+"Test_name.c", line 53: warning: attributes may not appear here
+    try {} catch (int [[carries_dependency]]) {}		// { dg-warning "attribute ignored" }
+                        ^
+
+"Test_name.c", line 54: warning: attribute "carries_dependency" does not apply here
+    try {} catch (int x [[carries_dependency]]) {}	// { dg-warning "'carries_dependency' attribute can only be applied to functions or parameters" }
+                          ^
+
+"Test_name.c", line 19: warning: variable "x1" was declared but never referenced
+    [[carries_dependency]] int x1;			// { dg-warning "'carries_dependency' attribute can only be applied to functions or parameters" }
+                               ^
+
+"Test_name.c", line 21: warning: variable "a" was declared but never referenced
+    auto a = [] [[carries_dependency]] () {};		// { dg-warning "'carries_dependency' attribute ignored" }
+         ^
+
+"Test_name.c", line 22: warning: variable "b" was declared but never referenced
+    auto b = [] constexpr [[carries_dependency]] {};	// { dg-warning "'carries_dependency' attribute does not apply to types" }
+         ^
+
+"Test_name.c", line 25: warning: variable "c" was declared but never referenced
+    auto c = [] noexcept [[carries_dependency]] {};	// { dg-warning "'carries_dependency' attribute does not apply to types" }
+         ^
+
+"Test_name.c", line 27: warning: variable "d" was declared but never referenced
+    auto d = [] () [[carries_dependency]] {};		// { dg-warning "'carries_dependency' attribute does not apply to types" }
+         ^
+
+"Test_name.c", line 57: warning: the "carries_dependency" attribute is ignored
+  [[carries_dependency]] int bar ();			// { dg-warning "'carries_dependency' attribute ignored" }
+    ^
+
+"Test_name.c", line 58: warning: attribute "carries_dependency" does not apply here
+  using foobar [[carries_dependency]] = int;		// { dg-warning "'carries_dependency' attribute can only be applied to functions or parameters" }
+                 ^
+
+"Test_name.c", line 59: warning: attribute "carries_dependency" does not apply here
+  [[carries_dependency]] int a;				// { dg-warning "'carries_dependency' attribute can only be applied to functions or parameters" }
+    ^
+
+"Test_name.c", line 60: warning: structured bindings are a C++17 feature
+  [[carries_dependency]] auto [b, c] = arr;		// { dg-warning "'carries_dependency' attribute can only be applied to functions or parameters" }
+                              ^
+
+"Test_name.c", line 60: warning: attribute "carries_dependency" does not apply here
+  [[carries_dependency]] auto [b, c] = arr;		// { dg-warning "'carries_dependency' attribute can only be applied to functions or parameters" }
+    ^
+
+"Test_name.c", line 62: error: attribute "carries_dependency" does not apply here
+  [[carries_dependency]];					// { dg-warning "attribute ignored" }
+    ^
+
+"Test_name.c", line 63: error: attribute does not apply to any entity
+  inline [[carries_dependency]] void baz () {}		// { dg-warning "attribute ignored" }
+         ^
+
+"Test_name.c", line 65: error: attribute does not apply to any entity
+  constexpr [[carries_dependency]] int qux () { return 0; }	// { dg-warning "attribute ignored" }
+            ^
+
+"Test_name.c", line 67: warning: attribute "carries_dependency" does not apply here
+  int [[carries_dependency]] d;				// { dg-warning "attribute ignored" }
+        ^
+
+"Test_name.c", line 68: warning: attribute "carries_dependency" does not apply here
+  int const [[carries_dependency]] e = 1;			// { dg-warning "attribute ignored" }
+              ^
+
+"Test_name.c", line 69: warning: attribute "carries_dependency" does not apply here
+  struct A {} [[carries_dependency]];			// { dg-warning "attribute ignored in declaration of 'struct A'" }
+                ^
+
+"Test_name.c", line 70: warning: attribute "carries_dependency" does not apply here
+  struct A [[carries_dependency]];			// { dg-warning "attribute ignored" }
+             ^
+
+"Test_name.c", line 70: warning: declaration does not declare anything
+  struct A [[carries_dependency]];			// { dg-warning "attribute ignored" }
+  ^
+
+"Test_name.c", line 71: warning: attribute "carries_dependency" does not apply here
+  struct A [[carries_dependency]] a1;			// { dg-warning "attribute ignored" }
+             ^
+
+"Test_name.c", line 72: warning: attribute "carries_dependency" does not apply here
+  A [[carries_dependency]] a2;				// { dg-warning "attribute ignored" }
+      ^
+
+"Test_name.c", line 73: warning: attribute "carries_dependency" does not apply here
+  enum B { B0 } [[carries_dependency]];			// { dg-warning "attribute ignored in declaration of 'enum B'" }
+                  ^
+
+"Test_name.c", line 74: warning: attribute "carries_dependency" does not apply here
+  enum B [[carries_dependency]];				// { dg-warning "attribute ignored" }
+           ^
+
+"Test_name.c", line 74: warning: declaration does not declare anything
+  enum B [[carries_dependency]];				// { dg-warning "attribute ignored" }
+  ^
+
+"Test_name.c", line 75: warning: attribute "carries_dependency" does not apply here
+  enum B [[carries_dependency]] b1;			// { dg-warning "attribute ignored" }
+           ^
+
+"Test_name.c", line 76: warning: attribute "carries_dependency" does not apply here
+  B [[carries_dependency]] b2;				// { dg-warning "attribute ignored" }
+      ^
+
+"Test_name.c", line 77: warning: attribute "carries_dependency" does not apply here
+  struct [[carries_dependency]] C {};			// { dg-warning "'carries_dependency' attribute does not apply to types" }
+           ^
+
+"Test_name.c", line 78: warning: attribute "carries_dependency" does not apply here
+  int f [[carries_dependency]];				// { dg-warning "'carries_dependency' attribute can only be applied to functions or parameters" }
+          ^
+
+"Test_name.c", line 79: warning: attribute "carries_dependency" does not apply here
+  int g[2] [[carries_dependency]];			// { dg-warning "'carries_dependency' attribute does not apply to types" }
+             ^
+
+"Test_name.c", line 80: warning: attribute "carries_dependency" does not apply here
+  int g2 [[carries_dependency]] [2];			// { dg-warning "'carries_dependency' attribute can only be applied to functions or parameters" }
+           ^
+
+"Test_name.c", line 81: warning: attribute "carries_dependency" does not apply here
+  int corge () [[carries_dependency]];			// { dg-warning "'carries_dependency' attribute does not apply to types" }
+                 ^
+
+"Test_name.c", line 82: warning: attribute "carries_dependency" does not apply here
+  int *[[carries_dependency]] h;				// { dg-warning "'carries_dependency' attribute does not apply to types" }
+         ^
+
+"Test_name.c", line 83: warning: attribute "carries_dependency" does not apply here
+  int & [[carries_dependency]] i = f;			// { dg-warning "'carries_dependency' attribute does not apply to types" }
+          ^
+
+"Test_name.c", line 84: warning: attribute "carries_dependency" does not apply here
+  int && [[carries_dependency]] j = 0;			// { dg-warning "'carries_dependency' attribute does not apply to types" }
+           ^
+
+"Test_name.c", line 85: warning: attribute "carries_dependency" does not apply here
+  int S::* [[carries_dependency]] k;			// { dg-warning "'carries_dependency' attribute does not apply to types" }
+             ^
+
+"Test_name.c", line 86: warning: attribute "carries_dependency" does not apply here
+  auto l = sizeof (int [2] [[carries_dependency]]);	// { dg-warning "'carries_dependency' attribute does not apply to types" }
+                             ^
+
+"Test_name.c", line 87: warning: the "carries_dependency" attribute is ignored
+  int freddy ([[carries_dependency]] int a,		// { dg-warning "'carries_dependency' attribute ignored" }
+                ^
+
+"Test_name.c", line 88: warning: the "carries_dependency" attribute is ignored
+  	    [[carries_dependency]] int,			// { dg-warning "'carries_dependency' attribute ignored" }
+  	      ^
+
+"Test_name.c", line 89: warning: the "carries_dependency" attribute is ignored
+  	    [[carries_dependency]] int c = 0,		// { dg-warning "'carries_dependency' attribute ignored" }
+  	      ^
+
+"Test_name.c", line 90: warning: the "carries_dependency" attribute is ignored
+  	    [[carries_dependency]] int = 0);		// { dg-warning "'carries_dependency' attribute ignored" }
+  	      ^
+
+"Test_name.c", line 92: warning: the "carries_dependency" attribute is ignored
+  corge ([[carries_dependency]] int a,			// { dg-warning "'carries_dependency' attribute ignored" }
+           ^
+
+"Test_name.c", line 93: warning: the "carries_dependency" attribute is ignored
+         [[carries_dependency]] int,			// { dg-warning "'carries_dependency' attribute ignored" }
+           ^
+
+"Test_name.c", line 94: warning: the "carries_dependency" attribute is ignored
+         [[carries_dependency]] int c = 0,		// { dg-warning "'carries_dependency' attribute ignored" }
+           ^
+
+"Test_name.c", line 95: warning: the "carries_dependency" attribute is ignored
+         [[carries_dependency]] int = 0)			// { dg-warning "'carries_dependency' attribute ignored" }
+           ^
+
+"Test_name.c", line 98: warning: the "carries_dependency" attribute is ignored
+  [[carries_dependency]] void
+    ^
+
+"Test_name.c", line 102: warning: attribute "carries_dependency" does not apply here
+  int grault (int [[carries_dependency]] a,		// { dg-warning "attribute ignored" }
+                    ^
+
+"Test_name.c", line 103: warning: attribute "carries_dependency" does not apply here
+  	    int [[carries_dependency]],			// { dg-warning "attribute ignored" }
+  	          ^
+
+"Test_name.c", line 104: warning: attribute "carries_dependency" does not apply here
+  	    int [[carries_dependency]] c = 0,		// { dg-warning "attribute ignored" }
+  	          ^
+
+"Test_name.c", line 105: warning: attribute "carries_dependency" does not apply here
+  	    int [[carries_dependency]] = 0);		// { dg-warning "attribute ignored" }
+  	          ^
+
+"Test_name.c", line 107: warning: attribute "carries_dependency" does not apply here
+  waldo (int [[carries_dependency]] a,			// { dg-warning "attribute ignored" }
+               ^
+
+"Test_name.c", line 108: warning: attribute "carries_dependency" does not apply here
+         int [[carries_dependency]],			// { dg-warning "attribute ignored" }
+               ^
+
+"Test_name.c", line 109: warning: attribute "carries_dependency" does not apply here
+         int [[carries_dependency]] c = 0,		// { dg-warning "attribute ignored" }
+               ^
+
+"Test_name.c", line 110: warning: attribute "carries_dependency" does not apply here
+         int [[carries_dependency]] = 0)			// { dg-warning "attribute ignored" }
+               ^
+
+"Test_name.c", line 113: warning: the "carries_dependency" attribute is ignored
+  int plugh (int a [[carries_dependency]],		// { dg-warning "'carries_dependency' attribute ignored" }
+                     ^
+
+"Test_name.c", line 114: warning: the "carries_dependency" attribute is ignored
+  	    int b [[carries_dependency]] = 0);		// { dg-warning "'carries_dependency' attribute ignored" }
+  	            ^
+
+"Test_name.c", line 116: warning: the "carries_dependency" attribute is ignored
+  thud (int a [[carries_dependency]],			// { dg-warning "'carries_dependency' attribute ignored" }
+                ^
+
+"Test_name.c", line 117: warning: the "carries_dependency" attribute is ignored
+        int b [[carries_dependency]] = 0)			// { dg-warning "'carries_dependency' attribute ignored" }
+                ^
+
+"Test_name.c", line 120: warning: attribute "carries_dependency" does not apply here
+  enum [[carries_dependency]] D { D0 };			// { dg-warning "'carries_dependency' attribute does not apply to types" }
+         ^
+
+"Test_name.c", line 121: warning: attribute "carries_dependency" does not apply here
+  enum class [[carries_dependency]] E { E0 };		// { dg-warning "'carries_dependency' attribute does not apply to types" }
+               ^
+
+"Test_name.c", line 123: warning: attribute "carries_dependency" does not apply here
+  enum [[carries_dependency]] F;				// { dg-warning "'carries_dependency' attribute does not apply to types" }
+         ^
+
+"Test_name.c", line 125: warning: attribute "carries_dependency" does not apply here
+    G0 [[carries_dependency]],				// { dg-warning "'carries_dependency' attribute can only be applied to functions or parameters" }
+         ^
+
+"Test_name.c", line 126: warning: attribute "carries_dependency" does not apply here
+    G1 [[carries_dependency]] = 2				// { dg-warning "'carries_dependency' attribute can only be applied to functions or parameters" }
+         ^
+
+"Test_name.c", line 128: warning: attribute "carries_dependency" does not apply here
+  namespace [[carries_dependency]] H { using H0 = int; }	// { dg-warning "'carries_dependency' attribute directive ignored" } */
+              ^
+
+"Test_name.c", line 129: warning: attribute "carries_dependency" does not apply here
+  namespace [[carries_dependency]] {}			// { dg-warning "'carries_dependency' attribute directive ignored" }
+              ^
+
+"Test_name.c", line 130: error: attributes are not allowed here
+  [[carries_dependency]] using namespace H;		// { dg-warning "'carries_dependency' attribute directive ignored" }
+  ^
+
+"Test_name.c", line 131: warning: attribute "carries_dependency" does not apply here
+  struct [[carries_dependency]] I				// { dg-warning "'carries_dependency' attribute does not apply to types" }
+           ^
+
+"Test_name.c", line 133: warning: attributes ignored here because they do not apply to a declared entity
+    [[carries_dependency]];				// { dg-error "declaration does not declare anything" }
+      ^
+
+"Test_name.c", line 134: warning: attribute "carries_dependency" does not apply here
+    [[carries_dependency]] int i;				// { dg-warning "'carries_dependency' attribute can only be applied to functions or parameters" }
+      ^
+
+"Test_name.c", line 135: warning: the "carries_dependency" attribute is ignored
+    [[carries_dependency]] int foo ();			// { dg-warning "'carries_dependency' attribute ignored" }
+      ^
+
+"Test_name.c", line 136: warning: the "carries_dependency" attribute is ignored
+    [[carries_dependency]] int bar () { return 1; }	// { dg-warning "'carries_dependency' attribute ignored" }
+      ^
+
+"Test_name.c", line 137: warning: attribute "carries_dependency" does not apply here
+    [[carries_dependency]] int : 0;			// { dg-warning "'carries_dependency' attribute can only be applied to functions or parameters" }
+      ^
+
+"Test_name.c", line 138: warning: attribute "carries_dependency" does not apply here
+    [[carries_dependency]] int i2 : 5;			// { dg-warning "'carries_dependency' attribute can only be applied to functions or parameters" }
+      ^
+
+"Test_name.c", line 139: warning: attribute "carries_dependency" does not apply here
+    [[carries_dependency]] static int i3;			// { dg-warning "'carries_dependency' attribute can only be applied to functions or parameters" }
+      ^
+
+"Test_name.c", line 142: warning: attribute "carries_dependency" does not apply here
+  [[carries_dependency]] int I::i4 = 0;			// { dg-warning "'carries_dependency' attribute can only be applied to functions or parameters" }
+    ^
+
+"Test_name.c", line 143: warning: attribute "carries_dependency" does not apply here
+  struct J : [[carries_dependency]] C {};			// { dg-warning "attributes on base specifiers are ignored" }
+               ^
+
+"Test_name.c", line 148: warning: attribute "carries_dependency" does not apply here
+  typedef int L [[carries_dependency]];			// { dg-warning "'carries_dependency' attribute can only be applied to functions or parameters" }
+                  ^
+
+"Test_name.c", line 152: warning: attribute "carries_dependency" does not apply here
+  struct [[carries_dependency]] M<int> { int m; };	// { dg-warning "'carries_dependency' attribute does not apply to types" }
+           ^
+
+"Test_name.c", line 153: warning: attribute "carries_dependency" does not apply here
+  typedef int N[2] [[carries_dependency]];		// { dg-warning "'carries_dependency' attribute does not apply to types" }
+                     ^
+
+"Test_name.c", line 154: warning: attribute "carries_dependency" does not apply here
+  typedef int O [[carries_dependency]] [2];		// { dg-warning "'carries_dependency' attribute can only be applied to functions or parameters" }
+                  ^
+
+"Test_name.c", line 60: warning: structured binding "b" was declared but never referenced
+  [[carries_dependency]] auto [b, c] = arr;		// { dg-warning "'carries_dependency' attribute can only be applied to functions or parameters" }
+                               ^
+
+"Test_name.c", line 68: warning: variable "e" was declared but never referenced
+  int const [[carries_dependency]] e = 1;			// { dg-warning "attribute ignored" }
+                                   ^
+
+6 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=2 --c11 Test_name.c
+"Test_name.c", line 4: error: type of cast must be integral
+    _Static_assert((int*)(void*)0 == (int*)0, "");  // Accepted in GNU C mode.
+                    ^
+
+"Test_name.c", line 4: error: type of cast must be integral
+    _Static_assert((int*)(void*)0 == (int*)0, "");  // Accepted in GNU C mode.
+                                      ^
+
+2 errors detected in the compilation of "Test_name.c".

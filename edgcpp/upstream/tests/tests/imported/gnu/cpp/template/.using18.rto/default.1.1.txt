@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 13: warning: duplicate using-declaration of "foo<T>::jtype" ignored
+      using foo<T>::jtype; // { dg-error "not a base type" }
+      ^
+
+"Test_name.c", line 30: error: class "B1" has no member "x"
+      using B1::x; // { dg-error "has not been declared" }
+                ^
+
+1 error detected in the compilation of "Test_name.c".

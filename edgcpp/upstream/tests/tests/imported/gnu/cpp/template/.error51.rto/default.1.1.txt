@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: warning: definition of base class type not completed yet
+    struct B : A {};         // { dg-error "invalid use of incomplete" }
+               ^
+
+"Test_name.c", line 8: error: incomplete type "A" is not allowed
+    struct B : A {};         // { dg-error "invalid use of incomplete" }
+               ^
+          detected during instantiation of "void foo<<unnamed>>() [with <unnamed>=0]" at line 11
+
+1 error detected in the compilation of "Test_name.c".

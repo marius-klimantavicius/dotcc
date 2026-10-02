@@ -1,0 +1,98 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./dfp/decfloat-constants.c", line 29: error: extra text after expected end of number
+    if (9.999999E96DF 
+                   ^
+
+"./dfp/decfloat-constants.c", line 29: error: extra text after expected end of number
+                 != 9.999999E96DF) __builtin_abort ();
+                               ^
+
+"./dfp/decfloat-constants.c", line 30: error: extra text after expected end of number
+    if (9.999999999999999E384DD 
+                             ^
+
+"./dfp/decfloat-constants.c", line 30: error: extra text after expected end of number
+                 != 9.999999999999999E384DD) __builtin_abort ();
+                                         ^
+
+"./dfp/decfloat-constants.c", line 31: error: extra text after expected end of number
+    if (9.999999999999999999999999999999999E6144DL 
+                                                ^
+
+"./dfp/decfloat-constants.c", line 31: error: extra text after expected end of number
+                  != 9.999999999999999999999999999999999E6144DL) __builtin_abort ();
+                                                             ^
+
+"./dfp/decfloat-constants.c", line 33: error: extra text after expected end of number
+    if (1E-6DF 
+            ^
+
+"./dfp/decfloat-constants.c", line 33: error: extra text after expected end of number
+                     != 1E-6DF) __builtin_abort ();
+                            ^
+
+"./dfp/decfloat-constants.c", line 34: error: extra text after expected end of number
+    if (1E-15DD 
+             ^
+
+"./dfp/decfloat-constants.c", line 34: error: extra text after expected end of number
+                     != 1E-15DD) __builtin_abort ();
+                             ^
+
+"./dfp/decfloat-constants.c", line 35: error: extra text after expected end of number
+    if (1E-33DL 
+             ^
+
+"./dfp/decfloat-constants.c", line 35: error: extra text after expected end of number
+                      != 1E-33DL) __builtin_abort ();
+                              ^
+
+"./dfp/decfloat-constants.c", line 37: error: extra text after expected end of number
+    if (1E-95DF 
+             ^
+
+"./dfp/decfloat-constants.c", line 37: error: extra text after expected end of number
+                 != 1E-95DF) __builtin_abort ();
+                         ^
+
+"./dfp/decfloat-constants.c", line 38: error: extra text after expected end of number
+    if (1E-383DD 
+              ^
+
+"./dfp/decfloat-constants.c", line 38: error: extra text after expected end of number
+                 != 1E-383DD) __builtin_abort ();
+                          ^
+
+"./dfp/decfloat-constants.c", line 39: error: extra text after expected end of number
+    if (1E-6143DL 
+               ^
+
+"./dfp/decfloat-constants.c", line 39: error: extra text after expected end of number
+                  != 1E-6143DL) __builtin_abort ();
+                            ^
+
+"./dfp/decfloat-constants.c", line 41: error: extra text after expected end of number
+    if (0.000001E-95DF 
+                    ^
+
+"./dfp/decfloat-constants.c", line 41: error: extra text after expected end of number
+                           != 0.000001E-95DF) __builtin_abort ();
+                                          ^
+
+"./dfp/decfloat-constants.c", line 42: error: extra text after expected end of number
+    if (0.000000000000001E-383DD 
+                              ^
+
+"./dfp/decfloat-constants.c", line 42: error: extra text after expected end of number
+                           != 0.000000000000001E-383DD) __builtin_abort ();
+                                                    ^
+
+"./dfp/decfloat-constants.c", line 43: error: extra text after expected end of number
+    if (0.000000000000000000000000000000001E-6143DL 
+                                                 ^
+
+"./dfp/decfloat-constants.c", line 43: error: extra text after expected end of number
+                            != 0.000000000000000000000000000000001E-6143DL)
+                                                                        ^
+
+24 errors detected in the compilation of "Test_name.c".

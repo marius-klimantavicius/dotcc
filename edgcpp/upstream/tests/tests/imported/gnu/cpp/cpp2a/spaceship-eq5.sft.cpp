@@ -1,0 +1,12 @@
+//type: fn
+//options: --c++20
+// { dg-do compile { target c++20 } }
+
+struct A {
+  int &r;			// { dg-message "reference" }
+  bool operator==(const A&) const = default; // { dg-message "deleted" }
+};
+
+int i;
+A a { i };
+bool b = a == a;		// { dg-error "deleted" }

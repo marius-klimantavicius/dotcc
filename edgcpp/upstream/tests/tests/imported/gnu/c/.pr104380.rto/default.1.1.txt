@@ -1,0 +1,5 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 Test_name.c
+"./pr104380.c", line 13: warning: unknown attribute "noipa"
+  static int __attribute__ ((noipa))
+                             ^
+

@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 13: error: identifier "noalias" is undefined
+  template<typename T> __declspec(noalias) void f(T) {}
+                                  ^
+
+"Test_name.c", line 13: error: explicit type is missing ("int" assumed)
+  template<typename T> __declspec(noalias) void f(T) {}
+                       ^
+
+"Test_name.c", line 13: error: expected a ";"
+  template<typename T> __declspec(noalias) void f(T) {}
+                                           ^
+
+3 errors detected in the compilation of "Test_name.c".

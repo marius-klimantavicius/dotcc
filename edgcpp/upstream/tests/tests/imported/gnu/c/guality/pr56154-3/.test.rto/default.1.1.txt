@@ -1,0 +1,7 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c pr56154-aux.c
+Test_name.c:
+"./guality/pr56154-3.c", line 10: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int
+                           ^
+
+pr56154-aux.c:

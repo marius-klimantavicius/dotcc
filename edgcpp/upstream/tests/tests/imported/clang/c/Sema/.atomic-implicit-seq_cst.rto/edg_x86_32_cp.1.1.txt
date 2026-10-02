@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c11 Test_name.c
+"Test_name.c", line 317: warning: expression has no effect
+  void good_c11_atomic_is_lock_free(void) { __c11_atomic_is_lock_free(sizeof(int)); }
+                                            ^
+
+"Test_name.c", line 328: error: return value type does not match the function type
+  int good_c11_atomic_fetch_nand(int i) { return __c11_atomic_fetch_nand(&atom, i, __ATOMIC_RELAXED); }
+                                                 ^
+
+"Test_name.c", line 335: warning: variable "no_init" was declared but never referenced
+  void good_no_init(void) { _Atomic(int) no_init; }
+                                         ^
+
+"Test_name.c", line 336: warning: variable "init" was declared but never referenced
+  void good_init(void) { _Atomic(int) init = 42; }
+                                      ^
+
+1 error detected in the compilation of "Test_name.c".

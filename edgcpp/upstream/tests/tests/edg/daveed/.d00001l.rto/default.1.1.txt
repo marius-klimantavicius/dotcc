@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c --extended_designators --microsoft Test_name.c
+"Test_name.c", line 20: error: array range designators cannot be applied to dynamic initializers
+    struct A n1[5] = { [2 ... 4] = { i++, i++ } };
+                                   ^
+
+1 error detected in the compilation of "Test_name.c".

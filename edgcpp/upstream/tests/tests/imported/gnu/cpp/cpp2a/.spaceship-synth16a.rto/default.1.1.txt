@@ -1,0 +1,5 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"./cpp2a/spaceship-synth16a.C", line 16: warning: variable "r" was declared but never referenced
+    constexpr auto r = X{} <=> X{};
+                   ^
+

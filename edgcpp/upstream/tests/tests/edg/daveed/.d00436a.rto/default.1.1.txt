@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --microsoft --diag_error 1215 Test_name.c
+"Test_name.c", line 19: error: function "f<T>() [with T=void]" was declared deprecated
+  	f<void>();
+  	^
+"Test_name.c", line 15: note: because of a "deprecated" attribute
+  template<> __declspec(deprecated) void f<void>();
+                        ^
+
+1 error detected in the compilation of "Test_name.c".

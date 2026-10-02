@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./gomp/map-ptrmem-2.C", line 23: warning: unrecognized #pragma
+  #pragma omp target map(s->*xp, s->*ptrp, (s->*ptrp)[:64])
+          ^
+
+"./gomp/map-ptrmem-2.C", line 27: warning: unrecognized #pragma
+  #pragma omp teams distribute parallel for
+          ^
+

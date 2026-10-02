@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --c --gcc Test_name.c
+"Test_name.c", line 15: warning: extra braces are nonstandard
+  double z[1] = { { 1.0, 2.0 } };  // Previously an error in all modes.
+                  ^
+
+"Test_name.c", line 15: warning: excess initializers are ignored
+  double z[1] = { { 1.0, 2.0 } };  // Previously an error in all modes.
+                         ^
+

@@ -1,0 +1,18 @@
+cpfe -DTEST_NUMBER=1 --c++23 -A Test_name.c
+"Test_name.c", line 22: error: "x" has already been declared in the current scope
+    using A::x;              // OK, does not conflict with previous using A::x
+             ^
+
+"Test_name.c", line 14: warning: variable "i" was declared but never referenced
+  int i;
+      ^
+
+"Test_name.c", line 19: warning: variable "g1" was declared but never referenced
+  struct g g1; // g1 has class type B::g
+           ^
+
+"Test_name.c", line 24: warning: variable "x1" was declared but never referenced
+    struct x x1;             // x1 has class type B::x
+             ^
+
+1 error detected in the compilation of "Test_name.c".

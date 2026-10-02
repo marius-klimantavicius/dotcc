@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++03 --no_strict_gnu Test_name.c
+"Test_name.c", line 7: warning: delegating constructors are a C++11 feature
+    S() : S() {} // { dg-message "delegating constructors" }
+          ^
+
+"Test_name.c", line 7: error: constructor delegates directly or indirectly to itself
+    S() : S() {} // { dg-message "delegating constructors" }
+          ^
+          detected during instantiation of "S<T>::S() [with T=int]" at line 10
+
+1 error detected in the compilation of "Test_name.c".

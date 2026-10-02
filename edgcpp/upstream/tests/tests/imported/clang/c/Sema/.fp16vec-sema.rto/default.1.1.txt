@@ -1,0 +1,102 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 33: error: expression must have arithmetic or pointer type
+    sv0 = hv0 || hv1; // expected-error{{logical expression with vector types 'half4' (vector of 4 '__fp16' values) and 'half4' is only supported in C++}}
+          ^
+
+"Test_name.c", line 33: error: expression must have arithmetic or pointer type
+    sv0 = hv0 || hv1; // expected-error{{logical expression with vector types 'half4' (vector of 4 '__fp16' values) and 'half4' is only supported in C++}}
+                 ^
+
+"Test_name.c", line 34: error: expression must have arithmetic or pointer type
+    sv0 = hv0 && hv1; // expected-error{{logical expression with vector types 'half4' (vector of 4 '__fp16' values) and 'half4' is only supported in C++}}
+          ^
+
+"Test_name.c", line 34: error: expression must have arithmetic or pointer type
+    sv0 = hv0 && hv1; // expected-error{{logical expression with vector types 'half4' (vector of 4 '__fp16' values) and 'half4' is only supported in C++}}
+                 ^
+
+"Test_name.c", line 35: warning: expression has no effect
+    hv0, 1;
+    ^
+
+"Test_name.c", line 35: warning: expression has no effect
+    hv0, 1;
+    ^
+
+"Test_name.c", line 36: warning: expression has no effect
+    1, hv0;
+    ^
+
+"Test_name.c", line 36: warning: expression has no effect
+    1, hv0;
+    ^
+
+"Test_name.c", line 39: error: a value of type "float4" (aka "__attribute((vector_size(16))) float") cannot be assigned to an entity of type "half4" (aka "__attribute((vector_size(8))) __fp16")
+    hv0 = fv0; // expected-error{{assigning to}}
+        ^
+
+"Test_name.c", line 40: error: a value of type "half4" (aka "__attribute((vector_size(8))) __fp16") cannot be assigned to an entity of type "float4" (aka "__attribute((vector_size(16))) float")
+    fv0 = hv0; // expected-error{{assigning to}}
+        ^
+
+"Test_name.c", line 41: error: invalid type conversion
+    hv0 = (half4)fv0; // expected-error{{invalid conversion between}}
+          ^
+
+"Test_name.c", line 42: error: invalid type conversion
+    fv0 = (float4)hv0; // expected-error{{invalid conversion between}}
+          ^
+
+"Test_name.c", line 43: error: a value of type "__attribute((vector_size(16))) float" cannot be assigned to an entity of type "half4" (aka "__attribute((vector_size(8))) __fp16")
+    hv0 = fv0 + fv1; // expected-error{{assigning to}}
+        ^
+
+"Test_name.c", line 44: error: a value of type "__attribute((vector_size(8))) __fp16" cannot be assigned to an entity of type "float4" (aka "__attribute((vector_size(16))) float")
+    fv0 = hv0 + hv1; // expected-error{{assigning to}}
+        ^
+
+"Test_name.c", line 45: error: operation requires two vectors of the same size
+    hv0 = hv0 + fv1; // expected-error{{cannot convert between vector}}
+              ^
+
+"Test_name.c", line 46: error: operand types are incompatible ("half4" (aka "__attribute((vector_size(8))) __fp16") and "float4" (aka "__attribute((vector_size(16))) float"))
+    hv0 = c ? hv0 : fv1; // expected-error{{cannot convert between vector}}
+                  ^
+
+"Test_name.c", line 47: error: operation requires two vectors of the same size
+    sv0 = hv0 == fv1; // expected-error{{cannot convert between vector}}
+              ^
+
+"Test_name.c", line 48: error: operation requires two vectors of the same size
+    sv0 = hv0 < fv1; // expected-error{{cannot convert between vector}}
+              ^
+
+"Test_name.c", line 49: error: expression must have arithmetic or pointer type
+    sv0 = hv0 || fv1; // expected-error{{cannot convert between vector}} expected-error{{invalid operands to binary expression}}
+          ^
+
+"Test_name.c", line 49: error: expression must have arithmetic or pointer type
+    sv0 = hv0 || fv1; // expected-error{{cannot convert between vector}} expected-error{{invalid operands to binary expression}}
+                 ^
+
+"Test_name.c", line 50: error: a value of type "__attribute((vector_size(8))) short" cannot be assigned to an entity of type "int4" (aka "__attribute((vector_size(16))) int")
+    iv0 = hv0 == hv1; // expected-error{{assigning to}}
+        ^
+
+"Test_name.c", line 54: error: expression must have arithmetic or pointer type
+    sv0 = !hv0; // expected-error{{invalid argument type}}
+           ^
+
+"Test_name.c", line 55: error: expression must have arithmetic or pointer type
+    hv0++; // expected-error{{cannot increment value of type}}
+    ^
+
+"Test_name.c", line 56: error: expression must have arithmetic or pointer type
+    ++hv0; // expected-error{{cannot increment value of type}}
+      ^
+
+"Test_name.c", line 61: error: expression must have struct or union type but it has type "exthalf4" (aka "__attribute((ext_vector_type(4))) __fp16")
+    __fp16 t0 = (-a).z;
+                ^
+
+21 errors detected in the compilation of "Test_name.c".

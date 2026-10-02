@@ -1,0 +1,7 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: error: reference to void is not allowed
+      template<T&> struct B;  // { dg-error "reference to void" }
+                ^
+          detected during instantiation of class "A<T> [with T=void]" at line 12
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --no_exceptions --c++14 Test_name.c
+"Test_name.c", line 13: error: copy constructor for class "B" may not have a parameter of type "B"
+    B(const B &a, B b = B()) {
+                  ^
+
+1 error detected in the compilation of "Test_name.c".

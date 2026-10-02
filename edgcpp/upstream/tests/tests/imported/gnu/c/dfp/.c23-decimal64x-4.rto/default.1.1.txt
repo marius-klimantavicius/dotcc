@@ -1,0 +1,66 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"./dfp/c23-decimal64x-4.c", line 12: error: extra text after expected end of number
+  static_assert (_Generic (9.999999999999999999999999999999999E6144D64x
+                                                                   ^
+
+"./dfp/c23-decimal64x-4.c", line 12: error: identifier "_Decimal64x" is undefined
+                , default : 0, _Decimal64x : 1));
+                               ^
+
+"./dfp/c23-decimal64x-4.c", line 13: error: extra text after expected end of number
+  static_assert (_Generic (1E-6143D64x
+                                  ^
+
+"./dfp/c23-decimal64x-4.c", line 13: error: identifier "_Decimal64x" is undefined
+                , default : 0, _Decimal64x : 1));
+                               ^
+
+"./dfp/c23-decimal64x-4.c", line 14: error: extra text after expected end of number
+  static_assert (_Generic (1E-33D64x
+                                ^
+
+"./dfp/c23-decimal64x-4.c", line 14: error: identifier "_Decimal64x" is undefined
+                , default : 0, _Decimal64x : 1));
+                               ^
+
+"./dfp/c23-decimal64x-4.c", line 15: error: extra text after expected end of number
+  static_assert (_Generic (0.000000000000000000000000000000001E-6143D64x
+                                                                    ^
+
+"./dfp/c23-decimal64x-4.c", line 15: error: identifier "_Decimal64x" is undefined
+                , default : 0, _Decimal64x : 1));
+                               ^
+
+"./dfp/c23-decimal64x-4.c", line 31: error: extra text after expected end of number
+    if (9.999999999999999999999999999999999E6144D64x 
+                                                ^
+
+"./dfp/c23-decimal64x-4.c", line 31: error: extra text after expected end of number
+                  != 9.999999999999999999999999999999999E6144D64x)
+                                                             ^
+
+"./dfp/c23-decimal64x-4.c", line 34: error: extra text after expected end of number
+    if (1E-33D64x 
+             ^
+
+"./dfp/c23-decimal64x-4.c", line 34: error: extra text after expected end of number
+                      != 1E-33D64x)
+                              ^
+
+"./dfp/c23-decimal64x-4.c", line 37: error: extra text after expected end of number
+    if (1E-6143D64x 
+               ^
+
+"./dfp/c23-decimal64x-4.c", line 37: error: extra text after expected end of number
+                  != 1E-6143D64x)
+                            ^
+
+"./dfp/c23-decimal64x-4.c", line 40: error: extra text after expected end of number
+    if (0.000000000000000000000000000000001E-6143D64x 
+                                                 ^
+
+"./dfp/c23-decimal64x-4.c", line 40: error: extra text after expected end of number
+                       != 0.000000000000000000000000000000001E-6143D64x)
+                                                                   ^
+
+16 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,53 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 --no_strict_gnu Test_name.c
+"Test_name.c", line 9: warning: unknown attribute "gnu::musttail"
+  double g() { [[gnu::musttail]] return f<int>(); } /* { dg-error "cannot tail-call" } */
+                 ^
+
+"Test_name.c", line 12: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone, noipa))
+                           ^
+
+"Test_name.c", line 12: warning: unknown attribute "noipa"
+  __attribute__((noinline, noclone, noipa))
+                                    ^
+
+"Test_name.c", line 16: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone, noipa))
+                           ^
+
+"Test_name.c", line 16: warning: unknown attribute "noipa"
+  __attribute__((noinline, noclone, noipa))
+                                    ^
+
+"Test_name.c", line 20: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone, noipa))
+                           ^
+
+"Test_name.c", line 20: warning: unknown attribute "noipa"
+  __attribute__((noinline, noclone, noipa))
+                                    ^
+
+"Test_name.c", line 25: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone, noipa))
+                           ^
+
+"Test_name.c", line 25: warning: unknown attribute "noipa"
+  __attribute__((noinline, noclone, noipa))
+                                    ^
+
+"Test_name.c", line 13: warning: unknown attribute "gnu::musttail"
+  T g1() { [[gnu::musttail]] return f<T>(); } /* { dg-error "target is not able" "" { target { ! external_musttail } } } */
+             ^
+
+"Test_name.c", line 17: warning: unknown attribute "gnu::musttail"
+  T g2() { [[gnu::musttail]] return f<T>(); } /* { dg-error "target is not able" "" { target { ! external_musttail } } } */
+             ^
+
+"Test_name.c", line 22: warning: unknown attribute "gnu::musttail"
+  T g3() { [[gnu::musttail]] return f<T>(); } /* { dg-error "cannot tail-call" } */
+             ^
+
+"Test_name.c", line 26: warning: unknown attribute "gnu::musttail"
+  T g4() { [[gnu::musttail]] return f<double>(); } /* { dg-error "cannot tail-call" } */
+             ^
+

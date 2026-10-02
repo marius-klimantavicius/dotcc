@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 11: error: identifier "__int128" is undefined
+  bar (short a, __int128 b)
+                ^
+
+"Test_name.c", line 22: error: identifier "__int128" is undefined
+    g *= (__int128) bar (1, 1);
+          ^
+
+"Test_name.c", line 22: error: expected a ";"
+    g *= (__int128) bar (1, 1);
+                    ^
+
+"Test_name.c", line 11: warning: function "bar" was declared but never referenced
+  bar (short a, __int128 b)
+  ^
+
+3 errors detected in the compilation of "Test_name.c".

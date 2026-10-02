@@ -1,0 +1,418 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 Test_name.c
+"Test_name.c", line 8: error: expected a ";"
+  typedef void __cdecl cdecl_fun_t();
+                       ^
+
+"Test_name.c", line 12: error: "__cdecl" has already been declared in the current scope
+  void __cdecl    free_func_cdecl(); // expected-note 2 {{previous declaration is here}}
+       ^
+
+"Test_name.c", line 12: error: incomplete type "void" is not allowed
+  void __cdecl    free_func_cdecl(); // expected-note 2 {{previous declaration is here}}
+       ^
+
+"Test_name.c", line 12: error: expected a ";"
+  void __cdecl    free_func_cdecl(); // expected-note 2 {{previous declaration is here}}
+                  ^
+
+"Test_name.c", line 13: error: incomplete type "void" is not allowed
+  void __stdcall  free_func_stdcall(); // expected-note 2 {{previous declaration is here}}
+       ^
+
+"Test_name.c", line 13: error: expected a ";"
+  void __stdcall  free_func_stdcall(); // expected-note 2 {{previous declaration is here}}
+                  ^
+
+"Test_name.c", line 14: error: incomplete type "void" is not allowed
+  void __fastcall free_func_fastcall(); // expected-note 2 {{previous declaration is here}}
+       ^
+
+"Test_name.c", line 14: error: expected a ";"
+  void __fastcall free_func_fastcall(); // expected-note 2 {{previous declaration is here}}
+                  ^
+
+"Test_name.c", line 15: error: incomplete type "void" is not allowed
+  void __vectorcall free_func_vectorcall(); // expected-note 2 {{previous declaration is here}}
+       ^
+
+"Test_name.c", line 15: error: expected a ";"
+  void __vectorcall free_func_vectorcall(); // expected-note 2 {{previous declaration is here}}
+                    ^
+
+"Test_name.c", line 17: error: variable "__cdecl" has already been defined (previous definition at line 12)
+  void __cdecl    free_func_default();
+       ^
+
+"Test_name.c", line 17: error: expected a ";"
+  void __cdecl    free_func_default();
+                  ^
+
+"Test_name.c", line 18: error: variable "__stdcall" has already been defined (previous definition at line 13)
+  void __stdcall  free_func_default(); // expected-error {{function declared 'stdcall' here was previously declared without calling convention}}
+       ^
+
+"Test_name.c", line 18: error: expected a ";"
+  void __stdcall  free_func_default(); // expected-error {{function declared 'stdcall' here was previously declared without calling convention}}
+                  ^
+
+"Test_name.c", line 19: error: variable "__fastcall" has already been defined (previous definition at line 14)
+  void __fastcall free_func_default(); // expected-error {{function declared 'fastcall' here was previously declared without calling convention}}
+       ^
+
+"Test_name.c", line 19: error: expected a ";"
+  void __fastcall free_func_default(); // expected-error {{function declared 'fastcall' here was previously declared without calling convention}}
+                  ^
+
+"Test_name.c", line 22: error: variable "__stdcall" has already been defined (previous definition at line 13)
+  void __stdcall  free_func_cdecl(); // expected-error {{function declared 'stdcall' here was previously declared 'cdecl'}}
+       ^
+
+"Test_name.c", line 22: error: expected a ";"
+  void __stdcall  free_func_cdecl(); // expected-error {{function declared 'stdcall' here was previously declared 'cdecl'}}
+                  ^
+
+"Test_name.c", line 23: error: variable "__fastcall" has already been defined (previous definition at line 14)
+  void __fastcall free_func_cdecl(); // expected-error {{function declared 'fastcall' here was previously declared 'cdecl'}}
+       ^
+
+"Test_name.c", line 23: error: expected a ";"
+  void __fastcall free_func_cdecl(); // expected-error {{function declared 'fastcall' here was previously declared 'cdecl'}}
+                  ^
+
+"Test_name.c", line 26: error: variable "__cdecl" has already been defined (previous definition at line 12)
+  void __cdecl    free_func_stdcall(); // expected-error {{function declared 'cdecl' here was previously declared 'stdcall'}}
+       ^
+
+"Test_name.c", line 26: error: expected a ";"
+  void __cdecl    free_func_stdcall(); // expected-error {{function declared 'cdecl' here was previously declared 'stdcall'}}
+                  ^
+
+"Test_name.c", line 27: error: variable "__fastcall" has already been defined (previous definition at line 14)
+  void __fastcall free_func_stdcall(); // expected-error {{function declared 'fastcall' here was previously declared 'stdcall'}}
+       ^
+
+"Test_name.c", line 27: error: expected a ";"
+  void __fastcall free_func_stdcall(); // expected-error {{function declared 'fastcall' here was previously declared 'stdcall'}}
+                  ^
+
+"Test_name.c", line 29: error: variable "__cdecl" has already been defined (previous definition at line 12)
+  void __cdecl    free_func_fastcall(); // expected-error {{function declared 'cdecl' here was previously declared 'fastcall'}}
+       ^
+
+"Test_name.c", line 29: error: expected a ";"
+  void __cdecl    free_func_fastcall(); // expected-error {{function declared 'cdecl' here was previously declared 'fastcall'}}
+                  ^
+
+"Test_name.c", line 30: error: variable "__stdcall" has already been defined (previous definition at line 13)
+  void __stdcall  free_func_fastcall(); // expected-error {{function declared 'stdcall' here was previously declared 'fastcall'}}
+       ^
+
+"Test_name.c", line 30: error: expected a ";"
+  void __stdcall  free_func_fastcall(); // expected-error {{function declared 'stdcall' here was previously declared 'fastcall'}}
+                  ^
+
+"Test_name.c", line 33: error: variable "__cdecl" has already been defined (previous definition at line 12)
+  void __cdecl    free_func_vectorcall(); // expected-error {{function declared 'cdecl' here was previously declared 'vectorcall'}}
+       ^
+
+"Test_name.c", line 33: error: expected a ";"
+  void __cdecl    free_func_vectorcall(); // expected-error {{function declared 'cdecl' here was previously declared 'vectorcall'}}
+                  ^
+
+"Test_name.c", line 34: error: variable "__stdcall" has already been defined (previous definition at line 13)
+  void __stdcall  free_func_vectorcall(); // expected-error {{function declared 'stdcall' here was previously declared 'vectorcall'}}
+       ^
+
+"Test_name.c", line 34: error: expected a ";"
+  void __stdcall  free_func_vectorcall(); // expected-error {{function declared 'stdcall' here was previously declared 'vectorcall'}}
+                  ^
+
+"Test_name.c", line 38: error: variable "__fastcall" has already been defined (previous definition at line 14)
+  void __fastcall free_func_default(int);
+       ^
+
+"Test_name.c", line 38: error: expected a ";"
+  void __fastcall free_func_default(int);
+                  ^
+
+"Test_name.c", line 39: error: variable "__cdecl" has already been defined (previous definition at line 12)
+  void __cdecl    free_func_default(int *);
+       ^
+
+"Test_name.c", line 39: error: expected a ";"
+  void __cdecl    free_func_default(int *);
+                  ^
+
+"Test_name.c", line 41: error: incomplete type "void" is not allowed
+  void __thiscall free_func_cdecl(char *);
+       ^
+
+"Test_name.c", line 41: error: expected a ";"
+  void __thiscall free_func_cdecl(char *);
+                  ^
+
+"Test_name.c", line 42: error: variable "__cdecl" has already been defined (previous definition at line 12)
+  void __cdecl    free_func_cdecl(double);
+       ^
+
+"Test_name.c", line 42: error: expected a ";"
+  void __cdecl    free_func_cdecl(double);
+                  ^
+
+"Test_name.c", line 45: error: "__cdecl" has already been declared in the current scope
+  typedef void __cdecl cdecl_fun_t();
+               ^
+
+"Test_name.c", line 45: error: expected a ";"
+  typedef void __cdecl cdecl_fun_t();
+                       ^
+
+"Test_name.c", line 51: error: incomplete type "void" is not allowed
+    void __cdecl    member_cdecl1();
+         ^
+
+"Test_name.c", line 51: error: expected a ";"
+    void __cdecl    member_cdecl1();
+                    ^
+
+"Test_name.c", line 52: error: incomplete type "void" is not allowed
+    void __cdecl    member_cdecl2(); // expected-note {{previous declaration is here}}
+         ^
+
+"Test_name.c", line 52: error: "__cdecl" has already been declared in the current scope
+    void __cdecl    member_cdecl2(); // expected-note {{previous declaration is here}}
+         ^
+
+"Test_name.c", line 52: error: expected a ";"
+    void __cdecl    member_cdecl2(); // expected-note {{previous declaration is here}}
+                    ^
+
+"Test_name.c", line 53: error: incomplete type "void" is not allowed
+    void __thiscall member_thiscall1();
+         ^
+
+"Test_name.c", line 53: error: expected a ";"
+    void __thiscall member_thiscall1();
+                    ^
+
+"Test_name.c", line 54: error: incomplete type "void" is not allowed
+    void __thiscall member_thiscall2(); // expected-note {{previous declaration is here}}
+         ^
+
+"Test_name.c", line 54: error: "__thiscall" has already been declared in the current scope
+    void __thiscall member_thiscall2(); // expected-note {{previous declaration is here}}
+         ^
+
+"Test_name.c", line 54: error: expected a ";"
+    void __thiscall member_thiscall2(); // expected-note {{previous declaration is here}}
+                    ^
+
+"Test_name.c", line 55: error: incomplete type "void" is not allowed
+    void __vectorcall member_vectorcall1();
+         ^
+
+"Test_name.c", line 55: error: expected a ";"
+    void __vectorcall member_vectorcall1();
+                      ^
+
+"Test_name.c", line 56: error: incomplete type "void" is not allowed
+    void __vectorcall member_vectorcall2(); // expected-note {{previous declaration is here}}
+         ^
+
+"Test_name.c", line 56: error: "__vectorcall" has already been declared in the current scope
+    void __vectorcall member_vectorcall2(); // expected-note {{previous declaration is here}}
+         ^
+
+"Test_name.c", line 56: error: expected a ";"
+    void __vectorcall member_vectorcall2(); // expected-note {{previous declaration is here}}
+                      ^
+
+"Test_name.c", line 60: error: identifier "cdecl_fun_t" is undefined
+    cdecl_fun_t          member_typedef_cdecl1;  // expected-note {{previous declaration is here}}
+    ^
+
+"Test_name.c", line 61: error: identifier "cdecl_fun_t" is undefined
+    cdecl_fun_t __cdecl  member_typedef_cdecl2;
+    ^
+
+"Test_name.c", line 61: error: "__cdecl" has already been declared in the current scope
+    cdecl_fun_t __cdecl  member_typedef_cdecl2;
+                ^
+
+"Test_name.c", line 61: error: expected a ";"
+    cdecl_fun_t __cdecl  member_typedef_cdecl2;
+                         ^
+
+"Test_name.c", line 62: error: expected a ";"
+    void_fun_t __stdcall member_typedef_stdcall;
+                         ^
+
+"Test_name.c", line 68: error: incomplete type "void" is not allowed
+    static void __cdecl    static_member_cdecl1();
+                ^
+
+"Test_name.c", line 68: error: "__cdecl" has already been declared in the current scope
+    static void __cdecl    static_member_cdecl1();
+                ^
+
+"Test_name.c", line 68: error: expected a ";"
+    static void __cdecl    static_member_cdecl1();
+                           ^
+
+"Test_name.c", line 69: error: incomplete type "void" is not allowed
+    static void __cdecl    static_member_cdecl2(); // expected-note {{previous declaration is here}}
+                ^
+
+"Test_name.c", line 69: error: "__cdecl" has already been declared in the current scope
+    static void __cdecl    static_member_cdecl2(); // expected-note {{previous declaration is here}}
+                ^
+
+"Test_name.c", line 69: error: expected a ";"
+    static void __cdecl    static_member_cdecl2(); // expected-note {{previous declaration is here}}
+                           ^
+
+"Test_name.c", line 70: error: incomplete type "void" is not allowed
+    static void __stdcall  static_member_stdcall1();
+                ^
+
+"Test_name.c", line 70: error: "__stdcall" has already been declared in the current scope
+    static void __stdcall  static_member_stdcall1();
+                ^
+
+"Test_name.c", line 70: error: expected a ";"
+    static void __stdcall  static_member_stdcall1();
+                           ^
+
+"Test_name.c", line 71: error: incomplete type "void" is not allowed
+    static void __stdcall  static_member_stdcall2();
+                ^
+
+"Test_name.c", line 71: error: "__stdcall" has already been declared in the current scope
+    static void __stdcall  static_member_stdcall2();
+                ^
+
+"Test_name.c", line 71: error: expected a ";"
+    static void __stdcall  static_member_stdcall2();
+                           ^
+
+"Test_name.c", line 75: error: incomplete type "void" is not allowed
+    void __cdecl    member_variadic_cdecl(int x, ...);
+         ^
+
+"Test_name.c", line 75: error: "__cdecl" has already been declared in the current scope
+    void __cdecl    member_variadic_cdecl(int x, ...);
+         ^
+
+"Test_name.c", line 75: error: expected a ";"
+    void __cdecl    member_variadic_cdecl(int x, ...);
+                    ^
+
+"Test_name.c", line 78: error: incomplete type "void" is not allowed
+    static void __cdecl    static_member_variadic_cdecl(int x, ...);
+                ^
+
+"Test_name.c", line 78: error: "__cdecl" has already been declared in the current scope
+    static void __cdecl    static_member_variadic_cdecl(int x, ...);
+                ^
+
+"Test_name.c", line 78: error: expected a ";"
+    static void __cdecl    static_member_variadic_cdecl(int x, ...);
+                           ^
+
+"Test_name.c", line 86: error: "__cdecl" has already been declared in the current scope
+  void __cdecl    S::member_default1() {} // expected-error {{function declared 'cdecl' here was previously declared without calling convention}}
+       ^
+
+"Test_name.c", line 86: error: incomplete type "void" is not allowed
+  void __cdecl    S::member_default1() {} // expected-error {{function declared 'cdecl' here was previously declared without calling convention}}
+       ^
+
+"Test_name.c", line 86: error: expected a ";"
+  void __cdecl    S::member_default1() {} // expected-error {{function declared 'cdecl' here was previously declared without calling convention}}
+                  ^
+
+"Test_name.c", line 122: warning: parsing restarts here after previous syntax error
+  extern int sse_strlen(const char *str);
+                                        ^
+
+"Test_name.c", line 123: error: "<error-type> __cdecl" is not an entity that can be explicitly specialized
+  template <> inline int __cdecl mystrlen(const char *str) {
+                         ^
+
+"Test_name.c", line 123: error: expected a ";"
+  template <> inline int __cdecl mystrlen(const char *str) {
+                                 ^
+
+"Test_name.c", line 134: warning: parsing restarts here after previous syntax error
+  };
+   ^
+
+"Test_name.c", line 136: error: incomplete type "void" is not allowed
+  void MixedCCStaticOverload::overloaded(int a) {}
+       ^
+
+"Test_name.c", line 136: error: expected a ";"
+  void MixedCCStaticOverload::overloaded(int a) {}
+                            ^
+
+"Test_name.c", line 144: warning: parsing restarts here after previous syntax error
+  };
+   ^
+
+"Test_name.c", line 145: error: variable "__stdcall" has already been defined (previous definition at line 13)
+  void __stdcall friend_stdcall1() {}
+       ^
+
+"Test_name.c", line 145: error: expected a ";"
+  void __stdcall friend_stdcall1() {}
+                 ^
+
+"Test_name.c", line 153: warning: parsing restarts here after previous syntax error
+  };
+   ^
+
+"Test_name.c", line 155: error: variable "__stdcall" has already been defined (previous definition at line 13)
+  void __stdcall friend_stdcall3() {} // expected-error {{function declared 'stdcall' here was previously declared without calling convention}}
+       ^
+
+"Test_name.c", line 155: error: expected a ";"
+  void __stdcall friend_stdcall3() {} // expected-error {{function declared 'stdcall' here was previously declared without calling convention}}
+                 ^
+
+"Test_name.c", line 159: warning: parsing restarts here after previous syntax error
+  void __attribute__((noreturn)) __stdcall __attribute__((regparm(1))) multi_attribute(int x);
+                                                                                             ^
+
+"Test_name.c", line 166: error: variable "__cdecl" has already been defined (previous definition at line 86)
+  void __cdecl __cdecl __stdcall __cdecl __fastcall __vectorcall multi_cc(int x);
+       ^
+
+"Test_name.c", line 166: error: expected a ";"
+  void __cdecl __cdecl __stdcall __cdecl __fastcall __vectorcall multi_cc(int x);
+               ^
+
+"Test_name.c", line 168: error: "__stdcall" has already been declared in the current scope
+  template <typename T> void __stdcall StdcallTemplate(T) {}
+                             ^
+
+"Test_name.c", line 168: error: variable cannot have incomplete type "void"
+  template <typename T> void __stdcall StdcallTemplate(T) {}
+                        ^
+
+"Test_name.c", line 168: error: expected a ";"
+  template <typename T> void __stdcall StdcallTemplate(T) {}
+                                       ^
+
+"Test_name.c", line 181: warning: parsing restarts here after previous syntax error
+  };
+   ^
+
+"Test_name.c", line 182: error: "ExactlyInt" is not a class or function template name in the current scope
+  template <> inline int ExactlyInt::cast_to_int<int>(int x) { return x; }
+                         ^
+
+"Test_name.c", line 182: error: expected a ";"
+  template <> inline int ExactlyInt::cast_to_int<int>(int x) { return x; }
+                                   ^
+
+98 errors detected in the compilation of "Test_name.c".

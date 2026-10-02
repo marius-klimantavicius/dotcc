@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 32: error: a value of type "int" cannot be used to initialize an entity of type "T *"
+      T *x = 1; // expected-error{{cannot initialize a variable of type 'int *' with an rvalue of type 'int'}}
+             ^
+
+"Test_name.c", line 54: warning: alias declarations are a C++11 feature
+      using S = struct { // expected-warning {{add a tag name}} expected-note {{}}
+            ^
+
+"Test_name.c", line 54: warning: anonymous non-C-like type given name for linkage purposes by typedef or alias declaration
+      using S = struct { // expected-warning {{add a tag name}} expected-note {{}}
+            ^
+"Test_name.c", line 58: note: type is not C-like because of this member declaration
+        T g() { // expected-note {{}}
+          ^
+
+1 error detected in the compilation of "Test_name.c".

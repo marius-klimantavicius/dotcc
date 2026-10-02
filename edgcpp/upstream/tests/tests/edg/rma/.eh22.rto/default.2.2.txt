@@ -1,0 +1,5 @@
+./a.out
+caught base1
+caught base2
+caught base1
+default

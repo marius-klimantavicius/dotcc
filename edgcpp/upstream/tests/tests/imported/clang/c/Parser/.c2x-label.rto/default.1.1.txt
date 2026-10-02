@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c17 Test_name.c
+"Test_name.c", line 11: warning: expected a statement
+  } // c17-warning {{label at end of compound statement is a C23 extension}} \
+  ^
+
+"Test_name.c", line 7: warning: variable "x" was set but never used
+      int x;
+          ^
+
+"Test_name.c", line 8: warning: label "label1" was declared but never referenced
+  label1:
+  ^
+
+"Test_name.c", line 10: warning: label "label2" was declared but never referenced
+  label2: label3: label4:
+  ^
+
+"Test_name.c", line 10: warning: label "label3" was declared but never referenced
+  label2: label3: label4:
+          ^
+
+"Test_name.c", line 10: warning: label "label4" was declared but never referenced
+  label2: label3: label4:
+                  ^
+
+"Test_name.c", line 21: warning: expected a statement
+      } // c17-warning {{label at end of compound statement is a C23 extension}} \
+      ^
+
+"Test_name.c", line 28: warning: expected a statement
+      } // c17-warning {{label at end of compound statement is a C23 extension}} \
+      ^
+

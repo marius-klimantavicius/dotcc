@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 21: error: no operator "==" matches these operands
+            operand types are: E == const char [1]
+  bool b1 = (e == "");     // { dg-error "no match" }
+               ^
+"Test_name.c", line 21: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #2 does not match parameter
+  bool b1 = (e == "");     // { dg-error "no match" }
+               ^
+"Test_name.c", line 21: note: built-in operator==(<pointer>, <pointer>) does not match because argument #1 does not match parameter
+  bool b1 = (e == "");     // { dg-error "no match" }
+               ^
+"Test_name.c", line 21: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+  bool b1 = (e == "");     // { dg-error "no match" }
+               ^
+"Test_name.c", line 21: note: built-in operator==(<enum>, <enum>) does not match because argument #2 does not match parameter
+  bool b1 = (e == "");     // { dg-error "no match" }
+               ^
+
+"Test_name.c", line 27: error: no operator "*" matches these operands
+            operand types are: * E
+  const A& a1 = *e;        // { dg-error "no match" }
+                ^
+"Test_name.c", line 27: note: built-in operator*(<pointer to object>) does not match because argument #1 does not match parameter
+  const A& a1 = *e;        // { dg-error "no match" }
+                ^
+"Test_name.c", line 27: note: built-in operator*(<pointer to function>) does not match because argument #1 does not match parameter
+  const A& a1 = *e;        // { dg-error "no match" }
+                ^
+
+2 errors detected in the compilation of "Test_name.c".

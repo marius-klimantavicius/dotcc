@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: error: expression must have a constant value
+  constexpr int *p1 = (int *) vp0; // { dg-error "cast from .void\\*. is not allowed" "" { target c++23_down } }
+                       ^
+
+"Test_name.c", line 11: error: expression must have a constant value
+  constexpr int *p2 = (int *) vpi; // { dg-error "cast from .void\\*. is not allowed" "" { target c++23_down } }
+                       ^
+
+"Test_name.c", line 12: error: expression must have a constant value
+  constexpr int *p3 = static_cast<int *>(vp0); // { dg-error "cast from .void\\*. is not allowed" "" { target c++23_down } }
+                                  ^
+
+"Test_name.c", line 13: error: expression must have a constant value
+  constexpr int *p4 = static_cast<int *>(vpi); // { dg-error "cast from .void\\*. is not allowed" "" { target c++23_down } }
+                                  ^
+
+"Test_name.c", line 18: error: expression must have a constant value
+  constexpr bool b = ((int *)(void *) pi == pi); // { dg-error "cast from .void\\*. is not allowed" "" { target c++23_down } }
+                       ^
+
+"Test_name.c", line 10: warning: variable "p1" was declared but never referenced
+  constexpr int *p1 = (int *) vp0; // { dg-error "cast from .void\\*. is not allowed" "" { target c++23_down } }
+                 ^
+
+"Test_name.c", line 11: warning: variable "p2" was declared but never referenced
+  constexpr int *p2 = (int *) vpi; // { dg-error "cast from .void\\*. is not allowed" "" { target c++23_down } }
+                 ^
+
+"Test_name.c", line 12: warning: variable "p3" was declared but never referenced
+  constexpr int *p3 = static_cast<int *>(vp0); // { dg-error "cast from .void\\*. is not allowed" "" { target c++23_down } }
+                 ^
+
+"Test_name.c", line 13: warning: variable "p4" was declared but never referenced
+  constexpr int *p4 = static_cast<int *>(vpi); // { dg-error "cast from .void\\*. is not allowed" "" { target c++23_down } }
+                 ^
+
+"Test_name.c", line 14: warning: variable "p5" was declared but never referenced
+  constexpr void *p5 = vp0;
+                  ^
+
+"Test_name.c", line 15: warning: variable "p6" was declared but never referenced
+  constexpr void *p6 = vpi;
+                  ^
+
+"Test_name.c", line 18: warning: variable "b" was declared but never referenced
+  constexpr bool b = ((int *)(void *) pi == pi); // { dg-error "cast from .void\\*. is not allowed" "" { target c++23_down } }
+                 ^
+
+5 errors detected in the compilation of "Test_name.c".

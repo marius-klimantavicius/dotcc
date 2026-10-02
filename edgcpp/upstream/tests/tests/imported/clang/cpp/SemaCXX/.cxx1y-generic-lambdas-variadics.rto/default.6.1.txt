@@ -1,0 +1,69 @@
+fe_only -DTEST_NUMBER=6 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 -w -DDELAYED_TEMPLATE_PARSING Test_name.c
+"Test_name.c", line 124: error: parameter pack "v" was referenced but not expanded
+        v; // expected-error {{unexpanded parameter pack 'v'}}
+        ^
+
+"Test_name.c", line 125: error: expected a "}"
+      }...}; // expected-error {{pack expansion does not contain any unexpanded parameter packs}}
+       ^
+
+"Test_name.c", line 123: error: no suitable conversion function from "lambda [](auto...)->auto" to "int" exists
+      int arr[] = {[](auto... v) {
+                   ^
+
+"Test_name.c", line 135: error: parameter pack "args" was referenced but not expanded
+    (void)[](auto... args) -> decltype(args) {}; // expected-error {{type contains unexpanded parameter pack}}
+                                       ^
+
+"Test_name.c", line 136: error: identifier "args" is undefined
+    (void)[](auto... args, int = args) {}; // expected-error {{default argument contains unexpanded parameter pack}}
+                                 ^
+
+"Test_name.c", line 137: error: parameter pack "args" was referenced but not expanded
+    (void)[](auto... args, decltype(args)) {}; // expected-error {{type contains unexpanded parameter pack}}
+                                    ^
+
+"Test_name.c", line 139: error: identifier "args" is undefined
+    (void)[](auto... args, int = [=] { return args; }()) {}; // expected-error {{default argument contains unexpanded parameter pack}}
+                                              ^
+
+"Test_name.c", line 140: error: parameter pack "T" was referenced but not expanded
+    (void)([]<typename ...T> (T t) {} + ...); // expected-error {{contains unexpanded parameter pack 'T'}} expected-error {{does not contain any unexpanded}} expected-warning 0-2{{extension}}
+                              ^
+
+"Test_name.c", line 140: error: fold expression does not refer to a parameter pack
+    (void)([]<typename ...T> (T t) {} + ...); // expected-error {{contains unexpanded parameter pack 'T'}} expected-error {{does not contain any unexpanded}} expected-warning 0-2{{extension}}
+                                        ^
+
+"Test_name.c", line 141: error: parameter pack "N" was referenced but not expanded
+    (void)([]<int ...N> (int k = N) {} + ...); // expected-error {{contains unexpanded parameter pack 'N'}} expected-error {{does not contain any unexpanded}} expected-warning 0-2{{extension}}
+                                 ^
+
+"Test_name.c", line 141: error: fold expression does not refer to a parameter pack
+    (void)([]<int ...N> (int k = N) {} + ...); // expected-error {{contains unexpanded parameter pack 'N'}} expected-error {{does not contain any unexpanded}} expected-warning 0-2{{extension}}
+                                         ^
+
+"Test_name.c", line 142: error: parameter pack "T" was referenced but not expanded
+    (void)([]<template<typename> typename ...T> (T<int>) {} + ...); // expected-error {{contains unexpanded parameter pack 'T'}} expected-error {{does not contain any unexpanded}} expected-warning 0-3{{extension}}
+                                                 ^
+
+"Test_name.c", line 142: error: fold expression does not refer to a parameter pack
+    (void)([]<template<typename> typename ...T> (T<int>) {} + ...); // expected-error {{contains unexpanded parameter pack 'T'}} expected-error {{does not contain any unexpanded}} expected-warning 0-3{{extension}}
+                                                              ^
+
+"Test_name.c", line 109: error: no suitable conversion function from "lambda [](auto...)->auto" to "int" exists
+      int arr[] = { [](auto ...K) { (void)I; } ... };
+                    ^
+          detected during instantiation of "void PR33082::a<I...>() [with I=<1>]" at line 129
+
+"Test_name.c", line 116: error: a value of type "int *" cannot be used to initialize an entity of type "int"
+      int arr[] = {[t...]() { // expected-error 2{{cannot initialize an array element of type 'int' with}}
+                   ^
+          detected during instantiation of "void PR33082::b(PR33082::Pack<U...>, T...) [with T=<int, int, int>, U=<int *, float *>]" at line 130
+
+"Test_name.c", line 116: error: a value of type "float *" cannot be used to initialize an entity of type "int"
+      int arr[] = {[t...]() { // expected-error 2{{cannot initialize an array element of type 'int' with}}
+                   ^
+          detected during instantiation of "void PR33082::b(PR33082::Pack<U...>, T...) [with T=<int, int, int>, U=<int *, float *>]" at line 130
+
+16 errors detected in the compilation of "Test_name.c".

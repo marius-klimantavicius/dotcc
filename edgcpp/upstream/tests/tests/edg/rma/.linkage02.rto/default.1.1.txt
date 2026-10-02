@@ -1,0 +1,14 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --set_flag=no_checking_pragmas --strict Test_name.c
+"Test_name.c", line 8: error: identifier "h" is undefined
+      friend void f() { extern void g(); g(); h(); };
+                                              ^
+
+"Test_name.c", line 11: error: return type "int" omitted in declaration of function "main"
+  main() { f(); }
+  ^
+
+"Test_name.c", line 11: error: identifier "f" is undefined
+  main() { f(); }
+           ^
+
+3 errors detected in the compilation of "Test_name.c".

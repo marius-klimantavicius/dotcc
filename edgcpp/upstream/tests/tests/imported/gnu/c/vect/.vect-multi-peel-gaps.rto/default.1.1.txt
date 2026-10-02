@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./vect/vect-multi-peel-gaps.c", line 37: warning: arithmetic on pointer to void or function type
+      end_s = (s_mapping + 0x20000);
+                         ^
+
+"./vect/vect-multi-peel-gaps.c", line 38: warning: arithmetic on pointer to void or function type
+      sptr = (int*)(end_s - sizeof(int[31]));
+                          ^
+
+"./vect/vect-multi-peel-gaps.c", line 39: error: too many arguments in function call
+      intrapred_luma_16x16(sptr);
+                           ^
+
+"./vect/vect-multi-peel-gaps.c", line 43: error: declaration is incompatible with "void intrapred_luma_16x16(void)" (declared at line 23)
+  void intrapred_luma_16x16(int * restrict sp) {
+       ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"SemaCXX/warn-sysheader-macro.cpp", line 27: warning: division by zero
+    int i = (0 / 0);
+               ^
+
+"SemaCXX/warn-sysheader-macro.cpp", line 27: warning: variable "i" was declared but never referenced
+    int i = (0 / 0);
+        ^
+
+"SemaCXX/warn-sysheader-macro.cpp", line 32: warning: variable "i" was declared but never referenced
+    int i = __extension__({ int v = __extension__({ int v = 1; v; }); v; });
+        ^
+
+"SemaCXX/warn-sysheader-macro.cpp", line 37: warning: variable "i" was declared but never referenced
+    int i = ((int) (0));
+        ^
+
+"SemaCXX/warn-sysheader-macro.cpp", line 42: warning: variable "i" was declared but never referenced
+    auto i = (Foo{.x = 123});
+         ^
+

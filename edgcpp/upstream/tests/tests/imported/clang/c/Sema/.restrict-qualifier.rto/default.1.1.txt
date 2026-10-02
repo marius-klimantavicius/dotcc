@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 7: error: expected a type specifier
+  static_assert(_Generic(typeof (t1), int (*restrict)[2] : 1, default : 0));
+                ^
+
+"Test_name.c", line 7: warning: this declaration has no storage class or type specifier
+  static_assert(_Generic(typeof (t1), int (*restrict)[2] : 1, default : 0));
+  ^
+
+"Test_name.c", line 10: error: "restrict" is not allowed
+  restrict T2 t2;
+  ^
+
+"Test_name.c", line 11: error: expected a type specifier
+  static_assert(_Generic(typeof (t2), int *restrict[2] : 1, default : 0));
+                ^
+
+"Test_name.c", line 11: warning: this declaration has no storage class or type specifier
+  static_assert(_Generic(typeof (t2), int *restrict[2] : 1, default : 0));
+  ^
+
+"Test_name.c", line 14: error: "restrict" is not allowed
+  restrict T3 t3;
+  ^
+
+"Test_name.c", line 15: error: expected a type specifier
+  static_assert(_Generic(typeof (t3), int *restrict[2][2] : 1, default : 0));
+                ^
+
+"Test_name.c", line 15: warning: this declaration has no storage class or type specifier
+  static_assert(_Generic(typeof (t3), int *restrict[2][2] : 1, default : 0));
+  ^
+
+"Test_name.c", line 16: error: expected a type specifier
+  static_assert(_Generic(void(T3 restrict), void(int *restrict (*)[2]): 1, default: 0));
+                ^
+
+"Test_name.c", line 16: warning: this declaration has no storage class or type specifier
+  static_assert(_Generic(void(T3 restrict), void(int *restrict (*)[2]): 1, default: 0));
+  ^
+
+"Test_name.c", line 20: error: "restrict" is not allowed
+  typedef t5 restrict t6; // expected-error {{pointer to function type 'int (void)' may not be 'restrict' qualified}}
+             ^
+
+"Test_name.c", line 23: error: "restrict" is not allowed
+  typedef t7 restrict t8; // expected-error {{restrict requires a pointer or reference ('t7' (aka 'int[2]')}}
+             ^
+
+8 errors detected in the compilation of "Test_name.c".

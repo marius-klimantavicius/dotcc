@@ -1,0 +1,9 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./torture/stackalign/vararg-2.c", line 57: warning: variable "arg" is used before its value is set
+   arg, fmt
+   ^
+
+eccp: diagnostics generated from compilation of Test_name.int.c:
+./torture/stackalign/vararg-2.c:57:12: error: expected identifier or '(' before '__builtin_c23_va_start'
+eccp: end of diagnostics from compilation of Test_name.int.c
+eccp: gcc compilation of Test_name.int.c returned an exit status of 1

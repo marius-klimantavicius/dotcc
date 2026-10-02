@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 7: error: identifier "frame_state" is undefined
+  copy_reg (unsigned int reg, frame_state *udata,	/* { dg-error "unknown type name" } */
+                              ^
+
+"Test_name.c", line 8: error: identifier "frame_state" is undefined
+  	  frame_state *target_udata)	/* { dg-error "unknown type name" } */
+  	  ^
+
+"Test_name.c", line 10: warning: function "ge_reg_addr" declared implicitly
+    word_type *preg = ge_reg_addr (reg, udata, 0);
+                      ^
+
+"Test_name.c", line 10: warning: a value of type "int" cannot be used to initialize an entity of type "word_type *" (aka "int *")
+    word_type *preg = ge_reg_addr (reg, udata, 0);
+                      ^
+
+"Test_name.c", line 11: warning: a value of type "int" cannot be used to initialize an entity of type "word_type *" (aka "int *")
+    word_type *ptreg = ge_reg_addr (reg, target_udata, 0);
+                       ^
+
+"Test_name.c", line 13: warning: function "__builtin_dwarf_reg_size" declared implicitly
+    memcpy (ptreg, preg, __builtin_dwarf_reg_size (reg));
+                         ^
+
+"Test_name.c", line 7: warning: function "copy_reg" was declared but never referenced
+  copy_reg (unsigned int reg, frame_state *udata,	/* { dg-error "unknown type name" } */
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

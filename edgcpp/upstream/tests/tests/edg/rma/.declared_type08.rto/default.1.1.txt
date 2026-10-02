@@ -1,0 +1,26 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 8: remark: parameter "n" was never referenced
+  void addscalar(const int n, int m) { }
+                           ^
+
+"Test_name.c", line 8: remark: parameter "m" was never referenced
+  void addscalar(const int n, int m) { }
+                                  ^
+
+"Test_name.c", line 9: error: identifier "n" is undefined
+  void addscalar2(n,m) const int n, m; { }
+                  ^
+
+"Test_name.c", line 9: error: identifier "m" is undefined
+  void addscalar2(n,m) const int n, m; { }
+                    ^
+
+"Test_name.c", line 9: error: a type qualifier is not allowed on a nonmember function
+  void addscalar2(n,m) const int n, m; { }
+                       ^
+
+"Test_name.c", line 9: error: expected a "{"
+  void addscalar2(n,m) const int n, m; { }
+                             ^
+
+4 errors detected in the compilation of "Test_name.c".

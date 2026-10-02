@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --exceptions --exceptions Test_name.c
+"Test_name.c", line 21: error: exception specification is not allowed
+    typedef int (*pf)() throw(int); // expected-error {{specifications are not allowed in typedefs}}
+                        ^
+
+"Test_name.c", line 37: error: exception specification is not allowed
+    void (**j)() throw(int); // expected-error {{not allowed beyond a single}}
+                 ^
+
+"Test_name.c", line 40: error: cannot overload functions distinguished by return type alone
+    void (**(*h())())() throw(int); // expected-error {{not allowed beyond a single}}
+              ^
+
+"Test_name.c", line 56: error: exception specification is not allowed
+    typedef int (*pf)() noexcept(false); // expected-error {{specifications are not allowed in typedefs}}
+                        ^
+
+"Test_name.c", line 64: error: exception specification is not allowed
+    void (**j)() noexcept(false); // expected-error {{not allowed beyond a single}}
+                 ^
+
+"Test_name.c", line 66: error: cannot overload functions distinguished by return type alone
+    void (**(*h())())() noexcept(false); // expected-error {{not allowed beyond a single}}
+              ^
+
+6 errors detected in the compilation of "Test_name.c".

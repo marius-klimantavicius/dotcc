@@ -1,0 +1,94 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 7: error: invalid floating constant
+    1e,            // expected-error {{exponent}}
+      ^
+
+"Test_name.c", line 8: error: invalid floating constant
+    1ee0           // expected-error {{exponent}}
+      ^
+
+"Test_name.c", line 15: error: identifier "va_list" is undefined
+    va_list v;                              // expected-error {{identifier}}
+    ^
+
+"Test_name.c", line 14: warning: variable "s" was set but never used
+    char *s;
+          ^
+
+"Test_name.c", line 21: error: expected a declaration
+  } // expected-error {{extraneous closing brace ('}')}}
+  ^
+
+"Test_name.c", line 46: warning: parsing restarts here after previous syntax error
+      ;
+      ^
+
+"Test_name.c", line 47: error: expected a declaration
+  }
+  ^
+
+"Test_name.c", line 52: warning: parsing restarts here after previous syntax error
+           *X x ] ))));                    /* expected-error {{expected ')'}} */
+                      ^
+
+"Test_name.c", line 62: error: identifier "BADIDENT" is undefined
+  &BADIDENT, 0     /* expected-error {{use of undeclared identifier}} */
+   ^
+
+"Test_name.c", line 66: error: expected an expression
+    [10]  // expected-error {{expected expression}}
+    ^
+
+"Test_name.c", line 67: error: expected a ";"
+  }
+  ^
+
+"Test_name.c", line 70: error: pointer or reference to incomplete type "struct forward" is not allowed
+  void x(struct forward* x) {switch(x->a) {}} // expected-error {{incomplete definition of type}}
+                                    ^
+
+"Test_name.c", line 76: error: expected a ";"
+  }
+  ^
+
+"Test_name.c", line 74: warning: variable "X" was set but never used
+    int X;
+        ^
+
+"Test_name.c", line 81: error: expected a ";"
+  }
+  ^
+
+"Test_name.c", line 78: warning: parameter "x" was set but never used
+  void test9045701(int x) {
+                       ^
+
+"Test_name.c", line 84: error: identifier "intptr" is undefined
+  void bar(intptr y);     // expected-error {{unknown type name 'intptr'; did you mean 'intptr_t'?}}
+           ^
+
+"Test_name.c", line 87: error: expected a ";"
+    int x = 2: // expected-error {{expected ';' at end of declaration}}
+             ^
+
+"Test_name.c", line 89: error: identifier "y" is undefined
+    int z = y;
+            ^
+
+"Test_name.c", line 87: warning: variable "x" was declared but never referenced
+    int x = 2: // expected-error {{expected ';' at end of declaration}}
+        ^
+
+"Test_name.c", line 97: error: expected a ";"
+    x = VALUE3 // expected-error{{expected ';' after expression}}
+    ^
+
+"Test_name.c", line 92: warning: parameter "x" was set but never used
+  void test2(int x) {
+                 ^
+
+"Test_name.c", line 13: warning: function "f" was declared but never referenced
+  static void f (char * (*g) (char **, int), char **p, ...) {
+              ^
+
+15 errors detected in the compilation of "Test_name.c".

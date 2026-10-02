@@ -1,0 +1,24 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 25: error: return type "int" omitted in declaration of function "main"
+  main() {
+  ^
+
+"Test_name.c", line 18: error: no instance of function template "std::cos" matches the argument list
+            argument types are: (float)
+      cos(p.imag());
+      ^
+"Test_name.c", line 15: note: candidate function template "std::cos" failed deduction
+    template<class P> inline T<P> cos(const T<P>& p) { return p; }
+                                  ^
+          detected during instantiation of "std::T<P> std::sin(const std::T<P> &) [with P=float]" at line 29
+
+"Test_name.c", line 19: error: no instance of function template "std::cosh" matches the argument list
+            argument types are: (float)
+      cosh(p.imag());
+      ^
+"Test_name.c", line 16: note: candidate function template "std::cosh" failed deduction
+    template<class P> inline T<P> cosh(const T<P>& p) { return p; }
+                                  ^
+          detected during instantiation of "std::T<P> std::sin(const std::T<P> &) [with P=float]" at line 29
+
+3 errors detected in the compilation of "Test_name.c".

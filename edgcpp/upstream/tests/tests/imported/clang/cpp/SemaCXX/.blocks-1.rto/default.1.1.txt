@@ -1,0 +1,94 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 Test_name.c
+"Test_name.c", line 15: error: expected an expression
+      BobTheStruct (^copyStruct)(BobTheStruct);
+                    ^
+
+"Test_name.c", line 15: error: type name is not allowed
+      BobTheStruct (^copyStruct)(BobTheStruct);
+                                 ^
+
+"Test_name.c", line 23: error: identifier "copyStruct" is undefined
+      copyStruct = ^(BobTheStruct aBigStruct){ return aBigStruct; };  // pass-by-value intrinsically copies the argument
+      ^
+
+"Test_name.c", line 23: error: expected an expression
+      copyStruct = ^(BobTheStruct aBigStruct){ return aBigStruct; };  // pass-by-value intrinsically copies the argument
+                   ^
+
+"Test_name.c", line 41: error: expected an expression
+      int (^P)(int) = reinterpret_cast<int(^)(int)>(1);
+           ^
+
+"Test_name.c", line 41: error: type name is not allowed
+      int (^P)(int) = reinterpret_cast<int(^)(int)>(1);
+               ^
+
+"Test_name.c", line 41: error: expected a ")"
+      int (^P)(int) = reinterpret_cast<int(^)(int)>(1);
+                                           ^
+
+"Test_name.c", line 41: error: cast to type "int (int)" is not allowed
+      int (^P)(int) = reinterpret_cast<int(^)(int)>(1);
+                                       ^
+
+"Test_name.c", line 42: error: identifier "P" is undefined
+      P = (int(^)(int))(1);
+      ^
+
+"Test_name.c", line 42: error: expected an expression
+      P = (int(^)(int))(1);
+               ^
+
+"Test_name.c", line 42: error: type name is not allowed
+      P = (int(^)(int))(1);
+                  ^
+
+"Test_name.c", line 44: error: expected a ")"
+      P = reinterpret_cast<int(^)(int)>((void*)1);
+                               ^
+
+"Test_name.c", line 44: error: cast to type "int (int)" is not allowed
+      P = reinterpret_cast<int(^)(int)>((void*)1);
+                           ^
+
+"Test_name.c", line 45: error: expected an expression
+      P = (int(^)(int))((void*)1);
+               ^
+
+"Test_name.c", line 45: error: type name is not allowed
+      P = (int(^)(int))((void*)1);
+                  ^
+
+"Test_name.c", line 56: error: expected an identifier
+    void (^block)() = ^{
+          ^
+
+"Test_name.c", line 56: error: function "rdar11055105::<error>" may not be initialized
+    void (^block)() = ^{
+                    ^
+
+"Test_name.c", line 56: error: expected an expression
+    void (^block)() = ^{
+                      ^
+
+"Test_name.c", line 59: warning: parsing restarts here after previous syntax error
+    };
+     ^
+
+"Test_name.c", line 64: error: expected an expression
+      (void) ^{
+             ^
+
+"Test_name.c", line 67: warning: parsing restarts here after previous syntax error
+      };
+       ^
+
+"Test_name.c", line 70: error: expected an expression
+      (void) ^{
+             ^
+
+"Test_name.c", line 73: warning: parsing restarts here after previous syntax error
+      };
+       ^
+
+20 errors detected in the compilation of "Test_name.c".

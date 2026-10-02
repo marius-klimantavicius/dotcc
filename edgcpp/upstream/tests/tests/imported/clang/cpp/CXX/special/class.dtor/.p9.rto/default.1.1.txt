@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 -DMSABI --c++03 Test_name.c
+"Test_name.c", line 81: error: a non-placement operator delete must be visible in a class with a virtual destructor
+    B::~B() {} // expected-error {{no suitable member 'operator delete' in 'B'}}
+       ^
+
+"Test_name.c", line 85: error: a non-placement operator delete must be visible in a class with a virtual destructor
+    struct C : CBase { // expected-error {{no suitable member 'operator delete' in 'C'}}
+           ^
+          detected during:
+            implicit generation of "test2::C::~C()" at line 89
+            implicit generation of "test2::C::C()" at line 89
+
+2 errors detected in the compilation of "Test_name.c".

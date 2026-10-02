@@ -1,0 +1,86 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --target linux_aarch64 Test_name.c
+"Test_name.c", line 7: error: expected a type specifier
+    T __ptrauth(0,0,1234) test;
+                ^
+
+"Test_name.c", line 7: error: expected a type specifier
+    T __ptrauth(0,0,1234) test;
+                  ^
+
+"Test_name.c", line 7: error: expected a type specifier
+    T __ptrauth(0,0,1234) test;
+                    ^
+
+"Test_name.c", line 7: error: expected a ";"
+    T __ptrauth(0,0,1234) test;
+                          ^
+
+"Test_name.c", line 19: error: constant "K" is not a type name
+    void * __ptrauth(K, 0, 100) m1; // expected-error {{expression is not an integer constant expression}}
+                     ^
+
+"Test_name.c", line 19: error: expected a type specifier
+    void * __ptrauth(K, 0, 100) m1; // expected-error {{expression is not an integer constant expression}}
+                        ^
+
+"Test_name.c", line 19: error: expected a type specifier
+    void * __ptrauth(K, 0, 100) m1; // expected-error {{expression is not an integer constant expression}}
+                           ^
+
+"Test_name.c", line 19: error: expected a ";"
+    void * __ptrauth(K, 0, 100) m1; // expected-error {{expression is not an integer constant expression}}
+                                ^
+
+"Test_name.c", line 20: error: expected a type specifier
+    void * __ptrauth(0, A, 100) m2; // expected-error {{argument to '__ptrauth' must be an integer constant expression}}
+                     ^
+
+"Test_name.c", line 20: error: constant "A" is not a type name
+    void * __ptrauth(0, A, 100) m2; // expected-error {{argument to '__ptrauth' must be an integer constant expression}}
+                        ^
+
+"Test_name.c", line 20: error: expected a type specifier
+    void * __ptrauth(0, A, 100) m2; // expected-error {{argument to '__ptrauth' must be an integer constant expression}}
+                           ^
+
+"Test_name.c", line 20: error: invalid redeclaration of member function "TemplateParameters<K, A, D>::__ptrauth(<error-type>, <error-type>, <error-type>)" (declared at line 19)
+    void * __ptrauth(0, A, 100) m2; // expected-error {{argument to '__ptrauth' must be an integer constant expression}}
+           ^
+
+"Test_name.c", line 20: error: expected a ";"
+    void * __ptrauth(0, A, 100) m2; // expected-error {{argument to '__ptrauth' must be an integer constant expression}}
+                                ^
+
+"Test_name.c", line 21: error: expected a type specifier
+    void * __ptrauth(0, 0, D) m3; // expected-error {{argument to '__ptrauth' must be an integer constant expression}}
+                     ^
+
+"Test_name.c", line 21: error: expected a type specifier
+    void * __ptrauth(0, 0, D) m3; // expected-error {{argument to '__ptrauth' must be an integer constant expression}}
+                        ^
+
+"Test_name.c", line 21: error: constant "D" is not a type name
+    void * __ptrauth(0, 0, D) m3; // expected-error {{argument to '__ptrauth' must be an integer constant expression}}
+                           ^
+
+"Test_name.c", line 21: error: invalid redeclaration of member function "TemplateParameters<K, A, D>::__ptrauth(<error-type>, <error-type>, <error-type>)" (declared at line 19)
+    void * __ptrauth(0, 0, D) m3; // expected-error {{argument to '__ptrauth' must be an integer constant expression}}
+           ^
+
+"Test_name.c", line 21: error: expected a ";"
+    void * __ptrauth(0, 0, D) m3; // expected-error {{argument to '__ptrauth' must be an integer constant expression}}
+                              ^
+
+"Test_name.c", line 26: error: expected a ">"
+    Indirect<void* __ptrauth(0,0,1234)> one;
+                   ^
+
+"Test_name.c", line 28: error: expected a ">"
+    Indirect<void* __ptrauth(0,0,1235)> two;
+                   ^
+
+"Test_name.c", line 30: warning: variable "three" was declared but never referenced
+    Indirect<void*> three;
+                    ^
+
+20 errors detected in the compilation of "Test_name.c".

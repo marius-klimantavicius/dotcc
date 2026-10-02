@@ -1,0 +1,274 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 14: error: attribute "maybe_unused" does not take arguments
+    [[maybe_unused ("foobar")]] int x2;		// { dg-error "'maybe_unused' attribute does not take any arguments" }
+                   ^
+
+"Test_name.c", line 16: error: attribute "maybe_unused" does not take arguments
+    [[maybe_unused (0)]] int x3;			// { dg-error "'maybe_unused' attribute does not take any arguments" }
+                   ^
+
+"Test_name.c", line 20: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+    auto b = [] constexpr [[maybe_unused]] {};	// { dg-error "'maybe_unused' on a type other than class or enumeration definition" }
+                ^
+
+"Test_name.c", line 20: error: constexpr lambdas are not enabled in this mode
+    auto b = [] constexpr [[maybe_unused]] {};	// { dg-error "'maybe_unused' on a type other than class or enumeration definition" }
+                ^
+
+"Test_name.c", line 20: error: attribute "maybe_unused" does not apply here
+    auto b = [] constexpr [[maybe_unused]] {};	// { dg-error "'maybe_unused' on a type other than class or enumeration definition" }
+                            ^
+
+"Test_name.c", line 23: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+    auto c = [] noexcept [[maybe_unused]] {};	// { dg-error "'maybe_unused' on a type other than class or enumeration definition" }
+                ^
+
+"Test_name.c", line 23: error: attribute "maybe_unused" does not apply here
+    auto c = [] noexcept [[maybe_unused]] {};	// { dg-error "'maybe_unused' on a type other than class or enumeration definition" }
+                           ^
+
+"Test_name.c", line 25: error: attribute "maybe_unused" does not apply here
+    auto d = [] () [[maybe_unused]] {};		// { dg-error "'maybe_unused' on a type other than class or enumeration definition" }
+                     ^
+
+"Test_name.c", line 26: error: attribute "maybe_unused" does not apply here
+    auto e = new int [n] [[maybe_unused]];	// { dg-warning "attributes ignored on outermost array type in new expression" }
+                           ^
+
+"Test_name.c", line 27: error: attribute "maybe_unused" does not apply here
+    auto e2 = new int [n] [[maybe_unused]] [42];	// { dg-warning "attributes ignored on outermost array type in new expression" }
+                            ^
+
+"Test_name.c", line 28: error: attribute "maybe_unused" does not apply here
+    auto f = new int [n][42] [[maybe_unused]];	// { dg-error "'maybe_unused' on a type other than class or enumeration definition" }
+                               ^
+
+"Test_name.c", line 29: warning: attribute "maybe_unused" does not apply here
+    [[maybe_unused]];				// { dg-warning "attributes at the beginning of statement are ignored" }
+      ^
+
+"Test_name.c", line 30: warning: attribute "maybe_unused" does not apply here
+    [[maybe_unused]] {}				// { dg-warning "attributes at the beginning of statement are ignored" }
+      ^
+
+"Test_name.c", line 31: warning: attribute "maybe_unused" does not apply here
+    [[maybe_unused]] if (true) {}			// { dg-warning "attributes at the beginning of statement are ignored" }
+      ^
+
+"Test_name.c", line 32: warning: attribute "maybe_unused" does not apply here
+    [[maybe_unused]] while (false) {}		// { dg-warning "attributes at the beginning of statement are ignored" }
+      ^
+
+"Test_name.c", line 33: warning: attribute "maybe_unused" does not apply here
+    [[maybe_unused]] goto lab;			// { dg-warning "attributes at the beginning of statement are ignored" }
+      ^
+
+"Test_name.c", line 35: warning: attribute "maybe_unused" does not apply here
+    [[maybe_unused]] try {} catch (int) {}	// { dg-warning "attributes at the beginning of statement are ignored" }
+      ^
+
+"Test_name.c", line 39: warning: attribute "maybe_unused" does not apply here
+      [[maybe_unused]] case 1:			// { dg-error "'maybe_unused' on 'case' or 'default' label" }
+        ^
+
+"Test_name.c", line 40: warning: attribute "maybe_unused" does not apply here
+      [[maybe_unused]] break;			// { dg-warning "attributes at the beginning of statement are ignored" }
+        ^
+
+"Test_name.c", line 41: warning: attribute "maybe_unused" does not apply here
+      [[maybe_unused]] default:			// { dg-error "'maybe_unused' on 'case' or 'default' label" }
+        ^
+
+"Test_name.c", line 45: warning: structured bindings are a C++17 feature
+    for ([[maybe_unused]] auto [a, b] : arr2) {}	// { dg-error "structured bindings only available with" "" { target c++14_down } }
+                               ^
+
+"Test_name.c", line 46: warning: attribute "maybe_unused" does not apply here
+    [[maybe_unused]] asm ("");			// { dg-warning "attributes ignored on 'asm' declaration" }
+      ^
+
+"Test_name.c", line 49: warning: attributes may not appear here
+    try {} catch (int [[maybe_unused]] x) {}	// { dg-warning "attribute ignored" }
+                        ^
+
+"Test_name.c", line 50: warning: attributes may not appear here
+    try {} catch (int [[maybe_unused]]) {}	// { dg-warning "attribute ignored" }
+                        ^
+
+"Test_name.c", line 14: warning: variable "x2" was declared but never referenced
+    [[maybe_unused ("foobar")]] int x2;		// { dg-error "'maybe_unused' attribute does not take any arguments" }
+                                    ^
+
+"Test_name.c", line 16: warning: variable "x3" was declared but never referenced
+    [[maybe_unused (0)]] int x3;			// { dg-error "'maybe_unused' attribute does not take any arguments" }
+                             ^
+
+"Test_name.c", line 19: warning: variable "a" was declared but never referenced
+    auto a = [] [[maybe_unused]] () {};
+         ^
+
+"Test_name.c", line 20: warning: variable "b" was declared but never referenced
+    auto b = [] constexpr [[maybe_unused]] {};	// { dg-error "'maybe_unused' on a type other than class or enumeration definition" }
+         ^
+
+"Test_name.c", line 23: warning: variable "c" was declared but never referenced
+    auto c = [] noexcept [[maybe_unused]] {};	// { dg-error "'maybe_unused' on a type other than class or enumeration definition" }
+         ^
+
+"Test_name.c", line 25: warning: variable "d" was declared but never referenced
+    auto d = [] () [[maybe_unused]] {};		// { dg-error "'maybe_unused' on a type other than class or enumeration definition" }
+         ^
+
+"Test_name.c", line 57: warning: structured bindings are a C++17 feature
+  [[maybe_unused]] auto [b, c] = arr;		// { dg-error "structured bindings only available with" "" { target c++14_down } }
+                        ^
+
+"Test_name.c", line 58: error: attribute "maybe_unused" does not apply here
+  [[maybe_unused]];				// { dg-warning "attribute ignored" }
+    ^
+
+"Test_name.c", line 59: error: attribute does not apply to any entity
+  inline [[maybe_unused]] void baz () {}		// { dg-warning "attribute ignored" }
+         ^
+
+"Test_name.c", line 61: error: attribute does not apply to any entity
+  constexpr [[maybe_unused]] int qux () { return 0; }	// { dg-warning "attribute ignored" }
+            ^
+
+"Test_name.c", line 63: warning: attribute "maybe_unused" does not apply here
+  int [[maybe_unused]] d;				// { dg-warning "attribute ignored" }
+        ^
+
+"Test_name.c", line 64: warning: attribute "maybe_unused" does not apply here
+  int const [[maybe_unused]] e = 1;		// { dg-warning "attribute ignored" }
+              ^
+
+"Test_name.c", line 65: warning: attribute "maybe_unused" does not apply here
+  struct A {} [[maybe_unused]];			// { dg-warning "attribute ignored in declaration of 'struct A'" }
+                ^
+
+"Test_name.c", line 66: warning: attribute "maybe_unused" does not apply here
+  struct A [[maybe_unused]];			// { dg-warning "attribute ignored" }
+             ^
+
+"Test_name.c", line 66: warning: declaration does not declare anything
+  struct A [[maybe_unused]];			// { dg-warning "attribute ignored" }
+  ^
+
+"Test_name.c", line 67: warning: attribute "maybe_unused" does not apply here
+  struct A [[maybe_unused]] a1;			// { dg-warning "attribute ignored" }
+             ^
+
+"Test_name.c", line 68: warning: attribute "maybe_unused" does not apply here
+  A [[maybe_unused]] a2;				// { dg-warning "attribute ignored" }
+      ^
+
+"Test_name.c", line 69: warning: attribute "maybe_unused" does not apply here
+  enum B { B0 } [[maybe_unused]];			// { dg-warning "attribute ignored in declaration of 'enum B'" }
+                  ^
+
+"Test_name.c", line 70: warning: attribute "maybe_unused" does not apply here
+  enum B [[maybe_unused]];			// { dg-warning "attribute ignored" }
+           ^
+
+"Test_name.c", line 70: warning: declaration does not declare anything
+  enum B [[maybe_unused]];			// { dg-warning "attribute ignored" }
+  ^
+
+"Test_name.c", line 71: warning: attribute "maybe_unused" does not apply here
+  enum B [[maybe_unused]] b1;			// { dg-warning "attribute ignored" }
+           ^
+
+"Test_name.c", line 72: warning: attribute "maybe_unused" does not apply here
+  B [[maybe_unused]] b2;				// { dg-warning "attribute ignored" }
+      ^
+
+"Test_name.c", line 75: error: attribute "maybe_unused" does not apply here
+  int g[2] [[maybe_unused]];			// { dg-error "'maybe_unused' on a type other than class or enumeration definition" }
+             ^
+
+"Test_name.c", line 77: error: attribute "maybe_unused" does not apply here
+  int corge () [[maybe_unused]];			// { dg-error "'maybe_unused' on a type other than class or enumeration definition" }
+                 ^
+
+"Test_name.c", line 78: error: attribute "maybe_unused" does not apply here
+  int *[[maybe_unused]] h;			// { dg-error "'maybe_unused' on a type other than class or enumeration definition" }
+         ^
+
+"Test_name.c", line 79: error: attribute "maybe_unused" does not apply here
+  int & [[maybe_unused]] i = f;			// { dg-error "'maybe_unused' on a type other than class or enumeration definition" }
+          ^
+
+"Test_name.c", line 80: error: attribute "maybe_unused" does not apply here
+  int && [[maybe_unused]] j = 0;			// { dg-error "'maybe_unused' on a type other than class or enumeration definition" }
+           ^
+
+"Test_name.c", line 81: error: attribute "maybe_unused" does not apply here
+  int S::* [[maybe_unused]] k;			// { dg-error "'maybe_unused' on a type other than class or enumeration definition" }
+             ^
+
+"Test_name.c", line 82: error: attribute "maybe_unused" does not apply here
+  auto l = sizeof (int [2] [[maybe_unused]]);	// { dg-error "'maybe_unused' on a type other than class or enumeration definition" }
+                             ^
+
+"Test_name.c", line 98: warning: attribute "maybe_unused" does not apply here
+  int grault (int [[maybe_unused]] a,		// { dg-warning "attribute ignored" }
+                    ^
+
+"Test_name.c", line 99: warning: attribute "maybe_unused" does not apply here
+  	    int [[maybe_unused]],		// { dg-warning "attribute ignored" }
+  	          ^
+
+"Test_name.c", line 100: warning: attribute "maybe_unused" does not apply here
+  	    int [[maybe_unused]] c = 0,		// { dg-warning "attribute ignored" }
+  	          ^
+
+"Test_name.c", line 101: warning: attribute "maybe_unused" does not apply here
+  	    int [[maybe_unused]] = 0);		// { dg-warning "attribute ignored" }
+  	          ^
+
+"Test_name.c", line 103: warning: attribute "maybe_unused" does not apply here
+  waldo (int [[maybe_unused]] a,			// { dg-warning "attribute ignored" }
+               ^
+
+"Test_name.c", line 104: warning: attribute "maybe_unused" does not apply here
+         int [[maybe_unused]],			// { dg-warning "attribute ignored" }
+               ^
+
+"Test_name.c", line 105: warning: attribute "maybe_unused" does not apply here
+         int [[maybe_unused]] c = 0,		// { dg-warning "attribute ignored" }
+               ^
+
+"Test_name.c", line 106: warning: attribute "maybe_unused" does not apply here
+         int [[maybe_unused]] = 0)		// { dg-warning "attribute ignored" }
+               ^
+
+"Test_name.c", line 124: warning: attribute "maybe_unused" does not apply here
+  namespace [[maybe_unused]] H { using H0 = int; }// { dg-warning "'maybe_unused' attribute directive ignored" }
+              ^
+
+"Test_name.c", line 125: warning: attribute "maybe_unused" does not apply here
+  namespace [[maybe_unused]] {}			// { dg-warning "'maybe_unused' attribute directive ignored" }
+              ^
+
+"Test_name.c", line 126: error: attributes are not allowed here
+  [[maybe_unused]] using namespace H;		// { dg-warning "'maybe_unused' attribute directive ignored" }
+  ^
+
+"Test_name.c", line 129: warning: attributes ignored here because they do not apply to a declared entity
+    [[maybe_unused]];				// { dg-error "declaration does not declare anything" }
+      ^
+
+"Test_name.c", line 139: warning: attribute "maybe_unused" does not apply here
+  struct J : [[maybe_unused]] C {};		// { dg-warning "attributes on base specifiers are ignored" }
+               ^
+
+"Test_name.c", line 149: error: attribute "maybe_unused" does not apply here
+  typedef int N[2] [[maybe_unused]];		// { dg-error "'maybe_unused' on a type other than class or enumeration definition" }
+                     ^
+
+"Test_name.c", line 64: warning: variable "e" was declared but never referenced
+  int const [[maybe_unused]] e = 1;		// { dg-warning "attribute ignored" }
+                             ^
+
+21 errors detected in the compilation of "Test_name.c".

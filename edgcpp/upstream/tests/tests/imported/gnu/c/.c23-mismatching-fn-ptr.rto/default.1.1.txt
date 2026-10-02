@@ -1,0 +1,45 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 20: warning: argument of type "void (*)(void)" is incompatible with parameter of type "void_int_fnptr_t" (aka "void (*)(int)")
+    takes_void_int_fnptr (&fn_argpass); /* { dg-error "passing argument 1 of 'takes_void_int_fnptr' from incompatible pointer type" } */
+                          ^
+
+"Test_name.c", line 27: warning: a value of type "void (*)(void)" cannot be assigned to an entity of type "void (*)(int)"
+    assigned_to = &fn_assign; /* { dg-error "assignment to '\[^\n\r\]*' from incompatible pointer type '\[^\n\r\]*'" } */
+                ^
+
+"Test_name.c", line 26: warning: variable "assigned_to" was set but never used
+    void (*assigned_to) (int);
+           ^
+
+"Test_name.c", line 33: warning: a value of type "void (*)(void)" cannot be used to initialize an entity of type "void (*)(int)"
+    void (*initialized) (int) = &fn_init; /* { dg-error "initialization of '\[^\n\r\]*' from incompatible pointer type '\[^\n\r\]*'" } */
+                                ^
+
+"Test_name.c", line 33: warning: variable "initialized" was declared but never referenced
+    void (*initialized) (int) = &fn_init; /* { dg-error "initialization of '\[^\n\r\]*' from incompatible pointer type '\[^\n\r\]*'" } */
+           ^
+
+"Test_name.c", line 40: warning: return value type does not match the function type
+    return &fn_return; /* { dg-error "returning '\[^\n\r\]*' from a function with incompatible return type '\[^\n\r\]*'" } */
+           ^
+
+"Test_name.c", line 54: warning: argument of type "sighandler_t" (aka "void (*)(int)") is incompatible with parameter of type "wrong_sighandler_t" (aka "void (*)(void)")
+    takes_wrong_sighandler_type (signal (42, NULL)); /* { dg-error "passing argument 1 of 'takes_wrong_sighandler_type' from incompatible pointer type" } */
+                                 ^
+
+"Test_name.c", line 60: warning: a value of type "sighandler_t" (aka "void (*)(int)") cannot be assigned to an entity of type "wrong_sighandler_t" (aka "void (*)(void)")
+    assigned_to = signal (42, NULL); /* { dg-error "assignment to 'wrong_sighandler_t' \\{aka '\[^\n\r\]*'\\} from incompatible pointer type 'sighandler_t' \\{aka '\[^\n\r\]*'\\}" } */
+                ^
+
+"Test_name.c", line 59: warning: variable "assigned_to" was set but never used
+    wrong_sighandler_t assigned_to;
+                       ^
+
+"Test_name.c", line 65: warning: a value of type "sighandler_t" (aka "void (*)(int)") cannot be used to initialize an entity of type "wrong_sighandler_t" (aka "void (*)(void)")
+    wrong_sighandler_t initialized = signal (42, NULL); /* { dg-error "initialization of 'wrong_sighandler_t' \\{aka '\[^\n\r\]*'\\} from incompatible pointer type 'sighandler_t' \\{aka '\[^\n\r\]*'\\}" } */
+                                     ^
+
+"Test_name.c", line 71: warning: return value type does not match the function type
+    return signal (42, NULL); /* { dg-error "returning 'sighandler_t' \\{aka '\[^\n\r\]*'\\} from a function with incompatible return type 'wrong_sighandler_t' \\{aka '\[^\n\r\]*'\\}" } */
+           ^
+

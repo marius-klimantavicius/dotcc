@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --exceptions --exceptions --c++14 Test_name.c
+"Test_name.c", line 7: warning: unknown attribute "target_clones"
+  int __attribute__((target_clones("sse4.2", "default"))) foo(){ return 1;}
+                     ^
+
+"Test_name.c", line 11: warning: unknown attribute "target_clones"
+    auto x = []()__attribute__((target_clones("sse4.2", "arch=ivybridge", "default"))) {};
+                                ^
+

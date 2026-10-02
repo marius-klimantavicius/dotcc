@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp0x/lambda/lambda-initlist3.C", line 8: error: a brace-enclosed list does not provide a return type for this lambda
+    []{ return { 1, 2 }; }();
+               ^
+
+1 error detected in the compilation of "Test_name.c".

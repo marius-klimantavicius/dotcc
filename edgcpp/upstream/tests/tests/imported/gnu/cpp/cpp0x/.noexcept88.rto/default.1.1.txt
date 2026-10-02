@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"./cpp0x/noexcept88.C", line 6: error: dynamic exception specifications are not permitted in this mode
+  void *operator new (std::size_t) throw (std::bad_alloc);
+                                   ^
+
+1 error detected in the compilation of "Test_name.c".

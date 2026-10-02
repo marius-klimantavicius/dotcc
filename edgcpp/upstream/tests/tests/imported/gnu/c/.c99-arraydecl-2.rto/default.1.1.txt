@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 12: error: expected a "]"
+    int a[2, 3]; /* { dg-error "parse|syntax|expected" "bad array declarator" } */
+           ^
+
+"Test_name.c", line 12: error: expected an identifier
+    int a[2, 3]; /* { dg-error "parse|syntax|expected" "bad array declarator" } */
+             ^
+
+"Test_name.c", line 13: error: expected a "]"
+    void b(int x[2, 3]); /* { dg-error "parse|syntax|expected" "bad array declarator" } */
+                  ^
+
+"Test_name.c", line 13: error: expected a type specifier
+    void b(int x[2, 3]); /* { dg-error "parse|syntax|expected" "bad array declarator" } */
+                    ^
+
+"Test_name.c", line 14: error: expected a "]"
+    void c(int [2, 3]); /* { dg-error "parse|syntax|expected" "bad array declarator" } */
+                 ^
+
+"Test_name.c", line 14: error: expected a type specifier
+    void c(int [2, 3]); /* { dg-error "parse|syntax|expected" "bad array declarator" } */
+                   ^
+
+"Test_name.c", line 15: error: expected a "]"
+    void d(int *x[restrict 2, 3]); /* { dg-error "parse|syntax|expected" "bad array declarator" } */
+                            ^
+
+"Test_name.c", line 15: error: expected a type specifier
+    void d(int *x[restrict 2, 3]); /* { dg-error "parse|syntax|expected" "bad array declarator" } */
+                              ^
+
+"Test_name.c", line 16: error: expected a "]"
+    void e(int *x[static restrict 2, 3]); /* { dg-error "parse|syntax|expected" "bad array declarator" } */
+                                   ^
+
+"Test_name.c", line 16: error: expected a type specifier
+    void e(int *x[static restrict 2, 3]); /* { dg-error "parse|syntax|expected" "bad array declarator" } */
+                                     ^
+
+"Test_name.c", line 17: error: expected a "]"
+    void f(int *x[restrict static 2, 3]); /* { dg-error "parse|syntax|expected" "bad array declarator" } */
+                                   ^
+
+"Test_name.c", line 17: error: expected a type specifier
+    void f(int *x[restrict static 2, 3]); /* { dg-error "parse|syntax|expected" "bad array declarator" } */
+                                     ^
+
+"Test_name.c", line 12: warning: variable "a" was declared but never referenced
+    int a[2, 3]; /* { dg-error "parse|syntax|expected" "bad array declarator" } */
+        ^
+
+12 errors detected in the compilation of "Test_name.c".

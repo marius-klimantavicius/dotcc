@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 11: error: function call requires a real floating-point argument
+    check(__builtin_isfinite(1)); // expected-error{{requires argument of floating point type}}
+                            ^
+
+"Test_name.c", line 12: error: function call requires one argument
+    check(__builtin_isinf()); // expected-error{{too few arguments}}
+                         ^
+
+"Test_name.c", line 13: error: function call requires one argument
+    check(__builtin_isnan(1,2)); // expected-error{{too many arguments}}
+                         ^
+
+"Test_name.c", line 15: error: the last argument in a call to __builtin_fpclassify must have a real floating-point type
+    check(__builtin_fpclassify(0, 0, 0, 0, 0, 1)); // expected-error{{requires argument of floating point type}}
+                              ^
+
+"Test_name.c", line 17: error: a call to __builtin_fpclassify requires five integral arguments followed by one floating-point argument
+    check(__builtin_fpclassify(0, 0, 0, 0, 1)); // expected-error{{too few arguments}}
+                              ^
+
+"Test_name.c", line 18: error: a call to __builtin_fpclassify requires five integral arguments followed by one floating-point argument
+    check(__builtin_fpclassify(0, 0, 0, 0, 0, 1, 0)); // expected-error{{too many arguments}}
+                              ^
+
+"Test_name.c", line 20: error: identifier "invalid" is undefined
+    check(__builtin_fpclassify(0,0,0,0,0, (invalid))); // expected-error{{use of undeclared identifier 'invalid'}}
+                                           ^
+
+"Test_name.c", line 21: error: identifier "inf" is undefined
+    check(__builtin_fpclassify(0,0,0,0,0, (inf))); // expected-error{{use of undeclared identifier 'inf'}}
+                                           ^
+
+8 errors detected in the compilation of "Test_name.c".

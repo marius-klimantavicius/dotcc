@@ -1,0 +1,7 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 I386-DECLSPEC-GNU I386-DECLSPEC-GNU --ms_extensions I386-DECLSPEC-MS I386-DECLSPEC-MS --ms_extensions I386-DECLSPEC-MS I386-DECLSPEC-MS -w -w --c Test_name.c
+eccp: unrecognizable argument: I386-DECLSPEC-GNU
+eccp: unrecognizable argument: I386-DECLSPEC-GNU
+eccp: unrecognizable argument: I386-DECLSPEC-MS
+eccp: unrecognizable argument: I386-DECLSPEC-MS
+eccp: unrecognizable argument: I386-DECLSPEC-MS
+eccp: unrecognizable argument: I386-DECLSPEC-MS

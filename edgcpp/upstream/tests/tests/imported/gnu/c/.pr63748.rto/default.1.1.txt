@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./pr63748.c", line 32: warning: transfer of control bypasses initialization of:
+            variable "buf" (declared at line 17)
+    goto do_call_it;
+    ^
+

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 17: error: a member with reference type is not allowed in a union
+    int& kConstant;	// { dg-error "may not have reference type" }
+    ^
+
+"Test_name.c", line 21: error: a member with reference type is not allowed in a union
+    const int& kConstant = 10;	// { dg-error "may not have reference type" }
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

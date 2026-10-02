@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 5: error: statement may not appear in a constexpr function
+  constexpr int foo() { thread_local int i __attribute__((unused)) {}; return 1; }  // { dg-error "40:.i. defined .thread_local." "" { target c++20_down } }
+                        ^
+
+"Test_name.c", line 7: error: statement may not appear in a constexpr function
+  constexpr int bar() { static int i __attribute__((unused)) {}; return 1; }  // { dg-error "34:.i. defined .static." "" { target c++20_down } }
+                        ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,482 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 -DGNUMODE Test_name.c
+"SemaCXX/constexpr-string.cpp", line 57: error: expression must have a constant value
+    constexpr int wm = wcslen(L"hello"); // expected-error {{constant expression}} expected-note {{non-constexpr function 'wcslen' cannot be used in a constant expression}}
+                       ^
+"SemaCXX/constexpr-string.cpp", line 57: note: cannot call non-constexpr function "wcslen" (declared at line 31 of "/usr/include/wchar.h")
+    constexpr int wm = wcslen(L"hello"); // expected-error {{constant expression}} expected-note {{non-constexpr function 'wcslen' cannot be used in a constant expression}}
+                       ^
+
+"SemaCXX/constexpr-string.cpp", line 61: warning: subscript out of range
+    int k = arr[strlen("hello")]; // expected-warning {{array index 5}}
+               ^
+
+"SemaCXX/constexpr-string.cpp", line 79: error: expression must have a constant value
+    static_assert(__builtin_strcmp(0, "abab") == 0); // expected-error {{not an integral constant}} expected-note {{dereferenced null}}
+                  ^
+"SemaCXX/constexpr-string.cpp", line 79: note: attempt to dereference a null pointer
+    static_assert(__builtin_strcmp(0, "abab") == 0); // expected-error {{not an integral constant}} expected-note {{dereferenced null}}
+                                   ^
+
+"SemaCXX/constexpr-string.cpp", line 80: error: expression must have a constant value
+    static_assert(__builtin_strcmp("abab", 0) == 0); // expected-error {{not an integral constant}} expected-note {{dereferenced null}}
+                  ^
+"SemaCXX/constexpr-string.cpp", line 80: note: attempt to dereference a null pointer
+    static_assert(__builtin_strcmp("abab", 0) == 0); // expected-error {{not an integral constant}} expected-note {{dereferenced null}}
+                                           ^
+
+"SemaCXX/constexpr-string.cpp", line 97: error: expression must have a constant value
+    static_assert(__builtin_strncmp(kFoobar, kFoobazfoobar + 6, 7) == 0); // expected-error {{not an integral constant}} expected-note {{dereferenced one-past-the-end}}
+                  ^
+"SemaCXX/constexpr-string.cpp", line 97: note: attempt to read past the end of the object
+    static_assert(__builtin_strncmp(kFoobar, kFoobazfoobar + 6, 7) == 0); // expected-error {{not an integral constant}} expected-note {{dereferenced one-past-the-end}}
+                                    ^
+
+"SemaCXX/constexpr-string.cpp", line 104: error: expression must have a constant value
+    static_assert(__builtin_memcmp("abab\0banana", "abab\0banana", 100) == 0); // expected-error {{not an integral constant}} expected-note {{dereferenced one-past-the-end}}
+                  ^
+"SemaCXX/constexpr-string.cpp", line 104: note: attempt to read past the end of the object
+    static_assert(__builtin_memcmp("abab\0banana", "abab\0banana", 100) == 0); // expected-error {{not an integral constant}} expected-note {{dereferenced one-past-the-end}}
+                                   ^
+
+"SemaCXX/constexpr-string.cpp", line 115: error: expression must have a constant value
+    static_assert(__builtin_memcmp(u8"abab\0banana", u8"abab\0banana", 100) == 0); // expected-error {{not an integral constant}} expected-note {{dereferenced one-past-the-end}}
+                  ^
+"SemaCXX/constexpr-string.cpp", line 115: note: attempt to read past the end of the object
+    static_assert(__builtin_memcmp(u8"abab\0banana", u8"abab\0banana", 100) == 0); // expected-error {{not an integral constant}} expected-note {{dereferenced one-past-the-end}}
+                                   ^
+
+"SemaCXX/constexpr-string.cpp", line 124: error: expression must have a constant value
+    static_assert(__builtin_bcmp("abaa", "abba", 3) != 0);
+                  ^
+"SemaCXX/constexpr-string.cpp", line 124: note: cannot call non-constexpr function "__builtin_bcmp" (declared implicitly)
+    static_assert(__builtin_bcmp("abaa", "abba", 3) != 0);
+                  ^
+
+"SemaCXX/constexpr-string.cpp", line 125: error: expression must have a constant value
+    static_assert(__builtin_bcmp("abaa", "abba", 2) == 0);
+                  ^
+"SemaCXX/constexpr-string.cpp", line 125: note: cannot call non-constexpr function "__builtin_bcmp" (declared implicitly)
+    static_assert(__builtin_bcmp("abaa", "abba", 2) == 0);
+                  ^
+
+"SemaCXX/constexpr-string.cpp", line 126: error: expression must have a constant value
+    static_assert(__builtin_bcmp("a\203", "a", 2) != 0);
+                  ^
+"SemaCXX/constexpr-string.cpp", line 126: note: cannot call non-constexpr function "__builtin_bcmp" (declared implicitly)
+    static_assert(__builtin_bcmp("a\203", "a", 2) != 0);
+                  ^
+
+"SemaCXX/constexpr-string.cpp", line 127: error: expression must have a constant value
+    static_assert(__builtin_bcmp("a\203", "a\003", 2) != 0);
+                  ^
+"SemaCXX/constexpr-string.cpp", line 127: note: cannot call non-constexpr function "__builtin_bcmp" (declared implicitly)
+    static_assert(__builtin_bcmp("a\203", "a\003", 2) != 0);
+                  ^
+
+"SemaCXX/constexpr-string.cpp", line 128: error: expression must have a constant value
+    static_assert(__builtin_bcmp(0, 0, 0) == 0);
+                  ^
+"SemaCXX/constexpr-string.cpp", line 128: note: cannot call non-constexpr function "__builtin_bcmp" (declared implicitly)
+    static_assert(__builtin_bcmp(0, 0, 0) == 0);
+                  ^
+
+"SemaCXX/constexpr-string.cpp", line 129: error: expression must have a constant value
+    static_assert(__builtin_bcmp("abab\0banana", "abab\0banana", 100) == 0); // expected-error {{not an integral constant}} expected-note {{dereferenced one-past-the-end}}
+                  ^
+"SemaCXX/constexpr-string.cpp", line 129: note: cannot call non-constexpr function "__builtin_bcmp" (declared implicitly)
+    static_assert(__builtin_bcmp("abab\0banana", "abab\0banana", 100) == 0); // expected-error {{not an integral constant}} expected-note {{dereferenced one-past-the-end}}
+                  ^
+
+"SemaCXX/constexpr-string.cpp", line 130: error: expression must have a constant value
+    static_assert(__builtin_bcmp("abab\0banana", "abab\0canada", 100) != 0); // FIXME: Should we reject this?
+                  ^
+"SemaCXX/constexpr-string.cpp", line 130: note: cannot call non-constexpr function "__builtin_bcmp" (declared implicitly)
+    static_assert(__builtin_bcmp("abab\0banana", "abab\0canada", 100) != 0); // FIXME: Should we reject this?
+                  ^
+
+"SemaCXX/constexpr-string.cpp", line 131: error: expression must have a constant value
+    static_assert(__builtin_bcmp("abab\0banana", "abab\0canada", 7) != 0);
+                  ^
+"SemaCXX/constexpr-string.cpp", line 131: note: cannot call non-constexpr function "__builtin_bcmp" (declared implicitly)
+    static_assert(__builtin_bcmp("abab\0banana", "abab\0canada", 7) != 0);
+                  ^
+
+"SemaCXX/constexpr-string.cpp", line 132: error: expression must have a constant value
+    static_assert(__builtin_bcmp("abab\0banana", "abab\0canada", 6) != 0);
+                  ^
+"SemaCXX/constexpr-string.cpp", line 132: note: cannot call non-constexpr function "__builtin_bcmp" (declared implicitly)
+    static_assert(__builtin_bcmp("abab\0banana", "abab\0canada", 6) != 0);
+                  ^
+
+"SemaCXX/constexpr-string.cpp", line 133: error: expression must have a constant value
+    static_assert(__builtin_bcmp("abab\0banana", "abab\0canada", 5) == 0);
+                  ^
+"SemaCXX/constexpr-string.cpp", line 133: note: cannot call non-constexpr function "__builtin_bcmp" (declared implicitly)
+    static_assert(__builtin_bcmp("abab\0banana", "abab\0canada", 5) == 0);
+                  ^
+
+"SemaCXX/constexpr-string.cpp", line 138: error: expression must have a constant value
+    static_assert(__builtin_memcmp(&incomplete, "", 1u) == 42); // expected-error {{not an integral constant}} expected-note {{not supported}}
+                  ^
+"SemaCXX/constexpr-string.cpp", line 138: note: attempt to access run-time storage
+    static_assert(__builtin_memcmp(&incomplete, "", 1u) == 42); // expected-error {{not an integral constant}} expected-note {{not supported}}
+                                   ^
+
+"SemaCXX/constexpr-string.cpp", line 139: error: expression must have a constant value
+    static_assert(__builtin_memcmp("", &incomplete, 1u) == 42); // expected-error {{not an integral constant}} expected-note {{not supported}}
+                  ^
+"SemaCXX/constexpr-string.cpp", line 139: note: attempt to access run-time storage
+    static_assert(__builtin_memcmp("", &incomplete, 1u) == 42); // expected-error {{not an integral constant}} expected-note {{not supported}}
+                                       ^
+
+"SemaCXX/constexpr-string.cpp", line 141: error: expression must have a constant value
+    static_assert(__builtin_bcmp(&incomplete, "", 0u) == 0);
+                  ^
+"SemaCXX/constexpr-string.cpp", line 141: note: cannot call non-constexpr function "__builtin_bcmp" (declared implicitly)
+    static_assert(__builtin_bcmp(&incomplete, "", 0u) == 0);
+                  ^
+
+"SemaCXX/constexpr-string.cpp", line 142: error: expression must have a constant value
+    static_assert(__builtin_bcmp("", &incomplete, 0u) == 0);
+                  ^
+"SemaCXX/constexpr-string.cpp", line 142: note: cannot call non-constexpr function "__builtin_bcmp" (declared implicitly)
+    static_assert(__builtin_bcmp("", &incomplete, 0u) == 0);
+                  ^
+
+"SemaCXX/constexpr-string.cpp", line 143: error: expression must have a constant value
+    static_assert(__builtin_bcmp(&incomplete, "", 1u) == 42); // expected-error {{not an integral constant}} expected-note {{not supported}}
+                  ^
+"SemaCXX/constexpr-string.cpp", line 143: note: cannot call non-constexpr function "__builtin_bcmp" (declared implicitly)
+    static_assert(__builtin_bcmp(&incomplete, "", 1u) == 42); // expected-error {{not an integral constant}} expected-note {{not supported}}
+                  ^
+
+"SemaCXX/constexpr-string.cpp", line 144: error: expression must have a constant value
+    static_assert(__builtin_bcmp("", &incomplete, 1u) == 42); // expected-error {{not an integral constant}} expected-note {{not supported}}
+                  ^
+"SemaCXX/constexpr-string.cpp", line 144: note: cannot call non-constexpr function "__builtin_bcmp" (declared implicitly)
+    static_assert(__builtin_bcmp("", &incomplete, 1u) == 42); // expected-error {{not an integral constant}} expected-note {{not supported}}
+                  ^
+
+"SemaCXX/constexpr-string.cpp", line 160: error: expression must have a constant value
+    static_assert(__builtin_bcmp(ku00feff, ks00fe00, 2) == 0);
+                  ^
+"SemaCXX/constexpr-string.cpp", line 160: note: cannot call non-constexpr function "__builtin_bcmp" (declared implicitly)
+    static_assert(__builtin_bcmp(ku00feff, ks00fe00, 2) == 0);
+                  ^
+
+"SemaCXX/constexpr-string.cpp", line 161: error: expression must have a constant value
+    static_assert(__builtin_bcmp(ku00feff, ks00fe00, 99) != 0);
+                  ^
+"SemaCXX/constexpr-string.cpp", line 161: note: cannot call non-constexpr function "__builtin_bcmp" (declared implicitly)
+    static_assert(__builtin_bcmp(ku00feff, ks00fe00, 99) != 0);
+                  ^
+
+"SemaCXX/constexpr-string.cpp", line 162: error: expression must have a constant value
+    static_assert(__builtin_bcmp(ku00fe00, ks00feff, 99) != 0);
+                  ^
+"SemaCXX/constexpr-string.cpp", line 162: note: cannot call non-constexpr function "__builtin_bcmp" (declared implicitly)
+    static_assert(__builtin_bcmp(ku00fe00, ks00feff, 99) != 0);
+                  ^
+
+"SemaCXX/constexpr-string.cpp", line 163: error: expression must have a constant value
+    static_assert(__builtin_bcmp(ks00feff, ku00fe00, 2) == 0);
+                  ^
+"SemaCXX/constexpr-string.cpp", line 163: note: cannot call non-constexpr function "__builtin_bcmp" (declared implicitly)
+    static_assert(__builtin_bcmp(ks00feff, ku00fe00, 2) == 0);
+                  ^
+
+"SemaCXX/constexpr-string.cpp", line 164: error: expression must have a constant value
+    static_assert(__builtin_bcmp(ks00feff, ku00fe00, 99) != 0);
+                  ^
+"SemaCXX/constexpr-string.cpp", line 164: note: cannot call non-constexpr function "__builtin_bcmp" (declared implicitly)
+    static_assert(__builtin_bcmp(ks00feff, ku00fe00, 99) != 0);
+                  ^
+
+"SemaCXX/constexpr-string.cpp", line 165: error: expression must have a constant value
+    static_assert(__builtin_bcmp(ks00fe00, ku00feff, 99) != 0);
+                  ^
+"SemaCXX/constexpr-string.cpp", line 165: note: cannot call non-constexpr function "__builtin_bcmp" (declared implicitly)
+    static_assert(__builtin_bcmp(ks00fe00, ku00feff, 99) != 0);
+                  ^
+
+"SemaCXX/constexpr-string.cpp", line 166: error: expression must have a constant value
+    static_assert(__builtin_bcmp(ks00fe00, ks00feff, 2) == 0);
+                  ^
+"SemaCXX/constexpr-string.cpp", line 166: note: cannot call non-constexpr function "__builtin_bcmp" (declared implicitly)
+    static_assert(__builtin_bcmp(ks00fe00, ks00feff, 2) == 0);
+                  ^
+
+"SemaCXX/constexpr-string.cpp", line 167: error: expression must have a constant value
+    static_assert(__builtin_bcmp(ks00feff, ks00fe00, 99) != 0);
+                  ^
+"SemaCXX/constexpr-string.cpp", line 167: note: cannot call non-constexpr function "__builtin_bcmp" (declared implicitly)
+    static_assert(__builtin_bcmp(ks00feff, ks00fe00, 99) != 0);
+                  ^
+
+"SemaCXX/constexpr-string.cpp", line 168: error: expression must have a constant value
+    static_assert(__builtin_bcmp(ks00fe00, ks00feff, 99) != 0);
+                  ^
+"SemaCXX/constexpr-string.cpp", line 168: note: cannot call non-constexpr function "__builtin_bcmp" (declared implicitly)
+    static_assert(__builtin_bcmp(ks00fe00, ks00feff, 99) != 0);
+                  ^
+
+"SemaCXX/constexpr-string.cpp", line 175: error: expression must have a constant value
+    static_assert(sizeof(bool) != 1u || __builtin_bcmp(ks00fe00, kb000100.bb, 1) == 0); // expected-error {{constant}} expected-note {{not supported}}
+                  ^
+"SemaCXX/constexpr-string.cpp", line 175: note: cannot call non-constexpr function "__builtin_bcmp" (declared implicitly)
+    static_assert(sizeof(bool) != 1u || __builtin_bcmp(ks00fe00, kb000100.bb, 1) == 0); // expected-error {{constant}} expected-note {{not supported}}
+                                        ^
+
+"SemaCXX/constexpr-string.cpp", line 176: error: expression must have a constant value
+    static_assert(sizeof(bool) != 1u || __builtin_bcmp(ks00fe00, kb000100.bb, 2) != 0); // expected-error {{constant}} expected-note {{not supported}}
+                  ^
+"SemaCXX/constexpr-string.cpp", line 176: note: cannot call non-constexpr function "__builtin_bcmp" (declared implicitly)
+    static_assert(sizeof(bool) != 1u || __builtin_bcmp(ks00fe00, kb000100.bb, 2) != 0); // expected-error {{constant}} expected-note {{not supported}}
+                                        ^
+
+"SemaCXX/constexpr-string.cpp", line 195: error: expression must have a constant value
+    static_assert(__builtin_memcmp(ksl, kuSizeofLong(), 2*sizeof(long) + 1) == 42); // expected-error {{constant}} expected-note {{not supported}}
+                  ^
+"SemaCXX/constexpr-string.cpp", line 195: note: attempt to read past the end of the object
+    static_assert(__builtin_memcmp(ksl, kuSizeofLong(), 2*sizeof(long) + 1) == 42); // expected-error {{constant}} expected-note {{not supported}}
+                                   ^
+
+"SemaCXX/constexpr-string.cpp", line 198: error: expression must have a constant value
+    static_assert(__builtin_memcmp(ksl + 1, kuSizeofLong() + 1, sizeof(long) + 1) == 42); // expected-error {{constant}} expected-note {{not supported}}
+                  ^
+"SemaCXX/constexpr-string.cpp", line 198: note: attempt to read past the end of the object
+    static_assert(__builtin_memcmp(ksl + 1, kuSizeofLong() + 1, sizeof(long) + 1) == 42); // expected-error {{constant}} expected-note {{not supported}}
+                                   ^
+
+"SemaCXX/constexpr-string.cpp", line 200: error: expression must have a constant value
+    static_assert(__builtin_bcmp(ksl, kuSizeofLong(), sizeof(long) - 1) == 0); // expected-error {{constant}} expected-note {{not supported}}
+                  ^
+"SemaCXX/constexpr-string.cpp", line 200: note: cannot call non-constexpr function "__builtin_bcmp" (declared implicitly)
+    static_assert(__builtin_bcmp(ksl, kuSizeofLong(), sizeof(long) - 1) == 0); // expected-error {{constant}} expected-note {{not supported}}
+                  ^
+
+"SemaCXX/constexpr-string.cpp", line 201: error: expression must have a constant value
+    static_assert(__builtin_bcmp(ksl, kuSizeofLong(), sizeof(long) + 0) == 0); // expected-error {{constant}} expected-note {{not supported}}
+                  ^
+"SemaCXX/constexpr-string.cpp", line 201: note: cannot call non-constexpr function "__builtin_bcmp" (declared implicitly)
+    static_assert(__builtin_bcmp(ksl, kuSizeofLong(), sizeof(long) + 0) == 0); // expected-error {{constant}} expected-note {{not supported}}
+                  ^
+
+"SemaCXX/constexpr-string.cpp", line 202: error: expression must have a constant value
+    static_assert(__builtin_bcmp(ksl, kuSizeofLong(), sizeof(long) + 1) == 0); // expected-error {{constant}} expected-note {{not supported}}
+                  ^
+"SemaCXX/constexpr-string.cpp", line 202: note: cannot call non-constexpr function "__builtin_bcmp" (declared implicitly)
+    static_assert(__builtin_bcmp(ksl, kuSizeofLong(), sizeof(long) + 1) == 0); // expected-error {{constant}} expected-note {{not supported}}
+                  ^
+
+"SemaCXX/constexpr-string.cpp", line 203: error: expression must have a constant value
+    static_assert(__builtin_bcmp(ksl, kuSizeofLong(), 2*sizeof(long) - 1) == 0); // expected-error {{constant}} expected-note {{not supported}}
+                  ^
+"SemaCXX/constexpr-string.cpp", line 203: note: cannot call non-constexpr function "__builtin_bcmp" (declared implicitly)
+    static_assert(__builtin_bcmp(ksl, kuSizeofLong(), 2*sizeof(long) - 1) == 0); // expected-error {{constant}} expected-note {{not supported}}
+                  ^
+
+"SemaCXX/constexpr-string.cpp", line 204: error: expression must have a constant value
+    static_assert(__builtin_bcmp(ksl, kuSizeofLong(), 2*sizeof(long) + 0) == 0); // expected-error {{constant}} expected-note {{not supported}}
+                  ^
+"SemaCXX/constexpr-string.cpp", line 204: note: cannot call non-constexpr function "__builtin_bcmp" (declared implicitly)
+    static_assert(__builtin_bcmp(ksl, kuSizeofLong(), 2*sizeof(long) + 0) == 0); // expected-error {{constant}} expected-note {{not supported}}
+                  ^
+
+"SemaCXX/constexpr-string.cpp", line 205: error: expression must have a constant value
+    static_assert(__builtin_bcmp(ksl, kuSizeofLong(), 2*sizeof(long) + 1) == 42); // expected-error {{constant}} expected-note {{not supported}}
+                  ^
+"SemaCXX/constexpr-string.cpp", line 205: note: cannot call non-constexpr function "__builtin_bcmp" (declared implicitly)
+    static_assert(__builtin_bcmp(ksl, kuSizeofLong(), 2*sizeof(long) + 1) == 42); // expected-error {{constant}} expected-note {{not supported}}
+                  ^
+
+"SemaCXX/constexpr-string.cpp", line 206: error: expression must have a constant value
+    static_assert(__builtin_bcmp(ksl + 1, kuSizeofLong() + 1, sizeof(long) - 1) == 0); // expected-error {{constant}} expected-note {{not supported}}
+                  ^
+"SemaCXX/constexpr-string.cpp", line 206: note: cannot call non-constexpr function "__builtin_bcmp" (declared implicitly)
+    static_assert(__builtin_bcmp(ksl + 1, kuSizeofLong() + 1, sizeof(long) - 1) == 0); // expected-error {{constant}} expected-note {{not supported}}
+                  ^
+
+"SemaCXX/constexpr-string.cpp", line 207: error: expression must have a constant value
+    static_assert(__builtin_bcmp(ksl + 1, kuSizeofLong() + 1, sizeof(long) + 0) == 0); // expected-error {{constant}} expected-note {{not supported}}
+                  ^
+"SemaCXX/constexpr-string.cpp", line 207: note: cannot call non-constexpr function "__builtin_bcmp" (declared implicitly)
+    static_assert(__builtin_bcmp(ksl + 1, kuSizeofLong() + 1, sizeof(long) + 0) == 0); // expected-error {{constant}} expected-note {{not supported}}
+                  ^
+
+"SemaCXX/constexpr-string.cpp", line 208: error: expression must have a constant value
+    static_assert(__builtin_bcmp(ksl + 1, kuSizeofLong() + 1, sizeof(long) + 1) == 42); // expected-error {{constant}} expected-note {{not supported}}
+                  ^
+"SemaCXX/constexpr-string.cpp", line 208: note: cannot call non-constexpr function "__builtin_bcmp" (declared implicitly)
+    static_assert(__builtin_bcmp(ksl + 1, kuSizeofLong() + 1, sizeof(long) + 1) == 42); // expected-error {{constant}} expected-note {{not supported}}
+                  ^
+
+"SemaCXX/constexpr-string.cpp", line 210: error: expression must have a constant value
+    constexpr int a = strcmp("hello", "world"); // expected-error {{constant expression}} expected-note {{non-constexpr function 'strcmp' cannot be used in a constant expression}}
+                      ^
+"SemaCXX/constexpr-string.cpp", line 210: note: cannot call non-constexpr function "strcmp" (declared at line 14 of "/usr/include/string.h")
+    constexpr int a = strcmp("hello", "world"); // expected-error {{constant expression}} expected-note {{non-constexpr function 'strcmp' cannot be used in a constant expression}}
+                      ^
+
+"SemaCXX/constexpr-string.cpp", line 211: error: expression must have a constant value
+    constexpr int b = strncmp("hello", "world", 3); // expected-error {{constant expression}} expected-note {{non-constexpr function 'strncmp' cannot be used in a constant expression}}
+                      ^
+"SemaCXX/constexpr-string.cpp", line 211: note: cannot call non-constexpr function "strncmp" (declared at line 15 of "/usr/include/string.h")
+    constexpr int b = strncmp("hello", "world", 3); // expected-error {{constant expression}} expected-note {{non-constexpr function 'strncmp' cannot be used in a constant expression}}
+                      ^
+
+"SemaCXX/constexpr-string.cpp", line 212: error: expression must have a constant value
+    constexpr int c = memcmp("hello", "world", 3); // expected-error {{constant expression}} expected-note {{non-constexpr function 'memcmp' cannot be used in a constant expression}}
+                      ^
+"SemaCXX/constexpr-string.cpp", line 212: note: cannot call non-constexpr function "memcmp" (declared at line 16 of "/usr/include/string.h")
+    constexpr int c = memcmp("hello", "world", 3); // expected-error {{constant expression}} expected-note {{non-constexpr function 'memcmp' cannot be used in a constant expression}}
+                      ^
+
+"SemaCXX/constexpr-string.cpp", line 215: error: expression must have a constant value
+    constexpr int d = bcmp("hello", "world", 3); // expected-error {{constant expression}} expected-note {{non-constexpr function 'bcmp' cannot be used in a constant expression}}
+                      ^
+"SemaCXX/constexpr-string.cpp", line 215: note: cannot call non-constexpr function "bcmp" (declared at line 19 of "/usr/include/string.h")
+    constexpr int d = bcmp("hello", "world", 3); // expected-error {{constant expression}} expected-note {{non-constexpr function 'bcmp' cannot be used in a constant expression}}
+                      ^
+
+"SemaCXX/constexpr-string.cpp", line 248: warning: variable "chk" was declared but never referenced
+    decltype(static_cast<FoldResultKind *>(foldResult(c, n, e))) *chk{};
+                                                                  ^
+
+"SemaCXX/constexpr-string.cpp", line 318: error: expression must have a constant value
+    static_assert(__builtin_wcscmp(0, L"abab") == 0); // expected-error {{not an integral constant}} expected-note {{dereferenced null}}
+                  ^
+"SemaCXX/constexpr-string.cpp", line 318: note: attempt to dereference a null pointer
+    static_assert(__builtin_wcscmp(0, L"abab") == 0); // expected-error {{not an integral constant}} expected-note {{dereferenced null}}
+                                   ^
+
+"SemaCXX/constexpr-string.cpp", line 319: error: expression must have a constant value
+    static_assert(__builtin_wcscmp(L"abab", 0) == 0); // expected-error {{not an integral constant}} expected-note {{dereferenced null}}
+                  ^
+"SemaCXX/constexpr-string.cpp", line 319: note: attempt to dereference a null pointer
+    static_assert(__builtin_wcscmp(L"abab", 0) == 0); // expected-error {{not an integral constant}} expected-note {{dereferenced null}}
+                                            ^
+
+"SemaCXX/constexpr-string.cpp", line 340: error: expression must have a constant value
+    static_assert(__builtin_wcsncmp(kFoobar, kFoobazfoobar + 6, 7) == 0); // expected-error {{not an integral constant}} expected-note {{dereferenced one-past-the-end}}
+                  ^
+"SemaCXX/constexpr-string.cpp", line 340: note: attempt to read past the end of the object
+    static_assert(__builtin_wcsncmp(kFoobar, kFoobazfoobar + 6, 7) == 0); // expected-error {{not an integral constant}} expected-note {{dereferenced one-past-the-end}}
+                                    ^
+
+"SemaCXX/constexpr-string.cpp", line 349: error: expression must have a constant value
+    static_assert(__builtin_wmemcmp(L"abab\0banana", L"abab\0banana", 100) == 0); // expected-error {{not an integral constant}} expected-note {{dereferenced one-past-the-end}}
+                  ^
+"SemaCXX/constexpr-string.cpp", line 349: note: attempt to read past the end of the object
+    static_assert(__builtin_wmemcmp(L"abab\0banana", L"abab\0banana", 100) == 0); // expected-error {{not an integral constant}} expected-note {{dereferenced one-past-the-end}}
+                                    ^
+
+"SemaCXX/constexpr-string.cpp", line 355: error: expression must have a constant value
+    constexpr int a = wcscmp(L"hello", L"world"); // expected-error {{constant expression}} expected-note {{non-constexpr function 'wcscmp' cannot be used in a constant expression}}
+                      ^
+"SemaCXX/constexpr-string.cpp", line 355: note: cannot call non-constexpr function "wcscmp" (declared at line 33 of "/usr/include/wchar.h")
+    constexpr int a = wcscmp(L"hello", L"world"); // expected-error {{constant expression}} expected-note {{non-constexpr function 'wcscmp' cannot be used in a constant expression}}
+                      ^
+
+"SemaCXX/constexpr-string.cpp", line 356: error: expression must have a constant value
+    constexpr int b = wcsncmp(L"hello", L"world", 3); // expected-error {{constant expression}} expected-note {{non-constexpr function 'wcsncmp' cannot be used in a constant expression}}
+                      ^
+"SemaCXX/constexpr-string.cpp", line 356: note: cannot call non-constexpr function "wcsncmp" (declared at line 34 of "/usr/include/wchar.h")
+    constexpr int b = wcsncmp(L"hello", L"world", 3); // expected-error {{constant expression}} expected-note {{non-constexpr function 'wcsncmp' cannot be used in a constant expression}}
+                      ^
+
+"SemaCXX/constexpr-string.cpp", line 357: error: expression must have a constant value
+    constexpr int c = wmemcmp(L"hello", L"world", 3); // expected-error {{constant expression}} expected-note {{non-constexpr function 'wmemcmp' cannot be used in a constant expression}}
+                      ^
+"SemaCXX/constexpr-string.cpp", line 357: note: cannot call non-constexpr function "wmemcmp" (declared at line 35 of "/usr/include/wchar.h")
+    constexpr int c = wmemcmp(L"hello", L"world", 3); // expected-error {{constant expression}} expected-note {{non-constexpr function 'wmemcmp' cannot be used in a constant expression}}
+                      ^
+
+"SemaCXX/constexpr-string.cpp", line 375: error: expression must have a constant value
+    static_assert(__builtin_strchr(kFoo, 'x') == nullptr); // expected-error {{not an integral constant}} expected-note {{dereferenced one-past-the-end}}
+                  ^
+"SemaCXX/constexpr-string.cpp", line 375: note: not a null-terminated string
+    static_assert(__builtin_strchr(kFoo, 'x') == nullptr); // expected-error {{not an integral constant}} expected-note {{dereferenced one-past-the-end}}
+                                   ^
+
+"SemaCXX/constexpr-string.cpp", line 376: error: expression must have a constant value
+    static_assert(__builtin_strchr(nullptr, 'x') == nullptr); // expected-error {{not an integral constant}} expected-note {{dereferenced null}}
+                  ^
+"SemaCXX/constexpr-string.cpp", line 376: note: attempt to dereference a null pointer
+    static_assert(__builtin_strchr(nullptr, 'x') == nullptr); // expected-error {{not an integral constant}} expected-note {{dereferenced null}}
+                                   ^
+
+"SemaCXX/constexpr-string.cpp", line 383: error: static assertion failed
+    static_assert(__builtin_memchr(kStr, '\xff' + 256, 8) == kStr + 4);
+    ^
+
+"SemaCXX/constexpr-string.cpp", line 384: error: static assertion failed
+    static_assert(__builtin_memchr(kStr, '\xff' - 256, 8) == kStr + 4);
+    ^
+
+"SemaCXX/constexpr-string.cpp", line 386: error: expression must have a constant value
+    static_assert(__builtin_memchr(kFoo, 'x', 4) == nullptr); // expected-error {{not an integral constant}} expected-note {{dereferenced one-past-the-end}}
+                  ^
+"SemaCXX/constexpr-string.cpp", line 386: note: attempt to read past the end of the object
+    static_assert(__builtin_memchr(kFoo, 'x', 4) == nullptr); // expected-error {{not an integral constant}} expected-note {{dereferenced one-past-the-end}}
+                                   ^
+
+"SemaCXX/constexpr-string.cpp", line 387: error: expression must have a constant value
+    static_assert(__builtin_memchr(nullptr, 'x', 3) == nullptr); // expected-error {{not an integral constant}} expected-note {{dereferenced null}}
+                  ^
+"SemaCXX/constexpr-string.cpp", line 387: note: attempt to dereference a null pointer
+    static_assert(__builtin_memchr(nullptr, 'x', 3) == nullptr); // expected-error {{not an integral constant}} expected-note {{dereferenced null}}
+                                   ^
+
+"SemaCXX/constexpr-string.cpp", line 388: error: expression must have a constant value
+    static_assert(__builtin_memchr(nullptr, 'x', 0) == nullptr); // FIXME: Should we reject this?
+                  ^
+"SemaCXX/constexpr-string.cpp", line 388: note: attempt to dereference a null pointer
+    static_assert(__builtin_memchr(nullptr, 'x', 0) == nullptr); // FIXME: Should we reject this?
+                                   ^
+
+"SemaCXX/constexpr-string.cpp", line 397: error: static assertion failed
+    static_assert(__builtin_memchr(kU8Str, u8'\xff' + 256, 8) == kU8Str + 4);
+    ^
+
+"SemaCXX/constexpr-string.cpp", line 398: error: static assertion failed
+    static_assert(__builtin_memchr(kU8Str, u8'\xff' - 256, 8) == kU8Str + 4);
+    ^
+
+"SemaCXX/constexpr-string.cpp", line 400: error: expression must have a constant value
+    static_assert(__builtin_memchr(kU8Foo, u8'x', 4) == nullptr); // expected-error {{not an integral constant}} expected-note {{dereferenced one-past-the-end}}
+                  ^
+"SemaCXX/constexpr-string.cpp", line 400: note: attempt to read past the end of the object
+    static_assert(__builtin_memchr(kU8Foo, u8'x', 4) == nullptr); // expected-error {{not an integral constant}} expected-note {{dereferenced one-past-the-end}}
+                                   ^
+
+"SemaCXX/constexpr-string.cpp", line 401: error: expression must have a constant value
+    static_assert(__builtin_memchr(nullptr, u8'x', 3) == nullptr); // expected-error {{not an integral constant}} expected-note {{dereferenced null}}
+                  ^
+"SemaCXX/constexpr-string.cpp", line 401: note: attempt to dereference a null pointer
+    static_assert(__builtin_memchr(nullptr, u8'x', 3) == nullptr); // expected-error {{not an integral constant}} expected-note {{dereferenced null}}
+                                   ^
+
+"SemaCXX/constexpr-string.cpp", line 402: error: expression must have a constant value
+    static_assert(__builtin_memchr(nullptr, u8'x', 0) == nullptr); // FIXME: Should we reject this?
+                  ^
+"SemaCXX/constexpr-string.cpp", line 402: note: attempt to dereference a null pointer
+    static_assert(__builtin_memchr(nullptr, u8'x', 0) == nullptr); // FIXME: Should we reject this?
+                                   ^
+
+"SemaCXX/constexpr-string.cpp", line 405: error: expression must have a constant value
+    static_assert(__builtin_memchr(&incomplete, 0, 0u) == nullptr);
+                  ^
+"SemaCXX/constexpr-string.cpp", line 405: note: attempt to access run-time storage
+    static_assert(__builtin_memchr(&incomplete, 0, 0u) == nullptr);
+                                   ^
+
+"SemaCXX/constexpr-string.cpp", line 406: error: expression must have a constant value
+    static_assert(__builtin_memchr(&incomplete, 0, 1u) == nullptr); // expected-error {{not an integral constant}} expected-note {{read of incomplete type 'struct Incomplete'}}
+                  ^
+"SemaCXX/constexpr-string.cpp", line 406: note: attempt to access run-time storage
+    static_assert(__builtin_memchr(&incomplete, 0, 1u) == nullptr); // expected-error {{not an integral constant}} expected-note {{read of incomplete type 'struct Incomplete'}}
+                                   ^
+
+Segmentation fault
+eccp: front end returned an exit status of 139

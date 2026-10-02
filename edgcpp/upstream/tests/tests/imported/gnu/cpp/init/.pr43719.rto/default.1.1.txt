@@ -1,0 +1,78 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 122: error: variable "a1" has an uninitialized const or reference member
+    A1 a1; // { dg-error "uninitialized const member|deleted" }
+       ^
+
+"Test_name.c", line 122: warning: variable "a1" was declared but never referenced
+    A1 a1; // { dg-error "uninitialized const member|deleted" }
+       ^
+
+"Test_name.c", line 127: error: variable "a2" has an uninitialized const or reference member
+    A2 a2; // { dg-error "uninitialized const member|deleted" }
+       ^
+
+"Test_name.c", line 132: error: the default constructor of "A3" cannot be referenced -- it is a deleted function
+    A3 a3; // { dg-error "uninitialized reference member|deleted" }
+       ^
+
+"Test_name.c", line 137: error: the default constructor of "A4" cannot be referenced -- it is a deleted function
+    A4 a4; // { dg-error "uninitialized reference member|deleted" }
+       ^
+
+"Test_name.c", line 142: error: the default constructor of "A5" cannot be referenced -- it is a deleted function
+    A5 a5; // { dg-error "uninitialized reference member|uninitialized const member|deleted" }
+       ^
+
+"Test_name.c", line 147: error: variable "s" has an uninitialized const or reference member
+    S1<int> s; // { dg-error "uninitialized const member|deleted" }
+            ^
+
+"Test_name.c", line 147: warning: variable "s" was declared but never referenced
+    S1<int> s; // { dg-error "uninitialized const member|deleted" }
+            ^
+
+"Test_name.c", line 152: error: variable "s" has an uninitialized const or reference member
+    S2<int> s; // { dg-error "uninitialized const member|deleted" }
+            ^
+
+"Test_name.c", line 157: error: the default constructor of "S3<int>" cannot be referenced -- it is a deleted function
+    S3<int> s; // { dg-error "uninitialized reference member|deleted" }
+            ^
+
+"Test_name.c", line 162: error: the default constructor of "S4<int>" cannot be referenced -- it is a deleted function
+    S4<int> s; // { dg-error "uninitialized reference member|uninitialized const member|deleted" }
+            ^
+
+"Test_name.c", line 172: error: variable "a" has an uninitialized const or reference member
+    A1 a[ 1 ]; // { dg-error "uninitialized const member|deleted" }
+       ^
+
+"Test_name.c", line 172: warning: variable "a" was declared but never referenced
+    A1 a[ 1 ]; // { dg-error "uninitialized const member|deleted" }
+       ^
+
+"Test_name.c", line 177: error: the default constructor of "A3" cannot be referenced -- it is a deleted function
+    A3 a[ 1 ]; // { dg-error "uninitialized reference member|deleted" }
+       ^
+
+"Test_name.c", line 182: error: the default constructor of "Y1" cannot be referenced -- it is a deleted function
+    Y1 y1; // { dg-error "uninitialized const member|deleted" }
+       ^
+
+"Test_name.c", line 187: error: the default constructor of "Y2" cannot be referenced -- it is a deleted function
+    Y2 y2; // { dg-error "uninitialized reference member|deleted" }
+       ^
+
+"Test_name.c", line 192: error: the default constructor of "Z" cannot be referenced -- it is a deleted function
+    Z z; // { dg-error "uninitialized reference member|uninitialized const member|deleted" }
+      ^
+
+"Test_name.c", line 197: error: variable "u" has an uninitialized const or reference member
+    U u; // { dg-error "uninitialized const member|deleted" }
+      ^
+
+"Test_name.c", line 197: warning: variable "u" was declared but never referenced
+    U u; // { dg-error "uninitialized const member|deleted" }
+      ^
+
+15 errors detected in the compilation of "Test_name.c".

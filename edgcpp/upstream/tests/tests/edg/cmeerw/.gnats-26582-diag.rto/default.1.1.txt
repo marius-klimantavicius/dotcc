@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --ms_c++20 --microsoft_version 1936 Test_name.c
+"Test_name.c", line 11: error: the template argument list of the partial specialization includes a nontype argument whose type depends on a template parameter
+    struct C<T, 1>;               // error
+           ^
+
+"Test_name.c", line 23: error: the template argument list of the partial specialization includes a nontype argument whose type depends on a template parameter
+    struct C<T, T, 1>;            // error
+           ^
+
+"Test_name.c", line 35: error: the template argument list of the partial specialization includes a nontype argument whose type depends on a template parameter
+    struct C<T, T, 1>;            // error (GCC and MSVC don't diagnose)
+           ^
+
+"Test_name.c", line 47: error: the template argument list of the partial specialization includes a nontype argument whose type depends on a template parameter
+    struct C<T, sizeof(T)>;       // error
+           ^
+
+4 errors detected in the compilation of "Test_name.c".

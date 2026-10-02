@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 -DWARN Test_name.c
+"Test_name.c", line 67: warning: function "UndefButUsed<T>::f [with T=int]" was referenced but not defined
+    static inline int f();
+                      ^
+
+"Test_name.c", line 67: warning: function "UndefButUsed<T>::f [with T=float]" was referenced but not defined
+    static inline int f();
+                      ^
+
+"Test_name.c", line 67: warning: function "UndefButUsed<T>::f [with T=char]" was referenced but not defined
+    static inline int f();
+                      ^
+
+"Test_name.c", line 67: warning: function "UndefButUsed<T>::f [with T=void]" was referenced but not defined
+    static inline int f();
+                      ^
+

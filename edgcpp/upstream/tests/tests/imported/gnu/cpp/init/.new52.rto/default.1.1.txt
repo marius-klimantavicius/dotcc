@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: error: invalid combination of type specifiers
+  		   void void **p) noexcept // { dg-error "two or more" }
+  		        ^
+
+"Test_name.c", line 15: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned long, int *)
+      new (&y) int(x);
+      ^
+"Test_name.c", line 7: note: function "operator new(size_t, <error-type> **)" does not match because argument #2 does not match parameter
+  void* operator new(size_t, // { dg-bogus "first parameter" "" { xfail *-*-* } }
+        ^
+Note: number of parameters of function "operator new(unsigned long)" does not match the call
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --exceptions --exceptions Test_name.c
+"Test_name.c", line 11: error: incomplete type "void" is not allowed
+  void ic1() throw(void); // expected-error {{incomplete type 'void' is not allowed in exception specification}}
+                   ^
+
+"Test_name.c", line 11: error: dynamic exception specifications are not permitted in this mode
+  void ic1() throw(void); // expected-error {{incomplete type 'void' is not allowed in exception specification}}
+             ^
+
+"Test_name.c", line 12: error: dynamic exception specifications are not permitted in this mode
+  void ic2() throw(Incomplete); // expected-error {{incomplete type 'Incomplete' is not allowed in exception specification}}
+             ^
+
+"Test_name.c", line 13: error: dynamic exception specifications are not permitted in this mode
+  void ic3() throw(void*);
+             ^
+
+"Test_name.c", line 14: error: dynamic exception specifications are not permitted in this mode
+  void ic4() throw(Incomplete*); // expected-error {{pointer to incomplete type 'Incomplete' is not allowed in exception specification}}
+             ^
+
+"Test_name.c", line 15: error: dynamic exception specifications are not permitted in this mode
+  void ic5() throw(Incomplete&); // expected-error {{reference to incomplete type 'Incomplete' is not allowed in exception specification}}
+             ^
+
+"Test_name.c", line 20: error: dynamic exception specifications are not permitted in this mode
+  void tf() throw(TEx<int>); // expected-error {{implicit instantiation of undefined template}}
+            ^
+
+"Test_name.c", line 24: error: dynamic exception specifications are not permitted in this mode
+     void f() throw(DR437);
+              ^
+
+"Test_name.c", line 25: error: dynamic exception specifications are not permitted in this mode
+     void g() throw(DR437*);
+              ^
+
+"Test_name.c", line 26: error: dynamic exception specifications are not permitted in this mode
+     void h() throw(DR437&);
+              ^
+
+"Test_name.c", line 32: error: dynamic exception specifications are not permitted in this mode
+        void f() throw(DR437_out);
+                 ^
+
+"Test_name.c", line 33: error: dynamic exception specifications are not permitted in this mode
+        void g() throw(DR437_out*);
+                 ^
+
+"Test_name.c", line 34: error: dynamic exception specifications are not permitted in this mode
+        void h() throw(DR437_out&);
+                 ^
+
+13 errors detected in the compilation of "Test_name.c".

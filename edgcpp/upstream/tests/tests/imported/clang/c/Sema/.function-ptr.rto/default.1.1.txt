@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 8: warning: a value of type "void *" cannot be assigned to an entity of type "unary_int_func *" (aka "int (*)(int)")
+   func = p; // expected-warning {{converts between void pointer and function pointer}}
+        ^
+
+"Test_name.c", line 11: warning: return value type does not match the function type
+   return p; // expected-warning {{converts between void pointer and function pointer}}
+          ^
+

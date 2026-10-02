@@ -1,0 +1,9 @@
+cpfe -DTEST_NUMBER=2 -r -x -tused Test_name.c
+"Test_name.c", line 5: warning: in-class initializer for nonstatic member is nonstandard
+        const int size = 10 ;
+                       ^
+
+"Test_name.c", line 9: warning: expression has no effect
+        Foo::size;
+        ^
+

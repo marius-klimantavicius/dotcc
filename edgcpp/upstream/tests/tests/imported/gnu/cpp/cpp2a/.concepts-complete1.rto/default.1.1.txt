@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 18: error: static assertion failed
+  static_assert (sizeof (f<A>()) > 1); // { dg-error "assert" }
+  ^
+"Test_name.c", line 18: note: the final comparison was 1 > 1
+  static_assert (sizeof (f<A>()) > 1); // { dg-error "assert" }
+                                 ^
+
+"Test_name.c", line 20: error: static assertion failed
+  static_assert (sizeof (f<A>()) > 1);
+  ^
+"Test_name.c", line 20: note: the final comparison was 1 > 1
+  static_assert (sizeof (f<A>()) > 1);
+                                 ^
+
+2 errors detected in the compilation of "Test_name.c".

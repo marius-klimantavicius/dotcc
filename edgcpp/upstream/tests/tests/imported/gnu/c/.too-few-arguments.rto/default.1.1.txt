@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 11: error: too few arguments in function call
+    fn_b ();  /* { dg-error "too few arguments to function '\[^\n\r\]*'; expected 1, have 0" } */
+          ^
+
+"Test_name.c", line 12: error: too few arguments in function call
+    fn_c (42);/* { dg-error "too few arguments to function '\[^\n\r\]*'; expected 2, have 1" } */
+            ^
+
+"Test_name.c", line 13: error: too few arguments in function call
+    fn_f ();  /* { dg-error "too few arguments to function '\[^\n\r\]*'; expected at least 1, have 0" } */
+          ^
+
+"Test_name.c", line 27: error: too few arguments in function call
+    f->callback_b (); /* { dg-error "too few arguments to function 'f->callback_b'; expected 1, have 0" } */
+                   ^
+
+"Test_name.c", line 29: error: too few arguments in function call
+    f->callback_c (42); /* { dg-error "too few arguments to function 'f->callback_c'; expected 2, have 1" } */
+                     ^
+
+5 errors detected in the compilation of "Test_name.c".

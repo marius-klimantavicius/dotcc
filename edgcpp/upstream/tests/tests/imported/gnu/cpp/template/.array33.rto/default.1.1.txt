@@ -1,0 +1,65 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 28: error: template instantiation resulted in unexpected function type of "void (const char *)" (the meaning of a name may have changed since the template declaration -- the type of the template is "void (T)")
+  SA(__is_same(decltype(foo1<char[]>), void(const char*)));
+  ^
+          detected during instantiation of "foo1" based on template argument <char []> at line 28
+
+"Test_name.c", line 28: error: static assertion failed with "__is_same(decltype(foo1<char[]>), void(const char*))"
+  SA(__is_same(decltype(foo1<char[]>), void(const char*)));
+  ^
+
+"Test_name.c", line 30: error: template instantiation resulted in unexpected function type of "void (const volatile char *)" (the meaning of a name may have changed since the template declaration -- the type of the template is "void (T)")
+  SA(__is_same(decltype(foo1<volatile char[]>), void(const volatile char*)));
+  ^
+          detected during instantiation of "foo1" based on template argument <volatile char []> at line 30
+
+"Test_name.c", line 30: error: static assertion failed with "__is_same(decltype(foo1<volatile char[]>), void(const volatile char*))"
+  SA(__is_same(decltype(foo1<volatile char[]>), void(const volatile char*)));
+  ^
+
+"Test_name.c", line 33: error: template instantiation resulted in unexpected function type of "void (volatile char *)" (the meaning of a name may have changed since the template declaration -- the type of the template is "void (T)")
+  SA(__is_same(decltype(foo2<char[]>), void(volatile char*)));
+  ^
+          detected during instantiation of "foo2" based on template argument <char []> at line 33
+
+"Test_name.c", line 33: error: static assertion failed with "__is_same(decltype(foo2<char[]>), void(volatile char*))"
+  SA(__is_same(decltype(foo2<char[]>), void(volatile char*)));
+  ^
+
+"Test_name.c", line 34: error: template instantiation resulted in unexpected function type of "void (const volatile char *)" (the meaning of a name may have changed since the template declaration -- the type of the template is "void (T)")
+  SA(__is_same(decltype(foo2<const char[]>), void(const volatile char*)));
+  ^
+          detected during instantiation of "foo2" based on template argument <const char []> at line 34
+
+"Test_name.c", line 34: error: static assertion failed with "__is_same(decltype(foo2<const char[]>), void(const volatile char*))"
+  SA(__is_same(decltype(foo2<const char[]>), void(const volatile char*)));
+  ^
+
+"Test_name.c", line 38: error: template instantiation resulted in unexpected function type of "void (const volatile char *)" (the meaning of a name may have changed since the template declaration -- the type of the template is "void (T)")
+  SA(__is_same(decltype(foo3<char[]>), void(const volatile char*)));
+  ^
+          detected during instantiation of "foo3" based on template argument <char []> at line 38
+
+"Test_name.c", line 38: error: static assertion failed with "__is_same(decltype(foo3<char[]>), void(const volatile char*))"
+  SA(__is_same(decltype(foo3<char[]>), void(const volatile char*)));
+  ^
+
+"Test_name.c", line 39: error: template instantiation resulted in unexpected function type of "void (const volatile char *)" (the meaning of a name may have changed since the template declaration -- the type of the template is "void (T)")
+  SA(__is_same(decltype(foo3<const char[]>), void(const volatile char*)));
+  ^
+          detected during instantiation of "foo3" based on template argument <const char []> at line 39
+
+"Test_name.c", line 39: error: static assertion failed with "__is_same(decltype(foo3<const char[]>), void(const volatile char*))"
+  SA(__is_same(decltype(foo3<const char[]>), void(const volatile char*)));
+  ^
+
+"Test_name.c", line 40: error: template instantiation resulted in unexpected function type of "void (const volatile char *)" (the meaning of a name may have changed since the template declaration -- the type of the template is "void (T)")
+  SA(__is_same(decltype(foo3<volatile char[]>), void(const volatile char*)));
+  ^
+          detected during instantiation of "foo3" based on template argument <volatile char []> at line 40
+
+"Test_name.c", line 40: error: static assertion failed with "__is_same(decltype(foo3<volatile char[]>), void(const volatile char*))"
+  SA(__is_same(decltype(foo3<volatile char[]>), void(const volatile char*)));
+  ^
+
+14 errors detected in the compilation of "Test_name.c".

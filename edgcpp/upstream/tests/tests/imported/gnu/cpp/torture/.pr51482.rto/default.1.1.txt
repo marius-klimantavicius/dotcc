@@ -1,0 +1,45 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 23: warning: variable "p_p0" is used before its value is set
+    g1.x = (p_p1->x - p_p0->x)*bp1;
+                      ^
+
+"Test_name.c", line 23: warning: variable "p_p1" is used before its value is set
+    g1.x = (p_p1->x - p_p0->x)*bp1;
+            ^
+
+"Test_name.c", line 23: warning: variable "bp1" is used before its value is set
+    g1.x = (p_p1->x - p_p0->x)*bp1;
+                               ^
+
+"Test_name.c", line 27: warning: variable "continuity" is used before its value is set
+    bp1 = (0.5f + key_class*0.5f*continuity);
+                                 ^
+
+"Test_name.c", line 28: warning: variable "g3" is used before its value is set
+    p_tn->x = (g1.x + g3.x*bp1)*tn1;
+                      ^
+
+"Test_name.c", line 28: warning: variable "tn1" is used before its value is set
+    p_tn->x = (g1.x + g3.x*bp1)*tn1;
+                                ^
+
+"Test_name.c", line 21: warning: variable "bias" was declared but never referenced
+    float bias,continuity,tension,tn1,bp1;
+          ^
+
+"Test_name.c", line 21: warning: variable "tension" was declared but never referenced
+    float bias,continuity,tension,tn1,bp1;
+                          ^
+
+"Test_name.c", line 22: warning: variable "p_p2" was declared but never referenced
+    WVECT *p_p0,*p_p1,*p_p2,         t1,         g1,g2,g3;
+                       ^
+
+"Test_name.c", line 22: warning: variable "t1" was declared but never referenced
+    WVECT *p_p0,*p_p1,*p_p2,         t1,         g1,g2,g3;
+                                     ^
+
+"Test_name.c", line 22: warning: variable "g2" was declared but never referenced
+    WVECT *p_p0,*p_p1,*p_p2,         t1,         g1,g2,g3;
+                                                    ^
+

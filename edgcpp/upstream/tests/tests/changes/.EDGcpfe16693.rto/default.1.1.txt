@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --g++ --c++14 Test_name.c
+"Test_name.c", line 14: warning: attributes are not allowed here
+  template <class T> [[deprecated]] class A {};
+                     ^
+
+"Test_name.c", line 15: warning: attributes are not allowed here
+  template <class T> __attribute((deprecated)) class B {};
+                     ^
+
+"Test_name.c", line 17: warning: attributes are not allowed here
+    template <class T> friend [[deprecated]] class Y;
+                              ^
+
+"Test_name.c", line 18: warning: attributes are not allowed here
+    template <class T> friend __attribute((deprecated)) class Z;
+                              ^
+

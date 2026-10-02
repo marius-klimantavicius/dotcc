@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 26: warning: argument of type "void (*)(void)" is incompatible with parameter of type "int"
+    vvinit((vvec *) &mgpssort, mgpssort_1);
+                               ^
+
+"Test_name.c", line 27: warning: argument of type "void (*)(void)" is incompatible with parameter of type "int"
+    vvneeds((vvec *) &mgpssort, mgpssort_1);
+                                ^
+

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 -w Test_name.c
+"Test_name.c", line 19: error: expression must have a constant value
+  static_assert (f (duration < 0 >::min (), duration < 0 > ()), ""); // { dg-error "non-constant|before its definition" }
+                 ^
+"Test_name.c", line 19: note: constexpr function "duration<<unnamed>>::min [with <unnamed>=0]" (declared at line 10) is not defined
+  static_assert (f (duration < 0 >::min (), duration < 0 > ()), ""); // { dg-error "non-constant|before its definition" }
+                                    ^
+
+1 error detected in the compilation of "Test_name.c".

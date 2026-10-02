@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c++11 --g++ Test_name.c
+"Test_name.c", line 8: error: no instance of function template "foo" matches the argument list
+            argument types are: (int)
+    foo<Abstract>(0);
+    ^
+"Test_name.c", line 5: note: parameter number 1 of function template "foo" has abstract type "Abstract"
+  template<typename T> void foo(T) { };
+                            ^
+
+1 error detected in the compilation of "Test_name.c".

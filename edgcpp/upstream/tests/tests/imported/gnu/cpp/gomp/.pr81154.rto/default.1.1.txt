@@ -1,0 +1,49 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 11: warning: unrecognized #pragma
+  #pragma omp parallel shared (foo)	// { dg-error "is not a variable in clause" }
+          ^
+
+"Test_name.c", line 13: warning: unrecognized #pragma
+  #pragma omp parallel private (foo)	// { dg-error "is not a variable in clause" }
+          ^
+
+"Test_name.c", line 15: warning: unrecognized #pragma
+  #pragma omp parallel firstprivate (foo)	// { dg-error "is not a variable in clause" }
+          ^
+
+"Test_name.c", line 17: warning: unrecognized #pragma
+  #pragma omp parallel for lastprivate (foo)	// { dg-error "is not a variable in clause" }
+          ^
+
+"Test_name.c", line 20: warning: unrecognized #pragma
+  #pragma omp parallel for linear (foo)	// { dg-error "is not a variable in clause" }
+          ^
+
+"Test_name.c", line 23: warning: unrecognized #pragma
+  #pragma omp parallel reduction (+:foo)	// { dg-error "is not a variable in clause" }
+          ^
+
+"Test_name.c", line 35: warning: unrecognized #pragma
+  #pragma omp parallel shared (foo)	// { dg-error "is not a variable in clause" }
+          ^
+
+"Test_name.c", line 37: warning: unrecognized #pragma
+  #pragma omp parallel private (foo)	// { dg-error "is not a variable in clause" }
+          ^
+
+"Test_name.c", line 39: warning: unrecognized #pragma
+  #pragma omp parallel firstprivate (foo)	// { dg-error "is not a variable in clause" }
+          ^
+
+"Test_name.c", line 41: warning: unrecognized #pragma
+  #pragma omp parallel for lastprivate (foo)	// { dg-error "is not a variable in clause" }
+          ^
+
+"Test_name.c", line 44: warning: unrecognized #pragma
+  #pragma omp parallel for linear (foo)	// { dg-error "is not a variable in clause" }
+          ^
+
+"Test_name.c", line 47: warning: unrecognized #pragma
+  #pragma omp parallel reduction (+:foo)	// { dg-error "is not a variable in clause" }
+          ^
+

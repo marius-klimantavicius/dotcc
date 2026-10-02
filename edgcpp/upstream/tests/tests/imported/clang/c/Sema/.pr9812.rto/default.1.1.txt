@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 8: error: invalid combination of type specifiers
+      bool signed;  // expected-error {{'bool' cannot be signed or unsigned}} expected-warning {{declaration does not declare anything}}
+      ^
+
+"Test_name.c", line 18: error: invalid combination of type specifiers
+      bool signed; // expected-error {{'type-name' cannot be signed or unsigned}} expected-warning {{declaration does not declare anything}}
+      ^
+
+"Test_name.c", line 19: error: invalid combination of type specifiers
+      _Bool signed; // expected-error {{'_Bool' cannot be signed or unsigned}} expected-warning {{declaration does not declare anything}}
+      ^
+
+3 errors detected in the compilation of "Test_name.c".

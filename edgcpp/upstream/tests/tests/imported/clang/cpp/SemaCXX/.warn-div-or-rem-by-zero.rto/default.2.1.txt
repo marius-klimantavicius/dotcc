@@ -1,0 +1,49 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 Test_name.c
+"Test_name.c", line 8: warning: division by zero
+    (void)(42 / 0); // expected-warning{{division by zero is undefined}}
+              ^
+
+"Test_name.c", line 9: warning: division by zero
+    (void)(42 / false); // expected-warning{{division by zero is undefined}}
+              ^
+
+"Test_name.c", line 10: warning: division by zero
+    (void)(42 / !1); // expected-warning{{division by zero is undefined}}
+              ^
+
+"Test_name.c", line 11: warning: division by zero
+    (void)(42 / (1 - 1)); // expected-warning{{division by zero is undefined}}
+              ^
+
+"Test_name.c", line 12: warning: division by zero
+    (void)(42 / !(1 + 1)); // expected-warning{{division by zero is undefined}}
+              ^
+
+"Test_name.c", line 13: warning: division by zero
+    (void)(42 / (int)(0.0)); // expected-warning{{division by zero is undefined}}
+              ^
+
+"Test_name.c", line 17: warning: right operand of "%" is zero
+    (void)(42 % 0); // expected-warning{{remainder by zero is undefined}}
+              ^
+
+"Test_name.c", line 18: warning: right operand of "%" is zero
+    (void)(42 % false); // expected-warning{{remainder by zero is undefined}}
+              ^
+
+"Test_name.c", line 19: warning: right operand of "%" is zero
+    (void)(42 % !1); // expected-warning{{remainder by zero is undefined}}
+              ^
+
+"Test_name.c", line 20: warning: right operand of "%" is zero
+    (void)(42 % (1 - 1)); // expected-warning{{remainder by zero is undefined}}
+              ^
+
+"Test_name.c", line 21: warning: right operand of "%" is zero
+    (void)(42 % !(1 + 1)); // expected-warning{{remainder by zero is undefined}}
+              ^
+
+"Test_name.c", line 22: warning: right operand of "%" is zero
+    (void)(42 % (int)(0.0)); // expected-warning{{remainder by zero is undefined}}
+              ^
+

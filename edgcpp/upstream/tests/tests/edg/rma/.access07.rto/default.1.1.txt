@@ -1,0 +1,18 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 14: error: member "A::c" (declared at line 4) is inaccessible
+    c = 0;     // inaccessible member
+    ^
+
+"Test_name.c", line 17: error: member "B::z" (declared at line 5) is inaccessible
+    z = 0;     // inaccessible member
+    ^
+
+"Test_name.c", line 23: error: member "A::c" (declared at line 4) is inaccessible
+    c = 0;     // inaccessible member
+    ^
+
+"Test_name.c", line 26: error: member "B::z" (declared at line 5) is inaccessible
+    z = 0;     // inaccessible member
+    ^
+
+4 errors detected in the compilation of "Test_name.c".

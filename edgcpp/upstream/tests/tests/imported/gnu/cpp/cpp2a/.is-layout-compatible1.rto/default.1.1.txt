@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 29: warning: signed bit field of length 1
+  struct C { int a : 1; int : 7; int : 0; int b : 2; };
+                 ^
+
+"Test_name.c", line 31: warning: signed bit field of length 1
+  struct E { int f : 1; int : 7; int g : 2; };
+                 ^
+
+"Test_name.c", line 59: error: static assertion failed
+  static_assert (std::is_layout_compatible_v<C, D>);
+  ^
+
+"Test_name.c", line 71: error: static assertion failed
+  static_assert (std::is_layout_compatible_v<I, const A>);
+  ^
+
+"Test_name.c", line 72: error: static assertion failed
+  static_assert (std::is_layout_compatible_v<volatile A, const I>);
+  ^
+
+"Test_name.c", line 73: error: static assertion failed
+  static_assert (std::is_layout_compatible_v<M, A>);
+  ^
+
+"Test_name.c", line 74: error: static assertion failed
+  static_assert (std::is_layout_compatible_v<O, M>);
+  ^
+
+"Test_name.c", line 75: error: static assertion failed
+  static_assert (std::is_layout_compatible_v<A, O>);
+  ^
+
+6 errors detected in the compilation of "Test_name.c".

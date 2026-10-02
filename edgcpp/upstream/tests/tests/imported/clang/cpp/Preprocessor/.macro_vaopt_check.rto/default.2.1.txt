@@ -1,0 +1,70 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 8: error: __VA_OPT__ must be followed by "("
+  #define V1(...) __VA_OPT__
+                            ^
+
+"Test_name.c", line 15: error: the identifier __VA_OPT__ can only appear in the replacement lists of variadic macros
+  #define V2() __VA_OPT__(x)
+               ^
+
+"Test_name.c", line 20: error: missing closing parenthesis for __VA_OPT__
+  #define V3(...) __VA_OPT__(
+                            ^
+
+"Test_name.c", line 27: error: __VA_OPT__ cannot appear in a __VA_OPT__ operand
+  #define V5(...) __VA_OPT__(__VA_OPT__())
+                             ^
+
+"Test_name.c", line 31: error: expected a macro parameter name
+  #define V1(...) __VA_OPT__  (#)
+                                ^
+
+"Test_name.c", line 35: error: "##" may not be first in a __VA_OPT__ operand
+  #define V1(...) __VA_OPT__  (##)
+                               ^
+
+"Test_name.c", line 39: error: "##" may not be first in a __VA_OPT__ operand
+  #define V1(...) __VA_OPT__  (## X) x
+                               ^
+
+"Test_name.c", line 43: error: "##" may not be last in a __VA_OPT__ operand
+  #define V1(...) y __VA_OPT__  (X ##)
+                                     ^
+
+"Test_name.c", line 43: error: "##" may not be last in a macro definition
+  #define V1(...) y __VA_OPT__  (X ##)
+                                      ^
+
+"Test_name.c", line 50: error: expected a macro parameter name
+  #define V1(...) __VA_OPT__(#)
+                              ^
+
+"Test_name.c", line 54: error: "##" may not be first in a __VA_OPT__ operand
+  #define V1(...) a __VA_OPT__(##) b
+                               ^
+
+"Test_name.c", line 58: error: "##" may not be first in a __VA_OPT__ operand
+  #define V1(...) a __VA_OPT__(a ## b) b __VA_OPT__(##)
+                                                    ^
+
+"Test_name.c", line 66: error: missing closing parenthesis for __VA_OPT__
+  #define V1(...) __VA_OPT__  ((())
+                              ^
+
+"Test_name.c", line 70: error: the identifier __VA_OPT__ can only appear in the replacement lists of variadic macros
+  #if __VA_OPT__ // expected-warning {{__VA_OPT__ can only appear in the expansion of a variadic macro}}
+      ^
+
+"Test_name.c", line 74: error: the identifier __VA_OPT__ can only appear in the replacement lists of variadic macros
+  #ifdef __VA_OPT__ // expected-warning {{__VA_OPT__ can only appear in the expansion of a variadic macro}}
+         ^
+
+"Test_name.c", line 75: error: the identifier __VA_OPT__ can only appear in the replacement lists of variadic macros
+  #elifdef __VA_OPT__
+           ^
+
+"Test_name.c", line 78: error: the identifier __VA_OPT__ can only appear in the replacement lists of variadic macros
+  #define BAD __VA_OPT__ // expected-warning {{__VA_OPT__ can only appear in the expansion of a variadic macro}}
+              ^
+
+17 errors detected in the compilation of "Test_name.c".

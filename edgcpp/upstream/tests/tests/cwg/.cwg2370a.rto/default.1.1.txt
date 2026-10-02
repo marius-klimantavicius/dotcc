@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c++20 -tused -A Test_name.c
+"Test_name.c", line 27: error: name followed by "::" must be a class or namespace name
+      friend void X::g(D);  // OK
+                  ^
+
+"Test_name.c", line 28: error: name followed by "::" must be a class or namespace name
+      friend void X::g(F);  // OK
+                  ^
+
+2 errors detected in the compilation of "Test_name.c".

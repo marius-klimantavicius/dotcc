@@ -1,0 +1,98 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++23 Test_name.c
+"Test_name.c", line 17: error: invalid redeclaration of member function "S0::f0()" (declared at line 16)
+    void f0(this S0 &&); // { dg-error "cannot be overloaded with" }
+         ^
+
+"Test_name.c", line 18: error: invalid redeclaration of member function "S0::f0()" (declared at line 16)
+    void f0(this S0 const&); // { dg-bogus "" }
+         ^
+
+"Test_name.c", line 19: error: invalid redeclaration of member function "S0::f0()" (declared at line 16)
+    void f0(this S0 const&&); // { dg-bogus "" }
+         ^
+
+"Test_name.c", line 20: error: invalid redeclaration of member function "S0::f0()" (declared at line 16)
+    void f0(this S0 volatile&); // { dg-bogus "" }
+         ^
+
+"Test_name.c", line 21: error: invalid redeclaration of member function "S0::f0()" (declared at line 16)
+    void f0(this S0 volatile&&); // { dg-bogus "" }
+         ^
+
+"Test_name.c", line 22: error: invalid redeclaration of member function "S0::f0()" (declared at line 16)
+    void f0(this S0 const volatile&); // { dg-bogus "" }
+         ^
+
+"Test_name.c", line 23: error: invalid redeclaration of member function "S0::f0()" (declared at line 16)
+    void f0(this S0 const volatile&&); // { dg-bogus "" }
+         ^
+
+"Test_name.c", line 26: error: invalid redeclaration of member function "S0::f1()" (declared at line 25)
+    void f1(this S0 &); // { dg-error "cannot be overloaded with" }
+         ^
+
+"Test_name.c", line 27: error: invalid redeclaration of member function "S0::f1()" (declared at line 25)
+    void f1(this S0 const&); // { dg-bogus "" }
+         ^
+
+"Test_name.c", line 28: error: invalid redeclaration of member function "S0::f1()" (declared at line 25)
+    void f1(this S0 const&&); // { dg-bogus "" }
+         ^
+
+"Test_name.c", line 29: error: invalid redeclaration of member function "S0::f1()" (declared at line 25)
+    void f1(this S0 volatile&); // { dg-bogus "" }
+         ^
+
+"Test_name.c", line 30: error: invalid redeclaration of member function "S0::f1()" (declared at line 25)
+    void f1(this S0 volatile&&); // { dg-bogus "" }
+         ^
+
+"Test_name.c", line 31: error: invalid redeclaration of member function "S0::f1()" (declared at line 25)
+    void f1(this S0 const volatile&); // { dg-bogus "" }
+         ^
+
+"Test_name.c", line 32: error: invalid redeclaration of member function "S0::f1()" (declared at line 25)
+    void f1(this S0 const volatile&&); // { dg-bogus "" }
+         ^
+
+"Test_name.c", line 99: error: invalid redeclaration of member function "S1::f0(const volatile S1 &&)" (declared at line 98)
+    void f0(); // { dg-error "cannot be overloaded with" }
+         ^
+
+"Test_name.c", line 108: error: invalid redeclaration of member function "S1::f1(const volatile S1 &&)" (declared at line 107)
+    void f1(); // { dg-error "cannot be overloaded with" }
+         ^
+
+"Test_name.c", line 177: error: invalid redeclaration of member function "S2::f0()" (declared at line 176)
+    void f0(this S2 &&); // { dg-error "cannot be overloaded with" }
+         ^
+
+"Test_name.c", line 178: error: invalid redeclaration of member function "S2::f0()" (declared at line 176)
+    void f0(this S2 const&); // { dg-bogus "" }
+         ^
+
+"Test_name.c", line 179: error: invalid redeclaration of member function "S2::f0()" (declared at line 176)
+    void f0(this S2 const&&); // { dg-bogus "" }
+         ^
+
+"Test_name.c", line 180: error: invalid redeclaration of member function "S2::f0()" (declared at line 176)
+    void f0(this S2 volatile&); // { dg-bogus "" }
+         ^
+
+"Test_name.c", line 181: error: invalid redeclaration of member function "S2::f0()" (declared at line 176)
+    void f0(this S2 volatile&&); // { dg-bogus "" }
+         ^
+
+"Test_name.c", line 182: error: invalid redeclaration of member function "S2::f0()" (declared at line 176)
+    void f0(this S2 const volatile&); // { dg-bogus "" }
+         ^
+
+"Test_name.c", line 183: error: invalid redeclaration of member function "S2::f0()" (declared at line 176)
+    void f0(this S2 const volatile&&); // { dg-bogus "" }
+         ^
+
+"Test_name.c", line 186: error: invalid redeclaration of member function "S2::f1(S2 &)" (declared at line 185)
+    void f1(); // { dg-error "cannot be overloaded with" }
+         ^
+
+24 errors detected in the compilation of "Test_name.c".

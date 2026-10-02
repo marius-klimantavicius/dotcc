@@ -1,0 +1,38 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 4: error: expected a ")"
+  int f(int * far p) { return *p; };
+                  ^
+
+"Test_name.c", line 4: error: identifier "p" is undefined
+  int f(int * far p) { return *p; };
+                               ^
+
+"Test_name.c", line 4: remark: parameter "far" was never referenced
+  int f(int * far p) { return *p; };
+              ^
+
+"Test_name.c", line 4: error: extra ";" ignored
+  int f(int * far p) { return *p; };
+                                   ^
+
+"Test_name.c", line 5: error: expected a ")"
+  int f(int * near p) { return *p; };
+                   ^
+
+"Test_name.c", line 5: error: function "f" has already been defined (previous definition at line 4)
+  int f(int * near p) { return *p; };
+      ^
+
+"Test_name.c", line 5: error: identifier "p" is undefined
+  int f(int * near p) { return *p; };
+                                ^
+
+"Test_name.c", line 5: remark: parameter "near" was never referenced
+  int f(int * near p) { return *p; };
+              ^
+
+"Test_name.c", line 5: error: extra ";" ignored
+  int f(int * near p) { return *p; };
+                                    ^
+
+7 errors detected in the compilation of "Test_name.c".

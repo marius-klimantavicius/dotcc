@@ -1,0 +1,91 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 8: error: expression must have a constant value
+  enum NonConstE : unsigned char { NCE = nonconst }; // expected-error {{enumerator value is not a constant expression}} expected-note {{read of non-const}}
+                                         ^
+"Test_name.c", line 8: note: the value of variable "nonconst" (declared at line 7) cannot be used as a constant
+  enum NonConstE : unsigned char { NCE = nonconst }; // expected-error {{enumerator value is not a constant expression}} expected-note {{read of non-const}}
+                                         ^
+
+"Test_name.c", line 9: error: expression must have a constant value
+  template<int = nonconst> struct NonConstT {}; // expected-error {{non-type template argument is not a constant expression}} expected-note {{read of non-const}}
+                 ^
+"Test_name.c", line 9: note: the value of variable "nonconst" (declared at line 7) cannot be used as a constant
+  template<int = nonconst> struct NonConstT {}; // expected-error {{non-type template argument is not a constant expression}} expected-note {{read of non-const}}
+                 ^
+
+"Test_name.c", line 12: error: expression must have a constant value
+      case nonconst: // expected-error {{case value is not a constant expression}} expected-note {{read of non-const}}
+           ^
+"Test_name.c", line 12: note: the value of variable "nonconst" (declared at line 7) cannot be used as a constant
+      case nonconst: // expected-error {{case value is not a constant expression}} expected-note {{read of non-const}}
+           ^
+
+"Test_name.c", line 15: warning: variable "V" was declared but never referenced
+    NonConstT<> V; // expected-note {{while checking a default template argument used here}}
+                ^
+
+"Test_name.c", line 54: error: this constant expression has type "EE" instead of the required "unsigned int" type
+      case EE::EE32: // expected-error {{not implicitly convertible}}
+           ^
+
+"Test_name.c", line 57: error: invalid narrowing conversion from "long long" to "unsigned int": constant value does not fit in destination type
+      case (long long)1e10: // expected-error {{case value evaluates to 10000000000, which cannot be narrowed to type 'unsigned int'}}
+           ^
+
+"Test_name.c", line 58: error: invalid narrowing conversion from "int" to "unsigned int": constant value does not fit in destination type
+      case -3: // expected-error {{case value evaluates to -3, which cannot be narrowed to type 'unsigned int'}}
+           ^
+
+"Test_name.c", line 65: error: this constant expression has type "EE" instead of the required "unsigned short" type
+    b = EE::EE32, // expected-error {{not implicitly convertible}}
+        ^
+
+"Test_name.c", line 68: error: enumeration value is outside the range of its underlying type ("unsigned short")
+    e = 123456, // expected-error {{enumerator value evaluates to 123456, which cannot be narrowed to type 'unsigned short'}}
+        ^
+
+"Test_name.c", line 69: error: enumeration value is outside the range of its underlying type ("unsigned short")
+    f = -3 // expected-error {{enumerator value evaluates to -3, which cannot be narrowed to type 'unsigned short'}}
+        ^
+
+"Test_name.c", line 74: error: argument of type "EE" is incompatible with template parameter of type "unsigned char"
+  using Int = A<EE::EE32>; // expected-error {{not implicitly convertible}}
+                ^
+
+"Test_name.c", line 77: error: invalid narrowing conversion from "int" to "unsigned char": constant value does not fit in destination type
+  using Int = A<1000>; // expected-error {{template argument evaluates to 1000, which cannot be narrowed to type 'unsigned char'}}
+                ^
+
+"Test_name.c", line 78: error: invalid narrowing conversion from "int" to "unsigned char": constant value does not fit in destination type
+  using Int = A<-3>; // expected-error {{template argument evaluates to -3, which cannot be narrowed to type 'unsigned char'}}
+                ^
+
+"Test_name.c", line 94: error: incompatible exception specifications
+  Val<decltype(&noexcept_true), &noexcept_false> add_noexcept;
+                                ^
+
+"Test_name.c", line 100: error: expression must have integral or enum type
+  using Int = A<1.0>; // expected-error {{conversion from 'double' to 'unsigned char' is not allowed in a converted constant expression}}
+                ^
+
+"Test_name.c", line 102: error: this constant expression has type "bool (*)(int)" instead of the required "bool" type
+    True = &a, // expected-error {{conversion from 'bool (*)(int)' to 'bool' is not allowed in a converted constant expression}}
+           ^
+
+"Test_name.c", line 103: error: this constant expression has type "double" instead of the required "bool" type
+    False = 0.0, // expected-error {{conversion from 'double' to 'bool' is not allowed in a converted constant expression}}
+            ^
+
+"Test_name.c", line 108: error: this constant expression has type "float" instead of the required "int" type
+    case 0.0f: // expected-error {{conversion from 'float' to 'int' is not allowed in a converted constant expression}}
+         ^
+
+"Test_name.c", line 113: error: no instance of function template "f" matches the specified type
+  template int f<&S::operator int>(); // expected-error {{does not refer to a function template}}
+               ^
+
+"Test_name.c", line 116: error: argument of type "int (S::*)() const" is incompatible with template parameter of type "bool"
+  int n = Val<bool, &S::operator int>::value; // expected-error-re {{conversion from 'int (S::*)(){{( __attribute__\(\(thiscall\)\))?}} const' to 'bool' is not allowed in a converted constant expression}}
+                    ^
+
+19 errors detected in the compilation of "Test_name.c".

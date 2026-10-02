@@ -1,0 +1,63 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 -DCXX1Y Test_name.c
+"Test_name.c", line 18: warning: variable "GL1" was declared but never referenced
+    auto GL1 = [](auto a, int i) -> int { return id(a); };
+         ^
+
+"Test_name.c", line 20: warning: variable "GL2" was declared but never referenced
+    auto GL2 = [](auto ... As) -> int { return vfoo(As...); };
+         ^
+
+"Test_name.c", line 46: error: decltype(auto) is not allowed here
+    auto l4 = [](decltype(auto) a) -> int { return 0; }; //expected-error{{decltype(auto)}}
+                 ^
+
+"Test_name.c", line 66: error: "auto" is not allowed here
+                        (*)(auto)) { }; //expected-error{{'auto' not allowed}}
+                            ^
+
+"Test_name.c", line 68: error: expected a ")"
+      auto l2 = [](char auto::*pm) { };  //expected-error{{cannot combine with previous}}\
+                            ^
+
+"Test_name.c", line 70: error: "auto" is not allowed here
+      auto l3 = [](char (auto::*pmf)()) { };  //expected-error{{'auto' not allowed}}\
+                         ^
+
+"Test_name.c", line 70: error: expected a ")"
+      auto l3 = [](char (auto::*pmf)()) { };  //expected-error{{'auto' not allowed}}\
+                             ^
+
+"Test_name.c", line 70: error: function returning function is not allowed
+      auto l3 = [](char (auto::*pmf)()) { };  //expected-error{{'auto' not allowed}}\
+                                     ^
+
+"Test_name.c", line 65: warning: variable "l" was declared but never referenced
+      auto l = [](auto 
+           ^
+
+"Test_name.c", line 68: warning: variable "l2" was declared but never referenced
+      auto l2 = [](char auto::*pm) { };  //expected-error{{cannot combine with previous}}\
+           ^
+
+"Test_name.c", line 70: warning: variable "l3" was declared but never referenced
+      auto l3 = [](char (auto::*pmf)()) { };  //expected-error{{'auto' not allowed}}\
+           ^
+
+"Test_name.c", line 25: warning: variable "l1" was declared but never referenced
+    auto l1 = [](auto a) -> int { return a + 5; };
+         ^
+
+"Test_name.c", line 26: warning: variable "l2" was declared but never referenced
+    auto l2 = [](auto *p) -> int { return p + 5; };
+         ^
+
+"Test_name.c", line 46: warning: variable "l4" was declared but never referenced
+    auto l4 = [](decltype(auto) a) -> int { return 0; }; //expected-error{{decltype(auto)}}
+         ^
+
+"Test_name.c", line 54: error: no suitable conversion function from "Local" to "int" exists
+      auto l4 = [](auto (*fp)(int)) -> int { return fp(3); }; //expected-error{{no viable conversion from returned value of type 'Local' to function return type 'int'}} 
+                                                    ^
+          detected during instantiation of function "lambda [](auto (*)(int))->int [with <auto-1>=Local]" at line 58
+
+7 errors detected in the compilation of "Test_name.c".

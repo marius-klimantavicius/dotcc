@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 5: error: subscript out of range
+  char font8x8[256][8] = { [-1] = { 0 } }; /* { dg-error "array index|near init" } */
+                            ^
+
+1 error detected in the compilation of "Test_name.c".

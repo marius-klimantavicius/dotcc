@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=2 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c99 Test_name.c
+"Test_name.c", line 15: warning: function "_Alignof" declared implicitly
+    int j = _Alignof(int [++i]);
+            ^
+
+"Test_name.c", line 15: error: expected an expression
+    int j = _Alignof(int [++i]);
+                     ^
+
+1 error detected in the compilation of "Test_name.c".

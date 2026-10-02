@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=4 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++23 -DTEST_LINUX Test_name.c
+"Test_name.c", line 38: error: call to consteval function "square" did not produce a valid constant expression
+    auto val = square(2); // expected-note {{in call to 'square(2)'}} \
+                     ^
+"Test_name.c", line 33: note: cannot call non-constexpr function "__assert_fail" (declared at line 16)
+    assert(result == 42); // expected-note {{assertion failed during evaluation of constant expression}}
+    ^
+
+1 error detected in the compilation of "Test_name.c".

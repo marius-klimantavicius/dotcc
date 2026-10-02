@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+At end of source: error: expected an expression
+
+At end of source: error: expected a "]"
+
+"Test_name.c", line 3: error: an operator name must be declared as a function
+  operator new[ // { dg-error "expected type-specifier before 'new'" }
+  ^
+
+At end of source: error: expected a ";"
+
+4 errors detected in the compilation of "Test_name.c".

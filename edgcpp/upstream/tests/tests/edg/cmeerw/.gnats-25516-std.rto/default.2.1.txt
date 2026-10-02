@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=2 --c++23 -A -tused -DNEG Test_name.c
+"Test_name.c", line 27: error: no instance of constructor "D" matches the argument list
+            argument types are: (int)
+  D d(42);            // error: deduction failed, no inherited deduction guides
+    ^
+
+"Test_name.c", line 27: error: cannot deduce class template arguments
+  D d(42);            // error: deduction failed, no inherited deduction guides
+  ^
+
+"Test_name.c", line 38: error: no instance of constructor "E" matches the argument list
+            argument types are: (int)
+  E e(42);            // error: deduction failed, arguments of E cannot be deduced from introduced guides
+    ^
+
+"Test_name.c", line 38: error: cannot deduce class template arguments
+  E e(42);            // error: deduction failed, arguments of E cannot be deduced from introduced guides
+  ^
+
+"Test_name.c", line 69: error: no instance of constructor "J" matches the argument list
+            argument types are: (const char [4])
+  J j = { "ghi" };    // error: cannot bind reference to array of unsigned char to array of char in deduction
+    ^
+
+"Test_name.c", line 69: error: cannot deduce class template arguments
+  J j = { "ghi" };    // error: cannot bind reference to array of unsigned char to array of char in deduction
+  ^
+
+6 errors detected in the compilation of "Test_name.c".

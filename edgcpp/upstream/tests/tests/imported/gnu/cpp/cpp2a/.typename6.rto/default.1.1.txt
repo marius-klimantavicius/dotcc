@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 32: error: nonvirtual function cannot be declared with "final" modifier
+    T::X fn5 () final;
+         ^
+
+"Test_name.c", line 43: error: fn7 is not a template
+    friend T::X fn7<int> ();
+                ^
+
+"Test_name.c", line 75: warning: template parameter "T" is not used in declaring the parameter types of function template "lambda [](T::X, int)->auto::operator auto (*)(T::X, int)"
+    auto j = []<typename T>(T::X t, int i) { return i; };
+                         ^
+
+"Test_name.c", line 75: warning: variable "j" was declared but never referenced
+    auto j = []<typename T>(T::X t, int i) { return i; };
+         ^
+
+2 errors detected in the compilation of "Test_name.c".

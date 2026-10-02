@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 7: error: "M" has already been declared in the current scope
+  struct M; /* { dg-error "redeclared as different kind of" } */
+         ^
+
+"Test_name.c", line 12: error: "N" has already been declared in the current scope
+  struct N; /* { dg-error "redeclared as different kind of" } */
+         ^
+
+"Test_name.c", line 13: error: variable "p" has already been defined (previous definition at line 8)
+  struct N* p; /* { dg-error "redeclared as different kind of" } */
+            ^
+
+3 errors detected in the compilation of "Test_name.c".

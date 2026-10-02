@@ -1,0 +1,9 @@
+eccp -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 9: remark: declaration hides variable "a" (declared at line 7)
+    A a;
+      ^
+
+"Test_name.c", line 12: remark: function "A::f" redeclared "inline" after being called
+  inline void A::f() { }
+                 ^
+

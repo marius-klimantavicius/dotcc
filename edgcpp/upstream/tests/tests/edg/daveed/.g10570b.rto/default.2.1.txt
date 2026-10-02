@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=2 -DPOS --gcc Test_name.c
+"Test_name.c", line 9: warning: variable "s2" was declared but never referenced
+      static S s2 = { 3, { 4 } };  // Still accepted in GNU C mode.
+               ^
+

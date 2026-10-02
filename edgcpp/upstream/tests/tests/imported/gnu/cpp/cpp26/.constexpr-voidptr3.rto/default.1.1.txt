@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++26 Test_name.c
+"Test_name.c", line 15: error: expression must have a constant value
+  static_assert (foo () == nullptr);
+                 ^
+"Test_name.c", line 12: note: conversion from "void *" to "S *" is invalid in constant-expression evaluation
+    return static_cast<S *> (p);
+           ^
+
+1 error detected in the compilation of "Test_name.c".

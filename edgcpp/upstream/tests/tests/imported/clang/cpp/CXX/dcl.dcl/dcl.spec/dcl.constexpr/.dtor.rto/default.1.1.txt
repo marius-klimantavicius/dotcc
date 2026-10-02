@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 19: warning: statement is unreachable
+        goto x; // cxx2a-warning {{use of this statement in a constexpr function is a C++23 extension}}
+        ^
+
+"Test_name.c", line 19: error: statement may not appear in a constexpr function
+        goto x; // cxx2a-warning {{use of this statement in a constexpr function is a C++23 extension}}
+        ^
+
+"Test_name.c", line 20: error: label definitions cannot appear in constexpr functions
+        x: ;
+        ^
+
+"Test_name.c", line 25: error: label definitions cannot appear in constexpr functions
+      x:; // cxx2a-warning {{use of this statement in a constexpr function is a C++23 extension}}
+      ^
+
+"Test_name.c", line 34: warning: dynamic initialization in unreachable code
+        Nonlit nl; // cxx2a-error {{variable of non-literal type 'Nonlit' cannot be defined in a constexpr function before C++23}}
+               ^
+
+"Test_name.c", line 40: warning: variable in constexpr function does not have automatic storage duration
+        static int a; // cxx2a-warning {{definition of a static variable in a constexpr function is a C++23 extension}}
+                   ^
+
+"Test_name.c", line 40: warning: variable "a" was declared but never referenced
+        static int a; // cxx2a-warning {{definition of a static variable in a constexpr function is a C++23 extension}}
+                   ^
+
+"Test_name.c", line 46: warning: variable in constexpr function does not have automatic storage duration
+        thread_local int e; // cxx2a-warning {{definition of a thread_local variable in a constexpr function is a C++23 extension}}
+                         ^
+
+"Test_name.c", line 46: warning: variable "e" was declared but never referenced
+        thread_local int e; // cxx2a-warning {{definition of a thread_local variable in a constexpr function is a C++23 extension}}
+                         ^
+
+3 errors detected in the compilation of "Test_name.c".

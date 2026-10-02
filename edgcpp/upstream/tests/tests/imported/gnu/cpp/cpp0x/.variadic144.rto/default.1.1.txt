@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 15: error: no instance of function template "foo" matches the argument list
+    foo<int>();     // { dg-error "no matching" }
+    ^
+"Test_name.c", line 11: note: substituting explicit template arguments "<int>" for function template "foo" failed
+  foo();
+  ^
+
+1 error detected in the compilation of "Test_name.c".

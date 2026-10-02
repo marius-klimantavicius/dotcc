@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gcc Test_name.c
+"Test_name.c", line 22: warning: variable "p1" was declared but never referenced
+  	F *p1 = f;
+  	   ^
+
+"Test_name.c", line 23: warning: variable "p2" was declared but never referenced
+  	F *p2 = g;
+  	   ^
+
+"Test_name.c", line 24: warning: variable "p3" was declared but never referenced
+  	G *p3 = f;
+  	   ^
+
+"Test_name.c", line 25: warning: variable "p4" was declared but never referenced
+  	G *p4 = g;
+  	   ^
+
+"Test_name.c", line 26: warning: variable "p5" was declared but never referenced
+  	G *p5 = h;
+  	   ^
+
+"Test_name.c", line 27: warning: variable "p6" was declared but never referenced
+  	F *p6 = h;
+  	   ^
+

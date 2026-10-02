@@ -1,0 +1,25 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 7: remark: declaration hides variable "i" (declared at line 4)
+    int i;
+        ^
+
+"Test_name.c", line 9: remark: declaration hides variable "i" (declared at line 7)
+      int i, j;
+          ^
+
+"Test_name.c", line 9: remark: declaration hides variable "j" (declared at line 5)
+      int i, j;
+             ^
+
+"Test_name.c", line 9: warning: variable "i" was declared but never referenced
+      int i, j;
+          ^
+
+"Test_name.c", line 9: warning: variable "j" was declared but never referenced
+      int i, j;
+             ^
+
+"Test_name.c", line 7: warning: variable "i" was declared but never referenced
+    int i;
+        ^
+

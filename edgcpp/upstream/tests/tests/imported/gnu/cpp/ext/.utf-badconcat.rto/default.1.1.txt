@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: error: string literals with different character kinds cannot be concatenated
+  const void *s2	= u"a" U"b";	/* { dg-error "concatenation" } */
+                	       ^
+
+"Test_name.c", line 10: error: string literals with different character kinds cannot be concatenated
+  const void *s3	= U"a" u"b";	/* { dg-error "concatenation" } */
+                	       ^
+
+"Test_name.c", line 11: error: string literals with different character kinds cannot be concatenated
+  const void *s4	= u"a" L"b";	/* { dg-error "concatenation" } */
+                	       ^
+
+"Test_name.c", line 12: error: string literals with different character kinds cannot be concatenated
+  const void *s5	= L"a" u"b";	/* { dg-error "concatenation" } */
+                	       ^
+
+"Test_name.c", line 16: error: string literals with different character kinds cannot be concatenated
+  const void *s9	= U"a" L"b";	/* { dg-error "concatenation" } */
+                	       ^
+
+"Test_name.c", line 17: error: string literals with different character kinds cannot be concatenated
+  const void *sa	= L"a" U"b";	/* { dg-error "concatenation" } */
+                	       ^
+
+6 errors detected in the compilation of "Test_name.c".

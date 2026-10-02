@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=3 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 --exceptions --exceptions Test_name.c
+"Test_name.c", line 27: error: identifier "I" is undefined
+    static auto compute_right() { return X<I>(); }
+                                           ^
+          detected during:
+            instantiation of "auto cwg2335::ex2::partition_indices<T>::compute_right() [with T=int]" at line 32
+            instantiation of class "cwg2335::ex2::partition_indices<T> [with T=int]" at line 35
+
+"Test_name.c", line 41: error: cannot deduce the return type of function "cwg2335::ex3::partition_indices::compute_right" (declared at line 40); it has not been defined
+    static constexpr auto right = compute_right; // #cwg2335-ex3-right
+                                  ^
+
+2 errors detected in the compilation of "Test_name.c".

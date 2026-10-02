@@ -1,0 +1,177 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -DTEST=1 -DTEST=2 --c Test_name.c
+"Test_name.c", line 8: warning: statement is unreachable
+    return C != (void*)0;
+    ^
+
+"Test_name.c", line 9: warning: statement is unreachable
+    return C != 0;
+    ^
+
+"Test_name.c", line 10: warning: statement is unreachable
+    return C != 1;  // expected-warning {{comparison between pointer and integer ('char *' and 'int')}}
+    ^
+
+"Test_name.c", line 10: warning: operand types are incompatible ("char *" and "int")
+    return C != 1;  // expected-warning {{comparison between pointer and integer ('char *' and 'int')}}
+             ^
+
+"Test_name.c", line 10: warning: conversion of nonzero integer to pointer
+    return C != 1;  // expected-warning {{comparison between pointer and integer ('char *' and 'int')}}
+                ^
+
+"Test_name.c", line 213: warning: operand types are incompatible ("char (*)[5]" and "char (*)[10]")
+    return a == b; // expected-warning {{comparison of distinct pointer types}}
+             ^
+
+"Test_name.c", line 212: warning: variable "d" was declared but never referenced
+    int d = (a == c);
+        ^
+
+"Test_name.c", line 218: warning: statement is unreachable
+    return a > 42; // expected-warning {{ordered comparison between pointer and integer ('int *' and 'int')}}
+    ^
+
+"Test_name.c", line 218: warning: operand types are incompatible ("int *" and "int")
+    return a > 42; // expected-warning {{ordered comparison between pointer and integer ('int *' and 'int')}}
+             ^
+
+"Test_name.c", line 218: warning: conversion of nonzero integer to pointer
+    return a > 42; // expected-warning {{ordered comparison between pointer and integer ('int *' and 'int')}}
+               ^
+
+"Test_name.c", line 219: warning: statement is unreachable
+    return a > (void *)0; // expected-warning {{comparison of distinct pointer types}}
+    ^
+
+"Test_name.c", line 224: warning: statement is unreachable
+    return function_pointers > function_pointers; // expected-warning {{self-comparison always evaluates to false}} expected-warning{{ordered comparison of function pointers}}
+    ^
+
+"Test_name.c", line 225: warning: statement is unreachable
+    return a > c;                                 // expected-warning {{comparison of distinct pointer types}} expected-warning {{ordered comparison of function pointers}}
+    ^
+
+"Test_name.c", line 225: warning: operand types are incompatible ("int (*)(int)" and "void (*)(int)")
+    return a > c;                                 // expected-warning {{comparison of distinct pointer types}} expected-warning {{ordered comparison of function pointers}}
+             ^
+
+"Test_name.c", line 226: warning: statement is unreachable
+    return a == (void *) 0;
+    ^
+
+"Test_name.c", line 227: warning: statement is unreachable
+    return a == (void *) 1; // expected-warning {{equality comparison between function pointer and void pointer}}
+    ^
+
+"Test_name.c", line 232: warning: statement is unreachable
+    return foo == (void*) 1;
+    ^
+
+"Test_name.c", line 251: warning: variable "x" is used before its value is set
+    if (x->u8 == i32) { // comparison in int32, exact
+        ^
+
+"Test_name.c", line 270: warning: variable "x" is used before its value is set
+    if ((x > y ? x : y) > z)
+         ^
+
+"Test_name.c", line 270: warning: variable "y" is used before its value is set
+    if ((x > y ? x : y) > z)
+             ^
+
+"Test_name.c", line 270: warning: variable "z" is used before its value is set
+    if ((x > y ? x : y) > z)
+                          ^
+
+"Test_name.c", line 278: warning: variable "value" is used before its value is set
+    if (value < (unsigned long) &ptr4) // expected-warning {{comparison of integers of different signs}}
+        ^
+
+"Test_name.c", line 284: warning: pointless comparison of unsigned integer with zero
+    return (x < 0) // expected-warning {{comparison of unsigned expression < 0 is always false}}
+              ^
+
+"Test_name.c", line 285: warning: pointless comparison of unsigned integer with zero
+      && (0 > x)   // expected-warning {{comparison of 0 > unsigned expression is always false}}
+            ^
+
+"Test_name.c", line 286: warning: pointless comparison of unsigned integer with zero
+      && (x >= 0)  // expected-warning {{comparison of unsigned expression >= 0 is always true}}
+            ^
+
+"Test_name.c", line 287: warning: pointless comparison of unsigned integer with zero
+      && (0 <= x); // expected-warning {{comparison of 0 <= unsigned expression is always true}}
+            ^
+
+"Test_name.c", line 299: warning: pointless comparison of unsigned integer with zero
+    if (a.b < 0) {} // expected-warning {{comparison of unsigned expression < 0 is always false}}
+            ^
+
+"Test_name.c", line 301: warning: pointless comparison of unsigned integer with zero
+    if (a.d < 0) {} // expected-warning {{comparison of unsigned expression < 0 is always false}}
+            ^
+
+"Test_name.c", line 314: warning: pointless comparison of unsigned integer with zero
+    if (CHECK(v)) // no-warning
+        ^
+
+"Test_name.c", line 316: warning: pointless comparison of unsigned integer with zero
+    if (v >= X) // no-warning
+          ^
+
+"Test_name.c", line 320: warning: pointless comparison of unsigned integer with zero
+    return x >= ZERO; // no-warning
+             ^
+
+"Test_name.c", line 329: warning: variable "a" is used before its value is set
+    if (a == 0)
+        ^
+
+"Test_name.c", line 333: warning: pointless comparison of unsigned integer with zero
+    if (a < 0) // expected-warning {{comparison of unsigned enum expression < 0 is always false}}
+          ^
+
+"Test_name.c", line 339: warning: pointless comparison of unsigned integer with zero
+    if (a >= 0) // expected-warning {{comparison of unsigned enum expression >= 0 is always true}}
+          ^
+
+"Test_name.c", line 348: warning: pointless comparison of unsigned integer with zero
+    if (0 <= a) // expected-warning {{comparison of 0 <= unsigned enum expression is always true}}
+          ^
+
+"Test_name.c", line 350: warning: pointless comparison of unsigned integer with zero
+    if (0 > a) // expected-warning {{comparison of 0 > unsigned enum expression is always false}}
+          ^
+
+"Test_name.c", line 359: warning: pointless comparison of unsigned integer with zero
+    if (a < 0U) // expected-warning {{comparison of unsigned enum expression < 0 is always false}}
+          ^
+
+"Test_name.c", line 365: warning: pointless comparison of unsigned integer with zero
+    if (a >= 0U) // expected-warning {{comparison of unsigned enum expression >= 0 is always true}}
+          ^
+
+"Test_name.c", line 374: warning: pointless comparison of unsigned integer with zero
+    if (0U <= a) // expected-warning {{comparison of 0 <= unsigned enum expression is always true}}
+           ^
+
+"Test_name.c", line 376: warning: pointless comparison of unsigned integer with zero
+    if (0U > a) // expected-warning {{comparison of 0 > unsigned enum expression is always false}}
+           ^
+
+"Test_name.c", line 395: warning: variable "sl" is used before its value is set
+    b = (si == (ui = sl)); // expected-warning {{comparison of integers of different signs: 'int' and 'unsigned int'}}
+                     ^
+
+"Test_name.c", line 395: warning: variable "si" is used before its value is set
+    b = (si == (ui = sl)); // expected-warning {{comparison of integers of different signs: 'int' and 'unsigned int'}}
+         ^
+
+"Test_name.c", line 391: warning: variable "ui" was set but never used
+    unsigned int ui;
+                 ^
+
+"Test_name.c", line 394: warning: variable "b" was set but never used
+    _Bool b;
+          ^
+

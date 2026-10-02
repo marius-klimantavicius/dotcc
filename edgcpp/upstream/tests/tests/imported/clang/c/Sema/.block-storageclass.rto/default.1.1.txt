@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 10: error: identifier "__block" is undefined
+     __block  int X = 1234;
+     ^
+
+"Test_name.c", line 10: error: expected a ";"
+     __block  int X = 1234;
+              ^
+
+"Test_name.c", line 11: error: expected a ";"
+     __block  const char * message = "HELLO";
+              ^
+
+"Test_name.c", line 13: error: identifier "X" is undefined
+     X = X - 1234;
+     ^
+
+"Test_name.c", line 17: error: identifier "message" is undefined
+     printf ("%s(%d)\n", message, X);
+                         ^
+
+5 errors detected in the compilation of "Test_name.c".

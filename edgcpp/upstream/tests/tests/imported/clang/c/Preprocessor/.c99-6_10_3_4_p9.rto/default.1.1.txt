@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -w --c Test_name.c
+"Test_name.c", line 11: error: expected an identifier
+  debug("Flag");
+  ^
+
+"Test_name.c", line 14: error: expected an identifier
+  debug("X = %d\n", x);
+  ^
+
+"Test_name.c", line 17: error: expected a type specifier
+  showlist(The first, second, and third items.);
+  ^
+
+"Test_name.c", line 20: error: expected a ")"
+  report(x>y, "x is %d but y is %d", x, y);
+  ^
+
+4 errors detected in the compilation of "Test_name.c".

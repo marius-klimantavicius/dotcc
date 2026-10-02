@@ -1,0 +1,4 @@
+//type:fn
+//options_all:--c++20
+
+export module :PA.PB.PC.PD;

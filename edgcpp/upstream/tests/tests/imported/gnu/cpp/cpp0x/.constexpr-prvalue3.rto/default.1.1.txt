@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 14: warning: constexpr non-static member function will not be implicitly 'const' in C++14
+    constexpr _Safe_iterator end() {
+    ^
+
+"Test_name.c", line 14: error: a constexpr function cannot have a nonliteral return type "_Safe_iterator"
+    constexpr _Safe_iterator end() {
+                             ^
+
+1 error detected in the compilation of "Test_name.c".

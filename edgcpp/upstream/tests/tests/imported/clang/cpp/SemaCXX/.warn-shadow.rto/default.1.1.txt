@@ -1,0 +1,182 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 35: warning: variable "i" was declared but never referenced
+    int i; // expected-warning {{declaration shadows a variable in namespace '(anonymous)'}}
+        ^
+
+"Test_name.c", line 36: warning: variable "j" was declared but never referenced
+    int j; // expected-warning {{declaration shadows a variable in namespace 'one::two'}}
+        ^
+
+"Test_name.c", line 37: warning: variable "s" was declared but never referenced
+    static int s; // expected-warning {{declaration shadows a variable in namespace '(anonymous)'}}
+               ^
+
+"Test_name.c", line 38: warning: variable "m" was declared but never referenced
+    int m;
+        ^
+
+"Test_name.c", line 39: warning: variable "mm" was declared but never referenced
+    int mm;
+        ^
+
+"Test_name.c", line 40: warning: variable "mmm" was declared but never referenced
+    int mmm;
+        ^
+
+"Test_name.c", line 67: warning: variable "field" was declared but never referenced
+      char *field; // expected-warning {{declaration shadows a field of 'A'}}
+            ^
+
+"Test_name.c", line 68: warning: variable "data" was declared but never referenced
+      char *data; // expected-warning {{declaration shadows a static data member of 'A'}}
+            ^
+
+"Test_name.c", line 69: warning: variable "a1" was declared but never referenced
+      char *a1; // no warning
+            ^
+
+"Test_name.c", line 70: warning: variable "a2" was declared but never referenced
+      char *a2; // no warning
+            ^
+
+"Test_name.c", line 71: warning: variable "jj" was declared but never referenced
+      char *jj; // no warning
+            ^
+
+"Test_name.c", line 72: warning: variable "jjj" was declared but never referenced
+      char *jjj; // no warning
+            ^
+
+"Test_name.c", line 73: warning: variable "f1" was declared but never referenced
+      static char *f1; // expected-warning {{declaration shadows a field of 'A'}}
+                   ^
+
+"Test_name.c", line 121: warning: variable "Bar" was declared but never referenced
+    double Bar = 12; // Don't warn.
+           ^
+
+"Test_name.c", line 157: warning: variable "bob" was declared but never referenced
+    int bob; // expected-warning {{declaration shadows a variable in the global namespace}}
+        ^
+
+"Test_name.c", line 158: warning: variable "bob1" was declared but never referenced
+    int bob1; //no warning
+        ^
+
+"Test_name.c", line 159: warning: variable "bob2" was declared but never referenced
+    int bob2; // no warning
+        ^
+
+"Test_name.c", line 178: error: "a" has already been declared in the current scope
+    int a = 1; // expected-error {{redefinition of 'a'}}
+        ^
+
+"Test_name.c", line 179: error: "b" has already been declared in the current scope
+    int b = 2; // expected-error {{redefinition of 'b'}}
+        ^
+
+"Test_name.c", line 182: error: invalid redeclaration of type name "c" (declared at line 181)
+    using c=int; // expected-error {{type alias redefinition with different types ('int' vs 'char')}}
+          ^
+
+"Test_name.c", line 185: error: invalid redeclaration of type name "d" (declared at line 184)
+    typedef int d; // expected-error {{typedef redefinition with different types ('int' vs 'char')}}
+                ^
+
+"Test_name.c", line 188: error: invalid redeclaration of type name "e" (declared at line 187)
+    typedef int e; // expected-error {{type alias redefinition with different types ('int' vs 'char')}}
+                ^
+
+"Test_name.c", line 191: error: "f" has already been declared in the current scope
+    using f=int; // expected-error {{redefinition of 'f'}}
+          ^
+
+"Test_name.c", line 194: error: "g" has already been declared in the current scope
+    int g; // expected-error {{redefinition of 'g'}}
+        ^
+
+"Test_name.c", line 197: error: "h" has already been declared in the current scope
+    int h; // expected-error {{redefinition of 'h'}}
+        ^
+
+"Test_name.c", line 200: error: "k" has already been declared in the current scope
+    typedef int k; // expected-error {{redefinition of 'k'}}
+                ^
+
+"Test_name.c", line 177: warning: variable "a" was declared but never referenced
+    int a = 0; // expected-note {{previous definition is here}}
+        ^
+
+"Test_name.c", line 178: warning: variable "a" was declared but never referenced
+    int a = 1; // expected-error {{redefinition of 'a'}}
+        ^
+
+"Test_name.c", line 179: warning: variable "b" was declared but never referenced
+    int b = 2; // expected-error {{redefinition of 'b'}}
+        ^
+
+"Test_name.c", line 190: warning: variable "f" was declared but never referenced
+    int f; // expected-note {{previous definition is here}}
+        ^
+
+"Test_name.c", line 194: warning: variable "g" was declared but never referenced
+    int g; // expected-error {{redefinition of 'g'}}
+        ^
+
+"Test_name.c", line 197: warning: variable "h" was declared but never referenced
+    int h; // expected-error {{redefinition of 'h'}}
+        ^
+
+"Test_name.c", line 199: warning: variable "k" was declared but never referenced
+    int k; // expected-note {{previous definition is here}}
+        ^
+
+"Test_name.c", line 224: warning: variable "a" was declared but never referenced
+      A() { int a; }
+                ^
+
+"Test_name.c", line 280: warning: structured binding "x" was declared but never referenced
+    const auto [x, y] = S(); // expected-warning 2 {{declaration shadows a variable in namespace 'structured_binding_tests'}}
+                ^
+
+"Test_name.c", line 287: warning: structured binding "a" was declared but never referenced
+      auto [a, b] = S(); // expected-warning 2 {{declaration shadows a local variable}}
+            ^
+
+"Test_name.c", line 284: warning: variable "a" was declared but never referenced
+    int a; // expected-note {{previous declaration is here}}
+        ^
+
+"Test_name.c", line 285: warning: variable "b" was declared but never referenced
+    bool b; // expected-note {{previous declaration is here}}
+         ^
+
+"Test_name.c", line 297: warning: structured binding "m_a" was declared but never referenced
+      auto [m_a, m_b] = S(); // expected-warning 2 {{declaration shadows a field of 'structured_binding_tests::A'}}
+            ^
+
+"Test_name.c", line 304: warning: variable "a" was declared but never referenced
+      int a = 4; // expected-warning {{declaration shadows a structured binding}}
+          ^
+
+"Test_name.c", line 307: warning: structured binding "a" was declared but never referenced
+      const auto [a, b] = S(); // expected-warning 2 {{declaration shadows a structured binding}}
+                  ^
+
+"Test_name.c", line 302: warning: structured binding "a" was declared but never referenced
+    const auto [a, b] = S(); // expected-note 3 {{previous declaration is here}}
+                ^
+
+"Test_name.c", line 318: error: "foo" has already been declared in the current scope
+    enum Outer_E { foo }; // expected-error {{redefinition of 'foo'}} \
+                   ^
+
+"Test_name.c", line 6: warning: variable "<unnamed>::i" was declared but never referenced
+    int i; // expected-note {{previous declaration is here}}
+        ^
+
+"Test_name.c", line 7: warning: variable "<unnamed>::s" was declared but never referenced
+    static int s; // expected-note {{previous declaration is here}}
+               ^
+
+10 errors detected in the compilation of "Test_name.c".

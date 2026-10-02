@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 18: error: namespace "AmbiguousCorrection" has no member "method_Ace"
+    AmbiguousCorrection::method_Ace(); // expected-error {{no member named 'method_Ace' in namespace 'AmbiguousCorrection'}}
+                         ^
+
+"Test_name.c", line 29: error: namespace "MultipleCorrectionsButNotAmbiguous" has no member "PrefixType_Enum"
+    int val = MultipleCorrectionsButNotAmbiguous::PrefixType_Enum(0);  // expected-error {{no member named 'PrefixType_Enum' in namespace 'MultipleCorrectionsButNotAmbiguous'}}
+                                                  ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 11: warning: variable "s" was declared but never referenced
+  auto x1 = [](auto) { constexpr S s[]{{}}; };
+                                   ^
+
+"Test_name.c", line 12: warning: variable "s" was declared but never referenced
+  auto x2 = [](auto) { constexpr S s[]{{'a'}}; };
+                                   ^
+
+"Test_name.c", line 16: warning: variable "s" was declared but never referenced
+  auto x4 = [](auto) { constexpr S s[]{'a'}; };
+                                   ^
+
+"Test_name.c", line 17: warning: variable "s" was declared but never referenced
+  auto x5 = [](auto) { constexpr S s[]{{{}}}; };
+                                   ^
+

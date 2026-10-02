@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 79: error: expression must have a constant value
+      constexpr std::vector<A> a{1,2};
+                                ^
+"Test_name.c", line 79: note: cannot call non-constexpr function "std::initializer_list<_E>::initializer_list(const _E *, std::size_t) [with _E=Issue2::A]" (declared at line 20)
+      constexpr std::vector<A> a{1,2};
+                                ^
+
+1 error detected in the compilation of "Test_name.c".

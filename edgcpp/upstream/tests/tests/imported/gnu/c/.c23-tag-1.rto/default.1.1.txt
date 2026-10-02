@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 14: error: this declaration of struct "bar" does not declare the same type as the declaration at line 13
+  typedef struct bar { float x; } Y; /* { dg-error "redefinition of struct or union" } */
+                 ^
+
+"Test_name.c", line 19: error: this declaration of struct "foo" does not declare the same type as the declaration at line 18
+  	struct foo { float x; }; /* { dg-error "redefinition of struct or union" } */
+  	       ^
+
+"Test_name.c", line 31: warning: variable "x" is used before its value is set
+  	(void)x; (void)y;
+  	      ^
+
+"Test_name.c", line 31: warning: variable "y" is used before its value is set
+  	(void)x; (void)y;
+  	               ^
+
+"Test_name.c", line 45: warning: variable "x" is used before its value is set
+  		(void)x; (void)y;
+  		      ^
+
+"Test_name.c", line 45: warning: variable "y" is used before its value is set
+  		(void)x; (void)y;
+  		               ^
+
+"Test_name.c", line 52: error: this declaration of union "cc" does not declare the same type as the declaration at line 50
+  union cc { float y; int x; } z2;	/* { dg-error "redefinition of struct or union" } */
+        ^
+
+"Test_name.c", line 58: warning: variable "x0" is used before its value is set
+  	struct p { struct s c; } y1 = { x0 };
+  	                                ^
+
+"Test_name.c", line 58: warning: variable "y1" was declared but never referenced
+  	struct p { struct s c; } y1 = { x0 };
+  	                         ^
+
+"Test_name.c", line 59: warning: variable "y" was declared but never referenced
+  	struct p { struct s { int a; } c; } y = { x0 };
+  	                                    ^
+
+"Test_name.c", line 64: error: this declaration of struct "q" does not declare the same type as the declaration at line 62
+  struct q { int a; };  /* { dg-error "redefinition of struct or union" } */
+         ^
+
+"Test_name.c", line 68: error: this declaration of struct "r" does not declare the same type as the declaration at line 66
+  struct r { int a; char b[1]; }; /* { dg-error "redefinition of struct or union" } */
+         ^
+
+5 errors detected in the compilation of "Test_name.c".

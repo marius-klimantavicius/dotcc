@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 5: error: statement expressions are only allowed in block scope
+  static int *z[1] = {({ static int _x = 70; &_x; })}; // expected-error {{statement expression not allowed at file scope}}
+                       ^
+
+"Test_name.c", line 15: error: expression must have a constant value
+    static int *y[1] = {({ static int _x = 20; &_x; })}; // expected-error {{initializer element is not a compile-time constant}}
+                        ^
+
+"Test_name.c", line 15: warning: variable "y" was declared but never referenced
+    static int *y[1] = {({ static int _x = 20; &_x; })}; // expected-error {{initializer element is not a compile-time constant}}
+                ^
+
+"Test_name.c", line 5: warning: variable "z" was declared but never referenced
+  static int *z[1] = {({ static int _x = 70; &_x; })}; // expected-error {{statement expression not allowed at file scope}}
+              ^
+
+2 errors detected in the compilation of "Test_name.c".

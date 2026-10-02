@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 7: error: expected an expression
+  template< typename Pred > assert<false> assert_not_arg( void (*)(Pred), typename assert_arg_pred<Pred>::type );
+                                                                 ^
+
+"Test_name.c", line 7: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+  template< typename Pred > assert<false> assert_not_arg( void (*)(Pred), typename assert_arg_pred<Pred>::type );
+                                                          ^
+
+"Test_name.c", line 7: error: type name is not allowed
+  template< typename Pred > assert<false> assert_not_arg( void (*)(Pred), typename assert_arg_pred<Pred>::type );
+                                                                   ^
+
+"Test_name.c", line 7: error: assert_arg_pred is not a template
+  template< typename Pred > assert<false> assert_not_arg( void (*)(Pred), typename assert_arg_pred<Pred>::type );
+                                                                                   ^
+
+"Test_name.c", line 7: error: type name is not allowed
+  template< typename Pred > assert<false> assert_not_arg( void (*)(Pred), typename assert_arg_pred<Pred>::type );
+                                                                          ^
+
+"Test_name.c", line 7: error: too many initializer values
+  template< typename Pred > assert<false> assert_not_arg( void (*)(Pred), typename assert_arg_pred<Pred>::type );
+                                                                          ^
+
+6 errors detected in the compilation of "Test_name.c".

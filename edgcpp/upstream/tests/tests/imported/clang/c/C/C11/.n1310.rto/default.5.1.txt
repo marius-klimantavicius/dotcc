@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=5 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 25: error: expression must have a constant value
+  _Static_assert(TEST(0, 1), "");
+                 ^
+
+"Test_name.c", line 26: error: expression must have a constant value
+  _Static_assert(TEST(1, 2), "");
+                 ^
+
+"Test_name.c", line 27: error: expression must have a constant value
+  _Static_assert(TEST(2, 4), "");
+                 ^
+
+"Test_name.c", line 28: error: expression must have a constant value
+  _Static_assert(TEST(3, 8), "");
+                 ^
+
+"Test_name.c", line 29: error: expression must have a constant value
+  _Static_assert(TEST(4, 16), "");
+                 ^
+
+"Test_name.c", line 30: error: expression must have a constant value
+  _Static_assert(TEST(5, 32), "");
+                 ^
+
+"Test_name.c", line 31: error: expression must have a constant value
+  _Static_assert(TEST(6, 64), "");
+                 ^
+
+"Test_name.c", line 32: error: expression must have a constant value
+  _Static_assert(TEST(7, (signed char)128), "");
+                 ^
+
+8 errors detected in the compilation of "Test_name.c".

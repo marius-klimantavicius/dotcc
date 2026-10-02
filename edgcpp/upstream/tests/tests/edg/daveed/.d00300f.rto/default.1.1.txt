@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c99 --embedded_c Test_name.c
+"Test_name.c", line 20: error: operand types are incompatible ("_EDG_NAS_A int *" and "_EDG_NAS_C int *")
+  	pa == pc;
+  	   ^
+
+"Test_name.c", line 22: warning: expression has no effect
+  	pa == pb;
+  	^
+
+1 error detected in the compilation of "Test_name.c".

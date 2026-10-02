@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 16: warning: integer conversion resulted in truncation
+    struct {int16_t i;} i16 = {70000};
+                               ^
+
+"Test_name.c", line 12: warning: variable "c2" was declared but never referenced
+    struct {char c;} c2 = {x};
+                     ^
+
+"Test_name.c", line 16: warning: variable "i16" was declared but never referenced
+    struct {int16_t i;} i16 = {70000};
+                        ^
+
+"Test_name.c", line 24: warning: integer conversion resulted in truncation
+    struct {T t;} t2 = {700};
+                        ^
+          detected during instantiation of "void maybe_shrink_int(T) [with T=char]" at line 28
+

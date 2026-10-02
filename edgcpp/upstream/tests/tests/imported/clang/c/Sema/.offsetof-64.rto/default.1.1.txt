@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 10: warning: use of a const variable in a constant expression is nonstandard in C
+    char padding[Size]; // expected-warning {{folded to constant}}
+                 ^
+
+"Test_name.c", line 11: warning: use of a const variable in a constant expression is nonstandard in C
+    char more_padding[1][Size]; // expected-warning {{folded to constant}}
+                         ^
+
+"Test_name.c", line 18: warning: use of a const variable in a constant expression is nonstandard in C
+    char padding[Size][Size][Size];  // expected-error {{array is too large}}
+                 ^
+
+"Test_name.c", line 18: warning: use of a const variable in a constant expression is nonstandard in C
+    char padding[Size][Size][Size];  // expected-error {{array is too large}}
+                       ^
+
+"Test_name.c", line 18: warning: use of a const variable in a constant expression is nonstandard in C
+    char padding[Size][Size][Size];  // expected-error {{array is too large}}
+                             ^
+
+"Test_name.c", line 18: error: array is too large
+    char padding[Size][Size][Size];  // expected-error {{array is too large}}
+         ^
+
+"Test_name.c", line 24: warning: integer conversion resulted in truncation
+  int test2 = __builtin_offsetof(struct Chunk2, data);  // expected-error{{initializer element is not a compile-time constant}} 
+              ^
+
+1 error detected in the compilation of "Test_name.c".

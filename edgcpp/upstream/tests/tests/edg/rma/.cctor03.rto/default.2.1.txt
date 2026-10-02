@@ -1,0 +1,14 @@
+cpfe -DTEST_NUMBER=2 -r -x -tused Test_name.c
+"Test_name.c", line 5: error: "A::A()" (declared at line 4) is inaccessible
+  A a;         // error -- A() is inaccessible
+    ^
+
+"Test_name.c", line 6: error: "A::A(const A &, int, int)" (declared at line 4) is inaccessible
+  A b = a;     // error -- A(A&) is inaccessible
+        ^
+
+"Test_name.c", line 7: error: "A::A(int)" (declared at line 4) is inaccessible
+  A c = 1;     // error -- A(A&) is inaccessible
+        ^
+
+3 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,41 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 6: warning: class "B" defines no constructor to initialize the following:
+            const member "B::v_"
+  class B // { dg-message "implicitly deleted" }
+        ^
+
+"Test_name.c", line 14: warning: class "A" defines no constructor to initialize the following:
+            reference member "A::ref"
+  class A // { dg-message "implicitly deleted" }
+        ^
+
+"Test_name.c", line 12: error: the default constructor of "B" cannot be referenced -- it is a deleted function
+  struct D : B {}; // { dg-error "deleted" }
+             ^
+          detected during implicit generation of "D::D()" at line 24
+
+"Test_name.c", line 25: error: object has an uninitialized const or reference member
+    new D; // { dg-error "use of deleted" }
+        ^
+
+"Test_name.c", line 29: error: the default constructor of "C" cannot be referenced -- it is a deleted function
+    C c; // { dg-error "use of deleted" }
+      ^
+
+"Test_name.c", line 30: error: the default constructor of "C" cannot be referenced -- it is a deleted function
+    new C; // { dg-error "use of deleted" }
+        ^
+
+"Test_name.c", line 31: error: the default constructor of "C" cannot be referenced -- it is a deleted function
+    C(); // { dg-error "use of deleted" }
+    ^
+
+"Test_name.c", line 32: error: the default constructor of "C" cannot be referenced -- it is a deleted function
+    new C(); // { dg-error "use of deleted" }
+         ^
+
+"Test_name.c", line 24: warning: variable "d" was declared but never referenced
+    D d; // { dg-error "use of deleted" }
+      ^
+
+6 errors detected in the compilation of "Test_name.c".

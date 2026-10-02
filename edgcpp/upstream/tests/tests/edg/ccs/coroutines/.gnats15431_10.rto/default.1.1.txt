@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --microsoft_version 1900 --set_flag coroutines -tused Test_name.c
+"Test_name.c", line 5: warning: missing co_return statement while "std::coroutine_traits<std::generator<int>>::promise_type" (aka "std::generator<int>::promise_type") has no "return_void" at end of function "f"
+  std::generator<int> f(...) {
+                      ^
+
+"Test_name.c", line 5: error: a coroutine cannot have an ellipsis parameter
+  std::generator<int> f(...) {
+                      ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=2 -W -r --diag_suppress 174 --set_flag=no_checking_pragmas --c++20 Test_name.c
+"Test_name.c", line 8: error: an unparenthesized comma operator in an array subscript expression is deprecated
+  int r = x[f(), two]; // deprecated
+               ^
+
+"Test_name.c", line 10: error: an unparenthesized comma operator in an array subscript expression is deprecated
+  int t = x[f(), 2]; // deprecated
+               ^
+
+2 errors detected in the compilation of "Test_name.c".

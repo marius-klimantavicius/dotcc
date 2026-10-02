@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --g++ Test_name.c
+"Test_name.c", line 19: warning: storage specifier ignored
+  template static void Foo(const int& value);
+           ^
+
+"Test_name.c", line 20: warning: storage specifier ignored
+  template extern void Foo(const char& value);
+           ^
+
+"Test_name.c", line 30: warning: storage specifier ignored
+  template extern void X<int>::f();
+           ^
+
+"Test_name.c", line 31: warning: storage specifier ignored
+  template extern int X<int>::i;
+           ^
+

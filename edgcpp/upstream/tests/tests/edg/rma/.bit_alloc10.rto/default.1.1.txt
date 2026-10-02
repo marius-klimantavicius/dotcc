@@ -1,0 +1,8 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 9: error: expected a ";"
+  struct C { char a:3; short :0; long :0; }
+  ^
+
+At end of source: error: expected a ";"
+
+2 errors detected in the compilation of "Test_name.c".

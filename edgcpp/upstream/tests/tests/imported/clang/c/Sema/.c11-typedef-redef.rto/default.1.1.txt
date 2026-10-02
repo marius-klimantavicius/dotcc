@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c11 Test_name.c
+"Test_name.c", line 15: error: invalid redeclaration of type name "vla" (declared at line 14)
+    typedef int vla[N]; // expected-error{{redefinition of typedef for variably-modified type 'int[N]'}}
+                ^
+
+1 error detected in the compilation of "Test_name.c".

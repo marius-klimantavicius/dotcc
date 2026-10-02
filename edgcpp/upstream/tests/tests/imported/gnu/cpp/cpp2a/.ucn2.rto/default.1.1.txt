@@ -1,0 +1,74 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 --char8_t Test_name.c
+"Test_name.c", line 9: warning: a universal character name cannot designate a surrogate code point
+  const char16_t *c = u"\uD802";		// { dg-error "is not a valid universal character" }
+                        ^
+
+"Test_name.c", line 10: warning: a universal character name cannot designate a surrogate code point
+  const char16_t *d = u"\U0000DFF0";	// { dg-error "is not a valid universal character" }
+                        ^
+
+"Test_name.c", line 11: warning: a universal character name must designate a valid code point
+  const char16_t *e = u"\U00110000";	// { dg-error "is outside the UCS codespace" "" { target c++20 } }
+                        ^
+
+"Test_name.c", line 13: warning: a universal character name cannot designate a surrogate code point
+  const char32_t *f = U"\uD802";		// { dg-error "is not a valid universal character" }
+                        ^
+
+"Test_name.c", line 14: warning: a universal character name cannot designate a surrogate code point
+  const char32_t *g = U"\U0000DFF0";	// { dg-error "is not a valid universal character" }
+                        ^
+
+"Test_name.c", line 15: warning: a universal character name must designate a valid code point
+  const char32_t *h = U"\U00110001";	// { dg-error "is outside the UCS codespace" "" { target c++20 } }
+                        ^
+
+"Test_name.c", line 19: error: invalid character for char16_t literal
+  const char16_t j = u'\U0001F914';	// { dg-error "character not encodable in a single code unit" }
+                       ^
+
+"Test_name.c", line 24: error: too many characters in character constant
+  const char16_t m = u'ab';		// { dg-error "multi-character literal cannot have an encoding prefix" }
+                     ^
+
+"Test_name.c", line 25: error: too many characters in character constant
+  const char32_t n = U'ab';		// { dg-error "multi-character literal cannot have an encoding prefix" }
+                     ^
+
+"Test_name.c", line 30: warning: a universal character name must designate a valid code point
+  const char16_t p = u'\U00110003';	// { dg-error "is outside the UCS codespace" "" { target c++20 } }
+                       ^
+
+"Test_name.c", line 30: error: invalid character for char16_t literal
+  const char16_t p = u'\U00110003';	// { dg-error "is outside the UCS codespace" "" { target c++20 } }
+                       ^
+
+"Test_name.c", line 32: warning: a universal character name must designate a valid code point
+  const char32_t q = U'\U00110004';	// { dg-error "is outside the UCS codespace" "" { target c++20 } }
+                       ^
+
+"Test_name.c", line 19: warning: variable "j" was declared but never referenced
+  const char16_t j = u'\U0001F914';	// { dg-error "character not encodable in a single code unit" }
+                 ^
+
+"Test_name.c", line 20: warning: variable "k" was declared but never referenced
+  const char32_t k = U'\U0001F914';
+                 ^
+
+"Test_name.c", line 24: warning: variable "m" was declared but never referenced
+  const char16_t m = u'ab';		// { dg-error "multi-character literal cannot have an encoding prefix" }
+                 ^
+
+"Test_name.c", line 25: warning: variable "n" was declared but never referenced
+  const char32_t n = U'ab';		// { dg-error "multi-character literal cannot have an encoding prefix" }
+                 ^
+
+"Test_name.c", line 30: warning: variable "p" was declared but never referenced
+  const char16_t p = u'\U00110003';	// { dg-error "is outside the UCS codespace" "" { target c++20 } }
+                 ^
+
+"Test_name.c", line 32: warning: variable "q" was declared but never referenced
+  const char32_t q = U'\U00110004';	// { dg-error "is outside the UCS codespace" "" { target c++20 } }
+                 ^
+
+4 errors detected in the compilation of "Test_name.c".

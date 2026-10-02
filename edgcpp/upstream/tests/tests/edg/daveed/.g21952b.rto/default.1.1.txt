@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --c11 Test_name.c
+"Test_name.c", line 6: error: _Generic construct matches multiple types
+                     void (*)(void) : 0);  // Previously aborted.  Now an
+                     ^
+"Test_name.c", line 5: note: the other match is "void (*)(int)"
+                     void (*)(int)  : 0,
+                     ^
+
+1 error detected in the compilation of "Test_name.c".

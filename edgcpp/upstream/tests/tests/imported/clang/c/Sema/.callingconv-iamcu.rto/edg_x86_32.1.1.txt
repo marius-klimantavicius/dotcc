@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 11: error: attribute "fastcall" does not take arguments
+  void __attribute__((fastcall(1))) baz(float *a) { // expected-error {{'fastcall' attribute takes no arguments}}
+                              ^
+
+"Test_name.c", line 18: warning: unknown attribute "thiscall"
+  void __attribute__((thiscall)) test4(int a, ...) { // expected-warning {{'thiscall' calling convention is not supported for this target}}
+                      ^
+
+"Test_name.c", line 23: error: attribute "cdecl" does not take arguments
+  void __attribute__((cdecl(1))) ctest1(float x) {} // expected-error {{'cdecl' attribute takes no arguments}}
+                           ^
+
+"Test_name.c", line 37: warning: unknown attribute "pcs"
+  int __attribute__((pcs("aapcs", "aapcs"))) pcs1(void); // expected-error {{'pcs' attribute takes one argument}}
+                     ^
+
+"Test_name.c", line 38: warning: unknown attribute "pcs"
+  int __attribute__((pcs())) pcs2(void); // expected-error {{'pcs' attribute takes one argument}}
+                     ^
+
+"Test_name.c", line 39: warning: unknown attribute "pcs"
+  int __attribute__((pcs(pcs1))) pcs3(void); // expected-error {{'pcs' attribute requires a string}} \
+                     ^
+
+"Test_name.c", line 41: warning: unknown attribute "pcs"
+  int __attribute__((pcs(0))) pcs4(void); // expected-error {{expected string literal as argument of 'pcs' attribute}}
+                     ^
+
+"Test_name.c", line 43: warning: unknown attribute "pcs"
+  int __attribute__((pcs("aapcs"))) pcs5(void); // expected-warning {{'pcs' calling convention is not supported for this target}}
+                     ^
+
+"Test_name.c", line 44: warning: unknown attribute "pcs"
+  int __attribute__((pcs("aapcs-vfp"))) pcs6(void); // expected-warning {{'pcs' calling convention is not supported for this target}}
+                     ^
+
+"Test_name.c", line 45: warning: unknown attribute "pcs"
+  int __attribute__((pcs("foo"))) pcs7(void); // expected-error {{invalid PCS type}}
+                     ^
+
+"Test_name.c", line 51: warning: missing return statement at end of non-void function "ctest4"
+  PROC __attribute__((cdecl)) ctest4(const char *x) {}
+                                                     ^
+
+"Test_name.c", line 53: warning: unknown attribute "intel_ocl_bicc"
+  void __attribute__((intel_ocl_bicc)) inteloclbifunc(float *a) {} // expected-warning {{'intel_ocl_bicc' calling convention is not supported for this target}}
+                      ^
+
+"Test_name.c", line 55: warning: attribute "stdcall" does not apply here
+  struct type_test {} __attribute__((stdcall)); // expected-warning {{'stdcall' calling convention is not supported for this target}} expected-warning {{'stdcall' attribute only applies to functions and methods}}
+                                     ^
+
+2 errors detected in the compilation of "Test_name.c".

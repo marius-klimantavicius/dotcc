@@ -1,0 +1,6 @@
+cpfe -DTEST_NUMBER=1 --gcc Test_name.c
+eccp: diagnostics generated from compilation of Test_name.int.c:
+Test_name.c:16:5: error: conflicting types for 'f'; have 'int(short int)'
+Test_name.c:16:12: note: previous declaration of 'f' with type 'int(int)'
+eccp: end of diagnostics from compilation of Test_name.int.c
+eccp: gcc compilation of Test_name.int.c returned an exit status of 1

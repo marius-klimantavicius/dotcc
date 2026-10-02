@@ -1,0 +1,26 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --microsoft_version=1200 -n Test_name.c
+"Test_name.c", line 6: remark: extra ";" ignored
+  };
+   ^
+
+"Test_name.c", line 10: warning: attributes ignored here
+  __declspec(dllimport) extern "C" void f();
+  ^
+
+"Test_name.c", line 10: warning: dllexport/dllimport conflict with "f" (declared at line 5); dllexport assumed
+  __declspec(dllimport) extern "C" void f();
+                                        ^
+
+"Test_name.c", line 20: warning: attributes ignored here
+  __declspec(dllimport) extern "C" void X::f() { }
+  ^
+
+"Test_name.c", line 20: warning: dllexport/dllimport conflict with "X::f" (declared at line 16); dllexport assumed
+  __declspec(dllimport) extern "C" void X::f() { }
+                                           ^
+
+"Test_name.c", line 21: error: a function declared "dllimport" may not be defined
+  extern "C" __declspec(dllimport) void X::g() { }
+                                           ^
+
+1 error detected in the compilation of "Test_name.c".

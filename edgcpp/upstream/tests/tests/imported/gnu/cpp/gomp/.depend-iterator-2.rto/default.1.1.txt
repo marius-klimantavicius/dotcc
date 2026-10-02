@@ -1,0 +1,161 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 13: warning: unrecognized #pragma
+    #pragma omp task depend (iterator , in : a)	// { dg-error "expected" }
+            ^
+
+"Test_name.c", line 15: warning: unrecognized #pragma
+    #pragma omp task depend (iterator (for = 0 : 2) , in : a)	// { dg-error "expected" }
+            ^
+
+"Test_name.c", line 17: warning: unrecognized #pragma
+    #pragma omp task depend (iterator (5 = 0 : 2) , in : a)	// { dg-error "expected" }
+            ^
+
+"Test_name.c", line 19: warning: unrecognized #pragma
+    #pragma omp task depend (iterator (i : N : 2) , in : a)	// { dg-error "expected '='|name a type|expected" }
+            ^
+
+"Test_name.c", line 21: warning: unrecognized #pragma
+    #pragma omp task depend (iterator (i = 0, 1 : 2) , in : a)	// { dg-error "expected" }
+            ^
+
+"Test_name.c", line 23: warning: unrecognized #pragma
+    #pragma omp task depend (iterator (i = (0, 1) : 2) , in : a)
+            ^
+
+"Test_name.c", line 25: warning: unrecognized #pragma
+    #pragma omp task depend (iterator (i = 0 : 1 : 2 : 3) , in : a)	// { dg-error "expected '.'" }
+            ^
+
+"Test_name.c", line 27: warning: unrecognized #pragma
+    #pragma omp task depend (iterator (i = 0 : 2, 3) , in : a)	// { dg-error "expected" }
+            ^
+
+"Test_name.c", line 29: warning: unrecognized #pragma
+    #pragma omp task depend (iterator (i = N : 10 : 2, 3) , in : a)	// { dg-error "expected" }
+            ^
+
+"Test_name.c", line 31: warning: unrecognized #pragma
+    #pragma omp task depend (iterator (i = 0:1), iterator (j = 0:1) , in : a)	// { dg-error "invalid depend kind" }
+            ^
+
+"Test_name.c", line 33: warning: unrecognized #pragma
+    #pragma omp task depend (iterator (i = N:32) , in : b[i*2:2])
+            ^
+
+"Test_name.c", line 35: warning: unrecognized #pragma
+    #pragma omp task depend (iterator (void i = 0:1) , in : a)		// { dg-error "iterator 'i' has neither integral nor pointer type" }
+            ^
+
+"Test_name.c", line 37: warning: unrecognized #pragma
+    #pragma omp task depend (iterator (U *p = d:e:2) , in : a)
+            ^
+
+"Test_name.c", line 39: warning: unrecognized #pragma
+    #pragma omp task depend (iterator (W i = N:4, \
+            ^
+
+"Test_name.c", line 42: warning: unrecognized #pragma
+    #pragma omp task depend (iterator (i = 0:4, j = i:16) , in : a)	// { dg-error "begin expression refers to outer iterator 'i'" }
+            ^
+
+"Test_name.c", line 44: warning: unrecognized #pragma
+    #pragma omp task depend (iterator (i = N:4, j = 2:i:1) , in : a)	// { dg-error "end expression refers to outer iterator 'i'" }
+            ^
+
+"Test_name.c", line 46: warning: unrecognized #pragma
+    #pragma omp task depend (iterator (i = 0:4, j = 2:8:i) , in : a)	// { dg-error "step expression refers to outer iterator 'i'" }
+            ^
+
+"Test_name.c", line 48: warning: unrecognized #pragma
+    #pragma omp task depend (iterator (i = 1.25:2.5:3) , in : a)
+            ^
+
+"Test_name.c", line 50: warning: unrecognized #pragma
+    #pragma omp task depend (iterator (i = 1:2:3.5) , in : a)		// { dg-error "iterator step with non-integral type" }
+            ^
+
+"Test_name.c", line 52: warning: unrecognized #pragma
+    #pragma omp task depend (iterator (W *p = 23 : h) , in : a)
+            ^
+
+"Test_name.c", line 54: warning: unrecognized #pragma
+    #pragma omp task depend (iterator (const int i = N : 2) , in : a)	// { dg-error "const qualified" }
+            ^
+
+"Test_name.c", line 56: warning: unrecognized #pragma
+    #pragma omp task depend (iterator (const long long unsigned i = 0 : 2) , in : a)	// { dg-error "const qualified" }
+            ^
+
+"Test_name.c", line 65: warning: unrecognized #pragma
+    #pragma omp for ordered(2)
+            ^
+
+"Test_name.c", line 69: warning: unrecognized #pragma
+        #pragma omp ordered depend (iterator (k=0:N) , sink: i - 1, j - 1)	// { dg-error "'iterator' modifier incompatible with 'sink'" }
+                ^
+
+"Test_name.c", line 70: warning: unrecognized #pragma
+        #pragma omp ordered depend (iterator (W l = 0:2:3) , source)		// { dg-error "'iterator' modifier incompatible with 'source'" }
+                ^
+
+"Test_name.c", line 78: warning: unrecognized #pragma
+    #pragma omp task depend (iterator (U i = 0:1), in : a)		// { dg-error "iterator 'i' has neither integral nor pointer type" }
+            ^
+
+"Test_name.c", line 80: warning: unrecognized #pragma
+    #pragma omp task depend (iterator (V f = 0.2:0.4) , in : a)	// { dg-error "iterator 'f' has neither integral nor pointer type" }
+            ^
+
+"Test_name.c", line 82: warning: unrecognized #pragma
+    #pragma omp task depend (iterator (struct T *p = f:g) , in : a)	// { dg-error "invalid use of" }
+            ^
+
+"Test_name.c", line 84: warning: unrecognized #pragma
+    #pragma omp task depend (iterator (i = *d:2) , in : a)	// { dg-error "invalid cast from type 'S' to type 'int'" }
+            ^
+
+"Test_name.c", line 86: warning: unrecognized #pragma
+    #pragma omp task depend (iterator (i = 2:*d:2) , in : a)	// { dg-error "invalid cast from type 'S' to type 'int'" }
+            ^
+
+"Test_name.c", line 88: warning: unrecognized #pragma
+    #pragma omp task depend (iterator (i = 2:4:*d) , in : a)	// { dg-error "iterator step with non-integral type" }
+            ^
+
+"Test_name.c", line 90: warning: unrecognized #pragma
+    #pragma omp task depend (iterator (i = 1.25:2.5:3) , in : a)
+            ^
+
+"Test_name.c", line 92: warning: unrecognized #pragma
+    #pragma omp task depend (iterator (i = 1:2:3.5) , in : a)	// { dg-error "iterator step with non-integral type" }
+            ^
+
+"Test_name.c", line 94: warning: unrecognized #pragma
+    #pragma omp task depend (iterator (W *p = 23 : h) , in : a)
+            ^
+
+"Test_name.c", line 96: warning: unrecognized #pragma
+    #pragma omp task depend (iterator (short i=1:3:N) , in : a)	// { dg-error "iterator 'i' has zero step" }
+            ^
+
+"Test_name.c", line 98: warning: unrecognized #pragma
+    #pragma omp task depend (iterator (i = 1 : 3 : N + 3 - 3) , in : a)	// { dg-error "iterator 'i' has zero step" }
+            ^
+
+"Test_name.c", line 100: warning: unrecognized #pragma
+    #pragma omp task depend (iterator (int *p = &b[6]:&b[9]:4 - 4) , in : a)	// { dg-error "iterator 'p' has zero step" }
+            ^
+
+"Test_name.c", line 102: warning: unrecognized #pragma
+    #pragma omp task depend (iterator (X i = N : 2) , in : a)	// { dg-error "const qualified" }
+            ^
+
+"Test_name.c", line 104: warning: unrecognized #pragma
+    #pragma omp task depend (iterator (Y i = 0 : 2) , in : a)	// { dg-error "const qualified" }
+            ^
+
+"Test_name.c", line 112: warning: unrecognized #pragma
+    #pragma omp task depend (iterator (i = 0:1), iterator (j = 0:1) , in : a)	// { dg-error "invalid depend kind" }
+            ^
+

@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --c++03 --gn 150100 Test_name.c
+"Test_name.c", line 14: error: no instance of function template "unnamed_enum::f0" matches the argument list
+            argument types are: (<unknown-type>)
+      f0( &f1<__typeof__(E1)>);
+      ^
+"Test_name.c", line 6: note: candidate function template "unnamed_enum::f0" failed deduction
+    template<typename R, typename A1> void f0(R (*)(A1));
+                                           ^
+
+"Test_name.c", line 16: error: no instance of function template "unnamed_enum::f2" matches the required type
+      void (*fp)(int, __typeof__(E1)) = f2;
+                                        ^
+
+"Test_name.c", line 29: error: no instance of function template "unnamed_class::f0" matches the argument list
+            argument types are: (<unknown-type>)
+      f0( &f1<__typeof__(x)>);
+      ^
+"Test_name.c", line 22: note: candidate function template "unnamed_class::f0" failed deduction
+    template<typename R, typename A1> void f0(R (*)(A1));
+                                           ^
+
+"Test_name.c", line 30: error: no instance of function template "unnamed_class::f2" matches the required type
+      void (*fp)(int, __typeof__(x)) = f2;
+                                       ^
+
+"Test_name.c", line 45: warning: variable "fp" was declared but never referenced
+      void (*fp)(int, X) = f2;
+             ^
+
+4 errors detected in the compilation of "Test_name.c".

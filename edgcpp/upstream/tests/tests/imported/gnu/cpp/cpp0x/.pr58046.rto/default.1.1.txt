@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 40: error: no operator "=" matches these operands
+            operand types are: A<int, enabler> = A<double, enabler>
+      a_i = a_d;  // { dg-error "cannot bind" }
+          ^
+"Test_name.c", line 23: note: function "A<T, <unnamed>>::operator=(A<int, enabler> &&) [with T=int, <unnamed>=enabler]" does not match because argument #1 does not match parameter
+  class A
+        ^
+"Test_name.c", line 23: note: function "A<T, <unnamed>>::operator=(const A<int, enabler> &) [with T=int, <unnamed>=enabler]" does not match because argument #1 does not match parameter
+  class A
+        ^
+"Test_name.c", line 29: note: function template "A<T, <unnamed>>::operator=(A<U, enabler> &&) [with T=int, <unnamed>=enabler]" does not match because argument #1 does not match parameter
+      A& operator=( A<U>&& )
+         ^
+
+1 error detected in the compilation of "Test_name.c".

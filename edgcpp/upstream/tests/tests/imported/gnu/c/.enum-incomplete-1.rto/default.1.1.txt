@@ -1,0 +1,278 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 16: error: incomplete type "enum e" is not allowed
+    ve; /* { dg-error "incomplete" } */
+    ^
+
+"Test_name.c", line 17: error: incomplete type "struct s" is not allowed
+    vs; /* { dg-error "incomplete" } */
+    ^
+
+"Test_name.c", line 18: error: incomplete type "enum e" is not allowed
+    (void) ve; /* { dg-error "incomplete" } */
+           ^
+
+"Test_name.c", line 19: error: incomplete type "struct s" is not allowed
+    (void) vs; /* { dg-error "incomplete" } */
+           ^
+
+"Test_name.c", line 20: error: incomplete type "enum e" is not allowed
+    (void) (i ? ve : ve); /* { dg-error "incomplete" } */
+                ^
+
+"Test_name.c", line 20: error: incomplete type "enum e" is not allowed
+    (void) (i ? ve : ve); /* { dg-error "incomplete" } */
+                     ^
+
+"Test_name.c", line 21: error: incomplete type "struct s" is not allowed
+    (void) (i ? vs : vs); /* { dg-error "incomplete" } */
+                ^
+
+"Test_name.c", line 21: error: incomplete type "struct s" is not allowed
+    (void) (i ? vs : vs); /* { dg-error "incomplete" } */
+                     ^
+
+"Test_name.c", line 22: error: expression must be a modifiable lvalue
+    (void) (ve = ve); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 22: error: incomplete type "enum e" is not allowed
+    (void) (ve = ve); /* { dg-error "incomplete" } */
+                 ^
+
+"Test_name.c", line 23: error: expression must be a modifiable lvalue
+    (void) (vs = vs); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 23: error: incomplete type "struct s" is not allowed
+    (void) (vs = vs); /* { dg-error "incomplete" } */
+                 ^
+
+"Test_name.c", line 24: error: incomplete type "enum e" is not allowed
+    (void) ve, /* { dg-error "incomplete" } */
+           ^
+
+"Test_name.c", line 25: error: incomplete type "enum e" is not allowed
+      (void) ve; /* { dg-error "incomplete" } */
+             ^
+
+"Test_name.c", line 26: error: incomplete type "struct s" is not allowed
+    (void) vs, /* { dg-error "incomplete" } */
+           ^
+
+"Test_name.c", line 27: error: incomplete type "struct s" is not allowed
+      (void) vs; /* { dg-error "incomplete" } */
+             ^
+
+"Test_name.c", line 30: error: incomplete type "enum e" is not allowed
+    (void) sizeof (ve); /* { dg-error "incomplete" } */
+                  ^
+
+"Test_name.c", line 31: error: incomplete type "struct s" is not allowed
+    (void) sizeof (vs); /* { dg-error "incomplete" } */
+                  ^
+
+"Test_name.c", line 35: warning: alignment-of operator applied to incomplete type
+    (void) __alignof (ve);
+           ^
+
+"Test_name.c", line 36: warning: alignment-of operator applied to incomplete type
+    (void) __alignof (vs);
+           ^
+
+"Test_name.c", line 37: error: incomplete type "enum e" is not allowed
+    (void) (ve + i); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 38: error: incomplete type "enum e" is not allowed
+    (void) (i * ve); /* { dg-error "incomplete" } */
+                ^
+
+"Test_name.c", line 39: error: incomplete type "enum e" is not allowed
+    (void) (i / ve); /* { dg-error "incomplete" } */
+                ^
+
+"Test_name.c", line 40: error: incomplete type "enum e" is not allowed
+    (void) (ve - i); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 41: error: incomplete type "enum e" is not allowed
+    (void) (ve << i); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 42: error: incomplete type "enum e" is not allowed
+    (void) (i >> ve); /* { dg-error "incomplete" } */
+                 ^
+
+"Test_name.c", line 43: error: incomplete type "enum e" is not allowed
+    (void) (ve < i); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 44: error: incomplete type "enum e" is not allowed
+    (void) (ve <= i); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 45: error: incomplete type "enum e" is not allowed
+    (void) (i > ve); /* { dg-error "incomplete" } */
+                ^
+
+"Test_name.c", line 46: error: incomplete type "enum e" is not allowed
+    (void) (i >= ve); /* { dg-error "incomplete" } */
+                 ^
+
+"Test_name.c", line 47: error: incomplete type "enum e" is not allowed
+    (void) (ve == i); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 48: error: incomplete type "enum e" is not allowed
+    (void) (i != ve); /* { dg-error "incomplete" } */
+                 ^
+
+"Test_name.c", line 49: error: incomplete type "enum e" is not allowed
+    (void) (ve & i); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 50: error: incomplete type "enum e" is not allowed
+    (void) (ve ^ i); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 51: error: incomplete type "enum e" is not allowed
+    (void) (i | ve); /* { dg-error "incomplete" } */
+                ^
+
+"Test_name.c", line 52: error: incomplete type "enum e" is not allowed
+    (void) (i && ve); /* { dg-error "incomplete" } */
+                 ^
+
+"Test_name.c", line 53: error: incomplete type "enum e" is not allowed
+    (void) (ve || i); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 54: error: incomplete type "enum e" is not allowed
+    (void) -ve; /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 55: error: incomplete type "enum e" is not allowed
+    (void) +ve; /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 56: error: incomplete type "enum e" is not allowed
+    (void) ~ve; /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 57: error: incomplete type "enum e" is not allowed
+    (void) !ve; /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 58: error: expression must be a modifiable lvalue
+    (void) --ve; /* { dg-error "incomplete" } */
+             ^
+
+"Test_name.c", line 59: error: expression must be a modifiable lvalue
+    (void) ++ve; /* { dg-error "incomplete" } */
+             ^
+
+"Test_name.c", line 60: error: expression must be a modifiable lvalue
+    (void) ve--; /* { dg-error "incomplete" } */
+           ^
+
+"Test_name.c", line 61: error: expression must be a modifiable lvalue
+    (void) ve++; /* { dg-error "incomplete" } */
+           ^
+
+"Test_name.c", line 62: error: incomplete type "enum e" is not allowed
+    i = ve; /* { dg-error "incomplete" } */
+        ^
+
+"Test_name.c", line 63: error: incomplete type "enum e" is not allowed
+    i *= ve; /* { dg-error "incomplete" } */
+         ^
+
+"Test_name.c", line 64: error: incomplete type "enum e" is not allowed
+    i /= ve; /* { dg-error "incomplete" } */
+         ^
+
+"Test_name.c", line 65: error: incomplete type "enum e" is not allowed
+    i %= ve; /* { dg-error "incomplete" } */
+         ^
+
+"Test_name.c", line 66: error: incomplete type "enum e" is not allowed
+    i += ve; /* { dg-error "incomplete" } */
+         ^
+
+"Test_name.c", line 67: error: incomplete type "enum e" is not allowed
+    i -= ve; /* { dg-error "incomplete" } */
+         ^
+
+"Test_name.c", line 68: error: incomplete type "enum e" is not allowed
+    i <<= ve; /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 69: error: incomplete type "enum e" is not allowed
+    i >>= ve; /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 70: error: incomplete type "enum e" is not allowed
+    i &= ve; /* { dg-error "incomplete" } */
+         ^
+
+"Test_name.c", line 71: error: incomplete type "enum e" is not allowed
+    i ^= ve; /* { dg-error "incomplete" } */
+         ^
+
+"Test_name.c", line 72: error: incomplete type "enum e" is not allowed
+    i |= ve; /* { dg-error "incomplete" } */
+         ^
+
+"Test_name.c", line 73: error: incomplete type "enum e" is not allowed
+    (void) (ve ? 1 : 1); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 74: error: incomplete type "enum e" is not allowed
+    (void) (int) ve; /* { dg-error "incomplete" } */
+                 ^
+
+"Test_name.c", line 75: error: incomplete type "enum e" is not allowed
+    f0 (ve); /* { dg-error "incomplete" } */
+        ^
+
+"Test_name.c", line 76: error: incomplete type "enum e" is not allowed
+    if (ve) /* { dg-error "incomplete" } */
+        ^
+
+"Test_name.c", line 80: error: incomplete type "enum e" is not allowed
+    while (ve); /* { dg-error "incomplete" } */
+           ^
+
+"Test_name.c", line 81: error: incomplete type "enum e" is not allowed
+    while (ve) /* { dg-error "incomplete" } */
+           ^
+
+"Test_name.c", line 83: error: incomplete type "enum e" is not allowed
+    _Bool b = ve; /* { dg-error "incomplete" } */
+              ^
+
+"Test_name.c", line 84: error: incomplete type "enum e" is not allowed
+    float f = ve; /* { dg-error "incomplete" } */
+              ^
+
+"Test_name.c", line 85: error: incomplete type "enum e" is not allowed
+    switch (ve) /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 87: error: incomplete type "enum e" is not allowed
+    for (; ve;) /* { dg-error "incomplete" } */
+           ^
+
+"Test_name.c", line 89: error: incomplete type "enum e" is not allowed
+    return ve; /* { dg-error "incomplete" } */
+           ^
+
+"Test_name.c", line 32: warning: variable "pe" was declared but never referenced
+    typeof (ve) *pe;
+                 ^
+
+"Test_name.c", line 33: warning: variable "ps" was declared but never referenced
+    typeof (vs) *ps;
+                 ^
+
+65 errors detected in the compilation of "Test_name.c".

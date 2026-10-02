@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c17 --strict_gnu Test_name.c
+"./dfp/constants-pedantic.c", line 9: error: identifier "_Decimal32" is undefined
+  _Decimal32 a = 1.1df;
+  ^
+
+"./dfp/constants-pedantic.c", line 9: error: extra text after expected end of number
+  _Decimal32 a = 1.1df;
+                    ^
+
+"./dfp/constants-pedantic.c", line 10: error: identifier "_Decimal32" is undefined
+  _Decimal32 b = -.003DF;
+  ^
+
+"./dfp/constants-pedantic.c", line 10: error: extra text after expected end of number
+  _Decimal32 b = -.003DF;
+                      ^
+
+"./dfp/constants-pedantic.c", line 11: error: identifier "_Decimal64" is undefined
+  _Decimal64 c = 11e-1dl;
+  ^
+
+"./dfp/constants-pedantic.c", line 11: error: extra text after expected end of number
+  _Decimal64 c = 11e-1dl;
+                      ^
+
+"./dfp/constants-pedantic.c", line 12: error: identifier "_Decimal64" is undefined
+  _Decimal64 d = -.3DL;
+  ^
+
+"./dfp/constants-pedantic.c", line 12: error: extra text after expected end of number
+  _Decimal64 d = -.3DL;
+                    ^
+
+"./dfp/constants-pedantic.c", line 13: error: identifier "_Decimal128" is undefined
+  _Decimal128 e = 000.3e0dl;
+  ^
+
+"./dfp/constants-pedantic.c", line 13: error: extra text after expected end of number
+  _Decimal128 e = 000.3e0dl;
+                         ^
+
+"./dfp/constants-pedantic.c", line 14: error: identifier "_Decimal128" is undefined
+  _Decimal128 f = 3000300030003e0DL;
+  ^
+
+"./dfp/constants-pedantic.c", line 14: error: extra text after expected end of number
+  _Decimal128 f = 3000300030003e0DL;
+                                 ^
+
+12 errors detected in the compilation of "Test_name.c".

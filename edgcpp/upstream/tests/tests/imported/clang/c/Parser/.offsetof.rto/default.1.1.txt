@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 7: error: expected a ")"
+  int a = __builtin_offsetof(struct a, x; // expected-error{{expected ')'}} expected-note{{to match this '('}}
+                                        ^
+
+"Test_name.c", line 9: error: expected a ")"
+  int b = __builtin_offsetof(struct a, x->b); // expected-error{{expected ')'}} expected-note{{to match this '('}}
+                                        ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,64 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 6: error: explicit type is missing ("int" assumed)
+    static a(4); // expected-error {{a type specifier is required}}
+           ^
+
+"Test_name.c", line 7: error: explicit type is missing ("int" assumed)
+    b(int n); // expected-error {{a type specifier is required}}
+    ^
+
+"Test_name.c", line 8: error: this declaration has no storage class or type specifier
+    c (*p)[]; // expected-error {{unknown type name 'c'}}
+    ^
+
+"Test_name.c", line 8: error: identifier "p" is undefined
+    c (*p)[]; // expected-error {{unknown type name 'c'}}
+        ^
+
+"Test_name.c", line 8: error: expected a ";"
+    c (*p)[]; // expected-error {{unknown type name 'c'}}
+          ^
+
+"Test_name.c", line 9: error: identifier "itn" is undefined
+    itn f(char *p, *q); // expected-error {{unknown type name 'itn'}} expected-error {{a type specifier is required}}
+    ^
+
+"Test_name.c", line 9: error: expected a type specifier
+    itn f(char *p, *q); // expected-error {{unknown type name 'itn'}} expected-error {{a type specifier is required}}
+                   ^
+
+"Test_name.c", line 14: error: explicit type is missing ("int" assumed)
+    S::f() {} // expected-error {{a type specifier is required}}
+    ^
+
+"Test_name.c", line 14: error: declaration is incompatible with "void ImplicitInt::S::f()" (declared at line 12)
+    S::f() {} // expected-error {{a type specifier is required}}
+       ^
+
+"Test_name.c", line 14: warning: missing return statement at end of non-void function "ImplicitInt::S::f"
+    S::f() {} // expected-error {{a type specifier is required}}
+            ^
+
+"Test_name.c", line 18: error: name followed by "::" must be a class or namespace name
+  int f(a::b::c); // expected-error {{use of undeclared identifier 'a'}}
+        ^
+
+"Test_name.c", line 20: warning: nonstandard qualified name in global scope declaration
+  class Foo::Bar { // expected-error {{use of undeclared identifier 'Foo'}}
+           ^
+
+"Test_name.c", line 20: error: incomplete type "Foo" is not allowed
+  class Foo::Bar { // expected-error {{use of undeclared identifier 'Foo'}}
+             ^
+
+At end of source: error: expected an expression
+
+At end of source: error: expected a "}"
+
+At end of source: error: expected a ";"
+
+"Test_name.c", line 6: warning: variable "ImplicitInt::a" was declared but never referenced
+    static a(4); // expected-error {{a type specifier is required}}
+           ^
+
+14 errors detected in the compilation of "Test_name.c".

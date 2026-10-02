@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=3 --c++20 -A Test_name.c
+"Test_name.c", line 7: error: not a class or struct name
+    struct C : B                  // error at definition or instantiation time
+               ^
+
+"Test_name.c", line 18: error: the global scope has no class named "B"
+    struct C : ::B                // error
+                 ^
+
+"Test_name.c", line 27: error: the global scope has no class named "B"
+    struct C : ::B                // error
+                 ^
+
+"Test_name.c", line 36: error: not a class or struct name
+    struct C : B                  // error
+               ^
+
+"Test_name.c", line 46: error: not a class or struct name
+    struct C : B<void>            // error
+               ^
+
+"Test_name.c", line 55: error: not a class or struct name
+    struct C : B                  // error
+               ^
+
+6 errors detected in the compilation of "Test_name.c".

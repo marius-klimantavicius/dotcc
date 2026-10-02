@@ -1,0 +1,75 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 52: error: no instance of overloaded function "test1::A::foo" matches the argument list
+            argument types are: (test1::Opaque3)
+      A::foo(Opaque3()); // expected-error {{no matching member function}}
+      ^
+"Test_name.c", line 39: note: function "test1::A::foo(test1::Opaque2)" does not match because argument #1 does not match parameter
+      void foo(Opaque2); // expected-note {{candidate}}
+           ^
+"Test_name.c", line 38: note: function "test1::A::foo(test1::Opaque1)" does not match because argument #1 does not match parameter
+      void foo(Opaque1); // expected-note {{candidate}}
+           ^
+
+"Test_name.c", line 54: error: a nonstatic member reference must be relative to a specific object
+      C1::foo(Opaque1()); // expected-error {{call to non-static member function without an object argument}}
+      ^
+
+"Test_name.c", line 55: error: a nonstatic member reference must be relative to a specific object
+      C2::foo(Opaque1()); // expected-error {{call to non-static member function without an object argument}}
+      ^
+
+"Test_name.c", line 99: warning: missing return statement at end of non-void function "test2::test"
+    }
+    ^
+
+"Test_name.c", line 138: error: a nonstatic member reference must be relative to a specific object
+      decltype(T::f0()) g7(); // expected-error {{call to non-static member function without an object argument}}
+               ^
+          detected during instantiation of class "test3::B<T> [with T=test3::A]" at line 153
+
+"Test_name.c", line 140: error: a nonstatic member reference must be relative to a specific object
+      decltype(T::template f1<int>()) g8(); // expected-error {{call to non-static member function without an object argument}}
+               ^
+          detected during instantiation of class "test3::B<T> [with T=test3::A]" at line 153
+
+"Test_name.c", line 157: error: a nonstatic member reference must be relative to a specific object
+      static auto g0() -> decltype(T::f0()); // expected-error {{'this' cannot be implicitly used in a static member function declaration}}
+                                   ^
+          detected during instantiation of class "test3::C<T> [with T=test3::A]" at line 186
+
+"Test_name.c", line 159: error: a nonstatic member reference must be relative to a specific object
+      static auto g1() -> decltype(T::template f1<int>()); // expected-error {{'this' cannot be implicitly used in a static member function declaration}}
+                                   ^
+          detected during instantiation of class "test3::C<T> [with T=test3::A]" at line 186
+
+"Test_name.c", line 171: error: a nonstatic member reference must be relative to a specific object
+      static decltype(T::f0()) g7(); // expected-error {{call to non-static member function without an object argument}}
+                      ^
+          detected during instantiation of class "test3::C<T> [with T=test3::A]" at line 186
+
+"Test_name.c", line 173: error: a nonstatic member reference must be relative to a specific object
+      static decltype(T::template f1<int>()) g8(); // expected-error {{call to non-static member function without an object argument}}
+                      ^
+          detected during instantiation of class "test3::C<T> [with T=test3::A]" at line 186
+
+"Test_name.c", line 71: error: a nonstatic member reference must be relative to a specific object
+        Unrelated::foo(); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of "void test2::A<T>::test0() [with T=int]" at line 95
+
+"Test_name.c", line 75: error: a nonstatic member reference must be relative to a specific object
+        B<T>::foo(); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of "void test2::A<T>::test1() [with T=int]" at line 96
+
+"Test_name.c", line 79: error: a nonstatic member reference must be relative to a specific object
+        B<T>::foo(); // expected-error {{call to non-static member function without an object argument}}
+        ^
+          detected during instantiation of "void test2::A<T>::test2() [with T=int]" at line 97
+
+"Test_name.c", line 83: error: class "test2::C<int>" has no member "foo"
+        C<T>::foo(); // expected-error {{no member named 'foo'}}
+              ^
+          detected during instantiation of "void test2::A<T>::test3() [with T=int]" at line 98
+
+13 errors detected in the compilation of "Test_name.c".

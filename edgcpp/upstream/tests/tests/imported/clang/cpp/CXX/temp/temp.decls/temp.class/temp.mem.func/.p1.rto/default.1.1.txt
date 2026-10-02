@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 42: error: too many template parameters -- does not match previous declaration (declared at line 4)
+  template<class X, class Y, class Z> // expected-error{{too many template parameters}}
+                                   ^
+
+"Test_name.c", line 47: error: template argument list must match the parameter list
+  void X0<Y, X>::f4() { } // expected-error{{does not refer}}
+       ^
+
+"Test_name.c", line 52: error: function "X0<T, U>::f0" has already been defined (previous definition at line 27)
+  void X0<T, U>::f0(const T&, const U&) { // expected-error{{redefinition}}
+                 ^
+
+3 errors detected in the compilation of "Test_name.c".

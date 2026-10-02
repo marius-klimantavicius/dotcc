@@ -1,0 +1,516 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 30: warning: invalid narrowing conversion from "double" to "int"
+    int ai[] = { 1, 2.0 };  // expected-error {{type 'double' cannot be narrowed to 'int' in initializer list}} expected-note {{silence}}
+                    ^
+
+"Test_name.c", line 38: warning: invalid narrowing conversion from "double" to "int"
+    S2 s22 { 1.0, 2, 3 };  // expected-error {{type 'double' cannot be narrowed to 'int' in initializer list}} expected-note {{silence}}
+             ^
+
+"Test_name.c", line 69: error: invalid narrowing conversion from "double" to "int"
+    S s2 { 1.0, 2, 3 }; // expected-error {{type 'double' cannot be narrowed to 'int' in initializer list}} expected-note {{silence}}
+           ^
+
+"Test_name.c", line 75: error: invalid narrowing conversion from "double" to "int"
+    int x2 {2.0};  // expected-error {{type 'double' cannot be narrowed to 'int' in initializer list}} expected-note {{silence}}
+            ^
+
+"Test_name.c", line 86: error: initial value of reference to non-const must be an lvalue
+    S& r3 = { 1, 2, 3 };  // expected-error {{non-const lvalue reference to type 'S' cannot bind to an initializer list temporary}}
+            ^
+
+"Test_name.c", line 88: error: invalid narrowing conversion from "double" to "int"
+    const int& i2 = { 1.1 };  // expected-error {{type 'double' cannot be narrowed to 'int' in initializer list}} expected-note {{silence}} expected-warning {{implicit conversion}}
+                      ^
+
+"Test_name.c", line 113: warning: invalid narrowing conversion from "double" to "int"
+    A a2 { 1.2 };  // expected-error {{type 'double' cannot be narrowed to 'int' in initializer list}} expected-note {{silence}} expected-warning {{implicit conversion}}
+           ^
+
+"Test_name.c", line 119: error: invalid narrowing conversion from "double" to "int"
+    B b2 { 1, 2.0 }; // expected-error {{type 'double' cannot be narrowed to 'int' in initializer list}} expected-note {{silence}}
+              ^
+
+"Test_name.c", line 126: error: invalid narrowing conversion from "double" to "int"
+    C c2 = { 1.1, 2 }; // expected-error {{type 'double' cannot be narrowed to 'int' in initializer list}} expected-note {{silence}} expected-warning {{implicit conversion}}
+             ^
+
+"Test_name.c", line 138: error: function "rdar13395022::MoveOnly::MoveOnly(const rdar13395022::MoveOnly &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      auto &&list1 = {mo}; // expected-error {{call to implicitly-deleted copy constructor}} expected-note {{in initialization of temporary of type 'std::initializer_list}}
+                      ^
+
+"Test_name.c", line 139: error: function "rdar13395022::MoveOnly::MoveOnly(const rdar13395022::MoveOnly &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      MoveOnly (&&list2)[1] = {mo}; // expected-error {{call to implicitly-deleted copy constructor}} expected-note {{in initialization of temporary of type 'MoveOnly[1]'}}
+                               ^
+
+"Test_name.c", line 141: error: no instance of constructor "rdar13395022::MoveOnly::MoveOnly" matches the argument list
+      MoveOnly (&&list4)[1] = {}; // expected-error {{no matching constructor}}
+                               ^
+"Test_name.c", line 133: note: number of parameters of function "rdar13395022::MoveOnly::MoveOnly(const rdar13395022::MoveOnly &)" does not match the call
+    struct MoveOnly { // expected-note {{candidate}}
+           ^
+"Test_name.c", line 134: note: number of parameters of function "rdar13395022::MoveOnly::MoveOnly(rdar13395022::MoveOnly &&)" does not match the call
+      MoveOnly(MoveOnly&&); // expected-note 2{{copy constructor is implicitly deleted because}} expected-note {{candidate}}
+      ^
+
+"Test_name.c", line 155: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::A"
+      (void)T{0};
+              ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::A]" at line 251
+
+"Test_name.c", line 156: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::A"
+      T t1{0};
+           ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::A]" at line 251
+
+"Test_name.c", line 157: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::A"
+      T t2 = T{0};
+               ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::A]" at line 251
+
+"Test_name.c", line 160: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::A"
+      S s{T{0}};
+            ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::A]" at line 251
+
+"Test_name.c", line 162: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::A"
+      struct U { T t{0}; } u; // expected-note 0+{{instantiation of}}
+                     ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::A]" at line 251
+
+"Test_name.c", line 164: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::A"
+      struct V { T t; V() : t{0} {} }; // expected-note 0+{{instantiation of}}
+                              ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::A]" at line 251
+
+"Test_name.c", line 167: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::A"
+      f(T{0});
+          ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::A]" at line 251
+
+"Test_name.c", line 170: error: a value of type "char" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::A"
+      auto t3 = T{c};
+                  ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::A]" at line 251
+
+"Test_name.c", line 170: warning: variable "c" is used before its value is set
+      auto t3 = T{c};
+                  ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::A]" at line 251
+
+"Test_name.c", line 155: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::B"
+      (void)T{0};
+              ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::B]" at line 252
+
+"Test_name.c", line 156: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::B"
+      T t1{0};
+           ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::B]" at line 252
+
+"Test_name.c", line 157: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::B"
+      T t2 = T{0};
+               ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::B]" at line 252
+
+"Test_name.c", line 160: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::B"
+      S s{T{0}};
+            ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::B]" at line 252
+
+"Test_name.c", line 162: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::B"
+      struct U { T t{0}; } u; // expected-note 0+{{instantiation of}}
+                     ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::B]" at line 252
+
+"Test_name.c", line 164: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::B"
+      struct V { T t; V() : t{0} {} }; // expected-note 0+{{instantiation of}}
+                              ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::B]" at line 252
+
+"Test_name.c", line 167: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::B"
+      f(T{0});
+          ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::B]" at line 252
+
+"Test_name.c", line 170: error: a value of type "char" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::B"
+      auto t3 = T{c};
+                  ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::B]" at line 252
+
+"Test_name.c", line 170: warning: variable "c" is used before its value is set
+      auto t3 = T{c};
+                  ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::B]" at line 252
+
+"Test_name.c", line 155: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::C"
+      (void)T{0};
+              ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::C]" at line 253
+
+"Test_name.c", line 156: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::C"
+      T t1{0};
+           ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::C]" at line 253
+
+"Test_name.c", line 157: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::C"
+      T t2 = T{0};
+               ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::C]" at line 253
+
+"Test_name.c", line 160: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::C"
+      S s{T{0}};
+            ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::C]" at line 253
+
+"Test_name.c", line 162: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::C"
+      struct U { T t{0}; } u; // expected-note 0+{{instantiation of}}
+                     ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::C]" at line 253
+
+"Test_name.c", line 164: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::C"
+      struct V { T t; V() : t{0} {} }; // expected-note 0+{{instantiation of}}
+                              ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::C]" at line 253
+
+"Test_name.c", line 167: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::C"
+      f(T{0});
+          ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::C]" at line 253
+
+"Test_name.c", line 170: error: a value of type "char" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::C"
+      auto t3 = T{c};
+                  ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::C]" at line 253
+
+"Test_name.c", line 170: warning: variable "c" is used before its value is set
+      auto t3 = T{c};
+                  ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::C]" at line 253
+
+"Test_name.c", line 155: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::D"
+      (void)T{0};
+              ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::D]" at line 254
+
+"Test_name.c", line 156: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::D"
+      T t1{0};
+           ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::D]" at line 254
+
+"Test_name.c", line 157: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::D"
+      T t2 = T{0};
+               ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::D]" at line 254
+
+"Test_name.c", line 160: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::D"
+      S s{T{0}};
+            ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::D]" at line 254
+
+"Test_name.c", line 162: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::D"
+      struct U { T t{0}; } u; // expected-note 0+{{instantiation of}}
+                     ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::D]" at line 254
+
+"Test_name.c", line 164: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::D"
+      struct V { T t; V() : t{0} {} }; // expected-note 0+{{instantiation of}}
+                              ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::D]" at line 254
+
+"Test_name.c", line 167: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::D"
+      f(T{0});
+          ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::D]" at line 254
+
+"Test_name.c", line 170: error: a value of type "char" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::D"
+      auto t3 = T{c};
+                  ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::D]" at line 254
+
+"Test_name.c", line 170: warning: variable "c" is used before its value is set
+      auto t3 = T{c};
+                  ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::D]" at line 254
+
+"Test_name.c", line 155: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::E"
+      (void)T{0};
+              ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::E]" at line 255
+
+"Test_name.c", line 156: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::E"
+      T t1{0};
+           ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::E]" at line 255
+
+"Test_name.c", line 157: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::E"
+      T t2 = T{0};
+               ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::E]" at line 255
+
+"Test_name.c", line 160: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::E"
+      S s{T{0}};
+            ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::E]" at line 255
+
+"Test_name.c", line 162: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::E"
+      struct U { T t{0}; } u; // expected-note 0+{{instantiation of}}
+                     ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::E]" at line 255
+
+"Test_name.c", line 164: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::E"
+      struct V { T t; V() : t{0} {} }; // expected-note 0+{{instantiation of}}
+                              ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::E]" at line 255
+
+"Test_name.c", line 167: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::E"
+      f(T{0});
+          ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::E]" at line 255
+
+"Test_name.c", line 170: error: a value of type "char" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::E"
+      auto t3 = T{c};
+                  ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::E]" at line 255
+
+"Test_name.c", line 170: warning: variable "c" is used before its value is set
+      auto t3 = T{c};
+                  ^
+          detected during instantiation of "void cxx1z_direct_enum_init::good<T>() [with T=cxx1z_direct_enum_init::E]" at line 255
+
+"Test_name.c", line 209: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::A"
+      T t = {0};
+             ^
+          detected during instantiation of "void cxx1z_direct_enum_init::bad<T>() [with T=cxx1z_direct_enum_init::A]" at line 263
+
+"Test_name.c", line 212: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::A"
+      S s1{0};
+           ^
+          detected during instantiation of "void cxx1z_direct_enum_init::bad<T>() [with T=cxx1z_direct_enum_init::A]" at line 263
+
+"Test_name.c", line 213: warning: extra braces are nonstandard
+      S s2{{0}};
+           ^
+          detected during instantiation of "void cxx1z_direct_enum_init::bad<T>() [with T=cxx1z_direct_enum_init::A]" at line 263
+
+"Test_name.c", line 213: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::A"
+      S s2{{0}};
+            ^
+          detected during instantiation of "void cxx1z_direct_enum_init::bad<T>() [with T=cxx1z_direct_enum_init::A]" at line 263
+
+"Test_name.c", line 215: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::A"
+      struct U { T t = {0}; } u; // expected-note 0+{{instantiation of}}
+                        ^
+          detected during instantiation of "void cxx1z_direct_enum_init::bad<T>() [with T=cxx1z_direct_enum_init::A]" at line 263
+
+"Test_name.c", line 217: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::A"
+      struct V { T t; V() : t({0}) {} }; // expected-note 0+{{instantiation of}}
+                               ^
+          detected during instantiation of "void cxx1z_direct_enum_init::bad<T>() [with T=cxx1z_direct_enum_init::A]" at line 263
+
+"Test_name.c", line 220: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::A"
+      f({0});
+         ^
+          detected during instantiation of "void cxx1z_direct_enum_init::bad<T>() [with T=cxx1z_direct_enum_init::A]" at line 263
+
+"Test_name.c", line 209: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::B"
+      T t = {0};
+             ^
+          detected during instantiation of "void cxx1z_direct_enum_init::bad<T>() [with T=cxx1z_direct_enum_init::B]" at line 264
+
+"Test_name.c", line 212: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::B"
+      S s1{0};
+           ^
+          detected during instantiation of "void cxx1z_direct_enum_init::bad<T>() [with T=cxx1z_direct_enum_init::B]" at line 264
+
+"Test_name.c", line 213: warning: extra braces are nonstandard
+      S s2{{0}};
+           ^
+          detected during instantiation of "void cxx1z_direct_enum_init::bad<T>() [with T=cxx1z_direct_enum_init::B]" at line 264
+
+"Test_name.c", line 213: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::B"
+      S s2{{0}};
+            ^
+          detected during instantiation of "void cxx1z_direct_enum_init::bad<T>() [with T=cxx1z_direct_enum_init::B]" at line 264
+
+"Test_name.c", line 215: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::B"
+      struct U { T t = {0}; } u; // expected-note 0+{{instantiation of}}
+                        ^
+          detected during instantiation of "void cxx1z_direct_enum_init::bad<T>() [with T=cxx1z_direct_enum_init::B]" at line 264
+
+"Test_name.c", line 217: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::B"
+      struct V { T t; V() : t({0}) {} }; // expected-note 0+{{instantiation of}}
+                               ^
+          detected during instantiation of "void cxx1z_direct_enum_init::bad<T>() [with T=cxx1z_direct_enum_init::B]" at line 264
+
+"Test_name.c", line 220: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::B"
+      f({0});
+         ^
+          detected during instantiation of "void cxx1z_direct_enum_init::bad<T>() [with T=cxx1z_direct_enum_init::B]" at line 264
+
+"Test_name.c", line 209: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::C"
+      T t = {0};
+             ^
+          detected during instantiation of "void cxx1z_direct_enum_init::bad<T>() [with T=cxx1z_direct_enum_init::C]" at line 265
+
+"Test_name.c", line 212: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::C"
+      S s1{0};
+           ^
+          detected during instantiation of "void cxx1z_direct_enum_init::bad<T>() [with T=cxx1z_direct_enum_init::C]" at line 265
+
+"Test_name.c", line 213: warning: extra braces are nonstandard
+      S s2{{0}};
+           ^
+          detected during instantiation of "void cxx1z_direct_enum_init::bad<T>() [with T=cxx1z_direct_enum_init::C]" at line 265
+
+"Test_name.c", line 213: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::C"
+      S s2{{0}};
+            ^
+          detected during instantiation of "void cxx1z_direct_enum_init::bad<T>() [with T=cxx1z_direct_enum_init::C]" at line 265
+
+"Test_name.c", line 215: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::C"
+      struct U { T t = {0}; } u; // expected-note 0+{{instantiation of}}
+                        ^
+          detected during instantiation of "void cxx1z_direct_enum_init::bad<T>() [with T=cxx1z_direct_enum_init::C]" at line 265
+
+"Test_name.c", line 217: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::C"
+      struct V { T t; V() : t({0}) {} }; // expected-note 0+{{instantiation of}}
+                               ^
+          detected during instantiation of "void cxx1z_direct_enum_init::bad<T>() [with T=cxx1z_direct_enum_init::C]" at line 265
+
+"Test_name.c", line 220: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::C"
+      f({0});
+         ^
+          detected during instantiation of "void cxx1z_direct_enum_init::bad<T>() [with T=cxx1z_direct_enum_init::C]" at line 265
+
+"Test_name.c", line 209: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::D"
+      T t = {0};
+             ^
+          detected during instantiation of "void cxx1z_direct_enum_init::bad<T>() [with T=cxx1z_direct_enum_init::D]" at line 266
+
+"Test_name.c", line 212: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::D"
+      S s1{0};
+           ^
+          detected during instantiation of "void cxx1z_direct_enum_init::bad<T>() [with T=cxx1z_direct_enum_init::D]" at line 266
+
+"Test_name.c", line 213: warning: extra braces are nonstandard
+      S s2{{0}};
+           ^
+          detected during instantiation of "void cxx1z_direct_enum_init::bad<T>() [with T=cxx1z_direct_enum_init::D]" at line 266
+
+"Test_name.c", line 213: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::D"
+      S s2{{0}};
+            ^
+          detected during instantiation of "void cxx1z_direct_enum_init::bad<T>() [with T=cxx1z_direct_enum_init::D]" at line 266
+
+"Test_name.c", line 215: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::D"
+      struct U { T t = {0}; } u; // expected-note 0+{{instantiation of}}
+                        ^
+          detected during instantiation of "void cxx1z_direct_enum_init::bad<T>() [with T=cxx1z_direct_enum_init::D]" at line 266
+
+"Test_name.c", line 217: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::D"
+      struct V { T t; V() : t({0}) {} }; // expected-note 0+{{instantiation of}}
+                               ^
+          detected during instantiation of "void cxx1z_direct_enum_init::bad<T>() [with T=cxx1z_direct_enum_init::D]" at line 266
+
+"Test_name.c", line 220: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::D"
+      f({0});
+         ^
+          detected during instantiation of "void cxx1z_direct_enum_init::bad<T>() [with T=cxx1z_direct_enum_init::D]" at line 266
+
+"Test_name.c", line 209: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::E"
+      T t = {0};
+             ^
+          detected during instantiation of "void cxx1z_direct_enum_init::bad<T>() [with T=cxx1z_direct_enum_init::E]" at line 267
+
+"Test_name.c", line 212: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::E"
+      S s1{0};
+           ^
+          detected during instantiation of "void cxx1z_direct_enum_init::bad<T>() [with T=cxx1z_direct_enum_init::E]" at line 267
+
+"Test_name.c", line 213: warning: extra braces are nonstandard
+      S s2{{0}};
+           ^
+          detected during instantiation of "void cxx1z_direct_enum_init::bad<T>() [with T=cxx1z_direct_enum_init::E]" at line 267
+
+"Test_name.c", line 213: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::E"
+      S s2{{0}};
+            ^
+          detected during instantiation of "void cxx1z_direct_enum_init::bad<T>() [with T=cxx1z_direct_enum_init::E]" at line 267
+
+"Test_name.c", line 215: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::E"
+      struct U { T t = {0}; } u; // expected-note 0+{{instantiation of}}
+                        ^
+          detected during instantiation of "void cxx1z_direct_enum_init::bad<T>() [with T=cxx1z_direct_enum_init::E]" at line 267
+
+"Test_name.c", line 217: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::E"
+      struct V { T t; V() : t({0}) {} }; // expected-note 0+{{instantiation of}}
+                               ^
+          detected during instantiation of "void cxx1z_direct_enum_init::bad<T>() [with T=cxx1z_direct_enum_init::E]" at line 267
+
+"Test_name.c", line 220: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::E"
+      f({0});
+         ^
+          detected during instantiation of "void cxx1z_direct_enum_init::bad<T>() [with T=cxx1z_direct_enum_init::E]" at line 267
+
+"Test_name.c", line 237: error: a value of type "char" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::B"
+      T t1{char('0' + c)};
+           ^
+          detected during instantiation of "void cxx1z_direct_enum_init::ugly<T>() [with T=cxx1z_direct_enum_init::B]" at line 269
+
+"Test_name.c", line 238: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::B"
+      T t2{'0' + c};
+           ^
+          detected during instantiation of "void cxx1z_direct_enum_init::ugly<T>() [with T=cxx1z_direct_enum_init::B]" at line 269
+
+"Test_name.c", line 239: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::B"
+      T t3{1234};
+           ^
+          detected during instantiation of "void cxx1z_direct_enum_init::ugly<T>() [with T=cxx1z_direct_enum_init::B]" at line 269
+
+"Test_name.c", line 237: error: a value of type "char" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::C"
+      T t1{char('0' + c)};
+           ^
+          detected during instantiation of "void cxx1z_direct_enum_init::ugly<T>() [with T=cxx1z_direct_enum_init::C]" at line 270
+
+"Test_name.c", line 238: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::C"
+      T t2{'0' + c};
+           ^
+          detected during instantiation of "void cxx1z_direct_enum_init::ugly<T>() [with T=cxx1z_direct_enum_init::C]" at line 270
+
+"Test_name.c", line 239: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::C"
+      T t3{1234};
+           ^
+          detected during instantiation of "void cxx1z_direct_enum_init::ugly<T>() [with T=cxx1z_direct_enum_init::C]" at line 270
+
+"Test_name.c", line 237: error: a value of type "char" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::D"
+      T t1{char('0' + c)};
+           ^
+          detected during instantiation of "void cxx1z_direct_enum_init::ugly<T>() [with T=cxx1z_direct_enum_init::D]" at line 271
+
+"Test_name.c", line 238: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::D"
+      T t2{'0' + c};
+           ^
+          detected during instantiation of "void cxx1z_direct_enum_init::ugly<T>() [with T=cxx1z_direct_enum_init::D]" at line 271
+
+"Test_name.c", line 239: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::D"
+      T t3{1234};
+           ^
+          detected during instantiation of "void cxx1z_direct_enum_init::ugly<T>() [with T=cxx1z_direct_enum_init::D]" at line 271
+
+"Test_name.c", line 237: error: a value of type "char" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::E"
+      T t1{char('0' + c)};
+           ^
+          detected during instantiation of "void cxx1z_direct_enum_init::ugly<T>() [with T=cxx1z_direct_enum_init::E]" at line 272
+
+"Test_name.c", line 238: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::E"
+      T t2{'0' + c};
+           ^
+          detected during instantiation of "void cxx1z_direct_enum_init::ugly<T>() [with T=cxx1z_direct_enum_init::E]" at line 272
+
+"Test_name.c", line 239: error: a value of type "int" cannot be used to initialize an entity of type "cxx1z_direct_enum_init::E"
+      T t3{1234};
+           ^
+          detected during instantiation of "void cxx1z_direct_enum_init::ugly<T>() [with T=cxx1z_direct_enum_init::E]" at line 272
+
+91 errors detected in the compilation of "Test_name.c".

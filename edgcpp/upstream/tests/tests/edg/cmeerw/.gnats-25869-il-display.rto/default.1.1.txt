@@ -1,0 +1,3 @@
+fe_only -DTEST_NUMBER=1 --c++17 --no_il_lowering --il_display Test_name.c
+next:                    file-scope type: E<((bool)(V<U#(3,1)>::B<T#(3,2)>)), void>
+assoc_type:              file-scope type: E<((bool)(V<U#(3,1)>::B<T#(3,2)>)), void>

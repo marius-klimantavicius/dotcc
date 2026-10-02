@@ -1,0 +1,8 @@
+fe_only -DTEST_NUMBER=1 --c++17 --gnu=90400 Test_name.c
+"Test_name.c", line 15: error: more than one user-defined conversion from "T" to "S" applies:
+            function "S::S(float)" (declared at line 6)
+            function "S::S(short)" (declared at line 7)
+    static_cast<S>(s);
+                   ^
+
+1 error detected in the compilation of "Test_name.c".

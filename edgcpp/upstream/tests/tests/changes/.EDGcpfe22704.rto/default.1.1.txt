@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 14: error: invalid storage class for a class member
+    template<typename F> auto f(F &&rf) -> decltype(rf(*T::r()));
+                         ^
+
+"Test_name.c", line 14: error: expected a ")"
+    template<typename F> auto f(F &&rf) -> decltype(rf(*T::r()));
+                                  ^
+
+"Test_name.c", line 14: error: explicit type is missing ("int" assumed)
+    template<typename F> auto f(F &&rf) -> decltype(rf(*T::r()));
+                              ^
+
+"Test_name.c", line 14: error: expected a ";"
+    template<typename F> auto f(F &&rf) -> decltype(rf(*T::r()));
+                                        ^
+
+"Test_name.c", line 17: error: expected a ")"
+  struct C { void operator=(C&&); };
+                             ^
+
+"Test_name.c", line 19: error: explicit type is missing ("int" assumed)
+  auto x = M<R>{}.f([](C &&p){ return 42; });
+       ^
+
+"Test_name.c", line 19: error: a global-scope declaration may not have this storage class
+  auto x = M<R>{}.f([](C &&p){ return 42; });
+  ^
+
+"Test_name.c", line 19: error: type name is not allowed
+  auto x = M<R>{}.f([](C &&p){ return 42; });
+           ^
+
+"Test_name.c", line 19: error: expected a ";"
+  auto x = M<R>{}.f([](C &&p){ return 42; });
+               ^
+
+9 errors detected in the compilation of "Test_name.c".

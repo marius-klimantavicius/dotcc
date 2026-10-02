@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: error: "virtual" is not allowed
+    static virtual int i = 0;	// { dg-error "10:member .i. cannot be declared both .virtual. and .static." }
+    ^
+
+"Test_name.c", line 8: error: expected a ";"
+    static virtual int i = 0;	// { dg-error "10:member .i. cannot be declared both .virtual. and .static." }
+                         ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 10: error: expected a "("
+  int typeof_unqual; // expected-error {{expected '(' after 'typeof_unqual'}}
+                   ^
+
+"Test_name.c", line 10: error: expected an expression
+  int typeof_unqual; // expected-error {{expected '(' after 'typeof_unqual'}}
+                   ^
+
+"Test_name.c", line 10: warning: declaration does not declare anything
+  int typeof_unqual; // expected-error {{expected '(' after 'typeof_unqual'}}
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

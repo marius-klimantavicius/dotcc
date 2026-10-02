@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 53: error: "f1" is not a class or function template name in the current scope
+  template void f1(int);
+                ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 7: error: expression must have integral or unscoped enum type
+    a -= b; // expected-error {{incompatible integer to pointer conversion assigning to 'int *' from}}
+         ^
+
+"Test_name.c", line 24: error: static assertion failed with "failed"
+  static_assert(has_minus_assign<int*>, "failed"); // expected-error {{static assertion failed due to requirement 'has_minus_assign<int *>': failed}}
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

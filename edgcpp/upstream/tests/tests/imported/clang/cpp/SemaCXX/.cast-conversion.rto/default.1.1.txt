@@ -1,0 +1,44 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 19: error: no instance of constructor "B::B" matches the argument list
+            argument types are: (int)
+    B(10);	// expected-error {{no matching conversion for functional-style cast from 'int' to 'B'}}
+    ^
+"Test_name.c", line 13: note: function "B::B(const B &)" does not match because argument #1 does not match parameter
+  struct B { // expected-note 3 {{candidate constructor (the implicit copy constructor) not viable}} \
+         ^
+"Test_name.c", line 13: note: function "B::B(B &&)" does not match because argument #1 does not match parameter
+  struct B { // expected-note 3 {{candidate constructor (the implicit copy constructor) not viable}} \
+         ^
+"Test_name.c", line 15: note: function "B::B(A)" does not match because argument #1 does not match parameter
+    B(A); // expected-note 3 {{candidate constructor not viable}}
+    ^
+
+"Test_name.c", line 20: error: no suitable constructor exists to convert from "int" to "B"
+    (B)10;	// expected-error {{no matching conversion for C-style cast from 'int' to 'B'}}
+       ^
+
+"Test_name.c", line 21: error: no suitable constructor exists to convert from "int" to "B"
+    static_cast<B>(10);	// expected-error {{no matching conversion for static_cast from 'int' to 'B'}}
+                   ^
+
+"Test_name.c", line 46: error: more than one instance of overloaded function "C::f0" matches the argument list:
+            function template "float *&C::f0<<unnamed>>()" (declared at line 42)
+            function template "float *&C::f0<<unnamed>>()" (declared at line 43)
+      static_cast<float*>(f0<0>()); // expected-error{{ambiguous}}
+                          ^
+
+"Test_name.c", line 75: error: more than one conversion function from "AmbiguousCast" to "long long" applies:
+            function "AmbiguousCast::operator int()" (declared at line 71)
+            function "AmbiguousCast::operator unsigned int()" (declared at line 72)
+    return static_cast<long long>(a); // expected-error {{ambiguous conversion for static_cast from 'AmbiguousCast' to 'long long'}}
+                                  ^
+
+"Test_name.c", line 81: error: invalid type conversion
+      f(reinterpret_cast<int>(0.0f)); // expected-error {{reinterpret_cast from 'float' to 'int' is not allowed}}
+        ^
+
+"Test_name.c", line 82: warning: missing return statement at end of non-void function "PR16680::g"
+    }
+    ^
+
+6 errors detected in the compilation of "Test_name.c".

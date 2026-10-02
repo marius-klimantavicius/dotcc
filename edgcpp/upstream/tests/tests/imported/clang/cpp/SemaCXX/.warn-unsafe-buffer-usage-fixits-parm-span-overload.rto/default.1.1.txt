@@ -1,0 +1,37 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"SemaCXX/warn-unsafe-buffer-usage-fixits-parm-span-overload.cpp", line 15: warning: variable "tmp" was set but never used
+    int tmp;
+        ^
+
+"SemaCXX/warn-unsafe-buffer-usage-fixits-parm-span-overload.cpp", line 22: warning: variable "tmp" was set but never used
+    int tmp;
+        ^
+
+"SemaCXX/warn-unsafe-buffer-usage-fixits-parm-span-overload.cpp", line 31: warning: variable "tmp" was set but never used
+    int tmp;
+        ^
+
+"SemaCXX/warn-unsafe-buffer-usage-fixits-parm-span-overload.cpp", line 40: warning: variable "tmp" was set but never used
+      int tmp;
+          ^
+
+"SemaCXX/warn-unsafe-buffer-usage-fixits-parm-span-overload.cpp", line 54: warning: variable "tmp" was set but never used
+    int tmp;
+        ^
+
+"SemaCXX/warn-unsafe-buffer-usage-fixits-parm-span-overload.cpp", line 68: warning: variable "tmp" was set but never used
+        int tmp;
+            ^
+
+"SemaCXX/warn-unsafe-buffer-usage-fixits-parm-span-overload.cpp", line 80: warning: variable "tmp" was set but never used
+      int tmp;
+          ^
+
+"SemaCXX/warn-unsafe-buffer-usage-fixits-parm-span-overload.cpp", line 94: warning: variable "tmp" was set but never used
+    int tmp;
+        ^
+
+"SemaCXX/warn-unsafe-buffer-usage-fixits-parm-span-overload.cpp", line 101: warning: variable "tmp" was set but never used
+    int tmp;
+        ^
+

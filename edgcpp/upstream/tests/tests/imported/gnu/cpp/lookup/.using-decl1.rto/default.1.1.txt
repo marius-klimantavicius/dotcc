@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 23: error: "i" has already been declared in the current scope
+    using B::i;       // { dg-error "" } i conflicts
+             ^
+
+"Test_name.c", line 27: error: more than one instance of overloaded function "f" matches the argument list:
+            function "B::f(int)" (declared at line 16)
+            function "A::f(int)" (declared at line 7)
+            argument types are: (int)
+    f(1);             // { dg-error "" } ambiguous
+    ^
+
+"Test_name.c", line 33: error: "g" has already been declared in the current scope
+    using A::g;       // { dg-error "" } conflicts with B::g
+             ^
+
+"Test_name.c", line 35: error: using-declaration of function "A::h()" conflicts with function "h()" (declared at line 34)
+    using A::h;       // { dg-error "" } conflicts
+             ^
+
+"Test_name.c", line 22: warning: variable "i" was declared but never referenced
+    int i;
+        ^
+
+"Test_name.c", line 32: warning: variable "g1" was declared but never referenced
+    struct g g1;      // g1 has class type B::g
+             ^
+
+"Test_name.c", line 39: warning: variable "x1" was declared but never referenced
+    struct x x1;      // x1 has class type B::x
+             ^
+
+4 errors detected in the compilation of "Test_name.c".

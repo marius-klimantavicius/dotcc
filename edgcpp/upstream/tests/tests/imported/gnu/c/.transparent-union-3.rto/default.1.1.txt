@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 11: warning: declaration does not declare anything
+  union __attribute__((__transparent_union__)) ue1 { enum e; }; /* { dg-warning "declaration does not declare anything" "not anything" } */
+                                                     ^
+
+"Test_name.c", line 11: warning: struct or union declares no named members
+  union __attribute__((__transparent_union__)) ue1 { enum e; }; /* { dg-warning "declaration does not declare anything" "not anything" } */
+                                                             ^
+
+"Test_name.c", line 13: warning: declaration does not declare anything
+  union ue2 { enum e; } __attribute__((__transparent_union__)); /* { dg-warning "declaration does not declare anything" "not anything" } */
+              ^
+
+"Test_name.c", line 13: warning: struct or union declares no named members
+  union ue2 { enum e; } __attribute__((__transparent_union__)); /* { dg-warning "declaration does not declare anything" "not anything" } */
+                      ^
+
+"Test_name.c", line 16: warning: declaration does not declare anything
+  union __attribute__((__transparent_union__)) ui1 { int; }; /* { dg-warning "declaration does not declare anything" "not anything" } */
+                                                     ^
+
+"Test_name.c", line 16: warning: struct or union declares no named members
+  union __attribute__((__transparent_union__)) ui1 { int; }; /* { dg-warning "declaration does not declare anything" "not anything" } */
+                                                          ^
+
+"Test_name.c", line 18: warning: declaration does not declare anything
+  union ui2 { int; } __attribute__((__transparent_union__)); /* { dg-warning "declaration does not declare anything" "no anything" } */
+              ^
+
+"Test_name.c", line 18: warning: struct or union declares no named members
+  union ui2 { int; } __attribute__((__transparent_union__)); /* { dg-warning "declaration does not declare anything" "no anything" } */
+                   ^
+

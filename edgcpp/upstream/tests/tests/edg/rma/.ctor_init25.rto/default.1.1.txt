@@ -1,0 +1,6 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 8: error: "A::~A()" (declared at line 4) is inaccessible
+    B() : a() { }
+           ^
+
+1 error detected in the compilation of "Test_name.c".

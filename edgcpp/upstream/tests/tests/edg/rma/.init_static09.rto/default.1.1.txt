@@ -1,0 +1,69 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 8: error: const variable "ci1" requires an initializer
+  static const int ci1;
+                      ^
+
+"Test_name.c", line 17: remark: class "T" defines no constructor to initialize the following:
+            const member "T::i"
+  struct T { const int i; };
+         ^
+
+"Test_name.c", line 17: error: implicitly generated constructor for class "T" cannot initialize:
+            const member "T::i"
+  struct T { const int i; };
+         ^
+          detected during implicit generation of "T::T()" at line 18
+
+"Test_name.c", line 18: error: variable "t1" has an uninitialized const or reference member
+  static T t1;
+           ^
+
+"Test_name.c", line 4: warning: variable "i1" was declared but never referenced
+  static int i1;
+             ^
+
+"Test_name.c", line 5: warning: variable "i2" was declared but never referenced
+  static int i2 = 0;
+             ^
+
+"Test_name.c", line 6: warning: variable "i3" was declared but never referenced
+  static int i3 = int();
+             ^
+
+"Test_name.c", line 8: warning: variable "ci1" was declared but never referenced
+  static const int ci1;
+                   ^
+
+"Test_name.c", line 9: warning: variable "ci2" was declared but never referenced
+  static const int ci2 = 0;
+                   ^
+
+"Test_name.c", line 10: warning: variable "ci3" was declared but never referenced
+  static const int ci3 = int();
+                   ^
+
+"Test_name.c", line 13: warning: variable "s1" was declared but never referenced
+  static S s1;
+           ^
+
+"Test_name.c", line 14: warning: variable "s2" was declared but never referenced
+  static S s2 = { 0 };
+           ^
+
+"Test_name.c", line 15: warning: variable "s3" was declared but never referenced
+  static S s3 = S();
+           ^
+
+"Test_name.c", line 18: warning: variable "t1" was declared but never referenced
+  static T t1;
+           ^
+
+"Test_name.c", line 19: warning: variable "t2" was declared but never referenced
+  static T t2 = { 0 };
+           ^
+
+"Test_name.c", line 20: warning: variable "t3" was declared but never referenced
+  static T t3 = T();
+           ^
+
+3 errors detected in the compilation of "Test_name.c".

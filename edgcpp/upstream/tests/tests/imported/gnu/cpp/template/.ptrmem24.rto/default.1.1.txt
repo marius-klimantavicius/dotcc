@@ -1,0 +1,7 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 21: error: template instantiation resulted in unexpected function type of "void (const Bar *, void (Bar::*)())" (the meaning of a name may have changed since the template declaration -- the type of the template is "void (T *, void (Identity<T>::type::*)())")
+    Foo foo(this, &Bar::Method);	// { dg-error "no match" }
+                               ^
+          detected during instantiation of "Foo::Foo" based on template argument <const Bar> at line 21
+
+1 error detected in the compilation of "Test_name.c".

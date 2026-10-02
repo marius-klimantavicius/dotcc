@@ -1,0 +1,45 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 17: warning: enumerated type mixed with another type
+          y2 = x2;
+             ^
+
+"Test_name.c", line 19: warning: enumerated type mixed with another type
+  	enum Bb : short { V = 1 } y2d = x2;
+  	                                ^
+
+"Test_name.c", line 20: warning: a value of type "enum B *" cannot be used to initialize an entity of type "enum B *"
+  	enum B : short { M = 1 } *y2e = &x2;	/* { dg-error "incompatible" } */
+  	                                ^
+
+"Test_name.c", line 21: warning: enumerated type mixed with another type
+  	enum B : short { M = 1 } y2c = x2;
+  	                               ^
+
+"Test_name.c", line 15: warning: variable "y1" was declared but never referenced
+  	enum A : int { N = 1 } y1 = x1;
+  	                       ^
+
+"Test_name.c", line 16: warning: variable "y2" was set but never used
+  	enum B : short { M = 1 } y2;
+  	                         ^
+
+"Test_name.c", line 18: warning: variable "y2b" was declared but never referenced
+  	enum B : short { M = 1 } y2b;
+  	                         ^
+
+"Test_name.c", line 19: warning: variable "y2d" was declared but never referenced
+  	enum Bb : short { V = 1 } y2d = x2;
+  	                          ^
+
+"Test_name.c", line 20: warning: variable "y2e" was declared but never referenced
+  	enum B : short { M = 1 } *y2e = &x2;	/* { dg-error "incompatible" } */
+  	                          ^
+
+"Test_name.c", line 21: warning: variable "y2c" was declared but never referenced
+  	enum B : short { M = 1 } y2c = x2;
+  	                         ^
+
+"Test_name.c", line 22: warning: variable "y3" was declared but never referenced
+  	enum C { U = 1 } y3 = x3;
+  	                 ^
+

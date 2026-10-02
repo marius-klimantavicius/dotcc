@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 45: error: pointer or reference to incomplete type "struct Incomplete" is not allowed
+    s_ptr->i = 10; /* expected-error {{incomplete definition of type 'struct Incomplete'}} */
+    ^
+
+"Test_name.c", line 45: warning: variable "s_ptr" is used before its value is set
+    s_ptr->i = 10; /* expected-error {{incomplete definition of type 'struct Incomplete'}} */
+    ^
+
+"Test_name.c", line 46: error: pointer or reference to incomplete type "union AlsoIncomplete" is not allowed
+    u_ptr->i = 10; /* expected-error {{incomplete definition of type 'union AlsoIncomplete'}} */
+    ^
+
+"Test_name.c", line 46: warning: variable "u_ptr" is used before its value is set
+    u_ptr->i = 10; /* expected-error {{incomplete definition of type 'union AlsoIncomplete'}} */
+    ^
+
+"Test_name.c", line 48: error: incomplete type "struct Incomplete" is not allowed
+    (*s_ptr).i = 10; /* expected-error {{incomplete definition of type 'struct Incomplete'}} */
+    ^
+
+"Test_name.c", line 49: error: incomplete type "union AlsoIncomplete" is not allowed
+    (*u_ptr).i = 10; /* expected-error {{incomplete definition of type 'union AlsoIncomplete'}} */
+    ^
+
+"Test_name.c", line 52: error: struct "S" has no field "f"
+    s.f = "test"; /* expected-error {{no member named 'f' in 'struct S'}} */
+      ^
+
+"Test_name.c", line 53: error: union "U" has no field "f"
+    u.f = "test"; /* expected-error {{no member named 'f' in 'union U'}} */
+      ^
+
+6 errors detected in the compilation of "Test_name.c".

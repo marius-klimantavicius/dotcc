@@ -1,0 +1,113 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./goacc/../../c-c++-common/goacc/cache-1.c", line 24: warning: unrecognized #pragma
+  #pragma acc parallel copyin (a[0:N]) copyout (b[0:N])
+          ^
+
+"./goacc/../../c-c++-common/goacc/cache-1.c", line 35: warning: unrecognized #pragma
+  #pragma acc cache (a[0:N])
+          ^
+
+"./goacc/../../c-c++-common/goacc/cache-1.c", line 36: warning: unrecognized #pragma
+  #pragma acc cache (a[0:N], a[0:N])
+          ^
+
+"./goacc/../../c-c++-common/goacc/cache-1.c", line 37: warning: unrecognized #pragma
+  #pragma acc cache (a[0:N], b[0:N])
+          ^
+
+"./goacc/../../c-c++-common/goacc/cache-1.c", line 38: warning: unrecognized #pragma
+  #pragma acc cache (a[0])
+          ^
+
+"./goacc/../../c-c++-common/goacc/cache-1.c", line 39: warning: unrecognized #pragma
+  #pragma acc cache (a[0], a[1], b[0:N])
+          ^
+
+"./goacc/../../c-c++-common/goacc/cache-1.c", line 40: warning: unrecognized #pragma
+  #pragma acc cache (a[i - 5])
+          ^
+
+"./goacc/../../c-c++-common/goacc/cache-1.c", line 41: warning: unrecognized #pragma
+  #pragma acc cache (a[i + 5:len])
+          ^
+
+"./goacc/../../c-c++-common/goacc/cache-1.c", line 42: warning: unrecognized #pragma
+  #pragma acc cache (a[i + 5:len - 1])
+          ^
+
+"./goacc/../../c-c++-common/goacc/cache-1.c", line 43: warning: unrecognized #pragma
+  #pragma acc cache (b[i])
+          ^
+
+"./goacc/../../c-c++-common/goacc/cache-1.c", line 44: warning: unrecognized #pragma
+  #pragma acc cache (b[i:len])
+          ^
+
+"./goacc/../../c-c++-common/goacc/cache-1.c", line 45: warning: unrecognized #pragma
+  #pragma acc cache (a[ii])
+          ^
+
+"./goacc/../../c-c++-common/goacc/cache-1.c", line 46: warning: unrecognized #pragma
+  #pragma acc cache (a[ii:len])
+          ^
+
+"./goacc/../../c-c++-common/goacc/cache-1.c", line 47: warning: unrecognized #pragma
+  #pragma acc cache (b[ii - 1])
+          ^
+
+"./goacc/../../c-c++-common/goacc/cache-1.c", line 48: warning: unrecognized #pragma
+  #pragma acc cache (b[ii - 1:len])
+          ^
+
+"./goacc/../../c-c++-common/goacc/cache-1.c", line 49: warning: unrecognized #pragma
+  #pragma acc cache (b[i - ii + 1])
+          ^
+
+"./goacc/../../c-c++-common/goacc/cache-1.c", line 50: warning: unrecognized #pragma
+  #pragma acc cache (b[i + ii - 1:len])
+          ^
+
+"./goacc/../../c-c++-common/goacc/cache-1.c", line 51: warning: unrecognized #pragma
+  #pragma acc cache (b[i * ii - 1:len + 1])
+          ^
+
+"./goacc/../../c-c++-common/goacc/cache-1.c", line 52: warning: unrecognized #pragma
+  #pragma acc cache (a[idx + 2])
+          ^
+
+"./goacc/../../c-c++-common/goacc/cache-1.c", line 53: warning: unrecognized #pragma
+  #pragma acc cache (a[idx:len + 2])
+          ^
+
+"./goacc/../../c-c++-common/goacc/cache-1.c", line 54: warning: unrecognized #pragma
+  #pragma acc cache (a[idx])
+          ^
+
+"./goacc/../../c-c++-common/goacc/cache-1.c", line 55: warning: unrecognized #pragma
+  #pragma acc cache (a[idx:len])
+          ^
+
+"./goacc/../../c-c++-common/goacc/cache-1.c", line 56: warning: unrecognized #pragma
+  #pragma acc cache (a[idx + 2:len])
+          ^
+
+"./goacc/../../c-c++-common/goacc/cache-1.c", line 57: warning: unrecognized #pragma
+  #pragma acc cache (a[idx + 2 + i:len])
+          ^
+
+"./goacc/../../c-c++-common/goacc/cache-1.c", line 58: warning: unrecognized #pragma
+  #pragma acc cache (a[idx + 2 + i + ii:len])
+          ^
+
+"./goacc/cache-1.C", line 14: warning: expression has no effect
+    &test<0>;
+    ^
+
+"./goacc/../../c-c++-common/goacc/cache-1.c", line 30: warning: variable "idx" was declared but never referenced
+          const int idx = ii;
+                    ^
+
+"./goacc/../../c-c++-common/goacc/cache-1.c", line 32: warning: variable "len" was declared but never referenced
+          const int len = n;
+                    ^
+

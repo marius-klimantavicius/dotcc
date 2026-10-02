@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: error: attribute "noreturn" did not appear on original declaration
+  void f [[noreturn]] (); // { dg-error "declared '\\\[\\\[noreturn\\\]\\\]' but its first declaration was not" }
+           ^
+
+"Test_name.c", line 11: error: attribute "gnu::noreturn" did not appear on original declaration
+  void f2 [[gnu::noreturn]] ();
+            ^
+
+"Test_name.c", line 17: error: attribute "noreturn" did not appear on original declaration
+  void f4 [[noreturn]] (); // { dg-error "declared '\\\[\\\[noreturn\\\]\\\]' but its first declaration was not" }
+            ^
+
+"Test_name.c", line 20: error: attribute "gnu::noreturn" did not appear on original declaration
+  void f5 [[gnu::noreturn]] ();
+            ^
+
+4 errors detected in the compilation of "Test_name.c".

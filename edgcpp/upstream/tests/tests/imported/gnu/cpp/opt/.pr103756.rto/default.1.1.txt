@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 32: error: a class or namespace qualified name is required
+      typename __n = __last - __first;
+               ^
+          detected during:
+            instantiation of "_BI2 __copy_move_backward_a2<<unnamed>,_BI1,_BI2>(_BI1, _BI1, _BI2) [with <unnamed>=1, _BI1=reverse_iterator<unsigned char *>, _BI2=reverse_iterator<unsigned char *>]" at line 47
+            instantiation of "_BI2 __copy_move_backward_a1<_IsMove,_BI1,_BI2>(_BI1, _BI2) [with _IsMove=1, _BI1=reverse_iterator<unsigned char *>, _BI2=reverse_iterator<unsigned char *>]" at line 52
+            instantiation of "void __copy_move_backward_a<_IsMove,_II,_OI>(_II, _OI) [with _IsMove=1, _II=reverse_iterator<unsigned char *>, _OI=reverse_iterator<unsigned char *>]" at line 56
+            instantiation of "void move_backward(_BI1, _BI2) [with _BI1=reverse_iterator<unsigned char *>, _BI2=reverse_iterator<unsigned char *>]" at line 59
+
+"Test_name.c", line 32: error: type name is not allowed
+      typename __n = __last - __first;
+      ^
+          detected during:
+            instantiation of "_BI2 __copy_move_backward_a2<<unnamed>,_BI1,_BI2>(_BI1, _BI1, _BI2) [with <unnamed>=1, _BI1=reverse_iterator<unsigned char *>, _BI2=reverse_iterator<unsigned char *>]" at line 47
+            instantiation of "_BI2 __copy_move_backward_a1<_IsMove,_BI1,_BI2>(_BI1, _BI2) [with _IsMove=1, _BI1=reverse_iterator<unsigned char *>, _BI2=reverse_iterator<unsigned char *>]" at line 52
+            instantiation of "void __copy_move_backward_a<_IsMove,_II,_OI>(_II, _OI) [with _IsMove=1, _II=reverse_iterator<unsigned char *>, _OI=reverse_iterator<unsigned char *>]" at line 56
+            instantiation of "void move_backward(_BI1, _BI2) [with _BI1=reverse_iterator<unsigned char *>, _BI2=reverse_iterator<unsigned char *>]" at line 59
+
+"Test_name.c", line 33: error: identifier "__n" is undefined
+      for (; __n > 0; --__n) {
+             ^
+          detected during:
+            instantiation of "_BI2 __copy_move_backward_a2<<unnamed>,_BI1,_BI2>(_BI1, _BI1, _BI2) [with <unnamed>=1, _BI1=reverse_iterator<unsigned char *>, _BI2=reverse_iterator<unsigned char *>]" at line 47
+            instantiation of "_BI2 __copy_move_backward_a1<_IsMove,_BI1,_BI2>(_BI1, _BI2) [with _IsMove=1, _BI1=reverse_iterator<unsigned char *>, _BI2=reverse_iterator<unsigned char *>]" at line 52
+            instantiation of "void __copy_move_backward_a<_IsMove,_II,_OI>(_II, _OI) [with _IsMove=1, _II=reverse_iterator<unsigned char *>, _OI=reverse_iterator<unsigned char *>]" at line 56
+            instantiation of "void move_backward(_BI1, _BI2) [with _BI1=reverse_iterator<unsigned char *>, _BI2=reverse_iterator<unsigned char *>]" at line 59
+
+3 errors detected in the compilation of "Test_name.c".

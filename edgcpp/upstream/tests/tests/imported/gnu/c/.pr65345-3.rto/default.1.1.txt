@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 14: warning: the standard "alignof" operator does not accept an expression argument (use a type instead)
+  float b1 = _Alignof (i + 1);
+                      ^
+
+"Test_name.c", line 15: warning: the standard "alignof" operator does not accept an expression argument (use a type instead)
+  float b2 = _Alignof (i = 0);
+                      ^
+
+"Test_name.c", line 16: warning: the standard "alignof" operator does not accept an expression argument (use a type instead)
+  float b3 = _Alignof (i++);
+                      ^
+
+"Test_name.c", line 17: warning: the standard "alignof" operator does not accept an expression argument (use a type instead)
+  float b4 = _Alignof (i--);
+                      ^
+
+"Test_name.c", line 18: warning: the standard "alignof" operator does not accept an expression argument (use a type instead)
+  float b5 = _Alignof (-i);
+                      ^
+
+"Test_name.c", line 20: error: expression must have a constant value
+  float c1 = i; /* { dg-error "initializer element is not constant" } */
+             ^
+"Test_name.c", line 20: note: the value of variable "i" (declared at line 6) cannot be used as a constant
+  float c1 = i; /* { dg-error "initializer element is not constant" } */
+             ^
+
+"Test_name.c", line 21: error: expression must have a constant value
+  float c2 = (i ? 1 : 2); /* { dg-error "initializer element is not constant" } */
+              ^
+"Test_name.c", line 21: note: the value of variable "i" (declared at line 6) cannot be used as a constant
+  float c2 = (i ? 1 : 2); /* { dg-error "initializer element is not constant" } */
+              ^
+
+"Test_name.c", line 22: error: expression must have a constant value
+  float c3[(int) i]; /* { dg-error "variably modified" } */
+                 ^
+"Test_name.c", line 22: note: the value of variable "i" (declared at line 6) cannot be used as a constant
+  float c3[(int) i]; /* { dg-error "variably modified" } */
+                 ^
+
+"Test_name.c", line 23: error: expression must have a constant value
+  float c4 = 0 || i; /* { dg-error "initializer element is not constant" } */
+                  ^
+"Test_name.c", line 23: note: the value of variable "i" (declared at line 6) cannot be used as a constant
+  float c4 = 0 || i; /* { dg-error "initializer element is not constant" } */
+                  ^
+
+"Test_name.c", line 24: error: this operator is not allowed in a constant expression
+  float c5 = (i += 10); /* { dg-error "initializer element is not constant" } */
+                ^
+
+5 errors detected in the compilation of "Test_name.c".

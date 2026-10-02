@@ -1,0 +1,133 @@
+fe_only -DTEST_NUMBER=2 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c99 -DMPICH Test_name.c
+"Test_name.c", line 34: warning: unknown attribute "pointer_with_type_tag"
+      __attribute__(( pointer_with_type_tag(mpi,1,3) ));
+                      ^
+
+"Test_name.c", line 38: warning: unknown attribute "pointer_with_type_tag"
+                 __attribute__(( pointer_with_type_tag(mpi,1,3), pointer_with_type_tag(mpi,4,6) ));
+                                 ^
+
+"Test_name.c", line 38: warning: unknown attribute "pointer_with_type_tag"
+                 __attribute__(( pointer_with_type_tag(mpi,1,3), pointer_with_type_tag(mpi,4,6) ));
+                                                                 ^
+
+"Test_name.c", line 88: warning: unknown attribute "type_tag_for_datatype"
+  static const MPI_Datatype mpich_mpi_datatype_null __attribute__(( type_tag_for_datatype(mpi,void,must_be_null) )) = 0xa0000000;
+                                                                    ^
+
+"Test_name.c", line 89: warning: unknown attribute "type_tag_for_datatype"
+  static const MPI_Datatype mpich_mpi_float         __attribute__(( type_tag_for_datatype(mpi,float) ))             = 0xa0000001;
+                                                                    ^
+
+"Test_name.c", line 90: warning: unknown attribute "type_tag_for_datatype"
+  static const MPI_Datatype mpich_mpi_int           __attribute__(( type_tag_for_datatype(mpi,int) ))               = 0xa0000002;
+                                                                    ^
+
+"Test_name.c", line 91: warning: unknown attribute "type_tag_for_datatype"
+  static const MPI_Datatype mpich_mpi_long          __attribute__(( type_tag_for_datatype(mpi,long) ))              = 0xa0000003;
+                                                                    ^
+
+"Test_name.c", line 92: warning: unknown attribute "type_tag_for_datatype"
+  static const MPI_Datatype mpich_mpi_long_long_int __attribute__(( type_tag_for_datatype(mpi,long long int) ))     = 0xa0000004;
+                                                                    ^
+
+"Test_name.c", line 93: warning: unknown attribute "type_tag_for_datatype"
+  static const MPI_Datatype mpich_mpi_char          __attribute__(( type_tag_for_datatype(mpi,char) ))              = 0xa0000005;
+                                                                    ^
+
+"Test_name.c", line 97: warning: unknown attribute "type_tag_for_datatype"
+  static const MPI_Datatype mpich_mpi_float_int     __attribute__(( type_tag_for_datatype(mpi, struct mpich_struct_mpi_float_int, layout_compatible) )) = 0xa0000006;
+                                                                    ^
+
+"Test_name.c", line 98: warning: unknown attribute "type_tag_for_datatype"
+  static const MPI_Datatype mpich_mpi_2int          __attribute__(( type_tag_for_datatype(mpi, struct mpich_struct_mpi_2int, layout_compatible) )) = 0xa0000007;
+                                                                    ^
+
+"Test_name.c", line 118: warning: unknown attribute "type_tag_for_datatype"
+  hid_t H5T_NATIVE_SCHAR_g __attribute__(( type_tag_for_datatype(hdf5,signed char) ));
+                                           ^
+
+"Test_name.c", line 119: warning: unknown attribute "type_tag_for_datatype"
+  hid_t H5T_NATIVE_UCHAR_g __attribute__(( type_tag_for_datatype(hdf5,unsigned char) ));
+                                           ^
+
+"Test_name.c", line 120: warning: unknown attribute "type_tag_for_datatype"
+  hid_t H5T_NATIVE_INT_g   __attribute__(( type_tag_for_datatype(hdf5,int) ));
+                                           ^
+
+"Test_name.c", line 121: warning: unknown attribute "type_tag_for_datatype"
+  hid_t H5T_NATIVE_LONG_g  __attribute__(( type_tag_for_datatype(hdf5,long) ));
+                                           ^
+
+"Test_name.c", line 123: warning: unknown attribute "pointer_with_type_tag"
+  void H5Dwrite(hid_t mem_type_id, const void *buf) __attribute__(( pointer_with_type_tag(hdf5,2,1) ));
+                                                                    ^
+
+"Test_name.c", line 197: warning: unknown attribute "type_tag_for_datatype"
+  MPI_Datatype my_int_datatype __attribute__(( type_tag_for_datatype(mpi,int) ));
+                                               ^
+
+"Test_name.c", line 200: warning: unknown attribute "type_tag_for_datatype"
+  MPI_Datatype my_s1_datatype __attribute__(( type_tag_for_datatype(mpi,struct S1) ));
+                                              ^
+
+"Test_name.c", line 204: warning: unknown attribute "type_tag_for_datatype"
+  MPI_Datatype my_s2_datatype __attribute__(( type_tag_for_datatype(mpi,struct S2) ));
+                                              ^
+
+"Test_name.c", line 207: warning: unknown attribute "type_tag_for_datatype"
+  MPI_Datatype my_e1_datatype __attribute__(( type_tag_for_datatype(mpi,enum E1) ));
+                                              ^
+
+"Test_name.c", line 242: warning: unknown attribute "type_tag_for_datatype"
+      __attribute__(( type_tag_for_datatype(mpi, struct S1_compat, layout_compatible) ));
+                      ^
+
+"Test_name.c", line 247: warning: unknown attribute "type_tag_for_datatype"
+      __attribute__(( type_tag_for_datatype(mpi, struct S3_compat, layout_compatible) ));
+                      ^
+
+"Test_name.c", line 252: warning: unknown attribute "type_tag_for_datatype"
+      __attribute__(( type_tag_for_datatype(mpi, struct S4_compat, layout_compatible) ));
+                      ^
+
+"Test_name.c", line 257: warning: unknown attribute "type_tag_for_datatype"
+      __attribute__(( type_tag_for_datatype(mpi, union U1_compat, layout_compatible) ));
+                      ^
+
+"Test_name.c", line 261: warning: unknown attribute "type_tag_for_datatype"
+      __attribute__(( type_tag_for_datatype(mpi, union U2, layout_compatible) ));
+                      ^
+
+"Test_name.c", line 88: warning: variable "mpich_mpi_datatype_null" was declared but never referenced
+  static const MPI_Datatype mpich_mpi_datatype_null __attribute__(( type_tag_for_datatype(mpi,void,must_be_null) )) = 0xa0000000;
+                            ^
+
+"Test_name.c", line 89: warning: variable "mpich_mpi_float" was declared but never referenced
+  static const MPI_Datatype mpich_mpi_float         __attribute__(( type_tag_for_datatype(mpi,float) ))             = 0xa0000001;
+                            ^
+
+"Test_name.c", line 90: warning: variable "mpich_mpi_int" was declared but never referenced
+  static const MPI_Datatype mpich_mpi_int           __attribute__(( type_tag_for_datatype(mpi,int) ))               = 0xa0000002;
+                            ^
+
+"Test_name.c", line 91: warning: variable "mpich_mpi_long" was declared but never referenced
+  static const MPI_Datatype mpich_mpi_long          __attribute__(( type_tag_for_datatype(mpi,long) ))              = 0xa0000003;
+                            ^
+
+"Test_name.c", line 92: warning: variable "mpich_mpi_long_long_int" was declared but never referenced
+  static const MPI_Datatype mpich_mpi_long_long_int __attribute__(( type_tag_for_datatype(mpi,long long int) ))     = 0xa0000004;
+                            ^
+
+"Test_name.c", line 93: warning: variable "mpich_mpi_char" was declared but never referenced
+  static const MPI_Datatype mpich_mpi_char          __attribute__(( type_tag_for_datatype(mpi,char) ))              = 0xa0000005;
+                            ^
+
+"Test_name.c", line 97: warning: variable "mpich_mpi_float_int" was declared but never referenced
+  static const MPI_Datatype mpich_mpi_float_int     __attribute__(( type_tag_for_datatype(mpi, struct mpich_struct_mpi_float_int, layout_compatible) )) = 0xa0000006;
+                            ^
+
+"Test_name.c", line 98: warning: variable "mpich_mpi_2int" was declared but never referenced
+  static const MPI_Datatype mpich_mpi_2int          __attribute__(( type_tag_for_datatype(mpi, struct mpich_struct_mpi_2int, layout_compatible) )) = 0xa0000007;
+                            ^
+

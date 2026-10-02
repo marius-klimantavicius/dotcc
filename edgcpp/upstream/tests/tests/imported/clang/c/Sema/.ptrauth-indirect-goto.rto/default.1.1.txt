@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c --target linux_aarch64 Test_name.c
+"Test_name.c", line 15: warning: arithmetic on pointer to void or function type
+    goto *(&&l1 + diff_32); // expected-error{{addition of address-of-label expressions is not supported with ptrauth indirect gotos}}
+                ^
+
+"Test_name.c", line 7: warning: variable "addrs" was declared but never referenced
+    static void *addrs[] = { &&l1, &&l2 };
+                 ^
+
+"Test_name.c", line 9: warning: variable "diffs" was declared but never referenced
+    static int diffs[] = {
+               ^
+

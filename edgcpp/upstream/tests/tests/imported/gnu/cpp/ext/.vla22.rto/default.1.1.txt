@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 10: warning: variable "tbl" was declared but never referenced
+    const int tbl[(long) "h"] = { 12 }; // { dg-error "size of array .tbl. is not an integral constant-expression" }
+              ^
+

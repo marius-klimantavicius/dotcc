@@ -1,0 +1,46 @@
+fe_only -DTEST_NUMBER=2 --c++11 --clang_version 180200 Test_name.c
+"Test_name.c", line 29: error: invalid redeclaration of member function template "void Non_Dependent::f<B,<unnamed>>()" (declared at line 26)
+    void f();                     // error
+         ^
+
+"Test_name.c", line 40: error: invalid redeclaration of member function template "void Dependent<I>::f1<B,<unnamed>>()" (declared at line 37)
+    void f1();                    // error
+         ^
+
+"Test_name.c", line 58: error: static and nonstatic member functions with same parameter types cannot be overloaded
+    static void s1();             // error
+                ^
+
+"Test_name.c", line 52: error: invalid redeclaration of member function template "void Dependent<I>::f3<B,<unnamed>>() [with I=0]" (declared at line 49)
+    void f3();                    // error on instantiation
+         ^
+          detected during instantiation of class "Dependent<I> [with I=0]" at line 68
+
+"Test_name.c", line 81: error: invalid redeclaration of member function template "void Outer<O>::Dependent<I>::f1<B,<unnamed>>()" (declared at line 78)
+      void f1();                  // error
+           ^
+
+"Test_name.c", line 96: error: invalid redeclaration of member function template "void Outer<O>::Templated::f1<B,<unnamed>>()" (declared at line 93)
+      void f1();                  // error
+           ^
+
+"Test_name.c", line 87: error: invalid redeclaration of member function template "void Outer<O>::Dependent<I>::f2<B,<unnamed>>() [with O=0, I=0]" (declared at line 84)
+      void f2();                  // error on instantiation
+           ^
+          detected during instantiation of class "Outer<O>::Dependent<I> [with O=0, I=0]" at line 106
+
+"Test_name.c", line 102: error: invalid redeclaration of member function template "void Outer<O>::Templated::f2<B,<unnamed>>() [with O=0]" (declared at line 99)
+      void f2();                  // error on instantiation
+           ^
+          detected during instantiation of class "Outer<O>::Templated [with O=0]" at line 107
+
+"Test_name.c", line 117: error: invalid redeclaration of member function template "C<B> FnType<I>::f1<B>()" (declared at line 114)
+    C<B> f1();                    // error
+         ^
+
+"Test_name.c", line 129: error: invalid redeclaration of member function template "C<false> FnType<I>::f3<B>() [with I=0]" (declared at line 126)
+    C<I == 2> f3();               // error on instantiation
+              ^
+          detected during instantiation of class "FnType<I> [with I=0]" at line 144
+
+10 errors detected in the compilation of "Test_name.c".

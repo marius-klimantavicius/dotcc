@@ -1,0 +1,60 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 15: error: constructor delegates directly or indirectly to itself
+    B1() : B1() {}        // { dg-error "delegates to itself" }
+           ^
+
+"Test_name.c", line 16: error: constructor delegates directly or indirectly to itself
+    B1(int y) : B1(y) {}  // { dg-error "delegates to itself" }
+                ^
+
+"Test_name.c", line 27: error: constructor delegates directly or indirectly to itself
+    B2() : B2() {}        // { dg-error "delegates to itself" }
+           ^
+
+"Test_name.c", line 28: error: constructor delegates directly or indirectly to itself
+    B2(int y) : B2(y) {}  // { dg-error "delegates to itself" }
+                ^
+
+"Test_name.c", line 33: error: constructor delegates directly or indirectly to itself
+    V2() : V2() {}        // { dg-error "delegates to itself" }
+           ^
+
+"Test_name.c", line 34: error: constructor delegates directly or indirectly to itself
+    V2(int x) : V2(x) {}  // { dg-error "delegates to itself" }
+                ^
+
+"Test_name.c", line 45: error: constructor delegates directly or indirectly to itself
+    V3() : V3() {}        // { dg-error "delegates to itself" }
+           ^
+
+"Test_name.c", line 46: error: constructor delegates directly or indirectly to itself
+    V3(int x) : V3(x) {}  // { dg-error "delegates to itself" }
+                ^
+
+"Test_name.c", line 51: error: constructor delegates directly or indirectly to itself
+    constexpr CE1() : CE1() {}        // { dg-error "delegates to itself" }
+                      ^
+
+"Test_name.c", line 52: error: constructor delegates directly or indirectly to itself
+    constexpr CE1(int x) : CE1(x) {}  // { dg-error "delegates to itself" }
+                           ^
+
+"Test_name.c", line 57: error: constructor delegates directly or indirectly to itself
+    constexpr CEB2() : CEB2() {}        // { dg-error "delegates to itself" }
+                       ^
+
+"Test_name.c", line 58: error: constructor delegates directly or indirectly to itself
+    constexpr CEB2(int x) : CEB2(x) {}  // { dg-error "delegates to itself" }
+                            ^
+
+"Test_name.c", line 9: error: constructor delegates directly or indirectly to itself
+    S() : S() {}          // { dg-error "delegates to itself" }
+          ^
+          detected during instantiation of "S<T>::S() [with T=int]" at line 67
+
+"Test_name.c", line 10: error: constructor delegates directly or indirectly to itself
+    S(int x) : S(x) {}    // { dg-error "delegates to itself" }
+               ^
+          detected during instantiation of "S<T>::S(int) [with T=int]" at line 68
+
+14 errors detected in the compilation of "Test_name.c".

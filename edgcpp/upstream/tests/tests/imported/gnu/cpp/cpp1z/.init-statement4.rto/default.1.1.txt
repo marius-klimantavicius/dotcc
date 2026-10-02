@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 16: error: identifier "i" is undefined
+    i = 10; // { dg-error "not declared" }
+    ^
+
+"Test_name.c", line 34: error: identifier "i" is undefined
+    i = 10; // { dg-error "not declared" }
+    ^
+
+"Test_name.c", line 42: error: identifier "i" is undefined
+    i = 4; // { dg-error "not declared" }
+    ^
+
+"Test_name.c", line 56: error: identifier "j" is undefined
+  	j--; // { dg-error "not declared" }
+  	^
+
+"Test_name.c", line 58: error: identifier "i" is undefined
+      i = 10; // { dg-error "not declared" }
+      ^
+
+"Test_name.c", line 60: error: identifier "i" is undefined
+    i = 10; // { dg-error "not declared" }
+    ^
+
+6 errors detected in the compilation of "Test_name.c".

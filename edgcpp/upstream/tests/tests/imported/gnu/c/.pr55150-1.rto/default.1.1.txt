@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 40: warning: variable "s1" is used before its value is set
+    	    k[11] = s3 = ~s1;
+    	                  ^
+
+"Test_name.c", line 53: warning: variable "_t3" is used before its value is set
+    	      _t3 ^= Camellia_SBOX[3][(_t0 >> 8) & 0xff];
+    	      ^
+
+"Test_name.c", line 51: warning: variable "_t1" was declared but never referenced
+    	  register u32 _t0, _t1, _t2, _t3;
+    	                    ^
+
+"Test_name.c", line 51: warning: variable "_t2" was declared but never referenced
+    	  register u32 _t0, _t1, _t2, _t3;
+    	                         ^
+
+"Test_name.c", line 75: warning: missing return statement at end of non-void function "Camellia_Ekeygen"
+    }
+    ^
+

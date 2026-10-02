@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=2 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c89 --strict_gnu Test_name.c
+"Test_name.c", line 18: error: function "f" has already been defined (previous definition at line 16)
+  int f(int c) {return c;} // expected-error{{redefinition of 'f'}}
+      ^
+
+"Test_name.c", line 26: error: declaration is incompatible with "int h(int)" (declared at line 25)
+  int h(short b) {return b;}  // expected-error{{conflicting types for 'h'}}
+      ^
+
+"Test_name.c", line 22: warning: function "g" was declared but never referenced
+  static int g(int b) {return b;}
+             ^
+
+2 errors detected in the compilation of "Test_name.c".

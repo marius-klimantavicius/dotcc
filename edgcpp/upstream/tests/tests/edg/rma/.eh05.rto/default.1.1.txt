@@ -1,0 +1,21 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 27: warning: statement is unreachable
+      case 0:   throw a.i;  break;
+                            ^
+
+"Test_name.c", line 28: warning: statement is unreachable
+      case 1:   throw b;    break;
+                            ^
+
+"Test_name.c", line 29: warning: statement is unreachable
+      case 2:   throw pc;   break;
+                            ^
+
+"Test_name.c", line 30: warning: statement is unreachable
+      case 3:   throw pmi;  break;
+                            ^
+
+"Test_name.c", line 31: warning: statement is unreachable
+      default:  throw x;    break;
+                            ^
+

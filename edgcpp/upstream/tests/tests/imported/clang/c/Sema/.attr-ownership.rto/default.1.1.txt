@@ -1,0 +1,105 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 5: warning: unknown attribute "ownership_takes"
+  void f1(void) __attribute__((ownership_takes("foo"))); // expected-error {{'ownership_takes' attribute requires parameter 1 to be an identifier}}
+                               ^
+
+"Test_name.c", line 6: warning: unknown attribute "ownership_returns"
+  void *f2(void) __attribute__((ownership_returns(foo, 1, 2)));  // expected-error {{'ownership_returns' attribute takes no more than 2 arguments}}
+                                ^
+
+"Test_name.c", line 7: warning: unknown attribute "ownership_holds"
+  void f3(void) __attribute__((ownership_holds(foo, 1))); // expected-error {{'ownership_holds' attribute parameter 1 is out of bounds}}
+                               ^
+
+"Test_name.c", line 8: warning: unknown attribute "ownership_returns"
+  void *f4(void) __attribute__((ownership_returns(foo)));
+                                ^
+
+"Test_name.c", line 9: warning: unknown attribute "ownership_holds"
+  void f5(void) __attribute__((ownership_holds(foo)));  // expected-error {{'ownership_holds' attribute takes at least 2 arguments}}
+                               ^
+
+"Test_name.c", line 10: warning: unknown attribute "ownership_holds"
+  void f6(void) __attribute__((ownership_holds(foo, 1, 2, 3)));  // expected-error {{'ownership_holds' attribute parameter 1 is out of bounds}}
+                               ^
+
+"Test_name.c", line 11: warning: unknown attribute "ownership_takes"
+  void f7(void) __attribute__((ownership_takes(foo)));  // expected-error {{'ownership_takes' attribute takes at least 2 arguments}}
+                               ^
+
+"Test_name.c", line 12: warning: unknown attribute "ownership_holds"
+  void f8(int *i, int *j, int k) __attribute__((ownership_holds(foo, 1, 2, 4)));  // expected-error {{'ownership_holds' attribute parameter 3 is out of bounds}}
+                                                ^
+
+"Test_name.c", line 14: warning: unknown attribute "ownership_takes"
+  int f9 __attribute__((ownership_takes(foo, 1)));  // expected-warning {{'ownership_takes' attribute only applies to non-K&R-style functions}}
+                        ^
+
+"Test_name.c", line 16: warning: unknown attribute "ownership_holds"
+  void f10(int i) __attribute__((ownership_holds(foo, 1)));  // expected-error {{'ownership_holds' attribute only applies to pointer arguments}}
+                                 ^
+
+"Test_name.c", line 17: warning: unknown attribute "ownership_returns"
+  void *f11(float i) __attribute__((ownership_returns(foo, 1)));  // expected-error {{'ownership_returns' attribute only applies to integer arguments}}
+                                    ^
+
+"Test_name.c", line 18: warning: unknown attribute "ownership_returns"
+  void *f12(float i, int k, int f, int *j) __attribute__((ownership_returns(foo, 4)));  // expected-error {{'ownership_returns' attribute only applies to integer arguments}}
+                                                          ^
+
+"Test_name.c", line 20: warning: unknown attribute "ownership_holds"
+  void f13(int *i, int *j) __attribute__((ownership_holds(foo, 1))) __attribute__((ownership_takes(foo, 2)));
+                                          ^
+
+"Test_name.c", line 20: warning: unknown attribute "ownership_takes"
+  void f13(int *i, int *j) __attribute__((ownership_holds(foo, 1))) __attribute__((ownership_takes(foo, 2)));
+                                                                                   ^
+
+"Test_name.c", line 21: warning: unknown attribute "ownership_holds"
+  void f14(int i, int j, int *k) __attribute__((ownership_holds(foo, 3))) __attribute__((ownership_takes(foo, 3)));  // expected-error {{'ownership_takes' and 'ownership_holds' attributes are not compatible}}
+                                                ^
+
+"Test_name.c", line 21: warning: unknown attribute "ownership_takes"
+  void f14(int i, int j, int *k) __attribute__((ownership_holds(foo, 3))) __attribute__((ownership_takes(foo, 3)));  // expected-error {{'ownership_takes' and 'ownership_holds' attributes are not compatible}}
+                                                                                         ^
+
+"Test_name.c", line 24: warning: unknown attribute "ownership_returns"
+    __attribute__((ownership_returns(foo, 1)))  // expected-error {{'ownership_returns' attribute index does not match; here it is 1}}
+                   ^
+
+"Test_name.c", line 25: warning: unknown attribute "ownership_returns"
+    __attribute__((ownership_returns(foo, 2))); // expected-note {{declared with index 2 here}}
+                   ^
+
+"Test_name.c", line 26: warning: unknown attribute "ownership_holds"
+  void f16(int *i, int *j) __attribute__((ownership_holds(foo, 1))) __attribute__((ownership_holds(foo, 1))); // OK, same index
+                                          ^
+
+"Test_name.c", line 26: warning: unknown attribute "ownership_holds"
+  void f16(int *i, int *j) __attribute__((ownership_holds(foo, 1))) __attribute__((ownership_holds(foo, 1))); // OK, same index
+                                                                                   ^
+
+"Test_name.c", line 27: warning: unknown attribute "ownership_takes"
+  void f17(void*) __attribute__((ownership_takes(__, 1)));
+                                 ^
+
+"Test_name.c", line 28: warning: unknown attribute "ownership_takes"
+  void f18() __attribute__((ownership_takes(foo, 1)));  // expected-warning {{'ownership_takes' attribute only applies to non-K&R-style functions}}
+                            ^
+
+"Test_name.c", line 31: warning: unknown attribute "ownership_takes"
+    __attribute__((ownership_takes(foo, 1)))    // expected-error {{'ownership_takes' attribute class does not match; here it is 'foo'}}
+                   ^
+
+"Test_name.c", line 32: warning: unknown attribute "ownership_takes"
+    __attribute__((ownership_takes(foo1, 1)));  // expected-note {{declared with class 'foo1' here}}
+                   ^
+
+"Test_name.c", line 34: warning: unknown attribute "ownership_returns"
+  void f20(void) __attribute__((ownership_returns(foo)));  // expected-error {{'ownership_returns' attribute only applies to functions that return a pointer}}
+                                ^
+
+"Test_name.c", line 35: warning: unknown attribute "ownership_returns"
+  int f21(void) __attribute__((ownership_returns(foo)));  // expected-error {{'ownership_returns' attribute only applies to functions that return a pointer}}
+                               ^
+

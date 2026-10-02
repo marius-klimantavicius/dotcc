@@ -1,0 +1,93 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 Test_name.c
+"Test_name.c", line 33: warning: expression has no effect
+    (1 ? p1 : 0);
+    ^
+
+"Test_name.c", line 34: warning: expression has no effect
+    (1 ? p1 : 0L);
+    ^
+
+"Test_name.c", line 35: warning: expression has no effect
+    (1 ? p1 : 0ULL);
+    ^
+
+"Test_name.c", line 36: warning: expression has no effect
+    (1 ? p1 : (char) 0);
+    ^
+
+"Test_name.c", line 37: warning: expression has no effect
+    (1 ? p1 : (_Bool) 0);
+    ^
+
+"Test_name.c", line 38: warning: expression has no effect
+    (1 ? p1 : (enum e) 0);
+    ^
+
+"Test_name.c", line 39: warning: expression has no effect
+    p1 == 0;
+    ^
+
+"Test_name.c", line 40: warning: expression has no effect
+    p1 == 0LL;
+    ^
+
+"Test_name.c", line 41: warning: expression has no effect
+    p1 == 0U;
+    ^
+
+"Test_name.c", line 42: warning: expression has no effect
+    p1 == (char) 0;
+    ^
+
+"Test_name.c", line 43: warning: expression has no effect
+    p1 == (_Bool) 0;
+    ^
+
+"Test_name.c", line 44: warning: expression has no effect
+    p1 == (enum e) 0;
+    ^
+
+"Test_name.c", line 45: warning: expression has no effect
+    p1 != 0;
+    ^
+
+"Test_name.c", line 46: warning: expression has no effect
+    p1 != 0LL;
+    ^
+
+"Test_name.c", line 47: warning: expression has no effect
+    p1 != 0U;
+    ^
+
+"Test_name.c", line 48: warning: expression has no effect
+    p1 != (char) 0;
+    ^
+
+"Test_name.c", line 49: warning: expression has no effect
+    p1 != (_Bool) 0;
+    ^
+
+"Test_name.c", line 50: warning: expression has no effect
+    p1 != (enum e) 0;
+    ^
+
+"Test_name.c", line 52: warning: statement is unreachable
+    return 0UL;
+    ^
+
+"Test_name.c", line 53: warning: statement is unreachable
+    return 0LL;
+    ^
+
+"Test_name.c", line 54: warning: statement is unreachable
+    return (char) 0;
+    ^
+
+"Test_name.c", line 55: warning: statement is unreachable
+    return (_Bool) 0;
+    ^
+
+"Test_name.c", line 56: warning: statement is unreachable
+    return (enum e) 0;
+    ^
+

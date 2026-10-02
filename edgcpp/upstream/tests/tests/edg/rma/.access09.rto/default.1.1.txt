@@ -1,0 +1,26 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 26: error: function "X::xggg" (declared at line 11) is inaccessible
+    xggg();      // inaccessible member (private)
+    ^
+
+"Test_name.c", line 32: error: type "W::W" (declared at line 13) is inaccessible
+    W::f();      // inaccessible member (==>A==>W)
+    ^
+
+"Test_name.c", line 32: error: conversion to inaccessible base class "W" is not allowed
+    W::f();      // inaccessible member (==>A==>W)
+    ^
+
+"Test_name.c", line 33: error: function "X::xg" (declared at line 7) is inaccessible
+    xg();        // inaccessible member (==>A==>W==>X)
+    ^
+
+"Test_name.c", line 34: error: function "X::xgg" (declared at line 9) is inaccessible
+    xgg();       // inaccessible member (==>A==>W==>X)
+    ^
+
+"Test_name.c", line 35: error: function "X::xggg" (declared at line 11) is inaccessible
+    xggg();      // inaccessible member (==>A==>W==>X)
+    ^
+
+6 errors detected in the compilation of "Test_name.c".

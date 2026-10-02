@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"./c23-if-decls-1.c", line 9: error: expected an expression
+    if (int i = 42);
+        ^
+
+"./c23-if-decls-1.c", line 10: error: expected an expression
+    if (int i = 42; i > 10);
+        ^
+
+"./c23-if-decls-1.c", line 11: error: expected an expression
+    if (int i, j; i = 42);
+        ^
+
+"./c23-if-decls-1.c", line 12: error: expected an expression
+    switch (int i = 42);
+            ^
+
+"./c23-if-decls-1.c", line 13: error: expected an expression
+    switch (int i = 42; i);
+            ^
+
+"./c23-if-decls-1.c", line 14: error: expected an expression
+    switch (int i, j; i = 42);
+            ^
+
+6 errors detected in the compilation of "Test_name.c".

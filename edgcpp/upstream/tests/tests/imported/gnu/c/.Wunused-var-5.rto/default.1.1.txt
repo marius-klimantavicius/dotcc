@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 Test_name.c
+"Test_name.c", line 12: warning: variable "x" was set but never used
+  void f5 (void) { static _Atomic int x = 0; bar (x = 1); }
+                                      ^
+
+"Test_name.c", line 13: warning: variable "x" was set but never used
+  void f6 (void) { static _Atomic int x = 0; x = 1; }	/* { dg-warning "variable 'x' set but not used" } */
+                                      ^
+
+"Test_name.c", line 19: warning: variable "x" was set but never used
+  void f12 (void) { _Atomic int x = 0; bar (x = 1); }
+                                ^
+
+"Test_name.c", line 20: warning: variable "x" was set but never used
+  void f13 (void) { _Atomic int x = 0; x = 1; }		/* { dg-warning "variable 'x' set but not used" } */
+                                ^
+
+"Test_name.c", line 24: warning: variable "x" was set but never used
+  void f17 (void) { _Atomic int x = 0; int y = 3; x = y; }	/* { dg-warning "variable 'x' set but not used" } */
+                                ^
+
+"Test_name.c", line 25: warning: variable "x" was set but never used
+  void f18 (void) { _Atomic int x = 0; int y = 3; bar (x = y); }
+                                ^
+

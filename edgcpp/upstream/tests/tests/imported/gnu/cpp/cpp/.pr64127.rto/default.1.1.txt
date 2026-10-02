@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++03 Test_name.c
+"Test_name.c", line 5: error: expected a type specifier
+  template <0> int __copy_streambufs_eof; // { dg-error "expected identifier|numeric constant|variable templates" }
+            ^
+
+"Test_name.c", line 5: warning: variable templates are a C++14 feature
+  template <0> int __copy_streambufs_eof; // { dg-error "expected identifier|numeric constant|variable templates" }
+                                        ^
+
+At end of source: error: expected an expression
+
+At end of source: error: expected a ">"
+
+At end of source: error: expected an identifier
+
+At end of source: error: expected a ";"
+
+5 errors detected in the compilation of "Test_name.c".

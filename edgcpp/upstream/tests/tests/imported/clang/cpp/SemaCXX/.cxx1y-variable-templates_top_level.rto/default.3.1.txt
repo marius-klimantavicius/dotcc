@@ -1,0 +1,315 @@
+fe_only -DTEST_NUMBER=3 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 29: warning: variable "ipi" was declared but never referenced
+      int ipi = pi<int>;
+          ^
+
+"Test_name.c", line 30: warning: variable "icpi" was declared but never referenced
+      int icpi = cpi<int>;
+          ^
+
+"Test_name.c", line 31: warning: variable "dpi" was declared but never referenced
+      double dpi = pi<double>;
+             ^
+
+"Test_name.c", line 32: warning: variable "dcpi" was declared but never referenced
+      double dcpi = cpi<double>;
+             ^
+
+"Test_name.c", line 37: error: argument list for variable template "pi" is missing
+      int ipi = pi; // expected-error {{use of variable template 'pi' requires template arguments}}
+                ^
+
+"Test_name.c", line 38: error: argument list for variable template "cpi" is missing
+      int icpi = cpi; // expected-error {{use of variable template 'cpi' requires template arguments}}
+                 ^
+
+"Test_name.c", line 66: warning: variable "pi" is used before its value is set
+      int a = pi;
+              ^
+
+"Test_name.c", line 67: error: type name is not allowed
+      int ipi = pi<int>;  // expected-error {{'pi' does not name a template but is followed by template arguments; did you mean '::pi'?}}
+                   ^
+
+"Test_name.c", line 67: error: expected an expression
+      int ipi = pi<int>;  // expected-error {{'pi' does not name a template but is followed by template arguments; did you mean '::pi'?}}
+                       ^
+
+"Test_name.c", line 64: warning: variable "ipi0" was declared but never referenced
+      int ipi0 = pi<int>;
+          ^
+
+"Test_name.c", line 66: warning: variable "a" was declared but never referenced
+      int a = pi;
+          ^
+
+"Test_name.c", line 74: error: "v" has already been declared in the current scope
+      template<typename T> T v; // expected-error {{redefinition of 'v' as different kind of symbol}}
+                             ^
+
+"Test_name.c", line 78: error: "v" has already been declared in the current scope
+      int v;   // expected-error {{redefinition of 'v' as different kind of symbol}}
+          ^
+
+"Test_name.c", line 82: error: variable template "odr_tmpl::pvt_cvt::v0" has already been defined (previous definition at line 81)
+      template<typename T> T v0; // expected-error {{redefinition of 'v0'}}
+                             ^
+
+"Test_name.c", line 85: error: declaration is incompatible with variable template "odr_tmpl::pvt_cvt::v" (declared at line 84)
+      template<typename T> int v; // expected-error {{redefinition of 'v'}}
+                               ^
+
+"Test_name.c", line 88: error: declaration is incompatible with template parameter "T" (declared at line 87)
+      template<int I> int v1;      // expected-error {{template parameter has a different kind in template redeclaration}}
+                   ^
+
+"Test_name.c", line 92: error: this declaration has no storage class or type specifier
+      v = 10;  // expected-error {{a type specifier is required for all declarations}}
+      ^
+
+"Test_name.c", line 92: error: "v" has already been declared in the current scope
+      v = 10;  // expected-error {{a type specifier is required for all declarations}}
+      ^
+
+"Test_name.c", line 97: error: too few template parameters -- does not match previous declaration (declared at line 96)
+      template<typename T> T v;   // expected-error {{too few template parameters in template redeclaration}}
+                        ^
+
+"Test_name.c", line 98: error: too many template parameters -- does not match previous declaration (declared at line 96)
+      template<typename T, typename, typename> T v; // expected-error {{too many template parameters in template redeclaration}}
+                                             ^
+
+"Test_name.c", line 103: error: variable template "odr_tmpl::pvt_extern::v" has already been defined (previous definition at line 102)
+      template<typename T> extern T v;      // redeclaration is allowed \
+                                    ^
+
+"Test_name.c", line 105: error: declaration is incompatible with variable template "odr_tmpl::pvt_extern::v" (declared at line 102)
+      template<typename T> extern int v;    // expected-error {{redeclaration of 'v' with a different type: 'int' vs 'T'}}
+                                      ^
+
+"Test_name.c", line 108: error: declaration is incompatible with variable template "odr_tmpl::pvt_extern::v" (declared at line 102)
+      template<typename T> extern auto v;   // expected-error {{declaration of variable 'v' with deduced type 'auto' requires an initializer}}
+                                       ^
+
+"Test_name.c", line 108: error: cannot deduce "auto" type (initializer required)
+      template<typename T> extern auto v;   // expected-error {{declaration of variable 'v' with deduced type 'auto' requires an initializer}}
+                                  ^
+
+"Test_name.c", line 112: error: "var" has already been declared in the current scope
+      extern int var;                       // expected-error {{redefinition of 'var' as different kind of symbol}}
+                 ^
+
+"Test_name.c", line 117: error: cannot deduce "auto" type (initializer required)
+      template<typename T> auto v0; // expected-error {{declaration of variable 'v0' with deduced type 'auto' requires an initializer}}
+                                ^
+
+"Test_name.c", line 119: error: declaration is incompatible with variable template "odr_tmpl::pvt_auto::v1" (declared at line 118)
+      template<typename T> int v1;   // expected-error {{redefinition of 'v1' with a different type: 'int' vs 'auto'}}
+                               ^
+
+"Test_name.c", line 121: error: declaration is incompatible with variable template "odr_tmpl::pvt_auto::v2" (declared at line 120)
+      template<typename T> T v2;   // expected-error {{redefinition of 'v2'}}
+                             ^
+
+"Test_name.c", line 123: error: declaration is incompatible with variable template "odr_tmpl::pvt_auto::v3" (declared at line 122)
+      template<typename T> extern T v3;     // expected-error {{redeclaration of 'v3' with a different type: 'T' vs 'auto'}}
+                                    ^
+
+"Test_name.c", line 125: error: variable template "odr_tmpl::pvt_auto::v4" has already been defined (previous definition at line 124)
+      template<typename T> extern auto v4;   // expected-error {{declaration of variable 'v4' with deduced type 'auto' requires an initializer}}
+                                       ^
+
+"Test_name.c", line 125: error: cannot deduce "auto" type (initializer required)
+      template<typename T> extern auto v4;   // expected-error {{declaration of variable 'v4' with deduced type 'auto' requires an initializer}}
+                                  ^
+
+"Test_name.c", line 134: error: declaration is incompatible with "int explicit_instantiation::pi0a<int>" (declared at line 133)
+    template float pi0a<int>; // expected-error {{type 'float' of explicit instantiation of 'pi0a' does not match expected type 'int'}}
+                   ^
+
+"Test_name.c", line 138: error: "constexpr" is not allowed on an explicit instantiation directive
+    template CONST int pi0b<int>; // expected-error {{type 'const int' of explicit instantiation of 'pi0b' does not match expected type 'int'}}
+             ^
+
+"Test_name.c", line 142: error: declaration is incompatible with "const int explicit_instantiation::pi0c<const int>" (declared at line 141)
+    template int pi0c<const int>;  // expected-error {{type 'int' of explicit instantiation of 'pi0c' does not match expected type 'const int'}}
+                 ^
+
+"Test_name.c", line 147: error: variable "explicit_instantiation::pi0<int>" explicitly instantiated more than once
+    template int pi0<int>;   // expected-error {{duplicate explicit instantiation of 'pi0<int>'}}
+                 ^
+
+"Test_name.c", line 151: error: declaration is incompatible with "const int explicit_instantiation::pi1a<int>" (declared at line 150)
+    template int pi1a<int>; // expected-error {{type 'int' of explicit instantiation of 'pi1a' does not match expected type 'const int'}}
+                 ^
+
+"Test_name.c", line 155: error: declaration is incompatible with "const int explicit_instantiation::pi1b<const int>" (declared at line 154)
+    template int pi1b<const int>;  // expected-error {{type 'int' of explicit instantiation of 'pi1b' does not match expected type 'const const int'}}
+                 ^
+
+"Test_name.c", line 159: error: "constexpr" is not allowed on an explicit instantiation directive
+    template CONST int pi1<int>;   // expected-note {{previous explicit instantiation is here}}
+             ^
+
+"Test_name.c", line 159: error: declaration is incompatible with "const int explicit_instantiation::pi1<int>" (declared at line 158)
+    template CONST int pi1<int>;   // expected-note {{previous explicit instantiation is here}}
+                       ^
+
+"Test_name.c", line 160: error: "constexpr" is not allowed on an explicit instantiation directive
+    template CONST int pi1<int>;   // expected-error {{duplicate explicit instantiation of 'pi1<int>'}}
+             ^
+
+"Test_name.c", line 160: error: declaration is incompatible with "const int explicit_instantiation::pi1<int>" (declared at line 158)
+    template CONST int pi1<int>;   // expected-error {{duplicate explicit instantiation of 'pi1<int>'}}
+                       ^
+
+"Test_name.c", line 168: error: declaration is incompatible with "auto explicit_instantiation::auto_var::var<int>" (declared at line 167)
+      template int var<int>;
+                   ^
+
+"Test_name.c", line 173: error: invalid explicit instantiation declaration
+    template int missing_args; // expected-error {{must specify a template argument list}}
+             ^
+
+"Test_name.c", line 218: warning: variable "a" was declared but never referenced
+        int a = pi2<int,int>;  // expected-error {{ambiguous partial specializations of 'pi2<int, int>'}}
+            ^
+
+"Test_name.c", line 251: error: variable "explicit_specialization::redefinition::pi0<int>" has already been defined (previous definition at line 247)
+      template<> int pi0<int> = 10;   // expected-error {{redefinition of 'pi0<int>'}}
+                     ^
+
+"Test_name.c", line 252: error: variable "explicit_specialization::redefinition::pi0<int>" has already been defined (previous definition at line 247)
+      template<> CONST int pi0<int> = 10; // expected-error {{redefinition of 'pi0' with a different type: 'const int' vs 'int'}}
+                           ^
+
+"Test_name.c", line 252: error: "constexpr" is not valid here
+      template<> CONST int pi0<int> = 10; // expected-error {{redefinition of 'pi0' with a different type: 'const int' vs 'int'}}
+                 ^
+
+"Test_name.c", line 253: error: variable "explicit_specialization::redefinition::pi0<int>" has already been defined (previous definition at line 247)
+      template<> float pi0<int> = 10; // expected-error {{redefinition of 'pi0' with a different type: 'float' vs 'int'}}
+                       ^
+
+"Test_name.c", line 255: error: variable "explicit_specialization::redefinition::pi0<int>" has already been defined (previous definition at line 247)
+      template<> auto pi0<int> = 10;  // expected-error {{redefinition of 'pi0<int>'}}
+                      ^
+
+"Test_name.c", line 263: error: variable "explicit_specialization::redefinition::pi1<int>" has already been defined (previous definition at line 262)
+      template<> CONST int pi1<int> = 10;   // expected-error {{redefinition of 'pi1<int>'}}
+                           ^
+
+"Test_name.c", line 263: error: "constexpr" is not valid here
+      template<> CONST int pi1<int> = 10;   // expected-error {{redefinition of 'pi1<int>'}}
+                 ^
+
+"Test_name.c", line 272: error: declaration is incompatible with "int explicit_specialization::before_instantiation::pi0<int>" (declared at line 270)
+      template float pi0<int>;      // expected-error {{type 'float' of explicit instantiation of 'pi0' does not match expected type}} expected-warning {{has no effect}}
+                     ^
+
+"Test_name.c", line 278: error: "constexpr" is not allowed on an explicit instantiation directive
+      template CONST int pi2<int,int>;
+               ^
+
+"Test_name.c", line 278: error: declaration is incompatible with "const int explicit_specialization::before_instantiation::pi2<int, int>" (declared at line 275)
+      template CONST int pi2<int,int>;
+                         ^
+
+"Test_name.c", line 286: error: variable "explicit_specialization::after_instantiation::pi0<int>" has already been defined (previous definition at line 285)
+      template<> float pi0<int>;    // expected-error {{explicit specialization of 'pi0' after instantiation}}
+                       ^
+
+"Test_name.c", line 291: error: "constexpr" is not allowed on an explicit instantiation directive
+      template CONST int pi2<int,int>;
+               ^
+
+"Test_name.c", line 291: error: declaration is incompatible with "const int explicit_specialization::after_instantiation::pi2<int, int>" (declared at line 289)
+      template CONST int pi2<int,int>;
+                         ^
+
+"Test_name.c", line 306: warning: variable "i0" was declared but never referenced
+        int i0 = var0<int,int>;
+            ^
+
+"Test_name.c", line 307: warning: variable "b" was declared but never referenced
+        int b = var<int,int>;
+            ^
+
+"Test_name.c", line 321: error: declaration is incompatible with variable template "explicit_specialization::diff_type::var" (declared at line 320)
+      template<typename T> T var<T*> = T();     // expected-error {{redefinition of 'var' with a different type: 'T' vs 'auto'}}
+                             ^
+
+"Test_name.c", line 327: error: invalid narrowing conversion from "int" to "char": constant value does not fit in destination type
+    template<typename T> T v = {1234};  // expected-warning {{implicit conversion from 'int' to 'char' changes value from 1234 to}}
+                                ^
+          detected during instantiation of "T narrowing::v [with T=char]" at line 332
+
+"Test_name.c", line 357: warning: variable "ff" was declared but never referenced
+      float ff = *arr<float>;
+            ^
+
+"Test_name.c", line 358: warning: variable "nof" was declared but never referenced
+      float nof = arr<float>[3];  // No bounds-check in C++
+            ^
+
+"Test_name.c", line 410: error: variable "nested::n1::pi1a<float>" cannot be explicitly instantiated in the current scope
+      template float pi1a<float>;
+                     ^
+
+"Test_name.c", line 416: error: variable "nested::n1::pi1a<double>" cannot be specialized in the current scope
+      template<> double pi1a<double> = 5.2; // expected-error {{not in a namespace enclosing 'n1'}}
+                        ^
+
+"Test_name.c", line 423: error: variable "nested::n1::pi1b<float>" cannot be explicitly instantiated in the current scope
+      template float n1::pi1b<float>;
+                         ^
+
+"Test_name.c", line 429: error: variable "nested::n1::pi1b<double>" cannot be specialized in the current scope
+      template<> double n1::pi1b<double> = 5.2;  // expected-error {{not in a namespace enclosing 'n1'}}
+                            ^
+
+"Test_name.c", line 436: error: name followed by "::" must be a class or namespace name
+    a<int>::b c; // expected-error {{qualified name refers into a specialization of variable template 'a'}}
+    ^
+
+"Test_name.c", line 438: error: tag kind of class or struct is incompatible with declaration of "int nested_name::a<int>" (declared at line 435)
+    class a<int> {}; // expected-error {{identifier followed by '<' indicates a class template specialization but 'a' refers to a variable template}}
+          ^
+
+"Test_name.c", line 439: error: tag kind of enum is incompatible with declaration of "int nested_name::a<int>" (declared at line 435)
+    enum a<int> {}; // expected-error {{expected identifier or '{'}}
+         ^
+
+"Test_name.c", line 444: error: an explicit template argument list is not allowed on this declaration
+    int a<int>; // expected-error {{requires 'template<>'}}
+        ^
+
+"Test_name.c", line 457: error: overloaded function "PR19169::f" is not an entity that can be explicitly specialized
+    template<> int f<double>; // expected-error {{no variable template matches specialization; did you mean to use 'f' as function template instead?}}
+                   ^
+
+"Test_name.c", line 460: error: function template "void PR19169::g<T>()" is not an entity that can be explicitly specialized
+    template<> int g<double>; // expected-error {{no variable template matches specialization; did you mean to use 'g' as function template instead?}}
+                   ^
+
+"Test_name.c", line 472: error: argument list for variable template "VexingParse::var" is missing
+    int x(var); // expected-error {{use of variable template 'var' requires template arguments}}
+          ^
+
+"Test_name.c", line 507: warning: expression has no effect
+    a<U, Ts...>; // expected-error {{variable template 'a' declared with deduced type 'auto' cannot appear in its own initializer}}
+    ^
+
+"Test_name.c", line 513: error: cannot deduce "auto" type
+  template <> auto b<0, 0, 0> = b<0, 0, 0>; // expected-error {{variable template explicit specialization 'b<0, 0, 0>' declared with deduced type 'auto' cannot appear in its own initializer}}
+              ^
+
+"Test_name.c", line 513: internal error: assertion failed at: "exprutil.c", line <suppressed> in generic_cast_operand
+
+  template <> auto b<0, 0, 0> = b<0, 0, 0>; // expected-error {{variable template explicit specialization 'b<0, 0, 0>' declared with deduced type 'auto' cannot appear in its own initializer}}
+                                ^
+
+63 errors and 1 catastrophic error detected in the compilation of "Test_name.c".
+Compilation aborted.
+Aborted
+eccp: front end returned an exit status of 134

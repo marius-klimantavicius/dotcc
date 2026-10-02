@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --microsoft --c Test_name.c
+"Test_name.c", line 15: warning: declaration is incompatible with "unsigned int i" (declared at line 14)
+    unsigned long i;  // Already accepted in Microsoft C mode (with a warning).
+                  ^
+
+"Test_name.c", line 18: warning: declaration is incompatible with "unsigned int i" (declared at line 14)
+    UL i;  // Now also accepted in Microsoft C mode (with a warning).
+       ^
+

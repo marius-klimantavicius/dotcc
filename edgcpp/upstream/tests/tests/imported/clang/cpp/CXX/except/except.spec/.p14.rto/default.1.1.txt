@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --exceptions --exceptions --c++11 Test_name.c
+"Test_name.c", line 15: error: exception specification for implicitly declared virtual function "X2::~X2" is incompatible with that of overridden function "X1::~X1"
+  struct X2 : public X0, public X1 { }; // expected-error 2{{exception specification of overriding function is more lax than base version}}
+         ^
+
+"Test_name.c", line 15: error: exception specification for implicitly declared virtual function "X2::~X2" is incompatible with that of overridden function "X0::~X0"
+  struct X2 : public X0, public X1 { }; // expected-error 2{{exception specification of overriding function is more lax than base version}}
+         ^
+
+"Test_name.c", line 29: error: incompatible exception specifications
+    CA2 &(CA2::*captr3)(const CA2&) throw(A) = &CA2::operator=; // expected-error{{target exception specification is not superset of source}}
+                                               ^
+
+"Test_name.c", line 30: error: incompatible exception specifications
+    CA2 &(CA2::*captr4)(const CA2&) throw(B) = &CA2::operator=; // expected-error{{target exception specification is not superset of source}}
+                                               ^
+
+"Test_name.c", line 27: warning: variable "captr1" was declared but never referenced
+    CA2 &(CA2::*captr1)(const CA2&) throw(A, B) = &CA2::operator=;
+                ^
+
+"Test_name.c", line 28: warning: variable "captr2" was declared but never referenced
+    CA2 &(CA2::*captr2)(const CA2&) throw(A, B, C) = &CA2::operator=;
+                ^
+
+"Test_name.c", line 29: warning: variable "captr3" was declared but never referenced
+    CA2 &(CA2::*captr3)(const CA2&) throw(A) = &CA2::operator=; // expected-error{{target exception specification is not superset of source}}
+                ^
+
+"Test_name.c", line 30: warning: variable "captr4" was declared but never referenced
+    CA2 &(CA2::*captr4)(const CA2&) throw(B) = &CA2::operator=; // expected-error{{target exception specification is not superset of source}}
+                ^
+
+"Test_name.c", line 66: error: function "PR13381::X::operator=(const PR13381::X &)" (declared implicitly) cannot be referenced -- it is a deleted function
+    static_assert(!noexcept(X::ref() = X::val()), "");
+                                     ^
+
+"Test_name.c", line 125: error: identifier "Typo" is undefined
+      Typo foo(); // expected-error{{unknown type name 'Typo'}}
+      ^
+
+6 errors detected in the compilation of "Test_name.c".

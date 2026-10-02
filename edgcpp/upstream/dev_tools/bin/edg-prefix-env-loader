@@ -1,0 +1,147 @@
+#!/usr/bin/env python3
+
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+import argparse
+import os
+import platform
+import re
+import shlex
+import shutil
+import subprocess
+import sys
+
+from edgutil import eprint
+
+CMD_DESCRIPTION = f"""
+EDG environment modifiying command launcher (used for launching
+multi-configuration edgy runs).
+
+This is primarily used to allow a large number of environments to be stiched
+together while keeping the command line from becoming too overbearing (which
+can be important on Windows).
+
+This tool reads from a file and processes directives within the file.  The
+directives are as follows:
+
+source <path-to-file>
+
+  Merge in the environment variables from the given file.  The bash syntax
+  options:
+
+    export VAR=VALUE
+    export VAR="VALUE"
+
+  are currently the only supported operations in input file.
+
+prefix_source <prefix> <path-to-file>
+
+  This is the same as the source directive, however, all loaded environment
+  variables from the given file will be prefixed with the given prefix
+  prepended.
+
+exec <cmd> [cmdline args...]
+
+  Execute the given command with the composed environment.
+
+# [anything...]
+
+  Represents a comment.
+
+-----------------------------------------------------------------------------
+"""
+
+def parse_args():
+  parser = argparse.ArgumentParser(
+    description = CMD_DESCRIPTION,
+    formatter_class = argparse.RawDescriptionHelpFormatter
+  )
+  parser.add_argument(
+    'cmd_file',
+    help = 'the file with commands to run'
+  )
+  return parser.parse_args()
+
+RE_ENV_EXPORT = re.compile(r'^export ([^ ]+)=(\"|)(.*?)(\"|)\n$')
+RE_DIRECTIVE_SOURCE = re.compile(r'^source (\"|)(.*?)(\"|)\n$')
+RE_DIRECTIVE_PREFIX_SOURCE = re.compile(
+  r'^prefix_source ([^ ]+) (\"|)(.*?)(\"|)\n$'
+)
+RE_DIRECTIVE_EXEC = re.compile(r'^exec (.*)$')
+
+def source_file(env: Dict[str, str], file: str,
+                *, prefix: Optional[str] = None) -> None:
+  with open(file) as file_handle:
+    for line in file_handle:
+      re_match = RE_ENV_EXPORT.match(line)
+      if re_match is None:
+        eprint(f"Unsupported environment file syntax:\n{line}")
+        sys.exit(1)
+
+      key = re_match.group(1)
+      value = re_match.group(3)
+      if prefix is None:
+        env[key] = value
+      else:
+        env[f"{prefix}_{key}"] = value
+
+def main() -> None:
+  args = parse_args()
+
+  with open(args.cmd_file) as file_handle:
+    env = os.environ.copy()
+    for line in file_handle:
+      # Skip comments.
+      if line.startswith('#'):
+        continue
+
+      re_match = RE_DIRECTIVE_SOURCE.match(line)
+      if re_match is not None:
+        source_file(env, re_match.group(2))
+        continue
+
+      re_match = RE_DIRECTIVE_PREFIX_SOURCE.match(line)
+      if re_match is not None:
+        source_file(
+          env,
+          re_match.group(3),
+          prefix = re_match.group(1)
+        )
+        continue
+
+      re_match = RE_DIRECTIVE_EXEC.match(line)
+      if re_match is not None:
+        cmd, *cmd_args = shlex.split(re_match.group(1))
+
+        cmd = shutil.which(cmd)
+        if cmd is None:
+          eprint(f"Comamnd not found: {cmd}")
+          sys.exit(1)
+
+        if platform.system() == 'Windows':
+          # Windows does not properly handle the execvp.  Instead, keep this
+          # process around, and simply forward on stdin, stdout, and stderr.
+          subprocess.run(
+            [cmd, *cmd_args],
+            stdin = sys.stdin,
+            stdout = sys.stdout,
+            stderr = sys.stderr,
+            env = env
+          )
+        else:
+          # argv[0] must be the program name; otherwise the first real option
+          # (e.g. --config=...) is skipped by argparse as sys.argv[0].
+          os.execvpe(cmd, [cmd, *cmd_args], env)
+
+        # This is only reachable in the Windows case, but is included at this
+        # point in the hope of improving clarity.
+        break
+
+      # If this point is reached, we've encountered an unsupported directive.
+      eprint(f"Unsupported line directive:\n{line}")
+      sys.exit(1)
+
+main()

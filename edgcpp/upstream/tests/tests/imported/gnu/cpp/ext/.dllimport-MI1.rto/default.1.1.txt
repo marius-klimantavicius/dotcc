@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./ext/dll-MI1.h", line 13: warning: unknown attribute "dllimport"
+  class __attribute__ ((dllimport)) MBase
+                        ^
+
+"./ext/dll-MI1.h", line 20: warning: unknown attribute "dllimport"
+  class __attribute__ ((dllimport)) D1 : virtual public MBase
+                        ^
+
+"./ext/dll-MI1.h", line 26: warning: unknown attribute "dllimport"
+  class __attribute__ ((dllimport)) D2 : virtual public MBase
+                        ^
+
+"./ext/dll-MI1.h", line 34: warning: unknown attribute "dllimport"
+  class __attribute__ ((dllimport)) MI1 : public D1, public D2
+                        ^
+
+"./ext/dllimport-MI1.C", line 11: warning: unknown attribute "dllimport"
+  extern __attribute__ ((dllimport)) MI1 dllMI1;
+                         ^
+

@@ -1,0 +1,39 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"SemaCXX/underlying_type.cpp", line 14: error: __underlying_type only applies to enum types
+  __underlying_type(int) a;
+                    ^
+
+"SemaCXX/underlying_type.cpp", line 15: error: __underlying_type only applies to enum types
+  __underlying_type(struct b) c;
+                    ^
+
+"SemaCXX/underlying_type.cpp", line 31: error: __underlying_type only applies to enum types
+    typedef __underlying_type(T) type;
+                              ^
+          detected during instantiation of class "underlying_type<T> [with T=int]" at line 37
+
+"SemaCXX/underlying_type.cpp", line 46: error: forward declaration of enum type is nonstandard
+    void PR19966(enum Invalid) {
+                      ^
+
+"SemaCXX/underlying_type.cpp", line 46: error: incomplete type "PR19966::Invalid" is not allowed
+    void PR19966(enum Invalid) {
+                 ^
+
+"SemaCXX/underlying_type.cpp", line 49: error: incomplete type "PR19966::Invalid" is not allowed
+      __underlying_type(Invalid) dont_crash;
+                        ^
+
+"SemaCXX/underlying_type.cpp", line 53: error: incomplete type "PR19966::E" is not allowed
+      a = (__underlying_type(E)){}
+                             ^
+
+"SemaCXX/underlying_type.cpp", line 53: error: a compound literal is not allowed in an integral constant expression
+      a = (__underlying_type(E)){}
+           ^
+
+"SemaCXX/underlying_type.cpp", line 64: error: parameter pack "T" was referenced but not expanded
+  template<typename ...T> void f(__underlying_type(T) v);
+                                                   ^
+
+9 errors detected in the compilation of "Test_name.c".

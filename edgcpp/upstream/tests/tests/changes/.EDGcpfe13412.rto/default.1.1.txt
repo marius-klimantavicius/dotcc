@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --microsoft Test_name.c
+"Test_name.c", line 16: error: type used as constructor name does not match type "S2"
+    S1::S2();  // This constructor-like declaration previously triggered an
+        ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,110 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 -DCXX1Y Test_name.c
+"Test_name.c", line 36: error: incomplete type "const Incomplete" is not allowed
+  constexpr Incomplete incomplete = {}; // expected-error {{constexpr variable cannot have non-literal type 'const Incomplete'}} expected-note {{incomplete type 'const Incomplete' is not a literal type}}
+                       ^
+
+"Test_name.c", line 37: error: incomplete type "const Incomplete []" is not allowed
+  constexpr Incomplete incomplete2[] = {}; // expected-error {{constexpr variable cannot have non-literal type 'const Incomplete[]'}} expected-note {{incomplete type 'const Incomplete[]' is not a literal type}}
+                       ^
+
+"Test_name.c", line 45: error: a constexpr function cannot have a parameter of nonliteral type "UserProvDtor"
+  constexpr int f(UserProvDtor) { return 0; } // expected-error {{'UserProvDtor' is not a literal type}}
+                ^
+
+"Test_name.c", line 50: error: a constexpr function cannot have a parameter of nonliteral type "NonTrivDtor"
+  constexpr int f(NonTrivDtor) { return 0; } // expected-error {{'NonTrivDtor' is not a literal type}}
+                ^
+
+"Test_name.c", line 58: error: a constexpr function cannot have a parameter of nonliteral type "DerivedFromNonTrivDtor<NonTrivDtorBase>"
+  constexpr int f(DerivedFromNonTrivDtor<NonTrivDtorBase>) { return 0; } // expected-error {{constexpr function's 1st parameter type 'DerivedFromNonTrivDtor<NonTrivDtorBase>' is not a literal type}}
+                ^
+
+"Test_name.c", line 82: error: a constexpr function cannot have a parameter of nonliteral type "CopyCtorOnly"
+  constexpr int f(CopyCtorOnly) { return 0; } // expected-error {{'CopyCtorOnly' is not a literal type}}
+                ^
+
+"Test_name.c", line 86: error: a constexpr function cannot have a parameter of nonliteral type "MoveCtorOnly"
+  constexpr int f(MoveCtorOnly) { return 0; } // expected-error {{'MoveCtorOnly' is not a literal type}}
+                ^
+
+"Test_name.c", line 97: error: a constructor for a class with virtual bases cannot be constexpr
+    constexpr Derived() {} // expected-error {{constexpr constructor not allowed in struct with virtual base class}}
+    ^
+
+"Test_name.c", line 100: error: a constructor for a class with virtual bases cannot be constexpr
+    constexpr DerivedFromVBase();
+    ^
+          detected during instantiation of class "DerivedFromVBase<T> [with T=HasVBase]" at line 102
+
+"Test_name.c", line 102: error: a constexpr function cannot have a parameter of nonliteral type "DerivedFromVBase<HasVBase>"
+  constexpr int f(DerivedFromVBase<HasVBase>) {} // expected-error {{constexpr function's 1st parameter type 'DerivedFromVBase<HasVBase>' is not a literal type}}
+                ^
+
+"Test_name.c", line 102: warning: missing return statement at end of non-void function "f(DerivedFromVBase<HasVBase>)"
+  constexpr int f(DerivedFromVBase<HasVBase>) {} // expected-error {{constexpr function's 1st parameter type 'DerivedFromVBase<HasVBase>' is not a literal type}}
+                                               ^
+
+"Test_name.c", line 104: error: expression must have a constant value
+  constexpr int nVBase = (DerivedFromVBase<HasVBase>(), 0); // expected-error {{constant expression}} expected-note {{cannot construct object of type 'DerivedFromVBase<HasVBase>' with virtual base class in a constant expression}}
+                          ^
+
+"Test_name.c", line 110: error: a constexpr function cannot have a parameter of nonliteral type "NonLitMember"
+  constexpr int f(NonLitMember) {} // expected-error {{1st parameter type 'NonLitMember' is not a literal type}}
+                ^
+
+"Test_name.c", line 110: warning: missing return statement at end of non-void function "f(NonLitMember)"
+  constexpr int f(NonLitMember) {} // expected-error {{1st parameter type 'NonLitMember' is not a literal type}}
+                                 ^
+
+"Test_name.c", line 115: error: a constexpr function cannot have a parameter of nonliteral type "NonLitBase"
+  constexpr int f(NonLitBase) { return 0; } // expected-error {{'NonLitBase' is not a literal type}}
+                ^
+
+"Test_name.c", line 125: error: a constexpr function cannot have a parameter of nonliteral type "MemberType<NonLiteral>"
+  constexpr int f(MemberType<NonLiteral>) { return 0; } // expected-error {{not a literal type}}
+                ^
+
+"Test_name.c", line 139: error: a constexpr function cannot have a parameter of nonliteral type "ArrBad"
+  constexpr int f(ArrBad) { return 0; } // expected-error {{1st parameter type 'ArrBad' is not a literal type}}
+                ^
+
+"Test_name.c", line 145: warning: missing return statement at end of non-void function "arb"
+  }
+  ^
+
+"Test_name.c", line 142: warning: variable "a" was declared but never referenced
+    int a[n]; // expected-error {{variable of non-literal type 'int[n]' cannot be defined in a constexpr function}} \
+        ^
+
+"Test_name.c", line 146: error: expression must have a constant value
+  constexpr long Overflow[(1 << 30) << 2]{}; // expected-warning {{requires 34 bits to represent}} \
+                          ^
+"Test_name.c", line 146: note: value exceeds range of "int"
+  constexpr long Overflow[(1 << 30) << 2]{}; // expected-warning {{requires 34 bits to represent}} \
+                                    ^
+
+"Test_name.c", line 164: error: a constexpr function cannot have a parameter of nonliteral type "inherited_ctor::D"
+    constexpr int f(D) { return 0; } // expected-error {{not a literal type}}
+                  ^
+
+"Test_name.c", line 183: error: a constexpr function cannot have a parameter of nonliteral type "inherited_ctor::H"
+    constexpr int f(H) { return 0; } // expected-error {{not a literal type}}
+                  ^
+
+"Test_name.c", line 190: error: a constexpr function cannot have a parameter of nonliteral type "inherited_ctor::J"
+    constexpr int f(J) { return 0; }
+                  ^
+
+"Test_name.c", line 38: warning: variable "classtemplate" was declared but never referenced
+  constexpr ClassTemp<int> classtemplate = {};
+                           ^
+
+"Test_name.c", line 39: warning: variable "classtemplate2" was declared but never referenced
+  constexpr ClassTemp<int> classtemplate2[] = {};
+                           ^
+
+"Test_name.c", line 104: warning: variable "nVBase" was declared but never referenced
+  constexpr int nVBase = (DerivedFromVBase<HasVBase>(), 0); // expected-error {{constant expression}} expected-note {{cannot construct object of type 'DerivedFromVBase<HasVBase>' with virtual base class in a constant expression}}
+                ^
+
+19 errors detected in the compilation of "Test_name.c".

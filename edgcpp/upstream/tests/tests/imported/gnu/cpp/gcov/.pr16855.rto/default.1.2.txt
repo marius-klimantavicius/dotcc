@@ -1,0 +1,7 @@
+./a.out
+in constructor(())
+In Test::Test
+In main
+In foo
+In Test::~Test
+in destructor(())

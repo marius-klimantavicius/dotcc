@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 18: error: class "A<T1>::B<double> [with T1=long]" has no member "mf1"
+  void A<long>::B<double>::mf1(T t) { } // expected-error{{does not match}}
+                           ^
+
+"Test_name.c", line 22: error: a template declaration containing a template parameter list may not be followed by an explicit specialization declaration
+  template<class Y> template<>
+                             ^
+
+"Test_name.c", line 23: error: partial specialization of nontype "A<T1>::B<T2>::mf2 [with T2=double]" is not allowed
+    void A<Y>::B<double>::mf2() { } // expected-error{{does not refer}}
+         ^
+
+"Test_name.c", line 23: error: class template "A<T1>::B" (declared at line 5) is inaccessible
+    void A<Y>::B<double>::mf2() { } // expected-error{{does not refer}}
+               ^
+
+4 errors detected in the compilation of "Test_name.c".

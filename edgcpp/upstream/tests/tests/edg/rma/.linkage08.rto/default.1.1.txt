@@ -1,0 +1,22 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 15: error: function "N1::f" has already been defined (previous definition at line 6)
+    extern "C" void f() {             // conflicts with N1::f
+                    ^
+
+"Test_name.c", line 23: error: declaration is incompatible with previous "N1::g" (declared at line 8)
+  extern "C" void g() {               // conflicts with N1::g, N2::g
+                  ^
+
+"Test_name.c", line 30: error: declaration is incompatible with previous "N1::f" (declared at line 6)
+    extern "C" void f(int) {          // conflicts with N1::f, N2::f, ::f
+                    ^
+
+"Test_name.c", line 30: error: function "N2::f" has already been defined (previous definition at line 15)
+    extern "C" void f(int) {          // conflicts with N1::f, N2::f, ::f
+                    ^
+
+"Test_name.c", line 31: error: declaration is incompatible with previous "N1::g" (declared at line 8)
+      extern void g(int);             // conflicts with N1::g, N2::g, ::g
+                  ^
+
+5 errors detected in the compilation of "Test_name.c".

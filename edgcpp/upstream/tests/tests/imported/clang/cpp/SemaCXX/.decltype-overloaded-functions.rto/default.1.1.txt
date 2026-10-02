@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 7: error: cannot determine which instance of overloaded function "f" is intended
+  decltype(f) a;  // expected-error{{reference to overloaded function could not be resolved; did you mean to call it with no arguments?}} expected-error {{variable has incomplete type 'decltype(f())' (aka 'void')}}
+           ^
+
+"Test_name.c", line 10: error: cannot determine which instance of overloaded function "K::f" is intended
+    decltype(T::f) * f; // expected-error {{call to non-static member function without an object argument}}
+             ^
+          detected during instantiation of class "S<T> [with T=K]" at line 17
+
+2 errors detected in the compilation of "Test_name.c".

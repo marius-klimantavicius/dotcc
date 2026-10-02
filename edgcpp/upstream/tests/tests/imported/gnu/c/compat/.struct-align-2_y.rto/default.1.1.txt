@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./compat/struct-align-2.h", line 26: warning: a reduction in alignment without the "packed" attribute is ignored
+  } __attribute__ ((aligned(4)));
+                    ^
+
+"./compat/struct-align-2.h", line 37: warning: a reduction in alignment without the "packed" attribute is ignored
+    unsigned long long data __attribute__ ((aligned(4)));
+                       ^
+

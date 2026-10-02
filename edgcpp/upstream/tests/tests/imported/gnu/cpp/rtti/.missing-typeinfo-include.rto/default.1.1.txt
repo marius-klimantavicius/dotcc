@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./rtti/missing-typeinfo-include.C", line 8: error: <typeinfo> must be included before typeid is used
+    typeid(void);
+    ^
+
+"./rtti/missing-typeinfo-include.C", line 8: warning: expression has no effect
+    typeid(void);
+    ^
+
+1 error detected in the compilation of "Test_name.c".

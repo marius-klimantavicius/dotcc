@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=5 --c++17 -A Test_name.c
+"Test_name.c", line 18: error: argument list for alias template "alias_ctad::A" is missing
+    A a(1);                       // accepted by GCC and Clang
+    ^
+
+"Test_name.c", line 32: error: argument list for alias template "non_simple_alias_ctad::A" is missing
+    A a(1);                       // accepted by Clang
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

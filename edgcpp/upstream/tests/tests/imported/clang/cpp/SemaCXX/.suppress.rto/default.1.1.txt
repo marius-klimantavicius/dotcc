@@ -1,0 +1,57 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 5: warning: attribute namespace "gsl" is unrecognized
+  [[gsl::suppress("globally")]];
+    ^
+
+"Test_name.c", line 8: warning: attribute namespace "gsl" is unrecognized
+    [[gsl::suppress("in-a-namespace")]];
+      ^
+
+"Test_name.c", line 11: warning: attribute namespace "gsl" is unrecognized
+  [[gsl::suppress("readability-identifier-naming")]]
+    ^
+
+"Test_name.c", line 14: warning: attribute namespace "gsl" is unrecognized
+    [[gsl::suppress("type", "bounds")]] {
+      ^
+
+"Test_name.c", line 18: warning: attribute namespace "gsl" is unrecognized
+    [[gsl::suppress]] int x; // expected-error {{'suppress' attribute takes at least 1 argument}}
+      ^
+
+"Test_name.c", line 19: warning: attribute namespace "gsl" is unrecognized
+    [[gsl::suppress()]] int y; // expected-error {{'suppress' attribute takes at least 1 argument}}
+      ^
+
+"Test_name.c", line 20: warning: attribute namespace "gsl" is unrecognized
+    int [[gsl::suppress("r")]] z; // expected-error {{'suppress' attribute cannot be applied to types}}
+          ^
+
+"Test_name.c", line 21: warning: attribute namespace "gsl" is unrecognized
+    [[gsl::suppress(f_)]] float f; // expected-error {{expected string literal as argument of 'suppress' attribut}}
+      ^
+
+"Test_name.c", line 13: warning: variable "p" was set but never used
+    int *p;
+         ^
+
+"Test_name.c", line 18: warning: variable "x" was declared but never referenced
+    [[gsl::suppress]] int x; // expected-error {{'suppress' attribute takes at least 1 argument}}
+                          ^
+
+"Test_name.c", line 19: warning: variable "y" was declared but never referenced
+    [[gsl::suppress()]] int y; // expected-error {{'suppress' attribute takes at least 1 argument}}
+                            ^
+
+"Test_name.c", line 20: warning: variable "z" was declared but never referenced
+    int [[gsl::suppress("r")]] z; // expected-error {{'suppress' attribute cannot be applied to types}}
+                               ^
+
+"Test_name.c", line 21: warning: variable "f" was declared but never referenced
+    [[gsl::suppress(f_)]] float f; // expected-error {{expected string literal as argument of 'suppress' attribut}}
+                                ^
+
+"Test_name.c", line 24: warning: attribute namespace "gsl" is unrecognized
+  union [[gsl::suppress("type.1")]] U {
+          ^
+

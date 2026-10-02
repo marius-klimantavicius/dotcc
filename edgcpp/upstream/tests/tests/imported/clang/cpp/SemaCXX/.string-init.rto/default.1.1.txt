@@ -1,0 +1,118 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 8: error: a value of type "const char16_t [2]" cannot be used to initialize an entity of type "char []"
+    char a3[] = u"a"; // expected-error{{initializing char array with wide string literal}}
+                ^
+
+"Test_name.c", line 9: error: a value of type "const char32_t [2]" cannot be used to initialize an entity of type "char []"
+    char a4[] = U"a"; // expected-error{{initializing char array with wide string literal}}
+                ^
+
+"Test_name.c", line 10: error: a value of type "const wchar_t [2]" cannot be used to initialize an entity of type "char []"
+    char a5[] = L"a"; // expected-error{{initializing char array with wide string literal}}
+                ^
+
+"Test_name.c", line 12: error: a value of type "const char [2]" cannot be used to initialize an entity of type "wchar_t []"
+    wchar_t b1[] = "a"; // expected-error{{initializing wide char array with non-wide string literal}}
+                   ^
+
+"Test_name.c", line 13: error: a value of type "const char [2]" cannot be used to initialize an entity of type "wchar_t []"
+    wchar_t b2[] = u8"a"; // expected-error{{initializing wide char array with non-wide string literal}}
+                   ^
+
+"Test_name.c", line 14: error: a value of type "const char16_t [2]" cannot be used to initialize an entity of type "wchar_t []"
+    wchar_t b3[] = u"a"; // expected-error{{initializing wide char array with incompatible wide string literal}}
+                   ^
+
+"Test_name.c", line 15: error: a value of type "const char32_t [2]" cannot be used to initialize an entity of type "wchar_t []"
+    wchar_t b4[] = U"a"; // expected-error{{initializing wide char array with incompatible wide string literal}}
+                   ^
+
+"Test_name.c", line 18: error: a value of type "const char [2]" cannot be used to initialize an entity of type "char16_t []"
+    char16_t c1[] = "a"; // expected-error{{initializing wide char array with non-wide string literal}}
+                    ^
+
+"Test_name.c", line 19: error: a value of type "const char [2]" cannot be used to initialize an entity of type "char16_t []"
+    char16_t c2[] = u8"a"; // expected-error{{initializing wide char array with non-wide string literal}}
+                    ^
+
+"Test_name.c", line 21: error: a value of type "const char32_t [2]" cannot be used to initialize an entity of type "char16_t []"
+    char16_t c4[] = U"a"; // expected-error{{initializing wide char array with incompatible wide string literal}}
+                    ^
+
+"Test_name.c", line 22: error: a value of type "const wchar_t [2]" cannot be used to initialize an entity of type "char16_t []"
+    char16_t c5[] = L"a"; // expected-error{{initializing wide char array with incompatible wide string literal}}
+                    ^
+
+"Test_name.c", line 24: error: a value of type "const char [2]" cannot be used to initialize an entity of type "char32_t []"
+    char32_t d1[] = "a"; // expected-error{{initializing wide char array with non-wide string literal}}
+                    ^
+
+"Test_name.c", line 25: error: a value of type "const char [2]" cannot be used to initialize an entity of type "char32_t []"
+    char32_t d2[] = u8"a"; // expected-error{{initializing wide char array with non-wide string literal}}
+                    ^
+
+"Test_name.c", line 26: error: a value of type "const char16_t [2]" cannot be used to initialize an entity of type "char32_t []"
+    char32_t d3[] = u"a"; // expected-error{{initializing wide char array with incompatible wide string literal}}
+                    ^
+
+"Test_name.c", line 28: error: a value of type "const wchar_t [2]" cannot be used to initialize an entity of type "char32_t []"
+    char32_t d5[] = L"a"; // expected-error{{initializing wide char array with incompatible wide string literal}}
+                    ^
+
+"Test_name.c", line 30: error: initialization with "{...}" expected for aggregate object
+    int e1[] = "a"; // expected-error{{array initializer must be an initializer list}}
+               ^
+
+"Test_name.c", line 31: error: initialization with "{...}" expected for aggregate object
+    int e2[] = u8"a"; // expected-error{{array initializer must be an initializer list}}
+               ^
+
+"Test_name.c", line 32: error: initialization with "{...}" expected for aggregate object
+    int e3[] = u"a"; // expected-error{{array initializer must be an initializer list}}
+               ^
+
+"Test_name.c", line 33: error: initialization with "{...}" expected for aggregate object
+    int e4[] = U"a"; // expected-error{{array initializer must be an initializer list}}
+               ^
+
+"Test_name.c", line 34: error: initialization with "{...}" expected for aggregate object
+    int e5[] = L"a"; // expected-error{{array initializer must be an initializer list}}
+               ^
+
+"Test_name.c", line 6: warning: variable "a1" was declared but never referenced
+    char a1[] = "a"; // No error.
+         ^
+
+"Test_name.c", line 7: warning: variable "a2" was declared but never referenced
+    char a2[] = u8"a"; // No error.
+         ^
+
+"Test_name.c", line 16: warning: variable "b5" was declared but never referenced
+    wchar_t b5[] = L"a"; // No error.
+            ^
+
+"Test_name.c", line 20: warning: variable "c3" was declared but never referenced
+    char16_t c3[] = u"a"; // No error.
+             ^
+
+"Test_name.c", line 27: warning: variable "d4" was declared but never referenced
+    char32_t d4[] = U"a"; // No error.
+             ^
+
+"Test_name.c", line 38: error: initialization with "{...}" expected for aggregate object
+    char a[] = 1; // expected-error{{array initializer must be an initializer list or string literal}}
+               ^
+
+"Test_name.c", line 39: error: initialization with "{...}" expected for aggregate object
+    wchar_t b[] = 1; // expected-error{{array initializer must be an initializer list or wide string literal}}
+                  ^
+
+"Test_name.c", line 40: error: initialization with "{...}" expected for aggregate object
+    char16_t c[] = 1; // expected-error{{array initializer must be an initializer list or wide string literal}}
+                   ^
+
+"Test_name.c", line 41: error: initialization with "{...}" expected for aggregate object
+    char32_t d[] = 1; // expected-error{{array initializer must be an initializer list or wide string literal}}
+                   ^
+
+24 errors detected in the compilation of "Test_name.c".

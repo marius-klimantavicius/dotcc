@@ -1,0 +1,41 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 11: error: istreambuf_iterator is not a template
+  template<typename _CharT, typename _InIter = istreambuf_iterator<_CharT> >     class num_get;
+                                               ^
+
+"Test_name.c", line 13: warning: declaration of "_CharT" hides template parameter
+    template<typename _CharT, typename _InIter>     _InIter     num_get<_CharT, _InIter>::     _M_extract_float(_InIter __beg, _InIter __end, ios_base& __io,        ios_base::iostate& __err, string& __xtrc) const     {
+                      ^
+
+"Test_name.c", line 13: error: qualified name is not allowed
+    template<typename _CharT, typename _InIter>     _InIter     num_get<_CharT, _InIter>::     _M_extract_float(_InIter __beg, _InIter __end, ios_base& __io,        ios_base::iostate& __err, string& __xtrc) const     {
+                                                                ^
+
+"Test_name.c", line 13: error: identifier "ios_base" is undefined
+    template<typename _CharT, typename _InIter>     _InIter     num_get<_CharT, _InIter>::     _M_extract_float(_InIter __beg, _InIter __end, ios_base& __io,        ios_base::iostate& __err, string& __xtrc) const     {
+                                                                                                                                              ^
+
+"Test_name.c", line 13: error: identifier "ios_base" is undefined
+    template<typename _CharT, typename _InIter>     _InIter     num_get<_CharT, _InIter>::     _M_extract_float(_InIter __beg, _InIter __end, ios_base& __io,        ios_base::iostate& __err, string& __xtrc) const     {
+                                                                                                                                                                     ^
+
+"Test_name.c", line 13: error: global-scope qualifier (leading "::") is not allowed
+    template<typename _CharT, typename _InIter>     _InIter     num_get<_CharT, _InIter>::     _M_extract_float(_InIter __beg, _InIter __end, ios_base& __io,        ios_base::iostate& __err, string& __xtrc) const     {
+                                                                                                                                                                             ^
+
+"Test_name.c", line 13: error: expected a ")"
+    template<typename _CharT, typename _InIter>     _InIter     num_get<_CharT, _InIter>::     _M_extract_float(_InIter __beg, _InIter __end, ios_base& __io,        ios_base::iostate& __err, string& __xtrc) const     {
+                                                                                                                                                                                      ^
+
+"Test_name.c", line 13: error: closing brace of template definition not found
+    template<typename _CharT, typename _InIter>     _InIter     num_get<_CharT, _InIter>::     _M_extract_float(_InIter __beg, _InIter __end, ios_base& __io,        ios_base::iostate& __err, string& __xtrc) const     {
+                                                                ^
+
+At end of source: error: expected a "}"
+"Test_name.c", line 12: note: to match this "{"
+  template<typename _CharT, typename _Traits>     class basic_ostream : virtual public basic_ios<_CharT, _Traits>     {
+                                                                                                                      ^
+
+At end of source: error: expected a ";"
+
+9 errors detected in the compilation of "Test_name.c".

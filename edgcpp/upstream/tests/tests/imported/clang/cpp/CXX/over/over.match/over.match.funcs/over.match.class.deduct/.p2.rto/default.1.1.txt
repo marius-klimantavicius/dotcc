@@ -1,0 +1,82 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 20: error: copy-list-initialization cannot use "explicit" deduction guide "Explicit::A(T *)->Explicit::A<T **> [with T=int]"
+    A d = {p}; // expected-error {{selected an explicit deduction guide}}
+      ^
+
+"Test_name.c", line 45: error: the definition of std::initializer_list does not contain the expected constructor
+    X xi = {0};
+           ^
+
+"Test_name.c", line 45: error: no instance of constructor "p0702r1::X" matches the argument list
+            argument types are: (int)
+    X xi = {0};
+      ^
+
+"Test_name.c", line 45: error: cannot deduce class template arguments
+    X xi = {0};
+    ^
+
+"Test_name.c", line 52: error: the definition of std::initializer_list does not contain the expected constructor
+    Y y {{0}};
+         ^
+
+"Test_name.c", line 52: error: no instance of constructor "p0702r1::X<T>::X [with T=int]" matches the argument list
+            argument types are: (int)
+    Y y {{0}};
+         ^
+"Test_name.c", line 41: note: function "p0702r1::X<T>::X(std::initializer_list<T>) [with T=int]" does not match because argument #1 does not match parameter
+      X(std::initializer_list<T>); // expected-note {{candidate template ignored: could not match 'std::initializer_list<T>' against 'Z'}} \
+      ^
+"Test_name.c", line 40: note: function "p0702r1::X<T>::X(const p0702r1::X<int> &) [with T=int]" does not match because argument #1 does not match parameter
+    template<typename T> struct X { // expected-note {{candidate}} expected-note {{implicit deduction guide}}
+                                ^
+"Test_name.c", line 40: note: function "p0702r1::X<T>::X(p0702r1::X<int> &&) [with T=int]" does not match because argument #1 does not match parameter
+    template<typename T> struct X { // expected-note {{candidate}} expected-note {{implicit deduction guide}}
+                                ^
+
+"Test_name.c", line 57: error: the definition of std::initializer_list does not contain the expected constructor
+    Z z = {{0}, {0.0f}};
+           ^
+
+"Test_name.c", line 57: error: no instance of constructor "p0702r1::X<T>::X [with T=int]" matches the argument list
+            argument types are: (int)
+    Z z = {{0}, {0.0f}};
+           ^
+"Test_name.c", line 41: note: function "p0702r1::X<T>::X(std::initializer_list<T>) [with T=int]" does not match because argument #1 does not match parameter
+      X(std::initializer_list<T>); // expected-note {{candidate template ignored: could not match 'std::initializer_list<T>' against 'Z'}} \
+      ^
+"Test_name.c", line 40: note: function "p0702r1::X<T>::X(const p0702r1::X<int> &) noexcept [with T=int]" does not match because argument #1 does not match parameter
+    template<typename T> struct X { // expected-note {{candidate}} expected-note {{implicit deduction guide}}
+                                ^
+"Test_name.c", line 40: note: function "p0702r1::X<T>::X(p0702r1::X<int> &&) [with T=int]" does not match because argument #1 does not match parameter
+    template<typename T> struct X { // expected-note {{candidate}} expected-note {{implicit deduction guide}}
+                                ^
+
+"Test_name.c", line 57: error: the definition of std::initializer_list does not contain the expected constructor
+    Z z = {{0}, {0.0f}};
+                ^
+
+"Test_name.c", line 57: error: no instance of constructor "p0702r1::X<T>::X [with T=float]" matches the argument list
+            argument types are: (float)
+    Z z = {{0}, {0.0f}};
+                ^
+"Test_name.c", line 41: note: function "p0702r1::X<T>::X(std::initializer_list<T>) [with T=float]" does not match because argument #1 does not match parameter
+      X(std::initializer_list<T>); // expected-note {{candidate template ignored: could not match 'std::initializer_list<T>' against 'Z'}} \
+      ^
+"Test_name.c", line 40: note: function "p0702r1::X<T>::X(const p0702r1::X<float> &) [with T=float]" does not match because argument #1 does not match parameter
+    template<typename T> struct X { // expected-note {{candidate}} expected-note {{implicit deduction guide}}
+                                ^
+"Test_name.c", line 40: note: function "p0702r1::X<T>::X(p0702r1::X<float> &&) [with T=float]" does not match because argument #1 does not match parameter
+    template<typename T> struct X { // expected-note {{candidate}} expected-note {{implicit deduction guide}}
+                                ^
+
+"Test_name.c", line 60: error: no instance of constructor "p0702r1::X" matches the argument list
+            argument types are: (p0702r1::Z)
+    X xz = {z}; // expected-error {{no viable constructor or deduction guide}}
+      ^
+
+"Test_name.c", line 60: error: cannot deduce class template arguments
+    X xz = {z}; // expected-error {{no viable constructor or deduction guide}}
+    ^
+
+12 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+//type: fp
+//options: --c99
+/* { dg-do compile } */
+/* { dg-options "-fpermissive -O2 -std=c99" } */
+
+void
+foo (void)
+{
+  char *e = alloca (100); /* { dg-warning "implicit declaration|initialization of 'char \\*' from 'int' makes" } */
+}

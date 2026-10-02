@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./sarif-output/include-chain-1-2.h", line 1: error: declaration is incompatible with "int p" (declared at line 1 of "./sarif-output/include-chain-1-1.h")
+  char p;
+       ^
+
+"./sarif-output/include-chain-1-2.h", line 2: error: declaration is incompatible with "int q" (declared at line 2 of "./sarif-output/include-chain-1-1.h")
+  char q;
+       ^
+
+2 errors detected in the compilation of "Test_name.c".

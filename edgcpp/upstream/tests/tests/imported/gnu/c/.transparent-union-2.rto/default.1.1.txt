@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 11: error: declaration is incompatible with "void f0(U)" (declared at line 10)
+  extern void f0 (void *);	/* { dg-error "conflicting types" } */
+              ^
+
+"Test_name.c", line 14: error: declaration is incompatible with "void f1(U)" (declared at line 13)
+  extern void f1 (unsigned long);	/* { dg-error "conflicting types" } */
+              ^
+
+"Test_name.c", line 17: error: declaration is incompatible with "void f2(void *)" (declared at line 16)
+  extern void f2 (U);		/* { dg-error "conflicting types" } */
+              ^
+
+"Test_name.c", line 20: error: declaration is incompatible with "void f3(unsigned long)" (declared at line 19)
+  extern void f3 (U);		/* { dg-error "conflicting types" } */
+              ^
+
+4 errors detected in the compilation of "Test_name.c".

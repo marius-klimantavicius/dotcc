@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++26 Test_name.c
+"./cpp26/constexpr-new2.C", line 74: error: expression must have a constant value
+  static_assert (foo ());
+                 ^
+"./cpp26/constexpr-new2.C", line 28: note: a placement new-expression cannot be constant-evaluated
+    ::new (b) int ();
+    ^
+
+1 error detected in the compilation of "Test_name.c".

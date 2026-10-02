@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 10: error: template constraint not satisfied
+    intA<T> a;			// { dg-error "" }
+          ^
+"Test_name.c", line 7: note: type constraint failed for "char"
+  template <int_type T> using intA = A<T>;
+            ^
+"Test_name.c", line 6: note: atomic constraint evaluates to false
+  template <typename T> concept int_type = __is_same_as (T, int);
+                                           ^
+          detected during instantiation of class "B<T> [with T=char]" at line 12
+
+1 error detected in the compilation of "Test_name.c".

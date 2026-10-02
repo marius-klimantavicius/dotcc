@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"cpp0x/initlist92.C", line 26: error: invalid narrowing conversion from "const char [6]" to "bool"
+    ( Test1({"false"}) );
+             ^
+
+1 error detected in the compilation of "Test_name.c".

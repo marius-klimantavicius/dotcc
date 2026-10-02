@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 6: warning: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+  void c_direct(par)
+                ^
+
+"Test_name.c", line 7: error: a parameter declaration may not have an initializer
+       void *par = &&lab; /* { dg-error "is initialized|non-standard|outside of" } */
+             ^
+
+"Test_name.c", line 7: error: labels can be referenced only in function definitions
+       void *par = &&lab; /* { dg-error "is initialized|non-standard|outside of" } */
+                     ^
+
+"Test_name.c", line 10: warning: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+  void foo(p, q)
+           ^
+
+"Test_name.c", line 11: error: a parameter declaration may not have an initializer
+       int *p = &q; /* { dg-error "initialized|undeclared" } */
+            ^
+
+"Test_name.c", line 11: error: identifier "q" is undefined
+       int *p = &q; /* { dg-error "initialized|undeclared" } */
+                 ^
+
+"Test_name.c", line 10: warning: standard requires that parameter "q" be given a type by a subsequent declaration ("int" assumed)
+  void foo(p, q)
+              ^
+
+"Test_name.c", line 14: warning: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+  void bar(i)
+           ^
+
+"Test_name.c", line 15: error: a declaration here must declare a parameter
+       int j = i; /* { dg-error "initialized|undeclared|no such parameter" } */
+           ^
+
+"Test_name.c", line 15: error: a parameter declaration may not have an initializer
+       int j = i; /* { dg-error "initialized|undeclared|no such parameter" } */
+           ^
+
+"Test_name.c", line 15: error: identifier "i" is undefined
+       int j = i; /* { dg-error "initialized|undeclared|no such parameter" } */
+               ^
+
+"Test_name.c", line 14: warning: standard requires that parameter "i" be given a type by a subsequent declaration ("int" assumed)
+  void bar(i)
+           ^
+
+7 errors detected in the compilation of "Test_name.c".

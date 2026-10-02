@@ -1,0 +1,18 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 4: error: static data member declaration is not allowed in this class
+  struct { static int i; } x;
+           ^
+
+"Test_name.c", line 4: error: use of a type with no linkage to declare a variable with linkage
+  struct { static int i; } x;
+                           ^
+
+"Test_name.c", line 5: error: static data member declaration is not allowed in this class
+  typedef struct { static int i; } S;
+                   ^
+
+"Test_name.c", line 8: error: return type "int" omitted in declaration of function "main"
+  main() {
+  ^
+
+4 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,1 @@
+cpfe -DTEST_NUMBER=2 --gnu_version 80000 Test_name.c

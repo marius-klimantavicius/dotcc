@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c99 --embedded_c Test_name.c
+"Test_name.c", line 15: error: named register is too small for the type of the variable
+  register _EDG_REG_1 int k;
+  ^
+
+1 error detected in the compilation of "Test_name.c".

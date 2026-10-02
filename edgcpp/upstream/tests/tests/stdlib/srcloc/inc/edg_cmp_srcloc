@@ -1,0 +1,46 @@
+#pragma once
+
+#include <edg_constexpr_printing>
+
+template<typename SrcLocType>
+constexpr bool compare(const SrcLocType& val,
+                       const char*       file_name,
+                       const char*       function_name,
+                       unsigned          line,
+                       unsigned          column,
+                       unsigned          indent) {
+  print_indent(indent);
+  __report_constexpr_value("Line: ");
+  __report_constexpr_value(val.line());
+  __report_constexpr_value(", expected: ");
+  __report_constexpr_value(line);
+  __report_constexpr_value("\n");
+  print_indent(indent);
+  __report_constexpr_value("Column: ");
+  __report_constexpr_value(val.column());
+  __report_constexpr_value(", expected: ");
+  __report_constexpr_value(column);
+  __report_constexpr_value("\n");
+  print_indent(indent);
+  __report_constexpr_value("Function: ");
+  __report_constexpr_value(val.function_name());
+  __report_constexpr_value(", expected: ");
+  __report_constexpr_value(function_name);
+  __report_constexpr_value("\n");
+  print_indent(indent);
+  __report_constexpr_value("File: ");
+  __report_constexpr_value(val.file_name());
+  __report_constexpr_value(", expected: ");
+  __report_constexpr_value(file_name);
+  __report_constexpr_value("\n");
+
+  if (cmp(val.file_name (), file_name))
+    return false;
+  if (cmp(val.function_name (), function_name))
+    return false;
+  if (val.line() != line)
+    return false;
+  if (val.column() != column)
+    return false;
+  return true;
+}

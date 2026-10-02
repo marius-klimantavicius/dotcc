@@ -1,0 +1,258 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./spellcheck-stdlib.C", line 3: error: identifier "NULL" is undefined
+  void *ptr = NULL;
+              ^
+
+"./spellcheck-stdlib.C", line 6: error: identifier "ptrdiff_t" is undefined
+  ptrdiff_t pd;
+  ^
+
+"./spellcheck-stdlib.C", line 9: error: identifier "size_t" is undefined
+  size_t sz;
+  ^
+
+"./spellcheck-stdlib.C", line 16: error: identifier "FILE" is undefined
+    FILE *f;
+    ^
+
+"./spellcheck-stdlib.C", line 16: error: identifier "f" is undefined
+    FILE *f;
+          ^
+
+"./spellcheck-stdlib.C", line 21: error: identifier "BUFSIZ" is undefined
+    char buf[BUFSIZ];
+             ^
+
+"./spellcheck-stdlib.C", line 24: error: identifier "FILENAME_MAX" is undefined
+    char buf2[FILENAME_MAX];
+              ^
+
+"./spellcheck-stdlib.C", line 27: error: identifier "stderr" is undefined
+    stderr;
+    ^
+
+"./spellcheck-stdlib.C", line 30: error: identifier "stdin" is undefined
+    stdin;
+    ^
+
+"./spellcheck-stdlib.C", line 33: error: identifier "stdout" is undefined
+    stdout;
+    ^
+
+"./spellcheck-stdlib.C", line 36: error: identifier "EOF" is undefined
+    EOF;
+    ^
+
+"./spellcheck-stdlib.C", line 39: error: identifier "fopen" is undefined
+    fopen ("test.txt");
+    ^
+
+"./spellcheck-stdlib.C", line 42: error: identifier "printf" is undefined
+    printf ("test\n");
+    ^
+
+"./spellcheck-stdlib.C", line 46: error: identifier "sprintf" is undefined
+    sprintf (tmp, "test\n");
+    ^
+
+"./spellcheck-stdlib.C", line 48: error: identifier "snprintf" is undefined
+    snprintf (tmp, 16, "test\n");
+    ^
+
+"./spellcheck-stdlib.C", line 51: error: identifier "getchar" is undefined
+    getchar ();
+    ^
+
+"./spellcheck-stdlib.C", line 59: error: identifier "errno" is undefined
+    return errno;
+           ^
+
+"./spellcheck-stdlib.C", line 67: error: identifier "va_list" is undefined
+    va_list ap;
+    ^
+
+"./spellcheck-stdlib.C", line 74: error: identifier "INT_MAX" is undefined
+    return INT_MAX;
+           ^
+
+"./spellcheck-stdlib.C", line 81: error: identifier "FLT_MAX" is undefined
+  float test_FLT_MAX = FLT_MAX;
+                       ^
+
+"./spellcheck-stdlib.C", line 89: error: identifier "memchr" is undefined
+    memchr(dest, 'a', 4);
+    ^
+
+"./spellcheck-stdlib.C", line 91: error: identifier "memcmp" is undefined
+    memcmp(dest, src, 4);
+    ^
+
+"./spellcheck-stdlib.C", line 93: error: identifier "memcpy" is undefined
+    memcpy(dest, src, 4);
+    ^
+
+"./spellcheck-stdlib.C", line 95: error: identifier "memmove" is undefined
+    memmove(dest, src, 4);
+    ^
+
+"./spellcheck-stdlib.C", line 97: error: identifier "memset" is undefined
+    memset(dest, 'a', 4);
+    ^
+
+"./spellcheck-stdlib.C", line 99: error: identifier "strcat" is undefined
+    strcat(dest, "test");
+    ^
+
+"./spellcheck-stdlib.C", line 101: error: identifier "strchr" is undefined
+    strchr("test", 'e');
+    ^
+
+"./spellcheck-stdlib.C", line 103: error: identifier "strcmp" is undefined
+    strcmp(dest, "test");
+    ^
+
+"./spellcheck-stdlib.C", line 105: error: identifier "strcpy" is undefined
+    strcpy(dest, "test");
+    ^
+
+"./spellcheck-stdlib.C", line 107: error: identifier "strerror" is undefined
+    strerror(0);
+    ^
+
+"./spellcheck-stdlib.C", line 109: error: identifier "strlen" is undefined
+    strlen("test");
+    ^
+
+"./spellcheck-stdlib.C", line 111: error: identifier "strncat" is undefined
+    strncat(dest, "test", 3);
+    ^
+
+"./spellcheck-stdlib.C", line 113: error: identifier "strncmp" is undefined
+    strncmp(dest, "test", 3);
+    ^
+
+"./spellcheck-stdlib.C", line 115: error: identifier "strncpy" is undefined
+    strncpy(dest, "test", 3);
+    ^
+
+"./spellcheck-stdlib.C", line 117: error: identifier "strrchr" is undefined
+    strrchr("test", 'e');
+    ^
+
+"./spellcheck-stdlib.C", line 119: error: identifier "strspn" is undefined
+    strspn(dest, "test");
+    ^
+
+"./spellcheck-stdlib.C", line 121: error: identifier "strstr" is undefined
+    strstr(dest, "test");
+    ^
+
+"./spellcheck-stdlib.C", line 129: error: identifier "assert" is undefined
+    assert (a == b);
+    ^
+
+"./spellcheck-stdlib.C", line 137: error: identifier "malloc" is undefined
+    void *ptr = malloc (64);
+                ^
+
+"./spellcheck-stdlib.C", line 139: error: identifier "free" is undefined
+    free (ptr);
+    ^
+
+"./spellcheck-stdlib.C", line 141: error: identifier "realloc" is undefined
+    q = realloc (q, 1024);
+        ^
+
+"./spellcheck-stdlib.C", line 143: error: identifier "calloc" is undefined
+    q = calloc (8, 8);
+        ^
+
+"./spellcheck-stdlib.C", line 147: error: identifier "atexit" is undefined
+    atexit (callback);
+    ^
+
+"./spellcheck-stdlib.C", line 150: error: identifier "EXIT_SUCCESS" is undefined
+    i = EXIT_SUCCESS;
+        ^
+
+"./spellcheck-stdlib.C", line 152: error: identifier "EXIT_FAILURE" is undefined
+    i = EXIT_FAILURE;
+        ^
+
+"./spellcheck-stdlib.C", line 154: error: identifier "exit" is undefined
+    exit (i);
+    ^
+
+"./spellcheck-stdlib.C", line 156: error: identifier "abort" is undefined
+    abort ();
+    ^
+
+"./spellcheck-stdlib.C", line 159: error: identifier "getenv" is undefined
+    getenv ("foo");
+    ^
+
+"./spellcheck-stdlib.C", line 167: error: identifier "clock_t" is undefined
+    clock_t c;
+    ^
+
+"./spellcheck-stdlib.C", line 169: error: identifier "time_t" is undefined
+    time_t t;
+    ^
+
+"./spellcheck-stdlib.C", line 171: error: identifier "tm" is undefined
+    tm t2;
+    ^
+
+"./spellcheck-stdlib.C", line 173: error: identifier "difftime" is undefined
+    d = difftime (0, 0);
+        ^
+
+"./spellcheck-stdlib.C", line 175: error: identifier "mktime" is undefined
+    s = mktime (q);
+        ^
+
+"./spellcheck-stdlib.C", line 177: error: identifier "time" is undefined
+    s = time (0);
+        ^
+
+"./spellcheck-stdlib.C", line 179: error: identifier "asctime" is undefined
+    q = asctime (0);
+        ^
+
+"./spellcheck-stdlib.C", line 181: error: identifier "ctime" is undefined
+    q = ctime (0);
+        ^
+
+"./spellcheck-stdlib.C", line 183: error: identifier "gmtime" is undefined
+    q = gmtime (0);
+        ^
+
+"./spellcheck-stdlib.C", line 185: error: identifier "localtime" is undefined
+    q = localtime (0);
+        ^
+
+"./spellcheck-stdlib.C", line 187: error: "c" has already been declared in the current scope
+    char c[2];
+         ^
+
+"./spellcheck-stdlib.C", line 188: error: identifier "strftime" is undefined
+    strftime (c, 2, "", 0);
+    ^
+
+"./spellcheck-stdlib.C", line 165: warning: parameter "s" was set but never used
+  void test_ctime (void *q, long s, double d)
+                                 ^
+
+"./spellcheck-stdlib.C", line 165: warning: parameter "d" was set but never used
+  void test_ctime (void *q, long s, double d)
+                                           ^
+
+"./spellcheck-stdlib.C", line 199: error: namespace "some_ns" has no member "stdout"
+    return some_ns::stdout;
+                    ^
+
+"./spellcheck-stdlib.C", line 209: error: class "some_class" has no member "stdout"
+    return some_class::stdout;
+                       ^
+
+62 errors detected in the compilation of "Test_name.c".

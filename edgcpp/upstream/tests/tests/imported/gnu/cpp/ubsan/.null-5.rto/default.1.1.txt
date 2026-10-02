@@ -1,0 +1,21 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 13: warning: variable "r1" was declared but never referenced
+    int &r1 = *p;
+         ^
+
+"Test_name.c", line 14: warning: variable "r2" was declared but never referenced
+    int &r2 = *p;
+         ^
+
+"Test_name.c", line 15: warning: variable "r3" was declared but never referenced
+    int &r3 = *p;
+         ^
+
+"Test_name.c", line 16: warning: variable "r4" was declared but never referenced
+    int &r4 = *p;
+         ^
+
+"Test_name.c", line 17: warning: variable "r5" was declared but never referenced
+    int &r5 = *p;
+         ^
+

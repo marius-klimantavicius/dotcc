@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 17: error: operand types are incompatible ("struct foo" and "struct foo")
+  	1 ? i : u;
+  	      ^
+
+"Test_name.c", line 17: warning: variable "u" is used before its value is set
+  	1 ? i : u;
+  	        ^
+
+"Test_name.c", line 18: error: operand types are incompatible ("struct foo" and "struct foo")
+  	1 ? u : i;
+  	      ^
+
+"Test_name.c", line 31: error: operand types are incompatible ("struct bar" and "struct bar")
+  	1 ? i : u;
+  	      ^
+
+"Test_name.c", line 31: warning: variable "i" is used before its value is set
+  	1 ? i : u;
+  	    ^
+
+"Test_name.c", line 32: error: operand types are incompatible ("struct bar" and "struct bar")
+  	1 ? u : i;
+  	      ^
+
+"Test_name.c", line 42: error: operand types are incompatible ("struct bar" and "struct bar")
+  	1 ? i : u;
+  	      ^
+
+"Test_name.c", line 42: warning: variable "i" is used before its value is set
+  	1 ? i : u;
+  	    ^
+
+"Test_name.c", line 43: error: operand types are incompatible ("struct bar" and "struct bar")
+  	1 ? u : i;
+  	      ^
+
+6 errors detected in the compilation of "Test_name.c".

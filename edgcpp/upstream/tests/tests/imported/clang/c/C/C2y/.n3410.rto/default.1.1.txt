@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 17: error: external/internal linkage conflict with previous declaration at line 13
+  static int a; /* expected-error {{static declaration of 'a' follows non-static declaration}}
+             ^
+
+"Test_name.c", line 26: warning: variable "b" was declared but never referenced
+    extern int b; // Ok
+               ^
+
+"Test_name.c", line 36: error: external/internal linkage conflict with previous declaration at line 29
+      extern int c;
+                 ^
+
+"Test_name.c", line 41: error: external/internal linkage conflict with previous declaration at line 29
+      extern int d;
+                 ^
+
+"Test_name.c", line 36: warning: variable "c" was declared but never referenced
+      extern int c;
+                 ^
+
+"Test_name.c", line 41: warning: variable "d" was declared but never referenced
+      extern int d;
+                 ^
+
+"Test_name.c", line 32: warning: variable "d" was declared but never referenced
+    for (int d;;) {
+             ^
+
+"Test_name.c", line 43: error: storage class must be auto or register
+    for (static int e;;) {
+         ^
+
+"Test_name.c", line 43: warning: loop is not reachable
+    for (static int e;;) {
+    ^
+
+"Test_name.c", line 43: warning: variable "e" was declared but never referenced
+    for (static int e;;) {
+                    ^
+
+"Test_name.c", line 31: warning: variable "c" was declared but never referenced
+    int c; // no linkage, different object from the one declared above.
+        ^
+
+"Test_name.c", line 17: warning: variable "a" was declared but never referenced
+  static int a; /* expected-error {{static declaration of 'a' follows non-static declaration}}
+             ^
+
+"Test_name.c", line 21: warning: variable "b" was declared but never referenced
+  static int b;
+             ^
+
+"Test_name.c", line 29: warning: variable "c" was declared but never referenced
+  static int c, d;
+             ^
+
+"Test_name.c", line 29: warning: variable "d" was declared but never referenced
+  static int c, d;
+                ^
+
+4 errors detected in the compilation of "Test_name.c".

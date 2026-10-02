@@ -1,0 +1,117 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu -w Test_name.c
+"Test_name.c", line 24: error: a value of type "int [4]" cannot be used to initialize an entity of type "char []"
+  char w1[] = L"foo"; /* { dg-error "13:array of .char. from a string literal with type array of" } */
+              ^
+
+"Test_name.c", line 25: error: a value of type "char [4]" cannot be used to initialize an entity of type "int []"
+  __WCHAR_TYPE__ w2[] = "foo"; /* { dg-error "23:from a string literal with type array of .char." } */
+                        ^
+
+"Test_name.c", line 26: error: identifier "U" is undefined
+  __WCHAR_TYPE__ w3[] = U"foo"; /* { dg-error "23:from a string literal with type array of" } */
+                        ^
+
+"Test_name.c", line 26: error: expected a ";"
+  __WCHAR_TYPE__ w3[] = U"foo"; /* { dg-error "23:from a string literal with type array of" } */
+                         ^
+
+"Test_name.c", line 27: error: a value of type "char [4]" cannot be used to initialize an entity of type "schar []" (aka "enum <unnamed> []")
+  schar a1[] = "foo"; /* { dg-error "14:array of inappropriate type initialized from string constant" } */
+               ^
+
+"Test_name.c", line 30: error: expression must have a constant value
+  int a3 = e; /* { dg-error "10:initializer element is not constant" } */
+           ^
+"Test_name.c", line 30: note: the value of variable "e" (declared at line 9) cannot be used as a constant
+  int a3 = e; /* { dg-error "10:initializer element is not constant" } */
+           ^
+
+"Test_name.c", line 31: error: this operator is not allowed in a constant expression
+  int a4 = (e, 1); /* { dg-error "10:initializer element is not constant" } */
+             ^
+
+"Test_name.c", line 32: error: expression must have a constant value
+  int a5 = a1[0]; /* { dg-error "10:initializer element is not constant" } */
+           ^
+"Test_name.c", line 32: note: attempt to access run-time storage
+  int a5 = a1[0]; /* { dg-error "10:initializer element is not constant" } */
+             ^
+
+"Test_name.c", line 33: error: expression must have a constant value
+  int a6 = &a3 - &a4; /* { dg-error "10:initializer element is not" } */
+               ^
+
+"Test_name.c", line 34: error: a value of type "int *" cannot be used to initialize an entity of type "int []"
+  int a7[] = a7; /* { dg-error "12:invalid initializer" } */
+             ^
+
+"Test_name.c", line 38: error: an initializer cannot be specified for an indirect flexible array member
+  struct g g1 = { {0, { 1 } } }; /* { dg-error "21:initialization of flexible array member in a nested context" } */
+                      ^
+
+"Test_name.c", line 39: error: invalid designator kind
+  struct g g2 = { .f[0] = 1 }; /* { dg-error "20:array index in non-array initializer" } */
+                    ^
+
+"Test_name.c", line 42: error: expression must be an integral constant expression
+  int a9[10] = {[1.2] = 2 }; /* { dg-error "16:array index in initializer not of integer type" } */
+                 ^
+
+"Test_name.c", line 43: error: expression must have a constant value
+  int a10[10] = {[e] = 2 }; /* { dg-error "17:nonconstant array index in initializer" } */
+                  ^
+"Test_name.c", line 43: note: the value of variable "e" (declared at line 9) cannot be used as a constant
+  int a10[10] = {[e] = 2 }; /* { dg-error "17:nonconstant array index in initializer" } */
+                  ^
+
+"Test_name.c", line 44: error: expression must have a constant value
+  __extension__ int a11[10] = {[1 ... e] = 1 }; /* { dg-error "31:nonconstant array index in initializer" } */
+                                      ^
+"Test_name.c", line 44: note: the value of variable "e" (declared at line 9) cannot be used as a constant
+  __extension__ int a11[10] = {[1 ... e] = 1 }; /* { dg-error "31:nonconstant array index in initializer" } */
+                                      ^
+
+"Test_name.c", line 45: error: a designator cannot be used with a non-aggregate type "int"
+  int a12 = {[1] = 2 }; /* { dg-error "13:array index in non-array initializer" } */
+             ^
+
+"Test_name.c", line 46: error: subscript out of range
+  int a13[2] = {[-1] = 4 }; /* { dg-error "16:array index in initializer exceeds array bounds" } */
+                 ^
+
+"Test_name.c", line 47: error: subscript out of range
+  int a14[2] = {[64] = 4 }; /* { dg-error "16:array index in initializer exceeds array bounds" } */
+                ^
+
+"Test_name.c", line 48: error: the second subscript must not be smaller than the first
+  __extension__ int a15[10] = {[2 ... 1] = 4 }; /* { dg-error "31:empty index range in initializer" } */
+                                      ^
+
+"Test_name.c", line 49: error: subscript out of range
+  __extension__ int a16[10] = {[2 ... 100] = 4 }; /* { dg-error "31:array index range in initializer exceeds array bounds" } */
+                               ^
+
+"Test_name.c", line 50: error: invalid designator kind
+  int a17[] = { .B = 1 }; /* { dg-error "15:field name not in record or union initializer" } */
+                 ^
+
+"Test_name.c", line 51: error: expression must have a constant value
+  int a18[] = { e }; /* { dg-error "15:initializer element is not constant" } */
+                ^
+"Test_name.c", line 51: note: the value of variable "e" (declared at line 9) cannot be used as a constant
+  int a18[] = { e }; /* { dg-error "15:initializer element is not constant" } */
+                ^
+
+"Test_name.c", line 52: error: integer conversion resulted in truncation
+  char a19[1] = { "x", "x" }; /* { dg-error "22:excess elements in 'char.1.' initializer" } */
+                  ^
+
+"Test_name.c", line 57: error: an initializer cannot be specified for a flexible array member with automatic storage duration
+    struct f f = { 2, "c" }; /* { dg-error "21:non-static initialization of a flexible array member" } */
+                      ^
+
+"Test_name.c", line 63: error: invalid designator kind
+  } sx[] = { .v = 0 }; /* { dg-error "12:field name not in record or union initializer" } */
+              ^
+
+25 errors detected in the compilation of "Test_name.c".

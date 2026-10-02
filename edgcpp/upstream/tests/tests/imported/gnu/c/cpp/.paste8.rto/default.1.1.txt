@@ -1,0 +1,27 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc -E Test_name.c
+# 1 "Test_name.c"
+
+
+ 
+ 
+
+int foo(int, ...);
+
+
+foo(1)
+foo(1,2, 3)
+"Test_name.c", line 12: warning: concatenation with "2" in macro "b" does not create a valid token
+  b(1, 2, 3)			/* { dg-error "valid preprocessing token" } */
+  ^
+
+
+foo(1,2)			 
+
+foo(1)
+foo(1,3)
+"Test_name.c", line 17: warning: concatenation with "1" in macro "d" does not create a valid token
+  d(1)				/* { dg-error "valid preprocessing token" } */
+  ^
+
+
+fo(1)				 

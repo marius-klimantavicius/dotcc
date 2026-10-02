@@ -1,0 +1,2 @@
+fe_only -DTEST_NUMBER=1 --gcc -diag_error noreturn_function_does_return Test_name.c
+eccp: unrecognizable argument: noreturn_function_does_return

@@ -1,0 +1,53 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 10: warning: unknown attribute "alloc_align"
+  ALIGN (1) void fvv_m1 (void);     /* { dg-warning ".alloc_align. attribute ignored on a function returning .void." } */
+  ^
+
+"Test_name.c", line 12: warning: unknown attribute "alloc_align"
+  ALIGN (1) int fiv_1 (void);       /* { dg-warning ".alloc_align. attribute ignored on a function returning .int." } */
+  ^
+
+"Test_name.c", line 14: warning: unknown attribute "alloc_align"
+  ALIGN (0) void* fpvv_0 (void);    /* { dg-warning ".alloc_align. attribute argument value .0. does not refer to a function parameter" } */
+  ^
+
+"Test_name.c", line 16: warning: unknown attribute "alloc_align"
+  ALIGN (1) void* fpvv_1 (void);    /* { dg-warning ".alloc_align. attribute argument value .1. exceeds the number of function parameters 0" } */
+  ^
+
+"Test_name.c", line 18: warning: unknown attribute "alloc_align"
+  ALIGN (2) void* fii_2 (int);      /* { dg-warning ".alloc_align. attribute argument value .2. exceeds the number of function parameters 1" } */
+  ^
+
+"Test_name.c", line 20: warning: unknown attribute "alloc_align"
+  ALIGN (1) void fvi_1 (int);       /* { dg-warning ".alloc_align. attribute ignored on a function returning .void." } */
+  ^
+
+"Test_name.c", line 25: warning: unknown attribute "alloc_align"
+  ALIGN (1) F* fpF_i_1 (int);
+  ^
+
+"Test_name.c", line 27: warning: unknown attribute "alloc_align"
+  ALIGN (SIZE_MAX) void*
+  ^
+
+"Test_name.c", line 30: warning: unknown attribute "alloc_align"
+  ALIGN ("1") void*
+  ^
+
+"Test_name.c", line 33: warning: unknown attribute "alloc_align"
+  ALIGN ((void*)0) void*
+  ^
+
+"Test_name.c", line 36: warning: unknown attribute "alloc_align"
+  ALIGN ((double*)1) void*
+  ^
+
+"Test_name.c", line 39: warning: unknown attribute "alloc_align"
+  ALIGN (1) void*
+  ^
+
+"Test_name.c", line 43: warning: unknown attribute "alloc_align"
+  ALIGN (2) void*
+  ^
+

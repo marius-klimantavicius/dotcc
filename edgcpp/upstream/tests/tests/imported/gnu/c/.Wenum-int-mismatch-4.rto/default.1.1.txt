@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./Wenum-int-mismatch-1.c", line 40: error: declaration is incompatible with "enum F fn1(void)" (declared at line 39)
+  signed char fn1(void);
+              ^
+
+"./Wenum-int-mismatch-1.c", line 43: error: declaration is incompatible with "signed char fn2(void)" (declared at line 42)
+  enum F fn2(void);
+         ^
+
+2 errors detected in the compilation of "Test_name.c".

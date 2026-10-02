@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 10: error: floating-point template parameter is nonstandard
+    template<T I> B(A<I>);  // { dg-error "" }
+             ^
+          detected during instantiation of class "B<T> [with T=double]" at line 13
+
+"Test_name.c", line 10: warning: constant "I" is not used in declaring the parameter types of function template "B<T>::B [with T=double]"
+    template<T I> B(A<I>);  // { dg-error "" }
+               ^
+          detected during instantiation of class "B<T> [with T=double]" at line 13
+
+"Test_name.c", line 13: error: no suitable user-defined conversion from "A<0>" to "B<double>" exists
+  B<double> a=A<0>();  // { dg-error "non-scalar type" }
+              ^
+
+2 errors detected in the compilation of "Test_name.c".

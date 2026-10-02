@@ -1,0 +1,49 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 101: warning: missing return statement at end of non-void function "cmpitem"
+  }
+  ^
+
+"Test_name.c", line 110: warning: missing return statement at end of non-void function "distX"
+  }
+  ^
+
+"Test_name.c", line 115: warning: missing return statement at end of non-void function "intersectY0"
+  }
+  ^
+
+"Test_name.c", line 120: warning: missing return statement at end of non-void function "intersectY"
+  }
+  ^
+
+"Test_name.c", line 171: warning: missing return statement at end of non-void function "mkNConstraintG"
+  }
+  ^
+
+"Test_name.c", line 155: warning: variable "e" was set but never used
+    edge_t *e;
+            ^
+
+"Test_name.c", line 178: warning: variable "vg" is used before its value is set
+    mapGraphs (vg, cg, dist);
+               ^
+
+"Test_name.c", line 179: warning: missing return statement at end of non-void function "mkConstraintG"
+  }
+  ^
+
+"Test_name.c", line 187: warning: variable "cg" was set but never used
+    graph_t *cg;
+             ^
+
+"Test_name.c", line 222: warning: missing return statement at end of non-void function "cAdjust"
+  }
+  ^
+
+"Test_name.c", line 202: warning: variable "ret" was declared but never referenced
+    int ret, i, nnodes = agnnodes (g);
+        ^
+
+"Test_name.c", line 202: warning: variable "i" was declared but never referenced
+    int ret, i, nnodes = agnnodes (g);
+             ^
+

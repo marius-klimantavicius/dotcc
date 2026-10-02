@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c++17 -tused -A Test_name.c
+"Test_name.c", line 6: error: too many initializer values
+      const A& a1 { A{a,a} };   // OK
+                        ^
+
+"Test_name.c", line 8: error: too many initializer values
+    A a{a,a};                   // OK
+          ^
+
+2 errors detected in the compilation of "Test_name.c".

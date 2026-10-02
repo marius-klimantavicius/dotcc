@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c++23 Test_name.c
+"Test_name.c", line 10: error: cannot determine which instance of overloaded function "X<B>::f [with B=true]" is intended
+      &X<true>::f;      // error: ambiguous; constraints are not considered
+      ^
+
+"Test_name.c", line 11: error: cannot determine which instance of overloaded function "X<B>::g [with B=true]" is intended
+      &X<true>::g<int>; // error: ambiguous; constraints are not considered
+      ^
+
+2 errors detected in the compilation of "Test_name.c".

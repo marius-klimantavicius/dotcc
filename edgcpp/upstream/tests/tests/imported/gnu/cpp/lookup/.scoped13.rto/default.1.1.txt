@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 14: error: class "D" has no member "x"
+    (void) d.x;	  // { dg-error ".struct D. has no member named .x." }
+             ^
+
+"Test_name.c", line 15: error: class "A" has no member "x"
+    (void) d.A::x;  // { dg-error ".struct A. has no member named .x." }
+                ^
+
+2 errors detected in the compilation of "Test_name.c".

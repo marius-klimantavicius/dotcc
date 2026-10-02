@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 24: warning: type qualifiers are ignored (underlying type is a reference)
+  typedef const LRI& r2; CHECK_EQUAL_TYPES(r2, int&); // expected-warning {{'const' qualifier on reference type 'LRI' (aka 'int &') has no effect}}
+          ^
+
+"Test_name.c", line 25: warning: type qualifiers are ignored (underlying type is a reference)
+  typedef const LRI&& r3; CHECK_EQUAL_TYPES(r3, int&); // expected-warning {{'const' qualifier on reference type 'LRI' (aka 'int &') has no effect}}
+          ^
+

@@ -1,0 +1,8 @@
+./a.out
+in non-cctor (#2)
+in non-cctor (#2)
+in cctor (#1)
+in cctor (#1)
+in non-cctor (#2)
+in cctor (#1)
+in cctor (#1)

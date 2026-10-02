@@ -1,0 +1,165 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"SemaCXX/warn-cast-qual.cpp", line 9: warning: variable "t0" was declared but never referenced
+    char *t0 = const_cast<char *>(ptr);
+          ^
+
+"SemaCXX/warn-cast-qual.cpp", line 12: warning: variable "t1" was declared but never referenced
+    char *t1 = const_cast<char *>(ptr2);
+          ^
+
+"SemaCXX/warn-cast-qual.cpp", line 15: warning: variable "t2" was declared but never referenced
+    char *t2 = const_cast<char *>(ptr3);
+          ^
+
+"SemaCXX/warn-cast-qual.cpp", line 19: warning: variable "p0" was declared but never referenced
+    void* p0 = (void*)(const void*)"txt";
+          ^
+
+"SemaCXX/warn-cast-qual.cpp", line 20: warning: variable "p1" was declared but never referenced
+    void* p1 = (void*)"txt";
+          ^
+
+"SemaCXX/warn-cast-qual.cpp", line 21: warning: variable "p2" was declared but never referenced
+    char* p2 = (char*)"txt";
+          ^
+
+"SemaCXX/warn-cast-qual.cpp", line 27: warning: variable "a0" was declared but never referenced
+    const int &a0 = a;
+               ^
+
+"SemaCXX/warn-cast-qual.cpp", line 28: warning: variable "a1" was declared but never referenced
+    const int &a1 = (const int &)a;
+               ^
+
+"SemaCXX/warn-cast-qual.cpp", line 30: warning: variable "a2" was declared but never referenced
+    int &a2 = (int &)a;
+         ^
+
+"SemaCXX/warn-cast-qual.cpp", line 31: warning: variable "a3" was declared but never referenced
+    const int &a3 = (int &)a;
+               ^
+
+"SemaCXX/warn-cast-qual.cpp", line 32: warning: variable "a4" was declared but never referenced
+    int &a4 = (int &)((const int &)a);
+         ^
+
+"SemaCXX/warn-cast-qual.cpp", line 33: warning: variable "a5" was declared but never referenced
+    int &a5 = (int &)((int &)a);
+         ^
+
+"SemaCXX/warn-cast-qual.cpp", line 34: warning: variable "a6" was declared but never referenced
+    const int &a6 = (int &)((int &)a);
+               ^
+
+"SemaCXX/warn-cast-qual.cpp", line 35: warning: variable "a7" was declared but never referenced
+    const int &a7 = (int &)((const int &)a);
+               ^
+
+"SemaCXX/warn-cast-qual.cpp", line 36: warning: variable "a8" was declared but never referenced
+    const int &a8 = (const int &)((int &)a);
+               ^
+
+"SemaCXX/warn-cast-qual.cpp", line 42: warning: variable "a0" was declared but never referenced
+    volatile int &a0 = a;
+                  ^
+
+"SemaCXX/warn-cast-qual.cpp", line 43: warning: variable "a1" was declared but never referenced
+    volatile int &a1 = (volatile int &)a;
+                  ^
+
+"SemaCXX/warn-cast-qual.cpp", line 45: warning: variable "a2" was declared but never referenced
+    int &a2 = (int &)a;
+         ^
+
+"SemaCXX/warn-cast-qual.cpp", line 46: warning: variable "a3" was declared but never referenced
+    volatile int &a3 = (int &)a;
+                  ^
+
+"SemaCXX/warn-cast-qual.cpp", line 47: warning: variable "a4" was declared but never referenced
+    int &a4 = (int &)((volatile int &)a);
+         ^
+
+"SemaCXX/warn-cast-qual.cpp", line 48: warning: variable "a5" was declared but never referenced
+    int &a5 = (int &)((int &)a);
+         ^
+
+"SemaCXX/warn-cast-qual.cpp", line 49: warning: variable "a6" was declared but never referenced
+    volatile int &a6 = (int &)((int &)a);
+                  ^
+
+"SemaCXX/warn-cast-qual.cpp", line 50: warning: variable "a7" was declared but never referenced
+    volatile int &a7 = (int &)((volatile int &)a);
+                  ^
+
+"SemaCXX/warn-cast-qual.cpp", line 51: warning: variable "a8" was declared but never referenced
+    volatile int &a8 = (volatile int &)((int &)a);
+                  ^
+
+"SemaCXX/warn-cast-qual.cpp", line 57: warning: variable "a0" was declared but never referenced
+    const volatile int &a0 = a;
+                        ^
+
+"SemaCXX/warn-cast-qual.cpp", line 58: warning: variable "a1" was declared but never referenced
+    const volatile int &a1 = (const volatile int &)a;
+                        ^
+
+"SemaCXX/warn-cast-qual.cpp", line 60: warning: variable "a2" was declared but never referenced
+    int &a2 = (int &)a;
+         ^
+
+"SemaCXX/warn-cast-qual.cpp", line 61: warning: variable "a3" was declared but never referenced
+    const volatile int &a3 = (int &)a;
+                        ^
+
+"SemaCXX/warn-cast-qual.cpp", line 62: warning: variable "a4" was declared but never referenced
+    int &a4 = (int &)((const volatile int &)a);
+         ^
+
+"SemaCXX/warn-cast-qual.cpp", line 63: warning: variable "a5" was declared but never referenced
+    int &a5 = (int &)((int &)a);
+         ^
+
+"SemaCXX/warn-cast-qual.cpp", line 64: warning: variable "a6" was declared but never referenced
+    const volatile int &a6 = (int &)((int &)a);
+                        ^
+
+"SemaCXX/warn-cast-qual.cpp", line 65: warning: variable "a7" was declared but never referenced
+    const volatile int &a7 = (int &)((const volatile int &)a);
+                        ^
+
+"SemaCXX/warn-cast-qual.cpp", line 66: warning: variable "a8" was declared but never referenced
+    const volatile int &a8 = (const volatile int &)((int &)a);
+                        ^
+
+"SemaCXX/warn-cast-qual.cpp", line 73: warning: variable "a0" was declared but never referenced
+    int **a0 = (int **)((const int **)a);
+          ^
+
+"SemaCXX/warn-cast-qual.cpp", line 74: warning: variable "a1" was declared but never referenced
+    int **a1 = (int **)((int **)a);
+          ^
+
+"SemaCXX/warn-cast-qual.cpp", line 79: warning: variable "a4" was declared but never referenced
+    const int **a4 = (const int **)((int **)a);
+                ^
+
+"SemaCXX/warn-cast-qual.cpp", line 80: warning: variable "a5" was declared but never referenced
+    const int **a5 = (const int **)((const int **)a);
+                ^
+
+"SemaCXX/warn-cast-qual.cpp", line 87: warning: variable "a0" was declared but never referenced
+    int *&a0 = (int *&)((const int *&)a);
+          ^
+
+"SemaCXX/warn-cast-qual.cpp", line 88: warning: variable "a1" was declared but never referenced
+    int *&a1 = (int *&)((int *&)a);
+          ^
+
+"SemaCXX/warn-cast-qual.cpp", line 93: warning: variable "a4" was declared but never referenced
+    const int *&a4 = (const int *&)((int *&)a);
+                ^
+
+"SemaCXX/warn-cast-qual.cpp", line 94: warning: variable "a5" was declared but never referenced
+    const int *&a5 = (const int *&)((const int *&)a);
+                ^
+

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --g++ Test_name.c
+"Test_name.c", line 17: error: a variable-length array is not allowed in a function return type
+  	T (*pf)();
+  	    ^
+
+"Test_name.c", line 17: warning: variable "pf" was declared but never referenced
+  	T (*pf)();
+  	    ^
+
+1 error detected in the compilation of "Test_name.c".

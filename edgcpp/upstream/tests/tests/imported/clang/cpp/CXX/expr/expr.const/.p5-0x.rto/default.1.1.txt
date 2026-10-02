@@ -1,0 +1,78 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 20: error: more than one conversion function from "const std_example::A" to a built-in type applies:
+            function "std_example::A::operator int() const" (declared at line 12)
+            function "std_example::A::operator long() const" (declared at line 13)
+  int ary[a]; // expected-error {{ambiguous conversion from type 'const A' to an integral or unscoped enumeration type}}
+          ^
+
+"Test_name.c", line 50: error: incomplete type "Incomplete" is not allowed
+  auto new2 = new int[1][incomplete]; // expected-error {{incomplete}}
+                         ^
+
+"Test_name.c", line 51: error: this constant expression has type "const Explicit" instead of the required "unsigned long" type
+  auto new3 = new int[1][expl]; // expected-error {{explicit conversion}}
+                         ^
+
+"Test_name.c", line 52: error: more than one conversion function from "const Ambiguous" to a built-in type applies:
+            function "Ambiguous::operator int() const" (declared at line 35)
+            function "Ambiguous::operator long() const" (declared at line 36)
+  auto new4 = new int[1][ambig]; // expected-error {{ambiguous conversion}}
+                         ^
+
+"Test_name.c", line 58: error: incomplete type "Incomplete" is not allowed
+    enum2 = incomplete, // expected-error {{incomplete}}
+            ^
+
+"Test_name.c", line 59: error: this constant expression has type "const Explicit" instead of the required integral or enum type
+    enum3 = expl, // expected-error {{explicit conversion}}
+            ^
+
+"Test_name.c", line 60: error: more than one conversion function from "const Ambiguous" to a built-in type applies:
+            function "Ambiguous::operator int() const" (declared at line 35)
+            function "Ambiguous::operator long() const" (declared at line 36)
+    enum4 = ambig // expected-error {{ambiguous conversion}}
+            ^
+
+"Test_name.c", line 67: error: incomplete type "Incomplete" is not allowed
+  alignas(incomplete) int alignas2; // expected-error {{incomplete}}
+          ^
+
+"Test_name.c", line 68: error: this constant expression has type "const Explicit" instead of the required integral or enum type
+  alignas(expl) int alignas3; // expected-error {{explicit conversion}}
+          ^
+
+"Test_name.c", line 69: error: more than one conversion function from "const Ambiguous" to a built-in type applies:
+            function "Ambiguous::operator int() const" (declared at line 35)
+            function "Ambiguous::operator long() const" (declared at line 36)
+  alignas(ambig) int alignas4; // expected-error {{ambiguous conversion}}
+          ^
+
+"Test_name.c", line 74: error: incomplete type "Incomplete" is not allowed
+  int array2[incomplete]; // expected-error {{incomplete}}
+             ^
+
+"Test_name.c", line 75: error: this constant expression has type "const Explicit" instead of the required "unsigned long" type
+  int array3[expl]; // expected-error {{explicit conversion}}
+             ^
+
+"Test_name.c", line 76: error: more than one conversion function from "const Ambiguous" to a built-in type applies:
+            function "Ambiguous::operator int() const" (declared at line 35)
+            function "Ambiguous::operator long() const" (declared at line 36)
+  int array4[ambig]; // expected-error {{ambiguous conversion}}
+             ^
+
+"Test_name.c", line 82: error: incomplete type "Incomplete" is not allowed
+    int bitfield2 : incomplete; // expected-error {{incomplete}}
+                    ^
+
+"Test_name.c", line 83: error: this constant expression has type "const Explicit" instead of the required integral or enum type
+    int bitfield3 : expl; // expected-error {{explicit conversion}}
+                    ^
+
+"Test_name.c", line 84: error: more than one conversion function from "const Ambiguous" to a built-in type applies:
+            function "Ambiguous::operator int() const" (declared at line 35)
+            function "Ambiguous::operator long() const" (declared at line 36)
+    int bitfield4 : ambig; // expected-error {{ambiguous conversion}}
+                    ^
+
+16 errors detected in the compilation of "Test_name.c".

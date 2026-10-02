@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 19: error: a default template argument cannot be specified on the definition of a member of a class template outside the template
+  template<int N = 0> // expected-error{{cannot add a default template argument}}
+               ^
+
+"Test_name.c", line 23: error: a default template argument in a friend declaration may only be specified in a definition
+    template<template<int> class TT = X0> // expected-error{{not permitted on a friend template}}
+                                 ^
+
+2 errors detected in the compilation of "Test_name.c".

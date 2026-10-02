@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 6: warning: unknown attribute "deprecated"
+  class [[deprecated]] A // { dg-bogus "'deprecated' is a C..14 feature" }
+          ^
+
+"Test_name.c", line 10: warning: unknown attribute "deprecated"
+  [[deprecated]] // { dg-bogus "'deprecated' is a C..14 feature" }
+    ^
+
+"Test_name.c", line 17: warning: unknown attribute "deprecated"
+  class [[deprecated("B has been superceded by C")]] B // { dg-bogus "'deprecated' is a C..14 feature" }
+          ^
+
+"Test_name.c", line 21: warning: unknown attribute "deprecated"
+  [[deprecated("bar is unsafe; use foobar instead")]] // { dg-bogus "'deprecated' is a C..14 feature" }
+    ^
+
+"Test_name.c", line 53: warning: variable "aaa" was declared but never referenced
+    A aaa; // { dg-warning "is deprecated" }
+      ^
+
+"Test_name.c", line 56: warning: variable "bbb" was declared but never referenced
+    B bbb; // { dg-warning "is deprecated" }
+      ^
+
+"Test_name.c", line 59: warning: variable "ccc" was declared but never referenced
+    C ccc; // { dg-warning "is deprecated" "" { target { c++14 } } }
+      ^
+

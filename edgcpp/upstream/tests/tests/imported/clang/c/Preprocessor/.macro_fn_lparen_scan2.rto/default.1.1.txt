@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 8: error: expected a type specifier
+  F(FUNC) FUNC (3); /* final token sequence is FUNC(3+1) */ 
+          ^
+
+"Test_name.c", line 8: warning: this declaration has no storage class or type specifier
+  F(FUNC) FUNC (3); /* final token sequence is FUNC(3+1) */ 
+  ^
+
+1 error detected in the compilation of "Test_name.c".

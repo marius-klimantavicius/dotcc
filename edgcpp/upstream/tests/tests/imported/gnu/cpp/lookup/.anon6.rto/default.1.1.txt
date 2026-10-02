@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 4: error: "v1" has already been declared in the current scope
+  static union { int v1; }; // { dg-error "redeclaration" } 
+                     ^
+
+"Test_name.c", line 7: error: "v2" has already been declared in the current scope
+  extern int v2; // { dg-error "redeclaration" } 
+             ^
+
+"Test_name.c", line 10: error: "v3" has already been declared in the current scope
+  static union { int v3; }; // { dg-error "redeclaration" } 
+                     ^
+
+"Test_name.c", line 13: error: "v4" has already been declared in the current scope
+  static union { int v4; }; // { dg-error "redeclaration" } 
+                     ^
+
+4 errors detected in the compilation of "Test_name.c".

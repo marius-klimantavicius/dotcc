@@ -1,0 +1,157 @@
+fe_only -DTEST_NUMBER=4 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 -DNEW_INTERP Test_name.c
+"Test_name.c", line 19: error: class "A" has no member "moveable"
+      static_assert(T::moveable, "instantiated move"); // expected-error {{no member named 'moveable' in 'B'}}
+                       ^
+          detected during instantiation of "T &&std::move(T &) [with T=A]" at line 106
+
+"Test_name.c", line 32: error: class "A" has no member "moveable"
+      static_assert(T::moveable, "instantiated move_if_noexcept"); // expected-error {{no member named 'moveable' in 'B'}}
+                       ^
+          detected during instantiation of "auto std::move_if_noexcept(T &)->std::ref<T, noexcept(<expression>)>::type [with T=A]" at line 107
+
+"Test_name.c", line 45: error: class "A" has no member "moveable"
+      static_assert(T::moveable, "instantiated forward"); // expected-error {{no member named 'moveable' in 'B'}}
+                       ^
+          detected during instantiation of "T &&std::forward<T>(std::remove_reference<T>::type &) [with T=A]" at line 108
+
+"Test_name.c", line 45: error: name followed by "::" must be a class or namespace name
+      static_assert(T::moveable, "instantiated forward"); // expected-error {{no member named 'moveable' in 'B'}}
+                    ^
+          detected during instantiation of "T &&std::forward<T>(std::remove_reference<T>::type &) [with T=A &]" at line 109
+
+"Test_name.c", line 84: error: class "A" has no member "moveable"
+      static_assert(T::moveable, "instantiated as_const"); // expected-error {{no member named 'moveable' in 'B'}}
+                       ^
+          detected during instantiation of "const T &std::as_const(T &) [with T=A]" at line 110
+
+"Test_name.c", line 90: error: class "A" has no member "moveable"
+      static_assert(T::moveable, "instantiated addressof"); // expected-error {{no member named 'moveable' in 'B'}}
+                       ^
+          detected during instantiation of "T *std::addressof(T &) [with T=A]" at line 111
+
+"Test_name.c", line 96: error: class "A" has no member "moveable"
+      static_assert(T::moveable, "instantiated __addressof"); // expected-error {{no member named 'moveable' in 'B'}}
+                       ^
+          detected during instantiation of "T *std::__addressof(T &) [with T=A]" at line 112
+
+"Test_name.c", line 51: error: static assertion failed with "should not forward rval as lval"
+      static_assert(!is_lvalue_reference<T>::value, "should not forward rval as lval"); // expected-error {{static assertion failed}}
+      ^
+          detected during instantiation of "T &&std::forward<T>(std::remove_reference<T>::type &&) [with T=A &]" at line 128
+
+"Test_name.c", line 19: error: class "B" has no member "moveable"
+      static_assert(T::moveable, "instantiated move"); // expected-error {{no member named 'moveable' in 'B'}}
+                       ^
+          detected during instantiation of "T &&std::move(T &) [with T=B]" at line 132
+
+"Test_name.c", line 32: error: class "B" has no member "moveable"
+      static_assert(T::moveable, "instantiated move_if_noexcept"); // expected-error {{no member named 'moveable' in 'B'}}
+                       ^
+          detected during instantiation of "auto std::move_if_noexcept(T &)->std::ref<T, noexcept(<expression>)>::type [with T=B]" at line 133
+
+"Test_name.c", line 45: error: class "B" has no member "moveable"
+      static_assert(T::moveable, "instantiated forward"); // expected-error {{no member named 'moveable' in 'B'}}
+                       ^
+          detected during instantiation of "T &&std::forward<T>(std::remove_reference<T>::type &) [with T=B]" at line 134
+
+"Test_name.c", line 78: error: class "B" has no member "moveable"
+      static_assert(TT::moveable, "instantiated as_const"); // expected-error {{no member named 'moveable' in 'B'}}
+                        ^
+          detected during instantiation of "auto std::forward_like<U,T>(T &&)->std::ForwardLikeRetType<U, T> [with U=int &&, T=B &]" at line 135
+
+"Test_name.c", line 84: error: class "B" has no member "moveable"
+      static_assert(T::moveable, "instantiated as_const"); // expected-error {{no member named 'moveable' in 'B'}}
+                       ^
+          detected during instantiation of "const T &std::as_const(T &) [with T=B]" at line 136
+
+"Test_name.c", line 90: error: class "B" has no member "moveable"
+      static_assert(T::moveable, "instantiated addressof"); // expected-error {{no member named 'moveable' in 'B'}}
+                       ^
+          detected during instantiation of "T *std::addressof(T &) [with T=B]" at line 137
+
+"Test_name.c", line 96: error: class "B" has no member "moveable"
+      static_assert(T::moveable, "instantiated __addressof"); // expected-error {{no member named 'moveable' in 'B'}}
+                       ^
+          detected during instantiation of "T *std::__addressof(T &) [with T=B]" at line 138
+
+"Test_name.c", line 19: error: class "C" has no member "moveable"
+      static_assert(T::moveable, "instantiated move"); // expected-error {{no member named 'moveable' in 'B'}}
+                       ^
+          detected during instantiation of "T &&std::move(T &) [with T=C]" at line 142
+
+"Test_name.c", line 45: error: class "C" has no member "moveable"
+      static_assert(T::moveable, "instantiated forward"); // expected-error {{no member named 'moveable' in 'B'}}
+                       ^
+          detected during instantiation of "T &&std::forward<T>(std::remove_reference<T>::type &) [with T=C]" at line 143
+
+"Test_name.c", line 19: error: name followed by "::" must be a class or namespace name
+      static_assert(T::moveable, "instantiated move"); // expected-error {{no member named 'moveable' in 'B'}}
+                    ^
+          detected during instantiation of "T &&std::move(T &) [with T=int]" at line 148
+
+"Test_name.c", line 32: error: name followed by "::" must be a class or namespace name
+      static_assert(T::moveable, "instantiated move_if_noexcept"); // expected-error {{no member named 'moveable' in 'B'}}
+                    ^
+          detected during instantiation of "auto std::move_if_noexcept(T &)->std::ref<T, noexcept(<expression>)>::type [with T=int]" at line 149
+
+"Test_name.c", line 45: error: name followed by "::" must be a class or namespace name
+      static_assert(T::moveable, "instantiated forward"); // expected-error {{no member named 'moveable' in 'B'}}
+                    ^
+          detected during instantiation of "T &&std::forward<T>(std::remove_reference<T>::type &) [with T=int]" at line 150
+
+"Test_name.c", line 78: error: name followed by "::" must be a class or namespace name
+      static_assert(TT::moveable, "instantiated as_const"); // expected-error {{no member named 'moveable' in 'B'}}
+                    ^
+          detected during instantiation of "auto std::forward_like<U,T>(T &&)->std::ForwardLikeRetType<U, T> [with U=float &&, T=int &]" at line 151
+
+"Test_name.c", line 90: error: name followed by "::" must be a class or namespace name
+      static_assert(T::moveable, "instantiated addressof"); // expected-error {{no member named 'moveable' in 'B'}}
+                    ^
+          detected during instantiation of "T *std::addressof(T &) [with T=int]" at line 152
+
+"Test_name.c", line 96: error: name followed by "::" must be a class or namespace name
+      static_assert(T::moveable, "instantiated __addressof"); // expected-error {{no member named 'moveable' in 'B'}}
+                    ^
+          detected during instantiation of "T *std::__addressof(T &) [with T=int]" at line 153
+
+"Test_name.c", line 84: error: name followed by "::" must be a class or namespace name
+      static_assert(T::moveable, "instantiated as_const"); // expected-error {{no member named 'moveable' in 'B'}}
+                    ^
+          detected during instantiation of "const T &std::as_const(T &) [with T=int]" at line 154
+
+"Test_name.c", line 19: error: class "D" has no member "moveable"
+      static_assert(T::moveable, "instantiated move"); // expected-error {{no member named 'moveable' in 'B'}}
+                       ^
+          detected during instantiation of "T &&std::move(T &) [with T=D]" at line 164
+
+"Test_name.c", line 32: error: class "D" has no member "moveable"
+      static_assert(T::moveable, "instantiated move_if_noexcept"); // expected-error {{no member named 'moveable' in 'B'}}
+                       ^
+          detected during instantiation of "auto std::move_if_noexcept(T &)->std::ref<T, noexcept(<expression>)>::type [with T=D]" at line 165
+
+"Test_name.c", line 45: error: class "D" has no member "moveable"
+      static_assert(T::moveable, "instantiated forward"); // expected-error {{no member named 'moveable' in 'B'}}
+                       ^
+          detected during instantiation of "T &&std::forward<T>(std::remove_reference<T>::type &) [with T=D]" at line 166
+
+"Test_name.c", line 78: error: class "D" has no member "moveable"
+      static_assert(TT::moveable, "instantiated as_const"); // expected-error {{no member named 'moveable' in 'B'}}
+                        ^
+          detected during instantiation of "auto std::forward_like<U,T>(T &&)->std::ForwardLikeRetType<U, T> [with U=D, T=D &]" at line 167
+
+"Test_name.c", line 90: error: class "D" has no member "moveable"
+      static_assert(T::moveable, "instantiated addressof"); // expected-error {{no member named 'moveable' in 'B'}}
+                       ^
+          detected during instantiation of "T *std::addressof(T &) [with T=D]" at line 168
+
+"Test_name.c", line 96: error: class "D" has no member "moveable"
+      static_assert(T::moveable, "instantiated __addressof"); // expected-error {{no member named 'moveable' in 'B'}}
+                       ^
+          detected during instantiation of "T *std::__addressof(T &) [with T=D]" at line 169
+
+"Test_name.c", line 84: error: class "D" has no member "moveable"
+      static_assert(T::moveable, "instantiated as_const"); // expected-error {{no member named 'moveable' in 'B'}}
+                       ^
+          detected during instantiation of "const T &std::as_const(T &) [with T=D]" at line 170
+
+31 errors detected in the compilation of "Test_name.c".

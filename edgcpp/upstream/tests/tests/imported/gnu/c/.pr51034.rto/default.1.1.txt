@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 12: error: a compound literal of type "struct W" is not allowed
+    struct R { typeof (((struct W) {})) x; } r;	/* { dg-error "invalid use of undefined type" } */
+                         ^
+
+"Test_name.c", line 13: error: a compound literal of type "struct S" is not allowed
+    struct S { typeof (((struct S) {})) x; } s;	/* { dg-error "invalid use of undefined type" } */
+                         ^
+
+"Test_name.c", line 14: error: a compound literal of type "struct T" is not allowed
+    struct T { int x[sizeof ((struct T) {})]; } t;/* { dg-error "invalid use of undefined type" } */
+                              ^
+
+"Test_name.c", line 15: error: a compound literal of type "struct V" is not allowed
+    struct U { int x[sizeof((struct V){})];} u;	/* { dg-error "invalid use of undefined type" } */
+                             ^
+
+"Test_name.c", line 12: warning: variable "r" was declared but never referenced
+    struct R { typeof (((struct W) {})) x; } r;	/* { dg-error "invalid use of undefined type" } */
+                                             ^
+
+"Test_name.c", line 13: warning: variable "s" was declared but never referenced
+    struct S { typeof (((struct S) {})) x; } s;	/* { dg-error "invalid use of undefined type" } */
+                                             ^
+
+"Test_name.c", line 14: warning: variable "t" was declared but never referenced
+    struct T { int x[sizeof ((struct T) {})]; } t;/* { dg-error "invalid use of undefined type" } */
+                                                ^
+
+"Test_name.c", line 15: warning: variable "u" was declared but never referenced
+    struct U { int x[sizeof((struct V){})];} u;	/* { dg-error "invalid use of undefined type" } */
+                                             ^
+
+4 errors detected in the compilation of "Test_name.c".

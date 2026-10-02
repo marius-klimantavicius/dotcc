@@ -1,0 +1,5 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./torture/stackalign/throw-3.C", line 22: warning: statement is unreachable
+   if (check_int ((int *) &a, __alignof__(a)) != a)
+   ^
+

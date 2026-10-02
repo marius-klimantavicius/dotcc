@@ -1,0 +1,142 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 9: warning: this declaration has no storage class or type specifier
+  constexpr float fi = __builtin_inf ();
+  ^
+
+"Test_name.c", line 9: error: expected a ";"
+  constexpr float fi = __builtin_inf ();
+            ^
+
+"Test_name.c", line 10: warning: this declaration has no storage class or type specifier
+  constexpr double di = __builtin_inff ();
+  ^
+
+"Test_name.c", line 10: error: expected a ";"
+  constexpr double di = __builtin_inff ();
+            ^
+
+"Test_name.c", line 11: warning: this declaration has no storage class or type specifier
+  constexpr float fn = __builtin_nan ("");
+  ^
+
+"Test_name.c", line 11: error: expected a ";"
+  constexpr float fn = __builtin_nan ("");
+            ^
+
+"Test_name.c", line 12: warning: this declaration has no storage class or type specifier
+  constexpr double dn = __builtin_nanf ("");
+  ^
+
+"Test_name.c", line 12: error: expected a ";"
+  constexpr double dn = __builtin_nanf ("");
+            ^
+
+"Test_name.c", line 13: warning: this declaration has no storage class or type specifier
+  constexpr float fns = __builtin_nansf ("");
+  ^
+
+"Test_name.c", line 13: error: expected a ";"
+  constexpr float fns = __builtin_nansf ("");
+            ^
+
+"Test_name.c", line 14: warning: this declaration has no storage class or type specifier
+  constexpr double dns = __builtin_nans ("");
+  ^
+
+"Test_name.c", line 14: error: expected a ";"
+  constexpr double dns = __builtin_nans ("");
+            ^
+
+"Test_name.c", line 15: warning: this declaration has no storage class or type specifier
+  constexpr _Complex double cdns = __builtin_nans ("");
+  ^
+
+"Test_name.c", line 15: error: expected a ";"
+  constexpr _Complex double cdns = __builtin_nans ("");
+            ^
+
+"Test_name.c", line 20: error: expected a ")"
+    (constexpr float) { __builtin_inf () };
+               ^
+
+"Test_name.c", line 20: warning: expression has no effect
+    (constexpr float) { __builtin_inf () };
+    ^
+
+"Test_name.c", line 20: error: expected a ";"
+    (constexpr float) { __builtin_inf () };
+                      ^
+
+"Test_name.c", line 21: error: expected a ")"
+    (constexpr double) { __builtin_inff () };
+               ^
+
+"Test_name.c", line 21: warning: expression has no effect
+    (constexpr double) { __builtin_inff () };
+    ^
+
+"Test_name.c", line 21: error: expected a ";"
+    (constexpr double) { __builtin_inff () };
+                       ^
+
+"Test_name.c", line 22: error: expected a ")"
+    (constexpr float) { __builtin_nan ("") };
+               ^
+
+"Test_name.c", line 22: warning: expression has no effect
+    (constexpr float) { __builtin_nan ("") };
+    ^
+
+"Test_name.c", line 22: error: expected a ";"
+    (constexpr float) { __builtin_nan ("") };
+                      ^
+
+"Test_name.c", line 23: error: expected a ")"
+    (constexpr double) { __builtin_nanf ("") };
+               ^
+
+"Test_name.c", line 23: warning: expression has no effect
+    (constexpr double) { __builtin_nanf ("") };
+    ^
+
+"Test_name.c", line 23: error: expected a ";"
+    (constexpr double) { __builtin_nanf ("") };
+                       ^
+
+"Test_name.c", line 24: error: expected a ")"
+    (constexpr float) { __builtin_nansf ("") };
+               ^
+
+"Test_name.c", line 24: warning: expression has no effect
+    (constexpr float) { __builtin_nansf ("") };
+    ^
+
+"Test_name.c", line 24: error: expected a ";"
+    (constexpr float) { __builtin_nansf ("") };
+                      ^
+
+"Test_name.c", line 25: error: expected a ")"
+    (constexpr double) { __builtin_nans ("") };
+               ^
+
+"Test_name.c", line 25: warning: expression has no effect
+    (constexpr double) { __builtin_nans ("") };
+    ^
+
+"Test_name.c", line 25: error: expected a ";"
+    (constexpr double) { __builtin_nans ("") };
+                       ^
+
+"Test_name.c", line 26: error: expected a ")"
+    (constexpr _Complex double) { __builtin_nans ("") };
+               ^
+
+"Test_name.c", line 26: warning: expression has no effect
+    (constexpr _Complex double) { __builtin_nans ("") };
+    ^
+
+"Test_name.c", line 26: error: expected a ";"
+    (constexpr _Complex double) { __builtin_nans ("") };
+                                ^
+
+21 errors detected in the compilation of "Test_name.c".

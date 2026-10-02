@@ -1,0 +1,5 @@
+cpfe -DTEST_NUMBER=2 -r -x -tused Test_name.c
+"Test_name.c", line 7: warning: type qualifier on a reference type is not allowed
+    char (&const constr)[32] = carray;
+           ^
+

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 15: error: no instance of function template "A<<unnamed>...>::g [with <unnamed>=<>]" matches the argument list
+    A<>::g<int>(); // OK, the later-declared #2 isn't considered when
+    ^
+"Test_name.c", line 10: note: substituting explicit template arguments "<int>" for function template "A<<unnamed>...>::g [with <unnamed>=<>]" failed
+    template<class T> static auto g() -> decltype(f<T>());
+                                  ^
+
+1 error detected in the compilation of "Test_name.c".

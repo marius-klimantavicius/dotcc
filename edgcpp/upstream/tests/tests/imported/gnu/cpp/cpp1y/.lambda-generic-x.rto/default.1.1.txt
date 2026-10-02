@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"./cpp1y/lambda-generic-x.C", line 10: warning: explicit lambda template parameters are a C++20 feature
+     auto glambda = [] <typename A, typename B> (A a, B&& b) { return a < b; };
+                       ^
+

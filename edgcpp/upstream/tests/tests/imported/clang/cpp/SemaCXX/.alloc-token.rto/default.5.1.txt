@@ -1,0 +1,89 @@
+fe_only -DTEST_NUMBER=5 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++23 -DTOKEN_MAX=2 Test_name.c
+"Test_name.c", line 33: error: expression must have a constant value
+  static_assert(__builtin_infer_alloc_token(sizeof(int)) == 0);
+                ^
+"Test_name.c", line 33: note: cannot call non-constexpr function "__builtin_infer_alloc_token" (declared implicitly)
+  static_assert(__builtin_infer_alloc_token(sizeof(int)) == 0);
+                ^
+
+"Test_name.c", line 34: error: expression must have a constant value
+  static_assert(__builtin_infer_alloc_token(sizeof(char*)) == 1);
+                ^
+"Test_name.c", line 34: note: cannot call non-constexpr function "__builtin_infer_alloc_token" (declared implicitly)
+  static_assert(__builtin_infer_alloc_token(sizeof(char*)) == 1);
+                ^
+
+"Test_name.c", line 35: error: expression must have a constant value
+  static_assert(__builtin_infer_alloc_token(sizeof(NoPtr)) == 0);
+                ^
+"Test_name.c", line 35: note: cannot call non-constexpr function "__builtin_infer_alloc_token" (declared implicitly)
+  static_assert(__builtin_infer_alloc_token(sizeof(NoPtr)) == 0);
+                ^
+
+"Test_name.c", line 36: error: expression must have a constant value
+  static_assert(__builtin_infer_alloc_token(sizeof(WithPtr)) == 1);
+                ^
+"Test_name.c", line 36: note: cannot call non-constexpr function "__builtin_infer_alloc_token" (declared implicitly)
+  static_assert(__builtin_infer_alloc_token(sizeof(WithPtr)) == 1);
+                ^
+
+"Test_name.c", line 52: error: expression must have a constant value
+  static_assert(__builtin_infer_alloc_token(sizeof(int)) == get_token<int>());
+                ^
+"Test_name.c", line 52: note: cannot call non-constexpr function "__builtin_infer_alloc_token" (declared implicitly)
+  static_assert(__builtin_infer_alloc_token(sizeof(int)) == get_token<int>());
+                ^
+
+"Test_name.c", line 55: error: static assertion failed
+  static_assert(__builtin_constant_p(__builtin_infer_alloc_token(sizeof(int))));
+  ^
+
+"Test_name.c", line 56: error: expression must have a constant value
+  static_assert(__builtin_infer_alloc_token(sizeof(NoPtr) * 2, 1) == get_token<NoPtr>());
+                ^
+"Test_name.c", line 56: note: cannot call non-constexpr function "__builtin_infer_alloc_token" (declared implicitly)
+  static_assert(__builtin_infer_alloc_token(sizeof(NoPtr) * 2, 1) == get_token<NoPtr>());
+                ^
+
+"Test_name.c", line 57: error: expression must have a constant value
+  static_assert(__builtin_infer_alloc_token(1, 4 + sizeof(NoPtr)) == get_token<NoPtr>());
+                ^
+"Test_name.c", line 57: note: cannot call non-constexpr function "__builtin_infer_alloc_token" (declared implicitly)
+  static_assert(__builtin_infer_alloc_token(1, 4 + sizeof(NoPtr)) == get_token<NoPtr>());
+                ^
+
+"Test_name.c", line 58: error: expression must have a constant value
+  static_assert(__builtin_infer_alloc_token(sizeof(NoPtr) << 8) == get_token<NoPtr>());
+                ^
+"Test_name.c", line 58: note: cannot call non-constexpr function "__builtin_infer_alloc_token" (declared implicitly)
+  static_assert(__builtin_infer_alloc_token(sizeof(NoPtr) << 8) == get_token<NoPtr>());
+                ^
+
+"Test_name.c", line 66: error: expression must have a constant value
+  static_assert(token_for_type<__builtin_infer_alloc_token(sizeof(int)), int>::value == get_token<int>());
+                               ^
+"Test_name.c", line 66: note: cannot call non-constexpr function "__builtin_infer_alloc_token" (declared implicitly)
+  static_assert(token_for_type<__builtin_infer_alloc_token(sizeof(int)), int>::value == get_token<int>());
+                               ^
+
+"Test_name.c", line 80: error: incomplete type "void" is not allowed
+    __builtin_infer_alloc_token((void)0); // expected-error {{argument may not have 'void' type}}
+                                ^
+
+"Test_name.c", line 82: error: expression must have a constant value
+    constexpr auto inference_fail = __builtin_infer_alloc_token(123); // expected-error {{must be initialized by a constant expression}} \
+                                    ^
+"Test_name.c", line 82: note: cannot call non-constexpr function "__builtin_infer_alloc_token" (declared implicitly)
+    constexpr auto inference_fail = __builtin_infer_alloc_token(123); // expected-error {{must be initialized by a constant expression}} \
+                                    ^
+
+"Test_name.c", line 82: warning: variable "inference_fail" was declared but never referenced
+    constexpr auto inference_fail = __builtin_infer_alloc_token(123); // expected-error {{must be initialized by a constant expression}} \
+                   ^
+
+"Test_name.c", line 75: error: incomplete type "void" is not allowed
+    __builtin_infer_alloc_token(T()); // expected-error {{argument may not have 'void' type}}
+                                ^
+          detected during instantiation of "void negative_template_test<T>() [with T=void]" at line 81
+
+13 errors detected in the compilation of "Test_name.c".

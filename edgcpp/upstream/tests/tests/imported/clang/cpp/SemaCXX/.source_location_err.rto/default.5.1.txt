@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=5 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 --exceptions --exceptions -DTEST=5 Test_name.c
+"Test_name.c", line 80: error: expected "std::source_location::__impl" to be defined to a class with only the data members "_M_function_name", "_M_file_name", "_M_column", "_M_line"
+    using BuiltinT = decltype(__builtin_source_location()); // OK.
+                              ^
+
+1 error detected in the compilation of "Test_name.c".

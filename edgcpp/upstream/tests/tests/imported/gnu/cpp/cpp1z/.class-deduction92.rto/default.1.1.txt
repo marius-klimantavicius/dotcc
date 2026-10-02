@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 11: error: default argument is not allowed
+    template<class T> B(T, decltype(V)=V) -> B<const T, V>;
+                                      ^
+
+"Test_name.c", line 13: error: no instance of constructor "X<V>::B [with V=42]" matches the argument list
+            argument types are: (int)
+    auto foo() { return B{V}; }
+                         ^
+          detected during instantiation of "auto X<V>::foo() [with V=42]" at line 17
+
+"Test_name.c", line 13: error: cannot deduce class template arguments
+    auto foo() { return B{V}; }
+                        ^
+          detected during instantiation of "auto X<V>::foo() [with V=42]" at line 17
+
+"Test_name.c", line 18: error: no instance of constructor "X<V>::B [with V=42]" matches the argument list
+            argument types are: (int)
+  using type = decltype(decltype(x)::B{42});
+                                      ^
+
+"Test_name.c", line 18: error: cannot deduce class template arguments
+  using type = decltype(decltype(x)::B{42});
+                        ^
+
+5 errors detected in the compilation of "Test_name.c".

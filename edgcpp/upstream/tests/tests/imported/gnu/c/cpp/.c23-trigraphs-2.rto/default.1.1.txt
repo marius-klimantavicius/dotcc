@@ -1,0 +1,30 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"./cpp/trigraphs.c", line 26: warning: support for trigraphs is disabled
+    x ??'= 3;
+      ^
+
+"./cpp/trigraphs.c", line 26: warning: this declaration has no storage class or type specifier
+    x ??'= 3;
+    ^
+
+"./cpp/trigraphs.c", line 26: error: expected a ";"
+    x ??'= 3;
+      ^
+
+"./cpp/trigraphs.c", line 26: error: missing closing quote
+    x ??'= 3;
+        ^
+
+"./cpp/trigraphs.c", line 30: error: expected a declaration
+    if ((5 ??! 3) != 7)
+    ^
+
+"./cpp/trigraphs.c", line 33: error: expected a declaration
+    return 0;
+    ^
+
+"./cpp/trigraphs.c", line 34: error: expected a declaration
+  ??>
+  ^
+
+5 errors detected in the compilation of "Test_name.c".

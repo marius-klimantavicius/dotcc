@@ -1,0 +1,41 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"./format/ms_miss-3.c", line 10: warning: unrecognized format function type "__ms_printf__" ignored
+  typedef noattr_t __attribute__ ((__format__(__ms_printf__, 1, 2))) attr_t;
+                                              ^
+
+"./format/ms_miss-3.c", line 13: warning: unrecognized format function type "__ms_printf__" ignored
+  typedef vnoattr_t __attribute__ ((__format__(__ms_printf__, 1, 0))) vattr_t;
+                                               ^
+
+"./format/ms_miss-3.c", line 18: warning: variable "na1" was declared but never referenced
+    noattr_t na1 = na;
+             ^
+
+"./format/ms_miss-3.c", line 19: warning: variable "na2" was declared but never referenced
+    noattr_t na2 = a;
+             ^
+
+"./format/ms_miss-3.c", line 20: warning: variable "a1" was declared but never referenced
+    attr_t a1 = na;
+           ^
+
+"./format/ms_miss-3.c", line 21: warning: variable "a2" was declared but never referenced
+    attr_t a2 = a;
+           ^
+
+"./format/ms_miss-3.c", line 23: warning: variable "vna1" was declared but never referenced
+    vnoattr_t vna1 = vna;
+              ^
+
+"./format/ms_miss-3.c", line 24: warning: variable "vna2" was declared but never referenced
+    vnoattr_t vna2 = va;
+              ^
+
+"./format/ms_miss-3.c", line 25: warning: variable "va1" was declared but never referenced
+    vattr_t va1 = vna;
+            ^
+
+"./format/ms_miss-3.c", line 26: warning: variable "va2" was declared but never referenced
+    vattr_t va2 = va;
+            ^
+

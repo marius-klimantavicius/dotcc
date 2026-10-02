@@ -1,0 +1,14 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp23/attr-assume1.C", line 20: error: constexpr function return is non-constant
+    { return __builtin_sqrtf (x); }
+             ^
+
+"./cpp23/attr-assume1.C", line 24: error: constexpr function return is non-constant
+    { return __builtin_sqrt (x); }
+             ^
+
+"./cpp23/attr-assume1.C", line 28: error: constexpr function return is non-constant
+    { return __builtin_sqrtl (x); }
+             ^
+
+3 errors detected in the compilation of "Test_name.c".

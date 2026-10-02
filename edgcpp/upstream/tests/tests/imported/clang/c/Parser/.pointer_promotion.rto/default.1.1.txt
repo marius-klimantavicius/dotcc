@@ -1,0 +1,49 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 13: warning: operand types are incompatible ("int *" and "char *")
+    if (ip < cp) {} // expected-warning {{comparison of distinct pointer types ('int *' and 'char *')}}
+           ^
+
+"Test_name.c", line 13: warning: variable "ip" is used before its value is set
+    if (ip < cp) {} // expected-warning {{comparison of distinct pointer types ('int *' and 'char *')}}
+        ^
+
+"Test_name.c", line 13: warning: variable "cp" is used before its value is set
+    if (ip < cp) {} // expected-warning {{comparison of distinct pointer types ('int *' and 'char *')}}
+             ^
+
+"Test_name.c", line 14: warning: operand types are incompatible ("char *" and "struct foo *")
+    if (cp < fp) {} // expected-warning {{comparison of distinct pointer types ('char *' and 'struct foo *')}}
+           ^
+
+"Test_name.c", line 14: warning: variable "fp" is used before its value is set
+    if (cp < fp) {} // expected-warning {{comparison of distinct pointer types ('char *' and 'struct foo *')}}
+             ^
+
+"Test_name.c", line 15: warning: operand types are incompatible ("struct foo *" and "struct bar *")
+    if (fp < bp) {} // expected-warning {{comparison of distinct pointer types ('struct foo *' and 'struct bar *')}}
+           ^
+
+"Test_name.c", line 15: warning: variable "bp" is used before its value is set
+    if (fp < bp) {} // expected-warning {{comparison of distinct pointer types ('struct foo *' and 'struct bar *')}}
+             ^
+
+"Test_name.c", line 16: warning: operand types are incompatible ("int *" and "int")
+    if (ip < 7) {} // expected-warning {{comparison between pointer and integer ('int *' and 'int')}}
+           ^
+
+"Test_name.c", line 16: warning: conversion of nonzero integer to pointer
+    if (ip < 7) {} // expected-warning {{comparison between pointer and integer ('int *' and 'int')}}
+             ^
+
+"Test_name.c", line 17: warning: operand types are incompatible ("short" and "int *")
+    if (sint < ip) {} // expected-warning {{comparison between pointer and integer ('short' and 'int *')}}
+             ^
+
+"Test_name.c", line 18: warning: operand types are incompatible ("int *" and "char *")
+    if (ip == cp) {} // expected-warning {{comparison of distinct pointer types ('int *' and 'char *')}}
+           ^
+
+"Test_name.c", line 6: warning: variable "vp" was declared but never referenced
+    void *vp;
+          ^
+

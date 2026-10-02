@@ -1,0 +1,23 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --exceptions Test_name.c
+"Test_name.c", line 35: error: constexpr function return is non-constant
+  constexpr int f() { return throw 0, 0; } // expected-error {{constexpr function never produces a constant expression}} expected-note {{subexpression}}
+                             ^
+
+"Test_name.c", line 53: error: constexpr function return is non-constant
+    (void)(n * 2),
+    ^
+
+"Test_name.c", line 108: warning: constexpr non-static member function will not be implicitly 'const' in C++14
+    constexpr int get() { return T(); }
+    ^
+
+"p5.cpp", line 131: error: identifier "g" is undefined
+      B() { g(T::f()); } // expected-error {{undeclared identifier 'g'}}
+            ^
+          detected during instantiation of "PR14550::B<T>::B() [with T=PR14550::A]" at line 134
+
+"Test_name.c", line 19: warning: variable "StdExample::c" was declared but never referenced
+  constexpr int c = 0;
+                ^
+
+3 errors detected in the compilation of "Test_name.c".

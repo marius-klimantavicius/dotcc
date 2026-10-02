@@ -1,0 +1,49 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc -E Test_name.c
+# 1 "Test_name.c"
+
+
+ 
+ 
+ 
+
+"Test_name.c", line 7: error: expected a ")"
+  #if __has_attribute(
+                      ^
+
+"Test_name.c", line 7: error: improperly terminated macro invocation
+  #if __has_attribute(
+      ^
+
+"Test_name.c", line 7: error: expected an expression
+  #if __has_attribute(
+                      ^
+
+"Test_name.c", line 9: error: expected a ")"
+  #if __has_attribute(unused
+                            ^
+
+"Test_name.c", line 9: error: improperly terminated macro invocation
+  #if __has_attribute(unused
+      ^
+
+"Test_name.c", line 9: error: expected an expression
+  #if __has_attribute(unused
+                            ^
+
+"Test_name.c", line 11: error: too many arguments in invocation of macro "__has_attribute"
+  #if __has_attribute(unused, unused)
+                              ^
+
+"Test_name.c", line 13: error: the argument to a feature-test macro must be a simple identifier
+  #if __has_attribute(__has_attribute(unused))
+                      ^
+
+# 15 "Test_name.c"
+
+ 
+ 
+ 
+ 
+ 
+ 
+8 errors detected in the compilation of "Test_name.c".

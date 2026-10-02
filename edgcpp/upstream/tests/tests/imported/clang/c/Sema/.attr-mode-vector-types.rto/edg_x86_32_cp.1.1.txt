@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 12: error: vector size must be a multiple of the element size
+  typedef float __attribute__((mode(XF))) __attribute__((vector_size(256))) vec_t7;
+                                                         ^
+
+"Test_name.c", line 23: error: invalid argument to attribute "mode"
+  typedef float __attribute__((mode(QC))) __attribute__((vector_size(256))) vec_t8;
+                                    ^
+
+"Test_name.c", line 26: error: invalid argument to attribute "mode"
+  typedef _Complex float __attribute__((mode(HC))) __attribute__((vector_size(256))) vec_t9;
+                                             ^
+
+"Test_name.c", line 28: error: an attribute specifies a mode incompatible with "int"
+  typedef int __attribute__((mode(SC))) __attribute__((vector_size(256))) vec_t10;
+                             ^
+
+"Test_name.c", line 31: error: an attribute specifies a mode incompatible with "float"
+  typedef float __attribute__((mode(DC))) __attribute__((vector_size(256))) vec_t11;
+                               ^
+
+"Test_name.c", line 34: error: vector_size attribute is not allowed with a complex element type
+  typedef _Complex float __attribute__((mode(XC))) __attribute__((vector_size(256))) vec_t12;
+                                                                  ^
+
+"Test_name.c", line 34: error: the number of elements in a vector must be a power of two
+  typedef _Complex float __attribute__((mode(XC))) __attribute__((vector_size(256))) vec_t12;
+                                                                  ^
+
+"Test_name.c", line 36: error: invalid argument to attribute "mode"
+  typedef int __attribute__((mode(V3QI))) v3qi;
+                                  ^
+
+8 errors detected in the compilation of "Test_name.c".

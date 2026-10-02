@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 13: warning: variable "a" was declared but never referenced
+    float a = 1e+100000000f; /* { dg-warning "floating constant exceeds range of 'float'" } */
+          ^
+
+"Test_name.c", line 14: warning: variable "b" was declared but never referenced
+    double b = 1e+100000000; /* { dg-warning "floating constant exceeds range of 'double'" } */
+           ^
+
+"Test_name.c", line 15: warning: variable "c" was declared but never referenced
+    long double c = 1e+100000000l; /* { dg-warning "floating constant exceeds range of 'long double'" } */
+                ^
+

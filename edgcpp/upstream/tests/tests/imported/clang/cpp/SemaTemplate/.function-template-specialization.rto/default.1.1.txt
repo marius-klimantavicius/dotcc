@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 17: error: no instance of function template "f0" matches the specified type
+  template<> void f0(char (&array)[1]); // expected-error{{no function template matches}}
+                  ^
+
+"Test_name.c", line 29: error: more than one instance of overloaded function "f1" matches the argument list:
+  template<> void f1(int (&array)[17]); // expected-error{{ambiguous}}
+                  ^
+
+"Test_name.c", line 38: error: an explicit template argument list is not allowed on this declaration
+  void f2<25>(double (&array)[25]); // expected-error{{specialization}} 
+       ^
+
+"Test_name.c", line 45: warning: missing return statement at end of non-void function "PR5833::f0(T &) [with T=float]"
+  template <> bool PR5833::f0<float>(float &t1) {}
+                                                 ^
+
+"Test_name.c", line 59: error: a storage class is not allowed in an explicit specialization
+    static void Bar(const long& input) {}  // expected-warning{{explicit specialization cannot have a storage class}}
+    ^
+
+4 errors detected in the compilation of "Test_name.c".

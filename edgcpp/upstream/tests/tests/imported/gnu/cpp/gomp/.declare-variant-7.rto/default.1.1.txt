@@ -1,0 +1,37 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: warning: unrecognized #pragma
+  #pragma omp declare variant (f01) match (user={condition(1)},device={arch(x86_64)})
+          ^
+
+"Test_name.c", line 12: warning: unrecognized #pragma
+  #pragma omp declare variant (f03) match (user={condition(score(N+2):N)})
+          ^
+
+"Test_name.c", line 17: warning: unrecognized #pragma
+  #pragma omp declare variant (f05<N>) match (user={condition((T)N)},implementation={vendor("gnu")})
+          ^
+
+"Test_name.c", line 21: warning: unrecognized #pragma
+  #pragma omp declare variant (f07) match (user={condition(score(N+2):N)})
+          ^
+
+"Test_name.c", line 26: warning: unrecognized #pragma
+  #pragma omp declare variant (f09<N>) match (user={condition((T) N)})
+          ^
+
+"Test_name.c", line 34: warning: unrecognized #pragma
+    #pragma omp declare variant (f11<T>) match (user={condition(score(N):N)})
+            ^
+
+"Test_name.c", line 39: warning: unrecognized #pragma
+    #pragma omp declare variant (f13<T>) match (user={condition(score(N):N)})
+            ^
+
+"Test_name.c", line 49: warning: unrecognized #pragma
+    #pragma omp declare variant (f15<T>) match (user={condition(score(N):N)})
+            ^
+
+"Test_name.c", line 54: warning: unrecognized #pragma
+    #pragma omp declare variant (f17<T>) match (user={condition(score(N):N)})
+            ^
+

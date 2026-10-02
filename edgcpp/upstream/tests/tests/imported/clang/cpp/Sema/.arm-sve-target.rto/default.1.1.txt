@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 -DNONEON --c++11 --target linux_aarch64 Test_name.c
+"Test_name.c", line 8: warning: variable "x" was declared but never referenced
+    __SVFloat32_t x; // expected-error {{SVE vector type '__SVFloat32_t' cannot be used in a target without sve}}
+                  ^
+
+"Test_name.c", line 11: error: target attribute not recognized
+  __attribute__((target("sve")))
+                        ^
+
+"Test_name.c", line 13: warning: variable "x" was declared but never referenced
+    __SVFloat32_t x;
+                  ^
+
+"Test_name.c", line 16: error: target attribute not recognized
+  __attribute__((target("sve2")))
+                        ^
+
+"Test_name.c", line 18: warning: variable "x" was declared but never referenced
+    __SVFloat32_t x;
+                  ^
+
+"Test_name.c", line 21: error: target attribute not recognized
+  __attribute__((target("sve2-bitperm")))
+                        ^
+
+"Test_name.c", line 23: warning: variable "x" was declared but never referenced
+    __SVFloat32_t x;
+                  ^
+
+"Test_name.c", line 31: error: target attribute not recognized
+  __attribute__((target("sve")))
+                        ^
+
+"Test_name.c", line 39: error: target attribute not recognized
+  __attribute__((target("sve")))
+                        ^
+
+"Test_name.c", line 45: warning: variable "x" is used before its value is set
+    return x;
+           ^
+
+"Test_name.c", line 48: error: target attribute not recognized
+  __attribute__((target("sve")))
+                        ^
+
+"Test_name.c", line 51: warning: variable "x" is used before its value is set
+    return x;
+           ^
+
+6 errors detected in the compilation of "Test_name.c".

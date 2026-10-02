@@ -1,0 +1,14 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 6: error: identifier "x" is undefined
+  x = calloc(10, sizeof(char));
+  ^
+
+"Test_name.c", line 6: error: identifier "calloc" is undefined
+  x = calloc(10, sizeof(char));
+      ^
+
+"Test_name.c", line 7: warning: variable "i" was declared but never referenced
+  int i = 0;
+      ^
+
+2 errors detected in the compilation of "Test_name.c".

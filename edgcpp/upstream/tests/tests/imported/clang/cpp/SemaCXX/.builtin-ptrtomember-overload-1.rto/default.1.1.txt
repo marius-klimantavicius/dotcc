@@ -1,0 +1,8 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 45: error: more than one conversion function from "C1" to "E *" applies:
+            function "S::operator E *()" (declared at line 16)
+            function "R::operator E *()" (declared at line 10)
+          int i = c1->*pmf;	// expected-error {{use of overloaded operator '->*' is ambiguous}} \
+                  ^
+
+1 error detected in the compilation of "Test_name.c".

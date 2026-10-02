@@ -1,0 +1,55 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc -E Test_name.c
+# 1 "Test_name.c"
+
+
+ 
+
+
+ 
+
+"Test_name.c", line 9: warning: incompatible redefinition of macro "mac" (declared at line 8)
+  #define mac(a, b) (a) * (b)
+          ^
+
+"Test_name.c", line 10: warning: incompatible redefinition of macro "mac" (declared at line 9)
+  #define mac(a, b) (a) * (x)
+          ^
+
+"Test_name.c", line 11: warning: incompatible redefinition of macro "mac" (declared at line 10)
+  #define mac(a, g) (a) * (x)
+          ^
+
+
+
+
+
+
+"Test_name.c", line 14: warning: incompatible redefinition of macro "ro" (declared at line 13)
+  #define ro(x, b) foo x bar
+          ^
+
+
+
+
+"Test_name.c", line 17: warning: incompatible redefinition of macro "va" (declared at line 16)
+  #define va(...) __VA_ARGS__
+          ^
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 

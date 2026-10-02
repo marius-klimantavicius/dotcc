@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 12: error: user-defined literal suffix does not match the earlier "_x"
+    "P"_x "Q" "R"_y; // expected-error {{differing user-defined suffixes ('_x' and '_y') in string literal concatenation}}
+                 ^
+
+"Test_name.c", line 12: warning: expression has no effect
+    "P"_x "Q" "R"_y; // expected-error {{differing user-defined suffixes ('_x' and '_y') in string literal concatenation}}
+    ^
+
+"Test_name.c", line 13: warning: missing return statement at end of non-void function "std_example::main"
+  }
+  ^
+
+1 error detected in the compilation of "Test_name.c".

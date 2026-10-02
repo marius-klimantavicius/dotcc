@@ -1,0 +1,37 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 10: warning: variable "ptr" is used before its value is set
+    ptr++;
+    ^
+
+"Test_name.c", line 20: warning: expression has no effect
+    ptr + 1;
+    ^
+
+"Test_name.c", line 22: warning: expression has no effect
+    2 + ptr;
+    ^
+
+"Test_name.c", line 24: warning: expression has no effect
+    ptr + i;
+    ^
+
+"Test_name.c", line 26: warning: expression has no effect
+    i + ptr;
+    ^
+
+"Test_name.c", line 30: warning: expression has no effect
+    ptr - 3;
+    ^
+
+"Test_name.c", line 32: warning: expression has no effect
+    ptr - i;
+    ^
+
+"Test_name.c", line 48: warning: expression has no effect
+    ptr[5];
+    ^
+
+"Test_name.c", line 50: warning: expression has no effect
+    5[ptr];
+    ^
+

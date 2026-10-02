@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 17: warning: argument of type "int (*)(char *, int *)" is incompatible with parameter of type "MyFnTyA" (aka "int (*)(int *, char *)")
+    foo(&bar); // soft-warning {{incompatible function pointer types passing 'int (*)(char *, int *)' to parameter of type 'MyFnTyA' (aka 'int (*)(int *, char *)')}} \
+        ^
+

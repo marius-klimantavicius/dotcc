@@ -1,0 +1,10 @@
+//type: fn
+//options: --c++11
+// PR c++/55240
+// { dg-do compile { target c++11 } }
+
+int main()
+{
+    int q = 1;				 // { dg-message "declared here" }
+    struct test { int x = q; } instance; // { dg-error "local variable" }
+}

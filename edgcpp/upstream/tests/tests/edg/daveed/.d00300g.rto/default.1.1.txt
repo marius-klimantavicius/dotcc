@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --c99 --embedded_c Test_name.c
+"Test_name.c", line 21: error: field type cannot be qualified with named address space
+  	int *_EDG_NAS_A p;
+  	                ^
+
+"Test_name.c", line 25: error: function type cannot be qualified with named address space
+  F _EDG_NAS_C *pf;
+    ^
+
+"Test_name.c", line 26: warning: type qualifiers on function types are ignored
+  F const *pf2;
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

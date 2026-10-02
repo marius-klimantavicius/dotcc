@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 29: warning: type qualifier on return type is meaningless
+  volatile int // { dg-warning ".volatile.-qualified return type is deprecated" "" { target c++20 } }
+  ^
+
+"Test_name.c", line 75: warning: variable "x" was declared but never referenced
+    decltype(vi = 42) x = vi;
+                      ^
+
+"Test_name.c", line 76: warning: variable "x3" was declared but never referenced
+    decltype(i = vi = 42) x3 = i;
+                          ^
+
+"Test_name.c", line 89: warning: variable "x2" was declared but never referenced
+    decltype(vi -= 42) x2 = vi; // { dg-bogus "assignment with .volatile.-qualified left operand is deprecated" }
+                       ^
+
+"Test_name.c", line 93: warning: structured binding "cxr" was declared but never referenced
+    const auto & [cxr, cyr] = a;
+                  ^
+
+"Test_name.c", line 94: warning: structured binding "cvxr" was declared but never referenced
+    const volatile auto & [cvxr, cvyr] = a; // { dg-warning ".volatile.-qualified structured binding is deprecated" "" { target c++20 } }
+                           ^
+
+"Test_name.c", line 95: warning: structured binding "vxr" was declared but never referenced
+    volatile auto & [vxr, vyr] = a; // { dg-warning ".volatile.-qualified structured binding is deprecated" "" { target c++20 } }
+                     ^
+

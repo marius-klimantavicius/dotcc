@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 24: error: more than one instance of overloaded function "f" matches the argument list:
+            function "B::f(int)" (declared at line 9)
+            function "C::f(int)" (declared at line 14)
+            argument types are: (int)
+    f(1);         // { dg-error "ambiguous" }
+    ^
+
+"Test_name.c", line 25: error: function "f(int)" conflicts with using-declaration of function "C::f(int)"
+    void f(int);  // { dg-error "previous declaration" }
+         ^
+
+"Test_name.c", line 25: error: function "f(int)" conflicts with using-declaration of function "B::f(int)"
+    void f(int);  // { dg-error "previous declaration" }
+         ^
+
+"Test_name.c", line 31: error: using-declaration of function "B::f(int)" conflicts with function "f(int)" (declared at line 30)
+    using B::f;   // { dg-error "previous declaration" }
+             ^
+
+4 errors detected in the compilation of "Test_name.c".

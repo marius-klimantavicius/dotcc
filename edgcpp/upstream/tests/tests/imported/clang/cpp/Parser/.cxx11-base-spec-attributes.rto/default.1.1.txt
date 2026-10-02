@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 9: error: expected an identifier
+  struct E : public [[]] virtual A {}; // expected-error {{an attribute list cannot appear here}}
+                    ^
+
+"Test_name.c", line 10: error: expected an identifier
+  struct F : virtual [[]] public A {}; // expected-error {{an attribute list cannot appear here}}
+                     ^
+
+"Test_name.c", line 11: warning: attribute "noreturn" does not apply here
+  struct G : [[noreturn]] A {}; // expected-error {{'noreturn' attribute cannot be applied to a base specifier}}
+               ^
+
+"Test_name.c", line 12: warning: attribute namespace "unknown" is unrecognized
+  struct H : [[unknown::foobar]] A {}; // expected-warning {{unknown attribute 'unknown::foobar' ignored}}
+               ^
+
+2 errors detected in the compilation of "Test_name.c".

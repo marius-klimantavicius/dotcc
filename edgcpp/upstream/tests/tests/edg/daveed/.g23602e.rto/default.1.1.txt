@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --c++14 --clang_v=70000 Test_name.c
+"Test_name.c", line 7: error: argument of type "int *" is incompatible with template parameter of type "int"
+  template<int* N> struct S<I<N>> {};
+                              ^
+
+"Test_name.c", line 7: warning: constant "N" is not used in or cannot be deduced from the template argument list of class template "S<I<<error-constant>>>"
+  template<int* N> struct S<I<N>> {};
+                ^
+
+"Test_name.c", line 10: error: argument of type "int *" is incompatible with template parameter of type "int"
+  S<I<&n>> s;
+      ^
+
+"Test_name.c", line 10: error: incomplete type "S<I<<error-constant>>>" is not allowed
+  S<I<&n>> s;
+           ^
+
+3 errors detected in the compilation of "Test_name.c".

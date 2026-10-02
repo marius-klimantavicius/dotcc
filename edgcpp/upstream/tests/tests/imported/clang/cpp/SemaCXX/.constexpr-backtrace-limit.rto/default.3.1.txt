@@ -1,0 +1,24 @@
+fe_only -DTEST_NUMBER=3 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 36: error: expression must have a constant value
+  static_assert(recurse(5), "");
+                ^
+"Test_name.c", line 35: note: attempt to dereference a null pointer
+  constexpr int recurse(int n) { return n ? recurse(n-1) : *(int*)n; }
+                                                           ^
+"Test_name.c", line 35: note: called from:
+  constexpr int recurse(int n) { return n ? recurse(n-1) : *(int*)n; }
+                                                   ^
+"Test_name.c", line 35: note: called from:
+  constexpr int recurse(int n) { return n ? recurse(n-1) : *(int*)n; }
+                                                   ^
+"Test_name.c", line 35: note: called from:
+  constexpr int recurse(int n) { return n ? recurse(n-1) : *(int*)n; }
+                                                   ^
+"Test_name.c", line 35: note: called from:
+  constexpr int recurse(int n) { return n ? recurse(n-1) : *(int*)n; }
+                                                   ^
+"Test_name.c", line 35: note: called from:
+  constexpr int recurse(int n) { return n ? recurse(n-1) : *(int*)n; }
+                                                   ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 8: warning: unknown attribute "mig_server_routine"
+  __attribute__((mig_server_routine)) kern_return_t var = KERN_SUCCESS; // expected-warning{{'mig_server_routine' attribute only applies to functions, Objective-C methods, and blocks}}
+                 ^
+
+"Test_name.c", line 10: warning: unknown attribute "mig_server_routine"
+  __attribute__((mig_server_routine)) void foo_void(void); // expected-warning{{'mig_server_routine' attribute only applies to routines that return a kern_return_t}}
+                 ^
+
+"Test_name.c", line 11: warning: unknown attribute "mig_server_routine"
+  __attribute__((mig_server_routine)) int foo_int(void); // expected-warning{{'mig_server_routine' attribute only applies to routines that return a kern_return_t}}
+                 ^
+
+"Test_name.c", line 13: warning: unknown attribute "mig_server_routine"
+  __attribute__((mig_server_routine)) kern_return_t bar_extern(void); // no-warning
+                 ^
+
+"Test_name.c", line 14: warning: unknown attribute "mig_server_routine"
+  __attribute__((mig_server_routine)) kern_return_t bar_forward(void); // no-warning
+                 ^
+
+"Test_name.c", line 16: warning: unknown attribute "mig_server_routine"
+  __attribute__((mig_server_routine)) kern_return_t bar_definition(void) { // no-warning
+                 ^
+
+"Test_name.c", line 24: warning: unknown attribute "mig_server_routine"
+  __attribute__((mig_server_routine(123))) kern_return_t bar_with_argument(void); // expected-error{{'mig_server_routine' attribute takes no arguments}}
+                 ^
+

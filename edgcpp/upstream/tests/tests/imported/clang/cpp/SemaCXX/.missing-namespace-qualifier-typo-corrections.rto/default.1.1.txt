@@ -1,0 +1,86 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 7: error: identifier "Foobar" is undefined
+  Foobar *my_bar  // expected-error{{unknown type name 'Foobar'; did you mean 'fizbin::Foobar'?}}
+  ^
+
+"Test_name.c", line 8: error: expected a type specifier
+      = new Foobar; // expected-error{{unknown type name 'Foobar'; did you mean 'fizbin::Foobar'?}}
+            ^
+
+"Test_name.c", line 9: error: expected a type specifier
+  fizbin::Foobar *my_foo = new fizbin::FooBar; // expected-error{{no type named 'FooBar' in namespace 'fizbin'; did you mean 'Foobar'?}}
+                               ^
+
+"Test_name.c", line 14: error: identifier "toFoobar" is undefined
+    Double(toFoobar()); // expected-error{{use of undeclared identifier 'toFoobar'; did you mean 'barstool::toFoobar'?}}
+           ^
+
+"Test_name.c", line 28: error: identifier "toFoobar" is undefined
+    if (toFoobar()) Double(7); // expected-error{{use of undeclared identifier 'toFoobar'; did you mean 'barstool::toFoobar'?}}
+        ^
+
+"Test_name.c", line 29: error: identifier "noFoobar" is undefined
+    if (noFoobar()) Double(7); // expected-error{{use of undeclared identifier 'noFoobar'; did you mean 'barstool::toFoobar'?}}
+        ^
+
+"Test_name.c", line 30: error: identifier "moreFoobar" is undefined
+    if (moreFoobar()) Double(7); // expected-error{{use of undeclared identifier 'moreFoobar'; did you mean 'fizbin::nested::moreFoobar'}}
+        ^
+
+"Test_name.c", line 31: error: identifier "lessFoobar" is undefined
+    if (lessFoobar()) Double(7); // expected-error{{use of undeclared identifier 'lessFoobar'; did you mean 'fizbin::nested::lessFoobar'?}}
+        ^
+
+"Test_name.c", line 32: error: name followed by "::" must be a class or namespace name
+    if (baztool::toFoobar()) Double(7); // expected-error{{use of undeclared identifier 'baztool'; did you mean 'fizbin::baztool'?}}
+        ^
+
+"Test_name.c", line 33: error: name followed by "::" must be a class or namespace name
+    if (nested::moreFoobar()) Double(7); // expected-error{{use of undeclared identifier 'nested'; did you mean 'fizbin::nested'?}}
+        ^
+
+"Test_name.c", line 34: error: name followed by "::" must be a class or namespace name
+    if (dummy::morebar()) Double(7); // expected-error{{use of undeclared identifier 'dummy'; did you mean 'fizbin::dummy'?}}
+        ^
+
+"Test_name.c", line 35: error: name followed by "::" must be a class or namespace name
+    if (dummy::mrebar()) Double(7); // expected-error{{use of undeclared identifier 'dummy'; did you mean 'fizbin::dummy'?}} \
+        ^
+
+"Test_name.c", line 37: error: identifier "moFoobin" is undefined
+    if (moFoobin()) Double(7); // expected-error{{use of undeclared identifier 'moFoobin'}}
+        ^
+
+"Test_name.c", line 41: error: identifier "Cleck" is undefined
+    Cleck(); // expected-error{{use of undeclared identifier 'Cleck'; did you mean 'Check'?}}
+    ^
+
+"Test_name.c", line 50: error: identifier "myvector" is undefined
+      myvector v; // expected-error{{unknown type name 'myvector'; did you mean 'inner::myvector'?}}
+      ^
+
+"Test_name.c", line 63: error: identifier "mylinkedlist" is undefined
+    mylinkedlist v; // expected-error{{unknown type name 'mylinkedlist'; did you mean 'realstd::mylinkedlist'?}}
+    ^
+
+"Test_name.c", line 64: error: identifier "nylinkedlist" is undefined
+    nylinkedlist w; // expected-error{{unknown type name 'nylinkedlist'; did you mean 'realstd::mylinkedlist'?}}
+    ^
+
+"Test_name.c", line 89: error: identifier "fimish" is undefined
+    fimish(7); // expected-error {{use of undeclared identifier 'fimish'; did you mean 'Finish'?}}
+    ^
+
+"Test_name.c", line 99: error: identifier "somechick" is undefined
+    somechick(7); // expected-error {{use of undeclared identifier 'somechick'; did you mean 'N::someCheck'?}}
+    ^
+
+"Test_name.c", line 115: error: namespace "util::MessageUtils" has no member "Equivalent"
+    return util::MessageUtils::Equivalent(a, b); // expected-error {{no member named 'Equivalent' in namespace 'util::MessageUtils'; did you mean 'extra::util::MessageUtils::Equivalent'?}}
+                               ^
+
+"Test_name.c", line 122: error: namespace "util::MessageUtils" has no member "Equivalent"
+        return MessageUtils::Equivalent(a, b); // expected-error {{no member named 'Equivalent' in namespace 'util::MessageUtils'; did you mean '::extra::util::MessageUtils::Equivalent'?}}
+                             ^
+
+21 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 38: warning: missing return statement at end of non-void function "pov::DBL_Counter"
+    }
+    ^
+
+"Test_name.c", line 80: warning: multicharacter character literal (potential portability problem)
+     kPOVMsgClass_RenderControl = 'Ctrl',  kPOVMsgClass_RenderOutput = 'Outp',  kPOVMsgClass_IniOptions = 'IniO',  kPOVMsgClass_Miscellaneous = 'Misc' };
+                                  ^
+
+"Test_name.c", line 80: warning: multicharacter character literal (potential portability problem)
+     kPOVMsgClass_RenderControl = 'Ctrl',  kPOVMsgClass_RenderOutput = 'Outp',  kPOVMsgClass_IniOptions = 'IniO',  kPOVMsgClass_Miscellaneous = 'Misc' };
+                                                                       ^
+
+"Test_name.c", line 80: warning: multicharacter character literal (potential portability problem)
+     kPOVMsgClass_RenderControl = 'Ctrl',  kPOVMsgClass_RenderOutput = 'Outp',  kPOVMsgClass_IniOptions = 'IniO',  kPOVMsgClass_Miscellaneous = 'Misc' };
+                                                                                                          ^
+
+"Test_name.c", line 80: warning: multicharacter character literal (potential portability problem)
+     kPOVMsgClass_RenderControl = 'Ctrl',  kPOVMsgClass_RenderOutput = 'Outp',  kPOVMsgClass_IniOptions = 'IniO',  kPOVMsgClass_Miscellaneous = 'Misc' };
+                                                                                                                                                ^
+
+"Test_name.c", line 119: warning: variable "err" was set but never used
+          int err;
+              ^
+

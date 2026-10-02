@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 --strict_gnu Test_name.c
+"Test_name.c", line 12: error: invalid redeclaration of type name "V3" (declared at line 11)
+  typedef _BitInt(575) V3 __attribute__((vector_size (16 * sizeof (_BitInt(575)))));	/* { dg-error "invalid vector type for attribute 'vector_size'" "" { target bitint575 } } */
+                       ^
+
+1 error detected in the compilation of "Test_name.c".

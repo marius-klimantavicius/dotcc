@@ -1,0 +1,19 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 9: error: no operator "+" matches these operands
+            operand types are: S<0> + S<0>
+  int k = s + s; // expected-note {{while substituting}}
+            ^
+"Test_name.c", line 6: note: candidate function template "operator+" failed deduction
+  template<typename T> S<T() + T()> operator+(T, T); // expected-error {{instantiation exceeded maximum depth}} expected-note 2{{while substituting}}
+                                    ^
+"Test_name.c", line 9: note: built-in operator+(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+  int k = s + s; // expected-note {{while substituting}}
+            ^
+"Test_name.c", line 9: note: built-in operator+(<pointer to object>, <ptrdiff_t>) does not match because argument #1 does not match parameter
+  int k = s + s; // expected-note {{while substituting}}
+            ^
+"Test_name.c", line 9: note: built-in operator+(<ptrdiff_t>, <pointer to object>) does not match because argument #1 does not match parameter
+  int k = s + s; // expected-note {{while substituting}}
+            ^
+
+1 error detected in the compilation of "Test_name.c".

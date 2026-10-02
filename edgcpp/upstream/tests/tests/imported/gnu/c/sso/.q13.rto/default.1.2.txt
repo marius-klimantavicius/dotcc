@@ -1,0 +1,6 @@
+./a.out
+A1 : db 0f 49 40 db 0f 49 c0
+B1 : db 0f 49 40 db 0f 49 c0
+A2 : db 0f 49 40 db 0f 49 c0
+B2 : db 0f 49 40 db 0f 49 c0
+

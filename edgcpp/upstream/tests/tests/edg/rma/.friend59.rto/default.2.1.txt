@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=2 -r -x -tused Test_name.c
+"Test_name.c", line 11: warning: nonstandard local-class friend declaration -- no prior declaration in the enclosing scope
+          friend int g()   // error : a global friend function cannot be
+                     ^
+
+"Test_name.c", line 13: error: function "g" cannot be defined in the current scope
+          {
+          ^
+
+1 error detected in the compilation of "Test_name.c".

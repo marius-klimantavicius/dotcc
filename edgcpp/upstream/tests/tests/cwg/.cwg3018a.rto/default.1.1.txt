@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c++26 -A Test_name.c
+"Test_name.c", line 6: error: the "defined" operator is not permitted here
+  #embed __FILE__ limit(defined(FOO))
+                        ^
+
+"Test_name.c", line 6: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+  #embed __FILE__ limit(defined(FOO))
+                        ^
+
+2 errors detected in the compilation of "Test_name.c".

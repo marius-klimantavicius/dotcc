@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=4 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 Test_name.c
+"Test_name.c", line 9: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  auto XL0 = [] constexpr { return true; };
+                ^
+
+"Test_name.c", line 9: error: constexpr lambdas are not enabled in this mode
+  auto XL0 = [] constexpr { return true; };
+                ^
+
+"Test_name.c", line 17: error: duplicate specifier in declaration
+      mutable             // expected-error{{cannot appear multiple times}}
+      ^
+
+"Test_name.c", line 18: error: duplicate specifier in declaration
+      mutable {};         // expected-error{{cannot appear multiple times}}
+      ^
+
+"Test_name.c", line 35: error: constexpr lambdas are not enabled in this mode
+  auto L = []() mutable constexpr {return 0; }; //expected-warning{{is a C++17 extension}}
+                        ^
+
+"Test_name.c", line 36: error: constexpr lambdas are not enabled in this mode
+  auto L2 = []() constexpr { return 0;};//expected-warning{{is a C++17 extension}}
+                 ^
+
+"Test_name.c", line 37: error: constexpr lambdas are not enabled in this mode
+  auto L4 = []() constexpr mutable { return 0; }; //expected-warning{{is a C++17 extension}}
+                 ^
+
+6 errors detected in the compilation of "Test_name.c".

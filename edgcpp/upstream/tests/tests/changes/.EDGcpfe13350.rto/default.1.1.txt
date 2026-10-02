@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 12: error: invalid explicit instantiation declaration
+  template struct __declspec(dllexport) S<int>;
+           ^
+
+"Test_name.c", line 12: error: expected a ";"
+  template struct __declspec(dllexport) S<int>;
+                                        ^
+
+2 errors detected in the compilation of "Test_name.c".

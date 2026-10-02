@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --exceptions Test_name.c
+"Test_name.c", line 12: error: "BadDtor::~BadDtor()" (declared at line 7) is inaccessible
+    delete [] p; // expected-error {{private destructor}}
+              ^
+
+"Test_name.c", line 13: error: "BadDtor::~BadDtor()" (declared at line 7) is inaccessible
+    const BadDtor &dd2 = BadDtor(); // expected-error {{private destructor}}
+                         ^
+
+"Test_name.c", line 14: error: "BadDtor::~BadDtor()" (declared at line 7) is inaccessible
+    BadDtor dd; // expected-error {{private destructor}}
+            ^
+
+"Test_name.c", line 15: warning: "BadDtor::~BadDtor()" (declared at line 7), required to destroy temporary that was eliminated, is inaccessible
+    throw dd; // expected-error {{private destructor}}
+          ^
+
+"Test_name.c", line 15: error: "BadDtor::~BadDtor()" (declared at line 7) is inaccessible
+    throw dd; // expected-error {{private destructor}}
+          ^
+
+"Test_name.c", line 13: warning: variable "dd2" was declared but never referenced
+    const BadDtor &dd2 = BadDtor(); // expected-error {{private destructor}}
+                   ^
+
+"Test_name.c", line 27: error: "BadDtor::~BadDtor()" (declared at line 7) is inaccessible
+    ~X() {}
+    ^
+
+"Test_name.c", line 31: error: "BadDtor::~BadDtor()" (declared at line 7) is inaccessible
+    ~Y() {}
+    ^
+
+"Test_name.c", line 34: error: "BadDtor::~BadDtor()" (declared at line 7) is inaccessible
+    ~Z() {}
+    ^
+
+"Test_name.c", line 36: error: "BadDtor::~BadDtor()" (declared at line 7) is inaccessible
+  BadDtor dd; // expected-error {{private destructor}}
+          ^
+
+"Test_name.c", line 48: warning: statement is unreachable
+        goto dont_call_dtor;
+        ^
+
+"Test_name.c", line 47: warning: variable "x" was declared but never referenced
+        BadDtor x;
+                ^
+
+"Test_name.c", line 42: warning: variable "dd2" was declared but never referenced
+      const BadDtor &dd2 = BadDtor();
+                     ^
+
+8 errors detected in the compilation of "Test_name.c".

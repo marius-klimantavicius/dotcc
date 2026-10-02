@@ -1,0 +1,150 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 Test_name.c
+"Test_name.c", line 14: error: cannot determine which instance of overloaded function "access_control::Private::check" is intended
+  auto Priv = reinterpret_cast<void (Private::*)(char *)>(&Private::check); // expected-error{{'check' is a private member of 'access_control::Private'}} expected-note@6{{implicitly declared private here}}
+                                                          ^
+
+"Test_name.c", line 16: error: cannot determine which instance of overloaded function "access_control::Private::checkStatic" is intended
+  auto PrivStatic = reinterpret_cast<void (*)(char *)>(&Private::checkStatic); // expected-error{{'checkStatic' is a private member of 'access_control::Private'}} expected-note@9{{implicitly declared private here}}
+                                                       ^
+
+"Test_name.c", line 27: error: cannot determine which instance of overloaded function "access_control::Protected::check" is intended
+  auto Prot = reinterpret_cast<void (Protected::*)(char *)>(&Protected::check); // expected-error{{'check' is a protected member of 'access_control::Protected'}} expected-note@19{{declared protected here}}
+                                                            ^
+
+"Test_name.c", line 29: error: cannot determine which instance of overloaded function "access_control::Protected::checkStatic" is intended
+  auto ProtStatic = reinterpret_cast<void (*)(char *)>(&Protected::checkStatic); // expected-error{{'checkStatic' is a protected member of 'access_control::Protected'}} expected-note@22{{declared protected here}}
+                                                       ^
+
+"Test_name.c", line 37: error: cannot determine which instance of overloaded function "unavailable::foo" is intended
+  void *Ptr = reinterpret_cast<void*>(foo); // expected-error{{'foo' is unavailable: don't call this}} expected-note@-3{{explicitly marked unavailable here}}
+                                      ^
+
+"Test_name.c", line 60: error: cannot take the address of a function with an "enable_if" attribute whose condition is not unconditionally true
+    call(foo); // expected-error{{cannot take address of function 'foo'}}
+         ^
+
+"Test_name.c", line 61: error: no instance of function template "template_deduction::call" matches the argument list
+            argument types are: (<unknown-type>)
+    call(bar);
+    ^
+"Test_name.c", line 55: note: candidate function template "template_deduction::call" failed deduction
+  template <typename Fn, typename... Args> void call(Fn F, Args... As) {
+                                                ^
+
+"Test_name.c", line 62: error: no instance of function template "template_deduction::call" matches the argument list
+            argument types are: (<unknown-type>, int)
+    call(baz, 0);
+    ^
+"Test_name.c", line 55: note: candidate function template "template_deduction::call" failed deduction
+  template <typename Fn, typename... Args> void call(Fn F, Args... As) {
+                                                ^
+
+"Test_name.c", line 63: error: no instance of function template "template_deduction::call" matches the argument list
+            argument types are: (<unknown-type>, int)
+    call(qux, 0); // expected-error{{no matching function for call to 'call'}} expected-note@53{{candidate template ignored: couldn't infer template argument 'Fn'}}
+    ^
+"Test_name.c", line 55: note: candidate function template "template_deduction::call" failed deduction
+  template <typename Fn, typename... Args> void call(Fn F, Args... As) {
+                                                ^
+
+"Test_name.c", line 65: error: cannot take the address of a function with an "enable_if" attribute whose condition is not unconditionally true
+    auto Ptr1 = foo; // expected-error{{cannot take address of function 'foo'}}
+                ^
+
+"Test_name.c", line 66: error: cannot deduce "auto" type
+    auto Ptr2 = bar;
+    ^
+
+"Test_name.c", line 67: error: cannot deduce "auto" type
+    auto Ptr3 = baz;
+    ^
+
+"Test_name.c", line 68: error: cannot deduce "auto" type
+    auto Ptr4 = qux; // expected-error{{variable 'Ptr4' with type 'auto' has incompatible initializer of type '<overloaded function type>'}}
+    ^
+
+"Test_name.c", line 65: warning: variable "Ptr1" was declared but never referenced
+    auto Ptr1 = foo; // expected-error{{cannot take address of function 'foo'}}
+         ^
+
+"Test_name.c", line 85: error: no instance of function template "template_deduction::callMem" matches the argument list
+            argument types are: (<unknown-type>, template_deduction::Foo)
+    callMem(&Foo::bar, Foo()); // expected-error{{'bar' is a private member of 'template_deduction::Foo'}} expected-note@-8{{implicitly declared private here}}
+    ^
+"Test_name.c", line 72: note: candidate function template "template_deduction::callMem" failed deduction
+  void callMem(Fn F, T t, Args... As) {
+       ^
+
+"Test_name.c", line 86: error: no instance of function template "template_deduction::call" matches the argument list
+            argument types are: (<unknown-type>)
+    call(&Foo::staticBar); // expected-error{{'staticBar' is a private member of 'template_deduction::Foo'}} expected-note@-6{{implicitly declared private here}}
+    ^
+"Test_name.c", line 55: note: candidate function template "template_deduction::call" failed deduction
+  template <typename Fn, typename... Args> void call(Fn F, Args... As) {
+                                                ^
+
+"Test_name.c", line 100: error: no instance of function template "template_template_deduction::call" matches the argument list
+            argument types are: (<unknown-type>)
+  auto Fail = call(&foo); // expected-error{{no matching function for call to 'call'}} expected-note@-5{{candidate template ignored: couldn't infer template argument 'Fn'}}
+              ^
+"Test_name.c", line 95: note: candidate function template "template_template_deduction::call" failed deduction
+  template <typename Fn, typename... Args> auto call(Fn F, Args... As) {
+                                                ^
+
+"Test_name.c", line 103: error: cannot deduce "auto" type
+  auto PtrFail = &foo; // expected-error{{variable 'PtrFail' with type 'auto' has incompatible initializer of type '<overloaded function type>'}}
+  ^
+
+"Test_name.c", line 117: error: cannot determine which instance of overloaded function "pointer_equality::bothEnableIf" is intended
+      (void)(Fn == bothEnableIf);
+                   ^
+
+"Test_name.c", line 117: warning: variable "Fn" is used before its value is set
+      (void)(Fn == bothEnableIf);
+             ^
+
+"Test_name.c", line 118: error: cannot determine which instance of overloaded function "pointer_equality::bothEnableIf" is intended
+      (void)(Fn == &bothEnableIf);
+                   ^
+
+"Test_name.c", line 119: error: cannot determine which instance of overloaded function "pointer_equality::oneEnableIf" is intended
+      (void)(Fn == oneEnableIf);
+                   ^
+
+"Test_name.c", line 120: error: cannot determine which instance of overloaded function "pointer_equality::oneEnableIf" is intended
+      (void)(Fn == &oneEnableIf);
+                   ^
+
+"Test_name.c", line 128: error: cannot determine which instance of overloaded function "pointer_equality::unavailableEnableIf" is intended
+      (void)(Fn == unavailableEnableIf); // expected-error{{is unavailable}}
+                   ^
+
+"Test_name.c", line 128: warning: variable "Fn" is used before its value is set
+      (void)(Fn == unavailableEnableIf); // expected-error{{is unavailable}}
+             ^
+
+"Test_name.c", line 129: error: cannot determine which instance of overloaded function "pointer_equality::unavailableEnableIf" is intended
+      (void)(Fn == &unavailableEnableIf); // expected-error{{is unavailable}}
+                   ^
+
+"Test_name.c", line 143: error: cannot determine which instance of overloaded function "pointer_equality::Foo::staticAccessEnableIf" is intended
+      (void)(Fn == Foo::staticAccessEnableIf); // expected-error{{is a private member}}
+                   ^
+
+"Test_name.c", line 143: warning: variable "Fn" is used before its value is set
+      (void)(Fn == Foo::staticAccessEnableIf); // expected-error{{is a private member}}
+             ^
+
+"Test_name.c", line 144: error: cannot determine which instance of overloaded function "pointer_equality::Foo::staticAccessEnableIf" is intended
+      (void)(Fn == &Foo::staticAccessEnableIf); // expected-error{{is a private member}}
+                   ^
+
+"Test_name.c", line 147: error: cannot determine which instance of overloaded function "pointer_equality::Foo::accessEnableIf" is intended
+      (void)(MemFn == &Foo::accessEnableIf); // expected-error{{is a private member}}
+                      ^
+
+"Test_name.c", line 147: warning: variable "MemFn" is used before its value is set
+      (void)(MemFn == &Foo::accessEnableIf); // expected-error{{is a private member}}
+             ^
+
+26 errors detected in the compilation of "Test_name.c".

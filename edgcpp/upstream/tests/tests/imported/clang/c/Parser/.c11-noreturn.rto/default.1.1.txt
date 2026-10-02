@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c11 Test_name.c
+"Test_name.c", line 8: error: declaration is incompatible with "int f(void)" (declared at line 6)
+  int f _Noreturn(); // expected-error {{expected ';'}} expected-error 2{{}}
+      ^
+
+"Test_name.c", line 8: error: expected a ";"
+  int f _Noreturn(); // expected-error {{expected ';'}} expected-error 2{{}}
+        ^
+
+"Test_name.c", line 9: error: declaration is incompatible with "int f" (declared at line 8)
+  int f(void) _Noreturn; // expected-error {{'_Noreturn' keyword must precede function declarator}}
+      ^
+
+"Test_name.c", line 9: error: expected a "{"
+  int f(void) _Noreturn; // expected-error {{'_Noreturn' keyword must precede function declarator}}
+              ^
+
+"Test_name.c", line 18: warning: parsing restarts here after previous syntax error
+  _Noreturn enum E { e }; // expected-error {{'_Noreturn' can only appear on functions}}
+                   ^
+
+"Test_name.c", line 18: error: identifier "e" is undefined
+  _Noreturn enum E { e }; // expected-error {{'_Noreturn' can only appear on functions}}
+                     ^
+
+"Test_name.c", line 18: error: expected a ";"
+  _Noreturn enum E { e }; // expected-error {{'_Noreturn' can only appear on functions}}
+                       ^
+
+"Test_name.c", line 18: warning: missing return statement at end of non-void function "f"
+  _Noreturn enum E { e }; // expected-error {{'_Noreturn' can only appear on functions}}
+                       ^
+
+"Test_name.c", line 21: error: _Noreturn is not allowed here
+    _Noreturn int f1; // expected-error {{type name does not allow function specifier to be specified}}
+    ^
+
+"Test_name.c", line 24: error: _Noreturn is not allowed here
+  _Noreturn int AlsoBad; // expected-error {{'_Noreturn' can only appear on functions}}
+  ^
+
+"Test_name.c", line 25: error: invalid specifier on a parameter
+  void func(_Noreturn int ThisToo) { // expected-error {{'_Noreturn' can only appear on functions}}
+            ^
+
+"Test_name.c", line 26: error: _Noreturn is not allowed here
+    for (_Noreturn int i = 0; i < 10; ++i) // expected-error {{'_Noreturn' can only appear on functions}}
+         ^
+
+10 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,70 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 15: warning: variable "n" was declared but never referenced
+    for (int n = 5; int x : arr1) {}
+             ^
+
+"Test_name.c", line 18: warning: variable "n" was declared but never referenced
+    for (int n = 5; int A<true ? 0 : 1>::*x : arr2) {}
+             ^
+
+"Test_name.c", line 23: warning: variable "n" was declared but never referenced
+    for (int n = 5; F (*p)(int n) : arr3) {}
+             ^
+
+"Test_name.c", line 24: warning: variable "n" was declared but never referenced
+    for (int n = 5; F (*p)(int (n)) : arr3) {}
+             ^
+
+"Test_name.c", line 33: error: type definition is not allowed
+    for (int n = 0; struct { operator bool(); } x = {}; ++n) {} // expected-error {{cannot be defined in a condition}}
+                    ^
+
+"Test_name.c", line 34: error: type definition is not allowed
+    for (int n = 0; struct { operator bool(); } x : arr4) {} // expected-error {{may not be defined in a for range declaration}}
+                    ^
+
+"Test_name.c", line 34: warning: variable "n" was declared but never referenced
+    for (int n = 0; struct { operator bool(); } x : arr4) {} // expected-error {{may not be defined in a for range declaration}}
+             ^
+
+"Test_name.c", line 36: error: a storage class may not be specified here
+    for (int n = 0; static int m = 0; ++n) {} // expected-error {{type name does not allow storage class}}
+                    ^
+
+"Test_name.c", line 36: warning: variable "m" was declared but never referenced
+    for (int n = 0; static int m = 0; ++n) {} // expected-error {{type name does not allow storage class}}
+                               ^
+
+"Test_name.c", line 37: error: a storage class may not be specified here
+    for (int n = 0; static int m : arr1) {} // expected-error {{loop variable 'm' may not be declared 'static'}}
+                    ^
+
+"Test_name.c", line 37: warning: variable "n" was declared but never referenced
+    for (int n = 0; static int m : arr1) {} // expected-error {{loop variable 'm' may not be declared 'static'}}
+             ^
+
+"Test_name.c", line 40: warning: statement is unreachable
+    for (int n = ({ break; 0; }); int m : arr1) {} // expected-error {{not in loop}}
+                           ^
+
+"Test_name.c", line 41: warning: statement is unreachable
+    for (int n = ({ continue; 0; }); int m : arr1) {} // expected-error {{not in loop}}
+                              ^
+
+"Test_name.c", line 42: warning: statement is unreachable
+    for (int arr[3]; int n : *({ break; &arr; })) {} // expected-error {{not in loop}}
+                                        ^
+
+"Test_name.c", line 43: warning: statement is unreachable
+    for (int arr[3]; int n : *({ continue; &arr; })) {} // expected-error {{not in loop}}
+                                           ^
+
+"Test_name.c", line 44: warning: variable "n" was declared but never referenced
+    for (int n = 0; int m : arr1) { break; }
+             ^
+
+"Test_name.c", line 45: warning: variable "n" was declared but never referenced
+    for (int n = 0; int m : arr1) { continue; }
+             ^
+
+4 errors detected in the compilation of "Test_name.c".

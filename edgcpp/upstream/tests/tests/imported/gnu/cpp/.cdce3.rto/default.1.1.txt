@@ -1,0 +1,12 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./cdce3.C", line 214: warning: variable "te1" was set but never used
+     int te1, te2;
+         ^
+
+"./cdce3.C", line 214: warning: variable "te2" was set but never used
+     int te1, te2;
+              ^
+
+/usr/sbin/ld: Test_name.o: undefined reference to symbol 'acos@@GLIBC_2.2.5'
+/usr/sbin/ld: /usr/lib64/libm.so.6: error adding symbols: DSO missing from command line
+collect2: error: ld returned 1 exit status

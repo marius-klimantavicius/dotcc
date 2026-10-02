@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 14: warning: attribute "gnu::__stdcall__" does not apply to non-function type "void (T::*)(L *)"
+    typedef void (T::* [[gnu::__stdcall__]] F2) (L*); // { dg-warning "only applies to function types" }
+                         ^
+
+"Test_name.c", line 14: warning: attribute is supported only in 32-bit x86 configurations
+    typedef void (T::* [[gnu::__stdcall__]] F2) (L*); // { dg-warning "only applies to function types" }
+                         ^
+
+"Test_name.c", line 15: warning: attribute "gnu::__stdcall__" does not apply to non-function type "void (T::*)(L *)"
+    typedef void (T::*F) (L*) [[gnu::__stdcall__]];
+                                ^
+
+"Test_name.c", line 15: warning: attribute is supported only in 32-bit x86 configurations
+    typedef void (T::*F) (L*) [[gnu::__stdcall__]];
+                                ^
+
+"Test_name.c", line 22: warning: attribute is supported only in 32-bit x86 configurations
+    virtual void  A(L *listener) [[gnu::__stdcall__]] = 0;
+                                   ^
+
+"Test_name.c", line 23: warning: attribute is supported only in 32-bit x86 configurations
+    virtual void R(L *listener)  [[gnu::__stdcall__]] = 0;
+                                   ^
+
+"Test_name.c", line 27: warning: variable "addRemoveEventListener" was declared but never referenced
+    F addRemoveEventListener = (aAdd ? &T::A : &T::R);
+      ^
+

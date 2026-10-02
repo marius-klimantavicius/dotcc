@@ -1,0 +1,13 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./signbit-5.c", line 26: warning: unknown attribute "noipa"
+  __attribute__ ((noinline, noipa))
+                            ^
+
+"./signbit-5.c", line 33: warning: unknown attribute "noipa"
+  __attribute__ ((noinline, noipa, optimize("O1")))
+                            ^
+
+"./signbit-5.c", line 33: warning: unknown attribute "optimize"
+  __attribute__ ((noinline, noipa, optimize("O1")))
+                                   ^
+

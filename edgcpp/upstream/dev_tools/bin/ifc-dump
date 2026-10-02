@@ -1,0 +1,168 @@
+#!/usr/bin/env python3
+
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+import argparse
+import signal
+import sys
+
+import edgifc.decoration
+
+from pathlib import Path
+from typing import Any
+
+from edgifc import (
+  IFCDialect,
+  IFCReader,
+  IFCUnsupportedValue,
+  StreamReader
+)
+
+def eprint(*args, **kw_args):
+  print(*args, file = sys.stderr, **kw_args)
+
+def parse_args() -> argparse.Namespace:
+  parser = argparse.ArgumentParser(description='EDG IFC Dumper.')
+  parser.add_argument(
+    '-C',
+    '--check-file-only',
+    dest = 'check_file_only',
+    action = 'store_true',
+    help = 'run file integrity checks and exit'
+  )
+  parser.add_argument(
+    '-D',
+    '--no-decoration',
+    dest = 'no_decoration',
+    action = 'store_true',
+    help = 'disable decorators'
+  )
+  parser.add_argument(
+    'file_path',
+    type = Path,
+    help = 'the IFC file to dump'
+  )
+  return parser.parse_args()
+
+class IFCDumper:
+  def __init__(self, decorator_map: edgifc.decoration.DecoratorMap):
+    self._decorator_map = decorator_map
+
+  def dump_field_value(self, reader: IFCReader, value, field, *, indent):
+    print('  ' * indent, end = '')
+    field_type = field.type_name()
+    print(f"{field.name()} ({field_type}):")
+    subfields = field.subfields()
+    field_value = value.get(field.name())
+    if len(subfields) > 0:
+      for subfield in subfields:
+        self.dump_field_value(
+          reader,
+          field_value,
+          subfield,
+          indent = indent + 1
+        )
+    else:
+      print('  ' * indent, end = '')
+
+      field_value_str = reader.render_python_value(field_value, field_type)
+      print(f"  {field_value_str}")
+
+      if field_type in self._decorator_map:
+        for decorator in self._decorator_map[field_type]:
+          print('  ' * (indent + 1), end = '')
+          print(f"\\ {decorator.name()}:")
+          print('  ' * (indent + 1), end = '')
+          print(f"  {decorator.decorate(reader, field_value)}")
+
+def _init_file(reader: IFCReader) -> None:
+  '''Initialize the given file reader, exiting if initialization fails.'''
+
+  if reader.get_dialect() == IFCDialect.UNKNOWN:
+    eprint(
+      'WARNING: This file has an unknown IFC dialect. '
+      'Are you sure this is the right file?'
+    )
+
+  try:
+    reader.init_file()
+  except Exception as e:
+    eprint(f"ERROR: {e}")
+    sys.exit(1)
+
+def dump_node(dumper, reader, ifc_value, ifc_type):
+  try:
+    for field in ifc_type.fields():
+      dumper.dump_field_value(reader, ifc_value, field, indent = 2)
+  except Exception as e:
+    e.add_note(f"for node type: \"{ifc_type.name()}\"")
+    raise
+
+def dump_ifc_file(file_path: Path, stop_after_init: bool,
+                  no_decoration: bool) -> None:
+  '''Dump the given file.'''
+  with open(file_path, 'rb') as file_handle:
+    reader = IFCReader(file_handle)
+    _init_file(reader)
+
+    if stop_after_init:
+      return
+
+    if no_decoration:
+      dumper = IFCDumper(edgifc.decoration.DecoratorMap())
+    else:
+      dumper = IFCDumper(edgifc.decoration.full_decoration_map(reader))
+
+    # Dump the header.
+    header_value = reader.get_header()
+    header_type = reader.get_header_type()
+    print(f" File Header ".center(80, '='))
+    dump_node(dumper, reader, header_value, header_type)
+    print('')
+
+    # Dump the partition values.
+    partition_tuples = sorted(
+      reader.get_partitions(),
+      key = lambda x: x[0]
+    )
+    for partition_name, partition in partition_tuples:
+      if not reader.supports_partition(partition_name):
+        continue
+
+      ifc_type = reader.get_type_for_partition(partition_name)
+      stream_reader = StreamReader(reader)
+      print(f" {partition_name} ".center(80, '='))
+
+      for idx in range(0, partition.cardinality()):
+        element_header = f" {partition_name} ".center(80, '-')
+        element_id = f" #{idx} "
+        element_header = f"{element_id}{element_header[len(element_id):]}"
+        print(element_header)
+        partition_value = stream_reader.read(partition_name, idx)
+        dump_node(dumper, reader, partition_value, ifc_type)
+
+      print('')
+
+def die(signum: Any, frame: Any) -> None:
+  sys.exit()
+
+def register_signal_handlers() -> None:
+  signal.signal(signal.SIGINT, die)
+  signal.signal(signal.SIGTERM, die)
+  signal.signal(signal.SIGPIPE, die)
+
+def main() -> None:
+  args = parse_args()
+
+  register_signal_handlers()
+
+  if not args.file_path.exists():
+    eprint(f"File does not exist: {args.file_path}")
+    exit(1)
+
+  dump_ifc_file(args.file_path, args.check_file_only, args.no_decoration)
+
+main()

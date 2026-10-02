@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 6: warning: variable "i" was declared but never referenced
+    int i;  // expected-error{{unused}}
+        ^
+
+"Test_name.c", line 7: warning: variable "j" was declared but never referenced
+    int j;  // expected-error{{unused}}
+        ^
+

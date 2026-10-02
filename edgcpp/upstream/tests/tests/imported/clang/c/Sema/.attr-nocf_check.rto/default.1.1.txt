@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 6: warning: unknown attribute "nocf_check"
+  typedef void (*FuncPointerWithNoCfCheck)(void) __attribute__((nocf_check)); // no-warning
+                                                                ^
+
+"Test_name.c", line 10: warning: unknown attribute "nocf_check"
+  void __attribute__((nocf_check)) testNoCfCheck(void);   // expected-note {{previous declaration is here}}
+                      ^
+
+"Test_name.c", line 14: warning: unknown attribute "nocf_check"
+  __attribute__((nocf_check)) int i;                              // expected-warning {{'nocf_check' attribute only applies to function}}
+                 ^
+
+"Test_name.c", line 15: warning: unknown attribute "nocf_check"
+  void testNoCfCheckImpl(double __attribute__((nocf_check)) i) {} // expected-warning {{'nocf_check' attribute only applies to function}}
+                                               ^
+
+"Test_name.c", line 25: warning: unknown attribute "nocf_check"
+  int testNoCfCheckParams(void) __attribute__((nocf_check(1))); // expected-error {{'nocf_check' attribute takes no arguments}}
+                                               ^
+

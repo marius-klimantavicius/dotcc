@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 13: warning: function "fn1badc" declared implicitly
+    fn1badc (); /* { dg-warning "3: implicit declaration of function .fn1badc.; did you mean .fn1abcd.?" } */
+    ^
+
+"Test_name.c", line 27: warning: function "fn2fehg" declared implicitly
+    fn2fehg (); /* { dg-warning "3: implicit declaration of function .fn2fehg.; did you mean .fn2efhg.?" } */
+    ^
+
+"Test_name.c", line 41: warning: function "fn3jilk" declared implicitly
+    fn3jilk (); /* { dg-warning "3: implicit declaration of function .fn3jilk.; did you mean .fn3ijkl.?" } */
+    ^
+

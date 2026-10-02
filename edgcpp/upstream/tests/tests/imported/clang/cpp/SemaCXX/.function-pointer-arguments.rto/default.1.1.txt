@@ -1,0 +1,82 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 12: warning: variable "g1" was declared but never referenced
+      int(*g1)(int, int) = f1;
+           ^
+
+"Test_name.c", line 13: warning: variable "g2" was declared but never referenced
+      int(*g2)(const int, int) = f1;
+           ^
+
+"Test_name.c", line 14: warning: variable "g3" was declared but never referenced
+      int(*g3)(volatile int, int) = f1;
+           ^
+
+"Test_name.c", line 15: warning: variable "g4" was declared but never referenced
+      int(*g4)(int, int) = f2;
+           ^
+
+"Test_name.c", line 16: warning: variable "g5" was declared but never referenced
+      int(*g5)(const int, int) = f2;
+           ^
+
+"Test_name.c", line 17: warning: variable "g6" was declared but never referenced
+      int(*g6)(volatile int, int) = f2;
+           ^
+
+"Test_name.c", line 18: warning: variable "g7" was declared but never referenced
+      int(*g7)(int&, int) = f3;
+           ^
+
+"Test_name.c", line 19: warning: variable "g8" was declared but never referenced
+      int(*g8)(const int&, int) = f4;
+           ^
+
+"Test_name.c", line 23: error: a value of type "int (*)(int, int)" cannot be used to initialize an entity of type "void (*)(int, int)"
+      void (*g1)(int, int) = f1;
+                             ^
+
+"Test_name.c", line 25: warning: type qualifier on return type is meaningless
+      const int (*g2)(int, int) = f1;
+      ^
+
+"Test_name.c", line 25: error: a value of type "int (*)(int, int)" cannot be used to initialize an entity of type "const int (*)(int, int)"
+      const int (*g2)(int, int) = f1;
+                                  ^
+
+"Test_name.c", line 28: error: a value of type "int (*)(int, int)" cannot be used to initialize an entity of type "int (*)(char, int)"
+      int (*g3)(char, int) = f1;
+                             ^
+
+"Test_name.c", line 30: error: a value of type "int (*)(int, int)" cannot be used to initialize an entity of type "int (*)(int, char)"
+      int (*g4)(int, char) = f1;
+                             ^
+
+"Test_name.c", line 33: error: a value of type "int (*)(int, int)" cannot be used to initialize an entity of type "int (*)(int)"
+      int (*g5)(int) = f1;
+                       ^
+
+"Test_name.c", line 36: error: a value of type "int (*)(int, int)" cannot be used to initialize an entity of type "int (*)(int, int, int)"
+      int (*g6)(int, int, int) = f1;
+                                 ^
+
+"Test_name.c", line 39: error: a value of type "int (*)(int, int)" cannot be used to initialize an entity of type "int (*)(int, char)"
+      int (*g7)(const int, char) = f1;
+                                   ^
+
+"Test_name.c", line 41: error: a value of type "int (*)(int, int)" cannot be used to initialize an entity of type "int (*)(int, char)"
+      int (*g8)(int, char) = f2;
+                             ^
+
+"Test_name.c", line 43: error: a value of type "int (*)(int &, int)" cannot be used to initialize an entity of type "int (*)(const int &, char)"
+      int (*g9)(const int&, char) = f3;
+                                    ^
+
+"Test_name.c", line 45: error: a value of type "int (*)(const int &, int)" cannot be used to initialize an entity of type "int (*)(int &, char)"
+      int (*g10)(int&, char) = f4;
+                               ^
+
+"Test_name.c", line 51: error: a value of type "void (*)(const char *, unsigned int)" cannot be used to initialize an entity of type "PR16570::F" (aka "void (*)(const char *, int)")
+    F f = g;
+          ^
+
+11 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"./format/attr-2.c", line 15: warning: unrecognized format function type "strfmon" ignored
+  extern void tformatstrfmon (const char *, ...) __attribute__((format(strfmon, 1, 2)));
+                                                                       ^
+
+"./format/attr-2.c", line 16: warning: unrecognized format function type "__strfmon__" ignored
+  extern void tformat__strfmon__ (const char *, ...) __attribute__((format(__strfmon__, 1, 2)));
+                                                                           ^
+
+"./format/attr-2.c", line 23: warning: unrecognized format function type "strfmon" ignored
+  extern void t__format__strfmon (const char *, ...) __attribute__((__format__(strfmon, 1, 2)));
+                                                                               ^
+
+"./format/attr-2.c", line 24: warning: unrecognized format function type "__strfmon__" ignored
+  extern void t__format____strfmon__ (const char *, ...) __attribute__((__format__(__strfmon__, 1, 2)));
+                                                                                   ^
+

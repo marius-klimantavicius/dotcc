@@ -1,0 +1,173 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Sema/format-string-matches.c", line 6: warning: unknown attribute "format_matches"
+  __attribute__((format_matches(printf, -1, "%s")))
+                 ^
+
+"Sema/format-string-matches.c", line 9: warning: unknown attribute "format_matches"
+  __attribute__((format_matches(printf, 0, "%s")))
+                 ^
+
+"Sema/format-string-matches.c", line 12: warning: unknown attribute "format_matches"
+  __attribute__((format_matches(printf, 1, "%s")))
+                 ^
+
+"Sema/format-string-matches.c", line 15: warning: unknown attribute "format_matches"
+  __attribute__((format_matches(printf, 1, "%s")))
+                 ^
+
+"Sema/format-string-matches.c", line 27: warning: unknown attribute "format_matches"
+  __attribute__((format_matches(printf, 1, "%s %1.5s")))
+                 ^
+
+"Sema/format-string-matches.c", line 32: warning: unknown attribute "format_matches"
+  __attribute__((format_matches(printf, 1, "%s" "%1.5s")))
+                 ^
+
+"Sema/format-string-matches.c", line 37: warning: unknown attribute "format_matches"
+  __attribute__((format_matches(printf, 1, ("%s" "%1.5s") + 5)))
+                 ^
+
+"Sema/format-string-matches.c", line 40: warning: unknown attribute "format_matches"
+  __attribute__((format_matches(printf, 1, "%s %g")))
+                 ^
+
+"Sema/format-string-matches.c", line 45: warning: unknown attribute "format_matches"
+  __attribute__((format_matches(printf, 1, "%s %g")))
+                 ^
+
+"Sema/format-string-matches.c", line 56: warning: unknown attribute "format_matches"
+  void cvt_percent(const char *c) __attribute__((format_matches(printf, 1, "%%")));
+                                                 ^
+
+"Sema/format-string-matches.c", line 57: warning: unknown attribute "format_matches"
+  void cvt_at(const char *c) __attribute__((format_matches(NSString, 1, "%@")));
+                                            ^
+
+"Sema/format-string-matches.c", line 60: warning: unknown attribute "format_matches"
+  void cvt_c(const char *c) __attribute__((format_matches(printf, 1, "%c")));
+                                           ^
+
+"Sema/format-string-matches.c", line 61: warning: unknown attribute "format_matches"
+  void cvt_u(const char *c) __attribute__((format_matches(printf, 1, "%u")));
+                                           ^
+
+"Sema/format-string-matches.c", line 62: warning: unknown attribute "format_matches"
+  void cvt_hhi(const char *c) __attribute__((format_matches(printf, 1, "%hhi")));
+                                             ^
+
+"Sema/format-string-matches.c", line 63: warning: unknown attribute "format_matches"
+  void cvt_i(const char *c) __attribute__((format_matches(printf, 1, "%i")));
+                                           ^
+
+"Sema/format-string-matches.c", line 64: warning: unknown attribute "format_matches"
+  void cvt_p(const char *c) __attribute__((format_matches(printf, 1, "%p")));
+                                           ^
+
+"Sema/format-string-matches.c", line 65: warning: unknown attribute "format_matches"
+  void cvt_s(const char *c) __attribute__((format_matches(printf, 1, "%s")));
+                                           ^
+
+"Sema/format-string-matches.c", line 66: warning: unknown attribute "format_matches"
+  void cvt_n(const char *c) __attribute__((format_matches(printf, 1, "%n")));
+                                           ^
+
+"Sema/format-string-matches.c", line 109: warning: unknown attribute "format_matches"
+  void cvt_several(const char *c) __attribute__((format_matches(printf, 1, "%f %i %s")));
+                                                 ^
+
+"Sema/format-string-matches.c", line 119: warning: unknown attribute "format_matches"
+  void cvt_freebsd_D(const char *c) __attribute__((format_matches(freebsd_kprintf, 1, "%D")));
+                                                   ^
+
+"Sema/format-string-matches.c", line 128: warning: unknown attribute "format_matches"
+  void takes_printf_string(const char *fmt) __attribute__((format_matches(printf, 1, "%s")));
+                                                           ^
+
+"Sema/format-string-matches.c", line 129: warning: unknown attribute "format_matches"
+  __attribute__((format_matches(freebsd_kprintf, 1, "%s")))
+                 ^
+
+"Sema/format-string-matches.c", line 137: warning: unknown attribute "format_matches"
+  __attribute__((format_matches(printf, 1, "%s")))
+                 ^
+
+"Sema/format-string-matches.c", line 138: warning: unknown attribute "format_matches"
+  __attribute__((format_matches(os_log, 2, "%i")))
+                 ^
+
+"Sema/format-string-matches.c", line 141: warning: unknown attribute "format_matches"
+  __attribute__((format_matches(printf, 1, "%s")))
+                 ^
+
+"Sema/format-string-matches.c", line 142: warning: unknown attribute "format_matches"
+  __attribute__((format_matches(os_log, 2, "%i")))
+                 ^
+
+"Sema/format-string-matches.c", line 160: warning: unknown attribute "format_matches"
+  __attribute__((format_matches(os_log, 1, "%{public}s")))
+                 ^
+
+"Sema/format-string-matches.c", line 163: warning: unknown attribute "format_matches"
+  __attribute__((format_matches(os_log, 1, "%{sensitive}s")))
+                 ^
+
+"Sema/format-string-matches.c", line 166: warning: unknown attribute "format_matches"
+  __attribute__((format_matches(os_log, 1, "%{private}s")))
+                 ^
+
+"Sema/format-string-matches.c", line 188: warning: unknown attribute "format_matches"
+  void accept_value(const char *f) __attribute__((format_matches(freebsd_kprintf, 1, "%s%i%i")));
+                                                  ^
+
+"Sema/format-string-matches.c", line 191: warning: unknown attribute "format_matches"
+  void accept_indirect_field_width(const char *f) __attribute__((format_matches(freebsd_kprintf, 1, "%s%*i")));
+                                                                 ^
+
+"Sema/format-string-matches.c", line 194: warning: unknown attribute "format_matches"
+  void accept_indirect_field_precision(const char *f) __attribute__((format_matches(freebsd_kprintf, 1, "%s%.*i")));
+                                                                     ^
+
+"Sema/format-string-matches.c", line 197: warning: unknown attribute "format_matches"
+  void accept_aux_value(const char *f) __attribute__((format_matches(freebsd_kprintf, 1, "%D%i")));
+                                                      ^
+
+"Sema/format-string-matches.c", line 226: warning: unknown attribute "format_matches"
+  __attribute__((format_matches(printf, 1, "%i")))
+                 ^
+
+"Sema/format-string-matches.c", line 227: warning: unknown attribute "format_matches"
+  __attribute__((format_matches(printf, 1, "%d")))
+                 ^
+
+"Sema/format-string-matches.c", line 230: warning: unknown attribute "format_matches"
+  __attribute__((format_matches(printf, 1, "%i")))
+                 ^
+
+"Sema/format-string-matches.c", line 231: warning: unknown attribute "format_matches"
+  __attribute__((format_matches(printf, 1, "%s")))
+                 ^
+
+"Sema/format-string-matches.c", line 234: warning: unknown attribute "format_matches"
+  __attribute__((format_matches(printf, 1, "%i")))
+                 ^
+
+"Sema/format-string-matches.c", line 237: warning: unknown attribute "format_matches"
+  __attribute__((format_matches(printf, 1, "%d")))
+                 ^
+
+"Sema/format-string-matches.c", line 243: warning: unknown attribute "format_matches"
+  __attribute__((format_matches(printf, 1, "%i")))
+                 ^
+
+"Sema/format-string-matches.c", line 246: warning: unknown attribute "format_matches"
+  __attribute__((format_matches(printf, 1, "%s")))
+                 ^
+
+"Sema/format-string-matches.c", line 252: warning: unknown attribute "format_matches"
+  __attribute__((format_matches(printf, 1, "%1$s %1$d")))
+                 ^
+
+"Sema/format-string-matches.c", line 267: warning: unknown attribute "format_matches"
+  __attribute__((format_matches(printf, 1, "%*d %*d")))
+                 ^
+

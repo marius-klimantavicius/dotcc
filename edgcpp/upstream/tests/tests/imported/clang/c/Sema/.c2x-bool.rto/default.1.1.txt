@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 34: warning: variable "c1" was declared but never referenced
+    char c1[true];
+         ^
+
+"Test_name.c", line 35: warning: variable "c2" was declared but never referenced
+    char c2[false];
+         ^
+
+"Test_name.c", line 25: warning: variable "f" was declared but never referenced
+  static void *f = false; // expected-warning {{to null from a constant boolean expression}}
+               ^
+
+"Test_name.c", line 26: warning: variable "one" was declared but never referenced
+  static int one = true;
+             ^
+
+"Test_name.c", line 27: warning: variable "zero" was declared but never referenced
+  static int zero = false;
+             ^
+
+"Test_name.c", line 29: warning: function "do_work" was declared but never referenced
+  static void do_work() {
+              ^
+

@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Sema/variadic-block.c", line 8: error: expected an identifier
+      long (^addthem)(const char *, ...) = ^long (const char *format, ...){
+            ^
+
+"Sema/variadic-block.c", line 8: error: function "<error>" may not be initialized
+      long (^addthem)(const char *, ...) = ^long (const char *format, ...){
+                                         ^
+
+"Sema/variadic-block.c", line 8: error: expected an expression
+      long (^addthem)(const char *, ...) = ^long (const char *format, ...){
+                                           ^
+
+"Sema/variadic-block.c", line 30: warning: parsing restarts here after previous syntax error
+          return result;
+                       ^
+
+"Sema/variadic-block.c", line 32: error: function call is not allowed in a constant expression
+      long testresult = addthem("ii", 10, 20);
+                        ^
+
+"Sema/variadic-block.c", line 33: error: expected a declaration
+      if (testresult != 30) {
+      ^
+
+"Sema/variadic-block.c", line 36: warning: parsing restarts here after previous syntax error
+      testresult = addthem("idc", 30, 40.0, 'a');
+                                                ^
+
+"Sema/variadic-block.c", line 37: error: expected a declaration
+      if (testresult != (70+'a')) {
+      ^
+
+"Sema/variadic-block.c", line 40: warning: parsing restarts here after previous syntax error
+      return 0;
+              ^
+
+"Sema/variadic-block.c", line 41: error: expected a declaration
+  }
+  ^
+
+7 errors detected in the compilation of "Test_name.c".

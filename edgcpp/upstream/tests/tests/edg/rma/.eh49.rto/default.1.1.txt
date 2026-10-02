@@ -1,0 +1,24 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 5: error: incomplete type "X" is not allowed
+  template <class T> inline void f(T) throw(X) { }
+                                            ^
+
+"Test_name.c", line 6: error: incomplete type "X" is not allowed
+  template<> inline void f<int>(int) throw(X) { }
+                                           ^
+
+"Test_name.c", line 5: error: incomplete type "X" is not allowed
+  template <class T> inline void f(T) throw(X) { }
+                                            ^
+          detected during instantiation of "f" based on template argument <int> at line 6
+
+"Test_name.c", line 7: error: return type "int" omitted in declaration of function "main"
+  main() {
+  ^
+
+"Test_name.c", line 5: error: incomplete type "X" is not allowed
+  template <class T> inline void f(T) throw(X) { }
+                                            ^
+          detected during instantiation of "f" based on template argument <long> at line 9
+
+5 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 49: warning: missing return statement at end of non-void function "B<T>::operator->"
+    T* operator-> () const { }
+                             ^
+
+"Test_name.c", line 47: warning: missing return statement at end of non-void function "B<T>::operator="
+  incRef (); } }
+               ^
+          detected during:
+            instantiation of "void copy_backward(_BI1, _BI1, _BI2) [with _BI1=B<C> *, _BI2=B<C> *]" at line 31
+            instantiation of "void vector<_Tp>::insert(vector<_Tp>::iterator, vector<_Tp>::size_type) [with _Tp=B<C>]" at line 26
+            instantiation of "void vector<_Tp>::resize(vector<_Tp>::size_type) [with _Tp=B<C>]" at line 56
+            instantiation of "void D::foo(const B<T> &) [with T=E]" at line 71
+

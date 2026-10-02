@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 10: error: identifier "b" is undefined
+    b = &&c;    // { dg-error "not declared|not defined" }
+    ^
+
+"Test_name.c", line 10: error: label "c" was referenced but not defined
+    b = &&c;    // { dg-error "not declared|not defined" }
+          ^
+
+"Test_name.c", line 18: error: identifier "b" is undefined
+    b = &&c;  // { dg-error "not declared" }
+    ^
+
+3 errors detected in the compilation of "Test_name.c".

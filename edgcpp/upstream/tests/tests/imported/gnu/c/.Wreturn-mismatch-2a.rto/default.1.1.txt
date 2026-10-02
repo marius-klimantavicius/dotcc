@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 12: warning: missing return statement at end of non-void function "f2"
+  } /* { dg-warning "control reaches end of non-void\[^\n\r\]*-Wreturn-type" } */
+  ^
+
+"Test_name.c", line 18: warning: missing return statement at end of non-void function "f3"
+  } /* { dg-warning "no return statement in function\[^\n\r\]*-Wreturn-type" } */
+  ^
+
+"Test_name.c", line 23: warning: return value type does not match the function type
+    return 1; /* { dg-error "with a value,\[^\n\r\]*-Wreturn-mismatch" } */
+           ^
+
+"Test_name.c", line 35: warning: non-void function "f6" should return a value
+    return; /* { dg-error "with no value,\[^\n\r\]*Wreturn-mismatch" } */
+          ^
+
+"Test_name.c", line 41: error: return value type does not match the function type
+    return f1 (); /* { dg-error "void value not ignored as it ought to be" } */
+           ^
+
+"Test_name.c", line 15: warning: function "f3" was declared but never referenced
+  f3 (void)
+  ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 7: warning: unrecognized #pragma
+  #pragma acc routine (one_d) /* { dg-error "names a set of overloads" } */
+          ^
+
+"Test_name.c", line 15: warning: unrecognized #pragma
+  #pragma acc routine (one) /* { dg-error "names a set of overloads" } */
+          ^
+
+"Test_name.c", line 20: warning: unrecognized #pragma
+  #pragma acc routine (incr) /* { dg-error "names a set of overloads" } */
+          ^
+
+"Test_name.c", line 26: warning: unrecognized #pragma
+  #pragma acc routine (sum)
+          ^
+
+"Test_name.c", line 30: warning: unrecognized #pragma
+  #pragma acc routine (foo::sub)
+          ^
+
+"Test_name.c", line 37: warning: unrecognized #pragma
+  #pragma acc routine
+          ^
+

@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 12: error: a variable-length array type is not allowed
+    (int[i]) { 1 };	// { dg-error "variable-sized compound literal" }
+     ^
+
+"Test_name.c", line 13: error: a compound literal of type "A [5]" is not allowed
+    (A[5]) { 1 };		// { dg-error "have incomplete type" }
+     ^
+
+"Test_name.c", line 14: error: a variable-length array type is not allowed
+    (A[i]) { 1 };		// { dg-error "have incomplete type" }
+     ^
+
+3 errors detected in the compilation of "Test_name.c".

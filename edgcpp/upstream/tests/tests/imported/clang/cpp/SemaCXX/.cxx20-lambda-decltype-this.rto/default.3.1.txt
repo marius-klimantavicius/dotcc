@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=3 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 --ms_extensions Test_name.c
+"Test_name.c", line 14: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+      auto z = [*this](auto z2, decltype(z2(this)) z3){};
+                                         ^
+
+"Test_name.c", line 22: error: "this" may only be used inside a nonstatic member function
+      auto z = []<typename TT, typename TTT=decltype(TT()(this))>(){return 0;};
+                                                          ^
+
+"Test_name.c", line 22: warning: template parameter "TT" is not used in declaring the parameter types of function template "lambda []()->auto::operator auto (*)()"
+      auto z = []<typename TT, typename TTT=decltype(TT()(this))>(){return 0;};
+                           ^
+
+"Test_name.c", line 23: error: no instance of function template "lambda []()->auto" matches the argument list
+            object type is: lambda []()->auto
+      z.template operator()<int(*)(B*)>();
+                 ^
+"Test_name.c", line 22: note: candidate function template "lambda []()->auto" failed deduction
+      auto z = []<typename TT, typename TTT=decltype(TT()(this))>(){return 0;};
+                 ^
+
+"Test_name.c", line 22: warning: variable "z" was set but never used
+      auto z = []<typename TT, typename TTT=decltype(TT()(this))>(){return 0;};
+           ^
+
+"Test_name.c", line 30: error: "this" may only be used inside a nonstatic member function
+      auto z = []<typename TT, decltype(TT()(this)) n>(){return 0;};
+                                             ^
+
+"Test_name.c", line 30: warning: template parameter "TT" is not used in declaring the parameter types of function template "lambda []()->auto::operator auto (*)()"
+      auto z = []<typename TT, decltype(TT()(this)) n>(){return 0;};
+                           ^
+
+"Test_name.c", line 30: warning: constant "n" is not used in declaring the parameter types of function template "lambda []()->auto::operator auto (*)()"
+      auto z = []<typename TT, decltype(TT()(this)) n>(){return 0;};
+                                                    ^
+
+"Test_name.c", line 31: error: no instance of function template "lambda []()->auto" matches the argument list
+            object type is: lambda []()->auto
+      z.template operator()<int(*)(C*), 8>();
+                 ^
+"Test_name.c", line 30: note: substituting explicit template arguments "<int (*)(PR45881::C *), 8>" for function template "lambda []()->auto" failed
+      auto z = []<typename TT, decltype(TT()(this)) n>(){return 0;};
+                 ^
+
+"Test_name.c", line 30: warning: variable "z" was set but never used
+      auto z = []<typename TT, decltype(TT()(this)) n>(){return 0;};
+           ^
+
+5 errors detected in the compilation of "Test_name.c".

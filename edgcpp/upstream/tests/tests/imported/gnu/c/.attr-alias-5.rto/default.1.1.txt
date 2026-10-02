@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu -w Test_name.c
+"Test_name.c", line 11: error: declaration aliased to undefined entity "¡"
+  void f0 (void) __attribute__((alias("\xa1"))); /* { dg-error "undefined symbol '\\\\241'" } */
+                                ^
+
+"Test_name.c", line 12: error: declaration aliased to undefined entity "Ã©"
+  void f1 (void) __attribute__((alias("\u00e9"))); /* { dg-error "undefined symbol '\\\\U000000e9'" } */
+                                ^
+
+"Test_name.c", line 13: error: declaration aliased to undefined entity "ï¿¿"
+  void f2 (void) __attribute__((alias("\uffff"))); /* { dg-error "undefined symbol '\\\\U0000ffff'" } */
+                                ^
+
+"Test_name.c", line 14: error: declaration aliased to undefined entity "ó¿¿¿"
+  void f3 (void) __attribute__((alias("\U000fffff"))); /* { dg-error "undefined symbol '\\\\U000fffff'" } */
+                                ^
+
+"Test_name.c", line 15: error: declaration aliased to undefined entity "÷¿¿¿"
+  void f4 (void) __attribute__((alias("\U00ffffff"))); /* { dg-error "undefined symbol '\\\\U00ffffff'" } */
+                                ^
+
+"Test_name.c", line 16: error: declaration aliased to undefined entity "÷¿¿¿"
+  void f5 (void) __attribute__((alias("\U0fffffff"))); /* { dg-error "undefined symbol '\\\\U0fffffff'" } */
+                                ^
+
+6 errors detected in the compilation of "Test_name.c".

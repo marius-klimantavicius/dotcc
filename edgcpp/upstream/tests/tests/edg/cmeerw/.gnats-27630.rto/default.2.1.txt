@@ -1,0 +1,20 @@
+fe_only -DTEST_NUMBER=2 -w -tused --c++20 --clang_version 190100 Test_name.c
+"Test_name.c", line 170: error: namespace "tmpl::ns" has no member "O2"
+        friend struct ns::O2;     // error with clang
+                          ^
+
+"Test_name.c", line 176: error: namespace "tmpl::ns" has no member "I2"
+        friend struct ns::I2;     // error with clang
+                          ^
+
+"Test_name.c", line 205: error: member "tmpl::ns::C::v" (declared at line 179) is inaccessible
+      { return ns::C::v; }
+                      ^
+          detected during instantiation of "int tmpl::outer::O2<<unnamed>>::f() [with <unnamed>=int]" at line 226
+
+"Test_name.c", line 223: error: member "tmpl::ns::C::v" (declared at line 179) is inaccessible
+      { return ns::C::v; }
+                      ^
+          detected during instantiation of "int tmpl::ns::inner::I2<<unnamed>>::f() [with <unnamed>=int]" at line 228
+
+4 errors detected in the compilation of "Test_name.c".

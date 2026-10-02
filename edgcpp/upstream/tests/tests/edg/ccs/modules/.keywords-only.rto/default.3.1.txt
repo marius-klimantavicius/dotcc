@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=3 -r --no_modules --set_flag skip_module_imports --microsoft_version 1928 --ms_c++latest Test_name.c
+"Test_name.c", line 5: error: modules are not enabled in this mode
+  export module bar;
+  ^
+
+1 error detected in the compilation of "Test_name.c".

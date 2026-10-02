@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 15: error: no instance of function template "f" matches the argument list
+            argument types are: (A)
+    f(A());			// { dg-message "from here" }
+    ^
+"Test_name.c", line 8: note: candidate function template "f" failed deduction
+  decltype(f(T())) f(T t)		// { dg-error "depth" }
+                   ^
+
+1 error detected in the compilation of "Test_name.c".

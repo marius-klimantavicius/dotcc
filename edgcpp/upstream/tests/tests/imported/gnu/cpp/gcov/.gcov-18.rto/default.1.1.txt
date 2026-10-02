@@ -1,0 +1,9 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./gcov/gcov-18.C", line 278: warning: variable "v2" was declared but never referenced
+      constexpr int v2 = mcdc010a (4, 2);
+                    ^
+
+"./gcov/gcov-18.C", line 280: warning: variable "v3" was declared but never referenced
+      constexpr int v3 = mcdc010b (2, 4);
+                    ^
+

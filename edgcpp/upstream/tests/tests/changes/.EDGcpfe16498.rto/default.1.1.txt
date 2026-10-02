@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --clang Test_name.c
+"Test_name.c", line 14: warning: keyword "__is_base_of" will be treated as a context-sensitive keyword from this point
+  struct __is_base_of {};
+         ^
+

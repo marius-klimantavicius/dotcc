@@ -1,0 +1,20 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 23: warning: variable "x1" was declared but never referenced
+    X<&B::i> x1;  // { dg-error "protected" }
+             ^
+
+"Test_name.c", line 24: warning: variable "x2" was declared but never referenced
+    X<&D2::i> x2; // { dg-error "protected" }
+              ^
+
+"Test_name.c", line 23: error: member "B::i" (declared at line 8) is inaccessible
+    X<&B::i> x1;  // { dg-error "protected" }
+          ^
+          detected during instantiation of "void fr<T>() [with T=char]" at line 27
+
+"Test_name.c", line 24: error: member "B::i" (declared at line 8) is inaccessible
+    X<&D2::i> x2; // { dg-error "protected" }
+           ^
+          detected during instantiation of "void fr<T>() [with T=char]" at line 27
+
+2 errors detected in the compilation of "Test_name.c".

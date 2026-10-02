@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 14: error: invalid type conversion
+    (void) static_cast<A1*>(c);	// { dg-error "10:invalid 'static_cast'" }
+           ^
+
+"Test_name.c", line 15: error: invalid type conversion
+    (void) static_cast<C*>(a2);	// { dg-error "10:invalid 'static_cast'" }
+           ^
+
+"Test_name.c", line 16: error: invalid type conversion
+    (void) static_cast<B2*>(b1);	// { dg-error "10:invalid 'static_cast'" }
+           ^
+
+"Test_name.c", line 26: error: invalid type conversion
+    (void) static_cast<D1&>(c);	// { dg-error "10:invalid 'static_cast'" }
+           ^
+
+"Test_name.c", line 27: error: invalid type conversion
+    (void) static_cast<C&>(d2);	// { dg-error "10:invalid 'static_cast'" }
+           ^
+
+"Test_name.c", line 28: error: invalid type conversion
+    (void) static_cast<E2&>(e1);	// { dg-error "10:invalid 'static_cast'" }
+           ^
+
+6 errors detected in the compilation of "Test_name.c".

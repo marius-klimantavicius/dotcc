@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 16: warning: explicit lambda template parameters are a C++20 feature
+    auto glambda = [] <typename T> (T a) { return a; };
+                      ^
+
+"Test_name.c", line 19: error: no suitable conversion function from "lambda [](T)->auto" to "char (*)(int)" exists
+    f2(glambda); // { dg-error "invalid user-defined conversion" }
+       ^
+
+"Test_name.c", line 20: error: more than one instance of overloaded function "g" matches the argument list:
+            function "g(int (*)(int))" (declared at line 9)
+            function "g(char (*)(char))" (declared at line 10)
+            argument types are: (lambda [](T)->auto)
+    g(glambda); // { dg-error "ambiguous" }
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --multi_trans -tused Test_name.c tmpl-class-mem-mismatch-p2.C
+"tmpl-class-mem-mismatch-p2.C", line 2: error: declaration of member "X<<unnamed>>::<unnamed>" is incompatible with a declaration in another translation unit
+            the other declaration is at line 8 of "Test_name.c"
+    union {
+    ^
+          detected during compilation of secondary translation unit "tmpl-class-mem-mismatch-p2.C"
+
+"tmpl-class-mem-mismatch-p2.C", line 5: error: declaration of member "X<<unnamed>>::<unnamed>" is incompatible with a declaration in another translation unit
+            the other declaration is at line 11 of "Test_name.c"
+    union {
+    ^
+          detected during compilation of secondary translation unit "tmpl-class-mem-mismatch-p2.C"
+
+"tmpl-class-mem-mismatch-p2.C", line 8: error: declaration of class template "X<<unnamed>>::<unnamed>" is incompatible with a declaration in another translation unit
+            the other declaration is at line 11 of "Test_name.c"
+    union {
+          ^
+          detected during compilation of secondary translation unit "tmpl-class-mem-mismatch-p2.C"
+
+"tmpl-class-mem-mismatch-p2.C", line 5: error: declaration of class template "X<<unnamed>>::<unnamed>" is incompatible with a declaration in another translation unit
+            the other declaration is at line 8 of "Test_name.c"
+    union {
+          ^
+          detected during compilation of secondary translation unit "tmpl-class-mem-mismatch-p2.C"
+
+4 errors detected in the compilation of "Test_name.c".

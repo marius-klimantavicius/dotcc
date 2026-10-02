@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 71: warning: variable "<unnamed>::three::anonymous_three_var" was declared but never referenced
+  int anonymous_three_var;
+      ^
+
+"Test_name.c", line 86: warning: variable "one::<unnamed>::one_anonymous_var" was declared but never referenced
+  int one_anonymous_var;
+      ^
+

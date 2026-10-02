@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 26: error: too many initializer values
+  const char c[0] = { 1 };      // { dg-error "too many initializers for .const char \\\[0]" }
+                      ^
+
+"Test_name.c", line 44: error: too many initializer values
+    const char b[0] = { 0 };    // { dg-error "too many initializers" }
+                        ^
+
+"Test_name.c", line 48: error: a value of type "const char [1]" cannot be used to initialize an entity of type "const char [0]"
+    const char c[0] = "";       // { dg-warning "too long" }
+                      ^
+
+"Test_name.c", line 58: error: too many initializer values
+    A (sizeof (const char[0]){ 0 } == 0);    // { dg-error "too many" }
+    ^
+
+"Test_name.c", line 59: error: too many initializer values
+    A (sizeof (const char[0]){ 1 } == 0);    // { dg-error "too many" }
+    ^
+
+"Test_name.c", line 60: error: a value of type "const char [1]" cannot be used to initialize an entity of type "const char [0]"
+    A (sizeof (const char[0]){ "" } == 0);   // { dg-warning "too long" }
+    ^
+
+"Test_name.c", line 61: error: a value of type "const char [2]" cannot be used to initialize an entity of type "const char [0]"
+    A (sizeof (const char[0]){ "1" } == 0);  // { dg-warning "too long" }
+    ^
+
+7 errors detected in the compilation of "Test_name.c".

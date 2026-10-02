@@ -1,0 +1,86 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 10: error: template parameter pack not at end of parameter list
+  template<template<int..., int...> typename> struct TPiPi; // FIXME: Why is this not ill-formed?
+                          ^
+
+"Test_name.c", line 36: error: class template "ii" is not compatible with template template parameter "<unnamed>"
+    using err1 = Ti<ii>; // expected-error {{different template parameters}}
+                    ^
+
+"Test_name.c", line 37: error: class template "iiPi" is not compatible with template template parameter "<unnamed>"
+    using err2 = Ti<iiPi>; // expected-error {{different template parameters}}
+                    ^
+
+"Test_name.c", line 38: error: class template "t0" is not compatible with template template parameter "<unnamed>"
+    using err3 = Ti<t0>; // expected-error {{different template parameters}}
+                    ^
+
+"Test_name.c", line 39: error: class template "it" is not compatible with template template parameter "<unnamed>"
+    using err4 = Ti<it>; // expected-error {{different template parameters}}
+                    ^
+
+"Test_name.c", line 47: error: class template "t0" is not compatible with template template parameter "<unnamed>"
+    using err1 = TPi<t0>; // expected-error {{different template parameters}}
+                     ^
+
+"Test_name.c", line 48: error: class template "iDt" is not compatible with template template parameter "<unnamed>"
+    using err2 = TPi<iDt>; // expected-error {{different template parameters}}
+                     ^
+
+"Test_name.c", line 49: error: class template "it" is not compatible with template template parameter "<unnamed>"
+    using err3 = TPi<it>; // expected-error {{different template parameters}}
+                     ^
+
+"Test_name.c", line 60: error: class template "ii" is not compatible with template template parameter "<unnamed>"
+    using err1 = tT0<int, ii>; // expected-error {{different template parameters}}
+                          ^
+
+"Test_name.c", line 61: error: class template "i" is not compatible with template template parameter "<unnamed>"
+    using err2 = tT0<short, i>; // FIXME: should this be OK?
+                            ^
+
+"Test_name.c", line 62: error: class template "i" is not compatible with template template parameter "<unnamed>"
+    using err2a = tT0<long long, i>; // FIXME: should this be OK (if long long is larger than int)?
+                                 ^
+
+"Test_name.c", line 63: error: class template "i" is not compatible with template template parameter "<unnamed>"
+    using err2b = tT0<void*, i>; // expected-error {{different template parameters}}
+                             ^
+
+"Test_name.c", line 64: error: class template "t0" is not compatible with template template parameter "<unnamed>"
+    using err3 = tT0<short, t0>; // expected-error {{different template parameters}}
+                            ^
+
+"Test_name.c", line 67: error: class template "it" is not compatible with template template parameter "<unnamed>"
+    using err4 = Tt0<it>; // expected-error {{different template parameters}}
+                     ^
+
+"Test_name.c", line 83: error: class template "Auto::AutoPtr" is not compatible with template template parameter "T"
+    TInt<AutoPtr> iap; // FIXME: ill-formed (?)
+         ^
+
+"Test_name.c", line 86: error: class template "Auto::IntPtr" is not compatible with template template parameter "T"
+    TInt<IntPtr> iip; // expected-error {{different template parameters}}
+         ^
+
+"Test_name.c", line 91: error: class template "Auto::Int" is not compatible with template template parameter "T"
+    TIntPtr<Int> ipi; // expected-error {{different template parameters}}
+            ^
+
+"Test_name.c", line 95: error: class template "Auto::AutoPtr" is not compatible with template template parameter "T"
+    TAuto<AutoPtr> aap; // FIXME: ill-formed (?)
+          ^
+
+"Test_name.c", line 101: error: class template "Auto::Int" is not compatible with template template parameter "T"
+    TAutoPtr<Int> api; // FIXME: ill-formed (?)
+             ^
+
+"Test_name.c", line 102: error: class template "Auto::IntPtr" is not compatible with template template parameter "T"
+    TAutoPtr<IntPtr> apip; // FIXME: ill-formed (?)
+             ^
+
+"Test_name.c", line 116: error: class template "Auto::AutoPtr" is not compatible with template template parameter "T"
+    TDecltypeAuto<AutoPtr> daap; // FIXME: should probably be ill-formed
+                  ^
+
+21 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=2 --g++ --gnu_version=30300 Test_name.c
+"Test_name.c", line 15: error: a member of type "const char *const" cannot have an in-class initializer
+       static const char * const str = "test";
+                                     ^
+
+"Test_name.c", line 20: error: const member "foo::str" requires an initializer
+  char const*const foo::str;
+                           ^
+
+2 errors detected in the compilation of "Test_name.c".

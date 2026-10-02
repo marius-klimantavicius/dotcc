@@ -1,0 +1,218 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c17 --strict_gnu Test_name.c
+"Test_name.c", line 38: error: identifier "_Decimal32" is undefined
+  DECIMAL_COMPOSITE_DECL(32);  /* { dg-error "incompatible types when assigning to type '\[^\n\]*' from type '\[^\n\]*'" } */
+  ^
+
+"Test_name.c", line 38: error: expected a type specifier
+  DECIMAL_COMPOSITE_DECL(32);  /* { dg-error "incompatible types when assigning to type '\[^\n\]*' from type '\[^\n\]*'" } */
+  ^
+
+"Test_name.c", line 38: error: function returning array is not allowed
+  DECIMAL_COMPOSITE_DECL(32);  /* { dg-error "incompatible types when assigning to type '\[^\n\]*' from type '\[^\n\]*'" } */
+  ^
+
+"Test_name.c", line 38: error: function "_Decimal32" is not a type name
+  DECIMAL_COMPOSITE_DECL(32);  /* { dg-error "incompatible types when assigning to type '\[^\n\]*' from type '\[^\n\]*'" } */
+  ^
+
+"Test_name.c", line 38: warning: expression has no effect
+  DECIMAL_COMPOSITE_DECL(32);  /* { dg-error "incompatible types when assigning to type '\[^\n\]*' from type '\[^\n\]*'" } */
+  ^
+
+"Test_name.c", line 38: error: expected a ";"
+  DECIMAL_COMPOSITE_DECL(32);  /* { dg-error "incompatible types when assigning to type '\[^\n\]*' from type '\[^\n\]*'" } */
+  ^
+
+"Test_name.c", line 38: error: expected an expression
+  DECIMAL_COMPOSITE_DECL(32);  /* { dg-error "incompatible types when assigning to type '\[^\n\]*' from type '\[^\n\]*'" } */
+  ^
+
+"Test_name.c", line 38: error: expected an expression
+  DECIMAL_COMPOSITE_DECL(32);  /* { dg-error "incompatible types when assigning to type '\[^\n\]*' from type '\[^\n\]*'" } */
+  ^
+
+"Test_name.c", line 38: error: expression must have arithmetic type
+  DECIMAL_COMPOSITE_DECL(32);  /* { dg-error "incompatible types when assigning to type '\[^\n\]*' from type '\[^\n\]*'" } */
+  ^
+
+"Test_name.c", line 38: error: expected a ")"
+  DECIMAL_COMPOSITE_DECL(32);  /* { dg-error "incompatible types when assigning to type '\[^\n\]*' from type '\[^\n\]*'" } */
+  ^
+
+"Test_name.c", line 38: error: expected an expression
+  DECIMAL_COMPOSITE_DECL(32);  /* { dg-error "incompatible types when assigning to type '\[^\n\]*' from type '\[^\n\]*'" } */
+  ^
+
+"Test_name.c", line 38: error: expected a ")"
+  DECIMAL_COMPOSITE_DECL(32);  /* { dg-error "incompatible types when assigning to type '\[^\n\]*' from type '\[^\n\]*'" } */
+  ^
+
+"Test_name.c", line 42: error: identifier "_Decimal64" is undefined
+  DECIMAL_COMPOSITE_DECL(64);  /* { dg-error "incompatible types when assigning to type '\[^\n\]*' from type '\[^\n\]*'" } */
+  ^
+
+"Test_name.c", line 42: error: expected a type specifier
+  DECIMAL_COMPOSITE_DECL(64);  /* { dg-error "incompatible types when assigning to type '\[^\n\]*' from type '\[^\n\]*'" } */
+  ^
+
+"Test_name.c", line 42: error: function returning array is not allowed
+  DECIMAL_COMPOSITE_DECL(64);  /* { dg-error "incompatible types when assigning to type '\[^\n\]*' from type '\[^\n\]*'" } */
+  ^
+
+"Test_name.c", line 42: error: function "_Decimal64" is not a type name
+  DECIMAL_COMPOSITE_DECL(64);  /* { dg-error "incompatible types when assigning to type '\[^\n\]*' from type '\[^\n\]*'" } */
+  ^
+
+"Test_name.c", line 42: warning: expression has no effect
+  DECIMAL_COMPOSITE_DECL(64);  /* { dg-error "incompatible types when assigning to type '\[^\n\]*' from type '\[^\n\]*'" } */
+  ^
+
+"Test_name.c", line 42: error: expected a ";"
+  DECIMAL_COMPOSITE_DECL(64);  /* { dg-error "incompatible types when assigning to type '\[^\n\]*' from type '\[^\n\]*'" } */
+  ^
+
+"Test_name.c", line 42: error: expected an expression
+  DECIMAL_COMPOSITE_DECL(64);  /* { dg-error "incompatible types when assigning to type '\[^\n\]*' from type '\[^\n\]*'" } */
+  ^
+
+"Test_name.c", line 42: error: expected an expression
+  DECIMAL_COMPOSITE_DECL(64);  /* { dg-error "incompatible types when assigning to type '\[^\n\]*' from type '\[^\n\]*'" } */
+  ^
+
+"Test_name.c", line 42: error: expression must have arithmetic type
+  DECIMAL_COMPOSITE_DECL(64);  /* { dg-error "incompatible types when assigning to type '\[^\n\]*' from type '\[^\n\]*'" } */
+  ^
+
+"Test_name.c", line 42: error: expected a ")"
+  DECIMAL_COMPOSITE_DECL(64);  /* { dg-error "incompatible types when assigning to type '\[^\n\]*' from type '\[^\n\]*'" } */
+  ^
+
+"Test_name.c", line 42: error: expected an expression
+  DECIMAL_COMPOSITE_DECL(64);  /* { dg-error "incompatible types when assigning to type '\[^\n\]*' from type '\[^\n\]*'" } */
+  ^
+
+"Test_name.c", line 42: error: expected a ")"
+  DECIMAL_COMPOSITE_DECL(64);  /* { dg-error "incompatible types when assigning to type '\[^\n\]*' from type '\[^\n\]*'" } */
+  ^
+
+"Test_name.c", line 46: error: identifier "_Decimal128" is undefined
+  DECIMAL_COMPOSITE_DECL(128); /* { dg-error "incompatible types when assigning to type '\[^\n\]*' from type '\[^\n\]*'" } */
+  ^
+
+"Test_name.c", line 46: error: expected a type specifier
+  DECIMAL_COMPOSITE_DECL(128); /* { dg-error "incompatible types when assigning to type '\[^\n\]*' from type '\[^\n\]*'" } */
+  ^
+
+"Test_name.c", line 46: error: function returning array is not allowed
+  DECIMAL_COMPOSITE_DECL(128); /* { dg-error "incompatible types when assigning to type '\[^\n\]*' from type '\[^\n\]*'" } */
+  ^
+
+"Test_name.c", line 46: error: function "_Decimal128" is not a type name
+  DECIMAL_COMPOSITE_DECL(128); /* { dg-error "incompatible types when assigning to type '\[^\n\]*' from type '\[^\n\]*'" } */
+  ^
+
+"Test_name.c", line 46: warning: expression has no effect
+  DECIMAL_COMPOSITE_DECL(128); /* { dg-error "incompatible types when assigning to type '\[^\n\]*' from type '\[^\n\]*'" } */
+  ^
+
+"Test_name.c", line 46: error: expected a ";"
+  DECIMAL_COMPOSITE_DECL(128); /* { dg-error "incompatible types when assigning to type '\[^\n\]*' from type '\[^\n\]*'" } */
+  ^
+
+"Test_name.c", line 46: error: expected an expression
+  DECIMAL_COMPOSITE_DECL(128); /* { dg-error "incompatible types when assigning to type '\[^\n\]*' from type '\[^\n\]*'" } */
+  ^
+
+"Test_name.c", line 46: error: expected an expression
+  DECIMAL_COMPOSITE_DECL(128); /* { dg-error "incompatible types when assigning to type '\[^\n\]*' from type '\[^\n\]*'" } */
+  ^
+
+"Test_name.c", line 46: error: expression must have arithmetic type
+  DECIMAL_COMPOSITE_DECL(128); /* { dg-error "incompatible types when assigning to type '\[^\n\]*' from type '\[^\n\]*'" } */
+  ^
+
+"Test_name.c", line 46: error: expected a ")"
+  DECIMAL_COMPOSITE_DECL(128); /* { dg-error "incompatible types when assigning to type '\[^\n\]*' from type '\[^\n\]*'" } */
+  ^
+
+"Test_name.c", line 46: error: expected an expression
+  DECIMAL_COMPOSITE_DECL(128); /* { dg-error "incompatible types when assigning to type '\[^\n\]*' from type '\[^\n\]*'" } */
+  ^
+
+"Test_name.c", line 46: error: expected a ")"
+  DECIMAL_COMPOSITE_DECL(128); /* { dg-error "incompatible types when assigning to type '\[^\n\]*' from type '\[^\n\]*'" } */
+  ^
+
+"Test_name.c", line 52: warning: expression has no effect
+    DECIMAL_COMPOSITE_TEST(32);  /* { dg-error "incompatible pointer type" } */
+    ^
+
+"Test_name.c", line 52: error: expected a ";"
+    DECIMAL_COMPOSITE_TEST(32);  /* { dg-error "incompatible pointer type" } */
+    ^
+
+"Test_name.c", line 52: error: identifier "d32" is undefined
+    DECIMAL_COMPOSITE_TEST(32);  /* { dg-error "incompatible pointer type" } */
+    ^
+
+"Test_name.c", line 52: error: identifier "h1_32" is undefined
+    DECIMAL_COMPOSITE_TEST(32);  /* { dg-error "incompatible pointer type" } */
+    ^
+
+"Test_name.c", line 52: error: identifier "h2_32" is undefined
+    DECIMAL_COMPOSITE_TEST(32);  /* { dg-error "incompatible pointer type" } */
+    ^
+
+"Test_name.c", line 52: error: identifier "h3_32" is undefined
+    DECIMAL_COMPOSITE_TEST(32);  /* { dg-error "incompatible pointer type" } */
+    ^
+
+"Test_name.c", line 53: warning: expression has no effect
+    DECIMAL_COMPOSITE_TEST(64);  /* { dg-error "incompatible pointer type" } */
+    ^
+
+"Test_name.c", line 53: error: expected a ";"
+    DECIMAL_COMPOSITE_TEST(64);  /* { dg-error "incompatible pointer type" } */
+    ^
+
+"Test_name.c", line 53: error: identifier "d64" is undefined
+    DECIMAL_COMPOSITE_TEST(64);  /* { dg-error "incompatible pointer type" } */
+    ^
+
+"Test_name.c", line 53: error: identifier "h1_64" is undefined
+    DECIMAL_COMPOSITE_TEST(64);  /* { dg-error "incompatible pointer type" } */
+    ^
+
+"Test_name.c", line 53: error: identifier "h2_64" is undefined
+    DECIMAL_COMPOSITE_TEST(64);  /* { dg-error "incompatible pointer type" } */
+    ^
+
+"Test_name.c", line 53: error: identifier "h3_64" is undefined
+    DECIMAL_COMPOSITE_TEST(64);  /* { dg-error "incompatible pointer type" } */
+    ^
+
+"Test_name.c", line 54: warning: expression has no effect
+    DECIMAL_COMPOSITE_TEST(128); /* { dg-error "incompatible pointer type" } */
+    ^
+
+"Test_name.c", line 54: error: expected a ";"
+    DECIMAL_COMPOSITE_TEST(128); /* { dg-error "incompatible pointer type" } */
+    ^
+
+"Test_name.c", line 54: error: identifier "d128" is undefined
+    DECIMAL_COMPOSITE_TEST(128); /* { dg-error "incompatible pointer type" } */
+    ^
+
+"Test_name.c", line 54: error: identifier "h1_128" is undefined
+    DECIMAL_COMPOSITE_TEST(128); /* { dg-error "incompatible pointer type" } */
+    ^
+
+"Test_name.c", line 54: error: identifier "h2_128" is undefined
+    DECIMAL_COMPOSITE_TEST(128); /* { dg-error "incompatible pointer type" } */
+    ^
+
+"Test_name.c", line 54: error: identifier "h3_128" is undefined
+    DECIMAL_COMPOSITE_TEST(128); /* { dg-error "incompatible pointer type" } */
+    ^
+
+48 errors detected in the compilation of "Test_name.c".

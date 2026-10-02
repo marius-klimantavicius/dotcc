@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=8 --c11 -w --target linux_aarch64 --gn 140200 Test_name.c

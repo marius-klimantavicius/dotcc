@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 33: warning: function "operator new(unsigned long, void *)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+    template <typename f, typename x> w(f, x y) { new (0) af(y.a); }
+                                                  ^
+          detected during:
+            instantiation of "w::w(f, x) [with f=z::aj, x=u]" at line 37
+            instantiation of "z::z(x) [with x=u]" at line 41
+            instantiation of "am::am(x) [with x=u]" at line 42
+            instantiation of "am an<<unnamed>,x>(x) [with <unnamed>=int, x=l]" at line 43
+            instantiation of "am ao<<unnamed>>() [with <unnamed>=bt]" at line 67
+            instantiation of "bd<bc>::bd(bd<bc>::bf, bd<bc>::bf, const bc::bg &, ay) [with bc=bt]" at line 74
+            instantiation of "bn<bo, bc> bq<bc,bo>(bo) [with bc=bt, bo=const wchar_t *]" at line 83
+            instantiation of "bw::bw(bo, bo, m, ay) [with bo=const wchar_t *]" at line 81
+            instantiation of "void bw::assign(b<bv, x>) [with bv=bt::be, x=int]" at line 90
+

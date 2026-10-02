@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 7: error: a value of type "int" cannot be used to initialize an entity of type "void *"
+  void* ptr1 = zero();		// { dg-error "int" }
+               ^
+
+"Test_name.c", line 8: error: a value of type "int" cannot be used to initialize an entity of type "void *const"
+  constexpr void* ptr2 = zero();	// { dg-error "int" }
+                         ^
+
+"Test_name.c", line 8: warning: variable "ptr2" was declared but never referenced
+  constexpr void* ptr2 = zero();	// { dg-error "int" }
+                  ^
+
+2 errors detected in the compilation of "Test_name.c".

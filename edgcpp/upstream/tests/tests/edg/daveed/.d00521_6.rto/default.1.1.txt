@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --microsoft -x Test_name.c
+"Test_name.c", line 36: warning: statement is unreachable
+  	throw S<int>();
+  	^
+

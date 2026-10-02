@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --g++ Test_name.c
+"Test_name.c", line 12: warning: expected a ")"; pragma ignored
+  #pragma pack(2, 2)  // Previously an error; now a warning.  No packing
+                ^
+

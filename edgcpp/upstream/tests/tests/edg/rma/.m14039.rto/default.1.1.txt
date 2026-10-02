@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 14: error: function "X<T>::X" is not a template
+  template<class T> X<T>::X<T>(T ii) : i(ii) { }
+                          ^
+
+"Test_name.c", line 18: error: argument list for class template "X" is missing
+  	return X(0).i;
+  	       ^
+
+2 errors detected in the compilation of "Test_name.c".

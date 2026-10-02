@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 13: warning: variable "a" is used before its value is set
+    if (a.i)	/* { dg-warning "'a.i' is used uninitialized" } */
+        ^
+
+"Test_name.c", line 22: warning: variable "a" is used before its value is set
+    if (a.a)	/* { dg-warning "'a.a' is used uninitialized" } */
+        ^
+

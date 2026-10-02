@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 27: error: function "A::f(Private)" (declared at line 20) is inaccessible
+    using A::f; // expected-error {{private member}}
+             ^
+
+"Test_name.c", line 45: error: "A::A(Private)" (declared at line 19) is inaccessible
+    C(Private p) : B(p) {} // expected-error {{private}}
+                    ^
+
+"Test_name.c", line 57: error: "A::A(Protected)" (declared at line 15) is inaccessible
+    B b(protected_); // expected-error {{protected}}
+        ^
+
+"Test_name.c", line 58: error: "A::A(Private)" (declared at line 19) is inaccessible
+    B c(private_); // expected-error {{private}}
+        ^
+
+4 errors detected in the compilation of "Test_name.c".

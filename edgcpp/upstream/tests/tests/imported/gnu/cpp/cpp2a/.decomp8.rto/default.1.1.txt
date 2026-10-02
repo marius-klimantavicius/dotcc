@@ -1,0 +1,74 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 13: warning: structured bindings are a C++17 feature
+    static auto [i, j] = a;		// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+                ^
+
+"Test_name.c", line 13: error: a structured binding cannot declare an explicit storage class
+    static auto [i, j] = a;		// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+    ^
+
+"Test_name.c", line 15: warning: structured bindings are a C++17 feature
+    static auto [k, l] = a;		// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+                ^
+
+"Test_name.c", line 15: error: a structured binding cannot declare an explicit storage class
+    static auto [k, l] = a;		// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+    ^
+
+"Test_name.c", line 19: warning: structured bindings are a C++17 feature
+      static auto [i, j] = a;		// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+                  ^
+
+"Test_name.c", line 19: error: a structured binding cannot declare an explicit storage class
+      static auto [i, j] = a;		// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+      ^
+
+"Test_name.c", line 21: warning: structured bindings are a C++17 feature
+      static auto [k, l] = a;		// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+                  ^
+
+"Test_name.c", line 21: error: a structured binding cannot declare an explicit storage class
+      static auto [k, l] = a;		// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+      ^
+
+"Test_name.c", line 26: warning: structured bindings are a C++17 feature
+      static auto [i, j] = a;		// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+                  ^
+
+"Test_name.c", line 26: error: a structured binding cannot declare an explicit storage class
+      static auto [i, j] = a;		// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+      ^
+
+"Test_name.c", line 28: warning: structured bindings are a C++17 feature
+      static auto [k, l] = a;		// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+                  ^
+
+"Test_name.c", line 28: error: a structured binding cannot declare an explicit storage class
+      static auto [k, l] = a;		// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+      ^
+
+"Test_name.c", line 43: warning: structured bindings are a C++17 feature
+        static auto [i, j] = a;		// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+                    ^
+
+"Test_name.c", line 43: error: a structured binding cannot declare an explicit storage class
+        static auto [i, j] = a;		// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+        ^
+
+"Test_name.c", line 45: warning: structured bindings are a C++17 feature
+        static auto && [u, v, w] = Y{};	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+                       ^
+
+"Test_name.c", line 45: error: a structured binding cannot declare an explicit storage class
+        static auto && [u, v, w] = Y{};	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+        ^
+
+"Test_name.c", line 49: warning: structured bindings are a C++17 feature
+  	static auto && [u, v, w] = Y{};	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+  	               ^
+
+"Test_name.c", line 49: error: a structured binding cannot declare an explicit storage class
+  	static auto && [u, v, w] = Y{};	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+  	^
+
+9 errors detected in the compilation of "Test_name.c".

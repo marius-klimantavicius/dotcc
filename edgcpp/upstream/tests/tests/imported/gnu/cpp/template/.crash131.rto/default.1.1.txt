@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 12: error: expression must have a constant value
+      Y<f> y;  // { dg-error "not a constant" }
+        ^
+"Test_name.c", line 12: note: the value of parameter "f" (declared at line 10) cannot be used as a constant
+      Y<f> y;  // { dg-error "not a constant" }
+        ^
+          detected during instantiation of "X<F>::X(F) [with F=int]" at line 18
+
+"Test_name.c", line 14: error: class "X<F>::Y<<error-constant>> [with F=int]" has no member "value"
+      y.value();
+        ^
+          detected during instantiation of "X<F>::X(F) [with F=int]" at line 18
+
+2 errors detected in the compilation of "Test_name.c".

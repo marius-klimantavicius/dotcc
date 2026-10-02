@@ -1,0 +1,1207 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"./c23-constexpr-1.c", line 7: warning: this declaration has no storage class or type specifier
+  constexpr int v1 = 1;
+  ^
+
+"./c23-constexpr-1.c", line 7: error: expected a ";"
+  constexpr int v1 = 1;
+            ^
+
+"./c23-constexpr-1.c", line 8: error: identifier "v1" is undefined
+  static_assert (v1 == 1);
+                 ^
+
+"./c23-constexpr-1.c", line 11: error: expected a ")"
+  extern typeof (&(constexpr int) {}) pci;
+                             ^
+
+"./c23-constexpr-1.c", line 11: error: expected a ")"
+  extern typeof (&(constexpr int) {}) pci;
+                                  ^
+
+"./c23-constexpr-1.c", line 15: error: expression must have a constant value
+  static_assert (v1 == 1);
+                    ^
+
+"./c23-constexpr-1.c", line 16: error: declaration is incompatible with "int constexpr" (declared at line 7)
+  unsigned int constexpr v2 = 2;
+               ^
+
+"./c23-constexpr-1.c", line 16: error: expected a ";"
+  unsigned int constexpr v2 = 2;
+                         ^
+
+"./c23-constexpr-1.c", line 17: error: identifier "v2" is undefined
+  static_assert (v2 == 2);
+                 ^
+
+"./c23-constexpr-1.c", line 20: warning: explicit type is missing ("int" assumed)
+  static constexpr char v3 = 3;
+         ^
+
+"./c23-constexpr-1.c", line 20: error: external/internal linkage conflict with previous declaration at line 16
+  static constexpr char v3 = 3;
+         ^
+
+"./c23-constexpr-1.c", line 20: error: expected a ";"
+  static constexpr char v3 = 3;
+                   ^
+
+"./c23-constexpr-1.c", line 21: error: identifier "v3" is undefined
+  static_assert (v3 == 3);
+                 ^
+
+"./c23-constexpr-1.c", line 24: warning: this declaration has no storage class or type specifier
+  constexpr void *v4 = 0;
+  ^
+
+"./c23-constexpr-1.c", line 24: error: expected a ";"
+  constexpr void *v4 = 0;
+            ^
+
+"./c23-constexpr-1.c", line 25: error: identifier "v4" is undefined
+  extern typeof (v4) *pcpv;
+                 ^
+
+"./c23-constexpr-1.c", line 27: warning: this declaration has no storage class or type specifier
+  constexpr int *v5 = nullptr;
+  ^
+
+"./c23-constexpr-1.c", line 27: error: expected a ";"
+  constexpr int *v5 = nullptr;
+            ^
+
+"./c23-constexpr-1.c", line 28: error: identifier "v5" is undefined
+  extern typeof (v5) *pcpi;
+                 ^
+
+"./c23-constexpr-1.c", line 30: warning: this declaration has no storage class or type specifier
+  constexpr double v6 = 3.5;
+  ^
+
+"./c23-constexpr-1.c", line 30: error: expected a ";"
+  constexpr double v6 = 3.5;
+            ^
+
+"./c23-constexpr-1.c", line 31: error: identifier "v6" is undefined
+  extern typeof (v6) *pcd;
+                 ^
+
+"./c23-constexpr-1.c", line 33: error: expected a ";"
+  auto constexpr v7 = 1.0;
+                 ^
+
+"./c23-constexpr-1.c", line 33: error: a variable declared with "auto" requires an initializer
+  auto constexpr v7 = 1.0;
+  ^
+
+"./c23-constexpr-1.c", line 34: error: identifier "v7" is undefined
+  extern typeof (v7) *pcd;
+                 ^
+
+"./c23-constexpr-1.c", line 35: warning: this declaration has no storage class or type specifier
+  constexpr auto v8 = 1.5f;
+  ^
+
+"./c23-constexpr-1.c", line 35: error: expected a ";"
+  constexpr auto v8 = 1.5f;
+            ^
+
+"./c23-constexpr-1.c", line 36: error: identifier "v8" is undefined
+  extern typeof (v8) *pcf;
+                 ^
+
+"./c23-constexpr-1.c", line 38: warning: this declaration has no storage class or type specifier
+  constexpr static long v9 = 2ULL;
+  ^
+
+"./c23-constexpr-1.c", line 38: error: expected a ";"
+  constexpr static long v9 = 2ULL;
+            ^
+
+"./c23-constexpr-1.c", line 39: error: identifier "v9" is undefined
+  static_assert (v9 == 2);
+                 ^
+
+"./c23-constexpr-1.c", line 42: error: expected a ")"
+  const short *v10 = &(constexpr short) { 10 };
+                                 ^
+
+"./c23-constexpr-1.c", line 42: warning: a value of type "int *" cannot be used to initialize an entity of type "const short *"
+  const short *v10 = &(constexpr short) { 10 };
+                     ^
+
+"./c23-constexpr-1.c", line 42: error: expected a ";"
+  const short *v10 = &(constexpr short) { 10 };
+                                        ^
+
+"./c23-constexpr-1.c", line 45: warning: this declaration has no storage class or type specifier
+  constexpr volatile int *v11 = nullptr;
+  ^
+
+"./c23-constexpr-1.c", line 45: error: expected a ";"
+  constexpr volatile int *v11 = nullptr;
+            ^
+
+"./c23-constexpr-1.c", line 46: error: identifier "v11" is undefined
+  extern typeof (v11) *pcpvi;
+                 ^
+
+"./c23-constexpr-1.c", line 48: warning: this declaration has no storage class or type specifier
+  constexpr _Atomic int *v12 = nullptr;
+  ^
+
+"./c23-constexpr-1.c", line 48: error: expected a ";"
+  constexpr _Atomic int *v12 = nullptr;
+            ^
+
+"./c23-constexpr-1.c", line 49: error: identifier "v12" is undefined
+  extern typeof (v12) *pcpai;
+                 ^
+
+"./c23-constexpr-1.c", line 51: warning: this declaration has no storage class or type specifier
+  constexpr int *restrict *v13 = nullptr;
+  ^
+
+"./c23-constexpr-1.c", line 51: error: expected a ";"
+  constexpr int *restrict *v13 = nullptr;
+            ^
+
+"./c23-constexpr-1.c", line 52: error: identifier "v13" is undefined
+  extern typeof (v13) cprpi;
+                 ^
+
+"./c23-constexpr-1.c", line 55: warning: this declaration has no storage class or type specifier
+  constexpr restrict P *v14 = nullptr;
+  ^
+
+"./c23-constexpr-1.c", line 55: error: expected a ";"
+  constexpr restrict P *v14 = nullptr;
+            ^
+
+"./c23-constexpr-1.c", line 56: error: identifier "v14" is undefined
+  extern typeof (v14) cprpi;
+                 ^
+
+"./c23-constexpr-1.c", line 58: warning: this declaration has no storage class or type specifier
+  constexpr struct s15 *v16 = nullptr;
+  ^
+
+"./c23-constexpr-1.c", line 58: error: expected a ";"
+  constexpr struct s15 *v16 = nullptr;
+            ^
+
+"./c23-constexpr-1.c", line 59: warning: this declaration has no storage class or type specifier
+  constexpr char v17[3] = { 1, 2, 3 };
+  ^
+
+"./c23-constexpr-1.c", line 59: error: expected a ";"
+  constexpr char v17[3] = { 1, 2, 3 };
+            ^
+
+"./c23-constexpr-1.c", line 61: warning: this declaration has no storage class or type specifier
+  constexpr struct s18 v19 = { 12345ULL, 0, 19.0L };
+  ^
+
+"./c23-constexpr-1.c", line 61: error: expected a ";"
+  constexpr struct s18 v19 = { 12345ULL, 0, 19.0L };
+            ^
+
+"./c23-constexpr-1.c", line 62: error: identifier "v19" is undefined
+  static_assert (v19.a == 12345);
+                 ^
+
+"./c23-constexpr-1.c", line 62: error: this operator is not allowed in an integral constant expression
+  static_assert (v19.a == 12345);
+                    ^
+
+"./c23-constexpr-1.c", line 64: warning: this declaration has no storage class or type specifier
+  constexpr union u20 v21 = { 1 };
+  ^
+
+"./c23-constexpr-1.c", line 64: error: expected a ";"
+  constexpr union u20 v21 = { 1 };
+            ^
+
+"./c23-constexpr-1.c", line 65: error: identifier "v21" is undefined
+  static_assert (v21.a == 1);
+                 ^
+
+"./c23-constexpr-1.c", line 65: error: this operator is not allowed in an integral constant expression
+  static_assert (v21.a == 1);
+                    ^
+
+"./c23-constexpr-1.c", line 66: warning: this declaration has no storage class or type specifier
+  constexpr union u20 v22 = { .b = 23.0 };
+  ^
+
+"./c23-constexpr-1.c", line 66: error: expected a ";"
+  constexpr union u20 v22 = { .b = 23.0 };
+            ^
+
+"./c23-constexpr-1.c", line 67: warning: this declaration has no storage class or type specifier
+  constexpr float v23 = (float) (1.0f / 3.0f);
+  ^
+
+"./c23-constexpr-1.c", line 67: error: expected a ";"
+  constexpr float v23 = (float) (1.0f / 3.0f);
+            ^
+
+"./c23-constexpr-1.c", line 68: warning: this declaration has no storage class or type specifier
+  constexpr double v24 = (double) (1.0 / 3.0);
+  ^
+
+"./c23-constexpr-1.c", line 68: error: expected a ";"
+  constexpr double v24 = (double) (1.0 / 3.0);
+            ^
+
+"./c23-constexpr-1.c", line 69: warning: this declaration has no storage class or type specifier
+  constexpr struct s18 v25 = { 0, 0, (double) (1.0 / 3.0) };
+  ^
+
+"./c23-constexpr-1.c", line 69: error: expected a ";"
+  constexpr struct s18 v25 = { 0, 0, (double) (1.0 / 3.0) };
+            ^
+
+"./c23-constexpr-1.c", line 70: error: identifier "v25" is undefined
+  static_assert (v25.a == 0);
+                 ^
+
+"./c23-constexpr-1.c", line 70: error: this operator is not allowed in an integral constant expression
+  static_assert (v25.a == 0);
+                    ^
+
+"./c23-constexpr-1.c", line 71: warning: this declaration has no storage class or type specifier
+  constexpr char v26[] = "abc\xfe";
+  ^
+
+"./c23-constexpr-1.c", line 71: error: expected a ";"
+  constexpr char v26[] = "abc\xfe";
+            ^
+
+"./c23-constexpr-1.c", line 72: warning: this declaration has no storage class or type specifier
+  constexpr unsigned char v27[] = u8"xyz\xff";
+  ^
+
+"./c23-constexpr-1.c", line 72: error: expected a ";"
+  constexpr unsigned char v27[] = u8"xyz\xff";
+            ^
+
+"./c23-constexpr-1.c", line 73: warning: this declaration has no storage class or type specifier
+  constexpr unsigned char v28[] = "\x12\x7f";
+  ^
+
+"./c23-constexpr-1.c", line 73: error: expected a ";"
+  constexpr unsigned char v28[] = "\x12\x7f";
+            ^
+
+"./c23-constexpr-1.c", line 74: warning: this declaration has no storage class or type specifier
+  constexpr signed char v29[] = "\x34\x66";
+  ^
+
+"./c23-constexpr-1.c", line 74: error: expected a ";"
+  constexpr signed char v29[] = "\x34\x66";
+            ^
+
+"./c23-constexpr-1.c", line 75: warning: this declaration has no storage class or type specifier
+  constexpr double v30 = (int) (double) 3.0 - (long) (double) 2.0;
+  ^
+
+"./c23-constexpr-1.c", line 75: error: expected a ";"
+  constexpr double v30 = (int) (double) 3.0 - (long) (double) 2.0;
+            ^
+
+"./c23-constexpr-1.c", line 76: warning: this declaration has no storage class or type specifier
+  constexpr int v31 = 1 + 2 + (int) 3.0;
+  ^
+
+"./c23-constexpr-1.c", line 76: error: expected a ";"
+  constexpr int v31 = 1 + 2 + (int) 3.0;
+            ^
+
+"./c23-constexpr-1.c", line 77: error: identifier "v31" is undefined
+  static_assert (v31 == 6);
+                 ^
+
+"./c23-constexpr-1.c", line 78: warning: this declaration has no storage class or type specifier
+  constexpr typeof (nullptr) v32 = nullptr;
+  ^
+
+"./c23-constexpr-1.c", line 78: error: expected a ";"
+  constexpr typeof (nullptr) v32 = nullptr;
+            ^
+
+"./c23-constexpr-1.c", line 79: warning: this declaration has no storage class or type specifier
+  constexpr _Complex double v33 = __builtin_complex (1.0f, 3.0f / 2.0f);
+  ^
+
+"./c23-constexpr-1.c", line 79: error: expected a ";"
+  constexpr _Complex double v33 = __builtin_complex (1.0f, 3.0f / 2.0f);
+            ^
+
+"./c23-constexpr-1.c", line 80: warning: this declaration has no storage class or type specifier
+  constexpr float v34 = 1234.0L;
+  ^
+
+"./c23-constexpr-1.c", line 80: error: expected a ";"
+  constexpr float v34 = 1234.0L;
+            ^
+
+"./c23-constexpr-1.c", line 81: warning: this declaration has no storage class or type specifier
+  constexpr char v35 = 127ULL;
+  ^
+
+"./c23-constexpr-1.c", line 81: error: expected a ";"
+  constexpr char v35 = 127ULL;
+            ^
+
+"./c23-constexpr-1.c", line 83: warning: this declaration has no storage class or type specifier
+  constexpr float v36 = 0x1p-149;
+  ^
+
+"./c23-constexpr-1.c", line 83: error: expected a ";"
+  constexpr float v36 = 0x1p-149;
+            ^
+
+"./c23-constexpr-1.c", line 84: warning: this declaration has no storage class or type specifier
+  constexpr float _Complex v37 = __builtin_complex (0x1p-149, 0x1p127);
+  ^
+
+"./c23-constexpr-1.c", line 84: error: expected a ";"
+  constexpr float _Complex v37 = __builtin_complex (0x1p-149, 0x1p127);
+            ^
+
+"./c23-constexpr-1.c", line 85: warning: this declaration has no storage class or type specifier
+  constexpr float v38 = 0xffffffUL;
+  ^
+
+"./c23-constexpr-1.c", line 85: error: expected a ";"
+  constexpr float v38 = 0xffffffUL;
+            ^
+
+"./c23-constexpr-1.c", line 86: warning: this declaration has no storage class or type specifier
+  constexpr float v39 = -0xffffffL;
+  ^
+
+"./c23-constexpr-1.c", line 86: error: expected a ";"
+  constexpr float v39 = -0xffffffL;
+            ^
+
+"./c23-constexpr-1.c", line 87: warning: this declaration has no storage class or type specifier
+  constexpr float v40 = 0xffffff0L;
+  ^
+
+"./c23-constexpr-1.c", line 87: error: expected a ";"
+  constexpr float v40 = 0xffffff0L;
+            ^
+
+"./c23-constexpr-1.c", line 88: warning: this declaration has no storage class or type specifier
+  constexpr float v41 = 1ULL << 63;
+  ^
+
+"./c23-constexpr-1.c", line 88: error: expected a ";"
+  constexpr float v41 = 1ULL << 63;
+            ^
+
+"./c23-constexpr-1.c", line 91: warning: this declaration has no storage class or type specifier
+  constexpr double v42 = 0x1p-1074L;
+  ^
+
+"./c23-constexpr-1.c", line 91: error: expected a ";"
+  constexpr double v42 = 0x1p-1074L;
+            ^
+
+"./c23-constexpr-1.c", line 92: warning: this declaration has no storage class or type specifier
+  constexpr _Complex double v43 = __builtin_complex (0x1p1023L, 0x1p-1074L);
+  ^
+
+"./c23-constexpr-1.c", line 92: error: expected a ";"
+  constexpr _Complex double v43 = __builtin_complex (0x1p1023L, 0x1p-1074L);
+            ^
+
+"./c23-constexpr-1.c", line 93: warning: this declaration has no storage class or type specifier
+  constexpr double v44 = 0x1fffffffffffffULL;
+  ^
+
+"./c23-constexpr-1.c", line 93: error: expected a ";"
+  constexpr double v44 = 0x1fffffffffffffULL;
+            ^
+
+"./c23-constexpr-1.c", line 94: warning: this declaration has no storage class or type specifier
+  constexpr double v45 = -0x1fffffffffffffLL;
+  ^
+
+"./c23-constexpr-1.c", line 94: error: expected a ";"
+  constexpr double v45 = -0x1fffffffffffffLL;
+            ^
+
+"./c23-constexpr-1.c", line 95: warning: this declaration has no storage class or type specifier
+  constexpr double v46 = 0x3ffffffffffffeULL;
+  ^
+
+"./c23-constexpr-1.c", line 95: error: expected a ";"
+  constexpr double v46 = 0x3ffffffffffffeULL;
+            ^
+
+"./c23-constexpr-1.c", line 96: warning: this declaration has no storage class or type specifier
+  constexpr double v47 = 1ULL << 63;
+  ^
+
+"./c23-constexpr-1.c", line 96: error: expected a ";"
+  constexpr double v47 = 1ULL << 63;
+            ^
+
+"./c23-constexpr-1.c", line 98: warning: this declaration has no storage class or type specifier
+  constexpr void *v48 = (void *) 0;
+  ^
+
+"./c23-constexpr-1.c", line 98: error: expected a ";"
+  constexpr void *v48 = (void *) 0;
+            ^
+
+"./c23-constexpr-1.c", line 99: warning: this declaration has no storage class or type specifier
+  constexpr int *v49 = (void *) 0L;
+  ^
+
+"./c23-constexpr-1.c", line 99: error: expected a ";"
+  constexpr int *v49 = (void *) 0L;
+            ^
+
+"./c23-constexpr-1.c", line 100: warning: this declaration has no storage class or type specifier
+  constexpr long *v50 = 0LL;
+  ^
+
+"./c23-constexpr-1.c", line 100: error: expected a ";"
+  constexpr long *v50 = 0LL;
+            ^
+
+"./c23-constexpr-1.c", line 101: warning: this declaration has no storage class or type specifier
+  constexpr int v51 = {};
+  ^
+
+"./c23-constexpr-1.c", line 101: error: expected a ";"
+  constexpr int v51 = {};
+            ^
+
+"./c23-constexpr-1.c", line 102: error: identifier "v51" is undefined
+  static_assert (v51 == 0);
+                 ^
+
+"./c23-constexpr-1.c", line 103: warning: this declaration has no storage class or type specifier
+  constexpr float v52 = {};
+  ^
+
+"./c23-constexpr-1.c", line 103: error: expected a ";"
+  constexpr float v52 = {};
+            ^
+
+"./c23-constexpr-1.c", line 104: warning: this declaration has no storage class or type specifier
+  constexpr long double v53 = {};
+  ^
+
+"./c23-constexpr-1.c", line 104: error: expected a ";"
+  constexpr long double v53 = {};
+            ^
+
+"./c23-constexpr-1.c", line 105: warning: this declaration has no storage class or type specifier
+  constexpr int *v54 = {};
+  ^
+
+"./c23-constexpr-1.c", line 105: error: expected a ";"
+  constexpr int *v54 = {};
+            ^
+
+"./c23-constexpr-1.c", line 106: warning: this declaration has no storage class or type specifier
+  constexpr void *v55 = {};
+  ^
+
+"./c23-constexpr-1.c", line 106: error: expected a ";"
+  constexpr void *v55 = {};
+            ^
+
+"./c23-constexpr-1.c", line 107: warning: this declaration has no storage class or type specifier
+  constexpr typeof (nullptr) v56 = {};
+  ^
+
+"./c23-constexpr-1.c", line 107: error: expected a ";"
+  constexpr typeof (nullptr) v56 = {};
+            ^
+
+"./c23-constexpr-1.c", line 110: warning: this declaration has no storage class or type specifier
+  constexpr int *v59 = 0;
+  ^
+
+"./c23-constexpr-1.c", line 110: error: expected a ";"
+  constexpr int *v59 = 0;
+            ^
+
+"./c23-constexpr-1.c", line 111: warning: this declaration has no storage class or type specifier
+  constexpr int *v60 = { 0 };
+  ^
+
+"./c23-constexpr-1.c", line 111: error: expected a ";"
+  constexpr int *v60 = { 0 };
+            ^
+
+"./c23-constexpr-1.c", line 112: warning: this declaration has no storage class or type specifier
+  constexpr struct s57 v61 = { 0 };
+  ^
+
+"./c23-constexpr-1.c", line 112: error: expected a ";"
+  constexpr struct s57 v61 = { 0 };
+            ^
+
+"./c23-constexpr-1.c", line 113: warning: this declaration has no storage class or type specifier
+  constexpr struct s57 v62 = { { } };
+  ^
+
+"./c23-constexpr-1.c", line 113: error: expected a ";"
+  constexpr struct s57 v62 = { { } };
+            ^
+
+"./c23-constexpr-1.c", line 114: warning: this declaration has no storage class or type specifier
+  constexpr struct s57 v63 = { { 0 } };
+  ^
+
+"./c23-constexpr-1.c", line 114: error: expected a ";"
+  constexpr struct s57 v63 = { { 0 } };
+            ^
+
+"./c23-constexpr-1.c", line 115: warning: this declaration has no storage class or type specifier
+  constexpr union u58 v64 = { 0 };
+  ^
+
+"./c23-constexpr-1.c", line 115: error: expected a ";"
+  constexpr union u58 v64 = { 0 };
+            ^
+
+"./c23-constexpr-1.c", line 116: warning: this declaration has no storage class or type specifier
+  constexpr union u58 v65 = { { } };
+  ^
+
+"./c23-constexpr-1.c", line 116: error: expected a ";"
+  constexpr union u58 v65 = { { } };
+            ^
+
+"./c23-constexpr-1.c", line 117: warning: this declaration has no storage class or type specifier
+  constexpr union u58 v66 = { { 0 } };
+  ^
+
+"./c23-constexpr-1.c", line 117: error: expected a ";"
+  constexpr union u58 v66 = { { 0 } };
+            ^
+
+"./c23-constexpr-1.c", line 122: warning: this declaration has no storage class or type specifier
+  constexpr struct s67 v71 = { 1, 2.0, 0, 0, nullptr, 7, { 3, 4 } };
+  ^
+
+"./c23-constexpr-1.c", line 122: error: expected a ";"
+  constexpr struct s67 v71 = { 1, 2.0, 0, 0, nullptr, 7, { 3, 4 } };
+            ^
+
+"./c23-constexpr-1.c", line 123: error: identifier "v71" is undefined
+  static_assert (v71.a == 1);
+                 ^
+
+"./c23-constexpr-1.c", line 123: error: this operator is not allowed in an integral constant expression
+  static_assert (v71.a == 1);
+                    ^
+
+"./c23-constexpr-1.c", line 124: error: this operator is not allowed in an integral constant expression
+  static_assert (v71.f == 7);
+                    ^
+
+"./c23-constexpr-1.c", line 125: warning: this declaration has no storage class or type specifier
+  constexpr struct s67 v72 = v71;
+  ^
+
+"./c23-constexpr-1.c", line 125: error: expected a ";"
+  constexpr struct s67 v72 = v71;
+            ^
+
+"./c23-constexpr-1.c", line 126: error: identifier "v72" is undefined
+  static_assert (v72.a == 1);
+                 ^
+
+"./c23-constexpr-1.c", line 126: error: this operator is not allowed in an integral constant expression
+  static_assert (v72.a == 1);
+                    ^
+
+"./c23-constexpr-1.c", line 127: error: this operator is not allowed in an integral constant expression
+  static_assert (v72.f == 7);
+                    ^
+
+"./c23-constexpr-1.c", line 129: warning: this declaration has no storage class or type specifier
+  constexpr auto v73 = v71;
+  ^
+
+"./c23-constexpr-1.c", line 129: error: expected a ";"
+  constexpr auto v73 = v71;
+            ^
+
+"./c23-constexpr-1.c", line 130: error: identifier "v73" is undefined
+  static_assert (v73.a == 1);
+                 ^
+
+"./c23-constexpr-1.c", line 130: error: this operator is not allowed in an integral constant expression
+  static_assert (v73.a == 1);
+                    ^
+
+"./c23-constexpr-1.c", line 131: error: this operator is not allowed in an integral constant expression
+  static_assert (v73.f == 7);
+                    ^
+
+"./c23-constexpr-1.c", line 132: error: expression must have a constant value
+  auto v74 = v71;
+             ^
+"./c23-constexpr-1.c", line 132: note: the value of variable "v71" (declared at line 128) cannot be used as a constant
+  auto v74 = v71;
+             ^
+
+"./c23-constexpr-1.c", line 133: warning: this declaration has no storage class or type specifier
+  constexpr struct s68 v75 = { v72 };
+  ^
+
+"./c23-constexpr-1.c", line 133: error: expected a ";"
+  constexpr struct s68 v75 = { v72 };
+            ^
+
+"./c23-constexpr-1.c", line 134: error: identifier "v75" is undefined
+  static_assert (v75.x.a == 1);
+                 ^
+
+"./c23-constexpr-1.c", line 134: error: this operator is not allowed in an integral constant expression
+  static_assert (v75.x.a == 1);
+                    ^
+
+"./c23-constexpr-1.c", line 134: error: this operator is not allowed in an integral constant expression
+  static_assert (v75.x.a == 1);
+                      ^
+
+"./c23-constexpr-1.c", line 135: error: this operator is not allowed in an integral constant expression
+  static_assert (v75.x.f == 7);
+                    ^
+
+"./c23-constexpr-1.c", line 135: error: this operator is not allowed in an integral constant expression
+  static_assert (v75.x.f == 7);
+                      ^
+
+"./c23-constexpr-1.c", line 136: warning: this declaration has no storage class or type specifier
+  constexpr union u69 v76 = { };
+  ^
+
+"./c23-constexpr-1.c", line 136: error: expected a ";"
+  constexpr union u69 v76 = { };
+            ^
+
+"./c23-constexpr-1.c", line 137: error: identifier "v76" is undefined
+  static_assert (v76.a == 0);
+                 ^
+
+"./c23-constexpr-1.c", line 137: error: this operator is not allowed in an integral constant expression
+  static_assert (v76.a == 0);
+                    ^
+
+"./c23-constexpr-1.c", line 138: warning: this declaration has no storage class or type specifier
+  constexpr union u69 v77 = { .e = v75 };
+  ^
+
+"./c23-constexpr-1.c", line 138: error: expected a ";"
+  constexpr union u69 v77 = { .e = v75 };
+            ^
+
+"./c23-constexpr-1.c", line 139: error: identifier "v77" is undefined
+  static_assert (v77.e.x.a == 1);
+                 ^
+
+"./c23-constexpr-1.c", line 139: error: this operator is not allowed in an integral constant expression
+  static_assert (v77.e.x.a == 1);
+                    ^
+
+"./c23-constexpr-1.c", line 139: error: this operator is not allowed in an integral constant expression
+  static_assert (v77.e.x.a == 1);
+                      ^
+
+"./c23-constexpr-1.c", line 139: error: this operator is not allowed in an integral constant expression
+  static_assert (v77.e.x.a == 1);
+                        ^
+
+"./c23-constexpr-1.c", line 140: error: this operator is not allowed in an integral constant expression
+  static_assert (v77.e.x.f == 7);
+                    ^
+
+"./c23-constexpr-1.c", line 140: error: this operator is not allowed in an integral constant expression
+  static_assert (v77.e.x.f == 7);
+                      ^
+
+"./c23-constexpr-1.c", line 140: error: this operator is not allowed in an integral constant expression
+  static_assert (v77.e.x.f == 7);
+                        ^
+
+"./c23-constexpr-1.c", line 141: warning: this declaration has no storage class or type specifier
+  constexpr union u69 v78 = { .a = 1 };
+  ^
+
+"./c23-constexpr-1.c", line 141: error: expected a ";"
+  constexpr union u69 v78 = { .a = 1 };
+            ^
+
+"./c23-constexpr-1.c", line 142: error: identifier "v78" is undefined
+  static_assert (v78.a == 1);
+                 ^
+
+"./c23-constexpr-1.c", line 142: error: this operator is not allowed in an integral constant expression
+  static_assert (v78.a == 1);
+                    ^
+
+"./c23-constexpr-1.c", line 143: warning: this declaration has no storage class or type specifier
+  constexpr union u69 v79 = { .e = { v72 } };
+  ^
+
+"./c23-constexpr-1.c", line 143: error: expected a ";"
+  constexpr union u69 v79 = { .e = { v72 } };
+            ^
+
+"./c23-constexpr-1.c", line 144: error: identifier "v79" is undefined
+  static_assert (v79.e.x.a == 1);
+                 ^
+
+"./c23-constexpr-1.c", line 144: error: this operator is not allowed in an integral constant expression
+  static_assert (v79.e.x.a == 1);
+                    ^
+
+"./c23-constexpr-1.c", line 144: error: this operator is not allowed in an integral constant expression
+  static_assert (v79.e.x.a == 1);
+                      ^
+
+"./c23-constexpr-1.c", line 144: error: this operator is not allowed in an integral constant expression
+  static_assert (v79.e.x.a == 1);
+                        ^
+
+"./c23-constexpr-1.c", line 145: error: this operator is not allowed in an integral constant expression
+  static_assert (v79.e.x.f == 7);
+                    ^
+
+"./c23-constexpr-1.c", line 145: error: this operator is not allowed in an integral constant expression
+  static_assert (v79.e.x.f == 7);
+                      ^
+
+"./c23-constexpr-1.c", line 145: error: this operator is not allowed in an integral constant expression
+  static_assert (v79.e.x.f == 7);
+                        ^
+
+"./c23-constexpr-1.c", line 148: warning: this declaration has no storage class or type specifier
+  constexpr struct s70 v81 = { v79 };
+  ^
+
+"./c23-constexpr-1.c", line 148: error: expected a ";"
+  constexpr struct s70 v81 = { v79 };
+            ^
+
+"./c23-constexpr-1.c", line 149: error: identifier "v81" is undefined
+  static_assert (v81.x.e.x.f == 7);
+                 ^
+
+"./c23-constexpr-1.c", line 149: error: this operator is not allowed in an integral constant expression
+  static_assert (v81.x.e.x.f == 7);
+                    ^
+
+"./c23-constexpr-1.c", line 149: error: this operator is not allowed in an integral constant expression
+  static_assert (v81.x.e.x.f == 7);
+                      ^
+
+"./c23-constexpr-1.c", line 149: error: this operator is not allowed in an integral constant expression
+  static_assert (v81.x.e.x.f == 7);
+                        ^
+
+"./c23-constexpr-1.c", line 149: error: this operator is not allowed in an integral constant expression
+  static_assert (v81.x.e.x.f == 7);
+                          ^
+
+"./c23-constexpr-1.c", line 150: warning: this declaration has no storage class or type specifier
+  constexpr struct s68 v82 = { (constexpr struct s67) { 5, 6, 0, 0, nullptr, 9, { 1, 2 } } };
+  ^
+
+"./c23-constexpr-1.c", line 150: error: expected a ";"
+  constexpr struct s68 v82 = { (constexpr struct s67) { 5, 6, 0, 0, nullptr, 9, { 1, 2 } } };
+            ^
+
+"./c23-constexpr-1.c", line 151: error: identifier "v82" is undefined
+  static_assert (v82.x.a == 5);
+                 ^
+
+"./c23-constexpr-1.c", line 151: error: this operator is not allowed in an integral constant expression
+  static_assert (v82.x.a == 5);
+                    ^
+
+"./c23-constexpr-1.c", line 151: error: this operator is not allowed in an integral constant expression
+  static_assert (v82.x.a == 5);
+                      ^
+
+"./c23-constexpr-1.c", line 152: error: this operator is not allowed in an integral constant expression
+  static_assert (v82.x.f == 9);
+                    ^
+
+"./c23-constexpr-1.c", line 152: error: this operator is not allowed in an integral constant expression
+  static_assert (v82.x.f == 9);
+                      ^
+
+"./c23-constexpr-1.c", line 153: warning: this declaration has no storage class or type specifier
+  constexpr auto v83 = (constexpr int) { (constexpr int) { 0 } };
+  ^
+
+"./c23-constexpr-1.c", line 153: error: expected a ";"
+  constexpr auto v83 = (constexpr int) { (constexpr int) { 0 } };
+            ^
+
+"./c23-constexpr-1.c", line 155: warning: this declaration has no storage class or type specifier
+  constexpr typeof (nullptr) v84 = nullptr;
+  ^
+
+"./c23-constexpr-1.c", line 155: error: expected a ";"
+  constexpr typeof (nullptr) v84 = nullptr;
+            ^
+
+"./c23-constexpr-1.c", line 156: warning: this declaration has no storage class or type specifier
+  constexpr void *v85 = 0;
+  ^
+
+"./c23-constexpr-1.c", line 156: error: expected a ";"
+  constexpr void *v85 = 0;
+            ^
+
+"./c23-constexpr-1.c", line 157: error: identifier "v85" is undefined
+  int *v86 = v85;
+             ^
+
+"./c23-constexpr-1.c", line 158: error: identifier "v84" is undefined
+  int *v87 = v84;
+             ^
+
+"./c23-constexpr-1.c", line 163: warning: this declaration has no storage class or type specifier
+  constexpr struct s68 v90 = { };
+  ^
+
+"./c23-constexpr-1.c", line 163: error: expected a ";"
+  constexpr struct s68 v90 = { };
+            ^
+
+"./c23-constexpr-1.c", line 164: error: identifier "v90" is undefined
+  static_assert (v90.x.a == 0);
+                 ^
+
+"./c23-constexpr-1.c", line 164: error: this operator is not allowed in an integral constant expression
+  static_assert (v90.x.a == 0);
+                    ^
+
+"./c23-constexpr-1.c", line 164: error: this operator is not allowed in an integral constant expression
+  static_assert (v90.x.a == 0);
+                      ^
+
+"./c23-constexpr-1.c", line 165: error: this operator is not allowed in an integral constant expression
+  static_assert (v90.x.f == 0);
+                    ^
+
+"./c23-constexpr-1.c", line 165: error: this operator is not allowed in an integral constant expression
+  static_assert (v90.x.f == 0);
+                      ^
+
+"./c23-constexpr-1.c", line 166: warning: this declaration has no storage class or type specifier
+  constexpr int v91 = { 123 };
+  ^
+
+"./c23-constexpr-1.c", line 166: error: expected a ";"
+  constexpr int v91 = { 123 };
+            ^
+
+"./c23-constexpr-1.c", line 167: error: identifier "v91" is undefined
+  static_assert (v91 == 123);
+                 ^
+
+"./c23-constexpr-1.c", line 168: warning: this declaration has no storage class or type specifier
+  constexpr int v92 = { v91 };
+  ^
+
+"./c23-constexpr-1.c", line 168: error: expected a ";"
+  constexpr int v92 = { v91 };
+            ^
+
+"./c23-constexpr-1.c", line 169: error: identifier "v92" is undefined
+  static_assert (v92 == 123);
+                 ^
+
+"./c23-constexpr-1.c", line 173: warning: this declaration has no storage class or type specifier
+  constexpr int v94 = alignof (int);
+  ^
+
+"./c23-constexpr-1.c", line 173: error: expected a ";"
+  constexpr int v94 = alignof (int);
+            ^
+
+"./c23-constexpr-1.c", line 174: error: identifier "v94" is undefined
+  alignas (v94) int v95;
+           ^
+
+"./c23-constexpr-1.c", line 175: warning: this declaration has no storage class or type specifier
+  constexpr int v97[100] = { [v82.x.f] = 7 };
+  ^
+
+"./c23-constexpr-1.c", line 175: error: expected a ";"
+  constexpr int v97[100] = { [v82.x.f] = 7 };
+            ^
+
+"./c23-constexpr-1.c", line 177: warning: this declaration has no storage class or type specifier
+  constexpr _Complex double v99 = 1.0;
+  ^
+
+"./c23-constexpr-1.c", line 177: error: expected a ";"
+  constexpr _Complex double v99 = 1.0;
+            ^
+
+"./c23-constexpr-1.c", line 178: warning: this declaration has no storage class or type specifier
+  constexpr _Complex float v100 = 12345;
+  ^
+
+"./c23-constexpr-1.c", line 178: error: expected a ";"
+  constexpr _Complex float v100 = 12345;
+            ^
+
+"./c23-constexpr-1.c", line 179: warning: this declaration has no storage class or type specifier
+  constexpr int *v101 = (int *) 0;
+  ^
+
+"./c23-constexpr-1.c", line 179: error: expected a ";"
+  constexpr int *v101 = (int *) 0;
+            ^
+
+"./c23-constexpr-1.c", line 180: warning: this declaration has no storage class or type specifier
+  constexpr void *v102 = (void *) (void *) 0;
+  ^
+
+"./c23-constexpr-1.c", line 180: error: expected a ";"
+  constexpr void *v102 = (void *) (void *) 0;
+            ^
+
+"./c23-constexpr-1.c", line 181: warning: this declaration has no storage class or type specifier
+  constexpr void *v103 = v101;
+  ^
+
+"./c23-constexpr-1.c", line 181: error: expected a ";"
+  constexpr void *v103 = v101;
+            ^
+
+"./c23-constexpr-1.c", line 182: warning: this declaration has no storage class or type specifier
+  constexpr void *v104 = v84;
+  ^
+
+"./c23-constexpr-1.c", line 182: error: expected a ";"
+  constexpr void *v104 = v84;
+            ^
+
+"./c23-constexpr-1.c", line 184: warning: this declaration has no storage class or type specifier
+  constexpr struct s105 v106 = { (int *) 0 };
+  ^
+
+"./c23-constexpr-1.c", line 184: error: expected a ";"
+  constexpr struct s105 v106 = { (int *) 0 };
+            ^
+
+"./c23-constexpr-1.c", line 189: warning: expression has no effect
+    constexpr int fv0 = 3;
+    ^
+
+"./c23-constexpr-1.c", line 189: error: expected a ";"
+    constexpr int fv0 = 3;
+              ^
+
+"./c23-constexpr-1.c", line 190: error: identifier "fv0" is undefined
+    static_assert (fv0 == 3);
+                   ^
+
+"./c23-constexpr-1.c", line 191: error: expected a ";"
+    auto constexpr fv1 = 4;
+                   ^
+
+"./c23-constexpr-1.c", line 191: error: a variable declared with "auto" requires an initializer
+    auto constexpr fv1 = 4;
+    ^
+
+"./c23-constexpr-1.c", line 192: error: identifier "fv1" is undefined
+    static_assert (fv1 == 4);
+                   ^
+
+"./c23-constexpr-1.c", line 193: warning: explicit type is missing ("int" assumed)
+    register constexpr float fv2 = 1.0;
+             ^
+
+"./c23-constexpr-1.c", line 193: error: "constexpr" has already been declared in the current scope
+    register constexpr float fv2 = 1.0;
+             ^
+
+"./c23-constexpr-1.c", line 193: error: expected a ";"
+    register constexpr float fv2 = 1.0;
+                       ^
+
+"./c23-constexpr-1.c", line 194: warning: expression has no effect
+    constexpr auto fv3 = 123;
+    ^
+
+"./c23-constexpr-1.c", line 194: warning: variable "constexpr" is used before its value is set
+    constexpr auto fv3 = 123;
+    ^
+
+"./c23-constexpr-1.c", line 194: error: expected a ";"
+    constexpr auto fv3 = 123;
+              ^
+
+"./c23-constexpr-1.c", line 195: error: identifier "fv3" is undefined
+    static_assert (fv3 == 123);
+                   ^
+
+"./c23-constexpr-1.c", line 196: warning: expression has no effect
+    constexpr register void *fv4 = (void *) 0;
+    ^
+
+"./c23-constexpr-1.c", line 196: error: expected a ";"
+    constexpr register void *fv4 = (void *) 0;
+              ^
+
+"./c23-constexpr-1.c", line 197: error: expected a ")"
+    const int *fv5 = &(constexpr int) { 234 };
+                                 ^
+
+"./c23-constexpr-1.c", line 197: warning: taking the address of a register variable is not allowed
+    const int *fv5 = &(constexpr int) { 234 };
+                       ^
+
+"./c23-constexpr-1.c", line 197: error: expected a ";"
+    const int *fv5 = &(constexpr int) { 234 };
+                                      ^
+
+"./c23-constexpr-1.c", line 198: error: expected a ")"
+    const int *fv6 = &(constexpr static int) { 234 };
+                                 ^
+
+"./c23-constexpr-1.c", line 198: warning: taking the address of a register variable is not allowed
+    const int *fv6 = &(constexpr static int) { 234 };
+                       ^
+
+"./c23-constexpr-1.c", line 198: error: expected a ";"
+    const int *fv6 = &(constexpr static int) { 234 };
+                                             ^
+
+"./c23-constexpr-1.c", line 199: error: a storage class may not be specified here
+    const int *fv7 = &(static constexpr int) { 234 };
+                       ^
+
+"./c23-constexpr-1.c", line 199: warning: explicit type is missing ("int" assumed)
+    const int *fv7 = &(static constexpr int) { 234 };
+                       ^
+
+"./c23-constexpr-1.c", line 199: error: expected a ")"
+    const int *fv7 = &(static constexpr int) { 234 };
+                              ^
+
+"./c23-constexpr-1.c", line 200: error: expected a ")"
+    typeof ((constexpr register int) { 234 }) *fv8;
+                       ^
+
+"./c23-constexpr-1.c", line 200: error: expected a ")"
+    typeof ((constexpr register int) { 234 }) *fv8;
+                                     ^
+
+"./c23-constexpr-1.c", line 201: error: a storage class may not be specified here
+    typeof ((register constexpr int) { 234 }) *fv9;
+             ^
+
+"./c23-constexpr-1.c", line 201: warning: explicit type is missing ("int" assumed)
+    typeof ((register constexpr int) { 234 }) *fv9;
+             ^
+
+"./c23-constexpr-1.c", line 201: error: expected a ")"
+    typeof ((register constexpr int) { 234 }) *fv9;
+                      ^
+
+"./c23-constexpr-1.c", line 202: error: expected a ")"
+    int fv10 = (constexpr int) { 1 } + sizeof (struct fs *);
+                          ^
+
+"./c23-constexpr-1.c", line 202: error: expected a ";"
+    int fv10 = (constexpr int) { 1 } + sizeof (struct fs *);
+                               ^
+
+"./c23-constexpr-1.c", line 203: warning: expression has no effect
+    constexpr auto fv11 = (constexpr int) { (constexpr int) { 0 } };
+    ^
+
+"./c23-constexpr-1.c", line 203: error: expected a ";"
+    constexpr auto fv11 = (constexpr int) { (constexpr int) { 0 } };
+              ^
+
+"./c23-constexpr-1.c", line 204: error: identifier "fv11" is undefined
+    static_assert (fv11 == 0);
+                   ^
+
+"./c23-constexpr-1.c", line 205: warning: expression has no effect
+    constexpr char fv12[3] = { 1, 2, 3 };
+    ^
+
+"./c23-constexpr-1.c", line 205: error: expected a ";"
+    constexpr char fv12[3] = { 1, 2, 3 };
+              ^
+
+"./c23-constexpr-1.c", line 206: error: expected a ")"
+    (constexpr short [4]) { 9, 8, 7, -6 };
+               ^
+
+"./c23-constexpr-1.c", line 206: warning: expression has no effect
+    (constexpr short [4]) { 9, 8, 7, -6 };
+    ^
+
+"./c23-constexpr-1.c", line 206: error: expected a ";"
+    (constexpr short [4]) { 9, 8, 7, -6 };
+                          ^
+
+"./c23-constexpr-1.c", line 207: warning: expression has no effect
+    constexpr struct s18 fv13 = { 1234ULL, 0, 13.0f };
+    ^
+
+"./c23-constexpr-1.c", line 207: error: expected a ";"
+    constexpr struct s18 fv13 = { 1234ULL, 0, 13.0f };
+              ^
+
+"./c23-constexpr-1.c", line 208: error: expected a ")"
+    (constexpr struct s18) { 123, (void *) 0, 11 };
+               ^
+
+"./c23-constexpr-1.c", line 208: warning: expression has no effect
+    (constexpr struct s18) { 123, (void *) 0, 11 };
+    ^
+
+"./c23-constexpr-1.c", line 208: error: expected a ";"
+    (constexpr struct s18) { 123, (void *) 0, 11 };
+                           ^
+
+"./c23-constexpr-1.c", line 209: warning: expression has no effect
+    constexpr union u20 fv14 = { 2 };
+    ^
+
+"./c23-constexpr-1.c", line 209: error: expected a ";"
+    constexpr union u20 fv14 = { 2 };
+              ^
+
+"./c23-constexpr-1.c", line 210: error: expected a ")"
+    (constexpr union u20) { 5 };
+               ^
+
+"./c23-constexpr-1.c", line 210: warning: expression has no effect
+    (constexpr union u20) { 5 };
+    ^
+
+"./c23-constexpr-1.c", line 210: error: expected a ";"
+    (constexpr union u20) { 5 };
+                          ^
+
+Error limit reached.
+200 errors detected in the compilation of "Test_name.c".
+Compilation terminated.

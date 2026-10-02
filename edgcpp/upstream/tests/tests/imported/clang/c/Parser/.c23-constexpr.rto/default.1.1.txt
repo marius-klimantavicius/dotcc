@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 6: warning: this declaration has no storage class or type specifier
+  constexpr int a = 0; // c17-error {{unknown type name 'constexpr'}} \
+  ^
+
+"Test_name.c", line 6: error: expected a ";"
+  constexpr int a = 0; // c17-error {{unknown type name 'constexpr'}} \
+            ^
+
+"Test_name.c", line 12: warning: explicit type is missing ("int" assumed)
+  _Atomic constexpr int b = 0; // c23-error {{constexpr variable cannot have type 'const _Atomic(int)'}} \
+          ^
+
+"Test_name.c", line 12: error: declaration is incompatible with "int constexpr" (declared at line 6)
+  _Atomic constexpr int b = 0; // c23-error {{constexpr variable cannot have type 'const _Atomic(int)'}} \
+          ^
+
+"Test_name.c", line 12: error: expected a ";"
+  _Atomic constexpr int b = 0; // c23-error {{constexpr variable cannot have type 'const _Atomic(int)'}} \
+                    ^
+
+"Test_name.c", line 16: error: external/internal linkage conflict with previous declaration at line 12
+  int static constexpr c = 1; // c17-error {{expected ';' after top level declarator}} \
+             ^
+
+"Test_name.c", line 16: error: expected a ";"
+  int static constexpr c = 1; // c17-error {{expected ';' after top level declarator}} \
+                       ^
+
+5 errors detected in the compilation of "Test_name.c".

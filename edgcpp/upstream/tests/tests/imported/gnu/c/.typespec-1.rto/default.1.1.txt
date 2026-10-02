@@ -1,0 +1,804 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 30: error: invalid combination of type specifiers
+  void void *x11; /* { dg-error "" "void void" } */
+       ^
+
+"Test_name.c", line 31: error: invalid combination of type specifiers
+  void char *x12; /* { dg-error "" "void char" } */
+       ^
+
+"Test_name.c", line 32: error: invalid combination of type specifiers
+  void short *x13; /* { dg-error "" "void short" } */
+  ^
+
+"Test_name.c", line 33: error: invalid combination of type specifiers
+  void int *x14; /* { dg-error "" "void int" } */
+       ^
+
+"Test_name.c", line 34: error: invalid combination of type specifiers
+  void long *x15; /* { dg-error "" "void long" } */
+  ^
+
+"Test_name.c", line 35: error: invalid combination of type specifiers
+  void float *x16; /* { dg-error "" "void float" } */
+       ^
+
+"Test_name.c", line 36: error: invalid combination of type specifiers
+  void double *x17; /* { dg-error "" "void double" } */
+       ^
+
+"Test_name.c", line 37: error: invalid combination of type specifiers
+  void signed *x18; /* { dg-error "" "void signed" } */
+  ^
+
+"Test_name.c", line 38: error: invalid combination of type specifiers
+  void unsigned *x19; /* { dg-error "" "void unsigned" } */
+  ^
+
+"Test_name.c", line 39: error: invalid combination of type specifiers
+  void _Bool *x20; /* { dg-error "" "void _Bool" } */
+       ^
+
+"Test_name.c", line 40: error: invalid combination of type specifiers
+  char void *x21; /* { dg-error "" "char void" } */
+       ^
+
+"Test_name.c", line 41: error: invalid combination of type specifiers
+  char char *x22; /* { dg-error "" "char char" } */
+       ^
+
+"Test_name.c", line 42: error: invalid combination of type specifiers
+  char short *x23; /* { dg-error "" "char short" } */
+  ^
+
+"Test_name.c", line 43: error: invalid combination of type specifiers
+  char int *x24; /* { dg-error "" "char int" } */
+       ^
+
+"Test_name.c", line 44: error: invalid combination of type specifiers
+  char long *x25; /* { dg-error "" "char long" } */
+  ^
+
+"Test_name.c", line 45: error: invalid combination of type specifiers
+  char float *x26; /* { dg-error "" "char float" } */
+       ^
+
+"Test_name.c", line 46: error: invalid combination of type specifiers
+  char double *x27; /* { dg-error "" "char double" } */
+       ^
+
+"Test_name.c", line 49: error: invalid combination of type specifiers
+  char _Bool *x30; /* { dg-error "" "char _Bool" } */
+       ^
+
+"Test_name.c", line 50: error: invalid combination of type specifiers
+  short void *x31; /* { dg-error "" "short void" } */
+  ^
+
+"Test_name.c", line 51: error: invalid combination of type specifiers
+  short char *x32; /* { dg-error "" "short char" } */
+  ^
+
+"Test_name.c", line 52: error: duplicate specifier in declaration
+  short short *x33; /* { dg-error "" "short short" } */
+        ^
+
+"Test_name.c", line 54: error: invalid combination of type specifiers
+  short long *x35; /* { dg-error "" "short long" } */
+        ^
+
+"Test_name.c", line 55: error: invalid combination of type specifiers
+  short float *x36; /* { dg-error "" "short float" } */
+  ^
+
+"Test_name.c", line 56: error: invalid combination of type specifiers
+  short double *x37; /* { dg-error "" "short double" } */
+  ^
+
+"Test_name.c", line 59: error: invalid combination of type specifiers
+  short _Bool *x40; /* { dg-error "" "short _Bool" } */
+  ^
+
+"Test_name.c", line 60: error: invalid combination of type specifiers
+  int void *x41; /* { dg-error "" "int void" } */
+      ^
+
+"Test_name.c", line 61: error: invalid combination of type specifiers
+  int char *x42; /* { dg-error "" "int char" } */
+      ^
+
+"Test_name.c", line 63: error: invalid combination of type specifiers
+  int int *x44; /* { dg-error "" "int int" } */
+      ^
+
+"Test_name.c", line 65: error: invalid combination of type specifiers
+  int float *x46; /* { dg-error "" "int float" } */
+      ^
+
+"Test_name.c", line 66: error: invalid combination of type specifiers
+  int double *x47; /* { dg-error "" "int double" } */
+      ^
+
+"Test_name.c", line 69: error: invalid combination of type specifiers
+  int _Bool *x50; /* { dg-error "" "int _Bool" } */
+      ^
+
+"Test_name.c", line 70: error: invalid combination of type specifiers
+  long void *x51; /* { dg-error "" "long void" } */
+  ^
+
+"Test_name.c", line 71: error: invalid combination of type specifiers
+  long char *x52; /* { dg-error "" "long char" } */
+  ^
+
+"Test_name.c", line 72: error: invalid combination of type specifiers
+  long short *x53; /* { dg-error "" "long short" } */
+       ^
+
+"Test_name.c", line 75: error: invalid combination of type specifiers
+  long float *x56; /* { dg-error "" "long float" } */
+  ^
+
+"Test_name.c", line 79: error: invalid combination of type specifiers
+  long _Bool *x60; /* { dg-error "" "long _Bool" } */
+  ^
+
+"Test_name.c", line 80: error: invalid combination of type specifiers
+  float void *x61; /* { dg-error "" "float void" } */
+        ^
+
+"Test_name.c", line 81: error: invalid combination of type specifiers
+  float char *x62; /* { dg-error "" "float char" } */
+        ^
+
+"Test_name.c", line 82: error: invalid combination of type specifiers
+  float short *x63; /* { dg-error "" "float short" } */
+  ^
+
+"Test_name.c", line 83: error: invalid combination of type specifiers
+  float int *x64; /* { dg-error "" "float int" } */
+        ^
+
+"Test_name.c", line 84: error: invalid combination of type specifiers
+  float long *x65; /* { dg-error "" "float long" } */
+  ^
+
+"Test_name.c", line 85: error: invalid combination of type specifiers
+  float float *x66; /* { dg-error "" "float float" } */
+        ^
+
+"Test_name.c", line 86: error: invalid combination of type specifiers
+  float double *x67; /* { dg-error "" "float double" } */
+        ^
+
+"Test_name.c", line 87: error: invalid combination of type specifiers
+  float signed *x68; /* { dg-error "" "float signed" } */
+  ^
+
+"Test_name.c", line 88: error: invalid combination of type specifiers
+  float unsigned *x69; /* { dg-error "" "float unsigned" } */
+  ^
+
+"Test_name.c", line 89: error: invalid combination of type specifiers
+  float _Bool *x70; /* { dg-error "" "float _Bool" } */
+        ^
+
+"Test_name.c", line 90: error: invalid combination of type specifiers
+  double void *x71; /* { dg-error "" "double void" } */
+         ^
+
+"Test_name.c", line 91: error: invalid combination of type specifiers
+  double char *x72; /* { dg-error "" "double char" } */
+         ^
+
+"Test_name.c", line 92: error: invalid combination of type specifiers
+  double short *x73; /* { dg-error "" "double short" } */
+  ^
+
+"Test_name.c", line 93: error: invalid combination of type specifiers
+  double int *x74; /* { dg-error "" "double int" } */
+         ^
+
+"Test_name.c", line 95: error: invalid combination of type specifiers
+  double float *x76; /* { dg-error "" "double float" } */
+         ^
+
+"Test_name.c", line 96: error: invalid combination of type specifiers
+  double double *x77; /* { dg-error "" "double double" } */
+         ^
+
+"Test_name.c", line 97: error: invalid combination of type specifiers
+  double signed *x78; /* { dg-error "" "double signed" } */
+  ^
+
+"Test_name.c", line 98: error: invalid combination of type specifiers
+  double unsigned *x79; /* { dg-error "" "double unsigned" } */
+  ^
+
+"Test_name.c", line 99: error: invalid combination of type specifiers
+  double _Bool *x80; /* { dg-error "" "double _Bool" } */
+         ^
+
+"Test_name.c", line 100: error: invalid combination of type specifiers
+  signed void *x81; /* { dg-error "" "signed void" } */
+  ^
+
+"Test_name.c", line 105: error: invalid combination of type specifiers
+  signed float *x86; /* { dg-error "" "signed float" } */
+  ^
+
+"Test_name.c", line 106: error: invalid combination of type specifiers
+  signed double *x87; /* { dg-error "" "signed double" } */
+  ^
+
+"Test_name.c", line 107: error: duplicate specifier in declaration
+  signed signed *x88; /* { dg-error "" "signed signed" } */
+         ^
+
+"Test_name.c", line 108: error: invalid combination of type specifiers
+  signed unsigned *x89; /* { dg-error "" "signed unsigned" } */
+         ^
+
+"Test_name.c", line 109: error: invalid combination of type specifiers
+  signed _Bool *x90; /* { dg-error "" "signed _Bool" } */
+  ^
+
+"Test_name.c", line 110: error: invalid combination of type specifiers
+  unsigned void *x91; /* { dg-error "" "unsigned void" } */
+  ^
+
+"Test_name.c", line 115: error: invalid combination of type specifiers
+  unsigned float *x96; /* { dg-error "" "unsigned float" } */
+  ^
+
+"Test_name.c", line 116: error: invalid combination of type specifiers
+  unsigned double *x97; /* { dg-error "" "unsigned double" } */
+  ^
+
+"Test_name.c", line 117: error: invalid combination of type specifiers
+  unsigned signed *x98; /* { dg-error "" "unsigned signed" } */
+           ^
+
+"Test_name.c", line 118: error: duplicate specifier in declaration
+  unsigned unsigned *x99; /* { dg-error "" "unsigned unsigned" } */
+           ^
+
+"Test_name.c", line 119: error: invalid combination of type specifiers
+  unsigned _Bool *x100; /* { dg-error "" "unsigned _Bool" } */
+  ^
+
+"Test_name.c", line 120: error: invalid combination of type specifiers
+  _Bool void *x101; /* { dg-error "" "_Bool void" } */
+        ^
+
+"Test_name.c", line 121: error: invalid combination of type specifiers
+  _Bool char *x102; /* { dg-error "" "_Bool char" } */
+        ^
+
+"Test_name.c", line 122: error: invalid combination of type specifiers
+  _Bool short *x103; /* { dg-error "" "_Bool short" } */
+  ^
+
+"Test_name.c", line 123: error: invalid combination of type specifiers
+  _Bool int *x104; /* { dg-error "" "_Bool int" } */
+        ^
+
+"Test_name.c", line 124: error: invalid combination of type specifiers
+  _Bool long *x105; /* { dg-error "" "_Bool long" } */
+  ^
+
+"Test_name.c", line 125: error: invalid combination of type specifiers
+  _Bool float *x106; /* { dg-error "" "_Bool float" } */
+        ^
+
+"Test_name.c", line 126: error: invalid combination of type specifiers
+  _Bool double *x107; /* { dg-error "" "_Bool double" } */
+        ^
+
+"Test_name.c", line 127: error: invalid combination of type specifiers
+  _Bool signed *x108; /* { dg-error "" "_Bool signed" } */
+  ^
+
+"Test_name.c", line 128: error: invalid combination of type specifiers
+  _Bool unsigned *x109; /* { dg-error "" "_Bool unsigned" } */
+  ^
+
+"Test_name.c", line 129: error: invalid combination of type specifiers
+  _Bool _Bool *x110; /* { dg-error "" "_Bool _Bool" } */
+        ^
+
+"Test_name.c", line 130: error: invalid combination of type specifiers
+  type void *x111; /* { dg-error "" "type void" } */
+       ^
+
+"Test_name.c", line 131: error: invalid combination of type specifiers
+  type char *x112; /* { dg-error "" "type char" } */
+       ^
+
+"Test_name.c", line 132: error: invalid combination of type specifiers
+  type short *x113; /* { dg-error "" "type short" } */
+  ^
+
+"Test_name.c", line 133: error: invalid combination of type specifiers
+  type int *x114; /* { dg-error "" "type int" } */
+       ^
+
+"Test_name.c", line 134: error: invalid combination of type specifiers
+  type long *x115; /* { dg-error "" "type long" } */
+  ^
+
+"Test_name.c", line 135: error: invalid combination of type specifiers
+  type float *x116; /* { dg-error "" "type float" } */
+       ^
+
+"Test_name.c", line 136: error: invalid combination of type specifiers
+  type double *x117; /* { dg-error "" "type double" } */
+       ^
+
+"Test_name.c", line 137: error: invalid combination of type specifiers
+  type signed *x118; /* { dg-error "" "type signed" } */
+  ^
+
+"Test_name.c", line 138: error: invalid combination of type specifiers
+  type unsigned *x119; /* { dg-error "" "type unsigned" } */
+  ^
+
+"Test_name.c", line 139: error: invalid combination of type specifiers
+  type _Bool *x120; /* { dg-error "" "type _Bool" } */
+       ^
+
+"Test_name.c", line 140: error: invalid combination of type specifiers
+  char signed void *x121; /* { dg-error "" "char signed void" } */
+              ^
+
+"Test_name.c", line 141: error: invalid combination of type specifiers
+  char signed char *x122; /* { dg-error "" "char signed char" } */
+              ^
+
+"Test_name.c", line 142: error: invalid combination of type specifiers
+  char signed short *x123; /* { dg-error "" "char signed short" } */
+  ^
+
+"Test_name.c", line 143: error: invalid combination of type specifiers
+  char signed int *x124; /* { dg-error "" "char signed int" } */
+              ^
+
+"Test_name.c", line 144: error: invalid combination of type specifiers
+  char signed long *x125; /* { dg-error "" "char signed long" } */
+  ^
+
+"Test_name.c", line 145: error: invalid combination of type specifiers
+  char signed float *x126; /* { dg-error "" "char signed float" } */
+              ^
+
+"Test_name.c", line 146: error: invalid combination of type specifiers
+  char signed double *x127; /* { dg-error "" "char signed double" } */
+              ^
+
+"Test_name.c", line 147: error: duplicate specifier in declaration
+  char signed signed *x128; /* { dg-error "" "char signed signed" } */
+              ^
+
+"Test_name.c", line 148: error: invalid combination of type specifiers
+  char signed unsigned *x129; /* { dg-error "" "char signed unsigned" } */
+              ^
+
+"Test_name.c", line 149: error: invalid combination of type specifiers
+  char signed _Bool *x130; /* { dg-error "" "char signed _Bool" } */
+              ^
+
+"Test_name.c", line 150: error: invalid combination of type specifiers
+  char unsigned void *x131; /* { dg-error "" "char unsigned void" } */
+                ^
+
+"Test_name.c", line 151: error: invalid combination of type specifiers
+  char unsigned char *x132; /* { dg-error "" "char unsigned char" } */
+                ^
+
+"Test_name.c", line 152: error: invalid combination of type specifiers
+  char unsigned short *x133; /* { dg-error "" "char unsigned short" } */
+  ^
+
+"Test_name.c", line 153: error: invalid combination of type specifiers
+  char unsigned int *x134; /* { dg-error "" "char unsigned int" } */
+                ^
+
+"Test_name.c", line 154: error: invalid combination of type specifiers
+  char unsigned long *x135; /* { dg-error "" "char unsigned long" } */
+  ^
+
+"Test_name.c", line 155: error: invalid combination of type specifiers
+  char unsigned float *x136; /* { dg-error "" "char unsigned float" } */
+                ^
+
+"Test_name.c", line 156: error: invalid combination of type specifiers
+  char unsigned double *x137; /* { dg-error "" "char unsigned double" } */
+                ^
+
+"Test_name.c", line 157: error: invalid combination of type specifiers
+  char unsigned signed *x138; /* { dg-error "" "char unsigned signed" } */
+                ^
+
+"Test_name.c", line 158: error: duplicate specifier in declaration
+  char unsigned unsigned *x139; /* { dg-error "" "char unsigned unsigned" } */
+                ^
+
+"Test_name.c", line 159: error: invalid combination of type specifiers
+  char unsigned _Bool *x140; /* { dg-error "" "char unsigned _Bool" } */
+                ^
+
+"Test_name.c", line 160: error: invalid combination of type specifiers
+  short int void *x141; /* { dg-error "" "short int void" } */
+            ^
+
+"Test_name.c", line 161: error: invalid combination of type specifiers
+  short int char *x142; /* { dg-error "" "short int char" } */
+            ^
+
+"Test_name.c", line 162: error: duplicate specifier in declaration
+  short int short *x143; /* { dg-error "" "short int short" } */
+            ^
+
+"Test_name.c", line 163: error: invalid combination of type specifiers
+  short int int *x144; /* { dg-error "" "short int int" } */
+            ^
+
+"Test_name.c", line 164: error: invalid combination of type specifiers
+  short int long *x145; /* { dg-error "" "short int long" } */
+            ^
+
+"Test_name.c", line 165: error: invalid combination of type specifiers
+  short int float *x146; /* { dg-error "" "short int float" } */
+            ^
+
+"Test_name.c", line 166: error: invalid combination of type specifiers
+  short int double *x147; /* { dg-error "" "short int double" } */
+            ^
+
+"Test_name.c", line 169: error: invalid combination of type specifiers
+  short int _Bool *x150; /* { dg-error "" "short int _Bool" } */
+            ^
+
+"Test_name.c", line 170: error: invalid combination of type specifiers
+  short signed void *x151; /* { dg-error "" "short signed void" } */
+  ^
+
+"Test_name.c", line 171: error: invalid combination of type specifiers
+  short signed char *x152; /* { dg-error "" "short signed char" } */
+  ^
+
+"Test_name.c", line 172: error: duplicate specifier in declaration
+  short signed short *x153; /* { dg-error "" "short signed short" } */
+               ^
+
+"Test_name.c", line 174: error: invalid combination of type specifiers
+  short signed long *x155; /* { dg-error "" "short signed long" } */
+               ^
+
+"Test_name.c", line 175: error: invalid combination of type specifiers
+  short signed float *x156; /* { dg-error "" "short signed float" } */
+  ^
+
+"Test_name.c", line 176: error: invalid combination of type specifiers
+  short signed double *x157; /* { dg-error "" "short signed double" } */
+  ^
+
+"Test_name.c", line 177: error: duplicate specifier in declaration
+  short signed signed *x158; /* { dg-error "" "short signed signed" } */
+               ^
+
+"Test_name.c", line 178: error: invalid combination of type specifiers
+  short signed unsigned *x159; /* { dg-error "" "short signed unsigned" } */
+               ^
+
+"Test_name.c", line 179: error: invalid combination of type specifiers
+  short signed _Bool *x160; /* { dg-error "" "short signed _Bool" } */
+  ^
+
+"Test_name.c", line 180: error: invalid combination of type specifiers
+  short unsigned void *x161; /* { dg-error "" "short unsigned void" } */
+  ^
+
+"Test_name.c", line 181: error: invalid combination of type specifiers
+  short unsigned char *x162; /* { dg-error "" "short unsigned char" } */
+  ^
+
+"Test_name.c", line 182: error: duplicate specifier in declaration
+  short unsigned short *x163; /* { dg-error "" "short unsigned short" } */
+                 ^
+
+"Test_name.c", line 184: error: invalid combination of type specifiers
+  short unsigned long *x165; /* { dg-error "" "short unsigned long" } */
+                 ^
+
+"Test_name.c", line 185: error: invalid combination of type specifiers
+  short unsigned float *x166; /* { dg-error "" "short unsigned float" } */
+  ^
+
+"Test_name.c", line 186: error: invalid combination of type specifiers
+  short unsigned double *x167; /* { dg-error "" "short unsigned double" } */
+  ^
+
+"Test_name.c", line 187: error: invalid combination of type specifiers
+  short unsigned signed *x168; /* { dg-error "" "short unsigned signed" } */
+                 ^
+
+"Test_name.c", line 188: error: duplicate specifier in declaration
+  short unsigned unsigned *x169; /* { dg-error "" "short unsigned unsigned" } */
+                 ^
+
+"Test_name.c", line 189: error: invalid combination of type specifiers
+  short unsigned _Bool *x170; /* { dg-error "" "short unsigned _Bool" } */
+  ^
+
+"Test_name.c", line 190: error: invalid combination of type specifiers
+  int short void *x171; /* { dg-error "" "int short void" } */
+            ^
+
+"Test_name.c", line 191: error: invalid combination of type specifiers
+  int short char *x172; /* { dg-error "" "int short char" } */
+            ^
+
+"Test_name.c", line 192: error: duplicate specifier in declaration
+  int short short *x173; /* { dg-error "" "int short short" } */
+            ^
+
+"Test_name.c", line 193: error: invalid combination of type specifiers
+  int short int *x174; /* { dg-error "" "int short int" } */
+            ^
+
+"Test_name.c", line 194: error: invalid combination of type specifiers
+  int short long *x175; /* { dg-error "" "int short long" } */
+            ^
+
+"Test_name.c", line 195: error: invalid combination of type specifiers
+  int short float *x176; /* { dg-error "" "int short float" } */
+            ^
+
+"Test_name.c", line 196: error: invalid combination of type specifiers
+  int short double *x177; /* { dg-error "" "int short double" } */
+            ^
+
+"Test_name.c", line 199: error: invalid combination of type specifiers
+  int short _Bool *x180; /* { dg-error "" "int short _Bool" } */
+            ^
+
+"Test_name.c", line 200: error: invalid combination of type specifiers
+  int long void *x181; /* { dg-error "" "int long void" } */
+           ^
+
+"Test_name.c", line 201: error: invalid combination of type specifiers
+  int long char *x182; /* { dg-error "" "int long char" } */
+           ^
+
+"Test_name.c", line 202: error: invalid combination of type specifiers
+  int long short *x183; /* { dg-error "" "int long short" } */
+           ^
+
+"Test_name.c", line 203: error: invalid combination of type specifiers
+  int long int *x184; /* { dg-error "" "int long int" } */
+           ^
+
+"Test_name.c", line 205: error: invalid combination of type specifiers
+  int long float *x186; /* { dg-error "" "int long float" } */
+           ^
+
+"Test_name.c", line 206: error: invalid combination of type specifiers
+  int long double *x187; /* { dg-error "" "int long double" } */
+           ^
+
+"Test_name.c", line 209: error: invalid combination of type specifiers
+  int long _Bool *x190; /* { dg-error "" "int long _Bool" } */
+           ^
+
+"Test_name.c", line 210: error: invalid combination of type specifiers
+  int signed void *x191; /* { dg-error "" "int signed void" } */
+             ^
+
+"Test_name.c", line 211: error: invalid combination of type specifiers
+  int signed char *x192; /* { dg-error "" "int signed char" } */
+             ^
+
+"Test_name.c", line 213: error: invalid combination of type specifiers
+  int signed int *x194; /* { dg-error "" "int signed int" } */
+             ^
+
+"Test_name.c", line 215: error: invalid combination of type specifiers
+  int signed float *x196; /* { dg-error "" "int signed float" } */
+             ^
+
+"Test_name.c", line 216: error: invalid combination of type specifiers
+  int signed double *x197; /* { dg-error "" "int signed double" } */
+             ^
+
+"Test_name.c", line 217: error: duplicate specifier in declaration
+  int signed signed *x198; /* { dg-error "" "int signed signed" } */
+             ^
+
+"Test_name.c", line 218: error: invalid combination of type specifiers
+  int signed unsigned *x199; /* { dg-error "" "int signed unsigned" } */
+             ^
+
+"Test_name.c", line 219: error: invalid combination of type specifiers
+  int signed _Bool *x200; /* { dg-error "" "int signed _Bool" } */
+             ^
+
+"Test_name.c", line 220: error: invalid combination of type specifiers
+  int unsigned void *x201; /* { dg-error "" "int unsigned void" } */
+               ^
+
+"Test_name.c", line 221: error: invalid combination of type specifiers
+  int unsigned char *x202; /* { dg-error "" "int unsigned char" } */
+               ^
+
+"Test_name.c", line 223: error: invalid combination of type specifiers
+  int unsigned int *x204; /* { dg-error "" "int unsigned int" } */
+               ^
+
+"Test_name.c", line 225: error: invalid combination of type specifiers
+  int unsigned float *x206; /* { dg-error "" "int unsigned float" } */
+               ^
+
+"Test_name.c", line 226: error: invalid combination of type specifiers
+  int unsigned double *x207; /* { dg-error "" "int unsigned double" } */
+               ^
+
+"Test_name.c", line 227: error: invalid combination of type specifiers
+  int unsigned signed *x208; /* { dg-error "" "int unsigned signed" } */
+               ^
+
+"Test_name.c", line 228: error: duplicate specifier in declaration
+  int unsigned unsigned *x209; /* { dg-error "" "int unsigned unsigned" } */
+               ^
+
+"Test_name.c", line 229: error: invalid combination of type specifiers
+  int unsigned _Bool *x210; /* { dg-error "" "int unsigned _Bool" } */
+               ^
+
+"Test_name.c", line 230: error: invalid combination of type specifiers
+  long int void *x211; /* { dg-error "" "long int void" } */
+           ^
+
+"Test_name.c", line 231: error: invalid combination of type specifiers
+  long int char *x212; /* { dg-error "" "long int char" } */
+           ^
+
+"Test_name.c", line 232: error: invalid combination of type specifiers
+  long int short *x213; /* { dg-error "" "long int short" } */
+           ^
+
+"Test_name.c", line 233: error: invalid combination of type specifiers
+  long int int *x214; /* { dg-error "" "long int int" } */
+           ^
+
+"Test_name.c", line 235: error: invalid combination of type specifiers
+  long int float *x216; /* { dg-error "" "long int float" } */
+           ^
+
+"Test_name.c", line 236: error: invalid combination of type specifiers
+  long int double *x217; /* { dg-error "" "long int double" } */
+           ^
+
+"Test_name.c", line 239: error: invalid combination of type specifiers
+  long int _Bool *x220; /* { dg-error "" "long int _Bool" } */
+           ^
+
+"Test_name.c", line 240: error: invalid combination of type specifiers
+  long long void *x221; /* { dg-error "" "long long void" } */
+  ^
+
+"Test_name.c", line 241: error: invalid combination of type specifiers
+  long long char *x222; /* { dg-error "" "long long char" } */
+  ^
+
+"Test_name.c", line 242: error: invalid combination of type specifiers
+  long long short *x223; /* { dg-error "" "long long short" } */
+            ^
+
+"Test_name.c", line 244: error: invalid combination of type specifiers
+  long long long *x225; /* { dg-error "" "long long long" } */
+            ^
+
+"Test_name.c", line 245: error: invalid combination of type specifiers
+  long long float *x226; /* { dg-error "" "long long float" } */
+  ^
+
+"Test_name.c", line 246: error: invalid combination of type specifiers
+  long long double *x227; /* { dg-error "" "long long double" } */
+  ^
+
+"Test_name.c", line 249: error: invalid combination of type specifiers
+  long long _Bool *x230; /* { dg-error "" "long long _Bool" } */
+  ^
+
+"Test_name.c", line 250: error: invalid combination of type specifiers
+  long double void *x231; /* { dg-error "" "long double void" } */
+              ^
+
+"Test_name.c", line 251: error: invalid combination of type specifiers
+  long double char *x232; /* { dg-error "" "long double char" } */
+              ^
+
+"Test_name.c", line 252: error: invalid combination of type specifiers
+  long double short *x233; /* { dg-error "" "long double short" } */
+              ^
+
+"Test_name.c", line 253: error: invalid combination of type specifiers
+  long double int *x234; /* { dg-error "" "long double int" } */
+              ^
+
+"Test_name.c", line 254: error: invalid combination of type specifiers
+  long double long *x235; /* { dg-error "" "long double long" } */
+  ^
+
+"Test_name.c", line 255: error: invalid combination of type specifiers
+  long double float *x236; /* { dg-error "" "long double float" } */
+              ^
+
+"Test_name.c", line 256: error: invalid combination of type specifiers
+  long double double *x237; /* { dg-error "" "long double double" } */
+              ^
+
+"Test_name.c", line 257: error: invalid combination of type specifiers
+  long double signed *x238; /* { dg-error "" "long double signed" } */
+  ^
+
+"Test_name.c", line 258: error: invalid combination of type specifiers
+  long double unsigned *x239; /* { dg-error "" "long double unsigned" } */
+  ^
+
+"Test_name.c", line 259: error: invalid combination of type specifiers
+  long double _Bool *x240; /* { dg-error "" "long double _Bool" } */
+              ^
+
+"Test_name.c", line 260: error: invalid combination of type specifiers
+  long signed void *x241; /* { dg-error "" "long signed void" } */
+  ^
+
+"Test_name.c", line 261: error: invalid combination of type specifiers
+  long signed char *x242; /* { dg-error "" "long signed char" } */
+  ^
+
+"Test_name.c", line 262: error: invalid combination of type specifiers
+  long signed short *x243; /* { dg-error "" "long signed short" } */
+              ^
+
+"Test_name.c", line 265: error: invalid combination of type specifiers
+  long signed float *x246; /* { dg-error "" "long signed float" } */
+  ^
+
+"Test_name.c", line 266: error: invalid combination of type specifiers
+  long signed double *x247; /* { dg-error "" "long signed double" } */
+  ^
+
+"Test_name.c", line 267: error: duplicate specifier in declaration
+  long signed signed *x248; /* { dg-error "" "long signed signed" } */
+              ^
+
+"Test_name.c", line 268: error: invalid combination of type specifiers
+  long signed unsigned *x249; /* { dg-error "" "long signed unsigned" } */
+              ^
+
+"Test_name.c", line 269: error: invalid combination of type specifiers
+  long signed _Bool *x250; /* { dg-error "" "long signed _Bool" } */
+  ^
+
+"Test_name.c", line 270: error: invalid combination of type specifiers
+  long unsigned void *x251; /* { dg-error "" "long unsigned void" } */
+  ^
+
+"Test_name.c", line 271: error: invalid combination of type specifiers
+  long unsigned char *x252; /* { dg-error "" "long unsigned char" } */
+  ^
+
+"Test_name.c", line 272: error: invalid combination of type specifiers
+  long unsigned short *x253; /* { dg-error "" "long unsigned short" } */
+                ^
+
+"Test_name.c", line 275: error: invalid combination of type specifiers
+  long unsigned float *x256; /* { dg-error "" "long unsigned float" } */
+  ^
+
+Error limit reached.
+200 errors detected in the compilation of "Test_name.c".
+Compilation terminated.

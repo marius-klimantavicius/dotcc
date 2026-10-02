@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 5: warning: expression has no effect
+    if (0) 0; else continue;
+           ^
+
+"Test_name.c", line 5: error: a continue statement may only be used within a loop
+    if (0) 0; else continue;
+                   ^
+
+1 error detected in the compilation of "Test_name.c".

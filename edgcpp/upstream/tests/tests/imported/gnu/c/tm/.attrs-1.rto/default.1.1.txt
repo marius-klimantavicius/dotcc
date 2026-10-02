@@ -1,0 +1,98 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 10: error: identifier "__transaction_atomic" is undefined
+    __transaction_atomic [[outer()]] {} /* { dg-error "does not take any arguments" } */
+    ^
+
+"Test_name.c", line 10: error: two consecutive left square brackets always introduce an attribute list but an attribute list cannot appear here
+    __transaction_atomic [[outer()]] {} /* { dg-error "does not take any arguments" } */
+                         ^
+
+"Test_name.c", line 10: error: expected an expression
+    __transaction_atomic [[outer()]] {} /* { dg-error "does not take any arguments" } */
+                          ^
+
+"Test_name.c", line 10: error: expected a ";"
+    __transaction_atomic [[outer()]] {} /* { dg-error "does not take any arguments" } */
+                                     ^
+
+"Test_name.c", line 16: error: identifier "__transaction_atomic" is undefined
+    __transaction_atomic [[not_a_tm_attribute]] {} /* { dg-warning "attribute directive ignored" } */
+    ^
+
+"Test_name.c", line 16: error: two consecutive left square brackets always introduce an attribute list but an attribute list cannot appear here
+    __transaction_atomic [[not_a_tm_attribute]] {} /* { dg-warning "attribute directive ignored" } */
+                         ^
+
+"Test_name.c", line 16: error: expected an expression
+    __transaction_atomic [[not_a_tm_attribute]] {} /* { dg-warning "attribute directive ignored" } */
+                          ^
+
+"Test_name.c", line 16: error: expected a ";"
+    __transaction_atomic [[not_a_tm_attribute]] {} /* { dg-warning "attribute directive ignored" } */
+                                                ^
+
+"Test_name.c", line 22: error: identifier "__transaction_atomic" is undefined
+    __transaction_atomic [[unknown_attribute(args of *unknown* attributes need only (be {balanced[(({{[[]]}}))]}!), as per standard C)]] {} /* { dg-warning "attribute directive ignored" } */
+    ^
+
+"Test_name.c", line 22: error: two consecutive left square brackets always introduce an attribute list but an attribute list cannot appear here
+    __transaction_atomic [[unknown_attribute(args of *unknown* attributes need only (be {balanced[(({{[[]]}}))]}!), as per standard C)]] {} /* { dg-warning "attribute directive ignored" } */
+                         ^
+
+"Test_name.c", line 22: error: expected an expression
+    __transaction_atomic [[unknown_attribute(args of *unknown* attributes need only (be {balanced[(({{[[]]}}))]}!), as per standard C)]] {} /* { dg-warning "attribute directive ignored" } */
+                          ^
+
+"Test_name.c", line 22: error: expected a ";"
+    __transaction_atomic [[unknown_attribute(args of *unknown* attributes need only (be {balanced[(({{[[]]}}))]}!), as per standard C)]] {} /* { dg-warning "attribute directive ignored" } */
+                                                                                                                                         ^
+
+"Test_name.c", line 28: error: identifier "__transaction_atomic" is undefined
+    __transaction_atomic [[gnu::const]] {} /* { dg-warning "attribute directive ignored" } */
+    ^
+
+"Test_name.c", line 28: error: two consecutive left square brackets always introduce an attribute list but an attribute list cannot appear here
+    __transaction_atomic [[gnu::const]] {} /* { dg-warning "attribute directive ignored" } */
+                         ^
+
+"Test_name.c", line 28: error: expected an expression
+    __transaction_atomic [[gnu::const]] {} /* { dg-warning "attribute directive ignored" } */
+                          ^
+
+"Test_name.c", line 28: error: expected a ";"
+    __transaction_atomic [[gnu::const]] {} /* { dg-warning "attribute directive ignored" } */
+                                        ^
+
+"Test_name.c", line 34: error: identifier "__transaction_atomic" is undefined
+    __transaction_atomic [[bad_namespace::outer]] {} /* { dg-warning "attribute directive ignored" } */
+    ^
+
+"Test_name.c", line 34: error: two consecutive left square brackets always introduce an attribute list but an attribute list cannot appear here
+    __transaction_atomic [[bad_namespace::outer]] {} /* { dg-warning "attribute directive ignored" } */
+                         ^
+
+"Test_name.c", line 34: error: expected an expression
+    __transaction_atomic [[bad_namespace::outer]] {} /* { dg-warning "attribute directive ignored" } */
+                          ^
+
+"Test_name.c", line 34: error: expected a ";"
+    __transaction_atomic [[bad_namespace::outer]] {} /* { dg-warning "attribute directive ignored" } */
+                                                  ^
+
+"Test_name.c", line 40: error: identifier "__transaction_atomic" is undefined
+    __transaction_atomic [[outer, outer]] {} /* { dg-warning "attribute duplicated" } */
+    ^
+
+"Test_name.c", line 40: error: two consecutive left square brackets always introduce an attribute list but an attribute list cannot appear here
+    __transaction_atomic [[outer, outer]] {} /* { dg-warning "attribute duplicated" } */
+                         ^
+
+"Test_name.c", line 40: error: expected an expression
+    __transaction_atomic [[outer, outer]] {} /* { dg-warning "attribute duplicated" } */
+                          ^
+
+"Test_name.c", line 40: error: expected a ";"
+    __transaction_atomic [[outer, outer]] {} /* { dg-warning "attribute duplicated" } */
+                                          ^
+
+24 errors detected in the compilation of "Test_name.c".

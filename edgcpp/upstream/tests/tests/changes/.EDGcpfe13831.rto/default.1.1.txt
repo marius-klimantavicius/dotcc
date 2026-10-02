@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 13: error: variable "s" has an uninitialized const or reference member
+  struct S { int i; R x; } s = { 1 };  // Previously accepted; now an error
+                           ^
+
+1 error detected in the compilation of "Test_name.c".

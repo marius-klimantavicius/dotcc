@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --signed_chars Test_name.c
+"Test_name.c", line 5: warning: integer conversion resulted in truncation
+  char c1 = 1024; // { dg-warning "overflow" }
+            ^
+
+"Test_name.c", line 10: warning: integer conversion resulted in truncation
+  unsigned char uc1 = -129; // { dg-warning "unsigned" }
+                      ^
+

@@ -1,0 +1,114 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 24: warning: variable "s1" was declared but never referenced
+      S s1 = { 1, 2, 3 ,4, 5, 6, 7, 8 };
+        ^
+
+"Test_name.c", line 25: warning: variable "s2" was declared but never referenced
+      S s2{ {1, 2}, {3, 4}, { {5}, {6} }, { {7, 8} } };
+        ^
+
+"Test_name.c", line 26: warning: variable "s3" was declared but never referenced
+      S s3{ 1, 2, 3, 4, 5, 6 };
+        ^
+
+"Test_name.c", line 27: warning: variable "s4" was declared but never referenced
+      S s4{ {1, 2}, {3, 4}, {5, 6}, { {7, 8} } };
+        ^
+
+"Test_name.c", line 28: warning: variable "s5" was declared but never referenced
+      S s5{ {1, 2}, {3, 4}, { {5}, {6} }, {7, 8} };
+        ^
+
+"Test_name.c", line 75: warning: a parenthesized initializer for a non-class entity must be an expression, not a brace-enclosed list
+    struct C { int a[2]; C():a({1, 2}) { } }; // expected-error {{parenthesized initialization of a member array is a GNU extension}}
+                                     ^
+
+"Test_name.c", line 81: error: the size of an array must be greater than zero
+    template<int x> struct A { int a[x]; }; // expected-error {{'a' declared as an array with a negative size}}
+                                     ^
+          detected during instantiation of class "array_explicit_conversion::A<x> [with x=-1]" at line 88
+
+"Test_name.c", line 114: error: no instance of constructor "sub_constructor::DefaultConstructor::DefaultConstructor" matches the argument list
+            argument types are: (int)
+    Aggr too_many { {0} , {0} , {0,0} }; // expected-error {{no matching constructor for initialization}}
+                    ^
+"Test_name.c", line 93: note: function "sub_constructor::DefaultConstructor::DefaultConstructor(const sub_constructor::DefaultConstructor &)" does not match because argument #1 does not match parameter
+    struct DefaultConstructor { // expected-note 2 {{not viable}}
+           ^
+"Test_name.c", line 93: note: function "sub_constructor::DefaultConstructor::DefaultConstructor(sub_constructor::DefaultConstructor &&)" does not match because argument #1 does not match parameter
+    struct DefaultConstructor { // expected-note 2 {{not viable}}
+           ^
+"Test_name.c", line 94: note: number of parameters of function "sub_constructor::DefaultConstructor::DefaultConstructor()" does not match the call
+      DefaultConstructor(); // expected-note  {{not viable}}
+      ^
+
+"Test_name.c", line 115: error: no instance of constructor "sub_constructor::NoDefaultConstructor2::NoDefaultConstructor2" matches the argument list
+            argument types are: (int)
+    Aggr too_few { {} , {0} , {0} }; // expected-error {{no matching constructor for initialization}}
+                              ^
+"Test_name.c", line 101: note: function "sub_constructor::NoDefaultConstructor2::NoDefaultConstructor2(const sub_constructor::NoDefaultConstructor2 &)" does not match because argument #1 does not match parameter
+    struct NoDefaultConstructor2 {  // expected-note 4 {{not viable}}
+           ^
+"Test_name.c", line 101: note: function "sub_constructor::NoDefaultConstructor2::NoDefaultConstructor2(sub_constructor::NoDefaultConstructor2 &&)" does not match because argument #1 does not match parameter
+    struct NoDefaultConstructor2 {  // expected-note 4 {{not viable}}
+           ^
+"Test_name.c", line 102: note: number of parameters of function "sub_constructor::NoDefaultConstructor2::NoDefaultConstructor2(int, int)" does not match the call
+      NoDefaultConstructor2(int,int); // expected-note 2 {{not viable}}
+      ^
+
+"Test_name.c", line 116: error: no instance of constructor "sub_constructor::NoDefaultConstructor1::NoDefaultConstructor1" matches the argument list
+            argument types are: (sub_constructor::Aggr *)
+    Aggr invalid { {} , {&ok1} , {0,0} }; // expected-error {{no matching constructor for initialization}}
+                        ^
+"Test_name.c", line 97: note: function "sub_constructor::NoDefaultConstructor1::NoDefaultConstructor1(const sub_constructor::NoDefaultConstructor1 &)" does not match because argument #1 does not match parameter
+    struct NoDefaultConstructor1 { // expected-note 2 {{not viable}}
+           ^
+"Test_name.c", line 97: note: function "sub_constructor::NoDefaultConstructor1::NoDefaultConstructor1(sub_constructor::NoDefaultConstructor1 &&)" does not match because argument #1 does not match parameter
+    struct NoDefaultConstructor1 { // expected-note 2 {{not viable}}
+           ^
+"Test_name.c", line 98: note: function "sub_constructor::NoDefaultConstructor1::NoDefaultConstructor1(int)" does not match because argument #1 does not match parameter
+      NoDefaultConstructor1(int); // expected-note {{not viable}}
+      ^
+
+"Test_name.c", line 118: error: no instance of constructor "sub_constructor::NoDefaultConstructor2::NoDefaultConstructor2" matches the argument list
+            argument types are: (int)
+    NoDefaultConstructor2 array_error[] = { {0,0} , {0} }; // expected-error {{no matching constructor for initialization}}
+                                                    ^
+"Test_name.c", line 101: note: function "sub_constructor::NoDefaultConstructor2::NoDefaultConstructor2(const sub_constructor::NoDefaultConstructor2 &)" does not match because argument #1 does not match parameter
+    struct NoDefaultConstructor2 {  // expected-note 4 {{not viable}}
+           ^
+"Test_name.c", line 101: note: function "sub_constructor::NoDefaultConstructor2::NoDefaultConstructor2(sub_constructor::NoDefaultConstructor2 &&)" does not match because argument #1 does not match parameter
+    struct NoDefaultConstructor2 {  // expected-note 4 {{not viable}}
+           ^
+"Test_name.c", line 102: note: number of parameters of function "sub_constructor::NoDefaultConstructor2::NoDefaultConstructor2(int, int)" does not match the call
+      NoDefaultConstructor2(int,int); // expected-note 2 {{not viable}}
+      ^
+
+"Test_name.c", line 126: error: more than one instance of overloaded function "multidimensional_array::g" matches the argument list:
+            function "multidimensional_array::g(const int (&)[2][2])" (declared at line 122)
+            function "multidimensional_array::g(const int (&)[2][2][2])" (declared at line 123)
+            argument types are: ({...})
+      g({{1,2},{3,4}});
+      ^
+
+"Test_name.c", line 132: error: expression must be an lvalue or a function designator
+    T *p = &T{1,2,3,4,5}; // expected-error {{taking the address of a temporary object of type 'T' (aka 'int[5]')}}
+            ^
+
+"Test_name.c", line 136: warning: extra braces are nonstandard
+    struct { int i; } ne = {{0, 1}}; // expected-error{{excess elements in scalar initializer}}
+                            ^
+
+"Test_name.c", line 136: error: too many initializer values
+    struct { int i; } ne = {{0, 1}}; // expected-error{{excess elements in scalar initializer}}
+                                ^
+
+"Test_name.c", line 142: error: variable "array" may not be initialized
+    Foo array[size] = {0}; // expected-error {{variable has incomplete type}} \
+        ^
+
+"Test_name.c", line 142: error: incomplete type "no_crash::Foo [size]" is not allowed
+    Foo array[size] = {0}; // expected-error {{variable has incomplete type}} \
+        ^
+
+10 errors detected in the compilation of "Test_name.c".

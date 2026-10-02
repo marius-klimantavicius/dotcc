@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: error: member "A::var0" (declared at line 6) is inaccessible
+  template <class T> void C<T>::g() { A::var0++; } // { dg-error "protected|invalid" }
+                                         ^
+          detected during instantiation of "void C<T>::g() [with T=char]" at line 11
+
+"Test_name.c", line 9: error: a nonstatic member reference must be relative to a specific object
+  template <class T> void C<T>::g() { A::var0++; } // { dg-error "protected|invalid" }
+                                         ^
+          detected during instantiation of "void C<T>::g() [with T=char]" at line 11
+
+2 errors detected in the compilation of "Test_name.c".

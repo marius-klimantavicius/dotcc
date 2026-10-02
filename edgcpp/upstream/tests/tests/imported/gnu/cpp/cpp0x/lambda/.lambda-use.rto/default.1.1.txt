@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 12: warning: expression has no effect
+    [] { sizeof (argc); sizeof (i); sizeof (ir); sizeof (ci); sizeof (cir); };
+         ^
+
+"Test_name.c", line 12: warning: expression has no effect
+    [] { sizeof (argc); sizeof (i); sizeof (ir); sizeof (ci); sizeof (cir); };
+                        ^
+
+"Test_name.c", line 12: warning: expression has no effect
+    [] { sizeof (argc); sizeof (i); sizeof (ir); sizeof (ci); sizeof (cir); };
+                                    ^
+
+"Test_name.c", line 12: warning: expression has no effect
+    [] { sizeof (argc); sizeof (i); sizeof (ir); sizeof (ci); sizeof (cir); };
+                                                 ^
+
+"Test_name.c", line 12: warning: expression has no effect
+    [] { sizeof (argc); sizeof (i); sizeof (ir); sizeof (ci); sizeof (cir); };
+                                                              ^
+
+"Test_name.c", line 13: warning: variable "ia" was declared but never referenced
+    [] { int ia[ci]; };
+             ^
+
+"Test_name.c", line 8: warning: variable "ir" was set but never used
+    int &ir = i;
+         ^
+
+"Test_name.c", line 10: warning: variable "cir" was set but never used
+    const int &cir = ci;
+               ^
+

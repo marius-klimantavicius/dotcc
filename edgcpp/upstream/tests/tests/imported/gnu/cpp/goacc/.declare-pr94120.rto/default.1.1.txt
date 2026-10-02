@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: warning: unrecognized #pragma
+  #pragma acc declare create (b)
+          ^
+
+"Test_name.c", line 12: warning: unrecognized #pragma
+   #pragma acc declare copyin (d)
+           ^
+
+"Test_name.c", line 18: warning: unrecognized #pragma
+      #pragma acc declare copyin (e)
+              ^
+
+"Test_name.c", line 24: warning: unrecognized #pragma
+   #pragma acc declare copyin (f)		/* { dg-error "'f' must be a variable declared in the same scope as '#pragma acc declare'" }  */
+           ^
+
+"Test_name.c", line 30: warning: unrecognized #pragma
+      #pragma acc declare copyin (g)	/* { dg-error "'outer::g' must be a variable declared in the same scope as '#pragma acc declare'" }  */
+              ^
+

@@ -1,0 +1,53 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --exceptions -DUSE_CAPABILITY=0 Test_name.c
+"SemaCXX/warn-thread-safety-verbose.cpp", line 6: warning: unknown attribute "lockable"
+  class __attribute__((lockable)) Mutex {
+                       ^
+
+"SemaCXX/warn-thread-safety-verbose.cpp", line 8: warning: unknown attribute "exclusive_lock_function"
+    void Lock() __attribute__((exclusive_lock_function()));
+                               ^
+
+"SemaCXX/warn-thread-safety-verbose.cpp", line 9: warning: unknown attribute "shared_lock_function"
+    void ReaderLock() __attribute__((shared_lock_function()));
+                                     ^
+
+"SemaCXX/warn-thread-safety-verbose.cpp", line 10: warning: unknown attribute "unlock_function"
+    void Unlock() __attribute__((unlock_function()));
+                                 ^
+
+"SemaCXX/warn-thread-safety-verbose.cpp", line 11: warning: unknown attribute "exclusive_trylock_function"
+    bool TryLock() __attribute__((exclusive_trylock_function(true)));
+                                  ^
+
+"SemaCXX/warn-thread-safety-verbose.cpp", line 12: warning: unknown attribute "shared_trylock_function"
+    bool ReaderTryLock() __attribute__((shared_trylock_function(true)));
+                                        ^
+
+"SemaCXX/warn-thread-safety-verbose.cpp", line 17: warning: unknown attribute "assert_exclusive_lock"
+    void AssertHeld() __attribute__((assert_exclusive_lock()));
+                                     ^
+
+"SemaCXX/warn-thread-safety-verbose.cpp", line 18: warning: unknown attribute "assert_shared_lock"
+    void AssertReaderHeld() __attribute__((assert_shared_lock()));
+                                           ^
+
+"SemaCXX/warn-thread-safety-verbose.cpp", line 24: warning: unknown attribute "guarded_by"
+    int a __attribute__((guarded_by(mu)));
+                         ^
+
+"SemaCXX/warn-thread-safety-verbose.cpp", line 26: warning: unknown attribute "exclusive_locks_required"
+    void foo1() __attribute__((exclusive_locks_required(mu)));
+                               ^
+
+"SemaCXX/warn-thread-safety-verbose.cpp", line 27: warning: unknown attribute "shared_locks_required"
+    void foo2() __attribute__((shared_locks_required(mu)));
+                               ^
+
+"SemaCXX/warn-thread-safety-verbose.cpp", line 28: warning: unknown attribute "locks_excluded"
+    void foo3() __attribute__((locks_excluded(mu)));
+                               ^
+
+"SemaCXX/warn-thread-safety-verbose.cpp", line 35: warning: variable "b" was declared but never referenced
+      int b = a;
+          ^
+

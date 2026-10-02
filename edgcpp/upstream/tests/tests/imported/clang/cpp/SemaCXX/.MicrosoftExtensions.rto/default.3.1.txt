@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=3 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 -w --exceptions --exceptions -DTEST2 -w Test_name.c
+"Test_name.c", line 612: error: expected a ";"
+  typedef char __unaligned *aligned_type; // expected-error {{expected ';' after top level declarator}}
+                           ^
+
+"Test_name.c", line 628: error: a member with reference type is not allowed in a union
+      int &i2;
+      ^
+
+2 errors detected in the compilation of "Test_name.c".

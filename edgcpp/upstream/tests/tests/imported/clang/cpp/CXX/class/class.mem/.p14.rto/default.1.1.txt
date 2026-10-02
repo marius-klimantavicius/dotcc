@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 14: error: a field with the same name as its class cannot be declared in a class with a user-declared constructor
+    int X1; // expected-error{{member 'X1' has the same name as its class}}
+        ^
+
+"Test_name.c", line 20: error: declaration of a member with the same name as its class
+    float X2; // expected-error{{member 'X2' has the same name as its class}}
+          ^
+
+2 errors detected in the compilation of "Test_name.c".

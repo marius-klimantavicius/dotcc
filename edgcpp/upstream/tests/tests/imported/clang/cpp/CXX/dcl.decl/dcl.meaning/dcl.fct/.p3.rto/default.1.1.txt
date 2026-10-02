@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 5: error: function "f" has already been defined (previous definition at line 4)
+  void f(const int) { } // expected-error {{redefinition of 'f'}}
+       ^
+
+"Test_name.c", line 9: error: function "ft(T) [with T=int]" has already been defined (previous definition at line 8)
+  template <> void ft(int) {} // expected-error {{redefinition of 'ft<int>'}}
+                   ^
+
+2 errors detected in the compilation of "Test_name.c".

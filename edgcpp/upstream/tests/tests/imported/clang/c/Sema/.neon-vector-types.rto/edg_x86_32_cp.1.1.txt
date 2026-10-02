@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 32: error: expected a ")"
+  typedef __attribute__((neon_vector_type(2, 4))) int only_one_arg; // expected-error{{'neon_vector_type' attribute takes one argument}}
+                                           ^
+
+"Test_name.c", line 35: error: expression must be an integral constant expression
+  typedef __attribute__((neon_vector_type(2.0))) int non_int_width; // expected-error{{'neon_vector_type' attribute requires an integer constant}}
+                                          ^
+
+"Test_name.c", line 38: error: invalid NEON vector element type "void"
+  typedef __attribute__((neon_vector_type(4))) void* ptr_elt; // expected-error{{invalid vector element type}}
+                         ^
+
+"Test_name.c", line 38: error: a NEON vector or polyvector must be either 64 or 128 bits wide
+  typedef __attribute__((neon_vector_type(4))) void* ptr_elt; // expected-error{{invalid vector element type}}
+                         ^
+
+"Test_name.c", line 39: error: invalid NEON polyvector element type "float32_t" (aka "float")
+  typedef __attribute__((neon_polyvector_type(4))) float32_t bad_poly_elt; // expected-error{{invalid vector element type}}
+                         ^
+
+"Test_name.c", line 41: error: invalid NEON vector element type "struct aggr"
+  typedef __attribute__((neon_vector_type(8))) struct aggr aggregate_elt; // expected-error{{invalid vector element type}}
+                         ^
+
+"Test_name.c", line 44: error: a NEON vector or polyvector must be either 64 or 128 bits wide
+  typedef __attribute__((neon_vector_type(1))) int int32x1_t; // expected-error{{Neon vector size must be 64 or 128 bits}}
+                         ^
+
+"Test_name.c", line 45: error: a NEON vector or polyvector must be either 64 or 128 bits wide
+  typedef __attribute__((neon_vector_type(3))) int int32x3_t; // expected-error{{Neon vector size must be 64 or 128 bits}}
+                         ^
+
+8 errors detected in the compilation of "Test_name.c".

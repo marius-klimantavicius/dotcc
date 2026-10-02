@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++23 Test_name.c
+"Test_name.c", line 17: error: static assertion failed
+          static_assert(requires { T::template foo<S>(); });
+          ^
+          detected during instantiation of "auto A<T, S>::foo() [with T=B, S=double]" at line 24
+
+"Test_name.c", line 18: error: static assertion failed
+          static_assert(requires { T::bar(); });
+          ^
+          detected during instantiation of "auto A<T, S>::foo() [with T=B, S=double]" at line 24
+
+2 errors detected in the compilation of "Test_name.c".

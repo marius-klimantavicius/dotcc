@@ -1,0 +1,24 @@
+fe_only -DTEST_NUMBER=1 --c++20 Test_name.c
+"Test_name.c", line 14: error: out-of-order initializers are nonstandard in C++
+    f({.y = 2, .x = 1}, 0); // error: selects #1, initialization of a fails due to non-matching member order
+                ^
+
+"Test_name.c", line 15: error: duplicate designator is not allowed
+    f({.x = 1, .y = 2, .y = 2}, 0); // error: selects #1, initialization of a fails due to duplicate initializers
+                        ^
+
+"Test_name.c", line 16: error: more than one instance of overloaded function "g" matches the argument list:
+            function "g(A)" (declared at line 9)
+            function "g(B)" (declared at line 10)
+            argument types are: ({...})
+    g({.x = 1, .y = 2}); // error: ambiguous between #3 and #4
+    ^
+
+"Test_name.c", line 17: error: more than one instance of overloaded function "g" matches the argument list:
+            function "g(A)" (declared at line 9)
+            function "g(B)" (declared at line 10)
+            argument types are: ({...})
+    g({.x = 1, .y = 2, .y = 2}); // error: ambiguous between #3 and #4
+    ^
+
+4 errors detected in the compilation of "Test_name.c".

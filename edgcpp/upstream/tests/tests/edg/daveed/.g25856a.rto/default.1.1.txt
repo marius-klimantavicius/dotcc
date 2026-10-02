@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --c++20 Test_name.c
+"Test_name.c", line 6: error: variable in constexpr function does not have automatic storage duration
+     static const int x = 5;
+                      ^
+
+"Test_name.c", line 10: error: expression must have a constant value
+  static_assert(' ' == test());
+                ^
+"Test_name.c", line 10: note: cannot call non-constexpr function "test" (declared at line 4)
+  static_assert(' ' == test());
+                       ^
+
+2 errors detected in the compilation of "Test_name.c".

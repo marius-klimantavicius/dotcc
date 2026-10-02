@@ -1,0 +1,27 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc -E Test_name.c
+# 1 "Test_name.c"
+
+
+ 
+
+ 
+
+ 
+
+"Test_name.c", line 9: error: "##" may not be first in a macro definition
+  #define bad1 ## owt	/* { dg-error "cannot" "## at objlike start" } */
+               ^
+
+"Test_name.c", line 10: error: "##" may not be last in a macro definition
+  #define bad2 owt ##	/* { dg-error "cannot" "## at objlike end" } */
+                     	                                               ^
+
+"Test_name.c", line 11: error: "##" may not be first in a macro definition
+  #define bad3(x) ## x	/* { dg-error "cannot" "## at funlike start" } */
+                  ^
+
+"Test_name.c", line 12: error: "##" may not be last in a macro definition
+  #define bad4(x) x ##	/* { dg-error "cannot" "## at funlike end" } */
+                      	                                               ^
+
+4 errors detected in the compilation of "Test_name.c".

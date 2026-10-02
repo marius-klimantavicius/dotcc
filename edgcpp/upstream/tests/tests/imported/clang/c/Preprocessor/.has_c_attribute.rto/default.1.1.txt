@@ -1,0 +1,98 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c11 Test_name.c
+"Test_name.c", line 9: warning: this declaration has no storage class or type specifier
+  C2x(fallthrough)
+  ^
+
+"Test_name.c", line 9: error: expected a ";"
+  C2x(fallthrough)
+  ^
+
+"Test_name.c", line 24: warning: parsing restarts here after previous syntax error
+  C2x(selectany); // Known attribute not supported in C mode
+                ^
+
+"Test_name.c", line 27: warning: this declaration has no storage class or type specifier
+  C2x(frobble) // Unknown attribute
+  ^
+
+"Test_name.c", line 27: error: expected a ";"
+  C2x(frobble) // Unknown attribute
+  ^
+
+"Test_name.c", line 53: error: function call is not allowed in a constant expression
+  #if __has_c_attribute(N)
+      ^
+
+"Test_name.c", line 58: error: function call is not allowed in a constant expression
+  #if __has_c_attribute(C::L)
+      ^
+
+"Test_name.c", line 58: error: expected a ")"
+  #if __has_c_attribute(C::L)
+                         ^
+
+"Test_name.c", line 63: error: function call is not allowed in a constant expression
+  #if __has_c_attribute(clang::L)
+      ^
+
+"Test_name.c", line 63: error: expected a ")"
+  #if __has_c_attribute(clang::L)
+                             ^
+
+"Test_name.c", line 68: error: function call is not allowed in a constant expression
+  #if __has_c_attribute(C::likely)
+      ^
+
+"Test_name.c", line 68: error: expected a ")"
+  #if __has_c_attribute(C::likely)
+                         ^
+
+"Test_name.c", line 73: error: function call is not allowed in a constant expression
+  #if __has_c_attribute(CL)
+      ^
+
+"Test_name.c", line 73: error: expected a ")"
+  #if __has_c_attribute(CL)
+                        ^
+
+"Test_name.c", line 79: error: function call is not allowed in a constant expression
+  #if __has_c_attribute(FUNCLIKE1(likely))
+      ^
+
+"Test_name.c", line 79: error: expected a ")"
+  #if __has_c_attribute(FUNCLIKE1(likely))
+                        ^
+
+"Test_name.c", line 85: error: function call is not allowed in a constant expression
+  #if __has_c_attribute(FUNCLIKE2(likely))
+      ^
+
+"Test_name.c", line 85: error: expected a ")"
+  #if __has_c_attribute(FUNCLIKE2(likely))
+                        ^
+
+"Test_name.c", line 90: error: function call is not allowed in a constant expression
+  #if __has_c_attribute(CL\
+      ^
+
+"Test_name.c", line 90: error: expected a ")"
+  #if __has_c_attribute(CL\
+                        ^
+
+"Test_name.c", line 99: error: function call is not allowed in a constant expression
+  #if __has_c_attribute(CL_2)
+      ^
+
+"Test_name.c", line 99: error: expected a ")"
+  #if __has_c_attribute(CL_2)
+                        ^
+
+"Test_name.c", line 104: error: function call is not allowed in a constant expression
+  #if __has_c_attribute(CL_2\
+      ^
+
+"Test_name.c", line 104: error: expected a ")"
+  #if __has_c_attribute(CL_2\
+                        ^
+
+21 errors detected in the compilation of "Test_name.c".

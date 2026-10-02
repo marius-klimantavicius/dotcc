@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 24: warning: operand types are incompatible ("struct S2 *" and "struct S2 *")
+    if (s1->u1.x == s2) return 1; /* expected-warning {{comparison of distinct pointer types ('struct S2 *' and 'struct S2 *')}} */
+                 ^
+
+"Test_name.c", line 33: warning: declaration is not visible outside of function
+  int test_struct_scope_3(struct S4 * s4) { // expected-warning{{declaration of 'struct S4' will not be visible outside of this function}}
+                                 ^
+
+"Test_name.c", line 34: warning: variable "s4_2" was declared but never referenced
+    struct S4 { int y; } *s4_2 = 0;
+                          ^
+
+"Test_name.c", line 39: warning: declaration is not visible outside of function
+  void f(struct S5 { int y; } s5); // expected-warning{{declaration of 'struct S5' will not be visible outside of this function}}
+                ^
+
+"Test_name.c", line 47: warning: variable "a" was set but never used
+          struct S6 a;
+                    ^
+

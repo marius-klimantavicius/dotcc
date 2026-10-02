@@ -1,0 +1,6 @@
+cpfe -DTEST_NUMBER=1 --c++23 -tused -A Test_name.c
+"Test_name.c", line 5: error: function "S<T>::f(S<T> &) [with T=int]" was referenced but not defined
+      constexpr void f(this S&) requires true; // #2
+                     ^
+
+1 error detected in the compilation of "Test_name.c".

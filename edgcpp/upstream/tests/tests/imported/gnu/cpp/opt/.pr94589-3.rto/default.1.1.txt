@@ -1,0 +1,97 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"./opt/pr94589-1.C", line 10: warning: unknown attribute "noipa"
+  __attribute__((noipa)) bool f1 (int i, int j) { auto c = i <=> j; return c == 0; }
+                 ^
+
+"./opt/pr94589-1.C", line 11: warning: unknown attribute "noipa"
+  __attribute__((noipa)) bool f2 (int i, int j) { auto c = i <=> j; return c != 0; }
+                 ^
+
+"./opt/pr94589-1.C", line 12: warning: unknown attribute "noipa"
+  __attribute__((noipa)) bool f3 (int i, int j) { auto c = i <=> j; return c > 0; }
+                 ^
+
+"./opt/pr94589-1.C", line 13: warning: unknown attribute "noipa"
+  __attribute__((noipa)) bool f4 (int i, int j) { auto c = i <=> j; return c < 0; }
+                 ^
+
+"./opt/pr94589-1.C", line 14: warning: unknown attribute "noipa"
+  __attribute__((noipa)) bool f5 (int i, int j) { auto c = i <=> j; return c >= 0; }
+                 ^
+
+"./opt/pr94589-1.C", line 15: warning: unknown attribute "noipa"
+  __attribute__((noipa)) bool f6 (int i, int j) { auto c = i <=> j; return c <= 0; }
+                 ^
+
+"./opt/pr94589-1.C", line 16: warning: unknown attribute "noipa"
+  __attribute__((noipa)) bool f7 (int i, int j) { auto c = i <=> j; return c == std::strong_ordering::less; }
+                 ^
+
+"./opt/pr94589-1.C", line 17: warning: unknown attribute "noipa"
+  __attribute__((noipa)) bool f8 (int i, int j) { auto c = i <=> j; return c != std::strong_ordering::less; }
+                 ^
+
+"./opt/pr94589-1.C", line 18: warning: unknown attribute "noipa"
+  __attribute__((noipa)) bool f9 (int i, int j) { auto c = i <=> j; return c == std::strong_ordering::equal; }
+                 ^
+
+"./opt/pr94589-1.C", line 19: warning: unknown attribute "noipa"
+  __attribute__((noipa)) bool f10 (int i, int j) { auto c = i <=> j; return c != std::strong_ordering::equal; }
+                 ^
+
+"./opt/pr94589-1.C", line 20: warning: unknown attribute "noipa"
+  __attribute__((noipa)) bool f11 (int i, int j) { auto c = i <=> j; return c == std::strong_ordering::greater; }
+                 ^
+
+"./opt/pr94589-1.C", line 21: warning: unknown attribute "noipa"
+  __attribute__((noipa)) bool f12 (int i, int j) { auto c = i <=> j; return c != std::strong_ordering::greater; }
+                 ^
+
+"./opt/pr94589-1.C", line 22: warning: unknown attribute "noipa"
+  __attribute__((noipa)) bool f13 (int i) { auto c = i <=> 5; return c == 0; }
+                 ^
+
+"./opt/pr94589-1.C", line 23: warning: unknown attribute "noipa"
+  __attribute__((noipa)) bool f14 (int i) { auto c = i <=> 5; return c != 0; }
+                 ^
+
+"./opt/pr94589-1.C", line 24: warning: unknown attribute "noipa"
+  __attribute__((noipa)) bool f15 (int i) { auto c = i <=> 5; return c > 0; }
+                 ^
+
+"./opt/pr94589-1.C", line 25: warning: unknown attribute "noipa"
+  __attribute__((noipa)) bool f16 (int i) { auto c = i <=> 5; return c < 0; }
+                 ^
+
+"./opt/pr94589-1.C", line 26: warning: unknown attribute "noipa"
+  __attribute__((noipa)) bool f17 (int i) { auto c = i <=> 5; return c >= 0; }
+                 ^
+
+"./opt/pr94589-1.C", line 27: warning: unknown attribute "noipa"
+  __attribute__((noipa)) bool f18 (int i) { auto c = i <=> 5; return c <= 0; }
+                 ^
+
+"./opt/pr94589-1.C", line 28: warning: unknown attribute "noipa"
+  __attribute__((noipa)) bool f19 (int i) { auto c = i <=> 5; return c == std::strong_ordering::less; }
+                 ^
+
+"./opt/pr94589-1.C", line 29: warning: unknown attribute "noipa"
+  __attribute__((noipa)) bool f20 (int i) { auto c = i <=> 5; return c != std::strong_ordering::less; }
+                 ^
+
+"./opt/pr94589-1.C", line 30: warning: unknown attribute "noipa"
+  __attribute__((noipa)) bool f21 (int i) { auto c = i <=> 5; return c == std::strong_ordering::equal; }
+                 ^
+
+"./opt/pr94589-1.C", line 31: warning: unknown attribute "noipa"
+  __attribute__((noipa)) bool f22 (int i) { auto c = i <=> 5; return c != std::strong_ordering::equal; }
+                 ^
+
+"./opt/pr94589-1.C", line 32: warning: unknown attribute "noipa"
+  __attribute__((noipa)) bool f23 (int i) { auto c = i <=> 5; return c == std::strong_ordering::greater; }
+                 ^
+
+"./opt/pr94589-1.C", line 33: warning: unknown attribute "noipa"
+  __attribute__((noipa)) bool f24 (int i) { auto c = i <=> 5; return c != std::strong_ordering::greater; }
+                 ^
+

@@ -1,0 +1,114 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++23 Test_name.c
+"Test_name.c", line 22: error: a virtual member function cannot have an explicit "this" parameter
+    virtual void f0(this S&) {}		     // { dg-line line_f0 }
+    ^
+
+"Test_name.c", line 23: error: a virtual member function cannot have an explicit "this" parameter
+    virtual void f1(this S&) override {}	     // { dg-line line_f1 }
+    ^
+
+"Test_name.c", line 23: error: member function declared with "override" does not override a base class member
+    virtual void f1(this S&) override {}	     // { dg-line line_f1 }
+                 ^
+
+"Test_name.c", line 24: error: a virtual member function cannot have an explicit "this" parameter
+    virtual void f2(this S&) final {}	     // { dg-line line_f2 }
+    ^
+
+"Test_name.c", line 25: error: a virtual member function cannot have an explicit "this" parameter
+    virtual void f3(this S&) override final {} // { dg-line line_f3 }
+    ^
+
+"Test_name.c", line 25: error: member function declared with "override" does not override a base class member
+    virtual void f3(this S&) override final {} // { dg-line line_f3 }
+                 ^
+
+"Test_name.c", line 27: error: member function declared with "override" does not override a base class member
+    void f5(this S&) override {}		     // { dg-line line_f5 }
+         ^
+
+"Test_name.c", line 28: error: nonvirtual function cannot be declared with "final" modifier
+    void f6(this S&) final {}		     // { dg-line line_f6 }
+         ^
+
+"Test_name.c", line 29: error: member function declared with "override" does not override a base class member
+    void f7(this S&) override final {}	     // { dg-line line_f7 }
+         ^
+
+"Test_name.c", line 29: error: nonvirtual function cannot be declared with "final" modifier
+    void f7(this S&) override final {}	     // { dg-line line_f7 }
+         ^
+
+"Test_name.c", line 22: warning: function "B::f0()" is hidden by "S::f0" -- virtual function override intended?
+    virtual void f0(this S&) {}		     // { dg-line line_f0 }
+                 ^
+
+"Test_name.c", line 23: warning: function "B::f1()" is hidden by "S::f1" -- virtual function override intended?
+    virtual void f1(this S&) override {}	     // { dg-line line_f1 }
+                 ^
+
+"Test_name.c", line 24: warning: function "B::f2()" is hidden by "S::f2" -- virtual function override intended?
+    virtual void f2(this S&) final {}	     // { dg-line line_f2 }
+                 ^
+
+"Test_name.c", line 25: warning: function "B::f3()" is hidden by "S::f3" -- virtual function override intended?
+    virtual void f3(this S&) override final {} // { dg-line line_f3 }
+                 ^
+
+"Test_name.c", line 26: warning: function "B::f4()" is hidden by "S::f4" -- virtual function override intended?
+    void f4(this S&) {}			     // { dg-line line_f4 }
+         ^
+
+"Test_name.c", line 27: warning: function "B::f5()" is hidden by "S::f5" -- virtual function override intended?
+    void f5(this S&) override {}		     // { dg-line line_f5 }
+         ^
+
+"Test_name.c", line 28: warning: function "B::f6()" is hidden by "S::f6" -- virtual function override intended?
+    void f6(this S&) final {}		     // { dg-line line_f6 }
+         ^
+
+"Test_name.c", line 29: warning: function "B::f7()" is hidden by "S::f7" -- virtual function override intended?
+    void f7(this S&) override final {}	     // { dg-line line_f7 }
+         ^
+
+"Test_name.c", line 66: error: a virtual member function cannot have an explicit "this" parameter
+    virtual void f0(this S&) {}		     // { dg-line line_S1_f0 }
+    ^
+
+"Test_name.c", line 67: error: a virtual member function cannot have an explicit "this" parameter
+    virtual void f1(this S&) override {}	     // { dg-line line_S1_f1 }
+    ^
+
+"Test_name.c", line 67: error: member function declared with "override" does not override a base class member
+    virtual void f1(this S&) override {}	     // { dg-line line_S1_f1 }
+                 ^
+
+"Test_name.c", line 68: error: a virtual member function cannot have an explicit "this" parameter
+    virtual void f2(this S&) final {}	     // { dg-line line_S1_f2 }
+    ^
+
+"Test_name.c", line 69: error: a virtual member function cannot have an explicit "this" parameter
+    virtual void f3(this S&) override final {} // { dg-line line_S1_f3 }
+    ^
+
+"Test_name.c", line 69: error: member function declared with "override" does not override a base class member
+    virtual void f3(this S&) override final {} // { dg-line line_S1_f3 }
+                 ^
+
+"Test_name.c", line 71: error: member function declared with "override" does not override a base class member
+    void f5(this S&) override {}		     // { dg-line line_S1_f5 }
+         ^
+
+"Test_name.c", line 72: error: nonvirtual function cannot be declared with "final" modifier
+    void f6(this S&) final {}		     // { dg-line line_S1_f6 }
+         ^
+
+"Test_name.c", line 73: error: member function declared with "override" does not override a base class member
+    void f7(this S&) override final {}	     // { dg-line line_S1_f7 }
+         ^
+
+"Test_name.c", line 73: error: nonvirtual function cannot be declared with "final" modifier
+    void f7(this S&) override final {}	     // { dg-line line_S1_f7 }
+         ^
+
+20 errors detected in the compilation of "Test_name.c".

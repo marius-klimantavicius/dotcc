@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++14 Test_name.c
+"Test_name.c", line 8: error: operand types are incompatible ("int (S::*)()" and "int (S::*)() const")
+    auto pmf = 0 ? &S::f : &S::g;  // Previously accepted.  Now an error.
+                         ^
+
+1 error detected in the compilation of "Test_name.c".

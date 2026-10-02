@@ -1,0 +1,5 @@
+cpfe -DTEST_NUMBER=1 --c++23 -A Test_name.c
+"Test_name.c", line 5: warning: template parameter "T" is not used in declaring the parameter types of function template "lambda [](int)->auto::operator auto (*)(int)"
+    auto z = []<class T>(int i) { return i; };             // OK, a generic lambda
+                      ^
+

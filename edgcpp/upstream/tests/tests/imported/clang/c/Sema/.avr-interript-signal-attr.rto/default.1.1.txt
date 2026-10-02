@@ -1,0 +1,41 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 6: warning: unknown attribute "interrupt"
+  struct a test __attribute__((interrupt)); // expected-warning {{'interrupt' attribute only applies to functions}}
+                               ^
+
+"Test_name.c", line 8: warning: unknown attribute "interrupt"
+  __attribute__((interrupt(12))) void foo(void) { } // expected-error {{'interrupt' attribute takes no arguments}}
+                 ^
+
+"Test_name.c", line 10: warning: unknown attribute "interrupt"
+  __attribute__((interrupt)) int fooa(void) { return 0; } // expected-warning {{'interrupt' attribute only applies to functions that have a 'void' return type}}
+                 ^
+
+"Test_name.c", line 12: warning: unknown attribute "interrupt"
+  __attribute__((interrupt)) void foob(int a) {} // expected-warning {{'interrupt' attribute only applies to functions that have no parameters}}
+                 ^
+
+"Test_name.c", line 14: warning: unknown attribute "signal"
+  __attribute__((signal)) int fooc(void) { return 0; } // expected-warning {{'signal' attribute only applies to functions that have a 'void' return type}}
+                 ^
+
+"Test_name.c", line 16: warning: unknown attribute "signal"
+  __attribute__((signal)) void food(int a) {} // expected-warning {{'signal' attribute only applies to functions that have no parameters}}
+                 ^
+
+"Test_name.c", line 18: warning: unknown attribute "interrupt"
+  __attribute__((interrupt)) void fooe(void) {}
+                 ^
+
+"Test_name.c", line 20: warning: unknown attribute "interrupt"
+  __attribute__((interrupt)) void foof() {}
+                 ^
+
+"Test_name.c", line 22: warning: unknown attribute "signal"
+  __attribute__((signal)) void foog(void) {}
+                 ^
+
+"Test_name.c", line 24: warning: unknown attribute "signal"
+  __attribute__((signal)) void fooh() {}
+                 ^
+

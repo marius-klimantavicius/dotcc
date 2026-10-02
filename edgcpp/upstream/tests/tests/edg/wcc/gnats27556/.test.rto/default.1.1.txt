@@ -1,0 +1,20 @@
+fe_only -DTEST_NUMBER=1 --multi_trans_unit --c++14 --clang --clang_version=160000 other-tu.c Test_name.c
+"code.h", line 1: error: attribute "__visibility__" is missing in another translation unit
+            the other declaration is at line 1
+  template <class _Tp> class __attribute__((__visibility__("default"))) reference_wrapper;
+                                            ^
+          detected during compilation of secondary translation unit "Test_name.c"
+
+"code.h", line 1: error: attribute "__visibility__" is missing in another translation unit
+            the other declaration is at line 1
+  template <class _Tp> class __attribute__((__visibility__("default"))) reference_wrapper;
+                                            ^
+          detected during compilation of secondary translation unit "Test_name.c"
+
+"code.h", line 1: error: attribute "__visibility__" is missing in another translation unit
+            the other declaration is at line 1
+  template <class _Tp> class __attribute__((__visibility__("default"))) reference_wrapper;
+                                            ^
+          detected during compilation of secondary translation unit "Test_name.c"
+
+3 errors detected in the compilation of "other-tu.c".

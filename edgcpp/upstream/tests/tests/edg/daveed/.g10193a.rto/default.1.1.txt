@@ -1,0 +1,1 @@
+eccp -DTEST_NUMBER=1 -DPOS Test_name.c

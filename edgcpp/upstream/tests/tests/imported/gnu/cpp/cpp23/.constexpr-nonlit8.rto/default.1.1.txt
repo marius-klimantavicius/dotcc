@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 16: error: a constexpr function cannot have a nonliteral return type "NonLiteral"
+  fn0 (int) // { dg-warning "invalid return type" "" { target c++20_down } }
+  ^
+
+"Test_name.c", line 22: error: a constexpr function cannot have a parameter of nonliteral type "NonLiteral"
+  fn1 (NonLiteral) // { dg-warning "invalid type" "" { target c++20_down } }
+  ^
+
+"Test_name.c", line 89: warning: variable "p" was declared but never referenced
+    void *p = (void *) 1LL; // { dg-warning ".reinterpret_cast. from integer to pointer" "" { target c++20_down } }
+          ^
+
+"Test_name.c", line 96: error: variable in constexpr function does not have automatic storage duration
+    static int s = i; // { dg-error "static" "" { target c++20_down } }
+               ^
+
+3 errors detected in the compilation of "Test_name.c".

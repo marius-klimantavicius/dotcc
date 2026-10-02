@@ -1,0 +1,24 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++26 Test_name.c
+"Test_name.c", line 30: error: expression must have a constant value
+  constexpr auto x1 = f1();
+                      ^
+"Test_name.c", line 21: note: conversion from "void *" to "float *" is invalid in constant-expression evaluation
+    return *static_cast<float*>(p); // { dg-error "not allowed in a constant expression" }
+            ^
+
+"Test_name.c", line 31: error: expression must have a constant value
+  constexpr auto x2 = f2();
+                      ^
+"Test_name.c", line 27: note: conversion from "void *" to "float *" is invalid in constant-expression evaluation
+    return *static_cast<float*>(p); // { dg-error "not allowed in a constant expression" }
+            ^
+
+"Test_name.c", line 30: warning: variable "x1" was declared but never referenced
+  constexpr auto x1 = f1();
+                 ^
+
+"Test_name.c", line 31: warning: variable "x2" was declared but never referenced
+  constexpr auto x2 = f2();
+                 ^
+
+2 errors detected in the compilation of "Test_name.c".

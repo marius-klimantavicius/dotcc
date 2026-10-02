@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --microsoft Test_name.c
+At end of source: error: expected a declaration
+
+At end of source: error: expected a "}"
+"Test_name.c", line 3: note: to match this "{"
+  typedef struct {
+                 ^
+
+At end of source: error: expected an identifier
+
+At end of source: error: expected a ";"
+
+4 errors detected in the compilation of "Test_name.c".

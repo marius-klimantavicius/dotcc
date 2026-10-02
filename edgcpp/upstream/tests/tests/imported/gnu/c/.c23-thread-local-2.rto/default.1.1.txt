@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 11: warning: variable "b" was declared but never referenced
+  static thread_local int b; /* { dg-message "previous" } */
+                          ^
+
+"Test_name.c", line 18: warning: variable "d" was declared but never referenced
+  static thread_local int d = 1; /* { dg-error "redefinition" } */
+                          ^
+
+"Test_name.c", line 23: warning: variable "f" was declared but never referenced
+  static thread_local int f = 1; /* { dg-message "previous" } */
+                          ^
+
+"Test_name.c", line 29: warning: variable "h" was declared but never referenced
+  static thread_local int h[]; /* { dg-error "array size missing" } */
+                          ^
+
+"Test_name.c", line 33: warning: variable "k" was declared but never referenced
+  static thread_local int k[] = { 0 };
+                          ^
+
+"Test_name.c", line 41: warning: variable "n" was declared but never referenced
+  static thread_local int n;
+                          ^
+

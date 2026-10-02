@@ -1,0 +1,58 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 93: error: division by zero
+      case (1/0, 1): // expected-error {{not an integral constant expression}} expected-note {{division by zero}} expected-warning {{left operand of comma operator has no effect}}
+             ^
+
+"Test_name.c", line 93: error: this operator is not allowed in a constant expression
+      case (1/0, 1): // expected-error {{not an integral constant expression}} expected-note {{division by zero}} expected-warning {{left operand of comma operator has no effect}}
+               ^
+
+"Test_name.c", line 94: error: division by zero
+      case (int)(1/0, 2.0): // expected-error {{not an integral constant expression}} expected-note {{division by zero}} expected-warning {{left operand of comma operator has no effect}}
+                  ^
+
+"Test_name.c", line 94: error: this operator is not allowed in a constant expression
+      case (int)(1/0, 2.0): // expected-error {{not an integral constant expression}} expected-note {{division by zero}} expected-warning {{left operand of comma operator has no effect}}
+                    ^
+
+"Test_name.c", line 95: error: division by zero
+      case __imag(1/0): // expected-error {{not an integral constant expression}} expected-note {{division by zero}}
+                   ^
+
+"Test_name.c", line 95: warning: __real/__imag applied to real value
+      case __imag(1/0): // expected-error {{not an integral constant expression}} expected-note {{division by zero}}
+           ^
+
+"Test_name.c", line 96: error: division by zero
+      case (int)__imag((double)(1/0)): // expected-error {{not an integral constant expression}} expected-note {{division by zero}}
+                                 ^
+
+"Test_name.c", line 105: error: expression must have a constant value
+    S<p> s; // expected-error {{not an integral constant expression}} expected-note {{read of variable 'p' of non-integral, non-enumeration type 'const int &'}}
+      ^
+
+"Test_name.c", line 115: error: constant value is not known
+  int array2[recurse2]; // expected-warning 2{{variable length array}} expected-note {{initializer of 'recurse2' is not a constant expression}}
+             ^
+
+"Test_name.c", line 120: error: floating-point value does not fit in required integral type
+    typedef int b[(long long)4e20]; // expected-warning {{variable length}} expected-error {{variable length}} expected-warning {{'long long' is a C++11 extension}} expected-note {{value 4.0E+20 is outside the range of representable values}}
+                  ^
+
+"Test_name.c", line 126: error: incomplete type "test3::X" is not allowed
+    struct Y { bool b; X x; }; // expected-error {{field has incomplete type 'X'}}
+                         ^
+
+"Test_name.c", line 146: warning: integer operation result is out of range
+  char PR17381_ice = 1000000 * 1000000; // expected-warning {{overflow}} expected-warning {{changes value}}
+                             ^
+
+"Test_name.c", line 146: warning: integer conversion resulted in truncation
+  char PR17381_ice = 1000000 * 1000000; // expected-warning {{overflow}} expected-warning {{changes value}}
+                     ^
+
+"Test_name.c", line 154: error: incomplete type "PR31701::D<M>" is not allowed
+    template<int i> void D<M>::set() { // expected-error {{from class 'PR31701::D<M>' without definition}}
+                         ^
+
+11 errors detected in the compilation of "Test_name.c".

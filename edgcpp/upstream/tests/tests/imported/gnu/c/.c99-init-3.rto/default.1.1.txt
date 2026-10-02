@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 9: error: expression must be an integral constant expression
+  int a[] = { [(void *)0] = 1 }; /* { dg-bogus "warning" "warning in place of error" } */
+               ^
+
+1 error detected in the compilation of "Test_name.c".

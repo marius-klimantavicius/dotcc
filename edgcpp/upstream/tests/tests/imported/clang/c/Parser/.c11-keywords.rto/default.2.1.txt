@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=2 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c99 Test_name.c
+"Test_name.c", line 18: warning: function "_Alignas" declared implicitly
+    _Alignas(8) char c;            /* compat-warning {{'_Alignas' is incompatible with C standards before C11}}
+    ^
+
+"Test_name.c", line 18: error: expected a ";"
+    _Alignas(8) char c;            /* compat-warning {{'_Alignas' is incompatible with C standards before C11}}
+                ^
+
+"Test_name.c", line 28: warning: function "_Static_assert" declared implicitly
+    _Static_assert(1, "");         /* compat-warning {{'_Static_assert' is incompatible with C standards before C11}}
+    ^
+
+"Test_name.c", line 35: warning: function "_Alignof" declared implicitly
+    (void)_Alignof(int);           /* compat-warning {{'_Alignof' is incompatible with C standards before C11}}
+          ^
+
+"Test_name.c", line 35: error: expected an expression
+    (void)_Alignof(int);           /* compat-warning {{'_Alignof' is incompatible with C standards before C11}}
+                   ^
+
+"Test_name.c", line 15: warning: variable "tl" was declared but never referenced
+    static _Thread_local int tl;   /* compat-warning {{'_Thread_local' is incompatible with C standards before C11}}
+                             ^
+
+"Test_name.c", line 21: warning: variable "i1" was declared but never referenced
+    _Atomic int i1;                /* compat-warning {{'_Atomic' is incompatible with C standards before C11}}
+                ^
+
+"Test_name.c", line 24: warning: variable "i2" was declared but never referenced
+    _Atomic(int) i2;               /* compat-warning {{'_Atomic' is incompatible with C standards before C11}}
+                 ^
+
+2 errors detected in the compilation of "Test_name.c".

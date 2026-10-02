@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./Wfatal-2.c", line 5: warning: integer operation result is out of range
+                 + 1;
+                 ^
+
+"./Wfatal-2.c", line 6: error: division by zero
+  int k = 1 / 0;
+            ^
+
+"./Wfatal-2.c", line 7: warning: integer operation result is out of range
+                 - 1;
+                 ^
+
+1 error detected in the compilation of "Test_name.c".

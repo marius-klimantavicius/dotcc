@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=2 --c++17 --gnu_version 100100 Test_name.c
+"Test_name.c", line 19: error: no instance of constructor "fails_with_gcc_10::no_templ_args::C" matches the argument list
+            argument types are: (int)
+      C c(1);                     // deduction failed for gcc 10
+        ^
+
+"Test_name.c", line 19: error: cannot deduce class template arguments
+      C c(1);                     // deduction failed for gcc 10
+      ^
+
+"Test_name.c", line 35: error: no instance of constructor "fails_with_gcc_10::templ_args::C" matches the argument list
+            argument types are: (int)
+      C c(1);                     // deduction failed for gcc 10
+        ^
+
+"Test_name.c", line 35: error: cannot deduce class template arguments
+      C c(1);                     // deduction failed for gcc 10
+      ^
+
+"Test_name.c", line 51: error: no instance of constructor "fails_with_gcc_10::qualified_name_templ_args::C" matches the argument list
+            argument types are: (int)
+      C c(1);                     // deduction failed for gcc 10
+        ^
+
+"Test_name.c", line 51: error: cannot deduce class template arguments
+      C c(1);                     // deduction failed for gcc 10
+      ^
+
+"Test_name.c", line 112: error: no instance of constructor "not_accepted_by_gcc_10::C" matches the argument list
+            argument types are: (int, int)
+    C c{1, 2};                    // deduction failed for gcc 10
+      ^
+
+"Test_name.c", line 112: error: cannot deduce class template arguments
+    C c{1, 2};                    // deduction failed for gcc 10
+    ^
+
+8 errors detected in the compilation of "Test_name.c".

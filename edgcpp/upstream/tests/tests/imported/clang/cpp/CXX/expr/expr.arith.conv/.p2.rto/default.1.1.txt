@@ -1,0 +1,58 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 45: error: expected a ")"
+    void(e1 = e1b);
+            ^
+
+"Test_name.c", line 45: error: incomplete type "void" is not allowed
+    void(e1 = e1b);
+         ^
+
+"Test_name.c", line 45: error: expected a ";"
+    void(e1 = e1b);
+                 ^
+
+"Test_name.c", line 46: error: expected a ")"
+    void(e1 = e2); // expected-error {{incompatible}}
+            ^
+
+"Test_name.c", line 46: error: "e1" has already been declared in the current scope
+    void(e1 = e2); // expected-error {{incompatible}}
+         ^
+
+"Test_name.c", line 46: error: incomplete type "void" is not allowed
+    void(e1 = e2); // expected-error {{incompatible}}
+         ^
+
+"Test_name.c", line 46: error: expected a ";"
+    void(e1 = e2); // expected-error {{incompatible}}
+                ^
+
+"Test_name.c", line 47: error: expected a ")"
+    void(e1 = d); // expected-error {{incompatible}}
+            ^
+
+"Test_name.c", line 47: error: "e1" has already been declared in the current scope
+    void(e1 = d); // expected-error {{incompatible}}
+         ^
+
+"Test_name.c", line 47: error: incomplete type "void" is not allowed
+    void(e1 = d); // expected-error {{incompatible}}
+         ^
+
+"Test_name.c", line 47: error: expected a ";"
+    void(e1 = d); // expected-error {{incompatible}}
+               ^
+
+"Test_name.c", line 48: error: expected a ")"
+    void(d = e1); // FIXME: Should we warn on this?
+           ^
+
+"Test_name.c", line 48: error: incomplete type "void" is not allowed
+    void(d = e1); // FIXME: Should we warn on this?
+         ^
+
+"Test_name.c", line 48: error: expected a ";"
+    void(d = e1); // FIXME: Should we warn on this?
+               ^
+
+14 errors detected in the compilation of "Test_name.c".

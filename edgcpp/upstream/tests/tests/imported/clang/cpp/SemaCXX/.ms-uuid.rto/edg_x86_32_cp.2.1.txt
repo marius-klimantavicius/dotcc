@@ -1,0 +1,106 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 --ms_extensions Test_name.c
+"Test_name.c", line 45: error: declaration modifiers are incompatible with previous declaration
+  class __declspec(uuid("110000A0-0000-0000-C000-000000000049")) C2;
+                   ^
+
+"Test_name.c", line 47: error: declaration modifiers are incompatible with previous declaration
+  class __declspec(uuid("220000A0-0000-0000-C000-000000000049")) C2 {};
+                   ^
+
+"Test_name.c", line 53: error: declaration modifiers are incompatible with previous declaration
+  class __declspec(uuid("110000A0-0000-0000-C000-000000000049")) C2_2;
+                   ^
+
+"Test_name.c", line 64: error: declaration modifiers are incompatible with previous declaration
+  [uuid("110000A0-0000-0000-C000-000000000049")] class C4;
+   ^
+
+"Test_name.c", line 66: error: declaration modifiers are incompatible with previous declaration
+  [uuid("220000A0-0000-0000-C000-000000000049")] class C4 {};
+   ^
+
+"Test_name.c", line 72: error: declaration modifiers are incompatible with previous declaration
+        __declspec(uuid("110000A0-0000-0000-C000-000000000049")) C5;
+                   ^
+
+"Test_name.c", line 77: error: declaration modifiers are incompatible with previous declaration
+   uuid("110000A0-0000-0000-C000-000000000049")] class C6;
+   ^
+
+"Test_name.c", line 85: error: declaration modifiers are incompatible with previous declaration
+  [uuid("000000A0-0000-0000-C000-000000000049")]
+   ^
+
+"Test_name.c", line 104: warning: variable "q" was declared but never referenced
+    const GUID* q = p;
+                ^
+
+"Test_name.c", line 124: error: expression must have a constant value
+    static_assert(__uuidof(Request).Data1 == 0x1babb1ed, "");
+                  ^
+"Test_name.c", line 124: note: attempt to access run-time storage
+    static_assert(__uuidof(Request).Data1 == 0x1babb1ed, "");
+                                   ^
+
+"Test_name.c", line 126: error: expression must have a constant value
+    static_assert(__uuidof(Request).Data2 == 0xfeed, "");
+                  ^
+"Test_name.c", line 126: note: attempt to access run-time storage
+    static_assert(__uuidof(Request).Data2 == 0xfeed, "");
+                                   ^
+
+"Test_name.c", line 128: error: expression must have a constant value
+    static_assert(__uuidof(Request).Data3 == 0xc01d, "");
+                  ^
+"Test_name.c", line 128: note: attempt to access run-time storage
+    static_assert(__uuidof(Request).Data3 == 0xc01d, "");
+                                   ^
+
+"Test_name.c", line 130: error: expression must have a constant value
+    static_assert(__uuidof(Request).Data4[0] == 0x1c, "");
+                  ^
+"Test_name.c", line 130: note: attempt to access run-time storage
+    static_assert(__uuidof(Request).Data4[0] == 0x1c, "");
+                                         ^
+
+"Test_name.c", line 132: error: expression must have a constant value
+    static_assert(__uuidof(Request).Data4[1] == 0xed, "");
+                  ^
+"Test_name.c", line 132: note: attempt to access run-time storage
+    static_assert(__uuidof(Request).Data4[1] == 0xed, "");
+                                         ^
+
+"Test_name.c", line 134: error: expression must have a constant value
+    static_assert(__uuidof(Request).Data4[2] == 0xde, "");
+                  ^
+"Test_name.c", line 134: note: attempt to access run-time storage
+    static_assert(__uuidof(Request).Data4[2] == 0xde, "");
+                                         ^
+
+"Test_name.c", line 136: error: expression must have a constant value
+    static_assert(__uuidof(Request).Data4[7] == 0xe5, "");
+                  ^
+"Test_name.c", line 136: note: attempt to access run-time storage
+    static_assert(__uuidof(Request).Data4[7] == 0xe5, "");
+                                         ^
+
+"Test_name.c", line 137: warning: subscript out of range
+    constexpr int k = __uuidof(Request).Data4[8]; // expected-error {{constant expression}} expected-note {{past-the-end}}
+                      ^
+
+"Test_name.c", line 137: error: expression must have a constant value
+    constexpr int k = __uuidof(Request).Data4[8]; // expected-error {{constant expression}} expected-note {{past-the-end}}
+                      ^
+"Test_name.c", line 137: note: attempt to access run-time storage
+    constexpr int k = __uuidof(Request).Data4[8]; // expected-error {{constant expression}} expected-note {{past-the-end}}
+                                             ^
+
+"Test_name.c", line 107: warning: function "<unnamed>::F2" was declared but never referenced
+  void F2() {
+       ^
+
+"Test_name.c", line 137: warning: variable "ConstantEvaluation::k" was declared but never referenced
+    constexpr int k = __uuidof(Request).Data4[8]; // expected-error {{constant expression}} expected-note {{past-the-end}}
+                  ^
+
+16 errors detected in the compilation of "Test_name.c".

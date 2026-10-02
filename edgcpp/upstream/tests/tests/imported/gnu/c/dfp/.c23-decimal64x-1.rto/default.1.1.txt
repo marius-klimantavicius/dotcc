@@ -1,0 +1,438 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 7: error: extra text after expected end of number
+  int a = (int) 1.1D64x;
+                   ^
+
+"Test_name.c", line 8: error: extra text after expected end of number
+  int b = (int) 2.d64x;
+                  ^
+
+"Test_name.c", line 9: error: identifier "_Decimal64x" is undefined
+  _Decimal64x c = 1;
+  ^
+
+"Test_name.c", line 12: error: extra text after expected end of number
+  static_assert (expr_has_type (1.1D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 12: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (1.1D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 13: error: extra text after expected end of number
+  static_assert (expr_has_type (2.d64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 13: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (2.d64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 14: error: extra text after expected end of number
+  static_assert (expr_has_type (.33D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 14: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (.33D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 15: error: extra text after expected end of number
+  static_assert (expr_has_type (2e1d64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 15: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (2e1d64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 16: error: extra text after expected end of number
+  static_assert (expr_has_type (.3e2D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 16: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (.3e2D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 17: error: extra text after expected end of number
+  static_assert (expr_has_type (4.5e3d64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 17: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (4.5e3d64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 18: error: extra text after expected end of number
+  static_assert (expr_has_type (5.e0D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 18: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (5.e0D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 19: error: extra text after expected end of number
+  static_assert (expr_has_type (1e+2d64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 19: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (1e+2d64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 20: error: extra text after expected end of number
+  static_assert (expr_has_type (1000e-3D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 20: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (1000e-3D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 21: error: extra text after expected end of number
+  static_assert (expr_has_type (__DEC64X_MIN__, _Decimal64x));
+                 ^
+
+"Test_name.c", line 21: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (__DEC64X_MIN__, _Decimal64x));
+                 ^
+
+"Test_name.c", line 22: error: extra text after expected end of number
+  static_assert (expr_has_type (__DEC64X_MAX__, _Decimal64x));
+                 ^
+
+"Test_name.c", line 22: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (__DEC64X_MAX__, _Decimal64x));
+                 ^
+
+"Test_name.c", line 23: error: extra text after expected end of number
+  static_assert (expr_has_type (__DEC64X_EPSILON__, _Decimal64x));
+                 ^
+
+"Test_name.c", line 23: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (__DEC64X_EPSILON__, _Decimal64x));
+                 ^
+
+"Test_name.c", line 24: error: extra text after expected end of number
+  static_assert (expr_has_type (__DEC64X_SUBNORMAL_MIN__, _Decimal64x));
+                 ^
+
+"Test_name.c", line 24: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (__DEC64X_SUBNORMAL_MIN__, _Decimal64x));
+                 ^
+
+"Test_name.c", line 27: error: extra text after expected end of number
+  static_assert (expr_has_type (1.1D32 + 1.1D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 27: error: extra text after expected end of number
+  static_assert (expr_has_type (1.1D32 + 1.1D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 27: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (1.1D32 + 1.1D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 28: error: extra text after expected end of number
+  static_assert (expr_has_type (1.1D64 + 1.1D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 28: error: extra text after expected end of number
+  static_assert (expr_has_type (1.1D64 + 1.1D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 28: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (1.1D64 + 1.1D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 29: error: extra text after expected end of number
+  static_assert (expr_has_type (1.1D64x + 1.1D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 29: error: extra text after expected end of number
+  static_assert (expr_has_type (1.1D64x + 1.1D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 29: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (1.1D64x + 1.1D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 30: error: extra text after expected end of number
+  static_assert (expr_has_type (1.1D128 + 1.1D64x, _Decimal128));
+                 ^
+
+"Test_name.c", line 30: error: extra text after expected end of number
+  static_assert (expr_has_type (1.1D128 + 1.1D64x, _Decimal128));
+                 ^
+
+"Test_name.c", line 30: error: identifier "_Decimal128" is undefined
+  static_assert (expr_has_type (1.1D128 + 1.1D64x, _Decimal128));
+                 ^
+
+"Test_name.c", line 31: error: extra text after expected end of number
+  static_assert (expr_has_type (1 + 1.1D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 31: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (1 + 1.1D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 32: error: extra text after expected end of number
+  static_assert (expr_has_type (1U + 1.1D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 32: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (1U + 1.1D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 33: error: extra text after expected end of number
+  static_assert (expr_has_type (1L + 1.1D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 33: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (1L + 1.1D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 34: error: extra text after expected end of number
+  static_assert (expr_has_type (1UL + 1.1D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 34: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (1UL + 1.1D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 35: error: extra text after expected end of number
+  static_assert (expr_has_type (1LL + 1.1D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 35: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (1LL + 1.1D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 36: error: extra text after expected end of number
+  static_assert (expr_has_type (1ULL + 1.1D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 36: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (1ULL + 1.1D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 37: error: extra text after expected end of number
+  static_assert (expr_has_type (1.1D64x + 1.1D32, _Decimal64x));
+                 ^
+
+"Test_name.c", line 37: error: extra text after expected end of number
+  static_assert (expr_has_type (1.1D64x + 1.1D32, _Decimal64x));
+                 ^
+
+"Test_name.c", line 37: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (1.1D64x + 1.1D32, _Decimal64x));
+                 ^
+
+"Test_name.c", line 38: error: extra text after expected end of number
+  static_assert (expr_has_type (1.1D64x + 1.1D64, _Decimal64x));
+                 ^
+
+"Test_name.c", line 38: error: extra text after expected end of number
+  static_assert (expr_has_type (1.1D64x + 1.1D64, _Decimal64x));
+                 ^
+
+"Test_name.c", line 38: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (1.1D64x + 1.1D64, _Decimal64x));
+                 ^
+
+"Test_name.c", line 39: error: extra text after expected end of number
+  static_assert (expr_has_type (1.1D64x + 1.1D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 39: error: extra text after expected end of number
+  static_assert (expr_has_type (1.1D64x + 1.1D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 39: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (1.1D64x + 1.1D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 40: error: extra text after expected end of number
+  static_assert (expr_has_type (1.1D64x + 1.1D128, _Decimal128));
+                 ^
+
+"Test_name.c", line 40: error: extra text after expected end of number
+  static_assert (expr_has_type (1.1D64x + 1.1D128, _Decimal128));
+                 ^
+
+"Test_name.c", line 40: error: identifier "_Decimal128" is undefined
+  static_assert (expr_has_type (1.1D64x + 1.1D128, _Decimal128));
+                 ^
+
+"Test_name.c", line 41: error: extra text after expected end of number
+  static_assert (expr_has_type (1.1D64x + 1, _Decimal64x));
+                 ^
+
+"Test_name.c", line 41: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (1.1D64x + 1, _Decimal64x));
+                 ^
+
+"Test_name.c", line 42: error: extra text after expected end of number
+  static_assert (expr_has_type (1.1D64x + 1U, _Decimal64x));
+                 ^
+
+"Test_name.c", line 42: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (1.1D64x + 1U, _Decimal64x));
+                 ^
+
+"Test_name.c", line 43: error: extra text after expected end of number
+  static_assert (expr_has_type (1.1D64x + 1L, _Decimal64x));
+                 ^
+
+"Test_name.c", line 43: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (1.1D64x + 1L, _Decimal64x));
+                 ^
+
+"Test_name.c", line 44: error: extra text after expected end of number
+  static_assert (expr_has_type (1.1D64x + 1UL, _Decimal64x));
+                 ^
+
+"Test_name.c", line 44: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (1.1D64x + 1UL, _Decimal64x));
+                 ^
+
+"Test_name.c", line 45: error: extra text after expected end of number
+  static_assert (expr_has_type (1.1D64x + 1LL, _Decimal64x));
+                 ^
+
+"Test_name.c", line 45: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (1.1D64x + 1LL, _Decimal64x));
+                 ^
+
+"Test_name.c", line 46: error: extra text after expected end of number
+  static_assert (expr_has_type (1.1D64x + 1ULL, _Decimal64x));
+                 ^
+
+"Test_name.c", line 46: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (1.1D64x + 1ULL, _Decimal64x));
+                 ^
+
+"Test_name.c", line 49: error: identifier "_Decimal64x" is undefined
+  _Decimal64x
+  ^
+
+"Test_name.c", line 50: error: identifier "_Decimal64x" is undefined
+  foo (_Decimal64x x, _Decimal64x y)
+       ^
+
+"Test_name.c", line 50: error: identifier "_Decimal64x" is undefined
+  foo (_Decimal64x x, _Decimal64x y)
+                      ^
+
+"Test_name.c", line 60: error: extra text after expected end of number
+    if (1.1D64x != 1.1dl
+           ^
+
+"Test_name.c", line 60: error: extra text after expected end of number
+    if (1.1D64x != 1.1dl
+                      ^
+
+"Test_name.c", line 61: error: extra text after expected end of number
+        || 2.d64x != 2.dl
+             ^
+
+"Test_name.c", line 61: error: extra text after expected end of number
+        || 2.d64x != 2.dl
+                       ^
+
+"Test_name.c", line 62: error: extra text after expected end of number
+        || .33D64x != .33dl
+              ^
+
+"Test_name.c", line 62: error: extra text after expected end of number
+        || .33D64x != .33dl
+                         ^
+
+"Test_name.c", line 63: error: extra text after expected end of number
+        || 2e1d64x != 2e1dl
+              ^
+
+"Test_name.c", line 63: error: extra text after expected end of number
+        || 2e1d64x != 2e1dl
+                         ^
+
+"Test_name.c", line 64: error: extra text after expected end of number
+        || .3e2D64x != .3e2dl
+               ^
+
+"Test_name.c", line 64: error: extra text after expected end of number
+        || .3e2D64x != .3e2dl
+                           ^
+
+"Test_name.c", line 65: error: extra text after expected end of number
+        || 4.5e3d64x != 4.5e3dl
+                ^
+
+"Test_name.c", line 65: error: extra text after expected end of number
+        || 4.5e3d64x != 4.5e3dl
+                             ^
+
+"Test_name.c", line 66: error: extra text after expected end of number
+        || 5.e0D64x != 5.e0dl
+               ^
+
+"Test_name.c", line 66: error: extra text after expected end of number
+        || 5.e0D64x != 5.e0dl
+                           ^
+
+"Test_name.c", line 67: error: extra text after expected end of number
+        || 1e+2d64x != 1e+2dl
+               ^
+
+"Test_name.c", line 67: error: extra text after expected end of number
+        || 1e+2d64x != 1e+2dl
+                           ^
+
+"Test_name.c", line 68: error: extra text after expected end of number
+        || 1000e-3D64x != 1000e-3dl
+                  ^
+
+"Test_name.c", line 68: error: extra text after expected end of number
+        || 1000e-3D64x != 1000e-3dl
+                                 ^
+
+"Test_name.c", line 69: error: extra text after expected end of number
+        || __DEC64X_MIN__ != __DEC128_MIN__
+           ^
+
+"Test_name.c", line 69: error: extra text after expected end of number
+        || __DEC64X_MIN__ != __DEC128_MIN__
+                             ^
+
+"Test_name.c", line 70: error: extra text after expected end of number
+        || __DEC64X_MAX__ != __DEC128_MAX__
+           ^
+
+"Test_name.c", line 70: error: extra text after expected end of number
+        || __DEC64X_MAX__ != __DEC128_MAX__
+                             ^
+
+"Test_name.c", line 71: error: extra text after expected end of number
+        || __DEC64X_EPSILON__ != __DEC128_EPSILON__
+           ^
+
+"Test_name.c", line 71: error: extra text after expected end of number
+        || __DEC64X_EPSILON__ != __DEC128_EPSILON__
+                                 ^
+
+"Test_name.c", line 72: error: extra text after expected end of number
+        || __DEC64X_SUBNORMAL_MIN__ != __DEC128_SUBNORMAL_MIN__
+           ^
+
+"Test_name.c", line 72: error: extra text after expected end of number
+        || __DEC64X_SUBNORMAL_MIN__ != __DEC128_SUBNORMAL_MIN__
+                                       ^
+
+"Test_name.c", line 73: error: extra text after expected end of number
+        || foo (0.5d64x, 0.5D64x) != 1.D64x)
+                   ^
+
+"Test_name.c", line 73: error: extra text after expected end of number
+        || foo (0.5d64x, 0.5D64x) != 1.D64x)
+                            ^
+
+"Test_name.c", line 73: error: extra text after expected end of number
+        || foo (0.5d64x, 0.5D64x) != 1.D64x)
+                                       ^
+
+109 errors detected in the compilation of "Test_name.c".

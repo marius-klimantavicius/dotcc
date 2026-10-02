@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 15: error: too few arguments for template template parameter "TT"
+  	TT<int> y; // { dg-error "number" }
+  	      ^
+
+"Test_name.c", line 20: error: class template "A::B" is not compatible with template template parameter "TT"
+  	X<T::template B> x; // { dg-error "type" }
+  	  ^
+          detected during instantiation of class "C<T> [with T=A]" at line 25
+
+"Test_name.c", line 25: warning: variable "c" was declared but never referenced
+  	C<A> c; // { dg-message "required" }
+  	     ^
+
+2 errors detected in the compilation of "Test_name.c".

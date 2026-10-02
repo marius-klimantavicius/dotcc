@@ -1,0 +1,69 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 40: warning: variable "asv" was set but never used
+    auto asv = (struct s) { 0 };
+         ^
+
+"Test_name.c", line 42: warning: variable "s2p" was declared but never referenced
+    auto s2p = (struct s2 *) 0;
+         ^
+
+"Test_name.c", line 44: warning: variable "s3p" was declared but never referenced
+    auto s3p = (struct s3 *) 0;
+         ^
+
+"Test_name.c", line 45: warning: variable "ev" was declared but never referenced
+    auto ev = (enum e) 0;
+         ^
+
+"Test_name.c", line 49: warning: variable "ncd" was set but never used
+    auto ncd = d;
+         ^
+
+"Test_name.c", line 52: warning: variable "nad" was set but never used
+    auto nad = ad;
+         ^
+
+"Test_name.c", line 55: warning: variable "fp" was set but never used
+    auto fp = tf;
+         ^
+
+"Test_name.c", line 58: warning: variable "aap" was set but never used
+    auto aap = a;
+         ^
+
+"Test_name.c", line 61: warning: variable "i" was set but never used
+    auto i = 2L;
+         ^
+
+"Test_name.c", line 62: warning: variable "l" was declared but never referenced
+    extern typeof (i) l;
+                      ^
+
+"Test_name.c", line 72: warning: variable "bfa" was set but never used
+    auto bfa = bv.a;
+         ^
+
+"Test_name.c", line 73: warning: variable "bfb" was set but never used
+    auto bfb = bv.b;
+         ^
+
+"Test_name.c", line 77: warning: variable "s" was declared but never referenced
+    auto short s;
+               ^
+
+"Test_name.c", line 78: warning: variable "c" was declared but never referenced
+    char auto c;
+              ^
+
+"Test_name.c", line 79: warning: variable "t" was declared but never referenced
+    auto struct t { int x; } t;
+                             ^
+
+"Test_name.c", line 81: warning: variable "int_from_typedef" was set but never used
+    auto ti int_from_typedef = 3.0;
+            ^
+
+"Test_name.c", line 9: warning: variable "l" was declared but never referenced
+  static auto l = 0L;
+              ^
+

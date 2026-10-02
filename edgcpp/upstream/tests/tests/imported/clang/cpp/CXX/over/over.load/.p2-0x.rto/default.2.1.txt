@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 17: error: overloading two member functions with the same parameter types requires that they both have ref-qualifiers or both lack ref-qualifiers
+    void i() const; // expected-error{{cannot overload a member function without a ref-qualifier with a member function with ref-qualifier '&'}}
+         ^
+
+"Test_name.c", line 26: error: overloading two member functions with the same parameter types requires that they both have ref-qualifiers or both lack ref-qualifiers
+    void k() &&; // expected-error{{cannot overload a member function with ref-qualifier '&&' with a member function without a ref-qualifier}}
+         ^
+
+2 errors detected in the compilation of "Test_name.c".

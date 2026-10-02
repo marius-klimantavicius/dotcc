@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: error: a storage class may not be specified here
+  static int S::i;  // { dg-error "1:.static. may not be used" }
+  ^
+
+"Test_name.c", line 10: error: a storage class may not be specified here
+  const static double S::d = 1.0;  // { dg-error "7:.static. may not be used" }
+        ^
+
+2 errors detected in the compilation of "Test_name.c".

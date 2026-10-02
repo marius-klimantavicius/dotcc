@@ -1,0 +1,74 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/decimal/decimal", line 235: error: invalid argument to attribute "mode"
+      typedef float __decfloat32 __attribute__((mode(SD)));
+                                                     ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/decimal/decimal", line 238: error: user-defined literal operator not found
+      decimal32() : __val(0.e-101DF) {}
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/decimal/decimal", line 321: error: invalid argument to attribute "mode"
+      typedef float __decfloat64 __attribute__((mode(DD)));
+                                                     ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/decimal/decimal", line 324: error: user-defined literal operator not found
+      decimal64() : __val(0.e-398dd) {}
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/decimal/decimal", line 407: error: invalid argument to attribute "mode"
+      typedef float __decfloat128 __attribute__((mode(TD)));
+                                                      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/decimal/decimal", line 410: error: user-defined literal operator not found
+      decimal128() : __val(0.e-6176DL) {}
+                           ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/decimal/decimal.h", line 129: error: user-defined literal operator not found
+   __multiplier = 1.E-1DF;
+                  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/decimal/decimal.h", line 133: error: user-defined literal operator not found
+        __multiplier = 1.E1DF;
+                       ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/decimal/decimal.h", line 147: error: user-defined literal operator not found
+   __multiplier = 1.E-1DF;
+                  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/decimal/decimal.h", line 151: error: user-defined literal operator not found
+        __multiplier = 1.E1DF;
+                       ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/decimal/decimal.h", line 165: error: user-defined literal operator not found
+   __multiplier = 1.E-1DD;
+                  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/decimal/decimal.h", line 169: error: user-defined literal operator not found
+        __multiplier = 1.E1DD;
+                       ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/decimal/decimal.h", line 183: error: user-defined literal operator not found
+   __multiplier = 1.E-1DD;
+                  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/decimal/decimal.h", line 187: error: user-defined literal operator not found
+        __multiplier = 1.E1DD;
+                       ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/decimal/decimal.h", line 201: error: user-defined literal operator not found
+   __multiplier = 1.E-1DL;
+                  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/decimal/decimal.h", line 205: error: user-defined literal operator not found
+        __multiplier = 1.E1DL;
+                       ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/decimal/decimal.h", line 219: error: user-defined literal operator not found
+   __multiplier = 1.E-1DL;
+                  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/decimal/decimal.h", line 223: error: user-defined literal operator not found
+        __multiplier = 1.E1DL;
+                       ^
+
+18 errors detected in the compilation of "Test_name.c".

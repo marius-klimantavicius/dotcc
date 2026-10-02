@@ -1,0 +1,78 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -DSTRICT -DCPP -DSTRICT --c Test_name.c
+"Test_name.c", line 12: warning: expected "ON", "OFF", or "DEFAULT"
+  #pragma STDC FENV_ACCESS IN_BETWEEN   // expected-warning {{expected 'ON' or 'OFF' or 'DEFAULT' in pragma}}
+                           ^
+
+"Test_name.c", line 19: warning: a STDC pragma may only appear between declarations in the global scope or before any statements or declarations in a block scope
+    #pragma STDC FENV_ACCESS ON // expected-error{{'#pragma STDC FENV_ACCESS' can only appear at file scope or at the start of a compound statement}}
+    ^
+
+"Test_name.c", line 25: error: identifier "constexpr" is undefined
+    CONST float one = 1.0F ;
+    ^
+
+"Test_name.c", line 25: error: expected a ";"
+    CONST float one = 1.0F ;
+          ^
+
+"Test_name.c", line 26: error: expected a ";"
+    CONST float three = 3.0F ;
+          ^
+
+"Test_name.c", line 27: error: expected a ";"
+    CONST float four = 4.0F ;
+          ^
+
+"Test_name.c", line 28: error: expected a ";"
+    CONST float frac_ok = one/four;
+          ^
+
+"Test_name.c", line 32: error: expected a ";"
+    CONST float frac = one/three;
+          ^
+
+"Test_name.c", line 33: error: expected a ";"
+    CONST double d = one;
+          ^
+
+"Test_name.c", line 34: error: expected a ";"
+    CONST int not_too_big = 255;
+          ^
+
+"Test_name.c", line 35: error: expected a ";"
+    CONST float fnot_too_big = not_too_big;
+          ^
+
+"Test_name.c", line 36: error: expected a ";"
+    CONST int too_big = 0x7ffffff0;
+          ^
+
+"Test_name.c", line 40: error: expected a ";"
+    CONST float fbig = too_big; // inexact
+          ^
+
+"Test_name.c", line 45: error: identifier "one" is undefined
+    e1 = (int)one, e3 = (int)three, e4 = (int)four, e_four_quarters = (int)(frac_ok * 4)
+              ^
+
+"Test_name.c", line 45: error: identifier "three" is undefined
+    e1 = (int)one, e3 = (int)three, e4 = (int)four, e_four_quarters = (int)(frac_ok * 4)
+                             ^
+
+"Test_name.c", line 45: error: identifier "four" is undefined
+    e1 = (int)one, e3 = (int)three, e4 = (int)four, e_four_quarters = (int)(frac_ok * 4)
+                                              ^
+
+"Test_name.c", line 45: error: identifier "frac_ok" is undefined
+    e1 = (int)one, e3 = (int)three, e4 = (int)four, e_four_quarters = (int)(frac_ok * 4)
+                                                                            ^
+
+"Test_name.c", line 47: warning: function "static_assert" declared implicitly
+  static_assert(e1 == 1  && e3 == 3 && e4 == 4 && e_four_quarters == 1, "");
+  ^
+
+"Test_name.c", line 52: error: identifier "frac" is undefined
+    e_three_thirds = (int)(frac * 3)
+                           ^
+
+16 errors detected in the compilation of "Test_name.c".

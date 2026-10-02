@@ -1,0 +1,50 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 14: error: expected a "{"
+  test2 (int n)
+  ^
+
+"Test_name.c", line 18: warning: function "n_1" declared implicitly
+    if (n_1(D) > 0) goto unreachable;
+        ^
+
+"Test_name.c", line 18: error: identifier "D" is undefined
+    if (n_1(D) > 0) goto unreachable;
+            ^
+
+"Test_name.c", line 21: error: identifier "t_2" is undefined
+    t_2 = (unsigned)n_1(D);
+    ^
+
+"Test_name.c", line 21: warning: function "n_1" declared implicitly
+    t_2 = (unsigned)n_1(D);
+                    ^
+
+"Test_name.c", line 21: error: identifier "D" is undefined
+    t_2 = (unsigned)n_1(D);
+                        ^
+
+"Test_name.c", line 22: error: identifier "t_3" is undefined
+    t_3 = t_2 - 1u;
+    ^
+
+"Test_name.c", line 23: error: identifier "n_5" is undefined
+    n_5 = (signed) t_3;
+    ^
+
+"Test_name.c", line 25: error: identifier "n_6" is undefined
+    n_6 = _4 ? n_5 : 0;
+    ^
+
+"Test_name.c", line 16: warning: variable "t" was declared but never referenced
+    unsigned t;
+             ^
+
+"Test_name.c", line 41: warning: integer conversion resulted in a change of sign
+    unsigned t = -__INT_MAX__ - 1;
+                 ^
+
+"Test_name.c", line 42: warning: function "test2" declared implicitly
+    test2(t);
+    ^
+
+7 errors detected in the compilation of "Test_name.c".

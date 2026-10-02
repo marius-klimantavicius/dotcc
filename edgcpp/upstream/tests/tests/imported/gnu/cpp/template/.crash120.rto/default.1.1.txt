@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 15: error: too many template parameters -- does not match previous declaration (declared at line 9)
+  template <class T, class D>
+                           ^
+
+"Test_name.c", line 20: error: incomplete type "baz<int>::bar" is not allowed
+  baz<int>::bar it; // { dg-error "incomplete" }
+                ^
+
+2 errors detected in the compilation of "Test_name.c".

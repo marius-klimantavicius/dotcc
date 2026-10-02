@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 --microsoft --c++14 Test_name.c
+"Test_name.c", line 4: error: "constexpr" is not allowed on an explicit instantiation directive
+  template constexpr float pi<float>;
+           ^
+
+"Test_name.c", line 4: warning: declaration is incompatible with "const float pi<float>" (declared at line 3)
+  template constexpr float pi<float>;
+                           ^
+
+1 error detected in the compilation of "Test_name.c".

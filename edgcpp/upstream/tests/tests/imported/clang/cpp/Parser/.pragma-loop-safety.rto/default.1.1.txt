@@ -1,0 +1,53 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 11: warning: unrecognized #pragma
+  #pragma clang loop vectorize(assume_safety)
+          ^
+
+"Test_name.c", line 12: warning: unrecognized #pragma
+  #pragma clang loop interleave(assume_safety)
+          ^
+
+"Test_name.c", line 17: warning: unrecognized #pragma
+  /* expected-error {{expected ')'}} */ #pragma clang loop vectorize(assume_safety
+                                                ^
+
+"Test_name.c", line 18: warning: unrecognized #pragma
+  /* expected-error {{expected ')'}} */ #pragma clang loop interleave(assume_safety
+                                                ^
+
+"Test_name.c", line 20: warning: unrecognized #pragma
+  /* expected-error {{invalid argument; expected 'enable', 'full' or 'disable'}} */ #pragma clang loop unroll(assume_safety)
+                                                                                            ^
+
+"Test_name.c", line 21: warning: unrecognized #pragma
+  /* expected-error {{invalid argument; expected 'enable' or 'disable'}} */ #pragma clang loop distribute(assume_safety)
+                                                                                    ^
+
+"Test_name.c", line 23: warning: unrecognized #pragma
+  /* expected-error {{invalid argument; expected 'enable', 'assume_safety' or 'disable'}} */ #pragma clang loop vectorize(badidentifier)
+                                                                                                     ^
+
+"Test_name.c", line 24: warning: unrecognized #pragma
+  /* expected-error {{invalid argument; expected 'enable', 'assume_safety' or 'disable'}} */ #pragma clang loop interleave(badidentifier)
+                                                                                                     ^
+
+"Test_name.c", line 25: warning: unrecognized #pragma
+  /* expected-error {{invalid argument; expected 'enable', 'full' or 'disable'}} */ #pragma clang loop unroll(badidentifier)
+                                                                                            ^
+
+"Test_name.c", line 30: warning: unrecognized #pragma
+  #pragma clang loop vectorize(enable)
+          ^
+
+"Test_name.c", line 31: warning: unrecognized #pragma
+  /* expected-error {{duplicate directives 'vectorize(enable)' and 'vectorize(assume_safety)'}} */ #pragma clang loop vectorize(assume_safety)
+                                                                                                           ^
+
+"Test_name.c", line 32: warning: unrecognized #pragma
+  #pragma clang loop interleave(enable)
+          ^
+
+"Test_name.c", line 33: warning: unrecognized #pragma
+  /* expected-error {{duplicate directives 'interleave(enable)' and 'interleave(assume_safety)'}} */ #pragma clang loop interleave(assume_safety)
+                                                                                                             ^
+

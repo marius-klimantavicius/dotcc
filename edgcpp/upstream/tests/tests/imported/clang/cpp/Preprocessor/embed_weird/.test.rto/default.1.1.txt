@@ -1,0 +1,63 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 42: warning: expression has no effect
+  #embed <jk.txt>
+   ^
+
+"Test_name.c", line 81: warning: expression has no effect
+  #embed <jk.txt> // expected-warning {{left operand of comma operator has no effect}}
+   ^
+
+"Test_name.c", line 80: error: a value of type "int" cannot be used to initialize an entity of type "const unsigned char *"
+  const unsigned char *ptr = (
+                             ^
+
+"Test_name.c", line 136: warning: integer conversion resulted in a change of sign
+  #embed "Inputs/big_char.txt" // cxx-error {{constant expression evaluates to 255 which cannot be narrowed to type 'signed char'}} \
+   ^
+
+"Test_name.c", line 161: warning: division by zero
+      1/0; // cxx-warning {{division by zero is undefined}}
+       ^
+
+"Test_name.c", line 161: warning: expression has no effect
+      1/0; // cxx-warning {{division by zero is undefined}}
+      ^
+
+"Test_name.c", line 168: error: expression must have a constant value
+  constexpr S2 s2 { // cxx-error {{must be initialized by a constant expression}}
+                  ^
+"Test_name.c", line 161: note: division by zero
+      1/0; // cxx-warning {{division by zero is undefined}}
+       ^
+
+"Test_name.c", line 172: error: expression must have a constant value
+  constexpr S2 s3 {1, // cxx-error {{must be initialized by a constant expression}}
+                  ^
+"Test_name.c", line 161: note: division by zero
+      1/0; // cxx-warning {{division by zero is undefined}}
+       ^
+
+"Test_name.c", line 176: error: expression must have a constant value
+  constexpr S2 s4 { // cxx-error {{must be initialized by a constant expression}}
+                  ^
+"Test_name.c", line 161: note: division by zero
+      1/0; // cxx-warning {{division by zero is undefined}}
+       ^
+
+"Test_name.c", line 135: warning: variable "c" was declared but never referenced
+  constexpr struct HasChar c = {
+                           ^
+
+"Test_name.c", line 168: warning: variable "s2" was declared but never referenced
+  constexpr S2 s2 { // cxx-error {{must be initialized by a constant expression}}
+               ^
+
+"Test_name.c", line 172: warning: variable "s3" was declared but never referenced
+  constexpr S2 s3 {1, // cxx-error {{must be initialized by a constant expression}}
+               ^
+
+"Test_name.c", line 176: warning: variable "s4" was declared but never referenced
+  constexpr S2 s4 { // cxx-error {{must be initialized by a constant expression}}
+               ^
+
+4 errors detected in the compilation of "Test_name.c".

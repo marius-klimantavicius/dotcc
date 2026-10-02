@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --c++11 --strict Test_name.c
+"Test_name.c", line 24: warning: constexpr non-static member function will not be implicitly 'const' in C++14
+      constexpr CLS inner(U)
+      ^
+
+"Test_name.c", line 35: error: no instance of function template "mbr_fn_tmpl_out_of_class_spec::Outer<T>::inner [with T=int]" matches the specified type
+    constexpr CLS Outer<int>::inner(expl_tag_t)
+                              ^
+
+"Test_name.c", line 35: error: "constexpr" is not valid here
+    constexpr CLS Outer<int>::inner(expl_tag_t)
+    ^
+
+"Test_name.c", line 41: error: static assertion failed with "Unexpected"
+    static_assert(Outer<int>().inner(expl_tag_t()) == EXPLICIT_SPEC, "Unexpected");
+    ^
+"Test_name.c", line 41: note: the final comparison was 0 == 1
+    static_assert(Outer<int>().inner(expl_tag_t()) == EXPLICIT_SPEC, "Unexpected");
+                                                   ^
+
+"Test_name.c", line 56: warning: constexpr non-static member function will not be implicitly 'const' in C++14
+      constexpr CLS inner(U)
+      ^
+
+"Test_name.c", line 62: warning: constexpr non-static member function will not be implicitly 'const' in C++14
+      constexpr CLS inner(expl_tag_t)
+      ^
+
+"Test_name.c", line 110: warning: constexpr non-static member function will not be implicitly 'const' in C++14
+      constexpr CLS inner(expl_tag_t)
+      ^
+
+"Test_name.c", line 110: error: no instance of function template "static_mbr_fn_tmpl_in_class_spec::Outer<T>::inner [with T=int]" matches the specified type
+      constexpr CLS inner(expl_tag_t)
+                    ^
+          detected during instantiation of class "static_mbr_fn_tmpl_in_class_spec::Outer<T> [with T=int]" at line 116
+
+"Test_name.c", line 110: error: "constexpr" is not valid here
+      constexpr CLS inner(expl_tag_t)
+      ^
+          detected during instantiation of class "static_mbr_fn_tmpl_in_class_spec::Outer<T> [with T=int]" at line 116
+
+"Test_name.c", line 117: error: static assertion failed with "Unexpected"
+    static_assert(Outer<int>::inner(expl_tag_t()) == EXPLICIT_SPEC, "Unexpected");
+    ^
+"Test_name.c", line 117: note: the final comparison was 0 == 1
+    static_assert(Outer<int>::inner(expl_tag_t()) == EXPLICIT_SPEC, "Unexpected");
+                                                  ^
+
+6 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 15: error: a value of type "int" cannot be assigned to an entity of type "X"
+    x = 10;  // { dg-warning "invalid conversion from .int. to .X." "invalid" }
+      ^
+
+"Test_name.c", line 17: error: a value of type "int" cannot be assigned to an entity of type "X"
+    x = 1;   // { dg-warning "invalid conversion from .int. to .X." }
+      ^
+
+"Test_name.c", line 18: error: a value of type "Y" cannot be assigned to an entity of type "X"
+    x = C;   // { dg-error "cannot convert .Y. to .X. in assignment" }  
+      ^
+
+"Test_name.c", line 19: error: a value of type "Y" cannot be assigned to an entity of type "X"
+    x = D;   // { dg-error "cannot convert .Y. to .X. in assignment" }  
+      ^
+
+"Test_name.c", line 20: error: a value of type "X" cannot be assigned to an entity of type "Y"
+    y = A;   // { dg-error "cannot convert .X. to .Y. in assignment" }  
+      ^
+
+"Test_name.c", line 21: error: a value of type "Y" cannot be assigned to an entity of type "X"
+    x = y;   // { dg-error "cannot convert .Y. to .X. in assignment" }  
+      ^
+
+"Test_name.c", line 22: error: a value of type "int" cannot be assigned to an entity of type "X"
+    x = i;   // { dg-warning "invalid conversion from .int. to .X."  }
+      ^
+
+"Test_name.c", line 12: warning: variable "x" was set but never used
+    X x;
+      ^
+
+"Test_name.c", line 27: warning: variable "a" was declared but never referenced
+    X a = static_cast<X> (10); // { dg-warning "unspecified" }
+      ^
+
+"Test_name.c", line 28: warning: variable "b" was declared but never referenced
+    X b = static_cast<X> (0);
+      ^
+
+"Test_name.c", line 29: warning: variable "c" was declared but never referenced
+    X c = static_cast<X> (1);
+      ^
+
+"Test_name.c", line 30: warning: variable "d" was declared but never referenced
+    X d = static_cast<X> (2); // { dg-warning "unspecified" }
+      ^
+
+"Test_name.c", line 31: warning: variable "f" was declared but never referenced
+    X f = static_cast<X> ((int)A);
+      ^
+
+"Test_name.c", line 32: warning: variable "g" was declared but never referenced
+    X g = static_cast<X> (B);
+      ^
+
+"Test_name.c", line 33: warning: variable "h" was declared but never referenced
+    X h = static_cast<X> (C);
+      ^
+
+"Test_name.c", line 34: warning: variable "e" was declared but never referenced
+    X e = static_cast<X> (D); // { dg-warning "unspecified" }
+      ^
+
+7 errors detected in the compilation of "Test_name.c".

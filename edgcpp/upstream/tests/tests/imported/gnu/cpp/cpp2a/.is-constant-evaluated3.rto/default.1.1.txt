@@ -1,0 +1,21 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 13: warning: call to __builtin_is_constant_evaluated appearing in a constant expression always produces "true"
+  int a[__builtin_is_constant_evaluated () ? 1 : 2];
+                                        ^
+
+"Test_name.c", line 20: warning: call to __builtin_is_constant_evaluated appearing in a constant expression always produces "true"
+    int c[__builtin_is_constant_evaluated () ? 3 : 4];
+                                          ^
+
+"Test_name.c", line 23: warning: call to __builtin_is_constant_evaluated appearing in a non-constexpr function always produces "false"
+    int (*e)[7][9] = new int[__builtin_is_constant_evaluated () ? -1 : 5]
+                                                             ^
+
+"Test_name.c", line 24: warning: call to __builtin_is_constant_evaluated appearing in a constant expression always produces "true"
+  			  [__builtin_is_constant_evaluated () ? 7 : 8]
+  			                                   ^
+
+"Test_name.c", line 25: warning: call to __builtin_is_constant_evaluated appearing in a constant expression always produces "true"
+  			  [__builtin_is_constant_evaluated () ? 9 : 10];
+  			                                   ^
+

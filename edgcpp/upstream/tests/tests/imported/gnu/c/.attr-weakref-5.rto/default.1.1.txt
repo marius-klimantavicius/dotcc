@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 8: error: entity declared as alias cannot have definition
+  static __attribute__ ((weakref ("bar"))) void f0 (void) { }   // { dg-warning "'weakref' attribute ignored because function is defined" }
+                                                ^
+
+"Test_name.c", line 15: error: entity declared as alias cannot have definition
+  static __attribute__ ((weakref ("bar"))) void f1 (void) { }   // { dg-warning "'weakref' attribute ignored because function is defined" }
+                                                ^
+
+"Test_name.c", line 24: error: entity declared as alias cannot have definition
+  static void f2 (void) { }                                     // { dg-error "redefinition" }
+              ^
+
+"Test_name.c", line 31: error: entity declared as alias cannot have definition
+  void f3 (void) { }                                            // { dg-error "redefinition" }
+       ^
+
+4 errors detected in the compilation of "Test_name.c".

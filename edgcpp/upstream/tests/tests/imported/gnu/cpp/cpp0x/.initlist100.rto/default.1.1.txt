@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 12: error: no instance of constructor "B<T>::B [with T=C]" matches the argument list
+            argument types are: (D)
+  struct D : C {} d { B<C> { D {} } };  // { dg-error "no matching" }
+                           ^
+"Test_name.c", line 10: note: function "B<T>::B(std::initializer_list<T>) [with T=C]" does not match because argument #1 does not match parameter
+  template <typename T> struct B { B (std::initializer_list<T>); };
+                                   ^
+"Test_name.c", line 10: note: function "B<T>::B(const B<C> &) [with T=C]" does not match because argument #1 does not match parameter
+  template <typename T> struct B { B (std::initializer_list<T>); };
+                               ^
+"Test_name.c", line 10: note: function "B<T>::B(B<C> &&) [with T=C]" does not match because argument #1 does not match parameter
+  template <typename T> struct B { B (std::initializer_list<T>); };
+                               ^
+
+1 error detected in the compilation of "Test_name.c".

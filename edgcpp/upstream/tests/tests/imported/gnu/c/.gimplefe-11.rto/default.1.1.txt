@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 6: error: expected a "{"
+  void __GIMPLE() bar(int a, int b, int c)
+                  ^
+
+"Test_name.c", line 8: error: identifier "a" is undefined
+    a = 1;
+    ^
+
+"Test_name.c", line 9: error: identifier "b" is undefined
+    b = a + 1;
+    ^
+
+"Test_name.c", line 10: error: identifier "c" is undefined
+    c = b * 4;
+    ^
+
+"Test_name.c", line 14: error: function "__GIMPLE" has already been defined (previous definition at line 6)
+  void __GIMPLE() foo()
+       ^
+
+"Test_name.c", line 14: error: expected a "{"
+  void __GIMPLE() foo()
+                  ^
+
+"Test_name.c", line 19: warning: function "bar" declared implicitly
+    bar(a, b, c);
+    ^
+
+"Test_name.c", line 19: warning: variable "a" is used before its value is set
+    bar(a, b, c);
+        ^
+
+"Test_name.c", line 19: warning: variable "b" is used before its value is set
+    bar(a, b, c);
+           ^
+
+"Test_name.c", line 19: warning: variable "c" is used before its value is set
+    bar(a, b, c);
+              ^
+
+6 errors detected in the compilation of "Test_name.c".

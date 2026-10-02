@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c++20 -tused -A Test_name.c
+"Test_name.c", line 17: error: a parameter may not have void type
+  template<class B> template<class C> void N::A<B>::g(C) {
+                                                      ^
+
+"Test_name.c", line 17: error: declaration is incompatible with function template "void N::A<T>::g(U)" (declared at line 9)
+  template<class B> template<class C> void N::A<B>::g(C) {
+                                                    ^
+
+2 errors detected in the compilation of "Test_name.c".

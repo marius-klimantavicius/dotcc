@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=2 --c++17 Test_name.c
+"Test_name.c", line 8: error: class "B" has no suitable copy constructor
+    B(const B &, B = b);
+                     ^
+
+1 error detected in the compilation of "Test_name.c".

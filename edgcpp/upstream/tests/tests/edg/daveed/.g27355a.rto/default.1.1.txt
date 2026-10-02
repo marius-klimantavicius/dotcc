@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --c++14 --clang_v=150101 Test_name.c
+"Test_name.c", line 9: warning: variable "rr" was declared but never referenced
+   int * _Nullable * rr = qq;
+                     ^
+

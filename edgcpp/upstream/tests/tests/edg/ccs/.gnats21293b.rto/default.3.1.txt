@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=3 --c++11 --gnu_version 90000 Test_name.c
+"Test_name.c", line 20: error: function "W<T>::W(const W<T> &) [with T=M]" (declared at line 14) cannot be referenced -- it is a deleted function
+  W<M> w2(w);
+          ^
+
+1 error detected in the compilation of "Test_name.c".

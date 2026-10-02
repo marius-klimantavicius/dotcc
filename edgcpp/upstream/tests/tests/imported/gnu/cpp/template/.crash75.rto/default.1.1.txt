@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 7: error: nontype "T::X" is not a template
+    T::X<0> x; // { dg-error "non-template" }
+       ^
+
+"Test_name.c", line 7: error: X is not a template
+    T::X<0> x; // { dg-error "non-template" }
+       ^
+          detected during instantiation of class "A<T> [with T=int *]" at line 12
+
+"Test_name.c", line 7: error: expected a ";"
+    T::X<0> x; // { dg-error "non-template" }
+            ^
+          detected during instantiation of class "A<T> [with T=int *]" at line 12
+
+3 errors detected in the compilation of "Test_name.c".

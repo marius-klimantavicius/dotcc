@@ -1,0 +1,152 @@
+fe_only -DTEST_NUMBER=7 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++26 --exceptions --exceptions Test_name.c
+"Test_name.c", line 25: error: identifier "f" is undefined
+      (f)(s);
+       ^
+
+"Test_name.c", line 40: warning: expression has no effect
+          use((cond, a));
+               ^
+
+"Test_name.c", line 54: warning: expression has no effect
+          (void)(cond, a); // #cwg712-comma
+                 ^
+
+"Test_name.c", line 112: warning: invalid redeclaration of nested class
+      template<> struct C<int>;
+                        ^
+
+"Test_name.c", line 120: error: class "cwg727::A::C<float>" cannot be specialized in the current scope
+        template<> struct C<float>;
+                          ^
+
+"Test_name.c", line 123: error: no instance of function template "cwg727::A::f" matches the specified type
+        template<> void f<float>();
+                        ^
+
+"Test_name.c", line 125: error: variable "cwg727::A::N<float>" cannot be specialized in the current scope
+        template<> int N<float>;
+                       ^
+
+"Test_name.c", line 129: error: class "cwg727::A::C<T **>" cannot be declared in this scope
+        template<typename T> struct C<T**>;
+                                    ^
+
+"Test_name.c", line 136: error: class "cwg727::A::C<double>" cannot be specialized in the current scope
+        template<> struct A::C<double>;
+                          ^
+
+"Test_name.c", line 140: error: function "cwg727::A::f<T>() [with T=double]" cannot be specialized in the current scope
+        template<> void A::f<double>();
+                           ^
+
+"Test_name.c", line 143: error: variable "cwg727::A::N<double>" cannot be specialized in the current scope
+        template<> int A::N<double>;
+                          ^
+
+"Test_name.c", line 148: error: class "cwg727::A::C<T ***>" cannot be declared in this scope
+        template<typename T> struct A::C<T***>;
+                                       ^
+
+"Test_name.c", line 152: error: qualified name is not allowed
+        template<typename T> static int A::N<T***>;
+                                        ^
+
+"Test_name.c", line 167: error: class "cwg727::A::C<long>" cannot be specialized in the current scope
+      template<> struct A::C<long>;
+                        ^
+
+"Test_name.c", line 170: error: function "cwg727::A::f<T>() [with T=long]" cannot be specialized in the current scope
+      template<> void A::f<long>();
+                         ^
+
+"Test_name.c", line 173: error: variable "cwg727::A::N<long>" cannot be specialized in the current scope
+      template<> int A::N<long>;
+                        ^
+
+"Test_name.c", line 177: error: class "cwg727::A::C<T *****>" cannot be partially specialized in the current scope
+      template<typename T> struct A::C<T*****>;
+                                     ^
+
+"Test_name.c", line 180: error: variable template "cwg727::A::N" cannot be defined in the current scope
+      template<typename T> int A::N<T*****>;
+                                  ^
+
+"Test_name.c", line 187: error: a class or namespace qualified name is required
+      template<typename T> struct C { typename T::error e; };
+                                               ^
+          detected during instantiation of class "cwg727::D<<unnamed>>::C<T> [with <unnamed>=int, T=float]" at line 220
+
+"Test_name.c", line 187: error: global-scope qualifier (leading "::") is not allowed
+      template<typename T> struct C { typename T::error e; };
+                                                ^
+          detected during instantiation of class "cwg727::D<<unnamed>>::C<T> [with <unnamed>=int, T=float]" at line 220
+
+"Test_name.c", line 187: error: expected a ";"
+      template<typename T> struct C { typename T::error e; };
+                                                        ^
+          detected during instantiation of class "cwg727::D<<unnamed>>::C<T> [with <unnamed>=int, T=float]" at line 220
+
+"Test_name.c", line 193: error: name followed by "::" must be a class or namespace name
+      template<typename T> static const int N = T::error;
+                                                ^
+          detected during instantiation of "const int cwg727::D<<unnamed>>::N [with <unnamed>=int, T=float]" at line 193
+
+"Test_name.c", line 215: warning: variable "a" was declared but never referenced
+      int a = D<int>::N<int>;
+          ^
+
+"Test_name.c", line 218: warning: variable "b" was declared but never referenced
+      int b = D<int>::N<int*>;
+          ^
+
+"Test_name.c", line 267: error: variable template "cwg727::mixed_inner_outer_specialization::B<<unnamed>>::w [with <unnamed>=0]" has already been defined (previous definition at line 251)
+      template<> template<int> constexpr int B<0>::w = 3;
+                                                   ^
+
+"Test_name.c", line 267: error: "constexpr" is not valid here
+      template<> template<int> constexpr int B<0>::w = 3;
+                               ^
+
+"Test_name.c", line 283: error: static assertion failed with ""
+      static_assert(B<0>().w<1> == 3, "");
+      ^
+"Test_name.c", line 283: note: the final comparison was 1 == 3
+      static_assert(B<0>().w<1> == 3, "");
+                                ^
+
+"Test_name.c", line 319: warning: invalid redeclaration of nested class
+      template<> struct S1<T>;
+                        ^
+
+"Test_name.c", line 320: warning: invalid redeclaration of nested class
+      template<> struct S1<U>;
+                        ^
+
+"Test_name.c", line 296: warning: missing return statement at end of non-void function "cwg727::Collision<T, U>::f2()"
+      template<> int f2<T>() {}
+                              ^
+
+"Test_name.c", line 297: warning: missing return statement at end of non-void function "cwg727::Collision<T, U>::f2()"
+      template<> int f2<U>() {}
+                              ^
+
+"Test_name.c", line 297: error: function "cwg727::Collision<T, U>::f2<<unnamed>>() [with T=int, U=int, <unnamed>=int]" has already been defined (previous definition at line 296)
+      template<> int f2<U>() {}
+                     ^
+          detected during instantiation of class "cwg727::Collision<T, U> [with T=int, U=int]" at line 328
+
+"Test_name.c", line 324: error: class "cwg727::Collision<T, U>::S2<int> [with T=int, U=int]" has already been defined (previous definition at line 323)
+      template<> struct S2<U> {};
+                        ^
+          detected during instantiation of class "cwg727::Collision<T, U> [with T=int, U=int]" at line 328
+
+"Test_name.c", line 352: error: a value of type "cwg794::D cwg794::X::*" cannot be used to initialize an entity of type "cwg794::B cwg794::Y::*"
+  B Y::*pm = &X::d;
+             ^
+
+"Test_name.c", line 190: error: name followed by "::" must be a class or namespace name
+      template<typename T> void f() { T::error; }
+                                      ^
+          detected during instantiation of "void cwg727::D<<unnamed>>::f<T>() [with <unnamed>=int, T=float]" at line 221
+
+26 errors detected in the compilation of "Test_name.c".

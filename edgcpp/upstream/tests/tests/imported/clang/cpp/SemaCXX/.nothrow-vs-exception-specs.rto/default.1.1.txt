@@ -1,0 +1,216 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --exceptions --c++14 --exceptions Test_name.c
+"Test_name.c", line 8: error: exception specification is incompatible with that of previous function "f1" (declared at line 6)
+  void f1() noexcept;
+            ^
+
+"Test_name.c", line 11: error: exception specification is incompatible with that of previous function "f1" (declared at line 6):
+            previously specified: no exceptions will be thrown
+  void f1() noexcept(false);
+            ^
+
+"Test_name.c", line 21: error: exception specification is incompatible with that of previous function "f3" (declared at line 19)
+  void f3() noexcept;
+            ^
+
+"Test_name.c", line 24: error: exception specification is incompatible with that of previous function "f3" (declared at line 19):
+            previously specified: no exceptions will be thrown
+  void f3() noexcept(false);
+            ^
+
+"Test_name.c", line 41: warning: dynamic exception specifications are deprecated
+  __attribute__((nothrow)) void f7() throw(int);
+                                     ^
+
+"Test_name.c", line 42: error: static assertion failed with ""
+  static_assert(!noexcept(f7()), "");
+  ^
+
+"Test_name.c", line 48: error: static assertion failed with ""
+  static_assert(!noexcept(f8()), "");
+  ^
+
+"Test_name.c", line 50: error: this declaration has no storage class or type specifier
+  __declspec(nothrow) void foo1() noexcept;
+  ^
+
+"Test_name.c", line 50: error: identifier "nothrow" is undefined
+  __declspec(nothrow) void foo1() noexcept;
+             ^
+
+"Test_name.c", line 50: error: expected a ";"
+  __declspec(nothrow) void foo1() noexcept;
+                      ^
+
+"Test_name.c", line 51: error: this declaration has no storage class or type specifier
+  __declspec(nothrow) void foo2() noexcept(true);
+  ^
+
+"Test_name.c", line 51: error: variable "__declspec" has already been defined (previous definition at line 50)
+  __declspec(nothrow) void foo2() noexcept(true);
+  ^
+
+"Test_name.c", line 51: error: expected a ";"
+  __declspec(nothrow) void foo2() noexcept(true);
+                      ^
+
+"Test_name.c", line 53: error: this declaration has no storage class or type specifier
+  __declspec(nothrow) void foo3() noexcept(false);
+  ^
+
+"Test_name.c", line 53: error: variable "__declspec" has already been defined (previous definition at line 50)
+  __declspec(nothrow) void foo3() noexcept(false);
+  ^
+
+"Test_name.c", line 53: error: expected a ";"
+  __declspec(nothrow) void foo3() noexcept(false);
+                      ^
+
+"Test_name.c", line 54: error: this declaration has no storage class or type specifier
+  __declspec(nothrow) void foo4() noexcept(noexcept(foo1()));
+  ^
+
+"Test_name.c", line 54: error: variable "__declspec" has already been defined (previous definition at line 50)
+  __declspec(nothrow) void foo4() noexcept(noexcept(foo1()));
+  ^
+
+"Test_name.c", line 54: error: expected a ";"
+  __declspec(nothrow) void foo4() noexcept(noexcept(foo1()));
+                      ^
+
+"Test_name.c", line 55: error: this declaration has no storage class or type specifier
+  __declspec(nothrow) void foo5() noexcept(noexcept(foo2()));
+  ^
+
+"Test_name.c", line 55: error: variable "__declspec" has already been defined (previous definition at line 50)
+  __declspec(nothrow) void foo5() noexcept(noexcept(foo2()));
+  ^
+
+"Test_name.c", line 55: error: expected a ";"
+  __declspec(nothrow) void foo5() noexcept(noexcept(foo2()));
+                      ^
+
+"Test_name.c", line 57: error: this declaration has no storage class or type specifier
+  __declspec(nothrow) void foo6() noexcept(noexcept(foo3()));
+  ^
+
+"Test_name.c", line 57: error: variable "__declspec" has already been defined (previous definition at line 50)
+  __declspec(nothrow) void foo6() noexcept(noexcept(foo3()));
+  ^
+
+"Test_name.c", line 57: error: expected a ";"
+  __declspec(nothrow) void foo6() noexcept(noexcept(foo3()));
+                      ^
+
+"Test_name.c", line 60: error: this declaration has no storage class or type specifier
+  __declspec(nothrow) void foo7() noexcept(noexcept(F()));
+  ^
+
+"Test_name.c", line 60: error: "__declspec" has already been declared in the current scope
+  __declspec(nothrow) void foo7() noexcept(noexcept(F()));
+  ^
+
+"Test_name.c", line 60: error: expected a ";"
+  __declspec(nothrow) void foo7() noexcept(noexcept(F()));
+                      ^
+
+"Test_name.c", line 66: error: argument list for variable template "__declspec" is missing
+    __declspec(nothrow) void f1();
+    ^
+
+"Test_name.c", line 66: error: expected a ";"
+    __declspec(nothrow) void f1();
+                        ^
+
+"Test_name.c", line 68: error: argument list for variable template "__declspec" is missing
+    __declspec(nothrow) void f2() throw();
+    ^
+
+"Test_name.c", line 68: error: "nothrow" has already been declared in the current scope
+    __declspec(nothrow) void f2() throw();
+               ^
+
+"Test_name.c", line 68: error: expected a ";"
+    __declspec(nothrow) void f2() throw();
+                        ^
+
+"Test_name.c", line 69: error: argument list for variable template "__declspec" is missing
+    __declspec(nothrow) void f3() throw(int);
+    ^
+
+"Test_name.c", line 69: error: "nothrow" has already been declared in the current scope
+    __declspec(nothrow) void f3() throw(int);
+               ^
+
+"Test_name.c", line 69: error: expected a ";"
+    __declspec(nothrow) void f3() throw(int);
+                        ^
+
+"Test_name.c", line 71: error: argument list for variable template "__declspec" is missing
+    __declspec(nothrow) void f4() noexcept(true);
+    ^
+
+"Test_name.c", line 71: error: "nothrow" has already been declared in the current scope
+    __declspec(nothrow) void f4() noexcept(true);
+               ^
+
+"Test_name.c", line 71: error: expected a ";"
+    __declspec(nothrow) void f4() noexcept(true);
+                        ^
+
+"Test_name.c", line 72: error: argument list for variable template "__declspec" is missing
+    __declspec(nothrow) void f5() noexcept(false);
+    ^
+
+"Test_name.c", line 72: error: "nothrow" has already been declared in the current scope
+    __declspec(nothrow) void f5() noexcept(false);
+               ^
+
+"Test_name.c", line 72: error: expected a ";"
+    __declspec(nothrow) void f5() noexcept(false);
+                        ^
+
+"Test_name.c", line 79: error: argument list for variable template "__declspec" is missing
+    virtual __declspec(nothrow) void foo() = 0;
+            ^
+
+"Test_name.c", line 79: error: "virtual" is not allowed
+    virtual __declspec(nothrow) void foo() = 0;
+    ^
+
+"Test_name.c", line 79: error: expected a ";"
+    virtual __declspec(nothrow) void foo() = 0;
+                                ^
+
+"Test_name.c", line 81: error: argument list for variable template "__declspec" is missing
+    __declspec(nothrow) void bar();
+    ^
+
+"Test_name.c", line 81: error: expected a ";"
+    __declspec(nothrow) void bar();
+                        ^
+
+"Test_name.c", line 85: error: class "PR42100::Base" has no member "bar"
+  void Base::bar() {}
+             ^
+
+"Test_name.c", line 104: error: argument list for variable template "__declspec" is missing
+  __declspec(nothrow) void (&FuncRef)() = FuncToBeRefed;
+  ^
+
+"Test_name.c", line 104: error: expected a ";"
+  __declspec(nothrow) void (&FuncRef)() = FuncToBeRefed;
+                      ^
+
+"Test_name.c", line 105: error: argument list for variable template "__declspec" is missing
+  __declspec(nothrow) void (*FuncPtr)() = FuncToBeRefed;
+  ^
+
+"Test_name.c", line 105: error: variable "FuncPointerReferenceConverts::nothrow" has already been defined (previous definition at line 104)
+  __declspec(nothrow) void (*FuncPtr)() = FuncToBeRefed;
+             ^
+
+"Test_name.c", line 105: error: expected a ";"
+  __declspec(nothrow) void (*FuncPtr)() = FuncToBeRefed;
+                      ^
+
+52 errors detected in the compilation of "Test_name.c".

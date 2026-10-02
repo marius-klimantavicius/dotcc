@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 80: warning: pointless comparison of unsigned integer with zero
+    if (un < 0) // expected-warning {{comparison of unsigned expression < 0 is always false}}
+           ^
+
+"Test_name.c", line 86: warning: pointless comparison of unsigned integer with zero
+    if (un >= 0) // expected-warning {{comparison of unsigned expression >= 0 is always true}}
+           ^
+
+"Test_name.c", line 95: warning: pointless comparison of unsigned integer with zero
+    if (0 <= un) // expected-warning {{comparison of 0 <= unsigned expression is always true}}
+          ^
+
+"Test_name.c", line 97: warning: pointless comparison of unsigned integer with zero
+    if (0 > un) // expected-warning {{comparison of 0 > unsigned expression is always false}}
+          ^
+
+"Test_name.c", line 106: warning: pointless comparison of unsigned integer with zero
+    if (un < 0UL) // expected-warning {{comparison of unsigned expression < 0 is always false}}
+           ^
+
+"Test_name.c", line 112: warning: pointless comparison of unsigned integer with zero
+    if (un >= 0UL) // expected-warning {{comparison of unsigned expression >= 0 is always true}}
+           ^
+
+"Test_name.c", line 121: warning: pointless comparison of unsigned integer with zero
+    if (0UL <= un) // expected-warning {{comparison of 0 <= unsigned expression is always true}}
+            ^
+
+"Test_name.c", line 123: warning: pointless comparison of unsigned integer with zero
+    if (0UL > un) // expected-warning {{comparison of 0 > unsigned expression is always false}}
+            ^
+

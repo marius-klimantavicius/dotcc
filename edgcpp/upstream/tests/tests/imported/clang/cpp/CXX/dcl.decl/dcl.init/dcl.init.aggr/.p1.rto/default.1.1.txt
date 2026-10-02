@@ -1,0 +1,264 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 25: error: no instance of constructor "NonAggr1a::NonAggr1a" matches the argument list
+            argument types are: (int)
+  NonAggr1a na1a = { 42 }; // expected-error {{no matching constructor for initialization of 'NonAggr1a'}}
+                   ^
+"Test_name.c", line 21: note: function "NonAggr1a::NonAggr1a(const NonAggr1a &)" does not match because argument #1 does not match parameter
+  struct NonAggr1a { // expected-note 2 {{candidate constructor}}
+         ^
+"Test_name.c", line 21: note: function "NonAggr1a::NonAggr1a(NonAggr1a &&)" does not match because argument #1 does not match parameter
+  struct NonAggr1a { // expected-note 2 {{candidate constructor}}
+         ^
+"Test_name.c", line 22: note: number of parameters of function "NonAggr1a::NonAggr1a(int, int)" does not match the call
+    NonAggr1a(int, int); // expected-note {{candidate constructor}}
+    ^
+
+"Test_name.c", line 31: error: no instance of constructor "NonAggr1b::NonAggr1b" matches the argument list
+            argument types are: (int)
+  NonAggr1b na1b = { 42 }; // expected-error {{no matching constructor for initialization of 'NonAggr1b'}}
+                   ^
+"Test_name.c", line 28: note: function "NonAggr1b::NonAggr1b" does not match because argument #1 does not match parameter
+    NonAggr1b(const NonAggr1b &); // expected-note {{candidate constructor}}
+    ^
+
+"Test_name.c", line 38: error: no instance of constructor "NonAggr2::NonAggr2" matches the argument list
+            argument types are: (int)
+  NonAggr2 na2 = { 42 };
+                 ^
+"Test_name.c", line 35: note: function "NonAggr2::NonAggr2(const NonAggr2 &)" does not match because argument #1 does not match parameter
+  struct NonAggr2 {
+         ^
+"Test_name.c", line 35: note: function "NonAggr2::NonAggr2(NonAggr2 &&)" does not match because argument #1 does not match parameter
+  struct NonAggr2 {
+         ^
+"Test_name.c", line 35: note: number of parameters of function "NonAggr2::NonAggr2()" does not match the call
+  struct NonAggr2 {
+         ^
+
+"Test_name.c", line 49: error: no suitable constructor exists to convert from "int" to "NonAggr3"
+  NonAggr3 na3 = { 42 }; // expected-error {{no matching constructor for initialization of 'NonAggr3'}}
+                   ^
+
+"Test_name.c", line 56: error: no suitable constructor exists to convert from "int" to "NonAggr4"
+  NonAggr4 na4 = { 42 }; // expected-error {{no matching constructor for initialization of 'NonAggr4'}}
+                   ^
+
+"Test_name.c", line 61: error: no instance of constructor "NonAggr5::NonAggr5" matches the argument list
+            argument types are: (bool)
+  NonAggr5 na5 = { b };
+                 ^
+"Test_name.c", line 59: note: function "NonAggr5::NonAggr5(const NonAggr5 &)" does not match because argument #1 does not match parameter
+  struct NonAggr5 : Aggr {
+         ^
+"Test_name.c", line 59: note: function "NonAggr5::NonAggr5(NonAggr5 &&)" does not match because argument #1 does not match parameter
+  struct NonAggr5 : Aggr {
+         ^
+"Test_name.c", line 59: note: number of parameters of function "NonAggr5::NonAggr5()" does not match the call
+  struct NonAggr5 : Aggr {
+         ^
+
+"Test_name.c", line 69: error: the default constructor of "MaybeAggr5a<Aggr>" cannot be referenced -- it is a deleted function
+  MaybeAggr5a<Aggr> ma5a1 = {}; // ok in C++17
+                            ^
+
+"Test_name.c", line 71: error: no instance of constructor "MaybeAggr5a<BaseList...>::MaybeAggr5a [with BaseList=<NonAggr2>]" matches the argument list
+            argument types are: (int)
+  MaybeAggr5a<NonAggr2> m5a3 = {0}; // ok in C++17, overrides default member initializer in base class
+                               ^
+"Test_name.c", line 67: note: function "MaybeAggr5a<BaseList...>::MaybeAggr5a(const MaybeAggr5a<NonAggr2> &) [with BaseList=<NonAggr2>]" does not match because argument #1 does not match parameter
+  struct MaybeAggr5a : BaseList... {};
+         ^
+"Test_name.c", line 67: note: function "MaybeAggr5a<BaseList...>::MaybeAggr5a(MaybeAggr5a<NonAggr2> &&) [with BaseList=<NonAggr2>]" does not match because argument #1 does not match parameter
+  struct MaybeAggr5a : BaseList... {};
+         ^
+"Test_name.c", line 67: note: number of parameters of function "MaybeAggr5a<BaseList...>::MaybeAggr5a() [with BaseList=<NonAggr2>]" does not match the call
+  struct MaybeAggr5a : BaseList... {};
+         ^
+
+"Test_name.c", line 84: error: no instance of constructor "NonAggr5b::NonAggr5b" matches the argument list
+            argument types are: (bool)
+  NonAggr5b na5b = { b }; // expected-error {{no matching constructor}}
+                   ^
+"Test_name.c", line 83: note: function "NonAggr5b::NonAggr5b(const NonAggr5b &)" does not match because argument #1 does not match parameter
+  struct NonAggr5b : virtual Aggr {}; // expected-note 3{{candidate}}
+         ^
+"Test_name.c", line 83: note: function "NonAggr5b::NonAggr5b(NonAggr5b &&)" does not match because argument #1 does not match parameter
+  struct NonAggr5b : virtual Aggr {}; // expected-note 3{{candidate}}
+         ^
+"Test_name.c", line 83: note: number of parameters of function "NonAggr5b::NonAggr5b()" does not match the call
+  struct NonAggr5b : virtual Aggr {}; // expected-note 3{{candidate}}
+         ^
+
+"Test_name.c", line 86: error: no instance of constructor "NonAggr5c::NonAggr5c" matches the argument list
+            argument types are: (bool)
+  NonAggr5c na5c = { b }; // expected-error {{no matching constructor}}
+                   ^
+"Test_name.c", line 85: note: function "NonAggr5c::NonAggr5c(const NonAggr5c &)" does not match because argument #1 does not match parameter
+  struct NonAggr5c : NonAggr5b {}; // expected-note 3{{candidate}}
+         ^
+"Test_name.c", line 85: note: function "NonAggr5c::NonAggr5c(NonAggr5c &&)" does not match because argument #1 does not match parameter
+  struct NonAggr5c : NonAggr5b {}; // expected-note 3{{candidate}}
+         ^
+"Test_name.c", line 85: note: number of parameters of function "NonAggr5c::NonAggr5c()" does not match the call
+  struct NonAggr5c : NonAggr5b {}; // expected-note 3{{candidate}}
+         ^
+
+"Test_name.c", line 88: error: no instance of constructor "NonAggr5d::NonAggr5d" matches the argument list
+            argument types are: (bool)
+  NonAggr5d na5d = { b }; // expected-error {{no matching constructor}}
+                   ^
+"Test_name.c", line 87: note: function "NonAggr5d::NonAggr5d(const NonAggr5d &)" does not match because argument #1 does not match parameter
+  struct NonAggr5d : protected Aggr {}; // expected-note 3{{candidate}}
+         ^
+"Test_name.c", line 87: note: function "NonAggr5d::NonAggr5d(NonAggr5d &&)" does not match because argument #1 does not match parameter
+  struct NonAggr5d : protected Aggr {}; // expected-note 3{{candidate}}
+         ^
+"Test_name.c", line 87: note: number of parameters of function "NonAggr5d::NonAggr5d()" does not match the call
+  struct NonAggr5d : protected Aggr {}; // expected-note 3{{candidate}}
+         ^
+
+"Test_name.c", line 90: error: no instance of constructor "NonAggr5e::NonAggr5e" matches the argument list
+            argument types are: (bool)
+  NonAggr5e na5e = { b }; // expected-error {{no matching constructor}}
+                   ^
+"Test_name.c", line 89: note: function "NonAggr5e::NonAggr5e(const NonAggr5e &)" does not match because argument #1 does not match parameter
+  struct NonAggr5e : private Aggr {}; // expected-note 3{{candidate}}
+         ^
+"Test_name.c", line 89: note: function "NonAggr5e::NonAggr5e(NonAggr5e &&)" does not match because argument #1 does not match parameter
+  struct NonAggr5e : private Aggr {}; // expected-note 3{{candidate}}
+         ^
+"Test_name.c", line 89: note: number of parameters of function "NonAggr5e::NonAggr5e()" does not match the call
+  struct NonAggr5e : private Aggr {}; // expected-note 3{{candidate}}
+         ^
+
+"Test_name.c", line 92: error: no instance of constructor "NonAggr5f::NonAggr5f" matches the argument list
+            argument types are: (bool)
+  NonAggr5f na5f = { b }; // expected-error {{no matching constructor}}
+                   ^
+"Test_name.c", line 91: note: function "NonAggr5f::NonAggr5f(const NonAggr5f &)" does not match because argument #1 does not match parameter
+  class NonAggr5f : Aggr {}; // expected-note 3{{candidate}}
+        ^
+"Test_name.c", line 91: note: function "NonAggr5f::NonAggr5f(NonAggr5f &&)" does not match because argument #1 does not match parameter
+  class NonAggr5f : Aggr {}; // expected-note 3{{candidate}}
+        ^
+"Test_name.c", line 91: note: number of parameters of function "NonAggr5f::NonAggr5f()" does not match the call
+  class NonAggr5f : Aggr {}; // expected-note 3{{candidate}}
+        ^
+
+"Test_name.c", line 96: error: no instance of constructor "MaybeAggr5g::MaybeAggr5g" matches the argument list
+            argument types are: (int)
+  MaybeAggr5g ma5g1 = { 1 };
+                      ^
+"Test_name.c", line 95: note: function "MaybeAggr5g::MaybeAggr5g(const MaybeAggr5g &)" does not match because argument #1 does not match parameter
+  struct MaybeAggr5g : NonAggr1a {};
+         ^
+"Test_name.c", line 95: note: function "MaybeAggr5g::MaybeAggr5g(MaybeAggr5g &&)" does not match because argument #1 does not match parameter
+  struct MaybeAggr5g : NonAggr1a {};
+         ^
+"Test_name.c", line 95: note: number of parameters of function "MaybeAggr5g::MaybeAggr5g()" does not match the call
+  struct MaybeAggr5g : NonAggr1a {};
+         ^
+
+"Test_name.c", line 97: error: no instance of constructor "MaybeAggr5g::MaybeAggr5g" matches the argument list
+            argument types are: ({...})
+  MaybeAggr5g ma5g2 = { {1, 2} };
+                      ^
+"Test_name.c", line 95: note: function "MaybeAggr5g::MaybeAggr5g(const MaybeAggr5g &)" does not match because argument #1 does not match parameter
+  struct MaybeAggr5g : NonAggr1a {};
+         ^
+"Test_name.c", line 95: note: function "MaybeAggr5g::MaybeAggr5g(MaybeAggr5g &&)" does not match because argument #1 does not match parameter
+  struct MaybeAggr5g : NonAggr1a {};
+         ^
+"Test_name.c", line 95: note: number of parameters of function "MaybeAggr5g::MaybeAggr5g()" does not match the call
+  struct MaybeAggr5g : NonAggr1a {};
+         ^
+
+"Test_name.c", line 98: error: the default constructor of "MaybeAggr5g" cannot be referenced -- it is a deleted function
+  MaybeAggr5g ma5g3 = {};
+                      ^
+
+"Test_name.c", line 114: error: no instance of constructor "NonAggr6::NonAggr6" matches the argument list
+            argument types are: (int)
+  NonAggr6 na6 = { 42 }; // expected-error {{no matching constructor for initialization of 'NonAggr6'}}
+                 ^
+"Test_name.c", line 110: note: function "NonAggr6::NonAggr6(const NonAggr6 &)" does not match because argument #1 does not match parameter
+  struct NonAggr6 { // expected-note 3 {{candidate constructor}}
+         ^
+"Test_name.c", line 110: note: function "NonAggr6::NonAggr6(NonAggr6 &&)" does not match because argument #1 does not match parameter
+  struct NonAggr6 { // expected-note 3 {{candidate constructor}}
+         ^
+"Test_name.c", line 110: note: number of parameters of function "NonAggr6::NonAggr6()" does not match the call
+  struct NonAggr6 { // expected-note 3 {{candidate constructor}}
+         ^
+
+"Test_name.c", line 119: error: no instance of constructor "NonAggr7::NonAggr7" matches the argument list
+            argument types are: ({...}, int)
+  NonAggr7 na7 = {{}, 42}; // expected-error {{no matching constructor for initialization of 'NonAggr7'}}
+                 ^
+"Test_name.c", line 116: note: number of parameters of function "NonAggr7::NonAggr7(const NonAggr7 &)" does not match the call
+  struct NonAggr7 : NonAggr6 { // expected-note 3 {{candidate constructor}}
+         ^
+"Test_name.c", line 116: note: number of parameters of function "NonAggr7::NonAggr7(NonAggr7 &&)" does not match the call
+  struct NonAggr7 : NonAggr6 { // expected-note 3 {{candidate constructor}}
+         ^
+"Test_name.c", line 116: note: number of parameters of function "NonAggr7::NonAggr7()" does not match the call
+  struct NonAggr7 : NonAggr6 { // expected-note 3 {{candidate constructor}}
+         ^
+
+"Test_name.c", line 139: error: no instance of constructor "ExplicitDefaultedAggr::ExplicitDefaultedAggr" matches the argument list
+            argument types are: (int)
+  ExplicitDefaultedAggr eda = { 42 }; // expected-error {{no matching constructor}}
+                              ^
+"Test_name.c", line 137: note: function "ExplicitDefaultedAggr::ExplicitDefaultedAggr(ExplicitDefaultedAggr &&)" does not match because argument #1 does not match parameter
+    ExplicitDefaultedAggr(ExplicitDefaultedAggr &&) = default; // expected-note {{candidate}}
+    ^
+"Test_name.c", line 136: note: function "ExplicitDefaultedAggr::ExplicitDefaultedAggr(const ExplicitDefaultedAggr &)" does not match because argument #1 does not match parameter
+    ExplicitDefaultedAggr(const ExplicitDefaultedAggr &) = default; // expected-note {{candidate}}
+    ^
+"Test_name.c", line 135: note: number of parameters of function "ExplicitDefaultedAggr::ExplicitDefaultedAggr()" does not match the call
+    explicit ExplicitDefaultedAggr() = default; // expected-note {{candidate}}
+             ^
+
+"Test_name.c", line 152: error: no instance of constructor "InheritingConstructors::InheritingConstructors" matches the argument list
+            argument types are: (int)
+  InheritingConstructors ic = { 42 }; // expected-error {{no matching constructor}}
+                              ^
+"Test_name.c", line 149: note: function "InheritingConstructors::InheritingConstructors(const InheritingConstructors &)" does not match because argument #1 does not match parameter
+  struct InheritingConstructors : DefaultedBase { // expected-note 3 {{candidate}}
+         ^
+"Test_name.c", line 149: note: function "InheritingConstructors::InheritingConstructors(InheritingConstructors &&)" does not match because argument #1 does not match parameter
+  struct InheritingConstructors : DefaultedBase { // expected-note 3 {{candidate}}
+         ^
+"Test_name.c", line 149: note: number of parameters of function "InheritingConstructors::InheritingConstructors()" does not match the call
+  struct InheritingConstructors : DefaultedBase { // expected-note 3 {{candidate}}
+         ^
+
+"Test_name.c", line 155: error: no instance of constructor "NonInheritingConstructors::NonInheritingConstructors" matches the argument list
+            argument types are: (int)
+  NonInheritingConstructors nic = { 42 };
+                                  ^
+"Test_name.c", line 154: note: function "NonInheritingConstructors::NonInheritingConstructors(const NonInheritingConstructors &)" does not match because argument #1 does not match parameter
+  struct NonInheritingConstructors : DefaultedBase {}; // expected-note 0+ {{candidate}}
+         ^
+"Test_name.c", line 154: note: function "NonInheritingConstructors::NonInheritingConstructors(NonInheritingConstructors &&)" does not match because argument #1 does not match parameter
+  struct NonInheritingConstructors : DefaultedBase {}; // expected-note 0+ {{candidate}}
+         ^
+"Test_name.c", line 154: note: number of parameters of function "NonInheritingConstructors::NonInheritingConstructors()" does not match the call
+  struct NonInheritingConstructors : DefaultedBase {}; // expected-note 0+ {{candidate}}
+         ^
+
+"Test_name.c", line 164: error: no instance of constructor "HasNonAggrBase::HasNonAggrBase" matches the argument list
+            argument types are: (int)
+  HasNonAggrBase hnab = {42};
+                        ^
+"Test_name.c", line 163: note: function "HasNonAggrBase::HasNonAggrBase(const HasNonAggrBase &)" does not match because argument #1 does not match parameter
+  struct HasNonAggrBase : NonAggrBase {}; // expected-note 0+ {{candidate}}
+         ^
+"Test_name.c", line 163: note: function "HasNonAggrBase::HasNonAggrBase(HasNonAggrBase &&)" does not match because argument #1 does not match parameter
+  struct HasNonAggrBase : NonAggrBase {}; // expected-note 0+ {{candidate}}
+         ^
+"Test_name.c", line 163: note: number of parameters of function "HasNonAggrBase::HasNonAggrBase()" does not match the call
+  struct HasNonAggrBase : NonAggrBase {}; // expected-note 0+ {{candidate}}
+         ^
+
+22 errors detected in the compilation of "Test_name.c".

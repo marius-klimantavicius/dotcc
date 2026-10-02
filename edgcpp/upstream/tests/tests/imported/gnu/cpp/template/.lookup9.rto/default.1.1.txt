@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 6: warning: class template "A<T>" defines no constructor to initialize the following:
+            reference member "A<T>::foo"
+  template<class T> class A {T& foo;};
+                          ^
+
+"Test_name.c", line 9: error: identifier "foo" is undefined
+      foo(1);			// { dg-message "foo" }
+      ^
+
+"Test_name.c", line 9: error: member "A<T>::foo [with T=int]" (declared at line 6) is inaccessible
+      foo(1);			// { dg-message "foo" }
+      ^
+          detected during instantiation of "void B<T>::f() [with T=int]" at line 12
+
+"Test_name.c", line 9: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+      foo(1);			// { dg-message "foo" }
+      ^
+          detected during instantiation of "void B<T>::f() [with T=int]" at line 12
+
+3 errors detected in the compilation of "Test_name.c".

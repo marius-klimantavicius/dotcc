@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 9: error: expected a declaration
+  join(x, y);
+  ^
+
+"Test_name.c", line 13: error: "#" not expected here
+  FOO(##);
+  ^
+
+"Test_name.c", line 13: warning: this declaration has no storage class or type specifier
+  FOO(##);
+  ^
+
+"Test_name.c", line 13: error: expected a ";"
+  FOO(##);
+  ^
+
+3 errors detected in the compilation of "Test_name.c".

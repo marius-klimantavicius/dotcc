@@ -1,0 +1,82 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 137: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 140: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 155: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 158: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 206: error: first parameter of allocation function must be of type "size_t"
+  void* operator new(std::size_t, void* __p)
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 210: error: first parameter of allocation function must be of type "size_t"
+  void* operator new[](std::size_t, void* __p)
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/cpp_type_traits.h", line 553: error: identifier "__int128" is undefined
+      struct __memcpyable_integer<__int128> { enum { __width = 128 }; };
+                                  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/cpp_type_traits.h", line 556: error: expected a ">"
+      struct __memcpyable_integer<unsigned __int128> { enum { __width = 128 }; };
+                                           ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/ext/numeric_traits.h", line 132: error: identifier "__int128" is undefined
+    __extension__ template<> struct __is_integer_nonstrict<__int128> { enum { __value = 1 }; typedef std::__true_type __type; enum { __width = 128 }; }; __extension__ template<> struct __is_integer_nonstrict<unsigned __int128> { enum { __value = 1 }; typedef std::__true_type __type; enum { __width = 128 }; };
+                                                           ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/ext/numeric_traits.h", line 132: error: expected a ">"
+    __extension__ template<> struct __is_integer_nonstrict<__int128> { enum { __value = 1 }; typedef std::__true_type __type; enum { __width = 128 }; }; __extension__ template<> struct __is_integer_nonstrict<unsigned __int128> { enum { __value = 1 }; typedef std::__true_type __type; enum { __width = 128 }; };
+                                                                                                                                                                                                                         ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/basic_string.h", line 4774: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+      operator""s(const char* __str, size_t __len)
+      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/basic_string.h", line 4779: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+      operator""s(const wchar_t* __str, size_t __len)
+      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/basic_string.h", line 4791: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+      operator""s(const char16_t* __str, size_t __len)
+      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/basic_string.h", line 4796: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+      operator""s(const char32_t* __str, size_t __len)
+      ^
+
+"./tm/inherit2.C", line 8: error: expected a ";"
+    virtual void f() transaction_safe;
+                     ^
+
+"./tm/inherit2.C", line 9: error: expected a ";"
+    virtual ~B() transaction_safe_dynamic;
+                 ^
+
+"./tm/inherit2.C", line 26: error: identifier "atomic_commit" is undefined
+    atomic_commit {
+    ^
+
+"./tm/inherit2.C", line 26: error: expected a ";"
+    atomic_commit {
+                  ^
+
+"./tm/inherit2.C", line 34: warning: parsing restarts here after previous syntax error
+  }
+  ^
+
+"./tm/inherit2.C", line 25: warning: variable "b2" was declared but never referenced
+    B * b2 = d2;
+        ^
+
+18 errors detected in the compilation of "Test_name.c".

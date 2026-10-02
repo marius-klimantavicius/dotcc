@@ -1,0 +1,2 @@
+./a.out
+a.out: ./torture/hardbool.c:63: check_pfalse: Assertion `*(char*)p == (char)0x5a' failed.

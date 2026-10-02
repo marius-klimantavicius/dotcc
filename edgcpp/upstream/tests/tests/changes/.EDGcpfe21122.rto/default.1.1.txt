@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --microsoft_version 1920 Test_name.c
+"Test_name.c", line 14: error: an "asm" declaration is not allowed here
+      __asm { mov eax, 0 } // Previously accepted, now rejected.
+                         ^
+
+"Test_name.c", line 12: warning: variable "lambda" was declared but never referenced
+    auto lambda = [&]
+         ^
+
+1 error detected in the compilation of "Test_name.c".

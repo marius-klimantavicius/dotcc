@@ -1,0 +1,61 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 21: warning: unknown attribute "noipa"
+  NOIPA char* nowarn_strcpy (char *s)
+  ^
+
+"Test_name.c", line 30: warning: unknown attribute "noipa"
+  NOIPA char* warn_strcpy (char *s)
+  ^
+
+"Test_name.c", line 38: warning: unknown attribute "noipa"
+  NOIPA char* warn_strcpy_nz (char *s)
+  ^
+
+"Test_name.c", line 49: warning: unknown attribute "noipa"
+  NOIPA char* warn_strcpy_nn (char *s)
+  ^
+
+"Test_name.c", line 60: warning: unknown attribute "noipa"
+  NOIPA char* warn_strcpy_nz_nn (char *s)
+  ^
+
+"Test_name.c", line 75: warning: unknown attribute "noipa"
+  NOIPA char* nowarn_strncpy_1 (char *s)
+  ^
+
+"Test_name.c", line 86: warning: unknown attribute "noipa"
+  NOIPA char* warn_strncpy (char *s)
+  ^
+
+"Test_name.c", line 94: warning: unknown attribute "noipa"
+  NOIPA char* warn_strncpy_p1 (char *s)
+  ^
+
+"Test_name.c", line 102: warning: unknown attribute "noipa"
+  NOIPA char* warn_strncpy_nz (char *s)
+  ^
+
+"Test_name.c", line 115: warning: unknown attribute "noipa"
+  NOIPA char* nowarn_memcpy (char *s)
+  ^
+
+"Test_name.c", line 123: warning: unknown attribute "noipa"
+  NOIPA char* nowarn_memcpy_nz (char *s)
+  ^
+
+"Test_name.c", line 134: warning: unknown attribute "noipa"
+  NOIPA char* nowarn_memcpy_nn (char *s)
+  ^
+
+"Test_name.c", line 145: warning: unknown attribute "noipa"
+  NOIPA char* nowarn_memcpy_nn_nz (char *s)
+  ^
+
+"Test_name.c", line 161: warning: unknown attribute "noipa"
+  NOIPA char* nowarn_memmove (char *s)
+  ^
+
+"Test_name.c", line 173: warning: unknown attribute "noipa"
+  NOIPA char* nowarn_memset (char *s, int c)
+  ^
+

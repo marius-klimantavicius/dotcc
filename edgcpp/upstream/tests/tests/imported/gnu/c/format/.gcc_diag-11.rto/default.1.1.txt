@@ -1,0 +1,69 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./format/gcc_diag-11.c", line 30: warning: unrecognized format function type "__gcc_diag_raw__" ignored
+  void diag_raw (const char*, ...) __attribute__ ((format (__gcc_diag_raw__, 1, 2)));
+                                                           ^
+
+"./format/gcc_diag-11.c", line 31: warning: unrecognized format function type "__gcc_cdiag_raw__" ignored
+  void cdiag_raw (const char*, ...) __attribute__ ((format (__gcc_cdiag_raw__, 1, 2)));
+                                                            ^
+
+"./format/gcc_diag-11.c", line 32: warning: unrecognized format function type "gcc_tdiag_raw" ignored
+  void tdiag_raw (const char*, ...) __attribute__ ((format (gcc_tdiag_raw, 1, 2)));
+                                                            ^
+
+"./format/gcc_diag-11.c", line 33: warning: unrecognized format function type "gcc_cxxdiag_raw" ignored
+  void cxxdiag_raw (const char*, ...) __attribute__ ((format (gcc_cxxdiag_raw, 1, 2)));
+                                                              ^
+
+"./format/gcc_diag-11.c", line 36: warning: unrecognized format function type "__gcc_diag__" ignored
+  void diag (const char*, ...) __attribute__ ((format (__gcc_diag__, 1, 2)));
+                                                       ^
+
+"./format/gcc_diag-11.c", line 40: warning: unrecognized format function type "__gcc_cdiag__" ignored
+  void cdiag (const char*, ...) __attribute__ ((format (__gcc_cdiag__, 1, 2)));
+                                                        ^
+
+"./format/gcc_diag-11.c", line 44: warning: unrecognized format function type "__gcc_tdiag__" ignored
+  void tdiag (const char*, ...) __attribute__ ((format (__gcc_tdiag__, 1, 2)));
+                                                        ^
+
+"./format/gcc_diag-11.c", line 48: warning: unrecognized format function type "__gcc_cxxdiag__" ignored
+  void cxxdiag (const char*, ...) __attribute__ ((format (__gcc_cxxdiag__, 1, 2)));
+                                                          ^
+
+"./format/gcc_diag-11.c", line 106: warning: unrecognized GCC pragma
+  #pragma GCC diagnostic push
+              ^
+
+"./format/gcc_diag-11.c", line 107: warning: unrecognized GCC pragma
+  #pragma GCC diagnostic ignored "-Wformat-diag"
+              ^
+
+"./format/gcc_diag-11.c", line 112: warning: unrecognized GCC pragma
+  #pragma GCC diagnostic pop
+              ^
+
+"./format/gcc_diag-11.c", line 252: warning: unrecognized GCC pragma
+  #pragma GCC diagnostic push
+              ^
+
+"./format/gcc_diag-11.c", line 253: warning: unrecognized GCC pragma
+  #pragma GCC diagnostic ignored "-Wformat-diag"
+              ^
+
+"./format/gcc_diag-11.c", line 258: warning: unrecognized GCC pragma
+  #pragma GCC diagnostic pop
+              ^
+
+"./format/gcc_diag-11.c", line 269: warning: unrecognized GCC pragma
+  #pragma GCC diagnostic push
+              ^
+
+"./format/gcc_diag-11.c", line 270: warning: unrecognized GCC pragma
+  #pragma GCC diagnostic ignored "-Wformat-diag"
+              ^
+
+"./format/gcc_diag-11.c", line 275: warning: unrecognized GCC pragma
+  #pragma GCC diagnostic pop
+              ^
+

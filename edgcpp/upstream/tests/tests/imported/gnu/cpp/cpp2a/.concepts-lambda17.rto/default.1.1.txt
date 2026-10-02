@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 12: error: a requires-clause is not allowed here (not a templated function)
+    [] () requires (T::value && A<T>::value) || true { }();
+          ^
+
+"Test_name.c", line 12: error: name followed by "::" must be a class or namespace name
+    [] () requires (T::value && A<T>::value) || true { }();
+                    ^
+          detected during instantiation of "void f<T>() [with T=int]" at line 16
+
+2 errors detected in the compilation of "Test_name.c".

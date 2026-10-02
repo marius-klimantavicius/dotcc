@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 12: error: a using-declaration may not name a constructor or destructor
+  struct D: B { using B::B; };
+                         ^
+
+"Test_name.c", line 13: error: no suitable constructor exists to convert from "int" to "D"
+  D d = 1;  // Previously accepted.  Now an error.
+        ^
+
+2 errors detected in the compilation of "Test_name.c".

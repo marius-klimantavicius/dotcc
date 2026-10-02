@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: error: labels can be referenced only in function definitions
+    enum { M = && N };	// { dg-error "referenced outside|cannot appear in|integral" }
+                  ^
+
+"Test_name.c", line 17: error: this constant expression has type "void *" instead of the required integral or enum type
+    enum { O = && P };	// { dg-error "14:enumerator value for .O. must have integral|cannot appear in" }
+               ^
+
+2 errors detected in the compilation of "Test_name.c".

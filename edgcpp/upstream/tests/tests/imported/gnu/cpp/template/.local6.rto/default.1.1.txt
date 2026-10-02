@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 5: warning: template parameter "T2" is not used in declaring the parameter types of function template "PCVector2<T>::PCVector2"
+      template <class T2> PCVector2(const PCVector2<T> &cv) ; // { dg-message "candidate .:" }
+                      ^
+
+"Test_name.c", line 10: error: no instance of constructor "PCVector2<T>::PCVector2 [with T=double]" matches the argument list
+            argument types are: (const double, const double)
+  	  return PCVector2<T>(ov.xFIELD, ov.yFIELD); // { dg-error "matching" }
+  	         ^
+"Test_name.c", line 3: note: number of parameters of function "PCVector2<T>::PCVector2(const PCVector2<double> &) [with T=double]" does not match the call
+  template <class T> struct PCVector2 // { dg-message "note" }
+                            ^
+"Test_name.c", line 3: note: number of parameters of function "PCVector2<T>::PCVector2(PCVector2<double> &&) noexcept [with T=double]" does not match the call
+  template <class T> struct PCVector2 // { dg-message "note" }
+                            ^
+"Test_name.c", line 5: note: number of parameters of function template "PCVector2<T>::PCVector2<T2>(const PCVector2<double> &) [with T=double]" does not match the call
+      template <class T2> PCVector2(const PCVector2<T> &cv) ; // { dg-message "candidate .:" }
+                          ^
+          detected during instantiation of "PCVector2<T> PCVector2<T>::operator-(const PCVector2<T> &) const [with T=double]" at line 21
+
+1 error detected in the compilation of "Test_name.c".

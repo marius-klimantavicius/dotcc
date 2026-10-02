@@ -1,0 +1,818 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 26: warning: 'explicit(bool)' is a C++20 feature
+    explicit(1 << a)
+    ^
+
+"Test_name.c", line 26: error: expression must have a constant value
+    explicit(1 << a)
+             ^
+"Test_name.c", line 26: note: shift count is negative
+    explicit(1 << a)
+                  ^
+          detected during instantiation of class "special_cases::A<a> [with a=-1]" at line 32
+
+"Test_name.c", line 39: warning: 'explicit(bool)' is a C++20 feature
+    explicit(b)
+    ^
+
+"Test_name.c", line 39: error: identifier "b" is undefined
+    explicit(b)
+             ^
+
+"Test_name.c", line 46: warning: 'explicit(bool)' is a C++20 feature
+    explicit(a +)
+    ^
+
+"Test_name.c", line 46: error: expected an expression
+    explicit(a +)
+                ^
+
+"Test_name.c", line 52: warning: 'explicit(bool)' is a C++20 feature
+    explicit(false) explicit
+    ^
+
+"Test_name.c", line 52: error: duplicate specifier in declaration
+    explicit(false) explicit
+                    ^
+
+"Test_name.c", line 61: warning: 'explicit(bool)' is a C++20 feature
+    explicit(a == 0)
+    ^
+
+"Test_name.c", line 66: error: no suitable constructor exists to convert from "double" to "special_cases::C<0>"
+  C<0> c0 = 0.0; // expected-error {{no viable conversion}}
+            ^
+
+"Test_name.c", line 67: error: no suitable constructor exists to convert from "int" to "special_cases::C<0>"
+  C<0> c1 = 0; // expected-error {{no viable conversion}}
+            ^
+
+"Test_name.c", line 71: warning: 'explicit(bool)' is a C++20 feature
+  explicit(false) void f(int);// expected-error {{'explicit' can only be specified inside the class definition}}
+  ^
+
+"Test_name.c", line 71: error: "explicit" is not allowed
+  explicit(false) void f(int);// expected-error {{'explicit' can only be specified inside the class definition}}
+  ^
+
+"Test_name.c", line 74: warning: 'explicit(bool)' is a C++20 feature
+    explicit(false) void f(int);// expected-error {{'explicit' can only be applied to a constructor or conversion function}}
+    ^
+
+"Test_name.c", line 74: error: "explicit" is not allowed
+    explicit(false) void f(int);// expected-error {{'explicit' can only be applied to a constructor or conversion function}}
+    ^
+
+"Test_name.c", line 79: warning: 'explicit(bool)' is a C++20 feature
+    explicit((T{}, false))
+    ^
+
+"Test_name.c", line 79: error: cast to type "void ()" is not allowed
+    explicit((T{}, false))
+              ^
+          detected during instantiation of class "special_cases::E<T> [with T=void ()]" at line 84
+
+"Test_name.c", line 84: error: no suitable constructor exists to convert from "int" to "special_cases::E<void ()>"
+  E<void ()> e = 1;
+                 ^
+
+"Test_name.c", line 94: warning: 'explicit(bool)' is a C++20 feature
+    explicit(b) B(int) {}
+    ^
+
+"Test_name.c", line 99: warning: 'explicit(bool)' is a C++20 feature
+    explicit(b) A(int) : B<b>(0) {}
+    ^
+
+"Test_name.c", line 112: warning: 'explicit(bool)' is a C++20 feature
+      explicit(b) A(int, int = 0); // expected-note {{not a candidate}}
+      ^
+
+"Test_name.c", line 121: error: no suitable constructor exists to convert from "int" to "constructor1::A<true>"
+  A<true> a0 = 0; // expected-error {{no viable conversion}}
+               ^
+
+"Test_name.c", line 123: error: no suitable constructor exists to convert from "int" to "constructor1::A<true>"
+  A<true> && a2 = 0;// expected-error {{could not bind}}
+                  ^
+
+"Test_name.c", line 124: error: no suitable constructor exists to convert from "int" to "constructor1::A<true>"
+  A<true> && a3( 0);// expected-error {{could not bind}}
+                 ^
+
+"Test_name.c", line 126: error: copy-list-initialization cannot use a constructor marked "explicit"
+  A<true> && a5 = { 0};// expected-error {{chosen constructor is explicit}}
+                  ^
+
+"Test_name.c", line 127: error: copy-list-initialization cannot use a constructor marked "explicit"
+  A<true> && a6{ 0};
+               ^
+
+"Test_name.c", line 128: error: copy-list-initialization cannot use a constructor marked "explicit"
+  A<true> a7 = { 0}; // expected-error {{chosen constructor is explicit in copy-initialization}}
+               ^
+
+"Test_name.c", line 130: error: no operator "=" matches these operands
+            operand types are: constructor1::A<true> = int
+  a0 = 0; // expected-error {{no viable overloaded '='}}
+     ^
+"Test_name.c", line 109: note: function "constructor1::A<b>::operator=(constructor1::A<true> &&) [with b=true]" does not match because argument #1 does not match parameter
+    struct A {
+           ^
+"Test_name.c", line 109: note: function "constructor1::A<b>::operator=(const constructor1::A<true> &) [with b=true]" does not match because argument #1 does not match parameter
+    struct A {
+           ^
+
+"Test_name.c", line 131: error: copy-list-initialization cannot use a constructor marked "explicit"
+  a1 = { 0}; // expected-error {{no viable overloaded '='}}
+       ^
+
+"Test_name.c", line 145: error: copy-list-initialization cannot use a constructor marked "explicit"
+  A<true> d3 = { 0, 0}; // expected-error {{chosen constructor is explicit in copy-initialization}}
+               ^
+
+"Test_name.c", line 147: error: copy-list-initialization cannot use a constructor marked "explicit"
+  d1 = { 0, 0}; // expected-error {{no viable overloaded '='}}
+       ^
+
+"Test_name.c", line 160: warning: 'explicit(bool)' is a C++20 feature
+    explicit(a ^ is_same<T1, T2>::value)
+    ^
+
+"Test_name.c", line 166: error: no suitable constructor exists to convert from "double" to "constructor2::A<true, int>"
+  A<true, int> a0 = 0.0; // expected-error {{no viable conversion}}
+                    ^
+
+"Test_name.c", line 168: error: no suitable constructor exists to convert from "double" to "constructor2::A<true, int>"
+  A<true, int> && a2 = 0.0;// expected-error {{could not bind}}
+                       ^
+
+"Test_name.c", line 169: error: no suitable constructor exists to convert from "double" to "constructor2::A<true, int>"
+  A<true, int> && a3( 0.0);// expected-error {{could not bind}}
+                      ^
+
+"Test_name.c", line 171: error: no instance of constructor "constructor2::A<a, T1>::A [with a=true, T1=int]" matches the argument list
+            argument types are: (double)
+  A<true, int> && a5 = { 0.0};// expected-error {{chosen constructor is explicit}}
+                       ^
+"Test_name.c", line 156: note: function "constructor2::A<a, T1>::A(const constructor2::A<true, int> &) [with a=true, T1=int]" does not match because argument #1 does not match parameter
+  struct A {
+         ^
+"Test_name.c", line 156: note: function "constructor2::A<a, T1>::A(constructor2::A<true, int> &&) [with a=true, T1=int]" does not match because argument #1 does not match parameter
+  struct A {
+         ^
+
+"Test_name.c", line 172: error: no instance of constructor "constructor2::A<a, T1>::A [with a=true, T1=int]" matches the argument list
+            argument types are: (double)
+  A<true, int> && a6{ 0.0};
+                    ^
+"Test_name.c", line 156: note: function "constructor2::A<a, T1>::A(const constructor2::A<true, int> &) [with a=true, T1=int]" does not match because argument #1 does not match parameter
+  struct A {
+         ^
+"Test_name.c", line 156: note: function "constructor2::A<a, T1>::A(constructor2::A<true, int> &&) [with a=true, T1=int]" does not match because argument #1 does not match parameter
+  struct A {
+         ^
+
+"Test_name.c", line 173: error: no instance of constructor "constructor2::A<a, T1>::A [with a=true, T1=int]" matches the argument list
+            argument types are: (double)
+  A<true, int> a7 = { 0.0}; // expected-error {{chosen constructor is explicit in copy-initialization}}
+                    ^
+"Test_name.c", line 156: note: function "constructor2::A<a, T1>::A(const constructor2::A<true, int> &) [with a=true, T1=int]" does not match because argument #1 does not match parameter
+  struct A {
+         ^
+"Test_name.c", line 156: note: function "constructor2::A<a, T1>::A(constructor2::A<true, int> &&) [with a=true, T1=int]" does not match because argument #1 does not match parameter
+  struct A {
+         ^
+
+"Test_name.c", line 184: error: no suitable constructor exists to convert from "int" to "constructor2::A<true, double>"
+  A<true, double> c0 = 0; // expected-error {{no viable conversion}}
+                       ^
+
+"Test_name.c", line 186: error: no suitable constructor exists to convert from "int" to "constructor2::A<true, double>"
+  A<true, double> && c2 = 0;// expected-error {{could not bind}}
+                          ^
+
+"Test_name.c", line 187: error: no suitable constructor exists to convert from "int" to "constructor2::A<true, double>"
+  A<true, double> && c3( 0);// expected-error {{could not bind}}
+                         ^
+
+"Test_name.c", line 189: error: no instance of constructor "constructor2::A<a, T1>::A [with a=true, T1=double]" matches the argument list
+            argument types are: (int)
+  A<true, double> && c5 = { 0};// expected-error {{chosen constructor is explicit}}
+                          ^
+"Test_name.c", line 156: note: function "constructor2::A<a, T1>::A(const constructor2::A<true, double> &) [with a=true, T1=double]" does not match because argument #1 does not match parameter
+  struct A {
+         ^
+"Test_name.c", line 156: note: function "constructor2::A<a, T1>::A(constructor2::A<true, double> &&) [with a=true, T1=double]" does not match because argument #1 does not match parameter
+  struct A {
+         ^
+
+"Test_name.c", line 190: error: no instance of constructor "constructor2::A<a, T1>::A [with a=true, T1=double]" matches the argument list
+            argument types are: (int)
+  A<true, double> && c6{ 0};
+                       ^
+"Test_name.c", line 156: note: function "constructor2::A<a, T1>::A(const constructor2::A<true, double> &) [with a=true, T1=double]" does not match because argument #1 does not match parameter
+  struct A {
+         ^
+"Test_name.c", line 156: note: function "constructor2::A<a, T1>::A(constructor2::A<true, double> &&) [with a=true, T1=double]" does not match because argument #1 does not match parameter
+  struct A {
+         ^
+
+"Test_name.c", line 191: error: no instance of constructor "constructor2::A<a, T1>::A [with a=true, T1=double]" matches the argument list
+            argument types are: (int)
+  A<true, double> c7 = { 0}; // expected-error {{chosen constructor is explicit in copy-initialization}}
+                       ^
+"Test_name.c", line 156: note: function "constructor2::A<a, T1>::A(const constructor2::A<true, double> &) [with a=true, T1=double]" does not match because argument #1 does not match parameter
+  struct A {
+         ^
+"Test_name.c", line 156: note: function "constructor2::A<a, T1>::A(constructor2::A<true, double> &&) [with a=true, T1=double]" does not match because argument #1 does not match parameter
+  struct A {
+         ^
+
+"Test_name.c", line 201: warning: 'explicit(bool)' is a C++20 feature
+    explicit(enable_ifv<is_same<int, T>::value, a>::value)
+    ^
+
+"Test_name.c", line 207: warning: 'explicit(bool)' is a C++20 feature
+    explicit(enable_ifv<is_same<bool, T>::value, a>::value)
+    ^
+
+"Test_name.c", line 214: error: no suitable constructor exists to convert from "double" to "constructor_sfinae::A<true>"
+  A<true> a0 = 0.0; // expected-error {{no viable conversion}}
+               ^
+
+"Test_name.c", line 215: error: no instance of constructor "constructor_sfinae::A<a>::A [with a=true]" matches the argument list
+            argument types are: (double)
+  A<true> a1( 0.0); // expected-error {{no matching constructor}}
+              ^
+"Test_name.c", line 198: note: function "constructor_sfinae::A<a>::A(const constructor_sfinae::A<true> &) [with a=true]" does not match because argument #1 does not match parameter
+  struct A {
+         ^
+"Test_name.c", line 198: note: function "constructor_sfinae::A<a>::A(constructor_sfinae::A<true> &&) [with a=true]" does not match because argument #1 does not match parameter
+  struct A {
+         ^
+"Test_name.c", line 208: note: candidate function template "constructor_sfinae::A<a>::A(T) [with a=true]" failed deduction
+    A(T) {}
+    ^
+"Test_name.c", line 202: note: candidate function template "constructor_sfinae::A<a>::A(T) [with a=true]" failed deduction
+    A(T) {}
+    ^
+
+"Test_name.c", line 216: error: no instance of constructor "constructor_sfinae::A<a>::A [with a=true]" matches the argument list
+            argument types are: (double)
+  A<true> a4{ 0.0}; // expected-error {{no matching constructor}}
+            ^
+"Test_name.c", line 198: note: function "constructor_sfinae::A<a>::A(const constructor_sfinae::A<true> &) [with a=true]" does not match because argument #1 does not match parameter
+  struct A {
+         ^
+"Test_name.c", line 198: note: function "constructor_sfinae::A<a>::A(constructor_sfinae::A<true> &&) [with a=true]" does not match because argument #1 does not match parameter
+  struct A {
+         ^
+"Test_name.c", line 208: note: candidate function template "constructor_sfinae::A<a>::A(T) [with a=true]" failed deduction
+    A(T) {}
+    ^
+"Test_name.c", line 202: note: candidate function template "constructor_sfinae::A<a>::A(T) [with a=true]" failed deduction
+    A(T) {}
+    ^
+
+"Test_name.c", line 217: error: no instance of constructor "constructor_sfinae::A<a>::A [with a=true]" matches the argument list
+            argument types are: (double)
+  A<true> a7 = { 0.0}; // expected-error {{no matching constructor}}
+               ^
+"Test_name.c", line 198: note: function "constructor_sfinae::A<a>::A(const constructor_sfinae::A<true> &) [with a=true]" does not match because argument #1 does not match parameter
+  struct A {
+         ^
+"Test_name.c", line 198: note: function "constructor_sfinae::A<a>::A(constructor_sfinae::A<true> &&) [with a=true]" does not match because argument #1 does not match parameter
+  struct A {
+         ^
+"Test_name.c", line 208: note: candidate function template "constructor_sfinae::A<a>::A(T) [with a=true]" failed deduction
+    A(T) {}
+    ^
+"Test_name.c", line 202: note: candidate function template "constructor_sfinae::A<a>::A(T) [with a=true]" failed deduction
+    A(T) {}
+    ^
+
+"Test_name.c", line 219: error: no suitable constructor exists to convert from "int" to "constructor_sfinae::A<true>"
+  A<true> b0 = 0; // expected-error {{no viable conversion}}
+               ^
+
+"Test_name.c", line 222: error: no instance of constructor "constructor_sfinae::A<a>::A [with a=true]" matches the argument list
+            argument types are: (int)
+  A<true> b7 = { 0}; // expected-error {{chosen constructor is explicit}}
+               ^
+"Test_name.c", line 198: note: function "constructor_sfinae::A<a>::A(const constructor_sfinae::A<true> &) [with a=true]" does not match because argument #1 does not match parameter
+  struct A {
+         ^
+"Test_name.c", line 198: note: function "constructor_sfinae::A<a>::A(constructor_sfinae::A<true> &&) [with a=true]" does not match because argument #1 does not match parameter
+  struct A {
+         ^
+"Test_name.c", line 208: note: candidate function template "constructor_sfinae::A<a>::A(T) [with a=true]" failed deduction
+    A(T) {}
+    ^
+
+"Test_name.c", line 229: error: no suitable constructor exists to convert from "bool" to "constructor_sfinae::A<true>"
+  A<true> d0 = true; // expected-error {{no viable conversion}}
+               ^
+
+"Test_name.c", line 232: error: no instance of constructor "constructor_sfinae::A<a>::A [with a=true]" matches the argument list
+            argument types are: (bool)
+  A<true> d7 = { true}; // expected-error {{chosen constructor is explicit}}
+               ^
+"Test_name.c", line 198: note: function "constructor_sfinae::A<a>::A(const constructor_sfinae::A<true> &) [with a=true]" does not match because argument #1 does not match parameter
+  struct A {
+         ^
+"Test_name.c", line 198: note: function "constructor_sfinae::A<a>::A(constructor_sfinae::A<true> &&) [with a=true]" does not match because argument #1 does not match parameter
+  struct A {
+         ^
+"Test_name.c", line 202: note: candidate function template "constructor_sfinae::A<a>::A(T) [with a=true]" failed deduction
+    A(T) {}
+    ^
+
+"Test_name.c", line 240: warning: 'explicit(bool)' is a C++20 feature
+    explicit(a) operator int (); // expected-note+ {{not a candidate}}
+    ^
+
+"Test_name.c", line 251: error: no suitable conversion function from "conversion::A<true>" to "int" exists
+  int ai0 = A<true>(); // expected-error {{no viable conversion}}
+            ^
+
+"Test_name.c", line 252: error: no suitable conversion function from "conversion::A<true>" to "const int" exists
+  const int& ai1 = A<true>(); // expected-error {{no viable conversion}}
+                   ^
+
+"Test_name.c", line 253: error: no suitable conversion function from "conversion::A<true>" to "int" exists
+  int&& ai3 = A<true>(); // expected-error {{no viable conversion}}
+              ^
+
+"Test_name.c", line 254: error: no suitable conversion function from "conversion::A<true>" to "int" exists
+  int ai4 = A_true; // expected-error {{no viable conversion}}
+            ^
+
+"Test_name.c", line 255: error: no suitable conversion function from "conversion::A<true>" to "const int" exists
+  const int& ai5 = A_true; // expected-error {{no viable conversion}}
+                   ^
+
+"Test_name.c", line 257: error: no suitable conversion function from "conversion::A<true>" to "int" exists
+  int ai01 = {A<true>()}; // expected-error {{no viable conversion}}
+              ^
+
+"Test_name.c", line 260: error: no suitable conversion function from "conversion::A<true>" to "int" exists
+  int ai41 = {A_true}; // expected-error {{no viable conversion}}
+              ^
+
+"Test_name.c", line 296: warning: 'explicit(bool)' is a C++20 feature
+    explicit(enable_ifv<is_same<B, T2>::value, a>::value)
+    ^
+
+"Test_name.c", line 305: error: no suitable conversion function from "conversion2::A<true>" to "int" exists
+  int ai0 = A<true>(); // expected-error {{no viable conversion}}
+            ^
+
+"Test_name.c", line 306: error: no suitable conversion function from "conversion2::A<true>" to "const int" exists
+  const int& ai1 = A<true>(); // expected-error {{no viable conversion}}
+                   ^
+
+"Test_name.c", line 307: error: no suitable conversion function from "conversion2::A<true>" to "int" exists
+  int&& ai3 = A<true>(); // expected-error {{no viable conversion}}
+              ^
+
+"Test_name.c", line 308: error: no suitable conversion function from "conversion2::A<false>" to "int" exists
+  int ai4 = A_false; // expected-error {{no viable conversion}}
+            ^
+
+"Test_name.c", line 309: error: no suitable conversion function from "conversion2::A<false>" to "const int" exists
+  const int& ai5 = A_false; // expected-error {{no viable conversion}}
+                   ^
+
+"Test_name.c", line 311: error: no suitable conversion function from "conversion2::A<true>" to "int" exists
+  int ae0{A<true>()};  // expected-error {{no viable conversion}}
+          ^
+
+"Test_name.c", line 312: error: no suitable conversion function from "conversion2::A<true>" to "const int" exists
+  const int& ae1{A<true>()};  // expected-error {{no viable conversion}}
+                 ^
+
+"Test_name.c", line 313: error: no suitable conversion function from "conversion2::A<true>" to "int" exists
+  int&& ae3{A<true>()};  // expected-error {{no viable conversion}}
+            ^
+
+"Test_name.c", line 314: error: no suitable conversion function from "conversion2::A<true>" to "int" exists
+  int ae4{A_true};  // expected-error {{no viable conversion}}
+          ^
+
+"Test_name.c", line 315: error: no suitable conversion function from "conversion2::A<true>" to "const int" exists
+  const int& ae5{A_true};  // expected-error {{no viable conversion}}
+                 ^
+
+"Test_name.c", line 317: error: no suitable conversion function from "conversion2::A<true>" to "int" exists
+  int ap0((A<true>()));  // expected-error {{no viable conversion}}
+          ^
+
+"Test_name.c", line 318: error: no suitable conversion function from "conversion2::A<true>" to "const int" exists
+  const int& ap1((A<true>()));  // expected-error {{no viable conversion}}
+                 ^
+
+"Test_name.c", line 319: error: no suitable conversion function from "conversion2::A<true>" to "int" exists
+  int&& ap3((A<true>()));  // expected-error {{no viable conversion}}
+            ^
+
+"Test_name.c", line 320: error: no suitable conversion function from "conversion2::A<true>" to "int" exists
+  int ap4(A_true);  // expected-error {{no viable conversion}}
+          ^
+
+"Test_name.c", line 321: error: no suitable conversion function from "conversion2::A<true>" to "const int" exists
+  const int& ap5(A_true);  // expected-error {{no viable conversion}}
+                 ^
+
+"Test_name.c", line 323: error: no suitable user-defined conversion from "conversion2::A<true>" to "conversion2::B" exists
+  B b0 = A<true>(); // expected-error {{no viable conversion}}
+         ^
+
+"Test_name.c", line 324: error: no suitable user-defined conversion from "conversion2::A<true>" to "const conversion2::B" exists
+  const B & b1 = A<true>(); // expected-error {{no viable conversion}}
+                 ^
+
+"Test_name.c", line 325: error: no suitable user-defined conversion from "conversion2::A<true>" to "conversion2::B" exists
+  B && b3 = A<true>(); // expected-error {{no viable conversion}}
+            ^
+
+"Test_name.c", line 326: error: no suitable user-defined conversion from "conversion2::A<true>" to "conversion2::B" exists
+  B b4 = A_true; // expected-error {{no viable conversion}}
+         ^
+
+"Test_name.c", line 327: error: no suitable user-defined conversion from "conversion2::A<true>" to "const conversion2::B" exists
+  const B & b5 = A_true; // expected-error {{no viable conversion}}
+                 ^
+
+"Test_name.c", line 333: error: no suitable user-defined conversion from "conversion2::A<true>" to "const conversion2::B" exists
+  const B& be5(A_true);
+               ^
+
+"Test_name.c", line 350: warning: 'explicit(bool)' is a C++20 feature
+    explicit((is_same<T, Ts>::value && ...))
+    ^
+
+"Test_name.c", line 362: error: no suitable constructor exists to convert from "int" to "parameter_pack::A<int>"
+  A<int> a0 = 0; // expected-error {{no viable conversion}}
+              ^
+
+"Test_name.c", line 365: error: no instance of constructor "parameter_pack::A<T>::A [with T=int]" matches the argument list
+            argument types are: (int, int)
+  A<int> a3 = { 0, 1}; // expected-error {{chosen constructor is explicit}}
+              ^
+"Test_name.c", line 346: note: number of parameters of function "parameter_pack::A<T>::A(const parameter_pack::A<int> &) [with T=int]" does not match the call
+  struct A {
+         ^
+"Test_name.c", line 346: note: number of parameters of function "parameter_pack::A<T>::A(parameter_pack::A<int> &&) [with T=int]" does not match the call
+  struct A {
+         ^
+
+"Test_name.c", line 367: error: no operator "=" matches these operands
+            operand types are: parameter_pack::A<int> = int
+  a1 = 0; // expected-error {{no viable overloaded '='}}
+     ^
+"Test_name.c", line 346: note: function "parameter_pack::A<T>::operator=(parameter_pack::A<int> &&) [with T=int]" does not match because argument #1 does not match parameter
+  struct A {
+         ^
+"Test_name.c", line 346: note: function "parameter_pack::A<T>::operator=(const parameter_pack::A<int> &) [with T=int]" does not match because argument #1 does not match parameter
+  struct A {
+         ^
+
+"Test_name.c", line 368: error: no instance of constructor "parameter_pack::A<T>::A [with T=int]" matches the argument list
+            argument types are: (int, int)
+  a2 = { 0, 1}; // expected-error {{no viable overloaded '='}}
+       ^
+"Test_name.c", line 346: note: number of parameters of function "parameter_pack::A<T>::A(const parameter_pack::A<int> &) [with T=int]" does not match the call
+  struct A {
+         ^
+"Test_name.c", line 346: note: number of parameters of function "parameter_pack::A<T>::A(parameter_pack::A<int> &&) [with T=int]" does not match the call
+  struct A {
+         ^
+
+"Test_name.c", line 400: warning: 'explicit(bool)' is a C++20 feature
+    explicit(false)
+    ^
+
+"Test_name.c", line 407: warning: 'explicit(bool)' is a C++20 feature
+  explicit(enable_ifv<is_same<T1, T2>::value, b>::value)
+  ^
+
+"Test_name.c", line 424: error: no instance of constructor "deduction_guide::A<T1, T2, b>::A [with T1=int, T2=int, b=true]" matches the argument list
+            argument types are: (int, int, deduction_guide::B<false>)
+  b0 = { 0, 1, b_false}; // expected-error {{no viable overloaded '='}}
+       ^
+"Test_name.c", line 397: note: number of parameters of function "deduction_guide::A<T1, T2, b>::A(const deduction_guide::A<int, int, true> &) [with T1=int, T2=int, b=true]" does not match the call
+  struct A {
+         ^
+"Test_name.c", line 397: note: number of parameters of function "deduction_guide::A<T1, T2, b>::A(deduction_guide::A<int, int, true> &&) [with T1=int, T2=int, b=true]" does not match the call
+  struct A {
+         ^
+"Test_name.c", line 401: note: function "deduction_guide::A<T1, T2, b>::A(deduction_guide::nondeduced<T1>::type, deduction_guide::nondeduced<T2>::type, deduction_guide::nondeduced<deduction_guide::B<b>>::type) [with T1=int, T2=int, b=true]" does not match because argument #3 does not match parameter
+    A(typename nondeduced<T1>::type, typename nondeduced<T2>::type, typename nondeduced<B<b>>::type) {}
+    ^
+
+"Test_name.c", line 443: warning: 'explicit(bool)' is a C++20 feature
+    explicit(b)
+    ^
+
+"Test_name.c", line 449: warning: 'explicit(bool)' is a C++20 feature
+  explicit(!is_same<T1, int>::value)
+  ^
+
+"Test_name.c", line 474: error: no instance of constructor "test8::A<b>::A [with b=true]" matches the argument list
+            argument types are: (int, double)
+  A c2 = { 0, 1.0}; // expected-error {{chosen constructor is explicit}}
+         ^
+"Test_name.c", line 440: note: number of parameters of function "test8::A<b>::A(const test8::A<true> &) [with b=true]" does not match the call
+  struct A {
+         ^
+"Test_name.c", line 440: note: number of parameters of function "test8::A<b>::A(test8::A<true> &&) [with b=true]" does not match the call
+  struct A {
+         ^
+
+"Test_name.c", line 478: error: no instance of constructor "test8::A<b>::A [with b=true]" matches the argument list
+            argument types are: (int, double)
+  c0 = { 0, 1.0}; // expected-error {{no viable overloaded '='}}
+       ^
+"Test_name.c", line 440: note: number of parameters of function "test8::A<b>::A(const test8::A<true> &) [with b=true]" does not match the call
+  struct A {
+         ^
+"Test_name.c", line 440: note: number of parameters of function "test8::A<b>::A(test8::A<true> &&) [with b=true]" does not match the call
+  struct A {
+         ^
+
+"Test_name.c", line 482: error: no instance of constructor "test8::A<b>::A [with b=true]" matches the argument list
+            argument types are: (double, double)
+  A d2 = { 0.0, 1.0};  // expected-error {{explicit deduction guide for copy-list-initialization}}
+         ^
+"Test_name.c", line 440: note: number of parameters of function "test8::A<b>::A(const test8::A<true> &) [with b=true]" does not match the call
+  struct A {
+         ^
+"Test_name.c", line 440: note: number of parameters of function "test8::A<b>::A(test8::A<true> &&) [with b=true]" does not match the call
+  struct A {
+         ^
+
+"Test_name.c", line 494: warning: 'explicit(bool)' is a C++20 feature
+    explicit(!b) operator int();
+    ^
+
+"Test_name.c", line 495: warning: 'explicit(bool)' is a C++20 feature
+    explicit(b) operator bool();
+    ^
+
+"Test_name.c", line 520: warning: 'explicit(bool)' is a C++20 feature
+    explicit(b) operator X() const;
+    ^
+
+"Test_name.c", line 521: warning: 'explicit(bool)' is a C++20 feature
+    explicit(b) operator Y() const; // expected-note 2{{not a candidate}}
+    ^
+
+"Test_name.c", line 522: warning: 'explicit(bool)' is a C++20 feature
+    explicit(b) operator int() const; // expected-note {{not a candidate}}
+    ^
+
+"Test_name.c", line 529: error: no suitable user-defined conversion from "conversion3::Z<true>" to "conversion3::Y" exists
+  Y y2 = z; // expected-error {{no viable conversion}}
+         ^
+
+"Test_name.c", line 540: error: no suitable user-defined conversion from "conversion3::Z<true>" to "const conversion3::Y" exists
+  const Y& y6 = z; // expected-error {{no viable conversion}}
+                ^
+
+"Test_name.c", line 541: error: no suitable conversion function from "conversion3::Z<true>" to "const int" exists
+  const int& y7 = z; // expected-error {{no viable conversion}}
+                  ^
+
+"Test_name.c", line 547: error: too many initializer values
+  const Y y10{z}; // expected-error {{excess elements}}
+              ^
+
+"Test_name.c", line 548: error: too many initializer values
+  const Y& y11{z}; // expected-error {{excess elements}} expected-note {{in initialization of temporary}}
+               ^
+
+"Test_name.c", line 554: error: no instance of constructor "conversion3::X::X" matches the argument list
+            argument types are: (conversion3::Z<true>)
+  const X& x2{z};
+             ^
+"Test_name.c", line 515: note: function "conversion3::X::X(const conversion3::X &)" does not match because argument #1 does not match parameter
+  class X { X(); };
+        ^
+"Test_name.c", line 515: note: function "conversion3::X::X(conversion3::X &&)" does not match because argument #1 does not match parameter
+  class X { X(); };
+        ^
+"Test_name.c", line 515: note: number of parameters of function "conversion3::X::X()" does not match the call
+  class X { X(); };
+            ^
+
+"Test_name.c", line 562: warning: 'explicit(bool)' is a C++20 feature
+    explicit(!is_same<T1, T>::value)
+    ^
+
+"Test_name.c", line 575: error: no operator "+" matches these operands
+            operand types are: int + conversion3::Bool
+  (void) (1 + b); // expected-error {{invalid operands to binary expression}}
+            ^
+"Test_name.c", line 575: note: built-in operator+(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #2 does not match parameter
+  (void) (1 + b); // expected-error {{invalid operands to binary expression}}
+            ^
+"Test_name.c", line 575: note: built-in operator+(<pointer to object>, <ptrdiff_t>) does not match because argument #1 does not match parameter
+  (void) (1 + b); // expected-error {{invalid operands to binary expression}}
+            ^
+"Test_name.c", line 575: note: built-in operator+(<ptrdiff_t>, <pointer to object>) does not match because argument #2 does not match parameter
+  (void) (1 + b); // expected-error {{invalid operands to binary expression}}
+            ^
+
+"Test_name.c", line 577: error: no operator "+" matches these operands
+            operand types are: int + conversion3::Unrelated
+  (void) (1 + u); // expected-error {{invalid operands to binary expression}}
+            ^
+"Test_name.c", line 577: note: built-in operator+(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #2 does not match parameter
+  (void) (1 + u); // expected-error {{invalid operands to binary expression}}
+            ^
+"Test_name.c", line 577: note: built-in operator+(<pointer to object>, <ptrdiff_t>) does not match because argument #1 does not match parameter
+  (void) (1 + u); // expected-error {{invalid operands to binary expression}}
+            ^
+"Test_name.c", line 577: note: built-in operator+(<ptrdiff_t>, <pointer to object>) does not match because argument #2 does not match parameter
+  (void) (1 + u); // expected-error {{invalid operands to binary expression}}
+            ^
+
+"Test_name.c", line 608: error: expression must have integral or enum type
+  switch (b) {} // expected-error {{statement requires expression of integer type}}
+          ^
+
+"Test_name.c", line 609: error: expression must have integral or enum type
+  switch (n) {} // expected-error {{statement requires expression of integer type}}
+          ^
+
+"Test_name.c", line 610: error: expression must have integral or enum type
+  switch (u) {} // expected-error {{statement requires expression of integer type}}
+          ^
+
+"Test_name.c", line 635: error: no suitable conversion function from "conversion3::Integral" (aka "conversion3::C<int>") to "const bool" exists
+  const bool &direct_cr2(n);
+                         ^
+
+"Test_name.c", line 636: error: no suitable conversion function from "conversion3::Integral" (aka "conversion3::C<int>") to "const bool" exists
+  const bool &direct_cr3(n);
+                         ^
+
+"Test_name.c", line 637: error: no suitable conversion function from "conversion3::Bool" (aka "conversion3::C<bool>") to "const int" exists
+  const int &direct_cr4(b);
+                        ^
+
+"Test_name.c", line 647: error: no suitable conversion function from "conversion3::Integral" (aka "conversion3::C<int>") to "const bool" exists
+  const bool &directList_cr2{n};
+                             ^
+
+"Test_name.c", line 648: error: no suitable conversion function from "conversion3::Integral" (aka "conversion3::C<int>") to "const bool" exists
+  const bool &directList_cr3{n};
+                             ^
+
+"Test_name.c", line 649: error: no suitable conversion function from "conversion3::Bool" (aka "conversion3::C<bool>") to "const int" exists
+  const int &directList_cr4{b};
+                            ^
+
+"Test_name.c", line 653: error: no suitable conversion function from "conversion3::Integral" (aka "conversion3::C<int>") to "bool" exists
+  bool copy2 = n;// expected-error {{no viable conversion}}
+               ^
+
+"Test_name.c", line 654: error: no suitable conversion function from "conversion3::Unrelated" (aka "conversion3::C<conversion3::tmp>") to "bool" exists
+  bool copyu2 = u;// expected-error {{no viable conversion}}
+                ^
+
+"Test_name.c", line 655: error: no suitable conversion function from "conversion3::Bool" (aka "conversion3::C<bool>") to "int" exists
+  int copy3 = b;// expected-error {{no viable conversion}}
+              ^
+
+"Test_name.c", line 657: error: no suitable conversion function from "conversion3::Unrelated" (aka "conversion3::C<conversion3::tmp>") to "int" exists
+  int copyu4 = u;// expected-error {{no viable conversion}}
+               ^
+
+"Test_name.c", line 659: error: no suitable conversion function from "conversion3::Integral" (aka "conversion3::C<int>") to "const bool" exists
+  const bool &copy6 = n;// expected-error {{no viable conversion}}
+                      ^
+
+"Test_name.c", line 660: error: no suitable conversion function from "conversion3::Unrelated" (aka "conversion3::C<conversion3::tmp>") to "const bool" exists
+  const bool &copyu6 = u;// expected-error {{no viable conversion}}
+                       ^
+
+"Test_name.c", line 661: error: no suitable conversion function from "conversion3::Bool" (aka "conversion3::C<bool>") to "const int" exists
+  const int &copy7 = b;// expected-error {{no viable conversion}}
+                     ^
+
+"Test_name.c", line 663: error: no suitable conversion function from "conversion3::Unrelated" (aka "conversion3::C<conversion3::tmp>") to "const int" exists
+  const int &copyu8 = u;// expected-error {{no viable conversion}}
+                      ^
+
+"Test_name.c", line 665: error: no suitable conversion function from "conversion3::Integral" (aka "conversion3::C<int>") to "bool" exists
+  bool copyList2 = {n};// expected-error {{no viable conversion}}
+                    ^
+
+"Test_name.c", line 666: error: no suitable conversion function from "conversion3::Unrelated" (aka "conversion3::C<conversion3::tmp>") to "bool" exists
+  bool copyListu2 = {u};// expected-error {{no viable conversion}}
+                     ^
+
+"Test_name.c", line 667: error: no suitable conversion function from "conversion3::Bool" (aka "conversion3::C<bool>") to "int" exists
+  int copyList3 = {b};// expected-error {{no viable conversion}}
+                   ^
+
+"Test_name.c", line 669: error: no suitable conversion function from "conversion3::Unrelated" (aka "conversion3::C<conversion3::tmp>") to "int" exists
+  int copyListu4 = {u};// expected-error {{no viable conversion}}
+                    ^
+
+"Test_name.c", line 671: error: no suitable conversion function from "conversion3::Integral" (aka "conversion3::C<int>") to "const bool" exists
+  const bool &copyList6 = {n};// expected-error {{no viable conversion}}
+                           ^
+
+"Test_name.c", line 672: error: no suitable conversion function from "conversion3::Unrelated" (aka "conversion3::C<conversion3::tmp>") to "const bool" exists
+  const bool &copyListu6 = {u};// expected-error {{no viable conversion}}
+                            ^
+
+"Test_name.c", line 673: error: no suitable conversion function from "conversion3::Bool" (aka "conversion3::C<bool>") to "const int" exists
+  const int &copyList7 = {b};// expected-error {{no viable conversion}}
+                          ^
+
+"Test_name.c", line 675: error: no suitable conversion function from "conversion3::Unrelated" (aka "conversion3::C<conversion3::tmp>") to "const int" exists
+  const int &copyListu8 = {u};// expected-error {{no viable conversion}}
+                           ^
+
+"Test_name.c", line 686: warning: 'explicit(bool)' is a C++20 feature
+    explicit(!is_same<T1, T2>::value)
+    ^
+
+"Test_name.c", line 698: error: no instance of constructor "deduction_guide2::A" matches the argument list
+            argument types are: (double)
+  A b0 = 0.0; // expected-error {{no viable constructor or deduction guide}}
+    ^
+
+"Test_name.c", line 698: error: cannot deduce class template arguments
+  A b0 = 0.0; // expected-error {{no viable constructor or deduction guide}}
+  ^
+
+"Test_name.c", line 703: error: copy-list-initialization cannot use a constructor marked "explicit"
+  A b4 = {0.0, 0}; // expected-error {{explicit constructor}}
+         ^
+
+"Test_name.c", line 712: error: copy-list-initialization cannot use "explicit" deduction guide "deduction_guide2::A(T1, T2)->deduction_guide2::A<T1, T2> [with T1=int, T2=int]"
+  A c3 = {0, 0};// expected-error {{explicit deduction guide}}
+    ^
+
+"Test_name.c", line 714: error: no instance of constructor "deduction_guide2::A" matches the argument list
+            argument types are: (double)
+  A d0 = 0.0; // expected-error {{no viable constructor or deduction guide}}
+    ^
+
+"Test_name.c", line 714: error: cannot deduce class template arguments
+  A d0 = 0.0; // expected-error {{no viable constructor or deduction guide}}
+  ^
+
+"Test_name.c", line 717: error: copy-list-initialization cannot use "explicit" deduction guide "deduction_guide2::A(T1, T2)->deduction_guide2::A<T1, T2> [with T1=double, T2=double]"
+  A d3 = {0.0, 0.0};// expected-error {{explicit deduction guide}}
+    ^
+
+"Test_name.c", line 726: warning: 'explicit(bool)' is a C++20 feature
+    explicit(N > 7)
+    ^
+
+"Test_name.c", line 734: error: no suitable constructor exists to convert from "const char [13]" to "PR42980::Str"
+  Str b = "not so short";// expected-error {{no viable conversion}}
+          ^
+
+"Test_name.c", line 743: warning: 'explicit(bool)' is a C++20 feature
+    explicit(sizeof(char[2])) S(char); // expected-error {{explicit specifier argument evaluates to 2, which cannot be narrowed to type 'bool'}}
+    ^
+
+"Test_name.c", line 744: warning: 'explicit(bool)' is a C++20 feature
+    explicit(ptr) S(long);             // expected-error {{conversion from 'const int *' to 'bool' is not allowed in a converted constant expression}}
+    ^
+
+"Test_name.c", line 744: error: expression must have a constant value
+    explicit(ptr) S(long);             // expected-error {{conversion from 'const int *' to 'bool' is not allowed in a converted constant expression}}
+             ^
+"Test_name.c", line 744: note: the value of variable "P1401::ptr" (declared at line 740) cannot be used as a constant
+    explicit(ptr) S(long);             // expected-error {{conversion from 'const int *' to 'bool' is not allowed in a converted constant expression}}
+             ^
+
+"Test_name.c", line 745: warning: 'explicit(bool)' is a C++20 feature
+    explicit(nullptr) S(int);          // expected-error {{conversion from 'std::nullptr_t' to 'bool' is not allowed in a converted constant expression}}
+    ^
+
+"Test_name.c", line 746: warning: 'explicit(bool)' is a C++20 feature
+    explicit(42L) S(int, int);         // expected-error {{explicit specifier argument evaluates to 42, which cannot be narrowed to type 'bool'}}
+    ^
+
+"Test_name.c", line 747: warning: 'explicit(bool)' is a C++20 feature
+    explicit(sizeof(char)) S();
+    ^
+
+"Test_name.c", line 748: warning: 'explicit(bool)' is a C++20 feature
+    explicit(0) S(char, char);
+    ^
+
+"Test_name.c", line 749: warning: 'explicit(bool)' is a C++20 feature
+    explicit(1L) S(char, char, char);
+    ^
+
+118 errors detected in the compilation of "Test_name.c".

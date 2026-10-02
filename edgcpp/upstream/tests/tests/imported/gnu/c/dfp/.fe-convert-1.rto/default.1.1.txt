@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./dfp/fe-convert-1.c", line 8: error: identifier "_Decimal32" is undefined
+  volatile _Decimal32 d32;
+           ^
+
+"./dfp/fe-convert-1.c", line 9: error: identifier "_Decimal64" is undefined
+  volatile _Decimal64 d64;
+           ^
+
+"./dfp/fe-convert-1.c", line 10: error: identifier "_Decimal128" is undefined
+  volatile _Decimal128 d128;
+           ^
+
+"./dfp/fe-convert-1.c", line 16: error: extra text after expected end of number
+  void convert_100 (void) { d64 = 9.999999e96DD; __dfp_clear_except(
+                                             ^
+
+"./dfp/fe-convert-1.c", line 17: error: extra text after expected end of number
+  void convert_101 (void) { d64 = 10.000000e96DD; __dfp_clear_except(
+                                              ^
+
+"./dfp/fe-convert-1.c", line 18: error: extra text after expected end of number
+  void convert_102 (void) { d64 = 1.1111111DD; __dfp_clear_except(
+                                           ^
+
+"./dfp/fe-convert-1.c", line 19: error: extra text after expected end of number
+  void convert_110 (void) { d128 = 9.999999e96DL; __dfp_clear_except(
+                                              ^
+
+"./dfp/fe-convert-1.c", line 20: error: extra text after expected end of number
+  void convert_111 (void) { d128 = 10.000000e96DL; __dfp_clear_except(
+                                               ^
+
+"./dfp/fe-convert-1.c", line 21: error: extra text after expected end of number
+  void convert_112 (void) { d128 = 1.1111111DL; __dfp_clear_except(
+                                            ^
+
+"./dfp/fe-convert-1.c", line 22: error: extra text after expected end of number
+  void convert_120 (void) { d128 = 9.999999999999999E384DL; __dfp_clear_except(
+                                                        ^
+
+"./dfp/fe-convert-1.c", line 23: error: extra text after expected end of number
+  void convert_121 (void) { d128 = 10.00000000000000E384DL; __dfp_clear_except(
+                                                        ^
+
+"./dfp/fe-convert-1.c", line 24: error: extra text after expected end of number
+  void convert_122 (void) { d128 = 1.1111111111111111DL; __dfp_clear_except(
+                                                     ^
+
+12 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 19: error: the default constructor of "B" cannot be referenced -- it is a deleted function
+  B b;				// { dg-error "B::B\\(\\)" "B::B" }
+    ^
+
+"Test_name.c", line 19: error: function "B::~B()" (declared implicitly) cannot be referenced -- it is a deleted function
+  B b;				// { dg-error "B::B\\(\\)" "B::B" }
+    ^
+
+"Test_name.c", line 20: error: function "B::B(const B &)" (declared implicitly) cannot be referenced -- it is a deleted function
+  B b2(b);			// { dg-error "B::B\\(const B&\\)" "B::B" }
+       ^
+
+"Test_name.c", line 20: error: function "B::~B()" (declared implicitly) cannot be referenced -- it is a deleted function
+  B b2(b);			// { dg-error "B::B\\(const B&\\)" "B::B" }
+       ^
+
+"Test_name.c", line 30: error: the default constructor of "C" cannot be referenced -- it is a deleted function
+  C c;				// { dg-error "C::C\\(\\)" "C::C" }
+    ^
+
+"Test_name.c", line 30: error: function "C::~C()" (declared implicitly) cannot be referenced -- it is a deleted function
+  C c;				// { dg-error "C::C\\(\\)" "C::C" }
+    ^
+
+"Test_name.c", line 31: error: function "C::C(const C &)" (declared implicitly) cannot be referenced -- it is a deleted function
+  C c2(c);			// { dg-error "C::C\\(const C&\\)" "C::C" }
+       ^
+
+"Test_name.c", line 31: error: function "C::~C()" (declared implicitly) cannot be referenced -- it is a deleted function
+  C c2(c);			// { dg-error "C::C\\(const C&\\)" "C::C" }
+       ^
+
+8 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,7 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"CXX/module/module.unit/p7/t6.cpp", line 9: catastrophic error: could not find module file for module "X"
+  import X;
+         ^
+
+1 catastrophic error detected in the compilation of "Test_name.c".
+Compilation terminated.

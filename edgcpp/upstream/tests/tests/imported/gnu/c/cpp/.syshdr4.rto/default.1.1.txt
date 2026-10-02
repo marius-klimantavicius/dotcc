@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./cpp/syshdr4.c", line 22: warning: division by zero
+    return 1 / 0;
+             ^
+
+"./cpp/syshdr4.c", line 23: warning: statement is unreachable
+    return 0;
+    ^
+

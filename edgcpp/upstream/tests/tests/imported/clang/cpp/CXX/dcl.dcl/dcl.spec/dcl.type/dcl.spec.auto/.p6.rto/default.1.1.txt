@@ -1,0 +1,126 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --c++03 Test_name.c
+"Test_name.c", line 9: warning: deleted functions are a C++11 feature
+    template<typename U> only(U) = delete;
+                                   ^
+
+"Test_name.c", line 14: warning: "auto" as a type specifier is nonstandard in this mode
+    auto a = "const char [16]", *p = &a;
+    ^
+
+"Test_name.c", line 21: warning: "auto" as a type specifier is nonstandard in this mode
+    auto b = 42ULL;
+    ^
+
+"Test_name.c", line 24: warning: "auto" as a type specifier is nonstandard in this mode
+    for (auto c = 0; c < 100; ++c) {
+         ^
+
+"Test_name.c", line 30: warning: "auto" as a type specifier is nonstandard in this mode
+    auto x = 5;
+    ^
+
+"Test_name.c", line 31: warning: "auto" as a type specifier is nonstandard in this mode
+    const auto *v = &x, u = 6;
+          ^
+
+"Test_name.c", line 32: warning: "auto" as a type specifier is nonstandard in this mode
+    static auto y = 0.0;
+           ^
+
+"Test_name.c", line 41: warning: "auto" as a type specifier is nonstandard in this mode
+    if (auto a = true) {
+        ^
+
+"Test_name.c", line 45: warning: "auto" as a type specifier is nonstandard in this mode
+    switch (auto a = 0) {
+            ^
+
+"Test_name.c", line 50: warning: "auto" as a type specifier is nonstandard in this mode
+    while (auto a = false) {
+           ^
+
+"Test_name.c", line 54: warning: "auto" as a type specifier is nonstandard in this mode
+    for (; auto a = "test"; ) {
+           ^
+
+"Test_name.c", line 58: warning: "auto" as a type specifier is nonstandard in this mode
+    auto *fail1 = 0; // expected-error {{variable 'fail1' with type 'auto *' has incompatible initializer of type 'int'}}
+    ^
+
+"Test_name.c", line 58: error: cannot deduce "auto" type
+    auto *fail1 = 0; // expected-error {{variable 'fail1' with type 'auto *' has incompatible initializer of type 'int'}}
+    ^
+
+"Test_name.c", line 60: warning: "auto" as a type specifier is nonstandard in this mode
+    const auto **fail2(p); // expected-error {{variable 'fail2' with type 'const auto **' has incompatible initializer of type 'int **'}}
+          ^
+
+"Test_name.c", line 60: warning: a value of type "int **" cannot be used to initialize an entity of type "const int **"
+    const auto **fail2(p); // expected-error {{variable 'fail2' with type 'const auto **' has incompatible initializer of type 'int **'}}
+                       ^
+
+"Test_name.c", line 60: warning: variable "p" is used before its value is set
+    const auto **fail2(p); // expected-error {{variable 'fail2' with type 'const auto **' has incompatible initializer of type 'int **'}}
+                       ^
+
+"Test_name.c", line 60: warning: variable "fail2" was declared but never referenced
+    const auto **fail2(p); // expected-error {{variable 'fail2' with type 'const auto **' has incompatible initializer of type 'int **'}}
+                 ^
+
+"Test_name.c", line 70: warning: "auto" as a type specifier is nonstandard in this mode
+      auto p1 = &S::f;
+      ^
+
+"Test_name.c", line 71: warning: "auto" as a type specifier is nonstandard in this mode
+      auto S::*p2 = &S::f;
+      ^
+
+"Test_name.c", line 72: warning: "auto" as a type specifier is nonstandard in this mode
+      auto (S::*p3)() = &S::f;
+      ^
+
+"Test_name.c", line 73: warning: "auto" as a type specifier is nonstandard in this mode
+      auto p4 = &S::g; // expected-error {{incompatible initializer of type '<overloaded function type>'}}
+      ^
+
+"Test_name.c", line 73: error: cannot deduce "auto" type
+      auto p4 = &S::g; // expected-error {{incompatible initializer of type '<overloaded function type>'}}
+      ^
+
+"Test_name.c", line 74: warning: "auto" as a type specifier is nonstandard in this mode
+      auto S::*p5 = &S::g; // expected-error {{incompatible initializer of type '<overloaded function type>'}}
+      ^
+
+"Test_name.c", line 74: error: cannot deduce "auto" type
+      auto S::*p5 = &S::g; // expected-error {{incompatible initializer of type '<overloaded function type>'}}
+      ^
+
+"Test_name.c", line 75: warning: "auto" as a type specifier is nonstandard in this mode
+      auto (S::*p6)(int) = &S::g;
+      ^
+
+"Test_name.c", line 76: warning: "auto" as a type specifier is nonstandard in this mode
+      auto p7 = &S::m;
+      ^
+
+"Test_name.c", line 77: warning: "auto" as a type specifier is nonstandard in this mode
+      auto S::*p8 = &S::m;
+      ^
+
+"Test_name.c", line 97: warning: "auto" as a type specifier is nonstandard in this mode
+      auto value = x->method; // expected-error {{reference to non-static member function must be called}}
+      ^
+
+"Test_name.c", line 97: error: a pointer to a bound function may only be used to call the function
+      auto value = x->method; // expected-error {{reference to non-static member function must be called}}
+                      ^
+
+"Test_name.c", line 100: warning: "auto" as a type specifier is nonstandard in this mode
+      auto funcptr = &g<int>;
+      ^
+
+"Test_name.c", line 101: warning: variable "funcptr2" was declared but never referenced
+      int (*funcptr2)(int) = funcptr;
+            ^
+
+4 errors detected in the compilation of "Test_name.c".

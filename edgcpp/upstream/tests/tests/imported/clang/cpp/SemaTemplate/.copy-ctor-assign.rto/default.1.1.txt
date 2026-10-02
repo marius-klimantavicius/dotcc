@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 13: error: expression must have arithmetic, unscoped enum, or pointer type but has type "int Y::*"
+      : value(other.value + 1) { } // expected-error{{binary expression}}
+              ^
+          detected during instantiation of "X<T>::X(const X<U> &) [with T=int, U=int Y::*]" at line 31
+
+"Test_name.c", line 17: error: expression must have arithmetic, unscoped enum, or pointer type but has type "int Y::*"
+      value = other.value + 1; // expected-error{{binary expression}}
+              ^
+          detected during instantiation of "X<T> &X<T>::operator=(const X<U> &) [with T=int, U=int Y::*]" at line 37
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 7: error: identifier "similer" is undefined
+    if constexpr (similer<>) {} // expected-error {{use of undeclared identifier 'similer'; did you mean 'similar'?}} \
+                  ^
+
+"Test_name.c", line 11: error: identifier "__adl_swap" is undefined
+  void a() { if constexpr (__adl_swap<>) {}} // expected-error{{use of undeclared identifier '__adl_swap'}}
+                           ^
+
+"Test_name.c", line 15: error: identifier "AAA" is undefined
+  void b() { if constexpr (AAA<>) {}} // expected-error {{use of undeclared identifier 'AAA'; did you mean 'AA'?}} \
+                           ^
+
+3 errors detected in the compilation of "Test_name.c".

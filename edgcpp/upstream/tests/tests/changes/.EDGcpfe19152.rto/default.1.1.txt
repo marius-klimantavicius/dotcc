@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --clang --c++17 Test_name.c
+"Test_name.c", line 14: error: identifier "g" is undefined
+    g({ .a = 0 });  // Previously triggered an internal error.
+    ^
+
+1 error detected in the compilation of "Test_name.c".

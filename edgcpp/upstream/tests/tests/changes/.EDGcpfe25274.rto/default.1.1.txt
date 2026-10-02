@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gn 110200 --c++17 Test_name.c
+"Test_name.c", line 17: error: no instance of function template "g" matches the argument list
+            argument types are: (S *)
+      g(this);  // Now an error in Clang modes and in GNU C++ modes with
+      ^
+"Test_name.c", line 14: note: function template "g" does not match because argument #1 does not match parameter
+  template<typename T> void g(T&);
+                            ^
+
+1 error detected in the compilation of "Test_name.c".

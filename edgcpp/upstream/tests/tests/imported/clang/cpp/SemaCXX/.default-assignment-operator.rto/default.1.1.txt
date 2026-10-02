@@ -1,0 +1,32 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 7: warning: class "Base" defines no constructor to initialize the following:
+            reference member "Base::ref"
+  class Base { // expected-warning{{class 'Base' does not declare any constructor to initialize its non-modifiable members}}
+        ^
+
+"Test_name.c", line 20: error: implicitly generated assignment operator cannot copy:
+            const member "X::cint"
+  class X  : Base {
+        ^
+          detected during implicit generation of "X &X::operator=(const X &)" at line 51
+
+"Test_name.c", line 7: error: implicitly generated assignment operator cannot copy:
+            reference member "Base::ref"
+  class Base { // expected-warning{{class 'Base' does not declare any constructor to initialize its non-modifiable members}}
+        ^
+          detected during:
+            implicit generation of "Base &Base::operator=(const Base &)" at line 51
+            implicit generation of "X &X::operator=(const X &)" at line 51
+
+"Test_name.c", line 105: error: implicitly generated assignment operator cannot copy:
+            const member "E1::a"
+  class E1 {
+        ^
+          detected during implicit generation of "E1 &E1::operator=(const E1 &)" at line 124
+
+"Test_name.c", line 149: error: "ProtectedCheck::X &ProtectedCheck::X::operator=(const ProtectedCheck::X &)" (declared at line 135) is inaccessible
+      X x;
+        ^
+          detected during implicit generation of "ProtectedCheck::Z &ProtectedCheck::Z::operator=(const ProtectedCheck::Z &)" at line 155
+
+4 errors detected in the compilation of "Test_name.c".

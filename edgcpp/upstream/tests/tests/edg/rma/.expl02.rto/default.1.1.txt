@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 17: error: no suitable constructor exists to convert from "int" to "A"
+  	g(1);  // gets expected error
+  	  ^
+
+"Test_name.c", line 18: error: no suitable constructor exists to convert from "int" to "B"
+  	h(1);  // incorrectly accepted
+  	  ^
+
+2 errors detected in the compilation of "Test_name.c".

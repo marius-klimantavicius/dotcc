@@ -1,0 +1,45 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 10: warning: integer conversion resulted in truncation
+    [0] = 0x100, /* { dg-warning "-Woverflow" } */
+          ^
+
+"Test_name.c", line 11: warning: integer conversion resulted in truncation
+    [2] = 0x101, /* { dg-warning "-Woverflow" } */
+          ^
+
+"Test_name.c", line 24: warning: integer conversion resulted in truncation
+    signed char a[][3] = { { 0x100, /* { dg-warning "28:-Woverflow" } */
+                             ^
+
+"Test_name.c", line 25: warning: integer conversion resulted in truncation
+                      1, 0x100 }, /* { dg-warning "24:-Woverflow" } */
+                         ^
+
+"Test_name.c", line 26: warning: integer conversion resulted in truncation
+                    { '\0', 0x100, '\0' } /* { dg-warning "27:-Woverflow" } */
+                            ^
+
+"Test_name.c", line 28: warning: integer conversion resulted in truncation
+    (const signed char []) { 0x100 }; /* { dg-warning "28:-Woverflow" } */
+                             ^
+
+"Test_name.c", line 24: warning: variable "a" was declared but never referenced
+    signed char a[][3] = { { 0x100, /* { dg-warning "28:-Woverflow" } */
+                ^
+
+"Test_name.c", line 30: warning: variable "s1" was declared but never referenced
+    struct S s1 = { 0x80000000 }; /* { dg-warning "19:-Wsign-conversion" } */
+             ^
+
+"Test_name.c", line 31: warning: variable "s2" was declared but never referenced
+    struct S s2 = { .n = 0x80000000 }; /* { dg-warning "24:-Wsign-conversion" } */
+             ^
+
+"Test_name.c", line 32: warning: variable "s3" was declared but never referenced
+    struct S s3 = { .u[1] = 0x80000000 }; /* { dg-warning "27:-Wsign-conversion" } */
+             ^
+
+"Test_name.c", line 33: warning: variable "h" was declared but never referenced
+    H h = { 1, 2, 0x80000000 }; /* { dg-warning "17:-Wsign-conversion" } */
+      ^
+

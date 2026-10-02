@@ -1,0 +1,61 @@
+# Generic items to ignore:
+*.h.gch
+*~
+*.swp
+*.o
+*.bak
+*.BAK
+*.so
+*.obj
+*.exe
+*.rej
+*.orig
+*.nfs
+*.diff
+*.patch
+a.out
+core
+cscope.out
+tags
+TAGS
+
+# Ignore some common archive formats that show up from time to time:
+*.tar
+*.tar.gz
+*.zip
+
+# EDG-specific items to ignore:
+*.ti
+*.ii
+*.et
+*.int.c
+*.rt
+*.lck
+/dev-pref.json
+cfe
+src/cpfe
+edgcpfe
+cdisp
+!src/cmake/cdisp
+src/err_codes.h
+src/err_data.h
+build
+util/eccp
+util/edg_decode
+util/edg_munch
+util/edg_prelink
+util/mk_errinfo
+bin
+!dev_tools/bin
+.last_make_targets
+
+# CMake items to ignore
+CMakeFiles/
+CMakeCache.txt
+compile_commands.json
+
+# clangd cache files
+.cache/
+
+# VS-created items to ignore:
+.vs/

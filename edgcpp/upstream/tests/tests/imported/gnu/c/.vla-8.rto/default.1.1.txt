@@ -1,0 +1,23 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 Test_name.c
+"Test_name.c", line 16: warning: function "bar1" was declared but never referenced
+    extern int bar1(int a[new_i()][new_i()]);	/* Since this isn't a VM type ensure we can have linkage.  */
+               ^
+
+"Test_name.c", line 22: warning: function "bar1" was declared but never referenced
+    int bar1(int a[new_i()][new_i()]);		/* Not a VM type, as VM arguments don't matter. */
+        ^
+
+"Test_name.c", line 28: error: transfer of control bypasses initialization of:
+            variable length array dimension (declared at line 29)
+    goto A;	/* { dg-error "jump into scope of identifier with variably modified type" } */
+    ^
+
+"Test_name.c", line 29: warning: variable "bar2" was declared but never referenced
+    int (*(*bar2)(void))[n];
+            ^
+
+"Test_name.c", line 12: warning: function "bar1" was declared but never referenced
+  static int bar1(int a[new_i()][new_i()]);
+             ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --c++11 --microsoft_version 1700 Test_name.c
+"Test_name.c", line 14: error: function "private_in_base_overloaded_with_using::A::f(int)" (declared at line 9) is inaccessible
+      using A::f;
+               ^
+
+"Test_name.c", line 14: error: function "private_in_base_overloaded_with_using::A::f()" (declared at line 8) is inaccessible
+      using A::f;
+               ^
+
+"Test_name.c", line 34: error: function "private_in_base_no_overload_with_using::A::f" (declared at line 29) is inaccessible
+      using A::f;
+               ^
+
+3 errors detected in the compilation of "Test_name.c".

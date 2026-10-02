@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 101: warning: alias templates are a C++11 feature
+    template<typename> using ignore = void; // expected-warning 0-1{{extension}}
+                       ^
+
+"Test_name.c", line 112: error: static assertion failed with ""
+    _Static_assert(!A<X>::specialized, "");
+    ^
+
+"Test_name.c", line 128: warning: alias declarations are a C++11 feature
+    using S = IsTuple<tuple<int> >; // expected-warning 0-1{{extension}}
+          ^
+
+"Test_name.c", line 154: warning: variable "instantiation" was declared but never referenced
+      ClassTemplate<>::Nested<int> instantiation;
+                                   ^
+
+1 error detected in the compilation of "Test_name.c".

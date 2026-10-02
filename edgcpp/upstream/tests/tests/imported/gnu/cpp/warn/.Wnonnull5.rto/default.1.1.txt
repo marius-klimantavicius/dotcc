@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 59: warning: null argument provided for parameter marked with attribute "nonnull"
+    s.f3 (nullptr, &s);              // { dg-warning "9:argument 1 null where non-null expected" "pr86568" { xfail *-*-* } }
+          ^
+
+"Test_name.c", line 61: warning: null argument provided for parameter marked with attribute "nonnull"
+    s.f3 (&s, nullptr);              // { dg-warning "13:argument 2 null where non-null expected" "pr86568" { xfail *-*-* } }
+              ^
+
+"Test_name.c", line 69: warning: null argument provided for parameter marked with attribute "nonnull"
+    s.f4 (null, &s);                 // { dg-warning "9:argument 1 null where non-null expected" }
+          ^
+
+"Test_name.c", line 70: warning: null argument provided for parameter marked with attribute "nonnull"
+    s.f4 (&s, null);                 // { dg-warning "13:argument 2 null where non-null expected" }
+              ^
+
+"Test_name.c", line 99: warning: null argument provided for parameter marked with attribute "nonnull"
+    p (null, "");                   // { dg-warning "6:argument 1 null where non-null expected" }
+       ^
+
+"Test_name.c", line 100: warning: null argument provided for parameter marked with attribute "nonnull"
+    p ("", null);                   // { dg-warning "10:argument 2 null where non-null expected" }
+           ^
+
+"Test_name.c", line 103: warning: attribute "nonnull" does not apply to non-function type "void (S::*)(const void *, const void *)"
+  typedef NONNULL void (S::*SMemFvp) (const void*, const void*);
+          ^
+

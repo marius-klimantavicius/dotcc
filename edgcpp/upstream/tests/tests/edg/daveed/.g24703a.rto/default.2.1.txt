@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=2 --c++20 --clang Test_name.c
+"Test_name.c", line 10: error: more than one operator "==" matches these operands:
+            function "operator==(const char *, const S &)" (declared at line 9), with reversed arguments
+            built-in operator "arithmetic == arithmetic"
+            function "operator==(const S &, const char *)" (declared at line 8)
+            operand types are: S == int
+    auto r = (s == 0);  // Previously ambiguous in C++20 modes.  Now accepted
+                ^
+"Test_name.c", line 9: note: function "operator==(const char *, const S &)" does not match because argument #1 does not match parameter
+    bool operator==(char const*, S const&);  // (2)
+         ^
+"Test_name.c", line 10: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    auto r = (s == 0);  // Previously ambiguous in C++20 modes.  Now accepted
+                ^
+
+1 error detected in the compilation of "Test_name.c".

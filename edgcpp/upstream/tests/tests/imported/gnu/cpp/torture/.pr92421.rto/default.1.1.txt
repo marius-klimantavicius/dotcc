@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 117: warning: variable "cur" is used before its value is set
+      while (cur) {
+             ^
+
+"Test_name.c", line 120: warning: variable "dl" is used before its value is set
+        dj.bb(&dbuf, dl, &dbuf, dk);
+                     ^
+
+"Test_name.c", line 120: warning: variable "dk" is used before its value is set
+        dj.bb(&dbuf, dl, &dbuf, dk);
+                                ^
+
+"Test_name.c", line 122: warning: missing return statement at end of non-void function "t<bk>::az"
+    }
+    ^
+

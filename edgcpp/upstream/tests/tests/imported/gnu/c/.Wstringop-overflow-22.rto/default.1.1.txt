@@ -1,0 +1,877 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 32: warning: unknown attribute "noipa"
+  T (index, a, 'x');          // { dg-warning "missing terminating nul" "index" }
+  ^
+
+"Test_name.c", line 33: warning: unknown attribute "noipa"
+  T (index, a, *s);           // { dg-warning "missing terminating nul" "index" }
+  ^
+
+"Test_name.c", line 35: warning: unknown attribute "noipa"
+  T (index, b, '0');
+  ^
+
+"Test_name.c", line 36: warning: unknown attribute "noipa"
+  T (index, b + 1, '1');
+  ^
+
+"Test_name.c", line 37: warning: unknown attribute "noipa"
+  T (index, b + 2, '2');
+  ^
+
+"Test_name.c", line 38: warning: unknown attribute "noipa"
+  T (index, b + 3, '3');
+  ^
+
+"Test_name.c", line 39: warning: unknown attribute "noipa"
+  T (index, b + 4, '4');      // { dg-warning "missing terminating nul" "index" }
+  ^
+
+"Test_name.c", line 41: warning: unknown attribute "noipa"
+  T (rindex, a, 'x');         // { dg-warning "missing terminating nul" "rindex" }
+  ^
+
+"Test_name.c", line 42: warning: unknown attribute "noipa"
+  T (rindex, a, *s);          // { dg-warning "missing terminating nul" "rindex" }
+  ^
+
+"Test_name.c", line 44: warning: unknown attribute "noipa"
+  T (rindex, b, '0');
+  ^
+
+"Test_name.c", line 45: warning: unknown attribute "noipa"
+  T (rindex, b + 1, '1');
+  ^
+
+"Test_name.c", line 46: warning: unknown attribute "noipa"
+  T (rindex, b + 2, '2');
+  ^
+
+"Test_name.c", line 47: warning: unknown attribute "noipa"
+  T (rindex, b + 3, '3');
+  ^
+
+"Test_name.c", line 48: warning: unknown attribute "noipa"
+  T (rindex, b + 4, '4');     // { dg-warning "missing terminating nul" "rindex" }
+  ^
+
+"Test_name.c", line 50: warning: unknown attribute "noipa"
+  T (stpcpy, d, a);           // { dg-warning "missing terminating nul" "stpcpy" }
+  ^
+
+"Test_name.c", line 52: warning: unknown attribute "noipa"
+  T (stpncpy, d, a, 4);
+  ^
+
+"Test_name.c", line 53: warning: unknown attribute "noipa"
+  T (stpncpy, d, a, 5);       // { dg-warning "specified bound 5 exceeds the size 4 of unterminated array" "stpncpy" }
+  ^
+
+"Test_name.c", line 54: warning: unknown attribute "noipa"
+  T (stpncpy, d, a, n);
+  ^
+
+"Test_name.c", line 62: warning: unknown attribute "noipa"
+  T (stpncpy, d, a + n, 3);
+  ^
+
+"Test_name.c", line 63: warning: unknown attribute "noipa"
+  T (stpncpy, d, a + n, 4);   // { dg-warning "specified bound 4 may exceed the size of at most 4 of unterminated array" "stpncpy" }
+  ^
+
+"Test_name.c", line 64: warning: unknown attribute "noipa"
+  T (stpncpy, d, a + n, 5);   // { dg-warning "specified bound 5 exceeds the size of at most 4 of unterminated array" "stpncpy" }
+  ^
+
+"Test_name.c", line 66: warning: unknown attribute "noipa"
+  T (stpncpy, d, b, 4);
+  ^
+
+"Test_name.c", line 67: warning: unknown attribute "noipa"
+  T (stpncpy, d, b, 5);
+  ^
+
+"Test_name.c", line 68: warning: unknown attribute "noipa"
+  T (stpncpy, d, b, n);
+  ^
+
+"Test_name.c", line 70: warning: unknown attribute "noipa"
+  T (stpncpy, d, b + 1, 4);
+  ^
+
+"Test_name.c", line 71: warning: unknown attribute "noipa"
+  T (stpncpy, d, b + 1, 5);
+  ^
+
+"Test_name.c", line 72: warning: unknown attribute "noipa"
+  T (stpncpy, d, b + 1, n);
+  ^
+
+"Test_name.c", line 74: warning: unknown attribute "noipa"
+  T (stpncpy, d, b + 3, 4);
+  ^
+
+"Test_name.c", line 75: warning: unknown attribute "noipa"
+  T (stpncpy, d, b + 3, 5);
+  ^
+
+"Test_name.c", line 76: warning: unknown attribute "noipa"
+  T (stpncpy, d, b + 3, n);
+  ^
+
+"Test_name.c", line 78: warning: unknown attribute "noipa"
+  T (stpncpy, d, b + 4, 1);
+  ^
+
+"Test_name.c", line 79: warning: unknown attribute "noipa"
+  T (stpncpy, d, b + 4, 2);   // { dg-warning "specified bound 2 exceeds the size 1 of unterminated array" "stpncpy" }
+  ^
+
+"Test_name.c", line 80: warning: unknown attribute "noipa"
+  T (stpncpy, d, b + 4, n);
+  ^
+
+"Test_name.c", line 83: warning: unknown attribute "noipa"
+  T (stpncpy, d, b + n, 5);
+  ^
+
+"Test_name.c", line 85: warning: unknown attribute "noipa"
+  T (strcasecmp, a, "ab");    // { dg-warning "missing terminating nul" "strcasecmp" }
+  ^
+
+"Test_name.c", line 86: warning: unknown attribute "noipa"
+  T (strcasecmp, a, s);       // { dg-warning "missing terminating nul" "strcasecmp" }
+  ^
+
+"Test_name.c", line 87: warning: unknown attribute "noipa"
+  T (strcasecmp, a, b);       // { dg-warning "missing terminating nul" "strcasecmp" }
+  ^
+
+"Test_name.c", line 88: warning: unknown attribute "noipa"
+  T (strcasecmp, b, b + 1);
+  ^
+
+"Test_name.c", line 89: warning: unknown attribute "noipa"
+  T (strcasecmp, b, b + 2);
+  ^
+
+"Test_name.c", line 90: warning: unknown attribute "noipa"
+  T (strcasecmp, b, b + 3);
+  ^
+
+"Test_name.c", line 91: warning: unknown attribute "noipa"
+  T (strcasecmp, b, b + 4);   // { dg-warning "missing terminating nul" "strcasecmp" }
+  ^
+
+"Test_name.c", line 93: warning: unknown attribute "noipa"
+  T (strcat, d, a);           // { dg-warning "missing terminating nul" "strcat" }
+  ^
+
+"Test_name.c", line 95: warning: unknown attribute "noipa"
+  T (strncat, d, a, 4);
+  ^
+
+"Test_name.c", line 96: warning: unknown attribute "noipa"
+  T (strncat, d, a, 5);       // { dg-warning "specified bound 5 exceeds the size 4 of unterminated array" "strncat" }
+  ^
+
+"Test_name.c", line 97: warning: unknown attribute "noipa"
+  T (strncat, d, a, n);
+  ^
+
+"Test_name.c", line 99: warning: unknown attribute "noipa"
+  T (strncat, d, b, n);
+  ^
+
+"Test_name.c", line 100: warning: unknown attribute "noipa"
+  T (strncat, d, b + 1, n);
+  ^
+
+"Test_name.c", line 101: warning: unknown attribute "noipa"
+  T (strncat, d, b + 2, n);
+  ^
+
+"Test_name.c", line 102: warning: unknown attribute "noipa"
+  T (strncat, d, b + 3, n);
+  ^
+
+"Test_name.c", line 103: warning: unknown attribute "noipa"
+  T (strncat, d, b + 4, 0);
+  ^
+
+"Test_name.c", line 104: warning: unknown attribute "noipa"
+  T (strncat, d, b + 4, 1);
+  ^
+
+"Test_name.c", line 105: warning: unknown attribute "noipa"
+  T (strncat, d, b + 4, 2);   // { dg-warning "specified bound 2 exceeds the size 1 of unterminated array" "strncat" }
+  ^
+
+"Test_name.c", line 109: warning: unknown attribute "noipa"
+  T (strncat, d, b + 4, n);   // { dg-warning "missing terminating nul" "strncat" { xfail *-*-* } }
+  ^
+
+"Test_name.c", line 111: warning: unknown attribute "noipa"
+  T (strchr, a, 'x');         // { dg-warning "missing terminating nul" "strchr" }
+  ^
+
+"Test_name.c", line 112: warning: unknown attribute "noipa"
+  T (strchr, a, *s);          // { dg-warning "missing terminating nul" "strchr" }
+  ^
+
+"Test_name.c", line 114: warning: unknown attribute "noipa"
+  T (strcmp, a, "ab");        // { dg-warning "missing terminating nul" "strcmp" }
+  ^
+
+"Test_name.c", line 115: warning: unknown attribute "noipa"
+  T (strcmp, "bc", a);        // { dg-warning "missing terminating nul" "strcmp" }
+  ^
+
+"Test_name.c", line 116: warning: unknown attribute "noipa"
+  T (strcmp, a, s);           // { dg-warning "missing terminating nul" "strcmp" }
+  ^
+
+"Test_name.c", line 117: warning: unknown attribute "noipa"
+  T (strcmp, s, a);           // { dg-warning "missing terminating nul" "strcmp" }
+  ^
+
+"Test_name.c", line 119: warning: unknown attribute "noipa"
+  T (strcmp, a, b);           // { dg-warning "missing terminating nul" "strcmp" }
+  ^
+
+"Test_name.c", line 123: warning: unknown attribute "noipa"
+  T (strcmp, a, b + 1);       // { dg-warning "missing terminating nul" "bug" { xfail *-*-* } }
+  ^
+
+"Test_name.c", line 125: warning: unknown attribute "noipa"
+  T (strncmp, a, "ab", 4);
+  ^
+
+"Test_name.c", line 126: warning: unknown attribute "noipa"
+  T (strncmp, "bc", a, 4);
+  ^
+
+"Test_name.c", line 127: warning: unknown attribute "noipa"
+  T (strncmp, a, a, 4);
+  ^
+
+"Test_name.c", line 128: warning: unknown attribute "noipa"
+  T (strncmp, a, s, 4);
+  ^
+
+"Test_name.c", line 129: warning: unknown attribute "noipa"
+  T (strncmp, s, a, 4);
+  ^
+
+"Test_name.c", line 133: warning: unknown attribute "noipa"
+  T (strncmp, a, a, 5);       // { dg-warning "missing terminating nul" "pr92624" { xfail *-*-*} }
+  ^
+
+"Test_name.c", line 134: warning: unknown attribute "noipa"
+  T (strncmp, a, s, 5);       // { dg-warning "specified bound 5 exceeds the size 4 of unterminated array" "strcmp" }
+  ^
+
+"Test_name.c", line 135: warning: unknown attribute "noipa"
+  T (strncmp, s, a, 5);       // { dg-warning "specified bound 5 exceeds the size 4 of unterminated array" "strcmp" }
+  ^
+
+"Test_name.c", line 137: warning: unknown attribute "noipa"
+  T (strcpy, d, a);           // { dg-warning "missing terminating nul" "strcpy" }
+  ^
+
+"Test_name.c", line 139: warning: unknown attribute "noipa"
+  T (strcspn, a, s);          // { dg-warning "missing terminating nul" "strcspn" }
+  ^
+
+"Test_name.c", line 140: warning: unknown attribute "noipa"
+  T (strcspn, s, a);          // { dg-warning "missing terminating nul" "strcspn" }
+  ^
+
+"Test_name.c", line 142: warning: unknown attribute "noipa"
+  T (strspn, a, s);           // { dg-warning "missing terminating nul" "strcspn" }
+  ^
+
+"Test_name.c", line 143: warning: unknown attribute "noipa"
+  T (strspn, s, a);           // { dg-warning "missing terminating nul" "strcspn" }
+  ^
+
+"Test_name.c", line 145: warning: unknown attribute "noipa"
+  T (strdup, a);              // { dg-warning "missing terminating nul" "strdup" }
+  ^
+
+"Test_name.c", line 147: warning: unknown attribute "noipa"
+  T (strndup, a, 4);
+  ^
+
+"Test_name.c", line 148: warning: unknown attribute "noipa"
+  T (strndup, a, 5);          // { dg-warning "specified bound 5 exceeds the size 4 of unterminated array" "strndup" }
+  ^
+
+"Test_name.c", line 149: warning: unknown attribute "noipa"
+  T (strndup, b + 3, 2);
+  ^
+
+"Test_name.c", line 150: warning: unknown attribute "noipa"
+  T (strndup, b + 4, 1);
+  ^
+
+"Test_name.c", line 151: warning: unknown attribute "noipa"
+  T (strndup, b + 4, 2);      // { dg-warning "specified bound 2 exceeds the size 1 of unterminated array" "strndup" }
+  ^
+
+"Test_name.c", line 153: warning: unknown attribute "noipa"
+  T (strlen, a);              // { dg-warning "missing terminating nul" "strlen" }
+  ^
+
+"Test_name.c", line 155: warning: unknown attribute "noipa"
+  T (strnlen, a, 4);
+  ^
+
+"Test_name.c", line 156: warning: unknown attribute "noipa"
+  T (strnlen, a, 5);          // { dg-warning "specified bound 5 exceeds the size 4 of unterminated array" "strnlen" }
+  ^
+
+"Test_name.c", line 157: warning: unknown attribute "noipa"
+  T (strnlen, a, n);
+  ^
+
+"Test_name.c", line 159: warning: unknown attribute "noipa"
+  T (strpbrk, s, a);          // { dg-warning "missing terminating nul" "strpbrk" }
+  ^
+
+"Test_name.c", line 161: warning: unknown attribute "noipa"
+  T (strrchr, a, 'x');        // { dg-warning "missing terminating nul" "strrchr" }
+  ^
+
+"Test_name.c", line 162: warning: unknown attribute "noipa"
+  T (strrchr, a, *s);         // { dg-warning "missing terminating nul" "strrchr" }
+  ^
+
+"Test_name.c", line 164: warning: unknown attribute "noipa"
+  T (strstr, a, "cde");       // { dg-warning "missing terminating nul" "strstr" }
+  ^
+
+"Test_name.c", line 165: warning: unknown attribute "noipa"
+  T (strstr, a, s);           // { dg-warning "missing terminating nul" "strstr" }
+  ^
+
+"Test_name.c", line 169: warning: unknown attribute "noipa"
+  T (__stpcpy_chk, d, a, -1);           // { dg-warning "missing terminating nul" "stpcpy" }
+  ^
+
+"Test_name.c", line 169: warning: integer conversion resulted in a change of sign
+  T (__stpcpy_chk, d, a, -1);           // { dg-warning "missing terminating nul" "stpcpy" }
+  ^
+
+"Test_name.c", line 172: warning: unknown attribute "noipa"
+  T (__stpncpy_chk, d, a, 4, -1);
+  ^
+
+"Test_name.c", line 172: warning: integer conversion resulted in a change of sign
+  T (__stpncpy_chk, d, a, 4, -1);
+  ^
+
+"Test_name.c", line 173: warning: unknown attribute "noipa"
+  T (__stpncpy_chk, d, a, 5, -1);       // { dg-warning "specified bound 5 exceeds the size 4 of unterminated array" "stpncpy_chk" }
+  ^
+
+"Test_name.c", line 173: warning: integer conversion resulted in a change of sign
+  T (__stpncpy_chk, d, a, 5, -1);       // { dg-warning "specified bound 5 exceeds the size 4 of unterminated array" "stpncpy_chk" }
+  ^
+
+"Test_name.c", line 174: warning: unknown attribute "noipa"
+  T (__stpncpy_chk, d, a, n, -1);
+  ^
+
+"Test_name.c", line 174: warning: integer conversion resulted in a change of sign
+  T (__stpncpy_chk, d, a, n, -1);
+  ^
+
+"Test_name.c", line 176: warning: unknown attribute "noipa"
+  T (__stpncpy_chk, d, a + n, 3, -1);
+  ^
+
+"Test_name.c", line 176: warning: integer conversion resulted in a change of sign
+  T (__stpncpy_chk, d, a + n, 3, -1);
+  ^
+
+"Test_name.c", line 177: warning: unknown attribute "noipa"
+  T (__stpncpy_chk, d, a + n, 4, -1);   // { dg-warning "specified bound 4 may exceed the size of at most 4 of unterminated array" "stpncpy_chk" }
+  ^
+
+"Test_name.c", line 177: warning: integer conversion resulted in a change of sign
+  T (__stpncpy_chk, d, a + n, 4, -1);   // { dg-warning "specified bound 4 may exceed the size of at most 4 of unterminated array" "stpncpy_chk" }
+  ^
+
+"Test_name.c", line 178: warning: unknown attribute "noipa"
+  T (__stpncpy_chk, d, a + n, 5, -1);   // { dg-warning "specified bound 5 exceeds the size of at most 4 of unterminated array" "stpncpy_chk" }
+  ^
+
+"Test_name.c", line 178: warning: integer conversion resulted in a change of sign
+  T (__stpncpy_chk, d, a + n, 5, -1);   // { dg-warning "specified bound 5 exceeds the size of at most 4 of unterminated array" "stpncpy_chk" }
+  ^
+
+"Test_name.c", line 180: warning: unknown attribute "noipa"
+  T (__stpncpy_chk, d, b, 4, -1);
+  ^
+
+"Test_name.c", line 180: warning: integer conversion resulted in a change of sign
+  T (__stpncpy_chk, d, b, 4, -1);
+  ^
+
+"Test_name.c", line 181: warning: unknown attribute "noipa"
+  T (__stpncpy_chk, d, b, 5, -1);
+  ^
+
+"Test_name.c", line 181: warning: integer conversion resulted in a change of sign
+  T (__stpncpy_chk, d, b, 5, -1);
+  ^
+
+"Test_name.c", line 182: warning: unknown attribute "noipa"
+  T (__stpncpy_chk, d, b, n, -1);
+  ^
+
+"Test_name.c", line 182: warning: integer conversion resulted in a change of sign
+  T (__stpncpy_chk, d, b, n, -1);
+  ^
+
+"Test_name.c", line 184: warning: unknown attribute "noipa"
+  T (__stpncpy_chk, d, b + 1, 4, -1);
+  ^
+
+"Test_name.c", line 184: warning: integer conversion resulted in a change of sign
+  T (__stpncpy_chk, d, b + 1, 4, -1);
+  ^
+
+"Test_name.c", line 185: warning: unknown attribute "noipa"
+  T (__stpncpy_chk, d, b + 1, 5, -1);
+  ^
+
+"Test_name.c", line 185: warning: integer conversion resulted in a change of sign
+  T (__stpncpy_chk, d, b + 1, 5, -1);
+  ^
+
+"Test_name.c", line 186: warning: unknown attribute "noipa"
+  T (__stpncpy_chk, d, b + 1, n, -1);
+  ^
+
+"Test_name.c", line 186: warning: integer conversion resulted in a change of sign
+  T (__stpncpy_chk, d, b + 1, n, -1);
+  ^
+
+"Test_name.c", line 188: warning: unknown attribute "noipa"
+  T (__stpncpy_chk, d, b + 3, 4, -1);
+  ^
+
+"Test_name.c", line 188: warning: integer conversion resulted in a change of sign
+  T (__stpncpy_chk, d, b + 3, 4, -1);
+  ^
+
+"Test_name.c", line 189: warning: unknown attribute "noipa"
+  T (__stpncpy_chk, d, b + 3, 5, -1);
+  ^
+
+"Test_name.c", line 189: warning: integer conversion resulted in a change of sign
+  T (__stpncpy_chk, d, b + 3, 5, -1);
+  ^
+
+"Test_name.c", line 190: warning: unknown attribute "noipa"
+  T (__stpncpy_chk, d, b + 3, n, -1);
+  ^
+
+"Test_name.c", line 190: warning: integer conversion resulted in a change of sign
+  T (__stpncpy_chk, d, b + 3, n, -1);
+  ^
+
+"Test_name.c", line 192: warning: unknown attribute "noipa"
+  T (__stpncpy_chk, d, b + 4, 1, -1);
+  ^
+
+"Test_name.c", line 192: warning: integer conversion resulted in a change of sign
+  T (__stpncpy_chk, d, b + 4, 1, -1);
+  ^
+
+"Test_name.c", line 193: warning: unknown attribute "noipa"
+  T (__stpncpy_chk, d, b + 4, 2, -1);   // { dg-warning "specified bound 2 exceeds the size 1 of unterminated array" "stpncpy_chk" }
+  ^
+
+"Test_name.c", line 193: warning: integer conversion resulted in a change of sign
+  T (__stpncpy_chk, d, b + 4, 2, -1);   // { dg-warning "specified bound 2 exceeds the size 1 of unterminated array" "stpncpy_chk" }
+  ^
+
+"Test_name.c", line 194: warning: unknown attribute "noipa"
+  T (__stpncpy_chk, d, b + 4, n, -1);
+  ^
+
+"Test_name.c", line 194: warning: integer conversion resulted in a change of sign
+  T (__stpncpy_chk, d, b + 4, n, -1);
+  ^
+
+"Test_name.c", line 197: warning: unknown attribute "noipa"
+  T (__strncat_chk, d, a, 4, -1);
+  ^
+
+"Test_name.c", line 197: warning: integer conversion resulted in a change of sign
+  T (__strncat_chk, d, a, 4, -1);
+  ^
+
+"Test_name.c", line 198: warning: unknown attribute "noipa"
+  T (__strncat_chk, d, a, 5, -1);       // { dg-warning "specified bound 5 exceeds the size 4 of unterminated array" "strncat_chk" }
+  ^
+
+"Test_name.c", line 198: warning: integer conversion resulted in a change of sign
+  T (__strncat_chk, d, a, 5, -1);       // { dg-warning "specified bound 5 exceeds the size 4 of unterminated array" "strncat_chk" }
+  ^
+
+"Test_name.c", line 199: warning: unknown attribute "noipa"
+  T (__strncat_chk, d, a, n, -1);
+  ^
+
+"Test_name.c", line 199: warning: integer conversion resulted in a change of sign
+  T (__strncat_chk, d, a, n, -1);
+  ^
+
+"Test_name.c", line 201: warning: unknown attribute "noipa"
+  T (__strncat_chk, d, a + n, 3, -1);
+  ^
+
+"Test_name.c", line 201: warning: integer conversion resulted in a change of sign
+  T (__strncat_chk, d, a + n, 3, -1);
+  ^
+
+"Test_name.c", line 202: warning: unknown attribute "noipa"
+  T (__strncat_chk, d, a + n, 4, -1);   // { dg-warning "specified bound 4 may exceed the size of at most 4 of unterminated array" "strncat_chk" }
+  ^
+
+"Test_name.c", line 202: warning: integer conversion resulted in a change of sign
+  T (__strncat_chk, d, a + n, 4, -1);   // { dg-warning "specified bound 4 may exceed the size of at most 4 of unterminated array" "strncat_chk" }
+  ^
+
+"Test_name.c", line 203: warning: unknown attribute "noipa"
+  T (__strncat_chk, d, a + n, 5, -1);   // { dg-warning "specified bound 5 exceeds the size of at most 4 of unterminated array" "strncat_chk" }
+  ^
+
+"Test_name.c", line 203: warning: integer conversion resulted in a change of sign
+  T (__strncat_chk, d, a + n, 5, -1);   // { dg-warning "specified bound 5 exceeds the size of at most 4 of unterminated array" "strncat_chk" }
+  ^
+
+"Test_name.c", line 205: warning: unknown attribute "noipa"
+  T (__strncat_chk, d, b, 4, -1);
+  ^
+
+"Test_name.c", line 205: warning: integer conversion resulted in a change of sign
+  T (__strncat_chk, d, b, 4, -1);
+  ^
+
+"Test_name.c", line 206: warning: unknown attribute "noipa"
+  T (__strncat_chk, d, b, 5, -1);
+  ^
+
+"Test_name.c", line 206: warning: integer conversion resulted in a change of sign
+  T (__strncat_chk, d, b, 5, -1);
+  ^
+
+"Test_name.c", line 207: warning: unknown attribute "noipa"
+  T (__strncat_chk, d, b, n, -1);
+  ^
+
+"Test_name.c", line 207: warning: integer conversion resulted in a change of sign
+  T (__strncat_chk, d, b, n, -1);
+  ^
+
+"Test_name.c", line 209: warning: unknown attribute "noipa"
+  T (__strncat_chk, d, b + 1, 4, -1);
+  ^
+
+"Test_name.c", line 209: warning: integer conversion resulted in a change of sign
+  T (__strncat_chk, d, b + 1, 4, -1);
+  ^
+
+"Test_name.c", line 210: warning: unknown attribute "noipa"
+  T (__strncat_chk, d, b + 1, 5, -1);
+  ^
+
+"Test_name.c", line 210: warning: integer conversion resulted in a change of sign
+  T (__strncat_chk, d, b + 1, 5, -1);
+  ^
+
+"Test_name.c", line 211: warning: unknown attribute "noipa"
+  T (__strncat_chk, d, b + 1, n, -1);
+  ^
+
+"Test_name.c", line 211: warning: integer conversion resulted in a change of sign
+  T (__strncat_chk, d, b + 1, n, -1);
+  ^
+
+"Test_name.c", line 213: warning: unknown attribute "noipa"
+  T (__strncat_chk, d, b + 3, 4, -1);
+  ^
+
+"Test_name.c", line 213: warning: integer conversion resulted in a change of sign
+  T (__strncat_chk, d, b + 3, 4, -1);
+  ^
+
+"Test_name.c", line 214: warning: unknown attribute "noipa"
+  T (__strncat_chk, d, b + 3, 5, -1);
+  ^
+
+"Test_name.c", line 214: warning: integer conversion resulted in a change of sign
+  T (__strncat_chk, d, b + 3, 5, -1);
+  ^
+
+"Test_name.c", line 215: warning: unknown attribute "noipa"
+  T (__strncat_chk, d, b + 3, n, -1);
+  ^
+
+"Test_name.c", line 215: warning: integer conversion resulted in a change of sign
+  T (__strncat_chk, d, b + 3, n, -1);
+  ^
+
+"Test_name.c", line 217: warning: unknown attribute "noipa"
+  T (__strncat_chk, d, b + 4, 1, -1);
+  ^
+
+"Test_name.c", line 217: warning: integer conversion resulted in a change of sign
+  T (__strncat_chk, d, b + 4, 1, -1);
+  ^
+
+"Test_name.c", line 218: warning: unknown attribute "noipa"
+  T (__strncat_chk, d, b + 4, 2, -1);   // { dg-warning "specified bound 2 exceeds the size 1 of unterminated array" "strncat_chk" }
+  ^
+
+"Test_name.c", line 218: warning: integer conversion resulted in a change of sign
+  T (__strncat_chk, d, b + 4, 2, -1);   // { dg-warning "specified bound 2 exceeds the size 1 of unterminated array" "strncat_chk" }
+  ^
+
+"Test_name.c", line 219: warning: unknown attribute "noipa"
+  T (__strncat_chk, d, b + 4, n, -1);
+  ^
+
+"Test_name.c", line 219: warning: integer conversion resulted in a change of sign
+  T (__strncat_chk, d, b + 4, n, -1);
+  ^
+
+"Test_name.c", line 222: warning: unknown attribute "noipa"
+  T (__strncpy_chk, d, a, 4, -1);
+  ^
+
+"Test_name.c", line 222: warning: integer conversion resulted in a change of sign
+  T (__strncpy_chk, d, a, 4, -1);
+  ^
+
+"Test_name.c", line 223: warning: unknown attribute "noipa"
+  T (__strncpy_chk, d, a, 5, -1);       // { dg-warning "specified bound 5 exceeds the size 4 of unterminated array" "strncpy_chk" }
+  ^
+
+"Test_name.c", line 223: warning: integer conversion resulted in a change of sign
+  T (__strncpy_chk, d, a, 5, -1);       // { dg-warning "specified bound 5 exceeds the size 4 of unterminated array" "strncpy_chk" }
+  ^
+
+"Test_name.c", line 224: warning: unknown attribute "noipa"
+  T (__strncpy_chk, d, a, n, -1);
+  ^
+
+"Test_name.c", line 224: warning: integer conversion resulted in a change of sign
+  T (__strncpy_chk, d, a, n, -1);
+  ^
+
+"Test_name.c", line 226: warning: unknown attribute "noipa"
+  T (__strncpy_chk, d, a + n, 3, -1);
+  ^
+
+"Test_name.c", line 226: warning: integer conversion resulted in a change of sign
+  T (__strncpy_chk, d, a + n, 3, -1);
+  ^
+
+"Test_name.c", line 227: warning: unknown attribute "noipa"
+  T (__strncpy_chk, d, a + n, 4, -1);   // { dg-warning "specified bound 4 may exceed the size of at most 4 of unterminated array" "strncpy_chk" }
+  ^
+
+"Test_name.c", line 227: warning: integer conversion resulted in a change of sign
+  T (__strncpy_chk, d, a + n, 4, -1);   // { dg-warning "specified bound 4 may exceed the size of at most 4 of unterminated array" "strncpy_chk" }
+  ^
+
+"Test_name.c", line 228: warning: unknown attribute "noipa"
+  T (__strncpy_chk, d, a + n, 5, -1);   // { dg-warning "specified bound 5 exceeds the size of at most 4 of unterminated array" "strncpy_chk" }
+  ^
+
+"Test_name.c", line 228: warning: integer conversion resulted in a change of sign
+  T (__strncpy_chk, d, a + n, 5, -1);   // { dg-warning "specified bound 5 exceeds the size of at most 4 of unterminated array" "strncpy_chk" }
+  ^
+
+"Test_name.c", line 230: warning: unknown attribute "noipa"
+  T (__strncpy_chk, d, b, 4, -1);
+  ^
+
+"Test_name.c", line 230: warning: integer conversion resulted in a change of sign
+  T (__strncpy_chk, d, b, 4, -1);
+  ^
+
+"Test_name.c", line 231: warning: unknown attribute "noipa"
+  T (__strncpy_chk, d, b, 5, -1);
+  ^
+
+"Test_name.c", line 231: warning: integer conversion resulted in a change of sign
+  T (__strncpy_chk, d, b, 5, -1);
+  ^
+
+"Test_name.c", line 232: warning: unknown attribute "noipa"
+  T (__strncpy_chk, d, b, n, -1);
+  ^
+
+"Test_name.c", line 232: warning: integer conversion resulted in a change of sign
+  T (__strncpy_chk, d, b, n, -1);
+  ^
+
+"Test_name.c", line 234: warning: unknown attribute "noipa"
+  T (__strncpy_chk, d, b + 1, 4, -1);
+  ^
+
+"Test_name.c", line 234: warning: integer conversion resulted in a change of sign
+  T (__strncpy_chk, d, b + 1, 4, -1);
+  ^
+
+"Test_name.c", line 235: warning: unknown attribute "noipa"
+  T (__strncpy_chk, d, b + 1, 5, -1);
+  ^
+
+"Test_name.c", line 235: warning: integer conversion resulted in a change of sign
+  T (__strncpy_chk, d, b + 1, 5, -1);
+  ^
+
+"Test_name.c", line 236: warning: unknown attribute "noipa"
+  T (__strncpy_chk, d, b + 1, n, -1);
+  ^
+
+"Test_name.c", line 236: warning: integer conversion resulted in a change of sign
+  T (__strncpy_chk, d, b + 1, n, -1);
+  ^
+
+"Test_name.c", line 238: warning: unknown attribute "noipa"
+  T (__strncpy_chk, d, b + 3, 4, -1);
+  ^
+
+"Test_name.c", line 238: warning: integer conversion resulted in a change of sign
+  T (__strncpy_chk, d, b + 3, 4, -1);
+  ^
+
+"Test_name.c", line 239: warning: unknown attribute "noipa"
+  T (__strncpy_chk, d, b + 3, 5, -1);
+  ^
+
+"Test_name.c", line 239: warning: integer conversion resulted in a change of sign
+  T (__strncpy_chk, d, b + 3, 5, -1);
+  ^
+
+"Test_name.c", line 240: warning: unknown attribute "noipa"
+  T (__strncpy_chk, d, b + 3, n, -1);
+  ^
+
+"Test_name.c", line 240: warning: integer conversion resulted in a change of sign
+  T (__strncpy_chk, d, b + 3, n, -1);
+  ^
+
+"Test_name.c", line 242: warning: unknown attribute "noipa"
+  T (__strncpy_chk, d, b + 4, 1, -1);
+  ^
+
+"Test_name.c", line 242: warning: integer conversion resulted in a change of sign
+  T (__strncpy_chk, d, b + 4, 1, -1);
+  ^
+
+"Test_name.c", line 243: warning: unknown attribute "noipa"
+  T (__strncpy_chk, d, b + 4, 2, -1);   // { dg-warning "specified bound 2 exceeds the size 1 of unterminated array" "strncpy" }
+  ^
+
+"Test_name.c", line 243: warning: integer conversion resulted in a change of sign
+  T (__strncpy_chk, d, b + 4, 2, -1);   // { dg-warning "specified bound 2 exceeds the size 1 of unterminated array" "strncpy" }
+  ^
+
+"Test_name.c", line 244: warning: unknown attribute "noipa"
+  T (__strncpy_chk, d, b + 4, n, -1);
+  ^
+
+"Test_name.c", line 244: warning: integer conversion resulted in a change of sign
+  T (__strncpy_chk, d, b + 4, n, -1);
+  ^
+
+"Test_name.c", line 248: warning: unknown attribute "noipa"
+  T (printf, a);              // { dg-warning "unterminated format string" "printf" }
+  ^
+
+"Test_name.c", line 249: warning: unknown attribute "noipa"
+  T (printf, "%s", a);        // { dg-warning "not a nul-terminated string" "printf" }
+  ^
+
+"Test_name.c", line 250: warning: unknown attribute "noipa"
+  T (sprintf, d, "%s", a);    // { dg-warning "not a nul-terminated string" "sprintf" }
+  ^
+
+"Test_name.c", line 251: warning: unknown attribute "noipa"
+  T (snprintf, d, n, "%s", a);    // { dg-warning "not a nul-terminated string" "sprintf" }
+  ^
+
+"Test_name.c", line 253: warning: unknown attribute "noipa"
+  T (__sprintf_chk, d, 0, -1, "%s", a);      // { dg-warning "not a nul-terminated string" "sprintf" }
+  ^
+
+"Test_name.c", line 253: warning: integer conversion resulted in a change of sign
+  T (__sprintf_chk, d, 0, -1, "%s", a);      // { dg-warning "not a nul-terminated string" "sprintf" }
+  ^
+
+"Test_name.c", line 254: warning: unknown attribute "noipa"
+  T (__snprintf_chk, d, n, 0, -1, "%s", a);  // { dg-warning "not a nul-terminated string" "sprintf" }
+  ^
+
+"Test_name.c", line 254: warning: integer conversion resulted in a change of sign
+  T (__snprintf_chk, d, n, 0, -1, "%s", a);  // { dg-warning "not a nul-terminated string" "sprintf" }
+  ^
+
+"Test_name.c", line 256: warning: unknown attribute "noipa"
+  T (fputs, a, fp);           // { dg-warning "missing terminating nul" "fputs" }
+  ^
+
+"Test_name.c", line 257: warning: unknown attribute "noipa"
+  T (fputs_unlocked, a, fp);  // { dg-warning "missing terminating nul" "fputs_unlocked" }
+  ^
+
+"Test_name.c", line 258: warning: unknown attribute "noipa"
+  T (puts, a);                // { dg-warning "missing terminating nul" "puts" }
+  ^
+
+"Test_name.c", line 259: warning: unknown attribute "noipa"
+  T (puts_unlocked, a);       // { dg-warning "missing terminating nul" "puts_unlocked" }
+  ^
+
+"Test_name.c", line 264: warning: unknown attribute "noipa"
+  T (execl, a, s, NULL);      // { dg-warning "missing terminating nul" "execl" }
+  ^
+
+"Test_name.c", line 265: warning: unknown attribute "noipa"
+  T (execle, a, s, NULL, NULL);   // { dg-warning "missing terminating nul" "execle" }
+  ^
+
+"Test_name.c", line 266: warning: unknown attribute "noipa"
+  T (execlp, a, s, NULL);     // { dg-warning "missing terminating nul" "execlp" }
+  ^
+
+"Test_name.c", line 268: warning: unknown attribute "noipa"
+  T (execv, a, &d);           // { dg-warning "missing terminating nul" "execv" }
+  ^
+
+"Test_name.c", line 269: warning: unknown attribute "noipa"
+  T (execve, a, &d, &d);      // { dg-warning "missing terminating nul" "execve" }
+  ^
+
+"Test_name.c", line 270: warning: unknown attribute "noipa"
+  T (execvp, a, &d);          // { dg-warning "missing terminating nul" "execvp" }
+  ^
+
+"Test_name.c", line 272: warning: unknown attribute "noipa"
+  T (gettext, a);             // { dg-warning "missing terminating nul" "gettext" }
+  ^
+
+"Test_name.c", line 274: warning: unknown attribute "noipa"
+  T (strfmon, d, n, a);       // { dg-warning "unterminated format string" "strfmon" }
+  ^
+

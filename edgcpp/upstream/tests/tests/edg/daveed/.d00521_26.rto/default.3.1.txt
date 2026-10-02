@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=3 --microsoft_version=1300 -DNODEF -DC=IXP -DM=IXP Test_name.c
+"Test_name.c", line 18: warning: invalid combination of DLL attributes
+  struct C S {
+         ^
+
+"Test_name.c", line 22: warning: invalid combination of DLL attributes
+  void M S::f()
+       ^
+

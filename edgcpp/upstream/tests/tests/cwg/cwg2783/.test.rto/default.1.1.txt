@@ -1,0 +1,5 @@
+cpfe -DTEST_NUMBER=1 --c++23 -tused -A Test_name.c
+"Test_name.c", line 7: warning: using-declaration ignored -- it refers to the current namespace
+  export using ::S;
+               ^
+

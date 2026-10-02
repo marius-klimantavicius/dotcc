@@ -1,0 +1,98 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++23 Test_name.c
+"Test_name.c", line 11: error: cannot determine which instance of function template "lambda [](auto) static->auto" is intended
+    auto fp0_value     = static_cast<int(*)(int)        >(&decltype(f0)::operator());
+                                                          ^
+
+"Test_name.c", line 12: error: cannot determine which instance of function template "lambda [](auto) static->auto" is intended
+    auto fp0_lref      = static_cast<int(*)(int&)       >(&decltype(f0)::operator());
+                                                          ^
+
+"Test_name.c", line 13: error: cannot determine which instance of function template "lambda [](auto) static->auto" is intended
+    auto fp0_rref      = static_cast<int(*)(int&&)      >(&decltype(f0)::operator());
+                                                          ^
+
+"Test_name.c", line 14: error: cannot determine which instance of function template "lambda [](auto) static->auto" is intended
+    auto fp0_constlref = static_cast<int(*)(int const&) >(&decltype(f0)::operator());
+                                                          ^
+
+"Test_name.c", line 15: error: cannot determine which instance of function template "lambda [](auto) static->auto" is intended
+    auto fp0_constrref = static_cast<int(*)(int const&&)>(&decltype(f0)::operator());
+                                                          ^
+
+"Test_name.c", line 18: error: cannot determine which instance of function template "lambda [](auto &&) static->auto" is intended
+    auto fp1_value      = static_cast<int(*)(int)        >(&decltype(f1)::operator()); // { dg-error {invalid 'static_cast' from type} }
+                                                           ^
+
+"Test_name.c", line 19: error: cannot determine which instance of function template "lambda [](auto &&) static->auto" is intended
+    auto fp1_lref       = static_cast<int(*)(int&)       >(&decltype(f1)::operator());
+                                                           ^
+
+"Test_name.c", line 20: error: cannot determine which instance of function template "lambda [](auto &&) static->auto" is intended
+    auto fp1_rref       = static_cast<int(*)(int&&)      >(&decltype(f1)::operator());
+                                                           ^
+
+"Test_name.c", line 21: error: cannot determine which instance of function template "lambda [](auto &&) static->auto" is intended
+    auto fp1_constlref  = static_cast<int(*)(int const&) >(&decltype(f1)::operator());
+                                                           ^
+
+"Test_name.c", line 22: error: cannot determine which instance of function template "lambda [](auto &&) static->auto" is intended
+    auto fp1_constrref  = static_cast<int(*)(int const&&)>(&decltype(f1)::operator());
+                                                           ^
+
+"Test_name.c", line 10: warning: variable "f0" was set but never used
+    auto f0 = [](this auto self) { return self; };
+         ^
+
+"Test_name.c", line 17: warning: variable "f1" was set but never used
+    auto f1 = [](this auto&& self) { return self; };
+         ^
+
+"Test_name.c", line 28: error: no instance of function template "lambda [](auto) static->auto" matches the required type
+    int (*fp0_value)(int)             = &decltype(f0)::operator();
+                                        ^
+
+"Test_name.c", line 29: error: no instance of function template "lambda [](auto) static->auto" matches the required type
+    int (*fp0_lref)(int&)             = &decltype(f0)::operator();
+                                        ^
+
+"Test_name.c", line 30: error: no instance of function template "lambda [](auto) static->auto" matches the required type
+    int (*fp0_rref)(int&&)            = &decltype(f0)::operator();
+                                        ^
+
+"Test_name.c", line 31: error: no instance of function template "lambda [](auto) static->auto" matches the required type
+    int (*fp0_constlref)(int const&)  = &decltype(f0)::operator();
+                                        ^
+
+"Test_name.c", line 32: error: no instance of function template "lambda [](auto) static->auto" matches the required type
+    int (*fp0_constrref)(int const&&) = &decltype(f0)::operator();
+                                        ^
+
+"Test_name.c", line 35: error: no instance of function template "lambda [](auto &&) static->auto" matches the required type
+    int (*fp1_value)(int)              = &decltype(f1)::operator(); // { dg-error {no matches converting function} }
+                                         ^
+
+"Test_name.c", line 36: error: no instance of function template "lambda [](auto &&) static->auto" matches the required type
+    int (*fp1_lref)(int&)              = &decltype(f1)::operator();
+                                         ^
+
+"Test_name.c", line 37: error: no instance of function template "lambda [](auto &&) static->auto" matches the required type
+    int (*fp1_rref)(int&&)             = &decltype(f1)::operator();
+                                         ^
+
+"Test_name.c", line 38: error: no instance of function template "lambda [](auto &&) static->auto" matches the required type
+    int (*fp1_constlref)(int const&)   = &decltype(f1)::operator();
+                                         ^
+
+"Test_name.c", line 39: error: no instance of function template "lambda [](auto &&) static->auto" matches the required type
+    int (*fp1_constrref)(int const&&)  = &decltype(f1)::operator();
+                                         ^
+
+"Test_name.c", line 27: warning: variable "f0" was set but never used
+    auto f0 = [](this auto self) { return self; };
+         ^
+
+"Test_name.c", line 34: warning: variable "f1" was set but never used
+    auto f1 = [](this auto&& self) { return self; };
+         ^
+
+20 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,151 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 10: error: class "A" has no member class "m"
+     A() : A::m(17) { } // expected-error {{member initializer 'm' does not name a non-static data member or base class}}
+              ^
+
+"Test_name.c", line 36: error: base class "B" is ambiguous
+    E() : B(), D() { } // expected-error{{base class initializer 'B' names both a direct base class and an inherited virtual base class}}
+          ^
+
+"Test_name.c", line 47: error: member "B::m" (declared at line 19) is inaccessible
+          m(17), // expected-error{{member initializer 'm' does not name a non-static data member or base class}}
+          ^
+
+"Test_name.c", line 47: error: "m" is not a nonstatic data member or base class of class "F"
+          m(17), // expected-error{{member initializer 'm' does not name a non-static data member or base class}}
+          ^
+
+"Test_name.c", line 48: error: "INT" is not a nonstatic data member or base class of class "F"
+          INT(17) // expected-error{{constructor initializer 'INT' (aka 'int') does not name a class}}
+          ^
+
+"Test_name.c", line 54: error: expected a "{"
+    G() : A(10); // expected-error{{expected '{'}}
+               ^
+
+"Test_name.c", line 54: error: expected a "}"
+    G() : A(10); // expected-error{{expected '{'}}
+               ^
+
+"Test_name.c", line 57: error: expected a "{"
+  void f() : a(242) { } // expected-error{{only constructors take base initializers}}
+           ^
+
+"Test_name.c", line 74: error: "E" is not a nonstatic data member or base class of class "Z"
+    Z() : X(), S(), E()  {} // expected-error {{type 'E' is not a direct or virtual base of 'Z'}}
+                    ^
+
+"Test_name.c", line 82: error: only one member of a union may be specified in a constructor initializer list
+           p(0), // expected-error {{initializing multiple members of union}}
+           ^
+
+"Test_name.c", line 99: error: indirect nonvirtual base class is not allowed
+                ::Derived::Base(),       // expected-error {{type '::Derived::Base' is not a direct or virtual base of 'Current'}}
+                ^
+
+"Test_name.c", line 100: error: indirect nonvirtual base class is not allowed
+                Derived::Base1(),        // expected-error {{type 'Derived::Base1' is not a direct or virtual base of 'Current'}}
+                ^
+
+"Test_name.c", line 102: error: the global scope has no class named "NonExisting"
+                ::NonExisting(),      // expected-error {{member initializer 'NonExisting' does not name a non-static data member or}}
+                  ^
+
+"Test_name.c", line 103: error: "INT" is not a nonstatic data member or base class of class "Current"
+                INT::NonExisting() {} // expected-error {{'INT' (aka 'int') is not a class, namespace, or enumeration}} \
+                ^
+
+"Test_name.c", line 103: error: expected a "("
+                INT::NonExisting() {} // expected-error {{'INT' (aka 'int') is not a class, namespace, or enumeration}} \
+                   ^
+
+"Test_name.c", line 103: error: expected a "{"
+                INT::NonExisting() {} // expected-error {{'INT' (aka 'int') is not a class, namespace, or enumeration}} \
+                                ^
+
+"Test_name.c", line 116: error: no instance of constructor "M::M" matches the argument list
+            argument types are: (int)
+    N() : M(1),        // expected-error {{no matching constructor for initialization of 'M'}}
+           ^
+"Test_name.c", line 107: note: function "M::M(const M &)" does not match because argument #1 does not match parameter
+  struct M {              // expected-note 2 {{candidate constructor (the implicit copy constructor)}}
+         ^
+"Test_name.c", line 112: note: number of parameters of function "M::M(int, int)" does not match the call
+    M(int i, int j);      // expected-note 2 {{candidate constructor}}
+    ^
+
+"Test_name.c", line 117: error: no instance of constructor "M::M" matches the argument list
+            argument types are: (int)
+          m1(100) {  } // expected-error {{no matching constructor for initialization of 'M'}}
+            ^
+"Test_name.c", line 107: note: function "M::M(const M &)" does not match because argument #1 does not match parameter
+  struct M {              // expected-note 2 {{candidate constructor (the implicit copy constructor)}}
+         ^
+"Test_name.c", line 112: note: number of parameters of function "M::M(int, int)" does not match the call
+    M(int i, int j);      // expected-note 2 {{candidate constructor}}
+    ^
+
+"Test_name.c", line 122: error: no default constructor exists for class "M"
+    P()  {  } // expected-error {{constructor for 'P' must explicitly initialize the base class 'M' which does not have a default constructor}} \
+         ^
+
+"Test_name.c", line 122: error: no default constructor exists for class "M"
+    P()  {  } // expected-error {{constructor for 'P' must explicitly initialize the base class 'M' which does not have a default constructor}} \
+         ^
+
+"Test_name.c", line 128: error: too many initializer values
+    Q() : f1(1,2),       // expected-error {{excess elements in scalar initializer}}
+               ^
+
+"Test_name.c", line 129: error: a value of type "double" cannot be used to initialize an entity of type "float *"
+          pf(0.0)  { }   // expected-error {{cannot initialize a member subobject of type 'float *' with an rvalue of type 'double'}}
+             ^
+
+"Test_name.c", line 243: error: namespace "std" has no member class "exception"
+    class A : public std::exception {}; // expected-error {{undeclared identifier}} expected-error {{expected class name}}
+                          ^
+
+"Test_name.c", line 252: error: identifier "String" is undefined
+      B(const String& s, int e=0) // expected-error {{unknown type name}} 
+              ^
+
+"Test_name.c", line 253: error: no suitable constructor exists to convert from "int" to "test3::A"
+        : A(e), m_String(s) , m_ErrorStr(__null) {} // expected-error {{no matching constructor}} \
+            ^
+
+"Test_name.c", line 253: error: "m_String" is not a nonstatic data member or base class of class "test3::B"
+        : A(e), m_String(s) , m_ErrorStr(__null) {} // expected-error {{no matching constructor}} \
+                ^
+
+"Test_name.c", line 253: error: "m_ErrorStr" is not a nonstatic data member or base class of class "test3::B"
+        : A(e), m_String(s) , m_ErrorStr(__null) {} // expected-error {{no matching constructor}} \
+                              ^
+
+"Test_name.c", line 257: error: "m_String" is not a nonstatic data member or base class of class "test3::B"
+        : A(e), m_String(e.m_String), m_ErrorStr(__null) { // expected-error 2{{does not name}} \
+                ^
+
+"Test_name.c", line 257: error: "m_ErrorStr" is not a nonstatic data member or base class of class "test3::B"
+        : A(e), m_String(e.m_String), m_ErrorStr(__null) { // expected-error 2{{does not name}} \
+                                      ^
+
+"Test_name.c", line 298: error: "member" is not a nonstatic data member or base class of class "PR12049::Class"
+        Class() : member(function() {} // expected-note {{to match this '('}}
+                  ^
+
+"Test_name.c", line 301: error: expected a "{"
+    };
+     ^
+
+"Test_name.c", line 304: error: invalid start of member declaration
+  namespace PR14073 {
+  ^
+
+At end of source: error: expected a ";"
+
+At end of source: error: expected a "}"
+"Test_name.c", line 292: note: to match this "{"
+  namespace PR12049 {
+                    ^
+
+34 errors detected in the compilation of "Test_name.c".

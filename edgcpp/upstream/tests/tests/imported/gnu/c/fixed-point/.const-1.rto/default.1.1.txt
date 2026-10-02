@@ -1,0 +1,202 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 10: error: expected a ";"
+  short _Fract sf = 1.0hr;
+               ^
+
+"Test_name.c", line 10: error: extra text after expected end of number
+  short _Fract sf = 1.0hr;
+                       ^
+
+"Test_name.c", line 11: error: variable "_Fract" is not a type name
+  _Fract f = 1.0r;
+  ^
+
+"Test_name.c", line 11: error: extra text after expected end of number
+  _Fract f = 1.0r;
+                ^
+
+"Test_name.c", line 12: error: declaration is incompatible with "short _Fract" (declared at line 10)
+  long _Fract lf = 1.0lr;
+       ^
+
+"Test_name.c", line 12: error: expected a ";"
+  long _Fract lf = 1.0lr;
+              ^
+
+"Test_name.c", line 12: error: extra text after expected end of number
+  long _Fract lf = 1.0lr;
+                       ^
+
+"Test_name.c", line 13: error: declaration is incompatible with "short _Fract" (declared at line 12)
+  long long _Fract llf = 1.0llr;
+            ^
+
+"Test_name.c", line 13: error: expected a ";"
+  long long _Fract llf = 1.0llr;
+                   ^
+
+"Test_name.c", line 13: error: extra text after expected end of number
+  long long _Fract llf = 1.0llr;
+                             ^
+
+"Test_name.c", line 15: error: declaration is incompatible with "short _Fract" (declared at line 13)
+  unsigned short _Fract usf = 1.0uhr;
+                 ^
+
+"Test_name.c", line 15: error: expected a ";"
+  unsigned short _Fract usf = 1.0uhr;
+                        ^
+
+"Test_name.c", line 15: error: extra text after expected end of number
+  unsigned short _Fract usf = 1.0uhr;
+                                 ^
+
+"Test_name.c", line 16: error: declaration is incompatible with "short _Fract" (declared at line 15)
+  unsigned _Fract uf = 1.0ur;
+           ^
+
+"Test_name.c", line 16: error: expected a ";"
+  unsigned _Fract uf = 1.0ur;
+                  ^
+
+"Test_name.c", line 16: error: extra text after expected end of number
+  unsigned _Fract uf = 1.0ur;
+                          ^
+
+"Test_name.c", line 17: error: declaration is incompatible with "short _Fract" (declared at line 16)
+  unsigned long _Fract ulf = 1.0ulr;
+                ^
+
+"Test_name.c", line 17: error: expected a ";"
+  unsigned long _Fract ulf = 1.0ulr;
+                       ^
+
+"Test_name.c", line 17: error: extra text after expected end of number
+  unsigned long _Fract ulf = 1.0ulr;
+                                ^
+
+"Test_name.c", line 18: error: declaration is incompatible with "short _Fract" (declared at line 17)
+  unsigned long long _Fract ullf = 1.0ullr;
+                     ^
+
+"Test_name.c", line 18: error: expected a ";"
+  unsigned long long _Fract ullf = 1.0ullr;
+                            ^
+
+"Test_name.c", line 18: error: extra text after expected end of number
+  unsigned long long _Fract ullf = 1.0ullr;
+                                      ^
+
+"Test_name.c", line 20: error: expected a ";"
+  short _Fract sfF = 1.0;  /* { dg-warning "overflow" } */
+               ^
+
+"Test_name.c", line 21: error: variable "_Fract" is not a type name
+  _Fract fF = 1.0;  /* { dg-warning "overflow" } */
+  ^
+
+"Test_name.c", line 22: error: declaration is incompatible with "short _Fract" (declared at line 18)
+  long _Fract lfF = 1.0;  /* { dg-warning "overflow" } */
+       ^
+
+"Test_name.c", line 22: error: expected a ";"
+  long _Fract lfF = 1.0;  /* { dg-warning "overflow" } */
+              ^
+
+"Test_name.c", line 23: error: declaration is incompatible with "short _Fract" (declared at line 22)
+  long long _Fract llfF = 1.0;  /* { dg-warning "overflow" } */
+            ^
+
+"Test_name.c", line 23: error: expected a ";"
+  long long _Fract llfF = 1.0;  /* { dg-warning "overflow" } */
+                   ^
+
+"Test_name.c", line 25: error: declaration is incompatible with "short _Fract" (declared at line 23)
+  unsigned short _Fract usfF = 1.0;  /* { dg-warning "overflow" } */
+                 ^
+
+"Test_name.c", line 25: error: expected a ";"
+  unsigned short _Fract usfF = 1.0;  /* { dg-warning "overflow" } */
+                        ^
+
+"Test_name.c", line 26: error: declaration is incompatible with "short _Fract" (declared at line 25)
+  unsigned _Fract ufF = 1.0;  /* { dg-warning "overflow" } */
+           ^
+
+"Test_name.c", line 26: error: expected a ";"
+  unsigned _Fract ufF = 1.0;  /* { dg-warning "overflow" } */
+                  ^
+
+"Test_name.c", line 27: error: declaration is incompatible with "short _Fract" (declared at line 26)
+  unsigned long _Fract ulfF = 1.0;  /* { dg-warning "overflow" } */
+                ^
+
+"Test_name.c", line 27: error: expected a ";"
+  unsigned long _Fract ulfF = 1.0;  /* { dg-warning "overflow" } */
+                       ^
+
+"Test_name.c", line 28: error: declaration is incompatible with "short _Fract" (declared at line 27)
+  unsigned long long _Fract ullfF = 1.0;  /* { dg-warning "overflow" } */
+                     ^
+
+"Test_name.c", line 28: error: expected a ";"
+  unsigned long long _Fract ullfF = 1.0;  /* { dg-warning "overflow" } */
+                            ^
+
+"Test_name.c", line 30: error: expected a ";"
+  short _Fract sfI = 1;  /* { dg-warning "overflow" } */
+               ^
+
+"Test_name.c", line 31: error: variable "_Fract" is not a type name
+  _Fract fI = 1;  /* { dg-warning "overflow" } */
+  ^
+
+"Test_name.c", line 32: error: declaration is incompatible with "short _Fract" (declared at line 28)
+  long _Fract lfI = 1;  /* { dg-warning "overflow" } */
+       ^
+
+"Test_name.c", line 32: error: expected a ";"
+  long _Fract lfI = 1;  /* { dg-warning "overflow" } */
+              ^
+
+"Test_name.c", line 33: error: declaration is incompatible with "short _Fract" (declared at line 32)
+  long long _Fract llfI = 1;  /* { dg-warning "overflow" } */
+            ^
+
+"Test_name.c", line 33: error: expected a ";"
+  long long _Fract llfI = 1;  /* { dg-warning "overflow" } */
+                   ^
+
+"Test_name.c", line 35: error: declaration is incompatible with "short _Fract" (declared at line 33)
+  unsigned short _Fract usfI = 1;  /* { dg-warning "overflow" } */
+                 ^
+
+"Test_name.c", line 35: error: expected a ";"
+  unsigned short _Fract usfI = 1;  /* { dg-warning "overflow" } */
+                        ^
+
+"Test_name.c", line 36: error: declaration is incompatible with "short _Fract" (declared at line 35)
+  unsigned _Fract ufI = 1;  /* { dg-warning "overflow" } */
+           ^
+
+"Test_name.c", line 36: error: expected a ";"
+  unsigned _Fract ufI = 1;  /* { dg-warning "overflow" } */
+                  ^
+
+"Test_name.c", line 37: error: declaration is incompatible with "short _Fract" (declared at line 36)
+  unsigned long _Fract ulfI = 1;  /* { dg-warning "overflow" } */
+                ^
+
+"Test_name.c", line 37: error: expected a ";"
+  unsigned long _Fract ulfI = 1;  /* { dg-warning "overflow" } */
+                       ^
+
+"Test_name.c", line 38: error: declaration is incompatible with "short _Fract" (declared at line 37)
+  unsigned long long _Fract ullfI = 1;  /* { dg-warning "overflow" } */
+                     ^
+
+"Test_name.c", line 38: error: expected a ";"
+  unsigned long long _Fract ullfI = 1;  /* { dg-warning "overflow" } */
+                            ^
+
+50 errors detected in the compilation of "Test_name.c".

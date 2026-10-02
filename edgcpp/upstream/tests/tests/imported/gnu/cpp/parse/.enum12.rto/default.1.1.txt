@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: error: template parameter "T::Color" cannot be defined in the current scope
+    enum T::Color {R, G, B} c; // { dg-error "nested name specifier" }
+         ^
+
+1 error detected in the compilation of "Test_name.c".

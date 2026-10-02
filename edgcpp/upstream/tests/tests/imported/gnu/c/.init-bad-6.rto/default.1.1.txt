@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 14: warning: excess initializers are ignored
+  typeof(*(0 ? p : q)) x = { 0 }; /* { dg-warning "excess elements in array initializer|near initialization" } */
+                             ^
+

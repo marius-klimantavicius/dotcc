@@ -1,0 +1,35 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 30: error: no instance of function template "f1" matches the argument list
+            argument types are: (void (X::*)())
+    f1(&X::f); // { dg-error "no matching function for call" }
+    ^
+"Test_name.c", line 15: note: substituting "<void (X::*)()>" for function template "f1" failed constraints
+  void f1(T)
+       ^
+"Test_name.c", line 14: note: atomic constraint evaluates to false
+  requires (sizeof(T)==1) // { dg-message {\[with T = void \(X::\*\)\(\)\]} }
+                     ^
+
+"Test_name.c", line 31: error: no instance of function template "f2" matches the argument list
+            argument types are: (int X::*)
+    f2(&X::a); // { dg-error "no matching function for call" }
+    ^
+"Test_name.c", line 20: note: substituting "<int X::*>" for function template "f2" failed constraints
+  void f2(T)
+       ^
+"Test_name.c", line 19: note: atomic constraint evaluates to false
+  requires (sizeof(T)==1) // { dg-message {\[with T = int X::\*\]} }
+                     ^
+
+"Test_name.c", line 32: error: no instance of function template "f3" matches the argument list
+            argument types are: (int (X::*)[5])
+    f3(&X::arr); // { dg-error "no matching function for call" }
+    ^
+"Test_name.c", line 25: note: substituting "<int (X::*)[5]>" for function template "f3" failed constraints
+  void f3(T)
+       ^
+"Test_name.c", line 24: note: atomic constraint evaluates to false
+  requires (sizeof(T)==1) // { dg-message {\[with T = int \(X::\*\)\[5\]\]} }
+                     ^
+
+3 errors detected in the compilation of "Test_name.c".

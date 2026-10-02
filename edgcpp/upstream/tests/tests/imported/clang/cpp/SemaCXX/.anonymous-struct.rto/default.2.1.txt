@@ -1,0 +1,93 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 15: warning: declaration does not declare anything
+  struct { // expected-error {{anonymous structs and classes must be class members}} expected-warning {{does not declare anything}}
+  ^
+
+"Test_name.c", line 25: warning: declaration does not declare anything
+    static struct { // expected-warning {{does not declare anything}}
+    ^
+
+"Test_name.c", line 27: error: invalid anonymous union -- nonpublic member is not allowed
+    class {
+          ^
+
+"Test_name.c", line 43: warning: anonymous non-C-like type given name for linkage purposes by typedef or alias declaration
+  } A; // expected-note {{type is given name 'A' for linkage purposes by this typedef declaration}}
+    ^
+"Test_name.c", line 36: note: type is not C-like because of this member declaration
+    void test() { // expected-note {{type is not C-compatible due to this member declaration}}
+         ^
+
+"Test_name.c", line 47: warning: anonymous non-C-like type given name for linkage purposes by typedef or alias declaration
+  } B; // expected-note {{type is given name 'B' for linkage purposes by this typedef declaration}}
+    ^
+"Test_name.c", line 46: note: type is not C-like because of this default member initializer
+    int x = 0; // expected-note {{type is not C-compatible due to this default member initializer}} expected-warning 0-1{{extension}}
+        ^
+
+"Test_name.c", line 51: warning: anonymous non-C-like type given name for linkage purposes by typedef or alias declaration
+  } C; // expected-note {{type is given name 'C' for linkage purposes by this typedef declaration}}
+    ^
+"Test_name.c", line 50: note: type is not C-like because of this base class
+  : B { // expected-note {{type is not C-compatible due to this base class}}
+    ^
+
+"Test_name.c", line 73: warning: anonymous non-C-like type given name for linkage purposes by typedef or alias declaration
+  } Template; // expected-note {{type is given name 'Template' for linkage purposes by this typedef declaration}}
+    ^
+"Test_name.c", line 72: note: type is not C-like because of this member declaration
+    template<int> void f() {} // expected-note {{type is not C-compatible due to this member declaration}}
+                       ^
+
+"Test_name.c", line 79: warning: anonymous non-C-like type given name for linkage purposes by typedef or alias declaration
+  } Nested; // expected-note {{type is given name 'Nested' for linkage purposes by this typedef declaration}}
+    ^
+"Test_name.c", line 77: note: type is not C-like because of this member declaration
+      void f(); // expected-note {{type is not C-compatible due to this member declaration}}
+           ^
+
+"Test_name.c", line 83: warning: anonymous non-C-like type given name for linkage purposes by typedef or alias declaration
+  } Friend; // expected-note {{type is given name 'Friend' for linkage purposes by this typedef declaration}}
+    ^
+"Test_name.c", line 82: note: type is not C-like because of this friend declaration
+    friend void f() {} // expected-note {{type is not C-compatible due to this friend declaration}}
+                ^
+
+"Test_name.c", line 87: warning: anonymous non-C-like type given name for linkage purposes by typedef or alias declaration
+  } FriendTemplate; // expected-note {{type is given name 'FriendTemplate' for linkage purposes by this typedef declaration}}
+    ^
+"Test_name.c", line 86: note: type is not C-like because of this friend declaration
+    template<typename T> friend void f() {} // expected-note {{type is not C-compatible due to this friend declaration}}
+    ^
+
+"Test_name.c", line 94: warning: extra ";" ignored
+    /*empty-declaration*/;
+                         ^
+
+"Test_name.c", line 163: error: static data member declaration is not allowed in this class
+    static int x; // expected-error {{static data member 'x' not allowed in anonymous struct}}
+    ^
+
+"Test_name.c", line 168: error: static data member declaration is not allowed in this class
+      static int x; // expected-error {{static data member 'x' not allowed in anonymous class}}
+      ^
+
+"Test_name.c", line 175: error: static data member declaration is not allowed in this class
+        static int x; // expected-error {{static data member 'x' not allowed in anonymous union}}
+        ^
+
+"Test_name.c", line 186: warning: anonymous non-C-like type given name for linkage purposes by typedef or alias declaration
+    } A; // expected-note {{given name 'A' for linkage purposes by this typedef}}
+      ^
+"Test_name.c", line 185: note: type is not C-like because of this member declaration
+      void memcpy(); // expected-note {{due to this member}}
+           ^
+
+"Test_name.c", line 192: warning: anonymous non-C-like type given name for linkage purposes by typedef or alias declaration
+  } A; // expected-note {{given name 'A' for linkage purposes by this typedef}}
+    ^
+"Test_name.c", line 190: note: type is not C-like because of this member declaration
+    static void f() { // expected-note {{due to this member}}
+                ^
+
+4 errors detected in the compilation of "Test_name.c".

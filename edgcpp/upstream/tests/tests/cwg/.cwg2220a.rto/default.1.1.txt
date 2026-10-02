@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c++17 -tused -A Test_name.c
+"Test_name.c", line 5: error: "i", declared in for-loop initialization, may not be redeclared in this scope
+        int i = 0;          // error: redeclaration
+            ^
+
+"Test_name.c", line 5: warning: variable "i" was declared but never referenced
+        int i = 0;          // error: redeclaration
+            ^
+
+1 error detected in the compilation of "Test_name.c".

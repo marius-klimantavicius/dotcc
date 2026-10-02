@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"./gomp/target-lambda-1.C", line 10: warning: unrecognized #pragma
+  #pragma omp target teams distribute parallel for
+          ^
+
+"./gomp/target-lambda-1.C", line 25: warning: unrecognized #pragma
+  #pragma omp target map(from:mapped)
+          ^
+
+"./gomp/target-lambda-1.C", line 52: warning: unrecognized #pragma
+  #pragma omp target enter data map(alloc: data1[:N], data2[:N])
+          ^
+
+"./gomp/target-lambda-1.C", line 57: warning: unrecognized #pragma
+  #pragma omp target update from(data1[:N], data2[:N])
+          ^
+
+"./gomp/target-lambda-1.C", line 65: warning: unrecognized #pragma
+  #pragma omp target exit data map(delete: data1[:N], data2[:N])
+          ^
+
+"./gomp/target-lambda-1.C", line 73: warning: unrecognized #pragma
+  #pragma omp target enter data map(to: data1[:N])
+          ^
+
+"./gomp/target-lambda-1.C", line 76: warning: unrecognized #pragma
+  #pragma omp target enter data map(to: data2[:N])
+          ^
+
+"./gomp/target-lambda-1.C", line 79: warning: unrecognized #pragma
+  #pragma omp target exit data map(from: data1[:N], data2[:N])
+          ^
+

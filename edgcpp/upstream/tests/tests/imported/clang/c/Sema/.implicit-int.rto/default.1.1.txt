@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c89 Test_name.c
+"Test_name.c", line 14: warning: this declaration has no storage class or type specifier
+  y;  /* expected-warning {{type specifier missing, defaults to 'int'}} \
+  ^
+
+"Test_name.c", line 18: error: expected a type specifier
+  void f((x));  /* expected-warning {{type specifier missing, defaults to 'int'}} \
+         ^
+
+"Test_name.c", line 33: warning: explicit type is missing ("int" assumed)
+    ILPAD();  /* expected-warning {{type specifier missing, defaults to 'int'}} \
+    ^
+
+"Test_name.c", line 33: warning: variable "i" was declared but never referenced
+    ILPAD();  /* expected-warning {{type specifier missing, defaults to 'int'}} \
+    ^
+
+"Test_name.c", line 40: warning: this declaration has no storage class or type specifier
+   __extension__ __attribute__((packed)) x : 4; /* expected-warning {{type specifier missing, defaults to 'int'}} \
+                                         ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 --c++14 Test_name.c
+"Test_name.c", line 15: error: argument list for class template "N::A" is missing
+  N::A f2;              // { dg-error "1:invalid use of template-name 'N::A' without an argument list" "" { target c++14_down } }
+  ^
+
+"Test_name.c", line 17: error: namespace "N" has no member "INVALID"
+  N::INVALID f3;        // { dg-error "4:'INVALID' in namespace 'N' does not name a type" }
+     ^
+
+"Test_name.c", line 18: error: class "N::C" has no member "INVALID"
+  N::C::INVALID f4;     // { dg-error "7:'INVALID' in 'struct N::C' does not name a type" }
+        ^
+
+"Test_name.c", line 19: error: variable "N::K" is not a type name
+  N::K f6;              // { dg-error "4:'K' in namespace 'N' does not name a type" }
+  ^
+
+"Test_name.c", line 20: error: argument list for class template "N::A" is missing
+  typename N::A f7;
+           ^
+
+"Test_name.c", line 25: error: argument list for class template "N::A" is missing
+    N::A f2;            // { dg-error "3:invalid use of template-name 'N::A' without an argument list" }
+    ^
+
+"Test_name.c", line 26: error: namespace "N" has no member "INVALID"
+    N::INVALID f3;      // { dg-error "6:'INVALID' in namespace 'N' does not name a type" }
+       ^
+
+"Test_name.c", line 27: error: class "N::C" has no member "INVALID"
+    N::C::INVALID f4;   // { dg-error "9:'INVALID' in 'struct N::C' does not name a type" }
+          ^
+
+"Test_name.c", line 28: error: variable "N::K" is not a type name
+    N::K f6;            // { dg-error "6:'K' in namespace 'N' does not name a type" }
+    ^
+
+"Test_name.c", line 29: error: argument list for class template "N::A" is missing
+    typename N::A f7;
+             ^
+
+"Test_name.c", line 36: error: argument list for class template "N::A" is missing
+    N::A f2;            // { dg-error "3:invalid use of template-name 'N::A' without an argument list" }
+    ^
+
+"Test_name.c", line 37: error: namespace "N" has no member "INVALID"
+    N::INVALID f3;      // { dg-error "6:'INVALID' in namespace 'N' does not name a type" }
+       ^
+
+"Test_name.c", line 38: error: class "N::C" has no member "INVALID"
+    N::C::INVALID f4;   // { dg-error "9:'INVALID' in 'struct N::C' does not name a type" }
+          ^
+
+"Test_name.c", line 39: error: variable "N::K" is not a type name
+    N::K f6;            // { dg-error "6:'K' in namespace 'N' does not name a type" }
+    ^
+
+"Test_name.c", line 40: error: argument list for class template "N::A" is missing
+    typename N::A f7;   // { dg-error "15:invalid use of template-name 'N::A' without an argument list" }
+             ^
+
+15 errors detected in the compilation of "Test_name.c".

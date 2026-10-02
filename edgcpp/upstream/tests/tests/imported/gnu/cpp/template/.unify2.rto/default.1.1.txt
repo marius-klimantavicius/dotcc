@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 11: error: no instance of function template "f1" matches the specified type
+  template void f1 (char [][6]); // { dg-error "does not match" }
+                ^
+
+"Test_name.c", line 12: error: no instance of function template "f2" matches the specified type
+  template void f2 (char [][6]); // { dg-error "does not match" }
+                ^
+
+"Test_name.c", line 14: error: no instance of function template "f4" matches the specified type
+  template void f4 (char [][6]); // { dg-error "does not match" }
+                ^
+
+"Test_name.c", line 15: error: no instance of function template "f5" matches the specified type
+  template void f5 (char [][6]); // { dg-error "does not match" }
+                ^
+
+4 errors detected in the compilation of "Test_name.c".

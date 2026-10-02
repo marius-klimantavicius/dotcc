@@ -1,0 +1,85 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 10: error: _BitInt(1) is invalid; the minimum signed _BitInt width is 2
+    _BitInt (1) a;		/* { dg-error "'signed _BitInt' argument must be at least 2" } */
+             ^
+
+"Test_name.c", line 11: error: _BitInt(1) is invalid; the minimum signed _BitInt width is 2
+    signed _BitInt (1) b;		/* { dg-error "'signed _BitInt' argument must be at least 2" } */
+                    ^
+
+"Test_name.c", line 12: error: _BitInt(0) is invalid; the minimum signed _BitInt width is 2
+    _BitInt (0) c;		/* { dg-error "'_BitInt' argument '0' is not a positive integer constant expression" } */
+             ^
+
+"Test_name.c", line 13: error: unsigned _BitInt(0) is invalid; the minimum unsigned _BitInt width is 1
+    unsigned _BitInt (0) d;	/* { dg-error "'_BitInt' argument '0' is not a positive integer constant expression" } */
+                      ^
+
+"Test_name.c", line 14: error: _BitInt(-42) is invalid; the minimum signed _BitInt width is 2
+    _BitInt (-42) e;		/* { dg-error "'_BitInt' argument '-42' is not a positive integer constant expression" } */
+             ^
+
+"Test_name.c", line 15: error: unsigned _BitInt(-5) is invalid; the minimum unsigned _BitInt width is 1
+    _BitInt (-5) unsigned f;	/* { dg-error "'_BitInt' argument '-5' is not a positive integer constant expression" } */
+             ^
+
+"Test_name.c", line 16: error: _BitInt(65536) is invalid; the maximum integer width is 65535
+    _BitInt (4294967295ULL) g;	/* { dg-error "'_BitInt' argument '4294967295' is larger than 'BITINT_MAXWIDTH' '\[0-9]+'" } */
+             ^
+
+"Test_name.c", line 17: error: invalid combination of type specifiers
+    long _BitInt (42) h;		/* { dg-error "both 'long' and '_BitInt' in declaration specifiers" } */
+    ^
+
+"Test_name.c", line 18: error: invalid combination of type specifiers
+    long long _BitInt (42) i;	/* { dg-error "both 'long' and '_BitInt' in declaration specifiers" } */
+    ^
+
+"Test_name.c", line 19: error: invalid combination of type specifiers
+    _BitInt (42) long j;		/* { dg-error "both 'long' and '_BitInt' in declaration specifiers" } */
+    ^
+
+"Test_name.c", line 20: error: invalid combination of type specifiers
+    _BitInt (42) long long k;	/* { dg-error "both 'long' and '_BitInt' in declaration specifiers" } */
+    ^
+
+"Test_name.c", line 21: error: invalid combination of type specifiers
+    short _BitInt (42) l;		/* { dg-error "both 'short' and '_BitInt' in declaration specifiers" } */
+    ^
+
+"Test_name.c", line 22: error: invalid combination of type specifiers
+    _BitInt (42) short m;		/* { dg-error "both 'short' and '_BitInt' in declaration specifiers" } */
+    ^
+
+"Test_name.c", line 23: error: _Complex can only be used with floating-point types
+    _Complex _BitInt (42) n;	/* { dg-error "both 'complex' and '_BitInt' in declaration specifiers" } */
+    ^
+
+"Test_name.c", line 24: error: _Complex can only be used with floating-point types
+    _BitInt (42) _Complex o;	/* { dg-error "both 'complex' and '_BitInt' in declaration specifiers" } */
+    ^
+
+"Test_name.c", line 25: error: invalid combination of type specifiers
+    int _BitInt (42) p;		/* { dg-error "two or more data types in declaration specifiers" } */
+        ^
+
+"Test_name.c", line 25: error: expected an identifier
+    int _BitInt (42) p;		/* { dg-error "two or more data types in declaration specifiers" } */
+                 ^
+
+"Test_name.c", line 25: error: expected a ";"
+    int _BitInt (42) p;		/* { dg-error "two or more data types in declaration specifiers" } */
+                     ^
+
+"Test_name.c", line 26: error: invalid combination of type specifiers
+    _BitInt (42) int q;		/* { dg-error "two or more data types in declaration specifiers" } */
+                 ^
+
+"Test_name.c", line 27: error: expression must have a constant value
+    _BitInt (x) r;		/* { dg-error "'_BitInt' argument is not an integer constant expression" } */
+             ^
+"Test_name.c", line 27: note: the value of parameter "x" (declared at line 8) cannot be used as a constant
+    _BitInt (x) r;		/* { dg-error "'_BitInt' argument is not an integer constant expression" } */
+             ^
+
+20 errors detected in the compilation of "Test_name.c".

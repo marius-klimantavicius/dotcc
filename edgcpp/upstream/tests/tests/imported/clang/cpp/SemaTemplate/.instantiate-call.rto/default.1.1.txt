@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 29: error: identifier "f0" is undefined
+        Result &result = f0(t); // expected-error {{undeclared identifier}} \
+                         ^
+          detected during instantiation of "void N3::call_f0<T, Result>::test_f0(T) [with T=int, Result=char &]" at line 35
+
+"Test_name.c", line 29: error: identifier "f0" is undefined
+        Result &result = f0(t); // expected-error {{undeclared identifier}} \
+                         ^
+          detected during instantiation of "void N3::call_f0<T, Result>::test_f0(T) [with T=int, Result=short &]" at line 50
+
+2 errors detected in the compilation of "Test_name.c".

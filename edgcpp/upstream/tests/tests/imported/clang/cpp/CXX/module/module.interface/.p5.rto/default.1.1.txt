@@ -1,0 +1,153 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 50: warning: using-declaration ignored -- it refers to the current namespace
+    using ::a; // expected-error {{using declaration referring to 'a' with module linkage cannot be exported}}
+          ^
+
+"Test_name.c", line 51: warning: using-declaration ignored -- it refers to the current namespace
+    using ::sa; // expected-error {{using declaration referring to 'sa' with internal linkage}}
+          ^
+
+"Test_name.c", line 52: warning: using-declaration ignored -- it refers to the current namespace
+    using ::b; // expected-error {{using declaration referring to 'b' with module linkage cannot be exported}}
+          ^
+
+"Test_name.c", line 53: warning: using-declaration ignored -- it refers to the current namespace
+    using ::sb; // expected-error {{using declaration referring to 'sb' with internal linkage}}
+          ^
+
+"Test_name.c", line 54: warning: using-declaration ignored -- it refers to the current namespace
+    using ::c; // expected-error {{using declaration referring to 'c' with module linkage cannot be exported}}
+          ^
+
+"Test_name.c", line 55: warning: using-declaration ignored -- it refers to the current namespace
+    using ::d; // expected-error {{using declaration referring to 'd' with module linkage cannot be exported}}
+          ^
+
+"Test_name.c", line 56: warning: using-declaration ignored -- it refers to the current namespace
+    using ::e;
+          ^
+
+"Test_name.c", line 57: warning: using-declaration ignored -- it refers to the current namespace
+    using ::f;
+          ^
+
+"Test_name.c", line 58: warning: using-declaration ignored -- it refers to the current namespace
+    using ::sg1; // expected-error {{using declaration referring to 'sg1' with internal linkage}}
+          ^
+
+"Test_name.c", line 60: warning: using-declaration ignored -- it refers to the current namespace
+    using ::ta; // expected-error {{using declaration referring to 'ta' with module linkage cannot be exported}}
+          ^
+
+"Test_name.c", line 61: warning: using-declaration ignored -- it refers to the current namespace
+    using ::sta; // expected-error {{using declaration referring to 'sta' with internal linkage}}
+          ^
+
+"Test_name.c", line 62: warning: using-declaration ignored -- it refers to the current namespace
+    using ::tb; // expected-error {{using declaration referring to 'tb' with module linkage cannot be exported}}
+          ^
+
+"Test_name.c", line 63: warning: using-declaration ignored -- it refers to the current namespace
+    using ::stb; // expected-error {{using declaration referring to 'stb' with internal linkage}}
+          ^
+
+"Test_name.c", line 64: warning: using-declaration ignored -- it refers to the current namespace
+    using ::tc; // expected-error {{using declaration referring to 'tc' with module linkage cannot be exported}}
+          ^
+
+"Test_name.c", line 65: warning: using-declaration ignored -- it refers to the current namespace
+    using ::te; // expected-error {{using declaration referring to 'te' with module linkage cannot be exported}}
+          ^
+
+"Test_name.c", line 66: warning: using-declaration ignored -- it refers to the current namespace
+    using ::tf; // expected-error {{using declaration referring to 'tf' with module linkage cannot be exported}}
+          ^
+
+"Test_name.c", line 70: warning: using-declaration ignored -- it refers to the current namespace
+      using UnnamedNS::a; // expected-error {{internal linkage}}
+            ^
+
+"Test_name.c", line 71: warning: using-declaration ignored -- it refers to the current namespace
+      using UnnamedNS::sa; // expected-error {{internal linkage}}
+            ^
+
+"Test_name.c", line 72: warning: using-declaration ignored -- it refers to the current namespace
+      using UnnamedNS::b; // expected-error {{internal linkage}}
+            ^
+
+"Test_name.c", line 73: warning: using-declaration ignored -- it refers to the current namespace
+      using UnnamedNS::sb; // expected-error {{internal linkage}}
+            ^
+
+"Test_name.c", line 74: warning: using-declaration ignored -- it refers to the current namespace
+      using UnnamedNS::c; // expected-error {{internal linkage}}
+            ^
+
+"Test_name.c", line 75: warning: using-declaration ignored -- it refers to the current namespace
+      using UnnamedNS::d; // expected-error {{internal linkage}}
+            ^
+
+"Test_name.c", line 76: warning: using-declaration ignored -- it refers to the current namespace
+      using UnnamedNS::e; // ok
+            ^
+
+"Test_name.c", line 77: warning: using-declaration ignored -- it refers to the current namespace
+      using UnnamedNS::f; // ok? using-declaration refers to alias-declaration,
+            ^
+
+"Test_name.c", line 80: warning: using-declaration ignored -- it refers to the current namespace
+      using UnnamedNS::sg1; // expected-error {{internal linkage}}
+            ^
+
+"Test_name.c", line 82: warning: using-declaration ignored -- it refers to the current namespace
+      using UnnamedNS::ta; // expected-error {{internal linkage}}
+            ^
+
+"Test_name.c", line 83: warning: using-declaration ignored -- it refers to the current namespace
+      using UnnamedNS::sta; // expected-error {{internal linkage}}
+            ^
+
+"Test_name.c", line 84: warning: using-declaration ignored -- it refers to the current namespace
+      using UnnamedNS::tb; // expected-error {{internal linkage}}
+            ^
+
+"Test_name.c", line 85: warning: using-declaration ignored -- it refers to the current namespace
+      using UnnamedNS::stb; // expected-error {{internal linkage}}
+            ^
+
+"Test_name.c", line 86: warning: using-declaration ignored -- it refers to the current namespace
+      using UnnamedNS::tc; // expected-error {{internal linkage}}
+            ^
+
+"Test_name.c", line 87: warning: using-declaration ignored -- it refers to the current namespace
+      using UnnamedNS::te; // expected-error {{internal linkage}}
+            ^
+
+"Test_name.c", line 88: warning: using-declaration ignored -- it refers to the current namespace
+      using UnnamedNS::tf; // expected-error {{internal linkage}}
+            ^
+
+"Test_name.c", line 8: warning: variable "sa" was declared but never referenced
+  static int sa; // expected-note {{target}}
+             ^
+
+"Test_name.c", line 10: warning: function "sb" was declared but never referenced
+  static void sb(); // expected-note {{target}}
+              ^
+
+"Test_name.c", line 28: warning: variable "UnnamedNS::<unnamed>::a" was declared but never referenced
+      int a; // expected-note {{target}}
+          ^
+
+"Test_name.c", line 29: warning: variable "UnnamedNS::<unnamed>::sa" was declared but never referenced
+      static int sa; // expected-note {{target}}
+                 ^
+
+"Test_name.c", line 30: warning: function "UnnamedNS::<unnamed>::b" was declared but never referenced
+      void b(); // expected-note {{target}}
+           ^
+
+"Test_name.c", line 31: warning: function "UnnamedNS::<unnamed>::sb" was declared but never referenced
+      static void sb(); // expected-note {{target}}
+                  ^
+

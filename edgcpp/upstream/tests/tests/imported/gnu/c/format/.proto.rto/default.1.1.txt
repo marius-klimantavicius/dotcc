@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c17 --strict_gnu Test_name.c
+"Test_name.c", line 26: error: format argument index is greater than number of parameters
+  FMT (1, 2) void print5 (void);              // { dg-warning "\\\[-Wattributes" }
+  ^
+
+"Test_name.c", line 26: error: "format" attribute requires an ellipsis parameter or parameter pack
+  FMT (1, 2) void print5 (void);              // { dg-warning "\\\[-Wattributes" }
+  ^
+
+"Test_name.c", line 26: error: first substitution argument is not the first variable argument
+  FMT (1, 2) void print5 (void);              // { dg-warning "\\\[-Wattributes" }
+  ^
+
+"Test_name.c", line 67: error: format argument index is greater than number of parameters
+  FMT (1, 2) void (*pfprint5)(void);              // { dg-warning "\\\[-Wattributes" }
+  ^
+
+"Test_name.c", line 67: error: "format" attribute requires an ellipsis parameter or parameter pack
+  FMT (1, 2) void (*pfprint5)(void);              // { dg-warning "\\\[-Wattributes" }
+  ^
+
+"Test_name.c", line 67: error: first substitution argument is not the first variable argument
+  FMT (1, 2) void (*pfprint5)(void);              // { dg-warning "\\\[-Wattributes" }
+  ^
+
+6 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,25 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 21: warning: unknown attribute "no_sanitize"
+  __attribute__((no_sanitize(("address"))))
+                 ^
+
+"Test_name.c", line 22: warning: unknown attribute "no_sanitize"
+  __attribute__((no_sanitize(("undefined"))))
+                 ^
+
+"Test_name.c", line 23: warning: unknown attribute "no_sanitize"
+  __attribute__((no_sanitize(("address"))))
+                 ^
+
+"Test_name.c", line 24: warning: unknown attribute "no_sanitize"
+  __attribute__((no_sanitize(("null"))))
+                 ^
+
+"Test_name.c", line 28: warning: unknown attribute "no_sanitize"
+  __attribute__((no_sanitize(("all"))))
+                 ^
+
+"Test_name.c", line 32: warning: unknown attribute "no_sanitize_address"
+  __attribute__((no_sanitize_address))
+                 ^
+

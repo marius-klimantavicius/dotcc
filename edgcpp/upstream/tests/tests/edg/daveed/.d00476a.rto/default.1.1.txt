@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --microsoft Test_name.c
+"Test_name.c", line 14: warning: declaration requires a typedef name
+  typedef char;
+              ^
+
+"Test_name.c", line 15: warning: duplicate specifier in declaration
+  unsigned long unsigned int a;
+                ^
+
+"Test_name.c", line 16: warning: duplicate specifier in declaration
+  typedef unsigned long unsigned int;
+                        ^
+
+"Test_name.c", line 16: warning: declaration requires a typedef name
+  typedef unsigned long unsigned int;
+                                    ^
+

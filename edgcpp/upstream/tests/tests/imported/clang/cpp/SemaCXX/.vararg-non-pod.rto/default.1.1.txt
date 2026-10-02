@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --ms_compatibility --ms_compatibility --ms_compatibility Test_name.c
+"Test_name.c", line 78: error: expected an identifier
+  int (^block)(int, ...);
+       ^
+
+"Test_name.c", line 84: error: identifier "block" is undefined
+    block(10, c);
+    ^
+
+"Test_name.c", line 119: error: "E::E(int, ...)" (declared at line 112) is inaccessible
+    E e(10, c);
+        ^
+
+"Test_name.c", line 124: error: "E::E(int, ...)" (declared at line 112) is inaccessible
+    (void)E(10, c);
+          ^
+
+"Test_name.c", line 150: warning: a class type that is not trivially copyable passed through ellipsis
+    (void)typeid(get_base(base));
+                          ^
+
+"Test_name.c", line 164: warning: variable "list" was set but never used
+    __builtin_va_list list;
+                      ^
+
+"Test_name.c", line 171: warning: variable "list" was set but never used
+    __builtin_va_list list;
+                      ^
+
+"Test_name.c", line 189: error: a class type that cannot be trivially copied cannot be fetched by va_arg
+    (void)__builtin_va_arg(list, Abstract); // expected-error{{second argument to 'va_arg' is of abstract type 'Abstract'}}
+                                 ^
+
+"Test_name.c", line 222: error: expected an identifier
+    typedef void(^block_ptr)(int, ...);
+                 ^
+
+"Test_name.c", line 226: error: identifier "block_ptr" is undefined
+    block_ptr get_b_ptr();
+    ^
+
+"Test_name.c", line 230: error: identifier "block_ptr" is undefined
+    block_ptr arr_b_ptr[5];
+    ^
+
+"Test_name.c", line 139: warning: variable "size" was declared but never referenced
+  const int size = sizeof(Helper(Foo()));
+            ^
+
+8 errors detected in the compilation of "Test_name.c".

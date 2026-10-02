@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 17: error: class "SmallVectorImpl<CallSite>" has no member "U"
+    typedef typename SmallVectorImpl<T>::U U; // expected-error {{no type named 'U' in 'SmallVectorImpl<CallSite>'}}
+                                         ^
+          detected during instantiation of class "SmallVector<T, N> [with T=CallSite, N=2U]" at line 36
+
+"Test_name.c", line 20: error: incomplete type "CallSite" is not allowed
+      MinUs = (static_cast<unsigned int>(sizeof(T))*N +	// expected-error {{invalid application of 'sizeof' to an incomplete type 'CallSite'}}
+                                                ^
+          detected during instantiation of class "SmallVector<T, N> [with T=CallSite, N=2U]" at line 36
+
+2 errors detected in the compilation of "Test_name.c".

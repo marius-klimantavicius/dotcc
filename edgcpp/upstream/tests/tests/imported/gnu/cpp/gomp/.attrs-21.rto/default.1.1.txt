@@ -1,0 +1,97 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: warning: attribute namespace "omp" is unrecognized
+    [[omp::decl]] int v1;						// { dg-error "'omp::decl' attribute requires argument" }
+      ^
+
+"Test_name.c", line 9: warning: attribute namespace "omp" is unrecognized
+    [[omp::decl ()]] int v2;					// { dg-error "expected OpenMP directive name" }
+      ^
+
+"Test_name.c", line 11: warning: attribute namespace "omp" is unrecognized
+    [[omp::decl (nonexistent foobar)]] int v3;			// { dg-error "unknown OpenMP directive name in 'omp::decl' attribute argument" }
+      ^
+
+"Test_name.c", line 13: warning: attribute namespace "omp" is unrecognized
+    [[omp::sequence(decl(threadprivate))]] int v4;		// { dg-error "expected 'directive' or 'sequence'" }
+      ^
+
+"Test_name.c", line 15: warning: attribute namespace "omp" is unrecognized
+    [[omp::sequence(omp::decl(threadprivate))]] int v5;		// { dg-error "expected 'directive' or 'sequence'" }
+      ^
+
+"Test_name.c", line 17: warning: attribute namespace "omp" is unrecognized
+    [[omp::decl (barrier)]];					// { dg-error "OpenMP 'omp::decl' attribute on a statement" }
+      ^
+
+"Test_name.c", line 18: warning: attribute namespace "omp" is unrecognized
+    [[omp::decl (parallel)]] {};					// { dg-error "OpenMP 'omp::decl' attribute on a statement" }
+      ^
+
+"Test_name.c", line 19: warning: attribute namespace "omp" is unrecognized
+    extern int [[omp::decl (threadprivate)]] *v6;			// { dg-warning "attribute ignored" }
+                 ^
+
+"Test_name.c", line 20: warning: attribute namespace "omp" is unrecognized
+    [[omp::decl (threadprivate (v5))]] static int v7;		// { dg-error "expected end of line before '\\\(' token" }
+      ^
+
+"Test_name.c", line 22: warning: attribute namespace "omp" is unrecognized
+    [[omp::decl (declare target (v8))]] static int v9;		// { dg-error "expected end of line before '\\\(' token" }
+      ^
+
+"Test_name.c", line 23: warning: attribute namespace "omp" is unrecognized
+    [[omp::decl (declare target enter (v8))]] static int v10;	// { dg-error "expected an OpenMP clause before '\\\(' token" }
+      ^
+
+"Test_name.c", line 24: warning: attribute namespace "omp" is unrecognized
+    [[omp::decl (declare target, link (v9))]] static int v11;	// { dg-error "expected an OpenMP clause before '\\\(' token" }
+      ^
+
+"Test_name.c", line 25: warning: attribute namespace "omp" is unrecognized
+    [[omp::decl (declare target device_type (any))]] static int v12;	// { dg-error "directive with only 'device_type' or 'indirect' clauses" }
+      ^
+
+"Test_name.c", line 8: warning: variable "v1" was declared but never referenced
+    [[omp::decl]] int v1;						// { dg-error "'omp::decl' attribute requires argument" }
+                      ^
+
+"Test_name.c", line 9: warning: variable "v2" was declared but never referenced
+    [[omp::decl ()]] int v2;					// { dg-error "expected OpenMP directive name" }
+                         ^
+
+"Test_name.c", line 11: warning: variable "v3" was declared but never referenced
+    [[omp::decl (nonexistent foobar)]] int v3;			// { dg-error "unknown OpenMP directive name in 'omp::decl' attribute argument" }
+                                           ^
+
+"Test_name.c", line 13: warning: variable "v4" was declared but never referenced
+    [[omp::sequence(decl(threadprivate))]] int v4;		// { dg-error "expected 'directive' or 'sequence'" }
+                                               ^
+
+"Test_name.c", line 15: warning: variable "v5" was declared but never referenced
+    [[omp::sequence(omp::decl(threadprivate))]] int v5;		// { dg-error "expected 'directive' or 'sequence'" }
+                                                    ^
+
+"Test_name.c", line 20: warning: variable "v7" was declared but never referenced
+    [[omp::decl (threadprivate (v5))]] static int v7;		// { dg-error "expected end of line before '\\\(' token" }
+                                                  ^
+
+"Test_name.c", line 22: warning: variable "v9" was declared but never referenced
+    [[omp::decl (declare target (v8))]] static int v9;		// { dg-error "expected end of line before '\\\(' token" }
+                                                   ^
+
+"Test_name.c", line 23: warning: variable "v10" was declared but never referenced
+    [[omp::decl (declare target enter (v8))]] static int v10;	// { dg-error "expected an OpenMP clause before '\\\(' token" }
+                                                         ^
+
+"Test_name.c", line 24: warning: variable "v11" was declared but never referenced
+    [[omp::decl (declare target, link (v9))]] static int v11;	// { dg-error "expected an OpenMP clause before '\\\(' token" }
+                                                         ^
+
+"Test_name.c", line 25: warning: variable "v12" was declared but never referenced
+    [[omp::decl (declare target device_type (any))]] static int v12;	// { dg-error "directive with only 'device_type' or 'indirect' clauses" }
+                                                                ^
+
+"Test_name.c", line 29: warning: attribute namespace "omp" is unrecognized
+  [[omp::decl (assume (i < 42))]];				// { dg-error "OpenMP 'omp::decl' attribute on a statement" }
+    ^
+

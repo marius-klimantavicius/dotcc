@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 10: error: expression must have struct or union type but it has type "float8" (aka "__attribute((ext_vector_type(8))) float")
+      (void)f2.s01234;
+            ^
+
+"Test_name.c", line 11: error: expression must have struct or union type but it has type "float8" (aka "__attribute((ext_vector_type(8))) float")
+      (void)f2.xyzxy;
+            ^
+
+2 errors detected in the compilation of "Test_name.c".

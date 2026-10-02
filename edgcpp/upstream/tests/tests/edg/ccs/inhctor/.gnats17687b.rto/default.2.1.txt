@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=2 --c++17 -tused -DNEG Test_name.c
+"Test_name.c", line 28: error: the default constructor of "D1" cannot be referenced -- it is a deleted function
+    D1 e;          // error: D1 has no default constructor
+       ^
+
+"Test_name.c", line 38: error: the sub-object construction of "D2" for inheriting constructors cannot be performed -- the associated constructor is deleted
+  D2 f(1.0);       // error: B1 has no default constructor
+       ^
+
+2 errors detected in the compilation of "Test_name.c".

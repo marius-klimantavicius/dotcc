@@ -1,0 +1,34 @@
+#!/usr/bin/env python3
+
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+import argparse
+
+import edgshell
+import edgutil
+
+def _parse_args():
+  parser = argparse.ArgumentParser(
+    description = (
+      'A tool for checking out a specific revision of the EDG front end '
+      'source files while leaving other files in the mono-repo alone.'
+    )
+  )
+  parser.add_argument(
+    'commit',
+    help = 'the commit to restore to'
+  )
+  return parser.parse_args()
+
+def main() -> None:
+  args = _parse_args()
+  edgshell.run_git_restore_src_files(
+    args.commit,
+    cwd = edgutil.find_mono_repo_or_exit()
+  )
+
+main()
+

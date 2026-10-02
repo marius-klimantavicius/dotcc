@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: error: no instance of constructor "Y::Y" matches the argument list
+            argument types are: (int)
+  Y y1(reinterpret_cast<int>(v));  // { dg-error "" }
+       ^
+"Test_name.c", line 5: note: function "Y::Y(const Y &)" does not match because argument #1 does not match parameter
+  struct Y { Y(int &); };
+         ^
+"Test_name.c", line 5: note: function "Y::Y(Y &&)" does not match because argument #1 does not match parameter
+  struct Y { Y(int &); };
+         ^
+"Test_name.c", line 5: note: function "Y::Y(int &)" does not match because argument #1 does not match parameter
+  struct Y { Y(int &); };
+             ^
+
+1 error detected in the compilation of "Test_name.c".

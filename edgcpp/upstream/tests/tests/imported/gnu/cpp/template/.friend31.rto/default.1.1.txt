@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 14: error: declaration is incompatible with template parameter "T" (declared at line 10)
+    template<int i> friend class F;	// { dg-error "template parameter" }
+                 ^
+
+"Test_name.c", line 14: error: too few template parameters -- does not match previous declaration (declared at line 10)
+    template<int i> friend class F;	// { dg-error "template parameter" }
+                 ^
+
+"Test_name.c", line 20: error: member "W::x" (declared at line 15) is inaccessible
+    void Look(W& w) { w.x = 3; }          // { dg-error "within this context" }
+                        ^
+          detected during instantiation of "void F<T, U>::Look(W &) [with T=char, U=bool]" at line 27
+
+3 errors detected in the compilation of "Test_name.c".

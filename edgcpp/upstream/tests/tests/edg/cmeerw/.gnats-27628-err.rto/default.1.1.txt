@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c++11 --clang_version 190100 Test_name.c
+"Test_name.c", line 4: error: argument of type "int" is incompatible with parameter of type "void *"
+  int i = (__builtin_operator_delete(1),
+                                     ^
+
+"Test_name.c", line 5: error: argument of type "std::nullptr_t" is incompatible with parameter of type "unsigned long"
+           __builtin_operator_new(nullptr),
+                                  ^
+
+2 errors detected in the compilation of "Test_name.c".

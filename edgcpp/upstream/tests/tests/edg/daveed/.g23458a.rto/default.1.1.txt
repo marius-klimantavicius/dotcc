@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang --ms_compatibility Test_name.c
+"Test_name.c", line 8: warning: parameter "i" was set but never used
+    void PutX(int i, int j, int k) { j = i = k; }
+                  ^
+
+"Test_name.c", line 8: warning: parameter "j" was set but never used
+    void PutX(int i, int j, int k) { j = i = k; }
+                         ^
+

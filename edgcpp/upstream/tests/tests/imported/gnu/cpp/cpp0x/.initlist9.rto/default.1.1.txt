@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 24: error: "b::b(const b &)" (declared at line 13), required for copy that was eliminated, cannot be referenced -- it is a deleted function
+    b tst2 = false;		// { dg-error "use" "" { target c++14_down } }
+             ^
+
+"Test_name.c", line 30: warning: variable "tst4" was declared but never referenced
+    b tst4;
+      ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,157 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 100: error: enum "std::align_val_t" was previously declared with a different base type
+    enum class align_val_t: size_t {};
+               ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 137: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 140: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 155: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 158: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 168: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t, std::align_val_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 171: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t, std::align_val_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 179: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, std::align_val_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 182: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, std::align_val_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 206: error: first parameter of allocation function must be of type "size_t"
+  void* operator new(std::size_t, void* __p)
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 210: error: first parameter of allocation function must be of type "size_t"
+  void* operator new[](std::size_t, void* __p)
+        ^
+
+"./analyzer/placement-new.C", line 8: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, char [4])
+    int *p = new(buf) int (42);
+             ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+
+"./analyzer/placement-new.C", line 16: error: no instance of overloaded "operator new[]" matches the argument list
+            argument types are: (unsigned int, char [40])
+    int *p = new(buf) int[10];
+             ^
+Note: function "operator new[](unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new[](unsigned int)" does not match the call
+
+"./analyzer/placement-new.C", line 24: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, char [4])
+    int *p = new (buf) int (42);
+             ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+
+"./analyzer/placement-new.C", line 33: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, int *)
+    int *p = new (&buf[2]) int (42);
+             ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+
+"./analyzer/placement-new.C", line 43: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, short *)
+    short *lp = ::new (s) short;
+                  ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+
+"./analyzer/placement-new.C", line 51: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, short *)
+    short *lp = ::new (s) short;
+                  ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+
+"./analyzer/placement-new.C", line 53: warning: variable "m" was declared but never referenced
+    short m = *lp;
+          ^
+
+"./analyzer/placement-new.C", line 65: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, int *)
+    int *lp = ::new (&a.y) int;
+                ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+
+"./analyzer/placement-new.C", line 68: warning: variable "m" was declared but never referenced
+    int m = *lp;
+        ^
+
+"./analyzer/placement-new.C", line 74: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, int *)
+    int *p = ::new (&x) int;
+               ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+
+"./analyzer/placement-new.C", line 76: warning: variable "z" was declared but never referenced
+    int z = x + 2;
+        ^
+
+"./analyzer/placement-new.C", line 82: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, char *)
+    char *p = ::new (&buf[2]) char;
+                ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+
+"./analyzer/placement-new.C", line 84: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, char *)
+    char *y = ::new (&buf[0]) char;
+                ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+
+"./analyzer/placement-new.C", line 85: warning: variable "z" was set but never used
+    char z = buf[2] + 2;
+         ^
+
+"./analyzer/placement-new.C", line 93: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, int *)
+    int *z = ::new (&a->y) int;
+               ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+
+"./analyzer/placement-new.C", line 102: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, int *)
+    int *z = ::new (&a->y) int;
+               ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+
+"./analyzer/placement-new.C", line 110: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, int *)
+    int *lp = ::new (&a->y) int;
+                ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+
+"./analyzer/placement-new.C", line 113: warning: variable "m" was declared but never referenced
+    int m = *lp;
+        ^
+
+24 errors detected in the compilation of "Test_name.c".

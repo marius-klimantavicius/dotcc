@@ -1,0 +1,1 @@
+eccp -DTEST_NUMBER=2 --c++17 --gnu_version 70400 Test_name.c

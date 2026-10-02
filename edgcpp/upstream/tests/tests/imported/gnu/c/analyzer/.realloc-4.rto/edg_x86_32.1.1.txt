@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./analyzer/realloc-4.c", line 3: warning: declaration of "size_t" does not match the expected type "unsigned int"
+  typedef long unsigned int size_t;
+                            ^
+
+"./analyzer/realloc-4.c", line 8: warning: unknown attribute "__leaf__"
+    __attribute__ ((__nothrow__ , __leaf__))
+                                  ^
+
+"./analyzer/realloc-4.c", line 12: warning: unknown attribute "__leaf__"
+    __attribute__ ((__nothrow__ , __leaf__))
+                                  ^
+
+"./analyzer/realloc-4.c", line 16: warning: unknown attribute "__leaf__"
+    __attribute__ ((__nothrow__ , __leaf__))
+                                  ^
+
+"./analyzer/realloc-4.c", line 20: warning: unknown attribute "__leaf__"
+    __attribute__ ((__nothrow__ , __leaf__));
+                                  ^
+

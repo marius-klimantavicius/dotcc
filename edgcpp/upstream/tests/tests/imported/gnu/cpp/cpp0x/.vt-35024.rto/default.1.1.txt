@@ -1,0 +1,31 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 6: error: parameter pack "T" was referenced but not expanded
+    typename T::X x; // { dg-error "parameter packs|T" }
+             ^
+
+"Test_name.c", line 6: error: name followed by "::" must be a class or namespace name
+    typename T::X x; // { dg-error "parameter packs|T" }
+             ^
+          detected during instantiation of "int foo<T...>() [with T=<int>]" at line 12
+
+"Test_name.c", line 6: error: a class or namespace qualified name is required
+    typename T::X x; // { dg-error "parameter packs|T" }
+             ^
+          detected during instantiation of "int foo<T...>() [with T=<int>]" at line 12
+
+"Test_name.c", line 6: error: global-scope qualifier (leading "::") is not allowed
+    typename T::X x; // { dg-error "parameter packs|T" }
+              ^
+          detected during instantiation of "int foo<T...>() [with T=<int>]" at line 12
+
+"Test_name.c", line 6: error: expected a ";"
+    typename T::X x; // { dg-error "parameter packs|T" }
+                  ^
+          detected during instantiation of "int foo<T...>() [with T=<int>]" at line 12
+
+"Test_name.c", line 7: error: identifier "x" is undefined
+    return x;
+           ^
+          detected during instantiation of "int foo<T...>() [with T=<int>]" at line 12
+
+6 errors detected in the compilation of "Test_name.c".

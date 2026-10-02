@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 13: error: return value type does not match the function type
+    return ptr; // expected-error{{cannot initialize return object of type 'add_pointer<float>::type' (aka 'float *') with an lvalue of type 'int *'}}
+           ^
+
+"Test_name.c", line 7: error: pointer to reference is not allowed
+    typedef T* type; // expected-error{{'type' declared as a pointer to a reference}}
+             ^
+          detected during instantiation of class "add_pointer<T> [with T=int &]" at line 16
+
+2 errors detected in the compilation of "Test_name.c".

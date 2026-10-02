@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"./lookup/operator-4a.C", line 33: error: function "operator,(N::A, N::A)" (declared at line 30 of "./lookup/operator-3-ops.h") cannot be referenced -- it is a deleted function
+      (xs, ...);
+         ^
+          detected during instantiation of function "lambda [](auto...)->auto [with <auto-1>=<N::A, N::A>]" at line 75
+
+"./lookup/operator-4a.C", line 34: error: function "operator,(N::A, N::A)" (declared at line 30 of "./lookup/operator-3-ops.h") cannot be referenced -- it is a deleted function
+      (..., xs);
+          ^
+          detected during instantiation of function "lambda [](auto...)->auto [with <auto-1>=<N::A, N::A>]" at line 75
+
+2 errors detected in the compilation of "Test_name.c".

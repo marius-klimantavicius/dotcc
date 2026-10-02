@@ -1,0 +1,58 @@
+fe_only -DTEST_NUMBER=5 --c++20 --clang_version 190100 Test_name.c
+"Test_name.c", line 12: error: no instance of function template "minimal::f" matches the argument list
+            argument types are: (int, int)
+    int i = f<int>(1, 2);
+            ^
+"Test_name.c", line 11: note: candidate function template "minimal::f" failed deduction
+    int f(Ts ..., C<Ts ...>);
+        ^
+
+"Test_name.c", line 29: error: no instance of function template "type_arg::f" matches the argument list
+            argument types are: (int, type_arg::C<void>)
+    int i = f<int>(1, C<void>());
+            ^
+"Test_name.c", line 27: note: candidate function template "type_arg::f" failed deduction
+    int f(Ts ..., C<Ts ...>);
+        ^
+
+"Test_name.c", line 55: error: no instance of function template "nested_type_arg::f" matches the argument list
+            argument types are: (nested_type_arg::B<void>, nested_type_arg::C<void>)
+    int i = f<int>(B<void>(), C<void>());
+            ^
+"Test_name.c", line 53: note: candidate function template "nested_type_arg::f" failed deduction
+    int f(B<Ts> ..., C<Ts ...>);
+        ^
+
+"Test_name.c", line 64: error: no instance of function template "nested_fn_type::f" matches the argument list
+            argument types are: (char, lambda [](int)->void)
+    int i = f<int>('a', [] (int) { });
+            ^
+"Test_name.c", line 62: note: candidate function template "nested_fn_type::f" failed deduction
+    int f(Ts ..., void(Ts ...));
+        ^
+
+"Test_name.c", line 131: error: no instance of function template "nested_inner_type_arg_with_other_param::g" matches the argument list
+            argument types are: (nested_inner_type_arg_with_other_param::B<void, int>, nested_inner_type_arg_with_other_param::C<void, char>)
+    int j = g<int>(B<void, int>(), C<void, char>());
+            ^
+"Test_name.c", line 125: note: candidate function template "nested_inner_type_arg_with_other_param::g" failed deduction
+    int g(B<U, Ts> ..., C<void, Ts ...>); // MSVC actually complains that it
+        ^
+
+"Test_name.c", line 157: error: no instance of function template "nested_non_type_param::f" matches the argument list
+            argument types are: (nested_non_type_param::B<0>, nested_non_type_param::C<0>)
+    int i = f<1>(B<0>(), C<0>());
+            ^
+"Test_name.c", line 155: note: candidate function template "nested_non_type_param::f" failed deduction
+    int f(B<Is> ..., C<Is ...>);
+        ^
+
+"Test_name.c", line 191: error: no instance of function template "nested_template_param::f" matches the argument list
+            argument types are: (nested_template_param::B<nested_template_param::A2>, nested_template_param::C<nested_template_param::A2>)
+    int i = f<A1>(B<A2>(), C<A2>());
+            ^
+"Test_name.c", line 189: note: candidate function template "nested_template_param::f" failed deduction
+    int f(B<TTs> ..., C<TTs ...>);
+        ^
+
+7 errors detected in the compilation of "Test_name.c".

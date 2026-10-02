@@ -1,0 +1,46 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 8: warning: constexpr non-static member function will not be implicitly 'const' in C++14
+    constexpr int f(); // expected-warning {{C++14}}
+    ^
+
+"Test_name.c", line 10: warning: constexpr non-static member function will not be implicitly 'const' in C++14
+    constexpr int h(); // expected-warning {{C++14}}
+    ^
+
+"Test_name.c", line 14: warning: constexpr non-static member function will not be implicitly 'const' in C++14
+    template<typename T> constexpr T tm(); // expected-warning {{C++14}}
+                         ^
+
+"Test_name.c", line 22: warning: variable "Sf" was declared but never referenced
+    int (*Sf)() = &S::Sf;
+          ^
+
+"Test_name.c", line 23: warning: variable "f" was declared but never referenced
+    int (S::*f)() const = &S::f;
+             ^
+
+"Test_name.c", line 24: warning: variable "g" was declared but never referenced
+    int (S::*g)() const = &S::g;
+             ^
+
+"Test_name.c", line 25: warning: variable "opNew" was declared but never referenced
+    void *(*opNew)(size_t) = &S::operator new;
+            ^
+
+"Test_name.c", line 26: warning: variable "tm" was declared but never referenced
+    int (S::*tm)() const = &S::tm;
+             ^
+
+"Test_name.c", line 27: warning: variable "ts" was declared but never referenced
+    int (*ts)() = &S::ts;
+          ^
+
+"Test_name.c", line 51: error: function "std_example::bar" has already been defined (previous definition at line 49)
+    int bar(int x, int y) // expected-error {{non-constexpr declaration of 'bar' follows constexpr declaration}}
+        ^
+
+"Test_name.c", line 51: error: function "std_example::bar" (declared at line 49) was previously declared constexpr
+    int bar(int x, int y) // expected-error {{non-constexpr declaration of 'bar' follows constexpr declaration}}
+        ^
+
+2 errors detected in the compilation of "Test_name.c".

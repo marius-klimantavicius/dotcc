@@ -1,0 +1,23 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 24: error: call to consteval function "fixed_string::size" did not produce a valid constant expression
+    s.size(-1); // { dg-message "expansion of" }
+          ^
+"Test_name.c", line 9: note: expression cannot be interpreted
+      if (n < 0) throw; // { dg-error "not a constant" }
+                 ^
+
+"Test_name.c", line 27: error: call to consteval function "fixed_string::size_static" did not produce a valid constant expression
+    s.size_static(-1); // { dg-message "expansion of" }
+                 ^
+"Test_name.c", line 14: note: expression cannot be interpreted
+      if (n < 0) throw; // { dg-error "not a constant" }
+                 ^
+
+"Test_name.c", line 30: error: call to consteval function "fixed_string::size_static" did not produce a valid constant expression
+    fixed_string::size_static(-1); // { dg-message "expansion of" }
+                             ^
+"Test_name.c", line 14: note: expression cannot be interpreted
+      if (n < 0) throw; // { dg-error "not a constant" }
+                 ^
+
+3 errors detected in the compilation of "Test_name.c".

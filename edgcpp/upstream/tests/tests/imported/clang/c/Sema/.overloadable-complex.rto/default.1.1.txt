@@ -1,0 +1,53 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 18: error: more than one instance of overloaded function "foo" matches the argument list:
+            function "foo(float) C++" (declared at line 4)
+            function "foo(float __complex__) C++" (declared at line 14)
+            argument types are: (double)
+    char *cp2 = foo(dv);
+                ^
+
+"Test_name.c", line 20: error: more than one instance of overloaded function "foo" matches the argument list:
+            function "foo(float) C++" (declared at line 4)
+            function "foo(float __complex__) C++" (declared at line 14)
+            argument types are: (double __complex__)
+    int *lp = foo(dc);
+              ^
+
+"Test_name.c", line 27: error: more than one instance of overloaded function "foo" matches the argument list:
+            function "foo(float) C++" (declared at line 4)
+            function "foo(float __complex__) C++" (declared at line 14)
+            function "foo(double __complex__) C++" (declared at line 23)
+            argument types are: (double)
+    char *cp2 = foo(dv);
+                ^
+
+"Test_name.c", line 36: error: more than one instance of overloaded function "promote_or_convert" matches the argument list:
+            function "promote_or_convert(double __complex__) C++" (declared at line 32)
+            function "promote_or_convert(long double __complex__) C++" (declared at line 33)
+            argument types are: (float __complex__)
+    char *cp = promote_or_convert(fc); // expected-error{{call to 'promote_or_convert' is ambiguous}}
+               ^
+
+"Test_name.c", line 37: error: more than one instance of overloaded function "promote_or_convert" matches the argument list:
+            function "promote_or_convert(double __complex__) C++" (declared at line 32)
+            function "promote_or_convert(long double __complex__) C++" (declared at line 33)
+            argument types are: (float)
+    int *ip2 = promote_or_convert(f); // expected-error{{call to 'promote_or_convert' is ambiguous}}
+               ^
+
+"Test_name.c", line 44: error: more than one instance of overloaded function "promote_or_convert2" matches the argument list:
+            function "promote_or_convert2(float) C++" (declared at line 40)
+            function "promote_or_convert2(double __complex__) C++" (declared at line 41)
+            argument types are: (float __complex__)
+    int *cp = promote_or_convert2(fc);
+              ^
+
+"Test_name.c", line 47: error: _Complex can only be used with floating-point types
+  char *promote_or_convert3(int _Complex) __attribute__((__overloadable__));
+                            ^
+
+"Test_name.c", line 50: error: invalid combination of type specifiers
+  void test_promote_or_convert3(short _Complex sc) {
+                                ^
+
+8 errors detected in the compilation of "Test_name.c".

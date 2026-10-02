@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 15: error: no instance of constructor "A::A" matches the argument list
+            argument types are: (int)
+    constexpr B() : a(0) {} // { dg-error "no matching function" "" { target c++17_down } }
+                     ^
+"Test_name.c", line 6: note: function "A::A(const A &)" does not match because argument #1 does not match parameter
+  struct A
+         ^
+"Test_name.c", line 6: note: function "A::A(A &&)" does not match because argument #1 does not match parameter
+  struct A
+         ^
+"Test_name.c", line 6: note: number of parameters of function "A::A()" does not match the call
+  struct A
+         ^
+
+1 error detected in the compilation of "Test_name.c".

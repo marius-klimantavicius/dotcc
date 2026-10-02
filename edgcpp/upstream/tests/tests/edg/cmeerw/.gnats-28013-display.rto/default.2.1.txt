@@ -1,0 +1,388 @@
+fe_only -DTEST_NUMBER=2 -w --c++11 --clang_version 200100 --no_il_lower --il_display --target linux_i686 Test_name.c
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_abs"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_abs"
+type:                    file-scope type: __attribute((vector_size(16))) float (__attribute((vector_size(16))) float)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_abs"
+type:                    file-scope type: __attribute((vector_size(16))) int (__attribute((vector_size(16))) int)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_acos"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_acos"
+type:                    file-scope type: __attribute((vector_size(16))) float (__attribute((vector_size(16))) float)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_add_sat"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_add_sat"
+type:                    file-scope type: __attribute((vector_size(16))) int (__attribute((vector_size(16))) int, __attribute((vector_size(16))) int)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_asin"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_asin"
+type:                    file-scope type: __attribute((vector_size(16))) float (__attribute((vector_size(16))) float)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_atan"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_atan"
+type:                    file-scope type: __attribute((vector_size(16))) float (__attribute((vector_size(16))) float)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_atan2"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_atan2"
+type:                    file-scope type: __attribute((vector_size(16))) float (__attribute((vector_size(16))) float, __attribute((vector_size(16))) float)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_bitreverse"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_bitreverse"
+type:                    file-scope type: __attribute((vector_size(16))) int (__attribute((vector_size(16))) int)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_canonicalize"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_canonicalize"
+type:                    file-scope type: __attribute((vector_size(16))) float (__attribute((vector_size(16))) float)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_ceil"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_ceil"
+type:                    file-scope type: __attribute((vector_size(16))) float (__attribute((vector_size(16))) float)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_copysign"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_copysign"
+type:                    file-scope type: __attribute((vector_size(16))) float (__attribute((vector_size(16))) float, __attribute((vector_size(16))) float)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_cos"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_cos"
+type:                    file-scope type: __attribute((vector_size(16))) float (__attribute((vector_size(16))) float)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_cosh"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_cosh"
+type:                    file-scope type: __attribute((vector_size(16))) float (__attribute((vector_size(16))) float)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_exp"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_exp"
+type:                    file-scope type: __attribute((vector_size(16))) float (__attribute((vector_size(16))) float)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_exp2"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_exp2"
+type:                    file-scope type: __attribute((vector_size(16))) float (__attribute((vector_size(16))) float)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_floor"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_floor"
+type:                    file-scope type: __attribute((vector_size(16))) float (__attribute((vector_size(16))) float)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_fma"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_fma"
+type:                    file-scope type: __attribute((vector_size(16))) float (__attribute((vector_size(16))) float, __attribute((vector_size(16))) float, __attribute((vector_size(16))) float)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_fmod"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_fmod"
+type:                    file-scope type: __attribute((vector_size(16))) float (__attribute((vector_size(16))) float, __attribute((vector_size(16))) float)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_log"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_log"
+type:                    file-scope type: __attribute((vector_size(16))) float (__attribute((vector_size(16))) float)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_log10"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_log10"
+type:                    file-scope type: __attribute((vector_size(16))) float (__attribute((vector_size(16))) float)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_log2"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_log2"
+type:                    file-scope type: __attribute((vector_size(16))) float (__attribute((vector_size(16))) float)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_max"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_max"
+type:                    file-scope type: __attribute((vector_size(16))) int (__attribute((vector_size(16))) int, __attribute((vector_size(16))) int)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_max"
+type:                    file-scope type: __attribute((vector_size(16))) float (__attribute((vector_size(16))) float, __attribute((vector_size(16))) float)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_maximum"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_maximum"
+type:                    file-scope type: __attribute((vector_size(16))) float (__attribute((vector_size(16))) float, __attribute((vector_size(16))) float)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_min"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_min"
+type:                    file-scope type: __attribute((vector_size(16))) int (__attribute((vector_size(16))) int, __attribute((vector_size(16))) int)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_min"
+type:                    file-scope type: __attribute((vector_size(16))) float (__attribute((vector_size(16))) float, __attribute((vector_size(16))) float)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_minimum"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_minimum"
+type:                    file-scope type: __attribute((vector_size(16))) float (__attribute((vector_size(16))) float, __attribute((vector_size(16))) float)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_nearbyint"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_nearbyint"
+type:                    file-scope type: __attribute((vector_size(16))) float (__attribute((vector_size(16))) float)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_popcount"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_popcount"
+type:                    file-scope type: __attribute((vector_size(16))) int (__attribute((vector_size(16))) int)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_pow"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_pow"
+type:                    file-scope type: __attribute((vector_size(16))) float (__attribute((vector_size(16))) float, __attribute((vector_size(16))) float)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_rint"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_rint"
+type:                    file-scope type: __attribute((vector_size(16))) float (__attribute((vector_size(16))) float)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_round"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_round"
+type:                    file-scope type: __attribute((vector_size(16))) float (__attribute((vector_size(16))) float)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_roundeven"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_roundeven"
+type:                    file-scope type: __attribute((vector_size(16))) float (__attribute((vector_size(16))) float)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_sin"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_sin"
+type:                    file-scope type: __attribute((vector_size(16))) float (__attribute((vector_size(16))) float)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_sinh"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_sinh"
+type:                    file-scope type: __attribute((vector_size(16))) float (__attribute((vector_size(16))) float)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_sqrt"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_sqrt"
+type:                    file-scope type: __attribute((vector_size(16))) float (__attribute((vector_size(16))) float)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_sub_sat"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_sub_sat"
+type:                    file-scope type: __attribute((vector_size(16))) int (__attribute((vector_size(16))) int, __attribute((vector_size(16))) int)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_tan"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_tan"
+type:                    file-scope type: __attribute((vector_size(16))) float (__attribute((vector_size(16))) float)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_tanh"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_tanh"
+type:                    file-scope type: __attribute((vector_size(16))) float (__attribute((vector_size(16))) float)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_trunc"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_elementwise_trunc"
+type:                    file-scope type: __attribute((vector_size(16))) float (__attribute((vector_size(16))) float)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_reduce_max"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_reduce_max"
+type:                    file-scope type: int (__attribute((vector_size(16))) int)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_reduce_max"
+type:                    file-scope type: float (__attribute((vector_size(16))) float)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_reduce_and"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_reduce_and"
+type:                    file-scope type: int (__attribute((vector_size(16))) int)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_reduce_or"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_reduce_or"
+type:                    file-scope type: int (__attribute((vector_size(16))) int)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_reduce_xor"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_reduce_xor"
+type:                    file-scope type: int (__attribute((vector_size(16))) int)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_reduce_add"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_reduce_add"
+type:                    file-scope type: int (__attribute((vector_size(16))) int)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_reduce_mul"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_reduce_mul"
+type:                    file-scope type: int (__attribute((vector_size(16))) int)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_reduce_maximum"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_reduce_maximum"
+type:                    file-scope type: float (__attribute((vector_size(16))) float)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_reduce_min"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_reduce_min"
+type:                    file-scope type: int (__attribute((vector_size(16))) int)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_reduce_min"
+type:                    file-scope type: float (__attribute((vector_size(16))) float)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_reduce_minimum"
+type:                    file-scope type: void (...)
+--
+file-scope routine
+  name:                  file-scope id-name: "__builtin_reduce_minimum"
+type:                    file-scope type: float (__attribute((vector_size(16))) float)

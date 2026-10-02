@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 11: error: attribute "fastcall" does not take arguments
+  void __attribute__((fastcall(1))) baz(float *a) { // expected-error {{'fastcall' attribute takes no arguments}}
+                              ^
+
+"Test_name.c", line 23: error: attribute "cdecl" does not take arguments
+  void __attribute__((cdecl(1))) ctest1(float x) {} // expected-error {{'cdecl' attribute takes no arguments}}
+                           ^
+
+"Test_name.c", line 51: warning: missing return statement at end of non-void function "ctest4"
+  PROC __attribute__((cdecl)) ctest4(const char *x) {}
+                                                     ^
+
+"Test_name.c", line 55: warning: attribute "stdcall" does not apply here
+  struct type_test {} __attribute__((stdcall)); // expected-warning {{'stdcall' calling convention is not supported for this target}} expected-warning {{'stdcall' attribute only applies to functions and methods}}
+                                     ^
+
+2 errors detected in the compilation of "Test_name.c".

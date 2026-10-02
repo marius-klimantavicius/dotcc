@@ -1,0 +1,86 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 -DCXX1Y Test_name.c
+"Test_name.c", line 68: warning: template parameter "T" is not used in declaring the parameter types of function template "extended_examples::A4::operator int"
+      template<typename T> operator int();  // not matching (ambiguous anyway)
+                        ^
+
+"Test_name.c", line 73: error: overloading two member functions with the same parameter types requires that they both have ref-qualifiers or both lack ref-qualifiers
+      operator int();     // @71  -- duplicate declaration with different qualifier is not allowed
+      ^
+
+"Test_name.c", line 83: error: expression must have integral or enum type
+      switch (a1) {}     // @81 -- fails for different reasons
+              ^
+
+"Test_name.c", line 84: error: expression must have integral or enum type
+      switch (a2) {}     // @82
+              ^
+
+"Test_name.c", line 85: error: expression must have integral or enum type
+      switch (a3) {}     // @83
+              ^
+
+"Test_name.c", line 86: error: expression must have integral or enum type
+      switch (a4) {}     // @84
+              ^
+
+"Test_name.c", line 87: error: expression must have integral or enum type
+      switch (b2) {}     // @85 -- fails for different reasons
+              ^
+
+"Test_name.c", line 114: warning: template parameter "T" is not used in declaring the parameter types of function template "extended_examples_cxx1y::A2::operator int<T>()"
+      template <typename T> operator int(); // In C++1y: matching but ambiguous (disambiguated by L.105).
+                         ^
+
+"Test_name.c", line 124: warning: template parameter "T" is not used in declaring the parameter types of function template "extended_examples_cxx1y::B2::operator int<T>()"
+      template <typename T> operator int(); // In C++1y: matching but ambiguous, since disambiguated by L.115
+                         ^
+
+"Test_name.c", line 140: error: expression must have integral or enum type
+      switch (a1) {} // @XXXXXXXX --  should presumably call templated conversion operator to convert to int.
+              ^
+
+"Test_name.c", line 141: error: expression must have integral or enum type
+      switch (a2) {} // @XXXXXXXX
+              ^
+
+"Test_name.c", line 144: error: expression must have integral or enum type
+      switch (c) {}  // @XXXXXXXX
+              ^
+
+"Test_name.c", line 145: error: expression must have integral or enum type
+      switch (d) {}  // @XXXXXXXX
+              ^
+
+"Test_name.c", line 172: warning: variable "arr" was declared but never referenced
+      int arr[x]; // cxx11-error {{ambiguous}}
+          ^
+
+"Test_name.c", line 183: error: more than one conversion function from "extended_examples_array_bounds::Y" to a built-in type applies:
+            function "extended_examples_array_bounds::Y::operator float() const" (declared at line 177)
+            function "extended_examples_array_bounds::Y::operator int() const" (declared at line 178)
+      int *p = new int[y]; // cxx14-error {{ambiguous}}
+                       ^
+
+"Test_name.c", line 185: error: more than one conversion function from "extended_examples_array_bounds::Y" to a built-in type applies:
+            function "extended_examples_array_bounds::Y::operator float() const" (declared at line 177)
+            function "extended_examples_array_bounds::Y::operator int() const" (declared at line 178)
+      int arr[y]; // cxx14-error {{ambiguous}}
+              ^
+
+"Test_name.c", line 195: warning: integer conversion resulted in a change of sign
+      int arrC[Z<-1>()]; // expected-error {{'arrC' declared as an array with a negative size}}
+               ^
+
+"Test_name.c", line 195: error: array is too large
+      int arrC[Z<-1>()]; // expected-error {{'arrC' declared as an array with a negative size}}
+          ^
+
+"Test_name.c", line 193: warning: variable "arrA" was declared but never referenced
+      int arrA[Z<1>()];
+          ^
+
+"Test_name.c", line 194: warning: variable "arrB" was declared but never referenced
+      int arrB[Z<0>()]; // expected-error {{zero size array}}
+          ^
+
+13 errors detected in the compilation of "Test_name.c".

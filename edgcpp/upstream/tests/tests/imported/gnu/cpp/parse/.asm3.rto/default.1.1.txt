@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 7: error: expected an identifier
+    asm ("%[x]" : [0](x));  // { dg-error "numeric constant|token" }
+                   ^
+
+"Test_name.c", line 7: error: expected a string literal
+    asm ("%[x]" : [0](x));  // { dg-error "numeric constant|token" }
+                     ^
+
+"Test_name.c", line 7: error: invalid symbolic operand name "x"
+    asm ("%[x]" : [0](x));  // { dg-error "numeric constant|token" }
+    ^
+
+3 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 5: error: explicit type is missing ("int" assumed)
+  typeof_unqual(int) u = 12; // expected-error {{expected function body after function declarator}}
+  ^
+
+"Test_name.c", line 5: error: expected a "{"
+  typeof_unqual(int) u = 12; // expected-error {{expected function body after function declarator}}
+                     ^
+
+"Test_name.c", line 9: warning: parsing restarts here after previous syntax error
+  namespace GH97646 {
+                    ^
+
+"Test_name.c", line 10: error: a template declaration is not allowed here
+    template<bool B>
+    ^
+
+"Test_name.c", line 15: warning: missing return statement at end of non-void function "typeof_unqual"
+  }
+  ^
+
+3 errors detected in the compilation of "Test_name.c".

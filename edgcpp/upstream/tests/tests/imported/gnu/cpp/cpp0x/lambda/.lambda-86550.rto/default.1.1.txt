@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: error: expected a "{" introducing a lambda body
+    auto a = []() bool {};			// { dg-error "type-specifier invalid in lambda" }
+                  ^
+
+"Test_name.c", line 9: error: expected a ";"
+    auto a = []() bool {};			// { dg-error "type-specifier invalid in lambda" }
+                  ^
+
+"Test_name.c", line 10: error: expected a "{" introducing a lambda body
+    auto b = []() bool bool bool bool int {};	// { dg-error "type-specifier invalid in lambda" }
+                  ^
+
+"Test_name.c", line 10: error: expected a ";"
+    auto b = []() bool bool bool bool int {};	// { dg-error "type-specifier invalid in lambda" }
+                  ^
+
+4 errors detected in the compilation of "Test_name.c".

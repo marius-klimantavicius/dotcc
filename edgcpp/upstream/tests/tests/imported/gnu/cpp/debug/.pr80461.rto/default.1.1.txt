@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 34: warning: variable "q" is used before its value is set
+    A<P> f = q;
+             ^
+          detected during instantiation of "void bar<O,P>() [with O=int (N::*)(...) &, P=int ()]" at line 41
+
+"Test_name.c", line 34: warning: variable "q" is used before its value is set
+    A<P> f = q;
+             ^
+          detected during instantiation of "void bar<O,P>() [with O=int (N::*)(...) const &, P=int ()]" at line 42
+
+"Test_name.c", line 34: warning: variable "q" is used before its value is set
+    A<P> f = q;
+             ^
+          detected during instantiation of "void bar<O,P>() [with O=int (N::*)(...) volatile &, P=int ()]" at line 43
+

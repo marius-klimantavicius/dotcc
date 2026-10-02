@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=2 -r -W Test_name.c
+"Test_name.c", line 5: remark: parameter "x" was never referenced
+  void f(int x) {
+             ^
+
+"Test_name.c", line 6: error: variable "y" was declared but never referenced
+    int y = 0;
+        ^
+
+1 error detected in the compilation of "Test_name.c".

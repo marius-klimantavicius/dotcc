@@ -1,0 +1,323 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 20: error: too many arguments for alias template "identity_t"
+  static_assert(!requires { typename identity_t<A, A>; }); // expected-error{{too many template arguments for alias template 'identity_t'}}
+                                                   ^
+
+"Test_name.c", line 20: error: expected a type name
+  static_assert(!requires { typename identity_t<A, A>; }); // expected-error{{too many template arguments for alias template 'identity_t'}}
+                                     ^
+
+"Test_name.c", line 20: error: static assertion failed
+  static_assert(!requires { typename identity_t<A, A>; }); // expected-error{{too many template arguments for alias template 'identity_t'}}
+  ^
+
+"Test_name.c", line 21: error: too many arguments for alias template "identity_t"
+  static_assert(!requires { typename ::identity_t<A, A>; }); // expected-error{{too many template arguments for alias template 'identity_t'}}
+                                                     ^
+
+"Test_name.c", line 21: error: expected a type name
+  static_assert(!requires { typename ::identity_t<A, A>; }); // expected-error{{too many template arguments for alias template 'identity_t'}}
+                                     ^
+
+"Test_name.c", line 21: error: static assertion failed
+  static_assert(!requires { typename ::identity_t<A, A>; }); // expected-error{{too many template arguments for alias template 'identity_t'}}
+  ^
+
+"Test_name.c", line 23: error: static assertion failed
+  static_assert(!requires { typename identity; });
+  ^
+
+"Test_name.c", line 25: error: static assertion failed
+  static_assert(!requires { typename ::identity; });
+  ^
+
+"Test_name.c", line 27: error: static assertion failed
+  static_assert(!requires { typename identity_t; });
+  ^
+
+"Test_name.c", line 29: error: static assertion failed
+  static_assert(!requires { typename ::identity_t; });
+  ^
+
+"Test_name.c", line 37: error: expected a type name
+    static_assert(!requires { typename ns::A; }); // expected-error{{no type named 'A' in namespace 'ns'}}
+                                       ^
+
+"Test_name.c", line 37: error: static assertion failed
+    static_assert(!requires { typename ns::A; }); // expected-error{{no type named 'A' in namespace 'ns'}}
+    ^
+
+"Test_name.c", line 38: error: expected a type name
+    static_assert(!requires { typename ::B; }); // expected-error{{no type named 'B' in the global namespace}}
+                                       ^
+
+"Test_name.c", line 38: error: static assertion failed
+    static_assert(!requires { typename ::B; }); // expected-error{{no type named 'B' in the global namespace}}
+    ^
+
+"Test_name.c", line 39: error: expected a type name
+    static_assert(requires { typename C; });
+                                      ^
+
+"Test_name.c", line 46: error: expected a type name
+  static_assert(!requires { typename identity<int>::typr; }); // expected-error{{no type named 'typr' in 'identity<int>'}}
+                                     ^
+
+"Test_name.c", line 46: error: static assertion failed
+  static_assert(!requires { typename identity<int>::typr; }); // expected-error{{no type named 'typr' in 'identity<int>'}}
+  ^
+
+"Test_name.c", line 47: error: expected a type name
+  static_assert(!requires { typename ::identity<int>::typr; }); // expected-error{{no type named 'typr' in 'identity<int>'}}
+                                     ^
+
+"Test_name.c", line 47: error: static assertion failed
+  static_assert(!requires { typename ::identity<int>::typr; }); // expected-error{{no type named 'typr' in 'identity<int>'}}
+  ^
+
+"Test_name.c", line 60: error: template constraint not satisfied
+  using r1i2 = r1<int>; // expected-error{{constraints not satisfied for class template 'r1' [with T = int]}}
+                     ^
+"Test_name.c", line 49: note: substitution of arguments "<int>" for requires-clause failed
+  template<typename T> requires requires { typename T::type; }
+                                ^
+"Test_name.c", line 49: note: atomic constraint evaluates to false
+  template<typename T> requires requires { typename T::type; }
+                                ^
+
+"Test_name.c", line 61: error: template constraint not satisfied
+  using r1i3 = r1<C>; // expected-error{{constraints not satisfied for class template 'r1' [with T = C]}}
+                   ^
+"Test_name.c", line 49: note: substitution of arguments "<C>" for requires-clause failed
+  template<typename T> requires requires { typename T::type; }
+                                ^
+"Test_name.c", line 49: note: atomic constraint evaluates to false
+  template<typename T> requires requires { typename T::type; }
+                                ^
+
+"Test_name.c", line 62: error: template constraint not satisfied
+  using r1i4 = r1<D>; // expected-error{{constraints not satisfied for class template 'r1' [with T = D]}}
+                   ^
+"Test_name.c", line 49: note: substitution of arguments "<D>" for requires-clause failed
+  template<typename T> requires requires { typename T::type; }
+                                ^
+"Test_name.c", line 49: note: atomic constraint evaluates to false
+  template<typename T> requires requires { typename T::type; }
+                                ^
+
+"Test_name.c", line 64: error: member "D::type" is not a type name
+  template<typename T> struct invalid { typename T::type x; };
+                                                 ^
+          detected during instantiation of class "invalid<T> [with T=D]" at line 66
+
+"Test_name.c", line 66: error: template constraint not satisfied
+  using r1i5 = r1<invalid<D>>;
+                           ^
+"Test_name.c", line 49: note: substitution of arguments "<invalid<D>>" for requires-clause failed
+  template<typename T> requires requires { typename T::type; }
+                                ^
+"Test_name.c", line 49: note: atomic constraint evaluates to false
+  template<typename T> requires requires { typename T::type; }
+                                ^
+
+"Test_name.c", line 77: error: template constraint not satisfied
+  using r2i3 = r2<int, int>; // expected-error{{constraints not satisfied for class template 'r2' [with Ts = <int, int>]}}
+                          ^
+"Test_name.c", line 72: note: substitution of arguments "<int, int>" for requires-clause failed
+  template<typename... Ts> requires requires { typename identity<Ts...>; } // expected-note{{because 'typename identity<Ts...>' would be invalid: too many template arguments for class template 'identity'}}
+                                    ^
+"Test_name.c", line 72: note: atomic constraint evaluates to false
+  template<typename... Ts> requires requires { typename identity<Ts...>; } // expected-note{{because 'typename identity<Ts...>' would be invalid: too many template arguments for class template 'identity'}}
+                                    ^
+
+"Test_name.c", line 85: error: template constraint not satisfied
+    using r4i1 = r4<int>; // expected-error{{constraints not satisfied for class template 'r4' [with Ts = <int>]}}
+                       ^
+"Test_name.c", line 82: note: substitution of arguments "<int>" for requires-clause failed
+    template<typename... Ts> requires requires { typename identity<Ts...>; } // expected-note 2{{because 'typename identity<Ts...>' would be invalid: too few template arguments for class template 'identity'}}
+                                      ^
+"Test_name.c", line 82: note: atomic constraint evaluates to false
+    template<typename... Ts> requires requires { typename identity<Ts...>; } // expected-note 2{{because 'typename identity<Ts...>' would be invalid: too few template arguments for class template 'identity'}}
+                                      ^
+
+"Test_name.c", line 88: error: template constraint not satisfied
+  using r4i2 = ns2::r4<int>; // expected-error{{constraints not satisfied for class template 'r4' [with Ts = <int>]}}
+                          ^
+"Test_name.c", line 82: note: substitution of arguments "<int>" for requires-clause failed
+    template<typename... Ts> requires requires { typename identity<Ts...>; } // expected-note 2{{because 'typename identity<Ts...>' would be invalid: too few template arguments for class template 'identity'}}
+                                      ^
+"Test_name.c", line 82: note: atomic constraint evaluates to false
+    template<typename... Ts> requires requires { typename identity<Ts...>; } // expected-note 2{{because 'typename identity<Ts...>' would be invalid: too few template arguments for class template 'identity'}}
+                                      ^
+
+"Test_name.c", line 91: error: type "E" may not have a template argument list
+  template<typename T> requires requires { typename E<T>; } // expected-error{{expected ';' at end of requirement}}
+                                                    ^
+
+"Test_name.c", line 91: error: expected a type name
+  template<typename T> requires requires { typename E<T>; } // expected-error{{expected ';' at end of requirement}}
+                                                    ^
+
+"Test_name.c", line 93: error: type "E" may not have a template argument list
+  template<typename T> requires requires { typename ::E<T>; } // expected-error{{expected ';' at end of requirement}}
+                                                      ^
+
+"Test_name.c", line 93: error: expected a type name
+  template<typename T> requires requires { typename ::E<T>; } // expected-error{{expected ';' at end of requirement}}
+                                                    ^
+
+"Test_name.c", line 102: error: template constraint not satisfied
+  using r6i = r6<int>; // expected-error{{constraints not satisfied for class template 'r6' [with T = int]}}
+                    ^
+"Test_name.c", line 99: note: substitution of arguments "<int>" for requires-clause failed
+  template<typename T> requires requires { typename chars_only<T>; } // expected-note{{because 'typename chars_only<T>' would be invalid: constraints not satisfied for class template 'chars_only' [with T = int]}}
+                                ^
+"Test_name.c", line 99: note: atomic constraint evaluates to false
+  template<typename T> requires requires { typename chars_only<T>; } // expected-note{{because 'typename chars_only<T>' would be invalid: constraints not satisfied for class template 'chars_only' [with T = int]}}
+                                ^
+
+"Test_name.c", line 106: error: expected a type name
+  static_assert(!requires { typename F<int>; });
+                                     ^
+
+"Test_name.c", line 106: error: static assertion failed
+  static_assert(!requires { typename F<int>; });
+  ^
+
+"Test_name.c", line 108: error: expected a type name
+  static_assert(!requires { typename ::F<int>; });
+                                     ^
+
+"Test_name.c", line 108: error: static assertion failed
+  static_assert(!requires { typename ::F<int>; });
+  ^
+
+"Test_name.c", line 119: error: template constraint not satisfied
+  using r7i1 = r7<int>; // expected-error{{constraints not satisfied for class template 'r7' [with T = int]}}
+                     ^
+"Test_name.c", line 113: note: substitution of arguments "<int>" for requires-clause failed
+  template<typename T> requires requires { typename T::template temp<int>; }
+                                ^
+"Test_name.c", line 113: note: atomic constraint evaluates to false
+  template<typename T> requires requires { typename T::template temp<int>; }
+                                ^
+
+"Test_name.c", line 120: error: template constraint not satisfied
+  using r7i2 = r7<D>; // expected-error{{constraints not satisfied for class template 'r7' [with T = D]}}
+                   ^
+"Test_name.c", line 113: note: substitution of arguments "<D>" for requires-clause failed
+  template<typename T> requires requires { typename T::template temp<int>; }
+                                ^
+"Test_name.c", line 113: note: atomic constraint evaluates to false
+  template<typename T> requires requires { typename T::template temp<int>; }
+                                ^
+
+"Test_name.c", line 121: error: template constraint not satisfied
+  using r7i3 = r7<G>; // expected-error{{constraints not satisfied for class template 'r7' [with T = G]}}
+                   ^
+"Test_name.c", line 113: note: substitution of arguments "<G>" for requires-clause failed
+  template<typename T> requires requires { typename T::template temp<int>; }
+                                ^
+"Test_name.c", line 113: note: atomic constraint evaluates to false
+  template<typename T> requires requires { typename T::template temp<int>; }
+                                ^
+
+"Test_name.c", line 132: error: incomplete type "I<int>::incomplete" is not allowed
+  static_assert(!requires { I<int>::incomplete::inner; }); // expected-error{{implicit instantiation of undefined member 'I<int>::incomplete'}}
+                            ^
+
+"Test_name.c", line 132: error: static assertion failed
+  static_assert(!requires { I<int>::incomplete::inner; }); // expected-error{{implicit instantiation of undefined member 'I<int>::incomplete'}}
+  ^
+
+"Test_name.c", line 137: error: template constraint not satisfied
+  using r9i = r9<int>; // expected-error{{constraints not satisfied for class template 'r9' [with T = int]}}
+                    ^
+"Test_name.c", line 134: note: substitution of arguments "<int>" for requires-clause failed
+  template<typename T> requires requires { typename I<T>::incomplete::inner; } // expected-note{{because 'typename I<T>::incomplete::inner' would be invalid: implicit instantiation of undefined member 'I<int>::incomplete'}}
+                                ^
+"Test_name.c", line 134: note: atomic constraint evaluates to false
+  template<typename T> requires requires { typename I<T>::incomplete::inner; } // expected-note{{because 'typename I<T>::incomplete::inner' would be invalid: implicit instantiation of undefined member 'I<int>::incomplete'}}
+                                ^
+
+"Test_name.c", line 147: error: "X" is ambiguous
+  static_assert(requires { typename X::inner; }); // expected-error{{reference to 'X' is ambiguous}}
+                                    ^
+
+"Test_name.c", line 147: error: expected a type name
+  static_assert(requires { typename X::inner; }); // expected-error{{reference to 'X' is ambiguous}}
+                                    ^
+
+"Test_name.c", line 162: error: more than one partial specialization matches the template argument list of class "Z<int>"
+            "Z<T>" (declared at line 157)
+            "Z<T>" (declared at line 160)
+  Z<int> x; // expected-error{{ambiguous partial specializations of 'Z<int>'}}
+         ^
+
+"Test_name.c", line 192: error: template constraint not satisfied
+    using c1 = C1_check<int>; // expected-error{{constraints not satisfied for class template 'C1_check' [with T = int]}}
+                           ^
+"Test_name.c", line 185: note: type constraint failed for "int"
+    template<C1 T> struct C1_check {};
+             ^
+"Test_name.c", line 172: note: atomic constraint evaluates to false
+      requires {
+      ^
+
+"Test_name.c", line 193: error: template constraint not satisfied
+    using c2 = C1_check<has_type>; // expected-error{{constraints not satisfied for class template 'C1_check' [with T = has_type]}}
+                                ^
+"Test_name.c", line 185: note: type constraint failed for "std_example::has_type"
+    template<C1 T> struct C1_check {};
+             ^
+"Test_name.c", line 172: note: atomic constraint evaluates to false
+      requires {
+      ^
+
+"Test_name.c", line 194: error: template constraint not satisfied
+    using c3 = C2_check<has_inner>; // expected-error{{constraints not satisfied for class template 'C2_check' [with T = has_inner]}}
+                                 ^
+"Test_name.c", line 188: note: type constraint failed for "std_example::has_inner"
+    template<C2 T> struct C2_check {};
+             ^
+"Test_name.c", line 177: note: atomic constraint evaluates to false
+    template<typename T> concept C2 = requires { typename S<T>; };
+                                      ^
+
+"Test_name.c", line 195: error: template constraint not satisfied
+    using c4 = C3_check<void>; // expected-error{{constraints not satisfied for class template 'C3_check' [with T = void]}}
+                            ^
+"Test_name.c", line 190: note: type constraint failed for "void"
+    template<C3 T> struct C3_check {};
+             ^
+"Test_name.c", line 178: note: atomic constraint evaluates to false
+    template<typename T> concept C3 = requires { typename Ref<T>; };
+                                      ^
+
+"Test_name.c", line 207: error: template constraint not satisfied
+  template struct A<T1>; // expected-error {{constraints not satisfied for class template 'A' [with $0 = <T1>]}}
+                      ^
+"Test_name.c", line 203: note: type constraint failed for "PR48656::T1"
+  template <C...> struct A {};
+            ^
+"Test_name.c", line 200: note: atomic constraint evaluates to false
+  template <typename T> concept C = requires { requires requires { T::a; }; };
+                                    ^
+
+"Test_name.c", line 207: error: invalid explicit instantiation declaration
+  template struct A<T1>; // expected-error {{constraints not satisfied for class template 'A' [with $0 = <T1>]}}
+           ^
+
+"Test_name.c", line 217: error: no instance of function template "PR48656::T3<T>::m [with T=int]" matches the argument list
+            argument types are: (int)
+  template <typename... Args> void t3(Args... args) { (..., T3<int>::m(args)); }
+                                                            ^
+"Test_name.c", line 213: note: substituting "<int>" for function template "PR48656::T3<T>::m [with T=int]" failed constraints
+    static void m(auto) requires requires { T::fail; } {}
+                ^
+"Test_name.c", line 213: note: atomic constraint evaluates to false
+    static void m(auto) requires requires { T::fail; } {}
+                                 ^
+          detected during instantiation of "void PR48656::t3(Args...) [with Args=<int>]" at line 220
+
+52 errors detected in the compilation of "Test_name.c".

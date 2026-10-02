@@ -1,0 +1,41 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 6: warning: unrecognized GCC pragma
+  #pragma GCC diagnostic ignored "-Wreturn-type"
+              ^
+
+"Test_name.c", line 8: warning: declaration of "size_t" does not match the expected type "unsigned long"
+  typedef long size_t;
+               ^
+
+"Test_name.c", line 90: warning: missing return statement at end of non-void function "dense_hash_set<Value, HashFcn, EqualKey, Alloc>::insert"
+      }
+      ^
+
+"Test_name.c", line 56: warning: missing return statement at end of non-void function "dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::insert"
+        }
+        ^
+          detected during instantiation of "pair<dense_hash_set<Value, HashFcn, EqualKey, Alloc>::iterator, bool> dense_hash_set<Value, HashFcn, EqualKey, Alloc>::insert(dense_hash_set<Value, HashFcn, EqualKey, Alloc>::value_type) [with Value=blah_46, HashFcn=hash<blah_46>, EqualKey=equal_to<blah_46>, Alloc=allocator<blah_46>]" at line 111
+
+"Test_name.c", line 52: warning: missing return statement at end of non-void function "dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::insert_noresize"
+        }
+        ^
+          detected during:
+            instantiation of "pair<dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::iterator, bool> dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::insert(dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::value_type &) [with Value=blah_46, Key=blah_46, HashFcn=hash<blah_46>, ExtractKey=dense_hash_set<blah_46, hash<blah_46>, equal_to<blah_46>, allocator<blah_46>>::Identity, EqualKey=equal_to<blah_46>, Alloc=allocator<blah_46>]" at line 89
+            instantiation of "pair<dense_hash_set<Value, HashFcn, EqualKey, Alloc>::iterator, bool> dense_hash_set<Value, HashFcn, EqualKey, Alloc>::insert(dense_hash_set<Value, HashFcn, EqualKey, Alloc>::value_type) [with Value=blah_46, HashFcn=hash<blah_46>, EqualKey=equal_to<blah_46>, Alloc=allocator<blah_46>]" at line 111
+
+"Test_name.c", line 48: warning: missing return statement at end of non-void function "dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::find_position"
+        }
+        ^
+          detected during:
+            instantiation of "pair<dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::iterator, bool> dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::insert_noresize(dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::value_type) [with Value=blah_46, Key=blah_46, HashFcn=hash<blah_46>, ExtractKey=dense_hash_set<blah_46, hash<blah_46>, equal_to<blah_46>, allocator<blah_46>>::Identity, EqualKey=equal_to<blah_46>, Alloc=allocator<blah_46>]" at line 55
+            instantiation of "pair<dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::iterator, bool> dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::insert(dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::value_type &) [with Value=blah_46, Key=blah_46, HashFcn=hash<blah_46>, ExtractKey=dense_hash_set<blah_46, hash<blah_46>, equal_to<blah_46>, allocator<blah_46>>::Identity, EqualKey=equal_to<blah_46>, Alloc=allocator<blah_46>]" at line 89
+            instantiation of "pair<dense_hash_set<Value, HashFcn, EqualKey, Alloc>::iterator, bool> dense_hash_set<Value, HashFcn, EqualKey, Alloc>::insert(dense_hash_set<Value, HashFcn, EqualKey, Alloc>::value_type) [with Value=blah_46, HashFcn=hash<blah_46>, EqualKey=equal_to<blah_46>, Alloc=allocator<blah_46>]" at line 111
+
+"Test_name.c", line 47: warning: variable "insert_pos" was declared but never referenced
+  	size_type insert_pos = ILLEGAL_BUCKET;
+  	          ^
+          detected during:
+            instantiation of "pair<dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::iterator, bool> dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::insert_noresize(dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::value_type) [with Value=blah_46, Key=blah_46, HashFcn=hash<blah_46>, ExtractKey=dense_hash_set<blah_46, hash<blah_46>, equal_to<blah_46>, allocator<blah_46>>::Identity, EqualKey=equal_to<blah_46>, Alloc=allocator<blah_46>]" at line 55
+            instantiation of "pair<dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::iterator, bool> dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::insert(dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::value_type &) [with Value=blah_46, Key=blah_46, HashFcn=hash<blah_46>, ExtractKey=dense_hash_set<blah_46, hash<blah_46>, equal_to<blah_46>, allocator<blah_46>>::Identity, EqualKey=equal_to<blah_46>, Alloc=allocator<blah_46>]" at line 89
+            instantiation of "pair<dense_hash_set<Value, HashFcn, EqualKey, Alloc>::iterator, bool> dense_hash_set<Value, HashFcn, EqualKey, Alloc>::insert(dense_hash_set<Value, HashFcn, EqualKey, Alloc>::value_type) [with Value=blah_46, HashFcn=hash<blah_46>, EqualKey=equal_to<blah_46>, Alloc=allocator<blah_46>]" at line 111
+

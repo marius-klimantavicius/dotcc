@@ -1,0 +1,17 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 21: warning: use of a const variable in a constant expression is nonstandard in C
+  struct s1 p = { { -!le , -le }, 42 };
+                      ^
+
+"Test_name.c", line 21: warning: use of a const variable in a constant expression is nonstandard in C
+  struct s1 p = { { -!le , -le }, 42 };
+                            ^
+
+"Test_name.c", line 21: warning: integer conversion resulted in a change of sign
+  struct s1 p = { { -!le , -le }, 42 };
+                           ^
+
+"Test_name.c", line 22: warning: integer conversion resulted in a change of sign
+  struct s2 q = { -2 << (__CHAR_BIT__ - 1), 42 };
+                  ^
+

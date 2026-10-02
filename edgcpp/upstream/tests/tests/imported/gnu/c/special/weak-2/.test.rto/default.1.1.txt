@@ -1,0 +1,4 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c weak-2a.c weak-2b.c
+Test_name.c:
+weak-2a.c:
+weak-2b.c:

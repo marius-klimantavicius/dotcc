@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 17: error: expected a type specifier
+    typedef decltype(*T()) type;
+                     ^
+
+"Test_name.c", line 17: error: explicit type is missing ("int" assumed)
+    typedef decltype(*T()) type;
+            ^
+
+"Test_name.c", line 17: error: expected a ";"
+    typedef decltype(*T()) type;
+                           ^
+
+3 errors detected in the compilation of "Test_name.c".

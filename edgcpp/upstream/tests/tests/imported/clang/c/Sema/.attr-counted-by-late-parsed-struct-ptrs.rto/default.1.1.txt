@@ -1,0 +1,130 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 19: warning: unknown attribute "counted_by"
+    struct size_known * buf __counted_by(count);
+                            ^
+
+"Test_name.c", line 24: warning: unknown attribute "counted_by"
+    struct size_unknown * buf __counted_by(count); // ok
+                              ^
+
+"Test_name.c", line 29: warning: unknown attribute "counted_by"
+    const struct size_unknown * buf __counted_by(count); // ok
+                                    ^
+
+"Test_name.c", line 36: warning: unknown attribute "counted_by"
+    void* buf __counted_by(count);
+              ^
+
+"Test_name.c", line 42: warning: unknown attribute "counted_by"
+    void (**fn_ptr)(void) __counted_by(count);
+                          ^
+
+"Test_name.c", line 49: warning: unknown attribute "counted_by"
+    fn_ptr_ty* fn_ptr __counted_by(count);
+                      ^
+
+"Test_name.c", line 56: warning: unknown attribute "counted_by"
+    void (*fn_ptr)(void) __counted_by(count);
+                         ^
+
+"Test_name.c", line 63: warning: unknown attribute "counted_by"
+    fn_ptr_ty fn_ptr __counted_by(count);
+                     ^
+
+"Test_name.c", line 74: warning: unknown attribute "counted_by"
+    struct has_unannotated_vla* objects __counted_by(count);
+                                        ^
+
+"Test_name.c", line 80: warning: unknown attribute "counted_by"
+    int buffer[] __counted_by(count);
+                 ^
+
+"Test_name.c", line 88: warning: unknown attribute "counted_by"
+    struct has_annotated_vla* objects __counted_by(count);
+                                      ^
+
+"Test_name.c", line 96: warning: unknown attribute "counted_by"
+      struct size_known *buf __counted_by(count);
+                             ^
+
+"Test_name.c", line 102: warning: unknown attribute "counted_by"
+    struct size_known *buf __counted_by(count);
+                           ^
+
+"Test_name.c", line 118: warning: unknown attribute "counted_by"
+    struct size_known *__counted_by(count) buf;
+                       ^
+
+"Test_name.c", line 125: warning: unknown attribute "counted_by"
+    struct size_unknown * __counted_by(count) buf;
+                          ^
+
+"Test_name.c", line 132: warning: unknown attribute "counted_by"
+    const struct size_unknown * __counted_by(count) buf;
+                                ^
+
+"Test_name.c", line 140: warning: unknown attribute "counted_by"
+    void *__counted_by(count) buf;
+          ^
+
+"Test_name.c", line 150: warning: unknown attribute "counted_by"
+    void (** __counted_by(count) fn_ptr)(void);
+             ^
+
+"Test_name.c", line 158: warning: unknown attribute "counted_by"
+    fn_ptr_ty* __counted_by(count) fn_ptr;
+               ^
+
+"Test_name.c", line 166: warning: unknown attribute "counted_by"
+    void (* __counted_by(count) fn_ptr)(void);
+            ^
+
+"Test_name.c", line 173: warning: unknown attribute "counted_by"
+    void (** __counted_by(count) fn_ptr)(void);
+             ^
+
+"Test_name.c", line 181: warning: unknown attribute "counted_by"
+    fn_ptr_ty __counted_by(count) fn_ptr;
+              ^
+
+"Test_name.c", line 189: warning: unknown attribute "counted_by"
+    void (* __counted_by(count) * fn_ptr)(void);
+            ^
+
+"Test_name.c", line 197: warning: unknown attribute "counted_by"
+    struct has_unannotated_vla *__counted_by(count) objects;
+                                ^
+
+"Test_name.c", line 205: warning: unknown attribute "counted_by"
+    struct has_annotated_vla* __counted_by(count) objects;
+                              ^
+
+"Test_name.c", line 213: warning: unknown attribute "counted_by"
+    struct size_known *__counted_by(count) *buf;
+                       ^
+
+"Test_name.c", line 220: warning: unknown attribute "counted_by"
+    struct size_known **__counted_by(count) buf;
+                        ^
+
+"Test_name.c", line 228: warning: unknown attribute "counted_by"
+      struct size_known * __counted_by(count) buf;
+                          ^
+
+"Test_name.c", line 236: warning: unknown attribute "counted_by"
+    struct size_known *__counted_by(count) buf;
+                       ^
+
+"Test_name.c", line 248: warning: unknown attribute "counted_by"
+    int wrong_ty __counted_by(count);
+                 ^
+
+"Test_name.c", line 255: warning: unknown attribute "counted_by"
+    void wrong_ty __counted_by(count);
+                  ^
+
+"Test_name.c", line 255: error: incomplete type "void" is not allowed
+    void wrong_ty __counted_by(count);
+         ^
+
+1 error detected in the compilation of "Test_name.c".

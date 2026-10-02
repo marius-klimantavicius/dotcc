@@ -1,0 +1,490 @@
+#!/usr/bin/env python3
+
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+import argparse
+import functools
+import html
+import re
+import subprocess
+import sys
+
+import edgshell
+import edgutil
+
+from typing import List, Protocol, Set, Tuple
+
+from edgtest.runtest import (
+  TEST_STATUS_SEVERITY,
+  parse_test_status
+)
+
+# This script is often paired with tee, modify the print function to default to
+# flush = True.
+print = functools.partial(print, flush = True)
+
+def _run_build() -> Tuple[bool, str]:
+  completed_process = subprocess.run(
+    [
+      'ninja'
+    ],
+    stdout = subprocess.PIPE,
+    stderr = subprocess.STDOUT,
+  )
+  return (completed_process.returncode == 0, completed_process.stdout.decode())
+
+def _run_edgy_replay(test_timeout: int) -> Tuple[int, str]:
+  completed_process = subprocess.run(
+    [
+      'edgy',
+      '--timeout',
+      str(test_timeout),
+      '--replay',
+      'unexpected'
+    ],
+    stdout = subprocess.PIPE,
+    stderr = subprocess.STDOUT
+  )
+  return (completed_process.returncode, completed_process.stdout.decode())
+
+# If you add a new starting character here (e.g., currently '+', '-', and 'X'),
+# make sure to update _determine_complaint_severity (below) for appropriate
+# colorization (and to prevent it from crashing edgy-replay-blame should the
+# complaint not follow the run_test output style).
+_EDGY_COMPLAINT_REGEX = re.compile(r'^((\+|-|X) (.+))$', re.MULTILINE)
+
+def _collect_edgy_complaints(raw_output: str) -> Set[str]:
+  complaints = set()
+  for result in _EDGY_COMPLAINT_REGEX.finditer(raw_output):
+    complaints.add(result.group(1))
+  return complaints
+
+def _sorted_complaints(complaints: Set[str]) -> List[str]:
+  '''This function is a bit of a hack to return to a more "edgy-like" output.
+
+  Ideally, someday this function would be replaced by using edgy
+  functions/structures directly, rather than taking edgy output and reshaping
+  it/acting on it retroactively.
+  '''
+  def get_complaint_key(complaint: str) -> str:
+    # This reshapes edgy output:
+    #
+    #   <+/-> <suite>/<test> <type>:<options>:<etc...>
+    #
+    # into a comparison key something like:
+    #
+    #   <suite>/<test> <type>:<options><+/->
+    #
+    # This results in sorting by the "identifier" (combination of suite + test
+    # + type + options), then breaking ties on +/-. This changes the output
+    # sorting to be by identifier then by addition/removal as it is in edgy.
+
+    # Break the output into parts based on the colons
+    parts = complaint.split(':')
+    # Take the first two parts to form a test identifier string
+    test_ident = ':'.join(parts[:2])
+    # Reshape the identifier so the "+" and "-" characters are at the end of
+    # the string. Any additional information is discarded to reduce the length
+    # of the comparison string.
+    return f"{test_ident[2:]}{test_ident[:2]}"
+
+  return sorted(complaints, key = get_complaint_key)
+
+class AnalysisFormatter(Protocol):
+  '''A protocol defining the interface that must be implemented for a type to
+  function as a analysis formatter.
+  '''
+
+  def write_document_start(self) -> None:
+    pass
+
+  def write_document_end(self) -> None:
+    pass
+
+  def write_status_update(self, text: str) -> None:
+    pass
+
+  def write_commit_transition(self, commit_sha: str) -> None:
+    pass
+
+  def write_complaint_list(self, heading: str, complaints: Set[str]) -> None:
+    pass
+
+  def write_commit_complaints(self, commit_summary: str,
+                              complaints: Set[str]) -> None:
+    pass
+
+  def write_tool_failure(self, tool_name: str, commit_summary: str,
+                         tool_output: str) -> None:
+    pass
+
+class PlainTextFormatter:
+  '''A formatter implementing the AnalysisFormatter protocol to produce plaint
+  text output.
+  '''
+
+  def __init__(self) -> None:
+    self._wrote_anything = False
+    self._just_wrote_commit_transition = False
+
+  def write_document_start(self) -> None:
+    pass
+
+  def write_document_end(self) -> None:
+    pass
+
+  def _write(self, text: str, *, end: str = '\n') -> None:
+    print(text, end = end)
+    self._wrote_anything = True
+    self._just_wrote_commit_transition = False
+
+  def _write_newline(self) -> None:
+    # If nothing has yet been written, do not start with a newline
+    if not self._wrote_anything:
+      return
+    self._write('\n', end = '')
+
+  def write_status_update(self, text: str) -> None:
+    self._write(text)
+
+  def write_commit_transition(self, commit_sha: str) -> None:
+    if not self._just_wrote_commit_transition:
+      self._write_newline()
+    self.write_status_update(f"Now on: {commit_sha}")
+    self._just_wrote_commit_transition = True
+
+  def _write_complaint_text(self, complaints: Set[str], *,
+                            indent: int) -> None:
+    for complaint in _sorted_complaints(complaints):
+      self._write(f"{'  ' * indent}{complaint}")
+
+  def write_complaint_list(self, heading: str, complaints: Set[str]) -> None:
+    self._write_newline()
+    self._write(f"{heading}:")
+    self._write_complaint_text(complaints, indent = 1)
+
+  def write_commit_complaints(self, commit_summary: str,
+                              complaints: Set[str]) -> None:
+    self._write_newline()
+    self._write("The commit:")
+    self._write(edgutil.indent_text_block(commit_summary), end = '')
+    self._write('  Introduced:')
+    self._write_complaint_text(complaints, indent = 2)
+
+  def write_tool_failure(self, tool_name: str, commit_summary: str,
+                         tool_output: str) -> None:
+    self._write(f"{tool_name} failed on commit:")
+    self._write(edgutil.indent_text_block(commit_summary), end = '')
+    self._write(f"  {tool_name} output:")
+    self._write(edgutil.indent_text_block(tool_output, n_times = 2), end = '')
+
+def _determine_complaint_severity(complaint: str) -> int:
+  '''This function is used to determine a severity level for the given
+  complaint. See also _EDGY_COMPLAINT_REGEX (above).
+  '''
+  if complaint[0] == 'X':
+    # Use abort level severity for timeouts
+    return TEST_STATUS_SEVERITY['ABORT']
+
+  # This is a normal run_test style complaint, parse the test status and use
+  # its severity.
+  _, parsed_test_status = parse_test_status(complaint)
+  status = parsed_test_status.normalized_status
+  return TEST_STATUS_SEVERITY[status]
+
+class HTMLFormatter:
+  '''A formatter implementing the AnalysisFormatter protocol to produce HTML
+  output.
+
+  Note that due to some email programs not playing well without line breaks,
+  newline characters are injected where in a normal HTML page they would not be
+  necessary.
+  '''
+
+  def __init__(self) -> None:
+    self._last_write_was_status_update = False
+
+  def _write(self, text: str, *, end: str = '') -> None:
+    print(text, end = end)
+
+  def write_document_start(self) -> None:
+    self._write('<html><body style="')
+    self._write('background-color: #DCDCDC;')
+    self._write('margin: 0px;')
+    self._write('padding: 1em;')
+    self._write('">')
+
+  def write_document_end(self) -> None:
+    self._write('</body></html>\n')
+
+  def _write_line_break(self) -> None:
+    self._write('<br />', end = '\n')
+
+  def _write_report_block_begin(self) -> None:
+    self._write('<div style="')
+    self._write('background-color: white;')
+    self._write('color:black;')
+    self._write('padding: 1em;')
+    self._write('border-radius: .3em;')
+    self._write('display: block;')
+    self._write('margin-bottom: 1em;')
+    self._write('">', end = '\n')
+
+  def _write_report_block_end(self) -> None:
+    self._write('</div>', end = '\n')
+
+  def write_status_update(self, text: str) -> None:
+    self._write_report_block_begin()
+    self._write(text)
+    self._write_report_block_end()
+
+  def write_commit_transition(self, commit_sha: str) -> None:
+    self._write_report_block_begin()
+    self._write('Now on: <span style="')
+    self._write('font-family: monospace;')
+    self._write('">')
+    self._write(commit_sha)
+    self._write('</span>')
+    self._write_report_block_end()
+
+  def _write_spoiler_begin(self, heading: str) -> None:
+    self._write(f"<details><summary>{heading}</summary>")
+    # Add an initial blank line, particularly for cases where the client can't
+    # render HTML details tags properly.
+    self._write_line_break()
+
+  def _write_spoiler_end(self) -> None:
+    self._write(f"</details>")
+
+  def _write_complaint_text(self, complaints: Set[str]) -> None:
+    for complaint in _sorted_complaints(complaints):
+      self._write('<span style="')
+
+      # Add styles
+      self._write('font-family: monospace;')
+      # Add styling reacting to the test status
+      severity = _determine_complaint_severity(complaint)
+      if severity == 0:
+        self._write('color: green;')
+      elif severity > 0:
+        self._write('color: red;')
+        if severity > 1:
+          self._write('font-weight: bold;')
+
+      self._write('">')
+      self._write(html.escape(complaint))
+      self._write('</span>')
+      self._write_line_break()
+
+  def write_complaint_list(self, heading: str, complaints: Set[str]) -> None:
+    self._write_report_block_begin()
+    self._write_spoiler_begin(f"{heading} ({len(complaints)}):")
+    self._write_complaint_text(complaints)
+    self._write_spoiler_end()
+    self._write_report_block_end()
+
+  def _write_indented_block_begin(self) -> None:
+    self._write('<div style="margin-left: 2em;">')
+
+  def _write_indented_block_end(self) -> None:
+    self._write('</div>')
+
+  def _write_preformatted_text(self, text: str) -> None:
+    self._write('<pre style="white-space:pre-wrap;">')
+    self._write(html.escape(text))
+    self._write('</pre>')
+
+  def write_commit_complaints(self, commit_summary: str,
+                              complaints: Set[str]) -> None:
+    self._write_report_block_begin()
+    self._write('The commit:')
+    # Introduce indented block
+    self._write_indented_block_begin()
+    # Write commit summary
+    self._write_preformatted_text(commit_summary)
+    # Write changes
+    self._write_spoiler_begin(f"Introduced ({len(complaints)}):")
+    self._write_complaint_text(complaints)
+    self._write_spoiler_end()
+    # Terminate the block
+    self._write_indented_block_end()
+    self._write_report_block_end()
+
+  def write_tool_failure(self, tool_name: str, commit_summary: str,
+                         tool_output: str) -> None:
+    self._write_report_block_begin()
+    self._write(f"{tool_name} failed on commit:")
+    # Introduce indented block
+    self._write_indented_block_begin()
+    # Write commit summary
+    self._write_preformatted_text(commit_summary)
+    # Write tool output
+    self._write_spoiler_begin('Output:')
+    self._write_preformatted_text(tool_output)
+    self._write_spoiler_end()
+    # Terminate the block
+    self._write_indented_block_end()
+    self._write_report_block_end()
+
+def _run_analysis(tmp_branch: edgshell.TmpGitBranchInstance,
+                  terminal_commit: str,
+                  test_timeout_seconds: int,
+                  formatter: AnalysisFormatter) -> None:
+  # Set the initial commit states.
+  curr_commit = edgshell.get_current_git_commit()
+  prev_commit = None
+
+  # Run an initial build & edgy execution.
+  build_ok, build_output = _run_build()
+  if not build_ok:
+    commit_summary = edgshell.get_git_summary(curr_commit)
+    formatter.write_tool_failure('ninja', commit_summary, build_output)
+    formatter.write_document_end()
+    sys.exit(1)
+  edgy_returncode, edgy_output = _run_edgy_replay(test_timeout_seconds)
+  if edgy_returncode != 0:
+    # Cleanup the edgy "no test found" error, as in this context, it just means
+    # there weren't problems.
+    if edgy_returncode == 2:
+      formatter.write_status_update(
+        'No unexpected testing output was observed.'
+      )
+      formatter.write_document_end()
+      sys.exit(0)
+
+    # Otherwise, report the problem.
+    commit_summary = edgshell.get_git_summary(curr_commit)
+    formatter.write_tool_failure('edgy', commit_summary, build_output)
+    formatter.write_document_end()
+    sys.exit(1)
+
+  # Collect edgy's initial complaints list (FIXME: It should be possible to
+  # put edgy's code into a library and perform this and other operations
+  # directly, rather than calling upon an edgy process. In this case, we
+  # should be able to get the initial set of unexpected information without
+  # rerunning edgy).
+  curr_complaints = _collect_edgy_complaints(edgy_output)
+  if len(curr_complaints) == 0:
+    # This is possible if edgy runs with problems, the code is fixed, and then
+    # a replay is run again (now with now problems).
+    formatter.write_status_update('All tests passed, nothing to investigate.')
+    formatter.write_document_end()
+    sys.exit(0)
+
+  # Print the changes that will be investigated.
+  formatter.write_complaint_list('Investigating changes', curr_complaints)
+
+  # Resolve the terminal commit to a particular git SHA.
+  terminal_commit = edgshell.get_git_commit_sha(terminal_commit)
+
+  while True:
+    # Move one commit up.
+    tmp_branch.reset_to_commit(f"{curr_commit}~1")
+    prev_commit = curr_commit
+    curr_commit = edgshell.get_current_git_commit()
+
+    formatter.write_commit_transition(curr_commit)
+
+    # Run a new build to update the binary.
+    build_ok, build_output = _run_build()
+    if build_ok:
+      # The build succeeded, run a new edgy replay.
+      edgy_returncode, edgy_output = _run_edgy_replay(test_timeout_seconds)
+      if edgy_returncode == 0:
+        # edgy succeeded, collect the updates complaints, and see if
+        # any complaints are no longer present.
+        new_complaints = _collect_edgy_complaints(edgy_output)
+        lost_complaints = curr_complaints - new_complaints
+        if len(lost_complaints) > 0:
+          # Some complaints are no longer present, attribute them to the
+          # previous commit (i.e., the last commit to have them).
+          commit_summary = edgshell.get_git_summary(prev_commit)
+          formatter.write_commit_complaints(commit_summary, lost_complaints)
+
+        # Reduce the set of current complaints by the intersection of the
+        # previous current complaints, and the newly detected complaints.
+        curr_complaints = curr_complaints & new_complaints
+        if len(curr_complaints) == 0:
+          break
+      else:
+        commit_summary = edgshell.get_git_summary(curr_commit)
+        formatter.write_tool_failure('edgy', commit_summary, edgy_output)
+    else:
+      commit_summary = edgshell.get_git_summary(curr_commit)
+      formatter.write_tool_failure('ninja', commit_summary, build_output)
+
+    # If the terminal commit has been passed, stop execution. Check one after
+    # the terminal commit as this is a bit more intuitive (going 1 past
+    # actually analyses the terminal commit).
+    if prev_commit == terminal_commit:
+      break
+
+  # Report any issues that remain
+  if len(curr_complaints) > 0:
+    formatter.write_complaint_list('Unresolved by commit', curr_complaints)
+
+def parse_args() -> argparse.Namespace:
+  parser = argparse.ArgumentParser(
+    description = 'EDG test regression search tool.'
+  )
+  parser.add_argument(
+    '-T',
+    '--timeout',
+    dest = 'timeout_seconds',
+    default = 0,
+    type = int,
+    help = (
+      'the number of seconds to wait for tests before '
+      'killing them (0 to disable)'
+    )
+  )
+  parser.add_argument(
+    '--formatter',
+    dest = 'formatter',
+    choices = ['plain', 'html'],
+    default = 'plain',
+    help = 'the formatter to use'
+  )
+  parser.add_argument(
+    'terminal_commit',
+    help = 'the commit to stop searching at'
+  )
+  return parser.parse_args()
+
+def _resolve_formatter(args: argparse.Namespace) -> AnalysisFormatter:
+  if args.formatter == 'plain':
+    return PlainTextFormatter()
+  if args.formatter == 'html':
+    return HTMLFormatter()
+  assert False
+
+def main() -> None:
+  args = parse_args()
+
+  if edgshell.has_local_git_changes():
+    print('Your local changes would be overwritten by this script.')
+    sys.exit(1)
+
+  terminal_commit = args.terminal_commit
+  if not edgshell.has_git_commit_sha(terminal_commit):
+    print(
+      f"The commit {args.terminal_commit} does not exist in the "
+      'current branch.'
+    )
+    sys.exit(1)
+
+  # Use a temporary git branch so that any resets don't affect the main branch.
+  with edgshell.TmpGitBranch() as tmp_branch:
+    timeout_seconds = args.timeout_seconds
+    formatter = _resolve_formatter(args)
+    formatter.write_document_start()
+    _run_analysis(tmp_branch, terminal_commit, timeout_seconds, formatter)
+    formatter.write_document_end()
+
+  # Run a final build to restore the state of the original branch.
+  _run_build()
+
+main()

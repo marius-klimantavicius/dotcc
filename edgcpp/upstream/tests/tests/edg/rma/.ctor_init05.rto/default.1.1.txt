@@ -1,0 +1,18 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 5: error: name of member or base class is missing
+  class B : public A { public: B() : (0) {} };
+                                     ^
+
+"Test_name.c", line 5: error: no default constructor exists for class "A"
+  class B : public A { public: B() : (0) {} };
+                                         ^
+
+"Test_name.c", line 6: error: name of member or base class is missing
+  class C : public A, public B { public: C() : (0) {} };
+                                               ^
+
+"Test_name.c", line 6: error: no default constructor exists for class "A"
+  class C : public A, public B { public: C() : (0) {} };
+                                                   ^
+
+4 errors detected in the compilation of "Test_name.c".

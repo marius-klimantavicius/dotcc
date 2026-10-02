@@ -1,0 +1,24 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 10: warning: variable "b" is used before its value is set
+    if(b > true)    {} // expected-warning {{comparison of true with expression of type 'bool' is always false}}
+       ^
+
+"Test_name.c", line 26: warning: variable "a" is used before its value is set
+    if (a > b)      {} // no warning
+        ^
+
+"Test_name.c", line 191: warning: variable "r" is used before its value is set
+      if(r<0){} // expected-warning {{result of comparison of constant 0 with expression of type 'bool' is always false}}
+         ^
+
+"Test_name.c", line 188: error: return value type does not match the function type
+          return v; // expected-error{{cannot initialize return object of type}}
+                 ^
+          detected during instantiation of "U X6<T, U, V>::f(T, U, V) [with T=bool, U=int, V=int *]" at line 205
+
+"Test_name.c", line 196: error: return value type does not match the function type
+      return v; // expected-error{{cannot initialize return object of type}}
+             ^
+          detected during instantiation of "U X6<T, U, V>::f(T, U, V) [with T=bool, U=int, V=int *]" at line 205
+
+2 errors detected in the compilation of "Test_name.c".

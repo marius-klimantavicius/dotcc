@@ -1,0 +1,24 @@
+# Import Base MacOS Platform Configuration
+import <support/platform/macos/base>
+# Import ARM64 Configuration
+import <support/arch/arm64/base>
+
+# Allow 128-bit extensions.
+INT128_EXTENSIONS_ALLOWED=1
+
+# Allow floating point to function.
+FIXED_POINT_ALLOWED=0
+#
+# Per Apple documentation for the Apple ARM64 platform:
+#
+#   The long double type is a double precision IEEE754 binary floating-point
+#   type, which makes it identical to the double type.  This behavior contrasts
+#   to the standard specification, in which a long double is a quad-precision,
+#   IEEE754 binary, floating-point type.
+#
+# Thus, the clearest option for Apple ARM64 is to set the front end to use the
+# double type.
+USE_DOUBLE_FOR_HOST_FP_VALUE=1
+
+# Use macos_arm64 as the legacy configuration name
+LEGACY_TARGET_CONFIGURATION_NAME="macos_arm64"

@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 12: error: a qualified name is not allowed for a friend declaration that is a function definition
+    friend void ::f1() { } // expected-error{{friend function definition cannot be qualified with '::'}}
+                  ^
+
+"Test_name.c", line 13: error: function "X::f2" cannot be defined in the current scope
+    friend void X::f2() { } // expected-error{{friend function definition cannot be qualified with 'X'}}
+                   ^
+
+"Test_name.c", line 17: error: nontype "T::f" cannot be defined in the current scope
+    friend void T::f() {} // expected-error{{friend function definition cannot be qualified with 'T'}}
+                   ^
+
+"Test_name.c", line 24: error: function "f" cannot be defined in the current scope
+      friend void f() { } // expected-error{{friend function cannot be defined in a local class}}
+                      ^
+
+"Test_name.c", line 37: error: function template "N::f4" cannot be defined in the current scope
+    friend void N::f4(T) {} // expected-error{{friend function definition cannot be qualified with 'N'}}
+                   ^
+
+"Test_name.c", line 38: error: function template "N::f4" cannot be defined in the current scope
+    friend void N::f4<T>(T) {} // expected-error{{friend function definition cannot be qualified with 'N'}}
+                   ^
+
+6 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,14 @@
+cpfe -DTEST_NUMBER=1 --c++23 -tused Test_name.c
+"Test_name.c", line 14: error: more than one conversion function from "A" to "const Z" applies:
+            function "A::operator Z &()" (declared at line 5)
+            function "A::operator const Z &()" (declared at line 6)
+    const Z& r1 = A();          // OK, uses #1
+                  ^
+
+"Test_name.c", line 15: error: more than one conversion function from "B" to "const Z" applies:
+            function "B::operator Z()" (declared at line 10)
+            function "B::operator const Z &&()" (declared at line 11)
+    const Z&& r2 = B();         // OK, uses #2
+                   ^
+
+2 errors detected in the compilation of "Test_name.c".

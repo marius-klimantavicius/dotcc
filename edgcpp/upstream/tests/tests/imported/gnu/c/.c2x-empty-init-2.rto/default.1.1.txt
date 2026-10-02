@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 17: error: variable "x3" may not be initialized
+    int x3[a] = { 0 }; /* { dg-error "variable-sized object may not be initialized except with an empty initializer" } */
+        ^
+
+"Test_name.c", line 19: error: a variable-length array type is not allowed
+    (void) (int [a]) {}; /* { dg-error "compound literal has variable size" } */
+            ^
+
+"Test_name.c", line 14: warning: variable "x1" was declared but never referenced
+    int x1[] = {}; /* { dg-error "zero or negative size array" } */
+        ^
+
+"Test_name.c", line 15: warning: variable "x2" was declared but never referenced
+    int x2[][a] = {}; /* { dg-error "zero or negative size array" } */
+        ^
+
+"Test_name.c", line 17: warning: variable "x3" was declared but never referenced
+    int x3[a] = { 0 }; /* { dg-error "variable-sized object may not be initialized except with an empty initializer" } */
+        ^
+
+2 errors detected in the compilation of "Test_name.c".

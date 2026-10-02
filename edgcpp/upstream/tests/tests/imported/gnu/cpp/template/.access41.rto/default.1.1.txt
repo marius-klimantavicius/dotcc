@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 12: error: type "Child::type" (declared at line 19) is inaccessible
+  constexpr bool has_type_member<T, typename T::type> = true;
+                                                ^
+          detected during instantiation of "const bool has_type_member [with <unnamed>=Child, <unnamed>=void]" at line 25
+
+"Test_name.c", line 25: error: static assertion failed with ""
+    static_assert(!has_type_member<Child>, "");
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

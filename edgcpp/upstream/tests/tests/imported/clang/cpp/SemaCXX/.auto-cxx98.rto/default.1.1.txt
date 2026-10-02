@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 7: warning: "auto" as a type specifier is nonstandard in this mode
+    auto c; // expected-warning {{C++11 extension}} expected-error {{requires an initializer}}
+    ^
+
+"Test_name.c", line 7: error: cannot deduce "auto" type (initializer required)
+    auto c; // expected-warning {{C++11 extension}} expected-error {{requires an initializer}}
+         ^
+
+"Test_name.c", line 8: warning: "auto" as a type specifier is nonstandard in this mode
+    static auto d = 0; // expected-warning {{C++11 extension}}
+           ^
+
+"Test_name.c", line 9: warning: "auto" as a type specifier is nonstandard in this mode
+    auto static e = 0; // expected-warning {{C++11 extension}}
+    ^
+
+"Test_name.c", line 5: warning: variable "a" was declared but never referenced
+    auto int a; // expected-warning {{'auto' storage class specifier is redundant and incompatible with C++11}}
+             ^
+
+"Test_name.c", line 6: warning: variable "b" was declared but never referenced
+    int auto b; // expected-warning {{'auto' storage class specifier is redundant and incompatible with C++11}}
+             ^
+
+"Test_name.c", line 8: warning: variable "d" was declared but never referenced
+    static auto d = 0; // expected-warning {{C++11 extension}}
+                ^
+
+"Test_name.c", line 9: warning: variable "e" was declared but never referenced
+    auto static e = 0; // expected-warning {{C++11 extension}}
+                ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,44 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 74: error: "unique_ptr<T>::unique_ptr(const unique_ptr<T> &) [with T=int]" (declared at line 9) is inaccessible
+    unique_ptr<int> p4(p); // expected-error{{call to deleted constructor of 'unique_ptr<int>'}}
+                       ^
+
+"Test_name.c", line 74: error: function "unique_ptr<T>::unique_ptr(const unique_ptr<T> &) [with T=int]" (declared at line 9) cannot be referenced -- it is a deleted function
+    unique_ptr<int> p4(p); // expected-error{{call to deleted constructor of 'unique_ptr<int>'}}
+                       ^
+
+"Test_name.c", line 75: error: "unique_ptr<T>::unique_ptr(const unique_ptr<T> &) [with T=int]" (declared at line 9) is inaccessible
+    unique_ptr<int> p5 = p; // expected-error{{call to deleted constructor of 'unique_ptr<int>'}}
+                         ^
+
+"Test_name.c", line 75: error: function "unique_ptr<T>::unique_ptr(const unique_ptr<T> &) [with T=int]" (declared at line 9) cannot be referenced -- it is a deleted function
+    unique_ptr<int> p5 = p; // expected-error{{call to deleted constructor of 'unique_ptr<int>'}}
+                         ^
+
+"Test_name.c", line 82: error: "unique_ptr<T> &unique_ptr<T>::operator=(const unique_ptr<T> &) [with T=int]" (declared at line 10) is inaccessible
+    p2 = p3; // expected-error{{overload resolution selected deleted operator '='}}
+       ^
+
+"Test_name.c", line 82: error: function "unique_ptr<T>::operator=(const unique_ptr<T> &) [with T=int]" (declared at line 10) cannot be referenced -- it is a deleted function
+    p2 = p3; // expected-error{{overload resolution selected deleted operator '='}}
+       ^
+
+"Test_name.c", line 89: error: "unique_ptr<T>::unique_ptr(const unique_ptr<T> &) [with T=int]" (declared at line 9) is inaccessible
+    accept_unique_ptr(p); // expected-error{{call to deleted constructor of 'unique_ptr<int>'}}
+                      ^
+
+"Test_name.c", line 89: error: function "unique_ptr<T>::unique_ptr(const unique_ptr<T> &) [with T=int]" (declared at line 9) cannot be referenced -- it is a deleted function
+    accept_unique_ptr(p); // expected-error{{call to deleted constructor of 'unique_ptr<int>'}}
+                      ^
+
+"Test_name.c", line 103: error: function "perfect_forwarding::F0::operator()" cannot be called with the given argument list
+            argument types are: (perfect_forwarding::A, const perfect_forwarding::A, perfect_forwarding::A, const perfect_forwarding::A, const perfect_forwarding::A, const perfect_forwarding::A)
+            object type is: perfect_forwarding::F0
+      f(static_cast<Args&&>(args)...); // expected-error{{no matching function for call to object of type 'perfect_forwarding::F0'}}
+      ^
+"Test_name.c", line 98: note: function "perfect_forwarding::F0::operator()" does not match because argument #5 does not match parameter
+      void operator()(A&, const A&, A&&, const A&&, A&&, const A&&); // expected-note{{candidate function not viable: 5th argument ('const perfect_forwarding::A') would lose const qualifier}}
+           ^
+          detected during instantiation of "void perfect_forwarding::forward(F, Args &&...) [with F=perfect_forwarding::F0, Args=<perfect_forwarding::A &, const perfect_forwarding::A &, perfect_forwarding::A, const perfect_forwarding::A, const perfect_forwarding::A, const perfect_forwarding::A>]" at line 111
+
+9 errors detected in the compilation of "Test_name.c".

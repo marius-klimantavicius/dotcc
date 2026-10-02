@@ -1,0 +1,14 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --microsoft_version=1200 -n Test_name.c
+"Test_name.c", line 5: warning: dllexport/dllimport conflict with "f1" (declared at line 4); dllexport assumed
+  __declspec(dllexport) void f1() { }
+                             ^
+
+"Test_name.c", line 7: warning: dllexport/dllimport conflict with "f2" (declared at line 6); dllexport assumed
+  void f2() { }
+       ^
+
+"Test_name.c", line 10: error: a function declared "dllimport" may not be defined
+  __declspec(dllimport) void f4() { }
+                             ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 7: warning: this declaration has no storage class or type specifier
+  constexpr _Bool inf2 = (1.0/0.0 == __builtin_inf()); // expected-error {{must be initialized by a constant expression}} expected-note {{division by zero}}
+  ^
+
+"Test_name.c", line 7: error: expected a ";"
+  constexpr _Bool inf2 = (1.0/0.0 == __builtin_inf()); // expected-error {{must be initialized by a constant expression}} expected-note {{division by zero}}
+            ^
+
+"Test_name.c", line 8: warning: this declaration has no storage class or type specifier
+  constexpr _Bool inf3 = __builtin_inf() == __builtin_inf();
+  ^
+
+"Test_name.c", line 8: error: expected a ";"
+  constexpr _Bool inf3 = __builtin_inf() == __builtin_inf();
+            ^
+
+2 errors detected in the compilation of "Test_name.c".

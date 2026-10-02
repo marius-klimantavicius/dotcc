@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 12: error: identifier "__for_begin" is undefined
+      if (i != *__for_begin		// { dg-error "was not declared in this scope" }
+                ^
+
+"Test_name.c", line 13: error: identifier "__for_end" is undefined
+  	|| &i == __for_end		// { dg-error "was not declared in this scope" }
+  	         ^
+
+"Test_name.c", line 14: error: identifier "__for_range" is undefined
+  	|| &__for_range[0] != &a[0])	// { dg-error "was not declared in this scope" }
+  	    ^
+
+"Test_name.c", line 23: error: identifier "__for_begin" is undefined
+      if (i != *__for_begin		// { dg-error "was not declared in this scope" }
+                ^
+
+"Test_name.c", line 24: error: identifier "__for_end" is undefined
+  	|| &i == __for_end		// { dg-error "was not declared in this scope" }
+  	         ^
+
+"Test_name.c", line 25: error: identifier "__for_range" is undefined
+  	|| &__for_range[0] != &a[0])	// { dg-error "was not declared in this scope" }
+  	    ^
+
+6 errors detected in the compilation of "Test_name.c".

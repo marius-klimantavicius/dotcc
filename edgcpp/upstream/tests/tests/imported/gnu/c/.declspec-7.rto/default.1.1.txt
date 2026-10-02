@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c89 --strict_gnu Test_name.c
+"Test_name.c", line 13: error: duplicate specifier in declaration
+  inline inline void f0 (void),
+         ^
+
+"Test_name.c", line 16: error: more than one storage class may not be specified
+  static static int a, /* { dg-error "duplicate 'static'" } */
+         ^
+
+"Test_name.c", line 19: error: more than one storage class may not be specified
+  extern extern int c, /* { dg-error "duplicate 'extern'" } */
+         ^
+
+"Test_name.c", line 22: error: more than one storage class may not be specified
+  typedef typedef int e, /* { dg-error "duplicate 'typedef'" } */
+          ^
+
+"Test_name.c", line 28: error: more than one storage class may not be specified
+    auto auto int p, /* { dg-error "duplicate 'auto'" } */
+         ^
+
+"Test_name.c", line 31: error: more than one storage class may not be specified
+    register register int r, /* { dg-error "duplicate 'register'" } */
+             ^
+
+"Test_name.c", line 28: warning: variable "p" was declared but never referenced
+    auto auto int p, /* { dg-error "duplicate 'auto'" } */
+                  ^
+
+"Test_name.c", line 29: warning: variable "q" was declared but never referenced
+      q;
+      ^
+
+"Test_name.c", line 31: warning: variable "r" was declared but never referenced
+    register register int r, /* { dg-error "duplicate 'register'" } */
+                          ^
+
+"Test_name.c", line 32: warning: variable "s" was declared but never referenced
+      s;
+      ^
+
+"Test_name.c", line 37: error: more than one storage class may not be specified
+  static extern int x, /* { dg-error "multiple storage classes in declaration specifiers" } */
+         ^
+
+"Test_name.c", line 40: error: more than one storage class may not be specified
+  extern typedef long z, /* { dg-error "multiple storage classes in declaration specifiers" } */
+         ^
+
+"Test_name.c", line 16: warning: variable "a" was declared but never referenced
+  static static int a, /* { dg-error "duplicate 'static'" } */
+                    ^
+
+"Test_name.c", line 17: warning: variable "b" was declared but never referenced
+    b;
+    ^
+
+"Test_name.c", line 37: warning: variable "x" was declared but never referenced
+  static extern int x, /* { dg-error "multiple storage classes in declaration specifiers" } */
+                    ^
+
+"Test_name.c", line 38: warning: variable "y" was declared but never referenced
+    y;
+    ^
+
+8 errors detected in the compilation of "Test_name.c".

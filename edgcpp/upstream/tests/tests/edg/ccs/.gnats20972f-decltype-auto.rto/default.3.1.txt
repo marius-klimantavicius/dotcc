@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=3 --c++14 --sys_include $RUN_TEST_CURR_DIR/include --gnu_version 40900 Test_name.c
+"Test_name.c", line 11: error: cannot deduce "decltype(auto)" type
+    auto a = new decltype(auto) ({2});
+                 ^
+
+1 error detected in the compilation of "Test_name.c".

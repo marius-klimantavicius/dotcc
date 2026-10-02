@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./analyzer/out-of-bounds-read-int-arr.c", line 7: warning: subscript out of range
+    return arr[-100];
+              ^
+
+"./analyzer/out-of-bounds-read-int-arr.c", line 14: warning: subscript out of range
+    return arr[-2];
+              ^
+
+"./analyzer/out-of-bounds-read-int-arr.c", line 21: warning: subscript out of range
+    return arr[-1];
+              ^
+
+"./analyzer/out-of-bounds-read-int-arr.c", line 38: warning: subscript out of range
+    return arr[10];
+           ^
+
+"./analyzer/out-of-bounds-read-int-arr.c", line 46: warning: subscript out of range
+    return arr[11];
+              ^
+
+"./analyzer/out-of-bounds-read-int-arr.c", line 54: warning: subscript out of range
+    return arr[100];
+              ^
+

@@ -1,0 +1,48 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++23 Test_name.c
+"Test_name.c", line 13: warning: dynamic initialization in unreachable code
+        static int v = qux ();
+                   ^
+
+"Test_name.c", line 25: warning: dynamic initialization in unreachable code
+        thread_local int v = qux ();
+                         ^
+
+"Test_name.c", line 37: warning: dynamic initialization in unreachable code
+        static const int v = qux ();	// { dg-message "'v' was not initialized with a constant expression" }
+                         ^
+
+"Test_name.c", line 49: warning: dynamic initialization in unreachable code
+        const thread_local int v = qux ();	// { dg-message "'v' was not initialized with a constant expression" }
+                               ^
+
+"Test_name.c", line 58: error: expression must have a constant value
+  constexpr int c = baz (12);
+                    ^
+"Test_name.c", line 39: note: the value of variable "v" (declared at line 37) cannot be used as a constant
+        return v;	// { dg-error "the value of 'v' is not usable in a constant expression" }
+               ^
+
+"Test_name.c", line 59: error: expression must have a constant value
+  constexpr int d = corge (12);
+                    ^
+"Test_name.c", line 51: note: the value of variable "v" (declared at line 49) cannot be used as a constant
+        return v; // { dg-error "the value of 'v' is not usable in a constant expression" }
+               ^
+
+"Test_name.c", line 56: warning: variable "a" was declared but never referenced
+  constexpr int a = foo (12);
+                ^
+
+"Test_name.c", line 57: warning: variable "b" was declared but never referenced
+  constexpr int b = bar (12);
+                ^
+
+"Test_name.c", line 58: warning: variable "c" was declared but never referenced
+  constexpr int c = baz (12);
+                ^
+
+"Test_name.c", line 59: warning: variable "d" was declared but never referenced
+  constexpr int d = corge (12);
+                ^
+
+2 errors detected in the compilation of "Test_name.c".

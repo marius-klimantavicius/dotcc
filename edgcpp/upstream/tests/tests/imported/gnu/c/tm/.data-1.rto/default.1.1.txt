@@ -1,0 +1,70 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 29: error: identifier "__transaction_atomic" is undefined
+    __transaction_atomic {
+    ^
+
+"Test_name.c", line 29: error: expected a ";"
+    __transaction_atomic {
+                         ^
+
+"Test_name.c", line 50: warning: parsing restarts here after previous syntax error
+  }
+  ^
+
+"Test_name.c", line 7: warning: variable "gc" was declared but never referenced
+  static char gc;
+              ^
+
+"Test_name.c", line 8: warning: variable "gsc" was declared but never referenced
+  static signed char gsc;
+                     ^
+
+"Test_name.c", line 9: warning: variable "guc" was declared but never referenced
+  static unsigned char guc;
+                       ^
+
+"Test_name.c", line 11: warning: variable "gs" was declared but never referenced
+  static short gs;
+               ^
+
+"Test_name.c", line 12: warning: variable "gus" was declared but never referenced
+  static unsigned short gus;
+                        ^
+
+"Test_name.c", line 14: warning: variable "gi" was declared but never referenced
+  static int gi;
+             ^
+
+"Test_name.c", line 15: warning: variable "gui" was declared but never referenced
+  static unsigned int gui;
+                      ^
+
+"Test_name.c", line 17: warning: variable "gl" was declared but never referenced
+  static long gl;
+              ^
+
+"Test_name.c", line 18: warning: variable "gul" was declared but never referenced
+  static unsigned long gul;
+                       ^
+
+"Test_name.c", line 20: warning: variable "gll" was declared but never referenced
+  static long long gll;
+                   ^
+
+"Test_name.c", line 21: warning: variable "gull" was declared but never referenced
+  static unsigned long long gull;
+                            ^
+
+"Test_name.c", line 23: warning: variable "gf" was declared but never referenced
+  static float gf;
+               ^
+
+"Test_name.c", line 24: warning: variable "gd" was declared but never referenced
+  static double gd;
+                ^
+
+"Test_name.c", line 25: warning: variable "gld" was declared but never referenced
+  static long double gld;
+                     ^
+
+2 errors detected in the compilation of "Test_name.c".

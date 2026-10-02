@@ -1,0 +1,74 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 13: error: explicit type is missing ("int" assumed)
+    static constexpr bool value = false;
+           ^
+
+"Test_name.c", line 13: error: expected a ";"
+    static constexpr bool value = false;
+                     ^
+
+"Test_name.c", line 16: error: explicit type is missing ("int" assumed)
+    static constexpr bool value = true;
+           ^
+
+"Test_name.c", line 16: error: expected a ";"
+    static constexpr bool value = true;
+                     ^
+
+"Test_name.c", line 20: error: explicit type is missing ("int" assumed)
+    static constexpr int value = D-'0';
+           ^
+
+"Test_name.c", line 20: error: expected a ";"
+    static constexpr int value = D-'0';
+                     ^
+
+"Test_name.c", line 22: error: expected a "," or ">"
+  template<char... Ds> F<D2I<Ds...>::value> operator "" _F();
+               ^
+
+"Test_name.c", line 22: error: identifier "Ds" is undefined
+  template<char... Ds> F<D2I<Ds...>::value> operator "" _F();
+                             ^
+
+"Test_name.c", line 22: error: expected a ">"
+  template<char... Ds> F<D2I<Ds...>::value> operator "" _F();
+                               ^
+
+"Test_name.c", line 22: error: expected an operator
+  template<char... Ds> F<D2I<Ds...>::value> operator "" _F();
+                                                     ^
+
+"Test_name.c", line 25: error: expected a ")"
+    static void unused() { f<F<0>>(0_F); }
+                                    ^
+
+"Test_name.c", line 25: error: expected a ">"
+    static void unused() { f<F<0>>(0_F); }
+                                       ^
+
+"Test_name.c", line 25: error: expected a ">"
+    static void unused() { f<F<0>>(0_F); }
+                                       ^
+
+"Test_name.c", line 27: error: identifier "decltype" is undefined
+  static_assert(Eq<F<2>, decltype(2_F) >::value, "Unexpected!");
+                         ^
+
+"Test_name.c", line 27: error: expected a ")"
+  static_assert(Eq<F<2>, decltype(2_F) >::value, "Unexpected!");
+                                  ^
+
+"Test_name.c", line 27: error: this declaration has no storage class or type specifier
+  static_assert(Eq<F<2>, decltype(2_F) >::value, "Unexpected!");
+  ^
+
+"Test_name.c", line 27: error: class "Eq<F<2>, <error-type>>" has no member "value"
+  static_assert(Eq<F<2>, decltype(2_F) >::value, "Unexpected!");
+                                          ^
+
+"Test_name.c", line 27: error: too many initializer values
+  static_assert(Eq<F<2>, decltype(2_F) >::value, "Unexpected!");
+                                                 ^
+
+18 errors detected in the compilation of "Test_name.c".

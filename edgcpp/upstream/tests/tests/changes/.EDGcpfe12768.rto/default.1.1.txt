@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --g++ Test_name.c
+"Test_name.c", line 12: warning: trailing comma is nonstandard
+    S(),;    // Now accepted with a warning in GNU C++ mode.
+       ^
+
+"Test_name.c", line 13: warning: trailing comma is nonstandard
+    int i,;  // Ditto.
+         ^
+

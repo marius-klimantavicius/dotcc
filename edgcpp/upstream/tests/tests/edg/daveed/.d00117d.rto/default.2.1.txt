@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=2 -tused -DNEG -tused Test_name.c
+"Test_name.c", line 17: error: expected a ":"
+  		case 1 ... I:
+  		       ^
+          detected during instantiation of "void f<I,J>(int) [with I=4, J=5]" at line 24
+
+"Test_name.c", line 18: error: expected a ":"
+  		case J ... 10:
+  		       ^
+          detected during instantiation of "void f<I,J>(int) [with I=4, J=5]" at line 24
+
+"Test_name.c", line 17: error: expected a ":"
+  		case 1 ... I:
+  		       ^
+          detected during instantiation of "void f<I,J>(int) [with I=5, J=5]" at line 26
+
+"Test_name.c", line 18: error: expected a ":"
+  		case J ... 10:
+  		       ^
+          detected during instantiation of "void f<I,J>(int) [with I=5, J=5]" at line 26
+
+4 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,186 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 11: error: identifier "x" is undefined
+  x usex();        // expected-error{{reference to unresolved using declaration}}
+  ^
+
+"Test_name.c", line 13: error: identifier "NotNS" is undefined
+  using NotNS::x UIE; // expected-error{{use of undeclared identifier 'NotNS'}}
+        ^
+
+"Test_name.c", line 13: error: expected a ";"
+  using NotNS::x UIE; // expected-error{{use of undeclared identifier 'NotNS'}}
+             ^
+
+"Test_name.c", line 15: error: name followed by "::" must be a class or namespace name
+  using NS::NotNS::x UIE; // expected-error{{no member named 'NotNS' in namespace 'test_basic::NS'}}
+            ^
+
+"Test_name.c", line 56: error: class "test_dependent::BaseEmpty" has no member "mt"
+    using typename B::mt UIE; // expected-note{{using declaration annotated with 'using_if_exists' here}}
+                      ^
+          detected during instantiation of class "test_dependent::S<B> [with B=test_dependent::BaseEmpty]" at line 73
+
+"Test_name.c", line 75: error: class "test_dependent::S<test_dependent::BaseEmpty>" has no member "mf"
+    empty.mf(); // expected-error {{reference to unresolved using declaration}}
+          ^
+
+"Test_name.c", line 77: error: class "test_dependent::S<test_dependent::BaseEmpty>" has no member "mf"
+    (&empty)->mf(); // expected-error {{reference to unresolved using declaration}}
+              ^
+
+"Test_name.c", line 80: error: class "test_dependent::S<test_dependent::BaseEmpty>" has no member "mt"
+    S<BaseEmpty>::mt y; // expected-error {{reference to unresolved using declaration}}
+                  ^
+
+"Test_name.c", line 83: error: class "test_dependent::S<test_dependent::BaseEmpty>" has no member "mf"
+    S<BaseEmpty>::mf(); // expected-error {{reference to unresolved using declaration}}
+                  ^
+
+"Test_name.c", line 81: warning: variable "z" was declared but never referenced
+    S<BaseNonEmpty>::mt z;
+                        ^
+
+"Test_name.c", line 85: warning: variable "usector" was declared but never referenced
+    UseCtor<BaseCtor> usector;
+                      ^
+
+"Test_name.c", line 91: error: class "test_dependent::BaseEmpty" has no member "mt"
+    using typename B::mt UIE; // expected-note 2 {{using declaration annotated with 'using_if_exists' here}}
+                      ^
+          detected during instantiation of class "test_dependent::Implicit<B> [with B=test_dependent::BaseEmpty]" at line 103
+
+"Test_name.c", line 98: error: identifier "mt" is undefined
+    mt alsoUse(); // expected-error {{reference to unresolved using declaration}}
+    ^
+          detected during instantiation of class "test_dependent::Implicit<B> [with B=test_dependent::BaseEmpty]" at line 103
+
+"Test_name.c", line 111: error: identifier "x" is undefined
+    x y();                  // expected-error{{reference to unresolved using declaration}}
+    ^
+
+"Test_name.c", line 118: error: expected a ";"
+    using typename Ts::x... UIE; // expected-error 2 {{target of using declaration conflicts with declaration already in scope}} expected-note{{conflicting declaration}} expected-note{{target of using declaration}}
+                            ^
+
+"Test_name.c", line 118: error: class "test_using_pack::E1" has no member "x"
+    using typename Ts::x... UIE; // expected-error 2 {{target of using declaration conflicts with declaration already in scope}} expected-note{{conflicting declaration}} expected-note{{target of using declaration}}
+                       ^
+          detected during instantiation of class "test_using_pack::S<Ts...> [with Ts=<test_using_pack::E1, test_using_pack::E2>]" at line 123
+
+"Test_name.c", line 118: error: class "test_using_pack::E2" has no member "x"
+    using typename Ts::x... UIE; // expected-error 2 {{target of using declaration conflicts with declaration already in scope}} expected-note{{conflicting declaration}} expected-note{{target of using declaration}}
+                       ^
+          detected during instantiation of class "test_using_pack::S<Ts...> [with Ts=<test_using_pack::E1, test_using_pack::E2>]" at line 123
+
+"Test_name.c", line 118: error: "x" has already been declared in the current scope
+    using typename Ts::x... UIE; // expected-error 2 {{target of using declaration conflicts with declaration already in scope}} expected-note{{conflicting declaration}} expected-note{{target of using declaration}}
+                       ^
+          detected during instantiation of class "test_using_pack::S<Ts...> [with Ts=<test_using_pack::F1, test_using_pack::F2>]" at line 131
+
+"Test_name.c", line 118: error: class "test_using_pack::E1" has no member "x"
+    using typename Ts::x... UIE; // expected-error 2 {{target of using declaration conflicts with declaration already in scope}} expected-note{{conflicting declaration}} expected-note{{target of using declaration}}
+                       ^
+          detected during instantiation of class "test_using_pack::S<Ts...> [with Ts=<test_using_pack::E1, test_using_pack::F2>]" at line 133
+
+"Test_name.c", line 118: error: class "test_using_pack::E2" has no member "x"
+    using typename Ts::x... UIE; // expected-error 2 {{target of using declaration conflicts with declaration already in scope}} expected-note{{conflicting declaration}} expected-note{{target of using declaration}}
+                       ^
+          detected during instantiation of class "test_using_pack::S<Ts...> [with Ts=<test_using_pack::F1, test_using_pack::E2>]" at line 134
+
+"Test_name.c", line 138: error: expected a ";"
+    using typename Ts::x... UIE; // expected-error 2 {{target of using declaration conflicts with declaration already in scope}} expected-note 3 {{using declaration annotated with 'using_if_exists' here}} expected-note{{conflicting declaration}} expected-note{{target of using declaration}}
+                            ^
+
+"Test_name.c", line 138: error: class "test_using_pack::E1" has no member "x"
+    using typename Ts::x... UIE; // expected-error 2 {{target of using declaration conflicts with declaration already in scope}} expected-note 3 {{using declaration annotated with 'using_if_exists' here}} expected-note{{conflicting declaration}} expected-note{{target of using declaration}}
+                       ^
+          detected during instantiation of class "test_using_pack::S2<Ts...> [with Ts=<test_using_pack::E1, test_using_pack::E2>]" at line 143
+
+"Test_name.c", line 138: error: class "test_using_pack::E2" has no member "x"
+    using typename Ts::x... UIE; // expected-error 2 {{target of using declaration conflicts with declaration already in scope}} expected-note 3 {{using declaration annotated with 'using_if_exists' here}} expected-note{{conflicting declaration}} expected-note{{target of using declaration}}
+                       ^
+          detected during instantiation of class "test_using_pack::S2<Ts...> [with Ts=<test_using_pack::E1, test_using_pack::E2>]" at line 143
+
+"Test_name.c", line 140: error: identifier "x" is undefined
+    x mem(); // expected-error 3 {{reference to unresolved using declaration}}
+    ^
+          detected during instantiation of class "test_using_pack::S2<Ts...> [with Ts=<test_using_pack::E1, test_using_pack::E2>]" at line 143
+
+"Test_name.c", line 138: error: "x" has already been declared in the current scope
+    using typename Ts::x... UIE; // expected-error 2 {{target of using declaration conflicts with declaration already in scope}} expected-note 3 {{using declaration annotated with 'using_if_exists' here}} expected-note{{conflicting declaration}} expected-note{{target of using declaration}}
+                       ^
+          detected during instantiation of class "test_using_pack::S2<Ts...> [with Ts=<test_using_pack::F1, test_using_pack::F2>]" at line 144
+
+"Test_name.c", line 138: error: class "test_using_pack::E1" has no member "x"
+    using typename Ts::x... UIE; // expected-error 2 {{target of using declaration conflicts with declaration already in scope}} expected-note 3 {{using declaration annotated with 'using_if_exists' here}} expected-note{{conflicting declaration}} expected-note{{target of using declaration}}
+                       ^
+          detected during instantiation of class "test_using_pack::S2<Ts...> [with Ts=<test_using_pack::E1, test_using_pack::F2>]" at line 145
+
+"Test_name.c", line 138: error: class "test_using_pack::E2" has no member "x"
+    using typename Ts::x... UIE; // expected-error 2 {{target of using declaration conflicts with declaration already in scope}} expected-note 3 {{using declaration annotated with 'using_if_exists' here}} expected-note{{conflicting declaration}} expected-note{{target of using declaration}}
+                       ^
+          detected during instantiation of class "test_using_pack::S2<Ts...> [with Ts=<test_using_pack::F1, test_using_pack::E2>]" at line 146
+
+"Test_name.c", line 150: error: expected a ";"
+    using Ts::m... UIE; // expected-error{{target of using declaration conflicts with declaration already in scope}} expected-note{{target of using declaration}}
+                   ^
+
+"Test_name.c", line 150: error: class "test_using_pack::B2" has no member "m"
+    using Ts::m... UIE; // expected-error{{target of using declaration conflicts with declaration already in scope}} expected-note{{target of using declaration}}
+              ^
+          detected during instantiation of class "test_using_pack::S3<Ts...> [with Ts=<test_using_pack::B1, test_using_pack::B2>]" at line 157
+
+"Test_name.c", line 118: error: class "test_using_pack::B2" has no member "x"
+    using typename Ts::x... UIE; // expected-error 2 {{target of using declaration conflicts with declaration already in scope}} expected-note{{conflicting declaration}} expected-note{{target of using declaration}}
+                       ^
+          detected during instantiation of class "test_using_pack::S<Ts...> [with Ts=<test_using_pack::B2, test_using_pack::B1>]" at line 158
+
+"Test_name.c", line 118: error: class "test_using_pack::B1" has no member "x"
+    using typename Ts::x... UIE; // expected-error 2 {{target of using declaration conflicts with declaration already in scope}} expected-note{{conflicting declaration}} expected-note{{target of using declaration}}
+                       ^
+          detected during instantiation of class "test_using_pack::S<Ts...> [with Ts=<test_using_pack::B2, test_using_pack::B1>]" at line 158
+
+"Test_name.c", line 171: error: namespace "test_nested::NS2" has no member "x"
+  NS2::x y; // expected-error {{reference to unresolved using declaration}}
+       ^
+
+"Test_name.c", line 202: error: attribute "using_if_exists" does not apply here
+  using alias UIE = NS::x; // expected-error {{'using_if_exists' attribute only applies to named declarations, types, and value declarations}}
+              ^
+
+"Test_name.c", line 207: error: attribute "using_if_exists" does not apply here
+  void f() UIE; // expected-error {{'using_if_exists' attribute only applies to named declarations, types, and value declarations}}
+           ^
+
+"Test_name.c", line 209: error: attribute "using_if_exists" does not apply here
+  using namespace NS UIE; // expected-error {{'using_if_exists' attribute only applies to named declarations, types, and value declarations}}
+                     ^
+
+"Test_name.c", line 224: error: namespace "std" has no member "fake_fopen"
+    file = std::fake_fopen(); // expected-error {{reference to unresolved using declaration}} expected-error{{incompatible integer to pointer}}
+                ^
+
+"Test_name.c", line 225: error: namespace "std" has no member "fake_size_t"
+    std::fake_size_t size;    // expected-error {{reference to unresolved using declaration}}
+         ^
+
+"Test_name.c", line 223: warning: variable "file" was set but never used
+    std::fake_FILE file;
+                   ^
+
+"Test_name.c", line 94: error: identifier "mf" is undefined
+      mf(); // expected-error {{reference to unresolved using declaration}}
+      ^
+          detected during instantiation of "void test_dependent::Implicit<B>::use() [with B=test_dependent::BaseEmpty]" at line 105
+
+"Test_name.c", line 95: error: identifier "mt" is undefined
+      mt x; // expected-error {{reference to unresolved using declaration}}
+      ^
+          detected during instantiation of "void test_dependent::Implicit<B>::use() [with B=test_dependent::BaseEmpty]" at line 105
+
+"Test_name.c", line 95: error: expected a ";"
+      mt x; // expected-error {{reference to unresolved using declaration}}
+         ^
+          detected during instantiation of "void test_dependent::Implicit<B>::use() [with B=test_dependent::BaseEmpty]" at line 105
+
+38 errors detected in the compilation of "Test_name.c".

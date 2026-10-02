@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=8 --c++ --clang_version 180100 --target linux_armv7 Test_name.c
+"Test_name.c", line 7: error: identifier "__builtin_cpu_init" is undefined
+      __builtin_cpu_init();
+      ^
+
+"Test_name.c", line 8: error: identifier "__builtin_cpu_is" is undefined
+      __builtin_cpu_is("intel");
+      ^
+
+"Test_name.c", line 9: error: identifier "__builtin_cpu_supports" is undefined
+      __builtin_cpu_supports("mmx");
+      ^
+
+3 errors detected in the compilation of "Test_name.c".

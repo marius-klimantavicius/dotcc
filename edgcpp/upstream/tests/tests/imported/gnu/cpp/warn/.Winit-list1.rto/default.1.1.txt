@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./warn/Winit-list1.C", line 12: warning: a "new" of an std::initializer_list object is unlikely to work as expected because the underlying array will be destroyed at the end of the full expression
+    il = *new IL{ 7, 8, 9 };
+                ^
+

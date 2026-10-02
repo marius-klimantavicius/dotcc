@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: error: no instance of function template "fn" matches the argument list
+            argument types are: (E)
+    template <typename T> void mfn(T t) { t, fn(E()); } // { dg-error "cannot bind non-const lvalue reference" }
+                                             ^
+"Test_name.c", line 5: note: function template "fn" does not match because argument #1 does not match parameter
+  template <typename T> void fn(T &);
+                             ^
+
+"Test_name.c", line 8: warning: expression has no effect
+    template <typename T> void mfn(T t) { t, fn(E()); } // { dg-error "cannot bind non-const lvalue reference" }
+                                          ^
+          detected during instantiation of "void F::mfn(T) [with T=E]" at line 15
+
+1 error detected in the compilation of "Test_name.c".

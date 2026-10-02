@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 14: error: identifier "ssacnf" is undefined
+    return ssacnf (p, "%d", &i); /* { dg-error "10: .ssacnf. was not declared in this scope; did you mean 'sscafn'\\?" } */
+           ^
+
+"Test_name.c", line 29: error: identifier "sacnf" is undefined
+    return sacnf ("%d", &i); /* { dg-error "10: .sacnf. was not declared in this scope; did you mean 'scanf'\\?" } */
+           ^
+
+2 errors detected in the compilation of "Test_name.c".

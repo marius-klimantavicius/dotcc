@@ -1,0 +1,150 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 6: error: default argument not at end of parameter list
+  void f1(int = 0, int);                       // { dg-error "default" }
+                ^
+
+"Test_name.c", line 8: error: default argument not at end of parameter list
+  void f2(int = 0, int) {}                     // { dg-error "default" }
+                ^
+
+"Test_name.c", line 11: error: default argument not at end of parameter list
+  void f3(int = 0, int);                       // { dg-error "default" }
+                ^
+
+"Test_name.c", line 14: error: default argument not at end of parameter list
+  void f4(int = 0, int) {}                     // { dg-error "default" }
+                ^
+
+"Test_name.c", line 17: error: default argument not at end of parameter list
+  void f5(int = 0, int);                       // { dg-error "default" }
+                ^
+
+"Test_name.c", line 20: error: default argument not at end of parameter list
+  void f6(int = 0, int) {}                     // { dg-error "default" }
+                ^
+
+"Test_name.c", line 22: error: default argument not at end of parameter list
+  template<typename> void g1(int = 0, int);    // { dg-error "default" }
+                          ^
+
+"Test_name.c", line 24: error: default argument not at end of parameter list
+  template<typename> void g2(int = 0, int) {}  // { dg-error "default" }
+                          ^
+
+"Test_name.c", line 27: warning: specifying a default argument when redeclaring an unreferenced function template is nonstandard
+  template<typename> void g3(int = 0, int);    // { dg-error "default" }
+                          ^
+
+"Test_name.c", line 27: error: default argument not at end of parameter list
+  template<typename> void g3(int = 0, int);    // { dg-error "default" }
+                          ^
+
+"Test_name.c", line 30: warning: specifying a default argument when redeclaring an unreferenced function template is nonstandard
+  template<typename> void g4(int = 0, int) {}  // { dg-error "default" }
+                          ^
+
+"Test_name.c", line 30: error: default argument not at end of parameter list
+  template<typename> void g4(int = 0, int) {}  // { dg-error "default" }
+                          ^
+
+"Test_name.c", line 33: error: default argument not at end of parameter list
+  template<typename> void g5(int = 0, int);    // { dg-error "default" }
+                          ^
+
+"Test_name.c", line 36: error: default argument not at end of parameter list
+  template<typename> void g6(int = 0, int) {}  // { dg-error "default" }
+                          ^
+
+"Test_name.c", line 39: error: default argument not at end of parameter list
+  template<typename T> void g7(T* = 0, T*) {}  // { dg-error "default" }
+                            ^
+
+"Test_name.c", line 56: error: default argument not at end of parameter list
+    template<typename> void G1(int = 0, int);    // { dg-error "default" }
+                                     ^
+
+"Test_name.c", line 58: error: default argument not at end of parameter list
+    template<typename> void G2(int = 0, int) {}  // { dg-error "default" }
+                                     ^
+
+"Test_name.c", line 63: error: default argument not at end of parameter list
+    template<typename> void G4(int = 0, int);    // { dg-error "default" }
+                                     ^
+
+"Test_name.c", line 66: error: default argument not at end of parameter list
+    template<typename> void G5(int = 0, int) {}  // { dg-error "default" }
+                                     ^
+
+"Test_name.c", line 69: error: default argument not at end of parameter list
+    template<typename T> void G6(T* = 0, T*) {}  // { dg-error "default" }
+                                      ^
+
+"Test_name.c", line 44: error: default argument not at end of parameter list
+    void F1(int = 0, int);                       // { dg-error "default" }
+                  ^
+
+"Test_name.c", line 46: error: default argument not at end of parameter list
+    void F2(int = 0, int) {}                     // { dg-error "default" }
+                  ^
+
+"Test_name.c", line 51: error: default argument not at end of parameter list
+    void F4(int = 0, int);                       // { dg-error "default" }
+                  ^
+
+"Test_name.c", line 54: error: default argument not at end of parameter list
+    void F5(int = 0, int) {}                     // { dg-error "default" }
+                  ^
+
+"Test_name.c", line 72: error: default argument not at end of parameter list
+  void A::F3(int = 0, int) {}                     // { dg-error "default" }
+          ^
+
+"Test_name.c", line 74: error: default argument not at end of parameter list
+  template<typename> void A::G3(int = 0, int) {}  // { dg-error "default" }
+                             ^
+
+"Test_name.c", line 91: error: default argument not at end of parameter list
+    template<typename> void G1(int = 0, int);    // { dg-error "default" }
+                                     ^
+
+"Test_name.c", line 93: error: default argument not at end of parameter list
+    template<typename> void G2(int = 0, int) {}  // { dg-error "default" }
+                                     ^
+
+"Test_name.c", line 98: error: default argument not at end of parameter list
+    template<typename> void G4(int = 0, int);    // { dg-error "default" }
+                                     ^
+
+"Test_name.c", line 101: error: default argument not at end of parameter list
+    template<typename> void G5(int = 0, int) {}  // { dg-error "default" }
+                                     ^
+
+"Test_name.c", line 104: error: default argument not at end of parameter list
+    template<typename T> void G6(T* = 0, T*) {}  // { dg-error "default" }
+                                      ^
+
+"Test_name.c", line 79: error: default argument not at end of parameter list
+    void F1(int = 0, int);                       // { dg-error "default" }
+                  ^
+
+"Test_name.c", line 81: error: default argument not at end of parameter list
+    void F2(int = 0, int) {}                     // { dg-error "default" }
+                  ^
+
+"Test_name.c", line 86: error: default argument not at end of parameter list
+    void F4(int = 0, int);                       // { dg-error "default" }
+                  ^
+
+"Test_name.c", line 89: error: default argument not at end of parameter list
+    void F5(int = 0, int) {}                     // { dg-error "default" }
+                  ^
+
+"Test_name.c", line 108: error: default argument not at end of parameter list
+  void B<T>::F3(int = 0, int) {}  // { dg-error "default" }
+             ^
+
+"Test_name.c", line 111: error: default argument not at end of parameter list
+  void B<T>::G3(int = 0, int) {}  // { dg-error "default" }
+             ^
+
+35 errors detected in the compilation of "Test_name.c".

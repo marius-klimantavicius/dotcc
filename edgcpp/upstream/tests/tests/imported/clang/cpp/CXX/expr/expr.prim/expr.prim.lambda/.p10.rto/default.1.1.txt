@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 22: error: overloaded function "X0::Overload" is not a variable
+      (void)[&Overload] () {}; // expected-error {{does not name a variable}} 
+              ^
+
+"Test_name.c", line 23: error: a variable with static storage duration cannot be captured in a lambda
+      (void)[&GlobalVar] () {}; // expected-error {{does not have automatic storage duration}} 
+              ^
+
+"Test_name.c", line 24: error: a variable with static storage duration cannot be captured in a lambda
+      (void)[&AmbiguousVar] () {}; // expected-error {{reference to 'AmbiguousVar' is ambiguous}} 
+              ^
+
+"Test_name.c", line 25: error: identifier "Variable" is undefined
+      (void)[&Variable] () {}; // expected-error {{use of undeclared identifier 'Variable'; did you mean 'variable'}}
+              ^
+
+"Test_name.c", line 21: warning: variable "variable" was declared but never referenced
+      int variable; // expected-note {{declared here}}
+          ^
+
+"Test_name.c", line 35: error: a local variable outside the current function scope cannot be captured
+          (void)[local, // expected-error{{reference to local variable 'local' declared in enclosing function 'test_reaching_scope'}}
+                 ^
+
+"Test_name.c", line 36: error: a variable with static storage duration cannot be captured in a lambda
+                 local_static]() { // expected-error{{'local_static' cannot be captured because it does not have automatic storage duration}}
+                 ^
+
+"Test_name.c", line 30: warning: variable "local" was declared but never referenced
+    int local; // expected-note{{declared here}}
+        ^
+
+"Test_name.c", line 31: warning: variable "local_static" was declared but never referenced
+    static int local_static; // expected-note{{'local_static' declared here}}
+               ^
+
+6 errors detected in the compilation of "Test_name.c".

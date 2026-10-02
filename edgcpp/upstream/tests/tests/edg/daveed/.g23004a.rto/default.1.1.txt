@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --microsoft Test_name.c
+"Test_name.c", line 12: warning: variable "IID_it" has already been defined (previous definition at line 10)
+  extern "C" __declspec(selectany)  GUI IID_it = { 0x1df0111 };
+                                        ^
+

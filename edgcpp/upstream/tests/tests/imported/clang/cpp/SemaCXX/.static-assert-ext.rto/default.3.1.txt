@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=3 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 8: error: static assertion failed with "a"
+  static_assert(false, "a");
+  ^
+
+"Test_name.c", line 14: error: static assertion failed
+  static_assert(false);
+  ^
+
+"Test_name.c", line 25: error: expected a string literal
+  static_assert(false, X());
+                       ^
+
+3 errors detected in the compilation of "Test_name.c".

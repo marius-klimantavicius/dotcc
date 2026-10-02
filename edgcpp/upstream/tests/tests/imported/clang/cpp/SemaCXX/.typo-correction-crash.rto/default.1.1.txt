@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 6: warning: statement is unreachable
+    return s; // expected-error {{use of undeclared identifier 's'}}
+    ^
+
+"Test_name.c", line 6: error: identifier "s" is undefined
+    return s; // expected-error {{use of undeclared identifier 's'}}
+           ^
+
+"Test_name.c", line 12: warning: statement is unreachable
+    return tes; // expected-error {{use of undeclared identifier 'tes'}}
+    ^
+
+"Test_name.c", line 12: error: identifier "tes" is undefined
+    return tes; // expected-error {{use of undeclared identifier 'tes'}}
+           ^
+
+"Test_name.c", line 19: error: identifier "s" is undefined
+  auto L1 = [] { return s; }; // expected-error {{use of undeclared identifier 's'}}
+                        ^
+
+"Test_name.c", line 21: error: static assertion failed with "Return statement should be discarded"
+  static_assert(is_same<T1, void>::value, "Return statement should be discarded");
+  ^
+
+"Test_name.c", line 22: error: identifier "tes" is undefined
+  auto L2 = [] { return tes; }; // expected-error {{use of undeclared identifier 'tes'}}
+                        ^
+
+"Test_name.c", line 24: error: static assertion failed with "Return statement was corrected"
+  static_assert(is_same<T2, int>::value, "Return statement was corrected");
+  ^
+
+"Test_name.c", line 32: error: name followed by "::" must be a class or namespace name
+  FooRecord::NestedNamespace::type x; // expected-error {{no member named 'NestedNamespace' in 'FooRecord'; did you mean 'BarNamespace::NestedNamespace'?}}
+             ^
+
+"Test_name.c", line 34: error: identifier "n" is undefined
+  void cast_expr(int g) { +int(n)(g); } // expected-error {{undeclared identifier 'n'}}
+                               ^
+
+"Test_name.c", line 36: error: identifier "_test_" is undefined
+  void bind() { for (const auto& [test,_] : _test_) { }; } // expected-error {{undeclared identifier '_test_'}} \
+                                            ^
+
+"Test_name.c", line 42: error: identifier "unknown2" is undefined
+      unknown1(unknown2, Function, unknown3); // expected-error 2{{use of undeclared identifier}}
+               ^
+
+"Test_name.c", line 42: error: identifier "unknown3" is undefined
+      unknown1(unknown2, Function, unknown3); // expected-error 2{{use of undeclared identifier}}
+                                   ^
+
+"Test_name.c", line 42: error: identifier "unknown1" is undefined
+      unknown1(unknown2, Function, unknown3); // expected-error 2{{use of undeclared identifier}}
+      ^
+
+"Test_name.c", line 50: error: identifier "files_db_data" is undefined
+    for (auto file_data :b(files_db_data)); // expected-error {{use of undeclared identifier 'files_db_data'}}
+                           ^
+
+13 errors detected in the compilation of "Test_name.c".

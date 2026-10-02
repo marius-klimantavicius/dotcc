@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gcc --gn 90300 --c18 Test_name.c
+"Test_name.c", line 13: warning: variable "x" was declared but never referenced
+    __auto_type const x = i;  // Previously a spurious error.  Now okay.
+                      ^
+

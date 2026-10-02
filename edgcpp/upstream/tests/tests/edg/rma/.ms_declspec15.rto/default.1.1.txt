@@ -1,0 +1,50 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --microsoft -n Test_name.c
+"Test_name.c", line 4: error: expected a "("
+  extern int __declspec(allocate) a;                  // Error
+                                ^
+
+"Test_name.c", line 5: error: expected a string literal
+  extern int __declspec(allocate()) b;                // Error
+                                 ^
+
+"Test_name.c", line 6: error: expected a string literal
+  extern int __declspec(allocate(a)) c;               // Error
+                                 ^
+
+"Test_name.c", line 12: error: declaration modifiers are incompatible with previous declaration
+  int __declspec(allocate("yyyyy")) y;                // Error
+                 ^
+
+"Test_name.c", line 18: error: attribute "allocate" does not apply here
+    int __declspec(allocate("xxx")) x;                // Error
+                   ^
+
+"Test_name.c", line 23: error: declaration modifiers are incompatible with previous declaration
+  int __declspec(allocate("yyy")) S::z = 0;           // Error
+                 ^
+
+"Test_name.c", line 25: error: attribute "allocate" does not apply here
+  void __declspec(allocate("xxx")) f() {              // Error
+                  ^
+
+"Test_name.c", line 26: remark: declaration hides variable "x" (declared at line 9)
+    int __declspec(allocate("xxx")) x;                // Error
+                                    ^
+
+"Test_name.c", line 26: error: attribute "allocate" does not apply to automatic variables
+    int __declspec(allocate("xxx")) x;                // Error
+                   ^
+
+"Test_name.c", line 27: remark: declaration hides variable "y" (declared at line 12)
+    static int __declspec(allocate("xxx")) y;
+                                           ^
+
+"Test_name.c", line 26: warning: variable "x" was declared but never referenced
+    int __declspec(allocate("xxx")) x;                // Error
+                                    ^
+
+"Test_name.c", line 30: warning: attribute "allocate" does not apply here
+  struct __declspec(allocate("xxx")) SS { };          // Error
+                    ^
+
+8 errors detected in the compilation of "Test_name.c".

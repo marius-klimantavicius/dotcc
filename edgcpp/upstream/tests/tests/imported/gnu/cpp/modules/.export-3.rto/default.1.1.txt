@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 --modules --c++20 Test_name.c
+"Test_name.c", line 20: error: "export" is not allowed
+  template <> export struct S<double>;  // { dg-error "expected unqualified-id" }
+              ^
+
+"Test_name.c", line 22: error: an export declaration cannot contain an export declaration (previous declaration at line 22)
+  export export int x;  // { dg-error ".export. may only occur once" }
+         ^
+
+"Test_name.c", line 24: error: an export declaration cannot contain an export declaration (previous declaration at line 24)
+  export { export int y; }  // { dg-error ".export. may only occur once" }
+           ^
+
+"Test_name.c", line 30: error: an exported declaration must introduce a name
+  export namespace {}  // { dg-error "exporting unnamed namespace" }
+         ^
+
+4 errors detected in the compilation of "Test_name.c".

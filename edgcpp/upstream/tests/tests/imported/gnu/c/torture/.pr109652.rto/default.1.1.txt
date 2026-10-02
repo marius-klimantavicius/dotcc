@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 21: error: too many arguments in function call
+    iregEnc(ri->ARMri5);
+            ^
+
+"Test_name.c", line 31: warning: statement is unreachable
+      instr |= subopc | rN;
+      ^
+
+"Test_name.c", line 31: warning: variable "subopc" is used before its value is set
+      instr |= subopc | rN;
+               ^
+
+"Test_name.c", line 31: warning: variable "rN" is used before its value is set
+      instr |= subopc | rN;
+                        ^
+
+"Test_name.c", line 31: warning: variable "instr" is used before its value is set
+      instr |= subopc | rN;
+      ^
+
+1 error detected in the compilation of "Test_name.c".

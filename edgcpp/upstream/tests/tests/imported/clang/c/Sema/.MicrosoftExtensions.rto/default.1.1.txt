@@ -1,0 +1,122 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -w --ms_extensions --c Test_name.c
+"Test_name.c", line 30: error: unknown attribute "uuid"
+  struct __declspec(uuid("00000000-0000-0000-C000-000000000046")) IUnknown {}; /* expected-error {{'uuid' attribute is not supported in C}} */
+                    ^
+
+"Test_name.c", line 79: error: struct "test" has no field "bad1"
+    var.bad1;   // expected-error {{no member named 'bad1' in 'struct test'}}
+        ^
+
+"Test_name.c", line 80: error: struct "test" has no field "bad2"
+    var.bad2;   // expected-error {{no member named 'bad2' in 'struct test'}}
+        ^
+
+"Test_name.c", line 107: error: identifier "UNKNOWN" is undefined
+    UNKNOWN u; // expected-error {{unknown type name 'UNKNOWN'}}
+    ^
+
+"Test_name.c", line 128: error: expected a string literal
+  struct __declspec(deprecated(123)) DS2 {};	// expected-error {{expected string literal as argument of 'deprecated' attribute}}
+                               ^
+
+"Test_name.c", line 138: error: __sptr and __uptr must follow a "*"
+  int __sptr wrong1; // expected-error {{'__sptr' attribute only applies to pointer arguments}}
+      ^
+
+"Test_name.c", line 140: error: __sptr and __uptr must follow a "*"
+  int __sptr *wrong_psp; // expected-error {{'__sptr' attribute only applies to pointer arguments}}
+      ^
+
+"Test_name.c", line 141: error: __sptr and __uptr cannot both be specified
+  int * __sptr __uptr wrong2; // expected-error {{'__sptr' and '__uptr' attributes are not compatible}}
+               ^
+
+"Test_name.c", line 146: error: function "ptr_func" has already been defined (previous definition at line 145)
+  void ptr_func(int * __ptr64 i) {} // expected-error {{redefinition of 'ptr_func'}}
+       ^
+
+"Test_name.c", line 150: error: function "ptr_func2" has already been defined (previous definition at line 149)
+  void ptr_func2(int * __uptr __ptr32 i) {} // expected-error {{redefinition of 'ptr_func2'}}
+       ^
+
+"Test_name.c", line 154: error: function "ptr_func3" has already been defined (previous definition at line 153)
+  void *__ptr64 ptr_func3(void) { return 0; } // expected-error {{redefinition of 'ptr_func3'}}
+                ^
+
+"Test_name.c", line 168: error: expected a declaration
+  __ptr32 int *wrong5; // expected-error {{'__ptr32' attribute only applies to pointer arguments}}
+  ^
+
+"Test_name.c", line 170: error: expected a ";"
+  int *wrong6 __ptr32;  // expected-error {{expected ';' after top level declarator}} expected-warning {{declaration does not declare anything}}
+              ^
+
+"Test_name.c", line 172: error: __ptr32 and __ptr64 cannot both apply
+  int * __ptr32 __ptr64 wrong7;  // expected-error {{'__ptr32' and '__ptr64' attributes are not compatible}}
+                ^
+
+"Test_name.c", line 176: error: __ptr32 and __ptr64 must follow a "*"
+  int *(__ptr32 __sptr wrong9); // expected-error {{'__sptr' attribute only applies to pointer arguments}} // expected-error {{'__ptr32' attribute only applies to pointer arguments}}
+        ^
+
+"Test_name.c", line 176: error: __sptr and __uptr must follow a "*"
+  int *(__ptr32 __sptr wrong9); // expected-error {{'__sptr' attribute only applies to pointer arguments}} // expected-error {{'__ptr32' attribute only applies to pointer arguments}}
+                ^
+
+"Test_name.c", line 178: error: __ptr32 and __ptr64 must follow a "*"
+  int *(__ptr32 wrong10); // expected-error {{'__ptr32' attribute only applies to pointer arguments}}
+        ^
+
+"Test_name.c", line 180: error: __ptr32 and __ptr64 must follow a "*"
+  int *(__ptr64 wrong11); // expected-error {{'__ptr64' attribute only applies to pointer arguments}}
+        ^
+
+"Test_name.c", line 182: error: __ptr32 and __ptr64 must follow a "*"
+  int *(__ptr32 __ptr64 wrong12); // expected-error {{'__ptr32' attribute only applies to pointer arguments}} // expected-error {{'__ptr64' attribute only applies to pointer arguments}}
+        ^
+
+"Test_name.c", line 182: error: __ptr32 and __ptr64 must follow a "*"
+  int *(__ptr32 __ptr64 wrong12); // expected-error {{'__ptr32' attribute only applies to pointer arguments}} // expected-error {{'__ptr64' attribute only applies to pointer arguments}}
+                ^
+
+"Test_name.c", line 185: error: __ptr32 and __ptr64 must follow a "*"
+  T __ptr32 ok1;
+    ^
+
+"Test_name.c", line 186: error: __ptr32 and __ptr64 must follow a "*"
+  T __ptr64 ok2;
+    ^
+
+"Test_name.c", line 187: error: __ptr32 and __ptr64 must follow a "*"
+  T __ptr32 __ptr64 wrong13; // expected-error {{'__ptr32' and '__ptr64' attributes are not compatible}}
+    ^
+
+"Test_name.c", line 187: error: __ptr32 and __ptr64 must follow a "*"
+  T __ptr32 __ptr64 wrong13; // expected-error {{'__ptr32' and '__ptr64' attributes are not compatible}}
+            ^
+
+"Test_name.c", line 191: error: __ptr32 and __ptr64 must follow a "*"
+  T1 __ptr32 wrong14;  // expected-warning {{attribute '__ptr32' is already applied}}
+     ^
+
+"Test_name.c", line 192: error: __ptr32 and __ptr64 must follow a "*"
+  T1 __ptr64 wrong15;  // expected-error {{'__ptr32' and '__ptr64' attributes are not compatible}}
+     ^
+
+"Test_name.c", line 196: error: __ptr32 and __ptr64 must follow a "*"
+  T2 __ptr64 wrong16;  // expected-warning {{attribute '__ptr64' is already applied}}
+     ^
+
+"Test_name.c", line 197: error: __ptr32 and __ptr64 must follow a "*"
+  T2 __ptr32 wrong17;  // expected-error {{'__ptr32' and '__ptr64' attributes are not compatible}}
+     ^
+
+"Test_name.c", line 199: error: __ptr32 and __ptr64 cannot both apply
+  typedef int *__ptr32 __ptr64 wrong18; // expected-error {{'__ptr32' and '__ptr64' attributes are not compatible}}
+                       ^
+
+"Test_name.c", line 222: error: a type qualifier is not allowed
+  void test_unaligned2(int x[__unaligned 4]) {}
+                             ^
+
+30 errors detected in the compilation of "Test_name.c".

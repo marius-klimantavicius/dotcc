@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --c++20 Test_name.c
+"Test_name.c", line 8: error: function "minimal::f(T) [with T=int]" (declared at line 6) cannot be referenced -- it is a deleted function
+    int i = f(0);                 // error
+            ^
+
+"Test_name.c", line 19: error: function "redecl_deleted_template_function::f(T) [with T=int]" (declared at line 14) cannot be referenced -- it is a deleted function
+    int i = f(0);                 // error
+            ^
+
+"Test_name.c", line 41: error: function "friend_for_deleted_template_function::g(const friend_for_deleted_template_function::D<true> &, friend_for_deleted_template_function::A<B3>) [with B3=true]" (declared at line 32) cannot be referenced -- it is a deleted function
+    int i = g(D<true>(), A<true>()); // error
+            ^
+
+3 errors detected in the compilation of "Test_name.c".

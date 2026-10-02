@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 38: warning: statement is unreachable
+    g();
+    ^
+
+"Test_name.c", line 68: warning: statement is unreachable
+    l();
+    ^
+
+"Test_name.c", line 162: warning: statement is unreachable
+      return Wrapper<x/2>::run();
+      ^
+          detected during:
+            instantiation of "int Wrapper<x>::run() [with x=1]" at line 162
+            instantiation of "int Wrapper<x>::run() [with x=2]" at line 172
+            instantiation of "int test_wrapper<x>() [with x=2]" at line 177
+
+"Test_name.c", line 174: warning: statement is unreachable
+    return 0;
+    ^
+          detected during instantiation of "int test_wrapper<x>() [with x=2]" at line 177
+

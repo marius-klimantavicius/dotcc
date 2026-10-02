@@ -1,0 +1,58 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 34: error: a ref-qualifier is not allowed here
+  SA(__is_same(__add_pointer(void() &), void() &));
+  ^
+
+"Test_name.c", line 34: error: static assertion failed with "__is_same(__add_pointer(void() &), void() &)"
+  SA(__is_same(__add_pointer(void() &), void() &));
+  ^
+
+"Test_name.c", line 35: error: a ref-qualifier is not allowed here
+  SA(__is_same(__add_pointer(void() & noexcept), void() & noexcept));
+  ^
+
+"Test_name.c", line 35: error: static assertion failed with "__is_same(__add_pointer(void() & noexcept), void() & noexcept)"
+  SA(__is_same(__add_pointer(void() & noexcept), void() & noexcept));
+  ^
+
+"Test_name.c", line 36: error: a type qualifier is not allowed on a nonmember function
+  SA(__is_same(__add_pointer(void() const), void() const));
+  ^
+
+"Test_name.c", line 36: error: static assertion failed with "__is_same(__add_pointer(void() const), void() const)"
+  SA(__is_same(__add_pointer(void() const), void() const));
+  ^
+
+"Test_name.c", line 37: error: a ref-qualifier is not allowed here
+  SA(__is_same(__add_pointer(void(...) &), void(...) &));
+  ^
+
+"Test_name.c", line 37: error: static assertion failed with "__is_same(__add_pointer(void(...) &), void(...) &)"
+  SA(__is_same(__add_pointer(void(...) &), void(...) &));
+  ^
+
+"Test_name.c", line 38: error: a ref-qualifier is not allowed here
+  SA(__is_same(__add_pointer(void(...) & noexcept), void(...) & noexcept));
+  ^
+
+"Test_name.c", line 38: error: static assertion failed with "__is_same(__add_pointer(void(...) & noexcept), void(...) & noexcept)"
+  SA(__is_same(__add_pointer(void(...) & noexcept), void(...) & noexcept));
+  ^
+
+"Test_name.c", line 39: error: a type qualifier is not allowed on a nonmember function
+  SA(__is_same(__add_pointer(void(...) const), void(...) const));
+  ^
+
+"Test_name.c", line 39: error: static assertion failed with "__is_same(__add_pointer(void(...) const), void(...) const)"
+  SA(__is_same(__add_pointer(void(...) const), void(...) const));
+  ^
+
+"Test_name.c", line 41: error: a type qualifier is not allowed on a nonmember function
+  SA(__is_same(__add_pointer(void() __restrict), void() __restrict));
+  ^
+
+"Test_name.c", line 41: error: static assertion failed with "__is_same(__add_pointer(void() __restrict), void() __restrict)"
+  SA(__is_same(__add_pointer(void() __restrict), void() __restrict));
+  ^
+
+14 errors detected in the compilation of "Test_name.c".

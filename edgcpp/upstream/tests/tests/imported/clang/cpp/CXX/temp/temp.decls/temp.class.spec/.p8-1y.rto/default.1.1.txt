@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 Test_name.c
+"Test_name.c", line 27: error: invalid partial specialization -- variable "X<Outer>::y<int> [with Outer=int]" is already fully specialized
+    template<typename Inner> static int y<Outer>; // expected-error 3{{cannot be deduced}} expected-note 3{{'Inner'}}
+                                        ^
+          detected during instantiation of class "X<Outer> [with Outer=int]" at line 35
+
+"Test_name.c", line 35: error: variable template "X<Outer>::y [with Outer=int]" has already been defined
+  template<> template<typename Inner> int X<int>::y<Inner>; // expected-error {{does not specialize}} expected-note {{instantiation of}}
+                                                  ^
+
+"Test_name.c", line 31: error: argument of type "int *" is incompatible with template parameter of type "int"
+    template<Outer N> static int z<int, N>; // expected-error {{not implicitly convertible}}
+                                        ^
+          detected during instantiation of class "X<Outer> [with Outer=int *]" at line 38
+
+3 errors detected in the compilation of "Test_name.c".

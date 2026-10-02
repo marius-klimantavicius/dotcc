@@ -1,0 +1,71 @@
+#pragma once
+
+/* Simplified version of various source_location headers. */
+#if _MSC_VER
+namespace std{
+  struct source_location {
+    static consteval source_location current(
+        const unsigned int _Line_ = __builtin_LINE(),
+        const unsigned int _Column_ = __builtin_COLUMN(),
+        const char* const _File_ = __builtin_FILE(),
+        const char* const _Function_ = __builtin_FUNCTION()) noexcept {
+        source_location _Result;
+        _Result._Line     = _Line_;
+        _Result._Column   = _Column_;
+        _Result._File     = _File_;
+        _Result._Function = _Function_;
+        return _Result;
+    }
+
+    constexpr source_location() noexcept = default;
+
+    constexpr unsigned int line() const noexcept {
+        return _Line;
+    }
+    constexpr unsigned int column() const noexcept {
+        return _Column;
+    }
+    constexpr const char* file_name() const noexcept {
+        return _File;
+    }
+    constexpr const char* function_name() const noexcept {
+        return _Function;
+    }
+private:
+    unsigned int _Line{};
+    unsigned int _Column{};
+    const char* _File     = "";
+    const char* _Function = "";
+  };
+}
+#else /* !_MSVC_VER */
+namespace std {
+  struct source_location {
+    struct __impl {
+      const char *_M_file_name;
+      const char *_M_function_name;
+      unsigned int _M_line, _M_column;
+    };
+    const __impl *__ptr;
+    constexpr source_location () : __ptr (nullptr) {}
+    static consteval source_location
+    current (const void *__p = __builtin_source_location ()) {
+      source_location __ret;
+      __ret.__ptr = static_cast <const __impl *> (__p);
+      return __ret;
+    }
+    constexpr const char *file_name () const {
+      return __ptr ? __ptr->_M_file_name : "";
+    }
+    constexpr const char *function_name () const {
+      return __ptr ? __ptr->_M_function_name : "";
+    }
+    constexpr unsigned line () const {
+      return __ptr ? __ptr->_M_line : 0;
+    }
+    constexpr unsigned column () const {
+      return __ptr ? __ptr->_M_column : 0;
+    }
+  };
+}
+#endif /* _MSVC_VER */

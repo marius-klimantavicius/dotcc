@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++26 Test_name.c
+"Test_name.c", line 124: error: function "PR47174::t1<T>() [with T=PR47174::X]" (declared at line 122) cannot be referenced -- it is a deleted function
+  void t1() { t1<X>(); } // expected-error {{call to deleted function 't1'}}
+              ^
+
+"Test_name.c", line 128: error: more than one instance of overloaded function "PR47174::t2" matches the argument list:
+  template void t2<X>(); // expected-error {{partial ordering for explicit instantiation of 't2' is ambiguous}}
+                ^
+
+"Test_name.c", line 129: error: more than one instance of overloaded function "PR47174::t2" matches the argument list:
+            function template "void PR47174::t2<T>()" (declared at line 126)
+            function template "void PR47174::t2<T>()" (declared at line 127)
+  void t2() { t2<X>(); } // expected-error {{call to 't2' is ambiguous}}
+              ^
+
+3 errors detected in the compilation of "Test_name.c".

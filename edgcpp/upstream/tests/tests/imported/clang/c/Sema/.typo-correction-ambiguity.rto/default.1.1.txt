@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 14: error: identifier "v_195" is undefined
+         v_2_0(v_195,  // expected-error {{use of undeclared identifier 'v_195'}}
+               ^
+
+"Test_name.c", line 15: error: identifier "v_231" is undefined
+               v_231);  // expected-error {{use of undeclared identifier 'v_231'}}
+               ^
+
+"Test_name.c", line 13: warning: variable "v_345" was declared but never referenced
+     for (int v_345 = 0 ; v_63;)
+              ^
+
+"Test_name.c", line 16: warning: missing return statement at end of non-void function "v_3_0"
+  }
+  ^
+
+"Test_name.c", line 29: error: identifier "g_910" is undefined
+  void PR50797(void) { (g_910.xxx = g_910.xxx); } //expected-error 2{{use of undeclared identifier 'g_910'}}
+                        ^
+
+3 errors detected in the compilation of "Test_name.c".

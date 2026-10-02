@@ -1,0 +1,129 @@
+#!/usr/bin/env python3
+
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+import argparse
+import os
+import shutil
+import sys
+
+import edgbench
+
+from pathlib import Path
+
+from edgutil import eprint
+
+def copy_files(bench_home: Path, run_dir: Path, tag: str) -> None:
+  '''Copy the files in from the given run directory updating the baseline
+  owned by the given tag.
+  '''
+
+  if tag.startswith('@'):
+    tag_path = bench_home / 'baselines' / 'user' / tag[1:]
+  else:
+    tag_path = bench_home / 'baselines' / 'project' / tag
+
+  tag_path.mkdir(parents = True, exist_ok = True)
+
+  for root, dirs, files in os.walk(run_dir):
+    for file in files:
+      file_path = Path(root, file)
+      if file_path.suffix != '.cgout':
+        continue
+
+      rel_benchmark_path = file_path.relative_to(run_dir)
+      baseline_file = tag_path / rel_benchmark_path
+
+      # Create the parent directories.
+      baseline_file.parent.mkdir(parents = True, exist_ok = True)
+
+      shutil.copy2(file_path, baseline_file)
+
+CMD_DESCRIPTION = f"""
+EDG tool for saving a benchmark output as a baseline.
+
+This tool is used to create or update the benchmark baseline with the output
+of a prior benchmark run.
+
+It is often desirable to save a "user" baseline for development purposes during
+performance work, this can be accomplished by prefixing the baseline name with
+the '@' symbol:
+
+  edg-bench-run-save @my-baseline
+
+By default the latest edg-bench run's output will be used.  To go to the
+previous output add the "-b" flag to the command. This can be repeated to get
+even older output.
+
+For example, the following command will save the 4th most recent
+benchmark run as the project's release baseline:
+
+  edg-bench-run-save -bbb release
+
+Alternatively, a root path to can be explicitly specified (this is incompatible
+with the -b flag):
+
+  # Examine all .rt files in $MY_RUNS/2024.08.16-20.58.06/
+  edg-bench-run-save --root $MY_RUNS/2024.08.16-20.58.06/ release
+
+The root path must exist, otherwise an error will be issued.
+
+-----------------------------------------------------------------------------
+"""
+
+def parse_args() -> argparse.Namespace:
+  '''Parse the commandline arguments for this script.'''
+  parser = argparse.ArgumentParser(
+    description = CMD_DESCRIPTION,
+    formatter_class = argparse.RawDescriptionHelpFormatter
+  )
+  parser.add_argument(
+    '-b',
+    dest = 'num_runs_back',
+    action = 'count',
+    default = 0,
+    help = (
+      'update from the previous run (if this flag is repeated, go back the '
+      'number of times the flag was repeated)'
+    )
+  )
+  parser.add_argument(
+    '--root',
+    dest = 'root_path',
+    type = Path,
+    required = False,
+    help = 'the root path to update from'
+  )
+  parser.add_argument(
+    'tag',
+    help = (
+      'the baseline tag to create or update (prefix with @ to reference '
+      'a user baseline instead of a project baseline)'
+    )
+  )
+  return parser.parse_args()
+
+def main() -> None:
+  args = parse_args()
+
+  bench_home = edgbench.load_benchmark_home_or_exit()
+  previous_run_dirs = edgbench.get_benchmark_runs(bench_home)
+
+  benchmark_inspection = edgbench.BenchmarkRunInspection(
+    args.root_path,
+    args.num_runs_back,
+    previous_run_dirs
+  )
+  edgbench.validate_inspection(benchmark_inspection)
+
+  run_dir = benchmark_inspection.get_run_directory()
+  if not run_dir.exists():
+    eprint(f"Path does not exist: {run_dir}")
+    sys.exit(1)
+
+  copy_files(bench_home, run_dir, args.tag)
+
+main()

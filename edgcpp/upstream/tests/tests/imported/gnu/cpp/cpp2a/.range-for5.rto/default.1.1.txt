@@ -1,0 +1,46 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 15: error: identifier "i" is undefined
+    i = 0; // { dg-error "not declared" }
+    ^
+
+"Test_name.c", line 23: error: identifier "k" is undefined
+  	  k++; // { dg-error "not declared" }
+  	  ^
+
+"Test_name.c", line 19: warning: variable "j" was declared but never referenced
+        for (int j = 0; auto x : a)
+                 ^
+
+"Test_name.c", line 25: error: identifier "j" is undefined
+        j++; // { dg-error "not declared" }
+        ^
+
+"Test_name.c", line 17: warning: variable "i" was declared but never referenced
+    for (int i = 0; auto x : a)
+             ^
+
+"Test_name.c", line 34: warning: variable "i" was declared but never referenced
+      int i = 3; // { dg-error "redeclaration" }
+          ^
+
+"Test_name.c", line 33: warning: variable "i" was declared but never referenced
+    for (int i = 0; auto x : a)
+             ^
+
+"Test_name.c", line 41: error: expected a declaration
+    for (;:) // { dg-error "expected" }
+          ^
+
+"Test_name.c", line 41: error: expected an expression
+    for (;:) // { dg-error "expected" }
+           ^
+
+"Test_name.c", line 45: error: expected an expression
+    for (;;:) // { dg-error "expected" }
+           ^
+
+"Test_name.c", line 39: warning: variable "a" was declared but never referenced
+    int a[] = { 1, 2, 3, 4, 5 };
+        ^
+
+6 errors detected in the compilation of "Test_name.c".

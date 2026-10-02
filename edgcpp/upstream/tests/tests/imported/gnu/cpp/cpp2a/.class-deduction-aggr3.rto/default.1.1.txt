@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 26: error: no instance of constructor "F" matches the argument list
+            argument types are: (Types<X, Y, Z>, X, W)
+  F f3 = {Types<X, Y, Z>{}, X{}, W{}}; // { dg-error "" } conflicting types deduced; operator Y not considered
+    ^
+
+"Test_name.c", line 26: error: cannot deduce class template arguments
+  F f3 = {Types<X, Y, Z>{}, X{}, W{}}; // { dg-error "" } conflicting types deduced; operator Y not considered
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

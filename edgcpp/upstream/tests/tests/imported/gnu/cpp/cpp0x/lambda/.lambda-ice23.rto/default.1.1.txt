@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: error: function template "r" is not a variable
+    auto f = [r,x]() { return r(x); }; // { dg-error "13:capture of non-variable" }
+              ^
+
+"Test_name.c", line 8: warning: statement may not appear in a constexpr function
+    auto f = [r,x]() { return r(x); }; // { dg-error "13:capture of non-variable" }
+    ^
+
+1 error detected in the compilation of "Test_name.c".

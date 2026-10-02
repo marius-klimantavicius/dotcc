@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=4 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 --exceptions --exceptions Test_name.c
+"Test_name.c", line 45: error: type name is not allowed
+    y.set<double>(3.2);
+      ^
+
+"Test_name.c", line 111: error: external/internal linkage conflict with previous declaration at line 110
+      static int a;
+                 ^
+
+"Test_name.c", line 111: warning: variable "cwg1113::named::a" was declared but never referenced
+      static int a;
+                 ^
+
+"Test_name.c", line 118: warning: variable "cwg1113::<unnamed>::b" was declared but never referenced
+      int b = a;
+          ^
+
+2 errors detected in the compilation of "Test_name.c".

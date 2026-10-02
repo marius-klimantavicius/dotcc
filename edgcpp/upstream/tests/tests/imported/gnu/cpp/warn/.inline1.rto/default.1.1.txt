@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 10: warning: extern inline function "Foo1" was referenced but not defined
+  inline void Foo1 ();  // { dg-warning "inline function" }
+              ^
+
+"Test_name.c", line 12: warning: extern inline function "Foo2(T) [with T=int]" was referenced but not defined
+  template <typename T> inline void Foo2(T);   // { dg-warning "inline function" }
+                                    ^
+

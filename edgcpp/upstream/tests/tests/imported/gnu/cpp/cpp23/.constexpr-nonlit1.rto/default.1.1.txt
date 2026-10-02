@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 9: error: label definitions cannot appear in constexpr functions
+  lab:		// { dg-error "label definition in 'constexpr' function only available with" "" { target c++20_down } }
+  ^
+
+"Test_name.c", line 17: error: statement may not appear in a constexpr function
+      goto lab;	// { dg-error "'goto' in 'constexpr' function only available with" "" { target c++20_down } }
+      ^
+
+"Test_name.c", line 19: error: label definitions cannot appear in constexpr functions
+  lab:
+  ^
+
+"Test_name.c", line 28: error: variable in constexpr function does not have automatic storage duration
+    static int a;	// { dg-error "'a' defined 'static' in 'constexpr' function only available with" "" { target c++20_down } }
+               ^
+
+"Test_name.c", line 37: error: variable in constexpr function does not have automatic storage duration
+    thread_local int a;	// { dg-error "'a' defined 'thread_local' in 'constexpr' function only available with" "" { target c++20_down } }
+                     ^
+
+"Test_name.c", line 46: error: variable in constexpr function does not have automatic storage duration
+    extern thread_local int a;	// { dg-bogus "'thread_local' in 'constexpr' function only available with" "" { target c++20_down } }
+                            ^
+
+"Test_name.c", line 59: error: variable type "S" in constexpr function is not a literal type
+    S s;			// { dg-error "variable 's' of non-literal type 'S' in 'constexpr' function only available with" "" { target c++20_down } }
+      ^
+
+7 errors detected in the compilation of "Test_name.c".

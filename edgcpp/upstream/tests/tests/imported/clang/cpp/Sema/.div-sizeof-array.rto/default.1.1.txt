@@ -1,0 +1,97 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 16: warning: variable "p" was set but never used
+    int *p = &arr[0];
+         ^
+
+"Test_name.c", line 17: warning: variable "a1" was declared but never referenced
+    int a1 = sizeof(arr) / sizeof(*arr);
+        ^
+
+"Test_name.c", line 18: warning: variable "a2" was declared but never referenced
+    int a2 = sizeof arr / sizeof p; // expected-warning {{expression does not compute the number of elements in this array; element type is 'int', not 'int *'}}
+        ^
+
+"Test_name.c", line 20: warning: variable "a4" was declared but never referenced
+    int a4 = sizeof arr2 / sizeof p;
+        ^
+
+"Test_name.c", line 21: warning: variable "a5" was declared but never referenced
+    int a5 = sizeof(arr) / sizeof(short); // expected-warning {{expression does not compute the number of elements in this array; element type is 'int', not 'short'}}
+        ^
+
+"Test_name.c", line 23: warning: variable "a6" was declared but never referenced
+    int a6 = sizeof(arr) / sizeof(int32);
+        ^
+
+"Test_name.c", line 24: warning: variable "a7" was declared but never referenced
+    int a7 = sizeof(arr) / sizeof(int);
+        ^
+
+"Test_name.c", line 25: warning: variable "a9" was declared but never referenced
+    int a9 = sizeof(arr) / sizeof(unsigned int);
+        ^
+
+"Test_name.c", line 27: warning: variable "a10" was declared but never referenced
+    int a10 = sizeof(arr3) / sizeof(char);
+        ^
+
+"Test_name.c", line 28: warning: variable "a11" was declared but never referenced
+    int a11 = sizeof(arr2) / (sizeof(unsigned));
+        ^
+
+"Test_name.c", line 29: warning: variable "a12" was declared but never referenced
+    int a12 = sizeof(arr) / (sizeof(short));
+        ^
+
+"Test_name.c", line 30: warning: variable "a13" was declared but never referenced
+    int a13 = sizeof(arr3) / sizeof(p);
+        ^
+
+"Test_name.c", line 31: warning: variable "a14" was declared but never referenced
+    int a14 = sizeof(arr3) / sizeof(int);
+        ^
+
+"Test_name.c", line 34: warning: variable "b1" was declared but never referenced
+    int b1 = sizeof(arr4) / sizeof(arr2[12]);
+        ^
+
+"Test_name.c", line 35: warning: variable "b2" was declared but never referenced
+    int b2 = sizeof(arr4) / sizeof(int *);
+        ^
+
+"Test_name.c", line 36: warning: variable "b3" was declared but never referenced
+    int b3 = sizeof(arr4) / sizeof(short *);
+        ^
+
+"Test_name.c", line 37: warning: variable "arr5" was set but never used
+    int arr5[][5] = {
+        ^
+
+"Test_name.c", line 41: warning: variable "c1" was declared but never referenced
+    int c1 = sizeof(arr5) / sizeof(*arr5);
+        ^
+
+"Test_name.c", line 42: warning: variable "c2" was declared but never referenced
+    int c2 = sizeof(arr5) / sizeof(**arr5);
+        ^
+
+"Test_name.c", line 43: warning: variable "c3" was declared but never referenced
+    int c3 = sizeof(arr5) / sizeof(int);
+        ^
+
+"Test_name.c", line 46: warning: variable "d1" was declared but never referenced
+    int d1 = sizeof(m) / sizeof(**m);
+        ^
+
+"Test_name.c", line 49: warning: variable "narray" was declared but never referenced
+    int narray = sizeof(array) / sizeof(int &);
+        ^
+
+"Test_name.c", line 50: warning: variable "narray2" was declared but never referenced
+    int narray2 = sizeof(array) / sizeof(decltype(array[0]));
+        ^
+
+"Test_name.c", line 53: warning: variable "len" was declared but never referenced
+    int len = sizeof(arrptrs) / sizeof(decltype(*arrptrs[0])); // expected-warning {{expression does not compute the number of elements in this array; element type is 'int *', not 'int'}}
+        ^
+

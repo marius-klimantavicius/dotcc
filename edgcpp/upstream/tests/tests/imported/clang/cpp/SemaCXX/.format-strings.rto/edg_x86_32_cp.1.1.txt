@@ -1,0 +1,31 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"SemaCXX/format-strings.cpp", line 44: warning: the format string requires additional arguments
+    foo.scanf("%d");
+                  ^
+
+"SemaCXX/format-strings.cpp", line 134: error: expected an identifier
+    extern void (^block_print)(const char * format, ...) __attribute__((format(printf, 1, 2)));
+                 ^
+
+"SemaCXX/format-strings.cpp", line 161: warning: the format string requires additional arguments
+    t1.func2("Hello %s");
+                       ^
+
+"SemaCXX/format-strings.cpp", line 161: warning: variable "t1" is used before its value is set
+    t1.func2("Hello %s");
+    ^
+
+"SemaCXX/format-strings.cpp", line 162: warning: the format string requires additional arguments
+    t::func3("Hello %s");
+                       ^
+
+"SemaCXX/format-strings.cpp", line 163: warning: the format string requires additional arguments
+    t::func4("Hello %s");
+                       ^
+
+"SemaCXX/format-strings.cpp", line 143: error: identifier "block_print" is undefined
+      block_print("%d", arg);
+      ^
+          detected during instantiation of "void Templates::call_block_print(const T &) [with T=char [4]]" at line 147
+
+2 errors detected in the compilation of "Test_name.c".

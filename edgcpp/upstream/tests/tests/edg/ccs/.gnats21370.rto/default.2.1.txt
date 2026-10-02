@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=2 -A Test_name.c
+"Test_name.c", line 4: error: declaration requires a typedef name
+  typedef struct A { int member; };
+                                  ^
+
+"Test_name.c", line 5: error: declaration requires a typedef name
+  typedef enum { red, green, blue };
+                                   ^
+
+2 errors detected in the compilation of "Test_name.c".

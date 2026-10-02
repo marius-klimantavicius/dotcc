@@ -1,0 +1,55 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 6: warning: attribute "assume" does not apply here
+  [[assume (true)]] void f1 ();		// { dg-error "'assume' attribute ignored" }
+    ^
+
+"Test_name.c", line 7: warning: attribute "assume" does not apply here
+  typedef int intx [[assume (true)]];	// { dg-error "'assume' attribute ignored" }
+                     ^
+
+"Test_name.c", line 8: error: attribute "assume" does not apply here
+  [[assume (true)]];			// { dg-warning "attribute ignored" }
+    ^
+
+"Test_name.c", line 14: error: expected a "("
+    [[assume]];				// { dg-error "wrong number of arguments specified for 'assume' attribute" }
+            ^
+
+"Test_name.c", line 16: error: expected an expression
+    [[assume ()]];			// { dg-error "parentheses must be omitted if 'assume' attribute argument list is empty" }
+              ^
+
+"Test_name.c", line 19: error: expected a ")"
+    [[assume (true, true)]];		// { dg-error "wrong number of arguments specified for 'assume' attribute" }
+                  ^
+
+"Test_name.c", line 21: warning: the "assume" attribute can only apply to a null statement
+    [[assume (true)]] i = 1;		// { dg-warning "'assume' attribute not followed by ';'" }
+    ^
+
+"Test_name.c", line 22: error: expression must have bool type (or be convertible to bool)
+    [[assume (throw 1)]];			// { dg-error "expected primary-expression before 'throw'" }
+              ^
+
+"Test_name.c", line 23: error: expected a ")"
+    [[assume (i = 1)]];			// { dg-error "expected '\\\)' before '=' token" }
+                ^
+
+"Test_name.c", line 61: error: expression must have bool type (or be convertible to bool)
+    [[assume (s)]];			// { dg-error "could not convert 's' from 'S' to 'bool'" }
+              ^
+
+"Test_name.c", line 70: error: expression must have bool type (or be convertible to bool)
+    [[assume (t)]];			// { dg-error "could not convert 't' from 'S' to 'bool'" }
+              ^
+          detected during instantiation of "int f6<T>() [with T=S]" at line 74
+
+"Test_name.c", line 35: warning: variable "a" was declared but never referenced
+  constexpr int a = f2 (44);
+                ^
+
+"Test_name.c", line 85: warning: variable "w" was declared but never referenced
+  constexpr int w = f7 (42, 43, 45, 44);
+                ^
+
+8 errors detected in the compilation of "Test_name.c".

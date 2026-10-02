@@ -1,0 +1,100 @@
+fe_only -DTEST_NUMBER=6 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"SemaCXX/deprecated.cpp", line 22: error: dynamic exception specifications are not permitted in this mode
+  void h() throw(int);
+           ^
+
+"SemaCXX/deprecated.cpp", line 23: error: a parameter pack declaration is not allowed here
+  void i() throw(...);
+                 ^
+
+"SemaCXX/deprecated.cpp", line 23: error: explicit type is missing ("int" assumed)
+  void i() throw(...);
+                 ^
+
+"SemaCXX/deprecated.cpp", line 23: error: dynamic exception specifications are not permitted in this mode
+  void i() throw(...);
+           ^
+
+"SemaCXX/deprecated.cpp", line 34: error: use of the "register" storage class specifier is not allowed
+  void stuff(register int q) {
+             ^
+
+"SemaCXX/deprecated.cpp", line 40: error: use of the "register" storage class specifier is not allowed
+    register int n;
+    ^
+
+"SemaCXX/deprecated.cpp", line 47: error: use of the "register" storage class specifier is not allowed
+    register int m asm("rbx");
+    ^
+
+"SemaCXX/deprecated.cpp", line 47: warning: an asm name is ignored on a non-register automatic variable
+    register int m asm("rbx");
+                   ^
+
+"SemaCXX/deprecated.cpp", line 49: error: use of the "register" storage class specifier is not allowed
+    int k = ({ register int n = (n); n; });
+               ^
+
+"SemaCXX/deprecated.cpp", line 49: warning: variable "n" is used before its value is set
+    int k = ({ register int n = (n); n; });
+                                 ^
+
+"SemaCXX/deprecated.cpp", line 51: error: incrementing a bool value is not allowed
+    ++b;
+      ^
+
+"SemaCXX/deprecated.cpp", line 58: error: incrementing a bool value is not allowed
+    b++;
+    ^
+
+"SemaCXX/deprecated.cpp", line 65: warning: conversion from a string literal to "char *" is deprecated
+    char *p = "foo";
+              ^
+
+"SemaCXX/deprecated.cpp", line 40: warning: variable "n" was declared but never referenced
+    register int n;
+                 ^
+
+"SemaCXX/deprecated.cpp", line 47: warning: variable "m" was declared but never referenced
+    register int m asm("rbx");
+                 ^
+
+"SemaCXX/deprecated.cpp", line 65: warning: variable "p" was declared but never referenced
+    char *p = "foo";
+          ^
+
+"SemaCXX/deprecated.cpp", line 176: warning: use of "=" where "==" may have been intended
+      if (b = true) {}
+          ^
+
+"SemaCXX/deprecated.cpp", line 178: warning: use of "=" where "==" may have been intended
+           b = true;
+           ^
+
+"SemaCXX/deprecated.cpp", line 209: warning: type qualifier on return type is meaningless
+        volatile int (*p)(
+        ^
+
+"SemaCXX/deprecated.cpp", line 207: warning: type qualifier on return type is meaningless
+    volatile int g(
+    ^
+
+"SemaCXX/deprecated.cpp", line 280: warning: parameter "x" was set but never used
+  [[deprecated]] void f2([[deprecated]] int x) {
+                                            ^
+
+"SemaCXX/deprecated.cpp", line 286: warning: function "GH90073::f1" was declared deprecated
+    f1();
+    ^
+"SemaCXX/deprecated.cpp", line 273: note: because of a "deprecated" attribute
+  [[deprecated]] int f1() {
+    ^
+
+"SemaCXX/deprecated.cpp", line 287: warning: function "GH90073::f2" was declared deprecated
+    f2(1);
+    ^
+"SemaCXX/deprecated.cpp", line 280: note: because of a "deprecated" attribute
+  [[deprecated]] void f2([[deprecated]] int x) {
+    ^
+
+10 errors detected in the compilation of "Test_name.c".

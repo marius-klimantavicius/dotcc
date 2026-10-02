@@ -1,0 +1,29 @@
+cpfe -DTEST_NUMBER=2 -r -x -tused Test_name.c
+"Test_name.c", line 6: warning: integer conversion resulted in a change of sign
+           za = (int)(ya > -1) };
+                           ^
+
+"Test_name.c", line 9: warning: integer conversion resulted in a change of sign
+           zb = (int)(yb > -1) };
+                           ^
+
+"Test_name.c", line 12: warning: integer conversion resulted in a change of sign
+           zc = (int)(yc > -1) };
+                           ^
+
+"Test_name.c", line 15: warning: integer conversion resulted in a change of sign
+           zd = (int)(yd > -1) };
+                           ^
+
+"Test_name.c", line 18: warning: integer conversion resulted in a change of sign
+           ze = (int)(ye > -1) };
+                           ^
+
+"Test_name.c", line 21: warning: integer conversion resulted in a change of sign
+           zf = (int)(yf > -1) };
+                           ^
+
+"Test_name.c", line 24: warning: integer conversion resulted in a change of sign
+           zg = (int)(yg > -1) };
+                           ^
+

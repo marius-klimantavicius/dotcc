@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 7: warning: unknown attribute "__weak_import__"
+  extern int ext_weak_import __attribute__ ((__weak_import__));
+                                             ^
+
+"Test_name.c", line 10: warning: unknown attribute "__weak_import__"
+  int decl_weak_import __attribute__ ((__weak_import__)); // expected-warning {{'weak_import' attribute cannot be specified on a definition}}
+                                       ^
+
+"Test_name.c", line 11: warning: unknown attribute "__weak_import__"
+  int decl_initialized_weak_import __attribute__ ((__weak_import__)) = 13; // expected-warning {{'weak_import' attribute cannot be specified on a definition}}
+                                                   ^
+
+"Test_name.c", line 14: warning: unknown attribute "__weak_import__"
+  extern int ext_f(void) __attribute__ ((__weak_import__));
+                                         ^
+
+"Test_name.c", line 17: warning: unknown attribute "__weak_import__"
+  int def_f(void) __attribute__ ((__weak_import__));
+                                  ^
+
+"Test_name.c", line 18: warning: unknown attribute "__weak_import__"
+  int __attribute__ ((__weak_import__)) decl_f(void) {return 0;};
+                      ^
+

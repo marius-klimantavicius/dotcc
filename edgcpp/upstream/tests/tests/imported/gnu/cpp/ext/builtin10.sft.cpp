@@ -1,0 +1,663 @@
+//type: fp
+//options: 
+# 0 "./ext/builtin10.C"
+# 0 "<built-in>"
+# 0 "<command-line>"
+# 1 "/usr/include/stdc-predef.h" 1 3 4
+# 0 "<command-line>" 2
+# 1 "./ext/builtin10.C"
+
+
+
+
+# 1 "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/cstring" 1 3
+# 47 "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/cstring" 3
+# 1 "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/version.h" 1 3
+# 51 "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/version.h" 3
+# 1 "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/x86_64-pc-linux-gnu/bits/c++config.h" 1 3
+# 37 "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/x86_64-pc-linux-gnu/bits/c++config.h" 3
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wvariadic-macros"
+
+#pragma GCC diagnostic ignored "-Wc++11-extensions"
+#pragma GCC diagnostic ignored "-Wc++23-extensions"
+# 328 "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/x86_64-pc-linux-gnu/bits/c++config.h" 3
+namespace std
+{
+  typedef long unsigned int size_t;
+  typedef long int ptrdiff_t;
+
+
+  typedef decltype(nullptr) nullptr_t;
+
+
+#pragma GCC visibility push(default)
+
+
+  extern "C++" __attribute__ ((__noreturn__, __always_inline__))
+  inline void __terminate() noexcept
+  {
+    void terminate() noexcept __attribute__ ((__noreturn__,__cold__));
+    terminate();
+  }
+#pragma GCC visibility pop
+}
+# 361 "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/x86_64-pc-linux-gnu/bits/c++config.h" 3
+namespace std
+{
+  inline namespace __cxx11 __attribute__((__abi_tag__ ("cxx11"))) { }
+}
+namespace __gnu_cxx
+{
+  inline namespace __cxx11 __attribute__((__abi_tag__ ("cxx11"))) { }
+}
+# 565 "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/x86_64-pc-linux-gnu/bits/c++config.h" 3
+namespace std
+{
+#pragma GCC visibility push(default)
+
+
+
+
+  __attribute__((__always_inline__))
+  constexpr inline bool
+  __is_constant_evaluated() noexcept
+  {
+
+
+
+
+
+    return __builtin_is_constant_evaluated();
+
+
+
+  }
+#pragma GCC visibility pop
+}
+# 609 "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/x86_64-pc-linux-gnu/bits/c++config.h" 3
+namespace std
+{
+#pragma GCC visibility push(default)
+
+  extern "C++" __attribute__ ((__noreturn__)) __attribute__((__cold__))
+  void
+  __glibcxx_assert_fail
+    (const char* __file, int __line, const char* __function,
+     const char* __condition)
+  noexcept;
+#pragma GCC visibility pop
+}
+# 719 "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/x86_64-pc-linux-gnu/bits/c++config.h" 3
+# 1 "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/x86_64-pc-linux-gnu/bits/os_defines.h" 1 3
+# 39 "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/x86_64-pc-linux-gnu/bits/os_defines.h" 3
+# 1 "/usr/include/features.h" 1 3 4
+# 375 "/usr/include/features.h" 3 4
+# 1 "/usr/include/sys/cdefs.h" 1 3 4
+# 392 "/usr/include/sys/cdefs.h" 3 4
+# 1 "/usr/include/bits/wordsize.h" 1 3 4
+# 393 "/usr/include/sys/cdefs.h" 2 3 4
+# 376 "/usr/include/features.h" 2 3 4
+# 399 "/usr/include/features.h" 3 4
+# 1 "/usr/include/gnu/stubs.h" 1 3 4
+# 10 "/usr/include/gnu/stubs.h" 3 4
+# 1 "/usr/include/gnu/stubs-64.h" 1 3 4
+# 11 "/usr/include/gnu/stubs.h" 2 3 4
+# 400 "/usr/include/features.h" 2 3 4
+# 40 "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/x86_64-pc-linux-gnu/bits/os_defines.h" 2 3
+# 720 "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/x86_64-pc-linux-gnu/bits/c++config.h" 2 3
+
+
+# 1 "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/x86_64-pc-linux-gnu/bits/cpu_defines.h" 1 3
+# 723 "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/x86_64-pc-linux-gnu/bits/c++config.h" 2 3
+# 879 "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/x86_64-pc-linux-gnu/bits/c++config.h" 3
+namespace __gnu_cxx
+{
+  typedef __decltype(0.0bf16) __bfloat16_t;
+}
+# 941 "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/x86_64-pc-linux-gnu/bits/c++config.h" 3
+# 1 "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/pstl/pstl_config.h" 1 3
+# 942 "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/x86_64-pc-linux-gnu/bits/c++config.h" 2 3
+
+
+
+#pragma GCC diagnostic pop
+# 52 "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/version.h" 2 3
+# 48 "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/cstring" 2 3
+# 1 "/usr/include/string.h" 1 3 4
+# 27 "/usr/include/string.h" 3 4
+extern "C" {
+
+
+
+
+# 1 "/mds/gnu/build/gcc-15-20250112/lib/gcc/x86_64-pc-linux-gnu/15.0.0/include/stddef.h" 1 3 4
+# 214 "/mds/gnu/build/gcc-15-20250112/lib/gcc/x86_64-pc-linux-gnu/15.0.0/include/stddef.h" 3 4
+typedef long unsigned int size_t;
+# 33 "/usr/include/string.h" 2 3 4
+
+
+
+
+
+
+
+
+
+extern void *memcpy (void *__restrict __dest, const void *__restrict __src,
+       size_t __n) throw () __attribute__ ((__nonnull__ (1, 2)));
+
+
+extern void *memmove (void *__dest, const void *__src, size_t __n)
+     throw () __attribute__ ((__nonnull__ (1, 2)));
+
+
+
+
+
+
+extern void *memccpy (void *__restrict __dest, const void *__restrict __src,
+        int __c, size_t __n)
+     throw () __attribute__ ((__nonnull__ (1, 2)));
+
+
+
+
+
+extern void *memset (void *__s, int __c, size_t __n) throw () __attribute__ ((__nonnull__ (1)));
+
+
+extern int memcmp (const void *__s1, const void *__s2, size_t __n)
+     throw () __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2)));
+
+
+
+extern "C++"
+{
+extern void *memchr (void *__s, int __c, size_t __n)
+      throw () __asm ("memchr") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1)));
+extern const void *memchr (const void *__s, int __c, size_t __n)
+      throw () __asm ("memchr") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1)));
+# 90 "/usr/include/string.h" 3 4
+}
+
+
+
+
+
+
+
+
+
+
+extern "C++" void *rawmemchr (void *__s, int __c)
+     throw () __asm ("rawmemchr") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1)));
+extern "C++" const void *rawmemchr (const void *__s, int __c)
+     throw () __asm ("rawmemchr") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1)));
+
+
+
+
+
+
+
+extern "C++" void *memrchr (void *__s, int __c, size_t __n)
+      throw () __asm ("memrchr") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1)));
+extern "C++" const void *memrchr (const void *__s, int __c, size_t __n)
+      throw () __asm ("memrchr") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1)));
+
+
+
+
+
+
+
+
+
+extern char *strcpy (char *__restrict __dest, const char *__restrict __src)
+     throw () __attribute__ ((__nonnull__ (1, 2)));
+
+extern char *strncpy (char *__restrict __dest,
+        const char *__restrict __src, size_t __n)
+     throw () __attribute__ ((__nonnull__ (1, 2)));
+
+
+extern char *strcat (char *__restrict __dest, const char *__restrict __src)
+     throw () __attribute__ ((__nonnull__ (1, 2)));
+
+extern char *strncat (char *__restrict __dest, const char *__restrict __src,
+        size_t __n) throw () __attribute__ ((__nonnull__ (1, 2)));
+
+
+extern int strcmp (const char *__s1, const char *__s2)
+     throw () __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2)));
+
+extern int strncmp (const char *__s1, const char *__s2, size_t __n)
+     throw () __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2)));
+
+
+extern int strcoll (const char *__s1, const char *__s2)
+     throw () __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2)));
+
+extern size_t strxfrm (char *__restrict __dest,
+         const char *__restrict __src, size_t __n)
+     throw () __attribute__ ((__nonnull__ (2)));
+
+
+
+
+
+
+# 1 "/usr/include/xlocale.h" 1 3 4
+# 27 "/usr/include/xlocale.h" 3 4
+typedef struct __locale_struct
+{
+
+  struct __locale_data *__locales[13];
+
+
+  const unsigned short int *__ctype_b;
+  const int *__ctype_tolower;
+  const int *__ctype_toupper;
+
+
+  const char *__names[13];
+} *__locale_t;
+
+
+typedef __locale_t locale_t;
+# 160 "/usr/include/string.h" 2 3 4
+
+
+extern int strcoll_l (const char *__s1, const char *__s2, __locale_t __l)
+     throw () __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2, 3)));
+
+extern size_t strxfrm_l (char *__dest, const char *__src, size_t __n,
+    __locale_t __l) throw () __attribute__ ((__nonnull__ (2, 4)));
+
+
+
+
+
+extern char *strdup (const char *__s)
+     throw () __attribute__ ((__malloc__)) __attribute__ ((__nonnull__ (1)));
+
+
+
+
+
+
+extern char *strndup (const char *__string, size_t __n)
+     throw () __attribute__ ((__malloc__)) __attribute__ ((__nonnull__ (1)));
+# 207 "/usr/include/string.h" 3 4
+
+
+
+extern "C++"
+{
+extern char *strchr (char *__s, int __c)
+     throw () __asm ("strchr") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1)));
+extern const char *strchr (const char *__s, int __c)
+     throw () __asm ("strchr") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1)));
+# 230 "/usr/include/string.h" 3 4
+}
+
+
+
+
+
+
+extern "C++"
+{
+extern char *strrchr (char *__s, int __c)
+     throw () __asm ("strrchr") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1)));
+extern const char *strrchr (const char *__s, int __c)
+     throw () __asm ("strrchr") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1)));
+# 257 "/usr/include/string.h" 3 4
+}
+
+
+
+
+
+
+
+
+
+
+extern "C++" char *strchrnul (char *__s, int __c)
+     throw () __asm ("strchrnul") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1)));
+extern "C++" const char *strchrnul (const char *__s, int __c)
+     throw () __asm ("strchrnul") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1)));
+
+
+
+
+
+
+
+
+
+extern size_t strcspn (const char *__s, const char *__reject)
+     throw () __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2)));
+
+
+extern size_t strspn (const char *__s, const char *__accept)
+     throw () __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2)));
+
+
+extern "C++"
+{
+extern char *strpbrk (char *__s, const char *__accept)
+     throw () __asm ("strpbrk") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2)));
+extern const char *strpbrk (const char *__s, const char *__accept)
+     throw () __asm ("strpbrk") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2)));
+# 309 "/usr/include/string.h" 3 4
+}
+
+
+
+
+
+
+extern "C++"
+{
+extern char *strstr (char *__haystack, const char *__needle)
+     throw () __asm ("strstr") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2)));
+extern const char *strstr (const char *__haystack, const char *__needle)
+     throw () __asm ("strstr") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2)));
+# 336 "/usr/include/string.h" 3 4
+}
+
+
+
+
+
+
+
+extern char *strtok (char *__restrict __s, const char *__restrict __delim)
+     throw () __attribute__ ((__nonnull__ (2)));
+
+
+
+
+extern char *__strtok_r (char *__restrict __s,
+    const char *__restrict __delim,
+    char **__restrict __save_ptr)
+     throw () __attribute__ ((__nonnull__ (2, 3)));
+
+extern char *strtok_r (char *__restrict __s, const char *__restrict __delim,
+         char **__restrict __save_ptr)
+     throw () __attribute__ ((__nonnull__ (2, 3)));
+
+
+
+
+
+extern "C++" char *strcasestr (char *__haystack, const char *__needle)
+     throw () __asm ("strcasestr") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2)));
+extern "C++" const char *strcasestr (const char *__haystack,
+         const char *__needle)
+     throw () __asm ("strcasestr") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2)));
+# 378 "/usr/include/string.h" 3 4
+extern void *memmem (const void *__haystack, size_t __haystacklen,
+       const void *__needle, size_t __needlelen)
+     throw () __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 3)));
+
+
+
+extern void *__mempcpy (void *__restrict __dest,
+   const void *__restrict __src, size_t __n)
+     throw () __attribute__ ((__nonnull__ (1, 2)));
+extern void *mempcpy (void *__restrict __dest,
+        const void *__restrict __src, size_t __n)
+     throw () __attribute__ ((__nonnull__ (1, 2)));
+
+
+
+
+
+extern size_t strlen (const char *__s)
+     throw () __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1)));
+
+
+
+
+
+extern size_t strnlen (const char *__string, size_t __maxlen)
+     throw () __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1)));
+
+
+
+
+
+extern char *strerror (int __errnum) throw ();
+
+# 434 "/usr/include/string.h" 3 4
+extern char *strerror_r (int __errnum, char *__buf, size_t __buflen)
+     throw () __attribute__ ((__nonnull__ (2))) ;
+
+
+
+
+
+extern char *strerror_l (int __errnum, __locale_t __l) throw ();
+
+
+
+
+
+extern void __bzero (void *__s, size_t __n) throw () __attribute__ ((__nonnull__ (1)));
+
+
+
+extern void bcopy (const void *__src, void *__dest, size_t __n)
+     throw () __attribute__ ((__nonnull__ (1, 2)));
+
+
+extern void bzero (void *__s, size_t __n) throw () __attribute__ ((__nonnull__ (1)));
+
+
+extern int bcmp (const void *__s1, const void *__s2, size_t __n)
+     throw () __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2)));
+
+
+
+extern "C++"
+{
+extern char *index (char *__s, int __c)
+     throw () __asm ("index") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1)));
+extern const char *index (const char *__s, int __c)
+     throw () __asm ("index") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1)));
+# 483 "/usr/include/string.h" 3 4
+}
+
+
+
+
+
+
+
+extern "C++"
+{
+extern char *rindex (char *__s, int __c)
+     throw () __asm ("rindex") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1)));
+extern const char *rindex (const char *__s, int __c)
+     throw () __asm ("rindex") __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1)));
+# 511 "/usr/include/string.h" 3 4
+}
+
+
+
+
+
+
+
+extern int ffs (int __i) throw () __attribute__ ((__const__));
+
+
+
+
+extern int ffsl (long int __l) throw () __attribute__ ((__const__));
+
+__extension__ extern int ffsll (long long int __ll)
+     throw () __attribute__ ((__const__));
+
+
+
+
+extern int strcasecmp (const char *__s1, const char *__s2)
+     throw () __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2)));
+
+
+extern int strncasecmp (const char *__s1, const char *__s2, size_t __n)
+     throw () __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2)));
+
+
+
+
+
+extern int strcasecmp_l (const char *__s1, const char *__s2,
+    __locale_t __loc)
+     throw () __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2, 3)));
+
+extern int strncasecmp_l (const char *__s1, const char *__s2,
+     size_t __n, __locale_t __loc)
+     throw () __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2, 4)));
+
+
+
+
+
+extern char *strsep (char **__restrict __stringp,
+       const char *__restrict __delim)
+     throw () __attribute__ ((__nonnull__ (1, 2)));
+
+
+
+
+extern char *strsignal (int __sig) throw ();
+
+
+extern char *__stpcpy (char *__restrict __dest, const char *__restrict __src)
+     throw () __attribute__ ((__nonnull__ (1, 2)));
+extern char *stpcpy (char *__restrict __dest, const char *__restrict __src)
+     throw () __attribute__ ((__nonnull__ (1, 2)));
+
+
+
+extern char *__stpncpy (char *__restrict __dest,
+   const char *__restrict __src, size_t __n)
+     throw () __attribute__ ((__nonnull__ (1, 2)));
+extern char *stpncpy (char *__restrict __dest,
+        const char *__restrict __src, size_t __n)
+     throw () __attribute__ ((__nonnull__ (1, 2)));
+
+
+
+
+extern int strverscmp (const char *__s1, const char *__s2)
+     throw () __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2)));
+
+
+extern char *strfry (char *__string) throw () __attribute__ ((__nonnull__ (1)));
+
+
+extern void *memfrob (void *__s, size_t __n) throw () __attribute__ ((__nonnull__ (1)));
+
+
+
+
+
+
+
+extern "C++" char *basename (char *__filename)
+     throw () __asm ("basename") __attribute__ ((__nonnull__ (1)));
+extern "C++" const char *basename (const char *__filename)
+     throw () __asm ("basename") __attribute__ ((__nonnull__ (1)));
+# 642 "/usr/include/string.h" 3 4
+}
+# 49 "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/cstring" 2 3
+# 74 "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/cstring" 3
+extern "C++"
+{
+namespace std __attribute__ ((__visibility__ ("default")))
+{
+
+
+  using ::memchr;
+  using ::memcmp;
+  using ::memcpy;
+  using ::memmove;
+  using ::memset;
+  using ::strcat;
+  using ::strcmp;
+  using ::strcoll;
+  using ::strcpy;
+  using ::strcspn;
+  using ::strerror;
+  using ::strlen;
+  using ::strncat;
+  using ::strncmp;
+  using ::strncpy;
+  using ::strspn;
+
+  using ::strtok;
+
+  using ::strxfrm;
+  using ::strchr;
+  using ::strpbrk;
+  using ::strrchr;
+  using ::strstr;
+# 127 "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/cstring" 3
+
+}
+}
+# 6 "./ext/builtin10.C" 2
+
+
+# 7 "./ext/builtin10.C"
+const void *cv1;
+const char *cc1, *cc2, *cc3, *cc4;
+void *v1;
+char *c1, *c2, *c3, *c4;
+
+void
+f1 (void)
+{
+  cv1 = memchr ("abcba", 'b', 3);
+  cc1 = strchr ("abcba", 'b');
+  cc2 = strrchr ("abcba", 'b');
+  cc3 = strpbrk ("dabc", "abc");
+  cc4 = strstr ("aaabc", "abc");
+}
+
+void
+f2 (void)
+{
+  cv1 = std::memchr ("abcba", 'b', 3);
+  cc1 = std::strchr ("abcba", 'b');
+  cc2 = std::strrchr ("abcba", 'b');
+  cc3 = std::strpbrk ("dabc", "abc");
+  cc4 = std::strstr ("aaabc", "abc");
+}
+
+void
+f3 (void)
+{
+  v1 = memchr ((char *)"abcba", 'b', 3);
+  c1 = strchr ((char *)"abcba", 'b');
+  c2 = strrchr ((char *)"abcba", 'b');
+  c3 = strpbrk ((char *)"dabc", "abc");
+  c4 = strstr ((char *)"aaabc", "abc");
+}
+
+void
+f4 (void)
+{
+  v1 = std::memchr ((char *)"abcba", 'b', 3);
+  c1 = std::strchr ((char *)"abcba", 'b');
+  c2 = std::strrchr ((char *)"abcba", 'b');
+  c3 = std::strpbrk ((char *)"dabc", "abc");
+  c4 = std::strstr ((char *)"aaabc", "abc");
+}

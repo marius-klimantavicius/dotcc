@@ -1,0 +1,14 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 14: error: class "B" has no suitable copy constructor
+  const B b4 = b3;    // error
+               ^
+
+"Test_name.c", line 15: error: class "B" has no suitable copy constructor
+  B b5 = b3;          // error
+         ^
+
+"Test_name.c", line 14: warning: variable "b4" was declared but never referenced
+  const B b4 = b3;    // error
+          ^
+
+2 errors detected in the compilation of "Test_name.c".

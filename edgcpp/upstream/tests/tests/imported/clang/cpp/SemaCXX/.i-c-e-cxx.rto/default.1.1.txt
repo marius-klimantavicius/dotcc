@@ -1,0 +1,36 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 18: warning: variable "array" was declared but never referenced
+      int array[value];
+          ^
+
+"Test_name.c", line 23: warning: variable "t" is used before its value is set
+    const int t=t; // expected-note {{declared here}}
+                ^
+
+"Test_name.c", line 27: error: expression must have a constant value
+      case t:; // expected-note {{initializer of 't' is not a constant expression}}
+           ^
+"Test_name.c", line 27: note: the value of variable "t" (declared at line 23) cannot be used as a constant
+      case t:; // expected-note {{initializer of 't' is not a constant expression}}
+           ^
+
+"Test_name.c", line 34: warning: missing return statement at end of non-void function "a"
+  }
+  ^
+
+"Test_name.c", line 54: warning: variable "max" was declared but never referenced
+    unsigned max = 80 / x;
+             ^
+
+"Test_name.c", line 72: error: a value of type "char" cannot be used to initialize an entity of type "int *"
+  int* y = reinterpret_cast<const char&>(x); // expected-error {{cannot initialize}}
+           ^
+
+"Test_name.c", line 80: error: expression must have a constant value
+  int PR8836test[(__typeof(sizeof(int)))&reinterpret_cast<const volatile char&>((((PR8836*)0)->a))];
+                 ^
+"Test_name.c", line 80: note: conversion from "long long" to "char" is invalid in constant-expression evaluation
+  int PR8836test[(__typeof(sizeof(int)))&reinterpret_cast<const volatile char&>((((PR8836*)0)->a))];
+                                         ^
+
+3 errors detected in the compilation of "Test_name.c".

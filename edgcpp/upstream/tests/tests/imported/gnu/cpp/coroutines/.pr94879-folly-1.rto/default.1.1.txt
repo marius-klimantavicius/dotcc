@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics -w Test_name.c
+"Test_name.c", line 36: error: expected an operator
+  template <typename ab> ac::ad<ab> operator co_await(ab) noexcept;
+                                             ^
+
+"Test_name.c", line 57: error: identifier "co_await" is undefined
+    [&]() -> n { co_await std::b(am.e); };
+                 ^
+
+"Test_name.c", line 57: error: qualified name is not allowed
+    [&]() -> n { co_await std::b(am.e); };
+                          ^
+
+3 errors detected in the compilation of "Test_name.c".

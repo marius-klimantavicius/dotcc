@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 9: error: unknown asm constraint letter 'w'
+            : "=w"(x)
+              ^
+
+"Test_name.c", line 10: error: unknown asm constraint letter 'w'
+            : "w"(x)); // No error expected.
+              ^
+
+2 errors detected in the compilation of "Test_name.c".

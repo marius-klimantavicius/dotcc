@@ -1,0 +1,34 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 6: error: type definition is not allowed
+  void f(struct AA { int ii; } p, void (*pf)(struct AAA { int iii; })) {
+         ^
+
+"Test_name.c", line 6: error: type definition is not allowed
+  void f(struct AA { int ii; } p, void (*pf)(struct AAA { int iii; })) {
+                                             ^
+
+"Test_name.c", line 8: error: use of a local type to declare a function
+    extern void g(struct B);
+                ^
+
+"Test_name.c", line 9: warning: variable "b" is used before its value is set
+    g(b);
+      ^
+
+"Test_name.c", line 11: error: use of a local type to declare a nonlocal variable
+      extern struct C v;
+                      ^
+
+"Test_name.c", line 12: warning: expression has no effect
+      &v;
+      ^
+
+"Test_name.c", line 6: remark: parameter "p" was never referenced
+  void f(struct AA { int ii; } p, void (*pf)(struct AAA { int iii; })) {
+                               ^
+
+"Test_name.c", line 6: remark: parameter "pf" was never referenced
+  void f(struct AA { int ii; } p, void (*pf)(struct AAA { int iii; })) {
+                                         ^
+
+4 errors detected in the compilation of "Test_name.c".

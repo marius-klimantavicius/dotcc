@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 6: error: a value of type "std::nullptr_t" cannot be used to initialize an entity of type "bool"
+  bool b1 = nullptr;  // { dg-error "direct" }
+            ^
+
+"Test_name.c", line 11: error: a value of type "std::nullptr_t" cannot be used to initialize an entity of type "int"
+  int  i1 = nullptr;  // { dg-error "cannot convert" }
+            ^
+
+"Test_name.c", line 12: error: a value of type "std::nullptr_t" cannot be used to initialize an entity of type "int"
+  int  i2(nullptr);   // { dg-error "cannot convert" }
+          ^
+
+"Test_name.c", line 13: error: a value of type "std::nullptr_t" cannot be used to initialize an entity of type "int"
+  int  i3{nullptr};   // { dg-error "cannot convert" }
+          ^
+
+4 errors detected in the compilation of "Test_name.c".

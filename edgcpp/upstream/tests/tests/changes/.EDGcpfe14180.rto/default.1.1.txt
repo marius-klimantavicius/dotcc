@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++11 Test_name.c
+"Test_name.c", line 18: error: overloading two member functions with the same parameter types requires that they both have ref-qualifiers or both lack ref-qualifiers
+    void f() &;      // Previously silently accepted in C++11 mode.
+         ^
+
+1 error detected in the compilation of "Test_name.c".

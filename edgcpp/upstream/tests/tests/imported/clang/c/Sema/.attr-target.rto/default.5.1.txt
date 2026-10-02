@@ -1,0 +1,77 @@
+fe_only -DTEST_NUMBER=5 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 --target linux_aarch64 Test_name.c
+"Test_name.c", line 42: warning: target attribute not recognized
+  int __attribute__((target("sve,arch=armv8-a"))) foo(void) { return 4; }
+                            ^
+
+"Test_name.c", line 42: warning: target attribute not recognized
+  int __attribute__((target("sve,arch=armv8-a"))) foo(void) { return 4; }
+                            ^
+
+"Test_name.c", line 46: warning: target attribute not recognized
+  int __attribute__((target("tune=cortex-a710"))) baz(void) { return 4; }
+                            ^
+
+"Test_name.c", line 48: warning: target attribute not recognized
+  int __attribute__((target("fpmath=387"))) walrus(void) { return 4; }
+                            ^
+
+"Test_name.c", line 50: warning: target attribute not recognized
+  int __attribute__((target("sve,cpu=hiss"))) meow(void) {  return 4; }
+                            ^
+
+"Test_name.c", line 50: warning: target attribute not recognized
+  int __attribute__((target("sve,cpu=hiss"))) meow(void) {  return 4; }
+                            ^
+
+"Test_name.c", line 52: warning: target attribute not recognized
+  int __attribute__((target("woof"))) bark(void) {  return 4; }
+                            ^
+
+"Test_name.c", line 54: warning: target attribute not recognized
+  int __attribute__((target("arch=armv8-a+woof"))) buff(void) {  return 4; }
+                            ^
+
+"Test_name.c", line 56: warning: target attribute not recognized
+  int __attribute__((target("+noway"))) noway(void) {  return 4; }
+                            ^
+
+"Test_name.c", line 58: warning: target attribute not recognized
+  int __attribute__((target("arch="))) turtle(void) { return 4; }
+                            ^
+
+"Test_name.c", line 60: warning: target attribute not recognized
+  int __attribute__((target("cpu=hiss,cpu=woof"))) pine_tree(void) { return 4; }
+                            ^
+
+"Test_name.c", line 60: warning: target attribute not recognized
+  int __attribute__((target("cpu=hiss,cpu=woof"))) pine_tree(void) { return 4; }
+                            ^
+
+"Test_name.c", line 62: warning: target attribute not recognized
+  int __attribute__((target("arch=armv8.1-a,arch=armv8-a"))) oak_tree(void) { return 4; }
+                            ^
+
+"Test_name.c", line 62: warning: target attribute not recognized
+  int __attribute__((target("arch=armv8.1-a,arch=armv8-a"))) oak_tree(void) { return 4; }
+                            ^
+
+"Test_name.c", line 64: warning: target attribute not recognized
+  int __attribute__((target("cpu=cortex-a710,cpu=neoverse-n2"))) apple_tree(void) { return 4; }
+                            ^
+
+"Test_name.c", line 64: warning: target attribute not recognized
+  int __attribute__((target("cpu=cortex-a710,cpu=neoverse-n2"))) apple_tree(void) { return 4; }
+                            ^
+
+"Test_name.c", line 66: warning: target attribute not recognized
+  int __attribute__((target("tune=cortex-a710,tune=neoverse-n2"))) pear_tree(void) { return 4; }
+                            ^
+
+"Test_name.c", line 66: warning: target attribute not recognized
+  int __attribute__((target("tune=cortex-a710,tune=neoverse-n2"))) pear_tree(void) { return 4; }
+                            ^
+
+"Test_name.c", line 68: warning: target attribute not recognized
+  int __attribute__((target("branch-protection=none"))) birch_tree(void) { return 5; }
+                            ^
+

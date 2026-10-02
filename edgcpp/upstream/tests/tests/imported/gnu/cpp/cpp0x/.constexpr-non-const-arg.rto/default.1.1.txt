@@ -1,0 +1,24 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 24: error: expression must have a constant value
+  constexpr int v = A2(true, global).m; // { dg-error "global" }
+                    ^
+"Test_name.c", line 24: note: the value of variable "global" (declared at line 12) cannot be used as a constant
+  constexpr int v = A2(true, global).m; // { dg-error "global" }
+                             ^
+
+"Test_name.c", line 26: error: expression must have a constant value
+  constexpr int w = A2(false, global).m; // { dg-error "global" }
+                    ^
+"Test_name.c", line 26: note: the value of variable "global" (declared at line 12) cannot be used as a constant
+  constexpr int w = A2(false, global).m; // { dg-error "global" }
+                              ^
+
+"Test_name.c", line 24: warning: variable "v" was declared but never referenced
+  constexpr int v = A2(true, global).m; // { dg-error "global" }
+                ^
+
+"Test_name.c", line 26: warning: variable "w" was declared but never referenced
+  constexpr int w = A2(false, global).m; // { dg-error "global" }
+                ^
+
+2 errors detected in the compilation of "Test_name.c".

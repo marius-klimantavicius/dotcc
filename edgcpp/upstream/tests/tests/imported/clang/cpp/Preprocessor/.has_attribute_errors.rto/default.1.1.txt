@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 15: error: the argument to a feature-test macro must be a simple identifier
+  __has_cpp_attribute(__clang__::fallthrough) // expected-error {{missing ')' after <numeric_constant>}} \
+                      ^
+
+"Test_name.c", line 15: error: expected a declaration
+  __has_cpp_attribute(__clang__::fallthrough) // expected-error {{missing ')' after <numeric_constant>}} \
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

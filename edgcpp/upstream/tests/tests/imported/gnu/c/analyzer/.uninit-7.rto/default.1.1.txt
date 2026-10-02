@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 19: warning: variable "e" is used before its value is set
+    c = foo(e); /* { dg-warning "use of uninitialized value 'e'" } */
+            ^
+
+"Test_name.c", line 14: warning: variable "b" was set but never used
+    st b, c, d, e;
+       ^
+
+"Test_name.c", line 14: warning: variable "c" was set but never used
+    st b, c, d, e;
+          ^
+
+"Test_name.c", line 14: warning: variable "d" was set but never used
+    st b, c, d, e;
+             ^
+
+"Test_name.c", line 42: warning: variable "a" is used before its value is set
+    a = foo (a); /* { dg-warning "use of uninitialized value 'a'" } */
+             ^
+
+"Test_name.c", line 75: warning: parameter "a" was set but never used
+  st test_6 (st a)
+                ^
+
+"Test_name.c", line 83: warning: parameter "a" was set but never used
+  void test_6a (st a)
+                   ^
+
+"Test_name.c", line 99: warning: variable "b" was set but never used
+    st b;
+       ^
+

@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 13: error: result of decltype qualifier "int &" is not a class or enumeration
+  template<class T> void f2(decltype(n = n)::t1); // { dg-error "not a class" }
+                            ^
+
+"Test_name.c", line 13: warning: variable templates are a C++14 feature
+  template<class T> void f2(decltype(n = n)::t1); // { dg-error "not a class" }
+                            ^
+
+"Test_name.c", line 13: error: incomplete type "void" is not allowed
+  template<class T> void f2(decltype(n = n)::t1); // { dg-error "not a class" }
+                         ^
+
+"Test_name.c", line 14: error: result of decltype qualifier "int &" is not a class or enumeration
+  template<class T> void f3(decltype(n += n)::t1); // { dg-error "not a class" }
+                            ^
+
+"Test_name.c", line 14: warning: variable templates are a C++14 feature
+  template<class T> void f3(decltype(n += n)::t1); // { dg-error "not a class" }
+                            ^
+
+"Test_name.c", line 14: error: incomplete type "void" is not allowed
+  template<class T> void f3(decltype(n += n)::t1); // { dg-error "not a class" }
+                         ^
+
+4 errors detected in the compilation of "Test_name.c".

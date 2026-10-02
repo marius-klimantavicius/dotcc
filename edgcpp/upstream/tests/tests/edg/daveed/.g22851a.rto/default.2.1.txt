@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=2 --c++17 --clang Test_name.c
+"Test_name.c", line 6: error: the return type must directly designate a specialization of the associated class template
+  template <typename c> a()->b<c>;
+                             ^
+
+1 error detected in the compilation of "Test_name.c".

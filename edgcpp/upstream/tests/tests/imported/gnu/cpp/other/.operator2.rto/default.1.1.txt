@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: error: no arguments allowed on user-defined conversion
+    operator int&(int);  // { dg-error "3:.A::operator int&\\(int\\). must have no arguments" }
+    ^
+
+"Test_name.c", line 12: error: a reference of type "int &" (not const-qualified) cannot be initialized with a value of type "A"
+  int& i = a;  // { dg-error "initialization" }
+           ^
+
+2 errors detected in the compilation of "Test_name.c".

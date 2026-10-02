@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++23 Test_name.c
+"Test_name.c", line 13: error: identifier "i" is undefined
+  int e1 (auto{i}); // { dg-error "not declared" }
+               ^
+
+"Test_name.c", line 18: error: expected a ")"
+  int v6 (auto(i = 4));
+                 ^
+
+"Test_name.c", line 18: error: expected a declaration
+  int v6 (auto(i = 4));
+                     ^
+
+"Test_name.c", line 21: error: "auto" function requires a trailing return type
+  int f6 (auto());
+          ^
+
+"Test_name.c", line 22: error: "auto" function requires a trailing return type
+  int f7 (auto(int));
+          ^
+
+"Test_name.c", line 23: error: "auto" function requires a trailing return type
+  int f8 (auto(f)(int));
+          ^
+
+"Test_name.c", line 32: error: invalid type conversion
+  int e2 (auto{}); // { dg-error "invalid use of .auto." }
+              ^
+
+"Test_name.c", line 33: error: expected a ")"
+  int e3 (auto(i, i)); // { dg-error "invalid use of .auto." }
+                ^
+
+"Test_name.c", line 62: error: cannot determine which instance of function template "v6" is intended
+    v6 = 6;
+    ^
+
+9 errors detected in the compilation of "Test_name.c".

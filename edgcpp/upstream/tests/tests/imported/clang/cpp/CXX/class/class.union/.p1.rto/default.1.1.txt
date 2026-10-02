@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 25: warning: template parameter "T" is not used in declaring the parameter types of function template "CtorTmpl::CtorTmpl"
+    template<typename T> CtorTmpl(); // expected-note {{implicit default constructor suppressed by user-declared constructor}}
+                      ^
+
+"Test_name.c", line 41: warning: unrestricted unions are a C++11 feature
+    Virtual v; // expected-error {{union member 'v' has a non-trivial copy constructor}}
+            ^
+
+"Test_name.c", line 97: warning: deleted functions are a C++11 feature
+      s8(...) = delete; // expected-note {{because it is a variadic function}} expected-warning {{C++11}}
+                ^
+
+"Test_name.c", line 107: error: a member with reference type is not allowed in a union
+    int& i1; // expected-error {{union member 'i1' has reference type 'int &'}}
+    ^
+
+"Test_name.c", line 133: error: function "Either<A, B>::~Either() [with A=int, B=Dtor]" (declared implicitly) cannot be referenced -- it is a deleted function
+    Either<int,Dtor> dtor(0); // expected-note {{in instantiation of template}}
+                          ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --c++17 -tused -A Test_name.c
+"Test_name.c", line 3: warning: expression has no effect
+  auto a = (0, 1); // error - expr-list is not a single asst-expr
+            ^
+

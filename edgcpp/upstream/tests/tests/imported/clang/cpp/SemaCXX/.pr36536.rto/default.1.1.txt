@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 20: warning: variable "o" was declared but never referenced
+    switch (0) { case 0: ImplicitDefaultCtor1 o; }
+                                              ^
+
+"Test_name.c", line 22: warning: variable "var" was declared but never referenced
+    NameInClass var;
+                ^
+
+"Test_name.c", line 29: error: a decltype-qualified name is nonstandard in this declaration context
+  template <typename T> void decltype(TFoo<T>())::f() {
+                                                  ^
+
+"Test_name.c", line 29: error: "class <unnamed>" is not a class template
+  template <typename T> void decltype(TFoo<T>())::f() {
+                             ^
+
+"Test_name.c", line 41: error: a template declaration containing a template parameter list may not be followed by an explicit specialization declaration
+  template <>
+            ^
+
+"Test_name.c", line 43: error: partial specialization of nontype "tpl2::A<T1>::B<T2>::mf2 [with T2=double]" is not allowed
+  void A<Y>::B<double>::mf2() {
+       ^
+
+"Test_name.c", line 43: error: class template "tpl2::A<T1>::B" (declared at line 36) is inaccessible
+  void A<Y>::B<double>::mf2() {
+             ^
+
+5 errors detected in the compilation of "Test_name.c".

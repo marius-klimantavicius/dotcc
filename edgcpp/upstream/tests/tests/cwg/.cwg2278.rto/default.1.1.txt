@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 -A --c++20 -tused -e 200 --no_wrap Test_name.c
+"Test_name.c", line 11: error: expression must have a constant value
+    constexpr B b = f(); // is b.self == &b?
+                    ^
+"Test_name.c", line 11: note: invalid use of address of interpreter storage
+    constexpr B b = f(); // is b.self == &b?
+                    ^
+
+1 error detected in the compilation of "Test_name.c".

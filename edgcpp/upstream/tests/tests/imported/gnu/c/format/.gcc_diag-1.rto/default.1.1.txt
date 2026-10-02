@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./format/gcc_diag-1.c", line 23: warning: unrecognized format function type "__gcc_diag__" ignored
+  extern int diag (const char *, ...) __attribute__ ((__format__ (__gcc_diag__, 1, 2))) __attribute__ ((__nonnull__));;
+                                                                  ^
+
+"./format/gcc_diag-1.c", line 24: warning: unrecognized format function type "__gcc_tdiag__" ignored
+  extern int tdiag (const char *, ...) __attribute__ ((__format__ (__gcc_tdiag__, 1, 2))) __attribute__ ((__nonnull__));;
+                                                                   ^
+
+"./format/gcc_diag-1.c", line 25: warning: unrecognized format function type "__gcc_cdiag__" ignored
+  extern int cdiag (const char *, ...) __attribute__ ((__format__ (__gcc_cdiag__, 1, 2))) __attribute__ ((__nonnull__));;
+                                                                   ^
+
+"./format/gcc_diag-1.c", line 26: warning: unrecognized format function type "__gcc_cxxdiag__" ignored
+  extern int cxxdiag (const char *, ...) __attribute__ ((__format__ (__gcc_cxxdiag__, 1, 2))) __attribute__ ((__nonnull__));;
+                                                                     ^
+
+"./format/gcc_diag-1.c", line 27: warning: unrecognized format function type "__gcc_dump_printf__" ignored
+  extern int dump (const char *, ...) __attribute__ ((__format__ (__gcc_dump_printf__, 1, 2))) __attribute__ ((__nonnull__));;
+                                                                  ^
+

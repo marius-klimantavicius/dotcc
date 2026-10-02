@@ -1,0 +1,1025 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 8: warning: variable "string_0" was declared but never referenced
+    char string_0[] = "\x0";
+         ^
+
+"Test_name.c", line 9: warning: variable "string_1" was declared but never referenced
+    char string_1[] = "\x1";
+         ^
+
+"Test_name.c", line 10: warning: variable "string_2" was declared but never referenced
+    char string_2[] = "\x2";
+         ^
+
+"Test_name.c", line 11: warning: variable "string_3" was declared but never referenced
+    char string_3[] = "\x3";
+         ^
+
+"Test_name.c", line 12: warning: variable "string_4" was declared but never referenced
+    char string_4[] = "\x4";
+         ^
+
+"Test_name.c", line 13: warning: variable "string_5" was declared but never referenced
+    char string_5[] = "\x5";
+         ^
+
+"Test_name.c", line 14: warning: variable "string_6" was declared but never referenced
+    char string_6[] = "\x6";
+         ^
+
+"Test_name.c", line 15: warning: variable "string_7" was declared but never referenced
+    char string_7[] = "\x7";
+         ^
+
+"Test_name.c", line 16: warning: variable "string_8" was declared but never referenced
+    char string_8[] = "\x8";
+         ^
+
+"Test_name.c", line 17: warning: variable "string_9" was declared but never referenced
+    char string_9[] = "\x9";
+         ^
+
+"Test_name.c", line 18: warning: variable "string_10" was declared but never referenced
+    char string_10[] = "\xa";
+         ^
+
+"Test_name.c", line 19: warning: variable "string_11" was declared but never referenced
+    char string_11[] = "\xb";
+         ^
+
+"Test_name.c", line 20: warning: variable "string_12" was declared but never referenced
+    char string_12[] = "\xc";
+         ^
+
+"Test_name.c", line 21: warning: variable "string_13" was declared but never referenced
+    char string_13[] = "\xd";
+         ^
+
+"Test_name.c", line 22: warning: variable "string_14" was declared but never referenced
+    char string_14[] = "\xe";
+         ^
+
+"Test_name.c", line 23: warning: variable "string_15" was declared but never referenced
+    char string_15[] = "\xf";
+         ^
+
+"Test_name.c", line 24: warning: variable "string_16" was declared but never referenced
+    char string_16[] = "\x10";
+         ^
+
+"Test_name.c", line 25: warning: variable "string_17" was declared but never referenced
+    char string_17[] = "\x11";
+         ^
+
+"Test_name.c", line 26: warning: variable "string_18" was declared but never referenced
+    char string_18[] = "\x12";
+         ^
+
+"Test_name.c", line 27: warning: variable "string_19" was declared but never referenced
+    char string_19[] = "\x13";
+         ^
+
+"Test_name.c", line 28: warning: variable "string_20" was declared but never referenced
+    char string_20[] = "\x14";
+         ^
+
+"Test_name.c", line 29: warning: variable "string_21" was declared but never referenced
+    char string_21[] = "\x15";
+         ^
+
+"Test_name.c", line 30: warning: variable "string_22" was declared but never referenced
+    char string_22[] = "\x16";
+         ^
+
+"Test_name.c", line 31: warning: variable "string_23" was declared but never referenced
+    char string_23[] = "\x17";
+         ^
+
+"Test_name.c", line 32: warning: variable "string_24" was declared but never referenced
+    char string_24[] = "\x18";
+         ^
+
+"Test_name.c", line 33: warning: variable "string_25" was declared but never referenced
+    char string_25[] = "\x19";
+         ^
+
+"Test_name.c", line 34: warning: variable "string_26" was declared but never referenced
+    char string_26[] = "\x1a";
+         ^
+
+"Test_name.c", line 35: warning: variable "string_27" was declared but never referenced
+    char string_27[] = "\x1b";
+         ^
+
+"Test_name.c", line 36: warning: variable "string_28" was declared but never referenced
+    char string_28[] = "\x1c";
+         ^
+
+"Test_name.c", line 37: warning: variable "string_29" was declared but never referenced
+    char string_29[] = "\x1d";
+         ^
+
+"Test_name.c", line 38: warning: variable "string_30" was declared but never referenced
+    char string_30[] = "\x1e";
+         ^
+
+"Test_name.c", line 39: warning: variable "string_31" was declared but never referenced
+    char string_31[] = "\x1f";
+         ^
+
+"Test_name.c", line 40: warning: variable "string_32" was declared but never referenced
+    char string_32[] = "\x20";
+         ^
+
+"Test_name.c", line 41: warning: variable "string_33" was declared but never referenced
+    char string_33[] = "\x21";
+         ^
+
+"Test_name.c", line 42: warning: variable "string_34" was declared but never referenced
+    char string_34[] = "\x22";
+         ^
+
+"Test_name.c", line 43: warning: variable "string_35" was declared but never referenced
+    char string_35[] = "\x23";
+         ^
+
+"Test_name.c", line 44: warning: variable "string_36" was declared but never referenced
+    char string_36[] = "\x24";
+         ^
+
+"Test_name.c", line 45: warning: variable "string_37" was declared but never referenced
+    char string_37[] = "\x25";
+         ^
+
+"Test_name.c", line 46: warning: variable "string_38" was declared but never referenced
+    char string_38[] = "\x26";
+         ^
+
+"Test_name.c", line 47: warning: variable "string_39" was declared but never referenced
+    char string_39[] = "\x27";
+         ^
+
+"Test_name.c", line 48: warning: variable "string_40" was declared but never referenced
+    char string_40[] = "\x28";
+         ^
+
+"Test_name.c", line 49: warning: variable "string_41" was declared but never referenced
+    char string_41[] = "\x29";
+         ^
+
+"Test_name.c", line 50: warning: variable "string_42" was declared but never referenced
+    char string_42[] = "\x2a";
+         ^
+
+"Test_name.c", line 51: warning: variable "string_43" was declared but never referenced
+    char string_43[] = "\x2b";
+         ^
+
+"Test_name.c", line 52: warning: variable "string_44" was declared but never referenced
+    char string_44[] = "\x2c";
+         ^
+
+"Test_name.c", line 53: warning: variable "string_45" was declared but never referenced
+    char string_45[] = "\x2d";
+         ^
+
+"Test_name.c", line 54: warning: variable "string_46" was declared but never referenced
+    char string_46[] = "\x2e";
+         ^
+
+"Test_name.c", line 55: warning: variable "string_47" was declared but never referenced
+    char string_47[] = "\x2f";
+         ^
+
+"Test_name.c", line 56: warning: variable "string_48" was declared but never referenced
+    char string_48[] = "\x30";
+         ^
+
+"Test_name.c", line 57: warning: variable "string_49" was declared but never referenced
+    char string_49[] = "\x31";
+         ^
+
+"Test_name.c", line 58: warning: variable "string_50" was declared but never referenced
+    char string_50[] = "\x32";
+         ^
+
+"Test_name.c", line 59: warning: variable "string_51" was declared but never referenced
+    char string_51[] = "\x33";
+         ^
+
+"Test_name.c", line 60: warning: variable "string_52" was declared but never referenced
+    char string_52[] = "\x34";
+         ^
+
+"Test_name.c", line 61: warning: variable "string_53" was declared but never referenced
+    char string_53[] = "\x35";
+         ^
+
+"Test_name.c", line 62: warning: variable "string_54" was declared but never referenced
+    char string_54[] = "\x36";
+         ^
+
+"Test_name.c", line 63: warning: variable "string_55" was declared but never referenced
+    char string_55[] = "\x37";
+         ^
+
+"Test_name.c", line 64: warning: variable "string_56" was declared but never referenced
+    char string_56[] = "\x38";
+         ^
+
+"Test_name.c", line 65: warning: variable "string_57" was declared but never referenced
+    char string_57[] = "\x39";
+         ^
+
+"Test_name.c", line 66: warning: variable "string_58" was declared but never referenced
+    char string_58[] = "\x3a";
+         ^
+
+"Test_name.c", line 67: warning: variable "string_59" was declared but never referenced
+    char string_59[] = "\x3b";
+         ^
+
+"Test_name.c", line 68: warning: variable "string_60" was declared but never referenced
+    char string_60[] = "\x3c";
+         ^
+
+"Test_name.c", line 69: warning: variable "string_61" was declared but never referenced
+    char string_61[] = "\x3d";
+         ^
+
+"Test_name.c", line 70: warning: variable "string_62" was declared but never referenced
+    char string_62[] = "\x3e";
+         ^
+
+"Test_name.c", line 71: warning: variable "string_63" was declared but never referenced
+    char string_63[] = "\x3f";
+         ^
+
+"Test_name.c", line 72: warning: variable "string_64" was declared but never referenced
+    char string_64[] = "\x40";
+         ^
+
+"Test_name.c", line 73: warning: variable "string_65" was declared but never referenced
+    char string_65[] = "\x41";
+         ^
+
+"Test_name.c", line 74: warning: variable "string_66" was declared but never referenced
+    char string_66[] = "\x42";
+         ^
+
+"Test_name.c", line 75: warning: variable "string_67" was declared but never referenced
+    char string_67[] = "\x43";
+         ^
+
+"Test_name.c", line 76: warning: variable "string_68" was declared but never referenced
+    char string_68[] = "\x44";
+         ^
+
+"Test_name.c", line 77: warning: variable "string_69" was declared but never referenced
+    char string_69[] = "\x45";
+         ^
+
+"Test_name.c", line 78: warning: variable "string_70" was declared but never referenced
+    char string_70[] = "\x46";
+         ^
+
+"Test_name.c", line 79: warning: variable "string_71" was declared but never referenced
+    char string_71[] = "\x47";
+         ^
+
+"Test_name.c", line 80: warning: variable "string_72" was declared but never referenced
+    char string_72[] = "\x48";
+         ^
+
+"Test_name.c", line 81: warning: variable "string_73" was declared but never referenced
+    char string_73[] = "\x49";
+         ^
+
+"Test_name.c", line 82: warning: variable "string_74" was declared but never referenced
+    char string_74[] = "\x4a";
+         ^
+
+"Test_name.c", line 83: warning: variable "string_75" was declared but never referenced
+    char string_75[] = "\x4b";
+         ^
+
+"Test_name.c", line 84: warning: variable "string_76" was declared but never referenced
+    char string_76[] = "\x4c";
+         ^
+
+"Test_name.c", line 85: warning: variable "string_77" was declared but never referenced
+    char string_77[] = "\x4d";
+         ^
+
+"Test_name.c", line 86: warning: variable "string_78" was declared but never referenced
+    char string_78[] = "\x4e";
+         ^
+
+"Test_name.c", line 87: warning: variable "string_79" was declared but never referenced
+    char string_79[] = "\x4f";
+         ^
+
+"Test_name.c", line 88: warning: variable "string_80" was declared but never referenced
+    char string_80[] = "\x50";
+         ^
+
+"Test_name.c", line 89: warning: variable "string_81" was declared but never referenced
+    char string_81[] = "\x51";
+         ^
+
+"Test_name.c", line 90: warning: variable "string_82" was declared but never referenced
+    char string_82[] = "\x52";
+         ^
+
+"Test_name.c", line 91: warning: variable "string_83" was declared but never referenced
+    char string_83[] = "\x53";
+         ^
+
+"Test_name.c", line 92: warning: variable "string_84" was declared but never referenced
+    char string_84[] = "\x54";
+         ^
+
+"Test_name.c", line 93: warning: variable "string_85" was declared but never referenced
+    char string_85[] = "\x55";
+         ^
+
+"Test_name.c", line 94: warning: variable "string_86" was declared but never referenced
+    char string_86[] = "\x56";
+         ^
+
+"Test_name.c", line 95: warning: variable "string_87" was declared but never referenced
+    char string_87[] = "\x57";
+         ^
+
+"Test_name.c", line 96: warning: variable "string_88" was declared but never referenced
+    char string_88[] = "\x58";
+         ^
+
+"Test_name.c", line 97: warning: variable "string_89" was declared but never referenced
+    char string_89[] = "\x59";
+         ^
+
+"Test_name.c", line 98: warning: variable "string_90" was declared but never referenced
+    char string_90[] = "\x5a";
+         ^
+
+"Test_name.c", line 99: warning: variable "string_91" was declared but never referenced
+    char string_91[] = "\x5b";
+         ^
+
+"Test_name.c", line 100: warning: variable "string_92" was declared but never referenced
+    char string_92[] = "\x5c";
+         ^
+
+"Test_name.c", line 101: warning: variable "string_93" was declared but never referenced
+    char string_93[] = "\x5d";
+         ^
+
+"Test_name.c", line 102: warning: variable "string_94" was declared but never referenced
+    char string_94[] = "\x5e";
+         ^
+
+"Test_name.c", line 103: warning: variable "string_95" was declared but never referenced
+    char string_95[] = "\x5f";
+         ^
+
+"Test_name.c", line 104: warning: variable "string_96" was declared but never referenced
+    char string_96[] = "\x60";
+         ^
+
+"Test_name.c", line 105: warning: variable "string_97" was declared but never referenced
+    char string_97[] = "\x61";
+         ^
+
+"Test_name.c", line 106: warning: variable "string_98" was declared but never referenced
+    char string_98[] = "\x62";
+         ^
+
+"Test_name.c", line 107: warning: variable "string_99" was declared but never referenced
+    char string_99[] = "\x63";
+         ^
+
+"Test_name.c", line 108: warning: variable "string_100" was declared but never referenced
+    char string_100[] = "\x64";
+         ^
+
+"Test_name.c", line 109: warning: variable "string_101" was declared but never referenced
+    char string_101[] = "\x65";
+         ^
+
+"Test_name.c", line 110: warning: variable "string_102" was declared but never referenced
+    char string_102[] = "\x66";
+         ^
+
+"Test_name.c", line 111: warning: variable "string_103" was declared but never referenced
+    char string_103[] = "\x67";
+         ^
+
+"Test_name.c", line 112: warning: variable "string_104" was declared but never referenced
+    char string_104[] = "\x68";
+         ^
+
+"Test_name.c", line 113: warning: variable "string_105" was declared but never referenced
+    char string_105[] = "\x69";
+         ^
+
+"Test_name.c", line 114: warning: variable "string_106" was declared but never referenced
+    char string_106[] = "\x6a";
+         ^
+
+"Test_name.c", line 115: warning: variable "string_107" was declared but never referenced
+    char string_107[] = "\x6b";
+         ^
+
+"Test_name.c", line 116: warning: variable "string_108" was declared but never referenced
+    char string_108[] = "\x6c";
+         ^
+
+"Test_name.c", line 117: warning: variable "string_109" was declared but never referenced
+    char string_109[] = "\x6d";
+         ^
+
+"Test_name.c", line 118: warning: variable "string_110" was declared but never referenced
+    char string_110[] = "\x6e";
+         ^
+
+"Test_name.c", line 119: warning: variable "string_111" was declared but never referenced
+    char string_111[] = "\x6f";
+         ^
+
+"Test_name.c", line 120: warning: variable "string_112" was declared but never referenced
+    char string_112[] = "\x70";
+         ^
+
+"Test_name.c", line 121: warning: variable "string_113" was declared but never referenced
+    char string_113[] = "\x71";
+         ^
+
+"Test_name.c", line 122: warning: variable "string_114" was declared but never referenced
+    char string_114[] = "\x72";
+         ^
+
+"Test_name.c", line 123: warning: variable "string_115" was declared but never referenced
+    char string_115[] = "\x73";
+         ^
+
+"Test_name.c", line 124: warning: variable "string_116" was declared but never referenced
+    char string_116[] = "\x74";
+         ^
+
+"Test_name.c", line 125: warning: variable "string_117" was declared but never referenced
+    char string_117[] = "\x75";
+         ^
+
+"Test_name.c", line 126: warning: variable "string_118" was declared but never referenced
+    char string_118[] = "\x76";
+         ^
+
+"Test_name.c", line 127: warning: variable "string_119" was declared but never referenced
+    char string_119[] = "\x77";
+         ^
+
+"Test_name.c", line 128: warning: variable "string_120" was declared but never referenced
+    char string_120[] = "\x78";
+         ^
+
+"Test_name.c", line 129: warning: variable "string_121" was declared but never referenced
+    char string_121[] = "\x79";
+         ^
+
+"Test_name.c", line 130: warning: variable "string_122" was declared but never referenced
+    char string_122[] = "\x7a";
+         ^
+
+"Test_name.c", line 131: warning: variable "string_123" was declared but never referenced
+    char string_123[] = "\x7b";
+         ^
+
+"Test_name.c", line 132: warning: variable "string_124" was declared but never referenced
+    char string_124[] = "\x7c";
+         ^
+
+"Test_name.c", line 133: warning: variable "string_125" was declared but never referenced
+    char string_125[] = "\x7d";
+         ^
+
+"Test_name.c", line 134: warning: variable "string_126" was declared but never referenced
+    char string_126[] = "\x7e";
+         ^
+
+"Test_name.c", line 135: warning: variable "string_127" was declared but never referenced
+    char string_127[] = "\x7f";
+         ^
+
+"Test_name.c", line 136: warning: variable "string_128" was declared but never referenced
+    char string_128[] = "\x80";
+         ^
+
+"Test_name.c", line 137: warning: variable "string_129" was declared but never referenced
+    char string_129[] = "\x81";
+         ^
+
+"Test_name.c", line 138: warning: variable "string_130" was declared but never referenced
+    char string_130[] = "\x82";
+         ^
+
+"Test_name.c", line 139: warning: variable "string_131" was declared but never referenced
+    char string_131[] = "\x83";
+         ^
+
+"Test_name.c", line 140: warning: variable "string_132" was declared but never referenced
+    char string_132[] = "\x84";
+         ^
+
+"Test_name.c", line 141: warning: variable "string_133" was declared but never referenced
+    char string_133[] = "\x85";
+         ^
+
+"Test_name.c", line 142: warning: variable "string_134" was declared but never referenced
+    char string_134[] = "\x86";
+         ^
+
+"Test_name.c", line 143: warning: variable "string_135" was declared but never referenced
+    char string_135[] = "\x87";
+         ^
+
+"Test_name.c", line 144: warning: variable "string_136" was declared but never referenced
+    char string_136[] = "\x88";
+         ^
+
+"Test_name.c", line 145: warning: variable "string_137" was declared but never referenced
+    char string_137[] = "\x89";
+         ^
+
+"Test_name.c", line 146: warning: variable "string_138" was declared but never referenced
+    char string_138[] = "\x8a";
+         ^
+
+"Test_name.c", line 147: warning: variable "string_139" was declared but never referenced
+    char string_139[] = "\x8b";
+         ^
+
+"Test_name.c", line 148: warning: variable "string_140" was declared but never referenced
+    char string_140[] = "\x8c";
+         ^
+
+"Test_name.c", line 149: warning: variable "string_141" was declared but never referenced
+    char string_141[] = "\x8d";
+         ^
+
+"Test_name.c", line 150: warning: variable "string_142" was declared but never referenced
+    char string_142[] = "\x8e";
+         ^
+
+"Test_name.c", line 151: warning: variable "string_143" was declared but never referenced
+    char string_143[] = "\x8f";
+         ^
+
+"Test_name.c", line 152: warning: variable "string_144" was declared but never referenced
+    char string_144[] = "\x90";
+         ^
+
+"Test_name.c", line 153: warning: variable "string_145" was declared but never referenced
+    char string_145[] = "\x91";
+         ^
+
+"Test_name.c", line 154: warning: variable "string_146" was declared but never referenced
+    char string_146[] = "\x92";
+         ^
+
+"Test_name.c", line 155: warning: variable "string_147" was declared but never referenced
+    char string_147[] = "\x93";
+         ^
+
+"Test_name.c", line 156: warning: variable "string_148" was declared but never referenced
+    char string_148[] = "\x94";
+         ^
+
+"Test_name.c", line 157: warning: variable "string_149" was declared but never referenced
+    char string_149[] = "\x95";
+         ^
+
+"Test_name.c", line 158: warning: variable "string_150" was declared but never referenced
+    char string_150[] = "\x96";
+         ^
+
+"Test_name.c", line 159: warning: variable "string_151" was declared but never referenced
+    char string_151[] = "\x97";
+         ^
+
+"Test_name.c", line 160: warning: variable "string_152" was declared but never referenced
+    char string_152[] = "\x98";
+         ^
+
+"Test_name.c", line 161: warning: variable "string_153" was declared but never referenced
+    char string_153[] = "\x99";
+         ^
+
+"Test_name.c", line 162: warning: variable "string_154" was declared but never referenced
+    char string_154[] = "\x9a";
+         ^
+
+"Test_name.c", line 163: warning: variable "string_155" was declared but never referenced
+    char string_155[] = "\x9b";
+         ^
+
+"Test_name.c", line 164: warning: variable "string_156" was declared but never referenced
+    char string_156[] = "\x9c";
+         ^
+
+"Test_name.c", line 165: warning: variable "string_157" was declared but never referenced
+    char string_157[] = "\x9d";
+         ^
+
+"Test_name.c", line 166: warning: variable "string_158" was declared but never referenced
+    char string_158[] = "\x9e";
+         ^
+
+"Test_name.c", line 167: warning: variable "string_159" was declared but never referenced
+    char string_159[] = "\x9f";
+         ^
+
+"Test_name.c", line 168: warning: variable "string_160" was declared but never referenced
+    char string_160[] = "\xa0";
+         ^
+
+"Test_name.c", line 169: warning: variable "string_161" was declared but never referenced
+    char string_161[] = "\xa1";
+         ^
+
+"Test_name.c", line 170: warning: variable "string_162" was declared but never referenced
+    char string_162[] = "\xa2";
+         ^
+
+"Test_name.c", line 171: warning: variable "string_163" was declared but never referenced
+    char string_163[] = "\xa3";
+         ^
+
+"Test_name.c", line 172: warning: variable "string_164" was declared but never referenced
+    char string_164[] = "\xa4";
+         ^
+
+"Test_name.c", line 173: warning: variable "string_165" was declared but never referenced
+    char string_165[] = "\xa5";
+         ^
+
+"Test_name.c", line 174: warning: variable "string_166" was declared but never referenced
+    char string_166[] = "\xa6";
+         ^
+
+"Test_name.c", line 175: warning: variable "string_167" was declared but never referenced
+    char string_167[] = "\xa7";
+         ^
+
+"Test_name.c", line 176: warning: variable "string_168" was declared but never referenced
+    char string_168[] = "\xa8";
+         ^
+
+"Test_name.c", line 177: warning: variable "string_169" was declared but never referenced
+    char string_169[] = "\xa9";
+         ^
+
+"Test_name.c", line 178: warning: variable "string_170" was declared but never referenced
+    char string_170[] = "\xaa";
+         ^
+
+"Test_name.c", line 179: warning: variable "string_171" was declared but never referenced
+    char string_171[] = "\xab";
+         ^
+
+"Test_name.c", line 180: warning: variable "string_172" was declared but never referenced
+    char string_172[] = "\xac";
+         ^
+
+"Test_name.c", line 181: warning: variable "string_173" was declared but never referenced
+    char string_173[] = "\xad";
+         ^
+
+"Test_name.c", line 182: warning: variable "string_174" was declared but never referenced
+    char string_174[] = "\xae";
+         ^
+
+"Test_name.c", line 183: warning: variable "string_175" was declared but never referenced
+    char string_175[] = "\xaf";
+         ^
+
+"Test_name.c", line 184: warning: variable "string_176" was declared but never referenced
+    char string_176[] = "\xb0";
+         ^
+
+"Test_name.c", line 185: warning: variable "string_177" was declared but never referenced
+    char string_177[] = "\xb1";
+         ^
+
+"Test_name.c", line 186: warning: variable "string_178" was declared but never referenced
+    char string_178[] = "\xb2";
+         ^
+
+"Test_name.c", line 187: warning: variable "string_179" was declared but never referenced
+    char string_179[] = "\xb3";
+         ^
+
+"Test_name.c", line 188: warning: variable "string_180" was declared but never referenced
+    char string_180[] = "\xb4";
+         ^
+
+"Test_name.c", line 189: warning: variable "string_181" was declared but never referenced
+    char string_181[] = "\xb5";
+         ^
+
+"Test_name.c", line 190: warning: variable "string_182" was declared but never referenced
+    char string_182[] = "\xb6";
+         ^
+
+"Test_name.c", line 191: warning: variable "string_183" was declared but never referenced
+    char string_183[] = "\xb7";
+         ^
+
+"Test_name.c", line 192: warning: variable "string_184" was declared but never referenced
+    char string_184[] = "\xb8";
+         ^
+
+"Test_name.c", line 193: warning: variable "string_185" was declared but never referenced
+    char string_185[] = "\xb9";
+         ^
+
+"Test_name.c", line 194: warning: variable "string_186" was declared but never referenced
+    char string_186[] = "\xba";
+         ^
+
+"Test_name.c", line 195: warning: variable "string_187" was declared but never referenced
+    char string_187[] = "\xbb";
+         ^
+
+"Test_name.c", line 196: warning: variable "string_188" was declared but never referenced
+    char string_188[] = "\xbc";
+         ^
+
+"Test_name.c", line 197: warning: variable "string_189" was declared but never referenced
+    char string_189[] = "\xbd";
+         ^
+
+"Test_name.c", line 198: warning: variable "string_190" was declared but never referenced
+    char string_190[] = "\xbe";
+         ^
+
+"Test_name.c", line 199: warning: variable "string_191" was declared but never referenced
+    char string_191[] = "\xbf";
+         ^
+
+"Test_name.c", line 200: warning: variable "string_192" was declared but never referenced
+    char string_192[] = "\xc0";
+         ^
+
+"Test_name.c", line 201: warning: variable "string_193" was declared but never referenced
+    char string_193[] = "\xc1";
+         ^
+
+"Test_name.c", line 202: warning: variable "string_194" was declared but never referenced
+    char string_194[] = "\xc2";
+         ^
+
+"Test_name.c", line 203: warning: variable "string_195" was declared but never referenced
+    char string_195[] = "\xc3";
+         ^
+
+"Test_name.c", line 204: warning: variable "string_196" was declared but never referenced
+    char string_196[] = "\xc4";
+         ^
+
+"Test_name.c", line 205: warning: variable "string_197" was declared but never referenced
+    char string_197[] = "\xc5";
+         ^
+
+"Test_name.c", line 206: warning: variable "string_198" was declared but never referenced
+    char string_198[] = "\xc6";
+         ^
+
+"Test_name.c", line 207: warning: variable "string_199" was declared but never referenced
+    char string_199[] = "\xc7";
+         ^
+
+"Test_name.c", line 208: warning: variable "string_200" was declared but never referenced
+    char string_200[] = "\xc8";
+         ^
+
+"Test_name.c", line 209: warning: variable "string_201" was declared but never referenced
+    char string_201[] = "\xc9";
+         ^
+
+"Test_name.c", line 210: warning: variable "string_202" was declared but never referenced
+    char string_202[] = "\xca";
+         ^
+
+"Test_name.c", line 211: warning: variable "string_203" was declared but never referenced
+    char string_203[] = "\xcb";
+         ^
+
+"Test_name.c", line 212: warning: variable "string_204" was declared but never referenced
+    char string_204[] = "\xcc";
+         ^
+
+"Test_name.c", line 213: warning: variable "string_205" was declared but never referenced
+    char string_205[] = "\xcd";
+         ^
+
+"Test_name.c", line 214: warning: variable "string_206" was declared but never referenced
+    char string_206[] = "\xce";
+         ^
+
+"Test_name.c", line 215: warning: variable "string_207" was declared but never referenced
+    char string_207[] = "\xcf";
+         ^
+
+"Test_name.c", line 216: warning: variable "string_208" was declared but never referenced
+    char string_208[] = "\xd0";
+         ^
+
+"Test_name.c", line 217: warning: variable "string_209" was declared but never referenced
+    char string_209[] = "\xd1";
+         ^
+
+"Test_name.c", line 218: warning: variable "string_210" was declared but never referenced
+    char string_210[] = "\xd2";
+         ^
+
+"Test_name.c", line 219: warning: variable "string_211" was declared but never referenced
+    char string_211[] = "\xd3";
+         ^
+
+"Test_name.c", line 220: warning: variable "string_212" was declared but never referenced
+    char string_212[] = "\xd4";
+         ^
+
+"Test_name.c", line 221: warning: variable "string_213" was declared but never referenced
+    char string_213[] = "\xd5";
+         ^
+
+"Test_name.c", line 222: warning: variable "string_214" was declared but never referenced
+    char string_214[] = "\xd6";
+         ^
+
+"Test_name.c", line 223: warning: variable "string_215" was declared but never referenced
+    char string_215[] = "\xd7";
+         ^
+
+"Test_name.c", line 224: warning: variable "string_216" was declared but never referenced
+    char string_216[] = "\xd8";
+         ^
+
+"Test_name.c", line 225: warning: variable "string_217" was declared but never referenced
+    char string_217[] = "\xd9";
+         ^
+
+"Test_name.c", line 226: warning: variable "string_218" was declared but never referenced
+    char string_218[] = "\xda";
+         ^
+
+"Test_name.c", line 227: warning: variable "string_219" was declared but never referenced
+    char string_219[] = "\xdb";
+         ^
+
+"Test_name.c", line 228: warning: variable "string_220" was declared but never referenced
+    char string_220[] = "\xdc";
+         ^
+
+"Test_name.c", line 229: warning: variable "string_221" was declared but never referenced
+    char string_221[] = "\xdd";
+         ^
+
+"Test_name.c", line 230: warning: variable "string_222" was declared but never referenced
+    char string_222[] = "\xde";
+         ^
+
+"Test_name.c", line 231: warning: variable "string_223" was declared but never referenced
+    char string_223[] = "\xdf";
+         ^
+
+"Test_name.c", line 232: warning: variable "string_224" was declared but never referenced
+    char string_224[] = "\xe0";
+         ^
+
+"Test_name.c", line 233: warning: variable "string_225" was declared but never referenced
+    char string_225[] = "\xe1";
+         ^
+
+"Test_name.c", line 234: warning: variable "string_226" was declared but never referenced
+    char string_226[] = "\xe2";
+         ^
+
+"Test_name.c", line 235: warning: variable "string_227" was declared but never referenced
+    char string_227[] = "\xe3";
+         ^
+
+"Test_name.c", line 236: warning: variable "string_228" was declared but never referenced
+    char string_228[] = "\xe4";
+         ^
+
+"Test_name.c", line 237: warning: variable "string_229" was declared but never referenced
+    char string_229[] = "\xe5";
+         ^
+
+"Test_name.c", line 238: warning: variable "string_230" was declared but never referenced
+    char string_230[] = "\xe6";
+         ^
+
+"Test_name.c", line 239: warning: variable "string_231" was declared but never referenced
+    char string_231[] = "\xe7";
+         ^
+
+"Test_name.c", line 240: warning: variable "string_232" was declared but never referenced
+    char string_232[] = "\xe8";
+         ^
+
+"Test_name.c", line 241: warning: variable "string_233" was declared but never referenced
+    char string_233[] = "\xe9";
+         ^
+
+"Test_name.c", line 242: warning: variable "string_234" was declared but never referenced
+    char string_234[] = "\xea";
+         ^
+
+"Test_name.c", line 243: warning: variable "string_235" was declared but never referenced
+    char string_235[] = "\xeb";
+         ^
+
+"Test_name.c", line 244: warning: variable "string_236" was declared but never referenced
+    char string_236[] = "\xec";
+         ^
+
+"Test_name.c", line 245: warning: variable "string_237" was declared but never referenced
+    char string_237[] = "\xed";
+         ^
+
+"Test_name.c", line 246: warning: variable "string_238" was declared but never referenced
+    char string_238[] = "\xee";
+         ^
+
+"Test_name.c", line 247: warning: variable "string_239" was declared but never referenced
+    char string_239[] = "\xef";
+         ^
+
+"Test_name.c", line 248: warning: variable "string_240" was declared but never referenced
+    char string_240[] = "\xf0";
+         ^
+
+"Test_name.c", line 249: warning: variable "string_241" was declared but never referenced
+    char string_241[] = "\xf1";
+         ^
+
+"Test_name.c", line 250: warning: variable "string_242" was declared but never referenced
+    char string_242[] = "\xf2";
+         ^
+
+"Test_name.c", line 251: warning: variable "string_243" was declared but never referenced
+    char string_243[] = "\xf3";
+         ^
+
+"Test_name.c", line 252: warning: variable "string_244" was declared but never referenced
+    char string_244[] = "\xf4";
+         ^
+
+"Test_name.c", line 253: warning: variable "string_245" was declared but never referenced
+    char string_245[] = "\xf5";
+         ^
+
+"Test_name.c", line 254: warning: variable "string_246" was declared but never referenced
+    char string_246[] = "\xf6";
+         ^
+
+"Test_name.c", line 255: warning: variable "string_247" was declared but never referenced
+    char string_247[] = "\xf7";
+         ^
+
+"Test_name.c", line 256: warning: variable "string_248" was declared but never referenced
+    char string_248[] = "\xf8";
+         ^
+
+"Test_name.c", line 257: warning: variable "string_249" was declared but never referenced
+    char string_249[] = "\xf9";
+         ^
+
+"Test_name.c", line 258: warning: variable "string_250" was declared but never referenced
+    char string_250[] = "\xfa";
+         ^
+
+"Test_name.c", line 259: warning: variable "string_251" was declared but never referenced
+    char string_251[] = "\xfb";
+         ^
+
+"Test_name.c", line 260: warning: variable "string_252" was declared but never referenced
+    char string_252[] = "\xfc";
+         ^
+
+"Test_name.c", line 261: warning: variable "string_253" was declared but never referenced
+    char string_253[] = "\xfd";
+         ^
+
+"Test_name.c", line 262: warning: variable "string_254" was declared but never referenced
+    char string_254[] = "\xfe";
+         ^
+
+"Test_name.c", line 263: warning: variable "string_255" was declared but never referenced
+    char string_255[] = "\xff";
+         ^
+

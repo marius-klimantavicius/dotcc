@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --microsoft Test_name.c
+"Test_name.c", line 15: error: attribute "dllexport" does not apply to automatic variables
+      __declspec( dllexport ) int n;         // Error; implies external
+                  ^
+
+"Test_name.c", line 15: warning: variable "n" was declared but never referenced
+      __declspec( dllexport ) int n;         // Error; implies external
+                                  ^
+
+1 error detected in the compilation of "Test_name.c".

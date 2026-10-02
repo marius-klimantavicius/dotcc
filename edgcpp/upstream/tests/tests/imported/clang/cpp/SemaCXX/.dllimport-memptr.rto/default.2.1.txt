@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 8: error: incomplete type "__declspec" is not allowed
+  struct __declspec(dllimport) Foo { int get_a(); };
+                    ^
+
+"Test_name.c", line 8: error: expected a ";"
+  struct __declspec(dllimport) Foo { int get_a(); };
+                               ^
+
+"Test_name.c", line 9: error: expected a ")"
+  template <int (Foo::*Getter)()> struct HasValue { };
+                    ^
+
+"Test_name.c", line 10: error: name followed by "::" must be a class or namespace name
+  HasValue<&Foo::get_a> hv;
+            ^
+
+4 errors detected in the compilation of "Test_name.c".

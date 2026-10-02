@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 29: error: invalid redeclaration of member function template "int C<T>::f<U>()" (declared at line 28)
+    template <class U> decltype (b.i) f() { return 1; } // #2
+                                      ^
+
+"Test_name.c", line 36: error: invalid redeclaration of member function template "int D<T>::f<U>()" (declared at line 35)
+    template <class U> decltype (B::j) f() { return 3; } // #2
+                                       ^
+
+"Test_name.c", line 29: error: member "B::i" (declared at line 19) is inaccessible
+    template <class U> decltype (b.i) f() { return 1; } // #2
+                                   ^
+          detected during instantiation of class "C<T> [with T=int]" at line 41
+
+"Test_name.c", line 28: error: member "A::i" (declared at line 11) is inaccessible
+    template <class U> decltype (a.i) f() { return 0; } // #1
+                                   ^
+          detected during instantiation of class "C<T> [with T=float]" at line 42
+
+"Test_name.c", line 36: error: member "B::j" (declared at line 20) is inaccessible
+    template <class U> decltype (B::j) f() { return 3; } // #2
+                                    ^
+          detected during instantiation of class "D<T> [with T=int]" at line 43
+
+"Test_name.c", line 35: error: member "A::j" (declared at line 12) is inaccessible
+    template <class U> decltype (A::j) f() { return 2; } // #1
+                                    ^
+          detected during instantiation of class "D<T> [with T=float]" at line 44
+
+6 errors detected in the compilation of "Test_name.c".

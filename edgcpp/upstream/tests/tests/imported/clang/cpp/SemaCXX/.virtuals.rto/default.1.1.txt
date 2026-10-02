@@ -1,0 +1,83 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --exceptions --c++11 Test_name.c
+"Test_name.c", line 9: error: pure specifier ("= 0") allowed only on virtual functions
+    void h() = 0; // expected-error {{'h' is not virtual and cannot be declared pure}}
+             ^
+
+"Test_name.c", line 10: error: pure specifier ("= 0") allowed only on virtual functions
+    void i() = 1; // expected-error {{initializer on function does not look like a pure-specifier}}
+             ^
+
+"Test_name.c", line 10: error: badly-formed pure specifier (only "= 0" is allowed)
+    void i() = 1; // expected-error {{initializer on function does not look like a pure-specifier}}
+               ^
+
+"Test_name.c", line 11: error: pure specifier ("= 0") allowed only on virtual functions
+    void j() = 0u; // expected-error {{initializer on function does not look like a pure-specifier}}
+             ^
+
+"Test_name.c", line 20: error: invalid specifier outside a class declaration
+  virtual void A::k() { } // expected-error{{'virtual' can only be specified inside the class definition}}
+  ^
+
+"Test_name.c", line 27: error: pure specifier ("= 0") allowed only on virtual functions
+    void g(int) = 0; // expected-error{{'g' is not virtual and cannot be declared pure}}
+                ^
+
+"Test_name.c", line 31: error: parameter of abstract class type "A" is not allowed:
+            function "A::g" is a pure virtual function
+  A fn(A) // expected-error{{parameter type 'A' is an abstract class}} \
+       ^
+
+"Test_name.c", line 31: error: function returning abstract class "A" is not allowed:
+            function "A::g" is a pure virtual function
+  A fn(A) // expected-error{{parameter type 'A' is an abstract class}} \
+    ^
+
+"Test_name.c", line 34: error: object of abstract class type "A" is not allowed:
+            function "A::g" is a pure virtual function
+    A a; // expected-error{{variable type 'A' is an abstract class}}
+      ^
+
+"Test_name.c", line 34: error: no default constructor exists for class "A"
+    A a; // expected-error{{variable type 'A' is an abstract class}}
+      ^
+
+"Test_name.c", line 35: error: a cast to abstract class "A" is not allowed:
+            function "A::g" is a pure virtual function
+    (void)static_cast<A>(0); // expected-error{{allocating an object of abstract class type 'A'}}
+                      ^
+
+"Test_name.c", line 37: error: abstract class type "A" is not allowed as catch type:
+            function "A::g" is a pure virtual function
+    } catch(A) { // expected-error{{variable type 'A' is an abstract class}}
+            ^
+
+"Test_name.c", line 39: warning: missing return statement at end of non-void function "fn"
+  }
+  ^
+
+"Test_name.c", line 34: warning: variable "a" was declared but never referenced
+    A a; // expected-error{{variable type 'A' is an abstract class}}
+      ^
+
+"Test_name.c", line 53: error: duplicate specifier in declaration
+      virtual virtual void func();  // expected-warning {{duplicate 'virtual' declaration specifier}}
+              ^
+
+"Test_name.c", line 63: warning: "final" applied to a pure virtual function
+    virtual ~Derived() = defaul; // expected-error {{use of undeclared identifier 'defaul'}}
+                       ^
+
+"Test_name.c", line 63: error: badly-formed pure specifier (only "= 0" is allowed)
+    virtual ~Derived() = defaul; // expected-error {{use of undeclared identifier 'defaul'}}
+                         ^
+
+"Test_name.c", line 70: error: pure specifier ("= 0") allowed only on virtual functions
+    struct B { friend int A::f() = 0; }; // expected-error {{friend declaration cannot have a pure-specifier}}
+                                 ^
+
+"Test_name.c", line 73: warning: pointless friend declaration
+      friend int C::f() = 0; // expected-error {{friend declaration cannot have a pure-specifier}}
+                        ^
+
+15 errors detected in the compilation of "Test_name.c".

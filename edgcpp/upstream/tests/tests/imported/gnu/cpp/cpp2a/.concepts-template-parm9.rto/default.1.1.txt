@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 17: error: class template "T0" is not compatible with template template parameter "X"
+  S<T0> x3; // { dg-error "constraint mismatch|invalid type" }
+    ^
+
+"Test_name.c", line 18: error: class template "T1" is not compatible with template template parameter "X"
+  S<T1> x4; // { dg-error "constraint mismatch|invalid type" }
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

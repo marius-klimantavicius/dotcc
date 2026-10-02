@@ -1,0 +1,433 @@
+fe_only -DTEST_NUMBER=2 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 --c++ Test_name.c
+"Test_name.c", line 10: error: identifier "__externref_t" is undefined
+  __externref_t r1;
+  ^
+
+"Test_name.c", line 11: error: identifier "__externref_t" is undefined
+  extern __externref_t r2;
+         ^
+
+"Test_name.c", line 12: error: identifier "__externref_t" is undefined
+  static __externref_t r3;
+         ^
+
+"Test_name.c", line 14: error: identifier "__externref_t" is undefined
+  __externref_t *t1;               // expected-error {{pointer to WebAssembly reference type is not allowed}}
+  ^
+
+"Test_name.c", line 15: error: identifier "__externref_t" is undefined
+  __externref_t **t2;              // expected-error {{pointer to WebAssembly reference type is not allowed}}
+  ^
+
+"Test_name.c", line 16: error: identifier "__externref_t" is undefined
+  __externref_t ******t3;          // expected-error {{pointer to WebAssembly reference type is not allowed}}
+  ^
+
+"Test_name.c", line 17: error: identifier "__externref_t" is undefined
+  static __externref_t t4[3];      // expected-error {{only zero-length WebAssembly tables are currently supported}}
+         ^
+
+"Test_name.c", line 18: error: identifier "__externref_t" is undefined
+  static __externref_t t5[];       // expected-error {{only zero-length WebAssembly tables are currently supported}}
+         ^
+
+"Test_name.c", line 18: error: incomplete type "<error-type> []" is not allowed
+  static __externref_t t5[];       // expected-error {{only zero-length WebAssembly tables are currently supported}}
+                       ^
+
+"Test_name.c", line 19: error: identifier "__externref_t" is undefined
+  static __externref_t t6[] = {0}; // expected-error {{only zero-length WebAssembly tables are currently supported}}
+         ^
+
+"Test_name.c", line 20: error: identifier "__externref_t" is undefined
+  __externref_t t7[0];             // expected-error {{WebAssembly table must be static}}
+  ^
+
+"Test_name.c", line 21: error: identifier "__externref_t" is undefined
+  static __externref_t t8[0][0];   // expected-error {{multi-dimensional arrays of WebAssembly references are not allowed}}
+         ^
+
+"Test_name.c", line 22: error: explicit type is missing ("int" assumed)
+  static __externref_t (*t9)[0];   // expected-error {{cannot form a pointer to a WebAssembly table}}
+         ^
+
+"Test_name.c", line 22: error: identifier "t9" is undefined
+  static __externref_t (*t9)[0];   // expected-error {{cannot form a pointer to a WebAssembly table}}
+                         ^
+
+"Test_name.c", line 22: error: expected a ";"
+  static __externref_t (*t9)[0];   // expected-error {{cannot form a pointer to a WebAssembly table}}
+                            ^
+
+"Test_name.c", line 24: error: variable "__externref_t" is not a type name
+  static __externref_t table[0];
+         ^
+
+"Test_name.c", line 25: error: variable "__externref_t" is not a type name
+  static __externref_t other_table[0] = {};
+         ^
+
+"Test_name.c", line 26: error: variable "__externref_t" is not a type name
+  static __externref_t another_table[] = {}; // expected-error {{only zero-length WebAssembly tables are currently supported}}
+         ^
+
+"Test_name.c", line 29: error: variable "__externref_t" is not a type name
+    __externref_t f1;       // expected-error {{field has sizeless type '__externref_t'}}
+    ^
+
+"Test_name.c", line 30: error: variable "__externref_t" is not a type name
+    __externref_t f2[0];    // expected-error {{field has sizeless type '__externref_t'}}
+    ^
+
+"Test_name.c", line 31: error: variable "__externref_t" is not a type name
+    __externref_t f3[];     // expected-error {{field has sizeless type '__externref_t'}}
+    ^
+
+"Test_name.c", line 32: error: variable "__externref_t" is not a type name
+    __externref_t f4[0][0]; // expected-error {{multi-dimensional arrays of WebAssembly references are not allowed}}
+    ^
+
+"Test_name.c", line 31: error: incomplete type "<error-type> []" is not allowed
+    __externref_t f3[];     // expected-error {{field has sizeless type '__externref_t'}}
+                  ^
+
+"Test_name.c", line 33: error: variable "__externref_t" is not a type name
+    __externref_t *f5;      // expected-error {{pointer to WebAssembly reference type is not allowed}}
+    ^
+
+"Test_name.c", line 34: error: variable "__externref_t" is not a type name
+    __externref_t ****f6;   // expected-error {{pointer to WebAssembly reference type is not allowed}}
+    ^
+
+"Test_name.c", line 35: error: expected a type specifier
+    __externref_t (*f7)[0]; // expected-error {{cannot form a pointer to a WebAssembly table}}
+                   ^
+
+"Test_name.c", line 35: error: function returning array is not allowed
+    __externref_t (*f7)[0]; // expected-error {{cannot form a pointer to a WebAssembly table}}
+                       ^
+
+"Test_name.c", line 39: error: variable "__externref_t" is not a type name
+    __externref_t f1;       // expected-error {{field has sizeless type '__externref_t'}}
+    ^
+
+"Test_name.c", line 40: error: variable "__externref_t" is not a type name
+    __externref_t f2[0];    // expected-error {{field has sizeless type '__externref_t'}}
+    ^
+
+"Test_name.c", line 41: error: variable "__externref_t" is not a type name
+    __externref_t f3[];     // expected-error {{field has sizeless type '__externref_t'}}
+    ^
+
+"Test_name.c", line 42: error: variable "__externref_t" is not a type name
+    __externref_t f4[0][0]; // expected-error {{multi-dimensional arrays of WebAssembly references are not allowed}}
+    ^
+
+"Test_name.c", line 43: error: variable "__externref_t" is not a type name
+    __externref_t *f5;      // expected-error {{pointer to WebAssembly reference type is not allowed}}
+    ^
+
+"Test_name.c", line 44: error: variable "__externref_t" is not a type name
+    __externref_t ****f6;   // expected-error {{pointer to WebAssembly reference type is not allowed}}
+    ^
+
+"Test_name.c", line 45: error: expected a type specifier
+    __externref_t (*f7)[0]; // expected-error {{cannot form a pointer to a WebAssembly table}}
+                   ^
+
+"Test_name.c", line 45: error: function returning array is not allowed
+    __externref_t (*f7)[0]; // expected-error {{cannot form a pointer to a WebAssembly table}}
+                       ^
+
+"Test_name.c", line 48: error: incomplete type "void" is not allowed
+  void illegal_argument_1(__externref_t table[]);     // expected-error {{cannot use WebAssembly table as a function parameter}}
+       ^
+
+"Test_name.c", line 48: error: expected a ")"
+  void illegal_argument_1(__externref_t table[]);     // expected-error {{cannot use WebAssembly table as a function parameter}}
+                                        ^
+
+"Test_name.c", line 49: error: incomplete type "void" is not allowed
+  void illegal_argument_2(__externref_t table[0][0]); // expected-error {{multi-dimensional arrays of WebAssembly references are not allowed}}
+       ^
+
+"Test_name.c", line 49: error: expected a ")"
+  void illegal_argument_2(__externref_t table[0][0]); // expected-error {{multi-dimensional arrays of WebAssembly references are not allowed}}
+                                        ^
+
+"Test_name.c", line 50: error: incomplete type "void" is not allowed
+  void illegal_argument_3(__externref_t *table);      // expected-error {{pointer to WebAssembly reference type is not allowed}}
+       ^
+
+"Test_name.c", line 50: error: expression must have arithmetic or unscoped enum type
+  void illegal_argument_3(__externref_t *table);      // expected-error {{pointer to WebAssembly reference type is not allowed}}
+                                         ^
+
+"Test_name.c", line 51: error: incomplete type "void" is not allowed
+  void illegal_argument_4(__externref_t ***table);    // expected-error {{pointer to WebAssembly reference type is not allowed}}
+       ^
+
+"Test_name.c", line 52: error: incomplete type "void" is not allowed
+  void illegal_argument_5(__externref_t (*table)[0]); // expected-error {{cannot form a pointer to a WebAssembly table}}
+       ^
+
+"Test_name.c", line 52: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+  void illegal_argument_5(__externref_t (*table)[0]); // expected-error {{cannot form a pointer to a WebAssembly table}}
+                          ^
+
+"Test_name.c", line 53: error: incomplete type "void" is not allowed
+  void illegal_argument_6(__externref_t table[0]);    // expected-error {{cannot use WebAssembly table as a function parameter}}
+       ^
+
+"Test_name.c", line 53: error: expected a ")"
+  void illegal_argument_6(__externref_t table[0]);    // expected-error {{cannot use WebAssembly table as a function parameter}}
+                                        ^
+
+"Test_name.c", line 55: error: variable "__externref_t" is not a type name
+  __externref_t *illegal_return_1();   // expected-error {{pointer to WebAssembly reference type is not allowed}}
+  ^
+
+"Test_name.c", line 56: error: variable "__externref_t" is not a type name
+  __externref_t ***illegal_return_2(); // expected-error {{pointer to WebAssembly reference type is not allowed}}
+  ^
+
+"Test_name.c", line 57: error: this declaration has no storage class or type specifier
+  __externref_t (*illegal_return_3())[0]; // expected-error {{cannot form a pointer to a WebAssembly table}}
+  ^
+
+"Test_name.c", line 57: error: variable "__externref_t" has already been defined (previous definition at line 22)
+  __externref_t (*illegal_return_3())[0]; // expected-error {{cannot form a pointer to a WebAssembly table}}
+  ^
+
+"Test_name.c", line 57: error: identifier "illegal_return_3" is undefined
+  __externref_t (*illegal_return_3())[0]; // expected-error {{cannot form a pointer to a WebAssembly table}}
+                  ^
+
+"Test_name.c", line 57: error: expected a ";"
+  __externref_t (*illegal_return_3())[0]; // expected-error {{cannot form a pointer to a WebAssembly table}}
+                                     ^
+
+"Test_name.c", line 60: error: expected a ")"
+  typedef void (*__funcref funcref_t)();
+                           ^
+
+"Test_name.c", line 61: error: expected a ")"
+  typedef void (*__funcref __funcref funcref_fail_t)(); // expected-warning {{attribute '__funcref' is already applied}}
+                           ^
+
+"Test_name.c", line 63: error: variable "__externref_t" is not a type name
+  __externref_t func(__externref_t ref) {
+  ^
+
+"Test_name.c", line 63: error: expected a ")"
+  __externref_t func(__externref_t ref) {
+                                   ^
+
+"Test_name.c", line 63: error: expected a ";"
+  __externref_t func(__externref_t ref) {
+                                        ^
+
+"Test_name.c", line 84: warning: parsing restarts here after previous syntax error
+    varargs(1, ref);               // expected-error {{cannot pass expression of type '__externref_t' to variadic function}}
+                   ^
+
+"Test_name.c", line 86: error: variable "__externref_t" is not a type name
+    __externref_t lt1[0];           // expected-error {{WebAssembly table cannot be declared within a function}}
+    ^
+
+"Test_name.c", line 87: error: variable "__externref_t" is not a type name
+    static __externref_t lt2[0];    // expected-error {{WebAssembly table cannot be declared within a function}}
+           ^
+
+"Test_name.c", line 88: error: variable "__externref_t" is not a type name
+    static __externref_t lt3[0][0]; // expected-error {{multi-dimensional arrays of WebAssembly references are not allowed}}
+           ^
+
+"Test_name.c", line 89: error: explicit type is missing ("int" assumed)
+    static __externref_t(*lt4)[0];  // expected-error {{cannot form a pointer to a WebAssembly table}}
+           ^
+
+"Test_name.c", line 89: error: variable "__externref_t" has already been defined (previous definition at line 22)
+    static __externref_t(*lt4)[0];  // expected-error {{cannot form a pointer to a WebAssembly table}}
+           ^
+
+"Test_name.c", line 89: error: identifier "lt4" is undefined
+    static __externref_t(*lt4)[0];  // expected-error {{cannot form a pointer to a WebAssembly table}}
+                          ^
+
+"Test_name.c", line 89: error: expected a ";"
+    static __externref_t(*lt4)[0];  // expected-error {{cannot form a pointer to a WebAssembly table}}
+                              ^
+
+"Test_name.c", line 92: error: this declaration has no storage class or type specifier
+    illegal_argument_1(table);
+    ^
+
+"Test_name.c", line 92: error: variable "illegal_argument_1" has already been defined (previous definition at line 48)
+    illegal_argument_1(table);
+    ^
+
+"Test_name.c", line 93: error: this declaration has no storage class or type specifier
+    varargs(1, table);              // expected-error {{cannot use WebAssembly table as a function parameter}}
+    ^
+
+"Test_name.c", line 93: error: declaration is incompatible with "void varargs(int, ...)" (declared at line 59)
+    varargs(1, table);              // expected-error {{cannot use WebAssembly table as a function parameter}}
+    ^
+
+"Test_name.c", line 93: error: too many initializer values
+    varargs(1, table);              // expected-error {{cannot use WebAssembly table as a function parameter}}
+               ^
+
+"Test_name.c", line 94: error: this declaration has no storage class or type specifier
+    table == 1;                     // expected-error {{invalid operands to binary expression ('__attribute__((address_space(1))) __externref_t[0]' and 'int')}}
+    ^
+
+"Test_name.c", line 94: error: variable "table" has already been defined (previous definition at line 24)
+    table == 1;                     // expected-error {{invalid operands to binary expression ('__attribute__((address_space(1))) __externref_t[0]' and 'int')}}
+    ^
+
+"Test_name.c", line 94: error: expected a ";"
+    table == 1;                     // expected-error {{invalid operands to binary expression ('__attribute__((address_space(1))) __externref_t[0]' and 'int')}}
+          ^
+
+"Test_name.c", line 95: error: expected a declaration
+    1 >= table;                     // expected-error {{invalid operands to binary expression ('int' and '__attribute__((address_space(1))) __externref_t[0]')}}
+    ^
+
+"Test_name.c", line 96: error: this declaration has no storage class or type specifier
+    table == other_table;           // expected-error {{invalid operands to binary expression ('__attribute__((address_space(1))) __externref_t[0]' and '__attribute__((address_space(1))) __externref_t[0]')}}
+    ^
+
+"Test_name.c", line 96: error: variable "table" has already been defined (previous definition at line 24)
+    table == other_table;           // expected-error {{invalid operands to binary expression ('__attribute__((address_space(1))) __externref_t[0]' and '__attribute__((address_space(1))) __externref_t[0]')}}
+    ^
+
+"Test_name.c", line 96: error: expected a ";"
+    table == other_table;           // expected-error {{invalid operands to binary expression ('__attribute__((address_space(1))) __externref_t[0]' and '__attribute__((address_space(1))) __externref_t[0]')}}
+          ^
+
+"Test_name.c", line 97: error: this declaration has no storage class or type specifier
+    table !=- table;                // expected-error {{invalid argument type '__attribute__((address_space(1))) __externref_t *' to unary expression}}
+    ^
+
+"Test_name.c", line 97: error: variable "table" has already been defined (previous definition at line 24)
+    table !=- table;                // expected-error {{invalid argument type '__attribute__((address_space(1))) __externref_t *' to unary expression}}
+    ^
+
+"Test_name.c", line 97: error: expected a ";"
+    table !=- table;                // expected-error {{invalid argument type '__attribute__((address_space(1))) __externref_t *' to unary expression}}
+          ^
+
+"Test_name.c", line 98: error: expected a declaration
+    !table;                         // expected-error {{invalid argument type '__attribute__((address_space(1))) __externref_t *' to unary expression}}
+    ^
+
+"Test_name.c", line 99: error: expected a declaration
+    1 && table;                     // expected-error {{invalid operands to binary expression ('int' and '__attribute__((address_space(1))) __externref_t[0]')}}
+    ^
+
+"Test_name.c", line 100: error: this declaration has no storage class or type specifier
+    table || 1;                     // expected-error {{invalid operands to binary expression ('__attribute__((address_space(1))) __externref_t[0]' and 'int')}}
+    ^
+
+"Test_name.c", line 100: error: variable "table" has already been defined (previous definition at line 24)
+    table || 1;                     // expected-error {{invalid operands to binary expression ('__attribute__((address_space(1))) __externref_t[0]' and 'int')}}
+    ^
+
+"Test_name.c", line 100: error: expected a ";"
+    table || 1;                     // expected-error {{invalid operands to binary expression ('__attribute__((address_space(1))) __externref_t[0]' and 'int')}}
+          ^
+
+"Test_name.c", line 101: error: expected a declaration
+    1 ? table : table;              // expected-error {{cannot use a WebAssembly table within a branch of a conditional expression}}
+    ^
+
+"Test_name.c", line 102: error: this declaration has no storage class or type specifier
+    table ? : other_table;          // expected-error {{cannot use a WebAssembly table within a branch of a conditional expression}}
+    ^
+
+"Test_name.c", line 102: error: variable "table" has already been defined (previous definition at line 24)
+    table ? : other_table;          // expected-error {{cannot use a WebAssembly table within a branch of a conditional expression}}
+    ^
+
+"Test_name.c", line 102: error: expected a ";"
+    table ? : other_table;          // expected-error {{cannot use a WebAssembly table within a branch of a conditional expression}}
+          ^
+
+"Test_name.c", line 103: error: expected an identifier
+    (void *)table;                  // expected-error {{cannot cast from a WebAssembly table}}
+     ^
+
+"Test_name.c", line 103: error: expected a ";"
+    (void *)table;                  // expected-error {{cannot cast from a WebAssembly table}}
+            ^
+
+"Test_name.c", line 105: error: this declaration has no storage class or type specifier
+    u = table;                      // expected-error {{cannot assign a WebAssembly table}}
+    ^
+
+"Test_name.c", line 105: error: variable "u" has already been defined (previous definition at line 104)
+    u = table;                      // expected-error {{cannot assign a WebAssembly table}}
+    ^
+
+"Test_name.c", line 107: error: this declaration has no storage class or type specifier
+    &table;                         // expected-error {{cannot form a reference to a WebAssembly table}}
+    ^
+
+"Test_name.c", line 107: error: variable "table" has already been defined (previous definition at line 24)
+    &table;                         // expected-error {{cannot form a reference to a WebAssembly table}}
+     ^
+
+"Test_name.c", line 108: error: expected an identifier
+    (void)table;
+     ^
+
+"Test_name.c", line 108: error: expected a ";"
+    (void)table;
+          ^
+
+"Test_name.c", line 110: error: variable "table" is not a type name
+    table[0];                       // expected-error {{cannot subscript a WebAssembly table}}
+    ^
+
+"Test_name.c", line 110: error: invalid specifier for structured binding declaration
+    table[0];                       // expected-error {{cannot subscript a WebAssembly table}}
+    ^
+
+"Test_name.c", line 110: error: missing initializer
+    table[0];                       // expected-error {{cannot subscript a WebAssembly table}}
+            ^
+
+"Test_name.c", line 111: error: variable "table" is not a type name
+    table[0] = ref;                 // expected-error {{cannot subscript a WebAssembly table}}
+    ^
+
+"Test_name.c", line 111: error: invalid specifier for structured binding declaration
+    table[0] = ref;                 // expected-error {{cannot subscript a WebAssembly table}}
+    ^
+
+"Test_name.c", line 111: error: identifier "ref" is undefined
+    table[0] = ref;                 // expected-error {{cannot subscript a WebAssembly table}}
+               ^
+
+"Test_name.c", line 114: error: variable "__externref_t" is not a type name
+    __externref_t oh_no_vlas[i];    // expected-error {{WebAssembly table cannot be declared within a function}} \
+    ^
+
+"Test_name.c", line 114: error: expression must have a constant value
+    __externref_t oh_no_vlas[i];    // expected-error {{WebAssembly table cannot be declared within a function}} \
+                             ^
+"Test_name.c", line 114: note: the value of variable "i" (declared at line 113) cannot be used as a constant
+    __externref_t oh_no_vlas[i];    // expected-error {{WebAssembly table cannot be declared within a function}} \
+                             ^
+
+"Test_name.c", line 118: error: expected a declaration
+    return ref;
+    ^
+
+"Test_name.c", line 119: error: expected a declaration
+  }
+  ^
+
+106 errors detected in the compilation of "Test_name.c".

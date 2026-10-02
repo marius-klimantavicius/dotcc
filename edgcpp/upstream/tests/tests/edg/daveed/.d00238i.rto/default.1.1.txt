@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --microsoft Test_name.c
+"Test_name.c", line 15: error: interface types cannot contain friend declarations
+  	friend class X;
+  	^
+
+"Test_name.c", line 19: error: interface types cannot contain friend declarations
+  	friend X;
+  	^
+
+"Test_name.c", line 23: error: interface types cannot contain friend declarations
+  	friend void f();
+  	^
+
+"Test_name.c", line 27: error: interface types cannot contain friend declarations
+  	friend void f() {}
+  	^
+
+4 errors detected in the compilation of "Test_name.c".

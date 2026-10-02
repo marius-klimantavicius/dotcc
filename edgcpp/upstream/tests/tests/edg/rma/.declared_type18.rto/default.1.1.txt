@@ -1,0 +1,38 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 5: warning: type qualifiers on function types are ignored
+  typedef const F FF;
+          ^
+
+"Test_name.c", line 9: error: function type may not come from a typedef
+    F f3 { }
+      ^
+
+"Test_name.c", line 10: error: function type may not come from a typedef
+    FF f4 { }
+       ^
+
+"Test_name.c", line 12: error: function type may not come from a typedef
+  F S::f1 { }
+       ^
+
+"Test_name.c", line 13: error: function type may not come from a typedef
+  FF S::f2 { }
+        ^
+
+"Test_name.c", line 14: warning: type qualifiers on function types are ignored
+  const F g1;
+  ^
+
+"Test_name.c", line 15: warning: type qualifiers on function types are ignored
+  const F g1 { }
+  ^
+
+"Test_name.c", line 15: error: function type may not come from a typedef
+  const F g1 { }
+          ^
+
+"Test_name.c", line 17: error: function type may not come from a typedef
+  FF g2 { }
+     ^
+
+6 errors detected in the compilation of "Test_name.c".

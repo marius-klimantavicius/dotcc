@@ -1,0 +1,386 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 --exceptions --exceptions Test_name.c
+"Test_name.c", line 211: error: a module cannot have an interface dependency on itself
+  import cwg1884_A;
+         ^
+
+"Test_name.c", line 218: error: declaration is incompatible with "int a1" (declared at line 44)
+  void a1();
+       ^
+
+"Test_name.c", line 222: error: "a2" has already been declared in the current scope
+    a2
+    ^
+
+"Test_name.c", line 226: error: "a3" has already been declared in the current scope
+  namespace a3 {}
+            ^
+
+"Test_name.c", line 232: error: "a5" has already been declared in the current scope
+  class a5;
+        ^
+
+"Test_name.c", line 236: error: declaration is incompatible with "int a6" (declared at line 49)
+  void a6(int);
+       ^
+
+"Test_name.c", line 240: error: "a7" has already been declared in the current scope
+  int a7;
+      ^
+
+"Test_name.c", line 244: error: "a8" has already been declared in the current scope
+  int a8<T, int>;
+      ^
+
+"Test_name.c", line 244: error: expected a ";"
+  int a8<T, int>;
+        ^
+
+"Test_name.c", line 249: error: "a9" has already been declared in the current scope
+  using a9 = int;
+        ^
+
+"Test_name.c", line 253: error: invalid redeclaration of variable "a10" (declared at line 53)
+  concept a10 = true;
+          ^
+
+"Test_name.c", line 257: error: variable "a11" has already been defined (previous definition at line 54)
+  long a11;
+       ^
+
+"Test_name.c", line 265: error: declaration is incompatible with "void b1()" (declared at line 55)
+  int b1;
+      ^
+
+"Test_name.c", line 269: error: "b2" has already been declared in the current scope
+    b2
+    ^
+
+"Test_name.c", line 273: error: "b3" has already been declared in the current scope
+  namespace b3 {} // #cwg1884-namespace-b
+            ^
+
+"Test_name.c", line 279: error: "b5" has already been declared in the current scope
+  class b5;
+        ^
+
+"Test_name.c", line 286: error: "b7" has already been declared in the current scope
+  int b7;
+      ^
+
+"Test_name.c", line 290: error: "b8" has already been declared in the current scope
+  int b8<T, int>;
+      ^
+
+"Test_name.c", line 290: error: expected a ";"
+  int b8<T, int>;
+        ^
+
+"Test_name.c", line 293: error: "b9" has already been declared in the current scope
+  using b9 = int;
+        ^
+
+"Test_name.c", line 297: error: invalid redeclaration of function "b10" (declared at line 64)
+  concept b10 = true;
+          ^
+
+"Test_name.c", line 302: error: cannot overload functions distinguished by return type alone
+  int b11();
+      ^
+
+"Test_name.c", line 310: error: "c1" has already been declared in the current scope
+  int c1;
+      ^
+
+"Test_name.c", line 313: error: "c2" has already been declared in the current scope
+  void c2();
+       ^
+
+"Test_name.c", line 316: error: "c3" has already been declared in the current scope
+  namespace c3 {}
+            ^
+
+"Test_name.c", line 322: error: "c5" has already been declared in the current scope
+  class c5;
+        ^
+
+"Test_name.c", line 326: error: "c6" has already been declared in the current scope
+  void c6(int);
+       ^
+
+"Test_name.c", line 330: error: "c7" has already been declared in the current scope
+  int c7;
+      ^
+
+"Test_name.c", line 334: error: "c8" has already been declared in the current scope
+  int c8<T, int>;
+      ^
+
+"Test_name.c", line 334: error: expected a ";"
+  int c8<T, int>;
+        ^
+
+"Test_name.c", line 339: error: "c9" has already been declared in the current scope
+  using c9 = int;
+        ^
+
+"Test_name.c", line 343: error: invalid redeclaration of constant "c10" (declared at line 76)
+  concept c10 = true;
+          ^
+
+"Test_name.c", line 351: error: "d1" has already been declared in the current scope
+  int d1;
+      ^
+
+"Test_name.c", line 354: error: "d2" has already been declared in the current scope
+  void d2();
+       ^
+
+"Test_name.c", line 358: error: "d3" has already been declared in the current scope
+    d3
+    ^
+
+"Test_name.c", line 362: error: "d4" has already been declared in the current scope
+  struct d4;
+         ^
+
+"Test_name.c", line 366: error: "d5" has already been declared in the current scope
+  class d5;
+        ^
+
+"Test_name.c", line 370: error: "d6" has already been declared in the current scope
+  void d6(int);
+       ^
+
+"Test_name.c", line 374: error: "d7" has already been declared in the current scope
+  int d7;
+      ^
+
+"Test_name.c", line 378: error: "d8" has already been declared in the current scope
+  int d8<T, int>;
+      ^
+
+"Test_name.c", line 378: error: expected a ";"
+  int d8<T, int>;
+        ^
+
+"Test_name.c", line 383: error: "d9" has already been declared in the current scope
+  using d9 = int;
+        ^
+
+"Test_name.c", line 387: error: invalid redeclaration of namespace "d10" (declared at line 87)
+  concept d10 = true;
+          ^
+
+"Test_name.c", line 403: error: "e4" has already been declared in the current scope
+  namespace e4 {}
+            ^
+
+"Test_name.c", line 407: error: "e5" has already been declared in the current scope
+  class e5;
+        ^
+
+"Test_name.c", line 418: error: class "e8" may not have a template argument list
+  int e8<T, int>;
+      ^
+
+"Test_name.c", line 423: error: "e9" has already been declared in the current scope
+  using e9 = int;
+        ^
+
+"Test_name.c", line 427: error: invalid redeclaration of class "e10" (declared at line 97)
+  concept e10 = true;
+          ^
+
+"Test_name.c", line 435: error: tag kind of union is incompatible with declaration of class "e12" (declared at line 99)
+  union e12;
+        ^
+
+"Test_name.c", line 440: error: tag kind of enum is incompatible with declaration of class "e13" (declared at line 100)
+  enum e13 {};
+       ^
+
+"Test_name.c", line 448: error: "f1" has already been declared in the current scope
+  int f1;
+      ^
+
+"Test_name.c", line 451: error: "f2" has already been declared in the current scope
+  void f2();
+       ^
+
+"Test_name.c", line 455: error: "f3" has already been declared in the current scope
+    f3
+    ^
+
+"Test_name.c", line 459: error: "f4" has already been declared in the current scope
+  namespace f4 {}
+            ^
+
+"Test_name.c", line 462: error: argument list for class template "f5" is missing
+  struct f5;
+         ^
+
+"Test_name.c", line 466: error: "f6" has already been declared in the current scope
+  void f6(int);
+       ^
+
+"Test_name.c", line 470: error: "f7" has already been declared in the current scope
+  int f7;
+      ^
+
+"Test_name.c", line 474: error: too many arguments for class template "f8"
+  int f8<T, int>;
+            ^
+
+"Test_name.c", line 477: error: "f9" has already been declared in the current scope
+  using f9 = int;
+        ^
+
+"Test_name.c", line 481: error: invalid redeclaration of class template "f10" (declared at line 120)
+  concept f10 = true;
+          ^
+
+"Test_name.c", line 489: error: declaration is incompatible with function template "void g1<<unnamed>>(int)" (declared at line 124)
+  int g1;
+      ^
+
+"Test_name.c", line 495: error: "g3" has already been declared in the current scope
+    g3
+    ^
+
+"Test_name.c", line 499: error: "g4" has already been declared in the current scope
+  namespace g4 {}
+            ^
+
+"Test_name.c", line 505: error: "g6" has already been declared in the current scope
+  class g6;
+        ^
+
+"Test_name.c", line 509: error: "g7" has already been declared in the current scope
+  int g7;
+      ^
+
+"Test_name.c", line 513: error: "g8" has already been declared in the current scope
+  int g8<T, int>;
+      ^
+
+"Test_name.c", line 516: error: "g9" has already been declared in the current scope
+  using g9 = int;
+        ^
+
+"Test_name.c", line 520: error: invalid redeclaration of function template "g10" (declared at line 142)
+  concept g10 = true;
+          ^
+
+"Test_name.c", line 528: error: "h1" has already been declared in the current scope
+  int h1;
+      ^
+
+"Test_name.c", line 531: error: "h2" has already been declared in the current scope
+  void h2();
+       ^
+
+"Test_name.c", line 535: error: "h3" has already been declared in the current scope
+    h3
+    ^
+
+"Test_name.c", line 539: error: "h4" has already been declared in the current scope
+  namespace h4 {}
+            ^
+
+"Test_name.c", line 546: error: "h6" has already been declared in the current scope
+  class h6;
+        ^
+
+"Test_name.c", line 550: error: "h7" has already been declared in the current scope
+  void h7(int);
+       ^
+
+"Test_name.c", line 557: error: "h9" has already been declared in the current scope
+  using h9 = int;
+        ^
+
+"Test_name.c", line 561: error: invalid redeclaration of variable template "h10" (declared at line 162)
+  concept h10 = true;
+          ^
+
+"Test_name.c", line 569: error: "i1" has already been declared in the current scope
+  int i1;
+      ^
+
+"Test_name.c", line 572: error: "i2" has already been declared in the current scope
+  void i2();
+       ^
+
+"Test_name.c", line 576: error: "i3" has already been declared in the current scope
+    i3
+    ^
+
+"Test_name.c", line 580: error: "i4" has already been declared in the current scope
+  namespace i4 {}
+            ^
+
+"Test_name.c", line 583: error: argument list for alias template "i5" is missing
+  struct i5;
+         ^
+
+"Test_name.c", line 587: error: "i6" has already been declared in the current scope
+  class i6;
+        ^
+
+"Test_name.c", line 591: error: "i7" has already been declared in the current scope
+  void i7(int);
+       ^
+
+"Test_name.c", line 595: error: "i8" has already been declared in the current scope
+  int i8;
+      ^
+
+"Test_name.c", line 599: error: too many arguments for alias template "i9"
+  int i9<T, int>;
+            ^
+
+"Test_name.c", line 602: error: invalid redeclaration of alias template "i10" (declared at line 182)
+  concept i10 = true;
+          ^
+
+"Test_name.c", line 610: error: "j1" has already been declared in the current scope
+  int j1;
+      ^
+
+"Test_name.c", line 613: error: "j2" has already been declared in the current scope
+  void j2();
+       ^
+
+"Test_name.c", line 617: error: "j3" has already been declared in the current scope
+    j3
+    ^
+
+"Test_name.c", line 621: error: "j4" has already been declared in the current scope
+  namespace j4 {}
+            ^
+
+"Test_name.c", line 624: error: "j5" has already been declared in the current scope
+  struct j5;
+         ^
+
+"Test_name.c", line 628: error: "j6" has already been declared in the current scope
+  class j6;
+        ^
+
+"Test_name.c", line 632: error: "j7" has already been declared in the current scope
+  void j7(int);
+       ^
+
+"Test_name.c", line 636: error: "j8" has already been declared in the current scope
+  int j8;
+      ^
+
+"Test_name.c", line 640: error: "j9" is not a function or static data member
+  int j9<T, int>;
+      ^
+
+"Test_name.c", line 643: error: "j10" has already been declared in the current scope
+  using j10 = int;
+        ^
+
+96 errors detected in the compilation of "Test_name.c".

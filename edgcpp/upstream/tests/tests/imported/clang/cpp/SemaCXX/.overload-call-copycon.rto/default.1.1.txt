@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 38: error: class "B" has no suitable copy constructor
+    copycon2(bc); // expected-error{{no matching constructor}}
+             ^
+
+"Test_name.c", line 39: error: class "B" has no suitable copy constructor
+    copycon2(bv); // expected-error{{no matching constructor}}
+             ^
+
+"Test_name.c", line 41: error: class "A" has no suitable copy constructor
+    copycon2(ac); // expected-error{{no matching constructor}}
+             ^
+
+"Test_name.c", line 49: error: no suitable user-defined conversion from "const B" to "A" exists
+    copycon3(bc); // expected-error{{no matching constructor}}
+             ^
+
+4 errors detected in the compilation of "Test_name.c".

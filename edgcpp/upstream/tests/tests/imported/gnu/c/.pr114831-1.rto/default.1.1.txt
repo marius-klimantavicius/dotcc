@@ -1,0 +1,19 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 9: error: transfer of control bypasses initialization of:
+            variable length array "b1" (declared at line 10)
+  	goto foo;	/* { dg-error "jump into scope" "variably modified" } */
+  	^
+
+"Test_name.c", line 10: warning: variable "b1" was declared but never referenced
+  	typeof(a) b1;		
+  	          ^
+
+"Test_name.c", line 18: warning: variable "b2" was declared but never referenced
+  	typeof((n++,a2)) b2;
+  	                 ^
+
+"Test_name.c", line 27: warning: variable "b" was declared but never referenced
+  	typeof(&b1) b;
+  	            ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: warning: this universal character is not allowed in an identifier
+  int a\u0024c;		// { dg-error "universal character \\\\u0024 is not valid in an identifier" "" { target c++26 } }
+       ^
+
+"Test_name.c", line 9: warning: this universal character is not allowed in an identifier
+  int a\U00000024d;	// { dg-error "universal character \\\\U00000024 is not valid in an identifier" "" { target c++26 } }
+       ^
+

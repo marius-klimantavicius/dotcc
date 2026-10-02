@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -Dtest=FOO --c Test_name.c
+"Test_name.c", line 6: warning: this declaration has no storage class or type specifier
+  HERE: test
+  ^
+
+"Test_name.c", line 6: error: expected a ";"
+  HERE: test
+      ^
+
+1 error detected in the compilation of "Test_name.c".

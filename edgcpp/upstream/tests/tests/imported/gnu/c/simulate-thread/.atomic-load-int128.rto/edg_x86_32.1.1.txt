@@ -1,0 +1,22 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./simulate-thread/atomic-load-int128.c", line 27: error: identifier "__int128_t" is undefined
+  __int128_t ret;
+  ^
+
+"./simulate-thread/atomic-load-int128.c", line 28: error: identifier "__int128_t" is undefined
+  __int128_t value = 0;
+  ^
+
+"./simulate-thread/atomic-load-int128.c", line 29: error: identifier "__int128_t" is undefined
+  __int128_t result = 0;
+  ^
+
+"./simulate-thread/atomic-load-int128.c", line 30: error: identifier "__int128_t" is undefined
+  __int128_t table[16] = {
+  ^
+
+"./simulate-thread/atomic-load-int128.c", line 106: warning: variable "x" was declared but never referenced
+    int x;
+        ^
+
+4 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: error: a condition declaration must declare a variable
+    if (int bar() {});  // { dg-error "condition declares a function" }
+            ^
+
+"Test_name.c", line 8: error: expected a ")"
+    if (int bar() {});  // { dg-error "condition declares a function" }
+                  ^
+
+"Test_name.c", line 10: error: a condition declaration must declare a variable
+    for (;int bar() {};);  // { dg-error "condition declares a function" }
+              ^
+
+"Test_name.c", line 10: error: expected a ";"
+    for (;int bar() {};);  // { dg-error "condition declares a function" }
+                    ^
+
+"Test_name.c", line 12: error: a condition declaration must declare a variable
+    while (int bar() {});  // { dg-error "condition declares a function" }
+               ^
+
+"Test_name.c", line 12: error: expected a ")"
+    while (int bar() {});  // { dg-error "condition declares a function" }
+                     ^
+
+"Test_name.c", line 14: error: an array type is not allowed here
+    if (int a[] {});  // { dg-error "condition declares an array" }
+        ^
+
+"Test_name.c", line 14: warning: variable "a" was declared but never referenced
+    if (int a[] {});  // { dg-error "condition declares an array" }
+            ^
+
+"Test_name.c", line 16: error: an array type is not allowed here
+    for (;int a[] {};);  // { dg-error "condition declares an array" }
+          ^
+
+"Test_name.c", line 16: warning: variable "a" was declared but never referenced
+    for (;int a[] {};);  // { dg-error "condition declares an array" }
+              ^
+
+"Test_name.c", line 18: error: an array type is not allowed here
+    while (int a[] {});  // { dg-error "condition declares an array" }
+           ^
+
+"Test_name.c", line 18: warning: variable "a" was declared but never referenced
+    while (int a[] {});  // { dg-error "condition declares an array" }
+               ^
+
+9 errors detected in the compilation of "Test_name.c".

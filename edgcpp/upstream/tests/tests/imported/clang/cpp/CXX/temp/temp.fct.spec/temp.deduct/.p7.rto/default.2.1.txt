@@ -1,0 +1,45 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 14: error: initial value of reference to non-const must be an lvalue
+  int &a_disabled = a(0);
+                    ^
+
+"Test_name.c", line 15: error: initial value of reference to non-const must be an lvalue
+  int &a_enabled = a(Q()); // expected-error {{cannot bind to a temporary of type 'void'}}
+                   ^
+
+"Test_name.c", line 19: error: initial value of reference to non-const must be an lvalue
+  int &b_disabled = b(0);
+                    ^
+
+"Test_name.c", line 20: error: initial value of reference to non-const must be an lvalue
+  int &b_enabled = b(Q()); // expected-error {{cannot bind to a temporary of type 'void'}}
+                   ^
+
+"Test_name.c", line 24: error: initial value of reference to non-const must be an lvalue
+  int &c_disabled = c(0);
+                    ^
+
+"Test_name.c", line 25: error: initial value of reference to non-const must be an lvalue
+  int &c_enabled = c(Q()); // expected-error {{cannot bind to a temporary of type 'void'}}
+                   ^
+
+"Test_name.c", line 39: warning: incomplete type "void" is not allowed
+        static_assert(sizeof(T) != 0);
+                             ^
+          detected during instantiation of class "reversed_operator_substitution_order::no_adl::indirect_sizeof<T> [with T=void]" at line 55
+
+"Test_name.c", line 40: warning: incomplete type "void" is not allowed
+        static const auto value = sizeof(T);
+                                         ^
+          detected during instantiation of class "reversed_operator_substitution_order::no_adl::indirect_sizeof<T> [with T=void]" at line 55
+
+"Test_name.c", line 50: warning: incomplete type "void" is not allowed
+            X(sizeof(T)) < Y(indirect_sizeof<T>::value)
+                     ^
+          detected during instantiation of "reversed_operator_substitution_order::no_adl::f" based on template argument <void> at line 55
+
+"Test_name.c", line 55: error: a reference of type "int &" (not const-qualified) cannot be initialized with a value of type "float"
+    int &r = no_adl::f<void>(true);
+             ^
+
+7 errors detected in the compilation of "Test_name.c".

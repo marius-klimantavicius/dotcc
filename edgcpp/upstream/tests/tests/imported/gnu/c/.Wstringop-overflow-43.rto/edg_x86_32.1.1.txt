@@ -1,0 +1,41 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./range.h", line 13: warning: declaration of "size_t" does not match the expected type "unsigned int"
+  typedef long unsigned int size_t;
+                            ^
+
+"./Wstringop-overflow-43.c", line 106: warning: integer conversion resulted in truncation
+    do { char *_p0 = p; char *_p1 = _p0 + (signed_range ((-1), (0))); char *_p2 = _p1 + (signed_range ((-10), (-9))); memset (_p2, 0, unsigned_range ((11), (0x7fffffffffffffffL))); sink (p, _p0, _p1, _p2); } while (0);;
+                                                                                                                                                            ^
+
+"./Wstringop-overflow-43.c", line 107: warning: integer conversion resulted in truncation
+    do { char *_p0 = p; char *_p1 = _p0 + (signed_range ((0), (1))); char *_p2 = _p1 + (signed_range ((-11), (-10))); memset (_p2, 0, unsigned_range ((11), (0xffffffffffffffffUL))); sink (p, _p0, _p1, _p2); } while (0);;
+                                                                                                                                                            ^
+
+"./Wstringop-overflow-43.c", line 109: warning: integer conversion resulted in truncation
+    do { char *_p0 = p; char *_p1 = _p0 + (signed_range (((-0x7fffffffffffffffL - 1)), (-10))); char *_p2 = _p1 + (signed_range (((-0x7fffffffffffffffL - 1)), (-1))); memset (_p2, 0, unsigned_range ((10), (12))); sink (p, _p0, _p1, _p2); } while (0);;
+                                                         ^
+
+"./Wstringop-overflow-43.c", line 109: warning: integer conversion resulted in truncation
+    do { char *_p0 = p; char *_p1 = _p0 + (signed_range (((-0x7fffffffffffffffL - 1)), (-10))); char *_p2 = _p1 + (signed_range (((-0x7fffffffffffffffL - 1)), (-1))); memset (_p2, 0, unsigned_range ((10), (12))); sink (p, _p0, _p1, _p2); } while (0);;
+                                                                                                                                 ^
+
+"./Wstringop-overflow-43.c", line 129: warning: integer conversion resulted in truncation
+    size_t n11 = unsigned_range ((11), (0xffffffffffffffffUL));
+                                       ^
+
+"./Wstringop-overflow-43.c", line 144: warning: integer conversion resulted in truncation
+    do { char *_p0 = p; char *_p1 = _p0 + (signed_anti_range (((-0x7fffffffffffffffL - 1)), (-12))); char *_p2 = _p1 + (0); memset (_p2, 0, n11); sink (p, _p0, _p1, _p2); } while (0);;
+                                                              ^
+
+"./Wstringop-overflow-43.c", line 149: warning: integer conversion resulted in truncation
+    do { char *_p0 = p; char *_p1 = _p0 + (signed_anti_range ((-10), (0x7fffffffffffffffL))); char *_p2 = _p1 + (0); memset (_p2, 0, n11); sink (p, _p0, _p1, _p2); } while (0);;
+                                                                     ^
+
+"./Wstringop-overflow-43.c", line 153: warning: integer conversion resulted in truncation
+    do { char *_p0 = p; char *_p1 = _p0 + (signed_anti_range ((-1), (0x7fffffffffffffffL))); char *_p2 = _p1 + (0); memset (_p2, 0, n11); sink (p, _p0, _p1, _p2); } while (0);;
+                                                                    ^
+
+"./Wstringop-overflow-43.c", line 158: warning: integer conversion resulted in truncation
+    size_t n11 = unsigned_range ((11), (0xffffffffffffffffUL));
+                                       ^
+

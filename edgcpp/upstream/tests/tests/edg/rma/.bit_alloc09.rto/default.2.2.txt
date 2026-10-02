@@ -1,0 +1,3 @@
+./a.out
+sizeof(A) = 2
+sizeof(B) = 4

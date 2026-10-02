@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 9: error: identifier "foo" is undefined
+  extern __typeof(foo) foo __asm__(""); /* { dg-error "undeclared" } */
+                  ^
+
+"Test_name.c", line 11: error: declaration is incompatible with "<error-type> foo" (declared at line 9)
+  void *foo (void) {} /* { dg-error "redeclared as different kind of symbol" } */
+        ^
+
+"Test_name.c", line 11: warning: missing return statement at end of non-void function "foo"
+  void *foo (void) {} /* { dg-error "redeclared as different kind of symbol" } */
+                    ^
+
+2 errors detected in the compilation of "Test_name.c".

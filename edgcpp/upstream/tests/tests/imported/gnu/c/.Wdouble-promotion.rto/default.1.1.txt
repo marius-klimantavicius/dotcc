@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c17 --strict_gnu Test_name.c
+"./Wdouble-promotion.c", line 27: warning: variable "local_f" was set but never used
+    float local_f;
+          ^
+
+"./Wdouble-promotion.c", line 28: warning: variable "local_cf" was set but never used
+    _Complex float local_cf;
+                   ^
+
+"./Wdouble-promotion.c", line 53: warning: function "undeclared_fn" declared implicitly
+    undeclared_fn (f);
+    ^
+
+"./Wdouble-promotion.c", line 65: warning: variable "local_f" was set but never used
+    float local_f;
+          ^
+
+"./Wdouble-promotion.c", line 66: warning: variable "local_cf" was set but never used
+    _Complex float local_cf;
+                   ^
+

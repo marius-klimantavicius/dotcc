@@ -1,0 +1,128 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 16: warning: subscript out of range
+  constexpr const int *h = &b[6];		// { dg-error "array subscript value '6' is outside the bounds of array 'b' of type 'const int \\\[5\\\]'" }
+                             ^
+
+"Test_name.c", line 16: error: expression must have a constant value
+  constexpr const int *h = &b[6];		// { dg-error "array subscript value '6' is outside the bounds of array 'b' of type 'const int \\\[5\\\]'" }
+                           ^
+"Test_name.c", line 16: note: cannot access position 6 in array of 5 elements
+  constexpr const int *h = &b[6];		// { dg-error "array subscript value '6' is outside the bounds of array 'b' of type 'const int \\\[5\\\]'" }
+                             ^
+
+"Test_name.c", line 20: warning: subscript out of range
+  constexpr const int *k = &c[5];		// { dg-error "array subscript value '5' is outside the bounds of array 'c' of type 'const int \\\[4\\\]'" }
+                             ^
+
+"Test_name.c", line 20: error: expression must have a constant value
+  constexpr const int *k = &c[5];		// { dg-error "array subscript value '5' is outside the bounds of array 'c' of type 'const int \\\[4\\\]'" }
+                           ^
+"Test_name.c", line 20: note: cannot access position 5 in array of 4 elements
+  constexpr const int *k = &c[5];		// { dg-error "array subscript value '5' is outside the bounds of array 'c' of type 'const int \\\[4\\\]'" }
+                             ^
+
+"Test_name.c", line 29: warning: variable "n" was declared but never referenced
+    constexpr const int *n = &l[1];
+                         ^
+
+"Test_name.c", line 41: warning: subscript out of range
+  constexpr const int *r = &o[3];		// { dg-error "array subscript value '3' is outside the bounds of array 'o' of type 'const int \\\[2\\\]'" }
+                             ^
+
+"Test_name.c", line 41: error: expression must have a constant value
+  constexpr const int *r = &o[3];		// { dg-error "array subscript value '3' is outside the bounds of array 'o' of type 'const int \\\[2\\\]'" }
+                           ^
+"Test_name.c", line 41: note: cannot access position 3 in array of 2 elements
+  constexpr const int *r = &o[3];		// { dg-error "array subscript value '3' is outside the bounds of array 'o' of type 'const int \\\[2\\\]'" }
+                             ^
+
+"Test_name.c", line 45: error: expression must have a constant value
+  constexpr const char *u = &s.b[1];	// { dg-error "nonzero array subscript '1' is used with array of type 'char \\\[\\\]' with unknown bounds" }
+                            ^
+"Test_name.c", line 45: note: cannot access position 1 in array of 0 elements
+  constexpr const char *u = &s.b[1];	// { dg-error "nonzero array subscript '1' is used with array of type 'char \\\[\\\]' with unknown bounds" }
+                                ^
+
+"Test_name.c", line 50: error: expression must have a constant value
+  constexpr int *x = &v[0].a;
+                     ^
+"Test_name.c", line 50: note: attempt to access storage one position past an object treated as an array of one element
+  constexpr int *x = &v[0].a;
+                          ^
+
+"Test_name.c", line 51: error: expression must have a constant value
+  constexpr int y = a[0];			// { dg-error "the value of 'a' is not usable in a constant expression" }
+                    ^
+"Test_name.c", line 51: note: attempt to access run-time storage
+  constexpr int y = a[0];			// { dg-error "the value of 'a' is not usable in a constant expression" }
+                     ^
+
+"Test_name.c", line 12: warning: variable "e" was declared but never referenced
+  constexpr const int *e = &a[1];		// { dg-error "nonzero array subscript '1' is used with array 'a' of type 'const int \\\[\\\]' with unknown bounds" }
+                       ^
+
+"Test_name.c", line 15: warning: variable "g" was declared but never referenced
+  constexpr const int *g = &b[5];
+                       ^
+
+"Test_name.c", line 16: warning: variable "h" was declared but never referenced
+  constexpr const int *h = &b[6];		// { dg-error "array subscript value '6' is outside the bounds of array 'b' of type 'const int \\\[5\\\]'" }
+                       ^
+
+"Test_name.c", line 19: warning: variable "j" was declared but never referenced
+  constexpr const int *j = &c[4];
+                       ^
+
+"Test_name.c", line 20: warning: variable "k" was declared but never referenced
+  constexpr const int *k = &c[5];		// { dg-error "array subscript value '5' is outside the bounds of array 'c' of type 'const int \\\[4\\\]'" }
+                       ^
+
+"Test_name.c", line 35: warning: variable "n" was declared but never referenced
+  constexpr const int *n = &l[1];		// { dg-error "nonzero array subscript '1' is used with array 'l' of type 'const int \\\[\\\]' with unknown bounds" }
+                       ^
+
+"Test_name.c", line 38: warning: variable "p" was declared but never referenced
+  constexpr const int *p = &o[0];
+                       ^
+
+"Test_name.c", line 39: warning: variable "p2" was declared but never referenced
+  constexpr const int *p2 = o;
+                       ^
+
+"Test_name.c", line 40: warning: variable "q" was declared but never referenced
+  constexpr const int *q = &o[2];
+                       ^
+
+"Test_name.c", line 41: warning: variable "r" was declared but never referenced
+  constexpr const int *r = &o[3];		// { dg-error "array subscript value '3' is outside the bounds of array 'o' of type 'const int \\\[2\\\]'" }
+                       ^
+
+"Test_name.c", line 43: warning: variable "t" was declared but never referenced
+  constexpr const char *t = &s.b[0];
+                        ^
+
+"Test_name.c", line 44: warning: variable "t2" was declared but never referenced
+  constexpr const char *t2 = s.b;
+                        ^
+
+"Test_name.c", line 45: warning: variable "u" was declared but never referenced
+  constexpr const char *u = &s.b[1];	// { dg-error "nonzero array subscript '1' is used with array of type 'char \\\[\\\]' with unknown bounds" }
+                        ^
+
+"Test_name.c", line 48: warning: variable "w" was declared but never referenced
+  constexpr V *w = &v[0];
+               ^
+
+"Test_name.c", line 49: warning: variable "w2" was declared but never referenced
+  constexpr V *w2 = v;
+               ^
+
+"Test_name.c", line 50: warning: variable "x" was declared but never referenced
+  constexpr int *x = &v[0].a;
+                 ^
+
+"Test_name.c", line 51: warning: variable "y" was declared but never referenced
+  constexpr int y = a[0];			// { dg-error "the value of 'a' is not usable in a constant expression" }
+                ^
+
+6 errors detected in the compilation of "Test_name.c".

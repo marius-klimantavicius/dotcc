@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: warning: attribute namespace "foo" is unrecognized
+  [[foo::bar]] asm ("nop");	// { dg-warning "attributes ignored on 'asm' declaration" }
+    ^
+
+"Test_name.c", line 15: warning: attribute namespace "foo" is unrecognized
+    [[foo::bar]] asm ("nop");	// { dg-warning "attributes ignored on 'asm' declaration" }
+      ^
+
+"Test_name.c", line 17: warning: attribute namespace "foo" is unrecognized
+    [[foo::bar]] [[bar::baz]] asm ("nop" : "+r" (i));	// { dg-warning "attributes ignored on 'asm' declaration" }
+      ^
+
+"Test_name.c", line 17: warning: attribute namespace "bar" is unrecognized
+    [[foo::bar]] [[bar::baz]] asm ("nop" : "+r" (i));	// { dg-warning "attributes ignored on 'asm' declaration" }
+                   ^
+

@@ -1,0 +1,28 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 11: error: more than one operator "==" matches these operands:
+            function "operator==(Y, int)" (declared at line 8), with reversed arguments
+            function "operator==(X, int)" (declared at line 6)
+            operand types are: X == Y
+  bool b1 = x == y;		// { dg-error "ambiguous" "" { target c++20 } }
+              ^
+"Test_name.c", line 8: note: function "operator==(Y, int)" does not match because argument #1 does not match parameter
+  bool operator==(Y, int);    // #2 { dg-message "reversed" "" { target c++20 } }
+       ^
+"Test_name.c", line 11: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+  bool b1 = x == y;		// { dg-error "ambiguous" "" { target c++20 } }
+              ^
+
+"Test_name.c", line 12: error: more than one operator "==" matches these operands:
+            function "operator==(X, int)" (declared at line 6), with reversed arguments
+            function "operator==(Y, int)" (declared at line 8)
+            operand types are: Y == X
+  bool b2 = y == x;		// { dg-error "ambiguous" "" { target c++20 } }
+              ^
+"Test_name.c", line 6: note: function "operator==(X, int)" does not match because argument #1 does not match parameter
+  bool operator==(X, int);    // #1 { dg-message "reversed" "" { target c++20 } }
+       ^
+"Test_name.c", line 12: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+  bool b2 = y == x;		// { dg-error "ambiguous" "" { target c++20 } }
+              ^
+
+2 errors detected in the compilation of "Test_name.c".

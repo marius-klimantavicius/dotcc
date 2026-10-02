@@ -1,0 +1,68 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 12: error: tag kind of union is incompatible with declaration of class "A" (declared at line 7)
+  void a3(union A); // expected-error {{use of 'A' with tag type that does not match previous declaration}}
+                ^
+
+"Test_name.c", line 13: error: tag kind of enum is incompatible with declaration of class "A" (declared at line 7)
+  void a4(enum A); // expected-error {{use of 'A' with tag type that does not match previous declaration}}
+               ^
+
+"Test_name.c", line 18: error: tag kind of union is incompatible with declaration of class "A" (declared at line 7)
+    friend union A; // expected-error {{use of 'A' with tag type that does not match previous declaration}}
+                 ^
+
+"Test_name.c", line 20: error: tag kind of enum is incompatible with declaration of class "A" (declared at line 7)
+    friend enum A; // expected-error {{use of 'A' with tag type that does not match previous declaration}}
+                ^
+
+"Test_name.c", line 43: error: invalid reference to class template "B" (union/nonunion mismatch)
+  void b3(union B<float>); // expected-error {{use of 'union B<float>' with tag type that does not match previous declaration}}
+          ^
+
+"Test_name.c", line 48: error: tag kind of union is incompatible with declaration of class "B<T>::Member [with T=float]" (declared at line 28)
+  void c3(union B<float>::Member); // expected-error {{use of 'Member' with tag type that does not match previous declaration}}
+                          ^
+
+"Test_name.c", line 49: error: tag kind of enum is incompatible with declaration of class "B<T>::Member [with T=float]" (declared at line 28)
+  void c4(enum B<float>::Member); // expected-error {{use of 'Member' with tag type that does not match previous declaration}}
+                         ^
+
+"Test_name.c", line 51: error: class "B<int>" has no tag member named "Member"
+  void d1(struct B<int>::Member); // expected-error {{no struct named 'Member' in 'B<int>'}}
+                         ^
+
+"Test_name.c", line 52: error: class "B<int>" has no tag member named "Member"
+  void d2(class B<int>::Member); // expected-error {{no class named 'Member' in 'B<int>'}}
+                        ^
+
+"Test_name.c", line 53: error: class "B<int>" has no tag member named "Member"
+  void d3(union B<int>::Member); // expected-error {{no union named 'Member' in 'B<int>'}}
+                        ^
+
+"Test_name.c", line 54: error: class "B<int>" has no tag member named "Member"
+  void d4(enum B<int>::Member); // expected-error {{no enum named 'Member' in 'B<int>'}}
+                       ^
+
+"Test_name.c", line 56: error: tag kind of class or struct is incompatible with declaration of union "B<A>::Member" (declared at line 36)
+  void e1(struct B<A>::Member); // expected-error {{use of 'Member' with tag type that does not match previous declaration}}
+                       ^
+
+"Test_name.c", line 57: error: tag kind of class or struct is incompatible with declaration of union "B<A>::Member" (declared at line 36)
+  void e2(class B<A>::Member); // expected-error {{use of 'Member' with tag type that does not match previous declaration}}
+                      ^
+
+"Test_name.c", line 59: error: tag kind of enum is incompatible with declaration of union "B<A>::Member" (declared at line 36)
+  void e4(enum B<A>::Member); // expected-error {{use of 'Member' with tag type that does not match previous declaration}}
+                     ^
+
+"Test_name.c", line 62: error: class "B<int>" has no tag member named "Member"
+    void foo(class B<T>::Member); // expected-error{{no class named 'Member' in 'B<int>'}} \
+                         ^
+          detected during instantiation of class "C<T> [with T=int]" at line 67
+
+"Test_name.c", line 62: error: tag kind of class or struct is incompatible with declaration of union "B<A>::Member" (declared at line 36)
+    void foo(class B<T>::Member); // expected-error{{no class named 'Member' in 'B<int>'}} \
+                         ^
+          detected during instantiation of class "C<T> [with T=A]" at line 68
+
+16 errors detected in the compilation of "Test_name.c".

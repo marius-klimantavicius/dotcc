@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=4 -w -tused --c++26 --microsoft_version 1950 --no_ms_permissive Test_name.c

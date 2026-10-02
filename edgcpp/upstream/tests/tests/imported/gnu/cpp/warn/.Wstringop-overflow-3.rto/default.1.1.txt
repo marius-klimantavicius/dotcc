@@ -1,0 +1,125 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 23: warning: unknown attribute "noipa"
+  NOIPA void gax_ ()
+  ^
+
+"Test_name.c", line 34: warning: unknown attribute "noipa"
+  NOIPA void gax0 ()
+  ^
+
+"Test_name.c", line 45: warning: unknown attribute "noipa"
+  NOIPA void gax0_ ()
+  ^
+
+"Test_name.c", line 56: warning: unknown attribute "noipa"
+  NOIPA void gax1 ()
+  ^
+
+"Test_name.c", line 65: warning: unknown attribute "noipa"
+  NOIPA void gax2 ()
+  ^
+
+"Test_name.c", line 74: warning: unknown attribute "noipa"
+  NOIPA void gaxp (Ax *p)
+  ^
+
+"Test_name.c", line 86: warning: unknown attribute "noipa"
+  NOIPA void gaxx ()
+  ^
+
+"Test_name.c", line 104: warning: unknown attribute "noipa"
+  NOIPA void ga0_ ()
+  ^
+
+"Test_name.c", line 115: warning: unknown attribute "noipa"
+  NOIPA void ga00 ()
+  ^
+
+"Test_name.c", line 126: warning: unknown attribute "noipa"
+  NOIPA void ga00_ ()
+  ^
+
+"Test_name.c", line 140: warning: unknown attribute "noipa"
+  NOIPA void ga0p (A0 *p)
+  ^
+
+"Test_name.c", line 152: warning: unknown attribute "noipa"
+  NOIPA void ga0x ()
+  ^
+
+"Test_name.c", line 171: warning: unknown attribute "noipa"
+  NOIPA void ga1_ ()
+  ^
+
+"Test_name.c", line 182: warning: unknown attribute "noipa"
+  NOIPA void ga1__ ()
+  ^
+
+"Test_name.c", line 193: warning: unknown attribute "noipa"
+  NOIPA void ga1_0_ ()
+  ^
+
+"Test_name.c", line 204: warning: unknown attribute "noipa"
+  NOIPA void ga1_1 ()
+  ^
+
+"Test_name.c", line 213: warning: unknown attribute "noipa"
+  NOIPA void ga1p (A1 *p)
+  ^
+
+"Test_name.c", line 226: warning: unknown attribute "noipa"
+  NOIPA void ga1x ()
+  ^
+
+"Test_name.c", line 246: warning: unknown attribute "noipa"
+  NOIPA void ga1i_ ()
+  ^
+
+"Test_name.c", line 257: warning: unknown attribute "noipa"
+  NOIPA void ga1i__ ()
+  ^
+
+"Test_name.c", line 268: warning: unknown attribute "noipa"
+  NOIPA void ga1i_0_ ()
+  ^
+
+"Test_name.c", line 279: warning: unknown attribute "noipa"
+  NOIPA void ga1i_1 ()
+  ^
+
+"Test_name.c", line 288: warning: unknown attribute "noipa"
+  NOIPA void ga1ip (A1i *p)
+  ^
+
+"Test_name.c", line 299: warning: unknown attribute "noipa"
+  NOIPA void ga1ix ()
+  ^
+
+"Test_name.c", line 322: warning: unknown attribute "noipa"
+  NOIPA void gbx (void)
+  ^
+
+"Test_name.c", line 328: warning: unknown attribute "noipa"
+  NOIPA void gbxi (int i)
+  ^
+
+"Test_name.c", line 343: warning: unknown attribute "noipa"
+  NOIPA void gb0 (void)
+  ^
+
+"Test_name.c", line 358: warning: unknown attribute "noipa"
+  NOIPA void gb1 (void)
+  ^
+
+"Test_name.c", line 369: warning: subscript out of range
+    B123 () { a[123] = 0; }       // { dg-warning "\\\[-Wstringop-overflow" }
+              ^
+
+"Test_name.c", line 372: warning: unknown attribute "noipa"
+  NOIPA void gb123 (void)
+  ^
+
+"Test_name.c", line 386: warning: unknown attribute "noipa"
+  NOIPA void g234 (void)
+  ^
+

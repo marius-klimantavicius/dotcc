@@ -1,0 +1,282 @@
+fe_only -DTEST_NUMBER=4 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 22: warning: variable "var" was declared but never referenced
+      auto f1 = [=] { int var = 1; };  // expected-warning {{declaration shadows a local variable}}
+                          ^
+
+"Test_name.c", line 23: warning: variable "var" was declared but never referenced
+      auto f2 = [&] { int var = 2; };  // expected-warning {{declaration shadows a local variable}}
+                          ^
+
+"Test_name.c", line 26: warning: variable "var" was declared but never referenced
+      auto f5 = [=] { static int var = 1; };  // expected-warning {{declaration shadows a local variable}}
+                                 ^
+
+"Test_name.c", line 27: warning: variable "var" was declared but never referenced
+      auto f6 = [&] { static int var = 2; };  // expected-warning {{declaration shadows a local variable}}
+                                 ^
+
+"Test_name.c", line 22: warning: variable "f1" was declared but never referenced
+      auto f1 = [=] { int var = 1; };  // expected-warning {{declaration shadows a local variable}}
+           ^
+
+"Test_name.c", line 23: warning: variable "f2" was declared but never referenced
+      auto f2 = [&] { int var = 2; };  // expected-warning {{declaration shadows a local variable}}
+           ^
+
+"Test_name.c", line 24: warning: variable "f3" was declared but never referenced
+      auto f3 = [=] (int param) { ; }; // expected-warning {{declaration shadows a local variable}}
+           ^
+
+"Test_name.c", line 25: warning: variable "f4" was declared but never referenced
+      auto f4 = [&] (int param) { ; }; // expected-warning {{declaration shadows a local variable}}
+           ^
+
+"Test_name.c", line 26: warning: variable "f5" was declared but never referenced
+      auto f5 = [=] { static int var = 1; };  // expected-warning {{declaration shadows a local variable}}
+           ^
+
+"Test_name.c", line 27: warning: variable "f6" was declared but never referenced
+      auto f6 = [&] { static int var = 2; };  // expected-warning {{declaration shadows a local variable}}
+           ^
+
+"Test_name.c", line 35: warning: variable "var" was declared but never referenced
+          int var = 1; // expected-warning {{declaration shadows a local variable}}
+              ^
+
+"Test_name.c", line 37: warning: variable "x" was declared but never referenced
+        int x = var; // expected-note {{variable 'var' is captured here}}
+            ^
+
+"Test_name.c", line 45: warning: variable "x" was declared but never referenced
+        int x = var; // expected-note {{variable 'var' is captured here}}
+            ^
+
+"Test_name.c", line 46: warning: variable "var" was declared but never referenced
+        int var = param; // expected-warning {{declaration shadows a local variable}}
+            ^
+
+"Test_name.c", line 33: warning: variable "f1" was declared but never referenced
+      auto f1 = [=] () {
+           ^
+
+"Test_name.c", line 39: warning: variable "f2" was declared but never referenced
+      auto f2 = [&]
+           ^
+
+"Test_name.c", line 54: warning: variable "x" was declared but never referenced
+        int x = param; // expected-note {{variable 'param' is captured here}}
+            ^
+
+"Test_name.c", line 55: warning: variable "var" was declared but never referenced
+        int var = 0; // expected-warning {{declaration shadows a local variable}}
+            ^
+
+"Test_name.c", line 56: warning: variable "param" was declared but never referenced
+        int param = 0; // expected-warning {{declaration shadows a local variable}}
+            ^
+
+"Test_name.c", line 53: warning: variable "f1" was declared but never referenced
+      auto f1 = [=, &var] () { // expected-note {{variable 'var' is captured here}}
+           ^
+
+"Test_name.c", line 63: warning: variable "x" was declared but never referenced
+        { int x = 2; } // expected-warning {{declaration shadows a local variable}}
+              ^
+
+"Test_name.c", line 62: warning: variable "x" was declared but never referenced
+        int x = 1; // expected-note {{previous declaration is here}}
+            ^
+
+"Test_name.c", line 66: warning: variable "x" was declared but never referenced
+      { int x = 1; } // expected-warning {{declaration shadows a local variable}}
+            ^
+
+"Test_name.c", line 79: warning: variable "var" was declared but never referenced
+      auto f1 = [] { int var = 1; }; // expected-warning {{declaration shadows a local variable}}
+                         ^
+
+"Test_name.c", line 81: warning: variable "var" was declared but never referenced
+      auto f3 = [param] () { int var = 1; }; // expected-warning {{declaration shadows a local variable}}
+                                 ^
+
+"Test_name.c", line 83: warning: variable "var" was declared but never referenced
+      auto f5 = [param] () { static int var = 1; }; // expected-warning {{declaration shadows a local variable}}
+                                        ^
+
+"Test_name.c", line 84: warning: variable "var" was declared but never referenced
+      auto f6 = [] { static int var = 1; }; // expected-warning {{declaration shadows a local variable}}
+                                ^
+
+"Test_name.c", line 79: warning: variable "f1" was declared but never referenced
+      auto f1 = [] { int var = 1; }; // expected-warning {{declaration shadows a local variable}}
+           ^
+
+"Test_name.c", line 80: warning: variable "f2" was declared but never referenced
+      auto f2 = [] (int param) { ; }; // expected-warning {{declaration shadows a local variable}}
+           ^
+
+"Test_name.c", line 81: warning: variable "f3" was declared but never referenced
+      auto f3 = [param] () { int var = 1; }; // expected-warning {{declaration shadows a local variable}}
+           ^
+
+"Test_name.c", line 82: warning: variable "f4" was declared but never referenced
+      auto f4 = [var] (int param) { ; }; // expected-warning {{declaration shadows a local variable}}
+           ^
+
+"Test_name.c", line 83: warning: variable "f5" was declared but never referenced
+      auto f5 = [param] () { static int var = 1; }; // expected-warning {{declaration shadows a local variable}}
+           ^
+
+"Test_name.c", line 84: warning: variable "f6" was declared but never referenced
+      auto f6 = [] { static int var = 1; }; // expected-warning {{declaration shadows a local variable}}
+           ^
+
+"Test_name.c", line 91: warning: variable "var" was declared but never referenced
+        int var = 1; // expected-warning {{declaration shadows a local variable}}
+            ^
+
+"Test_name.c", line 94: error: a lambda parameter cannot hide an explicit capture
+       (int param) { ; }; // expected-error {{a lambda parameter cannot shadow an explicitly captured entity}}
+            ^
+
+"Test_name.c", line 90: warning: variable "f1" was declared but never referenced
+      auto f1 = [var] () { // expected-note {{variable 'var' is explicitly captured here}}
+           ^
+
+"Test_name.c", line 93: warning: variable "f2" was declared but never referenced
+      auto f2 = [param]   // expected-note {{variable 'param' is explicitly captured here}}
+           ^
+
+"Test_name.c", line 104: warning: variable "z" was declared but never referenced
+      { int z = 1; } // expected-warning {{declaration shadows a local variable}}
+            ^
+
+"Test_name.c", line 102: warning: variable "var" was declared but never referenced
+      int var = 1; // expected-warning {{declaration shadows a local variable}}
+          ^
+
+"Test_name.c", line 118: warning: variable "var" was declared but never referenced
+        int var = 1; // expected-warning {{declaration shadows a local variable}}
+            ^
+
+"Test_name.c", line 125: warning: variable "var" was declared but never referenced
+      auto f1 = [] { int var = 1; }; // expected-warning {{declaration shadows a local variable}}
+                         ^
+
+"Test_name.c", line 126: warning: variable "var" was declared but never referenced
+      auto f2 = [=] { int var = 1; }; // expected-warning {{declaration shadows a local variable}}
+                          ^
+
+"Test_name.c", line 129: warning: variable "var" was declared but never referenced
+        { int var = 1; }; // expected-warning {{declaration shadows a local variable}}
+              ^
+
+"Test_name.c", line 131: warning: variable "x" was declared but never referenced
+        int x = var; // expected-note {{variable 'var' is captured here}}
+            ^
+
+"Test_name.c", line 132: warning: variable "var" was declared but never referenced
+        int var = 2; // expected-warning {{declaration shadows a local variable}}
+            ^
+
+"Test_name.c", line 114: warning: variable "l1" was declared but never referenced
+      auto l1 = [] { // expected-warning {{declaration shadows a local variable}}
+           ^
+
+"Test_name.c", line 125: warning: variable "f1" was declared but never referenced
+      auto f1 = [] { int var = 1; }; // expected-warning {{declaration shadows a local variable}}
+           ^
+
+"Test_name.c", line 126: warning: variable "f2" was declared but never referenced
+      auto f2 = [=] { int var = 1; }; // expected-warning {{declaration shadows a local variable}}
+           ^
+
+"Test_name.c", line 128: warning: variable "f3" was declared but never referenced
+      auto f3 = [var] // expected-note {{variable 'var' is explicitly captured here}}
+           ^
+
+"Test_name.c", line 130: warning: variable "f4" was declared but never referenced
+      auto f4 = [&] {
+           ^
+
+"Test_name.c", line 137: warning: variable "param" was declared but never referenced
+        int param = 0; // expected-warning {{declaration shadows a local variable}}
+            ^
+
+"Test_name.c", line 136: warning: variable "f1" was declared but never referenced
+      auto f1 = [param] { // expected-note {{variable 'param' is explicitly captured here}}
+           ^
+
+"Test_name.c", line 142: warning: variable "param" was declared but never referenced
+        static int param = 0; // expected-warning {{declaration shadows a local variable}}
+                   ^
+
+"Test_name.c", line 141: warning: variable "f1" was declared but never referenced
+      auto f1 = [param] { // expected-note {{variable 'param' is explicitly captured here}}
+           ^
+
+"Test_name.c", line 155: error: a lambda parameter cannot hide an explicit capture
+     (auto param) { ; }; // expected-error {{a lambda parameter cannot shadow an explicitly captured entity}}
+           ^
+
+"Test_name.c", line 65: warning: variable "l2" was declared but never referenced
+    auto l2 = [] (int x) { // expected-note {{previous declaration is here}}
+         ^
+
+"Test_name.c", line 98: warning: variable "l3" was declared but never referenced
+    auto l3 = [z = var] { // expected-note {{previous declaration is here}}
+         ^
+
+"Test_name.c", line 109: warning: variable "l4" was declared but never referenced
+    auto l4 = [var = param](int param) { ; }; // expected-warning 2{{declaration shadows a local variable}}
+         ^
+
+"Test_name.c", line 113: warning: variable "l5" was declared but never referenced
+    auto l5 = [var, l1] { // expected-note {{variable 'l1' is explicitly captured here}}
+         ^
+
+"Test_name.c", line 135: warning: variable "l6" was declared but never referenced
+    auto l6 = [&] {
+         ^
+
+"Test_name.c", line 140: warning: variable "l7" was declared but never referenced
+    auto l7 = [&] {
+         ^
+
+"Test_name.c", line 151: warning: variable "g1" was declared but never referenced
+    auto g1 = [](auto param) { ; }; // expected-warning {{declaration shadows a local variable}}
+         ^
+
+"Test_name.c", line 152: warning: variable "g2" was declared but never referenced
+    auto g2 = [=](auto param) { ; }; // expected-warning {{declaration shadows a local variable}}
+         ^
+
+"Test_name.c", line 154: warning: variable "g3" was declared but never referenced
+    auto g3 = [param] // expected-note {{variable 'param' is explicitly captured here}}
+         ^
+
+"Test_name.c", line 162: warning: variable "b" was declared but never referenced
+      int b = 0; // expected-error {{redefinition of 'b'}}
+          ^
+
+"Test_name.c", line 160: warning: variable "l" was declared but never referenced
+    auto l = [b = a] { // expected-note {{previous definition is here}}
+         ^
+
+"Test_name.c", line 168: warning: variable "y" was declared but never referenced
+    int y = 0;
+        ^
+
+"Test_name.c", line 169: warning: variable "x" was declared but never referenced
+    int x = 0;
+        ^
+
+"Test_name.c", line 223: warning: variable "b" was declared but never referenced
+      auto b = [a = this->a] {}; // expected-warning {{declaration shadows a field}}
+           ^
+
+"Test_name.c", line 272: warning: missing return statement at end of non-void function "GH71976::foo"
+  }
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

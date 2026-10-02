@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 6: error: invalid destructor declaration
+  typedef int ~A; // { dg-error "13:declaration of .~ A. as non-function" }
+              ^
+
+"Test_name.c", line 8: error: invalid destructor declaration
+    ~A(); // { dg-error "3:declaration of .~A. as member of .B." }
+    ^
+
+"Test_name.c", line 9: error: invalid destructor declaration
+    typedef int ~A; // { dg-error "15:declaration of .~ A. as non-function" }
+                ^
+
+"Test_name.c", line 11: error: invalid destructor declaration
+      extern ~B(); // { dg-error "12:declaration of .~ B. as non-member" }
+             ^
+
+"Test_name.c", line 14: error: invalid destructor declaration
+  void ~A(); // { dg-error "6:declaration of .~ A. as non-member" }
+       ^
+
+5 errors detected in the compilation of "Test_name.c".

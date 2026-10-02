@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 9: error: identifier "UINT8_MIN" is undefined
+    _Atomic struct S s = { .h = UINT8_MIN }; // expected-error {{use of undeclared identifier 'UINT8_MIN'}}
+                                ^
+
+"Test_name.c", line 10: warning: access to member of _Atomic object
+    __c11_atomic_fetch_add(&s.h, UINT8_MIN); // expected-error {{use of undeclared identifier 'UINT8_MIN'}} \
+                            ^
+
+"Test_name.c", line 10: error: too few arguments in function call
+    __c11_atomic_fetch_add(&s.h, UINT8_MIN); // expected-error {{use of undeclared identifier 'UINT8_MIN'}} \
+                                          ^
+
+"Test_name.c", line 14: error: expected an identifier
+  int (^GH69470) (int i, int j) = ^(int i, int j)
+       ^
+
+"Test_name.c", line 14: error: function "<error>" may not be initialized
+  int (^GH69470) (int i, int j) = ^(int i, int j)
+                                ^
+
+"Test_name.c", line 14: error: expected an expression
+  int (^GH69470) (int i, int j) = ^(int i, int j)
+                                  ^
+
+"Test_name.c", line 18: error: identifier "a" is undefined
+    *a = (a_struct){0}; // expected-error {{use of undeclared identifier 'a'}} \
+     ^
+
+"Test_name.c", line 18: error: identifier "a_struct" is undefined
+    *a = (a_struct){0}; // expected-error {{use of undeclared identifier 'a'}} \
+          ^
+
+"Test_name.c", line 18: error: expected a ";"
+    *a = (a_struct){0}; // expected-error {{use of undeclared identifier 'a'}} \
+                   ^
+
+8 errors detected in the compilation of "Test_name.c".

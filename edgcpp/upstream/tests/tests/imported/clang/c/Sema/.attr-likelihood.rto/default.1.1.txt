@@ -1,0 +1,74 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 7: warning: unknown attribute "clang::likely"
+      [[clang::likely]] {}
+        ^
+
+"Test_name.c", line 10: warning: unknown attribute "clang::likely"
+    [[clang::likely]] int x = 42; // expected-error {{'clang::likely' attribute cannot be applied to a declaration}}
+      ^
+
+"Test_name.c", line 13: warning: unknown attribute "clang::unlikely"
+      [[clang::unlikely]] {}
+        ^
+
+"Test_name.c", line 15: warning: unknown attribute "clang::unlikely"
+      [[clang::unlikely]];
+        ^
+
+"Test_name.c", line 19: warning: unknown attribute "clang::likely"
+      [[clang::likely]] {}
+        ^
+
+"Test_name.c", line 21: warning: unknown attribute "clang::likely"
+      [[clang::likely]] case 2 : case 3 : {}
+        ^
+
+"Test_name.c", line 26: warning: unknown attribute "clang::unlikely"
+      [[clang::unlikely]];
+        ^
+
+"Test_name.c", line 29: warning: unknown attribute "clang::unlikely"
+      [[clang::unlikely]] {}
+        ^
+
+"Test_name.c", line 33: error: expected "while"
+    [[clang::unlikely]] while (x); // expected-error {{expected 'while' in do/while loop}}
+    ^
+
+"Test_name.c", line 35: warning: unknown attribute "clang::unlikely"
+      [[clang::unlikely]] {}
+        ^
+
+"Test_name.c", line 37: warning: unknown attribute "clang::unlikely"
+      [[clang::unlikely]];
+        ^
+
+"Test_name.c", line 36: warning: loop is not reachable
+    for (;;) {
+    ^
+
+"Test_name.c", line 40: warning: unknown attribute "clang::unlikely"
+      [[clang::unlikely]] {}
+        ^
+
+"Test_name.c", line 39: warning: loop is not reachable
+    while (x)
+    ^
+
+"Test_name.c", line 42: warning: unknown attribute "clang::unlikely"
+      [[clang::unlikely]];
+        ^
+
+"Test_name.c", line 49: warning: unknown attribute "clang::unlikely"
+    [[clang::unlikely]] lbl : // expected-error {{'clang::unlikely' attribute cannot be applied to a declaration}}
+      ^
+
+"Test_name.c", line 50: warning: unknown attribute "clang::likely"
+    [[clang::likely]] x = x + 1;
+      ^
+
+"Test_name.c", line 52: warning: unknown attribute "clang::likely"
+    [[clang::likely]]++ x;
+      ^
+
+1 error detected in the compilation of "Test_name.c".

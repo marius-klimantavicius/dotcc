@@ -1,0 +1,2 @@
+./a.out
+in operator<<(ostream&, const Handle&) in operator<<(ostream&, const Handle&)

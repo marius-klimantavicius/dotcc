@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c11 Test_name.c
+"Sema/format-strings-scanf.c", line 7: warning: declaration of "size_t" does not match the expected type "unsigned int"
+  typedef long unsigned int size_t;
+                            ^
+
+"Sema/format-strings-scanf.c", line 33: warning: unrecognized format function type "gnu_scanf" ignored
+  int my_gnu_scanf(const char * restrict, ...) __attribute__((__format__(gnu_scanf, 1, 2)));
+                                                                         ^
+
+"Sema/format-strings-scanf.c", line 85: warning: variable "i" is used before its value is set
+    scanf(kFormat1, i);
+                    ^
+
+"Sema/format-strings-scanf.c", line 212: warning: variable "ss" was declared but never referenced
+    ssize_t ss = 0;
+            ^
+
+"Sema/format-strings-scanf.c", line 307: warning: variable "vp" is used before its value is set
+    scanf("%hhd", vp);
+                  ^
+

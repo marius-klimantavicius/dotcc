@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"SemaCXX/libcxx_valarray_hack.cpp", line 18: error: "extern template" cannot refer to a specialization of static function "std::valarray<T>::valarray" (declared at line 14)
+    extern template valarray<size_t>::valarray(size_t);
+                                      ^
+
+"SemaCXX/libcxx_valarray_hack.cpp", line 19: error: "extern template" cannot refer to a specialization of static function "std::valarray<T>::~valarray" (declared at line 15)
+    extern template valarray<size_t>::~valarray();
+                                      ^
+
+"SemaCXX/libcxx_valarray_hack.cpp", line 30: error: "extern template" cannot refer to a specialization of static function "foo<T>::x" (declared at line 28)
+  extern template void foo<int>::x();
+                                 ^
+
+3 errors detected in the compilation of "Test_name.c".

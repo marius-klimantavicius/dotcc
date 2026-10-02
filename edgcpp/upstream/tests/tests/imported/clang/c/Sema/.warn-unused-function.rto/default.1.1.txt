@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 9: warning: function "f1" was declared but never referenced
+  static void f1(void) {f2();} // expected-warning{{unused}}
+              ^
+
+"Test_name.c", line 15: warning: function "f3" was declared but never referenced
+  extern void f3(void) { } // expected-warning{{unused}}
+              ^
+
+"Test_name.c", line 18: warning: function "f4" was declared but never referenced
+  void f4(void) { } // expected-warning{{unused}}
+       ^
+
+"Test_name.c", line 39: warning: function "f10" was declared but never referenced
+  static void f10(void); // expected-warning{{unused}}
+              ^
+
+"Test_name.c", line 43: warning: function "f11" was declared but never referenced
+  static void f11(void) { }  // expected-warning{{unused}}
+              ^
+
+"Test_name.c", line 45: warning: function "f12" was declared but never referenced
+  static void f12(void) { }  // expected-warning{{unused}}
+              ^
+

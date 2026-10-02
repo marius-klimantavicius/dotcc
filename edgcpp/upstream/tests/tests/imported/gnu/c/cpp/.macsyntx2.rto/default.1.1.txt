@@ -1,0 +1,155 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 -E Test_name.c
+# 1 "Test_name.c"
+
+
+ 
+
+ 
+ 
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+ 
+
+"Test_name.c", line 24: error: expected an identifier
+  #define ;			/* { dg-error "identifier" } */
+          ^
+
+"Test_name.c", line 25: warning: white space is required between the macro name "SEMI" and its replacement text
+  #define SEMI;			/* { dg-warning "space" } */
+              ^
+
+"Test_name.c", line 26: error: expected a ")"
+  #define foo(X			/* { dg-error "expected" } */
+               			                             ^
+
+"Test_name.c", line 28: error: expected an identifier
+  (X,)				/* { dg-error "parameter name" } */
+     ^
+
+"Test_name.c", line 29: error: expected an identifier
+  #define foo(, X)		/* { dg-error "parameter name" } */
+              ^
+
+"Test_name.c", line 30: error: duplicate macro parameter name
+  #define foo(X, X)		/* { dg-error "duplicate" } */
+                 ^
+
+"Test_name.c", line 31: error: expected a ")"
+  #define foo(X Y)		/* { dg-error "expected" } */
+                ^
+
+"Test_name.c", line 31: warning: incompatible redefinition of macro "foo" (declared at line 26)
+  #define foo(X Y)		/* { dg-error "expected" } */
+          ^
+
+"Test_name.c", line 32: error: expected an identifier
+  #define foo(()			/* { dg-error "parameter name" } */
+              ^
+
+"Test_name.c", line 32: error: expected a ")"
+  #define foo(()			/* { dg-error "parameter name" } */
+                			                                   ^
+
+"Test_name.c", line 32: warning: incompatible redefinition of macro "foo" (declared at line 31)
+  #define foo(()			/* { dg-error "parameter name" } */
+          ^
+
+"Test_name.c", line 33: error: expected a ")"
+  #define foo(..., X)		/* { dg-error "expected" } */
+                 ^
+
+"Test_name.c", line 33: warning: incompatible redefinition of macro "foo" (declared at line 32)
+  #define foo(..., X)		/* { dg-error "expected" } */
+          ^
+
+"Test_name.c", line 35: error: the identifier __VA_ARGS__ can only appear in the replacement lists of variadic macros
+  __VA_ARGS__			/* { dg-warning "__VA_ARGS__" } */
+  ^
+
+"Test_name.c", line 34: warning: incompatible redefinition of macro "foo" (declared at line 33)
+  #define foo \
+          ^
+
+"Test_name.c", line 36: error: the identifier __VA_ARGS__ can only appear in the replacement lists of variadic macros
+  #define goo(__VA_ARGS__)	/* { dg-warning "__VA_ARGS__" } */
+              ^
+
+"Test_name.c", line 38: error: the identifier __VA_ARGS__ can only appear in the replacement lists of variadic macros
+  #define __VA_ARGS__		/* { dg-warning "__VA_ARGS__" } */
+          ^
+
+"Test_name.c", line 39: error: the identifier __VA_ARGS__ can only appear in the replacement lists of variadic macros
+  __VA_ARGS__			/* { dg-warning "__VA_ARGS__" } */
+  ^
+
+# 39 "Test_name.c"
+			 
+
+ 
+
+
+
+
+
+				 
+"Test_name.c", line 48: error: too many arguments in invocation of macro "none"
+  none(ichi)			/* { dg-error "passed 1" } */
+       ^
+
+			 
+				 
+			 
+"Test_name.c", line 52: error: too many arguments in invocation of macro "one"
+  , ni)				/* { dg-error "passed 2" } */
+    ^
+
+				 
+"Test_name.c", line 53: error: too few arguments in invocation of macro "two"
+  two(ichi)			/* { dg-error "requires 2" } */
+          ^
+
+
+			 
+				 
+			 
+				 
+			 
+			 
+
+
+ 
+
+ichi			 
+ichi			 
+
+
+
+
+
+ 
+
+
+2		 
+"Test_name.c", line 74: error: expected a ")"
+  do_nowt (half_invocation))	/* { dg-error "unterminated argument" } */
+  ^
+
+"Test_name.c", line 74: error: improperly terminated macro invocation
+  do_nowt (half_invocation))	/* { dg-error "unterminated argument" } */
+  ^
+
+)	 
+18 errors detected in the compilation of "Test_name.c".

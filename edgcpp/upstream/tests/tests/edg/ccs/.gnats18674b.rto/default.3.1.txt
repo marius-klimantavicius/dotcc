@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=3 --c++11 --g++ -DNEG Test_name.c
+"Test_name.c", line 7: warning: member "<unnamed>::S::m" was referenced but not defined
+      static int m;
+                 ^
+
+"Test_name.c", line 8: warning: member "<unnamed>::S::n" was declared but never referenced
+      static int n;
+                 ^
+
+"Test_name.c", line 11: warning: member "<unnamed>::TS<T>::m [with T=int]" was referenced but not defined
+      static int m;
+                 ^
+
+"Test_name.c", line 12: warning: member "<unnamed>::TS<T>::n [with T=int]" was declared but never referenced
+      static int n;
+                 ^
+
+"Test_name.c", line 14: warning: variable "<unnamed>::m" was referenced but not defined
+    extern int m;
+               ^
+
+"Test_name.c", line 15: warning: variable "<unnamed>::n" was declared but never referenced
+    extern int n;
+               ^
+

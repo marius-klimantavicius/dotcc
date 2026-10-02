@@ -1,0 +1,7 @@
+macro_configuration_to_compile_definitions("cpfe-dot")
+set(DOT_FILES ${CORE_FRONT_END_SOURCE_FILES} ${PROJECT_SOURCE_DIR}/dot_gen_be.c)
+set_source_files_properties(${DOT_FILES} PROPERTIES LANGUAGE CXX)
+add_executable(cpfe-dot ${DOT_FILES} ${TXT_FILES})
+target_compile_definitions(cpfe-dot PRIVATE EDG_DOT_BACKEND=1)
+add_dependencies(cpfe-dot error-info)
+add_softfloat_to_target(cpfe-dot)

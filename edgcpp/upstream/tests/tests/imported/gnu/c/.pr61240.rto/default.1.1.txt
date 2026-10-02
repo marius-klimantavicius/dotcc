@@ -1,0 +1,58 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 13: error: expression must have a constant value
+    static ptrdiff_t b = p - (p - 1);	/* { dg-bogus "integer overflow in expression" } */
+                              ^
+"Test_name.c", line 13: note: the value of variable "p" (declared at line 12) cannot be used as a constant
+    static ptrdiff_t b = p - (p - 1);	/* { dg-bogus "integer overflow in expression" } */
+                              ^
+
+"Test_name.c", line 13: error: expression must have a constant value
+    static ptrdiff_t b = p - (p - 1);	/* { dg-bogus "integer overflow in expression" } */
+                         ^
+"Test_name.c", line 13: note: the value of variable "p" (declared at line 12) cannot be used as a constant
+    static ptrdiff_t b = p - (p - 1);	/* { dg-bogus "integer overflow in expression" } */
+                         ^
+
+"Test_name.c", line 14: error: expression must have a constant value
+    static ptrdiff_t c = (p - 1) - p;	/* { dg-bogus "integer overflow in expression" } */
+                          ^
+"Test_name.c", line 14: note: the value of variable "p" (declared at line 12) cannot be used as a constant
+    static ptrdiff_t c = (p - 1) - p;	/* { dg-bogus "integer overflow in expression" } */
+                          ^
+
+"Test_name.c", line 14: error: expression must have a constant value
+    static ptrdiff_t c = (p - 1) - p;	/* { dg-bogus "integer overflow in expression" } */
+                                   ^
+"Test_name.c", line 14: note: the value of variable "p" (declared at line 12) cannot be used as a constant
+    static ptrdiff_t c = (p - 1) - p;	/* { dg-bogus "integer overflow in expression" } */
+                                   ^
+
+"Test_name.c", line 15: error: expression must have a constant value
+    static ptrdiff_t d = (p - 2) - (p - 1);/* { dg-bogus "integer overflow in expression" } */
+                          ^
+"Test_name.c", line 15: note: the value of variable "p" (declared at line 12) cannot be used as a constant
+    static ptrdiff_t d = (p - 2) - (p - 1);/* { dg-bogus "integer overflow in expression" } */
+                          ^
+
+"Test_name.c", line 15: error: expression must have a constant value
+    static ptrdiff_t d = (p - 2) - (p - 1);/* { dg-bogus "integer overflow in expression" } */
+                                    ^
+"Test_name.c", line 15: note: the value of variable "p" (declared at line 12) cannot be used as a constant
+    static ptrdiff_t d = (p - 2) - (p - 1);/* { dg-bogus "integer overflow in expression" } */
+                                    ^
+
+"Test_name.c", line 16: error: expression must have a constant value
+    static ptrdiff_t e = (p - 1) - (p - 2);/* { dg-bogus "integer overflow in expression" } */
+                          ^
+"Test_name.c", line 16: note: the value of variable "p" (declared at line 12) cannot be used as a constant
+    static ptrdiff_t e = (p - 1) - (p - 2);/* { dg-bogus "integer overflow in expression" } */
+                          ^
+
+"Test_name.c", line 16: error: expression must have a constant value
+    static ptrdiff_t e = (p - 1) - (p - 2);/* { dg-bogus "integer overflow in expression" } */
+                                    ^
+"Test_name.c", line 16: note: the value of variable "p" (declared at line 12) cannot be used as a constant
+    static ptrdiff_t e = (p - 1) - (p - 2);/* { dg-bogus "integer overflow in expression" } */
+                                    ^
+
+8 errors detected in the compilation of "Test_name.c".

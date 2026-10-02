@@ -1,0 +1,18 @@
+//type: fp
+//options: 
+//options_all: --gnu_version=80200 -tused -e 200 --no_wrap
+// PR c++/84059
+// { dg-do compile { target i?86-*-* x86_64-*-* } }
+// { dg-require-ifunc "" }
+
+template <typename> struct a
+{
+  int __attribute__ ((target ("arch=ivybridge"))) c (int) {return 1;}
+  int __attribute__ ((target ("default"))) c (int) { return 2; }
+};
+void
+d ()
+{
+  a<double> b;
+  b.c (2);
+}

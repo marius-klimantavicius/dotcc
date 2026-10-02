@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 17: error: the type in a const_cast must be a pointer, reference, or pointer to member to an object type
+    const int now2 = const_cast<double>(val); // { dg-error "invalid" }
+                                ^
+
+"Test_name.c", line 19: error: invalid type conversion
+    const int now4 = reinterpret_cast<double>(val); // { dg-error "invalid" }
+                     ^
+
+2 errors detected in the compilation of "Test_name.c".

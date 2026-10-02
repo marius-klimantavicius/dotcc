@@ -1,0 +1,19 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 72: error: invalid partial specialization -- class "GH89374::solve_retval<int>" is already fully specialized
+  struct solve_retval<int> : MatrixBase<solve_retval<Rhs> > {};
+         ^
+
+"Test_name.c", line 77: error: incomplete type "GH89374::solve_retval<int>" is not allowed
+    c = solve_retval<int>();
+        ^
+
+"Test_name.c", line 16: error: no instance of function template "A::bar" matches the argument list
+            argument types are: (int)
+      A::template bar(array[0]); // expected-error {{a template argument list is expected after a name prefixed by the template keyword}} expected-error {{no matching function for call to 'bar'}}
+      ^
+"Test_name.c", line 9: note: candidate function template "A::bar" failed deduction
+    static void bar(int) { } // expected-note {{candidate template ignored: couldn't infer template argument 'T'}}
+                ^
+          detected during instantiation of "void B::foo<i>() [with i=4]" at line 21
+
+3 errors detected in the compilation of "Test_name.c".

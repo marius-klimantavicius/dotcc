@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: error: duplicate parameter name
+                  int a);		// { dg-error "redefinition" }
+                      ^
+
+"Test_name.c", line 11: error: duplicate parameter name
+                  float a);	// { dg-error "conflicting" }
+                        ^
+
+"Test_name.c", line 13: error: duplicate parameter name
+                  int a);		// { dg-error "redefinition" }
+                      ^
+
+"Test_name.c", line 15: error: duplicate parameter name
+                  int a,		     // { dg-error "redefinition" }
+                      ^
+
+"Test_name.c", line 16: error: duplicate parameter name
+                  int a);		     // { dg-error "redefinition" }
+                      ^
+
+"Test_name.c", line 18: error: duplicate parameter name
+                  int a,							// { dg-error "redefinition" }
+                      ^
+
+"Test_name.c", line 24: error: duplicate parameter name
+                  int a,		// { dg-error "redefinition" }
+                      ^
+
+"Test_name.c", line 30: error: duplicate parameter name
+                  void (*a)(int));  // { dg-error "redefinition" }
+                         ^
+
+"Test_name.c", line 32: error: duplicate parameter name
+                  int (*a)(float));  // { dg-error "conflicting" }
+                        ^
+
+"Test_name.c", line 35: error: duplicate parameter name
+                  int a,		// { dg-error "redefinition" }
+                      ^
+
+"Test_name.c", line 36: error: duplicate parameter name
+                  int a);		// { dg-error "redefinition" }
+                      ^
+
+"Test_name.c", line 41: error: duplicate parameter name
+                   int c,		// { dg-error "redefinition" }
+                       ^
+
+"Test_name.c", line 42: error: duplicate parameter name
+                   int b,		// { dg-error "redefinition" }
+                       ^
+
+"Test_name.c", line 43: error: duplicate parameter name
+                   int a);	// { dg-error "redefinition" }
+                       ^
+
+"Test_name.c", line 49: error: duplicate parameter name
+                int a);		// { dg-error "redefinition" }
+                    ^
+
+"Test_name.c", line 57: error: duplicate parameter name
+                T a);		// { dg-error "redefinition" }
+                  ^
+
+16 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 13: error: initial value of reference to non-const must be an lvalue
+    static void func (X &ref = a); // { dg-error "" }
+                               ^
+
+"Test_name.c", line 19: error: initial value of reference to non-const must be an lvalue
+    static void func (X &ref = a); // { dg-error "cannot bind non-const lvalue reference" }
+                               ^
+          detected during instantiation of "void D<T>::func(X &) [with T=int]" at line 26
+
+2 errors detected in the compilation of "Test_name.c".

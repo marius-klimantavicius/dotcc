@@ -1,0 +1,111 @@
+fe_only -DTEST_NUMBER=3 -w -tused --ms_c++20 --microsoft_version 1936 Test_name.c
+"Test_name.c", line 21: error: more than one instance of constructor "minimal::C2::C2" matches the argument list:
+            function "minimal::C2::C2(minimal::C2 &&)" (declared at line 12)
+            function "minimal::C2::C2(int)" (declared at line 13)
+            argument types are: (minimal::D)
+    C2 c2{D{}};
+         ^
+
+"Test_name.c", line 74: error: more than one instance of constructor "move_ctor::C::C" matches the argument list:
+            function "move_ctor::C::C(move_ctor::C &&)" (declared at line 61)
+            function "move_ctor::C::C(int)" (declared at line 62)
+            argument types are: (move_ctor::D)
+      C c2(d);                    // error: strict, MSVC
+           ^
+
+"Test_name.c", line 75: error: more than one instance of constructor "move_ctor::C::C" matches the argument list:
+            function "move_ctor::C::C(move_ctor::C &&)" (declared at line 61)
+            function "move_ctor::C::C(int)" (declared at line 62)
+            argument types are: (move_ctor::D)
+      C c3{d};                    // error: strict, MSVC
+          ^
+
+"Test_name.c", line 76: error: more than one instance of constructor "move_ctor::C::C" matches the argument list:
+            function "move_ctor::C::C(move_ctor::C &&)" (declared at line 61)
+            function "move_ctor::C::C(int)" (declared at line 62)
+            argument types are: (move_ctor::D)
+      C c4 = { d };               // error: strict, MSVC
+             ^
+
+"Test_name.c", line 85: error: more than one instance of constructor "move_ctor::C::C" matches the argument list:
+            function "move_ctor::C::C(move_ctor::C &&)" (declared at line 61)
+            function "move_ctor::C::C(int)" (declared at line 62)
+            argument types are: (move_ctor::D)
+        return { d };             // error: strict, MSVC
+               ^
+
+"Test_name.c", line 163: error: more than one instance of constructor "tmpl_conversion_move_ctor::A::A" matches the argument list:
+            function "tmpl_conversion_move_ctor::A::A(tmpl_conversion_move_ctor::A &&)" (declared at line 152)
+            function "tmpl_conversion_move_ctor::A::A(tmpl_conversion_move_ctor::X)" (declared at line 153)
+            argument types are: (tmpl_conversion_move_ctor::B)
+    A v1( g );                    // error: strict, MSVC
+          ^
+
+"Test_name.c", line 164: error: more than one instance of constructor "tmpl_conversion_move_ctor::A::A" matches the argument list:
+            function "tmpl_conversion_move_ctor::A::A(tmpl_conversion_move_ctor::A &&)" (declared at line 152)
+            function "tmpl_conversion_move_ctor::A::A(tmpl_conversion_move_ctor::X)" (declared at line 153)
+            argument types are: (tmpl_conversion_move_ctor::B)
+    A v2{ g };                    // error: strict, MSVC
+        ^
+
+"Test_name.c", line 165: error: more than one instance of constructor "tmpl_conversion_move_ctor::A::A" matches the argument list:
+            function "tmpl_conversion_move_ctor::A::A(tmpl_conversion_move_ctor::A &&)" (declared at line 152)
+            function "tmpl_conversion_move_ctor::A::A(tmpl_conversion_move_ctor::X)" (declared at line 153)
+            argument types are: (tmpl_conversion_move_ctor::B)
+    A v3 = { g };                 // error: strict, MSVC
+           ^
+
+"Test_name.c", line 211: error: more than one instance of constructor "non_tmpl_conversion_move_ctor::A::A" matches the argument list:
+            function "non_tmpl_conversion_move_ctor::A::A(non_tmpl_conversion_move_ctor::A &&)" (declared at line 199)
+            function "non_tmpl_conversion_move_ctor::A::A(non_tmpl_conversion_move_ctor::X)" (declared at line 200)
+            argument types are: (non_tmpl_conversion_move_ctor::B)
+    A v1( g );                    // error: strict, MSVC
+          ^
+
+"Test_name.c", line 212: error: more than one instance of constructor "non_tmpl_conversion_move_ctor::A::A" matches the argument list:
+            function "non_tmpl_conversion_move_ctor::A::A(non_tmpl_conversion_move_ctor::A &&)" (declared at line 199)
+            function "non_tmpl_conversion_move_ctor::A::A(non_tmpl_conversion_move_ctor::X)" (declared at line 200)
+            argument types are: (non_tmpl_conversion_move_ctor::B)
+    A v2{ g };                    // error: strict, MSVC
+        ^
+
+"Test_name.c", line 213: error: more than one instance of constructor "non_tmpl_conversion_move_ctor::A::A" matches the argument list:
+            function "non_tmpl_conversion_move_ctor::A::A(non_tmpl_conversion_move_ctor::A &&)" (declared at line 199)
+            function "non_tmpl_conversion_move_ctor::A::A(non_tmpl_conversion_move_ctor::X)" (declared at line 200)
+            argument types are: (non_tmpl_conversion_move_ctor::B)
+    A v3 = { g };                 // error: strict, MSVC
+           ^
+
+"Test_name.c", line 270: error: more than one instance of constructor "aggr_init::Y::Y" matches the argument list:
+            function "aggr_init::Y::Y(int)" (declared at line 258)
+            function "aggr_init::Y::Y(aggr_init::Y &&)" (declared implicitly)
+            argument types are: (aggr_init::U)
+    S s{ { U{} } };                 // error: strict, MSVC
+         ^
+
+"Test_name.c", line 275: error: more than one instance of constructor "aggr_init::Y::Y" matches the argument list:
+            function "aggr_init::Y::Y(int)" (declared at line 258)
+            function "aggr_init::Y::Y(aggr_init::Y &&)" (declared implicitly)
+            argument types are: (aggr_init::U)
+      s = { { U{} } };            // error: strict, MSVC
+            ^
+
+"Test_name.c", line 276: error: more than one instance of constructor "aggr_init::Y::Y" matches the argument list:
+            function "aggr_init::Y::Y(int)" (declared at line 258)
+            function "aggr_init::Y::Y(aggr_init::Y &&)" (declared implicitly)
+            argument types are: (aggr_init::U)
+      s.y = { U{} };              // error: strict, MSVC
+            ^
+
+"Test_name.c", line 277: error: copy-list-initialization cannot use a constructor marked "explicit"
+      s.y = { { U{} } };          // error: strict, MSVC, clang
+            ^
+
+"Test_name.c", line 280: error: more than one instance of constructor "aggr_init::Y::Y" matches the argument list:
+            function "aggr_init::Y::Y(int)" (declared at line 258)
+            function "aggr_init::Y::Y(aggr_init::Y &&)" (declared implicitly)
+            argument types are: (aggr_init::U)
+      S{ { U{} } };               // error: strict, MSVC
+         ^
+
+16 errors detected in the compilation of "Test_name.c".

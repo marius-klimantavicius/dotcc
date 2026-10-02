@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 11: warning: type qualifier on return type is meaningless
+  int * _Nullable foo(int * _Nonnull x);
+        ^
+
+"Test_name.c", line 13: warning: type qualifier on return type is meaningless
+  int *_Nonnull ret_nonnull(void);
+       ^
+
+"Test_name.c", line 19: warning: type qualifier on return type is meaningless
+  int * _Nullable foo1(int * _Nonnull x); // expected-note {{previous declaration is here}}
+        ^
+
+"Test_name.c", line 25: warning: type qualifier on return type is meaningless
+  int * _Nullable foo2(int * _Nonnull x);
+        ^
+
+"Test_name.c", line 31: warning: type qualifier on return type is meaningless
+  int * _Nullable foo3(int * _Nullable x); // expected-note {{previous declaration is here}}
+        ^
+

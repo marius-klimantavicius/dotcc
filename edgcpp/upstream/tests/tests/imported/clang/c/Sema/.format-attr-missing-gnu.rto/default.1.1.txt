@@ -1,0 +1,82 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 28: error: expected an identifier
+    void (^b1)(const char *, ...) = ^(const char *fmt, ...) { // #b1
+          ^
+
+"Test_name.c", line 28: error: function "<error>" may not be initialized
+    void (^b1)(const char *, ...) = ^(const char *fmt, ...) { // #b1
+                                  ^
+
+"Test_name.c", line 28: error: expected an expression
+    void (^b1)(const char *, ...) = ^(const char *fmt, ...) { // #b1
+                                    ^
+
+"Test_name.c", line 32: warning: parsing restarts here after previous syntax error
+    };
+     ^
+
+"Test_name.c", line 34: error: expected an identifier
+    void (^b2)(const char *, va_list) = ^(const char *fmt, va_list args) { // #b2
+          ^
+
+"Test_name.c", line 34: error: function "<error>" may not be initialized
+    void (^b2)(const char *, va_list) = ^(const char *fmt, va_list args) { // #b2
+                                      ^
+
+"Test_name.c", line 34: error: expected an expression
+    void (^b2)(const char *, va_list) = ^(const char *fmt, va_list args) { // #b2
+                                        ^
+
+"Test_name.c", line 37: warning: parsing restarts here after previous syntax error
+    };
+     ^
+
+"Test_name.c", line 39: error: expected an identifier
+    void (^b3)(const char *, int x, float y) = ^(const char *fmt, int x, float y) { // #b3
+          ^
+
+"Test_name.c", line 39: error: function "<error>" may not be initialized
+    void (^b3)(const char *, int x, float y) = ^(const char *fmt, int x, float y) { // #b3
+                                             ^
+
+"Test_name.c", line 39: error: expected an expression
+    void (^b3)(const char *, int x, float y) = ^(const char *fmt, int x, float y) { // #b3
+                                               ^
+
+"Test_name.c", line 42: warning: parsing restarts here after previous syntax error
+    };
+     ^
+
+"Test_name.c", line 44: error: expected an identifier
+    void __attribute__((__format__(__printf__, 1, 2))) (^b4)(const char *, ...) =
+                                                        ^
+
+"Test_name.c", line 44: error: function "<error>" may not be initialized
+    void __attribute__((__format__(__printf__, 1, 2))) (^b4)(const char *, ...) =
+                                                                                ^
+
+"Test_name.c", line 45: error: expected an expression
+        ^(const char *fmt, ...) __attribute__((__format__(__printf__, 1, 2))) {
+        ^
+
+"Test_name.c", line 48: warning: parsing restarts here after previous syntax error
+    };
+     ^
+
+"Test_name.c", line 50: error: expected an identifier
+    void __attribute__((__format__(__printf__, 2, 3))) (^b5)(const char *, const char *, ...) =
+                                                        ^
+
+"Test_name.c", line 50: error: function "<error>" may not be initialized
+    void __attribute__((__format__(__printf__, 2, 3))) (^b5)(const char *, const char *, ...) =
+                                                                                              ^
+
+"Test_name.c", line 51: error: expected an expression
+        ^(const char *not_fmt, const char *fmt, ...) __attribute__((__format__(__printf__, 2, 3))) { // #b5
+        ^
+
+"Test_name.c", line 56: warning: parsing restarts here after previous syntax error
+    };
+     ^
+
+15 errors detected in the compilation of "Test_name.c".

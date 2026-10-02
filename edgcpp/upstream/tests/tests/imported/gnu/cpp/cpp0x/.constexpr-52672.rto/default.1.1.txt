@@ -1,0 +1,35 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 7: error: expression must have a constant value
+  constexpr unsigned long a = *((ul_ptr)0x0); // { dg-error "" }
+                              ^
+"Test_name.c", line 7: note: attempt to access run-time storage
+  constexpr unsigned long a = *((ul_ptr)0x0); // { dg-error "" }
+                              ^
+
+"Test_name.c", line 8: error: expression must have a constant value
+  constexpr unsigned long b = *((ul_ptr)(*((ul_ptr)0x0))); // { dg-error "" }
+                              ^
+"Test_name.c", line 8: note: attempt to access run-time storage
+  constexpr unsigned long b = *((ul_ptr)(*((ul_ptr)0x0))); // { dg-error "" }
+                                         ^
+
+"Test_name.c", line 9: error: expression must have a constant value
+  constexpr unsigned long c = *((ul_ptr)*((ul_ptr)(*((ul_ptr)0x0)))); // { dg-error "" }
+                              ^
+"Test_name.c", line 9: note: attempt to access run-time storage
+  constexpr unsigned long c = *((ul_ptr)*((ul_ptr)(*((ul_ptr)0x0)))); // { dg-error "" }
+                                                   ^
+
+"Test_name.c", line 7: warning: variable "a" was declared but never referenced
+  constexpr unsigned long a = *((ul_ptr)0x0); // { dg-error "" }
+                          ^
+
+"Test_name.c", line 8: warning: variable "b" was declared but never referenced
+  constexpr unsigned long b = *((ul_ptr)(*((ul_ptr)0x0))); // { dg-error "" }
+                          ^
+
+"Test_name.c", line 9: warning: variable "c" was declared but never referenced
+  constexpr unsigned long c = *((ul_ptr)*((ul_ptr)(*((ul_ptr)0x0)))); // { dg-error "" }
+                          ^
+
+3 errors detected in the compilation of "Test_name.c".

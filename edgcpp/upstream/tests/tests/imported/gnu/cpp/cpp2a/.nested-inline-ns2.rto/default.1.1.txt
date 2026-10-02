@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 6: error: the "inline" keyword cannot be used on a nested namespace declaration
+  inline namespace A::B { // { dg-error "a nested namespace definition cannot be inline" }
+  ^
+
+"Test_name.c", line 10: error: expected an identifier
+  namespace inline C::D { // { dg-error "expected|does not name a type" }
+            ^
+
+"Test_name.c", line 10: error: expected a "{"
+  namespace inline C::D { // { dg-error "expected|does not name a type" }
+                    ^
+
+"Test_name.c", line 14: error: expected a "{"
+  namespace E::F inline { // { dg-error "expected" }
+                 ^
+
+"Test_name.c", line 18: error: expected an identifier
+  namespace inline G { // { dg-error "expected|does not name a type" }
+            ^
+
+"Test_name.c", line 19: error: variable "<unnamed>::i" has already been defined (previous definition at line 11)
+    int i;
+        ^
+
+"Test_name.c", line 22: error: expected an identifier
+  inline namespace inline H { // { dg-error "expected|does not name a type" }
+                   ^
+
+"Test_name.c", line 22: warning: the previous declaration of namespace "<unnamed>" was not declared inline
+  inline namespace inline H { // { dg-error "expected|does not name a type" }
+  ^
+
+"Test_name.c", line 23: error: variable "<unnamed>::i" has already been defined (previous definition at line 11)
+    int i;
+        ^
+
+"Test_name.c", line 26: error: expected an identifier
+  inline namespace inline I::J { // { dg-error "expected|does not name a type" }
+                   ^
+
+"Test_name.c", line 26: error: expected a "{"
+  inline namespace inline I::J { // { dg-error "expected|does not name a type" }
+                           ^
+
+"Test_name.c", line 27: error: variable "<unnamed>::i" has already been defined (previous definition at line 11)
+    int i;
+        ^
+
+11 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,22 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 13: error: "Base::Base(Base &)", required for copy that was eliminated, is not callable because reference parameter cannot be bound to rvalue
+              Base b2 = 9;        // Error, cannot create temporary for non-const
+                        ^
+
+"Test_name.c", line 15: error: class "Base" has no suitable copy constructor
+              Base b3 = Base ( 9 );       // Okay, explicit generation of the
+                        ^
+
+"Test_name.c", line 17: error: class "Base" has no suitable copy constructor
+              Base b4 = (Base)9;  // Same thing
+                        ^
+
+"Test_name.c", line 15: remark: variable "b3" was declared but never referenced
+              Base b3 = Base ( 9 );       // Okay, explicit generation of the
+                   ^
+
+"Test_name.c", line 17: remark: variable "b4" was declared but never referenced
+              Base b4 = (Base)9;  // Same thing
+                   ^
+
+3 errors detected in the compilation of "Test_name.c".

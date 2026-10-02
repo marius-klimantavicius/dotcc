@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 13: warning: scoped enum types are a C++11 feature
+    enum class EC { ec }; // expected-warning 0-1 {{C++11}}
+    ^
+
+"Test_name.c", line 33: error: invalid base class
+    using C::g; // expected-error{{using declaration refers into 'C', which is not a base class of 'D2'}}
+          ^
+
+"Test_name.c", line 35: error: invalid base class
+    using D::f2; // expected-error {{using declaration refers into 'D', which is not a base class of 'D2'}}
+          ^
+
+"Test_name.c", line 36: error: invalid base class
+    using D::E2; // expected-error {{using declaration refers into 'D', which is not a base class of 'D2'}}
+          ^
+
+"Test_name.c", line 37: error: invalid base class
+    using D::e2; // expected-error {{using declaration refers into 'D', which is not a base class of 'D2'}}
+          ^
+
+"Test_name.c", line 38: error: invalid base class
+    using D::x2; // expected-error {{using declaration refers into 'D', which is not a base class of 'D2'}}
+          ^
+
+"Test_name.c", line 41: warning: an enum-type name qualifier is a C++11 feature
+    using B::EC::ec; // expected-warning {{a C++20 extension}} expected-warning 0-1 {{C++11}}
+             ^
+
+"Test_name.c", line 41: error: invalid base class
+    using B::EC::ec; // expected-warning {{a C++20 extension}} expected-warning 0-1 {{C++11}}
+          ^
+
+"Test_name.c", line 65: error: a class-qualified name is required
+      using InnerNS::foo; // expected-error {{not a class}}
+            ^
+
+"Test_name.c", line 66: error: class "test1::Base" has no member "bar"
+      using Base::bar; // expected-error {{no member named 'bar'}}
+                  ^
+
+"Test_name.c", line 67: error: invalid base class
+      using Unrelated::foo; // expected-error {{not a base class}}
+            ^
+
+"Test_name.c", line 69: error: invalid base class
+      using C::foo; // expected-error {{refers to its own class}}
+            ^
+
+"Test_name.c", line 70: error: invalid base class
+      using Subclass::foo; // expected-error {{not a base class}}
+            ^
+
+11 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -DINVALID --c Test_name.c
+"Test_name.c", line 42: error: unknown asm constraint letter 'O'
+    asm ("" :: "O"(IncorrectVal)); // expected-error{{value '18' out of range for constraint 'O'}}
+               ^
+
+"Test_name.c", line 48: error: unknown asm constraint letter 'P'
+    asm ("" :: "P"(BelowMin)); // expected-error{{value '7' out of range for constraint 'P'}}
+               ^
+
+"Test_name.c", line 49: error: unknown asm constraint letter 'P'
+    asm ("" :: "P"(AboveMax)); // expected-error{{value '16' out of range for constraint 'P'}}
+               ^
+
+"Test_name.c", line 55: error: unknown asm constraint letter 'C'
+    asm ("" :: "C0"(IncorrectVal)); // expected-error{{value '1' out of range for constraint 'C0'}}
+               ^
+
+4 errors detected in the compilation of "Test_name.c".

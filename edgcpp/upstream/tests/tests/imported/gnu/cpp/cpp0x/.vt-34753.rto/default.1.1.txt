@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 6: error: parameter pack "T" was referenced but not expanded
+    template<T> struct B {}; // { dg-error "not expanded|T" }
+             ^
+
+"Test_name.c", line 13: error: parameter pack "T" was referenced but not expanded
+    template<T> B(); // { dg-error "not expanded|T" }
+             ^
+
+"Test_name.c", line 13: warning: constant "<unnamed>" is not used in declaring the parameter types of function template "B<T...>::B"
+    template<T> B(); // { dg-error "not expanded|T" }
+              ^
+
+"Test_name.c", line 16: error: no default constructor exists for class "B<int>"
+  B<int> c;
+         ^
+
+3 errors detected in the compilation of "Test_name.c".

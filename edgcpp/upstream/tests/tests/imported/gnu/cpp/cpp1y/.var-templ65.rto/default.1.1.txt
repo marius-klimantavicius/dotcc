@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 6: error: missing initializer for constexpr variable
+  template<typename T> constexpr int var;
+                       ^
+
+"Test_name.c", line 7: error: variable template "var" has already been defined (previous definition at line 6)
+  template<typename T> constexpr int var = 1; // { dg-error "redefinition" }
+                                     ^
+
+"Test_name.c", line 7: error: "constexpr" is not valid here
+  template<typename T> constexpr int var = 1; // { dg-error "redefinition" }
+                       ^
+
+3 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,46 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 106: warning: missing return statement at end of non-void function "ellint_pi_imp5(double, double, double, Policy &)"
+  }
+  ^
+
+"Test_name.c", line 104: warning: variable "x" is used before its value is set
+    ellint_rj_imp(x, y, z, p, p5);
+                  ^
+          detected during instantiation of "double ellint_pi_imp5(double, double, double, Policy &) [with Policy=PolicyA]" at line 110
+
+"Test_name.c", line 104: warning: variable "y" is used before its value is set
+    ellint_rj_imp(x, y, z, p, p5);
+                     ^
+          detected during instantiation of "double ellint_pi_imp5(double, double, double, Policy &) [with Policy=PolicyA]" at line 110
+
+"Test_name.c", line 104: warning: variable "z" is used before its value is set
+    ellint_rj_imp(x, y, z, p, p5);
+                        ^
+          detected during instantiation of "double ellint_pi_imp5(double, double, double, Policy &) [with Policy=PolicyA]" at line 110
+
+"Test_name.c", line 104: warning: variable "p" is used before its value is set
+    ellint_rj_imp(x, y, z, p, p5);
+                           ^
+          detected during instantiation of "double ellint_pi_imp5(double, double, double, Policy &) [with Policy=PolicyA]" at line 110
+
+"Test_name.c", line 96: warning: variable "x" is used before its value is set
+    ellint_rj_imp(x, y, z, p3, p4);
+                  ^
+          detected during:
+            instantiation of "void ellint_pi_imp4(double, double, Policy &) [with Policy=PolicyA]" at line 105
+            instantiation of "double ellint_pi_imp5(double, double, double, Policy &) [with Policy=PolicyA]" at line 110
+
+"Test_name.c", line 96: warning: variable "y" is used before its value is set
+    ellint_rj_imp(x, y, z, p3, p4);
+                     ^
+          detected during:
+            instantiation of "void ellint_pi_imp4(double, double, Policy &) [with Policy=PolicyA]" at line 105
+            instantiation of "double ellint_pi_imp5(double, double, double, Policy &) [with Policy=PolicyA]" at line 110
+
+"Test_name.c", line 96: warning: variable "z" is used before its value is set
+    ellint_rj_imp(x, y, z, p3, p4);
+                        ^
+          detected during:
+            instantiation of "void ellint_pi_imp4(double, double, Policy &) [with Policy=PolicyA]" at line 105
+            instantiation of "double ellint_pi_imp5(double, double, double, Policy &) [with Policy=PolicyA]" at line 110
+

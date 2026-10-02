@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 5: error: a trailing return type requires the "auto" type specifier
+  int const foo1() -> double;  // { dg-error "1:.foo1. function with trailing return type" }
+                   ^
+
+"Test_name.c", line 6: error: a trailing return type requires the "auto" type specifier
+  int volatile foo2() -> double;  // { dg-error "1:.foo2. function with trailing return type" }
+                      ^
+
+"Test_name.c", line 7: error: a trailing return type requires the "auto" type specifier
+  int const volatile foo3() -> double;  // { dg-error "1:.foo3. function with trailing return type" }
+                            ^
+
+3 errors detected in the compilation of "Test_name.c".

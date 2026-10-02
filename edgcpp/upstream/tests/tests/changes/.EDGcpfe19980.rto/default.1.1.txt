@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu=80200 Test_name.c
+"Test_name.c", line 14: warning: alignment cannot be set to less than the default alignment
+  enum alignas(16) alignas(1) E1 { };   // should have alignment of 16
+                              ^
+

@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 5: warning: missing return statement at end of non-void function "func2"
+  static char func2() { }
+                        ^
+
+"Test_name.c", line 25: warning: variable "k" was set but never used
+  	  int k;
+  	      ^
+
+"Test_name.c", line 37: warning: missing return statement at end of non-void function "foo"
+  }
+  ^
+

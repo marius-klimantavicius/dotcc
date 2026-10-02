@@ -1,0 +1,22 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 12: error: "s" has already been declared in the current scope
+    struct s {};  /* error */
+           ^
+
+"Test_name.c", line 14: error: "ss" has already been declared in the current scope
+    A::ss;        /* error */
+       ^
+
+"Test_name.c", line 18: error: "t" has already been declared in the current scope
+    int t;        /* error */
+        ^
+
+"Test_name.c", line 20: error: "tt" has already been declared in the current scope
+    A::tt;        /* error */
+       ^
+
+"Test_name.c", line 24: error: "t" has already been declared in the current scope
+    struct t {};  /* error */
+           ^
+
+5 errors detected in the compilation of "Test_name.c".

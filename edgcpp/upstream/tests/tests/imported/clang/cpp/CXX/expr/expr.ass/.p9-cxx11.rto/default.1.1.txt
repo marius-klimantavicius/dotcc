@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 18: error: expected a ";"
+    a = { 1 } = b; // expected-error {{initializer list cannot be used on the left hand side of operator '='}}
+              ^
+
+"Test_name.c", line 19: error: expected an expression
+    a = a + { 4 }; // expected-error {{initializer list cannot be used on the right hand side of operator '+'}}
+            ^
+
+"Test_name.c", line 20: error: expected a ";"
+    a = { 3 } * { 4 }; // expected-error {{initializer list cannot be used on the left hand side of operator '*'}} \
+              ^
+
+"Test_name.c", line 16: warning: variable "b" was set but never used
+    int a, b;
+           ^
+
+"Test_name.c", line 35: error: expected a ";"
+  int k1 = T() = { 1, 2 } = { 3, 4 }; // expected-error {{initializer list cannot be used on the left hand side of operator '='}}
+                          ^
+
+"Test_name.c", line 36: error: expected a ";"
+  int k2 = T() = { 1, 2 } + 1; // expected-error {{initializer list cannot be used on the left hand side of operator '+'}}
+                          ^
+
+5 errors detected in the compilation of "Test_name.c".

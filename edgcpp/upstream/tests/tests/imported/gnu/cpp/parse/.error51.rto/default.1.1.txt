@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 13: error: qualified name is not allowed
+    typedef A::template INVALID<void> X0;  // { dg-error "23:'INVALID' in 'struct A' does not name a template type" }
+            ^
+
+"Test_name.c", line 13: error: explicit type is missing ("int" assumed)
+    typedef A::template INVALID<void> X0;  // { dg-error "23:'INVALID' in 'struct A' does not name a template type" }
+            ^
+
+"Test_name.c", line 13: error: expected a ";"
+    typedef A::template INVALID<void> X0;  // { dg-error "23:'INVALID' in 'struct A' does not name a template type" }
+                               ^
+
+"Test_name.c", line 14: error: qualified name is not allowed
+    typedef N::template INVALID<void> X1;  // { dg-error "23:'INVALID' in namespace 'N' does not name a template type" }
+            ^
+
+"Test_name.c", line 14: error: explicit type is missing ("int" assumed)
+    typedef N::template INVALID<void> X1;  // { dg-error "23:'INVALID' in namespace 'N' does not name a template type" }
+            ^
+
+"Test_name.c", line 14: error: expected a ";"
+    typedef N::template INVALID<void> X1;  // { dg-error "23:'INVALID' in namespace 'N' does not name a template type" }
+                               ^
+
+6 errors detected in the compilation of "Test_name.c".

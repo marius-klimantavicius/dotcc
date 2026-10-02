@@ -1,0 +1,45 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 13: warning: the "availability" attribute used here is ignored
+  void f0(int) __attribute__((availability(fuchsia, introduced = 14, deprecated = 19)));
+                              ^
+
+"Test_name.c", line 14: warning: the "availability" attribute used here is ignored
+  void f1(int) __attribute__((availability(fuchsia, introduced = 16)));
+                              ^
+
+"Test_name.c", line 15: warning: the "availability" attribute used here is ignored
+  void f2(int) __attribute__((availability(fuchsia, introduced = 14, deprecated = 16))); // expected-note {{'f2' has been explicitly marked deprecated here}}
+                              ^
+
+"Test_name.c", line 16: warning: the "availability" attribute used here is ignored
+  void f3(int) __attribute__((availability(fuchsia, introduced = 19, strict))); // expected-note {{'f3' has been explicitly marked unavailable here}}
+                              ^
+
+"Test_name.c", line 17: warning: the "availability" attribute used here is ignored
+  void f4(int) __attribute__((availability(fuchsia, introduced = 9, deprecated = 11, obsoleted = 16), availability(ios, introduced = 2.0, deprecated = 3.0))); // expected-note{{explicitly marked unavailable}}
+                              ^
+
+"Test_name.c", line 17: warning: the "availability" attribute used here is ignored
+  void f4(int) __attribute__((availability(fuchsia, introduced = 9, deprecated = 11, obsoleted = 16), availability(ios, introduced = 2.0, deprecated = 3.0))); // expected-note{{explicitly marked unavailable}}
+                                                                                                      ^
+
+"Test_name.c", line 18: warning: the "availability" attribute used here is ignored
+  void f5(int) __attribute__((availability(ios, introduced = 3.2), availability(fuchsia, unavailable)));                                                       // expected-note{{'f5' has been explicitly marked unavailable here}}
+                              ^
+
+"Test_name.c", line 18: warning: the "availability" attribute used here is ignored
+  void f5(int) __attribute__((availability(ios, introduced = 3.2), availability(fuchsia, unavailable)));                                                       // expected-note{{'f5' has been explicitly marked unavailable here}}
+                                                                   ^
+
+"Test_name.c", line 19: warning: the "availability" attribute used here is ignored
+  void f6(int) __attribute__((availability(fuchsia, introduced = 16.0)));                                                                                      // expected-warning {{Fuchsia API Level prohibits specifying a minor or sub-minor version}}
+                              ^
+
+"Test_name.c", line 20: warning: the "availability" attribute used here is ignored
+  void f7(int) __attribute__((availability(fuchsia, introduced = 16.1))); // expected-warning {{Fuchsia API Level prohibits specifying a minor or sub-minor version}}
+                              ^
+
+"Test_name.c", line 21: warning: the "availability" attribute used here is ignored
+  void f8(int) __attribute__((availability(fuchsia, introduced = 19))); // nothing will happen as 'strict' is not specified.
+                              ^
+

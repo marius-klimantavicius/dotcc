@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 31: warning: missing return statement at end of non-void function "f1"
+  }	// { dg-warning "control reaches end of non-void function" }
+  ^
+
+"Test_name.c", line 80: warning: missing return statement at end of non-void function "f2"
+  }	// { dg-warning "control reaches end of non-void function" }
+  ^
+
+"Test_name.c", line 105: warning: missing return statement at end of non-void function "f3<N>(int, int)"
+  }	// { dg-warning "control reaches end of non-void function" }
+  ^
+
+"Test_name.c", line 155: warning: missing return statement at end of non-void function "f4<N>(int, int, int, int)"
+  }	// { dg-warning "control reaches end of non-void function" }
+  ^
+

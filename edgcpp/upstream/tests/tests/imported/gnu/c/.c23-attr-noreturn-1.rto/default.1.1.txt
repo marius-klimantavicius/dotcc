@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 9: warning: "noreturn" function has non-void return type
+  [[__noreturn__]] int f1 (void);
+    ^
+
+"Test_name.c", line 19: warning: "noreturn" function has non-void return type
+  [[noreturn]] int
+    ^
+
+"Test_name.c", line 22: warning: function declared with "noreturn" does return
+    return 1; /* { dg-warning "has a 'return' statement" } */
+    ^
+
+"Test_name.c", line 29: warning: function declared with "noreturn" does return
+    return; /* { dg-warning "has a 'return' statement" } */
+    ^
+
+"Test_name.c", line 36: warning: function declared with "noreturn" does return
+  } /* { dg-warning "does return" } */
+  ^
+
+"Test_name.c", line 43: warning: function declared with "noreturn" does return
+  } /* { dg-warning "does return" } */
+  ^
+
+"Test_name.c", line 58: warning: "noreturn" function has non-void return type
+  [[noreturn]] int main ();
+    ^
+
+"Test_name.c", line 13: warning: function "f3" was declared but never referenced
+  [[___Noreturn__]] static void f3 (void) { exit (0); }
+                                ^
+

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 6: warning: declaration of "size_t" does not match the expected type "unsigned long"
+  typedef int size_t;
+              ^
+
+"Test_name.c", line 14: warning: variable "s1" was declared but never referenced
+    constexpr S<1> s1("");
+                   ^
+

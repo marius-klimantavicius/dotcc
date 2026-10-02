@@ -1,0 +1,70 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 7: warning: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+  __GIMPLE (ssa) *
+            ^
+
+"Test_name.c", line 7: warning: standard requires that parameter "ssa" be given a type by a subsequent declaration ("int" assumed)
+  __GIMPLE (ssa) *
+            ^
+
+"Test_name.c", line 7: error: expected a "{"
+  __GIMPLE (ssa) *
+                 ^
+
+"Test_name.c", line 14: warning: function "__BB" declared implicitly
+  __BB(5):
+  ^
+
+"Test_name.c", line 14: error: expected a ";"
+  __BB(5):
+         ^
+
+"Test_name.c", line 18: warning: statement is unreachable
+  __BB(2):
+  ^
+
+"Test_name.c", line 18: error: expected a ";"
+  __BB(2):
+         ^
+
+"Test_name.c", line 21: error: expected a statement
+    else
+    ^
+
+"Test_name.c", line 24: error: expected a ";"
+  __BB(3):
+         ^
+
+"Test_name.c", line 28: warning: statement is unreachable
+  __BB(4):
+  ^
+
+"Test_name.c", line 28: error: expected a ";"
+  __BB(4):
+         ^
+
+"Test_name.c", line 30: error: identifier "b_4" is undefined
+    return b_4;
+           ^
+
+"Test_name.c", line 10: warning: variable "_1" was declared but never referenced
+    int _1;
+        ^
+
+"Test_name.c", line 11: warning: variable "j" was declared but never referenced
+    int j;
+        ^
+
+"Test_name.c", line 12: warning: variable "b" was declared but never referenced
+    int *b;
+         ^
+
+"Test_name.c", line 16: error: label "__BB2" was referenced but not defined
+    goto __BB2;
+         ^
+
+"Test_name.c", line 26: error: label "__BB4" was referenced but not defined
+    goto __BB4;
+         ^
+
+9 errors detected in the compilation of "Test_name.c".

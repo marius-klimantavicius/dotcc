@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 -w Test_name.c
+"./init-string-2.c", line 22: error: a value of type "long [4]" cannot be used to initialize an entity of type "wchar_t []" (aka "int []")
+  wchar_t a4[] = L"foo";
+                 ^
+
+"./init-string-2.c", line 23: error: a value of type "long [4]" cannot be used to initialize an entity of type "const wchar_t [3]"
+  const wchar_t a5[3] = L"foo";
+                        ^
+
+"./init-string-2.c", line 24: error: a value of type "long [4]" cannot be used to initialize an entity of type "volatile ushrt []"
+  volatile ushrt a6[] = L"foo";
+                        ^
+
+"./init-string-2.c", line 26: error: a value of type "char [4]" cannot be used to initialize an entity of type "schar []" (aka "enum <unnamed> []")
+  schar a7[] = "foo";
+               ^
+
+"./init-string-2.c", line 27: error: a value of type "char [4]" cannot be used to initialize an entity of type "uchar []" (aka "enum <unnamed> []")
+  uchar a8[] = "foo";
+               ^
+
+"./init-string-2.c", line 28: error: a value of type "char [4]" cannot be used to initialize an entity of type "const schar []"
+  const schar a9[] = "foo";
+                     ^
+
+"./init-string-2.c", line 29: error: a value of type "long [4]" cannot be used to initialize an entity of type "short []"
+  short a10[] = L"foo";
+                ^
+
+"./init-string-2.c", line 30: error: a value of type "long [4]" cannot be used to initialize an entity of type "const sshrt []"
+  const sshrt a11[] = L"foo";
+                      ^
+
+"./init-string-2.c", line 31: error: a value of type "long [4]" cannot be used to initialize an entity of type "char []"
+  char a12[] = L"foo";
+               ^
+
+"./init-string-2.c", line 32: error: a value of type "char [4]" cannot be used to initialize an entity of type "wchar_t []" (aka "int []")
+  wchar_t a13[] = "foo";
+                  ^
+
+"./init-string-2.c", line 44: error: integer conversion resulted in truncation
+  short b10[] = { L"foo" };
+                  ^
+
+"./init-string-2.c", line 46: error: a value of type "long [4]" cannot be used to initialize an entity of type "char []"
+  char b12[] = { L"foo" };
+                 ^
+
+"./init-string-2.c", line 46: error: incomplete type "char []" is not allowed
+  char b12[] = { L"foo" };
+       ^
+
+13 errors detected in the compilation of "Test_name.c".

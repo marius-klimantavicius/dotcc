@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 11: error: invalid argument to attribute "alloc_size"
+  ASIZE (-1) void fvv_m1 (void);    /* { dg-warning ".alloc_size. attribute ignored on a function returning .void." } */
+  ^
+
+"Test_name.c", line 13: error: invalid argument to attribute "alloc_size"
+  ASIZE (1) int fiv_1 (void);       /* { dg-warning ".alloc_size. attribute ignored on a function returning .int." } */
+  ^
+
+"Test_name.c", line 15: error: invalid argument to attribute "alloc_size"
+  ASIZE (1, 2) int fiv_1_2 (void);  /* { dg-warning ".alloc_size. attribute ignored on a function returning .int." } */
+  ^
+
+"Test_name.c", line 17: error: invalid argument to attribute "alloc_size"
+  ASIZE (0) void* fpvv_0 (void);    /* { dg-warning ".alloc_size. attribute argument value .0. does not refer to a function parameter" } */
+  ^
+
+"Test_name.c", line 19: error: invalid argument to attribute "alloc_size"
+  ASIZE (1, 0) void*
+  ^
+
+"Test_name.c", line 22: error: invalid argument to attribute "alloc_size"
+  ASIZE (1) void* fpvv_1 (void);    /* { dg-warning ".alloc_size. attribute argument value .1. exceeds the number of function parameters 0" } */
+  ^
+
+"Test_name.c", line 24: error: invalid argument to attribute "alloc_size"
+  ASIZE (1, 9) void*
+  ^
+
+"Test_name.c", line 27: error: invalid argument to attribute "alloc_size"
+  ASIZE (2) void* fii_2 (int);      /* { dg-warning ".alloc_size. attribute argument value .2. exceeds the number of function parameters 1" } */
+  ^
+
+"Test_name.c", line 36: error: invalid argument to attribute "alloc_size"
+  ASIZE (SIZE_MAX) void*
+  ^
+
+"Test_name.c", line 39: error: expression must be an integral constant expression
+  ASIZE ("12") void*
+  ^
+
+"Test_name.c", line 42: error: expression must be an integral constant expression
+  ASIZE (1, "123") void*
+  ^
+
+"Test_name.c", line 45: error: expression must be an integral constant expression
+  ASIZE ((void*)0) void*
+  ^
+
+"Test_name.c", line 48: error: expression must be an integral constant expression
+  ASIZE ((double*)sizeof (double)) void*
+  ^
+
+"Test_name.c", line 58: error: expression must be an integral constant expression
+  ASIZE ((struct S){ 1 }) void*
+  ^
+
+"Test_name.c", line 61: error: expression must be an integral constant expression
+  ASIZE (1, (struct S){ 1 }) void*
+  ^
+
+15 errors detected in the compilation of "Test_name.c".

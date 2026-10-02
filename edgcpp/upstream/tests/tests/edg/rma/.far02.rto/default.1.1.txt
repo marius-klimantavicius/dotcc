@@ -1,0 +1,14 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 5: error: expected a ";"
+  typedef F far CF;
+                ^
+
+"Test_name.c", line 6: error: expected a ")"
+  void g(F far *pf) { }
+               ^
+
+"Test_name.c", line 6: remark: parameter "far" was never referenced
+  void g(F far *pf) { }
+           ^
+
+2 errors detected in the compilation of "Test_name.c".

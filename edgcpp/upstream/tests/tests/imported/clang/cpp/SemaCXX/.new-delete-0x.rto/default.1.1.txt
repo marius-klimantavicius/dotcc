@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 15: warning: attributes may not appear here
+    auto q = new int[[]][2];
+                      ^
+
+"Test_name.c", line 23: error: expected a "]"
+    auto r = new int[[]{return 1;}()][2]; // expected-error {{expected ']'}}
+                       ^
+
+"Test_name.c", line 23: warning: attributes may not appear here
+    auto r = new int[[]{return 1;}()][2]; // expected-error {{expected ']'}}
+                      ^
+
+"Test_name.c", line 24: error: expected a "]"
+    auto s = new int*[[]{return 1;}()][2]; // expected-error {{expected ']'}}
+                        ^
+
+"Test_name.c", line 26: error: two consecutive left square brackets always introduce an attribute list but an attribute list cannot appear here
+    auto t = new (int(*)[[]]); // expected-error {{an attribute list cannot appear here}}
+                        ^
+
+"Test_name.c", line 26: error: a lambda is not allowed in a constant expression
+    auto t = new (int(*)[[]]); // expected-error {{an attribute list cannot appear here}}
+                         ^
+
+"Test_name.c", line 26: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+    auto t = new (int(*)[[]]); // expected-error {{an attribute list cannot appear here}}
+                           ^
+
+"Test_name.c", line 26: error: expected a "{" introducing a lambda body
+    auto t = new (int(*)[[]]); // expected-error {{an attribute list cannot appear here}}
+                           ^
+
+"Test_name.c", line 27: error: two consecutive left square brackets always introduce an attribute list but an attribute list cannot appear here
+    auto u = new (int(*)[[]{return 1;}()][2]); // expected-error {{C++11 only allows consecutive left square brackets when introducing an attribute}} \
+                        ^
+
+"Test_name.c", line 27: error: a lambda is not allowed in a constant expression
+    auto u = new (int(*)[[]{return 1;}()][2]); // expected-error {{C++11 only allows consecutive left square brackets when introducing an attribute}} \
+                         ^
+
+"Test_name.c", line 36: error: delete array size expression used (anachronism)
+    delete [&]{ return (int*)0; }();
+            ^
+
+"Test_name.c", line 36: error: expected an expression
+    delete [&]{ return (int*)0; }();
+             ^
+
+"Test_name.c", line 36: error: expected an expression
+    delete [&]{ return (int*)0; }();
+              ^
+
+"Test_name.c", line 42: error: expected an expression
+    delete []{ return (int*)0; }(); // expected-error {{'[]' after delete interpreted as 'delete[]'}}
+             ^
+
+"Test_name.c", line 7: warning: variable "noreturn" was declared but never referenced
+  struct noreturn_t {} constexpr noreturn = {};
+                                 ^
+
+11 errors detected in the compilation of "Test_name.c".

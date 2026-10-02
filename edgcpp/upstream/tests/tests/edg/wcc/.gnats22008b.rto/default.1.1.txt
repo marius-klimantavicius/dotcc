@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --g++ -W --gnu_version 80100 Test_name.c
+"Test_name.c", line 8: error: type "V3<int, 16>" was declared deprecated
+  V3<int, 16> val;
+              ^
+"Test_name.c", line 6: note: because of a "deprecated" attribute
+  using V3 [[deprecated]] = T;
+             ^
+
+1 error detected in the compilation of "Test_name.c".

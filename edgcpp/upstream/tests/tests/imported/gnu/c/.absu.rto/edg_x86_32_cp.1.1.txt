@@ -1,0 +1,13 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./absu.c", line 40: warning: integer conversion resulted in truncation
+    foo_long (0x7fffffffffffffffL
+              ^
+
+"./absu.c", line 40: warning: integer conversion resulted in truncation
+                     , 0x7fffffffffffffffL
+                       ^
+
+"./absu.c", line 41: warning: integer conversion resulted in truncation
+                      + 1, 0x7fffffffffffffffL
+                           ^
+

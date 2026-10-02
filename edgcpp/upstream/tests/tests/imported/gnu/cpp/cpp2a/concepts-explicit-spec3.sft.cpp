@@ -1,0 +1,15 @@
+//type: fn
+//options: --c++20
+// { dg-do compile { target c++20 } }
+
+template<typename T>
+  concept C = __is_class(T);
+
+template<C T> struct S;
+
+struct X { };
+
+// Not a valid explicit specialization, int does not satisfy C.
+template<> struct S<int> { }; // { dg-error "constraint failure" }
+
+int main() { }

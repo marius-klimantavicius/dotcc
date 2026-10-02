@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 5: warning: attribute namespace "omp" is unrecognized
+  [[omp::decl (declare target, indirect(1))]] // { dg-error "directive with only 'device_type' or 'indirect' clause" }
+    ^
+
+"Test_name.c", line 8: warning: attribute namespace "omp" is unrecognized
+  [[omp::decl (declare target indirect)]] // { dg-error "directive with only 'device_type' or 'indirect' clause" }
+    ^
+
+"Test_name.c", line 11: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive (begin declare target, indirect)]];
+    ^
+
+"Test_name.c", line 13: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive (end declare target)]];
+    ^
+
+"Test_name.c", line 16: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive (declare target to(i), indirect (1))]];
+    ^
+
+"Test_name.c", line 19: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive (declare target indirect enter (j))]];
+    ^
+

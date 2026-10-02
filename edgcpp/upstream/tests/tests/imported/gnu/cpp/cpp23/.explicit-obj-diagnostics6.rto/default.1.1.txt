@@ -1,0 +1,170 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++23 Test_name.c
+"Test_name.c", line 17: error: taking the address of an explicit "this" function requires a qualified name
+      void (*fp)(S&) = &f; // { dg-line line_sf }
+                       ^
+
+"Test_name.c", line 17: warning: variable "fp" was declared but never referenced
+      void (*fp)(S&) = &f; // { dg-line line_sf }
+             ^
+
+"Test_name.c", line 20: warning: variable "gp" was declared but never referenced
+      void (*gp)(S&) = &g; // { dg-line line_sg }
+             ^
+
+"Test_name.c", line 26: error: a pointer to a bound function may only be used to call the function
+      void (*fp)(S&) = &self.f; // { dg-line s_test1_f }
+                             ^
+
+"Test_name.c", line 29: error: a pointer to a bound function may only be used to call the function
+      void (*gp)(S&) = &self.g; // { dg-line s_test1_g }
+                             ^
+
+"Test_name.c", line 40: error: a pointer to a bound function may only be used to call the function
+    void (*fp)(S&) = &s.f; // { dg-line s_free_test0_f }
+                        ^
+
+"Test_name.c", line 43: error: a pointer to a bound function may only be used to call the function
+    void (*gp)(S&) = &s.g; // { dg-line s_free_test0_g }
+                        ^
+
+"Test_name.c", line 38: warning: variable "s" was set but never used
+    S s{};
+      ^
+
+"Test_name.c", line 75: error: taking the address of an explicit "this" function requires a qualified name
+      void (*fbp)(B&) = &fb; // { dg-line d_test0_fb }
+                        ^
+
+"Test_name.c", line 83: error: taking the address of an explicit "this" function requires a qualified name
+      void (*fdp)(D&) = &fd; // { dg-line d_test0_fd }
+                        ^
+
+"Test_name.c", line 75: warning: variable "fbp" was declared but never referenced
+      void (*fbp)(B&) = &fb; // { dg-line d_test0_fb }
+             ^
+
+"Test_name.c", line 78: warning: variable "gbp" was declared but never referenced
+      void (*gbp)(B&) = &gb; // { dg-line d_test0_gb }
+             ^
+
+"Test_name.c", line 83: warning: variable "fdp" was declared but never referenced
+      void (*fdp)(D&) = &fd; // { dg-line d_test0_fd }
+             ^
+
+"Test_name.c", line 86: warning: variable "gdp" was declared but never referenced
+      void (*gdp)(D&) = &gd; // { dg-line d_test0_gd }
+             ^
+
+"Test_name.c", line 93: error: a pointer to a bound function may only be used to call the function
+      void (*fbp)(B&) = &self.fb; // { dg-line d_test1_fb }
+                              ^
+
+"Test_name.c", line 96: error: a pointer to a bound function may only be used to call the function
+      void (*gbp)(B&) = &self.gb; // { dg-line d_test1_gb }
+                              ^
+
+"Test_name.c", line 101: error: a pointer to a bound function may only be used to call the function
+      void (*fdp)(D&) = &self.fd; // { dg-line d_test1_fd }
+                              ^
+
+"Test_name.c", line 104: error: a pointer to a bound function may only be used to call the function
+      void (*gdp)(D&) = &self.gd; // { dg-line d_test1_gd }
+                              ^
+
+"Test_name.c", line 111: error: a pointer to a bound function may only be used to call the function
+      void (*fbp)(B&) = &self.fb; // { dg-line d_test2_fb }
+                              ^
+
+"Test_name.c", line 114: error: a pointer to a bound function may only be used to call the function
+      void (*gbp)(B&) = &self.gb; // { dg-line d_test2_gb }
+                              ^
+
+"Test_name.c", line 120: error: a pointer to a bound function may only be used to call the function
+      void (*fdp)(D&) = &self.fd; // { dg-line d_test2_fd }
+                              ^
+
+"Test_name.c", line 123: error: a pointer to a bound function may only be used to call the function
+      void (*gdp)(D&) = &self.gd; // { dg-line d_test2_gd }
+                              ^
+
+"Test_name.c", line 131: error: taking the address of an explicit "this" function requires a qualified name
+      void (*fbp)(B&) = &fb2; // { dg-line d_test3_fb2 }
+                        ^
+
+"Test_name.c", line 138: error: taking the address of an explicit "this" function requires a qualified name
+      void (*fdp)(D&) = &fd2; // { dg-line d_test3_fd2 }
+                        ^
+
+"Test_name.c", line 131: warning: variable "fbp" was declared but never referenced
+      void (*fbp)(B&) = &fb2; // { dg-line d_test3_fb2 }
+             ^
+
+"Test_name.c", line 134: warning: variable "gbp" was declared but never referenced
+      void (*gbp)(B&) = &gb2; // { dg-line d_test3_gb2 }
+             ^
+
+"Test_name.c", line 138: warning: variable "fdp" was declared but never referenced
+      void (*fdp)(D&) = &fd2; // { dg-line d_test3_fd2 }
+             ^
+
+"Test_name.c", line 141: warning: variable "gdp" was declared but never referenced
+      void (*gdp)(D&) = &gd2; // { dg-line d_test3_gd2 }
+             ^
+
+"Test_name.c", line 147: error: a pointer to a bound function may only be used to call the function
+      void (*fbp)(B&) = &self.fb2; // { dg-line d_test4_fb2 }
+                              ^
+
+"Test_name.c", line 150: error: a pointer to a bound function may only be used to call the function
+      void (*gbp)(B&) = &self.gb2; // { dg-line d_test4_gb2 }
+                              ^
+
+"Test_name.c", line 155: error: a pointer to a bound function may only be used to call the function
+      void (*fdp)(D&) = &self.fd2; // { dg-line d_test4_fd2 }
+                              ^
+
+"Test_name.c", line 158: error: a pointer to a bound function may only be used to call the function
+      void (*gdp)(D&) = &self.gd2; // { dg-line d_test4_gd2 }
+                              ^
+
+"Test_name.c", line 169: error: a pointer to a bound function may only be used to call the function
+    void (*fbp)(B&) = &d.fb; // { dg-line d_free_test1_fb }
+                         ^
+
+"Test_name.c", line 172: error: a pointer to a bound function may only be used to call the function
+    void (*gbp)(B&) = &d.gb; // { dg-line d_free_test1_gb }
+                         ^
+
+"Test_name.c", line 178: error: a pointer to a bound function may only be used to call the function
+    void (*fdp)(D&) = &d.fd; // { dg-line d_free_test1_fd }
+                         ^
+
+"Test_name.c", line 181: error: a pointer to a bound function may only be used to call the function
+    void (*gdp)(D&) = &d.gd; // { dg-line d_free_test1_gd }
+                         ^
+
+"Test_name.c", line 167: warning: variable "d" was set but never used
+    D d{};
+      ^
+
+"Test_name.c", line 192: error: a pointer to a bound function may only be used to call the function
+    void (*fbp)(B&) = &d.fb2; // { dg-line d_free_test2_fb2 }
+                         ^
+
+"Test_name.c", line 195: error: a pointer to a bound function may only be used to call the function
+    void (*gbp)(B&) = &d.gb2; // { dg-line d_free_test2_gb2 }
+                         ^
+
+"Test_name.c", line 200: error: a pointer to a bound function may only be used to call the function
+    void (*fdp)(D&) = &d.fd2; // { dg-line d_free_test2_fd2 }
+                         ^
+
+"Test_name.c", line 203: error: a pointer to a bound function may only be used to call the function
+    void (*gdp)(D&) = &d.gd2; // { dg-line d_free_test2_gd2 }
+                         ^
+
+"Test_name.c", line 190: warning: variable "d" was set but never used
+    D d{};
+      ^
+
+29 errors detected in the compilation of "Test_name.c".

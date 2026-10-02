@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 6: error: expected a "{"
+  unsigned int __GIMPLE() f(int a)
+                          ^
+
+"Test_name.c", line 10: error: identifier "a" is undefined
+    t0 = -a;
+          ^
+
+"Test_name.c", line 11: error: identifier "__ABSU" is undefined
+    t1 = __ABSU a;
+         ^
+
+"Test_name.c", line 11: error: expected a ";"
+    t1 = __ABSU a;
+                ^
+
+"Test_name.c", line 8: warning: variable "t0" was set but never used
+    int t0;
+        ^
+
+4 errors detected in the compilation of "Test_name.c".

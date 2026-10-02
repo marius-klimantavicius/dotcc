@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 15: error: this operator is not allowed in a template argument expression
+  struct X<x[1]> xx;  // Previously erroneously accepted.  Now an error
+            ^
+
+1 error detected in the compilation of "Test_name.c".

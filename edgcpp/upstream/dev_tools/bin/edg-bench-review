@@ -1,0 +1,236 @@
+#!/usr/bin/env python3
+
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+import argparse
+import asyncio
+import os
+import sys
+import uuid
+
+import edgacknowledg
+import edgbench
+import edgutil
+
+from pathlib import Path
+
+from edgacknowledg.client import (
+  BackgroundWorkerPool,
+  DirectClient,
+  add_endpoint_arguments,
+  form_section_http_url,
+)
+from edgacknowledg.client.bench import (
+  DEFAULT_THRESHOLD_FAST,
+  DEFAULT_THRESHOLD_SLOW,
+  TOOL_PATH_CG_ANNOTATE,
+  BenchEditHandler,
+  BenchReviewSession,
+  BenchSourceHandler,
+  resolve_baseline_dir,
+)
+from edgacknowledg import IncompatibleProtocolVersion
+from edgutil import eprint
+
+def print_connection_status(status_message: str) -> None:
+  eprint(f"[Connection] {status_message}")
+
+
+class _CliConnectionStatusListener:
+  '''Print direct-socket lifecycle events for the CLI.'''
+
+  def connected(self) -> None:
+    print_connection_status('Connected!')
+
+  def attempting_reconnect(self) -> None:
+    print_connection_status('Attempting to reconnect...')
+
+  def disconnected(self) -> None:
+    print_connection_status('Disconnected.')
+
+
+def parse_args() -> argparse.Namespace:
+  '''Parse the commandline arguments for this script.'''
+  parser = argparse.ArgumentParser(
+    description = 'Tool to launch an AcknowlEDG benchmark review session'
+  )
+  parser.add_argument(
+    '--api-key',
+    dest = 'api_key',
+    default = os.environ.get('EDG_ACKNOWLEDG_API_KEY'),
+    help = 'API key for /source and /edit (or EDG_ACKNOWLEDG_API_KEY)'
+  )
+  add_endpoint_arguments(parser)
+  parser.add_argument(
+    '--id',
+    dest = 'run_id',
+    default = str(uuid.uuid4()),
+    help = 'the UUID that identifies the review (share with edgy-review)'
+  )
+  parser.add_argument(
+    '--name',
+    dest = 'output_name',
+    default = None,
+    help = (
+      'review title (default: "Review opened by <username>")'
+    )
+  )
+  parser.add_argument(
+    '--section-name',
+    dest = 'section_name',
+    default = 'Benchmarks',
+    help = 'display name for this review section/tab'
+  )
+  parser.add_argument(
+    '--die-after',
+    dest = 'die_after',
+    default = 0,
+    type = int,
+    help = (
+      'if set, the program will automatically terminate after the specified '
+      'number of minutes'
+    )
+  )
+  parser.add_argument(
+    '--faster-threshold',
+    '-f',
+    dest = 'threshold_fast',
+    type = float,
+    default = DEFAULT_THRESHOLD_FAST,
+    help = (
+      'the percentage faster a benchmark has to be to be individually listed'
+    )
+  )
+  parser.add_argument(
+    '--slower-threshold',
+    '-s',
+    dest = 'threshold_slow',
+    type = float,
+    default = DEFAULT_THRESHOLD_SLOW,
+    help = (
+      'the percentage slower a benchmark has to be to be individually listed'
+    )
+  )
+  parser.add_argument(
+    '-b',
+    dest = 'num_runs_back',
+    action = 'count',
+    default = 0,
+    help = (
+      'examine the previous bench run (if this flag is repeated, go back the '
+      'number of times the flag was repeated)'
+    )
+  )
+  parser.add_argument(
+    '--root',
+    dest = 'root_path',
+    type = Path,
+    required = False,
+    help = 'the root path to examine'
+  )
+  parser.add_argument(
+    'tag',
+    nargs = '?',
+    default = None,
+    help = (
+      'the baseline tag to compare against (prefix with @ to reference '
+      'a user baseline instead of a project baseline)'
+    )
+  )
+  return parser.parse_args()
+
+def main() -> None:
+  args = parse_args()
+
+  bench_home = edgbench.load_benchmark_home_or_exit()
+
+  if args.tag is None:
+    eprint('a baseline tag is required')
+    sys.exit(1)
+
+  TOOL_PATH_CG_ANNOTATE.exit_if_not_found()
+
+  previous_run_dirs = edgbench.get_benchmark_runs(bench_home)
+  benchmark_inspection = edgbench.BenchmarkRunInspection(
+    args.root_path,
+    args.num_runs_back,
+    previous_run_dirs
+  )
+  edgbench.validate_inspection(benchmark_inspection)
+
+  run_dir = benchmark_inspection.get_run_directory()
+  if not run_dir.exists():
+    eprint(f"Path does not exist: {run_dir}")
+    sys.exit(1)
+
+  baseline_dir = resolve_baseline_dir(bench_home, args.tag)
+  if not baseline_dir.exists():
+    eprint(f"Baseline directory does not exist: {baseline_dir}")
+    sys.exit(1)
+
+  session = BenchReviewSession(
+    bench_home = bench_home,
+    run_dir = run_dir,
+    baseline_dir = baseline_dir,
+    tag = args.tag,
+    threshold_slow = args.threshold_slow,
+    threshold_fast = args.threshold_fast
+  )
+
+  run_id = uuid.UUID(args.run_id)
+  review_name = edgacknowledg.review_display_name(args.output_name)
+  created_at = edgacknowledg.utc_now_iso()
+  slug = edgacknowledg.section_slug(args.section_name)
+  specified_timeout = args.die_after * 60 if args.die_after > 0 else None
+
+  print_connection_status('Starting new session view at:')
+  review_url = form_section_http_url(
+    args.ui_hostname,
+    args.ui_port,
+    run_id,
+    edgacknowledg.TAG_PREFIX_BENCH_SRC,
+    slug
+  )
+  print_connection_status(f"  {review_url}")
+
+  async def run_tasks(loop: asyncio.AbstractEventLoop) -> None:
+    try:
+      worker_pool = BackgroundWorkerPool()
+      async with DirectClient(
+        api_host = args.api_hostname,
+        api_port = args.api_port,
+        api_key = args.api_key,
+        status_listener = _CliConnectionStatusListener()
+      ) as client_session:
+        review = await client_session.create_review(
+          run_id, review_name, created_at
+        )
+        await review.add_section(
+          BenchSourceHandler(
+            args.section_name, slug, session, worker_pool
+          )
+        )
+        await review.add_section(
+          BenchEditHandler(
+            args.section_name, slug, session, worker_pool
+          )
+        )
+        print_connection_status(
+          f"Section: \"{args.section_name}\" of review: \"{review_name}\"."
+        )
+
+        if specified_timeout is not None:
+          await asyncio.sleep(specified_timeout)
+          print_connection_status('die-after elapsed, shutting down...')
+          await client_session.stop()
+    except IncompatibleProtocolVersion:
+      eprint('Client out of date, please update tools.')
+    except asyncio.CancelledError:
+      pass
+
+  edgutil.run_asyncio_loop(run_tasks)
+
+main()

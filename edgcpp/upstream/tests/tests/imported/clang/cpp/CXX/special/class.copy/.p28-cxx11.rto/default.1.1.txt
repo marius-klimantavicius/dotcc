@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 14: warning: rvalue references are a C++11 feature
+    A &operator=(T &&) { return T::error; } // expected-error {{no member named 'error' in 'A'}}
+                   ^
+
+"Test_name.c", line 14: error: class "A" has no member "error"
+    A &operator=(T &&) { return T::error; } // expected-error {{no member named 'error' in 'A'}}
+                                   ^
+          detected during instantiation of "A &A::operator=(T &&) [with T=A]" at line 17
+
+1 error detected in the compilation of "Test_name.c".

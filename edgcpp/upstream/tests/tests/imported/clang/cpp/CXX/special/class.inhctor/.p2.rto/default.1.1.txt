@@ -1,0 +1,252 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 24: error: expression must have a constant value
+  constexpr A a0c { X<0>{} }; // expected-error {{must be initialized by a constant expression}} expected-note {{non-constexpr}}
+                  ^
+"Test_name.c", line 24: note: cannot call non-constexpr function "A::A(X<0>)" (declared at line 16)
+  constexpr A a0c { X<0>{} }; // expected-error {{must be initialized by a constant expression}} expected-note {{non-constexpr}}
+                  ^
+
+"Test_name.c", line 25: error: expression must have a constant value
+  constexpr A a0ic = { X<0>{} }; // expected-error {{must be initialized by a constant expression}} expected-note {{non-constexpr}}
+                     ^
+"Test_name.c", line 25: note: cannot call non-constexpr function "A::A(X<0>)" (declared at line 16)
+  constexpr A a0ic = { X<0>{} }; // expected-error {{must be initialized by a constant expression}} expected-note {{non-constexpr}}
+                     ^
+
+"Test_name.c", line 33: error: copy-list-initialization cannot use a constructor marked "explicit"
+  A a2i = { X<2>{} }; // expected-error {{constructor is explicit}}
+          ^
+
+"Test_name.c", line 34: error: expression must have a constant value
+  constexpr A a2c { X<2>{} }; // expected-error {{must be initialized by a constant expression}} expected-note {{non-constexpr}}
+                  ^
+"Test_name.c", line 34: note: cannot call non-constexpr function "A::A(X<2>)" (declared at line 18)
+  constexpr A a2c { X<2>{} }; // expected-error {{must be initialized by a constant expression}} expected-note {{non-constexpr}}
+                  ^
+
+"Test_name.c", line 35: error: copy-list-initialization cannot use a constructor marked "explicit"
+  constexpr A a2ic = { X<2>{} }; // expected-error {{constructor is explicit}}
+                     ^
+
+"Test_name.c", line 35: error: expression must have a constant value
+  constexpr A a2ic = { X<2>{} }; // expected-error {{constructor is explicit}}
+                     ^
+"Test_name.c", line 35: note: cannot call non-constexpr function "A::A(X<2>)" (declared at line 18)
+  constexpr A a2ic = { X<2>{} }; // expected-error {{constructor is explicit}}
+                     ^
+
+"Test_name.c", line 38: error: copy-list-initialization cannot use a constructor marked "explicit"
+  A a3i = { X<3>{} }; // expected-error {{constructor is explicit}}
+          ^
+
+"Test_name.c", line 40: error: copy-list-initialization cannot use a constructor marked "explicit"
+  constexpr A a3ic = { X<3>{} }; // expected-error {{constructor is explicit}}
+                     ^
+
+"Test_name.c", line 49: error: expression must have a constant value
+  constexpr B b0c { X<0>{} }; // expected-error {{must be initialized by a constant expression}} expected-note {{non-constexpr}}
+                  ^
+"Test_name.c", line 49: note: cannot call non-constexpr function "B::A(X<0>)" (declared implicitly)
+  constexpr B b0c { X<0>{} }; // expected-error {{must be initialized by a constant expression}} expected-note {{non-constexpr}}
+                  ^
+
+"Test_name.c", line 50: error: expression must have a constant value
+  constexpr B b0ic = { X<0>{} }; // expected-error {{must be initialized by a constant expression}} expected-note {{non-constexpr}}
+                     ^
+"Test_name.c", line 50: note: cannot call non-constexpr function "B::A(X<0>)" (declared implicitly)
+  constexpr B b0ic = { X<0>{} }; // expected-error {{must be initialized by a constant expression}} expected-note {{non-constexpr}}
+                     ^
+
+"Test_name.c", line 58: error: copy-list-initialization cannot use a constructor marked "explicit"
+  B b2i = { X<2>{} }; // expected-error {{constructor is explicit}}
+          ^
+
+"Test_name.c", line 59: error: expression must have a constant value
+  constexpr B b2c { X<2>{} }; // expected-error {{must be initialized by a constant expression}} expected-note {{non-constexpr}}
+                  ^
+"Test_name.c", line 59: note: cannot call non-constexpr function "B::A(X<2>)" (declared implicitly)
+  constexpr B b2c { X<2>{} }; // expected-error {{must be initialized by a constant expression}} expected-note {{non-constexpr}}
+                  ^
+
+"Test_name.c", line 60: error: copy-list-initialization cannot use a constructor marked "explicit"
+  constexpr B b2ic = { X<2>{} }; // expected-error {{constructor is explicit}}
+                     ^
+
+"Test_name.c", line 60: error: expression must have a constant value
+  constexpr B b2ic = { X<2>{} }; // expected-error {{constructor is explicit}}
+                     ^
+"Test_name.c", line 60: note: cannot call non-constexpr function "B::A(X<2>)" (declared implicitly)
+  constexpr B b2ic = { X<2>{} }; // expected-error {{constructor is explicit}}
+                     ^
+
+"Test_name.c", line 63: error: copy-list-initialization cannot use a constructor marked "explicit"
+  B b3i = { X<3>{} }; // expected-error {{constructor is explicit}}
+          ^
+
+"Test_name.c", line 65: error: copy-list-initialization cannot use a constructor marked "explicit"
+  constexpr B b3ic = { X<3>{} }; // expected-error {{constructor is explicit}}
+                     ^
+
+"Test_name.c", line 74: error: expression must have a constant value
+  constexpr BothNonLiteral bothNL{42}; // expected-error {{constexpr variable cannot have non-literal type 'const BothNonLiteral'}}
+                                 ^
+"Test_name.c", line 73: note: cannot call non-constexpr function "NonLiteral::NonLiteral()" (declared at line 69)
+  struct BothNonLiteral : NonLiteral, Constexpr { using Constexpr::Constexpr; }; // expected-note {{base class 'NonLiteral' of non-literal type}}
+                                                  ^
+
+"Test_name.c", line 74: error: a constexpr variable must have a literal type or a reference type
+  constexpr BothNonLiteral bothNL{42}; // expected-error {{constexpr variable cannot have non-literal type 'const BothNonLiteral'}}
+  ^
+
+"Test_name.c", line 82: error: expression must have a constant value
+  constexpr BothNonConstexpr bothNC{42}; // expected-error {{must be initialized by a constant expression}} expected-note {{inherited from base class 'Constexpr'}}
+                                   ^
+"Test_name.c", line 80: note: cannot call non-constexpr function "NonConstexpr::NonConstexpr()" (declared at line 70)
+    using Constexpr::Constexpr; // expected-note {{here}}
+    ^
+
+"Test_name.c", line 118: warning: template parameter "T" is not used in declaring the parameter types of function template "UsingTemplateCtors::UsingTemplateCtors<T,U>(int, int, int)"
+    template<typename T, typename U> constexpr UsingTemplateCtors(int, int, int) {} // expected-note {{couldn't infer}}
+                      ^
+
+"Test_name.c", line 118: warning: template parameter "U" is not used in declaring the parameter types of function template "UsingTemplateCtors::UsingTemplateCtors<T,U>(int, int, int)"
+    template<typename T, typename U> constexpr UsingTemplateCtors(int, int, int) {} // expected-note {{couldn't infer}}
+                                  ^
+
+"Test_name.c", line 123: error: expression must have a constant value
+  constexpr UsingTemplateCtors uct2{ X<0>{}, Y<0>{} }; // expected-error {{must be initialized by a constant expression}} expected-note {{non-constexpr}}
+                                   ^
+"Test_name.c", line 123: note: cannot call non-constexpr function "UsingTemplateCtors::UsingTemplateCtors(X<0>, T<0>) [with T=Y]" (declared implicitly)
+  constexpr UsingTemplateCtors uct2{ X<0>{}, Y<0>{} }; // expected-error {{must be initialized by a constant expression}} expected-note {{non-constexpr}}
+                                   ^
+
+"Test_name.c", line 124: error: expression must have a constant value
+  constexpr UsingTemplateCtors uct3{ X<1>{}, X<0>{} }; // expected-error {{must be initialized by a constant expression}} expected-note {{non-constexpr}}
+                                   ^
+"Test_name.c", line 124: note: cannot call non-constexpr function "UsingTemplateCtors::UsingTemplateCtors(X<1>, X<N>) [with N=0]" (declared implicitly)
+  constexpr UsingTemplateCtors uct3{ X<1>{}, X<0>{} }; // expected-error {{must be initialized by a constant expression}} expected-note {{non-constexpr}}
+                                   ^
+
+"Test_name.c", line 126: error: expression must have a constant value
+  constexpr UsingTemplateCtors uct5{ X<2>{}, 0 }; // expected-error {{must be initialized by a constant expression}} expected-note {{non-constexpr}}
+                                   ^
+"Test_name.c", line 126: note: cannot call non-constexpr function "UsingTemplateCtors::UsingTemplateCtors(X<2>, T) [with T=int]" (declared implicitly)
+  constexpr UsingTemplateCtors uct5{ X<2>{}, 0 }; // expected-error {{must be initialized by a constant expression}} expected-note {{non-constexpr}}
+                                   ^
+
+"Test_name.c", line 135: error: expression must have a constant value
+  constexpr UsingTemplateCtors utc9{ 0, 0, 0 }; // expected-error {{no matching constructor}}
+                                   ^
+"Test_name.c", line 135: note: cannot call non-constexpr function "UsingTemplateCtors::UsingTemplateCtors(int, int, int) [with T=int]" (declared implicitly)
+  constexpr UsingTemplateCtors utc9{ 0, 0, 0 }; // expected-error {{no matching constructor}}
+                                   ^
+
+"Test_name.c", line 24: warning: variable "a0c" was declared but never referenced
+  constexpr A a0c { X<0>{} }; // expected-error {{must be initialized by a constant expression}} expected-note {{non-constexpr}}
+              ^
+
+"Test_name.c", line 25: warning: variable "a0ic" was declared but never referenced
+  constexpr A a0ic = { X<0>{} }; // expected-error {{must be initialized by a constant expression}} expected-note {{non-constexpr}}
+              ^
+
+"Test_name.c", line 29: warning: variable "a1c" was declared but never referenced
+  constexpr A a1c { X<1>{} };
+              ^
+
+"Test_name.c", line 30: warning: variable "a1ic" was declared but never referenced
+  constexpr A a1ic = { X<1>{} };
+              ^
+
+"Test_name.c", line 34: warning: variable "a2c" was declared but never referenced
+  constexpr A a2c { X<2>{} }; // expected-error {{must be initialized by a constant expression}} expected-note {{non-constexpr}}
+              ^
+
+"Test_name.c", line 35: warning: variable "a2ic" was declared but never referenced
+  constexpr A a2ic = { X<2>{} }; // expected-error {{constructor is explicit}}
+              ^
+
+"Test_name.c", line 39: warning: variable "a3c" was declared but never referenced
+  constexpr A a3c { X<3>{} };
+              ^
+
+"Test_name.c", line 40: warning: variable "a3ic" was declared but never referenced
+  constexpr A a3ic = { X<3>{} }; // expected-error {{constructor is explicit}}
+              ^
+
+"Test_name.c", line 49: warning: variable "b0c" was declared but never referenced
+  constexpr B b0c { X<0>{} }; // expected-error {{must be initialized by a constant expression}} expected-note {{non-constexpr}}
+              ^
+
+"Test_name.c", line 50: warning: variable "b0ic" was declared but never referenced
+  constexpr B b0ic = { X<0>{} }; // expected-error {{must be initialized by a constant expression}} expected-note {{non-constexpr}}
+              ^
+
+"Test_name.c", line 54: warning: variable "b1c" was declared but never referenced
+  constexpr B b1c { X<1>{} };
+              ^
+
+"Test_name.c", line 55: warning: variable "b1ic" was declared but never referenced
+  constexpr B b1ic = { X<1>{} };
+              ^
+
+"Test_name.c", line 59: warning: variable "b2c" was declared but never referenced
+  constexpr B b2c { X<2>{} }; // expected-error {{must be initialized by a constant expression}} expected-note {{non-constexpr}}
+              ^
+
+"Test_name.c", line 60: warning: variable "b2ic" was declared but never referenced
+  constexpr B b2ic = { X<2>{} }; // expected-error {{constructor is explicit}}
+              ^
+
+"Test_name.c", line 64: warning: variable "b3c" was declared but never referenced
+  constexpr B b3c { X<3>{} };
+              ^
+
+"Test_name.c", line 65: warning: variable "b3ic" was declared but never referenced
+  constexpr B b3ic = { X<3>{} }; // expected-error {{constructor is explicit}}
+              ^
+
+"Test_name.c", line 74: warning: variable "bothNL" was declared but never referenced
+  constexpr BothNonLiteral bothNL{42}; // expected-error {{constexpr variable cannot have non-literal type 'const BothNonLiteral'}}
+                           ^
+
+"Test_name.c", line 82: warning: variable "bothNC" was declared but never referenced
+  constexpr BothNonConstexpr bothNC{42}; // expected-error {{must be initialized by a constant expression}} expected-note {{inherited from base class 'Constexpr'}}
+                             ^
+
+"Test_name.c", line 122: warning: variable "uct1" was declared but never referenced
+  constexpr UsingTemplateCtors uct1{ X<0>{}, X<0>{} };
+                               ^
+
+"Test_name.c", line 123: warning: variable "uct2" was declared but never referenced
+  constexpr UsingTemplateCtors uct2{ X<0>{}, Y<0>{} }; // expected-error {{must be initialized by a constant expression}} expected-note {{non-constexpr}}
+                               ^
+
+"Test_name.c", line 124: warning: variable "uct3" was declared but never referenced
+  constexpr UsingTemplateCtors uct3{ X<1>{}, X<0>{} }; // expected-error {{must be initialized by a constant expression}} expected-note {{non-constexpr}}
+                               ^
+
+"Test_name.c", line 125: warning: variable "uct4" was declared but never referenced
+  constexpr UsingTemplateCtors uct4{ X<1>{}, X<1>{} };
+                               ^
+
+"Test_name.c", line 126: warning: variable "uct5" was declared but never referenced
+  constexpr UsingTemplateCtors uct5{ X<2>{}, 0 }; // expected-error {{must be initialized by a constant expression}} expected-note {{non-constexpr}}
+                               ^
+
+"Test_name.c", line 127: warning: variable "uct6" was declared but never referenced
+  constexpr UsingTemplateCtors uct6{ X<2>{}, X<2>{} };
+                               ^
+
+"Test_name.c", line 129: warning: variable "utc7" was declared but never referenced
+  constexpr UsingTemplateCtors utc7{ 0 }; // ok
+                               ^
+
+"Test_name.c", line 130: warning: variable "utc8" was declared but never referenced
+  constexpr UsingTemplateCtors utc8{ 0, 0 }; // ok
+                               ^
+
+"Test_name.c", line 135: warning: variable "utc9" was declared but never referenced
+  constexpr UsingTemplateCtors utc9{ 0, 0, 0 }; // expected-error {{no matching constructor}}
+                               ^
+
+23 errors detected in the compilation of "Test_name.c".

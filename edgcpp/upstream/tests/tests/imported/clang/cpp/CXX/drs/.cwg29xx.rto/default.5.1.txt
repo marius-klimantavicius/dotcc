@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=5 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 24: error: expected a ";"
+  R(T) -> R<T> requires true;
+               ^
+
+"Test_name.c", line 27: error: the return type must directly designate a specialization of the associated class template
+  R(T, T) requires true -> R<T>;
+  ^
+
+"Test_name.c", line 27: error: expected a ";"
+  R(T, T) requires true -> R<T>;
+          ^
+
+"Test_name.c", line 55: error: "Foo" has already been declared in the current scope
+    friend class Foo, int;
+                 ^
+
+"Test_name.c", line 55: error: expected an identifier
+    friend class Foo, int;
+                    ^
+
+"Test_name.c", line 55: error: invalid friend declaration
+    friend class Foo, int;
+                    ^
+
+"Test_name.c", line 59: error: parameter pack "Ts" was referenced but not expanded
+    friend class C<Ts>::Nested...;
+                   ^
+
+"Test_name.c", line 59: error: expected an identifier
+    friend class C<Ts>::Nested...;
+                              ^
+
+"Test_name.c", line 59: error: invalid friend declaration
+    friend class C<Ts>::Nested...;
+                              ^
+
+"Test_name.c", line 79: error: cannot determine which instance of overloaded function "cwg2918::Example1::X<B>::f [with B=true]" is intended
+    &X<true>::f;      // since-cxx20-error {{reference to overloaded function could not be resolved}}
+    ^
+
+"Test_name.c", line 80: error: cannot determine which instance of overloaded function "cwg2918::Example1::X<B>::g [with B=true]" is intended
+    &X<true>::g<int>; // since-cxx20-error {{reference to overloaded function could not be resolved}}
+    ^
+
+"Test_name.c", line 104: error: cannot deduce "auto" type
+    constexpr auto x = &X<true>::f;
+              ^
+
+"Test_name.c", line 108: error: cannot deduce "auto" type
+    constexpr auto y = &X<false>::f;
+              ^
+
+"Test_name.c", line 112: error: cannot deduce "auto" type
+    constexpr auto z = &f<int>;
+              ^
+
+"Test_name.c", line 119: error: cannot deduce "auto" type
+    auto w = f; // since-cxx20-error {{variable 'w' with type 'auto' has incompatible initializer of type '<overloaded function type>'}}
+    ^
+
+15 errors detected in the compilation of "Test_name.c".

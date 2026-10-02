@@ -1,0 +1,34 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 15: error: invalid literal operator name
+  int operator""_zero(const char*, size_t) { return 0; }
+                     ^
+
+"Test_name.c", line 16: warning: identifier is a macro and not a literal suffix
+  int operator""_ID(const char*, size_t) { return 0; }
+                ^
+
+"Test_name.c", line 25: error: expression must have integral or unscoped enum type
+  	 + "bob"_zero
+  	   ^
+
+"Test_name.c", line 28: warning: identifier is a macro and not a literal suffix
+  	 + "xx"_ID
+  	       ^
+
+"Test_name.c", line 28: error: expected a ";"
+  	 + "xx"_ID
+  	       ^
+
+"Test_name.c", line 29: warning: identifier is a macro and not a literal suffix
+  	 + ""_ID
+  	     ^
+
+"Test_name.c", line 32: warning: identifier is a macro and not a literal suffix
+  		string)AA"_ID;
+  		          ^
+
+"Test_name.c", line 32: warning: parsing restarts here after previous syntax error
+  		string)AA"_ID;
+  		             ^
+
+3 errors detected in the compilation of "Test_name.c".

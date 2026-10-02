@@ -1,0 +1,242 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++23 Test_name.c
+"Test_name.c", line 11: error: invalid redeclaration of member function "S::f_xs_v(S)" (declared at line 10)
+    static void f_xs_v() {}; // { dg-error {cannot be overloaded with} }
+                ^
+
+"Test_name.c", line 14: error: invalid redeclaration of member function "S::f_xs_ref(S &)" (declared at line 13)
+    static void f_xs_ref() {}; // { dg-error {cannot be overloaded with} }
+                ^
+
+"Test_name.c", line 17: error: invalid redeclaration of member function "S::f_xs_cref(const S &)" (declared at line 16)
+    static void f_xs_cref() {}; // { dg-error {cannot be overloaded with} }
+                ^
+
+"Test_name.c", line 20: error: invalid redeclaration of member function "S::f_xs_rref(S &&)" (declared at line 19)
+    static void f_xs_rref() {}; // { dg-error {cannot be overloaded with} }
+                ^
+
+"Test_name.c", line 23: error: invalid redeclaration of member function "S::f_xs_crref(const S &&)" (declared at line 22)
+    static void f_xs_crref() {}; // { dg-error {cannot be overloaded with} }
+                ^
+
+"Test_name.c", line 27: error: invalid redeclaration of member function "S::f_sx_v()" (declared at line 26)
+    void f_sx_v(this S) {}; // { dg-error {cannot be overloaded with} }
+         ^
+
+"Test_name.c", line 30: error: invalid redeclaration of member function "S::f_sx_ref()" (declared at line 29)
+    void f_sx_ref(this S&) {}; // { dg-error {cannot be overloaded with} }
+         ^
+
+"Test_name.c", line 33: error: invalid redeclaration of member function "S::f_sx_cref()" (declared at line 32)
+    void f_sx_cref(this S const&) {}; // { dg-error {cannot be overloaded with} }
+         ^
+
+"Test_name.c", line 36: error: invalid redeclaration of member function "S::f_sx_rref()" (declared at line 35)
+    void f_sx_rref(this S&&) {}; // { dg-error {cannot be overloaded with} }
+         ^
+
+"Test_name.c", line 39: error: invalid redeclaration of member function "S::f_sx_crref()" (declared at line 38)
+    void f_sx_crref(this S const&&) {}; // { dg-error {cannot be overloaded with} }
+         ^
+
+"Test_name.c", line 43: error: invalid redeclaration of member function "S::f_xs_v_int(S, int)" (declared at line 42)
+    static void f_xs_v_int(int) {}; // { dg-error {cannot be overloaded with} }
+                ^
+
+"Test_name.c", line 46: error: invalid redeclaration of member function "S::f_xs_ref_int(S &, int)" (declared at line 45)
+    static void f_xs_ref_int(int) {}; // { dg-error {cannot be overloaded with} }
+                ^
+
+"Test_name.c", line 49: error: invalid redeclaration of member function "S::f_xs_cref_int(const S &, int)" (declared at line 48)
+    static void f_xs_cref_int(int) {}; // { dg-error {cannot be overloaded with} }
+                ^
+
+"Test_name.c", line 52: error: invalid redeclaration of member function "S::f_xs_rref_int(S &&, int)" (declared at line 51)
+    static void f_xs_rref_int(int) {}; // { dg-error {cannot be overloaded with} }
+                ^
+
+"Test_name.c", line 55: error: invalid redeclaration of member function "S::f_xs_crref_int(const S &&, int)" (declared at line 54)
+    static void f_xs_crref_int(int) {}; // { dg-error {cannot be overloaded with} }
+                ^
+
+"Test_name.c", line 59: error: invalid redeclaration of member function "S::f_sx_v_int(int)" (declared at line 58)
+    void f_sx_v_int(this S, int) {}; // { dg-error {cannot be overloaded with} }
+         ^
+
+"Test_name.c", line 62: error: invalid redeclaration of member function "S::f_sx_ref_int(int)" (declared at line 61)
+    void f_sx_ref_int(this S&, int) {}; // { dg-error {cannot be overloaded with} }
+         ^
+
+"Test_name.c", line 65: error: invalid redeclaration of member function "S::f_sx_cref_int(int)" (declared at line 64)
+    void f_sx_cref_int(this S const&, int) {}; // { dg-error {cannot be overloaded with} }
+         ^
+
+"Test_name.c", line 68: error: invalid redeclaration of member function "S::f_sx_rref_int(int)" (declared at line 67)
+    void f_sx_rref_int(this S&&, int) {}; // { dg-error {cannot be overloaded with} }
+         ^
+
+"Test_name.c", line 71: error: invalid redeclaration of member function "S::f_sx_crref_int(int)" (declared at line 70)
+    void f_sx_crref_int(this S const&&, int) {}; // { dg-error {cannot be overloaded with} }
+         ^
+
+"Test_name.c", line 75: error: invalid redeclaration of member function "S::f_xs_v_int2(S, int, int)" (declared at line 74)
+    static void f_xs_v_int2(int, int) {}; // { dg-error {cannot be overloaded with} }
+                ^
+
+"Test_name.c", line 78: error: invalid redeclaration of member function "S::f_xs_ref_int2(S &, int, int)" (declared at line 77)
+    static void f_xs_ref_int2(int, int) {}; // { dg-error {cannot be overloaded with} }
+                ^
+
+"Test_name.c", line 81: error: invalid redeclaration of member function "S::f_xs_cref_int2(const S &, int, int)" (declared at line 80)
+    static void f_xs_cref_int2(int, int) {}; // { dg-error {cannot be overloaded with} }
+                ^
+
+"Test_name.c", line 84: error: invalid redeclaration of member function "S::f_xs_rref_int2(S &&, int, int)" (declared at line 83)
+    static void f_xs_rref_int2(int, int) {}; // { dg-error {cannot be overloaded with} }
+                ^
+
+"Test_name.c", line 87: error: invalid redeclaration of member function "S::f_xs_crref_int2(const S &&, int, int)" (declared at line 86)
+    static void f_xs_crref_int2(int, int) {}; // { dg-error {cannot be overloaded with} }
+                ^
+
+"Test_name.c", line 91: error: invalid redeclaration of member function "S::f_sx_v_int2(int, int)" (declared at line 90)
+    void f_sx_v_int2(this S, int, int) {}; // { dg-error {cannot be overloaded with} }
+         ^
+
+"Test_name.c", line 94: error: invalid redeclaration of member function "S::f_sx_ref_int2(int, int)" (declared at line 93)
+    void f_sx_ref_int2(this S&, int, int) {}; // { dg-error {cannot be overloaded with} }
+         ^
+
+"Test_name.c", line 97: error: invalid redeclaration of member function "S::f_sx_cref_int2(int, int)" (declared at line 96)
+    void f_sx_cref_int2(this S const&, int, int) {}; // { dg-error {cannot be overloaded with} }
+         ^
+
+"Test_name.c", line 100: error: invalid redeclaration of member function "S::f_sx_rref_int2(int, int)" (declared at line 99)
+    void f_sx_rref_int2(this S&&, int, int) {}; // { dg-error {cannot be overloaded with} }
+         ^
+
+"Test_name.c", line 103: error: invalid redeclaration of member function "S::f_sx_crref_int2(int, int)" (declared at line 102)
+    void f_sx_crref_int2(this S const&&, int, int) {}; // { dg-error {cannot be overloaded with} }
+         ^
+
+"Test_name.c", line 114: error: invalid redeclaration of member function "S1::f_xs_v(A)" (declared at line 113)
+    static void f_xs_v() {}; // { dg-error {cannot be overloaded with} }
+                ^
+
+"Test_name.c", line 117: error: invalid redeclaration of member function "S1::f_xs_ref(A &)" (declared at line 116)
+    static void f_xs_ref() {}; // { dg-error {cannot be overloaded with} }
+                ^
+
+"Test_name.c", line 120: error: invalid redeclaration of member function "S1::f_xs_cref(const A &)" (declared at line 119)
+    static void f_xs_cref() {}; // { dg-error {cannot be overloaded with} }
+                ^
+
+"Test_name.c", line 123: error: invalid redeclaration of member function "S1::f_xs_rref(A &&)" (declared at line 122)
+    static void f_xs_rref() {}; // { dg-error {cannot be overloaded with} }
+                ^
+
+"Test_name.c", line 126: error: invalid redeclaration of member function "S1::f_xs_crref(const A &&)" (declared at line 125)
+    static void f_xs_crref() {}; // { dg-error {cannot be overloaded with} }
+                ^
+
+"Test_name.c", line 130: error: invalid redeclaration of member function "S1::f_sx_v()" (declared at line 129)
+    void f_sx_v(this A) {}; // { dg-error {cannot be overloaded with} }
+         ^
+
+"Test_name.c", line 133: error: invalid redeclaration of member function "S1::f_sx_ref()" (declared at line 132)
+    void f_sx_ref(this A&) {}; // { dg-error {cannot be overloaded with} }
+         ^
+
+"Test_name.c", line 136: error: invalid redeclaration of member function "S1::f_sx_cref()" (declared at line 135)
+    void f_sx_cref(this A const&) {}; // { dg-error {cannot be overloaded with} }
+         ^
+
+"Test_name.c", line 139: error: invalid redeclaration of member function "S1::f_sx_rref()" (declared at line 138)
+    void f_sx_rref(this A&&) {}; // { dg-error {cannot be overloaded with} }
+         ^
+
+"Test_name.c", line 142: error: invalid redeclaration of member function "S1::f_sx_crref()" (declared at line 141)
+    void f_sx_crref(this A const&&) {}; // { dg-error {cannot be overloaded with} }
+         ^
+
+"Test_name.c", line 146: error: invalid redeclaration of member function "S1::f_xs_v_int(A, int)" (declared at line 145)
+    static void f_xs_v_int(int) {}; // { dg-error {cannot be overloaded with} }
+                ^
+
+"Test_name.c", line 149: error: invalid redeclaration of member function "S1::f_xs_ref_int(A &, int)" (declared at line 148)
+    static void f_xs_ref_int(int) {}; // { dg-error {cannot be overloaded with} }
+                ^
+
+"Test_name.c", line 152: error: invalid redeclaration of member function "S1::f_xs_cref_int(const A &, int)" (declared at line 151)
+    static void f_xs_cref_int(int) {}; // { dg-error {cannot be overloaded with} }
+                ^
+
+"Test_name.c", line 155: error: invalid redeclaration of member function "S1::f_xs_rref_int(A &&, int)" (declared at line 154)
+    static void f_xs_rref_int(int) {}; // { dg-error {cannot be overloaded with} }
+                ^
+
+"Test_name.c", line 158: error: invalid redeclaration of member function "S1::f_xs_crref_int(const A &&, int)" (declared at line 157)
+    static void f_xs_crref_int(int) {}; // { dg-error {cannot be overloaded with} }
+                ^
+
+"Test_name.c", line 162: error: invalid redeclaration of member function "S1::f_sx_v_int(int)" (declared at line 161)
+    void f_sx_v_int(this A, int) {}; // { dg-error {cannot be overloaded with} }
+         ^
+
+"Test_name.c", line 165: error: invalid redeclaration of member function "S1::f_sx_ref_int(int)" (declared at line 164)
+    void f_sx_ref_int(this A&, int) {}; // { dg-error {cannot be overloaded with} }
+         ^
+
+"Test_name.c", line 168: error: invalid redeclaration of member function "S1::f_sx_cref_int(int)" (declared at line 167)
+    void f_sx_cref_int(this A const&, int) {}; // { dg-error {cannot be overloaded with} }
+         ^
+
+"Test_name.c", line 171: error: invalid redeclaration of member function "S1::f_sx_rref_int(int)" (declared at line 170)
+    void f_sx_rref_int(this A&&, int) {}; // { dg-error {cannot be overloaded with} }
+         ^
+
+"Test_name.c", line 174: error: invalid redeclaration of member function "S1::f_sx_crref_int(int)" (declared at line 173)
+    void f_sx_crref_int(this A const&&, int) {}; // { dg-error {cannot be overloaded with} }
+         ^
+
+"Test_name.c", line 178: error: invalid redeclaration of member function "S1::f_xs_v_int2(A, int, int)" (declared at line 177)
+    static void f_xs_v_int2(int, int) {}; // { dg-error {cannot be overloaded with} }
+                ^
+
+"Test_name.c", line 181: error: invalid redeclaration of member function "S1::f_xs_ref_int2(A &, int, int)" (declared at line 180)
+    static void f_xs_ref_int2(int, int) {}; // { dg-error {cannot be overloaded with} }
+                ^
+
+"Test_name.c", line 184: error: invalid redeclaration of member function "S1::f_xs_cref_int2(const A &, int, int)" (declared at line 183)
+    static void f_xs_cref_int2(int, int) {}; // { dg-error {cannot be overloaded with} }
+                ^
+
+"Test_name.c", line 187: error: invalid redeclaration of member function "S1::f_xs_rref_int2(A &&, int, int)" (declared at line 186)
+    static void f_xs_rref_int2(int, int) {}; // { dg-error {cannot be overloaded with} }
+                ^
+
+"Test_name.c", line 190: error: invalid redeclaration of member function "S1::f_xs_crref_int2(const A &&, int, int)" (declared at line 189)
+    static void f_xs_crref_int2(int, int) {}; // { dg-error {cannot be overloaded with} }
+                ^
+
+"Test_name.c", line 194: error: invalid redeclaration of member function "S1::f_sx_v_int2(int, int)" (declared at line 193)
+    void f_sx_v_int2(this A, int, int) {}; // { dg-error {cannot be overloaded with} }
+         ^
+
+"Test_name.c", line 197: error: invalid redeclaration of member function "S1::f_sx_ref_int2(int, int)" (declared at line 196)
+    void f_sx_ref_int2(this A&, int, int) {}; // { dg-error {cannot be overloaded with} }
+         ^
+
+"Test_name.c", line 200: error: invalid redeclaration of member function "S1::f_sx_cref_int2(int, int)" (declared at line 199)
+    void f_sx_cref_int2(this A const&, int, int) {}; // { dg-error {cannot be overloaded with} }
+         ^
+
+"Test_name.c", line 203: error: invalid redeclaration of member function "S1::f_sx_rref_int2(int, int)" (declared at line 202)
+    void f_sx_rref_int2(this A&&, int, int) {}; // { dg-error {cannot be overloaded with} }
+         ^
+
+"Test_name.c", line 206: error: invalid redeclaration of member function "S1::f_sx_crref_int2(int, int)" (declared at line 205)
+    void f_sx_crref_int2(this A const&&, int, int) {}; // { dg-error {cannot be overloaded with} }
+         ^
+
+60 errors detected in the compilation of "Test_name.c".

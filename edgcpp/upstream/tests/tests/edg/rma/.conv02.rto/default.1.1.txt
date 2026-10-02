@@ -1,0 +1,17 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 5: warning: "S::operator S()" will not be called for implicit or explicit conversions
+    operator S ();
+    ^
+
+"Test_name.c", line 6: warning: "S::operator S &()" will not be called for implicit or explicit conversions
+    operator S& ();
+    ^
+
+"Test_name.c", line 7: warning: "S::operator const S()" will not be called for implicit or explicit conversions
+    operator const S ();
+    ^
+
+"Test_name.c", line 8: warning: "S::operator const S &()" will not be called for implicit or explicit conversions
+    operator const S& ();
+    ^
+

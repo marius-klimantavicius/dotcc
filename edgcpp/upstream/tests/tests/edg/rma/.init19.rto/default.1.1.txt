@@ -1,0 +1,14 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 6: error: no suitable constructor exists to convert from "int" to "X"
+  X b[] = {0};            // error
+           ^
+
+"Test_name.c", line 7: error: an empty initializer is invalid for an array with unspecified bound
+  X c[] = {};             // error
+    ^
+
+"Test_name.c", line 10: error: no suitable constructor exists to convert from "int" to "X"
+  X ddx[] = {{}, 0};      // error
+                 ^
+
+3 errors detected in the compilation of "Test_name.c".

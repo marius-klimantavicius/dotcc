@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -w --c Test_name.c
+"Test_name.c", line 16: error: expected a type specifier
+  debug(1, 2); 
+  ^
+
+"Test_name.c", line 16: error: identifier "x2" is undefined
+  debug(1, 2); 
+  ^
+
+"Test_name.c", line 17: error: expected a type specifier
+  fputs(str(strncmp("abc\0d" "abc", '\4') // this goes away 
+        ^
+
+"Test_name.c", line 18: error: identifier "s" is undefined
+            == 0) str(: @\n), s); 
+                              ^
+
+"Test_name.c", line 19: error: expected a ";"
+  include xstr(INCFILE(2).h) 
+          ^
+
+"Test_name.c", line 21: error: expected a declaration
+  xglue(HIGH, LOW) 
+  ^
+
+6 errors detected in the compilation of "Test_name.c".

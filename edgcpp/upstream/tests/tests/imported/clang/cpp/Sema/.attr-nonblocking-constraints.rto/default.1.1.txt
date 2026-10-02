@@ -1,0 +1,350 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --exceptions --c++20 Test_name.c
+"Test_name.c", line 8: warning: unrecognized #pragma
+  #pragma clang diagnostic ignored "-Wperf-constraint-implies-noexcept"
+          ^
+
+"Test_name.c", line 12: warning: unknown attribute "clang::nonblocking"
+  void nb1() [[clang::nonblocking]]
+               ^
+
+"Test_name.c", line 18: warning: unknown attribute "clang::nonblocking"
+  void nb2() [[clang::nonblocking]]
+               ^
+
+"Test_name.c", line 20: warning: variable "global" was declared but never referenced
+  	static int global; // expected-warning {{function with 'nonblocking' attribute must not have static local variables}}
+  	           ^
+
+"Test_name.c", line 23: warning: unknown attribute "clang::nonblocking"
+  void nb3() [[clang::nonblocking]]
+               ^
+
+"Test_name.c", line 35: warning: unknown attribute "clang::nonblocking"
+  void nb4() [[clang::nonblocking]]
+               ^
+
+"Test_name.c", line 46: warning: unknown attribute "clang::nonblocking"
+  void nb5() [[clang::nonblocking]]
+               ^
+
+"Test_name.c", line 58: warning: unknown attribute "clang::nonblocking"
+  void nb6() [[clang::nonblocking]]
+               ^
+
+"Test_name.c", line 65: warning: unknown attribute "clang::nonblocking"
+  bool tl_test() [[clang::nonblocking]]
+                   ^
+
+"Test_name.c", line 73: error: expected an expression
+  	auto blk = ^() [[clang::nonblocking]] {
+  	           ^
+
+"Test_name.c", line 81: warning: unknown attribute "clang::nonblocking"
+  	auto lambda = []() [[clang::nonblocking]] {
+  	                     ^
+
+"Test_name.c", line 81: warning: variable "lambda" was declared but never referenced
+  	auto lambda = []() [[clang::nonblocking]] {
+  	     ^
+
+"Test_name.c", line 86: warning: unknown attribute "clang::nonblocking"
+  void nb8a() [[clang::nonblocking]]
+                ^
+
+"Test_name.c", line 89: warning: variable "unsafeLambda" was declared but never referenced
+  	auto unsafeLambda = []() {
+  	     ^
+
+"Test_name.c", line 94: warning: unknown attribute "clang::nonblocking"
+  void nb8b() [[clang::nonblocking]]
+                ^
+
+"Test_name.c", line 105: warning: unknown attribute "clang::nonblocking"
+  	auto unsafeCapture = [foo = new int]() [[clang::nonblocking]] {
+  	                                         ^
+
+"Test_name.c", line 112: warning: unknown attribute "clang::nonblocking"
+  		static T add_explicit(T x, T y) [[clang::nonblocking]]
+  		                                  ^
+
+"Test_name.c", line 139: warning: unknown attribute "clang::nonblocking"
+  void nb9() [[clang::nonblocking]]
+               ^
+
+"Test_name.c", line 151: warning: unknown attribute "clang::nonblocking"
+  	void (*fptr)() [[clang::nonblocking]];
+  	                 ^
+
+"Test_name.c", line 168: warning: unknown attribute "clang::nonblocking"
+  void TemplatedFunc(T x) [[clang::nonblocking]] {
+                            ^
+
+"Test_name.c", line 172: warning: unknown attribute "clang::nonblocking"
+  void nb9b() [[clang::nonblocking]] {
+                ^
+
+"Test_name.c", line 175: warning: unknown attribute "clang::nonblocking"
+  	auto foo = [](auto x) [[clang::nonblocking]] {
+  	                        ^
+
+"Test_name.c", line 186: warning: unknown attribute "clang::nonblocking"
+  	void (*fp2)() [[clang::nonblocking]]
+  	                ^
+
+"Test_name.c", line 187: warning: unknown attribute "clang::nonblocking"
+  	) [[clang::nonblocking]]
+  	    ^
+
+"Test_name.c", line 197: warning: unknown attribute "clang::nonblocking"
+  int nb10a() [[clang::nonblocking]];
+                ^
+
+"Test_name.c", line 198: warning: unknown attribute "clang::nonblocking"
+  int nb10b() [[clang::nonblocking]];
+                ^
+
+"Test_name.c", line 201: warning: unknown attribute "clang::nonblocking"
+  int nb10c(bool x) [[clang::nonblocking]]
+                      ^
+
+"Test_name.c", line 208: warning: unknown attribute "clang::nonblocking"
+  void nb11_no_inference_1() [[clang::nonblocking(false)]] // expected-note {{function does not permit inference of 'nonblocking'}}
+                               ^
+
+"Test_name.c", line 211: warning: unknown attribute "clang::nonblocking"
+  void nb11_no_inference_2() [[clang::nonblocking(false)]]; // expected-note {{function does not permit inference of 'nonblocking'}}
+                               ^
+
+"Test_name.c", line 215: warning: unknown attribute "clang::nonblocking"
+  	void method() [[clang::nonblocking(V)]]; // expected-note {{function does not permit inference of 'nonblocking' because it is declared 'blocking'}}
+  	                ^
+
+"Test_name.c", line 218: warning: unknown attribute "clang::nonblocking"
+  void nb11() [[clang::nonblocking]]
+                ^
+
+"Test_name.c", line 232: warning: variable "x" was declared but never referenced
+  	static int x; // expected-warning {{function with 'nonblocking' attribute must not have static local variables}}
+  	           ^
+
+"Test_name.c", line 234: warning: unknown attribute "clang::nonblocking"
+  void nb12() [[clang::nonblocking]];
+                ^
+
+"Test_name.c", line 235: warning: unknown attribute "clang::nonblocking"
+  void nb13() [[clang::nonblocking]] { nb12(); }
+                ^
+
+"Test_name.c", line 239: warning: unknown attribute "clang::nonblocking"
+  	typedef void (PTMFTester::*ConvertFunction)() [[clang::nonblocking]];
+  	                                                ^
+
+"Test_name.c", line 241: warning: unknown attribute "clang::nonblocking"
+  	void convert() [[clang::nonblocking]];
+  	                 ^
+
+"Test_name.c", line 246: warning: unknown attribute "clang::nonblocking"
+  void PTMFTester::convert() [[clang::nonblocking]]
+                               ^
+
+"Test_name.c", line 252: warning: unknown attribute "clang::nonblocking"
+  void nb14(unsigned idx) [[clang::nonblocking]]
+                            ^
+
+"Test_name.c", line 254: warning: unknown attribute "clang::nonblocking"
+  	using FP = void (*)() [[clang::nonblocking]];
+  	                        ^
+
+"Test_name.c", line 256: warning: unknown attribute "clang::nonblocking"
+  	auto nb = +[]() [[clang::nonblocking]] {};
+  	                  ^
+
+"Test_name.c", line 265: warning: variable "vla" is used before its value is set
+  	FP h = vla[0];
+  	       ^
+
+"Test_name.c", line 259: warning: variable "f" was declared but never referenced
+  	FP f = src[idx]; // This should not generate a warning.
+  	   ^
+
+"Test_name.c", line 262: warning: variable "g" was declared but never referenced
+  	FP g = twoDim[1][1];
+  	   ^
+
+"Test_name.c", line 265: warning: variable "h" was declared but never referenced
+  	FP h = vla[0];
+  	   ^
+
+"Test_name.c", line 269: error: incomplete type "void" is not allowed
+  void nb17(void (^blk)() [[clang::nonblocking]]) [[clang::nonblocking]] {
+       ^
+
+"Test_name.c", line 269: error: expected an expression
+  void nb17(void (^blk)() [[clang::nonblocking]]) [[clang::nonblocking]] {
+                  ^
+
+"Test_name.c", line 269: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+  void nb17(void (^blk)() [[clang::nonblocking]]) [[clang::nonblocking]] {
+            ^
+
+"Test_name.c", line 269: error: two consecutive left square brackets always introduce an attribute list but an attribute list cannot appear here
+  void nb17(void (^blk)() [[clang::nonblocking]]) [[clang::nonblocking]] {
+                          ^
+
+"Test_name.c", line 269: error: identifier "clang" is undefined
+  void nb17(void (^blk)() [[clang::nonblocking]]) [[clang::nonblocking]] {
+                            ^
+
+"Test_name.c", line 269: error: expected a "]"
+  void nb17(void (^blk)() [[clang::nonblocking]]) [[clang::nonblocking]] {
+                                 ^
+
+"Test_name.c", line 269: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  void nb17(void (^blk)() [[clang::nonblocking]]) [[clang::nonblocking]] {
+                                               ^
+
+"Test_name.c", line 269: error: expected a "{" introducing a lambda body
+  void nb17(void (^blk)() [[clang::nonblocking]]) [[clang::nonblocking]] {
+                                               ^
+
+"Test_name.c", line 269: error: expected a ";"
+  void nb17(void (^blk)() [[clang::nonblocking]]) [[clang::nonblocking]] {
+                                                  ^
+
+"Test_name.c", line 302: warning: parsing restarts here after previous syntax error
+  };
+   ^
+
+"Test_name.c", line 315: warning: unknown attribute "clang::nonblocking"
+  void f() [[clang::nonblocking]] {
+             ^
+
+"Test_name.c", line 316: error: identifier "S" is undefined
+      S s1(3);   // expected-warning {{function with 'nonblocking' attribute must not call non-'nonblocking' constructor 'S::S'}}
+      ^
+
+"Test_name.c", line 317: error: identifier "S" is undefined
+      S s2(3.0); // expected-warning {{function with 'nonblocking' attribute must not call non-'nonblocking' constructor 'S::S'}}
+      ^
+
+"Test_name.c", line 324: warning: unknown attribute "clang::nonblocking"
+  	T() [[clang::nonblocking]] {} // expected-note {{in constructor here}}
+  	      ^
+
+"Test_name.c", line 325: warning: unknown attribute "clang::nonblocking"
+  	T(int x) [[clang::nonblocking]] : x(x) {} // OK
+  	           ^
+
+"Test_name.c", line 337: warning: unknown attribute "clang::nonblocking"
+  void nb21() [[clang::nonblocking]] {
+                ^
+
+"Test_name.c", line 342: warning: unknown attribute "clang::nonblocking"
+  void nb22(int param = badForDefaultArg()) [[clang::nonblocking]] { // expected-warning {{function with 'nonblocking' attribute must not call non-'nonblocking' function 'badForDefaultArg'}}
+                                              ^
+
+"Test_name.c", line 356: warning: unknown attribute "clang::nonblocking"
+    Unsafe(float y) [[clang::nonblocking]] : Unsafe(int(y)) {} // expected-warning {{constructor with 'nonblocking' attribute must not call non-'nonblocking' constructor 'Unsafe::Unsafe'}}
+                      ^
+
+"Test_name.c", line 360: warning: unknown attribute "clang::nonblocking"
+    DerivedFromUnsafe() [[clang::nonblocking]] {} // expected-warning {{constructor with 'nonblocking' attribute must not call non-'nonblocking' constructor 'Unsafe::Unsafe'}}
+                          ^
+
+"Test_name.c", line 361: warning: unknown attribute "clang::nonblocking"
+    DerivedFromUnsafe(int x) [[clang::nonblocking]] : Unsafe(x) {} // expected-warning {{constructor with 'nonblocking' attribute must not call non-'nonblocking' constructor 'Unsafe::Unsafe'}}
+                               ^
+
+"Test_name.c", line 362: warning: unknown attribute "clang::nonblocking"
+    ~DerivedFromUnsafe() [[clang::nonblocking]] {} // expected-warning {{destructor with 'nonblocking' attribute must not call non-'nonblocking' destructor 'Unsafe::~Unsafe'}}
+                           ^
+
+"Test_name.c", line 384: warning: unknown attribute "clang::nonblocking"
+  void nb_opt() [[clang::nonblocking]] {
+                  ^
+
+"Test_name.c", line 397: warning: unknown attribute "clang::nonblocking"
+    VDerived() [[clang::nonblocking]] {} // expected-warning {{constructor with 'nonblocking' attribute must not call non-'nonblocking' constructor 'VBase::VBase'}}
+                 ^
+
+"Test_name.c", line 399: warning: unknown attribute "clang::nonblocking"
+    ~VDerived() [[clang::nonblocking]] {} // expected-warning {{destructor with 'nonblocking' attribute must not call non-'nonblocking' destructor 'VBase::~VBase'}}
+                  ^
+
+"Test_name.c", line 407: warning: unknown attribute "clang::nonblocking"
+  void g() [[clang::nonblocking]] {}
+             ^
+
+"Test_name.c", line 409: warning: unknown attribute "clang::nonblocking"
+  void g() [[clang::nonblocking]] {
+             ^
+
+"Test_name.c", line 413: warning: unrecognized #pragma
+  #pragma clang diagnostic push
+          ^
+
+"Test_name.c", line 414: warning: unrecognized #pragma
+  #pragma clang diagnostic ignored "-Wassume"
+          ^
+
+"Test_name.c", line 416: warning: unrecognized #pragma
+  #pragma clang diagnostic pop
+          ^
+
+"Test_name.c", line 410: warning: variable "a" was declared but never referenced
+      decltype(bad()) a; // doesn't generate a call so, OK
+                      ^
+
+"Test_name.c", line 432: warning: unknown attribute "clang::nonblocking"
+  void nb25() [[clang::nonblocking]] {
+                ^
+
+"Test_name.c", line 441: warning: unknown attribute "clang::nonblocking"
+  void nb26() [[clang::nonblocking]] {
+                ^
+
+"Test_name.c", line 483: warning: unknown attribute "clang::nonblocking"
+  void test() [[clang::nonblocking]]
+                ^
+
+"Test_name.c", line 486: warning: variable "b" was declared but never referenced
+  	auto b = a;            // Copy constructor.
+  	     ^
+
+"Test_name.c", line 492: warning: unknown attribute "clang::nonblocking"
+  constexpr bool foo() [[clang::nonblocking(false)]] { return true; }
+                         ^
+
+"Test_name.c", line 493: warning: unknown attribute "clang::nonblocking"
+  void nb27() noexcept(foo()) [[clang::nonblocking]] {}
+                                ^
+
+"Test_name.c", line 496: warning: unknown attribute "clang::nonblocking"
+  void nb28() [[clang::nonblocking]] {
+                ^
+
+"Test_name.c", line 497: warning: variable "x" was declared but never referenced
+  	bool x = __is_constructible(int, const int&);
+  	     ^
+
+"Test_name.c", line 501: warning: unrecognized #pragma
+  #pragma clang diagnostic warning "-Wperf-constraint-implies-noexcept"
+          ^
+
+"Test_name.c", line 503: warning: unknown attribute "clang::nonblocking"
+  void needs_noexcept() [[clang::nonblocking]] // expected-warning {{function with 'nonblocking' attribute should be declared noexcept}}
+                          ^
+
+"Test_name.c", line 505: warning: unknown attribute "clang::nonblocking"
+  	auto lambda = []() [[clang::nonblocking]] {}; // expected-warning {{lambda with 'nonblocking' attribute should be declared noexcept}}
+  	                     ^
+
+"Test_name.c", line 505: warning: variable "lambda" was declared but never referenced
+  	auto lambda = []() [[clang::nonblocking]] {}; // expected-warning {{lambda with 'nonblocking' attribute should be declared noexcept}}
+  	     ^
+
+"Test_name.c", line 155: warning: unknown attribute "clang::nonblocking"
+  		: fptr{ []() [[clang::nonblocking]] {
+  		               ^
+
+11 errors detected in the compilation of "Test_name.c".

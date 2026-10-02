@@ -1,0 +1,32 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 15: error: no instance of function template "foo" matches the argument list
+    foo<char>(); // expected-error{{no matching function for call to 'foo'}}
+    ^
+"Test_name.c", line 8: note: substituting "<char>" for function template "foo" failed constraints
+  void foo() requires (sizeof(T) <= 8) {}
+       ^
+"Test_name.c", line 5: note: atomic constraint evaluates to false
+  template<typename T> requires (sizeof(T) >= 4 && sizeof(T) <= 10)
+                                           ^
+
+"Test_name.c", line 18: error: no instance of function template "foo" matches the argument list
+    foo<char[9]>(); // expected-error{{no matching function for call to 'foo'}}
+    ^
+"Test_name.c", line 8: note: substituting "<char [9]>" for function template "foo" failed constraints
+  void foo() requires (sizeof(T) <= 8) {}
+       ^
+"Test_name.c", line 8: note: atomic constraint evaluates to false
+  void foo() requires (sizeof(T) <= 8) {}
+                                 ^
+
+"Test_name.c", line 19: error: no instance of function template "foo" matches the argument list
+    foo<char[20]>(); // expected-error{{no matching function for call to 'foo'}}
+    ^
+"Test_name.c", line 8: note: substituting "<char [20]>" for function template "foo" failed constraints
+  void foo() requires (sizeof(T) <= 8) {}
+       ^
+"Test_name.c", line 5: note: atomic constraint evaluates to false
+  template<typename T> requires (sizeof(T) >= 4 && sizeof(T) <= 10)
+                                                             ^
+
+3 errors detected in the compilation of "Test_name.c".

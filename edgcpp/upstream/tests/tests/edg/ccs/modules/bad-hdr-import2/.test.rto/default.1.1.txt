@@ -1,0 +1,7 @@
+fe_only -DTEST_NUMBER=1 --c++20 --sys_include . Test_name.c
+"Test_name.c", line 5: catastrophic error: "non-imp-hdr.h" is not an importable header
+  import <non-imp-hdr.h>;
+         ^
+
+1 catastrophic error detected in the compilation of "Test_name.c".
+Compilation terminated.

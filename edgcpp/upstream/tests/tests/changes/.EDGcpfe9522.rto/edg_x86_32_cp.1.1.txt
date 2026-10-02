@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --microsoft Test_name.c
+"Test_name.c", line 16: error: declaration is incompatible with "int *p" (declared at line 15)
+  int *__ptr64 p;  // Now accepted on 64-bit platforms.
+               ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,210 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 9: warning: non-void function "t14" should return a value
+    return; // expected-warning {{non-void function 't14' should return a value}}
+          ^
+
+"Test_name.c", line 13: warning: return value type does not match the function type
+    return 1; // expected-warning {{void function 't15' should not return a value}}
+           ^
+
+"Test_name.c", line 22: warning: missing return statement at end of non-void function "test1"
+  } // expected-warning {{non-void function does not return a value}}
+  ^
+
+"Test_name.c", line 31: warning: missing return statement at end of non-void function "test3"
+  } // expected-warning {{non-void function does not return a value}}
+  ^
+
+"Test_name.c", line 46: warning: missing return statement at end of non-void function "test5"
+  }
+  ^
+
+"Test_name.c", line 49: warning: expression has no effect
+    1, halt2();
+    ^
+
+"Test_name.c", line 50: warning: missing return statement at end of non-void function "test6"
+  }
+  ^
+
+"Test_name.c", line 59: warning: missing return statement at end of non-void function "test7"
+  } // expected-warning {{non-void function does not return a value}}
+  ^
+
+"Test_name.c", line 63: warning: missing return statement at end of non-void function "test8"
+  } // expected-warning {{non-void function does not return a value}}
+  ^
+
+"Test_name.c", line 69: warning: missing return statement at end of non-void function "test9"
+  }
+  ^
+
+"Test_name.c", line 73: warning: missing return statement at end of non-void function "test10"
+  } // expected-warning {{non-void function does not return a value in all control paths}}
+  ^
+
+"Test_name.c", line 77: warning: missing return statement at end of non-void function "test11"
+  } // expected-warning {{non-void function does not return a value in all control paths}}
+  ^
+
+"Test_name.c", line 81: warning: missing return statement at end of non-void function "test12"
+  }
+  ^
+
+"Test_name.c", line 85: warning: missing return statement at end of non-void function "test13"
+  }
+  ^
+
+"Test_name.c", line 89: warning: missing return statement at end of non-void function "test14"
+  } // expected-warning {{non-void function does not return a value}}
+  ^
+
+"Test_name.c", line 93: warning: missing return statement at end of non-void function "test15"
+  } // expected-warning {{non-void function does not return a value}}
+  ^
+
+"Test_name.c", line 97: warning: missing return statement at end of non-void function "test16"
+  } // expected-warning {{non-void function does not return a value}}
+  ^
+
+"Test_name.c", line 101: warning: missing return statement at end of non-void function "test17"
+  } // expected-warning {{non-void function does not return a value}}
+  ^
+
+"Test_name.c", line 105: warning: missing return statement at end of non-void function "test18"
+  } // expected-warning {{non-void function does not return a value in all control paths}}
+  ^
+
+"Test_name.c", line 109: warning: missing return statement at end of non-void function "test19"
+  } // expected-warning {{non-void function does not return a value}}
+  ^
+
+"Test_name.c", line 113: warning: variable "i" is used before its value is set
+    if (i)
+        ^
+
+"Test_name.c", line 117: warning: missing return statement at end of non-void function "test20"
+  } // expected-warning {{non-void function does not return a value in all control paths}}
+  ^
+
+"Test_name.c", line 121: warning: variable "i" is used before its value is set
+    if (i)
+        ^
+
+"Test_name.c", line 129: warning: variable "i" is used before its value is set
+    switch (i) default: ;
+            ^
+
+"Test_name.c", line 130: warning: missing return statement at end of non-void function "test22"
+  } // expected-warning {{non-void function does not return a value}}
+  ^
+
+"Test_name.c", line 134: warning: variable "i" is used before its value is set
+    switch (i) {
+            ^
+
+"Test_name.c", line 140: warning: missing return statement at end of non-void function "test23"
+  } // expected-warning {{non-void function does not return a value in all control paths}}
+  ^
+
+"Test_name.c", line 144: warning: variable "i" is used before its value is set
+    switch (i) {
+            ^
+
+"Test_name.c", line 156: warning: missing return statement at end of non-void function "test25"
+  }
+  ^
+
+"Test_name.c", line 160: warning: missing return statement at end of non-void function "test26"
+  } // expected-warning {{non-void function does not return a value}}
+  ^
+
+"Test_name.c", line 168: warning: statement is unreachable
+      break;
+      ^
+
+"Test_name.c", line 171: warning: statement is unreachable
+      break;
+      ^
+
+"Test_name.c", line 174: warning: loop is not reachable
+      for (;0;) {
+      ^
+
+"Test_name.c", line 183: warning: statement is unreachable
+      break;
+      ^
+
+"Test_name.c", line 191: warning: missing return statement at end of non-void function "test27"
+  }
+  ^
+
+"Test_name.c", line 195: warning: standard requires that parameter "x" be given a type by a subsequent declaration ("int" assumed)
+  void test28(x) { while (1) { } } // expected-warning {{parameter 'x' was not declared, defaults to 'int'; ISO C99 and later do not support implicit int}}
+              ^
+
+"Test_name.c", line 200: warning: missing return statement at end of non-void function "test29"
+  }
+  ^
+
+"Test_name.c", line 225: error: expected an expression
+    ^ (void) { while (1) { } }();
+    ^
+
+"Test_name.c", line 226: error: expected an expression
+    ^ (void) { if (j) while (1) { } }();
+    ^
+
+"Test_name.c", line 236: warning: missing return statement at end of non-void function "si_has_missing_return"
+  static inline int si_has_missing_return(void) {} // expected-warning{{non-void function does not return a value}}
+                                                 ^
+
+"Test_name.c", line 237: warning: missing return statement at end of non-void function "si_has_missing_return_2"
+  static inline int si_has_missing_return_2(void) {}; // expected-warning{{non-void function does not return a value}}
+                                                   ^
+
+"Test_name.c", line 242: warning: missing return statement at end of non-void function "si_has_missing_return_3"
+  } // expected-warning{{non-void function does not return a value in all control paths}}
+  ^
+
+"Test_name.c", line 248: warning: missing return statement at end of non-void function "si_forward"
+  static inline int si_forward(void) {} // expected-warning{{non-void function does not return a value}}
+                                      ^
+
+"Test_name.c", line 251: warning: type qualifier on return type is meaningless
+  const int ignored_c_quals(void); // expected-warning{{'const' type qualifier on return type has no effect}}
+  ^
+
+"Test_name.c", line 252: warning: type qualifier on return type is meaningless
+  const volatile int ignored_cv_quals(void); // expected-warning{{'const volatile' type qualifiers on return type have no effect}}
+  ^
+
+"Test_name.c", line 253: warning: type qualifier on return type is meaningless
+  char* const volatile restrict ignored_cvr_quals(void); // expected-warning{{'const volatile restrict' type qualifiers on return type have no effect}}
+        ^
+
+"Test_name.c", line 258: warning: type qualifier on return type is meaningless
+  const CI ignored_quals_typedef_2(void); // expected-warning{{'const' type qualifier}}
+  ^
+
+"Test_name.c", line 270: warning: missing return statement at end of non-void function "test_enum_cases"
+  } // no-warning
+  ^
+
+"Test_name.c", line 279: warning: missing return statement at end of non-void function "test34"
+  }
+  ^
+
+"Test_name.c", line 298: warning: missing return statement at end of non-void function "test36b"
+  }
+  ^
+
+"Test_name.c", line 324: warning: missing return statement at end of non-void function "PR19074_positive"
+  } // expected-warning {{non-void function does not return a value in all control paths}}
+  ^
+
+"Test_name.c", line 236: warning: function "si_has_missing_return" was declared but never referenced
+  static inline int si_has_missing_return(void) {} // expected-warning{{non-void function does not return a value}}
+                    ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,576 @@
+Version 7.0, September 28, 2026
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 6.9, July 20, 2026
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 6.8, November 21, 2025
+
+3/20/25  [EDGcpfe/28044]
+Version check for <stdfloat> types
+
+The version test for C++23 in stdfloat.stdh was redundant with the feature
+macro tests for each of the <stdfloat> types; furthermore, it prevented use
+of the header in Microsoft mode, since MSVC does not set __cplusplus to the
+value corresponding to the language version.  The test has now been removed.
+
+
+-------------------------------------------------------------------------------
+Version 6.7, January 29, 2025
+
+2/13/24  [EDGcpfe/27005]
+Copyright notice in prototype header files
+
+The prototype header files have been updated to include a copyright notice
+to make it explicit that those files can be distributed provided the copyright
+notice is preserved.
+
+
+-------------------------------------------------------------------------------
+Version 6.6, December 18, 2023
+
+12/5/23  [EDGcpfe/26698]
+Experimental reflection support
+
+The <meta> header (meta.stdh) has been added in support of experimental
+reflection features.  Because of the experimental nature of this header, it
+has been added in a separate subdirectory (include_experimental).
+
+-------------------------------------------------------------------------------
+Version 6.5, June 21, 2023
+
+-------------------------------------------------------------------------------
+Version 6.4, October 25, 2022
+
+10/18/22 [EDGcpfe/25100,EDGcpfe/25170,EDGcpfe/25515]
+C++23: extended floating-point types
+
+The <stdfloat> header (stdfloat.stdh) has been added to provide the typedef
+members of namespace std as described in WG21 committee document P1467R9.
+
+-------------------------------------------------------------------------------
+Version 6.3, December 13, 2021
+
+11/4/21 [EDGcpfe/24816]
+Incomplete signature for std::terminate
+
+The std::terminate and std::unexpected functions have had their function
+signatures changed to indicate that they do not throw and use the [[noreturn]]
+attribute when available.
+
+
+-------------------------------------------------------------------------------
+Version 6.2, February 10, 2021
+
+-------------------------------------------------------------------------------
+Version 6.1, July 24, 2020
+
+12/13/19  [EDGcpfe/22121]
+Microsoft <initializer_list> compatibility
+
+The Microsoft version of <initializer_list> makes its internal iterator-based
+constructor public.  The EDG implementation of <initializer_list> has been
+updated to match this.
+
+-------------------------------------------------------------------------------
+Version 6.0, December 5, 2019
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 5.1, July 12, 2019
+
+5/22/19  [EDGcpfe/20917,EDGcpfe/20948]
+C++20: Coroutines
+
+A stub implementation for the C++20 coroutines header has been provided in
+coroutine.stdh.  There is not yet any library support for coroutines, as
+coroutines are not yet able to be lowered.  This header will, however, allow
+for compilation of code that uses coroutines.
+
+-------------------------------------------------------------------------------
+Version 5.0, August 10, 2018
+
+9/25/17  [EDGcpfe/10590,EDGcpfe/16574,EDGcpfe/17582]
+Implementation of some standard library utilities; new edg_internal_defines
+header file
+
+The run time library now implements std::get_terminate, std::get_new_handler,
+and std::uncaught_exceptions.
+
+Additionally, a new header file, edg_internal_defines.stdh, has been added to
+introduce macros used to conceal differences in C++ versions when compiling
+the exceptions.stdh and new.stdh files.  Those files have been updated to use
+the new macros.
+
+
+9/25/17  [EDGcpfe/18806]
+Microsoft compatibility: exception specifications for allocation/deallocation
+functions
+
+C++17 removes dynamic exception specifications (those using the "throw"
+keyword).  The new.stdh file previously determined whether to use the newer
+"noexcept" forms based on the value of the __cplusplus predefined macro.
+However, the Microsoft compiler always sets __cplusplus to reflect C++98,
+resulting in incorrect exception specifications when compiling in Microsoft
+C++17 mode.  The new.stdh file has now been changed to use the value of the
+Microsoft-specific predefined macro _NOEXCEPT_TYPES_SUPPORTED to determine
+which form of exception specification to use in Microsoft-mode
+compilations.
+
+-------------------------------------------------------------------------------
+Version 4.14, September 12, 2017
+
+8/24/17  [EDGcpfe/17696]
+C++17: overaligned storage allocation
+
+The new.stdh file has been modified to define std::align_val_t and to
+declare the additional overloaded operators to support allocation and
+freeing of overaligned data types, as described in Committee document
+P0035R4.  These declarations are only enabled when
+__STDCPP_DEFAULT_NEW_ALIGNMENT__ is defined, indicating a C++17
+compilation.
+
+-------------------------------------------------------------------------------
+Version 4.13, February 22, 2017
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 4.12, October 5, 2016
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 4.11, May 12, 2016
+
+5/4/16   [EDGcpfe/17147]
+Undefined behavior in std::initializer_list<T>::end
+
+Previously, the implementation of std::initializer_list<T>::end provided with
+the front end returned the expression
+
+    this->__array + this->__length
+
+which technically resulted in undefined behavior for empty initializer lists,
+where __array is a null pointer and __length is zero.  This is now fixed.
+
+
+-------------------------------------------------------------------------------
+Version 4.10.1, June 23, 2015
+
+3/5/15  [EDGcpfe/14687]
+C++14: Support for sized global deallocation
+
+Declarations for the sized global deallocation operators, namely
+operator ::delete(void*, size_t) and operator ::delete[](void*, size_t),
+have been added to new.stdh.
+
+
+-------------------------------------------------------------------------------
+Version 4.10, December 23, 2014
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 4.9, April 17, 2014
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 4.8, October 18, 2013
+
+8/28/13 [EDGcpfe/9167,EDGcpfe/12359]
+C++11: Support for thread_local
+
+The __cxa_thread_atexit function has been added to cxxabi.h.  This routine
+is invoked by the front end (in IA-64 ABI configurations) to register
+destructions for thread_local variables that should occur when the current
+thread terminates.
+
+
+------------------------------------------------------------------------------
+Version 4.7, May 21, 2013
+
+No changes.
+
+------------------------------------------------------------------------------
+Version 4.6, March 30, 2013
+
+12/7/12 [EDGcpfe/13489,EDGcpfe/9247,EDGcpfe/9975]
+C++11: add std::bad_array_new_length and __cxa_throw_bad_array_new_length
+
+The std::bad_array_new_length class (thrown when the number of elements in an
+array new operation is invalid) has been added to the new.stdh include file.
+In the IA-64 ABI, __cxa_throw_bad_array_new_length has also been added
+(which unconditionally throws an object of type std::bad_array_new_length).
+
+
+-------------------------------------------------------------------------------
+Version 4.5, October 5, 2012
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 4.4, December 21, 2011
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 4.3, March 17, 2011
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 4.2, August 25, 2010
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 4.1, August 6, 2009
+
+6/25/09  [EDGcpfe/9835]
+__cxa_deleted_virtual declaration added to cxxabi.h
+
+As required by the IA-64 ABI, a declaration for the __cxa_deleted_virtual
+runtime routine has been added to the cxxabi.h header file.
+
+-------------------------------------------------------------------------------
+Version 4.0, December 5, 2008
+
+No Changes.
+
+-------------------------------------------------------------------------------
+Version 3.10, September 23, 2007
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 3.9, March 23, 2007
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 3.8, July 14, 2006
+
+No Changes.
+
+-------------------------------------------------------------------------------
+Version 3.7, January 12, 2006
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 3.6, June 7, 2005
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 3.5, November 8, 2004
+
+6/7/04  ARM EABI Features
+
+The cxxabi.h file, which is used with the IA-64 ABI, now supports several
+variants of the ABI that are specified in the ARM EABI.  See the front end
+Changes file entry for more information.
+
+-------------------------------------------------------------------------------
+Version 3.4, May 8, 2004
+
+12/9/03  Missing exception specification on uncaught_exception
+
+A change in the TC1 version of the standard added an exception specification
+to uncaught_exception.  Our header files and runtime have been updated
+to include the exception specification.
+-------------------------------------------------------------------------------
+Version 3.3, July 31, 2003
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 3.2, May 12, 2003
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 3.1, January 26, 2003
+
+1/22/03  Support for IA-64 ABI
+
+We have added support for the IA-64 ABI.  In particular, we added
+the required cxxabi.h header.  See the front end Changes file
+for details.
+
+5/13/02  Missing exception specification on set_new_handler, et al
+
+A throw specification was missing on the declarations of set_new_handler,
+set_unexpected, and set_terminate.  Now fixed.
+
+-------------------------------------------------------------------------------
+Version 3.0, May 9, 2002
+
+11/1/01  exception and stdexcept headers updated
+
+The exception and stdexcept headers did not match the specification
+in the standard.  In particular, the exception class was defined in
+stdexcept instead of exception.  The headers we provide are not complete
+(because we don't, in general, supply library components) but to the
+extent that we do provide them, they now conform to the standard.
+
+-------------------------------------------------------------------------------
+Version 2.45, December 26, 2000
+
+10/6/00  C++ header files renamed
+
+Formerly, the C++ headers used the .h suffix.  The front end would
+implicitly add the .h so that, for example, an include of <typeinfo>
+would result in the inclusion of typeinfo.h.  The implicit addition of
+a .h to file names with no suffix created problems when some other
+file with the .h name was found in the include search path before the
+desired file.
+
+To resolve this, the files have been renamed with a new suffix that is
+unlikely to be used on other header files (.stdh).  The corresponding
+change has been made in the front end so that .stdh will be used when
+looking for include files that have no suffix, and .h is no longer
+used.
+
+In addition, new header files with a .h suffix have been supplied for
+compatibility purposes so that programs that still use names such as
+new.h will continue to work.  The .h versions simply include the
+version without specifying a suffix.
+
+10/6/00  Prototype C headers removed
+
+Formerly, the include directory contained both the C++ headers needed
+to work with the EDG C++ runtime library (e.g., typeinfo) and
+prototype versions of the C library header files (e.g., stdio.h).
+While the C++ headers were required when using our runtime library,
+the C headers, in general, must not be used because they are
+incompatible with the target system's C library.  The include
+directory now contains only the C++ headers.
+
+-------------------------------------------------------------------------------
+Version 2.44, August 1, 2000
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 2.43, December 8, 1999
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 2.42, August 12, 1999
+
+5/5/99   Placement delete functions missing exception specifications
+
+The placement delete and placement array delete operators in new.h
+were missing exception specifications.  Now fixed.
+
+5/3/99   Implicitly declared delete functions missing from new.h
+
+The new.h header file was missing the implicitly declared delete
+and array delete routines.  Now fixed.
+-------------------------------------------------------------------------------
+Version 2.41, March 5, 1999
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 2.40, December 8, 1998
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 2.39, August 10, 1998
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 2.38, January 13, 1998
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 2.37, October 18, 1997
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 2.36, June 17, 1997
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 2.35, February 28, 1997
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 2.34, December 18, 1996
+
+11/19/96 Placement delete conditionally compiled
+
+The placement delete declarations in new.h are now guarded by an #ifdef
+of __PLACEMENT_DELETE, which is defined by the front end when placement
+delete is enabled.
+
+10/15/96 Placement delete enabled
+
+The placement delete declarations in new.h have been enabled.  They were
+added in version 2.31, but were disabled because the front end did not
+yet support placement delete or overloaded delete operators.
+
+-------------------------------------------------------------------------------
+Version 2.33, Octover 2, 1996
+
+9/25/96 uncaught_exception has been added to exception.h
+
+The routine std::uncaught_exception that is specified by the Working
+Paper has been added to exception.h.
+
+9/19/96 Exception specifications are now provided for operator new
+
+Exception specifications, as specified by the WP, are now provided on
+the declarations of operator new and placement operator new in the
+new.h header file.
+
+8/13/96 signal.h update for C vs. C++ routine linkage language changes
+
+signal.h has been updated to make sure that the function types declared/used
+have C linkage instead of C++ linkage.  This is important now that C and
+C++ linkage are incompatible according to the Working Paper.
+
+7/22/96 Use standard name for the new handler type
+
+In new.h, __new_handler was changed to new_handler as specified in the
+working paper.
+
+-------------------------------------------------------------------------------
+Version 2.32, June 28, 1996
+
+5/6/96  Revised nothrow new implementation
+
+X3J16/WG21 changed std::nothrow from a type to an object because the
+disambiguation rules made the use of the type difficult.  For example,
+
+	new (std::nothrow()) T;
+
+was interpreted as allocating an object whose type was "function taking
+no argument and returning a std::nothrow", instead of the desired
+interpretation of passing an std::nothrow object to the new routine.
+
+We now define std::nothrow as an object of type std::nothrow_t.
+
+-------------------------------------------------------------------------------
+Version 2.31, January 19, 1996
+
+1/10/96  Added iso646.h header file
+
+The iso646.h header has been added.  It defines macros for the alternative
+spellings (e.g., bitand, bitor) for certain operators as specified in
+Normative Addendum 1 of the ISO C standard.
+
+12/28/95 Added placement array new and delete and nothrow new routines
+
+The placement version of array new and delete have been added to new.h, as
+have the nothrow versions of new and array new.  The placement delete
+routines, although present, have been disabled because the front end
+does not yet support overloaded operator delete routines, nor calling
+the placement delete routines in the EH mechanism.
+
+12/1/95  Remove include of iostream.h from assert.h
+
+The assert.h include file was changed to use stdio.h instead of iostream.h.
+This change was made to reduce the number of header files that are pulled
+in by assert.h.  Strictly speaking, assert.h should not include anything
+else.  A "real" library will need to do assert.h differently.
+
+-------------------------------------------------------------------------------
+Version 2.30, October 10, 1995
+
+9/1/95   Changes for namespaces
+
+typeinfo.h, stdexcept.h, new.h, and exception.h have been changed to
+put standard types in namespace std, but only if the front-end flag
+RUNTIME_USES_NAMESPACES is set to TRUE.
+
+When the runtime uses namespaces, the front end will define a
+preprocessing flag (named __EDG_IMPLICIT_USING_STD by default) that
+will be TRUE if the --using_std option was specified when the front
+end was invoked.  The runtime tests this flag and does a "using
+namespace std" directive when it is set.
+-----------------------------------------------------------------------------
+Version 2.29, May 24, 1995
+
+5/4/95   C++ standard header files: typeinfo.h, exception.h, stdexcept.h
+
+typeinfo.h and stdexcept.h have been added.  exception.h has been
+modified to reflect changes in the working paper.  The runtime library
+source depends on the class definitions specified in these files.
+Changes to these files will probably require corresponding changes
+in the runtime library and vice-versa.
+
+-----------------------------------------------------------------------------
+Version 2.28, March 2, 1995
+
+2/27/95  errno.h: extern on errno
+
+-----------------------------------------------------------------------------
+Version 2.27, December 22, 1994
+
+12/4/94  stdarg.h: va_end redefined not to be empty
+
+11/21/94 stddef.h: ptrdiff_t redefined as int (instead of long).
+
+-----------------------------------------------------------------------------
+Version 2.25, August 19, 1994
+
+8/12/94  exception.h added
+
+-----------------------------------------------------------------------------
+Version 2.22, February 26, 1994
+
+1/27/94  toupper/tolower made inline in C++
+
+The toupper and tolower macros in <ctype.h> have been made inline functions
+in C++.  In C, the temporaries used by the macros have been changed back
+to external (to avoid warnings about unused static variables when compiling
+preprocessed output).
+
+------------------------------------------------------------------------------
+Version 2.21, December 21, 1993
+
+11/18/93 struct __iobuf renamed _iobuf in <stdio.h>
+
+11/16/93 toupper/tolower temps made static
+
+The temporary variables used by toupper and tolower to avoid evaluating
+the argument twice have been made static to avoid problems with the change
+that makes declarations that are tentative definitions in C be true
+definitions in C++.
+
+11/15/93 Size of setjmp buffer
+
+The setjmp buffer in setjmp.h has been changed to match the size of the
+buffer used by SunOS 4.1.2.
+------------------------------------------------------------------------------
+Version 2.20, November 4, 1993
+
+11/04/93 Exit function has C++ linkage
+
+The exit function has been changed to have C++ linkage.  A version of
+exit is now supplied with the C++ runtime to support exception handling.
+------------------------------------------------------------------------------
+Version 2.09, September 15, 1992
+
+9/13/92  stdarg.h updated for sparc architecture.
+------------------------------------------------------------------------------
+Version 2.05, April 30, 1992
+
+first official release.

@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 61: warning: expression has no effect
+        use((i, a));
+             ^
+
+"Test_name.c", line 64: warning: expression has no effect
+        use((a, a)); // expected-error {{reference to local variable}}
+             ^
+
+"Test_name.c", line 67: warning: expression has no effect
+        use(a ? (i, a) : a);
+                 ^
+
+"Test_name.c", line 80: warning: expression has no effect
+    int n = b ? (1, S::x)
+                 ^
+

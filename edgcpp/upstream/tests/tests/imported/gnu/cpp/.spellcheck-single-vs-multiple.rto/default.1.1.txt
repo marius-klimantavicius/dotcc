@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 18: error: identifier "foo_1" is undefined
+    foo_1 (); // { dg-error "'foo_1' was not declared in this scope; did you mean 'ns1::foo_1'\\?" }
+    ^
+
+"Test_name.c", line 46: error: identifier "foo_2" is undefined
+    foo_2 (); // { dg-line foo_2_usage }
+    ^
+
+"Test_name.c", line 75: error: namespace "ns3" has no member "goo_3"
+    ns3::goo_3 (); // { dg-error "'goo_3' is not a member of 'ns3'; did you mean 'foo_3'\\?" }
+         ^
+
+3 errors detected in the compilation of "Test_name.c".

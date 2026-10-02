@@ -1,0 +1,804 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"./bitint-31.c", line 211: error: integer constant is too large
+   ); if (testflt_135 (151115713941029764726783wb) != 0xfffffep+53f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 211: error: integer constant is too large
+   ); if (testflt_135 (151115713941029764726783wb) != 0xfffffep+53f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 211: error: integer constant is too large
+   ); if (testflt_135 (151115713941029764726783wb) != 0xffffffp+53f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 211: error: integer constant is too large
+   ); if (testflt_135 (151115713941029764726783wb) != 0xfffffep+53f) __builtin_abort (); } while (0);
+                       ^
+
+"./bitint-31.c", line 212: error: integer constant is too large
+   ); if (testflt_135 (151115713941029764726784wb) != 0xfffffep+53f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 212: error: integer constant is too large
+   ); if (testflt_135 (151115713941029764726784wb) != 0xfffffep+53f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 212: error: integer constant is too large
+   ); if (testflt_135 (151115713941029764726784wb) != 0xffffffp+53f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 212: error: integer constant is too large
+   ); if (testflt_135 (151115713941029764726784wb) != 0xfffffep+53f) __builtin_abort (); } while (0);
+                       ^
+
+"./bitint-31.c", line 213: error: integer constant is too large
+   ); if (testflt_135 (151115713941029764726785wb) != 0xffffffp+53f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 213: error: integer constant is too large
+   ); if (testflt_135 (151115713941029764726785wb) != 0xfffffep+53f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 213: error: integer constant is too large
+   ); if (testflt_135 (151115713941029764726785wb) != 0xffffffp+53f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 213: error: integer constant is too large
+   ); if (testflt_135 (151115713941029764726785wb) != 0xfffffep+53f) __builtin_abort (); } while (0);
+                       ^
+
+"./bitint-31.c", line 214: error: integer constant is too large
+   ); if (testflt_135 (151115718444629392097280wb) != 0xffffffp+53f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 214: error: integer constant is too large
+   ); if (testflt_135 (151115718444629392097280wb) != 0xffffffp+53f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 214: error: integer constant is too large
+   ); if (testflt_135 (151115718444629392097280wb) != 0xffffffp+53f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 214: error: integer constant is too large
+   ); if (testflt_135 (151115718444629392097280wb) != 0xffffffp+53f) __builtin_abort (); } while (0);
+                       ^
+
+"./bitint-31.c", line 215: error: integer constant is too large
+   ); if (testflt_135 (151115722948229019467775wb) != 0xffffffp+53f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 215: error: integer constant is too large
+   ); if (testflt_135 (151115722948229019467775wb) != 0xffffffp+53f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 215: error: integer constant is too large
+   ); if (testflt_135 (151115722948229019467775wb) != 0x1000000p+53f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 215: error: integer constant is too large
+   ); if (testflt_135 (151115722948229019467775wb) != 0xffffffp+53f) __builtin_abort (); } while (0);
+                       ^
+
+"./bitint-31.c", line 216: error: integer constant is too large
+   ); if (testflt_135 (151115722948229019467776wb) != 0x1000000p+53f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 216: error: integer constant is too large
+   ); if (testflt_135 (151115722948229019467776wb) != 0xffffffp+53f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 216: error: integer constant is too large
+   ); if (testflt_135 (151115722948229019467776wb) != 0x1000000p+53f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 216: error: integer constant is too large
+   ); if (testflt_135 (151115722948229019467776wb) != 0xffffffp+53f) __builtin_abort (); } while (0);
+                       ^
+
+"./bitint-31.c", line 217: error: integer constant is too large
+   ); if (testflt_135 (151115722948229019467777wb) != 0x1000000p+53f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 217: error: integer constant is too large
+   ); if (testflt_135 (151115722948229019467777wb) != 0xffffffp+53f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 217: error: integer constant is too large
+   ); if (testflt_135 (151115722948229019467777wb) != 0x1000000p+53f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 217: error: integer constant is too large
+   ); if (testflt_135 (151115722948229019467777wb) != 0xffffffp+53f) __builtin_abort (); } while (0);
+                       ^
+
+"./bitint-31.c", line 218: error: integer constant is too large
+   ); if (testflt_135 (-340282346638528859811704183484516925440wb) != -0xffffffp+104f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 218: error: integer constant is too large
+   ); if (testflt_135 (-340282346638528859811704183484516925440wb) != -0xffffffp+104f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 218: error: integer constant is too large
+   ); if (testflt_135 (-340282346638528859811704183484516925440wb) != -0xffffffp+104f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 218: error: integer constant is too large
+   ); if (testflt_135 (-340282346638528859811704183484516925440wb) != -0xffffffp+104f) __builtin_abort (); } while (0);
+                        ^
+
+"./bitint-31.c", line 219: error: integer constant is too large
+   ); if (testflt_135 (-340282356779733661637539395458142568447wb) != -0xffffffp+104f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 219: error: integer constant is too large
+   ); if (testflt_135 (-340282356779733661637539395458142568447wb) != -__builtin_inff ()) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 219: error: integer constant is too large
+   ); if (testflt_135 (-340282356779733661637539395458142568447wb) != -0xffffffp+104f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 219: error: integer constant is too large
+   ); if (testflt_135 (-340282356779733661637539395458142568447wb) != -0xffffffp+104f) __builtin_abort (); } while (0);
+                        ^
+
+"./bitint-31.c", line 220: error: integer constant is too large
+   ); if (testflt_135 (-340282356779733661637539395458142568448wb) != -__builtin_inff ()) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 220: error: integer constant is too large
+   ); if (testflt_135 (-340282356779733661637539395458142568448wb) != -__builtin_inff ()) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 220: error: integer constant is too large
+   ); if (testflt_135 (-340282356779733661637539395458142568448wb) != -0xffffffp+104f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 220: error: integer constant is too large
+   ); if (testflt_135 (-340282356779733661637539395458142568448wb) != -0xffffffp+104f) __builtin_abort (); } while (0);
+                        ^
+
+"./bitint-31.c", line 221: error: integer constant is too large
+   ); if (testflt_135 (-21778071482940061661655974875633165533183wb - 1) != -__builtin_inff ()) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 221: error: integer constant is too large
+   ); if (testflt_135 (-21778071482940061661655974875633165533183wb - 1) != -__builtin_inff ()) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 221: error: integer constant is too large
+   ); if (testflt_135 (-21778071482940061661655974875633165533183wb - 1) != -0xffffffp+104f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 221: error: integer constant is too large
+   ); if (testflt_135 (-21778071482940061661655974875633165533183wb - 1) != -0xffffffp+104f) __builtin_abort (); } while (0);
+                        ^
+
+"./bitint-31.c", line 222: error: integer constant is too large
+   ); if (testfltu_135 (151115713941029764726783uwb) != 0xfffffep+53f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 222: error: integer constant is too large
+   ); if (testfltu_135 (151115713941029764726783uwb) != 0xfffffep+53f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 222: error: integer constant is too large
+   ); if (testfltu_135 (151115713941029764726783uwb) != 0xffffffp+53f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 222: error: integer constant is too large
+   ); if (testfltu_135 (151115713941029764726783uwb) != 0xfffffep+53f) __builtin_abort (); } while (0);
+                        ^
+
+"./bitint-31.c", line 223: error: integer constant is too large
+   ); if (testfltu_135 (151115713941029764726784uwb) != 0xfffffep+53f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 223: error: integer constant is too large
+   ); if (testfltu_135 (151115713941029764726784uwb) != 0xfffffep+53f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 223: error: integer constant is too large
+   ); if (testfltu_135 (151115713941029764726784uwb) != 0xffffffp+53f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 223: error: integer constant is too large
+   ); if (testfltu_135 (151115713941029764726784uwb) != 0xfffffep+53f) __builtin_abort (); } while (0);
+                        ^
+
+"./bitint-31.c", line 224: error: integer constant is too large
+   ); if (testfltu_135 (151115713941029764726785uwb) != 0xffffffp+53f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 224: error: integer constant is too large
+   ); if (testfltu_135 (151115713941029764726785uwb) != 0xfffffep+53f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 224: error: integer constant is too large
+   ); if (testfltu_135 (151115713941029764726785uwb) != 0xffffffp+53f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 224: error: integer constant is too large
+   ); if (testfltu_135 (151115713941029764726785uwb) != 0xfffffep+53f) __builtin_abort (); } while (0);
+                        ^
+
+"./bitint-31.c", line 225: error: integer constant is too large
+   ); if (testfltu_135 (151115718444629392097280uwb) != 0xffffffp+53f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 225: error: integer constant is too large
+   ); if (testfltu_135 (151115718444629392097280uwb) != 0xffffffp+53f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 225: error: integer constant is too large
+   ); if (testfltu_135 (151115718444629392097280uwb) != 0xffffffp+53f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 225: error: integer constant is too large
+   ); if (testfltu_135 (151115718444629392097280uwb) != 0xffffffp+53f) __builtin_abort (); } while (0);
+                        ^
+
+"./bitint-31.c", line 226: error: integer constant is too large
+   ); if (testfltu_135 (151115722948229019467775uwb) != 0xffffffp+53f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 226: error: integer constant is too large
+   ); if (testfltu_135 (151115722948229019467775uwb) != 0xffffffp+53f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 226: error: integer constant is too large
+   ); if (testfltu_135 (151115722948229019467775uwb) != 0x1000000p+53f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 226: error: integer constant is too large
+   ); if (testfltu_135 (151115722948229019467775uwb) != 0xffffffp+53f) __builtin_abort (); } while (0);
+                        ^
+
+"./bitint-31.c", line 227: error: integer constant is too large
+   ); if (testfltu_135 (151115722948229019467776uwb) != 0x1000000p+53f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 227: error: integer constant is too large
+   ); if (testfltu_135 (151115722948229019467776uwb) != 0xffffffp+53f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 227: error: integer constant is too large
+   ); if (testfltu_135 (151115722948229019467776uwb) != 0x1000000p+53f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 227: error: integer constant is too large
+   ); if (testfltu_135 (151115722948229019467776uwb) != 0xffffffp+53f) __builtin_abort (); } while (0);
+                        ^
+
+"./bitint-31.c", line 228: error: integer constant is too large
+   ); if (testfltu_135 (151115722948229019467777uwb) != 0x1000000p+53f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 228: error: integer constant is too large
+   ); if (testfltu_135 (151115722948229019467777uwb) != 0xffffffp+53f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 228: error: integer constant is too large
+   ); if (testfltu_135 (151115722948229019467777uwb) != 0x1000000p+53f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 228: error: integer constant is too large
+   ); if (testfltu_135 (151115722948229019467777uwb) != 0xffffffp+53f) __builtin_abort (); } while (0);
+                        ^
+
+"./bitint-31.c", line 229: error: integer constant is too large
+   ); if (testfltu_135 (340282346638528859811704183484516925440uwb) != 0xffffffp+104f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 229: error: integer constant is too large
+   ); if (testfltu_135 (340282346638528859811704183484516925440uwb) != 0xffffffp+104f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 229: error: integer constant is too large
+   ); if (testfltu_135 (340282346638528859811704183484516925440uwb) != 0xffffffp+104f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 229: error: integer constant is too large
+   ); if (testfltu_135 (340282346638528859811704183484516925440uwb) != 0xffffffp+104f) __builtin_abort (); } while (0);
+                        ^
+
+"./bitint-31.c", line 230: error: integer constant is too large
+   ); if (testfltu_135 (340282356779733661637539395458142568447uwb) != 0xffffffp+104f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 230: error: integer constant is too large
+   ); if (testfltu_135 (340282356779733661637539395458142568447uwb) != 0xffffffp+104f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 230: error: integer constant is too large
+   ); if (testfltu_135 (340282356779733661637539395458142568447uwb) != __builtin_inff ()) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 230: error: integer constant is too large
+   ); if (testfltu_135 (340282356779733661637539395458142568447uwb) != 0xffffffp+104f) __builtin_abort (); } while (0);
+                        ^
+
+"./bitint-31.c", line 231: error: integer constant is too large
+   ); if (testfltu_135 (340282356779733661637539395458142568448uwb) != __builtin_inff ()) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 231: error: integer constant is too large
+   ); if (testfltu_135 (340282356779733661637539395458142568448uwb) != 0xffffffp+104f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 231: error: integer constant is too large
+   ); if (testfltu_135 (340282356779733661637539395458142568448uwb) != __builtin_inff ()) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 231: error: integer constant is too large
+   ); if (testfltu_135 (340282356779733661637539395458142568448uwb) != 0xffffffp+104f) __builtin_abort (); } while (0);
+                        ^
+
+"./bitint-31.c", line 232: error: integer constant is too large
+   ); if (testfltu_135 (43556142965880123323311949751266331066367uwb) != __builtin_inff ()) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 232: error: integer constant is too large
+   ); if (testfltu_135 (43556142965880123323311949751266331066367uwb) != 0xffffffp+104f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 232: error: integer constant is too large
+   ); if (testfltu_135 (43556142965880123323311949751266331066367uwb) != __builtin_inff ()) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 232: error: integer constant is too large
+   ); if (testfltu_135 (43556142965880123323311949751266331066367uwb) != 0xffffffp+104f) __builtin_abort (); } while (0);
+                        ^
+
+"./bitint-31.c", line 235: error: integer constant is too large
+   ); if (testflt_192 (-10141203895131470501001744613375wb) != -0xfffffep+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 235: error: integer constant is too large
+   ); if (testflt_192 (-10141203895131470501001744613375wb) != -0xffffffp+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 235: error: integer constant is too large
+   ); if (testflt_192 (-10141203895131470501001744613375wb) != -0xfffffep+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 235: error: integer constant is too large
+   ); if (testflt_192 (-10141203895131470501001744613375wb) != -0xfffffep+79f) __builtin_abort (); } while (0);
+                        ^
+
+"./bitint-31.c", line 236: error: integer constant is too large
+   ); if (testflt_192 (-10141203895131470501001744613376wb) != -0xfffffep+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 236: error: integer constant is too large
+   ); if (testflt_192 (-10141203895131470501001744613376wb) != -0xffffffp+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 236: error: integer constant is too large
+   ); if (testflt_192 (-10141203895131470501001744613376wb) != -0xfffffep+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 236: error: integer constant is too large
+   ); if (testflt_192 (-10141203895131470501001744613376wb) != -0xfffffep+79f) __builtin_abort (); } while (0);
+                        ^
+
+"./bitint-31.c", line 237: error: integer constant is too large
+   ); if (testflt_192 (-10141203895131470501001744613377wb) != -0xffffffp+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 237: error: integer constant is too large
+   ); if (testflt_192 (-10141203895131470501001744613377wb) != -0xffffffp+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 237: error: integer constant is too large
+   ); if (testflt_192 (-10141203895131470501001744613377wb) != -0xfffffep+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 237: error: integer constant is too large
+   ); if (testflt_192 (-10141203895131470501001744613377wb) != -0xfffffep+79f) __builtin_abort (); } while (0);
+                        ^
+
+"./bitint-31.c", line 238: error: integer constant is too large
+   ); if (testflt_192 (-10141204197362925404659038289920wb) != -0xffffffp+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 238: error: integer constant is too large
+   ); if (testflt_192 (-10141204197362925404659038289920wb) != -0xffffffp+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 238: error: integer constant is too large
+   ); if (testflt_192 (-10141204197362925404659038289920wb) != -0xffffffp+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 238: error: integer constant is too large
+   ); if (testflt_192 (-10141204197362925404659038289920wb) != -0xffffffp+79f) __builtin_abort (); } while (0);
+                        ^
+
+"./bitint-31.c", line 239: error: integer constant is too large
+   ); if (testflt_192 (-10141204499594380308316331966463wb) != -0xffffffp+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 239: error: integer constant is too large
+   ); if (testflt_192 (-10141204499594380308316331966463wb) != -0x1000000p+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 239: error: integer constant is too large
+   ); if (testflt_192 (-10141204499594380308316331966463wb) != -0xffffffp+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 239: error: integer constant is too large
+   ); if (testflt_192 (-10141204499594380308316331966463wb) != -0xffffffp+79f) __builtin_abort (); } while (0);
+                        ^
+
+"./bitint-31.c", line 240: error: integer constant is too large
+   ); if (testflt_192 (-10141204499594380308316331966464wb) != -0x1000000p+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 240: error: integer constant is too large
+   ); if (testflt_192 (-10141204499594380308316331966464wb) != -0x1000000p+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 240: error: integer constant is too large
+   ); if (testflt_192 (-10141204499594380308316331966464wb) != -0xffffffp+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 240: error: integer constant is too large
+   ); if (testflt_192 (-10141204499594380308316331966464wb) != -0xffffffp+79f) __builtin_abort (); } while (0);
+                        ^
+
+"./bitint-31.c", line 241: error: integer constant is too large
+   ); if (testflt_192 (-10141204499594380308316331966465wb) != -0x1000000p+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 241: error: integer constant is too large
+   ); if (testflt_192 (-10141204499594380308316331966465wb) != -0x1000000p+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 241: error: integer constant is too large
+   ); if (testflt_192 (-10141204499594380308316331966465wb) != -0xffffffp+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 241: error: integer constant is too large
+   ); if (testflt_192 (-10141204499594380308316331966465wb) != -0xffffffp+79f) __builtin_abort (); } while (0);
+                        ^
+
+"./bitint-31.c", line 242: error: integer constant is too large
+   ); if (testflt_192 (340282346638528859811704183484516925440wb) != 0xffffffp+104f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 242: error: integer constant is too large
+   ); if (testflt_192 (340282346638528859811704183484516925440wb) != 0xffffffp+104f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 242: error: integer constant is too large
+   ); if (testflt_192 (340282346638528859811704183484516925440wb) != 0xffffffp+104f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 242: error: integer constant is too large
+   ); if (testflt_192 (340282346638528859811704183484516925440wb) != 0xffffffp+104f) __builtin_abort (); } while (0);
+                       ^
+
+"./bitint-31.c", line 243: error: integer constant is too large
+   ); if (testflt_192 (340282356779733661637539395458142568447wb) != 0xffffffp+104f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 243: error: integer constant is too large
+   ); if (testflt_192 (340282356779733661637539395458142568447wb) != 0xffffffp+104f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 243: error: integer constant is too large
+   ); if (testflt_192 (340282356779733661637539395458142568447wb) != __builtin_inff ()) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 243: error: integer constant is too large
+   ); if (testflt_192 (340282356779733661637539395458142568447wb) != 0xffffffp+104f) __builtin_abort (); } while (0);
+                       ^
+
+"./bitint-31.c", line 244: error: integer constant is too large
+   ); if (testflt_192 (340282356779733661637539395458142568448wb) != __builtin_inff ()) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 244: error: integer constant is too large
+   ); if (testflt_192 (340282356779733661637539395458142568448wb) != 0xffffffp+104f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 244: error: integer constant is too large
+   ); if (testflt_192 (340282356779733661637539395458142568448wb) != __builtin_inff ()) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 244: error: integer constant is too large
+   ); if (testflt_192 (340282356779733661637539395458142568448wb) != 0xffffffp+104f) __builtin_abort (); } while (0);
+                       ^
+
+"./bitint-31.c", line 245: error: integer constant is too large
+   ); if (testflt_192 (3138550867693340381917894711603833208051177722232017256447wb) != __builtin_inff ()) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 245: error: integer constant is too large
+   ); if (testflt_192 (3138550867693340381917894711603833208051177722232017256447wb) != 0xffffffp+104f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 245: error: integer constant is too large
+   ); if (testflt_192 (3138550867693340381917894711603833208051177722232017256447wb) != __builtin_inff ()) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 245: error: integer constant is too large
+   ); if (testflt_192 (3138550867693340381917894711603833208051177722232017256447wb) != 0xffffffp+104f) __builtin_abort (); } while (0);
+                       ^
+
+"./bitint-31.c", line 246: error: integer constant is too large
+   ); if (testfltu_192 (10141203895131470501001744613375uwb) != 0xfffffep+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 246: error: integer constant is too large
+   ); if (testfltu_192 (10141203895131470501001744613375uwb) != 0xfffffep+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 246: error: integer constant is too large
+   ); if (testfltu_192 (10141203895131470501001744613375uwb) != 0xffffffp+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 246: error: integer constant is too large
+   ); if (testfltu_192 (10141203895131470501001744613375uwb) != 0xfffffep+79f) __builtin_abort (); } while (0);
+                        ^
+
+"./bitint-31.c", line 247: error: integer constant is too large
+   ); if (testfltu_192 (10141203895131470501001744613376uwb) != 0xfffffep+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 247: error: integer constant is too large
+   ); if (testfltu_192 (10141203895131470501001744613376uwb) != 0xfffffep+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 247: error: integer constant is too large
+   ); if (testfltu_192 (10141203895131470501001744613376uwb) != 0xffffffp+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 247: error: integer constant is too large
+   ); if (testfltu_192 (10141203895131470501001744613376uwb) != 0xfffffep+79f) __builtin_abort (); } while (0);
+                        ^
+
+"./bitint-31.c", line 248: error: integer constant is too large
+   ); if (testfltu_192 (10141203895131470501001744613377uwb) != 0xffffffp+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 248: error: integer constant is too large
+   ); if (testfltu_192 (10141203895131470501001744613377uwb) != 0xfffffep+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 248: error: integer constant is too large
+   ); if (testfltu_192 (10141203895131470501001744613377uwb) != 0xffffffp+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 248: error: integer constant is too large
+   ); if (testfltu_192 (10141203895131470501001744613377uwb) != 0xfffffep+79f) __builtin_abort (); } while (0);
+                        ^
+
+"./bitint-31.c", line 249: error: integer constant is too large
+   ); if (testfltu_192 (10141204197362925404659038289920uwb) != 0xffffffp+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 249: error: integer constant is too large
+   ); if (testfltu_192 (10141204197362925404659038289920uwb) != 0xffffffp+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 249: error: integer constant is too large
+   ); if (testfltu_192 (10141204197362925404659038289920uwb) != 0xffffffp+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 249: error: integer constant is too large
+   ); if (testfltu_192 (10141204197362925404659038289920uwb) != 0xffffffp+79f) __builtin_abort (); } while (0);
+                        ^
+
+"./bitint-31.c", line 250: error: integer constant is too large
+   ); if (testfltu_192 (10141204499594380308316331966463uwb) != 0xffffffp+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 250: error: integer constant is too large
+   ); if (testfltu_192 (10141204499594380308316331966463uwb) != 0xffffffp+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 250: error: integer constant is too large
+   ); if (testfltu_192 (10141204499594380308316331966463uwb) != 0x1000000p+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 250: error: integer constant is too large
+   ); if (testfltu_192 (10141204499594380308316331966463uwb) != 0xffffffp+79f) __builtin_abort (); } while (0);
+                        ^
+
+"./bitint-31.c", line 251: error: integer constant is too large
+   ); if (testfltu_192 (10141204499594380308316331966464uwb) != 0x1000000p+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 251: error: integer constant is too large
+   ); if (testfltu_192 (10141204499594380308316331966464uwb) != 0xffffffp+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 251: error: integer constant is too large
+   ); if (testfltu_192 (10141204499594380308316331966464uwb) != 0x1000000p+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 251: error: integer constant is too large
+   ); if (testfltu_192 (10141204499594380308316331966464uwb) != 0xffffffp+79f) __builtin_abort (); } while (0);
+                        ^
+
+"./bitint-31.c", line 252: error: integer constant is too large
+   ); if (testfltu_192 (10141204499594380308316331966465uwb) != 0x1000000p+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 252: error: integer constant is too large
+   ); if (testfltu_192 (10141204499594380308316331966465uwb) != 0xffffffp+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 252: error: integer constant is too large
+   ); if (testfltu_192 (10141204499594380308316331966465uwb) != 0x1000000p+79f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 252: error: integer constant is too large
+   ); if (testfltu_192 (10141204499594380308316331966465uwb) != 0xffffffp+79f) __builtin_abort (); } while (0);
+                        ^
+
+"./bitint-31.c", line 253: error: integer constant is too large
+   ); if (testfltu_192 (340282346638528859811704183484516925440uwb) != 0xffffffp+104f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 253: error: integer constant is too large
+   ); if (testfltu_192 (340282346638528859811704183484516925440uwb) != 0xffffffp+104f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 253: error: integer constant is too large
+   ); if (testfltu_192 (340282346638528859811704183484516925440uwb) != 0xffffffp+104f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 253: error: integer constant is too large
+   ); if (testfltu_192 (340282346638528859811704183484516925440uwb) != 0xffffffp+104f) __builtin_abort (); } while (0);
+                        ^
+
+"./bitint-31.c", line 254: error: integer constant is too large
+   ); if (testfltu_192 (340282356779733661637539395458142568447uwb) != 0xffffffp+104f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 254: error: integer constant is too large
+   ); if (testfltu_192 (340282356779733661637539395458142568447uwb) != 0xffffffp+104f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 254: error: integer constant is too large
+   ); if (testfltu_192 (340282356779733661637539395458142568447uwb) != __builtin_inff ()) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 254: error: integer constant is too large
+   ); if (testfltu_192 (340282356779733661637539395458142568447uwb) != 0xffffffp+104f) __builtin_abort (); } while (0);
+                        ^
+
+"./bitint-31.c", line 255: error: integer constant is too large
+   ); if (testfltu_192 (340282356779733661637539395458142568448uwb) != __builtin_inff ()) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 255: error: integer constant is too large
+   ); if (testfltu_192 (340282356779733661637539395458142568448uwb) != 0xffffffp+104f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 255: error: integer constant is too large
+   ); if (testfltu_192 (340282356779733661637539395458142568448uwb) != __builtin_inff ()) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 255: error: integer constant is too large
+   ); if (testfltu_192 (340282356779733661637539395458142568448uwb) != 0xffffffp+104f) __builtin_abort (); } while (0);
+                        ^
+
+"./bitint-31.c", line 256: error: integer constant is too large
+   ); if (testfltu_192 (6277101735386680763835789423207666416102355444464034512895uwb) != __builtin_inff ()) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 256: error: integer constant is too large
+   ); if (testfltu_192 (6277101735386680763835789423207666416102355444464034512895uwb) != 0xffffffp+104f) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 256: error: integer constant is too large
+   ); if (testfltu_192 (6277101735386680763835789423207666416102355444464034512895uwb) != __builtin_inff ()) __builtin_abort (); fesetround (
+                        ^
+
+"./bitint-31.c", line 256: error: integer constant is too large
+   ); if (testfltu_192 (6277101735386680763835789423207666416102355444464034512895uwb) != 0xffffffp+104f) __builtin_abort (); } while (0);
+                        ^
+
+"./bitint-31.c", line 259: error: integer constant is too large
+   ); if (testflt_575 (10633823015541376812058405359715352575wb) != 0xfffffep+99f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 259: error: integer constant is too large
+   ); if (testflt_575 (10633823015541376812058405359715352575wb) != 0xfffffep+99f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 259: error: integer constant is too large
+   ); if (testflt_575 (10633823015541376812058405359715352575wb) != 0xffffffp+99f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 259: error: integer constant is too large
+   ); if (testflt_575 (10633823015541376812058405359715352575wb) != 0xfffffep+99f) __builtin_abort (); } while (0);
+                       ^
+
+"./bitint-31.c", line 260: error: integer constant is too large
+   ); if (testflt_575 (10633823015541376812058405359715352576wb) != 0xfffffep+99f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 260: error: integer constant is too large
+   ); if (testflt_575 (10633823015541376812058405359715352576wb) != 0xfffffep+99f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 260: error: integer constant is too large
+   ); if (testflt_575 (10633823015541376812058405359715352576wb) != 0xffffffp+99f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 260: error: integer constant is too large
+   ); if (testflt_575 (10633823015541376812058405359715352576wb) != 0xfffffep+99f) __builtin_abort (); } while (0);
+                       ^
+
+"./bitint-31.c", line 261: error: integer constant is too large
+   ); if (testflt_575 (10633823015541376812058405359715352577wb) != 0xffffffp+99f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 261: error: integer constant is too large
+   ); if (testflt_575 (10633823015541376812058405359715352577wb) != 0xfffffep+99f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 261: error: integer constant is too large
+   ); if (testflt_575 (10633823015541376812058405359715352577wb) != 0xffffffp+99f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 261: error: integer constant is too large
+   ); if (testflt_575 (10633823015541376812058405359715352577wb) != 0xfffffep+99f) __builtin_abort (); } while (0);
+                       ^
+
+"./bitint-31.c", line 262: error: integer constant is too large
+   ); if (testflt_575 (10633823332454026869115755733891153920wb) != 0xffffffp+99f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 262: error: integer constant is too large
+   ); if (testflt_575 (10633823332454026869115755733891153920wb) != 0xffffffp+99f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 262: error: integer constant is too large
+   ); if (testflt_575 (10633823332454026869115755733891153920wb) != 0xffffffp+99f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 262: error: integer constant is too large
+   ); if (testflt_575 (10633823332454026869115755733891153920wb) != 0xffffffp+99f) __builtin_abort (); } while (0);
+                       ^
+
+"./bitint-31.c", line 263: error: integer constant is too large
+   ); if (testflt_575 (10633823649366676926173106108066955263wb) != 0xffffffp+99f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 263: error: integer constant is too large
+   ); if (testflt_575 (10633823649366676926173106108066955263wb) != 0xffffffp+99f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 263: error: integer constant is too large
+   ); if (testflt_575 (10633823649366676926173106108066955263wb) != 0x1000000p+99f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 263: error: integer constant is too large
+   ); if (testflt_575 (10633823649366676926173106108066955263wb) != 0xffffffp+99f) __builtin_abort (); } while (0);
+                       ^
+
+"./bitint-31.c", line 264: error: integer constant is too large
+   ); if (testflt_575 (10633823649366676926173106108066955264wb) != 0x1000000p+99f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 264: error: integer constant is too large
+   ); if (testflt_575 (10633823649366676926173106108066955264wb) != 0xffffffp+99f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 264: error: integer constant is too large
+   ); if (testflt_575 (10633823649366676926173106108066955264wb) != 0x1000000p+99f) __builtin_abort (); fesetround (
+                       ^
+
+"./bitint-31.c", line 264: error: integer constant is too large
+   ); if (testflt_575 (10633823649366676926173106108066955264wb) != 0xffffffp+99f) __builtin_abort (); } while (0);
+                       ^
+
+Error limit reached.
+200 errors detected in the compilation of "Test_name.c".
+Compilation terminated.

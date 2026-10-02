@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c17 --strict_gnu Test_name.c
+"Test_name.c", line 13: error: declaration is incompatible with "void f2()" (declared at line 12)
+  void f2(int); /* { dg-error "prototype for 'f2' declares more arguments than previous old-style definition" } */
+       ^
+
+"Test_name.c", line 16: error: declaration is incompatible with "void f3()" (declared at line 15)
+  void f3(void); /* { dg-error "prototype for 'f3' declares fewer arguments than previous old-style definition" } */
+       ^
+
+"Test_name.c", line 22: error: declaration is incompatible with "void f5()" (declared at line 21)
+  void f5(int, int); /* { dg-error "prototype for 'f5' declares more arguments than previous old-style definition" } */
+       ^
+
+"Test_name.c", line 28: error: declaration is incompatible with "void f7()" (declared at line 27)
+  void f7(int); /* { dg-error "prototype for 'f7' declares fewer arguments than previous old-style definition" } */
+       ^
+
+"Test_name.c", line 31: error: declaration is incompatible with "void f8()" (declared at line 30)
+  void f8(int, ...); /* { dg-error "conflicting types for 'f8'" } */
+       ^
+
+"Test_name.c", line 37: error: declaration is incompatible with "void f10()" (declared at line 36)
+  void f10(int, long); /* { dg-error "prototype for 'f10' declares argument 2 with incompatible type" } */
+       ^
+
+"Test_name.c", line 40: error: declaration is incompatible with "void f11()" (declared at line 39)
+  void f11(long, int); /* { dg-error "prototype for 'f11' declares argument 1 with incompatible type" } */
+       ^
+
+"Test_name.c", line 46: error: declaration is incompatible with "void f13()" (declared at line 45)
+  void f13(volatile int [2][2]); /* { dg-error "prototype for 'f13' declares argument 1 with incompatible type" } */
+       ^
+
+8 errors detected in the compilation of "Test_name.c".

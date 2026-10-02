@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 10: error: this operator is not allowed in an integral constant expression
+  static_assert('a' == data[0]);
+                           ^
+
+1 error detected in the compilation of "Test_name.c".

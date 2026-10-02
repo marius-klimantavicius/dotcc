@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./analyzer/out-of-bounds-1.c", line 26: warning: subscript out of range
+    id_sequence[3] = 456;
+    ^
+
+"./analyzer/out-of-bounds-1.c", line 21: warning: variable "id_sequence" was set but never used
+    int id_sequence[3];
+        ^
+
+"./analyzer/out-of-bounds-1.c", line 36: warning: variable "arr" was set but never used
+    int arr[4];
+        ^
+
+"./analyzer/out-of-bounds-1.c", line 45: warning: variable "arr" was set but never used
+    int arr[4];
+        ^
+
+"./analyzer/out-of-bounds-1.c", line 106: warning: integer conversion resulted in a change of sign
+    return is_valid () ? sizeof (*ptr) : -1;
+                                         ^
+

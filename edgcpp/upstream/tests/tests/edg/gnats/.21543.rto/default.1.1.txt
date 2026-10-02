@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --microsoft --no_ms_permissive Test_name.c
+"Test_name.c", line 15: warning: more than one instance of overloaded function "N::f" has "C" linkage
+  extern "C" void f(int* p, BOOL flag)
+                  ^
+

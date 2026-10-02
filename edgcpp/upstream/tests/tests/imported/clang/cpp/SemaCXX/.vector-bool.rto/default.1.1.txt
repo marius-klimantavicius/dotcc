@@ -1,0 +1,115 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --exceptions --exceptions --c++17 Test_name.c
+"Test_name.c", line 49: error: operator is not permitted for "vector of bool" types
+    (void)(eight_bools || other_eight_bools); // expected-error@47 {{invalid operands to binary expression ('EightBools' (vector of 8 'bool' values) and 'EightBools')}}
+                       ^
+
+"Test_name.c", line 50: error: operator is not permitted for "vector of bool" types
+    (void)(eight_bools && other_eight_bools); // expected-error@48 {{invalid operands to binary expression ('EightBools' (vector of 8 'bool' values) and 'EightBools')}}
+                       ^
+
+"Test_name.c", line 51: error: operator is not permitted for "vector of bool" types
+    (void)(eight_bools + other_eight_bools);  // expected-error@49 {{invalid operands to binary expression ('EightBools' (vector of 8 'bool' values) and 'EightBools')}}
+                       ^
+
+"Test_name.c", line 52: error: operator is not permitted for "vector of bool" types
+    (void)(eight_bools - other_eight_bools);  // expected-error@50 {{invalid operands to binary expression ('EightBools' (vector of 8 'bool' values) and 'EightBools')}}
+                       ^
+
+"Test_name.c", line 53: error: operator is not permitted for "vector of bool" types
+    (void)(eight_bools * other_eight_bools);  // expected-error@51 {{invalid operands to binary expression ('EightBools' (vector of 8 'bool' values) and 'EightBools')}}
+                       ^
+
+"Test_name.c", line 54: error: operator is not permitted for "vector of bool" types
+    (void)(eight_bools << other_eight_bools); // expected-error@52 {{invalid operands to binary expression ('EightBools' (vector of 8 'bool' values) and 'EightBools')}}
+                       ^
+
+"Test_name.c", line 55: error: operator is not permitted for "vector of bool" types
+    (void)(eight_bools >> other_eight_bools); // expected-error@53 {{invalid operands to binary expression ('EightBools' (vector of 8 'bool' values) and 'EightBools')}}
+                       ^
+
+"Test_name.c", line 56: error: operator is not permitted for "vector of bool" types
+    (void)(eight_bools / other_eight_bools);  // expected-error@54 {{invalid operands to binary expression ('EightBools' (vector of 8 'bool' values) and 'EightBools')}}
+                       ^
+
+"Test_name.c", line 57: error: operator is not permitted for "vector of bool" types
+    (void)(eight_bools % other_eight_bools);  // expected-error@55 {{invalid operands to binary expression ('EightBools' (vector of 8 'bool' values) and 'EightBools')}}
+                       ^
+
+"Test_name.c", line 60: error: operator is not permitted for "vector of bool" types
+    (void)(eight_bools += other_eight_bools);  // expected-error@58 {{invalid operands to binary expression ('EightBools' (vector of 8 'bool' values) and 'EightBools')}}
+                       ^
+
+"Test_name.c", line 61: error: operator is not permitted for "vector of bool" types
+    (void)(eight_bools -= other_eight_bools);  // expected-error@59 {{invalid operands to binary expression ('EightBools' (vector of 8 'bool' values) and 'EightBools')}}
+                       ^
+
+"Test_name.c", line 62: error: operator is not permitted for "vector of bool" types
+    (void)(eight_bools *= other_eight_bools);  // expected-error@60 {{invalid operands to binary expression ('EightBools' (vector of 8 'bool' values) and 'EightBools')}}
+                       ^
+
+"Test_name.c", line 63: error: operator is not permitted for "vector of bool" types
+    (void)(eight_bools <<= other_eight_bools); // expected-error@61 {{invalid operands to binary expression ('EightBools' (vector of 8 'bool' values) and 'EightBools')}}
+                       ^
+
+"Test_name.c", line 64: error: operator is not permitted for "vector of bool" types
+    (void)(eight_bools >>= other_eight_bools); // expected-error@62 {{invalid operands to binary expression ('EightBools' (vector of 8 'bool' values) and 'EightBools')}}
+                       ^
+
+"Test_name.c", line 65: error: operator is not permitted for "vector of bool" types
+    (void)(eight_bools /= other_eight_bools);  // expected-error@63 {{invalid operands to binary expression ('EightBools' (vector of 8 'bool' values) and 'EightBools')}}
+                       ^
+
+"Test_name.c", line 66: error: operator is not permitted for "vector of bool" types
+    (void)(eight_bools %= other_eight_bools);  // expected-error@64 {{invalid operands to binary expression ('EightBools' (vector of 8 'bool' values) and 'EightBools')}}
+                       ^
+
+"Test_name.c", line 69: error: expression must have arithmetic, unscoped enum, or pointer type
+    (void)(eight_bools++); // expected-error@67 {{cannot increment value of type 'EightBools' (vector of 8 'bool' values)}}
+           ^
+
+"Test_name.c", line 70: error: expression must have arithmetic, unscoped enum, or pointer type
+    (void)(++eight_bools); // expected-error@68 {{cannot increment value of type 'EightBools' (vector of 8 'bool' values)}}
+             ^
+
+"Test_name.c", line 71: error: expression must have arithmetic, unscoped enum, or pointer type
+    (void)(eight_bools--); // expected-error@69 {{cannot decrement value of type 'EightBools' (vector of 8 'bool' values)}}
+           ^
+
+"Test_name.c", line 72: error: expression must have arithmetic, unscoped enum, or pointer type
+    (void)(--eight_bools); // expected-error@70 {{cannot decrement value of type 'EightBools' (vector of 8 'bool' values)}}
+             ^
+
+"Test_name.c", line 75: error: operation requires two vectors of the same size
+    (void)(eight_bools + eight_ints); // expected-error@73 {{invalid operands to binary expression ('EightBools' (vector of 8 'bool' values) and 'EightInts' (vector of 8 'int' values))}}
+                       ^
+
+"Test_name.c", line 76: error: operation requires two vectors of the same size
+    (void)(eight_ints - eight_bools); // expected-error@74 {{invalid operands to binary expression ('EightInts' (vector of 8 'int' values) and 'EightBools' (vector of 8 'bool' values))}}
+                      ^
+
+"Test_name.c", line 90: error: expression must have class type but it has type "EightBools" (aka "__attribute((ext_vector_type(8))) bool")
+    eight_bools.y = false; // expected-error@88 {{illegal vector component name 'y'}}
+    ^
+
+"Test_name.c", line 91: error: expression must have class type but it has type "EightBools" (aka "__attribute((ext_vector_type(8))) bool")
+    &eight_bools.z;        // expected-error@89 {{illegal vector component name 'z'}}
+     ^
+
+"Test_name.c", line 92: error: expression must have class type but it has type "EightBools" (aka "__attribute((ext_vector_type(8))) bool")
+    foo(eight_bools.w);    // expected-error@90 {{illegal vector component name 'w'}}
+        ^
+
+"Test_name.c", line 93: error: expression must have class type but it has type "EightBools" (aka "__attribute((ext_vector_type(8))) bool")
+    foo(eight_bools.wyx);  // expected-error@91 {{illegal vector component name 'wyx'}}
+        ^
+
+"Test_name.c", line 94: warning: missing return statement at end of non-void function "ElementRefs"
+  }
+  ^
+
+"Test_name.c", line 119: catastrophic error: #error directive: "FAIL"
+  #error "FAIL"
+   ^
+
+26 errors and 1 catastrophic error detected in the compilation of "Test_name.c".
+Compilation terminated.

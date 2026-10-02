@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gcc Test_name.c
+"Test_name.c", line 15: warning: declaration does not declare anything
+  ;
+  ^
+
+"Test_name.c", line 16: warning: struct or union declares no named members
+  };
+  ^
+

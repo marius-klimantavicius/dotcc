@@ -1,0 +1,6 @@
+cpfe -DTEST_NUMBER=1 --microsoft_version 1900 Test_name.c
+"Test_name.c", line 3: error: user-defined literal operator not found
+                "Assert "__FILE__;
+                ^
+
+1 error detected in the compilation of "Test_name.c".

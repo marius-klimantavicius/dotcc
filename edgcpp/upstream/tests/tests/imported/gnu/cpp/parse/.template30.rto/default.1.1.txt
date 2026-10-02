@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: warning: variable templates are a C++14 feature
+  template<typename T> int z;	// { dg-warning "variable templates only available with" "" { target c++11_down } }
+                            ^
+
+"Test_name.c", line 9: warning: variable templates are a C++14 feature
+  template<int N> int w;		// { dg-warning "variable templates only available with" "" { target c++11_down } }
+                       ^
+
+"Test_name.c", line 14: error: expected a ">"
+    z<int>=0;			// { dg-error "'>=' should be '> =' to terminate a template argument list" }
+         ^
+
+"Test_name.c", line 26: error: expected a ">"
+    return z<int>>=0;		// { dg-error "'>>=' should be '> >=' to terminate a template argument list" }
+                ^
+
+"Test_name.c", line 32: error: expected a ">"
+    return z<A<int>>=0;		// { dg-error "'>>=' should be '>> =' to terminate a template argument list" "" { target c++11 } }
+                  ^
+
+"Test_name.c", line 32: error: expected a ">"
+    return z<A<int>>=0;		// { dg-error "'>>=' should be '>> =' to terminate a template argument list" "" { target c++11 } }
+                      ^
+
+"Test_name.c", line 43: warning: constexpr non-static member function will not be implicitly 'const' in C++14
+  struct B { constexpr bool operator >= (int) { return true; } };
+             ^
+
+4 errors detected in the compilation of "Test_name.c".

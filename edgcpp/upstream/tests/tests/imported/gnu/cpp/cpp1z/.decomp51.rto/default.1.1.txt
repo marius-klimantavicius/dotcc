@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 10: warning: variable "e" is used before its value is set
+    auto [a,b] = e, [c,d] = f;	// { dg-error "expected ';' before ',' token" }
+                 ^
+
+"Test_name.c", line 10: error: a structured binding cannot be combined with other declarators
+    auto [a,b] = e, [c,d] = f;	// { dg-error "expected ';' before ',' token" }
+         ^
+
+"Test_name.c", line 10: error: a structured binding cannot be combined with other declarators
+    auto [a,b] = e, [c,d] = f;	// { dg-error "expected ';' before ',' token" }
+                    ^
+
+"Test_name.c", line 10: warning: structured binding "a" was declared but never referenced
+    auto [a,b] = e, [c,d] = f;	// { dg-error "expected ';' before ',' token" }
+          ^
+
+"Test_name.c", line 17: warning: variable "e" is used before its value is set
+    auto [a, b] = e );		// { dg-error "expected ';' before '\\\)' token" }
+                  ^
+
+"Test_name.c", line 17: error: expected a ";"
+    auto [a, b] = e );		// { dg-error "expected ';' before '\\\)' token" }
+                    ^
+
+"Test_name.c", line 17: warning: structured binding "a" was declared but never referenced
+    auto [a, b] = e );		// { dg-error "expected ';' before '\\\)' token" }
+          ^
+
+3 errors detected in the compilation of "Test_name.c".

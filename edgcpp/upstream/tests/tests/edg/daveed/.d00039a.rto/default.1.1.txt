@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 20: error: declaration is incompatible with "int V::init(unsigned int, unsigned long)" (declared at line 17)
+              friend void V::init(unsigned, unsigned long);
+                             ^
+
+1 error detected in the compilation of "Test_name.c".

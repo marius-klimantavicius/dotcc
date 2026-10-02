@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 15: error: qualifiers dropped in binding reference of type "float &" to initializer of type "const float"
+      decltype((r)) r2 = y2;      // r2 has type float const&
+                         ^
+
+"Test_name.c", line 14: warning: variable "r1" was declared but never referenced
+      decltype(r) r1 = y1;        // r1 has type float&
+                  ^
+
+"Test_name.c", line 20: warning: variable "z" was declared but never referenced
+      decltype((x)) z = x;        // OK, y has type float&, z has type float const&
+                    ^
+
+"Test_name.c", line 8: warning: variable "r" was set but never used
+    float x, &r = x;
+              ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,46 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 8: error: user-defined literal operator not found
+  int a = 123_x; // expected-error {{no matching literal operator for call to 'operator""_x' with argument of type 'unsigned long long' or 'const char *', and no matching literal operator template}}
+          ^
+
+"Test_name.c", line 9: error: user-defined literal operator not found
+  int b = 4.2_x; // expected-error {{no matching literal operator for call to 'operator""_x' with argument of type 'long double' or 'const char *', and no matching literal operator template}}
+          ^
+
+"Test_name.c", line 10: error: user-defined literal operator not found
+  int c = "foo"_x; // expected-error {{no matching literal operator for call to 'operator""_x' with arguments of types 'const char *' and '__size_t' (aka 'unsigned}}
+          ^
+
+"Test_name.c", line 11: error: user-defined literal operator not found
+  int d = L"foo"_x; // expected-error {{no matching literal operator for call to 'operator""_x' with arguments of types 'const wchar_t *' and '__size_t' (aka 'unsigned}}
+          ^
+
+"Test_name.c", line 12: error: user-defined literal operator not found
+  int e = u8"foo"_x; // expected-error {{no matching literal operator for call to 'operator""_x' with arguments of types 'const char *' and '__size_t' (aka 'unsigned}}
+          ^
+
+"Test_name.c", line 13: error: user-defined literal operator not found
+  int f = u"foo"_x; // expected-error {{no matching literal operator for call to 'operator""_x' with arguments of types 'const char16_t *' and '__size_t' (aka 'unsigned}}
+          ^
+
+"Test_name.c", line 14: error: user-defined literal operator not found
+  int g = U"foo"_x; // expected-error {{no matching literal operator for call to 'operator""_x' with arguments of types 'const char32_t *' and '__size_t' (aka 'unsigned}}
+          ^
+
+"Test_name.c", line 15: error: user-defined literal operator not found
+  int h = 'y'_x; // expected-error {{no matching literal operator for call to 'operator""_x' with argument of type 'char'}}
+          ^
+
+"Test_name.c", line 16: error: user-defined literal operator not found
+  int i = L'y'_x; // expected-error {{no matching literal operator for call to 'operator""_x' with argument of type 'wchar_t'}}
+          ^
+
+"Test_name.c", line 17: error: user-defined literal operator not found
+  int j = u'y'_x; // expected-error {{no matching literal operator for call to 'operator""_x' with argument of type 'char16_t'}}
+          ^
+
+"Test_name.c", line 18: error: user-defined literal operator not found
+  int k = U'y'_x; // expected-error {{no matching literal operator for call to 'operator""_x' with argument of type 'char32_t'}}
+          ^
+
+11 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./pr99990.c", line 10: error: incorrect use of va_arg
+   0
+   ^
+
+"./pr99990.c", line 11: warning: initialization with "{...}" expected for aggregate object
+    void *b[] = 0;
+                ^
+
+"./pr99990.c", line 11: warning: variable "b" was declared but never referenced
+    void *b[] = 0;
+          ^
+
+1 error detected in the compilation of "Test_name.c".

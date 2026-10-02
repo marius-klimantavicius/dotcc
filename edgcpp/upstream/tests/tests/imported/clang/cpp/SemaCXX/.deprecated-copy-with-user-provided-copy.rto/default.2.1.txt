@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --ms_compatibility Test_name.c
+"Test_name.c", line 14: warning: variable "a2" was declared but never referenced
+    A a2(a1); // expected-note {{implicit copy constructor for 'A' first required here}}
+      ^
+

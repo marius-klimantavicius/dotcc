@@ -1,0 +1,86 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: error: "_" has already been declared in the current scope
+    int _;		// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+        ^
+
+"Test_name.c", line 25: error: "_" has already been declared in the current scope
+    int _;		// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+        ^
+
+"Test_name.c", line 35: error: "_" has already been declared in the current scope
+    int _;		// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+        ^
+
+"Test_name.c", line 41: error: "_" has already been declared in the current scope
+    int _;		// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+        ^
+
+"Test_name.c", line 50: error: "_" has already been declared in the current scope
+    union { int _; };	// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+                ^
+
+"Test_name.c", line 55: error: "_" has already been declared in the current scope
+    union { int _, _; };	// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+                   ^
+
+"Test_name.c", line 55: error: "_" has already been declared in the current scope
+    union { int _, _; };	// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+                   ^
+
+"Test_name.c", line 56: error: "_" has already been declared in the current scope
+    union { int _, _; };	// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+                   ^
+
+"Test_name.c", line 56: error: "_" has already been declared in the current scope
+    union { int _, _; };	// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+                ^
+
+"Test_name.c", line 56: error: "_" has already been declared in the current scope
+    union { int _, _; };	// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+                   ^
+
+"Test_name.c", line 64: error: "_" has already been declared in the current scope
+  	  int _; };	// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+  	      ^
+
+"Test_name.c", line 64: error: "_" has already been declared in the current scope
+  	  int _; };	// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+  	      ^
+
+"Test_name.c", line 71: error: "_" has already been declared in the current scope
+    static union { int _ = 2; };	// { dg-error "redeclaration of 'int _'" }
+                       ^
+
+"Test_name.c", line 78: error: "_" has already been declared in the current scope
+    static union { int _ = 4; };	// { dg-error "redeclaration of 'int _'" }
+                       ^
+
+"Test_name.c", line 83: error: "_" has already been declared in the current scope
+    int _;		// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+        ^
+
+"Test_name.c", line 91: warning: expression has no effect
+    D {}._;		// { dg-error "request for member '_' is ambiguous" }
+    ^
+
+"Test_name.c", line 98: error: "_" has already been declared in the current scope
+    int _;		// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+        ^
+
+"Test_name.c", line 112: error: "_" has already been declared in the current scope
+    int _;		// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+        ^
+
+"Test_name.c", line 121: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+    this->_ (0);		// { dg-error "request for member '_' is ambiguous" }
+    ^
+
+"Test_name.c", line 127: error: "_" has already been declared in the current scope
+    int _;		// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+        ^
+
+"Test_name.c", line 136: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+    this->_ (0);		// { dg-error "request for member '_' is ambiguous" }
+    ^
+
+20 errors detected in the compilation of "Test_name.c".

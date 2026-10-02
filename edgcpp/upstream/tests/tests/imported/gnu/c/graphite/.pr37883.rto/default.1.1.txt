@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 10: warning: variable "base" is used before its value is set
+    for (i = base; i < hi; i++)
+             ^
+
+"Test_name.c", line 10: warning: variable "hi" is used before its value is set
+    for (i = base; i < hi; i++)
+                       ^
+

@@ -1,0 +1,193 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 73: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 76: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 79: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 82: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 85: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 88: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 91: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 94: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 97: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 100: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 103: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 106: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 121: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 124: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 127: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 130: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 133: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 136: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 139: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 142: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 145: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 148: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 151: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 154: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 157: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 160: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 163: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 166: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 169: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 172: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 175: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 178: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 181: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 184: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 187: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 190: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 193: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 196: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 199: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 202: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 205: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 208: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 211: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 214: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 217: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 220: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 223: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 226: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+

@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: warning: unrecognized #pragma
+    #pragma omp requires unified_address				// { dg-error "may only be used at file or namespace scope" }
+            ^
+
+"Test_name.c", line 9: warning: unrecognized #pragma
+    #pragma omp requires unified_shared_memory			// { dg-error "may only be used at file or namespace scope" }
+            ^
+
+"Test_name.c", line 10: warning: unrecognized #pragma
+    #pragma omp requires unified_shared_memory unified_address	// { dg-error "may only be used at file or namespace scope" }
+            ^
+
+"Test_name.c", line 11: warning: unrecognized #pragma
+    #pragma omp requires dynamic_allocators,reverse_offload	// { dg-error "may only be used at file or namespace scope" }
+            ^
+
+"Test_name.c", line 12: warning: unrecognized #pragma
+    #pragma omp requires atomic_default_mem_order(seq_cst)	// { dg-error "may only be used at file or namespace scope" }
+            ^
+
+"Test_name.c", line 14: warning: unrecognized #pragma
+      #pragma omp requires unified_address			// { dg-error "may only be used at file or namespace scope" }
+              ^
+
+"Test_name.c", line 17: warning: unrecognized #pragma
+      #pragma omp requires atomic_default_mem_order(seq_cst)	// { dg-error "may only be used at file or namespace scope" }
+              ^
+
+"Test_name.c", line 23: warning: unrecognized #pragma
+    #pragma omp requires unified_address				// { dg-error "may only be used at file or namespace scope" }
+            ^
+

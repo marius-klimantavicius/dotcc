@@ -1,0 +1,122 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 8: error: identifier "startwith" is undefined
+  int __RTL (startwith ("pro_and_epilogue")) test_1 (int i, int j, int k)
+             ^
+
+"Test_name.c", line 8: error: expected a ")"
+  int __RTL (startwith ("pro_and_epilogue")) test_1 (int i, int j, int k)
+                        ^
+
+"Test_name.c", line 8: error: expected a "{"
+  int __RTL (startwith ("pro_and_epilogue")) test_1 (int i, int j, int k)
+                                             ^
+
+"Test_name.c", line 10: error: identifier "function" is undefined
+  (function "test_1"
+   ^
+
+"Test_name.c", line 10: error: expected a ")"
+  (function "test_1"
+            ^
+
+"Test_name.c", line 14: warning: parsing restarts here after previous syntax error
+      (DECL_RTL_INCOMING (reg:SI di [ i ])))
+                                          ^
+
+"Test_name.c", line 14: error: expected a ";"
+      (DECL_RTL_INCOMING (reg:SI di [ i ])))
+                                           ^
+
+"Test_name.c", line 52: warning: parsing restarts here after previous syntax error
+      ) ;; block 2
+        ^
+
+"Test_name.c", line 52: error: identifier "block" is undefined
+      ) ;; block 2
+           ^
+
+"Test_name.c", line 52: error: expected a ";"
+      ) ;; block 2
+                 ^
+
+"Test_name.c", line 71: warning: parsing restarts here after previous syntax error
+      ) ;; block 3
+        ^
+
+"Test_name.c", line 71: error: expected a ";"
+      ) ;; block 3
+                 ^
+
+"Test_name.c", line 88: warning: parsing restarts here after previous syntax error
+      ) ;; block 4
+        ^
+
+"Test_name.c", line 88: error: expected a ";"
+      ) ;; block 4
+                 ^
+
+"Test_name.c", line 96: warning: parsing restarts here after previous syntax error
+      ) ;; block 5
+        ^
+
+"Test_name.c", line 96: error: expected a ";"
+      ) ;; block 5
+                 ^
+
+"Test_name.c", line 98: error: identifier "insn" is undefined
+    ) ;; insn-chain
+         ^
+
+"Test_name.c", line 98: warning: function "chain" declared implicitly
+    ) ;; insn-chain
+              ^
+
+"Test_name.c", line 99: warning: function "crtl" declared implicitly
+    (crtl
+     ^
+
+"Test_name.c", line 100: warning: function "return_rtx" declared implicitly
+      (return_rtx 
+       ^
+
+"Test_name.c", line 101: error: identifier "reg" is undefined
+        (reg/i:SI ax)
+         ^
+
+"Test_name.c", line 101: error: identifier "i" is undefined
+        (reg/i:SI ax)
+             ^
+
+"Test_name.c", line 101: error: expected a ")"
+        (reg/i:SI ax)
+              ^
+
+"Test_name.c", line 102: error: expected a ")"
+      ) ;; return_rtx
+        ^
+
+"Test_name.c", line 102: warning: expression has no effect
+      ) ;; return_rtx
+           ^
+
+"Test_name.c", line 103: error: expected a ";"
+    ) ;; crtl
+    ^
+
+"Test_name.c", line 103: warning: expression has no effect
+    ) ;; crtl
+         ^
+
+"Test_name.c", line 104: error: expected a ";"
+  ) ;; function "test_1"
+  ^
+
+"Test_name.c", line 104: error: expected a ";"
+  ) ;; function "test_1"
+                ^
+
+"Test_name.c", line 105: warning: missing return statement at end of non-void function "__RTL"
+  }
+  ^
+
+19 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"C/C99/digraphs.c", line 89: error: expression must be an integral constant expression
+  _Static_assert(__builtin_strcmp("testing", "testing") == 0, "");
+                 ^
+
+"C/C99/digraphs.c", line 89: error: function call is not allowed in a constant expression
+  _Static_assert(__builtin_strcmp("testing", "testing") == 0, "");
+                 ^
+
+"C/C99/digraphs.c", line 89: error: expression must have integral type
+  _Static_assert(__builtin_strcmp("testing", "testing") == 0, "");
+                                  ^
+
+"C/C99/digraphs.c", line 89: error: expression must have integral type
+  _Static_assert(__builtin_strcmp("testing", "testing") == 0, "");
+                                             ^
+
+4 errors detected in the compilation of "Test_name.c".

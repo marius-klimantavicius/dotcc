@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./analyzer/out-of-bounds-diagram-6.c", line 27: warning: pointer points outside of underlying object
+    memcpy (buf - 50, "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod" " tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim" " veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea" " commodo consequat. Duis aute irure dolor in reprehenderit in voluptate" " velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint" " occaecat cupidatat non proident, sunt in culpa qui officia deserunt" " mollit anim id est laborum." - 100, 4096);
+                ^
+
+"./analyzer/out-of-bounds-diagram-6.c", line 27: warning: pointer points outside of underlying object
+    memcpy (buf - 50, "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod" " tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim" " veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea" " commodo consequat. Duis aute irure dolor in reprehenderit in voluptate" " velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint" " occaecat cupidatat non proident, sunt in culpa qui officia deserunt" " mollit anim id est laborum." - 100, 4096);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ^
+

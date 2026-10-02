@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 10: error: identifier "lock" is undefined
+    audit_skb_queue = (lock); // expected-error {{use of undeclared identifier 'lock'}}
+                       ^
+
+"Test_name.c", line 14: error: identifier "lock" is undefined
+    audit_skb_queue + (lock); // expected-error {{use of undeclared identifier 'lock'}}
+                       ^
+
+"Test_name.c", line 14: error: expression must have arithmetic or pointer type but has type "struct spinlock_t"
+    audit_skb_queue + (lock); // expected-error {{use of undeclared identifier 'lock'}}
+    ^
+
+3 errors detected in the compilation of "Test_name.c".

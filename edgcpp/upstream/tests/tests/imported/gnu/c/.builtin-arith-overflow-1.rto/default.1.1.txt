@@ -1,0 +1,37 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 8: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int
+                           ^
+
+"Test_name.c", line 14: warning: variable "res3" was declared but never referenced
+    int res3 = res2 - 2;
+        ^
+
+"Test_name.c", line 21: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int
+                           ^
+
+"Test_name.c", line 27: warning: variable "res3" was declared but never referenced
+    int res3 = res2 - 2;
+        ^
+
+"Test_name.c", line 35: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int
+                           ^
+
+"Test_name.c", line 46: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) long int
+                           ^
+
+"Test_name.c", line 59: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) signed char
+                           ^
+
+"Test_name.c", line 72: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) unsigned char
+                           ^
+
+"Test_name.c", line 84: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) unsigned char
+                           ^
+

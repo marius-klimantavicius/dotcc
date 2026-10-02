@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 9: warning: enumerated type mixed with another type
+      enum { QSTRING } c = 0;
+                           ^
+
+"Test_name.c", line 13: warning: enumerated type mixed with another type
+  	  c = 0;
+  	    ^
+
+"Test_name.c", line 16: warning: enumerated type mixed with another type
+  	  case 0:
+  	       ^
+
+"Test_name.c", line 19: warning: enumerated type mixed with another type
+  	    c = 1;
+  	      ^
+

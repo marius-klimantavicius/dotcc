@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=2 -DALL --c++20 Test_name.c
+"Test_name.c", line 5: error: an rvalue reference cannot be bound to an lvalue
+  const char (&&r4)[4] = {"abc"};
+                          ^
+
+"Test_name.c", line 8: error: an rvalue reference cannot be bound to an lvalue
+  const char (&&r_)[] = {"abc"};
+                         ^
+
+2 errors detected in the compilation of "Test_name.c".

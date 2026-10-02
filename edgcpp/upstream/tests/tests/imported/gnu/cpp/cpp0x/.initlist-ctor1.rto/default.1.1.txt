@@ -1,0 +1,19 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp0x/initlist-ctor1.C", line 13: error: no instance of constructor "A::A" matches the argument list
+            argument types are: (E, int)
+  A a{e1,2};
+     ^
+"./cpp0x/initlist-ctor1.C", line 9: note: function "A::A(std::initializer_list<E>)" does not match because argument #1 does not match parameter
+    A(std::initializer_list<E>);
+    ^
+"./cpp0x/initlist-ctor1.C", line 7: note: number of parameters of function "A::A(const A &)" does not match the call
+  struct A
+         ^
+"./cpp0x/initlist-ctor1.C", line 7: note: number of parameters of function "A::A(A &&)" does not match the call
+  struct A
+         ^
+"./cpp0x/initlist-ctor1.C", line 10: note: function "A::A(int, E)" does not match because argument #2 does not match parameter
+    A(int, E);
+    ^
+
+1 error detected in the compilation of "Test_name.c".

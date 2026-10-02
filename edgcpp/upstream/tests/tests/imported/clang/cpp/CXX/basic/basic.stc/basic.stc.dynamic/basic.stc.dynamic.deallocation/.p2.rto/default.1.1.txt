@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 --exceptions Test_name.c
+"Test_name.c", line 17: error: function "A<Ts...>::operator delete(void *, Ts...) [with Ts=<>]" (declared at line 14) cannot be referenced -- it is a deleted function
+  auto *a1 = new A<>; // expected-error {{deleted}}
+             ^
+
+"Test_name.c", line 18: error: function "A<Ts...>::operator delete(void *, Ts...) [with Ts=<size_t>]" (declared at line 14) cannot be referenced -- it is a deleted function
+  auto *a2 = new A<size_t>; // expected-error {{deleted}}
+             ^
+
+"Test_name.c", line 19: error: function "A<Ts...>::operator delete(void *, Ts...) [with Ts=<std::align_val_t>]" (declared at line 14) cannot be referenced -- it is a deleted function
+  auto *a3 = new A<std::align_val_t>; // expected-error {{deleted}}
+             ^
+
+"Test_name.c", line 20: error: function "A<Ts...>::operator delete(void *, Ts...) [with Ts=<size_t, std::align_val_t>]" (declared at line 14) cannot be referenced -- it is a deleted function
+  auto *a4 = new A<size_t, std::align_val_t>; // expected-error {{deleted}}
+             ^
+
+4 errors detected in the compilation of "Test_name.c".

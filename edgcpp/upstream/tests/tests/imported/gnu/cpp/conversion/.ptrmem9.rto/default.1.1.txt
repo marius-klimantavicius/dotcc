@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 25: warning: expression has no effect
+    pd == pb;
+    ^
+
+"Test_name.c", line 26: error: cannot convert pointer to member of base class "BV" to pointer to member of derived class "D" -- base class is virtual
+    pd == pbv;  // { dg-error "" }
+          ^
+
+"Test_name.c", line 27: error: operand types are incompatible ("void (D::*)()" and "void (C::*)()")
+    pd == pc;   // { dg-error "6:comparison between distinct pointer-to-member types" }
+       ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --exceptions --exceptions Test_name.c
+"Test_name.c", line 11: error: incompatible exception specifications
+  void (*t2)() throw() = &f1<0>; // expected-error {{not superset}}
+                         ^
+
+"Test_name.c", line 14: error: incompatible exception specifications
+  void (*t4)() noexcept = &f2<0>; // expected-error {{not superset}}
+                          ^
+
+2 errors detected in the compilation of "Test_name.c".

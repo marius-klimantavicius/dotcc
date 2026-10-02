@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./analyzer/boxed-malloc-1.c", line 24: warning: missing return statement at end of non-void function "boxed_free"
+  }
+  ^
+
+"./analyzer/boxed-malloc-1.c", line 295: warning: missing return statement at end of non-void function "test_24"
+  }
+  ^
+
+"./analyzer/boxed-malloc-1.c", line 303: warning: missing return statement at end of non-void function "test_25"
+  }
+  ^
+
+"./analyzer/boxed-malloc-1.c", line 312: warning: missing return statement at end of non-void function "test_26"
+  }
+  ^
+
+"./analyzer/boxed-malloc-1.c", line 346: warning: variable "tmp" was set but never used
+    struct link tmp;
+                ^
+

@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=2 -A Test_name.c
+"Test_name.c", line 18: warning: variable "d" was declared but never referenced
+    D d;
+      ^
+

@@ -1,0 +1,10 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 43: warning: extra braces are nonstandard
+  	a3({1}),
+  	   ^
+
+"Test_name.c", line 69: error: a value of type "S *" cannot be used to initialize an entity of type "int"
+  F::F () : m(__extension__(S[1]) { 1, 2 })
+                           ^
+
+1 error detected in the compilation of "Test_name.c".

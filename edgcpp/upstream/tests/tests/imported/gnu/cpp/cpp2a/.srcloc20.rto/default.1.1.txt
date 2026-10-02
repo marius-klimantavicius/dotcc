@@ -1,0 +1,44 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 37: error: the address of a consteval function cannot be used here
+  auto a = source_location::current;		// { dg-error "taking address of an immediate function" }
+                            ^
+
+"Test_name.c", line 38: error: expression must have a constant value
+  constexpr auto b = &source_location::current;	// { dg-error "constant evaluation returns address of immediate function" }
+                     ^
+"Test_name.c", line 38: note: address of consteval function "std::source_location::current" in constant expression result
+  constexpr auto b = &source_location::current;	// { dg-error "constant evaluation returns address of immediate function" }
+                     ^
+
+"Test_name.c", line 43: error: the address of a consteval function cannot be used here
+    auto c = &source_location::current;		// { dg-error "taking address of an immediate function" }
+                               ^
+
+"Test_name.c", line 44: error: expression must have a constant value
+    constexpr auto d = source_location::current;	// { dg-error "constant evaluation returns address of immediate function" }
+                       ^
+"Test_name.c", line 44: note: address of consteval function "std::source_location::current" in constant expression result
+    constexpr auto d = source_location::current;	// { dg-error "constant evaluation returns address of immediate function" }
+                       ^
+
+"Test_name.c", line 45: error: the address of a consteval function cannot be used here
+    static auto e = source_location::current;	// { dg-error "taking address of an immediate function" }
+                                     ^
+
+"Test_name.c", line 43: warning: variable "c" was declared but never referenced
+    auto c = &source_location::current;		// { dg-error "taking address of an immediate function" }
+         ^
+
+"Test_name.c", line 44: warning: variable "d" was declared but never referenced
+    constexpr auto d = source_location::current;	// { dg-error "constant evaluation returns address of immediate function" }
+                   ^
+
+"Test_name.c", line 45: warning: variable "e" was declared but never referenced
+    static auto e = source_location::current;	// { dg-error "taking address of an immediate function" }
+                ^
+
+"Test_name.c", line 38: warning: variable "b" was declared but never referenced
+  constexpr auto b = &source_location::current;	// { dg-error "constant evaluation returns address of immediate function" }
+                 ^
+
+5 errors detected in the compilation of "Test_name.c".

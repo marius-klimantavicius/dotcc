@@ -1,0 +1,73 @@
+fe_only -DTEST_NUMBER=6 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 94: error: expression must have a constant value
+      __builtin_convertvector((vector4double){0, 1, 2, 3}, vector4double);
+      ^
+"Test_name.c", line 94: note: expression cannot be interpreted
+      __builtin_convertvector((vector4double){0, 1, 2, 3}, vector4double);
+      ^
+
+"Test_name.c", line 96: error: expression must have a constant value
+      __builtin_convertvector((vector4double){0, 1, 2, 3}, vector4float);
+      ^
+"Test_name.c", line 96: note: expression cannot be interpreted
+      __builtin_convertvector((vector4double){0, 1, 2, 3}, vector4float);
+      ^
+
+"Test_name.c", line 98: error: expression must have a constant value
+      __builtin_convertvector((vector4double){0, 1, 2, 3}, vector4long);
+      ^
+"Test_name.c", line 98: note: expression cannot be interpreted
+      __builtin_convertvector((vector4double){0, 1, 2, 3}, vector4long);
+      ^
+
+"Test_name.c", line 100: error: expression must have a constant value
+      __builtin_convertvector((vector4double){0, 1, 2, 3}, vector4int);
+      ^
+"Test_name.c", line 100: note: expression cannot be interpreted
+      __builtin_convertvector((vector4double){0, 1, 2, 3}, vector4int);
+      ^
+
+"Test_name.c", line 102: error: expression must have a constant value
+      __builtin_convertvector((vector4double){0, 1, 2, 3}, vector4short);
+      ^
+"Test_name.c", line 102: note: expression cannot be interpreted
+      __builtin_convertvector((vector4double){0, 1, 2, 3}, vector4short);
+      ^
+
+"Test_name.c", line 104: error: expression must have a constant value
+      __builtin_convertvector((vector4double){0, 1, 2, 3}, vector4char);
+      ^
+"Test_name.c", line 104: note: expression cannot be interpreted
+      __builtin_convertvector((vector4double){0, 1, 2, 3}, vector4char);
+      ^
+
+"Test_name.c", line 106: error: expression must have a constant value
+      __builtin_convertvector((vector4double){0, 1, 2, 3}, vector4BitInt8);
+      ^
+"Test_name.c", line 106: note: expression cannot be interpreted
+      __builtin_convertvector((vector4double){0, 1, 2, 3}, vector4BitInt8);
+      ^
+
+"Test_name.c", line 108: error: expression must have a constant value
+      __builtin_convertvector((vector4double){0, 1, 2, 3}, vector4BitInt32);
+      ^
+"Test_name.c", line 108: note: expression cannot be interpreted
+      __builtin_convertvector((vector4double){0, 1, 2, 3}, vector4BitInt32);
+      ^
+
+"Test_name.c", line 110: error: expression must have a constant value
+      __builtin_convertvector((vector4double){0, 1, 2, 3}, vector4BitInt128);
+      ^
+"Test_name.c", line 110: note: expression cannot be interpreted
+      __builtin_convertvector((vector4double){0, 1, 2, 3}, vector4BitInt128);
+      ^
+
+"Test_name.c", line 115: internal error: assertion failed at: "expr.c", line <suppressed> in scan_builtin_shuffle
+
+                                            0, 1, 2, 3)) ==
+                                                       ^
+
+9 errors and 1 catastrophic error detected in the compilation of "Test_name.c".
+Compilation aborted.
+Aborted
+eccp: front end returned an exit status of 134

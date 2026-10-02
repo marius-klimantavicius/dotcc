@@ -1,0 +1,81 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --exceptions --exceptions --c++11 Test_name.c
+"SemaCXX/nullptr.cpp", line 28: error: a value of type "std::nullptr_t" cannot be used to initialize an entity of type "bool"
+    bool b = nullptr;
+             ^
+
+"SemaCXX/nullptr.cpp", line 31: error: a value of type "std::nullptr_t" cannot be used to initialize an entity of type "uintptr_t" (aka "unsigned long")
+    uintptr_t i = nullptr;
+                  ^
+
+"SemaCXX/nullptr.cpp", line 46: error: operand types are incompatible ("int" and "std::nullptr_t")
+    (void)(1 > nullptr);
+             ^
+
+"SemaCXX/nullptr.cpp", line 47: error: operand types are incompatible ("int" and "std::nullptr_t")
+    (void)(1 != nullptr);
+             ^
+
+"SemaCXX/nullptr.cpp", line 48: error: expression must have arithmetic or unscoped enum type
+    (void)(1 + nullptr);
+               ^
+
+"SemaCXX/nullptr.cpp", line 51: error: operand types are incompatible ("std::nullptr_t" and "A")
+    (void)(0 ? nullptr : A());
+                       ^
+
+"SemaCXX/nullptr.cpp", line 52: error: operand types are incompatible ("A" and "std::nullptr_t")
+    (void)(0 ? A() : nullptr);
+                   ^
+
+"SemaCXX/nullptr.cpp", line 57: error: more than one instance of overloaded function "o2" matches the argument list:
+            function "o2(char *)" (declared at line 10)
+            function "o2(int A::*)" (declared at line 11)
+            argument types are: (std::nullptr_t)
+    o2(nullptr);
+    ^
+
+"SemaCXX/nullptr.cpp", line 60: error: expression must be an lvalue or a function designator
+    (void)&nullptr;
+           ^
+
+"SemaCXX/nullptr.cpp", line 68: warning: conversion from pointer to smaller integer
+    (void)reinterpret_cast<char>(nullptr);
+          ^
+
+"SemaCXX/nullptr.cpp", line 17: warning: variable "p" was set but never used
+    void *p = nullptr;
+          ^
+
+"SemaCXX/nullptr.cpp", line 19: warning: variable "pi" was set but never used
+    int *pi = nullptr;
+         ^
+
+"SemaCXX/nullptr.cpp", line 22: warning: variable "pm" was set but never used
+    int A::*pm = nullptr;
+            ^
+
+"SemaCXX/nullptr.cpp", line 24: warning: variable "pf" was set but never used
+    void (*pf)() = nullptr;
+           ^
+
+"SemaCXX/nullptr.cpp", line 26: warning: variable "pmf" was set but never used
+    void (A::*pmf)() = nullptr;
+              ^
+
+"SemaCXX/nullptr.cpp", line 70: warning: variable "ip" was declared but never referenced
+    int *ip = *pn;
+         ^
+
+"SemaCXX/nullptr.cpp", line 113: warning: argument is incompatible with corresponding format string conversion (expected type "void *" but argument has type "std::nullptr_t")
+      f("%p", nullptr);
+              ^
+
+"SemaCXX/nullptr.cpp", line 187: error: a value of type "int" cannot be used to initialize an entity of type "void *"
+  void *p = S().n;
+            ^
+
+"SemaCXX/nullptr.cpp", line 188: error: a value of type "int" cannot be used to initialize an entity of type "void *"
+  void *q = null();
+            ^
+
+11 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 37: error: more than one operator "*" matches these operands:
+            function template "int operator*(T &, A &)" (declared at line 25)
+            function template "int B<T>::operator*(R &) [with T=A]" (declared at line 20)
+            operand types are: B<A> * A
+    if ((b * a) != 6)		// { dg-error "ambiguous" }
+           ^
+"Test_name.c", line 37: note: built-in operator*(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    if ((b * a) != 6)		// { dg-error "ambiguous" }
+           ^
+
+1 error detected in the compilation of "Test_name.c".

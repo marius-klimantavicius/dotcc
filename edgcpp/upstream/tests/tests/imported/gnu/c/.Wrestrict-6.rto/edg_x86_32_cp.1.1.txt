@@ -1,0 +1,37 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./range.h", line 13: warning: declaration of "size_t" does not match the expected type "unsigned int"
+  typedef long unsigned int size_t;
+                            ^
+
+"./Wrestrict-6.c", line 22: warning: integer operation result is out of range
+    ptrdiff_t i = unsigned_range ((2), (0x7fffffffffffffffL + (size_t)2));
+                                                            ^
+
+"./Wrestrict-6.c", line 22: warning: integer conversion resulted in truncation
+    ptrdiff_t i = unsigned_range ((2), (0x7fffffffffffffffL + (size_t)2));
+                                       ^
+
+"./Wrestrict-6.c", line 35: warning: integer operation result is out of range
+    ptrdiff_t i = unsigned_range ((3), (0x7fffffffffffffffL + (size_t)2));
+                                                            ^
+
+"./Wrestrict-6.c", line 35: warning: integer conversion resulted in truncation
+    ptrdiff_t i = unsigned_range ((3), (0x7fffffffffffffffL + (size_t)2));
+                                       ^
+
+"./Wrestrict-6.c", line 48: warning: integer operation result is out of range
+    size_t i = unsigned_range ((2), (0x7fffffffffffffffL + (size_t)2));
+                                                         ^
+
+"./Wrestrict-6.c", line 48: warning: integer conversion resulted in truncation
+    size_t i = unsigned_range ((2), (0x7fffffffffffffffL + (size_t)2));
+                                    ^
+
+"./Wrestrict-6.c", line 61: warning: integer operation result is out of range
+    size_t i = unsigned_range ((3), (0x7fffffffffffffffL + (size_t)2));
+                                                         ^
+
+"./Wrestrict-6.c", line 61: warning: integer conversion resulted in truncation
+    size_t i = unsigned_range ((3), (0x7fffffffffffffffL + (size_t)2));
+                                    ^
+

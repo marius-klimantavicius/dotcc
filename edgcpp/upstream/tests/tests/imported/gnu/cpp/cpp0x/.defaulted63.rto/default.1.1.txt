@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 11: error: invalid type for defaulted constructor
+    C1(volatile C1&) = default; // { dg-warning "implicitly deleted" "" { target c++20 } }
+    ^
+
+"Test_name.c", line 20: error: invalid type for defaulted constructor
+    C3(const volatile C3&) = default;  // { dg-warning "implicitly deleted" "" { target c++20 } }
+    ^
+
+"Test_name.c", line 29: error: invalid type for defaulted constructor
+    M1(const M1&&) = default; // { dg-warning "implicitly deleted" "" { target c++20 } }
+    ^
+
+"Test_name.c", line 34: error: invalid type for defaulted constructor
+    M2(volatile M2&&) = default;	// { dg-warning "implicitly deleted" "" { target c++20 } }
+    ^
+
+"Test_name.c", line 39: error: invalid type for defaulted constructor
+    M3(const volatile M3&&) = default;  // { dg-warning "implicitly deleted" "" { target c++20 } }
+    ^
+
+5 errors detected in the compilation of "Test_name.c".

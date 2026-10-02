@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 13: warning: unknown attribute "leaf"
+    ATTR (leaf, nothrow) int
+    ^
+
+"Test_name.c", line 20: warning: unknown attribute "copy"
+      ATTR (weakref ("fnothrow"), copy (fnothrow))
+      ^
+
+"Test_name.c", line 24: warning: unknown attribute "leaf"
+    ATTR (leaf) int
+    ^
+
+"Test_name.c", line 33: warning: unknown attribute "copy"
+      ATTR (weakref ("fthrow_none"), copy (fthrow_none))
+      ^
+
+"Test_name.c", line 37: warning: unknown attribute "leaf"
+    ATTR (leaf) int
+    ^
+
+"Test_name.c", line 41: warning: unknown attribute "copy"
+      ATTR (weakref ("fthrow_none_nodef"), copy (fthrow_none_nodef))
+      ^
+
+"Test_name.c", line 47: warning: unknown attribute "copy"
+    ATTR (weakref ("fthrow_none_nodef"), copy (fthrow_none_nodef))
+    ^
+

@@ -1,0 +1,1 @@
+eccp -DTEST_NUMBER=4 --g++ --gnu_version=30400 Test_name.c

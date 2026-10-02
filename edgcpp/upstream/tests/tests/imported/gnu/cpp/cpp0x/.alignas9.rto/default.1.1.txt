@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 7: error: pack expansion does not make use of any argument packs
+  struct A { alignas(int...) char c; }; // { dg-error "no parameter packs|expected" }
+                        ^
+
+"Test_name.c", line 7: error: expected a ")"
+  struct A { alignas(int...) char c; }; // { dg-error "no parameter packs|expected" }
+                        ^
+          detected during instantiation of class "A<T...> [with T=<int, double>]" at line 8
+
+2 errors detected in the compilation of "Test_name.c".

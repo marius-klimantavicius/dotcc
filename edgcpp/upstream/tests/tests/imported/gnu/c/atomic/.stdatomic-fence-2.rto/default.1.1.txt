@@ -1,0 +1,16 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 Test_name.c
+/usr/sbin/ld: Test_name.o: in function `main':
+Test_name.int.c:(.text+0xXX): undefined reference to `atomic_thread_fence'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `atomic_thread_fence'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `atomic_thread_fence'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `atomic_thread_fence'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `atomic_thread_fence'
+/usr/sbin/ld: Test_name.o:Test_name.int.c:(.text+0xXX): more undefined references to `atomic_thread_fence' follow
+/usr/sbin/ld: Test_name.o: in function `main':
+Test_name.int.c:(.text+0xXX): undefined reference to `atomic_signal_fence'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `atomic_signal_fence'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `atomic_signal_fence'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `atomic_signal_fence'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `atomic_signal_fence'
+/usr/sbin/ld: Test_name.o:Test_name.int.c:(.text+0xXX): more undefined references to `atomic_signal_fence' follow
+collect2: error: ld returned 1 exit status

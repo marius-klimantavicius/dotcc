@@ -1,0 +1,31 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 22: error: a class-qualified name is required
+          blah::blah, // expected-error {{undeclared}}
+          ^
+
+"Test_name.c", line 22: error: expected a ";"
+          blah::blah, // expected-error {{undeclared}}
+              ^
+
+"Test_name.c", line 27: warning: parsing restarts here after previous syntax error
+          Y::z; // expected-error {{conflicts with}}
+              ^
+
+"Test_name.c", line 30: error: "Z::x2" is ambiguous
+  int X::*px2 = &Z::x2;
+                    ^
+
+"Test_name.c", line 31: error: "Z::y" is ambiguous
+  int Y::*py = &Z::y;
+                   ^
+
+"Test_name.c", line 32: error: "Z::z" is ambiguous
+  int X::*pz = &Z::z;
+                   ^
+
+"Test_name.c", line 35: error: "z" has already been declared in the current scope
+    using T::z...; // expected-error {{conflicts}}
+             ^
+          detected during instantiation of class "Q<T...> [with T=<X, Y>]" at line 37
+
+6 errors detected in the compilation of "Test_name.c".

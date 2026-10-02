@@ -1,0 +1,147 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 14: error: empty expansion not valid for this fold expression
+  MAKE_FN (add, +);		// { dg-message "" }
+  ^
+          detected during instantiation of "auto add(Ts...) [with Ts=<>]" at line 58
+
+"Test_name.c", line 16: error: empty expansion not valid for this fold expression
+  MAKE_FN (mul, *);		// { dg-message "" }
+  ^
+          detected during instantiation of "auto mul(Ts...) [with Ts=<>]" at line 59
+
+"Test_name.c", line 20: error: empty expansion not valid for this fold expression
+  MAKE_FN (bor, |);		// { dg-message "" }
+  ^
+          detected during instantiation of "auto bor(Ts...) [with Ts=<>]" at line 60
+
+"Test_name.c", line 21: error: empty expansion not valid for this fold expression
+  MAKE_FN (band, &);		// { dg-message "" }
+  ^
+          detected during instantiation of "auto band(Ts...) [with Ts=<>]" at line 61
+
+"Test_name.c", line 15: error: empty expansion not valid for this fold expression
+  MAKE_FN (sub, -);		// { dg-message "" }
+  ^
+          detected during instantiation of "auto sub(Ts...) [with Ts=<>]" at line 62
+
+"Test_name.c", line 17: error: empty expansion not valid for this fold expression
+  MAKE_FN (div, /);		// { dg-message "" }
+  ^
+          detected during instantiation of "auto div(Ts...) [with Ts=<>]" at line 63
+
+"Test_name.c", line 18: error: empty expansion not valid for this fold expression
+  MAKE_FN (mod, %);		// { dg-message "" }
+  ^
+          detected during instantiation of "auto mod(Ts...) [with Ts=<>]" at line 64
+
+"Test_name.c", line 22: error: empty expansion not valid for this fold expression
+  MAKE_FN (lsh, <<);		// { dg-message "" }
+  ^
+          detected during instantiation of "auto lsh(Ts...) [with Ts=<>]" at line 65
+
+"Test_name.c", line 23: error: empty expansion not valid for this fold expression
+  MAKE_FN (rsh, >>);		// { dg-message "" }
+  ^
+          detected during instantiation of "auto rsh(Ts...) [with Ts=<>]" at line 66
+
+"Test_name.c", line 25: error: empty expansion not valid for this fold expression
+  MAKE_FN (assign, =);		// { dg-message "" }
+  ^
+          detected during instantiation of "auto assign(Ts...) [with Ts=<>]" at line 67
+
+"Test_name.c", line 26: error: empty expansion not valid for this fold expression
+  MAKE_FN (addi, +=);		// { dg-message "" }
+  ^
+          detected during instantiation of "auto addi(Ts...) [with Ts=<>]" at line 68
+
+"Test_name.c", line 27: error: empty expansion not valid for this fold expression
+  MAKE_FN (subi, -=);		// { dg-message "" }
+  ^
+          detected during instantiation of "auto subi(Ts...) [with Ts=<>]" at line 69
+
+"Test_name.c", line 28: error: empty expansion not valid for this fold expression
+  MAKE_FN (muli, *=);		// { dg-message "" }
+  ^
+          detected during instantiation of "auto muli(Ts...) [with Ts=<>]" at line 70
+
+"Test_name.c", line 29: error: empty expansion not valid for this fold expression
+  MAKE_FN (divi, /=);		// { dg-message "" }
+  ^
+          detected during instantiation of "auto divi(Ts...) [with Ts=<>]" at line 71
+
+"Test_name.c", line 30: error: empty expansion not valid for this fold expression
+  MAKE_FN (modi, %=);		// { dg-message "" }
+  ^
+          detected during instantiation of "auto modi(Ts...) [with Ts=<>]" at line 72
+
+"Test_name.c", line 19: error: empty expansion not valid for this fold expression
+  MAKE_FN (bxor, ^);		// { dg-message "" }
+  ^
+          detected during instantiation of "auto bxor(Ts...) [with Ts=<>]" at line 73
+
+"Test_name.c", line 31: error: empty expansion not valid for this fold expression
+  MAKE_FN (bxori, ^=);		// { dg-message "" }
+  ^
+          detected during instantiation of "auto bxori(Ts...) [with Ts=<>]" at line 74
+
+"Test_name.c", line 32: error: empty expansion not valid for this fold expression
+  MAKE_FN (bori, |=);		// { dg-message "" }
+  ^
+          detected during instantiation of "auto bori(Ts...) [with Ts=<>]" at line 75
+
+"Test_name.c", line 33: error: empty expansion not valid for this fold expression
+  MAKE_FN (bandi, &=);		// { dg-message "" }
+  ^
+          detected during instantiation of "auto bandi(Ts...) [with Ts=<>]" at line 76
+
+"Test_name.c", line 34: error: empty expansion not valid for this fold expression
+  MAKE_FN (lshi, <<=);		// { dg-message "" }
+  ^
+          detected during instantiation of "auto lshi(Ts...) [with Ts=<>]" at line 77
+
+"Test_name.c", line 35: error: empty expansion not valid for this fold expression
+  MAKE_FN (rshi, >>=);		// { dg-message "" }
+  ^
+          detected during instantiation of "auto rshi(Ts...) [with Ts=<>]" at line 78
+
+"Test_name.c", line 37: error: empty expansion not valid for this fold expression
+  MAKE_FN (eq, ==);		// { dg-message "" }
+  ^
+          detected during instantiation of "auto eq(Ts...) [with Ts=<>]" at line 79
+
+"Test_name.c", line 38: error: empty expansion not valid for this fold expression
+  MAKE_FN (ne, !=);		// { dg-message "" }
+  ^
+          detected during instantiation of "auto ne(Ts...) [with Ts=<>]" at line 80
+
+"Test_name.c", line 39: error: empty expansion not valid for this fold expression
+  MAKE_FN (lt, <);		// { dg-message "" }
+  ^
+          detected during instantiation of "auto lt(Ts...) [with Ts=<>]" at line 81
+
+"Test_name.c", line 40: error: empty expansion not valid for this fold expression
+  MAKE_FN (gt, >);		// { dg-message "" }
+  ^
+          detected during instantiation of "auto gt(Ts...) [with Ts=<>]" at line 82
+
+"Test_name.c", line 41: error: empty expansion not valid for this fold expression
+  MAKE_FN (le, <);		// { dg-message "" }
+  ^
+          detected during instantiation of "auto le(Ts...) [with Ts=<>]" at line 83
+
+"Test_name.c", line 42: error: empty expansion not valid for this fold expression
+  MAKE_FN (ge, >);		// { dg-message "" }
+  ^
+          detected during instantiation of "auto ge(Ts...) [with Ts=<>]" at line 84
+
+"Test_name.c", line 48: error: empty expansion not valid for this fold expression
+  MAKE_FN (dot_star, .*);		// { dg-message "" }
+  ^
+          detected during instantiation of "auto dot_star(Ts...) [with Ts=<>]" at line 85
+
+"Test_name.c", line 49: error: empty expansion not valid for this fold expression
+  MAKE_FN (arrow_star, ->*);	// { dg-message "" }
+  ^
+          detected during instantiation of "auto arrow_star(Ts...) [with Ts=<>]" at line 86
+
+29 errors detected in the compilation of "Test_name.c".

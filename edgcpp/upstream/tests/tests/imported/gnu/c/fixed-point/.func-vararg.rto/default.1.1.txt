@@ -1,0 +1,932 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"./fixed-point/func-vararg.c", line 26: error: expected a ";"
+  static short _Fract vararg_sf (unsigned arg, ...) { int i; va_list ap; short _Fract result; 
+                      ^
+
+"./fixed-point/func-vararg.c", line 26: warning: parsing restarts here after previous syntax error
+  ; 
+  ^
+
+"./fixed-point/func-vararg.c", line 26: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg.c", line 26: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg.c", line 27: warning: parsing restarts here after previous syntax error
+  ; 
+  ^
+
+"./fixed-point/func-vararg.c", line 27: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg.c", line 27: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg.c", line 28: warning: parsing restarts here after previous syntax error
+  ; 
+  ^
+
+"./fixed-point/func-vararg.c", line 28: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg.c", line 28: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg.c", line 29: warning: parsing restarts here after previous syntax error
+  ; 
+  ^
+
+"./fixed-point/func-vararg.c", line 29: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg.c", line 29: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg.c", line 30: warning: parsing restarts here after previous syntax error
+  ; 
+  ^
+
+"./fixed-point/func-vararg.c", line 30: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg.c", line 30: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg.c", line 31: warning: parsing restarts here after previous syntax error
+  ; 
+  ^
+
+"./fixed-point/func-vararg.c", line 31: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg.c", line 31: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg.c", line 32: warning: parsing restarts here after previous syntax error
+  ; 
+  ^
+
+"./fixed-point/func-vararg.c", line 32: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg.c", line 32: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg.c", line 33: warning: parsing restarts here after previous syntax error
+  ; 
+  ^
+
+"./fixed-point/func-vararg.c", line 33: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg.c", line 33: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg.c", line 34: warning: parsing restarts here after previous syntax error
+  ; 
+  ^
+
+"./fixed-point/func-vararg.c", line 34: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg.c", line 34: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg.c", line 35: warning: parsing restarts here after previous syntax error
+  ; 
+  ^
+
+"./fixed-point/func-vararg.c", line 35: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg.c", line 35: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg.c", line 36: warning: parsing restarts here after previous syntax error
+  ; 
+  ^
+
+"./fixed-point/func-vararg.c", line 36: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg.c", line 36: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg.c", line 37: warning: parsing restarts here after previous syntax error
+  ; 
+  ^
+
+"./fixed-point/func-vararg.c", line 37: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg.c", line 37: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg.c", line 38: warning: parsing restarts here after previous syntax error
+  ; 
+  ^
+
+"./fixed-point/func-vararg.c", line 38: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg.c", line 38: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg.c", line 39: warning: parsing restarts here after previous syntax error
+  ; 
+  ^
+
+"./fixed-point/func-vararg.c", line 39: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg.c", line 39: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg.c", line 40: warning: parsing restarts here after previous syntax error
+  ; 
+  ^
+
+"./fixed-point/func-vararg.c", line 40: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg.c", line 40: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg.c", line 41: warning: parsing restarts here after previous syntax error
+  ; 
+  ^
+
+"./fixed-point/func-vararg.c", line 41: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg.c", line 41: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg.c", line 42: warning: parsing restarts here after previous syntax error
+  ; 
+  ^
+
+"./fixed-point/func-vararg.c", line 42: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg.c", line 42: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg.c", line 43: warning: parsing restarts here after previous syntax error
+  ; 
+  ^
+
+"./fixed-point/func-vararg.c", line 43: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg.c", line 43: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg.c", line 44: warning: parsing restarts here after previous syntax error
+  ; 
+  ^
+
+"./fixed-point/func-vararg.c", line 44: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg.c", line 44: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg.c", line 45: warning: parsing restarts here after previous syntax error
+  ; 
+  ^
+
+"./fixed-point/func-vararg.c", line 45: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg.c", line 45: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg.c", line 46: warning: parsing restarts here after previous syntax error
+  ; 
+  ^
+
+"./fixed-point/func-vararg.c", line 46: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg.c", line 46: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg.c", line 47: warning: parsing restarts here after previous syntax error
+  ; 
+  ^
+
+"./fixed-point/func-vararg.c", line 47: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg.c", line 47: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg.c", line 48: warning: parsing restarts here after previous syntax error
+  ; 
+  ^
+
+"./fixed-point/func-vararg.c", line 48: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg.c", line 48: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg.c", line 49: warning: parsing restarts here after previous syntax error
+  ; 
+  ^
+
+"./fixed-point/func-vararg.c", line 49: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg.c", line 49: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg.c", line 50: warning: parsing restarts here after previous syntax error
+  ; 
+  ^
+
+"./fixed-point/func-vararg.c", line 50: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg.c", line 50: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg.c", line 51: warning: parsing restarts here after previous syntax error
+  ; 
+  ^
+
+"./fixed-point/func-vararg.c", line 51: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg.c", line 51: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg.c", line 52: warning: parsing restarts here after previous syntax error
+  ; 
+  ^
+
+"./fixed-point/func-vararg.c", line 52: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg.c", line 52: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg.c", line 53: warning: parsing restarts here after previous syntax error
+  ; 
+  ^
+
+"./fixed-point/func-vararg.c", line 53: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg.c", line 53: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg.c", line 54: warning: parsing restarts here after previous syntax error
+  ; 
+  ^
+
+"./fixed-point/func-vararg.c", line 54: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg.c", line 54: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg.c", line 55: warning: parsing restarts here after previous syntax error
+  ; 
+  ^
+
+"./fixed-point/func-vararg.c", line 55: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg.c", line 55: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg.c", line 56: warning: parsing restarts here after previous syntax error
+  ; 
+  ^
+
+"./fixed-point/func-vararg.c", line 56: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg.c", line 56: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg.c", line 57: warning: parsing restarts here after previous syntax error
+  ; 
+  ^
+
+"./fixed-point/func-vararg.c", line 57: error: expected a declaration
+  ; return result; }
+    ^
+
+"./fixed-point/func-vararg.c", line 57: error: expected a declaration
+  ; return result; }
+                   ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                         ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                       ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                              ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                                     ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                                            ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                                                      ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                                                                                         ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                                                                                                ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                                                                                                       ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                                                                                                              ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                                                                                                                     ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                                                                                                                            ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                                                                                                                                      ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                                                                                                                                                                         ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                                                                                                                                                                                ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                                                                                                                                                                                       ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                                                                                                                                                                                              ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                                                                                                                                                                                                     ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                                                                                                                                                                                                            ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                                                                                                                                                                                                                      ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                                                                                                                                                                                                                                                         ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                                                                                                                                                                                                                                                                ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                                                                                                                                                                                                                                                                       ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                                                                                                                                                                                                                                                                              ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                                                                                                                                                                                                                                                                                     ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                                                                                                                                                                                                                                                                                            ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                                                                                                                                                                                                                                                                                                      ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                                                                                                                                                                                                                                                                                                                                         ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                                                                                                                                                                                                                                                                                                                                                ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                                                                                                                                                                                                                                                                                                                                                       ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                                                                                                                                                                                                                                                                                                                                                              ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                                                                                                                                                                                                                                                                                                                                                                     ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                                                                                                                                                                                                                                                                                                                                                                            ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                                                                                                                                                                                                                                                                                                                                                                                      ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                                                                                                                                                                                                                                                                                                                                                                                                                         ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                                                                                                                                                                                                                                                                                                                                                                                                                                ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                                                                                                                                                                                                                                                                                                                                                                                                                                       ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                                                                                                                                                                                                                                                                                                                                                                                                                                              ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ^
+
+"./fixed-point/func-vararg.c", line 81: error: extra text after expected end of number
+    if (vararg_sf (0, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.0hr) abort (); if (vararg_sf (1, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.1hr) abort (); if (vararg_sf (2, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.2hr) abort (); if (vararg_sf (3, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.3hr) abort (); if (vararg_sf (4, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.4hr) abort (); if (vararg_sf (5, 0.0hr, 0.1hr, 0.2hr, 0.3hr, 0.4hr, 0.5hr) != 0.5hr) abort ();
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                        ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                              ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                    ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                          ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                                ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                                      ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                                               ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                                                                                ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                                                                                      ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                                                                                            ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                                                                                                  ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                                                                                                        ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                                                                                                              ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                                                                                                                       ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                                                                                                                                                        ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                                                                                                                                                              ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                                                                                                                                                                    ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                                                                                                                                                                          ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                                                                                                                                                                                ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                                                                                                                                                                                      ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                                                                                                                                                                                               ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                                                                                                                                                                                                                                ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                                                                                                                                                                                                                                      ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                                                                                                                                                                                                                                            ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                                                                                                                                                                                                                                                  ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                                                                                                                                                                                                                                                        ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                                                                                                                                                                                                                                                              ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                                                                                                                                                                                                                                                                       ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                                                                                                                                                                                                                                                                                                        ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                                                                                                                                                                                                                                                                                                              ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                                                                                                                                                                                                                                                                                                                    ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                                                                                                                                                                                                                                                                                                                          ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                                                                                                                                                                                                                                                                                                                                ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                                                                                                                                                                                                                                                                                                                                      ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                                                                                                                                                                                                                                                                                                                                               ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                                                                                                                                                                                                                                                                                                                                                                                ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                                                                                                                                                                                                                                                                                                                                                                                      ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                                                                                                                                                                                                                                                                                                                                                                                            ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                                                                                                                                                                                                                                                                                                                                                                                                  ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                                                                                                                                                                                                                                                                                                                                                                                                        ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                                                                                                                                                                                                                                                                                                                                                                                                              ^
+
+"./fixed-point/func-vararg.c", line 82: error: extra text after expected end of number
+    if (vararg_f (0, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.0r) abort (); if (vararg_f (1, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.1r) abort (); if (vararg_f (2, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.2r) abort (); if (vararg_f (3, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.3r) abort (); if (vararg_f (4, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.4r) abort (); if (vararg_f (5, 0.0r, 0.1r, 0.2r, 0.3r, 0.4r, 0.5r) != 0.5r) abort ();
+                                                                                                                                                                                                                                                                                                                                                                                                                                       ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                          ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                 ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                        ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                               ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                                      ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                                             ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                                                       ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                                                                                          ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                                                                                                 ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                                                                                                        ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                                                                                                               ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                                                                                                                      ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                                                                                                                             ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                                                                                                                                       ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                                                                                                                                                                          ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                                                                                                                                                                                 ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                                                                                                                                                                                        ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                                                                                                                                                                                               ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                                                                                                                                                                                                      ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                                                                                                                                                                                                             ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                                                                                                                                                                                                                       ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                                                                                                                                                                                                                                                          ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                                                                                                                                                                                                                                                                 ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                                                                                                                                                                                                                                                                        ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                                                                                                                                                                                                                                                                               ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                                                                                                                                                                                                                                                                                      ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                                                                                                                                                                                                                                                                                             ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                                                                                                                                                                                                                                                                                                       ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                                                                                                                                                                                                                                                                                                                                          ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                                                                                                                                                                                                                                                                                                                                                 ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                                                                                                                                                                                                                                                                                                                                                        ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                                                                                                                                                                                                                                                                                                                                                               ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                                                                                                                                                                                                                                                                                                                                                                      ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                                                                                                                                                                                                                                                                                                                                                                             ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                                                                                                                                                                                                                                                                                                                                                                                       ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                                                                                                                                                                                                                                                                                                                                                                                                                          ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                                                                                                                                                                                                                                                                                                                                                                                                                                 ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                                                                                                                                                                                                                                                                                                                                                                                                                                        ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                                                                                                                                                                                                                                                                                                                                                                                                                                               ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ^
+
+"./fixed-point/func-vararg.c", line 83: error: extra text after expected end of number
+    if (vararg_lf (0, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.0lr) abort (); if (vararg_lf (1, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.1lr) abort (); if (vararg_lf (2, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.2lr) abort (); if (vararg_lf (3, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.3lr) abort (); if (vararg_lf (4, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.4lr) abort (); if (vararg_lf (5, 0.0lr, 0.1lr, 0.2lr, 0.3lr, 0.4lr, 0.5lr) != 0.5lr) abort ();
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ^
+
+"./fixed-point/func-vararg.c", line 84: error: extra text after expected end of number
+    if (vararg_llf (0, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.0llr) abort (); if (vararg_llf (1, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.1llr) abort (); if (vararg_llf (2, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.2llr) abort (); if (vararg_llf (3, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.3llr) abort (); if (vararg_llf (4, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.4llr) abort (); if (vararg_llf (5, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.5llr) abort ();
+                           ^
+
+"./fixed-point/func-vararg.c", line 84: error: extra text after expected end of number
+    if (vararg_llf (0, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.0llr) abort (); if (vararg_llf (1, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.1llr) abort (); if (vararg_llf (2, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.2llr) abort (); if (vararg_llf (3, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.3llr) abort (); if (vararg_llf (4, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.4llr) abort (); if (vararg_llf (5, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.5llr) abort ();
+                                   ^
+
+"./fixed-point/func-vararg.c", line 84: error: extra text after expected end of number
+    if (vararg_llf (0, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.0llr) abort (); if (vararg_llf (1, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.1llr) abort (); if (vararg_llf (2, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.2llr) abort (); if (vararg_llf (3, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.3llr) abort (); if (vararg_llf (4, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.4llr) abort (); if (vararg_llf (5, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.5llr) abort ();
+                                           ^
+
+"./fixed-point/func-vararg.c", line 84: error: extra text after expected end of number
+    if (vararg_llf (0, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.0llr) abort (); if (vararg_llf (1, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.1llr) abort (); if (vararg_llf (2, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.2llr) abort (); if (vararg_llf (3, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.3llr) abort (); if (vararg_llf (4, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.4llr) abort (); if (vararg_llf (5, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.5llr) abort ();
+                                                   ^
+
+"./fixed-point/func-vararg.c", line 84: error: extra text after expected end of number
+    if (vararg_llf (0, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.0llr) abort (); if (vararg_llf (1, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.1llr) abort (); if (vararg_llf (2, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.2llr) abort (); if (vararg_llf (3, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.3llr) abort (); if (vararg_llf (4, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.4llr) abort (); if (vararg_llf (5, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.5llr) abort ();
+                                                           ^
+
+"./fixed-point/func-vararg.c", line 84: error: extra text after expected end of number
+    if (vararg_llf (0, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.0llr) abort (); if (vararg_llf (1, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.1llr) abort (); if (vararg_llf (2, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.2llr) abort (); if (vararg_llf (3, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.3llr) abort (); if (vararg_llf (4, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.4llr) abort (); if (vararg_llf (5, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.5llr) abort ();
+                                                                   ^
+
+"./fixed-point/func-vararg.c", line 84: error: extra text after expected end of number
+    if (vararg_llf (0, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.0llr) abort (); if (vararg_llf (1, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.1llr) abort (); if (vararg_llf (2, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.2llr) abort (); if (vararg_llf (3, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.3llr) abort (); if (vararg_llf (4, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.4llr) abort (); if (vararg_llf (5, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.5llr) abort ();
+                                                                              ^
+
+"./fixed-point/func-vararg.c", line 84: error: extra text after expected end of number
+    if (vararg_llf (0, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.0llr) abort (); if (vararg_llf (1, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.1llr) abort (); if (vararg_llf (2, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.2llr) abort (); if (vararg_llf (3, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.3llr) abort (); if (vararg_llf (4, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.4llr) abort (); if (vararg_llf (5, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.5llr) abort ();
+                                                                                                                   ^
+
+"./fixed-point/func-vararg.c", line 84: error: extra text after expected end of number
+    if (vararg_llf (0, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.0llr) abort (); if (vararg_llf (1, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.1llr) abort (); if (vararg_llf (2, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.2llr) abort (); if (vararg_llf (3, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.3llr) abort (); if (vararg_llf (4, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.4llr) abort (); if (vararg_llf (5, 0.0llr, 0.1llr, 0.2llr, 0.3llr, 0.4llr, 0.5llr) != 0.5llr) abort ();
+                                                                                                                           ^
+
+Error limit reached.
+200 errors detected in the compilation of "Test_name.c".
+Compilation terminated.

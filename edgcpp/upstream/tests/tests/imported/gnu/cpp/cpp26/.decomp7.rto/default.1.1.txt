@@ -1,0 +1,102 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 32: warning: structured bindings are a C++17 feature
+    if (auto [ i, j ] = S { 1, 1 })	// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+             ^
+
+"Test_name.c", line 32: error: structured binding is not allowed in a condition
+    if (auto [ i, j ] = S { 1, 1 })	// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+             ^
+
+"Test_name.c", line 44: warning: C++17-style initializer is nonstandard in this mode
+    if (int m = 78; auto & [ i, j ] = t)	// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                  ^
+
+"Test_name.c", line 44: warning: structured bindings are a C++17 feature
+    if (int m = 78; auto & [ i, j ] = t)	// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                           ^
+
+"Test_name.c", line 44: error: structured binding is not allowed in a condition
+    if (int m = 78; auto & [ i, j ] = t)	// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                           ^
+
+"Test_name.c", line 56: warning: structured bindings are a C++17 feature
+    if (auto m = 15; auto [ i, j ] = S { -1, 1 })	// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                          ^
+
+"Test_name.c", line 56: error: structured binding is not allowed in a condition
+    if (auto m = 15; auto [ i, j ] = S { -1, 1 })	// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                          ^
+
+"Test_name.c", line 70: warning: structured bindings are a C++17 feature
+    if (auto & [ i, j ] = t)	// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+               ^
+
+"Test_name.c", line 70: error: structured binding is not allowed in a condition
+    if (auto & [ i, j ] = t)	// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+               ^
+
+"Test_name.c", line 88: warning: structured bindings are a C++17 feature
+    while (auto [ i, j ] = S { 7, 7 })	// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                ^
+
+"Test_name.c", line 88: error: structured binding is not allowed in a condition
+    while (auto [ i, j ] = S { 7, 7 })	// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                ^
+
+"Test_name.c", line 98: warning: structured bindings are a C++17 feature
+    while (auto & [ i, j ] = t)	// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                  ^
+
+"Test_name.c", line 98: error: structured binding is not allowed in a condition
+    while (auto & [ i, j ] = t)	// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                  ^
+
+"Test_name.c", line 108: warning: structured bindings are a C++17 feature
+    while (auto [ i, j ] = S { 7, -7 })	// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                ^
+
+"Test_name.c", line 108: error: structured binding is not allowed in a condition
+    while (auto [ i, j ] = S { 7, -7 })	// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                ^
+
+"Test_name.c", line 116: warning: structured bindings are a C++17 feature
+    while (auto & [ i, j ] = t)	// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                  ^
+
+"Test_name.c", line 116: error: structured binding is not allowed in a condition
+    while (auto & [ i, j ] = t)	// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                  ^
+
+"Test_name.c", line 129: warning: structured bindings are a C++17 feature
+    for (int cnt = 0; auto [ i, j ] = S { 12, 12 }; ++cnt)	// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                           ^
+
+"Test_name.c", line 129: error: structured binding is not allowed in a condition
+    for (int cnt = 0; auto [ i, j ] = S { 12, 12 }; ++cnt)	// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                           ^
+
+"Test_name.c", line 140: warning: structured bindings are a C++17 feature
+    for (int cnt = 5; auto & [ i, j ] = t; ++cnt)	// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                             ^
+
+"Test_name.c", line 140: error: structured binding is not allowed in a condition
+    for (int cnt = 5; auto & [ i, j ] = t; ++cnt)	// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                             ^
+
+"Test_name.c", line 151: warning: structured bindings are a C++17 feature
+    for (int cnt = 0; auto [ i, j ] = S { -27, 27 }; ++cnt)	// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                           ^
+
+"Test_name.c", line 151: error: structured binding is not allowed in a condition
+    for (int cnt = 0; auto [ i, j ] = S { -27, 27 }; ++cnt)	// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                           ^
+
+"Test_name.c", line 159: warning: structured bindings are a C++17 feature
+    for (int cnt = 0; auto & [ i, j ] = t; ++cnt)	// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                             ^
+
+"Test_name.c", line 159: error: structured binding is not allowed in a condition
+    for (int cnt = 0; auto & [ i, j ] = t; ++cnt)	// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                             ^
+
+12 errors detected in the compilation of "Test_name.c".

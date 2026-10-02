@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 13: warning: unrecognized #pragma
+    #pragma omp for simd lastprivate(u) schedule (static, 32)	/* { dg-bogus "may be used uninitialized in this function" } */
+            ^
+
+"Test_name.c", line 22: warning: unrecognized #pragma
+    #pragma omp taskloop simd lastprivate(u)	/* { dg-bogus "may be used uninitialized in this function" } */
+            ^
+

@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 15: error: expected an identifier
+    int &&r;
+        ^
+
+"Test_name.c", line 16: error: expected a ";"
+    X(X const&) = default;
+                ^
+
+"Test_name.c", line 17: error: copy constructor for class "X" may not have a parameter of type "X"
+    X(X&&);
+      ^
+
+"Test_name.c", line 17: error: expected a ")"
+    X(X&&);
+       ^
+
+4 errors detected in the compilation of "Test_name.c".

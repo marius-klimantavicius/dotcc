@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 27: error: constructor delegates directly or indirectly to itself
+  foo::foo (bool) : foo(true) { // expected-error{{creates a delegation cycle}}
+                    ^
+
+"Test_name.c", line 34: error: constructor delegates directly or indirectly to itself
+  foo::foo (const float &f) : foo(&f) { //expected-error{{creates a delegation cycle}} \
+                              ^
+
+"Test_name.c", line 40: error: a delegating constructor cannot have other mem-initializers
+    foo(3) { // expected-error{{must appear alone}}
+    ^
+
+"Test_name.c", line 50: error: function "deleted_dtor::~deleted_dtor()" (declared at line 48) cannot be referenced -- it is a deleted function
+    deleted_dtor(int) : deleted_dtor() // expected-error{{attempt to use a deleted function}}
+                                    ^
+
+4 errors detected in the compilation of "Test_name.c".

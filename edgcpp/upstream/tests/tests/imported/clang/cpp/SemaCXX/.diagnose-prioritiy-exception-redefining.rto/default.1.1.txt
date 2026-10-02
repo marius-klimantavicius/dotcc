@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --exceptions --c++11 Test_name.c
+"Test_name.c", line 8: error: function "ExplicitlySpecialMethod::ExplicitlySpecialMethod()" has already been defined (previous definition at line 6)
+  ExplicitlySpecialMethod::ExplicitlySpecialMethod() {} // expected-error{{definition of explicitly defaulted default constructor}}
+                           ^
+
+"Test_name.c", line 11: error: defining an implicitly declared member function is not allowed
+  ImplicitlySpecialMethod::ImplicitlySpecialMethod() {} // expected-error{{definition of implicitly declared default constructor}}
+                           ^
+
+"Test_name.c", line 11: error: allowing all exceptions is incompatible with previous function "ImplicitlySpecialMethod::ImplicitlySpecialMethod"
+  ImplicitlySpecialMethod::ImplicitlySpecialMethod() {} // expected-error{{definition of implicitly declared default constructor}}
+                                                     ^
+
+3 errors detected in the compilation of "Test_name.c".

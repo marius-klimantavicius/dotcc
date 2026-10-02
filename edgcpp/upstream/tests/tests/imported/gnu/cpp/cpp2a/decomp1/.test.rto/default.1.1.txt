@@ -1,0 +1,34 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 30: warning: structured bindings are a C++17 feature
+  static auto [ d, e, f ] = t;	// { dg-warning "structured binding declaration can be 'static' only" "" { target c++17_down } }
+              ^
+
+"Test_name.c", line 30: error: a structured binding cannot declare an explicit storage class
+  static auto [ d, e, f ] = t;	// { dg-warning "structured binding declaration can be 'static' only" "" { target c++17_down } }
+  ^
+
+"Test_name.c", line 32: warning: structured bindings are a C++17 feature
+  static auto [ g, h ] = A (44);	// { dg-warning "structured binding declaration can be 'static' only" "" { target c++17_down } }
+              ^
+
+"Test_name.c", line 32: error: a structured binding cannot declare an explicit storage class
+  static auto [ g, h ] = A (44);	// { dg-warning "structured binding declaration can be 'static' only" "" { target c++17_down } }
+  ^
+
+"Test_name.c", line 60: warning: structured bindings are a C++17 feature
+    static auto [ m, n, o ] = t;	// { dg-warning "structured binding declaration can be 'static' only" "" { target c++17_down } }
+                ^
+
+"Test_name.c", line 60: error: a structured binding cannot declare an explicit storage class
+    static auto [ m, n, o ] = t;	// { dg-warning "structured binding declaration can be 'static' only" "" { target c++17_down } }
+    ^
+
+"Test_name.c", line 62: warning: structured bindings are a C++17 feature
+    static auto [ p, q ] = A (45);	// { dg-warning "structured binding declaration can be 'static' only" "" { target c++17_down } }
+                ^
+
+"Test_name.c", line 62: error: a structured binding cannot declare an explicit storage class
+    static auto [ p, q ] = A (45);	// { dg-warning "structured binding declaration can be 'static' only" "" { target c++17_down } }
+    ^
+
+4 errors detected in the compilation of "Test_name.c".

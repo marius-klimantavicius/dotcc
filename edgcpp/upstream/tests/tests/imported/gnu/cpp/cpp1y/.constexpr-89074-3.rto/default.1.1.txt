@@ -1,0 +1,44 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 128: error: expression must have a constant value
+  constexpr bool a = f1 ();
+                     ^
+"Test_name.c", line 30: note: cannot compare a pointer past the end of an array with a pointer to another complete object
+    if (&a[0] == &"foo"[4])	// { dg-error "is not a constant expression" }
+              ^
+
+"Test_name.c", line 129: error: expression must have a constant value
+  constexpr bool b = f2 ();
+                     ^
+"Test_name.c", line 42: note: cannot compare a pointer past the end of an array with a pointer to another complete object
+    if (&a[4] == "foo")		// { dg-error "is not a constant expression" }
+              ^
+
+"Test_name.c", line 128: warning: variable "a" was declared but never referenced
+  constexpr bool a = f1 ();
+                 ^
+
+"Test_name.c", line 129: warning: variable "b" was declared but never referenced
+  constexpr bool b = f2 ();
+                 ^
+
+"Test_name.c", line 130: warning: variable "c" was declared but never referenced
+  constexpr bool c = f3 ();
+                 ^
+
+"Test_name.c", line 131: warning: variable "d" was declared but never referenced
+  constexpr bool d = f4 ();
+                 ^
+
+"Test_name.c", line 132: warning: variable "e" was declared but never referenced
+  constexpr bool e = f5 ();
+                 ^
+
+"Test_name.c", line 133: warning: variable "f" was declared but never referenced
+  constexpr bool f = f6 ();
+                 ^
+
+"Test_name.c", line 134: warning: variable "g" was declared but never referenced
+  constexpr bool g = f7 ();
+                 ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,22 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 14: error: expected a ";"
+    {
+    ^
+
+"Test_name.c", line 19: warning: parsing restarts here after previous syntax error
+        recursive (n - 1, do_goto);
+                                  ^
+
+"Test_name.c", line 20: error: expected a statement
+    else if (n > 0)
+    ^
+
+"Test_name.c", line 22: error: expected a statement
+    else
+    ^
+
+"Test_name.c", line 26: warning: label "l1" was declared but never referenced
+  l1:
+  ^
+
+3 errors detected in the compilation of "Test_name.c".

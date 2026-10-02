@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 20: error: member "t1::m_color" (declared at line 12) is inaccessible
+    return ref.m_color; // { dg-error ".int t1::m_color. is private within this context" }
+               ^
+
+"Test_name.c", line 42: error: member "t1::m_color" (declared at line 12) is inaccessible
+    return ref.m_color; // { dg-error ".int t1::m_color. is private within this context" }
+               ^
+
+"Test_name.c", line 64: error: member "t1::m_shape" (declared at line 15) is inaccessible
+    return ref.m_shape; // { dg-error ".int t1::m_shape. is protected within this context" }
+               ^
+
+"Test_name.c", line 86: error: member "t1::m_color" (declared at line 12) is inaccessible
+    return ptr->m_color; // { dg-error ".int t1::m_color. is private within this context" }
+                ^
+
+"Test_name.c", line 108: error: member "t1::m_color" (declared at line 12) is inaccessible
+    return ptr->m_color; // { dg-error ".int t1::m_color. is private within this context" }
+                ^
+
+"Test_name.c", line 130: error: member "t1::m_shape" (declared at line 15) is inaccessible
+    return ptr->m_shape; // { dg-error ".int t1::m_shape. is protected within this context" }
+                ^
+
+"Test_name.c", line 158: error: member "t1::m_color" (declared at line 12) is inaccessible
+    return ptr->m_color; // { dg-error ".int t1::m_color. is private within this context" }
+                ^
+
+"Test_name.c", line 186: error: member "t1::m_color" (declared at line 12) is inaccessible
+    return ptr->m_color; // { dg-error ".int t1::m_color. is private within this context" }
+                ^
+
+"Test_name.c", line 211: error: member "t4::m_field" (declared at line 205) is inaccessible
+    return ptr->m_field; // { dg-error ".int t4::m_field. is private within this context" }
+                ^
+
+9 errors detected in the compilation of "Test_name.c".

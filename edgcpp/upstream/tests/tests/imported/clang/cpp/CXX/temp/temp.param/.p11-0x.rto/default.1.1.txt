@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 10: error: default argument not at end of parameter list
+  template<typename T = int, typename> struct X3t; // expected-error{{template parameter missing a default argument}} expected-note{{previous default template argument defined here}}
+                    ^
+
+"Test_name.c", line 11: error: default argument not at end of parameter list
+  template<typename T = int, typename> using A3t = int; // expected-error{{template parameter missing a default argument}} expected-note{{previous default template argument defined here}}
+                    ^
+
+"Test_name.c", line 12: error: default argument not at end of parameter list
+  template<int V = 0, int> struct X3nt; // expected-error{{template parameter missing a default argument}} expected-note{{previous default template argument defined here}}
+               ^
+
+"Test_name.c", line 13: error: default argument not at end of parameter list
+  template<int V = 0, int> using A3nt = int; // expected-error{{template parameter missing a default argument}} expected-note{{previous default template argument defined here}}
+               ^
+
+"Test_name.c", line 14: error: default argument not at end of parameter list
+  template<template<class> class M = vector, template<class> class> struct X3tt; // expected-error{{template parameter missing a default argument}} expected-note{{previous default template argument defined here}}
+                                 ^
+
+"Test_name.c", line 15: error: default argument not at end of parameter list
+  template<template<class> class M = vector, template<class> class> using A3tt = int; // expected-error{{template parameter missing a default argument}} expected-note{{previous default template argument defined here}}
+                                 ^
+
+"Test_name.c", line 28: error: template parameter pack not at end of parameter list
+  template<typename ...Types, // expected-error{{template parameter pack must be the last template parameter}}
+                       ^
+
+"Test_name.c", line 31: error: too few arguments for class template "X0t"
+  X0t<int> pr9789();
+         ^
+
+"Test_name.c", line 32: error: template parameter pack not at end of parameter list
+  template<typename ...Types, // expected-error{{template parameter pack must be the last template parameter}}
+                       ^
+
+"Test_name.c", line 36: error: template parameter pack not at end of parameter list
+  template<int ...Values, // expected-error{{template parameter pack must be the last template parameter}}
+                  ^
+
+"Test_name.c", line 39: error: template parameter pack not at end of parameter list
+  template<int ...Values, // expected-error{{template parameter pack must be the last template parameter}}
+                  ^
+
+"Test_name.c", line 43: error: template parameter pack not at end of parameter list
+  template<template<typename> class ...Templates, // expected-error{{template parameter pack must be the last template parameter}}
+                                       ^
+
+"Test_name.c", line 46: error: template parameter pack not at end of parameter list
+  template<template<typename> class ...Templates, // expected-error{{template parameter pack must be the last template parameter}}
+                                       ^
+
+13 errors detected in the compilation of "Test_name.c".

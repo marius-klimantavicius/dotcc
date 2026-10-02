@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 9: warning: variable "i" is used before its value is set
+    static_cast<void(*)(int)>([i](auto){});  // { dg-error "3:invalid 'static_cast'" }
+                               ^
+
+"Test_name.c", line 9: error: no suitable conversion function from "lambda [](auto)->auto" to "void (*)(int)" exists
+    static_cast<void(*)(int)>([i](auto){});  // { dg-error "3:invalid 'static_cast'" }
+                              ^
+
+"Test_name.c", line 10: error: no suitable conversion function from "lambda [](auto)->auto" to "void (*)(int)" exists
+    static_cast<void(*)(int)>([=](auto){});  // { dg-error "3:invalid 'static_cast'" }
+                              ^
+
+"Test_name.c", line 11: error: no suitable conversion function from "lambda [](auto)->auto" to "void (*)(int)" exists
+    static_cast<void(*)(int)>([&](auto){});  // { dg-error "3:invalid 'static_cast'" }
+                              ^
+
+"Test_name.c", line 12: error: no suitable conversion function from "lambda [](auto)->auto" to "float (*)(float)" exists
+    static_cast<float(*)(float)>([i](auto x){ return x; });  // { dg-error "3:invalid 'static_cast'" }
+                                 ^
+
+"Test_name.c", line 13: error: no suitable conversion function from "lambda [](auto)->auto" to "float (*)(float)" exists
+    static_cast<float(*)(float)>([=](auto x){ return x; });  // { dg-error "3:invalid 'static_cast'" }
+                                 ^
+
+"Test_name.c", line 14: error: no suitable conversion function from "lambda [](auto)->auto" to "float (*)(float)" exists
+    static_cast<float(*)(float)>([&](auto x){ return x; });  // { dg-error "3:invalid 'static_cast'" }
+                                 ^
+
+6 errors detected in the compilation of "Test_name.c".

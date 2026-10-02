@@ -1,0 +1,82 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 11: error: an exported declaration must introduce a name
+  export; // No diagnostic after P2615R1 DR
+        ^
+
+"Test_name.c", line 12: error: an exported declaration must introduce a name
+  export static_assert(true); // No diagnostic after P2615R1 DR
+         ^
+
+"Test_name.c", line 16: error: an exported declaration must introduce a name
+    ; // No diagnostic after P2615R1 DR
+    ^
+
+"Test_name.c", line 17: error: an exported declaration must introduce a name
+    static_assert(true); // No diagnostic after P2615R1 DR
+    ^
+
+"Test_name.c", line 21: warning: declaration does not declare anything
+  export struct {}; // expected-error {{must be class member}} expected-error {{GNU extension}} expected-error {{does not declare anything}}
+         ^
+
+"Test_name.c", line 23: error: anonymous union at global or namespace scope must be declared static
+  export union {}; // expected-error {{must be declared 'static'}} expected-error {{does not declare anything}}
+         ^
+
+"Test_name.c", line 25: warning: declaration does not declare anything
+  export enum {}; // expected-error {{does not declare anything}}
+         ^
+
+"Test_name.c", line 28: warning: declaration requires a typedef name
+  export typedef int; // expected-error {{typedef requires a name}}
+                    ^
+
+"Test_name.c", line 34: warning: using-declaration ignored -- it refers to the current namespace
+    export using A::ns_mem; // expected-error {{using declaration referring to 'ns_mem' with module linkage cannot be exported}}
+                 ^
+
+"Test_name.c", line 44: error: an exported declaration must introduce a name
+  export [[]]; // No diagnostic after P2615R1 DR
+             ^
+
+"Test_name.c", line 45: warning: attribute namespace "example" is unrecognized
+  export [[example::attr]]; // expected-warning {{unknown attribute 'example::attr' ignored}}
+           ^
+
+"Test_name.c", line 45: error: an exported declaration must introduce a name
+  export [[example::attr]]; // expected-warning {{unknown attribute 'example::attr' ignored}}
+                          ^
+
+"Test_name.c", line 48: error: an export declaration cannot export a name with internal linkage
+  export static int a; // expected-error {{declaration of 'a' with internal linkage cannot be exported}}
+                    ^
+
+"Test_name.c", line 49: error: an export declaration cannot export a name with internal linkage
+  export static int b(); // expected-error {{declaration of 'b' with internal linkage cannot be exported}}
+                    ^
+
+"Test_name.c", line 50: error: an exported declaration must introduce a name
+  export namespace { } // expected-error {{anonymous namespaces cannot be exported}}
+         ^
+
+"Test_name.c", line 53: error: an export declaration cannot export a name with internal linkage
+    export int d; // expected-error {{export declaration appears within anonymous namespace}}
+               ^
+
+"Test_name.c", line 48: warning: variable "a" was declared but never referenced
+  export static int a; // expected-error {{declaration of 'a' with internal linkage cannot be exported}}
+                    ^
+
+"Test_name.c", line 49: warning: function "b" was declared but never referenced
+  export static int b(); // expected-error {{declaration of 'b' with internal linkage cannot be exported}}
+                    ^
+
+"Test_name.c", line 51: warning: variable "<unnamed>::c" was declared but never referenced
+  export namespace { int c; } // expected-error {{anonymous namespaces cannot be exported}}
+                         ^
+
+"Test_name.c", line 53: warning: variable "<unnamed>::d" was declared but never referenced
+    export int d; // expected-error {{export declaration appears within anonymous namespace}}
+               ^
+
+11 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 12: warning: unrecognized #pragma
+  #pragma omp declare variant(variant_fn) match(construct={dispatch}) adjust_args(need_device_ptr: x,y)
+          ^
+
+"Test_name.c", line 17: warning: unrecognized #pragma
+    #pragma omp dispatch is_device_ptr(y)
+            ^
+

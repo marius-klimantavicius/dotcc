@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --microsoft_v=1910 Test_name.c
+"Test_name.c", line 5: warning: nonstandard qualified name in namespace member declaration
+      template<typename> void N::f();  // Now accepted in some Microsoft modes.
+                              ^
+

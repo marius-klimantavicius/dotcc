@@ -1,0 +1,52 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 78: warning: missing return statement at end of non-void function "end(T) [with T=C]"
+  template <class T> typename M<T>::type end (T) {}
+                                                  ^
+          detected during:
+            instantiation of "M<T>::type end(T) [with T=C]" at line 100
+            instantiation of "K<Reference>::K(WrappedRange) [with Reference=int, WrappedRange=C]" at line 113
+            instantiation of "void mix_values_impl<<unnamed>,<unnamed>,<unnamed>,<unnamed>,<unnamed>,TargetReference>() [with <unnamed>=int, <unnamed>=int, <unnamed>=int, <unnamed>=int, <unnamed>=int, TargetReference=int &]" at line 120
+            instantiation of "void mix_values_driver<<unnamed>>() [with <unnamed>=int]" at line 125
+
+"Test_name.c", line 85: warning: function "operator new(unsigned long, void *)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+      m_impl = new (ptr) J (0);
+               ^
+          detected during:
+            instantiation of "any_iterator<<unnamed>>::any_iterator(WrappedIterator) [with <unnamed>=int, WrappedIterator=C::iterator]" at line 30
+            instantiation of "D<IteratorT>::D(Iterator, Iterator) [with IteratorT=any_iterator<int>, Iterator=C::iterator]" at line 41
+            instantiation of "I<IteratorT>::I(Iterator, Iterator) [with IteratorT=any_iterator<int>, Iterator=C::iterator]" at line 100
+            instantiation of "K<Reference>::K(WrappedRange) [with Reference=int, WrappedRange=C]" at line 113
+            instantiation of "void mix_values_impl<<unnamed>,<unnamed>,<unnamed>,<unnamed>,<unnamed>,TargetReference>() [with <unnamed>=int, <unnamed>=int, <unnamed>=int, <unnamed>=int, <unnamed>=int, TargetReference=int &]" at line 120
+            instantiation of "void mix_values_driver<<unnamed>>() [with <unnamed>=int]" at line 125
+
+"Test_name.c", line 78: warning: missing return statement at end of non-void function "end(T) [with T=K<int>]"
+  template <class T> typename M<T>::type end (T) {}
+                                                  ^
+          detected during:
+            instantiation of "M<T>::type end(T) [with T=K<int>]" at line 100
+            instantiation of "K<Reference>::K(WrappedRange) [with Reference=int &, WrappedRange=K<int>]" at line 114
+            instantiation of "void mix_values_impl<<unnamed>,<unnamed>,<unnamed>,<unnamed>,<unnamed>,TargetReference>() [with <unnamed>=int, <unnamed>=int, <unnamed>=int, <unnamed>=int, <unnamed>=int, TargetReference=int &]" at line 120
+            instantiation of "void mix_values_driver<<unnamed>>() [with <unnamed>=int]" at line 125
+
+"Test_name.c", line 85: warning: function "operator new(unsigned long, void *)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+      m_impl = new (ptr) J (0);
+               ^
+          detected during:
+            instantiation of "any_iterator<<unnamed>>::any_iterator(WrappedIterator) [with <unnamed>=int &, WrappedIterator=any_iterator<int>]" at line 30
+            instantiation of "D<IteratorT>::D(Iterator, Iterator) [with IteratorT=any_iterator<int &>, Iterator=any_iterator<int>]" at line 41
+            instantiation of "I<IteratorT>::I(Iterator, Iterator) [with IteratorT=any_iterator<int &>, Iterator=any_iterator<int>]" at line 100
+            instantiation of "K<Reference>::K(WrappedRange) [with Reference=int &, WrappedRange=K<int>]" at line 114
+            instantiation of "void mix_values_impl<<unnamed>,<unnamed>,<unnamed>,<unnamed>,<unnamed>,TargetReference>() [with <unnamed>=int, <unnamed>=int, <unnamed>=int, <unnamed>=int, <unnamed>=int, TargetReference=int &]" at line 120
+            instantiation of "void mix_values_driver<<unnamed>>() [with <unnamed>=int]" at line 125
+
+"Test_name.c", line 85: warning: function "operator new(unsigned long, void *)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+      m_impl = new (ptr) J (0);
+               ^
+          detected during:
+            instantiation of "any_iterator<<unnamed>>::any_iterator(WrappedIterator) [with <unnamed>=int &, WrappedIterator=int]" at line 30
+            instantiation of "D<IteratorT>::D(Iterator, Iterator) [with IteratorT=any_iterator<int &>, Iterator=any_iterator<int>]" at line 41
+            instantiation of "I<IteratorT>::I(Iterator, Iterator) [with IteratorT=any_iterator<int &>, Iterator=any_iterator<int>]" at line 100
+            instantiation of "K<Reference>::K(WrappedRange) [with Reference=int &, WrappedRange=K<int>]" at line 114
+            instantiation of "void mix_values_impl<<unnamed>,<unnamed>,<unnamed>,<unnamed>,<unnamed>,TargetReference>() [with <unnamed>=int, <unnamed>=int, <unnamed>=int, <unnamed>=int, <unnamed>=int, TargetReference=int &]" at line 120
+            instantiation of "void mix_values_driver<<unnamed>>() [with <unnamed>=int]" at line 125
+

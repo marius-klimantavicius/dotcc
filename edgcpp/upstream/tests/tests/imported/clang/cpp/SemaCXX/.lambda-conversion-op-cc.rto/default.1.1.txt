@@ -1,0 +1,48 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 -DBAD_CONVERSION -w -DBAD_CONVERSION -DWIN32 -w -DWIN32 -DBAD_VEC_CONVERS Test_name.c
+"Test_name.c", line 32: error: no operator "+" matches these operands
+            operand types are: + lambda [](auto)->auto
+    (void)+genericlambda;
+          ^
+"Test_name.c", line 32: note: built-in operator+(<promoted arithmetic>) does not match because argument #1 does not match parameter
+    (void)+genericlambda;
+          ^
+"Test_name.c", line 32: note: built-in operator+(<pointer>) does not match because argument #1 does not match parameter
+    (void)+genericlambda;
+          ^
+
+"Test_name.c", line 34: error: no operator "+" matches these operands
+            operand types are: + lambda [](auto)->auto
+    (void)+genericvectorcalllambda;
+          ^
+"Test_name.c", line 34: note: built-in operator+(<promoted arithmetic>) does not match because argument #1 does not match parameter
+    (void)+genericvectorcalllambda;
+          ^
+"Test_name.c", line 34: note: built-in operator+(<pointer>) does not match because argument #1 does not match parameter
+    (void)+genericvectorcalllambda;
+          ^
+
+"Test_name.c", line 161: error: identifier "__vectorcall" is undefined
+    void(__vectorcall * generic_ptr)(char) = genericlambda;
+         ^
+
+"Test_name.c", line 161: error: identifier "generic_ptr" is undefined
+    void(__vectorcall * generic_ptr)(char) = genericlambda;
+                        ^
+
+"Test_name.c", line 161: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+    void(__vectorcall * generic_ptr)(char) = genericlambda;
+    ^
+
+"Test_name.c", line 161: error: type name is not allowed
+    void(__vectorcall * generic_ptr)(char) = genericlambda;
+                                     ^
+
+"Test_name.c", line 168: error: "normal_ptr2" has already been declared in the current scope
+    void (*__attribute__((vectorcall)) normal_ptr2)(int, float, double) = normal;
+                                       ^
+
+"Test_name.c", line 173: error: "vectorcall_ptr2" has already been declared in the current scope
+    void (*__attribute__((vectorcall)) vectorcall_ptr2)(int, float, double) = vectorcall;
+                                       ^
+
+8 errors detected in the compilation of "Test_name.c".

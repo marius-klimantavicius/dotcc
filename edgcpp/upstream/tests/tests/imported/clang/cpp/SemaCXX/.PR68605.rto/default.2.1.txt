@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 46: warning: variable "lambda1" was declared but never referenced
+    auto lambda1 = [id = id](){ return id; }; // all-warning {{declaration shadows a structured binding}}
+         ^
+
+"Test_name.c", line 47: warning: variable "lambda2" was declared but never referenced
+    auto lambda2 = [value = value](){ return value; }; // all-warning {{declaration shadows a structured binding}}
+         ^
+
+"Test_name.c", line 57: warning: variable "lambda1" was declared but never referenced
+    auto lambda1 = [regular_var = regular_var](){}; // all-warning {{declaration shadows a local variable}}
+         ^
+
+"Test_name.c", line 58: warning: variable "lambda2" was declared but never referenced
+    auto lambda2 = [x = x](){}; // all-warning {{declaration shadows a structured binding}}
+         ^
+
+"Test_name.c", line 59: warning: variable "lambda3" was declared but never referenced
+    auto lambda3 = [y = y](){}; // all-warning {{declaration shadows a structured binding}}
+         ^
+
+"Test_name.c", line 69: warning: variable "outer" was declared but never referenced
+      int outer = 10; // expected-warning {{declaration shadows a local variable}} all-warning {{declaration shadows a local variable}}
+          ^
+
+"Test_name.c", line 70: warning: variable "a" was declared but never referenced
+      int a = 20;     // expected-warning {{declaration shadows a structured binding}} all-warning {{declaration shadows a structured binding}}
+          ^
+
+"Test_name.c", line 68: warning: variable "lambda" was declared but never referenced
+    auto lambda = [outer, a](){ // expected-note {{variable 'outer' is explicitly captured here}} all-note {{variable 'outer' is explicitly captured here}} expected-note {{variable 'a' is explicitly captured here}} all-note {{variable 'a' is explicitly captured here}}
+         ^
+

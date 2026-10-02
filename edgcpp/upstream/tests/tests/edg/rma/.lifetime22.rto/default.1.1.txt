@@ -1,0 +1,14 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 32: remark: value copied to temporary, reference to temporary used
+  	static const X &rX = "foo";
+  	                     ^
+
+"Test_name.c", line 38: remark: value copied to temporary, reference to temporary used
+  	const X &rX = "bar";
+  	              ^
+
+"Test_name.c", line 42: error: return type "int" omitted in declaration of function "main"
+  main()
+  ^
+
+1 error detected in the compilation of "Test_name.c".

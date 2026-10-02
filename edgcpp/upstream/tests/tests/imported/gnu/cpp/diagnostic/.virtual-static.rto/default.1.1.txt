@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 7: error: only nonstatic member functions may be virtual
+    virtual static void foo();  // { dg-error "3:member .foo. cannot be declared both .virtual. and .static." }
+    ^
+
+"Test_name.c", line 12: error: only nonstatic member functions may be virtual
+    static virtual void bar();  // { dg-error "10:member .bar. cannot be declared both .virtual. and .static." }
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

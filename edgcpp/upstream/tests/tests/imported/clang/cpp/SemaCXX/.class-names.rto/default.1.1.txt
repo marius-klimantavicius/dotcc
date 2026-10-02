@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 15: warning: variable "d" was declared but never referenced
+    class D d;
+            ^
+
+"Test_name.c", line 20: error: tag kind of enum is incompatible with declaration of class "D" (declared at line 10)
+  enum D; // expected-error {{use of 'D' with tag type that does not match previous declaration}}
+       ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,18 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 11: error: expected a ")"
+  A::A(int) {}
+            ^
+
+"Test_name.c", line 8: error: return type may not be specified on a constructor
+  struct A {
+  ^
+
+"Test_name.c", line 8: error: type definition is not allowed in function return type declaration
+  struct A {
+  ^
+
+"Test_name.c", line 11: error: specializing overloaded function "A::A" requires "template<>" syntax
+  A::A(int) {}
+     ^
+
+4 errors detected in the compilation of "Test_name.c".

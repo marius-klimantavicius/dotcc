@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c99 --embedded_c Test_name.c
+"Test_name.c", line 14: error: named register "_EDG_REG_1" is not a type name
+  _EDG_REG_1 x;
+  ^
+
+"Test_name.c", line 15: error: a named-register storage class is not allowed here
+  int i = sizeof(_EDG_REG_1);
+                 ^
+
+2 errors detected in the compilation of "Test_name.c".

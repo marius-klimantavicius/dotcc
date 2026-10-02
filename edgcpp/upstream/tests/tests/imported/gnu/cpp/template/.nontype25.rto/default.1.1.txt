@@ -1,0 +1,20 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 --c++17 --c++11 Test_name.c
+"Test_name.c", line 19: error: invalid nontype template argument of type "const A *"
+    C<static_cast<const A*>(&b)> c; // { dg-error "" "" { target c++17_down } }
+      ^
+
+"Test_name.c", line 21: error: invalid nontype template argument of type "B *"
+    E<const_cast<B*>(&b)> e; // { dg-error "" "" { target { ! c++11 } } }
+      ^
+
+"Test_name.c", line 12: error: invalid nontype template argument of type "const A *"
+  template<const B* b> void f(D<b> &, C<static_cast<const A*>(b)> &) {} // { dg-error "" "" { target { ! c++20 } } }
+                                        ^
+          detected during instantiation of "f" based on template argument <&b> at line 22
+
+"Test_name.c", line 13: error: invalid nontype template argument of type "B *"
+  template<const B* b> void g(D<b> &, E<const_cast<B*>(b)> &) {} // { dg-error "" "" { target { ! c++11 } } }
+                                        ^
+          detected during instantiation of "g" based on template argument <&b> at line 23
+
+4 errors detected in the compilation of "Test_name.c".

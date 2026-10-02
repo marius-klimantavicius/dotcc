@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --c99 Test_name.c
+"Test_name.c", line 15: error: expected a declaration
+  	struct X {};
+  	          ^
+
+"Test_name.c", line 15: warning: expected an identifier
+  	struct X {};
+  	           ^
+
+"Test_name.c", line 16: warning: struct or union declares no named members
+  };
+  ^
+
+"Test_name.c", line 18: error: invalid designator kind
+  struct A a[] = {.x = 37};
+                   ^
+
+2 errors detected in the compilation of "Test_name.c".

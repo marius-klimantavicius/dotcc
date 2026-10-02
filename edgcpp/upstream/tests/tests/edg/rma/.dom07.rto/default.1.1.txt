@@ -1,0 +1,18 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 26: error: "Y1::i" is ambiguous
+    Y1::i = 0;   // ambiguous (B::i or C::i ??)
+        ^
+
+"Test_name.c", line 27: error: "Z1::i" is ambiguous
+    Z1::i = 0;   // ambiguous (C::i or D::i ??)
+        ^
+
+"Test_name.c", line 28: error: "S1::i" is ambiguous
+    S1::i = 0;   // ambiguous (X::i or C::i or D::i ??)
+        ^
+
+"Test_name.c", line 29: error: "S1::i" is ambiguous
+    i = 0;       // ambiguous (ditto)
+    ^
+
+4 errors detected in the compilation of "Test_name.c".

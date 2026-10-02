@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: warning: structured bindings are a C++17 feature
+  auto&& [t] = X{};	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+         ^
+
+"Test_name.c", line 10: warning: structured bindings are a C++17 feature
+  namespace A { namespace B { auto&& [u, v, ww] = Y{}; } }	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+                                     ^
+
+"Test_name.c", line 9: warning: structured binding "t" was declared but never referenced
+  auto&& [t] = X{};	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+          ^
+
+"Test_name.c", line 10: warning: structured binding "A::B::u" was declared but never referenced
+  namespace A { namespace B { auto&& [u, v, ww] = Y{}; } }	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+                                      ^
+

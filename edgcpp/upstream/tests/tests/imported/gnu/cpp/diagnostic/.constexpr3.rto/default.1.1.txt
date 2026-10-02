@@ -1,0 +1,31 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 25: error: expression must have a constant value
+    constexpr X x{i}; // { dg-error "not a constant expression" }
+                 ^
+"Test_name.c", line 25: note: attempt to access run-time storage
+    constexpr X x{i}; // { dg-error "not a constant expression" }
+                 ^
+
+"Test_name.c", line 27: error: expression must have a constant value
+    constexpr const int *p = &i; // { dg-error "not a constant expression" }
+                             ^
+"Test_name.c", line 27: note: attempt to access run-time storage
+    constexpr const int *p = &i; // { dg-error "not a constant expression" }
+                             ^
+
+"Test_name.c", line 30: error: expression must have a constant value
+    constexpr A a = foo (); // { dg-error "not a constant expression" }
+                    ^
+"Test_name.c", line 30: note: invalid use of address of interpreter storage
+    constexpr A a = foo (); // { dg-error "not a constant expression" }
+                    ^
+
+"Test_name.c", line 33: internal error: assertion failed at: "expr.c", line <suppressed> in scan_builtin_pseudo_call
+
+    constexpr const int *q = __builtin_launder (&i); // { dg-error "not a constant expression" }
+                             ^
+
+3 errors and 1 catastrophic error detected in the compilation of "Test_name.c".
+Compilation aborted.
+Aborted
+eccp: front end returned an exit status of 134

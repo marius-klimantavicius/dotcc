@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 --exceptions --exceptions Test_name.c
+"Test_name.c", line 27: warning: statement is unreachable
+    throw x2;
+    ^
+
+"Test_name.c", line 43: error: function "PR10142::X::X(const PR10142::X &)" (declared at line 34) cannot be referenced -- it is a deleted function
+        throw x; // expected-error{{call to deleted constructor of 'X'}}
+              ^
+
+"Test_name.c", line 55: error: function "PR10142::X::X(const PR10142::X &)" (declared at line 34) cannot be referenced -- it is a deleted function
+        throw x; // expected-error{{call to deleted constructor of 'PR10142::X'}}
+              ^
+          detected during instantiation of "void PR10142::f2<T>(int) [with T=PR10142::X]" at line 60
+
+2 errors detected in the compilation of "Test_name.c".

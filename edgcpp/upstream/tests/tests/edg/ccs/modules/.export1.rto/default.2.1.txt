@@ -1,0 +1,78 @@
+fe_only -DTEST_NUMBER=2 --c++20 --set_flag skip_module_imports -DNEG Test_name.c
+"Test_name.c", line 11: error: an export declaration cannot contain a module import declaration
+    import MOD3; // An export declaration cannot contain a module import declaration
+    ^
+
+"Test_name.c", line 14: error: an exported declaration must introduce a name
+  export ; // Does not introduce any names
+         ^
+
+"Test_name.c", line 15: error: an exported declaration must introduce a name
+  export {} // Does not introduce any names
+  ^
+
+"Test_name.c", line 17: error: an exported declaration must introduce a name
+    namespace {} // Does not introduce any names
+    ^
+
+"Test_name.c", line 19: error: an exported declaration must introduce a name
+  export { // Does not introduce any names
+  ^
+
+"Test_name.c", line 24: error: an export declaration cannot contain an export declaration (previous declaration at line 23)
+    export int var; // Export inside export
+    ^
+
+"Test_name.c", line 26: error: an export declaration cannot contain an export declaration (previous declaration at line 26)
+  export export {} // Export inside export + does not introduce any names
+         ^
+
+"Test_name.c", line 26: error: an exported declaration must introduce a name
+  export export {} // Export inside export + does not introduce any names
+         ^
+
+"Test_name.c", line 28: error: an export declaration cannot contain an export declaration (previous declaration at line 27)
+    export {} // Export inside export + does not introduce any names
+    ^
+
+"Test_name.c", line 28: error: an exported declaration must introduce a name
+    export {} // Export inside export + does not introduce any names
+    ^
+
+"Test_name.c", line 30: error: an exported declaration must introduce a name
+  export namespace {} // Does not introduce any names
+         ^
+
+"Test_name.c", line 35: error: an export declaration cannot export a name with internal linkage
+    export int a2; // Internal linkage
+               ^
+
+"Test_name.c", line 37: error: an export declaration cannot export a name with internal linkage
+  export static int b; // Internal linkage
+                    ^
+
+"Test_name.c", line 38: error: "export" is not allowed
+  int export global_var = b + a1 + a2; // export in the wrong location
+      ^
+
+"Test_name.c", line 59: error: an export declaration cannot export a name with internal linkage
+  export using N::f;  // N::f(int) has internal linkage
+               ^
+
+"Test_name.c", line 68: error: an exported declaration must introduce a name
+  export using namespace N2; // Does not introduce any names
+         ^
+
+"Test_name.c", line 72: error: an export declaration cannot export a name with internal linkage
+  export using namespace N4; // N4::c4 has internal linkage
+         ^
+
+"Test_name.c", line 86: error: "export" is not allowed
+    export private: // Not a declaration
+    ^
+
+"Test_name.c", line 87: error: exporting individual class members is not allowed
+    export int foo; // Exporting class member
+    ^
+
+19 errors detected in the compilation of "Test_name.c".

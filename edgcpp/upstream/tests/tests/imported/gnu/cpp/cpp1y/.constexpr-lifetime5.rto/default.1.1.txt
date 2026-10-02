@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 6: warning: returning reference to local variable
+  constexpr const int& id(int x) { return x; }
+                                          ^
+
+"Test_name.c", line 13: error: expression must have a constant value
+  constexpr bool x = test();  // { dg-message "in .constexpr. expansion" }
+                     ^
+"Test_name.c", line 10: note: attempt to access expired storage
+    return y == 3;  // { dg-error "outside its lifetime" }
+           ^
+
+"Test_name.c", line 13: warning: variable "x" was declared but never referenced
+  constexpr bool x = test();  // { dg-message "in .constexpr. expansion" }
+                 ^
+
+1 error detected in the compilation of "Test_name.c".

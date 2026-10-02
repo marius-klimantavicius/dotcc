@@ -1,0 +1,233 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"./c99-stdint-6.c", line 19: warning: variable "b" was declared but never referenced
+    do { signed char a; int8_t *b = &a; int8_t c; signed char *d = &c; } while (0);
+                                ^
+
+"./c99-stdint-6.c", line 19: warning: variable "d" was declared but never referenced
+    do { signed char a; int8_t *b = &a; int8_t c; signed char *d = &c; } while (0);
+                                                               ^
+
+"./c99-stdint-6.c", line 22: warning: variable "b" was declared but never referenced
+    do { short int a; int16_t *b = &a; int16_t c; short int *d = &c; } while (0);
+                               ^
+
+"./c99-stdint-6.c", line 22: warning: variable "d" was declared but never referenced
+    do { short int a; int16_t *b = &a; int16_t c; short int *d = &c; } while (0);
+                                                             ^
+
+"./c99-stdint-6.c", line 25: warning: variable "b" was declared but never referenced
+    do { int a; int32_t *b = &a; int32_t c; int *d = &c; } while (0);
+                         ^
+
+"./c99-stdint-6.c", line 25: warning: variable "d" was declared but never referenced
+    do { int a; int32_t *b = &a; int32_t c; int *d = &c; } while (0);
+                                                 ^
+
+"./c99-stdint-6.c", line 28: warning: variable "b" was declared but never referenced
+    do { long int a; int64_t *b = &a; int64_t c; long int *d = &c; } while (0);
+                              ^
+
+"./c99-stdint-6.c", line 28: warning: variable "d" was declared but never referenced
+    do { long int a; int64_t *b = &a; int64_t c; long int *d = &c; } while (0);
+                                                           ^
+
+"./c99-stdint-6.c", line 31: warning: variable "b" was declared but never referenced
+    do { unsigned char a; uint8_t *b = &a; uint8_t c; unsigned char *d = &c; } while (0);
+                                   ^
+
+"./c99-stdint-6.c", line 31: warning: variable "d" was declared but never referenced
+    do { unsigned char a; uint8_t *b = &a; uint8_t c; unsigned char *d = &c; } while (0);
+                                                                     ^
+
+"./c99-stdint-6.c", line 34: warning: variable "b" was declared but never referenced
+    do { short unsigned int a; uint16_t *b = &a; uint16_t c; short unsigned int *d = &c; } while (0);
+                                         ^
+
+"./c99-stdint-6.c", line 34: warning: variable "d" was declared but never referenced
+    do { short unsigned int a; uint16_t *b = &a; uint16_t c; short unsigned int *d = &c; } while (0);
+                                                                                 ^
+
+"./c99-stdint-6.c", line 37: warning: variable "b" was declared but never referenced
+    do { unsigned int a; uint32_t *b = &a; uint32_t c; unsigned int *d = &c; } while (0);
+                                   ^
+
+"./c99-stdint-6.c", line 37: warning: variable "d" was declared but never referenced
+    do { unsigned int a; uint32_t *b = &a; uint32_t c; unsigned int *d = &c; } while (0);
+                                                                     ^
+
+"./c99-stdint-6.c", line 40: warning: variable "b" was declared but never referenced
+    do { long unsigned int a; uint64_t *b = &a; uint64_t c; long unsigned int *d = &c; } while (0);
+                                        ^
+
+"./c99-stdint-6.c", line 40: warning: variable "d" was declared but never referenced
+    do { long unsigned int a; uint64_t *b = &a; uint64_t c; long unsigned int *d = &c; } while (0);
+                                                                               ^
+
+"./c99-stdint-6.c", line 43: warning: variable "b" was declared but never referenced
+    do { signed char a; int_least8_t *b = &a; int_least8_t c; signed char *d = &c; } while (0);
+                                      ^
+
+"./c99-stdint-6.c", line 43: warning: variable "d" was declared but never referenced
+    do { signed char a; int_least8_t *b = &a; int_least8_t c; signed char *d = &c; } while (0);
+                                                                           ^
+
+"./c99-stdint-6.c", line 44: warning: variable "b" was declared but never referenced
+    do { short int a; int_least16_t *b = &a; int_least16_t c; short int *d = &c; } while (0);
+                                     ^
+
+"./c99-stdint-6.c", line 44: warning: variable "d" was declared but never referenced
+    do { short int a; int_least16_t *b = &a; int_least16_t c; short int *d = &c; } while (0);
+                                                                         ^
+
+"./c99-stdint-6.c", line 45: warning: variable "b" was declared but never referenced
+    do { int a; int_least32_t *b = &a; int_least32_t c; int *d = &c; } while (0);
+                               ^
+
+"./c99-stdint-6.c", line 45: warning: variable "d" was declared but never referenced
+    do { int a; int_least32_t *b = &a; int_least32_t c; int *d = &c; } while (0);
+                                                             ^
+
+"./c99-stdint-6.c", line 46: warning: variable "b" was declared but never referenced
+    do { long int a; int_least64_t *b = &a; int_least64_t c; long int *d = &c; } while (0);
+                                    ^
+
+"./c99-stdint-6.c", line 46: warning: variable "d" was declared but never referenced
+    do { long int a; int_least64_t *b = &a; int_least64_t c; long int *d = &c; } while (0);
+                                                                       ^
+
+"./c99-stdint-6.c", line 47: warning: variable "b" was declared but never referenced
+    do { unsigned char a; uint_least8_t *b = &a; uint_least8_t c; unsigned char *d = &c; } while (0);
+                                         ^
+
+"./c99-stdint-6.c", line 47: warning: variable "d" was declared but never referenced
+    do { unsigned char a; uint_least8_t *b = &a; uint_least8_t c; unsigned char *d = &c; } while (0);
+                                                                                 ^
+
+"./c99-stdint-6.c", line 48: warning: variable "b" was declared but never referenced
+    do { short unsigned int a; uint_least16_t *b = &a; uint_least16_t c; short unsigned int *d = &c; } while (0);
+                                               ^
+
+"./c99-stdint-6.c", line 48: warning: variable "d" was declared but never referenced
+    do { short unsigned int a; uint_least16_t *b = &a; uint_least16_t c; short unsigned int *d = &c; } while (0);
+                                                                                             ^
+
+"./c99-stdint-6.c", line 49: warning: variable "b" was declared but never referenced
+    do { unsigned int a; uint_least32_t *b = &a; uint_least32_t c; unsigned int *d = &c; } while (0);
+                                         ^
+
+"./c99-stdint-6.c", line 49: warning: variable "d" was declared but never referenced
+    do { unsigned int a; uint_least32_t *b = &a; uint_least32_t c; unsigned int *d = &c; } while (0);
+                                                                                 ^
+
+"./c99-stdint-6.c", line 50: warning: variable "b" was declared but never referenced
+    do { long unsigned int a; uint_least64_t *b = &a; uint_least64_t c; long unsigned int *d = &c; } while (0);
+                                              ^
+
+"./c99-stdint-6.c", line 50: warning: variable "d" was declared but never referenced
+    do { long unsigned int a; uint_least64_t *b = &a; uint_least64_t c; long unsigned int *d = &c; } while (0);
+                                                                                           ^
+
+"./c99-stdint-6.c", line 53: warning: variable "b" was declared but never referenced
+    do { signed char a; int_fast8_t *b = &a; int_fast8_t c; signed char *d = &c; } while (0);
+                                     ^
+
+"./c99-stdint-6.c", line 53: warning: variable "d" was declared but never referenced
+    do { signed char a; int_fast8_t *b = &a; int_fast8_t c; signed char *d = &c; } while (0);
+                                                                         ^
+
+"./c99-stdint-6.c", line 54: warning: variable "b" was declared but never referenced
+    do { long int a; int_fast16_t *b = &a; int_fast16_t c; long int *d = &c; } while (0);
+                                   ^
+
+"./c99-stdint-6.c", line 54: warning: variable "d" was declared but never referenced
+    do { long int a; int_fast16_t *b = &a; int_fast16_t c; long int *d = &c; } while (0);
+                                                                     ^
+
+"./c99-stdint-6.c", line 55: warning: variable "b" was declared but never referenced
+    do { long int a; int_fast32_t *b = &a; int_fast32_t c; long int *d = &c; } while (0);
+                                   ^
+
+"./c99-stdint-6.c", line 55: warning: variable "d" was declared but never referenced
+    do { long int a; int_fast32_t *b = &a; int_fast32_t c; long int *d = &c; } while (0);
+                                                                     ^
+
+"./c99-stdint-6.c", line 56: warning: variable "b" was declared but never referenced
+    do { long int a; int_fast64_t *b = &a; int_fast64_t c; long int *d = &c; } while (0);
+                                   ^
+
+"./c99-stdint-6.c", line 56: warning: variable "d" was declared but never referenced
+    do { long int a; int_fast64_t *b = &a; int_fast64_t c; long int *d = &c; } while (0);
+                                                                     ^
+
+"./c99-stdint-6.c", line 57: warning: variable "b" was declared but never referenced
+    do { unsigned char a; uint_fast8_t *b = &a; uint_fast8_t c; unsigned char *d = &c; } while (0);
+                                        ^
+
+"./c99-stdint-6.c", line 57: warning: variable "d" was declared but never referenced
+    do { unsigned char a; uint_fast8_t *b = &a; uint_fast8_t c; unsigned char *d = &c; } while (0);
+                                                                               ^
+
+"./c99-stdint-6.c", line 58: warning: variable "b" was declared but never referenced
+    do { long unsigned int a; uint_fast16_t *b = &a; uint_fast16_t c; long unsigned int *d = &c; } while (0);
+                                             ^
+
+"./c99-stdint-6.c", line 58: warning: variable "d" was declared but never referenced
+    do { long unsigned int a; uint_fast16_t *b = &a; uint_fast16_t c; long unsigned int *d = &c; } while (0);
+                                                                                         ^
+
+"./c99-stdint-6.c", line 59: warning: variable "b" was declared but never referenced
+    do { long unsigned int a; uint_fast32_t *b = &a; uint_fast32_t c; long unsigned int *d = &c; } while (0);
+                                             ^
+
+"./c99-stdint-6.c", line 59: warning: variable "d" was declared but never referenced
+    do { long unsigned int a; uint_fast32_t *b = &a; uint_fast32_t c; long unsigned int *d = &c; } while (0);
+                                                                                         ^
+
+"./c99-stdint-6.c", line 60: warning: variable "b" was declared but never referenced
+    do { long unsigned int a; uint_fast64_t *b = &a; uint_fast64_t c; long unsigned int *d = &c; } while (0);
+                                             ^
+
+"./c99-stdint-6.c", line 60: warning: variable "d" was declared but never referenced
+    do { long unsigned int a; uint_fast64_t *b = &a; uint_fast64_t c; long unsigned int *d = &c; } while (0);
+                                                                                         ^
+
+"./c99-stdint-6.c", line 63: warning: variable "b" was declared but never referenced
+    do { long int a; intptr_t *b = &a; intptr_t c; long int *d = &c; } while (0);
+                               ^
+
+"./c99-stdint-6.c", line 63: warning: variable "d" was declared but never referenced
+    do { long int a; intptr_t *b = &a; intptr_t c; long int *d = &c; } while (0);
+                                                             ^
+
+"./c99-stdint-6.c", line 66: warning: variable "b" was declared but never referenced
+    do { long unsigned int a; uintptr_t *b = &a; uintptr_t c; long unsigned int *d = &c; } while (0);
+                                         ^
+
+"./c99-stdint-6.c", line 66: warning: variable "d" was declared but never referenced
+    do { long unsigned int a; uintptr_t *b = &a; uintptr_t c; long unsigned int *d = &c; } while (0);
+                                                                                 ^
+
+"./c99-stdint-6.c", line 69: warning: variable "b" was declared but never referenced
+    do { long int a; intmax_t *b = &a; intmax_t c; long int *d = &c; } while (0);
+                               ^
+
+"./c99-stdint-6.c", line 69: warning: variable "d" was declared but never referenced
+    do { long int a; intmax_t *b = &a; intmax_t c; long int *d = &c; } while (0);
+                                                             ^
+
+"./c99-stdint-6.c", line 70: warning: variable "b" was declared but never referenced
+    do { long unsigned int a; uintmax_t *b = &a; uintmax_t c; long unsigned int *d = &c; } while (0);
+                                         ^
+
+"./c99-stdint-6.c", line 70: warning: variable "d" was declared but never referenced
+    do { long unsigned int a; uintmax_t *b = &a; uintmax_t c; long unsigned int *d = &c; } while (0);
+                                                                                 ^
+
+"./c99-stdint-6.c", line 73: warning: variable "b" was declared but never referenced
+    do { int a; sig_atomic_t *b = &a; sig_atomic_t c; int *d = &c; } while (0);
+                              ^
+
+"./c99-stdint-6.c", line 73: warning: variable "d" was declared but never referenced
+    do { int a; sig_atomic_t *b = &a; sig_atomic_t c; int *d = &c; } while (0);
+                                                           ^
+

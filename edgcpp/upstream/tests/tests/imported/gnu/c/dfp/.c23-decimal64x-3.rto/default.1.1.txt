@@ -1,0 +1,102 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 7: error: identifier "_Decimal64x" is undefined
+  _Decimal64x a = __builtin_infd64x ();
+  ^
+
+"Test_name.c", line 7: error: function call is not allowed in a constant expression
+  _Decimal64x a = __builtin_infd64x ();
+                  ^
+
+"Test_name.c", line 8: error: identifier "_Decimal64x" is undefined
+  _Decimal64x b = __builtin_nand64x ("");
+  ^
+
+"Test_name.c", line 8: error: function call is not allowed in a constant expression
+  _Decimal64x b = __builtin_nand64x ("");
+                  ^
+
+"Test_name.c", line 9: error: identifier "_Decimal64x" is undefined
+  _Decimal64x c = __builtin_nansd64x ("");
+  ^
+
+"Test_name.c", line 9: error: function call is not allowed in a constant expression
+  _Decimal64x c = __builtin_nansd64x ("");
+                  ^
+
+"Test_name.c", line 10: error: identifier "_Decimal64x" is undefined
+  _Decimal64x d = -42.D64x;
+  ^
+
+"Test_name.c", line 10: error: extra text after expected end of number
+  _Decimal64x d = -42.D64x;
+                      ^
+
+"Test_name.c", line 11: error: identifier "_Decimal64x" is undefined
+  _Decimal64x e = 5.25d64x;
+  ^
+
+"Test_name.c", line 11: error: extra text after expected end of number
+  _Decimal64x e = 5.25d64x;
+                      ^
+
+"Test_name.c", line 16: warning: function "__builtin_fabsd64x" declared implicitly
+    if (__builtin_fabsd64x (-2.5d64x) != 2.5D64x
+        ^
+
+"Test_name.c", line 16: error: extra text after expected end of number
+    if (__builtin_fabsd64x (-2.5d64x) != 2.5D64x
+                                ^
+
+"Test_name.c", line 16: error: extra text after expected end of number
+    if (__builtin_fabsd64x (-2.5d64x) != 2.5D64x
+                                            ^
+
+"Test_name.c", line 17: error: extra text after expected end of number
+        || __builtin_fabsd64x (42.25D64x) != 42.25d64x
+                                    ^
+
+"Test_name.c", line 17: error: extra text after expected end of number
+        || __builtin_fabsd64x (42.25D64x) != 42.25d64x
+                                                  ^
+
+"Test_name.c", line 18: error: extra text after expected end of number
+        || __builtin_fabsd64x (d) != 42.d64x
+                                        ^
+
+"Test_name.c", line 19: error: extra text after expected end of number
+        || __builtin_fabsd64x (e) != 5.25D64x
+                                         ^
+
+"Test_name.c", line 20: error: extra text after expected end of number
+        || __builtin_isinf (42.d64x)
+                               ^
+
+"Test_name.c", line 21: error: extra text after expected end of number
+        || __builtin_isnan (0.d64x)
+                              ^
+
+"Test_name.c", line 22: warning: function "__builtin_infd64x" declared implicitly
+        || !__builtin_isinf (__builtin_infd64x ())
+                             ^
+
+"Test_name.c", line 22: error: function call requires a real floating-point argument
+        || !__builtin_isinf (__builtin_infd64x ())
+                            ^
+
+"Test_name.c", line 23: warning: function "__builtin_nand64x" declared implicitly
+        || !__builtin_isnan (__builtin_nand64x (""))
+                             ^
+
+"Test_name.c", line 23: error: function call requires a real floating-point argument
+        || !__builtin_isnan (__builtin_nand64x (""))
+                            ^
+
+"Test_name.c", line 25: error: function call requires a real floating-point argument
+        || !__builtin_isnan (b)
+                            ^
+
+"Test_name.c", line 26: error: function call requires a real floating-point argument
+        || !__builtin_isnan (c))
+                            ^
+
+22 errors detected in the compilation of "Test_name.c".

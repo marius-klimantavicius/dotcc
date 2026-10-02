@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 18: warning: variable "k" was declared but never referenced
+  constexpr static const int k = j->s[0];
+                             ^
+
+"Test_name.c", line 19: warning: variable "l" was declared but never referenced
+  constexpr static int l = foo (a[0].s);
+                       ^
+
+"Test_name.c", line 20: warning: variable "m" was declared but never referenced
+  constexpr static int m = foo (j->s);
+                       ^
+
+"Test_name.c", line 22: warning: variable "o" was declared but never referenced
+  constexpr static const int o = n->s[0];
+                             ^
+
+"Test_name.c", line 23: warning: variable "p" was declared but never referenced
+  constexpr static int p = foo (b[0].s);
+                       ^
+
+"Test_name.c", line 24: warning: variable "q" was declared but never referenced
+  constexpr static int q = foo (n->s);
+                       ^
+

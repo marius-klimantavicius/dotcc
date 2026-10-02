@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 9: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  auto XL0 = [] constexpr { return true; };
+                ^
+
+"Test_name.c", line 17: error: duplicate specifier in declaration
+      mutable             // expected-error{{cannot appear multiple times}}
+      ^
+
+"Test_name.c", line 18: error: duplicate specifier in declaration
+      mutable {};         // expected-error{{cannot appear multiple times}}
+      ^
+
+"Test_name.c", line 21: error: duplicate specifier in declaration
+  auto XL2 = [] () constexpr mutable constexpr { }; //expected-error{{cannot appear multiple times}}
+                                     ^
+
+"Test_name.c", line 27: error: duplicate specifier in declaration
+                    constexpr   //expected-error{{cannot appear multiple times}}
+                    ^
+
+"Test_name.c", line 28: error: duplicate specifier in declaration
+                    mutable     //expected-error{{cannot appear multiple times}}
+                    ^
+
+"Test_name.c", line 29: error: duplicate specifier in declaration
+                    mutable     //expected-error{{cannot appear multiple times}}
+                    ^
+
+"Test_name.c", line 30: error: duplicate specifier in declaration
+                    constexpr   //expected-error{{cannot appear multiple times}}
+                    ^
+
+"Test_name.c", line 31: error: duplicate specifier in declaration
+                    constexpr   //expected-error{{cannot appear multiple times}}
+                    ^
+
+8 errors detected in the compilation of "Test_name.c".

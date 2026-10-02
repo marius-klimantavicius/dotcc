@@ -1,0 +1,249 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 12: warning: unknown attribute "swiftcall"
+  int notAFunction SWIFTCALL; // expected-warning {{'swiftcall' only applies to function types; type here is 'int'}}
+                   ^
+
+"Test_name.c", line 13: warning: unknown attribute "swiftasynccall"
+  int notAnAsyncFunction SWIFTASYNCCALL; // expected-warning {{'swiftasynccall' only applies to function types; type here is 'int'}}
+                         ^
+
+"Test_name.c", line 14: warning: unknown attribute "swiftcall"
+  void variadic(int x, ...) SWIFTCALL; // expected-error {{variadic function cannot use swiftcall calling convention}}
+                            ^
+
+"Test_name.c", line 15: warning: unknown attribute "swiftasynccall"
+  void variadic_async(int x, ...) SWIFTASYNCCALL; // expected-error {{variadic function cannot use swiftasynccall calling convention}}
+                                  ^
+
+"Test_name.c", line 16: warning: unknown attribute "swiftcall"
+  void multiple_ccs(int x) SWIFTCALL __attribute__((vectorcall)); // expected-error {{vectorcall and swiftcall attributes are not compatible}}
+                           ^
+
+"Test_name.c", line 16: warning: unknown attribute "vectorcall"
+  void multiple_ccs(int x) SWIFTCALL __attribute__((vectorcall)); // expected-error {{vectorcall and swiftcall attributes are not compatible}}
+                                                    ^
+
+"Test_name.c", line 17: warning: unknown attribute "swiftasynccall"
+  void multiple_ccs_async(int x) SWIFTASYNCCALL __attribute__((vectorcall)); // expected-error {{vectorcall and swiftasynccall attributes are not compatible}}
+                                 ^
+
+"Test_name.c", line 17: warning: unknown attribute "vectorcall"
+  void multiple_ccs_async(int x) SWIFTASYNCCALL __attribute__((vectorcall)); // expected-error {{vectorcall and swiftasynccall attributes are not compatible}}
+                                                               ^
+
+"Test_name.c", line 18: warning: unknown attribute "swiftcall"
+  void (*functionPointer)(void) SWIFTCALL;
+                                ^
+
+"Test_name.c", line 19: warning: unknown attribute "swiftasynccall"
+  void (*asyncFunctionPointer)(void) SWIFTASYNCCALL;
+                                     ^
+
+"Test_name.c", line 21: warning: unknown attribute "swift_indirect_result"
+  void indirect_result_nonswift(INDIRECT_RESULT void *out); // expected-error {{'swift_indirect_result' parameter can only be used with swiftcall or swiftasynccall calling convention}}
+                                ^
+
+"Test_name.c", line 22: warning: unknown attribute "swift_indirect_result"
+  void indirect_result_bad_position(int first, INDIRECT_RESULT void *out) SWIFTCALL; // expected-error {{'swift_indirect_result' parameters must be first parameters of function}}
+                                               ^
+
+"Test_name.c", line 22: warning: unknown attribute "swiftcall"
+  void indirect_result_bad_position(int first, INDIRECT_RESULT void *out) SWIFTCALL; // expected-error {{'swift_indirect_result' parameters must be first parameters of function}}
+                                                                          ^
+
+"Test_name.c", line 23: warning: unknown attribute "swift_indirect_result"
+  void indirect_result_bad_type(INDIRECT_RESULT int out) SWIFTCALL; // expected-error {{'swift_indirect_result' parameter must have pointer type; type here is 'int'}}
+                                ^
+
+"Test_name.c", line 23: warning: unknown attribute "swiftcall"
+  void indirect_result_bad_type(INDIRECT_RESULT int out) SWIFTCALL; // expected-error {{'swift_indirect_result' parameter must have pointer type; type here is 'int'}}
+                                                         ^
+
+"Test_name.c", line 24: warning: unknown attribute "swift_indirect_result"
+  void indirect_result_single(INDIRECT_RESULT void *out) SWIFTCALL;
+                              ^
+
+"Test_name.c", line 24: warning: unknown attribute "swiftcall"
+  void indirect_result_single(INDIRECT_RESULT void *out) SWIFTCALL;
+                                                         ^
+
+"Test_name.c", line 25: warning: unknown attribute "swift_indirect_result"
+  void indirect_result_multiple(INDIRECT_RESULT void *out1, INDIRECT_RESULT void *out2) SWIFTCALL;
+                                ^
+
+"Test_name.c", line 25: warning: unknown attribute "swift_indirect_result"
+  void indirect_result_multiple(INDIRECT_RESULT void *out1, INDIRECT_RESULT void *out2) SWIFTCALL;
+                                                            ^
+
+"Test_name.c", line 25: warning: unknown attribute "swiftcall"
+  void indirect_result_multiple(INDIRECT_RESULT void *out1, INDIRECT_RESULT void *out2) SWIFTCALL;
+                                                                                        ^
+
+"Test_name.c", line 26: warning: unknown attribute "swift_indirect_result"
+  void indirect_result_single_async(INDIRECT_RESULT void *out) SWIFTASYNCCALL;
+                                    ^
+
+"Test_name.c", line 26: warning: unknown attribute "swiftasynccall"
+  void indirect_result_single_async(INDIRECT_RESULT void *out) SWIFTASYNCCALL;
+                                                               ^
+
+"Test_name.c", line 27: warning: unknown attribute "swift_indirect_result"
+  void indirect_result_multiple_async(INDIRECT_RESULT void *out1, INDIRECT_RESULT void *out2) SWIFTASYNCCALL;
+                                      ^
+
+"Test_name.c", line 27: warning: unknown attribute "swift_indirect_result"
+  void indirect_result_multiple_async(INDIRECT_RESULT void *out1, INDIRECT_RESULT void *out2) SWIFTASYNCCALL;
+                                                                  ^
+
+"Test_name.c", line 27: warning: unknown attribute "swiftasynccall"
+  void indirect_result_multiple_async(INDIRECT_RESULT void *out1, INDIRECT_RESULT void *out2) SWIFTASYNCCALL;
+                                                                                              ^
+
+"Test_name.c", line 29: warning: unknown attribute "swift_error_result"
+  void error_result_nonswift(ERROR_RESULT void **error); // expected-error {{'swift_error_result' parameter can only be used with swiftcall calling convention}} expected-error{{'swift_error_result' parameter must follow 'swift_context' parameter}}
+                             ^
+
+"Test_name.c", line 30: warning: unknown attribute "swift_error_result"
+  void error_result_bad_position2(int first, ERROR_RESULT void **error) SWIFTCALL; // expected-error {{'swift_error_result' parameter must follow 'swift_context' parameter}}
+                                             ^
+
+"Test_name.c", line 30: warning: unknown attribute "swiftcall"
+  void error_result_bad_position2(int first, ERROR_RESULT void **error) SWIFTCALL; // expected-error {{'swift_error_result' parameter must follow 'swift_context' parameter}}
+                                                                        ^
+
+"Test_name.c", line 31: warning: unknown attribute "swift_context"
+  void error_result_bad_type(CONTEXT void *context, ERROR_RESULT int error) SWIFTCALL; // expected-error {{'swift_error_result' parameter must have pointer to unqualified pointer type; type here is 'int'}}
+                             ^
+
+"Test_name.c", line 31: warning: unknown attribute "swift_error_result"
+  void error_result_bad_type(CONTEXT void *context, ERROR_RESULT int error) SWIFTCALL; // expected-error {{'swift_error_result' parameter must have pointer to unqualified pointer type; type here is 'int'}}
+                                                    ^
+
+"Test_name.c", line 31: warning: unknown attribute "swiftcall"
+  void error_result_bad_type(CONTEXT void *context, ERROR_RESULT int error) SWIFTCALL; // expected-error {{'swift_error_result' parameter must have pointer to unqualified pointer type; type here is 'int'}}
+                                                                            ^
+
+"Test_name.c", line 32: warning: unknown attribute "swift_context"
+  void error_result_bad_type2(CONTEXT void *context, ERROR_RESULT int *error) SWIFTCALL; // expected-error {{'swift_error_result' parameter must have pointer to unqualified pointer type; type here is 'int *'}}
+                              ^
+
+"Test_name.c", line 32: warning: unknown attribute "swift_error_result"
+  void error_result_bad_type2(CONTEXT void *context, ERROR_RESULT int *error) SWIFTCALL; // expected-error {{'swift_error_result' parameter must have pointer to unqualified pointer type; type here is 'int *'}}
+                                                     ^
+
+"Test_name.c", line 32: warning: unknown attribute "swiftcall"
+  void error_result_bad_type2(CONTEXT void *context, ERROR_RESULT int *error) SWIFTCALL; // expected-error {{'swift_error_result' parameter must have pointer to unqualified pointer type; type here is 'int *'}}
+                                                                              ^
+
+"Test_name.c", line 33: warning: unknown attribute "swift_context"
+  void error_result_okay(int a, int b, CONTEXT void *context, ERROR_RESULT void **error) SWIFTCALL;
+                                       ^
+
+"Test_name.c", line 33: warning: unknown attribute "swift_error_result"
+  void error_result_okay(int a, int b, CONTEXT void *context, ERROR_RESULT void **error) SWIFTCALL;
+                                                              ^
+
+"Test_name.c", line 33: warning: unknown attribute "swiftcall"
+  void error_result_okay(int a, int b, CONTEXT void *context, ERROR_RESULT void **error) SWIFTCALL;
+                                                                                         ^
+
+"Test_name.c", line 34: warning: unknown attribute "swift_context"
+  void error_result_okay(CONTEXT void *context, ERROR_RESULT void **error, void *selfType, char **selfWitnessTable) SWIFTCALL;
+                         ^
+
+"Test_name.c", line 34: warning: unknown attribute "swift_error_result"
+  void error_result_okay(CONTEXT void *context, ERROR_RESULT void **error, void *selfType, char **selfWitnessTable) SWIFTCALL;
+                                                ^
+
+"Test_name.c", line 34: warning: unknown attribute "swiftcall"
+  void error_result_okay(CONTEXT void *context, ERROR_RESULT void **error, void *selfType, char **selfWitnessTable) SWIFTCALL;
+                                                                                                                    ^
+
+"Test_name.c", line 36: warning: unknown attribute "swift_context"
+  void context_nonswift(CONTEXT void *context); // expected-error {{'swift_context' parameter can only be used with swiftcall or swiftasynccall calling convention}}
+                        ^
+
+"Test_name.c", line 37: warning: unknown attribute "swift_context"
+  void context_bad_type(CONTEXT int context) SWIFTCALL; // expected-error {{'swift_context' parameter must have pointer type; type here is 'int'}}
+                        ^
+
+"Test_name.c", line 37: warning: unknown attribute "swiftcall"
+  void context_bad_type(CONTEXT int context) SWIFTCALL; // expected-error {{'swift_context' parameter must have pointer type; type here is 'int'}}
+                                             ^
+
+"Test_name.c", line 38: warning: unknown attribute "swift_context"
+  void context_okay(CONTEXT void *context) SWIFTCALL;
+                    ^
+
+"Test_name.c", line 38: warning: unknown attribute "swiftcall"
+  void context_okay(CONTEXT void *context) SWIFTCALL;
+                                           ^
+
+"Test_name.c", line 39: warning: unknown attribute "swift_context"
+  void context_okay(CONTEXT void *context, void *selfType, char **selfWitnessTable) SWIFTCALL;
+                    ^
+
+"Test_name.c", line 39: warning: unknown attribute "swiftcall"
+  void context_okay(CONTEXT void *context, void *selfType, char **selfWitnessTable) SWIFTCALL;
+                                                                                    ^
+
+"Test_name.c", line 40: warning: unknown attribute "swift_context"
+  void context_okay_async(CONTEXT void *context) SWIFTASYNCCALL;
+                          ^
+
+"Test_name.c", line 40: warning: unknown attribute "swiftasynccall"
+  void context_okay_async(CONTEXT void *context) SWIFTASYNCCALL;
+                                                 ^
+
+"Test_name.c", line 41: warning: unknown attribute "swift_context"
+  void context_okay2_async(CONTEXT void *context, void *selfType, char **selfWitnessTable) SWIFTASYNCCALL;
+                           ^
+
+"Test_name.c", line 41: warning: unknown attribute "swiftasynccall"
+  void context_okay2_async(CONTEXT void *context, void *selfType, char **selfWitnessTable) SWIFTASYNCCALL;
+                                                                                           ^
+
+"Test_name.c", line 43: warning: unknown attribute "swift_async_context"
+  void async_context_nonswift(ASYNC_CONTEXT void *context); // OK
+                              ^
+
+"Test_name.c", line 44: warning: unknown attribute "swift_async_context"
+  void async_context_bad_type(ASYNC_CONTEXT int context) SWIFTASYNCCALL; // expected-error {{'swift_async_context' parameter must have pointer type; type here is 'int'}}
+                              ^
+
+"Test_name.c", line 44: warning: unknown attribute "swiftasynccall"
+  void async_context_bad_type(ASYNC_CONTEXT int context) SWIFTASYNCCALL; // expected-error {{'swift_async_context' parameter must have pointer type; type here is 'int'}}
+                                                         ^
+
+"Test_name.c", line 45: warning: unknown attribute "swift_async_context"
+  void async_context_okay(ASYNC_CONTEXT void *context) SWIFTASYNCCALL;
+                          ^
+
+"Test_name.c", line 45: warning: unknown attribute "swiftasynccall"
+  void async_context_okay(ASYNC_CONTEXT void *context) SWIFTASYNCCALL;
+                                                       ^
+
+"Test_name.c", line 46: warning: unknown attribute "swift_async_context"
+  void async_context_okay(void *someArg, ASYNC_CONTEXT void *context, void *otherArg) SWIFTASYNCCALL;
+                                         ^
+
+"Test_name.c", line 46: warning: unknown attribute "swiftasynccall"
+  void async_context_okay(void *someArg, ASYNC_CONTEXT void *context, void *otherArg) SWIFTASYNCCALL;
+                                                                                      ^
+
+"Test_name.c", line 48: warning: unknown attribute "swift_indirect_result"
+  template <class T> void indirect_result_temp_okay1(INDIRECT_RESULT T *out) SWIFTCALL;
+                                                     ^
+
+"Test_name.c", line 48: warning: unknown attribute "swiftcall"
+  template <class T> void indirect_result_temp_okay1(INDIRECT_RESULT T *out) SWIFTCALL;
+                                                                             ^
+
+"Test_name.c", line 49: warning: unknown attribute "swift_indirect_result"
+  template <class T> void indirect_result_temp_okay2(INDIRECT_RESULT T out) SWIFTCALL; // expected-note {{candidate template ignored: substitution failure [with T = int]: 'swift_indirect_result' parameter must have pointer type; type here is 'int'}}
+                                                     ^
+
+"Test_name.c", line 49: warning: unknown attribute "swiftcall"
+  template <class T> void indirect_result_temp_okay2(INDIRECT_RESULT T out) SWIFTCALL; // expected-note {{candidate template ignored: substitution failure [with T = int]: 'swift_indirect_result' parameter must have pointer type; type here is 'int'}}
+                                                                            ^
+

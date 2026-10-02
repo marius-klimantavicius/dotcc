@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 8: error: "#" not expected here
+  HASH define foo bar
+  ^
+
+"Test_name.c", line 8: error: expected a declaration
+  HASH define foo bar
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

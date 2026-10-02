@@ -1,0 +1,18 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --microsoft -n Test_name.c
+"Test_name.c", line 11: error: incomplete type "int [0]" is not allowed
+    int a, b[0], c;      // Incomplete type not allowed
+           ^
+
+"Test_name.c", line 19: error: the size of an array must be greater than zero
+  int x[0];              // Zero not allowed
+        ^
+
+"Test_name.c", line 20: error: the size of an array must be greater than zero
+  int (*y)[0];           // Zero not allowed
+           ^
+
+"Test_name.c", line 21: error: the size of an array must be greater than zero
+  int (*z[0]);           // Zero not allowed
+          ^
+
+4 errors detected in the compilation of "Test_name.c".

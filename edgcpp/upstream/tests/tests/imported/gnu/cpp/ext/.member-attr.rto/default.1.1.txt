@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 14: warning: unknown attribute "garbage1"
+      __attribute__ ((garbage1)) void member1(int) {} /* { dg-warning "'garbage1' attribute directive ignored" } */
+                      ^
+
+"Test_name.c", line 15: warning: unknown attribute "garbage2"
+      void __attribute__ ((garbage2)) member2(int) {} /* { dg-warning "'garbage2' attribute directive ignored" } */
+                           ^
+

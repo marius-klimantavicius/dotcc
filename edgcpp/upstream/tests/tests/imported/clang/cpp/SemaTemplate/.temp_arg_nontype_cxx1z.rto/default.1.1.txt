@@ -1,0 +1,323 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 11: error: invalid nontype template argument of type "const char *"
+    A<const char*, "test"> a; // expected-error {{pointer to subobject of string literal}}
+                   ^
+
+"Test_name.c", line 12: error: invalid nontype template argument of type "const char (&)[5]"
+    A<const char (&)[5], "test"> b; // expected-error {{reference to string literal}}
+                         ^
+
+"Test_name.c", line 21: error: invalid nontype template argument of type "const char *"
+    A<const char*, &arr[1]> d; // expected-error {{refers to subobject '&arr[1]'}}
+                   ^
+
+"Test_name.c", line 25: error: invalid nontype template argument of type "const char *"
+    A<const char*, &(&x)[1]> h; // expected-error {{refers to subobject '&x + 1'}}
+                   ^
+
+"Test_name.c", line 26: error: argument of type "int" is incompatible with template parameter of type "const char *"
+    A<const char*, 0> i; // expected-error {{not allowed in a converted constant}}
+                   ^
+
+"Test_name.c", line 48: error: argument of type "void (*)(int)" is incompatible with template parameter of type "void (*)()"
+    typedef A<void (*)(), i<int>> e; // expected-error {{value of type '<overloaded function type>' is not implicitly convertible to 'void (*)()'}}
+                          ^
+
+"Test_name.c", line 50: error: argument of type "int" is incompatible with template parameter of type "void (*)()"
+    typedef A<void (*)(), 0> x; // expected-error {{not allowed in a converted constant}}
+                          ^
+
+"Test_name.c", line 55: error: a template argument may not reference a non-external entity
+    A<const char*, __func__> a; // expected-error {{pointer to subobject of predefined '__func__' variable}}
+                   ^
+
+"Test_name.c", line 55: warning: variable "a" was declared but never referenced
+    A<const char*, __func__> a; // expected-error {{pointer to subobject of predefined '__func__' variable}}
+                             ^
+
+"Test_name.c", line 60: error: identifier "__INTPTR_TYPE__" is undefined
+      a: b: A<int, __builtin_constant_p(true) ? (__INTPTR_TYPE__)&&b - (__INTPTR_TYPE__)&&a : 0> s; // expected-error {{label address difference}}
+                                                 ^
+
+"Test_name.c", line 60: error: identifier "b" is undefined
+      a: b: A<int, __builtin_constant_p(true) ? (__INTPTR_TYPE__)&&b - (__INTPTR_TYPE__)&&a : 0> s; // expected-error {{label address difference}}
+                                                                   ^
+
+"Test_name.c", line 60: error: identifier "a" is undefined
+      a: b: A<int, __builtin_constant_p(true) ? (__INTPTR_TYPE__)&&b - (__INTPTR_TYPE__)&&a : 0> s; // expected-error {{label address difference}}
+                                                                                          ^
+
+"Test_name.c", line 60: warning: label "a" was declared but never referenced
+      a: b: A<int, __builtin_constant_p(true) ? (__INTPTR_TYPE__)&&b - (__INTPTR_TYPE__)&&a : 0> s; // expected-error {{label address difference}}
+      ^
+
+"Test_name.c", line 60: warning: label "b" was declared but never referenced
+      a: b: A<int, __builtin_constant_p(true) ? (__INTPTR_TYPE__)&&b - (__INTPTR_TYPE__)&&a : 0> s; // expected-error {{label address difference}}
+         ^
+
+"Test_name.c", line 60: warning: variable "s" was declared but never referenced
+      a: b: A<int, __builtin_constant_p(true) ? (__INTPTR_TYPE__)&&b - (__INTPTR_TYPE__)&&a : 0> s; // expected-error {{label address difference}}
+                                                                                                 ^
+
+"Test_name.c", line 67: error: a nontype template argument of reference type must bind to a function or to a complete object
+    A<S &, addr({})> a; // expected-error {{reference to temporary object}}
+           ^
+
+"Test_name.c", line 68: error: expression must have a constant value
+    A<S *, &addr({})> b; // expected-error {{pointer to temporary object}}
+           ^
+"Test_name.c", line 68: note: reference or pointer to temporary with limited lifetime
+    A<S *, &addr({})> b; // expected-error {{pointer to temporary object}}
+           ^
+
+"Test_name.c", line 69: error: a nontype template argument of reference type must bind to a function or to a complete object
+    A<int &, addr({}).n> c; // expected-error {{reference to subobject of temporary object}}
+             ^
+
+"Test_name.c", line 70: error: expression must have a constant value
+    A<int *, &addr({}).n> d; // expected-error {{pointer to subobject of temporary object}}
+             ^
+"Test_name.c", line 70: note: reference or pointer to temporary with limited lifetime
+    A<int *, &addr({}).n> d; // expected-error {{pointer to subobject of temporary object}}
+             ^
+
+"Test_name.c", line 76: error: a nontype template argument of reference type must bind to a function or to a complete object
+    A<const std::type_info&, typeid(int)> a; // expected-error {{reference to type_info object}}
+                             ^
+
+"Test_name.c", line 77: error: invalid nontype template argument of type "const std::type_info *"
+    A<const std::type_info*, &typeid(int)> b; // expected-error {{pointer to type_info object}}
+                             ^
+
+"Test_name.c", line 104: error: static assertion failed with ""
+    static_assert(!is_same<Abce, Abde>, "");
+    ^
+
+"Test_name.c", line 113: error: static assertion failed with ""
+    static_assert(!is_same<Aecb, Aedb>, "");
+    ^
+
+"Test_name.c", line 124: error: no instance of function template "DeduceDifferentType::a" matches the argument list
+            argument types are: (DeduceDifferentType::A<3>)
+    int a_imp = a(A<3>()); // expected-error {{no matching function}}
+                ^
+"Test_name.c", line 123: note: candidate function template "DeduceDifferentType::a" failed deduction
+    template<long N> int a(A<N>); // expected-note {{does not have the same type}}
+                         ^
+
+"Test_name.c", line 128: error: argument of type "int *" is incompatible with template parameter of type "std::nullptr_t"
+    template<int *P> int b(B<P>); // expected-error {{value of type 'int *' is not implicitly convertible to 'decltype(nullptr)'}}
+                             ^
+
+"Test_name.c", line 129: error: no instance of function template "DeduceDifferentType::b" matches the argument list
+            argument types are: (DeduceDifferentType::B<nullptr>)
+    int b_imp = b(B<nullptr>()); // expected-error {{no matching function}}
+                ^
+"Test_name.c", line 128: note: candidate function template "DeduceDifferentType::b" failed deduction
+    template<int *P> int b(B<P>); // expected-error {{value of type 'int *' is not implicitly convertible to 'decltype(nullptr)'}}
+                         ^
+
+"Test_name.c", line 134: error: initial value of reference to non-const must be an lvalue
+    template<int N> int c(C<N>); // expected-error {{value of type 'int' is not implicitly convertible to 'X &'}}
+                            ^
+
+"Test_name.c", line 135: error: no instance of function template "DeduceDifferentType::c" matches the argument list
+            argument types are: (DeduceDifferentType::C<DeduceDifferentType::x>)
+    int c_imp = c(C<x>()); // expected-error {{no matching function}}
+                ^
+"Test_name.c", line 134: note: candidate function template "DeduceDifferentType::c" failed deduction
+    template<int N> int c(C<N>); // expected-error {{value of type 'int' is not implicitly convertible to 'X &'}}
+                        ^
+
+"Test_name.c", line 144: error: no instance of function template "DeduceDifferentType::d" matches the argument list
+            argument types are: (DeduceDifferentType::D<DeduceDifferentType::y>)
+    int d_imp = d(D<y>()); // expected-error {{no matching function}}
+                ^
+"Test_name.c", line 143: note: candidate function template "DeduceDifferentType::d" failed deduction
+    template<Z &z> int d(D<z>); // expected-note {{couldn't infer template argument 'z'}}
+                       ^
+
+"Test_name.c", line 145: error: no instance of function template "DeduceDifferentType::d" matches the argument list
+            argument types are: (DeduceDifferentType::D<DeduceDifferentType::y>)
+    int d_exp = d<y>(D<y>());
+                ^
+"Test_name.c", line 143: note: substituting explicit template arguments "<<expression>>" for function template "DeduceDifferentType::d" failed
+    template<Z &z> int d(D<z>); // expected-note {{couldn't infer template argument 'z'}}
+                       ^
+
+"Test_name.c", line 170: error: expression must have integral or enum type
+      auto v4 = constant<2.5>;  // expected-error {{cannot have type 'double'}}
+                         ^
+
+"Test_name.c", line 202: error: no instance of overloaded function "Auto::Basic::f" matches the argument list
+            argument types are: (Auto::Basic::B<&Auto::Basic::X::n>)
+      auto t = f(B<&X::n>()); // expected-error {{no match}}
+               ^
+"Test_name.c", line 199: note: candidate function template "Auto::Basic::f(Auto::Basic::B<pp0>)" failed deduction
+      template<typename T, auto **T::*pp0> short &f(B<pp0> b); // expected-note {{candidate}}
+                                                  ^
+"Test_name.c", line 198: note: candidate function template "Auto::Basic::f(Auto::Basic::B<p0>)" failed deduction
+      template<typename T, auto *T::*p0>   char &f(B<p0> b); // expected-note {{candidate}}
+                                                 ^
+"Test_name.c", line 184: note: candidate function template "Auto::Basic::f(Auto::Basic::B<pp0>)" failed deduction
+      template<auto** pp0> float &f(B<pp0> b); // expected-note {{candidate}}
+                                  ^
+"Test_name.c", line 183: note: candidate function template "Auto::Basic::f(Auto::Basic::B<p0>)" failed deduction
+      template<auto* p0>   int &f(B<p0> b); // expected-note {{candidate}}
+                                ^
+
+"Test_name.c", line 244: error: function "Auto::Chained::foo<T,N>(Auto::Chained::F<N> *) [with T=int, N=0]" (declared at line 241) cannot be referenced -- it is a deleted function
+          foo(p); // expected-error {{deleted function}}
+          ^
+
+"Test_name.c", line 264: error: expression must have a constant value
+      A<n> a; // expected-error {{not a constant}} expected-note {{non-const variable 'n'}}
+        ^
+"Test_name.c", line 264: note: the value of variable "Auto::DecltypeAuto::n" (declared at line 263) cannot be used as a constant
+      A<n> a; // expected-error {{not a constant}} expected-note {{non-const variable 'n'}}
+        ^
+
+"Test_name.c", line 265: error: expression must have a constant value
+      DA<n> da1;  // expected-error {{not a constant}} expected-note {{non-const variable 'n'}}
+         ^
+"Test_name.c", line 265: note: the value of variable "Auto::DecltypeAuto::n" (declared at line 263) cannot be used as a constant
+      DA<n> da1;  // expected-error {{not a constant}} expected-note {{non-const variable 'n'}}
+         ^
+
+"Test_name.c", line 275: error: class template "Auto::Decomposition::Any" has already been defined (previous definition at line 274)
+      template<short N> struct Any<N> { typedef int Short; }; // expected-note 3{{match}}
+                               ^
+
+"Test_name.c", line 277: error: incomplete type "Auto::Decomposition::Any<(short)0>" is not allowed
+      Any<(short)0>::Short is_short; // expected-error {{ambiguous}}
+      ^
+
+"Test_name.c", line 278: error: incomplete type "Auto::Decomposition::Any<'\000'>" is not allowed
+      Any<(char)0>::Short is_char; // expected-error {{ambiguous}}
+      ^
+
+"Test_name.c", line 283: error: class template "Auto::Decomposition::NestedAny" has already been defined (previous definition at line 282)
+      template<short N> struct NestedAny<0, N> { typedef int Short; }; // expected-note 3{{match}}
+                               ^
+
+"Test_name.c", line 284: error: more than one partial specialization matches the template argument list of class "Auto::Decomposition::NestedAny<0, 0>"
+            "Auto::Decomposition::NestedAny<0, N>" (declared at line 281)
+            "Auto::Decomposition::NestedAny<0, N>" (declared at line 282)
+      NestedAny<0, 0>::Int nested_int; // expected-error {{ambiguous}}
+                       ^
+
+"Test_name.c", line 284: error: incomplete type "Auto::Decomposition::NestedAny<0, 0>" is not allowed
+      NestedAny<0, 0>::Int nested_int; // expected-error {{ambiguous}}
+      ^
+
+"Test_name.c", line 285: error: incomplete type "Auto::Decomposition::NestedAny<0, (short)0>" is not allowed
+      NestedAny<0, (short)0>::Short nested_short; // expected-error {{ambiguous}}
+      ^
+
+"Test_name.c", line 286: error: incomplete type "Auto::Decomposition::NestedAny<0, '\000'>" is not allowed
+      NestedAny<0, (char)0>::Short nested_char; // expected-error {{ambiguous}}
+      ^
+
+"Test_name.c", line 397: warning: variable "y" was declared but never referenced
+    void f() { X<1, 2>::Y y; X<1, 2>().f(0, 0); }
+                          ^
+
+"Test_name.c", line 420: error: a nontype template argument of reference type must bind to a function or to a complete object
+    template void g<(const int *const&)X>();
+                    ^
+
+"Test_name.c", line 420: error: no instance of function template "QualConv::g" matches the specified type
+    template void g<(const int *const&)X>();
+                  ^
+
+"Test_name.c", line 455: error: expression must have a constant value
+      A<R{}>(); // expected-error {{would bind reference to a temporary}}
+        ^
+"Test_name.c", line 455: note: reference or pointer to temporary with limited lifetime
+      A<R{}>(); // expected-error {{would bind reference to a temporary}}
+        ^
+
+"Test_name.c", line 456: error: expression must have a constant value
+      A<S{}>(); // expected-error {{reference to temporary object}}
+        ^
+"Test_name.c", line 456: note: reference or pointer to temporary with limited lifetime
+      A<S{}>(); // expected-error {{reference to temporary object}}
+        ^
+
+"Test_name.c", line 457: error: expression must have a constant value
+      A<T{}>(); // expected-error {{reference to temporary object}}
+        ^
+"Test_name.c", line 457: note: reference or pointer to temporary with limited lifetime
+      A<T{}>(); // expected-error {{reference to temporary object}}
+        ^
+
+"Test_name.c", line 465: error: cannot deduce "auto" template parameter type "auto (*)()->auto" from "std::nullptr_t"
+    X<nullptr> x; // expected-error {{incompatible initializer}}
+      ^
+
+"Test_name.c", line 469: error: a value of type "void *" cannot be used to initialize an entity of type "int"
+    int n = y.call(); // expected-error {{cannot initialize a variable of type 'int' with an rvalue of type 'void *'}}
+            ^
+
+"Test_name.c", line 481: error: type "PR48517::T" has already been defined (previous definition at line 478)
+    using T = U; // expected-error {{different types}}
+          ^
+
+"Test_name.c", line 491: error: type "PR48517::V" has already been defined (previous definition at line 487)
+    using V = W; // expected-error {{different types}}
+          ^
+
+"Test_name.c", line 535: error: class "TypeSuffix::A<1L>" has no member "type"
+    A<1L>::type a;                                 // expected-error {{no type named 'type' in 'TypeSuffix::A<1L>'; did you mean 'A<1>::type'?}}
+           ^
+
+"Test_name.c", line 539: error: class "TypeSuffix::B<2>" has no member "type"
+    B<2>::type b;                                  // expected-error {{no type named 'type' in 'TypeSuffix::B<2>'; did you mean 'B<1>::type'?}}
+          ^
+
+"Test_name.c", line 543: error: class "TypeSuffix::C<(signed char)'a'>" has no member "type"
+    C<(signed char)'a'>::type c;                             // expected-error {{no type named 'type' in 'TypeSuffix::C<(signed char)'a'>'; did you mean 'C<'a'>::type'?}}
+                         ^
+
+"Test_name.c", line 547: error: class "TypeSuffix::D<'b'>" has no member "type"
+    D<'b'>::type d;                                          // expected-error {{no type named 'type' in 'TypeSuffix::D<'b'>'; did you mean 'D<'a'>::type'?}}
+            ^
+
+"Test_name.c", line 551: error: class "TypeSuffix::E<(unsigned char)'a'>" has no member "type"
+    E<(unsigned char)'a'>::type e;                             // expected-error {{no type named 'type' in 'TypeSuffix::E<(unsigned char)'a'>'; did you mean 'E<'a'>::type'?}}
+                           ^
+
+"Test_name.c", line 555: error: class "TypeSuffix::F<'b'>" has no member "type"
+    F<'b'>::type f;                                            // expected-error {{no type named 'type' in 'TypeSuffix::F<'b'>'; did you mean 'F<'a'>::type'?}}
+            ^
+
+"Test_name.c", line 558: error: class "TypeSuffix::X<1, 1U>" has no member "type"
+    X<1, 1u>::type y; // expected-error {{no type named 'type' in 'TypeSuffix::X<1, 1U>'}}
+              ^
+
+"Test_name.c", line 559: error: class "TypeSuffix::X<1, 1>" has no member "type"
+    X<1, 1>::type z; // expected-error {{no type named 'type' in 'TypeSuffix::X<1, 1>'}}
+             ^
+
+"Test_name.c", line 574: error: identifier "Undefined" is undefined
+    void Invalid(Undefined) const; // expected-error {{unknown type name 'Undefined'}}
+                 ^
+
+"Test_name.c", line 577: error: nonstandard form for taking the address of a member function
+          EntryPoint<&Invalid>()
+                     ^
+
+"Test_name.c", line 576: error: no instance of constructor "no_crash::Derived::Spec" matches the argument list
+            argument types are: (no_crash::Base<no_crash::Derived>::EntryPointSpec<no_crash::Derived>)
+      return Spec{
+                 ^
+
+"Test_name.c", line 576: error: cannot deduce class template arguments
+      return Spec{
+             ^
+
+"Test_name.c", line 604: error: function "PR47792::bar() [with <unnamed>=&PR47792::foo]" explicitly instantiated more than once
+    template void bar<foo>(); // expected-error {{duplicate explicit instantiation of 'bar<&PR47792::foo>'}}
+                  ^
+
+61 errors detected in the compilation of "Test_name.c".

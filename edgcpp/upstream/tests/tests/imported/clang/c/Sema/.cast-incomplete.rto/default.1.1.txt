@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 11: error: incomplete type "enum x" is not allowed
+    (enum x)1;   // expected-error {{cast to incomplete type}}
+     ^
+
+"Test_name.c", line 12: error: incomplete type "struct y" is not allowed
+    (struct y)a; // expected-error {{cast to incomplete type}}
+     ^
+
+"Test_name.c", line 13: error: incomplete type "union z" is not allowed
+    (union z)b;  // expected-error {{cast to incomplete type}}
+     ^
+
+"Test_name.c", line 14: error: incomplete type "union z" is not allowed
+    (union z)1;  // expected-error {{cast to incomplete type}}
+     ^
+
+4 errors detected in the compilation of "Test_name.c".

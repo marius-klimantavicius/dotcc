@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 57: warning: argument of type "long *" is incompatible with parameter of type "int *"
+    f0 (&l);	/* { dg-error "passing argument 1 of 'f0' from incompatible pointer type" } */
+        ^
+
+"Test_name.c", line 59: warning: argument of type "long *" is incompatible with parameter of type "int *"
+    f1 (&l);	/* { dg-error "passing argument 1 of 'f1' from incompatible pointer type" } */
+        ^
+

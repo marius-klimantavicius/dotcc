@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"./tm/inherit2.C", line 8: error: expected a ";"
+    virtual void f() transaction_safe;
+                     ^
+
+"./tm/inherit2.C", line 9: error: expected a ";"
+    virtual ~B() transaction_safe_dynamic;
+                 ^
+
+"./tm/inherit2.C", line 26: error: identifier "atomic_commit" is undefined
+    atomic_commit {
+    ^
+
+"./tm/inherit2.C", line 26: error: expected a ";"
+    atomic_commit {
+                  ^
+
+"./tm/inherit2.C", line 34: warning: parsing restarts here after previous syntax error
+  }
+  ^
+
+"./tm/inherit2.C", line 25: warning: variable "b2" was declared but never referenced
+    B * b2 = d2;
+        ^
+
+4 errors detected in the compilation of "Test_name.c".

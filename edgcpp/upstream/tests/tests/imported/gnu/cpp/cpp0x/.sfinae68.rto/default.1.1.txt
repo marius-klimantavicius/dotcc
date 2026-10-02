@@ -1,0 +1,20 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 22: error: more than one instance of overloaded function "bar" matches the argument list:
+            function template "void bar<I,<unnamed>,<unnamed>...>()" (declared at line 17)
+            function template "void bar<I,<unnamed>,<unnamed>...>()" (declared at line 18)
+    bar<0>();
+    ^
+
+"Test_name.c", line 23: error: more than one instance of overloaded function "bar" matches the argument list:
+            function template "void bar<I,<unnamed>,<unnamed>...>()" (declared at line 17)
+            function template "void bar<I,<unnamed>,<unnamed>...>()" (declared at line 18)
+    bar<0,0>();
+    ^
+
+"Test_name.c", line 24: error: more than one instance of overloaded function "foo" matches the argument list:
+            function template "void foo<I,<unnamed>...>()" (declared at line 15)
+            function template "void foo<I,<unnamed>...>()" (declared at line 16)
+    foo<0>();
+    ^
+
+3 errors detected in the compilation of "Test_name.c".

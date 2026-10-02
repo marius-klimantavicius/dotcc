@@ -1,0 +1,51 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 14: error: expected an expression
+      _Static_assert(_Generic(typeof(A), typeof(B): 1, default: 0) == 1, "");
+                              ^
+
+"Test_name.c", line 19: error: expected an expression
+        _Generic(typeof(enum {A}), typeof(enum {B}): 1, default: 0) == 0, "");
+                 ^
+
+"Test_name.c", line 28: error: static assertion failed with ""
+      _Static_assert(_Generic(A, typeof(B): 1, default: 0) == 0, "");
+      ^
+"Test_name.c", line 28: note: the final comparison was 1 == 0
+      _Static_assert(_Generic(A, typeof(B): 1, default: 0) == 0, "");
+                                                           ^
+
+"Test_name.c", line 29: error: expected an expression
+      _Static_assert(_Generic(typeof(A), typeof(B): 1, default: 0) == 0, "");
+                              ^
+
+"Test_name.c", line 34: error: expected an expression
+        _Generic(typeof(enum : int{A}), typeof(enum : int{B}): 1, default: 0) == 0, "");
+                 ^
+
+"Test_name.c", line 43: error: static assertion failed with ""
+      _Static_assert(_Generic(A, __typeof__(B): 1, default: 0) == 0, "");
+      ^
+"Test_name.c", line 43: note: the final comparison was 1 == 0
+      _Static_assert(_Generic(A, __typeof__(B): 1, default: 0) == 0, "");
+                                                               ^
+
+"Test_name.c", line 44: error: expected an expression
+      _Static_assert(_Generic(__typeof__(A), __typeof__(B): 1, default: 0) == 0, "");
+                              ^
+
+"Test_name.c", line 51: error: static assertion failed with ""
+      _Static_assert(_Generic(A, __typeof__(B): 1, default: 0) == 0, "");
+      ^
+"Test_name.c", line 51: note: the final comparison was 1 == 0
+      _Static_assert(_Generic(A, __typeof__(B): 1, default: 0) == 0, "");
+                                                               ^
+
+"Test_name.c", line 52: error: expected an expression
+      _Static_assert(_Generic(__typeof__(A), __typeof__(B): 1, default: 0) == 0, "");
+                              ^
+
+"Test_name.c", line 60: error: duplicate association type ("enum <unnamed>") in _Generic selection
+    _Static_assert(_Generic(A, typeof(B): 1, typeof(A): 2, default: 0) == 2, "");
+                                             ^
+
+10 errors detected in the compilation of "Test_name.c".

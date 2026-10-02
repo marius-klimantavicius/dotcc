@@ -1,0 +1,86 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++23 --ms_compatibility Test_name.c
+"SemaCXX/cxx2b-p2266-disable-with-msvc-compat.cpp", line 21: error: initial value of reference to non-const must be an lvalue
+  int &mt2(int &&x) { return x; }
+                             ^
+
+"SemaCXX/cxx2b-p2266-disable-with-msvc-compat.cpp", line 26: error: initial value of reference to non-const must be an lvalue
+  int &mt2(int &&x) { return x; }
+                             ^
+
+"SemaCXX/cxx2b-p2266-disable-with-msvc-compat.cpp", line 32: error: initial value of reference to non-const must be an lvalue
+  int &mt2(int &&x) { return x; }
+                             ^
+
+"SemaCXX/cxx2b-p2266-disable-with-msvc-compat.cpp", line 35: error: initial value of reference to non-const must be an lvalue
+  int &mt2(int &&x) { return x; }
+                             ^
+
+"SemaCXX/cxx2b-p2266-disable-with-msvc-compat.cpp", line 43: error: initial value of reference to non-const must be an lvalue
+  int &mt2(int &&x) { return x; }
+                             ^
+
+"SemaCXX/cxx2b-p2266-disable-with-msvc-compat.cpp", line 48: error: initial value of reference to non-const must be an lvalue
+  int &mt2(int &&x) { return x; }
+                             ^
+
+"SemaCXX/cxx2b-p2266-disable-with-msvc-compat.cpp", line 54: error: initial value of reference to non-const must be an lvalue
+  int &mt2(int &&x) { return x; }
+                             ^
+
+"SemaCXX/cxx2b-p2266-disable-with-msvc-compat.cpp", line 68: error: initial value of reference to non-const must be an lvalue
+  int &ut2(int &&x) { return x; }
+                             ^
+
+"SemaCXX/cxx2b-p2266-disable-with-msvc-compat.cpp", line 73: error: initial value of reference to non-const must be an lvalue
+  int &ut2(int &&x) { return x; }
+                             ^
+
+"SemaCXX/cxx2b-p2266-disable-with-msvc-compat.cpp", line 79: error: initial value of reference to non-const must be an lvalue
+  int &ut2(int &&x) { return x; }
+                             ^
+
+"SemaCXX/cxx2b-p2266-disable-with-msvc-compat.cpp", line 83: error: initial value of reference to non-const must be an lvalue
+  int &ut2(int &&x) { return x; }
+                             ^
+
+"SemaCXX/cxx2b-p2266-disable-with-msvc-compat.cpp", line 91: error: initial value of reference to non-const must be an lvalue
+  int &ut2(int &&x) { return x; }
+                             ^
+
+"SemaCXX/cxx2b-p2266-disable-with-msvc-compat.cpp", line 96: error: initial value of reference to non-const must be an lvalue
+  int &ut2(int &&x) { return x; }
+                             ^
+
+"SemaCXX/cxx2b-p2266-disable-with-msvc-compat.cpp", line 102: error: initial value of reference to non-const must be an lvalue
+  int &ut2(int &&x) { return x; }
+                             ^
+
+"SemaCXX/cxx2b-p2266-disable-with-msvc-compat.cpp", line 113: error: initial value of reference to non-const must be an lvalue
+  int &st2(int &&x) { return x; }
+                             ^
+
+"SemaCXX/cxx2b-p2266-disable-with-msvc-compat.cpp", line 118: error: initial value of reference to non-const must be an lvalue
+  int &st2(int &&x) { return x; }
+                             ^
+
+"SemaCXX/cxx2b-p2266-disable-with-msvc-compat.cpp", line 124: error: initial value of reference to non-const must be an lvalue
+  int &st2(int &&x) { return x; }
+                             ^
+
+"SemaCXX/cxx2b-p2266-disable-with-msvc-compat.cpp", line 128: error: initial value of reference to non-const must be an lvalue
+  int &st2(int &&x) { return x; }
+                             ^
+
+"SemaCXX/cxx2b-p2266-disable-with-msvc-compat.cpp", line 136: error: initial value of reference to non-const must be an lvalue
+  int &st2(int &&x) { return x; }
+                             ^
+
+"SemaCXX/cxx2b-p2266-disable-with-msvc-compat.cpp", line 141: error: initial value of reference to non-const must be an lvalue
+  int &st2(int &&x) { return x; }
+                             ^
+
+"SemaCXX/cxx2b-p2266-disable-with-msvc-compat.cpp", line 147: error: initial value of reference to non-const must be an lvalue
+  int &st2(int &&x) { return x; }
+                             ^
+
+21 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 --char8_t Test_name.c
+"Test_name.c", line 14: error: a value of type "const char8_t *" cannot be used to initialize an entity of type "const char *"
+  const char *pc2 = u8"x"; // { dg-error "invalid conversion from .const char8_t.. to .const char.." "char8_t" }
+                    ^
+
+"Test_name.c", line 15: error: a value of type "const char *" cannot be used to initialize an entity of type "const char8_t *"
+  const char8_t *pc3 = "x"; // { dg-error "invalid conversion from .const char.. to .const char8_t.." "char8_t" }
+                       ^
+
+"Test_name.c", line 17: error: a value of type "const char16_t *" cannot be used to initialize an entity of type "const char8_t *"
+  const char8_t *pc5 = u"x"; // { dg-error "cannot convert .const char16_t.. to .const char8_t.. in initialization" "char8_t" }
+                       ^
+
+"Test_name.c", line 20: error: a value of type "const char8_t *" cannot be used to initialize an entity of type "const char (&)[2]"
+  const char (&rca2)[2] = u8"x"; // { dg-error "invalid initialization of reference of type .const char ....... from expression of type .const char8_t ...." "char8_t" }
+                          ^
+
+"Test_name.c", line 21: error: a value of type "const char *" cannot be used to initialize an entity of type "const char8_t (&)[2]"
+  const char8_t (&rca3)[2] = "x"; // { dg-error "invalid initialization of reference of type .const char8_t ....... from expression of type .const char ...." "char8_t" }
+                             ^
+
+"Test_name.c", line 23: error: a value of type "const char16_t *" cannot be used to initialize an entity of type "const char8_t (&)[2]"
+  const char8_t (&rca5)[2] = u"x"; // { dg-error "invalid initialization of reference of type .const char8_t ....... from expression of type .const char16_t ...." "char8_t" }
+                             ^
+
+"Test_name.c", line 27: error: a value of type "const char [2]" cannot be used to initialize an entity of type "char8_t []"
+  char8_t ca3[] = "x"; // { dg-error "from a string literal with type array of .char." "char8_t" }
+                  ^
+
+"Test_name.c", line 29: error: a value of type "const char16_t [2]" cannot be used to initialize an entity of type "char8_t []"
+  char8_t ca5[] = u"x"; // { dg-error "from a string literal with type array of .char16_t." "char8_t" }
+                  ^
+
+"Test_name.c", line 32: error: a value of type "const char8_t [2]" cannot be used to initialize an entity of type "signed char []"
+  signed char sca2[] = u8"x"; // { dg-error "from a string literal with type array of .char8_t." "char8_t" }
+                       ^
+
+9 errors detected in the compilation of "Test_name.c".

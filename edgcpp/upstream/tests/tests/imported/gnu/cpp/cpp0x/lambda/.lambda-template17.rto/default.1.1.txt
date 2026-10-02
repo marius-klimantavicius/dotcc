@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: error: more than one operator "+" matches these operands:
+            "C3::operator+" (declared at line 6), ambiguous by inheritance
+            operand types are: + C3
+    template <class T> void get() { [] (T x) { +x; }; } // { dg-error "ambiguous" }
+                                               ^
+"Test_name.c", line 9: note: built-in operator+(<promoted arithmetic>) does not match because argument #1 does not match parameter
+    template <class T> void get() { [] (T x) { +x; }; } // { dg-error "ambiguous" }
+                                               ^
+"Test_name.c", line 9: note: built-in operator+(<pointer>) does not match because argument #1 does not match parameter
+    template <class T> void get() { [] (T x) { +x; }; } // { dg-error "ambiguous" }
+                                               ^
+          detected during instantiation of "void C3::get<T>() [with T=C3]" at line 14
+
+1 error detected in the compilation of "Test_name.c".

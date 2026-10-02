@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./warn-sprintf-no-nul.c", line 29: warning: string literal too long -- excess characters ignored
+    "", "1", "12", "123", "123\000"
+                          ^
+

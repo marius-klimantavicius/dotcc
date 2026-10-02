@@ -1,0 +1,23 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 11: error: atomic constraint must have type bool
+  concept Invalid = X<T>{};
+                    ^
+
+"Test_name.c", line 31: error: no instance of function template "g2" matches the argument list
+  using g2i = decltype(g2<int>());
+                       ^
+"Test_name.c", line 28: note: substituting "<int>" for function template "g2" failed constraints
+  void g2(); // requires Invalid<T>;
+       ^
+"Test_name.c", line 26: note: concept "False" not satisfied for "<int>"
+  template<False T> // expected-note{{because 'int' does not satisfy 'False'}}
+           ^
+"Test_name.c", line 14: note: atomic constraint evaluates to false
+  concept False = false; // expected-note{{because 'false' evaluated to false}}
+                  ^
+
+"Test_name.c", line 32: warning: last line of file ends without a newline
+  // expected-error@-1{{no matching function for call to 'g2'}}
+                                                               ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 25: error: "X" is ambiguous
+    X *x; // expected-error{{reference to 'X' is ambiguous}}
+    ^
+
+"Test_name.c", line 25: warning: variable "x" was declared but never referenced
+    X *x; // expected-error{{reference to 'X' is ambiguous}}
+       ^
+
+"Test_name.c", line 38: warning: variable "c" was declared but never referenced
+        struct S c = b;
+                 ^
+
+"Test_name.c", line 45: error: no suitable conversion function from "S" to "int" exists
+        int a = S(); // expected-error {{no viable conversion from 'S'}}
+                ^
+
+"Test_name.c", line 46: error: no suitable user-defined conversion from "S" to "S" exists
+        struct S c = b; // expected-error {{no viable conversion from 'struct S'}}
+                     ^
+
+"Test_name.c", line 57: warning: variable "c" was declared but never referenced
+        struct S c = b;
+                 ^
+
+"Test_name.c", line 64: error: no suitable conversion function from "S" to "int" exists
+        int a = S(); // expected-error {{no viable conversion from 'S'}}
+                ^
+
+"Test_name.c", line 65: error: no suitable user-defined conversion from "S" to "S" exists
+        struct S c = b; // expected-error {{no viable conversion from 'struct S'}}
+                     ^
+
+"Test_name.c", line 77: warning: variable "b" was declared but never referenced
+      struct B b;
+               ^
+
+5 errors detected in the compilation of "Test_name.c".

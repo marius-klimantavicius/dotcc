@@ -1,0 +1,14 @@
+cpfe -DTEST_NUMBER=1 --c++23 -A Test_name.c
+"Test_name.c", line 4: error: member function with the same name as its class must be a constructor
+      constexpr int C(int) {}
+                    ^
+
+"Test_name.c", line 10: error: no suitable constructor exists to convert from "int" to "C"
+    void foo(int (&a)[bar(1)]) noexcept(bar(2) > 0); // presumably OK because of friendship
+                          ^
+
+"Test_name.c", line 10: error: no suitable constructor exists to convert from "int" to "C"
+    void foo(int (&a)[bar(1)]) noexcept(bar(2) > 0); // presumably OK because of friendship
+                                            ^
+
+3 errors detected in the compilation of "Test_name.c".

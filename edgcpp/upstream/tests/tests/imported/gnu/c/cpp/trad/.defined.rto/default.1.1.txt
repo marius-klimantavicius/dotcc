@@ -1,0 +1,108 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc -E Test_name.c
+# 1 "Test_name.c"
+
+
+ 
+
+ 
+
+
+ 
+
+ 
+
+
+
+
+
+
+
+
+
+
+"Test_name.c", line 21: warning: predefined meaning of "defined" discarded
+  #define defined			/* { dg-error "-:defined" } */
+          ^
+
+
+
+ 
+"Test_name.c", line 24: error: expected an expression
+  #if defined defined
+                     ^
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+"Test_name.c", line 42: error: expected an expression
+  #if !defined Z
+                ^
+
+
+
+
+
+"Test_name.c", line 46: error: expected an expression
+  #if !is_Z_defined
+                   ^
+
+
+
+
+
+
+
+
+ 
+
+ 
+"Test_name.c", line 56: error: expected an expression
+  #if defined(defined)
+                     ^
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+"Test_name.c", line 74: error: expected an expression
+  #if !defined(Z)
+                ^
+
+
+
+
+
+"Test_name.c", line 78: error: expected an expression
+  #if !is_Z_defined
+       ^
+
+6 errors detected in the compilation of "Test_name.c".

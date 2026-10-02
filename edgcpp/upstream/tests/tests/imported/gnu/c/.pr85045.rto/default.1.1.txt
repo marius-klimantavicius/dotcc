@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 10: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+    (a / b) (); /* { dg-error "called object .a / b. is not a function or function pointer" } */
+    ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 17: error: no instance of overloaded function "S<T>::get [with T=X]" matches the argument list
+            argument types are: (X)
+    typedef decltype(get<T>(declval<T>())) type; // { dg-error "" }
+                     ^
+"Test_name.c", line 15: note: substituting explicit template arguments "<X>" for function template "S<T>::get<U>(...) [with T=X]" failed
+      static decltype(*declval<U>()) get(...); // { dg-error "operator*" }
+                                     ^
+"Test_name.c", line 12: note: function template "S<T>::get<U>(const volatile X &) [with T=X]" does not match because argument #1 does not match parameter
+      static U get(const volatile T&);
+               ^
+          detected during instantiation of class "S<T> [with T=X]" at line 22
+
+1 error detected in the compilation of "Test_name.c".

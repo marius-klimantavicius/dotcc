@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 10: error: cast to type "union u" is not allowed
+    f((union u)&x); // expected-error {{cast to union type from type 'int *' not present in union}}
+       ^
+
+"Test_name.c", line 15: error: type of cast must be arithmetic or pointer
+  union u ww = (union u)1.0; // expected-error{{cast to union type from type 'double' not present in union}}
+                ^
+
+"Test_name.c", line 16: error: a value of type "int" cannot be used to initialize an entity of type "union u"
+  union u x = 7; // expected-error{{initializing 'union u' with an expression of incompatible type 'int'}}
+              ^
+
+"Test_name.c", line 18: error: type of cast must be arithmetic or pointer
+  union u zz = (union u)i; // expected-error{{initializer element is not a compile-time constant}}  expected-warning {{cast to union type is a GNU extension}}
+                ^
+
+4 errors detected in the compilation of "Test_name.c".

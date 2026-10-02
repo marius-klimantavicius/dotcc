@@ -1,0 +1,234 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c11 Test_name.c
+"Test_name.c", line 13: error: a value of type "unsigned short [2]" cannot be used to initialize an entity of type "char []"
+    char a3[] = u"a"; // expected-error{{initializing char array with wide string literal}}
+                ^
+
+"Test_name.c", line 14: error: a value of type "unsigned int [2]" cannot be used to initialize an entity of type "char []"
+    char a4[] = U"a"; // expected-error{{initializing char array with wide string literal}}
+                ^
+
+"Test_name.c", line 15: error: a value of type "long [2]" cannot be used to initialize an entity of type "char []"
+    char a5[] = L"a"; // expected-error{{initializing char array with wide string literal}}
+                ^
+
+"Test_name.c", line 17: warning: initialization with "{...}" expected for aggregate object
+    wchar_t b1[] = "a"; // expected-error{{initializing wide char array with non-wide string literal}}
+                   ^
+
+"Test_name.c", line 17: warning: a value of type "char *" cannot be used to initialize an entity of type "wchar_t" (aka "int")
+    wchar_t b1[] = "a"; // expected-error{{initializing wide char array with non-wide string literal}}
+                   ^
+
+"Test_name.c", line 18: warning: initialization with "{...}" expected for aggregate object
+    wchar_t b2[] = u8"a"; // expected-error{{initializing wide char array with non-wide string literal}}
+                   ^
+
+"Test_name.c", line 18: warning: a value of type "char *" cannot be used to initialize an entity of type "wchar_t" (aka "int")
+    wchar_t b2[] = u8"a"; // expected-error{{initializing wide char array with non-wide string literal}}
+                   ^
+
+"Test_name.c", line 19: warning: initialization with "{...}" expected for aggregate object
+    wchar_t b3[] = u"a"; // expected-error{{initializing wide char array with incompatible wide string literal}}
+                   ^
+
+"Test_name.c", line 19: warning: a value of type "unsigned short *" cannot be used to initialize an entity of type "wchar_t" (aka "int")
+    wchar_t b3[] = u"a"; // expected-error{{initializing wide char array with incompatible wide string literal}}
+                   ^
+
+"Test_name.c", line 20: warning: initialization with "{...}" expected for aggregate object
+    wchar_t b4[] = U"a"; // expected-error{{initializing wide char array with incompatible wide string literal}}
+                   ^
+
+"Test_name.c", line 20: warning: a value of type "unsigned int *" cannot be used to initialize an entity of type "wchar_t" (aka "int")
+    wchar_t b4[] = U"a"; // expected-error{{initializing wide char array with incompatible wide string literal}}
+                   ^
+
+"Test_name.c", line 21: warning: initialization with "{...}" expected for aggregate object
+    wchar_t b5[] = L"a"; // No error.
+                   ^
+
+"Test_name.c", line 21: warning: a value of type "long *" cannot be used to initialize an entity of type "wchar_t" (aka "int")
+    wchar_t b5[] = L"a"; // No error.
+                   ^
+
+"Test_name.c", line 23: error: a value of type "char [2]" cannot be used to initialize an entity of type "char16_t []" (aka "unsigned short []")
+    char16_t c1[] = "a"; // expected-error{{initializing wide char array with non-wide string literal}}
+                    ^
+
+"Test_name.c", line 24: error: a value of type "char [2]" cannot be used to initialize an entity of type "char16_t []" (aka "unsigned short []")
+    char16_t c2[] = u8"a"; // expected-error{{initializing wide char array with non-wide string literal}}
+                    ^
+
+"Test_name.c", line 26: error: a value of type "unsigned int [2]" cannot be used to initialize an entity of type "char16_t []" (aka "unsigned short []")
+    char16_t c4[] = U"a"; // expected-error{{initializing wide char array with incompatible wide string literal}}
+                    ^
+
+"Test_name.c", line 27: error: a value of type "long [2]" cannot be used to initialize an entity of type "char16_t []" (aka "unsigned short []")
+    char16_t c5[] = L"a"; // expected-error{{initializing wide char array with incompatible wide string literal}}
+                    ^
+
+"Test_name.c", line 29: error: a value of type "char [2]" cannot be used to initialize an entity of type "char32_t []" (aka "unsigned int []")
+    char32_t d1[] = "a"; // expected-error{{initializing wide char array with non-wide string literal}}
+                    ^
+
+"Test_name.c", line 30: error: a value of type "char [2]" cannot be used to initialize an entity of type "char32_t []" (aka "unsigned int []")
+    char32_t d2[] = u8"a"; // expected-error{{initializing wide char array with non-wide string literal}}
+                    ^
+
+"Test_name.c", line 31: error: a value of type "unsigned short [2]" cannot be used to initialize an entity of type "char32_t []" (aka "unsigned int []")
+    char32_t d3[] = u"a"; // expected-error{{initializing wide char array with incompatible wide string literal}}
+                    ^
+
+"Test_name.c", line 33: error: a value of type "long [2]" cannot be used to initialize an entity of type "char32_t []" (aka "unsigned int []")
+    char32_t d5[] = L"a"; // expected-error{{initializing wide char array with incompatible wide string literal}}
+                    ^
+
+"Test_name.c", line 35: warning: initialization with "{...}" expected for aggregate object
+    int e1[] = "a"; // expected-error{{initializing wide char array with non-wide string literal}}
+               ^
+
+"Test_name.c", line 35: warning: a value of type "char *" cannot be used to initialize an entity of type "int"
+    int e1[] = "a"; // expected-error{{initializing wide char array with non-wide string literal}}
+               ^
+
+"Test_name.c", line 36: warning: initialization with "{...}" expected for aggregate object
+    int e2[] = u8"a"; // expected-error{{initializing wide char array with non-wide string literal}}
+               ^
+
+"Test_name.c", line 36: warning: a value of type "char *" cannot be used to initialize an entity of type "int"
+    int e2[] = u8"a"; // expected-error{{initializing wide char array with non-wide string literal}}
+               ^
+
+"Test_name.c", line 37: warning: initialization with "{...}" expected for aggregate object
+    int e3[] = u"a"; // expected-error{{initializing wide char array with incompatible wide string literal}}
+               ^
+
+"Test_name.c", line 37: warning: a value of type "unsigned short *" cannot be used to initialize an entity of type "int"
+    int e3[] = u"a"; // expected-error{{initializing wide char array with incompatible wide string literal}}
+               ^
+
+"Test_name.c", line 38: warning: initialization with "{...}" expected for aggregate object
+    int e4[] = U"a"; // expected-error{{initializing wide char array with incompatible wide string literal}}
+               ^
+
+"Test_name.c", line 38: warning: a value of type "unsigned int *" cannot be used to initialize an entity of type "int"
+    int e4[] = U"a"; // expected-error{{initializing wide char array with incompatible wide string literal}}
+               ^
+
+"Test_name.c", line 39: warning: initialization with "{...}" expected for aggregate object
+    int e5[] = L"a"; // No error.
+               ^
+
+"Test_name.c", line 39: warning: a value of type "long *" cannot be used to initialize an entity of type "int"
+    int e5[] = L"a"; // No error.
+               ^
+
+"Test_name.c", line 41: error: a value of type "char [2]" cannot be used to initialize an entity of type "long []"
+    long f1[] = "a"; // expected-error{{array initializer must be an initializer list}}
+                ^
+
+"Test_name.c", line 42: error: a value of type "char [2]" cannot be used to initialize an entity of type "long []"
+    long f2[] = u8"a"; // expected-error{{array initializer must be an initializer list}}}
+                ^
+
+"Test_name.c", line 43: error: a value of type "unsigned short [2]" cannot be used to initialize an entity of type "long []"
+    long f3[] = u"a"; // expected-error{{array initializer must be an initializer list}}
+                ^
+
+"Test_name.c", line 44: error: a value of type "unsigned int [2]" cannot be used to initialize an entity of type "long []"
+    long f4[] = U"a"; // expected-error{{array initializer must be an initializer list}}
+                ^
+
+"Test_name.c", line 11: warning: variable "a1" was declared but never referenced
+    char a1[] = "a"; // No error.
+         ^
+
+"Test_name.c", line 12: warning: variable "a2" was declared but never referenced
+    char a2[] = u8"a"; // No error.
+         ^
+
+"Test_name.c", line 17: warning: variable "b1" was declared but never referenced
+    wchar_t b1[] = "a"; // expected-error{{initializing wide char array with non-wide string literal}}
+            ^
+
+"Test_name.c", line 18: warning: variable "b2" was declared but never referenced
+    wchar_t b2[] = u8"a"; // expected-error{{initializing wide char array with non-wide string literal}}
+            ^
+
+"Test_name.c", line 19: warning: variable "b3" was declared but never referenced
+    wchar_t b3[] = u"a"; // expected-error{{initializing wide char array with incompatible wide string literal}}
+            ^
+
+"Test_name.c", line 20: warning: variable "b4" was declared but never referenced
+    wchar_t b4[] = U"a"; // expected-error{{initializing wide char array with incompatible wide string literal}}
+            ^
+
+"Test_name.c", line 21: warning: variable "b5" was declared but never referenced
+    wchar_t b5[] = L"a"; // No error.
+            ^
+
+"Test_name.c", line 25: warning: variable "c3" was declared but never referenced
+    char16_t c3[] = u"a"; // No error.
+             ^
+
+"Test_name.c", line 32: warning: variable "d4" was declared but never referenced
+    char32_t d4[] = U"a"; // No error.
+             ^
+
+"Test_name.c", line 35: warning: variable "e1" was declared but never referenced
+    int e1[] = "a"; // expected-error{{initializing wide char array with non-wide string literal}}
+        ^
+
+"Test_name.c", line 36: warning: variable "e2" was declared but never referenced
+    int e2[] = u8"a"; // expected-error{{initializing wide char array with non-wide string literal}}
+        ^
+
+"Test_name.c", line 37: warning: variable "e3" was declared but never referenced
+    int e3[] = u"a"; // expected-error{{initializing wide char array with incompatible wide string literal}}
+        ^
+
+"Test_name.c", line 38: warning: variable "e4" was declared but never referenced
+    int e4[] = U"a"; // expected-error{{initializing wide char array with incompatible wide string literal}}
+        ^
+
+"Test_name.c", line 39: warning: variable "e5" was declared but never referenced
+    int e5[] = L"a"; // No error.
+        ^
+
+"Test_name.c", line 45: warning: variable "f5" was declared but never referenced
+    long f5[] = L"a"; // expected-error{{array initializer must be an initializer list}}
+         ^
+
+"Test_name.c", line 49: warning: initialization with "{...}" expected for aggregate object
+    char a[] = 1; // expected-error{{array initializer must be an initializer list or string literal}}
+               ^
+
+"Test_name.c", line 50: warning: initialization with "{...}" expected for aggregate object
+    wchar_t b[] = 1; // expected-error{{array initializer must be an initializer list or wide string literal}}
+                  ^
+
+"Test_name.c", line 51: warning: initialization with "{...}" expected for aggregate object
+    char16_t c[] = 1; // expected-error{{array initializer must be an initializer list or wide string literal}}
+                   ^
+
+"Test_name.c", line 52: warning: initialization with "{...}" expected for aggregate object
+    char32_t d[] = 1; // expected-error{{array initializer must be an initializer list or wide string literal}}
+                   ^
+
+"Test_name.c", line 49: warning: variable "a" was declared but never referenced
+    char a[] = 1; // expected-error{{array initializer must be an initializer list or string literal}}
+         ^
+
+"Test_name.c", line 50: warning: variable "b" was declared but never referenced
+    wchar_t b[] = 1; // expected-error{{array initializer must be an initializer list or wide string literal}}
+            ^
+
+"Test_name.c", line 51: warning: variable "c" was declared but never referenced
+    char16_t c[] = 1; // expected-error{{array initializer must be an initializer list or wide string literal}}
+             ^
+
+"Test_name.c", line 52: warning: variable "d" was declared but never referenced
+    char32_t d[] = 1; // expected-error{{array initializer must be an initializer list or wide string literal}}
+             ^
+
+15 errors detected in the compilation of "Test_name.c".

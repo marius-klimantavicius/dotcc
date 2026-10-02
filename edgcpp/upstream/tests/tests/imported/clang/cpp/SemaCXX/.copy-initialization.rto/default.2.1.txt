@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 17: error: no suitable user-defined conversion from "Y" to "X" exists
+    X x1 = y; // expected-error{{no matching constructor for initialization of 'X'}}
+           ^
+
+"Test_name.c", line 20: error: no suitable constructor exists to convert from "float *" to "X"
+    X x4 = fp; // expected-error{{no viable conversion}}
+           ^
+
+"Test_name.c", line 21: error: more than one instance of constructor "X::X" matches the argument list:
+            function "X::X(int *)" (declared at line 10)
+            function "X::X(float *)" (declared at line 11)
+            argument types are: (int)
+    X x2a(0); // expected-error{{call to constructor of 'X' is ambiguous}}
+          ^
+
+"Test_name.c", line 31: error: the object has type qualifiers that are not compatible with the member function "foo::bar"
+            object type is: const foo
+  void test(const foo *P) { P->bar(); } // expected-error{{'this' argument to member function 'bar' has type 'const foo', but function is not marked const}}
+                            ^
+
+"Test_name.c", line 46: error: class "PR6757::Foo" has no copy constructor to copy a const object
+      f(Bar()); // expected-error{{no viable constructor copying parameter of type 'const Foo'}}
+        ^
+
+"Test_name.c", line 84: warning: "B::B(B &)", required for copy that was eliminated, is not callable because reference parameter cannot be bound to rvalue
+  B b = 0; // ok, calls B(int) then A(const A&) then B(A).
+        ^
+
+5 errors detected in the compilation of "Test_name.c".

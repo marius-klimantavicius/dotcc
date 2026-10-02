@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 17: error: identifier "undeclared" is undefined
+  void f0 (int[undeclared]);    // { dg-error "undeclared" }
+               ^
+
+"Test_name.c", line 20: error: the size of an array must be greater than zero
+  void f1 (int[-1]);            // { dg-error "size" }
+               ^
+
+"Test_name.c", line 23: error: expression must have integral type
+  void f2 (int[v]);             // { dg-error "size" }
+               ^
+
+"Test_name.c", line 26: error: expression must have integral type
+  void f3 (int b[s]);           // { dg-error "size" }
+                 ^
+
+"Test_name.c", line 29: error: expression must have integral type
+  void f4 (int c[pv]);          // { dg-error "size" }
+                 ^
+
+"Test_name.c", line 32: error: expression must have integral type
+  void f5 (int d[vf ()]);       // { dg-error "size" }
+                 ^
+
+6 errors detected in the compilation of "Test_name.c".

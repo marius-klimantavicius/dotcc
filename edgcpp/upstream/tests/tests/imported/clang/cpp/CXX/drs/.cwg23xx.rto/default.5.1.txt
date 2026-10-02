@@ -1,0 +1,155 @@
+fe_only -DTEST_NUMBER=5 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 --exceptions --exceptions Test_name.c
+"Test_name.c", line 54: error: base class "cwg2303::A<int, int>" is ambiguous
+    f(F{});
+      ^
+
+"Test_name.c", line 214: error: reference to local variable of enclosing function is not allowed
+      extern void h2b(int x = i2 + 0); // ok, not odr-use
+                              ^
+
+"Test_name.c", line 234: error: list-initialization of an object type "void" is not allowed because the type is incomplete
+      return {};
+             ^
+
+"Test_name.c", line 243: warning: type qualifier on return type is meaningless
+    template const void i<const void>();
+             ^
+
+"Test_name.c", line 245: error: a brace-enclosed list is not allowed here
+    static_assert((void({}), true), "");
+                        ^
+
+"Test_name.c", line 257: warning: returning reference to local temporary
+    const int *const *const &f1() { return p; }
+                                           ^
+
+"Test_name.c", line 258: warning: returning reference to local temporary
+    int *const *const &f2() { return p; }
+                                     ^
+
+"Test_name.c", line 261: warning: return value type does not match the function type
+    const int **const &f4() { return p; }
+                                     ^
+
+"Test_name.c", line 261: warning: returning reference to local temporary
+    const int **const &f4() { return p; }
+                                     ^
+
+"Test_name.c", line 263: error: a reference of type "const int *const *&" (not const-qualified) cannot be initialized with a value of type "int **"
+    const int *const *&f5() { return p; }
+                                     ^
+
+"Test_name.c", line 269: error: expression must be an lvalue or a function designator
+    __typeof(&(true ? p : q)) x = &(true ? p : q);
+              ^
+
+"Test_name.c", line 269: error: expression must be an lvalue or a function designator
+    __typeof(&(true ? p : q)) x = &(true ? p : q);
+                                   ^
+
+"Test_name.c", line 274: error: expression must be an lvalue or a function designator
+    void *y = &(true ? p : r);
+               ^
+
+"Test_name.c", line 287: error: expression must have a constant value
+    static_assert(&p == &check_f, "");
+                  ^
+"Test_name.c", line 287: note: comparison involves unknown address (e.g., the address of a weak variable)
+    static_assert(&p == &check_f, "");
+                     ^
+
+"Test_name.c", line 330: error: reference to local variable of enclosing function is not allowed
+      void g2(int = [xxx=i] { return xxx; }());
+                         ^
+
+"Test_name.c", line 353: error: enum "cwg2363::E1" (declared at line 341) was previously declared as a different kind of enum type
+    friend enum class E1;
+                      ^
+
+"Test_name.c", line 353: error: enum "cwg2363::E1" (declared at line 341) was previously declared with a different base type
+    friend enum class E1;
+                      ^
+
+"Test_name.c", line 373: error: a class or namespace qualified name is required
+    typedef typename T::x xx;
+                     ^
+          detected during instantiation of class "cwg2369::Z<T> [with T=void]" at line 393
+
+"Test_name.c", line 373: error: global-scope qualifier (leading "::") is not allowed
+    typedef typename T::x xx;
+                      ^
+          detected during instantiation of class "cwg2369::Z<T> [with T=void]" at line 393
+
+"Test_name.c", line 373: error: expected a ";"
+    typedef typename T::x xx;
+                          ^
+          detected during instantiation of class "cwg2369::Z<T> [with T=void]" at line 393
+
+"Test_name.c", line 420: error: class template name must be a placeholder for the complete type being initialized (not for a component of that type)
+  C* d;
+  ^
+
+"Test_name.c", line 422: error: argument list for class template "cwg2376::C" is missing
+  C e[1];
+  ^
+
+"Test_name.c", line 443: error: std::tuple_size<"cwg2386::Bad1">::value is not a valid integral constant-expression
+  void no_value() { auto [x, y] = Bad1(); }
+                         ^
+
+"Test_name.c", line 444: error: "std::tuple_element" not defined
+  void wrong_value() { auto [x, y] = Bad2(); }
+                            ^
+
+"Test_name.c", line 513: error: variable "cwg2394::b" has an uninitialized const or reference member
+  B b;
+    ^
+
+"Test_name.c", line 538: warning: variable "b" was declared but never referenced
+      auto (&b)[5] = a;
+             ^
+
+"Test_name.c", line 539: warning: variable "c" was declared but never referenced
+      auto (*c)[5] = &a;
+             ^
+
+"Test_name.c", line 123: warning: variable "fn" is used before its value is set
+    fn({T(0)});
+    ^
+          detected during instantiation of "void cwg2311::test<T>() [with T=cwg2311::NonMovable]" at line 159
+
+"Test_name.c", line 123: warning: variable "fn" is used before its value is set
+    fn({T(0)});
+    ^
+          detected during instantiation of "void cwg2311::test<T>() [with T=cwg2311::NonMovableNonApplicableIList]" at line 160
+
+"Test_name.c", line 123: warning: variable "fn" is used before its value is set
+    fn({T(0)});
+    ^
+          detected during instantiation of "void cwg2311::test<T>() [with T=cwg2311::ExplicitMovable]" at line 161
+
+"Test_name.c", line 123: warning: variable "fn" is used before its value is set
+    fn({T(0)});
+    ^
+          detected during instantiation of "void cwg2311::test<T>() [with T=cwg2311::ExplicitNonMovable]" at line 162
+
+"Test_name.c", line 123: warning: variable "fn" is used before its value is set
+    fn({T(0)});
+    ^
+          detected during instantiation of "void cwg2311::test<T>() [with T=cwg2311::ExplicitNonMovableNonApplicableIList]" at line 163
+
+"Test_name.c", line 123: warning: variable "fn" is used before its value is set
+    fn({T(0)});
+    ^
+          detected during instantiation of "void cwg2311::test<T>() [with T=cwg2311::CopyOnly]" at line 164
+
+"Test_name.c", line 123: warning: variable "fn" is used before its value is set
+    fn({T(0)});
+    ^
+          detected during instantiation of "void cwg2311::test<T>() [with T=cwg2311::ExplicitCopyOnly]" at line 165
+
+"Test_name.c", line 509: warning: variable "cwg2394::a" was declared but never referenced
+  const A a;
+          ^
+
+20 errors detected in the compilation of "Test_name.c".

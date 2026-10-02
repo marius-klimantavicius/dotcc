@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"SemaCXX/array-bounds-system-header.cpp", line 4: warning: subscript out of range
+    int i[3]; i[3] = 5;
+              ^
+
+"SemaCXX/array-bounds-system-header.cpp", line 6: warning: subscript out of range
+    (a)[(3)] = 5;
+    ^
+
+"SemaCXX/array-bounds-system-header.cpp", line 7: warning: expression has no effect
+    sizeof(a) > 3 ? (a)[3] = 5 : 5;
+    ^
+
+"SemaCXX/array-bounds-system-header.cpp", line 8: warning: subscript out of range
+    (a[3] = 5);
+     ^
+
+"SemaCXX/array-bounds-system-header.cpp", line 4: warning: variable "i" was set but never used
+    int i[3]; i[3] = 5;
+        ^
+
+"SemaCXX/array-bounds-system-header.cpp", line 5: warning: variable "a" was set but never used
+    char a[3];
+         ^
+

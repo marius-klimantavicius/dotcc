@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 18: error: more than one instance of constructor "A<T, U, V>::A [with T=int, U=less, V=allocator]" matches the argument list:
+            function "A<T, U, V>::A(T, U) [with T=int, U=less, V=allocator]" (declared at line 11)
+            function "A<T, U, V>::A(T, V) [with T=int, U=less, V=allocator]" (declared at line 12)
+            argument types are: (int, {...})
+  A a(0, {}); // { dg-error "ambiguous" }
+      ^
+"Test_name.c", line 10: note: number of parameters of function "A<T, U, V>::A(const A<int, less, allocator> &) [with T=int, U=less, V=allocator]" does not match the call
+  struct A {
+         ^
+"Test_name.c", line 10: note: number of parameters of function "A<T, U, V>::A(A<int, less, allocator> &&) [with T=int, U=less, V=allocator]" does not match the call
+  struct A {
+         ^
+
+1 error detected in the compilation of "Test_name.c".

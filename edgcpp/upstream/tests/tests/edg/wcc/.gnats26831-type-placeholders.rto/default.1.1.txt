@@ -1,0 +1,90 @@
+fe_only -DTEST_NUMBER=1 --c++20 Test_name.c
+"Test_name.c", line 77: error: no suitable conversion function from "bad_type" to "good_type" (aka "const int") exists
+    { good_type                      var = bad_type{}; }
+                                           ^
+
+"Test_name.c", line 78: error: no suitable conversion function from "bad_type" to "good_type *" (aka "const int *") exists
+    { good_type*                     var = bad_type{}; }
+                                           ^
+
+"Test_name.c", line 79: error: no suitable conversion function from "bad_type" to "good_type" (aka "const int") exists
+    { good_type&                     var = bad_type{}; }
+                                           ^
+
+"Test_name.c", line 80: error: no suitable conversion function from "bad_type" to "good_type" (aka "const int") exists
+    { good_type&&                    var = bad_type{}; }
+                                           ^
+
+"Test_name.c", line 81: error: no suitable user-defined conversion from "bad_type" to "foo<good_type>" (aka "foo<const int>") exists
+    { foo<good_type>                 var = bad_type{}; }
+                                           ^
+
+"Test_name.c", line 82: error: no suitable user-defined conversion from "bad_type" to "std::vector<int>" exists
+    { std::vector<int>               var = bad_type{}; }
+                                           ^
+
+"Test_name.c", line 83: error: no suitable user-defined conversion from "bad_type" to "std::string" exists
+    { std::string                    var = bad_type{}; }
+                                           ^
+
+"Test_name.c", line 84: error: no suitable user-defined conversion from "bad_type" to "std::v1::inline_ns_vector<int>" exists
+    { std::inline_ns_vector<int>     var = bad_type{}; }
+                                           ^
+
+"Test_name.c", line 85: error: no suitable user-defined conversion from "bad_type" to "std::v1::inline_ns_string" exists
+    { std::inline_ns_string          var = bad_type{}; }
+                                           ^
+
+"Test_name.c", line 86: error: no suitable user-defined conversion from "bad_type" to "not_std::vector<int>" (aka "not_std::detail::v1::vector_impl<int>") exists
+    { not_std::vector<int>           var = bad_type{}; }
+                                           ^
+
+"Test_name.c", line 87: error: no suitable user-defined conversion from "bad_type" to "not_std::string" (aka "not_std::detail::v1::basic_string<char>") exists
+    { not_std::string                var = bad_type{}; }
+                                           ^
+
+"Test_name.c", line 88: error: no suitable user-defined conversion from "bad_type" to "not_std::v1::inline_ns_vector<int>" (aka "not_std::detail::v1::vector_impl<int>") exists
+    { not_std::inline_ns_vector<int> var = bad_type{}; }
+                                           ^
+
+"Test_name.c", line 89: error: no suitable user-defined conversion from "bad_type" to "not_std::v1::inline_ns_string" (aka "not_std::detail::v1::basic_string<char>") exists
+    { not_std::inline_ns_string      var = bad_type{}; }
+                                           ^
+
+"Test_name.c", line 90: error: no suitable user-defined conversion from "bad_type" to "my_struct<&int_func>" exists
+    { my_struct<&int_func>           var = bad_type{}; }
+                                           ^
+
+"Test_name.c", line 91: error: initialization with "{...}" expected for aggregate object
+    { array_type                     var = bad_type{}; }
+                                           ^
+
+"Test_name.c", line 92: error: no suitable conversion function from "bad_type" to "array_type *" (aka "int (*)[24]") exists
+    { array_type*                    var = bad_type{}; }
+                                           ^
+
+"Test_name.c", line 93: error: initial value of reference to non-const must be an lvalue
+    { array_type&                    var = bad_type{}; }
+                                           ^
+
+"Test_name.c", line 94: error: no suitable conversion function from "bad_type" to "array_type" (aka "int [24]") exists
+    { array_type&&                   var = bad_type{}; }
+                                           ^
+
+"Test_name.c", line 95: error: no suitable user-defined conversion from "bad_type" to "td_struct" exists
+    { td_struct                      var = bad_type{}; }
+                                           ^
+
+"Test_name.c", line 96: error: no suitable conversion function from "bad_type" to "td_enum" exists
+    { td_enum                        var = bad_type{}; }
+                                           ^
+
+"Test_name.c", line 97: error: no suitable user-defined conversion from "bad_type" to "inline_td_struct" (aka "td_wrapped_struct") exists
+    { inline_td_struct               var = bad_type{}; }
+                                           ^
+
+"Test_name.c", line 98: error: no suitable conversion function from "bad_type" to "inline_td_enum" (aka "td_wrapped_enum") exists
+    { inline_td_enum                 var = bad_type{}; }
+                                           ^
+
+22 errors detected in the compilation of "Test_name.c".

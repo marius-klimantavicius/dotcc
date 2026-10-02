@@ -1,0 +1,142 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 10: error: template constraint not satisfied
+  using r1i = r1<int>; // expected-error{{constraints not satisfied for class template 'r1' [with T = int]}}
+                    ^
+"Test_name.c", line 7: note: substitution of arguments "<int>" for requires-clause failed
+  template<typename T> requires requires { requires false; } // expected-note{{because 'false' evaluated to false}}
+                                ^
+"Test_name.c", line 7: note: atomic constraint evaluates to false
+  template<typename T> requires requires { requires false; } // expected-note{{because 'false' evaluated to false}}
+                                ^
+
+"Test_name.c", line 15: error: template constraint not satisfied
+  using r2i = r2<int>; // expected-error{{constraints not satisfied for class template 'r2' [with T = int]}}
+                    ^
+"Test_name.c", line 12: note: substitution of arguments "<int>" for requires-clause failed
+  template<typename T> requires requires { requires sizeof(T) == 0; } // expected-note{{because 'sizeof(int) == 0' (4 == 0) evaluated to false}}
+                                ^
+"Test_name.c", line 12: note: atomic constraint evaluates to false
+  template<typename T> requires requires { requires sizeof(T) == 0; } // expected-note{{because 'sizeof(int) == 0' (4 == 0) evaluated to false}}
+                                ^
+
+"Test_name.c", line 20: error: template constraint not satisfied
+  using r3i = r3<int>; // expected-error{{constraints not satisfied for class template 'r3' [with T = int]}}
+                    ^
+"Test_name.c", line 17: note: substitution of arguments "<int>" for requires-clause failed
+  template<typename T> requires requires (T t) { requires sizeof(t) == 0; } // expected-note{{because 'sizeof (t) == 0' (4 == 0) evaluated to false}}
+                                ^
+"Test_name.c", line 17: note: atomic constraint evaluates to false
+  template<typename T> requires requires (T t) { requires sizeof(t) == 0; } // expected-note{{because 'sizeof (t) == 0' (4 == 0) evaluated to false}}
+                                ^
+
+"Test_name.c", line 28: error: template constraint not satisfied
+  using r4i = X<void>::r4<int>; // expected-error{{constraints not satisfied for class template 'r4' [with U = int]}}
+                             ^
+"Test_name.c", line 24: note: substitution of arguments "<int>" for requires-clause failed
+      template<typename U> requires requires (U u) { requires sizeof(u) == sizeof(T); } // expected-note{{because 'sizeof (u) == sizeof(T)' would be invalid: invalid application of 'sizeof' to an incomplete type 'void'}}
+                                    ^
+"Test_name.c", line 24: note: atomic constraint evaluates to false
+      template<typename U> requires requires (U u) { requires sizeof(u) == sizeof(T); } // expected-note{{because 'sizeof (u) == sizeof(T)' would be invalid: invalid application of 'sizeof' to an incomplete type 'void'}}
+                                    ^
+
+"Test_name.c", line 41: error: template constraint not satisfied
+    using dc1 = D_check<short>; // expected-error{{constraints not satisfied for class template 'D_check' [with T = short]}}
+                             ^
+"Test_name.c", line 40: note: type constraint failed for "short"
+    template<D T> struct D_check {}; // expected-note{{because 'short' does not satisfy 'D'}}
+             ^
+"Test_name.c", line 34: note: atomic constraint evaluates to false
+      requires (T t) {
+      ^
+
+"Test_name.c", line 46: error: template constraint not satisfied
+        requires a == 0; // expected-error{{substitution into constraint expression resulted in a non-constant expression}}
+        ^
+"Test_name.c", line 46: note: atomic constraint not constant
+        requires a == 0; // expected-error{{substitution into constraint expression resulted in a non-constant expression}}
+                   ^
+"Test_name.c", line 46: note: expression cannot be interpreted
+        requires a == 0; // expected-error{{substitution into constraint expression resulted in a non-constant expression}}
+                 ^
+
+"Test_name.c", line 53: error: static assertion failed
+      static_assert(C2<int>); // expected-error{{static assertion failed}}
+      ^
+
+"Test_name.c", line 88: error: static assertion failed
+  static_assert(Amps1<double>);
+  ^
+
+"Test_name.c", line 91: error: static assertion failed
+  static_assert(Amps2<double>);
+  ^
+
+"Test_name.c", line 103: error: no instance of function template "SubstitutionFailureNestedRequires::foo1" matches the argument list
+    foo1<int>();
+    ^
+"Test_name.c", line 94: note: substituting "<int>" for function template "SubstitutionFailureNestedRequires::foo1" failed constraints
+  void foo1() requires requires (T x) {
+       ^
+"Test_name.c", line 94: note: atomic constraint evaluates to false
+  void foo1() requires requires (T x) {
+                       ^
+
+"Test_name.c", line 107: error: no instance of function template "SubstitutionFailureNestedRequires::fooAmps1" matches the argument list
+    fooAmps1<int>();
+    ^
+"Test_name.c", line 100: note: substituting "<int>" for function template "SubstitutionFailureNestedRequires::fooAmps1" failed constraints
+  template<class T> void fooAmps1() requires Amps1<T> {}
+                         ^
+"Test_name.c", line 100: note: concept "SubstitutionFailureNestedRequires::Amps1" not satisfied for "<int>"
+  template<class T> void fooAmps1() requires Amps1<T> {}
+                                             ^
+"Test_name.c", line 76: note: atomic constraint evaluates to false
+  concept Amps1 = requires (T x) {
+                  ^
+
+"Test_name.c", line 141: warning: unnamed parameter in requires-expression has no effect
+  template<typename T> requires requires(T) { requires C<T> || X<T>::value; } void foo();
+                                          ^
+
+"Test_name.c", line 143: warning: unnamed parameter in requires-expression has no effect
+  template<typename T> requires requires(T) { requires C<T> && X<T>::value; } void bar(); // #bar
+                                          ^
+
+"Test_name.c", line 144: warning: unnamed parameter in requires-expression has no effect
+  template<typename T> requires requires(T) { requires F<T> || (X<T>::value && C<T>); } void baz();
+                                          ^
+
+"Test_name.c", line 152: error: no instance of function template "SubstitutionFailureNestedRequires::ErrorExpressions_NotSF::bar" matches the argument list
+    bar<False>();
+    ^
+"Test_name.c", line 143: note: substituting "<SubstitutionFailureNestedRequires::ErrorExpressions_NotSF::False>" for function template "SubstitutionFailureNestedRequires::ErrorExpressions_NotSF::bar" failed constraints
+  template<typename T> requires requires(T) { requires C<T> && X<T>::value; } void bar(); // #bar
+                                                                                   ^
+"Test_name.c", line 143: note: atomic constraint evaluates to false
+  template<typename T> requires requires(T) { requires C<T> && X<T>::value; } void bar(); // #bar
+                                ^
+
+"Test_name.c", line 135: error: name followed by "::" must be a class or namespace name
+  template<typename T> struct X { static constexpr bool value = T::value; }; // #X_Value
+                                                                ^
+          detected during instantiation of class "SubstitutionFailureNestedRequires::ErrorExpressions_NotSF::X<T> [with T=int]" at line 159
+
+"Test_name.c", line 159: error: no instance of function template "SubstitutionFailureNestedRequires::ErrorExpressions_NotSF::bar" matches the argument list
+    bar<int>();
+    ^
+"Test_name.c", line 143: note: substituting "<int>" for function template "SubstitutionFailureNestedRequires::ErrorExpressions_NotSF::bar" failed constraints
+  template<typename T> requires requires(T) { requires C<T> && X<T>::value; } void bar(); // #bar
+                                                                                   ^
+"Test_name.c", line 143: note: atomic constraint evaluates to false
+  template<typename T> requires requires(T) { requires C<T> && X<T>::value; } void bar(); // #bar
+                                ^
+
+"Test_name.c", line 182: warning: template parameter "k" is not used in declaring the parameter types of function template "no_crash_D138914::j<<unnamed>>::j"
+    template <typename k>
+                       ^
+
+"Test_name.c", line 186: error: expected an identifier
+  template <> j(); // expected-error {{deduction guide declaration without trailing return type}}
+                ^
+
+15 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 5: error: mismatched delimiters in default argument expression
+  template<typename=int struct A __attribute((aligned(4))); // { dg-error "declaration|expected" }
+                    ^
+
+"Test_name.c", line 5: error: expected a "," or ">"
+  template<typename=int struct A __attribute((aligned(4))); // { dg-error "declaration|expected" }
+                                                          ^
+
+"Test_name.c", line 5: error: invalid combination of type specifiers
+  template<typename=int struct A __attribute((aligned(4))); // { dg-error "declaration|expected" }
+                        ^
+
+"Test_name.c", line 5: error: expected a declaration
+  template<typename=int struct A __attribute((aligned(4))); // { dg-error "declaration|expected" }
+                                                          ^
+
+4 errors detected in the compilation of "Test_name.c".

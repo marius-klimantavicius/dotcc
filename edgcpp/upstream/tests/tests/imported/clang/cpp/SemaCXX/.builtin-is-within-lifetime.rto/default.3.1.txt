@@ -1,0 +1,336 @@
+fe_only -DTEST_NUMBER=3 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++26 Test_name.c
+"Test_name.c", line 52: error: expression must have a constant value
+  static_assert([]{
+                ^
+"Test_name.c", line 41: note: cannot call non-constexpr function "__builtin_is_within_lifetime" (declared implicitly)
+    if (__builtin_is_within_lifetime(&i) || __builtin_is_within_lifetime(&c))
+        ^
+"Test_name.c", line 54: note: called from:
+    return test_union(u.i, u.c);
+                     ^
+
+"Test_name.c", line 56: error: expression must have a constant value
+  static_assert([]{
+                ^
+"Test_name.c", line 41: note: cannot call non-constexpr function "__builtin_is_within_lifetime" (declared implicitly)
+    if (__builtin_is_within_lifetime(&i) || __builtin_is_within_lifetime(&c))
+        ^
+"Test_name.c", line 58: note: called from:
+    return test_union(i, c);
+                     ^
+
+"Test_name.c", line 60: error: expression must have a constant value
+  static_assert([]{
+                ^
+"Test_name.c", line 41: note: cannot call non-constexpr function "__builtin_is_within_lifetime" (declared implicitly)
+    if (__builtin_is_within_lifetime(&i) || __builtin_is_within_lifetime(&c))
+        ^
+"Test_name.c", line 62: note: called from:
+    return test_union(u.i, u.c);
+                     ^
+
+"Test_name.c", line 64: error: expression must have a constant value
+  static_assert([]{
+                ^
+"Test_name.c", line 41: note: cannot call non-constexpr function "__builtin_is_within_lifetime" (declared implicitly)
+    if (__builtin_is_within_lifetime(&i) || __builtin_is_within_lifetime(&c))
+        ^
+"Test_name.c", line 66: note: called from:
+    return test_union(r.u.i, r.u.c);
+                     ^
+
+"Test_name.c", line 88: error: expression must have a constant value
+  static_assert(test_nested());
+                ^
+"Test_name.c", line 74: note: cannot call non-constexpr function "__builtin_is_within_lifetime" (declared implicitly)
+    if (__builtin_is_within_lifetime(&l) || __builtin_is_within_lifetime(&u) || __builtin_is_within_lifetime(&u.i) || __builtin_is_within_lifetime(&u.c))
+        ^
+
+"Test_name.c", line 108: error: expression must have a constant value
+  static_assert(test_dynamic(false));
+                ^
+"Test_name.c", line 95: note: cannot call non-constexpr function "__builtin_is_within_lifetime" (declared implicitly)
+    if (__builtin_is_within_lifetime(p))
+        ^
+
+"Test_name.c", line 109: error: expression must have a constant value
+  static_assert(test_dynamic(true));
+                ^
+"Test_name.c", line 95: note: cannot call non-constexpr function "__builtin_is_within_lifetime" (declared implicitly)
+    if (__builtin_is_within_lifetime(p))
+        ^
+
+"Test_name.c", line 122: warning: variable "x" was declared but never referenced
+      int x = 0;
+          ^
+
+"Test_name.c", line 147: error: expression must have a constant value
+  static_assert(test_automatic(0));
+                ^
+"Test_name.c", line 118: note: cannot call non-constexpr function "__builtin_is_within_lifetime" (declared implicitly)
+      if (!__builtin_is_within_lifetime(p))
+           ^
+
+"Test_name.c", line 148: error: expression must have a constant value
+  static_assert(test_automatic(1));
+                ^
+"Test_name.c", line 118: note: cannot call non-constexpr function "__builtin_is_within_lifetime" (declared implicitly)
+      if (!__builtin_is_within_lifetime(p))
+           ^
+
+"Test_name.c", line 151: error: expression must have a constant value
+  static_assert(test_automatic(2));
+                ^
+"Test_name.c", line 118: note: cannot call non-constexpr function "__builtin_is_within_lifetime" (declared implicitly)
+      if (!__builtin_is_within_lifetime(p))
+           ^
+
+"Test_name.c", line 154: error: expression must have a constant value
+  static_assert(test_automatic(3));
+                ^
+"Test_name.c", line 118: note: cannot call non-constexpr function "__builtin_is_within_lifetime" (declared implicitly)
+      if (!__builtin_is_within_lifetime(p))
+           ^
+
+"Test_name.c", line 157: error: expression must have a constant value
+  static_assert(test_automatic(4));
+                ^
+"Test_name.c", line 118: note: cannot call non-constexpr function "__builtin_is_within_lifetime" (declared implicitly)
+      if (!__builtin_is_within_lifetime(p))
+           ^
+
+"Test_name.c", line 176: error: expression must have a constant value
+  static_assert(test_indeterminate());
+                ^
+"Test_name.c", line 164: note: cannot call non-constexpr function "__builtin_is_within_lifetime" (declared implicitly)
+    if (!__builtin_is_within_lifetime(&x))
+         ^
+
+"Test_name.c", line 180: error: argument of type "volatile int *" is incompatible with parameter of type "void *"
+    if (!__builtin_is_within_lifetime(static_cast<volatile int*>(&x)) || !__builtin_is_within_lifetime(static_cast<volatile void*>(&x)))
+                                      ^
+
+"Test_name.c", line 180: error: argument of type "volatile void *" is incompatible with parameter of type "void *"
+    if (!__builtin_is_within_lifetime(static_cast<volatile int*>(&x)) || !__builtin_is_within_lifetime(static_cast<volatile void*>(&x)))
+                                                                                                       ^
+
+"Test_name.c", line 189: error: argument of type "const bool *" is incompatible with parameter of type "void *"
+  constexpr bool self = __builtin_is_within_lifetime(&self);
+                                                     ^
+
+"Test_name.c", line 196: error: argument of type "const int *" is incompatible with parameter of type "void *"
+  static_assert(__builtin_is_within_lifetime(&external));
+                                             ^
+
+"Test_name.c", line 198: error: argument of type "const int *" is incompatible with parameter of type "void *"
+    __builtin_is_within_lifetime(&external);
+                                 ^
+
+"Test_name.c", line 209: error: too few arguments in function call
+    __builtin_is_within_lifetime();
+                                 ^
+
+"Test_name.c", line 212: error: argument of type "int" is incompatible with parameter of type "void *"
+    __builtin_is_within_lifetime(1, 2);
+                                 ^
+
+"Test_name.c", line 212: error: too many arguments in function call
+    __builtin_is_within_lifetime(1, 2);
+                                    ^
+
+"Test_name.c", line 215: error: argument of type "const int *" is incompatible with parameter of type "void *"
+    __builtin_is_within_lifetime(&external, &external);
+                                 ^
+
+"Test_name.c", line 215: error: too many arguments in function call
+    __builtin_is_within_lifetime(&external, &external);
+                                            ^
+
+"Test_name.c", line 227: error: argument of type "const int *" is incompatible with parameter of type "void *"
+  static_assert(!__builtin_is_within_lifetime(&x1.i));
+                                              ^
+
+"Test_name.c", line 228: error: argument of type "const char *" is incompatible with parameter of type "void *"
+  static_assert(__builtin_is_within_lifetime(&x1.c));
+                                             ^
+
+"Test_name.c", line 229: error: expression must have a constant value
+  static_assert(__builtin_is_within_lifetime(&x1.mi));
+                ^
+"Test_name.c", line 229: note: cannot call non-constexpr function "__builtin_is_within_lifetime" (declared implicitly)
+  static_assert(__builtin_is_within_lifetime(&x1.mi));
+                ^
+
+"Test_name.c", line 237: error: initialization is not constant
+  } x2;
+    ^
+"Test_name.c", line 236: note: cannot call non-constexpr function "__builtin_is_within_lifetime" (declared implicitly)
+    bool b = __builtin_is_within_lifetime(&a); // #NSDMI-read
+             ^
+
+"Test_name.c", line 250: error: call to consteval function "X3::X3()" did not produce a valid constant expression
+  } x3;
+      ^
+"Test_name.c", line 248: note: cannot call non-constexpr function "__builtin_is_within_lifetime" (declared implicitly)
+      __builtin_is_within_lifetime(this); // #X3-read
+      ^
+
+"Test_name.c", line 256: error: expression must have a constant value
+  static_assert(__builtin_is_within_lifetime(const_cast<int*>(&i)));
+                ^
+"Test_name.c", line 256: note: cannot call non-constexpr function "__builtin_is_within_lifetime" (declared implicitly)
+  static_assert(__builtin_is_within_lifetime(const_cast<int*>(&i)));
+                ^
+
+"Test_name.c", line 257: error: argument of type "volatile int *" is incompatible with parameter of type "void *"
+  static_assert(__builtin_is_within_lifetime(const_cast<volatile int*>(&i)));
+                                             ^
+
+"Test_name.c", line 258: error: argument of type "const void *" is incompatible with parameter of type "void *"
+  static_assert(__builtin_is_within_lifetime(static_cast<const void*>(&i)));
+                                             ^
+
+"Test_name.c", line 261: error: argument of type "const int *" is incompatible with parameter of type "void *"
+  static_assert(__builtin_is_within_lifetime(arr));
+                                             ^
+
+"Test_name.c", line 262: error: argument of type "const int *" is incompatible with parameter of type "void *"
+  static_assert(__builtin_is_within_lifetime(arr + 0));
+                                             ^
+
+"Test_name.c", line 263: error: argument of type "const int *" is incompatible with parameter of type "void *"
+  static_assert(__builtin_is_within_lifetime(arr + 1));
+                                             ^
+
+"Test_name.c", line 265: error: argument of type "const int *" is incompatible with parameter of type "void *"
+    __builtin_is_within_lifetime(&i + 1);
+                                 ^
+
+"Test_name.c", line 268: error: argument of type "const int *" is incompatible with parameter of type "void *"
+    __builtin_is_within_lifetime(arr + 2);
+                                 ^
+
+"Test_name.c", line 276: warning: argument of type "void (*)()" is incompatible with parameter of type "void *"
+      __builtin_is_within_lifetime(p); // expected-error {{function pointer argument to '__builtin_is_within_lifetime' is not allowed}}
+                                   ^
+          detected during instantiation of "void disallow_function_types(bool, const T *) [with T=void ()]" at line 280
+
+"Test_name.c", line 296: error: argument of type "const bool *" is incompatible with parameter of type "void *"
+        return __builtin_is_within_lifetime(&b);   // during constant evaluation, cannot read from c
+                                            ^
+
+"Test_name.c", line 319: error: expression must have a constant value
+  static_assert(f(1));
+                ^
+"Test_name.c", line 316: note: cannot use variable-length array during constexpr evaluation
+    int vla[n]; // cxx20-error {{variable of non-literal type}}
+           ^
+
+"Test_name.c", line 325: error: expression must have a constant value
+  static_assert(fail(1)); // sincecxx23-error {{static assertion expression is not an integral constant expression}}
+                ^
+"Test_name.c", line 322: note: cannot use variable-length array during constexpr evaluation
+    int vla[n]; // cxx20-error {{variable of non-literal type}}
+           ^
+
+"Test_name.c", line 331: error: expression must have a constant value
+  static_assert(variably_modified(1));
+                ^
+"Test_name.c", line 328: note: cannot use variable-length array during constexpr evaluation
+    int(* p)[n];
+            ^
+
+"Test_name.c", line 347: error: expression must have a constant value
+  static_assert(partial_arrays());
+                ^
+"Test_name.c", line 337: note: cannot call non-constexpr function "__builtin_is_within_lifetime" (declared implicitly)
+    if (!__builtin_is_within_lifetime(&arr) || !__builtin_is_within_lifetime(&arr[0]) || !__builtin_is_within_lifetime(&arr[1]))
+         ^
+
+"Test_name.c", line 375: error: expression must have a constant value
+    static_assert(__builtin_is_within_lifetime(&unmove(0)));
+                  ^
+"Test_name.c", line 375: note: cannot call non-constexpr function "__builtin_is_within_lifetime" (declared implicitly)
+    static_assert(__builtin_is_within_lifetime(&unmove(0)));
+                  ^
+
+"Test_name.c", line 376: error: expression must have a constant value
+    static_assert(__builtin_is_within_lifetime(&unmove(NonTrivial{})));
+                  ^
+"Test_name.c", line 376: note: cannot call non-constexpr function "__builtin_is_within_lifetime" (declared implicitly)
+    static_assert(__builtin_is_within_lifetime(&unmove(NonTrivial{})));
+                  ^
+
+"Test_name.c", line 383: error: expression must have a constant value
+  static_assert(test_temporaries());
+                ^
+"Test_name.c", line 377: note: cannot call non-constexpr function "__builtin_is_within_lifetime" (declared implicitly)
+    if (!__builtin_is_within_lifetime(&unmove(0)))
+         ^
+
+"Test_name.c", line 386: error: argument of type "const int *" is incompatible with parameter of type "void *"
+  static_assert(__builtin_is_within_lifetime(&temp));
+                                             ^
+
+"Test_name.c", line 391: warning: returning pointer to local variable
+    return &i; // expected-warning 2 {{address of stack memory associated with local variable 'i' returned}}
+           ^
+          detected during instantiation of "T *test_dangling<T>() [with T=int]" at line 393
+
+"Test_name.c", line 393: error: expression must have a constant value
+  static_assert(__builtin_is_within_lifetime(test_dangling<int>())); // expected-note {{in instantiation of function template specialization}}
+                ^
+"Test_name.c", line 393: note: cannot call non-constexpr function "__builtin_is_within_lifetime" (declared implicitly)
+  static_assert(__builtin_is_within_lifetime(test_dangling<int>())); // expected-note {{in instantiation of function template specialization}}
+                ^
+
+"Test_name.c", line 391: warning: returning pointer to local variable
+    return &i; // expected-warning 2 {{address of stack memory associated with local variable 'i' returned}}
+           ^
+          detected during instantiation of "T *test_dangling<T>() [with T=int [1]]" at line 396
+
+"Test_name.c", line 396: error: expression must have a constant value
+  static_assert(__builtin_is_within_lifetime(test_dangling<int[1]>())); // expected-note {{in instantiation of function template specialization}}
+                ^
+"Test_name.c", line 396: note: cannot call non-constexpr function "__builtin_is_within_lifetime" (declared implicitly)
+  static_assert(__builtin_is_within_lifetime(test_dangling<int[1]>())); // expected-note {{in instantiation of function template specialization}}
+                ^
+
+"Test_name.c", line 402: error: static assertion failed
+  static_assert(CanCallAndPassToIsWithinLifetime<[]{ return &i; }>);
+  ^
+
+"Test_name.c", line 407: error: static assertion failed
+  static_assert(decltype(sfinae<[]{ return &i; }>())::value);
+  ^
+
+"Test_name.c", line 409: error: no instance of overloaded function "sfinae" matches the required type
+  std::true_type(* not_immediate)() = &sfinae<[]{ return &i; }>;
+                                      ^
+
+"Test_name.c", line 33: error: argument of type "const int *" is incompatible with parameter of type "void *"
+    return __builtin_is_within_lifetime(p);
+                                        ^
+          detected during instantiation of "bool std::is_within_lifetime(const T *) noexcept [with T=int]" at line 412
+
+"Test_name.c", line 416: error: no instance of function template "std::is_within_lifetime" matches the argument list
+            argument types are: (void (*)())
+    std::is_within_lifetime<void()>(&test_std_error_message);
+    ^
+"Test_name.c", line 32: note: substituting "<void ()>" for function template "std::is_within_lifetime" failed constraints
+  consteval bool is_within_lifetime(const T* p) noexcept { // #std-definition
+                 ^
+"Test_name.c", line 31: note: atomic constraint evaluates to false
+  template<typename T> requires (!is_function_v<T>) // #std-constraint
+                                 ^
+
+"Test_name.c", line 33: error: argument of type "const XStd *" is incompatible with parameter of type "void *"
+    return __builtin_is_within_lifetime(p);
+                                        ^
+          detected during instantiation of "bool std::is_within_lifetime(const T *) noexcept [with T=XStd]" at line 427
+
+"Test_name.c", line 237: warning: variable "x2" was declared but never referenced
+  } x2;
+    ^
+
+53 errors detected in the compilation of "Test_name.c".

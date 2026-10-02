@@ -1,0 +1,262 @@
+fe_only -DTEST_NUMBER=3 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 93: warning: access to member of _Atomic object
+    x.val = 12;   // access-error {{accessing a member of an atomic structure or union is undefined behavior}}
+    ^
+
+"Test_name.c", line 94: warning: access to member of _Atomic object
+    xp->val = 12; // access-error {{accessing a member of an atomic structure or union is undefined behavior}}
+    ^
+
+"Test_name.c", line 94: warning: variable "xp" is used before its value is set
+    xp->val = 12; // access-error {{accessing a member of an atomic structure or union is undefined behavior}}
+    ^
+
+"Test_name.c", line 100: warning: access to member of _Atomic object
+    y.ival = 12;     // access-error {{accessing a member of an atomic structure or union is undefined behavior}}
+    ^
+
+"Test_name.c", line 101: warning: access to member of _Atomic object
+    yp->fval = 1.2f; // access-error {{accessing a member of an atomic structure or union is undefined behavior}}
+    ^
+
+"Test_name.c", line 101: warning: variable "yp" is used before its value is set
+    yp->fval = 1.2f; // access-error {{accessing a member of an atomic structure or union is undefined behavior}}
+    ^
+
+"Test_name.c", line 104: warning: access to member of _Atomic object
+    int xval = x.val; // access-error {{accessing a member of an atomic structure or union is undefined behavior}}
+               ^
+
+"Test_name.c", line 105: warning: access to member of _Atomic object
+    xval = xp->val;   // access-error {{accessing a member of an atomic structure or union is undefined behavior}}
+           ^
+
+"Test_name.c", line 106: warning: access to member of _Atomic object
+    int yval = y.ival; // access-error {{accessing a member of an atomic structure or union is undefined behavior}}
+               ^
+
+"Test_name.c", line 107: warning: access to member of _Atomic object
+    yval = yp->ival;   // access-error {{accessing a member of an atomic structure or union is undefined behavior}}
+           ^
+
+"Test_name.c", line 111: warning: access to member of _Atomic object
+    z.val = 12;       // access-error {{accessing a member of an atomic structure or union is undefined behavior}}
+    ^
+
+"Test_name.c", line 112: warning: access to member of _Atomic object
+    int zval = z.val; // access-error {{accessing a member of an atomic structure or union is undefined behavior}}
+               ^
+
+"Test_name.c", line 115: warning: access to member of _Atomic object
+    (void)sizeof(x.val);
+                 ^
+
+"Test_name.c", line 116: warning: access to member of _Atomic object
+    (void)sizeof(xp->val);
+                 ^
+
+"Test_name.c", line 117: warning: access to member of _Atomic object
+    (void)sizeof(y.ival);
+                 ^
+
+"Test_name.c", line 118: warning: access to member of _Atomic object
+    (void)sizeof(yp->ival);
+                 ^
+
+"Test_name.c", line 123: warning: access to member of _Atomic object
+        x.val = 12;
+        ^
+
+"Test_name.c", line 124: warning: access to member of _Atomic object
+        xp->val = 12;
+        ^
+
+"Test_name.c", line 125: warning: access to member of _Atomic object
+        (void)y.ival;
+              ^
+
+"Test_name.c", line 126: warning: access to member of _Atomic object
+        (void)yp->ival;
+              ^
+
+"Test_name.c", line 131: warning: statement is unreachable
+      x.val = 12;
+      ^
+
+"Test_name.c", line 131: warning: access to member of _Atomic object
+      x.val = 12;
+      ^
+
+"Test_name.c", line 132: warning: access to member of _Atomic object
+      xp->val = 12;
+      ^
+
+"Test_name.c", line 133: warning: access to member of _Atomic object
+      (void)y.ival;
+            ^
+
+"Test_name.c", line 134: warning: access to member of _Atomic object
+      (void)yp->ival;
+            ^
+
+"Test_name.c", line 104: warning: variable "xval" was set but never used
+    int xval = x.val; // access-error {{accessing a member of an atomic structure or union is undefined behavior}}
+        ^
+
+"Test_name.c", line 106: warning: variable "yval" was set but never used
+    int yval = y.ival; // access-error {{accessing a member of an atomic structure or union is undefined behavior}}
+        ^
+
+"Test_name.c", line 112: warning: variable "zval" was declared but never referenced
+    int zval = z.val; // access-error {{accessing a member of an atomic structure or union is undefined behavior}}
+        ^
+
+"Test_name.c", line 148: warning: variable "non_atomic_s" is used before its value is set
+    _Atomic struct S s = non_atomic_s;
+                         ^
+
+"Test_name.c", line 151: warning: variable "non_atomic_u" is used before its value is set
+    _Atomic union U u = non_atomic_u;
+                        ^
+
+"Test_name.c", line 162: warning: a value of type "const volatile int *" cannot be used to initialize an entity of type "const int *_Atomic"
+    _Atomic(const int *) bad_acip = vcip; // expected-warning {{initializing '_Atomic(const int *)' with an expression of type 'const volatile int *' discards qualifiers}}
+                                    ^
+
+"Test_name.c", line 164: warning: a value of type "_Atomic(int) *" cannot be used to initialize an entity of type "int *_Atomic"
+    _Atomic(int *) aip = &i; // expected-error {{incompatible pointer types initializing '_Atomic(int *)' with an expression of type '_Atomic(int) *'}} \
+                         ^
+
+"Test_name.c", line 174: warning: a value of type "const volatile int *" cannot be used to initialize an entity of type "const int *_Atomic"
+    _Atomic(const int *) acip4 = vcip;   // expected-warning {{initializing '_Atomic(const int *)' with an expression of type 'const volatile int *' discards qualifiers}}
+                                 ^
+
+"Test_name.c", line 175: warning: a value of type "const volatile int *" cannot be used to initialize an entity of type "const void *_Atomic"
+    _Atomic(const void *) acvip2 = vcip; // expected-warning {{initializing '_Atomic(const void *)' with an expression of type 'const volatile int *' discards qualifiers}}
+                                   ^
+
+"Test_name.c", line 143: warning: variable "f" was declared but never referenced
+    _Atomic float f = 0.0f;
+                  ^
+
+"Test_name.c", line 148: warning: variable "s" was declared but never referenced
+    _Atomic struct S s = non_atomic_s;
+                     ^
+
+"Test_name.c", line 151: warning: variable "u" was declared but never referenced
+    _Atomic union U u = non_atomic_u;
+                    ^
+
+"Test_name.c", line 161: warning: variable "acip" was declared but never referenced
+    _Atomic(const int *) acip = cip;
+                         ^
+
+"Test_name.c", line 162: warning: variable "bad_acip" was declared but never referenced
+    _Atomic(const int *) bad_acip = vcip; // expected-warning {{initializing '_Atomic(const int *)' with an expression of type 'const volatile int *' discards qualifiers}}
+                         ^
+
+"Test_name.c", line 163: warning: variable "acip2" was declared but never referenced
+    _Atomic(const int *) acip2 = cicp;
+                         ^
+
+"Test_name.c", line 164: warning: variable "aip" was declared but never referenced
+    _Atomic(int *) aip = &i; // expected-error {{incompatible pointer types initializing '_Atomic(int *)' with an expression of type '_Atomic(int) *'}} \
+                   ^
+
+"Test_name.c", line 172: warning: variable "acip3" was declared but never referenced
+    _Atomic(const int *) acip3 = cvp;
+                         ^
+
+"Test_name.c", line 173: warning: variable "acvip" was declared but never referenced
+    _Atomic(const void *) acvip = cip;
+                          ^
+
+"Test_name.c", line 174: warning: variable "acip4" was declared but never referenced
+    _Atomic(const int *) acip4 = vcip;   // expected-warning {{initializing '_Atomic(const int *)' with an expression of type 'const volatile int *' discards qualifiers}}
+                         ^
+
+"Test_name.c", line 175: warning: variable "acvip2" was declared but never referenced
+    _Atomic(const void *) acvip2 = vcip; // expected-warning {{initializing '_Atomic(const void *)' with an expression of type 'const volatile int *' discards qualifiers}}
+                          ^
+
+"Test_name.c", line 176: warning: variable "acip5" was declared but never referenced
+    _Atomic(const int *) acip5 = cicp;
+                         ^
+
+"Test_name.c", line 177: warning: variable "acvip3" was declared but never referenced
+    _Atomic(const void *) acvip3 = cicp;
+                          ^
+
+"Test_name.c", line 184: warning: variable "cn2" was declared but never referenced
+    _Atomic nullptr_t cn2 = n;
+                      ^
+
+"Test_name.c", line 185: warning: variable "cn3" was declared but never referenced
+    _Atomic nullptr_t cn3 = nullptr;
+                      ^
+
+"Test_name.c", line 190: warning: variable "aip2" was declared but never referenced
+    _Atomic(int *) aip2 = 0;
+                   ^
+
+"Test_name.c", line 192: warning: variable "ip2" was declared but never referenced
+    _Atomic(int *) ip2 = n;
+                   ^
+
+"Test_name.c", line 193: warning: variable "ip3" was declared but never referenced
+    _Atomic(int *) ip3 = nullptr;
+                   ^
+
+"Test_name.c", line 194: warning: variable "ip4" was declared but never referenced
+    _Atomic(const int *) ip4 = nullptr;
+                         ^
+
+"Test_name.c", line 204: error: expression must have a constant value
+  _Atomic struct S as = non_atomic_s; // expected-error {{initializer element is not a compile-time constant}}
+                        ^
+"Test_name.c", line 204: note: the value of variable "non_atomic_s" (declared at line 203) cannot be used as a constant
+  _Atomic struct S as = non_atomic_s; // expected-error {{initializer element is not a compile-time constant}}
+                        ^
+
+"Test_name.c", line 207: error: expression must have a constant value
+  _Atomic(const int *) acip1 = cip; // expected-error {{initializer element is not a compile-time constant}}
+                               ^
+"Test_name.c", line 207: note: the value of variable "cip" (declared at line 206) cannot be used as a constant
+  _Atomic(const int *) acip1 = cip; // expected-error {{initializer element is not a compile-time constant}}
+                               ^
+
+"Test_name.c", line 210: error: expression must have a constant value
+  _Atomic(const int *) acip2 = cvp; // expected-error {{initializer element is not a compile-time constant}}
+                               ^
+"Test_name.c", line 210: note: the value of variable "cvp" (declared at line 209) cannot be used as a constant
+  _Atomic(const int *) acip2 = cvp; // expected-error {{initializer element is not a compile-time constant}}
+                               ^
+
+"Test_name.c", line 217: error: expression must have a constant value
+    _Atomic nullptr_t cn2 = n; // expected-error {{initializer element is not a compile-time constant}}
+                            ^
+"Test_name.c", line 217: note: the value of variable "n" (declared at line 216) cannot be used as a constant
+    _Atomic nullptr_t cn2 = n; // expected-error {{initializer element is not a compile-time constant}}
+                            ^
+
+"Test_name.c", line 225: warning: a value of type "_Atomic(int) *" cannot be used to initialize an entity of type "int *_Atomic"
+  _Atomic(int *) aip3 = &ai; /* expected-error {{incompatible pointer types initializing '_Atomic(int *)' with an expression of type '_Atomic(int) *'}}
+                        ^
+
+"Test_name.c", line 235: warning: type qualifier is meaningless on cast type
+    data2 = (_Atomic int)0;
+             ^
+
+"Test_name.c", line 241: warning: type qualifier is meaningless on cast type
+    (void)(_Atomic struct T)s; // expected-error {{used type 'struct T' where arithmetic or pointer type is required}}
+           ^
+
+"Test_name.c", line 241: error: cast to type "struct T" is not allowed
+    (void)(_Atomic struct T)s; // expected-error {{used type 'struct T' where arithmetic or pointer type is required}}
+           ^
+
+"Test_name.c", line 241: warning: variable "s" is used before its value is set
+    (void)(_Atomic struct T)s; // expected-error {{used type 'struct T' where arithmetic or pointer type is required}}
+                            ^
+
+5 errors detected in the compilation of "Test_name.c".

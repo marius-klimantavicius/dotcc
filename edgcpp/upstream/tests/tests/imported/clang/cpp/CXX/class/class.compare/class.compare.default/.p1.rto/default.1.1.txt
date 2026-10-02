@@ -1,0 +1,295 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 8: error: function templates cannot be defaulted
+    bool operator<(const B&, const B&) = default; // expected-error {{comparison operator template cannot be defaulted}}
+         ^
+
+"Test_name.c", line 12: error: bad type "const B &" for parameter of defaulted comparison operator (must be "reference to const X" where X is the enclosing class type)
+    friend bool operator!=(const A&, const B&) = default; // expected-error {{parameters for defaulted equality comparison operator must have the same type (found 'const A &' vs 'const B &')}}
+                                               ^
+
+"Test_name.c", line 13: error: bad type "const B &" for parameter of defaulted comparison operator (must be "reference to const X" where X is the enclosing class type)
+    friend bool operator!=(const B&, const B&) = default; // expected-error {{invalid parameter type for defaulted equality comparison}}
+                                               ^
+
+"Test_name.c", line 15: error: bad type "const B &" for parameter of defaulted comparison operator (must be "reference to const X" where X is the enclosing class type)
+    friend bool operator<(const B&, const B&) = default; // expected-error {{invalid parameter type for defaulted relational comparison}}
+                                              ^
+
+"Test_name.c", line 20: error: a defaulted member comparison operator cannot be "&&"-qualified
+    bool operator==(const A&) const && = default; // expected-error {{ref-qualifier '&&' is not allowed on a defaulted comparison operator}}
+         ^
+
+"Test_name.c", line 21: error: bad type "const A &&" for parameter of defaulted comparison operator (must be "reference to const X" where X is the enclosing class type)
+    bool operator<=(const A&&) const = default; // expected-error {{invalid parameter type for defaulted relational comparison operator; found 'const A &&', expected 'const A &'}}
+         ^
+
+"Test_name.c", line 22: error: bad type "const int &" for parameter of defaulted comparison operator (must be "reference to const X" where X is the enclosing class type)
+    bool operator<=(const int&) const = default; // expected-error {{invalid parameter type for defaulted relational comparison operator; found 'const int &', expected 'const A &'}}
+         ^
+
+"Test_name.c", line 23: error: a defaulted member comparison operator must be "const"
+    bool operator>=(const A&) const volatile = default; // expected-error {{defaulted comparison function must not be volatile}}
+         ^
+
+"Test_name.c", line 24: error: a defaulted member comparison operator must be "const"
+    bool operator<=>(const A&) = default; // expected-error {{defaulted member three-way comparison operator must be const-qualified}}
+         ^
+
+"Test_name.c", line 25: error: bad type "const B &" for parameter of defaulted comparison operator (must be "reference to const X" where X is the enclosing class type)
+    bool operator>=(const B&) const = default; // expected-error-re {{invalid parameter type for defaulted relational comparison operator; found 'const B &', expected 'const A &'{{$}}}}
+         ^
+
+"Test_name.c", line 26: error: operator may not be a static member function
+    static bool operator>(const B&) = default; // expected-error {{overloaded 'operator>' cannot be a static member function}}
+                ^
+
+"Test_name.c", line 26: error: "= default" can only appear on default constructors, copy/move constructors, copy/move assignment operators, and destructors
+    static bool operator>(const B&) = default; // expected-error {{overloaded 'operator>' cannot be a static member function}}
+                         ^
+
+"Test_name.c", line 27: error: bad type "A" for parameter of defaulted comparison operator (must be "reference to const X" where X is the enclosing class type)
+    friend bool operator>(A, const A&) = default; // expected-error {{must have the same type}} expected-note {{would be the best match}}
+                                       ^
+
+"Test_name.c", line 30: error: function templates cannot be defaulted
+      friend bool operator==(const A&, const A&) = default; // expected-error {{comparison operator template cannot be defaulted}}
+                  ^
+
+"Test_name.c", line 32: error: function templates cannot be defaulted
+      bool operator==(const A&) const = default; // expected-error {{comparison operator template cannot be defaulted}}
+                                      ^
+
+"Test_name.c", line 37: error: bad type "D<C>" for parameter of defaulted comparison operator (must be "reference to const X" where X is the enclosing class type)
+    friend bool operator==(const D&, D) = default; // expected-error {{must have the same type}}
+                                        ^
+
+"Test_name.c", line 38: error: bad type "D<C>" for parameter of defaulted comparison operator (must be "reference to const X" where X is the enclosing class type)
+    friend bool operator>(D, const D&) = default; // expected-error {{must have the same type}}
+                                       ^
+
+"Test_name.c", line 42: error: bad type "D<C>" for parameter of defaulted comparison operator (must be "reference to const X" where X is the enclosing class type)
+    bool operator!=(D) const = default; // expected-error {{invalid parameter type for defaulted equality comparison operator}}
+         ^
+
+"Test_name.c", line 47: error: bad type "Dependent<T>::U" (aka "T::type") for parameter of defaulted comparison operator (must be "reference to const X" where X is the enclosing class type)
+    bool operator==(U) const = default; // expected-error {{found 'U'}}
+         ^
+
+"Test_name.c", line 48: error: bad type "Dependent<T>::U" (aka "T::type") for parameter of defaulted comparison operator (must be "reference to const X" where X is the enclosing class type)
+    friend bool operator==(U, U) = default; // expected-error {{found 'U'}}
+                                 ^
+
+"Test_name.c", line 87: error: no valid std::partial_ordering type found (<compare> must be included)
+        struct B {
+               ^
+
+"Test_name.c", line 87: error: no valid std::weak_ordering type found (<compare> must be included)
+        struct B {
+               ^
+
+"Test_name.c", line 118: error: function "LookupContext::M::operator<(const LookupContext::A &, const LookupContext::A &)" (declared at line 117) cannot be referenced -- it is a deleted function
+      bool cmp = N::f<A>() < N::f<A>();
+                                      ^
+
+"Test_name.c", line 118: error: function "LookupContext::M::operator==(const LookupContext::A &, const LookupContext::A &)" (declared at line 116) cannot be referenced -- it is a deleted function
+      bool cmp = N::f<A>() < N::f<A>();
+                                      ^
+
+"Test_name.c", line 121: error: function "B::operator<=>(const B &) const" (declared at line 89) cannot be referenced -- it is a deleted function
+      auto cmp2 = N::g() <=> N::g();
+                         ^
+
+"Test_name.c", line 124: error: no operator "!=" matches these operands
+            operand types are: B != B
+        N::h() != N::h(); // expected-error {{implicitly deleted}}
+               ^
+"Test_name.c", line 124: note: built-in operator!=(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+        N::h() != N::h(); // expected-error {{implicitly deleted}}
+               ^
+"Test_name.c", line 124: note: built-in operator!=(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+        N::h() != N::h(); // expected-error {{implicitly deleted}}
+               ^
+"Test_name.c", line 116: note: function "LookupContext::M::operator==" does not match because argument #1 does not match parameter
+      bool operator==(const A &, const A &) = delete;
+           ^
+"Test_name.c", line 124: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+        N::h() != N::h(); // expected-error {{implicitly deleted}}
+               ^
+"Test_name.c", line 124: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+        N::h() != N::h(); // expected-error {{implicitly deleted}}
+               ^
+
+"Test_name.c", line 125: error: no operator "<" matches these operands
+            operand types are: B < B
+        N::h() < N::h(); // expected-error {{implicitly deleted}}
+               ^
+"Test_name.c", line 117: note: function "LookupContext::M::operator<" does not match because argument #1 does not match parameter
+      bool operator<(const A &, const A &) = delete;
+           ^
+"Test_name.c", line 125: note: built-in operator<(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+        N::h() < N::h(); // expected-error {{implicitly deleted}}
+               ^
+"Test_name.c", line 125: note: built-in operator<(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+        N::h() < N::h(); // expected-error {{implicitly deleted}}
+               ^
+"Test_name.c", line 120: note: function "LookupContext::M::operator<=>" does not match because argument #1 does not match parameter
+      void operator<=>(const A &, const A &) = delete;
+           ^
+"Test_name.c", line 125: note: built-in operator<=>(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+        N::h() < N::h(); // expected-error {{implicitly deleted}}
+               ^
+"Test_name.c", line 125: note: built-in operator<=>(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+        N::h() < N::h(); // expected-error {{implicitly deleted}}
+               ^
+
+"Test_name.c", line 126: error: no operator "<=" matches these operands
+            operand types are: B <= B
+        N::h() <= N::h(); // expected-error {{implicitly deleted}}
+               ^
+"Test_name.c", line 126: note: built-in operator<=(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+        N::h() <= N::h(); // expected-error {{implicitly deleted}}
+               ^
+"Test_name.c", line 126: note: built-in operator<=(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+        N::h() <= N::h(); // expected-error {{implicitly deleted}}
+               ^
+"Test_name.c", line 120: note: function "LookupContext::M::operator<=>" does not match because argument #1 does not match parameter
+      void operator<=>(const A &, const A &) = delete;
+           ^
+"Test_name.c", line 126: note: built-in operator<=>(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+        N::h() <= N::h(); // expected-error {{implicitly deleted}}
+               ^
+"Test_name.c", line 126: note: built-in operator<=>(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+        N::h() <= N::h(); // expected-error {{implicitly deleted}}
+               ^
+
+"Test_name.c", line 127: error: no operator ">" matches these operands
+            operand types are: B > B
+        N::h() > N::h(); // expected-error {{implicitly deleted}}
+               ^
+"Test_name.c", line 127: note: built-in operator>(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+        N::h() > N::h(); // expected-error {{implicitly deleted}}
+               ^
+"Test_name.c", line 127: note: built-in operator>(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+        N::h() > N::h(); // expected-error {{implicitly deleted}}
+               ^
+"Test_name.c", line 120: note: function "LookupContext::M::operator<=>" does not match because argument #1 does not match parameter
+      void operator<=>(const A &, const A &) = delete;
+           ^
+"Test_name.c", line 127: note: built-in operator<=>(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+        N::h() > N::h(); // expected-error {{implicitly deleted}}
+               ^
+"Test_name.c", line 127: note: built-in operator<=>(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+        N::h() > N::h(); // expected-error {{implicitly deleted}}
+               ^
+
+"Test_name.c", line 128: error: no operator ">=" matches these operands
+            operand types are: B >= B
+        N::h() >= N::h(); // expected-error {{implicitly deleted}}
+               ^
+"Test_name.c", line 128: note: built-in operator>=(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+        N::h() >= N::h(); // expected-error {{implicitly deleted}}
+               ^
+"Test_name.c", line 128: note: built-in operator>=(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+        N::h() >= N::h(); // expected-error {{implicitly deleted}}
+               ^
+"Test_name.c", line 120: note: function "LookupContext::M::operator<=>" does not match because argument #1 does not match parameter
+      void operator<=>(const A &, const A &) = delete;
+           ^
+"Test_name.c", line 128: note: built-in operator<=>(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+        N::h() >= N::h(); // expected-error {{implicitly deleted}}
+               ^
+"Test_name.c", line 128: note: built-in operator<=>(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+        N::h() >= N::h(); // expected-error {{implicitly deleted}}
+               ^
+
+"Test_name.c", line 136: error: bad type "const float &" for parameter of defaulted comparison operator (must be "reference to const X" where X is the enclosing class type)
+    bool operator==(T const &) const = default;
+         ^
+          detected during instantiation of class "evil1::Bad<T> [with T=float]" at line 149
+
+"Test_name.c", line 142: error: a class or namespace qualified name is required
+    bool operator==(typename T::Weird_ const &) const = default;
+                             ^
+          detected during instantiation of class "evil1::Weird<T> [with T=float]" at line 150
+
+"Test_name.c", line 142: error: global-scope qualifier (leading "::") is not allowed
+    bool operator==(typename T::Weird_ const &) const = default;
+                              ^
+          detected during instantiation of class "evil1::Weird<T> [with T=float]" at line 150
+
+"Test_name.c", line 142: error: expected a ")"
+    bool operator==(typename T::Weird_ const &) const = default;
+                                       ^
+          detected during instantiation of class "evil1::Weird<T> [with T=float]" at line 150
+
+"Test_name.c", line 142: error: bad type "<error-type>" for parameter of defaulted comparison operator (must be "reference to const X" where X is the enclosing class type)
+    bool operator==(typename T::Weird_ const &) const = default;
+         ^
+          detected during instantiation of class "evil1::Weird<T> [with T=float]" at line 150
+
+"Test_name.c", line 189: error: a defaulted comparison operator must be a member or a friend of the class it applies to
+  bool operator==(S3 const &, S3 const &) = default; // expected-error{{not a friend}}
+                                            ^
+
+"Test_name.c", line 192: error: a defaulted comparison operator must be a member or a friend of the class it applies to
+  bool operator==(S4 const &, S4 const &) = default; // expected-error{{not a friend}}
+                                            ^
+
+"Test_name.c", line 195: error: a defaulted comparison operator must be a member or a friend of the class it applies to
+  bool operator==(S5, S5) = default; // expected-error{{not a friend}} expected-error 2{{has incomplete type}}
+                            ^
+
+"Test_name.c", line 200: error: a comparison operator defaulted in a class definition must be the first declaration of that comparison operator (function "p2085::operator==(const p2085::S6 &, const p2085::S6 &)" (declared at line 198))
+      friend bool operator==(const S6&, const S6&) = default; // expected-error {{because it was already declared outside}}
+                  ^
+
+"Test_name.c", line 206: error: a defaulted member comparison operator cannot be "&&"-qualified
+  bool S7::operator==(S7 const &) const && = default; // expected-error {{ref-qualifier '&&' is not allowed on a defaulted comparison operator}}
+                                             ^
+
+"Test_name.c", line 209: error: a defaulted comparison operator must be a member or a friend of the class it applies to
+  bool operator==(e, int) = default; // expected-error{{expected class or reference to a constant class}}
+                            ^
+
+"Test_name.c", line 211: error: nonmember operator requires a parameter with class or enum type
+  bool operator==(e *, int *) = default; // expected-error{{must have at least one}}
+       ^
+
+"Test_name.c", line 211: error: "= default" can only appear on default constructors, copy/move constructors, copy/move assignment operators, and destructors
+  bool operator==(e *, int *) = default; // expected-error{{must have at least one}}
+                                ^
+
+"Test_name.c", line 220: error: a defaulted comparison operator must be a member or a friend of the class it applies to
+  template <class T> bool S6<T>::operator==(T const &) const = default;
+                                 ^
+
+"Test_name.c", line 235: error: a defaulted comparison operator must be a member or a friend of the class it applies to
+  template <class T> bool S7<T>::operator==(typename T::S7_ const &) const = default;
+                                 ^
+
+"Test_name.c", line 232: error: a class or namespace qualified name is required
+    bool operator==(typename T::S7_ const &) const;
+                             ^
+          detected during instantiation of class "p2085_2::S7<T> [with T=float]" at line 240
+
+"Test_name.c", line 232: error: global-scope qualifier (leading "::") is not allowed
+    bool operator==(typename T::S7_ const &) const;
+                              ^
+          detected during instantiation of class "p2085_2::S7<T> [with T=float]" at line 240
+
+"Test_name.c", line 232: error: expected a ")"
+    bool operator==(typename T::S7_ const &) const;
+                                    ^
+          detected during instantiation of class "p2085_2::S7<T> [with T=float]" at line 240
+
+"Test_name.c", line 262: warning: variable "c" was declared but never referenced
+    constexpr bool c = (a == b); // no diagnostic, we should not be comparing the
+                   ^
+
+At end of source: internal error: assertion failed at: "func_def.c", line <suppressed> in define_default_comparison_operator
+
+
+48 errors and 1 catastrophic error detected in the compilation of "Test_name.c".
+Compilation aborted.
+Aborted
+eccp: front end returned an exit status of 134

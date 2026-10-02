@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 17: error: no suitable conversion function from "A" to "void (*)() noexcept" exists
+  void (*p3)() noexcept = A(); // expected-error {{no viable conversion}}
+                          ^
+
+"Test_name.c", line 31: error: no suitable conversion function from "C" to "void (A::*)() noexcept" exists
+  void (A::*q3)() noexcept = C(); // expected-error {{no viable conversion}}
+                             ^
+
+"Test_name.c", line 51: error: initial value of reference to non-const must be an lvalue
+  void (&r3)() noexcept = E(); // expected-error {{no viable conversion}}
+                          ^
+
+"Test_name.c", line 63: error: no suitable conversion function from "G" to "G::A<void, void> *" exists
+  G::A<void, void> *g = G(); // expected-error {{no viable conversion}}
+                        ^
+
+4 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,14 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 17: remark: parameter "e" was never referenced
+  void xxx(E e)      //// allow warning.*not used
+             ^
+
+"Test_name.c", line 22: remark: parameter "i" was never referenced
+  void xxx(int i)      //// allow warning.*not used
+               ^
+
+"Test_name.c", line 39: error: return type "int" omitted in declaration of function "main"
+  main()
+  ^
+
+1 error detected in the compilation of "Test_name.c".

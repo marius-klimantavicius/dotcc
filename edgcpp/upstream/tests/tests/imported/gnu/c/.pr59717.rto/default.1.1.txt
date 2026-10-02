@@ -1,0 +1,485 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 --strict_gnu Test_name.c
+"Test_name.c", line 10: warning: function "acos" declared implicitly
+    acos (d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 12: warning: function "acosh" declared implicitly
+    acosh (d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 14: warning: function "asin" declared implicitly
+    asin (d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 16: warning: function "asinh" declared implicitly
+    asinh (d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 18: warning: function "atan" declared implicitly
+    atan (d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 20: warning: function "atanh" declared implicitly
+    atanh (d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 22: warning: function "atan2" declared implicitly
+    atan2 (d, d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 24: warning: function "cbrt" declared implicitly
+    cbrt (d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 26: warning: function "ceil" declared implicitly
+    ceil (d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 28: warning: function "copysign" declared implicitly
+    copysign (d, d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 30: warning: function "cos" declared implicitly
+    cos (d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 32: warning: function "cosh" declared implicitly
+    cosh (d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 34: warning: function "erf" declared implicitly
+    erf (d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 36: warning: function "erfc" declared implicitly
+    erfc (d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 38: warning: function "exp" declared implicitly
+    exp (d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 40: warning: function "exp2" declared implicitly
+    exp2 (d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 42: warning: function "expm1" declared implicitly
+    expm1 (d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 44: warning: function "fabs" declared implicitly
+    fabs (d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 46: warning: function "fdim" declared implicitly
+    fdim (d, d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 48: warning: function "floor" declared implicitly
+    floor (d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 50: warning: function "fma" declared implicitly
+    fma (d, d, d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 52: warning: function "fmax" declared implicitly
+    fmax (d, d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 54: warning: function "fmin" declared implicitly
+    fmin (d, d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 56: warning: function "fmod" declared implicitly
+    fmod (d, d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 58: warning: function "frexp" declared implicitly
+    frexp (d, ex); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 60: warning: function "hypot" declared implicitly
+    hypot (d, d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 63: warning: function "ilogb" declared implicitly
+    ilogb (d);
+    ^
+
+"Test_name.c", line 64: warning: function "ldexp" declared implicitly
+    ldexp (d, *ex); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 66: warning: function "lgamma" declared implicitly
+    lgamma (d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 68: warning: function "llrint" declared implicitly
+    llrint (d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 70: warning: function "llround" declared implicitly
+    llround (d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 72: warning: function "log" declared implicitly
+    log (d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 74: warning: function "log10" declared implicitly
+    log10 (d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 76: warning: function "log1p" declared implicitly
+    log1p (d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 78: warning: function "log2" declared implicitly
+    log2 (d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 80: warning: function "logb" declared implicitly
+    logb (d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 82: warning: function "lrint" declared implicitly
+    lrint (d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 84: warning: function "lround" declared implicitly
+    lround (d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 86: warning: function "modf" declared implicitly
+    modf (d, dp); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 88: warning: function "nan" declared implicitly
+    nan (""); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 90: warning: function "nearbyint" declared implicitly
+    nearbyint (d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 92: warning: function "nextafter" declared implicitly
+    nextafter (d, d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 94: warning: function "nexttoward" declared implicitly
+    nexttoward (d, 20.0L); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 96: warning: function "pow" declared implicitly
+    pow (d, d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 98: warning: function "remainder" declared implicitly
+    remainder (d, d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 100: warning: function "remquo" declared implicitly
+    remquo (d, d, ex); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 102: warning: function "rint" declared implicitly
+    rint (d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 104: warning: function "round" declared implicitly
+    round (d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 106: warning: function "scalbln" declared implicitly
+    scalbln (d, 100L); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 108: warning: function "scalbn" declared implicitly
+    scalbn (d, 100); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 110: warning: function "sin" declared implicitly
+    sin (d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 112: warning: function "sinh" declared implicitly
+    sinh (d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 114: warning: function "sincos" declared implicitly
+    sincos (d, dp, dp); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 116: warning: function "sqrt" declared implicitly
+    sqrt (d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 118: warning: function "tan" declared implicitly
+    tan (d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 120: warning: function "tanh" declared implicitly
+    tanh (d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 122: warning: function "tgamma" declared implicitly
+    tgamma (d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 124: warning: function "trunc" declared implicitly
+    trunc (d); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 131: warning: function "cabs" declared implicitly
+    cabs (z); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 133: warning: function "cacos" declared implicitly
+    cacos (z); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 135: warning: function "cacosh" declared implicitly
+    cacosh (z); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 137: warning: function "carg" declared implicitly
+    carg (z); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 139: warning: function "casin" declared implicitly
+    casin (z); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 141: warning: function "casinh" declared implicitly
+    casinh (z); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 143: warning: function "catan" declared implicitly
+    catan (z); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 145: warning: function "catanh" declared implicitly
+    catanh (z); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 147: warning: function "ccos" declared implicitly
+    ccos (z); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 149: warning: function "ccosh" declared implicitly
+    ccosh (z); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 151: warning: function "cexp" declared implicitly
+    cexp (z); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 153: warning: function "cimag" declared implicitly
+    cimag (z); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 155: warning: function "clog" declared implicitly
+    clog (z); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 157: warning: function "conj" declared implicitly
+    conj (z); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 159: warning: function "cpow" declared implicitly
+    cpow (z, z); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 161: warning: function "cproj" declared implicitly
+    cproj (z); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 163: warning: function "creal" declared implicitly
+    creal (z); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 165: warning: function "csin" declared implicitly
+    csin (z); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 167: warning: function "csinh" declared implicitly
+    csinh (z); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 169: warning: function "csqrt" declared implicitly
+    csqrt (z); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 171: warning: function "ctan" declared implicitly
+    ctan (z); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 173: warning: function "ctanh" declared implicitly
+    ctanh (z); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 180: warning: function "memchr" declared implicitly
+    memchr (p, 2, sz); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 183: warning: function "memcmp" declared implicitly
+    memcmp (p, q, sz);
+    ^
+
+"Test_name.c", line 184: warning: function "memcpy" declared implicitly
+    memcpy (p, q, sz); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 186: warning: function "memmove" declared implicitly
+    memmove (p, q, sz); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 188: warning: function "memset" declared implicitly
+    memset (p, 0, sz); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 190: warning: function "strcat" declared implicitly
+    strcat (p, q); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 192: warning: function "strchr" declared implicitly
+    strchr (p, 'a'); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 195: warning: function "strcmp" declared implicitly
+    strcmp (p, q);
+    ^
+
+"Test_name.c", line 196: warning: function "strcpy" declared implicitly
+    strcpy (p, q); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 198: warning: function "strcspn" declared implicitly
+    strcspn (p, q); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 200: warning: function "strlen" declared implicitly
+    strlen (p); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 202: warning: function "strncat" declared implicitly
+    strncat (p, q, sz); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 205: warning: function "strncmp" declared implicitly
+    strncmp (p, q, sz);
+    ^
+
+"Test_name.c", line 206: warning: function "strncpy" declared implicitly
+    strncpy (p, q, sz); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 208: warning: function "strpbrk" declared implicitly
+    strpbrk (p, q); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 210: warning: function "strrchr" declared implicitly
+    strrchr (p, 'q'); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 212: warning: function "strspn" declared implicitly
+    strspn (p, q); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 214: warning: function "strstr" declared implicitly
+    strstr (p, q); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 224: warning: function "fprintf" declared implicitly
+    fprintf (fp, ""); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 226: warning: function "fscanf" declared implicitly
+    fscanf (fp, ""); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 228: warning: function "fwrite" declared implicitly
+    fwrite (p, sz, sz, fp); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 230: warning: function "printf" declared implicitly
+    printf (""); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 232: warning: function "scanf" declared implicitly
+    scanf (""); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 234: warning: function "snprintf" declared implicitly
+    snprintf ("", sz, ""); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 236: warning: function "sprintf" declared implicitly
+    sprintf ("", ""); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 238: warning: function "sscanf" declared implicitly
+    sscanf ("", ""); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 245: warning: function "abort" declared implicitly
+    abort (); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 247: warning: function "calloc" declared implicitly
+    void *p1 = calloc (sz, 1); /* { dg-warning "incompatible implicit" } */
+               ^
+
+"Test_name.c", line 247: warning: a value of type "int" cannot be used to initialize an entity of type "void *"
+    void *p1 = calloc (sz, 1); /* { dg-warning "incompatible implicit" } */
+               ^
+
+"Test_name.c", line 249: warning: function "exit" declared implicitly
+    exit (1); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 251: warning: function "free" declared implicitly
+    free (p); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 253: warning: function "labs" declared implicitly
+    labs (1L); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 255: warning: function "llabs" declared implicitly
+    llabs (1LL); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 257: warning: function "malloc" declared implicitly
+    void *p2 = malloc (sz); /* { dg-warning "incompatible implicit" } */
+               ^
+
+"Test_name.c", line 257: warning: a value of type "int" cannot be used to initialize an entity of type "void *"
+    void *p2 = malloc (sz); /* { dg-warning "incompatible implicit" } */
+               ^
+
+"Test_name.c", line 259: warning: function "realloc" declared implicitly
+    void *p3 = realloc (p, sz); /* { dg-warning "incompatible implicit" } */
+               ^
+
+"Test_name.c", line 259: warning: a value of type "int" cannot be used to initialize an entity of type "void *"
+    void *p3 = realloc (p, sz); /* { dg-warning "incompatible implicit" } */
+               ^
+
+"Test_name.c", line 261: warning: function "aligned_alloc" declared implicitly
+    void *p4 = aligned_alloc (sz, sz); /* { dg-warning "incompatible implicit" } */
+               ^
+
+"Test_name.c", line 261: warning: a value of type "int" cannot be used to initialize an entity of type "void *"
+    void *p4 = aligned_alloc (sz, sz); /* { dg-warning "incompatible implicit" } */
+               ^
+
+"Test_name.c", line 268: warning: function "imaxabs" declared implicitly
+    imaxabs (j); /* { dg-warning "incompatible implicit" } */
+    ^
+
+"Test_name.c", line 277: warning: function "strftime" declared implicitly
+    strftime (s, sz, "", tm); /* { dg-warning "incompatible implicit" } */
+    ^
+

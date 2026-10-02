@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 27: error: specializing class "X0<double, double>" requires "template<>" syntax
+  template class X0<double> { }; // expected-error{{explicit specialization}}
+                 ^
+
+"Test_name.c", line 27: error: expected an identifier
+  template class X0<double> { }; // expected-error{{explicit specialization}}
+                               ^
+
+"Test_name.c", line 27: error: invalid explicit instantiation declaration
+  template class X0<double> { }; // expected-error{{explicit specialization}}
+           ^
+
+"Test_name.c", line 31: error: class "X0<int, int>" explicitly instantiated more than once
+  template class X0<int, int>; // expected-error{{duplicate}}
+           ^
+
+"Test_name.c", line 44: error: incomplete type "X2<float>" is not allowed
+  template struct X2<float>; // expected-error{{undefined template}}
+           ^
+
+"Test_name.c", line 48: error: pointer to reference is not allowed
+    void f0(T*); // expected-error{{pointer to a reference}}
+             ^
+          detected during instantiation of class "X2<T> [with T=int &]" at line 52
+
+"Test_name.c", line 57: error: pointer to reference is not allowed
+      void f(T*); // expected-error{{pointer to a reference}}
+              ^
+          detected during instantiation of class "X3<T>::Inner [with T=int &]" at line 63
+
+"Test_name.c", line 68: error: pointer to reference is not allowed
+        void f(T*); // expected-error 2{{pointer to a reference}}
+                ^
+          detected during instantiation of class "X4<T>::Inner::VeryInner [with T=int &]" at line 76
+
+"Test_name.c", line 90: error: pointer to reference is not allowed
+        void g(T*); // expected-error 2{{pointer to a reference}}
+                ^
+          detected during instantiation of class "N2::X5<T>::Inner2::VeryInner [with T=int &]" at line 100
+
+"Test_name.c", line 120: error: class "X6::Inner" is not an entity that can be instantiated
+  template struct X6::Inner; // expected-error{{non-templated}}
+           ^
+
+"Test_name.c", line 136: warning: template nesting depth does not match the previous declaration of class "Foo<int>::Bar<void>"
+  struct Foo<int>::Bar<void>
+  ^
+
+10 errors detected in the compilation of "Test_name.c".

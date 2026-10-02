@@ -1,0 +1,22 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"./c2x-complit-2.c", line 11: error: a storage class may not be specified here
+  int *ps = &(static int) { 1 };
+              ^
+
+"./c2x-complit-2.c", line 12: error: a storage class may not be specified here
+  size_t ss = sizeof (static int) { 1 };
+                      ^
+
+"./c2x-complit-2.c", line 13: error: a storage class may not be specified here
+  int *psa = (static int [3]) { 1, 2, 3 };
+              ^
+
+"./c2x-complit-2.c", line 24: error: a storage class may not be specified here
+    if ((register int) { 3 } != 3)
+         ^
+
+"./c2x-complit-2.c", line 31: error: a storage class may not be specified here
+    int *p = &(static int) { 0 };
+               ^
+
+5 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,27 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./torture/pr77745.C", line 7: error: first parameter of allocation function must be of type "size_t"
+  inline void* operator new(long unsigned int, void* __p) noexcept { return __p; }
+               ^
+
+"./torture/pr77745.C", line 11: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, char *)
+    long *p1 = new (c1) long;
+               ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+
+"./torture/pr77745.C", line 13: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, char *)
+    long long *p2 = new (c2) long long;
+                    ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+
+"./torture/pr77745.C", line 15: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, char *)
+    long *p3 = new (c2) long;
+               ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+
+4 errors detected in the compilation of "Test_name.c".

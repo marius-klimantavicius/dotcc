@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 12: error: mutable is not allowed
+         mutable Bar::type x; // { dg-error "8:non-member .x. cannot be declared .mutable." }
+         ^
+
+"Test_name.c", line 12: warning: variable "x" was declared but never referenced
+         mutable Bar::type x; // { dg-error "8:non-member .x. cannot be declared .mutable." }
+                           ^
+
+1 error detected in the compilation of "Test_name.c".

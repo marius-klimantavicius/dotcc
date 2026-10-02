@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 --c++23 -tused -A Test_name.c
+"Test_name.c", line 4: error: nontype "T::type" is not a template
+      typename T::type<void>;   // template required?
+                  ^
+
+"Test_name.c", line 4: error: expected a type name
+      typename T::type<void>;   // template required?
+               ^
+
+2 errors detected in the compilation of "Test_name.c".

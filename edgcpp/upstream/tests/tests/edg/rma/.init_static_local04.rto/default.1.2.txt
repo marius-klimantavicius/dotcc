@@ -1,0 +1,5 @@
+./a.out
+destructing: 22
+destructing: 10
+destructing: 7
+destructing: 4

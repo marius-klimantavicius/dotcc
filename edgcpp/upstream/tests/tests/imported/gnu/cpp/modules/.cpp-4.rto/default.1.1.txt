@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics -E Test_name.c
+# 1 "Test_name.c"
+
+
+# 1 "./modules/cpp-4.C"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 1 "/usr/include/stdc-predef.h"
+# 1 "<command-line>"
+# 1 "./modules/cpp-4.C"
+
+
+
+# 1 "./modules/cpp-4.h"
+
+import x;
+int i;
+# 5 "./modules/cpp-4.C"

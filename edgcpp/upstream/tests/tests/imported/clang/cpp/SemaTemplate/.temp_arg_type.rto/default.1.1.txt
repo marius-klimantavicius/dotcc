@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 11: error: expected a type specifier
+  A<0> *a1; // expected-error{{template argument for template type parameter must be a type}}
+    ^
+
+"Test_name.c", line 13: error: argument list for class template "A" is missing
+  A<A> *a2; // expected-error{{use of class template 'A' requires template arguments}}
+    ^
+
+"Test_name.c", line 22: error: function template "function_tpl" is not a type name
+  A<function_tpl> a7;  // expected-error{{template argument for template type parameter must be a type}}
+    ^
+
+"Test_name.c", line 22: error: incomplete type "A<<error-type>>" is not allowed
+  A<function_tpl> a7;  // expected-error{{template argument for template type parameter must be a type}}
+                  ^
+
+"Test_name.c", line 28: error: argument list for class template "ns::B" is missing
+  A<ns::B> a8; // expected-error{{use of class template 'ns::B' requires template arguments}}
+    ^
+
+"Test_name.c", line 28: error: incomplete type "A<<error-type>>" is not allowed
+  A<ns::B> a8; // expected-error{{use of class template 'ns::B' requires template arguments}}
+           ^
+
+"Test_name.c", line 33: error: a template argument may not reference a local type
+    A<X> * a = 0;
+      ^
+
+"Test_name.c", line 33: warning: variable "a" was declared but never referenced
+    A<X> * a = 0;
+           ^
+
+"Test_name.c", line 44: error: a template argument may not reference an unnamed type
+  A<__typeof__(Unnamed)> *a9;
+    ^
+
+8 errors detected in the compilation of "Test_name.c".

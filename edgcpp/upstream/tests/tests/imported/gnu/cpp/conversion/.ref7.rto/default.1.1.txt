@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 11: error: a reference of type "int &" (not const-qualified) cannot be initialized with a value of type "float"
+    int &r = f;			// { dg-error "float" }
+             ^
+
+"Test_name.c", line 12: error: initial value of reference to non-const must be an lvalue
+    int &r2 = A();		// { dg-error "float" }
+              ^
+
+"Test_name.c", line 18: error: initial value of reference to non-const must be an lvalue
+    int &r = 1.f;			// { dg-error "float" }
+             ^
+
+3 errors detected in the compilation of "Test_name.c".

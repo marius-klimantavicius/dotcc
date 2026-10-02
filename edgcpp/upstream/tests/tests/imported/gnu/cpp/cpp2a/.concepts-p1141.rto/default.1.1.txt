@@ -1,0 +1,186 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 23: error: concept "Type" is not a type name
+  Type x1 = 0; // { dg-error "expected 'auto'" }
+  ^
+
+"Test_name.c", line 26: error: concept "Number" is not a type name
+  Number x3 = 0; // { dg-error "does not constrain a type" }
+  ^
+
+"Test_name.c", line 27: error: concept "Template" is not a type name
+  Template x4 = 0; // { dg-error "does not constrain a type" }
+  ^
+
+"Test_name.c", line 29: error: this declaration has no storage class or type specifier
+  Type const& x5 = 0; // { dg-error "expected 'auto'" }
+  ^
+
+"Test_name.c", line 29: error: "Type" has already been declared in the current scope
+  Type const& x5 = 0; // { dg-error "expected 'auto'" }
+  ^
+
+"Test_name.c", line 29: error: expected a ";"
+  Type const& x5 = 0; // { dg-error "expected 'auto'" }
+       ^
+
+"Test_name.c", line 30: error: variable "Type" is not a type name
+  const Type& x6 = 0; // { dg-error "expected 'auto'" }
+        ^
+
+"Test_name.c", line 31: error: this declaration has no storage class or type specifier
+  Type auto const& x7 = 0;
+  ^
+
+"Test_name.c", line 31: error: variable "Type" has already been defined (previous definition at line 29)
+  Type auto const& x7 = 0;
+  ^
+
+"Test_name.c", line 31: error: expected a ";"
+  Type auto const& x7 = 0;
+       ^
+
+"Test_name.c", line 32: error: explicit type is missing ("int" assumed)
+  const Type auto& x8 = 0;
+        ^
+
+"Test_name.c", line 32: error: variable "Type" has already been defined (previous definition at line 29)
+  const Type auto& x8 = 0;
+        ^
+
+"Test_name.c", line 32: error: expected a ";"
+  const Type auto& x8 = 0;
+             ^
+
+"Test_name.c", line 33: error: this declaration has no storage class or type specifier
+  Type const auto& x9 = 0; // { dg-error "expected 'auto'|two or more data types" }
+  ^
+
+"Test_name.c", line 33: error: variable "Type" has already been defined (previous definition at line 29)
+  Type const auto& x9 = 0; // { dg-error "expected 'auto'|two or more data types" }
+  ^
+
+"Test_name.c", line 33: error: expected a ";"
+  Type const auto& x9 = 0; // { dg-error "expected 'auto'|two or more data types" }
+       ^
+
+"Test_name.c", line 35: error: variable "Type" is not a type name
+  template<Type T> // OK: T is a type parameter.
+           ^
+
+"Test_name.c", line 36: error: incomplete type "void" is not allowed
+  void f1(T);
+       ^
+
+"Test_name.c", line 38: error: type constraint uses concept "Number" (declared at line 16) that is not a type concept (i.e., a concept template whose first parameter is a type parameter)
+  template<Number N> // { dg-error "does not constrain a type" }
+           ^
+
+"Test_name.c", line 41: error: type constraint uses concept "Template" (declared at line 19) that is not a type concept (i.e., a concept template whose first parameter is a type parameter)
+  template<Template X> // { dg-error "does not constrain a type" }
+           ^
+
+"Test_name.c", line 44: error: variable "Type" is not a type name
+  template<Type auto N> // OK: N is a non-type parameter.
+           ^
+
+"Test_name.c", line 44: error: invalid combination of type specifiers
+  template<Type auto N> // OK: N is a non-type parameter.
+                ^
+
+"Test_name.c", line 51: error: no instance of function template "f4" matches the argument list
+    f4<0>();
+    ^
+"Test_name.c", line 45: note: substituting explicit template arguments "<0>" for function template "f4" failed
+  void f4() { }
+       ^
+
+"Test_name.c", line 52: error: no instance of function template "f5" matches the argument list
+    f5<0>(); // { dg-error "no matching function for call | constraints not satisfied" }
+    ^
+"Test_name.c", line 48: note: substituting "<0>" for function template "f5" failed constraints
+  void f5();
+       ^
+"Test_name.c", line 47: note: concept "Bottom" not satisfied for "<int>"
+  template<Bottom auto N> // OK: but never usable.
+           ^
+"Test_name.c", line 10: note: atomic constraint evaluates to false
+  concept Bottom = false;
+                   ^
+
+"Test_name.c", line 55: error: variable "Type" is not a type name
+  Type f6() { return 0; } // { dg-error "expected 'auto'" }
+  ^
+
+"Test_name.c", line 56: error: static assertion failed
+  static_assert(__is_same_as(decltype(f6), int()));
+  ^
+
+"Test_name.c", line 58: error: this declaration has no storage class or type specifier
+  Type auto f7() { return 0; }
+  ^
+
+"Test_name.c", line 58: error: variable "Type" has already been defined (previous definition at line 29)
+  Type auto f7() { return 0; }
+  ^
+
+"Test_name.c", line 58: error: expected a ";"
+  Type auto f7() { return 0; }
+       ^
+
+"Test_name.c", line 61: error: variable "Type" is not a type name
+  Type f8() { return 0; } // { dg-error "expected 'auto'" }
+  ^
+
+"Test_name.c", line 62: error: variable "Type" is not a type name
+  auto f9() -> Type { return 0; } // { dg-error "expected 'auto'" }
+               ^
+
+"Test_name.c", line 64: error: variable "Type" is not a type name
+  Type f10() { } // { dg-error "expected 'auto'" }
+  ^
+
+"Test_name.c", line 65: error: variable "Type" is not a type name
+  auto f11() -> Type { } // { dg-error "expected" }
+                ^
+
+"Test_name.c", line 67: error: concept "Number" is not a type name
+  Number f12(); // { dg-error "does not constrain a type" }
+  ^
+
+"Test_name.c", line 68: error: concept "Number" is not a type name
+  auto f13() -> Number; // { dg-error "does not constrain a type" }
+                ^
+
+"Test_name.c", line 70: error: concept "Template" is not a type name
+  Template f14(); // { dg-error "does not constrain a type" }
+  ^
+
+"Test_name.c", line 71: error: concept "Template" is not a type name
+  auto f15() -> Template; // { dg-error "does not constrain a type" }
+                ^
+
+"Test_name.c", line 73: error: variable "Type" is not a type name
+  Type f16() { return 0; } // { dg-error "expected 'auto'" }
+  ^
+
+"Test_name.c", line 74: error: variable "Type" is not a type name
+  auto f17() -> Type { return 0; } // { dg-error "expected 'auto'" }
+                ^
+
+"Test_name.c", line 78: error: incomplete type "void" is not allowed
+  void f18(Class x) { } // { dg-error "expected 'auto'" }
+       ^
+
+"Test_name.c", line 78: error: expected a "<"
+  void f18(Class x) { } // { dg-error "expected 'auto'" }
+                 ^
+
+"Test_name.c", line 78: error: expected a ";"
+  void f18(Class x) { } // { dg-error "expected 'auto'" }
+                    ^
+
+"Test_name.c", line 93: warning: parsing restarts here after previous syntax error
+  void f21(Class auto x);
+                        ^
+
+42 errors detected in the compilation of "Test_name.c".

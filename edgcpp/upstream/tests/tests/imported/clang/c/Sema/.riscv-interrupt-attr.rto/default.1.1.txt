@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -DCHECK_IR -DCHECK_IR --c Test_name.c
+"Test_name.c", line 11: warning: unknown attribute "interrupt"
+  __attribute__((interrupt("supervisor"))) void foo_supervisor(void) {}
+                 ^
+
+"Test_name.c", line 14: warning: unknown attribute "interrupt"
+  __attribute__((interrupt("machine"))) void foo_machine(void) {}
+                 ^
+
+"Test_name.c", line 17: warning: unknown attribute "interrupt"
+  __attribute__((interrupt())) void foo_default(void) {}
+                 ^
+
+"Test_name.c", line 20: warning: unknown attribute "interrupt"
+  __attribute__((interrupt())) void foo_default2(void) {}
+                 ^
+
+"Test_name.c", line 23: warning: unknown attribute "interrupt"
+  __attribute__((interrupt("machine", "machine")))
+                 ^
+
+"Test_name.c", line 27: warning: unknown attribute "interrupt"
+  __attribute__((interrupt("supervisor", "supervisor")))
+                 ^
+

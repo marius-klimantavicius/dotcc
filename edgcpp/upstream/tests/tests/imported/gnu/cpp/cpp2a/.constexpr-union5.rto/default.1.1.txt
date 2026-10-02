@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 18: warning: expression has no effect
+    (0, u.b) = 20;  // { dg-error "accessing" }
+     ^
+
+"Test_name.c", line 13: warning: variable "x1" was declared but never referenced
+  constexpr int x1 = test1();  // { dg-message "in .constexpr. expansion" }
+                ^
+
+"Test_name.c", line 21: warning: variable "x2" was declared but never referenced
+  constexpr int x2 = test2();  // { dg-message "in .constexpr. expansion" }
+                ^
+
+"Test_name.c", line 30: warning: variable "x3" was declared but never referenced
+  constexpr int x3 = test3();  // { dg-message "in .constexpr. expansion" }
+                ^
+
+"Test_name.c", line 39: warning: variable "x4" was declared but never referenced
+  constexpr int x4 = test4();  // { dg-message "in .constexpr. expansion" }
+                ^
+
+"Test_name.c", line 65: warning: variable "x7" was declared but never referenced
+  constexpr int x7 = test7();  // { dg-message "in .constexpr. expansion" }
+                ^
+

@@ -1,0 +1,69 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 --exceptions --exceptions Test_name.c
+"Test_name.c", line 101: warning: type qualifier on return type is meaningless
+      no_composite_pointer_type<const int (A::*)(), volatile int (C::*)()>();
+                                ^
+
+"Test_name.c", line 101: warning: type qualifier on return type is meaningless
+      no_composite_pointer_type<const int (A::*)(), volatile int (C::*)()>();
+                                                    ^
+
+"Test_name.c", line 352: warning: parameter "n" was set but never used
+    void f(bool b, int n) {
+                       ^
+
+"Test_name.c", line 574: error: no instance of function template "cwg1584::f" matches the argument list
+            argument types are: (void (*)())
+    f(&i);
+    ^
+"Test_name.c", line 567: note: candidate function template "cwg1584::f" failed deduction
+  template<typename T> void f(const T *); // #cwg1584-f
+                            ^
+
+"Test_name.c", line 32: error: operand types are incompatible ("const int *cwg1512::A::*" and "volatile int *cwg1512::B::*")
+      typedef __typeof(true ? val<A>() : val<B>()) type;
+                                       ^
+          detected during:
+            instantiation of "void cwg1512::composite_pointer_type_is_base<A,B,C>() [with A=const int *cwg1512::A::*, B=volatile int *cwg1512::B::*, C=const volatile int *const cwg1512::B::*]" at line 62
+            instantiation of "void cwg1512::composite_pointer_type_is_unord<A,B,C>(int) [with A=const int *cwg1512::A::*, B=volatile int *cwg1512::B::*, C=const volatile int *const cwg1512::B::*]" at line 98
+
+"Test_name.c", line 35: error: operand types are incompatible ("const int *cwg1512::A::*" and "volatile int *cwg1512::B::*")
+      typedef __typeof(val<A>() == val<B>()) cmp;
+                                ^
+          detected during:
+            instantiation of "void cwg1512::composite_pointer_type_is_base<A,B,C>() [with A=const int *cwg1512::A::*, B=volatile int *cwg1512::B::*, C=const volatile int *const cwg1512::B::*]" at line 62
+            instantiation of "void cwg1512::composite_pointer_type_is_unord<A,B,C>(int) [with A=const int *cwg1512::A::*, B=volatile int *cwg1512::B::*, C=const volatile int *const cwg1512::B::*]" at line 98
+
+"Test_name.c", line 36: error: operand types are incompatible ("const int *cwg1512::A::*" and "volatile int *cwg1512::B::*")
+      typedef __typeof(val<A>() != val<B>()) cmp;
+                                ^
+          detected during:
+            instantiation of "void cwg1512::composite_pointer_type_is_base<A,B,C>() [with A=const int *cwg1512::A::*, B=volatile int *cwg1512::B::*, C=const volatile int *const cwg1512::B::*]" at line 62
+            instantiation of "void cwg1512::composite_pointer_type_is_unord<A,B,C>(int) [with A=const int *cwg1512::A::*, B=volatile int *cwg1512::B::*, C=const volatile int *const cwg1512::B::*]" at line 98
+
+"Test_name.c", line 32: error: operand types are incompatible ("const int *cwg1512::B::*" and "volatile int *cwg1512::A::*")
+      typedef __typeof(true ? val<A>() : val<B>()) type;
+                                       ^
+          detected during:
+            instantiation of "void cwg1512::composite_pointer_type_is_base<A,B,C>() [with A=const int *cwg1512::B::*, B=volatile int *cwg1512::A::*, C=const volatile int *const cwg1512::B::*]" at line 62
+            instantiation of "void cwg1512::composite_pointer_type_is_unord<A,B,C>(int) [with A=const int *cwg1512::B::*, B=volatile int *cwg1512::A::*, C=const volatile int *const cwg1512::B::*]" at line 99
+
+"Test_name.c", line 35: error: operand types are incompatible ("const int *cwg1512::B::*" and "volatile int *cwg1512::A::*")
+      typedef __typeof(val<A>() == val<B>()) cmp;
+                                ^
+          detected during:
+            instantiation of "void cwg1512::composite_pointer_type_is_base<A,B,C>() [with A=const int *cwg1512::B::*, B=volatile int *cwg1512::A::*, C=const volatile int *const cwg1512::B::*]" at line 62
+            instantiation of "void cwg1512::composite_pointer_type_is_unord<A,B,C>(int) [with A=const int *cwg1512::B::*, B=volatile int *cwg1512::A::*, C=const volatile int *const cwg1512::B::*]" at line 99
+
+"Test_name.c", line 36: error: operand types are incompatible ("const int *cwg1512::B::*" and "volatile int *cwg1512::A::*")
+      typedef __typeof(val<A>() != val<B>()) cmp;
+                                ^
+          detected during:
+            instantiation of "void cwg1512::composite_pointer_type_is_base<A,B,C>() [with A=const int *cwg1512::B::*, B=volatile int *cwg1512::A::*, C=const volatile int *const cwg1512::B::*]" at line 62
+            instantiation of "void cwg1512::composite_pointer_type_is_unord<A,B,C>(int) [with A=const int *cwg1512::B::*, B=volatile int *cwg1512::A::*, C=const volatile int *const cwg1512::B::*]" at line 99
+
+"Test_name.c", line 569: error: name followed by "::" must be a class or namespace name
+  template<typename T> void h(T *) { T::error; }
+                                     ^
+          detected during instantiation of "void cwg1584::h(T *) [with T=void ()]" at line 578
+
+8 errors detected in the compilation of "Test_name.c".

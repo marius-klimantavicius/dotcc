@@ -1,0 +1,154 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --exceptions --exceptions --c++11 Test_name.c
+"Test_name.c", line 8: error: cannot deduce "auto" type (initializer required)
+    auto a; // expected-error{{'auto' not allowed in non-static struct member}}
+         ^
+
+"Test_name.c", line 9: error: cannot deduce "auto" type (initializer required)
+    auto *b; // expected-error{{'auto' not allowed in non-static struct member}}
+          ^
+
+"Test_name.c", line 10: error: cannot deduce "auto" type (initializer required)
+    const auto c; // expected-error{{'auto' not allowed in non-static struct member}}
+               ^
+
+"Test_name.c", line 12: error: "auto" is not allowed here
+    void f() throw (auto); // expected-error{{'auto' not allowed here}}
+                    ^
+
+"Test_name.c", line 14: error: cannot deduce "auto" type (initializer required)
+    friend auto; // expected-error{{'auto' not allowed in friend declaration}}
+           ^
+
+"Test_name.c", line 16: error: "auto" is not allowed here
+    operator auto(); // expected-error{{'auto' not allowed in conversion function type}}
+             ^
+
+"Test_name.c", line 20: error: "auto" is not allowed here
+  typedef auto *AutoPtr; // expected-error{{'auto' not allowed in typedef}}
+          ^
+
+"Test_name.c", line 21: error: "auto" is not allowed here
+  typedef auto (*PFun)(int a); // expected-error{{'auto' not allowed in typedef}}
+          ^
+
+"Test_name.c", line 24: error: "auto" is not allowed here
+  void g(auto a) { // expected-error{{'auto' not allowed in function prototype}}
+         ^
+
+"Test_name.c", line 26: error: "auto" is not allowed here
+    catch (auto &a) { } // expected-error{{'auto' not allowed in exception declaration}}
+           ^
+
+"Test_name.c", line 27: error: "auto" is not allowed here
+    catch (const auto a) { } // expected-error{{'auto' not allowed in exception declaration}}
+                 ^
+
+"Test_name.c", line 28: error: "auto" is not allowed here
+    try { } catch (auto a) { } // expected-error{{'auto' not allowed in exception declaration}}
+                   ^
+
+"Test_name.c", line 31: error: "auto" type cannot appear in top-level array type
+  void h(auto a[10]) { // expected-error{{'auto' not allowed in function prototype}}
+         ^
+
+"Test_name.c", line 34: error: "auto" is not allowed here
+  void i(const auto a) { // expected-error{{'auto' not allowed in function prototype}}
+               ^
+
+"Test_name.c", line 44: error: "auto" is not allowed here
+    (void)typeid(auto); // expected-error{{'auto' not allowed here}}
+                 ^
+
+"Test_name.c", line 45: error: "auto" is not allowed here
+    (void)sizeof(auto); // expected-error{{'auto' not allowed here}}
+                 ^
+
+"Test_name.c", line 46: error: "auto" is not allowed here
+    (void)__alignof(auto); // expected-error{{'auto' not allowed here}}
+                    ^
+
+"Test_name.c", line 48: error: "auto" is not allowed here
+    U<auto> v; // expected-error{{'auto' not allowed in template argument}}
+      ^
+
+"Test_name.c", line 51: error: "auto" is not allowed here
+    (void)dynamic_cast<auto &>(n);      // expected-error{{'auto' not allowed here}}
+                       ^
+
+"Test_name.c", line 52: error: "auto" is not allowed here
+    (void)static_cast<auto *>(&n);      // expected-error{{'auto' not allowed here}}
+                      ^
+
+"Test_name.c", line 53: error: "auto" is not allowed here
+    (void)reinterpret_cast<auto *>(&n); // expected-error{{'auto' not allowed here}}
+                           ^
+
+"Test_name.c", line 54: error: "auto" is not allowed here
+    (void)const_cast<auto const>(n);    // expected-error{{'auto' not allowed here}}
+                     ^
+
+"Test_name.c", line 55: error: "auto" is not allowed here
+    (void)*(auto *)(&n);                // expected-error{{'auto' not allowed here}}
+            ^
+
+"Test_name.c", line 56: error: "auto" is not allowed here
+    (void)dynamic_cast<auto>(n);        // expected-error{{'auto' not allowed here}}
+                       ^
+
+"Test_name.c", line 57: error: "auto" is not allowed here
+    (void)static_cast<auto>(n);         // expected-error{{'auto' not allowed here}}
+                      ^
+
+"Test_name.c", line 58: error: "auto" is not allowed here
+    (void)reinterpret_cast<auto>(n);    // expected-error{{'auto' not allowed here}}
+                           ^
+
+"Test_name.c", line 59: error: "auto" is not allowed here
+    (void)const_cast<auto>(n);          // expected-error{{'auto' not allowed here}}
+                     ^
+
+"Test_name.c", line 60: error: "auto" is not allowed here
+    (void)(auto)(n);                    // expected-error{{'auto' not allowed here}}
+           ^
+
+"Test_name.c", line 61: error: expected an expression
+    (void)auto(n);                      // expected-error{{'auto' not allowed here}}
+          ^
+
+"Test_name.c", line 62: error: expected an expression
+    (void)auto{n};                      // expected-error{{'auto' not allowed here}}
+          ^
+
+"Test_name.c", line 48: warning: variable "v" was declared but never referenced
+    U<auto> v; // expected-error{{'auto' not allowed in template argument}}
+            ^
+
+"Test_name.c", line 65: error: "auto" is not allowed here
+  template <auto a = 10> class C { }; // expected-error{{'auto' not allowed in template parameter}}
+            ^
+
+"Test_name.c", line 67: error: "auto" is not allowed here
+  template <const auto (*a)[3] = &ints> class D { }; // expected-error{{'auto' not allowed in template parameter}}
+                  ^
+
+"Test_name.c", line 68: error: "auto" is not allowed here
+  enum E : auto {}; // expected-error{{'auto' not allowed here}}
+           ^
+
+"Test_name.c", line 69: error: expected an identifier
+  struct F : auto {}; // expected-error{{expected class name}}
+             ^
+
+"Test_name.c", line 70: error: "auto" is not allowed here
+  template<typename T = auto> struct G { }; // expected-error{{'auto' not allowed in template argument}}
+                        ^
+
+"Test_name.c", line 72: error: "auto" is not allowed here
+  using A = auto; // expected-error{{'auto' not allowed in type alias}}
+            ^
+
+"Test_name.c", line 74: error: "auto" is not allowed here
+  auto k() -> auto; // expected-error{{'auto' not allowed in function return type}}
+              ^
+
+37 errors detected in the compilation of "Test_name.c".

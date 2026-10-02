@@ -1,0 +1,58 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 6: error: incomplete type "A" is not allowed
+  static struct A a;        /* Internal linkage, incomplete type. */
+                  ^
+
+"Test_name.c", line 7: error: incomplete type "A" is not allowed
+  struct A a2;
+           ^
+
+"Test_name.c", line 8: error: incomplete type "B" is not allowed
+  static struct B b;        /* Internal linkage, incomplete type. */
+                  ^
+
+"Test_name.c", line 9: error: incomplete type "B" is not allowed
+  struct B b2;              /* Never completed. */
+           ^
+
+"Test_name.c", line 10: error: incomplete type "A []" is not allowed
+  static struct A aa[];     /* Internal linkage, incomplete type. */
+                  ^
+
+"Test_name.c", line 11: error: variable "aa" has already been defined (previous definition at line 10)
+  static struct A aa[2];    /* Still incomplete. */
+                  ^
+
+"Test_name.c", line 12: error: incomplete type "A []" is not allowed
+  struct A aa2[];
+           ^
+
+"Test_name.c", line 13: error: variable "aa2" has already been defined (previous definition at line 12)
+  struct A aa2[3];
+           ^
+
+"Test_name.c", line 14: error: incomplete type "B []" is not allowed
+  static struct B bb[];     /* Internal linkage, incomplete type. */
+                  ^
+
+"Test_name.c", line 15: error: variable "bb" has already been defined (previous definition at line 14)
+  static struct B bb[2];
+                  ^
+
+"Test_name.c", line 16: error: incomplete type "B []" is not allowed
+  struct B bb2[];           /* Never completed. */
+           ^
+
+"Test_name.c", line 17: error: variable "bb2" has already been defined (previous definition at line 16)
+  struct B bb2[3];
+           ^
+
+"Test_name.c", line 19: error: incomplete type "A []" is not allowed
+  static struct A aaa[];    /* Internal linkage, incomplete type. */
+                  ^
+
+"Test_name.c", line 20: error: incomplete type "A []" is not allowed
+  struct A aaa2[];          /* Equivalent to "struct A aaa2[] = { 0 };". */
+           ^
+
+14 errors detected in the compilation of "Test_name.c".

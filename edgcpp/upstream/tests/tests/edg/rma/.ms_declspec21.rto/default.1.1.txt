@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 -r -x -tused --microsoft -n Test_name.c
+"Test_name.c", line 4: error: unknown attribute "xxx"
+  void __declspec(xxx(yyy)) f();
+                  ^
+
+1 error detected in the compilation of "Test_name.c".

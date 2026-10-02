@@ -1,0 +1,1 @@
+cpfe -DTEST_NUMBER=2 -tused --g++ Test_name.c

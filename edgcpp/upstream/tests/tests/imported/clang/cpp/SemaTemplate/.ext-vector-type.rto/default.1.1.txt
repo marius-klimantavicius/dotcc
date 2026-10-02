@@ -1,0 +1,108 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 11: error: expression must have class type but it has type "make1<int, 5U>::type" (aka "__attribute((ext_vector_type(5U))) int")
+    x.x = 4;
+    ^
+
+"Test_name.c", line 16: error: the "ext_vector_type" argument must be between 1 and 2047
+    typedef T __attribute__((ext_vector_type(Length))) type; // expected-error{{zero vector size}}
+                             ^
+          detected during instantiation of class "make2<T, Length> [with T=int, Length=0U]" at line 20
+
+"Test_name.c", line 21: warning: missing return statement at end of non-void function "test_make2"
+  }
+  ^
+
+"Test_name.c", line 20: warning: variable "x" was declared but never referenced
+    make2<int, 0> x; // expected-note{{in instantiation of}} 
+                  ^
+
+"Test_name.c", line 25: error: the "ext_vector_type" attribute applies only to bool, integer, or floating-point types
+    typedef T __attribute__((ext_vector_type(Length))) type; // expected-error{{invalid vector element type 's'}}
+                             ^
+          detected during instantiation of class "make3<T, Length> [with T=s, Length=3U]" at line 31
+
+"Test_name.c", line 32: warning: missing return statement at end of non-void function "test_make3"
+  }
+  ^
+
+"Test_name.c", line 31: warning: variable "x" was declared but never referenced
+    make3<s, 3>x; // expected-note{{in instantiation of}} 
+               ^
+
+"Test_name.c", line 41: error: expression must have class type but it has type "make4<int, 4>::type" (aka "__attribute((ext_vector_type(4))) int")
+    x.w = 7;
+    ^
+
+"Test_name.c", line 42: warning: missing return statement at end of non-void function "test_make4"
+  }
+  ^
+
+"Test_name.c", line 47: error: the "ext_vector_type" attribute applies only to bool, integer, or floating-point types
+    typedef int_ptr __attribute__((ext_vector_type(Length))) type; // expected-error{{invalid vector element type}}
+                                   ^
+
+"Test_name.c", line 57: error: expression must have class type but it has type "make6<4>::type" (aka "__attribute((ext_vector_type(4))) int")
+    x.w = 7;
+    ^
+
+"Test_name.c", line 60: error: expression must have class type but it has type "make6<2>::type" (aka "__attribute((ext_vector_type(2))) int")
+    y.x = -1;
+    ^
+
+"Test_name.c", line 61: error: expression must have class type but it has type "make6<2>::type" (aka "__attribute((ext_vector_type(2))) int")
+    y.w = -1; // expected-error{{vector component access exceeds type}}
+    ^
+
+"Test_name.c", line 62: warning: missing return statement at end of non-void function "test_make6"
+  }
+  ^
+
+"Test_name.c", line 68: error: the "ext_vector_type" attribute may appear only in a typedef
+    struct X0<T __attribute__((ext_vector_type(N)))> {
+                               ^
+
+"Test_name.c", line 67: warning: template parameter "T" is not used in or cannot be deduced from the template argument list of class template "Deduction::X0<<error-type>>"
+    template<typename T, unsigned N>
+                      ^
+
+"Test_name.c", line 67: warning: constant "N" is not used in or cannot be deduced from the template argument list of class template "Deduction::X0<<error-type>>"
+    template<typename T, unsigned N>
+                                  ^
+
+"Test_name.c", line 73: error: the "ext_vector_type" attribute may appear only in a typedef
+    struct X0<T __attribute__((ext_vector_type(4)))> {
+                               ^
+
+"Test_name.c", line 73: error: class template "Deduction::X0" has already been defined (previous definition at line 67)
+    struct X0<T __attribute__((ext_vector_type(4)))> {
+           ^
+
+"Test_name.c", line 78: error: the "ext_vector_type" attribute may appear only in a typedef
+    struct X0<float __attribute__((ext_vector_type(N)))> {
+                                   ^
+
+"Test_name.c", line 78: error: class template "Deduction::X0" has already been defined (previous definition at line 67)
+    struct X0<float __attribute__((ext_vector_type(N)))> {
+           ^
+
+"Test_name.c", line 83: error: the "ext_vector_type" attribute may appear only in a typedef
+    struct X0<float __attribute__((ext_vector_type(4)))> {
+                                   ^
+
+"Test_name.c", line 92: error: incomplete type "Deduction::X0<Deduction::int2>" (aka "Deduction::X0<__attribute((ext_vector_type(2))) int>") is not allowed
+    int array0[X0<int2>::value == 0? 1 : -1];
+               ^
+
+"Test_name.c", line 93: error: incomplete type "Deduction::X0<Deduction::int4>" (aka "Deduction::X0<__attribute((ext_vector_type(4))) int>") is not allowed
+    int array1[X0<int4>::value == 1? 1 : -1];
+               ^
+
+"Test_name.c", line 94: error: incomplete type "Deduction::X0<Deduction::float2>" (aka "Deduction::X0<__attribute((ext_vector_type(2))) float>") is not allowed
+    int array2[X0<float2>::value == 2? 1 : -1];
+               ^
+
+"Test_name.c", line 95: error: incomplete type "Deduction::X0<Deduction::float4>" (aka "Deduction::X0<__attribute((ext_vector_type(4))) float>") is not allowed
+    int array3[X0<float4>::value == 3? 1 : -1];
+               ^
+
+18 errors detected in the compilation of "Test_name.c".

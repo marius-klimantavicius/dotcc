@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 11: error: expected a "{"
+  foo (struct X *p, _Complex int q)
+  ^
+
+"Test_name.c", line 14: error: identifier "b_1" is undefined
+    b_1 = __real q;
+    ^
+
+"Test_name.c", line 14: error: identifier "q" is undefined
+    b_1 = __real q;
+                 ^
+
+"Test_name.c", line 15: warning: function "p_4" declared implicitly
+    p_4(D)->a = b_1;
+    ^
+
+"Test_name.c", line 15: error: identifier "D" is undefined
+    p_4(D)->a = b_1;
+        ^
+
+"Test_name.c", line 15: error: operator -> or ->* applied to "int" instead of to a pointer type
+    p_4(D)->a = b_1;
+    ^
+
+"Test_name.c", line 17: error: identifier "b_2" is undefined
+    b_2 = p->y.b[1];
+    ^
+
+"Test_name.c", line 17: error: identifier "p" is undefined
+    b_2 = p->y.b[1];
+          ^
+
+"Test_name.c", line 18: error: identifier "b_3" is undefined
+    b_3 = x.a;
+    ^
+
+"Test_name.c", line 13: warning: variable "b" was declared but never referenced
+    int b;
+        ^
+
+8 errors detected in the compilation of "Test_name.c".

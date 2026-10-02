@@ -1,0 +1,241 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 74: warning: integer conversion resulted in a change of sign
+    T (-1, "%-s", s);
+    ^
+
+"Test_name.c", line 75: warning: integer conversion resulted in a change of sign
+    T (-1, "%-s", ar->ax);
+    ^
+
+"Test_name.c", line 77: warning: integer conversion resulted in a change of sign
+    T (-1, "%s%s", s, s);
+    ^
+
+"Test_name.c", line 78: warning: integer conversion resulted in a change of sign
+    T (-1, "%s%s", "", s);
+    ^
+
+"Test_name.c", line 79: warning: integer conversion resulted in a change of sign
+    T (-1, "%s%s", s, "1");
+    ^
+
+"Test_name.c", line 80: warning: integer conversion resulted in a change of sign
+    T (-1, "%s%s", "1", s);
+    ^
+
+"Test_name.c", line 84: warning: integer conversion resulted in a change of sign
+    T (-1, "%-s", ar->a1);
+    ^
+
+"Test_name.c", line 85: warning: integer conversion resulted in a change of sign
+    T (-1, "%-s", ar->a4k);
+    ^
+
+"Test_name.c", line 91: warning: integer conversion resulted in a change of sign
+    T (-1, "%s%s", s, ar->a4k);
+    ^
+
+"Test_name.c", line 92: warning: integer conversion resulted in a change of sign
+    T (-1, "%s%s", ar->a4k, s);
+    ^
+
+"Test_name.c", line 93: warning: integer conversion resulted in a change of sign
+    T (-1, "%s%s", ar->a4k, ar->a4k);
+    ^
+
+"Test_name.c", line 94: warning: integer conversion resulted in a change of sign
+    T (-1, "%s%s", ar->a4k, "123");
+    ^
+
+"Test_name.c", line 95: warning: integer conversion resulted in a change of sign
+    T (-1, "%s%s", "123", ar->a4k);
+    ^
+
+"Test_name.c", line 96: warning: integer conversion resulted in a change of sign
+    T (-1, "%s%s", ar->ax, ar->a4k);
+    ^
+
+"Test_name.c", line 97: warning: integer conversion resulted in a change of sign
+    T (-1, "%s%s", ar->a4k, ar->ax);
+    ^
+
+"Test_name.c", line 101: warning: integer conversion resulted in a change of sign
+    T (-1, "%-s", ar->a4kp1);   /* { dg-warning "directive output between 0 and 4096 bytes may exceed minimum required size of 4095" } */
+    ^
+
+"Test_name.c", line 105: warning: integer conversion resulted in a change of sign
+    T (-1, "%*s", 4096, ar->a4k);   /* { dg-warning "directive output of 4096 bytes exceeds minimum required size of 4095" } */
+    ^
+
+"Test_name.c", line 109: warning: integer conversion resulted in a change of sign
+    T (-1, "%.*s", 4095, ar->a4kp1);
+    ^
+
+"Test_name.c", line 111: warning: integer conversion resulted in a change of sign
+    T (-1, "%s %s", s, "");
+    ^
+
+"Test_name.c", line 112: warning: integer conversion resulted in a change of sign
+    T (-1, "%s %s", "", s);
+    ^
+
+"Test_name.c", line 113: warning: integer conversion resulted in a change of sign
+    T (-1, "%s %s", s, "1");
+    ^
+
+"Test_name.c", line 114: warning: integer conversion resulted in a change of sign
+    T (-1, "%s %s", "1", s);
+    ^
+
+"Test_name.c", line 116: warning: integer conversion resulted in a change of sign
+    T (-1, "%s%s%s", s, "1", s);
+    ^
+
+"Test_name.c", line 117: warning: integer conversion resulted in a change of sign
+    T (-1, "%s%s%s", "1", s, "1");
+    ^
+
+"Test_name.c", line 118: warning: integer conversion resulted in a change of sign
+    T (-1, "%s%s%s", s, s, s);
+    ^
+
+"Test_name.c", line 119: warning: integer conversion resulted in a change of sign
+    T (-1, "%*s%*s%*s", 4093, s, 4094, s, 4095, s);
+    ^
+
+"Test_name.c", line 120: warning: integer conversion resulted in a change of sign
+    T (-1, "%s %s %s", s, s, s);
+    ^
+
+"Test_name.c", line 121: warning: integer conversion resulted in a change of sign
+    T (-1, "%s %s %s", ar->a4k, ar->a4k, ar->a4k);
+    ^
+
+"Test_name.c", line 122: warning: integer conversion resulted in a change of sign
+    T (-1, "%s %s %s", ar->ax, ar->ax, ar->ax);
+    ^
+
+"Test_name.c", line 126: warning: integer conversion resulted in a change of sign
+    T (-1, "%-s", ar->amax);   /* { dg-warning "directive output between 0 and \[0-9\]+ bytes may exceed minimum required size of 4095" } */
+    ^
+
+"Test_name.c", line 145: warning: integer conversion resulted in a change of sign
+    T (-1, "%-s", s);
+    ^
+
+"Test_name.c", line 146: warning: integer conversion resulted in a change of sign
+    T (-1, "%-s", ar->ax);
+    ^
+
+"Test_name.c", line 148: warning: integer conversion resulted in a change of sign
+    T (-1, "%s%s", s, s);
+    ^
+
+"Test_name.c", line 149: warning: integer conversion resulted in a change of sign
+    T (-1, "%s%s", "", s);
+    ^
+
+"Test_name.c", line 150: warning: integer conversion resulted in a change of sign
+    T (-1, "%s%s", s, "1");
+    ^
+
+"Test_name.c", line 151: warning: integer conversion resulted in a change of sign
+    T (-1, "%s%s", "1", s);
+    ^
+
+"Test_name.c", line 155: warning: integer conversion resulted in a change of sign
+    T (-1, "%-s", ar->a1);
+    ^
+
+"Test_name.c", line 156: warning: integer conversion resulted in a change of sign
+    T (-1, "%-s", ar->a4k);
+    ^
+
+"Test_name.c", line 162: warning: integer conversion resulted in a change of sign
+    T (-1, "%s%s", s, ar->a4k);
+    ^
+
+"Test_name.c", line 163: warning: integer conversion resulted in a change of sign
+    T (-1, "%s%s", ar->a4k, s);
+    ^
+
+"Test_name.c", line 164: warning: integer conversion resulted in a change of sign
+    T (-1, "%s%s", ar->a4k, ar->a4k);
+    ^
+
+"Test_name.c", line 165: warning: integer conversion resulted in a change of sign
+    T (-1, "%s%s", ar->a4k, "123");
+    ^
+
+"Test_name.c", line 166: warning: integer conversion resulted in a change of sign
+    T (-1, "%s%s", "123", ar->a4k);
+    ^
+
+"Test_name.c", line 167: warning: integer conversion resulted in a change of sign
+    T (-1, "%s%s", ar->ax, ar->a4k);
+    ^
+
+"Test_name.c", line 168: warning: integer conversion resulted in a change of sign
+    T (-1, "%s%s", ar->a4k, ar->ax);
+    ^
+
+"Test_name.c", line 173: warning: integer conversion resulted in a change of sign
+    T (-1, "%s", ar->a4kp1);
+    ^
+
+"Test_name.c", line 182: warning: integer conversion resulted in a change of sign
+    T (-1, "%*s", 4096, ar->a4k);   /* { dg-warning "directive output of 4096 bytes exceeds minimum required size of 4095" } */
+    ^
+
+"Test_name.c", line 186: warning: integer conversion resulted in a change of sign
+    T (-1, "%.*s", 4095, ar->a4kp1);
+    ^
+
+"Test_name.c", line 188: warning: integer conversion resulted in a change of sign
+    T (-1, "%s %s", s, "");
+    ^
+
+"Test_name.c", line 189: warning: integer conversion resulted in a change of sign
+    T (-1, "%s %s", "", s);
+    ^
+
+"Test_name.c", line 190: warning: integer conversion resulted in a change of sign
+    T (-1, "%s %s", s, "1");
+    ^
+
+"Test_name.c", line 191: warning: integer conversion resulted in a change of sign
+    T (-1, "%s %s", "1", s);
+    ^
+
+"Test_name.c", line 193: warning: integer conversion resulted in a change of sign
+    T (-1, "%s%s%s", s, "1", s);
+    ^
+
+"Test_name.c", line 194: warning: integer conversion resulted in a change of sign
+    T (-1, "%s%s%s", "1", s, "1");
+    ^
+
+"Test_name.c", line 195: warning: integer conversion resulted in a change of sign
+    T (-1, "%s%s%s", s, s, s);
+    ^
+
+"Test_name.c", line 196: warning: integer conversion resulted in a change of sign
+    T (-1, "%*s%*s%*s", 4093, s, 4094, s, 4095, s);
+    ^
+
+"Test_name.c", line 197: warning: integer conversion resulted in a change of sign
+    T (-1, "%s %s %s", s, s, s);
+    ^
+
+"Test_name.c", line 198: warning: integer conversion resulted in a change of sign
+    T (-1, "%s %s %s", ar->a4k, ar->a4k, ar->a4k);
+    ^
+
+"Test_name.c", line 199: warning: integer conversion resulted in a change of sign
+    T (-1, "%s %s %s", ar->ax, ar->ax, ar->ax);
+    ^
+
+"Test_name.c", line 203: warning: integer conversion resulted in a change of sign
+    T (-1, "%s", ar->amax);
+    ^
+

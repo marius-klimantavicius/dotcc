@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 Test_name.c
+"Test_name.c", line 6: error: extra text after expected end of number
+  double a = 1.d;		/* { dg-warning "double constant" } */
+               ^
+
+"Test_name.c", line 7: error: extra text after expected end of number
+  double b = 1.D;		/* { dg-warning "double constant" } */
+               ^
+
+"Test_name.c", line 8: error: extra text after expected end of number
+  double c = 1.1e+2d;	/* { dg-warning "double constant" } */
+                   ^
+
+"Test_name.c", line 10: error: extra text after expected end of number
+  double d = 1.di;	/* { dg-warning "imaginary constants" } */
+               ^
+
+"Test_name.c", line 11: error: extra text after expected end of number
+  double e = 1.dj;	/* { dg-warning "imaginary constants" } */
+               ^
+
+"Test_name.c", line 12: error: extra text after expected end of number
+  double f = 1.id;	/* { dg-warning "imaginary constants" } */
+                ^
+
+"Test_name.c", line 13: error: extra text after expected end of number
+  double g = 1.jd;	/* { dg-warning "imaginary constants" } */
+                ^
+
+"Test_name.c", line 15: error: extra text after expected end of number
+  double h = 0x1.5p1d;	/* { dg-warning "double constant" } */
+                    ^
+
+8 errors detected in the compilation of "Test_name.c".

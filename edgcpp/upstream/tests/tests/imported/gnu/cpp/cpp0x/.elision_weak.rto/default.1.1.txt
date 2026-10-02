@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++23 Test_name.c
+"Test_name.c", line 14: error: class "S" has no suitable copy constructor
+    return s; // { dg-error "cannot bind non-const lvalue reference" "" { target c++23 } }
+           ^
+
+"Test_name.c", line 20: error: class "S" has no suitable copy constructor
+    throw s; // { dg-error "cannot bind non-const lvalue reference" "" { target c++23 } }
+          ^
+
+2 errors detected in the compilation of "Test_name.c".

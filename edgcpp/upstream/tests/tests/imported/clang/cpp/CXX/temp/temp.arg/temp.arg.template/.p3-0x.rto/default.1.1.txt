@@ -1,0 +1,46 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 18: error: incomplete type "eval<C<17>>" is not allowed
+  eval<C<17>> eC; // expected-error{{implicit instantiation of undefined template 'eval<C<17>>'}}
+              ^
+
+"Test_name.c", line 19: error: incomplete type "eval<D<int, 17>>" is not allowed
+  eval<D<int, 17>> eD; // expected-error{{implicit instantiation of undefined template 'eval<D<int, 17>>'}}
+                   ^
+
+"Test_name.c", line 20: error: incomplete type "eval<E<int, float, 17>>" is not allowed
+  eval<E<int, float>> eE; // expected-error{{implicit instantiation of undefined template 'eval<E<int, float>>}}
+                      ^
+
+"Test_name.c", line 36: error: class template "X0c" is not compatible with template template parameter "TT"
+  X0<X0c> inst_x0c;
+     ^
+
+"Test_name.c", line 37: error: class template "X0d" is not compatible with template template parameter "TT"
+  X0<X0d> inst_x0d; // expected-note {{has different template parameters}}
+     ^
+
+"Test_name.c", line 38: error: class template "X0e" is not compatible with template template parameter "TT"
+  X0<X0e> inst_x0e; // expected-note{{template template argument has different template parameters than its corresponding template template parameter}}
+     ^
+
+"Test_name.c", line 55: error: class template "X1d" is not compatible with template template parameter "TT"
+  X1<short, X1d> inst_sx1d;
+            ^
+
+"Test_name.c", line 56: error: class template "X1d" is not compatible with template template parameter "TT"
+  X1<int, X1d> inst_ix1d;  // expected-note {{has different template parameters}}
+          ^
+
+"Test_name.c", line 57: error: class template "X1e" is not compatible with template template parameter "TT"
+  X1<short, X1e> inst_x1e; // expected-note {{has different template parameters}}
+            ^
+
+"Test_name.c", line 61: error: incomplete type "X2<1>" is not allowed
+  class X3 : X2<1> {}; // expected-error{{implicit instantiation of undefined template 'X2<1>'}}
+             ^
+
+"Test_name.c", line 65: error: incomplete type "X2<1>" is not allowed
+      X2<1> e; // expected-error{{implicit instantiation of undefined template 'X2<1>'}}
+            ^
+
+11 errors detected in the compilation of "Test_name.c".

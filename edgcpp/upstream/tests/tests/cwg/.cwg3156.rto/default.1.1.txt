@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 -A --c++20 Test_name.c
+"Test_name.c", line 9: error: function "C::C(int)" (declared at line 5) cannot be referenced -- it is a deleted function
+  decltype([b = C(3)]() { return 4; }()) x; // error
+                ^
+
+1 error detected in the compilation of "Test_name.c".

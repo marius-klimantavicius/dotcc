@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: warning: unrecognized #pragma
+  #pragma omp declare variant (f0) match (user={condition(score(1))})
+          ^
+
+"Test_name.c", line 12: warning: unrecognized #pragma
+  #pragma omp declare variant (f2) match (user={condition(score(1):1)})
+          ^
+
+"Test_name.c", line 15: warning: unrecognized #pragma
+  #pragma omp declare variant (f4) match (user={condition(score(1):score(1))})
+          ^
+
+"Test_name.c", line 18: warning: unrecognized #pragma
+  #pragma omp declare variant (f6) match (user={condition(score(1)==0)})
+          ^
+

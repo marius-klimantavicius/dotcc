@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: error: string literals with different character kinds cannot be concatenated
+    { auto a = L"" u""; }		// { dg-error "concatenation" }
+                   ^
+
+"Test_name.c", line 9: error: string literals with different character kinds cannot be concatenated
+    { auto a = L"" u8""; }	// { dg-error "concatenation" }
+                   ^
+
+"Test_name.c", line 9: warning: variable "a" was declared but never referenced
+    { auto a = L"" u8""; }	// { dg-error "concatenation" }
+           ^
+
+"Test_name.c", line 10: error: string literals with different character kinds cannot be concatenated
+    { auto a = L"" U""; }		// { dg-error "concatenation" }
+                   ^
+
+"Test_name.c", line 12: error: string literals with different character kinds cannot be concatenated
+    { auto a = u8"" L""; }	// { dg-error "concatenation" }
+                    ^
+
+"Test_name.c", line 13: error: string literals with different character kinds cannot be concatenated
+    { auto a = u8"" u""; }	// { dg-error "concatenation" }
+                    ^
+
+"Test_name.c", line 14: error: string literals with different character kinds cannot be concatenated
+    { auto a = u8"" U""; }	// { dg-error "concatenation" }
+                    ^
+
+"Test_name.c", line 16: error: string literals with different character kinds cannot be concatenated
+    { auto a = u"" L""; }		// { dg-error "concatenation" }
+                   ^
+
+"Test_name.c", line 17: error: string literals with different character kinds cannot be concatenated
+    { auto a = u"" u8""; }	// { dg-error "concatenation" }
+                   ^
+
+"Test_name.c", line 17: warning: variable "a" was declared but never referenced
+    { auto a = u"" u8""; }	// { dg-error "concatenation" }
+           ^
+
+"Test_name.c", line 18: error: string literals with different character kinds cannot be concatenated
+    { auto a = u"" U""; }		// { dg-error "concatenation" }
+                   ^
+
+"Test_name.c", line 20: error: string literals with different character kinds cannot be concatenated
+    { auto a = U"" L""; }		// { dg-error "concatenation" }
+                   ^
+
+"Test_name.c", line 21: error: string literals with different character kinds cannot be concatenated
+    { auto a = U"" u""; }		// { dg-error "concatenation" }
+                   ^
+
+"Test_name.c", line 22: error: string literals with different character kinds cannot be concatenated
+    { auto a = U"" u8""; }	// { dg-error "concatenation" }
+                   ^
+
+"Test_name.c", line 22: warning: variable "a" was declared but never referenced
+    { auto a = U"" u8""; }	// { dg-error "concatenation" }
+           ^
+
+12 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 85: warning: missing return statement at end of non-void function "tree_check"
+  }
+  ^
+
+"Test_name.c", line 94: warning: missing return statement at end of non-void function "contains_struct_check"
+  }
+  ^
+
+"Test_name.c", line 100: warning: missing return statement at end of non-void function "tree_class_check"
+  }
+  ^
+
+"Test_name.c", line 105: warning: missing return statement at end of non-void function "is_attribute_p"
+  }
+  ^
+
+"Test_name.c", line 190: warning: missing return statement at end of non-void function "avoid_dollar_number"
+  }
+  ^
+
+"Test_name.c", line 199: warning: variable "format_tree" is used before its value is set
+  				    format_tree, arg_num);
+  				    ^
+
+"Test_name.c", line 199: warning: variable "arg_num" is used before its value is set
+  				    format_tree, arg_num);
+  				                 ^
+
+"Test_name.c", line 257: warning: variable "format_chars" is used before its value is set
+    while (*format_chars != 0)
+            ^
+

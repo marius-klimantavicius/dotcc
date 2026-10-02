@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gcc Test_name.c
+"Test_name.c", line 18: warning: extra braces are nonstandard
+  struct foo bar = {{{1}}};
+                    ^
+
+"Test_name.c", line 19: warning: extra braces are nonstandard
+  struct foo baz = {{{1},},};
+                    ^
+

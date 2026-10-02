@@ -1,0 +1,9 @@
+cpfe -DTEST_NUMBER=1 --c++23 -tused -A Test_name.c
+"Test_name.c", line 10: error: more than one instance of overloaded function "h2" matches the argument list:
+            function "h2(void (&)())" (declared at line 4)
+            function "h2(void (&)() noexcept)" (declared at line 5)
+            argument types are: (void () noexcept)
+       h2(f2);            // calls h2(void (&)() noexcept)
+       ^
+
+1 error detected in the compilation of "Test_name.c".

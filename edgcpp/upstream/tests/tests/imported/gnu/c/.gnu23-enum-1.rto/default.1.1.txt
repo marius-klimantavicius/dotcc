@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 --strict_gnu Test_name.c
+"Test_name.c", line 10: error: enum "e1" (declared at line 9) was previously declared without an explicit enum base
+  enum e1 : int; /* { dg-error "'enum' declared both with and without fixed underlying type" } */
+            ^
+
+"Test_name.c", line 13: error: enum "e2" (declared at line 12) was previously declared without an explicit enum base
+  enum e2 : long { A }; /* { dg-error "'enum' declared both with and without fixed underlying type" } */
+            ^
+
+2 errors detected in the compilation of "Test_name.c".

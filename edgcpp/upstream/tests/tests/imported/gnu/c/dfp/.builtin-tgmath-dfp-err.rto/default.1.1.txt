@@ -1,0 +1,58 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 14: error: identifier "_Decimal32" is undefined
+  _Decimal32 f_d32 (_Decimal32);
+  ^
+
+"Test_name.c", line 14: warning: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+  _Decimal32 f_d32 (_Decimal32);
+                    ^
+
+"Test_name.c", line 14: warning: identifier-list parameters may only be used in a function definition
+  _Decimal32 f_d32 (_Decimal32);
+             ^
+
+"Test_name.c", line 15: error: identifier "_Decimal64" is undefined
+  _Decimal64 f_d64 (_Decimal64);
+  ^
+
+"Test_name.c", line 15: warning: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+  _Decimal64 f_d64 (_Decimal64);
+                    ^
+
+"Test_name.c", line 15: warning: identifier-list parameters may only be used in a function definition
+  _Decimal64 f_d64 (_Decimal64);
+             ^
+
+"Test_name.c", line 16: error: identifier "_Decimal128" is undefined
+  _Decimal128 f_d128 (_Decimal128);
+  ^
+
+"Test_name.c", line 16: warning: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+  _Decimal128 f_d128 (_Decimal128);
+                      ^
+
+"Test_name.c", line 16: warning: identifier-list parameters may only be used in a function definition
+  _Decimal128 f_d128 (_Decimal128);
+              ^
+
+"Test_name.c", line 19: error: identifier "_Decimal32" is undefined
+  _Decimal32 f_d32d32 (_Decimal32, _Decimal32);
+  ^
+
+"Test_name.c", line 19: warning: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+  _Decimal32 f_d32d32 (_Decimal32, _Decimal32);
+                       ^
+
+"Test_name.c", line 19: warning: identifier-list parameters may only be used in a function definition
+  _Decimal32 f_d32d32 (_Decimal32, _Decimal32);
+             ^
+
+"Test_name.c", line 22: error: identifier "_Decimal32" is undefined
+  _Decimal32 d32;
+  ^
+
+"Test_name.c", line 27: warning: function "__builtin_tgmath" declared implicitly
+    __builtin_tgmath (f_cf, f_cd, f_cld, d32); /* { dg-error "decimal floating-point argument 1 to complex-only type-generic function" } */
+    ^
+
+5 errors detected in the compilation of "Test_name.c".

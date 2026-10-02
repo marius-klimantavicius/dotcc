@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 22: warning: comparing a pointer to void and a pointer to a function is nonstandard
+  void il() { if (z != (void*)0) z(); }   // { dg-warning "19:comparison" }
+                    ^
+
+"Test_name.c", line 29: error: operand types are incompatible ("void (*)()" and "S *")
+  void nl() { if (z != (S*)0) z(); }      // { dg-error "19:comparison" }
+                    ^
+
+"Test_name.c", line 31: error: operand types are incompatible ("void (*)()" and "ptrfn" (aka "int (*)(int)"))
+  void pl() { if (z != (ptrfn)0) z(); }   // { dg-error "19:comparison" }
+                    ^
+
+"Test_name.c", line 33: error: operand types are incompatible ("double *" and "int *")
+  void ql() { if (&d != (int*)0) z(); }   // { dg-error "20:comparison" }
+                     ^
+
+"Test_name.c", line 35: error: operand types are incompatible ("S *" and "U *")
+  void rl() { if (&s != (U*)0) z(); }     // { dg-error "20:comparison" }
+                     ^
+
+"Test_name.c", line 40: warning: comparing a pointer to void and a pointer to a function is nonstandard
+  void ir() { if ((void*)0 != z) z(); }   // { dg-warning "26:comparison" }
+                           ^
+
+"Test_name.c", line 47: error: operand types are incompatible ("S *" and "void (*)()")
+  void nr() { if ((S*)0 != z) z(); }      // { dg-error "23:comparison" }
+                        ^
+
+"Test_name.c", line 49: error: operand types are incompatible ("ptrfn" (aka "int (*)(int)") and "void (*)()")
+  void pr() { if ((ptrfn)0 != z) z(); }   // { dg-error "26:comparison" }
+                           ^
+
+"Test_name.c", line 51: error: operand types are incompatible ("int *" and "double *")
+  void qr() { if ((int*)0 != &d) z(); }   // { dg-error "25:comparison" }
+                          ^
+
+"Test_name.c", line 53: error: operand types are incompatible ("U *" and "S *")
+  void rr() { if ((U*)0 != &s) z(); }     // { dg-error "23:comparison" }
+                        ^
+
+8 errors detected in the compilation of "Test_name.c".

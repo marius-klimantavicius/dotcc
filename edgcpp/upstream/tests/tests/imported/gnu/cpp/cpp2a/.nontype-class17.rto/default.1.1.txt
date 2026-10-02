@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 13: warning: variable "s" was declared but never referenced
+    S<R()> s; // { dg-error "mismatch" }
+           ^
+
+"Test_name.c", line 15: warning: variable "s2" was declared but never referenced
+    S<R{}> s2;
+           ^
+
+"Test_name.c", line 16: warning: variable "s3" was declared but never referenced
+    S<int()> s3; // { dg-error "mismatch" }
+             ^
+
+"Test_name.c", line 18: warning: variable "s4" was declared but never referenced
+    S<int{}> s4;
+             ^
+

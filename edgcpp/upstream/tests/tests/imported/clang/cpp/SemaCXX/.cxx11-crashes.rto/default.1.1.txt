@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 13: error: incomplete type "rdar12240916::S" is not allowed
+    S x; // expected-error {{incomplete type}}
+      ^
+
+"Test_name.c", line 25: error: incomplete type "rdar12240916::S3" is not allowed
+    S3 x; // expected-error {{incomplete type}}
+       ^
+
+"Test_name.c", line 60: error: expected a type specifier
+    auto LeftCanvas = new Canvas(); // expected-error {{unknown type name}}
+                          ^
+
+"Test_name.c", line 61: error: no suitable user-defined conversion from "lambda []()->void" to "rdar12542261::function<void ()>" exists
+    function<void()> m_OnChange = [&, LeftCanvas]() { }; // expected-error {{no viable conversion}}
+                                  ^
+
+"Test_name.c", line 69: error: too many initializer values
+      S s(1, 2, 3); // expected-error {{no matching}}
+             ^
+
+"Test_name.c", line 69: error: no suitable constructor exists to convert from "int" to "b6981007::S"
+      S s(1, 2, 3); // expected-error {{no matching}}
+          ^
+
+"Test_name.c", line 70: error: this range-based "for" statement requires a suitable "begin" function and none was found
+      for (auto x : s) {
+                    ^
+
+"Test_name.c", line 70: error: this range-based "for" statement requires a suitable "end" function and none was found
+      for (auto x : s) {
+                    ^
+
+"Test_name.c", line 90: error: identifier "sum_number" is undefined
+    auto x = sum_number;  // expected-error {{use of undeclared identifier 'sum_number'; did you mean 'some_number'?}}
+             ^
+
+"Test_name.c", line 102: warning: template parameter "T" is not used in declaring the parameter types of function template "pr29091::A::A"
+    struct A { template <typename T> A(); };
+                                  ^
+
+"Test_name.c", line 117: error: a constexpr static data member declaration requires an in-class initializer
+    static constexpr auto A = ;  // expected-error {{expected expression}}
+                            ^
+
+"Test_name.c", line 117: error: data member initializer is not allowed
+    static constexpr auto A = ;  // expected-error {{expected expression}}
+                            ^
+
+"Test_name.c", line 117: error: cannot deduce "auto" type (initializer required)
+    static constexpr auto A = ;  // expected-error {{expected expression}}
+                          ^
+
+12 errors detected in the compilation of "Test_name.c".

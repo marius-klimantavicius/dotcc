@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 40: warning: variable "event1" was declared but never referenced
+      inotify_event event1 = *ptr;
+                    ^
+
+"Test_name.c", line 57: warning: expression has no effect
+    a = b;
+    ^
+
+"Test_name.c", line 72: error: incomplete type "char []" is not allowed
+    char c[]; // expected-error {{flexible array member 'c' with type 'char[]' is not at the end of class}}
+         ^
+
+"Test_name.c", line 89: error: incomplete type "int []" is not allowed
+    int data[]; // expected-error {{flexible array member 'data' not allowed in struct which has a virtual base class}}
+        ^
+
+2 errors detected in the compilation of "Test_name.c".

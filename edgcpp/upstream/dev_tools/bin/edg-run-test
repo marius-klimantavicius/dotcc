@@ -1,0 +1,182 @@
+#!/usr/bin/env python3
+
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+from edgtest.preamble import ensure_launched_with_alsr_disabled
+
+ensure_launched_with_alsr_disabled()
+
+import argparse
+import asyncio
+import os
+import sys
+
+import edgutil
+
+from pathlib import Path
+from typing import List, Optional, cast
+
+from edgutil import eprint
+from edgtest.exec import run_test
+from edgtest.filter import load_build_constants
+
+def parse_args() -> argparse.Namespace:
+  parser = argparse.ArgumentParser(
+    description = 'EDG Python based test executor.'
+  )
+  parser.add_argument(
+    '-d',
+    '--debug',
+    dest = 'debug_mode',
+    action = 'store_true',
+    help = 'keep the output files'
+  )
+  parser.add_argument(
+    '-r',
+    '--record',
+    '--silent-record',
+    dest = 'rerecord_output',
+    action = 'store_true',
+    help = (
+      'update the expected test output to be the output from this run.'
+    )
+  )
+  parser.add_argument(
+    '--driver-debug',
+    dest = 'driver_debug_mode',
+    action = 'store_true',
+    help = (
+      'add --driver_debug to the test\'s command line arguments. '
+      'The resulting additional output will be printed to '
+      'stdout with the original test file replacing the generic '
+      'name.  This makes the underlying command more easily '
+      'accessible so that it may be more easily fed to a '
+      'debugger (e.g., gdb) or checked for correctness.'
+    )
+  )
+  parser.add_argument(
+    '--faster',
+    dest = 'faster_mode',
+    action = 'store_true',
+    help = (
+      'enable command line flags that might speed up the compilation of the '
+      'test files'
+    )
+  )
+  parser.add_argument(
+    '-q',
+    dest = 'quiet_mode',
+    action = 'store_true',
+    help = 'only display log output for errors'
+  )
+  parser.add_argument(
+    '-t',
+    '--top-dir',
+    dest = 'top_dir',
+    type = Path,
+    default = Path.cwd(),
+    help = 'the path to the contextually "top" directory'
+  )
+  parser.add_argument(
+    '-o',
+    dest = 'output_dir',
+    type = Path,
+    default = Path.cwd(),
+    help = 'the path where output will be stored'
+  )
+  parser.add_argument(
+    'test_files',
+    nargs = '+',
+    type = Path,
+    help = 'the paths to the test files to run'
+  )
+  return parser.parse_args()
+
+def _find_cpfe() -> Optional[Path]:
+  primary_cpfe = os.environ.get('PRIMARY_CPFE', 'CPFE')
+  env_val = os.environ.get(
+    f"TEST_{primary_cpfe}",
+    os.environ.get(primary_cpfe, '')
+  )
+  if not env_val:
+    return None
+
+  cpfe_path = Path(env_val)
+  if not cpfe_path.exists():
+    return None
+
+  return cpfe_path
+
+def main() -> None:
+  args = parse_args()
+
+  cpfe_path = _find_cpfe()
+  if cpfe_path is None:
+    eprint("CPFE not found!")
+    sys.exit(1)
+  # mypy 0.971 does not treat sys.exit as NoReturn for narrowing.
+  resolved_cpfe = cast(Path, cpfe_path)
+
+  env = os.environ.copy()
+
+  # Resolve and check that the test files actually exist.
+  #
+  # This is done prior to initializing test processing to make sure any error
+  # does not get buried in other potential output (that might be coming from a
+  # concurrent debug-mode execution of store_test_result).
+  test_files = [(args.top_dir / f).resolve() for f in args.test_files]
+  for test_file in test_files:
+    if not test_file.exists():
+      eprint(f"Test file not found: {test_file}")
+      sys.exit(1)
+
+  async def run_the_tests(loop: asyncio.AbstractEventLoop) -> None:
+    tests_results: List[List[str]] = [[]] * len(test_files)
+    test_tasks = []
+
+    build_constants = await loop.create_task(
+      load_build_constants(resolved_cpfe)
+    )
+
+    # Note that index and test_path are passed as argument values instead of
+    # captured to prevent Python from using the (updating) loop variables as
+    # opposed to the intended values for a given loop iteration.
+    #
+    # The function is declared prior to the loop to further emphasize this
+    # point.
+    async def store_test_result(test_index: int, test_path: Path) -> None:
+      tests_results[test_index] = await run_test(
+        test_path,
+        top_dir = args.top_dir,
+        output_dir = args.output_dir.resolve(),
+        env = env,
+        quiet_results = args.quiet_mode,
+        build_constants = build_constants,
+        faster_mode = args.faster_mode,
+        update_recording = args.rerecord_output,
+        debug_mode = args.debug_mode,
+        driver_debug_mode = args.driver_debug_mode
+      )
+
+    for index, test_path in enumerate(test_files):
+      # In debug modes run serially to prevent debug output from becoming
+      # intermixed between test files.
+      if args.debug_mode or args.driver_debug_mode:
+        await store_test_result(index, test_path)
+      else:
+        test_task = loop.create_task(store_test_result(index, test_path))
+        test_tasks.append(test_task)
+
+    if len(test_tasks) != 0:
+      await asyncio.wait(test_tasks)
+
+    for test_results in tests_results:
+      for test_result in test_results:
+        print(test_result)
+
+  edgutil.run_asyncio_loop(run_the_tests)
+
+main()

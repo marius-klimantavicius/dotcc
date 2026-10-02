@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 7: warning: subscript out of range
+  constexpr char c3 = "hi"[3];	// { dg-error "array subscript" }
+                      ^
+
+"Test_name.c", line 7: error: expression must have a constant value
+  constexpr char c3 = "hi"[3];	// { dg-error "array subscript" }
+                      ^
+"Test_name.c", line 7: note: attempt to access storage one position past the end of an array of 3 elements
+  constexpr char c3 = "hi"[3];	// { dg-error "array subscript" }
+                          ^
+
+"Test_name.c", line 5: warning: variable "c1" was declared but never referenced
+  constexpr char c1 = "hi"[1];
+                 ^
+
+"Test_name.c", line 6: warning: variable "c2" was declared but never referenced
+  constexpr char c2 = "hi"[2];
+                 ^
+
+"Test_name.c", line 7: warning: variable "c3" was declared but never referenced
+  constexpr char c3 = "hi"[3];	// { dg-error "array subscript" }
+                 ^
+
+1 error detected in the compilation of "Test_name.c".

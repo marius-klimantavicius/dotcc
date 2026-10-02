@@ -1,0 +1,410 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 37: error: expected a ")"
+    if (sizeof (__INT8_TYPE__) == sizeof (short _Fract))
+                                                ^
+
+"Test_name.c", line 40: error: expected a ";"
+        TEST (123);
+        ^
+
+"Test_name.c", line 40: error: identifier "q1" is undefined
+        TEST (123);
+        ^
+
+"Test_name.c", line 40: error: identifier "q2" is undefined
+        TEST (123);
+        ^
+
+"Test_name.c", line 40: warning: variable "_Fract" was declared but never referenced
+        TEST (123);
+        ^
+
+"Test_name.c", line 41: error: expected a ";"
+        TEST (-123);
+        ^
+
+"Test_name.c", line 41: error: identifier "q1" is undefined
+        TEST (-123);
+        ^
+
+"Test_name.c", line 41: error: identifier "q2" is undefined
+        TEST (-123);
+        ^
+
+"Test_name.c", line 41: warning: variable "_Fract" was declared but never referenced
+        TEST (-123);
+        ^
+
+"Test_name.c", line 45: error: expected a ";"
+        TEST (0.1234);
+        ^
+
+"Test_name.c", line 45: error: extra text after expected end of number
+        TEST (0.1234);
+        ^
+
+"Test_name.c", line 45: error: "_Fract" has already been declared in the current scope
+        TEST (0.1234);
+        ^
+
+"Test_name.c", line 45: error: expected a ";"
+        TEST (0.1234);
+        ^
+
+"Test_name.c", line 45: error: extra text after expected end of number
+        TEST (0.1234);
+        ^
+
+"Test_name.c", line 45: error: identifier "q1" is undefined
+        TEST (0.1234);
+        ^
+
+"Test_name.c", line 45: error: identifier "q2" is undefined
+        TEST (0.1234);
+        ^
+
+"Test_name.c", line 45: warning: variable "_Fract" was declared but never referenced
+        TEST (0.1234);
+        ^
+
+"Test_name.c", line 45: warning: variable "_Fract" was declared but never referenced
+        TEST (0.1234);
+        ^
+
+"Test_name.c", line 46: error: expected a ";"
+        TEST (-0.987);
+        ^
+
+"Test_name.c", line 46: error: extra text after expected end of number
+        TEST (-0.987);
+        ^
+
+"Test_name.c", line 46: error: "_Fract" has already been declared in the current scope
+        TEST (-0.987);
+        ^
+
+"Test_name.c", line 46: error: expected a ";"
+        TEST (-0.987);
+        ^
+
+"Test_name.c", line 46: error: extra text after expected end of number
+        TEST (-0.987);
+        ^
+
+"Test_name.c", line 46: error: identifier "q1" is undefined
+        TEST (-0.987);
+        ^
+
+"Test_name.c", line 46: error: identifier "q2" is undefined
+        TEST (-0.987);
+        ^
+
+"Test_name.c", line 46: warning: variable "_Fract" was declared but never referenced
+        TEST (-0.987);
+        ^
+
+"Test_name.c", line 46: warning: variable "_Fract" was declared but never referenced
+        TEST (-0.987);
+        ^
+
+"Test_name.c", line 58: error: identifier "_Fract" is undefined
+    if (sizeof (__INT16_TYPE__) == sizeof (_Fract))
+                                           ^
+
+"Test_name.c", line 61: error: expected a ";"
+        TEST (0x4321);
+        ^
+
+"Test_name.c", line 61: error: identifier "q1" is undefined
+        TEST (0x4321);
+        ^
+
+"Test_name.c", line 61: error: identifier "q2" is undefined
+        TEST (0x4321);
+        ^
+
+"Test_name.c", line 62: error: expected a ";"
+        TEST (-0x4321);
+        ^
+
+"Test_name.c", line 62: error: identifier "q1" is undefined
+        TEST (-0x4321);
+        ^
+
+"Test_name.c", line 62: error: identifier "q2" is undefined
+        TEST (-0x4321);
+        ^
+
+"Test_name.c", line 63: error: expected a ";"
+        TEST (0x8000);
+        ^
+
+"Test_name.c", line 63: error: identifier "q1" is undefined
+        TEST (0x8000);
+        ^
+
+"Test_name.c", line 63: error: identifier "q2" is undefined
+        TEST (0x8000);
+        ^
+
+"Test_name.c", line 67: error: expected a ";"
+        TEST (0.12345);
+        ^
+
+"Test_name.c", line 67: error: extra text after expected end of number
+        TEST (0.12345);
+        ^
+
+"Test_name.c", line 67: error: expected a ";"
+        TEST (0.12345);
+        ^
+
+"Test_name.c", line 67: error: extra text after expected end of number
+        TEST (0.12345);
+        ^
+
+"Test_name.c", line 67: error: identifier "q1" is undefined
+        TEST (0.12345);
+        ^
+
+"Test_name.c", line 67: error: identifier "q2" is undefined
+        TEST (0.12345);
+        ^
+
+"Test_name.c", line 68: error: expected a ";"
+        TEST (-0.98765);
+        ^
+
+"Test_name.c", line 68: error: extra text after expected end of number
+        TEST (-0.98765);
+        ^
+
+"Test_name.c", line 68: error: expected a ";"
+        TEST (-0.98765);
+        ^
+
+"Test_name.c", line 68: error: extra text after expected end of number
+        TEST (-0.98765);
+        ^
+
+"Test_name.c", line 68: error: identifier "q1" is undefined
+        TEST (-0.98765);
+        ^
+
+"Test_name.c", line 68: error: identifier "q2" is undefined
+        TEST (-0.98765);
+        ^
+
+"Test_name.c", line 79: error: identifier "_Accum" is undefined
+    if (sizeof (__INT32_TYPE__) == sizeof (_Accum))
+                                           ^
+
+"Test_name.c", line 82: error: expected a ";"
+        TEST (0x76543219);
+        ^
+
+"Test_name.c", line 82: error: identifier "q1" is undefined
+        TEST (0x76543219);
+        ^
+
+"Test_name.c", line 82: error: identifier "q2" is undefined
+        TEST (0x76543219);
+        ^
+
+"Test_name.c", line 83: error: expected a ";"
+        TEST (-0x76543219);
+        ^
+
+"Test_name.c", line 83: error: identifier "q1" is undefined
+        TEST (-0x76543219);
+        ^
+
+"Test_name.c", line 83: error: identifier "q2" is undefined
+        TEST (-0x76543219);
+        ^
+
+"Test_name.c", line 84: error: expected a ";"
+        TEST (0x80000000);
+        ^
+
+"Test_name.c", line 84: error: identifier "q1" is undefined
+        TEST (0x80000000);
+        ^
+
+"Test_name.c", line 84: error: identifier "q2" is undefined
+        TEST (0x80000000);
+        ^
+
+"Test_name.c", line 88: error: expected a ";"
+        TEST (123.456789);
+        ^
+
+"Test_name.c", line 88: error: extra text after expected end of number
+        TEST (123.456789);
+        ^
+
+"Test_name.c", line 88: error: expected a ";"
+        TEST (123.456789);
+        ^
+
+"Test_name.c", line 88: error: extra text after expected end of number
+        TEST (123.456789);
+        ^
+
+"Test_name.c", line 88: error: identifier "q1" is undefined
+        TEST (123.456789);
+        ^
+
+"Test_name.c", line 88: error: identifier "q2" is undefined
+        TEST (123.456789);
+        ^
+
+"Test_name.c", line 89: error: expected a ";"
+        TEST (-123.456789);
+        ^
+
+"Test_name.c", line 89: error: extra text after expected end of number
+        TEST (-123.456789);
+        ^
+
+"Test_name.c", line 89: error: expected a ";"
+        TEST (-123.456789);
+        ^
+
+"Test_name.c", line 89: error: extra text after expected end of number
+        TEST (-123.456789);
+        ^
+
+"Test_name.c", line 89: error: identifier "q1" is undefined
+        TEST (-123.456789);
+        ^
+
+"Test_name.c", line 89: error: identifier "q2" is undefined
+        TEST (-123.456789);
+        ^
+
+"Test_name.c", line 100: error: expected a ")"
+    if (sizeof (__INT64_TYPE__) == sizeof (long _Accum))
+                                                ^
+
+"Test_name.c", line 103: error: expected a ";"
+        TEST (0x12345678abcdef01);
+        ^
+
+"Test_name.c", line 103: error: identifier "q1" is undefined
+        TEST (0x12345678abcdef01);
+        ^
+
+"Test_name.c", line 103: error: identifier "q2" is undefined
+        TEST (0x12345678abcdef01);
+        ^
+
+"Test_name.c", line 103: warning: variable "_Accum" was declared but never referenced
+        TEST (0x12345678abcdef01);
+        ^
+
+"Test_name.c", line 104: error: expected a ";"
+        TEST (-0x12345678abcdef01);
+        ^
+
+"Test_name.c", line 104: error: identifier "q1" is undefined
+        TEST (-0x12345678abcdef01);
+        ^
+
+"Test_name.c", line 104: error: identifier "q2" is undefined
+        TEST (-0x12345678abcdef01);
+        ^
+
+"Test_name.c", line 104: warning: variable "_Accum" was declared but never referenced
+        TEST (-0x12345678abcdef01);
+        ^
+
+"Test_name.c", line 105: error: expected a ";"
+        TEST (0x8000000000000000);
+        ^
+
+"Test_name.c", line 105: error: identifier "q1" is undefined
+        TEST (0x8000000000000000);
+        ^
+
+"Test_name.c", line 105: error: identifier "q2" is undefined
+        TEST (0x8000000000000000);
+        ^
+
+"Test_name.c", line 105: warning: variable "_Accum" was declared but never referenced
+        TEST (0x8000000000000000);
+        ^
+
+"Test_name.c", line 109: error: expected a ";"
+        TEST (123.456789);
+        ^
+
+"Test_name.c", line 109: error: extra text after expected end of number
+        TEST (123.456789);
+        ^
+
+"Test_name.c", line 109: error: "_Accum" has already been declared in the current scope
+        TEST (123.456789);
+        ^
+
+"Test_name.c", line 109: error: expected a ";"
+        TEST (123.456789);
+        ^
+
+"Test_name.c", line 109: error: extra text after expected end of number
+        TEST (123.456789);
+        ^
+
+"Test_name.c", line 109: error: identifier "q1" is undefined
+        TEST (123.456789);
+        ^
+
+"Test_name.c", line 109: error: identifier "q2" is undefined
+        TEST (123.456789);
+        ^
+
+"Test_name.c", line 109: warning: variable "_Accum" was declared but never referenced
+        TEST (123.456789);
+        ^
+
+"Test_name.c", line 109: warning: variable "_Accum" was declared but never referenced
+        TEST (123.456789);
+        ^
+
+"Test_name.c", line 110: error: expected a ";"
+        TEST (-123.456789);
+        ^
+
+"Test_name.c", line 110: error: extra text after expected end of number
+        TEST (-123.456789);
+        ^
+
+"Test_name.c", line 110: error: "_Accum" has already been declared in the current scope
+        TEST (-123.456789);
+        ^
+
+"Test_name.c", line 110: error: expected a ";"
+        TEST (-123.456789);
+        ^
+
+"Test_name.c", line 110: error: extra text after expected end of number
+        TEST (-123.456789);
+        ^
+
+"Test_name.c", line 110: error: identifier "q1" is undefined
+        TEST (-123.456789);
+        ^
+
+"Test_name.c", line 110: error: identifier "q2" is undefined
+        TEST (-123.456789);
+        ^
+
+"Test_name.c", line 110: warning: variable "_Accum" was declared but never referenced
+        TEST (-123.456789);
+        ^
+
+"Test_name.c", line 110: warning: variable "_Accum" was declared but never referenced
+        TEST (-123.456789);
+        ^
+
+89 errors detected in the compilation of "Test_name.c".

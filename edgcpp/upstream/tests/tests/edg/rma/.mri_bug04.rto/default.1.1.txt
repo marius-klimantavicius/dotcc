@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --set_flag=no_checking_pragmas --strict Test_name.c
+"Test_name.c", line 8: error: explicit type is missing ("int" assumed)
+      f(S *sp) {
+      ^
+
+"Test_name.c", line 5: remark: parameter "i" was never referenced
+    int f2(int i = 0) { return f1(); } // It is okay to swap order of f1,f2
+               ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,146 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Sema/attr-format.c", line 6: error: first substitution argument is not the first variable argument
+  void b(const char *a, ...) __attribute__((format(printf, 1, 1)));
+                                                              ^
+
+"Sema/attr-format.c", line 8: warning: "format" attribute requires an ellipsis parameter or parameter pack
+  void d(const char *a, int c) __attribute__((format(printf, 1, 2)));
+                                              ^
+
+"Sema/attr-format.c", line 9: error: format argument does not have string type
+  void e(char *str, int c, ...) __attribute__((format(printf, 2, 3)));
+                                                              ^
+
+"Sema/attr-format.c", line 10: error: first substitution argument is not the first variable argument
+  void f(int a, const char *b, ...) __attribute__((format(printf, 2, 1)));
+                                                                     ^
+
+"Sema/attr-format.c", line 11: error: first substitution argument is not the first variable argument
+  void g(int a, const char *b, ...) __attribute__((format(printf, 2, 2)));
+                                                                     ^
+
+"Sema/attr-format.c", line 23: error: format argument does not have string type
+  int (*f2_ptr)(double,...) __attribute__((format(printf, 1, 2)));
+                                                          ^
+
+"Sema/attr-format.c", line 27: error: format argument does not have string type
+    int (*printf2)(double format, ...) __attribute__((__format__(printf, 1, 2)));
+                                                                         ^
+
+"Sema/attr-format.c", line 37: warning: missing return statement at end of non-void function "rdar6623513_aux"
+  }
+  ^
+
+"Sema/attr-format.c", line 40: warning: unrecognized format function type "printf0" ignored
+  void a2(const char *a, ...) __attribute__((format(printf0, 1, 2)));
+                                                    ^
+
+"Sema/attr-format.c", line 41: warning: unrecognized format function type "printf0" ignored
+  void b2(const char *a, ...) __attribute__((format(printf0, 1, 1)));
+                                                    ^
+
+"Sema/attr-format.c", line 42: warning: unrecognized format function type "printf0" ignored
+  void c2(const char *a, ...) __attribute__((format(printf0, 0, 2)));
+                                                    ^
+
+"Sema/attr-format.c", line 43: warning: unrecognized format function type "printf0" ignored
+  void d2(const char *a, int c) __attribute__((format(printf0, 1, 2)));
+                                                      ^
+
+"Sema/attr-format.c", line 44: warning: unrecognized format function type "printf0" ignored
+  void e2(char *str, int c, ...) __attribute__((format(printf0, 2, 3)));
+                                                       ^
+
+"Sema/attr-format.c", line 48: warning: unrecognized format function type "__printf0__" ignored
+  void null(int i, const char *a, ...) __attribute__((__format__(__printf0__, 2, 0)));
+                                                                 ^
+
+"Sema/attr-format.c", line 58: warning: argument of type "int *" is incompatible with parameter of type "const char *"
+    null(0, (int*)0);
+            ^
+
+"Sema/attr-format.c", line 62: warning: unrecognized format function type "freebsd_kprintf" ignored
+  void a3(const char *a, ...) __attribute__((format(freebsd_kprintf, 1, 2)));
+                                                    ^
+
+"Sema/attr-format.c", line 63: warning: unrecognized format function type "freebsd_kprintf" ignored
+  void b3(const char *a, ...) __attribute__((format(freebsd_kprintf, 1, 1)));
+                                                    ^
+
+"Sema/attr-format.c", line 64: warning: unrecognized format function type "freebsd_kprintf" ignored
+  void c3(const char *a, ...) __attribute__((format(freebsd_kprintf, 0, 2)));
+                                                    ^
+
+"Sema/attr-format.c", line 65: warning: unrecognized format function type "freebsd_kprintf" ignored
+  void d3(const char *a, int c) __attribute__((format(freebsd_kprintf, 1, 2)));
+                                                      ^
+
+"Sema/attr-format.c", line 66: warning: unrecognized format function type "freebsd_kprintf" ignored
+  void e3(char *str, int c, ...) __attribute__((format(freebsd_kprintf, 2, 3)));
+                                                       ^
+
+"Sema/attr-format.c", line 80: warning: unrecognized format function type "__gcc_diag__" ignored
+      __attribute__((__format__(__gcc_diag__, 1, 2)));
+                                ^
+
+"Sema/attr-format.c", line 82: warning: unrecognized format function type "__gcc_cdiag__" ignored
+      __attribute__((__format__(__gcc_cdiag__, 1, 2)));
+                                ^
+
+"Sema/attr-format.c", line 84: warning: unrecognized format function type "__gcc_cxxdiag__" ignored
+      __attribute__((__format__(__gcc_cxxdiag__, 1, 2)));
+                                ^
+
+"Sema/attr-format.c", line 86: warning: unrecognized format function type "__gcc_tdiag__" ignored
+      __attribute__((__format__(__gcc_tdiag__, 1, 2)));
+                                ^
+
+"Sema/attr-format.c", line 88: error: expression must be an integral constant expression
+  const char *foo3(const char *format) __attribute__((format_arg("foo")));
+                                                                 ^
+
+"Sema/attr-format.c", line 96: warning: "format" attribute requires an ellipsis parameter or parameter pack
+  __attribute__((format(printf, 1, 2)))
+                 ^
+
+"Sema/attr-format.c", line 104: warning: unrecognized format function type "syslog" ignored
+  void a2(const char *a, ...) __attribute__((format(syslog, 1, 2)));
+                                                    ^
+
+"Sema/attr-format.c", line 105: warning: unrecognized format function type "syslog" ignored
+  void b2(const char *a, ...) __attribute__((format(syslog, 1, 1)));
+                                                    ^
+
+"Sema/attr-format.c", line 106: warning: unrecognized format function type "syslog" ignored
+  void c2(const char *a, ...) __attribute__((format(syslog, 0, 2)));
+                                                    ^
+
+"Sema/attr-format.c", line 107: warning: unrecognized format function type "syslog" ignored
+  void d2(const char *a, int c) __attribute__((format(syslog, 1, 2)));
+                                                      ^
+
+"Sema/attr-format.c", line 108: warning: unrecognized format function type "syslog" ignored
+  void e2(char *str, int c, ...) __attribute__((format(syslog, 2, 3)));
+                                                       ^
+
+"Sema/attr-format.c", line 112: warning: unrecognized format function type "gnu_printf" ignored
+  void a2(const char *a, ...) __attribute__((format(gnu_printf, 1, 2)));
+                                                    ^
+
+"Sema/attr-format.c", line 113: warning: unrecognized format function type "gnu_printf" ignored
+  void b2(const char *a, ...) __attribute__((format(gnu_printf, 1, 1)));
+                                                    ^
+
+"Sema/attr-format.c", line 114: warning: unrecognized format function type "gnu_printf" ignored
+  void c2(const char *a, ...) __attribute__((format(gnu_printf, 0, 2)));
+                                                    ^
+
+"Sema/attr-format.c", line 115: warning: unrecognized format function type "gnu_printf" ignored
+  void d2(const char *a, int c) __attribute__((format(gnu_printf, 1, 2)));
+                                                      ^
+
+"Sema/attr-format.c", line 116: warning: unrecognized format function type "gnu_printf" ignored
+  void e2(char *str, int c, ...) __attribute__((format(gnu_printf, 2, 3)));
+                                                       ^
+
+7 errors detected in the compilation of "Test_name.c".

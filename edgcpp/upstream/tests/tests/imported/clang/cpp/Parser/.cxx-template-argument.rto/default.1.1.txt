@@ -1,0 +1,150 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 --c++03 Test_name.c
+"Test_name.c", line 14: error: expected a ">"
+  A<int+> int x; // expected-error {{expected '>'}} expected-note {{to match this '<'}} expected-error {{expected unqualified-id}}
+       ^
+
+"Test_name.c", line 14: error: invalid combination of type specifiers
+  A<int+> int x; // expected-error {{expected '>'}} expected-note {{to match this '<'}} expected-error {{expected unqualified-id}}
+          ^
+
+"Test_name.c", line 15: error: expected a ">"
+  A<int x; // expected-error {{expected '>'}} expected-note {{to match this '<'}}
+        ^
+
+"Test_name.c", line 24: error: expected a ">"
+    void f(S<int>=0); // expected-error {{a space is required between a right angle bracket and an equals sign (use '> =')}}
+                ^
+
+"Test_name.c", line 24: error: expected a ")"
+    void f(S<int>=0); // expected-error {{a space is required between a right angle bracket and an equals sign (use '> =')}}
+                    ^
+
+"Test_name.c", line 25: error: expected a ">"
+    void f(S<S<int>>=S<int>()); // expected-error {{use '> >'}} expected-error {{use '> ='}}
+                  ^
+
+"Test_name.c", line 25: error: expected a ">"
+    void f(S<S<int>>=S<int>()); // expected-error {{use '> >'}} expected-error {{use '> ='}}
+                              ^
+
+"Test_name.c", line 25: error: expected a ")"
+    void f(S<S<int>>=S<int>()); // expected-error {{use '> >'}} expected-error {{use '> ='}}
+                              ^
+
+"Test_name.c", line 32: error: expected a ">"
+      (void)(&t<int>==R()); // expected-error {{use '> ='}}
+                   ^
+
+"Test_name.c", line 33: error: expected a ">"
+      (void)(&t<int>>=R()); // expected-error {{use '> >'}}
+                   ^
+
+"Test_name.c", line 34: error: space required between adjacent ">" delimiters of nested template argument lists (">>" is the right shift operator)
+      (void)(&t<S<int>>>=R());
+                     ^
+
+"Test_name.c", line 38: error: expected a ">"
+      (void)(&t<S<int>>==R()); // expected-error {{use '> >'}} expected-error {{use '> ='}}
+                     ^
+
+"Test_name.c", line 38: error: expected a ">"
+      (void)(&t<S<int>>==R()); // expected-error {{use '> >'}} expected-error {{use '> ='}}
+                            ^
+
+"Test_name.c", line 46: error: argument list for class template "PR5925::foo" is missing
+    void bar(foo *X) { // expected-error {{requires template arguments}}
+             ^
+
+"Test_name.c", line 55: error: argument list for class template "PR13210::C" is missing
+      new C(); // expected-error {{requires template arguments}}
+          ^
+
+"Test_name.c", line 55: error: expected a type specifier
+      new C(); // expected-error {{requires template arguments}}
+          ^
+
+"Test_name.c", line 68: error: UnknownBase is not a template
+      UnknownBase<T1,T2> // expected-error {{no template named 'UnknownBase'}}
+      ^
+
+"Test_name.c", line 72: error: UnknownBase is not a template
+      UnknownBase<T1,T2>, // expected-error {{no template named 'UnknownBase'}}
+      ^
+
+"Test_name.c", line 73: error: too few arguments for class template "pr16225add::Known"
+      Known<T1>  // expected-error {{too few template arguments for class template 'Known'}}
+              ^
+
+"Test_name.c", line 77: error: UnknownBase is not a template
+      UnknownBase<T1,T2,ABC<T2,T1> > // expected-error {{no template named 'UnknownBase'}}
+      ^
+
+"Test_name.c", line 81: error: UnknownBase is not a template
+      UnknownBase<T1,ABC<T2> >, // expected-error {{too few template arguments for class template 'ABC'}}
+      ^
+
+"Test_name.c", line 81: error: too few arguments for class template "pr16225add::ABC"
+      UnknownBase<T1,ABC<T2> >, // expected-error {{too few template arguments for class template 'ABC'}}
+                           ^
+
+"Test_name.c", line 82: error: too few arguments for class template "pr16225add::Known"
+      Known<T1>  // expected-error {{too few template arguments for class template 'Known'}}
+              ^
+
+"Test_name.c", line 86: error: UnknownBase is not a template
+      UnknownBase<T1,T2,ABC<T2,T1>> // expected-error {{no template named 'UnknownBase'}}
+      ^
+
+"Test_name.c", line 86: error: space required between adjacent ">" delimiters of nested template argument lists (">>" is the right shift operator)
+      UnknownBase<T1,T2,ABC<T2,T1>> // expected-error {{no template named 'UnknownBase'}}
+                                 ^
+
+"Test_name.c", line 93: error: UnknownBase is not a template
+      UnknownBase<T1,ABC<T2,T1>>, // expected-error {{no template named 'UnknownBase'}}
+      ^
+
+"Test_name.c", line 93: error: space required between adjacent ">" delimiters of nested template argument lists (">>" is the right shift operator)
+      UnknownBase<T1,ABC<T2,T1>>, // expected-error {{no template named 'UnknownBase'}}
+                              ^
+
+"Test_name.c", line 97: error: too few arguments for class template "pr16225add::Known"
+      Known<T1>  // expected-error {{too few template arguments for class template 'Known'}}
+              ^
+
+"Test_name.c", line 101: error: UnknownBase is not a template
+      UnknownBase<T1,T2,(N>1)> // expected-error {{no template named 'UnknownBase'}}
+      ^
+
+"Test_name.c", line 105: error: UnknownBase is not a template
+      UnknownBase<X<int,int>,X<int,int>> // expected-error {{no template named 'UnknownBase'}}
+      ^
+
+"Test_name.c", line 105: error: space required between adjacent ">" delimiters of nested template argument lists (">>" is the right shift operator)
+      UnknownBase<X<int,int>,X<int,int>> // expected-error {{no template named 'UnknownBase'}}
+                                      ^
+
+"Test_name.c", line 112: error: UnknownBase is not a template
+      UnknownBase<Known<int,int>,X<int,int>> // expected-error {{no template named 'UnknownBase'}}
+      ^
+
+"Test_name.c", line 112: error: space required between adjacent ">" delimiters of nested template argument lists (">>" is the right shift operator)
+      UnknownBase<Known<int,int>,X<int,int>> // expected-error {{no template named 'UnknownBase'}}
+                                          ^
+
+"Test_name.c", line 119: error: UnknownBase is not a template
+      UnknownBase<Known<int,int>,X<int,X<int,int>>> // expected-error {{no template named 'UnknownBase'}}
+      ^
+
+"Test_name.c", line 119: error: space required between adjacent ">" delimiters of nested template argument lists (">>" is the right shift operator)
+      UnknownBase<Known<int,int>,X<int,X<int,int>>> // expected-error {{no template named 'UnknownBase'}}
+                                                ^
+
+"Test_name.c", line 126: error: UnknownBase is not a template
+      UnknownBase<2<N1,N2<4> // expected-error {{no template named 'UnknownBase'}}
+      ^
+
+"Test_name.c", line 149: warning: keyword "__is_pointer" will be treated as a context-sensitive keyword from this point
+  struct __is_pointer {};
+         ^
+
+36 errors detected in the compilation of "Test_name.c".

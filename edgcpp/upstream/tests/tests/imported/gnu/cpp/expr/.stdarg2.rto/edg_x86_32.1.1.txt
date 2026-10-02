@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./expr/stdarg2.C", line 15: warning: variable "ap" is used before its value is set
+         ap
+         ^
+
+"./expr/stdarg2.C", line 13: warning: variable "arg" was set but never used
+    struct S arg;
+             ^
+
+"./expr/stdarg2.C", line 29: warning: variable "ap" is used before its value is set
+         ap
+         ^
+
+"./expr/stdarg2.C", line 27: warning: variable "arg" was set but never used
+    struct T arg;
+             ^
+

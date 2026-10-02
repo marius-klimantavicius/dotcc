@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 10: error: an explicit template argument list is not allowed on this declaration
+    typedef auto foo<>();  // { dg-error "11:typedef declared 'auto'" }
+                 ^
+
+"Test_name.c", line 10: error: "auto" is not allowed here
+    typedef auto foo<>();  // { dg-error "11:typedef declared 'auto'" }
+            ^
+
+2 errors detected in the compilation of "Test_name.c".

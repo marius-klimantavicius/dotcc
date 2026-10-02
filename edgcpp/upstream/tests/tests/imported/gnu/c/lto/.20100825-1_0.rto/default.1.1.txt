@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 50: warning: variable "BH" is used before its value is set
+      BH.w[0] = (BH.w[0] >> amount) | (BH.w[1] << (64 - amount));
+                 ^
+
+"Test_name.c", line 10: warning: variable "short_recip_scale" was declared but never referenced
+  static const int short_recip_scale[] = {
+                   ^
+

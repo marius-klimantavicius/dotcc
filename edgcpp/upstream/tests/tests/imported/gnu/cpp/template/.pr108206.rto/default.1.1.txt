@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 6: error: identifier "X" is undefined
+  template <X x, typename T1> void foo (T1);	// { dg-error "'X' has not been declared" }
+            ^
+
+"Test_name.c", line 7: error: identifier "X" is undefined
+  template <X x, typename T2> void foo (T2);	// { dg-error "'X' has not been declared" }
+            ^
+
+2 errors detected in the compilation of "Test_name.c".

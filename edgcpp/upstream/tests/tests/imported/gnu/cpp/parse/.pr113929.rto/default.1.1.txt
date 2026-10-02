@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 6: error: "this" is not allowed here
+  template <this int C>		// { dg-error "'this' specifier in template parameter declaration" }
+            ^
+
+"Test_name.c", line 8: error: "this" is not allowed here
+  template <int N, this int C>	// { dg-error "'this' specifier in template parameter declaration" }
+                   ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,583 @@
+#!/usr/bin/env python3
+
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+import argparse
+import math
+import os
+import re
+import signal
+import sys
+
+import edgtest
+
+from collections import defaultdict
+from functools import lru_cache
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Pattern, Set, Tuple, TypeVar
+
+from edgutil import eprint
+
+# Used together to generate the quoted name filtering. Regex in
+# PRESERVE_QUOTE_QUALIFIERS will disable normalization of the quoted string.
+PRESERVE_QUOTE_QUALIFIERS = [
+  'assertion failed at: '
+]
+QUOTED_NAME_REGEX = r'"[#A-Za-z0-9,._:<>^/()\-\\ ]+"'
+
+TransformPattern = Tuple[Pattern[str], str]
+
+DEFAULT_TRANSFORM_PATTERNS : Dict[str, List[TransformPattern]] = {
+  # Quoted Names
+  'quoted': [
+    (
+      re.compile(
+        f"(?<!{'|'.join(PRESERVE_QUOTE_QUALIFIERS)}){QUOTED_NAME_REGEX}"
+      ),
+      '"###"'
+    )
+  ],
+  # Line Numbers
+  'line_num': [(re.compile(r'line \d+'), 'line ###')],
+  'col_num': [(re.compile(r'\(col\. \d+\)'), '(col. ##)')],
+  # Error position
+  'error_pos': [(re.compile(r'line ### \(col\. ##\)'), 'line ###')],
+  # IFC index
+  'ifc_index': [
+    (re.compile(r'[A-Z][a-z]+Sort::[A-Za-z]+\[[0-9]+\]'), '###Sort::###[###]')
+  ],
+  # Line Error Count
+  'err_count': [(re.compile(r'\d+ (catastrophic |)error(s|)'), '# errors')]
+}
+
+OPTIONAL_TRANSFORM_PATTERNS : Dict[str, List[TransformPattern]] = {
+  # Module Name Introducer
+  'module_name': [
+    (
+      re.compile(f"module {QUOTED_NAME_REGEX}( \\({QUOTED_NAME_REGEX}\\)|)"),
+      'module "###"'
+    )
+  ]
+}
+
+def _load_transform_patterns(
+                           args: argparse.Namespace) -> List[TransformPattern]:
+  loaded_patterns = []
+  for key, pattern in DEFAULT_TRANSFORM_PATTERNS.items():
+    if key in args.disabled_patterns:
+      continue
+    loaded_patterns.extend(pattern)
+  for key, pattern in OPTIONAL_TRANSFORM_PATTERNS.items():
+    if key not in args.enabled_patterns:
+      continue
+    loaded_patterns.extend(pattern)
+  return loaded_patterns
+
+CMD_DESCRIPTION = f"""
+EDG tool for analyzing test output.
+
+This tool is used to find common patterns in recent test runs.
+
+By default the latest edgy or run_my_tests test run's output will be examined.
+To go to the previous output add the "-b" flag to the command. This can be
+repeated to get even older output.
+
+For example, the following command will examine the 4th most recent test run:
+
+  edg-test-run-sonar -bbb
+
+Alternatively, a root path to examine can be specified (this is incompatible
+with the -b flag):
+
+  # Examine all .rt.tar files in $MY_RUNS/2024.08.16-20.58.06/
+  edg-test-run-sonar --root $MY_RUNS/2024.08.16-20.58.06/
+
+The root path must exist, otherwise an error will be issued.
+
+This can be combined with a search term and a number of selectionflags, for
+example, to examine specifically files that contain only new cases of
+"Compilation aborted":
+
+  # Using recent test run output
+  edg-test-run-sonar --select added Compilation aborted
+  # Using a specified search root
+  edg-test-run-sonar --select added --root $MY_RUNS/2024.08.16-20.58.06/ \\
+                     Compilation aborted
+
+-----------------------------------------------------------------------------
+"""
+
+def parse_args() -> argparse.Namespace:
+  '''Parse the commandline arguments for this script.'''
+  parser = argparse.ArgumentParser(
+    description = CMD_DESCRIPTION,
+    formatter_class = argparse.RawDescriptionHelpFormatter
+  )
+  parser.add_argument(
+    '--ignore-replays',
+    dest = 'ignore_replays',
+    action = 'store_true',
+    help = 'ignore edgy test replays when considering test runs'
+  )
+  parser.add_argument(
+    '-b',
+    dest = 'num_runs_back',
+    action = 'count',
+    default = 0,
+    help = (
+      'examine the previous test run (if this flag is repeated, go back the '
+      'number of times the flag was repeated)'
+    )
+  )
+  parser.add_argument(
+    '--root',
+    dest = 'root_path',
+    type = Path,
+    required = False,
+    help = 'the root path to examine'
+  )
+  parser.add_argument(
+    '--disable',
+    dest = 'disabled_patterns',
+    default = [],
+    choices = list(DEFAULT_TRANSFORM_PATTERNS.keys()),
+    action = 'append',
+    help = 'disable the given transform pattern'
+  )
+  parser.add_argument(
+    '--enable',
+    dest = 'enabled_patterns',
+    default = [],
+    choices = list(OPTIONAL_TRANSFORM_PATTERNS.keys()),
+    action = 'append',
+    help = 'enable the given transform pattern'
+  )
+  parser.add_argument(
+    '--select',
+    dest = 'line_selection',
+    choices = ['current', 'all-changes', 'added', 'removed'],
+    default = 'all-changes',
+    help = 'filter the line selection'
+  )
+  parser.add_argument(
+    '-r',
+    '--regex',
+    dest = 'use_regex',
+    action = 'store_true',
+    help = 'search with regex'
+  )
+  parser.add_argument(
+    '--non-interactive',
+    dest = 'non_interactive',
+    action = 'store_true',
+    help = 'disable the interactive CLI interface'
+  )
+  parser.add_argument(
+    'filters',
+    nargs = '*',
+    default = '',
+    help = 'the string to search for'
+  )
+  return parser.parse_args()
+
+# Include a space as some commands are named like "eccp" for diagnostics we
+# might want to see.
+RUN_TEST_COMMANDS = map(
+  lambda cmd: f"{cmd} ",
+  ['eccp', 'fe_only']
+)
+
+def normalize_line(transform_patterns: List[TransformPattern],
+                   line_text: str) -> str:
+  for pattern, replacement in transform_patterns:
+    line_text = pattern.sub(replacement, line_text)
+  return line_text
+
+class LineProcessor:
+  def __init__(self, args: argparse.Namespace) -> None:
+    self.args = args
+    self._transform_patterns = _load_transform_patterns(args)
+    self._text_matcher = ' '.join(args.filters)
+    self._regex_matcher = LineProcessor._get_regex_matcher(args)
+
+    # Initialize variables that cache details about the line selection to
+    # prevent repeated string processing.
+    self._init_analysis_cache_variables(args.line_selection)
+
+  def _init_analysis_cache_variables(self, line_selection: str) -> None:
+    # Determine if we're doing a diff analysis.
+    if line_selection == 'current':
+      self.diff_analysis = False
+    else:
+      self.diff_analysis = True
+
+    # Determine what kind of diff analysis we're doing. If we're not doing a
+    # diff analysis the matching rules will result in these variables being
+    # false.
+    if line_selection == 'all-changes':
+      self.allows_add = True
+      self.allows_rem = True
+    else:
+      self.allows_add = line_selection == 'added'
+      self.allows_rem = line_selection == 'removed'
+
+  @staticmethod
+  def _get_regex_matcher(args: argparse.Namespace) -> Optional[Pattern[str]]:
+    # In these cases we don't use regex, store None
+    if len(args.filters) == 0 or not args.use_regex:
+      return None
+
+    # Store a compiled regex
+    return re.compile(' '.join(args.filters))
+
+  def is_acceptable_diff_line(self, line_text: str) -> bool:
+    if line_text.startswith('+') and not line_text.startswith('+++'):
+      return self.allows_add
+
+    if line_text.startswith('-') and not line_text.startswith('---'):
+      return self.allows_rem
+
+    return False
+
+  def is_acceptable_output_line(self, line_text: str) -> bool:
+    # Check to see if this is the test command invocation.
+    for run_test_command in RUN_TEST_COMMANDS:
+      if line_text.startswith(run_test_command):
+        return False
+
+    return True
+
+  def line_matches_filter(self, line_text: str) -> bool:
+    if len(self.args.filters) == 0:
+      return True
+
+    if self._regex_matcher is None:
+      return self._text_matcher in line_text
+
+    return self._regex_matcher.search(line_text) is not None
+
+  def process_line(self, line_set: Set[str], line_text: str) -> None:
+    if len(line_text) <= 3:
+      return
+
+    if self.diff_analysis:
+      if not self.is_acceptable_diff_line(line_text):
+        return
+    else:
+      if not self.is_acceptable_output_line(line_text):
+        return
+
+    line_text = normalize_line(self._transform_patterns, line_text)
+    if not self.line_matches_filter(line_text):
+      return
+
+    line_set.add(line_text)
+
+class LineContext:
+  def __init__(self) -> None:
+    self.occurence_count = 0
+    self.rt_files : Set[Path] = set()
+    self.test_files : Set[Path] = set()
+    self.suites : Set[str] = set()
+
+  def add_occurence(self, suite: str, rt_file: Path,
+                    test_file: Optional[Path]) ->None:
+    self.occurence_count += 1
+    self.rt_files.add(rt_file)
+    if test_file is not None:
+      self.test_files.add(test_file)
+    self.suites.add(suite)
+
+LineContextList = List[Tuple[str, LineContext]]
+
+class LineContextManager:
+  def __init__(self) -> None:
+    self.global_suite_set : Set[str] = set()
+    self.line_context_map : Dict[str, LineContext] = defaultdict(LineContext)
+
+  def add_occurences(self, suite: str, rt_file: Path,
+                     test_file: Optional[Path], line_set: Set[str]) -> None:
+    self.global_suite_set.add(suite)
+    for line_text in line_set:
+      self.line_context_map[line_text].add_occurence(
+        suite,
+        rt_file,
+        test_file
+      )
+
+  def as_sorted_list(self) -> LineContextList:
+    line_context_list = list(self.line_context_map.items())
+    return sorted(
+      line_context_list,
+      key=lambda v: v[1].occurence_count,
+      reverse=True
+    )
+
+def path_to_suite(suite_path: Path) -> Tuple[str, List[str]]:
+  suite_id = ''
+  subpath_parts = []
+  match_count = 0
+  for part in suite_path.absolute().parts:
+    if match_count == 0:
+      if part == 'tests':
+        match_count += 1
+    elif match_count == 1:
+      if part == 'runs':
+        match_count += 1
+    elif match_count >= 2:
+      match_count += 1
+      if match_count == 5:
+        suite_id = part
+      elif match_count > 5:
+        subpath_parts.append(part)
+    else:
+      match_count = 0
+
+  return (suite_id, subpath_parts)
+
+@lru_cache(maxsize = 32)
+def _cached_test_extensions_for_suite(test_home: Path,
+                                      suite: str) -> List[str]:
+  '''It's probably not a great idea to cache this generally (as future long
+  lived processes might want to call test_extensions_for_suite and get
+  different outputs within the same process), so instead edg-test-run-sonar
+  uses an internal cache.
+  '''
+  return list(edgtest.test_extensions_for_suite(test_home, suite))
+
+def find_test_file(test_home: Path, suite: str,
+                   path_parts: List[str]) -> Optional[Path]:
+  parts = list(path_parts)
+  suffix = edgtest.runtest.RUN_TEST_OUTPUT_SUFFIX
+  if parts and parts[-1].endswith(suffix):
+    parts[-1] = parts[-1][:-len(suffix)]
+  base_path = (test_home / 'tests' / suite).joinpath(*parts)
+  for extension in _cached_test_extensions_for_suite(test_home, suite):
+    test_path = base_path.with_name(f"{base_path.name}.{extension}")
+    if test_path.exists():
+      return test_path
+  return None
+
+def process_file(line_processor: LineProcessor,
+                 line_context_manager: LineContextManager,
+                 test_home: Path, rt_file_path: Path) -> None:
+  line_set : Set[str] = set()
+
+  with edgtest.runtest.RunTestOutput(rt_file_path) as rt_output:
+    if line_processor.diff_analysis:
+      for diff_lines in rt_output.iter_command_diffs():
+        for line in diff_lines:
+          line_processor.process_line(line_set, line)
+    else:
+      for output_lines in rt_output.iter_command_outputs():
+        for line in output_lines:
+          line_processor.process_line(line_set, line)
+
+  suite, test_path_parts = path_to_suite(rt_file_path)
+  test_file = find_test_file(test_home, suite, test_path_parts)
+  line_context_manager.add_occurences(suite, rt_file_path, test_file, line_set)
+
+def walk_files(line_processor: LineProcessor, test_home: Path,
+               run_dir: Path, *,
+               do_replays_dir_detection: bool) -> LineContextManager:
+  line_context_manager = LineContextManager()
+
+  file_walker = edgtest.walk_rt_file_directory(
+    run_dir,
+    diff_algorithm = edgtest.detect_diff_discovery_mode(),
+    do_replays_dir_detection = do_replays_dir_detection
+  )
+  for file_path in file_walker:
+    process_file(line_processor, line_context_manager, test_home, file_path)
+
+  return line_context_manager
+
+USELESS_EXPECTED_STRINGS = [
+  'Compilation terminated.',
+  '# errors detected in the compilation of "###".',
+  'eccp: diagnostics generated from compilation of Test_name.int.c:',
+  'eccp: end of diagnostics from compilation of Test_name.int.c',
+]
+POINTER_LINE_PATTERN = re.compile(r'^\s*\^\s*$')
+
+# Exclude noise from not being on windows
+USELESS_NON_WINDOWS_EXPECTED_STRINGS = [
+  r'Catastrophic error: cannot open metadata file "###"',
+  r'eccp: unrecognizable argument: Files',
+  r'eccp: unrecognizable argument: (x86)Windows',
+  r'eccp: target-specific EDG_BASE/build/lib_win32 does not exist',
+  r'eccp: unrecognizable argument: Kits10\include10.0.15063.0ucrt',
+  r'eccp: unrecognizable argument: Kits10\include10.0.15063.0shared',
+  r'eccp: unrecognizable argument: Kits10\include10.0.15063.0um',
+  r'eccp: unrecognizable argument: Kits10\include10.0.15063.0winrt'
+]
+if not sys.platform.startswith('win32'):
+  USELESS_EXPECTED_STRINGS.extend(USELESS_NON_WINDOWS_EXPECTED_STRINGS)
+
+def is_useless_line(line_text: str) -> bool:
+  line_text = line_text[2:]
+  if line_text in USELESS_EXPECTED_STRINGS:
+    return True
+
+  if POINTER_LINE_PATTERN.match(line_text):
+    return True
+
+  return False
+
+def _file_content_length(file_path: Path) -> int:
+  return os.path.getsize(file_path)
+
+def _make_byte_count_str(file_path: Path) -> str:
+  return f"{os.path.getsize(file_path):,}"
+
+def _print_context_file_list(file_paths: Set[Path]) -> None:
+  # Figure out the longest file path and largest file (by byte count) for
+  # formatting purposes.
+  longest_file_path = 0
+  largest_file = 0
+  for file_path in file_paths:
+    longest_file_path = max(longest_file_path, len(str(file_path)))
+    largest_file = max(largest_file, len(_make_byte_count_str(file_path)))
+
+  for file_path in sorted(file_paths, key = _file_content_length):
+    file_path_str = str(file_path)
+    filename_str = f"{file_path_str:<{longest_file_path}}"
+    file_size_str = f"{_make_byte_count_str(file_path):>{largest_file}}"
+    print(f"   - {filename_str} ({file_size_str} bytes)")
+
+def _print_test_files(line_context: LineContext) -> None:
+  print('  Found in output produced by test files:')
+  _print_context_file_list(line_context.test_files)
+
+def _print_rt_files(line_context: LineContext) -> None:
+  print('  Found in output recording files:')
+  _print_context_file_list(line_context.rt_files)
+
+def inspect_line(line_context: LineContext) -> None:
+  _print_test_files(line_context)
+  _print_rt_files(line_context)
+
+def handle_command(line_context_list: LineContextList,
+                   pre_printed_count: int, printed_count: int) -> None:
+  while True:
+    instruction = input('Instruction (Continue - c, Inspect - i): ')
+    if instruction == 'c':
+      break
+
+    if instruction == 'i':
+      try:
+        # converting to integer
+        line = int(input("  Which line?: "))
+        if line < 1 or line > printed_count:
+          print(
+            f"  Invalid line, enter a number between 1 and {printed_count}"
+          )
+          continue
+
+        inspect_line(line_context_list[pre_printed_count + line - 1][1])
+      except ValueError:
+        print("  Not an integer. Instruction canceled.")
+
+# Pretty print the results
+def print_results(line_context_manager: LineContextManager,
+                  non_interactive: bool) -> None:
+  line_context_list = line_context_manager.as_sorted_list()
+  if len(line_context_list) == 0:
+    return
+
+  # Used for "pagination"
+  interactive = not non_interactive and sys.stdout.isatty()
+  flushed_counter = 0
+  counter = 0
+
+  # Vars used for formatting
+  first = True
+  occurence_chars = 0
+  num_suites_total = len(line_context_manager.global_suite_set)
+
+  for index, line_context_entry in enumerate(line_context_list):
+    line_text, line_context = line_context_entry
+
+    # Drop the newline at the end of the string, and check to see if this is
+    # remotely interesting information.
+    line_text = line_text[:-1]
+    if is_useless_line(line_text):
+      continue
+
+    # When we encounter the first result we're actually going to print,
+    # set the number of digits so that we can left pad properly.
+    if first:
+      first = False
+      occurence_chars = int(math.log10(line_context.occurence_count)) + 1
+
+    # If running interactively, every 10 results prompt to continue, and then
+    # reset. Otherwise, just print everything -- this enables use cases like
+    # grepping the generated data.
+    if counter >= 10:
+      handle_command(line_context_list, flushed_counter, counter)
+      flushed_counter += counter
+      counter = 1
+    elif interactive:
+      counter += 1
+
+    occurrence_str = format(line_context.occurence_count, str(occurence_chars))
+    prefix = f"{counter:2}) " if interactive else ''
+
+    if num_suites_total < 2:
+      print("{}{} # {}".format(prefix, occurrence_str, line_text))
+    else:
+      suite_str = len(line_context.suites)
+      print(
+        "{}{} # {:2} # {}".format(prefix, occurrence_str, suite_str, line_text)
+      )
+
+  # Handle any final entries
+  if interactive:
+    handle_command(line_context_list, flushed_counter, counter)
+
+def die(signum: Any, frame: Any) -> None:
+  sys.exit()
+
+def register_signal_handlers() -> None:
+  signal.signal(signal.SIGINT, die)
+  signal.signal(signal.SIGTERM, die)
+  signal.signal(signal.SIGPIPE, die)
+
+def main() -> None:
+  args = parse_args()
+
+  register_signal_handlers()
+
+  test_home = edgtest.load_test_home_or_exit()
+  previous_run_dirs = edgtest.get_test_runs(
+    test_home,
+    include_replays = not args.ignore_replays
+  )
+
+  test_comparison = edgtest.TestRunInspection(
+    args.root_path,
+    args.num_runs_back,
+    previous_run_dirs
+  )
+  edgtest.validate_inspection(test_comparison)
+
+  run_dir = test_comparison.get_run_directory()
+  if not run_dir.exists():
+    eprint(f"Path does not exist: {run_dir}")
+    exit(1)
+
+  # Get the list context manager
+  line_processor = LineProcessor(args)
+  line_context_manager = walk_files(
+    line_processor,
+    test_home,
+    run_dir,
+    do_replays_dir_detection = test_comparison.is_previous_run_search()
+  )
+
+  print_results(line_context_manager, args.non_interactive)
+
+main()

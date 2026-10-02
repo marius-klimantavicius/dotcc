@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 26: error: no operator "+" matches these operands
+            operand types are: foo::wibble::x + bar::y
+    a + b; // expected-error{{invalid operands to binary expression ('foo::wibble::x' and '::bar::y' (aka 'int'))}}
+      ^
+"Test_name.c", line 26: note: built-in operator+(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    a + b; // expected-error{{invalid operands to binary expression ('foo::wibble::x' and '::bar::y' (aka 'int'))}}
+      ^
+"Test_name.c", line 26: note: built-in operator+(<pointer to object>, <ptrdiff_t>) does not match because argument #1 does not match parameter
+    a + b; // expected-error{{invalid operands to binary expression ('foo::wibble::x' and '::bar::y' (aka 'int'))}}
+      ^
+"Test_name.c", line 26: note: built-in operator+(<ptrdiff_t>, <pointer to object>) does not match because argument #1 does not match parameter
+    a + b; // expected-error{{invalid operands to binary expression ('foo::wibble::x' and '::bar::y' (aka 'int'))}}
+      ^
+
+"Test_name.c", line 29: error: no operator "+" matches these operands
+            operand types are: foo::wibble::bar::wonka::x::y + bar::y
+    c + b; // expected-error{{invalid operands to binary expression ('::foo::wibble::bar::wonka::x::y' and '::bar::y' (aka 'int'))}}
+      ^
+"Test_name.c", line 29: note: built-in operator+(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    c + b; // expected-error{{invalid operands to binary expression ('::foo::wibble::bar::wonka::x::y' and '::bar::y' (aka 'int'))}}
+      ^
+"Test_name.c", line 29: note: built-in operator+(<pointer to object>, <ptrdiff_t>) does not match because argument #1 does not match parameter
+    c + b; // expected-error{{invalid operands to binary expression ('::foo::wibble::bar::wonka::x::y' and '::bar::y' (aka 'int'))}}
+      ^
+"Test_name.c", line 29: note: built-in operator+(<ptrdiff_t>, <pointer to object>) does not match because argument #1 does not match parameter
+    c + b; // expected-error{{invalid operands to binary expression ('::foo::wibble::bar::wonka::x::y' and '::bar::y' (aka 'int'))}}
+      ^
+
+"Test_name.c", line 31: error: incomplete type "bar::incomplete" is not allowed
+    (void)sizeof(bar::incomplete); // expected-error{{invalid application of 'sizeof' to an incomplete type 'bar::incomplete'}}
+                 ^
+
+3 errors detected in the compilation of "Test_name.c".

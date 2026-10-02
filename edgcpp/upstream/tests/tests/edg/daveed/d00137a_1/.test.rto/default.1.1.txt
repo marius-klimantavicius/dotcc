@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 -A --multi_trans_unit Test_name.c d00137a_2.c d00137a_3.c d00137a_4.c d00137a_5.c
+"d00137a_5.c", line 9: error: declaration of member "A<T>::x [with T=double]" is incompatible with a declaration in another translation unit
+            the other declaration is at line 5 of "d00137a_4.c"
+  template <> int A<double>::x = 37;
+                             ^
+          detected during compilation of secondary translation unit "d00137a_5.c"
+
+"d00137a_5.c", line 4: error: declaration of class template "A<T>" is incompatible with a declaration in another translation unit
+            the other declaration is at line 2 of "d00137a_4.c"
+  template <class T = short> struct A {
+                                    ^
+          detected during compilation of secondary translation unit "d00137a_5.c"
+
+2 errors detected in the compilation of "Test_name.c".

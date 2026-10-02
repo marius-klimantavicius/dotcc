@@ -1,0 +1,41 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 7: warning: unknown attribute "no_sanitize"
+  int f1() __attribute__((no_sanitize)); // expected-error{{'no_sanitize' attribute takes at least 1 argument}}
+                          ^
+
+"Test_name.c", line 9: warning: unknown attribute "no_sanitize"
+  int f2() __attribute__((no_sanitize(1))); // expected-error{{expected string literal as argument of 'no_sanitize' attribute}}
+                          ^
+
+"Test_name.c", line 11: warning: unknown attribute "no_sanitize"
+  __attribute__((no_sanitize("all"))) int global; // expected-warning{{'no_sanitize' attribute argument 'all' not supported on a global variable}}
+                 ^
+
+"Test_name.c", line 12: warning: unknown attribute "no_sanitize"
+  __attribute__((no_sanitize("unknown"))) int global2; // expected-warning{{unknown sanitizer 'unknown' ignored}}
+                 ^
+
+"Test_name.c", line 17: warning: unknown attribute "no_sanitize"
+  int f3() __attribute__((no_sanitize("address")));
+                          ^
+
+"Test_name.c", line 22: warning: unknown attribute "clang::no_sanitize"
+  [[clang::no_sanitize("thread")]] int f4();
+    ^
+
+"Test_name.c", line 27: warning: unknown attribute "gnu::no_sanitize"
+  [[gnu::no_sanitize("hwaddress")]] int f4();
+    ^
+
+"Test_name.c", line 32: warning: unknown attribute "no_sanitize"
+  int f5() __attribute__((no_sanitize("address", "thread", "hwaddress")));
+                          ^
+
+"Test_name.c", line 37: warning: unknown attribute "no_sanitize"
+  int f6() __attribute__((no_sanitize("unknown"))); // expected-warning{{unknown sanitizer 'unknown' ignored}}
+                          ^
+
+"Test_name.c", line 42: warning: unknown attribute "clang::no_sanitize"
+  [[clang::no_sanitize("memtag")]] int f7();
+    ^
+

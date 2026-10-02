@@ -1,0 +1,58 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 Test_name.c
+"Test_name.c", line 30: error: expression must have a constant value
+    static_assert(a3.d == 4.0, ""); // expected-error {{constant expression}} expected-note {{active member 'c'}}
+                  ^
+"Test_name.c", line 30: note: invalid access to inactive member "in_class_init::A::d" of union (member "in_class_init::A::c" is active)
+    static_assert(a3.d == 4.0, ""); // expected-error {{constant expression}} expected-note {{active member 'c'}}
+                    ^
+
+"Test_name.c", line 73: error: the generated default constructor for "use_self::FibTree" cannot be used in an initializer for its own data member
+        n > 2 ? new FibTree{n-2} : &fib0; // expected-error {{default member initializer for 'r' needed}}
+                               ^
+
+"Test_name.c", line 73: error: the generated default constructor for "use_self::FibTree" cannot be used in an initializer for its own data member
+        n > 2 ? new FibTree{n-2} : &fib0; // expected-error {{default member initializer for 'r' needed}}
+                               ^
+
+"Test_name.c", line 71: error: the generated default constructor for "use_self::FibTree" cannot be used in an initializer for its own data member
+        n > 1 ? new FibTree{n-1} : &fib0; // expected-error {{default member initializer for 'l' needed}}
+                               ^
+
+"Test_name.c", line 94: warning: a default bit-field initializer is a C++20 feature
+          int inner : 32 { 42 }; // expected-warning {{C++20 extension}}
+                         ^
+
+"Test_name.c", line 100: error: expression must have a constant value
+    static_assert(Test2{}.inner == 42, "");
+                  ^
+"Test_name.c", line 100: note: member "nested_union::Test2::<unnamed>" not initialized during constexpr evaluation
+    static_assert(Test2{}.inner == 42, "");
+                                ^
+
+"Test_name.c", line 101: error: expression must have a constant value
+    static_assert(Test2{}.inner_no_init == 0, "");
+                  ^
+"Test_name.c", line 101: note: member "nested_union::Test2::<unnamed>" not initialized during constexpr evaluation
+    static_assert(Test2{}.inner_no_init == 0, "");
+                                        ^
+
+"Test_name.c", line 108: warning: a default bit-field initializer is a C++20 feature
+          int inner : 32 { 42 }; // expected-warning {{C++20 extension}}
+                         ^
+
+"Test_name.c", line 118: error: more than one instance of overloaded function "nested_union::f" matches the argument list:
+            function "nested_union::f(nested_union::Test3)" (declared at line 114)
+            function "nested_union::f(nested_union::Int)" (declared at line 115)
+            argument types are: ({...})
+    static_assert(f({1}) == 2, ""); // expected-error {{call to 'f' is ambiguous}}
+                  ^
+
+"Test_name.c", line 125: error: expected an expression
+    int f = ; // expected-error {{expected expression}}
+            ^
+
+"Test_name.c", line 128: warning: variable "g" was declared but never referenced
+    U g{};
+      ^
+
+8 errors detected in the compilation of "Test_name.c".

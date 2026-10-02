@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc -E Test_name.c
+# 1 "Test_name.c"
+
+
+# 1 "./cpp/Wunused.c"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 1 "/usr/include/stdc-predef.h"
+# 1 "<command-line>"
+# 1 "./cpp/Wunused.c"
+# 11 "./cpp/Wunused.c"
+# 1 "./cpp/Wunused.h"
+# 12 "./cpp/Wunused.c"
+# 28 "./cpp/Wunused.c"
+used4
+
+unused7
+
+
+
+
+
+
+
+

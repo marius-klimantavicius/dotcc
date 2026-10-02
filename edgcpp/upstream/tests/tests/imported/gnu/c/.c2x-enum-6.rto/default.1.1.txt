@@ -1,0 +1,42 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 65: error: "e4" has already been declared in the current scope
+  enum e4 : typeof ((enum e4 : long { e4a = sizeof (enum e4) })0, 0L);
+       ^
+
+"Test_name.c", line 117: warning: enumerated type mixed with another type
+    e1vm = __LONG_LONG_MAX__; /* { dg-warning "overflow" } */
+         ^
+
+"Test_name.c", line 117: warning: integer conversion resulted in truncation
+    e1vm = __LONG_LONG_MAX__; /* { dg-warning "overflow" } */
+           ^
+
+"Test_name.c", line 120: warning: enumerated type mixed with another type
+    e2vm = 10;
+         ^
+
+"Test_name.c", line 123: warning: enumerated type mixed with another type
+    e2vm = 0;
+         ^
+
+"Test_name.c", line 149: warning: enumerated type mixed with another type
+    e2vm = 0;
+         ^
+
+"Test_name.c", line 162: warning: a value of type "void *" cannot be assigned to an entity of type "enum e2"
+    e2vm = p;
+         ^
+
+"Test_name.c", line 163: error: a value of type "nullptr_t" cannot be assigned to an entity of type "enum e2"
+    e2vm = np;
+         ^
+
+"Test_name.c", line 164: warning: enumerated type mixed with another type
+    e2vm = (bool) p;
+         ^
+
+"Test_name.c", line 165: warning: enumerated type mixed with another type
+    e2vm = (bool) np;
+         ^
+
+2 errors detected in the compilation of "Test_name.c".

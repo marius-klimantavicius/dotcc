@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: error: the default constructor of "B<int>" cannot be referenced -- it is a deleted function
+  B<int> b; // { dg-error "deleted" }
+         ^
+
+"Test_name.c", line 10: error: function "B<<unnamed>>::~B() [with <unnamed>=int]" (declared implicitly) cannot be referenced -- it is a deleted function
+  B<int> b; // { dg-error "deleted" }
+         ^
+
+2 errors detected in the compilation of "Test_name.c".

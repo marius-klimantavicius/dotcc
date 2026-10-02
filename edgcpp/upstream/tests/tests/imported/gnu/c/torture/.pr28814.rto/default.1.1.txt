@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 17: warning: variable "r9887" is used before its value is set
+    if (((struct structure_type24753 *) (r9887 - 1)) == ((void *) 0))
+                                         ^
+

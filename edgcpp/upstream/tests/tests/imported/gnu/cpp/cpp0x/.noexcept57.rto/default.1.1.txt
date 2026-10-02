@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 32: warning: function "operator new(unsigned long, void *)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+  static_assert(noexcept(new(mem) NoexceptTrueCtor), "2"); // OK
+                         ^
+
+"Test_name.c", line 35: warning: function "operator new(unsigned long, void *)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+  static_assert(noexcept(new(mem) NoexceptYesCtor), "5"); // fail
+                         ^
+
+"Test_name.c", line 38: warning: function "operator new(unsigned long, void *)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+  static_assert(noexcept(new(mem) NoexceptOneEqOneCtor), "8"); // fail
+                         ^
+
+"Test_name.c", line 41: warning: function "operator new(unsigned long, void *)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+  static_assert(!noexcept(new(mem) NoNoexceptCtor), "11"); // OK
+                          ^
+

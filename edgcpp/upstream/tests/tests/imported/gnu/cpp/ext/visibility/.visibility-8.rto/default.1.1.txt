@@ -1,0 +1,90 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 23: error: incomplete type "__declspec" is not allowed
+  struct __declspec(dllexport) A {
+                    ^
+
+"Test_name.c", line 23: error: expected a ";"
+  struct __declspec(dllexport) A {
+                               ^
+
+"Test_name.c", line 26: warning: parsing restarts here after previous syntax error
+  };
+   ^
+
+"Test_name.c", line 28: error: incomplete type "void" is not allowed
+  void A::f() {}
+       ^
+
+"Test_name.c", line 28: error: expected a ";"
+  void A::f() {}
+        ^
+
+"Test_name.c", line 32: error: variable "dllexport" has already been defined (previous definition at line 23)
+  __declspec(dllexport) void g() {}
+             ^
+
+"Test_name.c", line 32: error: expected a ";"
+  __declspec(dllexport) void g() {}
+                        ^
+
+"Test_name.c", line 39: error: incomplete type "__declspec" is not allowed
+    __declspec(dllexport) virtual ~B();
+               ^
+
+"Test_name.c", line 39: error: expected a ";"
+    __declspec(dllexport) virtual ~B();
+                          ^
+
+"Test_name.c", line 41: error: incomplete type "__declspec" is not allowed
+    __declspec(dllexport) void j();
+               ^
+
+"Test_name.c", line 41: error: "dllexport" has already been declared in the current scope
+    __declspec(dllexport) void j();
+               ^
+
+"Test_name.c", line 41: error: expected a ";"
+    __declspec(dllexport) void j();
+                          ^
+
+"Test_name.c", line 42: error: incomplete type "__declspec" is not allowed
+    __declspec(dllexport) static int b;
+               ^
+
+"Test_name.c", line 42: error: "dllexport" has already been declared in the current scope
+    __declspec(dllexport) static int b;
+               ^
+
+"Test_name.c", line 42: error: expected a ";"
+    __declspec(dllexport) static int b;
+                          ^
+
+"Test_name.c", line 45: error: variable "dllexport" has already been defined (previous definition at line 23)
+  __declspec(dllexport) B::B() {}
+             ^
+
+"Test_name.c", line 45: error: expected a ";"
+  __declspec(dllexport) B::B() {}
+                        ^
+
+"Test_name.c", line 53: warning: parsing restarts here after previous syntax error
+  int B::b;
+          ^
+
+"Test_name.c", line 55: error: variable "dllexport" has already been defined (previous definition at line 23)
+  __declspec(dllexport) int k;
+             ^
+
+"Test_name.c", line 55: error: expected a ";"
+  __declspec(dllexport) int k;
+                        ^
+
+"Test_name.c", line 57: error: variable "dllexport" has already been defined (previous definition at line 23)
+  __declspec(dllexport) extern int l;
+             ^
+
+"Test_name.c", line 57: error: expected a ";"
+  __declspec(dllexport) extern int l;
+                        ^
+
+20 errors detected in the compilation of "Test_name.c".

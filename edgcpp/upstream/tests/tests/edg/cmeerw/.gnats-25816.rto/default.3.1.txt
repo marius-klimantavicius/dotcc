@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=3 --ms_c++17 Test_name.c
+"Test_name.c", line 18: error: identifier "foo" is undefined
+        auto v = foo();
+                 ^
+
+"Test_name.c", line 42: error: identifier "foo" is undefined
+          foo();
+          ^
+
+"Test_name.c", line 60: error: identifier "foo" is undefined
+      auto v = foo();
+               ^
+
+"Test_name.c", line 73: error: "ns" has already been declared in the current scope
+    namespace ns
+              ^
+
+"Test_name.c", line 75: error: identifier "foo" is undefined
+      auto v = foo();
+               ^
+
+"Test_name.c", line 92: error: identifier "foo" is undefined
+      auto v = foo();
+               ^
+
+"Test_name.c", line 110: error: identifier "foo" is undefined
+      auto v = foo();
+               ^
+
+7 errors detected in the compilation of "Test_name.c".

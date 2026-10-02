@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 20: error: member "B::b" (declared at line 13) is inaccessible
+      B::b;  // error
+         ^
+
+"Test_name.c", line 21: error: type "A::A" (declared at line 5) is inaccessible
+      A::z;  // error
+      ^
+
+2 errors detected in the compilation of "Test_name.c".

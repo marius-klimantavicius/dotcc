@@ -1,0 +1,109 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 21: warning: unrecognized #pragma
+    #pragma omp parallel shared (a1, a2, a3)
+            ^
+
+"Test_name.c", line 29: warning: unrecognized #pragma
+      #pragma omp barrier
+              ^
+
+"Test_name.c", line 57: warning: unrecognized #pragma
+    #pragma omp parallel shared (a7, a9, a11)
+            ^
+
+"Test_name.c", line 76: warning: unrecognized #pragma
+    #pragma omp parallel shared (a13, a15)
+            ^
+
+"Test_name.c", line 78: warning: unrecognized #pragma
+      #pragma omp parallel shared (a14)
+              ^
+
+"Test_name.c", line 100: warning: unrecognized #pragma
+    #pragma omp task shared (a17)
+            ^
+
+"Test_name.c", line 103: warning: unrecognized #pragma
+    #pragma omp taskwait
+            ^
+
+"Test_name.c", line 104: warning: unrecognized #pragma
+    #pragma omp parallel shared (a19)
+            ^
+
+"Test_name.c", line 106: warning: unrecognized #pragma
+      #pragma omp task shared (a19)
+              ^
+
+"Test_name.c", line 110: warning: unrecognized #pragma
+      #pragma omp task shared (a20)
+              ^
+
+"Test_name.c", line 112: warning: unrecognized #pragma
+      #pragma omp for firstprivate (a25) lastprivate (a22) linear (a23:2) reduction (+:a24) private (a26)
+              ^
+
+"Test_name.c", line 98: warning: variable "a19" was set but never used
+    int a17 = 17, a18 = 18, a19 = 19, a20 = 20, a21 = 21, a22 = 22, a23 = 23, a24 = 0, a25 = 0, a26 = 0;
+                            ^
+
+"Test_name.c", line 98: warning: variable "a20" was set but never used
+    int a17 = 17, a18 = 18, a19 = 19, a20 = 20, a21 = 21, a22 = 22, a23 = 23, a24 = 0, a25 = 0, a26 = 0;
+                                      ^
+
+"Test_name.c", line 143: warning: unrecognized #pragma
+    #pragma omp target data map (tofrom: a27, a28)
+            ^
+
+"Test_name.c", line 145: warning: unrecognized #pragma
+      #pragma omp target map (tofrom: a27)
+              ^
+
+"Test_name.c", line 147: warning: unrecognized #pragma
+      #pragma omp parallel shared (a27, a28)
+              ^
+
+"Test_name.c", line 149: warning: unrecognized #pragma
+        #pragma omp critical
+                ^
+
+"Test_name.c", line 152: warning: unrecognized #pragma
+  	#pragma omp target update to (a27)
+  	        ^
+
+"Test_name.c", line 153: warning: unrecognized #pragma
+  	#pragma omp target map (always, from: a28) private (a30)
+  	        ^
+
+"Test_name.c", line 160: warning: unrecognized #pragma
+        #pragma omp barrier
+                ^
+
+"Test_name.c", line 142: warning: variable "a30" was set but never used
+    int a27 = 27, a28 = 28, a29 = 29, a30 = 30;
+                                      ^
+
+"Test_name.c", line 175: warning: unrecognized #pragma
+    #pragma omp parallel
+            ^
+
+"Test_name.c", line 177: warning: unrecognized #pragma
+      #pragma omp sections
+              ^
+
+"Test_name.c", line 179: warning: unrecognized #pragma
+        #pragma omp section
+                ^
+
+"Test_name.c", line 183: warning: unrecognized #pragma
+        #pragma omp section
+                ^
+
+"Test_name.c", line 189: warning: unrecognized #pragma
+      #pragma omp single
+              ^
+
+"Test_name.c", line 191: warning: unrecognized #pragma
+      #pragma omp atomic
+              ^
+

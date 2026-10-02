@@ -1,0 +1,17 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 9: error: exception specification is incompatible with that of previous function "X::f()" (declared at line 5):
+            previously omitted: "char"
+            previously specified but omitted here: "int"
+  void X::f() throw(char) { }
+              ^
+
+"Test_name.c", line 10: error: exception specification is incompatible with that of previous function "X::f(int)" (declared at line 6):
+            previously specified but omitted here: "int"
+  void X::f(int) throw() { }
+                 ^
+
+"Test_name.c", line 11: error: allowing all exceptions is incompatible with previous function "X::f(double)" (declared at line 7)
+  void X::f(double) { }
+                    ^
+
+3 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 22: error: "i" is ambiguous
+    i++; // expected-error {{reference to 'i' is ambiguous}}
+    ^
+
+"Test_name.c", line 34: error: class "<unnamed>::Test3" has already been defined (previous definition at line 31)
+    class Test3 {}; // expected-error {{redefinition of 'Test3'}}
+          ^
+
+"Test_name.c", line 42: error: class "test4::<unnamed>::Test4" has already been defined (previous definition at line 39)
+      class Test4 {}; // expected-error {{redefinition of 'Test4'}}
+            ^
+
+3 errors detected in the compilation of "Test_name.c".

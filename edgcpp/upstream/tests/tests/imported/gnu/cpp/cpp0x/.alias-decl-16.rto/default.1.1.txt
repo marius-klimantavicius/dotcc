@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: error: type definition is not allowed
+      struct B1 { // { dg-error "types may not be defined in alias template" }
+      ^
+
+"Test_name.c", line 18: error: type definition is not allowed
+      struct B2 {  // { dg-error "types may not be defined in alias template" }
+      ^
+
+"Test_name.c", line 26: error: expected a "}"
+      enum B3 {b = 0;}; //{ dg-error "types may not be defined in alias template" }
+                    ^
+"Test_name.c", line 26: note: to match this "{"
+      enum B3 {b = 0;}; //{ dg-error "types may not be defined in alias template" }
+              ^
+
+"Test_name.c", line 26: error: type definition is not allowed
+      enum B3 {b = 0;}; //{ dg-error "types may not be defined in alias template" }
+      ^
+
+4 errors detected in the compilation of "Test_name.c".

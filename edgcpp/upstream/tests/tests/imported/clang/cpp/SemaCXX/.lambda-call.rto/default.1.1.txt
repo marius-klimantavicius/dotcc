@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++23 Test_name.c
+"Test_name.c", line 8: error: no instance of function template "lambda [](auto &, int) static->void" matches the argument list
+            argument types are: (const char [2])
+            object type is: lambda [](auto &, int) static->void
+    auto l = [](this auto& self, int) -> void { self("j"); }; // expected-error {{no matching function for call to object of type}} \
+                                                ^
+"Test_name.c", line 8: note: function template "lambda [](auto &, int) static->void" does not match because argument #2 does not match parameter
+    auto l = [](this auto& self, int) -> void { self("j"); }; // expected-error {{no matching function for call to object of type}} \
+               ^
+          detected during instantiation of function "lambda [](auto &, int) static->void [with <auto-1>=lambda [](auto &, int) static->void]" at line 10
+
+1 error detected in the compilation of "Test_name.c".

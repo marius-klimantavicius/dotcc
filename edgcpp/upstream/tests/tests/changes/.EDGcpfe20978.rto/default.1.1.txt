@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++17 Test_name.c
+"Test_name.c", line 16: error: member "S::i" has already been defined (previous definition at line 14)
+  const int S::i;   // Previously erroneously accepted, now an error
+               ^
+
+1 error detected in the compilation of "Test_name.c".

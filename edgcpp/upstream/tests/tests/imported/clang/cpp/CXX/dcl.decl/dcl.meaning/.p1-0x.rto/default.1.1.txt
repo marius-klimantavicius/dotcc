@@ -1,0 +1,102 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 11: error: a decltype-qualified name is nonstandard in this declaration context
+  int decltype(foo())::i; // expected-error{{a 'decltype' specifier cannot be used in a declarative nested name specifier}}
+                       ^
+
+"Test_name.c", line 12: error: a decltype-qualified name is nonstandard in this declaration context
+  void decltype(foo())::func() { // expected-error{{a 'decltype' specifier cannot be used in a declarative nested name specifier}}
+                        ^
+
+"Test_name.c", line 23: error: a decltype-qualified name is nonstandard in this declaration context
+  int decltype(tfoo<T>())::i; // expected-error{{nested name specifier 'decltype(tfoo<T>())' for declaration does not refer into a class, class template or class template partial specialization}}
+                           ^
+
+"Test_name.c", line 23: error: "class <unnamed>" is not a class template
+  int decltype(tfoo<T>())::i; // expected-error{{nested name specifier 'decltype(tfoo<T>())' for declaration does not refer into a class, class template or class template partial specialization}}
+      ^
+
+"Test_name.c", line 23: warning: variable templates are a C++14 feature
+  int decltype(tfoo<T>())::i; // expected-error{{nested name specifier 'decltype(tfoo<T>())' for declaration does not refer into a class, class template or class template partial specialization}}
+                            ^
+
+"Test_name.c", line 25: error: a decltype-qualified name is nonstandard in this declaration context
+  void decltype(tfoo<T>())::func() { // expected-error{{nested name specifier 'decltype(tfoo<T>())' for declaration does not refer into a class, class template or class template partial specialization}}
+                            ^
+
+"Test_name.c", line 25: error: "class <unnamed>" is not a class template
+  void decltype(tfoo<T>())::func() { // expected-error{{nested name specifier 'decltype(tfoo<T>())' for declaration does not refer into a class, class template or class template partial specialization}}
+       ^
+
+"Test_name.c", line 43: warning: variable templates are a C++14 feature
+        template<typename T> extern int mt; // expected-note {{here}} expected-warning {{extension}}
+                                          ^
+
+"Test_name.c", line 44: warning: variable templates are a C++14 feature
+        template<typename T> extern int nt; // expected-note {{here}} expected-warning {{extension}}
+                                          ^
+
+"Test_name.c", line 56: error: cannot determine which instance of overloaded function "inline_namespaces::N::f" is intended
+      static_assert(&f != &M::f, ""); // expected-error {{reference to overloaded function could not be resolved}}
+                    ^
+
+"Test_name.c", line 57: error: "inline_namespaces::N::m" is ambiguous
+      static_assert(&m != &M::m, ""); // expected-error {{ambiguous}}
+                     ^
+
+"Test_name.c", line 58: error: "inline_namespaces::N::S" is ambiguous
+      typedef S X; // expected-error {{ambiguous}}
+              ^
+
+"Test_name.c", line 59: error: "inline_namespaces::N::E" is ambiguous
+      typedef E Y; // expected-error {{ambiguous}}
+              ^
+
+"Test_name.c", line 78: error: incomplete type "inline_namespaces::N::M::U<char>" is not allowed
+      template struct U<char>; // expected-error {{undefined}}
+               ^
+
+"Test_name.c", line 105: error: incomplete type "inline_namespaces::N::M::V<char>" is not allowed
+    template struct N::V<char>; // expected-error {{undefined}}
+             ^
+
+"Test_name.c", line 120: warning: nonstandard qualified name in namespace member declaration
+    int inline_namespaces::f_in_inline() { // expected-warning {{extra qualification}}
+        ^
+
+"Test_name.c", line 122: error: "inline_namespaces::Q" is ambiguous
+      Q x = q;
+      ^
+
+"Test_name.c", line 125: warning: nonstandard qualified name in namespace member declaration
+    int inline_namespaces::v_in_inline = // expected-warning {{extra qualification}}
+        ^
+
+"Test_name.c", line 126: error: "inline_namespaces::Q" is ambiguous
+      (Q(q), 0);
+       ^
+
+"Test_name.c", line 68: error: function "inline_namespaces::N::M::ft<T>() [with T=char]" cannot be instantiated -- no template definition was supplied
+      template void ft<char>(); // expected-error {{undefined}}
+               ^
+
+"Test_name.c", line 73: error: variable "inline_namespaces::N::M::mt<char>" cannot be instantiated -- no template definition was supplied
+      template int mt<char>; // expected-error {{undefined}}
+               ^
+
+"Test_name.c", line 95: error: function "inline_namespaces::N::M::gt<T>() [with T=char]" cannot be instantiated -- no template definition was supplied
+    template void N::gt<char>(); // expected-error {{undefined}}
+             ^
+
+"Test_name.c", line 100: error: variable "inline_namespaces::N::M::nt<char>" cannot be instantiated -- no template definition was supplied
+    template int N::nt<char>; // expected-error {{undefined}}
+             ^
+
+"Test_name.c", line 114: warning: function "inline_namespaces::<unnamed>::f_in_inline" was declared but never referenced
+      int f_in_inline();
+          ^
+
+"Test_name.c", line 115: warning: variable "inline_namespaces::<unnamed>::v_in_inline" was declared but never referenced
+      extern int v_in_inline;
+                 ^
+
+18 errors detected in the compilation of "Test_name.c".

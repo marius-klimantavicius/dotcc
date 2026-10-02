@@ -1,0 +1,18 @@
+cpfe -DTEST_NUMBER=1 --c++20 -tused -A Test_name.c
+"Test_name.c", line 8: error: no instance of function template "f1" matches the argument list
+            argument types are: (void ())
+      f1(g1);    // OK: E is false
+      ^
+"Test_name.c", line 2: note: candidate function template "f1" failed deduction
+    template <bool E> void f1(void (*)() noexcept(E));
+                           ^
+
+"Test_name.c", line 9: error: no instance of function template "f1" matches the argument list
+            argument types are: (void () noexcept)
+      f1(g2);    // OK: E is true
+      ^
+"Test_name.c", line 2: note: candidate function template "f1" failed deduction
+    template <bool E> void f1(void (*)() noexcept(E));
+                           ^
+
+2 errors detected in the compilation of "Test_name.c".

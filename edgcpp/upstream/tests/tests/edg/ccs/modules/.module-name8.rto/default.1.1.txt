@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --c++20 Test_name.c
+"Test_name.c", line 4: warning: "module" is parsed as an identifier rather than a keyword because the tokens that follow it do not match those of a preprocessor directive
+  export module .A;
+  ^
+
+"Test_name.c", line 4: error: an export declaration can only appear in a module interface unit
+  export module .A;
+  ^
+
+"Test_name.c", line 4: error: this declaration has no storage class or type specifier
+  export module .A;
+         ^
+
+"Test_name.c", line 4: error: expected a ";"
+  export module .A;
+                ^
+
+3 errors detected in the compilation of "Test_name.c".

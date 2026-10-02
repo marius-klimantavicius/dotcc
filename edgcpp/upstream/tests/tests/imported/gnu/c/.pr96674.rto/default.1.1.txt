@@ -1,0 +1,17 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./pr96674.c", line 8: warning: unknown attribute "noipa"
+  bool __attribute__ ((noipa)) test1 (unsigned a, unsigned b)
+                       ^
+
+"./pr96674.c", line 13: warning: unknown attribute "noipa"
+  bool __attribute__ ((noipa)) test2 (int a, int b)
+                       ^
+
+"./pr96674.c", line 18: warning: unknown attribute "noipa"
+  bool __attribute__ ((noipa)) test3 (unsigned a, unsigned b)
+                       ^
+
+"./pr96674.c", line 23: warning: unknown attribute "noipa"
+  bool __attribute__ ((noipa)) test4 (int a, int b)
+                       ^
+

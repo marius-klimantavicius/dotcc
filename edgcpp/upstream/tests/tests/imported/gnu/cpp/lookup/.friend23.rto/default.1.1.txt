@@ -1,0 +1,7 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 6: error: function "derived::bar" (declared at line 12) is inaccessible
+      d.bar(); // access in inline friend of friend, ok?
+        ^
+          detected during instantiation of class "base<Derived> [with Derived=derived]" at line 17
+
+1 error detected in the compilation of "Test_name.c".

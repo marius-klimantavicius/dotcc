@@ -1,0 +1,13 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./tree-ssa/pr96779.c", line 8: warning: unknown attribute "noipa"
+  bool __attribute__ ((noipa)) f_func(int a)
+                       ^
+
+"./tree-ssa/pr96779.c", line 13: warning: unknown attribute "noipa"
+  bool __attribute__ ((noipa)) h_func(short a)
+                       ^
+
+"./tree-ssa/pr96779.c", line 18: warning: unknown attribute "noipa"
+  bool __attribute__ ((noipa)) k_func(long a)
+                       ^
+

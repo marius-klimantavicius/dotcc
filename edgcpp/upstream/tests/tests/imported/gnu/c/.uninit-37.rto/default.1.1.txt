@@ -1,0 +1,121 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 46: warning: unknown attribute "access"
+  T1 (RO (1), froia_, IA_);     // { dg-warning "\\\[-Wuninitialized" }
+  ^
+
+"Test_name.c", line 47: warning: unknown attribute "access"
+  T1 (RW (1), frwia_, IA_);     // { dg-warning "\\\[-Wmaybe-uninitialized" }
+  ^
+
+"Test_name.c", line 48: warning: unknown attribute "access"
+  T1 (WO (1), fwoia_, IA_);
+  ^
+
+"Test_name.c", line 49: warning: unknown attribute "access"
+  T1 (X (1),  fxia_,  IA_);
+  ^
+
+"Test_name.c", line 57: warning: unknown attribute "access"
+  T1 (RO (1), froia1, IA1);     // { dg-warning "\\\[-Wuninitialized" }
+  ^
+
+"Test_name.c", line 58: warning: unknown attribute "access"
+  T1 (RW (1), frwia1, IA1);     // { dg-warning "\\\[-Wmaybe-uninitialized" }
+  ^
+
+"Test_name.c", line 59: warning: unknown attribute "access"
+  T1 (WO (1), fwoia1, IA1);
+  ^
+
+"Test_name.c", line 60: warning: unknown attribute "access"
+  T1 (X (1),  fxia1,  IA1);
+  ^
+
+"Test_name.c", line 68: warning: unknown attribute "access"
+  T1 (RO (1), froiars1, IARS1); // { dg-warning "\\\[-Wuninitialized" }
+  ^
+
+"Test_name.c", line 69: warning: unknown attribute "access"
+  T1 (RW (1), frwiars1, IARS1); // { dg-warning "\\\[-Wmaybe-uninitialized" }
+  ^
+
+"Test_name.c", line 70: warning: unknown attribute "access"
+  T1 (WO (1), fwoiars1, IARS1);
+  ^
+
+"Test_name.c", line 71: warning: unknown attribute "access"
+  T1 (X (1),  fxiars1,  IARS1);
+  ^
+
+"Test_name.c", line 79: warning: unknown attribute "access"
+  T1 (RO (1), froias1, IAS1);    // { dg-warning "\\\[-Wuninitialized" }
+  ^
+
+"Test_name.c", line 80: warning: unknown attribute "access"
+  T1 (RW (1), frwias1, IAS1);    // { dg-warning "\\\[-Wmaybe-uninitialized" }
+  ^
+
+"Test_name.c", line 81: warning: unknown attribute "access"
+  T1 (WO (1), fwoias1, IAS1);
+  ^
+
+"Test_name.c", line 82: warning: unknown attribute "access"
+  T1 (X (1),  fxias1,  IAS1);
+  ^
+
+"Test_name.c", line 90: warning: unknown attribute "access"
+  T1 (RO (1), froiax, IAX);     // { dg-warning "\\\[-Wuninitialized" }
+  ^
+
+"Test_name.c", line 91: warning: unknown attribute "access"
+  T1 (RW (1), frwiax, IAX);     // { dg-warning "\\\[-Wmaybe-uninitialized" }
+  ^
+
+"Test_name.c", line 92: warning: unknown attribute "access"
+  T1 (WO (1), fwoiax, IAX);
+  ^
+
+"Test_name.c", line 93: warning: unknown attribute "access"
+  T1 (X (1),  fxiax,  IAX);
+  ^
+
+"Test_name.c", line 101: warning: unknown attribute "access"
+  T2 (RO (2, 1), froian, IAN);  // { dg-warning "\\\[-Wuninitialized" }
+  ^
+
+"Test_name.c", line 102: warning: unknown attribute "access"
+  T2 (RW (2, 1), frwian, IAN);  // { dg-warning "\\\[-Wmaybe-uninitialized" }
+  ^
+
+"Test_name.c", line 103: warning: unknown attribute "access"
+  T2 (WO (2, 1), fwoian, IAN);
+  ^
+
+"Test_name.c", line 104: warning: unknown attribute "access"
+  T2 (X (2, 1),  fxian,  IAN);
+  ^
+
+"Test_name.c", line 112: warning: unknown attribute "access"
+  T1 (RO (1), froip, IP);      // { dg-warning "\\\[-Wuninitialized" }
+  ^
+
+"Test_name.c", line 113: warning: unknown attribute "access"
+  T1 (RW (1), frwip, IP);      // { dg-warning "\\\[-Wmaybe-uninitialized" }
+  ^
+
+"Test_name.c", line 114: warning: unknown attribute "access"
+  T1 (WO (1), fwoip, IP);
+  ^
+
+"Test_name.c", line 115: warning: unknown attribute "access"
+  T1 (X (1),  fxip,  IP);
+  ^
+
+"Test_name.c", line 142: warning: unknown attribute "access"
+    extern RO (1) void
+           ^
+
+"Test_name.c", line 151: warning: unknown attribute "access"
+    extern RW (1) void
+           ^
+

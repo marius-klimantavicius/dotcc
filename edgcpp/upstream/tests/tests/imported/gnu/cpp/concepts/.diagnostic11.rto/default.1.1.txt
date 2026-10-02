@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 6: error: identifier "requires" is undefined
+    requires B // { dg-error ".requires. does not name a type" }
+    ^
+
+"Test_name.c", line 6: error: template parameter "B" may not be redeclared in this scope
+    requires B // { dg-error ".requires. does not name a type" }
+             ^
+
+"Test_name.c", line 8: error: expected a ";"
+  void foo() { }
+  ^
+
+3 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,65 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 11: warning: unknown attribute "deprecated"
+    [[deprecated]] friend void f(); // { dg-warning "attribute ignored" }
+      ^
+
+"Test_name.c", line 12: warning: unknown attribute "deprecated"
+    [[deprecated]] friend void f2() { }
+      ^
+
+"Test_name.c", line 14: warning: unknown attribute "deprecated"
+    friend void f3 [[deprecated]] (); // { dg-warning "attribute ignored" }
+                     ^
+
+"Test_name.c", line 15: warning: unknown attribute "deprecated"
+    friend void f4 [[deprecated]] () { }
+                     ^
+
+"Test_name.c", line 16: warning: unknown attribute "deprecated"
+    [[deprecated]] friend void; // { dg-warning "attribute ignored" }
+      ^
+
+"Test_name.c", line 20: warning: unknown attribute "deprecated"
+    [[deprecated]] friend X; // { dg-warning "attribute ignored" }
+      ^
+
+"Test_name.c", line 21: warning: unknown attribute "deprecated"
+    [[deprecated]] friend class N; // { dg-warning "attribute ignored" }
+      ^
+
+"Test_name.c", line 22: warning: unknown attribute "deprecated"
+    friend class [[deprecated]] N2; // { dg-warning "attribute ignored" }
+                   ^
+
+"Test_name.c", line 24: warning: unknown attribute "deprecated"
+    [[deprecated]] friend void foo<>(int, int); // { dg-warning "attribute ignored" }
+      ^
+
+"Test_name.c", line 25: warning: unknown attribute "deprecated"
+    [[deprecated]] friend void ::foo(int, int); // { dg-warning "attribute ignored" }
+      ^
+
+"Test_name.c", line 25: warning: the qualifier on this friend declaration is ignored
+    [[deprecated]] friend void ::foo(int, int); // { dg-warning "attribute ignored" }
+                               ^
+
+"Test_name.c", line 34: warning: unknown attribute "deprecated"
+    [[deprecated]] friend T; // { dg-warning "attribute ignored" }
+      ^
+
+"Test_name.c", line 35: warning: unknown attribute "deprecated"
+    [[deprecated]] friend class node<T>; // { dg-warning "attribute ignored" }
+      ^
+
+"Test_name.c", line 37: warning: unknown attribute "deprecated"
+    [[deprecated]] friend class A; // { dg-warning "attribute ignored" }
+      ^
+
+"Test_name.c", line 39: warning: unknown attribute "deprecated"
+    [[deprecated]] friend void bar () { }
+      ^
+
+"Test_name.c", line 41: warning: unknown attribute "deprecated"
+    [[deprecated]] friend void baz (); // { dg-warning "attribute ignored" }
+      ^
+

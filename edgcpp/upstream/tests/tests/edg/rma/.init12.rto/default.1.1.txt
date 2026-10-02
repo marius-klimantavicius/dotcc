@@ -1,0 +1,45 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 4: remark: class "A" defines no constructor to initialize the following:
+            const member "A::i"
+  struct A { const int i; } x;
+         ^
+
+"Test_name.c", line 4: error: implicitly generated constructor for class "A" cannot initialize:
+            const member "A::i"
+  struct A { const int i; } x;
+         ^
+          detected during implicit generation of "A::A()" at line 4
+
+"Test_name.c", line 4: error: variable "x" has an uninitialized const or reference member
+  struct A { const int i; } x;
+                            ^
+
+"Test_name.c", line 5: error: uninitialized member "B::a" has a const member
+  struct B { struct A a[2]; } y;
+                      ^
+          detected during implicit generation of "B::B()" at line 5
+
+"Test_name.c", line 5: error: variable "y" has an uninitialized const or reference member
+  struct B { struct A a[2]; } y;
+                              ^
+
+"Test_name.c", line 6: error: uninitialized member "C::b" has a const member
+  struct C { struct B b[3]; } z;
+                      ^
+          detected during implicit generation of "C::C()" at line 6
+
+"Test_name.c", line 6: error: variable "z" has an uninitialized const or reference member
+  struct C { struct B b[3]; } z;
+                              ^
+
+"Test_name.c", line 7: error: return type "int" omitted in declaration of function "main"
+  main() {
+  ^
+
+"Test_name.c", line 4: error: implicitly generated assignment operator cannot copy:
+            const member "A::i"
+  struct A { const int i; } x;
+         ^
+          detected during implicit generation of "A &A::operator=(const A &)" at line 8
+
+8 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 16: warning: variable "b1" was declared but never referenced
+    bool b1 = e == e1;
+         ^
+
+"Test_name.c", line 17: warning: variable "b2" was declared but never referenced
+    bool b2 = e == f; // { dg-warning "comparison between .enum E1. and .enum E2." }
+         ^
+
+"Test_name.c", line 18: warning: variable "b3" was declared but never referenced
+    bool b3 = e == 0.0; // { dg-warning "comparison of enumeration type .E1. with floating-point type .double." }
+         ^
+
+"Test_name.c", line 19: warning: variable "b4" was declared but never referenced
+    bool b4 = 0.0 == f; // { dg-warning "comparison of floating-point type .double. with enumeration type .E2." }
+         ^
+
+"Test_name.c", line 20: warning: variable "n1" was declared but never referenced
+    int n1 = true ? e : f; // { dg-warning "enumerated mismatch" }
+        ^
+
+"Test_name.c", line 21: warning: variable "n2" was declared but never referenced
+    int n2 = true ? e : 0.0; // { dg-warning "enumerated and non-enumerated type in conditional expression" }
+        ^
+

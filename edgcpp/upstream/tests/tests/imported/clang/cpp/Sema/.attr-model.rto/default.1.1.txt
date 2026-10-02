@@ -1,0 +1,37 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --target linux_aarch64 Test_name.c
+"Test_name.c", line 25: warning: unknown attribute "model"
+  int a __attribute((model("tiny")));    // unsupported-warning {{unknown attribute 'model' ignored}} \
+                     ^
+
+"Test_name.c", line 30: warning: unknown attribute "model"
+  int b __attribute((model("small")));   // unsupported-warning {{unknown attribute 'model' ignored}} \
+                     ^
+
+"Test_name.c", line 33: warning: unknown attribute "model"
+  int c __attribute((model("normal")));  // unsupported-warning {{unknown attribute 'model' ignored}} \
+                     ^
+
+"Test_name.c", line 37: warning: unknown attribute "model"
+  int d __attribute((model("kernel")));  // unsupported-warning {{unknown attribute 'model' ignored}} \
+                     ^
+
+"Test_name.c", line 42: warning: unknown attribute "model"
+  int e __attribute((model("medium")));  // unsupported-warning {{unknown attribute 'model' ignored}} \
+                     ^
+
+"Test_name.c", line 46: warning: unknown attribute "model"
+  int f __attribute((model("large")));   // unsupported-warning {{unknown attribute 'model' ignored}} \
+                     ^
+
+"Test_name.c", line 49: warning: unknown attribute "model"
+  int g __attribute((model("extreme"))); // unsupported-warning {{unknown attribute 'model' ignored}} \
+                     ^
+
+"Test_name.c", line 54: warning: unknown attribute "model"
+  void __attribute((model("extreme"))) h() {} // unsupported-warning {{unknown attribute 'model' ignored}} \
+                    ^
+
+"Test_name.c", line 68: warning: unknown attribute "model"
+  int i __attribute((model("extreme"))); // unsupported-warning {{unknown attribute 'model' ignored}} \
+                     ^
+

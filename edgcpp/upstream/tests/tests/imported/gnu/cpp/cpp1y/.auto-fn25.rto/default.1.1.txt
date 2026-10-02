@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 10: error: a virtual function cannot have a deduced return type
+    virtual auto foo() {}		// { dg-error "11:virtual.*deduced" }
+                 ^
+
+"Test_name.c", line 15: error: a virtual function cannot have a deduced return type
+    auto foo();
+         ^
+
+2 errors detected in the compilation of "Test_name.c".

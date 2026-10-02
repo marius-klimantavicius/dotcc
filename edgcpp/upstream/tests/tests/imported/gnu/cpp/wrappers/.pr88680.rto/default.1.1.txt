@@ -1,0 +1,61 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 22: warning: statement is unreachable
+    if (FOO >= 0)
+    ^
+
+"Test_name.c", line 24: warning: statement is unreachable
+    if (FOO >= FOO)
+    ^
+
+"Test_name.c", line 26: warning: statement is unreachable
+    if (FOO >= P)
+    ^
+
+"Test_name.c", line 28: warning: statement is unreachable
+    if (BAR >= P)
+    ^
+
+"Test_name.c", line 30: warning: statement is unreachable
+    if (N >= FOO)
+    ^
+
+"Test_name.c", line 32: warning: statement is unreachable
+    if (n >= 0) // { dg-warning "'>= 0' is always true" }
+    ^
+
+"Test_name.c", line 32: warning: pointless comparison of unsigned integer with zero
+    if (n >= 0) // { dg-warning "'>= 0' is always true" }
+          ^
+
+"Test_name.c", line 34: warning: pointless comparison of unsigned integer with zero
+    if (n < 0) // { dg-warning "'< 0' is always false" }
+          ^
+
+"Test_name.c", line 36: warning: pointless comparison of unsigned integer with zero
+    if (n >= FOO)
+          ^
+
+"Test_name.c", line 38: warning: pointless comparison of unsigned integer with zero
+    if (n < FOO)
+          ^
+
+"Test_name.c", line 42: warning: statement is unreachable
+    if (N < 0)
+    ^
+
+"Test_name.c", line 46: warning: statement is unreachable
+    if (N < FOO)
+    ^
+
+"Test_name.c", line 50: warning: statement is unreachable
+    if (0 <= n) // { dg-warning "'>= 0' is always true" }
+    ^
+
+"Test_name.c", line 50: warning: pointless comparison of unsigned integer with zero
+    if (0 <= n) // { dg-warning "'>= 0' is always true" }
+          ^
+
+"Test_name.c", line 52: warning: pointless comparison of unsigned integer with zero
+    if (0 > n) // { dg-warning "'< 0' is always false" }
+          ^
+

@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: error: type name is not allowed
+    __decltype (A);	// { dg-error "must be an expression" }
+                ^
+
+"Test_name.c", line 8: error: declaration does not declare anything
+    __decltype (A);	// { dg-error "must be an expression" }
+    ^
+
+"Test_name.c", line 9: error: type name is not allowed
+    __decltype (~A);	// { dg-error "must be an expression" }
+                 ^
+
+"Test_name.c", line 9: error: declaration does not declare anything
+    __decltype (~A);	// { dg-error "must be an expression" }
+    ^
+
+"Test_name.c", line 14: error: declaration does not declare anything
+    __typeof__ (B);
+    ^
+
+"Test_name.c", line 15: error: type name is not allowed
+    __typeof__ (~B);	// { dg-error "expected primary-expression" }
+                 ^
+
+"Test_name.c", line 15: error: declaration does not declare anything
+    __typeof__ (~B);	// { dg-error "expected primary-expression" }
+    ^
+
+7 errors detected in the compilation of "Test_name.c".

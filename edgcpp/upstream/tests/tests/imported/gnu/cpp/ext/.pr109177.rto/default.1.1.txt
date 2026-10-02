@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 6: error: function "foo" was declared declared unavailable
+    foo (); // { dg-bogus "is unavailable.*is unavailable" }
+    ^
+"Test_name.c", line 4: note: because of an "unavailable" attribute
+  void foo() __attribute__((unavailable));
+                            ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 10: error: "asm" must be used with a function definition
+  int asm;	/* { dg-bogus "before .asm." } */
+         ^
+
+"Test_name.c", line 11: warning: declaration does not declare anything
+  int inline;	/* { dg-warning "empty declaration" } */
+  ^
+
+"Test_name.c", line 11: warning: inline specifier allowed on function declarations only
+  int inline;	/* { dg-warning "empty declaration" } */
+  ^
+
+"Test_name.c", line 13: error: expected a "("
+  int typeof;	/* { dg-bogus "before .typeof." } */
+            ^
+
+"Test_name.c", line 13: error: expected an expression
+  int typeof;	/* { dg-bogus "before .typeof." } */
+            ^
+
+"Test_name.c", line 13: warning: declaration does not declare anything
+  int typeof;	/* { dg-bogus "before .typeof." } */
+  ^
+
+3 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --exceptions Test_name.c
+"Test_name.c", line 8: warning: unknown attribute "exclusive_lock_function"
+    void Lock() __attribute__((exclusive_lock_function()));
+                               ^
+
+"Test_name.c", line 9: warning: unknown attribute "unlock_function"
+    void Unlock() __attribute__((unlock_function()));
+                                 ^
+
+"Test_name.c", line 16: warning: unknown attribute "exclusive_locks_required"
+    void foo() __attribute__((exclusive_locks_required(mu1))) __attribute__((exclusive_locks_required(mu2))) {}
+                              ^
+
+"Test_name.c", line 16: warning: unknown attribute "exclusive_locks_required"
+    void foo() __attribute__((exclusive_locks_required(mu1))) __attribute__((exclusive_locks_required(mu2))) {}
+                                                                             ^
+
+"Test_name.c", line 19: warning: unknown attribute "exclusive_locks_required"
+    void bar() __attribute__((exclusive_locks_required(mu1))) __attribute__((exclusive_locks_required(mu2))) {
+                              ^
+
+"Test_name.c", line 19: warning: unknown attribute "exclusive_locks_required"
+    void bar() __attribute__((exclusive_locks_required(mu1))) __attribute__((exclusive_locks_required(mu2))) {
+                                                                             ^
+

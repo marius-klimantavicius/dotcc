@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 8: error: integer constant is too large
+  enum E5 { a5 = -10000000000000, b5 = 10000000000000 } e5;
+                  ^
+
+"Test_name.c", line 8: error: integer constant is too large
+  enum E5 { a5 = -10000000000000, b5 = 10000000000000 } e5;
+                                       ^
+
+2 errors detected in the compilation of "Test_name.c".

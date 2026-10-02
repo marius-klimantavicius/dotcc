@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./asan/pr117845.C", line 9: error: identifier "h" is undefined
+      for (int i : ints | h) {
+                          ^
+
+1 error detected in the compilation of "Test_name.c".

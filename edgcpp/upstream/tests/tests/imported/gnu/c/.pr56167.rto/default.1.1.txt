@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 6: error: expected a string literal
+  extern void foo (void) __attribute__ ((error (0)));	/* { dg-warning "attribute ignored" } */
+                                                ^
+
+"Test_name.c", line 7: error: expected a string literal
+  extern void bar (void) __attribute__ ((warning (0)));	/* { dg-warning "attribute ignored" } */
+                                                  ^
+
+"Test_name.c", line 8: warning: attribute "error" does not apply here
+  int var __attribute__ ((error ("foo")));		/* { dg-warning "attribute ignored" } */
+                          ^
+
+2 errors detected in the compilation of "Test_name.c".

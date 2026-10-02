@@ -1,0 +1,1084 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 18: error: expected a ";"
+  FUNC (short _Fract, sf)
+  ^
+
+"Test_name.c", line 19: error: variable "_Fract" is not a type name
+  FUNC (_Fract, f)
+  ^
+
+"Test_name.c", line 20: error: declaration is incompatible with "short _Fract" (declared at line 18)
+  FUNC (long _Fract, lf)
+  ^
+
+"Test_name.c", line 20: error: expected a ";"
+  FUNC (long _Fract, lf)
+  ^
+
+"Test_name.c", line 21: error: declaration is incompatible with "short _Fract" (declared at line 20)
+  FUNC (long long _Fract, llf)
+  ^
+
+"Test_name.c", line 21: error: expected a ";"
+  FUNC (long long _Fract, llf)
+  ^
+
+"Test_name.c", line 22: error: declaration is incompatible with "short _Fract" (declared at line 21)
+  FUNC (unsigned short _Fract, usf)
+  ^
+
+"Test_name.c", line 22: error: expected a ";"
+  FUNC (unsigned short _Fract, usf)
+  ^
+
+"Test_name.c", line 23: error: declaration is incompatible with "short _Fract" (declared at line 22)
+  FUNC (unsigned _Fract, uf)
+  ^
+
+"Test_name.c", line 23: error: expected a ";"
+  FUNC (unsigned _Fract, uf)
+  ^
+
+"Test_name.c", line 24: error: declaration is incompatible with "short _Fract" (declared at line 23)
+  FUNC (unsigned long _Fract, ulf)
+  ^
+
+"Test_name.c", line 24: error: expected a ";"
+  FUNC (unsigned long _Fract, ulf)
+  ^
+
+"Test_name.c", line 25: error: declaration is incompatible with "short _Fract" (declared at line 24)
+  FUNC (unsigned long long _Fract, ullf)
+  ^
+
+"Test_name.c", line 25: error: expected a ";"
+  FUNC (unsigned long long _Fract, ullf)
+  ^
+
+"Test_name.c", line 26: warning: this declaration has no storage class or type specifier
+  FUNC (_Sat short _Fract, Ssf)
+  ^
+
+"Test_name.c", line 26: error: expected a ";"
+  FUNC (_Sat short _Fract, Ssf)
+  ^
+
+"Test_name.c", line 27: error: variable "_Sat" is not a type name
+  FUNC (_Sat _Fract, Sf)
+  ^
+
+"Test_name.c", line 27: error: expected a ";"
+  FUNC (_Sat _Fract, Sf)
+  ^
+
+"Test_name.c", line 28: warning: this declaration has no storage class or type specifier
+  FUNC (_Sat long _Fract, Slf)
+  ^
+
+"Test_name.c", line 28: error: expected a ";"
+  FUNC (_Sat long _Fract, Slf)
+  ^
+
+"Test_name.c", line 29: warning: this declaration has no storage class or type specifier
+  FUNC (_Sat long long _Fract, Sllf)
+  ^
+
+"Test_name.c", line 29: error: expected a ";"
+  FUNC (_Sat long long _Fract, Sllf)
+  ^
+
+"Test_name.c", line 30: warning: this declaration has no storage class or type specifier
+  FUNC (_Sat unsigned short _Fract, Susf)
+  ^
+
+"Test_name.c", line 30: error: expected a ";"
+  FUNC (_Sat unsigned short _Fract, Susf)
+  ^
+
+"Test_name.c", line 31: warning: this declaration has no storage class or type specifier
+  FUNC (_Sat unsigned _Fract, Suf)
+  ^
+
+"Test_name.c", line 31: error: expected a ";"
+  FUNC (_Sat unsigned _Fract, Suf)
+  ^
+
+"Test_name.c", line 32: warning: this declaration has no storage class or type specifier
+  FUNC (_Sat unsigned long _Fract, Sulf)
+  ^
+
+"Test_name.c", line 32: error: expected a ";"
+  FUNC (_Sat unsigned long _Fract, Sulf)
+  ^
+
+"Test_name.c", line 33: warning: this declaration has no storage class or type specifier
+  FUNC (_Sat unsigned long long _Fract, Sullf)
+  ^
+
+"Test_name.c", line 33: error: expected a ";"
+  FUNC (_Sat unsigned long long _Fract, Sullf)
+  ^
+
+"Test_name.c", line 34: error: expected a ";"
+  FUNC (short _Accum, sa)
+  ^
+
+"Test_name.c", line 35: error: variable "_Accum" is not a type name
+  FUNC (_Accum, a)
+  ^
+
+"Test_name.c", line 36: error: declaration is incompatible with "short _Accum" (declared at line 34)
+  FUNC (long _Accum, la)
+  ^
+
+"Test_name.c", line 36: error: expected a ";"
+  FUNC (long _Accum, la)
+  ^
+
+"Test_name.c", line 37: error: declaration is incompatible with "short _Accum" (declared at line 36)
+  FUNC (long long _Accum, lla)
+  ^
+
+"Test_name.c", line 37: error: expected a ";"
+  FUNC (long long _Accum, lla)
+  ^
+
+"Test_name.c", line 38: error: declaration is incompatible with "short _Accum" (declared at line 37)
+  FUNC (unsigned short _Accum, usa)
+  ^
+
+"Test_name.c", line 38: error: expected a ";"
+  FUNC (unsigned short _Accum, usa)
+  ^
+
+"Test_name.c", line 39: error: declaration is incompatible with "short _Accum" (declared at line 38)
+  FUNC (unsigned _Accum, ua)
+  ^
+
+"Test_name.c", line 39: error: expected a ";"
+  FUNC (unsigned _Accum, ua)
+  ^
+
+"Test_name.c", line 40: error: declaration is incompatible with "short _Accum" (declared at line 39)
+  FUNC (unsigned long _Accum, ula)
+  ^
+
+"Test_name.c", line 40: error: expected a ";"
+  FUNC (unsigned long _Accum, ula)
+  ^
+
+"Test_name.c", line 41: error: declaration is incompatible with "short _Accum" (declared at line 40)
+  FUNC (unsigned long long _Accum, ulla)
+  ^
+
+"Test_name.c", line 41: error: expected a ";"
+  FUNC (unsigned long long _Accum, ulla)
+  ^
+
+"Test_name.c", line 42: warning: this declaration has no storage class or type specifier
+  FUNC (_Sat short _Accum, Ssa)
+  ^
+
+"Test_name.c", line 42: error: expected a ";"
+  FUNC (_Sat short _Accum, Ssa)
+  ^
+
+"Test_name.c", line 43: error: variable "_Sat" is not a type name
+  FUNC (_Sat _Accum, Sa)
+  ^
+
+"Test_name.c", line 43: error: expected a ";"
+  FUNC (_Sat _Accum, Sa)
+  ^
+
+"Test_name.c", line 44: warning: this declaration has no storage class or type specifier
+  FUNC (_Sat long _Accum, Sla)
+  ^
+
+"Test_name.c", line 44: error: expected a ";"
+  FUNC (_Sat long _Accum, Sla)
+  ^
+
+"Test_name.c", line 45: warning: this declaration has no storage class or type specifier
+  FUNC (_Sat long long _Accum, Slla)
+  ^
+
+"Test_name.c", line 45: error: expected a ";"
+  FUNC (_Sat long long _Accum, Slla)
+  ^
+
+"Test_name.c", line 46: warning: this declaration has no storage class or type specifier
+  FUNC (_Sat unsigned short _Accum, Susa)
+  ^
+
+"Test_name.c", line 46: error: expected a ";"
+  FUNC (_Sat unsigned short _Accum, Susa)
+  ^
+
+"Test_name.c", line 47: warning: this declaration has no storage class or type specifier
+  FUNC (_Sat unsigned _Accum, Sua)
+  ^
+
+"Test_name.c", line 47: error: expected a ";"
+  FUNC (_Sat unsigned _Accum, Sua)
+  ^
+
+"Test_name.c", line 48: warning: this declaration has no storage class or type specifier
+  FUNC (_Sat unsigned long _Accum, Sula)
+  ^
+
+"Test_name.c", line 48: error: expected a ";"
+  FUNC (_Sat unsigned long _Accum, Sula)
+  ^
+
+"Test_name.c", line 49: warning: this declaration has no storage class or type specifier
+  FUNC (_Sat unsigned long long _Accum, Sulla)
+  ^
+
+"Test_name.c", line 49: error: expected a ";"
+  FUNC (_Sat unsigned long long _Accum, Sulla)
+  ^
+
+"Test_name.c", line 92: warning: function "fsf" declared implicitly
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: warning: type qualifier is meaningless on cast type
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ")"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ";"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ")"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ")"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ")"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ")"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ")"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ")"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ")"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: warning: expression has no effect
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ";"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ")"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: warning: expression has no effect
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ";"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ")"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: warning: expression has no effect
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ";"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ")"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: warning: expression has no effect
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ";"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ")"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: warning: expression has no effect
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ";"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ")"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: warning: expression has no effect
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ";"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ")"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: warning: expression has no effect
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ";"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ")"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: warning: expression has no effect
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ";"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ")"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ";"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ")"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ")"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ")"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ")"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ")"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ")"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ")"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: warning: expression has no effect
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ";"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ")"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: warning: expression has no effect
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ";"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ")"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: warning: expression has no effect
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ";"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ")"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: warning: expression has no effect
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ";"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ")"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: warning: expression has no effect
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ";"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ")"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: warning: expression has no effect
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ";"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ")"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: warning: expression has no effect
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ";"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ")"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: warning: expression has no effect
+    TEST (sf);
+    ^
+
+"Test_name.c", line 92: error: expected a ";"
+    TEST (sf);
+    ^
+
+"Test_name.c", line 93: warning: type qualifier is meaningless on cast type
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ")"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ";"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ")"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ")"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ")"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ")"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ")"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ")"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ")"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: warning: expression has no effect
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ";"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ")"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: warning: expression has no effect
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ";"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ")"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: warning: expression has no effect
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ";"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ")"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: warning: expression has no effect
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ";"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ")"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: warning: expression has no effect
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ";"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ")"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: warning: expression has no effect
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ";"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ")"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: warning: expression has no effect
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ";"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ")"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: warning: expression has no effect
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ";"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ")"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ";"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ")"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ")"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ")"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ")"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ")"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ")"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ")"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: warning: expression has no effect
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ";"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ")"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: warning: expression has no effect
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ";"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ")"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: warning: expression has no effect
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ";"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ")"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: warning: expression has no effect
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ";"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ")"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: warning: expression has no effect
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ";"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ")"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: warning: expression has no effect
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ";"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ")"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: warning: expression has no effect
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ";"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ")"
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: warning: expression has no effect
+    TEST (f);
+    ^
+
+"Test_name.c", line 93: error: expected a ";"
+    TEST (f);
+    ^
+
+"Test_name.c", line 94: warning: function "flf" declared implicitly
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: warning: type qualifier is meaningless on cast type
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ")"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ";"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ")"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ")"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ")"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ")"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ")"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ")"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ")"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: warning: expression has no effect
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ";"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ")"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: warning: expression has no effect
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ";"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ")"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: warning: expression has no effect
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ";"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ")"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: warning: expression has no effect
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ";"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ")"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: warning: expression has no effect
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ";"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ")"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: warning: expression has no effect
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ";"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ")"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: warning: expression has no effect
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ";"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ")"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: warning: expression has no effect
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ";"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ")"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ";"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ")"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ")"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ")"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ")"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ")"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ")"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ")"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: warning: expression has no effect
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ";"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ")"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: warning: expression has no effect
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ";"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ")"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: warning: expression has no effect
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ";"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ")"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: warning: expression has no effect
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ";"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ")"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: warning: expression has no effect
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ";"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ")"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: warning: expression has no effect
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ";"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ")"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: warning: expression has no effect
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ";"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ")"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: warning: expression has no effect
+    TEST (lf);
+    ^
+
+"Test_name.c", line 94: error: expected a ";"
+    TEST (lf);
+    ^
+
+"Test_name.c", line 95: warning: function "fllf" declared implicitly
+    TEST (llf);
+    ^
+
+"Test_name.c", line 95: warning: type qualifier is meaningless on cast type
+    TEST (llf);
+    ^
+
+"Test_name.c", line 95: error: expected a ")"
+    TEST (llf);
+    ^
+
+"Test_name.c", line 95: error: expected a ";"
+    TEST (llf);
+    ^
+
+"Test_name.c", line 95: error: expected a ")"
+    TEST (llf);
+    ^
+
+"Test_name.c", line 95: error: expected a ")"
+    TEST (llf);
+    ^
+
+"Test_name.c", line 95: error: expected a ")"
+    TEST (llf);
+    ^
+
+"Test_name.c", line 95: error: expected a ")"
+    TEST (llf);
+    ^
+
+"Test_name.c", line 95: error: expected a ")"
+    TEST (llf);
+    ^
+
+"Test_name.c", line 95: error: expected a ")"
+    TEST (llf);
+    ^
+
+"Test_name.c", line 95: error: expected a ")"
+    TEST (llf);
+    ^
+
+"Test_name.c", line 95: warning: expression has no effect
+    TEST (llf);
+    ^
+
+"Test_name.c", line 95: error: expected a ";"
+    TEST (llf);
+    ^
+
+Error limit reached.
+200 errors detected in the compilation of "Test_name.c".
+Compilation terminated.

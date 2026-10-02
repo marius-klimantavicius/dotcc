@@ -1,0 +1,84 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 32: warning: operand types are incompatible ("int *" and "long long *")
+  enum e2 { e2a = (long long) -__INT_MAX__ - 1, TYPE_CHECK (e2a, int),
+                                                ^
+
+"Test_name.c", line 33: warning: operand types are incompatible ("int *" and "unsigned int *")
+  	  e2b = (unsigned int) __INT_MAX__, TYPE_CHECK (e2b, int),
+  	                                    ^
+
+"Test_name.c", line 62: error: declaration is incompatible with "enum e4 e4v" (declared at line 61)
+  extern typeof (e4a) e4v;
+                      ^
+
+"Test_name.c", line 63: error: declaration is incompatible with "enum e4 e4v" (declared at line 61)
+  extern typeof (e4b) e4v;
+                      ^
+
+"Test_name.c", line 64: error: declaration is incompatible with "enum e4 e4v" (declared at line 61)
+  extern typeof (e4c) e4v;
+                      ^
+
+"Test_name.c", line 65: error: declaration is incompatible with "enum e4 e4v" (declared at line 61)
+  extern typeof (e4d) e4v;
+                      ^
+
+"Test_name.c", line 66: error: declaration is incompatible with "enum e4 e4v" (declared at line 61)
+  extern typeof (e4e) e4v;
+                      ^
+
+"Test_name.c", line 67: error: declaration is incompatible with "enum e4 e4v" (declared at line 61)
+  extern typeof (e4f) e4v;
+                      ^
+
+"Test_name.c", line 68: error: declaration is incompatible with "enum e4 e4v" (declared at line 61)
+  extern typeof (e4g) e4v;
+                      ^
+
+"Test_name.c", line 75: error: static assertion failed
+  static_assert (e4d == 1);
+  ^
+"Test_name.c", line 75: note: the final comparison was 0 == 1
+  static_assert (e4d == 1);
+                     ^
+
+"Test_name.c", line 90: warning: operand types are incompatible ("int *" and "long *")
+  	  TYPE_CHECK (e5a, int),
+  	  ^
+
+"Test_name.c", line 94: error: declaration is incompatible with "enum e5 e5v" (declared at line 93)
+  extern typeof (e5a) e5v;
+                      ^
+
+"Test_name.c", line 95: error: declaration is incompatible with "enum e5 e5v" (declared at line 93)
+  extern typeof (e5b) e5v;
+                      ^
+
+"Test_name.c", line 96: error: declaration is incompatible with "enum e5 e5v" (declared at line 93)
+  extern typeof (e5c) e5v;
+                      ^
+
+"Test_name.c", line 97: error: declaration is incompatible with "enum e5 e5v" (declared at line 93)
+  extern typeof (e5d) e5v;
+                      ^
+
+"Test_name.c", line 98: error: declaration is incompatible with "enum e5 e5v" (declared at line 93)
+  extern typeof (e5e) e5v;
+                      ^
+
+"Test_name.c", line 99: error: declaration is incompatible with "enum e5 e5v" (declared at line 93)
+  extern typeof (e5f) e5v;
+                      ^
+
+"Test_name.c", line 100: error: declaration is incompatible with "enum e5 e5v" (declared at line 93)
+  extern typeof (e5g) e5v;
+                      ^
+
+"Test_name.c", line 107: error: static assertion failed
+  static_assert (e5d == 1);
+  ^
+"Test_name.c", line 107: note: the final comparison was 0 == 1
+  static_assert (e5d == 1);
+                     ^
+
+16 errors detected in the compilation of "Test_name.c".

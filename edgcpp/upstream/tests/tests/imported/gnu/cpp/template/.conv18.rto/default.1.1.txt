@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 15: error: no instance of function template "f" matches the argument list
+            argument types are: (const int *, int, int)
+    f(&p, 0, 0); // { dg-warning "invalid conversion" }
+    ^
+"Test_name.c", line 11: note: function template "f" does not match because argument #1 does not match parameter
+  template<class T> void f(typename type_identity<T>::type*, T, int*);
+                         ^
+
+1 error detected in the compilation of "Test_name.c".

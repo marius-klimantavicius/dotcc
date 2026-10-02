@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --ms_compatibility Test_name.c
+"Test_name.c", line 67: error: "enclosing_friend_func::ns::A::A()" (declared at line 64) is inaccessible
+  void f() { ns::A x; } // expected-error {{calling a protected constructor of class 'enclosing_friend_func::ns::A'}}
+                   ^
+
+"Test_name.c", line 103: warning: variable "b" was declared but never referenced
+    Z *b;
+       ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 7: error: identifier "c" is undefined
+  void b(a c = [] { return c; }); // expected-error {{initialization of incomplete type 'a'}} \
+                           ^
+
+"Test_name.c", line 7: error: cannot convert to incomplete class "a"
+  void b(a c = [] { return c; }); // expected-error {{initialization of incomplete type 'a'}} \
+               ^
+
+2 errors detected in the compilation of "Test_name.c".

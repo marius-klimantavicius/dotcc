@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics -w Test_name.c
+"Test_name.c", line 125: error: a value of type "int" cannot be used to initialize an entity of type "__m256d" (aka "__attribute((vector_size(32))) double")
+    pset1___trans_tmp_1 = __m256d{__A};
+                                  ^
+
+1 error detected in the compilation of "Test_name.c".

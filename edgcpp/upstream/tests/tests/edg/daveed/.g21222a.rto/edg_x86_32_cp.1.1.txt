@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c++17 Test_name.c
+"Test_name.c", line 4: warning: declaration of "size_t" does not match the expected type "unsigned int"
+  typedef unsigned long size_t;
+                        ^
+
+"Test_name.c", line 6: error: first parameter of allocation function must be of type "size_t"
+  void *operator new[](size_t);
+        ^
+
+1 error detected in the compilation of "Test_name.c".

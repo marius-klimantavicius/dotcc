@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --c++17 -A -tused Test_name.c
+"Test_name.c", line 16: warning: variable "dr" was declared but never referenced
+      D &dr = static_cast<D&>(br);  // Okay?
+         ^
+

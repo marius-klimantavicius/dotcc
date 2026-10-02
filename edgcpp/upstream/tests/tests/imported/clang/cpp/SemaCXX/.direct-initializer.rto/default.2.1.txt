@@ -1,0 +1,46 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 13: warning: variable "x" was declared but never referenced
+    for (int x(1);;) {}
+             ^
+
+"Test_name.c", line 11: warning: variable "x" was declared but never referenced
+    int x(1);
+        ^
+
+"Test_name.c", line 12: warning: variable "x2" was declared but never referenced
+    int (x2)(1);
+         ^
+
+"Test_name.c", line 43: error: no instance of constructor "X::X" matches the argument list
+            argument types are: (double, double)
+    X x3(1.0, 1.0); // expected-error{{no matching constructor for initialization of 'X'}}
+         ^
+"Test_name.c", line 20: note: number of parameters of function "X::X(const X &)" does not match the call
+  class X { // expected-note{{candidate constructor (the implicit copy constructor)}}
+        ^
+"Test_name.c", line 20: note: number of parameters of function "X::X(X &&)" does not match the call
+  class X { // expected-note{{candidate constructor (the implicit copy constructor)}}
+        ^
+"Test_name.c", line 28: note: function "X::X(float, Y)" does not match because argument #2 does not match parameter
+    X(float, Y); // expected-note{{candidate constructor}}
+    ^
+"Test_name.c", line 27: note: number of parameters of function "X::X(float, float, float)" does not match the call
+    X(float, float, float); // expected-note{{candidate constructor}}
+    ^
+"Test_name.c", line 26: note: number of parameters of function "X::X(int)" does not match the call
+    explicit X(int); // expected-note{{candidate constructor}}
+             ^
+
+"Test_name.c", line 47: error: no default constructor exists for class "Z"
+    Z z; // expected-error{{no matching constructor for initialization of 'Z'}}
+      ^
+
+"Test_name.c", line 47: warning: variable "z" was declared but never referenced
+    Z z; // expected-error{{no matching constructor for initialization of 'Z'}}
+      ^
+
+"Test_name.c", line 59: error: no suitable conversion function from "const Derived" to "int *" exists
+          int *pi = cd;	// expected-error {{no viable conversion from 'const Derived' to 'int *'}}
+                    ^
+
+3 errors detected in the compilation of "Test_name.c".

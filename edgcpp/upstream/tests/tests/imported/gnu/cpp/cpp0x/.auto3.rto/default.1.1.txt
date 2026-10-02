@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp0x/auto3.C", line 6: error: cannot deduce "auto" type (initializer required)
+  auto x;
+       ^
+
+"./cpp0x/auto3.C", line 10: error: "auto" type is "double" for this entity, but was previously implied to be "int"
+  auto i = 42, j = 42.0;
+               ^
+
+"./cpp0x/auto3.C", line 13: error: "auto" type cannot appear in top-level array type
+  auto a[2] = { 1, 2 };
+  ^
+
+"./cpp0x/auto3.C", line 20: error: "auto" is not allowed here
+  A<auto> A2 = A1;
+    ^
+
+"./cpp0x/auto3.C", line 20: error: class "A<<error-type>>" has no suitable copy constructor
+  A<auto> A2 = A1;
+               ^
+
+"./cpp0x/auto3.C", line 22: error: "auto" function requires a trailing return type
+  auto foo() { }
+  ^
+
+"./cpp0x/auto3.C", line 24: error: "auto" is not allowed here
+  void bar(auto i)
+           ^
+
+7 errors detected in the compilation of "Test_name.c".

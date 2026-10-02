@@ -1,0 +1,10 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./dfp/typeid1.C", line 6: warning: a user-provided literal suffix must begin with "_"
+  const std::type_info &r = typeid(0.dd);
+                                   ^
+
+"./dfp/typeid1.C", line 6: error: user-defined literal operator not found
+  const std::type_info &r = typeid(0.dd);
+                                   ^
+
+1 error detected in the compilation of "Test_name.c".

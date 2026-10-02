@@ -1,0 +1,46 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 6: warning: declaration of "size_t" does not match the expected type "unsigned long"
+  typedef int size_t;
+              ^
+
+"Test_name.c", line 42: error: too many arguments for class template "pack_c"
+  struct make_index_pack_join<pack_c<size_t, Left...>, pack_c<size_t, Right...>>
+                                             ^
+
+"Test_name.c", line 42: error: too many arguments for class template "pack_c"
+  struct make_index_pack_join<pack_c<size_t, Left...>, pack_c<size_t, Right...>>
+                                                                      ^
+
+"Test_name.c", line 41: warning: constant "Left" is not used in or cannot be deduced from the template argument list of class template "make_index_pack_join<<error-type>, <error-type>>"
+  template <size_t... Left, size_t... Right>
+                      ^
+
+"Test_name.c", line 41: warning: constant "Right" is not used in or cannot be deduced from the template argument list of class template "make_index_pack_join<<error-type>, <error-type>>"
+  template <size_t... Left, size_t... Right>
+                                      ^
+
+"Test_name.c", line 53: error: too many arguments for class template "pack_c"
+  struct tuple_impl<pack_c<size_t, Is...>, Ts...> {
+                                   ^
+
+"Test_name.c", line 52: warning: constant "Is" is not used in or cannot be deduced from the template argument list of class template "tuple_impl<<error-type>, Ts...>"
+  template <size_t... Is, typename... Ts>
+                      ^
+
+"Test_name.c", line 55: warning: constant "<unnamed>" is not used in declaring the parameter types of function template "tuple_impl<<error-type>, Ts...>::tuple_impl"
+                                   tuple<>, UTuple>::value>::type>
+                                                                 ^
+
+"Test_name.c", line 46: error: incomplete type "make_index_pack_join<pack_c<size_t>::type, pack_c<size_t>::type>" (aka "make_index_pack_join<pack_c<int>, pack_c<int>>") is not allowed
+      : make_index_pack_join<typename I<N / 2>::type, typename I<N / 2>::type> {};
+        ^
+          detected during:
+            instantiation of class "I<N> [with N=2]" at line 59
+            instantiation of class "tuple<Ts...> [with Ts=<const char *, const char *>]" at line 64
+
+"Test_name.c", line 59: error: class "I<2>" has no member "type"
+    tuple_impl<typename I<sizeof...(Ts)>::type> _impl;
+                                          ^
+          detected during instantiation of class "tuple<Ts...> [with Ts=<const char *, const char *>]" at line 64
+
+5 errors detected in the compilation of "Test_name.c".

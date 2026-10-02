@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 11: error: function "foo(Base &)" has already been defined (previous definition at line 11)
+    friend int foo(Base&) requires (N == 1) { return 1; }  // #1
+               ^
+          detected during instantiation of class "S<N> [with N=2]" at line 21
+
+"Test_name.c", line 12: error: function "foo(Base &)" has already been defined (previous definition at line 12)
+    friend int foo(Base&) requires (N == 2) { return 3; }  // #2
+               ^
+          detected during instantiation of class "S<N> [with N=2]" at line 21
+
+"Test_name.c", line 26: error: identifier "foo" is undefined
+  int y = foo(s2);  // OK, selects #2
+          ^
+
+3 errors detected in the compilation of "Test_name.c".

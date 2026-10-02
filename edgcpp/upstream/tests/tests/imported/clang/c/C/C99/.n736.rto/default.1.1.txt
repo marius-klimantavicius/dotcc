@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 11: error: identifier "__INTMAX_MAX__" is undefined
+  _Static_assert(__INTMAX_MAX__ == __LONG_LONG_MAX__,
+                 ^
+
+"Test_name.c", line 11: error: identifier "__LONG_LONG_MAX__" is undefined
+  _Static_assert(__INTMAX_MAX__ == __LONG_LONG_MAX__,
+                                   ^
+
+"Test_name.c", line 15: error: identifier "__UINTMAX_MAX__" is undefined
+  _Static_assert(__UINTMAX_MAX__ == (__LONG_LONG_MAX__ * 2ULL + 1ULL),
+                 ^
+
+"Test_name.c", line 44: warning: integer operation result is out of range
+  #if 9223372036854775807LL + 1LL // expected-warning {{integer overflow in preprocessor expression}}
+                            ^
+
+"Test_name.c", line 47: warning: integer operation result is out of range
+  #if -9223372036854775807LL - 2LL // expected-warning {{integer overflow in preprocessor expression}}
+                             ^
+
+3 errors detected in the compilation of "Test_name.c".

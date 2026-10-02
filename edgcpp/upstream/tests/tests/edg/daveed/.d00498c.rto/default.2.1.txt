@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=2 --c Test_name.c
+"Test_name.c", line 17: warning: variable "x" was declared but never referenced
+  	unsigned int x;
+  	             ^
+
+"Test_name.c", line 20: error: declaration is incompatible with "int x" (declared at line 14)
+  unsigned int x;
+               ^
+
+1 error detected in the compilation of "Test_name.c".

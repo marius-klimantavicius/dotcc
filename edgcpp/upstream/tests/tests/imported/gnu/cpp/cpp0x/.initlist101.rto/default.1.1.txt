@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp0x/initlist101.C", line 8: error: no instance of constructor "D::D" matches the argument list
+            argument types are: (B<C>)
+  struct D : C {} d { B<C> { D {} } };
+                    ^
+"./cpp0x/initlist101.C", line 8: note: function "D::D(const D &)" does not match because argument #1 does not match parameter
+  struct D : C {} d { B<C> { D {} } };
+         ^
+"./cpp0x/initlist101.C", line 8: note: function "D::D(D &&)" does not match because argument #1 does not match parameter
+  struct D : C {} d { B<C> { D {} } };
+         ^
+"./cpp0x/initlist101.C", line 8: note: number of parameters of function "D::D()" does not match the call
+  struct D : C {} d { B<C> { D {} } };
+         ^
+
+1 error detected in the compilation of "Test_name.c".

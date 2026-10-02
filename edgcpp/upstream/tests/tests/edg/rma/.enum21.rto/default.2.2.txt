@@ -1,0 +1,10 @@
+./a.out
+sa: 7f = ffffffff, ffffffff, ffffffff
+sb: 0 = 0, 0, 0
+sc: 51 = 1, 1, ffffffff
+sa.s.x == a
+sa.s.y == a
+sa.s.z == a
+sc.s.x == c
+sc.s.y == c
+sc.s.z != c

@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=1 --c++11 --gn 150100 Test_name.c
+"Test_name.c", line 6: error: argument of type "int *" is incompatible with parameter of type "int"
+    __atomic_compare_exchange_n(p1, p2, v, false, p, 0);
+                                                  ^
+
+"Test_name.c", line 7: error: argument of type "int *" is incompatible with parameter of type "int"
+    __atomic_compare_exchange_n(p1, p2, v, false, 0, p);
+                                                     ^
+
+"Test_name.c", line 12: error: argument of type "char *" is incompatible with parameter of type "unsigned char"
+    __atomic_compare_exchange_1(p1, p2, v, false, 0, 0);
+                                        ^
+
+"Test_name.c", line 13: error: argument of type "char *" is incompatible with parameter of type "unsigned short"
+    __atomic_compare_exchange_2(p1, p2, v, false, 0, 0);
+                                        ^
+
+"Test_name.c", line 14: error: argument of type "char *" is incompatible with parameter of type "unsigned int"
+    __atomic_compare_exchange_4(p1, p2, v, false, 0, 0);
+                                        ^
+
+"Test_name.c", line 15: error: argument of type "char *" is incompatible with parameter of type "unsigned long"
+    __atomic_compare_exchange_8(p1, p2, v, false, 0, 0);
+                                        ^
+
+"Test_name.c", line 20: error: argument of type "int *" is incompatible with parameter of type "int"
+    __atomic_add_fetch(p, v, q);
+                             ^
+
+"Test_name.c", line 25: error: argument of type "char *" is incompatible with parameter of type "unsigned char"
+    __sync_bool_compare_and_swap_1(p, v1, v2);
+                                      ^
+
+"Test_name.c", line 25: error: argument of type "char *" is incompatible with parameter of type "unsigned char"
+    __sync_bool_compare_and_swap_1(p, v1, v2);
+                                          ^
+
+"Test_name.c", line 26: error: argument of type "char *" is incompatible with parameter of type "unsigned short"
+    __sync_bool_compare_and_swap_2(p, v1, v2);
+                                      ^
+
+"Test_name.c", line 26: error: argument of type "char *" is incompatible with parameter of type "unsigned short"
+    __sync_bool_compare_and_swap_2(p, v1, v2);
+                                          ^
+
+"Test_name.c", line 27: error: argument of type "char *" is incompatible with parameter of type "unsigned int"
+    __sync_bool_compare_and_swap_4(p, v1, v2);
+                                      ^
+
+"Test_name.c", line 27: error: argument of type "char *" is incompatible with parameter of type "unsigned int"
+    __sync_bool_compare_and_swap_4(p, v1, v2);
+                                          ^
+
+"Test_name.c", line 28: error: argument of type "char *" is incompatible with parameter of type "unsigned long"
+    __sync_bool_compare_and_swap_8(p, v1, v2);
+                                      ^
+
+"Test_name.c", line 28: error: argument of type "char *" is incompatible with parameter of type "unsigned long"
+    __sync_bool_compare_and_swap_8(p, v1, v2);
+                                          ^
+
+15 errors detected in the compilation of "Test_name.c".

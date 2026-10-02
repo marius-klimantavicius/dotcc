@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=2 --gcc Test_name.c
+"Test_name.c", line 14: error: integer constant is too large
+  enum a { i = 0x400000000000000000000000000 };
+               ^
+
+1 error detected in the compilation of "Test_name.c".

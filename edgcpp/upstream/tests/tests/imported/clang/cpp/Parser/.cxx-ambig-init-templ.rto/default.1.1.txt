@@ -1,0 +1,441 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 11: error: expected a ";"
+    int k1 = a < b < c, d > ::val, e1;
+                          ^
+
+"Test_name.c", line 12: error: a nonstatic member reference must be relative to a specific object
+    int k2 = a < b, c < d > ::val, e2;
+                        ^
+
+"Test_name.c", line 12: error: qualified name is not allowed
+    int k2 = a < b, c < d > ::val, e2;
+                    ^
+
+"Test_name.c", line 13: error: "d" has already been declared in the current scope
+    int k3 = b < a < c, d > ::val, e3;
+                        ^
+
+"Test_name.c", line 13: error: expected a ";"
+    int k3 = b < a < c, d > ::val, e3;
+                          ^
+
+"Test_name.c", line 15: warning: qualified name is not allowed in member declaration
+    int k5 = T1 < b, &S::operator=(int); // expected-error {{extra qualification}}
+                      ^
+
+"Test_name.c", line 16: warning: qualified name is not allowed in member declaration
+    int k6 = T2 < b, &S::operator= >::val;
+                      ^
+
+"Test_name.c", line 16: error: an operator name must be declared as a function
+    int k6 = T2 < b, &S::operator= >::val;
+                         ^
+
+"Test_name.c", line 16: error: expected a ";"
+    int k6 = T2 < b, &S::operator= >::val;
+                                   ^
+
+"Test_name.c", line 17: warning: qualified name is not allowed in member declaration
+    int k7 = T1 < b, &S::operator>(int); // expected-error {{extra qualification}}
+                      ^
+
+"Test_name.c", line 18: warning: qualified name is not allowed in member declaration
+    int k8 = T2 < b, &S::operator> >::val;
+                      ^
+
+"Test_name.c", line 18: error: an operator name must be declared as a function
+    int k8 = T2 < b, &S::operator> >::val;
+                         ^
+
+"Test_name.c", line 18: error: expected a ";"
+    int k8 = T2 < b, &S::operator> >::val;
+                                   ^
+
+"Test_name.c", line 19: error: expected a ";"
+    int k9 = T3 < a < b, c >> (d), e5 = 1 > (e4);
+                           ^
+
+"Test_name.c", line 20: error: "c" has already been declared in the current scope
+    int k10 = 0 < T3 < a < b, c >> (d
+                              ^
+
+"Test_name.c", line 20: error: expected a ";"
+    int k10 = 0 < T3 < a < b, c >> (d
+                                ^
+
+"Test_name.c", line 23: error: "c" has already been declared in the current scope
+    int k11 = 0 < 1, c<3>::*ptr;
+                     ^
+
+"Test_name.c", line 23: error: expected a ";"
+    int k11 = 0 < 1, c<3>::*ptr;
+                      ^
+
+"Test_name.c", line 24: error: expected an identifier
+    int k12 = e < 0, int a<b<c>::* >(), e11;
+                     ^
+
+"Test_name.c", line 27: error: member "S::d" is not a type name
+      int k1 = a < b < c, d > ::val,
+                          ^
+
+"Test_name.c", line 27: error: expected a ")"
+      int k1 = a < b < c, d > ::val,
+                            ^
+
+"Test_name.c", line 33: warning: parsing restarts here after previous syntax error
+    );
+    ^
+
+"Test_name.c", line 36: error: member "S::c" is not a type name
+      int k6 = a < b, c < d > (f)
+                      ^
+
+"Test_name.c", line 36: error: expected a ")"
+      int k6 = a < b, c < d > (f)
+                        ^
+
+"Test_name.c", line 38: error: too few arguments in function call
+    using f1b_T = decltype(f1b(0)); // only one parameter, because second param
+                                ^
+
+"Test_name.c", line 43: error: T3 is not a template
+      int k1 = c < b, T3 < int > x = 0 // expected-error {{no template named 'T3'}}
+                      ^
+
+"Test_name.c", line 55: error: member "S::c" is not a type name
+    int f3(int = a < b, c < goobar > ());
+                        ^
+
+"Test_name.c", line 55: error: expected a ")"
+    int f3(int = a < b, c < goobar > ());
+                          ^
+
+"Test_name.c", line 59: error: expected a type specifier
+      int k1 = a<1,2>::val,
+                   ^
+
+"Test_name.c", line 80: error: "c" has already been declared in the current scope
+    static const int b = 0, c = 1, d = 2, goobar = 3;
+                            ^
+
+"Test_name.c", line 80: error: "d" has already been declared in the current scope
+    static const int b = 0, c = 1, d = 2, goobar = 3;
+                                   ^
+
+"Test_name.c", line 27: error: default argument not at end of parameter list
+      int k1 = a < b < c, d > ::val,
+               ^
+
+"Test_name.c", line 27: error: expected a ">"
+      int k1 = a < b < c, d > ::val,
+                        ^
+
+"Test_name.c", line 36: error: default argument not at end of parameter list
+      int k6 = a < b, c < d > (f)
+               ^
+
+"Test_name.c", line 36: error: expected a ">"
+      int k6 = a < b, c < d > (f)
+                    ^
+
+"Test_name.c", line 55: error: default argument not at end of parameter list
+    int f3(int = a < b, c < goobar > ());
+                 ^
+
+"Test_name.c", line 55: error: expected a ">"
+    int f3(int = a < b, c < goobar > ());
+                      ^
+
+"Test_name.c", line 59: error: default argument not at end of parameter list
+      int k1 = a<1,2>::val,
+               ^
+
+"Test_name.c", line 59: error: expected a ">"
+      int k1 = a<1,2>::val,
+                  ^
+
+"Test_name.c", line 64: error: default argument not at end of parameter list
+      int k1 = b < c,
+               ^
+
+"Test_name.c", line 70: error: default argument not at end of parameter list
+      int k = b < c, // expected-error {{unexpected end of default argument}}
+              ^
+
+"Test_name.c", line 11: error: expected a ">"
+    int k1 = a < b < c, d > ::val, e1;
+                      ^
+
+"Test_name.c", line 12: error: expected a ">"
+    int k2 = a < b, c < d > ::val, e2;
+                  ^
+
+"Test_name.c", line 13: error: expected a ">"
+    int k3 = b < a < c, d > ::val, e3;
+                      ^
+
+"Test_name.c", line 16: error: too few arguments for class template "S::T2"
+    int k6 = T2 < b, &S::operator= >::val;
+                   ^
+
+"Test_name.c", line 18: error: too few arguments for class template "S::T2"
+    int k8 = T2 < b, &S::operator> >::val;
+                   ^
+
+"Test_name.c", line 19: error: expected a ">"
+    int k9 = T3 < a < b, c >> (d), e5 = 1 > (e4);
+                       ^
+
+"Test_name.c", line 19: error: expected a ">"
+    int k9 = T3 < a < b, c >> (d), e5 = 1 > (e4);
+                       ^
+
+"Test_name.c", line 20: error: expected a ">"
+    int k10 = 0 < T3 < a < b, c >> (d
+                            ^
+
+"Test_name.c", line 20: error: expected a ">"
+    int k10 = 0 < T3 < a < b, c >> (d
+                            ^
+
+"Test_name.c", line 24: error: too few arguments for class template "S::e"
+    int k12 = e < 0, int a<b<c>::* >(), e11;
+                   ^
+
+"Test_name.c", line 103: error: expected a ")"
+      int f(Bool<true> = X<Y, Bool<in_class> >(0));
+                                             ^
+
+"Test_name.c", line 103: error: default argument not at end of parameter list
+      int f(Bool<true> = X<Y, Bool<in_class> >(0));
+                         ^
+
+"Test_name.c", line 103: error: too few arguments for alias template "NoAnnotationTokens::Test::X"
+      int f(Bool<true> = X<Y, Bool<in_class> >(0));
+                            ^
+
+"Test_name.c", line 115: error: a class or namespace qualified name is required
+    template<typename T> struct HasError { typename T::error error; }; // expected-error {{has no members}}
+                                                    ^
+          detected during instantiation of class "ImplicitInstantiation::HasError<T> [with T=int]" at line 120
+
+"Test_name.c", line 115: error: global-scope qualifier (leading "::") is not allowed
+    template<typename T> struct HasError { typename T::error error; }; // expected-error {{has no members}}
+                                                     ^
+          detected during instantiation of class "ImplicitInstantiation::HasError<T> [with T=int]" at line 120
+
+"Test_name.c", line 115: error: expected a ";"
+    template<typename T> struct HasError { typename T::error error; }; // expected-error {{has no members}}
+                                                             ^
+          detected during instantiation of class "ImplicitInstantiation::HasError<T> [with T=int]" at line 120
+
+"Test_name.c", line 120: error: class "ImplicitInstantiation::HasError<int>" has no member "Z"
+      void f(int a = X<Y, HasError<int>::Z >()); // expected-note {{in instantiation of}}
+                                         ^
+
+"Test_name.c", line 120: error: expected a ")"
+      void f(int a = X<Y, HasError<int>::Z >()); // expected-note {{in instantiation of}}
+                                           ^
+
+"Test_name.c", line 120: error: default argument not at end of parameter list
+      void f(int a = X<Y, HasError<int>::Z >()); // expected-note {{in instantiation of}}
+                     ^
+
+"Test_name.c", line 120: error: too few arguments for class template "ImplicitInstantiation::S::X"
+      void f(int a = X<Y, HasError<int>::Z >()); // expected-note {{in instantiation of}}
+                        ^
+
+"Test_name.c", line 162: error: an operator name must be declared as a function
+      int k1 = T1<0, operator<, operator>, operator<>::val, l1;
+                     ^
+
+"Test_name.c", line 162: error: an operator name must be declared as a function
+      int k1 = T1<0, operator<, operator>, operator<>::val, l1;
+                                ^
+
+"Test_name.c", line 162: error: an operator name must be declared as a function
+      int k1 = T1<0, operator<, operator>, operator<>::val, l1;
+                                           ^
+
+"Test_name.c", line 162: error: expected a ";"
+      int k1 = T1<0, operator<, operator>, operator<>::val, l1;
+                                                    ^
+
+"Test_name.c", line 163: error: an operator name must be declared as a function
+      int k2 = T1<0, operator>, operator,, operator,>::val, l2;
+                     ^
+
+"Test_name.c", line 163: error: an operator name must be declared as a function
+      int k2 = T1<0, operator>, operator,, operator,>::val, l2;
+                                ^
+
+"Test_name.c", line 163: error: an operator name must be declared as a function
+      int k2 = T1<0, operator>, operator,, operator,>::val, l2;
+                                           ^
+
+"Test_name.c", line 163: error: expected a ";"
+      int k2 = T1<0, operator>, operator,, operator,>::val, l2;
+                                                    ^
+
+"Test_name.c", line 164: error: expected a ")"
+      int k3 = T2<0, operator,(Y{}, Y{}),  operator<(Y{}, Y{})>::val, l3;
+                                ^
+
+"Test_name.c", line 164: error: expected a ";"
+      int k3 = T2<0, operator,(Y{}, Y{}),  operator<(Y{}, Y{})>::val, l3;
+                                ^
+
+"Test_name.c", line 164: error: expected a declaration
+      int k3 = T2<0, operator,(Y{}, Y{}),  operator<(Y{}, Y{})>::val, l3;
+                                  ^
+
+"Test_name.c", line 165: error: expected a ")"
+      int k4 = T2<0, operator>(Y{}, Y{}),  operator,(Y{}, Y{})>::val, l4;
+                                ^
+
+"Test_name.c", line 165: error: expected a ";"
+      int k4 = T2<0, operator>(Y{}, Y{}),  operator,(Y{}, Y{})>::val, l4;
+                                ^
+
+"Test_name.c", line 165: error: expected a declaration
+      int k4 = T2<0, operator>(Y{}, Y{}),  operator,(Y{}, Y{})>::val, l4;
+                                  ^
+
+"Test_name.c", line 166: error: an operator name must be declared as a function
+      int k5 = T3<0, operator>>>::val, l5;
+                     ^
+
+"Test_name.c", line 166: error: expected a ";"
+      int k5 = T3<0, operator>>>::val, l5;
+                               ^
+
+"Test_name.c", line 167: error: T3 is not a template
+      int k6 = T4<0, T3<0, operator>>>>::val, l6;
+                     ^
+
+"Test_name.c", line 167: error: expected a ";"
+      int k6 = T4<0, T3<0, operator>>>>::val, l6;
+                                     ^
+
+"Test_name.c", line 160: error: nonstandard form for taking the address of a member function
+      void f(Fn a = operator,, Fn b = operator<, Fn c = operator>);
+                    ^
+
+"Test_name.c", line 160: error: default argument of type "int (Operators::X::*)(Operators::Y)" is incompatible with parameter of type "Operators::X::Fn" (aka "int (*)(const Operators::Y &, const Operators::Y &)")
+      void f(Fn a = operator,, Fn b = operator<, Fn c = operator>);
+                    ^
+
+"Test_name.c", line 160: error: nonstandard form for taking the address of a member function
+      void f(Fn a = operator,, Fn b = operator<, Fn c = operator>);
+                                                        ^
+
+"Test_name.c", line 160: error: default argument of type "int (Operators::X::*)(Operators::Y)" is incompatible with parameter of type "Operators::X::Fn" (aka "int (*)(const Operators::Y &, const Operators::Y &)")
+      void f(Fn a = operator,, Fn b = operator<, Fn c = operator>);
+                                                        ^
+
+"Test_name.c", line 159: error: nonstandard form for taking the address of a member function
+      Fn a = operator,, b = operator<, c = operator>;
+             ^
+
+"Test_name.c", line 159: error: a value of type "int (Operators::X::*)(Operators::Y)" cannot be used to initialize an entity of type "Operators::X::Fn" (aka "int (*)(const Operators::Y &, const Operators::Y &)")
+      Fn a = operator,, b = operator<, c = operator>;
+             ^
+
+"Test_name.c", line 159: error: nonstandard form for taking the address of a member function
+      Fn a = operator,, b = operator<, c = operator>;
+                                           ^
+
+"Test_name.c", line 159: error: a value of type "int (Operators::X::*)(Operators::Y)" cannot be used to initialize an entity of type "Operators::X::Fn" (aka "int (*)(const Operators::Y &, const Operators::Y &)")
+      Fn a = operator,, b = operator<, c = operator>;
+                                           ^
+
+"Test_name.c", line 162: error: too few arguments for class template "Operators::X::T1"
+      int k1 = T1<0, operator<, operator>, operator<>::val, l1;
+                   ^
+
+"Test_name.c", line 163: error: too few arguments for class template "Operators::X::T1"
+      int k2 = T1<0, operator>, operator,, operator,>::val, l2;
+                   ^
+
+"Test_name.c", line 164: error: too few arguments for class template "Operators::X::T2"
+      int k3 = T2<0, operator,(Y{}, Y{}),  operator<(Y{}, Y{})>::val, l3;
+                   ^
+
+"Test_name.c", line 165: error: too few arguments for class template "Operators::X::T2"
+      int k4 = T2<0, operator>(Y{}, Y{}),  operator,(Y{}, Y{})>::val, l4;
+                   ^
+
+"Test_name.c", line 166: error: too few arguments for class template "Operators::X::T3"
+      int k5 = T3<0, operator>>>::val, l5;
+                   ^
+
+"Test_name.c", line 167: error: too few arguments for class template "Operators::X::T4"
+      int k6 = T4<0, T3<0, operator>>>>::val, l6;
+                   ^
+
+"Test_name.c", line 164: warning: missing return statement at end of non-void function "Operators::X::operator,"
+      int k3 = T2<0, operator,(Y{}, Y{}),  operator<(Y{}, Y{})>::val, l3;
+                                 ^
+
+"Test_name.c", line 165: warning: missing return statement at end of non-void function "Operators::X::operator>"
+      int k4 = T2<0, operator>(Y{}, Y{}),  operator,(Y{}, Y{})>::val, l4;
+                                 ^
+
+"Test_name.c", line 178: error: expected a ")"
+      int f(int x = T<a, struct S>());
+                                 ^
+
+"Test_name.c", line 179: error: expected a ")"
+      int h(int x = T<a, union __attribute__(()) U>());
+                                                  ^
+
+"Test_name.c", line 180: error: forward declaration of enum type is nonstandard
+      int i(int x = T<a, enum E>());
+                              ^
+
+"Test_name.c", line 180: error: expected a ")"
+      int i(int x = T<a, enum E>());
+                               ^
+
+"Test_name.c", line 181: error: class "ElaboratedTypeSpecifiers::S" has no tag member named "T"
+      int j(int x = T<a, struct S::template T<0, enum E>>());
+                                            ^
+
+"Test_name.c", line 181: error: expected a ")"
+      int j(int x = T<a, struct S::template T<0, enum E>>());
+                                             ^
+
+"Test_name.c", line 178: error: default argument not at end of parameter list
+      int f(int x = T<a, struct S>());
+                    ^
+
+"Test_name.c", line 178: error: too few arguments for class template "ElaboratedTypeSpecifiers::S::T"
+      int f(int x = T<a, struct S>());
+                       ^
+
+"Test_name.c", line 179: error: default argument not at end of parameter list
+      int h(int x = T<a, union __attribute__(()) U>());
+                    ^
+
+"Test_name.c", line 179: error: too few arguments for class template "ElaboratedTypeSpecifiers::S::T"
+      int h(int x = T<a, union __attribute__(()) U>());
+                       ^
+
+"Test_name.c", line 180: error: default argument not at end of parameter list
+      int i(int x = T<a, enum E>());
+                    ^
+
+"Test_name.c", line 180: error: too few arguments for class template "ElaboratedTypeSpecifiers::S::T"
+      int i(int x = T<a, enum E>());
+                       ^
+
+"Test_name.c", line 181: error: default argument not at end of parameter list
+      int j(int x = T<a, struct S::template T<0, enum E>>());
+                    ^
+
+"Test_name.c", line 181: error: too few arguments for class template "ElaboratedTypeSpecifiers::S::T"
+      int j(int x = T<a, struct S::template T<0, enum E>>());
+                       ^
+
+102 errors detected in the compilation of "Test_name.c".

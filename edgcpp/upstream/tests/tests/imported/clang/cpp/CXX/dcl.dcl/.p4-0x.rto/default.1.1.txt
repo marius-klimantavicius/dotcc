@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 19: error: static assertion failed with "not so fast"
+  static_assert(S(false), "not so fast"); // expected-error {{not so fast}}
+  ^
+
+"Test_name.c", line 21: error: more than one conversion function from "U" to a built-in type applies:
+            function "U::operator int() const" (declared at line 14)
+            function "U::operator long() const" (declared at line 15)
+  static_assert(U(), ""); // expected-error {{ambiguous}}
+                ^
+
+"Test_name.c", line 23: error: static assertion failed with "?hi!""
+  static_assert(false, L"\x14hi" // expected-warning {{encoding prefix 'L' on an unevaluated string literal has no effect and is incompatible with c++2c}} \
+  ^
+
+3 errors detected in the compilation of "Test_name.c".

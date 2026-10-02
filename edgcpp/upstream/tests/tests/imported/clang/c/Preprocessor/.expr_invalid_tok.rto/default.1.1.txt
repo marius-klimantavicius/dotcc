@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 7: error: this operator is not allowed in a preprocessing expression
+  #if 1 * * 2
+          ^
+
+"Test_name.c", line 11: error: this operator is not allowed in a preprocessing expression
+  #if 4 [ 2
+        ^
+
+"Test_name.c", line 11: error: expected a "]"
+  #if 4 [ 2
+           ^
+
+"Test_name.c", line 17: error: extra text after expected end of preprocessing directive
+  #if 1 ? 2 : 0, 1
+               ^
+
+"Test_name.c", line 21: error: function call is not allowed in a constant expression
+  #if FOO(1, 2, 3)
+      ^
+
+"Test_name.c", line 25: error: function call is not allowed in a constant expression
+  #if 1 + BAR(1, 2, 3)
+          ^
+
+"Test_name.c", line 29: error: function call is not allowed in a constant expression
+  #if (FOO)(1, 2, 3)
+      ^
+
+7 errors detected in the compilation of "Test_name.c".

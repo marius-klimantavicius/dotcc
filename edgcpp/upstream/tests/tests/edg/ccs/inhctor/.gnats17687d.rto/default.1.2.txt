@@ -1,0 +1,7 @@
+./a.out
+y1var.vi = 30, y1var.vj = 33
+y1var.wi = 15, y1var.wj = 17
+y1var.xi = 5, y1var.xj = 0
+y2var.vi = 30, y2var.vj = 33
+y2var.wi = 10, y2var.wj = 0
+y2var.xi = 10, y2var.xj = 13

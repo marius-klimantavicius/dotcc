@@ -1,0 +1,5 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./torture/floatn-tg.h", line 27: warning: floating-point value does not fit in required floating-point type
+  volatile _Float16 inf = __builtin_inf (), nanval = __builtin_nan ("");
+                          ^
+

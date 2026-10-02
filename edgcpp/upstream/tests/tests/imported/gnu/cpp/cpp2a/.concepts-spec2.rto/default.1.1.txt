@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 16: error: no instance of overloaded function "A<T>::f [with T=int]" matches the specified type
+  template<> template<C<-2> U> void A<int>::f() { } // no match { dg-error "match" }
+                                            ^
+
+"Test_name.c", line 17: error: no instance of overloaded function "A<T>::f [with T=int]" matches the specified type
+  template<> template<class U> void A<int>::f() requires C<U, -1> { } // shouldn't match #3
+                                            ^
+
+2 errors detected in the compilation of "Test_name.c".

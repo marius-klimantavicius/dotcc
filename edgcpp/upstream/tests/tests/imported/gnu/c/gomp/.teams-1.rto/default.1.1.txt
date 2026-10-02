@@ -1,0 +1,57 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 9: warning: unrecognized #pragma
+    #pragma omp target teams
+            ^
+
+"Test_name.c", line 12: warning: statement is unreachable
+    goto bad2; // { dg-error "invalid entry to OpenMP structured block" }
+    ^
+
+"Test_name.c", line 13: warning: unrecognized #pragma
+    #pragma omp target teams
+            ^
+
+"Test_name.c", line 18: warning: unrecognized #pragma
+    #pragma omp target teams
+            ^
+
+"Test_name.c", line 28: warning: unrecognized #pragma
+    #pragma omp target teams // { dg-warning "statement will never be executed" }
+            ^
+
+"Test_name.c", line 37: warning: unrecognized #pragma
+    #pragma omp target
+            ^
+
+"Test_name.c", line 38: warning: unrecognized #pragma
+    #pragma omp teams
+            ^
+
+"Test_name.c", line 41: warning: statement is unreachable
+    goto bad2; // { dg-error "invalid entry to OpenMP structured block" }
+    ^
+
+"Test_name.c", line 42: warning: unrecognized #pragma
+    #pragma omp target
+            ^
+
+"Test_name.c", line 43: warning: unrecognized #pragma
+    #pragma omp teams
+            ^
+
+"Test_name.c", line 48: warning: unrecognized #pragma
+    #pragma omp target
+            ^
+
+"Test_name.c", line 49: warning: unrecognized #pragma
+    #pragma omp teams
+            ^
+
+"Test_name.c", line 59: warning: unrecognized #pragma
+    #pragma omp target // { dg-warning "statement will never be executed" }
+            ^
+
+"Test_name.c", line 60: warning: unrecognized #pragma
+    #pragma omp teams
+            ^
+

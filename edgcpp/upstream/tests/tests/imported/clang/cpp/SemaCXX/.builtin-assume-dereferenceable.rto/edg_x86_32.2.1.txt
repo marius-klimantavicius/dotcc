@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 33: error: argument of type "float" is incompatible with parameter of type "const void *"
+    __builtin_assume_dereferenceable(a, 2); // expected-error {{cannot initialize a parameter of type 'const void *' with an lvalue of type 'float'}}
+                                     ^
+
+"Test_name.c", line 38: error: too many arguments in function call
+    __builtin_assume_dereferenceable(a, 32, 1); // expected-error {{too many arguments to function call, expected 2, have 3}}
+                                            ^
+
+"Test_name.c", line 43: error: too few arguments in function call
+    __builtin_assume_dereferenceable(a); // expected-error {{too few arguments to function call, expected 2, have 1}}
+                                      ^
+
+"Test_name.c", line 48: error: a value of type "void" cannot be assigned to an entity of type "int"
+    a[0] = __builtin_assume_dereferenceable(a, 32); // expected-error {{assigning to 'int' from incompatible type 'void'}}
+         ^
+
+"Test_name.c", line 53: error: a value of type "void" cannot be used to initialize an entity of type "void *const"
+  constexpr void *l = __builtin_assume_dereferenceable(p, 4); // expected-error {{cannot initialize a variable of type 'void *const' with an rvalue of type 'void'}}
+                      ^
+
+"Test_name.c", line 60: error: argument of type "int *" is incompatible with parameter of type "unsigned int"
+    __builtin_assume_dereferenceable(a, a); // expected-error {{cannot initialize a parameter of type '__size_t' (aka 'unsigned long') with an lvalue of type 'int *'}}
+                                        ^
+
+6 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 58: error: expected an expression
+    int (^y)(long);
+         ^
+
+"Test_name.c", line 58: error: type name is not allowed
+    int (^y)(long);
+             ^
+
+"Test_name.c", line 59: error: identifier "y" is undefined
+    f = (f6 *)y; // expected-warning {{cast from 'int (^)(long)' to 'f6 *' (aka 'int (*)(long, int)') converts to incompatible function type}}
+              ^
+
+"Test_name.c", line 53: warning: variable "p1" was declared but never referenced
+    mf p1 = (mf)&S::foo; // expected-warning {{cast from 'void (S::*)(int *)' to 'mf' (aka 'void (S::*)(int)') converts to incompatible function type}}
+       ^
+
+3 errors detected in the compilation of "Test_name.c".

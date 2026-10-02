@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 8: error: "template" is not allowed
+  const template basic_istream<char>; // expected-error {{expected unqualified-id}}
+        ^
+
+"Test_name.c", line 8: error: basic_istream is not a template
+  const template basic_istream<char>; // expected-error {{expected unqualified-id}}
+                 ^
+
+2 errors detected in the compilation of "Test_name.c".

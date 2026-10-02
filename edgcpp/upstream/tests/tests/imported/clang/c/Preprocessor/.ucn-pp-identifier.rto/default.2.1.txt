@@ -1,0 +1,194 @@
+fe_only -DTEST_NUMBER=2 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 -DTRIGRAPHS=1 -DTRIGRAPHS=1 -DTRIGRAPHS=1 Test_name.c
+"Test_name.c", line 28: error: incorrectly formed universal character name
+  #if \uarecool // expected-warning{{incomplete universal character name; treating as '\' followed by identifier}} expected-error {{invalid token at start of a preprocessor expression}}
+         ^
+
+"Test_name.c", line 30: error: incorrectly formed universal character name
+  #if \uwerecool // expected-warning{{\u used with no following hex digits; treating as '\' followed by identifier}} expected-error {{invalid token at start of a preprocessor expression}}
+        ^
+
+"Test_name.c", line 32: error: incorrectly formed universal character name
+  #if \U0001000  // expected-warning{{incomplete universal character name; treating as '\' followed by identifier}} expected-error {{invalid token at start of a preprocessor expression}}
+               ^
+
+"Test_name.c", line 36: warning: this universal character is not allowed in an identifier
+  #define \ufffe // expected-error {{macro name must be an identifier}}
+          ^
+
+"Test_name.c", line 37: warning: a universal character name must designate a valid code point
+  #define \U10000000      // expected-error {{macro name must be an identifier}}
+          ^
+
+"Test_name.c", line 38: warning: a universal character name cannot designate a character in the basic character set
+  #define \u0061          // expected-error {{character 'a' cannot be specified by a universal character name}} expected-error {{macro name must be an identifier}}
+          ^
+
+"Test_name.c", line 39: warning: this universal character is not allowed in an identifier
+  #define \u{fffe}        // expected-error {{macro name must be an identifier}} \
+          ^
+
+"Test_name.c", line 41: warning: this universal character is not allowed in an identifier
+  #define \N{ALERT}       // expected-error {{universal character name refers to a control character}} \
+          ^
+
+"Test_name.c", line 44: warning: this universal character is not allowed in an identifier
+  #define \N{WASTEBASKET} // expected-error {{macro name must be an identifier}} \
+          ^
+
+"Test_name.c", line 46: warning: a universal character name cannot designate a character in the basic character set
+  #define a\u0024a  // expected-error {{character '$' cannot be specified by a universal character name}} \
+           ^
+
+"Test_name.c", line 54: error: division by zero
+  #if \u0110 // expected-error {{division by zero in preprocessor expression}}
+      ^
+
+"Test_name.c", line 116: error: incorrectly formed universal character name
+  #define capital_u_\U00FC
+                          ^
+
+"Test_name.c", line 123: error: a delimited escape sequence must have at least one character
+  #define \u{}           // expected-warning {{empty delimited universal character name; treating as '\' 'u' '{' '}'}} expected-error {{macro name must be an identifier}}
+             ^
+
+"Test_name.c", line 123: warning: white space is required between the macro name "\u" and its replacement text
+  #define \u{}           // expected-warning {{empty delimited universal character name; treating as '\' 'u' '{' '}'}} expected-error {{macro name must be an identifier}}
+            ^
+
+"Test_name.c", line 124: error: incorrectly formed universal character name
+  #define \u1{123}       // expected-warning {{incomplete universal character name; treating as '\' followed by identifier}} expected-error {{macro name must be an identifier}}
+             ^
+
+"Test_name.c", line 124: warning: white space is required between the macro name "\u0001" and its replacement text
+  #define \u1{123}       // expected-warning {{incomplete universal character name; treating as '\' followed by identifier}} expected-error {{macro name must be an identifier}}
+             ^
+
+"Test_name.c", line 125: warning: a universal character name must designate a valid code point
+  #define \u{123456789}  // expected-error {{hex escape sequence out of range}} expected-error {{macro name must be an identifier}}
+          ^
+
+"Test_name.c", line 126: error: unterminated delimited escape sequence
+  #define \u{            // expected-warning {{incomplete delimited universal character name; treating as '\' 'u' '{' identifier}} expected-error {{macro name must be an identifier}}
+             ^
+
+"Test_name.c", line 126: warning: white space is required between the macro name "\u" and its replacement text
+  #define \u{            // expected-warning {{incomplete delimited universal character name; treating as '\' 'u' '{' identifier}} expected-error {{macro name must be an identifier}}
+            ^
+
+"Test_name.c", line 126: warning: incompatible redefinition of macro "\u" (declared at line 123)
+  #define \u{            // expected-warning {{incomplete delimited universal character name; treating as '\' 'u' '{' identifier}} expected-error {{macro name must be an identifier}}
+          ^
+
+"Test_name.c", line 127: error: unterminated delimited escape sequence
+  #define \u{fgh}        // expected-warning {{incomplete delimited universal character name; treating as '\' 'u' '{' identifier}} expected-error {{macro name must be an identifier}}
+              ^
+
+"Test_name.c", line 127: warning: white space is required between the macro name "\u" and its replacement text
+  #define \u{fgh}        // expected-warning {{incomplete delimited universal character name; treating as '\' 'u' '{' identifier}} expected-error {{macro name must be an identifier}}
+            ^
+
+"Test_name.c", line 127: warning: incompatible redefinition of macro "\u" (declared at line 126)
+  #define \u{fgh}        // expected-warning {{incomplete delimited universal character name; treating as '\' 'u' '{' identifier}} expected-error {{macro name must be an identifier}}
+          ^
+
+"Test_name.c", line 128: error: character cannot appear in a Unicode name
+  #define \N{
+             ^
+
+"Test_name.c", line 128: warning: white space is required between the macro name "\N" and its replacement text
+  #define \N{
+            ^
+
+"Test_name.c", line 131: warning: empty named Unicode character escape
+  #define \N{}           // expected-warning {{empty delimited universal character name; treating as '\' 'N' '{' '}'}} expected-error {{macro name must be an identifier}}
+             ^
+
+"Test_name.c", line 131: warning: white space is required between the macro name "\N" and its replacement text
+  #define \N{}           // expected-warning {{empty delimited universal character name; treating as '\' 'N' '{' '}'}} expected-error {{macro name must be an identifier}}
+            ^
+
+"Test_name.c", line 131: warning: incompatible redefinition of macro "\N" (declared at line 128)
+  #define \N{}           // expected-warning {{empty delimited universal character name; treating as '\' 'N' '{' '}'}} expected-error {{macro name must be an identifier}}
+          ^
+
+"Test_name.c", line 132: error: the name "NOTATHING" does not designate a known Unicode character
+  #define \N{NOTATHING}  // expected-error {{'NOTATHING' is not a valid Unicode character name}} \
+             ^
+
+"Test_name.c", line 132: warning: white space is required between the macro name "\N" and its replacement text
+  #define \N{NOTATHING}  // expected-error {{'NOTATHING' is not a valid Unicode character name}} \
+            ^
+
+"Test_name.c", line 132: warning: incompatible redefinition of macro "\N" (declared at line 131)
+  #define \N{NOTATHING}  // expected-error {{'NOTATHING' is not a valid Unicode character name}} \
+          ^
+
+"Test_name.c", line 134: error: expected an identifier
+  #define \NN            // expected-warning {{incomplete universal character name; treating as '\' followed by identifier}} expected-error {{macro name must be an identifier}}
+          ^
+
+"Test_name.c", line 135: error: the name "GREEK_SMALL-LETTERALPHA" does not designate a known Unicode character
+  #define \N{GREEK_SMALL-LETTERALPHA}  // expected-error {{'GREEK_SMALL-LETTERALPHA' is not a valid Unicode character name}} \
+             ^
+
+"Test_name.c", line 135: warning: white space is required between the macro name "\N" and its replacement text
+  #define \N{GREEK_SMALL-LETTERALPHA}  // expected-error {{'GREEK_SMALL-LETTERALPHA' is not a valid Unicode character name}} \
+            ^
+
+"Test_name.c", line 135: warning: incompatible redefinition of macro "\N" (declared at line 132)
+  #define \N{GREEK_SMALL-LETTERALPHA}  // expected-error {{'GREEK_SMALL-LETTERALPHA' is not a valid Unicode character name}} \
+          ^
+
+"Test_name.c", line 137: error: character cannot appear in a Unicode name
+  #define \N{🤡}  // expected-error {{'🤡' is not a valid Unicode character name}} \
+             ^
+
+"Test_name.c", line 137: warning: white space is required between the macro name "\N" and its replacement text
+  #define \N{🤡}  // expected-error {{'🤡' is not a valid Unicode character name}} \
+            ^
+
+"Test_name.c", line 137: warning: incompatible redefinition of macro "\N" (declared at line 135)
+  #define \N{🤡}  // expected-error {{'🤡' is not a valid Unicode character name}} \
+          ^
+
+"Test_name.c", line 141: error: character cannot appear in a Unicode name
+  int CONCAT(\N{GREEK
+                     ^
+
+"Test_name.c", line 141: error: unrecognized token
+  int CONCAT(\N{GREEK
+      ^
+
+"Test_name.c", line 141: error: expected an identifier
+  int CONCAT(\N{GREEK
+      ^
+
+"Test_name.c", line 141: error: expected a ";"
+  int CONCAT(\N{GREEK
+      ^
+
+"Test_name.c", line 151: warning: support for trigraphs is disabled
+  int \N??<GREEK CAPITAL LETTER ALPHA??> = 0; // cxx23-warning {{before C++23}} \
+        ^
+
+"Test_name.c", line 151: error: unrecognized token
+  int \N??<GREEK CAPITAL LETTER ALPHA??> = 0; // cxx23-warning {{before C++23}} \
+      ^
+
+"Test_name.c", line 151: error: expected an identifier
+  int \N??<GREEK CAPITAL LETTER ALPHA??> = 0; // cxx23-warning {{before C++23}} \
+      ^
+
+"Test_name.c", line 155: error: character cannot appear in a Unicode name
+  int a\N{LATIN CAPITAL LETTER A WITH GRAVE??>; // expected-warning {{trigraph converted}}
+                                           ^
+
+"Test_name.c", line 155: error: expected a ";"
+  int a\N{LATIN CAPITAL LETTER A WITH GRAVE??>; // expected-warning {{trigraph converted}}
+        ^
+
+"Test_name.c", line 166: warning: this universal character is not allowed in an identifier
+  int A\N{LEFT-TO-RIGHT OVERRIDE}; // expected-error {{character <U+202D> not allowed in an identifier}}
+       ^
+
+22 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,194 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 7: error: incomplete type "void" is not allowed
+  void tovoid_test(int (^f)(int, int)) {
+       ^
+
+"Test_name.c", line 7: error: expected an expression
+  void tovoid_test(int (^f)(int, int)) {
+                        ^
+
+"Test_name.c", line 7: error: type name is not allowed
+  void tovoid_test(int (^f)(int, int)) {
+                            ^
+
+"Test_name.c", line 7: error: type name is not allowed
+  void tovoid_test(int (^f)(int, int)) {
+                                 ^
+
+"Test_name.c", line 7: error: expected a ";"
+  void tovoid_test(int (^f)(int, int)) {
+                                       ^
+
+"Test_name.c", line 68: warning: parsing restarts here after previous syntax error
+        has = 2;
+               ^
+
+"Test_name.c", line 69: error: expected a declaration
+      return hasProperty = 1;
+      ^
+
+"Test_name.c", line 70: error: expected a declaration
+    }
+    ^
+
+"Test_name.c", line 79: warning: parsing restarts here after previous syntax error
+  };
+   ^
+
+"Test_name.c", line 82: error: identifier "__block" is undefined
+    __block MoveOnly mo;
+    ^
+
+"Test_name.c", line 82: error: expected a ";"
+    __block MoveOnly mo;
+                     ^
+
+"Test_name.c", line 93: error: incomplete type "void" is not allowed
+    void use_block(void (^)());
+         ^
+
+"Test_name.c", line 93: error: expected an expression
+    void use_block(void (^)());
+                         ^
+
+"Test_name.c", line 93: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+    void use_block(void (^)());
+                   ^
+
+"Test_name.c", line 94: error: incomplete type "void" is not allowed
+    void use_block_2(void (^)(), const B &a);
+         ^
+
+"Test_name.c", line 94: error: expected an expression
+    void use_block_2(void (^)(), const B &a);
+                           ^
+
+"Test_name.c", line 94: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+    void use_block_2(void (^)(), const B &a);
+                     ^
+
+"Test_name.c", line 94: error: expected an expression
+    void use_block_2(void (^)(), const B &a);
+                                 ^
+
+"Test_name.c", line 97: error: no default constructor exists for class "test5::B"
+      B x; // expected-error {{no matching constructor for initialization}}
+        ^
+
+"Test_name.c", line 98: error: expected an expression
+      use_block(^{
+                ^
+
+"Test_name.c", line 101: warning: parsing restarts here after previous syntax error
+        });
+         ^
+
+"Test_name.c", line 97: warning: variable "x" was declared but never referenced
+      B x; // expected-error {{no matching constructor for initialization}}
+        ^
+
+"Test_name.c", line 116: error: incomplete type "void" is not allowed
+    void run(void (^)(), int);
+         ^
+
+"Test_name.c", line 116: error: expected an expression
+    void run(void (^)(), int);
+                   ^
+
+"Test_name.c", line 116: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+    void run(void (^)(), int);
+             ^
+
+"Test_name.c", line 116: error: type name is not allowed
+    void run(void (^)(), int);
+                         ^
+
+"Test_name.c", line 120: error: expected an expression
+      run(^{ (void) aCapturedVar; }, func<int>());
+          ^
+
+"Test_name.c", line 119: warning: variable "aCapturedVar" was declared but never referenced
+      int aCapturedVar = 0;
+          ^
+
+"Test_name.c", line 127: error: incomplete type "void" is not allowed
+    void run(void (^)(), void (^)());
+         ^
+
+"Test_name.c", line 127: error: expected an expression
+    void run(void (^)(), void (^)());
+                   ^
+
+"Test_name.c", line 127: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+    void run(void (^)(), void (^)());
+             ^
+
+"Test_name.c", line 127: error: expected an expression
+    void run(void (^)(), void (^)());
+                               ^
+
+"Test_name.c", line 127: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+    void run(void (^)(), void (^)());
+                         ^
+
+"Test_name.c", line 130: error: expected an expression
+      run(^{ (void) aCapturedVar; },
+          ^
+
+"Test_name.c", line 131: error: expected an expression
+          ^{ struct A { static void foo() {} };
+          ^
+
+"Test_name.c", line 129: warning: variable "aCapturedVar" was declared but never referenced
+      int aCapturedVar = 0;
+          ^
+
+"Test_name.c", line 139: error: incomplete type "void" is not allowed
+    void run(void (^)(), void (^)());
+         ^
+
+"Test_name.c", line 139: error: expected an expression
+    void run(void (^)(), void (^)());
+                   ^
+
+"Test_name.c", line 139: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+    void run(void (^)(), void (^)());
+             ^
+
+"Test_name.c", line 139: error: expected an expression
+    void run(void (^)(), void (^)());
+                               ^
+
+"Test_name.c", line 139: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+    void run(void (^)(), void (^)());
+                         ^
+
+"Test_name.c", line 142: error: expected an expression
+      run(^{ (void) aCapturedVar; },
+          ^
+
+"Test_name.c", line 143: error: expected an expression
+          ^{ struct A { static void foo() {} };
+          ^
+
+"Test_name.c", line 141: warning: variable "aCapturedVar" was declared but never referenced
+      int aCapturedVar = 0;
+          ^
+
+"Test_name.c", line 152: error: expected an expression
+    auto some_block = ^{ (void)s; };
+                      ^
+
+"Test_name.c", line 151: warning: variable "s" was declared but never referenced
+    constexpr S s;
+                ^
+
+"Test_name.c", line 157: error: expected an expression
+    auto block = ^{
+                 ^
+
+"Test_name.c", line 166: warning: parsing restarts here after previous syntax error
+    };
+     ^
+
+39 errors detected in the compilation of "Test_name.c".

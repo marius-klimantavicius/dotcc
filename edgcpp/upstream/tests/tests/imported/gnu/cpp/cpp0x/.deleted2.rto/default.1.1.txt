@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 11: error: no instance of constructor "A::A" matches the argument list
+            argument types are: (int)
+  A a = {1};	// { dg-error "could not convert" "" { target c++2a } }
+        ^
+"Test_name.c", line 6: note: function "A::A(const A &)" does not match because argument #1 does not match parameter
+  struct A {
+         ^
+"Test_name.c", line 6: note: function "A::A(A &&)" does not match because argument #1 does not match parameter
+  struct A {
+         ^
+"Test_name.c", line 8: note: number of parameters of function "A::A()" does not match the call
+   A() = delete;
+   ^
+
+1 error detected in the compilation of "Test_name.c".

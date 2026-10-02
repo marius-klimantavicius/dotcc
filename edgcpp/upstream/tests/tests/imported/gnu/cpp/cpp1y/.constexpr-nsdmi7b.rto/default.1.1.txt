@@ -1,0 +1,32 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 15: error: a constexpr function cannot have a nonliteral return type "A"
+  foo()
+  ^
+
+"Test_name.c", line 21: error: a constexpr function cannot have a nonliteral return type "A"
+  bar()
+  ^
+
+"Test_name.c", line 31: error: variable type "A" in constexpr function is not a literal type
+    A b = foo();
+      ^
+
+"Test_name.c", line 40: error: expression must have a constant value
+  static_assert(baz() == 0, "");
+                ^
+"Test_name.c", line 40: note: cannot call non-constexpr function "baz" (declared at line 29)
+  static_assert(baz() == 0, "");
+                ^
+
+"Test_name.c", line 45: error: variable type "const A" in constexpr function is not a literal type
+    const A d = foo();
+            ^
+
+"Test_name.c", line 50: error: expression must have a constant value
+  static_assert(quux() == 0, ""); // { dg-error "non-constant" }
+                ^
+"Test_name.c", line 50: note: cannot call non-constexpr function "quux" (declared at line 43)
+  static_assert(quux() == 0, ""); // { dg-error "non-constant" }
+                ^
+
+6 errors detected in the compilation of "Test_name.c".

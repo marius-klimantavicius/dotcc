@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 12: error: copy-list-initialization cannot use "explicit" deduction guide "std_example::A(const T &, ...) noexcept [with T=int]"
+    A a1 = {i, i}; // expected-error {{class template argument deduction for 'A' selected an explicit constructor for copy-list-initialization}}
+      ^
+
+"Test_name.c", line 12: error: copy-list-initialization cannot use a constructor marked "explicit"
+    A a1 = {i, i}; // expected-error {{class template argument deduction for 'A' selected an explicit constructor for copy-list-initialization}}
+           ^
+
+"Test_name.c", line 21: error: copy-list-initialization cannot use "explicit" deduction guide "std_example::A(T &&, T &&)->std_example::A<T> [with T=int]"
+    A a5 = {0, 1}; // expected-error {{class template argument deduction for 'A' selected an explicit deduction guide}}
+      ^
+
+"Test_name.c", line 23: error: more than one instance of constructor "std_example::A" matches the argument list:
+            function template "std_example::A<T> std_example::A(T &&, ...)" (declared implicitly)
+            function template "std_example::A<T> std_example::A(const T &, ...) noexcept" (declared implicitly)
+            function template "std_example::A(const T &, const T &)->std_example::A<T &>" (declared at line 17)
+            argument types are: (int, int)
+    A a7 = {0, i}; // expected-error {{ambiguous deduction}}
+      ^
+
+"Test_name.c", line 23: error: cannot deduce class template arguments
+    A a7 = {0, i}; // expected-error {{ambiguous deduction}}
+    ^
+
+"Test_name.c", line 24: error: more than one instance of constructor "std_example::A" matches the argument list:
+            function template "std_example::A<T> std_example::A(T &&, ...)" (declared implicitly)
+            function template "std_example::A<T> std_example::A(const T &, ...) noexcept" (declared implicitly)
+            function template "std_example::A(const T &, const T &)->std_example::A<T &>" (declared at line 17)
+            argument types are: (int, int)
+    A a8{0, i}; // expected-error {{ambiguous deduction}}
+      ^
+
+"Test_name.c", line 24: error: cannot deduce class template arguments
+    A a8{0, i}; // expected-error {{ambiguous deduction}}
+    ^
+
+7 errors detected in the compilation of "Test_name.c".

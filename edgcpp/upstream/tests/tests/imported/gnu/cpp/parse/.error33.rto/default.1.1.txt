@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 11: error: qualified name is not allowed
+  typedef void (A::T)(); /* { dg-error "15:typedef name may not be a nested" } */
+                ^
+
+"Test_name.c", line 13: error: incomplete type "void" is not allowed
+  void bar(T);
+       ^
+
+"Test_name.c", line 13: error: identifier "T" is undefined
+  void bar(T);
+           ^
+
+3 errors detected in the compilation of "Test_name.c".

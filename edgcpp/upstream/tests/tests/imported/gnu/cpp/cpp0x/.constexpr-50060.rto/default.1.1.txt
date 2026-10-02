@@ -1,0 +1,24 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: error: non-constant initializer for constexpr constructor
+    constexpr S (double a) : y {}, x (frexp (a, &y)) {}	// { dg-error "is not a constant expression" "S" { target { ! c++14 } } }
+                                     ^
+
+"Test_name.c", line 17: error: non-constant initializer for constexpr constructor
+    constexpr T (double a) : y {}, x ((y = 1, 0.8125)) {}	// { dg-error "is not a constant expression" "T" { target { ! c++14 } } }
+                                     ^
+
+"Test_name.c", line 22: error: expression must have a constant value
+  static_assert (S (6.5).x == 0.8125, "");	// { dg-error "non-constant condition for static assertion|in .constexpr. expansion" "" { target { ! c++14 } } }
+                 ^
+"Test_name.c", line 10: note: cannot call non-constexpr function "frexp" (declared at line 6)
+    constexpr S (double a) : y {}, x (frexp (a, &y)) {}	// { dg-error "is not a constant expression" "S" { target { ! c++14 } } }
+                                      ^
+
+"Test_name.c", line 23: error: expression must have a constant value
+  static_assert (T (6.5).x == 0.8125, "");	// { dg-error "non-constant condition for static assertion|called in a constant expression" "" { target { ! c++14 } } }
+                 ^
+"Test_name.c", line 17: note: access to uninitialized object
+    constexpr T (double a) : y {}, x ((y = 1, 0.8125)) {}	// { dg-error "is not a constant expression" "T" { target { ! c++14 } } }
+                                       ^
+
+4 errors detected in the compilation of "Test_name.c".

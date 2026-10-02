@@ -1,0 +1,94 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 4: error: expected a ";"
+  int far *p;
+          ^
+
+"Test_name.c", line 5: error: variable "far" has already been defined (previous definition at line 4)
+  int * far q;
+        ^
+
+"Test_name.c", line 5: error: expected a ";"
+  int * far q;
+            ^
+
+"Test_name.c", line 6: error: variable "far" has already been defined (previous definition at line 4)
+  int far f();
+      ^
+
+"Test_name.c", line 6: error: expected a ";"
+  int far f();
+          ^
+
+"Test_name.c", line 7: error: variable "far" has already been defined (previous definition at line 4)
+  int far x;
+      ^
+
+"Test_name.c", line 7: error: expected a ";"
+  int far x;
+          ^
+
+"Test_name.c", line 8: error: expected a ")"
+  int (far a)[2];
+           ^
+
+"Test_name.c", line 8: error: variable "far" has already been defined (previous definition at line 4)
+  int (far a)[2];
+       ^
+
+"Test_name.c", line 9: error: variable "far" has already been defined (previous definition at line 4)
+  int far b[2];
+      ^
+
+"Test_name.c", line 9: error: expected a ";"
+  int far b[2];
+          ^
+
+"Test_name.c", line 10: error: variable "far" has already been defined (previous definition at line 4)
+  int ii, far jj;
+          ^
+
+"Test_name.c", line 10: error: expected a ";"
+  int ii, far jj;
+              ^
+
+"Test_name.c", line 11: error: expected an identifier
+  int iii, const jjj = 0;
+           ^
+
+"Test_name.c", line 12: error: expected a ")"
+  int (far *pp)(int);
+           ^
+
+"Test_name.c", line 12: error: declaration is incompatible with "int far" (declared at line 4)
+  int (far *pp)(int);
+       ^
+
+"Test_name.c", line 13: error: declaration is incompatible with "int far(int)" (declared at line 12)
+  const int far xxx = 0;
+            ^
+
+"Test_name.c", line 13: error: const variable "far" requires an initializer
+  const int far xxx = 0;
+                ^
+
+"Test_name.c", line 13: error: expected a ";"
+  const int far xxx = 0;
+                ^
+
+"Test_name.c", line 14: error: variable "far" has already been defined (previous definition at line 13)
+  int ***far qq[1][2];
+         ^
+
+"Test_name.c", line 14: error: expected a ";"
+  int ***far qq[1][2];
+             ^
+
+"Test_name.c", line 15: error: variable "far" has already been defined (previous definition at line 13)
+  int const volatile far* const volatile far * far gg (int);
+                     ^
+
+"Test_name.c", line 15: error: expected a ";"
+  int const volatile far* const volatile far * far gg (int);
+                        ^
+
+23 errors detected in the compilation of "Test_name.c".

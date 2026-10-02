@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=2 -tused --c++17 -DNEG Test_name.c
+"Test_name.c", line 31: error: no instance of constructor "X<<unnamed>>::InnerB::InnerB [with <unnamed>=int]" matches the argument list
+            argument types are: (S, int)
+  X<int>::InnerB b(S(), 2); // Accessible due to friend decl
+                   ^
+"Test_name.c", line 9: note: number of parameters of function "X<<unnamed>>::InnerB::InnerB(const X<int>::InnerB &) [with <unnamed>=int]" does not match the call
+    struct InnerB {
+           ^
+"Test_name.c", line 9: note: number of parameters of function "X<<unnamed>>::InnerB::InnerB(X<int>::InnerB &&) [with <unnamed>=int]" does not match the call
+    struct InnerB {
+           ^
+"Test_name.c", line 10: note: candidate function template "X<<unnamed>>::InnerB::InnerB(T, T::Q) [with <unnamed>=int]" failed deduction
+      template<class T> InnerB(T o, typename T::Q x) {
+                        ^
+
+"Test_name.c", line 32: error: no instance of constructor "X<<unnamed>>::InnerD::InnerD [with <unnamed>=int]" matches the argument list
+            argument types are: (S, int)
+  X<int>::InnerD d(S(), 7); // Accessible due to inheriting ctor friend decl
+                   ^
+"Test_name.c", line 17: note: candidate function template "X<<unnamed>>::InnerD::InnerD(T, T::Q) [with <unnamed>=int]" failed deduction
+      using InnerB::InnerB;
+      ^
+"Test_name.c", line 16: note: number of parameters of function "X<<unnamed>>::InnerD::InnerD(const X<int>::InnerD &) [with <unnamed>=int]" does not match the call
+    struct InnerD : InnerB {
+           ^
+"Test_name.c", line 16: note: number of parameters of function "X<<unnamed>>::InnerD::InnerD(X<int>::InnerD &&) [with <unnamed>=int]" does not match the call
+    struct InnerD : InnerB {
+           ^
+"Test_name.c", line 16: note: number of parameters of function "X<<unnamed>>::InnerD::InnerD() [with <unnamed>=int]" does not match the call
+    struct InnerD : InnerB {
+           ^
+
+2 errors detected in the compilation of "Test_name.c".

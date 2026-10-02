@@ -1,0 +1,12 @@
+./a.out
+CTOR CALLED, setting 1
+CTOR CALLED, setting 2
+CTOR CALLED, setting 3
+CTOR CALLED, setting 4
+CTOR CALLED, setting 5
+MOVE CTOR CALLED, copying 5
+CTOR CALLED, setting 6
+CTOR CALLED, setting 10
+CTOR CALLED, setting 11
+Value of s.a = 5, sg.a = 6
+Value of s2.a = 10, s2g.a = 11

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 7: warning: unknown attribute "ownership_returns"
+         __attribute__((ownership_returns(foo, 2)))  // expected-error {{'ownership_returns' attribute index does not match; here it is 2}}
+                        ^
+
+"Test_name.c", line 8: warning: unknown attribute "ownership_returns"
+         __attribute__((ownership_returns(foo, 3))); // expected-note {{declared with index 3 here}}
+                        ^
+

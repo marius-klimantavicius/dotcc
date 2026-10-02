@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++17 -tused -A Test_name.c
+"Test_name.c", line 17: error: placement "new" expression refers to non-placement function "S::operator delete" (declared at line 15)
+  S* p = new (0) S; // ill-formed: non-placement deallocation function matches
+         ^
+
+1 error detected in the compilation of "Test_name.c".

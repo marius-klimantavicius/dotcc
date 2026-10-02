@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --c++14 -A Test_name.c
+"Test_name.c", line 13: warning: variable "cd" was declared but never referenced
+  D const cd;      // Previously an error in strict mode because of a missing
+          ^
+

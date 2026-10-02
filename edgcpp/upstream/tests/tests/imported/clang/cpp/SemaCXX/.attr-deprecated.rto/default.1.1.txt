@@ -1,0 +1,284 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --exceptions Test_name.c
+"Test_name.c", line 14: warning: function "A::f" was declared deprecated
+    f(); // expected-warning{{'f' is deprecated}}
+    ^
+"Test_name.c", line 5: note: because of a "deprecated" attribute
+    void f() __attribute__((deprecated)); // expected-note 2 {{'f' has been explicitly marked deprecated here}}
+                            ^
+
+"Test_name.c", line 15: warning: function "A::f" was declared deprecated
+    a->f(); // expected-warning{{'f' is deprecated}}
+       ^
+"Test_name.c", line 5: note: because of a "deprecated" attribute
+    void f() __attribute__((deprecated)); // expected-note 2 {{'f' has been explicitly marked deprecated here}}
+                            ^
+
+"Test_name.c", line 17: warning: member "A::b" was declared deprecated
+    (void)b; // expected-warning{{'b' is deprecated}}
+          ^
+"Test_name.c", line 9: note: because of a "deprecated" attribute
+    int b __attribute__((deprecated)); // expected-note 2 {{'b' has been explicitly marked deprecated here}}
+                         ^
+
+"Test_name.c", line 18: warning: member "A::b" was declared deprecated
+    (void)a->b; // expected-warning{{'b' is deprecated}}
+             ^
+"Test_name.c", line 9: note: because of a "deprecated" attribute
+    int b __attribute__((deprecated)); // expected-note 2 {{'b' has been explicitly marked deprecated here}}
+                         ^
+
+"Test_name.c", line 36: warning: function "B::f" was declared deprecated
+    f(); // expected-warning{{'f' is deprecated}}
+    ^
+"Test_name.c", line 31: note: because of a "deprecated" attribute
+    virtual void f() __attribute__((deprecated)); // expected-note 6 {{'f' has been explicitly marked deprecated here}}
+                                    ^
+
+"Test_name.c", line 37: warning: function "B::f" was declared deprecated
+    B::f(); // expected-warning{{'f' is deprecated}}
+       ^
+"Test_name.c", line 31: note: because of a "deprecated" attribute
+    virtual void f() __attribute__((deprecated)); // expected-note 6 {{'f' has been explicitly marked deprecated here}}
+                                    ^
+
+"Test_name.c", line 48: warning: function "B::f" was declared deprecated
+    B::f(); // expected-warning{{'f' is deprecated}}
+       ^
+"Test_name.c", line 31: note: because of a "deprecated" attribute
+    virtual void f() __attribute__((deprecated)); // expected-note 6 {{'f' has been explicitly marked deprecated here}}
+                                    ^
+
+"Test_name.c", line 52: warning: function "B::f" was declared deprecated
+    b->f(); // expected-warning{{'f' is deprecated}}
+       ^
+"Test_name.c", line 31: note: because of a "deprecated" attribute
+    virtual void f() __attribute__((deprecated)); // expected-note 6 {{'f' has been explicitly marked deprecated here}}
+                                    ^
+
+"Test_name.c", line 53: warning: function "B::f" was declared deprecated
+    b->B::f(); // expected-warning{{'f' is deprecated}}
+          ^
+"Test_name.c", line 31: note: because of a "deprecated" attribute
+    virtual void f() __attribute__((deprecated)); // expected-note 6 {{'f' has been explicitly marked deprecated here}}
+                                    ^
+
+"Test_name.c", line 57: warning: function "B::f" was declared deprecated
+    c->B::f(); // expected-warning{{'f' is deprecated}}
+          ^
+"Test_name.c", line 31: note: because of a "deprecated" attribute
+    virtual void f() __attribute__((deprecated)); // expected-note 6 {{'f' has been explicitly marked deprecated here}}
+                                    ^
+
+"Test_name.c", line 71: warning: function "D::f()" was declared deprecated
+    d->f(); // expected-warning{{'f' is deprecated}}
+       ^
+"Test_name.c", line 61: note: because of a "deprecated" attribute
+    virtual void f() __attribute__((deprecated));// expected-note{{'f' has been explicitly marked deprecated here}}
+                                    ^
+
+"Test_name.c", line 72: warning: function "D::f(int)" was declared deprecated
+    d->f(42); // expected-warning{{'f' is deprecated}}
+       ^
+"Test_name.c", line 62: note: because of a "deprecated" attribute
+    virtual void f(int) __attribute__((deprecated));// expected-note{{'f' has been explicitly marked deprecated here}}
+                                       ^
+
+"Test_name.c", line 73: warning: function "D::f(int, int)" was declared deprecated
+    d->f(42, 24); // expected-warning{{'f' is deprecated}}
+       ^
+"Test_name.c", line 63: note: because of a "deprecated" attribute
+    virtual void f(int, int) __attribute__((deprecated));// expected-note{{'f' has been explicitly marked deprecated here}}
+                                            ^
+
+"Test_name.c", line 80: warning: function "test1::foo" was declared deprecated
+    void test1() { foo(10); } // expected-warning {{deprecated}}
+                   ^
+"Test_name.c", line 79: note: because of a "deprecated" attribute
+    void foo(int) __attribute__((deprecated)); // expected-note {{'foo' has been explicitly marked deprecated here}}
+                                 ^
+
+"Test_name.c", line 82: warning: function "test1::foo(short)" was declared deprecated
+    void test2(short s) { foo(s); } // expected-warning {{deprecated}}
+                          ^
+"Test_name.c", line 81: note: because of a "deprecated" attribute
+    void foo(short) __attribute__((deprecated)); // expected-note {{'foo' has been explicitly marked deprecated here}}
+                                   ^
+
+"Test_name.c", line 88: warning: function "test1::foo(test1::A *)" was declared deprecated
+    void test4(A *a) { foo(a); } // expected-warning {{deprecated}}
+                       ^
+"Test_name.c", line 86: note: because of a "deprecated" attribute
+      friend void foo(A*) __attribute__((deprecated)); // expected-note {{'foo' has been explicitly marked deprecated here}}
+                                         ^
+
+"Test_name.c", line 95: warning: function "test1::ns::foo" was declared deprecated
+      foo(ns::Foo()); // expected-warning {{deprecated}}
+      ^
+"Test_name.c", line 92: note: because of a "deprecated" attribute
+      void foo(const Foo &f) __attribute__((deprecated)); // expected-note {{'foo' has been explicitly marked deprecated here}}
+                                            ^
+
+"Test_name.c", line 111: warning: function "test2::A::foo(int)" was declared deprecated
+      a.foo(i); // expected-warning {{deprecated}}
+        ^
+"Test_name.c", line 102: note: because of a "deprecated" attribute
+      void foo(int) __attribute__((deprecated)); // expected-note 2 {{'foo' has been explicitly marked deprecated here}}
+                                   ^
+
+"Test_name.c", line 113: warning: function "test2::A::bar(int)" was declared deprecated
+      a.bar(i); // expected-warning {{deprecated}}
+        ^
+"Test_name.c", line 104: note: because of a "deprecated" attribute
+      static void bar(int) __attribute__((deprecated)); // expected-note 3 {{'bar' has been explicitly marked deprecated here}}
+                                          ^
+
+"Test_name.c", line 115: warning: function "test2::A::bar(int)" was declared deprecated
+      A::bar(i); // expected-warning {{deprecated}}
+         ^
+"Test_name.c", line 104: note: because of a "deprecated" attribute
+      static void bar(int) __attribute__((deprecated)); // expected-note 3 {{'bar' has been explicitly marked deprecated here}}
+                                          ^
+
+"Test_name.c", line 120: warning: function "test2::A::foo(int)" was declared deprecated
+      foo(i); // expected-warning {{deprecated}}
+      ^
+"Test_name.c", line 102: note: because of a "deprecated" attribute
+      void foo(int) __attribute__((deprecated)); // expected-note 2 {{'foo' has been explicitly marked deprecated here}}
+                                   ^
+
+"Test_name.c", line 122: warning: function "test2::A::bar(int)" was declared deprecated
+      bar(i); // expected-warning {{deprecated}}
+      ^
+"Test_name.c", line 104: note: because of a "deprecated" attribute
+      static void bar(int) __attribute__((deprecated)); // expected-note 3 {{'bar' has been explicitly marked deprecated here}}
+                                          ^
+
+"Test_name.c", line 141: warning: function "test3::operator+(const test3::A &, int)" was declared deprecated
+      a + 1; // expected-warning {{deprecated}}
+        ^
+"Test_name.c", line 135: note: because of a "deprecated" attribute
+    void operator+(const A &, int) __attribute__((deprecated)); // expected-note {{'operator+' has been explicitly marked deprecated here}}
+                                                  ^
+
+"Test_name.c", line 143: warning: function "test3::operator-" was declared deprecated
+      a - 1; // expected-warning {{deprecated}}
+        ^
+"Test_name.c", line 136: note: because of a "deprecated" attribute
+    void operator-(const A &, int) __attribute__((deprecated)); // expected-note {{'operator-' has been explicitly marked deprecated here}}
+                                                  ^
+
+"Test_name.c", line 145: warning: function "test3::A::operator*(int)" was declared deprecated
+      a * 1; // expected-warning {{deprecated}}
+        ^
+"Test_name.c", line 131: note: because of a "deprecated" attribute
+      void operator*(int) __attribute__((deprecated)); // expected-note {{'operator*' has been explicitly marked deprecated here}}
+                                         ^
+
+"Test_name.c", line 162: warning: function "test4::A::operator test4::A::intfn" was declared deprecated
+      a(1); // expected-warning {{deprecated}}
+      ^
+"Test_name.c", line 154: note: because of a "deprecated" attribute
+      operator intfn() __attribute__((deprecated)); // expected-note {{'operator void (*)(int)' has been explicitly marked deprecated here}}
+                                      ^
+
+"Test_name.c", line 167: warning: function "test4::A::operator()(test4::A &)" was declared deprecated
+      a(b); // expected-warning {{deprecated}}
+       ^
+"Test_name.c", line 156: note: because of a "deprecated" attribute
+      void operator ()(A &) __attribute__((deprecated)); // expected-note {{'operator()' has been explicitly marked deprecated here}}
+                                           ^
+
+"Test_name.c", line 178: warning: function "test5::A::operator int" was declared deprecated
+      int i = a; // expected-warning {{deprecated}}
+              ^
+"Test_name.c", line 174: note: because of a "deprecated" attribute
+      operator int() __attribute__((deprecated)); // expected-note 3 {{'operator int' has been explicitly marked deprecated here}}
+                                    ^
+
+"Test_name.c", line 187: warning: function "test5::A::operator int" was declared deprecated
+      foo(a); // expected-warning {{deprecated}}
+          ^
+"Test_name.c", line 174: note: because of a "deprecated" attribute
+      operator int() __attribute__((deprecated)); // expected-note 3 {{'operator int' has been explicitly marked deprecated here}}
+                                    ^
+
+"Test_name.c", line 196: warning: function "test5::A::operator int" was declared deprecated
+        myInt(a), // expected-warning {{deprecated}}
+              ^
+"Test_name.c", line 174: note: because of a "deprecated" attribute
+      operator int() __attribute__((deprecated)); // expected-note 3 {{'operator int' has been explicitly marked deprecated here}}
+                                    ^
+
+"Test_name.c", line 207: warning: enum "test6::A" was declared deprecated
+      A x; // expected-warning {{'A' is deprecated}}
+        ^
+"Test_name.c", line 203: note: because of a "deprecated" attribute
+    enum __attribute__((deprecated)) A { // expected-note 2 {{'A' has been explicitly marked deprecated here}}
+                        ^
+
+"Test_name.c", line 207: warning: variable "x" was set but never used
+      A x; // expected-warning {{'A' is deprecated}}
+        ^
+
+"Test_name.c", line 217: warning: constant "test6::b0" was declared deprecated
+      x = b0; // expected-warning {{'b0' is deprecated}}
+          ^
+"Test_name.c", line 212: note: because of a "deprecated" attribute
+      b0 __attribute__((deprecated)), // expected-note {{'b0' has been explicitly marked deprecated here}}
+                        ^
+
+"Test_name.c", line 216: warning: variable "x" was set but never used
+      B x;
+        ^
+
+"Test_name.c", line 227: warning: enum "test6::C<T>::Enum [with T=int]" was declared deprecated
+      C<int>::Enum x; // expected-warning {{'Enum' is deprecated}}
+                   ^
+"Test_name.c", line 222: note: because of a "deprecated" attribute
+      enum __attribute__((deprecated)) Enum { // expected-note 2 {{'Enum' has been explicitly marked deprecated here}}
+                          ^
+
+"Test_name.c", line 227: warning: variable "x" was set but never used
+      C<int>::Enum x; // expected-warning {{'Enum' is deprecated}}
+                   ^
+
+"Test_name.c", line 240: warning: constant "test6::D<T>::d1 [with T=int]" was declared deprecated
+      x = D<int>::d1; // expected-warning {{'d1' is deprecated}}
+                  ^
+"Test_name.c", line 234: note: because of a "deprecated" attribute
+        d1 __attribute__((deprecated)), // expected-note {{'d1' has been explicitly marked deprecated here}}
+                          ^
+
+"Test_name.c", line 238: warning: variable "x" was set but never used
+      D<int>::Enum x;
+                   ^
+
+"Test_name.c", line 251: warning: function "test7::X::operator delete" was declared deprecated
+      X *x = new X;  // expected-warning{{'operator new' is deprecated}} expected-warning{{'operator delete' is deprecated}}
+             ^
+"Test_name.c", line 247: note: because of a "deprecated" attribute
+      void operator delete(void *) __attribute__((deprecated));  // expected-note{{'operator delete' has been explicitly marked deprecated here}}
+                                                  ^
+
+"Test_name.c", line 251: warning: function "test7::X::operator new" was declared deprecated
+      X *x = new X;  // expected-warning{{'operator new' is deprecated}} expected-warning{{'operator delete' is deprecated}}
+             ^
+"Test_name.c", line 246: note: because of a "deprecated" attribute
+      void* operator new(typeof(sizeof(void*))) __attribute__((deprecated));  // expected-note{{'operator new' has been explicitly marked deprecated here}}
+                                                               ^
+
+"Test_name.c", line 257: warning: type "TDS" was declared deprecated
+  TDS tds; // expected-warning {{'TDS' is deprecated}}
+      ^
+"Test_name.c", line 256: note: because of a "deprecated" attribute
+  } TDS __attribute__((deprecated)); // expected-note {{'TDS' has been explicitly marked deprecated here}}
+                       ^
+
+"Test_name.c", line 267: warning: class "test8::A::B" was declared deprecated
+    B b; // expected-warning {{'B' is deprecated}}
+      ^
+"Test_name.c", line 263: note: because of a "deprecated" attribute
+    struct __attribute__((deprecated)) B {};
+                          ^
+          detected during instantiation of class "test8::D<T> [with T=test8::A]" at line 269
+

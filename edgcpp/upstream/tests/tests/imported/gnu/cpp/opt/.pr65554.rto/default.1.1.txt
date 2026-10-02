@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 126: error: no suitable constructor exists to convert from "const char [4]" to "std::J<const char *, std::allocator<const char *>>"
+      extra = { "foo" };
+                ^
+
+"Test_name.c", line 125: warning: variable "extra" was set but never used
+      J <const char *> extra;
+                       ^
+
+1 error detected in the compilation of "Test_name.c".

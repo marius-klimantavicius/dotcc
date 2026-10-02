@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 27: warning: integer conversion resulted in a change of sign
+  		( (((size_t)(&x))<<(24))&(-1<<(8)) ),
+  		                         ^
+
+"Test_name.c", line 23: warning: variable "gdt_table" was declared but never referenced
+  struct gdt gdt_table[2]=
+             ^
+

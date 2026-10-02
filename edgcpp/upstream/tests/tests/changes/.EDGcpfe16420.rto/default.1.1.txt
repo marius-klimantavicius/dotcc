@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++11 Test_name.c
+"Test_name.c", line 17: error: a union can have at most one field initializer -- member "U::i" (declared at line 15) also has an initializer
+    union { float f = 2.0; };  // Previously not diagnosed.  Now an error.
+                  ^
+
+1 error detected in the compilation of "Test_name.c".

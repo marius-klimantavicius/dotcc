@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 16: error: cannot determine which instance of overloaded function "operator delete" is intended
+  void* A (operator delete, 1)
+        ^
+
+"Test_name.c", line 18: error: cannot determine which instance of overloaded function "operator delete[]" is intended
+  void* A (operator delete[], 1)
+        ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 6: warning: declaration does not declare anything
+  Ptr<unsigned>; // { dg-error "does not declare anything" }
+  ^
+
+"Test_name.c", line 7: error: expected an identifier
+  Ptr<char><int>; // { dg-error "not a template|does not declare anything" }
+           ^
+
+"Test_name.c", line 8: error: typedef "Ptr" may not be used in an elaborated type specifier
+  template class Ptr<int>;//{ dg-error "alias template specialization\[^\n\r\]*after\[^\n\r\]*class" }
+                 ^
+
+"Test_name.c", line 8: error: invalid explicit instantiation declaration
+  template class Ptr<int>;//{ dg-error "alias template specialization\[^\n\r\]*after\[^\n\r\]*class" }
+           ^
+
+"Test_name.c", line 12: error: typedef "Arg" may not be used in an elaborated type specifier
+  template class Arg<A>;// { dg-error "alias templ\[^\n\r\]*specialization\[^\n\r\]*Arg<A>\[^\n\r\]*after\[^\n\r\]*class" }
+                 ^
+
+"Test_name.c", line 12: error: invalid explicit instantiation declaration
+  template class Arg<A>;// { dg-error "alias templ\[^\n\r\]*specialization\[^\n\r\]*Arg<A>\[^\n\r\]*after\[^\n\r\]*class" }
+           ^
+
+"Test_name.c", line 23: error: typedef "Instantiate" may not be used in an elaborated type specifier
+  template class Instantiate<Vector, int>;//{ dg-error "alias template specialization\[^\n\r\]*after\[^\n\r\]*class" }
+                 ^
+
+"Test_name.c", line 23: error: invalid explicit instantiation declaration
+  template class Instantiate<Vector, int>;//{ dg-error "alias template specialization\[^\n\r\]*after\[^\n\r\]*class" }
+           ^
+
+"Test_name.c", line 28: error: typedef "SFor" may not be used in an elaborated type specifier
+  template class SFor<int>; //{ dg-error "alias template specialization\[^\n\r\]*after\[^\n\r\]*class" }
+                 ^
+
+"Test_name.c", line 28: error: invalid explicit instantiation declaration
+  template class SFor<int>; //{ dg-error "alias template specialization\[^\n\r\]*after\[^\n\r\]*class" }
+           ^
+
+9 errors detected in the compilation of "Test_name.c".

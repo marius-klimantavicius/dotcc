@@ -1,0 +1,12 @@
+./a.out
+Direct inits:
+x = 12, y = 0, z = 0
+x = 11, y = 0, z = 0
+x = 10, y = 0, z = 0
+x = 9, y = 0, z = 0
+
+Conversion inits:
+x = 1, y = 0, z = 0
+x = 2, y = 0, z = 0
+x = 3, y = 0, z = 0
+x = 4, y = 0, z = 0

@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./format/ms_cast-1.c", line 16: warning: conversion from pointer to smaller integer
+    printf((char *)(char)"%s", x);
+                   ^
+

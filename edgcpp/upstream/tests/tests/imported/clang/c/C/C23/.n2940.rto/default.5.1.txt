@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=5 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c17 Test_name.c
+"Test_name.c", line 16: warning: support for trigraphs is disabled
+   * Removing trigraphs??!
+                       ^
+
+"Test_name.c", line 24: error: expected a declaration
+  ??=
+  ^
+
+1 error detected in the compilation of "Test_name.c".

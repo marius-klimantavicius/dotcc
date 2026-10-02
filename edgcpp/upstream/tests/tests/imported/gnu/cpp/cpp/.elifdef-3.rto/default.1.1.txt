@@ -1,0 +1,128 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++23 -E Test_name.c
+# 1 "Test_name.c"
+
+
+
+
+
+
+
+
+"Test_name.c", line 9: error: the #if for this directive is missing
+  #elifdef A // { dg-error "'#elifdef' without '#if'" }
+   ^
+
+"Test_name.c", line 10: error: the #if for this directive is missing
+  #elifdef B // { dg-error "'#elifdef' without '#if'" }
+   ^
+
+"Test_name.c", line 11: error: the #if for this directive is missing
+  #elifndef A // { dg-error "'#elifndef' without '#if'" }
+   ^
+
+"Test_name.c", line 12: error: the #if for this directive is missing
+  #elifndef B // { dg-error "'#elifndef' without '#if'" }
+   ^
+
+
+
+
+
+
+"Test_name.c", line 16: error: directive is not allowed -- an #else has already appeared
+  #elifdef A // { dg-error "'#elifdef' after '#else'" }
+   ^
+
+
+
+
+
+
+"Test_name.c", line 21: error: directive is not allowed -- an #else has already appeared
+  #elifdef B // { dg-error "'#elifdef' after '#else'" }
+   ^
+
+
+
+
+
+
+"Test_name.c", line 26: error: directive is not allowed -- an #else has already appeared
+  #elifndef A // { dg-error "'#elifndef' after '#else'" }
+   ^
+
+
+
+
+
+
+"Test_name.c", line 31: error: directive is not allowed -- an #else has already appeared
+  #elifndef B // { dg-error "'#elifndef' after '#else'" }
+   ^
+
+
+
+
+
+
+"Test_name.c", line 35: warning: extra text after expected end of preprocessing directive
+  #elifdef A = // { dg-error "extra tokens at end of '#elifdef' directive" }
+             ^
+
+
+
+
+
+"Test_name.c", line 39: warning: extra text after expected end of preprocessing directive
+  #elifdef B = // { dg-error "extra tokens at end of '#elifdef' directive" }
+             ^
+
+
+
+
+
+"Test_name.c", line 43: warning: extra text after expected end of preprocessing directive
+  #elifndef A = // { dg-error "extra tokens at end of '#elifndef' directive" }
+              ^
+
+
+
+
+
+"Test_name.c", line 47: warning: extra text after expected end of preprocessing directive
+  #elifndef B = // { dg-error "extra tokens at end of '#elifndef' directive" }
+              ^
+
+
+
+
+
+"Test_name.c", line 51: error: expected an identifier
+  #elifdef // { dg-error "no macro name given in '#elifdef' directive" }
+                                                                        ^
+
+
+
+
+
+"Test_name.c", line 55: error: expected an identifier
+  #elifndef // { dg-error "no macro name given in '#elifndef' directive" }
+                                                                          ^
+
+
+
+
+
+"Test_name.c", line 59: error: expected an identifier
+  #elifdef , // { dg-error "macro names must be identifiers" }
+           ^
+
+
+
+
+
+"Test_name.c", line 63: error: expected an identifier
+  #elifndef , // { dg-error "macro names must be identifiers" }
+            ^
+
+12 errors detected in the compilation of "Test_name.c".

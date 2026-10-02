@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=2 --microsoft_version=1400 Test_name.c
+"Test_name.c", line 7: warning: function "g(T2)" is not defined in this translation unit but depends on a type with no linkage
+  void g(T2);
+       ^
+
+"Test_name.c", line 5: warning: function "g(T1)" is not defined in this translation unit but depends on a type with no linkage
+  void g(T1);
+       ^
+

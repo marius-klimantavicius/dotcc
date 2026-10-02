@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 8: error: class template argument deduction for alias templates is a C++20 feature
+  auto x = B{};  // { dg-error "alias template deduction only available with" "" { target c++17_only } }
+           ^
+
+"Test_name.c", line 9: error: class template argument deduction for alias templates is a C++20 feature
+  auto y = B();  // { dg-error "alias template deduction only available with" "" { target c++17_only } }
+           ^
+
+"Test_name.c", line 10: error: class template argument deduction for alias templates is a C++20 feature
+  auto z = B{1}; // { dg-error "alias template deduction only available with" "" { target c++17_only } }
+           ^
+
+"Test_name.c", line 11: error: class template argument deduction for alias templates is a C++20 feature
+  auto w = B(1); // { dg-error "alias template deduction only available with" "" { target c++17_only } }
+           ^
+
+4 errors detected in the compilation of "Test_name.c".

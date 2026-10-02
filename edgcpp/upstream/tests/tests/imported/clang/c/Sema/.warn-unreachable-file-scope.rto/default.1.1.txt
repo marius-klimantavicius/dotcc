@@ -1,0 +1,86 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 8: warning: integer conversion resulted in truncation
+  u8 a2 = (1 ? 0xffff : 0xff); // expected-warning {{implicit conversion from 'int' to 'u8' (aka 'unsigned char') changes value from 65535 to 255}}
+          ^
+
+"Test_name.c", line 10: warning: integer conversion resulted in truncation
+  u8 a4 = (0 ? 0xff : 0xffff); // expected-warning {{implicit conversion from 'int' to 'u8' (aka 'unsigned char') changes value from 65535 to 255}}
+          ^
+
+"Test_name.c", line 13: warning: shift count is too large
+  unsigned long long b2 = 0 ? 0 : 1ULL << 64; // expected-warning {{shift count >= width of type}}
+                                          ^
+
+"Test_name.c", line 14: warning: shift count is too large
+  unsigned long long b3 = 1 ? 1ULL << 64 : 0; // expected-warning {{shift count >= width of type}}
+                                      ^
+
+"Test_name.c", line 21: warning: integer conversion resulted in truncation
+  static u8 d2 = (1 ? 0xffff : 0xff); // expected-warning {{implicit conversion from 'int' to 'u8' (aka 'unsigned char') changes value from 65535 to 255}}
+                 ^
+
+"Test_name.c", line 23: warning: expression has no effect
+  int a = 1 ? 6 : (1,2);
+                   ^
+
+"Test_name.c", line 24: error: this operator is not allowed in a constant expression
+  int b = 0 ? 6 : (1,2); // expected-warning {{left operand of comma operator has no effect}}
+                    ^
+
+"Test_name.c", line 28: warning: integer conversion resulted in truncation
+    u8 e2 = (1 ? 0xffff : 0xff); // expected-warning {{implicit conversion from 'int' to 'u8' (aka 'unsigned char') changes value from 65535 to 255}}
+            ^
+
+"Test_name.c", line 31: warning: shift count is too large
+    unsigned long long e4 = 0 ? 0 : 1ULL << 64; // expected-warning {{shift count >= width of type}}
+                                            ^
+
+"Test_name.c", line 27: warning: variable "e1" was declared but never referenced
+    u8 e1 = (0 ? 0xffff : 0xff);
+       ^
+
+"Test_name.c", line 28: warning: variable "e2" was declared but never referenced
+    u8 e2 = (1 ? 0xffff : 0xff); // expected-warning {{implicit conversion from 'int' to 'u8' (aka 'unsigned char') changes value from 65535 to 255}}
+       ^
+
+"Test_name.c", line 30: warning: variable "e3" was declared but never referenced
+    unsigned long long e3 = 1 ? 0 : 1ULL << 64;
+                       ^
+
+"Test_name.c", line 31: warning: variable "e4" was declared but never referenced
+    unsigned long long e4 = 0 ? 0 : 1ULL << 64; // expected-warning {{shift count >= width of type}}
+                       ^
+
+"Test_name.c", line 36: warning: integer conversion resulted in truncation
+    static u8 f2 = (1 ? 0xffff : 0xff); // expected-warning {{implicit conversion from 'int' to 'u8' (aka 'unsigned char') changes value from 65535 to 255}}
+                   ^
+
+"Test_name.c", line 38: warning: integer conversion resulted in truncation
+    static u8 f4 = (0 ? 0xff : 0xffff); // expected-warning {{implicit conversion from 'int' to 'u8' (aka 'unsigned char') changes value from 65535 to 255}}
+                   ^
+
+"Test_name.c", line 35: warning: variable "f1" was declared but never referenced
+    static u8 f1 = (0 ? 0xffff : 0xff);
+              ^
+
+"Test_name.c", line 36: warning: variable "f2" was declared but never referenced
+    static u8 f2 = (1 ? 0xffff : 0xff); // expected-warning {{implicit conversion from 'int' to 'u8' (aka 'unsigned char') changes value from 65535 to 255}}
+              ^
+
+"Test_name.c", line 37: warning: variable "f3" was declared but never referenced
+    static u8 f3 = (1 ? 0xff : 0xffff);
+              ^
+
+"Test_name.c", line 38: warning: variable "f4" was declared but never referenced
+    static u8 f4 = (0 ? 0xff : 0xffff); // expected-warning {{implicit conversion from 'int' to 'u8' (aka 'unsigned char') changes value from 65535 to 255}}
+              ^
+
+"Test_name.c", line 20: warning: variable "d1" was declared but never referenced
+  static u8 d1 = (0 ? 0xffff : 0xff);
+            ^
+
+"Test_name.c", line 21: warning: variable "d2" was declared but never referenced
+  static u8 d2 = (1 ? 0xffff : 0xff); // expected-warning {{implicit conversion from 'int' to 'u8' (aka 'unsigned char') changes value from 65535 to 255}}
+            ^
+
+1 error detected in the compilation of "Test_name.c".

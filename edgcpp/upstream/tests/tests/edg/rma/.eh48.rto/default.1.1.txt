@@ -1,0 +1,23 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 7: error: incomplete type "X" is not allowed
+    void f() throw(X) { }
+                   ^
+
+"Test_name.c", line 8: error: incomplete type "X" is not allowed
+    void g() throw(X);
+                   ^
+
+"Test_name.c", line 7: error: incomplete type "X" is not allowed
+    void f() throw(X) { }
+                   ^
+          detected during instantiation of class "A<T> [with T=int]" at line 10
+
+"Test_name.c", line 11: error: incomplete type "X" is not allowed
+  template <class T> void A<T>::g() throw(X) { }
+                                          ^
+
+"Test_name.c", line 14: error: return type "int" omitted in declaration of function "main"
+  main() {
+  ^
+
+5 errors detected in the compilation of "Test_name.c".

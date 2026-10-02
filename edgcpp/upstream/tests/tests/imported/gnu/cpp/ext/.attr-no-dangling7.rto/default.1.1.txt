@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 12: warning: unknown attribute "gnu::no_dangling"
+  [[gnu::no_dangling(N)]] const X& get(const int& i); // { dg-error "parameter packs not expanded" }
+    ^
+
+"Test_name.c", line 15: warning: unknown attribute "gnu::no_dangling"
+  [[gnu::no_dangling(T::x)]] // { dg-error "member" }
+    ^
+
+"Test_name.c", line 20: warning: unknown attribute "gnu::no_dangling"
+  [[gnu::no_dangling(val ())]]   // { dg-error "call" }
+    ^
+
+"Test_name.c", line 23: warning: unknown attribute "gnu::no_dangling"
+  [[gnu::no_dangling(20)]] const X& fn1 (const int &, const X&);
+    ^
+
+"Test_name.c", line 8: warning: variable "x1" was declared but never referenced
+  const X x1 {};
+          ^
+
+"Test_name.c", line 9: warning: variable "x2" was declared but never referenced
+  const X x2 {};
+          ^
+

@@ -1,0 +1,13 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 8: warning: expression has no effect
+  	&A8 < &i8;
+  	^
+
+"Test_name.c", line 16: warning: variable "A9" is used before its value is set
+  	(void*)*A9 < p;
+  	        ^
+
+"Test_name.c", line 16: warning: expression has no effect
+  	(void*)*A9 < p;
+  	^
+

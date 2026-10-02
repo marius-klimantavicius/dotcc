@@ -1,0 +1,7 @@
+fe_only -DTEST_NUMBER=1 -x Test_name.c
+"Test_name.c", line 18: error: exception specification is incompatible with that of previous member "A::pmf" (declared at line 15):
+            previously specified but omitted here: "int"
+  void (A::*A::pmf)() throw();
+               ^
+
+1 error detected in the compilation of "Test_name.c".

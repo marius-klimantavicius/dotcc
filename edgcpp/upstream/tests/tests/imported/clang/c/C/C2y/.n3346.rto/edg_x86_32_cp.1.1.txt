@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c99 Test_name.c
+"Test_name.c", line 33: error: a value of type "struct T" cannot be used to initialize an entity of type "struct S"
+    struct S s3 = t; // expected-error {{initializing 'struct S' with an expression of incompatible type 'struct T'}}
+                  ^
+
+"Test_name.c", line 33: warning: variable "t" is used before its value is set
+    struct S s3 = t; // expected-error {{initializing 'struct S' with an expression of incompatible type 'struct T'}}
+                  ^
+
+"Test_name.c", line 29: warning: variable "s2" was declared but never referenced
+    struct S s2 = s1;
+             ^
+
+"Test_name.c", line 50: warning: initialization with "{...}" expected for aggregate object
+    float str5[] = "this doesn't work";          // expected-error {{array initializer must be an initializer list}}
+                   ^
+
+"Test_name.c", line 50: error: a value of type "char *" cannot be used to initialize an entity of type "float"
+    float str5[] = "this doesn't work";          // expected-error {{array initializer must be an initializer list}}
+                   ^
+
+"Test_name.c", line 51: error: a value of type "char *" cannot be used to initialize an entity of type "float"
+    float str6[] = { "this also doesn't work" }; // expected-error {{initializing 'float' with an expression of incompatible type 'char[23]'}}
+                     ^
+
+"Test_name.c", line 74: error: a value of type "char [5]" cannot be used to initialize an entity of type "wchar_t []" (aka "long []")
+    wchar_t str13[] = "nope";      // expected-error {{initializing wide char array with non-wide string literal}}
+                      ^
+
+"Test_name.c", line 75: error: a value of type "char [5]" cannot be used to initialize an entity of type "wchar_t []" (aka "long []")
+    wchar_t str14[] = { "nope" };  // expected-error-re {{incompatible pointer to integer conversion initializing 'wchar_t' (aka '{{.*}}') with an expression of type 'char[5]'}}
+                        ^
+
+"Test_name.c", line 75: error: incomplete type "wchar_t []" (aka "long []") is not allowed
+    wchar_t str14[] = { "nope" };  // expected-error-re {{incompatible pointer to integer conversion initializing 'wchar_t' (aka '{{.*}}') with an expression of type 'char[5]'}}
+            ^
+
+"Test_name.c", line 47: warning: variable "str1" was declared but never referenced
+    char str1[] = "string literal";
+         ^
+
+"Test_name.c", line 48: warning: variable "str2" was declared but never referenced
+    char str2[] = { "string literal" };
+         ^
+
+"Test_name.c", line 53: warning: variable "str7" was declared but never referenced
+    wchar_t str7[] = L"string literal";
+            ^
+
+"Test_name.c", line 54: warning: variable "str8" was declared but never referenced
+    wchar_t str8[] = { L"string literal" };
+            ^
+
+6 errors detected in the compilation of "Test_name.c".

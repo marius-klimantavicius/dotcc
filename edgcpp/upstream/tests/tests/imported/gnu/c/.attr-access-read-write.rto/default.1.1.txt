@@ -1,0 +1,113 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 8: warning: unknown attribute "access"
+  int  __attribute__ ((access))
+                       ^
+
+"Test_name.c", line 11: warning: unknown attribute "access"
+  int  __attribute__ ((access ()))
+                       ^
+
+"Test_name.c", line 14: warning: unknown attribute "access"
+  int  __attribute__ ((access (rdwr)))
+                       ^
+
+"Test_name.c", line 17: warning: unknown attribute "access"
+  int  __attribute__ ((access (read_write)))
+                       ^
+
+"Test_name.c", line 20: warning: unknown attribute "access"
+  int  __attribute__ ((access (read_write ())))
+                       ^
+
+"Test_name.c", line 27: warning: unknown attribute "access"
+  int  __attribute__ ((access (rdwr ())))
+                       ^
+
+"Test_name.c", line 33: warning: unknown attribute "access"
+  int RDWR (1)
+      ^
+
+"Test_name.c", line 36: warning: unknown attribute "access"
+  int RDWR (2)
+      ^
+
+"Test_name.c", line 38: warning: unknown attribute "access"
+  int RDWR (3)
+      ^
+
+"Test_name.c", line 41: warning: unknown attribute "access"
+  int RDWR (0 + 1)
+      ^
+
+"Test_name.c", line 44: warning: unknown attribute "access"
+  int RDWR (2 - 1)
+      ^
+
+"Test_name.c", line 47: warning: unknown attribute "access"
+  int RDWR (1)
+      ^
+
+"Test_name.c", line 50: warning: unknown attribute "access"
+  int RDWR (1, 1)
+      ^
+
+"Test_name.c", line 53: warning: unknown attribute "access"
+  int RDWR (1, 2)
+      ^
+
+"Test_name.c", line 56: warning: unknown attribute "access"
+  int RDWR (2, 1)
+      ^
+
+"Test_name.c", line 59: warning: unknown attribute "access"
+  int RDWR (2, 2)
+      ^
+
+"Test_name.c", line 62: warning: unknown attribute "access"
+  int RDWR (4)
+      ^
+
+"Test_name.c", line 65: warning: unknown attribute "access"
+  int RDWR (1)
+      ^
+
+"Test_name.c", line 68: warning: unknown attribute "access"
+  int RDWR (2)
+      ^
+
+"Test_name.c", line 71: warning: unknown attribute "access"
+  int RDWR (-1)
+      ^
+
+"Test_name.c", line 74: warning: unknown attribute "access"
+  int RDWR (1, -12345)
+      ^
+
+"Test_name.c", line 77: warning: unknown attribute "access"
+  int RDWR ("blah")
+      ^
+
+"Test_name.c", line 80: warning: unknown attribute "access"
+  int RDWR (1, "foobar")
+      ^
+
+"Test_name.c", line 86: warning: unknown attribute "access"
+  RDWR (1) void rdwr_pf_1 (F*);   /* { dg-error "attribute 'access\\(read_write, 1\\)' positional argument 1 references argument of function type 'F' \\{aka 'int\\(int,  *int\\)'\\}" } */
+  ^
+
+"Test_name.c", line 89: warning: unknown attribute "access"
+  void RDWR(2) (*prdwr_pv2)(int, void*);
+       ^
+
+"Test_name.c", line 90: warning: unknown attribute "access"
+  void RDWR(3, 1) (*prdwr_pv2_1)(int, void*, void*);
+       ^
+
+"Test_name.c", line 93: warning: unknown attribute "access"
+  typedef RDWR (2) void rdwr_p2_t (int*, char*, void*);
+          ^
+
+"Test_name.c", line 94: warning: unknown attribute "access"
+  typedef RDWR (2) void rdwr_p2_1 (int, int*);
+          ^
+

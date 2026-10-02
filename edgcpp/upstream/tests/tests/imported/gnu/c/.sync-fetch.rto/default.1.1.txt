@@ -1,0 +1,74 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 12: error: identifier "b" is undefined
+    __atomic_fetch_add (&a, &b, 0);   /* { dg-error ".b. undeclared" } */
+                             ^
+
+"Test_name.c", line 18: error: identifier "b" is undefined
+    __atomic_fetch_sub (&a, &b, 0);      /* { dg-error ".b. undeclared" } */
+                             ^
+
+"Test_name.c", line 24: error: identifier "b" is undefined
+    __atomic_fetch_or (&a, &b, 0);      /* { dg-error ".b. undeclared" } */
+                            ^
+
+"Test_name.c", line 30: error: identifier "b" is undefined
+    __atomic_fetch_and (&a, &b, 0);      /* { dg-error ".b. undeclared" } */
+                             ^
+
+"Test_name.c", line 36: error: identifier "b" is undefined
+    __atomic_fetch_xor (&a, &b, 0);      /* { dg-error ".b. undeclared" } */
+                             ^
+
+"Test_name.c", line 42: error: identifier "b" is undefined
+    __atomic_fetch_nand (&a, &b, 0);      /* { dg-error ".b. undeclared" } */
+                              ^
+
+"Test_name.c", line 49: error: identifier "a" is undefined
+    __atomic_fetch_add (&a, &b, 0);   /* { dg-error ".a. undeclared" } */
+                         ^
+
+"Test_name.c", line 55: error: identifier "a" is undefined
+    __atomic_fetch_sub (&a, &b, 0);      /* { dg-error ".a. undeclared" } */
+                         ^
+
+"Test_name.c", line 61: error: identifier "a" is undefined
+    __atomic_fetch_or (&a, &b, 0);      /* { dg-error ".a. undeclared" } */
+                        ^
+
+"Test_name.c", line 67: error: identifier "a" is undefined
+    __atomic_fetch_and (&a, &b, 0);      /* { dg-error ".a. undeclared" } */
+                         ^
+
+"Test_name.c", line 73: error: identifier "a" is undefined
+    __atomic_fetch_xor (&a, &b, 0);      /* { dg-error ".a. undeclared" } */
+                         ^
+
+"Test_name.c", line 79: error: identifier "a" is undefined
+    __atomic_fetch_nand (&a, &b, 0);      /* { dg-error ".a. undeclared" } */
+                          ^
+
+"Test_name.c", line 86: error: identifier "m" is undefined
+    __atomic_fetch_add (&a, &b, m);   /* { dg-error ".m. undeclared" } */
+                                ^
+
+"Test_name.c", line 92: error: identifier "m" is undefined
+    __atomic_fetch_sub (&a, &b, m);      /* { dg-error ".m. undeclared" } */
+                                ^
+
+"Test_name.c", line 98: error: identifier "m" is undefined
+    __atomic_fetch_or (&a, &b, m);      /* { dg-error ".m. undeclared" } */
+                               ^
+
+"Test_name.c", line 104: error: identifier "m" is undefined
+    __atomic_fetch_and (&a, &b, m);      /* { dg-error ".m. undeclared" } */
+                                ^
+
+"Test_name.c", line 110: error: identifier "m" is undefined
+    __atomic_fetch_xor (&a, &b, m);      /* { dg-error ".m. undeclared" } */
+                                ^
+
+"Test_name.c", line 116: error: identifier "m" is undefined
+    __atomic_fetch_nand (&a, &b, m);      /* { dg-error ".m. undeclared" } */
+                                 ^
+
+18 errors detected in the compilation of "Test_name.c".

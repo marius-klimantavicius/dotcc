@@ -1,0 +1,53 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 26: error: no default constructor exists for class "T"
+    new T[1]{}; // { dg-error "explicit constructor" }
+             ^
+
+"Test_name.c", line 28: error: no default constructor exists for class "T"
+    new T[3]{1, 2}; // { dg-error "explicit constructor" }
+                 ^
+
+"Test_name.c", line 29: error: no default constructor exists for class "T"
+    new T[n]{}; // { dg-error "explicit constructor" }
+             ^
+
+"Test_name.c", line 31: error: no instance of constructor "S::S" matches the argument list
+    new S[1]{}; // { dg-error "could not convert" }
+             ^
+"Test_name.c", line 19: note: number of parameters of function "S::S(const S &)" does not match the call
+  struct S {
+         ^
+"Test_name.c", line 19: note: number of parameters of function "S::S(S &&)" does not match the call
+  struct S {
+         ^
+"Test_name.c", line 20: note: number of parameters of function "S::S(int)" does not match the call
+    S(int);
+    ^
+
+"Test_name.c", line 33: error: no instance of constructor "S::S" matches the argument list
+    new S[3]{1, 2}; // { dg-error "could not convert" }
+                 ^
+"Test_name.c", line 19: note: number of parameters of function "S::S(const S &)" does not match the call
+  struct S {
+         ^
+"Test_name.c", line 19: note: number of parameters of function "S::S(S &&)" does not match the call
+  struct S {
+         ^
+"Test_name.c", line 20: note: number of parameters of function "S::S(int)" does not match the call
+    S(int);
+    ^
+
+"Test_name.c", line 34: error: no instance of constructor "S::S" matches the argument list
+    new S[n]{}; // { dg-error "could not convert" }
+             ^
+"Test_name.c", line 19: note: number of parameters of function "S::S(const S &)" does not match the call
+  struct S {
+         ^
+"Test_name.c", line 19: note: number of parameters of function "S::S(S &&)" does not match the call
+  struct S {
+         ^
+"Test_name.c", line 20: note: number of parameters of function "S::S(int)" does not match the call
+    S(int);
+    ^
+
+6 errors detected in the compilation of "Test_name.c".

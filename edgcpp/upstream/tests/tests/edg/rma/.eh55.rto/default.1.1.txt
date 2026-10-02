@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 5: error: a return statement is not allowed in a handler of a function try block of a constructor
+    S() try { } catch(...) { return; }
+                             ^
+
+"Test_name.c", line 6: error: a return statement is not allowed in a handler of a function try block of a constructor
+    S(int i) try { } catch(...) { if (i>0) { return; } }
+                                             ^
+
+2 errors detected in the compilation of "Test_name.c".

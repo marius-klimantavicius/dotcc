@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 9: warning: this declaration has no storage class or type specifier
+    GH140887();     // expected-error {{must use 'struct' tag to refer to type 'GH140887'}} \
+    ^
+
+"Test_name.c", line 9: error: a function type is not allowed here
+    GH140887();     // expected-error {{must use 'struct' tag to refer to type 'GH140887'}} \
+    ^
+
+"Test_name.c", line 13: warning: this declaration has no storage class or type specifier
+  constexpr struct GH140887 a; // expected-error {{constexpr variable 'a' must be initialized by a constant expression}}
+  ^
+
+"Test_name.c", line 13: error: expected a ";"
+  constexpr struct GH140887 a; // expected-error {{constexpr variable 'a' must be initialized by a constant expression}}
+            ^
+
+2 errors detected in the compilation of "Test_name.c".

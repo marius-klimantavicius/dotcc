@@ -1,0 +1,23 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"./template/builtin-speculation-overloads.def", line 28: error: static assertion failed
+      static_assert(is_available<int>::value == true); static_assert(is_available<float>::value == false); static_assert(is_available<X>::value == false); static_assert(is_available<Large>::value == false); static_assert(is_available<Incomplete>::value == false); static_assert(is_available<int *>::value == true); static_assert(is_available<long>::value == true);
+                                                       ^
+"./template/builtin-speculation-overloads.def", line 28: note: the final comparison was 1 == 0
+      static_assert(is_available<int>::value == true); static_assert(is_available<float>::value == false); static_assert(is_available<X>::value == false); static_assert(is_available<Large>::value == false); static_assert(is_available<Incomplete>::value == false); static_assert(is_available<int *>::value == true); static_assert(is_available<long>::value == true);
+                                                                                                ^
+
+"./template/builtin-speculation-overloads.def", line 28: error: static assertion failed
+      static_assert(is_available<int>::value == true); static_assert(is_available<float>::value == false); static_assert(is_available<X>::value == false); static_assert(is_available<Large>::value == false); static_assert(is_available<Incomplete>::value == false); static_assert(is_available<int *>::value == true); static_assert(is_available<long>::value == true);
+                                                                                                           ^
+"./template/builtin-speculation-overloads.def", line 28: note: the final comparison was 1 == 0
+      static_assert(is_available<int>::value == true); static_assert(is_available<float>::value == false); static_assert(is_available<X>::value == false); static_assert(is_available<Large>::value == false); static_assert(is_available<Incomplete>::value == false); static_assert(is_available<int *>::value == true); static_assert(is_available<long>::value == true);
+                                                                                                                                                ^
+
+"./template/builtin-speculation-overloads.def", line 28: error: static assertion failed
+      static_assert(is_available<int>::value == true); static_assert(is_available<float>::value == false); static_assert(is_available<X>::value == false); static_assert(is_available<Large>::value == false); static_assert(is_available<Incomplete>::value == false); static_assert(is_available<int *>::value == true); static_assert(is_available<long>::value == true);
+                                                                                                                                                           ^
+"./template/builtin-speculation-overloads.def", line 28: note: the final comparison was 1 == 0
+      static_assert(is_available<int>::value == true); static_assert(is_available<float>::value == false); static_assert(is_available<X>::value == false); static_assert(is_available<Large>::value == false); static_assert(is_available<Incomplete>::value == false); static_assert(is_available<int *>::value == true); static_assert(is_available<long>::value == true);
+                                                                                                                                                                                                    ^
+
+3 errors detected in the compilation of "Test_name.c".

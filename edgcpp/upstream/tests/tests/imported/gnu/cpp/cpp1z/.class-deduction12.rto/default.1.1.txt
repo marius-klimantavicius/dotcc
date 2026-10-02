@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 15: error: no instance of constructor "A" matches the argument list
+            argument types are: (int *, int, B<42>)
+  A a(&i,2,B<42>());
+    ^
+
+"Test_name.c", line 15: error: cannot deduce class template arguments
+  A a(&i,2,B<42>());
+  ^
+
+"Test_name.c", line 19: error: incomplete type "same<<error-type>, A<int *>>" is not allowed
+  same<decltype(a), A<int*>> s;
+                             ^
+
+3 errors detected in the compilation of "Test_name.c".

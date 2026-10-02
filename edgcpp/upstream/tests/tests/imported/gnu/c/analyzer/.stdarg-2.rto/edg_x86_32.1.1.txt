@@ -1,0 +1,121 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./analyzer/stdarg-2.c", line 16: warning: variable "ap" is used before its value is set
+   ap, placeholder
+   ^
+
+"./analyzer/stdarg-2.c", line 58: warning: variable "ap" is used before its value is set
+   ap, placeholder
+   ^
+
+"./analyzer/stdarg-2.c", line 77: warning: variable "ap" is used before its value is set
+   ap, placeholder
+   ^
+
+"./analyzer/stdarg-2.c", line 74: warning: variable "i" was set but never used
+    int i;
+        ^
+
+"./analyzer/stdarg-2.c", line 98: warning: variable "i" was set but never used
+    int i;
+        ^
+
+"./analyzer/stdarg-2.c", line 110: warning: variable "ap" is used before its value is set
+   ap, placeholder
+   ^
+
+"./analyzer/stdarg-2.c", line 128: warning: variable "ap" is used before its value is set
+   ap, placeholder
+   ^
+
+"./analyzer/stdarg-2.c", line 146: warning: variable "ap" is used before its value is set
+           ap
+           ^
+
+"./analyzer/stdarg-2.c", line 155: warning: variable "ap" is used before its value is set
+   ap, placeholder
+   ^
+
+"./analyzer/stdarg-2.c", line 153: warning: variable "i" was set but never used
+    int i;
+        ^
+
+"./analyzer/stdarg-2.c", line 166: warning: variable "ap" is used before its value is set
+   ap, placeholder
+   ^
+
+"./analyzer/stdarg-2.c", line 186: warning: variable "ap" is used before its value is set
+   ap, placeholder
+   ^
+
+"./analyzer/stdarg-2.c", line 184: warning: variable "i" was set but never used
+    int i;
+        ^
+
+"./analyzer/stdarg-2.c", line 199: warning: variable "ap" is used before its value is set
+   ap, placeholder
+   ^
+
+"./analyzer/stdarg-2.c", line 196: warning: variable "i" was set but never used
+    int i;
+        ^
+
+"./analyzer/stdarg-2.c", line 219: warning: variable "ap" is used before its value is set
+   ap, placeholder
+   ^
+
+"./analyzer/stdarg-2.c", line 216: warning: variable "str" was set but never used
+    const char *str;
+                ^
+
+"./analyzer/stdarg-2.c", line 236: warning: variable "str" was set but never used
+    const char *str;
+                ^
+
+"./analyzer/stdarg-2.c", line 245: warning: variable "ap" is used before its value is set
+   ap, placeholder
+   ^
+
+"./analyzer/stdarg-2.c", line 268: warning: variable "ap" is used before its value is set
+     ap, placeholder
+     ^
+
+"./analyzer/stdarg-2.c", line 309: warning: variable "args1" is used before its value is set
+   args1, placeholder
+   ^
+
+"./analyzer/stdarg-2.c", line 341: warning: variable "args1" is used before its value is set
+   args1, placeholder
+   ^
+
+"./analyzer/stdarg-2.c", line 370: warning: variable "ap1" is used before its value is set
+   ap1, placeholder
+   ^
+
+"./analyzer/stdarg-2.c", line 381: warning: variable "ap1" is used before its value is set
+   ap1, placeholder
+   ^
+
+"./analyzer/stdarg-2.c", line 380: warning: variable "ap2" was set but never used
+    va_list ap1, ap2;
+                 ^
+
+"./analyzer/stdarg-2.c", line 392: warning: variable "ap" is used before its value is set
+   ap, placeholder
+   ^
+
+"./analyzer/stdarg-2.c", line 403: warning: variable "ap" is used before its value is set
+   ap, placeholder
+   ^
+
+"./analyzer/stdarg-2.c", line 401: warning: variable "i" was declared but never referenced
+    int i;
+        ^
+
+"./analyzer/stdarg-2.c", line 415: warning: variable "ap1" is used before its value is set
+   ap1
+   ^
+
+"./analyzer/stdarg-2.c", line 433: warning: variable "i" was set but never used
+    int i;
+        ^
+

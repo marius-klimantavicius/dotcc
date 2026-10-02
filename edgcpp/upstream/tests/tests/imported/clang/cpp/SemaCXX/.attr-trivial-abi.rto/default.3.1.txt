@@ -1,0 +1,202 @@
+fe_only -DTEST_NUMBER=3 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 8: warning: unknown attribute "trivial_abi"
+  void __attribute__((trivial_abi)) foo(); // expected-warning {{'trivial_abi' attribute only applies to classes}}
+                      ^
+
+"Test_name.c", line 12: warning: unknown attribute "trivial_abi"
+  class __attribute__((trivial_abi)) a { a(a &&); };
+                       ^
+
+"Test_name.c", line 21: error: static assertion failed with ""
+  static_assert(__is_trivially_relocatable(a<int>), ""); // expected-warning{{deprecated}}
+  ^
+
+"Test_name.c", line 22: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(a<int>), "");
+                                                        ^
+
+"Test_name.c", line 22: error: identifier "__builtin_is_cpp_trivially_relocatable" is undefined
+  static_assert(!__builtin_is_cpp_trivially_relocatable(a<int>), "");
+                 ^
+
+"Test_name.c", line 25: warning: unknown attribute "clang::trivial_abi"
+  struct [[clang::trivial_abi]] S0 {
+           ^
+
+"Test_name.c", line 29: error: type name is not allowed
+  static_assert(__builtin_is_cpp_trivially_relocatable(S0), "");
+                                                       ^
+
+"Test_name.c", line 31: warning: unknown attribute "trivial_abi"
+  struct __attribute__((trivial_abi)) S1 {
+                        ^
+
+"Test_name.c", line 35: error: type name is not allowed
+  static_assert(__builtin_is_cpp_trivially_relocatable(S1), "");
+                                                       ^
+
+"Test_name.c", line 38: warning: unknown attribute "trivial_abi"
+  struct __attribute__((trivial_abi)) S3 { // expected-warning {{'trivial_abi' cannot be applied to 'S3'}} expected-note {{is polymorphic}}
+                        ^
+
+"Test_name.c", line 42: error: type name is not allowed
+  static_assert(__builtin_is_cpp_trivially_relocatable(S3), "");
+                                                       ^
+
+"Test_name.c", line 47: warning: unknown attribute "trivial_abi"
+  } __attribute__((trivial_abi)); // expected-warning {{'trivial_abi' cannot be applied to 'S3_2'}} expected-note {{is polymorphic}}
+                   ^
+
+"Test_name.c", line 49: error: type name is not allowed
+  static_assert(__builtin_is_cpp_trivially_relocatable(S3_2), "");
+                                                       ^
+
+"Test_name.c", line 51: warning: unknown attribute "trivial_abi"
+  struct __attribute__((trivial_abi)) S3_3 { // expected-warning {{'trivial_abi' cannot be applied to 'S3_3'}} expected-note {{has a field of a non-trivial class type}}
+                        ^
+
+"Test_name.c", line 64: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(S3_3), "");
+                                                        ^
+
+"Test_name.c", line 70: warning: unknown attribute "trivial_abi"
+  struct __attribute__((trivial_abi)) S3_4 { // expected-warning {{'trivial_abi' cannot be applied to 'S3_4'}} expected-note {{has a field of a non-trivial class type}}
+                        ^
+
+"Test_name.c", line 75: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(S3_4<int>), "");
+                                                        ^
+
+"Test_name.c", line 82: error: type name is not allowed
+  static_assert(__builtin_is_cpp_trivially_relocatable(S4), "");
+                                                       ^
+
+"Test_name.c", line 85: warning: unknown attribute "trivial_abi"
+  struct __attribute__((trivial_abi)) S5 : public virtual S4 { // expected-warning {{'trivial_abi' cannot be applied to 'S5'}} expected-note {{has a virtual base}}
+                        ^
+
+"Test_name.c", line 88: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(S5), "");
+                                                        ^
+
+"Test_name.c", line 91: warning: unknown attribute "trivial_abi"
+  struct __attribute__((trivial_abi)) S9 : public S4 {
+                        ^
+
+"Test_name.c", line 94: error: type name is not allowed
+  static_assert(__builtin_is_cpp_trivially_relocatable(S9), "");
+                                                       ^
+
+"Test_name.c", line 97: warning: unknown attribute "trivial_abi"
+  struct __attribute__((trivial_abi(1))) S8 { // expected-error {{'trivial_abi' attribute takes no arguments}}
+                        ^
+
+"Test_name.c", line 103: warning: unknown attribute "trivial_abi"
+  struct __attribute__((trivial_abi)) S10 {
+                        ^
+
+"Test_name.c", line 109: error: type name is not allowed
+  static_assert(__builtin_is_cpp_trivially_relocatable(S10<int>), "");
+                                                       ^
+
+"Test_name.c", line 111: error: static assertion failed with ""
+  static_assert(__is_trivially_relocatable(S10<S3>), ""); // expected-warning{{deprecated}}
+  ^
+
+"Test_name.c", line 112: error: type name is not allowed
+  static_assert(__builtin_is_cpp_trivially_relocatable(S10<S3>), "");
+                                                       ^
+
+"Test_name.c", line 121: warning: unknown attribute "trivial_abi"
+  struct __attribute__((trivial_abi)) S15 : S14<T> {
+                        ^
+
+"Test_name.c", line 126: error: type name is not allowed
+  static_assert(__builtin_is_cpp_trivially_relocatable(S15<int>), "");
+                                                       ^
+
+"Test_name.c", line 128: error: static assertion failed with ""
+  static_assert(__is_trivially_relocatable(S15<S3>), ""); // expected-warning{{deprecated}}
+  ^
+
+"Test_name.c", line 129: error: type name is not allowed
+  static_assert(__builtin_is_cpp_trivially_relocatable(S15<S3>), "");
+                                                       ^
+
+"Test_name.c", line 132: warning: unknown attribute "trivial_abi"
+  struct __attribute__((trivial_abi)) S16 {
+                        ^
+
+"Test_name.c", line 136: error: type name is not allowed
+  static_assert(__builtin_is_cpp_trivially_relocatable(S16<int>), "");
+                                                       ^
+
+"Test_name.c", line 138: error: static assertion failed with ""
+  static_assert(__is_trivially_relocatable(S16<S3>), ""); // expected-warning{{deprecated}}
+  ^
+
+"Test_name.c", line 139: error: type name is not allowed
+  static_assert(__builtin_is_cpp_trivially_relocatable(S16<S3>), "");
+                                                       ^
+
+"Test_name.c", line 144: warning: unknown attribute "trivial_abi"
+  struct __attribute__((trivial_abi)) S17 {
+                        ^
+
+"Test_name.c", line 149: error: type name is not allowed
+  static_assert(__builtin_is_cpp_trivially_relocatable(S17<int>), "");
+                                                       ^
+
+"Test_name.c", line 152: error: type name is not allowed
+  static_assert(__builtin_is_cpp_trivially_relocatable(S17<S3>), "");
+                                                       ^
+
+"Test_name.c", line 156: warning: unknown attribute "trivial_abi"
+  struct __attribute__((trivial_abi)) CopyMoveDeleted { // expected-warning {{'trivial_abi' cannot be applied to 'CopyMoveDeleted'}} expected-note {{copy constructors and move constructors are all deleted}}
+                        ^
+
+"Test_name.c", line 166: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(CopyMoveDeleted), "");
+                                                        ^
+
+"Test_name.c", line 170: warning: unknown attribute "trivial_abi"
+  struct __attribute__((trivial_abi)) S18 { // expected-warning {{'trivial_abi' cannot be applied to 'S18'}} \
+                        ^
+
+"Test_name.c", line 181: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(S18), "");
+                                                        ^
+
+"Test_name.c", line 184: warning: unknown attribute "trivial_abi"
+  struct __attribute__((trivial_abi)) CopyDeleted {
+                        ^
+
+"Test_name.c", line 194: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(CopyDeleted), "");
+                                                        ^
+
+"Test_name.c", line 197: warning: unknown attribute "trivial_abi"
+  struct __attribute__((trivial_abi)) MoveDeleted {
+                        ^
+
+"Test_name.c", line 202: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(MoveDeleted), "");
+                                                        ^
+
+"Test_name.c", line 203: warning: unknown attribute "trivial_abi"
+  struct __attribute__((trivial_abi)) S19 { // expected-warning {{'trivial_abi' cannot be applied to 'S19'}} \
+                        ^
+
+"Test_name.c", line 215: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(S19), "");
+                                                        ^
+
+"Test_name.c", line 219: warning: unknown attribute "trivial_abi"
+  struct __attribute__((trivial_abi)) S20 {
+                        ^
+
+"Test_name.c", line 228: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(S20), "");
+                                                        ^
+
+29 errors detected in the compilation of "Test_name.c".

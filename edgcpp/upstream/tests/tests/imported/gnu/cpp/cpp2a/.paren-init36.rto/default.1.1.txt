@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 9: error: too many initializer values
+  int *p3 = new int[2](1, 2, 3, 4); // { dg-error "too many initializers" }
+                             ^
+
+"Test_name.c", line 15: error: a value of type "const char [7]" cannot be used to initialize an entity of type "char [3]"
+  char *c5 = new char[3]("so_sad"); // { dg-error "too long" }
+                         ^
+
+"Test_name.c", line 16: error: a value of type "const char [7]" cannot be used to initialize an entity of type "char [3]"
+  char *c6 = new char[3]{"so_sad"}; // { dg-error "too long" }
+                         ^
+
+3 errors detected in the compilation of "Test_name.c".

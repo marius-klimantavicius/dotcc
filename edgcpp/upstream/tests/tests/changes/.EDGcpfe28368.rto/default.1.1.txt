@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=1 --targ linux_aarch64 --clang_v 210100 --c++17 Test_name.c

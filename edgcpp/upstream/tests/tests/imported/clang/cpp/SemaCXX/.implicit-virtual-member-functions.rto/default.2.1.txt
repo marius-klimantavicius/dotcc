@@ -1,0 +1,23 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 -DMSABI -DMSABI --c++03 -DMSABI Test_name.c
+"Test_name.c", line 17: error: a non-placement operator delete must be visible in a class with a virtual destructor
+  struct B : A {
+         ^
+          detected during implicit generation of "B::~B()" at line 36
+
+"Test_name.c", line 51: error: a non-placement operator delete must be visible in a class with a virtual destructor
+  struct C : A {
+         ^
+          detected during implicit generation of "C::~C()" at line 66
+
+"Test_name.c", line 71: error: a non-placement operator delete must be visible in a class with a virtual destructor
+  struct D : A {
+         ^
+          detected during:
+            implicit generation of "D::~D()" at line 85
+            implicit generation of "D::D()" at line 85
+
+"Test_name.c", line 85: warning: function "operator new" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+    new D;
+    ^
+
+3 errors detected in the compilation of "Test_name.c".

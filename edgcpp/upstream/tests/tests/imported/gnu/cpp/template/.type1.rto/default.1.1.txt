@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: error: argument list for class template "A::B" is missing
+  int A::B::c;			// { dg-error "arguments" }
+         ^
+
+"Test_name.c", line 10: error: name followed by "::" must be a class or namespace name
+  int A::C::d;			// { dg-error "declared" }
+         ^
+
+2 errors detected in the compilation of "Test_name.c".

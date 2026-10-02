@@ -1,0 +1,85 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (parallel sections)]]
+      ^
+
+"Test_name.c", line 11: warning: attribute namespace "omp" is unrecognized
+      [[omp::directive (parallel)]];
+        ^
+
+"Test_name.c", line 12: warning: attribute namespace "omp" is unrecognized
+      [[omp::sequence (directive (section), directive (flush))]];		// { dg-error "must be the only specified attribute on a statement" }
+        ^
+
+"Test_name.c", line 15: warning: attribute namespace "omp" is unrecognized
+      [[omp::sequence (directive (flush), omp::directive (section))]];	// { dg-error "must be the only specified attribute on a statement" }
+        ^
+
+"Test_name.c", line 17: warning: attribute namespace "omp" is unrecognized
+      [[gnu::cold, omp::directive (section)]];				// { dg-error "must be the only specified attribute on a statement" }
+                   ^
+
+"Test_name.c", line 17: warning: attribute "gnu::cold" does not apply here
+      [[gnu::cold, omp::directive (section)]];				// { dg-error "must be the only specified attribute on a statement" }
+        ^
+
+"Test_name.c", line 19: warning: attribute namespace "omp" is unrecognized
+      [[omp::directive (section)]] [[gnu::cold]];				// { dg-error "must be the only specified attribute on a statement" }
+        ^
+
+"Test_name.c", line 19: warning: attribute "gnu::cold" does not apply here
+      [[omp::directive (section)]] [[gnu::cold]];				// { dg-error "must be the only specified attribute on a statement" }
+                                     ^
+
+"Test_name.c", line 21: warning: attribute namespace "omp" is unrecognized
+      [[omp::directive (section foo)]];					// { dg-error "expected end of line before 'foo'" }
+        ^
+
+"Test_name.c", line 29: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (parallel for reduction (inscan, +: a))]]				// { dg-error "'a' specified in 'inscan' 'reduction' clause but not in 'scan' directive clause" }
+      ^
+
+"Test_name.c", line 33: warning: attribute namespace "omp" is unrecognized
+        [[omp::sequence (omp::directive (parallel), omp::directive (scan, exclusive (a)))]]	// { dg-error "must be the only specified attribute on a statement" }
+          ^
+
+"Test_name.c", line 37: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (parallel for reduction (inscan, +: a))]]				// { dg-error "'a' specified in 'inscan' 'reduction' clause but not in 'scan' directive clause" }
+      ^
+
+"Test_name.c", line 41: warning: attribute namespace "omp" is unrecognized
+        [[omp::sequence (directive (scan inclusive (a)), directive (critical))]]		// { dg-error "must be the only specified attribute on a statement" }
+          ^
+
+"Test_name.c", line 45: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (parallel for reduction (inscan, +: a))]]				// { dg-error "'a' specified in 'inscan' 'reduction' clause but not in 'scan' directive clause" }
+      ^
+
+"Test_name.c", line 49: warning: attribute namespace "omp" is unrecognized
+        [[gnu::cold]] [[omp::directive (scan, exclusive (a))]]				// { dg-error "must be the only specified attribute on a statement" }
+                        ^
+
+"Test_name.c", line 49: warning: attribute "gnu::cold" does not apply here
+        [[gnu::cold]] [[omp::directive (scan, exclusive (a))]]				// { dg-error "must be the only specified attribute on a statement" }
+          ^
+
+"Test_name.c", line 53: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (parallel for reduction (inscan, +: a))]]				// { dg-error "'a' specified in 'inscan' 'reduction' clause but not in 'scan' directive clause" }
+      ^
+
+"Test_name.c", line 57: warning: attribute namespace "omp" is unrecognized
+        [[omp::directive (scan, exclusive (a)), gnu::cold]]				// { dg-error "must be the only specified attribute on a statement" }
+          ^
+
+"Test_name.c", line 57: warning: attribute "gnu::cold" does not apply here
+        [[omp::directive (scan, exclusive (a)), gnu::cold]]				// { dg-error "must be the only specified attribute on a statement" }
+                                                ^
+
+"Test_name.c", line 61: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (parallel for reduction (inscan, +: a))]]				// { dg-error "'a' specified in 'inscan' 'reduction' clause but not in 'scan' directive clause" }
+      ^
+
+"Test_name.c", line 65: warning: attribute namespace "omp" is unrecognized
+        [[omp::directive (scan)]]								// { dg-error "expected 'inclusive' or 'exclusive' clause before end of line" }
+          ^
+

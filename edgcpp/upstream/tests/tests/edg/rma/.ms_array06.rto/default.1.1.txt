@@ -1,0 +1,29 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --microsoft_version=1400 -n Test_name.c
+"Test_name.c", line 10: remark: return type "int" omitted in declaration of function "main"
+  main() {
+  ^
+
+"Test_name.c", line 12: warning: conversion from pointer to smaller integer
+    printf("offset of a is %d\n", (int)(&s.a) - (int)(&s));
+                                  ^
+
+"Test_name.c", line 12: warning: conversion from pointer to smaller integer
+    printf("offset of a is %d\n", (int)(&s.a) - (int)(&s));
+                                                ^
+
+"Test_name.c", line 13: warning: conversion from pointer to smaller integer
+    printf("offset of b is %d\n", (int)(&s.b) - (int)(&s));
+                                  ^
+
+"Test_name.c", line 13: warning: conversion from pointer to smaller integer
+    printf("offset of b is %d\n", (int)(&s.b) - (int)(&s));
+                                                ^
+
+"Test_name.c", line 14: warning: conversion from pointer to smaller integer
+    printf("offset of c is %d\n", (int)(&s.c) - (int)(&s));
+                                  ^
+
+"Test_name.c", line 14: warning: conversion from pointer to smaller integer
+    printf("offset of c is %d\n", (int)(&s.c) - (int)(&s));
+                                                ^
+

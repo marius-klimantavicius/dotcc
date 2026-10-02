@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: error: invalid friend declaration
+    friend auto foo;  // { dg-error "cannot be declared friend" }
+    ^
+
+"Test_name.c", line 8: error: cannot deduce "auto" type (initializer required)
+    friend auto foo;  // { dg-error "cannot be declared friend" }
+           ^
+
+2 errors detected in the compilation of "Test_name.c".

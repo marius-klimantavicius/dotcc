@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 16: warning: label "l1" was declared but never referenced
+   l1: f9();				// { dg-warning "not used" }
+   ^
+
+"Test_name.c", line 17: warning: label "l3" was declared but never referenced
+   l3: ; f9();				// { dg-warning "not used" }
+   ^
+
+"Test_name.c", line 31: warning: label "l1" was declared but never referenced
+   l1: f9();				// { dg-warning "not used" }
+   ^
+
+"Test_name.c", line 32: warning: label "l3" was declared but never referenced
+   l3: ; f9();				// { dg-warning "not used" }
+   ^
+

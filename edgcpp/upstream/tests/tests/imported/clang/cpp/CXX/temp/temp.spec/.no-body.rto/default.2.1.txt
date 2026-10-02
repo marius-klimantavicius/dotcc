@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 -DFIXING -DFIXING Test_name.c
+"Test_name.c", line 62: error: expected an identifier
+    template struct y0 { };     // expected-error {{class cannot be defined in an explicit instantiation; if this declaration is meant to be a class definition, remove the 'template' keyword}}
+                          ^
+
+"Test_name.c", line 62: error: invalid explicit instantiation declaration
+    template struct y0 { };     // expected-error {{class cannot be defined in an explicit instantiation; if this declaration is meant to be a class definition, remove the 'template' keyword}}
+             ^
+
+"Test_name.c", line 91: error: expected a ";"
+  template void f2<int>(int) { }    // expected-error {{explicit template instantiation cannot have a definition; if this definition is meant to be an explicit specialization, add '<>' after the 'template' keyword}}
+                             ^
+
+3 errors detected in the compilation of "Test_name.c".

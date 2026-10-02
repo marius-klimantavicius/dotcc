@@ -1,0 +1,22 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 9: error: incomplete type "void" is not allowed
+    static void sm4;
+                ^
+
+"Test_name.c", line 12: error: incomplete type "S" is not allowed
+  S T::sm1;
+       ^
+
+"Test_name.c", line 13: error: incomplete type "S [2]" is not allowed
+  S T::sm2[];
+       ^
+
+"Test_name.c", line 14: error: incomplete type "S []" is not allowed
+  S T::sm3[];
+       ^
+
+"Test_name.c", line 16: error: incomplete type "int []" is not allowed
+  int T::sm5[];
+         ^
+
+5 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 8: error: a defaulted member comparison operator cannot be "&&"-qualified
+    bool operator==(const A&) const && = default; // { dg-error "ref-qualifier" }
+         ^
+
+"Test_name.c", line 13: error: bad type "const B &&" for parameter of defaulted comparison operator (must be "reference to const X" where X is the enclosing class type)
+    friend bool operator==(const B&&, const B&&) = default; // { dg-error "" }
+                                                 ^
+
+2 errors detected in the compilation of "Test_name.c".

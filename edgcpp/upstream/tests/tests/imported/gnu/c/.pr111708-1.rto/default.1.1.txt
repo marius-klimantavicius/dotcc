@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 7: error: external/internal linkage conflict with previous declaration at line 6
+  static int a(void);	/* { dg-error "static declaration of 'a' follows non-static declaration" } */
+             ^
+
+"Test_name.c", line 16: warning: function "h0" was declared but never referenced
+  	extern int h0(void);	// internal linkage (6.2.2p4),
+  	           ^
+
+"Test_name.c", line 33: warning: function "j" was declared but never referenced
+  	extern int j(void);	// internal linkage (6.2.2p4), ok, internal
+  	           ^
+
+"Test_name.c", line 41: error: external/internal linkage conflict with previous declaration at line 24
+  		extern int j(void);	/* { dg-error "function previously declared 'static' redeclared 'extern'" } */
+  		           ^
+
+"Test_name.c", line 41: warning: function "j" was declared but never referenced
+  		extern int j(void);	/* { dg-error "function previously declared 'static' redeclared 'extern'" } */
+  		           ^
+
+"Test_name.c", line 39: warning: variable "j" was declared but never referenced
+  	int j;			// no linkage (6.2.2p6)
+  	    ^
+
+"Test_name.c", line 6: warning: function "a" was declared but never referenced
+  extern int a(void);	// external linkage (6.2.2p4)
+             ^
+
+"Test_name.c", line 9: warning: function "b" was declared but never referenced
+  static int b(void);	// internal linkage (6.2.2p3)
+             ^
+
+"Test_name.c", line 12: warning: function "h0" was declared but never referenced
+  static int h0(void);
+             ^
+
+"Test_name.c", line 24: warning: function "j" was declared but never referenced
+  static int j(void);	// internal linkage (6.2.2p3)
+             ^
+
+2 errors detected in the compilation of "Test_name.c".

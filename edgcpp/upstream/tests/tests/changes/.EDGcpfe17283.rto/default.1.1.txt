@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 11: error: expected an operator
+  void * operator "" il(long double ld) { return nullptr; }
+                  ^
+
+"Test_name.c", line 11: error: expected a ";"
+  void * operator "" il(long double ld) { return nullptr; }
+                  ^
+
+2 errors detected in the compilation of "Test_name.c".

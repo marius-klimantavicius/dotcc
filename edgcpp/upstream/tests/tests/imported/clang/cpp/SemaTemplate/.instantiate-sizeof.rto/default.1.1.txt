@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 10: warning: variable "x" was declared but never referenced
+    [] { int x = sizeof(sizeof(buffer)); }();
+             ^
+
+"Test_name.c", line 10: error: a variable captured by a lambda cannot have a type involving a variable-length array
+    [] { int x = sizeof(sizeof(buffer)); }();
+                               ^
+          detected during instantiation of "void f(T) [with T=int]" at line 13
+
+"Test_name.c", line 24: error: a nonstatic member reference must be relative to a specific object
+    int m = *T::x; // expected-error {{invalid use of non-static data member 'x'}}
+                ^
+          detected during instantiation of "M<T>::M() [with T=S]" at line 32
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 14: error: declaration of a member with the same name as its class
+    static int A2;  // { dg-error "same name as" }
+               ^
+
+"Test_name.c", line 27: error: declaration of a member with the same name as its class
+    static int A4;  // { dg-error "same name as" }
+               ^
+
+"Test_name.c", line 34: error: declaration of a member with the same name as its class
+    int B;  // { dg-error "same name as" }
+        ^
+
+"Test_name.c", line 40: error: declaration of a member with the same name as its class
+    static int B2;  // { dg-error "same name as" }
+               ^
+
+"Test_name.c", line 47: error: declaration of a member with the same name as its class
+    int B3;  // { dg-error "same name as" "this error should appear at parsing time" { xfail *-*-* } }
+        ^
+
+"Test_name.c", line 54: error: declaration of a member with the same name as its class
+    static int B4;  // { dg-error "same name as" }
+               ^
+
+6 errors detected in the compilation of "Test_name.c".

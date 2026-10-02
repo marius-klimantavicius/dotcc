@@ -1,0 +1,86 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 12: error: expected an expression
+    if (;);	    /* { dg-error "expected" } */
+        ^
+
+"Test_name.c", line 13: error: expected an expression
+    if (int);	    /* { dg-error "expected|initializer" } */
+        ^
+
+"Test_name.c", line 14: error: expected an expression
+    if (auto);	    /* { dg-error "expected|initializer" } */
+        ^
+
+"Test_name.c", line 15: error: expected an expression
+    if (int;);	    /* { dg-error "initializer" } */
+        ^
+
+"Test_name.c", line 17: error: expected an expression
+    if (auto;);	    /* { dg-error "empty|initializer" } */
+        ^
+
+"Test_name.c", line 18: error: expected an expression
+    if (int i);	    /* { dg-error "initializer" } */
+        ^
+
+"Test_name.c", line 19: error: expected an expression
+    if (int i;);	    /* { dg-error "expected" } */
+        ^
+
+"Test_name.c", line 20: error: expected an expression
+    if (int i = 0;);  /* { dg-error "expected" } */
+        ^
+
+"Test_name.c", line 22: error: expected an expression
+    if (extern int i = 0);  /* { dg-error "both .extern. and initializer" } */
+        ^
+
+"Test_name.c", line 23: error: expected an expression
+    if (extern int i);  /* { dg-error "initializer" } */
+        ^
+
+"Test_name.c", line 24: error: expected an expression
+    if (thread_local int i = 0);  /* { dg-error "function-scope" } */
+        ^
+
+"Test_name.c", line 25: error: expected an expression
+    if (typedef int i); /* { dg-error "initializer" } */
+        ^
+
+"Test_name.c", line 26: error: expected an expression
+    if (typedef int i = 0); /* { dg-error "initialized" } */
+        ^
+
+"Test_name.c", line 28: error: expected an expression
+    if (int i = 2, j = 3);  /* { dg-error "only declare a single object" } */
+        ^
+
+"Test_name.c", line 30: error: expected an expression
+    if (void (*fp)(int));  /* { dg-error "initializer" } */
+        ^
+
+"Test_name.c", line 31: error: expected an expression
+    if ([[maybe_unused]] g);  /* { dg-error "expected" } */
+        ^
+
+"Test_name.c", line 32: error: expected an expression
+    if ([[maybe_unused]] 42);  /* { dg-error "expected" } */
+        ^
+
+"Test_name.c", line 33: error: expected an expression
+    if ([[maybe_unused]] int);  /* { dg-error "expected|initializer" } */
+        ^
+
+"Test_name.c", line 34: error: expected an expression
+    if (__attribute__((unused)) g); /* { dg-error "initializer" } */
+        ^
+
+"Test_name.c", line 35: error: expected an expression
+    if (__attribute__((unused)) 42);  /* { dg-error "expected|initializer" } */
+        ^
+
+"Test_name.c", line 36: error: expected an expression
+    if (__attribute__((unused)) int);  /* { dg-error "expected|initializer" } */
+        ^
+
+21 errors detected in the compilation of "Test_name.c".

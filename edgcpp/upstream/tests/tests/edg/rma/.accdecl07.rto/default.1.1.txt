@@ -1,0 +1,26 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 14: error: type "A::A" (declared at line 4) is inaccessible
+      A::b;      // error
+      ^
+
+"Test_name.c", line 19: error: type "A::A" (declared at line 4) is inaccessible
+    A::a = 0;
+    ^
+
+"Test_name.c", line 19: error: conversion to inaccessible base class "A" is not allowed
+    A::a = 0;
+       ^
+
+"Test_name.c", line 23: error: type "A::A" (declared at line 4) is inaccessible
+    A::b = 0;
+    ^
+
+"Test_name.c", line 23: error: conversion to inaccessible base class "A" is not allowed
+    A::b = 0;
+       ^
+
+"Test_name.c", line 24: error: member "A::b" (declared at line 5) is inaccessible
+    B::b = 0;
+       ^
+
+6 errors detected in the compilation of "Test_name.c".

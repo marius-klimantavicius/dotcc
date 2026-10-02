@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++20 Test_name.c
+"Test_name.c", line 18: warning: expression has no effect
+    X<C<Us> ...>;  // Previously triggered an assertion failure.  Now okay.
+    ^
+          detected during instantiation of "void f<Us...>() [with Us=<>]" at line 20
+

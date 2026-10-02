@@ -1,0 +1,5 @@
+cpfe -DTEST_NUMBER=1 --c++23 -tused Test_name.c
+"Test_name.c", line 5: warning: local class member function "X::operator E" requires a definition
+    struct X { operator E(); };
+               ^
+

@@ -1,0 +1,58 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 41: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1v (f), 2, var_f);
+    ^
+
+"Test_name.c", line 41: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1v (f), 2, var_f);
+    ^
+
+"Test_name.c", line 41: error: declaration is incompatible with previous "var_f" (declared at line 21)
+    CHECK_CALL (t1v (f), 2, var_f);
+    ^
+
+"Test_name.c", line 42: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1v (d), 4, var_d);
+    ^
+
+"Test_name.c", line 42: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1v (d), 4, var_d);
+    ^
+
+"Test_name.c", line 42: error: declaration is incompatible with previous "var_d" (declared at line 22)
+    CHECK_CALL (t1v (d), 4, var_d);
+    ^
+
+"Test_name.c", line 43: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1v (ld), 6, var_ld);
+    ^
+
+"Test_name.c", line 43: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1v (ld), 6, var_ld);
+    ^
+
+"Test_name.c", line 43: error: declaration is incompatible with previous "var_ld" (declared at line 23)
+    CHECK_CALL (t1v (ld), 6, var_ld);
+    ^
+
+"Test_name.c", line 44: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1v (f32), 8, var_f32);
+    ^
+
+"Test_name.c", line 44: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1v (f32), 8, var_f32);
+    ^
+
+"Test_name.c", line 44: error: declaration is incompatible with previous "var_f32" (declared at line 24)
+    CHECK_CALL (t1v (f32), 8, var_f32);
+    ^
+
+"Test_name.c", line 45: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1v (i), 7, var_d);
+    ^
+
+"Test_name.c", line 45: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1v (i), 7, var_d);
+    ^
+
+4 errors detected in the compilation of "Test_name.c".

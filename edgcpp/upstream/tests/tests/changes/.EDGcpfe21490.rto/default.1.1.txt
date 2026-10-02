@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --clang Test_name.c
+"Test_name.c", line 13: warning: alignment attribute must also appear on definition at line 12
+  extern float f __attribute__((aligned(8)));
+                                ^
+

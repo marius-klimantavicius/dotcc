@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --c++11 -A Test_name.c
+"Test_name.c", line 6: error: constant "J" cannot be used because it follows a parameter pack and cannot be deduced from the parameters of function template "param_after_pack::f"
+    template<int ... I, int J, int ... K> // diag for "J" and "K
+                            ^
+
+"Test_name.c", line 6: error: constant "K" cannot be used because it follows a parameter pack and cannot be deduced from the parameters of function template "param_after_pack::f"
+    template<int ... I, int J, int ... K> // diag for "J" and "K
+                                       ^
+
+"Test_name.c", line 68: error: no instance of function template "non_type_too_many_args::S<Ts...>::foo [with Ts=<int, int>]" matches the argument list
+            argument types are: (non_type_too_many_args::X<1>, non_type_too_many_args::X<2>, non_type_too_many_args::X<3>)
+      S<int, int>::foo(X<1>(), X<2>(), X<3>()); // error
+      ^
+"Test_name.c", line 63: note: candidate function template "non_type_too_many_args::S<Ts...>::foo [with Ts=<int, int>]" failed deduction
+      template<Ts ... Us> static void foo(X<Us> ... u);
+                                      ^
+
+3 errors detected in the compilation of "Test_name.c".

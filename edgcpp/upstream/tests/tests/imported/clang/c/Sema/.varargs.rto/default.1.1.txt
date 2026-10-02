@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --ms_compatibility -DMS -w --c Test_name.c
+"Test_name.c", line 11: error: va_start can appear only in a function with an ellipsis parameter
+      __builtin_va_start(ap, a, a); // expected-error {{too many arguments to function}}
+      ^
+
+"Test_name.c", line 11: error: expected a ")"
+      __builtin_va_start(ap, a, a); // expected-error {{too many arguments to function}}
+                              ^
+
+"Test_name.c", line 12: error: va_start can appear only in a function with an ellipsis parameter
+      __builtin_va_start(ap, a); // expected-error {{'va_start' used in function with fixed args}}
+      ^
+
+"Test_name.c", line 41: error: va_start can appear only in a function with an ellipsis parameter
+    __builtin_va_start(ap,ap); // expected-error {{'va_start' used in function with fixed args}}
+    ^
+
+"Test_name.c", line 46: error: expected a ","
+    __builtin_va_start(ap); // expected-error {{too few arguments to function}}
+                         ^
+
+"Test_name.c", line 46: error: expected an expression
+    __builtin_va_start(ap); // expected-error {{too few arguments to function}}
+                         ^
+
+"Test_name.c", line 82: error: incorrect use of va_arg
+      (void)__builtin_va_arg(args, int[10]); // expected-warning{{second argument to 'va_arg' is of array type 'int[10]'}}
+                                   ^
+
+"Test_name.c", line 83: error: incorrect use of va_arg
+      (void)__builtin_va_arg(args, int[++n]); // expected-warning{{second argument to 'va_arg' is of array type 'int[++n]'}}
+                                   ^
+
+"Test_name.c", line 84: error: incorrect use of va_arg
+      (void)__builtin_va_arg(args, int[n][n]); // expected-warning{{second argument to 'va_arg' is of array type 'int[n][n]'}}
+                                   ^
+
+"Test_name.c", line 90: error: a value of type "void" cannot be assigned to an entity of type "int"
+    i = __builtin_va_start(ap, a); // expected-error {{assigning to 'int' from incompatible type 'void'}}
+      ^
+
+10 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++03 -W Test_name.c
+"Test_name.c", line 14: error: badly-formed pure specifier (only "= 0" is allowed)
+    virtual void bar2 () = __null;  // { dg-error "32:invalid pure specifier" }
+                           ^
+
+"Test_name.c", line 15: error: badly-formed pure specifier (only "= 0" is allowed)
+    virtual void bar3 () = 4;       // { dg-error "27:invalid pure specifier" }
+                           ^
+
+"Test_name.c", line 16: error: badly-formed pure specifier (only "= 0" is allowed)
+    virtual void bar4 () = A::f;    // { dg-error "27:invalid pure specifier" }
+                           ^
+
+3 errors detected in the compilation of "Test_name.c".

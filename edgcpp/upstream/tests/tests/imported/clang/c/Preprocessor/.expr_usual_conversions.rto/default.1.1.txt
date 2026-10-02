@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 7: warning: integer conversion resulted in a change of sign
+  #if (-42 + 0U) /* expected-warning {{left side of operator converted from negative value to unsigned: -42 to 18446744073709551574}} */  \
+       ^
+
+"Test_name.c", line 8: warning: integer conversion resulted in a change of sign
+    / -2         /* expected-warning {{right side of operator converted from negative value to unsigned: -2 to 18446744073709551614}} */
+      ^
+

@@ -1,0 +1,34 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 27: warning: structured bindings are a C++17 feature
+  thread_local auto [ d, e, f ] = t;	// { dg-warning "structured binding declaration can be 'thread_local' only" "" { target c++17_down } }
+                    ^
+
+"Test_name.c", line 27: error: a structured binding cannot declare an explicit storage class
+  thread_local auto [ d, e, f ] = t;	// { dg-warning "structured binding declaration can be 'thread_local' only" "" { target c++17_down } }
+  ^
+
+"Test_name.c", line 29: warning: structured bindings are a C++17 feature
+  thread_local auto [ g, h ] = A (44);	// { dg-warning "structured binding declaration can be 'thread_local' only" "" { target c++17_down } }
+                    ^
+
+"Test_name.c", line 29: error: a structured binding cannot declare an explicit storage class
+  thread_local auto [ g, h ] = A (44);	// { dg-warning "structured binding declaration can be 'thread_local' only" "" { target c++17_down } }
+  ^
+
+"Test_name.c", line 48: warning: structured bindings are a C++17 feature
+    thread_local auto [ m, n, o ] = t;	// { dg-warning "structured binding declaration can be 'thread_local' only" "" { target c++17_down } }
+                      ^
+
+"Test_name.c", line 48: error: a structured binding cannot declare an explicit storage class
+    thread_local auto [ m, n, o ] = t;	// { dg-warning "structured binding declaration can be 'thread_local' only" "" { target c++17_down } }
+    ^
+
+"Test_name.c", line 50: warning: structured bindings are a C++17 feature
+    thread_local auto [ p, q ] = A (45);	// { dg-warning "structured binding declaration can be 'thread_local' only" "" { target c++17_down } }
+                      ^
+
+"Test_name.c", line 50: error: a structured binding cannot declare an explicit storage class
+    thread_local auto [ p, q ] = A (45);	// { dg-warning "structured binding declaration can be 'thread_local' only" "" { target c++17_down } }
+    ^
+
+4 errors detected in the compilation of "Test_name.c".

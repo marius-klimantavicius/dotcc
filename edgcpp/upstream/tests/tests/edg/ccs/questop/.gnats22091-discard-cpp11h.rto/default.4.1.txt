@@ -1,0 +1,1 @@
+eccp -DTEST_NUMBER=4 --c++11 --microsoft_version 1924 Test_name.c

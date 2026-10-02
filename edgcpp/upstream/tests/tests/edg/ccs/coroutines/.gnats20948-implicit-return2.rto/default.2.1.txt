@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=2 --c++20 --set_flag coroutines -tused -A Test_name.c
+"Test_name.c", line 22: error: missing co_return statement while "std::coroutine_traits<A>::promise_type" (aka "A::promise_type") has no "return_void" at end of function "foo"
+  A foo() {
+    ^
+
+1 error detected in the compilation of "Test_name.c".

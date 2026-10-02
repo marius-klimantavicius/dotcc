@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 20: warning: declaration does not declare anything
+    B;
+    ^
+
+"Test_name.c", line 29: warning: declaration does not declare anything
+    D;
+    ^
+
+"Test_name.c", line 47: error: struct "<unnamed>" has no field "c"
+    x.c = 3;
+      ^
+
+"Test_name.c", line 48: error: struct "<unnamed>" has no field "d"
+    x.d = 4;
+      ^
+
+"Test_name.c", line 49: error: struct "<unnamed>" has no field "e"
+    x.e = 5;
+      ^
+
+"Test_name.c", line 50: error: struct "<unnamed>" has no field "f"
+    x.f = 6;
+      ^
+
+4 errors detected in the compilation of "Test_name.c".

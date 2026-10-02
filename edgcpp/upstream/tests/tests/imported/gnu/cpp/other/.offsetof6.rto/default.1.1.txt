@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 23: warning: expression has no effect
+    __builtin_offsetof(A<char>, p); // OK
+    ^
+
+"Test_name.c", line 24: warning: expression has no effect
+    __builtin_offsetof(A<char>, p[1]); // { dg-error "non constant address" }
+    ^
+
+"Test_name.c", line 25: warning: expression has no effect
+    __builtin_offsetof(B, a.p); // OK
+    ^
+
+"Test_name.c", line 26: warning: expression has no effect
+    __builtin_offsetof(B, a.p[1]); // { dg-error "non constant address" }
+    ^
+

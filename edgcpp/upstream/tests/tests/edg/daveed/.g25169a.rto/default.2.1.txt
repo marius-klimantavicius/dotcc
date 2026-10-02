@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=2 --c++17 Test_name.c
+"Test_name.c", line 6: error: no instance of function template "S<T>::g [with T=int]" matches the argument list
+            argument types are: (int)
+            object type is: const S<int>
+      [x](auto) { x.g<int>(T{}); };
+                    ^
+"Test_name.c", line 9: note: candidate function template "S<T>::g [with T=int]" failed deduction
+    void g(U) {}
+         ^
+          detected during instantiation of "void S<T>::f(S<T> &) [with T=int]" at line 14
+
+1 error detected in the compilation of "Test_name.c".

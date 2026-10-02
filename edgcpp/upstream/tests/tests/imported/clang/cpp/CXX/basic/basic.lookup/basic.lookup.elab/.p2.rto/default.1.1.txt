@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 14: error: typedef "A" may not be used in an elaborated type specifier
+        struct A a; // expected-error {{typedef 'A' cannot be referenced with the 'struct' specifier}}
+               ^
+
+"Test_name.c", line 23: error: incomplete type "A" is not allowed
+        struct A a; // expected-error {{template 'A' cannot be referenced with the 'struct' specifier}}
+                 ^
+
+2 errors detected in the compilation of "Test_name.c".

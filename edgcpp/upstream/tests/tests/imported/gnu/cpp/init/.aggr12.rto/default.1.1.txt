@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: error: variable "a1" has an uninitialized const or reference member
+  A a1 = {}; // { dg-error "uninitialized reference" }
+    ^
+
+"Test_name.c", line 15: error: variable "b1" has an uninitialized const or reference member
+  B b1 = {}; // { dg-error "uninitialized reference" }
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

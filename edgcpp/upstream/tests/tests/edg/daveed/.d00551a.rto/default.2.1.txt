@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=2 --g++ --gnu_version=30400 Test_name.c
+"Test_name.c", line 24: error: type name is not allowed
+  	printf("%d %d\n", __builtin_offsetof(A, i),
+  	                                     ^
+
+"Test_name.c", line 24: error: identifier "i" is undefined
+  	printf("%d %d\n", __builtin_offsetof(A, i),
+  	                                        ^
+
+"Test_name.c", line 24: error: identifier "__builtin_offsetof" is undefined
+  	printf("%d %d\n", __builtin_offsetof(A, i),
+  	                  ^
+
+"Test_name.c", line 25: error: type name is not allowed
+  	                  __builtin_offsetof(A, k));
+  	                                     ^
+
+"Test_name.c", line 25: error: identifier "k" is undefined
+  	                  __builtin_offsetof(A, k));
+  	                                        ^
+
+5 errors detected in the compilation of "Test_name.c".

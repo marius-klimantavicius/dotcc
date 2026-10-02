@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gcc Test_name.c
+"Test_name.c", line 13: error: an initializer cannot be specified for a flexible array member with automatic storage duration
+    fa_st_t obj = {4,{10,20,30,40}};
+                     ^
+
+1 error detected in the compilation of "Test_name.c".

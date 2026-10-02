@@ -1,0 +1,126 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 22: warning: unknown attribute "counted_by_or_null"
+    struct size_known * buf __counted_by_or_null(count);
+                            ^
+
+"Test_name.c", line 27: warning: unknown attribute "counted_by_or_null"
+    struct size_unknown * buf __counted_by_or_null(count); // ok
+                              ^
+
+"Test_name.c", line 32: warning: unknown attribute "counted_by_or_null"
+    const struct size_unknown * buf __counted_by_or_null(count); // ok
+                                    ^
+
+"Test_name.c", line 39: warning: unknown attribute "counted_by_or_null"
+    void* buf __counted_by_or_null(count);
+              ^
+
+"Test_name.c", line 45: warning: unknown attribute "counted_by_or_null"
+    void (**fn_ptr)(void) __counted_by_or_null(count);
+                          ^
+
+"Test_name.c", line 51: warning: unknown attribute "counted_by_or_null"
+    fn_ptr_ty* fn_ptr __counted_by_or_null(count);
+                      ^
+
+"Test_name.c", line 58: warning: unknown attribute "counted_by_or_null"
+    void (*fn_ptr)(void) __counted_by_or_null(count);
+                         ^
+
+"Test_name.c", line 65: warning: unknown attribute "counted_by_or_null"
+    fn_ptr_ty fn_ptr __counted_by_or_null(count);
+                     ^
+
+"Test_name.c", line 76: warning: unknown attribute "counted_by_or_null"
+    struct has_unannotated_vla* objects __counted_by_or_null(count);
+                                        ^
+
+"Test_name.c", line 81: warning: unknown attribute "counted_by"
+    int buffer[] __counted_by(count);
+                 ^
+
+"Test_name.c", line 90: warning: unknown attribute "counted_by_or_null"
+    struct has_annotated_vla* objects __counted_by_or_null(count);
+                                      ^
+
+"Test_name.c", line 96: warning: unknown attribute "counted_by_or_null"
+      struct size_known *buf __counted_by_or_null(count);
+                             ^
+
+"Test_name.c", line 104: warning: unknown attribute "counted_by_or_null"
+    struct size_known *buf __counted_by_or_null(count);
+                           ^
+
+"Test_name.c", line 115: warning: unknown attribute "counted_by_or_null"
+    struct size_known *__counted_by_or_null(count) buf;
+                       ^
+
+"Test_name.c", line 120: warning: unknown attribute "counted_by_or_null"
+    struct size_unknown * __counted_by_or_null(count) buf; // ok
+                          ^
+
+"Test_name.c", line 125: warning: unknown attribute "counted_by_or_null"
+    const struct size_unknown * __counted_by_or_null(count) buf; // ok
+                                ^
+
+"Test_name.c", line 132: warning: unknown attribute "counted_by_or_null"
+    void *__counted_by_or_null(count) buf;
+          ^
+
+"Test_name.c", line 140: warning: unknown attribute "counted_by_or_null"
+    void (** __counted_by_or_null(count) fn_ptr)(void);
+             ^
+
+"Test_name.c", line 146: warning: unknown attribute "counted_by_or_null"
+    fn_ptr_ty* __counted_by_or_null(count) fn_ptr;
+               ^
+
+"Test_name.c", line 153: warning: unknown attribute "counted_by_or_null"
+    void (* __counted_by_or_null(count) fn_ptr)(void);
+            ^
+
+"Test_name.c", line 160: warning: unknown attribute "counted_by_or_null"
+    fn_ptr_ty __counted_by_or_null(count) fn_ptr;
+              ^
+
+"Test_name.c", line 167: warning: unknown attribute "counted_by_or_null"
+    void (* __counted_by_or_null(count) * fn_ptr)(void);
+            ^
+
+"Test_name.c", line 173: warning: unknown attribute "counted_by_or_null"
+    struct has_unannotated_vla *__counted_by_or_null(count) objects;
+                                ^
+
+"Test_name.c", line 182: warning: unknown attribute "counted_by_or_null"
+    struct has_annotated_vla* __counted_by_or_null(count) objects;
+                              ^
+
+"Test_name.c", line 189: warning: unknown attribute "counted_by_or_null"
+    struct size_known *__counted_by_or_null(count) *buf;
+                       ^
+
+"Test_name.c", line 194: warning: unknown attribute "counted_by_or_null"
+    struct size_known **__counted_by_or_null(count) buf;
+                        ^
+
+"Test_name.c", line 200: warning: unknown attribute "counted_by_or_null"
+      struct size_known * __counted_by_or_null(count) buf;
+                          ^
+
+"Test_name.c", line 208: warning: unknown attribute "counted_by_or_null"
+    struct size_known *__counted_by_or_null(count) buf;
+                       ^
+
+"Test_name.c", line 218: warning: unknown attribute "counted_by_or_null"
+    int wrong_ty __counted_by_or_null(count);
+                 ^
+
+"Test_name.c", line 225: warning: unknown attribute "counted_by_or_null"
+    void wrong_ty __counted_by_or_null(count);
+                  ^
+
+"Test_name.c", line 225: error: incomplete type "void" is not allowed
+    void wrong_ty __counted_by_or_null(count);
+         ^
+
+1 error detected in the compilation of "Test_name.c".

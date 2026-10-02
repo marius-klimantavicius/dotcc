@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 7: error: identifier "undeclared_identifier" is undefined
+  void f1() requires undeclared_identifier; // { dg-error "not declared" }
+                     ^
+
+"Test_name.c", line 10: error: identifier "undeclared_identifier" is undefined
+  void f2() requires true && undeclared_identifier; // { dg-error "not declared" }
+                             ^
+
+"Test_name.c", line 13: error: identifier "undeclared_identifier" is undefined
+  void f3() requires false || undeclared_identifier; // { dg-error "not declared" }
+                              ^
+
+"Test_name.c", line 16: error: this operator cannot appear at the top level (without parentheses) in a requires-clause
+  void f4() requires undeclared_identifier(T{}); // { dg-error "must be enclosed in parentheses" }
+                                          ^
+
+4 errors detected in the compilation of "Test_name.c".

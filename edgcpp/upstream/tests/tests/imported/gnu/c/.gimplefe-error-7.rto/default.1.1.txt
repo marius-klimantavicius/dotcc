@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 6: warning: explicit type is missing ("int" assumed)
+  __GIMPLE() void fn1()
+  ^
+
+"Test_name.c", line 6: error: expected a "{"
+  __GIMPLE() void fn1()
+             ^
+
+"Test_name.c", line 10: error: expected an identifier
+    else /* { dg-error "expected label" } */
+    ^
+
+"Test_name.c", line 10: error: expected a ";"
+    else /* { dg-error "expected label" } */
+    ^
+
+"Test_name.c", line 11: error: label "lbl" was referenced but not defined
+      goto lbl;
+           ^
+
+"Test_name.c", line 14: warning: explicit type is missing ("int" assumed)
+  __GIMPLE() void fn2()
+  ^
+
+"Test_name.c", line 14: error: function "__GIMPLE" has already been defined (previous definition at line 6)
+  __GIMPLE() void fn2()
+  ^
+
+"Test_name.c", line 14: error: expected a "{"
+  __GIMPLE() void fn2()
+             ^
+
+"Test_name.c", line 19: error: expected an identifier
+      goto ; /* { dg-error "expected label" } */
+           ^
+
+"Test_name.c", line 17: error: label "lbl" was referenced but not defined
+      goto lbl;
+           ^
+
+"Test_name.c", line 22: warning: explicit type is missing ("int" assumed)
+  __GIMPLE() void fn3()
+  ^
+
+"Test_name.c", line 22: error: function "__GIMPLE" has already been defined (previous definition at line 6)
+  __GIMPLE() void fn3()
+  ^
+
+"Test_name.c", line 22: error: expected a "{"
+  __GIMPLE() void fn3()
+             ^
+
+"Test_name.c", line 28: error: expected an identifier
+  } /* { dg-error "expected label" } */
+  ^
+
+"Test_name.c", line 28: error: expected a ";"
+  } /* { dg-error "expected label" } */
+  ^
+
+"Test_name.c", line 25: error: label "lbl" was referenced but not defined
+      goto lbl;
+           ^
+
+13 errors detected in the compilation of "Test_name.c".

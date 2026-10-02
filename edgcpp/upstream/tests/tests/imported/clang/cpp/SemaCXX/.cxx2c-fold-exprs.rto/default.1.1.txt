@@ -1,0 +1,375 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++26 Test_name.c
+"Test_name.c", line 24: error: more than one instance of overloaded function "g" matches the argument list:
+            function template "int g(T...)" (declared at line 20)
+            function template "int g(T...)" (declared at line 22)
+            argument types are: (int)
+  static_assert(g(0) == 1);
+                ^
+
+"Test_name.c", line 25: error: more than one instance of overloaded function "g" matches the argument list:
+            function template "int g(T...)" (declared at line 20)
+            function template "int g(T...)" (declared at line 22)
+  static_assert(g() == 1);
+                ^
+
+"Test_name.c", line 26: error: more than one instance of overloaded function "g" matches the argument list:
+            function template "int g(T...)" (declared at line 20)
+            function template "int g(T...)" (declared at line 22)
+            argument types are: (int, int)
+  static_assert(g(1, 2) == 1);
+                ^
+
+"Test_name.c", line 35: error: more than one instance of overloaded function "h" matches the argument list:
+            function template "int h(T...)" (declared at line 31)
+            function template "int h(T...)" (declared at line 33)
+            argument types are: (int)
+  static_assert(h(0) == 1); // expected-error {{call to 'h' is ambiguous}}
+                ^
+
+"Test_name.c", line 42: error: more than one instance of overloaded function "i" matches the argument list:
+            function template "int i(T...)" (declared at line 38)
+            function template "int i(T...)" (declared at line 40)
+            argument types are: (int)
+  static_assert(i(0) == 1); // expected-error {{call to 'i' is ambiguous}}
+                ^
+
+"Test_name.c", line 48: error: more than one instance of overloaded function "j" matches the argument list:
+            function template "int j(T...)" (declared at line 45)
+            function template "int j(T...)" (declared at line 46)
+            argument types are: (int)
+  static_assert(j(0) == 1);
+                ^
+
+"Test_name.c", line 56: error: more than one instance of overloaded function "j" matches the argument list:
+            function template "int j(T...)" (declared at line 45)
+            function template "int j(T...)" (declared at line 46)
+  static_assert(j() == 1);
+                ^
+
+"Test_name.c", line 70: error: more than one instance of overloaded function "k" matches the argument list:
+            function template "int k(T...)" (declared at line 66)
+            function template "int k(T...)" (declared at line 68)
+            argument types are: (int)
+  static_assert(k(0) == 1);
+                ^
+
+"Test_name.c", line 71: error: no instance of overloaded function "k" matches the argument list
+  static_assert(k() == 0); // expected-error {{no matching function for call to 'k'}}
+                ^
+"Test_name.c", line 68: note: substituting "<>" for function template "k(T...)" failed constraints
+  constexpr int k(T...) { return 1; }; // expected-note {{candidate template ignored: constraints not satisfied [with T = <>]}}
+                ^
+"Test_name.c", line 67: note: atomic constraint evaluates to false
+  template <class... T> requires (C<T> || ...)
+                                       ^
+"Test_name.c", line 66: note: substituting "<>" for function template "k(T...)" failed constraints
+  constexpr int k(T...) { return 0; }; // expected-note {{candidate template ignored: constraints not satisfied [with T = <>]}}
+                ^
+"Test_name.c", line 65: note: atomic constraint evaluates to false
+  template <class... T> requires (A<T> || ...)
+                                       ^
+
+"Test_name.c", line 72: error: more than one instance of overloaded function "k" matches the argument list:
+            function template "int k(T...)" (declared at line 66)
+            function template "int k(T...)" (declared at line 68)
+            argument types are: (int, int)
+  static_assert(k(1, 2) == 1);
+                ^
+
+"Test_name.c", line 113: error: more than one instance of overloaded function "equivalence::S<T...>::f [with T=<int>]" matches the argument list:
+            function template "void equivalence::S<T...>::f<U...>() [with T=<int>]" (declared at line 97)
+            function template "void equivalence::S<T...>::f<U...>() [with T=<int>]" (declared at line 99)
+      S<int>{}.f<int>();
+               ^
+
+"Test_name.c", line 114: error: more than one instance of overloaded function "equivalence::S<T...>::g [with T=<int>]" matches the argument list:
+            function template "void equivalence::S<T...>::g<U...>() [with T=<int>]" (declared at line 102)
+            function template "void equivalence::S<T...>::g<U...>() [with T=<int>]" (declared at line 104)
+      S<int>{}.g<int>();
+               ^
+
+"Test_name.c", line 115: error: more than one instance of overloaded function "equivalence::S<T...>::h [with T=<int>]" matches the argument list:
+            function template "void equivalence::S<T...>::h<U...>() [with T=<int>]" (declared at line 107)
+            function template "void equivalence::S<T...>::h<U...>() [with T=<int>]" (declared at line 109)
+      S<int>{}.h<int>(); // expected-error {{call to member function 'h' is ambiguous}}
+               ^
+
+"Test_name.c", line 160: error: no instance of function template "substitution::And1" matches the argument list
+  static_assert(And1<int>() == 1); // expected-error {{no matching function for call to 'And1'}}
+                ^
+"Test_name.c", line 127: note: substituting "<int>" for function template "substitution::And1" failed constraints
+  consteval int And1() requires (C<typename T::type> && ...) { // #and1
+                ^
+"Test_name.c", line 127: note: atomic constraint failed substitution
+  consteval int And1() requires (C<typename T::type> && ...) { // #and1
+                                                     ^
+
+"Test_name.c", line 164: error: no instance of function template "substitution::And1" matches the argument list
+  static_assert(And1<S, int>() == 1); // expected-error {{no matching function for call to 'And1'}}
+                ^
+"Test_name.c", line 127: note: substituting "<substitution::S, int>" for function template "substitution::And1" failed constraints
+  consteval int And1() requires (C<typename T::type> && ...) { // #and1
+                ^
+"Test_name.c", line 127: note: atomic constraint failed substitution
+  consteval int And1() requires (C<typename T::type> && ...) { // #and1
+                                                     ^
+
+"Test_name.c", line 168: error: no instance of function template "substitution::And1" matches the argument list
+  static_assert(And1<int, S>() == 1); // expected-error {{no matching function for call to 'And1'}}
+                ^
+"Test_name.c", line 127: note: substituting "<int, substitution::S>" for function template "substitution::And1" failed constraints
+  consteval int And1() requires (C<typename T::type> && ...) { // #and1
+                ^
+"Test_name.c", line 127: note: atomic constraint failed substitution
+  consteval int And1() requires (C<typename T::type> && ...) { // #and1
+                                                     ^
+
+"Test_name.c", line 174: error: no instance of function template "substitution::And2" matches the argument list
+  static_assert(And2<int>() == 2);  // expected-error {{no matching function for call to 'And2'}}
+                ^
+"Test_name.c", line 132: note: substituting "<int>" for function template "substitution::And2" failed constraints
+  consteval int And2() requires (C<typename U::type> && ... && C<typename T::type>) { // #and2
+                ^
+"Test_name.c", line 132: note: atomic constraint failed substitution
+  consteval int And2() requires (C<typename U::type> && ... && C<typename T::type>) { // #and2
+                                                     ^
+
+"Test_name.c", line 179: error: no instance of function template "substitution::And2" matches the argument list
+  static_assert(And2<int, int>() == 2);  // expected-error {{no matching function for call to 'And2'}}
+                ^
+"Test_name.c", line 132: note: substituting "<int, int>" for function template "substitution::And2" failed constraints
+  consteval int And2() requires (C<typename U::type> && ... && C<typename T::type>) { // #and2
+                ^
+"Test_name.c", line 132: note: atomic constraint failed substitution
+  consteval int And2() requires (C<typename U::type> && ... && C<typename T::type>) { // #and2
+                                                     ^
+
+"Test_name.c", line 183: error: no instance of function template "substitution::And2" matches the argument list
+  static_assert(And2<S, int>() == 2); // expected-error {{no matching function for call to 'And2'}}
+                ^
+"Test_name.c", line 132: note: substituting "<substitution::S, int>" for function template "substitution::And2" failed constraints
+  consteval int And2() requires (C<typename U::type> && ... && C<typename T::type>) { // #and2
+                ^
+"Test_name.c", line 132: note: atomic constraint failed substitution
+  consteval int And2() requires (C<typename U::type> && ... && C<typename T::type>) { // #and2
+                                                     ^
+
+"Test_name.c", line 187: error: no instance of function template "substitution::And2" matches the argument list
+  static_assert(And2<int, S>() == 2); // expected-error {{no matching function for call to 'And2'}}
+                ^
+"Test_name.c", line 132: note: substituting "<int, substitution::S>" for function template "substitution::And2" failed constraints
+  consteval int And2() requires (C<typename U::type> && ... && C<typename T::type>) { // #and2
+                ^
+"Test_name.c", line 132: note: atomic constraint failed substitution
+  consteval int And2() requires (C<typename U::type> && ... && C<typename T::type>) { // #and2
+                                                     ^
+
+"Test_name.c", line 193: error: no instance of function template "substitution::And3" matches the argument list
+  static_assert(And3<int>() == 3);   // expected-error {{no matching function for call to 'And3'}}
+                ^
+"Test_name.c", line 137: note: substituting "<int>" for function template "substitution::And3" failed constraints
+  consteval int And3() requires (C<typename T::type> && ... && C<typename U::type>) { // #and3
+                ^
+"Test_name.c", line 137: note: atomic constraint failed substitution
+  consteval int And3() requires (C<typename T::type> && ... && C<typename U::type>) { // #and3
+                                                            ^
+
+"Test_name.c", line 198: error: no instance of function template "substitution::And3" matches the argument list
+  static_assert(And3<int, int>() == 3);  // expected-error {{no matching function for call to 'And3'}}
+                ^
+"Test_name.c", line 137: note: substituting "<int, int>" for function template "substitution::And3" failed constraints
+  consteval int And3() requires (C<typename T::type> && ... && C<typename U::type>) { // #and3
+                ^
+"Test_name.c", line 137: note: atomic constraint failed substitution
+  consteval int And3() requires (C<typename T::type> && ... && C<typename U::type>) { // #and3
+                                                            ^
+
+"Test_name.c", line 203: error: no instance of function template "substitution::And3" matches the argument list
+  static_assert(And3<S, int>() == 3); // expected-error {{no matching function for call to 'And3'}}
+                ^
+"Test_name.c", line 137: note: substituting "<substitution::S, int>" for function template "substitution::And3" failed constraints
+  consteval int And3() requires (C<typename T::type> && ... && C<typename U::type>) { // #and3
+                ^
+"Test_name.c", line 137: note: atomic constraint failed substitution
+  consteval int And3() requires (C<typename T::type> && ... && C<typename U::type>) { // #and3
+                                                            ^
+
+"Test_name.c", line 208: error: no instance of function template "substitution::And3" matches the argument list
+  static_assert(And3<int, S>() == 3); // expected-error {{no matching function for call to 'And3'}}
+                ^
+"Test_name.c", line 137: note: substituting "<int, substitution::S>" for function template "substitution::And3" failed constraints
+  consteval int And3() requires (C<typename T::type> && ... && C<typename U::type>) { // #and3
+                ^
+"Test_name.c", line 137: note: atomic constraint failed substitution
+  consteval int And3() requires (C<typename T::type> && ... && C<typename U::type>) { // #and3
+                                                            ^
+
+"Test_name.c", line 213: error: no instance of function template "substitution::Or1" matches the argument list
+  static_assert(Or1<>() == 1); // expected-error {{no matching function for call to 'Or1'}}
+                ^
+"Test_name.c", line 142: note: substituting "<>" for function template "substitution::Or1" failed constraints
+  consteval int Or1() requires (C<typename T::type> || ...) { // #or1
+                ^
+"Test_name.c", line 142: note: atomic constraint evaluates to false
+  consteval int Or1() requires (C<typename T::type> || ...) { // #or1
+                                                    ^
+
+"Test_name.c", line 216: error: no instance of function template "substitution::Or1" matches the argument list
+  static_assert(Or1<int, S>() == 1);
+                ^
+"Test_name.c", line 142: note: substituting "<int, substitution::S>" for function template "substitution::Or1" failed constraints
+  consteval int Or1() requires (C<typename T::type> || ...) { // #or1
+                ^
+"Test_name.c", line 142: note: atomic constraint failed substitution
+  consteval int Or1() requires (C<typename T::type> || ...) { // #or1
+                                                    ^
+
+"Test_name.c", line 217: error: no instance of function template "substitution::Or1" matches the argument list
+  static_assert(Or1<S, int>() == 1);
+                ^
+"Test_name.c", line 142: note: substituting "<substitution::S, int>" for function template "substitution::Or1" failed constraints
+  consteval int Or1() requires (C<typename T::type> || ...) { // #or1
+                ^
+"Test_name.c", line 142: note: atomic constraint failed substitution
+  consteval int Or1() requires (C<typename T::type> || ...) { // #or1
+                                                    ^
+
+"Test_name.c", line 219: error: no instance of function template "substitution::Or1" matches the argument list
+  static_assert(Or1<int>() == 1); // expected-error {{no matching function for call to 'Or1'}}
+                ^
+"Test_name.c", line 142: note: substituting "<int>" for function template "substitution::Or1" failed constraints
+  consteval int Or1() requires (C<typename T::type> || ...) { // #or1
+                ^
+"Test_name.c", line 142: note: atomic constraint failed substitution
+  consteval int Or1() requires (C<typename T::type> || ...) { // #or1
+                                                    ^
+
+"Test_name.c", line 224: error: no instance of function template "substitution::Or2" matches the argument list
+  static_assert(Or2<int, S>() == 2);
+                ^
+"Test_name.c", line 147: note: substituting "<int, substitution::S>" for function template "substitution::Or2" failed constraints
+  consteval int Or2() requires (C<typename U::type> || ... || C<typename T::type>) {  // #or2
+                ^
+"Test_name.c", line 147: note: atomic constraint failed substitution
+  consteval int Or2() requires (C<typename U::type> || ... || C<typename T::type>) {  // #or2
+                                                    ^
+
+"Test_name.c", line 225: error: no instance of function template "substitution::Or2" matches the argument list
+  static_assert(Or2<S, int>() == 2);
+                ^
+"Test_name.c", line 147: note: substituting "<substitution::S, int>" for function template "substitution::Or2" failed constraints
+  consteval int Or2() requires (C<typename U::type> || ... || C<typename T::type>) {  // #or2
+                ^
+"Test_name.c", line 147: note: atomic constraint failed substitution
+  consteval int Or2() requires (C<typename U::type> || ... || C<typename T::type>) {  // #or2
+                                                    ^
+
+"Test_name.c", line 227: error: no instance of function template "substitution::Or2" matches the argument list
+  static_assert(Or2<int>() == 2); // expected-error {{no matching function for call to 'Or2'}}
+                ^
+"Test_name.c", line 147: note: substituting "<int>" for function template "substitution::Or2" failed constraints
+  consteval int Or2() requires (C<typename U::type> || ... || C<typename T::type>) {  // #or2
+                ^
+"Test_name.c", line 147: note: atomic constraint failed substitution
+  consteval int Or2() requires (C<typename U::type> || ... || C<typename T::type>) {  // #or2
+                                                    ^
+
+"Test_name.c", line 231: error: no instance of function template "substitution::Or3" matches the argument list
+  static_assert(Or3<int, S>() == 3);
+                ^
+"Test_name.c", line 152: note: substituting "<int, substitution::S>" for function template "substitution::Or3" failed constraints
+  consteval int Or3() requires (C<typename T::type> || ... || C<typename U::type>) {  // #or3
+                ^
+"Test_name.c", line 152: note: atomic constraint failed substitution
+  consteval int Or3() requires (C<typename T::type> || ... || C<typename U::type>) {  // #or3
+                                                           ^
+
+"Test_name.c", line 232: error: no instance of function template "substitution::Or3" matches the argument list
+  static_assert(Or3<S, int>() == 3);
+                ^
+"Test_name.c", line 152: note: substituting "<substitution::S, int>" for function template "substitution::Or3" failed constraints
+  consteval int Or3() requires (C<typename T::type> || ... || C<typename U::type>) {  // #or3
+                ^
+"Test_name.c", line 152: note: atomic constraint failed substitution
+  consteval int Or3() requires (C<typename T::type> || ... || C<typename U::type>) {  // #or3
+                                                           ^
+
+"Test_name.c", line 234: error: no instance of function template "substitution::Or3" matches the argument list
+  static_assert(Or3<int>() == 3); // expected-error {{no matching function for call to 'Or3'}}
+                ^
+"Test_name.c", line 152: note: substituting "<int>" for function template "substitution::Or3" failed constraints
+  consteval int Or3() requires (C<typename T::type> || ... || C<typename U::type>) {  // #or3
+                ^
+"Test_name.c", line 152: note: atomic constraint failed substitution
+  consteval int Or3() requires (C<typename T::type> || ... || C<typename U::type>) {  // #or3
+                                                           ^
+
+"Test_name.c", line 251: warning: variable "ap" is used before its value is set
+      f(ap, ap); // expected-error{{no matching function for call to 'f'}} \
+        ^
+
+"Test_name.c", line 287: error: more than one instance of overloaded function "nested::S<T...>::f [with T=<int>]" matches the argument list:
+            function template "int nested::S<T...>::f<U...>() [with T=<int>]" (declared at line 263)
+            function template "int nested::S<T...>::f<U...>() [with T=<int>]" (declared at line 269)
+  static_assert(S<int>::f<int>() == 2);
+                ^
+
+"Test_name.c", line 289: error: more than one instance of overloaded function "nested::S<T...>::g [with T=<int>]" matches the argument list:
+            function template "int nested::S<T...>::g<U...>() [with T=<int>]" (declared at line 275)
+            function template "int nested::S<T...>::g<U...>() [with T=<int>]" (declared at line 281)
+  static_assert(S<int>::g<int>() == 2);
+                ^
+
+"Test_name.c", line 344: error: incomplete type "GH88866::ExpandsBoth::LazyLitMatrix<GH88866::index_by<int, char>, 42>" is not allowed
+  template struct LazyLitMatrix<index_by<int, char>, 42>;
+           ^
+
+"Test_name.c", line 346: error: incomplete type "GH88866::ExpandsBoth::LazyLitMatrix<GH88866::index_by<int, char>, 42, 43>" is not allowed
+  template struct LazyLitMatrix<index_by<int, char>, 42, 43>;
+           ^
+
+"Test_name.c", line 362: error: incomplete type "GH88866::ExpandsRespectively::LazyLitMatrix<GH88866::index_by<int, char>, 42>" is not allowed
+  template struct LazyLitMatrix<index_by<int, char>, 42>;
+           ^
+
+"Test_name.c", line 363: error: incomplete type "GH88866::ExpandsRespectively::LazyLitMatrix<GH88866::index_by<int, char>, 42, 43>" is not allowed
+  template struct LazyLitMatrix<index_by<int, char>, 42, 43>;
+           ^
+
+"Test_name.c", line 380: error: incomplete type "GH88866::TypeParameter::LazyLitMatrix<GH88866::index_by<int, char>, float>" is not allowed
+  template struct LazyLitMatrix<index_by<int, char>, float>;
+           ^
+
+"Test_name.c", line 382: error: incomplete type "GH88866::TypeParameter::LazyLitMatrix<GH88866::index_by<int, char>, unsigned int, float>" is not allowed
+  template struct LazyLitMatrix<index_by<int, char>, unsigned, float>;
+           ^
+
+"Test_name.c", line 393: error: parameter pack "Indices" was referenced but not expanded
+      InitFunc<index_by<Indices>> init
+                        ^
+
+"Test_name.c", line 422: error: more than one instance of overloaded function "GH135190::g" matches the argument list:
+            function template "int GH135190::g<Ts...>()" (declared at line 412)
+            function template "int GH135190::g<Ts...>()" (declared at line 418)
+  static_assert(g<double>() == 2);
+                ^
+
+"Test_name.c", line 443: error: more than one instance of overloaded function "GH135190::h" matches the argument list:
+            function template "int GH135190::h<Ts...>()" (declared at line 433)
+            function template "int GH135190::h<Ts...>()" (declared at line 439)
+  static_assert(h<double>() == 2);
+                ^
+
+"Test_name.c", line 491: error: no instance of function "parameter_mapping_regressions::case2::zip_view<_Views...>::f [with _Views=<int>]" matches the argument list
+            object type is: parameter_mapping_regressions::case2::zip_view<int>
+    test_v.f(); // expected-error {{invalid reference to function 'f'}}
+           ^
+"Test_name.c", line 483: note: constraint on candidate function "parameter_mapping_regressions::case2::zip_view<_Views...>::f [with _Views=<int>]" not satisfied
+    void f() requires __zip_all_random_access<_Views...>{};
+         ^
+
+"Test_name.c", line 499: warning: unnamed parameter in requires-expression has no effect
+  concept __callable = requires (_Fun __fun, _As...) { __fun(); };
+                                                ^
+
+46 errors detected in the compilation of "Test_name.c".

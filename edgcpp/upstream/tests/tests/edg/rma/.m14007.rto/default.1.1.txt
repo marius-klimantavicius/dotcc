@@ -1,0 +1,6 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 8: error: this declaration cannot have multiple "template <...>" clauses
+  		class x { T i; U j; };
+  		      ^
+
+1 error detected in the compilation of "Test_name.c".

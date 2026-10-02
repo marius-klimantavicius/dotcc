@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 5: error: identifier "import" is undefined
+  import M;
+  ^
+
+"Test_name.c", line 8: error: identifier "external_linkage_fn" is undefined
+    external_linkage_fn();
+    ^
+
+"Test_name.c", line 9: error: identifier "module_linkage_fn" is undefined
+    module_linkage_fn();   // expected-error {{declaration of 'module_linkage_fn' must be imported}}
+    ^
+
+"Test_name.c", line 10: error: identifier "internal_linkage_fn" is undefined
+    internal_linkage_fn(); // expected-error {{declaration of 'internal_linkage_fn' must be imported}}
+    ^
+
+"Test_name.c", line 11: error: identifier "external_linkage_class" is undefined
+    (void)external_linkage_class{};
+          ^
+
+"Test_name.c", line 11: error: expected a ";"
+    (void)external_linkage_class{};
+                                ^
+
+"Test_name.c", line 12: error: identifier "module_linkage_class" is undefined
+    (void)module_linkage_class{}; // expected-error {{undeclared identifier}} expected-error 0+{{}}
+          ^
+
+"Test_name.c", line 12: error: expected a ";"
+    (void)module_linkage_class{}; // expected-error {{undeclared identifier}} expected-error 0+{{}}
+                              ^
+
+"Test_name.c", line 13: error: identifier "internal_linkage_class" is undefined
+    (void)internal_linkage_class{}; // expected-error {{undeclared identifier}} expected-error 0+{{}}
+          ^
+
+"Test_name.c", line 13: error: expected a ";"
+    (void)internal_linkage_class{}; // expected-error {{undeclared identifier}} expected-error 0+{{}}
+                                ^
+
+"Test_name.c", line 16: error: identifier "external_linkage_var" is undefined
+    (void)external_linkage_var;
+          ^
+
+"Test_name.c", line 17: error: identifier "module_linkage_var" is undefined
+    (void)module_linkage_var; // expected-error {{undeclared identifier}}
+          ^
+
+"Test_name.c", line 18: error: identifier "internal_linkage_var" is undefined
+    (void)internal_linkage_var; // expected-error {{undeclared identifier}}
+          ^
+
+13 errors detected in the compilation of "Test_name.c".

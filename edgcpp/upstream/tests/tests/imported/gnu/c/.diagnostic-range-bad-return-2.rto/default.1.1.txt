@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 8: warning: returning pointer to local variable
+    return &some_local; /* { dg-warning "function returns address of local variable" } */
+           ^
+
+"Test_name.c", line 17: warning: return value type does not match the function type
+    return 500; /* { dg-error "'return' with a value, in function returning void" } */
+           ^
+
+"Test_name.c", line 30: warning: return value type does not match the function type
+    return i * j; /* { dg-error "'return' with a value, in function returning void" } */
+           ^
+
+"Test_name.c", line 43: warning: non-void function "missing_return_value" should return a value
+    return; /* { dg-error "'return' with no value, in function returning non-void" } */
+          ^
+

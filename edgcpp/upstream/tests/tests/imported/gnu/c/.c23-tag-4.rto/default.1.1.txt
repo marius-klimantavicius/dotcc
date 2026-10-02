@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 11: error: declaration is incompatible with "struct <unnamed> a" (declared at line 10)
+  extern struct { int x; } a;	/* { dg-error "conflicting types" } */
+                           ^
+
+"Test_name.c", line 14: error: declaration is incompatible with "union <unnamed> b" (declared at line 13)
+  extern union { int x; } b;	/* { dg-error "conflicting types" } */
+                          ^
+
+"Test_name.c", line 20: error: declaration is incompatible with "u c" (declared at line 19)
+  v c;				/* { dg-error "conflicting types" } */
+    ^
+
+"Test_name.c", line 26: error: declaration is incompatible with "q d" (declared at line 25)
+  r d;				/* { dg-error "conflicting types" } */
+    ^
+
+4 errors detected in the compilation of "Test_name.c".

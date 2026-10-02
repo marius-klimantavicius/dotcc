@@ -1,0 +1,57 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: warning: unrecognized #pragma
+    #pragma omp target teams
+            ^
+
+"Test_name.c", line 12: warning: statement is unreachable
+    goto bad2;			// { dg-message "from here" }
+    ^
+
+"Test_name.c", line 13: warning: unrecognized #pragma
+    #pragma omp target teams
+            ^
+
+"Test_name.c", line 19: warning: unrecognized #pragma
+    #pragma omp target teams
+            ^
+
+"Test_name.c", line 29: warning: unrecognized #pragma
+    #pragma omp target teams
+            ^
+
+"Test_name.c", line 40: warning: unrecognized #pragma
+    #pragma omp target
+            ^
+
+"Test_name.c", line 41: warning: unrecognized #pragma
+    #pragma omp teams
+            ^
+
+"Test_name.c", line 44: warning: statement is unreachable
+    goto bad2;			// { dg-message "from here" }
+    ^
+
+"Test_name.c", line 45: warning: unrecognized #pragma
+    #pragma omp target
+            ^
+
+"Test_name.c", line 46: warning: unrecognized #pragma
+    #pragma omp teams
+            ^
+
+"Test_name.c", line 52: warning: unrecognized #pragma
+    #pragma omp target
+            ^
+
+"Test_name.c", line 53: warning: unrecognized #pragma
+    #pragma omp teams
+            ^
+
+"Test_name.c", line 63: warning: unrecognized #pragma
+    #pragma omp target		// { dg-warning "statement will never be executed" }
+            ^
+
+"Test_name.c", line 64: warning: unrecognized #pragma
+    #pragma omp teams
+            ^
+

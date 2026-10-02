@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 23: error: too many arguments in invocation of macro "foo"
+    return foo2;
+           ^
+
+1 error detected in the compilation of "Test_name.c".

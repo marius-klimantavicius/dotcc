@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --upc Test_name.c
+"Test_name.c", line 19: error: expression must have a constant value
+  shared Biggy a[2*MYTHREAD];
+                  ^
+
+"Test_name.c", line 20: error: expression must have a constant value
+  shared Biggy b[MYTHREAD*4];
+                         ^
+
+"Test_name.c", line 21: error: expression must have a constant value
+  Biggy c[(MYTHREAD*4)/(3*MYTHREAD)];
+                   ^
+
+"Test_name.c", line 21: error: expression must have a constant value
+  Biggy c[(MYTHREAD*4)/(3*MYTHREAD)];
+                         ^
+
+"Test_name.c", line 22: error: expression must have a constant value
+  shared Biggy b[THREADS+THREADS];
+                        ^
+
+5 errors detected in the compilation of "Test_name.c".

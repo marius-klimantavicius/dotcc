@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 6: warning: unknown attribute "gnu::no_such_attribute"
+  int a [[gnu::no_such_attribute(![!(!)!]!,;;)]];	// { dg-warning "ignored" }
+          ^
+
+"Test_name.c", line 7: warning: attribute namespace "no_such_namespace" is unrecognized
+  int b [[no_such_namespace::nonexisting_attribute(linear(c, d : 2), reduction(*:e), linear(uval (f)))]];	// { dg-warning "ignored" }
+          ^
+
+"Test_name.c", line 8: warning: unknown attribute "gnu::nonexisting_attribute"
+  int c [[gnu::nonexisting_attribute()]];	// { dg-warning "ignored" }
+          ^
+
+"Test_name.c", line 9: warning: unknown attribute "gnu::another_nonexistent_attr"
+  int d [[gnu::another_nonexistent_attr(1,"abcd",g+6)]];	// { dg-warning "ignored" }
+          ^
+

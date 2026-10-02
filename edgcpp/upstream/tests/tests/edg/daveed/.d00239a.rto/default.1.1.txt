@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --microsoft Test_name.c
+"Test_name.c", line 32: warning: function "A::f()" is hidden by "D::f" -- virtual function override intended?
+  	virtual void B::f() { printf("D's B::f\n"); }
+  	                ^
+

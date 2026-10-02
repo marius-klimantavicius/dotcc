@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=3 -W --g++ Test_name.c
+"Test_name.c", line 5: error: unknown attribute "msvc::known_semantics"
+  struct [[msvc::known_semantics]] C {
+           ^
+
+1 error detected in the compilation of "Test_name.c".

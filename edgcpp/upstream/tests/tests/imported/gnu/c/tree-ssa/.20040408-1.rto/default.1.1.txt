@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 12: warning: variable "i" is used before its value is set
+    if( x[i] != 0 )
+          ^
+
+"Test_name.c", line 14: warning: missing return statement at end of non-void function "eiisnan"
+  }
+  ^
+
+"Test_name.c", line 23: warning: missing return statement at end of non-void function "eiisinf"
+  }
+  ^
+
+"Test_name.c", line 43: warning: variable "s" is used before its value is set
+    while( *s == ' ' )
+            ^
+
+"Test_name.c", line 47: warning: missing return statement at end of non-void function "asctoeg"
+  }
+  ^
+
+"Test_name.c", line 53: warning: missing return statement at end of non-void function "_strtold"
+  }
+  ^
+

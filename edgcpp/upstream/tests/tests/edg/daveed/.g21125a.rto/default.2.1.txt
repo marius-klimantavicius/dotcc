@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=2 --c++17 Test_name.c
+"Test_name.c", line 11: error: function template "B::bf" (declared at line 6) is inaccessible
+    T::bf;
+       ^
+          detected during instantiation of class "C<T> [with T=B]" at line 19
+
+"Test_name.c", line 19: error: no operator "|" matches these operands
+            operand types are: int | B
+    d | B();
+      ^
+"Test_name.c", line 15: note: candidate function template "operator|" failed deduction
+  auto operator|(T arg, U bf) -> decltype(C<U>::bf(arg, bf));
+       ^
+"Test_name.c", line 19: note: built-in operator|(<promoted integral>, <promoted integral>) does not match because argument #2 does not match parameter
+    d | B();
+      ^
+
+2 errors detected in the compilation of "Test_name.c".

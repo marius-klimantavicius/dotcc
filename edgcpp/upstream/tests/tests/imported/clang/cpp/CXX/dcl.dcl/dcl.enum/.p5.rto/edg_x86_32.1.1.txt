@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 37: error: no instance of function template "force_same" matches the argument list
+            argument types are: (unsigned int, unsigned long)
+    Bullet3aVal4IsUnsigned = sizeof(force_same(Bullet3aVal4, 0ul))
+                                    ^
+"Test_name.c", line 4: note: candidate function template "force_same" failed deduction
+  template<typename T> int force_same(T, T);
+                           ^
+
+"Test_name.c", line 47: error: no instance of function template "force_same" matches the argument list
+            argument types are: (unsigned int, unsigned long)
+    Bullet3bVal4IsUnsigned = sizeof(force_same(Bullet3bVal4, 0ul))
+                                    ^
+"Test_name.c", line 4: note: candidate function template "force_same" failed deduction
+  template<typename T> int force_same(T, T);
+                           ^
+
+"Test_name.c", line 53: error: enumeration value is out of "int" range
+    Bullet3cVal3 // expected-warning{{not representable}}
+    ^
+
+3 errors detected in the compilation of "Test_name.c".

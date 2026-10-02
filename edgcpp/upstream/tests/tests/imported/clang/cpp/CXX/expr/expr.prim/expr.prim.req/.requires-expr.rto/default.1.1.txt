@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 35: error: template constraint not satisfied
+  using r1i = r1<int>;
+                    ^
+"Test_name.c", line 26: note: substitution of arguments "<int>" for requires-clause failed
+  template<typename T> requires requires (T t) {
+                                ^
+"Test_name.c", line 26: note: atomic constraint evaluates to false
+  template<typename T> requires requires (T t) {
+                                ^
+
+"Test_name.c", line 45: error: template constraint not satisfied
+  using r2i = r2<int>;
+                    ^
+"Test_name.c", line 38: note: substitution of arguments "<int>" for requires-clause failed
+  template<typename T> requires requires (T t) {
+                                ^
+"Test_name.c", line 38: note: atomic constraint evaluates to false
+  template<typename T> requires requires (T t) {
+                                ^
+
+"Test_name.c", line 59: error: template constraint not satisfied
+  using r3i = r3<int>;
+                    ^
+"Test_name.c", line 48: note: substitution of arguments "<int>" for requires-clause failed
+  template<typename T> requires requires (T t) {
+                                ^
+"Test_name.c", line 48: note: atomic constraint evaluates to false
+  template<typename T> requires requires (T t) {
+                                ^
+
+"Test_name.c", line 69: error: template constraint not satisfied
+  using r4i = r4<int>;
+                    ^
+"Test_name.c", line 65: note: substitution of arguments "<int>" for requires-clause failed
+  template<typename T> requires requires { T::value; S<T>::s; }
+                                ^
+"Test_name.c", line 65: note: atomic constraint evaluates to false
+  template<typename T> requires requires { T::value; S<T>::s; }
+                                ^
+
+"Test_name.c", line 75: error: a parameter may not have void type
+  static_assert(requires(void t) { // expected-error {{argument may not have 'void' type}}
+                         ^
+
+"Test_name.c", line 78: error: a parameter may not have void type
+  static_assert(requires(void t, int a) {  // expected-error {{'void' must be the first and only parameter if specified}}
+                         ^
+
+"Test_name.c", line 81: error: declaring a void parameter list with a qualified void type is nonstandard
+  static_assert(requires(const void) { // expected-error {{'void' as parameter must not have type qualifiers}}
+                         ^
+
+7 errors detected in the compilation of "Test_name.c".

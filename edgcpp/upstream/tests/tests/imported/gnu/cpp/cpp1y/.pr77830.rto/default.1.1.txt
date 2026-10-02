@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 35: error: expression must have a constant value
+    constexpr auto a = bar ("", "");	// { dg-message "in .constexpr. expansion of " }
+                       ^
+"Test_name.c", line 18: note: attempt to access storage one position past the end of an array of 1 elements
+      arr[i][j] = true;		// { dg-error "outside the bounds of array type" }
+                ^
+"Test_name.c", line 28: note: called from:
+      p.foo (s[i], i); // { dg-message "in .constexpr. expansion of " }
+            ^
+
+"Test_name.c", line 35: warning: variable "a" was declared but never referenced
+    constexpr auto a = bar ("", "");	// { dg-message "in .constexpr. expansion of " }
+                   ^
+
+1 error detected in the compilation of "Test_name.c".

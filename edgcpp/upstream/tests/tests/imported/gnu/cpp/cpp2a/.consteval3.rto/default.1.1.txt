@@ -1,0 +1,144 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 7: error: function "f1" (declared at line 6) was previously not declared consteval
+  consteval int f1 ();	// { dg-error "redeclaration 'consteval int f1\\(\\)' differs in 'consteval' from previous declaration" }
+  ^
+
+"Test_name.c", line 9: error: function "f2" (declared at line 8) was previously declared consteval
+  int f2 ();		// { dg-error "redeclaration 'int f2\\(\\)' differs in 'consteval' from previous declaration" }
+      ^
+
+"Test_name.c", line 11: error: function "f3" (declared at line 10) was previously declared constexpr
+  consteval int f3 ();	// { dg-error "redeclaration 'consteval int f3\\(\\)' differs in 'consteval' from previous declaration" }
+                ^
+
+"Test_name.c", line 13: error: function "f4" (declared at line 12) was previously declared consteval
+  constexpr int f4 ();	// { dg-error "redeclaration 'constexpr int f4\\(\\)' differs in 'consteval' from previous declaration" }
+                ^
+
+"Test_name.c", line 14: error: "consteval" is not valid here
+  typedef consteval int cint;	// { dg-error "'consteval' cannot appear in a typedef declaration" }
+          ^
+
+"Test_name.c", line 15: error: "consteval" is not valid here
+  consteval struct T { int i; };	// { dg-error "'consteval' cannot be used for type declarations" }
+  ^
+
+"Test_name.c", line 16: error: "consteval" is not permitted on the declaration of a variable or static data member
+  consteval int a = 5;	// { dg-error "a variable cannot be declared 'consteval'" }
+  ^
+
+"Test_name.c", line 17: error: a structured binding cannot be declared "consteval"
+  consteval auto [ b, c ] = S ();		// { dg-error "structured binding declaration cannot be 'consteval'" }
+  ^
+
+"Test_name.c", line 17: error: "consteval" is not permitted on the declaration of a variable or static data member
+  consteval auto [ b, c ] = S ();		// { dg-error "structured binding declaration cannot be 'consteval'" }
+  ^
+
+"Test_name.c", line 18: error: invalid specifier on a parameter
+  int f5 (consteval int x) { return x; }	// { dg-error "a parameter cannot be declared 'consteval'" }
+          ^
+
+"Test_name.c", line 21: error: call to consteval function "f6" did not produce a valid constant expression
+  int e = f6 (d);		// { dg-error "the value of 'd' is not usable in a constant expression|call to consteval function" }
+             ^
+"Test_name.c", line 21: note: the value of variable "d" (declared at line 20) cannot be used as a constant
+  int e = f6 (d);		// { dg-error "the value of 'd' is not usable in a constant expression|call to consteval function" }
+              ^
+
+"Test_name.c", line 22: error: call to consteval function "f6" did not produce a valid constant expression
+  constexpr int f7 (int x) { return f6 (x); }	// { dg-error "'x' is not a constant expression|call to consteval function" }
+                                       ^
+"Test_name.c", line 22: note: the value of parameter "x" (declared at line 22) cannot be used as a constant
+  constexpr int f7 (int x) { return f6 (x); }	// { dg-error "'x' is not a constant expression|call to consteval function" }
+                                        ^
+
+"Test_name.c", line 25: error: the address of a consteval function cannot be used here
+  fnptr *g = f6;		// { dg-error "taking address of an immediate function 'consteval int f6\\(int\\)'" }
+             ^
+
+"Test_name.c", line 27: error: the address of a consteval function cannot be used here
+  int h = f8 (f6);	// { dg-error "taking address of an immediate function 'consteval int f6\\(int\\)'" }
+              ^
+
+"Test_name.c", line 28: error: only one of "constexpr", "consteval", and "constinit" can appear on a declaration
+  consteval constexpr int f9 () { return 0; }	// { dg-error "both 'constexpr' and 'consteval' specified" }
+            ^
+
+"Test_name.c", line 29: error: only one of "constexpr", "consteval", and "constinit" can appear on a declaration
+  constexpr consteval int f10 () { return 0; }	// { dg-error "both 'constexpr' and 'consteval' specified" }
+            ^
+
+"Test_name.c", line 30: error: duplicate specifier in declaration
+  consteval consteval int f11 () { return 0; }	// { dg-error "duplicate 'consteval'" }
+            ^
+
+"Test_name.c", line 31: error: a destructor cannot be consteval
+  struct U { consteval ~U () {} };	// { dg-error "a destructor cannot be 'consteval'" }
+             ^
+
+"Test_name.c", line 32: error: "consteval" is not valid here
+  struct V { consteval int v = 5; };	// { dg-error "non-static data member 'v' declared 'consteval'" }
+             ^
+
+"Test_name.c", line 33: error: "consteval" is not permitted on the declaration of a variable or static data member
+  struct W { consteval static int w; };	// { dg-error "static data member 'w' declared 'consteval'" }
+             ^
+
+"Test_name.c", line 42: error: function "operator new(std::size_t)" (declared implicitly) was previously not declared consteval
+  consteval void* operator new (std::size_t);	// { dg-error "'operator new' cannot be 'consteval'" }
+  ^
+
+"Test_name.c", line 43: error: function "operator delete(void *, std::size_t) noexcept" (declared implicitly) was previously not declared consteval
+  consteval void operator delete (void *, std::size_t) noexcept;	// { dg-error "'operator delete' cannot be 'consteval'" }
+  ^
+
+"Test_name.c", line 44: error: function "operator delete[](void *) noexcept" (declared implicitly) was previously not declared consteval
+  consteval void operator delete[] (void *) noexcept;	// { dg-error "'operator delete \\\[\\\]' cannot be 'consteval'" }
+  ^
+
+"Test_name.c", line 46: error: a new or delete operator cannot be declared "consteval"
+    static consteval void* operator new (std::size_t);	// { dg-error "'operator new' cannot be 'consteval'" }
+           ^
+
+"Test_name.c", line 47: error: a new or delete operator cannot be declared "consteval"
+    static consteval void operator delete (void *, std::size_t) noexcept;	// { dg-error "'operator delete' cannot be 'consteval'" }
+           ^
+
+"Test_name.c", line 48: error: a new or delete operator cannot be declared "consteval"
+    consteval static void operator delete[] (void *) noexcept;	// { dg-error "'operator delete \\\[\\\]' cannot be 'consteval'" }
+    ^
+
+"Test_name.c", line 50: error: function "main" may not be declared consteval
+  consteval int main () { return 0; }	// { dg-error "cannot declare '::main' to be 'consteval'" }
+                ^
+
+"Test_name.c", line 53: error: defaulted default constructor cannot be constexpr because the corresponding implicitly declared default constructor would not be constexpr
+  struct C { A a; consteval C () = default; };	// { dg-error "explicitly defaulted function 'consteval C::C\\(\\)' cannot be declared 'consteval' because the implicit declaration is not 'constexpr'" }
+                            ^
+
+"Test_name.c", line 56: error: "consteval" is not allowed on an explicit instantiation directive
+  template consteval float f12 (float x); // { dg-error "explicit instantiation shall not use 'consteval' specifier" }
+           ^
+
+"Test_name.c", line 60: error: variable in constexpr function does not have automatic storage duration
+    static int a = 5;		// { dg-error "'a' defined 'static' in 'consteval' function only available with" "" { target c++20_only } }
+               ^
+
+"Test_name.c", line 60: warning: variable "a" was declared but never referenced
+    static int a = 5;		// { dg-error "'a' defined 'static' in 'consteval' function only available with" "" { target c++20_only } }
+               ^
+
+"Test_name.c", line 61: warning: variable "b" was declared but never referenced
+    thread_local int b = 6;	// { dg-error "'b' defined 'thread_local' in 'consteval' function only available with" "" { target c++20_only } }
+                     ^
+
+"Test_name.c", line 17: warning: structured binding "b" was declared but never referenced
+  consteval auto [ b, c ] = S ();		// { dg-error "structured binding declaration cannot be 'consteval'" }
+                   ^
+
+"Test_name.c", line 23: warning: variable "f" was declared but never referenced
+  constexpr int f = f7 (5);
+                ^
+
+30 errors detected in the compilation of "Test_name.c".

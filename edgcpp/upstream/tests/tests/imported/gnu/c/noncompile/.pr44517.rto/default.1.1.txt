@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 4: error: identifier "pid_t" is undefined
+  int f1(int x, pid_t y, long z, in t) {
+                ^
+
+"Test_name.c", line 4: error: identifier "in" is undefined
+  int f1(int x, pid_t y, long z, in t) {
+                                 ^
+
+"Test_name.c", line 10: error: identifier "lon" is undefined
+  int f2(int x, lon y, long z, ...){ /* { dg-error "unknown type name 'lon'" } */
+                ^
+
+"Test_name.c", line 11: warning: non-void function "f2" should return a value
+    return;
+          ^
+
+"Test_name.c", line 14: error: identifier "pid_t" is undefined
+  void f3(int n, int a[n], pid_t x); /* { dg-error "unknown type name 'pid_t'" } */
+                           ^
+
+"Test_name.c", line 16: error: expected a type specifier
+  void f5(int a, *b); /* { dg-error "expected declaration specifiers or" } */
+                 ^
+
+"Test_name.c", line 17: error: identifier "b" is undefined
+  void f6(int a, b);  /* { dg-error "unknown type name 'b'" } */
+                 ^
+
+"Test_name.c", line 18: error: expected a type specifier
+  void f7(int a, goto b); /* { dg-error "expected declaration specifiers or" } */
+                 ^
+
+"Test_name.c", line 19: error: identifier "in" is undefined
+  void f8(int a, in goto); /* { dg-error "unknown type name 'in'" } */
+                 ^
+
+"Test_name.c", line 19: error: expected a ")"
+  void f8(int a, in goto); /* { dg-error "unknown type name 'in'" } */
+                    ^
+
+"Test_name.c", line 20: error: identifier "in" is undefined
+  void f9(int a, in 1); /* { dg-error "unknown type name 'in'" } */
+                 ^
+
+"Test_name.c", line 20: error: expected a ")"
+  void f9(int a, in 1); /* { dg-error "unknown type name 'in'" } */
+                    ^
+
+11 errors detected in the compilation of "Test_name.c".

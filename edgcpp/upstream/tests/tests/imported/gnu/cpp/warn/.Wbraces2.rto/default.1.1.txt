@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 7: warning: extra braces are nonstandard
+  int c[2][2] = { { { 0 }, 1 }, { 2, 3 } };	 // { dg-error "braces around scalar" "" { target c++98_only } }
+                    ^
+
+"Test_name.c", line 11: warning: extra braces are nonstandard
+  S f = { { { "hello" } }, 1 };			 // { dg-error "braces around scalar|invalid conversion"  }
+            ^
+
+"Test_name.c", line 11: error: a value of type "const char *" cannot be used to initialize an entity of type "char"
+  S f = { { { "hello" } }, 1 };			 // { dg-error "braces around scalar|invalid conversion"  }
+              ^
+
+"Test_name.c", line 16: warning: extra braces are nonstandard
+  T k = { { { L"hello" } }, 1 };			 // { dg-error "braces around scalar|invalid conversion" }
+            ^
+
+"Test_name.c", line 16: error: a value of type "const wchar_t *" cannot be used to initialize an entity of type "wchar_t"
+  T k = { { { L"hello" } }, 1 };			 // { dg-error "braces around scalar|invalid conversion" }
+              ^
+
+2 errors detected in the compilation of "Test_name.c".

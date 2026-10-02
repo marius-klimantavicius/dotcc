@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 23: warning: template nesting depth does not match the previous declaration of function "A<T>::f(U) [with T=int, U=int]"
+  template <> void A<int>::f (int);                    // { dg-error "" }
+                           ^
+
+"Test_name.c", line 28: warning: template nesting depth does not match the previous declaration of function "A<T>::f2 [with T=int]"
+  template <> template <> void A<int>::f2 (int);       // { dg-error "" }
+                                       ^
+
+"Test_name.c", line 31: warning: template nesting depth does not match the previous declaration of function "A<float>::g(U) [with U=float]"
+  template <> template <> void A<float>::g(float);     // { dg-error "" }
+                                         ^
+
+"Test_name.c", line 33: error: "void A<float>::g2(float)" is not an entity that can be explicitly specialized
+  template <> void A<float>::g2 (float);               // { dg-error "" }
+                             ^
+
+"Test_name.c", line 34: error: "void A<float>::g2(float)" is not an entity that can be explicitly specialized
+  template <> template <> void A<float>::g2(float);    // { dg-error "" }
+                                         ^
+
+2 errors detected in the compilation of "Test_name.c".

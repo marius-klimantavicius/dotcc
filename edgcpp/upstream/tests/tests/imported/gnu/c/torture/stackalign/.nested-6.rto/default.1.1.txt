@@ -1,0 +1,18 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 15: error: expected a ";"
+    {
+    ^
+
+"Test_name.c", line 19: warning: parsing restarts here after previous syntax error
+    char array[3];
+                 ^
+
+"Test_name.c", line 20: error: identifier "array" is undefined
+    qsort (array, 3, 1, compare);
+           ^
+
+"Test_name.c", line 23: warning: label "nonlocal" was declared but never referenced
+   nonlocal:
+   ^
+
+2 errors detected in the compilation of "Test_name.c".

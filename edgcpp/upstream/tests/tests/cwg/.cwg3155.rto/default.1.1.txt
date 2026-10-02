@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 -A --c++26 Test_name.c
+"Test_name.c", line 15: error: call to consteval function "g" did not produce a valid constant expression
+    constexpr int f(int x) override { return g(x); }
+                                              ^
+"Test_name.c", line 15: note: the value of parameter "x" (declared at line 15) cannot be used as a constant
+    constexpr int f(int x) override { return g(x); }
+                                               ^
+
+1 error detected in the compilation of "Test_name.c".

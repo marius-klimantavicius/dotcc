@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 5: error: "this" may only be used inside a nonstatic member function
+    void f(A* p = this) { }	// expected-error{{invalid use of 'this'}}
+                  ^
+
+"Test_name.c", line 11: error: default argument of type "A *" is incompatible with parameter of type "int"
+    void g(int = this);
+                 ^
+
+2 errors detected in the compilation of "Test_name.c".

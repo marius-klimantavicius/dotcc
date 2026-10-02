@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 7: error: a constructor or destructor may not return a value
+    A() { return foo(); }  // { dg-error "19:returning a value" }
+                 ^
+
+"Test_name.c", line 8: error: a constructor or destructor may not return a value
+    ~A() { return foo(); }  // { dg-error "20:returning a value" }
+                  ^
+
+"Test_name.c", line 9: error: return value type does not match the function type
+    void bar() { return foo(); }  // { dg-error "26:return-statement with a value" }
+                        ^
+
+3 errors detected in the compilation of "Test_name.c".

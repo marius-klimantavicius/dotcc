@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --microsoft --diag_error=field_without_dll_interface Test_name.c
+"Test_name.c", line 23: error: field of class type without a DLL interface used in a class with a DLL interface
+  	S s;
+  	  ^
+
+"Test_name.c", line 24: error: field of class type without a DLL interface used in a class with a DLL interface
+  	S2 s2;
+  	   ^
+
+2 errors detected in the compilation of "Test_name.c".

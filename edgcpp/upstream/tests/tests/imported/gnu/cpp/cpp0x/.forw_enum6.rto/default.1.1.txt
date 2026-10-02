@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 6: error: enum "E1" (declared at line 5) was previously declared as a different kind of enum type
+  enum E1 : int;  // { dg-error "scoped/unscoped mismatch" }
+       ^
+
+"Test_name.c", line 9: error: enum "E2" (declared at line 8) was previously declared as a different kind of enum type
+  enum class E2 : int;  // { dg-error "scoped/unscoped mismatch" }
+             ^
+
+"Test_name.c", line 15: error: enum "E4" (declared at line 14) was previously declared with a different base type
+  enum class E4 : long;  // { dg-error "different underlying type" }
+             ^
+
+"Test_name.c", line 18: error: enum "E5" (declared at line 17) was previously declared with a different base type
+  enum E5 : long;  // { dg-error "different underlying type" }
+       ^
+
+"Test_name.c", line 26: warning: "enum class" and "enum struct" cannot be used here (use plain "enum" instead)
+  enum class E3 e3; // { dg-error "scoped enum must not use" }
+             ^
+
+"Test_name.c", line 27: warning: "enum class" and "enum struct" cannot be used here (use plain "enum" instead)
+  enum struct E3 e4; // { dg-error "scoped enum must not use" }
+              ^
+
+"Test_name.c", line 28: error: an opaque enum declaration cannot be part of another declaration
+  enum E5 : int e5; // { dg-error "declaration of enumeration with fixed underlying type|invalid type" }
+       ^
+
+"Test_name.c", line 31: error: enum "E6" has already been defined (previous definition at line 30)
+  enum E6 : int { a, b, c }; // { dg-error "multiple definition" }
+       ^
+
+"Test_name.c", line 31: error: "a" has already been declared in the current scope
+  enum E6 : int { a, b, c }; // { dg-error "multiple definition" }
+                  ^
+
+"Test_name.c", line 31: error: "b" has already been declared in the current scope
+  enum E6 : int { a, b, c }; // { dg-error "multiple definition" }
+                     ^
+
+"Test_name.c", line 31: error: "c" has already been declared in the current scope
+  enum E6 : int { a, b, c }; // { dg-error "multiple definition" }
+                        ^
+
+"Test_name.c", line 34: error: enum "E7" has already been defined (previous definition at line 33)
+  enum class E7 { a, b, c }; // { dg-error "multiple definition" }
+             ^
+
+"Test_name.c", line 49: error: enum "N1::E6" cannot be defined in the current scope
+      enum class N1::E6 { e1, e2, e3 }; // { dg-error "does not enclose" }
+                 ^
+
+"Test_name.c", line 50: error: enum "N1::E7" cannot be defined in the current scope
+      enum N1::E7 : int { e1, e2, e3 }; // { dg-error "does not enclose" }
+           ^
+
+"Test_name.c", line 69: error: enum "S1::E6" cannot be defined in the current scope
+      enum class S1::E6 { e1, e2, e3 }; // { dg-error "does not enclose" }
+                 ^
+
+"Test_name.c", line 70: error: enum "S1::E7" cannot be defined in the current scope
+      enum S1::E7 : int { e1, e2, e3 }; // { dg-error "does not enclose" }
+           ^
+
+14 errors detected in the compilation of "Test_name.c".

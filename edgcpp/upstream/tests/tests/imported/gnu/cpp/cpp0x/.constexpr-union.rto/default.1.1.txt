@@ -1,0 +1,28 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 15: error: expression must have a constant value
+  constexpr unsigned char c = u.ca[0]; // { dg-error "U::ca" }
+                              ^
+"Test_name.c", line 15: note: invalid access to inactive member "U::ca" of union (member "U::f" is active)
+  constexpr unsigned char c = u.ca[0]; // { dg-error "U::ca" }
+                                  ^
+
+"Test_name.c", line 18: error: expression must have a constant value
+  constexpr unsigned char c2 = (unsigned char&)d; // { dg-error "char. glvalue" }
+                               ^
+"Test_name.c", line 18: note: conversion from "double" to "unsigned char" is invalid in constant-expression evaluation
+  constexpr unsigned char c2 = (unsigned char&)d; // { dg-error "char. glvalue" }
+                               ^
+
+"Test_name.c", line 14: warning: variable "f" was declared but never referenced
+  constexpr float f = u.f;
+                  ^
+
+"Test_name.c", line 15: warning: variable "c" was declared but never referenced
+  constexpr unsigned char c = u.ca[0]; // { dg-error "U::ca" }
+                          ^
+
+"Test_name.c", line 18: warning: variable "c2" was declared but never referenced
+  constexpr unsigned char c2 = (unsigned char&)d; // { dg-error "char. glvalue" }
+                          ^
+
+2 errors detected in the compilation of "Test_name.c".

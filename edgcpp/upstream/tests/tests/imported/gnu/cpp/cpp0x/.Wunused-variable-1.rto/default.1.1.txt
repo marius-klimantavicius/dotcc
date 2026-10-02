@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 27: warning: variable "a" was declared but never referenced
+    char a;		// { dg-warning "unused variable" }
+         ^
+
+"Test_name.c", line 28: warning: variable "b" was declared but never referenced
+    short b;		// { dg-warning "unused variable" }
+          ^
+
+"Test_name.c", line 29: warning: variable "c" was declared but never referenced
+    int c;		// { dg-warning "unused variable" }
+        ^
+
+"Test_name.c", line 30: warning: variable "d" was declared but never referenced
+    long d;		// { dg-warning "unused variable" }
+         ^
+
+"Test_name.c", line 31: warning: variable "e" was declared but never referenced
+    long long e;		// { dg-warning "unused variable" }
+              ^
+
+"Test_name.c", line 32: warning: variable "f" was declared but never referenced
+    float f;		// { dg-warning "unused variable" }
+          ^
+
+"Test_name.c", line 33: warning: variable "g" was declared but never referenced
+    double g;		// { dg-warning "unused variable" }
+           ^
+

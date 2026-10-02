@@ -1,0 +1,94 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 6: error: duplicate specifier in declaration
+  constinit constinit int v1; // { dg-error "duplicate .constinit." }
+            ^
+
+"Test_name.c", line 7: error: only one of "constexpr", "consteval", and "constinit" can appear on a declaration
+  constexpr constinit int v2 = 1; // { dg-error "can use at most one of the .constinit. and .constexpr. specifiers" }
+            ^
+
+"Test_name.c", line 8: error: only one of "constexpr", "consteval", and "constinit" can appear on a declaration
+  constinit constexpr int v3 = 1; // { dg-error "an use at most one of the .constinit. and .constexpr. specifiers" }
+            ^
+
+"Test_name.c", line 10: error: more than one storage class may not be specified
+  extern static constinit int v4; // { dg-error "'static' specifier conflicts with 'extern'" }
+         ^
+
+"Test_name.c", line 14: error: "constinit" is not valid here
+  constinit typedef int T; // { dg-error ".constinit. cannot appear in a typedef declaration" }
+  ^
+
+"Test_name.c", line 17: error: "constinit" is not valid here
+    constinit int m1; // { dg-error "non-static data member .m1. declared .constinit." }
+    ^
+
+"Test_name.c", line 18: error: "constinit" is not valid here
+    constinit unsigned int b : 32; // { dg-error " non-static data member .b. declared .constinit." }
+    ^
+
+"Test_name.c", line 22: error: "constinit" is not valid here
+    constinit S3() {} // { dg-error ".constinit. on function return type is not allowed" }
+    ^
+
+"Test_name.c", line 23: error: "constinit" is not valid here
+    constinit ~S3() {} // { dg-error ".constinit. on function return type is not allowed" }
+    ^
+
+"Test_name.c", line 26: error: "constinit" is not valid here
+  constinit struct S4 { // { dg-error ".constinit. cannot be used for type declarations" }
+  ^
+
+"Test_name.c", line 29: error: "constinit" is not valid here
+  template<constinit int I> // { dg-error "a parameter cannot be declared .constinit." }
+           ^
+
+"Test_name.c", line 36: error: "constinit" is only valid for declarations of variables with static or thread storage duration
+    constinit int a1 = 42; // { dg-error "17:.constinit. can only be applied to a variable with static or thread storage" }
+    ^
+
+"Test_name.c", line 37: error: "constinit" is only valid for declarations of variables with static or thread storage duration
+    constinit int a2 = 42; // { dg-error "17:.constinit. can only be applied to a variable with static or thread storage" }
+    ^
+
+"Test_name.c", line 36: warning: variable "a1" was declared but never referenced
+    constinit int a1 = 42; // { dg-error "17:.constinit. can only be applied to a variable with static or thread storage" }
+                  ^
+
+"Test_name.c", line 37: warning: variable "a2" was declared but never referenced
+    constinit int a2 = 42; // { dg-error "17:.constinit. can only be applied to a variable with static or thread storage" }
+                  ^
+
+"Test_name.c", line 43: error: "constinit" is not valid here
+  constinit int // { dg-error ".constinit. on function return type is not allowed" }
+  ^
+
+"Test_name.c", line 46: warning: missing return statement at end of non-void function "fn3"
+  }
+  ^
+
+"Test_name.c", line 49: error: invalid specifier on a parameter
+  fn2 (int i, constinit int p) // { dg-error "a parameter cannot be declared .constinit." }
+              ^
+
+"Test_name.c", line 51: error: "constinit" is only valid for declarations of variables with static or thread storage duration
+    constinit auto l = [i](){ return i; }; // { dg-error "18:.constinit. can only be applied to a variable with static or thread storage" }
+    ^
+
+"Test_name.c", line 51: warning: variable "l" was declared but never referenced
+    constinit auto l = [i](){ return i; }; // { dg-error "18:.constinit. can only be applied to a variable with static or thread storage" }
+                   ^
+
+"Test_name.c", line 59: error: "constinit" is only valid for declarations of variables with static or thread storage duration
+    constinit auto [ a ] = b; // { dg-error ".constinit. can only be applied to a variable with static or thread storage" }
+    ^
+
+"Test_name.c", line 59: warning: structured binding "a" was declared but never referenced
+    constinit auto [ a ] = b; // { dg-error ".constinit. can only be applied to a variable with static or thread storage" }
+                     ^
+
+"Test_name.c", line 7: warning: variable "v2" was declared but never referenced
+  constexpr constinit int v2 = 1; // { dg-error "can use at most one of the .constinit. and .constexpr. specifiers" }
+                          ^
+
+17 errors detected in the compilation of "Test_name.c".

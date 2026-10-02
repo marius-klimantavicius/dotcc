@@ -1,0 +1,215 @@
+#!/usr/bin/env python3
+
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+import argparse
+import subprocess
+import sys
+
+import edgtest
+import edgshell
+import edgutil
+
+from pathlib import Path
+from typing import Optional, Tuple
+
+from edgshell.bisect import BisectInProgressException, MonoRepoBisector
+from edgutil import eprint
+
+TOOL_PATH_EDG_DOCKER_TEST = edgutil.RequiredToolPath('edg-docker-test')
+
+def _run_docker_test(test_file: str,
+                     posture: Optional[str]) -> Tuple[bool, bool]:
+  '''Returns a tuple where the first bool is whether or not the build succeeded
+  and the second is whether or not the test passed.'''
+
+  # Note we intentionally do not change the cwd as we want edg-docker-test to
+  # follow edgutil.find_mono_repo_or_exit semantics exactly as this script did.
+  completed_process = subprocess.run(
+    [
+      str(TOOL_PATH_EDG_DOCKER_TEST),
+      *([f"--posture={posture}"] if posture else []),
+      '--discard-test-results',
+      '--non-interactive',
+      test_file
+    ]
+  )
+  return (
+    completed_process.returncode == 0 or completed_process.returncode >= 20,
+    completed_process.returncode == 0
+  )
+
+def _parse_args():
+  parser = argparse.ArgumentParser(
+    description = (
+      'EDG wrapper around git-bisect designed for automatic bisection using '
+      'edg-docker-test within the mono-repo.'
+    )
+  )
+  parser.add_argument(
+    '--posture',
+    dest = 'posture',
+    default = None,
+    help = (
+      'the posture edg-docker-test should use, see edg-docker-test --help '
+      'for more information.'
+    )
+  )
+  parser.add_argument(
+    'bad_commit',
+    help = 'the known bad (new) commit'
+  )
+  parser.add_argument(
+    'good_commit',
+    help = 'the known good (old) commit'
+  )
+  parser.add_argument(
+    'test_path',
+    type = Path,
+    help = 'the path to the test'
+  )
+  return parser.parse_args()
+
+
+def _try_relative_test_paths(mono_repo_dir: Path,
+                             test_path: Path) -> Optional[Path]:
+  # Easiest case, the test is relative to the current working directory
+  # or is an absolute path.
+  if test_path.exists():
+    return test_path.resolve()
+
+  # Now try some diffrent mono repo prefixes.
+  prefixes_to_try = [
+    mono_repo_dir,
+    mono_repo_dir / 'tests',
+    mono_repo_dir / 'tests' / 'tests'
+  ]
+  for prefix in prefixes_to_try:
+    path = prefix.joinpath(test_path)
+    if path.exists():
+      return path.resolve()
+
+  return None
+
+def _resolve_test_path(mono_repo_dir: Path, test_path: Path) -> Optional[str]:
+  test_path = _try_relative_test_paths(mono_repo_dir, test_path)
+  if test_path is None or not test_path.is_file():
+    return None
+
+  mono_repo_tests_dir = mono_repo_dir / 'tests' / 'tests'
+  if not test_path.is_relative_to(mono_repo_dir):
+    return None
+
+  return str(test_path.relative_to(mono_repo_tests_dir).as_posix())
+
+def run_automatic_test_bisect(bisector: MonoRepoBisector,
+                              posture: Optional[str],
+                              bad_commit: str, good_commit: str,
+                              test_file: str, *, pass_is_good: bool) -> None:
+  bisector.start(bad_commit, good_commit)
+
+  last_bisect_head = None
+
+  while bisector.is_active():
+    # Make sure the bisect is still moving.
+    bisect_head = bisector.get_bisect_head()
+    if last_bisect_head == bisect_head:
+      break
+    last_bisect_head = bisect_head
+
+    # Run the docker build + test on the BISECT_HEAD.
+    build_success, test_success = _run_docker_test(test_file, posture)
+    if not build_success:
+      bisector.skip()
+    elif test_success == pass_is_good:
+      bisector.mark_good()
+    else:
+      bisector.mark_bad()
+
+  bisector.reset()
+
+def _exit_bisect_in_progress() -> None:
+    eprint('A git bisect is already in progress, please reset with:')
+    eprint('  edg-bisect reset')
+    sys.exit(1)
+
+def _sniff_status_at_commit(mono_repo_dir: Path, commit: str,
+                            test_file: str, posture: str) -> bool:
+  print(f"Checking testing results on: {commit}")
+  edgshell.run_git_restore_src_files(
+    commit,
+    cwd = mono_repo_dir
+  )
+
+  build_passed, test_passed = _run_docker_test(test_file, posture)
+  if not build_passed:
+    eprint('Build failure.')
+    sys.exit(1)
+
+  return test_passed
+
+def main() -> None:
+  args = _parse_args()
+
+  TOOL_PATH_EDG_DOCKER_TEST.exit_if_not_found()
+
+  mono_repo_dir = edgutil.find_mono_repo_or_exit()
+
+  test_file_str = _resolve_test_path(mono_repo_dir, args.test_path)
+  if test_file_str is None:
+    eprint(f"Not a test in tests/tests: {args.test_path}")
+    sys.exit(1)
+
+  try:
+    bisector = MonoRepoBisector(mono_repo_dir)
+    if bisector.is_active():
+      _exit_bisect_in_progress()
+
+    bad_status = _sniff_status_at_commit(
+      mono_repo_dir,
+      args.bad_commit,
+      test_file_str,
+      args.posture
+    )
+    good_status = _sniff_status_at_commit(
+      mono_repo_dir,
+      args.good_commit,
+      test_file_str,
+      args.posture
+    )
+
+    if bad_status == good_status:
+      test_status = 'PASS' if bad_status else 'FAIL'
+      eprint('Test status was the same on both commits:')
+      eprint(f"  {args.bad_commit} (bad/new commit):  {test_status}")
+      eprint(f"  {args.good_commit} (good/old commit): {test_status}")
+      sys.exit(1)
+
+    print("Searching for commit where test changes from:")
+    if not bad_status:
+      print(
+        '  FAIL (bad/new commit) -> PASS (good/old commit) [normal bisect]'
+      )
+      pass_is_good = True
+    else:
+      print(
+        '  PASS (bad/new commit)-> FAIL (good/old commit) [inverted bisect]'
+      )
+      pass_is_good = False
+
+    print('Starting automatic bisect...')
+    run_automatic_test_bisect(
+      bisector,
+      args.posture,
+      args.bad_commit,
+      args.good_commit,
+      test_file_str,
+      pass_is_good = pass_is_good
+    )
+  except BisectInProgressException:
+    _exit_bisect_in_progress()
+
+main()

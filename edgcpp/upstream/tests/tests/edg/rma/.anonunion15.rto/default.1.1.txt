@@ -1,0 +1,1 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict --diag_suppress=1055 --diag_suppress=2458 Test_name.c

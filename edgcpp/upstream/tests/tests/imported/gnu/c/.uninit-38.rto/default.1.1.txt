@@ -1,0 +1,81 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 33: warning: unknown attribute "noipa"
+  T (int, 0, 0);      // { dg-warning "'\\*\\(int \\*\\)a' is used uninitialized" "" { xfail { ! alloca } } }
+  ^
+
+"Test_name.c", line 34: warning: unknown attribute "noipa"
+  T (int, 0, 1);      // { dg-warning "'\\*\\(int \\*\\)\\(\\(char \\*\\)a \\+ 1\\)'" "" { xfail { ! alloca } } }
+  ^
+
+"Test_name.c", line 35: warning: unknown attribute "noipa"
+  T (int, 0, 2);      // { dg-warning "'\\*\\(int \\*\\)\\(\\(char \\*\\)a \\+ 2\\)'" "" { xfail { ! alloca } } }
+  ^
+
+"Test_name.c", line 36: warning: unknown attribute "noipa"
+  T (int, 0, 3);      // { dg-warning "'\\*\\(int \\*\\)\\(\\(char \\*\\)a \\+ 3\\)'" "" { xfail { ! alloca } } }
+  ^
+
+"Test_name.c", line 37: warning: unknown attribute "noipa"
+  T (int, 0, 4);      // { dg-warning "'\\(\\(int \\*\\)a\\)\\\[1]'" "" { xfail { ! alloca } } }
+  ^
+
+"Test_name.c", line 38: warning: unknown attribute "noipa"
+  T (int, 0, 5);      // { dg-warning "'\\(\\(int \\*\\)\\(\\(char \\*\\)a \\+ 1\\)\\)\\\[1]'" "" { xfail { ! alloca } } }
+  ^
+
+"Test_name.c", line 39: warning: unknown attribute "noipa"
+  T (int, 0, 6);      // { dg-warning "'\\(\\(int \\*\\)\\(\\(char \\*\\)a \\+ 2\\)\\)\\\[1]'" "" { xfail { ! alloca } } }
+  ^
+
+"Test_name.c", line 40: warning: unknown attribute "noipa"
+  T (int, 0, 7);      // { dg-warning "'\\(\\(int \\*\\)\\(\\(char \\*\\)a \\+ 3\\)\\)\\\[1]'" "" { xfail { ! alloca } } }
+  ^
+
+"Test_name.c", line 41: warning: unknown attribute "noipa"
+  T (int, 0, 8);      // { dg-warning "'\\(\\(int \\*\\)a\\)\\\[2]'" "" { xfail { ! alloca } } }
+  ^
+
+"Test_name.c", line 42: warning: unknown attribute "noipa"
+  T (int, 0, 9);      // { dg-warning "'\\(\\(int \\*\\)\\(\\(char \\*\\)a \\+ 1\\)\\)\\\[2]'" "" { xfail { ! alloca } } }
+  ^
+
+"Test_name.c", line 45: warning: unknown attribute "noipa"
+  T (int, 1, 0);      // { dg-warning "'\\(\\(int \\*\\)a\\)\\\[1]' is used uninitialized" "" { xfail { ! alloca } } }
+  ^
+
+"Test_name.c", line 46: warning: unknown attribute "noipa"
+  T (int, 1, 1);      // { dg-warning "'\\(\\(int \\*\\)\\(\\(char \\*\\)a \\+ 1\\)\\)\\\[1]'" "" { xfail { ! alloca } } }
+  ^
+
+"Test_name.c", line 47: warning: unknown attribute "noipa"
+  T (int, 1, 2);      // { dg-warning "'\\(\\(int \\*\\)\\(\\(char \\*\\)a \\+ 2\\)\\)\\\[1]'" "" { xfail { ! alloca } } }
+  ^
+
+"Test_name.c", line 48: warning: unknown attribute "noipa"
+  T (int, 1, 3);      // { dg-warning "'\\(\\(int \\*\\)\\(\\(char \\*\\)a \\+ 3\\)\\)\\\[1]'" "" { xfail { ! alloca } } }
+  ^
+
+"Test_name.c", line 49: warning: unknown attribute "noipa"
+  T (int, 1, 4);      // { dg-warning "'\\(\\(int \\*\\)a\\)\\\[2]'" "" { xfail { ! alloca } } }
+  ^
+
+"Test_name.c", line 50: warning: unknown attribute "noipa"
+  T (int, 1, 5);      // { dg-warning "'\\(\\(int \\*\\)\\(\\(char \\*\\)a \\+ 1\\)\\)\\\[2]'" "" { xfail { ! alloca } } }
+  ^
+
+"Test_name.c", line 51: warning: unknown attribute "noipa"
+  T (int, 1, 6);      // { dg-warning "'\\(\\(int \\*\\)\\(\\(char \\*\\)a \\+ 2\\)\\)\\\[2]'" "" { xfail { ! alloca } } }
+  ^
+
+"Test_name.c", line 52: warning: unknown attribute "noipa"
+  T (int, 1, 7);      // { dg-warning "'\\(\\(int \\*\\)\\(\\(char \\*\\)a \\+ 3\\)\\)\\\[2]'" "" { xfail { ! alloca } } }
+  ^
+
+"Test_name.c", line 53: warning: unknown attribute "noipa"
+  T (int, 1, 8);      // { dg-warning "'\\(\\(int \\*\\)a\\)\\\[3]'" "" { xfail { ! alloca } } }
+  ^
+
+"Test_name.c", line 54: warning: unknown attribute "noipa"
+  T (int, 1, 9);      // { dg-warning "'\\(\\(int \\*\\)\\(\\(char \\*\\)a \\+ 1\\)\\)\\\[3]'" "" { xfail { ! alloca } } }
+  ^
+

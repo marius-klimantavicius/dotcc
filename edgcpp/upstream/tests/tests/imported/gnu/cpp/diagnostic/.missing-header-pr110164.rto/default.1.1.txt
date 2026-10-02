@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./diagnostic/missing-header-pr110164.C", line 6: error: incomplete type "std::array<int, 10UL>" is not allowed
+  std::array<int, 10> a1;
+                      ^
+
+"./diagnostic/missing-header-pr110164.C", line 9: error: incomplete type "std::array<int, 10UL>" is not allowed
+  std::array<int, 10> a2 {5};
+                      ^
+
+2 errors detected in the compilation of "Test_name.c".

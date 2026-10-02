@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c17 --strict_gnu -w Test_name.c
+"Test_name.c", line 12: error: declaration is incompatible with "void bar()" (declared at line 10)
+  bar (int i, int j, int k, V v)
+  ^
+
+"Test_name.c", line 19: error: argument of type "V" (aka "__attribute((vector_size(64UL))) int") is incompatible with parameter of type "int"
+    bar ((V){}, (V){}, (V){}, (U){});
+         ^
+
+"Test_name.c", line 19: error: argument of type "V" (aka "__attribute((vector_size(64UL))) int") is incompatible with parameter of type "int"
+    bar ((V){}, (V){}, (V){}, (U){});
+                ^
+
+"Test_name.c", line 19: error: argument of type "V" (aka "__attribute((vector_size(64UL))) int") is incompatible with parameter of type "int"
+    bar ((V){}, (V){}, (V){}, (U){});
+                       ^
+
+"Test_name.c", line 19: error: argument of type "U" (aka "__attribute((vector_size(16UL))) char") is incompatible with parameter of type "V" (aka "__attribute((vector_size(64UL))) int")
+    bar ((V){}, (V){}, (V){}, (U){});
+                              ^
+
+5 errors detected in the compilation of "Test_name.c".

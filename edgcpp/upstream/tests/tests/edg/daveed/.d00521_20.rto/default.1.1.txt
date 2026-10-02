@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --microsoft Test_name.c
+"Test_name.c", line 14: error: a function declared "dllimport" may not be defined
+  __declspec(dllimport) void f() {}
+                             ^
+
+"Test_name.c", line 16: error: function "f" has already been defined (previous definition at line 14)
+  __declspec(dllimport) void f() {}
+                             ^
+
+"Test_name.c", line 16: error: a function declared "dllimport" may not be defined
+  __declspec(dllimport) void f() {}
+                             ^
+
+"Test_name.c", line 23: error: a function declared "dllimport" may not be defined
+  __declspec(dllimport) void X::f() {}
+                                ^
+
+"Test_name.c", line 25: error: function "X::f" has already been defined (previous definition at line 23)
+  __declspec(dllimport) void X::f() {}
+                                ^
+
+5 errors detected in the compilation of "Test_name.c".

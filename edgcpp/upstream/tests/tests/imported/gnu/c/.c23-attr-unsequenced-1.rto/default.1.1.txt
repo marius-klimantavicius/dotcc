@@ -1,0 +1,65 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 23: warning: unknown attribute "unsequenced"
+  int f1 () [[unsequenced]];
+              ^
+
+"Test_name.c", line 24: warning: unknown attribute "unsequenced"
+  int f2 () [[unsequenced]], f3 (int) [[__unsequenced__]];
+              ^
+
+"Test_name.c", line 24: warning: unknown attribute "__unsequenced__"
+  int f2 () [[unsequenced]], f3 (int) [[__unsequenced__]];
+                                        ^
+
+"Test_name.c", line 25: warning: unknown attribute "unsequenced"
+  int f4 (int, int *restrict) [[unsequenced]];
+                                ^
+
+"Test_name.c", line 26: warning: unknown attribute "unsequenced"
+  int f5 (int) [[unsequenced]];
+                 ^
+
+"Test_name.c", line 28: warning: unknown attribute "unsequenced"
+  int (*fp1) (int) [[unsequenced]] = f6;
+                     ^
+
+"Test_name.c", line 29: warning: unknown attribute "unsequenced"
+  typedef int ft1 (int) [[unsequenced]];
+                          ^
+
+"Test_name.c", line 31: warning: unknown attribute "unsequenced"
+  extern typeof (f6) [[unsequenced]] f7;
+                       ^
+
+"Test_name.c", line 32: warning: unknown attribute "__unsequenced__"
+  extern ft2 [[__unsequenced__]] f8;
+               ^
+
+"Test_name.c", line 35: warning: unknown attribute "__unsequenced__"
+  int f9 (int) [[__unsequenced__]];
+                 ^
+
+"Test_name.c", line 39: warning: unknown attribute "unsequenced"
+  f10 (int x) [[unsequenced]]
+                ^
+
+"Test_name.c", line 45: warning: unknown attribute "__unsequenced__"
+  f11 (int *restrict x, long long y[restrict static 1], int z) [[__unsequenced__]]
+                                                                 ^
+
+"Test_name.c", line 54: warning: unknown attribute "unsequenced"
+  int f12 () [[unsequenced]];
+               ^
+
+"Test_name.c", line 55: warning: unknown attribute "reproducible"
+  int f12 () [[reproducible]];
+               ^
+
+"Test_name.c", line 56: warning: unknown attribute "reproducible"
+  int f13 () [[reproducible]];
+               ^
+
+"Test_name.c", line 57: warning: unknown attribute "unsequenced"
+  int f13 () [[unsequenced]];
+               ^
+

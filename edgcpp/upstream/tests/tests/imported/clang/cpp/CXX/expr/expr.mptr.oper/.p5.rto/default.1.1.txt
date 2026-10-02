@@ -1,0 +1,72 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 29: error: the object has type qualifiers that are not compatible with the member function
+            object type is: const X0
+    (pc->*pm)(); // expected-error-re{{call to pointer to member function of type 'void (){{( __attribute__\(\(thiscall\)\))?}}' drops 'const' qualifier}}
+     ^
+
+"Test_name.c", line 31: error: the object has type qualifiers that are not compatible with the member function
+            object type is: const X0
+    (pc->*pmv)(); // expected-error-re{{call to pointer to member function of type 'void (){{( __attribute__\(\(thiscall\)\))?}} volatile' drops 'const' qualifier}}
+     ^
+
+"Test_name.c", line 34: error: the object has type qualifiers that are not compatible with the member function
+            object type is: volatile X0
+    (pv->*pm)(); // expected-error-re{{call to pointer to member function of type 'void (){{( __attribute__\(\(thiscall\)\))?}}' drops 'volatile' qualifier}}
+     ^
+
+"Test_name.c", line 35: error: the object has type qualifiers that are not compatible with the member function
+            object type is: volatile X0
+    (pv->*pmc)(); // expected-error-re{{call to pointer to member function of type 'void (){{( __attribute__\(\(thiscall\)\))?}} const' drops 'volatile' qualifier}}
+     ^
+
+"Test_name.c", line 39: error: the object has type qualifiers that are not compatible with the member function
+            object type is: const volatile X0
+    (pcv->*pm)(); // expected-error-re{{call to pointer to member function of type 'void (){{( __attribute__\(\(thiscall\)\))?}}' drops 'const volatile' qualifiers}}
+     ^
+
+"Test_name.c", line 40: error: the object has type qualifiers that are not compatible with the member function
+            object type is: const volatile X0
+    (pcv->*pmc)(); // expected-error-re{{call to pointer to member function of type 'void (){{( __attribute__\(\(thiscall\)\))?}} const' drops 'volatile' qualifier}}
+     ^
+
+"Test_name.c", line 41: error: the object has type qualifiers that are not compatible with the member function
+            object type is: const volatile X0
+    (pcv->*pmv)(); // expected-error-re{{call to pointer to member function of type 'void (){{( __attribute__\(\(thiscall\)\))?}} volatile' drops 'const' qualifier}}
+     ^
+
+"Test_name.c", line 49: error: the object has type qualifiers that are not compatible with the member function
+            object type is: const X0
+    (oc.*pm)(); // expected-error-re{{call to pointer to member function of type 'void (){{( __attribute__\(\(thiscall\)\))?}}' drops 'const' qualifier}}
+     ^
+
+"Test_name.c", line 51: error: the object has type qualifiers that are not compatible with the member function
+            object type is: const X0
+    (oc.*pmv)(); // expected-error-re{{call to pointer to member function of type 'void (){{( __attribute__\(\(thiscall\)\))?}} volatile' drops 'const' qualifier}}
+     ^
+
+"Test_name.c", line 54: error: the object has type qualifiers that are not compatible with the member function
+            object type is: volatile X0
+    (ov.*pm)(); // expected-error-re{{call to pointer to member function of type 'void (){{( __attribute__\(\(thiscall\)\))?}}' drops 'volatile' qualifier}}
+     ^
+
+"Test_name.c", line 55: error: the object has type qualifiers that are not compatible with the member function
+            object type is: volatile X0
+    (ov.*pmc)(); // expected-error-re{{call to pointer to member function of type 'void (){{( __attribute__\(\(thiscall\)\))?}} const' drops 'volatile' qualifier}}
+     ^
+
+"Test_name.c", line 59: error: the object has type qualifiers that are not compatible with the member function
+            object type is: const volatile X0
+    (ocv.*pm)(); // expected-error-re{{call to pointer to member function of type 'void (){{( __attribute__\(\(thiscall\)\))?}}' drops 'const volatile' qualifiers}}
+     ^
+
+"Test_name.c", line 60: error: the object has type qualifiers that are not compatible with the member function
+            object type is: const volatile X0
+    (ocv.*pmc)(); // expected-error-re{{call to pointer to member function of type 'void (){{( __attribute__\(\(thiscall\)\))?}} const' drops 'volatile' qualifier}}
+     ^
+
+"Test_name.c", line 61: error: the object has type qualifiers that are not compatible with the member function
+            object type is: const volatile X0
+    (ocv.*pmv)(); // expected-error-re{{call to pointer to member function of type 'void (){{( __attribute__\(\(thiscall\)\))?}} volatile' drops 'const' qualifier}}
+     ^
+
+14 errors detected in the compilation of "Test_name.c".

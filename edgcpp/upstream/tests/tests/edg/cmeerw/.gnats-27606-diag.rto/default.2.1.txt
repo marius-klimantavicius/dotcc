@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=2 --c++11 --diag_error 2361 Test_name.c
+"user.h", line 10: error: invalid narrowing conversion from "double" to "float"
+    auto v{ float{ d } };
+                   ^
+
+1 error detected in the compilation of "Test_name.c".

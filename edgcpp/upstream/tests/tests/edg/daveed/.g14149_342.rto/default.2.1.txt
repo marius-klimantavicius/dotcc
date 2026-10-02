@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=2 --gnu=80100 Test_name.c
+"Test_name.c", line 10: warning: a user-provided literal suffix must begin with "_"
+  constexpr complex  operator""il(long double __num)
+                             ^
+

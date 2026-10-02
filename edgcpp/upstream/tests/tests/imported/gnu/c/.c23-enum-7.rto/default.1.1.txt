@@ -1,0 +1,194 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 9: warning: a storage class may not be specified here
+  extern enum e1 : int; /* { dg-error "storage class specifier in empty declaration with 'enum' underlying type" } */
+  ^
+
+"Test_name.c", line 10: error: thread-local storage class is not valid here
+  _Thread_local enum e2 : short; /* { dg-error "'_Thread_local' in empty declaration with 'enum' underlying type" } */
+  ^
+
+"Test_name.c", line 11: warning: type qualifiers are meaningless in this declaration
+  const enum e3 : long; /* { dg-error "type qualifier in empty declaration with 'enum' underlying type" } */
+  ^
+
+"Test_name.c", line 12: warning: attribute does not apply to any entity
+  alignas (8) enum e4 : long; /* { dg-error "'alignas' in empty declaration with 'enum' underlying type" } */
+  ^
+
+"Test_name.c", line 13: warning: inline specifier allowed on function declarations only
+  inline enum e5 : unsigned; /* { dg-error "'inline' in empty declaration" } */
+  ^
+
+"Test_name.c", line 14: error: _Noreturn is not allowed here
+  _Noreturn enum e6 : unsigned; /* { dg-error "'_Noreturn' in empty declaration" } */
+  ^
+
+"Test_name.c", line 15: warning: the auto specifier is ignored here (invalid in standard C/C++)
+  auto enum e7 : unsigned; /* { dg-error "'auto' in file-scope empty declaration" } */
+  ^
+
+"Test_name.c", line 16: warning: a storage class may not be specified here
+  register enum e8 : unsigned; /* { dg-error "'register' in file-scope empty declaration" } */
+  ^
+
+"Test_name.c", line 20: warning: a storage class may not be specified here
+  extern enum e9 : int { E9 }; /* { dg-warning "useless storage class specifier in empty declaration" } */
+  ^
+
+"Test_name.c", line 21: error: thread-local storage class is not valid here
+  _Thread_local enum e10 : short { E10 }; /* { dg-warning "useless '_Thread_local' in empty declaration" } */
+  ^
+
+"Test_name.c", line 22: warning: type qualifiers are meaningless in this declaration
+  const enum e11 : long { E11 }; /* { dg-warning "useless type qualifier in empty declaration" } */
+  ^
+
+"Test_name.c", line 23: warning: attribute does not apply to any entity
+  alignas (8) enum e12 : long { E12 }; /* { dg-warning "useless '_Alignas' in empty declaration" } */
+  ^
+
+"Test_name.c", line 27: error: an opaque enum declaration cannot be part of another declaration
+  enum e13 : short x13; /* { dg-error "'enum' underlying type may not be specified here" } */
+       ^
+
+"Test_name.c", line 28: error: an opaque enum declaration cannot be part of another declaration
+  enum e14 : short f14 (); /* { dg-error "'enum' underlying type may not be specified here" } */
+       ^
+
+"Test_name.c", line 29: error: an opaque enum declaration cannot be part of another declaration
+  typeof (enum e15 : long) x15; /* { dg-error "'enum' underlying type may not be specified here" } */
+               ^
+
+"Test_name.c", line 30: error: an opaque enum declaration cannot be part of another declaration
+  int f16 (enum e16 : char p); /* { dg-error "'enum' underlying type may not be specified here" } */
+                ^
+
+"Test_name.c", line 31: error: an opaque enum declaration cannot be part of another declaration
+  int f17 (enum e17 : char); /* { dg-error "'enum' underlying type may not be specified here" } */
+                ^
+
+"Test_name.c", line 32: error: an opaque enum declaration cannot be part of another declaration
+  struct s18 { enum e18 : int x; }; /* { dg-error "'enum' underlying type may not be specified here" } */
+                    ^
+
+"Test_name.c", line 44: error: tag kind of enum is incompatible with declaration of struct "s25" (declared at line 43)
+  enum s25 : int; /* { dg-error "wrong kind of tag" } */
+       ^
+
+"Test_name.c", line 46: error: tag kind of enum is incompatible with declaration of struct "s26" (declared at line 45)
+  enum s26 : int { E26 }; /* { dg-error "wrong kind of tag" } */
+       ^
+
+"Test_name.c", line 48: error: tag kind of enum is incompatible with declaration of struct "s27" (declared at line 47)
+  enum s27 : int; /* { dg-error "wrong kind of tag" } */
+       ^
+
+"Test_name.c", line 50: error: tag kind of enum is incompatible with declaration of struct "s28" (declared at line 49)
+  enum s28 : int { E28 }; /* { dg-error "wrong kind of tag" } */
+       ^
+
+"Test_name.c", line 52: error: tag kind of enum is incompatible with declaration of union "u29" (declared at line 51)
+  enum u29 : int; /* { dg-error "wrong kind of tag" } */
+       ^
+
+"Test_name.c", line 54: error: tag kind of enum is incompatible with declaration of union "u30" (declared at line 53)
+  enum u30 : int { E30 }; /* { dg-error "wrong kind of tag" } */
+       ^
+
+"Test_name.c", line 56: error: tag kind of enum is incompatible with declaration of union "u31" (declared at line 55)
+  enum u31 : int; /* { dg-error "wrong kind of tag" } */
+       ^
+
+"Test_name.c", line 58: error: tag kind of enum is incompatible with declaration of union "u32" (declared at line 57)
+  enum u32 : int { E32 }; /* { dg-error "wrong kind of tag" } */
+       ^
+
+"Test_name.c", line 63: error: enum "e33" (declared at line 62) was previously declared with a different base type
+  enum e33 { E33 }; /* { dg-error "'enum' declared with but defined without fixed underlying type" } */
+       ^
+
+"Test_name.c", line 68: error: enum "e34" (declared at line 67) was previously declared without an explicit enum base
+  enum e34 : int; /* { dg-error "'enum' declared both with and without fixed underlying type" } */
+             ^
+
+"Test_name.c", line 68: error: enum "e34" (declared at line 67) was previously declared with a different base type
+  enum e34 : int; /* { dg-error "'enum' declared both with and without fixed underlying type" } */
+       ^
+
+"Test_name.c", line 73: error: enum "e35" (declared at line 72) was previously declared with a different base type
+  enum e35 : unsigned int; /* { dg-error "'enum' underlying type incompatible with previous declaration" } */
+       ^
+
+"Test_name.c", line 75: error: enum "e36" (declared at line 74) was previously declared with a different base type
+  enum e36 : unsigned int { E36 }; /* { dg-error "'enum' underlying type incompatible with previous declaration" } */
+       ^
+
+"Test_name.c", line 77: error: enum "e37" (declared at line 76) was previously declared with a different base type
+  enum e37 : int; /* { dg-error "'enum' underlying type incompatible with previous declaration" } */
+       ^
+
+"Test_name.c", line 80: error: enumeration value is outside the range of its underlying type ("unsigned char")
+  enum e38 : unsigned char { E38 = (unsigned long long)((unsigned char) -1) + 1 }; /* { dg-error "enumerator value outside the range of underlying type" } */
+                                   ^
+
+"Test_name.c", line 81: error: enumeration value is outside the range of its underlying type ("unsigned int")
+  enum e39 : unsigned int { E39 = -1 }; /* { dg-error "enumerator value outside the range of underlying type" } */
+                                  ^
+
+"Test_name.c", line 82: error: enumeration value is outside the range of its underlying type ("int")
+  enum e40 : int { E40 = __INT_MAX__, E40A }; /* { dg-error "overflow in enumeration values" } */
+                                      ^
+
+"Test_name.c", line 83: error: enumeration value is outside the range of its underlying type ("unsigned int")
+  enum e41 : unsigned int { E41 = (unsigned int) -1, E41A }; /* { dg-error "overflow in enumeration values" } */
+                                                     ^
+
+"Test_name.c", line 84: error: enumeration value is outside the range of its underlying type ("_Bool")
+  enum e42 : bool { E42 = 2 }; /* { dg-error "enumerator value outside the range of underlying type" } */
+                          ^
+
+"Test_name.c", line 85: error: enumeration value is outside the range of its underlying type ("_Bool")
+  enum e43 : bool { E43 = 1, E43A }; /* { dg-error "overflow in enumeration values" } */
+                             ^
+
+"Test_name.c", line 89: error: underlying type of enum type must be an integral type
+  enum e44 : double; /* { dg-error "invalid 'enum' underlying type" } */
+             ^
+
+"Test_name.c", line 89: error: expected a "{"
+  enum e44 : double; /* { dg-error "invalid 'enum' underlying type" } */
+                   ^
+
+"Test_name.c", line 89: error: expected an identifier
+  enum e44 : double; /* { dg-error "invalid 'enum' underlying type" } */
+                   ^
+
+"Test_name.c", line 89: error: expected a "}"
+  enum e44 : double; /* { dg-error "invalid 'enum' underlying type" } */
+                   ^
+
+"Test_name.c", line 93: error: underlying type of enum type must be an integral type
+  enum e46 : TP; /* { dg-error "invalid 'enum' underlying type" } */
+             ^
+
+"Test_name.c", line 93: error: expected a "{"
+  enum e46 : TP; /* { dg-error "invalid 'enum' underlying type" } */
+               ^
+
+"Test_name.c", line 93: error: expected an identifier
+  enum e46 : TP; /* { dg-error "invalid 'enum' underlying type" } */
+               ^
+
+"Test_name.c", line 93: error: expected a "}"
+  enum e46 : TP; /* { dg-error "invalid 'enum' underlying type" } */
+               ^
+
+"Test_name.c", line 95: warning: explicit type is missing ("int" assumed)
+  enum e48 : const; /* { dg-error "no 'enum' underlying type specified" } */
+             ^
+
+"Test_name.c", line 97: error: "restrict" is not allowed
+  enum e49 : int restrict; /* { dg-error "invalid use of 'restrict'" } */
+                 ^
+
+38 errors detected in the compilation of "Test_name.c".

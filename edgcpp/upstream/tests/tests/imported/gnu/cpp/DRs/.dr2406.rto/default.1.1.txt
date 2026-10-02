@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 -W Test_name.c
+"Test_name.c", line 20: error: unknown attribute "fallthrough"
+        [[fallthrough]];
+          ^
+
+"Test_name.c", line 24: error: unknown attribute "fallthrough"
+  	  [[fallthrough]];	// { dg-error "attribute 'fallthrough' not preceding a case label or default label" }
+  	    ^
+
+"Test_name.c", line 30: error: unknown attribute "fallthrough"
+  	  [[fallthrough]];	// { dg-error "attribute 'fallthrough' not preceding a case label or default label" }
+  	    ^
+
+"Test_name.c", line 36: error: unknown attribute "fallthrough"
+  	  [[fallthrough]];	// { dg-error "attribute 'fallthrough' not preceding a case label or default label" }
+  	    ^
+
+"Test_name.c", line 42: error: unknown attribute "fallthrough"
+        [[fallthrough]];		// { dg-error "attribute 'fallthrough' not preceding a case label or default label" }
+          ^
+
+"Test_name.c", line 56: error: unknown attribute "fallthrough"
+  	    [[fallthrough]];	// { dg-error "attribute 'fallthrough' not preceding a case label or default label" }
+  	      ^
+
+"Test_name.c", line 53: error: variable "i" was declared but never referenced
+  	int i = 0;
+  	    ^
+
+"Test_name.c", line 76: error: unknown attribute "fallthrough"
+  	[[fallthrough]];
+  	  ^
+
+"Test_name.c", line 75: error: variable "i" was declared but never referenced
+  	int i = 0;
+  	    ^
+
+9 errors detected in the compilation of "Test_name.c".

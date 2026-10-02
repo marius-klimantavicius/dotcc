@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 27: error: too many arguments in function call
+    f0(a); /* { dg-error "too many arguments to function 'f0'" } */
+       ^
+
+"Test_name.c", line 28: error: too many arguments in function call
+    x.f0(a); /* { dg-error "too many arguments to function 'x.f0'" } */
+         ^
+
+"Test_name.c", line 29: error: too many arguments in function call
+    f0(a, a); /* { dg-error "too many arguments to function 'f0'" } */
+       ^
+
+"Test_name.c", line 30: error: too many arguments in function call
+    x.f0(a, a); /* { dg-error "too many arguments to function 'x.f0'" } */
+         ^
+
+"Test_name.c", line 31: error: too few arguments in function call
+    f1(); /* { dg-error "too few arguments to function 'f1'" } */
+       ^
+
+"Test_name.c", line 32: error: too few arguments in function call
+    x.f1(); /* { dg-error "too few arguments to function 'x.f1'" } */
+         ^
+
+"Test_name.c", line 35: error: too many arguments in function call
+    f1(a, a); /* { dg-error "too many arguments to function 'f1'" } */
+          ^
+
+"Test_name.c", line 36: error: too many arguments in function call
+    x.f1(a, a); /* { dg-error "too many arguments to function 'x.f1'" } */
+            ^
+
+"Test_name.c", line 37: error: too few arguments in function call
+    f1v(); /* { dg-error "too few arguments to function 'f1v'" } */
+        ^
+
+"Test_name.c", line 38: error: too few arguments in function call
+    x.f1v(); /* { dg-error "too few arguments to function 'x.f1v'" } */
+          ^
+
+"Test_name.c", line 43: error: too few arguments in function call
+    f2(a); /* { dg-error "too few arguments to function 'f2'" } */
+        ^
+
+"Test_name.c", line 44: error: too few arguments in function call
+    x.f2(a); /* { dg-error "too few arguments to function 'x.f2'" } */
+          ^
+
+"Test_name.c", line 47: error: too many arguments in function call
+    f2(a, a, a); /* { dg-error "too many arguments to function 'f2'" } */
+             ^
+
+"Test_name.c", line 48: error: too many arguments in function call
+    x.f2(a, a, a); /* { dg-error "too many arguments to function 'x.f2'" } */
+               ^
+
+"Test_name.c", line 49: error: too few arguments in function call
+    f2v(a); /* { dg-error "too few arguments to function 'f2v'" } */
+         ^
+
+"Test_name.c", line 50: error: too few arguments in function call
+    x.f2v(a); /* { dg-error "too few arguments to function 'x.f2v'" } */
+           ^
+
+16 errors detected in the compilation of "Test_name.c".

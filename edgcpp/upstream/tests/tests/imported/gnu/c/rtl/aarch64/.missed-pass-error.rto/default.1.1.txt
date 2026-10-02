@@ -1,0 +1,166 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 15: error: identifier "startwith" is undefined
+  int __RTL (startwith ("peephole2")) badfoo ()
+             ^
+
+"Test_name.c", line 15: error: expected a ")"
+  int __RTL (startwith ("peephole2")) badfoo ()
+                        ^
+
+"Test_name.c", line 15: error: expected a "{"
+  int __RTL (startwith ("peephole2")) badfoo ()
+                                      ^
+
+"Test_name.c", line 17: error: identifier "function" is undefined
+  (function "badfoo"
+   ^
+
+"Test_name.c", line 17: error: expected a ")"
+  (function "badfoo"
+            ^
+
+"Test_name.c", line 21: warning: parsing restarts here after previous syntax error
+        (cnote 3 [bb 2] NOTE_INSN_BASIC_BLOCK)
+                                             ^
+
+"Test_name.c", line 22: error: identifier "cinsn" is undefined
+        (cinsn 101 (set (reg:DI x19) (reg:DI x0)))
+         ^
+
+"Test_name.c", line 22: error: expected a ")"
+        (cinsn 101 (set (reg:DI x19) (reg:DI x0)))
+               ^
+
+"Test_name.c", line 23: error: expected a ")"
+        (cinsn 10 (use (reg/i:SI x19)))
+               ^
+
+"Test_name.c", line 24: error: identifier "edge" is undefined
+        (edge-to exit (flags "FALLTHRU"))
+         ^
+
+"Test_name.c", line 24: error: identifier "to" is undefined
+        (edge-to exit (flags "FALLTHRU"))
+              ^
+
+"Test_name.c", line 24: error: expected a ")"
+        (edge-to exit (flags "FALLTHRU"))
+                 ^
+
+"Test_name.c", line 25: error: expected a ";"
+      ) ;; block 2
+      ^
+
+"Test_name.c", line 25: error: identifier "block" is undefined
+      ) ;; block 2
+           ^
+
+"Test_name.c", line 25: error: expected a ";"
+      ) ;; block 2
+                 ^
+
+"Test_name.c", line 26: error: identifier "insn" is undefined
+    ) ;; insn-chain
+         ^
+
+"Test_name.c", line 26: error: identifier "chain" is undefined
+    ) ;; insn-chain
+              ^
+
+"Test_name.c", line 27: error: expected a ";"
+  ) ;; function "foo2"
+  ^
+
+"Test_name.c", line 27: error: expected a ";"
+  ) ;; function "foo2"
+                ^
+
+"Test_name.c", line 28: warning: missing return statement at end of non-void function "__RTL"
+  }
+  ^
+
+"Test_name.c", line 33: error: identifier "startwith" is undefined
+  int __RTL (startwith ("final")) foo2 ()
+             ^
+
+"Test_name.c", line 33: error: expected a ")"
+  int __RTL (startwith ("final")) foo2 ()
+                        ^
+
+"Test_name.c", line 33: error: function "__RTL" has already been defined (previous definition at line 15)
+  int __RTL (startwith ("final")) foo2 ()
+      ^
+
+"Test_name.c", line 33: error: expected a "{"
+  int __RTL (startwith ("final")) foo2 ()
+                                  ^
+
+"Test_name.c", line 35: error: identifier "function" is undefined
+  (function "foo2"
+   ^
+
+"Test_name.c", line 35: error: expected a ")"
+  (function "foo2"
+            ^
+
+"Test_name.c", line 39: warning: parsing restarts here after previous syntax error
+        (cnote 3 [bb 2] NOTE_INSN_BASIC_BLOCK)
+                                             ^
+
+"Test_name.c", line 40: error: identifier "cinsn" is undefined
+        (cinsn 101 (set (reg:DI x19) (reg:DI x0)))
+         ^
+
+"Test_name.c", line 40: error: expected a ")"
+        (cinsn 101 (set (reg:DI x19) (reg:DI x0)))
+               ^
+
+"Test_name.c", line 41: error: expected a ")"
+        (cinsn 10 (use (reg/i:SI x19)))
+               ^
+
+"Test_name.c", line 42: error: identifier "edge" is undefined
+        (edge-to exit (flags "FALLTHRU"))
+         ^
+
+"Test_name.c", line 42: error: identifier "to" is undefined
+        (edge-to exit (flags "FALLTHRU"))
+              ^
+
+"Test_name.c", line 42: error: expected a ")"
+        (edge-to exit (flags "FALLTHRU"))
+                 ^
+
+"Test_name.c", line 43: error: expected a ";"
+      ) ;; block 2
+      ^
+
+"Test_name.c", line 43: error: identifier "block" is undefined
+      ) ;; block 2
+           ^
+
+"Test_name.c", line 43: error: expected a ";"
+      ) ;; block 2
+                 ^
+
+"Test_name.c", line 44: error: identifier "insn" is undefined
+    ) ;; insn-chain
+         ^
+
+"Test_name.c", line 44: error: identifier "chain" is undefined
+    ) ;; insn-chain
+              ^
+
+"Test_name.c", line 45: error: expected a ";"
+  ) ;; function "foo2"
+  ^
+
+"Test_name.c", line 45: error: expected a ";"
+  ) ;; function "foo2"
+                ^
+
+"Test_name.c", line 46: warning: missing return statement at end of non-void function "__RTL"
+  }
+  ^
+
+37 errors detected in the compilation of "Test_name.c".

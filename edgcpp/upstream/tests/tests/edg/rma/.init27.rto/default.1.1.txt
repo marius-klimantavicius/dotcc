@@ -1,0 +1,20 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 4: remark: class "A" defines no constructor to initialize the following:
+            const member "A::j"
+  struct A { int i; const int j; int k; };
+         ^
+
+"Test_name.c", line 6: remark: class "B" defines no constructor to initialize the following:
+            reference member "B::j"
+  struct B { int i; const int &j; int k; };
+         ^
+
+"Test_name.c", line 7: remark: value copied to temporary, reference to temporary used
+  B b[2] = { 1, 1, 1 };
+                ^
+
+"Test_name.c", line 7: error: variable "b" has an uninitialized const or reference member
+  B b[2] = { 1, 1, 1 };
+    ^
+
+1 error detected in the compilation of "Test_name.c".

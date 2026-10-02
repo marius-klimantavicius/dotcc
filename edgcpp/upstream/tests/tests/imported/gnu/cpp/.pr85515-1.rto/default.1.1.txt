@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 8: error: member "lambda []()->void::val" (declared at line 7) is inaccessible
+    lambda.val; // { dg-bogus "did you mean" }
+           ^
+
+"Test_name.c", line 8: warning: expression has no effect
+    lambda.val; // { dg-bogus "did you mean" }
+    ^
+
+"Test_name.c", line 7: warning: variable "lambda" was set but never used
+    auto lambda = [val = 2](){};
+         ^
+
+"Test_name.c", line 17: error: class "lambda []()->int" has no member "__val"
+    lambda.__val = 4;
+           ^
+
+2 errors detected in the compilation of "Test_name.c".

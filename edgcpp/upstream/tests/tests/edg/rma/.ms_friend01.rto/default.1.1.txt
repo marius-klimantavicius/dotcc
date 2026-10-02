@@ -1,0 +1,26 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --microsoft_version=1400 -n Test_name.c
+"Test_name.c", line 7: warning: a storage class is not allowed in a friend declaration
+    friend auto void c();
+           ^
+
+"Test_name.c", line 10: error: invalid storage class for an inline function
+    friend inline auto void f();
+                  ^
+
+"Test_name.c", line 10: warning: a storage class is not allowed in a friend declaration
+    friend inline auto void f();
+                  ^
+
+"Test_name.c", line 16: warning: a storage class may not be specified here
+    friend static void X::a();
+    ^
+
+"Test_name.c", line 5: warning: function "a" was declared but never referenced
+    friend static void a();
+                       ^
+
+"Test_name.c", line 8: warning: function "d" was declared but never referenced
+    friend inline static void d();
+                              ^
+
+1 error detected in the compilation of "Test_name.c".

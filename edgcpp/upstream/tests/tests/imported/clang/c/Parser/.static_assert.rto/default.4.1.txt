@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=4 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c99 Test_name.c
+"Test_name.c", line 30: error: expected a type specifier
+  _Static_assert(1, ""); // c99-pedantic-warning {{'_Static_assert' is a C11 extension}} \
+                 ^
+
+"Test_name.c", line 30: error: expected a type specifier
+  _Static_assert(1, ""); // c99-pedantic-warning {{'_Static_assert' is a C11 extension}} \
+                    ^
+
+"Test_name.c", line 30: warning: this declaration has no storage class or type specifier
+  _Static_assert(1, ""); // c99-pedantic-warning {{'_Static_assert' is a C11 extension}} \
+  ^
+
+"Test_name.c", line 40: error: expected a type specifier
+  _Static_assert(1); // c99-pedantic-warning {{'_Static_assert' with no message is a C23 extension}} \
+                 ^
+
+"Test_name.c", line 40: warning: this declaration has no storage class or type specifier
+  _Static_assert(1); // c99-pedantic-warning {{'_Static_assert' with no message is a C23 extension}} \
+  ^
+
+"Test_name.c", line 40: error: declaration is incompatible with "int _Static_assert(<error-type>, <error-type>)" (declared at line 30)
+  _Static_assert(1); // c99-pedantic-warning {{'_Static_assert' with no message is a C23 extension}} \
+  ^
+
+4 errors detected in the compilation of "Test_name.c".

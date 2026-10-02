@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c99 --embedded_c Test_name.c
+"Test_name.c", line 15: error: variable with automatic storage duration cannot be stored in a named address space
+    _EDG_NAS_A int x[100];
+                   ^
+
+1 error detected in the compilation of "Test_name.c".

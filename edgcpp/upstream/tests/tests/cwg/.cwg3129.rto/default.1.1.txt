@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 -A --c++23 Test_name.c
+"Test_name.c", line 6: error: floating constant is out of range
+  auto z = 1e1000000000f32;
+           ^
+
+1 error detected in the compilation of "Test_name.c".

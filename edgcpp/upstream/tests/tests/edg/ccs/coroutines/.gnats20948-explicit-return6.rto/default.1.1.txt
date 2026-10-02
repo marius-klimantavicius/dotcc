@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++20 --set_flag coroutines -tused Test_name.c
+"Test_name.c", line 25: error: "std::coroutine_traits<A>::promise_type" (aka "A::promise_type") has no member "return_void"
+    co_return f(0);
+    ^
+
+1 error detected in the compilation of "Test_name.c".

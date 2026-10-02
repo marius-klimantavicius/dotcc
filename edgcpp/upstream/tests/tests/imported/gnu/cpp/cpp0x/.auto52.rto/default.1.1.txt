@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 7: error: a trailing return type requires the "auto" type specifier
+  using U = void() -> int; // { dg-error "11:.type name. function with trailing return type not declared with .auto." }
+                   ^
+
+"Test_name.c", line 8: error: "auto" function requires a trailing return type
+  using W = auto(); // { dg-error "11:.*auto." }
+            ^
+
+2 errors detected in the compilation of "Test_name.c".

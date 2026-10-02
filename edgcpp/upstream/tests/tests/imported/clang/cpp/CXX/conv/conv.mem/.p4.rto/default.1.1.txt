@@ -1,0 +1,58 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 15: warning: variable "d" was declared but never referenced
+      int (Derived::*d) = data_ptr;
+                     ^
+
+"Test_name.c", line 16: warning: variable "m" was declared but never referenced
+      int (Derived::*m)() = method_ptr;
+                     ^
+
+"Test_name.c", line 24: error: conversion from inaccessible base class "Base" is not allowed
+      int (Derived::*d) = data_ptr; // expected-error {{cannot cast private base class 'Base' to 'Derived'}}
+                          ^
+
+"Test_name.c", line 25: error: conversion from inaccessible base class "Base" is not allowed
+      int (Derived::*m)() = method_ptr; // expected-error {{cannot cast private base class 'Base' to 'Derived'}}
+                            ^
+
+"Test_name.c", line 24: warning: variable "d" was declared but never referenced
+      int (Derived::*d) = data_ptr; // expected-error {{cannot cast private base class 'Base' to 'Derived'}}
+                     ^
+
+"Test_name.c", line 25: warning: variable "m" was declared but never referenced
+      int (Derived::*m)() = method_ptr; // expected-error {{cannot cast private base class 'Base' to 'Derived'}}
+                     ^
+
+"Test_name.c", line 35: error: derived class "test2::Derived" contains more than one instance of class "Base"
+      int (Derived::*d) = data_ptr; // expected-error {{ambiguous conversion from pointer to member of base class 'Base' to pointer to member of derived class 'Derived':}}
+                          ^
+
+"Test_name.c", line 36: error: derived class "test2::Derived" contains more than one instance of class "Base"
+      int (Derived::*m)() = method_ptr; // expected-error {{ambiguous conversion from pointer to member of base class 'Base' to pointer to member of derived class 'Derived':}}
+                            ^
+
+"Test_name.c", line 44: error: cannot convert pointer to member of base class "Base" to pointer to member of derived class "test3::Derived" -- base class is virtual
+      int (Derived::*d) = data_ptr;  // expected-error {{conversion from pointer to member of class 'Base' to pointer to member of class 'Derived' via virtual base 'Base' is not allowed}}
+                          ^
+
+"Test_name.c", line 45: error: cannot convert pointer to member of base class "Base" to pointer to member of derived class "test3::Derived" -- base class is virtual
+      int (Derived::*m)() = method_ptr; // expected-error {{conversion from pointer to member of class 'Base' to pointer to member of class 'Derived' via virtual base 'Base' is not allowed}}
+                            ^
+
+"Test_name.c", line 54: error: derived class "test4::Derived" contains more than one instance of class "Base"
+      int (Derived::*d) = data_ptr; // expected-error {{ambiguous conversion from pointer to member of base class 'Base' to pointer to member of derived class 'Derived':}}
+                          ^
+
+"Test_name.c", line 55: error: derived class "test4::Derived" contains more than one instance of class "Base"
+      int (Derived::*m)() = method_ptr; // expected-error {{ambiguous conversion from pointer to member of base class 'Base' to pointer to member of derived class 'Derived':}}
+                            ^
+
+"Test_name.c", line 64: warning: variable "d" was declared but never referenced
+      int (Derived::*d) = data_ptr;
+                     ^
+
+"Test_name.c", line 65: warning: variable "m" was declared but never referenced
+      int (Derived::*m)() = method_ptr;
+                     ^
+
+8 errors detected in the compilation of "Test_name.c".

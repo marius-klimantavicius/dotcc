@@ -1,0 +1,58 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 -DNOEXCEPT=noexcept Test_name.c
+"Test_name.c", line 17: warning: variable "f0a" was declared but never referenced
+    int (*f0a)(int) = f0;
+          ^
+
+"Test_name.c", line 18: warning: variable "f0b" was declared but never referenced
+    int (*f0b)(int) = &f0;
+          ^
+
+"Test_name.c", line 19: warning: variable "f0c" was declared but never referenced
+    int (*f0c)(int) = (f0);
+          ^
+
+"Test_name.c", line 20: warning: variable "f0d" was declared but never referenced
+    float (*f0d)(float) = f0;
+            ^
+
+"Test_name.c", line 21: warning: variable "f0e" was declared but never referenced
+    float (*f0e)(float) = &f0;
+            ^
+
+"Test_name.c", line 22: warning: variable "f0f" was declared but never referenced
+    float (*f0f)(float) = (f0);
+            ^
+
+"Test_name.c", line 23: warning: variable "f0g" was declared but never referenced
+    int (&f0g)(int) = f0;
+          ^
+
+"Test_name.c", line 24: warning: variable "f0h" was declared but never referenced
+    int (&f0h)(int) = (f0);
+          ^
+
+"Test_name.c", line 25: warning: variable "f0i" was declared but never referenced
+    float (&f0i)(float) = f0;
+            ^
+
+"Test_name.c", line 26: warning: variable "f0j" was declared but never referenced
+    float (&f0j)(float) = (f0);
+            ^
+
+"Test_name.c", line 27: warning: variable "s" was declared but never referenced
+    S s = { f0, f0 };
+      ^
+
+"Test_name.c", line 32: warning: variable "f0a" was set but never used
+    int (*f0a)(int) = 0;
+          ^
+
+"Test_name.c", line 33: warning: variable "f0b" was set but never used
+    float (*f0b)(float) = 0;
+            ^
+
+"Test_name.c", line 109: error: more than one instance of overloaded function "MixedNoexcept::f" matches the required type
+    void (*q)() = &f; // expected-error {{ambiguous}}
+                  ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,110 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 10: error: invalid type for defaulted constructor
+    A(int) = default;
+    ^
+
+"Test_name.c", line 16: error: copy constructor for class "A" may not have a parameter of type "A"
+    A(A) = default; // expected-error {{must pass its first argument by reference}}
+      ^
+
+"Test_name.c", line 16: error: invalid type for defaulted constructor
+    A(A) = default; // expected-error {{must pass its first argument by reference}}
+    ^
+
+"Test_name.c", line 17: error: "= default" can only appear on default constructors, copy/move constructors, copy/move assignment operators, and destructors
+    void f(A) = default; // expected-error-re {{only special member functions{{( and comparison operators)?}} may be defaulted}}
+         ^
+
+"Test_name.c", line 19: error: "= default" can only appear on default constructors, copy/move constructors, copy/move assignment operators, and destructors
+    bool operator==(const A&) const = default; // pre20-warning {{defaulted comparison operators are a C++20 extension}}
+         ^
+
+"Test_name.c", line 20: error: "= default" can only appear on default constructors, copy/move constructors, copy/move assignment operators, and destructors
+    bool operator!=(const A&) const = default; // pre20-warning {{defaulted comparison operators are a C++20 extension}}
+         ^
+
+"Test_name.c", line 21: error: "= default" can only appear on default constructors, copy/move constructors, copy/move assignment operators, and destructors
+    bool operator<(const A&) const = default; // pre20-error {{only special member functions may be defaulted}}
+         ^
+
+"Test_name.c", line 22: error: "= default" can only appear on default constructors, copy/move constructors, copy/move assignment operators, and destructors
+    bool operator>(const A&) const = default; // pre20-error {{only special member functions may be defaulted}}
+         ^
+
+"Test_name.c", line 23: error: "= default" can only appear on default constructors, copy/move constructors, copy/move assignment operators, and destructors
+    bool operator<=(const A&) const = default; // pre20-error {{only special member functions may be defaulted}}
+         ^
+
+"Test_name.c", line 24: error: "= default" can only appear on default constructors, copy/move constructors, copy/move assignment operators, and destructors
+    bool operator>=(const A&) const = default; // pre20-error {{only special member functions may be defaulted}}
+         ^
+
+"Test_name.c", line 25: error: an operator name must be declared as a function
+    bool operator<=>(const A&) const = default; // pre20-error 1+{{}} pre20-warning {{'<=>' is a single token in C++20}}
+         ^
+
+"Test_name.c", line 25: error: expected a ";"
+    bool operator<=>(const A&) const = default; // pre20-error 1+{{}} pre20-warning {{'<=>' is a single token in C++20}}
+                   ^
+
+"Test_name.c", line 27: error: "= default" can only appear on default constructors, copy/move constructors, copy/move assignment operators, and destructors
+    A operator+(const A&) const = default; // expected-error-re {{only special member functions{{( and comparison operators)?}} may be defaulted}}
+      ^
+
+"Test_name.c", line 31: error: invalid type for defaulted assignment operator
+    void operator=(const A &) = default; // expected-error {{must return 'A &'}}
+         ^
+
+"Test_name.c", line 32: error: invalid type for defaulted constructor
+    A(...) = default;
+    ^
+
+"Test_name.c", line 33: error: invalid type for defaulted constructor
+    A(const A &, ...) = default;
+    ^
+
+"Test_name.c", line 34: error: invalid type for defaulted assignment operator
+    A &operator=(const A&) const = default;
+       ^
+
+"Test_name.c", line 35: error: invalid type for defaulted assignment operator
+    A &operator=(A) const = default; // expected-error {{must be an lvalue refe}}
+       ^
+
+"Test_name.c", line 56: error: invalid type for defaulted constructor
+    A(double = 0.0) = default; // expected-error {{cannot have default arguments}}
+    ^
+
+"Test_name.c", line 57: error: a copy constructor with a default argument cannot be defaulted
+    A(const A & = 0) = default; // expected-error {{cannot have default arguments}}
+    ^
+
+"Test_name.c", line 65: error: invalid type for defaulted constructor
+  A2::A2(...) = default; // expected-error {{cannot be variadic}}
+      ^
+
+"Test_name.c", line 66: error: invalid type for defaulted constructor
+  A2::A2(const A2&, ...) = default; // expected-error {{cannot be variadic}}
+      ^
+
+"Test_name.c", line 67: error: invalid type for defaulted assignment operator
+  A2 &A2::operator=(const A2&) const = default; // expected-error {{may not have 'const'}}
+          ^
+
+"Test_name.c", line 74: error: the parameter of this defaulted copy-constructor cannot be const because a base or member copy constructor parameter is non-const
+    C(const C&) = default;
+    ^
+
+"Test_name.c", line 75: error: the parameter of this defaulted assignment operator cannot be const because a base or member copy assignment parameter is non-const
+    C &operator=(const C&) = default;
+       ^
+
+"Test_name.c", line 85: error: class "B" has no copy constructor to copy a const object
+  struct D : B { // expected-note 2{{base class}}
+             ^
+
+"Test_name.c", line 85: error: class "B" has no assignment operator to copy a const object
+  struct D : B { // expected-note 2{{base class}}
+             ^
+
+27 errors detected in the compilation of "Test_name.c".

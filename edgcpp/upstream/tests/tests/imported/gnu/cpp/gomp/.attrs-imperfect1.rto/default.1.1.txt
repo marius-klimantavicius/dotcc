@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 14: warning: attribute namespace "omp" is unrecognized
+    [[ omp :: directive (for, collapse(3)) ]]
+       ^
+
+"Test_name.c", line 20: warning: attribute namespace "omp" is unrecognized
+  	  [[ omp :: directive (barrier) ]] ;	/* { dg-error "intervening code must not contain OpenMP directives" } */
+  	     ^
+
+"Test_name.c", line 26: warning: loop is not reachable
+  	  for (k = 0; k < a3; k++)
+  	  ^
+

@@ -1,0 +1,14 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./torture/stackalign/nested-3.c", line 28: error: expected a ";"
+      {
+      ^
+
+"./torture/stackalign/nested-3.c", line 50: warning: parsing restarts here after previous syntax error
+    bar (size);
+              ^
+
+"./torture/stackalign/nested-3.c", line 52: warning: variable "j" is used before its value is set
+    if (j != -20)
+        ^
+
+1 error detected in the compilation of "Test_name.c".

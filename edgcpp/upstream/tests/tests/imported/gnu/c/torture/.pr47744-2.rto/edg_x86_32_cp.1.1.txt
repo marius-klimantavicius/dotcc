@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 7: warning: declaration of "size_t" does not match the expected type "unsigned int"
+  typedef long unsigned int size_t;
+                            ^
+
+"Test_name.c", line 10: error: identifier "__int128_t" is undefined
+  typedef __int128_t GFC_INTEGER_16;
+          ^
+
+"Test_name.c", line 34: warning: variable "y" is used before its value is set
+    dest_y = &dest[y*rystride];
+                   ^
+
+1 error detected in the compilation of "Test_name.c".

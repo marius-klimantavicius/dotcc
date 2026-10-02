@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --ms_c++17 --no_rtti Test_name.c
+"Test_name.c", line 15: warning: variable "ti1" was declared but never referenced
+    auto& ti1 = typeid(int);
+          ^
+

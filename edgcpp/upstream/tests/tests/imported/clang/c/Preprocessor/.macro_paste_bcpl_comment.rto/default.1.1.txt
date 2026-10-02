@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 6: error: expected a declaration
+  COMM1
+  ^
+
+"Test_name.c", line 6: warning: concatenation with "/" in macro "COMM1" does not create a valid token
+  COMM1
+  ^
+
+1 error detected in the compilation of "Test_name.c".

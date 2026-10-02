@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./ext/gnu-inline-global.C", line 27: error: function "gnu_test<T>::func1" has already been defined (previous definition at line 26)
+  template <typename T> int gnu_test<T>::func1 (void) { return 2; }
+                                         ^
+
+"./ext/gnu-inline-global.C", line 33: error: function "gnu_test<T>::func2" has already been defined (previous definition at line 32)
+  template <typename T> int gnu_test<T>::func2 (void) { return 2; }
+                                         ^
+
+"./ext/gnu-inline-global.C", line 44: error: function "gnu_test<T>::func4" has already been defined (previous definition at line 43)
+  template <typename T> int gnu_test<T>::func4 (void) { return 1; }
+                                         ^
+
+"./ext/gnu-inline-global.C", line 50: error: function "gnu_test<T>::func5" has already been defined (previous definition at line 49)
+  template <typename T> int gnu_test<T>::func5 (void) { return 1; }
+                                         ^
+
+"./ext/gnu-inline-global.C", line 26: warning: the "gnu_inline" attribute is ignored on non-inline functions
+  template <typename T> __attribute__((gnu_inline)) inline int gnu_test<T>::func1 (void) { return 0; }
+                                       ^
+
+"./ext/gnu-inline-global.C", line 32: warning: the "gnu_inline" attribute is ignored on non-inline functions
+  template <typename T> __attribute__((gnu_inline)) inline int gnu_test<T>::func2 (void) { return 0; }
+                                       ^
+
+"./ext/gnu-inline-global.C", line 43: warning: the "gnu_inline" attribute is ignored on non-inline functions
+  template <typename T> __attribute__((gnu_inline)) inline int gnu_test<T>::func4 (void) { return 0; }
+                                       ^
+
+"./ext/gnu-inline-global.C", line 49: warning: the "gnu_inline" attribute is ignored on non-inline functions
+  template <typename T> __attribute__((gnu_inline)) inline int gnu_test<T>::func5 (void) { return 0; }
+                                       ^
+
+4 errors detected in the compilation of "Test_name.c".

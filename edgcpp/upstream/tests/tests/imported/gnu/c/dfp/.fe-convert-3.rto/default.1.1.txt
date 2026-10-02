@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./dfp/fe-convert-3.c", line 5: error: identifier "_Decimal32" is undefined
+  volatile _Decimal32 d32;
+           ^
+
+"./dfp/fe-convert-3.c", line 6: error: identifier "_Decimal64" is undefined
+  volatile _Decimal64 d64;
+           ^
+
+"./dfp/fe-convert-3.c", line 31: warning: statement is unreachable
+    convert_100 ();
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,414 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 14: error: attribute "unlikely" does not take arguments
+    [[unlikely (1)]];				// { dg-error "'unlikely' attribute does not take any arguments" }
+               ^
+
+"Test_name.c", line 16: warning: attribute "unlikely" does not apply here
+    [[unlikely]] int x1;				// { dg-warning "'unlikely' attribute ignored" }
+      ^
+
+"Test_name.c", line 18: warning: attribute "unlikely" does not apply here
+    auto a = [] [[unlikely]] () {};		// { dg-warning "ISO C\\\+\\\+ 'unlikely' attribute does not apply to functions; treating as '\\\[\\\[gnu::cold\\\]\\\]'" }
+                  ^
+
+"Test_name.c", line 19: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+    auto b = [] constexpr [[unlikely]] {};	// { dg-warning "'unlikely' attribute ignored" }
+                ^
+
+"Test_name.c", line 19: error: constexpr lambdas are not enabled in this mode
+    auto b = [] constexpr [[unlikely]] {};	// { dg-warning "'unlikely' attribute ignored" }
+                ^
+
+"Test_name.c", line 19: warning: attribute "unlikely" does not apply here
+    auto b = [] constexpr [[unlikely]] {};	// { dg-warning "'unlikely' attribute ignored" }
+                            ^
+
+"Test_name.c", line 22: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+    auto c = [] noexcept [[unlikely]] {};		// { dg-warning "'unlikely' attribute ignored" }
+                ^
+
+"Test_name.c", line 22: warning: attribute "unlikely" does not apply here
+    auto c = [] noexcept [[unlikely]] {};		// { dg-warning "'unlikely' attribute ignored" }
+                           ^
+
+"Test_name.c", line 24: warning: attribute "unlikely" does not apply here
+    auto d = [] () [[unlikely]] {};		// { dg-warning "'unlikely' attribute ignored" }
+                     ^
+
+"Test_name.c", line 25: warning: attribute "unlikely" does not apply here
+    auto e = new int [n] [[unlikely]];		// { dg-warning "attributes ignored on outermost array type in new expression" }
+                           ^
+
+"Test_name.c", line 26: warning: attribute "unlikely" does not apply here
+    auto e2 = new int [n] [[unlikely]] [42];	// { dg-warning "attributes ignored on outermost array type in new expression" }
+                            ^
+
+"Test_name.c", line 27: warning: attribute "unlikely" does not apply here
+    auto f = new int [n][42] [[unlikely]];	// { dg-warning "'unlikely' attribute ignored" }
+                               ^
+
+"Test_name.c", line 35: warning: attribute "unlikely" does not apply here
+    if ([[unlikely]] int x = 0) {}		// { dg-warning "'unlikely' attribute ignored" }
+          ^
+
+"Test_name.c", line 43: warning: attribute "unlikely" does not apply here
+    for ([[unlikely]] auto a : arr) {}		// { dg-warning "'unlikely' attribute ignored" }
+           ^
+
+"Test_name.c", line 44: warning: structured bindings are a C++17 feature
+    for ([[unlikely]] auto [a, b] : arr2) {}	// { dg-warning "'unlikely' attribute ignored" }
+                           ^
+
+"Test_name.c", line 44: warning: attribute "unlikely" does not apply here
+    for ([[unlikely]] auto [a, b] : arr2) {}	// { dg-warning "'unlikely' attribute ignored" }
+           ^
+
+"Test_name.c", line 44: warning: structured binding "a" was declared but never referenced
+    for ([[unlikely]] auto [a, b] : arr2) {}	// { dg-warning "'unlikely' attribute ignored" }
+                            ^
+
+"Test_name.c", line 46: warning: attribute "unlikely" does not apply here
+    [[unlikely]] asm ("");			// { dg-warning "attributes ignored on 'asm' declaration" }
+      ^
+
+"Test_name.c", line 47: warning: attribute "unlikely" does not apply here
+    try {} catch ([[unlikely]] int x) {}		// { dg-warning "'unlikely' attribute ignored" }
+                    ^
+
+"Test_name.c", line 48: warning: attribute "unlikely" does not apply here
+    try {} catch ([[unlikely]] int) {}		// { dg-warning "'unlikely' attribute ignored" }
+                    ^
+
+"Test_name.c", line 49: warning: attributes may not appear here
+    try {} catch (int [[unlikely]] x) {}		// { dg-warning "attribute ignored" }
+                        ^
+
+"Test_name.c", line 50: warning: attributes may not appear here
+    try {} catch (int [[unlikely]]) {}		// { dg-warning "attribute ignored" }
+                        ^
+
+"Test_name.c", line 51: warning: attribute "unlikely" does not apply here
+    try {} catch (int x [[unlikely]]) {}		// { dg-warning "'unlikely' attribute ignored" }
+                          ^
+
+"Test_name.c", line 16: warning: variable "x1" was declared but never referenced
+    [[unlikely]] int x1;				// { dg-warning "'unlikely' attribute ignored" }
+                     ^
+
+"Test_name.c", line 18: warning: variable "a" was declared but never referenced
+    auto a = [] [[unlikely]] () {};		// { dg-warning "ISO C\\\+\\\+ 'unlikely' attribute does not apply to functions; treating as '\\\[\\\[gnu::cold\\\]\\\]'" }
+         ^
+
+"Test_name.c", line 19: warning: variable "b" was declared but never referenced
+    auto b = [] constexpr [[unlikely]] {};	// { dg-warning "'unlikely' attribute ignored" }
+         ^
+
+"Test_name.c", line 22: warning: variable "c" was declared but never referenced
+    auto c = [] noexcept [[unlikely]] {};		// { dg-warning "'unlikely' attribute ignored" }
+         ^
+
+"Test_name.c", line 24: warning: variable "d" was declared but never referenced
+    auto d = [] () [[unlikely]] {};		// { dg-warning "'unlikely' attribute ignored" }
+         ^
+
+"Test_name.c", line 54: warning: attribute "unlikely" does not apply here
+  [[unlikely]] int bar ();			// { dg-warning "ISO C\\\+\\\+ 'unlikely' attribute does not apply to functions; treating as '\\\[\\\[gnu::cold\\\]\\\]'" }
+    ^
+
+"Test_name.c", line 55: warning: attribute "unlikely" does not apply here
+  using foobar [[unlikely]] = int;		// { dg-warning "'unlikely' attribute ignored" }
+                 ^
+
+"Test_name.c", line 56: warning: attribute "unlikely" does not apply here
+  [[unlikely]] int a;				// { dg-warning "'unlikely' attribute ignored" }
+    ^
+
+"Test_name.c", line 57: warning: structured bindings are a C++17 feature
+  [[unlikely]] auto [b, c] = arr;			// { dg-warning "'unlikely' attribute ignored" }
+                    ^
+
+"Test_name.c", line 57: warning: attribute "unlikely" does not apply here
+  [[unlikely]] auto [b, c] = arr;			// { dg-warning "'unlikely' attribute ignored" }
+    ^
+
+"Test_name.c", line 59: error: attribute "unlikely" does not apply here
+  [[unlikely]];					// { dg-warning "attribute ignored" }
+    ^
+
+"Test_name.c", line 60: error: attribute does not apply to any entity
+  inline [[unlikely]] void baz () {}		// { dg-warning "attribute ignored" }
+         ^
+
+"Test_name.c", line 62: error: attribute does not apply to any entity
+  constexpr [[unlikely]] int qux () { return 0; }	// { dg-warning "attribute ignored" }
+            ^
+
+"Test_name.c", line 64: warning: attribute "unlikely" does not apply here
+  int [[unlikely]] d;				// { dg-warning "attribute ignored" }
+        ^
+
+"Test_name.c", line 65: warning: attribute "unlikely" does not apply here
+  int const [[unlikely]] e = 1;			// { dg-warning "attribute ignored" }
+              ^
+
+"Test_name.c", line 66: warning: attribute "unlikely" does not apply here
+  struct A {} [[unlikely]];			// { dg-warning "attribute ignored in declaration of 'struct A'" }
+                ^
+
+"Test_name.c", line 67: warning: attribute "unlikely" does not apply here
+  struct A [[unlikely]];				// { dg-warning "attribute ignored" }
+             ^
+
+"Test_name.c", line 67: warning: declaration does not declare anything
+  struct A [[unlikely]];				// { dg-warning "attribute ignored" }
+  ^
+
+"Test_name.c", line 68: warning: attribute "unlikely" does not apply here
+  struct A [[unlikely]] a1;			// { dg-warning "attribute ignored" }
+             ^
+
+"Test_name.c", line 69: warning: attribute "unlikely" does not apply here
+  A [[unlikely]] a2;				// { dg-warning "attribute ignored" }
+      ^
+
+"Test_name.c", line 70: warning: attribute "unlikely" does not apply here
+  enum B { B0 } [[unlikely]];			// { dg-warning "attribute ignored in declaration of 'enum B'" }
+                  ^
+
+"Test_name.c", line 71: warning: attribute "unlikely" does not apply here
+  enum B [[unlikely]];				// { dg-warning "attribute ignored" }
+           ^
+
+"Test_name.c", line 71: warning: declaration does not declare anything
+  enum B [[unlikely]];				// { dg-warning "attribute ignored" }
+  ^
+
+"Test_name.c", line 72: warning: attribute "unlikely" does not apply here
+  enum B [[unlikely]] b1;				// { dg-warning "attribute ignored" }
+           ^
+
+"Test_name.c", line 73: warning: attribute "unlikely" does not apply here
+  B [[unlikely]] b2;				// { dg-warning "attribute ignored" }
+      ^
+
+"Test_name.c", line 74: warning: attribute "unlikely" does not apply here
+  struct [[unlikely]] C {};			// { dg-warning "'unlikely' attribute ignored" }
+           ^
+
+"Test_name.c", line 75: warning: attribute "unlikely" does not apply here
+  int f [[unlikely]];				// { dg-warning "'unlikely' attribute ignored" }
+          ^
+
+"Test_name.c", line 76: warning: attribute "unlikely" does not apply here
+  int g[2] [[unlikely]];				// { dg-warning "'unlikely' attribute ignored" }
+             ^
+
+"Test_name.c", line 77: warning: attribute "unlikely" does not apply here
+  int g2 [[unlikely]] [2];			// { dg-warning "'unlikely' attribute ignored" }
+           ^
+
+"Test_name.c", line 78: warning: attribute "unlikely" does not apply here
+  int corge () [[unlikely]];			// { dg-warning "'unlikely' attribute ignored" }
+                 ^
+
+"Test_name.c", line 79: warning: attribute "unlikely" does not apply here
+  int *[[unlikely]] h;				// { dg-warning "'unlikely' attribute ignored" }
+         ^
+
+"Test_name.c", line 80: warning: attribute "unlikely" does not apply here
+  int & [[unlikely]] i = f;			// { dg-warning "'unlikely' attribute ignored" }
+          ^
+
+"Test_name.c", line 81: warning: attribute "unlikely" does not apply here
+  int && [[unlikely]] j = 0;			// { dg-warning "'unlikely' attribute ignored" }
+           ^
+
+"Test_name.c", line 82: warning: attribute "unlikely" does not apply here
+  int S::* [[unlikely]] k;			// { dg-warning "'unlikely' attribute ignored" }
+             ^
+
+"Test_name.c", line 83: warning: attribute "unlikely" does not apply here
+  auto l = sizeof (int [2] [[unlikely]]);		// { dg-warning "'unlikely' attribute ignored" }
+                             ^
+
+"Test_name.c", line 84: warning: attribute "unlikely" does not apply here
+  int freddy ([[unlikely]] int a,			// { dg-warning "'unlikely' attribute ignored" }
+                ^
+
+"Test_name.c", line 85: warning: attribute "unlikely" does not apply here
+  	    [[unlikely]] int,			// { dg-warning "'unlikely' attribute ignored" }
+  	      ^
+
+"Test_name.c", line 86: warning: attribute "unlikely" does not apply here
+  	    [[unlikely]] int c = 0,		// { dg-warning "'unlikely' attribute ignored" }
+  	      ^
+
+"Test_name.c", line 87: warning: attribute "unlikely" does not apply here
+  	    [[unlikely]] int = 0);		// { dg-warning "'unlikely' attribute ignored" }
+  	      ^
+
+"Test_name.c", line 89: warning: attribute "unlikely" does not apply here
+  corge ([[unlikely]] int a,			// { dg-warning "'unlikely' attribute ignored" }
+           ^
+
+"Test_name.c", line 90: warning: attribute "unlikely" does not apply here
+         [[unlikely]] int,			// { dg-warning "'unlikely' attribute ignored" }
+           ^
+
+"Test_name.c", line 91: warning: attribute "unlikely" does not apply here
+         [[unlikely]] int c = 0,			// { dg-warning "'unlikely' attribute ignored" }
+           ^
+
+"Test_name.c", line 92: warning: attribute "unlikely" does not apply here
+         [[unlikely]] int = 0)			// { dg-warning "'unlikely' attribute ignored" }
+           ^
+
+"Test_name.c", line 95: warning: attribute "unlikely" does not apply here
+  [[unlikely]] void
+    ^
+
+"Test_name.c", line 99: warning: attribute "unlikely" does not apply here
+  int grault (int [[unlikely]] a,			// { dg-warning "attribute ignored" }
+                    ^
+
+"Test_name.c", line 100: warning: attribute "unlikely" does not apply here
+  	    int [[unlikely]],			// { dg-warning "attribute ignored" }
+  	          ^
+
+"Test_name.c", line 101: warning: attribute "unlikely" does not apply here
+  	    int [[unlikely]] c = 0,		// { dg-warning "attribute ignored" }
+  	          ^
+
+"Test_name.c", line 102: warning: attribute "unlikely" does not apply here
+  	    int [[unlikely]] = 0);		// { dg-warning "attribute ignored" }
+  	          ^
+
+"Test_name.c", line 104: warning: attribute "unlikely" does not apply here
+  waldo (int [[unlikely]] a,			// { dg-warning "attribute ignored" }
+               ^
+
+"Test_name.c", line 105: warning: attribute "unlikely" does not apply here
+         int [[unlikely]],			// { dg-warning "attribute ignored" }
+               ^
+
+"Test_name.c", line 106: warning: attribute "unlikely" does not apply here
+         int [[unlikely]] c = 0,			// { dg-warning "attribute ignored" }
+               ^
+
+"Test_name.c", line 107: warning: attribute "unlikely" does not apply here
+         int [[unlikely]] = 0)			// { dg-warning "attribute ignored" }
+               ^
+
+"Test_name.c", line 110: warning: attribute "unlikely" does not apply here
+  int plugh (int a [[unlikely]],			// { dg-warning "'unlikely' attribute ignored" }
+                     ^
+
+"Test_name.c", line 111: warning: attribute "unlikely" does not apply here
+  	    int b [[unlikely]] = 0);		// { dg-warning "'unlikely' attribute ignored" }
+  	            ^
+
+"Test_name.c", line 113: warning: attribute "unlikely" does not apply here
+  thud (int a [[unlikely]],			// { dg-warning "'unlikely' attribute ignored" }
+                ^
+
+"Test_name.c", line 114: warning: attribute "unlikely" does not apply here
+        int b [[unlikely]] = 0)			// { dg-warning "'unlikely' attribute ignored" }
+                ^
+
+"Test_name.c", line 117: warning: attribute "unlikely" does not apply here
+  enum [[unlikely]] D { D0 };			// { dg-warning "'unlikely' attribute ignored" }
+         ^
+
+"Test_name.c", line 118: warning: attribute "unlikely" does not apply here
+  enum class [[unlikely]] E { E0 };		// { dg-warning "'unlikely' attribute ignored" }
+               ^
+
+"Test_name.c", line 120: warning: attribute "unlikely" does not apply here
+  enum [[unlikely]] F;				// { dg-warning "type attributes ignored after type is already defined" }
+         ^
+
+"Test_name.c", line 122: warning: attribute "unlikely" does not apply here
+    G0 [[unlikely]],				// { dg-warning "'unlikely' attribute ignored" }
+         ^
+
+"Test_name.c", line 123: warning: attribute "unlikely" does not apply here
+    G1 [[unlikely]] = 2				// { dg-warning "'unlikely' attribute ignored" }
+         ^
+
+"Test_name.c", line 125: warning: attribute "unlikely" does not apply here
+  namespace [[unlikely]] H { using H0 = int; }	// { dg-warning "'unlikely' attribute directive ignored" } */
+              ^
+
+"Test_name.c", line 126: warning: attribute "unlikely" does not apply here
+  namespace [[unlikely]] {}			// { dg-warning "'unlikely' attribute directive ignored" }
+              ^
+
+"Test_name.c", line 127: error: attributes are not allowed here
+  [[unlikely]] using namespace H;			// { dg-warning "'unlikely' attribute directive ignored" }
+  ^
+
+"Test_name.c", line 128: warning: attribute "unlikely" does not apply here
+  struct [[unlikely]] I				// { dg-warning "'unlikely' attribute ignored" }
+           ^
+
+"Test_name.c", line 130: warning: attributes ignored here because they do not apply to a declared entity
+    [[unlikely]];					// { dg-error "declaration does not declare anything" }
+      ^
+
+"Test_name.c", line 131: warning: attribute "unlikely" does not apply here
+    [[unlikely]] int i;				// { dg-warning "'unlikely' attribute ignored" }
+      ^
+
+"Test_name.c", line 132: warning: attribute "unlikely" does not apply here
+    [[unlikely]] int foo ();			// { dg-warning "ISO C\\\+\\\+ 'unlikely' attribute does not apply to functions; treating as '\\\[\\\[gnu::cold\\\]\\\]'" }
+      ^
+
+"Test_name.c", line 133: warning: attribute "unlikely" does not apply here
+    [[unlikely]] int bar () { return 1; }		// { dg-warning "ISO C\\\+\\\+ 'unlikely' attribute does not apply to functions; treating as '\\\[\\\[gnu::cold\\\]\\\]'" }
+      ^
+
+"Test_name.c", line 134: warning: attribute "unlikely" does not apply here
+    [[unlikely]] int : 0;				// { dg-warning "'unlikely' attribute ignored" }
+      ^
+
+"Test_name.c", line 135: warning: attribute "unlikely" does not apply here
+    [[unlikely]] int i2 : 5;			// { dg-warning "'unlikely' attribute ignored" }
+      ^
+
+"Test_name.c", line 136: warning: attribute "unlikely" does not apply here
+    [[unlikely]] static int i3;			// { dg-warning "'unlikely' attribute ignored" }
+      ^
+
+"Test_name.c", line 139: warning: attribute "unlikely" does not apply here
+  [[unlikely]] int I::i4 = 0;			// { dg-warning "'unlikely' attribute ignored" }
+    ^
+
+"Test_name.c", line 140: warning: attribute "unlikely" does not apply here
+  struct J : [[unlikely]] C {};			// { dg-warning "attributes on base specifiers are ignored" }
+               ^
+
+"Test_name.c", line 145: warning: attribute "unlikely" does not apply here
+  typedef int L [[unlikely]];			// { dg-warning "'unlikely' attribute ignored" }
+                  ^
+
+"Test_name.c", line 149: warning: attribute "unlikely" does not apply here
+  struct [[unlikely]] M<int> { int m; };		// { dg-warning "'unlikely' attribute ignored" }
+           ^
+
+"Test_name.c", line 150: warning: attribute "unlikely" does not apply here
+  typedef int N[2] [[unlikely]];			// { dg-warning "'unlikely' attribute ignored" }
+                     ^
+
+"Test_name.c", line 151: warning: attribute "unlikely" does not apply here
+  typedef int O [[unlikely]] [2];			// { dg-warning "'unlikely' attribute ignored" }
+                  ^
+
+"Test_name.c", line 57: warning: structured binding "b" was declared but never referenced
+  [[unlikely]] auto [b, c] = arr;			// { dg-warning "'unlikely' attribute ignored" }
+                     ^
+
+"Test_name.c", line 65: warning: variable "e" was declared but never referenced
+  int const [[unlikely]] e = 1;			// { dg-warning "attribute ignored" }
+                         ^
+
+6 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu -E Test_name.c
+# 1 "Test_name.c"
+
+
+# 1 "./cpp/sysmac1.c"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 1 "/usr/include/stdc-predef.h"
+# 1 "<command-line>"
+# 1 "./cpp/sysmac1.c"
+# 11 "./cpp/sysmac1.c"
+# 1 "./cpp/syshdr.h"
+
+        
+# 3 "./cpp/syshdr.h"
+# 12 "./cpp/sysmac1.c"
+# 22 "./cpp/sysmac1.c"
+(str);
+(sys_str);
+
+bar(one_arg);
+
+# 26 "./cpp/sysmac1.c"
+bar (
+# 26 "./cpp/sysmac1.c"
+one_arg
+# 26 "./cpp/sysmac1.c"
+)
+# 26 "./cpp/sysmac1.c"
+                ;

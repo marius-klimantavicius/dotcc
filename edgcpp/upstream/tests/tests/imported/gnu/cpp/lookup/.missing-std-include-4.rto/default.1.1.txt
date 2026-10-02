@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./lookup/missing-std-include-4.C", line 1: error: namespace "std" has no member "complex"
+  std::complex<int> c;
+       ^
+
+"./lookup/missing-std-include-4.C", line 1: error: expected a ";"
+  std::complex<int> c;
+              ^
+
+2 errors detected in the compilation of "Test_name.c".

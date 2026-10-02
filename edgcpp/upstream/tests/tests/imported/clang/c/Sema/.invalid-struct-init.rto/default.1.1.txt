@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 7: error: expected a type specifier
+    _efree((p)); // expected-error{{type name requires a specifier or qualifier}} \
+           ^
+
+"Test_name.c", line 7: warning: this declaration has no storage class or type specifier
+    _efree((p)); // expected-error{{type name requires a specifier or qualifier}} \
+    ^
+
+"Test_name.c", line 7: error: a function type is not allowed here
+    _efree((p)); // expected-error{{type name requires a specifier or qualifier}} \
+    ^
+
+"Test_name.c", line 18: warning: missing return statement at end of non-void function "zm_startup_pcre"
+  static int zm_startup_pcre(int type, int module_number ) { }
+                                                             ^
+
+"Test_name.c", line 21: error: expected a "}"
+    zend_function_entry pcre_functions[] = {{ }; // expected-error{{expected '}'}} expected-note {{to match this '{'}}
+                                               ^
+
+"Test_name.c", line 23: warning: excess initializers are ignored
+      sizeof(zend_module_entry), 20071006, 0, 0, ((void *)0), ((void *)0),
+                                 ^
+
+"Test_name.c", line 29: warning: missing return statement at end of non-void function "zm_shutdown_pcre"
+  }
+  ^
+
+"Test_name.c", line 21: warning: variable "pcre_functions" was declared but never referenced
+    zend_function_entry pcre_functions[] = {{ }; // expected-error{{expected '}'}} expected-note {{to match this '{'}}
+                        ^
+
+3 errors detected in the compilation of "Test_name.c".

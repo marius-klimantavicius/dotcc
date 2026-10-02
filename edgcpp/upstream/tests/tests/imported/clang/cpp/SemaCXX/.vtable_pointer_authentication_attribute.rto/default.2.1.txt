@@ -1,0 +1,174 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 --target linux_aarch64 Test_name.c
+"Test_name.c", line 16: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  TEST_AUTH(NoParams);
+  ^
+
+"Test_name.c", line 18: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  TEST_AUTH(NoAuth, no_authentication, default_address_discrimination, default_extra_discrimination);
+  ^
+
+"Test_name.c", line 19: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  TEST_AUTH(InvalidKey, wat, default_address_discrimination, default_extra_discrimination);
+  ^
+
+"Test_name.c", line 21: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  TEST_AUTH(InvalidAddressDiscrimination, no_authentication, wat, default_extra_discrimination);
+  ^
+
+"Test_name.c", line 23: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  TEST_AUTH(InvalidExtraDiscrimination, no_authentication, default_address_discrimination, wat);
+  ^
+
+"Test_name.c", line 25: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  TEST_AUTH(InvalidNoCustomDiscrimination, no_authentication, default_address_discrimination, custom_discrimination);
+  ^
+
+"Test_name.c", line 27: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  TEST_AUTH(InvalidCustomDiscrimination, no_authentication, default_address_discrimination, custom_discrimination, wat);
+  ^
+
+"Test_name.c", line 29: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  TEST_AUTH(Default, default_key, default_address_discrimination, default_extra_discrimination);
+  ^
+
+"Test_name.c", line 30: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  TEST_AUTH(InvalidDefaultExtra, default_key, default_address_discrimination, default_extra_discrimination, 1);
+  ^
+
+"Test_name.c", line 32: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  TEST_AUTH(ProcessDependentKey, process_dependent, default_address_discrimination, default_extra_discrimination);
+  ^
+
+"Test_name.c", line 33: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  TEST_AUTH(ProcessIndependentKey, process_independent, default_address_discrimination, default_extra_discrimination);
+  ^
+
+"Test_name.c", line 34: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  TEST_AUTH(DefaultAddressDiscrimination, process_independent, default_address_discrimination, default_extra_discrimination);
+  ^
+
+"Test_name.c", line 35: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  TEST_AUTH(NoAddressDiscrimination, process_independent, no_address_discrimination, default_extra_discrimination);
+  ^
+
+"Test_name.c", line 36: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  TEST_AUTH(AddressDiscrimination, process_independent, address_discrimination, default_extra_discrimination);
+  ^
+
+"Test_name.c", line 37: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  TEST_AUTH(DefaultExtraDiscrimination, process_independent, default_address_discrimination, default_extra_discrimination);
+  ^
+
+"Test_name.c", line 38: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  TEST_AUTH(NoExtraDiscrimination, process_independent, default_address_discrimination, no_extra_discrimination);
+  ^
+
+"Test_name.c", line 39: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  TEST_AUTH(TypeExtraDiscrimination, process_independent, default_address_discrimination, type_discrimination);
+  ^
+
+"Test_name.c", line 40: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  TEST_AUTH(InvalidCustomExtraDiscrimination, process_independent, default_address_discrimination, custom_discrimination);
+  ^
+
+"Test_name.c", line 42: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  TEST_AUTH(ValidCustomExtraDiscrimination, process_independent, default_address_discrimination, custom_discrimination, 1);
+  ^
+
+"Test_name.c", line 48: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  struct generic_authenticated ForwardDecl;
+         ^
+
+"Test_name.c", line 50: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  struct generic_authenticated generic_authenticated InvalidDuplicateAttribute {
+         ^
+
+"Test_name.c", line 50: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  struct generic_authenticated generic_authenticated InvalidDuplicateAttribute {
+                               ^
+
+"Test_name.c", line 54: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  struct generic_authenticated ValidPolymorphic {
+         ^
+
+"Test_name.c", line 57: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  struct generic_authenticated InvalidMonomorphic { // expected-error{{cannot set vtable pointer authentication on monomorphic type 'InvalidMonomorphic'}}
+         ^
+
+"Test_name.c", line 63: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  struct generic_authenticated InvalidSubclass : ValidPolymorphic {}; // expected-error{{cannot set vtable pointer authentication on 'InvalidSubclass' which is a subclass of polymorphic type 'ValidPolymorphic'}}
+         ^
+
+"Test_name.c", line 67: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  struct generic_authenticated ExplicitlyAuthedMonomorphicTemplateClass : T {};
+         ^
+
+"Test_name.c", line 71: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  struct generic_authenticated ExplicitlyAuthedPolymorphicTemplateClass : T { // expected-error{{cannot set vtable pointer authentication on 'ExplicitlyAuthedPolymorphicTemplateClass<basic::ValidPolymorphic>' which is a subclass of polymorphic type 'ValidPolymorphic'}}
+         ^
+
+"Test_name.c", line 96: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  struct authenticated(process_independent, no_address_discrimination, type_discrimination) SecondAuthenticatedPolymorphic {
+         ^
+
+"Test_name.c", line 105: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  struct generic_authenticated InvalidMultipleParents : UnauthenticatedPolymorphic, ValidPolymorphic, SecondAuthenticatedPolymorphic {};
+         ^
+
+"Test_name.c", line 109: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  struct generic_authenticated ExplicitlyAuthedPolymorphicTemplateClassNoBase {
+         ^
+
+"Test_name.c", line 118: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  struct generic_authenticated InvalidSubclassOfTemplate : ExplicitlyAuthedPolymorphicTemplateClassNoBase<int> {
+         ^
+
+"Test_name.c", line 123: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  struct generic_authenticated ExplicitlyAuthedMonomorphicTemplateClassNoBase {
+         ^
+
+"Test_name.c", line 132: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  struct generic_authenticated ExplicitlyAuthedTemplateClassValidBase : ValidMonomorphic {
+         ^
+
+"Test_name.c", line 141: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  struct generic_authenticated ExplicitlyAuthedTemplateClassInvalidBase : ValidPolymorphic {
+         ^
+
+"Test_name.c", line 150: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  class generic_authenticated TestPolymorphicTemplateSpecialization;
+        ^
+
+"Test_name.c", line 154: error: identifier "MissingDecl" is undefined
+    MissingDecl *zl;
+    ^
+
+"Test_name.c", line 160: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  class generic_authenticated TestPolymorphicTemplateSpecialization<test1, double>
+        ^
+
+"Test_name.c", line 170: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  template <typename A> class generic_authenticated TestMonomorphic {};
+                              ^
+
+"Test_name.c", line 174: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  template <> class generic_authenticated TestMonomorphic<int> {
+                    ^
+
+"Test_name.c", line 181: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  template <typename T> struct generic_authenticated TestMonomorphicSubclass2 : TestMonomorphic<T> {
+                               ^
+
+"Test_name.c", line 195: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  class generic_authenticated dependent_type {
+        ^
+
+"Test_name.c", line 202: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  class generic_authenticated dependent_type2 : public T... {
+        ^
+
+"Test_name.c", line 222: warning: unknown attribute "clang::ptrauth_vtable_pointer"
+  class generic_authenticated task<R(Args...)> {
+        ^
+
+1 error detected in the compilation of "Test_name.c".

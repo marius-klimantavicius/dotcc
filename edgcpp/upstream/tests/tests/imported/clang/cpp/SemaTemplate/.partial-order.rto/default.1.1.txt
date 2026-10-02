@@ -1,0 +1,40 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++26 Test_name.c
+"Test_name.c", line 29: error: no suitable constructor exists to convert from "int" to "GH132562::I"
+      template <int... X> struct A<X...>;
+                                   ^
+
+"Test_name.c", line 29: warning: constant "X" is not used in or cannot be deduced from the template argument list of class template "GH132562::t2::A<<error-constant>...>"
+      template <int... X> struct A<X...>;
+                       ^
+
+"Test_name.c", line 34: error: no suitable conversion function from "const GH132562::I" to "int" exists
+      template <I... X> struct B<X...>;
+                                 ^
+
+"Test_name.c", line 34: warning: constant "X" is not used in or cannot be deduced from the template argument list of class template "GH132562::t2::B<<error-constant>...>"
+      template <I... X> struct B<X...>;
+                     ^
+
+"Test_name.c", line 44: warning: constant "X" is not used in or cannot be deduced from the template argument list of class template "GH132562::t3::A<<expression>...>"
+      template <int... X> struct A<X...>;
+                       ^
+
+"Test_name.c", line 47: error: no suitable conversion function from "const GH132562::t3::J" to "int" exists
+      template <J... X> struct B<X...>;
+                                 ^
+
+"Test_name.c", line 47: warning: constant "X" is not used in or cannot be deduced from the template argument list of class template "GH132562::t3::B<<error-constant>...>"
+      template <J... X> struct B<X...>;
+                     ^
+
+"Test_name.c", line 71: error: more than one partial specialization matches the template argument list of class "GH51866::Trait<GH51866::Y>"
+            "GH51866::Trait<T>" (declared at line 58)
+            "GH51866::Trait<T>" (declared at line 61)
+  static_assert(!C<Y>);
+                    ^
+
+"Test_name.c", line 71: error: static assertion failed
+  static_assert(!C<Y>);
+  ^
+
+5 errors detected in the compilation of "Test_name.c".

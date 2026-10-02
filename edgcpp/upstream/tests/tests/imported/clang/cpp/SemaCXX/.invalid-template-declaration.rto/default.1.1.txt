@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 7: error: member "S::i" is not a valid class member template
+    template <typename> int i; // expected-error {{non-static data member 'i' cannot be declared as a template}}
+                            ^
+
+1 error detected in the compilation of "Test_name.c".

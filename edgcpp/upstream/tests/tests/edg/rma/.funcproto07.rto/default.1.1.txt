@@ -1,0 +1,17 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 4: remark: parameter "pa" was never referenced
+  static void f(struct A *pa, struct B *pb, struct C *pc) { }
+                          ^
+
+"Test_name.c", line 4: remark: parameter "pb" was never referenced
+  static void f(struct A *pa, struct B *pb, struct C *pc) { }
+                                        ^
+
+"Test_name.c", line 4: remark: parameter "pc" was never referenced
+  static void f(struct A *pa, struct B *pb, struct C *pc) { }
+                                                      ^
+
+"Test_name.c", line 4: warning: function "f" was declared but never referenced
+  static void f(struct A *pa, struct B *pb, struct C *pc) { }
+              ^
+

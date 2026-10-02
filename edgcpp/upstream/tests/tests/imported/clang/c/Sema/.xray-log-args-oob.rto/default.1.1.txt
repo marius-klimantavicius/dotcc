@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c11 Test_name.c
+"Test_name.c", line 4: warning: unknown attribute "xray_log_args"
+  void foo(int) __attribute__((xray_log_args(1)));
+                               ^
+
+"Test_name.c", line 5: warning: unknown attribute "xray_log_args"
+  struct __attribute__((xray_log_args(1))) a { int x; }; // expected-warning {{'xray_log_args' attribute only applies to functions and Objective-C methods}}
+                        ^
+
+"Test_name.c", line 7: warning: unknown attribute "xray_log_args"
+  void fop(void) __attribute__((xray_log_args(1))); // expected-error {{'xray_log_args' attribute parameter 1 is out of bounds}}
+                                ^
+
+"Test_name.c", line 9: warning: unknown attribute "xray_log_args"
+  void foq(void) __attribute__((xray_log_args(-1))); // expected-error {{'xray_log_args' attribute parameter 1 is out of bounds}}
+                                ^
+
+"Test_name.c", line 11: warning: unknown attribute "xray_log_args"
+  void fos(void) __attribute__((xray_log_args(0))); // expected-error {{'xray_log_args' attribute parameter 1 is out of bounds}}
+                                ^
+

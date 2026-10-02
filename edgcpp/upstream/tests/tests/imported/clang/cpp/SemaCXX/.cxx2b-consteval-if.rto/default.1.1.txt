@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++23 Test_name.c
+"Test_name.c", line 8: error: deduced return type "double" conflicts with previously deduced type "int"
+    if !consteval { return 0.0; } // expected-error {{'auto' in return type deduced as 'double' here but deduced as 'int' in earlier return statement}}
+                           ^
+
+"Test_name.c", line 13: error: deduced return type "double" conflicts with previously deduced type "int"
+    if consteval  { return 0.0; } // expected-error {{'auto' in return type deduced as 'double' here but deduced as 'int' in earlier return statement}}
+                           ^
+
+"Test_name.c", line 19: warning: missing return statement at end of non-void function "PR52206::h"
+  }
+  ^
+
+"Test_name.c", line 23: warning: already in consteval context
+      if consteval { // expected-warning {{consteval if is always true in an immediate context}}
+         ^
+
+"Test_name.c", line 28: error: deduced return type "double" conflicts with previously deduced type "int"
+      return 1.0; // expected-error {{'auto' in return type deduced as 'double' here but deduced as 'int' in earlier return statement}}
+             ^
+
+"Test_name.c", line 40: warning: variable "y3" was declared but never referenced
+    constexpr auto y3 = h();
+                   ^
+
+"Test_name.c", line 50: warning: "if consteval" and "if not consteval" are meaningless in a non-constexpr function
+      if consteval {
+         ^
+
+3 errors detected in the compilation of "Test_name.c".

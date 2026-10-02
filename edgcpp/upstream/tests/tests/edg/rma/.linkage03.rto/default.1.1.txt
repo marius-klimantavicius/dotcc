@@ -1,0 +1,6 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 6: error: more than one instance of overloaded function "f" has "C" linkage
+  extern "C" int f(int);
+                 ^
+
+1 error detected in the compilation of "Test_name.c".

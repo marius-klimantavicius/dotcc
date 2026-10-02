@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 15: error: a pointer to a bound function may only be used to call the function
+    f = foo.f; // { dg-error "context" }
+            ^
+
+"Test_name.c", line 16: error: function "Foo::g" (declared at line 8) is inaccessible
+    f = foo.g; // { dg-error "context" }
+            ^
+
+"Test_name.c", line 14: warning: variable "f" was set but never used
+    void (*f)();
+           ^
+
+2 errors detected in the compilation of "Test_name.c".

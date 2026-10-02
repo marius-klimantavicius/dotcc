@@ -1,0 +1,206 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./torture/dfp-default-init-1.c", line 19: error: identifier "_Decimal128" is undefined
+  _Decimal128 zero_int = 0;
+  ^
+
+"./torture/dfp-default-init-1.c", line 20: error: identifier "_Decimal128" is undefined
+  _Decimal128 zero_fp = 0e-6176DL;
+  ^
+
+"./torture/dfp-default-init-1.c", line 20: error: extra text after expected end of number
+  _Decimal128 zero_fp = 0e-6176DL;
+                               ^
+
+"./torture/dfp-default-init-1.c", line 21: error: identifier "_Decimal128" is undefined
+  _Decimal128 default_init;
+  ^
+
+"./torture/dfp-default-init-1.c", line 22: error: identifier "_Decimal128" is undefined
+  _Decimal128 empty_init = {};
+  ^
+
+"./torture/dfp-default-init-1.c", line 23: error: identifier "_Decimal128" is undefined
+  _Decimal128 zero_bytes;
+  ^
+
+"./torture/dfp-default-init-1.c", line 24: error: identifier "_Decimal128" is undefined
+  _Decimal128 x;
+  ^
+
+"./torture/dfp-default-init-1.c", line 26: error: identifier "_Decimal128" is undefined
+  struct s { _Decimal128 a, b; };
+             ^
+
+"./torture/dfp-default-init-1.c", line 33: error: identifier "_Decimal128" is undefined
+  const _Decimal128 a_default_init[10];
+        ^
+
+"./torture/dfp-default-init-1.c", line 34: error: identifier "_Decimal128" is undefined
+  const _Decimal128 a_empty_init[10] = {};
+        ^
+
+"./torture/dfp-default-init-1.c", line 35: error: identifier "_Decimal128" is undefined
+  const _Decimal128 a_first_int[10] = { 0 };
+        ^
+
+"./torture/dfp-default-init-1.c", line 36: error: identifier "_Decimal128" is undefined
+  const _Decimal128 a_two_int[10] = { 0, 0 };
+        ^
+
+"./torture/dfp-default-init-1.c", line 66: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&zero_fp, &zero_bytes, sizeof zero_bytes) != 0) abort (); _Decimal128 tmp = *&zero_fp; if (memcmp (&tmp, &zero_bytes, sizeof zero_bytes) != 0) abort (); } while (0);
+                                                                               ^
+
+"./torture/dfp-default-init-1.c", line 67: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&default_init, &zero_bytes, sizeof zero_bytes) != 0) abort (); _Decimal128 tmp = *&default_init; if (memcmp (&tmp, &zero_bytes, sizeof zero_bytes) != 0) abort (); } while (0);
+                                                                                    ^
+
+"./torture/dfp-default-init-1.c", line 68: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&empty_init, &zero_bytes, sizeof zero_bytes) != 0) abort (); _Decimal128 tmp = *&empty_init; if (memcmp (&tmp, &zero_bytes, sizeof zero_bytes) != 0) abort (); } while (0);
+                                                                                  ^
+
+"./torture/dfp-default-init-1.c", line 69: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&s_default_init.a, &zero_bytes, sizeof zero_bytes) != 0) abort (); _Decimal128 tmp = *&s_default_init.a; if (memcmp (&tmp, &zero_bytes, sizeof zero_bytes) != 0) abort (); } while (0);
+                                                                                        ^
+
+"./torture/dfp-default-init-1.c", line 70: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&s_default_init.b, &zero_bytes, sizeof zero_bytes) != 0) abort (); _Decimal128 tmp = *&s_default_init.b; if (memcmp (&tmp, &zero_bytes, sizeof zero_bytes) != 0) abort (); } while (0);
+                                                                                        ^
+
+"./torture/dfp-default-init-1.c", line 71: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&s_empty_init.a, &zero_bytes, sizeof zero_bytes) != 0) abort (); _Decimal128 tmp = *&s_empty_init.a; if (memcmp (&tmp, &zero_bytes, sizeof zero_bytes) != 0) abort (); } while (0);
+                                                                                      ^
+
+"./torture/dfp-default-init-1.c", line 72: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&s_empty_init.b, &zero_bytes, sizeof zero_bytes) != 0) abort (); _Decimal128 tmp = *&s_empty_init.b; if (memcmp (&tmp, &zero_bytes, sizeof zero_bytes) != 0) abort (); } while (0);
+                                                                                      ^
+
+"./torture/dfp-default-init-1.c", line 73: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&s_first_int.a, &zero_int, sizeof zero_int) != 0) abort (); _Decimal128 tmp = *&s_first_int.a; if (memcmp (&tmp, &zero_int, sizeof zero_int) != 0) abort (); } while (0);
+                                                                                 ^
+
+"./torture/dfp-default-init-1.c", line 74: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&s_first_int.b, &zero_bytes, sizeof zero_bytes) != 0) abort (); _Decimal128 tmp = *&s_first_int.b; if (memcmp (&tmp, &zero_bytes, sizeof zero_bytes) != 0) abort (); } while (0);
+                                                                                     ^
+
+"./torture/dfp-default-init-1.c", line 75: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&s_both_int.a, &zero_int, sizeof zero_int) != 0) abort (); _Decimal128 tmp = *&s_both_int.a; if (memcmp (&tmp, &zero_int, sizeof zero_int) != 0) abort (); } while (0);
+                                                                                ^
+
+"./torture/dfp-default-init-1.c", line 76: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&s_both_int.b, &zero_int, sizeof zero_int) != 0) abort (); _Decimal128 tmp = *&s_both_int.b; if (memcmp (&tmp, &zero_int, sizeof zero_int) != 0) abort (); } while (0);
+                                                                                ^
+
+"./torture/dfp-default-init-1.c", line 77: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&a_default_init[0], &zero_bytes, sizeof zero_bytes) != 0) abort (); _Decimal128 tmp = *&a_default_init[0]; if (memcmp (&tmp, &zero_bytes, sizeof zero_bytes) != 0) abort (); } while (0);
+                                                                                         ^
+
+"./torture/dfp-default-init-1.c", line 78: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&a_default_init[1], &zero_bytes, sizeof zero_bytes) != 0) abort (); _Decimal128 tmp = *&a_default_init[1]; if (memcmp (&tmp, &zero_bytes, sizeof zero_bytes) != 0) abort (); } while (0);
+                                                                                         ^
+
+"./torture/dfp-default-init-1.c", line 79: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&a_default_init[2], &zero_bytes, sizeof zero_bytes) != 0) abort (); _Decimal128 tmp = *&a_default_init[2]; if (memcmp (&tmp, &zero_bytes, sizeof zero_bytes) != 0) abort (); } while (0);
+                                                                                         ^
+
+"./torture/dfp-default-init-1.c", line 80: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&a_default_init[9], &zero_bytes, sizeof zero_bytes) != 0) abort (); _Decimal128 tmp = *&a_default_init[9]; if (memcmp (&tmp, &zero_bytes, sizeof zero_bytes) != 0) abort (); } while (0);
+                                                                                         ^
+
+"./torture/dfp-default-init-1.c", line 81: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&a_empty_init[0], &zero_bytes, sizeof zero_bytes) != 0) abort (); _Decimal128 tmp = *&a_empty_init[0]; if (memcmp (&tmp, &zero_bytes, sizeof zero_bytes) != 0) abort (); } while (0);
+                                                                                       ^
+
+"./torture/dfp-default-init-1.c", line 82: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&a_empty_init[1], &zero_bytes, sizeof zero_bytes) != 0) abort (); _Decimal128 tmp = *&a_empty_init[1]; if (memcmp (&tmp, &zero_bytes, sizeof zero_bytes) != 0) abort (); } while (0);
+                                                                                       ^
+
+"./torture/dfp-default-init-1.c", line 83: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&a_empty_init[2], &zero_bytes, sizeof zero_bytes) != 0) abort (); _Decimal128 tmp = *&a_empty_init[2]; if (memcmp (&tmp, &zero_bytes, sizeof zero_bytes) != 0) abort (); } while (0);
+                                                                                       ^
+
+"./torture/dfp-default-init-1.c", line 84: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&a_empty_init[9], &zero_bytes, sizeof zero_bytes) != 0) abort (); _Decimal128 tmp = *&a_empty_init[9]; if (memcmp (&tmp, &zero_bytes, sizeof zero_bytes) != 0) abort (); } while (0);
+                                                                                       ^
+
+"./torture/dfp-default-init-1.c", line 85: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&a_first_int[0], &zero_int, sizeof zero_int) != 0) abort (); _Decimal128 tmp = *&a_first_int[0]; if (memcmp (&tmp, &zero_int, sizeof zero_int) != 0) abort (); } while (0);
+                                                                                  ^
+
+"./torture/dfp-default-init-1.c", line 86: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&a_first_int[1], &zero_bytes, sizeof zero_bytes) != 0) abort (); _Decimal128 tmp = *&a_first_int[1]; if (memcmp (&tmp, &zero_bytes, sizeof zero_bytes) != 0) abort (); } while (0);
+                                                                                      ^
+
+"./torture/dfp-default-init-1.c", line 87: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&a_first_int[2], &zero_bytes, sizeof zero_bytes) != 0) abort (); _Decimal128 tmp = *&a_first_int[2]; if (memcmp (&tmp, &zero_bytes, sizeof zero_bytes) != 0) abort (); } while (0);
+                                                                                      ^
+
+"./torture/dfp-default-init-1.c", line 88: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&a_first_int[9], &zero_bytes, sizeof zero_bytes) != 0) abort (); _Decimal128 tmp = *&a_first_int[9]; if (memcmp (&tmp, &zero_bytes, sizeof zero_bytes) != 0) abort (); } while (0);
+                                                                                      ^
+
+"./torture/dfp-default-init-1.c", line 89: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&a_two_int[0], &zero_int, sizeof zero_int) != 0) abort (); _Decimal128 tmp = *&a_two_int[0]; if (memcmp (&tmp, &zero_int, sizeof zero_int) != 0) abort (); } while (0);
+                                                                                ^
+
+"./torture/dfp-default-init-1.c", line 90: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&a_two_int[1], &zero_int, sizeof zero_int) != 0) abort (); _Decimal128 tmp = *&a_two_int[1]; if (memcmp (&tmp, &zero_int, sizeof zero_int) != 0) abort (); } while (0);
+                                                                                ^
+
+"./torture/dfp-default-init-1.c", line 91: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&a_two_int[2], &zero_bytes, sizeof zero_bytes) != 0) abort (); _Decimal128 tmp = *&a_two_int[2]; if (memcmp (&tmp, &zero_bytes, sizeof zero_bytes) != 0) abort (); } while (0);
+                                                                                    ^
+
+"./torture/dfp-default-init-1.c", line 92: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&a_two_int[9], &zero_bytes, sizeof zero_bytes) != 0) abort (); _Decimal128 tmp = *&a_two_int[9]; if (memcmp (&tmp, &zero_bytes, sizeof zero_bytes) != 0) abort (); } while (0);
+                                                                                    ^
+
+"./torture/dfp-default-init-1.c", line 94: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&s2.a, &zero_bytes, sizeof zero_bytes) != 0) abort (); _Decimal128 tmp = *&s2.a; if (memcmp (&tmp, &zero_bytes, sizeof zero_bytes) != 0) abort (); } while (0);
+                                                                            ^
+
+"./torture/dfp-default-init-1.c", line 95: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&s2.b, &zero_bytes, sizeof zero_bytes) != 0) abort (); _Decimal128 tmp = *&s2.b; if (memcmp (&tmp, &zero_bytes, sizeof zero_bytes) != 0) abort (); } while (0);
+                                                                            ^
+
+"./torture/dfp-default-init-1.c", line 97: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&s3.a, &zero_int, sizeof zero_int) != 0) abort (); _Decimal128 tmp = *&s3.a; if (memcmp (&tmp, &zero_int, sizeof zero_int) != 0) abort (); } while (0);
+                                                                        ^
+
+"./torture/dfp-default-init-1.c", line 98: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&s3.b, &zero_bytes, sizeof zero_bytes) != 0) abort (); _Decimal128 tmp = *&s3.b; if (memcmp (&tmp, &zero_bytes, sizeof zero_bytes) != 0) abort (); } while (0);
+                                                                            ^
+
+"./torture/dfp-default-init-1.c", line 100: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&s4.a, &zero_int, sizeof zero_int) != 0) abort (); _Decimal128 tmp = *&s4.a; if (memcmp (&tmp, &zero_int, sizeof zero_int) != 0) abort (); } while (0);
+                                                                        ^
+
+"./torture/dfp-default-init-1.c", line 101: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&s4.b, &zero_int, sizeof zero_int) != 0) abort (); _Decimal128 tmp = *&s4.b; if (memcmp (&tmp, &zero_int, sizeof zero_int) != 0) abort (); } while (0);
+                                                                        ^
+
+"./torture/dfp-default-init-1.c", line 104: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&sx.a, &zero_int, sizeof zero_int) != 0) abort (); _Decimal128 tmp = *&sx.a; if (memcmp (&tmp, &zero_int, sizeof zero_int) != 0) abort (); } while (0);
+                                                                        ^
+
+"./torture/dfp-default-init-1.c", line 105: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&sx.b, &zero_bytes, sizeof zero_bytes) != 0) abort (); _Decimal128 tmp = *&sx.b; if (memcmp (&tmp, &zero_bytes, sizeof zero_bytes) != 0) abort (); } while (0);
+                                                                            ^
+
+"./torture/dfp-default-init-1.c", line 107: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&x, &zero_bytes, sizeof zero_bytes) != 0) abort (); _Decimal128 tmp = *&x; if (memcmp (&tmp, &zero_bytes, sizeof zero_bytes) != 0) abort (); } while (0);
+                                                                         ^
+
+"./torture/dfp-default-init-1.c", line 109: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&x, &zero_int, sizeof zero_int) != 0) abort (); _Decimal128 tmp = *&x; if (memcmp (&tmp, &zero_int, sizeof zero_int) != 0) abort (); } while (0);
+                                                                     ^
+
+"./torture/dfp-default-init-1.c", line 111: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&x, &zero_bytes, sizeof zero_bytes) != 0) abort (); _Decimal128 tmp = *&x; if (memcmp (&tmp, &zero_bytes, sizeof zero_bytes) != 0) abort (); } while (0);
+                                                                         ^
+
+"./torture/dfp-default-init-1.c", line 113: error: identifier "_Decimal128" is undefined
+    do { if (memcmp (&x, &zero_bytes, sizeof zero_bytes) != 0) abort (); _Decimal128 tmp = *&x; if (memcmp (&tmp, &zero_bytes, sizeof zero_bytes) != 0) abort (); } while (0);
+                                                                         ^
+
+51 errors detected in the compilation of "Test_name.c".

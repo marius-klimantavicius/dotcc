@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c++11 Test_name.c
+"Test_name.c", line 11: error: the template argument list of the partial specialization includes a nontype argument whose type depends on a template parameter
+    struct C<T, 1>;               // error
+           ^
+
+"Test_name.c", line 23: error: the template argument list of the partial specialization includes a nontype argument whose type depends on a template parameter
+    struct C<T, 1>;               // error (but gcc and MSVC won't diagnose)
+           ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++03 Test_name.c
+"Test_name.c", line 10: warning: list initialization syntax is a C++11 feature
+    D<0> d {1, 2, 3};  // { dg-error "constructor|no matching" }
+           ^
+
+"Test_name.c", line 10: error: no instance of constructor "std::D<N>::D [with N=0]" matches the argument list
+            argument types are: (int, int, int)
+    D<0> d {1, 2, 3};  // { dg-error "constructor|no matching" }
+           ^
+"Test_name.c", line 9: note: function "std::D<N>::D(std::initializer_list<int>) [with N=0]" does not match because argument #1 does not match parameter
+    template <int N> struct D { D(initializer_list<int>) {} };
+                                ^
+"Test_name.c", line 9: note: number of parameters of function "std::D<N>::D(const std::D<0> &) [with N=0]" does not match the call
+    template <int N> struct D { D(initializer_list<int>) {} };
+                            ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --c++17 -tused Test_name.c
+"Test_name.c", line 13: error: incomplete type "B<D, void>" is not allowed
+  struct C : B<T>
+             ^
+          detected during instantiation of class "C<T> [with T=D]" at line 20
+
+"Test_name.c", line 20: warning: variable "x" was declared but never referenced
+      C<D> x;
+           ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=2 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c17 Test_name.c
+"Test_name.c", line 11: error: "restrict" is not allowed
+  restrict T2 t2;         // pedantic-warning {{'restrict' qualifier on an array of pointers is a C23 extension}} \
+  ^
+
+"Test_name.c", line 15: error: "restrict" is not allowed
+  restrict T3 t3;         // pedantic-warning {{'restrict' qualifier on an array of pointers is a C23 extension}} \
+  ^
+
+"Test_name.c", line 20: error: "restrict" is not allowed
+  typedef t5 restrict t6; // // expected-error-re {{pointer to function type 'int {{\((void)?\)}}' may not be 'restrict' qualified}}
+             ^
+
+"Test_name.c", line 23: error: "restrict" is not allowed
+  typedef t7 restrict t8; // expected-error {{restrict requires a pointer or reference ('t7' (aka 'int[2]') is invalid)}}
+             ^
+
+4 errors detected in the compilation of "Test_name.c".

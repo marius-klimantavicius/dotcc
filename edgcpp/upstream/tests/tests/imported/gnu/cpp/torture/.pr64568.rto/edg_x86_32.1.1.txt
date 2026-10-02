@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: warning: declaration of "size_t" does not match the expected type "unsigned int"
+  typedef long unsigned size_t;
+                        ^
+
+"Test_name.c", line 18: warning: invalid narrowing conversion from "int" to "double __complex__"
+    complex (int __i) : _M_value{ __i } {}
+                                  ^
+

@@ -1,0 +1,138 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --exceptions Test_name.c
+"Test_name.c", line 5: error: expected an expression
+  int i = delete; // expected-error {{only functions can have deleted definitions}}
+                ^
+
+"Test_name.c", line 10: error: "= delete" can only appear on the first declaration of a function
+  void fn2() = delete; // expected-error {{deleted definition must be first declaration}}
+               ^
+
+"Test_name.c", line 13: error: function "fn3" has already been defined (previous definition at line 12)
+  void fn3() { // expected-error {{redefinition}}
+       ^
+
+"Test_name.c", line 25: error: expected an expression
+    int i = delete; // expected-error {{only functions can have deleted definitions}}
+                  ^
+
+"Test_name.c", line 29: error: function "fn()" (declared at line 7) cannot be referenced -- it is a deleted function
+    fn(); // expected-error {{call to deleted function 'fn'}}
+    ^
+
+"Test_name.c", line 31: error: function "ov(double)" (declared at line 17) cannot be referenced -- it is a deleted function
+    ov(1.0); // expected-error {{call to deleted function 'ov'}}
+    ^
+
+"Test_name.c", line 33: error: the default constructor of "WithDel" cannot be referenced -- it is a deleted function
+    WithDel dd; // expected-error {{call to deleted constructor of 'WithDel'}}
+            ^
+
+"Test_name.c", line 35: error: function "WithDel::fn()" (declared at line 21) cannot be referenced -- it is a deleted function
+    d->fn(); // expected-error {{attempt to use a deleted function}}
+       ^
+
+"Test_name.c", line 36: error: function "WithDel::operator int()" (declared at line 22) cannot be referenced -- it is a deleted function
+    int i = *d; // expected-error {{invokes a deleted function}}
+            ^
+
+"Test_name.c", line 44: error: function "DelDtor::~DelDtor()" (declared at line 40) cannot be referenced -- it is a deleted function
+    delete [] p; // expected-error {{attempt to use a deleted function}}
+              ^
+
+"Test_name.c", line 45: error: function "DelDtor::~DelDtor()" (declared at line 40) cannot be referenced -- it is a deleted function
+    const DelDtor &dd2 = DelDtor(); // expected-error {{attempt to use a deleted function}}
+                         ^
+
+"Test_name.c", line 46: error: function "DelDtor::~DelDtor()" (declared at line 40) cannot be referenced -- it is a deleted function
+    DelDtor dd; // expected-error {{attempt to use a deleted function}}
+            ^
+
+"Test_name.c", line 47: error: "DelDtor::~DelDtor()" (declared at line 40), required for copy that was eliminated, cannot be referenced -- it is a deleted function
+    throw dd; // expected-error {{attempt to use a deleted function}}
+          ^
+
+"Test_name.c", line 47: error: function "DelDtor::~DelDtor()" (declared at line 40) cannot be referenced -- it is a deleted function
+    throw dd; // expected-error {{attempt to use a deleted function}}
+          ^
+
+"Test_name.c", line 50: error: function "DelDtor::~DelDtor()" (declared at line 40) cannot be referenced -- it is a deleted function
+    ~X() {} // expected-error {{attempt to use a deleted function}}
+    ^
+
+"Test_name.c", line 54: error: function "DelDtor::~DelDtor()" (declared at line 40) cannot be referenced -- it is a deleted function
+    ~Y() {} // expected-error {{attempt to use a deleted function}}
+    ^
+
+"Test_name.c", line 57: error: function "DelDtor::~DelDtor()" (declared at line 40) cannot be referenced -- it is a deleted function
+    ~Z() {} // expected-error {{attempt to use a deleted function}}
+    ^
+
+"Test_name.c", line 59: error: function "DelDtor::~DelDtor()" (declared at line 40) cannot be referenced -- it is a deleted function
+  DelDtor dd; // expected-error {{attempt to use a deleted function}}
+          ^
+
+"Test_name.c", line 69: error: function "test4" has already been defined (previous definition at line 68)
+  void test4() = delete; // expected-error {{redefinition of 'test4'}}
+       ^
+
+"Test_name.c", line 76: error: function "DelCtor::DelCtor(int)" (declared at line 72) cannot be referenced -- it is a deleted function
+  DelCtor dc1 = 0; // expected-error {{deleted}}
+                ^
+
+"Test_name.c", line 77: error: function "DelCtor::DelCtor(int)" (declared at line 72) cannot be referenced -- it is a deleted function
+  DelCtor dc2(0); // expected-error {{deleted}}
+              ^
+
+"Test_name.c", line 78: error: function "DelCtor::DelCtor(int)" (declared at line 72) cannot be referenced -- it is a deleted function
+  DelCtor dc3 = {0}; // expected-error {{deleted}}
+                ^
+
+"Test_name.c", line 79: error: function "DelCtor::DelCtor(int)" (declared at line 72) cannot be referenced -- it is a deleted function
+  DelCtor dc4{0}; // expected-error {{deleted}}
+             ^
+
+"Test_name.c", line 80: error: function "DelCtor::DelCtor(int)" (declared at line 72) cannot be referenced -- it is a deleted function
+  DelCtor dc5 = (DelCtor)0; // expected-error {{deleted}}
+                         ^
+
+"Test_name.c", line 81: error: function "DelCtor::DelCtor(int)" (declared at line 72) cannot be referenced -- it is a deleted function
+  DelCtor dc6 = DelCtor(0); // expected-error {{deleted}}
+                ^
+
+"Test_name.c", line 82: error: function "DelCtor::DelCtor(int)" (declared at line 72) cannot be referenced -- it is a deleted function
+  DelCtor dc7 = DelCtor{0}; // expected-error {{deleted}}
+                       ^
+
+"Test_name.c", line 83: error: function "DelCtor::DelCtor(int)" (declared at line 72) cannot be referenced -- it is a deleted function
+  DelCtor *dc8 = new DelCtor(0); // expected-error {{deleted}}
+                            ^
+
+"Test_name.c", line 84: error: function "DelCtor::DelCtor(int)" (declared at line 72) cannot be referenced -- it is a deleted function
+  DelCtor *dc9 = new DelCtor{0}; // expected-error {{deleted}}
+                            ^
+
+"Test_name.c", line 85: error: function "DelCtor::DelCtor(int)" (declared at line 72) cannot be referenced -- it is a deleted function
+  DelCtor dc10[] = {0}; // expected-error {{deleted}}
+                    ^
+
+"Test_name.c", line 87: error: function "DelCtor::DelCtor(int)" (declared at line 72) cannot be referenced -- it is a deleted function
+  int dc11 = use_dc(0); // expected-error {{deleted}}
+                    ^
+
+"Test_name.c", line 88: error: function "DelCtor::DelCtor(int)" (declared at line 72) cannot be referenced -- it is a deleted function
+  int dc12 = use_dc({0}); // expected-error {{deleted}}
+                    ^
+
+"Test_name.c", line 90: error: function "DelCtor::DelCtor(int)" (declared at line 72) cannot be referenced -- it is a deleted function
+  int dc13 = use_dcr(0); // expected-error {{deleted}}
+                     ^
+
+"Test_name.c", line 91: error: function "DelCtor::DelCtor(int)" (declared at line 72) cannot be referenced -- it is a deleted function
+  int dc14 = use_dcr({0}); // expected-error {{deleted}}
+                     ^
+
+"Test_name.c", line 97: error: function "DelCtorTemplate::DelCtorTemplate(T) [with T=int]" (declared at line 94) cannot be referenced -- it is a deleted function
+  int dc15 = use_dct(0); // expected-error {{deleted}}
+                     ^
+
+34 errors detected in the compilation of "Test_name.c".

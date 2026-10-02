@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 6: error: "operator=" must be a member function
+  int operator=(int);  // { dg-error "5:.int operator=\\(int\\). must be a non-static member function" }
+      ^
+
+"Test_name.c", line 10: error: identifier "operator=" is undefined
+    operator=(0);  // { dg-error "not defined" }
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

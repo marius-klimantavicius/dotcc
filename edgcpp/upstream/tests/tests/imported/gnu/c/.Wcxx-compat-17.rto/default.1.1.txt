@@ -1,0 +1,41 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 16: warning: const variable "v11" requires an initializer
+    const int v11;		/* { dg-warning "invalid in C\[+\]\[+\]" } */
+                 ^
+
+"Test_name.c", line 17: warning: const variable "v12" requires an initializer
+    const char * const v12;	/* { dg-warning "invalid in C\[+\]\[+\]" } */
+                          ^
+
+"Test_name.c", line 18: warning: const variable "v13" requires an initializer
+    const struct s v13;		/* { dg-warning "invalid in C\[+\]\[+\]" } */
+                      ^
+
+"Test_name.c", line 16: warning: variable "v11" was declared but never referenced
+    const int v11;		/* { dg-warning "invalid in C\[+\]\[+\]" } */
+              ^
+
+"Test_name.c", line 17: warning: variable "v12" was declared but never referenced
+    const char * const v12;	/* { dg-warning "invalid in C\[+\]\[+\]" } */
+                       ^
+
+"Test_name.c", line 18: warning: variable "v13" was declared but never referenced
+    const struct s v13;		/* { dg-warning "invalid in C\[+\]\[+\]" } */
+                   ^
+
+"Test_name.c", line 19: warning: variable "v14" was declared but never referenced
+    const int v14 = 1;
+              ^
+
+"Test_name.c", line 20: warning: variable "v15" was declared but never referenced
+    const char * const v15 = 0;
+                       ^
+
+"Test_name.c", line 21: warning: variable "v16" was declared but never referenced
+    const struct s v16 = { 0, 0 };
+                   ^
+
+"Test_name.c", line 22: warning: variable "v17" was declared but never referenced
+    const struct s v17 = { 0 };
+                   ^
+

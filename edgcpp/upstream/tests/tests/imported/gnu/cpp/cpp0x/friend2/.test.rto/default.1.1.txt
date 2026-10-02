@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 32: warning: declaration of "W" hides template parameter
+    template <class T> friend class W;
+                                    ^
+
+"Test_name.c", line 38: error: member "P<W>::I [with W=A]" (declared at line 28) is inaccessible
+    int ar[P<A>::I];
+                 ^
+          detected during instantiation of class "A<T> [with T=int]" at line 41
+
+1 error detected in the compilation of "Test_name.c".

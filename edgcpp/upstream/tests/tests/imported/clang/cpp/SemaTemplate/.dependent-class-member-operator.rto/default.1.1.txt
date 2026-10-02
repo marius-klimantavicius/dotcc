@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 11: error: class "C1<int>" has no member "operator+"
+    foo(&C1<int>::operator+); // expected-error {{no member named 'operator+' in 'C1<int>'}}
+                  ^
+
+"Test_name.c", line 12: error: incomplete type "C2<int>" is not allowed
+    foo(&C2<int>::operator+); // expected-error {{implicit instantiation of undefined template 'C2<int>'}}
+         ^
+
+2 errors detected in the compilation of "Test_name.c".

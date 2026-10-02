@@ -1,0 +1,102 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 45: error: a pointer to a bound function may only be used to call the function
+    new (s.NoArgs) S; // expected-error {{reference to non-static member function must be called; did you mean to call it with no arguments?}}
+           ^
+
+"Test_name.c", line 46: error: a pointer to a bound function may only be used to call the function
+    new (s.OneArg) S; // expected-error {{reference to non-static member function must be called}}
+           ^
+
+"Test_name.c", line 47: error: a pointer to a bound function may only be used to call the function
+    new (ps->NoArgs) S; // expected-error {{reference to non-static member function must be called; did you mean to call it with no arguments?}}
+             ^
+
+"Test_name.c", line 48: error: a pointer to a bound function may only be used to call the function
+    new (ps->OneArg) S; // expected-error {{reference to non-static member function must be called}}
+             ^
+
+"Test_name.c", line 49: error: a pointer to a bound function may only be used to call the function
+    new (s.*pNoArgs) S; // expected-error {{reference to non-static member function must be called; did you mean to call it with no arguments?}}
+            ^
+
+"Test_name.c", line 50: error: a pointer to a bound function may only be used to call the function
+    new (s.*pOneArg) S; // expected-error {{reference to non-static member function must be called}}
+            ^
+
+"Test_name.c", line 51: error: a pointer to a bound function may only be used to call the function
+    new (ps->*pNoArgs) S; // expected-error {{reference to non-static member function must be called; did you mean to call it with no arguments?}}
+              ^
+
+"Test_name.c", line 52: error: a pointer to a bound function may only be used to call the function
+    new (ps->*pOneArg) S; // expected-error {{reference to non-static member function must be called}}
+              ^
+
+"Test_name.c", line 53: error: a pointer to a bound function may only be used to call the function
+    new ((s.*pNoArgs)) S; // expected-error {{reference to non-static member function must be called; did you mean to call it with no arguments?}}
+         ^
+
+"Test_name.c", line 54: error: a pointer to a bound function may only be used to call the function
+    new ((s.*pOneArg)) S; // expected-error {{reference to non-static member function must be called}}
+         ^
+
+"Test_name.c", line 55: error: a pointer to a bound function may only be used to call the function
+    new ((ps->*pNoArgs)) S; // expected-error {{reference to non-static member function must be called; did you mean to call it with no arguments?}}
+         ^
+
+"Test_name.c", line 56: error: a pointer to a bound function may only be used to call the function
+    new ((ps->*pOneArg)) S; // expected-error {{reference to non-static member function must be called}}
+         ^
+
+"Test_name.c", line 58: error: a pointer to a bound function may only be used to call the function
+    new (s.TemplNoArgs<int>) S; // expected-error {{reference to non-static member function must be called; did you mean to call it with no arguments?}}
+           ^
+
+"Test_name.c", line 59: error: a pointer to a bound function may only be used to call the function
+    new (s.TemplOneArg<int>) S; // expected-error {{reference to non-static member function must be called}}
+           ^
+
+"Test_name.c", line 60: error: a pointer to a bound function may only be used to call the function
+    new (ps->TemplNoArgs<int>) S; // expected-error {{reference to non-static member function must be called; did you mean to call it with no arguments?}}
+             ^
+
+"Test_name.c", line 61: error: a pointer to a bound function may only be used to call the function
+    new (ps->TemplOneArg<int>) S; // expected-error {{reference to non-static member function must be called}}
+             ^
+
+"Test_name.c", line 62: error: a pointer to a bound function may only be used to call the function
+    new (s.*pTemplNoArgs) S; // expected-error {{reference to non-static member function must be called; did you mean to call it with no arguments?}}
+            ^
+
+"Test_name.c", line 63: error: a pointer to a bound function may only be used to call the function
+    new (s.*pTemplOneArg) S; // expected-error {{reference to non-static member function must be called}}
+            ^
+
+"Test_name.c", line 64: error: a pointer to a bound function may only be used to call the function
+    new (ps->*pTemplNoArgs) S; // expected-error {{reference to non-static member function must be called; did you mean to call it with no arguments?}}
+              ^
+
+"Test_name.c", line 65: error: a pointer to a bound function may only be used to call the function
+    new (ps->*pTemplOneArg) S; // expected-error {{reference to non-static member function must be called}}
+              ^
+
+"Test_name.c", line 66: error: a pointer to a bound function may only be used to call the function
+    new ((s.*pTemplNoArgs)) S; // expected-error {{reference to non-static member function must be called; did you mean to call it with no arguments?}}
+         ^
+
+"Test_name.c", line 67: error: a pointer to a bound function may only be used to call the function
+    new ((s.*pTemplOneArg)) S; // expected-error {{reference to non-static member function must be called}}
+         ^
+
+"Test_name.c", line 68: error: a pointer to a bound function may only be used to call the function
+    new ((ps->*pTemplNoArgs)) S; // expected-error {{reference to non-static member function must be called; did you mean to call it with no arguments?}}
+         ^
+
+"Test_name.c", line 69: error: a pointer to a bound function may only be used to call the function
+    new ((ps->*pTemplOneArg)) S; // expected-error {{reference to non-static member function must be called}}
+         ^
+
+"Test_name.c", line 70: warning: missing return statement at end of non-void function "test"
+  }
+  ^
+
+24 errors detected in the compilation of "Test_name.c".

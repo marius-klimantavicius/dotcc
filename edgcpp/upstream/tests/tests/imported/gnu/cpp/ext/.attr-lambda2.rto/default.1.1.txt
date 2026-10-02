@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 8: error: expected a "{" introducing a lambda body
+      []() mutable __attribute__((cold)) constexpr {}();	// { dg-error "expected" }
+                                         ^
+
+"Test_name.c", line 8: error: expected a ";"
+      []() mutable __attribute__((cold)) constexpr {}();	// { dg-error "expected" }
+                                         ^
+
+"Test_name.c", line 9: error: expected a "{" introducing a lambda body
+      []() constexpr __attribute__((cold)) mutable {}();	// { dg-error "expected" }
+                                           ^
+
+"Test_name.c", line 9: error: expected a ";"
+      []() constexpr __attribute__((cold)) mutable {}();	// { dg-error "expected" }
+                                           ^
+
+"Test_name.c", line 10: error: expected a "{" introducing a lambda body
+      []() __attribute__((cold)) mutable constexpr {}();	// { dg-error "expected" }
+                                 ^
+
+"Test_name.c", line 10: error: expected a ";"
+      []() __attribute__((cold)) mutable constexpr {}();	// { dg-error "expected" }
+                                 ^
+
+"Test_name.c", line 11: error: expected a "{" introducing a lambda body
+      []() __attribute__((cold)) constexpr mutable {}();	// { dg-error "expected" }
+                                 ^
+
+"Test_name.c", line 11: error: expected a ";"
+      []() __attribute__((cold)) constexpr mutable {}();	// { dg-error "expected" }
+                                 ^
+
+8 errors detected in the compilation of "Test_name.c".

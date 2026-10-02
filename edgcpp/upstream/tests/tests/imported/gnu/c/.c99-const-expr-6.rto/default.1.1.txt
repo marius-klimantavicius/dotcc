@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 10: error: expression must have a constant value
+  int n = 0, p[n * 0 + 1]; /* { dg-error "variabl" } */
+               ^
+"Test_name.c", line 10: note: the value of variable "n" (declared at line 10) cannot be used as a constant
+  int n = 0, p[n * 0 + 1]; /* { dg-error "variabl" } */
+               ^
+
+"Test_name.c", line 33: error: expression must have a constant value
+    int a : (n * 0 + 1); /* { dg-error "constant" } */
+             ^
+"Test_name.c", line 33: note: the value of variable "n" (declared at line 10) cannot be used as a constant
+    int a : (n * 0 + 1); /* { dg-error "constant" } */
+             ^
+
+"Test_name.c", line 54: error: expression must have a constant value
+  int v[2] = { [(n * 0 + 1)] = 1 }; /* { dg-error "constant|near initialization" } */
+                 ^
+"Test_name.c", line 54: note: the value of variable "n" (declared at line 10) cannot be used as a constant
+  int v[2] = { [(n * 0 + 1)] = 1 }; /* { dg-error "constant|near initialization" } */
+                 ^
+
+"Test_name.c", line 61: error: expression must have a constant value
+      case (n * 0 + 1): /* { dg-error "constant" } */
+            ^
+"Test_name.c", line 61: note: the value of variable "n" (declared at line 10) cannot be used as a constant
+      case (n * 0 + 1): /* { dg-error "constant" } */
+            ^
+
+4 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 6: warning: unknown attribute "maybe_undef"
+  void f(int __attribute__((maybe_undef)) *a);
+                            ^
+
+"Test_name.c", line 7: warning: unknown attribute "maybe_undef"
+  void (*fp)(int __attribute__((maybe_undef)) handle);
+                                ^
+
+"Test_name.c", line 8: warning: unknown attribute "maybe_undef"
+  __attribute__((maybe_undef)) int i(); // expected-warning {{'maybe_undef' attribute only applies to parameters}}
+                 ^
+
+"Test_name.c", line 9: warning: unknown attribute "maybe_undef"
+  int __attribute__((maybe_undef)) a; // expected-warning {{'maybe_undef' attribute only applies to parameters}}
+                     ^
+
+"Test_name.c", line 10: warning: unknown attribute "maybe_undef"
+  int (* __attribute__((maybe_undef)) fpt)(char *); // expected-warning {{'maybe_undef' attribute only applies to parameters}}
+                        ^
+
+"Test_name.c", line 11: warning: unknown attribute "maybe_undef"
+  void h(int *a __attribute__((maybe_undef("RandomString")))); // expected-error {{'maybe_undef' attribute takes no arguments}}
+                               ^
+
+"Test_name.c", line 14: warning: unknown attribute "maybe_undef"
+  int __attribute__((maybe_undef)) ta; // expected-warning {{'maybe_undef' attribute only applies to parameters}}
+                     ^
+
+"Test_name.c", line 17: warning: unknown attribute "maybe_undef"
+  typedef int callback(char *) __attribute__((maybe_undef)); // expected-warning {{'maybe_undef' attribute only applies to parameters}}
+                                              ^
+

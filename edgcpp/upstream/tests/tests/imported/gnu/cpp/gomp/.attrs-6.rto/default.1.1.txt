@@ -1,0 +1,113 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: warning: unrecognized #pragma
+    #pragma omp parallel sections
+            ^
+
+"Test_name.c", line 11: warning: unrecognized #pragma
+      #pragma omp section
+              ^
+
+"Test_name.c", line 13: warning: attribute namespace "omp" is unrecognized
+      [[omp::directive (section)]] {
+        ^
+
+"Test_name.c", line 15: warning: attribute namespace "omp" is unrecognized
+      } [[omp::directive (section)]]
+          ^
+
+"Test_name.c", line 17: warning: unrecognized #pragma
+      #pragma omp section
+              ^
+
+"Test_name.c", line 20: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (parallel sections)]]
+      ^
+
+"Test_name.c", line 22: warning: unrecognized #pragma
+      #pragma omp section
+              ^
+
+"Test_name.c", line 24: warning: attribute namespace "omp" is unrecognized
+      [[omp::directive (section)]] {
+        ^
+
+"Test_name.c", line 26: warning: attribute namespace "omp" is unrecognized
+      } [[omp::directive (section)]]
+          ^
+
+"Test_name.c", line 28: warning: unrecognized #pragma
+      #pragma omp section
+              ^
+
+"Test_name.c", line 31: warning: unrecognized #pragma
+    #pragma omp parallel sections
+            ^
+
+"Test_name.c", line 33: warning: unrecognized #pragma
+      #pragma omp section
+              ^
+
+"Test_name.c", line 38: warning: attribute namespace "omp" is unrecognized
+      [[omp::directive (section)]] {
+        ^
+
+"Test_name.c", line 41: warning: attribute namespace "omp" is unrecognized
+      } [[omp::directive (section)]]
+          ^
+
+"Test_name.c", line 44: warning: unrecognized #pragma
+      #pragma omp section
+              ^
+
+"Test_name.c", line 48: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (parallel sections)]]
+      ^
+
+"Test_name.c", line 50: warning: unrecognized #pragma
+      #pragma omp section
+              ^
+
+"Test_name.c", line 53: warning: attribute namespace "omp" is unrecognized
+      [[omp::directive (section)]] {
+        ^
+
+"Test_name.c", line 56: warning: attribute namespace "omp" is unrecognized
+      } [[omp::directive (section)]]
+          ^
+
+"Test_name.c", line 62: warning: unrecognized #pragma
+      #pragma omp section
+              ^
+
+"Test_name.c", line 72: warning: unrecognized #pragma
+    #pragma omp simd reduction (inscan, +: a)
+            ^
+
+"Test_name.c", line 76: warning: attribute namespace "omp" is unrecognized
+        [[omp::directive (scan, exclusive (a))]]
+          ^
+
+"Test_name.c", line 79: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (simd reduction (inscan, +: a))]]
+      ^
+
+"Test_name.c", line 83: warning: unrecognized #pragma
+        #pragma omp scan inclusive (a)
+                ^
+
+"Test_name.c", line 86: warning: unrecognized #pragma
+    #pragma omp simd reduction (inscan, +: a)
+            ^
+
+"Test_name.c", line 91: warning: attribute namespace "omp" is unrecognized
+        [[omp::directive (scan, exclusive (a))]]
+          ^
+
+"Test_name.c", line 95: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (simd reduction (inscan, +: a))]]
+      ^
+
+"Test_name.c", line 100: warning: unrecognized #pragma
+        #pragma omp scan inclusive (a)
+                ^
+

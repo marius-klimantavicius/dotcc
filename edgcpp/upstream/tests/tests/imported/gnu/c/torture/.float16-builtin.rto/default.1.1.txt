@@ -1,0 +1,162 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./torture/floatn-builtin.h", line 77: error: function call is not allowed in a constant expression
+  volatile _Float16 inf_cst = __builtin_inff16 ();
+                              ^
+
+"./torture/floatn-builtin.h", line 78: error: function call is not allowed in a constant expression
+  volatile _Float16 huge_val_cst = __builtin_huge_valf16 ();
+                                   ^
+
+"./torture/floatn-builtin.h", line 79: error: function call is not allowed in a constant expression
+  volatile _Float16 nan_cst = __builtin_nanf16 ("");
+                              ^
+
+"./torture/floatn-builtin.h", line 80: error: function call is not allowed in a constant expression
+  volatile _Float16 nans_cst = __builtin_nansf16 ("");
+                               ^
+
+"./torture/floatn-builtin.h", line 82: error: function call is not allowed in a constant expression
+  volatile _Float16 t1 = __builtin_acoshf16 (1.0f16);
+                         ^
+
+"./torture/floatn-builtin.h", line 83: error: function call is not allowed in a constant expression
+  volatile _Float16 t2 = __builtin_acosf16 (1.0f16);
+                         ^
+
+"./torture/floatn-builtin.h", line 84: error: function call is not allowed in a constant expression
+  volatile _Float16 t3 = __builtin_asinhf16 (0.0f16);
+                         ^
+
+"./torture/floatn-builtin.h", line 85: error: function call is not allowed in a constant expression
+  volatile _Float16 t4 = __builtin_asinf16 (0.0f16);
+                         ^
+
+"./torture/floatn-builtin.h", line 86: error: function call is not allowed in a constant expression
+  volatile _Float16 t5 = __builtin_atanhf16 (0.0f16);
+                         ^
+
+"./torture/floatn-builtin.h", line 87: error: function call is not allowed in a constant expression
+  volatile _Float16 t6 = __builtin_atanf16 (0.0f16);
+                         ^
+
+"./torture/floatn-builtin.h", line 88: error: function call is not allowed in a constant expression
+  volatile _Float16 t7 = __builtin_cbrtf16 (27.0f16);
+                         ^
+
+"./torture/floatn-builtin.h", line 89: error: function call is not allowed in a constant expression
+  volatile _Float16 t8 = __builtin_coshf16 (0.0f16);
+                         ^
+
+"./torture/floatn-builtin.h", line 90: error: function call is not allowed in a constant expression
+  volatile _Float16 t9 = __builtin_cosf16 (0.0f16);
+                         ^
+
+"./torture/floatn-builtin.h", line 91: error: function call is not allowed in a constant expression
+  volatile _Float16 t10 = __builtin_erfcf16 (0.0f16);
+                          ^
+
+"./torture/floatn-builtin.h", line 92: error: function call is not allowed in a constant expression
+  volatile _Float16 t11 = __builtin_erff16 (0.0f16);
+                          ^
+
+"./torture/floatn-builtin.h", line 93: error: function call is not allowed in a constant expression
+  volatile _Float16 t12 = __builtin_exp2f16 (1.0f16);
+                          ^
+
+"./torture/floatn-builtin.h", line 94: error: function call is not allowed in a constant expression
+  volatile _Float16 t13 = __builtin_expf16 (0.0f16);
+                          ^
+
+"./torture/floatn-builtin.h", line 95: error: function call is not allowed in a constant expression
+  volatile _Float16 t14 = __builtin_expm1f16 (0.0f16);
+                          ^
+
+"./torture/floatn-builtin.h", line 96: error: function call is not allowed in a constant expression
+  volatile _Float16 t15 = __builtin_log10f16 (1.0f16);
+                          ^
+
+"./torture/floatn-builtin.h", line 97: error: function call is not allowed in a constant expression
+  volatile _Float16 t16 = __builtin_log1pf16 (0.0f16);
+                          ^
+
+"./torture/floatn-builtin.h", line 98: error: function call is not allowed in a constant expression
+  volatile _Float16 t17 = __builtin_log2f16 (1.0f16);
+                          ^
+
+"./torture/floatn-builtin.h", line 99: error: function call is not allowed in a constant expression
+  volatile _Float16 t18 = __builtin_logbf16 (1.0f16);
+                          ^
+
+"./torture/floatn-builtin.h", line 100: error: function call is not allowed in a constant expression
+  volatile _Float16 t19 = __builtin_logf16 (1.0f16);
+                          ^
+
+"./torture/floatn-builtin.h", line 101: error: function call is not allowed in a constant expression
+  volatile _Float16 t20 = __builtin_nextafterf16 (0.0f16, 0.0f16);
+                          ^
+
+"./torture/floatn-builtin.h", line 102: error: function call is not allowed in a constant expression
+  volatile _Float16 t21 = __builtin_sinhf16 (0.0f16);
+                          ^
+
+"./torture/floatn-builtin.h", line 103: error: function call is not allowed in a constant expression
+  volatile _Float16 t22 = __builtin_sinf16 (0.0f16);
+                          ^
+
+"./torture/floatn-builtin.h", line 104: error: function call is not allowed in a constant expression
+  volatile _Float16 t23 = __builtin_tanhf16 (0.0f16);
+                          ^
+
+"./torture/floatn-builtin.h", line 105: error: function call is not allowed in a constant expression
+  volatile _Float16 t24 = __builtin_tanf16 (0.0f16);
+                          ^
+
+"./torture/floatn-builtin.h", line 106: error: function call is not allowed in a constant expression
+  volatile _Float16 t25 = __builtin_atan2f16 (0.0f16, 1.0f16);
+                          ^
+
+"./torture/floatn-builtin.h", line 107: error: function call is not allowed in a constant expression
+  volatile _Float16 t26 = __builtin_fdimf16 (0.0f16, 0.0f16);
+                          ^
+
+"./torture/floatn-builtin.h", line 108: error: function call is not allowed in a constant expression
+  volatile _Float16 t27 = __builtin_fmodf16 (0.0f16, 1.0f16);
+                          ^
+
+"./torture/floatn-builtin.h", line 109: error: function call is not allowed in a constant expression
+  volatile _Float16 t28 = __builtin_ldexpf16 (1.0f16, 1);
+                          ^
+
+"./torture/floatn-builtin.h", line 110: error: function call is not allowed in a constant expression
+  volatile _Float16 t29 = __builtin_hypotf16 (3.0f16, 4.0f16);
+                          ^
+
+"./torture/floatn-builtin.h", line 111: error: function call is not allowed in a constant expression
+  volatile int t30 = __builtin_ilogbf16 (1.0f16);
+                     ^
+
+"./torture/floatn-builtin.h", line 112: error: function call is not allowed in a constant expression
+  volatile long long int t31 = __builtin_llroundf16 (42.25f16);
+                               ^
+
+"./torture/floatn-builtin.h", line 113: error: function call is not allowed in a constant expression
+  volatile long int t32 = __builtin_lroundf16 (42.25f16);
+                          ^
+
+"./torture/floatn-builtin.h", line 114: error: function call is not allowed in a constant expression
+  volatile _Float16 t33 = __builtin_powf16 (1.0f16, 2.0f16);
+                          ^
+
+"./torture/floatn-builtin.h", line 115: error: function call is not allowed in a constant expression
+  volatile _Float16 t34 = __builtin_remainderf16 (7.0f16, 4.0f16);
+                          ^
+
+"./torture/floatn-builtin.h", line 116: error: function call is not allowed in a constant expression
+  volatile _Float16 t35 = __builtin_scalblnf16 (1.0f16, 1L);
+                          ^
+
+"./torture/floatn-builtin.h", line 117: error: function call is not allowed in a constant expression
+  volatile _Float16 t36 = __builtin_scalbnf16 (1.0f16, 1);
+                          ^
+
+40 errors detected in the compilation of "Test_name.c".

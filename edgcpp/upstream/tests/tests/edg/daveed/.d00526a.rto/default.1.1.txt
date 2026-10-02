@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 -A Test_name.c
+"Test_name.c", line 18: error: transfer of control bypasses initialization of:
+            variable "d" (declared at line 19)
+    goto label_1;
+    ^
+
+"Test_name.c", line 19: warning: variable "d" was declared but never referenced
+    D d;
+      ^
+
+1 error detected in the compilation of "Test_name.c".

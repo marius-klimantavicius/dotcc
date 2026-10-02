@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: error: a storage class is not allowed in an explicit specialization
+  static void f1<void> ();  // { dg-error "explicit template specialization cannot have a storage class" }
+  ^
+
+"Test_name.c", line 15: error: a storage class is not allowed in an explicit specialization
+  extern void f2<void> ();  // { dg-error "explicit template specialization cannot have a storage class" }
+  ^
+
+"Test_name.c", line 17: error: exported templates are no longer in the standard C++ language
+  export template<class T>  // { dg-message "'export'" }
+  ^
+
+"Test_name.c", line 9: warning: function "f1<T>() [with T=void]" was declared but never referenced
+  static void f1<void> ();  // { dg-error "explicit template specialization cannot have a storage class" }
+              ^
+
+3 errors detected in the compilation of "Test_name.c".

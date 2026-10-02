@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./ext/pr17577.h", line 2: warning: unrecognized #pragma
+  #pragma interface
+          ^
+
+"./ext/pr17577.C", line 6: warning: unrecognized #pragma
+  #pragma implementation "pr17577.h"
+          ^
+

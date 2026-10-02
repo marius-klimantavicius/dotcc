@@ -1,0 +1,42 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 8: error: identifier "i" is undefined
+  int g(i)
+        ^
+
+"Test_name.c", line 9: error: expected a "{"
+  int i;
+  ^
+
+"Test_name.c", line 11: error: identifier "i" is undefined
+    return i;
+           ^
+
+"Test_name.c", line 14: error: identifier "s" is undefined
+  int h(s,i)
+        ^
+
+"Test_name.c", line 14: error: identifier "i" is undefined
+  int h(s,i)
+          ^
+
+"Test_name.c", line 15: error: expected a "{"
+  struct S { int i; } s;
+  ^
+
+"Test_name.c", line 15: warning: missing return statement at end of non-void function "h"
+  struct S { int i; } s;
+                    ^
+
+"Test_name.c", line 15: warning: variable "i" was declared but never referenced
+  struct S { int i; } s;
+                 ^
+
+"Test_name.c", line 15: error: this declaration has no storage class or type specifier
+  struct S { int i; } s;
+                      ^
+
+"Test_name.c", line 17: error: expected a declaration
+  {
+  ^
+
+8 errors detected in the compilation of "Test_name.c".

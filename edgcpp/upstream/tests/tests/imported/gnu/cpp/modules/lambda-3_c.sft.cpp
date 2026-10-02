@@ -1,0 +1,5 @@
+//type: fp
+//options:  --c++20 --modules
+// { dg-additional-options "-fmodules-ts -fno-module-lazy -fdump-lang-module-alias" }
+
+import "lambda-3_a.H";

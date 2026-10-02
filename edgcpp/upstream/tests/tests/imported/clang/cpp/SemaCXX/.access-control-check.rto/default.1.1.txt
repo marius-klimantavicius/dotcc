@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 16: error: member "P::iP" (declared at line 10) is inaccessible
+    int PR() { return iP + PPR(); } // expected-error 2 {{private member of 'P'}}
+                      ^
+
+"Test_name.c", line 16: error: function "P::PPR" (declared at line 11) is inaccessible
+    int PR() { return iP + PPR(); } // expected-error 2 {{private member of 'P'}}
+                           ^
+
+"Test_name.c", line 50: error: "GH62444::B::B(int)" (declared at line 46) is inaccessible
+  int f(T = 0); // #Decl
+            ^
+          detected during instantiation of "int GH62444::f(T) [with T=GH62444::B]" at line 54
+
+3 errors detected in the compilation of "Test_name.c".

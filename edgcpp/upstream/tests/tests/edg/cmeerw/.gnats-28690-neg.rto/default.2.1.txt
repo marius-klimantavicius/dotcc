@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=2 -w --c++20 --defer_parse_function_templates Test_name.c
+"Test_name.c", line 17: error: identifier "g" is undefined
+        return g(ns::X{});        // error
+               ^
+
+"Test_name.c", line 17: error: no instance of "g" matches the argument list
+            argument types are: (ns::X)
+        return g(ns::X{});        // error
+               ^
+          detected during instantiation of class "S<T> [with T=int]" at line 27
+
+2 errors detected in the compilation of "Test_name.c".

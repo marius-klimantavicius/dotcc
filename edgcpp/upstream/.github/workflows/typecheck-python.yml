@@ -1,0 +1,92 @@
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+#
+# Run mypy on the standalone repo bootstrap script and on
+# dev_tools/typecheck-python.sh so typed Python tooling does not regress.
+# Checks against both the oldest supported CPython (3.6) and the latest stable
+# release (3.14).
+
+name: Python Typecheck
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  typecheck:
+    name: typecheck-python (${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # setup-python no longer ships 3.6 on current Ubuntu runners, and
+          # job-level containers lack Node for actions/checkout. Run mypy
+          # inside the official slim image instead.
+          - python-version: '3.6'
+            use-docker: true
+            image: python:3.6-slim
+            mypy: 'mypy==0.971'
+            websockets: 'websockets==8.1'
+            pip: 'pip<22'
+          - python-version: '3.14'
+            use-docker: false
+            mypy: mypy
+            websockets: websockets
+            pip: pip
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python ${{ matrix.python-version }}
+        if: ${{ !matrix.use-docker }}
+        uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install mypy and typed dependencies
+        if: ${{ !matrix.use-docker }}
+        run: |
+          python -m pip install --upgrade ${{ matrix.pip }}
+          python -m pip install ${{ matrix.mypy }} ${{ matrix.websockets }}
+
+      - name: Typecheck dev-init.py
+        if: ${{ !matrix.use-docker }}
+        run: >
+          mypy --no-namespace-packages --scripts-are-modules --strict-equality
+          --python-version ${{ matrix.python-version }}
+          dev-init.py
+
+      - name: Run typecheck-python.sh
+        if: ${{ !matrix.use-docker }}
+        working-directory: dev_tools
+        env:
+          PYTHONPATH: pylibs:services/acknowledg/server
+          EDG_MYPY_PYTHON_VERSION: ${{ matrix.python-version }}
+        run: bash ./typecheck-python.sh
+
+      - name: Typecheck (Python ${{ matrix.python-version }} container)
+        if: ${{ matrix.use-docker }}
+        run: |
+          docker run --rm \
+            -v "$PWD:/src:ro" \
+            -w /src \
+            -e EDG_MYPY_PYTHON_VERSION=${{ matrix.python-version }} \
+            ${{ matrix.image }} \
+            bash -c "
+              set -euo pipefail
+              python -m pip install --upgrade '${{ matrix.pip }}'
+              python -m pip install ${{ matrix.mypy }} ${{ matrix.websockets }}
+              mypy --no-namespace-packages --scripts-are-modules --strict-equality \
+                --python-version ${{ matrix.python-version }} \
+                dev-init.py
+              cd dev_tools
+              export PYTHONPATH=pylibs:services/acknowledg/server
+              bash ./typecheck-python.sh --legacy
+            "
+

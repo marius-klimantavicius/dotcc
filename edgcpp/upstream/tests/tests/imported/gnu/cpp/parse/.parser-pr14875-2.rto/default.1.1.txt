@@ -1,0 +1,126 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 7: error: expected an identifier
+    CHECK (and);      // { dg-error "before .and. token" }
+    ^
+
+"Test_name.c", line 7: error: expected a ";"
+    CHECK (and);      // { dg-error "before .and. token" }
+    ^
+
+"Test_name.c", line 8: error: expected an identifier
+    CHECK (and_eq);   // { dg-error "before .and_eq. token" }
+    ^
+
+"Test_name.c", line 8: error: expected a ";"
+    CHECK (and_eq);   // { dg-error "before .and_eq. token" }
+    ^
+
+"Test_name.c", line 9: error: expected an identifier
+    CHECK (bitand);   // { dg-error "before .bitand. token" }
+    ^
+
+"Test_name.c", line 9: error: expected a ";"
+    CHECK (bitand);   // { dg-error "before .bitand. token" }
+    ^
+
+"Test_name.c", line 10: error: expected an identifier
+    CHECK (bitor);    // { dg-error "before .bitor. token" }
+    ^
+
+"Test_name.c", line 10: error: expected a ";"
+    CHECK (bitor);    // { dg-error "before .bitor. token" }
+    ^
+
+"Test_name.c", line 11: error: expected an identifier
+    CHECK (compl);    // { dg-error "before .compl. token" }
+    ^
+
+"Test_name.c", line 11: error: expected a ";"
+    CHECK (compl);    // { dg-error "before .compl. token" }
+    ^
+
+"Test_name.c", line 12: error: expected an identifier
+    CHECK (not);      // { dg-error "before .not. token" }
+    ^
+
+"Test_name.c", line 12: error: expected a ";"
+    CHECK (not);      // { dg-error "before .not. token" }
+    ^
+
+"Test_name.c", line 13: error: expected an identifier
+    CHECK (not_eq);   // { dg-error "before .not_eq. token" }
+    ^
+
+"Test_name.c", line 13: error: expected a ";"
+    CHECK (not_eq);   // { dg-error "before .not_eq. token" }
+    ^
+
+"Test_name.c", line 14: error: expected an identifier
+    CHECK (or);       // { dg-error "before .or. token" }
+    ^
+
+"Test_name.c", line 14: error: expected a ";"
+    CHECK (or);       // { dg-error "before .or. token" }
+    ^
+
+"Test_name.c", line 15: error: expected an identifier
+    CHECK (or_eq);    // { dg-error "before .or_eq. token" }
+    ^
+
+"Test_name.c", line 15: error: expected a ";"
+    CHECK (or_eq);    // { dg-error "before .or_eq. token" }
+    ^
+
+"Test_name.c", line 16: error: expected an identifier
+    CHECK (xor);      // { dg-error "before .xor. token" }
+    ^
+
+"Test_name.c", line 16: error: expected a ";"
+    CHECK (xor);      // { dg-error "before .xor. token" }
+    ^
+
+"Test_name.c", line 17: error: expected an identifier
+    CHECK (xor_eq);   // { dg-error "before .xor_eq. token" }
+    ^
+
+"Test_name.c", line 17: error: expected a ";"
+    CHECK (xor_eq);   // { dg-error "before .xor_eq. token" }
+    ^
+
+"Test_name.c", line 20: error: invalid specifier for structured binding declaration
+    CHECK (<:);     // { dg-error "" }
+    ^
+
+"Test_name.c", line 21: error: missing initializer
+    CHECK (:>);     // { dg-error "before .:>. token" }
+              ^
+
+"Test_name.c", line 24: error: expected a declaration
+    CHECK (<%);     // { dg-error "before .<%. token" }
+    ^
+
+"Test_name.c", line 27: error: expected a declaration
+    CHECK (%>);     // { dg-error "before .%>. token" }
+    ^
+
+"Test_name.c", line 30: error: "#" not expected here
+    CHECK (%:);     // { dg-error "stray .%:. " }
+    ^
+
+"Test_name.c", line 30: error: expected a declaration
+    CHECK (%:);     // { dg-error "stray .%:. " }
+    ^
+
+"Test_name.c", line 31: error: "#" not expected here
+    CHECK (%:%:);   // { dg-error "stray .%:%:. " }
+    ^
+
+"Test_name.c", line 31: error: expected a declaration
+    CHECK (%:%:);   // { dg-error "stray .%:%:. " }
+    ^
+
+"Test_name.c", line 31: error: "#" not expected here
+    CHECK (%:%:);   // { dg-error "stray .%:%:. " }
+    ^
+
+31 errors detected in the compilation of "Test_name.c".

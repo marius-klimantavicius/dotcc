@@ -1,0 +1,23 @@
+fe_only -DTEST_NUMBER=2 -w -tused --c++11 --microsoft_version 1900 Test_name.c
+"Test_name.c", line 45: error: more than one instance of constructor "move_ctor::C::C" matches the argument list:
+            function "move_ctor::C::C(move_ctor::C &&)" (declared at line 32)
+            function "move_ctor::C::C(int)" (declared at line 33)
+            argument types are: (move_ctor::D)
+      C c2(d);                    // error: MSVC >= 1900
+           ^
+
+"Test_name.c", line 46: error: more than one instance of constructor "move_ctor::C::C" matches the argument list:
+            function "move_ctor::C::C(move_ctor::C &&)" (declared at line 32)
+            function "move_ctor::C::C(int)" (declared at line 33)
+            argument types are: (move_ctor::D)
+      C c3{d};                    // error: MSVC >= 1900
+          ^
+
+"Test_name.c", line 47: error: more than one instance of constructor "move_ctor::C::C" matches the argument list:
+            function "move_ctor::C::C(move_ctor::C &&)" (declared at line 32)
+            function "move_ctor::C::C(int)" (declared at line 33)
+            argument types are: (move_ctor::D)
+      C c4 = { d };               // error: MSVC >= 1900
+             ^
+
+3 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 27: error: a pointer-to-member function with type "int (X::*)(int) &" can only be used with an lvalue object
+    (xvalue<X>().*l_pmf)(17); // expected-error-re{{pointer-to-member function type 'int (X::*)(int){{( __attribute__\(\(thiscall\)\))?}} &' can only be called on an lvalue}}
+                ^
+
+"Test_name.c", line 28: error: a pointer-to-member function with type "int (X::*)(int) &" can only be used with an lvalue object
+    (prvalue<X>().*l_pmf)(17); // expected-error-re{{pointer-to-member function type 'int (X::*)(int){{( __attribute__\(\(thiscall\)\))?}} &' can only be called on an lvalue}}
+                 ^
+
+"Test_name.c", line 32: error: a pointer-to-member function with type "int (X::*)(int) &&" can only be used with an rvalue object
+    (lvalue<X>().*r_pmf)(17); // expected-error-re{{pointer-to-member function type 'int (X::*)(int){{( __attribute__\(\(thiscall\)\))?}} &&' can only be called on an rvalue}}
+                ^
+
+"Test_name.c", line 35: error: a pointer-to-member function with type "int (X::*)(int) &&" can only be used with an rvalue object
+    (xp->*r_pmf)(17);  // expected-error-re{{pointer-to-member function type 'int (X::*)(int){{( __attribute__\(\(thiscall\)\))?}} &&' can only be called on an rvalue}}
+       ^
+
+4 errors detected in the compilation of "Test_name.c".

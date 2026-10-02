@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: error: class template "B::X" (declared at line 13) is inaccessible
+    typename T::template X<int> x;	// { dg-error "this context" }
+                         ^
+          detected during instantiation of class "A<T> [with T=B]" at line 18
+
+"Test_name.c", line 18: warning: variable "ab" was declared but never referenced
+    A<B> ab;				// { dg-message "required" }
+         ^
+
+1 error detected in the compilation of "Test_name.c".

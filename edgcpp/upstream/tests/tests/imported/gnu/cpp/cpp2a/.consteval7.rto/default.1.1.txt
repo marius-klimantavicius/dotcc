@@ -1,0 +1,39 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 8: error: expression must have a constant value
+  constexpr auto a = bar ();	// { dg-error "immediate evaluation returns address of immediate function 'consteval int foo\\(\\)'" }
+                     ^
+"Test_name.c", line 8: note: address of consteval function "foo" in constant expression result
+  constexpr auto a = bar ();	// { dg-error "immediate evaluation returns address of immediate function 'consteval int foo\\(\\)'" }
+                     ^
+
+"Test_name.c", line 12: error: expression must have a constant value
+  consteval int quux () { constexpr S s = baz (); return s.b + s.c (); }	// { dg-error "immediate evaluation returns address of immediate function 'consteval int foo\\(\\)'" }
+                                          ^
+"Test_name.c", line 12: note: address of consteval function "foo" in constant expression result
+  consteval int quux () { constexpr S s = baz (); return s.b + s.c (); }	// { dg-error "immediate evaluation returns address of immediate function 'consteval int foo\\(\\)'" }
+                                          ^
+
+"Test_name.c", line 13: error: expression must have a constant value
+  constexpr auto d = baz ();	// { dg-error "immediate evaluation returns address of immediate function 'consteval int foo\\(\\)'" }
+                     ^
+"Test_name.c", line 13: note: address of consteval function "foo" in constant expression result
+  constexpr auto d = baz ();	// { dg-error "immediate evaluation returns address of immediate function 'consteval int foo\\(\\)'" }
+                     ^
+
+"Test_name.c", line 8: warning: variable "a" was declared but never referenced
+  constexpr auto a = bar ();	// { dg-error "immediate evaluation returns address of immediate function 'consteval int foo\\(\\)'" }
+                 ^
+
+"Test_name.c", line 13: warning: variable "d" was declared but never referenced
+  constexpr auto d = baz ();	// { dg-error "immediate evaluation returns address of immediate function 'consteval int foo\\(\\)'" }
+                 ^
+
+"Test_name.c", line 14: warning: variable "e" was declared but never referenced
+  constexpr auto e = qux ();
+                 ^
+
+"Test_name.c", line 15: warning: variable "f" was declared but never referenced
+  constexpr auto f = quux ();	// { dg-error "quux" }
+                 ^
+
+3 errors detected in the compilation of "Test_name.c".

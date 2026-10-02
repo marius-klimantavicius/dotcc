@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"./cpp1y/complex_literals1a.C", line 10: error: user-defined literal operator not found
+    auto a = std::abs(0.0i);
+                      ^
+
+1 error detected in the compilation of "Test_name.c".

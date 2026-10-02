@@ -1,0 +1,49 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 16: warning: const variable "s" requires an initializer
+    } s;
+       ^
+
+"Test_name.c", line 17: warning: a value of type "const int *" cannot be used to initialize an entity of type "int *"
+    int *p1 = s.a; /* { dg-error "qualifier" } */
+              ^
+
+"Test_name.c", line 24: warning: a value of type "const int *" cannot be used to initialize an entity of type "int *"
+    int *p3 = t.a; /* { dg-error "qualifier" } */
+              ^
+
+"Test_name.c", line 25: warning: a value of type "const int *" cannot be used to initialize an entity of type "int *"
+    int *p4 = (a ? t : t).a; /* { dg-error "qualifier" } */
+              ^
+
+"Test_name.c", line 29: warning: const variable "u" requires an initializer
+    } u;
+       ^
+
+"Test_name.c", line 31: warning: a value of type "int (*)[1]" cannot be used to initialize an entity of type "const int (*)[1]"
+    const int (*p6)[1] = (a ? u : u).a; /* { dg-error "pointer" } */
+                         ^
+
+"Test_name.c", line 17: warning: variable "p1" was declared but never referenced
+    int *p1 = s.a; /* { dg-error "qualifier" } */
+         ^
+
+"Test_name.c", line 18: warning: variable "p2" was declared but never referenced
+    int *p2 = (a ? s : s).a;
+         ^
+
+"Test_name.c", line 24: warning: variable "p3" was declared but never referenced
+    int *p3 = t.a; /* { dg-error "qualifier" } */
+         ^
+
+"Test_name.c", line 25: warning: variable "p4" was declared but never referenced
+    int *p4 = (a ? t : t).a; /* { dg-error "qualifier" } */
+         ^
+
+"Test_name.c", line 30: warning: variable "p5" was declared but never referenced
+    const int (*p5)[1] = u.a;
+                ^
+
+"Test_name.c", line 31: warning: variable "p6" was declared but never referenced
+    const int (*p6)[1] = (a ? u : u).a; /* { dg-error "pointer" } */
+                ^
+

@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 5: warning: unknown attribute "cfi_canonical_jump_table"
+  __attribute__((cfi_canonical_jump_table)) void fdecl();
+                 ^
+
+"Test_name.c", line 7: warning: unknown attribute "cfi_canonical_jump_table"
+  __attribute__((cfi_canonical_jump_table)) void f() {}
+                 ^
+
+"Test_name.c", line 10: warning: unknown attribute "cfi_canonical_jump_table"
+    __attribute__((cfi_canonical_jump_table)) void f() {}
+                   ^
+
+"Test_name.c", line 13: warning: unknown attribute "cfi_canonical_jump_table"
+  __attribute__((cfi_canonical_jump_table)) int i; // expected-error {{'cfi_canonical_jump_table' attribute only applies to functions}}
+                 ^
+

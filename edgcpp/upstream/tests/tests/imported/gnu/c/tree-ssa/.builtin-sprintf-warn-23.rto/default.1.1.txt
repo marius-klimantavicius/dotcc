@@ -1,0 +1,1313 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 21: warning: variable "a" was declared but never referenced
+    T (d, "%s", d);       /* { dg-warning "argument 3 overlaps destination object 'd'" } */
+    ^
+
+"Test_name.c", line 22: warning: variable "a" was declared but never referenced
+    T (d, "%s", d + 0);   /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 25: warning: variable "a" was declared but never referenced
+    T (d, "%s", d + 1);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 26: warning: variable "a" was declared but never referenced
+    T (d, "%s", d + 2);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 27: warning: variable "a" was declared but never referenced
+    T (d, "%s", d + i);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 29: warning: variable "a" was declared but never referenced
+    T (d, "%s", &d[0]);   /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 30: warning: variable "a" was declared but never referenced
+    T (d, "%s", &d[1]);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 31: warning: variable "a" was declared but never referenced
+    T (d, "%s", &d[2]);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 32: warning: variable "a" was declared but never referenced
+    T (d, "%s", &d[i]);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 34: warning: variable "a" was declared but never referenced
+    T (d + 0, "%s", d);   /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 35: warning: variable "a" was declared but never referenced
+    T (d + 1, "%s", d);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 36: warning: variable "a" was declared but never referenced
+    T (d + 2, "%s", d);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 37: warning: variable "a" was declared but never referenced
+    T (d + i, "%s", d);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 39: warning: variable "a" was declared but never referenced
+    T (&d[0], "%s", d);   /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 40: warning: variable "a" was declared but never referenced
+    T (&d[1], "%s", d);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 41: warning: variable "a" was declared but never referenced
+    T (&d[2], "%s", d);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 42: warning: variable "a" was declared but never referenced
+    T (&d[i], "%s", d);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 46: warning: variable "a" was declared but never referenced
+    T (d, "%s", s);       /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 47: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 1);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 48: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 2);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 49: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + i);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 56: warning: variable "a" was declared but never referenced
+    T (d, "%s", s++);     /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 57: warning: variable "a" was declared but never referenced
+    T (d, "%s", s++);     /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 58: warning: variable "a" was declared but never referenced
+    T (d, "%s", s++);     /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 59: warning: variable "a" was declared but never referenced
+    T (d, "%s", s++);     /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 62: warning: variable "a" was declared but never referenced
+    T (d, "%s", s);       /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 92: warning: variable "a" was declared but never referenced
+    T (a2[0], "%s", a2[0]);       /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 93: warning: variable "a" was declared but never referenced
+    T (a2[0], "%s", a2[0] + 0);   /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 94: warning: variable "a" was declared but never referenced
+    T (a2[0], "%s", a2[0] + 1);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 95: warning: variable "a" was declared but never referenced
+    T (a2[0], "%s", a2[0] + 2);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 96: warning: variable "a" was declared but never referenced
+    T (a2[0], "%s", a2[0] + i);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 98: warning: variable "a" was declared but never referenced
+    T (a2[0], "%s", &a2[0][0]);   /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 99: warning: variable "a" was declared but never referenced
+    T (a2[0], "%s", &a2[0][1]);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 100: warning: variable "a" was declared but never referenced
+    T (a2[0], "%s", &a2[0][2]);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 101: warning: variable "a" was declared but never referenced
+    T (a2[0], "%s", &a2[0][i]);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 103: warning: variable "a" was declared but never referenced
+    T (a2[0] + 0, "%s", a2[0]);   /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 104: warning: variable "a" was declared but never referenced
+    T (a2[0] + 1, "%s", a2[0]);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 105: warning: variable "a" was declared but never referenced
+    T (a2[0] + 2, "%s", a2[0]);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 106: warning: variable "a" was declared but never referenced
+    T (a2[0] + i, "%s", a2[0]);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 108: warning: variable "a" was declared but never referenced
+    T (&a2[0][0], "%s", a2[0]);   /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 109: warning: variable "a" was declared but never referenced
+    T (&a2[0][1], "%s", a2[0]);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 110: warning: variable "a" was declared but never referenced
+    T (&a2[0][2], "%s", a2[0]);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 111: warning: variable "a" was declared but never referenced
+    T (&a2[0][i], "%s", a2[0]);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 114: warning: variable "a" was declared but never referenced
+    T (a2[0], "%s", a2[1]);
+    ^
+
+"Test_name.c", line 115: warning: variable "a" was declared but never referenced
+    T (a2[0], "%s", a2[1] + 0);
+    ^
+
+"Test_name.c", line 116: warning: variable "a" was declared but never referenced
+    T (a2[0], "%s", a2[1] + 1);
+    ^
+
+"Test_name.c", line 117: warning: variable "a" was declared but never referenced
+    T (a2[0], "%s", a2[1] + 2);
+    ^
+
+"Test_name.c", line 118: warning: variable "a" was declared but never referenced
+    T (a2[0], "%s", a2[1] + i);
+    ^
+
+"Test_name.c", line 120: warning: variable "a" was declared but never referenced
+    T (a2[0], "%s", &a2[1][0]);
+    ^
+
+"Test_name.c", line 121: warning: variable "a" was declared but never referenced
+    T (a2[0], "%s", &a2[1][1]);
+    ^
+
+"Test_name.c", line 122: warning: variable "a" was declared but never referenced
+    T (a2[0], "%s", &a2[1][2]);
+    ^
+
+"Test_name.c", line 129: warning: variable "a" was declared but never referenced
+    T (a2[0], "%s", &a2[1][i]);   /* { dg-bogus "overlap" "" { xfail *-*-* } } */
+    ^
+
+"Test_name.c", line 131: warning: variable "a" was declared but never referenced
+    T (a2[0] + 0, "%s", a2[1]);
+    ^
+
+"Test_name.c", line 132: warning: variable "a" was declared but never referenced
+    T (a2[0] + 1, "%s", a2[1]);
+    ^
+
+"Test_name.c", line 133: warning: variable "a" was declared but never referenced
+    T (a2[0] + 2, "%s", a2[1]);
+    ^
+
+"Test_name.c", line 134: warning: variable "a" was declared but never referenced
+    T (a2[0] + i, "%s", a2[1]);
+    ^
+
+"Test_name.c", line 136: warning: variable "a" was declared but never referenced
+    T (&a2[0][0], "%s", a2[1]);
+    ^
+
+"Test_name.c", line 137: warning: variable "a" was declared but never referenced
+    T (&a2[0][1], "%s", a2[1]);
+    ^
+
+"Test_name.c", line 138: warning: variable "a" was declared but never referenced
+    T (&a2[0][2], "%s", a2[1]);
+    ^
+
+"Test_name.c", line 139: warning: variable "a" was declared but never referenced
+    T (&a2[0][i], "%s", a2[1]);
+    ^
+
+"Test_name.c", line 142: warning: variable "a" was declared but never referenced
+    T (a2[1], "%s", a2[0]);
+    ^
+
+"Test_name.c", line 143: warning: variable "a" was declared but never referenced
+    T (a2[1], "%s", a2[0] + 0);
+    ^
+
+"Test_name.c", line 144: warning: variable "a" was declared but never referenced
+    T (a2[1], "%s", a2[0] + 1);
+    ^
+
+"Test_name.c", line 145: warning: variable "a" was declared but never referenced
+    T (a2[1], "%s", a2[0] + 2);
+    ^
+
+"Test_name.c", line 146: warning: variable "a" was declared but never referenced
+    T (a2[1], "%s", a2[0] + i);
+    ^
+
+"Test_name.c", line 148: warning: variable "a" was declared but never referenced
+    T (a2[1], "%s", &a2[0][0]);
+    ^
+
+"Test_name.c", line 149: warning: variable "a" was declared but never referenced
+    T (a2[1], "%s", &a2[0][1]);
+    ^
+
+"Test_name.c", line 150: warning: variable "a" was declared but never referenced
+    T (a2[1], "%s", &a2[0][2]);
+    ^
+
+"Test_name.c", line 151: warning: variable "a" was declared but never referenced
+    T (a2[1], "%s", &a2[0][i]);
+    ^
+
+"Test_name.c", line 153: warning: variable "a" was declared but never referenced
+    T (a2[1] + 0, "%s", a2[0]);
+    ^
+
+"Test_name.c", line 154: warning: variable "a" was declared but never referenced
+    T (a2[1] + 1, "%s", a2[0]);
+    ^
+
+"Test_name.c", line 155: warning: variable "a" was declared but never referenced
+    T (a2[1] + 2, "%s", a2[0]);
+    ^
+
+"Test_name.c", line 156: warning: variable "a" was declared but never referenced
+    T (a2[1] + i, "%s", a2[0]);
+    ^
+
+"Test_name.c", line 158: warning: variable "a" was declared but never referenced
+    T (&a2[1][0], "%s", a2[0]);
+    ^
+
+"Test_name.c", line 159: warning: variable "a" was declared but never referenced
+    T (&a2[1][1], "%s", a2[0]);
+    ^
+
+"Test_name.c", line 160: warning: variable "a" was declared but never referenced
+    T (&a2[1][2], "%s", a2[0]);
+    ^
+
+"Test_name.c", line 161: warning: variable "a" was declared but never referenced
+    T (&a2[1][i], "%s", a2[0]);   /* { dg-bogus "overlap" "" { xfail *-*-* } } */
+    ^
+
+"Test_name.c", line 164: warning: variable "a" was declared but never referenced
+    T (a2[1], "%s", a2[1]);       /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 165: warning: variable "a" was declared but never referenced
+    T (a2[1], "%s", a2[1] + 0);   /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 166: warning: variable "a" was declared but never referenced
+    T (a2[1], "%s", a2[1] + 1);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 167: warning: variable "a" was declared but never referenced
+    T (a2[1], "%s", a2[1] + 2);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 168: warning: variable "a" was declared but never referenced
+    T (a2[1], "%s", a2[1] + i);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 170: warning: variable "a" was declared but never referenced
+    T (a2[1], "%s", &a2[1][0]);   /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 171: warning: variable "a" was declared but never referenced
+    T (a2[1], "%s", &a2[1][1]);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 172: warning: variable "a" was declared but never referenced
+    T (a2[1], "%s", &a2[1][2]);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 173: warning: variable "a" was declared but never referenced
+    T (a2[1], "%s", &a2[1][i]);   /* { dg-warning "may overlap" "" { xfail *-*-* } } */
+    ^
+
+"Test_name.c", line 175: warning: variable "a" was declared but never referenced
+    T (a2[1] + 0, "%s", a2[1]);   /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 176: warning: variable "a" was declared but never referenced
+    T (a2[1] + 1, "%s", a2[1]);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 177: warning: variable "a" was declared but never referenced
+    T (a2[1] + 2, "%s", a2[1]);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 178: warning: variable "a" was declared but never referenced
+    T (a2[1] + i, "%s", a2[1]);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 180: warning: variable "a" was declared but never referenced
+    T (&a2[1][0], "%s", a2[1]);   /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 181: warning: variable "a" was declared but never referenced
+    T (&a2[1][1], "%s", a2[1]);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 182: warning: variable "a" was declared but never referenced
+    T (&a2[1][2], "%s", a2[1]);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 183: warning: variable "a" was declared but never referenced
+    T (&a2[1][i], "%s", a2[1]);   /* { dg-warning "may overlap" "" { xfail *-*-* } } */
+    ^
+
+"Test_name.c", line 216: warning: variable "a" was declared but never referenced
+    T (d, "%s", d);       /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 217: warning: variable "a" was declared but never referenced
+    T (d, "%s", d + 0);   /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 218: warning: variable "a" was declared but never referenced
+    T (d, "%s", d + 1);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 221: warning: variable "a" was declared but never referenced
+    T (d, "%s", d + 2);
+    ^
+
+"Test_name.c", line 222: warning: variable "a" was declared but never referenced
+    T (d, "%s", d + i);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 224: warning: variable "a" was declared but never referenced
+    T (d, "%s", &d[0]);   /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 225: warning: variable "a" was declared but never referenced
+    T (d, "%s", &d[1]);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 226: warning: variable "a" was declared but never referenced
+    T (d, "%s", &d[2]);
+    ^
+
+"Test_name.c", line 227: warning: variable "a" was declared but never referenced
+    T (d, "%s", &d[i]);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 229: warning: variable "a" was declared but never referenced
+    T (d + 0, "%s", d);   /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 230: warning: variable "a" was declared but never referenced
+    T (d + 1, "%s", d);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 231: warning: variable "a" was declared but never referenced
+    T (d + 2, "%s", d);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 232: warning: variable "a" was declared but never referenced
+    T (d + i, "%s", d);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 234: warning: variable "a" was declared but never referenced
+    T (&d[0], "%s", d);   /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 235: warning: variable "a" was declared but never referenced
+    T (&d[1], "%s", d);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 236: warning: variable "a" was declared but never referenced
+    T (&d[2], "%s", d);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 237: warning: variable "a" was declared but never referenced
+    T (&d[i], "%s", d);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 241: warning: variable "a" was declared but never referenced
+    T (d, "%s", s);       /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 242: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 1);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 243: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 2);
+    ^
+
+"Test_name.c", line 244: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + i);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 248: warning: variable "a" was declared but never referenced
+    T (d, "%s", s);
+    ^
+
+"Test_name.c", line 249: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 1);
+    ^
+
+"Test_name.c", line 250: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 2);
+    ^
+
+"Test_name.c", line 251: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + i);
+    ^
+
+"Test_name.c", line 255: warning: variable "a" was declared but never referenced
+    T (d, "%s", s);
+    ^
+
+"Test_name.c", line 256: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 1);
+    ^
+
+"Test_name.c", line 257: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 2);
+    ^
+
+"Test_name.c", line 258: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + i);
+    ^
+
+"Test_name.c", line 262: warning: variable "a" was declared but never referenced
+    T (d, "%s", s);
+    ^
+
+"Test_name.c", line 263: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 1);
+    ^
+
+"Test_name.c", line 264: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 2);
+    ^
+
+"Test_name.c", line 265: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + i);
+    ^
+
+"Test_name.c", line 271: warning: variable "a" was declared but never referenced
+    T (d, "%s", s);
+    ^
+
+"Test_name.c", line 272: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 1);
+    ^
+
+"Test_name.c", line 273: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 2);
+    ^
+
+"Test_name.c", line 274: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + i);
+    ^
+
+"Test_name.c", line 278: warning: variable "a" was declared but never referenced
+    T (d, "%s", s);
+    ^
+
+"Test_name.c", line 279: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 1);
+    ^
+
+"Test_name.c", line 280: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 2);
+    ^
+
+"Test_name.c", line 281: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + i);
+    ^
+
+"Test_name.c", line 285: warning: variable "a" was declared but never referenced
+    T (d, "%s", s);
+    ^
+
+"Test_name.c", line 286: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 1);
+    ^
+
+"Test_name.c", line 287: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 2);
+    ^
+
+"Test_name.c", line 288: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + i);
+    ^
+
+"Test_name.c", line 292: warning: variable "a" was declared but never referenced
+    T (d, "%s", s);
+    ^
+
+"Test_name.c", line 293: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 1);
+    ^
+
+"Test_name.c", line 294: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 2);
+    ^
+
+"Test_name.c", line 295: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + i);
+    ^
+
+"Test_name.c", line 299: warning: variable "a" was declared but never referenced
+    T (d, "%s", s);
+    ^
+
+"Test_name.c", line 300: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 1);
+    ^
+
+"Test_name.c", line 301: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 2);
+    ^
+
+"Test_name.c", line 302: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + i);
+    ^
+
+"Test_name.c", line 306: warning: variable "a" was declared but never referenced
+    T (d, "%s", s);
+    ^
+
+"Test_name.c", line 307: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 1);
+    ^
+
+"Test_name.c", line 308: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 2);
+    ^
+
+"Test_name.c", line 309: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + i);
+    ^
+
+"Test_name.c", line 315: warning: variable "a" was declared but never referenced
+    T (d, "%s", s);
+    ^
+
+"Test_name.c", line 316: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 1);
+    ^
+
+"Test_name.c", line 317: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 2);
+    ^
+
+"Test_name.c", line 318: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + i);
+    ^
+
+"Test_name.c", line 322: warning: variable "a" was declared but never referenced
+    T (d, "%s", s);
+    ^
+
+"Test_name.c", line 323: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 1);
+    ^
+
+"Test_name.c", line 324: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 2);
+    ^
+
+"Test_name.c", line 325: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + i);
+    ^
+
+"Test_name.c", line 329: warning: variable "a" was declared but never referenced
+    T (d, "%s", s);       /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 330: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 1);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 331: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 2);
+    ^
+
+"Test_name.c", line 332: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + i);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 336: warning: variable "a" was declared but never referenced
+    T (d, "%s", s);
+    ^
+
+"Test_name.c", line 337: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 1);
+    ^
+
+"Test_name.c", line 338: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 2);
+    ^
+
+"Test_name.c", line 339: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + i);
+    ^
+
+"Test_name.c", line 343: warning: variable "a" was declared but never referenced
+    T (d, "%s", s);
+    ^
+
+"Test_name.c", line 344: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 1);
+    ^
+
+"Test_name.c", line 345: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 2);
+    ^
+
+"Test_name.c", line 346: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + i);
+    ^
+
+"Test_name.c", line 352: warning: variable "a" was declared but never referenced
+    T (d, "%s", s);
+    ^
+
+"Test_name.c", line 353: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 1);
+    ^
+
+"Test_name.c", line 354: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 2);
+    ^
+
+"Test_name.c", line 355: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + i);
+    ^
+
+"Test_name.c", line 359: warning: variable "a" was declared but never referenced
+    T (d, "%s", s);
+    ^
+
+"Test_name.c", line 360: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 1);
+    ^
+
+"Test_name.c", line 361: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 2);
+    ^
+
+"Test_name.c", line 362: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + i);
+    ^
+
+"Test_name.c", line 366: warning: variable "a" was declared but never referenced
+    T (d, "%s", s);
+    ^
+
+"Test_name.c", line 367: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 1);
+    ^
+
+"Test_name.c", line 368: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 2);
+    ^
+
+"Test_name.c", line 369: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + i);
+    ^
+
+"Test_name.c", line 373: warning: variable "a" was declared but never referenced
+    T (d, "%s", s);       /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 374: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 1);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 375: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 2);
+    ^
+
+"Test_name.c", line 376: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + i);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 380: warning: variable "a" was declared but never referenced
+    T (d, "%s", s);
+    ^
+
+"Test_name.c", line 381: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 1);
+    ^
+
+"Test_name.c", line 382: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 2);
+    ^
+
+"Test_name.c", line 383: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + i);
+    ^
+
+"Test_name.c", line 387: warning: variable "a" was declared but never referenced
+    T (d, "%s", s);
+    ^
+
+"Test_name.c", line 388: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 1);
+    ^
+
+"Test_name.c", line 389: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 2);
+    ^
+
+"Test_name.c", line 390: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + i);
+    ^
+
+"Test_name.c", line 398: warning: variable "a" was declared but never referenced
+    T (d, "%s", s);       /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 399: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 0);   /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 400: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 1);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 401: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 2);
+    ^
+
+"Test_name.c", line 402: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + i);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 404: warning: variable "a" was declared but never referenced
+    T (d, "%s", &s[0]);   /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 405: warning: variable "a" was declared but never referenced
+    T (d, "%s", &s[1]);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 406: warning: variable "a" was declared but never referenced
+    T (d, "%s", &s[2]);
+    ^
+
+"Test_name.c", line 407: warning: variable "a" was declared but never referenced
+    T (d, "%s", &s[i]);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 409: warning: variable "a" was declared but never referenced
+    T (d + 0, "%s", s);   /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 410: warning: variable "a" was declared but never referenced
+    T (d + 1, "%s", s);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 411: warning: variable "a" was declared but never referenced
+    T (d + 2, "%s", s);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 412: warning: variable "a" was declared but never referenced
+    T (d + i, "%s", s);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 414: warning: variable "a" was declared but never referenced
+    T (&d[0], "%s", s);   /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 415: warning: variable "a" was declared but never referenced
+    T (&d[1], "%s", s);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 416: warning: variable "a" was declared but never referenced
+    T (&d[2], "%s", s);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 417: warning: variable "a" was declared but never referenced
+    T (&d[i], "%s", s);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 421: warning: variable "a" was declared but never referenced
+    T (d, "%s", s);
+    ^
+
+"Test_name.c", line 422: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 0);
+    ^
+
+"Test_name.c", line 423: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 1);
+    ^
+
+"Test_name.c", line 424: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 2);
+    ^
+
+"Test_name.c", line 425: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + i);
+    ^
+
+"Test_name.c", line 427: warning: variable "a" was declared but never referenced
+    T (d, "%s", &s[0]);
+    ^
+
+"Test_name.c", line 428: warning: variable "a" was declared but never referenced
+    T (d, "%s", &s[1]);
+    ^
+
+"Test_name.c", line 429: warning: variable "a" was declared but never referenced
+    T (d, "%s", &s[2]);
+    ^
+
+"Test_name.c", line 430: warning: variable "a" was declared but never referenced
+    T (d, "%s", &s[i]);
+    ^
+
+"Test_name.c", line 432: warning: variable "a" was declared but never referenced
+    T (d + 0, "%s", s);
+    ^
+
+"Test_name.c", line 433: warning: variable "a" was declared but never referenced
+    T (d + 1, "%s", s);
+    ^
+
+"Test_name.c", line 434: warning: variable "a" was declared but never referenced
+    T (d + 2, "%s", s);
+    ^
+
+"Test_name.c", line 435: warning: variable "a" was declared but never referenced
+    T (d + i, "%s", s);
+    ^
+
+"Test_name.c", line 437: warning: variable "a" was declared but never referenced
+    T (&d[0], "%s", s);
+    ^
+
+"Test_name.c", line 438: warning: variable "a" was declared but never referenced
+    T (&d[1], "%s", s);
+    ^
+
+"Test_name.c", line 439: warning: variable "a" was declared but never referenced
+    T (&d[2], "%s", s);
+    ^
+
+"Test_name.c", line 440: warning: variable "a" was declared but never referenced
+    T (&d[i], "%s", s);
+    ^
+
+"Test_name.c", line 514: warning: variable "a" was declared but never referenced
+    T (d, "%s", s);       /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 515: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 0);   /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 516: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 1);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 517: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 2);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 518: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + i);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 520: warning: variable "a" was declared but never referenced
+    T (d, "%s", &s[0]);   /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 521: warning: variable "a" was declared but never referenced
+    T (d, "%s", &s[1]);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 522: warning: variable "a" was declared but never referenced
+    T (d, "%s", &s[2]);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 523: warning: variable "a" was declared but never referenced
+    T (d, "%s", &s[i]);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 525: warning: variable "a" was declared but never referenced
+    T (d + 0, "%s", s);   /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 526: warning: variable "a" was declared but never referenced
+    T (d + 1, "%s", s);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 527: warning: variable "a" was declared but never referenced
+    T (d + 2, "%s", s);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 528: warning: variable "a" was declared but never referenced
+    T (d + i, "%s", s);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 530: warning: variable "a" was declared but never referenced
+    T (&d[0], "%s", s);   /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 531: warning: variable "a" was declared but never referenced
+    T (&d[1], "%s", s);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 532: warning: variable "a" was declared but never referenced
+    T (&d[2], "%s", s);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 533: warning: variable "a" was declared but never referenced
+    T (&d[i], "%s", s);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 538: warning: variable "a" was declared but never referenced
+    T (d, "%s", s);       /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 539: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 0);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 540: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 1);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 541: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 2);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 542: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + i);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 544: warning: variable "a" was declared but never referenced
+    T (d, "%s", &s[0]);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 545: warning: variable "a" was declared but never referenced
+    T (d, "%s", &s[1]);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 546: warning: variable "a" was declared but never referenced
+    T (d, "%s", &s[2]);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 547: warning: variable "a" was declared but never referenced
+    T (d, "%s", &s[i]);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 549: warning: variable "a" was declared but never referenced
+    T (d + 0, "%s", s);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 550: warning: variable "a" was declared but never referenced
+    T (d + 1, "%s", s);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 551: warning: variable "a" was declared but never referenced
+    T (d + 2, "%s", s);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 552: warning: variable "a" was declared but never referenced
+    T (d + j, "%s", s);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 554: warning: variable "a" was declared but never referenced
+    T (&d[0], "%s", s);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 555: warning: variable "a" was declared but never referenced
+    T (&d[1], "%s", s);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 556: warning: variable "a" was declared but never referenced
+    T (&d[2], "%s", s);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 557: warning: variable "a" was declared but never referenced
+    T (&d[j], "%s", s);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 570: warning: variable "a" was declared but never referenced
+    T (d, "%s", d);       /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 571: warning: variable "a" was declared but never referenced
+    T (d, "%s", d + 0);   /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 572: warning: variable "a" was declared but never referenced
+    T (d, "%s", d + 1);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 573: warning: variable "a" was declared but never referenced
+    T (d, "%s", d + 2);
+    ^
+
+"Test_name.c", line 574: warning: variable "a" was declared but never referenced
+    T (d, "%s", d + i);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 576: warning: variable "a" was declared but never referenced
+    T (d, "%s", &d[0]);   /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 577: warning: variable "a" was declared but never referenced
+    T (d, "%s", &d[1]);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 578: warning: variable "a" was declared but never referenced
+    T (d, "%s", &d[2]);
+    ^
+
+"Test_name.c", line 579: warning: variable "a" was declared but never referenced
+    T (d, "%s", &d[i]);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 581: warning: variable "a" was declared but never referenced
+    T (d + 0, "%s", d);   /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 582: warning: variable "a" was declared but never referenced
+    T (d + 1, "%s", d);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 583: warning: variable "a" was declared but never referenced
+    T (d + 2, "%s", d);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 584: warning: variable "a" was declared but never referenced
+    T (d + i, "%s", d);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 586: warning: variable "a" was declared but never referenced
+    T (&d[0], "%s", d);   /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 587: warning: variable "a" was declared but never referenced
+    T (&d[1], "%s", d);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 588: warning: variable "a" was declared but never referenced
+    T (&d[2], "%s", d);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 589: warning: variable "a" was declared but never referenced
+    T (&d[i], "%s", d);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 593: warning: variable "a" was declared but never referenced
+    T (d, "%s", s);       /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 594: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 1);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 595: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 2);
+    ^
+
+"Test_name.c", line 596: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + i);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 600: warning: variable "a" was declared but never referenced
+    T (d, "%s", s);
+    ^
+
+"Test_name.c", line 601: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 1);
+    ^
+
+"Test_name.c", line 602: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 2);
+    ^
+
+"Test_name.c", line 603: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + i);
+    ^
+
+"Test_name.c", line 607: warning: variable "a" was declared but never referenced
+    T (d, "%s", s);
+    ^
+
+"Test_name.c", line 608: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 1);
+    ^
+
+"Test_name.c", line 609: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 2);
+    ^
+
+"Test_name.c", line 610: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + i);
+    ^
+
+"Test_name.c", line 614: warning: variable "a" was declared but never referenced
+    T (d, "%s", s);
+    ^
+
+"Test_name.c", line 615: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 1);
+    ^
+
+"Test_name.c", line 616: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 2);
+    ^
+
+"Test_name.c", line 617: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + i);
+    ^
+
+"Test_name.c", line 621: warning: variable "a" was declared but never referenced
+    T (d, "%s", s);       /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 622: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 1);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 623: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 2);
+    ^
+
+"Test_name.c", line 624: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + i);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 628: warning: variable "a" was declared but never referenced
+    T (d, "%s", s);
+    ^
+
+"Test_name.c", line 629: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 1);
+    ^
+
+"Test_name.c", line 630: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + 2);
+    ^
+
+"Test_name.c", line 631: warning: variable "a" was declared but never referenced
+    T (d, "%s", s + i);
+    ^
+
+"Test_name.c", line 645: warning: variable "a" was declared but never referenced
+      T (d, "%s%s", a3, a4);    /* { dg-warning "arguments 3, 4 overlap destination object .a." }*/
+      ^
+
+"Test_name.c", line 657: warning: variable "a" was declared but never referenced
+      T (d, "%s%s", a3, a4);
+      ^
+
+"Test_name.c", line 669: warning: variable "a" was declared but never referenced
+      T (d, "%s%s", a3, a4);    /* { dg-warning "arguments 3, 4 may overlap destination object .a." }*/
+      ^
+
+"Test_name.c", line 681: warning: variable "a" was declared but never referenced
+      T (d, "%s%s", a3, a4);    /* { dg-warning "arguments 3 and maybe 4 overlap destination object .a." }*/
+      ^
+
+"Test_name.c", line 689: warning: variable "a" was declared but never referenced
+    T (d, "%.0s", d + 0);
+    ^
+
+"Test_name.c", line 690: warning: variable "a" was declared but never referenced
+    T (d, "%.0s", d + 1);
+    ^
+
+"Test_name.c", line 691: warning: variable "a" was declared but never referenced
+    T (d, "%.0s", d + 2);
+    ^
+
+"Test_name.c", line 692: warning: variable "a" was declared but never referenced
+    T (d, "%.0s", d + i);
+    ^
+
+"Test_name.c", line 694: warning: variable "a" was declared but never referenced
+    T (d, "%.1s", d + 0);       /* { dg-warning "overlaps" } */
+    ^
+
+"Test_name.c", line 698: warning: variable "a" was declared but never referenced
+    T (d, "%.1s", d + 1);       /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 699: warning: variable "a" was declared but never referenced
+    T (d, "%.1s", d + 2);
+    ^
+
+"Test_name.c", line 700: warning: variable "a" was declared but never referenced
+    T (d, "%.1s", d + i);       /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 702: warning: variable "a" was declared but never referenced
+    T (d + 1, "%.0s", d);
+    ^
+
+"Test_name.c", line 703: warning: variable "a" was declared but never referenced
+    T (d + 2, "%.0s", d);
+    ^
+
+"Test_name.c", line 705: warning: variable "a" was declared but never referenced
+    T (d + 1, "%.1s", d);       /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 706: warning: variable "a" was declared but never referenced
+    T (d + 2, "%.1s", d);
+    ^
+
+"Test_name.c", line 708: warning: variable "a" was declared but never referenced
+    T (d + 2, "%.1s", d + 1);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 709: warning: variable "a" was declared but never referenced
+    T (d + 2, "%.1s", d + i);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 713: warning: variable "a" was declared but never referenced
+    T (d + i, "%.1s", d + i);   /* { dg-warning "overlap" } */
+    ^
+
+"Test_name.c", line 715: warning: variable "a" was declared but never referenced
+    T (d + i, "%.1s", d + j);   /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 721: warning: variable "a" was declared but never referenced
+    T (d, "%.*s", i, d + 0);    /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 722: warning: variable "a" was declared but never referenced
+    T (d, "%.*s", i, d + 1);    /* { dg-warning "may overlap" } */
+    ^
+
+"Test_name.c", line 723: warning: variable "a" was declared but never referenced
+    T (d, "%.*s", i, d + 2);
+    ^
+
+"Test_name.c", line 724: warning: variable "a" was declared but never referenced
+    T (d, "%.*s", i, d + i);    /* { dg-warning "may overlap" } */
+    ^
+

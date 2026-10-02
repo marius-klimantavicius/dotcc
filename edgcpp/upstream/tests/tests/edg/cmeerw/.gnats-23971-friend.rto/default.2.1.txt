@@ -1,0 +1,2 @@
+fe_only -DTEST_NUMBER=2 c++20 Test_name.c
+eccp: unrecognizable argument: c++20

@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 9: error: mutable is not allowed
+    mutable const int f0; // expected-error{{'mutable' and 'const' cannot be mixed}}
+    ^
+
+"Test_name.c", line 10: error: mutable is not allowed
+    mutable T0 f1; // expected-error{{'mutable' and 'const' cannot be mixed}}
+    ^
+
+"Test_name.c", line 11: warning: declaring a reference with "mutable" is nonstandard
+    mutable int &f2; // expected-error{{'mutable' cannot be applied to references}}
+    ^
+
+"Test_name.c", line 12: warning: declaring a reference with "mutable" is nonstandard
+    mutable T1 f3; // expected-error{{'mutable' cannot be applied to references}}
+    ^
+
+"Test_name.c", line 13: error: mutable is not allowed
+    mutable struct s1 {}; // expected-error{{'mutable' can only be applied to member variables}}
+    ^
+
+"Test_name.c", line 14: error: mutable is not allowed
+    mutable void im0(); // expected-error{{'mutable' cannot be applied to functions}}
+    ^
+
+4 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./analyzer/switch.c", line 131: warning: statement is unreachable
+        break;
+        ^
+
+"./analyzer/switch.c", line 134: warning: statement is unreachable
+        break;
+        ^
+
+"./analyzer/switch.c", line 146: warning: integer conversion resulted in a change of sign
+      case -1:
+           ^
+
+"./analyzer/switch.c", line 194: warning: missing return statement at end of non-void function "test_bitmask_1"
+  }
+  ^
+
+"./analyzer/switch.c", line 239: warning: missing return statement at end of non-void function "test_bitmask_2"
+  }
+  ^
+

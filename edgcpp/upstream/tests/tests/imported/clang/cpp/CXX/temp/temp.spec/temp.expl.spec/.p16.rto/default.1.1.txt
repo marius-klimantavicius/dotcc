@@ -1,0 +1,58 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 38: error: a template declaration containing a template parameter list may not be followed by an explicit specialization declaration
+    template <>
+              ^
+
+"Test_name.c", line 51: warning: template nesting depth does not match the previous declaration of class "extraneous::A<int>"
+    struct A<int>;
+    ^
+
+"Test_name.c", line 55: warning: template nesting depth does not match the previous declaration of variable "extraneous::x<int>"
+    int x<int>;
+        ^
+
+"Test_name.c", line 59: warning: template nesting depth does not match the previous declaration of function "extraneous::f<T>() [with T=int]"
+    void f<int>();
+         ^
+
+"Test_name.c", line 85: warning: template nesting depth does not match the previous declaration of class "extraneous::B<T>::C [with T=int]"
+    struct B<int>::C;
+    ^
+
+"Test_name.c", line 90: warning: template nesting depth does not match the previous declaration of class "extraneous::B<T>::D<int> [with T=int]"
+    struct B<int>::D<int>;
+    ^
+
+"Test_name.c", line 95: error: template nesting depth does not match the previous declaration of class template "extraneous::B<T>::D [with T=int]"
+    struct B<int>::D;
+                    ^
+
+"Test_name.c", line 99: warning: template nesting depth does not match the previous declaration of member "extraneous::B<T>::y [with T=int]"
+    int B<int>::y;
+                ^
+
+"Test_name.c", line 104: warning: template nesting depth does not match the previous declaration of variable "extraneous::B<T>::z<int> [with T=int]"
+    int B<int>::z<int>;
+                ^
+
+"Test_name.c", line 113: warning: template nesting depth does not match the previous declaration of function "extraneous::B<T>::g [with T=int]"
+    void B<int>::g(); // expected-error{{no function template matches function template specialization 'g'}}
+                 ^
+
+"Test_name.c", line 118: warning: template nesting depth does not match the previous declaration of function "extraneous::B<T>::h<U>() [with T=int, U=int]"
+    void B<int>::h<int>();
+                 ^
+
+"Test_name.c", line 123: error: declaration is incompatible with function template "void extraneous::B<T>::h<U>() [with T=int]" (declared at line 76)
+    void B<int>::h<int>(); // expected-error{{function template partial specialization is not allowed}}
+                 ^
+
+"Test_name.c", line 128: warning: template nesting depth does not match the previous declaration of enum "extraneous::B<T>::E [with T=int]"
+    enum class B<int>::E; // expected-error{{enumeration cannot be a template}}
+    ^
+
+"Test_name.c", line 133: warning: template nesting depth does not match the previous declaration of enum "extraneous::B<T>::F [with T=int]"
+    enum B<int>::F : int; // expected-error{{enumeration cannot be a template}}
+    ^
+
+3 errors detected in the compilation of "Test_name.c".

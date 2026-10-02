@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --microsoft Test_name.c
+"Test_name.c", line 15: error: interface types cannot have typedef members
+  	typedef int T;
+  	            ^
+
+"Test_name.c", line 20: error: interface types cannot be nested class types
+  	__interface N;
+  	^
+
+"Test_name.c", line 25: error: interface types cannot be declared in functions
+  	__interface I;
+  	^
+
+3 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 11: error: expected a ";"
+    {
+    ^
+
+"Test_name.c", line 14: warning: parsing restarts here after previous syntax error
+    a = 1;
+         ^
+
+"Test_name.c", line 9: warning: variable "a" was declared but never referenced
+    int a;
+        ^
+
+"Test_name.c", line 22: error: declaration is incompatible with previous "foo" (declared at line 10)
+    void foo (void)
+         ^
+
+"Test_name.c", line 23: error: expected a ";"
+    {
+    ^
+
+"Test_name.c", line 26: warning: parsing restarts here after previous syntax error
+    a = 1;
+         ^
+
+"Test_name.c", line 21: warning: variable "a" was declared but never referenced
+    int a;	/* { dg-warning "set but not used" } */
+        ^
+
+3 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,58 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 7: error: declaration of a member with the same name as its class
+    static int Test1; // expected-error {{member 'Test1' has the same name as its class}}
+               ^
+
+"Test_name.c", line 10: warning: variable "x" was declared but never referenced
+      Test1 x; // expected-error {{must use 'class' tag to refer to type 'Test1' in this scope}}
+            ^
+
+"Test_name.c", line 13: error: type name is not allowed
+      return Test1;
+             ^
+
+"Test_name.c", line 19: error: identifier "NoSuchType" is undefined
+    static NoSuchType Test2; // expected-error {{unknown type name 'NoSuchType'}}
+           ^
+
+"Test_name.c", line 19: error: declaration of a member with the same name as its class
+    static NoSuchType Test2; // expected-error {{unknown type name 'NoSuchType'}}
+                      ^
+
+"Test_name.c", line 22: warning: variable "x" was declared but never referenced
+      Test2 x;
+            ^
+
+"Test_name.c", line 25: error: type name is not allowed
+      return Test2; // expected-error {{'Test2' does not refer to a value}}
+             ^
+
+"Test_name.c", line 31: error: identifier "NoSuchType" is undefined
+    NoSuchType x() { return 0; } // expected-error {{unknown type name 'NoSuchType'}}
+    ^
+
+"Test_name.c", line 43: error: not a class or struct name
+  class Test4 : public NoSuchType { // expected-error {{expected class name}}
+                       ^
+
+"Test_name.c", line 53: error: not a class or struct name
+  class Test5 : public NoSuchType { // expected-error {{expected class name}}
+                       ^
+
+"Test_name.c", line 56: error: identifier "NoSuchType" is undefined
+  NoSuchType Test5() { return 0; } // expected-error {{unknown type name 'NoSuchType'}}
+  ^
+
+"Test_name.c", line 58: error: function "Test5" is not a type name
+  Test5 test5_fn() {
+  ^
+
+"Test_name.c", line 59: warning: expression has no effect
+    Test5 x;
+    ^
+
+"Test_name.c", line 59: error: expected a ";"
+    Test5 x;
+          ^
+
+11 errors detected in the compilation of "Test_name.c".

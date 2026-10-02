@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 14: error: incomplete type "int []" is not allowed
+      e = sizeof a   // { dg-error "9:invalid application of .sizeof. to incomplete type" }
+                 ^
+
+"Test_name.c", line 23: error: incomplete type "B::A" (aka "int []") is not allowed
+      e = sizeof a   // { dg-error "9:invalid application of .sizeof. to incomplete type" }
+                 ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 14: warning: unknown attribute "returns_nonnull"
+    __attribute__ ((returns_nonnull)) void* frnn1 (void);
+                    ^
+
+"Test_name.c", line 30: warning: unknown attribute "returns_nonnull"
+    __attribute__ ((returns_nonnull)) void* frnn2 (void);
+                    ^
+
+"Test_name.c", line 44: warning: unknown attribute "returns_nonnull"
+  __attribute__ ((returns_nonnull)) void* frnn3 (void);
+                  ^
+

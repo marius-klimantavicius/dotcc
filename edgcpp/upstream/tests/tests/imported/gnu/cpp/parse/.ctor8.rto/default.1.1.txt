@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 7: error: expected an expression
+      A : ();     // { dg-error "primary-expression|incomplete type" }
+           ^
+
+"Test_name.c", line 7: error: incomplete type "A" is not allowed
+      A : ();     // { dg-error "primary-expression|incomplete type" }
+        ^
+
+"Test_name.c", line 8: error: expected an expression
+      A : (int);  // { dg-error "primary-expression|incomplete type|'int'" }
+               ^
+
+"Test_name.c", line 8: error: incomplete type "A" is not allowed
+      A : (int);  // { dg-error "primary-expression|incomplete type|'int'" }
+        ^
+
+"Test_name.c", line 11: error: too many initializer values
+  A a = (A){0};   // { dg-error "too many initializers|compound-literals" }
+            ^
+
+5 errors detected in the compilation of "Test_name.c".

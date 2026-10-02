@@ -1,0 +1,19 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: error: no operator "+" matches these operands
+            operand types are: C<int>::D + int
+    t+1;				// { dg-error "no match" }
+     ^
+"Test_name.c", line 9: note: built-in operator+(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    t+1;				// { dg-error "no match" }
+     ^
+"Test_name.c", line 9: note: built-in operator+(<pointer to object>, <ptrdiff_t>) does not match because argument #1 does not match parameter
+    t+1;				// { dg-error "no match" }
+     ^
+"Test_name.c", line 9: note: built-in operator+(<ptrdiff_t>, <pointer to object>) does not match because argument #1 does not match parameter
+    t+1;				// { dg-error "no match" }
+     ^
+          detected during:
+            instantiation of "void g(T) [with T=C<int>::D]" at line 19
+            instantiation of "decltype((<expression>)) C<S>::h() [with S=int]" at line 25
+
+1 error detected in the compilation of "Test_name.c".

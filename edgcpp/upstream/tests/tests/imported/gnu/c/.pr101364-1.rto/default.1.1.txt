@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 Test_name.c
+"Test_name.c", line 8: error: identifier "x" is undefined
+      int b[x], /* { dg-error "undeclared " } */
+            ^
+
+"Test_name.c", line 7: error: declaration is incompatible with "void fruit()" (declared at line 6)
+  void fruit( /* { dg-error "conflicting types for" } */
+       ^
+
+2 errors detected in the compilation of "Test_name.c".

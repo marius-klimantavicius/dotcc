@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 Test_name.c
+"Test_name.c", line 7: error: extra text after expected end of number
+  int a = (int) 1.1D32; /* { dg-error "C23 feature" } */
+                   ^
+
+"Test_name.c", line 8: error: extra text after expected end of number
+  int b = (int) 2.d32; /* { dg-error "C23 feature" } */
+                  ^
+
+"Test_name.c", line 9: error: extra text after expected end of number
+  int c = (int) .33D64; /* { dg-error "C23 feature" } */
+                   ^
+
+"Test_name.c", line 10: error: extra text after expected end of number
+  int d = (int) 2e1d64; /* { dg-error "C23 feature" } */
+                   ^
+
+"Test_name.c", line 11: error: extra text after expected end of number
+  int e = (int) .3e2D128; /* { dg-error "C23 feature" } */
+                    ^
+
+"Test_name.c", line 12: error: extra text after expected end of number
+  int f = (int) 4.5e3d128; /* { dg-error "C23 feature" } */
+                     ^
+
+"Test_name.c", line 13: error: extra text after expected end of number
+  int g = (int) 5.e0D32; /* { dg-error "C23 feature" } */
+                    ^
+
+"Test_name.c", line 14: error: extra text after expected end of number
+  int h = (int) 1e+2d32; /* { dg-error "C23 feature" } */
+                    ^
+
+"Test_name.c", line 15: error: extra text after expected end of number
+  int i = (int) 1000e-3D128; /* { dg-error "C23 feature" } */
+                       ^
+
+9 errors detected in the compilation of "Test_name.c".

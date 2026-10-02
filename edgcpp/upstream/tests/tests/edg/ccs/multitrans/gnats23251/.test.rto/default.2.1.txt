@@ -1,0 +1,1 @@
+cpfe -DTEST_NUMBER=2 --multi_trans --microsoft -tused -DBUG2 Test_name.c gnats23251-p2.C

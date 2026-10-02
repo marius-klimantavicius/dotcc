@@ -1,0 +1,324 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 -w --c++14 --ms_extensions --ms_compatibility Test_name.c
+"Test_name.c", line 49: error: wide string literal not allowed
+  struct __declspec(uuid(L"00000000-0000-0000-1234-000000000047")) uuid_attr_bad1 { };// expected-warning {{encoding prefix 'L' on an unevaluated string literal has no effect and is incompatible with c++2c}}
+                         ^
+
+"Test_name.c", line 50: error: expected a string literal
+  struct __declspec(uuid(3)) uuid_attr_bad2 { };// expected-error {{expected string literal as argument of 'uuid' attribute}}
+                         ^
+
+"Test_name.c", line 51: error: invalid GUID string in __declspec(uuid("..."))
+  struct __declspec(uuid("0000000-0000-0000-1234-0000500000047")) uuid_attr_bad3 { };// expected-error {{uuid attribute contains a malformed GUID}}
+                         ^
+
+"Test_name.c", line 52: error: invalid GUID string in __declspec(uuid("..."))
+  struct __declspec(uuid("0000000-0000-0000-Z234-000000000047")) uuid_attr_bad4 { };// expected-error {{uuid attribute contains a malformed GUID}}
+                         ^
+
+"Test_name.c", line 53: error: invalid GUID string in __declspec(uuid("..."))
+  struct __declspec(uuid("000000000000-0000-1234-000000000047")) uuid_attr_bad5 { };// expected-error {{uuid attribute contains a malformed GUID}}
+                         ^
+
+"Test_name.c", line 54: error: invalid GUID string in __declspec(uuid("..."))
+  [uuid("000000000000-0000-1234-000000000047")] struct uuid_attr_bad6 { };// expected-error {{uuid attribute contains a malformed GUID}}
+        ^
+
+"Test_name.c", line 92: error: operand of __uuidof must have a class or enum type for which __declspec(uuid("...")) has been specified
+     __uuidof(struct_without_uuid); // expected-error {{cannot call operator __uuidof on a type with no GUID}}
+              ^
+
+"Test_name.c", line 94: error: operand of __uuidof must have a class or enum type for which __declspec(uuid("...")) has been specified
+     __uuidof(struct_without_uuid*); // expected-error {{cannot call operator __uuidof on a type with no GUID}}
+              ^
+
+"Test_name.c", line 96: error: operand of __uuidof must have a class or enum type for which __declspec(uuid("...")) has been specified
+     __uuidof(struct_with_uuid*[1]); // expected-error {{cannot call operator __uuidof on a type with no GUID}}
+              ^
+
+"Test_name.c", line 98: error: operand of __uuidof must have a class or enum type for which __declspec(uuid("...")) has been specified
+     __uuidof(const struct_with_uuid*[1][1]); // expected-error {{cannot call operator __uuidof on a type with no GUID}}
+              ^
+
+"Test_name.c", line 101: error: operand of __uuidof must have a class or enum type for which __declspec(uuid("...")) has been specified
+     __uuidof(enum_without_uuid); // expected-error {{cannot call operator __uuidof on a type with no GUID}}
+              ^
+
+"Test_name.c", line 103: error: operand of __uuidof must have a class or enum type for which __declspec(uuid("...")) has been specified
+     __uuidof(enum_without_uuid*); // expected-error {{cannot call operator __uuidof on a type with no GUID}}
+              ^
+
+"Test_name.c", line 105: error: operand of __uuidof must have a class or enum type for which __declspec(uuid("...")) has been specified
+     __uuidof(enum_with_uuid*[1]); // expected-error {{cannot call operator __uuidof on a type with no GUID}}
+              ^
+
+"Test_name.c", line 107: error: operand of __uuidof must have a class or enum type for which __declspec(uuid("...")) has been specified
+     __uuidof(const enum_with_uuid*[1][1]); // expected-error {{cannot call operator __uuidof on a type with no GUID}}
+              ^
+
+"Test_name.c", line 110: error: operand of __uuidof must have a class or enum type for which __declspec(uuid("...")) has been specified
+     __uuidof(var_without_uuid);// expected-error {{cannot call operator __uuidof on a type with no GUID}}
+              ^
+
+"Test_name.c", line 112: error: operand of __uuidof must have a class or enum type for which __declspec(uuid("...")) has been specified
+     __uuidof(var_without_uuid[1]);// expected-error {{cannot call operator __uuidof on a type with no GUID}}
+              ^
+
+"Test_name.c", line 114: error: operand of __uuidof must have a class or enum type for which __declspec(uuid("...")) has been specified
+     __uuidof(&var_without_uuid[1]);// expected-error {{cannot call operator __uuidof on a type with no GUID}}
+              ^
+
+"Test_name.c", line 117: error: operand of __uuidof must have a class or enum type for which __declspec(uuid("...")) has been specified
+     __uuidof(1);// expected-error {{cannot call operator __uuidof on a type with no GUID}}
+              ^
+
+"Test_name.c", line 150: error: no suitable conversion function from "const _GUID" to "const GUID *" exists
+  COM_CLASS_TEMPLATE<int, __uuidof(struct_with_uuid)> bad_template_arg; // expected-error {{non-type template argument for template parameter of pointer type 'const GUID *' (aka 'const struct _GUID *') must have its address taken}}
+                          ^
+
+"Test_name.c", line 164: error: operand of __uuidof must have a class or enum type for which __declspec(uuid("...")) has been specified
+  const struct _GUID *w = &__uuidof(inher); // expected-error{{cannot call operator __uuidof on a type with no GUID}}
+                                    ^
+
+"Test_name.c", line 166: error: operand of __uuidof must have a class or enum type for which __declspec(uuid("...")) has been specified
+  const struct _GUID *y = &__uuidof(thing<uuid2, uuid>); // expected-error{{cannot call operator __uuidof on a type with multiple GUIDs}}
+                                    ^
+
+"Test_name.c", line 168: error: operand of __uuidof must have a class or enum type for which __declspec(uuid("...")) has been specified
+  const struct _GUID *z = &__uuidof(thing_obj); // expected-error{{cannot call operator __uuidof on a type with multiple GUIDs}}
+                                    ^
+
+"Test_name.c", line 182: error: type name is not allowed
+          this->CtorCall::CtorCall(that); // expected-warning {{explicit constructor calls are a Microsoft extension}}
+                          ^
+
+"Test_name.c", line 197: error: template parameter "C1<A>::Iterator [with A=T]" may not have a template argument list
+    typename C1<T>:: /*template*/  Iterator<0> Mypos; // expected-warning {{use 'template' keyword to treat 'Iterator' as a dependent template name}}
+                                   ^
+
+"Test_name.c", line 269: error: expected a "("
+  int __identifier for; // expected-error {{missing '(' after '__identifier'}}
+                   ^
+
+"Test_name.c", line 269: error: expected a C++ keyword
+  int __identifier for; // expected-error {{missing '(' after '__identifier'}}
+                   ^
+
+"Test_name.c", line 269: error: expected a ")"
+  int __identifier for; // expected-error {{missing '(' after '__identifier'}}
+                   ^
+
+"Test_name.c", line 269: error: expected an identifier
+  int __identifier for; // expected-error {{missing '(' after '__identifier'}}
+                      ^
+
+"Test_name.c", line 270: error: expected a ")"
+  int __identifier(else} = __identifier(for); // expected-error {{missing ')' after identifier}} expected-note {{to match this '('}}
+                       ^
+
+"Test_name.c", line 272: error: identifier "if" is undefined
+  int k = identifier_weird(if)); // expected-error {{use of undeclared identifier 'if'}}
+                              ^
+
+"Test_name.c", line 276: error: expected a C++ keyword
+  int __identifier("baz") = 0;
+                   ^
+
+"Test_name.c", line 280: error: expected a C++ keyword
+  extern "C" void __identifier("?mangled_function@@YAXXZ")() {}
+                               ^
+
+"Test_name.c", line 283: error: expected a C++ keyword
+    __identifier(() // expected-error {{cannot convert '(' token to an identifier}}
+                 ^
+
+"Test_name.c", line 283: error: expected a ")"
+    __identifier(() // expected-error {{cannot convert '(' token to an identifier}}
+                 ^
+
+"Test_name.c", line 285: error: expected a C++ keyword
+    __identifier()) // expected-error {{cannot convert ')' token to an identifier}}
+                 ^
+
+"Test_name.c", line 285: error: expected an expression
+    __identifier()) // expected-error {{cannot convert ')' token to an identifier}}
+                  ^
+
+"Test_name.c", line 287: error: expected a C++ keyword
+    __identifier(1) // expected-error {{cannot convert <numeric_constant> token to an identifier}}
+                 ^
+
+"Test_name.c", line 287: error: expected a ")"
+    __identifier(1) // expected-error {{cannot convert <numeric_constant> token to an identifier}}
+                 ^
+
+"Test_name.c", line 288: error: expected a C++ keyword
+    __identifier(+) // expected-error {{cannot convert '+' token to an identifier}}
+                 ^
+
+"Test_name.c", line 288: error: expected a ")"
+    __identifier(+) // expected-error {{cannot convert '+' token to an identifier}}
+                 ^
+
+"Test_name.c", line 289: error: expected a C++ keyword
+    __identifier(;) // expected-error {{cannot convert ';' token to an identifier}}
+                 ^
+
+"Test_name.c", line 289: error: expected a ")"
+    __identifier(;) // expected-error {{cannot convert ';' token to an identifier}}
+                 ^
+
+"Test_name.c", line 290: error: expected a C++ keyword
+    __identifier("1"); // expected-error {{use of undeclared identifier '1'}}
+                 ^
+
+"Test_name.c", line 291: error: expected a C++ keyword
+    __identifier("+"); // expected-error {{use of undeclared identifier '+'}}
+                 ^
+
+"Test_name.c", line 291: error: identifier "+" is undefined
+    __identifier("+"); // expected-error {{use of undeclared identifier '+'}}
+                    ^
+
+"Test_name.c", line 292: error: expected a C++ keyword
+    __identifier(";"); // expected-error {{use of undeclared identifier ';'}}
+                 ^
+
+"Test_name.c", line 292: error: identifier ";" is undefined
+    __identifier(";"); // expected-error {{use of undeclared identifier ';'}}
+                    ^
+
+"Test_name.c", line 357: error: expected a "("
+    __declspec(property) int V0; // expected-error {{expected '(' after 'property'}}
+                       ^
+
+"Test_name.c", line 358: error: incorrect property specification; correct form is __declspec(property(get=name1,put=name2))
+    __declspec(property()) int V1; // expected-error {{property does not specify a getter or a putter}}
+                        ^
+
+"Test_name.c", line 359: error: incorrect property specification; correct form is __declspec(property(get=name1,put=name2))
+    __declspec(property(set)) int V2; // expected-error {{putter for property must be specified as 'put', not 'set'}} expected-error {{expected '=' after 'set'}}
+                        ^
+
+"Test_name.c", line 360: error: incorrect property specification; correct form is __declspec(property(get=name1,put=name2))
+    __declspec(property(ptu)) int V3; // expected-error {{missing 'get=' or 'put='}}
+                        ^
+
+"Test_name.c", line 361: error: incorrect property specification; correct form is __declspec(property(get=name1,put=name2))
+    __declspec(property(ptu=PutV)) int V4; // expected-error {{expected 'get' or 'put' in property declaration}}
+                        ^
+
+"Test_name.c", line 362: error: expected an "="
+    __declspec(property(get)) int V5; // expected-error {{expected '=' after 'get'}}
+                           ^
+
+"Test_name.c", line 363: error: expected an "="
+    __declspec(property(get&)) int V6; // expected-error {{expected '=' after 'get'}}
+                           ^
+
+"Test_name.c", line 364: error: expected an identifier
+    __declspec(property(get=)) int V7; // expected-error {{expected name of accessor method}}
+                            ^
+
+"Test_name.c", line 366: error: expected a ")"
+    __declspec(property(get=GetV=)) int V9; // expected-error {{expected ',' or ')' at end of property accessor list}}
+                                ^
+
+"Test_name.c", line 367: error: incorrect property specification; correct form is __declspec(property(get=name1,put=name2))
+    __declspec(property(get=GetV,)) int V10; // expected-error {{expected 'get' or 'put' in property declaration}}
+                                 ^
+
+"Test_name.c", line 369: error: property has already been specified
+    __declspec(property(get=GetV,put=SetV,get=GetV)) int V12; // expected-error {{property declaration specifies 'get' accessor twice}}
+                                          ^
+
+"Test_name.c", line 378: error: member is declared with __declspec(property), but no "put" function was specified
+    sp.V8 = 0; // expected-error {{no setter defined for property 'V8'}}
+    ^
+
+"Test_name.c", line 419: error: __ptr32 and __ptr64 must follow a "*"
+  typedef int ignored_quals_dummy1, const volatile __ptr32 __ptr64 __w64 __unaligned __sptr __uptr ignored_quals1; // expected-warning {{qualifiers after comma in declarator list are ignored}}
+                                                   ^
+
+"Test_name.c", line 419: error: __ptr32 and __ptr64 must follow a "*"
+  typedef int ignored_quals_dummy1, const volatile __ptr32 __ptr64 __w64 __unaligned __sptr __uptr ignored_quals1; // expected-warning {{qualifiers after comma in declarator list are ignored}}
+                                                           ^
+
+"Test_name.c", line 419: error: __w64 can only be specified on int, long, and pointer types
+  typedef int ignored_quals_dummy1, const volatile __ptr32 __ptr64 __w64 __unaligned __sptr __uptr ignored_quals1; // expected-warning {{qualifiers after comma in declarator list are ignored}}
+                                                                   ^
+
+"Test_name.c", line 419: error: __sptr and __uptr must follow a "*"
+  typedef int ignored_quals_dummy1, const volatile __ptr32 __ptr64 __w64 __unaligned __sptr __uptr ignored_quals1; // expected-warning {{qualifiers after comma in declarator list are ignored}}
+                                                                         ^
+
+"Test_name.c", line 419: error: __sptr and __uptr must follow a "*"
+  typedef int ignored_quals_dummy1, const volatile __ptr32 __ptr64 __w64 __unaligned __sptr __uptr ignored_quals1; // expected-warning {{qualifiers after comma in declarator list are ignored}}
+                                                                                            ^
+
+"Test_name.c", line 439: error: expression must have a constant value
+  static_assert(h().g() == false, "");
+                ^
+"Test_name.c", line 431: note: cannot call non-constexpr function "<unnamed>::f" (declared at line 427)
+      __assume(f(t)); // expected-warning{{assumption is ignored because it contains (potential) side-effects}}
+               ^
+"Test_name.c", line 436: note: called from:
+    A<int> b(0); // expected-note {{in instantiation of member function}}
+            ^
+
+"Test_name.c", line 469: error: forward declaration of enum type is nonstandard
+    enum E0 *p0; // expected-warning {{Microsoft extension}}
+         ^
+
+"Test_name.c", line 470: error: underlying type of enum type must be an integral type
+    enum class E1 : int *p1;
+                    ^
+
+"Test_name.c", line 470: error: expected a "{"
+    enum class E1 : int *p1;
+                         ^
+
+"Test_name.c", line 470: error: expected an identifier
+    enum class E1 : int *p1;
+                           ^
+
+"Test_name.c", line 470: error: expected a "}"
+    enum class E1 : int *p1;
+                           ^
+
+"Test_name.c", line 471: error: underlying type of enum type must be an integral type
+    enum E2 : int *p2;
+              ^
+
+"Test_name.c", line 471: error: expected a "{"
+    enum E2 : int *p2;
+                   ^
+
+"Test_name.c", line 471: error: expected an identifier
+    enum E2 : int *p2;
+                     ^
+
+"Test_name.c", line 471: error: expected a "}"
+    enum E2 : int *p2;
+                     ^
+
+"Test_name.c", line 473: error: a function may not return a value of this type
+    auto f4() -> enum class E4 { return {}; }
+         ^
+
+"Test_name.c", line 474: error: forward declaration of enum type is nonstandard
+    auto f5() -> enum E5 : int { return {}; } // FIXME: MSVC rejects this and crashes if the body is {}.
+                      ^
+
+"Test_name.c", line 474: error: expected a "{"
+    auto f5() -> enum E5 : int { return {}; } // FIXME: MSVC rejects this and crashes if the body is {}.
+                         ^
+
+"Test_name.c", line 475: error: forward declaration of enum type is nonstandard
+    auto f6() -> enum E6 { return {}; } // expected-warning {{Microsoft extension}}
+                      ^
+
+"Test_name.c", line 487: error: expected a ";"
+      enum E : int : int{}{}; // expected-error {{anonymous bit-field cannot have a default member initializer}}
+                          ^
+
+79 errors detected in the compilation of "Test_name.c".

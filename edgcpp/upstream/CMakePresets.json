@@ -1,0 +1,330 @@
+{
+  "version": 1,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 19,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "macos-arm-common",
+      "hidden": true,
+      "description": "MacOS ARM base config",
+      "generator": "Ninja",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "DEBUG",
+        "EDG_CPP_RT_LIBS": "macos_arm64"
+      }
+    },
+    {
+      "name": "macos-arm-clang-debug",
+      "inherits": "macos-arm-common",
+      "displayName": "MacOS ARM (Clang) Build Config - DEBUG",
+      "description": "MacOS ARM build using Clang",
+      "binaryDir": "${sourceDir}/build/clang",
+      "cacheVariables": {
+        "EDG_MACRO_CONF": "macos-arm-clang",
+        "CMAKE_BUILD_TYPE": "Debug"
+      },
+      "environment": {
+        "CC": "clang",
+        "CXX": "clang++"
+      }
+    },
+    {
+      "name": "macos-arm-clang-release",
+      "inherits": "macos-arm-common",
+      "displayName": "MacOS ARM (Clang) Build Config - RELEASE",
+      "description": "MacOS ARM build using Clang",
+      "binaryDir": "${sourceDir}/build/clang-release",
+      "cacheVariables": {
+        "EDG_MACRO_CONF": "macos-arm-clang-release",
+        "CMAKE_BUILD_TYPE": "Release"
+      },
+      "environment": {
+        "CC": "clang",
+        "CXX": "clang++"
+      }
+    },
+    {
+      "name": "macos-x86-common",
+      "hidden": true,
+      "description": "MacOS x86 base config",
+      "generator": "Ninja",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "DEBUG",
+        "EDG_CPP_RT_LIBS": "macos_x86_64"
+      }
+    },
+    {
+      "name": "macos-x86-clang-debug",
+      "inherits": "macos-x86-common",
+      "displayName": "MacOS x86 (Clang) Build Config - DEBUG",
+      "description": "MacOS x86 build using Clang",
+      "binaryDir": "${sourceDir}/build/clang",
+      "cacheVariables": {
+        "EDG_MACRO_CONF": "macos-x86-clang",
+        "CMAKE_BUILD_TYPE": "Debug"
+      },
+      "environment": {
+        "CC": "clang",
+        "CXX": "clang++"
+      }
+    },
+    {
+      "name": "macos-x86-clang-multi-thread-debug",
+      "inherits": "macos-x86-common",
+      "displayName": "MacOS Multi-Threaded x86 (Clang) Build Config - DEBUG",
+      "description": "MacOS Multi-Threaded x86 build using Clang",
+      "binaryDir": "${sourceDir}/build/clang-multi-thread",
+      "cacheVariables": {
+        "EDG_MACRO_CONF": "macos-x86-clang-multi-thread",
+        "CMAKE_BUILD_TYPE": "Debug",
+        "MULTI_THREADED_DAEMON": "ON"
+      },
+      "environment": {
+        "CC": "clang",
+        "CXX": "clang++"
+      }
+    },
+    {
+      "name": "macos-x86-clang-release",
+      "inherits": "macos-x86-common",
+      "displayName": "MacOS x86 (Clang) Build Config - RELEASE",
+      "description": "MacOS x86 build using Clang",
+      "binaryDir": "${sourceDir}/build/clang-release",
+      "cacheVariables": {
+        "EDG_MACRO_CONF": "macos-x86-clang-release",
+        "CMAKE_BUILD_TYPE": "Release"
+      },
+      "environment": {
+        "CC": "clang",
+        "CXX": "clang++"
+      }
+    },
+    {
+      "name": "linux-common",
+      "hidden": true,
+      "description": "Linux base config",
+      "generator": "Ninja",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "DEBUG",
+        "EDG_CPP_RT_LIBS": "linux_riscv64 linux_riscv32 linux_aarch64 linux_armv7 linux_i686 linux_x86_64 win32 win64"
+      }
+    },
+    {
+      "name": "linux-clang-debug",
+      "inherits": "linux-common",
+      "displayName": "Linux (Clang) Build Config - DEBUG",
+      "description": "Linux build using Clang",
+      "binaryDir": "${sourceDir}/build/clang",
+      "cacheVariables": {
+        "EDG_MACRO_CONF": "linux-clang",
+        "CMAKE_BUILD_TYPE": "Debug"
+      },
+      "environment": {
+        "CC": "clang",
+        "CXX": "clang++"
+      }
+    },
+    {
+      "name": "linux-clang-lsp",
+      "inherits": "linux-clang-debug",
+      "displayName": "Linux (Clang) LSP",
+      "description": "Linux based Clang Language Server",
+      "binaryDir": "${sourceDir}/build/clang-lsp",
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "1"
+      },
+      "environment": {
+        "CC": "clang",
+        "CXX": "clang++"
+      }
+    },
+    {
+      "name": "linux-clang-release",
+      "inherits": "linux-common",
+      "displayName": "Linux (Clang) Build Config - RELEASE",
+      "description": "Linux build using Clang",
+      "binaryDir": "${sourceDir}/build/clang-release",
+      "cacheVariables": {
+        "EDG_MACRO_CONF": "linux-clang-release",
+        "CMAKE_BUILD_TYPE": "Release"
+      },
+      "environment": {
+        "CC": "clang",
+        "CXX": "clang++"
+      }
+    },
+    {
+      "name": "linux-clang-debuggable-release",
+      "inherits": "linux-common",
+      "displayName": "Linux (Clang) Build Config - RELEASE w/ debug info",
+      "description": "Linux build using Clang",
+      "binaryDir": "${sourceDir}/build/clang-dbg-release",
+      "cacheVariables": {
+        "EDG_MACRO_CONF": "linux-clang-release",
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+      },
+      "environment": {
+        "CC": "clang",
+        "CXX": "clang++"
+      }
+    },
+    {
+      "name": "linux-gcc-debug",
+      "inherits": "linux-common",
+      "displayName": "Linux (GCC) Build Config - DEBUG",
+      "description": "Linux build using GCC",
+      "binaryDir": "${sourceDir}/build/gcc",
+      "cacheVariables": {
+        "EDG_MACRO_CONF": "linux-gcc",
+        "CMAKE_BUILD_TYPE": "Debug"
+      },
+      "environment": {
+        "CC": "gcc",
+        "CXX": "g++"
+      }
+    },
+    {
+      "name": "linux-i686-gcc-debug",
+      "inherits": "linux-common",
+      "displayName": "Linux i686 (GCC) Build Config - DEBUG",
+      "description": "Linux i686 build using GCC",
+      "binaryDir": "${sourceDir}/build/gcc-i686",
+      "cacheVariables": {
+        "EDG_MACRO_CONF": "linux-i686-gcc",
+        "CMAKE_BUILD_TYPE": "Debug",
+        "32BIT_BUILD": "ON",
+        "EDG_CPP_RT_LIBS": "linux_i686 win32",
+        "EDG_ENABLE_CONVERSION_WARNINGS": "OFF"
+      },
+      "environment": {
+        "CC": "gcc",
+        "CXX": "g++"
+      }
+    },
+    {
+      "name": "linux-gcc-multi-thread-debug",
+      "inherits": "linux-common",
+      "displayName": "Linux Multi-Threaded (GCC) Build Config - DEBUG",
+      "description": "Linux Multi-Threaded driver build using GCC",
+      "binaryDir": "${sourceDir}/build/gcc-multi-thread",
+      "cacheVariables": {
+        "EDG_MACRO_CONF": "linux-gcc-multi-thread",
+        "CMAKE_BUILD_TYPE": "Debug",
+        "MULTI_THREADED_DAEMON": "ON"
+      },
+      "environment": {
+        "CC": "gcc",
+        "CXX": "g++"
+      }
+    },
+    {
+      "name": "linux-gcc-multi-thread-release",
+      "inherits": "linux-common",
+      "displayName": "Linux Multi-Threaded (GCC) Build Config - RELEASE",
+      "description": "Linux Multi-Threaded driver build using GCC",
+      "binaryDir": "${sourceDir}/build/gcc-multi-thread-release",
+      "cacheVariables": {
+        "EDG_MACRO_CONF": "linux-gcc-multi-thread-release",
+        "CMAKE_BUILD_TYPE": "Release",
+        "MULTI_THREADED_DAEMON": "ON"
+      },
+      "environment": {
+        "CC": "gcc",
+        "CXX": "g++"
+      }
+    },
+    {
+      "name": "linux-gcc-release",
+      "inherits": "linux-common",
+      "displayName": "Linux (GCC) Build Config - RELEASE",
+      "description": "Linux build using GCC",
+      "binaryDir": "${sourceDir}/build/gcc-release",
+      "cacheVariables": {
+        "EDG_MACRO_CONF": "linux-gcc-release",
+        "CMAKE_BUILD_TYPE": "Release"
+      },
+      "environment": {
+        "CC": "gcc",
+        "CXX": "g++"
+      }
+    },
+    {
+      "name": "linux-gcc-debuggable-release",
+      "inherits": "linux-common",
+      "displayName": "Linux (GCC) Build Config - RELEASE w/ debug info",
+      "description": "Linux build using GCC",
+      "binaryDir": "${sourceDir}/build/gcc-dbg-release",
+      "cacheVariables": {
+        "EDG_MACRO_CONF": "linux-gcc-release",
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+      },
+      "environment": {
+        "CC": "gcc",
+        "CXX": "g++"
+      }
+    },
+    {
+      "name": "linux-gcc-reflection-release",
+      "inherits": "linux-common",
+      "displayName": "Linux (GCC) Build Config - Reflection RELEASE",
+      "description": "Linux release build using GCC w/ reflection enabled",
+      "binaryDir": "${sourceDir}/build/gcc-reflection-release",
+      "cacheVariables": {
+        "EDG_MACRO_CONF": "linux-gcc-reflection-release",
+        "CMAKE_BUILD_TYPE": "Release"
+      },
+      "environment": {
+        "CC": "gcc",
+        "CXX": "g++"
+      }
+    },
+    {
+      "name": "windows-common",
+      "hidden": true,
+      "description": "Windows base config",
+      "generator": "Ninja",
+      "cacheVariables": {
+        "MSVC": true,
+        "EDG_CPP_RT_LIBS": "win32 win64"
+      }
+    },
+    {
+      "name": "windows-msvc-debug",
+      "inherits": "windows-common",
+      "displayName": "Windows (MSVC) Build Config - DEBUG",
+      "description": "Windows build using MSVC",
+      "binaryDir": "${sourceDir}/build/msvc",
+      "cacheVariables": {
+        "EDG_MACRO_CONF": "windows-msvc",
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "windows-msvc-release",
+      "inherits": "windows-common",
+      "displayName": "Windows (MSVC) Build Config - RELEASE",
+      "description": "Windows build using MSVC",
+      "binaryDir": "${sourceDir}/build/msvc-release",
+      "cacheVariables": {
+        "EDG_MACRO_CONF": "windows-msvc-release",
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "windows-msvc-sln",
+      "inherits": "windows-common",
+      "displayName": "Windows (MSVC) Build Config - Visual Studio",
+      "description": "Windows build using Visual Studio (2022)",
+      "binaryDir": "${sourceDir}/build/msvc-sln",
+      "generator": "Visual Studio 17 2022",
+      "cacheVariables": {
+        "EDG_DEBUG_MACRO_CONF": "windows-msvc",
+        "EDG_RELEASE_MACRO_CONF": "windows-msvc-release"
+      }
+    }
+  ]
+}
+

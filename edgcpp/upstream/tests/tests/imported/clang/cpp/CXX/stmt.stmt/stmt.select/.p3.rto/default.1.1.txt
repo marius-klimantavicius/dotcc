@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 -DCPP17 Test_name.c
+"Test_name.c", line 10: error: "x", declared in condition, may not be redeclared in this scope
+      int x; // expected-error{{redefinition of 'x'}}
+          ^
+
+"Test_name.c", line 10: warning: variable "x" was declared but never referenced
+      int x; // expected-error{{redefinition of 'x'}}
+          ^
+
+"Test_name.c", line 12: error: "x", declared in condition, may not be redeclared in this scope
+      int x; // expected-error{{redefinition of 'x'}}
+          ^
+
+"Test_name.c", line 12: warning: variable "x" was declared but never referenced
+      int x; // expected-error{{redefinition of 'x'}}
+          ^
+
+"Test_name.c", line 18: error: "x", declared in condition, may not be redeclared in this scope
+      int x; // expected-error{{redefinition of 'x'}}
+          ^
+
+"Test_name.c", line 18: warning: variable "x" was declared but never referenced
+      int x; // expected-error{{redefinition of 'x'}}
+          ^
+
+"Test_name.c", line 20: error: "x", declared in condition, may not be redeclared in this scope
+      int x; // expected-error{{redefinition of 'x'}}
+          ^
+
+"Test_name.c", line 20: warning: variable "x" was declared but never referenced
+      int x; // expected-error{{redefinition of 'x'}}
+          ^
+
+"Test_name.c", line 26: warning: C++17-style initializer is nonstandard in this mode
+    if (int I = 0; true) {}
+                 ^
+
+"Test_name.c", line 26: warning: variable "I" was declared but never referenced
+    if (int I = 0; true) {}
+            ^
+
+"Test_name.c", line 27: warning: expression has no effect
+    if (Var + Var; true) {}
+        ^
+
+"Test_name.c", line 43: warning: variable "I" was declared but never referenced
+    switch (int I = 0; Var) {}
+                ^
+
+"Test_name.c", line 44: warning: expression has no effect
+    switch (Var + Var; Var) {}
+            ^
+
+"Test_name.c", line 59: error: expected a ")"
+    while (int I = 10; I--); // expected-error {{expected ')'}}
+                     ^
+
+"Test_name.c", line 64: error: expected a ")"
+    while (Var + Var; Var--) {} // expected-error {{expected ')'}}
+                    ^
+
+"Test_name.c", line 73: error: expected an expression
+    while (; false) {} // expected-error {{expected expression}}
+           ^
+
+7 errors detected in the compilation of "Test_name.c".

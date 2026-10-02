@@ -1,0 +1,46 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 28: error: "A::A(X<1>)" (declared at line 16) is inaccessible
+  B b1{X<1>{}}; // expected-error {{calling a protected constructor}}
+      ^
+
+"Test_name.c", line 29: error: "A::A(X<2>)" (declared at line 18) is inaccessible
+  B b2{X<2>{}}; // expected-error {{calling a private constructor}}
+      ^
+
+"Test_name.c", line 45: error: "A::A(X<1>)" (declared at line 16) is inaccessible
+  FA fa1{X<1>{}}; // expected-error {{calling a protected constructor}}
+        ^
+
+"Test_name.c", line 46: error: "A::A(X<2>)" (declared at line 18) is inaccessible
+  FA fa2{X<2>{}}; // expected-error {{calling a private constructor}}
+        ^
+
+"Test_name.c", line 57: error: the sub-object construction of "H" for inheriting constructors cannot be performed -- the associated constructor is deleted
+  H h1(5); // expected-error {{call to deleted constructor of 'H'}}
+       ^
+
+"Test_name.c", line 58: error: the sub-object construction of "H" for inheriting constructors cannot be performed -- the associated constructor is deleted
+  H h2("foo"); // expected-error {{call to deleted constructor of 'H'}}
+       ^
+
+"Test_name.c", line 75: error: more than one instance of constructor "DRnnnn::B::B" matches the argument list:
+            function "DRnnnn::A::A(int, int, int)" (declared at line 68), inherited via using decl at line 71
+            function "DRnnnn::A::A(int, int)" (declared at line 66), inherited via using decl at line 71
+            argument types are: (int, int)
+    B b1(0, 1); // expected-error {{call to constructor of 'B' is ambiguous}}
+         ^
+"Test_name.c", line 70: note: number of parameters of function "DRnnnn::B::B(const DRnnnn::B &)" does not match the call
+    struct B : A {
+           ^
+"Test_name.c", line 70: note: number of parameters of function "DRnnnn::B::B(DRnnnn::B &&)" does not match the call
+    struct B : A {
+           ^
+"Test_name.c", line 70: note: number of parameters of function "DRnnnn::B::B()" does not match the call
+    struct B : A {
+           ^
+
+"Test_name.c", line 74: warning: variable "DRnnnn::b0" was declared but never referenced
+    constexpr B b0(0, 0.0f); // ok, constexpr
+                ^
+
+7 errors detected in the compilation of "Test_name.c".

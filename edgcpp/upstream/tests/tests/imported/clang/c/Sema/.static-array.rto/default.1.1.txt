@@ -1,0 +1,70 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 28: warning: argument of type "char *" is incompatible with parameter of type "int *"
+    cat(d); // expected-warning {{array argument is too small; is of size 4, callee requires at least 12}} expected-error {{incompatible pointer types}}
+        ^
+
+"Test_name.c", line 32: warning: argument of type "char *" is incompatible with parameter of type "int *"
+    cat(e); // expected-error {{incompatible pointer types}}
+        ^
+
+"Test_name.c", line 36: error: expected an expression
+  typedef int td[static 3]; // expected-error {{'static' used in array declarator outside of function prototype}}
+                 ^
+
+"Test_name.c", line 40: error: expected an expression
+    int a[static 42]; // expected-error {{'static' used in array declarator outside of function prototype}}
+          ^
+
+"Test_name.c", line 42: error: a type qualifier is not allowed
+    int b[const 10]; // expected-error {{type qualifier used in array declarator outside of function prototype}}
+          ^
+
+"Test_name.c", line 43: error: a type qualifier is not allowed
+    int c[volatile 10]; // expected-error {{type qualifier used in array declarator outside of function prototype}}
+          ^
+
+"Test_name.c", line 44: error: "restrict" is not allowed
+    int d[restrict 10]; // expected-error {{type qualifier used in array declarator outside of function prototype}}
+          ^
+
+"Test_name.c", line 46: error: expected an expression
+    int e[static restrict 1]; // expected-error {{'static' used in array declarator outside of function prototype}}
+          ^
+
+"Test_name.c", line 42: warning: variable "b" was declared but never referenced
+    int b[const 10]; // expected-error {{type qualifier used in array declarator outside of function prototype}}
+        ^
+
+"Test_name.c", line 43: warning: variable "c" was declared but never referenced
+    int c[volatile 10]; // expected-error {{type qualifier used in array declarator outside of function prototype}}
+        ^
+
+"Test_name.c", line 44: warning: variable "d" was declared but never referenced
+    int d[restrict 10]; // expected-error {{type qualifier used in array declarator outside of function prototype}}
+        ^
+
+"Test_name.c", line 52: error: expected an expression
+         [static 42]); // expected-error {{'static' used in non-outermost array type derivation}}
+          ^
+
+"Test_name.c", line 55: error: a type qualifier is not allowed
+         [const 42]); // expected-error {{type qualifier used in non-outermost array type derivation}}
+          ^
+
+"Test_name.c", line 57: error: expected an expression
+  void k(int (*x)[static 10]); // expected-error {{'static' used in non-outermost array type derivation}}
+                  ^
+
+"Test_name.c", line 62: error: array of functions is not allowed
+  void o(int (x[static 10])(void)); // expected-error{{'x' declared as array of functions of type 'int (void)'}}
+                            ^
+
+"Test_name.c", line 63: error: expected a ")"
+  void p(int (^x)[static 10]); // expected-error{{block pointer to non-function type is invalid}}
+              ^
+
+"Test_name.c", line 64: error: expected a ")"
+  void q(int (^x[static 10])()); // no-warning
+              ^
+
+12 errors detected in the compilation of "Test_name.c".

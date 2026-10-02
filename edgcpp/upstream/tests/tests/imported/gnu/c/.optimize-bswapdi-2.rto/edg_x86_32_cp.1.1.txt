@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./optimize-bswapdi-2.c", line 14: warning: shift count is too large
+    uint16_t a0 = x >> 48;
+                       ^
+
+"./optimize-bswapdi-2.c", line 15: warning: shift count is too large
+    uint16_t a1 = x >> 32;
+                       ^
+
+"./optimize-bswapdi-2.c", line 21: warning: shift count is too large
+   | ((uint64_t) (((a2 >> 8) & 0xff) | ((a2 << 8) & 0xff00)) << 32)
+                                                                ^
+
+"./optimize-bswapdi-2.c", line 22: warning: shift count is too large
+   | ((uint64_t) (((a3 >> 8) & 0xff) | ((a3 << 8) & 0xff00)) << 48);
+                                                                ^
+

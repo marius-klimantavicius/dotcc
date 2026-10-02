@@ -1,0 +1,172 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 7: error: this declaration has no storage class or type specifier
+  vector bool short vbs;
+  ^
+
+"Test_name.c", line 7: error: expected a ";"
+  vector bool short vbs;
+         ^
+
+"Test_name.c", line 8: error: this declaration has no storage class or type specifier
+  vector signed short vss;
+  ^
+
+"Test_name.c", line 8: error: variable "vector" has already been defined (previous definition at line 7)
+  vector signed short vss;
+  ^
+
+"Test_name.c", line 8: error: expected a ";"
+  vector signed short vss;
+         ^
+
+"Test_name.c", line 9: error: this declaration has no storage class or type specifier
+  vector unsigned short vus;
+  ^
+
+"Test_name.c", line 9: error: variable "vector" has already been defined (previous definition at line 7)
+  vector unsigned short vus;
+  ^
+
+"Test_name.c", line 9: error: expected a ";"
+  vector unsigned short vus;
+         ^
+
+"Test_name.c", line 10: error: this declaration has no storage class or type specifier
+  vector bool int vbi;
+  ^
+
+"Test_name.c", line 10: error: variable "vector" has already been defined (previous definition at line 7)
+  vector bool int vbi;
+  ^
+
+"Test_name.c", line 10: error: expected a ";"
+  vector bool int vbi;
+         ^
+
+"Test_name.c", line 11: error: this declaration has no storage class or type specifier
+  vector signed int vsi;
+  ^
+
+"Test_name.c", line 11: error: variable "vector" has already been defined (previous definition at line 7)
+  vector signed int vsi;
+  ^
+
+"Test_name.c", line 11: error: expected a ";"
+  vector signed int vsi;
+         ^
+
+"Test_name.c", line 12: error: this declaration has no storage class or type specifier
+  vector unsigned int vui;
+  ^
+
+"Test_name.c", line 12: error: variable "vector" has already been defined (previous definition at line 7)
+  vector unsigned int vui;
+  ^
+
+"Test_name.c", line 12: error: expected a ";"
+  vector unsigned int vui;
+         ^
+
+"Test_name.c", line 13: error: this declaration has no storage class or type specifier
+  vector bool long long vbl;
+  ^
+
+"Test_name.c", line 13: error: variable "vector" has already been defined (previous definition at line 7)
+  vector bool long long vbl;
+  ^
+
+"Test_name.c", line 13: error: expected a ";"
+  vector bool long long vbl;
+         ^
+
+"Test_name.c", line 14: error: this declaration has no storage class or type specifier
+  vector signed long long vsl;
+  ^
+
+"Test_name.c", line 14: error: variable "vector" has already been defined (previous definition at line 7)
+  vector signed long long vsl;
+  ^
+
+"Test_name.c", line 14: error: expected a ";"
+  vector signed long long vsl;
+         ^
+
+"Test_name.c", line 15: error: this declaration has no storage class or type specifier
+  vector unsigned long long vul;
+  ^
+
+"Test_name.c", line 15: error: variable "vector" has already been defined (previous definition at line 7)
+  vector unsigned long long vul;
+  ^
+
+"Test_name.c", line 15: error: expected a ";"
+  vector unsigned long long vul;
+         ^
+
+"Test_name.c", line 16: error: this declaration has no storage class or type specifier
+  vector bool char vbc;
+  ^
+
+"Test_name.c", line 16: error: variable "vector" has already been defined (previous definition at line 7)
+  vector bool char vbc;
+  ^
+
+"Test_name.c", line 16: error: expected a ";"
+  vector bool char vbc;
+         ^
+
+"Test_name.c", line 17: error: this declaration has no storage class or type specifier
+  vector signed char vsc;
+  ^
+
+"Test_name.c", line 17: error: variable "vector" has already been defined (previous definition at line 7)
+  vector signed char vsc;
+  ^
+
+"Test_name.c", line 17: error: expected a ";"
+  vector signed char vsc;
+         ^
+
+"Test_name.c", line 18: error: this declaration has no storage class or type specifier
+  vector unsigned char vuc;
+  ^
+
+"Test_name.c", line 18: error: variable "vector" has already been defined (previous definition at line 7)
+  vector unsigned char vuc;
+  ^
+
+"Test_name.c", line 18: error: expected a ";"
+  vector unsigned char vuc;
+         ^
+
+"Test_name.c", line 19: error: variable "vector" is not a type name
+  vector pixel vp;
+  ^
+
+"Test_name.c", line 19: error: expected a ";"
+  vector pixel vp;
+               ^
+
+"Test_name.c", line 21: error: incomplete type "void" is not allowed
+  void dummy(vector unsigned int a);
+       ^
+
+"Test_name.c", line 21: error: expected a ")"
+  void dummy(vector unsigned int a);
+                    ^
+
+"Test_name.c", line 22: warning: attribute "noinline" does not apply here
+  template <typename VEC> VEC __attribute__((noinline)) test(vector unsigned char a, vector unsigned char b) {
+                                             ^
+
+"Test_name.c", line 22: error: expected a ")"
+  template <typename VEC> VEC __attribute__((noinline)) test(vector unsigned char a, vector unsigned char b) {
+                                                                    ^
+
+"Test_name.c", line 22: error: expected a ";"
+  template <typename VEC> VEC __attribute__((noinline)) test(vector unsigned char a, vector unsigned char b) {
+                                                                                                             ^
+
+At end of source: error: expected a ";"
+
+42 errors detected in the compilation of "Test_name.c".

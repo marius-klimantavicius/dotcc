@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 10: error: complex integral types are not supported
+    A<T(0i)> a1; /* { dg-error "imaginary constants are a GCC extension|literal operator" } */
+         ^
+
+"Test_name.c", line 11: error: complex integral types are not supported
+    A<T(0i)> a2; /* { dg-error "imaginary constants are a GCC extension|literal operator" } */
+         ^
+
+2 errors detected in the compilation of "Test_name.c".

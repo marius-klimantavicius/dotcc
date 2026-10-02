@@ -1,0 +1,23 @@
+cpfe -DTEST_NUMBER=1 --c++20 -A Test_name.c
+"Test_name.c", line 9: error: static assertion failed
+  static_assert(9 == __LINE__);\
+  ^
+"Test_name.c", line 9: note: the final comparison was 9 == 8
+  static_assert(9 == __LINE__);\
+                  ^
+
+"Test_name.c", line 10: error: static assertion failed
+  static_assert(10 == __LINE__);\
+  ^
+"Test_name.c", line 10: note: the final comparison was 10 == 8
+  static_assert(10 == __LINE__);\
+                   ^
+
+"Test_name.c", line 11: error: static assertion failed
+  static_assert(11 == __LINE__);
+  ^
+"Test_name.c", line 11: note: the final comparison was 11 == 8
+  static_assert(11 == __LINE__);
+                   ^
+
+3 errors detected in the compilation of "Test_name.c".

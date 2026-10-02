@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 24: warning: expression has no effect
+    static int n = (1 ? 0 : (2, 3)); /* { dg-error "initial" "comma" } */
+                             ^
+
+"Test_name.c", line 20: warning: variable "j" was declared but never referenced
+    static int j = (1 ? 0 : (i = 2)); /* { dg-error "initial" "assignment" } */
+               ^
+
+"Test_name.c", line 21: warning: variable "k" was declared but never referenced
+    static int k = (1 ? 0 : ++i); /* { dg-error "initial" "increment" } */
+               ^
+
+"Test_name.c", line 22: warning: variable "l" was declared but never referenced
+    static int l = (1 ? 0 : --i); /* { dg-error "initial" "decrement" } */
+               ^
+
+"Test_name.c", line 23: warning: variable "m" was declared but never referenced
+    static int m = (1 ? 0 : bar ()); /* { dg-error "initial" "function call" } */
+               ^
+
+"Test_name.c", line 24: warning: variable "n" was declared but never referenced
+    static int n = (1 ? 0 : (2, 3)); /* { dg-error "initial" "comma" } */
+               ^
+

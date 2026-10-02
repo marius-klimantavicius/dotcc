@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+At end of source: error: expected a ";"
+
+At end of source: error: expected a "}"
+"Test_name.c", line 4: note: to match this "{"
+  template <typename T> struct S {
+                                 ^
+
+"Test_name.c", line 6: error: expected a ")"
+  int f;
+      ^
+
+At end of source: error: expected an expression
+
+At end of source: error: expected a ")"
+
+5 errors detected in the compilation of "Test_name.c".

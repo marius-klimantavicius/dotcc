@@ -1,0 +1,49 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 -DMSABI -DMSABI --c++03 -DMSABI Test_name.c
+"Test_name.c", line 35: error: "NoDestroy::~NoDestroy()" (declared at line 14) is inaccessible
+    NoDestroy x;
+              ^
+          detected during:
+            implicit generation of "B::B()" at line 68
+            implicit generation of "D::D()" at line 68
+
+"Test_name.c", line 29: error: "NoDestroy::~NoDestroy()" (declared at line 14) is inaccessible
+  struct B : public virtual A {
+         ^
+          detected during:
+            implicit generation of "B::~B()" at line 68
+            implicit generation of "B::B()" at line 68
+            implicit generation of "D::D()" at line 68
+
+"Test_name.c", line 87: error: "NoDestroy::~NoDestroy()" (declared at line 14) is inaccessible
+    NoDestroy x;
+              ^
+          detected during:
+            implicit generation of "E::E()" at line 134
+            implicit generation of "F::F()" at line 134
+            implicit generation of "G::G()" at line 134
+
+"Test_name.c", line 82: error: "NoDestroy::~NoDestroy()" (declared at line 14) is inaccessible
+  struct E : public virtual A {
+         ^
+          detected during:
+            implicit generation of "E::~E()" at line 134
+            implicit generation of "E::E()" at line 134
+            implicit generation of "F::F()" at line 134
+            implicit generation of "G::G()" at line 134
+
+"Test_name.c", line 154: error: "NoDestroy::~NoDestroy()" (declared at line 14) is inaccessible
+    NoDestroy x;
+              ^
+          detected during:
+            implicit generation of "H::H()" at line 196
+            implicit generation of "J::J()" at line 196
+
+"Test_name.c", line 148: error: "NoDestroy::~NoDestroy()" (declared at line 14) is inaccessible
+  struct H : public virtual A {
+         ^
+          detected during:
+            implicit generation of "H::~H()" at line 196
+            implicit generation of "H::H()" at line 196
+            implicit generation of "J::J()" at line 196
+
+6 errors detected in the compilation of "Test_name.c".

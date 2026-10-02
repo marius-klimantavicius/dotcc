@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp0x/lambda/lambda-capture-const-ref-neg.C", line 11: error: expression must be a modifiable lvalue
+    [&ci] () -> void { ci = 0; } ();
+                       ^
+
+1 error detected in the compilation of "Test_name.c".

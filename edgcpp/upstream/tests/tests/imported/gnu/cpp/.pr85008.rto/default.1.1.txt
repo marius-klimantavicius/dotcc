@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: error: a constructor or destructor may not have its address taken
+      int r [!!&b::~b]; // { dg-error "address of " }
+               ^
+
+"Test_name.c", line 7: warning: local class member function "b::~b" requires a definition
+      ~b();
+      ^
+
+1 error detected in the compilation of "Test_name.c".

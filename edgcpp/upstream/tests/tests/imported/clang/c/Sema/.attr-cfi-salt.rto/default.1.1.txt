@@ -1,0 +1,93 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c11 Test_name.c
+"Test_name.c", line 8: warning: unknown attribute "cfi_salt"
+  int bad1(void) __cfi_salt(); // expected-error{{'cfi_salt' attribute takes one argument}}
+                 ^
+
+"Test_name.c", line 9: warning: unknown attribute "cfi_salt"
+  int bad2(void) __cfi_salt(42); // expected-error{{expected string literal as argument of 'cfi_salt' attribute}}
+                 ^
+
+"Test_name.c", line 10: warning: unknown attribute "cfi_salt"
+  int bad3(void) __attribute__((cfi_salt("a", "b", "c"))); // expected-error{{'cfi_salt' attribute takes one argument}}
+                                ^
+
+"Test_name.c", line 13: warning: unknown attribute "cfi_salt"
+  int foo(int a, int b) __cfi_salt("pepper"); // ok
+                        ^
+
+"Test_name.c", line 14: warning: unknown attribute "cfi_salt"
+  int foo(int a, int b) __cfi_salt("pepper"); // ok
+                        ^
+
+"Test_name.c", line 17: warning: unknown attribute "cfi_salt"
+  typedef int (*bar_t)(void) __cfi_salt("pepper"); // ok
+                             ^
+
+"Test_name.c", line 18: warning: unknown attribute "cfi_salt"
+  typedef int (*bar_t)(void) __cfi_salt("pepper"); // ok
+                             ^
+
+"Test_name.c", line 25: warning: unknown attribute "cfi_salt"
+  int baz __cfi_salt("salt"); // expected-warning{{'cfi_salt' only applies to function types}}
+          ^
+
+"Test_name.c", line 27: warning: unknown attribute "cfi_salt"
+  int baz_fn(int a, int b) __cfi_salt("salt 'n"); // expected-note{{previous declaration is here}}
+                           ^
+
+"Test_name.c", line 28: warning: unknown attribute "cfi_salt"
+  int baz_fn(int a, int b) __cfi_salt("pepper"); // expected-error{{conflicting types for 'baz_fn'}}
+                           ^
+
+"Test_name.c", line 30: warning: unknown attribute "cfi_salt"
+  int mux_fn(int a, int b) __cfi_salt("salt 'n"); // expected-note{{previous declaration is here}}
+                           ^
+
+"Test_name.c", line 31: warning: unknown attribute "cfi_salt"
+  int mux_fn(int a, int b) __cfi_salt("pepper") { // expected-error{{conflicting types for 'mux_fn'}}
+                           ^
+
+"Test_name.c", line 35: warning: unknown attribute "cfi_salt"
+  typedef int qux_t __cfi_salt("salt"); // expected-warning{{'cfi_salt' only applies to function types}}
+                    ^
+
+"Test_name.c", line 37: warning: unknown attribute "cfi_salt"
+  typedef int (*quux_t)(void) __cfi_salt("salt 'n"); // expected-note{{previous definition is here}}
+                              ^
+
+"Test_name.c", line 38: warning: unknown attribute "cfi_salt"
+  typedef int (*quux_t)(void) __cfi_salt("pepper"); // expected-error{{typedef redefinition with different type}}
+                              ^
+
+"Test_name.c", line 40: warning: unknown attribute "cfi_salt"
+  void func1(int a) __cfi_salt("pepper"); // expected-note{{previous declaration is here}}
+                    ^
+
+"Test_name.c", line 44: warning: unknown attribute "clang::cfi_salt"
+  void func2(int) [[clang::cfi_salt("test")]]; // expected-note{{previous declaration is here}}
+                    ^
+
+"Test_name.c", line 48: warning: unknown attribute "cfi_salt"
+  void func3(int) __cfi_salt("pepper"); // ok
+                  ^
+
+"Test_name.c", line 49: warning: unknown attribute "cfi_salt"
+  void func3(int a) __cfi_salt("pepper") { } // ok
+                    ^
+
+"Test_name.c", line 50: warning: unknown attribute "cfi_salt"
+  void (* __cfi_salt("pepper") fp3)(int) = func3; // ok
+          ^
+
+"Test_name.c", line 53: warning: unknown attribute "clang::cfi_salt"
+  void func4(int) [[clang::cfi_salt("test")]]; // ok
+                    ^
+
+"Test_name.c", line 54: warning: unknown attribute "clang::cfi_salt"
+  void func4(int a) [[clang::cfi_salt("test")]] { } // ok
+                      ^
+
+"Test_name.c", line 55: warning: unknown attribute "clang::cfi_salt"
+  void (* [[clang::cfi_salt("test")]] fp4)(int) = func4; // ok
+            ^
+

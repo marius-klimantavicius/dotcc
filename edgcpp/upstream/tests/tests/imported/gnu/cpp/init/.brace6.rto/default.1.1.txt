@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 22: error: too many initializer values
+     int j = { 1, 2 }; /* { dg-error "8:scalar object 'j' requires one element" } */
+                  ^
+
+"Test_name.c", line 24: error: no instance of constructor "B::B" matches the argument list
+            argument types are: (int)
+     B b = { 6 }; /* { dg-error "" } */
+           ^
+"Test_name.c", line 11: note: function "B::B" does not match because argument #1 does not match parameter
+     B(const B&);
+     ^
+
+"Test_name.c", line 25: error: too many initializer values
+     C c = { 6 }; /* { dg-error "too many initializers" } */
+             ^
+
+"Test_name.c", line 21: warning: variable "i" was declared but never referenced
+     int i = { 1 };
+         ^
+
+"Test_name.c", line 26: warning: variable "d" was declared but never referenced
+     D d = { 6 };
+       ^
+
+3 errors detected in the compilation of "Test_name.c".

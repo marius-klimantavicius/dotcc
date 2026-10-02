@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"/mds/gnu/build/gcc-12.2.0/include/c++/12.2.0/bits/std_abs.h", line 84: error: identifier "__int128" is undefined
+    __extension__ inline constexpr __int128
+                                   ^
+
+"/mds/gnu/build/gcc-12.2.0/include/c++/12.2.0/bits/std_abs.h", line 85: error: identifier "__int128" is undefined
+    abs(__int128 __x) { return __x >= 0 ? __x : -__x; }
+        ^
+
+"/mds/gnu/build/gcc-12.2.0/lib/gcc/x86_64-pc-linux-gnu/12.2.0/include/xmmintrin.h", line 528: error: identifier "__builtin_ia32_cvtss2si64" is undefined
+    return __builtin_ia32_cvtss2si64 ((__v4sf) __A);
+           ^
+
+"/mds/gnu/build/gcc-12.2.0/lib/gcc/x86_64-pc-linux-gnu/12.2.0/include/xmmintrin.h", line 535: error: identifier "__builtin_ia32_cvtss2si64" is undefined
+    return __builtin_ia32_cvtss2si64 ((__v4sf) __A);
+           ^
+
+"/mds/gnu/build/gcc-12.2.0/lib/gcc/x86_64-pc-linux-gnu/12.2.0/include/xmmintrin.h", line 573: error: identifier "__builtin_ia32_cvttss2si64" is undefined
+    return __builtin_ia32_cvttss2si64 ((__v4sf) __A);
+           ^
+
+"/mds/gnu/build/gcc-12.2.0/lib/gcc/x86_64-pc-linux-gnu/12.2.0/include/xmmintrin.h", line 580: error: identifier "__builtin_ia32_cvttss2si64" is undefined
+    return __builtin_ia32_cvttss2si64 ((__v4sf) __A);
+           ^
+
+"/mds/gnu/build/gcc-12.2.0/lib/gcc/x86_64-pc-linux-gnu/12.2.0/include/xmmintrin.h", line 618: error: identifier "__builtin_ia32_cvtsi642ss" is undefined
+    return (__m128) __builtin_ia32_cvtsi642ss ((__v4sf) __A, __B);
+                    ^
+
+"/mds/gnu/build/gcc-12.2.0/lib/gcc/x86_64-pc-linux-gnu/12.2.0/include/xmmintrin.h", line 625: error: identifier "__builtin_ia32_cvtsi642ss" is undefined
+    return (__m128) __builtin_ia32_cvtsi642ss ((__v4sf) __A, __B);
+                    ^
+
+"/mds/gnu/build/gcc-12.2.0/lib/gcc/x86_64-pc-linux-gnu/12.2.0/include/emmintrin.h", line 876: error: identifier "__builtin_ia32_cvtsd2si64" is undefined
+    return __builtin_ia32_cvtsd2si64 ((__v2df) __A);
+           ^
+
+"/mds/gnu/build/gcc-12.2.0/lib/gcc/x86_64-pc-linux-gnu/12.2.0/include/emmintrin.h", line 883: error: identifier "__builtin_ia32_cvtsd2si64" is undefined
+    return __builtin_ia32_cvtsd2si64 ((__v2df) __A);
+           ^
+
+"/mds/gnu/build/gcc-12.2.0/lib/gcc/x86_64-pc-linux-gnu/12.2.0/include/emmintrin.h", line 898: error: identifier "__builtin_ia32_cvttsd2si64" is undefined
+    return __builtin_ia32_cvttsd2si64 ((__v2df) __A);
+           ^
+
+"/mds/gnu/build/gcc-12.2.0/lib/gcc/x86_64-pc-linux-gnu/12.2.0/include/emmintrin.h", line 905: error: identifier "__builtin_ia32_cvttsd2si64" is undefined
+    return __builtin_ia32_cvttsd2si64 ((__v2df) __A);
+           ^
+
+"/mds/gnu/build/gcc-12.2.0/lib/gcc/x86_64-pc-linux-gnu/12.2.0/include/emmintrin.h", line 926: error: identifier "__builtin_ia32_cvtsi642sd" is undefined
+    return (__m128d)__builtin_ia32_cvtsi642sd ((__v2df) __A, __B);
+                    ^
+
+"/mds/gnu/build/gcc-12.2.0/lib/gcc/x86_64-pc-linux-gnu/12.2.0/include/emmintrin.h", line 933: error: identifier "__builtin_ia32_cvtsi642sd" is undefined
+    return (__m128d)__builtin_ia32_cvtsi642sd ((__v2df) __A, __B);
+                    ^
+
+"/mds/gnu/build/gcc-12.2.0/lib/gcc/x86_64-pc-linux-gnu/12.2.0/include/emmintrin.h", line 1503: error: identifier "__builtin_ia32_movnti64" is undefined
+    __builtin_ia32_movnti64 (__A, __B);
+    ^
+
+15 errors detected in the compilation of "Test_name.c".

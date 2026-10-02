@@ -1,0 +1,90 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 17: error: incomplete type "X0" is not allowed
+  template void X0::f0<int>(int); // expected-error {{incomplete type}}
+                ^
+
+"Test_name.c", line 17: error: invalid explicit instantiation declaration
+  template void X0::f0<int>(int); // expected-error {{incomplete type}}
+           ^
+
+"Test_name.c", line 17: error: expected a ";"
+  template void X0::f0<int>(int); // expected-error {{incomplete type}}
+                      ^
+
+"Test_name.c", line 18: error: incomplete type "X1<int>" is not allowed
+  template void X1<int>::f0<int>(int); // expected-error {{implicit instantiation of undefined template}}
+                ^
+
+"Test_name.c", line 18: error: invalid explicit instantiation declaration
+  template void X1<int>::f0<int>(int); // expected-error {{implicit instantiation of undefined template}}
+           ^
+
+"Test_name.c", line 18: error: expected a ";"
+  template void X1<int>::f0<int>(int); // expected-error {{implicit instantiation of undefined template}}
+                           ^
+
+"Test_name.c", line 23: error: incomplete type "X1<float>" is not allowed
+  template struct X1<float>; // expected-error{{explicit instantiation of undefined template}}
+           ^
+
+"Test_name.c", line 33: error: incomplete type "X2<int>::Inner<float>" is not allowed
+  template struct X2<int>::Inner<float>; // expected-error{{explicit instantiation of undefined template}}
+           ^
+
+"Test_name.c", line 38: error: incomplete type "X1<int>" is not allowed
+  template void X1<int>::f1(int); // expected-error {{undefined template}}
+                ^
+
+"Test_name.c", line 38: error: invalid explicit instantiation declaration
+  template void X1<int>::f1(int); // expected-error {{undefined template}}
+           ^
+
+"Test_name.c", line 39: error: incomplete type "X1<int>" is not allowed
+  template void X1<int>::f1<int>(int); // expected-error {{undefined template}}
+                ^
+
+"Test_name.c", line 39: error: invalid explicit instantiation declaration
+  template void X1<int>::f1<int>(int); // expected-error {{undefined template}}
+           ^
+
+"Test_name.c", line 39: error: expected a ";"
+  template void X1<int>::f1<int>(int); // expected-error {{undefined template}}
+                           ^
+
+"Test_name.c", line 41: error: incomplete type "X1<int>" is not allowed
+  template int X1<int>::member; // expected-error {{undefined template}}
+               ^
+
+"Test_name.c", line 41: error: invalid explicit instantiation declaration
+  template int X1<int>::member; // expected-error {{undefined template}}
+           ^
+
+"Test_name.c", line 45: error: incomplete type "X2<float>::InnerClass" is not allowed
+  template struct X2<float>::InnerClass; // expected-error{{undefined member}}
+           ^
+
+"Test_name.c", line 49: error: compiler generated function "X2<T>::X2 [with T=int]" cannot be explicitly instantiated
+  template X2<int>::X2(); // expected-error{{not an instantiation}}
+                    ^
+
+"Test_name.c", line 50: error: compiler generated function "X2<T>::X2 [with T=int]" cannot be explicitly instantiated
+  template X2<int>::X2(const X2&); // expected-error{{not an instantiation}}
+                    ^
+
+"Test_name.c", line 51: error: compiler generated function "X2<T>::~X2 [with T=int]" cannot be explicitly instantiated
+  template X2<int>::~X2(); // expected-error{{not an instantiation}}
+                    ^
+
+"Test_name.c", line 52: error: compiler generated function "X2<T>::operator=(const X2<int> &) [with T=int]" cannot be explicitly instantiated
+  template X2<int> &X2<int>::operator=(const X2<int>&); // expected-error{{not an instantiation}}
+                             ^
+
+"Test_name.c", line 81: error: incomplete type "PR11599::BasicStringPiece<int>" is not allowed
+    extern template class BasicStringPiece<int>;  // expected-error{{explicit instantiation of undefined template 'PR11599::BasicStringPiece<int>}}
+                    ^
+
+"Test_name.c", line 82: error: incomplete type "PR11599::BasicStringPiece<int>" is not allowed
+    template class BasicStringPiece<int>;
+             ^
+
+22 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,165 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 17: warning: const variable "x1" requires an initializer
+    const CT1 x1;
+                ^
+
+"Test_name.c", line 18: warning: type qualifier specified more than once
+    const CT2 x2;
+          ^
+
+"Test_name.c", line 18: warning: const variable "x2" requires an initializer
+    const CT2 x2;
+                ^
+
+"Test_name.c", line 19: warning: const variable "x3" requires an initializer
+    CT1 const x3;
+                ^
+
+"Test_name.c", line 20: warning: type qualifier specified more than once
+    CT2 const x4;
+        ^
+
+"Test_name.c", line 20: warning: const variable "x4" requires an initializer
+    CT2 const x4;
+                ^
+
+"Test_name.c", line 21: warning: type qualifier specified more than once
+    const int const x5; /* { dg-warning "duplicate .const." } */
+              ^
+
+"Test_name.c", line 21: warning: const variable "x5" requires an initializer
+    const int const x5; /* { dg-warning "duplicate .const." } */
+                      ^
+
+"Test_name.c", line 22: warning: const variable "x6" requires an initializer
+    const int *const x6;
+                       ^
+
+"Test_name.c", line 24: warning: type qualifier specified more than once
+    volatile VT2 y2;
+             ^
+
+"Test_name.c", line 26: warning: type qualifier specified more than once
+    VT2 volatile y4;
+        ^
+
+"Test_name.c", line 27: warning: type qualifier specified more than once
+    volatile int volatile y5; /* { dg-warning "duplicate .volatile." } */
+                 ^
+
+"Test_name.c", line 30: warning: type qualifier specified more than once
+    RT2 restrict r2;
+        ^
+
+"Test_name.c", line 33: warning: type qualifier specified more than once
+    char *restrict restrict r4; /* { dg-warning "duplicate .restrict." } */
+                   ^
+
+"Test_name.c", line 17: warning: variable "x1" was declared but never referenced
+    const CT1 x1;
+              ^
+
+"Test_name.c", line 18: warning: variable "x2" was declared but never referenced
+    const CT2 x2;
+              ^
+
+"Test_name.c", line 19: warning: variable "x3" was declared but never referenced
+    CT1 const x3;
+              ^
+
+"Test_name.c", line 20: warning: variable "x4" was declared but never referenced
+    CT2 const x4;
+              ^
+
+"Test_name.c", line 21: warning: variable "x5" was declared but never referenced
+    const int const x5; /* { dg-warning "duplicate .const." } */
+                    ^
+
+"Test_name.c", line 22: warning: variable "x6" was declared but never referenced
+    const int *const x6;
+                     ^
+
+"Test_name.c", line 29: warning: variable "r1" was declared but never referenced
+    RT1 restrict r1;
+                 ^
+
+"Test_name.c", line 30: warning: variable "r2" was declared but never referenced
+    RT2 restrict r2;
+                 ^
+
+"Test_name.c", line 31: warning: variable "r3" was declared but never referenced
+    restrict RT1 r3;
+                 ^
+
+"Test_name.c", line 33: warning: variable "r4" was declared but never referenced
+    char *restrict restrict r4; /* { dg-warning "duplicate .restrict." } */
+                            ^
+
+"Test_name.c", line 34: warning: variable "r5" was declared but never referenced
+    char *restrict *restrict r5;
+                             ^
+
+"Test_name.c", line 38: warning: type qualifier specified more than once
+  void c2(const CT2 t) { }
+                ^
+
+"Test_name.c", line 40: warning: type qualifier specified more than once
+  void c4(CT2 const t) { }
+              ^
+
+"Test_name.c", line 41: warning: type qualifier specified more than once
+  void c5(const int const t) { }  /* { dg-warning "duplicate .const." } */
+                    ^
+
+"Test_name.c", line 43: warning: type qualifier specified more than once
+  void v2(volatile VT2 t) { }
+                   ^
+
+"Test_name.c", line 45: warning: type qualifier specified more than once
+  void v4(VT2 volatile t) { }
+              ^
+
+"Test_name.c", line 46: warning: type qualifier specified more than once
+  void v5(volatile int volatile t) { } /* { dg-warning "duplicate .volatile." } */
+                       ^
+
+"Test_name.c", line 49: warning: type qualifier specified more than once
+  void r3(RT2 restrict t) { }
+              ^
+
+"Test_name.c", line 50: warning: type qualifier specified more than once
+  void r4(char *restrict restrict t) { }  /* { dg-warning "duplicate .restrict." } */
+                         ^
+
+"Test_name.c", line 53: warning: type qualifier specified more than once
+  typedef const CT2 CCT2;
+                ^
+
+"Test_name.c", line 55: warning: type qualifier specified more than once
+  typedef CT2 const CT2C;
+              ^
+
+"Test_name.c", line 56: warning: type qualifier specified more than once
+  typedef const int const CIC;    /* { dg-warning "duplicate .const." } */
+                    ^
+
+"Test_name.c", line 58: warning: type qualifier specified more than once
+  typedef volatile VT2 VVT2;
+                   ^
+
+"Test_name.c", line 60: warning: type qualifier specified more than once
+  typedef VT2 volatile VT2V;
+              ^
+
+"Test_name.c", line 61: warning: type qualifier specified more than once
+  typedef volatile int volatile VIV; /* { dg-warning "duplicate .volatile." } */
+                       ^
+
+"Test_name.c", line 63: warning: type qualifier specified more than once
+  typedef RT2 restrict RT2R;
+              ^
+
+"Test_name.c", line 65: warning: type qualifier specified more than once
+  typedef int *restrict restrict IRR; /* { dg-warning "duplicate .restrict." } */
+                        ^
+

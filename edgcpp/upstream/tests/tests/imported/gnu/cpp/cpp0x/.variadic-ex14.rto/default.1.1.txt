@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 13: error: class template "B" is not compatible with template template parameter "P"
+  X<B> xB; // { dg-error "mismatch" "mismatch" }
+    ^
+
+"Test_name.c", line 15: error: class template "C" is not compatible with template template parameter "P"
+  X<C> xC; // { dg-error "mismatch" "mismatch" }
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

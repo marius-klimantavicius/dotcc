@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 6: warning: variable "ss" was declared but never referenced
+   const char (*ss)[12] = &__func__;
+                ^
+
+"Test_name.c", line 7: warning: variable "arr" was declared but never referenced
+   static int arr[sizeof(__func__)==12 ? 1 : -1];
+              ^
+
+"Test_name.c", line 14: error: expression must be a modifiable lvalue
+    __func__[0] = 'a';  // expected-error {{variable is not assignable}}
+    ^
+
+1 error detected in the compilation of "Test_name.c".

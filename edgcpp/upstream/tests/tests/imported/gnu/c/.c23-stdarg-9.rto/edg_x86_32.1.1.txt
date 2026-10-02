@@ -1,0 +1,77 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"./c23-stdarg-9.c", line 20: warning: variable "ap" is used before its value is set
+   ap
+   ^
+
+"./c23-stdarg-9.c", line 31: warning: variable "ap" is used before its value is set
+   ap
+   ^
+
+"./c23-stdarg-9.c", line 43: warning: variable "ap" is used before its value is set
+   ap
+   ^
+
+"./c23-stdarg-9.c", line 56: warning: variable "ap" is used before its value is set
+   ap
+   ^
+
+"./c23-stdarg-9.c", line 70: warning: variable "ap" is used before its value is set
+   ap
+   ^
+
+"./c23-stdarg-9.c", line 85: warning: variable "ap" is used before its value is set
+   ap
+   ^
+
+"./c23-stdarg-9.c", line 101: warning: variable "ap" is used before its value is set
+   ap
+   ^
+
+"./c23-stdarg-9.c", line 118: warning: variable "ap" is used before its value is set
+   ap
+   ^
+
+"./c23-stdarg-9.c", line 136: warning: variable "ap" is used before its value is set
+   ap
+   ^
+
+"./c23-stdarg-9.c", line 149: warning: variable "ap" is used before its value is set
+   ap
+   ^
+
+"./c23-stdarg-9.c", line 163: warning: variable "ap" is used before its value is set
+   ap
+   ^
+
+"./c23-stdarg-9.c", line 178: warning: variable "ap" is used before its value is set
+   ap
+   ^
+
+"./c23-stdarg-9.c", line 194: warning: variable "ap" is used before its value is set
+   ap
+   ^
+
+"./c23-stdarg-9.c", line 211: warning: variable "ap" is used before its value is set
+   ap
+   ^
+
+"./c23-stdarg-9.c", line 229: warning: variable "ap" is used before its value is set
+   ap
+   ^
+
+"./c23-stdarg-9.c", line 248: warning: variable "ap" is used before its value is set
+   ap
+   ^
+
+/usr/sbin/ld: Test_name.o: in function `f1':
+Test_name.int.c:(.text+0xXX): undefined reference to `__builtin_c23_va_start'
+/usr/sbin/ld: Test_name.o: in function `f2':
+Test_name.int.c:(.text+0xXX): undefined reference to `__builtin_c23_va_start'
+/usr/sbin/ld: Test_name.o: in function `f3':
+Test_name.int.c:(.text+0xXX): undefined reference to `__builtin_c23_va_start'
+/usr/sbin/ld: Test_name.o: in function `f4':
+Test_name.int.c:(.text+0xXX): undefined reference to `__builtin_c23_va_start'
+/usr/sbin/ld: Test_name.o: in function `f5':
+Test_name.int.c:(.text+0xXX): undefined reference to `__builtin_c23_va_start'
+/usr/sbin/ld: Test_name.o:Test_name.int.c:(.text+0xXX): more undefined references to `__builtin_c23_va_start' follow
+collect2: error: ld returned 1 exit status

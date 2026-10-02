@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++14 -tused -A Test_name.c
+"Test_name.c", line 8: error: function "A::operator=" has already been defined (previous definition at line 6)
+    A& A::operator=(A&) noexcept(false) = default;
+          ^
+
+1 error detected in the compilation of "Test_name.c".

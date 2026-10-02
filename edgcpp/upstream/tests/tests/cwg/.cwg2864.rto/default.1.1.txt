@@ -1,0 +1,6 @@
+cpfe -DTEST_NUMBER=1 --c++23 -A Test_name.c
+"Test_name.c", line 2: error: invalid narrowing conversion from "double" to "float": constant value does not fit in destination type
+    float f = {1e100};
+               ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gcc Test_name.c
+"Test_name.c", line 14: warning: requested constructor/destructor priority is reserved for internal use
+  void f(void) __attribute__((constructor(0)));
+                              ^
+
+"Test_name.c", line 15: warning: requested constructor/destructor priority is reserved for internal use
+  void g(void) __attribute__((destructor(0)));
+                              ^
+

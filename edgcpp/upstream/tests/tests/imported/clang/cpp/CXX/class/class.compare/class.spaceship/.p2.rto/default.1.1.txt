@@ -1,0 +1,43 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 133: error: function "PR44723::operator<=>(const PR44723::d &, const PR44723::d &)" (declared at line 124) cannot be referenced -- it is a deleted function
+    std::strong_ordering cmp_d = d() <=> d();
+                                     ^
+
+"Test_name.c", line 133: error: no suitable constructor exists to convert from "void" to "std::strong_ordering"
+    std::strong_ordering cmp_d = d() <=> d();
+                                 ^
+
+"Test_name.c", line 141: error: a deducible return type for a default operator<=> must be "auto"
+      friend auto &operator<=>(const A&, const A&) = default;
+                                                   ^
+
+"Test_name.c", line 152: error: argument list for class template "BadDeducedType::X" is missing
+      friend X operator<=>(const C&, const C&) = default;
+             ^
+
+"Test_name.c", line 216: error: function "PR50591::b4::operator<=>(const PR50591::b4 &) const" (declared at line 213) cannot be referenced -- it is a deleted function
+    std::strong_ordering cmp_b4 = b4() <=> b4();
+                                       ^
+
+"Test_name.c", line 216: error: no suitable constructor exists to convert from "void" to "std::strong_ordering"
+    std::strong_ordering cmp_b4 = b4() <=> b4();
+                                  ^
+
+"Test_name.c", line 81: error: type "T" has already been defined (previous definition at line 80)
+      using T = decltype(A<Ts...>() <=> A<Ts...>()); // expected-error {{different type}}
+            ^
+          detected during instantiation of "void Deduction::f<Expected,Ts...>() [with Expected=std::strong_ordering, Ts=<Deduction::weak>]" at line 101
+
+"Test_name.c", line 20: warning: function "std::weak_ordering::weak_ordering(std::strong_ordering)" was referenced but not defined
+      constexpr weak_ordering(strong_ordering o);
+                ^
+
+"Test_name.c", line 31: warning: function "std::partial_ordering::partial_ordering(std::strong_ordering)" was referenced but not defined
+      constexpr partial_ordering(strong_ordering o);
+                ^
+
+"Test_name.c", line 32: warning: function "std::partial_ordering::partial_ordering(std::weak_ordering)" was referenced but not defined
+      constexpr partial_ordering(weak_ordering o);
+                ^
+
+7 errors detected in the compilation of "Test_name.c".

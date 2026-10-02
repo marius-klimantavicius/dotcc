@@ -1,0 +1,98 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/cpp_type_traits.h", line 553: error: identifier "__int128" is undefined
+      struct __memcpyable_integer<__int128> { enum { __width = 128 }; };
+                                  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/cpp_type_traits.h", line 556: error: expected a ">"
+      struct __memcpyable_integer<unsigned __int128> { enum { __width = 128 }; };
+                                           ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/ext/numeric_traits.h", line 132: error: identifier "__int128" is undefined
+    __extension__ template<> struct __is_integer_nonstrict<__int128> { enum { __value = 1 }; typedef std::__true_type __type; enum { __width = 128 }; }; __extension__ template<> struct __is_integer_nonstrict<unsigned __int128> { enum { __value = 1 }; typedef std::__true_type __type; enum { __width = 128 }; };
+                                                           ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/ext/numeric_traits.h", line 132: error: expected a ">"
+    __extension__ template<> struct __is_integer_nonstrict<__int128> { enum { __value = 1 }; typedef std::__true_type __type; enum { __width = 128 }; }; __extension__ template<> struct __is_integer_nonstrict<unsigned __int128> { enum { __value = 1 }; typedef std::__true_type __type; enum { __width = 128 }; };
+                                                                                                                                                                                                                         ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/uniform_int_dist.h", line 318: error: expected a ">"
+    __ret = __extension__ _S_nd<unsigned __int128>(__urng,
+                                         ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 100: error: enum "std::align_val_t" was previously declared with a different base type
+    enum class align_val_t: size_t {};
+               ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 137: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 140: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 155: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 158: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 168: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t, std::align_val_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 171: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t, std::align_val_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 179: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, std::align_val_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 182: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, std::align_val_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 206: error: first parameter of allocation function must be of type "size_t"
+  void* operator new(std::size_t, void* __p)
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 210: error: first parameter of allocation function must be of type "size_t"
+  void* operator new[](std::size_t, void* __p)
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_tempbuf.h", line 94: error: no instance of overloaded function "operator new" matches the argument list
+            argument types are: (unsigned long, std::nothrow_t)
+   return (_Tp*) __builtin_operator_new(__len * sizeof(_Tp), nothrow_t());
+                 ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/memory_resource.h", line 78: error: no instance of overloaded function "operator new" matches the argument list
+            argument types are: (std::size_t, void *)
+      { return ::operator new(__bytes, do_allocate(__bytes, __alignment)); }
+               ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+
+"./torture/pr104601.C", line 15: warning: ignoring return value from routine declared with "nodiscard" attribute
+    find_if (b, c, [&](auto e) { d = h(e); return d; });
+            ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_construct.h", line 133: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, void *)
+        ::new(static_cast<void*>(__p)) _Tp(std::forward<_Args>(__args)...);
+          ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+          detected during:
+            instantiation of "void std::_Construct(_Tp *, _Args &&...) [with _Tp=int, _Args=<>]" at line 874 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_uninitialized.h"
+            instantiation of "_ForwardIterator std::__uninitialized_default_n_1<true>::__uninit_default_n(_ForwardIterator, _Size) [with _ForwardIterator=int *, _Size=std::size_t]" at line 920 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_uninitialized.h"
+            instantiation of "_ForwardIterator std::__uninitialized_default_n(_ForwardIterator, _Size) [with _ForwardIterator=int *, _Size=std::size_t]" at line 975 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_uninitialized.h"
+            instantiation of "_ForwardIterator std::__uninitialized_default_n_a(_ForwardIterator, _Size, std::allocator<_Tp> &) [with _ForwardIterator=int *, _Size=std::size_t, _Tp=int]" at line 1915 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_vector.h"
+            instantiation of "void std::vector<_Tp, _Alloc>::_M_default_initialize(std::vector<_Tp, _Alloc>::size_type) [with _Tp=int, _Alloc=std::allocator<int>]" at line 585 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_vector.h"
+            instantiation of "std::vector<_Tp, _Alloc>::vector(std::vector<_Tp, _Alloc>::size_type, const std::vector<_Tp, _Alloc>::allocator_type &) [with _Tp=int, _Alloc=std::allocator<int>]" at line 28 of "./torture/pr104601.C"
+
+19 errors detected in the compilation of "Test_name.c".

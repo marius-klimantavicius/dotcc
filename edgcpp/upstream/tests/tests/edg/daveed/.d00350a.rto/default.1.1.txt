@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --microsoft_version=1310 Test_name.c
+"Test_name.c", line 16: warning: variable "p" was set but never used
+    for (S *p, s; false; ) {}
+            ^
+

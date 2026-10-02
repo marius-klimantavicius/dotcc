@@ -1,0 +1,14 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 8: error: class "A::B" (declared at line 5) is inaccessible
+    friend class A::B;
+                    ^
+
+"Test_name.c", line 11: error: class "A::B" (declared at line 5) is inaccessible
+    using A::B;
+             ^
+
+"Test_name.c", line 12: error: class "A::B" (declared at line 5) is inaccessible
+    friend class B;
+                 ^
+
+3 errors detected in the compilation of "Test_name.c".

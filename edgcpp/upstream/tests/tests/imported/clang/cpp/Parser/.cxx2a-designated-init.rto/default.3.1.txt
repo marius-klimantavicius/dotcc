@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=3 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 15: error: copy-list-initialization cannot use a constructor marked "explicit"
+  B b1 = {.a = {1, 2}}; // cxx98-error {{non-aggregate type 'A' cannot be initialized with an initializer list}}
+               ^
+
+"Test_name.c", line 26: warning: integer conversion resulted in truncation
+  D d1 = {.c = {1, 2000}}; // cxx98-warning {{changes value}} expected-error {{narrow}} expected-warning {{changes value}} expected-note {{}}
+                   ^
+
+"Test_name.c", line 27: warning: integer conversion resulted in truncation
+  D d2 = {.c{1, 2000}}; // cxx98-error {{expected '='}} expected-error {{narrow}} expected-warning {{changes value}} expected-note {{}}
+                ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -DTEST1 -w -DTEST2 --c Test_name.c
+"Test_name.c", line 8: error: expected a declaration
+  M( f(1, 2), g((x=y++, y))) 
+  ^
+
+"Test_name.c", line 40: error: expected a macro parameter name
+  #define INVALID() #
+                     ^
+
+2 errors detected in the compilation of "Test_name.c".

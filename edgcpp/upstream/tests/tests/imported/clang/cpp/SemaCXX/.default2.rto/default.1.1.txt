@@ -1,0 +1,86 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 23: error: duplicate parameter name
+         int i, int j) { // expected-error {{redefinition of parameter 'i'}}
+             ^
+
+"Test_name.c", line 22: warning: parameter "i" was set but never used
+  int f1(int i,          // expected-note {{previous declaration is here}}
+             ^
+
+"Test_name.c", line 31: error: identifier "y" is undefined
+  void g2(int x, int y, int z = x + y); // expected-error {{default argument references parameter 'x'}} expected-error {{default argument references parameter 'y'}}
+                                    ^
+
+"Test_name.c", line 34: error: "this" may only be used inside a nonstatic member function
+    void f(X* x = this); // expected-error{{invalid use of 'this' outside of a non-static member function}}
+                  ^
+
+"Test_name.c", line 49: error: redefinition of default argument
+  void C::f(int i = 3) // expected-error{{redefinition of default argument}}
+          ^
+
+"Test_name.c", line 61: error: a nonstatic member reference must be relative to a specific object
+    int mem1(int i = a); // expected-error{{invalid use of non-static data member 'a'}}
+                     ^
+
+"Test_name.c", line 67: error: default argument not at end of parameter list
+      int mem5(int i = b, // OK; use Y::b
+                       ^
+
+"Test_name.c", line 69: error: identifier "j" is undefined
+               int k = j, // expected-error{{default argument references parameter 'j'}}
+                       ^
+
+"Test_name.c", line 70: error: a nonstatic member reference must be relative to a specific object
+               int l = a,  // expected-error{{invalid use of non-static data member 'a'}}
+                       ^
+
+"Test_name.c", line 71: error: "this" may only be used inside a nonstatic member function
+               Nested* self = this, // expected-error{{invalid use of 'this' outside of a non-static member function}}
+                              ^
+
+"Test_name.c", line 84: error: a nonstatic member reference must be relative to a specific object
+  int Y::mem4(int i = a) // expected-error{{invalid use of non-static data member 'a'}}
+                      ^
+
+"Test_name.c", line 95: error: no default constructor exists for class "Z"
+      Z z2;    // expected-error{{no matching constructor for initialization}}
+        ^
+
+"Test_name.c", line 95: warning: variable "z2" was declared but never referenced
+      Z z2;    // expected-error{{no matching constructor for initialization}}
+        ^
+
+"Test_name.c", line 100: error: no instance of constructor "Z::Z" matches the argument list
+            argument types are: (const Z)
+      Z z2(z); // expected-error{{no matching constructor for initialization of 'Z'}}
+           ^
+"Test_name.c", line 92: note: function "Z::Z" does not match because argument #1 does not match parameter
+    Z(Z&, int i = 17); // expected-note 3 {{candidate constructor}}
+    ^
+
+"Test_name.c", line 105: error: no instance of constructor "Z::Z" matches the argument list
+            argument types are: (const Z)
+    Z z2(z); // expected-error{{no matching constructor for initialization of 'Z'}}
+         ^
+"Test_name.c", line 92: note: function "Z::Z" does not match because argument #1 does not match parameter
+    Z(Z&, int i = 17); // expected-note 3 {{candidate constructor}}
+    ^
+
+"Test_name.c", line 119: error: too few arguments in function call
+    static void g(int = f()); // expected-error{{use of default argument to function 'f' that is declared later in class 'C2'}}
+                          ^
+
+"Test_name.c", line 125: error: too few arguments in function call
+    static void g(int = f()); // expected-error {{use of default argument to function 'f' that is declared later in class 'C3<int>'}}
+                          ^
+
+"Test_name.c", line 135: error: identifier "I" is undefined
+  template <int I = (1 * I)> struct S {};  // expected-error-re {{use of undeclared identifier 'I'{{$}}}}
+                         ^
+
+"Test_name.c", line 138: error: identifier "I2" is undefined
+  template <int I1 = I2, int I2 = 1> struct T {};  // expected-error-re {{use of undeclared identifier 'I2'{{$}}}}
+                     ^
+
+17 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 11: error: extra text after expected end of number
+    i = 0o'0; /* { dg-error "digit separator after base indicator" } */
+         ^
+
+"Test_name.c", line 12: error: extra text after expected end of number
+    i = 0O'7; /* { dg-error "digit separator after base indicator" } */
+         ^
+
+"Test_name.c", line 10: warning: variable "i" was set but never used
+    int i;
+        ^
+
+2 errors detected in the compilation of "Test_name.c".

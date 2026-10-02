@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c++20 -tused Test_name.c
+"Test_name.c", line 5: error: an export declaration cannot export a name with internal linkage
+    export int a2;                // error: export of name with internal linkage
+               ^
+
+"Test_name.c", line 5: warning: variable "<unnamed>::a2" was declared but never referenced
+    export int a2;                // error: export of name with internal linkage
+               ^
+
+1 error detected in the compilation of "Test_name.c".

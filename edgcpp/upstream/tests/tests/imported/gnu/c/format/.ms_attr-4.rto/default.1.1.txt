@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"./format/ms_attr-4.c", line 10: warning: unrecognized format function type "ms_printf" ignored
+  extern __attribute__((format(ms_printf, 1, 2))) void tformatprintf0 (const char *, ...);
+                               ^
+
+"./format/ms_attr-4.c", line 11: warning: unrecognized format function type "ms_printf" ignored
+  extern void __attribute__((format(ms_printf, 1, 2))) tformatprintf1 (const char *, ...);
+                                    ^
+
+"./format/ms_attr-4.c", line 12: warning: unrecognized format function type "ms_printf" ignored
+  extern void foo (void), __attribute__((format(ms_printf, 1, 2))) tformatprintf2 (const char *, ...);
+                                                ^
+
+"./format/ms_attr-4.c", line 13: warning: unrecognized format function type "ms_printf" ignored
+  extern __attribute__((noreturn)) void bar (void), __attribute__((format(ms_printf, 1, 2))) tformatprintf3 (const char *, ...);
+                                                                          ^
+

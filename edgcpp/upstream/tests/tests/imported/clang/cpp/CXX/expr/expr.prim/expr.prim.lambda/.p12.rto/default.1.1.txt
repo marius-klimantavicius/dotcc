@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 12: error: "this" may only be used inside a nonstatic member function
+      (void)[this](){}; // expected-error{{'this' cannot be captured in this context}}
+             ^
+
+"Test_name.c", line 31: error: "this" may only be used inside a nonstatic member function
+          (void)[this](){}; // expected-error{{'this' cannot be captured in this context}}
+                 ^
+
+"Test_name.c", line 32: error: a nonstatic member reference must be relative to a specific object
+          (void)[&](){i = 7; }; // expected-error{{invalid use of member 'i' in static member function}}
+                      ^
+
+"Test_name.c", line 48: error: this enclosing-function local variable cannot be referenced in this lambda body because an enclosing lambda does not allow implicit captures
+      [i] {}(); // expected-error{{variable 'i' cannot be implicitly captured in a lambda with no capture-default specified}}
+       ^
+
+"Test_name.c", line 57: warning: variable "x" was set but never used
+        int x[N][M];
+            ^
+
+"Test_name.c", line 56: warning: variable "m2" was set but never used
+      auto m2 = [i]{
+           ^
+
+"Test_name.c", line 70: error: this enclosing-function local variable cannot be referenced in this lambda body because an enclosing lambda does not allow implicit captures
+          auto m4 = [&,j] { // expected-error{{variable 'j' cannot be implicitly captured in a lambda with no capture-default specified}}
+                       ^
+
+"Test_name.c", line 71: error: this enclosing-function local variable cannot be referenced in this lambda body because an enclosing lambda does not allow implicit captures
+            int x = n; // expected-error{{variable 'n' cannot be implicitly captured in a lambda with no capture-default specified}}
+                    ^
+
+"Test_name.c", line 73: error: invalid reference to an outer-scope local variable in a lambda body
+            x += i; // expected-error{{variable 'i' cannot be implicitly captured in a lambda with no capture-default specified}}
+                 ^
+
+"Test_name.c", line 70: warning: variable "m4" was declared but never referenced
+          auto m4 = [&,j] { // expected-error{{variable 'j' cannot be implicitly captured in a lambda with no capture-default specified}}
+               ^
+
+"Test_name.c", line 69: warning: variable "m3" was declared but never referenced
+        auto m3 = [this, m] { // expected-note 3{{lambda expression begins here}} expected-note 2 {{capture 'i' by}} expected-note 2 {{capture 'j' by}} expected-note 2 {{capture 'n' by}}
+             ^
+
+"Test_name.c", line 54: warning: variable "m1" was declared but never referenced
+    auto m1 = [=]{
+         ^
+
+7 errors detected in the compilation of "Test_name.c".

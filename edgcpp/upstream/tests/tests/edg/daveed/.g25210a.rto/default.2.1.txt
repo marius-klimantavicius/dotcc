@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=2 --microsoft_v=1900 Test_name.c
+"Test_name.c", line 7: error: no operator "++" matches these operands
+            operand types are: S ++
+      s++;  // Ordinarily an error but previously accepted in all Microsoft C++
+       ^
+"Test_name.c", line 4: note: number of parameters of function "S::operator++" does not match the call
+    struct S { S operator++(); };
+                 ^
+"Test_name.c", line 7: note: built-in operator++(<arithmetic>, <integral>) does not match because argument #1 does not match parameter
+      s++;  // Ordinarily an error but previously accepted in all Microsoft C++
+       ^
+"Test_name.c", line 7: note: built-in operator++(<pointer to object>, <integral>) does not match because argument #1 does not match parameter
+      s++;  // Ordinarily an error but previously accepted in all Microsoft C++
+       ^
+
+1 error detected in the compilation of "Test_name.c".

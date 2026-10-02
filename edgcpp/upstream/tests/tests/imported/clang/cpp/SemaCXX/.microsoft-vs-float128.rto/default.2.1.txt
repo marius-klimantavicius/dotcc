@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 -DMS Test_name.c
+"Test_name.c", line 31: error: no operator "+" matches these operands
+            operand types are: S + double
+    double d = S() + 1.0;
+                   ^
+"Test_name.c", line 18: note: built-in operator+(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+                              !((__is_integral(T) && sizeof(T) != 16) ||
+                              ^
+"Test_name.c", line 18: note: built-in operator+(<pointer to object>, <ptrdiff_t>) does not match because argument #1 does not match parameter
+                              !((__is_integral(T) && sizeof(T) != 16) ||
+                              ^
+"Test_name.c", line 18: note: built-in operator+(<ptrdiff_t>, <pointer to object>) does not match because argument #1 does not match parameter
+                              !((__is_integral(T) && sizeof(T) != 16) ||
+                              ^
+
+1 error detected in the compilation of "Test_name.c".

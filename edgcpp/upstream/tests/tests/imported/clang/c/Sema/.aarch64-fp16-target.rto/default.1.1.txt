@@ -1,0 +1,37 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c --target linux_aarch64 Test_name.c
+"Sema/aarch64-fp16-target.c", line 8: warning: target attribute not recognized
+  __attribute__((target("fullfp16")))
+                        ^
+
+"Sema/aarch64-fp16-target.c", line 10: warning: function "vabdh_f16" declared implicitly
+    vabdh_f16(f16, f16);
+    ^
+
+"Sema/aarch64-fp16-target.c", line 13: warning: target attribute not recognized
+  __attribute__((target("fp16")))
+                        ^
+
+"Sema/aarch64-fp16-target.c", line 15: warning: function "vabdh_f16" declared implicitly
+    vabdh_f16(f16, f16);
+    ^
+
+"Sema/aarch64-fp16-target.c", line 18: warning: target attribute not recognized
+  __attribute__((target("arch=armv8-a+fp16")))
+                        ^
+
+"Sema/aarch64-fp16-target.c", line 20: warning: function "vabdh_f16" declared implicitly
+      vabdh_f16(f16, f16);
+      ^
+
+"Sema/aarch64-fp16-target.c", line 23: warning: target attribute not recognized
+  __attribute__((target("+fp16")))
+                        ^
+
+"Sema/aarch64-fp16-target.c", line 25: warning: function "vabdh_f16" declared implicitly
+      vabdh_f16(f16, f16);
+      ^
+
+"Sema/aarch64-fp16-target.c", line 29: warning: function "vabdh_f16" declared implicitly
+    vabdh_f16(f16, f16);
+    ^
+

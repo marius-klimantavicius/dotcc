@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 36: warning: variable "a" is used before its value is set
+        test<1> _ = (foo)(a);
+                          ^
+
+"Test_name.c", line 43: error: more than one instance of function "Test0::A::foo" matches the argument list:
+            function "foo(foo)" (declared at line 15)
+            function "Test0::A::foo(foo)" (declared at line 22)
+            argument types are: (foo)
+        test<0> _0 = foo(a); // expected-error {{call to 'foo' is ambiguous}}
+                     ^
+
+"Test_name.c", line 49: error: no suitable user-defined conversion from "Test0::foo" to "foo" exists
+        test<2> _2 = (foo)(b); // expected-error {{no viable conversion from 'class Test0::foo' to 'class ::foo'}}
+                           ^
+
+"Test_name.c", line 70: error: function "Test1::C::c" is not a type name
+      using typename C::c; // expected-error {{'typename' keyword used on a non-type}}
+                     ^
+
+"Test_name.c", line 92: error: protected function "test2::A::operator bool" (declared at line 81) is not accessible through a "test2::B" pointer or object
+      bool b = B();
+               ^
+
+"Test_name.c", line 93: error: "test2::A::operator int()" (declared at line 80) is inaccessible
+      return B(); // expected-error {{'operator int' is a protected member of 'test2::B'}}
+             ^
+
+5 errors detected in the compilation of "Test_name.c".

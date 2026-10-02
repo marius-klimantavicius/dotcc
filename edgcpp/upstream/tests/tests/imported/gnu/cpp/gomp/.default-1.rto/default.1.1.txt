@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 24: warning: unrecognized #pragma
+    #pragma omp task default(firstprivate)	/* { dg-message "note: enclosing 'task'" } */
+            ^
+
+"Test_name.c", line 35: warning: unrecognized #pragma
+    #pragma omp taskloop default(firstprivate)	/* { dg-message "note: enclosing 'taskloop'" } */
+            ^
+
+"Test_name.c", line 47: warning: unrecognized #pragma
+    #pragma omp teams default(firstprivate)	/* { dg-message "note: enclosing 'teams'" } */
+            ^
+
+"Test_name.c", line 58: warning: unrecognized #pragma
+    #pragma omp parallel default(firstprivate)	/* { dg-message "note: enclosing 'parallel'" } */
+            ^
+
+"Test_name.c", line 69: warning: unrecognized #pragma
+    #pragma omp task default(private)	/* { dg-message "note: enclosing 'task'" } */
+            ^
+
+"Test_name.c", line 80: warning: unrecognized #pragma
+    #pragma omp taskloop default(private)	/* { dg-message "note: enclosing 'taskloop'" } */
+            ^
+
+"Test_name.c", line 92: warning: unrecognized #pragma
+    #pragma omp teams default(private)	/* { dg-message "note: enclosing 'teams'" } */
+            ^
+
+"Test_name.c", line 103: warning: unrecognized #pragma
+    #pragma omp parallel default(private)	/* { dg-message "note: enclosing 'parallel'" } */
+            ^
+

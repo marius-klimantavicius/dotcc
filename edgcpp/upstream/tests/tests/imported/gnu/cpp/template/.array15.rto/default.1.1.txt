@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 12: error: expression must have a constant value
+    char c[A<N>::i], d; // { dg-error "constant" }
+           ^
+"Test_name.c", line 12: note: the value of member "A<<unnamed>>::i [with <unnamed>=0]" (declared at line 7) cannot be used as a constant
+    char c[A<N>::i], d; // { dg-error "constant" }
+           ^
+          detected during instantiation of class "B<N> [with N=0]" at line 15
+
+1 error detected in the compilation of "Test_name.c".

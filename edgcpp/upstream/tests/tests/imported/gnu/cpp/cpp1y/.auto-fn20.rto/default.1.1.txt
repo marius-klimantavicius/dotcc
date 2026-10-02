@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 13: error: no instance of function template "g" matches the required type
+    p = &g; // { dg-error "no match" }
+      ^
+
+"Test_name.c", line 12: warning: variable "p" was set but never used
+    int (*p)(int) = &f; // OK
+          ^
+
+1 error detected in the compilation of "Test_name.c".

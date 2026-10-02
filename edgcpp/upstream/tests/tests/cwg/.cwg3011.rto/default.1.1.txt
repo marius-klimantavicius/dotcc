@@ -1,0 +1,35 @@
+fe_only -DTEST_NUMBER=1 -A --c++20 Test_name.c
+"Test_name.c", line 13: error: no instance of constructor "A::A" matches the argument list
+    new A[4](1, 2, 3);            // error
+                    ^
+"Test_name.c", line 5: note: number of parameters of function "A::A(const A &) noexcept" does not match the call
+  struct A
+         ^
+"Test_name.c", line 5: note: number of parameters of function "A::A(A &&) noexcept" does not match the call
+  struct A
+         ^
+"Test_name.c", line 7: note: number of parameters of function "A::A(int)" does not match the call
+    A(int);
+    ^
+
+"Test_name.c", line 14: error: no instance of constructor "A::A" matches the argument list
+    new A[n](1, 2, 3);            // error
+                    ^
+"Test_name.c", line 5: note: number of parameters of function "A::A(const A &) noexcept" does not match the call
+  struct A
+         ^
+"Test_name.c", line 5: note: number of parameters of function "A::A(A &&) noexcept" does not match the call
+  struct A
+         ^
+"Test_name.c", line 7: note: number of parameters of function "A::A(int)" does not match the call
+    A(int);
+    ^
+
+"Test_name.c", line 25: error: expression must have a constant value
+  static_assert(g(1));            // error
+                ^
+"Test_name.c", line 19: note: number of dynamically-allocated elements (1) too small for initializer
+    auto *p = new char[n]('a', 'b');
+                       ^
+
+3 errors detected in the compilation of "Test_name.c".

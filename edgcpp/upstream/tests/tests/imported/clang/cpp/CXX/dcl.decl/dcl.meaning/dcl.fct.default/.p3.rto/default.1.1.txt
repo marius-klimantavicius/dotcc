@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 5: error: specifying a default argument on this declaration is nonstandard
+  void nondecl(int (*f)(int x = 5)) // expected-error {{default arguments can only be specified}}
+                              ^
+
+"Test_name.c", line 7: error: specifying a default argument on this declaration is nonstandard
+    void (*f2)(int = 17)  // expected-error {{default arguments can only be specified}}
+                   ^
+
+"Test_name.c", line 8: error: default argument is not allowed
+    = (void (*)(int = 42))f; // expected-error {{default arguments can only be specified}}
+                    ^
+
+"Test_name.c", line 7: warning: variable "f2" was declared but never referenced
+    void (*f2)(int = 17)  // expected-error {{default arguments can only be specified}}
+           ^
+
+"Test_name.c", line 12: error: specifying a default argument on this declaration is nonstandard
+    int (*f)(int = 17); // expected-error{{default arguments can only be specified for parameters in a function declaration}}
+                 ^
+
+"Test_name.c", line 13: error: specifying a default argument on this declaration is nonstandard
+    void (*g())(int = 22); // expected-error{{default arguments can only be specified for parameters in a function declaration}}
+                    ^
+
+"Test_name.c", line 15: error: default argument is not allowed
+    auto i(int) -> void (*)(int = 9); // expected-error{{default arguments can only be specified for parameters in a function declaration}}
+                                ^
+
+"Test_name.c", line 17: error: default argument is not allowed
+    void mem8(int (*fp)(int) = (int (*)(int = 17))0); // expected-error{{default arguments can only be specified for parameters in a function declaration}}  
+                                            ^
+
+"Test_name.c", line 21: error: default argument is not allowed
+  void defaultpack(Ts... = 0) {} // expected-error{{parameter pack cannot have a default argument}}
+                         ^
+
+8 errors detected in the compilation of "Test_name.c".

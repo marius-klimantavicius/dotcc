@@ -1,0 +1,106 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 14: error: expression must be a modifiable lvalue
+    (a+b) = 1; /* { dg-error "lvalue required as left operand of assignment" } */
+    ^
+
+"Test_name.c", line 15: error: expression must be a modifiable lvalue
+    (a+b)++; /* { dg-error "lvalue required as increment operand" } */
+    ^
+
+"Test_name.c", line 16: error: expression must be a modifiable lvalue
+    ++(a+b); /* { dg-error "lvalue required as increment operand" } */
+      ^
+
+"Test_name.c", line 17: error: expression must be a modifiable lvalue
+    (a+b)--; /* { dg-error "lvalue required as decrement operand" } */
+    ^
+
+"Test_name.c", line 18: error: expression must be a modifiable lvalue
+    --(a+b); /* { dg-error "lvalue required as decrement operand" } */
+      ^
+
+"Test_name.c", line 19: error: expression must be an lvalue or a function designator
+    &(a+b); /* { dg-error "lvalue required as unary '&' operand" } */
+     ^
+
+"Test_name.c", line 30: error: expression must be a modifiable lvalue
+    c = 1; /* { dg-error "assignment of read-only variable 'c'" } */
+    ^
+
+"Test_name.c", line 31: error: expression must be a modifiable lvalue
+    d.x = 1; /* { dg-error "assignment of member 'x' in read-only object" } */
+    ^
+
+"Test_name.c", line 32: error: expression must be a modifiable lvalue
+    e.x = 1; /* { dg-error "assignment of read-only member 'x'" } */
+    ^
+
+"Test_name.c", line 33: error: expression must be a modifiable lvalue
+    *f = 1; /* { dg-error "assignment of read-only location" } */
+    ^
+
+"Test_name.c", line 34: error: expression must be a modifiable lvalue
+    c++; /* { dg-error "increment of read-only variable 'c'" } */
+    ^
+
+"Test_name.c", line 35: error: expression must be a modifiable lvalue
+    d.x++; /* { dg-error "increment of member 'x' in read-only object" } */
+    ^
+
+"Test_name.c", line 36: error: expression must be a modifiable lvalue
+    e.x++; /* { dg-error "increment of read-only member 'x'" } */
+    ^
+
+"Test_name.c", line 37: error: expression must be a modifiable lvalue
+    (*f)++; /* { dg-error "increment of read-only location" } */
+    ^
+
+"Test_name.c", line 38: error: expression must be a modifiable lvalue
+    ++c; /* { dg-error "increment of read-only variable 'c'" } */
+      ^
+
+"Test_name.c", line 39: error: expression must be a modifiable lvalue
+    ++d.x; /* { dg-error "increment of member 'x' in read-only object" } */
+      ^
+
+"Test_name.c", line 40: error: expression must be a modifiable lvalue
+    ++e.x; /* { dg-error "increment of read-only member 'x'" } */
+      ^
+
+"Test_name.c", line 41: error: expression must be a modifiable lvalue
+    ++(*f); /* { dg-error "increment of read-only location" } */
+      ^
+
+"Test_name.c", line 42: error: expression must be a modifiable lvalue
+    c--; /* { dg-error "decrement of read-only variable 'c'" } */
+    ^
+
+"Test_name.c", line 43: error: expression must be a modifiable lvalue
+    d.x--; /* { dg-error "decrement of member 'x' in read-only object" } */
+    ^
+
+"Test_name.c", line 44: error: expression must be a modifiable lvalue
+    e.x--; /* { dg-error "decrement of read-only member 'x'" } */
+    ^
+
+"Test_name.c", line 45: error: expression must be a modifiable lvalue
+    (*f)--; /* { dg-error "decrement of read-only location" } */
+    ^
+
+"Test_name.c", line 46: error: expression must be a modifiable lvalue
+    --c; /* { dg-error "decrement of read-only variable 'c'" } */
+      ^
+
+"Test_name.c", line 47: error: expression must be a modifiable lvalue
+    --d.x; /* { dg-error "decrement of member 'x' in read-only object" } */
+      ^
+
+"Test_name.c", line 48: error: expression must be a modifiable lvalue
+    --e.x; /* { dg-error "decrement of read-only member 'x'" } */
+      ^
+
+"Test_name.c", line 49: error: expression must be a modifiable lvalue
+    --(*f); /* { dg-error "decrement of read-only location" } */
+      ^
+
+26 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 25: error: more than one instance of constructor "std_example::D1::D1" matches the argument list:
+            function "std_example::C1::A(int)" (declared implicitly), inherited via using decl at line 13
+            function "std_example::C2::A(int)" (declared implicitly), inherited via using decl at line 14
+            argument types are: (int)
+    D1 d1(0); // expected-error {{constructor of 'A' inherited from multiple base class subobjects}}
+          ^
+"Test_name.c", line 12: note: number of parameters of function "std_example::D1::D1()" does not match the call
+    struct D1 : C1, C2 {
+           ^
+
+1 error detected in the compilation of "Test_name.c".

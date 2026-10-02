@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 14: error: a pointer to a bound function may only be used to call the function
+        : keys(p1->keys), // { dg-error "18: invalid use of non-static member function" }
+                   ^
+          detected during:
+            instantiation of "C::C(B<C::mapped_type, _Compare, A<int>, A<int>> *, unsigned int) [with _Compare=int]" at line 33
+            instantiation of "B<_Tp, <unnamed>, <unnamed>, <unnamed>>::iterator B<_Tp, <unnamed>, <unnamed>, <unnamed>>::begin() [with _Tp=int, <unnamed>=int, <unnamed>=A<int>, <unnamed>=A<int>]" at line 39
+
+"Test_name.c", line 15: error: a pointer to a bound function may only be used to call the function
+          values(p1->values) {} // { dg-error "20: invalid use of non-static member function" }
+                     ^
+          detected during:
+            instantiation of "C::C(B<C::mapped_type, _Compare, A<int>, A<int>> *, unsigned int) [with _Compare=int]" at line 33
+            instantiation of "B<_Tp, <unnamed>, <unnamed>, <unnamed>>::iterator B<_Tp, <unnamed>, <unnamed>, <unnamed>>::begin() [with _Tp=int, <unnamed>=int, <unnamed>=A<int>, <unnamed>=A<int>]" at line 39
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 11: error: forward declaration of enum type is nonstandard
+  enum E *p;
+       ^
+
+"Test_name.c", line 13: error: enum "E" cannot be defined in the current scope
+    enum ::E { e };  // Previously triggered an abort.
+         ^
+
+2 errors detected in the compilation of "Test_name.c".

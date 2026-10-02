@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 15: error: "x" is not a nonstatic data member or base class of class "A"
+    A() : x(y) {}  // Previously triggered an internal error.
+          ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,37 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./gomp/sink-2.C", line 18: warning: unrecognized #pragma
+  #pragma omp parallel for ordered(1)
+          ^
+
+"./gomp/sink-2.C", line 21: warning: unrecognized #pragma
+  #pragma omp ordered depend(sink:it-1)
+          ^
+
+"./gomp/sink-2.C", line 23: warning: unrecognized #pragma
+  #pragma omp ordered depend(source)
+          ^
+
+"./gomp/sink-2.C", line 35: warning: unrecognized #pragma
+  #pragma omp parallel for ordered(1)
+          ^
+
+"./gomp/sink-2.C", line 38: warning: unrecognized #pragma
+  #pragma omp ordered depend(sink:it-1)
+          ^
+
+"./gomp/sink-2.C", line 40: warning: unrecognized #pragma
+  #pragma omp ordered depend(source)
+          ^
+
+"./gomp/sink-2.C", line 52: warning: unrecognized #pragma
+  #pragma omp parallel for ordered(1)
+          ^
+
+"./gomp/sink-2.C", line 55: warning: unrecognized #pragma
+  #pragma omp ordered depend(sink:it-1)
+          ^
+
+"./gomp/sink-2.C", line 57: warning: unrecognized #pragma
+  #pragma omp ordered depend(source)
+          ^
+

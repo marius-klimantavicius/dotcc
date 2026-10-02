@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 14: warning: expression has no effect
+      A<sizeof(t2)>::foo(); // { dg-error "dependent-name .A<sizeof .t2.>::foo" }
+      ^
+          detected during instantiation of "void g(T) [with T=char]" at line 19
+

@@ -1,0 +1,9 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 17: warning: variable "pa" is used before its value is set
+    pa->i = 1;  // okay
+    ^
+
+"Test_name.c", line 19: warning: variable "pb" is used before its value is set
+    pb->i = 1;  // okay
+    ^
+

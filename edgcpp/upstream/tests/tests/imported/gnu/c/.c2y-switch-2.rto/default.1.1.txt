@@ -1,0 +1,82 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 14: warning: integer conversion resulted in a change of sign
+      case -1:
+           ^
+
+"Test_name.c", line 16: warning: integer conversion resulted in truncation
+      case ~0U + 1ULL:			/* { dg-warning "conversion from 'long long unsigned int' to 'unsigned int' changes value from '\[0-9]*' to '0'" } */
+           ^
+
+"Test_name.c", line 28: warning: integer conversion resulted in a change of sign
+      case -2 ... -1:			/* { dg-warning "ISO C does not support range expressions in switch statements before C2Y" } */
+           ^
+
+"Test_name.c", line 28: warning: integer conversion resulted in a change of sign
+      case -2 ... -1:			/* { dg-warning "ISO C does not support range expressions in switch statements before C2Y" } */
+                  ^
+
+"Test_name.c", line 32: warning: integer conversion resulted in truncation
+      case ~0U + 1ULL ... ~0U + 2ULL:	/* { dg-warning "ISO C does not support range expressions in switch statements before C2Y" } */
+           ^
+
+"Test_name.c", line 32: warning: integer conversion resulted in truncation
+      case ~0U + 1ULL ... ~0U + 2ULL:	/* { dg-warning "ISO C does not support range expressions in switch statements before C2Y" } */
+                          ^
+
+"Test_name.c", line 38: error: the second constant in a case range must be larger than the first
+      case 80 ... 78:			/* { dg-warning "ISO C does not support range expressions in switch statements before C2Y" } */
+                  ^
+
+"Test_name.c", line 41: warning: integer conversion resulted in a change of sign
+      case -4 ... -4:			/* { dg-warning "ISO C does not support range expressions in switch statements before C2Y" } */
+           ^
+
+"Test_name.c", line 41: warning: integer conversion resulted in a change of sign
+      case -4 ... -4:			/* { dg-warning "ISO C does not support range expressions in switch statements before C2Y" } */
+                  ^
+
+"Test_name.c", line 44: warning: integer conversion resulted in truncation
+      case ~0U + 6ULL ... ~0U + 6ULL:	/* { dg-warning "ISO C does not support range expressions in switch statements before C2Y" } */
+           ^
+
+"Test_name.c", line 44: warning: integer conversion resulted in truncation
+      case ~0U + 6ULL ... ~0U + 6ULL:	/* { dg-warning "ISO C does not support range expressions in switch statements before C2Y" } */
+                          ^
+
+"Test_name.c", line 60: error: case label value has already appeared in this switch at line 57
+      case -31:				/* { dg-error "duplicate case value" } */
+           ^
+
+"Test_name.c", line 64: error: case label value has already appeared in this switch at line 62
+      case -43 ... -41:			/* { dg-warning "ISO C does not support range expressions in switch statements before C2Y" } */
+           ^
+
+"Test_name.c", line 77: error: the second constant in a case range must be larger than the first
+      case -6 ... -8:			/* { dg-warning "ISO C does not support range expressions in switch statements before C2Y" } */
+                  ^
+
+"Test_name.c", line 80: error: case label value has already appeared in this switch at line 77
+      case -6:
+           ^
+
+"Test_name.c", line 90: error: the second constant in a case range must be larger than the first
+      case -10 ... -11:			/* { dg-warning "ISO C does not support range expressions in switch statements before C2Y" } */
+                   ^
+
+"Test_name.c", line 90: error: case label value has already appeared in this switch at line 88
+      case -10 ... -11:			/* { dg-warning "ISO C does not support range expressions in switch statements before C2Y" } */
+           ^
+
+"Test_name.c", line 93: error: the second constant in a case range must be larger than the first
+      case -14 ... -15:			/* { dg-warning "ISO C does not support range expressions in switch statements before C2Y" } */
+                   ^
+
+"Test_name.c", line 96: error: the second constant in a case range must be larger than the first
+      case -14 ... -15:			/* { dg-warning "ISO C does not support range expressions in switch statements before C2Y" } */
+                   ^
+
+"Test_name.c", line 96: error: case label value has already appeared in this switch at line 93
+      case -14 ... -15:			/* { dg-warning "ISO C does not support range expressions in switch statements before C2Y" } */
+           ^
+
+10 errors detected in the compilation of "Test_name.c".

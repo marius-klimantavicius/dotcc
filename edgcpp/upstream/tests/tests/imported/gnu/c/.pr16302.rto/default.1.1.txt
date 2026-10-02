@@ -1,0 +1,89 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 19: warning: statement is unreachable
+    return (argc < 0 && argc > 10) ? 1 : 0; /* { dg-warning "'and' of mutually exclusive tests is always false" } */
+    ^
+
+"Test_name.c", line 20: warning: statement is unreachable
+    return (argc || !argc) ? 1 : 0; /* { dg-warning "'or' of collectively exhaustive tests is always true" } */
+    ^
+
+"Test_name.c", line 21: warning: statement is unreachable
+    return (argc && !argc) ? 1 : 0; /* { dg-warning "'and' of mutually exclusive tests is always false" } */
+    ^
+
+"Test_name.c", line 23: warning: statement is unreachable
+    if (argc == 2 && argc == 1) return 1; /* { dg-warning "'and' of mutually exclusive tests is always false" } */
+    ^
+
+"Test_name.c", line 32: warning: statement is unreachable
+    return (argc < 0 && argc > 10) ? 1 : 0; /* { dg-warning "'and' of mutually exclusive tests is always false" } */
+    ^
+
+"Test_name.c", line 33: warning: statement is unreachable
+    return (argc || !argc) ? 1 : 0; /* { dg-warning "'or' of collectively exhaustive tests is always true" } */
+    ^
+
+"Test_name.c", line 34: warning: statement is unreachable
+    return (argc && !argc) ? 1 : 0; /* { dg-warning "'and' of mutually exclusive tests is always false" } */
+    ^
+
+"Test_name.c", line 36: warning: statement is unreachable
+    if (argc == 2 && argc == 1) return 1; /* { dg-warning "'and' of mutually exclusive tests is always false" } */
+    ^
+
+"Test_name.c", line 45: warning: statement is unreachable
+    return (argc < 0 && argc > 10) ? 1 : 0; /* { dg-warning "'and' of mutually exclusive tests is always false" } */
+    ^
+
+"Test_name.c", line 46: warning: statement is unreachable
+    return (!argc || argc) ? 1 : 0; /* { dg-warning "'or' of collectively exhaustive tests is always true" } */
+    ^
+
+"Test_name.c", line 47: warning: statement is unreachable
+    return (!argc && argc) ? 1 : 0; /* { dg-warning "'and' of mutually exclusive tests is always false" } */
+    ^
+
+"Test_name.c", line 49: warning: statement is unreachable
+    return 0;
+    ^
+
+"Test_name.c", line 56: warning: statement is unreachable
+    if (5 < 0 && 5 > 10) return 1;
+    ^
+
+"Test_name.c", line 58: warning: statement is unreachable
+    if (0 && 1) return 1;
+    ^
+
+"Test_name.c", line 60: warning: statement is unreachable
+    if (2 && !2) return 1;
+    ^
+
+"Test_name.c", line 62: warning: statement is unreachable
+    if (!(!2) && !(2)) return 1;
+    ^
+
+"Test_name.c", line 70: warning: statement is unreachable
+    return (5 < 0 && 5 > 10) ? 1 : 0;
+    ^
+
+"Test_name.c", line 71: warning: statement is unreachable
+    return (1 || 0) ? 1 : 0 ;
+    ^
+
+"Test_name.c", line 72: warning: statement is unreachable
+    return (0 && 1) ? 1 : 0;
+    ^
+
+"Test_name.c", line 73: warning: statement is unreachable
+    return (2 || !2) ? 1 : 0;
+    ^
+
+"Test_name.c", line 74: warning: statement is unreachable
+    return (2 && !2) ? 1 : 0;
+    ^
+
+"Test_name.c", line 76: warning: statement is unreachable
+    return 0;
+    ^
+

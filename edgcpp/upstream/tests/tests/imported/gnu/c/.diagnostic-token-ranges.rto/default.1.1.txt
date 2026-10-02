@@ -1,0 +1,58 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 Test_name.c
+"Test_name.c", line 13: error: identifier "name" is undefined
+    name; /* { dg-error "'name' undeclared" } */
+    ^
+
+"Test_name.c", line 24: error: identifier "foo" is undefined
+    foo bar; /* { dg-error "unknown type name 'foo'" } */
+    ^
+
+"Test_name.c", line 32: error: identifier "qux" is undefined
+    qux *baz; /* { dg-error "unknown type name 'qux'" } */
+    ^
+
+"Test_name.c", line 32: error: identifier "baz" is undefined
+    qux *baz; /* { dg-error "unknown type name 'qux'" } */
+         ^
+
+"Test_name.c", line 43: warning: variable "new" was declared but never referenced
+    int new; /* { dg-warning "identifier 'new' conflicts with" } */
+        ^
+
+"Test_name.c", line 53: error: expected a type specifier
+  bogus_varargs (...); /* { dg-warning "ISO C requires a named argument before '...'" } */
+                 ^
+
+"Test_name.c", line 62: error: identifier "unknown_type" is undefined
+  foo (unknown_type param); /* { dg-error "unknown type name 'unknown_type'" } */
+       ^
+
+"Test_name.c", line 72: error: a wide string is invalid in an "asm" statement
+    __asm (L"nop"); /* { dg-error "a wide string is invalid in this context" } */
+           ^
+
+"Test_name.c", line 84: error: a break statement may only be used within a loop or switch
+      break; /* { dg-error "break statement not within loop or switch" } */
+      ^
+
+"Test_name.c", line 93: error: a continue statement may only be used within a loop
+      continue; /* { dg-error "continue statement not within a loop" } */
+      ^
+
+"Test_name.c", line 102: error: invalid combination of type specifiers
+  int float bogus; /* { dg-error "two or more data types in declaration specifiers" } */
+      ^
+
+"Test_name.c", line 108: error: invalid combination of type specifiers
+  long long long bogus2; /* { dg-error "'long long long' is too long for GCC" } */
+            ^
+
+"Test_name.c", line 114: error: invalid combination of type specifiers
+  long short bogus3; /* { dg-error "both 'long' and 'short' in declaration specifiers" } */
+       ^
+
+"Test_name.c", line 120: error: invalid combination of type specifiers
+  signed unsigned bogus4; /* { dg-error "both 'signed' and 'unsigned' in declaration specifiers" } */
+         ^
+
+13 errors detected in the compilation of "Test_name.c".

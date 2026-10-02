@@ -1,0 +1,202 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 14: error: expected a ";"
+        for (int j = ({ if (x == 0) break label1; 0; }); j < 16; ++j)		/* { dg-error "'break' statement operand 'label1' refers to a loop outside of its body" } */
+                                          ^
+
+"Test_name.c", line 17: error: expected a ";"
+        for (int j = ({ if (x == 1) continue label2; 0; }); j < 16; ++j)		/* { dg-error "'continue' statement operand 'label2' refers to a loop outside of its body" } */
+                                             ^
+
+"Test_name.c", line 20: error: expected a ";"
+        for (int j = 0; j < ({ if (x == 2) break label3; 16; }); ++j)		/* { dg-error "'break' statement operand 'label3' refers to a loop outside of its body" } */
+                                                 ^
+
+"Test_name.c", line 23: error: expected a ";"
+        for (int j = 0; j < ({ if (x == 3) continue label4; 16; }); ++j)		/* { dg-error "'continue' statement operand 'label4' refers to a loop outside of its body" } */
+                                                    ^
+
+"Test_name.c", line 26: error: expected a ";"
+        for (int j = 0; j < 16; j += ({ if (x == 4) break label5; 1; }))		/* { dg-error "'break' statement operand 'label5' refers to a loop outside of its body" } */
+                                                          ^
+
+"Test_name.c", line 29: error: expected a ";"
+        for (int j = 0; j < 16; j += ({ if (x == 5) continue label6; 1; }))	/* { dg-error "'continue' statement operand 'label6' refers to a loop outside of its body" } */
+                                                             ^
+
+"Test_name.c", line 33: error: expected a ";"
+        while (k < ({ if (x == 6) break label7; 16; }))				/* { dg-error "'break' statement operand 'label7' refers to a loop outside of its body" } */
+                                        ^
+
+"Test_name.c", line 37: error: expected a ";"
+        while (k < ({ if (x == 7) continue label8; 16; }))			/* { dg-error "'continue' statement operand 'label8' refers to a loop outside of its body" } */
+                                           ^
+
+"Test_name.c", line 43: error: expected a ";"
+        while (k <= ({ if (x == 8) break label9; 16; }));				/* { dg-error "'break' statement operand 'label9' does not refer to a named loop or 'switch'" } */
+                                         ^
+
+"Test_name.c", line 48: error: expected a ";"
+        while (k <= ({ if (x == 9) continue label10; 16; }));			/* { dg-error "'continue' statement operand 'label10' does not refer to a named loop" } */
+                                            ^
+
+"Test_name.c", line 50: error: expected a ";"
+        switch (x + ({ if (x == 10) break label11; 0; }))				/* { dg-error "'break' statement operand 'label11' refers to a 'switch' outside of its body" } */
+                                          ^
+
+"Test_name.c", line 83: error: expected a ";"
+  		continue label14;
+  		         ^
+
+"Test_name.c", line 85: error: expected a ";"
+  		break label15;
+  		      ^
+
+"Test_name.c", line 87: error: expected a ";"
+  	      {
+  	      ^
+
+"Test_name.c", line 105: warning: parsing restarts here after previous syntax error
+  	      bar ();
+  	            ^
+
+"Test_name.c", line 107: error: expected a ";"
+  		continue label22;
+  		         ^
+
+"Test_name.c", line 109: error: expected a ";"
+  		break label20;
+  		      ^
+
+"Test_name.c", line 111: error: expected a ";"
+  		break label15;
+  		      ^
+
+"Test_name.c", line 113: error: expected a ";"
+  		continue label13;
+  		         ^
+
+"Test_name.c", line 115: error: expected a ";"
+  		break label12;
+  		      ^
+
+"Test_name.c", line 13: warning: label "label1" was declared but never referenced
+       label1:									/* { dg-message "loop name defined here" } */
+       ^
+
+"Test_name.c", line 16: warning: label "label2" was declared but never referenced
+       label2:									/* { dg-message "loop name defined here" } */
+       ^
+
+"Test_name.c", line 19: warning: label "label3" was declared but never referenced
+       label3:									/* { dg-message "loop name defined here" } */
+       ^
+
+"Test_name.c", line 22: warning: label "label4" was declared but never referenced
+       label4:									/* { dg-message "loop name defined here" } */
+       ^
+
+"Test_name.c", line 25: warning: label "label5" was declared but never referenced
+       label5:									/* { dg-message "loop name defined here" } */
+       ^
+
+"Test_name.c", line 28: warning: label "label6" was declared but never referenced
+       label6:									/* { dg-message "loop name defined here" } */
+       ^
+
+"Test_name.c", line 32: warning: label "label7" was declared but never referenced
+       label7:									/* { dg-message "loop name defined here" } */
+       ^
+
+"Test_name.c", line 36: warning: label "label8" was declared but never referenced
+       label8:									/* { dg-message "loop name defined here" } */
+       ^
+
+"Test_name.c", line 40: warning: label "label9" was declared but never referenced
+       label9:
+       ^
+
+"Test_name.c", line 45: warning: label "label10" was declared but never referenced
+       label10:
+       ^
+
+"Test_name.c", line 49: warning: label "label11" was declared but never referenced
+       label11:									/* { dg-message "'switch' name defined here" } */
+       ^
+
+"Test_name.c", line 56: warning: label "label12" was declared but never referenced
+   label12:
+   ^
+
+"Test_name.c", line 57: warning: label "label13" was declared but never referenced
+   label13:
+   ^
+
+"Test_name.c", line 58: warning: label "label14" was declared but never referenced
+   label14:
+   ^
+
+"Test_name.c", line 61: warning: label "label15" was declared but never referenced
+       label15:
+       ^
+
+"Test_name.c", line 64: warning: label "label16" was declared but never referenced
+  	 label16:
+  	 ^
+
+"Test_name.c", line 66: warning: label "label17" was declared but never referenced
+  	 label17:
+  	 ^
+
+"Test_name.c", line 67: warning: label "label18" was declared but never referenced
+  	 label18:
+  	 ^
+
+"Test_name.c", line 68: warning: label "label19" was declared but never referenced
+  	 label19:
+  	 ^
+
+"Test_name.c", line 69: warning: label "label20" was declared but never referenced
+  	 label20:
+  	 ^
+
+"Test_name.c", line 70: warning: label "label21" was declared but never referenced
+  	 label21:
+  	 ^
+
+"Test_name.c", line 71: warning: label "label22" was declared but never referenced
+  	 label22:
+  	 ^
+
+"Test_name.c", line 72: warning: label "label23" was declared but never referenced
+  	 label23:
+  	 ^
+
+"Test_name.c", line 73: warning: label "label24" was declared but never referenced
+  	 label24:
+  	 ^
+
+"Test_name.c", line 74: warning: label "label25" was declared but never referenced
+  	 label25:
+  	 ^
+
+"Test_name.c", line 75: warning: label "label26" was declared but never referenced
+  	 label26:
+  	 ^
+
+"Test_name.c", line 76: warning: label "label27" was declared but never referenced
+  	 label27:
+  	 ^
+
+"Test_name.c", line 77: warning: label "label28" was declared but never referenced
+  	 label28:
+  	 ^
+
+"Test_name.c", line 78: warning: label "label29" was declared but never referenced
+  	 label29:
+  	 ^
+
+"Test_name.c", line 79: warning: label "label30" was declared but never referenced
+  	 label30:
+  	 ^
+
+19 errors detected in the compilation of "Test_name.c".

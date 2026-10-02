@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 22: error: no instance of function template "resolver" matches the argument list
+            argument types are: (<unknown-type>)
+    resolver (&funcA); // { dg-error "no match" }
+    ^
+"Test_name.c", line 7: note: candidate function template "resolver" failed deduction
+  void resolver(int (*) (T, Args...));
+       ^
+
+"Test_name.c", line 26: error: no instance of function template "resolver" matches the argument list
+            argument types are: (<unknown-type>)
+    resolver<int> (&funcB); // { dg-error "no match" }
+    ^
+"Test_name.c", line 7: note: function template "resolver" does not match because argument #1 does not match parameter
+  void resolver(int (*) (T, Args...));
+       ^
+
+"Test_name.c", line 27: error: no instance of function template "resolver" matches the argument list
+            argument types are: (<unknown-type>)
+    resolver<int, char> (&funcB); // { dg-error "no match" }
+    ^
+"Test_name.c", line 7: note: function template "resolver" does not match because argument #1 does not match parameter
+  void resolver(int (*) (T, Args...));
+       ^
+
+"Test_name.c", line 31: error: no instance of function template "resolver" matches the argument list
+            argument types are: (<unknown-type>)
+    resolver<int, float> (&funcC); // { dg-error "no match" }
+    ^
+"Test_name.c", line 7: note: function template "resolver" does not match because argument #1 does not match parameter
+  void resolver(int (*) (T, Args...));
+       ^
+
+4 errors detected in the compilation of "Test_name.c".

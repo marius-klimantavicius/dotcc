@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c89 Test_name.c
+"Sema/attr-nonblocking-constraints.c", line 5: warning: unknown attribute "blocking"
+  void hasproto(void) __attribute__((blocking)); // expected-note {{function does not permit inference of 'nonblocking' because it is declared 'blocking'}}
+                                     ^
+
+"Sema/attr-nonblocking-constraints.c", line 14: warning: unknown attribute "nonblocking"
+  void nb2(void) __attribute__((nonblocking)) {
+                                ^
+
+"Sema/attr-nonblocking-constraints.c", line 22: warning: unknown attribute "nonblocking"
+  void nb3(int x, int y) __attribute__((nonblocking)) {
+                                        ^
+

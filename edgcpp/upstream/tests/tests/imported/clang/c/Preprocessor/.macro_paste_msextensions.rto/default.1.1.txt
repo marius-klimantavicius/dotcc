@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --ms_extensions --ms_extensions -w --c Test_name.c
+"Test_name.c", line 37: error: variable "baz" is not a type name
+  bar(q) // expected-error {{type specifier missing}} expected-error {{invalid preprocessing token}} expected-error {{parameter list without types}}
+  ^
+
+"Test_name.c", line 44: error: expected a "{"
+  collapse_spaces(1a, b2, 3c, d4) // expected-error 4 {{invalid preprocessing token}} expected-error {{expected function body}}
+  ^
+
+At end of source: error: expected a "}"
+
+3 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 6: error: extra text after expected end of number
+  double a = 1.ld;	/* { dg-error "12:invalid suffix" } */
+                ^
+
+"Test_name.c", line 7: error: extra text after expected end of number
+  double b = 1.fd;	/* { dg-error "12:invalid suffix" } */
+                ^
+
+"Test_name.c", line 8: error: extra text after expected end of number
+  double c = 1.di;
+               ^
+
+"Test_name.c", line 9: error: extra text after expected end of number
+  double d = 1.dj;
+               ^
+
+"Test_name.c", line 10: error: extra text after expected end of number
+  double e = 1.id;
+                ^
+
+"Test_name.c", line 11: error: extra text after expected end of number
+  double f = 1.jd;
+                ^
+
+"Test_name.c", line 12: error: extra text after expected end of number
+  double g = 1.ddd;	/* { dg-error "12:invalid suffix" } */
+               ^
+
+"Test_name.c", line 13: error: extra text after expected end of number
+  double h = 1.ldd;	/* { dg-error "12:invalid suffix" } */
+                ^
+
+"Test_name.c", line 14: error: extra text after expected end of number
+  double i = 1.dld;	/* { dg-error "12:invalid suffix" } */
+               ^
+
+"Test_name.c", line 15: error: extra text after expected end of number
+  double j = 1.ddl;	/* { dg-error "12:invalid suffix" } */
+               ^
+
+"Test_name.c", line 16: error: extra text after expected end of number
+  double k = 1.fdd;	/* { dg-error "12:invalid suffix" } */
+                ^
+
+"Test_name.c", line 17: error: extra text after expected end of number
+  double l = 1.dfd;	/* { dg-error "12:invalid suffix" } */
+               ^
+
+"Test_name.c", line 18: error: extra text after expected end of number
+  double m = 1.ddf;	/* { dg-error "12:invalid suffix" } */
+               ^
+
+13 errors detected in the compilation of "Test_name.c".

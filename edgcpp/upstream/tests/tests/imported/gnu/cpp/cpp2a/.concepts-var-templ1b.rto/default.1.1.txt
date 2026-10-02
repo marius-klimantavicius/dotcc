@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 14: error: template constraint not satisfied
+  template<> template<> int A<int>::v<char>; // { dg-error "match" }
+                                          ^
+"Test_name.c", line 10: note: type constraint failed for "char"
+    template<C<T>> static int v;
+             ^
+"Test_name.c", line 6: note: atomic constraint evaluates to false
+  template<class T, class U> concept C = __is_same(T, U);
+                                         ^
+
+"Test_name.c", line 17: error: template constraint not satisfied
+  int y = A<int>::v<char>; // { dg-error "invalid" }
+                        ^
+"Test_name.c", line 10: note: type constraint failed for "char"
+    template<C<T>> static int v;
+             ^
+"Test_name.c", line 6: note: atomic constraint evaluates to false
+  template<class T, class U> concept C = __is_same(T, U);
+                                         ^
+
+2 errors detected in the compilation of "Test_name.c".

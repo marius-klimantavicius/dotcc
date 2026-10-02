@@ -1,0 +1,69 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 22: warning: constexpr non-static member function will not be implicitly 'const' in C++14
+    constexpr operator const char *() { return s3; }
+    ^
+
+"Test_name.c", line 31: error: invalid nontype template argument of type "fn_p" (aka "const char *(*)()")
+    A<f2()> a1; // { dg-error "7:.f2\\(\\). is not a valid template argument" "" { target c++14_down } }
+      ^
+
+"Test_name.c", line 35: error: a template argument may not reference a non-external entity
+    Message<s4> m4;  // { dg-error "no linkage" "" { target c++14_down } }
+            ^
+
+"Test_name.c", line 36: error: a template argument may not reference a non-external entity
+    Message<s5> m5;  // { dg-error "no linkage" "" { target c++14_down } }
+            ^
+
+"Test_name.c", line 37: error: invalid nontype template argument of type "const char *"
+    Message<f()> m6; // { dg-error "" "" { target c++14_down } }
+            ^
+
+"Test_name.c", line 38: error: invalid nontype template argument of type "const char *"
+    Message<B{}> m7; // { dg-error "11:could not convert template argument" "" { target c++14_down } }
+            ^
+
+"Test_name.c", line 42: error: expression must have a constant value
+    Message<s8> m8;  // { dg-error "" }
+            ^
+"Test_name.c", line 42: note: a pointer or reference to variable "s8" (declared at line 41) cannot be used as a constant
+    Message<s8> m8;  // { dg-error "" }
+            ^
+
+"Test_name.c", line 27: warning: variable "m1" was declared but never referenced
+    Message<s1> m1;  // OK (all versions)
+                ^
+
+"Test_name.c", line 28: warning: variable "m2" was declared but never referenced
+    Message<s2> m2;  // OK for clang since C++14, for gcc since C++17
+                ^
+
+"Test_name.c", line 29: warning: variable "m3" was declared but never referenced
+    Message<s3> m3;  // OK for clang/gcc since C++11
+                ^
+
+"Test_name.c", line 31: warning: variable "a1" was declared but never referenced
+    A<f2()> a1; // { dg-error "7:.f2\\(\\). is not a valid template argument" "" { target c++14_down } }
+            ^
+
+"Test_name.c", line 35: warning: variable "m4" was declared but never referenced
+    Message<s4> m4;  // { dg-error "no linkage" "" { target c++14_down } }
+                ^
+
+"Test_name.c", line 36: warning: variable "m5" was declared but never referenced
+    Message<s5> m5;  // { dg-error "no linkage" "" { target c++14_down } }
+                ^
+
+"Test_name.c", line 37: warning: variable "m6" was declared but never referenced
+    Message<f()> m6; // { dg-error "" "" { target c++14_down } }
+                 ^
+
+"Test_name.c", line 38: warning: variable "m7" was declared but never referenced
+    Message<B{}> m7; // { dg-error "11:could not convert template argument" "" { target c++14_down } }
+                 ^
+
+"Test_name.c", line 42: warning: variable "m8" was declared but never referenced
+    Message<s8> m8;  // { dg-error "" }
+                ^
+
+6 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 12: warning: excess initializers are ignored
+    struct S b = { .a = (char **) { "a", "b" } }; /* { dg-warning "(initialization|excess elements)" } */
+                                         ^
+
+"Test_name.c", line 12: warning: a value of type "char *" cannot be used to initialize an entity of type "char **"
+    struct S b = { .a = (char **) { "a", "b" } }; /* { dg-warning "(initialization|excess elements)" } */
+                                    ^
+
+"Test_name.c", line 12: warning: variable "b" was declared but never referenced
+    struct S b = { .a = (char **) { "a", "b" } }; /* { dg-warning "(initialization|excess elements)" } */
+             ^
+
+"Test_name.c", line 13: warning: variable "c" was declared but never referenced
+    struct S c = { .a = (char *[]) { "a", "b" } };
+             ^
+

@@ -1,0 +1,26 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 5: error: expected a ";"
+  typedef int near I; // error
+                   ^
+
+"Test_name.c", line 7: error: expected a ";"
+  typedef int far J;  // error
+                  ^
+
+"Test_name.c", line 8: error: expected a ";"
+  typedef int near K;
+                   ^
+
+"Test_name.c", line 9: error: expected a ";"
+  typedef int near K;  // okay
+                   ^
+
+"Test_name.c", line 10: error: expected a ";"
+  typedef int far L;
+                  ^
+
+"Test_name.c", line 11: error: expected a ";"
+  typedef int far L;  // okay
+                  ^
+
+6 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --c++17 -tused -A Test_name.c
+"Test_name.c", line 10: warning: variable "y" was declared but never referenced
+      int y = a.y;         // OK
+          ^
+
+"Test_name.c", line 11: warning: variable "x" was declared but never referenced
+      int x = a.x<int>;    // ???
+          ^
+

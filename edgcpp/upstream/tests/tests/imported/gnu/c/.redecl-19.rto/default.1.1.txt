@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc -w Test_name.c
+"Test_name.c", line 7: error: expected a ";"
+  b(){a()} a; // { dg-error "" }
+         ^
+
+"Test_name.c", line 7: error: declaration is incompatible with "int (*a)(void)" (declared at line 6)
+  b(){a()} a; // { dg-error "" }
+           ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 10: warning: function "__builtin_btf_type_id" declared implicitly
+  unsigned invalid1(void) { return __builtin_btf_type_id(1, tmp); } // expected-error {{__builtin_btf_type_id argument 2 not a constant}}
+                                   ^
+
+"Test_name.c", line 11: warning: function "__builtin_btf_type_id" declared implicitly
+  unsigned invalid2(void) { return __builtin_btf_type_id(1, 1, 1); } // expected-error {{too many arguments to function call, expected 2, have 3}}
+                                   ^
+
+"Test_name.c", line 13: warning: function "__builtin_btf_type_id" declared implicitly
+  int valid1(void) { return __builtin_btf_type_id(tmp, 0); }
+                            ^
+
+"Test_name.c", line 14: warning: function "__builtin_btf_type_id" declared implicitly
+  int valid2(void) { return __builtin_btf_type_id(&tmp, 1); }
+                            ^
+
+"Test_name.c", line 15: warning: function "__builtin_btf_type_id" declared implicitly
+  int valid3(void) { return __builtin_btf_type_id(tmp.f1[4], 10); }
+                            ^
+

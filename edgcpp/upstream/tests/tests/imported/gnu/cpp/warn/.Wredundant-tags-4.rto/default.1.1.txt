@@ -1,0 +1,41 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Wredundant-tags-4.h", line 31: warning: "enum class" and "enum struct" cannot be used here (use plain "enum" instead)
+    void f2 (enum_struct ES1);            // { dg-warning "\\\[-Wredundant-tags" }
+                         ^
+
+"Wredundant-tags-4.h", line 46: warning: "enum class" and "enum struct" cannot be used here (use plain "enum" instead)
+    finline3 (enum_struct ES1)            // { dg-warning "\\\[-Wredundant-tags" }
+                          ^
+
+"Wredundant-tags-4.h", line 59: warning: "enum class" and "enum struct" cannot be used here (use plain "enum" instead)
+    extern enum_struct ES1 es1;           // { dg-warning "\\\[-Wredundant-tags" }
+                       ^
+
+"Wredundant-tags-4.h", line 68: warning: "enum class" and "enum struct" cannot be used here (use plain "enum" instead)
+    extern enum_struct ES1 n1es1;         // { dg-warning "\\\[-Wredundant-tags" }
+                       ^
+
+"Wredundant-tags-4.h", line 83: warning: "enum class" and "enum struct" cannot be used here (use plain "enum" instead)
+      enum_struct ES2 es21;               // { dg-warning "\\\[-Wredundant-tags" }
+                  ^
+
+"Wredundant-tags-4.h", line 90: warning: "enum class" and "enum struct" cannot be used here (use plain "enum" instead)
+    void f7 (enum_struct ES2);            // { dg-warning "\\\[-Wredundant-tags" }
+                         ^
+
+"Wredundant-tags-4.h", line 96: warning: "enum class" and "enum struct" cannot be used here (use plain "enum" instead)
+    extern enum_struct ES2 es2;           // { dg-warning "\\\[-Wredundant-tags" }
+                       ^
+
+"Wredundant-tags-4.h", line 112: warning: "enum class" and "enum struct" cannot be used here (use plain "enum" instead)
+  void f12 (enum_struct ES3);             // { dg-warning "\\\[-Wredundant-tags" }
+                        ^
+
+"Wredundant-tags-4.h", line 118: warning: "enum class" and "enum struct" cannot be used here (use plain "enum" instead)
+  extern enum_struct ES3 es3;             // { dg-warning "\\\[-Wredundant-tags" }
+                     ^
+
+"Wredundant-tags-4.h", line 135: warning: "enum class" and "enum struct" cannot be used here (use plain "enum" instead)
+    extern enum_struct ES4 es4;           // { dg-warning "\\\[-Wredundant-tags" }
+                       ^
+

@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 ǣ-Ö.cpp
+At end of source: error: expected a "}"
+"ǣ-Ö.cpp", line 4: note: to match this "{"
+  int main() {{
+              ^
+
+At end of source: error: expected a "}"
+"ǣ-Ö.cpp", line 4: note: to match this "{"
+  int main() {{
+             ^
+
+2 errors detected in the compilation of "ǣ-Ö.cpp".

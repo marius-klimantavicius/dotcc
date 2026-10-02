@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./gomp/tile-1.C", line 16: warning: unrecognized #pragma
+  #pragma omp teams distribute parallel for num_teams(V)
+          ^
+
+"./gomp/tile-1.C", line 20: warning: unrecognized #pragma
+  #pragma omp tile sizes (V, U)
+          ^
+

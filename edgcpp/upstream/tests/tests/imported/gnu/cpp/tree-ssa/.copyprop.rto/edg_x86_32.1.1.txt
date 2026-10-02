@@ -1,0 +1,498 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --no_exceptions --c++03 Test_name.c
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/cpp_type_traits.h", line 553: error: identifier "__int128" is undefined
+      struct __memcpyable_integer<__int128> { enum { __width = 128 }; };
+                                  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/cpp_type_traits.h", line 556: error: expected a ">"
+      struct __memcpyable_integer<unsigned __int128> { enum { __width = 128 }; };
+                                           ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/ext/numeric_traits.h", line 132: error: identifier "__int128" is undefined
+    __extension__ template<> struct __is_integer_nonstrict<__int128> { enum { __value = 1 }; typedef std::__true_type __type; enum { __width = 128 }; }; __extension__ template<> struct __is_integer_nonstrict<unsigned __int128> { enum { __value = 1 }; typedef std::__true_type __type; enum { __width = 128 }; };
+                                                           ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/ext/numeric_traits.h", line 132: error: expected a ">"
+    __extension__ template<> struct __is_integer_nonstrict<__int128> { enum { __value = 1 }; typedef std::__true_type __type; enum { __width = 128 }; }; __extension__ template<> struct __is_integer_nonstrict<unsigned __int128> { enum { __value = 1 }; typedef std::__true_type __type; enum { __width = 128 }; };
+                                                                                                                                                                                                                         ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 137: error: first parameter of allocation function must be of type "size_t"
+   void* operator new(std::size_t)
+         ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 140: error: first parameter of allocation function must be of type "size_t"
+   void* operator new[](std::size_t)
+         ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 155: error: first parameter of allocation function must be of type "size_t"
+   void* operator new(std::size_t, const std::nothrow_t&)
+         ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 158: error: first parameter of allocation function must be of type "size_t"
+   void* operator new[](std::size_t, const std::nothrow_t&)
+         ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 206: error: first parameter of allocation function must be of type "size_t"
+  void* operator new(std::size_t, void* __p)
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 210: error: first parameter of allocation function must be of type "size_t"
+  void* operator new[](std::size_t, void* __p)
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/locale_classes.h", line 490: error: support for exception handling is disabled
+     try
+     ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/locale_classes.h", line 608: error: support for exception handling is disabled
+     try
+     ^
+
+"./tree-ssa/copyprop.C", line 27: warning: pointer points outside of underlying object
+    const unsigned long* __last = __stl_prime_list + 29;
+                                                   ^
+
+"./tree-ssa/copyprop.C", line 153: warning: missing return statement at end of non-void function "blah_54::stream"
+    ostream& stream() { };
+                        ^
+
+"./tree-ssa/copyprop.C", line 380: warning: missing return statement at end of non-void function "hash<long>::operator()"
+    }
+    ^
+
+"./tree-ssa/copyprop.C", line 384: warning: missing return statement at end of non-void function "hash<unsigned long>::operator()"
+    }
+    ^
+
+"./tree-ssa/copyprop.C", line 437: warning: missing return statement at end of non-void function "linked_ptr_internal::depart"
+   public: bool depart() { if (next_ == this) return true; }
+                                                           ^
+
+"./tree-ssa/copyprop.C", line 490: warning: declared size for bit field is larger than the size of the bit field type; truncated to 32 bits
+    long hahaha_id_ : 48;
+                      ^
+
+"./tree-ssa/copyprop.C", line 540: warning: declared size for bit field is larger than the size of the bit field type; truncated to 32 bits
+    long hahaha_id_ : 40;
+                      ^
+
+"./tree-ssa/copyprop.C", line 537: warning: missing return statement at end of non-void function "foo_12::hahaha_id"
+    unsigned long hahaha_id() const {}
+                                     ^
+
+"./tree-ssa/copyprop.C", line 538: warning: missing return statement at end of non-void function "foo_12::qbb_score"
+    unsigned int qbb_score() const {}
+                                    ^
+
+"./tree-ssa/copyprop.C", line 550: warning: missing return statement at end of non-void function "foo_13::begin"
+    const_iterator begin() const { }
+                                   ^
+
+"./tree-ssa/copyprop.C", line 553: warning: missing return statement at end of non-void function "foo_13::GetMatch"
+     const foo_12& GetMatch(const_iterator it) const {}
+                                                      ^
+
+"./tree-ssa/copyprop.C", line 579: warning: missing return statement at end of non-void function "foo_14::Gathersfoo_9"
+    bool Gathersfoo_9() const {}
+                               ^
+
+"./tree-ssa/copyprop.C", line 580: warning: missing return statement at end of non-void function "foo_14::rrrrrrr_type_data"
+    const foo_10* rrrrrrr_type_data() const {}
+                                             ^
+
+"./tree-ssa/copyprop.C", line 581: warning: missing return statement at end of non-void function "foo_14::negative_rrrrrrr_type_data"
+    const foo_10* negative_rrrrrrr_type_data() const {}
+                                                      ^
+
+"./tree-ssa/copyprop.C", line 582: warning: missing return statement at end of non-void function "foo_14::positive_rrrrrrr_type_data"
+    const foo_10* positive_rrrrrrr_type_data() const {}
+                                                      ^
+
+"./tree-ssa/copyprop.C", line 583: warning: missing return statement at end of non-void function "foo_14::kw_info_set"
+    const foo_9Set* kw_info_set() const { }
+                                          ^
+
+"./tree-ssa/copyprop.C", line 584: warning: missing return statement at end of non-void function "foo_14::rewrite_data"
+     const foo_6Data* rewrite_data() const {}
+                                            ^
+
+"./tree-ssa/copyprop.C", line 585: warning: missing return statement at end of non-void function "foo_14::query_rectangles"
+    const vector<blah_17>& query_rectangles() const {}
+                                                     ^
+
+"./tree-ssa/copyprop.C", line 620: warning: missing return statement at end of non-void function "blah_16::near_aaaaa_rrrrrrr_fps_size"
+   public: int near_aaaaa_rrrrrrr_fps_size() const {}
+                                                    ^
+
+"./tree-ssa/copyprop.C", line 621: warning: missing return statement at end of non-void function "blah_16::near_aaaaa_rrrrrrr_fps"
+    unsigned long near_aaaaa_rrrrrrr_fps(int i) const {}
+                                                       ^
+
+"./tree-ssa/copyprop.C", line 662: warning: missing return statement at end of non-void function "foo_14::hmmmmh_8(long, foo_13::iterator, const foo_12 &)"
+  }
+  ^
+
+"./tree-ssa/copyprop.C", line 665: warning: missing return statement at end of non-void function "foo_14::hmmmmh_8(long, const foo_12 &)"
+  }
+  ^
+
+"./tree-ssa/copyprop.C", line 680: error: function "operator new" cannot be called with the given argument list
+            argument types are: (unsigned int, char *)
+    foo_7* new_info = new(expanded_rrrrrrr_arena_->Alloc(sizeof(foo_7))) foo_7(shengmo_0,shengmo_1, shengmo_2, shengmo_3, shengmo_4_rewrite, multiplier, context_score);
+                      ^
+Note: number of parameters of function "operator new" does not match the call
+
+"./tree-ssa/copyprop.C", line 686: warning: missing return statement at end of non-void function "foo_14::Insertfoo_6"
+  }
+  ^
+
+"./tree-ssa/copyprop.C", line 688: error: function "operator new" cannot be called with the given argument list
+            argument types are: (unsigned int, char *)
+    foo_9* info = new(kw_arena_->Alloc(sizeof(foo_9))) foo_9;
+                  ^
+Note: number of parameters of function "operator new" does not match the call
+
+"./tree-ssa/copyprop.C", line 691: warning: missing return statement at end of non-void function "foo_14::Insertfoo_9"
+  }
+  ^
+
+"./tree-ssa/copyprop.C", line 694: warning: missing return statement at end of non-void function "foo_14::hmmmmh_12"
+  }
+  ^
+
+"./tree-ssa/copyprop.C", line 697: warning: missing return statement at end of non-void function "foo_14::hmmmmh_13"
+  }
+  ^
+
+"./tree-ssa/copyprop.C", line 702: warning: missing return statement at end of non-void function "foo_14::Getfoo_9"
+  }
+  ^
+
+"./tree-ssa/copyprop.C", line 700: warning: variable "occurrences_383" was declared but never referenced
+    static int occurrences_383 = 0, occurrences_mod_n_383 = 0;
+               ^
+
+"./tree-ssa/copyprop.C", line 251: warning: missing return statement at end of non-void function "dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::min_size"
+    }
+    ^
+          detected during instantiation of "dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::dense_hashtable(dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::size_type, const HashFcn &, const EqualKey &, const ExtractKey &) [with Value=std::pair<const long, int>, Key=long, HashFcn=hash<long>, ExtractKey=dense_hash_map<long, int, hash<long>, std::equal_to<long>, std::allocator<int>>::SelectKey, EqualKey=std::equal_to<long>, Alloc=std::allocator<int>]" at line 393
+
+"./tree-ssa/copyprop.C", line 246: warning: missing return statement at end of non-void function "dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::bucket_count"
+    size_type bucket_count() const { }
+                                     ^
+          detected during:
+            instantiation of "std::pair<size_t, size_t> dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::find_position(const dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::key_type &) const [with Value=std::pair<const long, int>, Key=long, HashFcn=hash<long>, ExtractKey=dense_hash_map<long, int, hash<long>, std::equal_to<long>, std::allocator<int>>::SelectKey, EqualKey=std::equal_to<long>, Alloc=std::allocator<int>]" at line 326
+            instantiation of "dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::iterator dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::find(const dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::key_type &) [with Value=std::pair<const long, int>, Key=long, HashFcn=hash<long>, ExtractKey=dense_hash_map<long, int, hash<long>, std::equal_to<long>, std::allocator<int>>::SelectKey, EqualKey=std::equal_to<long>, Alloc=std::allocator<int>]" at line 403
+            instantiation of "dense_hash_map<Key, T, HashFcn, EqualKey, Alloc>::iterator dense_hash_map<Key, T, HashFcn, EqualKey, Alloc>::find(const dense_hash_map<Key, T, HashFcn, EqualKey, Alloc>::key_type &) [with Key=long, T=int, HashFcn=hash<long>, EqualKey=std::equal_to<long>, Alloc=std::allocator<int>]" at line 552
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_construct.h", line 142: error: function "operator new" cannot be called with the given argument list
+            argument types are: (unsigned int, void *)
+        ::new(static_cast<void*>(__p)) _T1(__value);
+          ^
+Note: number of parameters of function "operator new" does not match the call
+          detected during:
+            instantiation of "void std::_Construct(_T1 *, const _T2 &) [with _T1=std::pair<const long, int>, _T2=std::pair<const long, int>]" at line 324 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_uninitialized.h"
+            instantiation of "void std::__do_uninit_fill(_ForwardIterator, _ForwardIterator, const _Tp &) [with _ForwardIterator=std::pair<const long, int> *, _Tp=std::pair<const long, int>]" at line 337 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_uninitialized.h"
+            instantiation of "void std::__uninitialized_fill<_CanMemset>::__uninit_fill(_ForwardIterator, _ForwardIterator, const _Tp &) [with _CanMemset=false, _ForwardIterator=std::pair<const long, int> *, _Tp=std::pair<const long, int>]" at line 433 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_uninitialized.h"
+            instantiation of "void std::uninitialized_fill(_ForwardIterator, _ForwardIterator, const _Tp &) [with _ForwardIterator=std::pair<const long, int> *, _Tp=std::pair<const long, int>]" at line 237 of "./tree-ssa/copyprop.C"
+            instantiation of "void dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::fill_range_with_empty(dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::value_type *, dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::value_type *) [with Value=std::pair<const long, int>, Key=long, HashFcn=hash<long>, ExtractKey=dense_hash_map<long, int, hash<long>, std::equal_to<long>, std::allocator<int>>::SelectKey, EqualKey=std::equal_to<long>, Alloc=std::allocator<int>]" at line 241 of "./tree-ssa/copyprop.C"
+            [ 4 instantiation contexts not shown ]
+            instantiation of "void dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::maybe_shrink() [with Value=std::pair<const long, int>, Key=long, HashFcn=hash<long>, ExtractKey=dense_hash_map<long, int, hash<long>, std::equal_to<long>, std::allocator<int>>::SelectKey, EqualKey=std::equal_to<long>, Alloc=std::allocator<int>]" at line 261 of "./tree-ssa/copyprop.C"
+            instantiation of "void dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::resize_delta(dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::size_type, dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::size_type) [with Value=std::pair<const long, int>, Key=long, HashFcn=hash<long>, ExtractKey=dense_hash_map<long, int, hash<long>, std::equal_to<long>, std::allocator<int>>::SelectKey, EqualKey=std::equal_to<long>, Alloc=std::allocator<int>]" at line 349 of "./tree-ssa/copyprop.C"
+            instantiation of "std::pair<dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::iterator, bool> dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::insert(const dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::value_type &) [with Value=std::pair<const long, int>, Key=long, HashFcn=hash<long>, ExtractKey=dense_hash_map<long, int, hash<long>, std::equal_to<long>, std::allocator<int>>::SelectKey, EqualKey=std::equal_to<long>, Alloc=std::allocator<int>]" at line 409 of "./tree-ssa/copyprop.C"
+            instantiation of "std::pair<dense_hash_map<Key, T, HashFcn, EqualKey, Alloc>::iterator, bool> dense_hash_map<Key, T, HashFcn, EqualKey, Alloc>::insert(const dense_hash_map<Key, T, HashFcn, EqualKey, Alloc>::value_type &) [with Key=long, T=int, HashFcn=hash<long>, EqualKey=std::equal_to<long>, Alloc=std::allocator<int>]" at line 406 of "./tree-ssa/copyprop.C"
+            instantiation of "dense_hash_map<Key, T, HashFcn, EqualKey, Alloc>::data_type &dense_hash_map<Key, T, HashFcn, EqualKey, Alloc>::operator[](const dense_hash_map<Key, T, HashFcn, EqualKey, Alloc>::key_type &) [with Key=long, T=int, HashFcn=hash<long>, EqualKey=std::equal_to<long>, Alloc=std::allocator<int>]" at line 740 of "./tree-ssa/copyprop.C"
+
+"./tree-ssa/copyprop.C", line 209: error: function "operator new" cannot be called with the given argument list
+            argument types are: (unsigned int, std::pair<const long, int> *)
+      new(dst) value_type(src);
+      ^
+Note: number of parameters of function "operator new" does not match the call
+          detected during:
+            instantiation of "void dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::set_value(dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::value_type *, const dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::value_type &) [with Value=std::pair<const long, int>, Key=long, HashFcn=hash<long>, ExtractKey=dense_hash_map<long, int, hash<long>, std::equal_to<long>, std::allocator<int>>::SelectKey, EqualKey=std::equal_to<long>, Alloc=std::allocator<int>]" at line 280
+            instantiation of "dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::dense_hashtable(const dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc> &, dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::size_type) [with Value=std::pair<const long, int>, Key=long, HashFcn=hash<long>, ExtractKey=dense_hash_map<long, int, hash<long>, std::equal_to<long>, std::allocator<int>>::SelectKey, EqualKey=std::equal_to<long>, Alloc=std::allocator<int>]" at line 256
+            instantiation of "void dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::maybe_shrink() [with Value=std::pair<const long, int>, Key=long, HashFcn=hash<long>, ExtractKey=dense_hash_map<long, int, hash<long>, std::equal_to<long>, std::allocator<int>>::SelectKey, EqualKey=std::equal_to<long>, Alloc=std::allocator<int>]" at line 261
+            instantiation of "void dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::resize_delta(dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::size_type, dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::size_type) [with Value=std::pair<const long, int>, Key=long, HashFcn=hash<long>, ExtractKey=dense_hash_map<long, int, hash<long>, std::equal_to<long>, std::allocator<int>>::SelectKey, EqualKey=std::equal_to<long>, Alloc=std::allocator<int>]" at line 349
+            instantiation of "std::pair<dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::iterator, bool> dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::insert(const dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::value_type &) [with Value=std::pair<const long, int>, Key=long, HashFcn=hash<long>, ExtractKey=dense_hash_map<long, int, hash<long>, std::equal_to<long>, std::allocator<int>>::SelectKey, EqualKey=std::equal_to<long>, Alloc=std::allocator<int>]" at line 409
+            instantiation of "std::pair<dense_hash_map<Key, T, HashFcn, EqualKey, Alloc>::iterator, bool> dense_hash_map<Key, T, HashFcn, EqualKey, Alloc>::insert(const dense_hash_map<Key, T, HashFcn, EqualKey, Alloc>::value_type &) [with Key=long, T=int, HashFcn=hash<long>, EqualKey=std::equal_to<long>, Alloc=std::allocator<int>]" at line 406
+            instantiation of "dense_hash_map<Key, T, HashFcn, EqualKey, Alloc>::data_type &dense_hash_map<Key, T, HashFcn, EqualKey, Alloc>::operator[](const dense_hash_map<Key, T, HashFcn, EqualKey, Alloc>::key_type &) [with Key=long, T=int, HashFcn=hash<long>, EqualKey=std::equal_to<long>, Alloc=std::allocator<int>]" at line 740
+
+"./tree-ssa/copyprop.C", line 165: warning: missing return statement at end of non-void function "dense_hashtable_iterator<V, K, HF, ExK, EqK, A>::operator->"
+    pointer operator->() const { }
+                                 ^
+          detected during instantiation of "dense_hash_map<Key, T, HashFcn, EqualKey, Alloc>::data_type &dense_hash_map<Key, T, HashFcn, EqualKey, Alloc>::operator[](const dense_hash_map<Key, T, HashFcn, EqualKey, Alloc>::key_type &) [with Key=long, T=int, HashFcn=hash<long>, EqualKey=std::equal_to<long>, Alloc=std::allocator<int>]" at line 740
+
+"./tree-ssa/copyprop.C", line 357: warning: missing return statement at end of non-void function "dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::erase"
+    }
+    ^
+          detected during instantiation of "dense_hash_map<Key, T, HashFcn, EqualKey, Alloc>::size_type dense_hash_map<Key, T, HashFcn, EqualKey, Alloc>::erase(const dense_hash_map<Key, T, HashFcn, EqualKey, Alloc>::key_type &) [with Key=long, T=int, HashFcn=hash<long>, EqualKey=std::equal_to<long>, Alloc=std::allocator<int>]" at line 546
+
+"./tree-ssa/copyprop.C", line 229: warning: missing return statement at end of non-void function "dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::set_deleted"
+    }
+    ^
+          detected during:
+            instantiation of "dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::size_type dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::erase(const dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::key_type &) [with Value=std::pair<const long, int>, Key=long, HashFcn=hash<long>, ExtractKey=dense_hash_map<long, int, hash<long>, std::equal_to<long>, std::allocator<int>>::SelectKey, EqualKey=std::equal_to<long>, Alloc=std::allocator<int>]" at line 414
+            instantiation of "dense_hash_map<Key, T, HashFcn, EqualKey, Alloc>::size_type dense_hash_map<Key, T, HashFcn, EqualKey, Alloc>::erase(const dense_hash_map<Key, T, HashFcn, EqualKey, Alloc>::key_type &) [with Key=long, T=int, HashFcn=hash<long>, EqualKey=std::equal_to<long>, Alloc=std::allocator<int>]" at line 546
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/new_allocator.h", line 205: error: function "operator new" cannot be called with the given argument list
+            argument types are: (unsigned int, void *)
+        { ::new((void *)__p) _Tp(__val); }
+            ^
+Note: number of parameters of function "operator new" does not match the call
+          detected during:
+            instantiation of "void std::__new_allocator<_Tp>::construct(std::__new_allocator<_Tp>::pointer, const _Tp &) [with _Tp=foo_12]" at line 157 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/ext/alloc_traits.h"
+            instantiation of "void __gnu_cxx::__alloc_traits<_Alloc, <unnamed>>::construct(_Alloc &, __gnu_cxx::__alloc_traits<_Alloc, <unnamed>>::pointer, const _Tp &) [with _Alloc=std::allocator<foo_12>, <unnamed>=foo_12, _Tp=foo_12]" at line 1421 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_vector.h"
+            instantiation of "void std::vector<_Tp, _Alloc>::push_back(const std::vector<_Tp, _Alloc>::value_type &) [with _Tp=foo_12, _Alloc=std::allocator<foo_12>]" at line 741 of "./tree-ssa/copyprop.C"
+
+"./tree-ssa/copyprop.C", line 182: warning: missing return statement at end of non-void function "dense_hashtable_const_iterator<V, K, HF, ExK, EqK, A>::operator->"
+    pointer operator->() const {}
+                                ^
+
+"./tree-ssa/copyprop.C", line 186: warning: missing return statement at end of non-void function "dense_hashtable_const_iterator<V, K, HF, ExK, EqK, A>::operator++"
+    const_iterator& operator++() { }
+                                   ^
+
+"./tree-ssa/copyprop.C", line 187: warning: missing return statement at end of non-void function "dense_hashtable_const_iterator<V, K, HF, ExK, EqK, A>::operator!="
+    bool operator!=(const const_iterator& it) const { }
+                                                      ^
+
+"./tree-ssa/copyprop.C", line 337: warning: missing return statement at end of non-void function "dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::count"
+      pair<size_type, size_type> pos = find_position(key); }
+                                                           ^
+          detected during instantiation of "dense_hash_set<Value, HashFcn, EqualKey, Alloc>::size_type dense_hash_set<Value, HashFcn, EqualKey, Alloc>::count(const dense_hash_set<Value, HashFcn, EqualKey, Alloc>::key_type &) const [with Value=blah_46, HashFcn=hash<blah_46>, EqualKey=std::equal_to<blah_46>, Alloc=std::allocator<blah_46>]" at line 679
+
+"./tree-ssa/copyprop.C", line 431: warning: missing return statement at end of non-void function "dense_hash_set<Value, HashFcn, EqualKey, Alloc>::insert"
+    }
+    ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_construct.h", line 142: error: function "operator new" cannot be called with the given argument list
+            argument types are: (unsigned int, void *)
+        ::new(static_cast<void*>(__p)) _T1(__value);
+          ^
+Note: number of parameters of function "operator new" does not match the call
+          detected during:
+            instantiation of "void std::_Construct(_T1 *, const _T2 &) [with _T1=blah_46, _T2=blah_46]" at line 324 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_uninitialized.h"
+            instantiation of "void std::__do_uninit_fill(_ForwardIterator, _ForwardIterator, const _Tp &) [with _ForwardIterator=blah_46 *, _Tp=blah_46]" at line 337 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_uninitialized.h"
+            instantiation of "void std::__uninitialized_fill<_CanMemset>::__uninit_fill(_ForwardIterator, _ForwardIterator, const _Tp &) [with _CanMemset=false, _ForwardIterator=blah_46 *, _Tp=blah_46]" at line 433 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_uninitialized.h"
+            instantiation of "void std::uninitialized_fill(_ForwardIterator, _ForwardIterator, const _Tp &) [with _ForwardIterator=blah_46 *, _Tp=blah_46]" at line 237 of "./tree-ssa/copyprop.C"
+            instantiation of "void dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::fill_range_with_empty(dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::value_type *, dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::value_type *) [with Value=blah_46, Key=blah_46, HashFcn=hash<blah_46>, ExtractKey=dense_hash_set<blah_46, hash<blah_46>, std::equal_to<blah_46>, std::allocator<blah_46>>::Identity, EqualKey=std::equal_to<blah_46>, Alloc=std::allocator<blah_46>]" at line 241 of "./tree-ssa/copyprop.C"
+            [ 3 instantiation contexts not shown ]
+            instantiation of "dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::dense_hashtable(const dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc> &, dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::size_type) [with Value=blah_46, Key=blah_46, HashFcn=hash<blah_46>, ExtractKey=dense_hash_set<blah_46, hash<blah_46>, std::equal_to<blah_46>, std::allocator<blah_46>>::Identity, EqualKey=std::equal_to<blah_46>, Alloc=std::allocator<blah_46>]" at line 256 of "./tree-ssa/copyprop.C"
+            instantiation of "void dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::maybe_shrink() [with Value=blah_46, Key=blah_46, HashFcn=hash<blah_46>, ExtractKey=dense_hash_set<blah_46, hash<blah_46>, std::equal_to<blah_46>, std::allocator<blah_46>>::Identity, EqualKey=std::equal_to<blah_46>, Alloc=std::allocator<blah_46>]" at line 261 of "./tree-ssa/copyprop.C"
+            instantiation of "void dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::resize_delta(dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::size_type, dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::size_type) [with Value=blah_46, Key=blah_46, HashFcn=hash<blah_46>, ExtractKey=dense_hash_set<blah_46, hash<blah_46>, std::equal_to<blah_46>, std::allocator<blah_46>>::Identity, EqualKey=std::equal_to<blah_46>, Alloc=std::allocator<blah_46>]" at line 349 of "./tree-ssa/copyprop.C"
+            instantiation of "std::pair<dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::iterator, bool> dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::insert(const dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::value_type &) [with Value=blah_46, Key=blah_46, HashFcn=hash<blah_46>, ExtractKey=dense_hash_set<blah_46, hash<blah_46>, std::equal_to<blah_46>, std::allocator<blah_46>>::Identity, EqualKey=std::equal_to<blah_46>, Alloc=std::allocator<blah_46>]" at line 430 of "./tree-ssa/copyprop.C"
+            instantiation of "std::pair<dense_hash_set<Value, HashFcn, EqualKey, Alloc>::iterator, bool> dense_hash_set<Value, HashFcn, EqualKey, Alloc>::insert(const dense_hash_set<Value, HashFcn, EqualKey, Alloc>::value_type &) [with Value=blah_46, HashFcn=hash<blah_46>, EqualKey=std::equal_to<blah_46>, Alloc=std::allocator<blah_46>]" at line 653 of "./tree-ssa/copyprop.C"
+
+"./tree-ssa/copyprop.C", line 209: error: function "operator new" cannot be called with the given argument list
+            argument types are: (unsigned int, blah_46 *)
+      new(dst) value_type(src);
+      ^
+Note: number of parameters of function "operator new" does not match the call
+          detected during:
+            instantiation of "void dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::set_value(dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::value_type *, const dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::value_type &) [with Value=blah_46, Key=blah_46, HashFcn=hash<blah_46>, ExtractKey=dense_hash_set<blah_46, hash<blah_46>, std::equal_to<blah_46>, std::allocator<blah_46>>::Identity, EqualKey=std::equal_to<blah_46>, Alloc=std::allocator<blah_46>]" at line 280
+            instantiation of "dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::dense_hashtable(const dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc> &, dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::size_type) [with Value=blah_46, Key=blah_46, HashFcn=hash<blah_46>, ExtractKey=dense_hash_set<blah_46, hash<blah_46>, std::equal_to<blah_46>, std::allocator<blah_46>>::Identity, EqualKey=std::equal_to<blah_46>, Alloc=std::allocator<blah_46>]" at line 256
+            instantiation of "void dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::maybe_shrink() [with Value=blah_46, Key=blah_46, HashFcn=hash<blah_46>, ExtractKey=dense_hash_set<blah_46, hash<blah_46>, std::equal_to<blah_46>, std::allocator<blah_46>>::Identity, EqualKey=std::equal_to<blah_46>, Alloc=std::allocator<blah_46>]" at line 261
+            instantiation of "void dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::resize_delta(dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::size_type, dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::size_type) [with Value=blah_46, Key=blah_46, HashFcn=hash<blah_46>, ExtractKey=dense_hash_set<blah_46, hash<blah_46>, std::equal_to<blah_46>, std::allocator<blah_46>>::Identity, EqualKey=std::equal_to<blah_46>, Alloc=std::allocator<blah_46>]" at line 349
+            instantiation of "std::pair<dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::iterator, bool> dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::insert(const dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::value_type &) [with Value=blah_46, Key=blah_46, HashFcn=hash<blah_46>, ExtractKey=dense_hash_set<blah_46, hash<blah_46>, std::equal_to<blah_46>, std::allocator<blah_46>>::Identity, EqualKey=std::equal_to<blah_46>, Alloc=std::allocator<blah_46>]" at line 430
+            instantiation of "std::pair<dense_hash_set<Value, HashFcn, EqualKey, Alloc>::iterator, bool> dense_hash_set<Value, HashFcn, EqualKey, Alloc>::insert(const dense_hash_set<Value, HashFcn, EqualKey, Alloc>::value_type &) [with Value=blah_46, HashFcn=hash<blah_46>, EqualKey=std::equal_to<blah_46>, Alloc=std::allocator<blah_46>]" at line 653
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_construct.h", line 142: error: function "operator new" cannot be called with the given argument list
+            argument types are: (unsigned int, void *)
+        ::new(static_cast<void*>(__p)) _T1(__value);
+          ^
+Note: number of parameters of function "operator new" does not match the call
+          detected during:
+            instantiation of "void std::_Construct(_T1 *, const _T2 &) [with _T1=foo_9 *, _T2=foo_9 *]" at line 324 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_uninitialized.h"
+            instantiation of "void std::__do_uninit_fill(_ForwardIterator, _ForwardIterator, const _Tp &) [with _ForwardIterator=foo_9 **, _Tp=foo_9 *]" at line 337 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_uninitialized.h"
+            instantiation of "void std::__uninitialized_fill<_CanMemset>::__uninit_fill(_ForwardIterator, _ForwardIterator, const _Tp &) [with _CanMemset=false, _ForwardIterator=foo_9 **, _Tp=foo_9 *]" at line 433 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_uninitialized.h"
+            instantiation of "void std::uninitialized_fill(_ForwardIterator, _ForwardIterator, const _Tp &) [with _ForwardIterator=foo_9 **, _Tp=foo_9 *]" at line 237 of "./tree-ssa/copyprop.C"
+            instantiation of "void dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::fill_range_with_empty(dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::value_type *, dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::value_type *) [with Value=foo_9 *, Key=long, HashFcn=hash<long>, ExtractKey=foo_5<foo_9>, EqualKey=std::equal_to<long>, Alloc=std::allocator<foo_9 *>]" at line 241 of "./tree-ssa/copyprop.C"
+            [ 2 instantiation contexts not shown ]
+            instantiation of "void dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::copy_from(const dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc> &, dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::size_type) [with Value=foo_9 *, Key=long, HashFcn=hash<long>, ExtractKey=foo_5<foo_9>, EqualKey=std::equal_to<long>, Alloc=std::allocator<foo_9 *>]" at line 279 of "./tree-ssa/copyprop.C"
+            instantiation of "dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::dense_hashtable(const dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc> &, dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::size_type) [with Value=foo_9 *, Key=long, HashFcn=hash<long>, ExtractKey=foo_5<foo_9>, EqualKey=std::equal_to<long>, Alloc=std::allocator<foo_9 *>]" at line 256 of "./tree-ssa/copyprop.C"
+            instantiation of "void dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::maybe_shrink() [with Value=foo_9 *, Key=long, HashFcn=hash<long>, ExtractKey=foo_5<foo_9>, EqualKey=std::equal_to<long>, Alloc=std::allocator<foo_9 *>]" at line 261 of "./tree-ssa/copyprop.C"
+            instantiation of "void dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::resize_delta(dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::size_type, dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::size_type) [with Value=foo_9 *, Key=long, HashFcn=hash<long>, ExtractKey=foo_5<foo_9>, EqualKey=std::equal_to<long>, Alloc=std::allocator<foo_9 *>]" at line 349 of "./tree-ssa/copyprop.C"
+            instantiation of "std::pair<dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::iterator, bool> dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::insert(const dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::value_type &) [with Value=foo_9 *, Key=long, HashFcn=hash<long>, ExtractKey=foo_5<foo_9>, EqualKey=std::equal_to<long>, Alloc=std::allocator<foo_9 *>]" at line 689 of "./tree-ssa/copyprop.C"
+
+"./tree-ssa/copyprop.C", line 209: error: function "operator new" cannot be called with the given argument list
+            argument types are: (unsigned int, foo_9 **)
+      new(dst) value_type(src);
+      ^
+Note: number of parameters of function "operator new" does not match the call
+          detected during:
+            instantiation of "void dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::set_value(dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::value_type *, const dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::value_type &) [with Value=foo_9 *, Key=long, HashFcn=hash<long>, ExtractKey=foo_5<foo_9>, EqualKey=std::equal_to<long>, Alloc=std::allocator<foo_9 *>]" at line 280
+            instantiation of "dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::dense_hashtable(const dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc> &, dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::size_type) [with Value=foo_9 *, Key=long, HashFcn=hash<long>, ExtractKey=foo_5<foo_9>, EqualKey=std::equal_to<long>, Alloc=std::allocator<foo_9 *>]" at line 256
+            instantiation of "void dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::maybe_shrink() [with Value=foo_9 *, Key=long, HashFcn=hash<long>, ExtractKey=foo_5<foo_9>, EqualKey=std::equal_to<long>, Alloc=std::allocator<foo_9 *>]" at line 261
+            instantiation of "void dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::resize_delta(dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::size_type, dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::size_type) [with Value=foo_9 *, Key=long, HashFcn=hash<long>, ExtractKey=foo_5<foo_9>, EqualKey=std::equal_to<long>, Alloc=std::allocator<foo_9 *>]" at line 349
+            instantiation of "std::pair<dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::iterator, bool> dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::insert(const dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::value_type &) [with Value=foo_9 *, Key=long, HashFcn=hash<long>, ExtractKey=foo_5<foo_9>, EqualKey=std::equal_to<long>, Alloc=std::allocator<foo_9 *>]" at line 689
+
+"./tree-ssa/copyprop.C", line 512: warning: missing return statement at end of non-void function "foo_5<T>::operator()"
+    }
+    ^
+          detected during:
+            instantiation of "bool dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::test_empty(dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::size_type) const [with Value=foo_9 *, Key=long, HashFcn=hash<long>, ExtractKey=foo_5<foo_9>, EqualKey=std::equal_to<long>, Alloc=std::allocator<foo_9 *>]" at line 313
+            instantiation of "std::pair<size_t, size_t> dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::find_position(const dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::key_type &) const [with Value=foo_9 *, Key=long, HashFcn=hash<long>, ExtractKey=foo_5<foo_9>, EqualKey=std::equal_to<long>, Alloc=std::allocator<foo_9 *>]" at line 339
+            instantiation of "std::pair<dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::iterator, bool> dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::insert_noresize(const dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::value_type &) [with Value=foo_9 *, Key=long, HashFcn=hash<long>, ExtractKey=foo_5<foo_9>, EqualKey=std::equal_to<long>, Alloc=std::allocator<foo_9 *>]" at line 350
+            instantiation of "std::pair<dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::iterator, bool> dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::insert(const dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::value_type &) [with Value=foo_9 *, Key=long, HashFcn=hash<long>, ExtractKey=foo_5<foo_9>, EqualKey=std::equal_to<long>, Alloc=std::allocator<foo_9 *>]" at line 689
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_tree.h", line 2550: error: support for exception handling is disabled
+   try
+   ^
+          detected during:
+            instantiation of "std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Base_ptr std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_M_copy<_MoveValues,_NodeGen>(const std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc> &, _NodeGen &) [with _Key=blah_46, _Val=std::pair<const blah_46, foo_7 *>, _KeyOfValue=std::_Select1st<std::pair<const blah_46, foo_7 *>>, _Compare=std::less<blah_46>, _Alloc=std::allocator<std::pair<const blah_46, foo_7 *>>, _MoveValues=false, _NodeGen=std::_Rb_tree<blah_46, std::pair<const blah_46, foo_7 *>, std::_Select1st<std::pair<const blah_46, foo_7 *>>, std::less<blah_46>, std::allocator<std::pair<const blah_46, foo_7 *>>>::_Reuse_or_alloc_node]" at line 2453
+            instantiation of "std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc> &std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::operator=(const std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc> &) [with _Key=blah_46, _Val=std::pair<const blah_46, foo_7 *>, _KeyOfValue=std::_Select1st<std::pair<const blah_46, foo_7 *>>, _Compare=std::less<blah_46>, _Alloc=std::allocator<std::pair<const blah_46, foo_7 *>>]" at line 326 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_map.h"
+            instantiation of "std::map<_Key, _Tp, _Compare, _Alloc> &std::map<_Key, _Tp, _Compare, _Alloc>::operator=(const std::map<_Key, _Tp, _Compare, _Alloc> &) [with _Key=blah_46, _Tp=foo_7 *, _Compare=std::less<blah_46>, _Alloc=std::allocator<std::pair<const blah_46, foo_7 *>>]" at line 733 of "./tree-ssa/copyprop.C"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_tree.h", line 1213: error: support for exception handling is disabled
+   try
+   ^
+          detected during:
+            instantiation of "std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Node_ptr std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Reuse_or_alloc_node::operator()(const _Arg &) [with _Key=blah_46, _Val=std::pair<const blah_46, foo_7 *>, _KeyOfValue=std::_Select1st<std::pair<const blah_46, foo_7 *>>, _Compare=std::less<blah_46>, _Alloc=std::allocator<std::pair<const blah_46, foo_7 *>>, _Arg=std::pair<const blah_46, foo_7 *>]" at line 1287
+            instantiation of "std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Node_ptr std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_M_clone_node<_MoveValue,_NodeGen>(std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Node_ptr, _NodeGen &) [with _Key=blah_46, _Val=std::pair<const blah_46, foo_7 *>, _KeyOfValue=std::_Select1st<std::pair<const blah_46, foo_7 *>>, _Compare=std::less<blah_46>, _Alloc=std::allocator<std::pair<const blah_46, foo_7 *>>, _MoveValue=false, _NodeGen=std::_Rb_tree<blah_46, std::pair<const blah_46, foo_7 *>, std::_Select1st<std::pair<const blah_46, foo_7 *>>, std::less<blah_46>, std::allocator<std::pair<const blah_46, foo_7 *>>>::_Reuse_or_alloc_node]" at line 2546
+            instantiation of "std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Base_ptr std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_M_copy<_MoveValues,_NodeGen>(std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Node_ptr, std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Base_ptr, _NodeGen &) [with _Key=blah_46, _Val=std::pair<const blah_46, foo_7 *>, _KeyOfValue=std::_Select1st<std::pair<const blah_46, foo_7 *>>, _Compare=std::less<blah_46>, _Alloc=std::allocator<std::pair<const blah_46, foo_7 *>>, _MoveValues=false, _NodeGen=std::_Rb_tree<blah_46, std::pair<const blah_46, foo_7 *>, std::_Select1st<std::pair<const blah_46, foo_7 *>>, std::less<blah_46>, std::allocator<std::pair<const blah_46, foo_7 *>>>::_Reuse_or_alloc_node]" at line 1523
+            instantiation of "std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Base_ptr std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_M_copy<_MoveValues,_NodeGen>(const std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc> &, _NodeGen &) [with _Key=blah_46, _Val=std::pair<const blah_46, foo_7 *>, _KeyOfValue=std::_Select1st<std::pair<const blah_46, foo_7 *>>, _Compare=std::less<blah_46>, _Alloc=std::allocator<std::pair<const blah_46, foo_7 *>>, _MoveValues=false, _NodeGen=std::_Rb_tree<blah_46, std::pair<const blah_46, foo_7 *>, std::_Select1st<std::pair<const blah_46, foo_7 *>>, std::less<blah_46>, std::allocator<std::pair<const blah_46, foo_7 *>>>::_Reuse_or_alloc_node]" at line 2453
+            instantiation of "std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc> &std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::operator=(const std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc> &) [with _Key=blah_46, _Val=std::pair<const blah_46, foo_7 *>, _KeyOfValue=std::_Select1st<std::pair<const blah_46, foo_7 *>>, _Compare=std::less<blah_46>, _Alloc=std::allocator<std::pair<const blah_46, foo_7 *>>]" at line 326 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_map.h"
+            instantiation of "std::map<_Key, _Tp, _Compare, _Alloc> &std::map<_Key, _Tp, _Compare, _Alloc>::operator=(const std::map<_Key, _Tp, _Compare, _Alloc> &) [with _Key=blah_46, _Tp=foo_7 *, _Compare=std::less<blah_46>, _Alloc=std::allocator<std::pair<const blah_46, foo_7 *>>]" at line 733 of "./tree-ssa/copyprop.C"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/new_allocator.h", line 205: error: function "operator new" cannot be called with the given argument list
+            argument types are: (unsigned int, void *)
+        { ::new((void *)__p) _Tp(__val); }
+            ^
+Note: number of parameters of function "operator new" does not match the call
+          detected during:
+            instantiation of "void std::__new_allocator<_Tp>::construct(std::__new_allocator<_Tp>::pointer, const _Tp &) [with _Tp=std::pair<const blah_46, foo_7 *>]" at line 1214 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_tree.h"
+            instantiation of "void std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_M_construct_node(std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Node_ptr, const std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::value_type &) [with _Key=blah_46, _Val=std::pair<const blah_46, foo_7 *>, _KeyOfValue=std::_Select1st<std::pair<const blah_46, foo_7 *>>, _Compare=std::less<blah_46>, _Alloc=std::allocator<std::pair<const blah_46, foo_7 *>>]" at line 1079 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_tree.h"
+            instantiation of "std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Node_ptr std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Reuse_or_alloc_node::operator()(const _Arg &) [with _Key=blah_46, _Val=std::pair<const blah_46, foo_7 *>, _KeyOfValue=std::_Select1st<std::pair<const blah_46, foo_7 *>>, _Compare=std::less<blah_46>, _Alloc=std::allocator<std::pair<const blah_46, foo_7 *>>, _Arg=std::pair<const blah_46, foo_7 *>]" at line 1287 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_tree.h"
+            instantiation of "std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Node_ptr std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_M_clone_node<_MoveValue,_NodeGen>(std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Node_ptr, _NodeGen &) [with _Key=blah_46, _Val=std::pair<const blah_46, foo_7 *>, _KeyOfValue=std::_Select1st<std::pair<const blah_46, foo_7 *>>, _Compare=std::less<blah_46>, _Alloc=std::allocator<std::pair<const blah_46, foo_7 *>>, _MoveValue=false, _NodeGen=std::_Rb_tree<blah_46, std::pair<const blah_46, foo_7 *>, std::_Select1st<std::pair<const blah_46, foo_7 *>>, std::less<blah_46>, std::allocator<std::pair<const blah_46, foo_7 *>>>::_Reuse_or_alloc_node]" at line 2546 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_tree.h"
+            instantiation of "std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Base_ptr std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_M_copy<_MoveValues,_NodeGen>(std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Node_ptr, std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Base_ptr, _NodeGen &) [with _Key=blah_46, _Val=std::pair<const blah_46, foo_7 *>, _KeyOfValue=std::_Select1st<std::pair<const blah_46, foo_7 *>>, _Compare=std::less<blah_46>, _Alloc=std::allocator<std::pair<const blah_46, foo_7 *>>, _MoveValues=false, _NodeGen=std::_Rb_tree<blah_46, std::pair<const blah_46, foo_7 *>, std::_Select1st<std::pair<const blah_46, foo_7 *>>, std::less<blah_46>, std::allocator<std::pair<const blah_46, foo_7 *>>>::_Reuse_or_alloc_node]" at line 1523 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_tree.h"
+            instantiation of "std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Base_ptr std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_M_copy<_MoveValues,_NodeGen>(const std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc> &, _NodeGen &) [with _Key=blah_46, _Val=std::pair<const blah_46, foo_7 *>, _KeyOfValue=std::_Select1st<std::pair<const blah_46, foo_7 *>>, _Compare=std::less<blah_46>, _Alloc=std::allocator<std::pair<const blah_46, foo_7 *>>, _MoveValues=false, _NodeGen=std::_Rb_tree<blah_46, std::pair<const blah_46, foo_7 *>, std::_Select1st<std::pair<const blah_46, foo_7 *>>, std::less<blah_46>, std::allocator<std::pair<const blah_46, foo_7 *>>>::_Reuse_or_alloc_node]" at line 2453 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_tree.h"
+            instantiation of "std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc> &std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::operator=(const std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc> &) [with _Key=blah_46, _Val=std::pair<const blah_46, foo_7 *>, _KeyOfValue=std::_Select1st<std::pair<const blah_46, foo_7 *>>, _Compare=std::less<blah_46>, _Alloc=std::allocator<std::pair<const blah_46, foo_7 *>>]" at line 326 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_map.h"
+            instantiation of "std::map<_Key, _Tp, _Compare, _Alloc> &std::map<_Key, _Tp, _Compare, _Alloc>::operator=(const std::map<_Key, _Tp, _Compare, _Alloc> &) [with _Key=blah_46, _Tp=foo_7 *, _Compare=std::less<blah_46>, _Alloc=std::allocator<std::pair<const blah_46, foo_7 *>>]" at line 733 of "./tree-ssa/copyprop.C"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_tree.h", line 1218: error: support for exception handling is disabled
+       throw;
+       ^
+          detected during:
+            instantiation of "void std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_M_construct_node(std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Node_ptr, const std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::value_type &) [with _Key=blah_46, _Val=std::pair<const blah_46, foo_7 *>, _KeyOfValue=std::_Select1st<std::pair<const blah_46, foo_7 *>>, _Compare=std::less<blah_46>, _Alloc=std::allocator<std::pair<const blah_46, foo_7 *>>]" at line 1079
+            instantiation of "std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Node_ptr std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Reuse_or_alloc_node::operator()(const _Arg &) [with _Key=blah_46, _Val=std::pair<const blah_46, foo_7 *>, _KeyOfValue=std::_Select1st<std::pair<const blah_46, foo_7 *>>, _Compare=std::less<blah_46>, _Alloc=std::allocator<std::pair<const blah_46, foo_7 *>>, _Arg=std::pair<const blah_46, foo_7 *>]" at line 1287
+            instantiation of "std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Node_ptr std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_M_clone_node<_MoveValue,_NodeGen>(std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Node_ptr, _NodeGen &) [with _Key=blah_46, _Val=std::pair<const blah_46, foo_7 *>, _KeyOfValue=std::_Select1st<std::pair<const blah_46, foo_7 *>>, _Compare=std::less<blah_46>, _Alloc=std::allocator<std::pair<const blah_46, foo_7 *>>, _MoveValue=false, _NodeGen=std::_Rb_tree<blah_46, std::pair<const blah_46, foo_7 *>, std::_Select1st<std::pair<const blah_46, foo_7 *>>, std::less<blah_46>, std::allocator<std::pair<const blah_46, foo_7 *>>>::_Reuse_or_alloc_node]" at line 2546
+            instantiation of "std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Base_ptr std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_M_copy<_MoveValues,_NodeGen>(std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Node_ptr, std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Base_ptr, _NodeGen &) [with _Key=blah_46, _Val=std::pair<const blah_46, foo_7 *>, _KeyOfValue=std::_Select1st<std::pair<const blah_46, foo_7 *>>, _Compare=std::less<blah_46>, _Alloc=std::allocator<std::pair<const blah_46, foo_7 *>>, _MoveValues=false, _NodeGen=std::_Rb_tree<blah_46, std::pair<const blah_46, foo_7 *>, std::_Select1st<std::pair<const blah_46, foo_7 *>>, std::less<blah_46>, std::allocator<std::pair<const blah_46, foo_7 *>>>::_Reuse_or_alloc_node]" at line 1523
+            instantiation of "std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Base_ptr std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_M_copy<_MoveValues,_NodeGen>(const std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc> &, _NodeGen &) [with _Key=blah_46, _Val=std::pair<const blah_46, foo_7 *>, _KeyOfValue=std::_Select1st<std::pair<const blah_46, foo_7 *>>, _Compare=std::less<blah_46>, _Alloc=std::allocator<std::pair<const blah_46, foo_7 *>>, _MoveValues=false, _NodeGen=std::_Rb_tree<blah_46, std::pair<const blah_46, foo_7 *>, std::_Select1st<std::pair<const blah_46, foo_7 *>>, std::less<blah_46>, std::allocator<std::pair<const blah_46, foo_7 *>>>::_Reuse_or_alloc_node]" at line 2453
+            instantiation of "std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc> &std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::operator=(const std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc> &) [with _Key=blah_46, _Val=std::pair<const blah_46, foo_7 *>, _KeyOfValue=std::_Select1st<std::pair<const blah_46, foo_7 *>>, _Compare=std::less<blah_46>, _Alloc=std::allocator<std::pair<const blah_46, foo_7 *>>]" at line 326 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_map.h"
+            instantiation of "std::map<_Key, _Tp, _Compare, _Alloc> &std::map<_Key, _Tp, _Compare, _Alloc>::operator=(const std::map<_Key, _Tp, _Compare, _Alloc> &) [with _Key=blah_46, _Tp=foo_7 *, _Compare=std::less<blah_46>, _Alloc=std::allocator<std::pair<const blah_46, foo_7 *>>]" at line 733 of "./tree-ssa/copyprop.C"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_tree.h", line 2574: error: support for exception handling is disabled
+       throw;
+       ^
+          detected during:
+            instantiation of "std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Base_ptr std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_M_copy<_MoveValues,_NodeGen>(std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Node_ptr, std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Base_ptr, _NodeGen &) [with _Key=blah_46, _Val=std::pair<const blah_46, foo_7 *>, _KeyOfValue=std::_Select1st<std::pair<const blah_46, foo_7 *>>, _Compare=std::less<blah_46>, _Alloc=std::allocator<std::pair<const blah_46, foo_7 *>>, _MoveValues=false, _NodeGen=std::_Rb_tree<blah_46, std::pair<const blah_46, foo_7 *>, std::_Select1st<std::pair<const blah_46, foo_7 *>>, std::less<blah_46>, std::allocator<std::pair<const blah_46, foo_7 *>>>::_Reuse_or_alloc_node]" at line 1523
+            instantiation of "std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_Base_ptr std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_M_copy<_MoveValues,_NodeGen>(const std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc> &, _NodeGen &) [with _Key=blah_46, _Val=std::pair<const blah_46, foo_7 *>, _KeyOfValue=std::_Select1st<std::pair<const blah_46, foo_7 *>>, _Compare=std::less<blah_46>, _Alloc=std::allocator<std::pair<const blah_46, foo_7 *>>, _MoveValues=false, _NodeGen=std::_Rb_tree<blah_46, std::pair<const blah_46, foo_7 *>, std::_Select1st<std::pair<const blah_46, foo_7 *>>, std::less<blah_46>, std::allocator<std::pair<const blah_46, foo_7 *>>>::_Reuse_or_alloc_node]" at line 2453
+            instantiation of "std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc> &std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::operator=(const std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc> &) [with _Key=blah_46, _Val=std::pair<const blah_46, foo_7 *>, _KeyOfValue=std::_Select1st<std::pair<const blah_46, foo_7 *>>, _Compare=std::less<blah_46>, _Alloc=std::allocator<std::pair<const blah_46, foo_7 *>>]" at line 326 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_map.h"
+            instantiation of "std::map<_Key, _Tp, _Compare, _Alloc> &std::map<_Key, _Tp, _Compare, _Alloc>::operator=(const std::map<_Key, _Tp, _Compare, _Alloc> &) [with _Key=blah_46, _Tp=foo_7 *, _Compare=std::less<blah_46>, _Alloc=std::allocator<std::pair<const blah_46, foo_7 *>>]" at line 733 of "./tree-ssa/copyprop.C"
+
+"./tree-ssa/copyprop.C", line 40: warning: missing return statement at end of non-void function "hashtable<_Val, _Key, _HashFcn, _ExtractKey, _EqualKey, _Alloc>::get_allocator [with _Val=std::pair<const long, linked_ptr<blah_57>>, _Key=long, _HashFcn=hash<long>, _ExtractKey=std::_Select1st<std::pair<const long, linked_ptr<blah_57>>>, _EqualKey=std::equal_to<long>, _Alloc=std::allocator<linked_ptr<blah_57>>]"
+    allocator_type get_allocator() const { }
+                                           ^
+          detected during:
+            instantiation of "hashtable<_Val, _Key, _HashFcn, _ExtractKey, _EqualKey, _Alloc>::allocator_type hashtable<_Val, _Key, _HashFcn, _ExtractKey, _EqualKey, _Alloc>::get_allocator() const [with _Val=std::pair<const long, linked_ptr<blah_57>>, _Key=long, _HashFcn=hash<long>, _ExtractKey=std::_Select1st<std::pair<const long, linked_ptr<blah_57>>>, _EqualKey=std::equal_to<long>, _Alloc=std::allocator<linked_ptr<blah_57>>]" at line 79
+            instantiation of "void hashtable<_Val, _Key, _HashFcn, _ExtractKey, _EqualKey, _Alloc>::_M_delete_node(hashtable<_Val, _Key, _HashFcn, _ExtractKey, _EqualKey, _Alloc>::_Node *) [with _Val=std::pair<const long, linked_ptr<blah_57>>, _Key=long, _HashFcn=hash<long>, _ExtractKey=std::_Select1st<std::pair<const long, linked_ptr<blah_57>>>, _EqualKey=std::equal_to<long>, _Alloc=std::allocator<linked_ptr<blah_57>>]" at line 91
+            instantiation of "void hashtable<_Val, _Key, _HashFcn, _ExtractKey, _EqualKey, _Alloc>::clear() [with _Val=std::pair<const long, linked_ptr<blah_57>>, _Key=long, _HashFcn=hash<long>, _ExtractKey=std::_Select1st<std::pair<const long, linked_ptr<blah_57>>>, _EqualKey=std::equal_to<long>, _Alloc=std::allocator<linked_ptr<blah_57>>]" at line 56
+            instantiation of "hashtable<_Val, _Key, _HashFcn, _ExtractKey, _EqualKey, _Alloc>::~hashtable() [with _Val=std::pair<const long, linked_ptr<blah_57>>, _Key=long, _HashFcn=hash<long>, _ExtractKey=std::_Select1st<std::pair<const long, linked_ptr<blah_57>>>, _EqualKey=std::equal_to<long>, _Alloc=std::allocator<linked_ptr<blah_57>>]" at line 114
+            implicit generation of "hash_map<_Key, _Tp, _HashFn, _EqualKey, _Alloc>::~hash_map() [with _Key=long, _Tp=linked_ptr<blah_57>, _HashFn=hash<long>, _EqualKey=std::equal_to<long>, _Alloc=std::allocator<linked_ptr<blah_57>>]" at line 114
+            instantiation of class "hash_map<_Key, _Tp, _HashFn, _EqualKey, _Alloc> [with _Key=long, _Tp=linked_ptr<blah_57>, _HashFn=hash<long>, _EqualKey=std::equal_to<long>, _Alloc=std::allocator<linked_ptr<blah_57>>]" at line 114
+            instantiation of "scoped_ptr<C>::scoped_ptr(C *) [with C=RejectedAdGroupMap]" at line 649
+
+"./tree-ssa/copyprop.C", line 118: warning: missing return statement at end of non-void function "scoped_ptr<C>::operator*"
+    C& operator*() const {}
+                          ^
+
+"./tree-ssa/copyprop.C", line 119: warning: missing return statement at end of non-void function "scoped_ptr<C>::operator->"
+    C* operator->() const {}
+                           ^
+
+"./tree-ssa/copyprop.C", line 444: warning: missing return statement at end of non-void function "linked_ptr<T>::operator*"
+    T& operator*() const { }
+                           ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/vector.tcc", line 712: error: support for exception handling is disabled
+         try
+         ^
+          detected during:
+            instantiation of "void std::vector<_Tp, _Alloc>::insert(std::vector<_Tp, _Alloc>::iterator, std::vector<_Tp, _Alloc>::size_type, const std::vector<_Tp, _Alloc>::value_type &) [with _Tp=_Hashtable_node<std::pair<const long, linked_ptr<blah_57>>> *, _Alloc=std::allocator<_Hashtable_node<std::pair<const long, linked_ptr<blah_57>>> *>]" at line 70 of "./tree-ssa/copyprop.C"
+            instantiation of "void hashtable<_Val, _Key, _HashFcn, _ExtractKey, _EqualKey, _Alloc>::_M_initialize_buckets(hashtable<_Val, _Key, _HashFcn, _ExtractKey, _EqualKey, _Alloc>::size_type) [with _Val=std::pair<const long, linked_ptr<blah_57>>, _Key=long, _HashFcn=hash<long>, _ExtractKey=std::_Select1st<std::pair<const long, linked_ptr<blah_57>>>, _EqualKey=std::equal_to<long>, _Alloc=std::allocator<linked_ptr<blah_57>>]" at line 54 of "./tree-ssa/copyprop.C"
+            instantiation of "hashtable<_Val, _Key, _HashFcn, _ExtractKey, _EqualKey, _Alloc>::hashtable(hashtable<_Val, _Key, _HashFcn, _ExtractKey, _EqualKey, _Alloc>::size_type, const _HashFcn &, const _EqualKey &, const hashtable<_Val, _Key, _HashFcn, _ExtractKey, _EqualKey, _Alloc>::allocator_type &) [with _Val=std::pair<const long, linked_ptr<blah_57>>, _Key=long, _HashFcn=hash<long>, _ExtractKey=std::_Select1st<std::pair<const long, linked_ptr<blah_57>>>, _EqualKey=std::equal_to<long>, _Alloc=std::allocator<linked_ptr<blah_57>>]" at line 103 of "./tree-ssa/copyprop.C"
+            instantiation of "hash_map<_Key, _Tp, _HashFn, _EqualKey, _Alloc>::hash_map() [with _Key=long, _Tp=linked_ptr<blah_57>, _HashFn=hash<long>, _EqualKey=std::equal_to<long>, _Alloc=std::allocator<linked_ptr<blah_57>>]" at line 706 of "./tree-ssa/copyprop.C"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_construct.h", line 142: error: function "operator new" cannot be called with the given argument list
+            argument types are: (unsigned int, void *)
+        ::new(static_cast<void*>(__p)) _T1(__value);
+          ^
+Note: number of parameters of function "operator new" does not match the call
+          detected during:
+            instantiation of "void std::_Construct(_T1 *, const _T2 &) [with _T1=_Hashtable_node<std::pair<const long, linked_ptr<blah_57>>> *, _T2=_Hashtable_node<std::pair<const long, linked_ptr<blah_57>>> *]" at line 458 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_uninitialized.h"
+            instantiation of "_ForwardIterator std::__do_uninit_fill_n(_ForwardIterator, _Size, const _Tp &) [with _ForwardIterator=_Hashtable_node<std::pair<const long, linked_ptr<blah_57>>> **, _Size=unsigned long, _Tp=_Hashtable_node<std::pair<const long, linked_ptr<blah_57>>> *]" at line 472 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_uninitialized.h"
+            instantiation of "_ForwardIterator std::__uninitialized_fill_n<_CanMemset>::__uninit_fill_n(_ForwardIterator, _Size, const _Tp &) [with _CanMemset=false, _ForwardIterator=_Hashtable_node<std::pair<const long, linked_ptr<blah_57>>> **, _Size=unsigned long, _Tp=_Hashtable_node<std::pair<const long, linked_ptr<blah_57>>> *]" at line 560 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_uninitialized.h"
+            instantiation of "_ForwardIterator std::uninitialized_fill_n(_ForwardIterator, _Size, const _Tp &) [with _ForwardIterator=_Hashtable_node<std::pair<const long, linked_ptr<blah_57>>> **, _Size=unsigned long, _Tp=_Hashtable_node<std::pair<const long, linked_ptr<blah_57>>> *]" at line 709 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_uninitialized.h"
+            instantiation of "_ForwardIterator std::__uninitialized_fill_n_a(_ForwardIterator, _Size, const _Tp &, std::allocator<_Tp2> &) [with _ForwardIterator=_Hashtable_node<std::pair<const long, linked_ptr<blah_57>>> **, _Size=unsigned long, _Tp=_Hashtable_node<std::pair<const long, linked_ptr<blah_57>>> *, _Tp2=_Hashtable_node<std::pair<const long, linked_ptr<blah_57>>> *]" at line 689 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/vector.tcc"
+            instantiation of "void std::vector<_Tp, _Alloc>::_M_fill_insert(std::vector<_Tp, _Alloc>::iterator, std::vector<_Tp, _Alloc>::size_type, const std::vector<_Tp, _Alloc>::value_type &) [with _Tp=_Hashtable_node<std::pair<const long, linked_ptr<blah_57>>> *, _Alloc=std::allocator<_Hashtable_node<std::pair<const long, linked_ptr<blah_57>>> *>]" at line 1593 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_vector.h"
+            instantiation of "void std::vector<_Tp, _Alloc>::insert(std::vector<_Tp, _Alloc>::iterator, std::vector<_Tp, _Alloc>::size_type, const std::vector<_Tp, _Alloc>::value_type &) [with _Tp=_Hashtable_node<std::pair<const long, linked_ptr<blah_57>>> *, _Alloc=std::allocator<_Hashtable_node<std::pair<const long, linked_ptr<blah_57>>> *>]" at line 70 of "./tree-ssa/copyprop.C"
+            instantiation of "void hashtable<_Val, _Key, _HashFcn, _ExtractKey, _EqualKey, _Alloc>::_M_initialize_buckets(hashtable<_Val, _Key, _HashFcn, _ExtractKey, _EqualKey, _Alloc>::size_type) [with _Val=std::pair<const long, linked_ptr<blah_57>>, _Key=long, _HashFcn=hash<long>, _ExtractKey=std::_Select1st<std::pair<const long, linked_ptr<blah_57>>>, _EqualKey=std::equal_to<long>, _Alloc=std::allocator<linked_ptr<blah_57>>]" at line 54 of "./tree-ssa/copyprop.C"
+            instantiation of "hashtable<_Val, _Key, _HashFcn, _ExtractKey, _EqualKey, _Alloc>::hashtable(hashtable<_Val, _Key, _HashFcn, _ExtractKey, _EqualKey, _Alloc>::size_type, const _HashFcn &, const _EqualKey &, const hashtable<_Val, _Key, _HashFcn, _ExtractKey, _EqualKey, _Alloc>::allocator_type &) [with _Val=std::pair<const long, linked_ptr<blah_57>>, _Key=long, _HashFcn=hash<long>, _ExtractKey=std::_Select1st<std::pair<const long, linked_ptr<blah_57>>>, _EqualKey=std::equal_to<long>, _Alloc=std::allocator<linked_ptr<blah_57>>]" at line 103 of "./tree-ssa/copyprop.C"
+            instantiation of "hash_map<_Key, _Tp, _HashFn, _EqualKey, _Alloc>::hash_map() [with _Key=long, _Tp=linked_ptr<blah_57>, _HashFn=hash<long>, _EqualKey=std::equal_to<long>, _Alloc=std::allocator<linked_ptr<blah_57>>]" at line 706 of "./tree-ssa/copyprop.C"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/vector.tcc", line 740: error: support for exception handling is disabled
+      throw;
+      ^
+          detected during:
+            instantiation of "void std::vector<_Tp, _Alloc>::_M_fill_insert(std::vector<_Tp, _Alloc>::iterator, std::vector<_Tp, _Alloc>::size_type, const std::vector<_Tp, _Alloc>::value_type &) [with _Tp=_Hashtable_node<std::pair<const long, linked_ptr<blah_57>>> *, _Alloc=std::allocator<_Hashtable_node<std::pair<const long, linked_ptr<blah_57>>> *>]" at line 1593 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_vector.h"
+            instantiation of "void std::vector<_Tp, _Alloc>::insert(std::vector<_Tp, _Alloc>::iterator, std::vector<_Tp, _Alloc>::size_type, const std::vector<_Tp, _Alloc>::value_type &) [with _Tp=_Hashtable_node<std::pair<const long, linked_ptr<blah_57>>> *, _Alloc=std::allocator<_Hashtable_node<std::pair<const long, linked_ptr<blah_57>>> *>]" at line 70 of "./tree-ssa/copyprop.C"
+            instantiation of "void hashtable<_Val, _Key, _HashFcn, _ExtractKey, _EqualKey, _Alloc>::_M_initialize_buckets(hashtable<_Val, _Key, _HashFcn, _ExtractKey, _EqualKey, _Alloc>::size_type) [with _Val=std::pair<const long, linked_ptr<blah_57>>, _Key=long, _HashFcn=hash<long>, _ExtractKey=std::_Select1st<std::pair<const long, linked_ptr<blah_57>>>, _EqualKey=std::equal_to<long>, _Alloc=std::allocator<linked_ptr<blah_57>>]" at line 54 of "./tree-ssa/copyprop.C"
+            instantiation of "hashtable<_Val, _Key, _HashFcn, _ExtractKey, _EqualKey, _Alloc>::hashtable(hashtable<_Val, _Key, _HashFcn, _ExtractKey, _EqualKey, _Alloc>::size_type, const _HashFcn &, const _EqualKey &, const hashtable<_Val, _Key, _HashFcn, _ExtractKey, _EqualKey, _Alloc>::allocator_type &) [with _Val=std::pair<const long, linked_ptr<blah_57>>, _Key=long, _HashFcn=hash<long>, _ExtractKey=std::_Select1st<std::pair<const long, linked_ptr<blah_57>>>, _EqualKey=std::equal_to<long>, _Alloc=std::allocator<linked_ptr<blah_57>>]" at line 103 of "./tree-ssa/copyprop.C"
+            instantiation of "hash_map<_Key, _Tp, _HashFn, _EqualKey, _Alloc>::hash_map() [with _Key=long, _Tp=linked_ptr<blah_57>, _HashFn=hash<long>, _EqualKey=std::equal_to<long>, _Alloc=std::allocator<linked_ptr<blah_57>>]" at line 706 of "./tree-ssa/copyprop.C"
+
+"./tree-ssa/copyprop.C", line 63: warning: missing return statement at end of non-void function "hashtable<_Val, _Key, _HashFcn, _ExtractKey, _EqualKey, _Alloc>::count"
+    }
+    ^
+          detected during instantiation of "hash_map<_Key, _Tp, _HashFn, _EqualKey, _Alloc>::size_type hash_map<_Key, _Tp, _HashFn, _EqualKey, _Alloc>::count(const hash_map<_Key, _Tp, _HashFn, _EqualKey, _Alloc>::key_type &) const [with _Key=long, _Tp=linked_ptr<blah_57>, _HashFn=hash<long>, _EqualKey=std::equal_to<long>, _Alloc=std::allocator<linked_ptr<blah_57>>]" at line 708
+
+"./tree-ssa/copyprop.C", line 86: warning: variable "__cur" was declared but never referenced
+    if (__first) _Node* __cur = __first;
+                        ^
+          detected during instantiation of "hash_map<_Key, _Tp, _HashFn, _EqualKey, _Alloc>::size_type hash_map<_Key, _Tp, _HashFn, _EqualKey, _Alloc>::erase(const hash_map<_Key, _Tp, _HashFn, _EqualKey, _Alloc>::key_type &) [with _Key=long, _Tp=linked_ptr<blah_57>, _HashFn=hash<long>, _EqualKey=std::equal_to<long>, _Alloc=std::allocator<linked_ptr<blah_57>>]" at line 660
+
+"./tree-ssa/copyprop.C", line 87: warning: missing return statement at end of non-void function "hashtable<_Val, _Key, _HashFcn, _ExtractKey, _EqualKey, _Alloc>::erase"
+  }
+  ^
+          detected during instantiation of "hash_map<_Key, _Tp, _HashFn, _EqualKey, _Alloc>::size_type hash_map<_Key, _Tp, _HashFn, _EqualKey, _Alloc>::erase(const hash_map<_Key, _Tp, _HashFn, _EqualKey, _Alloc>::key_type &) [with _Key=long, _Tp=linked_ptr<blah_57>, _HashFn=hash<long>, _EqualKey=std::equal_to<long>, _Alloc=std::allocator<linked_ptr<blah_57>>]" at line 660
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_construct.h", line 142: error: function "operator new" cannot be called with the given argument list
+            argument types are: (unsigned int, void *)
+        ::new(static_cast<void*>(__p)) _T1(__value);
+          ^
+Note: number of parameters of function "operator new" does not match the call
+          detected during:
+            instantiation of "void std::_Construct(_T1 *, const _T2 &) [with _T1=unsigned long, _T2=unsigned long]" at line 324 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_uninitialized.h"
+            instantiation of "void std::__do_uninit_fill(_ForwardIterator, _ForwardIterator, const _Tp &) [with _ForwardIterator=unsigned long *, _Tp=unsigned long]" at line 337 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_uninitialized.h"
+            instantiation of "void std::__uninitialized_fill<_CanMemset>::__uninit_fill(_ForwardIterator, _ForwardIterator, const _Tp &) [with _CanMemset=false, _ForwardIterator=unsigned long *, _Tp=unsigned long]" at line 433 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_uninitialized.h"
+            instantiation of "void std::uninitialized_fill(_ForwardIterator, _ForwardIterator, const _Tp &) [with _ForwardIterator=unsigned long *, _Tp=unsigned long]" at line 237 of "./tree-ssa/copyprop.C"
+            instantiation of "void dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::fill_range_with_empty(dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::value_type *, dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::value_type *) [with Value=unsigned long, Key=unsigned long, HashFcn=hash<unsigned long>, ExtractKey=dense_hash_set<unsigned long, hash<unsigned long>, std::equal_to<unsigned long>, std::allocator<unsigned long>>::Identity, EqualKey=std::equal_to<unsigned long>, Alloc=std::allocator<unsigned long>]" at line 241 of "./tree-ssa/copyprop.C"
+            [ 3 instantiation contexts not shown ]
+            instantiation of "dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::dense_hashtable(const dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc> &, dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::size_type) [with Value=unsigned long, Key=unsigned long, HashFcn=hash<unsigned long>, ExtractKey=dense_hash_set<unsigned long, hash<unsigned long>, std::equal_to<unsigned long>, std::allocator<unsigned long>>::Identity, EqualKey=std::equal_to<unsigned long>, Alloc=std::allocator<unsigned long>]" at line 256 of "./tree-ssa/copyprop.C"
+            instantiation of "void dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::maybe_shrink() [with Value=unsigned long, Key=unsigned long, HashFcn=hash<unsigned long>, ExtractKey=dense_hash_set<unsigned long, hash<unsigned long>, std::equal_to<unsigned long>, std::allocator<unsigned long>>::Identity, EqualKey=std::equal_to<unsigned long>, Alloc=std::allocator<unsigned long>]" at line 261 of "./tree-ssa/copyprop.C"
+            instantiation of "void dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::resize_delta(dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::size_type, dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::size_type) [with Value=unsigned long, Key=unsigned long, HashFcn=hash<unsigned long>, ExtractKey=dense_hash_set<unsigned long, hash<unsigned long>, std::equal_to<unsigned long>, std::allocator<unsigned long>>::Identity, EqualKey=std::equal_to<unsigned long>, Alloc=std::allocator<unsigned long>]" at line 349 of "./tree-ssa/copyprop.C"
+            instantiation of "std::pair<dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::iterator, bool> dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::insert(const dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::value_type &) [with Value=unsigned long, Key=unsigned long, HashFcn=hash<unsigned long>, ExtractKey=dense_hash_set<unsigned long, hash<unsigned long>, std::equal_to<unsigned long>, std::allocator<unsigned long>>::Identity, EqualKey=std::equal_to<unsigned long>, Alloc=std::allocator<unsigned long>]" at line 430 of "./tree-ssa/copyprop.C"
+            instantiation of "std::pair<dense_hash_set<Value, HashFcn, EqualKey, Alloc>::iterator, bool> dense_hash_set<Value, HashFcn, EqualKey, Alloc>::insert(const dense_hash_set<Value, HashFcn, EqualKey, Alloc>::value_type &) [with Value=unsigned long, HashFcn=hash<unsigned long>, EqualKey=std::equal_to<unsigned long>, Alloc=std::allocator<unsigned long>]" at line 674 of "./tree-ssa/copyprop.C"
+
+"./tree-ssa/copyprop.C", line 209: error: function "operator new" cannot be called with the given argument list
+            argument types are: (unsigned int, unsigned long *)
+      new(dst) value_type(src);
+      ^
+Note: number of parameters of function "operator new" does not match the call
+          detected during:
+            instantiation of "void dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::set_value(dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::value_type *, const dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::value_type &) [with Value=unsigned long, Key=unsigned long, HashFcn=hash<unsigned long>, ExtractKey=dense_hash_set<unsigned long, hash<unsigned long>, std::equal_to<unsigned long>, std::allocator<unsigned long>>::Identity, EqualKey=std::equal_to<unsigned long>, Alloc=std::allocator<unsigned long>]" at line 280
+            instantiation of "dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::dense_hashtable(const dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc> &, dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::size_type) [with Value=unsigned long, Key=unsigned long, HashFcn=hash<unsigned long>, ExtractKey=dense_hash_set<unsigned long, hash<unsigned long>, std::equal_to<unsigned long>, std::allocator<unsigned long>>::Identity, EqualKey=std::equal_to<unsigned long>, Alloc=std::allocator<unsigned long>]" at line 256
+            instantiation of "void dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::maybe_shrink() [with Value=unsigned long, Key=unsigned long, HashFcn=hash<unsigned long>, ExtractKey=dense_hash_set<unsigned long, hash<unsigned long>, std::equal_to<unsigned long>, std::allocator<unsigned long>>::Identity, EqualKey=std::equal_to<unsigned long>, Alloc=std::allocator<unsigned long>]" at line 261
+            instantiation of "void dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::resize_delta(dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::size_type, dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::size_type) [with Value=unsigned long, Key=unsigned long, HashFcn=hash<unsigned long>, ExtractKey=dense_hash_set<unsigned long, hash<unsigned long>, std::equal_to<unsigned long>, std::allocator<unsigned long>>::Identity, EqualKey=std::equal_to<unsigned long>, Alloc=std::allocator<unsigned long>]" at line 349
+            instantiation of "std::pair<dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::iterator, bool> dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::insert(const dense_hashtable<Value, Key, HashFcn, ExtractKey, EqualKey, Alloc>::value_type &) [with Value=unsigned long, Key=unsigned long, HashFcn=hash<unsigned long>, ExtractKey=dense_hash_set<unsigned long, hash<unsigned long>, std::equal_to<unsigned long>, std::allocator<unsigned long>>::Identity, EqualKey=std::equal_to<unsigned long>, Alloc=std::allocator<unsigned long>]" at line 430
+            instantiation of "std::pair<dense_hash_set<Value, HashFcn, EqualKey, Alloc>::iterator, bool> dense_hash_set<Value, HashFcn, EqualKey, Alloc>::insert(const dense_hash_set<Value, HashFcn, EqualKey, Alloc>::value_type &) [with Value=unsigned long, HashFcn=hash<unsigned long>, EqualKey=std::equal_to<unsigned long>, Alloc=std::allocator<unsigned long>]" at line 674
+
+31 errors detected in the compilation of "Test_name.c".

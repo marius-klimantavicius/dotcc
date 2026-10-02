@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 46: warning: variable "f1" was declared but never referenced
+    static union foo f1 = {{0,0}}; /* { dg-bogus "traditional C rejects initialization of unions" "initialization of unions" { xfail *-*-* } } */
+                     ^
+
+"Test_name.c", line 47: warning: variable "f2" was declared but never referenced
+    static union foo f2 = {{1,1}}; /* { dg-warning "traditional C rejects initialization of unions" "initialization of unions" } */
+                     ^
+
+"Test_name.c", line 49: warning: variable "f3" was declared but never referenced
+    static struct baz f3 = { 1, 2, {{0,0}} }; /* { dg-bogus "traditional C rejects initialization of unions" "initialization of unions" { xfail *-*-* } } */
+                      ^
+
+"Test_name.c", line 50: warning: variable "f4" was declared but never referenced
+    static struct baz f4 = { 1, 2, {{1,1}} }; /* { dg-warning "traditional C rejects initialization of unions" "initialization of unions" } */
+                      ^
+
+"Test_name.c", line 52: warning: variable "f5" was declared but never referenced
+    static struct baz2 f5 = { 1, 2, {0} };
+                       ^
+
+"Test_name.c", line 53: warning: variable "f6" was declared but never referenced
+    static struct baz2 f6 = { 1, 2, {1} }; /* { dg-warning "traditional C rejects initialization of unions" "initialization of unions" } */
+                       ^
+

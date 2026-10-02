@@ -1,0 +1,70 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c11 Test_name.c
+"Test_name.c", line 315: error: identifier "__ATOMIC_RELAXED" is undefined
+  void good_c11_atomic_thread_fence(void) { __c11_atomic_thread_fence(__ATOMIC_RELAXED); }
+                                                                      ^
+
+"Test_name.c", line 316: error: identifier "__ATOMIC_RELAXED" is undefined
+  void good_c11_atomic_signal_fence(void) { __c11_atomic_signal_fence(__ATOMIC_RELAXED); }
+                                                                      ^
+
+"Test_name.c", line 317: warning: expression has no effect
+  void good_c11_atomic_is_lock_free(void) { __c11_atomic_is_lock_free(sizeof(int)); }
+                                            ^
+
+"Test_name.c", line 318: error: identifier "__ATOMIC_RELAXED" is undefined
+  void good_c11_atomic_store(int i) { __c11_atomic_store(&atom, i, __ATOMIC_RELAXED); }
+                                                                   ^
+
+"Test_name.c", line 319: error: identifier "__ATOMIC_RELAXED" is undefined
+  int good_c11_atomic_load(void) { return __c11_atomic_load(&atom, __ATOMIC_RELAXED); }
+                                                                   ^
+
+"Test_name.c", line 320: error: identifier "__ATOMIC_RELAXED" is undefined
+  int good_c11_atomic_exchange(int i) { return __c11_atomic_exchange(&atom, i, __ATOMIC_RELAXED); }
+                                                                               ^
+
+"Test_name.c", line 321: error: identifier "__ATOMIC_RELAXED" is undefined
+  int good_c11_atomic_compare_exchange_strong(int *e, int i) { return __c11_atomic_compare_exchange_strong(&atom, e, i, __ATOMIC_RELAXED, __ATOMIC_RELAXED); }
+                                                                                                                        ^
+
+"Test_name.c", line 322: error: identifier "__ATOMIC_RELAXED" is undefined
+  int good_c11_atomic_compare_exchange_weak(int *e, int i) { return __c11_atomic_compare_exchange_weak(&atom, e, i, __ATOMIC_RELAXED, __ATOMIC_RELAXED); }
+                                                                                                                    ^
+
+"Test_name.c", line 323: error: identifier "__ATOMIC_RELAXED" is undefined
+  int good_c11_atomic_fetch_add(int i) { return __c11_atomic_fetch_add(&atom, i, __ATOMIC_RELAXED); }
+                                                                                 ^
+
+"Test_name.c", line 324: error: identifier "__ATOMIC_RELAXED" is undefined
+  int good_c11_atomic_fetch_sub(int i) { return __c11_atomic_fetch_sub(&atom, i, __ATOMIC_RELAXED); }
+                                                                                 ^
+
+"Test_name.c", line 325: error: identifier "__ATOMIC_RELAXED" is undefined
+  int good_c11_atomic_fetch_and(int i) { return __c11_atomic_fetch_and(&atom, i, __ATOMIC_RELAXED); }
+                                                                                 ^
+
+"Test_name.c", line 326: error: identifier "__ATOMIC_RELAXED" is undefined
+  int good_c11_atomic_fetch_or(int i) { return __c11_atomic_fetch_or(&atom, i, __ATOMIC_RELAXED); }
+                                                                               ^
+
+"Test_name.c", line 327: error: identifier "__ATOMIC_RELAXED" is undefined
+  int good_c11_atomic_fetch_xor(int i) { return __c11_atomic_fetch_xor(&atom, i, __ATOMIC_RELAXED); }
+                                                                                 ^
+
+"Test_name.c", line 328: error: identifier "__ATOMIC_RELAXED" is undefined
+  int good_c11_atomic_fetch_nand(int i) { return __c11_atomic_fetch_nand(&atom, i, __ATOMIC_RELAXED); }
+                                                                                   ^
+
+"Test_name.c", line 328: error: return value type does not match the function type
+  int good_c11_atomic_fetch_nand(int i) { return __c11_atomic_fetch_nand(&atom, i, __ATOMIC_RELAXED); }
+                                                 ^
+
+"Test_name.c", line 335: warning: variable "no_init" was declared but never referenced
+  void good_no_init(void) { _Atomic(int) no_init; }
+                                         ^
+
+"Test_name.c", line 336: warning: variable "init" was declared but never referenced
+  void good_init(void) { _Atomic(int) init = 42; }
+                                      ^
+
+14 errors detected in the compilation of "Test_name.c".

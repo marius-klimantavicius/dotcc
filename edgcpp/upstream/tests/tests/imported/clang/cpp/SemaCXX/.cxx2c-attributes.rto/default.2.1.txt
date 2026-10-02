@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 -w Test_name.c
+"Test_name.c", line 15: error: static assertion failed
+  static_assert(__has_cpp_attribute(likely));
+  ^
+
+"Test_name.c", line 16: error: static assertion failed
+  static_assert(__has_cpp_attribute(unlikely));
+  ^
+
+"Test_name.c", line 18: error: static assertion failed
+  static_assert(__has_cpp_attribute(nodiscard));
+  ^
+
+3 errors detected in the compilation of "Test_name.c".

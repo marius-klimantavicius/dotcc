@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 19: error: expression must have a constant value
+  constexpr int j = foo (false); // { dg-message "in .constexpr. expansion of" }
+                    ^
+"Test_name.c", line 12: note: statement cannot be interpreted
+    asm (""); // { dg-error "inline assembly is not a constant expression" }
+    ^
+
+"Test_name.c", line 19: warning: variable "j" was declared but never referenced
+  constexpr int j = foo (false); // { dg-message "in .constexpr. expansion of" }
+                ^
+
+1 error detected in the compilation of "Test_name.c".

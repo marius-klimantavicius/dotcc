@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --microsoft Test_name.c
+"Test_name.c", line 13: warning: a storage class may not be specified here
+  template<class T> static void S<T>::f() {}
+                    ^
+

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++11 -A Test_name.c
+"Test_name.c", line 4: error: invalid narrowing conversion from "int" to "unsigned long long": constant value does not fit in destination type
+  unsigned long long x[] = { -1 };
+                             ^
+
+1 error detected in the compilation of "Test_name.c".

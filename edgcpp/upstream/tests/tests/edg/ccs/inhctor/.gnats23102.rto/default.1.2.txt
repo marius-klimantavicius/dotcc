@@ -1,0 +1,7 @@
+./a.out
+A::A(int) called
+A::A() called
+B::B() called
+C::C() called
+c1.ai: 5, c1.bi: 20, c1.ci: 30
+c2.ai: 10, c2.bi: 25, c2.ci: 35

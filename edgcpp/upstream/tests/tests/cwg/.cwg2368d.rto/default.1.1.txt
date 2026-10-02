@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 -A --c++20 -tused -e 200 --no_wrap Test_name.c
+"Test_name.c", line 8: error: no valid std::strong_ordering type found (<compare> must be included)
+      constexpr auto g() { return &a <=> &b; } // returns unspecified value 
+                                         ^
+
+1 error detected in the compilation of "Test_name.c".

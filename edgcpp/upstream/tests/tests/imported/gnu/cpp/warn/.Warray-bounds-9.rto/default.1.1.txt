@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 51: warning: subscript out of range
+    return a[2];      // { dg-warning "\\\[-Warray-bounds" }
+           ^
+
+"Test_name.c", line 66: warning: subscript out of range
+    return a[3];      // { dg-warning "\\\[-Warray-bounds" }
+           ^
+

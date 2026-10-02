@@ -1,0 +1,514 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 8: error: expected a ";"
+  short _Fract sf0 = __SFRACT_MIN__ * __SFRACT_MIN__; /* { dg-warning "overflow" } */
+               ^
+
+"Test_name.c", line 9: error: variable "_Fract" is not a type name
+  _Fract f0 = __FRACT_MIN__ * __FRACT_MIN__; /* { dg-warning "overflow" } */
+  ^
+
+"Test_name.c", line 9: error: identifier "__FRACT_MIN__" is undefined
+  _Fract f0 = __FRACT_MIN__ * __FRACT_MIN__; /* { dg-warning "overflow" } */
+              ^
+
+"Test_name.c", line 10: error: declaration is incompatible with "short _Fract" (declared at line 8)
+  long _Fract lf0 = __LFRACT_MIN__ * __LFRACT_MIN__; /* { dg-warning "overflow" } */
+       ^
+
+"Test_name.c", line 10: error: expected a ";"
+  long _Fract lf0 = __LFRACT_MIN__ * __LFRACT_MIN__; /* { dg-warning "overflow" } */
+              ^
+
+"Test_name.c", line 11: error: declaration is incompatible with "short _Fract" (declared at line 10)
+  long long _Fract llf0 = __LLFRACT_MIN__ * __LLFRACT_MIN__; /* { dg-warning "overflow" } */
+            ^
+
+"Test_name.c", line 11: error: expected a ";"
+  long long _Fract llf0 = __LLFRACT_MIN__ * __LLFRACT_MIN__; /* { dg-warning "overflow" } */
+                   ^
+
+"Test_name.c", line 12: error: expected a ";"
+  short _Fract sf1 = __SFRACT_MAX__ * __SFRACT_MIN__;
+               ^
+
+"Test_name.c", line 13: error: variable "_Fract" is not a type name
+  _Fract f1 = __FRACT_MAX__ * __FRACT_MIN__;
+  ^
+
+"Test_name.c", line 13: error: identifier "__FRACT_MAX__" is undefined
+  _Fract f1 = __FRACT_MAX__ * __FRACT_MIN__;
+              ^
+
+"Test_name.c", line 14: error: declaration is incompatible with "short _Fract" (declared at line 11)
+  long _Fract lf1 = __LFRACT_MAX__ * __LFRACT_MIN__;
+       ^
+
+"Test_name.c", line 14: error: expected a ";"
+  long _Fract lf1 = __LFRACT_MAX__ * __LFRACT_MIN__;
+              ^
+
+"Test_name.c", line 15: error: declaration is incompatible with "short _Fract" (declared at line 14)
+  long long _Fract llf1 = __LLFRACT_MAX__ * __LLFRACT_MIN__;
+            ^
+
+"Test_name.c", line 15: error: expected a ";"
+  long long _Fract llf1 = __LLFRACT_MAX__ * __LLFRACT_MIN__;
+                   ^
+
+"Test_name.c", line 16: error: expected a ";"
+  short _Fract sf2 = __SFRACT_MIN__ / __SFRACT_MIN__; /* { dg-warning "overflow" } */
+               ^
+
+"Test_name.c", line 17: error: variable "_Fract" is not a type name
+  _Fract f2 = __FRACT_MIN__ / __FRACT_MIN__; /* { dg-warning "overflow" } */
+  ^
+
+"Test_name.c", line 18: error: declaration is incompatible with "short _Fract" (declared at line 15)
+  long _Fract lf2 = __LFRACT_MIN__ / __LFRACT_MIN__; /* { dg-warning "overflow" } */
+       ^
+
+"Test_name.c", line 18: error: expected a ";"
+  long _Fract lf2 = __LFRACT_MIN__ / __LFRACT_MIN__; /* { dg-warning "overflow" } */
+              ^
+
+"Test_name.c", line 19: error: declaration is incompatible with "short _Fract" (declared at line 18)
+  long long _Fract llf2 = __LLFRACT_MIN__ / __LLFRACT_MIN__; /* { dg-warning "overflow" } */
+            ^
+
+"Test_name.c", line 19: error: expected a ";"
+  long long _Fract llf2 = __LLFRACT_MIN__ / __LLFRACT_MIN__; /* { dg-warning "overflow" } */
+                   ^
+
+"Test_name.c", line 20: error: expected a ";"
+  short _Fract sf3 = __SFRACT_MAX__ / __SFRACT_MIN__;
+               ^
+
+"Test_name.c", line 21: error: variable "_Fract" is not a type name
+  _Fract f3 = __FRACT_MAX__ / __FRACT_MIN__;
+  ^
+
+"Test_name.c", line 22: error: declaration is incompatible with "short _Fract" (declared at line 19)
+  long _Fract lf3 = __LFRACT_MAX__ / __LFRACT_MIN__;
+       ^
+
+"Test_name.c", line 22: error: expected a ";"
+  long _Fract lf3 = __LFRACT_MAX__ / __LFRACT_MIN__;
+              ^
+
+"Test_name.c", line 23: error: declaration is incompatible with "short _Fract" (declared at line 22)
+  long long _Fract llf3 = __LLFRACT_MAX__ / __LLFRACT_MIN__;
+            ^
+
+"Test_name.c", line 23: error: expected a ";"
+  long long _Fract llf3 = __LLFRACT_MAX__ / __LLFRACT_MIN__;
+                   ^
+
+"Test_name.c", line 25: error: declaration is incompatible with "short _Fract" (declared at line 23)
+  unsigned short _Fract usf0 = __USFRACT_MIN__ * __USFRACT_MIN__;
+                 ^
+
+"Test_name.c", line 25: error: expected a ";"
+  unsigned short _Fract usf0 = __USFRACT_MIN__ * __USFRACT_MIN__;
+                        ^
+
+"Test_name.c", line 26: error: declaration is incompatible with "short _Fract" (declared at line 25)
+  unsigned _Fract uf0 = __UFRACT_MIN__ * __UFRACT_MIN__;
+           ^
+
+"Test_name.c", line 26: error: expected a ";"
+  unsigned _Fract uf0 = __UFRACT_MIN__ * __UFRACT_MIN__;
+                  ^
+
+"Test_name.c", line 27: error: declaration is incompatible with "short _Fract" (declared at line 26)
+  unsigned long _Fract ulf0 = __ULFRACT_MIN__ * __ULFRACT_MIN__;
+                ^
+
+"Test_name.c", line 27: error: expected a ";"
+  unsigned long _Fract ulf0 = __ULFRACT_MIN__ * __ULFRACT_MIN__;
+                       ^
+
+"Test_name.c", line 28: error: declaration is incompatible with "short _Fract" (declared at line 27)
+  unsigned long long _Fract ullf0 = __ULLFRACT_MIN__ * __ULLFRACT_MIN__;
+                     ^
+
+"Test_name.c", line 28: error: expected a ";"
+  unsigned long long _Fract ullf0 = __ULLFRACT_MIN__ * __ULLFRACT_MIN__;
+                            ^
+
+"Test_name.c", line 29: error: declaration is incompatible with "short _Fract" (declared at line 28)
+  unsigned short _Fract usf1 = __USFRACT_MAX__ * __USFRACT_MIN__;
+                 ^
+
+"Test_name.c", line 29: error: expected a ";"
+  unsigned short _Fract usf1 = __USFRACT_MAX__ * __USFRACT_MIN__;
+                        ^
+
+"Test_name.c", line 30: error: declaration is incompatible with "short _Fract" (declared at line 29)
+  unsigned _Fract uf1 = __UFRACT_MAX__ * __UFRACT_MIN__;
+           ^
+
+"Test_name.c", line 30: error: expected a ";"
+  unsigned _Fract uf1 = __UFRACT_MAX__ * __UFRACT_MIN__;
+                  ^
+
+"Test_name.c", line 31: error: declaration is incompatible with "short _Fract" (declared at line 30)
+  unsigned long _Fract ulf1 = __ULFRACT_MAX__ * __ULFRACT_MIN__;
+                ^
+
+"Test_name.c", line 31: error: expected a ";"
+  unsigned long _Fract ulf1 = __ULFRACT_MAX__ * __ULFRACT_MIN__;
+                       ^
+
+"Test_name.c", line 32: error: declaration is incompatible with "short _Fract" (declared at line 31)
+  unsigned long long _Fract ullf1 = __ULLFRACT_MAX__ * __ULLFRACT_MIN__;
+                     ^
+
+"Test_name.c", line 32: error: expected a ";"
+  unsigned long long _Fract ullf1 = __ULLFRACT_MAX__ * __ULLFRACT_MIN__;
+                            ^
+
+"Test_name.c", line 33: error: declaration is incompatible with "short _Fract" (declared at line 32)
+  unsigned short _Fract usf2 = __USFRACT_MAX__ / __USFRACT_MAX__; /* { dg-warning "overflow" } */
+                 ^
+
+"Test_name.c", line 33: error: expected a ";"
+  unsigned short _Fract usf2 = __USFRACT_MAX__ / __USFRACT_MAX__; /* { dg-warning "overflow" } */
+                        ^
+
+"Test_name.c", line 34: error: declaration is incompatible with "short _Fract" (declared at line 33)
+  unsigned _Fract uf2 = __UFRACT_MAX__ / __UFRACT_MAX__; /* { dg-warning "overflow" } */
+           ^
+
+"Test_name.c", line 34: error: expected a ";"
+  unsigned _Fract uf2 = __UFRACT_MAX__ / __UFRACT_MAX__; /* { dg-warning "overflow" } */
+                  ^
+
+"Test_name.c", line 35: error: declaration is incompatible with "short _Fract" (declared at line 34)
+  unsigned long _Fract ulf2 = __ULFRACT_MAX__ / __ULFRACT_MAX__; /* { dg-warning "overflow" } */
+                ^
+
+"Test_name.c", line 35: error: expected a ";"
+  unsigned long _Fract ulf2 = __ULFRACT_MAX__ / __ULFRACT_MAX__; /* { dg-warning "overflow" } */
+                       ^
+
+"Test_name.c", line 36: error: declaration is incompatible with "short _Fract" (declared at line 35)
+  unsigned long long _Fract ullf2 = __ULLFRACT_MAX__ / __ULLFRACT_MAX__; /* { dg-warning "overflow" } */
+                     ^
+
+"Test_name.c", line 36: error: expected a ";"
+  unsigned long long _Fract ullf2 = __ULLFRACT_MAX__ / __ULLFRACT_MAX__; /* { dg-warning "overflow" } */
+                            ^
+
+"Test_name.c", line 37: error: declaration is incompatible with "short _Fract" (declared at line 36)
+  unsigned short _Fract usf3 = __USFRACT_MIN__ / __USFRACT_MAX__;
+                 ^
+
+"Test_name.c", line 37: error: expected a ";"
+  unsigned short _Fract usf3 = __USFRACT_MIN__ / __USFRACT_MAX__;
+                        ^
+
+"Test_name.c", line 38: error: declaration is incompatible with "short _Fract" (declared at line 37)
+  unsigned _Fract uf3 = __UFRACT_MIN__ / __UFRACT_MAX__;
+           ^
+
+"Test_name.c", line 38: error: expected a ";"
+  unsigned _Fract uf3 = __UFRACT_MIN__ / __UFRACT_MAX__;
+                  ^
+
+"Test_name.c", line 39: error: declaration is incompatible with "short _Fract" (declared at line 38)
+  unsigned long _Fract ulf3 = __ULFRACT_MIN__ / __ULFRACT_MAX__;
+                ^
+
+"Test_name.c", line 39: error: expected a ";"
+  unsigned long _Fract ulf3 = __ULFRACT_MIN__ / __ULFRACT_MAX__;
+                       ^
+
+"Test_name.c", line 40: error: declaration is incompatible with "short _Fract" (declared at line 39)
+  unsigned long long _Fract ullf3 = __ULLFRACT_MIN__ / __ULLFRACT_MAX__;
+                     ^
+
+"Test_name.c", line 40: error: expected a ";"
+  unsigned long long _Fract ullf3 = __ULLFRACT_MIN__ / __ULLFRACT_MAX__;
+                            ^
+
+"Test_name.c", line 42: error: expected a ";"
+  short _Accum sa0 = __SACCUM_MIN__ * __SACCUM_MIN__; /* { dg-warning "overflow" } */
+               ^
+
+"Test_name.c", line 43: error: variable "_Accum" is not a type name
+  _Accum a0 = __ACCUM_MIN__ * __ACCUM_MIN__; /* { dg-warning "overflow" } */
+  ^
+
+"Test_name.c", line 43: error: identifier "__ACCUM_MIN__" is undefined
+  _Accum a0 = __ACCUM_MIN__ * __ACCUM_MIN__; /* { dg-warning "overflow" } */
+              ^
+
+"Test_name.c", line 44: error: declaration is incompatible with "short _Accum" (declared at line 42)
+  long _Accum la0 = __LACCUM_MIN__ * __LACCUM_MIN__; /* { dg-warning "overflow" } */
+       ^
+
+"Test_name.c", line 44: error: expected a ";"
+  long _Accum la0 = __LACCUM_MIN__ * __LACCUM_MIN__; /* { dg-warning "overflow" } */
+              ^
+
+"Test_name.c", line 45: error: declaration is incompatible with "short _Accum" (declared at line 44)
+  long long _Accum lla0 = __LLACCUM_MIN__ * __LLACCUM_MIN__; /* { dg-warning "overflow" } */
+            ^
+
+"Test_name.c", line 45: error: expected a ";"
+  long long _Accum lla0 = __LLACCUM_MIN__ * __LLACCUM_MIN__; /* { dg-warning "overflow" } */
+                   ^
+
+"Test_name.c", line 46: error: expected a ";"
+  short _Accum sa1 = __SACCUM_MAX__ * 0.1hk;
+               ^
+
+"Test_name.c", line 46: error: extra text after expected end of number
+  short _Accum sa1 = __SACCUM_MAX__ * 0.1hk;
+                                         ^
+
+"Test_name.c", line 47: error: variable "_Accum" is not a type name
+  _Accum a1 = __ACCUM_MAX__ * 0.1k;
+  ^
+
+"Test_name.c", line 47: error: identifier "__ACCUM_MAX__" is undefined
+  _Accum a1 = __ACCUM_MAX__ * 0.1k;
+              ^
+
+"Test_name.c", line 47: error: extra text after expected end of number
+  _Accum a1 = __ACCUM_MAX__ * 0.1k;
+                                 ^
+
+"Test_name.c", line 48: error: declaration is incompatible with "short _Accum" (declared at line 45)
+  long _Accum la1 = __LACCUM_MAX__ * 0.1lk;
+       ^
+
+"Test_name.c", line 48: error: expected a ";"
+  long _Accum la1 = __LACCUM_MAX__ * 0.1lk;
+              ^
+
+"Test_name.c", line 48: error: extra text after expected end of number
+  long _Accum la1 = __LACCUM_MAX__ * 0.1lk;
+                                         ^
+
+"Test_name.c", line 49: error: declaration is incompatible with "short _Accum" (declared at line 48)
+  long long _Accum lla1 = __LLACCUM_MAX__ * 0.1llk;
+            ^
+
+"Test_name.c", line 49: error: expected a ";"
+  long long _Accum lla1 = __LLACCUM_MAX__ * 0.1llk;
+                   ^
+
+"Test_name.c", line 49: error: extra text after expected end of number
+  long long _Accum lla1 = __LLACCUM_MAX__ * 0.1llk;
+                                                ^
+
+"Test_name.c", line 50: error: expected a ";"
+  short _Accum sa2 = __SACCUM_MIN__ / 0.1hk; /* { dg-warning "overflow" } */
+               ^
+
+"Test_name.c", line 50: error: extra text after expected end of number
+  short _Accum sa2 = __SACCUM_MIN__ / 0.1hk; /* { dg-warning "overflow" } */
+                                         ^
+
+"Test_name.c", line 51: error: variable "_Accum" is not a type name
+  _Accum a2 = __ACCUM_MIN__ / 0.1k; /* { dg-warning "overflow" } */
+  ^
+
+"Test_name.c", line 51: error: extra text after expected end of number
+  _Accum a2 = __ACCUM_MIN__ / 0.1k; /* { dg-warning "overflow" } */
+                                 ^
+
+"Test_name.c", line 52: error: declaration is incompatible with "short _Accum" (declared at line 49)
+  long _Accum la2 = __LACCUM_MIN__ / 0.1lk; /* { dg-warning "overflow" } */
+       ^
+
+"Test_name.c", line 52: error: expected a ";"
+  long _Accum la2 = __LACCUM_MIN__ / 0.1lk; /* { dg-warning "overflow" } */
+              ^
+
+"Test_name.c", line 52: error: extra text after expected end of number
+  long _Accum la2 = __LACCUM_MIN__ / 0.1lk; /* { dg-warning "overflow" } */
+                                         ^
+
+"Test_name.c", line 53: error: declaration is incompatible with "short _Accum" (declared at line 52)
+  long long _Accum lla2 = __LLACCUM_MIN__ / 0.1llk; /* { dg-warning "overflow" } */
+            ^
+
+"Test_name.c", line 53: error: expected a ";"
+  long long _Accum lla2 = __LLACCUM_MIN__ / 0.1llk; /* { dg-warning "overflow" } */
+                   ^
+
+"Test_name.c", line 53: error: extra text after expected end of number
+  long long _Accum lla2 = __LLACCUM_MIN__ / 0.1llk; /* { dg-warning "overflow" } */
+                                                ^
+
+"Test_name.c", line 54: error: expected a ";"
+  short _Accum sa3 = __SACCUM_MAX__ / __SACCUM_MIN__;
+               ^
+
+"Test_name.c", line 55: error: variable "_Accum" is not a type name
+  _Accum a3 = __ACCUM_MAX__ / __ACCUM_MIN__;
+  ^
+
+"Test_name.c", line 56: error: declaration is incompatible with "short _Accum" (declared at line 53)
+  long _Accum la3 = __LACCUM_MAX__ / __LACCUM_MIN__;
+       ^
+
+"Test_name.c", line 56: error: expected a ";"
+  long _Accum la3 = __LACCUM_MAX__ / __LACCUM_MIN__;
+              ^
+
+"Test_name.c", line 57: error: declaration is incompatible with "short _Accum" (declared at line 56)
+  long long _Accum lla3 = __LLACCUM_MAX__ / __LLACCUM_MIN__;
+            ^
+
+"Test_name.c", line 57: error: expected a ";"
+  long long _Accum lla3 = __LLACCUM_MAX__ / __LLACCUM_MIN__;
+                   ^
+
+"Test_name.c", line 59: error: declaration is incompatible with "short _Accum" (declared at line 57)
+  unsigned short _Accum usa0 = __USACCUM_MIN__ * __USACCUM_MIN__;
+                 ^
+
+"Test_name.c", line 59: error: expected a ";"
+  unsigned short _Accum usa0 = __USACCUM_MIN__ * __USACCUM_MIN__;
+                        ^
+
+"Test_name.c", line 60: error: declaration is incompatible with "short _Accum" (declared at line 59)
+  unsigned _Accum ua0 = __UACCUM_MIN__ * __UACCUM_MIN__;
+           ^
+
+"Test_name.c", line 60: error: expected a ";"
+  unsigned _Accum ua0 = __UACCUM_MIN__ * __UACCUM_MIN__;
+                  ^
+
+"Test_name.c", line 61: error: declaration is incompatible with "short _Accum" (declared at line 60)
+  unsigned long _Accum ula0 = __ULACCUM_MIN__ * __ULACCUM_MIN__;
+                ^
+
+"Test_name.c", line 61: error: expected a ";"
+  unsigned long _Accum ula0 = __ULACCUM_MIN__ * __ULACCUM_MIN__;
+                       ^
+
+"Test_name.c", line 62: error: declaration is incompatible with "short _Accum" (declared at line 61)
+  unsigned long long _Accum ulla0 = __ULLACCUM_MIN__ * __ULLACCUM_MIN__;
+                     ^
+
+"Test_name.c", line 62: error: expected a ";"
+  unsigned long long _Accum ulla0 = __ULLACCUM_MIN__ * __ULLACCUM_MIN__;
+                            ^
+
+"Test_name.c", line 63: error: declaration is incompatible with "short _Accum" (declared at line 62)
+  unsigned short _Accum usa1 = __USACCUM_MAX__ * __USACCUM_MAX__; /* { dg-warning "overflow" } */
+                 ^
+
+"Test_name.c", line 63: error: expected a ";"
+  unsigned short _Accum usa1 = __USACCUM_MAX__ * __USACCUM_MAX__; /* { dg-warning "overflow" } */
+                        ^
+
+"Test_name.c", line 64: error: declaration is incompatible with "short _Accum" (declared at line 63)
+  unsigned _Accum ua1 = __UACCUM_MAX__ * __UACCUM_MAX__; /* { dg-warning "overflow" } */
+           ^
+
+"Test_name.c", line 64: error: expected a ";"
+  unsigned _Accum ua1 = __UACCUM_MAX__ * __UACCUM_MAX__; /* { dg-warning "overflow" } */
+                  ^
+
+"Test_name.c", line 65: error: declaration is incompatible with "short _Accum" (declared at line 64)
+  unsigned long _Accum ula1 = __ULACCUM_MAX__ * __ULACCUM_MAX__; /* { dg-warning "overflow" } */
+                ^
+
+"Test_name.c", line 65: error: expected a ";"
+  unsigned long _Accum ula1 = __ULACCUM_MAX__ * __ULACCUM_MAX__; /* { dg-warning "overflow" } */
+                       ^
+
+"Test_name.c", line 66: error: declaration is incompatible with "short _Accum" (declared at line 65)
+  unsigned long long _Accum ulla1 = __ULLACCUM_MAX__ * __ULLACCUM_MAX__; /* { dg-warning "overflow" } */
+                     ^
+
+"Test_name.c", line 66: error: expected a ";"
+  unsigned long long _Accum ulla1 = __ULLACCUM_MAX__ * __ULLACCUM_MAX__; /* { dg-warning "overflow" } */
+                            ^
+
+"Test_name.c", line 67: error: declaration is incompatible with "short _Accum" (declared at line 66)
+  unsigned short _Accum usa2 = __USACCUM_MAX__ / 0.5hk; /* { dg-warning "overflow" } */
+                 ^
+
+"Test_name.c", line 67: error: expected a ";"
+  unsigned short _Accum usa2 = __USACCUM_MAX__ / 0.5hk; /* { dg-warning "overflow" } */
+                        ^
+
+"Test_name.c", line 67: error: extra text after expected end of number
+  unsigned short _Accum usa2 = __USACCUM_MAX__ / 0.5hk; /* { dg-warning "overflow" } */
+                                                    ^
+
+"Test_name.c", line 68: error: declaration is incompatible with "short _Accum" (declared at line 67)
+  unsigned _Accum ua2 = __UACCUM_MAX__ / 0.5k; /* { dg-warning "overflow" } */
+           ^
+
+"Test_name.c", line 68: error: expected a ";"
+  unsigned _Accum ua2 = __UACCUM_MAX__ / 0.5k; /* { dg-warning "overflow" } */
+                  ^
+
+"Test_name.c", line 68: error: extra text after expected end of number
+  unsigned _Accum ua2 = __UACCUM_MAX__ / 0.5k; /* { dg-warning "overflow" } */
+                                            ^
+
+"Test_name.c", line 69: error: declaration is incompatible with "short _Accum" (declared at line 68)
+  unsigned long _Accum ula2 = __ULACCUM_MAX__ / 0.5lk; /* { dg-warning "overflow" } */
+                ^
+
+"Test_name.c", line 69: error: expected a ";"
+  unsigned long _Accum ula2 = __ULACCUM_MAX__ / 0.5lk; /* { dg-warning "overflow" } */
+                       ^
+
+"Test_name.c", line 69: error: extra text after expected end of number
+  unsigned long _Accum ula2 = __ULACCUM_MAX__ / 0.5lk; /* { dg-warning "overflow" } */
+                                                    ^
+
+"Test_name.c", line 70: error: declaration is incompatible with "short _Accum" (declared at line 69)
+  unsigned long long _Accum ulla2 = __ULLACCUM_MAX__ / 0.5llk; /* { dg-warning "overflow" } */
+                     ^
+
+"Test_name.c", line 70: error: expected a ";"
+  unsigned long long _Accum ulla2 = __ULLACCUM_MAX__ / 0.5llk; /* { dg-warning "overflow" } */
+                            ^
+
+"Test_name.c", line 70: error: extra text after expected end of number
+  unsigned long long _Accum ulla2 = __ULLACCUM_MAX__ / 0.5llk; /* { dg-warning "overflow" } */
+                                                           ^
+
+"Test_name.c", line 71: error: declaration is incompatible with "short _Accum" (declared at line 70)
+  unsigned short _Accum usa3 = __USACCUM_MIN__ / __USACCUM_MAX__;
+                 ^
+
+"Test_name.c", line 71: error: expected a ";"
+  unsigned short _Accum usa3 = __USACCUM_MIN__ / __USACCUM_MAX__;
+                        ^
+
+"Test_name.c", line 72: error: declaration is incompatible with "short _Accum" (declared at line 71)
+  unsigned _Accum ua3 = __UACCUM_MIN__ / __UACCUM_MAX__;
+           ^
+
+"Test_name.c", line 72: error: expected a ";"
+  unsigned _Accum ua3 = __UACCUM_MIN__ / __UACCUM_MAX__;
+                  ^
+
+"Test_name.c", line 73: error: declaration is incompatible with "short _Accum" (declared at line 72)
+  unsigned long _Accum ula3 = __ULACCUM_MIN__ / __ULACCUM_MAX__;
+                ^
+
+"Test_name.c", line 73: error: expected a ";"
+  unsigned long _Accum ula3 = __ULACCUM_MIN__ / __ULACCUM_MAX__;
+                       ^
+
+"Test_name.c", line 74: error: declaration is incompatible with "short _Accum" (declared at line 73)
+  unsigned long long _Accum ulla3 = __ULLACCUM_MIN__ / __ULLACCUM_MAX__;
+                     ^
+
+"Test_name.c", line 74: error: expected a ";"
+  unsigned long long _Accum ulla3 = __ULLACCUM_MIN__ / __ULLACCUM_MAX__;
+                            ^
+
+128 errors detected in the compilation of "Test_name.c".

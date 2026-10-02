@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=3 -W --c --gnu_version 80000 Test_name.c
+"Test_name.c", line 5: error: expected a comma (the one-argument version of static_assert is not enabled in this mode)
+  _Static_assert(1);
+                  ^
+
+1 error detected in the compilation of "Test_name.c".

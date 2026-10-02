@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 10: error: expected a "("
+  __attribute__((warning)) // expected-error {{'warning' attribute takes one argument}}
+                        ^
+
+"Test_name.c", line 14: warning: attribute "warning" does not apply here
+  int bad1(__attribute__((warning("bad1"))) int param); // expected-error {{'warning' attribute only applies to functions}}
+                          ^
+
+"Test_name.c", line 17: warning: attribute "warning" does not apply here
+    __attribute__((warning("bad2"))); // expected-error {{'warning' attribute cannot be applied to a statement}}
+                   ^
+
+"Test_name.c", line 18: warning: missing return statement at end of non-void function "bad2"
+  }
+  ^
+
+"Test_name.c", line 20: error: expected a string literal
+  __attribute__((warning(3))) // expected-error {{expected string literal as argument of 'warning' attribute}}
+                         ^
+
+"Test_name.c", line 26: warning: missing return statement at end of non-void function "good1"
+  __attribute__((warning("foo"))) int good1(void) {}
+                                                   ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 31: error: no suitable conversion function from "cls<B>::nested<B>" to "bool *" exists
+  bool* a2 = v2; // { dg-error "cannot convert" }
+             ^
+
+"Test_name.c", line 36: error: no suitable conversion function from "cls<A>::nested<A>" to "long *" exists
+  long* b3 = v3; // { dg-error "cannot convert" }
+             ^
+
+2 errors detected in the compilation of "Test_name.c".

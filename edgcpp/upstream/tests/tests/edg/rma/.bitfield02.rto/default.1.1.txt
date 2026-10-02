@@ -1,0 +1,9 @@
+eccp -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 5: warning: declared size for bit field is larger than the size of the bit field type; truncated to 8 bits
+  struct A { char x:9;
+                    ^
+
+"Test_name.c", line 7: warning: declared size for bit field is larger than the size of the bit field type; truncated to 32 bits
+             int z: 1000;
+                    ^
+

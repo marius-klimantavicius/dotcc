@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 --c++23 -A Test_name.c
+"Test_name.c", line 7: error: cannot deduce "auto" type
+      auto x = &X<true>::f;       // OK, deduces void(*)(short), selects #1
+      ^
+
+"Test_name.c", line 8: error: cannot deduce "auto" type
+      auto y = &X<false>::f;       // OK, deduces void(*)(short), selects #2
+      ^
+
+2 errors detected in the compilation of "Test_name.c".

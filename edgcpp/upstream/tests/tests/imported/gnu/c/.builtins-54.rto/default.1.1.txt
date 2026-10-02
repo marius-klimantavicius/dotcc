@@ -1,0 +1,134 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 23: error: complex integral types are not supported
+    if (fabs(a) * __builtin_sqrt(2) != cabs (a+a*1i))
+                                                  ^
+
+"Test_name.c", line 26: error: complex integral types are not supported
+    if (fabs(a) * __builtin_sqrt(2) != cabs (a*1i+a))
+                                                ^
+
+"Test_name.c", line 29: error: complex integral types are not supported
+    if (fabs(a) * __builtin_sqrt(2) != cabs (-a+a*-1i))
+                                                    ^
+
+"Test_name.c", line 32: error: complex integral types are not supported
+    if (fabs(a) * __builtin_sqrt(2) != cabs (-a+-a*1i))
+                                                    ^
+
+"Test_name.c", line 35: error: complex integral types are not supported
+    if (fabs(a) * __builtin_sqrt(2) != cabs (-a-a*1i))
+                                                   ^
+
+"Test_name.c", line 38: error: complex integral types are not supported
+    if (fabs(a) * __builtin_sqrt(2) != cabs (a*-1i-a))
+                                                 ^
+
+"Test_name.c", line 41: error: complex integral types are not supported
+    if (fabs(a) * __builtin_sqrt(2) != cabs (-a*1i-a))
+                                                 ^
+
+"Test_name.c", line 44: error: complex integral types are not supported
+    if (fabs(a) * __builtin_sqrt(2) != cabs (a*-1i+-a))
+                                                 ^
+
+"Test_name.c", line 47: error: complex integral types are not supported
+    if (fabs(a) * __builtin_sqrt(2) != cabs (-a*1i+-a))
+                                                 ^
+
+"Test_name.c", line 50: error: complex integral types are not supported
+    if (fabs(a*b) * __builtin_sqrt(2) != cabs (a*b-(-b*a*1i)))
+                                                          ^
+
+"Test_name.c", line 53: error: complex integral types are not supported
+    if (fabs(a*b) * __builtin_sqrt(2) != cabs (a*b*1i-a*-b))
+                                                    ^
+
+"Test_name.c", line 65: error: complex integral types are not supported
+    if (fabsf(a) * __builtin_sqrtf(2) != cabsf (a+a*1i))
+                                                     ^
+
+"Test_name.c", line 68: error: complex integral types are not supported
+    if (fabsf(a) * __builtin_sqrtf(2) != cabsf (a*1i+a))
+                                                   ^
+
+"Test_name.c", line 71: error: complex integral types are not supported
+    if (fabsf(a) * __builtin_sqrtf(2) != cabsf (-a+a*-1i))
+                                                       ^
+
+"Test_name.c", line 74: error: complex integral types are not supported
+    if (fabsf(a) * __builtin_sqrtf(2) != cabsf (-a+-a*1i))
+                                                       ^
+
+"Test_name.c", line 77: error: complex integral types are not supported
+    if (fabsf(a) * __builtin_sqrtf(2) != cabsf (-a-a*1i))
+                                                      ^
+
+"Test_name.c", line 80: error: complex integral types are not supported
+    if (fabsf(a) * __builtin_sqrtf(2) != cabsf (a*-1i-a))
+                                                    ^
+
+"Test_name.c", line 83: error: complex integral types are not supported
+    if (fabsf(a) * __builtin_sqrtf(2) != cabsf (-a*1i-a))
+                                                    ^
+
+"Test_name.c", line 86: error: complex integral types are not supported
+    if (fabsf(a) * __builtin_sqrtf(2) != cabsf (a*-1i+-a))
+                                                    ^
+
+"Test_name.c", line 89: error: complex integral types are not supported
+    if (fabsf(a) * __builtin_sqrtf(2) != cabsf (-a*1i+-a))
+                                                    ^
+
+"Test_name.c", line 92: error: complex integral types are not supported
+    if (fabsf(a*b) * __builtin_sqrtf(2) != cabsf (a*b-(-b*a*1i)))
+                                                             ^
+
+"Test_name.c", line 95: error: complex integral types are not supported
+    if (fabsf(a*b) * __builtin_sqrtf(2) != cabsf (a*b*1i-a*-b))
+                                                       ^
+
+"Test_name.c", line 107: error: complex integral types are not supported
+    if (fabsl(a) * __builtin_sqrtl(2) != cabsl (a+a*1i))
+                                                     ^
+
+"Test_name.c", line 110: error: complex integral types are not supported
+    if (fabsl(a) * __builtin_sqrtl(2) != cabsl (a*1i+a))
+                                                   ^
+
+"Test_name.c", line 113: error: complex integral types are not supported
+    if (fabsl(a) * __builtin_sqrtl(2) != cabsl (-a+a*-1i))
+                                                       ^
+
+"Test_name.c", line 116: error: complex integral types are not supported
+    if (fabsl(a) * __builtin_sqrtl(2) != cabsl (-a+-a*1i))
+                                                       ^
+
+"Test_name.c", line 119: error: complex integral types are not supported
+    if (fabsl(a) * __builtin_sqrtl(2) != cabsl (-a-a*1i))
+                                                      ^
+
+"Test_name.c", line 122: error: complex integral types are not supported
+    if (fabsl(a) * __builtin_sqrtl(2) != cabsl (a*-1i-a))
+                                                    ^
+
+"Test_name.c", line 125: error: complex integral types are not supported
+    if (fabsl(a) * __builtin_sqrtl(2) != cabsl (-a*1i-a))
+                                                    ^
+
+"Test_name.c", line 128: error: complex integral types are not supported
+    if (fabsl(a) * __builtin_sqrtl(2) != cabsl (a*-1i+-a))
+                                                    ^
+
+"Test_name.c", line 131: error: complex integral types are not supported
+    if (fabsl(a) * __builtin_sqrtl(2) != cabsl (-a*1i+-a))
+                                                    ^
+
+"Test_name.c", line 134: error: complex integral types are not supported
+    if (fabsl(a*b) * __builtin_sqrtl(2) != cabsl (a*b-(-b*a*1i)))
+                                                             ^
+
+"Test_name.c", line 137: error: complex integral types are not supported
+    if (fabsl(a*b) * __builtin_sqrtl(2) != cabsl (a*b*1i-a*-b))
+                                                       ^
+
+33 errors detected in the compilation of "Test_name.c".

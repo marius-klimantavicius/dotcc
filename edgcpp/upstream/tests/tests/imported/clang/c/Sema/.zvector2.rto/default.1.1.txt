@@ -1,0 +1,282 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 7: warning: this declaration has no storage class or type specifier
+  vector signed char sc, sc2;
+  ^
+
+"Test_name.c", line 7: error: expected a ";"
+  vector signed char sc, sc2;
+         ^
+
+"Test_name.c", line 8: warning: this declaration has no storage class or type specifier
+  vector unsigned char uc, uc2;
+  ^
+
+"Test_name.c", line 8: error: expected a ";"
+  vector unsigned char uc, uc2;
+         ^
+
+"Test_name.c", line 9: error: variable "vector" is not a type name
+  vector bool char bc, bc2;
+  ^
+
+"Test_name.c", line 9: error: expected a ";"
+  vector bool char bc, bc2;
+              ^
+
+"Test_name.c", line 11: warning: this declaration has no storage class or type specifier
+  vector signed short ss, ss2;
+  ^
+
+"Test_name.c", line 11: error: expected a ";"
+  vector signed short ss, ss2;
+         ^
+
+"Test_name.c", line 12: warning: this declaration has no storage class or type specifier
+  vector unsigned short us, us2;
+  ^
+
+"Test_name.c", line 12: error: expected a ";"
+  vector unsigned short us, us2;
+         ^
+
+"Test_name.c", line 13: error: variable "vector" is not a type name
+  vector bool short bs, bs2;
+  ^
+
+"Test_name.c", line 13: error: expected a ";"
+  vector bool short bs, bs2;
+              ^
+
+"Test_name.c", line 15: warning: this declaration has no storage class or type specifier
+  vector signed int si, si2;
+  ^
+
+"Test_name.c", line 15: error: expected a ";"
+  vector signed int si, si2;
+         ^
+
+"Test_name.c", line 16: warning: this declaration has no storage class or type specifier
+  vector unsigned int ui, ui2;
+  ^
+
+"Test_name.c", line 16: error: expected a ";"
+  vector unsigned int ui, ui2;
+         ^
+
+"Test_name.c", line 17: error: variable "vector" is not a type name
+  vector bool int bi, bi2;
+  ^
+
+"Test_name.c", line 17: error: expected a ";"
+  vector bool int bi, bi2;
+              ^
+
+"Test_name.c", line 19: warning: this declaration has no storage class or type specifier
+  vector signed long long sl, sl2;
+  ^
+
+"Test_name.c", line 19: error: expected a ";"
+  vector signed long long sl, sl2;
+         ^
+
+"Test_name.c", line 20: warning: this declaration has no storage class or type specifier
+  vector unsigned long long ul, ul2;
+  ^
+
+"Test_name.c", line 20: error: expected a ";"
+  vector unsigned long long ul, ul2;
+         ^
+
+"Test_name.c", line 21: error: variable "vector" is not a type name
+  vector bool long long bl, bl2;
+  ^
+
+"Test_name.c", line 21: error: expected a ";"
+  vector bool long long bl, bl2;
+              ^
+
+"Test_name.c", line 23: warning: this declaration has no storage class or type specifier
+  vector double fd, fd2;
+  ^
+
+"Test_name.c", line 23: error: expected a ";"
+  vector double fd, fd2;
+         ^
+
+"Test_name.c", line 25: warning: this declaration has no storage class or type specifier
+  vector float ff, ff2;
+  ^
+
+"Test_name.c", line 25: error: expected a ";"
+  vector float ff, ff2;
+         ^
+
+"Test_name.c", line 28: warning: this declaration has no storage class or type specifier
+  __vector float ff3;
+  ^
+
+"Test_name.c", line 28: error: expected a ";"
+  __vector float ff3;
+           ^
+
+"Test_name.c", line 31: warning: this declaration has no storage class or type specifier
+  vector float _Complex cf; // expected-error {{cannot use '_Complex' with '__vector'}}
+  ^
+
+"Test_name.c", line 31: error: expected a ";"
+  vector float _Complex cf; // expected-error {{cannot use '_Complex' with '__vector'}}
+         ^
+
+"Test_name.c", line 32: warning: this declaration has no storage class or type specifier
+  __vector float _Complex cf3; // expected-error {{cannot use '_Complex' with '__vector'}}
+  ^
+
+"Test_name.c", line 32: error: expected a ";"
+  __vector float _Complex cf3; // expected-error {{cannot use '_Complex' with '__vector'}}
+           ^
+
+"Test_name.c", line 35: error: function call is not allowed in a constant expression
+  int res_ff[vec_step(ff) == 4 ? 1 : -1];
+             ^
+
+"Test_name.c", line 35: error: identifier "ff" is undefined
+  int res_ff[vec_step(ff) == 4 ? 1 : -1];
+                      ^
+
+"Test_name.c", line 44: error: identifier "ff2" is undefined
+    ff = ff2;
+         ^
+
+"Test_name.c", line 46: error: identifier "sc" is undefined
+    sc = ff2; // expected-error {{incompatible type}}
+    ^
+
+"Test_name.c", line 47: error: identifier "sc2" is undefined
+    ff = sc2; // expected-error {{incompatible type}}
+         ^
+
+"Test_name.c", line 49: error: identifier "uc" is undefined
+    uc = ff2; // expected-error {{incompatible type}}
+    ^
+
+"Test_name.c", line 50: error: identifier "uc2" is undefined
+    ff = uc2; // expected-error {{incompatible type}}
+         ^
+
+"Test_name.c", line 52: error: identifier "bc" is undefined
+    bc = ff2; // expected-error {{incompatible type}}
+    ^
+
+"Test_name.c", line 53: error: identifier "bc2" is undefined
+    ff = bc2; // expected-error {{incompatible type}}
+         ^
+
+"Test_name.c", line 55: error: identifier "fd" is undefined
+    fd = ff2; // expected-error {{incompatible type}}
+    ^
+
+"Test_name.c", line 56: error: identifier "fd2" is undefined
+    ff = fd2; // expected-error {{incompatible type}}
+         ^
+
+"Test_name.c", line 62: error: identifier "ui" is undefined
+    ui = (vector unsigned int)ff2;
+    ^
+
+"Test_name.c", line 62: error: expected a ")"
+    ui = (vector unsigned int)ff2;
+                 ^
+
+"Test_name.c", line 62: error: expected a ";"
+    ui = (vector unsigned int)ff2;
+                              ^
+
+"Test_name.c", line 63: error: expected a ")"
+    ff = (vector float)si2;
+                 ^
+
+"Test_name.c", line 63: error: expected a ";"
+    ff = (vector float)si2;
+                       ^
+
+"Test_name.c", line 69: error: expected a ")"
+    uc = (vector unsigned char)ff2;
+                 ^
+
+"Test_name.c", line 69: error: expected a ";"
+    uc = (vector unsigned char)ff2;
+                               ^
+
+"Test_name.c", line 70: error: identifier "us" is undefined
+    us = (vector unsigned short)ff2;
+    ^
+
+"Test_name.c", line 70: error: expected a ")"
+    us = (vector unsigned short)ff2;
+                 ^
+
+"Test_name.c", line 70: error: expected a ";"
+    us = (vector unsigned short)ff2;
+                                ^
+
+"Test_name.c", line 71: error: identifier "ul" is undefined
+    ul = (vector unsigned long long)ff2;
+    ^
+
+"Test_name.c", line 71: error: expected a ")"
+    ul = (vector unsigned long long)ff2;
+                 ^
+
+"Test_name.c", line 71: error: expected a ";"
+    ul = (vector unsigned long long)ff2;
+                                    ^
+
+"Test_name.c", line 73: error: expected a ")"
+    ff = (vector float)sc2;
+                 ^
+
+"Test_name.c", line 73: error: expected a ";"
+    ff = (vector float)sc2;
+                       ^
+
+"Test_name.c", line 74: error: expected a ")"
+    ff = (vector float)ss2;
+                 ^
+
+"Test_name.c", line 74: error: expected a ";"
+    ff = (vector float)ss2;
+                       ^
+
+"Test_name.c", line 75: error: expected a ")"
+    ff = (vector float)sl2;
+                 ^
+
+"Test_name.c", line 75: error: expected a ";"
+    ff = (vector float)sl2;
+                       ^
+
+"Test_name.c", line 98: error: identifier "ui2" is undefined
+    ff = ff + ui2; // expected-error {{cannot convert}}
+              ^
+
+"Test_name.c", line 99: error: identifier "si" is undefined
+    ff = si + ff2; // expected-error {{cannot convert}}
+         ^
+
+"Test_name.c", line 142: error: identifier "bi" is undefined
+    ff = bi & ff2; // expected-error {{invalid operands}}
+         ^
+
+"Test_name.c", line 144: error: identifier "bi2" is undefined
+    ff = ff & bi2; // expected-error {{invalid operands}}
+              ^
+
+"Test_name.c", line 145: error: identifier "si2" is undefined
+    ff = ff & si2; // expected-error {{invalid operands}}
+              ^
+
+"Test_name.c", line 178: error: identifier "sl" is undefined
+    ff = sl << ff2; // expected-error {{integer is required}}
+         ^
+
+57 errors detected in the compilation of "Test_name.c".

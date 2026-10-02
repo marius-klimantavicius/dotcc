@@ -1,0 +1,804 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./torture/fp-int-convert.h", line 11: error: there is no type with the width specified
+  typedef int TItype __attribute__ ((mode (TI)));
+                                     ^
+
+"./torture/fp-int-convert.h", line 12: error: there is no type with the width specified
+  typedef unsigned int UTItype __attribute__ ((mode (TI)));
+                                               ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+    do { do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)0); fv1 = ((signed char)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed char)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed char)0)) || fv1 != (_Float128x) ((signed char)0) || fv2 != (_Float128x) ((signed char)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)1); fv1 = ((signed char)1); fv2 = ivin; ivout = fv2; if (ivin != ((signed char)1) || ((1) && ivout != ivin) || ((1) && ivout != ((signed char)1)) || fv1 != (_Float128x) ((signed char)1) || fv2 != (_Float128x) ((signed char)1) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)(((unsigned char)~(unsigned char)0) >> 1)); fv1 = ((signed char)(((unsigned char)~(unsigned char)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((signed char)(((unsigned char)~(unsigned char)0) >> 1)) || ((((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                                                       ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+    do { do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)0); fv1 = ((signed char)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed char)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed char)0)) || fv1 != (_Float128x) ((signed char)0) || fv2 != (_Float128x) ((signed char)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)1); fv1 = ((signed char)1); fv2 = ivin; ivout = fv2; if (ivin != ((signed char)1) || ((1) && ivout != ivin) || ((1) && ivout != ((signed char)1)) || fv1 != (_Float128x) ((signed char)1) || fv2 != (_Float128x) ((signed char)1) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)(((unsigned char)~(unsigned char)0) >> 1)); fv1 = ((signed char)(((unsigned char)~(unsigned char)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((signed char)(((unsigned char)~(unsigned char)0) >> 1)) || ((((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                                                                                                                                                                                                                                                              ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+    do { do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)0); fv1 = ((signed char)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed char)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed char)0)) || fv1 != (_Float128x) ((signed char)0) || fv2 != (_Float128x) ((signed char)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)1); fv1 = ((signed char)1); fv2 = ivin; ivout = fv2; if (ivin != ((signed char)1) || ((1) && ivout != ivin) || ((1) && ivout != ((signed char)1)) || fv1 != (_Float128x) ((signed char)1) || fv2 != (_Float128x) ((signed char)1) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)(((unsigned char)~(unsigned char)0) >> 1)); fv1 = ((signed char)(((unsigned char)~(unsigned char)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((signed char)(((unsigned char)~(unsigned char)0) >> 1)) || ((((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                       ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+    do { do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)0); fv1 = ((signed char)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed char)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed char)0)) || fv1 != (_Float128x) ((signed char)0) || fv2 != (_Float128x) ((signed char)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)1); fv1 = ((signed char)1); fv2 = ivin; ivout = fv2; if (ivin != ((signed char)1) || ((1) && ivout != ivin) || ((1) && ivout != ((signed char)1)) || fv1 != (_Float128x) ((signed char)1) || fv2 != (_Float128x) ((signed char)1) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)(((unsigned char)~(unsigned char)0) >> 1)); fv1 = ((signed char)(((unsigned char)~(unsigned char)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((signed char)(((unsigned char)~(unsigned char)0) >> 1)) || ((((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+    do { do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)0); fv1 = ((signed char)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed char)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed char)0)) || fv1 != (_Float128x) ((signed char)0) || fv2 != (_Float128x) ((signed char)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)1); fv1 = ((signed char)1); fv2 = ivin; ivout = fv2; if (ivin != ((signed char)1) || ((1) && ivout != ivin) || ((1) && ivout != ((signed char)1)) || fv1 != (_Float128x) ((signed char)1) || fv2 != (_Float128x) ((signed char)1) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)(((unsigned char)~(unsigned char)0) >> 1)); fv1 = ((signed char)(((unsigned char)~(unsigned char)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((signed char)(((unsigned char)~(unsigned char)0) >> 1)) || ((((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "FLT128X_MANT_DIG" is undefined
+    do { do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)0); fv1 = ((signed char)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed char)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed char)0)) || fv1 != (_Float128x) ((signed char)0) || fv2 != (_Float128x) ((signed char)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)1); fv1 = ((signed char)1); fv2 = ivin; ivout = fv2; if (ivin != ((signed char)1) || ((1) && ivout != ivin) || ((1) && ivout != ((signed char)1)) || fv1 != (_Float128x) ((signed char)1) || fv2 != (_Float128x) ((signed char)1) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)(((unsigned char)~(unsigned char)0) >> 1)); fv1 = ((signed char)(((unsigned char)~(unsigned char)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((signed char)(((unsigned char)~(unsigned char)0) >> 1)) || ((((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 1)) && ivout != ((signed char)(((unsigned char)~(unsigned char)0) >> 1))) || fv1 != (_Float128x) ((signed char)(((unsigned char)~(unsigned char)0) >> 1)) || fv2 != (_Float128x) ((signed char)(((unsigned char)~(unsigned char)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)(unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)); fv1 = ((signed char)(unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((signed char)(unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)) || ((((FLT128X_MAX_EXP) > sizeof(signed char) * 8 
+                                                                                          ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 1)) && ivout != ((signed char)(((unsigned char)~(unsigned char)0) >> 1))) || fv1 != (_Float128x) ((signed char)(((unsigned char)~(unsigned char)0) >> 1)) || fv2 != (_Float128x) ((signed char)(((unsigned char)~(unsigned char)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)(unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)); fv1 = ((signed char)(unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((signed char)(unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)) || ((((FLT128X_MAX_EXP) > sizeof(signed char) * 8 
+                                                                                                                                                                                                                                                                                                                                                   ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "FLT128X_MAX_EXP" is undefined
+   - 1)) && ivout != ((signed char)(((unsigned char)~(unsigned char)0) >> 1))) || fv1 != (_Float128x) ((signed char)(((unsigned char)~(unsigned char)0) >> 1)) || fv2 != (_Float128x) ((signed char)(((unsigned char)~(unsigned char)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)(unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)); fv1 = ((signed char)(unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((signed char)(unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)) || ((((FLT128X_MAX_EXP) > sizeof(signed char) * 8 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 1)) && ivout != ((signed char)(unsigned char)~(((unsigned char)~(unsigned char)0) >> 1))) || fv1 != (_Float128x) ((signed char)(unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)) || fv2 != (_Float128x) ((signed char)(unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)(unsigned char)~(unsigned char)0); fv1 = ((signed char)(unsigned char)~(unsigned char)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed char)(unsigned char)~(unsigned char)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed char)(unsigned char)~(unsigned char)0)) || fv1 != (_Float128x) ((signed char)(unsigned char)~(unsigned char)0) || fv2 != (_Float128x) ((signed char)(unsigned char)~(unsigned char)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                                                                                          ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 1)) && ivout != ((signed char)(unsigned char)~(((unsigned char)~(unsigned char)0) >> 1))) || fv1 != (_Float128x) ((signed char)(unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)) || fv2 != (_Float128x) ((signed char)(unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)(unsigned char)~(unsigned char)0); fv1 = ((signed char)(unsigned char)~(unsigned char)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed char)(unsigned char)~(unsigned char)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed char)(unsigned char)~(unsigned char)0)) || fv1 != (_Float128x) ((signed char)(unsigned char)~(unsigned char)0) || fv2 != (_Float128x) ((signed char)(unsigned char)~(unsigned char)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                                                                                                                                                                                                                                                                                                                                                                                   ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 1)) && ivout != ((signed char)(unsigned char)~(((unsigned char)~(unsigned char)0) >> 1))) || fv1 != (_Float128x) ((signed char)(unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)) || fv2 != (_Float128x) ((signed char)(unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)(unsigned char)~(unsigned char)0); fv1 = ((signed char)(unsigned char)~(unsigned char)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed char)(unsigned char)~(unsigned char)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed char)(unsigned char)~(unsigned char)0)) || fv1 != (_Float128x) ((signed char)(unsigned char)~(unsigned char)0) || fv2 != (_Float128x) ((signed char)(unsigned char)~(unsigned char)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 1)) && ivout != ((signed char)(unsigned char)~(((unsigned char)~(unsigned char)0) >> 1))) || fv1 != (_Float128x) ((signed char)(unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)) || fv2 != (_Float128x) ((signed char)(unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)(unsigned char)~(unsigned char)0); fv1 = ((signed char)(unsigned char)~(unsigned char)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed char)(unsigned char)~(unsigned char)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed char)(unsigned char)~(unsigned char)0)) || fv1 != (_Float128x) ((signed char)(unsigned char)~(unsigned char)0) || fv2 != (_Float128x) ((signed char)(unsigned char)~(unsigned char)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 1)) && ivout != ((signed char)(unsigned char)~(((unsigned char)~(unsigned char)0) >> 1))) || fv1 != (_Float128x) ((signed char)(unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)) || fv2 != (_Float128x) ((signed char)(unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)(unsigned char)~(unsigned char)0); fv1 = ((signed char)(unsigned char)~(unsigned char)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed char)(unsigned char)~(unsigned char)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed char)(unsigned char)~(unsigned char)0)) || fv1 != (_Float128x) ((signed char)(unsigned char)~(unsigned char)0) || fv2 != (_Float128x) ((signed char)(unsigned char)~(unsigned char)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))))) || fv1 != (_Float128x) ((signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                           ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                                                                                                                   ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 2 - FLT128X_MANT_DIG))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                                                                                                                                                                ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) + 1)) || fv1 != (_Float128x) ((signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                               ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                                                                                                                       ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 2 - FLT128X_MANT_DIG)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                                                                                                                                                                    ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) - 1)) || fv1 != (_Float128x) ((signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                               ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                                                                                                                       ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 2 - FLT128X_MANT_DIG)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                                                                                                                                                                    ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))))) || fv1 != (_Float128x) ((signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                           ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                                                                                                                   ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 2 - FLT128X_MANT_DIG))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                                                                                                                                                                ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) + 1)) || fv1 != (_Float128x) ((signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                               ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                                                                                                                       ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 2 - FLT128X_MANT_DIG)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                                                                                                                                                                    ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) - 1)) || fv1 != (_Float128x) ((signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                               ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = (-(signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                                                                                                                       ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 2 - FLT128X_MANT_DIG)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = (-(signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                                                                                                                                                                     ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))))) || fv1 != (_Float128x) (-(signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                           ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = (-(signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                                                                                                                   ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 2 - FLT128X_MANT_DIG))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = (-(signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                                                                                                                                                                 ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) + 1)) || fv1 != (_Float128x) (-(signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                               ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = (-(signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                                                                                                                       ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 2 - FLT128X_MANT_DIG)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = (-(signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                                                                                                                                                                     ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) - 1)) || fv1 != (_Float128x) (-(signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                               ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = (-(signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                                                                                                                       ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 2 - FLT128X_MANT_DIG)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = (-(signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                                                                                                                                                                     ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))))) || fv1 != (_Float128x) (-(signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                           ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = (-(signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                                                                                                                   ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 2 - FLT128X_MANT_DIG))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = (-(signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                                                                                                                                                                 ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) + 1)) || fv1 != (_Float128x) (-(signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                               ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = (-(signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                                                                                                                       ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 2 - FLT128X_MANT_DIG)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = (-(signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                                                                                                                                                                     ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) - 1)) || fv1 != (_Float128x) (-(signed char)(((FLT128X_MANT_DIG) >= sizeof(signed char) * 8 
+                                               ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned char)0); fv1 = ((unsigned char)0); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned char)0) || ((1) && ivout != ivin) || ((1) && ivout != ((unsigned char)0)) || fv1 != (_Float128x) ((unsigned char)0) || fv2 != (_Float128x) ((unsigned char)0) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned char)1); fv1 = ((unsigned char)1); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned char)1) || ((1) && ivout != ivin) || ((1) && ivout != ((unsigned char)1)) || fv1 != (_Float128x) ((unsigned char)1) || fv2 != (_Float128x) ((unsigned char)1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned char)(((unsigned char)~(unsigned char)0) >> 1)); fv1 = ((unsigned char)(((unsigned char)~(unsigned char)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned char)(((unsigned char)~(unsigned char)0) >> 1)) || ((((FLT128X_MANT_DIG) >= sizeof(unsigned char) * 8 
+                                                                                                                                         ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned char)0); fv1 = ((unsigned char)0); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned char)0) || ((1) && ivout != ivin) || ((1) && ivout != ((unsigned char)0)) || fv1 != (_Float128x) ((unsigned char)0) || fv2 != (_Float128x) ((unsigned char)0) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned char)1); fv1 = ((unsigned char)1); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned char)1) || ((1) && ivout != ivin) || ((1) && ivout != ((unsigned char)1)) || fv1 != (_Float128x) ((unsigned char)1) || fv2 != (_Float128x) ((unsigned char)1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned char)(((unsigned char)~(unsigned char)0) >> 1)); fv1 = ((unsigned char)(((unsigned char)~(unsigned char)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned char)(((unsigned char)~(unsigned char)0) >> 1)) || ((((FLT128X_MANT_DIG) >= sizeof(unsigned char) * 8 
+                                                                                                                                                                                                                                                                                                                                                        ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned char)0); fv1 = ((unsigned char)0); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned char)0) || ((1) && ivout != ivin) || ((1) && ivout != ((unsigned char)0)) || fv1 != (_Float128x) ((unsigned char)0) || fv2 != (_Float128x) ((unsigned char)0) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned char)1); fv1 = ((unsigned char)1); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned char)1) || ((1) && ivout != ivin) || ((1) && ivout != ((unsigned char)1)) || fv1 != (_Float128x) ((unsigned char)1) || fv2 != (_Float128x) ((unsigned char)1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned char)(((unsigned char)~(unsigned char)0) >> 1)); fv1 = ((unsigned char)(((unsigned char)~(unsigned char)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned char)(((unsigned char)~(unsigned char)0) >> 1)) || ((((FLT128X_MANT_DIG) >= sizeof(unsigned char) * 8 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned char)0); fv1 = ((unsigned char)0); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned char)0) || ((1) && ivout != ivin) || ((1) && ivout != ((unsigned char)0)) || fv1 != (_Float128x) ((unsigned char)0) || fv2 != (_Float128x) ((unsigned char)0) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned char)1); fv1 = ((unsigned char)1); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned char)1) || ((1) && ivout != ivin) || ((1) && ivout != ((unsigned char)1)) || fv1 != (_Float128x) ((unsigned char)1) || fv2 != (_Float128x) ((unsigned char)1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned char)(((unsigned char)~(unsigned char)0) >> 1)); fv1 = ((unsigned char)(((unsigned char)~(unsigned char)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned char)(((unsigned char)~(unsigned char)0) >> 1)) || ((((FLT128X_MANT_DIG) >= sizeof(unsigned char) * 8 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned char)0); fv1 = ((unsigned char)0); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned char)0) || ((1) && ivout != ivin) || ((1) && ivout != ((unsigned char)0)) || fv1 != (_Float128x) ((unsigned char)0) || fv2 != (_Float128x) ((unsigned char)0) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned char)1); fv1 = ((unsigned char)1); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned char)1) || ((1) && ivout != ivin) || ((1) && ivout != ((unsigned char)1)) || fv1 != (_Float128x) ((unsigned char)1) || fv2 != (_Float128x) ((unsigned char)1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned char)(((unsigned char)~(unsigned char)0) >> 1)); fv1 = ((unsigned char)(((unsigned char)~(unsigned char)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned char)(((unsigned char)~(unsigned char)0) >> 1)) || ((((FLT128X_MANT_DIG) >= sizeof(unsigned char) * 8 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 2 - FLT128X_MANT_DIG)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned char)0); fv1 = ((unsigned char)0); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned char)0) || ((1) && ivout != ivin) || ((1) && ivout != ((unsigned char)0)) || fv1 != (_Float128x) ((unsigned char)0) || fv2 != (_Float128x) ((unsigned char)0) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned char)1); fv1 = ((unsigned char)1); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned char)1) || ((1) && ivout != ivin) || ((1) && ivout != ((unsigned char)1)) || fv1 != (_Float128x) ((unsigned char)1) || fv2 != (_Float128x) ((unsigned char)1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned char)(((unsigned char)~(unsigned char)0) >> 1)); fv1 = ((unsigned char)(((unsigned char)~(unsigned char)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned char)(((unsigned char)~(unsigned char)0) >> 1)) || ((((FLT128X_MANT_DIG) >= sizeof(unsigned char) * 8 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 1)) && ivout != ((unsigned char)(((unsigned char)~(unsigned char)0) >> 1))) || fv1 != (_Float128x) ((unsigned char)(((unsigned char)~(unsigned char)0) >> 1)) || fv2 != (_Float128x) ((unsigned char)(((unsigned char)~(unsigned char)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)); fv1 = ((unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)) || ((((FLT128X_MAX_EXP) > sizeof(unsigned char) * 8 
+                                                                                            ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 1)) && ivout != ((unsigned char)(((unsigned char)~(unsigned char)0) >> 1))) || fv1 != (_Float128x) ((unsigned char)(((unsigned char)~(unsigned char)0) >> 1)) || fv2 != (_Float128x) ((unsigned char)(((unsigned char)~(unsigned char)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)); fv1 = ((unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)) || ((((FLT128X_MAX_EXP) > sizeof(unsigned char) * 8 
+                                                                                                                                                                                                                                                                                                                                                           ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "FLT128X_MAX_EXP" is undefined
+   - 1)) && ivout != ((unsigned char)(((unsigned char)~(unsigned char)0) >> 1))) || fv1 != (_Float128x) ((unsigned char)(((unsigned char)~(unsigned char)0) >> 1)) || fv2 != (_Float128x) ((unsigned char)(((unsigned char)~(unsigned char)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)); fv1 = ((unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)) || ((((FLT128X_MAX_EXP) > sizeof(unsigned char) * 8 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 1)) && ivout != ((unsigned char)~(((unsigned char)~(unsigned char)0) >> 1))) || fv1 != (_Float128x) ((unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)) || fv2 != (_Float128x) ((unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned char)~(unsigned char)0); fv1 = ((unsigned char)~(unsigned char)0); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned char)~(unsigned char)0) || ((((FLT128X_MANT_DIG) >= sizeof(unsigned char) * 8
+                                                                                             ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 1)) && ivout != ((unsigned char)~(((unsigned char)~(unsigned char)0) >> 1))) || fv1 != (_Float128x) ((unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)) || fv2 != (_Float128x) ((unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned char)~(unsigned char)0); fv1 = ((unsigned char)~(unsigned char)0); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned char)~(unsigned char)0) || ((((FLT128X_MANT_DIG) >= sizeof(unsigned char) * 8
+                                                                                                                                                                                                                                                                                                                                                              ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 1)) && ivout != ((unsigned char)~(((unsigned char)~(unsigned char)0) >> 1))) || fv1 != (_Float128x) ((unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)) || fv2 != (_Float128x) ((unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned char)~(unsigned char)0); fv1 = ((unsigned char)~(unsigned char)0); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned char)~(unsigned char)0) || ((((FLT128X_MANT_DIG) >= sizeof(unsigned char) * 8
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   )) && ivout != ((unsigned char)~(unsigned char)0)) || fv1 != (_Float128x) ((unsigned char)~(unsigned char)0) || fv2 != (_Float128x) ((unsigned char)~(unsigned char)0) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned char)(((FLT128X_MANT_DIG) >= sizeof(unsigned char) * 8
+                                                                 ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   )) && ivout != ((unsigned char)~(unsigned char)0)) || fv1 != (_Float128x) ((unsigned char)~(unsigned char)0) || fv2 != (_Float128x) ((unsigned char)~(unsigned char)0) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned char)(((FLT128X_MANT_DIG) >= sizeof(unsigned char) * 8
+                                                                                                                                                                                                                                                                                ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "FLT128X_MANT_DIG" is undefined
+   )) && ivout != ((unsigned char)~(unsigned char)0)) || fv1 != (_Float128x) ((unsigned char)~(unsigned char)0) || fv2 != (_Float128x) ((unsigned char)~(unsigned char)0) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned char)(((FLT128X_MANT_DIG) >= sizeof(unsigned char) * 8
+                                                                                                                                                                                                                                                                                                                               ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 1 - FLT128X_MANT_DIG)))))) || fv1 != (_Float128x) ((unsigned char)(((FLT128X_MANT_DIG) >= sizeof(unsigned char) * 8
+                                           ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 1 - FLT128X_MANT_DIG))))) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned char)(((FLT128X_MANT_DIG) >= sizeof(unsigned char) * 8
+                                                                                                                                     ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 1 - FLT128X_MANT_DIG))))) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned char)(((FLT128X_MANT_DIG) >= sizeof(unsigned char) * 8
+                                                                                                                                                                                    ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 1 - FLT128X_MANT_DIG)))) + 1)) || fv1 != (_Float128x) ((unsigned char)(((FLT128X_MANT_DIG) >= sizeof(unsigned char) * 8
+                                               ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 1 - FLT128X_MANT_DIG)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned char)(((FLT128X_MANT_DIG) >= sizeof(unsigned char) * 8
+                                                                                                                                         ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 1 - FLT128X_MANT_DIG)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned char)(((FLT128X_MANT_DIG) >= sizeof(unsigned char) * 8
+                                                                                                                                                                                        ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 1 - FLT128X_MANT_DIG)))) - 1)) || fv1 != (_Float128x) ((unsigned char)(((FLT128X_MANT_DIG) >= sizeof(unsigned char) * 8
+                                               ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 1 - FLT128X_MANT_DIG)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned char)(((FLT128X_MANT_DIG) >= sizeof(unsigned char) * 8
+                                                                                                                                         ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 1 - FLT128X_MANT_DIG)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned char)(((FLT128X_MANT_DIG) >= sizeof(unsigned char) * 8
+                                                                                                                                                                                        ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 1 - FLT128X_MANT_DIG)))))) || fv1 != (_Float128x) ((unsigned char)(((FLT128X_MANT_DIG) >= sizeof(unsigned char) * 8
+                                           ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 1 - FLT128X_MANT_DIG))))) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned char)(((FLT128X_MANT_DIG) >= sizeof(unsigned char) * 8
+                                                                                                                                     ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 1 - FLT128X_MANT_DIG))))) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned char)(((FLT128X_MANT_DIG) >= sizeof(unsigned char) * 8
+                                                                                                                                                                                    ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 1 - FLT128X_MANT_DIG)))) + 1)) || fv1 != (_Float128x) ((unsigned char)(((FLT128X_MANT_DIG) >= sizeof(unsigned char) * 8
+                                               ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 1 - FLT128X_MANT_DIG)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned char)(((FLT128X_MANT_DIG) >= sizeof(unsigned char) * 8
+                                                                                                                                         ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 1 - FLT128X_MANT_DIG)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned char)(((FLT128X_MANT_DIG) >= sizeof(unsigned char) * 8
+                                                                                                                                                                                        ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 1 - FLT128X_MANT_DIG)))) - 1)) || fv1 != (_Float128x) ((unsigned char)(((FLT128X_MANT_DIG) >= sizeof(unsigned char) * 8
+                                               ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   - 1 - FLT128X_MANT_DIG)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed char)((signed char)1 << (sizeof(signed char) * 8 
+                                                                                                                                       ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "FLT128X_MAX_EXP" is undefined
+   / 2 - 1))) || ((((FLT128X_MAX_EXP) > sizeof(unsigned char) * 8 
+                     ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   / 2 - 1)))) || fv1 != (_Float128x) ((signed char)((signed char)1 << (sizeof(signed char) * 8 
+                          ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   / 2 - 1))) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile _Float128x fv1, fv2; ivin = (-(signed char)((signed char)1 << (sizeof(signed char) * 8 
+                                                                                                                  ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "FLT128X_MAX_EXP" is undefined
+   / 2 - 1))) || ((((FLT128X_MAX_EXP) > sizeof(unsigned char) * 8 
+                     ^
+
+"./torture/fp-int-convert-float128x.c", line 14: error: identifier "_Float128x" is undefined
+   / 2 - 1)))) || fv1 != (_Float128x) (-(signed char)((signed char)1 << (sizeof(signed char) * 8 
+                          ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+    do { do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)0); fv1 = ((signed short)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed short)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed short)0)) || fv1 != (_Float128x) ((signed short)0) || fv2 != (_Float128x) ((signed short)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)1); fv1 = ((signed short)1); fv2 = ivin; ivout = fv2; if (ivin != ((signed short)1) || ((1) && ivout != ivin) || ((1) && ivout != ((signed short)1)) || fv1 != (_Float128x) ((signed short)1) || fv2 != (_Float128x) ((signed short)1) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)(((unsigned short)~(unsigned short)0) >> 1)); fv1 = ((signed short)(((unsigned short)~(unsigned short)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((signed short)(((unsigned short)~(unsigned short)0) >> 1)) || ((((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                                                        ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+    do { do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)0); fv1 = ((signed short)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed short)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed short)0)) || fv1 != (_Float128x) ((signed short)0) || fv2 != (_Float128x) ((signed short)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)1); fv1 = ((signed short)1); fv2 = ivin; ivout = fv2; if (ivin != ((signed short)1) || ((1) && ivout != ivin) || ((1) && ivout != ((signed short)1)) || fv1 != (_Float128x) ((signed short)1) || fv2 != (_Float128x) ((signed short)1) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)(((unsigned short)~(unsigned short)0) >> 1)); fv1 = ((signed short)(((unsigned short)~(unsigned short)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((signed short)(((unsigned short)~(unsigned short)0) >> 1)) || ((((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                                                                                                                                                                                                                                                                   ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+    do { do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)0); fv1 = ((signed short)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed short)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed short)0)) || fv1 != (_Float128x) ((signed short)0) || fv2 != (_Float128x) ((signed short)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)1); fv1 = ((signed short)1); fv2 = ivin; ivout = fv2; if (ivin != ((signed short)1) || ((1) && ivout != ivin) || ((1) && ivout != ((signed short)1)) || fv1 != (_Float128x) ((signed short)1) || fv2 != (_Float128x) ((signed short)1) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)(((unsigned short)~(unsigned short)0) >> 1)); fv1 = ((signed short)(((unsigned short)~(unsigned short)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((signed short)(((unsigned short)~(unsigned short)0) >> 1)) || ((((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                               ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+    do { do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)0); fv1 = ((signed short)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed short)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed short)0)) || fv1 != (_Float128x) ((signed short)0) || fv2 != (_Float128x) ((signed short)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)1); fv1 = ((signed short)1); fv2 = ivin; ivout = fv2; if (ivin != ((signed short)1) || ((1) && ivout != ivin) || ((1) && ivout != ((signed short)1)) || fv1 != (_Float128x) ((signed short)1) || fv2 != (_Float128x) ((signed short)1) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)(((unsigned short)~(unsigned short)0) >> 1)); fv1 = ((signed short)(((unsigned short)~(unsigned short)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((signed short)(((unsigned short)~(unsigned short)0) >> 1)) || ((((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+    do { do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)0); fv1 = ((signed short)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed short)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed short)0)) || fv1 != (_Float128x) ((signed short)0) || fv2 != (_Float128x) ((signed short)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)1); fv1 = ((signed short)1); fv2 = ivin; ivout = fv2; if (ivin != ((signed short)1) || ((1) && ivout != ivin) || ((1) && ivout != ((signed short)1)) || fv1 != (_Float128x) ((signed short)1) || fv2 != (_Float128x) ((signed short)1) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)(((unsigned short)~(unsigned short)0) >> 1)); fv1 = ((signed short)(((unsigned short)~(unsigned short)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((signed short)(((unsigned short)~(unsigned short)0) >> 1)) || ((((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "FLT128X_MANT_DIG" is undefined
+    do { do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)0); fv1 = ((signed short)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed short)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed short)0)) || fv1 != (_Float128x) ((signed short)0) || fv2 != (_Float128x) ((signed short)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)1); fv1 = ((signed short)1); fv2 = ivin; ivout = fv2; if (ivin != ((signed short)1) || ((1) && ivout != ivin) || ((1) && ivout != ((signed short)1)) || fv1 != (_Float128x) ((signed short)1) || fv2 != (_Float128x) ((signed short)1) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)(((unsigned short)~(unsigned short)0) >> 1)); fv1 = ((signed short)(((unsigned short)~(unsigned short)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((signed short)(((unsigned short)~(unsigned short)0) >> 1)) || ((((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 1)) && ivout != ((signed short)(((unsigned short)~(unsigned short)0) >> 1))) || fv1 != (_Float128x) ((signed short)(((unsigned short)~(unsigned short)0) >> 1)) || fv2 != (_Float128x) ((signed short)(((unsigned short)~(unsigned short)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)(unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)); fv1 = ((signed short)(unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((signed short)(unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)) || ((((FLT128X_MAX_EXP) > sizeof(signed short) * 8 
+                                                                                             ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 1)) && ivout != ((signed short)(((unsigned short)~(unsigned short)0) >> 1))) || fv1 != (_Float128x) ((signed short)(((unsigned short)~(unsigned short)0) >> 1)) || fv2 != (_Float128x) ((signed short)(((unsigned short)~(unsigned short)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)(unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)); fv1 = ((signed short)(unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((signed short)(unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)) || ((((FLT128X_MAX_EXP) > sizeof(signed short) * 8 
+                                                                                                                                                                                                                                                                                                                                                             ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "FLT128X_MAX_EXP" is undefined
+   - 1)) && ivout != ((signed short)(((unsigned short)~(unsigned short)0) >> 1))) || fv1 != (_Float128x) ((signed short)(((unsigned short)~(unsigned short)0) >> 1)) || fv2 != (_Float128x) ((signed short)(((unsigned short)~(unsigned short)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)(unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)); fv1 = ((signed short)(unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((signed short)(unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)) || ((((FLT128X_MAX_EXP) > sizeof(signed short) * 8 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 1)) && ivout != ((signed short)(unsigned short)~(((unsigned short)~(unsigned short)0) >> 1))) || fv1 != (_Float128x) ((signed short)(unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)) || fv2 != (_Float128x) ((signed short)(unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)(unsigned short)~(unsigned short)0); fv1 = ((signed short)(unsigned short)~(unsigned short)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed short)(unsigned short)~(unsigned short)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed short)(unsigned short)~(unsigned short)0)) || fv1 != (_Float128x) ((signed short)(unsigned short)~(unsigned short)0) || fv2 != (_Float128x) ((signed short)(unsigned short)~(unsigned short)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                                                                                              ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 1)) && ivout != ((signed short)(unsigned short)~(((unsigned short)~(unsigned short)0) >> 1))) || fv1 != (_Float128x) ((signed short)(unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)) || fv2 != (_Float128x) ((signed short)(unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)(unsigned short)~(unsigned short)0); fv1 = ((signed short)(unsigned short)~(unsigned short)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed short)(unsigned short)~(unsigned short)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed short)(unsigned short)~(unsigned short)0)) || fv1 != (_Float128x) ((signed short)(unsigned short)~(unsigned short)0) || fv2 != (_Float128x) ((signed short)(unsigned short)~(unsigned short)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                                                                                                                                                                                                                                                                                                                                                                                                ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 1)) && ivout != ((signed short)(unsigned short)~(((unsigned short)~(unsigned short)0) >> 1))) || fv1 != (_Float128x) ((signed short)(unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)) || fv2 != (_Float128x) ((signed short)(unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)(unsigned short)~(unsigned short)0); fv1 = ((signed short)(unsigned short)~(unsigned short)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed short)(unsigned short)~(unsigned short)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed short)(unsigned short)~(unsigned short)0)) || fv1 != (_Float128x) ((signed short)(unsigned short)~(unsigned short)0) || fv2 != (_Float128x) ((signed short)(unsigned short)~(unsigned short)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 1)) && ivout != ((signed short)(unsigned short)~(((unsigned short)~(unsigned short)0) >> 1))) || fv1 != (_Float128x) ((signed short)(unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)) || fv2 != (_Float128x) ((signed short)(unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)(unsigned short)~(unsigned short)0); fv1 = ((signed short)(unsigned short)~(unsigned short)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed short)(unsigned short)~(unsigned short)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed short)(unsigned short)~(unsigned short)0)) || fv1 != (_Float128x) ((signed short)(unsigned short)~(unsigned short)0) || fv2 != (_Float128x) ((signed short)(unsigned short)~(unsigned short)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 1)) && ivout != ((signed short)(unsigned short)~(((unsigned short)~(unsigned short)0) >> 1))) || fv1 != (_Float128x) ((signed short)(unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)) || fv2 != (_Float128x) ((signed short)(unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)(unsigned short)~(unsigned short)0); fv1 = ((signed short)(unsigned short)~(unsigned short)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed short)(unsigned short)~(unsigned short)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed short)(unsigned short)~(unsigned short)0)) || fv1 != (_Float128x) ((signed short)(unsigned short)~(unsigned short)0) || fv2 != (_Float128x) ((signed short)(unsigned short)~(unsigned short)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))))) || fv1 != (_Float128x) ((signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                           ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                                                                                                                    ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 2 - FLT128X_MANT_DIG))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                                                                                                                                                                  ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) + 1)) || fv1 != (_Float128x) ((signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                               ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                                                                                                                        ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 2 - FLT128X_MANT_DIG)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                                                                                                                                                                      ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) - 1)) || fv1 != (_Float128x) ((signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                               ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                                                                                                                        ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 2 - FLT128X_MANT_DIG)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                                                                                                                                                                      ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))))) || fv1 != (_Float128x) ((signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                           ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                                                                                                                    ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 2 - FLT128X_MANT_DIG))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                                                                                                                                                                  ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) + 1)) || fv1 != (_Float128x) ((signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                               ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                                                                                                                        ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 2 - FLT128X_MANT_DIG)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                                                                                                                                                                      ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) - 1)) || fv1 != (_Float128x) ((signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                               ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = (-(signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                                                                                                                        ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 2 - FLT128X_MANT_DIG)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = (-(signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                                                                                                                                                                       ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))))) || fv1 != (_Float128x) (-(signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                           ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = (-(signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                                                                                                                    ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 2 - FLT128X_MANT_DIG))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = (-(signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                                                                                                                                                                   ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) + 1)) || fv1 != (_Float128x) (-(signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                               ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = (-(signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                                                                                                                        ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 2 - FLT128X_MANT_DIG)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = (-(signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                                                                                                                                                                       ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) - 1)) || fv1 != (_Float128x) (-(signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                               ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = (-(signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                                                                                                                        ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 2 - FLT128X_MANT_DIG)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = (-(signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                                                                                                                                                                       ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))))) || fv1 != (_Float128x) (-(signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                           ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = (-(signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                                                                                                                    ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 2 - FLT128X_MANT_DIG))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = (-(signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                                                                                                                                                                   ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) + 1)) || fv1 != (_Float128x) (-(signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                               ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = (-(signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                                                                                                                        ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 2 - FLT128X_MANT_DIG)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = (-(signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                                                                                                                                                                       ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) - 1)) || fv1 != (_Float128x) (-(signed short)(((FLT128X_MANT_DIG) >= sizeof(signed short) * 8 
+                                               ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned short)0); fv1 = ((unsigned short)0); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned short)0) || ((1) && ivout != ivin) || ((1) && ivout != ((unsigned short)0)) || fv1 != (_Float128x) ((unsigned short)0) || fv2 != (_Float128x) ((unsigned short)0) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned short)1); fv1 = ((unsigned short)1); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned short)1) || ((1) && ivout != ivin) || ((1) && ivout != ((unsigned short)1)) || fv1 != (_Float128x) ((unsigned short)1) || fv2 != (_Float128x) ((unsigned short)1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned short)(((unsigned short)~(unsigned short)0) >> 1)); fv1 = ((unsigned short)(((unsigned short)~(unsigned short)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned short)(((unsigned short)~(unsigned short)0) >> 1)) || ((((FLT128X_MANT_DIG) >= sizeof(unsigned short) * 8 
+                                                                                                                                          ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned short)0); fv1 = ((unsigned short)0); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned short)0) || ((1) && ivout != ivin) || ((1) && ivout != ((unsigned short)0)) || fv1 != (_Float128x) ((unsigned short)0) || fv2 != (_Float128x) ((unsigned short)0) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned short)1); fv1 = ((unsigned short)1); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned short)1) || ((1) && ivout != ivin) || ((1) && ivout != ((unsigned short)1)) || fv1 != (_Float128x) ((unsigned short)1) || fv2 != (_Float128x) ((unsigned short)1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned short)(((unsigned short)~(unsigned short)0) >> 1)); fv1 = ((unsigned short)(((unsigned short)~(unsigned short)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned short)(((unsigned short)~(unsigned short)0) >> 1)) || ((((FLT128X_MANT_DIG) >= sizeof(unsigned short) * 8 
+                                                                                                                                                                                                                                                                                                                                                             ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned short)0); fv1 = ((unsigned short)0); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned short)0) || ((1) && ivout != ivin) || ((1) && ivout != ((unsigned short)0)) || fv1 != (_Float128x) ((unsigned short)0) || fv2 != (_Float128x) ((unsigned short)0) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned short)1); fv1 = ((unsigned short)1); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned short)1) || ((1) && ivout != ivin) || ((1) && ivout != ((unsigned short)1)) || fv1 != (_Float128x) ((unsigned short)1) || fv2 != (_Float128x) ((unsigned short)1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned short)(((unsigned short)~(unsigned short)0) >> 1)); fv1 = ((unsigned short)(((unsigned short)~(unsigned short)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned short)(((unsigned short)~(unsigned short)0) >> 1)) || ((((FLT128X_MANT_DIG) >= sizeof(unsigned short) * 8 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned short)0); fv1 = ((unsigned short)0); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned short)0) || ((1) && ivout != ivin) || ((1) && ivout != ((unsigned short)0)) || fv1 != (_Float128x) ((unsigned short)0) || fv2 != (_Float128x) ((unsigned short)0) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned short)1); fv1 = ((unsigned short)1); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned short)1) || ((1) && ivout != ivin) || ((1) && ivout != ((unsigned short)1)) || fv1 != (_Float128x) ((unsigned short)1) || fv2 != (_Float128x) ((unsigned short)1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned short)(((unsigned short)~(unsigned short)0) >> 1)); fv1 = ((unsigned short)(((unsigned short)~(unsigned short)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned short)(((unsigned short)~(unsigned short)0) >> 1)) || ((((FLT128X_MANT_DIG) >= sizeof(unsigned short) * 8 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned short)0); fv1 = ((unsigned short)0); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned short)0) || ((1) && ivout != ivin) || ((1) && ivout != ((unsigned short)0)) || fv1 != (_Float128x) ((unsigned short)0) || fv2 != (_Float128x) ((unsigned short)0) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned short)1); fv1 = ((unsigned short)1); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned short)1) || ((1) && ivout != ivin) || ((1) && ivout != ((unsigned short)1)) || fv1 != (_Float128x) ((unsigned short)1) || fv2 != (_Float128x) ((unsigned short)1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned short)(((unsigned short)~(unsigned short)0) >> 1)); fv1 = ((unsigned short)(((unsigned short)~(unsigned short)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned short)(((unsigned short)~(unsigned short)0) >> 1)) || ((((FLT128X_MANT_DIG) >= sizeof(unsigned short) * 8 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 2 - FLT128X_MANT_DIG)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned short)0); fv1 = ((unsigned short)0); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned short)0) || ((1) && ivout != ivin) || ((1) && ivout != ((unsigned short)0)) || fv1 != (_Float128x) ((unsigned short)0) || fv2 != (_Float128x) ((unsigned short)0) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned short)1); fv1 = ((unsigned short)1); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned short)1) || ((1) && ivout != ivin) || ((1) && ivout != ((unsigned short)1)) || fv1 != (_Float128x) ((unsigned short)1) || fv2 != (_Float128x) ((unsigned short)1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned short)(((unsigned short)~(unsigned short)0) >> 1)); fv1 = ((unsigned short)(((unsigned short)~(unsigned short)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned short)(((unsigned short)~(unsigned short)0) >> 1)) || ((((FLT128X_MANT_DIG) >= sizeof(unsigned short) * 8 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 1)) && ivout != ((unsigned short)(((unsigned short)~(unsigned short)0) >> 1))) || fv1 != (_Float128x) ((unsigned short)(((unsigned short)~(unsigned short)0) >> 1)) || fv2 != (_Float128x) ((unsigned short)(((unsigned short)~(unsigned short)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)); fv1 = ((unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)) || ((((FLT128X_MAX_EXP) > sizeof(unsigned short) * 8 
+                                                                                               ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 1)) && ivout != ((unsigned short)(((unsigned short)~(unsigned short)0) >> 1))) || fv1 != (_Float128x) ((unsigned short)(((unsigned short)~(unsigned short)0) >> 1)) || fv2 != (_Float128x) ((unsigned short)(((unsigned short)~(unsigned short)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)); fv1 = ((unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)) || ((((FLT128X_MAX_EXP) > sizeof(unsigned short) * 8 
+                                                                                                                                                                                                                                                                                                                                                                     ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "FLT128X_MAX_EXP" is undefined
+   - 1)) && ivout != ((unsigned short)(((unsigned short)~(unsigned short)0) >> 1))) || fv1 != (_Float128x) ((unsigned short)(((unsigned short)~(unsigned short)0) >> 1)) || fv2 != (_Float128x) ((unsigned short)(((unsigned short)~(unsigned short)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)); fv1 = ((unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)) || ((((FLT128X_MAX_EXP) > sizeof(unsigned short) * 8 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 1)) && ivout != ((unsigned short)~(((unsigned short)~(unsigned short)0) >> 1))) || fv1 != (_Float128x) ((unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)) || fv2 != (_Float128x) ((unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned short)~(unsigned short)0); fv1 = ((unsigned short)~(unsigned short)0); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned short)~(unsigned short)0) || ((((FLT128X_MANT_DIG) >= sizeof(unsigned short) * 8
+                                                                                                ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 1)) && ivout != ((unsigned short)~(((unsigned short)~(unsigned short)0) >> 1))) || fv1 != (_Float128x) ((unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)) || fv2 != (_Float128x) ((unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned short)~(unsigned short)0); fv1 = ((unsigned short)~(unsigned short)0); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned short)~(unsigned short)0) || ((((FLT128X_MANT_DIG) >= sizeof(unsigned short) * 8
+                                                                                                                                                                                                                                                                                                                                                                        ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 1)) && ivout != ((unsigned short)~(((unsigned short)~(unsigned short)0) >> 1))) || fv1 != (_Float128x) ((unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)) || fv2 != (_Float128x) ((unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned short)~(unsigned short)0); fv1 = ((unsigned short)~(unsigned short)0); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned short)~(unsigned short)0) || ((((FLT128X_MANT_DIG) >= sizeof(unsigned short) * 8
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   )) && ivout != ((unsigned short)~(unsigned short)0)) || fv1 != (_Float128x) ((unsigned short)~(unsigned short)0) || fv2 != (_Float128x) ((unsigned short)~(unsigned short)0) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned short)(((FLT128X_MANT_DIG) >= sizeof(unsigned short) * 8
+                                                                   ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   )) && ivout != ((unsigned short)~(unsigned short)0)) || fv1 != (_Float128x) ((unsigned short)~(unsigned short)0) || fv2 != (_Float128x) ((unsigned short)~(unsigned short)0) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned short)(((FLT128X_MANT_DIG) >= sizeof(unsigned short) * 8
+                                                                                                                                                                                                                                                                                       ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "FLT128X_MANT_DIG" is undefined
+   )) && ivout != ((unsigned short)~(unsigned short)0)) || fv1 != (_Float128x) ((unsigned short)~(unsigned short)0) || fv2 != (_Float128x) ((unsigned short)~(unsigned short)0) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned short)(((FLT128X_MANT_DIG) >= sizeof(unsigned short) * 8
+                                                                                                                                                                                                                                                                                                                                       ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 1 - FLT128X_MANT_DIG)))))) || fv1 != (_Float128x) ((unsigned short)(((FLT128X_MANT_DIG) >= sizeof(unsigned short) * 8
+                                           ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 1 - FLT128X_MANT_DIG))))) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned short)(((FLT128X_MANT_DIG) >= sizeof(unsigned short) * 8
+                                                                                                                                      ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 1 - FLT128X_MANT_DIG))))) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned short)(((FLT128X_MANT_DIG) >= sizeof(unsigned short) * 8
+                                                                                                                                                                                      ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 1 - FLT128X_MANT_DIG)))) + 1)) || fv1 != (_Float128x) ((unsigned short)(((FLT128X_MANT_DIG) >= sizeof(unsigned short) * 8
+                                               ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 1 - FLT128X_MANT_DIG)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned short)(((FLT128X_MANT_DIG) >= sizeof(unsigned short) * 8
+                                                                                                                                          ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 1 - FLT128X_MANT_DIG)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned short)(((FLT128X_MANT_DIG) >= sizeof(unsigned short) * 8
+                                                                                                                                                                                          ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 1 - FLT128X_MANT_DIG)))) - 1)) || fv1 != (_Float128x) ((unsigned short)(((FLT128X_MANT_DIG) >= sizeof(unsigned short) * 8
+                                               ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 1 - FLT128X_MANT_DIG)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned short)(((FLT128X_MANT_DIG) >= sizeof(unsigned short) * 8
+                                                                                                                                          ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 1 - FLT128X_MANT_DIG)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned short)(((FLT128X_MANT_DIG) >= sizeof(unsigned short) * 8
+                                                                                                                                                                                          ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 1 - FLT128X_MANT_DIG)))))) || fv1 != (_Float128x) ((unsigned short)(((FLT128X_MANT_DIG) >= sizeof(unsigned short) * 8
+                                           ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 1 - FLT128X_MANT_DIG))))) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned short)(((FLT128X_MANT_DIG) >= sizeof(unsigned short) * 8
+                                                                                                                                      ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 1 - FLT128X_MANT_DIG))))) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned short)(((FLT128X_MANT_DIG) >= sizeof(unsigned short) * 8
+                                                                                                                                                                                      ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 1 - FLT128X_MANT_DIG)))) + 1)) || fv1 != (_Float128x) ((unsigned short)(((FLT128X_MANT_DIG) >= sizeof(unsigned short) * 8
+                                               ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 1 - FLT128X_MANT_DIG)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned short)(((FLT128X_MANT_DIG) >= sizeof(unsigned short) * 8
+                                                                                                                                          ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 1 - FLT128X_MANT_DIG)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((unsigned short)(((FLT128X_MANT_DIG) >= sizeof(unsigned short) * 8
+                                                                                                                                                                                          ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 1 - FLT128X_MANT_DIG)))) - 1)) || fv1 != (_Float128x) ((unsigned short)(((FLT128X_MANT_DIG) >= sizeof(unsigned short) * 8
+                                               ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   - 1 - FLT128X_MANT_DIG)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed short)((signed short)1 << (sizeof(signed short) * 8 
+                                                                                                                                        ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "FLT128X_MAX_EXP" is undefined
+   / 2 - 1))) || ((((FLT128X_MAX_EXP) > sizeof(unsigned short) * 8 
+                     ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   / 2 - 1)))) || fv1 != (_Float128x) ((signed short)((signed short)1 << (sizeof(signed short) * 8 
+                          ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   / 2 - 1))) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile _Float128x fv1, fv2; ivin = (-(signed short)((signed short)1 << (sizeof(signed short) * 8 
+                                                                                                                   ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "FLT128X_MAX_EXP" is undefined
+   / 2 - 1))) || ((((FLT128X_MAX_EXP) > sizeof(unsigned short) * 8 
+                     ^
+
+"./torture/fp-int-convert-float128x.c", line 15: error: identifier "_Float128x" is undefined
+   / 2 - 1)))) || fv1 != (_Float128x) (-(signed short)((signed short)1 << (sizeof(signed short) * 8 
+                          ^
+
+"./torture/fp-int-convert-float128x.c", line 16: error: identifier "_Float128x" is undefined
+    do { do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)0); fv1 = ((signed int)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed int)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed int)0)) || fv1 != (_Float128x) ((signed int)0) || fv2 != (_Float128x) ((signed int)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)1); fv1 = ((signed int)1); fv2 = ivin; ivout = fv2; if (ivin != ((signed int)1) || ((1) && ivout != ivin) || ((1) && ivout != ((signed int)1)) || fv1 != (_Float128x) ((signed int)1) || fv2 != (_Float128x) ((signed int)1) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)(((unsigned int)~(unsigned int)0) >> 1)); fv1 = ((signed int)(((unsigned int)~(unsigned int)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((signed int)(((unsigned int)~(unsigned int)0) >> 1)) || ((((FLT128X_MANT_DIG) >= sizeof(signed int) * 8 
+                                                                      ^
+
+"./torture/fp-int-convert-float128x.c", line 16: error: identifier "_Float128x" is undefined
+    do { do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)0); fv1 = ((signed int)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed int)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed int)0)) || fv1 != (_Float128x) ((signed int)0) || fv2 != (_Float128x) ((signed int)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)1); fv1 = ((signed int)1); fv2 = ivin; ivout = fv2; if (ivin != ((signed int)1) || ((1) && ivout != ivin) || ((1) && ivout != ((signed int)1)) || fv1 != (_Float128x) ((signed int)1) || fv2 != (_Float128x) ((signed int)1) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)(((unsigned int)~(unsigned int)0) >> 1)); fv1 = ((signed int)(((unsigned int)~(unsigned int)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((signed int)(((unsigned int)~(unsigned int)0) >> 1)) || ((((FLT128X_MANT_DIG) >= sizeof(signed int) * 8 
+                                                                                                                                                                                                                                                                         ^
+
+"./torture/fp-int-convert-float128x.c", line 16: error: identifier "_Float128x" is undefined
+    do { do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)0); fv1 = ((signed int)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed int)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed int)0)) || fv1 != (_Float128x) ((signed int)0) || fv2 != (_Float128x) ((signed int)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)1); fv1 = ((signed int)1); fv2 = ivin; ivout = fv2; if (ivin != ((signed int)1) || ((1) && ivout != ivin) || ((1) && ivout != ((signed int)1)) || fv1 != (_Float128x) ((signed int)1) || fv2 != (_Float128x) ((signed int)1) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)(((unsigned int)~(unsigned int)0) >> 1)); fv1 = ((signed int)(((unsigned int)~(unsigned int)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((signed int)(((unsigned int)~(unsigned int)0) >> 1)) || ((((FLT128X_MANT_DIG) >= sizeof(signed int) * 8 
+                                                                                                                                                                                                                                                                                                                                                                                                                                               ^
+
+"./torture/fp-int-convert-float128x.c", line 16: error: identifier "_Float128x" is undefined
+    do { do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)0); fv1 = ((signed int)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed int)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed int)0)) || fv1 != (_Float128x) ((signed int)0) || fv2 != (_Float128x) ((signed int)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)1); fv1 = ((signed int)1); fv2 = ivin; ivout = fv2; if (ivin != ((signed int)1) || ((1) && ivout != ivin) || ((1) && ivout != ((signed int)1)) || fv1 != (_Float128x) ((signed int)1) || fv2 != (_Float128x) ((signed int)1) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)(((unsigned int)~(unsigned int)0) >> 1)); fv1 = ((signed int)(((unsigned int)~(unsigned int)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((signed int)(((unsigned int)~(unsigned int)0) >> 1)) || ((((FLT128X_MANT_DIG) >= sizeof(signed int) * 8 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ^
+
+"./torture/fp-int-convert-float128x.c", line 16: error: identifier "_Float128x" is undefined
+    do { do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)0); fv1 = ((signed int)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed int)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed int)0)) || fv1 != (_Float128x) ((signed int)0) || fv2 != (_Float128x) ((signed int)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)1); fv1 = ((signed int)1); fv2 = ivin; ivout = fv2; if (ivin != ((signed int)1) || ((1) && ivout != ivin) || ((1) && ivout != ((signed int)1)) || fv1 != (_Float128x) ((signed int)1) || fv2 != (_Float128x) ((signed int)1) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)(((unsigned int)~(unsigned int)0) >> 1)); fv1 = ((signed int)(((unsigned int)~(unsigned int)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((signed int)(((unsigned int)~(unsigned int)0) >> 1)) || ((((FLT128X_MANT_DIG) >= sizeof(signed int) * 8 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ^
+
+"./torture/fp-int-convert-float128x.c", line 16: error: identifier "FLT128X_MANT_DIG" is undefined
+    do { do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)0); fv1 = ((signed int)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed int)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed int)0)) || fv1 != (_Float128x) ((signed int)0) || fv2 != (_Float128x) ((signed int)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)1); fv1 = ((signed int)1); fv2 = ivin; ivout = fv2; if (ivin != ((signed int)1) || ((1) && ivout != ivin) || ((1) && ivout != ((signed int)1)) || fv1 != (_Float128x) ((signed int)1) || fv2 != (_Float128x) ((signed int)1) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)(((unsigned int)~(unsigned int)0) >> 1)); fv1 = ((signed int)(((unsigned int)~(unsigned int)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((signed int)(((unsigned int)~(unsigned int)0) >> 1)) || ((((FLT128X_MANT_DIG) >= sizeof(signed int) * 8 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ^
+
+"./torture/fp-int-convert-float128x.c", line 16: error: identifier "_Float128x" is undefined
+   - 1)) && ivout != ((signed int)(((unsigned int)~(unsigned int)0) >> 1))) || fv1 != (_Float128x) ((signed int)(((unsigned int)~(unsigned int)0) >> 1)) || fv2 != (_Float128x) ((signed int)(((unsigned int)~(unsigned int)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)(unsigned int)~(((unsigned int)~(unsigned int)0) >> 1)); fv1 = ((signed int)(unsigned int)~(((unsigned int)~(unsigned int)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((signed int)(unsigned int)~(((unsigned int)~(unsigned int)0) >> 1)) || ((((FLT128X_MAX_EXP) > sizeof(signed int) * 8 
+                                                                                       ^
+
+"./torture/fp-int-convert-float128x.c", line 16: error: identifier "_Float128x" is undefined
+   - 1)) && ivout != ((signed int)(((unsigned int)~(unsigned int)0) >> 1))) || fv1 != (_Float128x) ((signed int)(((unsigned int)~(unsigned int)0) >> 1)) || fv2 != (_Float128x) ((signed int)(((unsigned int)~(unsigned int)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)(unsigned int)~(((unsigned int)~(unsigned int)0) >> 1)); fv1 = ((signed int)(unsigned int)~(((unsigned int)~(unsigned int)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((signed int)(unsigned int)~(((unsigned int)~(unsigned int)0) >> 1)) || ((((FLT128X_MAX_EXP) > sizeof(signed int) * 8 
+                                                                                                                                                                                                                                                                                                                                         ^
+
+"./torture/fp-int-convert-float128x.c", line 16: error: identifier "FLT128X_MAX_EXP" is undefined
+   - 1)) && ivout != ((signed int)(((unsigned int)~(unsigned int)0) >> 1))) || fv1 != (_Float128x) ((signed int)(((unsigned int)~(unsigned int)0) >> 1)) || fv2 != (_Float128x) ((signed int)(((unsigned int)~(unsigned int)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)(unsigned int)~(((unsigned int)~(unsigned int)0) >> 1)); fv1 = ((signed int)(unsigned int)~(((unsigned int)~(unsigned int)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((signed int)(unsigned int)~(((unsigned int)~(unsigned int)0) >> 1)) || ((((FLT128X_MAX_EXP) > sizeof(signed int) * 8 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ^
+
+"./torture/fp-int-convert-float128x.c", line 16: error: identifier "_Float128x" is undefined
+   - 1)) && ivout != ((signed int)(unsigned int)~(((unsigned int)~(unsigned int)0) >> 1))) || fv1 != (_Float128x) ((signed int)(unsigned int)~(((unsigned int)~(unsigned int)0) >> 1)) || fv2 != (_Float128x) ((signed int)(unsigned int)~(((unsigned int)~(unsigned int)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)(unsigned int)~(unsigned int)0); fv1 = ((signed int)(unsigned int)~(unsigned int)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed int)(unsigned int)~(unsigned int)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed int)(unsigned int)~(unsigned int)0)) || fv1 != (_Float128x) ((signed int)(unsigned int)~(unsigned int)0) || fv2 != (_Float128x) ((signed int)(unsigned int)~(unsigned int)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)(((FLT128X_MANT_DIG) >= sizeof(signed int) * 8 
+                                                                                                      ^
+
+"./torture/fp-int-convert-float128x.c", line 16: error: identifier "_Float128x" is undefined
+   - 1)) && ivout != ((signed int)(unsigned int)~(((unsigned int)~(unsigned int)0) >> 1))) || fv1 != (_Float128x) ((signed int)(unsigned int)~(((unsigned int)~(unsigned int)0) >> 1)) || fv2 != (_Float128x) ((signed int)(unsigned int)~(((unsigned int)~(unsigned int)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)(unsigned int)~(unsigned int)0); fv1 = ((signed int)(unsigned int)~(unsigned int)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed int)(unsigned int)~(unsigned int)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed int)(unsigned int)~(unsigned int)0)) || fv1 != (_Float128x) ((signed int)(unsigned int)~(unsigned int)0) || fv2 != (_Float128x) ((signed int)(unsigned int)~(unsigned int)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)(((FLT128X_MANT_DIG) >= sizeof(signed int) * 8 
+                                                                                                                                                                                                                                                                                                                                                                                      ^
+
+"./torture/fp-int-convert-float128x.c", line 16: error: identifier "_Float128x" is undefined
+   - 1)) && ivout != ((signed int)(unsigned int)~(((unsigned int)~(unsigned int)0) >> 1))) || fv1 != (_Float128x) ((signed int)(unsigned int)~(((unsigned int)~(unsigned int)0) >> 1)) || fv2 != (_Float128x) ((signed int)(unsigned int)~(((unsigned int)~(unsigned int)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)(unsigned int)~(unsigned int)0); fv1 = ((signed int)(unsigned int)~(unsigned int)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed int)(unsigned int)~(unsigned int)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed int)(unsigned int)~(unsigned int)0)) || fv1 != (_Float128x) ((signed int)(unsigned int)~(unsigned int)0) || fv2 != (_Float128x) ((signed int)(unsigned int)~(unsigned int)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)(((FLT128X_MANT_DIG) >= sizeof(signed int) * 8 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ^
+
+"./torture/fp-int-convert-float128x.c", line 16: error: identifier "_Float128x" is undefined
+   - 1)) && ivout != ((signed int)(unsigned int)~(((unsigned int)~(unsigned int)0) >> 1))) || fv1 != (_Float128x) ((signed int)(unsigned int)~(((unsigned int)~(unsigned int)0) >> 1)) || fv2 != (_Float128x) ((signed int)(unsigned int)~(((unsigned int)~(unsigned int)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)(unsigned int)~(unsigned int)0); fv1 = ((signed int)(unsigned int)~(unsigned int)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed int)(unsigned int)~(unsigned int)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed int)(unsigned int)~(unsigned int)0)) || fv1 != (_Float128x) ((signed int)(unsigned int)~(unsigned int)0) || fv2 != (_Float128x) ((signed int)(unsigned int)~(unsigned int)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)(((FLT128X_MANT_DIG) >= sizeof(signed int) * 8 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ^
+
+"./torture/fp-int-convert-float128x.c", line 16: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 1)) && ivout != ((signed int)(unsigned int)~(((unsigned int)~(unsigned int)0) >> 1))) || fv1 != (_Float128x) ((signed int)(unsigned int)~(((unsigned int)~(unsigned int)0) >> 1)) || fv2 != (_Float128x) ((signed int)(unsigned int)~(((unsigned int)~(unsigned int)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)(unsigned int)~(unsigned int)0); fv1 = ((signed int)(unsigned int)~(unsigned int)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed int)(unsigned int)~(unsigned int)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed int)(unsigned int)~(unsigned int)0)) || fv1 != (_Float128x) ((signed int)(unsigned int)~(unsigned int)0) || fv2 != (_Float128x) ((signed int)(unsigned int)~(unsigned int)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)(((FLT128X_MANT_DIG) >= sizeof(signed int) * 8 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ^
+
+"./torture/fp-int-convert-float128x.c", line 16: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))))) || fv1 != (_Float128x) ((signed int)(((FLT128X_MANT_DIG) >= sizeof(signed int) * 8 
+                                           ^
+
+"./torture/fp-int-convert-float128x.c", line 16: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)(((FLT128X_MANT_DIG) >= sizeof(signed int) * 8 
+                                                                                                                                  ^
+
+"./torture/fp-int-convert-float128x.c", line 16: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 2 - FLT128X_MANT_DIG))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)(((FLT128X_MANT_DIG) >= sizeof(signed int) * 8 
+                                                                                                                                                                              ^
+
+"./torture/fp-int-convert-float128x.c", line 16: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) + 1)) || fv1 != (_Float128x) ((signed int)(((FLT128X_MANT_DIG) >= sizeof(signed int) * 8 
+                                               ^
+
+"./torture/fp-int-convert-float128x.c", line 16: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)(((FLT128X_MANT_DIG) >= sizeof(signed int) * 8 
+                                                                                                                                      ^
+
+"./torture/fp-int-convert-float128x.c", line 16: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 2 - FLT128X_MANT_DIG)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)(((FLT128X_MANT_DIG) >= sizeof(signed int) * 8 
+                                                                                                                                                                                  ^
+
+"./torture/fp-int-convert-float128x.c", line 16: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) - 1)) || fv1 != (_Float128x) ((signed int)(((FLT128X_MANT_DIG) >= sizeof(signed int) * 8 
+                                               ^
+
+"./torture/fp-int-convert-float128x.c", line 16: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)(((FLT128X_MANT_DIG) >= sizeof(signed int) * 8 
+                                                                                                                                      ^
+
+"./torture/fp-int-convert-float128x.c", line 16: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 2 - FLT128X_MANT_DIG)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)(((FLT128X_MANT_DIG) >= sizeof(signed int) * 8 
+                                                                                                                                                                                  ^
+
+"./torture/fp-int-convert-float128x.c", line 16: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))))) || fv1 != (_Float128x) ((signed int)(((FLT128X_MANT_DIG) >= sizeof(signed int) * 8 
+                                           ^
+
+"./torture/fp-int-convert-float128x.c", line 16: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)(((FLT128X_MANT_DIG) >= sizeof(signed int) * 8 
+                                                                                                                                  ^
+
+"./torture/fp-int-convert-float128x.c", line 16: error: identifier "FLT128X_MANT_DIG" is undefined
+   - 2 - FLT128X_MANT_DIG))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)(((FLT128X_MANT_DIG) >= sizeof(signed int) * 8 
+                                                                                                                                                                              ^
+
+"./torture/fp-int-convert-float128x.c", line 16: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) + 1)) || fv1 != (_Float128x) ((signed int)(((FLT128X_MANT_DIG) >= sizeof(signed int) * 8 
+                                               ^
+
+"./torture/fp-int-convert-float128x.c", line 16: error: identifier "_Float128x" is undefined
+   - 2 - FLT128X_MANT_DIG)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile _Float128x fv1, fv2; ivin = ((signed int)(((FLT128X_MANT_DIG) >= sizeof(signed int) * 8 
+                                                                                                                                      ^
+
+Error limit reached.
+200 errors detected in the compilation of "Test_name.c".
+Compilation terminated.

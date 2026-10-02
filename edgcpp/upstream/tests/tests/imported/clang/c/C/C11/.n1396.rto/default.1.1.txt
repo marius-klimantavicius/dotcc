@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 96: warning: unrecognized #pragma
+  #pragma clang fp eval_method(extended)
+          ^
+
+"Test_name.c", line 167: warning: unrecognized #pragma
+  #pragma clang fp eval_method(extended)
+          ^
+
+"Test_name.c", line 238: warning: unrecognized #pragma
+  #pragma clang fp eval_method(extended)
+          ^
+
+"Test_name.c", line 309: warning: unrecognized #pragma
+  #pragma clang fp eval_method(extended)
+          ^
+
+"Test_name.c", line 368: warning: unrecognized #pragma
+  #pragma clang fp eval_method(source)
+          ^
+
+"Test_name.c", line 427: warning: unrecognized #pragma
+  #pragma clang fp eval_method(source)
+          ^
+
+"Test_name.c", line 498: warning: unrecognized #pragma
+  #pragma clang fp eval_method(source)
+          ^
+
+"Test_name.c", line 569: warning: unrecognized #pragma
+  #pragma clang fp eval_method(source)
+          ^
+

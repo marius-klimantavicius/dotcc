@@ -1,0 +1,8 @@
+fe_only -DTEST_NUMBER=1 --c++14 Test_name.c
+"Test_name.c", line 16: warning: variable "x" was declared deprecated ("Old!")
+  int y = x+1;                   // A warning is issued for the use of x here.
+          ^
+"Test_name.c", line 14: note: because of a "deprecated" attribute
+  int x [[deprecated("Old!")]];  // This attribute is now recognized in C++14
+          ^
+

@@ -1,0 +1,22 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 12: error: base class "A" is ambiguous
+    A::i = 0;
+       ^
+
+"Test_name.c", line 13: error: base class "B" is ambiguous
+    B::i = 0;
+       ^
+
+"Test_name.c", line 16: error: "C::i" is ambiguous
+    C::i = 0;
+       ^
+
+"Test_name.c", line 17: error: "D::i" is ambiguous
+    D::i = 0;
+       ^
+
+"Test_name.c", line 18: error: "D::i" is ambiguous
+    i = 0;
+    ^
+
+5 errors detected in the compilation of "Test_name.c".

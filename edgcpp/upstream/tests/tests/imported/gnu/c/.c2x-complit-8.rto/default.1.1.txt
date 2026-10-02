@@ -1,0 +1,126 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 11: error: a storage class may not be specified here
+    (static int) { 123 }; /* { dg-error "static but declared in inline function 'f1' which is not static" } */
+     ^
+
+"Test_name.c", line 12: error: a storage class may not be specified here
+    (static thread_local int) { 456 } ; /* { dg-error "static but declared in inline function 'f1' which is not static" } */
+     ^
+
+"Test_name.c", line 12: error: a storage class may not be specified here
+    (static thread_local int) { 456 } ; /* { dg-error "static but declared in inline function 'f1' which is not static" } */
+            ^
+
+"Test_name.c", line 14: error: a storage class may not be specified here
+    (register int) { 1234 };
+     ^
+
+"Test_name.c", line 20: error: a storage class may not be specified here
+    (static int) { 123 };
+     ^
+
+"Test_name.c", line 21: error: a storage class may not be specified here
+    (static thread_local int) { 456 } ;
+     ^
+
+"Test_name.c", line 21: error: a storage class may not be specified here
+    (static thread_local int) { 456 } ;
+            ^
+
+"Test_name.c", line 27: error: a storage class may not be specified here
+    (static int) { 123 };
+     ^
+
+"Test_name.c", line 28: error: a storage class may not be specified here
+    (static thread_local int) { 456 } ;
+     ^
+
+"Test_name.c", line 28: error: a storage class may not be specified here
+    (static thread_local int) { 456 } ;
+            ^
+
+"Test_name.c", line 34: error: a storage class may not be specified here
+    (static const int) { 123 };
+     ^
+
+"Test_name.c", line 35: error: a storage class may not be specified here
+    (static thread_local const int) { 456 };
+     ^
+
+"Test_name.c", line 35: error: a storage class may not be specified here
+    (static thread_local const int) { 456 };
+            ^
+
+"Test_name.c", line 41: error: a storage class may not be specified here
+    (static const int) { 123 };
+     ^
+
+"Test_name.c", line 42: error: a storage class may not be specified here
+    (static thread_local const int) { 456 };
+     ^
+
+"Test_name.c", line 42: error: a storage class may not be specified here
+    (static thread_local const int) { 456 };
+            ^
+
+"Test_name.c", line 48: error: a storage class may not be specified here
+    (static const int) { 123 };
+     ^
+
+"Test_name.c", line 49: error: a storage class may not be specified here
+    (static thread_local const int) { 456 };
+     ^
+
+"Test_name.c", line 49: error: a storage class may not be specified here
+    (static thread_local const int) { 456 };
+            ^
+
+"Test_name.c", line 55: error: a storage class may not be specified here
+    (static constexpr int) { 123 };
+     ^
+
+"Test_name.c", line 55: warning: explicit type is missing ("int" assumed)
+    (static constexpr int) { 123 };
+     ^
+
+"Test_name.c", line 55: error: expected a ")"
+    (static constexpr int) { 123 };
+            ^
+
+"Test_name.c", line 61: error: a storage class may not be specified here
+    (static constexpr int) { 123 };
+     ^
+
+"Test_name.c", line 61: warning: explicit type is missing ("int" assumed)
+    (static constexpr int) { 123 };
+     ^
+
+"Test_name.c", line 61: error: expected a ")"
+    (static constexpr int) { 123 };
+            ^
+
+"Test_name.c", line 67: error: a storage class may not be specified here
+    (static constexpr int) { 123 };
+     ^
+
+"Test_name.c", line 67: warning: explicit type is missing ("int" assumed)
+    (static constexpr int) { 123 };
+     ^
+
+"Test_name.c", line 67: error: expected a ")"
+    (static constexpr int) { 123 };
+            ^
+
+"Test_name.c", line 25: warning: function "f1s" was declared but never referenced
+  f1s ()
+  ^
+
+"Test_name.c", line 46: warning: function "f2s" was declared but never referenced
+  f2s ()
+  ^
+
+"Test_name.c", line 65: warning: function "f3s" was declared but never referenced
+  f3s ()
+  ^
+
+25 errors detected in the compilation of "Test_name.c".

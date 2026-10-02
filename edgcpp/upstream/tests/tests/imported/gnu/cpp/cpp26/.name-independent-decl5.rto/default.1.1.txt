@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: error: "_" has already been declared in the current scope
+    int _;		// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+        ^
+
+"Test_name.c", line 15: error: "_" has already been declared in the current scope
+    int _ = 4;		// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+        ^
+
+"Test_name.c", line 25: error: "_" has already been declared in the current scope
+    int _;		// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+        ^
+
+"Test_name.c", line 31: error: "_" has already been declared in the current scope
+    int _;		// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+        ^
+
+"Test_name.c", line 38: error: "_" has already been declared in the current scope
+    int _;		// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+        ^
+
+"Test_name.c", line 85: warning: variable "_" was set but never used
+    void foo () { ++_; int _; _ = 5; }
+                           ^
+
+"Test_name.c", line 92: error: "_" has already been declared in the current scope
+    int _;		// { dg-warning "name-independent declarations only available with" "" { target c++23_down } }
+        ^
+
+6 errors detected in the compilation of "Test_name.c".

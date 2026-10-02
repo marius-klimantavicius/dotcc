@@ -1,0 +1,13 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 11: warning: variable "b" was declared but never referenced
+    static int &b = *a;
+                ^
+
+"Test_name.c", line 12: warning: variable "c" was declared but never referenced
+    static int &c (*a);
+                ^
+
+"Test_name.c", line 13: warning: variable "d" was declared but never referenced
+    static int &d {*a};
+                ^
+

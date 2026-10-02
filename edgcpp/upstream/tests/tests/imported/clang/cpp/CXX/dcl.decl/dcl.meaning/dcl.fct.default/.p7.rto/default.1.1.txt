@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 7: error: reference to local variable of enclosing function is not allowed
+    extern void h1(int x = i1);
+                           ^
+
+"Test_name.c", line 11: error: reference to local variable of enclosing function is not allowed
+    extern void h2a(int x = i2);     // ok, not odr-use
+                            ^
+
+"Test_name.c", line 12: error: reference to local variable of enclosing function is not allowed
+    extern void h2b(int x = i2 + 0); // ok, not odr-use
+                            ^
+
+"Test_name.c", line 15: error: reference to local variable of enclosing function is not allowed
+    extern void h3(const int *x = &i3);
+                                   ^
+
+"Test_name.c", line 26: error: reference to local variable of enclosing function is not allowed
+    extern void h6(int = i5);
+                         ^
+
+"Test_name.c", line 32: error: reference to local variable of enclosing function is not allowed
+    extern void h7(int = x);
+                         ^
+
+6 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,17 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 9: warning: signed bit field of length 1
+  	int a :1; 
+  	    ^
+
+"Test_name.c", line 11: warning: signed bit field of length 1
+  	int b: 1;
+  	    ^
+
+"Test_name.c", line 17: warning: signed bit field of length 1
+  		int a :1; 
+  		    ^
+
+"Test_name.c", line 19: warning: signed bit field of length 1
+  		int b: 1;
+  		    ^
+

@@ -1,0 +1,3 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 %-DFIRST_WAY -w %-DFIRST_WAY --ms_compatibility -w -w --ms_compatibility -w --c Test_name.c
+eccp: unrecognizable argument: %-DFIRST_WAY
+eccp: unrecognizable argument: %-DFIRST_WAY

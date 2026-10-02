@@ -1,0 +1,162 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 19: error: a value of type "P" (aka "int *(*)[3]") cannot be assigned to an entity of type "R" (aka "const int *const (*)[4]")
+    r = p; // { dg-error "cannot convert" }
+      ^
+
+"Test_name.c", line 20: error: a value of type "P" (aka "int *(*)[3]") cannot be assigned to an entity of type "T" (aka "const int *(*)[]")
+    t = p; // { dg-error "cannot convert" }
+      ^
+
+"Test_name.c", line 22: error: a value of type "S" (aka "const int *const (*)[]") cannot be assigned to an entity of type "T" (aka "const int *(*)[]")
+    t = s; // { dg-error "invalid conversion" }
+      ^
+
+"Test_name.c", line 25: warning: expression has no effect
+    const_cast<P>(q);
+    ^
+
+"Test_name.c", line 26: warning: expression has no effect
+    const_cast<P>(q2);
+    ^
+
+"Test_name.c", line 27: warning: expression has no effect
+    const_cast<Q>(p);
+    ^
+
+"Test_name.c", line 28: warning: expression has no effect
+    const_cast<Q2>(p);
+    ^
+
+"Test_name.c", line 29: error: a const_cast can only adjust type qualifiers; it cannot change the underlying type
+    const_cast<S>(p); // { dg-error "3:invalid .const_cast." }
+                  ^
+
+"Test_name.c", line 30: error: a const_cast can only adjust type qualifiers; it cannot change the underlying type
+    const_cast<P>(s); // { dg-error "3:invalid .const_cast." }
+                  ^
+
+"Test_name.c", line 31: error: a const_cast can only adjust type qualifiers; it cannot change the underlying type
+    const_cast<S>(q); // { dg-error "3:invalid .const_cast." }
+                  ^
+
+"Test_name.c", line 32: error: a const_cast can only adjust type qualifiers; it cannot change the underlying type
+    const_cast<S>(q2); // { dg-error "3:invalid .const_cast." }
+                  ^
+
+"Test_name.c", line 33: error: a const_cast can only adjust type qualifiers; it cannot change the underlying type
+    const_cast<Q>(s); // { dg-error "3:invalid .const_cast." }
+                  ^
+
+"Test_name.c", line 34: error: a const_cast can only adjust type qualifiers; it cannot change the underlying type
+    const_cast<Q2>(s); // { dg-error "3:invalid .const_cast." }
+                   ^
+
+"Test_name.c", line 35: warning: expression has no effect
+    const_cast<T>(s);
+    ^
+
+"Test_name.c", line 36: warning: expression has no effect
+    const_cast<S>(t);
+    ^
+
+"Test_name.c", line 37: error: a const_cast can only adjust type qualifiers; it cannot change the underlying type
+    const_cast<T>(q); // { dg-error "3:invalid .const_cast." }
+                  ^
+
+"Test_name.c", line 38: error: a const_cast can only adjust type qualifiers; it cannot change the underlying type
+    const_cast<Q>(t); // { dg-error "3:invalid .const_cast." }
+                  ^
+
+"Test_name.c", line 41: error: reinterpret_cast cannot cast away const or other type qualifiers
+    reinterpret_cast<P>(q); // { dg-error "3:.reinterpret_cast. \[^\n\r]* casts away qualifiers" }
+    ^
+
+"Test_name.c", line 41: warning: expression has no effect
+    reinterpret_cast<P>(q); // { dg-error "3:.reinterpret_cast. \[^\n\r]* casts away qualifiers" }
+    ^
+
+"Test_name.c", line 42: error: reinterpret_cast cannot cast away const or other type qualifiers
+    reinterpret_cast<P>(q2); // { dg-error "3:.reinterpret_cast. \[^\n\r]* casts away qualifiers" }
+    ^
+
+"Test_name.c", line 42: warning: expression has no effect
+    reinterpret_cast<P>(q2); // { dg-error "3:.reinterpret_cast. \[^\n\r]* casts away qualifiers" }
+    ^
+
+"Test_name.c", line 43: error: reinterpret_cast cannot cast away const or other type qualifiers
+    reinterpret_cast<Q>(p);
+    ^
+
+"Test_name.c", line 43: warning: expression has no effect
+    reinterpret_cast<Q>(p);
+    ^
+
+"Test_name.c", line 44: error: reinterpret_cast cannot cast away const or other type qualifiers
+    reinterpret_cast<Q2>(p);
+    ^
+
+"Test_name.c", line 44: warning: expression has no effect
+    reinterpret_cast<Q2>(p);
+    ^
+
+"Test_name.c", line 45: error: reinterpret_cast cannot cast away const or other type qualifiers
+    reinterpret_cast<S>(p);
+    ^
+
+"Test_name.c", line 45: warning: expression has no effect
+    reinterpret_cast<S>(p);
+    ^
+
+"Test_name.c", line 46: error: reinterpret_cast cannot cast away const or other type qualifiers
+    reinterpret_cast<P>(s); // { dg-error "3:.reinterpret_cast. \[^\n\r]* casts away qualifiers" }
+    ^
+
+"Test_name.c", line 46: warning: expression has no effect
+    reinterpret_cast<P>(s); // { dg-error "3:.reinterpret_cast. \[^\n\r]* casts away qualifiers" }
+    ^
+
+"Test_name.c", line 47: warning: expression has no effect
+    reinterpret_cast<S>(q);
+    ^
+
+"Test_name.c", line 48: warning: expression has no effect
+    reinterpret_cast<S>(q2);
+    ^
+
+"Test_name.c", line 49: warning: expression has no effect
+    reinterpret_cast<Q>(s);
+    ^
+
+"Test_name.c", line 50: warning: expression has no effect
+    reinterpret_cast<Q2>(s);
+    ^
+
+"Test_name.c", line 51: error: reinterpret_cast cannot cast away const or other type qualifiers
+    reinterpret_cast<T>(s); // { dg-error "3:.reinterpret_cast. \[^\n\r]* casts away qualifiers" }
+    ^
+
+"Test_name.c", line 51: warning: expression has no effect
+    reinterpret_cast<T>(s); // { dg-error "3:.reinterpret_cast. \[^\n\r]* casts away qualifiers" }
+    ^
+
+"Test_name.c", line 52: warning: expression has no effect
+    reinterpret_cast<S>(t);
+    ^
+
+"Test_name.c", line 53: error: reinterpret_cast cannot cast away const or other type qualifiers
+    reinterpret_cast<T>(q); // { dg-error "3:.reinterpret_cast. \[^\n\r]* casts away qualifiers" }
+    ^
+
+"Test_name.c", line 53: warning: expression has no effect
+    reinterpret_cast<T>(q); // { dg-error "3:.reinterpret_cast. \[^\n\r]* casts away qualifiers" }
+    ^
+
+"Test_name.c", line 54: warning: expression has no effect
+    reinterpret_cast<Q>(t);
+    ^
+
+"Test_name.c", line 15: warning: parameter "r" was set but never used
+  f (P p, Q q, Q2 q2, R r, S s, T t)
+                        ^
+
+19 errors detected in the compilation of "Test_name.c".

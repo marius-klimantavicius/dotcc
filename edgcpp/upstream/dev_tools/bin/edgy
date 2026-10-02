@@ -1,0 +1,2361 @@
+#!/usr/bin/env python3
+
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+from edgtest.preamble import ensure_launched_with_alsr_disabled
+
+ensure_launched_with_alsr_disabled()
+
+import argparse
+import asyncio
+import contextlib
+import itertools
+import json
+import os
+import platform
+import random
+import re
+import shutil
+import socket
+import subprocess
+import sys
+import time
+
+import edgtest
+import edgtest.exec
+import edgtest.filter
+import edgutil
+
+from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime, timedelta
+from enum import Enum
+from pathlib import Path
+from typing import (
+  Any,
+  Callable,
+  Coroutine,
+  Dict,
+  Iterator,
+  List,
+  Optional,
+  Set,
+  TextIO,
+  Tuple
+)
+
+from edgdocker import render_docker_path
+from edgtest.filter import BuildConstants as FEBuildConstants
+from edgtest.runtest import (
+  ParsedTestStatus,
+  is_status_change_improvement,
+  is_status_change_regressive,
+  parse_test_status,
+  load_single_description
+)
+from edgutil import print_env_var
+
+class TestRunConfig:
+  def __init__(self, name: str, config_providing_fe_env: str,
+               front_end_env_paths: Dict[str, List[str]],
+               env_overrides: Dict[str, str], expectations_dir: Path,
+               flakey_tests_dir: Path) -> None:
+    self.name = name
+    self.config_providing_fe_env = config_providing_fe_env
+    self.front_end_env_paths = front_end_env_paths
+    self.env_overrides = env_overrides
+    self.expectations_dir = expectations_dir
+    self.flakey_tests_dir = flakey_tests_dir
+
+class EdgyConfig:
+  def __init__(self, test_home: Path,
+               configs: Dict[str, TestRunConfig],
+               config_sets: Dict[str, Set[str]],
+               primary_test_suites: List[str],
+               secondary_test_suites: List[str]) -> None:
+    self.test_home = test_home
+    self.configs = configs
+    self.config_sets = config_sets
+    self.primary_test_suites = primary_test_suites
+    self.secondary_test_suites = secondary_test_suites
+
+  def all_suites(self) -> List[str]:
+    return [*self.primary_test_suites, *self.secondary_test_suites]
+
+class TestSuiteExpectations:
+  def __init__(self, file_path: Path, modified_time: Optional[float],
+               test_keyed_expectations: Dict[str, List[str]]) -> None:
+    self.file_path = file_path
+    self.modified_time = modified_time
+    self._test_keyed_expectations = test_keyed_expectations
+
+  def __contains__(self, test_relative_path: str) -> bool:
+    return test_relative_path in self._test_keyed_expectations
+
+  def __getitem__(self, test_relative_path: str) -> List[str]:
+    return self._test_keyed_expectations[test_relative_path]
+
+  def keys(self) -> Set[str]:
+    return set(self._test_keyed_expectations.keys())
+
+  def all_values(self) -> List[str]:
+    internal_lists = self._test_keyed_expectations.values()
+    return [item for sublist in internal_lists for item in sublist]
+
+class ConfiguredFEMetadata:
+  def __init__(self, env_override: Dict[str, str],
+               build_constants: FEBuildConstants) -> None:
+    self.env_override = env_override
+    self.build_constants = build_constants
+
+class TestSuiteRun:
+  def __init__(self, run_dir: Path, test_suite: 'TestSuiteConfig', *,
+               fe_metadata: Optional[ConfiguredFEMetadata] = None) -> None:
+    self.run_dir = run_dir
+    self.test_suite = test_suite
+    self._fe_metadata = fe_metadata
+
+  def get_run_config(self) -> TestRunConfig:
+    return self.test_suite.run_config
+
+  def get_build_constants(self) -> FEBuildConstants:
+    assert self._fe_metadata is not None, "No build constants"
+    return self._fe_metadata.build_constants
+
+  def get_config_path(self) -> Path:
+    '''Return the path tests/runs/<run>/<config>.'''
+    run_config = self.get_run_config()
+    return self.run_dir / run_config.name
+
+  def get_log_path(self) -> Path:
+    '''Return the path tests/runs/<run>/<config>/<suite>.log.'''
+    return self.get_config_path() / f"suite-{self.test_suite.name}.log"
+
+  def get_elog_path(self) -> Path:
+    '''Return the path tests/runs/<run>/<config>/<suite>.elog.'''
+    return self.get_config_path() / f"suite-{self.test_suite.name}.elog"
+
+  def get_output_path(self) -> Path:
+    '''Return the path tests/runs/<run>/<config>/<suite>.'''
+    return self.get_config_path() / self.test_suite.name
+
+  def completed(self) -> bool:
+    # Test suite runs that complete always write a log file of problematic
+    # tests, even if there were no problematic tests and the log file is empty.
+    return os.path.exists(self.get_log_path())
+
+class TestSuiteConfig:
+  def __init__(self, run_config: TestRunConfig, name: str, path: Path,
+               env_override: Dict[str, str],
+               expectations: TestSuiteExpectations,
+               flakey_tests: Set[str]) -> None:
+    self.run_config = run_config
+    self.name = name
+    self.path = path
+    self.env_override = env_override
+    self.expectations = expectations
+    self.flakey_tests = flakey_tests
+    self.runs: List[Optional[TestSuiteRun]] = [None]
+
+  def set_current_run(self, test_suite_run: TestSuiteRun) -> None:
+    self.runs[0] = test_suite_run
+
+  def get_current_run(self) -> TestSuiteRun:
+    assert self.runs[0] is not None
+    return self.runs[0]
+
+  def get_previous_run(self) -> Optional[TestSuiteRun]:
+    return self.runs[1] if len(self.runs) >= 2 else None
+
+  def get_test_file_extensions(self) -> Set[str]:
+    if 'RUN_TEST_SUFFIXES' in self.env_override:
+      return set(self.env_override['RUN_TEST_SUFFIXES'].split(' '))
+    return edgtest.DEFAULT_TEST_EXTENSIONS
+
+def _load_c_back_end_configs(loaded_configs: Dict[str, TestRunConfig],
+                             test_home: Path,
+                             config_dict: Any) -> None:
+  for variant in config_dict.get('variants', []):
+    run_config_name = variant['name']
+    expectations_dir = test_home / 'expectations' / run_config_name
+    if not os.path.isdir(expectations_dir):
+      edgutil.eprint(f"Expected expectation directory at {expectations_dir}")
+      sys.exit(1)
+
+    bin_env_paths = config_dict.get('bin_path_env', [])
+    flakey_tests_dir = test_home / 'flakey-tests' / run_config_name
+    loaded_configs[run_config_name] = TestRunConfig(
+      run_config_name,
+      'CPFE',
+      {
+        'CPFE': bin_env_paths
+      },
+      {
+        'EDG_CONFIG': run_config_name
+      },
+      expectations_dir,
+      flakey_tests_dir
+    )
+
+def _load_cpp_back_end_configs(loaded_configs: Dict[str, TestRunConfig],
+                               test_home: Path,
+                               config_dict: Any) -> None:
+  for variant in config_dict.get('variants', []):
+    run_config_name = variant['name']
+    expectations_dir = test_home / 'expectations' / run_config_name
+    if not os.path.isdir(expectations_dir):
+      edgutil.eprint(f"Expected expectation directory at {expectations_dir}")
+      sys.exit(1)
+
+    bin_env_paths = config_dict.get('bin_path_env', {})
+    # cpfe-cp-gen-be must be present for this variant to be enabled.
+    cpfe_cp_gen_be_path = str(edgutil.RequiredToolPath('cpfe-cp-gen-be'))
+
+    flakey_tests_dir = test_home / 'flakey-tests' / run_config_name
+    loaded_configs[run_config_name] = TestRunConfig(
+      run_config_name,
+      'CPFEA',
+      {
+        'CPFEA': bin_env_paths.get('cpp', []),
+        'CPFEB': bin_env_paths.get('c', [])
+      },
+      {
+        'CPFE': cpfe_cp_gen_be_path,
+        'EDG_CONFIG': run_config_name
+      },
+      expectations_dir,
+      flakey_tests_dir
+    )
+
+def load_edgy_config(args: argparse.Namespace, test_home: Path) -> EdgyConfig:
+  config_file_path = Path(test_home / '.edgy' / 'config.json')
+  with open(config_file_path, 'r') as file_handle:
+    config_file_dict = json.load(file_handle)
+
+    loaded_configs: Dict[str, TestRunConfig] = {}
+    run_configs_dict = config_file_dict.get('config', {})
+    _load_c_back_end_configs(
+      loaded_configs,
+      test_home,
+      run_configs_dict.get('c', {})
+    )
+    _load_cpp_back_end_configs(
+      loaded_configs,
+      test_home,
+      run_configs_dict.get('cpp', {})
+    )
+
+    test_suites = config_file_dict.get('test_suites', {})
+    config_sets = config_file_dict.get('config_sets', {})
+    return EdgyConfig(
+      test_home,
+      loaded_configs,
+      config_sets,
+      test_suites.get('primary', []),
+      test_suites.get('secondary', [])
+    )
+
+def get_expectation_path(run_config: TestRunConfig,
+                         test_suite_name: str) -> Path:
+  return Path(run_config.expectations_dir, f"{test_suite_name}.log")
+
+def load_test_suite_expectations(
+                                args: argparse.Namespace,
+                                run_config: TestRunConfig,
+                                test_suite_name: str) -> TestSuiteExpectations:
+  expectations_path = get_expectation_path(run_config, test_suite_name)
+  modified_time = None
+  test_keyed_expectations: Dict[str, List[str]] = {}
+
+  # If the args haven't disabled expectations load the expectations file
+  if not args.no_expectations and expectations_path.exists():
+    modified_time = os.path.getmtime(expectations_path)
+    with open(expectations_path, 'r') as file_handle:
+      for line in file_handle:
+        test_name = line.split(':')[0]
+        if test_name not in test_keyed_expectations:
+          test_keyed_expectations[test_name] = []
+        test_keyed_expectations[test_name].append(line.strip())
+
+  return TestSuiteExpectations(
+    expectations_path,
+    modified_time,
+    test_keyed_expectations
+  )
+
+def get_flakey_tests_path(run_config: TestRunConfig,
+                          test_suite_name: str) -> Path:
+  return Path(run_config.flakey_tests_dir, f"{test_suite_name}.txt")
+
+def load_test_suite_flakey_tests(args: argparse.Namespace,
+                                 run_config: TestRunConfig,
+                                 test_suite_name: str) -> Set[str]:
+  flakey_tests_path = get_flakey_tests_path(run_config, test_suite_name)
+  flakey_tests = set()
+
+  if flakey_tests_path.exists():
+    with open(flakey_tests_path, 'r') as file_handle:
+      for line in file_handle:
+        # Ignore comment lines.
+        if line.startswith('#'):
+          continue
+        # Strip whitespace and ignore empty lines.
+        stripped_line = line.strip()
+        if len(stripped_line) == 0:
+          continue
+        flakey_tests.add(stripped_line)
+
+  return flakey_tests
+
+def load_test_suite(args: argparse.Namespace, run_config: TestRunConfig,
+                    test_home: Path, test_suite_name: str) -> TestSuiteConfig:
+  test_suite_dir = test_home / 'tests' / test_suite_name
+  env_override = edgtest.load_test_suite_env(test_suite_dir)
+  expectations = load_test_suite_expectations(
+    args,
+    run_config,
+    test_suite_name
+  )
+  flakey_tests = load_test_suite_flakey_tests(
+    args,
+    run_config,
+    test_suite_name
+  )
+
+  return TestSuiteConfig(
+    run_config,
+    test_suite_name,
+    test_suite_dir,
+    env_override,
+    expectations,
+    flakey_tests
+  )
+
+def print_warn(message: str) -> None:
+  edgutil.eprint(f"WARNING: {message}")
+
+def load_run_configs(args: argparse.Namespace,
+                     edgy_config: EdgyConfig) -> List[TestRunConfig]:
+  active_run_configs = []
+
+  # Create a test run config for each specified run configuration
+  for run_config_name in args.run_configs.split(','):
+    if run_config_name in edgy_config.config_sets:
+      for aliased_run_config in edgy_config.config_sets[run_config_name]:
+        active_run_configs.append(edgy_config.configs[aliased_run_config])
+    else:
+      active_run_configs.append(edgy_config.configs[run_config_name])
+
+  return active_run_configs
+
+def parse_test_suites(filter_str: str) -> Tuple[Set[str], Set[str]]:
+  # Split by ","s to get the individual test suite specifications.
+  result = filter_str.split(',')
+  # Remove anything after a /, that's a test name specification, use a set to
+  # ensure the test suites we get back are unique.
+  result = list(map(lambda suite: suite.split('/')[0], result))
+  # Remove negative suites (they can't introduce suite selections) and
+  # guarantee uniqueness.
+  positive_filters = set()
+  negative_filters = set()
+  for suite in result:
+    if suite.startswith('!'):
+      negative_filters.add(suite[1:])
+    else:
+      positive_filters.add(suite)
+  return positive_filters, negative_filters
+
+def validate_user_provided_suites(edgy_config: EdgyConfig,
+                                  test_suite_names: Set[str]) -> None:
+  invalid_test_suite_encountered = False
+  all_suite_names = set(edgy_config.all_suites())
+  for test_suite in test_suite_names:
+    if test_suite not in all_suite_names:
+      print(f"Unknown test suite \"{test_suite}\".")
+      invalid_test_suite_encountered = True
+
+  if invalid_test_suite_encountered:
+    sys.exit(1)
+
+def is_replay_run(args: argparse.Namespace) -> bool:
+  return len(args.replay) != 0
+
+def suites_need_previous_runs(args: argparse.Namespace) -> bool:
+  return is_replay_run(args)
+
+def get_selected_test_suite_names_from(args: argparse.Namespace,
+                                       edgy_config: EdgyConfig) -> List[str]:
+  if len(args.filters) == 0:
+    # Use all suites for the implicit suite selection replay runs. This ensures
+    # "edgy --replay" replays all suites in the replay, not just the fastest
+    # ones.
+    if is_replay_run(args):
+      return edgy_config.all_suites()
+    return edgy_config.primary_test_suites
+
+  positive_test_suites, negative_test_suites = parse_test_suites(args.filters)
+  validate_user_provided_suites(edgy_config, positive_test_suites)
+  validate_user_provided_suites(edgy_config, negative_test_suites)
+  return list(positive_test_suites - negative_test_suites)
+
+def load_previous_runs(previous_run_dirs: List[Path],
+                       test_suite: TestSuiteConfig) -> List[TestSuiteRun]:
+  previous_suite_runs = []
+
+  for run_dir in previous_run_dirs:
+    suite_run = TestSuiteRun(run_dir, test_suite)
+    previous_suite_runs.append(suite_run)
+  return previous_suite_runs
+
+def suite_ran_last_run(test_suite: TestSuiteConfig,
+                       last_run_dir: Optional[Path]) -> bool:
+  prev_run = test_suite.get_previous_run()
+  if prev_run is None:
+    return False
+  if not prev_run.completed():
+    return False
+  if last_run_dir is not None and prev_run.run_dir != last_run_dir:
+    return False
+  return True
+
+def load_test_suites(
+                    args: argparse.Namespace, edgy_config: EdgyConfig,
+                    test_runs_dir: Path) -> Tuple[List[TestSuiteConfig], bool]:
+  run_configs = load_run_configs(args, edgy_config)
+
+  # Determine what test suites we're running
+  test_suite_names = get_selected_test_suite_names_from(args, edgy_config)
+
+  # Load some initial information about previous runs.
+  previous_run_dirs = edgtest.get_test_runs_in(test_runs_dir)
+  last_run_dir = previous_run_dirs[0] if len(previous_run_dirs) > 0 else None
+
+  test_suites = []
+  for test_suite_name in test_suite_names:
+    for run_config in run_configs:
+      test_suite = load_test_suite(
+        args, run_config, edgy_config.test_home, test_suite_name
+      )
+
+      if suites_need_previous_runs(args):
+        previous_runs = load_previous_runs(previous_run_dirs, test_suite)
+        test_suite.runs.extend(previous_runs)
+
+        # Skip adding this suite if we're doing a replay run, and this suite
+        # did not run last time.
+        if not suite_ran_last_run(test_suite, last_run_dir):
+          continue
+
+      test_suites.append(test_suite)
+
+  return (test_suites, len(run_configs) > 1)
+
+def time_delta_to_seconds(time_delta: timedelta) -> int:
+  '''Convert the time from nano-seconds to seconds, rounded down to the nearest
+  second.
+  '''
+  days_as_seconds = time_delta.days * 864000
+  seconds = time_delta.seconds
+  return days_as_seconds + seconds
+
+class TestSuiteTest:
+  def __init__(self, suite: TestSuiteConfig, path: Path) -> None:
+    self.suite = suite
+    self.name = path.name
+    self.path = path
+    self.completed = False
+    self.killed = False
+    self.elapsed_time_delta: Optional[timedelta] = None
+    self.errors: List[str] = []
+    # Cache the path and use os.path.relpath rather than Path.relative_to. The
+    # Path.relative_to function seems to be significantly more expensive.
+    self._relative_path_str = os.path.relpath(self.path, self.suite.path)
+
+  def get_modified_time(self) -> float:
+    return os.path.getmtime(self.path)
+
+  def was_modified_after_expectations(self) -> bool:
+    expectations_modified_time = self.suite.expectations.modified_time
+    if expectations_modified_time is None:
+      return True
+    return expectations_modified_time < self.get_modified_time()
+
+  def is_marked_slow(self) -> bool:
+    return self.name.startswith('_')
+
+  def get_elapsed_time(self) -> int:
+    assert self.elapsed_time_delta is not None
+    return time_delta_to_seconds(self.elapsed_time_delta)
+
+  def get_relative_path(self) -> Path:
+    return Path(self._relative_path_str)
+
+  def get_relative_path_str(self) -> str:
+    return self._relative_path_str
+
+  def get_qualified_name(self, *, with_config: bool = False) -> str:
+    # If the config is requested, prepend the config then recurse.
+    if with_config:
+      return f"({self.suite.run_config.name}) {self.get_qualified_name()}"
+
+    return f"{self.suite.name}{os.path.sep}{self._relative_path_str}"
+
+  def get_unique_identifier(self) -> str:
+    '''Return a string that should uniquely identify this test (ignoring
+    run configurations).
+    '''
+    # Remove the extension, as tests with the same name but a different
+    # extension are considered duplicate tests.
+    extensionless_name, _ = os.path.splitext(self.name)
+    return self.get_qualified_name().replace(self.name, extensionless_name)
+
+  def get_expectations(self) -> List[str]:
+    expectations = []
+
+    test_relative_path = str(self.get_relative_path())
+    if test_relative_path in self.suite.expectations:
+      expectations = self.suite.expectations[test_relative_path]
+
+    return expectations
+
+def _construct_prefix_filter(filter_specs: List[str],
+                             test_suite: TestSuiteConfig) -> List[str]:
+  # Break this down into into parts based on "/"s.
+  filters = list(map(lambda suite: suite.split('/'), filter_specs))
+  # filter out any spec that doesn't specify any tests
+  filters = list(filter(lambda parts: len(parts) > 1, filters))
+  # Filter out any spec that doesn't match this test suite
+  filters = list(filter(lambda parts: parts[0] == test_suite.name, filters))
+  # Construct test prefix filter strings
+  return list(map(lambda parts: '/'.join(parts[1:]), filters))
+
+def _construct_prefix_filters(
+               args: argparse.Namespace,
+               test_suite: TestSuiteConfig) -> Callable[[TestSuiteTest], bool]:
+  # Split by ","s to get the individual test suite specifications.
+  filters = args.filters.split(',')
+
+  # Construct the positive filter list.
+  positive_filters = list(
+    filter(lambda f_str: not f_str.startswith('!'), filters)
+  )
+  positive_filters = _construct_prefix_filter(positive_filters, test_suite)
+  # Construct the negative filter list.
+  negative_filters = list(
+    filter(lambda f_str: f_str.startswith('!'), filters)
+  )
+  negative_filters = list(map(lambda f_str: f_str[1:], negative_filters))
+  negative_filters = _construct_prefix_filter(negative_filters, test_suite)
+
+  def matches_positive_filters(rel_path: str) -> bool:
+    if len(positive_filters) == 0:
+      return True
+    for prefix_str in positive_filters:
+      if rel_path.startswith(prefix_str):
+        return True
+    return False
+
+  def matches_negative_filters(rel_path: str) -> bool:
+    for prefix_str in negative_filters:
+      if rel_path.startswith(prefix_str):
+        return True
+    return False
+
+  def matches_prefix_filters(test: TestSuiteTest) -> bool:
+    rel_path = test.get_relative_path_str()
+    if not matches_positive_filters(rel_path):
+      return False
+    if matches_negative_filters(rel_path):
+      return False
+    return True
+
+  return matches_prefix_filters
+
+def parsed_test_status_key_to_name(key: str) -> str:
+  return key.split(':')[0]
+
+def _diagnose_bad_expectations_file(file_path: Path) -> None:
+  '''Diagnose bad expectations in the file at the given path.'''
+  line_ctr = 0
+  with open(file_path, 'r') as file_handle:
+    file_path_str = render_docker_path(file_path)
+    for line in file_handle:
+      line_text = line.rstrip()
+      line_ctr += 1
+      try:
+        parse_test_status(line_text)
+      except:
+        if len(line_text) != 0:
+          edgutil.eprint(
+            f"{file_path_str}, line {line_ctr}: "
+            'failed to parse test status line'
+          )
+          edgutil.eprint(
+            f"\n  {line_text}\n"
+          )
+        else:
+          edgutil.eprint(
+            f"{file_path_str}, line {line_ctr}: unexpected empty line"
+          )
+
+def _construct_replay_filters(
+               args: argparse.Namespace,
+               test_suite: TestSuiteConfig) -> Callable[[TestSuiteTest], bool]:
+  # The previous run is guaranteed to be loaded at this point, as otherwise
+  # the suite would've been filtered out during loading.
+  prev_run = test_suite.get_previous_run()
+  assert prev_run is not None
+
+  desired_tests = set()
+  if args.replay == 'unexpected' or args.replay == 'regress':
+    try:
+      with open(prev_run.get_log_path(), 'r') as file_handle:
+        expectations = test_suite.expectations.all_values()
+        encountered = [line.rstrip() for line in file_handle]
+        status_checker = TestStatusChecker(
+          expectations,
+          encountered
+        )
+        comparison_mode = (
+          TestStatusComparison.REGRESS if args.replay == 'regress'
+          else TestStatusComparison.ANY_CHANGE
+        )
+        comparison = status_checker.find_mismatches(
+          comparison_mode = comparison_mode
+        )
+        for key in comparison:
+          desired_tests.add(parsed_test_status_key_to_name(key))
+    except:
+      edgutil.eprint(
+        f"Failed to compare the previous run of the {test_suite.name} "
+        'suite to its expectations.'
+      )
+      _diagnose_bad_expectations_file(test_suite.expectations.file_path)
+      _diagnose_bad_expectations_file(prev_run.get_log_path())
+      sys.exit(1)
+  else:
+    try:
+      with open(prev_run.get_log_path(), 'r') as file_handle:
+        for status_line in file_handle:
+          key, parsed_test_status = parse_test_status(status_line)
+          if args.replay == 'all-failing':
+            desired_tests.add(parsed_test_status_key_to_name(key))
+          elif (args.replay == 'output-mismatch' and
+                parsed_test_status.is_output_mismatch()):
+            desired_tests.add(parsed_test_status_key_to_name(key))
+    except:
+      edgutil.eprint(
+        f"Failed to parse test statuses in previous run of {test_suite.name}."
+      )
+      _diagnose_bad_expectations_file(prev_run.get_log_path())
+      sys.exit(1)
+
+  return lambda test: test.get_relative_path_str() in desired_tests
+
+def _construct_crash_avoidance_filters(
+               args: argparse.Namespace,
+               test_suite: TestSuiteConfig) -> Callable[[TestSuiteTest], bool]:
+  def is_any_failure_a_crash(relative_path: str) -> bool:
+    for status_line in test_suite.expectations[relative_path]:
+      _, parsed_test_status = parse_test_status(status_line)
+      if parsed_test_status.normalized_status == 'ABORT':
+        return True
+    return False
+
+  def has_ulimit(test: TestSuiteTest) -> bool:
+    try:
+      test_descript = load_single_description(test.path)
+      # FIXME: Temporarily exclude anything that --time_limit in it.
+      for mode, cmd_opts, cmd_case_opts in test_descript.traverse_cases():
+        if '--time_limit' in ' '.join(cmd_opts):
+          return True
+        if '--time_limit' in ' '.join(cmd_case_opts):
+          return True
+    except Exception as e:
+      if sys.version_info >= (3, 11):
+        e.add_note(
+          f"while parsing test arguments for {test.path}"
+        )
+      raise
+    return len(test_descript.ulimit_options) != 0
+
+  def is_safe_test(test: TestSuiteTest) -> bool:
+    relative_path = test.get_relative_path_str()
+    if relative_path in test_suite.expectations:
+      if is_any_failure_a_crash(relative_path):
+        return False
+    if has_ulimit(test):
+      return False
+    return True
+
+  return is_safe_test
+
+def _construct_flakey_filters(
+               args: argparse.Namespace,
+               test_suite: TestSuiteConfig) -> Callable[[TestSuiteTest], bool]:
+  def in_flakey_tests(test: TestSuiteTest) -> bool:
+    return test.get_relative_path_str() not in test_suite.flakey_tests
+  return in_flakey_tests
+
+def passes_and_filtering(
+                       test_filter_list: List[Callable[[TestSuiteTest], bool]],
+                       test: TestSuiteTest) -> bool:
+  for filter_fn in test_filter_list:
+    if not filter_fn(test):
+      return False
+
+  return True
+
+TestLoadTuple = Tuple[int, List[TestSuiteTest], List[TestSuiteTest]]
+
+def validate_test_count(tests: List[TestSuiteTest]) -> None:
+  if len(tests) == 0:
+    print('No tests were found for the given arguments.')
+    sys.exit(2)
+
+def _find_or_copy_front_end(args: argparse.Namespace,
+                            run_dir: Path,
+                            run_config: TestRunConfig,
+                            run_config_env_overrides: Dict[str, str],
+                            dest_env_var: str) -> Path:
+  def grab_env_var(var_name: str) -> Optional[str]:
+    if var_name in run_config_env_overrides:
+      return run_config_env_overrides[var_name]
+    if var_name in os.environ:
+      return os.environ[var_name]
+    return None
+
+  for fe_env_var in run_config.front_end_env_paths[dest_env_var]:
+    env_value = grab_env_var(fe_env_var)
+    if env_value is None:
+      continue
+
+    fe_path = Path(env_value)
+    if args.verbose:
+      print(f"\"{fe_env_var}\" is set to: {fe_path}.")
+
+    if grab_env_var('EDG_TEST_NO_COPY_CPFE') is not None:
+      if args.verbose:
+        print('"EDG_TEST_NO_COPY_CPFE" is set.')
+      return fe_path
+    else:
+      # Create a path specific to the ocnfig to to store the front end
+      # binary copy.
+      run_config_path = run_dir / run_config.name / 'bin'
+      run_config_path.mkdir(parents = True, exist_ok = True)
+      # Copy the front end binary preserving the name.
+      run_fe_path =  run_config_path / fe_path.name
+      shutil.copy2(fe_path, run_fe_path)
+      if args.verbose:
+        print(f"Using a local copy at: {run_fe_path}.")
+      return run_fe_path
+
+  edgutil.eprint(f"No front end could be resolved for {dest_env_var}")
+  sys.exit(1)
+
+def _configure_front_end(args: argparse.Namespace, run_dir: Path,
+                         run_config: TestRunConfig) -> ConfiguredFEMetadata:
+  '''Prepare cpfe for a run; this involves making a local copy of cpfe if
+  necessary and capturing the configuration.
+  '''
+  if args.verbose:
+    print(f"Configuring the front end for the \"{run_config.name}\" config.")
+
+  # Create the environment variable overrides.
+  env_overrides: Dict[str, str] = {}
+  # Inherit any environment variables that start with the run config prefix.
+  #
+  # This maps variables as follows:
+  #
+  #    "TEST_<config_name>_X=Y" -> "X=Y"
+  #
+  # allowing multiple configurations with completely different CPFE binaries
+  # and EDG_BASE options to coexist within the same test run.
+  config_env_prefix = f"TEST_{run_config.name}_"
+  for key, value in os.environ.items():
+    if not key.startswith(config_env_prefix):
+      continue
+    env_overrides[key[len(config_env_prefix):]] = value
+  # Then computed overrides that point to a front end binary (factoring
+  # in any mapped environment variables that might influence resolution).
+  for dest_env in run_config.front_end_env_paths.keys():
+    fe_path = _find_or_copy_front_end(
+      args,
+      run_dir,
+      run_config,
+      env_overrides,
+      dest_env
+    )
+    env_overrides[dest_env] = str(fe_path)
+  # Express the CPFE providing build constants.
+  if run_config.config_providing_fe_env != 'CPFE':
+    env_overrides['PRIMARY_CPFE'] = run_config.config_providing_fe_env
+  # Finally merge in any fixed overrides.
+  env_overrides.update(run_config.env_overrides)
+
+  compiler_bin = env_overrides[run_config.config_providing_fe_env]
+  try:
+    async def load_constants(
+                          loop: asyncio.AbstractEventLoop) -> FEBuildConstants:
+      return await edgtest.filter.load_build_constants(Path(compiler_bin))
+    build_constants = edgutil.run_asyncio_loop(load_constants)
+  except asyncio.CancelledError:
+    edgutil.eprint(
+      f"Terminated while scraping build constants for: {run_config.name}\n"
+      f"  compiler binary: {compiler_bin}"
+    )
+    sys.exit(1)
+
+  return ConfiguredFEMetadata(
+    env_overrides,
+    build_constants
+  )
+
+class RunSetupCache:
+  def __init__(self, run_dir: Path) -> None:
+    self._run_dir = run_dir
+    self._cache: Dict[str, ConfiguredFEMetadata] = {}
+
+  def configure_fe_for_suite(
+                          self, args: argparse.Namespace,
+                          test_suite: TestSuiteConfig) -> ConfiguredFEMetadata:
+    run_config = test_suite.run_config
+    if run_config.name not in self._cache:
+      self._cache[run_config.name] = _configure_front_end(
+        args,
+        self._run_dir,
+        run_config
+      )
+
+    fe_metadata = self._cache[run_config.name]
+    # Update any environment variable keys with those updated by the run
+    # configuration.
+    test_suite.env_override.update(fe_metadata.env_override)
+    return fe_metadata
+
+def get_latest_replay_number(replay_dir: Path) -> int:
+  if not replay_dir.exists():
+    return 0
+
+  latest_replay = 0
+  for path in replay_dir.iterdir():
+    # Skip non-directories.
+    if not path.is_dir():
+      continue
+
+    # Try to interpret this directory as an integer.
+    try:
+      filename = path.name
+      latest_replay = max(int(filename), latest_replay)
+    except ValueError:
+      pass
+
+  return latest_replay
+
+def get_run_dir(test_runs_dir: Path, args: argparse.Namespace,
+                test_suites: List[TestSuiteConfig]) -> Path:
+  if is_replay_run(args):
+    # This is guaranteed to exist as the checks on test counts prior to calling
+    # this function ensure that at least one test from the last run is being
+    # replay (so there must be a last run).
+    replayed_run_dir = edgtest.get_test_runs_in(test_runs_dir)[0]
+
+    # Look for the latest subdirectory.
+    subdir = 'recording-updates' if args.record_mode else 'replays'
+    replay_dir = replayed_run_dir / subdir
+    latest_replay = get_latest_replay_number(replay_dir)
+
+    return replay_dir / str(latest_replay + 1)
+  else:
+    current_time = (
+      datetime.strptime(args.test_run_timestamp, edgutil.RUN_TIMESTAMP_FORMAT)
+      if args.test_run_timestamp else datetime.now()
+    )
+    timestamp = current_time.strftime(edgutil.RUN_TIMESTAMP_FORMAT)
+    return test_runs_dir / timestamp
+
+def prepare_for_test_run(test_runs_dir: Path, args: argparse.Namespace,
+                         test_suites: List[TestSuiteConfig]) -> None:
+  try:
+    run_dir = get_run_dir(test_runs_dir, args, test_suites)
+
+    if args.verbose or args.disp_run_dir:
+      run_dir_str = render_docker_path(run_dir)
+      print(f"Run output directory: {run_dir_str}")
+
+    run_dir.mkdir(parents = True)
+
+    setup_cache = RunSetupCache(run_dir)
+
+    for test_suite in test_suites:
+      # Load the test suite run
+      fe_metadata = setup_cache.configure_fe_for_suite(args, test_suite)
+      test_suite_run = TestSuiteRun(
+        run_dir,
+        test_suite,
+        fe_metadata = fe_metadata
+      )
+
+      # Create the test suite run's output path
+      test_suite_run.get_output_path().mkdir(parents = True)
+
+      # Set the test suite run as the current run
+      test_suite.set_current_run(test_suite_run)
+  except FileExistsError:
+    # This can happen if edgy is rapidly invoked, just wait a bit and retry (to
+    # bump the directory name).
+    time.sleep(.5)
+    prepare_for_test_run(test_runs_dir, args, test_suites)
+
+class TestStatus:
+  def __init__(self, total_test_count_fn: Callable[[], int],
+               max_test_failures: int) -> None:
+    self.start_time = time.time()
+    self._self_cancelled = False
+    self._terminated = False
+    self.test_completed = 0
+    self.total_test_count_fn = total_test_count_fn
+    self.test_failed = 0
+    self.max_test_failures = max_test_failures
+
+  def are_tests_loaded(self) -> bool:
+    return self.total_test_count_fn() != -1
+
+  def is_complete(self) -> bool:
+    if self.test_completed == self.total_test_count_fn():
+      return True
+    if self._terminated:
+      return True
+    return False
+
+  def was_self_terminated(self) -> bool:
+    return self._self_cancelled
+
+  def mark_external_termination(self) -> None:
+    '''A terminating condition occurred that was caused by a condition
+    outside of the control of edgy.'''
+    self._terminated = True
+
+  def mark_self_termination(self) -> None:
+    '''A terminating condition occurred that was caused by a condition
+    controlled by edgy itself.'''
+    self._self_cancelled = True
+    self._terminated = True
+
+  def get_elapsed_time(self) -> float:
+    return time.time() - self.start_time
+
+  def get_tests_per_second(self) -> int:
+    return int(self.test_completed / self.get_elapsed_time())
+
+  def get_percentage_completed(self) -> int:
+    total = max(1, self.total_test_count_fn())
+    return int(100 * self.test_completed / total)
+
+  def get_remaining_tests(self) -> int:
+    return self.total_test_count_fn() - self.test_completed
+
+  def get_seconds_remaining(self) -> float:
+    return self.get_remaining_tests() / self.get_tests_per_second()
+
+  def increment_failures(self) -> None:
+    self.test_failed += 1
+
+  def has_exceeded_failure_limit(self) -> bool:
+    # A value of < 1 disables this feature
+    if self.max_test_failures < 1:
+      return False
+
+    return self.test_failed >= self.max_test_failures
+
+def formatted_time(seconds: float) -> str:
+  time_rep = time.gmtime(seconds)
+  return time.strftime("%H:%M:%S", time_rep)
+
+MICROSECONDS_TO_MILISECONDS = 1_000
+
+def formatted_time_delta(delta: timedelta) -> str:
+  time_rep = time.gmtime(time_delta_to_seconds(delta))
+  time_major = time.strftime("%H:%M:%S", time_rep)
+  time_minor = str(delta.microseconds // MICROSECONDS_TO_MILISECONDS)
+  return f"{time_major}.{time_minor}"
+
+class TestStatusReporterBuffer:
+  def __init__(self, test_status_reporter: 'TestStatusReporter') -> None:
+    self.test_status_reporter = test_status_reporter
+    self.parts: List[str] = []
+
+  def print_info(self, string: str) -> None:
+    self.parts.append(string)
+    self.parts.append('\n')
+
+  def print_remark(self, string: str) -> None:
+    self.parts.append('  ')
+    self.print_info(string)
+
+  def print_internal_error(self, *strings: str) -> None:
+    # Create a VERY noisy internal error message
+    callout_string_wrapper = 'E ' + ('#' * 80) + '\n'
+    callout_string_header = 'CRITICAL INTERNAL ERROR DETECTED'.center(80)
+    callout_string = f"E {callout_string_header}\n"
+    self.parts.append(callout_string_wrapper)
+    self.parts.append(callout_string)
+    for string in strings:
+      self.parts.append('E ')
+      self.print_info(string)
+    self.parts.append(callout_string_wrapper)
+
+  def __enter__(self) -> 'TestStatusReporterBuffer':
+    return self
+
+  def __exit__(self, _type: Any, _value: Any, _tb: Any) -> None:
+    if len(self.parts) == 0:
+      return
+
+    joined_string = ''.join(self.parts)
+    self.test_status_reporter._status_line.print(joined_string, end = '')
+
+class TestStatusReporter:
+  def __init__(self, test_status: TestStatus, multi_config_run: bool,
+               regress_mode: bool, debug_failures: bool,
+               show_commands: bool) -> None:
+    self._status_line = edgutil.AsyncStatusReporter(self._get_status_line_text)
+    self.test_status = test_status
+    self.multi_config_run = multi_config_run
+    self.regress_mode = regress_mode
+    self.debug_failures = debug_failures
+    self.show_commands = show_commands
+
+  def is_multi_config_run(self) -> bool:
+    return self.multi_config_run
+
+  def is_status_line_enabled(self) -> bool:
+    return self._status_line.is_status_line_enabled()
+
+  def increment_failures(self) -> None:
+    self.test_status.increment_failures()
+
+  def is_regression_mode(self) -> bool:
+    return self.regress_mode
+
+  def should_report_cancellations(self) -> bool:
+    if self.test_status.was_self_terminated():
+      # Since this is a self cancellation, at the time of writing, this only
+      # occurs when using a max failure count, and this will just be unwanted
+      # noise.
+      return False
+    return True
+
+  def _get_estimate_remaining_time(self) -> str:
+    # We can't give a good estimate if we are completing ~0 tests per
+    # second. This will additionally result in a division by zero error
+    # so guard against that by returning "???".
+    if self.test_status.get_tests_per_second() == 0:
+      return '??:??:??'
+    else:
+      return formatted_time(self.test_status.get_seconds_remaining())
+
+  def _get_status_line_text(self) -> str:
+    if self.test_status.are_tests_loaded():
+      return "{:,}/{:,} ({}%) in {} ~{:,}/sec ({} remaining)".format(
+        self.test_status.test_completed,
+        self.test_status.total_test_count_fn(),
+        self.test_status.get_percentage_completed(),
+        formatted_time(self.test_status.get_elapsed_time()),
+        self.test_status.get_tests_per_second(),
+        self._get_estimate_remaining_time()
+      )
+    else:
+      return "{:,}/? (?%) in {} ~{:,}/sec (??:??:?? remaining)".format(
+        self.test_status.test_completed,
+        formatted_time(self.test_status.get_elapsed_time()),
+        self.test_status.get_tests_per_second()
+      )
+
+  def print_status_line(self) -> None:
+    self._status_line.print_status_line()
+
+  def new_buffer(self) -> TestStatusReporterBuffer:
+    return TestStatusReporterBuffer(self)
+
+  def cleanup_status_line(self) -> None:
+    self._status_line.cleanup_status_line()
+
+def process_test_error(test: TestSuiteTest, test_error: str) -> List[str]:
+  # Remove return characters as they cause formatting issues
+  return_removed_str = test_error.replace('\r', '')
+  # Replace the absolute path with a relative path (to make things prettier)
+  path_removed_str = return_removed_str.replace(
+    str(test.path),
+    test.get_relative_path_str()
+  )
+  # Finally, split the test result lines to get the different errors
+  # from the test error output string.
+  lines = path_removed_str.split('\n')
+  return list(filter(lambda line: len(line) > 0, lines))
+
+def format_test_error(test: TestSuiteTest, test_error: str, *,
+                      for_multi_config_output: bool = False) -> str:
+  relative_path = test.get_relative_path()
+
+  # If this is a run with multiple configurations being run, tell
+  # get_qualified_name to include the configuration in the qualification.
+  qualified_name = test.get_qualified_name(
+    with_config = for_multi_config_output
+  )
+
+  return test_error.replace(f"{relative_path}:", f"{qualified_name} ")
+
+# These keys while used by the suite and differing from the host
+# are processed in a way that makes them redundant to export
+USELESS_ENV_KEYS = ['', '_']
+
+# Create a dictionary of the environment variables that are overriden by the
+# suite vs the host environment.
+def create_env_diff(suite_env: Dict[str, str]) -> Dict[str, str]:
+  env_diff = {}
+  for key, value in suite_env.items():
+    # Skip keys already in the environment with the same value
+    if key in os.environ:
+      if os.environ[key] == value:
+        continue
+
+    if key in USELESS_ENV_KEYS:
+      continue
+
+    # Record the overridden value
+    env_diff[key] = value
+  return env_diff
+
+def create_env_cli_patch(suite_env: Dict[str, str]) -> str:
+  env_diff = create_env_diff(suite_env)
+  overrides = []
+  for key, value in env_diff.items():
+    overrides.append(f"{key}=\"{value}\"")
+  return " ".join(overrides)
+
+def get_test_executor_args(test: TestSuiteTest,
+                           *additional_args: str) -> List[str]:
+  return [
+    'edgy-run-test',
+    *additional_args,
+    str(test.path),
+    str(test.suite.path)
+  ]
+
+def get_test_executor_kw_args(test: TestSuiteTest) -> Dict[str, Any]:
+  return {
+    'cwd': test.suite.get_current_run().get_output_path(),
+    'env': test.suite.env_override,
+    'stdout': asyncio.subprocess.PIPE,
+    'stderr': asyncio.subprocess.PIPE,
+    'start_new_session': True
+  }
+
+class TestStatusComparison(Enum):
+  ANY_CHANGE = 1
+  REGRESS = 2
+  IMPROVEMENT = 3
+
+class TestStatusChecker:
+  def _compute_keyed_status(
+                       self,
+                       status_lines: List[str]) -> Dict[str, ParsedTestStatus]:
+    keyed_statuses = {}
+
+    # Parse the test statuses into a keyed state
+    for status_line in status_lines:
+      key, parsed_test_status = parse_test_status(status_line)
+      keyed_statuses[key] = parsed_test_status
+
+    return keyed_statuses
+
+  def __init__(self, expected_lines: List[str],
+               encountered_lines: List[str]) -> None:
+    self.keyed_expectations = self._compute_keyed_status(expected_lines)
+    self.keyed_results = self._compute_keyed_status(encountered_lines)
+
+    self.all_keys = set().union(
+      self.keyed_expectations.keys(), self.keyed_results.keys()
+    )
+
+  @staticmethod
+  def create_safely(
+                expected_lines: List[str],
+                encountered_lines: List[str]) -> Optional['TestStatusChecker']:
+    try:
+      return TestStatusChecker(expected_lines, encountered_lines)
+    except:
+      return None
+
+  def _get_status_for_comparison(
+                               self, parsed_status: Optional[ParsedTestStatus],
+                               comparison_mode: TestStatusComparison) -> str:
+    if parsed_status is None:
+      return 'PASS'
+
+    if comparison_mode != TestStatusComparison.ANY_CHANGE:
+      return parsed_status.normalized_status
+    else:
+      return parsed_status.full_status
+
+  def _compare(self, *, comparison_mode: TestStatusComparison) -> Iterator[
+                                                  Tuple[
+                                                    str,
+                                                    Optional[ParsedTestStatus],
+                                                    Optional[ParsedTestStatus]
+                                                  ]
+                                                               ]:
+    for key in self.all_keys:
+      old_parsed_status = self.keyed_expectations.get(key)
+      new_parsed_status = self.keyed_results.get(key)
+
+      # Exclude tests which had no previous output and no previous expectation
+      # in modes other than ANY_CHANGE, as we can't know in what way they've
+      # really changed.
+      if (comparison_mode != TestStatusComparison.ANY_CHANGE and
+          old_parsed_status is None and
+          new_parsed_status is not None):
+        if new_parsed_status.has_no_previous_output():
+          continue
+
+      # Extract the base status for comparison
+      old_status = self._get_status_for_comparison(
+        old_parsed_status, comparison_mode
+      )
+      new_status = self._get_status_for_comparison(
+        new_parsed_status, comparison_mode
+      )
+
+      if comparison_mode == TestStatusComparison.ANY_CHANGE:
+        # Skip statuses that didn't change compared to the expectations.
+        if old_status == new_status:
+          continue
+      elif comparison_mode == TestStatusComparison.REGRESS:
+        # In regression mode, skip status that didn't change severity or
+        # otherwise improved.
+        if not is_status_change_regressive(old_status, new_status):
+          continue
+      elif comparison_mode == TestStatusComparison.IMPROVEMENT:
+        # In improvement mode, skip status that didn't change severity or
+        # otherwise regressed.
+        if not is_status_change_improvement(old_status, new_status):
+          continue
+      else:
+        raise Exception(f"Unhandled TestStatusComparison: {comparison_mode}")
+
+
+      yield (key, old_parsed_status, new_parsed_status)
+
+  def find_mismatches(self, **kw_args: Any) -> Iterator[str]:
+    for key, _, _ in self._compare(**kw_args):
+      yield key
+
+  def compare(self, **kw_args: Any) -> Iterator[Tuple[
+                                                Optional[ParsedTestStatus],
+                                                Optional[ParsedTestStatus]
+                                               ]]:
+    for _, old_parsed_status, new_parsed_status in self._compare(**kw_args):
+      yield (old_parsed_status, new_parsed_status)
+
+def report_debug_command(status_buffer: TestStatusReporterBuffer,
+                         test: TestSuiteTest, *,
+                         faster_mode: bool) -> None:
+  current_suite_run = test.suite.get_current_run()
+  output_dir = current_suite_run.get_output_path()
+
+  faster_mode_str = ' --faster' or ''
+
+  driver_command = (
+    f"edg-run-test -o {output_dir} --driver-debug"
+    f"{faster_mode_str} -t {test.suite.path} {test.path}"
+   )
+
+  env_overrides = create_env_cli_patch(test.suite.env_override)
+  status_buffer.print_remark(" ".join([env_overrides, driver_command]))
+
+async def check_expectations(status_reporter: TestStatusReporter,
+                             test: TestSuiteTest, *,
+                             faster_mode: bool) -> None:
+  expectations = test.get_expectations()
+  encountered = test.errors
+
+  status_checker = TestStatusChecker.create_safely(expectations, encountered)
+  problem_detected = False
+
+  with status_reporter.new_buffer() as status_buffer:
+    if status_checker is not None:
+      comparison_mode = (
+        TestStatusComparison.REGRESS if status_reporter.is_regression_mode()
+        else TestStatusComparison.ANY_CHANGE
+      )
+      comparison = status_checker.compare(comparison_mode = comparison_mode)
+      for old_parsed_status, new_parsed_status in comparison:
+        # Report old problems with -
+        if old_parsed_status is not None:
+          formatted_error = format_test_error(
+            test,
+            old_parsed_status.status_line,
+            for_multi_config_output = status_reporter.is_multi_config_run()
+          )
+          status_buffer.print_info(f"- {formatted_error}")
+          problem_detected = True
+
+        # Report new problems with +
+        if new_parsed_status is not None:
+          formatted_error = format_test_error(
+            test,
+            new_parsed_status.status_line,
+            for_multi_config_output = status_reporter.is_multi_config_run()
+          )
+          status_buffer.print_info(f"+ {formatted_error}")
+          problem_detected = True
+    else:
+      # Reset the test errors to prevent log/expectation output issues.  (Since
+      # the output wasn't parsed properly, we could mishandle generating the
+      # log if we try to include this test).
+      test.errors = []
+      # Notify the user something very bad has happened.
+      status_buffer.print_internal_error(
+        'Could not parse test statuses for:',
+        test.get_qualified_name(),
+        'Expected:',
+        *expectations,
+        'Encountered:',
+        *encountered
+      )
+      problem_detected = True
+
+    # Report if a problematic test was created or updated after the last
+    # expectations update (as it's useful to know that it may be the test
+    # itself that's changed).
+    #
+    # Note this previously was based on the "created time". However on UNIX
+    # this is based on the time the file metadata's last changed. This is
+    # seemingly unreliable as a measure of "creation time" -- at least in the
+    # context of git? -- so modification time is used instead, and we now also
+    # report updates, not just creation.
+    if problem_detected and test.was_modified_after_expectations():
+      status_buffer.print_remark(
+        "Created or updated after last expectations update"
+      )
+
+    # Report the debug command if enabled
+    is_debugged_failure = problem_detected and status_reporter.debug_failures
+    if is_debugged_failure or status_reporter.show_commands:
+      report_debug_command(
+        status_buffer,
+        test,
+        faster_mode = faster_mode
+      )
+
+    # Increment failure count here so in the case of particularly fast tests we
+    # still get the debug report command.
+    if problem_detected:
+      status_reporter.increment_failures()
+
+def report_killed_test(status_reporter: TestStatusReporter,
+                       test: TestSuiteTest) -> None:
+  # If this is a run with multiple configurations being run, tell
+  # get_qualified_name to include the configuration in the qualification.
+  print_config = status_reporter.is_multi_config_run()
+  qualified_name = test.get_qualified_name(with_config=print_config)
+
+  with status_reporter.new_buffer() as status_buffer:
+    status_buffer.print_info(f"X {qualified_name}")
+
+def handle_test_cancel(status_reporter: TestStatusReporter,
+                       test: TestSuiteTest) -> None:
+  # Mark the test killed.
+  test.killed = True
+
+  if status_reporter.should_report_cancellations():
+    report_killed_test(status_reporter, test)
+
+TEST_SLOW_THRESHOLD = 60
+
+def check_test_speed(status_reporter: TestStatusReporter,
+                     test: TestSuiteTest) -> None:
+  # If this environment variable is set, do not report slow tests.
+  if edgutil.is_env_set('EDG_TEST_NO_INLINE_SLOW_TESTS'):
+    return
+
+  # Check to see if the test time matched speed expectations.
+  was_slow = test.get_elapsed_time() >= TEST_SLOW_THRESHOLD
+  if test.is_marked_slow() == was_slow:
+    return
+
+  if (test.is_marked_slow() and
+      test.get_elapsed_time() > (TEST_SLOW_THRESHOLD / 3)):
+    # Do not suggest removing the slow marker on tests that are running at a
+    # third of the slow time threshold or more.
+    return
+
+  template = (
+    "Consider marking {} slow (Took: {})" if was_slow
+    else "Consider removing {}'s slow marker (Took: {})"
+  )
+
+  # If this is a run with multiple configurations being run, tell
+  # get_qualified_name to include the configuration in the qualification.
+  print_config = status_reporter.is_multi_config_run()
+
+  with status_reporter.new_buffer() as status_buffer:
+    status_buffer.print_remark(template.format(
+      test.get_qualified_name(with_config=print_config),
+      formatted_time(test.get_elapsed_time())
+    ))
+
+async def run_test(status_reporter: TestStatusReporter,
+                   test: TestSuiteTest, *, faster_mode: bool) -> None:
+  start_time = datetime.now()
+  try:
+    current_suite_run = test.suite.get_current_run()
+    test_results = await edgtest.exec.run_test(
+      test.path,
+      top_dir = test.suite.path,
+      output_dir = current_suite_run.get_output_path(),
+      env = test.suite.env_override.copy(),
+      build_constants = current_suite_run.get_build_constants(),
+      faster_mode = faster_mode,
+      update_recording = False,
+      debug_mode = False,
+      driver_debug_mode = False
+    )
+    stdout_decoded = '\n'.join(test_results)
+
+    # Update the errors
+    if len(stdout_decoded) > 0:
+      test.errors = process_test_error(test, stdout_decoded)
+
+    # Report expectation differences.
+    await check_expectations(status_reporter, test, faster_mode = faster_mode)
+
+    # Mark the test as completed only if processing completes without issue.
+    test.completed = True
+  except asyncio.CancelledError:
+    handle_test_cancel(status_reporter, test)
+  finally:
+    test.elapsed_time_delta = datetime.now() - start_time
+    check_test_speed(status_reporter, test)
+
+async def record_test(status_reporter: TestStatusReporter,
+                      test: TestSuiteTest, faster_mode: bool) -> None:
+  try:
+    current_suite_run = test.suite.get_current_run()
+    test_results = await edgtest.exec.run_test(
+      test.path,
+      top_dir = test.suite.path,
+      output_dir = current_suite_run.get_output_path(),
+      env = test.suite.env_override.copy(),
+      build_constants = current_suite_run.get_build_constants(),
+      faster_mode = faster_mode,
+      update_recording = True,
+      debug_mode = False,
+      driver_debug_mode = False
+    )
+    stdout_decoded = '\n'.join(test_results)
+
+    if len(stdout_decoded) > 0:
+      test.errors = process_test_error(test, stdout_decoded)
+
+    # Mark the test as completed only if processing completes without issue.
+    test.completed = True
+  except asyncio.CancelledError:
+    handle_test_cancel(status_reporter, test)
+
+def get_test_executor_coroutine(
+     args: argparse.Namespace) -> Callable[
+                                           [TestStatusReporter, TestSuiteTest],
+                                           Coroutine
+                                          ]:
+  '''This function is responsible for taking the command line arguments and
+  forming the coroutine that should be executed for every test. The coroutine
+  itself takes only the status reporter and the test to run as arguments so any
+  additional state from the command line arguments must be configured here.
+  '''
+  # Create proxy functions for run_test with the appropriate command line
+  # arguments passed on to edgy-run-test (and by proxy, run_test).
+  if args.record_mode:
+    async def record_test_proxy(status_reporter: TestStatusReporter,
+                                test: TestSuiteTest) -> None:
+      await record_test(
+        status_reporter,
+        test,
+        faster_mode = not args.disable_faster_mode
+      )
+
+    return record_test_proxy
+  else:
+    async def run_test_proxy(status_reporter: TestStatusReporter,
+                             test: TestSuiteTest) -> None:
+      await run_test(
+        status_reporter,
+        test,
+        faster_mode = not args.disable_faster_mode
+      )
+    return run_test_proxy
+
+def _compute_daemon_socket() -> str:
+  daemon_id = os.environ.get('EDG_DAEMON_ID', '0')
+  user_id =  os.geteuid()
+
+  # For Linux the EDG daemon implementation confirms to the Filesystem
+  # Hierarchy Standard. In other Unix systems, the daemon falls back to using
+  # a temporary file path for increased compatibility.
+  if platform.system() == 'Linux':
+    return f"/var/run/user/{user_id}/cpfe-daemon-{daemon_id}.sock"
+
+  return f"/tmp/cpfe-daemon-{user_id}-{daemon_id}.sock"
+
+def is_daemon_socket_alive() -> bool:
+  socket_address = _compute_daemon_socket()
+  if os.path.exists(socket_address):
+    with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as cli_socket:
+      if cli_socket.connect_ex(socket_address) == 0:
+        cli_socket.send(b'ping7ef77b7a-cd45-4b2e-9498-5e999bb07a06')
+        return True
+  return False
+
+class DynamicLoadingTestRunner:
+  def __init__(self, loop: asyncio.AbstractEventLoop,
+               args: argparse.Namespace,
+               tests: List[TestSuiteTest],
+               skipped_tests: List[TestSuiteTest], *,
+               multi_config_run: bool) -> None:
+    self.loop = loop
+    self.args = args
+    self.test_queue: List[TestSuiteTest] = []
+    self.multi_config_run = multi_config_run
+    # Variables used for dynamic test loading.
+    self.tests = tests
+    self.skipped_tests = skipped_tests
+    self.all_tests_loaded = asyncio.Event()
+
+  async def load_tests_for_suite(self, test_suite: TestSuiteConfig) -> None:
+    test_exts = test_suite.get_test_file_extensions()
+
+    # Configure the desired filters.
+    all_filters = []
+    if len(self.args.filters) != 0:
+      all_filters.append(_construct_prefix_filters(self.args, test_suite))
+    if is_replay_run(self.args):
+      all_filters.append(_construct_replay_filters(self.args, test_suite))
+    if self.args.avoid_crashes:
+      all_filters.append(
+        _construct_crash_avoidance_filters(self.args, test_suite)
+      )
+    if self.args.exclude_flakey_tests or self.args.avoid_crashes:
+      all_filters.append(_construct_flakey_filters(self.args, test_suite))
+
+    # Don't add the test if it's a slow test and we're not running those.
+    # Include slow tests in replays implicitly, as they'll only be run if they
+    # were part of what's being replayed.
+    run_slow_tests = self.args.run_slow_tests or is_replay_run(self.args)
+
+    loaded_tests = set()
+    for test_path in edgtest.walk_test_directory(test_suite.path, test_exts):
+      test = TestSuiteTest(test_suite, test_path)
+
+      # Don't add tests that don't match the applied filters (if any)
+      if not passes_and_filtering(all_filters, test):
+        self.skipped_tests.append(test)
+        continue
+
+      if not run_slow_tests and test.is_marked_slow():
+        self.skipped_tests.append(test)
+        continue
+
+      # Detect tests that share the same path and name, but have differing file
+      # extensions. This causes problems with our current test executors as
+      # they don't preserve the file extension, thus leading to shared rt
+      # files, and subtle "blame shifting".
+      test_identifier = test.get_unique_identifier()
+      if test_identifier in loaded_tests:
+        print_warn(
+          f"Discovered multiple valid tests named \"{test_identifier}\"."
+          " This WILL cause issues with .rt file processing."
+        )
+      else:
+        loaded_tests.add(test_identifier)
+
+      self.tests.append(test)
+      self.test_queue.append(test)
+
+      try:
+        # Yield back to the event loop to work on other work if possible.
+        await asyncio.sleep(0)
+      except asyncio.CancelledError:
+        # This task cannot be cancelled; it must complete so that the
+        # expectations can be written correctly.
+        pass
+
+  async def load_tests(self,
+                       test_suites: List[TestSuiteConfig]) -> None:
+    # Handle the test suites reversed, our processing queue is effectively a
+    # stack so we want the highest priority things added last.
+    for test_suite in reversed(test_suites):
+      await self.load_tests_for_suite(test_suite)
+
+    self.all_tests_loaded.set()
+
+  async def run_tests(self) -> int:
+    if self.args.randomize_test_order or self.args.pick_count != 0:
+      # In these cases, the tests must be fully loaded up front to ensure the
+      # randomization (and optionally sampling) has the full context.
+      await self.all_tests_loaded.wait()
+      # Randomize the test processing order if requested.
+      random.shuffle(self.test_queue)
+      if self.args.pick_count > 0:
+        # Make a new test queue from the original list of tests.
+        self.test_queue = self.test_queue[:self.args.pick_count]
+    def test_count_to_execute() -> int:
+      if self.all_tests_loaded.is_set():
+        if self.args.pick_count != 0:
+          # When pick count is specified the number of tests to execute is the
+          # smaller number of number of tests and the number of test picked.
+          return min(self.args.pick_count, len(self.tests))
+        # Otherwise, the number of tests to execute is the number of tests
+        # loaded.
+        return len(self.tests)
+      # When the tests are not loaded, return -1 to indicate we do not know how
+      # many tests are going to be executed.
+      return -1
+    test_status = TestStatus(test_count_to_execute, self.args.max_fail_count)
+    status_reporter = TestStatusReporter(
+      test_status,
+      self.multi_config_run,
+      self.args.regress_mode,
+      self.args.debug_failures,
+      self.args.show_commands or self.args.verbose
+    )
+    test_executor_co = get_test_executor_coroutine(self.args)
+    stop_if_daemon_died = is_daemon_socket_alive()
+    try:
+      job_loop = edgutil.AsyncJobLoop(
+        self.loop,
+        max_jobs = self.args.job_count
+      )
+      timeout = (
+        self.args.timeout_seconds if self.args.timeout_seconds > 0 else None
+      )
+      def supply_job() -> Optional[Coroutine]:
+        if len(self.test_queue) == 0:
+          return None
+        job = test_executor_co(status_reporter, self.test_queue.pop())
+        if timeout is not None:
+          job = asyncio.wait_for(job, timeout)
+        return job
+      def update_callback(done_tasks: Set[asyncio.Task]) -> bool:
+        # Update the test status.
+        test_status.test_completed += len(done_tasks)
+        # Too many tests have failed, end the loop.
+        if test_status.has_exceeded_failure_limit():
+          test_status.mark_self_termination()
+          return True
+        if stop_if_daemon_died and not is_daemon_socket_alive():
+          test_status.mark_external_termination()
+          # The daemon was running when testing started but is no longer
+          # running; assume we're testing the daemon and end testing.
+          with status_reporter.new_buffer() as status_buffer:
+            status_buffer.print_info(
+              f"Daemon died, automatically stopping."
+            )
+          return True
+        # Continue.
+        return False
+      async def update_status_line() -> None:
+        # If the status line is not enabled, the update status line background
+        # task is immediately complete.
+        if not status_reporter.is_status_line_enabled():
+          return
+        try:
+          while not test_status.is_complete():
+            status_reporter.print_status_line()
+            await asyncio.sleep(.1)
+        except asyncio.CancelledError:
+          pass
+
+      # The status line is updated on an independent "clock" (as opposed to as
+      # soon as there is a job update) so as to not negatively impact the main
+      # job loop's performance when stdout is slow and the jobs are fast.
+      await asyncio.gather(
+        job_loop.run_supplier(supply_job, update_callback),
+        update_status_line()
+      )
+    except asyncio.CancelledError:
+      pass
+    finally:
+      status_reporter.cleanup_status_line()
+
+    # The exit code is 0 if everything passed; otherwise the exit code for
+    # failing tests is 5.
+    return 0 if test_status.test_failed == 0 else 5
+
+def supervise_testing(args: argparse.Namespace,
+                      test_suites: List[TestSuiteConfig], *,
+                      multi_config_run: bool) -> TestLoadTuple:
+  tests: List[TestSuiteTest] = []
+  skipped_tests: List[TestSuiteTest] = []
+
+  async def load_and_run_tests(loop: asyncio.AbstractEventLoop) -> int:
+    test_runner = DynamicLoadingTestRunner(
+      loop,
+      args,
+      tests,
+      skipped_tests,
+      multi_config_run = multi_config_run
+    )
+
+    try:
+      _, exit_code = await asyncio.gather(
+        test_runner.load_tests(test_suites),
+        test_runner.run_tests()
+      )
+      return exit_code
+    except asyncio.CancelledError:
+      return 1
+
+  exit_code = edgutil.run_asyncio_loop(load_and_run_tests)
+  return (exit_code, tests, skipped_tests)
+
+class TestSuiteReport:
+  def __init__(self) -> None:
+    self.tests: List[TestSuiteTest] = []
+    self.skipped_tests: List[TestSuiteTest] = []
+    self.errors: List[str] = []
+    self.inherited_errors: List[str] = []
+
+def _generate_testing_reports(
+                  test_suites: List[TestSuiteConfig],
+                  tests: List[TestSuiteTest],
+                  skipped_tests: List[TestSuiteTest]) -> Dict[TestSuiteConfig,
+                                                              TestSuiteReport]:
+  reports = {}
+
+  # Add all test suites so we generate logs for all tests
+  for suite in test_suites:
+    reports[suite] = TestSuiteReport()
+
+  # Add any test failures to any test suites
+  for test in tests:
+    report = reports[test.suite]
+    if not test.completed:
+      report.skipped_tests.append(test)
+      continue
+
+    report.tests.append(test)
+    report.errors.extend(test.errors)
+
+  for test in skipped_tests:
+    report = reports[test.suite]
+    report.skipped_tests.append(test)
+
+  return reports
+
+def write_log_file_from_errors(file_path: Path, errors: List[str]) -> None:
+  errors.sort()
+  with open(file_path, 'w') as file_handle:
+    for error in errors:
+      file_handle.write(error)
+      file_handle.write('\n')
+
+class OutputFileStack:
+  def __init__(self) -> None:
+    self.open_files: Dict[Path, TextIO] =  {}
+    self._context_stack = contextlib.ExitStack()
+
+  def get_or_init(self, file_path: Path) -> TextIO:
+    if file_path not in self.open_files:
+      self.open_files[file_path] = (
+        self._context_stack.enter_context(open(file_path, 'w+'))
+      )
+    return self.open_files[file_path]
+
+  def __enter__(self) -> 'OutputFileStack':
+    return self
+
+  def __exit__(self, _type: Any, _value: Any, _tb: Any) -> None:
+    self._context_stack.close()
+
+class EdgyRunLogWriter:
+  def __init__(self, output_file_stack: OutputFileStack,
+               run_config_path: Path) -> None:
+    self.output_file_stack = output_file_stack
+    self.run_config_path = run_config_path
+
+  def get_log_handle(self, name: str) -> TextIO:
+    log_path = self.run_config_path / f"{name}.elog"
+    return self.output_file_stack.get_or_init(log_path)
+
+  def get_list_handle(self, name: str) -> TextIO:
+    list_path = self.run_config_path / f"{name}.elist"
+    return self.output_file_stack.get_or_init(list_path)
+
+  def get_log_list_handle(self, name: str) -> Tuple[TextIO, TextIO]:
+    log_file_handle = self.get_log_handle(name)
+    list_file_handle = self.get_list_handle(name)
+    return log_file_handle, list_file_handle
+
+  def write_test_to_list(self, test: TestSuiteTest, list_name: str) -> None:
+    list_file_handle = self.get_list_handle(list_name)
+    list_file_handle.write(f"{test.get_qualified_name()}\n")
+
+  def log_comparison_notes(self, test: TestSuiteTest,
+                           comparison: Iterator[Tuple[
+                             Optional[ParsedTestStatus],
+                             Optional[ParsedTestStatus]
+                           ]],
+                           log_name: str) -> None:
+    include_in_list = False
+    for old_parsed_status, new_parsed_status in comparison:
+      # Report old problems with -
+      if old_parsed_status is not None:
+        formatted_error = format_test_error(
+          test, old_parsed_status.status_line
+        )
+        self.get_log_handle(log_name).write(f"- {formatted_error}\n")
+        include_in_list = True
+
+      # Report new problems with +
+      if new_parsed_status is not None:
+        formatted_error = format_test_error(
+          test, new_parsed_status.status_line
+        )
+        self.get_log_handle(log_name).write(f"+ {formatted_error}\n")
+        include_in_list = True
+
+    if include_in_list:
+      self.write_test_to_list(test, log_name)
+
+def generate_logs(args: argparse.Namespace, test_suites: List[TestSuiteConfig],
+                  tests: List[TestSuiteTest],
+                  skipped_tests: List[TestSuiteTest]) -> None:
+  reports = _generate_testing_reports(test_suites, tests, skipped_tests)
+
+  with OutputFileStack() as output_file_stack:
+    for suite, report in reports.items():
+      # Load information about this run.
+      current_suite_run = suite.get_current_run()
+
+      # Write edgy style logs
+      for test in report.tests:
+        # Write the following log and list files as necessary:
+        #  - 'tests/runs/<run>/<config>/executed.elist'
+        #  - 'tests/runs/<run>/<config>/changes.elog'
+        #  - 'tests/runs/<run>/<config>/changes.elist'
+        #  - 'tests/runs/<run>/<config>/improvements.elog'
+        #  - 'tests/runs/<run>/<config>/improvements.elist'
+        #  - 'tests/runs/<run>/<config>/regressions.elog'
+        #  - 'tests/runs/<run>/<config>/regressions.elist'
+        run_config_path = current_suite_run.get_config_path()
+        log_writer = EdgyRunLogWriter(output_file_stack, run_config_path)
+
+        # Write that this test was executed.
+        log_writer.write_test_to_list(test, 'executed')
+
+        if test.killed:
+          # Write that this test was killed.
+          changes_log = log_writer.get_log_handle('changes')
+          changes_log.write(f"X {test.get_qualified_name()}\n")
+          log_writer.write_test_to_list(test, 'changes')
+          continue
+
+        expectations = test.get_expectations()
+        encountered = test.errors
+
+        status_checker = TestStatusChecker.create_safely(
+          expectations, encountered
+        )
+        if status_checker is None:
+          continue
+
+        changes_comparison = status_checker.compare(
+          comparison_mode = TestStatusComparison.ANY_CHANGE
+        )
+        log_writer.log_comparison_notes(test, changes_comparison, 'changes')
+        improvement_comparison = status_checker.compare(
+          comparison_mode = TestStatusComparison.IMPROVEMENT
+        )
+        log_writer.log_comparison_notes(
+          test,
+          improvement_comparison,
+          'improvements'
+        )
+        regress_comparison = status_checker.compare(
+          comparison_mode = TestStatusComparison.REGRESS
+        )
+        log_writer.log_comparison_notes(
+          test,
+          regress_comparison,
+          'regressions'
+        )
+
+      # Check for tests that were not executed this run, and presume their
+      # statuses based on the existing expectation data.
+      # Compute the executed tests as a set for quick lookups.
+      completed_test_relative_paths = (
+        set(map(lambda test: test.get_relative_path_str(), report.tests))
+      )
+      skipped_test_relative_paths = set(map(
+        lambda test: test.get_relative_path_str(),
+        report.skipped_tests
+      ))
+      for test_relative_path in suite.expectations.keys():
+        if test_relative_path in completed_test_relative_paths:
+          continue
+
+        # If this path was not skipped, the test no longer exists and we do not
+        # want to keep its results around forever (so do not inherit
+        # expectations).
+        if test_relative_path not in skipped_test_relative_paths:
+          continue
+
+        existing_errors = suite.expectations[test_relative_path]
+        reports[suite].inherited_errors.extend(existing_errors)
+
+      # Write the suite elog (run_my_tests style) without inherited
+      # expectations (these logs are important for replay mode to know what
+      # actually ran).
+      suite_elog = current_suite_run.get_elog_path()
+      write_log_file_from_errors(suite_elog, report.errors)
+
+      # Write the suite log (run_my_tests style) with inherited expectations.
+      suite_log = current_suite_run.get_log_path()
+      write_log_file_from_errors(
+        suite_log,
+        [
+          *report.errors,
+          *report.inherited_errors
+        ]
+      )
+
+      # If in verbose mode, and we've inherited expectations, report them now.
+      if args.verbose and len(report.inherited_errors) > 0:
+        config_name = suite.run_config.name
+        print(f"Inheriting expectations for ({config_name}) {suite.name}...")
+        for existing_error in report.inherited_errors:
+          print(f"  - {existing_error}")
+
+      # Update expectations automatically when in record mode.
+      if args.record_mode:
+        shutil.copy2(suite_log, suite.expectations.file_path)
+
+    for file_path, file_handle in output_file_stack.open_files.items():
+      # Ignore elist files other than the executed elist outside of verbose
+      # mode.
+      if (not args.verbose and file_path.suffix == '.elist' and
+          file_path.stem != 'executed'):
+        continue
+      # Detect empty files and don't report them (even though we technically
+      # "wrote a file").
+      file_handle.seek(0, os.SEEK_END)
+      if file_handle.tell() == 0:
+        continue
+
+      print(f"Wrote log: {render_docker_path(file_path)}")
+
+def _get_largest_slow_test_name(tests: List[TestSuiteTest], multi_config: bool,
+                                num_slow_tests_to_report: int) -> int:
+  largest_name = 0
+  num_reported = 0
+  for test in tests:
+    if num_reported >= num_slow_tests_to_report:
+      break
+
+    largest_name = max(
+      largest_name, len(test.get_qualified_name(with_config=multi_config))
+    )
+    num_reported += 1
+
+  return largest_name
+
+def _get_reported_slow_test_line(test: TestSuiteTest, largest_test_name: int,
+                                 multi_config_run: bool) -> str:
+  qualified_name = test.get_qualified_name(with_config = multi_config_run)
+  assert test.elapsed_time_delta is not None
+  elapsed_time = formatted_time_delta(test.elapsed_time_delta)
+  return f"{qualified_name:<{largest_test_name}} {elapsed_time}"
+
+def _print_slow_tests_header(tests: List[TestSuiteTest],
+                             largest_test_name: int, multi_config: bool,
+                             num_slow_tests_to_report: int) -> None:
+  num_tests_reported = min(len(tests), num_slow_tests_to_report)
+  slow_test_header = f" Slowest Tests ({num_tests_reported}) "
+  len_of_entries = len(
+    _get_reported_slow_test_line(tests[0], largest_test_name, multi_config)
+  )
+  print(f"{slow_test_header:^{len_of_entries}}")
+
+def _print_slow_tests(tests: List[TestSuiteTest], largest_test_name: int,
+                      multi_config_run: bool,
+                      num_slow_tests_to_report: int) -> None:
+  # Print a header sized to the width of the entries
+  _print_slow_tests_header(
+    tests, largest_test_name, multi_config_run, num_slow_tests_to_report
+  )
+  # Print the requested number of entries
+  num_reported = 0
+  for test in tests:
+    if num_reported >= num_slow_tests_to_report:
+      break
+
+    print(_get_reported_slow_test_line(
+      test,
+      largest_test_name,
+      multi_config_run
+    ))
+    num_reported += 1
+
+def dump_performance_info(tests: List[TestSuiteTest],
+                          num_slow_tests_to_report: int, *,
+                          multi_config_run: bool) -> None:
+  # Sort the tests by elapsed time, descending
+  tests = [t for t in tests if t.elapsed_time_delta is not None]
+  def require_ellapsed_time(test: TestSuiteTest) -> timedelta:
+    assert test.elapsed_time_delta is not None
+    return test.elapsed_time_delta
+  tests = sorted(tests, key = require_ellapsed_time, reverse = True)
+
+  # Calculate the name length for improved formatting
+  largest_test_name = _get_largest_slow_test_name(
+    tests,
+    multi_config_run,
+    num_slow_tests_to_report
+  )
+
+  # Print the tests
+  _print_slow_tests(
+    tests,
+    largest_test_name,
+    multi_config_run,
+    num_slow_tests_to_report
+  )
+
+def maybe_dump_performance_info(args: argparse.Namespace,
+                                tests: List[TestSuiteTest], *,
+                                multi_config_run: bool) -> None:
+  if args.num_slow_tests_reported < 1:
+    return
+
+  dump_performance_info(
+    tests,
+    args.num_slow_tests_reported,
+    multi_config_run = multi_config_run
+  )
+
+def get_test_runs_kept_count(args: argparse.Namespace) -> int:
+  if args.verbose:
+    print_env_var('EDG_TEST_RUNS_KEPT')
+
+  if 'EDG_TEST_RUNS_KEPT' not in os.environ:
+    return 10
+
+  try:
+    return int(os.environ['EDG_TEST_RUNS_KEPT'])
+  except ValueError:
+    if args.verbose:
+      print('EDG_TEST_RUNS_KEPT was not a valid integer.')
+    return -1
+
+def try_cleanup_test_runs(test_runs_dir: Path,
+                          args: argparse.Namespace) -> None:
+  runs_kept = get_test_runs_kept_count(args)
+  if runs_kept < 1:
+    if args.verbose:
+      print('All test runs will be kept.')
+    return
+
+  if args.verbose:
+    print(f"{runs_kept} test runs will be kept.")
+
+  # Get the list of test runs sorted, most recent tests will be first.
+  run_dirs = edgtest.get_test_runs_in(test_runs_dir)
+
+  # Count up to the limit of kept test runs, then remove any test runs
+  # beyond the limit.
+  for index, dir in enumerate(run_dirs):
+    if index >= runs_kept:
+      if args.verbose:
+        print(f"Removing: {render_docker_path(dir)}")
+      shutil.rmtree(dir)
+    elif args.verbose:
+      print(f"Keeping: {render_docker_path(dir)}")
+
+def parse_args() -> argparse.Namespace:
+  parser = argparse.ArgumentParser(description = 'EDG test runner.')
+  parser.add_argument(
+    '-c',
+    '--config',
+    dest = 'run_configs',
+    default = 'default',
+    help = 'the run configurations to apply'
+  )
+  parser.add_argument(
+    '--runs-dir',
+    dest = 'test_runs_directory',
+    type = Path,
+    help = 'override the directory where tests runs are stored'
+  )
+  parser.add_argument(
+    '--run-timestamp',
+    dest = 'test_run_timestamp',
+    type = str,
+    help = (
+      'override the timestamp when creating a new test run '
+      '(does not apply to replay runs)'
+    )
+  )
+  parser.add_argument(
+    '-j',
+    '--jobs',
+    dest = 'job_count',
+    default = os.cpu_count(),
+    type = int,
+    help = 'the number of concurrent jobs'
+  )
+  parser.add_argument(
+    '-T',
+    '--timeout',
+    dest = 'timeout_seconds',
+    default = 0,
+    type = int,
+    help = (
+      'the number of seconds to wait for tests before '
+      'killing them (0 to disable)'
+    )
+  )
+  parser.add_argument(
+    '-A',
+    dest = 'run_slow_tests',
+    action = 'store_true',
+    help = 'include slow tests (marked by an "_" prefix)'
+  )
+  parser.add_argument(
+    '-D',
+    '--debug-failures',
+    dest = 'debug_failures',
+    action = 'store_true',
+    help = 'print debug commands for failures'
+  )
+  parser.add_argument(
+    '-E',
+    '--no-expectations',
+    dest = 'no_expectations',
+    action = 'store_true',
+    help = 'disable expectations'
+  )
+  parser.add_argument(
+    '-M',
+    '--meticulous',
+    dest = 'disable_faster_mode',
+    action = 'store_true',
+    help = (
+      'disable faster mode (on by default) and run all expensive checking'
+    )
+  )
+  parser.add_argument(
+    '-R',
+    '--regress',
+    dest = 'regress_mode',
+    action = 'store_true',
+    help = 'silence non-regressive changes'
+  )
+  parser.add_argument(
+    '-n',
+    '--max-failure-count',
+    dest = 'max_fail_count',
+    default = 0,
+    type = int,
+    help = 'the maximum number of failures'
+  )
+  parser.add_argument(
+    '--pick',
+    dest = 'pick_count',
+    default = 0,
+    type = int,
+    help = (
+      'the maximum number of tests to run (this option implies '
+      '--fully-random-order)'
+    )
+  )
+  parser.add_argument(
+    '--disp-run-dir',
+    dest = 'disp_run_dir',
+    action = 'store_true',
+    help = 'print the directory where the run output is being stored'
+  )
+  parser.add_argument(
+    '-W',
+    '--record',
+    dest = 'record_mode',
+    action = 'store_true',
+    help = 'record tests'
+  )
+  parser.add_argument(
+    '--crash-avoidance',
+    dest = 'avoid_crashes',
+    action = 'store_true',
+    help = (
+      'avoid tests that are likely to crash the compiler (this option also '
+      'implies --no-flakey-tests)'
+    )
+  )
+  parser.add_argument(
+    '--no-flakey-tests',
+    dest = 'exclude_flakey_tests',
+    action = 'store_true',
+    help = 'do not run tests that are known to be flakey'
+  )
+  parser.add_argument(
+    '--replay',
+    dest = 'replay',
+    choices = ['all-failing', 'output-mismatch', 'regress', 'unexpected'],
+    default = '',
+    help = 'rerun tests from the last run'
+  )
+  parser.add_argument(
+    '--slow-tests',
+    dest = 'num_slow_tests_reported',
+    default = 0,
+    type = int,
+    help = 'the number of the slowest tests to report'
+  )
+  parser.add_argument(
+    '--fully-random-order',
+    dest = 'randomize_test_order',
+    action = 'store_true',
+    help = (
+      'completely randomize test execution order (this can help lower system '
+      'pressure by mixing more "intensive" test suites with less intensive '
+      'test suites)'
+    )
+  )
+  parser.add_argument(
+    '--cmd',
+    dest = 'show_commands',
+    action = 'store_true',
+    help = 'print all run test commands'
+  )
+  parser.add_argument(
+    '--verbose',
+    dest = 'verbose',
+    action = 'store_true',
+    help = 'enable verbose mode'
+  )
+  parser.add_argument(
+    'filters',
+    nargs = '?',
+    default = '',
+    help = 'the test filter to apply; "all" for all suites'
+  )
+  return parser.parse_args()
+
+def warn_incompatible_args(trigger_arg_name: str, arg_name: str) -> None:
+  print_warn(f"{arg_name} is meaningless with {trigger_arg_name}")
+
+def _load_filter_file(file_path: Path) -> Set[str]:
+  '''Load a filter file at the given path and return a list of filter strings.
+  '''
+  file_filters = set()
+  with open(file_path, 'r') as file_handle:
+    for line in file_handle:
+      line = line.strip()
+      if len(line) == 0:
+        continue
+      file_filters.add(line)
+  return file_filters
+
+def preprocess_filter_args(args: argparse.Namespace,
+                           edgy_config: EdgyConfig) -> None:
+  '''Perform a sort of "preprocessing" on filters to allow for filter
+  generation operators (e.g., the '@' operator imports lines of a file as comma
+  seperated filters).
+  '''
+  def _expand_raw_special_suite_name(filter_str: str) -> List[str]:
+    if filter_str == 'all':
+      return edgy_config.all_suites()
+    if filter_str == 'mine':
+      # The user has requested "their" tests, configured by the EDGY_MY_TESTS
+      # environment variable.
+      #
+      # Print EDGY_MY_TESTS values in verbose mode.
+      if args.verbose:
+        print_env_var('EDGY_MY_TESTS')
+      if 'EDGY_MY_TESTS' not in os.environ:
+        edgutil.eprint('EDGY_MY_TESTS is not set.')
+        sys.exit(1)
+
+      return os.environ['EDGY_MY_TESTS'].split(',')
+    return [filter_str]
+
+  def _expand_special_suite_name(filter_str: str) -> Set[str]:
+    if filter_str.startswith('!'):
+      names = _expand_raw_special_suite_name(filter_str[1:])
+      return {f"!{n}" for n in names}
+    else:
+      return set(_expand_raw_special_suite_name(filter_str))
+
+  # Split by ","s to get the individual filter strings.
+  filter_str_list = set(args.filters.split(','))
+  all_filters = set()
+  for filter_str in filter_str_list:
+    if filter_str.startswith('@'):
+      filter_file_path = Path(filter_str[1:])
+      if not filter_file_path.exists():
+        edgutil.eprint(
+          f"Requested filter file \"{filter_file_path}\" does not exist."
+        )
+        sys.exit(1)
+      all_filters |= _load_filter_file(filter_file_path)
+    elif '/' not in filter_str:
+      all_filters |= _expand_special_suite_name(filter_str)
+    else:
+      all_filters.add(filter_str)
+
+  args.filters = ','.join(all_filters)
+
+def validate_args(args: argparse.Namespace) -> None:
+  if args.record_mode:
+    if args.debug_failures:
+      warn_incompatible_args('--record', '--debug-failures')
+    if args.regress_mode:
+      warn_incompatible_args('--record', '--regress')
+    if args.max_fail_count:
+      warn_incompatible_args('--record', '--max-failure-count')
+
+def main() -> None:
+  args = parse_args()
+  validate_args(args)
+
+  # Process the environment, store the test_home as edgy specifically needs
+  # this.
+  test_home = edgtest.load_test_home_or_exit(verbose = args.verbose)
+
+  edgy_config = load_edgy_config(args, test_home)
+  preprocess_filter_args(args, edgy_config)
+
+  test_runs_dir = args.test_runs_directory or test_home / 'runs'
+  test_suites, multi_config_run = load_test_suites(
+    args,
+    edgy_config,
+    test_runs_dir
+  )
+
+  prepare_for_test_run(test_runs_dir, args, test_suites)
+  exit_code, tests, skipped_tests = supervise_testing(
+    args,
+    test_suites,
+    multi_config_run = multi_config_run
+  )
+
+  validate_test_count(tests)
+
+  generate_logs(args, test_suites, tests, skipped_tests)
+  maybe_dump_performance_info(args, tests, multi_config_run = multi_config_run)
+  try_cleanup_test_runs(test_runs_dir, args)
+  sys.exit(exit_code)
+
+main()

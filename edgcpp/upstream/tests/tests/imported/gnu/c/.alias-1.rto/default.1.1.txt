@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 24: warning: variable "ppT" was declared but never referenced
+       tDefEntry** ppT   = (tDefEntry**)&list; // { dg-warning "type-punned pointer will" }
+                   ^
+
+"Test_name.c", line 26: warning: variable "p" was declared but never referenced
+       struct incomplete *p = (struct incomplete *)&list; // { dg-warning "type-punning to incomplete" }
+                          ^
+

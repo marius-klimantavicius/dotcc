@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./crc-from-fedora-packages-9.c", line 29: warning: arithmetic on pointer to void or function type
+        crc ^= *(unsigned char *) (data++);
+                                       ^
+

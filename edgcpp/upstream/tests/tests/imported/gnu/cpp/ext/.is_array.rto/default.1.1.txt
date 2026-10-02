@@ -1,0 +1,198 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 21: error: static assertion failed with "__is_array(int[0]) == false"
+  SA_TEST_CATEGORY(__is_array, int[0], false);
+  ^
+"Test_name.c", line 21: note: the final comparison was 1 == 0
+  SA_TEST_CATEGORY(__is_array, int[0], false);
+  ^
+
+"Test_name.c", line 21: error: static assertion failed with "__is_array(const int[0]) == false"
+  SA_TEST_CATEGORY(__is_array, int[0], false);
+  ^
+"Test_name.c", line 21: note: the final comparison was 1 == 0
+  SA_TEST_CATEGORY(__is_array, int[0], false);
+  ^
+
+"Test_name.c", line 21: error: static assertion failed with "__is_array(volatile int[0]) == false"
+  SA_TEST_CATEGORY(__is_array, int[0], false);
+  ^
+"Test_name.c", line 21: note: the final comparison was 1 == 0
+  SA_TEST_CATEGORY(__is_array, int[0], false);
+  ^
+
+"Test_name.c", line 21: error: static assertion failed with "__is_array(const volatile int[0]) == false"
+  SA_TEST_CATEGORY(__is_array, int[0], false);
+  ^
+"Test_name.c", line 21: note: the final comparison was 1 == 0
+  SA_TEST_CATEGORY(__is_array, int[0], false);
+  ^
+
+"Test_name.c", line 24: error: static assertion failed with "__is_array(int[0][3]) == false"
+  SA_TEST_CATEGORY(__is_array, int[0][3], false);
+  ^
+"Test_name.c", line 24: note: the final comparison was 1 == 0
+  SA_TEST_CATEGORY(__is_array, int[0][3], false);
+  ^
+
+"Test_name.c", line 24: error: static assertion failed with "__is_array(const int[0][3]) == false"
+  SA_TEST_CATEGORY(__is_array, int[0][3], false);
+  ^
+"Test_name.c", line 24: note: the final comparison was 1 == 0
+  SA_TEST_CATEGORY(__is_array, int[0][3], false);
+  ^
+
+"Test_name.c", line 24: error: static assertion failed with "__is_array(volatile int[0][3]) == false"
+  SA_TEST_CATEGORY(__is_array, int[0][3], false);
+  ^
+"Test_name.c", line 24: note: the final comparison was 1 == 0
+  SA_TEST_CATEGORY(__is_array, int[0][3], false);
+  ^
+
+"Test_name.c", line 24: error: static assertion failed with "__is_array(const volatile int[0][3]) == false"
+  SA_TEST_CATEGORY(__is_array, int[0][3], false);
+  ^
+"Test_name.c", line 24: note: the final comparison was 1 == 0
+  SA_TEST_CATEGORY(__is_array, int[0][3], false);
+  ^
+
+"Test_name.c", line 25: error: static assertion failed with "__is_array(int[3][0]) == false"
+  SA_TEST_CATEGORY(__is_array, int[3][0], false);
+  ^
+"Test_name.c", line 25: note: the final comparison was 1 == 0
+  SA_TEST_CATEGORY(__is_array, int[3][0], false);
+  ^
+
+"Test_name.c", line 25: error: static assertion failed with "__is_array(const int[3][0]) == false"
+  SA_TEST_CATEGORY(__is_array, int[3][0], false);
+  ^
+"Test_name.c", line 25: note: the final comparison was 1 == 0
+  SA_TEST_CATEGORY(__is_array, int[3][0], false);
+  ^
+
+"Test_name.c", line 25: error: static assertion failed with "__is_array(volatile int[3][0]) == false"
+  SA_TEST_CATEGORY(__is_array, int[3][0], false);
+  ^
+"Test_name.c", line 25: note: the final comparison was 1 == 0
+  SA_TEST_CATEGORY(__is_array, int[3][0], false);
+  ^
+
+"Test_name.c", line 25: error: static assertion failed with "__is_array(const volatile int[3][0]) == false"
+  SA_TEST_CATEGORY(__is_array, int[3][0], false);
+  ^
+"Test_name.c", line 25: note: the final comparison was 1 == 0
+  SA_TEST_CATEGORY(__is_array, int[3][0], false);
+  ^
+
+"Test_name.c", line 32: error: static assertion failed with "__is_array(ClassType[0]) == false"
+  SA_TEST_CATEGORY(__is_array, ClassType[0], false);
+  ^
+"Test_name.c", line 32: note: the final comparison was 1 == 0
+  SA_TEST_CATEGORY(__is_array, ClassType[0], false);
+  ^
+
+"Test_name.c", line 32: error: static assertion failed with "__is_array(const ClassType[0]) == false"
+  SA_TEST_CATEGORY(__is_array, ClassType[0], false);
+  ^
+"Test_name.c", line 32: note: the final comparison was 1 == 0
+  SA_TEST_CATEGORY(__is_array, ClassType[0], false);
+  ^
+
+"Test_name.c", line 32: error: static assertion failed with "__is_array(volatile ClassType[0]) == false"
+  SA_TEST_CATEGORY(__is_array, ClassType[0], false);
+  ^
+"Test_name.c", line 32: note: the final comparison was 1 == 0
+  SA_TEST_CATEGORY(__is_array, ClassType[0], false);
+  ^
+
+"Test_name.c", line 32: error: static assertion failed with "__is_array(const volatile ClassType[0]) == false"
+  SA_TEST_CATEGORY(__is_array, ClassType[0], false);
+  ^
+"Test_name.c", line 32: note: the final comparison was 1 == 0
+  SA_TEST_CATEGORY(__is_array, ClassType[0], false);
+  ^
+
+"Test_name.c", line 35: error: static assertion failed with "__is_array(ClassType[0][3]) == false"
+  SA_TEST_CATEGORY(__is_array, ClassType[0][3], false);
+  ^
+"Test_name.c", line 35: note: the final comparison was 1 == 0
+  SA_TEST_CATEGORY(__is_array, ClassType[0][3], false);
+  ^
+
+"Test_name.c", line 35: error: static assertion failed with "__is_array(const ClassType[0][3]) == false"
+  SA_TEST_CATEGORY(__is_array, ClassType[0][3], false);
+  ^
+"Test_name.c", line 35: note: the final comparison was 1 == 0
+  SA_TEST_CATEGORY(__is_array, ClassType[0][3], false);
+  ^
+
+"Test_name.c", line 35: error: static assertion failed with "__is_array(volatile ClassType[0][3]) == false"
+  SA_TEST_CATEGORY(__is_array, ClassType[0][3], false);
+  ^
+"Test_name.c", line 35: note: the final comparison was 1 == 0
+  SA_TEST_CATEGORY(__is_array, ClassType[0][3], false);
+  ^
+
+"Test_name.c", line 35: error: static assertion failed with "__is_array(const volatile ClassType[0][3]) == false"
+  SA_TEST_CATEGORY(__is_array, ClassType[0][3], false);
+  ^
+"Test_name.c", line 35: note: the final comparison was 1 == 0
+  SA_TEST_CATEGORY(__is_array, ClassType[0][3], false);
+  ^
+
+"Test_name.c", line 36: error: static assertion failed with "__is_array(ClassType[2][0]) == false"
+  SA_TEST_CATEGORY(__is_array, ClassType[2][0], false);
+  ^
+"Test_name.c", line 36: note: the final comparison was 1 == 0
+  SA_TEST_CATEGORY(__is_array, ClassType[2][0], false);
+  ^
+
+"Test_name.c", line 36: error: static assertion failed with "__is_array(const ClassType[2][0]) == false"
+  SA_TEST_CATEGORY(__is_array, ClassType[2][0], false);
+  ^
+"Test_name.c", line 36: note: the final comparison was 1 == 0
+  SA_TEST_CATEGORY(__is_array, ClassType[2][0], false);
+  ^
+
+"Test_name.c", line 36: error: static assertion failed with "__is_array(volatile ClassType[2][0]) == false"
+  SA_TEST_CATEGORY(__is_array, ClassType[2][0], false);
+  ^
+"Test_name.c", line 36: note: the final comparison was 1 == 0
+  SA_TEST_CATEGORY(__is_array, ClassType[2][0], false);
+  ^
+
+"Test_name.c", line 36: error: static assertion failed with "__is_array(const volatile ClassType[2][0]) == false"
+  SA_TEST_CATEGORY(__is_array, ClassType[2][0], false);
+  ^
+"Test_name.c", line 36: note: the final comparison was 1 == 0
+  SA_TEST_CATEGORY(__is_array, ClassType[2][0], false);
+  ^
+
+"Test_name.c", line 38: error: static assertion failed with "__is_array(int[sz0]) == false"
+  SA_TEST_CATEGORY(__is_array, int[sz0], false);
+  ^
+"Test_name.c", line 38: note: the final comparison was 1 == 0
+  SA_TEST_CATEGORY(__is_array, int[sz0], false);
+  ^
+
+"Test_name.c", line 38: error: static assertion failed with "__is_array(const int[sz0]) == false"
+  SA_TEST_CATEGORY(__is_array, int[sz0], false);
+  ^
+"Test_name.c", line 38: note: the final comparison was 1 == 0
+  SA_TEST_CATEGORY(__is_array, int[sz0], false);
+  ^
+
+"Test_name.c", line 38: error: static assertion failed with "__is_array(volatile int[sz0]) == false"
+  SA_TEST_CATEGORY(__is_array, int[sz0], false);
+  ^
+"Test_name.c", line 38: note: the final comparison was 1 == 0
+  SA_TEST_CATEGORY(__is_array, int[sz0], false);
+  ^
+
+"Test_name.c", line 38: error: static assertion failed with "__is_array(const volatile int[sz0]) == false"
+  SA_TEST_CATEGORY(__is_array, int[sz0], false);
+  ^
+"Test_name.c", line 38: note: the final comparison was 1 == 0
+  SA_TEST_CATEGORY(__is_array, int[sz0], false);
+  ^
+
+28 errors detected in the compilation of "Test_name.c".

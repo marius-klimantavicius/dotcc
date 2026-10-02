@@ -1,0 +1,146 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 11: error: operand types are incompatible ("int *" and "char")
+    r += p == '\0'; // { dg-error "10:ISO C\\+\\+ forbids comparison between pointer and integer" }
+           ^
+
+"Test_name.c", line 12: error: operand types are incompatible ("int *" and "wchar_t")
+    r += p == L'\0'; // { dg-error "10:ISO C\\+\\+ forbids comparison between pointer and integer" }
+           ^
+
+"Test_name.c", line 13: error: operand types are incompatible ("int *" and "char16_t")
+    r += p == u'\0'; // { dg-error "10:ISO C\\+\\+ forbids comparison between pointer and integer" }
+           ^
+
+"Test_name.c", line 14: error: operand types are incompatible ("int *" and "char32_t")
+    r += p == U'\0'; // { dg-error "10:ISO C\\+\\+ forbids comparison between pointer and integer" }
+           ^
+
+"Test_name.c", line 15: error: operand types are incompatible ("int *" and "char")
+    r += p != '\0'; // { dg-error "10:ISO C\\+\\+ forbids comparison between pointer and integer" }
+           ^
+
+"Test_name.c", line 16: error: operand types are incompatible ("int *" and "wchar_t")
+    r += p != L'\0'; // { dg-error "10:ISO C\\+\\+ forbids comparison between pointer and integer" }
+           ^
+
+"Test_name.c", line 17: error: operand types are incompatible ("int *" and "char16_t")
+    r += p != u'\0'; // { dg-error "10:ISO C\\+\\+ forbids comparison between pointer and integer" }
+           ^
+
+"Test_name.c", line 18: error: operand types are incompatible ("int *" and "char32_t")
+    r += p != U'\0'; // { dg-error "10:ISO C\\+\\+ forbids comparison between pointer and integer" }
+           ^
+
+"Test_name.c", line 20: error: operand types are incompatible ("char" and "int *")
+    r += '\0' == p; // { dg-error "13:ISO C\\+\\+ forbids comparison between pointer and integer" }
+              ^
+
+"Test_name.c", line 21: error: operand types are incompatible ("wchar_t" and "int *")
+    r += L'\0' == p; // { dg-error "14:ISO C\\+\\+ forbids comparison between pointer and integer" }
+               ^
+
+"Test_name.c", line 22: error: operand types are incompatible ("char16_t" and "int *")
+    r += u'\0' == p; // { dg-error "14:ISO C\\+\\+ forbids comparison between pointer and integer" }
+               ^
+
+"Test_name.c", line 23: error: operand types are incompatible ("char32_t" and "int *")
+    r += U'\0' == p; // { dg-error "14:ISO C\\+\\+ forbids comparison between pointer and integer" }
+               ^
+
+"Test_name.c", line 24: error: operand types are incompatible ("char" and "int *")
+    r += '\0' != p; // { dg-error "13:ISO C\\+\\+ forbids comparison between pointer and integer" }
+              ^
+
+"Test_name.c", line 25: error: operand types are incompatible ("wchar_t" and "int *")
+    r += L'\0' != p; // { dg-error "14:ISO C\\+\\+ forbids comparison between pointer and integer" }
+               ^
+
+"Test_name.c", line 26: error: operand types are incompatible ("char16_t" and "int *")
+    r += u'\0' != p; // { dg-error "14:ISO C\\+\\+ forbids comparison between pointer and integer" }
+               ^
+
+"Test_name.c", line 27: error: operand types are incompatible ("char32_t" and "int *")
+    r += U'\0' != p; // { dg-error "14:ISO C\\+\\+ forbids comparison between pointer and integer" }
+               ^
+
+"Test_name.c", line 29: error: operand types are incompatible ("int **" and "char")
+    r += q == '\0'; // { dg-error "10:ISO C\\+\\+ forbids comparison between pointer and integer" }
+           ^
+
+"Test_name.c", line 30: error: operand types are incompatible ("int **" and "wchar_t")
+    r += q == L'\0'; // { dg-error "10:ISO C\\+\\+ forbids comparison between pointer and integer" }
+           ^
+
+"Test_name.c", line 31: error: operand types are incompatible ("int **" and "char16_t")
+    r += q == u'\0'; // { dg-error "10:ISO C\\+\\+ forbids comparison between pointer and integer" }
+           ^
+
+"Test_name.c", line 32: error: operand types are incompatible ("int **" and "char32_t")
+    r += q == U'\0'; // { dg-error "10:ISO C\\+\\+ forbids comparison between pointer and integer" }
+           ^
+
+"Test_name.c", line 33: error: operand types are incompatible ("int **" and "char")
+    r += q != '\0'; // { dg-error "10:ISO C\\+\\+ forbids comparison between pointer and integer" }
+           ^
+
+"Test_name.c", line 34: error: operand types are incompatible ("int **" and "wchar_t")
+    r += q != L'\0'; // { dg-error "10:ISO C\\+\\+ forbids comparison between pointer and integer" }
+           ^
+
+"Test_name.c", line 35: error: operand types are incompatible ("int **" and "char16_t")
+    r += q != u'\0'; // { dg-error "10:ISO C\\+\\+ forbids comparison between pointer and integer" }
+           ^
+
+"Test_name.c", line 36: error: operand types are incompatible ("int **" and "char32_t")
+    r += q != U'\0'; // { dg-error "10:ISO C\\+\\+ forbids comparison between pointer and integer" }
+           ^
+
+"Test_name.c", line 38: error: operand types are incompatible ("char" and "int **")
+    r += '\0' == q; // { dg-error "13:ISO C\\+\\+ forbids comparison between pointer and integer" }
+              ^
+
+"Test_name.c", line 39: error: operand types are incompatible ("wchar_t" and "int **")
+    r += L'\0' == q; // { dg-error "14:ISO C\\+\\+ forbids comparison between pointer and integer" }
+               ^
+
+"Test_name.c", line 40: error: operand types are incompatible ("char16_t" and "int **")
+    r += u'\0' == q; // { dg-error "14:ISO C\\+\\+ forbids comparison between pointer and integer" }
+               ^
+
+"Test_name.c", line 41: error: operand types are incompatible ("char32_t" and "int **")
+    r += U'\0' == q; // { dg-error "14:ISO C\\+\\+ forbids comparison between pointer and integer" }
+               ^
+
+"Test_name.c", line 42: error: operand types are incompatible ("char" and "int **")
+    r += '\0' != q; // { dg-error "13:ISO C\\+\\+ forbids comparison between pointer and integer" }
+              ^
+
+"Test_name.c", line 43: error: operand types are incompatible ("wchar_t" and "int **")
+    r += L'\0' != q; // { dg-error "14:ISO C\\+\\+ forbids comparison between pointer and integer" }
+               ^
+
+"Test_name.c", line 44: error: operand types are incompatible ("char16_t" and "int **")
+    r += u'\0' != q; // { dg-error "14:ISO C\\+\\+ forbids comparison between pointer and integer" }
+               ^
+
+"Test_name.c", line 45: error: operand types are incompatible ("char32_t" and "int **")
+    r += U'\0' != q; // { dg-error "14:ISO C\\+\\+ forbids comparison between pointer and integer" }
+               ^
+
+"Test_name.c", line 73: error: operand types are incompatible ("int *" and "char")
+    r += p == (char) 0; // { dg-error "10:ISO C\\+\\+ forbids comparison between pointer and integer" }
+           ^
+
+"Test_name.c", line 74: error: operand types are incompatible ("int *" and "char")
+    r += p != (char) 0; // { dg-error "10:ISO C\\+\\+ forbids comparison between pointer and integer" }
+           ^
+
+"Test_name.c", line 76: error: operand types are incompatible ("char" and "int *")
+    r += (char) 0 == p; // { dg-error "17:ISO C\\+\\+ forbids comparison between pointer and integer" }
+                  ^
+
+"Test_name.c", line 77: error: operand types are incompatible ("char" and "int *")
+    r += (char) 0 != p; // { dg-error "17:ISO C\\+\\+ forbids comparison between pointer and integer" }
+                  ^
+
+36 errors detected in the compilation of "Test_name.c".

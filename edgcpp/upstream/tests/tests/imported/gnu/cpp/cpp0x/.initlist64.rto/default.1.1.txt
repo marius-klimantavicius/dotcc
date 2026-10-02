@@ -1,0 +1,20 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 27: error: no instance of constructor "X::X" matches the argument list
+            argument types are: (Z)
+  X c = { Z() };  // { dg-error "" }
+        ^
+"Test_name.c", line 6: note: function "X::X(const X &)" does not match because argument #1 does not match parameter
+  struct X
+         ^
+"Test_name.c", line 6: note: function "X::X(X &&)" does not match because argument #1 does not match parameter
+  struct X
+         ^
+"Test_name.c", line 8: note: number of parameters of function "X::X()" does not match the call
+    X();
+    ^
+
+"Test_name.c", line 28: error: no suitable user-defined conversion from "Z" to "X" exists
+  X cc = Z();	// { dg-error "" }
+         ^
+
+2 errors detected in the compilation of "Test_name.c".

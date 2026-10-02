@@ -1,0 +1,14 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 7: error: no default constructor exists for class "A"
+  B::B(const B&) {}
+                 ^
+
+"Test_name.c", line 8: remark: parameter "i" was never referenced
+  A::A(const A&, int i = 0) {}
+                     ^
+
+"Test_name.c", line 9: error: no default constructor exists for class "A"
+  C::C(const C&) {}                   // Error
+                 ^
+
+2 errors detected in the compilation of "Test_name.c".

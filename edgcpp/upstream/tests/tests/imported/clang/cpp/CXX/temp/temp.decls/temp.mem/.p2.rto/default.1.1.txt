@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 Test_name.c
+"Test_name.c", line 10: error: a template declaration is not allowed here
+      template <typename> struct bar {};  // expected-error{{templates cannot be declared inside of a local class}}
+      ^
+
+"Test_name.c", line 11: error: a template declaration is not allowed here
+      template <typename> void baz() {}   // expected-error{{templates cannot be declared inside of a local class}}
+      ^
+
+"Test_name.c", line 12: error: a template declaration is not allowed here
+      template <typename> void qux();     // expected-error{{templates cannot be declared inside of a local class}}
+      ^
+
+"Test_name.c", line 13: error: a template declaration is not allowed here
+      template <typename> using corge = int; // expected-error{{templates cannot be declared inside of a local class}}
+      ^
+
+"Test_name.c", line 14: error: a template declaration is not allowed here
+      template <typename T> static T grault; // expected-error{{templates cannot be declared inside of a local class}}
+      ^
+
+"Test_name.c", line 14: error: static data member declaration is not allowed in this class
+      template <typename T> static T grault; // expected-error{{templates cannot be declared inside of a local class}}
+                            ^
+
+6 errors detected in the compilation of "Test_name.c".

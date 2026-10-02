@@ -1,0 +1,32 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++26 Test_name.c
+"Test_name.c", line 43: error: expression must have a constant value
+  constexpr auto [t4] = X();
+                        ^
+
+"Test_name.c", line 50: error: expression must have a constant value
+  constexpr auto [t6] = Z2();
+                        ^
+
+"Test_name.c", line 69: error: expression must have a constant value
+  static_assert(a.n == 0);
+                ^
+"Test_name.c", line 69: note: attempt to access run-time storage
+  static_assert(a.n == 0);
+                 ^
+
+"Test_name.c", line 75: error: expression must have a constant value
+  constinit auto [init2] = X {};  // expected-error {{variable does not have a constant initializer}} \
+                           ^
+"Test_name.c", line 75: note: cannot call non-constexpr function "X::X()" (declared at line 13)
+  constinit auto [init2] = X {};  // expected-error {{variable does not have a constant initializer}} \
+                           ^
+
+"Test_name.c", line 74: warning: structured binding "init1" was declared but never referenced
+  constinit auto [init1] = Y {42};
+                  ^
+
+"Test_name.c", line 75: warning: structured binding "init2" was declared but never referenced
+  constinit auto [init2] = X {};  // expected-error {{variable does not have a constant initializer}} \
+                  ^
+
+4 errors detected in the compilation of "Test_name.c".

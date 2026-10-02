@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 18: error: function "A::operator G()" (declared at line 10) cannot be referenced -- it is a deleted function
+  int i = A{}(0); // OK, selects #1
+          ^
+
+"Test_name.c", line 19: error: function "B::operator G()" (declared at line 14) cannot be referenced -- it is a deleted function
+  int j = B{}(0); // OK, selects #1
+          ^
+
+2 errors detected in the compilation of "Test_name.c".

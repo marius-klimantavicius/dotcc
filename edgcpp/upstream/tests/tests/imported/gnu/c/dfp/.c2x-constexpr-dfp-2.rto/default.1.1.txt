@@ -1,0 +1,390 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 8: warning: this declaration has no storage class or type specifier
+  constexpr double v2 = 0.0DF; /* { dg-error "'constexpr' initializer for a binary floating-point type is of decimal type" } */
+  ^
+
+"Test_name.c", line 8: error: expected a ";"
+  constexpr double v2 = 0.0DF; /* { dg-error "'constexpr' initializer for a binary floating-point type is of decimal type" } */
+            ^
+
+"Test_name.c", line 8: error: extra text after expected end of number
+  constexpr double v2 = 0.0DF; /* { dg-error "'constexpr' initializer for a binary floating-point type is of decimal type" } */
+                           ^
+
+"Test_name.c", line 9: warning: this declaration has no storage class or type specifier
+  constexpr double v2i = __builtin_infd32 (); /* { dg-error "'constexpr' initializer for a binary floating-point type is of decimal type" } */
+  ^
+
+"Test_name.c", line 9: error: expected a ";"
+  constexpr double v2i = __builtin_infd32 (); /* { dg-error "'constexpr' initializer for a binary floating-point type is of decimal type" } */
+            ^
+
+"Test_name.c", line 10: warning: this declaration has no storage class or type specifier
+  constexpr double v2n = __builtin_nand32 (""); /* { dg-error "'constexpr' initializer for a binary floating-point type is of decimal type" } */
+  ^
+
+"Test_name.c", line 10: error: expected a ";"
+  constexpr double v2n = __builtin_nand32 (""); /* { dg-error "'constexpr' initializer for a binary floating-point type is of decimal type" } */
+            ^
+
+"Test_name.c", line 11: error: variable "constexpr" is not a type name
+  constexpr _Decimal128 v2d = 0x1p-100f; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+  ^
+
+"Test_name.c", line 11: error: expected a ";"
+  constexpr _Decimal128 v2d = 0x1p-100f; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                        ^
+
+"Test_name.c", line 15: error: variable "constexpr" is not a type name
+  constexpr _Decimal32 v3 = __builtin_nansd64 (""); /* { dg-error "'constexpr' initializer not representable in type of object" } */
+  ^
+
+"Test_name.c", line 15: error: expected a ";"
+  constexpr _Decimal32 v3 = __builtin_nansd64 (""); /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                       ^
+
+"Test_name.c", line 16: error: variable "constexpr" is not a type name
+  constexpr _Decimal32 v4 = __builtin_nansd128 (""); /* { dg-error "'constexpr' initializer not representable in type of object" } */
+  ^
+
+"Test_name.c", line 16: error: expected a ";"
+  constexpr _Decimal32 v4 = __builtin_nansd128 (""); /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                       ^
+
+"Test_name.c", line 17: error: variable "constexpr" is not a type name
+  constexpr _Decimal64 v5 = __builtin_nansd32 (""); /* { dg-error "'constexpr' initializer not representable in type of object" } */
+  ^
+
+"Test_name.c", line 17: error: expected a ";"
+  constexpr _Decimal64 v5 = __builtin_nansd32 (""); /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                       ^
+
+"Test_name.c", line 18: error: variable "constexpr" is not a type name
+  constexpr _Decimal64 v6 = __builtin_nansd128 (""); /* { dg-error "'constexpr' initializer not representable in type of object" } */
+  ^
+
+"Test_name.c", line 18: error: expected a ";"
+  constexpr _Decimal64 v6 = __builtin_nansd128 (""); /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                       ^
+
+"Test_name.c", line 19: error: variable "constexpr" is not a type name
+  constexpr _Decimal128 v7 = __builtin_nansd32 (""); /* { dg-error "'constexpr' initializer not representable in type of object" } */
+  ^
+
+"Test_name.c", line 19: error: expected a ";"
+  constexpr _Decimal128 v7 = __builtin_nansd32 (""); /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                        ^
+
+"Test_name.c", line 20: error: variable "constexpr" is not a type name
+  constexpr _Decimal128 v8 = __builtin_nansd64 (""); /* { dg-error "'constexpr' initializer not representable in type of object" } */
+  ^
+
+"Test_name.c", line 20: error: expected a ";"
+  constexpr _Decimal128 v8 = __builtin_nansd64 (""); /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                        ^
+
+"Test_name.c", line 23: error: variable "constexpr" is not a type name
+  constexpr _Decimal32 v9 = 12345678; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+  ^
+
+"Test_name.c", line 23: error: expected a ";"
+  constexpr _Decimal32 v9 = 12345678; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                       ^
+
+"Test_name.c", line 24: error: variable "constexpr" is not a type name
+  constexpr _Decimal64 v10 = (unsigned long long) -1; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+  ^
+
+"Test_name.c", line 24: error: expected a ";"
+  constexpr _Decimal64 v10 = (unsigned long long) -1; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                       ^
+
+"Test_name.c", line 25: error: variable "constexpr" is not a type name
+  constexpr _Decimal32 v11 = __DEC64_MIN__; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+  ^
+
+"Test_name.c", line 25: error: expected a ";"
+  constexpr _Decimal32 v11 = __DEC64_MIN__; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                       ^
+
+"Test_name.c", line 25: error: extra text after expected end of number
+  constexpr _Decimal32 v11 = __DEC64_MIN__; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                             ^
+
+"Test_name.c", line 26: error: variable "constexpr" is not a type name
+  constexpr _Decimal64 v12 = -__DEC128_MAX__; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+  ^
+
+"Test_name.c", line 26: error: expected a ";"
+  constexpr _Decimal64 v12 = -__DEC128_MAX__; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                       ^
+
+"Test_name.c", line 26: error: extra text after expected end of number
+  constexpr _Decimal64 v12 = -__DEC128_MAX__; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                              ^
+
+"Test_name.c", line 27: error: variable "constexpr" is not a type name
+  constexpr _Decimal64 v13 = 12345678901234567890.DL; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+  ^
+
+"Test_name.c", line 27: error: expected a ";"
+  constexpr _Decimal64 v13 = 12345678901234567890.DL; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                       ^
+
+"Test_name.c", line 27: error: extra text after expected end of number
+  constexpr _Decimal64 v13 = 12345678901234567890.DL; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                                                  ^
+
+"Test_name.c", line 31: error: variable "constexpr" is not a type name
+  constexpr _Decimal32 v14 = 0e-200DD; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+  ^
+
+"Test_name.c", line 31: error: expected a ";"
+  constexpr _Decimal32 v14 = 0e-200DD; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                       ^
+
+"Test_name.c", line 31: error: extra text after expected end of number
+  constexpr _Decimal32 v14 = 0e-200DD; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                                   ^
+
+"Test_name.c", line 32: error: variable "constexpr" is not a type name
+  constexpr _Decimal32 v15 = 0e200DL; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+  ^
+
+"Test_name.c", line 32: error: expected a ";"
+  constexpr _Decimal32 v15 = 0e200DL; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                       ^
+
+"Test_name.c", line 32: error: extra text after expected end of number
+  constexpr _Decimal32 v15 = 0e200DL; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                                  ^
+
+"Test_name.c", line 37: error: expected a ")"
+    (constexpr double) { 0.0DF }; /* { dg-error "'constexpr' initializer for a binary floating-point type is of decimal type" } */
+               ^
+
+"Test_name.c", line 37: warning: expression has no effect
+    (constexpr double) { 0.0DF }; /* { dg-error "'constexpr' initializer for a binary floating-point type is of decimal type" } */
+    ^
+
+"Test_name.c", line 37: error: expected a ";"
+    (constexpr double) { 0.0DF }; /* { dg-error "'constexpr' initializer for a binary floating-point type is of decimal type" } */
+                       ^
+
+"Test_name.c", line 37: error: extra text after expected end of number
+    (constexpr double) { 0.0DF }; /* { dg-error "'constexpr' initializer for a binary floating-point type is of decimal type" } */
+                            ^
+
+"Test_name.c", line 38: error: expected a ")"
+    (constexpr double) { __builtin_infd32 () }; /* { dg-error "'constexpr' initializer for a binary floating-point type is of decimal type" } */
+               ^
+
+"Test_name.c", line 38: warning: expression has no effect
+    (constexpr double) { __builtin_infd32 () }; /* { dg-error "'constexpr' initializer for a binary floating-point type is of decimal type" } */
+    ^
+
+"Test_name.c", line 38: error: expected a ";"
+    (constexpr double) { __builtin_infd32 () }; /* { dg-error "'constexpr' initializer for a binary floating-point type is of decimal type" } */
+                       ^
+
+"Test_name.c", line 39: error: expected a ")"
+    (constexpr double) { __builtin_nand32 ("") }; /* { dg-error "'constexpr' initializer for a binary floating-point type is of decimal type" } */
+               ^
+
+"Test_name.c", line 39: warning: expression has no effect
+    (constexpr double) { __builtin_nand32 ("") }; /* { dg-error "'constexpr' initializer for a binary floating-point type is of decimal type" } */
+    ^
+
+"Test_name.c", line 39: error: expected a ";"
+    (constexpr double) { __builtin_nand32 ("") }; /* { dg-error "'constexpr' initializer for a binary floating-point type is of decimal type" } */
+                       ^
+
+"Test_name.c", line 40: error: expected a ")"
+    (constexpr _Decimal128) { 0x1p-100f }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+               ^
+
+"Test_name.c", line 40: warning: expression has no effect
+    (constexpr _Decimal128) { 0x1p-100f }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+    ^
+
+"Test_name.c", line 40: error: expected a ";"
+    (constexpr _Decimal128) { 0x1p-100f }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                            ^
+
+"Test_name.c", line 41: error: expected a ")"
+    (constexpr _Decimal32) { __builtin_nansd64 ("") }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+               ^
+
+"Test_name.c", line 41: warning: expression has no effect
+    (constexpr _Decimal32) { __builtin_nansd64 ("") }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+    ^
+
+"Test_name.c", line 41: error: expected a ";"
+    (constexpr _Decimal32) { __builtin_nansd64 ("") }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                           ^
+
+"Test_name.c", line 42: error: expected a ")"
+    (constexpr _Decimal32) { __builtin_nansd128 ("") }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+               ^
+
+"Test_name.c", line 42: warning: expression has no effect
+    (constexpr _Decimal32) { __builtin_nansd128 ("") }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+    ^
+
+"Test_name.c", line 42: error: expected a ";"
+    (constexpr _Decimal32) { __builtin_nansd128 ("") }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                           ^
+
+"Test_name.c", line 43: error: expected a ")"
+    (constexpr _Decimal64) { __builtin_nansd32 ("") }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+               ^
+
+"Test_name.c", line 43: warning: expression has no effect
+    (constexpr _Decimal64) { __builtin_nansd32 ("") }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+    ^
+
+"Test_name.c", line 43: error: expected a ";"
+    (constexpr _Decimal64) { __builtin_nansd32 ("") }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                           ^
+
+"Test_name.c", line 44: error: expected a ")"
+    (constexpr _Decimal64) { __builtin_nansd128 ("") }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+               ^
+
+"Test_name.c", line 44: warning: expression has no effect
+    (constexpr _Decimal64) { __builtin_nansd128 ("") }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+    ^
+
+"Test_name.c", line 44: error: expected a ";"
+    (constexpr _Decimal64) { __builtin_nansd128 ("") }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                           ^
+
+"Test_name.c", line 45: error: expected a ")"
+    (constexpr _Decimal128) { __builtin_nansd32 ("") }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+               ^
+
+"Test_name.c", line 45: warning: expression has no effect
+    (constexpr _Decimal128) { __builtin_nansd32 ("") }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+    ^
+
+"Test_name.c", line 45: error: expected a ";"
+    (constexpr _Decimal128) { __builtin_nansd32 ("") }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                            ^
+
+"Test_name.c", line 46: error: expected a ")"
+    (constexpr _Decimal128) { __builtin_nansd64 ("") }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+               ^
+
+"Test_name.c", line 46: warning: expression has no effect
+    (constexpr _Decimal128) { __builtin_nansd64 ("") }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+    ^
+
+"Test_name.c", line 46: error: expected a ";"
+    (constexpr _Decimal128) { __builtin_nansd64 ("") }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                            ^
+
+"Test_name.c", line 47: error: expected a ")"
+    (constexpr _Decimal32) { 12345678 }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+               ^
+
+"Test_name.c", line 47: warning: expression has no effect
+    (constexpr _Decimal32) { 12345678 }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+    ^
+
+"Test_name.c", line 47: error: expected a ";"
+    (constexpr _Decimal32) { 12345678 }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                           ^
+
+"Test_name.c", line 48: error: expected a ")"
+    (constexpr _Decimal64) { (unsigned long long) -1 }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+               ^
+
+"Test_name.c", line 48: warning: expression has no effect
+    (constexpr _Decimal64) { (unsigned long long) -1 }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+    ^
+
+"Test_name.c", line 48: error: expected a ";"
+    (constexpr _Decimal64) { (unsigned long long) -1 }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                           ^
+
+"Test_name.c", line 49: error: expected a ")"
+    (constexpr _Decimal32) { __DEC64_MIN__ }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+               ^
+
+"Test_name.c", line 49: warning: expression has no effect
+    (constexpr _Decimal32) { __DEC64_MIN__ }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+    ^
+
+"Test_name.c", line 49: error: expected a ";"
+    (constexpr _Decimal32) { __DEC64_MIN__ }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                           ^
+
+"Test_name.c", line 49: error: extra text after expected end of number
+    (constexpr _Decimal32) { __DEC64_MIN__ }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                             ^
+
+"Test_name.c", line 50: error: expected a ")"
+    (constexpr _Decimal64) { -__DEC128_MAX__ }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+               ^
+
+"Test_name.c", line 50: warning: expression has no effect
+    (constexpr _Decimal64) { -__DEC128_MAX__ }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+    ^
+
+"Test_name.c", line 50: error: expected a ";"
+    (constexpr _Decimal64) { -__DEC128_MAX__ }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                           ^
+
+"Test_name.c", line 50: error: extra text after expected end of number
+    (constexpr _Decimal64) { -__DEC128_MAX__ }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                              ^
+
+"Test_name.c", line 51: error: expected a ")"
+    (constexpr _Decimal64) { 12345678901234567890.DL }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+               ^
+
+"Test_name.c", line 51: warning: expression has no effect
+    (constexpr _Decimal64) { 12345678901234567890.DL }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+    ^
+
+"Test_name.c", line 51: error: expected a ";"
+    (constexpr _Decimal64) { 12345678901234567890.DL }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                           ^
+
+"Test_name.c", line 51: error: extra text after expected end of number
+    (constexpr _Decimal64) { 12345678901234567890.DL }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                                                  ^
+
+"Test_name.c", line 52: error: expected a ")"
+    (constexpr _Decimal32) { 0e-200DD }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+               ^
+
+"Test_name.c", line 52: warning: expression has no effect
+    (constexpr _Decimal32) { 0e-200DD }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+    ^
+
+"Test_name.c", line 52: error: expected a ";"
+    (constexpr _Decimal32) { 0e-200DD }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                           ^
+
+"Test_name.c", line 52: error: extra text after expected end of number
+    (constexpr _Decimal32) { 0e-200DD }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                                   ^
+
+"Test_name.c", line 53: error: expected a ")"
+    (constexpr _Decimal32) { 0e200DL }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+               ^
+
+"Test_name.c", line 53: warning: expression has no effect
+    (constexpr _Decimal32) { 0e200DL }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+    ^
+
+"Test_name.c", line 53: error: expected a ";"
+    (constexpr _Decimal32) { 0e200DL }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                           ^
+
+"Test_name.c", line 53: error: extra text after expected end of number
+    (constexpr _Decimal32) { 0e200DL }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                                  ^
+
+77 errors detected in the compilation of "Test_name.c".

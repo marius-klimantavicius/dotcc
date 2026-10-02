@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp0x/missing-initializer_list-include.C", line 10: error: an #include <initializer_list> is needed prior to a use of std::initializer_list, including an implicit use
+    auto a = { &i };
+             ^
+
+"./cpp0x/missing-initializer_list-include.C", line 10: error: cannot deduce "auto" type
+    auto a = { &i };
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

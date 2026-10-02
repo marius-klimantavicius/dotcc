@@ -1,0 +1,209 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++23 Test_name.c
+"Test_name.c", line 11: error: no instance of function template "issue1::f" matches the argument list
+            argument types are: (issue1::B<int, int>)
+      f(B<int>());
+      ^
+"Test_name.c", line 7: note: candidate function template "issue1::f" failed deduction
+    template<template<class> class P, class T> void f(P<T>);
+                                                    ^
+
+"Test_name.c", line 12: error: no instance of function template "issue1::f" matches the argument list
+            argument types are: (issue1::B<int, float>)
+      f(B<int,float>()); // expected-error {{no matching function for call}}
+      ^
+"Test_name.c", line 7: note: candidate function template "issue1::f" failed deduction
+    template<template<class> class P, class T> void f(P<T>);
+                                                    ^
+
+"Test_name.c", line 91: error: more than one partial specialization matches the template argument list of class "type_pack1::A<type_pack1::B<char>>"
+            "type_pack1::A<TT1<T4>>" (declared at line 87)
+            "type_pack1::A<TT2<T6>>" (declared at line 88)
+    template struct A<B<char>>;
+             ^
+
+"Test_name.c", line 91: error: incomplete type "type_pack1::A<type_pack1::B<char>>" is not allowed
+    template struct A<B<char>>;
+             ^
+
+"Test_name.c", line 100: error: more than one partial specialization matches the template argument list of class "type_pack2::A<type_pack2::B<char>>"
+            "type_pack2::A<TT1<T4...>>" (declared at line 96)
+            "type_pack2::A<TT2<T6...>>" (declared at line 97)
+    template struct A<B<char>>;
+             ^
+
+"Test_name.c", line 100: error: incomplete type "type_pack2::A<type_pack2::B<char>>" is not allowed
+    template struct A<B<char>>;
+             ^
+
+"Test_name.c", line 127: error: incomplete type "gcc_issue::A<gcc_issue::B<int, int>, int>" is not allowed
+    template struct A<B<int>, int>;
+             ^
+
+"Test_name.c", line 157: error: more than one partial specialization matches the template argument list of class "ttp_only::A<ttp_only::B>"
+            "ttp_only::A<TT2>" (declared at line 149)
+            "ttp_only::A<TT3>" (declared at line 150)
+    static_assert(A<B>::V == 0);
+                        ^
+
+"Test_name.c", line 157: error: static assertion failed
+    static_assert(A<B>::V == 0);
+    ^
+"Test_name.c", line 157: note: the final comparison was 1 == 0
+    static_assert(A<B>::V == 0);
+                          ^
+
+"Test_name.c", line 274: error: no instance of function template "classes::canon::f" matches the argument list
+            argument types are: (classes::canon::A<int, float>)
+      using X = decltype(f(v1));
+                         ^
+"Test_name.c", line 268: note: candidate function template "classes::canon::f" failed deduction
+      template<template<class> class TT> auto f(TT<int> a) { return a; }
+                                              ^
+
+"Test_name.c", line 277: error: no instance of function template "classes::canon::f" matches the argument list
+            argument types are: (classes::canon::A<int, double>)
+      using X = decltype(f(v2));
+                         ^
+"Test_name.c", line 268: note: candidate function template "classes::canon::f" failed deduction
+      template<template<class> class TT> auto f(TT<int> a) { return a; }
+                                              ^
+
+"Test_name.c", line 289: error: no instance of function template "classes::expr::f" matches the argument list
+            argument types are: (classes::expr::A<int, 3>)
+        f(A<int, 3>());
+        ^
+"Test_name.c", line 284: note: candidate function template "classes::expr::f" failed deduction
+      template <template <class T3> class TT> void f(TT<int> v) {
+                                                   ^
+
+"Test_name.c", line 303: error: no instance of function template "classes::packs::f" matches the argument list
+            argument types are: (classes::packs::A<int, void, void, void>)
+        f(A<int, void, void, void>());
+        ^
+"Test_name.c", line 298: note: function template "classes::packs::f" does not match because argument #1 does not match parameter
+      template <template <class T3> class TT> void f(TT<int> v) {
+                                                   ^
+
+"Test_name.c", line 322: error: no instance of function template "classes::nested::g" matches the argument list
+            argument types are: (classes::nested::A<double, 1, 3>)
+      using B = decltype(g(A<double, 1, 3>()));
+                         ^
+"Test_name.c", line 317: note: candidate function template "classes::nested::g" failed deduction
+      template <template <class T2, int V3> class TT2> auto g(TT2<double, 1>) {
+                                                            ^
+
+"Test_name.c", line 325: error: expected a ";"
+      using X = B::type; // expected-error {{undeclared identifier 'B'}}
+                 ^
+
+"Test_name.c", line 327: error: name followed by "::" must be a class or namespace name
+      static_assert(B::v1 == 2); // expected-error {{undeclared identifier 'B'}}
+                    ^
+
+"Test_name.c", line 328: error: name followed by "::" must be a class or namespace name
+      static_assert(B::v2 == 3); // expected-error {{undeclared identifier 'B'}}
+                    ^
+
+"Test_name.c", line 339: error: no instance of function template "classes::defaulted::f" matches the argument list
+            argument types are: (classes::defaulted::A<int, int *>)
+      using X = decltype(f(A<int>()))::type;
+                         ^
+"Test_name.c", line 335: note: candidate function template "classes::defaulted::f" failed deduction
+      template <template <class> class TT> TT<float> f(TT<int>);
+                                                     ^
+
+"Test_name.c", line 339: error: invalid redeclaration of type name "classes::defaulted::X" (declared at line 338)
+      using X = decltype(f(A<int>()))::type;
+            ^
+
+"Test_name.c", line 343: error: no instance of function template "classes::defaulted::f" matches the argument list
+            argument types are: (classes::defaulted::A<int, double *>)
+      using Y = decltype(f(A<int, double*>()))::type;
+                         ^
+"Test_name.c", line 335: note: candidate function template "classes::defaulted::f" failed deduction
+      template <template <class> class TT> TT<float> f(TT<int>);
+                                                     ^
+
+"Test_name.c", line 343: error: invalid redeclaration of type name "classes::defaulted::Y" (declared at line 342)
+      using Y = decltype(f(A<int, double*>()))::type;
+            ^
+
+"Test_name.c", line 355: error: class template "packs::t1::B" is not compatible with template template parameter "<unnamed>"
+      template struct A<B>;
+                        ^
+
+"Test_name.c", line 361: error: class template "packs::t2::B" is not compatible with template template parameter "<unnamed>"
+      template struct A<B>;
+                        ^
+
+"Test_name.c", line 369: error: class template "packs::t3::B" is not compatible with template template parameter "<unnamed>"
+      template struct A<B>;
+                        ^
+
+"Test_name.c", line 375: error: class template "packs::t4::B" is not compatible with template template parameter "<unnamed>"
+      template struct A<B>;
+                        ^
+
+"Test_name.c", line 390: error: more than one instance of overloaded function "fun_tmpl_call::order_func_nonpack::f" matches the argument list:
+            function template "void fun_tmpl_call::order_func_nonpack::f(TT<int>)" (declared at line 386)
+            function template "void fun_tmpl_call::order_func_nonpack::f(TT<int>)" (declared at line 387)
+            argument types are: (fun_tmpl_call::order_func_nonpack::A<int>)
+      void test() { f(A<int>()); }
+                    ^
+
+"Test_name.c", line 396: error: more than one instance of overloaded function "fun_tmpl_call::order_func_pack::f" matches the argument list:
+            function template "void fun_tmpl_call::order_func_pack::f(TT<int>)" (declared at line 393)
+            function template "void fun_tmpl_call::order_func_pack::f(TT<int>)" (declared at line 394)
+            argument types are: (fun_tmpl_call::order_func_pack::A<int>)
+      void test() { f(A<int>()); }
+                    ^
+
+"Test_name.c", line 402: error: no instance of function template "fun_tmpl_call::match_enum::f" matches the specified type
+      template void f<B>(B<{}>);
+                    ^
+
+"Test_name.c", line 417: error: more than one instance of overloaded function "fun_tmpl_call::order_method_nonpack::A::f" matches the argument list:
+            function template "void fun_tmpl_call::order_method_nonpack::A::f(TT<int>)" (declared at line 413)
+            function template "void fun_tmpl_call::order_method_nonpack::A::f(TT<int>)" (declared at line 414)
+            argument types are: (fun_tmpl_call::order_method_nonpack::B<int>)
+            object type is: fun_tmpl_call::order_method_nonpack::A
+      void test() { A().f(B<int>()); }
+                        ^
+
+"Test_name.c", line 425: error: more than one instance of overloaded function "fun_tmpl_call::order_method_pack::A::f" matches the argument list:
+            function template "void fun_tmpl_call::order_method_pack::A::f(TT<int>)" (declared at line 421)
+            function template "void fun_tmpl_call::order_method_pack::A::f(TT<int>)" (declared at line 422)
+            argument types are: (fun_tmpl_call::order_method_pack::B<int>)
+            object type is: fun_tmpl_call::order_method_pack::A
+      void test() { A().f(B<int>()); }
+                        ^
+
+"Test_name.c", line 440: error: more than one user-defined conversion from "fun_tmpl_call::order_conv_nonpack::A" to "fun_tmpl_call::order_conv_nonpack::B<int>" applies:
+            function template "fun_tmpl_call::order_conv_nonpack::A::operator TT<int>()" (declared at line 436)
+            function template "fun_tmpl_call::order_conv_nonpack::A::operator TT<int>()" (declared at line 437)
+      void test() { B<int> b = A(); }
+                               ^
+
+"Test_name.c", line 448: error: more than one user-defined conversion from "fun_tmpl_call::order_conv_pack::A" to "fun_tmpl_call::order_conv_pack::B<int>" applies:
+            function template "fun_tmpl_call::order_conv_pack::A::operator TT<int>()" (declared at line 444)
+            function template "fun_tmpl_call::order_conv_pack::A::operator TT<int>()" (declared at line 445)
+      void test() { B<int> b = A(); }
+                               ^
+
+"Test_name.c", line 465: error: incomplete type "partial::t1::A<partial::t1::B>" is not allowed
+      template struct A<B>;
+               ^
+
+"Test_name.c", line 571: error: class template "constraints::t10::B" is not compatible with template template parameter "TT1"
+      template struct A<B>;
+                        ^
+
+"Test_name.c", line 620: error: template parameter pack not at end of parameter list
+      template<template<auto... Va1, auto Va2> class> struct A {};
+                                ^
+
+"Test_name.c", line 626: error: template parameter pack not at end of parameter list
+      template<template<auto... Va1, auto... Va2> class> struct A {};
+                                ^
+
+36 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,38 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --diag_warning=949 --strict Test_name.c
+"Test_name.c", line 7: warning: specifying a default argument on this declaration is nonstandard
+    typedef void (*pf)(int = x);
+                           ^
+
+"Test_name.c", line 7: error: identifier "x" is undefined
+    typedef void (*pf)(int = x);
+                             ^
+
+"Test_name.c", line 9: warning: specifying a default argument on this declaration is nonstandard
+    void (*m)(int = x*10);
+                  ^
+
+"Test_name.c", line 9: error: identifier "x" is undefined
+    void (*m)(int = x*10);
+                    ^
+
+"Test_name.c", line 11: warning: specifying a default argument on this declaration is nonstandard
+    static void (*s)(int = x*100);
+                         ^
+
+"Test_name.c", line 11: error: identifier "x" is undefined
+    static void (*s)(int = x*100);
+                           ^
+
+"Test_name.c", line 15: error: specializing member "X<T>::x [with T=int]" without "template<>" syntax is nonstandard
+  int A::x = 0;
+         ^
+
+"Test_name.c", line 19: error: specializing member "X<T>::s [with T=int]" without "template<>" syntax is nonstandard
+  void (*A::s)(int) = &func;
+            ^
+
+"Test_name.c", line 20: error: return type "int" omitted in declaration of function "main"
+  main() {
+  ^
+
+6 errors detected in the compilation of "Test_name.c".

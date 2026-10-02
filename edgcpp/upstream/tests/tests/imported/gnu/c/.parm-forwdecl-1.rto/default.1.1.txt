@@ -1,0 +1,146 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 9: error: expected a ")"
+  int f1(int a; int a);
+              ^
+
+"Test_name.c", line 9: error: expected a ";"
+  int f1(int a; int a);
+                     ^
+
+"Test_name.c", line 10: error: expected a ")"
+  int f2(int a; int a) { return 0; }
+              ^
+
+"Test_name.c", line 10: error: expected a ";"
+  int f2(int a; int a) { return 0; }
+                     ^
+
+"Test_name.c", line 12: error: expected a ")"
+  int f4(int a; int a; int a) { return 0; }
+              ^
+
+"Test_name.c", line 12: error: expected a ";"
+  int f4(int a; int a; int a) { return 0; }
+                            ^
+
+"Test_name.c", line 14: error: expected a ")"
+  int f6(int a; int (*x)[a], int a) { return 0; }
+              ^
+
+"Test_name.c", line 14: error: expression must have a constant value
+  int f6(int a; int (*x)[a], int a) { return 0; }
+                         ^
+"Test_name.c", line 14: note: the value of variable "a" (declared at line 9) cannot be used as a constant
+  int f6(int a; int (*x)[a], int a) { return 0; }
+                         ^
+
+"Test_name.c", line 14: error: expected an identifier
+  int f6(int a; int (*x)[a], int a) { return 0; }
+                             ^
+
+"Test_name.c", line 14: error: expected a ";"
+  int f6(int a; int (*x)[a], int a) { return 0; }
+                                    ^
+
+"Test_name.c", line 16: error: expected a ")"
+  int f8(int a; int (*x)[a]; int (*y)[x[1][2]], int (*x)[a], int a) { return 0; }
+              ^
+
+"Test_name.c", line 16: error: expression must have a constant value
+  int f8(int a; int (*x)[a]; int (*y)[x[1][2]], int (*x)[a], int a) { return 0; }
+                         ^
+"Test_name.c", line 16: note: the value of variable "a" (declared at line 9) cannot be used as a constant
+  int f8(int a; int (*x)[a]; int (*y)[x[1][2]], int (*x)[a], int a) { return 0; }
+                         ^
+
+"Test_name.c", line 16: error: expression must have a constant value
+  int f8(int a; int (*x)[a]; int (*y)[x[1][2]], int (*x)[a], int a) { return 0; }
+                                      ^
+"Test_name.c", line 16: note: the value of variable "x" (declared at line 14) cannot be used as a constant
+  int f8(int a; int (*x)[a]; int (*y)[x[1][2]], int (*x)[a], int a) { return 0; }
+                                      ^
+
+"Test_name.c", line 16: error: expected an identifier
+  int f8(int a; int (*x)[a]; int (*y)[x[1][2]], int (*x)[a], int a) { return 0; }
+                                                ^
+
+"Test_name.c", line 16: error: expected a type specifier
+  int f8(int a; int (*x)[a]; int (*y)[x[1][2]], int (*x)[a], int a) { return 0; }
+                                                     ^
+
+"Test_name.c", line 16: error: expression must have a constant value
+  int f8(int a; int (*x)[a]; int (*y)[x[1][2]], int (*x)[a], int a) { return 0; }
+                                                         ^
+"Test_name.c", line 16: note: the value of variable "a" (declared at line 9) cannot be used as a constant
+  int f8(int a; int (*x)[a]; int (*y)[x[1][2]], int (*x)[a], int a) { return 0; }
+                                                         ^
+
+"Test_name.c", line 16: error: expected an identifier
+  int f8(int a; int (*x)[a]; int (*y)[x[1][2]], int (*x)[a], int a) { return 0; }
+                                                             ^
+
+"Test_name.c", line 20: warning: parsing restarts here after previous syntax error
+  int g1(int a;); /* { dg-error "just a forward declaration" "no parms" { xfail *-*-* } } */
+        ^
+
+"Test_name.c", line 20: error: expected a ")"
+  int g1(int a;); /* { dg-error "just a forward declaration" "no parms" { xfail *-*-* } } */
+              ^
+
+"Test_name.c", line 20: error: expected a declaration
+  int g1(int a;); /* { dg-error "just a forward declaration" "no parms" { xfail *-*-* } } */
+               ^
+
+"Test_name.c", line 21: error: expected a ")"
+  int g2(int a; __attribute__((unused))); /* { dg-error "just a forward declaration" "no parms" { xfail *-*-* } } */
+              ^
+
+"Test_name.c", line 21: error: expected a declaration
+  int g2(int a; __attribute__((unused))); /* { dg-error "just a forward declaration" "no parms" { xfail *-*-* } } */
+                                       ^
+
+"Test_name.c", line 22: error: expected a ")"
+  int g3(int;); /* { dg-error "just a forward declaration" "no parms" { xfail *-*-* } } */
+            ^
+
+"Test_name.c", line 22: error: expected a declaration
+  int g3(int;); /* { dg-error "just a forward declaration" "no parms" { xfail *-*-* } } */
+             ^
+
+"Test_name.c", line 23: error: expected a ")"
+  int g4(int, long;); /* { dg-error "just a forward declaration" "no parms" { xfail *-*-* } } */
+                  ^
+
+"Test_name.c", line 23: error: expected a declaration
+  int g4(int, long;); /* { dg-error "just a forward declaration" "no parms" { xfail *-*-* } } */
+                   ^
+
+"Test_name.c", line 26: error: expected a ")"
+  int h1(int a; int b); /* { dg-error "just a forward declaration" } */
+              ^
+
+"Test_name.c", line 26: error: expected a ";"
+  int h1(int a; int b); /* { dg-error "just a forward declaration" } */
+                     ^
+
+"Test_name.c", line 27: error: expected a ")"
+  int h2(int; int b); /* { dg-error "just a forward declaration" } */
+            ^
+
+"Test_name.c", line 27: error: expected a ";"
+  int h2(int; int b); /* { dg-error "just a forward declaration" } */
+                   ^
+
+"Test_name.c", line 28: error: expected a ")"
+  int h3(int a; long a); /* { dg-error "conflicting types|previous definition|just a forward declaration" } */
+              ^
+
+"Test_name.c", line 28: error: declaration is incompatible with "int a" (declared at line 9)
+  int h3(int a; long a); /* { dg-error "conflicting types|previous definition|just a forward declaration" } */
+                     ^
+
+"Test_name.c", line 28: error: expected a ";"
+  int h3(int a; long a); /* { dg-error "conflicting types|previous definition|just a forward declaration" } */
+                      ^
+
+32 errors detected in the compilation of "Test_name.c".

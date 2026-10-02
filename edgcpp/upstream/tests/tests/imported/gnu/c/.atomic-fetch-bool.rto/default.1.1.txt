@@ -1,0 +1,65 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 Test_name.c
+"Test_name.c", line 16: warning: argument of type "_Atomic(_Bool) *" is incompatible with parameter of type "volatile void *"
+    __atomic_fetch_add (a, 1, SEQ_CST);   /* { dg-error "operand type ._Atomic _Bool \\*. is incompatible with argument 1 of .__atomic_fetch_add." } */
+                        ^
+
+"Test_name.c", line 17: warning: argument of type "_Atomic(_Bool) *" is incompatible with parameter of type "volatile void *"
+    __atomic_fetch_sub (a, 1, SEQ_CST);   /* { dg-error "operand type ._Atomic _Bool \\*. is incompatible with argument 1 of .__atomic_fetch_sub." } */
+                        ^
+
+"Test_name.c", line 18: warning: argument of type "_Atomic(_Bool) *" is incompatible with parameter of type "volatile void *"
+    __atomic_fetch_and (a, 1, SEQ_CST);   /* { dg-error "operand type ._Atomic _Bool \\*. is incompatible with argument 1 of .__atomic_fetch_and." } */
+                        ^
+
+"Test_name.c", line 19: warning: argument of type "_Atomic(_Bool) *" is incompatible with parameter of type "volatile void *"
+    __atomic_fetch_xor (a, 1, SEQ_CST);   /* { dg-error "operand type ._Atomic _Bool \\*. is incompatible with argument 1 of .__atomic_fetch_xor." } */
+                        ^
+
+"Test_name.c", line 20: warning: argument of type "_Atomic(_Bool) *" is incompatible with parameter of type "volatile void *"
+    __atomic_fetch_or (a, 1, SEQ_CST);   /* { dg-error "operand type ._Atomic _Bool \\*. is incompatible with argument 1 of .__atomic_fetch_or." } */
+                       ^
+
+"Test_name.c", line 21: warning: argument of type "_Atomic(_Bool) *" is incompatible with parameter of type "volatile void *"
+    __atomic_fetch_nand (a, 1, SEQ_CST);   /* { dg-error "operand type ._Atomic _Bool \\*. is incompatible with argument 1 of .__atomic_fetch_nand." } */
+                         ^
+
+"Test_name.c", line 23: warning: argument of type "_Atomic(_Bool) *" is incompatible with parameter of type "volatile void *"
+    __atomic_add_fetch (a, 1, SEQ_CST);   /* { dg-error "operand type ._Atomic _Bool \\*. is incompatible with argument 1 of .__atomic_add_fetch." } */
+                        ^
+
+"Test_name.c", line 24: warning: argument of type "_Atomic(_Bool) *" is incompatible with parameter of type "volatile void *"
+    __atomic_sub_fetch (a, 1, SEQ_CST);   /* { dg-error "operand type ._Atomic _Bool \\*. is incompatible with argument 1 of .__atomic_sub_fetch." } */
+                        ^
+
+"Test_name.c", line 25: warning: argument of type "_Atomic(_Bool) *" is incompatible with parameter of type "volatile void *"
+    __atomic_and_fetch (a, 1, SEQ_CST);   /* { dg-error "operand type ._Atomic _Bool \\*. is incompatible with argument 1 of .__atomic_and_fetch." } */
+                        ^
+
+"Test_name.c", line 26: warning: argument of type "_Atomic(_Bool) *" is incompatible with parameter of type "volatile void *"
+    __atomic_xor_fetch (a, 1, SEQ_CST);   /* { dg-error "operand type ._Atomic _Bool \\*. is incompatible with argument 1 of .__atomic_xor_fetch." } */
+                        ^
+
+"Test_name.c", line 27: warning: argument of type "_Atomic(_Bool) *" is incompatible with parameter of type "volatile void *"
+    __atomic_or_fetch (a, 1, SEQ_CST);   /* { dg-error "operand type ._Atomic _Bool \\*. is incompatible with argument 1 of .__atomic_or_fetch." } */
+                       ^
+
+"Test_name.c", line 28: warning: argument of type "_Atomic(_Bool) *" is incompatible with parameter of type "volatile void *"
+    __atomic_nand_fetch (a, 1, SEQ_CST);   /* { dg-error "operand type ._Atomic _Bool \\*. is incompatible with argument 1 of .__atomic_nand_fetch." } */
+                         ^
+
+"Test_name.c", line 33: warning: argument of type "_Atomic(_Bool) *" is incompatible with parameter of type "volatile void *"
+    __atomic_exchange_n (a, val, SEQ_CST);
+                         ^
+
+"Test_name.c", line 35: warning: argument of type "_Atomic(_Bool) *" is incompatible with parameter of type "volatile void *"
+    __atomic_compare_exchange_n (a, &val, ret, !1, SEQ_CST, SEQ_CST);
+                                 ^
+
+"Test_name.c", line 36: warning: argument of type "_Atomic(_Bool) *" is incompatible with parameter of type "volatile void *"
+    __atomic_test_and_set (a, SEQ_CST);
+                           ^
+
+"Test_name.c", line 37: warning: argument of type "_Atomic(_Bool) *" is incompatible with parameter of type "volatile void *"
+    __atomic_clear (a, SEQ_CST);
+                    ^
+

@@ -1,0 +1,94 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 68: error: invalid type conversion
+    static_cast<D&>(b);
+    ^
+
+"Test_name.c", line 84: error: this operator is not allowed in an integral constant expression
+  static_assert(__enable_constant_folding(static_cast<void*>(&x[0]) < static_cast<void*>(&x[1])), "");
+  ^
+
+"Test_name.c", line 84: error: this operator is not allowed in an integral constant expression
+  static_assert(__enable_constant_folding(static_cast<void*>(&x[0]) < static_cast<void*>(&x[1])), "");
+  ^
+
+"Test_name.c", line 84: error: type of cast must be integral or enum
+  static_assert(__enable_constant_folding(static_cast<void*>(&x[0]) < static_cast<void*>(&x[1])), "");
+  ^
+
+"Test_name.c", line 84: error: this operator is not allowed in an integral constant expression
+  static_assert(__enable_constant_folding(static_cast<void*>(&x[0]) < static_cast<void*>(&x[1])), "");
+  ^
+
+"Test_name.c", line 84: error: this operator is not allowed in an integral constant expression
+  static_assert(__enable_constant_folding(static_cast<void*>(&x[0]) < static_cast<void*>(&x[1])), "");
+  ^
+
+"Test_name.c", line 84: error: type of cast must be integral or enum
+  static_assert(__enable_constant_folding(static_cast<void*>(&x[0]) < static_cast<void*>(&x[1])), "");
+  ^
+
+"Test_name.c", line 85: error: this operator is not allowed in an integral constant expression
+  static_assert(__enable_constant_folding(static_cast<void*>(&y[0].i) < static_cast<void*>(&y[0].j)), "");
+  ^
+
+"Test_name.c", line 85: error: this operator is not allowed in an integral constant expression
+  static_assert(__enable_constant_folding(static_cast<void*>(&y[0].i) < static_cast<void*>(&y[0].j)), "");
+  ^
+
+"Test_name.c", line 85: error: this operator is not allowed in an integral constant expression
+  static_assert(__enable_constant_folding(static_cast<void*>(&y[0].i) < static_cast<void*>(&y[0].j)), "");
+  ^
+
+"Test_name.c", line 85: error: type of cast must be integral or enum
+  static_assert(__enable_constant_folding(static_cast<void*>(&y[0].i) < static_cast<void*>(&y[0].j)), "");
+  ^
+
+"Test_name.c", line 85: error: this operator is not allowed in an integral constant expression
+  static_assert(__enable_constant_folding(static_cast<void*>(&y[0].i) < static_cast<void*>(&y[0].j)), "");
+  ^
+
+"Test_name.c", line 85: error: this operator is not allowed in an integral constant expression
+  static_assert(__enable_constant_folding(static_cast<void*>(&y[0].i) < static_cast<void*>(&y[0].j)), "");
+  ^
+
+"Test_name.c", line 85: error: this operator is not allowed in an integral constant expression
+  static_assert(__enable_constant_folding(static_cast<void*>(&y[0].i) < static_cast<void*>(&y[0].j)), "");
+  ^
+
+"Test_name.c", line 85: error: type of cast must be integral or enum
+  static_assert(__enable_constant_folding(static_cast<void*>(&y[0].i) < static_cast<void*>(&y[0].j)), "");
+  ^
+
+"Test_name.c", line 86: error: this operator is not allowed in an integral constant expression
+  static_assert(__enable_constant_folding(static_cast<void*>(&y[0].j) < static_cast<void*>(&y[1].i)), "");
+  ^
+
+"Test_name.c", line 86: error: this operator is not allowed in an integral constant expression
+  static_assert(__enable_constant_folding(static_cast<void*>(&y[0].j) < static_cast<void*>(&y[1].i)), "");
+  ^
+
+"Test_name.c", line 86: error: this operator is not allowed in an integral constant expression
+  static_assert(__enable_constant_folding(static_cast<void*>(&y[0].j) < static_cast<void*>(&y[1].i)), "");
+  ^
+
+"Test_name.c", line 86: error: type of cast must be integral or enum
+  static_assert(__enable_constant_folding(static_cast<void*>(&y[0].j) < static_cast<void*>(&y[1].i)), "");
+  ^
+
+"Test_name.c", line 86: error: this operator is not allowed in an integral constant expression
+  static_assert(__enable_constant_folding(static_cast<void*>(&y[0].j) < static_cast<void*>(&y[1].i)), "");
+  ^
+
+"Test_name.c", line 86: error: this operator is not allowed in an integral constant expression
+  static_assert(__enable_constant_folding(static_cast<void*>(&y[0].j) < static_cast<void*>(&y[1].i)), "");
+  ^
+
+"Test_name.c", line 86: error: this operator is not allowed in an integral constant expression
+  static_assert(__enable_constant_folding(static_cast<void*>(&y[0].j) < static_cast<void*>(&y[1].i)), "");
+  ^
+
+"Test_name.c", line 86: error: type of cast must be integral or enum
+  static_assert(__enable_constant_folding(static_cast<void*>(&y[0].j) < static_cast<void*>(&y[1].i)), "");
+  ^
+
+23 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 18: error: "i" has already been declared in the current scope
+    using B::i; // { dg-error "redeclaration" }
+             ^
+
+"Test_name.c", line 34: error: "type" has already been declared in the current scope
+    using F::type; // { dg-error "redeclaration" }
+             ^
+
+"Test_name.c", line 45: error: "type" has already been declared in the current scope
+    using H::type; // { dg-error "conflicts" }
+             ^
+
+"Test_name.c", line 51: error: "type" has already been declared in the current scope
+    typedef int type; // { dg-error "conflicts" }
+                ^
+
+"Test_name.c", line 62: error: "type" has already been declared in the current scope
+    using J::type; // { dg-error "conflicts" }
+             ^
+
+"Test_name.c", line 68: error: "type" has already been declared in the current scope
+    struct type {}; // { dg-error "redefinition" }
+           ^
+
+"Test_name.c", line 80: warning: duplicate using-declaration of "M::type" ignored
+    using M::type; // { dg-error "redeclaration" }
+    ^
+
+"Test_name.c", line 82: warning: duplicate using-declaration of "M::type2" ignored
+    using M::type2; // { dg-error "redeclaration" }
+    ^
+
+6 errors detected in the compilation of "Test_name.c".

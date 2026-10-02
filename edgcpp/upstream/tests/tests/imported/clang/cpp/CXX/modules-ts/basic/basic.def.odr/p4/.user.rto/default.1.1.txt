@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 10: error: identifier "import" is undefined
+  import Module;
+  ^
+
+"Test_name.c", line 14: error: identifier "used_inline_exported" is undefined
+    used_inline_exported();
+    ^
+
+"Test_name.c", line 16: error: identifier "noninline_exported" is undefined
+    noninline_exported();
+    ^
+
+"Test_name.c", line 18: error: identifier "extern_var_exported" is undefined
+    (void)&extern_var_exported;
+           ^
+
+"Test_name.c", line 19: error: identifier "inline_var_exported" is undefined
+    (void)&inline_var_exported;
+           ^
+
+"Test_name.c", line 20: error: identifier "const_var_exported" is undefined
+    (void)&const_var_exported;
+           ^
+
+6 errors detected in the compilation of "Test_name.c".

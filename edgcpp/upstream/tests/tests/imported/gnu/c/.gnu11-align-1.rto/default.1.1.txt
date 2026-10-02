@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 --strict_gnu Test_name.c
+"./gnu11-align-1.c", line 8: warning: attribute does not apply to any entity
+  size_t align = _Alignof (_Alignas (_Alignof (max_align_t)) char) { 1 };
+                           ^
+

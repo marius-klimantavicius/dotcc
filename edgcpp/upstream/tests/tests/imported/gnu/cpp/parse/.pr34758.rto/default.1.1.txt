@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: error: no instance of constructor "A::A" matches the argument list
+    A (const A& = A()); // { dg-error "recursive evaluation of default argument" }
+                  ^
+"Test_name.c", line 8: note: number of parameters of function "A::A" does not match the call
+    A (const A& = A()); // { dg-error "recursive evaluation of default argument" }
+    ^
+
+"Test_name.c", line 13: error: too few arguments in function call
+    S(const S& = f()); // { dg-error "default argument\[^\n\]*which is not yet defined" }
+                   ^
+
+"Test_name.c", line 18: error: too few arguments in function call
+    J(const J& = f(2)); // { dg-error "default argument.*which is not yet defined" }
+                    ^
+
+3 errors detected in the compilation of "Test_name.c".

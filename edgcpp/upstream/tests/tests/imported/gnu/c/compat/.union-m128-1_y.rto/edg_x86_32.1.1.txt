@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"/mds/gnu/build/gcc-15-20250223/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/xmmintrin.h", line 666: error: invalid type conversion
+    return (__m128) __builtin_ia32_cvtsi642ss ((__v4sf) __A, __B);
+           ^
+
+"/mds/gnu/build/gcc-15-20250223/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/xmmintrin.h", line 673: error: invalid type conversion
+    return (__m128) __builtin_ia32_cvtsi642ss ((__v4sf) __A, __B);
+           ^
+
+"/mds/gnu/build/gcc-15-20250223/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/emmintrin.h", line 933: error: invalid type conversion
+    return (__m128d)__builtin_ia32_cvtsi642sd ((__v2df) __A, __B);
+           ^
+
+"/mds/gnu/build/gcc-15-20250223/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/emmintrin.h", line 940: error: invalid type conversion
+    return (__m128d)__builtin_ia32_cvtsi642sd ((__v2df) __A, __B);
+           ^
+
+4 errors detected in the compilation of "Test_name.c".

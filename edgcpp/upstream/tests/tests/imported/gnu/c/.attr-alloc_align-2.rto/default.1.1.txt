@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 6: warning: unknown attribute "alloc_align"
+  void *f1 (int) __attribute__((alloc_align (1)));
+                                ^
+
+"Test_name.c", line 7: warning: unknown attribute "alloc_align"
+  void *f2 (int, int, int) __attribute__((alloc_align (3)));
+                                          ^
+
+"Test_name.c", line 8: warning: unknown attribute "alloc_align"
+  void *f3 (void) __attribute__((alloc_align)); /* { dg-error "wrong number of arguments specified" } */
+                                 ^
+
+"Test_name.c", line 9: warning: unknown attribute "alloc_align"
+  void *f4 (int, int) __attribute__((alloc_align (1, 2))); /* { dg-error "wrong number of arguments specified" } */
+                                     ^
+
+"Test_name.c", line 10: warning: unknown attribute "alloc_align"
+  void *f5 (void) __attribute__((alloc_align (i))); /* { dg-warning ".alloc_align. attribute argument value .i. is not an integer constant" } */
+                                 ^
+
+"Test_name.c", line 11: warning: unknown attribute "alloc_align"
+  void *f6 (int) __attribute__((alloc_align (0))); /* { dg-warning ".alloc_align. attribute argument value .0. does not refer to a function parameter" } */
+                                ^
+
+"Test_name.c", line 12: warning: unknown attribute "alloc_align"
+  void *f7 (int) __attribute__((alloc_align (2))); /* { dg-warning ".alloc_align. attribute argument value .2. exceeds the number of function parameters 1" } */
+                                ^
+

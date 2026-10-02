@@ -1,0 +1,8 @@
+./a.out
+Direct inits:
+a[0] = 12, a[1] = 0, a[2] = 0
+a[0] = 9, a[1] = 0, a[2] = 0
+
+Conversion inits:
+a[0] = 1, a[1] = 0, a[2] = 0
+a[0] = 2, a[1] = 0, a[2] = 0

@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 --c++23 -A Test_name.c
+"Test_name.c", line 9: error: attribute "maybe_unused" does not apply here
+      [[maybe_unused]] x:
+        ^
+
+"Test_name.c", line 9: warning: label "x" was declared but never referenced
+      [[maybe_unused]] x:
+                       ^
+
+1 error detected in the compilation of "Test_name.c".

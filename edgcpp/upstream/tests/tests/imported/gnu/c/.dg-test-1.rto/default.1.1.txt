@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 10: error: identifier "a" is undefined
+    int z = a + b + c + d;/* { dg-error "'b' undeclared" "err2" } */
+            ^
+
+"Test_name.c", line 10: error: identifier "b" is undefined
+    int z = a + b + c + d;/* { dg-error "'b' undeclared" "err2" } */
+                ^
+
+"Test_name.c", line 10: error: identifier "c" is undefined
+    int z = a + b + c + d;/* { dg-error "'b' undeclared" "err2" } */
+                    ^
+
+"Test_name.c", line 10: error: identifier "d" is undefined
+    int z = a + b + c + d;/* { dg-error "'b' undeclared" "err2" } */
+                        ^
+
+4 errors detected in the compilation of "Test_name.c".

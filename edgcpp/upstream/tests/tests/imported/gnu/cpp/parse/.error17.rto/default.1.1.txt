@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 11: error: "B<T>::Bar [with T=int]" is ambiguous
+  int i2 = D::Bar(2); // { dg-error "13:reference to 'Bar' is ambiguous" }
+              ^
+
+1 error detected in the compilation of "Test_name.c".

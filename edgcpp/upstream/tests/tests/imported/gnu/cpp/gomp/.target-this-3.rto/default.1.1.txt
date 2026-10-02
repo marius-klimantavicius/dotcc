@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./gomp/target-this-3.C", line 7: warning: allowing all exceptions is incompatible with previous function "abort" (declared at line 514 of "/usr/include/stdlib.h")
+  extern "C" void abort ();
+                          ^
+
+"./gomp/target-this-3.C", line 20: warning: unrecognized #pragma
+  #pragma omp target map(from:mapped)
+          ^
+
+"./gomp/target-this-3.C", line 33: warning: unrecognized #pragma
+  #pragma omp target map(from:mapped)
+          ^
+
+"./gomp/target-this-3.C", line 76: warning: unrecognized #pragma
+  #pragma omp target data map(ptr1[:N])
+          ^
+
+"./gomp/target-this-3.C", line 89: warning: unrecognized #pragma
+  #pragma omp target data map(ptr2[:N])
+          ^
+

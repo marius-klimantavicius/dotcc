@@ -1,0 +1,145 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./pack-test-1.c", line 46: warning: variable "test_0" was declared but never referenced
+    int test_0 [(
+        ^
+
+"./pack-test-1.c", line 47: warning: variable "test_1" was declared but never referenced
+    int test_1 [(
+        ^
+
+"./pack-test-1.c", line 48: warning: variable "test_2" was declared but never referenced
+    int test_2 [(
+        ^
+
+"./pack-test-1.c", line 57: warning: variable "test_0" was declared but never referenced
+    int test_0 [(
+        ^
+
+"./pack-test-1.c", line 58: warning: variable "test_1" was declared but never referenced
+    int test_1 [(
+        ^
+
+"./pack-test-1.c", line 59: warning: variable "test_2" was declared but never referenced
+    int test_2 [(
+        ^
+
+"./pack-test-1.c", line 68: warning: variable "test_0" was declared but never referenced
+    int test_0 [(
+        ^
+
+"./pack-test-1.c", line 69: warning: variable "test_1" was declared but never referenced
+    int test_1 [(
+        ^
+
+"./pack-test-1.c", line 70: warning: variable "test_2" was declared but never referenced
+    int test_2 [(
+        ^
+
+"./pack-test-1.c", line 79: warning: variable "test_0" was declared but never referenced
+    int test_0 [(
+        ^
+
+"./pack-test-1.c", line 80: warning: variable "test_1" was declared but never referenced
+    int test_1 [(
+        ^
+
+"./pack-test-1.c", line 81: warning: variable "test_2" was declared but never referenced
+    int test_2 [(
+        ^
+
+"./pack-test-1.c", line 90: warning: variable "test_0" was declared but never referenced
+    int test_0 [(
+        ^
+
+"./pack-test-1.c", line 91: warning: variable "test_1" was declared but never referenced
+    int test_1 [(
+        ^
+
+"./pack-test-1.c", line 92: warning: variable "test_2" was declared but never referenced
+    int test_2 [(
+        ^
+
+"./pack-test-1.c", line 101: warning: variable "test_0" was declared but never referenced
+    int test_0 [((
+        ^
+
+"./pack-test-1.c", line 102: warning: variable "test_1" was declared but never referenced
+    int test_1 [((
+        ^
+
+"./pack-test-1.c", line 103: warning: variable "test_2" was declared but never referenced
+    int test_2 [((
+        ^
+
+"./pack-test-1.c", line 104: warning: variable "test_3" was declared but never referenced
+    int test_3 [((
+        ^
+
+"./pack-test-1.c", line 105: warning: variable "test_4" was declared but never referenced
+    int test_4 [((
+        ^
+
+"./pack-test-1.c", line 106: warning: variable "test_5" was declared but never referenced
+    int test_5 [((
+        ^
+
+"./pack-test-1.c", line 115: warning: variable "test_0" was declared but never referenced
+    int test_0 [(
+        ^
+
+"./pack-test-1.c", line 116: warning: variable "test_1" was declared but never referenced
+    int test_1 [(
+        ^
+
+"./pack-test-1.c", line 117: warning: variable "test_2" was declared but never referenced
+    int test_2 [(
+        ^
+
+"./pack-test-1.c", line 126: warning: variable "test_0" was declared but never referenced
+    int test_0 [(
+        ^
+
+"./pack-test-1.c", line 127: warning: variable "test_1" was declared but never referenced
+    int test_1 [(
+        ^
+
+"./pack-test-1.c", line 128: warning: variable "test_2" was declared but never referenced
+    int test_2 [(
+        ^
+
+"./pack-test-1.c", line 137: warning: variable "test_0" was declared but never referenced
+    int test_0 [(
+        ^
+
+"./pack-test-1.c", line 138: warning: variable "test_1" was declared but never referenced
+    int test_1 [(
+        ^
+
+"./pack-test-1.c", line 139: warning: variable "test_2" was declared but never referenced
+    int test_2 [(
+        ^
+
+"./pack-test-1.c", line 148: warning: variable "test_0" was declared but never referenced
+    int test_0 [((
+        ^
+
+"./pack-test-1.c", line 149: warning: variable "test_1" was declared but never referenced
+    int test_1 [((
+        ^
+
+"./pack-test-1.c", line 150: warning: variable "test_2" was declared but never referenced
+    int test_2 [((
+        ^
+
+"./pack-test-1.c", line 151: warning: variable "test_3" was declared but never referenced
+    int test_3 [((
+        ^
+
+"./pack-test-1.c", line 152: warning: variable "test_4" was declared but never referenced
+    int test_4 [((
+        ^
+
+"./pack-test-1.c", line 153: warning: variable "test_5" was declared but never referenced
+    int test_5 [((
+        ^
+

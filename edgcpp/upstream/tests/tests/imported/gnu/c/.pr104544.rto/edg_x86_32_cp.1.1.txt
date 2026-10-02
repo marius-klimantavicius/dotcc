@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 8: error: identifier "__int128" is undefined
+  __int128 q;
+  ^
+
+"Test_name.c", line 11: error: expected a ")"
+  bar (unsigned __int128 x, int y)
+                         ^
+
+"Test_name.c", line 13: error: identifier "x" is undefined
+    if (x)
+        ^
+
+"Test_name.c", line 14: error: identifier "y" is undefined
+      q += y;
+           ^
+
+"Test_name.c", line 20: error: too many arguments in function call
+    bar (!!q - 1, (m += m ? m : 1) < n);
+                  ^
+
+5 errors detected in the compilation of "Test_name.c".

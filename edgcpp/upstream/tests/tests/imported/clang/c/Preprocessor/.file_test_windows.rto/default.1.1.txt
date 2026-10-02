@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Preprocessor/file_test_windows.c", line 24: warning: this declaration has no storage class or type specifier
+  filename: "Preprocessor/file_test_windows.c"
+  ^
+
+"Preprocessor/file_test_windows.c", line 24: error: expected a ";"
+  filename: "Preprocessor/file_test_windows.c"
+          ^
+
+1 error detected in the compilation of "Test_name.c".

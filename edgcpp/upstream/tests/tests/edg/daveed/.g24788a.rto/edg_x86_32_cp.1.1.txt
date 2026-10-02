@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu=80300 --c++17 Test_name.c
+"Test_name.c", line 21: error: no instance of function template "conv" matches the argument list
+            argument types are: (double)
+  long r = conv<long>(1.2);
+           ^
+"Test_name.c", line 16: note: candidate function template "conv" failed deduction
+  To conv(From x) {
+     ^
+
+1 error detected in the compilation of "Test_name.c".

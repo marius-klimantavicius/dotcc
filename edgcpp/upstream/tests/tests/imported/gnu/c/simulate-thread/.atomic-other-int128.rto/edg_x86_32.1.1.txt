@@ -1,0 +1,22 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./simulate-thread/atomic-other-int128.c", line 11: error: identifier "__int128_t" is undefined
+  __int128_t zero = 0;
+  ^
+
+"./simulate-thread/atomic-other-int128.c", line 12: error: identifier "__int128_t" is undefined
+  __int128_t max = ~0;
+  ^
+
+"./simulate-thread/atomic-other-int128.c", line 13: error: identifier "__int128_t" is undefined
+  __int128_t changing_value = 0;
+  ^
+
+"./simulate-thread/atomic-other-int128.c", line 14: error: identifier "__int128_t" is undefined
+  __int128_t value = 0;
+  ^
+
+"./simulate-thread/atomic-other-int128.c", line 15: error: identifier "__int128_t" is undefined
+  __int128_t ret;
+  ^
+
+5 errors detected in the compilation of "Test_name.c".

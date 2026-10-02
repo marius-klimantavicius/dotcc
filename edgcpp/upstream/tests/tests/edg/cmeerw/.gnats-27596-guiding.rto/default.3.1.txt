@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=3 --c++ --microsoft_version 1936 Test_name.c
+"Test_name.c", line 14: error: more than one instance of overloaded function "f" matches the argument list:
+            function "f(int, int)" (declared at line 9)
+            function "f(const int &, const int &)" (declared at line 10)
+            argument types are: (int, int)
+  int i = f(1, 1);
+          ^
+
+1 error detected in the compilation of "Test_name.c".

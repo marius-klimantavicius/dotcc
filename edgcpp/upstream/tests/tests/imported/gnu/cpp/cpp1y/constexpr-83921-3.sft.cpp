@@ -1,0 +1,7 @@
+//type: fn
+//options: --c++14
+// PR c++/83921
+// { dg-do compile { target c++14 } }
+
+struct Foo { int m; };
+constexpr void test() { Foo f; }  // { dg-error "uninitialized" "" { target c++17_down } }

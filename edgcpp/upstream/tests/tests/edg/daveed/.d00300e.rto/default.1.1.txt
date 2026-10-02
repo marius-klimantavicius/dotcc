@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c99 --embedded_c Test_name.c
+"Test_name.c", line 19: error: type cannot be qualified with named address space
+  	(int _EDG_NAS_A[3]){ 1, 2, 3 };
+  	 ^
+
+"Test_name.c", line 20: error: type cannot be qualified with named address space
+  	(S _EDG_NAS_B){ 7, 8 };
+  	 ^
+
+2 errors detected in the compilation of "Test_name.c".

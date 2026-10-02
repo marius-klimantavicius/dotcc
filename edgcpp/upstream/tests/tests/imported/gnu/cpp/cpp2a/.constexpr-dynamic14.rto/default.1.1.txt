@@ -1,0 +1,88 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 103: error: expression must have a constant value
+  constexpr bool b17 = (dynamic_cast<J&> ((B&)k), true); // { dg-error "reference .dynamic_cast. failed" }
+                       ^
+"Test_name.c", line 103: note: conversion to inaccessible base class "J" is not allowed
+  constexpr bool b17 = (dynamic_cast<J&> ((B&)k), true); // { dg-error "reference .dynamic_cast. failed" }
+                        ^
+
+"Test_name.c", line 106: error: expression must have a constant value
+  constexpr bool b18 = (dynamic_cast<J&> ((CC&)kk), true); // { dg-error "reference .dynamic_cast. failed" }
+                       ^
+"Test_name.c", line 106: note: conversion to inaccessible base class "J" is not allowed
+  constexpr bool b18 = (dynamic_cast<J&> ((CC&)kk), true); // { dg-error "reference .dynamic_cast. failed" }
+                        ^
+
+"Test_name.c", line 26: warning: variable "b01" was declared but never referenced
+  constexpr bool b01 = (dynamic_cast<D&> ((A&)d), true); // { dg-error "reference .dynamic_cast. failed" }
+                 ^
+
+"Test_name.c", line 28: warning: variable "b02" was declared but never referenced
+  constexpr bool b02 = (dynamic_cast<D&> ((B&)d), true); // { dg-error "reference .dynamic_cast. failed" }
+                 ^
+
+"Test_name.c", line 31: warning: variable "b03" was declared but never referenced
+  constexpr bool b03 = (dynamic_cast<C&> ((B&)d), true); // { dg-error "reference .dynamic_cast. failed" }
+                 ^
+
+"Test_name.c", line 35: warning: variable "b04" was declared but never referenced
+  constexpr bool b04 = (dynamic_cast<DD&> ((A&)dd), true); // { dg-error "reference .dynamic_cast. failed" }
+                 ^
+
+"Test_name.c", line 37: warning: variable "b05" was declared but never referenced
+  constexpr bool b05 = (dynamic_cast<DD&> ((B&)dd), true); // { dg-error "reference .dynamic_cast. failed" }
+                 ^
+
+"Test_name.c", line 41: warning: variable "b06" was declared but never referenced
+  constexpr bool b06 = (dynamic_cast<DDD&> ((A&)ddd), true); // { dg-error "reference .dynamic_cast. failed" }
+                 ^
+
+"Test_name.c", line 43: warning: variable "b07" was declared but never referenced
+  constexpr bool b07 = (dynamic_cast<DDD&> ((B&)ddd), true); // { dg-error "reference .dynamic_cast. failed" }
+                 ^
+
+"Test_name.c", line 45: warning: variable "b08" was declared but never referenced
+  constexpr bool b08 = (dynamic_cast<CCC&> ((B&)ddd), true); // { dg-error "reference .dynamic_cast. failed" }
+                 ^
+
+"Test_name.c", line 55: warning: variable "b09" was declared but never referenced
+  constexpr bool b09 = (dynamic_cast<E&> ((A&)(D&)e), true); // { dg-error "reference .dynamic_cast. failed" }
+                 ^
+
+"Test_name.c", line 57: warning: variable "b10" was declared but never referenced
+  constexpr bool b10 = (dynamic_cast<E&> ((B&)(D&)e), true); // { dg-error "reference .dynamic_cast. failed" }
+                 ^
+
+"Test_name.c", line 64: warning: variable "b11" was declared but never referenced
+  constexpr bool b11 = (dynamic_cast<EE&> ((A&)(D&)ee), true); // { dg-error "reference .dynamic_cast. failed" }
+                 ^
+
+"Test_name.c", line 66: warning: variable "b12" was declared but never referenced
+  constexpr bool b12 = (dynamic_cast<EE&> ((B&)(D&)ee), true); // { dg-error "reference .dynamic_cast. failed" }
+                 ^
+
+"Test_name.c", line 83: warning: variable "b13" was declared but never referenced
+  constexpr bool b13 = (dynamic_cast<XX&>((B&)(CC&)(E&)xx), true); // { dg-error "reference .dynamic_cast. failed" }
+                 ^
+
+"Test_name.c", line 87: warning: variable "b14" was declared but never referenced
+  constexpr bool b14 = (dynamic_cast<Y&>((B&)y), true); // { dg-error "reference .dynamic_cast. failed" }
+                 ^
+
+"Test_name.c", line 89: warning: variable "b15" was declared but never referenced
+  constexpr bool b15 = (dynamic_cast<Y&>((A&)(B&)y), true); // { dg-error "reference .dynamic_cast. failed" }
+                 ^
+
+"Test_name.c", line 98: warning: variable "b16" was declared but never referenced
+  constexpr bool b16 = (dynamic_cast<CC&> ((B&)(D&)e), true); // { dg-error "reference .dynamic_cast. failed" }
+                 ^
+
+"Test_name.c", line 103: warning: variable "b17" was declared but never referenced
+  constexpr bool b17 = (dynamic_cast<J&> ((B&)k), true); // { dg-error "reference .dynamic_cast. failed" }
+                 ^
+
+"Test_name.c", line 106: warning: variable "b18" was declared but never referenced
+  constexpr bool b18 = (dynamic_cast<J&> ((CC&)kk), true); // { dg-error "reference .dynamic_cast. failed" }
+                 ^
+
+2 errors detected in the compilation of "Test_name.c".

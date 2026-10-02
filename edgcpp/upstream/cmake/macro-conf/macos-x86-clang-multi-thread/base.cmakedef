@@ -1,0 +1,2 @@
+# Start with the normal MacOS x86 clang debug configuration
+import <macos-x86-clang/base>

@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 10: error: constraints for function "A<T>::f [with T=int]" (declared at line 7) are not satisfied
+    A<int>::f(0);			// { dg-error "" "cannot call f" }
+            ^
+
+"Test_name.c", line 11: error: constraints for function "A<T>::f [with T=int]" (declared at line 7) are not satisfied
+    void (*p1)(int) = A<int>::f;  // { dg-error "" "cannot take the address of f" }
+                              ^
+
+"Test_name.c", line 12: error: constraints for function "A<T>::f [with T=int]" (declared at line 7) are not satisfied
+    decltype(A<int>::f)* p2 = nullptr; // { dg-error "" "the type decltype(A<int>::f) is invalid" }
+                     ^
+
+"Test_name.c", line 12: warning: variable "p2" was declared but never referenced
+    decltype(A<int>::f)* p2 = nullptr; // { dg-error "" "the type decltype(A<int>::f) is invalid" }
+                         ^
+
+3 errors detected in the compilation of "Test_name.c".

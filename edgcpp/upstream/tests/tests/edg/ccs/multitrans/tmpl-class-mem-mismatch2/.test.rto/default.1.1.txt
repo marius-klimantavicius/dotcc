@@ -1,0 +1,8 @@
+fe_only -DTEST_NUMBER=1 --multi_trans -tused Test_name.c tmpl-class-mem-mismatch2-p2.C
+"tmpl-class-mem-mismatch2-p2.C", line 2: error: declaration of class template "X<T>" is incompatible with a declaration in another translation unit
+            the other declaration is at line 7 of "Test_name.c"
+  struct X {
+         ^
+          detected during compilation of secondary translation unit "tmpl-class-mem-mismatch2-p2.C"
+
+1 error detected in the compilation of "Test_name.c".

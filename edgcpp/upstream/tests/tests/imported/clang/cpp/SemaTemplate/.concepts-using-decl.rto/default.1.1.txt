@@ -1,0 +1,44 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 93: error: more than one instance of overloaded function "constrained_members::base_members_hidden::baz::foo" matches the argument list:
+            function template "constrained_members::Opaque<0U> constrained_members::base_members_hidden::base1::foo<T>()" (declared at line 67)
+            function template "constrained_members::Opaque<1U> constrained_members::base_members_hidden::baz::foo<T>()" (declared at line 86)
+    baz{}.foo<Empty>(); // expected-error {{call to member function 'foo' is ambiguous}}
+          ^
+
+"Test_name.c", line 129: error: more than one instance of overloaded function "constrained_members::same_contraint_at_different_place::bar1::foo1" matches the argument list:
+            function template "void constrained_members::same_contraint_at_different_place::base::foo1<T>()" (declared at line 100)
+            function template "void constrained_members::same_contraint_at_different_place::bar1::foo1<T>()" (declared at line 111)
+    bar1{}.foo1<Empty>(); // expected-error {{call to member function 'foo1' is ambiguous}}
+           ^
+
+"Test_name.c", line 130: error: more than one instance of overloaded function "constrained_members::same_contraint_at_different_place::bar1::foo2" matches the argument list:
+            function template "void constrained_members::same_contraint_at_different_place::base::foo2<T>()" (declared at line 102)
+            function template "void constrained_members::same_contraint_at_different_place::bar1::foo2<T>()" (declared at line 113)
+    bar1{}.foo2<Empty>(); // expected-error {{call to member function 'foo2' is ambiguous}}
+           ^
+
+"Test_name.c", line 131: error: more than one instance of overloaded function "constrained_members::same_contraint_at_different_place::bar1::foo3" matches the argument list:
+            function template "void constrained_members::same_contraint_at_different_place::base::foo3<T>()" (declared at line 104)
+            function template "void constrained_members::same_contraint_at_different_place::bar1::foo3<T>()" (declared at line 115)
+    bar1{}.foo3<Empty>(); // expected-error {{call to member function 'foo3' is ambiguous}}
+           ^
+
+"Test_name.c", line 132: error: more than one instance of overloaded function "constrained_members::same_contraint_at_different_place::bar2::foo1" matches the argument list:
+            function template "void constrained_members::same_contraint_at_different_place::base::foo1<T>()" (declared at line 100)
+            function template "void constrained_members::same_contraint_at_different_place::bar2::foo1<T>()" (declared at line 122)
+    bar2{}.foo1<Empty>(); // expected-error {{call to member function 'foo1' is ambiguous}}
+           ^
+
+"Test_name.c", line 133: error: more than one instance of overloaded function "constrained_members::same_contraint_at_different_place::bar2::foo2" matches the argument list:
+            function template "void constrained_members::same_contraint_at_different_place::base::foo2<T>()" (declared at line 102)
+            function template "void constrained_members::same_contraint_at_different_place::bar2::foo2<T>()" (declared at line 124)
+    bar2{}.foo2<Empty>(); // expected-error {{call to member function 'foo2' is ambiguous}}
+           ^
+
+"Test_name.c", line 134: error: more than one instance of overloaded function "constrained_members::same_contraint_at_different_place::bar2::foo3" matches the argument list:
+            function template "void constrained_members::same_contraint_at_different_place::base::foo3<T>()" (declared at line 104)
+            function template "void constrained_members::same_contraint_at_different_place::bar2::foo3<T>()" (declared at line 126)
+    bar2{}.foo3<Empty>(); // expected-error {{call to member function 'foo3' is ambiguous}}
+           ^
+
+7 errors detected in the compilation of "Test_name.c".

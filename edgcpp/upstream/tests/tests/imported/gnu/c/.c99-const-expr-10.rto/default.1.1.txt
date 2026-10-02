@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 10: warning: a value of type "unsigned long" cannot be used to initialize an entity of type "void *"
+  void *p = (__SIZE_TYPE__)(void *)0; /* { dg-error "without a cast" } */
+            ^
+
+"Test_name.c", line 11: warning: a value of type "unsigned long" cannot be used to initialize an entity of type "void *"
+  struct s { void *a; } q = { (__SIZE_TYPE__)(void *)0 }; /* { dg-error "without a cast|near initialization" } */
+                              ^
+
+"Test_name.c", line 16: warning: a value of type "unsigned long" cannot be assigned to an entity of type "void *"
+    r = (__SIZE_TYPE__)(void *)0; /* { dg-error "without a cast" } */
+      ^
+
+"Test_name.c", line 17: warning: return value type does not match the function type
+    return (__SIZE_TYPE__)(void *)0; /* { dg-error "without a cast" } */
+           ^
+
+"Test_name.c", line 15: warning: variable "r" was set but never used
+    void *r;
+          ^
+
+"Test_name.c", line 23: warning: argument of type "unsigned long" is incompatible with parameter of type "void *"
+    g ((__SIZE_TYPE__)(void *)0); /* { dg-error "without a cast" } */
+       ^
+
+"Test_name.c", line 29: warning: argument of type "unsigned long" is incompatible with parameter of type "void *"
+    g2 (0, (__SIZE_TYPE__)(void *)0); /* { dg-error "without a cast" } */
+           ^
+

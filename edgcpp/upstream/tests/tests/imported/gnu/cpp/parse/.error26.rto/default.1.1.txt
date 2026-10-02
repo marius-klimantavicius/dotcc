@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++03 -W Test_name.c
+"Test_name.c", line 8: error: variable "c" was declared but never referenced
+    if (({int c[2];})) ; // { dg-error "7:ISO C.. forbids" "7" }
+              ^
+
+"Test_name.c", line 8: error: expression must have bool type (or be convertible to bool)
+    if (({int c[2];})) ; // { dg-error "7:ISO C.. forbids" "7" }
+        ^
+
+"Test_name.c", line 14: error: expression must have bool type (or be convertible to bool)
+    if (({})); // { dg-error "7:ISO C.. forbids" "7" }
+        ^
+
+3 errors detected in the compilation of "Test_name.c".

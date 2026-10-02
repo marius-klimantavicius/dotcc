@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 12: error: cannot convert pointer to base class "A" to pointer to derived class "B" -- base class is virtual
+     B* q = static_cast<B*>(p);  // { dg-error "cannot convert from pointer to base class 'A' to pointer to derived class 'B' because the base is virtual" }
+                        ^
+
+1 error detected in the compilation of "Test_name.c".

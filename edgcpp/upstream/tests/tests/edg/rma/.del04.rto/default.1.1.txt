@@ -1,0 +1,5 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --set_flag=no_checking_pragmas --strict Test_name.c
+"Test_name.c", line 15: remark: variable "px2" was declared but never referenced
+            X *px2 = new (pc) X(0);
+               ^
+

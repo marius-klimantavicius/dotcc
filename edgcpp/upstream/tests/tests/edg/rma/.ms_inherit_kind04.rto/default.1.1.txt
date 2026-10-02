@@ -1,0 +1,6 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --microsoft -n Test_name.c
+"Test_name.c", line 8: error: pointer-to-member representation "incomplete" has already been set for class "D"
+  class __multiple_inheritance D : A, B { char *pc; };  // actual error
+        ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --c++17 --gn 150100 Test_name.c
+"Test_name.c", line 7: warning: 'explicit(bool)' is a C++20 feature
+    constexpr explicit(sizeof(T) != 0) C(T)
+              ^
+

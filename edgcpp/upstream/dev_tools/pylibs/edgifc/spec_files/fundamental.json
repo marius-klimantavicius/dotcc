@@ -1,0 +1,100 @@
+{
+  "primitives": {
+    "integer": {
+      "Abi": 1,
+      "ByteOffset": 4,
+      "Cardinality": 4,
+      "EntitySize": 4,
+      "LanguageVersion": 4,
+      "Version": 1,
+      "bool": 1
+    },
+    "byte": {
+      "SHA256": 32
+    }
+  },
+  "simple_sorts": {
+    "Architecture": {
+      "size": 1,
+      "values": {
+        "0x0": "Unknown",
+        "0x1": "X86",
+        "0x2": "X64",
+        "0x3": "ARM32",
+        "0x4": "ARM64",
+        "0x5": "HybridX86ARM64"
+      }
+    }
+  },
+  "index_sorts": {
+    "Unit": {
+      "bitwidth": 3,
+      "size": 4,
+      "non_null": true,
+      "values": {
+        "0x0": "Source",
+        "0x1": "Primary",
+        "0x2": "Partition",
+        "0x3": "Header",
+        "0x4": "ExportedTU"
+      }
+    }
+  },
+  "node_offsets": {
+    "FormSpec": {
+      "non_null": true,
+      "size": 4,
+      "type": "FormSpec"
+    },
+    "Line": {
+      "non_null": true,
+      "size": 4,
+      "type": "SourceLine"
+    },
+    "Scope": {
+      "non_null": false,
+      "size": 4,
+      "type": "ScopeDescriptor"
+    }
+  },
+  "foreign_indexes": {},
+  "bitfields": {},
+  "value_categories": {},
+  "string_table_offsets": {
+    "Text": {
+      "size": 4,
+      "type": "Text"
+    }
+  },
+  "nodes": {
+    "FileHeader": {
+      "padding": 0,
+      "fields": {
+        "checksum": "SHA256",
+        "major_version": "Version",
+        "minor_version": "Version",
+        "abi": "Abi",
+        "arch": "ArchitectureSort",
+        "dialect": "LanguageVersion",
+        "string_table_bytes": "ByteOffset",
+        "string_table_size": "Cardinality",
+        "unit": "UnitIndex",
+        "src_path": "TextOffset",
+        "global_scope": "ScopeOffset",
+        "toc": "ByteOffset",
+        "partition_count": "Cardinality",
+        "internal": "bool"
+      }
+    },
+    "Partition": {
+      "padding": 0,
+      "fields": {
+        "name": "TextOffset",
+        "offset": "ByteOffset",
+        "cardinality": "Cardinality",
+        "entry_size": "EntitySize"
+      }
+    }
+  },
+  "partitions": {}
+}

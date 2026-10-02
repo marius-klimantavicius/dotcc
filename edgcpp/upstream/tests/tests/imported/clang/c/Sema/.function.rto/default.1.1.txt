@@ -1,0 +1,142 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 6: warning: a value of type "int" cannot be used to initialize an entity of type "double (*__restrict__)[5]"
+  void f(double a[restrict][5]) { __typeof(a) x = 10; } // expected-error {{(aka 'double (*restrict)[5]')}}
+                                                  ^
+
+"Test_name.c", line 6: warning: conversion of nonzero integer to pointer
+  void f(double a[restrict][5]) { __typeof(a) x = 10; } // expected-error {{(aka 'double (*restrict)[5]')}}
+                                                  ^
+
+"Test_name.c", line 6: warning: variable "x" was declared but never referenced
+  void f(double a[restrict][5]) { __typeof(a) x = 10; } // expected-error {{(aka 'double (*restrict)[5]')}}
+                                              ^
+
+"Test_name.c", line 12: error: declaration is incompatible with "void func(const char *)" (declared at line 11)
+  void func(char*); // expected-error{{conflicting types for 'func'}}
+       ^
+
+"Test_name.c", line 22: warning: identifier-list parameters may only be used in a function definition
+  int t5(b);          // expected-error {{parameter list without types}}
+      ^
+
+"Test_name.c", line 23: error: function "g" is not a type name
+  int t6(int x, g);   // expected-error {{type specifier missing, defaults to 'int'}}
+                ^
+
+"Test_name.c", line 25: error: expected a type specifier
+  int t7(, );       // expected-error {{expected parameter declarator}} expected-error {{expected parameter declarator}}
+         ^
+
+"Test_name.c", line 25: error: expected a type specifier
+  int t7(, );       // expected-error {{expected parameter declarator}} expected-error {{expected parameter declarator}}
+           ^
+
+"Test_name.c", line 26: error: expected a type specifier
+  int t8(, int a);  // expected-error {{expected parameter declarator}}
+         ^
+
+"Test_name.c", line 27: error: expected a type specifier
+  int t9(int a, );  // expected-error {{expected parameter declarator}}
+                ^
+
+"Test_name.c", line 32: warning: too many arguments in function call
+  void t11(){t10(1);} // expected-warning{{too many arguments}}
+                 ^
+
+"Test_name.c", line 35: warning: unnamed prototyped parameters not allowed when body is present
+  void t12(int) {}  // c2x-warning{{omitting the parameter name in a function definition is a C23 extension}}
+       ^
+
+"Test_name.c", line 39: warning: return value type does not match the function type
+    return 0; // expected-error {{void function 't13' should not return a value}}
+           ^
+
+"Test_name.c", line 42: warning: non-void function "t14" should return a value
+    return; // expected-error {{non-void function 't14' should return a value}}
+          ^
+
+"Test_name.c", line 45: warning: explicit type is missing ("int" assumed)
+  y(y) { return y; } // expected-error{{parameter 'y' was not declared, defaults to 'int'; ISO C99 and later do not support implicit int}} \
+  ^
+
+"Test_name.c", line 45: warning: standard requires that parameter "y" be given a type by a subsequent declaration ("int" assumed)
+  y(y) { return y; } // expected-error{{parameter 'y' was not declared, defaults to 'int'; ISO C99 and later do not support implicit int}} \
+    ^
+
+"Test_name.c", line 55: warning: variable "fp" was declared but never referenced
+    int (*fp)(void) = g0_3137;
+          ^
+
+"Test_name.c", line 59: error: a block-scope function may only have extern storage class
+    static void f2static(int); // expected-error{{function declared in block scope cannot have 'static' storage class}}
+    ^
+
+"Test_name.c", line 60: error: invalid storage class for a function
+    register void f2register(int); // expected-error{{illegal storage class on function}}
+    ^
+
+"Test_name.c", line 63: error: function "a" returns incomplete type "struct incomplete_test"
+  struct incomplete_test a(void) {} // expected-error{{incomplete result type 'struct incomplete_test' in function definition}} \
+                         ^
+
+"Test_name.c", line 63: warning: missing return statement at end of non-void function "a"
+  struct incomplete_test a(void) {} // expected-error{{incomplete result type 'struct incomplete_test' in function definition}} \
+                                  ^
+
+"Test_name.c", line 72: warning: the "gnu_inline" attribute is ignored on non-inline functions
+  __attribute__((__gnu_inline__)) // expected-warning {{'gnu_inline' attribute requires function to be marked 'inline', attribute ignored}}
+                 ^
+
+"Test_name.c", line 76: error: identifier "foo_t" is undefined
+  inline foo_t invalid_type() {  // expected-error {{unknown type name 'foo_t'}}
+         ^
+
+"Test_name.c", line 83: error: identifier "unknown_type" is undefined
+  unknown_type t18(void*) {   // expected-error {{unknown type name 'unknown_type'}} \
+  ^
+
+"Test_name.c", line 83: warning: unnamed prototyped parameters not allowed when body is present
+  unknown_type t18(void*) {   // expected-error {{unknown type name 'unknown_type'}} \
+               ^
+
+"Test_name.c", line 87: error: identifier "unknown_type" is undefined
+  unknown_type t19(int* P) {   // expected-error {{unknown type name 'unknown_type'}}
+  ^
+
+"Test_name.c", line 92: error: expected a ","
+  void t20(int i...) { } // expected-error {{requires a comma}}
+                ^
+
+"Test_name.c", line 98: error: expected a ";"
+    int func_n(int y) { // expected-error {{function definition is not allowed here}}
+                      ^
+
+"Test_name.c", line 105: warning: parsing restarts here after previous syntax error
+    return x + 3;
+                ^
+
+"Test_name.c", line 106: warning: missing return statement at end of non-void function "func_e"
+  }
+  ^
+
+"Test_name.c", line 112: warning: argument of type "int *" is incompatible with parameter of type "int (*)[3]"
+    decays(ptr);   // expected-error {{incompatible pointer types passing 'int *' to parameter of type 'int (*)[3]'}}
+           ^
+
+"Test_name.c", line 113: warning: argument of type "int *" is incompatible with parameter of type "int (*)[3]"
+    no_decay(ptr); // expected-error {{incompatible pointer types passing 'int *' to parameter of type 'int (*)[3]'}}
+             ^
+
+"Test_name.c", line 118: warning: type qualifier on return type is meaningless
+  void const Bar (void); // ok on decl
+       ^
+
+"Test_name.c", line 120: warning: type qualifier on return type is meaningless
+  void const Bar (void) // expected-warning {{function cannot return qualified void type 'const void'}}
+       ^
+
+"Test_name.c", line 59: warning: function "f2static" was declared but never referenced
+    static void f2static(int); // expected-error{{function declared in block scope cannot have 'static' storage class}}
+                ^
+
+14 errors detected in the compilation of "Test_name.c".

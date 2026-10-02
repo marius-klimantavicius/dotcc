@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 23: error: static assertion failed with ""
+    static_assert(val == noexcept(a(A<T>{})), "");
+    ^
+"Test_name.c", line 23: note: the final comparison was 0 == 1
+    static_assert(val == noexcept(a(A<T>{})), "");
+                      ^
+          detected during instantiation of "void f<T>() [with T=int]" at line 28
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 5: error: attribute "__deprecated__" does not apply here
+  __attribute__ ((__deprecated__)); // { dg-error "does not declare anything" }
+                  ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: error: a value of type "int" cannot be used to initialize an entity of type "A<void ()> *"
+  A<void()const>* p1 = 42;           // { dg-error "void\\(\\) const" }
+                       ^
+
+"Test_name.c", line 9: error: a value of type "int" cannot be used to initialize an entity of type "A<void (B::*)() const> *"
+  A<void(B::*)()const>* p2 = 42;     // { dg-error "void \\(B::\\*\\)\\(\\) const" }
+                             ^
+
+"Test_name.c", line 11: error: a value of type "int" cannot be used to initialize an entity of type "A<void ()> *"
+  A<void()volatile>* p3 = 42;        // { dg-error "void\\(\\) volatile" }
+                          ^
+
+"Test_name.c", line 12: error: a value of type "int" cannot be used to initialize an entity of type "A<void (B::*)() volatile> *"
+  A<void(B::*)()volatile>* p4 = 42;  // { dg-error "void \\(B::\\*\\)\\(\\) volatile" }
+                                ^
+
+4 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++14 Test_name.c
+"Test_name.c", line 6: error: no default constructor exists for class "S"
+  X x = {};  // Normally an error, but okay in Microsoft mode.
+         ^
+
+1 error detected in the compilation of "Test_name.c".

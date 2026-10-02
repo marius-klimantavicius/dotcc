@@ -1,0 +1,9 @@
+eccp -DTEST_NUMBER=1 -r -x -tused --set_flag=no_checking_pragmas --strict Test_name.c
+"Test_name.c", line 11: remark: parameter "p" was never referenced
+  void operator delete(void* p, int i) 
+                             ^
+
+"Test_name.c", line 19: remark: parameter "i" was never referenced
+  void* operator new(size_t s, int i = -59)
+                                   ^
+

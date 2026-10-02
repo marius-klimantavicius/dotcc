@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++17 -A Test_name.c
+"Test_name.c", line 6: error: return value type does not match the function type
+  	operator std:: nullptr_t() { return false; }
+  	                                    ^
+
+1 error detected in the compilation of "Test_name.c".

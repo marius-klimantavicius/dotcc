@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c11 Test_name.c
+"Test_name.c", line 13: warning: expression has no effect
+      a; // expected-note {{used here}}
+      ^
+
+"Test_name.c", line 15: warning: the standard "alignof" operator does not accept an expression argument (use a type instead)
+      int i = _Alignof(no_err);
+                      ^
+
+"Test_name.c", line 15: error: the alignment of a function type ("void *(void)") is nonstandard
+      int i = _Alignof(no_err);
+                      ^
+
+"Test_name.c", line 15: warning: variable "i" was declared but never referenced
+      int i = _Alignof(no_err);
+          ^
+
+"Test_name.c", line 17: warning: variable "j" was declared but never referenced
+      int j = _Generic(&no_err, void *(*)(void): 0);
+          ^
+
+"Test_name.c", line 28: warning: variable "l" was declared but never referenced
+      int l = sizeof(no_err);
+          ^
+
+"Test_name.c", line 30: warning: variable "x" was declared but never referenced
+      __typeof__(&no_err) x;
+                          ^
+
+"Test_name.c", line 5: warning: static function "a" treated as extern because it was referenced but not defined
+  static void *a(void); // expected-error {{function 'a' has internal linkage but is not defined}}
+               ^
+
+"Test_name.c", line 6: warning: static function "b" treated as extern because it was referenced but not defined
+  static void *b(void); // expected-error {{function 'b' has internal linkage but is not defined}}
+               ^
+
+"Test_name.c", line 8: warning: static function "d" treated as extern because it was referenced but not defined
+  static void *d(void); // expected-error {{function 'd' has internal linkage but is not defined}}
+               ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 6: error: only static and extern variables can use thread-local storage
+  __thread typedef int g4;	/* { dg-error "1:multiple storage classes" } */
+  ^
+
+"Test_name.c", line 10: error: invalid combination of type specifiers
+    __thread auto int l2;		/* { dg-error "3:multiple storage classes|data types" } */
+                  ^
+
+"Test_name.c", line 10: error: only static and extern variables can use thread-local storage
+    __thread auto int l2;		/* { dg-error "3:multiple storage classes|data types" } */
+                      ^
+
+"Test_name.c", line 11: error: only static and extern variables can use thread-local storage
+    __thread register int l4;	/* { dg-error "3:multiple storage classes" } */
+                          ^
+
+"Test_name.c", line 11: warning: variable "l4" was declared but never referenced
+    __thread register int l4;	/* { dg-error "3:multiple storage classes" } */
+                          ^
+
+4 errors detected in the compilation of "Test_name.c".

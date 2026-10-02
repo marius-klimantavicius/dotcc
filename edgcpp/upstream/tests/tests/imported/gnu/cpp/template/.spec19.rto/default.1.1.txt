@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 17: warning: expression has no effect
+    param; // make sure we use the argument list from the definition.
+    ^
+          detected during instantiation of "void Klasse<int, 1>::function(const Klasse<T2, N2> &) [with T2=char, N2=2]" at line 24
+

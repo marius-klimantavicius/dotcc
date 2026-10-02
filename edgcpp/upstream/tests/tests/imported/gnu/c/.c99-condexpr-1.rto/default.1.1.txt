@@ -1,0 +1,57 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 54: warning: variable "x" was set but never used
+    ASSERT_COND_TYPE (sc, sc, int);
+    ^
+
+"Test_name.c", line 56: warning: variable "x" was set but never used
+    ASSERT_COND_TYPE (st, st, struct s);
+    ^
+
+"Test_name.c", line 57: warning: variable "x" was set but never used
+    ASSERT_COND_TYPE (un, un, union u);
+    ^
+
+"Test_name.c", line 59: warning: variable "x" was set but never used
+    ASSERT_COND_TYPE ((void)0, (void)1, void);
+    ^
+
+"Test_name.c", line 61: warning: variable "x" was set but never used
+    ASSERT_COND_TYPE (c_vp, c_ip, const void *);
+    ^
+
+"Test_name.c", line 62: warning: variable "x" was set but never used
+    ASSERT_COND_TYPE (v_ip, 0, volatile int *);
+    ^
+
+"Test_name.c", line 63: warning: variable "x" was set but never used
+    ASSERT_COND_TYPE (c_ip, v_ip, const volatile int *);
+    ^
+
+"Test_name.c", line 64: warning: variable "x" was set but never used
+    ASSERT_COND_TYPE (vp, c_cp, const void *);
+    ^
+
+"Test_name.c", line 65: warning: variable "x" was set but never used
+    ASSERT_COND_TYPE (ip, c_ip, const int *);
+    ^
+
+"Test_name.c", line 66: warning: variable "x" was set but never used
+    ASSERT_COND_TYPE (vp, ip, void *);
+    ^
+
+"Test_name.c", line 68: warning: variable "x" was set but never used
+    ASSERT_COND_TYPE (v_ip, (void *)0, volatile int *);
+    ^
+
+"Test_name.c", line 69: warning: variable "x" was set but never used
+    ASSERT_COND_TYPE (r_ipp, (void *)0, int *restrict *);
+    ^
+
+"Test_name.c", line 70: warning: variable "x" was set but never used
+    ASSERT_COND_TYPE (fp, 0, fpt);
+    ^
+
+"Test_name.c", line 71: warning: variable "x" was set but never used
+    ASSERT_COND_TYPE (fp, (void *)0, fpt);
+    ^
+

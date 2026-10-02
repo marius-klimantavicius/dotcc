@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu -E Test_name.c
+# 1 "Test_name.c"
+
+
+
+
+
+
+
+
+
+
+"Test_name.c", line 11: warning: predefined meaning of "__TIME__" discarded
+  #define __TIME__ "X"  // { dg-warning "'__TIME__' redefined .-Wbuiltin-macro-redefined." }
+          ^
+
+
+
+"Test_name.c", line 13: warning: incompatible redefinition of macro "__TIME__" (declared at line 11)
+  #define __TIME__ "Y"  // { dg-bogus "-Wbuiltin-macro-redefined" }
+          ^
+
+
+                      
+                      
+
+"Test_name.c", line 18: warning: incompatible redefinition of macro "X" (declared at line 17)
+  #define X "Y"         // { dg-bogus "-Wbuiltin-macro-redefined" }
+          ^
+
+
+
+                      
+                      

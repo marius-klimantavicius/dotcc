@@ -1,0 +1,45 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 -E Test_name.c
+# 1 "Test_name.c"
+
+
+ 
+ 
+
+\u00AA
+"Test_name.c", line 7: warning: this universal character is not allowed in an identifier
+  \u00AB /* { dg-error "not valid in an identifier" } */
+  ^
+
+\u00AB  
+"Test_name.c", line 8: warning: this universal character is not allowed in an identifier
+  \u00B6 /* { dg-error "not valid in an identifier" } */
+  ^
+
+\u00B6  
+\u00BA
+\u00C0
+\u00D6
+"Test_name.c", line 12: warning: this universal character is not allowed in an identifier
+  \u0384
+  ^
+
+\u0384
+
+"Test_name.c", line 14: warning: this universal character cannot begin an identifier
+  \u0669
+  ^
+
+\u0669
+A\u0669
+0\u00BA
+"Test_name.c", line 17: warning: this universal character cannot begin an identifier
+  0\u0669
+   ^
+
+0\u0669
+"Test_name.c", line 18: warning: this universal character cannot begin an identifier
+  \u0E59
+  ^
+
+\u0E59
+A\u0E59

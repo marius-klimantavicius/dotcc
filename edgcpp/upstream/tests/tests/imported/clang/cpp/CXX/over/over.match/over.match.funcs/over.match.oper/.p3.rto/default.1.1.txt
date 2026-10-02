@@ -1,0 +1,28 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 20: error: no operator "~" matches these operands
+            operand types are: ~ bullet2::E
+  int b1 = ~E::e; // expected-error {{invalid argument type}}
+           ^
+"Test_name.c", line 20: note: built-in operator~(<promoted integral>) does not match because argument #1 does not match parameter
+  int b1 = ~E::e; // expected-error {{invalid argument type}}
+           ^
+
+"Test_name.c", line 16: error: no operator "~" matches these operands
+            operand types are: ~ bullet2::E
+  template<typename T> int f(T t) { return ~t; } // expected-error {{invalid argument type}}
+                                           ^
+"Test_name.c", line 16: note: built-in operator~(<promoted integral>) does not match because argument #1 does not match parameter
+  template<typename T> int f(T t) { return ~t; } // expected-error {{invalid argument type}}
+                                           ^
+          detected during instantiation of "int bullet2::f(T) [with T=bullet2::E]" at line 21
+
+"Test_name.c", line 17: error: no operator "%" matches these operands
+            operand types are: bullet2::E % int
+  template<typename T, typename U> int f(T t, U u) { return t % u; } // expected-error {{invalid operands to}}
+                                                              ^
+"Test_name.c", line 17: note: built-in operator%(<promoted integral>, <promoted integral>) does not match because argument #1 does not match parameter
+  template<typename T, typename U> int f(T t, U u) { return t % u; } // expected-error {{invalid operands to}}
+                                                              ^
+          detected during instantiation of "int bullet2::f(T, U) [with T=bullet2::E, U=int]" at line 23
+
+3 errors detected in the compilation of "Test_name.c".

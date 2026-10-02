@@ -1,0 +1,29 @@
+cpfe -DTEST_NUMBER=2 -r -x -tused Test_name.c
+"Test_name.c", line 4: remark: class "A" defines no constructor to initialize the following:
+            const member "A::i"
+  struct A { const int i; } x;
+         ^
+
+"Test_name.c", line 4: error: variable "x" has an uninitialized const or reference member
+  struct A { const int i; } x;
+                            ^
+
+"Test_name.c", line 5: error: variable "y" has an uninitialized const or reference member
+  struct B { struct A a[2]; } y;
+                              ^
+
+"Test_name.c", line 6: error: variable "z" has an uninitialized const or reference member
+  struct C { struct B b[3]; } z;
+                              ^
+
+"Test_name.c", line 7: remark: return type "int" omitted in declaration of function "main"
+  main() {
+  ^
+
+"Test_name.c", line 4: error: implicitly generated assignment operator cannot copy:
+            const member "A::i"
+  struct A { const int i; } x;
+         ^
+          detected during implicit generation of "A &A::operator=(const A &)" at line 8
+
+4 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 13: error: function "C1::operator T() [with T=int]" (declared at line 9) cannot be referenced -- it is a deleted function
+  int ic1 = c1;			// { dg-error "deleted" "" { target c++11 } }
+            ^
+
+"Test_name.c", line 26: error: "C2::operator T() [with T=int]" (declared at line 21) is inaccessible
+  int ic2 = c2;			// { dg-error "" }
+            ^
+
+2 errors detected in the compilation of "Test_name.c".

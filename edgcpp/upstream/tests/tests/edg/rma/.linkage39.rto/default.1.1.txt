@@ -1,0 +1,5 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 8: warning: function "std::stat" was declared but never referenced
+      static int stat(const char *_path, struct stat *_buf) {
+                 ^
+

@@ -1,0 +1,102 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 37: warning: function "alignas" declared implicitly
+    DECL_BUFFER(struct S, buffer) = {};
+    ^
+
+"Test_name.c", line 37: error: expected an expression
+    DECL_BUFFER(struct S, buffer) = {};
+    ^
+
+"Test_name.c", line 37: error: expected a ";"
+    DECL_BUFFER(struct S, buffer) = {};
+    ^
+
+"Test_name.c", line 38: error: identifier "buffer" is undefined
+    struct S *s_ptr = (struct S *)buffer;
+                                  ^
+
+"Test_name.c", line 55: warning: function "alignas" declared implicitly
+    DECL_BUFFER(struct S, buffer);
+    ^
+
+"Test_name.c", line 55: error: expected an expression
+    DECL_BUFFER(struct S, buffer);
+    ^
+
+"Test_name.c", line 55: error: expected a ";"
+    DECL_BUFFER(struct S, buffer);
+    ^
+
+"Test_name.c", line 56: error: identifier "buffer" is undefined
+    ((struct S *)buffer)->c = 'a';
+                 ^
+
+"Test_name.c", line 73: warning: function "alignas" declared implicitly
+    DECL_BUFFER(struct S, buffer);
+    ^
+
+"Test_name.c", line 73: error: expected an expression
+    DECL_BUFFER(struct S, buffer);
+    ^
+
+"Test_name.c", line 73: error: expected a ";"
+    DECL_BUFFER(struct S, buffer);
+    ^
+
+"Test_name.c", line 74: error: identifier "buffer" is undefined
+    ((struct S *)buffer)->f = 3.0f;
+                 ^
+
+"Test_name.c", line 79: warning: this declaration has no storage class or type specifier
+    DECL_BUFFER(struct S, buffer);
+    ^
+
+"Test_name.c", line 79: error: a function type is not allowed here
+    DECL_BUFFER(struct S, buffer);
+    ^
+
+"Test_name.c", line 79: error: expected a ";"
+    DECL_BUFFER(struct S, buffer);
+    ^
+
+"Test_name.c", line 98: error: struct "T" has no field "buffer"
+    struct S *s_ptr = (struct S *)t.buffer;
+                                    ^
+
+"Test_name.c", line 121: warning: function "alignas" declared implicitly
+    DECL_BUFFER(struct T, buffer) = {};
+    ^
+
+"Test_name.c", line 121: error: expected an expression
+    DECL_BUFFER(struct T, buffer) = {};
+    ^
+
+"Test_name.c", line 121: error: expected a ";"
+    DECL_BUFFER(struct T, buffer) = {};
+    ^
+
+"Test_name.c", line 122: error: identifier "buffer" is undefined
+    const struct T *t_ptr = (struct T *)buffer;
+                                        ^
+
+"Test_name.c", line 123: error: struct "T" has no field "buffer"
+    const struct S *s_ptr = (struct S *)t_ptr->buffer;
+                                               ^
+
+"Test_name.c", line 147: warning: function "alignas" declared implicitly
+    DECL_BUFFER(struct T, buffer);
+    ^
+
+"Test_name.c", line 147: error: expected an expression
+    DECL_BUFFER(struct T, buffer);
+    ^
+
+"Test_name.c", line 147: error: expected a ";"
+    DECL_BUFFER(struct T, buffer);
+    ^
+
+"Test_name.c", line 148: error: identifier "buffer" is undefined
+    ((struct S *)((struct T *)buffer)->buffer)->x = 12;
+                              ^
+
+19 errors detected in the compilation of "Test_name.c".

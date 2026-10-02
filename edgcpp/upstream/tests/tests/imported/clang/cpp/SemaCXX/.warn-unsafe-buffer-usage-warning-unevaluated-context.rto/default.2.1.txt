@@ -1,0 +1,37 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 32: warning: expression has no effect
+    _Generic(1, int: p[2], float: 3); // expected-note{{used in buffer access here}}
+    ^
+
+"Test_name.c", line 41: warning: expression has no effect
+    __is_pod(__typeof(q[5])); // no-note
+    ^
+
+"Test_name.c", line 42: warning: expression has no effect
+    __is_trivially_constructible(__typeof(q[5]), decltype(q[5])); // no-note
+    ^
+
+"Test_name.c", line 43: warning: expression has no effect
+    _Generic(q[1], int: 2, float: 3); // no-note
+    ^
+
+"Test_name.c", line 44: warning: expression has no effect
+    _Generic(1, int: 2, float: q[3]); // no-note
+    ^
+
+"Test_name.c", line 46: warning: expression has no effect
+    noexcept(q[2]); // no-note
+    ^
+
+"Test_name.c", line 47: warning: expression has no effect
+    typeid(q[3]); // no-note
+    ^
+
+"Test_name.c", line 38: warning: variable "x" was declared but never referenced
+    __typeof(q[5]) x; // no-note
+                   ^
+
+"Test_name.c", line 45: warning: variable "var" was declared but never referenced
+    decltype(q[2]) var = y; // no-note
+                   ^
+

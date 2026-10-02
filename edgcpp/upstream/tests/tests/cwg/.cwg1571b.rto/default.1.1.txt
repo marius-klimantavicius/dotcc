@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++17 -tused -A Test_name.c
+"Test_name.c", line 15: error: no suitable user-defined conversion from "B_209_853j5223c_z" to "A_209_853j5223c_z" exists
+          A_209_853j5223c_z&& a = B_209_853j5223c_z(); // error - drops qualifiers
+                                  ^
+
+1 error detected in the compilation of "Test_name.c".

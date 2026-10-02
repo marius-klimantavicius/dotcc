@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 17: warning: function "operator new(unsigned int, void *) throw()" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+      new (&m_data[0]) Y(y);
+      ^
+

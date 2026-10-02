@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 29: error: no instance of constructor "MyClass::MyClass" matches the argument list
+            argument types are: (void *)
+    return T( ( (beforeParam()), (u) ) ); // { dg-error "cannot bind rvalue reference" }
+           ^
+"Test_name.c", line 11: note: function "MyClass::MyClass(const MyClass &)" does not match because argument #1 does not match parameter
+  struct MyClass {
+         ^
+"Test_name.c", line 11: note: function "MyClass::MyClass(MyClass &&)" does not match because argument #1 does not match parameter
+  struct MyClass {
+         ^
+"Test_name.c", line 12: note: function "MyClass::MyClass(Optional<const void *>)" does not match because argument #1 does not match parameter
+    MyClass(Optional<const void*>);
+    ^
+          detected during instantiation of "T Create<T>::create(U &&) [with T=MyClass, U=void *&]" at line 34
+
+1 error detected in the compilation of "Test_name.c".

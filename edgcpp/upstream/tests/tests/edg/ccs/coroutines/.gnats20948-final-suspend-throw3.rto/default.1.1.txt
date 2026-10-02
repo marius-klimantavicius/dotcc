@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++20 --set_flag coroutines -tused Test_name.c
+"Test_name.c", line 16: error: the operand to this co_await expression resolves to non-class "void"
+  A f() {
+    ^
+
+1 error detected in the compilation of "Test_name.c".

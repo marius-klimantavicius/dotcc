@@ -1,0 +1,57 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --signed_chars Test_name.c
+"./Wconversion-integer-no-sign.c", line 43: warning: integer conversion resulted in a change of sign
+    uc = x ? 1U : -1;
+                  ^
+
+"./Wconversion-integer-no-sign.c", line 47: warning: integer conversion resulted in a change of sign
+    ui = x ? 1U : -1;
+                  ^
+
+"./Wconversion-integer-no-sign.c", line 50: warning: integer conversion resulted in a change of sign
+    ui = 1U * -1;
+              ^
+
+"./Wconversion-integer-no-sign.c", line 55: warning: integer conversion resulted in a change of sign
+    fuc (-1);
+         ^
+
+"./Wconversion-integer-no-sign.c", line 56: warning: integer conversion resulted in a change of sign
+    uc = -1;
+         ^
+
+"./Wconversion-integer-no-sign.c", line 57: warning: integer conversion resulted in a change of sign
+    fui (-1);
+         ^
+
+"./Wconversion-integer-no-sign.c", line 58: warning: integer conversion resulted in a change of sign
+    ui = -1;
+         ^
+
+"./Wconversion-integer-no-sign.c", line 59: warning: integer conversion resulted in a change of sign
+    fuc ('\xa0');
+         ^
+
+"./Wconversion-integer-no-sign.c", line 60: warning: integer conversion resulted in a change of sign
+    uc = '\xa0';
+         ^
+
+"./Wconversion-integer-no-sign.c", line 61: warning: integer conversion resulted in a change of sign
+    fui ('\xa0');
+         ^
+
+"./Wconversion-integer-no-sign.c", line 62: warning: integer conversion resulted in a change of sign
+    ui = '\xa0';
+         ^
+
+"./Wconversion-integer-no-sign.c", line 63: warning: integer conversion resulted in a change of sign
+    fsi ((unsigned) 0x7fffffff 
+         ^
+
+"./Wconversion-integer-no-sign.c", line 64: warning: integer conversion resulted in a change of sign
+    si = (unsigned) 0x7fffffff 
+         ^
+
+"./Wconversion-integer-no-sign.c", line 94: warning: integer conversion resulted in a change of sign
+  unsigned fui (unsigned a) { return a + -1; }
+                                         ^
+

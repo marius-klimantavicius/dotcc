@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --strict --c23 Test_name.c
+"Test_name.c", line 12: warning: support for trigraphs is disabled
+  int i = ??-0;   // Now an error in C23 mode
+          ^
+
+"Test_name.c", line 12: error: expected an expression
+  int i = ??-0;   // Now an error in C23 mode
+          ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,55 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 10: warning: variable "end" was set but never used
+        int end = 0;
+            ^
+
+"Test_name.c", line 29: warning: variable "end" was set but never used
+          int end = 0;
+              ^
+
+"Test_name.c", line 45: error: a value of type "int" cannot be assigned to an entity of type "double *"
+    end = 1; // expected-error{{incompatible integer to pointer conversion assigning to 'double *' from 'int'}}
+        ^
+
+"Test_name.c", line 50: error: label "end" was referenced but not defined
+      goto end; // expected-error{{use of undeclared label 'end'}}
+           ^
+
+"Test_name.c", line 54: warning: parameter "end" was set but never used
+  void h2(int end) {
+              ^
+
+"Test_name.c", line 62: warning: label "end" was declared but never referenced
+   end: // expected-warning{{unused label 'end'}}
+   ^
+
+"Test_name.c", line 83: error: label "undeclared" was referenced but not defined
+        goto undeclared; // expected-error{{use of undeclared label 'undeclared'}}
+             ^
+
+"Test_name.c", line 88: error: expected an expression
+      (void)^(bool b){
+            ^
+
+"Test_name.c", line 93: warning: parsing restarts here after previous syntax error
+      };
+       ^
+
+"Test_name.c", line 115: warning: dynamic initialization in unreachable code
+      const S s2(s); // expected-note {{jump bypasses variable initialization}}
+              ^
+
+"Test_name.c", line 114: error: transfer of control bypasses initialization of:
+            variable "s2" (declared at line 115)
+      goto done; // expected-error {{cannot jump}}
+      ^
+
+"Test_name.c", line 125: warning: statement is unreachable
+      (void) ^{ (void) a; };
+      ^
+
+"Test_name.c", line 125: error: expected an expression
+      (void) ^{ (void) a; };
+             ^
+
+6 errors detected in the compilation of "Test_name.c".

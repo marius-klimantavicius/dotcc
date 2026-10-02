@@ -1,0 +1,61 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 78: warning: integer conversion resulted in a change of sign
+    if (__atomic_fetch_and (&v, init, __ATOMIC_CONSUME) !=  0) 
+                                ^
+
+"Test_name.c", line 85: warning: integer conversion resulted in a change of sign
+    if (__atomic_fetch_and (&v, init, __ATOMIC_RELEASE) !=  init)
+                                ^
+
+"Test_name.c", line 103: warning: integer conversion resulted in a change of sign
+    if (__atomic_fetch_nand (&v, init, __ATOMIC_CONSUME) !=  init) 
+                                 ^
+
+"Test_name.c", line 109: warning: integer conversion resulted in a change of sign
+    if (__atomic_fetch_nand (&v, init, __ATOMIC_RELEASE) !=  init)
+                                 ^
+
+"Test_name.c", line 112: warning: integer conversion resulted in a change of sign
+    if (__atomic_fetch_nand (&v, init, __ATOMIC_ACQ_REL) !=  0) 
+                                 ^
+
+"Test_name.c", line 236: warning: integer conversion resulted in a change of sign
+    if (__atomic_and_fetch (&v, init, __ATOMIC_CONSUME) !=  init) 
+                                ^
+
+"Test_name.c", line 243: warning: integer conversion resulted in a change of sign
+    if (__atomic_and_fetch (&v, init, __ATOMIC_RELEASE) !=  init)
+                                ^
+
+"Test_name.c", line 262: warning: integer conversion resulted in a change of sign
+    if (__atomic_nand_fetch (&v, init, __ATOMIC_CONSUME) !=  0) 
+                                 ^
+
+"Test_name.c", line 268: warning: integer conversion resulted in a change of sign
+    if (__atomic_nand_fetch (&v, init, __ATOMIC_RELEASE) !=  0)
+                                 ^
+
+"Test_name.c", line 271: warning: integer conversion resulted in a change of sign
+    if (__atomic_nand_fetch (&v, init, __ATOMIC_ACQ_REL) !=  init) 
+                                 ^
+
+"Test_name.c", line 412: warning: integer conversion resulted in a change of sign
+    __atomic_fetch_and (&v, init, __ATOMIC_CONSUME);
+                            ^
+
+"Test_name.c", line 421: warning: integer conversion resulted in a change of sign
+    __atomic_fetch_and (&v, init, __ATOMIC_RELEASE);
+                            ^
+
+"Test_name.c", line 444: warning: integer conversion resulted in a change of sign
+    __atomic_fetch_nand (&v, init, __ATOMIC_CONSUME);
+                             ^
+
+"Test_name.c", line 452: warning: integer conversion resulted in a change of sign
+    __atomic_nand_fetch (&v, init, __ATOMIC_RELEASE);
+                             ^
+
+"Test_name.c", line 456: warning: integer conversion resulted in a change of sign
+    __atomic_fetch_nand (&v, init, __ATOMIC_ACQ_REL);
+                             ^
+

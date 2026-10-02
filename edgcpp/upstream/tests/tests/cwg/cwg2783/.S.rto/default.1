@@ -1,0 +1,14 @@
+cpfe -DTEST_NUMBER=1 --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: error: argument list for class template "S" is missing
+    S(T*) -> S<T>;
+    ^
+
+"Test_name.c", line 8: error: expected a ")"
+    S(T*) -> S<T>;
+       ^
+
+"Test_name.c", line 8: error: "T" is not a function or static data member
+    S(T*) -> S<T>;
+      ^
+
+3 errors detected in the compilation of "Test_name.c".

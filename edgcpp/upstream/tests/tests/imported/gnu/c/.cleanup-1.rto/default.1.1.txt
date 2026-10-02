@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c17 --strict_gnu Test_name.c
+"Test_name.c", line 24: error: cleanup routine has invalid type
+    int o3 C(f3);		/* { dg-error "too many arguments" } */
+           ^
+
+"Test_name.c", line 27: error: cleanup routine has invalid type
+    int o6 C(f6);		/* { dg-warning "incompatible pointer type" } */
+           ^
+
+"Test_name.c", line 29: error: cleanup routine has invalid type
+    int o8 C(f8);		/* { dg-error "too few arguments" } */
+           ^
+
+"Test_name.c", line 30: warning: call of cleanup routine requires suspect conversion
+    int o9 C(f9);		/* { dg-warning "from pointer without a cast" } */
+           ^
+
+"Test_name.c", line 31: warning: invalid cleanup routine
+    int o10 U C(undef);	/* { dg-error "not a function" } */
+              ^
+
+"Test_name.c", line 32: warning: invalid cleanup routine
+    int o11 U C(o1);	/* { dg-error "not a function" } */
+              ^
+
+"Test_name.c", line 33: error: expected an identifier
+    int o12 U C("f1");	/* { dg-error "not an identifier" } */
+              ^
+
+"Test_name.c", line 34: warning: attribute "cleanup" requires automatic storage duration
+    static int o13 U C(f1); /* { dg-warning "attribute ignored" } */
+                     ^
+
+"Test_name.c", line 24: warning: variable "o3" was declared but never referenced
+    int o3 C(f3);		/* { dg-error "too many arguments" } */
+        ^
+
+"Test_name.c", line 27: warning: variable "o6" was declared but never referenced
+    int o6 C(f6);		/* { dg-warning "incompatible pointer type" } */
+        ^
+
+"Test_name.c", line 29: warning: variable "o8" was declared but never referenced
+    int o8 C(f8);		/* { dg-error "too few arguments" } */
+        ^
+
+"Test_name.c", line 37: warning: attribute "cleanup" requires automatic storage duration
+  int o14 C(f1);		/* { dg-warning "attribute ignored" } */
+          ^
+
+"Test_name.c", line 38: warning: attribute "cleanup" does not apply here
+  void t15(int o U C(f1)) {} /* { dg-warning "attribute ignored" } */
+                   ^
+
+"Test_name.c", line 12: warning: function "f3" was declared but never referenced
+  static void f3(void) { } /* { dg-message "note: declared here" } */
+              ^
+
+"Test_name.c", line 15: warning: function "f6" was declared but never referenced
+  static void f6(double *x U) { } /* { dg-message "note: expected '\[^\n'\]*' but argument is of type '\[^\n'\]*'" "note: expected" } */
+              ^
+
+"Test_name.c", line 17: warning: function "f8" was declared but never referenced
+  static void f8(const int *x U, int y U) { } /* { dg-message "note: declared here" } */
+              ^
+
+4 errors detected in the compilation of "Test_name.c".

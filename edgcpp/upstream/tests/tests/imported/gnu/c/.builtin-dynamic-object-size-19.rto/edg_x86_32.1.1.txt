@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./builtin-object-size-18.c", line 7: warning: declaration of "size_t" does not match the expected type "unsigned int"
+  typedef long unsigned int size_t;
+                            ^
+
+"./builtin-dynamic-object-size-19.c", line 81: warning: argument of type "void *(*)(unsigned int)" is incompatible with parameter of type "allocfn_1 *" (aka "void *(*)(unsigned long)")
+    return call_alloc (__builtin_malloc, 0, n, 0);
+                       ^
+
+"./builtin-dynamic-object-size-19.c", line 87: warning: argument of type "void *(*)(unsigned int, unsigned int)" is incompatible with parameter of type "allocfn_1_2 *" (aka "void *(*)(unsigned long, unsigned long)")
+    return call_alloc (0, __builtin_calloc, n1, n2);
+                          ^
+

@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"./c99-const-expr-7.c", line 10: warning: floating-point value does not fit in required integral type
+  int a = ((double)1.79769313486231570814527423731704357e+308L)
+          ^
+
+"./c99-const-expr-7.c", line 13: warning: floating-point value does not fit in required integral type
+  unsigned int c = -1.0;
+                   ^
+
+"./c99-const-expr-7.c", line 17: warning: shift count is too large
+  int e = 0 << 1000;
+               ^
+
+"./c99-const-expr-7.c", line 19: error: shift count is negative
+  int f = 0 << -1;
+               ^
+
+"./c99-const-expr-7.c", line 21: warning: shift count is too large
+  int g = 0 >> 1000;
+               ^
+
+"./c99-const-expr-7.c", line 23: error: shift count is negative
+  int h = 0 >> -1;
+               ^
+
+"./c99-const-expr-7.c", line 36: warning: floating-point value does not fit in required integral type
+  int j[1] = { ((double)1.79769313486231570814527423731704357e+308L) 
+               ^
+
+"./c99-const-expr-7.c", line 39: warning: integer operation result is out of range
+                                + 1)] = 0 };
+                                ^
+
+"./c99-const-expr-7.c", line 42: warning: integer operation result is out of range
+                   + 1;
+                   ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 12: warning: auto(<expr>) and auto{<expr>} are a C++23 feature
+    auto a1 = auto(f); // { dg-error "only available with" "" { target c++20_only } }
+              ^
+
+"Test_name.c", line 13: warning: auto(<expr>) and auto{<expr>} are a C++23 feature
+    auto a2 = auto{f}; // { dg-error "only available with" "" { target c++20_only } }
+                     ^
+
+"Test_name.c", line 12: warning: variable "a1" was set but never used
+    auto a1 = auto(f); // { dg-error "only available with" "" { target c++20_only } }
+         ^
+
+"Test_name.c", line 13: warning: variable "a2" was set but never used
+    auto a2 = auto{f}; // { dg-error "only available with" "" { target c++20_only } }
+         ^
+

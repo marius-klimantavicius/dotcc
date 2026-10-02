@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 26: error: a value of type "const char *" cannot be used to initialize an entity of type "char"
+  C f = {{[0]="a"}}; // { dg-error "C99 designator .0. outside aggregate initializer" }
+              ^
+
+"Test_name.c", line 27: error: invalid designator kind
+  C g = {{.a="a"}}; // { dg-error "C99 designator .a. outside aggregate initializer" }
+           ^
+
+"Test_name.c", line 28: error: invalid designator kind
+  C h = {{.b="a"}}; // { dg-error "C99 designator .b. outside aggregate initializer" }
+           ^
+
+"Test_name.c", line 43: warning: variable "ca" was declared but never referenced
+    C ca[] = { {.a=""}, {.a={""}}, };
+      ^
+
+3 errors detected in the compilation of "Test_name.c".

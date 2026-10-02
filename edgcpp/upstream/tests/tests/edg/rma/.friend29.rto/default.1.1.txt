@@ -1,0 +1,22 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 8: error: function "A::f" (declared at line 5) is inaccessible
+    friend void B::f();
+                   ^
+
+"Test_name.c", line 8: error: inherited member is not allowed
+    friend void B::f();
+                   ^
+
+"Test_name.c", line 9: error: class "A" has no member "g"
+    friend void A::g();
+                   ^
+
+"Test_name.c", line 11: error: inherited member is not allowed
+  void B::f() { }
+          ^
+
+"Test_name.c", line 12: error: class "A" has no member "g"
+  void A::g() { }
+          ^
+
+5 errors detected in the compilation of "Test_name.c".

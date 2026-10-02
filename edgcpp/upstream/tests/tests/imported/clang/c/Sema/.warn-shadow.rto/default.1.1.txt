@@ -1,0 +1,118 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 21: warning: variable "pass3" was declared but never referenced
+        int pass3;
+            ^
+
+"Test_name.c", line 22: warning: variable "i" was declared but never referenced
+        int i;    // expected-warning {{declaration shadows a local variable}}
+            ^
+
+"Test_name.c", line 23: warning: variable "s" was declared but never referenced
+        int s;    // expected-warning {{declaration shadows a local variable}}
+            ^
+
+"Test_name.c", line 15: warning: variable "pass2" was declared but never referenced
+      int pass2;
+          ^
+
+"Test_name.c", line 16: warning: variable "i" was declared but never referenced
+      int i;      // expected-warning {{declaration shadows a local variable}} \
+          ^
+
+"Test_name.c", line 18: warning: variable "s" was declared but never referenced
+      int s;      // expected-warning {{declaration shadows a local variable}} \
+          ^
+
+"Test_name.c", line 9: warning: variable "pass1" was declared but never referenced
+    int pass1;
+        ^
+
+"Test_name.c", line 10: warning: variable "i" was declared but never referenced
+    int i;        // expected-warning {{declaration shadows a variable in the global scope}} \
+        ^
+
+"Test_name.c", line 12: warning: variable "s" was declared but never referenced
+    int s;        // expected-warning {{declaration shadows a variable in the global scope}} \
+        ^
+
+"Test_name.c", line 27: warning: variable "sin" was declared but never referenced
+    int sin; // okay; 'sin' has not been declared, even though it's a builtin.
+        ^
+
+"Test_name.c", line 30: error: expected an identifier
+  void (^test1)(int) = ^(int i) { // expected-warning {{declaration shadows a variable in the global scope}} \
+        ^
+
+"Test_name.c", line 30: error: function "<error>" may not be initialized
+  void (^test1)(int) = ^(int i) { // expected-warning {{declaration shadows a variable in the global scope}} \
+                     ^
+
+"Test_name.c", line 30: error: expected an expression
+  void (^test1)(int) = ^(int i) { // expected-warning {{declaration shadows a variable in the global scope}} \
+                       ^
+
+"Test_name.c", line 38: warning: parsing restarts here after previous syntax error
+  };
+   ^
+
+"Test_name.c", line 66: warning: variable "bob" was declared but never referenced
+    int bob; // expected-warning {{declaration shadows a variable in the global scope}}
+        ^
+
+"Test_name.c", line 78: warning: expected an identifier
+    };
+     ^
+
+"Test_name.c", line 79: warning: struct or union declares no named members
+  };
+  ^
+
+"Test_name.c", line 85: error: "i" has already been declared in the current scope
+    int i;        // expected-error {{non-static declaration of 'i' follows static declaration}}
+        ^
+
+"Test_name.c", line 96: warning: variable "foo" was declared but never referenced
+        static int foo; // expected-warning {{declaration shadows a local variable}}
+                   ^
+
+"Test_name.c", line 97: warning: variable "i" was declared but never referenced
+        int i; // expected-warning {{declaration shadows a local variable}}
+            ^
+
+"Test_name.c", line 90: warning: variable "foo" was declared but never referenced
+      static int foo; // expected-warning {{declaration shadows a local variable}}
+                 ^
+
+"Test_name.c", line 92: warning: variable "i" was declared but never referenced
+      static int i; // expected-warning {{declaration shadows a local variable}}
+                 ^
+
+"Test_name.c", line 94: warning: variable "hoge" was declared but never referenced
+      int hoge; // expected-warning {{declaration shadows a local variable}}
+          ^
+
+"Test_name.c", line 82: warning: variable "i" was declared but never referenced
+    static int i; // expected-warning {{declaration shadows a variable in the global scope}}
+               ^
+
+"Test_name.c", line 85: warning: variable "i" was declared but never referenced
+    int i;        // expected-error {{non-static declaration of 'i' follows static declaration}}
+        ^
+
+"Test_name.c", line 86: warning: variable "foo" was declared but never referenced
+    static int foo; // expected-note {{previous declaration is here}}
+               ^
+
+"Test_name.c", line 87: warning: variable "hoge" was declared but never referenced
+    static int hoge; // expected-note {{previous declaration is here}}
+               ^
+
+"Test_name.c", line 88: warning: variable "s" was declared but never referenced
+    int s; // expected-warning {{declaration shadows a variable in the global scope}}
+        ^
+
+"Test_name.c", line 6: warning: variable "s" was declared but never referenced
+  static int s;   // expected-note 2 {{previous declaration is here}}
+             ^
+
+4 errors detected in the compilation of "Test_name.c".

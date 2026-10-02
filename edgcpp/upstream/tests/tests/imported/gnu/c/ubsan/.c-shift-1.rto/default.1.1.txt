@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc -w Test_name.c
+"Test_name.c", line 12: error: variable "A" may not be initialized
+    int A[1 >> -1] = { 0 };    /* { dg-error "variable-sized object may not be initialized" } */
+        ^
+
+"Test_name.c", line 13: error: variable "B" may not be initialized
+    int B[-1 >> -1] = { 0 };   /* { dg-error "variable-sized object may not be initialized" } */
+        ^
+
+"Test_name.c", line 14: error: variable "D" may not be initialized
+    int D[1 << -1] = { 0 };    /* { dg-error "variable-sized object may not be initialized" } */
+        ^
+
+"Test_name.c", line 15: error: variable "E" may not be initialized
+    int E[-1 << -1] = { 0 };   /* { dg-error "variable-sized object may not be initialized" } */
+        ^
+
+"Test_name.c", line 16: error: the size of an array must be greater than zero
+    int F[-1 >> 200] = { 0 };  /* { dg-error "variable-sized object may not be initialized" } */
+          ^
+
+5 errors detected in the compilation of "Test_name.c".

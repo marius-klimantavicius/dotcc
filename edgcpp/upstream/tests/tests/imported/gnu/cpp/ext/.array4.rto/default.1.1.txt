@@ -1,0 +1,39 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: warning: constexpr non-static member function will not be implicitly 'const' in C++14
+    constexpr operator value_type() { return __v; }
+    ^
+
+"Test_name.c", line 34: warning: constant "<unnamed>" is not used in declaring the parameter types of function template "pair::pair"
+                                        int>::valuebool>::type>
+                                                              ^
+
+"Test_name.c", line 167: warning: variable "c_4" is used before its value is set
+    AtomicHashArray(capacity, c_0, c_1, c_2, c_3, c_4);
+                                                  ^
+          detected during instantiation of "void AtomicHashArray<KeyT>::create() [with KeyT=char]" at line 173
+
+"Test_name.c", line 167: warning: variable "c_3" is used before its value is set
+    AtomicHashArray(capacity, c_0, c_1, c_2, c_3, c_4);
+                                             ^
+          detected during instantiation of "void AtomicHashArray<KeyT>::create() [with KeyT=char]" at line 173
+
+"Test_name.c", line 167: warning: variable "c_2" is used before its value is set
+    AtomicHashArray(capacity, c_0, c_1, c_2, c_3, c_4);
+                                        ^
+          detected during instantiation of "void AtomicHashArray<KeyT>::create() [with KeyT=char]" at line 173
+
+"Test_name.c", line 167: warning: variable "c_1" is used before its value is set
+    AtomicHashArray(capacity, c_0, c_1, c_2, c_3, c_4);
+                                   ^
+          detected during instantiation of "void AtomicHashArray<KeyT>::create() [with KeyT=char]" at line 173
+
+"Test_name.c", line 167: warning: variable "c_0" is used before its value is set
+    AtomicHashArray(capacity, c_0, c_1, c_2, c_3, c_4);
+                              ^
+          detected during instantiation of "void AtomicHashArray<KeyT>::create() [with KeyT=char]" at line 173
+
+"Test_name.c", line 167: warning: variable "capacity" is used before its value is set
+    AtomicHashArray(capacity, c_0, c_1, c_2, c_3, c_4);
+                    ^
+          detected during instantiation of "void AtomicHashArray<KeyT>::create() [with KeyT=char]" at line 173
+

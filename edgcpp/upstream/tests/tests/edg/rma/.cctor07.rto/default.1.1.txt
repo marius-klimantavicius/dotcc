@@ -1,0 +1,14 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 6: error: no default constructor exists for class "B"
+  struct C : public A, public B { C(volatile C&) {} };
+                                                 ^
+
+"Test_name.c", line 7: error: no default constructor exists for class "B"
+  struct D : public A, public B { D(const volatile D&) {} };
+                                                       ^
+
+"Test_name.c", line 8: error: no default constructor exists for class "B"
+  struct E : public A, public B { E(const E&) {} };
+                                              ^
+
+3 errors detected in the compilation of "Test_name.c".

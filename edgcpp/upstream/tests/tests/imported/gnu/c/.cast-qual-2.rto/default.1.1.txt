@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 10: warning: type qualifiers on function types are ignored
+  typedef const intfn_t *constfn_t;
+          ^
+
+"Test_name.c", line 11: warning: type qualifiers on function types are ignored
+  typedef volatile voidfn_t *noreturnfn_t;
+          ^
+
+"Test_name.c", line 14: warning: type qualifiers on function types are ignored
+  const intfn_t constfn;
+  ^
+
+"Test_name.c", line 16: warning: type qualifiers on function types are ignored
+  volatile voidfn_t noreturnfn;
+  ^
+

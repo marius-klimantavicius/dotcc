@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 5: error: a value of type "void *" cannot be used to initialize an entity of type "int *"
+  template<typename T> int *p = &void(T::error); // expected-error{{cannot take the address of an rvalue}} expected-error{{type 'int' cannot be used prior to '::'}}
+                                ^
+
+"Test_name.c", line 5: error: name followed by "::" must be a class or namespace name
+  template<typename T> int *p = &void(T::error); // expected-error{{cannot take the address of an rvalue}} expected-error{{type 'int' cannot be used prior to '::'}}
+                                      ^
+          detected during instantiation of "int *p [with T=int]" at line 6
+
+"Test_name.c", line 5: error: expression must be an lvalue or a function designator
+  template<typename T> int *p = &void(T::error); // expected-error{{cannot take the address of an rvalue}} expected-error{{type 'int' cannot be used prior to '::'}}
+                                 ^
+          detected during instantiation of "int *p [with T=int]" at line 6
+
+3 errors detected in the compilation of "Test_name.c".

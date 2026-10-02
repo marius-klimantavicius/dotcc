@@ -1,0 +1,30 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 7: error: the type "long long" is nonstandard
+    long long x = 1ll;
+         ^
+
+"Test_name.c", line 7: error: the type "long long" is nonstandard
+    long long x = 1ll;
+                  ^
+
+"Test_name.c", line 8: error: the type "long long" is nonstandard
+    long long int y = 2ll;
+         ^
+
+"Test_name.c", line 8: error: the type "long long" is nonstandard
+    long long int y = 2ll;
+                      ^
+
+"Test_name.c", line 9: error: the type "long long" is nonstandard
+    long long unsigned int z = 3llu;
+         ^
+
+"Test_name.c", line 9: error: the type "long long" is nonstandard
+    long long unsigned int z = 3llu;
+                               ^
+
+"Test_name.c", line 10: warning: invalid format string conversion
+    printf("%lld %llu %ll %lld\n", x, z, x, y);
+                                         ^
+
+6 errors detected in the compilation of "Test_name.c".

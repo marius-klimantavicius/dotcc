@@ -1,0 +1,58 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 Test_name.c
+"Test_name.c", line 30: error: no instance of overloaded function "similar_to_user_code::f" matches the argument list
+            argument types are: (char, int)
+      f('x', 0); // expected-error{{no matching function}}
+      ^
+"Test_name.c", line 27: note: candidate function template "similar_to_user_code::f(T, long)" failed deduction
+    std::enable_if_t<sizeof(T) != 1, void> f(T, long);
+                                           ^
+"Test_name.c", line 23: note: candidate function template "similar_to_user_code::f(T, int)" failed deduction
+    void f(T, int);
+         ^
+"Test_name.c", line 19: note: candidate function template "similar_to_user_code::f(T, short)" failed deduction
+    void f(T, short);
+         ^
+
+"Test_name.c", line 52: error: no instance of overloaded function "similar_to_libcxx_version_14::f" matches the argument list
+            argument types are: (char, int)
+      f('x', 0); // expected-error{{no matching function}}
+      ^
+"Test_name.c", line 49: note: candidate function template "similar_to_libcxx_version_14::f(T, long)" failed deduction
+    __enable_if_t<sizeof(T) != 1, void> f(T, long);
+                                        ^
+"Test_name.c", line 45: note: candidate function template "similar_to_libcxx_version_14::f(T, int)" failed deduction
+    void f(T, int);
+         ^
+"Test_name.c", line 41: note: candidate function template "similar_to_libcxx_version_14::f(T, short)" failed deduction
+    void f(T, short);
+         ^
+
+"Test_name.c", line 74: error: no instance of overloaded function "similar_to_libcxx_version_13::f" matches the argument list
+            argument types are: (char, int)
+      f('x', 0); // expected-error{{no matching function}}
+      ^
+"Test_name.c", line 71: note: candidate function template "similar_to_libcxx_version_13::f(T, long)" failed deduction
+    _EnableIf<sizeof(T) != 1, void> f(T, long);
+                                    ^
+"Test_name.c", line 67: note: candidate function template "similar_to_libcxx_version_13::f(T, int)" failed deduction
+    void f(T, int);
+         ^
+"Test_name.c", line 63: note: candidate function template "similar_to_libcxx_version_13::f(T, short)" failed deduction
+    void f(T, short);
+         ^
+
+"Test_name.c", line 96: error: no instance of overloaded function "not_all_names_are_magic::f" matches the argument list
+            argument types are: (char, int)
+      f('x', 0); // expected-error{{no matching function}}
+      ^
+"Test_name.c", line 93: note: candidate function template "not_all_names_are_magic::f(T, long)" failed deduction
+    a_pony<sizeof(T) != 1, void> f(T, long);
+                                 ^
+"Test_name.c", line 89: note: candidate function template "not_all_names_are_magic::f(T, int)" failed deduction
+    void f(T, int);
+         ^
+"Test_name.c", line 85: note: candidate function template "not_all_names_are_magic::f(T, short)" failed deduction
+    void f(T, short);
+         ^
+
+4 errors detected in the compilation of "Test_name.c".

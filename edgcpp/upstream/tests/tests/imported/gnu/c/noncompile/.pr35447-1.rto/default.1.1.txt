@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 8: error: expected a ";"
+    ({ int i().; }); /* { dg-error "expected" } */
+              ^
+
+"Test_name.c", line 10: warning: nested comment is not allowed
+  /* { dg-error "-:expected" "" { target *-*-* } .+1 } */
+  ^
+
+1 error detected in the compilation of "Test_name.c".

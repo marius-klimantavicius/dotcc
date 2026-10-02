@@ -1,0 +1,3 @@
+# While possible to use the GCC quadmath header with Clang this introduces
+# warnings about non-standard portions of the header.
+APPROXIMATE_QUADMATH=1

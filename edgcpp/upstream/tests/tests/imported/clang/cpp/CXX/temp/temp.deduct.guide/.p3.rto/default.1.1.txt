@@ -1,0 +1,100 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 9: error: a parameter may not have void type
+  A(void, int) -> A<int>; // expected-error {{'void' must be the first and only parameter if specified}}
+    ^
+
+"Test_name.c", line 11: error: redeclaration of deduction guide "()->A<int>" (previous declaration at line 8)
+  A() -> A<int>; // expected-error {{redeclaration of deduction guide}}
+  ^
+
+"Test_name.c", line 14: error: redeclaration of deduction guide "()->A<int>" (previous declaration at line 8)
+  A() -> A<int>; // expected-note {{previous}}
+  ^
+
+"Test_name.c", line 26: warning: class template argument deduction for alias templates is a C++20 feature
+  B() -> B<int>; // expected-error {{cannot specify deduction guide for alias template 'B'}}
+  ^
+
+"Test_name.c", line 26: error: a deduction guide may not be declared for alias template "B"
+  B() -> B<int>; // expected-error {{cannot specify deduction guide for alias template 'B'}}
+  ^
+
+"Test_name.c", line 26: error: the return type must directly designate a specialization of the associated class template
+  B() -> B<int>; // expected-error {{cannot specify deduction guide for alias template 'B'}}
+         ^
+
+"Test_name.c", line 29: error: a trailing return type requires the "auto" type specifier
+  C() -> int; // expected-error {{a type specifier is required}}
+      ^
+
+"Test_name.c", line 29: error: "C" has already been declared in the current scope
+  C() -> int; // expected-error {{a type specifier is required}}
+  ^
+
+"Test_name.c", line 31: error: a trailing return type requires the "auto" type specifier
+  D() -> int; // expected-error {{a type specifier is required}}
+      ^
+
+"Test_name.c", line 34: error: deduction guide must be declared in the same scope as template template parameter "TT"
+    TT(int) -> TT<int>; // expected-error 2{{cannot specify deduction guide for template template parameter 'TT'}} expected-error {{requires an identifier}}
+    ^
+
+"Test_name.c", line 37: error: the return type must directly designate a specialization of the associated class template
+  A(int) -> int; // expected-error {{deduced type 'int' of deduction guide is not a specialization of template 'A'}}
+            ^
+
+"Test_name.c", line 38: error: the return type must directly designate a specialization of the associated class template
+  template <typename T> A(T)->B<T>;         // expected-error {{deduced type 'B<T>' (aka 'A<T>') of deduction guide is not written as a specialization of template 'A'}}
+                              ^
+
+"Test_name.c", line 39: error: the return type must directly designate a specialization of the associated class template
+  template<typename T> A(T*) -> const A<T>; // expected-error {{deduced type 'const A<T>' of deduction guide is not a specialization of template 'A'}}
+                                ^
+
+"Test_name.c", line 48: error: deduction guide must be declared in the same scope as class template "WrongScope::<unnamed>::AnonNS1"
+    AnonNS1(int) -> AnonNS1<int>; // expected-error {{deduction guide must be declared in the same scope as template 'WrongScope::}}
+    ^
+
+"Test_name.c", line 52: error: deduction guide must be declared in the same scope as class template "WrongScope::AnonNS2"
+      AnonNS2(int) -> AnonNS2<int>; // expected-error {{deduction guide must be declared in the same scope as template 'WrongScope::AnonNS2'}}
+      ^
+
+"Test_name.c", line 59: error: deduction guide must be declared in the same scope as class template "WrongScope::N::NamedNS1"
+    NamedNS1(int) -> NamedNS1<int>; // expected-error {{deduction guide must be declared in the same scope as template}}
+    ^
+
+"Test_name.c", line 62: error: deduction guide must be declared in the same scope as class template "WrongScope::N::NamedNS2"
+    NamedNS2(int) -> NamedNS2<int>; // expected-error {{deduction guide must be declared in the same scope as template}}
+    ^
+
+"Test_name.c", line 67: error: deduction guide must be declared in the same scope as class template "WrongScope::ClassMemberA::X"
+      X(int) -> X<int>; // expected-error {{deduction guide must be declared in the same scope as template 'WrongScope::ClassMemberA::X'}}
+      ^
+
+"Test_name.c", line 71: error: type name is not allowed
+      Local(int) -> Local<int>; // expected-error {{expected}}
+            ^
+
+"Test_name.c", line 71: error: no instance of constructor "WrongScope::Local" matches the argument list
+            argument types are: (<error-type>)
+      Local(int) -> Local<int>; // expected-error {{expected}}
+            ^
+
+"Test_name.c", line 71: error: cannot deduce class template arguments
+      Local(int) -> Local<int>; // expected-error {{expected}}
+      ^
+
+"Test_name.c", line 73: error: type name is not allowed
+      Local(int) -> Local<int>; // expected-error {{expected}}
+            ^
+
+"Test_name.c", line 73: error: no instance of constructor "WrongScope::Local" matches the argument list
+            argument types are: (<error-type>)
+      Local(int) -> Local<int>; // expected-error {{expected}}
+            ^
+
+"Test_name.c", line 73: error: cannot deduce class template arguments
+      Local(int) -> Local<int>; // expected-error {{expected}}
+      ^
+
+23 errors detected in the compilation of "Test_name.c".

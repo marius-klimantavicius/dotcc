@@ -1,0 +1,90 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"./c2y-named-loops-4.c", line 68: error: expected a ";"
+           break label7;
+                 ^
+
+"./c2y-named-loops-4.c", line 70: error: expected a ";"
+           break label6;
+                 ^
+
+"./c2y-named-loops-4.c", line 72: error: expected a ";"
+           continue label6;
+                    ^
+
+"./c2y-named-loops-4.c", line 74: error: expected a ";"
+           break label5;
+                 ^
+
+"./c2y-named-loops-4.c", line 76: error: expected a ";"
+           continue label5;
+                    ^
+
+"./c2y-named-loops-4.c", line 78: error: expected a ";"
+           break label4;
+                 ^
+
+"./c2y-named-loops-4.c", line 80: error: expected a ";"
+           continue label4;
+                    ^
+
+"./c2y-named-loops-4.c", line 82: error: expected a ";"
+           break label3;
+                 ^
+
+"./c2y-named-loops-4.c", line 84: error: expected a ";"
+           continue label3;
+                    ^
+
+"./c2y-named-loops-4.c", line 86: error: expected a ";"
+           break label2;
+                 ^
+
+"./c2y-named-loops-4.c", line 88: error: expected a ";"
+           break label1;
+                 ^
+
+"./c2y-named-loops-4.c", line 90: error: expected a ";"
+           continue label1;
+                    ^
+
+"./c2y-named-loops-4.c", line 11: warning: label "label1" was declared but never referenced
+   label1:
+   ^
+
+"./c2y-named-loops-4.c", line 20: warning: label "label2" was declared but never referenced
+       label2:
+       ^
+
+"./c2y-named-loops-4.c", line 23: warning: label "label3" was declared but never referenced
+    label3:
+    ^
+
+"./c2y-named-loops-4.c", line 33: warning: label "label4" was declared but never referenced
+        label4:
+        ^
+
+"./c2y-named-loops-4.c", line 43: warning: label "label5" was declared but never referenced
+     label5:
+     ^
+
+"./c2y-named-loops-4.c", line 54: warning: label "label6" was declared but never referenced
+         label6:
+         ^
+
+"./c2y-named-loops-4.c", line 64: warning: label "label7" was declared but never referenced
+      label7:
+      ^
+
+"./c2y-named-loops-4.c", line 141: error: expected a ";"
+     break label1;
+           ^
+
+"./c2y-named-loops-4.c", line 143: error: expected a ";"
+     continue label1;
+              ^
+
+"./c2y-named-loops-4.c", line 128: warning: label "label1" was declared but never referenced
+   label1:
+   ^
+
+14 errors detected in the compilation of "Test_name.c".

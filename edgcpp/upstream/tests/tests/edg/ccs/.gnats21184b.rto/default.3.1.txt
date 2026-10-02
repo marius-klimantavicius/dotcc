@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=3 --c++11 --gnu_version 40900 Test_name.c
+"Test_name.c", line 9: error: the default constructor of "A" cannot be referenced -- it is a deleted function
+  int x[A().f()]; // A() deleted with gnu_version < 40900
+        ^
+
+1 error detected in the compilation of "Test_name.c".

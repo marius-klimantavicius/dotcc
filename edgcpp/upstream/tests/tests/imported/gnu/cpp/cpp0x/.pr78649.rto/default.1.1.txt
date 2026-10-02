@@ -1,0 +1,7 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 11: error: incomplete type "void" is not allowed
+    T t (foo<U>...);	// { dg-error "declared void" }
+      ^
+          detected during instantiation of "void test<T,U...>() [with T=void, U=<>]" at line 17
+
+1 error detected in the compilation of "Test_name.c".

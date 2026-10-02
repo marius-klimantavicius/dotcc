@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp0x/initlist91.C", line 8: error: no instance of constructor "A::A" matches the argument list
+            argument types are: (int)
+  A a { 0 };
+      ^
+"./cpp0x/initlist91.C", line 6: note: candidate function template "A::A(std::initializer_list<B...>)" failed deduction
+    template <typename... B> A(std::initializer_list<B...>);
+                             ^
+"./cpp0x/initlist91.C", line 5: note: function "A::A(const A &)" does not match because argument #1 does not match parameter
+  struct A {
+         ^
+"./cpp0x/initlist91.C", line 5: note: function "A::A(A &&)" does not match because argument #1 does not match parameter
+  struct A {
+         ^
+
+1 error detected in the compilation of "Test_name.c".

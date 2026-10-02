@@ -1,0 +1,51 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 21: error: underlying type of enum type must be an integral type
+      enum class E : T { // expected-error {{non-integral type 'void *' is an invalid underlying type}}
+                     ^
+          detected during instantiation of class "ScopedEnum::ScopedEnum2<T> [with T=void *]" at line 25
+
+"Test_name.c", line 15: error: name followed by "::" must be a class or namespace name
+        e = T::error // expected-error {{'double' cannot be used prior to '::'}}
+            ^
+          detected during instantiation of enum "ScopedEnum::ScopedEnum1<T>::E [with T=double]" at line 36
+
+"Test_name.c", line 64: warning: inline variables are a C++17 feature
+      static inline int m = T::error; // expected-warning {{extension}}
+             ^
+
+"Test_name.c", line 63: error: name followed by "::" must be a class or namespace name
+      static const int n = T::error; // expected-error {{has no members}}
+                           ^
+          detected during instantiation of class "StaticDataMembers::A<T> [with T=int]" at line 66
+
+"Test_name.c", line 75: error: name followed by "::" must be a class or namespace name
+        e = T::error // expected-error {{'int' cannot be used prior to '::'}}
+            ^
+          detected during instantiation of class "UnscopedEnum::UnscopedEnum1<T> [with T=int]" at line 78
+
+"Test_name.c", line 81: error: underlying type of enum type must be an integral type
+      enum E : T { // expected-error {{non-integral type 'void *' is an invalid underlying type}}
+               ^
+          detected during instantiation of class "UnscopedEnum::UnscopedEnum2<T> [with T=void *]" at line 85
+
+"Test_name.c", line 43: error: name followed by "::" must be a class or namespace name
+        e = T::error // expected-error {{has no members}}
+            ^
+          detected during instantiation of "int ScopedEnum::f<T>() [with T=int]" at line 47
+
+"Test_name.c", line 52: error: name followed by "::" must be a class or namespace name
+        e = T::error // expected-error {{has no members}}
+            ^
+          detected during instantiation of "int ScopedEnum::g<T>() [with T=int]" at line 56
+
+"Test_name.c", line 98: error: name followed by "::" must be a class or namespace name
+        e = T::error // expected-error {{has no members}}
+            ^
+          detected during instantiation of "int UnscopedEnum::f<T>() [with T=int]" at line 102
+
+"Test_name.c", line 107: error: name followed by "::" must be a class or namespace name
+        e = T::error // expected-error {{has no members}}
+            ^
+          detected during instantiation of "int UnscopedEnum::g<T>() [with T=int]" at line 111
+
+9 errors detected in the compilation of "Test_name.c".

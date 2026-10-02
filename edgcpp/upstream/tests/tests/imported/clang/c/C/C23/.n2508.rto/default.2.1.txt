@@ -1,0 +1,61 @@
+fe_only -DTEST_NUMBER=2 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c11 Test_name.c
+"Test_name.c", line 15: warning: expected a statement
+    } /* pedantic-warning {{label at end of compound statement is a C23 extension}}
+    ^
+
+"Test_name.c", line 21: warning: expected a statement
+    } /* pedantic-warning {{label at end of compound statement is a C23 extension}}
+    ^
+
+"Test_name.c", line 27: warning: expected a statement
+    } /* pedantic-warning {{label at end of compound statement is a C23 extension}}
+    ^
+
+"Test_name.c", line 32: warning: expected a statement
+  } /* pedantic-warning {{label at end of compound statement is a C23 extension}}
+  ^
+
+"Test_name.c", line 14: warning: label "inner" was declared but never referenced
+    inner:
+    ^
+
+"Test_name.c", line 26: warning: label "multiple" was declared but never referenced
+    multiple: labels: on: a: line:
+    ^
+
+"Test_name.c", line 26: warning: label "labels" was declared but never referenced
+    multiple: labels: on: a: line:
+              ^
+
+"Test_name.c", line 26: warning: label "on" was declared but never referenced
+    multiple: labels: on: a: line:
+                      ^
+
+"Test_name.c", line 26: warning: label "a" was declared but never referenced
+    multiple: labels: on: a: line:
+                          ^
+
+"Test_name.c", line 26: warning: label "line" was declared but never referenced
+    multiple: labels: on: a: line:
+                             ^
+
+"Test_name.c", line 31: warning: label "final" was declared but never referenced
+  final:
+  ^
+
+"Test_name.c", line 38: warning: a declaration cannot have a label
+    int i = 0; /* pedantic-warning {{label followed by a declaration is a C23 extension}}
+    ^
+
+"Test_name.c", line 44: warning: a declaration cannot have a label
+      _Static_assert(1, ""); /* pedantic-warning {{label followed by a declaration is a C23 extension}}
+      ^
+
+"Test_name.c", line 48: warning: a declaration cannot have a label
+      _Static_assert(1, ""); /* pedantic-warning {{label followed by a declaration is a C23 extension}}
+      ^
+
+"Test_name.c", line 37: warning: label "label" was declared but never referenced
+  label:
+  ^
+

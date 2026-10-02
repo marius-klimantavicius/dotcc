@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 30: warning: variable "command" is used before its value is set
+        return command;
+               ^
+
+"Test_name.c", line 34: warning: variable "rightVerticalSensor" is used before its value is set
+        if (rightVerticalSensor >= 0)
+            ^
+
+"Test_name.c", line 35: warning: variable "keys" is used before its value is set
+          keys |= 1;
+          ^
+
+"Test_name.c", line 36: warning: variable "routingKeyCount" is used before its value is set
+        if ((routingKeyCount == 0) && keys)
+             ^
+
+"Test_name.c", line 40: warning: label "doChord" was declared but never referenced
+              doChord:switch (keys);
+              ^
+

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --ms_compatibility -w --c Test_name.c
+"Test_name.c", line 6: error: declaration is incompatible with "int __stdcall f(void)" (declared at line 4)
+  int __cdecl f(void) { /* expected-error {{function declared 'cdecl' here was previously declared 'stdcall'}} */
+              ^
+
+1 error detected in the compilation of "Test_name.c".

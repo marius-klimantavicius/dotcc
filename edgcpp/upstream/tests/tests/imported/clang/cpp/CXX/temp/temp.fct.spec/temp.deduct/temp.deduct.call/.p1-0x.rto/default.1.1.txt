@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 77: error: no instance of function template "first_arg_pair" matches the argument list
+            argument types are: (pair<int *, int>, int)
+    first_arg_pair(make_pair(ip, 17), 16); // expected-error{{no matching function for call to 'first_arg_pair'}}
+    ^
+"Test_name.c", line 59: note: candidate function template "first_arg_pair" failed deduction
+  typename get_nth_type<0, Args1...>::type first_arg_pair(pair<Args1, Args2>...); // expected-note{{candidate template ignored: could not match 'pair<Args1, Args2>' against 'int'}}
+                                           ^
+
+"Test_name.c", line 89: error: no instance of function template "pack_not_at_end" matches the argument list
+            argument types are: (tuple<int *, double *>, int, int, int)
+    pack_not_at_end(t2, 0, 0, 0); // expected-error {{no match}}
+    ^
+"Test_name.c", line 86: note: candidate function template "pack_not_at_end" failed deduction
+  void pack_not_at_end(tuple<Types...>, Types... values, int); // expected-note {{<int *, double *> vs. <int, int>}}
+       ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,5 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp0x/variadic-tuple.C", line 268: warning: variable "t0" was declared but never referenced
+    tuple<> t0;
+            ^
+

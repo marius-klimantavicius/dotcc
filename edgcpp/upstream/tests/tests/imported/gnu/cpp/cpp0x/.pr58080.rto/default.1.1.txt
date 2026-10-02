@@ -1,0 +1,19 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: error: expression must be a pointer to a complete object type
+    auto bar(A a, B b, decltype(a+b)* _) -> decltype(a+b) { return a+b; }  // { dg-error "pointer" }
+                                  ^
+          detected during instantiation of class "Eval<A, B> [with A=int, B=void *]" at line 15
+
+"Test_name.c", line 10: error: expression must be a pointer to a complete object type
+    auto bar(A a, B b, decltype(a+b)* _) -> decltype(a+b) { return a+b; }  // { dg-error "pointer" }
+                                                       ^
+          detected during instantiation of class "Eval<A, B> [with A=int, B=void *]" at line 15
+
+"Test_name.c", line 10: error: expression must be a pointer to a complete object type
+    auto bar(A a, B b, decltype(a+b)* _) -> decltype(a+b) { return a+b; }  // { dg-error "pointer" }
+                                                                     ^
+          detected during:
+            instantiation of "auto Eval<A, B>::bar(A, B, decltype((<expression>)) *)->decltype((<expression>)) [with A=int, B=void *]" at line 9
+            instantiation of "void Eval<A, B>::foo(A, B) [with A=int, B=void *]" at line 15
+
+3 errors detected in the compilation of "Test_name.c".

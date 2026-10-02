@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 20: error: a value of type "int (*)(int)" cannot be assigned to an entity of type "YYSTYPE" (aka "union _yystype")
+    a = f1;		/* { dg-error "incompatible types" } */
+      ^
+
+"Test_name.c", line 25: error: a value of type "int (*)(int)" cannot be assigned to an entity of type "YYSTYPE" (aka "union _yystype")
+    a = iptr;		/* { dg-error "incompatible types" } */
+      ^
+
+"Test_name.c", line 16: warning: variable "a" was set but never used
+    YYSTYPE a;
+            ^
+
+2 errors detected in the compilation of "Test_name.c".

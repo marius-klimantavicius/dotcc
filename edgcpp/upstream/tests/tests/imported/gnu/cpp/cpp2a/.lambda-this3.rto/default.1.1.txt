@@ -1,0 +1,114 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 13: error: explicit capture matches default
+      auto a2 = [=, this] { x = n; };
+                    ^
+
+"Test_name.c", line 26: warning: variable "a2" was declared but never referenced
+  	 auto a2 = [=] { x = n; }; // { dg-bogus "implicit capture" "" { target c++17_down } }
+  	      ^
+
+"Test_name.c", line 23: warning: variable "a" was declared but never referenced
+        auto a = [=] { // { dg-bogus "implicit capture" "" { target c++17_down } }
+             ^
+
+"Test_name.c", line 32: error: explicit capture matches default
+      auto a8 = [=, this] {
+                    ^
+
+"Test_name.c", line 34: error: explicit capture matches default
+        auto a = [=, this] {
+                     ^
+
+"Test_name.c", line 36: error: explicit capture matches default
+  	 auto a2 = [=, this] { x = n; };
+  	               ^
+
+"Test_name.c", line 36: warning: variable "a2" was declared but never referenced
+  	 auto a2 = [=, this] { x = n; };
+  	      ^
+
+"Test_name.c", line 34: warning: variable "a" was declared but never referenced
+        auto a = [=, this] {
+             ^
+
+"Test_name.c", line 43: warning: variable "a2" was declared but never referenced
+  	 auto a2 = [=, *this]() mutable { x = n; };
+  	      ^
+
+"Test_name.c", line 42: warning: variable "a" was declared but never referenced
+        auto a = [=, *this]() mutable {
+             ^
+
+"Test_name.c", line 49: warning: variable "a2" was declared but never referenced
+  	 auto a2 = [&] { x = n; };
+  	      ^
+
+"Test_name.c", line 48: warning: variable "a" was declared but never referenced
+        auto a = [&] {
+             ^
+
+"Test_name.c", line 55: warning: variable "a2" was declared but never referenced
+  	 auto a2 = [&, this] { x = n; };
+  	      ^
+
+"Test_name.c", line 54: warning: variable "a" was declared but never referenced
+        auto a = [&, this] {
+             ^
+
+"Test_name.c", line 61: warning: variable "a2" was declared but never referenced
+  	 auto a2 = [&, *this]() mutable { x = n; };
+  	      ^
+
+"Test_name.c", line 60: warning: variable "a" was declared but never referenced
+        auto a = [&, *this]() mutable {
+             ^
+
+"Test_name.c", line 10: warning: variable "a1" was declared but never referenced
+      auto a1 = [=] { x = n; }; // { dg-bogus "implicit capture" "" { target c++17_down } }
+           ^
+
+"Test_name.c", line 13: warning: variable "a2" was declared but never referenced
+      auto a2 = [=, this] { x = n; };
+           ^
+
+"Test_name.c", line 15: warning: variable "a3" was declared but never referenced
+      auto a3 = [=, *this]() mutable { x = n; };
+           ^
+
+"Test_name.c", line 16: warning: variable "a4" was declared but never referenced
+      auto a4 = [&] { x = n; };
+           ^
+
+"Test_name.c", line 17: warning: variable "a5" was declared but never referenced
+      auto a5 = [&, this] { x = n; };
+           ^
+
+"Test_name.c", line 18: warning: variable "a6" was declared but never referenced
+      auto a6 = [&, *this]() mutable { x = n; };
+           ^
+
+"Test_name.c", line 20: warning: variable "a7" was declared but never referenced
+      auto a7 = [=] { // { dg-bogus "implicit capture" "" { target c++17_down } }
+           ^
+
+"Test_name.c", line 32: warning: variable "a8" was declared but never referenced
+      auto a8 = [=, this] {
+           ^
+
+"Test_name.c", line 41: warning: variable "a9" was declared but never referenced
+      auto a9 = [=, *this]() mutable {
+           ^
+
+"Test_name.c", line 47: warning: variable "a10" was declared but never referenced
+      auto a10 = [&] {
+           ^
+
+"Test_name.c", line 53: warning: variable "a11" was declared but never referenced
+      auto a11 = [&, this] {
+           ^
+
+"Test_name.c", line 59: warning: variable "a12" was declared but never referenced
+      auto a12 = [&, *this]() mutable {
+           ^
+
+4 errors detected in the compilation of "Test_name.c".

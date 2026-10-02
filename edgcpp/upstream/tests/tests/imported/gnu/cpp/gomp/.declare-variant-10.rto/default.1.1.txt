@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 5: warning: unrecognized #pragma
+  #pragma omp declare variant (f1) match(user={condition(1)})	// { dg-error "'f1' was not declared in this scope; did you mean 'f2'\\\?" }
+          ^
+
+"Test_name.c", line 13: warning: unrecognized #pragma
+  #pragma omp declare variant (f3) match(user={condition(1)})	// { dg-error "variant 'void f3\\\(int\\\)' and base 'void f4\\\(long int\\\)' have incompatible types" }
+          ^
+
+"Test_name.c", line 19: warning: unrecognized #pragma
+  #pragma omp declare variant (f5) match(user={condition(1)})	// { dg-error "there are no arguments to 'f5' that depend on a template parameter, so a declaration of 'f5' must be available" }
+          ^
+
+"Test_name.c", line 29: warning: unrecognized #pragma
+  #pragma omp declare variant (f7) match(user={condition(1)})	// { dg-error "no matching function for call to 'f7\\\(long int\\\)'" }
+          ^
+
+"Test_name.c", line 36: warning: unrecognized #pragma
+  #pragma omp declare variant (f9) match(user={condition(1)})
+          ^
+
+"Test_name.c", line 46: warning: unrecognized #pragma
+  #pragma omp declare variant (f11) match(user={condition(1)})	// { dg-error "variant 'void f11\\\(T, int\\\) \\\[with T = int\\\]' and base 'void f12\\\(T, long int\\\) \\\[with T = int\\\]' have incompatible types" }
+          ^
+

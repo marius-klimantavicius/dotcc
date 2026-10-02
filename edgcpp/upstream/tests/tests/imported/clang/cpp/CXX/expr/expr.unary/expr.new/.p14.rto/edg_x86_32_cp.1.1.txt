@@ -1,0 +1,88 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 --exceptions Test_name.c
+"Test_name.c", line 17: error: function "Unaligned<Align, Ts...>::operator new(size_t, Ts...) [with Align=16U, Ts=<>]" (declared at line 15) cannot be referenced -- it is a deleted function
+  auto *ua = new Unaligned<__STDCPP_DEFAULT_NEW_ALIGNMENT__>; // expected-error {{deleted}}
+             ^
+
+"Test_name.c", line 18: error: function "Unaligned<Align, Ts...>::operator new(size_t, Ts...) [with Align=32U, Ts=<>]" (declared at line 15) cannot be referenced -- it is a deleted function
+  auto *ub = new Unaligned<__STDCPP_DEFAULT_NEW_ALIGNMENT__ * 2>; // expected-error {{deleted}}
+             ^
+
+"Test_name.c", line 19: error: function "Unaligned<Align, Ts...>::operator new(size_t, Ts...) [with Align=16U, Ts=<Arg>]" (declared at line 15) cannot be referenced -- it is a deleted function
+  auto *uap = new (arg) Unaligned<__STDCPP_DEFAULT_NEW_ALIGNMENT__, Arg>; // expected-error {{deleted}}
+              ^
+
+"Test_name.c", line 20: error: function "Unaligned<Align, Ts...>::operator new(size_t, Ts...) [with Align=32U, Ts=<Arg>]" (declared at line 15) cannot be referenced -- it is a deleted function
+  auto *ubp = new (arg) Unaligned<__STDCPP_DEFAULT_NEW_ALIGNMENT__ * 2, Arg>; // expected-error {{deleted}}
+              ^
+
+"Test_name.c", line 26: error: function "Aligned<Align, Ts...>::operator new [with Align=16U, Ts=<>]" cannot be called with the given argument list
+            argument types are: (unsigned int)
+  auto *aa = new Aligned<__STDCPP_DEFAULT_NEW_ALIGNMENT__>; // expected-error {{no matching}}
+             ^
+"Test_name.c", line 24: note: number of parameters of function "Aligned<Align, Ts...>::operator new [with Align=16U, Ts=<>]" does not match the call
+    void *operator new(size_t, std::align_val_t, Ts...) = delete; // expected-note 2{{deleted}} expected-note 2{{not viable}}
+          ^
+
+"Test_name.c", line 26: error: cannot deduce "auto" type
+  auto *aa = new Aligned<__STDCPP_DEFAULT_NEW_ALIGNMENT__>; // expected-error {{no matching}}
+  ^
+
+"Test_name.c", line 27: error: function "Aligned<Align, Ts...>::operator new(size_t, std::align_val_t, Ts...) [with Align=32U, Ts=<>]" (declared at line 24) cannot be referenced -- it is a deleted function
+  auto *ab = new Aligned<__STDCPP_DEFAULT_NEW_ALIGNMENT__ * 2>; // expected-error {{deleted}}
+             ^
+
+"Test_name.c", line 28: error: function "Aligned<Align, Ts...>::operator new [with Align=16U, Ts=<Arg>]" cannot be called with the given argument list
+            argument types are: (unsigned int, Arg)
+  auto *aap = new (arg) Aligned<__STDCPP_DEFAULT_NEW_ALIGNMENT__, Arg>; // expected-error {{no matching}}
+              ^
+"Test_name.c", line 24: note: number of parameters of function "Aligned<Align, Ts...>::operator new [with Align=16U, Ts=<Arg>]" does not match the call
+    void *operator new(size_t, std::align_val_t, Ts...) = delete; // expected-note 2{{deleted}} expected-note 2{{not viable}}
+          ^
+
+"Test_name.c", line 28: error: cannot deduce "auto" type
+  auto *aap = new (arg) Aligned<__STDCPP_DEFAULT_NEW_ALIGNMENT__, Arg>; // expected-error {{no matching}}
+  ^
+
+"Test_name.c", line 29: error: function "Aligned<Align, Ts...>::operator new(size_t, std::align_val_t, Ts...) [with Align=32U, Ts=<Arg>]" (declared at line 24) cannot be referenced -- it is a deleted function
+  auto *abp = new (arg) Aligned<__STDCPP_DEFAULT_NEW_ALIGNMENT__ * 2, Arg>; // expected-error {{deleted}}
+              ^
+
+"Test_name.c", line 45: error: function "Both1<Align, Ts...>::operator new(size_t, std::align_val_t, Ts...) [with Align=32U, Ts=<>]" (declared at line 37) cannot be referenced -- it is a deleted function
+  auto *b1b = new Both1<__STDCPP_DEFAULT_NEW_ALIGNMENT__ * 2>; // expected-error {{deleted}}
+              ^
+
+"Test_name.c", line 46: error: function "Both2<Align, Ts...>::operator new(size_t, Ts...) [with Align=16U, Ts=<>]" (declared at line 41) cannot be referenced -- it is a deleted function
+  auto *b2a = new Both2<__STDCPP_DEFAULT_NEW_ALIGNMENT__>; // expected-error {{deleted}}
+              ^
+
+"Test_name.c", line 49: error: function "Both1<Align, Ts...>::operator new(size_t, std::align_val_t, Ts...) [with Align=32U, Ts=<Arg>]" (declared at line 37) cannot be referenced -- it is a deleted function
+  auto *b1bp = new (arg) Both1<__STDCPP_DEFAULT_NEW_ALIGNMENT__ * 2, Arg>; // expected-error {{deleted}}
+               ^
+
+"Test_name.c", line 50: error: function "Both2<Align, Ts...>::operator new(size_t, Ts...) [with Align=16U, Ts=<Arg>]" (declared at line 41) cannot be referenced -- it is a deleted function
+  auto *b2ap = new (arg) Both2<__STDCPP_DEFAULT_NEW_ALIGNMENT__, Arg>; // expected-error {{deleted}}
+               ^
+
+"Test_name.c", line 59: error: function "WeirdAlignedAlloc1::operator new(size_t, ...)" (declared at line 57) cannot be referenced -- it is a deleted function
+  auto *waa1 = new WeirdAlignedAlloc1; // expected-error {{deleted}}
+               ^
+
+"Test_name.c", line 60: error: function "WeirdAlignedAlloc1::operator new(size_t, ...)" (declared at line 57) cannot be referenced -- it is a deleted function
+  auto *waa1p = new (arg) WeirdAlignedAlloc1; // expected-error {{deleted}}
+                ^
+
+"Test_name.c", line 68: warning: missing return statement at end of non-void function "WeirdAlignedAlloc2::operator new(size_t, T...)"
+    }
+    ^
+
+"Test_name.c", line 66: error: invalid redeclaration of type name "U" (declared at line 65)
+      using U = void; // expected-error {{different types ('void' vs 'void (std::align_val_t)')}} \
+            ^
+          detected during instantiation of "void *WeirdAlignedAlloc2::operator new(size_t, T...) [with T=<std::align_val_t>]" at line 70
+
+"Test_name.c", line 66: error: invalid redeclaration of type name "U" (declared at line 65)
+      using U = void; // expected-error {{different types ('void' vs 'void (std::align_val_t)')}} \
+            ^
+          detected during instantiation of "void *WeirdAlignedAlloc2::operator new(size_t, T...) [with T=<std::align_val_t, Arg>]" at line 71
+
+18 errors detected in the compilation of "Test_name.c".

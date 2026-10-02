@@ -1,0 +1,52 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 18: error: more than one instance of overloaded function "ambig::func" matches the argument list:
+            function "ambig::func(const char *, const char *)" (declared at line 14)
+            function "ambig::func(int, int)" (declared at line 15)
+            argument types are: (ambig::Foo, ambig::Foo)
+      func(x, x); // expected-error {{call to 'func' is ambiguous}}
+      ^
+
+"Test_name.c", line 29: warning: missing return statement at end of non-void function "ambig::doit"
+    }
+    ^
+
+"Test_name.c", line 44: error: no instance of overloaded function "bad_conversion::func" matches the argument list
+            argument types are: (int *, bad_conversion::Foo, bad_conversion::Foo)
+      func((int*)0, x, x); // expected-error {{no matching function for call to 'func'}}
+      ^
+"Test_name.c", line 41: note: function "bad_conversion::func(double *, int, int)" does not match because argument #1 does not match parameter
+    void func(double*, int, int);
+         ^
+"Test_name.c", line 40: note: function "bad_conversion::func(double *, const char *, const char *)" does not match because argument #1 does not match parameter
+    void func(double*, const char*, const char*);
+         ^
+"Test_name.c", line 39: note: function "bad_conversion::func(double *, const char *, long)" does not match because argument #1 does not match parameter
+    void func(double*, const char*, long);
+         ^
+
+"Test_name.c", line 55: warning: missing return statement at end of non-void function "bad_conversion::doit"
+    }
+    ^
+
+"Test_name.c", line 67: error: no instance of overloaded function "bad_deduction::func" matches the argument list
+            argument types are: (record)
+      func(r); // expected-error {{no matching function for call to 'func'}}
+      ^
+"Test_name.c", line 63: note: candidate function template "bad_deduction::func(const T &)->decltype((<expression>))" failed deduction
+    template <class T> auto func(const T&) -> decltype(T().begin());
+                            ^
+"Test_name.c", line 62: note: candidate function template "bad_deduction::func(T &)->decltype((<expression>))" failed deduction
+    template <class T> auto func(T&) -> decltype(T().begin());
+                            ^
+"Test_name.c", line 61: note: candidate function template "bad_deduction::func(T *)" failed deduction
+    template <class T> void func(T*);
+                            ^
+"Test_name.c", line 60: note: candidate function template "bad_deduction::func(bad_deduction::templ<T>)" failed deduction
+    template <class T> void func(templ<T>);
+                            ^
+
+"Test_name.c", line 69: warning: missing return statement at end of non-void function "bad_deduction::doit"
+    }
+    ^
+
+3 errors detected in the compilation of "Test_name.c".

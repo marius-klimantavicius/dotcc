@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --c --gcc --c99 Test_name.c
+"Test_name.c", line 17: warning: explicit type is missing ("int" assumed)
+  f() { return 3; }  // Now accepted (with a warning) in GNU C99 mode.
+  ^
+
+"Test_name.c", line 18: warning: this declaration has no storage class or type specifier
+  x;                 // Now accepted in GNU C and C99 modes (with a warning).
+  ^
+

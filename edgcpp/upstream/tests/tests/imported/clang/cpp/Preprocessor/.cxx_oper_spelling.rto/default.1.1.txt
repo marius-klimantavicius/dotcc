@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 12: error: this declaration has no storage class or type specifier
+  a: X(and)
+  ^
+
+"Test_name.c", line 12: error: expected a ";"
+  a: X(and)
+   ^
+
+2 errors detected in the compilation of "Test_name.c".

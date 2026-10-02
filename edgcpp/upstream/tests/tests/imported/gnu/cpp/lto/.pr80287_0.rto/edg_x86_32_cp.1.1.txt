@@ -1,0 +1,111 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 100: error: enum "std::align_val_t" was previously declared with a different base type
+    enum class align_val_t: size_t {};
+               ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 137: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 140: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 155: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 158: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 168: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t, std::align_val_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 171: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t, std::align_val_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 179: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, std::align_val_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 182: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, std::align_val_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 206: error: first parameter of allocation function must be of type "size_t"
+  void* operator new(std::size_t, void* __p)
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 210: error: first parameter of allocation function must be of type "size_t"
+  void* operator new[](std::size_t, void* __p)
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 421: error: identifier "__int128" is undefined
+      struct __is_integral_helper<__int128>
+                                  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 426: error: expected a ">"
+      struct __is_integral_helper<unsigned __int128>
+                                           ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 812: error: expected a ">"
+     , signed __int128
+              ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 832: error: expected a ">"
+     , unsigned __int128
+                ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 1877: error: identifier "__int128" is undefined
+      struct __make_unsigned<__int128>
+                             ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 1878: error: expected a ";"
+      { using __type = unsigned __int128; };
+                                ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 2037: error: expected a ">"
+      struct __make_signed<unsigned __int128>
+                                    ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 2038: error: identifier "__int128" is undefined
+      { using __type = __int128; };
+                       ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/any", line 604: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, unsigned char (*)[4])
+   ::new(&__arg->_M_any->_M_storage._M_buffer) _Tp(*__ptr);
+     ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+          detected during:
+            instantiation of "void std::any::_Manager_internal<_Tp>::_S_manage(std::any::_Op, const std::any *, std::any::_Arg *) [with _Tp=X2]" at line 197
+            instantiation of "std::any::any(_Tp &&) [with _Tp=X2 &, _VTp=X2, _Mgr=std::any::_Manager_internal<X2>, <unnamed>=true]" at line 264
+            instantiation of "std::enable_if_t<std::is_copy_constructible<std::any::_Decay_if_not_any<_Tp, std::decay_t<_Tp>>>::value, std::any &> std::any::operator=(_Tp &&) [with _Tp=X2 &]" at line 78 of "./lto/pr80287_0.C"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/any", line 611: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, unsigned char (*)[4])
+   ::new(&__arg->_M_any->_M_storage._M_buffer) _Tp
+     ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+          detected during:
+            instantiation of "void std::any::_Manager_internal<_Tp>::_S_manage(std::any::_Op, const std::any *, std::any::_Arg *) [with _Tp=X2]" at line 197
+            instantiation of "std::any::any(_Tp &&) [with _Tp=X2 &, _VTp=X2, _Mgr=std::any::_Manager_internal<X2>, <unnamed>=true]" at line 264
+            instantiation of "std::enable_if_t<std::is_copy_constructible<std::any::_Decay_if_not_any<_Tp, std::decay_t<_Tp>>>::value, std::any &> std::any::operator=(_Tp &&) [with _Tp=X2 &]" at line 78 of "./lto/pr80287_0.C"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/any", line 386: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, void *)
+       ::new (__addr) _Tp(std::forward<_Up>(__value));
+         ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+          detected during:
+            instantiation of "void std::any::_Manager_internal<_Tp>::_S_create(std::any::_Storage &, _Up &&) [with _Tp=X2, _Up=X2 &]" at line 199
+            instantiation of "std::any::any(_Tp &&) [with _Tp=X2 &, _VTp=X2, _Mgr=std::any::_Manager_internal<X2>, <unnamed>=true]" at line 264
+            instantiation of "std::enable_if_t<std::is_copy_constructible<std::any::_Decay_if_not_any<_Tp, std::decay_t<_Tp>>>::value, std::any &> std::any::operator=(_Tp &&) [with _Tp=X2 &]" at line 78 of "./lto/pr80287_0.C"
+
+22 errors detected in the compilation of "Test_name.c".

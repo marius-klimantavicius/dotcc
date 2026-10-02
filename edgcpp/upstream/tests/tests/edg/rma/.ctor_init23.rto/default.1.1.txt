@@ -1,0 +1,59 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 5: remark: class "A" defines no constructor to initialize the following:
+            const member "A::i"
+  struct A {
+         ^
+
+"Test_name.c", line 10: warning: class "B" defines no constructor to initialize the following:
+            const member "B::i"
+  struct B {
+         ^
+
+"Test_name.c", line 16: warning: class "C" defines no constructor to initialize the following:
+            const member "C::i"
+  struct C {
+         ^
+
+"Test_name.c", line 5: error: implicitly generated constructor for class "A" cannot initialize:
+            const member "A::i"
+  struct A {
+         ^
+          detected during implicit generation of "A::A()" at line 27
+
+"Test_name.c", line 27: error: variable "a1" has an uninitialized const or reference member
+  A a1;
+    ^
+
+"Test_name.c", line 10: error: implicitly generated constructor for class "B" cannot initialize:
+            const member "B::i"
+  struct B {
+         ^
+          detected during implicit generation of "B::B()" at line 28
+
+"Test_name.c", line 16: error: implicitly generated constructor for class "C" cannot initialize:
+            const member "C::i"
+  struct C {
+         ^
+          detected during implicit generation of "C::C()" at line 29
+
+"Test_name.c", line 32: error: const variable "a2" requires an initializer -- class "A" has no user-provided default constructor
+  const A a2;
+            ^
+
+"Test_name.c", line 33: error: const variable "b2" requires an initializer -- class "B" has no user-provided default constructor
+  const B b2;
+            ^
+
+"Test_name.c", line 34: error: const variable "c2" requires an initializer -- class "C" has no user-provided default constructor
+  const C c2;
+          ^
+
+"Test_name.c", line 32: warning: variable "a2" was declared but never referenced
+  const A a2;
+          ^
+
+"Test_name.c", line 33: warning: variable "b2" was declared but never referenced
+  const B b2;
+          ^
+
+7 errors detected in the compilation of "Test_name.c".

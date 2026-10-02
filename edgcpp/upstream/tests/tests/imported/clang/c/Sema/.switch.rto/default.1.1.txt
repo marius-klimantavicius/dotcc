@@ -1,0 +1,306 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 7: error: a default label may only be used within a switch
+      default: z--;            // expected-error {{statement not in switch}}
+      ^
+
+"Test_name.c", line 14: warning: integer conversion resulted in truncation
+    case 5000000000LL:         // expected-warning {{overflow}}
+         ^
+
+"Test_name.c", line 15: error: case label value has already appeared in this switch at line 13
+    case 42:                   // expected-error {{duplicate case value '42'}}
+         ^
+
+"Test_name.c", line 18: error: the second constant in a case range must be larger than the first
+    case 100 ... 99: ;         // expected-warning {{empty case range}}
+                 ^
+
+"Test_name.c", line 21: error: case label value has already appeared in this switch at line 20
+    case 43 ... 45:  ;         // expected-error {{duplicate case value}}
+         ^
+
+"Test_name.c", line 23: error: case label value has already appeared in this switch at line 18
+    case 100 ... 20000:;       // expected-note {{previous case}}
+         ^
+
+"Test_name.c", line 24: error: case label value has already appeared in this switch at line 23
+    case 15000 ... 40000000:;  // expected-error {{duplicate case value}}
+         ^
+
+"Test_name.c", line 40: warning: variable "cond" is used before its value is set
+    switch (cond) {
+            ^
+
+"Test_name.c", line 47: error: function call is not allowed in a constant expression
+    case g(): // expected-error {{expression is not an integer constant expression}}
+         ^
+
+"Test_name.c", line 48: error: function call is not allowed in a constant expression
+    case 0 ... g(): // expected-error {{expression is not an integer constant expression}}
+               ^
+
+"Test_name.c", line 58: error: function call is not allowed in a constant expression
+    case g() // expected-error {{expression is not an integer constant expression}}
+         ^
+
+"Test_name.c", line 65: error: function call is not allowed in a constant expression
+        g() // expected-error {{expression is not an integer constant expression}}
+        ^
+
+"Test_name.c", line 74: error: default label has already appeared in this switch
+      default:  // expected-error {{multiple default labels in one switch}}
+      ^
+
+"Test_name.c", line 89: error: identifier "va" is undefined
+    switch (va) { // expected-error{{use of undeclared identifier 'va'}}
+            ^
+
+"Test_name.c", line 103: warning: variable "a" is used before its value is set
+    switch(a) { //expected-warning{{enumeration value 'B' not handled in switch}}
+           ^
+
+"Test_name.c", line 115: warning: enumerated type mixed with another type
+      case 3: // expected-warning{{case value not in enumerated type 'enum (unnamed}}
+           ^
+
+"Test_name.c", line 121: warning: enumerated type mixed with another type
+      case 3 ... //expected-warning{{case value not in enumerated type 'enum (unnamed}}
+           ^
+
+"Test_name.c", line 122: warning: enumerated type mixed with another type
+          4: //expected-warning{{case value not in enumerated type 'enum (unnamed}}
+          ^
+
+"Test_name.c", line 126: warning: enumerated type mixed with another type
+      case 1 ... 2:
+           ^
+
+"Test_name.c", line 126: warning: enumerated type mixed with another type
+      case 1 ... 2:
+                 ^
+
+"Test_name.c", line 130: warning: enumerated type mixed with another type
+      case 0 ... 2: //expected-warning{{case value not in enumerated type 'enum (unnamed}}
+           ^
+
+"Test_name.c", line 130: warning: enumerated type mixed with another type
+      case 0 ... 2: //expected-warning{{case value not in enumerated type 'enum (unnamed}}
+                 ^
+
+"Test_name.c", line 134: warning: enumerated type mixed with another type
+      case 1 ... 3: //expected-warning{{case value not in enumerated type 'enum (unnamed}}
+           ^
+
+"Test_name.c", line 134: warning: enumerated type mixed with another type
+      case 1 ... 3: //expected-warning{{case value not in enumerated type 'enum (unnamed}}
+                 ^
+
+"Test_name.c", line 138: warning: enumerated type mixed with another type
+      case 0 ...  //expected-warning{{case value not in enumerated type 'enum (unnamed}}
+           ^
+
+"Test_name.c", line 139: warning: enumerated type mixed with another type
+        3:  //expected-warning{{case value not in enumerated type 'enum (unnamed}}
+        ^
+
+"Test_name.c", line 151: warning: variable "a" is used before its value is set
+    switch(a) {
+           ^
+
+"Test_name.c", line 172: warning: variable "a" is used before its value is set
+    switch(a) {
+           ^
+
+"Test_name.c", line 173: warning: enumerated type mixed with another type
+      case 0: //expected-warning{{case value not in enumerated type 'enum (unnamed}}
+           ^
+
+"Test_name.c", line 174: warning: enumerated type mixed with another type
+      case 1:
+           ^
+
+"Test_name.c", line 175: warning: enumerated type mixed with another type
+      case 2: //expected-warning{{case value not in enumerated type 'enum (unnamed}}
+           ^
+
+"Test_name.c", line 176: warning: enumerated type mixed with another type
+      case 3:
+           ^
+
+"Test_name.c", line 177: warning: enumerated type mixed with another type
+      case 4: //expected-warning{{case value not in enumerated type 'enum (unnamed}}
+           ^
+
+"Test_name.c", line 189: warning: variable "a" is used before its value is set
+    switch(a) {
+           ^
+
+"Test_name.c", line 190: warning: enumerated type mixed with another type
+      case 0 ...  //expected-warning{{case value not in enumerated type 'enum (unnamed}}
+           ^
+
+"Test_name.c", line 191: warning: enumerated type mixed with another type
+  	    1:  //expected-warning{{case value not in enumerated type 'enum (unnamed}}
+  	    ^
+
+"Test_name.c", line 192: warning: enumerated type mixed with another type
+      case 2 ... 4:
+           ^
+
+"Test_name.c", line 192: warning: enumerated type mixed with another type
+      case 2 ... 4:
+                 ^
+
+"Test_name.c", line 193: warning: enumerated type mixed with another type
+      case 5 ...  //expected-warning{{case value not in enumerated type 'enum (unnamed}}	
+           ^
+
+"Test_name.c", line 194: warning: enumerated type mixed with another type
+  	      9:  //expected-warning{{case value not in enumerated type 'enum (unnamed}}
+  	      ^
+
+"Test_name.c", line 195: warning: enumerated type mixed with another type
+      case 10 ... 12:
+           ^
+
+"Test_name.c", line 195: warning: enumerated type mixed with another type
+      case 10 ... 12:
+                  ^
+
+"Test_name.c", line 196: warning: enumerated type mixed with another type
+      case 13 ...  //expected-warning{{case value not in enumerated type 'enum (unnamed}}
+           ^
+
+"Test_name.c", line 197: warning: enumerated type mixed with another type
+                16: //expected-warning{{case value not in enumerated type 'enum (unnamed}}
+                ^
+
+"Test_name.c", line 208: warning: variable "a" is used before its value is set
+    switch(a) { //expected-warning{{enumeration value 'A' not handled in switch}}
+           ^
+
+"Test_name.c", line 229: warning: variable "a" is used before its value is set
+    switch(a) {
+           ^
+
+"Test_name.c", line 267: warning: integer conversion resulted in a change of sign
+    case -1: break;
+         ^
+
+"Test_name.c", line 302: warning: variable "bm" is used before its value is set
+    switch (bm.bf) { // no warning
+            ^
+
+"Test_name.c", line 311: warning: variable "a" is used before its value is set
+    switch (a) {
+            ^
+
+"Test_name.c", line 314: warning: enumerated type mixed with another type
+    case 7: return 1; // expected-warning {{case value not in enumerated type}}
+         ^
+
+"Test_name.c", line 328: warning: enumerated type mixed with another type
+                  case 2: 	// expected-warning {{case value not in enumerated type 'Ints'}}          
+                       ^
+
+"Test_name.c", line 345: error: case label value has already appeared in this switch at line 344
+      case TEST19MACRO: // expected-error {{duplicate case value '5'}}
+           ^
+
+"Test_name.c", line 348: error: case label value has already appeared in this switch at line 347
+      case kTest19Enum1: // expected-error {{duplicate case value: '7' and 'kTest19Enum1' both equal '7'}} \
+           ^
+
+"Test_name.c", line 350: error: case label value has already appeared in this switch at line 347
+      case kTest19Enum1: // expected-error {{duplicate case value 'kTest19Enum1'}} \
+           ^
+
+"Test_name.c", line 350: error: case label value has already appeared in this switch at line 348
+      case kTest19Enum1: // expected-error {{duplicate case value 'kTest19Enum1'}} \
+           ^
+
+"Test_name.c", line 352: error: case label value has already appeared in this switch at line 347
+      case kTest19Enum2: // expected-error {{duplicate case value: 'kTest19Enum1' and 'kTest19Enum2' both equal '7'}} \
+           ^
+
+"Test_name.c", line 352: error: case label value has already appeared in this switch at line 348
+      case kTest19Enum2: // expected-error {{duplicate case value: 'kTest19Enum1' and 'kTest19Enum2' both equal '7'}} \
+           ^
+
+"Test_name.c", line 352: error: case label value has already appeared in this switch at line 350
+      case kTest19Enum2: // expected-error {{duplicate case value: 'kTest19Enum1' and 'kTest19Enum2' both equal '7'}} \
+           ^
+
+"Test_name.c", line 354: error: case label value has already appeared in this switch at line 347
+      case (int)kTest19Enum2: //expected-error {{duplicate case value 'kTest19Enum2'}}
+           ^
+
+"Test_name.c", line 354: error: case label value has already appeared in this switch at line 348
+      case (int)kTest19Enum2: //expected-error {{duplicate case value 'kTest19Enum2'}}
+           ^
+
+"Test_name.c", line 354: error: case label value has already appeared in this switch at line 350
+      case (int)kTest19Enum2: //expected-error {{duplicate case value 'kTest19Enum2'}}
+           ^
+
+"Test_name.c", line 354: error: case label value has already appeared in this switch at line 352
+      case (int)kTest19Enum2: //expected-error {{duplicate case value 'kTest19Enum2'}}
+           ^
+
+"Test_name.c", line 357: warning: use of a const variable in a constant expression is nonstandard in C
+      case a: // expected-error {{duplicate case value: '3' and 'a' both equal '3'}} \
+           ^
+
+"Test_name.c", line 357: error: case label value has already appeared in this switch at line 356
+      case a: // expected-error {{duplicate case value: '3' and 'a' both equal '3'}} \
+           ^
+
+"Test_name.c", line 359: warning: use of a const variable in a constant expression is nonstandard in C
+      case a: // expected-error {{duplicate case value 'a'}}
+           ^
+
+"Test_name.c", line 359: error: case label value has already appeared in this switch at line 356
+      case a: // expected-error {{duplicate case value 'a'}}
+           ^
+
+"Test_name.c", line 359: error: case label value has already appeared in this switch at line 357
+      case a: // expected-error {{duplicate case value 'a'}}
+           ^
+
+"Test_name.c", line 377: warning: enumerated type mixed with another type
+  static const enum ExtendedEnum1 EE1_c = 100;
+                                          ^
+
+"Test_name.c", line 378: warning: enumerated type mixed with another type
+  static const enum ExtendedEnum1_unrelated EE1_d = 101;
+                                                    ^
+
+"Test_name.c", line 384: warning: use of a const variable in a constant expression is nonstandard in C
+    case EE1_c: break; // no-warning
+         ^
+
+"Test_name.c", line 385: warning: use of a const variable in a constant expression is nonstandard in C
+    case EE1_d: break; // expected-warning {{case value not in enumerated type 'enum ExtendedEnum1'}}
+         ^
+
+"Test_name.c", line 385: warning: enumerated type mixed with another type
+    case EE1_d: break; // expected-warning {{case value not in enumerated type 'enum ExtendedEnum1'}}
+         ^
+
+"Test_name.c", line 395: warning: integer conversion resulted in truncation
+    switch (n) case 0x100000001LL: case 1: ; // expected-warning {{overflow}} expected-error {{duplicate}} expected-note {{previous}}
+                    ^
+
+"Test_name.c", line 395: error: case label value has already appeared in this switch at line 395
+    switch (n) case 0x100000001LL: case 1: ; // expected-warning {{overflow}} expected-error {{duplicate}} expected-note {{previous}}
+                                        ^
+
+"Test_name.c", line 396: warning: integer conversion resulted in truncation
+    switch ((int)ll) case 0x100000001LL: case 1: ; // expected-warning {{overflow}} expected-error {{duplicate}} expected-note {{previous}}
+                          ^
+
+"Test_name.c", line 396: error: case label value has already appeared in this switch at line 396
+    switch ((int)ll) case 0x100000001LL: case 1: ; // expected-warning {{overflow}} expected-error {{duplicate}} expected-note {{previous}}
+                                              ^
+
+28 errors detected in the compilation of "Test_name.c".

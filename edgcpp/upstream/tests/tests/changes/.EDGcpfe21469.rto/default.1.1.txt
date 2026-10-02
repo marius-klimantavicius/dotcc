@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --c++11 --g++ --diag_error=811 Test_name.c
+"Test_name.c", line 17: warning: variable "s" was declared but never referenced
+  S const s;  // Previously a spurious error.  Now okay.
+          ^
+

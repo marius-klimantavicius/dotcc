@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 114: warning: variable "e" is used before its value is set
+      if (e == 0x1234567812345678L) // expected-warning {{comparison of constant 1311768465173141112 with expression of type 'enum E' is always false}}
+          ^
+

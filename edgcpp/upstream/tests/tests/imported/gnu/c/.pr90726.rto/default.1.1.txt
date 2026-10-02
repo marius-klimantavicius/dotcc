@@ -1,0 +1,106 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 6: warning: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+  int __GIMPLE (ssa,guessed_local(12348030),startwith("fix_loops"))
+                ^
+
+"Test_name.c", line 6: error: expected a ")"
+  int __GIMPLE (ssa,guessed_local(12348030),startwith("fix_loops"))
+                                 ^
+
+"Test_name.c", line 7: error: expected a declaration
+  un (int dd)
+  ^
+
+"Test_name.c", line 29: warning: parsing restarts here after previous syntax error
+    q8_57 = q8_53 * q8_53;
+                         ^
+
+"Test_name.c", line 30: error: expected a declaration
+    q8_61 = q8_57 * q8_57;
+    ^
+
+"Test_name.c", line 31: error: expected a declaration
+    q8_65 = q8_61 * q8_61;
+    ^
+
+"Test_name.c", line 32: error: expected a declaration
+    q8_69 = q8_65 * q8_65;
+    ^
+
+"Test_name.c", line 33: error: expected a declaration
+    q8_73 = q8_69 * q8_69;
+    ^
+
+"Test_name.c", line 34: error: expected a declaration
+    q8_77 = q8_73 * q8_73;
+    ^
+
+"Test_name.c", line 35: error: expected a declaration
+    q8_81 = q8_77 * q8_77;
+    ^
+
+"Test_name.c", line 36: error: expected a declaration
+    q8_85 = q8_81 * q8_81;
+    ^
+
+"Test_name.c", line 37: error: expected a declaration
+    q8_89 = q8_85 * q8_85;
+    ^
+
+"Test_name.c", line 38: error: expected a declaration
+    q8_93 = q8_89 * q8_89;
+    ^
+
+"Test_name.c", line 39: error: expected a declaration
+    q8_97 = q8_93 * q8_93;
+    ^
+
+"Test_name.c", line 40: error: expected a declaration
+    q8_101 = q8_97 * q8_97;
+    ^
+
+"Test_name.c", line 41: error: expected a declaration
+    q8_105 = q8_101 * q8_101;
+    ^
+
+"Test_name.c", line 42: error: expected a declaration
+    q8_109 = q8_105 * q8_105;
+    ^
+
+"Test_name.c", line 43: error: expected a declaration
+    q8_113 = q8_109 * q8_109;
+    ^
+
+"Test_name.c", line 44: error: expected a declaration
+    q8_117 = q8_113 * q8_113;
+    ^
+
+"Test_name.c", line 45: error: expected a declaration
+    q8_121 = q8_117 * q8_117;
+    ^
+
+"Test_name.c", line 46: error: expected a declaration
+    nz_10 = nz_7 + 1;
+    ^
+
+"Test_name.c", line 6: warning: standard requires that parameter "ssa" be given a type by a subsequent declaration ("int" assumed)
+  int __GIMPLE (ssa,guessed_local(12348030),startwith("fix_loops"))
+                ^
+
+"Test_name.c", line 6: warning: standard requires that parameter "guessed_local" be given a type by a subsequent declaration ("int" assumed)
+  int __GIMPLE (ssa,guessed_local(12348030),startwith("fix_loops"))
+                    ^
+
+"Test_name.c", line 47: error: expected a "{"
+    if (nz_10 != 3)
+    ^
+
+"Test_name.c", line 58: warning: parsing restarts here after previous syntax error
+  }
+  ^
+
+"Test_name.c", line 58: warning: missing return statement at end of non-void function "__GIMPLE"
+  }
+  ^
+
+20 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,542 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./dfp/convert-dfp-round.c", line 18: error: identifier "_Decimal32" is undefined
+  _Decimal32 d32;
+  ^
+
+"./dfp/convert-dfp-round.c", line 19: error: identifier "_Decimal64" is undefined
+  _Decimal64 d64;
+  ^
+
+"./dfp/convert-dfp-round.c", line 20: error: identifier "_Decimal128" is undefined
+  _Decimal128 d128;
+  ^
+
+"./dfp/convert-dfp-round.c", line 22: error: identifier "_Decimal32" is undefined
+  _Decimal32 d64_to_d32 (_Decimal64 d) { return d; }
+  ^
+
+"./dfp/convert-dfp-round.c", line 22: error: identifier "_Decimal64" is undefined
+  _Decimal32 d64_to_d32 (_Decimal64 d) { return d; }
+                         ^
+
+"./dfp/convert-dfp-round.c", line 23: error: identifier "_Decimal64" is undefined
+  _Decimal64 d128_to_d64 (_Decimal128 d) { return d; }
+  ^
+
+"./dfp/convert-dfp-round.c", line 23: error: identifier "_Decimal128" is undefined
+  _Decimal64 d128_to_d64 (_Decimal128 d) { return d; }
+                          ^
+
+"./dfp/convert-dfp-round.c", line 24: error: identifier "_Decimal32" is undefined
+  _Decimal32 d128_to_d32 (_Decimal128 d) { return d; }
+  ^
+
+"./dfp/convert-dfp-round.c", line 24: error: identifier "_Decimal128" is undefined
+  _Decimal32 d128_to_d32 (_Decimal128 d) { return d; }
+                          ^
+
+"./dfp/convert-dfp-round.c", line 27: error: identifier "_Decimal64" is undefined
+  do_d64_to_d32 (_Decimal64 orig, _Decimal32 exp)
+                 ^
+
+"./dfp/convert-dfp-round.c", line 27: error: identifier "_Decimal32" is undefined
+  do_d64_to_d32 (_Decimal64 orig, _Decimal32 exp)
+                                  ^
+
+"./dfp/convert-dfp-round.c", line 35: error: identifier "_Decimal128" is undefined
+  do_d128_to_d32 (_Decimal128 orig, _Decimal32 exp)
+                  ^
+
+"./dfp/convert-dfp-round.c", line 35: error: identifier "_Decimal32" is undefined
+  do_d128_to_d32 (_Decimal128 orig, _Decimal32 exp)
+                                    ^
+
+"./dfp/convert-dfp-round.c", line 43: error: identifier "_Decimal128" is undefined
+  do_d128_to_d64 (_Decimal128 orig, _Decimal64 exp)
+                  ^
+
+"./dfp/convert-dfp-round.c", line 43: error: identifier "_Decimal64" is undefined
+  do_d128_to_d64 (_Decimal128 orig, _Decimal64 exp)
+                                    ^
+
+"./dfp/convert-dfp-round.c", line 54: error: extra text after expected end of number
+    if (!do_d64_to_d32 (1.1111125dd, 1.111112df)) __builtin_abort ();
+                                 ^
+
+"./dfp/convert-dfp-round.c", line 54: error: extra text after expected end of number
+    if (!do_d64_to_d32 (1.1111125dd, 1.111112df)) __builtin_abort ();
+                                             ^
+
+"./dfp/convert-dfp-round.c", line 55: error: extra text after expected end of number
+    if (!do_d64_to_d32 (1.1111135dd, 1.111113df)) __builtin_abort ();
+                                 ^
+
+"./dfp/convert-dfp-round.c", line 55: error: extra text after expected end of number
+    if (!do_d64_to_d32 (1.1111135dd, 1.111113df)) __builtin_abort ();
+                                             ^
+
+"./dfp/convert-dfp-round.c", line 56: error: extra text after expected end of number
+    if (!do_d64_to_d32 (-1.1111125dd, -1.111113df)) __builtin_abort ();
+                                  ^
+
+"./dfp/convert-dfp-round.c", line 56: error: extra text after expected end of number
+    if (!do_d64_to_d32 (-1.1111125dd, -1.111113df)) __builtin_abort ();
+                                               ^
+
+"./dfp/convert-dfp-round.c", line 57: error: extra text after expected end of number
+    if (!do_d64_to_d32 (-1.1111135dd, -1.111114df)) __builtin_abort ();
+                                  ^
+
+"./dfp/convert-dfp-round.c", line 57: error: extra text after expected end of number
+    if (!do_d64_to_d32 (-1.1111135dd, -1.111114df)) __builtin_abort ();
+                                               ^
+
+"./dfp/convert-dfp-round.c", line 58: error: extra text after expected end of number
+    if (!do_d128_to_d32 (1.1111125dl, 1.111112df)) __builtin_abort ();
+                                  ^
+
+"./dfp/convert-dfp-round.c", line 58: error: extra text after expected end of number
+    if (!do_d128_to_d32 (1.1111125dl, 1.111112df)) __builtin_abort ();
+                                              ^
+
+"./dfp/convert-dfp-round.c", line 59: error: extra text after expected end of number
+    if (!do_d128_to_d32 (1.1111135dl, 1.111113df)) __builtin_abort ();
+                                  ^
+
+"./dfp/convert-dfp-round.c", line 59: error: extra text after expected end of number
+    if (!do_d128_to_d32 (1.1111135dl, 1.111113df)) __builtin_abort ();
+                                              ^
+
+"./dfp/convert-dfp-round.c", line 60: error: extra text after expected end of number
+    if (!do_d128_to_d32 (-1.1111125dl, -1.111113df)) __builtin_abort ();
+                                   ^
+
+"./dfp/convert-dfp-round.c", line 60: error: extra text after expected end of number
+    if (!do_d128_to_d32 (-1.1111125dl, -1.111113df)) __builtin_abort ();
+                                                ^
+
+"./dfp/convert-dfp-round.c", line 61: error: extra text after expected end of number
+    if (!do_d128_to_d32 (-1.1111135dl, -1.111114df)) __builtin_abort ();
+                                   ^
+
+"./dfp/convert-dfp-round.c", line 61: error: extra text after expected end of number
+    if (!do_d128_to_d32 (-1.1111135dl, -1.111114df)) __builtin_abort ();
+                                                ^
+
+"./dfp/convert-dfp-round.c", line 62: error: extra text after expected end of number
+    if (!do_d128_to_d64 (1.1111111111111125dl, 1.111111111111112dd)) __builtin_abort ();
+                                           ^
+
+"./dfp/convert-dfp-round.c", line 62: error: extra text after expected end of number
+    if (!do_d128_to_d64 (1.1111111111111125dl, 1.111111111111112dd)) __builtin_abort ();
+                                                                ^
+
+"./dfp/convert-dfp-round.c", line 63: error: extra text after expected end of number
+    if (!do_d128_to_d64 (1.1111111111111135dl, 1.111111111111113dd)) __builtin_abort ();
+                                           ^
+
+"./dfp/convert-dfp-round.c", line 63: error: extra text after expected end of number
+    if (!do_d128_to_d64 (1.1111111111111135dl, 1.111111111111113dd)) __builtin_abort ();
+                                                                ^
+
+"./dfp/convert-dfp-round.c", line 64: error: extra text after expected end of number
+    if (!do_d128_to_d64 (-1.1111111111111125dl, -1.111111111111113dd)) __builtin_abort ();
+                                            ^
+
+"./dfp/convert-dfp-round.c", line 64: error: extra text after expected end of number
+    if (!do_d128_to_d64 (-1.1111111111111125dl, -1.111111111111113dd)) __builtin_abort ();
+                                                                  ^
+
+"./dfp/convert-dfp-round.c", line 65: error: extra text after expected end of number
+    if (!do_d128_to_d64 (-1.1111111111111135dl, -1.111111111111114dd)) __builtin_abort ();
+                                            ^
+
+"./dfp/convert-dfp-round.c", line 65: error: extra text after expected end of number
+    if (!do_d128_to_d64 (-1.1111111111111135dl, -1.111111111111114dd)) __builtin_abort ();
+                                                                  ^
+
+"./dfp/convert-dfp-round.c", line 68: error: extra text after expected end of number
+    if (!do_d64_to_d32 (1.1111125dd, 1.111112df)) __builtin_abort ();
+                                 ^
+
+"./dfp/convert-dfp-round.c", line 68: error: extra text after expected end of number
+    if (!do_d64_to_d32 (1.1111125dd, 1.111112df)) __builtin_abort ();
+                                             ^
+
+"./dfp/convert-dfp-round.c", line 69: error: extra text after expected end of number
+    if (!do_d64_to_d32 (1.1111135dd, 1.111114df)) __builtin_abort ();
+                                 ^
+
+"./dfp/convert-dfp-round.c", line 69: error: extra text after expected end of number
+    if (!do_d64_to_d32 (1.1111135dd, 1.111114df)) __builtin_abort ();
+                                             ^
+
+"./dfp/convert-dfp-round.c", line 70: error: extra text after expected end of number
+    if (!do_d64_to_d32 (-1.1111125dd, -1.111112df)) __builtin_abort ();
+                                  ^
+
+"./dfp/convert-dfp-round.c", line 70: error: extra text after expected end of number
+    if (!do_d64_to_d32 (-1.1111125dd, -1.111112df)) __builtin_abort ();
+                                               ^
+
+"./dfp/convert-dfp-round.c", line 71: error: extra text after expected end of number
+    if (!do_d64_to_d32 (-1.1111135dd, -1.111114df)) __builtin_abort ();
+                                  ^
+
+"./dfp/convert-dfp-round.c", line 71: error: extra text after expected end of number
+    if (!do_d64_to_d32 (-1.1111135dd, -1.111114df)) __builtin_abort ();
+                                               ^
+
+"./dfp/convert-dfp-round.c", line 72: error: extra text after expected end of number
+    if (!do_d128_to_d32 (1.1111125dl, 1.111112df)) __builtin_abort ();
+                                  ^
+
+"./dfp/convert-dfp-round.c", line 72: error: extra text after expected end of number
+    if (!do_d128_to_d32 (1.1111125dl, 1.111112df)) __builtin_abort ();
+                                              ^
+
+"./dfp/convert-dfp-round.c", line 73: error: extra text after expected end of number
+    if (!do_d128_to_d32 (1.1111135dl, 1.111114df)) __builtin_abort ();
+                                  ^
+
+"./dfp/convert-dfp-round.c", line 73: error: extra text after expected end of number
+    if (!do_d128_to_d32 (1.1111135dl, 1.111114df)) __builtin_abort ();
+                                              ^
+
+"./dfp/convert-dfp-round.c", line 74: error: extra text after expected end of number
+    if (!do_d128_to_d32 (-1.1111125dl, -1.111112df)) __builtin_abort ();
+                                   ^
+
+"./dfp/convert-dfp-round.c", line 74: error: extra text after expected end of number
+    if (!do_d128_to_d32 (-1.1111125dl, -1.111112df)) __builtin_abort ();
+                                                ^
+
+"./dfp/convert-dfp-round.c", line 75: error: extra text after expected end of number
+    if (!do_d128_to_d32 (-1.1111135dl, -1.111114df)) __builtin_abort ();
+                                   ^
+
+"./dfp/convert-dfp-round.c", line 75: error: extra text after expected end of number
+    if (!do_d128_to_d32 (-1.1111135dl, -1.111114df)) __builtin_abort ();
+                                                ^
+
+"./dfp/convert-dfp-round.c", line 76: error: extra text after expected end of number
+    if (!do_d128_to_d64 (1.1111111111111125dl, 1.111111111111112dd)) __builtin_abort ();
+                                           ^
+
+"./dfp/convert-dfp-round.c", line 76: error: extra text after expected end of number
+    if (!do_d128_to_d64 (1.1111111111111125dl, 1.111111111111112dd)) __builtin_abort ();
+                                                                ^
+
+"./dfp/convert-dfp-round.c", line 77: error: extra text after expected end of number
+    if (!do_d128_to_d64 (1.1111111111111135dl, 1.111111111111114dd)) __builtin_abort ();
+                                           ^
+
+"./dfp/convert-dfp-round.c", line 77: error: extra text after expected end of number
+    if (!do_d128_to_d64 (1.1111111111111135dl, 1.111111111111114dd)) __builtin_abort ();
+                                                                ^
+
+"./dfp/convert-dfp-round.c", line 78: error: extra text after expected end of number
+    if (!do_d128_to_d64 (-1.1111111111111125dl, -1.111111111111112dd)) __builtin_abort ();
+                                            ^
+
+"./dfp/convert-dfp-round.c", line 78: error: extra text after expected end of number
+    if (!do_d128_to_d64 (-1.1111111111111125dl, -1.111111111111112dd)) __builtin_abort ();
+                                                                  ^
+
+"./dfp/convert-dfp-round.c", line 79: error: extra text after expected end of number
+    if (!do_d128_to_d64 (-1.1111111111111135dl, -1.111111111111114dd)) __builtin_abort ();
+                                            ^
+
+"./dfp/convert-dfp-round.c", line 79: error: extra text after expected end of number
+    if (!do_d128_to_d64 (-1.1111111111111135dl, -1.111111111111114dd)) __builtin_abort ();
+                                                                  ^
+
+"./dfp/convert-dfp-round.c", line 82: error: extra text after expected end of number
+    if (!do_d64_to_d32 (1.1111125dd, 1.111113df)) __builtin_abort ();
+                                 ^
+
+"./dfp/convert-dfp-round.c", line 82: error: extra text after expected end of number
+    if (!do_d64_to_d32 (1.1111125dd, 1.111113df)) __builtin_abort ();
+                                             ^
+
+"./dfp/convert-dfp-round.c", line 83: error: extra text after expected end of number
+    if (!do_d64_to_d32 (1.1111135dd, 1.111114df)) __builtin_abort ();
+                                 ^
+
+"./dfp/convert-dfp-round.c", line 83: error: extra text after expected end of number
+    if (!do_d64_to_d32 (1.1111135dd, 1.111114df)) __builtin_abort ();
+                                             ^
+
+"./dfp/convert-dfp-round.c", line 84: error: extra text after expected end of number
+    if (!do_d64_to_d32 (-1.1111125dd, -1.111113df)) __builtin_abort ();
+                                  ^
+
+"./dfp/convert-dfp-round.c", line 84: error: extra text after expected end of number
+    if (!do_d64_to_d32 (-1.1111125dd, -1.111113df)) __builtin_abort ();
+                                               ^
+
+"./dfp/convert-dfp-round.c", line 85: error: extra text after expected end of number
+    if (!do_d64_to_d32 (-1.1111135dd, -1.111114df)) __builtin_abort ();
+                                  ^
+
+"./dfp/convert-dfp-round.c", line 85: error: extra text after expected end of number
+    if (!do_d64_to_d32 (-1.1111135dd, -1.111114df)) __builtin_abort ();
+                                               ^
+
+"./dfp/convert-dfp-round.c", line 86: error: extra text after expected end of number
+    if (!do_d128_to_d32 (1.1111125dl, 1.111113df)) __builtin_abort ();
+                                  ^
+
+"./dfp/convert-dfp-round.c", line 86: error: extra text after expected end of number
+    if (!do_d128_to_d32 (1.1111125dl, 1.111113df)) __builtin_abort ();
+                                              ^
+
+"./dfp/convert-dfp-round.c", line 87: error: extra text after expected end of number
+    if (!do_d128_to_d32 (1.1111135dl, 1.111114df)) __builtin_abort ();
+                                  ^
+
+"./dfp/convert-dfp-round.c", line 87: error: extra text after expected end of number
+    if (!do_d128_to_d32 (1.1111135dl, 1.111114df)) __builtin_abort ();
+                                              ^
+
+"./dfp/convert-dfp-round.c", line 88: error: extra text after expected end of number
+    if (!do_d128_to_d32 (-1.1111125dl, -1.111113df)) __builtin_abort ();
+                                   ^
+
+"./dfp/convert-dfp-round.c", line 88: error: extra text after expected end of number
+    if (!do_d128_to_d32 (-1.1111125dl, -1.111113df)) __builtin_abort ();
+                                                ^
+
+"./dfp/convert-dfp-round.c", line 89: error: extra text after expected end of number
+    if (!do_d128_to_d32 (-1.1111135dl, -1.111114df)) __builtin_abort ();
+                                   ^
+
+"./dfp/convert-dfp-round.c", line 89: error: extra text after expected end of number
+    if (!do_d128_to_d32 (-1.1111135dl, -1.111114df)) __builtin_abort ();
+                                                ^
+
+"./dfp/convert-dfp-round.c", line 90: error: extra text after expected end of number
+    if (!do_d128_to_d64 (1.1111111111111125dl, 1.111111111111113dd)) __builtin_abort ();
+                                           ^
+
+"./dfp/convert-dfp-round.c", line 90: error: extra text after expected end of number
+    if (!do_d128_to_d64 (1.1111111111111125dl, 1.111111111111113dd)) __builtin_abort ();
+                                                                ^
+
+"./dfp/convert-dfp-round.c", line 91: error: extra text after expected end of number
+    if (!do_d128_to_d64 (1.1111111111111135dl, 1.111111111111114dd)) __builtin_abort ();
+                                           ^
+
+"./dfp/convert-dfp-round.c", line 91: error: extra text after expected end of number
+    if (!do_d128_to_d64 (1.1111111111111135dl, 1.111111111111114dd)) __builtin_abort ();
+                                                                ^
+
+"./dfp/convert-dfp-round.c", line 92: error: extra text after expected end of number
+    if (!do_d128_to_d64 (-1.1111111111111125dl, -1.111111111111113dd)) __builtin_abort ();
+                                            ^
+
+"./dfp/convert-dfp-round.c", line 92: error: extra text after expected end of number
+    if (!do_d128_to_d64 (-1.1111111111111125dl, -1.111111111111113dd)) __builtin_abort ();
+                                                                  ^
+
+"./dfp/convert-dfp-round.c", line 93: error: extra text after expected end of number
+    if (!do_d128_to_d64 (-1.1111111111111135dl, -1.111111111111114dd)) __builtin_abort ();
+                                            ^
+
+"./dfp/convert-dfp-round.c", line 93: error: extra text after expected end of number
+    if (!do_d128_to_d64 (-1.1111111111111135dl, -1.111111111111114dd)) __builtin_abort ();
+                                                                  ^
+
+"./dfp/convert-dfp-round.c", line 96: error: extra text after expected end of number
+    if (!do_d64_to_d32 (1.1111125dd, 1.111112df)) __builtin_abort ();
+                                 ^
+
+"./dfp/convert-dfp-round.c", line 96: error: extra text after expected end of number
+    if (!do_d64_to_d32 (1.1111125dd, 1.111112df)) __builtin_abort ();
+                                             ^
+
+"./dfp/convert-dfp-round.c", line 97: error: extra text after expected end of number
+    if (!do_d64_to_d32 (1.1111135dd, 1.111113df)) __builtin_abort ();
+                                 ^
+
+"./dfp/convert-dfp-round.c", line 97: error: extra text after expected end of number
+    if (!do_d64_to_d32 (1.1111135dd, 1.111113df)) __builtin_abort ();
+                                             ^
+
+"./dfp/convert-dfp-round.c", line 98: error: extra text after expected end of number
+    if (!do_d64_to_d32 (-1.1111125dd, -1.111112df)) __builtin_abort ();
+                                  ^
+
+"./dfp/convert-dfp-round.c", line 98: error: extra text after expected end of number
+    if (!do_d64_to_d32 (-1.1111125dd, -1.111112df)) __builtin_abort ();
+                                               ^
+
+"./dfp/convert-dfp-round.c", line 99: error: extra text after expected end of number
+    if (!do_d64_to_d32 (-1.1111135dd, -1.111113df)) __builtin_abort ();
+                                  ^
+
+"./dfp/convert-dfp-round.c", line 99: error: extra text after expected end of number
+    if (!do_d64_to_d32 (-1.1111135dd, -1.111113df)) __builtin_abort ();
+                                               ^
+
+"./dfp/convert-dfp-round.c", line 100: error: extra text after expected end of number
+    if (!do_d128_to_d32 (1.1111125dl, 1.111112df)) __builtin_abort ();
+                                  ^
+
+"./dfp/convert-dfp-round.c", line 100: error: extra text after expected end of number
+    if (!do_d128_to_d32 (1.1111125dl, 1.111112df)) __builtin_abort ();
+                                              ^
+
+"./dfp/convert-dfp-round.c", line 101: error: extra text after expected end of number
+    if (!do_d128_to_d32 (1.1111135dl, 1.111113df)) __builtin_abort ();
+                                  ^
+
+"./dfp/convert-dfp-round.c", line 101: error: extra text after expected end of number
+    if (!do_d128_to_d32 (1.1111135dl, 1.111113df)) __builtin_abort ();
+                                              ^
+
+"./dfp/convert-dfp-round.c", line 102: error: extra text after expected end of number
+    if (!do_d128_to_d32 (-1.1111125dl, -1.111112df)) __builtin_abort ();
+                                   ^
+
+"./dfp/convert-dfp-round.c", line 102: error: extra text after expected end of number
+    if (!do_d128_to_d32 (-1.1111125dl, -1.111112df)) __builtin_abort ();
+                                                ^
+
+"./dfp/convert-dfp-round.c", line 103: error: extra text after expected end of number
+    if (!do_d128_to_d32 (-1.1111135dl, -1.111113df)) __builtin_abort ();
+                                   ^
+
+"./dfp/convert-dfp-round.c", line 103: error: extra text after expected end of number
+    if (!do_d128_to_d32 (-1.1111135dl, -1.111113df)) __builtin_abort ();
+                                                ^
+
+"./dfp/convert-dfp-round.c", line 104: error: extra text after expected end of number
+    if (!do_d128_to_d64 (1.1111111111111125dl, 1.111111111111112dd)) __builtin_abort ();
+                                           ^
+
+"./dfp/convert-dfp-round.c", line 104: error: extra text after expected end of number
+    if (!do_d128_to_d64 (1.1111111111111125dl, 1.111111111111112dd)) __builtin_abort ();
+                                                                ^
+
+"./dfp/convert-dfp-round.c", line 105: error: extra text after expected end of number
+    if (!do_d128_to_d64 (1.1111111111111135dl, 1.111111111111113dd)) __builtin_abort ();
+                                           ^
+
+"./dfp/convert-dfp-round.c", line 105: error: extra text after expected end of number
+    if (!do_d128_to_d64 (1.1111111111111135dl, 1.111111111111113dd)) __builtin_abort ();
+                                                                ^
+
+"./dfp/convert-dfp-round.c", line 106: error: extra text after expected end of number
+    if (!do_d128_to_d64 (-1.1111111111111125dl, -1.111111111111112dd)) __builtin_abort ();
+                                            ^
+
+"./dfp/convert-dfp-round.c", line 106: error: extra text after expected end of number
+    if (!do_d128_to_d64 (-1.1111111111111125dl, -1.111111111111112dd)) __builtin_abort ();
+                                                                  ^
+
+"./dfp/convert-dfp-round.c", line 107: error: extra text after expected end of number
+    if (!do_d128_to_d64 (-1.1111111111111135dl, -1.111111111111113dd)) __builtin_abort ();
+                                            ^
+
+"./dfp/convert-dfp-round.c", line 107: error: extra text after expected end of number
+    if (!do_d128_to_d64 (-1.1111111111111135dl, -1.111111111111113dd)) __builtin_abort ();
+                                                                  ^
+
+"./dfp/convert-dfp-round.c", line 110: error: extra text after expected end of number
+    if (!do_d64_to_d32 (1.1111125dd, 1.111113df)) __builtin_abort ();
+                                 ^
+
+"./dfp/convert-dfp-round.c", line 110: error: extra text after expected end of number
+    if (!do_d64_to_d32 (1.1111125dd, 1.111113df)) __builtin_abort ();
+                                             ^
+
+"./dfp/convert-dfp-round.c", line 111: error: extra text after expected end of number
+    if (!do_d64_to_d32 (1.1111135dd, 1.111114df)) __builtin_abort ();
+                                 ^
+
+"./dfp/convert-dfp-round.c", line 111: error: extra text after expected end of number
+    if (!do_d64_to_d32 (1.1111135dd, 1.111114df)) __builtin_abort ();
+                                             ^
+
+"./dfp/convert-dfp-round.c", line 112: error: extra text after expected end of number
+    if (!do_d64_to_d32 (-1.1111125dd, -1.111112df)) __builtin_abort ();
+                                  ^
+
+"./dfp/convert-dfp-round.c", line 112: error: extra text after expected end of number
+    if (!do_d64_to_d32 (-1.1111125dd, -1.111112df)) __builtin_abort ();
+                                               ^
+
+"./dfp/convert-dfp-round.c", line 113: error: extra text after expected end of number
+    if (!do_d64_to_d32 (-1.1111135dd, -1.111113df)) __builtin_abort ();
+                                  ^
+
+"./dfp/convert-dfp-round.c", line 113: error: extra text after expected end of number
+    if (!do_d64_to_d32 (-1.1111135dd, -1.111113df)) __builtin_abort ();
+                                               ^
+
+"./dfp/convert-dfp-round.c", line 114: error: extra text after expected end of number
+    if (!do_d128_to_d32 (1.1111125dl, 1.111113df)) __builtin_abort ();
+                                  ^
+
+"./dfp/convert-dfp-round.c", line 114: error: extra text after expected end of number
+    if (!do_d128_to_d32 (1.1111125dl, 1.111113df)) __builtin_abort ();
+                                              ^
+
+"./dfp/convert-dfp-round.c", line 115: error: extra text after expected end of number
+    if (!do_d128_to_d32 (1.1111135dl, 1.111114df)) __builtin_abort ();
+                                  ^
+
+"./dfp/convert-dfp-round.c", line 115: error: extra text after expected end of number
+    if (!do_d128_to_d32 (1.1111135dl, 1.111114df)) __builtin_abort ();
+                                              ^
+
+"./dfp/convert-dfp-round.c", line 116: error: extra text after expected end of number
+    if (!do_d128_to_d32 (-1.1111125dl, -1.111112df)) __builtin_abort ();
+                                   ^
+
+"./dfp/convert-dfp-round.c", line 116: error: extra text after expected end of number
+    if (!do_d128_to_d32 (-1.1111125dl, -1.111112df)) __builtin_abort ();
+                                                ^
+
+"./dfp/convert-dfp-round.c", line 117: error: extra text after expected end of number
+    if (!do_d128_to_d32 (-1.1111135dl, -1.111113df)) __builtin_abort ();
+                                   ^
+
+"./dfp/convert-dfp-round.c", line 117: error: extra text after expected end of number
+    if (!do_d128_to_d32 (-1.1111135dl, -1.111113df)) __builtin_abort ();
+                                                ^
+
+"./dfp/convert-dfp-round.c", line 118: error: extra text after expected end of number
+    if (!do_d128_to_d64 (1.1111111111111125dl, 1.111111111111113dd)) __builtin_abort ();
+                                           ^
+
+"./dfp/convert-dfp-round.c", line 118: error: extra text after expected end of number
+    if (!do_d128_to_d64 (1.1111111111111125dl, 1.111111111111113dd)) __builtin_abort ();
+                                                                ^
+
+"./dfp/convert-dfp-round.c", line 119: error: extra text after expected end of number
+    if (!do_d128_to_d64 (1.1111111111111135dl, 1.111111111111114dd)) __builtin_abort ();
+                                           ^
+
+"./dfp/convert-dfp-round.c", line 119: error: extra text after expected end of number
+    if (!do_d128_to_d64 (1.1111111111111135dl, 1.111111111111114dd)) __builtin_abort ();
+                                                                ^
+
+"./dfp/convert-dfp-round.c", line 120: error: extra text after expected end of number
+    if (!do_d128_to_d64 (-1.1111111111111125dl, -1.111111111111112dd)) __builtin_abort ();
+                                            ^
+
+"./dfp/convert-dfp-round.c", line 120: error: extra text after expected end of number
+    if (!do_d128_to_d64 (-1.1111111111111125dl, -1.111111111111112dd)) __builtin_abort ();
+                                                                  ^
+
+"./dfp/convert-dfp-round.c", line 121: error: extra text after expected end of number
+    if (!do_d128_to_d64 (-1.1111111111111135dl, -1.111111111111113dd)) __builtin_abort ();
+                                            ^
+
+"./dfp/convert-dfp-round.c", line 121: error: extra text after expected end of number
+    if (!do_d128_to_d64 (-1.1111111111111135dl, -1.111111111111113dd)) __builtin_abort ();
+                                                                  ^
+
+135 errors detected in the compilation of "Test_name.c".

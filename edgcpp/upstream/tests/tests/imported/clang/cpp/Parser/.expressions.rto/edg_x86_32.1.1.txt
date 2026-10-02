@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 11: error: this operator is not allowed at this point; parenthesize the preceding new-expression
+    int &a = new A->n; // expected-error {{expression cannot be followed by a postfix '->' operator; add parentheses}}
+                  ^
+
+"Test_name.c", line 14: warning: function "operator new(unsigned int, void *)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+    int n = new (0) (B) (int()) (int()); // expected-error {{cannot be followed by a postfix '(}} expected-error {{not a function or function pointer}}
+            ^
+
+"Test_name.c", line 14: error: this operator is not allowed at this point; parenthesize the preceding new-expression
+    int n = new (0) (B) (int()) (int()); // expected-error {{cannot be followed by a postfix '(}} expected-error {{not a function or function pointer}}
+                                ^
+
+"Test_name.c", line 14: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+    int n = new (0) (B) (int()) (int()); // expected-error {{cannot be followed by a postfix '(}} expected-error {{not a function or function pointer}}
+            ^
+
+"Test_name.c", line 23: error: expression must have pointer-to-class type but it has type "void *"
+      return &&label->n; // expected-error {{cannot be followed by a postfix}} expected-error {{not a structure or union}}
+             ^
+
+"Test_name.c", line 27: error: two consecutive left square brackets always introduce an attribute list but an attribute list cannot appear here
+    [[noreturn]] void g();
+    ^
+
+"Test_name.c", line 27: error: identifier "noreturn" is undefined
+    [[noreturn]] void g();
+      ^
+
+"Test_name.c", line 27: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+    [[noreturn]] void g();
+               ^
+
+"Test_name.c", line 27: error: expected a "{" introducing a lambda body
+    [[noreturn]] void g();
+               ^
+
+"Test_name.c", line 27: error: expected a ";"
+    [[noreturn]] void g();
+                 ^
+
+"Test_name.c", line 33: error: expression must have pointer-to-object type but it has type "std::nullptr_t"
+    int a = nullptr["foo"]; // expected-error {{array subscript is not an integer}}
+            ^
+
+"Test_name.c", line 33: error: expression must have integral or unscoped enum type
+    int a = nullptr["foo"]; // expected-error {{array subscript is not an integer}}
+                    ^
+
+"Test_name.c", line 35: error: expected an expression
+    int c = __builtin_available(*)["ny"];
+                                 ^
+
+"Test_name.c", line 35: error: identifier "__builtin_available" is undefined
+    int c = __builtin_available(*)["ny"];
+            ^
+
+"Test_name.c", line 39: error: identifier "__is_lvalue_expr" is undefined
+    static_assert(__is_lvalue_expr(a)["ny"] == 'y');
+                  ^
+
+13 errors detected in the compilation of "Test_name.c".

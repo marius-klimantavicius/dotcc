@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 --char8_t Test_name.c
+"./cpp0x/udlit-resolve-char8_t.C", line 15: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+  int operator ""_foo(const char*, std::size_t) { return 8; }
+      ^
+
+"./cpp0x/udlit-resolve-char8_t.C", line 16: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+  int operator ""_foo(const wchar_t*, std::size_t) { return 9; }
+      ^
+
+"./cpp0x/udlit-resolve-char8_t.C", line 17: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+  int operator ""_foo(const char8_t*, std::size_t) { return 10; }
+      ^
+
+"./cpp0x/udlit-resolve-char8_t.C", line 18: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+  int operator ""_foo(const char16_t*, std::size_t) { return 11; }
+      ^
+
+"./cpp0x/udlit-resolve-char8_t.C", line 19: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+  int operator ""_foo(const char32_t*, std::size_t) { return 12; }
+      ^
+
+"./cpp0x/udlit-resolve-char8_t.C", line 33: error: user-defined literal operator not found
+   "abc"_foo == 8
+   ^
+
+"./cpp0x/udlit-resolve-char8_t.C", line 34: error: user-defined literal operator not found
+   L"abc"_foo == 9
+   ^
+
+"./cpp0x/udlit-resolve-char8_t.C", line 35: error: user-defined literal operator not found
+   u8"abc"_foo == 10
+   ^
+
+"./cpp0x/udlit-resolve-char8_t.C", line 36: error: user-defined literal operator not found
+   u"abc"_foo == 11
+   ^
+
+"./cpp0x/udlit-resolve-char8_t.C", line 37: error: user-defined literal operator not found
+   U"abc"_foo == 12
+   ^
+
+10 errors detected in the compilation of "Test_name.c".

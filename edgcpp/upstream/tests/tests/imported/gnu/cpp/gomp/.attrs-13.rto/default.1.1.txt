@@ -1,0 +1,65 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 5: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive(error)]];			// { dg-error "'pragma omp error' encountered" }
+    ^
+
+"Test_name.c", line 6: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive(error, at(compilation))]];	// { dg-error "'pragma omp error' encountered" }
+    ^
+
+"Test_name.c", line 7: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive(error severity(fatal))]];	// { dg-error "'pragma omp error' encountered" }
+    ^
+
+"Test_name.c", line 8: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive(error, message("my msg"))]];	// { dg-error "'pragma omp error' encountered: my msg" }
+    ^
+
+"Test_name.c", line 9: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive(error severity(warning)message("another message")at(compilation))]];	// { dg-warning "'pragma omp error' encountered: another message" }
+    ^
+
+"Test_name.c", line 14: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive(error)]];			// { dg-error "'pragma omp error' encountered" }
+      ^
+
+"Test_name.c", line 15: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive(error, at(compilation))]];	// { dg-error "'pragma omp error' encountered" }
+      ^
+
+"Test_name.c", line 16: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive(error severity(fatal))]];	// { dg-error "'pragma omp error' encountered" }
+      ^
+
+"Test_name.c", line 17: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive(error, message("42 / 1"))]];	// { dg-error "'pragma omp error' encountered: 42 / 1" }
+      ^
+
+"Test_name.c", line 18: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive(error severity(warning) message("bar") at(compilation))]];	// { dg-warning "'pragma omp error' encountered: bar" }
+      ^
+
+"Test_name.c", line 20: warning: attribute namespace "omp" is unrecognized
+      [[omp::directive(error)]];			// { dg-error "'pragma omp error' encountered" }
+        ^
+
+"Test_name.c", line 25: warning: attribute namespace "omp" is unrecognized
+      [[omp::directive(error at(compilation))]];	// { dg-error "'pragma omp error' encountered" }
+        ^
+
+"Test_name.c", line 28: warning: attribute namespace "omp" is unrecognized
+      [[omp::directive(error, severity(fatal))]];	// { dg-error "'pragma omp error' encountered" }
+        ^
+
+"Test_name.c", line 30: warning: attribute namespace "omp" is unrecognized
+      [[omp::directive(error, message("42 - 1"))]];	// { dg-error "'pragma omp error' encountered: 42 - 1" }
+        ^
+
+"Test_name.c", line 33: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive(error, severity(warning) message("bar"), at(compilation))]];	// { dg-warning "'pragma omp error' encountered: bar" }
+      ^
+
+"Test_name.c", line 32: warning: label "lab" was declared but never referenced
+    lab:
+    ^
+

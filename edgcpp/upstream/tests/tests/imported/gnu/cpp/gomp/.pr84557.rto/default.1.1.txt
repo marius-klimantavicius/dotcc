@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 12: warning: unrecognized #pragma
+    #pragma omp parallel firstprivate (A)		// { dg-error "is not a variable in clause" }
+            ^
+
+"Test_name.c", line 14: warning: unrecognized #pragma
+    #pragma omp parallel firstprivate (B<0>)	// { dg-error "is not a variable in clause" }
+            ^
+

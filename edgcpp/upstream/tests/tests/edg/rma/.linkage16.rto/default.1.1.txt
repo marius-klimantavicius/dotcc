@@ -1,0 +1,14 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 10: error: variable "M::x" has already been initialized
+    extern "C" int x = 1;
+                   ^
+
+"Test_name.c", line 12: error: declaration is incompatible with previous "N::z" (declared at line 7)
+    extern "C" void z();
+                    ^
+
+"Test_name.c", line 14: error: variable "x" has already been initialized
+  extern "C" int x = 2;
+                 ^
+
+3 errors detected in the compilation of "Test_name.c".

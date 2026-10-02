@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 11: error: this declaration has no storage class or type specifier
+  x:a a2;				// { dg-error "nested-name-specifier" }
+  ^
+
+"Test_name.c", line 11: error: "x" has already been declared in the current scope
+  x:a a2;				// { dg-error "nested-name-specifier" }
+  ^
+
+"Test_name.c", line 11: error: expected a ";"
+  x:a a2;				// { dg-error "nested-name-specifier" }
+   ^
+
+"Test_name.c", line 12: error: identifier "a2" is undefined
+  x::a a3 = a2;
+            ^
+
+"Test_name.c", line 14: error: this declaration has no storage class or type specifier
+  x:a f (void)			// { dg-error "nested-name-specifier" }
+  ^
+
+"Test_name.c", line 14: error: variable "x" has already been defined (previous definition at line 11)
+  x:a f (void)			// { dg-error "nested-name-specifier" }
+  ^
+
+"Test_name.c", line 14: error: expected a ";"
+  x:a f (void)			// { dg-error "nested-name-specifier" }
+   ^
+
+"Test_name.c", line 33: warning: parsing restarts here after previous syntax error
+  };
+   ^
+
+7 errors detected in the compilation of "Test_name.c".

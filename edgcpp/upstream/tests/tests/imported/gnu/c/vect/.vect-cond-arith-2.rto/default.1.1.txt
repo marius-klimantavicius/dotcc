@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 7: warning: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+  double __GIMPLE (ssa, startwith("loop"))
+                   ^
+
+"Test_name.c", line 7: error: expected a ")"
+  double __GIMPLE (ssa, startwith("loop"))
+                                 ^
+
+"Test_name.c", line 8: error: expected a declaration
+  neg_xi (double *x)
+  ^
+
+"Test_name.c", line 30: warning: parsing restarts here after previous syntax error
+    neg_xi = -xi;
+                ^
+
+"Test_name.c", line 31: error: expected a declaration
+    res_2 = neg_xi + res_1;
+    ^
+
+"Test_name.c", line 32: error: expected a declaration
+    i_5 = i_4 + 1;
+    ^
+
+"Test_name.c", line 33: error: expected a declaration
+    ivtmp_7 = ivtmp_6 - 1U;
+    ^
+
+"Test_name.c", line 7: warning: standard requires that parameter "ssa" be given a type by a subsequent declaration ("int" assumed)
+  double __GIMPLE (ssa, startwith("loop"))
+                   ^
+
+"Test_name.c", line 7: warning: standard requires that parameter "startwith" be given a type by a subsequent declaration ("int" assumed)
+  double __GIMPLE (ssa, startwith("loop"))
+                        ^
+
+"Test_name.c", line 34: error: expected a "{"
+    if (ivtmp_7 != 0U)
+    ^
+
+"Test_name.c", line 45: warning: parsing restarts here after previous syntax error
+  }
+  ^
+
+"Test_name.c", line 45: warning: missing return statement at end of non-void function "__GIMPLE"
+  }
+  ^
+
+6 errors detected in the compilation of "Test_name.c".

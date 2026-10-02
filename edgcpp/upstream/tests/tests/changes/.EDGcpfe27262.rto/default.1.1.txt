@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gn 999999 Test_name.c
+"Test_name.c", line 12: warning: a function declarator with a trailing return type must be preceded by a simple "auto" type specifier
+  auto const g()->int;  // Ordinarily an error, but now accepted in GNU C++
+             ^
+

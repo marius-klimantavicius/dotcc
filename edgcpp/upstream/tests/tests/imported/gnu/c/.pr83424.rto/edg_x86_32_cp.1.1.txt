@@ -1,0 +1,22 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 9: error: expected a ";"
+  typedef unsigned __int128 u128;
+                            ^
+
+"Test_name.c", line 14: warning: explicit type is missing ("int" assumed)
+  static u128 __attribute__ ((noinline, noclone))
+         ^
+
+"Test_name.c", line 14: warning: attribute "noinline" does not apply here
+  static u128 __attribute__ ((noinline, noclone))
+                              ^
+
+"Test_name.c", line 15: error: expected a ";"
+  foo (u128 p)
+  ^
+
+"Test_name.c", line 14: warning: variable "u128" was declared but never referenced
+  static u128 __attribute__ ((noinline, noclone))
+         ^
+
+2 errors detected in the compilation of "Test_name.c".

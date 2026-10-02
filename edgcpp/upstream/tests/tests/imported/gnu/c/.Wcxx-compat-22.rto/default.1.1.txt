@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 7: warning: expected an identifier
+  struct C { struct D {}; int x; }; /* { dg-warning "empty struct has size 0 in C|declaration does not declare anything" } */
+                        ^
+
+"Test_name.c", line 8: warning: expected an identifier
+  struct E { union F {}; int x; }; /* { dg-warning "empty union has size 0 in C|declaration does not declare anything" } */
+                       ^
+
+"Test_name.c", line 9: warning: expected an identifier
+  union G { union H {}; int x; }; /* { dg-warning "empty union has size 0 in C|declaration does not declare anything" } */
+                      ^
+
+"Test_name.c", line 10: warning: expected an identifier
+  union I { struct J {}; int x; }; /* { dg-warning "empty struct has size 0 in C|declaration does not declare anything" } */
+                       ^
+

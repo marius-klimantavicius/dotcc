@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 13: warning: ignoring return value type with "nodiscard" attribute
+      enable_missile_safety_mode(); // expected-warning {{ignoring return value of type 'error_info' declared with 'nodiscard'}}
+                                ^
+

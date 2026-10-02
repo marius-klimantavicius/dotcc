@@ -1,0 +1,37 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 7: error: <typeinfo> must be included before typeid is used
+    (void)typeid(int);
+          ^
+
+"Test_name.c", line 27: error: incomplete type "X" is not allowed
+    (void)typeid(X); // expected-error{{'typeid' of incomplete type 'X'}}
+                 ^
+
+"Test_name.c", line 28: error: incomplete type "X" is not allowed
+    (void)typeid(X&); // expected-error{{'typeid' of incomplete type 'X'}}
+                 ^
+
+"Test_name.c", line 29: error: incomplete type "X" is not allowed
+    (void)typeid(x); // expected-error{{'typeid' of incomplete type 'X'}}
+                 ^
+
+"Test_name.c", line 34: error: a variable-length array type is not allowed
+    typeid(V);        // expected-error{{'typeid' of variably modified type 'char[i]'}}
+           ^
+
+"Test_name.c", line 35: error: a variable-length array type is not allowed
+    typeid(char [i]); // expected-error{{'typeid' of variably modified type 'char[i]'}}
+           ^
+
+"Test_name.c", line 39: error: expression must have a constant value
+  constexpr const char *name = typeid(int).name; // expected-error {{constant expression}}
+                               ^
+"Test_name.c", line 39: note: attempt to access run-time storage
+  constexpr const char *name = typeid(int).name; // expected-error {{constant expression}}
+                                          ^
+
+"Test_name.c", line 39: warning: variable "name" was declared but never referenced
+  constexpr const char *name = typeid(int).name; // expected-error {{constant expression}}
+                        ^
+
+7 errors detected in the compilation of "Test_name.c".

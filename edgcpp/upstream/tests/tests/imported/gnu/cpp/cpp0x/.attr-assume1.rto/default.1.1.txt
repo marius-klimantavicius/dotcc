@@ -1,0 +1,454 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 14: error: expected a "("
+    [[assume]];					// { dg-error "wrong number of arguments specified for 'assume' attribute" }
+            ^
+
+"Test_name.c", line 16: error: expected a ")"
+    [[assume (1, 2, 3)]];				// { dg-error "wrong number of arguments specified for 'assume' attribute" }
+               ^
+
+"Test_name.c", line 18: warning: attribute "assume" does not apply here
+    [[assume (true)]] int x1;			// { dg-error "'assume' attribute ignored" }
+      ^
+
+"Test_name.c", line 20: warning: attribute "assume" does not apply here
+    auto a = [] [[assume (true)]] () {};		// { dg-error "'assume' attribute ignored" }
+                  ^
+
+"Test_name.c", line 21: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+    auto b = [] constexpr [[assume (true)]] {};	// { dg-error "'assume' attribute ignored" }
+                ^
+
+"Test_name.c", line 21: error: constexpr lambdas are not enabled in this mode
+    auto b = [] constexpr [[assume (true)]] {};	// { dg-error "'assume' attribute ignored" }
+                ^
+
+"Test_name.c", line 21: warning: attribute "assume" does not apply here
+    auto b = [] constexpr [[assume (true)]] {};	// { dg-error "'assume' attribute ignored" }
+                            ^
+
+"Test_name.c", line 24: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+    auto c = [] noexcept [[assume (true)]] {};	// { dg-error "'assume' attribute ignored" }
+                ^
+
+"Test_name.c", line 24: warning: attribute "assume" does not apply here
+    auto c = [] noexcept [[assume (true)]] {};	// { dg-error "'assume' attribute ignored" }
+                           ^
+
+"Test_name.c", line 26: warning: attribute "assume" does not apply here
+    auto d = [] () [[assume (true)]] {};		// { dg-error "'assume' attribute ignored" }
+                     ^
+
+"Test_name.c", line 27: warning: attribute "assume" does not apply here
+    auto e = new int [n] [[assume (true)]];	// { dg-warning "attributes ignored on outermost array type in new expression" }
+                           ^
+
+"Test_name.c", line 28: warning: attribute "assume" does not apply here
+    auto e2 = new int [n] [[assume (true)]] [42];	// { dg-warning "attributes ignored on outermost array type in new expression" }
+                            ^
+
+"Test_name.c", line 29: warning: attribute "assume" does not apply here
+    auto f = new int [n][42] [[assume (true)]];	// { dg-error "'assume' attribute ignored" }
+                               ^
+
+"Test_name.c", line 31: warning: the "assume" attribute can only apply to a null statement
+    [[assume (true)]] {}				// { dg-warning "attributes at the beginning of statement are ignored" }
+                      ^
+
+"Test_name.c", line 32: warning: the "assume" attribute can only apply to a null statement
+    [[assume (true)]] if (true) {}		// { dg-warning "attributes at the beginning of statement are ignored" }
+    ^
+
+"Test_name.c", line 33: warning: the "assume" attribute can only apply to a null statement
+    [[assume (true)]] while (false) {}		// { dg-warning "attributes at the beginning of statement are ignored" }
+    ^
+
+"Test_name.c", line 34: warning: the "assume" attribute can only apply to a null statement
+    [[assume (true)]] goto lab;			// { dg-warning "attributes at the beginning of statement are ignored" }
+    ^
+
+"Test_name.c", line 35: warning: attribute "assume" does not apply here
+    [[assume (true)]] lab:;			// { dg-error "'assume' attribute ignored" }
+      ^
+
+"Test_name.c", line 36: warning: the "assume" attribute can only apply to a null statement
+    [[assume (true)]] try {} catch (int) {}	// { dg-warning "attributes at the beginning of statement are ignored" }
+    ^
+
+"Test_name.c", line 37: warning: attribute "assume" does not apply here
+    if ([[assume (true)]] int x = 0) {}		// { dg-error "'assume' attribute ignored" }
+          ^
+
+"Test_name.c", line 40: warning: the "assume" attribute can only apply to a null statement
+      [[assume (true)]] case 1:			// { dg-error "'assume' attribute ignored" }
+                        ^
+
+"Test_name.c", line 41: warning: the "assume" attribute can only apply to a null statement
+      [[assume (true)]] break;			// { dg-warning "attributes at the beginning of statement are ignored" }
+                        ^
+
+"Test_name.c", line 42: warning: the "assume" attribute can only apply to a null statement
+      [[assume (true)]] default:			// { dg-error "'assume' attribute ignored" }
+                        ^
+
+"Test_name.c", line 45: warning: attribute "assume" does not apply here
+    for ([[assume (true)]] auto a : arr) {}	// { dg-error "'assume' attribute ignored" }
+           ^
+
+"Test_name.c", line 46: warning: structured bindings are a C++17 feature
+    for ([[assume (true)]] auto [a, b] : arr2) {}	// { dg-error "'assume' attribute ignored" }
+                                ^
+
+"Test_name.c", line 46: warning: attribute "assume" does not apply here
+    for ([[assume (true)]] auto [a, b] : arr2) {}	// { dg-error "'assume' attribute ignored" }
+           ^
+
+"Test_name.c", line 46: warning: structured binding "a" was declared but never referenced
+    for ([[assume (true)]] auto [a, b] : arr2) {}	// { dg-error "'assume' attribute ignored" }
+                                 ^
+
+"Test_name.c", line 48: warning: attribute "assume" does not apply here
+    [[assume (true)]] asm ("");			// { dg-warning "attributes ignored on 'asm' declaration" }
+      ^
+
+"Test_name.c", line 49: warning: attribute "assume" does not apply here
+    try {} catch ([[assume (true)]] int x) {}	// { dg-error "'assume' attribute ignored" }
+                    ^
+
+"Test_name.c", line 50: warning: attribute "assume" does not apply here
+    try {} catch ([[assume (true)]] int) {}	// { dg-error "'assume' attribute ignored" }
+                    ^
+
+"Test_name.c", line 51: warning: attributes may not appear here
+    try {} catch (int [[assume (true)]] x) {}	// { dg-warning "attribute ignored" }
+                        ^
+
+"Test_name.c", line 52: warning: attributes may not appear here
+    try {} catch (int [[assume (true)]]) {}	// { dg-warning "attribute ignored" }
+                        ^
+
+"Test_name.c", line 53: warning: attribute "assume" does not apply here
+    try {} catch (int x [[assume (true)]]) {}	// { dg-error "'assume' attribute ignored" }
+                          ^
+
+"Test_name.c", line 18: warning: variable "x1" was declared but never referenced
+    [[assume (true)]] int x1;			// { dg-error "'assume' attribute ignored" }
+                          ^
+
+"Test_name.c", line 20: warning: variable "a" was declared but never referenced
+    auto a = [] [[assume (true)]] () {};		// { dg-error "'assume' attribute ignored" }
+         ^
+
+"Test_name.c", line 21: warning: variable "b" was declared but never referenced
+    auto b = [] constexpr [[assume (true)]] {};	// { dg-error "'assume' attribute ignored" }
+         ^
+
+"Test_name.c", line 24: warning: variable "c" was declared but never referenced
+    auto c = [] noexcept [[assume (true)]] {};	// { dg-error "'assume' attribute ignored" }
+         ^
+
+"Test_name.c", line 26: warning: variable "d" was declared but never referenced
+    auto d = [] () [[assume (true)]] {};		// { dg-error "'assume' attribute ignored" }
+         ^
+
+"Test_name.c", line 56: warning: attribute "assume" does not apply here
+  [[assume (true)]] int bar ();			// { dg-error "'assume' attribute ignored" }
+    ^
+
+"Test_name.c", line 57: warning: attribute "assume" does not apply here
+  using foobar [[assume (true)]] = int;		// { dg-error "'assume' attribute ignored" }
+                 ^
+
+"Test_name.c", line 58: warning: attribute "assume" does not apply here
+  [[assume (true)]] int a;			// { dg-error "'assume' attribute ignored" }
+    ^
+
+"Test_name.c", line 59: warning: structured bindings are a C++17 feature
+  [[assume (true)]] auto [b, c] = arr;		// { dg-error "'assume' attribute ignored" }
+                         ^
+
+"Test_name.c", line 59: warning: attribute "assume" does not apply here
+  [[assume (true)]] auto [b, c] = arr;		// { dg-error "'assume' attribute ignored" }
+    ^
+
+"Test_name.c", line 61: error: attribute "assume" does not apply here
+  [[assume (true)]];				// { dg-warning "attribute ignored" }
+    ^
+
+"Test_name.c", line 62: error: attribute does not apply to any entity
+  inline [[assume (true)]] void baz () {}		// { dg-warning "attribute ignored" }
+         ^
+
+"Test_name.c", line 64: error: attribute does not apply to any entity
+  constexpr [[assume (true)]] int qux () { return 0; }	// { dg-warning "attribute ignored" }
+            ^
+
+"Test_name.c", line 66: warning: attribute "assume" does not apply here
+  int [[assume (true)]] d;			// { dg-warning "attribute ignored" }
+        ^
+
+"Test_name.c", line 67: warning: attribute "assume" does not apply here
+  int const [[assume (true)]] e = 1;		// { dg-warning "attribute ignored" }
+              ^
+
+"Test_name.c", line 68: warning: attribute "assume" does not apply here
+  struct A {} [[assume (true)]];			// { dg-warning "attribute ignored in declaration of 'struct A'" }
+                ^
+
+"Test_name.c", line 69: warning: attribute "assume" does not apply here
+  struct A [[assume (true)]];			// { dg-warning "attribute ignored" }
+             ^
+
+"Test_name.c", line 69: warning: declaration does not declare anything
+  struct A [[assume (true)]];			// { dg-warning "attribute ignored" }
+  ^
+
+"Test_name.c", line 70: warning: attribute "assume" does not apply here
+  struct A [[assume (true)]] a1;			// { dg-warning "attribute ignored" }
+             ^
+
+"Test_name.c", line 71: warning: attribute "assume" does not apply here
+  A [[assume (true)]] a2;				// { dg-warning "attribute ignored" }
+      ^
+
+"Test_name.c", line 72: warning: attribute "assume" does not apply here
+  enum B { B0 } [[assume (true)]];		// { dg-warning "attribute ignored in declaration of 'enum B'" }
+                  ^
+
+"Test_name.c", line 73: warning: attribute "assume" does not apply here
+  enum B [[assume (true)]];			// { dg-warning "attribute ignored" }
+           ^
+
+"Test_name.c", line 73: warning: declaration does not declare anything
+  enum B [[assume (true)]];			// { dg-warning "attribute ignored" }
+  ^
+
+"Test_name.c", line 74: warning: attribute "assume" does not apply here
+  enum B [[assume (true)]] b1;			// { dg-warning "attribute ignored" }
+           ^
+
+"Test_name.c", line 75: warning: attribute "assume" does not apply here
+  B [[assume (true)]] b2;				// { dg-warning "attribute ignored" }
+      ^
+
+"Test_name.c", line 76: warning: attribute "assume" does not apply here
+  struct [[assume (true)]] C {};			// { dg-error "'assume' attribute ignored" }
+           ^
+
+"Test_name.c", line 77: warning: attribute "assume" does not apply here
+  int f [[assume (true)]];			// { dg-error "'assume' attribute ignored" }
+          ^
+
+"Test_name.c", line 78: warning: attribute "assume" does not apply here
+  int g[2] [[assume (true)]];			// { dg-error "'assume' attribute ignored" }
+             ^
+
+"Test_name.c", line 79: warning: attribute "assume" does not apply here
+  int g2 [[assume (true)]] [2];			// { dg-error "'assume' attribute ignored" }
+           ^
+
+"Test_name.c", line 80: warning: attribute "assume" does not apply here
+  int corge () [[assume (true)]];			// { dg-error "'assume' attribute ignored" }
+                 ^
+
+"Test_name.c", line 81: warning: attribute "assume" does not apply here
+  int *[[assume (true)]] h;			// { dg-error "'assume' attribute ignored" }
+         ^
+
+"Test_name.c", line 82: warning: attribute "assume" does not apply here
+  int & [[assume (true)]] i = f;			// { dg-error "'assume' attribute ignored" }
+          ^
+
+"Test_name.c", line 83: warning: attribute "assume" does not apply here
+  int && [[assume (true)]] j = 0;			// { dg-error "'assume' attribute ignored" }
+           ^
+
+"Test_name.c", line 84: warning: attribute "assume" does not apply here
+  int S::* [[assume (true)]] k;			// { dg-error "'assume' attribute ignored" }
+             ^
+
+"Test_name.c", line 85: warning: attribute "assume" does not apply here
+  auto l = sizeof (int [2] [[assume (true)]]);	// { dg-error "'assume' attribute ignored" }
+                             ^
+
+"Test_name.c", line 86: warning: attribute "assume" does not apply here
+  int freddy ([[assume (true)]] int a,		// { dg-error "'assume' attribute ignored" }
+                ^
+
+"Test_name.c", line 87: warning: attribute "assume" does not apply here
+  	    [[assume (true)]] int,		// { dg-error "'assume' attribute ignored" }
+  	      ^
+
+"Test_name.c", line 88: warning: attribute "assume" does not apply here
+  	    [[assume (true)]] int c = 0,	// { dg-error "'assume' attribute ignored" }
+  	      ^
+
+"Test_name.c", line 89: warning: attribute "assume" does not apply here
+  	    [[assume (true)]] int = 0);		// { dg-error "'assume' attribute ignored" }
+  	      ^
+
+"Test_name.c", line 91: warning: attribute "assume" does not apply here
+  corge ([[assume (true)]] int a,			// { dg-error "'assume' attribute ignored" }
+           ^
+
+"Test_name.c", line 92: warning: attribute "assume" does not apply here
+         [[assume (true)]] int,			// { dg-error "'assume' attribute ignored" }
+           ^
+
+"Test_name.c", line 93: warning: attribute "assume" does not apply here
+         [[assume (true)]] int c = 0,		// { dg-error "'assume' attribute ignored" }
+           ^
+
+"Test_name.c", line 94: warning: attribute "assume" does not apply here
+         [[assume (true)]] int = 0)		// { dg-error "'assume' attribute ignored" }
+           ^
+
+"Test_name.c", line 97: warning: attribute "assume" does not apply here
+  [[assume (true)]] void
+    ^
+
+"Test_name.c", line 101: warning: attribute "assume" does not apply here
+  int grault (int [[assume (true)]] a,		// { dg-warning "attribute ignored" }
+                    ^
+
+"Test_name.c", line 102: warning: attribute "assume" does not apply here
+  	    int [[assume (true)]],		// { dg-warning "attribute ignored" }
+  	          ^
+
+"Test_name.c", line 103: warning: attribute "assume" does not apply here
+  	    int [[assume (true)]] c = 0,	// { dg-warning "attribute ignored" }
+  	          ^
+
+"Test_name.c", line 104: warning: attribute "assume" does not apply here
+  	    int [[assume (true)]] = 0);		// { dg-warning "attribute ignored" }
+  	          ^
+
+"Test_name.c", line 106: warning: attribute "assume" does not apply here
+  waldo (int [[assume (true)]] a,			// { dg-warning "attribute ignored" }
+               ^
+
+"Test_name.c", line 107: warning: attribute "assume" does not apply here
+         int [[assume (true)]],			// { dg-warning "attribute ignored" }
+               ^
+
+"Test_name.c", line 108: warning: attribute "assume" does not apply here
+         int [[assume (true)]] c = 0,		// { dg-warning "attribute ignored" }
+               ^
+
+"Test_name.c", line 109: warning: attribute "assume" does not apply here
+         int [[assume (true)]] = 0)		// { dg-warning "attribute ignored" }
+               ^
+
+"Test_name.c", line 112: warning: attribute "assume" does not apply here
+  int plugh (int a [[assume (true)]],		// { dg-error "'assume' attribute ignored" }
+                     ^
+
+"Test_name.c", line 113: warning: attribute "assume" does not apply here
+  	    int b [[assume (true)]] = 0);	// { dg-error "'assume' attribute ignored" }
+  	            ^
+
+"Test_name.c", line 115: warning: attribute "assume" does not apply here
+  thud (int a [[assume (true)]],			// { dg-error "'assume' attribute ignored" }
+                ^
+
+"Test_name.c", line 116: warning: attribute "assume" does not apply here
+        int b [[assume (true)]] = 0)		// { dg-error "'assume' attribute ignored" }
+                ^
+
+"Test_name.c", line 119: warning: attribute "assume" does not apply here
+  enum [[assume (true)]] D { D0 };		// { dg-error "'assume' attribute ignored" }
+         ^
+
+"Test_name.c", line 120: warning: attribute "assume" does not apply here
+  enum class [[assume (true)]] E { E0 };		// { dg-error "'assume' attribute ignored" }
+               ^
+
+"Test_name.c", line 122: warning: attribute "assume" does not apply here
+  enum [[assume (true)]] F;			// { dg-warning "type attributes ignored after type is already defined" }
+         ^
+
+"Test_name.c", line 124: warning: attribute "assume" does not apply here
+    G0 [[assume (true)]],				// { dg-error "'assume' attribute ignored" }
+         ^
+
+"Test_name.c", line 125: warning: attribute "assume" does not apply here
+    G1 [[assume (true)]] = 2			// { dg-error "'assume' attribute ignored" }
+         ^
+
+"Test_name.c", line 127: warning: attribute "assume" does not apply here
+  namespace [[assume (true)]] H { using H0 = int; }	// { dg-warning "'assume' attribute directive ignored" } */
+              ^
+
+"Test_name.c", line 128: warning: attribute "assume" does not apply here
+  namespace [[assume (true)]] {}			// { dg-warning "'assume' attribute directive ignored" }
+              ^
+
+"Test_name.c", line 129: error: attributes are not allowed here
+  [[assume (true)]] using namespace H;		// { dg-warning "'assume' attribute directive ignored" }
+  ^
+
+"Test_name.c", line 130: warning: attribute "assume" does not apply here
+  struct [[assume (true)]] I			// { dg-error "'assume' attribute ignored" }
+           ^
+
+"Test_name.c", line 132: warning: attributes ignored here because they do not apply to a declared entity
+    [[assume (true)]];				// { dg-error "declaration does not declare anything" }
+      ^
+
+"Test_name.c", line 133: warning: attribute "assume" does not apply here
+    [[assume (true)]] int i;			// { dg-error "'assume' attribute ignored" }
+      ^
+
+"Test_name.c", line 134: warning: attribute "assume" does not apply here
+    [[assume (true)]] int foo ();			// { dg-error "'assume' attribute ignored" }
+      ^
+
+"Test_name.c", line 135: warning: attribute "assume" does not apply here
+    [[assume (true)]] int bar () { return 1; }	// { dg-error "'assume' attribute ignored" }
+      ^
+
+"Test_name.c", line 136: warning: attribute "assume" does not apply here
+    [[assume (true)]] int : 0;			// { dg-error "'assume' attribute ignored" }
+      ^
+
+"Test_name.c", line 137: warning: attribute "assume" does not apply here
+    [[assume (true)]] int i2 : 5;			// { dg-error "'assume' attribute ignored" }
+      ^
+
+"Test_name.c", line 138: warning: attribute "assume" does not apply here
+    [[assume (true)]] static int i3;		// { dg-error "'assume' attribute ignored" }
+      ^
+
+"Test_name.c", line 141: warning: attribute "assume" does not apply here
+  [[assume (true)]] int I::i4 = 0;		// { dg-error "'assume' attribute ignored" }
+    ^
+
+"Test_name.c", line 142: warning: attribute "assume" does not apply here
+  struct J : [[assume (true)]] C {};		// { dg-warning "attributes on base specifiers are ignored" }
+               ^
+
+"Test_name.c", line 147: warning: attribute "assume" does not apply here
+  typedef int L [[assume (true)]];		// { dg-error "'assume' attribute ignored" }
+                  ^
+
+"Test_name.c", line 151: warning: attribute "assume" does not apply here
+  struct [[assume (true)]] M<int> { int m; };	// { dg-error "'assume' attribute ignored" }
+           ^
+
+"Test_name.c", line 152: warning: attribute "assume" does not apply here
+  typedef int N[2] [[assume (true)]];		// { dg-error "'assume' attribute ignored" }
+                     ^
+
+"Test_name.c", line 153: warning: attribute "assume" does not apply here
+  typedef int O [[assume (true)]] [2];		// { dg-error "'assume' attribute ignored" }
+                  ^
+
+"Test_name.c", line 59: warning: structured binding "b" was declared but never referenced
+  [[assume (true)]] auto [b, c] = arr;		// { dg-error "'assume' attribute ignored" }
+                          ^
+
+"Test_name.c", line 67: warning: variable "e" was declared but never referenced
+  int const [[assume (true)]] e = 1;		// { dg-warning "attribute ignored" }
+                              ^
+
+7 errors detected in the compilation of "Test_name.c".

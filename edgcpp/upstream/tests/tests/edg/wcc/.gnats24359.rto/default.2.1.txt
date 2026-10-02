@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=2 -W --microsoft --microsoft_version=1927 -c Test_name.c
+"Test_name.c", line 6: error: unknown attribute "msvc::noop_dtor"
+    [[msvc::noop_dtor]] ~C() {;}
+      ^
+
+1 error detected in the compilation of "Test_name.c".

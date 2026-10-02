@@ -1,0 +1,114 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 11: error: call to consteval function "bar" did not produce a valid constant expression
+    return b ? bar (3) : 2; // { dg-message "in .constexpr. expansion" }
+                   ^
+"Test_name.c", line 6: note: expression cannot be interpreted
+  consteval int bar (int i) { if (i != 1) throw 1; return 0; }	// { dg-error "is not a constant expression" }
+                                          ^
+
+"Test_name.c", line 17: error: expression must have a constant value
+  __extension__ constexpr int g1 = false ?: bar (2); // { dg-message "in .constexpr. expansion" }
+                                   ^
+"Test_name.c", line 6: note: expression cannot be interpreted
+  consteval int bar (int i) { if (i != 1) throw 1; return 0; }	// { dg-error "is not a constant expression" }
+                                          ^
+
+"Test_name.c", line 18: error: expression must have a constant value
+  __extension__ constexpr int g2 = false ?: (1 + bar (2)); // { dg-message "in .constexpr. expansion" }
+                                   ^
+"Test_name.c", line 6: note: expression cannot be interpreted
+  consteval int bar (int i) { if (i != 1) throw 1; return 0; }	// { dg-error "is not a constant expression" }
+                                          ^
+
+"Test_name.c", line 21: error: expression must have a constant value
+  constexpr int g5 = bar (2) ? 1 : 2; // { dg-message "in .constexpr. expansion" }
+                     ^
+"Test_name.c", line 6: note: expression cannot be interpreted
+  consteval int bar (int i) { if (i != 1) throw 1; return 0; }	// { dg-error "is not a constant expression" }
+                                          ^
+
+"Test_name.c", line 22: error: expression must have a constant value
+  constexpr int g6 = bar (2) - 1 ? 1 : 2; // { dg-message "in .constexpr. expansion" }
+                     ^
+"Test_name.c", line 6: note: expression cannot be interpreted
+  consteval int bar (int i) { if (i != 1) throw 1; return 0; }	// { dg-error "is not a constant expression" }
+                                          ^
+
+"Test_name.c", line 27: error: call to consteval function "bar" did not produce a valid constant expression
+    __extension__ int a1[bar(3)]; // { dg-message "in .constexpr. expansion" }
+                            ^
+"Test_name.c", line 6: note: expression cannot be interpreted
+  consteval int bar (int i) { if (i != 1) throw 1; return 0; }	// { dg-error "is not a constant expression" }
+                                          ^
+
+"Test_name.c", line 31: error: call to consteval function "bar" did not produce a valid constant expression
+    int a3 = false ? (1 + bar (8)) : 1; // { dg-message "in .constexpr. expansion" }
+                              ^
+"Test_name.c", line 6: note: expression cannot be interpreted
+  consteval int bar (int i) { if (i != 1) throw 1; return 0; }	// { dg-error "is not a constant expression" }
+                                          ^
+
+"Test_name.c", line 33: error: call to consteval function "bar" did not produce a valid constant expression
+    a3 += false ? (1 + bar (8)) : 1; // { dg-message "in .constexpr. expansion" }
+                           ^
+"Test_name.c", line 6: note: expression cannot be interpreted
+  consteval int bar (int i) { if (i != 1) throw 1; return 0; }	// { dg-error "is not a constant expression" }
+                                          ^
+
+"Test_name.c", line 36: error: call to consteval function "bar" did not produce a valid constant expression
+    __extension__ int a4 = false ?: (1 + bar (8)); // { dg-message "in .constexpr. expansion" }
+                                             ^
+"Test_name.c", line 6: note: expression cannot be interpreted
+  consteval int bar (int i) { if (i != 1) throw 1; return 0; }	// { dg-error "is not a constant expression" }
+                                          ^
+
+"Test_name.c", line 38: error: call to consteval function "bar" did not produce a valid constant expression
+    __extension__ int a5 = true ?: (1 + bar (8)); // { dg-message "in .constexpr. expansion" }
+                                            ^
+"Test_name.c", line 6: note: expression cannot be interpreted
+  consteval int bar (int i) { if (i != 1) throw 1; return 0; }	// { dg-error "is not a constant expression" }
+                                          ^
+
+"Test_name.c", line 40: error: call to consteval function "bar" did not produce a valid constant expression
+    int a6 = bar (2) ? 1 : 2; // { dg-message "in .constexpr. expansion" }
+                 ^
+"Test_name.c", line 6: note: expression cannot be interpreted
+  consteval int bar (int i) { if (i != 1) throw 1; return 0; }	// { dg-error "is not a constant expression" }
+                                          ^
+
+"Test_name.c", line 42: error: call to consteval function "bar" did not produce a valid constant expression
+    int a7 = bar (2) - 1 ? 1 : 2; // { dg-message "in .constexpr. expansion" }
+                 ^
+"Test_name.c", line 6: note: expression cannot be interpreted
+  consteval int bar (int i) { if (i != 1) throw 1; return 0; }	// { dg-error "is not a constant expression" }
+                                          ^
+
+"Test_name.c", line 29: warning: variable "a2" was declared but never referenced
+    int a2[sizeof (bar(3))];
+        ^
+
+"Test_name.c", line 17: warning: variable "g1" was declared but never referenced
+  __extension__ constexpr int g1 = false ?: bar (2); // { dg-message "in .constexpr. expansion" }
+                              ^
+
+"Test_name.c", line 18: warning: variable "g2" was declared but never referenced
+  __extension__ constexpr int g2 = false ?: (1 + bar (2)); // { dg-message "in .constexpr. expansion" }
+                              ^
+
+"Test_name.c", line 19: warning: variable "g3" was declared but never referenced
+  __extension__ constexpr int g3 = true ?: bar (2);
+                              ^
+
+"Test_name.c", line 20: warning: variable "g4" was declared but never referenced
+  __extension__ constexpr int g4 = true ?: (1 + bar (2));
+                              ^
+
+"Test_name.c", line 21: warning: variable "g5" was declared but never referenced
+  constexpr int g5 = bar (2) ? 1 : 2; // { dg-message "in .constexpr. expansion" }
+                ^
+
+"Test_name.c", line 22: warning: variable "g6" was declared but never referenced
+  constexpr int g6 = bar (2) - 1 ? 1 : 2; // { dg-message "in .constexpr. expansion" }
+                ^
+
+12 errors detected in the compilation of "Test_name.c".

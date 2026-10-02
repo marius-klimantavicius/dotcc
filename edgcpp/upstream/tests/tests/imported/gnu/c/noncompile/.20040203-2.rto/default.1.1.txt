@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 9: error: expression must have arithmetic or pointer type
+  int bug_if(union a a) { if (a) return 1; else return 0; }  /* { dg-error "union type" } */
+                              ^
+
+"Test_name.c", line 10: error: expression must have arithmetic or pointer type
+  int bug_while(union a a) { while (a); }  /* { dg-error "union type" } */
+                                    ^
+
+"Test_name.c", line 10: warning: missing return statement at end of non-void function "bug_while"
+  int bug_while(union a a) { while (a); }  /* { dg-error "union type" } */
+                                        ^
+
+"Test_name.c", line 11: error: expression must have arithmetic or pointer type
+  int bug_do_while(union a a) { do ; while (a); }  /* { dg-error "union type" } */
+                                            ^
+
+"Test_name.c", line 11: warning: missing return statement at end of non-void function "bug_do_while"
+  int bug_do_while(union a a) { do ; while (a); }  /* { dg-error "union type" } */
+                                                ^
+
+"Test_name.c", line 12: error: expression must have arithmetic or pointer type
+  int bug_for(union a a) { for ( ; a; ) ; }  /* { dg-error "union type" } */
+                                   ^
+
+"Test_name.c", line 12: warning: missing return statement at end of non-void function "bug_for"
+  int bug_for(union a a) { for ( ; a; ) ; }  /* { dg-error "union type" } */
+                                          ^
+
+"Test_name.c", line 13: error: expression must have arithmetic or pointer type
+  int bug_or(union a a) { return (a || 1); }  /* { dg-error "union type" } */
+                                  ^
+
+"Test_name.c", line 14: error: expression must have arithmetic or pointer type
+  int bug_and(union a a) { return (a && 1); }  /* { dg-error "union type" } */
+                                   ^
+
+"Test_name.c", line 15: error: expression must have arithmetic or pointer type
+  int bug_cond(union a a) { return (a ? 1 : 0); }  /* { dg-error "union type" } */
+                                    ^
+
+"Test_name.c", line 16: error: expression must have arithmetic or pointer type
+  int bug_cond2(union a a) { return (a ? : 0); }  /* { dg-error "union type" } */
+                                     ^
+
+"Test_name.c", line 16: error: operand types are incompatible ("union a" and "int")
+  int bug_cond2(union a a) { return (a ? : 0); }  /* { dg-error "union type" } */
+                                         ^
+
+"Test_name.c", line 17: error: invalid type conversion
+  int bug_bool(union a a) { return (_Bool) a; }  /* { dg-error "union type" } */
+                                   ^
+
+10 errors detected in the compilation of "Test_name.c".

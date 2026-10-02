@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: error: declaration is incompatible with template parameter "Args" (declared at line 5)
+  template<typename Fun, typename Arg0> // { dg-message "note: redeclared here" }
+                                  ^
+
+"Test_name.c", line 25: error: declaration is incompatible with constant "int N" (declared at line 22)
+  template<typename Fun, int N> // { dg-message "note: redeclared here" }
+                             ^
+
+"Test_name.c", line 41: error: declaration is incompatible with template template parameter "TT" (declared at line 38)
+  template<typename Fun, template<typename> class TT> // { dg-message "note: redeclared here" }
+                                                  ^
+
+3 errors detected in the compilation of "Test_name.c".

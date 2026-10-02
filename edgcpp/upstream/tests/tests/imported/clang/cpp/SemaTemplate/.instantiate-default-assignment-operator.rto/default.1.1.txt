@@ -1,0 +1,20 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 6: warning: missing return statement at end of non-void function "RefPtr<T>::operator=(const RefPtr<T> &)"
+    RefPtr& operator=(const RefPtr&) { int a[sizeof(T) ? -1 : -1];} // expected-error 2 {{array with a negative size}}
+                                                                  ^
+
+"Test_name.c", line 6: warning: variable "a" was declared but never referenced
+    RefPtr& operator=(const RefPtr&) { int a[sizeof(T) ? -1 : -1];} // expected-error 2 {{array with a negative size}}
+                                           ^
+
+"Test_name.c", line 6: error: the size of an array must be greater than zero
+    RefPtr& operator=(const RefPtr&) { int a[sizeof(T) ? -1 : -1];} // expected-error 2 {{array with a negative size}}
+                                             ^
+          detected during instantiation of "RefPtr<T> &RefPtr<T>::operator=(const RefPtr<T> &) [with T=int]" at line 10
+
+"Test_name.c", line 6: error: the size of an array must be greater than zero
+    RefPtr& operator=(const RefPtr&) { int a[sizeof(T) ? -1 : -1];} // expected-error 2 {{array with a negative size}}
+                                             ^
+          detected during instantiation of "RefPtr<T> &RefPtr<T>::operator=(const RefPtr<T> &) [with T=float]" at line 11
+
+2 errors detected in the compilation of "Test_name.c".

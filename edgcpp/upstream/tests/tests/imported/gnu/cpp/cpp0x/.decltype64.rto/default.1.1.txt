@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 17: error: too many recursive substitutions of function template signatures
+    -> decltype(recursive_impl(index<N - 1>()))  // { dg-error "depth" }
+                ^
+          detected during:
+            instantiation of "recursive_impl" at line 31
+            instantiation of "recursive_impl" at line 31
+            instantiation of "recursive_impl" at line 31
+            instantiation of "recursive_impl" at line 31
+            instantiation of "recursive_impl" at line 31
+            [ 24 instantiation contexts not shown ]
+            instantiation of "recursive_impl" at line 31
+            instantiation of "recursive_impl" at line 31
+            instantiation of "recursive_impl" at line 31
+            instantiation of "recursive_impl" at line 31
+            instantiation of "recursive" at line 31
+
+"Test_name.c", line 31: error: no instance of function template "recursive" matches the argument list
+    recursive<1>();   // { dg-message "from here" }
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

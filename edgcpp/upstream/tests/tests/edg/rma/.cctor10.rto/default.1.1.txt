@@ -1,0 +1,18 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 4: error: copy constructor for class "A" may not have a parameter of type "A"
+  class A { A(A); };                    // Error
+              ^
+
+"Test_name.c", line 6: error: copy constructor for class "C" may not have a parameter of type "C"
+  class C { C(C,int=0); };              // Error
+              ^
+
+"Test_name.c", line 9: error: copy constructor for class "F" may not have a parameter of type "F"
+  class F { F(F&,F=0); };               // Error
+                 ^
+
+"Test_name.c", line 10: error: copy constructor for class "G" may not have a parameter of type "G"
+  class G { G(G&,int=0,G=0); };         // Error
+                       ^
+
+4 errors detected in the compilation of "Test_name.c".

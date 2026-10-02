@@ -1,0 +1,102 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 13: error: identifier "unknown" is undefined
+    unknown *p = 0; // expected-error {{unknown type name 'unknown'}}
+    ^
+
+"Test_name.c", line 13: error: identifier "p" is undefined
+    unknown *p = 0; // expected-error {{unknown type name 'unknown'}}
+             ^
+
+"Test_name.c", line 11: warning: variable "ptr" was declared but never referenced
+    void (*ptr)(int, int) = &X::f<int, int>;
+           ^
+
+"Test_name.c", line 17: error: expected a ")"
+  auto (*p)() -> int(nullptr);
+                     ^
+
+"Test_name.c", line 18: error: identifier "unknown" is undefined
+  auto (*q)() -> int(*)(unknown); // expected-error {{unknown type name 'unknown'}}
+                        ^
+
+"Test_name.c", line 19: error: identifier "unknown" is undefined
+  auto (*r)() -> int(*)(unknown + 1); // expected-error {{undeclared identifier 'unknown'}}
+                        ^
+
+"Test_name.c", line 19: error: expected a ")"
+  auto (*r)() -> int(*)(unknown + 1); // expected-error {{undeclared identifier 'unknown'}}
+                                ^
+
+"Test_name.c", line 21: error: declaration is incompatible with "void f()" (declared at line 10)
+  int f(unknown const x); // expected-error {{unknown type name 'unknown'}}
+      ^
+
+"Test_name.c", line 21: error: identifier "unknown" is undefined
+  int f(unknown const x); // expected-error {{unknown type name 'unknown'}}
+        ^
+
+"Test_name.c", line 21: error: expected a ")"
+  int f(unknown const x); // expected-error {{unknown type name 'unknown'}}
+                ^
+
+"Test_name.c", line 29: warning: expression has no effect
+    int(x[1,1]); // expected-warning {{left operand of comma operator has no effect}} expected-warning {{unused}}
+          ^
+
+"Test_name.c", line 29: error: "x" has already been declared in the current scope
+    int(x[1,1]); // expected-warning {{left operand of comma operator has no effect}} expected-warning {{unused}}
+        ^
+
+"Test_name.c", line 33: error: expected an expression
+    int(x[{0}]); // expected-error {{array subscript is not an integer}}
+          ^
+
+"Test_name.c", line 33: error: "x" has already been declared in the current scope
+    int(x[{0}]); // expected-error {{array subscript is not an integer}}
+        ^
+
+"Test_name.c", line 38: error: expected an expression
+    int(a[{0}]); // expected-warning {{unused}}
+          ^
+
+"Test_name.c", line 38: error: "a" has already been declared in the current scope
+    int(a[{0}]); // expected-warning {{unused}}
+        ^
+
+"Test_name.c", line 41: error: "x" has already been declared in the current scope
+    int(x[((void)1,1)]); // expected-error {{redefinition}}
+        ^
+
+"Test_name.c", line 42: warning: expression has no effect
+    int(x[true ? 1 : (1,1)]); // expected-error {{redefinition}} // expected-warning {{left operand of comma operator has no effect}}
+                      ^
+
+"Test_name.c", line 42: error: "x" has already been declared in the current scope
+    int(x[true ? 1 : (1,1)]); // expected-error {{redefinition}} // expected-warning {{left operand of comma operator has no effect}}
+        ^
+
+"Test_name.c", line 45: warning: variable "atomic_ptr_to_int" is used before its value is set
+    *atomic_ptr_to_int = 42;
+     ^
+
+"Test_name.c", line 25: warning: variable "x" was declared but never referenced
+    int x[] = {1}; // expected-note 2{{previous}}
+        ^
+
+"Test_name.c", line 29: warning: variable "x" was declared but never referenced
+    int(x[1,1]); // expected-warning {{left operand of comma operator has no effect}} expected-warning {{unused}}
+        ^
+
+"Test_name.c", line 37: warning: variable "a" was declared but never referenced
+    } a;
+      ^
+
+"Test_name.c", line 41: warning: variable "x" was declared but never referenced
+    int(x[((void)1,1)]); // expected-error {{redefinition}}
+        ^
+
+"Test_name.c", line 42: warning: variable "x" was declared but never referenced
+    int(x[true ? 1 : (1,1)]); // expected-error {{redefinition}} // expected-warning {{left operand of comma operator has no effect}}
+        ^
+
+16 errors detected in the compilation of "Test_name.c".

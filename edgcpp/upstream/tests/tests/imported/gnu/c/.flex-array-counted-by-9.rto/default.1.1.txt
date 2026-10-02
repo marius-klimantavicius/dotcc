@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 Test_name.c
+"Test_name.c", line 9: warning: unknown attribute "__counted_by__"
+    int element[] __attribute__ ((__counted_by__ (lenx))); /* { dg-error "attribute is not a field declaration in the same structure as" } */
+                                  ^
+
+"Test_name.c", line 14: warning: unknown attribute "counted_by"
+    int array[] __attribute ((counted_by (count))); /* { dg-error "attribute is not a field declaration with an integer type" } */
+                              ^
+

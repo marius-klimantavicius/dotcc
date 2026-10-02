@@ -1,0 +1,18 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 4: error: expected an expression
+  int on_exit(void(*)(), caddr_t);
+                    ^
+
+"Test_name.c", line 4: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+  int on_exit(void(*)(), caddr_t);
+              ^
+
+"Test_name.c", line 4: error: identifier "caddr_t" is undefined
+  int on_exit(void(*)(), caddr_t);
+                         ^
+
+"Test_name.c", line 4: error: too many initializer values
+  int on_exit(void(*)(), caddr_t);
+                         ^
+
+4 errors detected in the compilation of "Test_name.c".

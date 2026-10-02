@@ -1,0 +1,57 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 5: warning: unknown attribute "import_name"
+  void name_a(void) __attribute__((import_name)); //expected-error {{'import_name' attribute takes one argument}}
+                                   ^
+
+"Test_name.c", line 7: warning: unknown attribute "import_name"
+  int name_b __attribute__((import_name("foo"))); //expected-error {{'import_name' attribute only applies to functions}}
+                            ^
+
+"Test_name.c", line 9: warning: unknown attribute "import_name"
+  void name_c(void) __attribute__((import_name("foo", "bar"))); //expected-error {{'import_name' attribute takes one argument}}
+                                   ^
+
+"Test_name.c", line 11: warning: unknown attribute "import_name"
+  void name_d(void) __attribute__((import_name("foo", "bar", "qux"))); //expected-error {{'import_name' attribute takes one argument}}
+                                   ^
+
+"Test_name.c", line 13: warning: unknown attribute "import_name"
+  void name_z(void) __attribute__((import_name("foo"))); //expected-note {{previous attribute is here}}
+                                   ^
+
+"Test_name.c", line 15: warning: unknown attribute "import_name"
+  void name_z(void) __attribute__((import_name("bar"))); //expected-warning {{import name (bar) does not match the import name (foo) of the previous declaration}}
+                                   ^
+
+"Test_name.c", line 17: warning: unknown attribute "import_module"
+  void module_a(void) __attribute__((import_module)); //expected-error {{'import_module' attribute takes one argument}}
+                                     ^
+
+"Test_name.c", line 19: warning: unknown attribute "import_module"
+  int module_b __attribute__((import_module("foo"))); //expected-error {{'import_module' attribute only applies to functions}}
+                              ^
+
+"Test_name.c", line 21: warning: unknown attribute "import_module"
+  void module_c(void) __attribute__((import_module("foo", "bar"))); //expected-error {{'import_module' attribute takes one argument}}
+                                     ^
+
+"Test_name.c", line 23: warning: unknown attribute "import_module"
+  void module_d(void) __attribute__((import_module("foo", "bar", "qux"))); //expected-error {{'import_module' attribute takes one argument}}
+                                     ^
+
+"Test_name.c", line 25: warning: unknown attribute "import_module"
+  void module_z(void) __attribute__((import_module("foo"))); //expected-note {{previous attribute is here}}
+                                     ^
+
+"Test_name.c", line 27: warning: unknown attribute "import_module"
+  void module_z(void) __attribute__((import_module("bar"))); //expected-warning {{import module (bar) does not match the import module (foo) of the previous declaration}}
+                                     ^
+
+"Test_name.c", line 29: warning: unknown attribute "import_name"
+  void both(void) __attribute__((import_name("foo"), import_module("bar")));
+                                 ^
+
+"Test_name.c", line 29: warning: unknown attribute "import_module"
+  void both(void) __attribute__((import_name("foo"), import_module("bar")));
+                                                     ^
+

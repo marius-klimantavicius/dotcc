@@ -1,0 +1,23 @@
+//type: fp
+//options: 
+# 0 "./lto/20081224_0.c"
+# 0 "<built-in>"
+# 0 "<command-line>"
+# 1 "/usr/include/stdc-predef.h" 1 3 4
+# 0 "<command-line>" 2
+# 1 "./lto/20081224_0.c"
+
+
+
+
+# 1 "./lto/20081224_0.h" 1
+typedef struct foo {
+ int x;
+} foo_t;
+# 6 "./lto/20081224_0.c" 2
+
+extern struct foo x;
+
+void f(void) {
+  x.x = 0;
+}

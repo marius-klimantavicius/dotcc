@@ -1,0 +1,78 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 60: warning: parameter "a" was set but never used
+  void test1(A a, const A Ca) {
+               ^
+
+"Test_name.c", line 78: error: expression must be a modifiable lvalue
+    Ca.b.c.d.e.num = 5;
+    ^
+
+"Test_name.c", line 85: error: expression must be a modifiable lvalue
+    a.Cb.c.d.e.num = 5;
+    ^
+
+"Test_name.c", line 92: error: expression must be a modifiable lvalue
+    a.b.c.Cd.e.num = 5;
+    ^
+
+"Test_name.c", line 99: error: expression must be a modifiable lvalue
+    a.b.c.d.e.CSnum = 5;
+    ^
+
+"Test_name.c", line 106: error: expression must be a modifiable lvalue
+    a.b.c.d.e.Cnum = 5;
+    ^
+
+"Test_name.c", line 113: error: expression must be a modifiable lvalue
+    a.getCB().c.d.e.num = 5;
+    ^
+
+"Test_name.c", line 120: error: expression must be a modifiable lvalue
+    a.getSCB().c.d.e.num = 5;
+    ^
+
+"Test_name.c", line 131: error: expression must be a modifiable lvalue
+    a.getSCB().Cc.d.e.num = 5;
+    ^
+
+"Test_name.c", line 140: error: expression must be a modifiable lvalue
+    Ca.b.c.Cd.e.num = 5;
+    ^
+
+"Test_name.c", line 149: error: expression must be a modifiable lvalue
+    a.getCB().c.Cd.e.num = 5;
+    ^
+
+"Test_name.c", line 158: error: expression must be a modifiable lvalue
+    a.b.getCC().d.e.Cnum = 5;
+    ^
+
+"Test_name.c", line 167: error: expression must be a modifiable lvalue
+    a.b.c.Cd.Ce.num = 5;
+    ^
+
+"Test_name.c", line 176: error: expression must be a modifiable lvalue
+    a.b.CSc.Cd.e.num = 5;
+    ^
+
+"Test_name.c", line 185: error: expression must be a modifiable lvalue
+    a.CSb.c.Cd.e.num = 5;
+    ^
+
+"Test_name.c", line 227: error: expression must be a modifiable lvalue
+    Ca.Mb.c.d.Ce.num = 5;
+    ^
+
+"Test_name.c", line 234: error: expression must be a modifiable lvalue
+    Ca.getB().c.d.Ce.num = 5;
+    ^
+
+"Test_name.c", line 241: error: expression must be a modifiable lvalue
+    Ca.getSB().c.d.Ce.num = 5;
+    ^
+
+"Test_name.c", line 248: error: expression must be a modifiable lvalue
+    Ca.Sb.c.d.Ce.num = 5;
+    ^
+
+18 errors detected in the compilation of "Test_name.c".

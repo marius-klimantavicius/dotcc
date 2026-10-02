@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 9: error: no instance of function template "deduce_pack_non_pack::g" matches the argument list
+            argument types are: (deduce_pack_non_pack::C<deduce_pack_non_pack::A<bool, int>>)
+    void h(C<A<bool, int>> &x) { g(x); } // expected-error {{no matching function}}
+                                 ^
+"Test_name.c", line 8: note: candidate function template "deduce_pack_non_pack::g" failed deduction
+    template <typename T> void g(C<A<T>>); // expected-note {{candidate template ignored: deduced type 'C<A<[...], (no argument)>>' of 1st parameter does not match adjusted type 'C<A<[...], int>>' of argument [with T = bool]}}
+                               ^
+
+"Test_name.c", line 15: warning: constant "B" cannot be used because it follows a parameter pack and cannot be deduced from the parameters of function template "pr39231::operator^"
+    template <typename T, T... A, T... B>
+                                       ^
+
+"Test_name.c", line 19: error: no operator "^" matches these operands
+            operand types are: pr39231::integer_sequence<int, 1, 2, 3> ^ pr39231::integer_sequence<int, 4, 5, 6>
+    int v = integer_sequence<int, 1, 2, 3>{} ^ integer_sequence<int, 4, 5, 6>{}; // expected-error {{invalid operands}}
+                                             ^
+"Test_name.c", line 16: note: candidate function template "pr39231::operator^" failed deduction
+    int operator^(integer_sequence<T, A...> a, // expected-note {{deduced conflicting values for parameter 'A' (<1, 2, 3> vs. <4, 5, 6>)}}
+        ^
+"Test_name.c", line 19: note: built-in operator^(<promoted integral>, <promoted integral>) does not match because argument #1 does not match parameter
+    int v = integer_sequence<int, 1, 2, 3>{} ^ integer_sequence<int, 4, 5, 6>{}; // expected-error {{invalid operands}}
+                                             ^
+
+2 errors detected in the compilation of "Test_name.c".

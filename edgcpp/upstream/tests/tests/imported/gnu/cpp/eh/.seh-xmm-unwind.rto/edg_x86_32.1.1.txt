@@ -1,0 +1,82 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 14: error: identifier "__int128" is undefined
+    register __int128 xmm6  asm("xmm6")  = 0;
+             ^
+
+"Test_name.c", line 15: error: identifier "__int128" is undefined
+    register __int128 xmm7  asm("xmm7")  = 0;
+             ^
+
+"Test_name.c", line 16: error: identifier "__int128" is undefined
+    register __int128 xmm8  asm("xmm8")  = 0;
+             ^
+
+"Test_name.c", line 17: error: identifier "__int128" is undefined
+    register __int128 xmm9  asm("xmm9")  = 0;
+             ^
+
+"Test_name.c", line 18: error: identifier "__int128" is undefined
+    register __int128 xmm10 asm("xmm10") = 0;
+             ^
+
+"Test_name.c", line 19: error: identifier "__int128" is undefined
+    register __int128 xmm11 asm("xmm11") = 0;
+             ^
+
+"Test_name.c", line 20: error: identifier "__int128" is undefined
+    register __int128 xmm12 asm("xmm12") = 0;
+             ^
+
+"Test_name.c", line 21: error: identifier "__int128" is undefined
+    register __int128 xmm13 asm("xmm13") = 0;
+             ^
+
+"Test_name.c", line 22: error: identifier "__int128" is undefined
+    register __int128 xmm14 asm("xmm14") = 0;
+             ^
+
+"Test_name.c", line 23: error: identifier "__int128" is undefined
+    register __int128 xmm15 asm("xmm15") = 0;
+             ^
+
+"Test_name.c", line 35: error: identifier "__int128" is undefined
+    register __int128 xmm6  asm("xmm6")  = 6;
+             ^
+
+"Test_name.c", line 36: error: identifier "__int128" is undefined
+    register __int128 xmm7  asm("xmm7")  = 7;
+             ^
+
+"Test_name.c", line 37: error: identifier "__int128" is undefined
+    register __int128 xmm8  asm("xmm8")  = 8;
+             ^
+
+"Test_name.c", line 38: error: identifier "__int128" is undefined
+    register __int128 xmm9  asm("xmm9")  = 9;
+             ^
+
+"Test_name.c", line 39: error: identifier "__int128" is undefined
+    register __int128 xmm10 asm("xmm10") = 10;
+             ^
+
+"Test_name.c", line 40: error: identifier "__int128" is undefined
+    register __int128 xmm11 asm("xmm11") = 11;
+             ^
+
+"Test_name.c", line 41: error: identifier "__int128" is undefined
+    register __int128 xmm12 asm("xmm12") = 12;
+             ^
+
+"Test_name.c", line 42: error: identifier "__int128" is undefined
+    register __int128 xmm13 asm("xmm13") = 13;
+             ^
+
+"Test_name.c", line 43: error: identifier "__int128" is undefined
+    register __int128 xmm14 asm("xmm14") = 14;
+             ^
+
+"Test_name.c", line 44: error: identifier "__int128" is undefined
+    register __int128 xmm15 asm("xmm15") = 15;
+             ^
+
+20 errors detected in the compilation of "Test_name.c".

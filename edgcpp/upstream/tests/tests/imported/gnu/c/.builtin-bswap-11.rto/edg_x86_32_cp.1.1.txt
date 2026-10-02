@@ -1,0 +1,42 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./builtin-bswap-11.c", line 20: error: identifier "__uint128_t" is undefined
+  __uint128_t my_bswap128(__uint128_t x) { __uint128_t result = 0; int shift; for (shift = 0; shift < 8 * sizeof (__uint128_t); shift += 8) { result <<= 8; result |= (x >> shift) & 0xff; } return result; };
+  ^
+
+"./builtin-bswap-11.c", line 20: error: identifier "__uint128_t" is undefined
+  __uint128_t my_bswap128(__uint128_t x) { __uint128_t result = 0; int shift; for (shift = 0; shift < 8 * sizeof (__uint128_t); shift += 8) { result <<= 8; result |= (x >> shift) & 0xff; } return result; };
+                          ^
+
+"./builtin-bswap-11.c", line 20: error: identifier "__uint128_t" is undefined
+  __uint128_t my_bswap128(__uint128_t x) { __uint128_t result = 0; int shift; for (shift = 0; shift < 8 * sizeof (__uint128_t); shift += 8) { result <<= 8; result |= (x >> shift) & 0xff; } return result; };
+                                           ^
+
+"./builtin-bswap-11.c", line 20: error: identifier "__uint128_t" is undefined
+  __uint128_t my_bswap128(__uint128_t x) { __uint128_t result = 0; int shift; for (shift = 0; shift < 8 * sizeof (__uint128_t); shift += 8) { result <<= 8; result |= (x >> shift) & 0xff; } return result; };
+                                                                                                                  ^
+
+"./builtin-bswap-11.c", line 27: error: identifier "__uint128_t" is undefined
+    __uint128_t n;
+    ^
+
+"./builtin-bswap-11.c", line 37: warning: integer conversion resulted in truncation
+  u uint128_ts[] = { { .s = { 0x0000000000000000ULL, 0x1122334455667788ULL } }, { .s = { 0x1122334455667788ULL, 0xffffffffffffffffULL } }, { .s = { 0xffffffffffffffffULL, 0x0000000000000000ULL } } };
+                                                     ^
+
+"./builtin-bswap-11.c", line 37: warning: integer conversion resulted in truncation
+  u uint128_ts[] = { { .s = { 0x0000000000000000ULL, 0x1122334455667788ULL } }, { .s = { 0x1122334455667788ULL, 0xffffffffffffffffULL } }, { .s = { 0xffffffffffffffffULL, 0x0000000000000000ULL } } };
+                                                                                         ^
+
+"./builtin-bswap-11.c", line 37: warning: integer conversion resulted in truncation
+  u uint128_ts[] = { { .s = { 0x0000000000000000ULL, 0x1122334455667788ULL } }, { .s = { 0x1122334455667788ULL, 0xffffffffffffffffULL } }, { .s = { 0xffffffffffffffffULL, 0x0000000000000000ULL } } };
+                                                                                                                ^
+
+"./builtin-bswap-11.c", line 37: warning: integer conversion resulted in truncation
+  u uint128_ts[] = { { .s = { 0x0000000000000000ULL, 0x1122334455667788ULL } }, { .s = { 0x1122334455667788ULL, 0xffffffffffffffffULL } }, { .s = { 0xffffffffffffffffULL, 0x0000000000000000ULL } } };
+                                                                                                                                                    ^
+
+"./builtin-bswap-11.c", line 47: warning: function "__builtin_bswap128" declared implicitly
+      if (__builtin_bswap128 (uint128_ts[i].n) != my_bswap128 (uint128_ts[i].n))
+          ^
+
+5 errors detected in the compilation of "Test_name.c".

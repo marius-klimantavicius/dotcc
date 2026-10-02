@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 16: error: a value of type "a" cannot be used to initialize an entity of type "int"
+    { 3, a::two }, // { dg-error "11: cannot convert 'a' to 'int' in initialization" }
+         ^
+
+"Test_name.c", line 23: error: a value of type "int" cannot be used to initialize an entity of type "a"
+    { 6, 7, fn() }, // { dg-error "13: cannot convert 'int' to 'a' in initialization" }
+            ^
+
+"Test_name.c", line 36: error: a value of type "int" cannot be used to initialize an entity of type "const char *"
+    { 42 }, // { dg-error "5: invalid conversion from 'int' to 'const char\\*'" }
+      ^
+
+3 errors detected in the compilation of "Test_name.c".

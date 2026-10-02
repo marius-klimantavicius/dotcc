@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 --c++11 Test_name.c
+"./init/new25.C", line 7: error: default argument is not allowed
+    void* operator new(std::size_t = 32) throw (std::bad_alloc);
+                                   ^
+
+"./init/new25.C", line 10: error: default argument is not allowed
+    void* operator new[](std::size_t = 32) throw (std::bad_alloc);
+                                     ^
+
+"./init/new25.C", line 13: error: default argument is not allowed
+    void* operator new(std::size_t = 32, const std::nothrow_t&) throw();
+                                   ^
+
+"./init/new25.C", line 14: error: default argument is not allowed
+    void* operator new[](std::size_t = 32, const std::nothrow_t&) throw();
+                                     ^
+
+"./init/new25.C", line 29: error: default argument is not allowed
+    void* operator new(std::size_t = 0,
+                                   ^
+
+"./init/new25.C", line 31: error: default argument is not allowed
+    void* operator new[](std::size_t = 0,
+                                     ^
+
+6 errors detected in the compilation of "Test_name.c".

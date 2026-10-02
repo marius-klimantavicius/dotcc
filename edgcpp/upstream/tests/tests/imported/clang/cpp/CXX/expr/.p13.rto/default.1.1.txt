@@ -1,0 +1,46 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 --exceptions --exceptions Test_name.c
+"Test_name.c", line 16: error: a value of type "B" (aka "void (*)()") cannot be assigned to an entity of type "A" (aka "void (*)() noexcept")
+    a = k ? a : b; // expected-error {{incompatible function pointer types assigning to 'A' (aka 'void (*)() noexcept') from 'void (*)()'}}
+      ^
+
+"Test_name.c", line 19: error: a value of type "void (X::*)()" cannot be assigned to an entity of type "C" (aka "void (X::*)() noexcept")
+    c = k ? c : d; // expected-error {{different exception specifications}}
+      ^
+
+"Test_name.c", line 22: error: a value of type "void (Y::*)()" cannot be assigned to an entity of type "E" (aka "void (Y::*)() noexcept")
+    e = k ? c : f; // expected-error {{different exception specifications}}
+      ^
+
+"Test_name.c", line 23: error: a value of type "void (Y::*)()" cannot be assigned to an entity of type "E" (aka "void (Y::*)() noexcept")
+    e = k ? d : e; // expected-error {{different exception specifications}}
+      ^
+
+"Test_name.c", line 30: error: a value of type "B" (aka "void (*)()") cannot be used to initialize an entity of type "const A &"
+    const A &ak3 = k ? ak : bk; // expected-error {{could not bind}}
+                   ^
+
+"Test_name.c", line 29: warning: variable "ak2" was declared but never referenced
+    const A &ak2 = k ? ak : ak;
+             ^
+
+"Test_name.c", line 31: warning: variable "bk3" was declared but never referenced
+    const B &bk3 = k ? ak : bk;
+             ^
+
+"Test_name.c", line 41: error: dynamic exception specifications are not permitted in this mode
+    using X = void (*)() throw(int);
+                         ^
+
+"Test_name.c", line 42: error: dynamic exception specifications are not permitted in this mode
+    using Y = void (*)() throw(float);
+                         ^
+
+"Test_name.c", line 43: error: dynamic exception specifications are not permitted in this mode
+    using Z = void (*)() throw(int, float);
+                         ^
+
+"Test_name.c", line 44: warning: parameter "z" was set but never used
+    void g(X x, Y y, Z z, bool k) {
+                       ^
+
+8 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 35: warning: variable "overlaps" is used before its value is set
+      matches_operands |= overlaps;
+                          ^
+
+"Test_name.c", line 35: warning: variable "matches_operands" is used before its value is set
+      matches_operands |= overlaps;
+      ^
+
+"Test_name.c", line 38: warning: variable "op_mask" is used before its value is set
+      operand_mask op_mask = earlyclobber_operands |= op_mask;
+                                                      ^
+
+"Test_name.c", line 42: warning: variable "matched_operands" is used before its value is set
+    if (op_mask || (matched_operands & unmatched_operands && 0))
+                    ^
+
+"Test_name.c", line 42: warning: variable "unmatched_operands" is used before its value is set
+    if (op_mask || (matched_operands & unmatched_operands && 0))
+                                       ^
+

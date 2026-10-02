@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: error: "auto" function requires a trailing return type
+    template < typename T > static auto f () { return 0; } 
+                                   ^
+
+"Test_name.c", line 13: error: no instance of function template "A<S>::g [with S=int]" matches the argument list
+            object type is: A<int>
+  auto a = A < int > {}.g ();
+                        ^
+"Test_name.c", line 10: note: candidate function template "A<S>::g [with S=int]" failed deduction
+    template < class U = decltype (f < S > ()) > int g () { return 0; }
+                                                     ^
+
+2 errors detected in the compilation of "Test_name.c".

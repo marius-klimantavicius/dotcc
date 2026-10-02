@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --c++17 -tused -A Test_name.c
+"Test_name.c", line 5: error: more than one instance of overloaded function "f" matches the argument list:
+            function template "int f<<unnamed>>(int)" (declared at line 3)
+            function template "int f<<unnamed>>(int)" (declared at line 4)
+            argument types are: (int)
+    int i2 = f<1>(0);   // ambiguous
+             ^
+
+1 error detected in the compilation of "Test_name.c".

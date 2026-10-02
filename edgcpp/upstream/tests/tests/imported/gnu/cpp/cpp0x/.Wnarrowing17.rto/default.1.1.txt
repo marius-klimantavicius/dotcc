@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: error: invalid narrowing conversion from "unsigned int" to "int": constant value does not fit in destination type
+      case 2149056512u:; // { dg-error "narrowing conversion of .2149056512. from .unsigned int. to .int." }
+           ^
+
+"Test_name.c", line 11: error: invalid narrowing conversion from "long long" to "int": constant value does not fit in destination type
+      case (long long int) 1e10:; // { dg-error "narrowing conversion of .10000000000. from .long long int. to .int." }
+           ^
+
+"Test_name.c", line 20: error: invalid narrowing conversion from "int" to "unsigned int": constant value does not fit in destination type
+      case -42:; // { dg-error "narrowing conversion of .-42. from .int. to .unsigned int." }
+           ^
+
+3 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,86 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 9: error: too many initializer values
+  int a1[2](1, 2, 3); // { dg-error "too many initializers" }
+                  ^
+
+"Test_name.c", line 10: error: array of functions is not allowed
+  int a2[](); // { dg-error "array of functions" }
+           ^
+
+"Test_name.c", line 10: error: incomplete type "<error-type> []" is not allowed
+  int a2[](); // { dg-error "array of functions" }
+      ^
+
+"Test_name.c", line 11: error: expected an expression
+  int a3[](()); // { dg-error "expected primary-expression" }
+            ^
+
+"Test_name.c", line 11: error: an empty initializer is invalid for an array with unspecified bound
+  int a3[](()); // { dg-error "expected primary-expression" }
+      ^
+
+"Test_name.c", line 12: error: a value of type "const char *" cannot be used to initialize an entity of type "int"
+  int a4[]("raccoon"); // { dg-error "invalid conversion" }
+           ^
+
+"Test_name.c", line 12: error: an empty initializer is invalid for an array with unspecified bound
+  int a4[]("raccoon"); // { dg-error "invalid conversion" }
+      ^
+
+"Test_name.c", line 19: error: too many initializer values
+  S s1(1, 1, 1); // { dg-error "too many initializers" }
+             ^
+
+"Test_name.c", line 29: error: too many initializer values
+  U2 u4 = U2(1, 2); // { dg-error "too many initializers" }
+                ^
+
+"Test_name.c", line 42: error: too many initializer values
+  D d({}, 1, 2); // { dg-error "no matching function" }
+          ^
+
+"Test_name.c", line 51: error: too many initializer values
+  P p(1, 2); // { dg-error "no matching function" }
+         ^
+
+"Test_name.c", line 51: error: no suitable constructor exists to convert from "int" to "P"
+  P p(1, 2); // { dg-error "no matching function" }
+      ^
+
+"Test_name.c", line 60: error: no instance of constructor "U::U" matches the argument list
+            argument types are: (int, int)
+  U u(1, 2); // { dg-error "no matching function" }
+      ^
+"Test_name.c", line 54: note: number of parameters of function "U::U(const U &)" does not match the call
+  struct U {
+         ^
+"Test_name.c", line 54: note: number of parameters of function "U::U(U &&)" does not match the call
+  struct U {
+         ^
+"Test_name.c", line 55: note: number of parameters of function "U::U()" does not match the call
+    U() {}
+    ^
+
+"Test_name.c", line 69: error: no instance of constructor "V::V" matches the argument list
+            argument types are: (int, int)
+  V v(1, 2); // { dg-error "no matching function" }
+      ^
+"Test_name.c", line 63: note: number of parameters of function "V::V(const V &)" does not match the call
+  struct V {
+         ^
+"Test_name.c", line 63: note: number of parameters of function "V::V(V &&)" does not match the call
+  struct V {
+         ^
+"Test_name.c", line 63: note: number of parameters of function "V::V()" does not match the call
+  struct V {
+         ^
+
+"Test_name.c", line 80: error: no suitable constructor exists to convert from "int" to "nonaggr"
+    F() : n(1) { } // { dg-error "no matching function" }
+            ^
+
+"Test_name.c", line 89: error: a value of type "const char [5]" cannot be used to initialize an entity of type "char [4]"
+    H() : g("oaks") { } // { dg-error "initializer-string" }
+            ^
+
+16 errors detected in the compilation of "Test_name.c".

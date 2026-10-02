@@ -1,0 +1,161 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 13: warning: unrecognized #pragma
+    #pragma omp atomic compare update seq_cst
+            ^
+
+"Test_name.c", line 15: warning: unrecognized #pragma
+    #pragma omp atomic compare relaxed
+            ^
+
+"Test_name.c", line 17: warning: unrecognized #pragma
+    #pragma omp atomic compare
+            ^
+
+"Test_name.c", line 19: warning: unrecognized #pragma
+    #pragma omp atomic compare seq_cst fail(relaxed)
+            ^
+
+"Test_name.c", line 21: warning: unrecognized #pragma
+    #pragma omp atomic compare
+            ^
+
+"Test_name.c", line 23: warning: unrecognized #pragma
+    #pragma omp atomic compare
+            ^
+
+"Test_name.c", line 25: warning: unrecognized #pragma
+    #pragma omp atomic compare
+            ^
+
+"Test_name.c", line 27: warning: unrecognized #pragma
+    #pragma omp atomic compare
+            ^
+
+"Test_name.c", line 29: warning: unrecognized #pragma
+    #pragma omp atomic compare
+            ^
+
+"Test_name.c", line 31: warning: unrecognized #pragma
+    #pragma omp atomic compare
+            ^
+
+"Test_name.c", line 33: warning: unrecognized #pragma
+    #pragma omp atomic compare update capture seq_cst fail(acquire)
+            ^
+
+"Test_name.c", line 35: warning: unrecognized #pragma
+    #pragma omp atomic update capture compare
+            ^
+
+"Test_name.c", line 37: warning: unrecognized #pragma
+    #pragma omp atomic compare, capture, update
+            ^
+
+"Test_name.c", line 39: warning: unrecognized #pragma
+    #pragma omp atomic capture compare
+            ^
+
+"Test_name.c", line 41: warning: unrecognized #pragma
+    #pragma omp atomic compare capture
+            ^
+
+"Test_name.c", line 43: warning: unrecognized #pragma
+    #pragma omp atomic compare capture
+            ^
+
+"Test_name.c", line 45: warning: unrecognized #pragma
+    #pragma omp atomic capture compare weak
+            ^
+
+"Test_name.c", line 47: warning: unrecognized #pragma
+    #pragma omp atomic capture compare fail(seq_cst)
+            ^
+
+"Test_name.c", line 49: warning: unrecognized #pragma
+    #pragma omp atomic capture compare
+            ^
+
+"Test_name.c", line 51: warning: unrecognized #pragma
+    #pragma omp atomic compare capture
+            ^
+
+"Test_name.c", line 59: warning: unrecognized #pragma
+    #pragma omp atomic compare update seq_cst
+            ^
+
+"Test_name.c", line 61: warning: unrecognized #pragma
+    #pragma omp atomic compare relaxed
+            ^
+
+"Test_name.c", line 63: warning: unrecognized #pragma
+    #pragma omp atomic compare
+            ^
+
+"Test_name.c", line 65: warning: unrecognized #pragma
+    #pragma omp atomic compare seq_cst fail(relaxed)
+            ^
+
+"Test_name.c", line 67: warning: unrecognized #pragma
+    #pragma omp atomic compare
+            ^
+
+"Test_name.c", line 69: warning: unrecognized #pragma
+    #pragma omp atomic compare
+            ^
+
+"Test_name.c", line 71: warning: unrecognized #pragma
+    #pragma omp atomic compare
+            ^
+
+"Test_name.c", line 73: warning: unrecognized #pragma
+    #pragma omp atomic compare
+            ^
+
+"Test_name.c", line 75: warning: unrecognized #pragma
+    #pragma omp atomic compare
+            ^
+
+"Test_name.c", line 77: warning: unrecognized #pragma
+    #pragma omp atomic compare
+            ^
+
+"Test_name.c", line 79: warning: unrecognized #pragma
+    #pragma omp atomic compare update capture seq_cst fail(acquire)
+            ^
+
+"Test_name.c", line 81: warning: unrecognized #pragma
+    #pragma omp atomic update capture compare
+            ^
+
+"Test_name.c", line 83: warning: unrecognized #pragma
+    #pragma omp atomic compare, capture, update
+            ^
+
+"Test_name.c", line 85: warning: unrecognized #pragma
+    #pragma omp atomic capture compare
+            ^
+
+"Test_name.c", line 87: warning: unrecognized #pragma
+    #pragma omp atomic compare capture
+            ^
+
+"Test_name.c", line 89: warning: unrecognized #pragma
+    #pragma omp atomic compare capture
+            ^
+
+"Test_name.c", line 91: warning: unrecognized #pragma
+    #pragma omp atomic capture compare weak
+            ^
+
+"Test_name.c", line 93: warning: unrecognized #pragma
+    #pragma omp atomic capture compare fail(seq_cst)
+            ^
+
+"Test_name.c", line 95: warning: unrecognized #pragma
+    #pragma omp atomic capture compare
+            ^
+
+"Test_name.c", line 97: warning: unrecognized #pragma
+    #pragma omp atomic compare capture
+            ^
+

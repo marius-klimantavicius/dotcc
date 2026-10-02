@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 16: error: overloaded function "N1::A::A" is not a type name
+  A::A a; // { dg-error "constructor" "the injected-class-name can never be found through qualified lookup" }
+  ^
+
+"Test_name.c", line 20: error: a fully qualified constructor call is not allowed
+    A::A();			// { dg-message "::A" "c++/42415" }
+    ^
+
+"Test_name.c", line 25: error: type name is not allowed
+    A::A a; // { dg-error "constructor" "constructor" }
+    ^
+
+"Test_name.c", line 25: error: expected a ";"
+    A::A a; // { dg-error "constructor" "constructor" }
+         ^
+
+"Test_name.c", line 41: error: member "N2::A<T>::x [with T=int]" is not a type name
+  template<> A<int>::A<int>(A<int>::x);  // { dg-error "" "this is an invalid declaration of the constructor" }
+                            ^
+
+"Test_name.c", line 41: error: no instance of overloaded function "N2::A<T>::A [with T=int]" matches the specified type
+  template<> A<int>::A<int>(A<int>::x);  // { dg-error "" "this is an invalid declaration of the constructor" }
+                     ^
+
+6 errors detected in the compilation of "Test_name.c".

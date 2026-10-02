@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 16: error: no instance of function template "A<int U::*>::c [with U=X]" matches the argument list
+  int x = A<int X::*>::c(); // { dg-error "no matching function for call" }
+          ^
+"Test_name.c", line 11: note: number of parameters of function template "A<int U::*>::c [with U=X]" does not match the call
+      static auto c(int U::*p, TT o) -> decltype(o.*p); // { dg-message {A<int U::\*>} }
+                  ^
+
+1 error detected in the compilation of "Test_name.c".

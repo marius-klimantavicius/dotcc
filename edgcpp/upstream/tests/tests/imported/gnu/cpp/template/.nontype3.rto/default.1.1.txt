@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++03 Test_name.c
+"Test_name.c", line 18: error: non-integral operation not allowed in nontype template argument
+  void dep6(bar<PI+1> *); // { dg-error "" "integral or enumeration" }
+                  ^
+
+"Test_name.c", line 21: error: argument of type "int" is incompatible with template parameter of type "int *"
+  void dep7(bar<I+1> *);		// { dg-error "16:could not convert template argument" }
+                ^
+
+"Test_name.c", line 24: error: this operator is not allowed in a template argument expression
+  void dep8(foo< *PI > *); // { dg-error "" "integral or enumeration" }
+                 ^
+
+"Test_name.c", line 27: error: this operator is not allowed in a template argument expression
+  void dep9(foo< *PI > *); // { dg-error "" "integral or enumeration" }
+                 ^
+
+"Test_name.c", line 33: error: this operator is not allowed in a template argument expression
+  void dep10(foo< PI[0] > *); // { dg-error "" "integral or enumeration" }
+                    ^
+
+"Test_name.c", line 36: error: expression must be an lvalue or a function designator
+  void dep11(foo< *&I > *); // { dg-error "" "constant expression" }
+                    ^
+
+"Test_name.c", line 36: error: this operator is not allowed in a template argument expression
+  void dep11(foo< *&I > *); // { dg-error "" "constant expression" }
+                  ^
+
+"Test_name.c", line 39: error: expression must be an lvalue or a function designator
+  void dep12(foo< (&I)[4] > *); // { dg-error "" "constant expression" }
+                    ^
+
+"Test_name.c", line 39: error: this operator is not allowed in a template argument expression
+  void dep12(foo< (&I)[4] > *); // { dg-error "" "constant expression" }
+                      ^
+
+9 errors detected in the compilation of "Test_name.c".

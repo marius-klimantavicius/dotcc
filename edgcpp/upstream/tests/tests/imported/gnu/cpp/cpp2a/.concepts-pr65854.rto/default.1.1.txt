@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 24: error: no instance of function template "f" matches the argument list
+  auto i = f<char, int>(); // { dg-error "" }
+           ^
+"Test_name.c", line 22: note: substituting "<char, int>" for function template "f" failed constraints
+  int f();
+      ^
+"Test_name.c", line 21: note: concept "C" not satisfied for "<char, int>"
+    requires C<T1, T2>
+             ^
+"Test_name.c", line 18: note: atomic constraint evaluates to false
+  concept C = requires() { typename Alias1<T1, T2>; }; // { dg-message "in requirements" }
+              ^
+
+1 error detected in the compilation of "Test_name.c".

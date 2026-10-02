@@ -1,0 +1,72 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 11: error: nonstandard form for taking the address of a member function
+        foo(&g<int>); // expected-error-re {{cannot form member pointer of type 'void (A::*)(int){{( __attribute__\(\(thiscall\)\))?}}' without '&' and class name}}
+            ^
+
+"Test_name.c", line 25: error: more than one instance of overloaded function "test1::A::f" matches the argument list:
+            function "test1::A::f(void (test1::A::*)())" (declared at line 19)
+            function "test1::A::f(void (*)(int))" (declared at line 20)
+            argument types are: (<unknown-type>)
+        f(&g);
+        ^
+
+"Test_name.c", line 43: error: nonstandard form for taking the address of a member function
+      int (A::*ptr)(int) = &(A::foo); // expected-error {{cannot create a non-constant pointer to member function}}
+                           ^
+
+"Test_name.c", line 43: warning: variable "ptr" was declared but never referenced
+      int (A::*ptr)(int) = &(A::foo); // expected-error {{cannot create a non-constant pointer to member function}}
+               ^
+
+"Test_name.c", line 55: error: nonstandard form for taking the address of a member function
+      static_assert(__is_same_as(decltype((S::func)), int&), ""); // expected-error {{call to non-static member function without an object argument}}
+                                          ^
+
+"Test_name.c", line 55: error: static assertion failed with ""
+      static_assert(__is_same_as(decltype((S::func)), int&), ""); // expected-error {{call to non-static member function without an object argument}}
+      ^
+
+"Test_name.c", line 56: error: nonstandard form for taking the address of a member function
+      static_assert(__is_same_as(decltype(&(S::func)), int*), ""); // expected-error {{call to non-static member function without an object argument}}
+                                          ^
+
+"Test_name.c", line 56: error: static assertion failed with ""
+      static_assert(__is_same_as(decltype(&(S::func)), int*), ""); // expected-error {{call to non-static member function without an object argument}}
+      ^
+
+"Test_name.c", line 60: error: nonstandard form for taking the address of a member function
+  static_assert(__is_same_as(decltype((S::func)), int&), ""); // expected-error {{call to non-static member function without an object argument}}
+                                      ^
+
+"Test_name.c", line 60: error: static assertion failed with ""
+  static_assert(__is_same_as(decltype((S::func)), int&), ""); // expected-error {{call to non-static member function without an object argument}}
+  ^
+
+"Test_name.c", line 61: error: nonstandard form for taking the address of a member function
+  static_assert(__is_same_as(decltype(&(S::func)), int*), ""); // expected-error {{call to non-static member function without an object argument}}
+                                      ^
+
+"Test_name.c", line 61: error: static assertion failed with ""
+  static_assert(__is_same_as(decltype(&(S::func)), int*), ""); // expected-error {{call to non-static member function without an object argument}}
+  ^
+
+"Test_name.c", line 72: error: function template "GH40906::f" has already been defined (previous definition at line 68)
+  constexpr int f(char (*)[sizeof(q(&(T::x)))]) { return 2; }
+                ^
+
+"Test_name.c", line 74: error: no instance of function template "GH40906::f" matches the argument list
+            argument types are: (char (*)[1])
+  constexpr int g(char (*p)[sizeof(char)] = 0) { return f<A>(p); }
+                                                        ^
+"Test_name.c", line 69: note: function template "GH40906::f" does not match because argument #1 does not match parameter
+  constexpr int f(char (*)[sizeof(q(&T::x))]) { return 1; }
+                ^
+
+"Test_name.c", line 78: error: static assertion failed
+  static_assert(h() == 1);
+  ^
+"Test_name.c", line 78: note: the final comparison was 2 == 1
+  static_assert(h() == 1);
+                    ^
+
+14 errors detected in the compilation of "Test_name.c".

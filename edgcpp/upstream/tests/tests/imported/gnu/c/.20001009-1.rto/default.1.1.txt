@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 31: warning: variable "w" is used before its value is set
+            foo (a, z, w);
+                       ^
+
+"Test_name.c", line 11: warning: variable "n" was set but never used
+    double l, m, n, o, p;
+                 ^
+
+"Test_name.c", line 12: warning: variable "s" was set but never used
+    double q, r, s, t, u;
+                 ^
+
+"Test_name.c", line 12: warning: variable "t" was set but never used
+    double q, r, s, t, u;
+                    ^
+
+"Test_name.c", line 12: warning: variable "u" was set but never used
+    double q, r, s, t, u;
+                       ^
+
+"Test_name.c", line 13: warning: variable "v" was set but never used
+    double x, y, v, w;
+                 ^
+

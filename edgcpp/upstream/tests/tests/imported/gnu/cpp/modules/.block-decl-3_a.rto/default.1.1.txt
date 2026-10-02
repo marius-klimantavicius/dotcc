@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 --modules Test_name.c
+"./modules/block-decl-3_a.C", line 145: warning: using-declaration ignored -- it refers to the current namespace
+  export using ::gmf_n_i;
+               ^
+
+"./modules/block-decl-3_a.C", line 146: warning: using-declaration ignored -- it refers to the current namespace
+  export using ::gmf_i_i;
+               ^
+
+"./modules/block-decl-3_a.C", line 147: warning: using-declaration ignored -- it refers to the current namespace
+  export using ::gmf_n_i_i;
+               ^
+
+"./modules/block-decl-3_a.C", line 148: warning: using-declaration ignored -- it refers to the current namespace
+  export using ::gmf_i_i_i;
+               ^
+

@@ -1,0 +1,18 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 5: error: expected an identifier
+  static union { int j; float g; } = {1}; // bug, Not allowed                    
+                                   ^
+
+"Test_name.c", line 5: error: expected a ";"
+  static union { int j; float g; } = {1}; // bug, Not allowed                    
+                                   ^
+
+"Test_name.c", line 5: error: expected a declaration
+  static union { int j; float g; } = {1}; // bug, Not allowed                    
+                                   ^
+
+"Test_name.c", line 6: error: "i" has already been declared in the current scope
+  int i = 1; // Not allowed, not bug                                             
+      ^
+
+4 errors detected in the compilation of "Test_name.c".

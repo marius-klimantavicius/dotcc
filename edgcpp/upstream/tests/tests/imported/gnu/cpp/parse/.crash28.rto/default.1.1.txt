@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 10: error: identifier "slist" is undefined
+  template <class _Tp> class insert_iterator<slist<_Tp> > {}; // { dg-error "not a class template|not declared in this scope|expected unqualified-id|extra" }
+                                             ^
+
+"Test_name.c", line 10: error: type name is not allowed
+  template <class _Tp> class insert_iterator<slist<_Tp> > {}; // { dg-error "not a class template|not declared in this scope|expected unqualified-id|extra" }
+                                                   ^
+
+"Test_name.c", line 10: error: insert_iterator is not a template
+  template <class _Tp> class insert_iterator<slist<_Tp> > {}; // { dg-error "not a class template|not declared in this scope|expected unqualified-id|extra" }
+                             ^
+
+"Test_name.c", line 10: error: expected a ";"
+  template <class _Tp> class insert_iterator<slist<_Tp> > {}; // { dg-error "not a class template|not declared in this scope|expected unqualified-id|extra" }
+                                                        ^
+
+"Test_name.c", line 11: error: a template argument list is not allowed in a declaration of a primary template
+  template <class _Value> class insert_iterator<int > { // { dg-error "template" }
+                                ^
+
+"Test_name.c", line 15: error: identifier "X" is undefined
+  template<int> struct A<X<> > {}; // { dg-error "not a class template|not declared in this scope|expected unqualified-id|extra" }
+                         ^
+
+"Test_name.c", line 15: error: expected an expression
+  template<int> struct A<X<> > {}; // { dg-error "not a class template|not declared in this scope|expected unqualified-id|extra" }
+                           ^
+
+"Test_name.c", line 15: error: A is not a template
+  template<int> struct A<X<> > {}; // { dg-error "not a class template|not declared in this scope|expected unqualified-id|extra" }
+                       ^
+
+"Test_name.c", line 15: error: expected a ";"
+  template<int> struct A<X<> > {}; // { dg-error "not a class template|not declared in this scope|expected unqualified-id|extra" }
+                             ^
+
+9 errors detected in the compilation of "Test_name.c".

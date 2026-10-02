@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 5: warning: unknown attribute "align_value"
+  typedef double * __attribute__((align_value(64))) aligned_double;
+                                  ^
+
+"Test_name.c", line 7: warning: unknown attribute "align_value"
+  void foo(aligned_double x, double * y __attribute__((align_value(32))),
+                                                       ^
+
+"Test_name.c", line 8: warning: unknown attribute "align_value"
+           double & z __attribute__((align_value(128)))) { };
+                                     ^
+
+"Test_name.c", line 12: warning: unknown attribute "align_value"
+    typedef T* aligned_int __attribute__((align_value(32+8*Q)));
+                                          ^
+
+"Test_name.c", line 15: warning: unknown attribute "align_value"
+    void foo(aligned_int a, T &b __attribute__((align_value(sizeof(T)*4))));
+                                                ^
+
+"Test_name.c", line 23: warning: unknown attribute "align_value"
+    void foo(T &b __attribute__((align_value(sizeof(T)+1))));
+                                 ^
+
+"Test_name.c", line 36: warning: unknown attribute "align_value"
+  void f(T __attribute__((align_value(4))) x) {} // expected-warning 2 {{'align_value' attribute only applies to a pointer or reference ('int' is invalid)}}
+                          ^
+

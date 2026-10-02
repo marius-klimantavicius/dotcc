@@ -1,0 +1,85 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./analyzer/uninit-1.c", line 7: warning: variable "i" is used before its value is set
+    return i;
+           ^
+
+"./analyzer/uninit-1.c", line 13: warning: variable "i" is used before its value is set
+    return i * 2;
+           ^
+
+"./analyzer/uninit-1.c", line 25: warning: variable "p" is used before its value is set
+    return *p;
+            ^
+
+"./analyzer/uninit-1.c", line 44: warning: variable "arr" is used before its value is set
+    return arr[i];
+           ^
+
+"./analyzer/uninit-1.c", line 50: warning: variable "j" is used before its value is set
+    return i >> j;
+                ^
+
+"./analyzer/uninit-1.c", line 56: warning: variable "j" is used before its value is set
+    return i << j;
+                ^
+
+"./analyzer/uninit-1.c", line 62: warning: variable "j" is used before its value is set
+    return j >> i;
+           ^
+
+"./analyzer/uninit-1.c", line 68: warning: variable "j" is used before its value is set
+    return j << i;
+           ^
+
+"./analyzer/uninit-1.c", line 74: warning: variable "j" is used before its value is set
+    return i < j;
+               ^
+
+"./analyzer/uninit-1.c", line 80: warning: variable "y" is used before its value is set
+    return x + y;
+               ^
+
+"./analyzer/uninit-1.c", line 86: warning: variable "y" is used before its value is set
+    return y + x;
+           ^
+
+"./analyzer/uninit-1.c", line 92: warning: variable "y" is used before its value is set
+    return x - y;
+               ^
+
+"./analyzer/uninit-1.c", line 98: warning: variable "y" is used before its value is set
+    return y - x;
+           ^
+
+"./analyzer/uninit-1.c", line 104: warning: variable "y" is used before its value is set
+    return x * y;
+               ^
+
+"./analyzer/uninit-1.c", line 110: warning: variable "y" is used before its value is set
+    return y * x;
+           ^
+
+"./analyzer/uninit-1.c", line 116: warning: variable "y" is used before its value is set
+    return x / y;
+               ^
+
+"./analyzer/uninit-1.c", line 122: warning: variable "y" is used before its value is set
+    return y / x;
+           ^
+
+"./analyzer/uninit-1.c", line 128: warning: variable "ptr" is used before its value is set
+    return __builtin_strlen (ptr);
+                             ^
+
+"./analyzer/uninit-1.c", line 134: warning: variable "fn_ptr" is used before its value is set
+    fn_ptr ();
+    ^
+
+"./analyzer/uninit-1.c", line 140: warning: variable "fn_ptr" is used before its value is set
+    return fn_ptr ();
+           ^
+
+"./analyzer/uninit-1.c", line 147: warning: variable "i" is used before its value is set
+    called_by_uninit_arg (i);
+                          ^
+

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 9: error: argument of type "struct S" is incompatible with parameter of type "int"
+    __builtin_set_flt_rounds(s); // expected-error {{passing 'struct S' to parameter of incompatible type}}
+                             ^
+
+"Test_name.c", line 9: warning: variable "s" is used before its value is set
+    __builtin_set_flt_rounds(s); // expected-error {{passing 'struct S' to parameter of incompatible type}}
+                             ^
+
+1 error detected in the compilation of "Test_name.c".

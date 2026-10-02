@@ -1,0 +1,218 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c99 Test_name.c
+"Test_name.c", line 11: error: expected a type specifier
+  int f4(*XX)(void); /* expected-error {{cannot return}} expected-error {{type specifier missing, defaults to 'int'; ISO C99 and later do not support implicit int}} */
+         ^
+
+"Test_name.c", line 11: error: function returning function is not allowed
+  int f4(*XX)(void); /* expected-error {{cannot return}} expected-error {{type specifier missing, defaults to 'int'; ISO C99 and later do not support implicit int}} */
+              ^
+
+"Test_name.c", line 12: error: expected an expression
+  int f5(int [static]); /* expected-error {{'static' may not be used without an array size}} */
+                    ^
+
+"Test_name.c", line 28: warning: variable "Array" was declared but never referenced
+    int Array[*(int*)P+A];
+        ^
+
+"Test_name.c", line 33: error: a typedef name may not be redeclared as a parameter
+             atype         /* expected-error {{unexpected type name 'atype': expected identifier}} */
+             ^
+
+"Test_name.c", line 36: error: duplicate parameter name
+  void test4(x, x) int x; {} // expected-error {{redefinition of parameter 'x'}} \
+                ^
+
+"Test_name.c", line 41: error: expected an identifier
+  int (test5), ;  // expected-error {{expected identifier or '('}}
+               ^
+
+"Test_name.c", line 47: error: identifier "foo_t" is undefined
+  foo_t *d;      // expected-error {{unknown type name 'foo_t'}}
+  ^
+
+"Test_name.c", line 48: error: identifier "foo_t" is undefined
+  foo_t a;   // expected-error {{unknown type name 'foo_t'}}
+  ^
+
+"Test_name.c", line 56: error: identifier "xyz" is undefined
+  xyz b;         // expected-error {{must use 'struct' tag to refer to type 'xyz'}}
+  ^
+
+"Test_name.c", line 57: error: identifier "myenum" is undefined
+  myenum c;      // expected-error {{must use 'enum' tag to refer to type 'myenum'}}
+  ^
+
+"Test_name.c", line 69: warning: explicit type is missing ("int" assumed)
+  static f;      // expected-error {{type specifier missing, defaults to 'int'; ISO C99 and later do not support implicit int}}
+         ^
+
+"Test_name.c", line 70: warning: explicit type is missing ("int" assumed)
+  static g = 4;  // expected-error {{type specifier missing, defaults to 'int'; ISO C99 and later do not support implicit int}}
+         ^
+
+"Test_name.c", line 71: warning: explicit type is missing ("int" assumed)
+  static h        // expected-error {{type specifier missing, defaults to 'int'; ISO C99 and later do not support implicit int}}
+         ^
+
+"Test_name.c", line 77: error: expected a ";"
+    int y;
+    ^
+
+"Test_name.c", line 79: warning: expected a ";"
+  };
+  ^
+
+"Test_name.c", line 88: error: expected an identifier
+  struct X<foo::int> { }; // expected-error{{expected identifier or '('}}
+          ^
+
+"Test_name.c", line 88: error: expected a ";"
+  struct X<foo::int> { }; // expected-error{{expected identifier or '('}}
+                     ^
+
+"Test_name.c", line 95: error: expected a "{"
+  void test14a(void);
+  ^
+
+"Test_name.c", line 98: warning: parsing restarts here after previous syntax error
+  long struct X { int x; } test15(void); // expected-error {{'long struct' is invalid}}
+                ^
+
+"Test_name.c", line 98: warning: variable "x" was declared but never referenced
+  long struct X { int x; } test15(void); // expected-error {{'long struct' is invalid}}
+                      ^
+
+"Test_name.c", line 98: warning: this declaration has no storage class or type specifier
+  long struct X { int x; } test15(void); // expected-error {{'long struct' is invalid}}
+                           ^
+
+"Test_name.c", line 100: error: expected a ";"
+  void test16(i) int i j; { } // expected-error {{expected ';' at end of declaration}} \
+                       ^
+
+"Test_name.c", line 102: error: expected a ";"
+  void test17(i, j) int i, j k; { } // expected-error {{expected ';' at end of declaration}} \
+                             ^
+
+"Test_name.c", line 104: error: expected a ";"
+  void knrNoSemi(i) int i { } // expected-error {{expected ';' at end of declaration}} \
+                          ^
+
+"Test_name.c", line 118: warning: parsing restarts here after previous syntax error
+  };
+   ^
+
+"Test_name.c", line 121: warning: declaration is not visible outside of function
+  enum E11 {
+       ^
+
+"Test_name.c", line 121: warning: a declaration here must declare a parameter
+  enum E11 {
+  ^
+
+"Test_name.c", line 125: warning: declaration is not visible outside of function
+  enum E12 {
+       ^
+
+"Test_name.c", line 126: error: expected an identifier
+    ,  // expected-error{{expected identifier}}
+    ^
+
+"Test_name.c", line 125: warning: a declaration here must declare a parameter
+  enum E12 {
+  ^
+
+"Test_name.c", line 129: error: a declaration here must declare a parameter
+  void func_E12(enum E12 *p) { *p = A2; }
+       ^
+
+"Test_name.c", line 129: error: expected a ";"
+  void func_E12(enum E12 *p) { *p = A2; }
+                             ^
+
+"Test_name.c", line 132: error: extra text after expected end of number
+    1D,  // expected-error{{expected identifier}}
+     ^
+
+"Test_name.c", line 134: warning: parsing restarts here after previous syntax error
+  };
+   ^
+
+"Test_name.c", line 135: warning: declaration is not visible outside of function
+  void func_E13(enum E13 *p) { *p = A3; }
+                     ^
+
+"Test_name.c", line 135: error: a declaration here must declare a parameter
+  void func_E13(enum E13 *p) { *p = A3; }
+       ^
+
+"Test_name.c", line 135: error: expected a ";"
+  void func_E13(enum E13 *p) { *p = A3; }
+                             ^
+
+"Test_name.c", line 140: warning: parsing restarts here after previous syntax error
+  };
+   ^
+
+"Test_name.c", line 141: warning: declaration is not visible outside of function
+  void func_E14(enum E14 *p) { *p = A4a; }
+                     ^
+
+"Test_name.c", line 141: error: a declaration here must declare a parameter
+  void func_E14(enum E14 *p) { *p = A4a; }
+       ^
+
+"Test_name.c", line 141: error: expected a ";"
+  void func_E14(enum E14 *p) { *p = A4a; }
+                             ^
+
+"Test_name.c", line 146: warning: parsing restarts here after previous syntax error
+  };
+   ^
+
+"Test_name.c", line 147: warning: declaration is not visible outside of function
+  void func_E15(enum E15 *p) { *p = A5a; }
+                     ^
+
+"Test_name.c", line 147: error: a declaration here must declare a parameter
+  void func_E15(enum E15 *p) { *p = A5a; }
+       ^
+
+"Test_name.c", line 147: error: expected a ";"
+  void func_E15(enum E15 *p) { *p = A5a; }
+                             ^
+
+"Test_name.c", line 152: warning: parsing restarts here after previous syntax error
+  };
+   ^
+
+"Test_name.c", line 154: error: a declaration here must declare a parameter
+  int PR20634 = sizeof(struct { int n; } [5]);
+      ^
+
+"Test_name.c", line 154: error: a parameter declaration may not have an initializer
+  int PR20634 = sizeof(struct { int n; } [5]);
+      ^
+
+At end of source: error: expected a "{"
+
+At end of source: error: expected a "}"
+
+"Test_name.c", line 69: warning: variable "f" was declared but never referenced
+  static f;      // expected-error {{type specifier missing, defaults to 'int'; ISO C99 and later do not support implicit int}}
+         ^
+
+"Test_name.c", line 70: warning: variable "g" was declared but never referenced
+  static g = 4;  // expected-error {{type specifier missing, defaults to 'int'; ISO C99 and later do not support implicit int}}
+         ^
+
+"Test_name.c", line 71: warning: variable "h" was declared but never referenced
+  static h        // expected-error {{type specifier missing, defaults to 'int'; ISO C99 and later do not support implicit int}}
+         ^
+
+"Test_name.c", line 82: warning: variable "test10x" was declared but never referenced
+  struct test10 { int a; } static test10x;
+                                  ^
+
+31 errors detected in the compilation of "Test_name.c".

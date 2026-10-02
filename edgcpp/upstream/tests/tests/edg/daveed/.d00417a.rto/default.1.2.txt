@@ -1,0 +1,13 @@
+./a.out
+              (int)0 1
+  (unsigned char)'a' 1
+           (enum E)0 1
+            (void*)0 5
+                 1.2 8
+(_Complex float)(3.0+2.0i) 9
+       *(void(*)())0 5
+                   s 12
+                   u 13
+    ((int[2]){1, 2}) 5
+                "Hi" 5
+((char const[2]){'a', '\0'}) 5

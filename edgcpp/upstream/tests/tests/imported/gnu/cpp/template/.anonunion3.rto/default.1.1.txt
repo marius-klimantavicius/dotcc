@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: error: class "union <unnamed>" has no suitable copy constructor
+   T u(*t);
+       ^
+          detected during instantiation of "const char *f(T *) [with T=union <unnamed>]" at line 16
+
+"Test_name.c", line 10: error: union "<unnamed>" has no member "x"
+   u.x = "hello world";
+     ^
+          detected during instantiation of "const char *f(T *) [with T=union <unnamed>]" at line 16
+
+"Test_name.c", line 11: error: union "<unnamed>" has no member "x"
+   printf("%s\n", u.x);
+                    ^
+          detected during instantiation of "const char *f(T *) [with T=union <unnamed>]" at line 16
+
+3 errors detected in the compilation of "Test_name.c".

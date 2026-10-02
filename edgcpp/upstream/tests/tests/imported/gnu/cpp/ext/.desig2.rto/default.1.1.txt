@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 28: error: out-of-order initializers are nonstandard in C++
+  __extension__ A b = { .j = 2, .i = 1 }; // { dg-error "designator order for field 'A::i' does not match declaration order in 'A'" }
+                                 ^
+
+1 error detected in the compilation of "Test_name.c".

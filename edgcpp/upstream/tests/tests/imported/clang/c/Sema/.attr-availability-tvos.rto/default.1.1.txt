@@ -1,0 +1,134 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -DUSE_VERSION_MAP --c Test_name.c
+"Test_name.c", line 6: warning: the "availability" attribute used here is ignored
+  void f0(int) __attribute__((availability(tvos,introduced=12.0,deprecated=12.1))); // expected-note {{'f0' has been explicitly marked deprecated here}}
+                              ^
+
+"Test_name.c", line 7: warning: the "availability" attribute used here is ignored
+  void f1(int) __attribute__((availability(tvos,introduced=12.1)));
+                              ^
+
+"Test_name.c", line 8: warning: the "availability" attribute used here is ignored
+  void f2(int) __attribute__((availability(tvos,introduced=12.0,deprecated=13.0))); // expected-note {{'f2' has been explicitly marked deprecated here}}
+                              ^
+
+"Test_name.c", line 9: warning: the "availability" attribute used here is ignored
+  void f3(int) __attribute__((availability(tvos,introduced=13.0)));
+                              ^
+
+"Test_name.c", line 10: warning: the "availability" attribute used here is ignored
+  void f4(int) __attribute__((availability(macosx,introduced=10.1,deprecated=10.3,obsoleted=10.5), availability(tvos,introduced=12.0,deprecated=12.1,obsoleted=13.0))); // expected-note{{explicitly marked unavailable}}
+                              ^
+
+"Test_name.c", line 10: warning: the "availability" attribute used here is ignored
+  void f4(int) __attribute__((availability(macosx,introduced=10.1,deprecated=10.3,obsoleted=10.5), availability(tvos,introduced=12.0,deprecated=12.1,obsoleted=13.0))); // expected-note{{explicitly marked unavailable}}
+                                                                                                   ^
+
+"Test_name.c", line 12: warning: the "availability" attribute used here is ignored
+  void f5(int) __attribute__((availability(tvos,introduced=12.0))) __attribute__((availability(tvos,deprecated=13.0))); // expected-note {{'f5' has been explicitly marked deprecated here}}
+                              ^
+
+"Test_name.c", line 12: warning: the "availability" attribute used here is ignored
+  void f5(int) __attribute__((availability(tvos,introduced=12.0))) __attribute__((availability(tvos,deprecated=13.0))); // expected-note {{'f5' has been explicitly marked deprecated here}}
+                                                                                  ^
+
+"Test_name.c", line 13: warning: the "availability" attribute used here is ignored
+  void f6(int) __attribute__((availability(tvos,deprecated=13.0))); // expected-note {{'f6' has been explicitly marked deprecated here}}
+                              ^
+
+"Test_name.c", line 14: warning: the "availability" attribute used here is ignored
+  void f6(int) __attribute__((availability(tvos,introduced=12.0)));
+                              ^
+
+"Test_name.c", line 27: warning: the "availability" attribute used here is ignored
+  void f9(int) __attribute__((availability(ios,introduced=12.0,deprecated=19.0)));
+                              ^
+
+"Test_name.c", line 33: error: extra text after expected end of number
+  __attribute__((availability(ios,introduced=19_0,deprecated=19_0,message="" ))) // expected-warning 2{{availability does not match previous declaration}}
+                                               ^
+
+"Test_name.c", line 33: error: extra text after expected end of number
+  __attribute__((availability(ios,introduced=19_0,deprecated=19_0,message="" ))) // expected-warning 2{{availability does not match previous declaration}}
+                                                               ^
+
+"Test_name.c", line 34: error: extra text after expected end of number
+  __attribute__((availability(ios,introduced=17_0)))                             // expected-note 2{{previous attribute is here}}
+                                               ^
+
+"Test_name.c", line 33: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(ios,introduced=19_0,deprecated=19_0,message="" ))) // expected-warning 2{{availability does not match previous declaration}}
+                 ^
+
+"Test_name.c", line 34: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(ios,introduced=17_0)))                             // expected-note 2{{previous attribute is here}}
+                 ^
+
+"Test_name.c", line 38: warning: the "availability" attribute used here is ignored
+  void f0_tvos(int) __attribute__((availability(tvos,introduced=12.0,deprecated=12.1))); // expected-note {{'f0_tvos' has been explicitly marked deprecated here}}
+                                   ^
+
+"Test_name.c", line 39: warning: the "availability" attribute used here is ignored
+  void f1_tvos(int) __attribute__((availability(tvos,introduced=12.1)));
+                                   ^
+
+"Test_name.c", line 40: warning: the "availability" attribute used here is ignored
+  void f2_tvos(int) __attribute__((availability(tvOS,introduced=12.0,deprecated=13.0))); // expected-note {{'f2_tvos' has been explicitly marked deprecated here}}
+                                   ^
+
+"Test_name.c", line 41: warning: the "availability" attribute used here is ignored
+  void f3_tvos(int) __attribute__((availability(tvos,introduced=13.0)));
+                                   ^
+
+"Test_name.c", line 42: warning: the "availability" attribute used here is ignored
+  void f4_tvos(int) __attribute__((availability(macosx,introduced=10.1,deprecated=10.3,obsoleted=10.5), availability(tvos,introduced=12.0,deprecated=12.1,obsoleted=13.0))); // expected-note{{explicitly marked unavailable}}
+                                   ^
+
+"Test_name.c", line 42: warning: the "availability" attribute used here is ignored
+  void f4_tvos(int) __attribute__((availability(macosx,introduced=10.1,deprecated=10.3,obsoleted=10.5), availability(tvos,introduced=12.0,deprecated=12.1,obsoleted=13.0))); // expected-note{{explicitly marked unavailable}}
+                                                                                                        ^
+
+"Test_name.c", line 43: warning: the "availability" attribute used here is ignored
+  void f5_tvos(int) __attribute__((availability(tvos,introduced=12.0))) __attribute__((availability(ios,deprecated=13.0)));
+                                   ^
+
+"Test_name.c", line 43: warning: the "availability" attribute used here is ignored
+  void f5_tvos(int) __attribute__((availability(tvos,introduced=12.0))) __attribute__((availability(ios,deprecated=13.0)));
+                                                                                       ^
+
+"Test_name.c", line 44: warning: the "availability" attribute used here is ignored
+  void f5_attr_reversed_tvos(int) __attribute__((availability(ios, deprecated=13.0))) __attribute__((availability(tvos,introduced=12.0)));
+                                                 ^
+
+"Test_name.c", line 44: warning: the "availability" attribute used here is ignored
+  void f5_attr_reversed_tvos(int) __attribute__((availability(ios, deprecated=13.0))) __attribute__((availability(tvos,introduced=12.0)));
+                                                                                                     ^
+
+"Test_name.c", line 45: warning: the "availability" attribute used here is ignored
+  void f5b_tvos(int) __attribute__((availability(tvos,introduced=12.0))) __attribute__((availability(tvos,deprecated=13.0))); // expected-note {{'f5b_tvos' has been explicitly marked deprecated here}}
+                                    ^
+
+"Test_name.c", line 45: warning: the "availability" attribute used here is ignored
+  void f5b_tvos(int) __attribute__((availability(tvos,introduced=12.0))) __attribute__((availability(tvos,deprecated=13.0))); // expected-note {{'f5b_tvos' has been explicitly marked deprecated here}}
+                                                                                        ^
+
+"Test_name.c", line 46: warning: the "availability" attribute used here is ignored
+  void f5c_tvos(int) __attribute__((availability(ios,introduced=12.0))) __attribute__((availability(ios,deprecated=13.0))); // expected-note {{'f5c_tvos' has been explicitly marked deprecated here}}
+                                    ^
+
+"Test_name.c", line 46: warning: the "availability" attribute used here is ignored
+  void f5c_tvos(int) __attribute__((availability(ios,introduced=12.0))) __attribute__((availability(ios,deprecated=13.0))); // expected-note {{'f5c_tvos' has been explicitly marked deprecated here}}
+                                                                                       ^
+
+"Test_name.c", line 47: warning: the "availability" attribute used here is ignored
+  void f6_tvos(int) __attribute__((availability(tvos,deprecated=13.0))); // expected-note {{'f6_tvos' has been explicitly marked deprecated here}}
+                                   ^
+
+"Test_name.c", line 48: warning: the "availability" attribute used here is ignored
+  void f6_tvos(int) __attribute__((availability(tvOS,introduced=12.0)));
+                                   ^
+
+"Test_name.c", line 70: warning: the "availability" attribute used here is ignored
+  void f11(int) __attribute__((availability(ios,deprecated=9.3))); // expected-note {{'f11' has been explicitly marked deprecated here}}
+                               ^
+
+3 errors detected in the compilation of "Test_name.c".

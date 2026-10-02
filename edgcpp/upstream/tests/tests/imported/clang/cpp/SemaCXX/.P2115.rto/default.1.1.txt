@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 21: error: this declaration has no storage class or type specifier
+  import "A.h";
+  ^
+
+"Test_name.c", line 21: error: expected a ";"
+  import "A.h";
+         ^
+
+"Test_name.c", line 22: error: this declaration has no storage class or type specifier
+  import "B.h";
+  ^
+
+"Test_name.c", line 22: error: variable "import" has already been defined (previous definition at line 21)
+  import "B.h";
+  ^
+
+"Test_name.c", line 22: error: expected a ";"
+  import "B.h";
+         ^
+
+5 errors detected in the compilation of "Test_name.c".

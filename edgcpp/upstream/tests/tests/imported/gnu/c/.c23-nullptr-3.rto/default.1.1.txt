@@ -1,0 +1,106 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 19: error: operand types are incompatible ("nullptr_t" and "int")
+    (void) (nullptr == 1); /* { dg-error "invalid operands" } */
+                    ^
+
+"Test_name.c", line 20: error: operand types are incompatible ("int" and "nullptr_t")
+    (void) (1 == nullptr); /* { dg-error "invalid operands" } */
+              ^
+
+"Test_name.c", line 21: error: operand types are incompatible ("nullptr_t" and "int")
+    (void) (nullptr != 1); /* { dg-error "invalid operands" } */
+                    ^
+
+"Test_name.c", line 22: error: operand types are incompatible ("int" and "nullptr_t")
+    (void) (1 != nullptr); /* { dg-error "invalid operands" } */
+              ^
+
+"Test_name.c", line 23: error: operand types are incompatible ("int" and "nullptr_t")
+    (void) (1 > nullptr); /* { dg-error "invalid operands" } */
+              ^
+
+"Test_name.c", line 30: error: a value of type "nullptr_t" cannot be used to initialize an entity of type "int"
+    int p = nullptr; /* { dg-error "incompatible types" } */
+            ^
+
+"Test_name.c", line 31: error: a value of type "nullptr_t" cannot be used to initialize an entity of type "float"
+    float d = nullptr; /* { dg-error "incompatible types" } */
+              ^
+
+"Test_name.c", line 32: error: a value of type "nullptr_t" cannot be used to initialize an entity of type "char"
+    char arr[10] = { nullptr }; /* { dg-error "incompatible types" } */
+                     ^
+
+"Test_name.c", line 35: error: expression must have arithmetic type
+    +nullptr; /* { dg-error "wrong type argument to unary plus" } */
+     ^
+
+"Test_name.c", line 37: error: argument of type "double" is incompatible with parameter of type "nullptr_t"
+    g (0.0); /* { dg-error "incompatible type" } */
+       ^
+
+"Test_name.c", line 38: error: argument of type "int" is incompatible with parameter of type "nullptr_t"
+    g (1); /* { dg-error "incompatible type" } */
+       ^
+
+"Test_name.c", line 39: error: argument of type "int" is incompatible with parameter of type "nullptr_t"
+    g ((int) (float) 0.0); /* { dg-error "incompatible type" } */
+       ^
+
+"Test_name.c", line 40: error: expression must have arithmetic type
+    int i = 42 + nullptr; /* { dg-error "invalid operands" } */
+                 ^
+
+"Test_name.c", line 46: error: a value of type "int" cannot be assigned to an entity of type "nullptr_t"
+    m = 1; /* { dg-error "incompatible types" } */
+      ^
+
+"Test_name.c", line 47: error: a value of type "double" cannot be assigned to an entity of type "nullptr_t"
+    m = 0.0; /* { dg-error "incompatible types" } */
+      ^
+
+"Test_name.c", line 49: error: a value of type "int" cannot be used to initialize an entity of type "nullptr_t"
+    nullptr_t o = 1; /* { dg-error "incompatible types" } */
+                  ^
+
+"Test_name.c", line 50: error: invalid type conversion
+    (nullptr_t) 0.0; /* { dg-error "conversion" } */
+    ^
+
+"Test_name.c", line 51: error: invalid type conversion
+    (nullptr_t) (int) (float) 0.0; /* { dg-error "conversion" } */
+    ^
+
+"Test_name.c", line 53: error: expression must have integral type
+    switch (nullptr); /* { dg-error "switch quantity not an integer" } */
+            ^
+
+"Test_name.c", line 29: warning: variable "nptr" was declared but never referenced
+    const nullptr_t nptr = nullptr;
+                    ^
+
+"Test_name.c", line 64: error: operand types are incompatible ("nullptr_t" and "int")
+    __auto_type a1 = b ? nptr : i; /* { dg-error "type mismatch" } */
+                              ^
+
+"Test_name.c", line 65: error: operand types are incompatible ("int" and "nullptr_t")
+    __auto_type a2 = b ? i : nptr; /* { dg-error "type mismatch" } */
+                           ^
+
+"Test_name.c", line 66: warning: variable "a3" was declared but never referenced
+    __auto_type a3 = b ? nptr : 0; /* { dg-error "type mismatch" } */
+                ^
+
+"Test_name.c", line 67: warning: variable "a4" was declared but never referenced
+    __auto_type a4 = b ? 0 : nptr; /* { dg-error "type mismatch" } */
+                ^
+
+"Test_name.c", line 68: warning: variable "a5" was declared but never referenced
+    __auto_type a5 = b ? 0 : nullptr; /* { dg-error "type mismatch" } */
+                ^
+
+"Test_name.c", line 69: warning: variable "a6" was declared but never referenced
+    __auto_type a6 = b ? nullptr : 0; /* { dg-error "type mismatch" } */
+                ^
+
+21 errors detected in the compilation of "Test_name.c".

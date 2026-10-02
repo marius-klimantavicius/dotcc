@@ -1,0 +1,19 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 18: error: expression must have a constant value
+    foo<C,m>((void *)c);// { dg-error "(not a valid template arg|pointer-to-member|no matching fun|could not convert|constant)" }
+          ^
+"Test_name.c", line 18: note: the value of parameter "m" (declared at line 16) cannot be used as a constant
+    foo<C,m>((void *)c);// { dg-error "(not a valid template arg|pointer-to-member|no matching fun|could not convert|constant)" }
+          ^
+          detected during instantiation of "void bar(C *, void (C::*)()) [with C=S]" at line 30
+
+"Test_name.c", line 18: error: no instance of function template "foo" matches the argument list
+            argument types are: (void *)
+    foo<C,m>((void *)c);// { dg-error "(not a valid template arg|pointer-to-member|no matching fun|could not convert|constant)" }
+    ^
+"Test_name.c", line 8: note: substituting explicit template arguments "<S, <expression>>" for function template "foo" failed
+  void foo(void *obj)
+       ^
+          detected during instantiation of "void bar(C *, void (C::*)()) [with C=S]" at line 30
+
+2 errors detected in the compilation of "Test_name.c".

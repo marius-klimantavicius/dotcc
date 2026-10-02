@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 6: warning: unknown attribute "function_return"
+  __attribute__((function_return("keep"))) void x(void) {}
+                 ^
+
+"Test_name.c", line 9: warning: unknown attribute "function_return"
+  __attribute__((function_return("thunk"))) void y(void) {}
+                 ^
+
+"Test_name.c", line 12: warning: unknown attribute "function_return"
+  __attribute__((function_return("thunk-inline"))) void z(void) {}
+                 ^
+
+"Test_name.c", line 15: warning: unknown attribute "function_return"
+  __attribute__((function_return("thunk-extern"))) void w(void) {}
+                 ^
+
+"Test_name.c", line 18: warning: unknown attribute "function_return"
+  __attribute__((function_return("invalid"))) void v(void) {}
+                 ^
+

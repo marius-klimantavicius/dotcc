@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 24: error: invalid alignment value specified by attribute
+  static int yn __attribute__ ((aligned (align_BAD))); /* { dg-error {requested alignment .[0-9]+. exceeds object file maximum} } */
+                                         ^
+
+"Test_name.c", line 25: error: invalid alignment value specified by attribute
+  static int yi __attribute__ ((aligned (align_BAD))) = 5;  /* { dg-error {requested alignment .[0-9]+. exceeds object file maximum} } */
+                                         ^
+
+"Test_name.c", line 26: error: invalid alignment value specified by attribute
+  int yni __attribute__ ((aligned (align_BAD))) = 6;  /* { dg-error {requested alignment .[0-9]+. exceeds object file maximum} } */
+                                   ^
+
+"Test_name.c", line 19: warning: variable "xn" was declared but never referenced
+  static int xn __attribute__ ((aligned (align_OK)));
+             ^
+
+"Test_name.c", line 20: warning: variable "xi" was declared but never referenced
+  static int xi __attribute__ ((aligned (align_OK))) = 5  ;
+             ^
+
+"Test_name.c", line 24: warning: variable "yn" was declared but never referenced
+  static int yn __attribute__ ((aligned (align_BAD))); /* { dg-error {requested alignment .[0-9]+. exceeds object file maximum} } */
+             ^
+
+"Test_name.c", line 25: warning: variable "yi" was declared but never referenced
+  static int yi __attribute__ ((aligned (align_BAD))) = 5;  /* { dg-error {requested alignment .[0-9]+. exceeds object file maximum} } */
+             ^
+
+3 errors detected in the compilation of "Test_name.c".

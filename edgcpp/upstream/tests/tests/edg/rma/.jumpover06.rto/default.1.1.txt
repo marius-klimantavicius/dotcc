@@ -1,0 +1,35 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 4: remark: parameter "i" was never referenced
+  void g(int i) { }
+             ^
+
+"Test_name.c", line 6: error: transfer of control bypasses initialization of:
+            variable "b" (declared at line 8)
+    if (i) goto L1;
+           ^
+
+"Test_name.c", line 11: error: transfer of control bypasses initialization of:
+            variable "a" (declared at line 13)
+    if (i) goto L2;
+           ^
+
+"Test_name.c", line 16: error: transfer of control bypasses initialization of:
+            variable "a" (declared at line 18)
+            variable "b" (declared at line 19)
+    if (i) goto L3;
+           ^
+
+"Test_name.c", line 22: error: transfer of control bypasses initialization of:
+            variable "b" (declared at line 24)
+            variable "c" (declared at line 25)
+    if (i) goto L4;
+           ^
+
+"Test_name.c", line 28: error: transfer of control bypasses initialization of:
+            variable "a" (declared at line 30)
+            variable "b" (declared at line 31)
+            variable "c" (declared at line 32)
+    if (i) goto L5;
+           ^
+
+5 errors detected in the compilation of "Test_name.c".

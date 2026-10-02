@@ -1,0 +1,12 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 6: error: "A::A()" (declared at line 4) is inaccessible
+  class E : public A, public B { };
+                   ^
+          detected during implicit generation of "E::E()" at line 7
+
+"Test_name.c", line 6: error: no default constructor exists for class "B"
+  class E : public A, public B { };
+                             ^
+          detected during implicit generation of "E::E()" at line 7
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,6 @@
+./a.out
+Strings should not be equal: __FUNCTION__ should preserve the
+UTF-8 encoding, while the literal should be "??????".
+With NATIVE_MULTIBYTE_CHARS_SUPPORTED_WITH_UNICODE == 0, however, this is not true.
+d8 a7 d8 ae d8 aa d8 a8 d8 a7 d8 b1 
+d8 a7 d8 ae d8 aa d8 a8 d8 a7 d8 b1 

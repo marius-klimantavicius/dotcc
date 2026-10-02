@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 54: warning: enumerated type mixed with another type
+      case 3: return 3;
+           ^
+
+"Test_name.c", line 60: warning: enumerated type mixed with another type
+      case 3: return 3;
+           ^
+

@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=2 --multi_trans_unit other-tu.c --c++11 --g++ Test_name.c

@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 14: error: "..." is not allowed
+  template<class T, class ... Ts> T* f(Ts ..., const long&);
+                          ^
+
+"Test_name.c", line 14: error: a nontype template parameter may not have class type
+  template<class T, class ... Ts> T* f(Ts ..., const long&);
+                    ^
+
+"Test_name.c", line 14: error: expected a ")"
+  template<class T, class ... Ts> T* f(Ts ..., const long&);
+                                             ^
+
+3 errors detected in the compilation of "Test_name.c".

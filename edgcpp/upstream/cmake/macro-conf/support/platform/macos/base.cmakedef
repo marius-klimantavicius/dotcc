@@ -1,0 +1,14 @@
+# Import the base EDG configuration
+import <support/platform/common/base>
+
+# Common MacOS Variables
+GNU_EXTENSIONS_ALLOWED=1
+GNU_VISIBILITY_ATTRIBUTE_ALLOWED=1
+IA64_ABI=1
+
+TARG_MINIMUM_PACK_ALIGNMENT=1
+TARG_MAXIMUM_PACK_ALIGNMENT=32768
+TYPE_FOR_TARG_ALIGNMENT=unsigned short
+
+# The jump buffer type on MacOS is always an integer.
+TARG_JMP_BUF_ELEMENT_INT_KIND=((an_integer_kind)ik_int)

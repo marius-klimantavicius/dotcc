@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=4 --ms_c++17 --microsoft_version=1930 Test_name.c
+"Test_name.c", line 16: error: const member "mbr::C<I>::var [with I=0]" requires an initializer
+    const int C<0>::var;          // missing initializer in MSVC mode
+                    ^
+
+"Test_name.c", line 19: error: member "mbr::C<I>::var [with I=0]" has already been defined (previous definition at line 16)
+    const int C<0>::var = 2;      // already defined in MSVC mode
+                    ^
+
+"Test_name.c", line 22: error: const variable "mbr::C<I>::tvar<0> [with I=0]" requires an initializer
+    const int C<0>::tvar<0>;      // missing initializer in MSVC >= 1910
+                    ^
+
+"Test_name.c", line 25: error: variable "mbr::C<I>::tvar<0> [with I=0]" has already been defined (previous definition at line 22)
+    const int C<0>::tvar<0> = 2;
+                    ^
+
+"Test_name.c", line 37: error: const variable "mbr_tmpl::C::tvar<0>" requires an initializer
+    const int C::tvar<0>;         // missing initializer for MSVC >=1910
+                 ^
+
+"Test_name.c", line 40: error: variable "mbr_tmpl::C::tvar<0>" has already been defined (previous definition at line 37)
+    const int C::tvar<0> = 2;
+                 ^
+
+"Test_name.c", line 78: error: variable "non_trivial_ctor::C::bvar<0>" has already been defined (previous definition at line 74)
+    B C::bvar<0> = B();           // already defined for MSVC 1930
+         ^
+
+7 errors detected in the compilation of "Test_name.c".

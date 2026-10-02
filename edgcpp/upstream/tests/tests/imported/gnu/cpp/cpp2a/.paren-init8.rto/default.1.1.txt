@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 13: error: expected an expression
+  S s(.i = 12); // { dg-error "expected" }
+      ^
+
+"Test_name.c", line 15: error: expected an identifier
+  int a[]([0] = 42); // { dg-error "" }
+           ^
+
+"Test_name.c", line 15: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  int a[]([0] = 42); // { dg-error "" }
+              ^
+
+"Test_name.c", line 15: error: expected a "{" introducing a lambda body
+  int a[]([0] = 42); // { dg-error "" }
+              ^
+
+"Test_name.c", line 15: error: an empty initializer is invalid for an array with unspecified bound
+  int a[]([0] = 42); // { dg-error "" }
+      ^
+
+4 errors detected in the compilation of "Test_name.c".

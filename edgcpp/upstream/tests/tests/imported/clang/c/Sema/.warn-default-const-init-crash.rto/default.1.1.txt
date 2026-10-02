@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 8: error: incomplete type "struct GH140887" is not allowed
+    struct GH140887 s; // expected-error {{field has incomplete type 'struct GH140887'}}
+                    ^
+
+"Test_name.c", line 12: warning: variable "s" was declared but never referenced
+    struct GH140887 s;
+                    ^
+
+1 error detected in the compilation of "Test_name.c".

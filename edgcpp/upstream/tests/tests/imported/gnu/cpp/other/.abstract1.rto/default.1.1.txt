@@ -1,0 +1,48 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 22: error: array of abstract class "Abstract" is not allowed:
+            function "Abstract::f" is a pure virtual function
+  Abstract a0[2];        // { dg-error "" }
+           ^
+
+"Test_name.c", line 23: error: array of abstract class "Abstract" is not allowed:
+            function "Abstract::f" is a pure virtual function
+  Abstract (*a1)[2];
+             ^
+
+"Test_name.c", line 24: error: array of abstract class "Abstract" is not allowed:
+            function "Abstract::f" is a pure virtual function
+  Abstract (**a2)[2];
+              ^
+
+"Test_name.c", line 25: error: array of abstract class "Abstract" is not allowed:
+            function "Abstract::f" is a pure virtual function
+  Abstract (***a3)[2];
+               ^
+
+"Test_name.c", line 28: error: array of abstract class "Abstract" is not allowed:
+            function "Abstract::f" is a pure virtual function
+  Abstract (*a6[2])[2];
+             ^
+
+"Test_name.c", line 31: error: array of abstract class "Abstract" is not allowed:
+            function "Abstract::f" is a pure virtual function
+  Abstract (**a9[2])[2];
+              ^
+
+"Test_name.c", line 40: error: array of abstract class "Abstract" is not allowed:
+            function "Abstract::f" is a pure virtual function
+    T (*a1)[2];
+        ^
+          detected during instantiation of class "K<T> [with T=Abstract]" at line 44
+
+"Test_name.c", line 41: error: array of abstract class "Abstract" is not allowed:
+            function "Abstract::f" is a pure virtual function
+    T (a2)[2];   // { dg-error "abstract" }
+       ^
+          detected during instantiation of class "K<T> [with T=Abstract]" at line 44
+
+"Test_name.c", line 64: error: incomplete type "StaticAssert<false>" is not allowed
+  StaticAssert<sizeof(is_abstract<Abstract>(0)) == sizeof(No)> b1;
+                                                               ^
+
+9 errors detected in the compilation of "Test_name.c".

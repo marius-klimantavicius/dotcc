@@ -1,0 +1,70 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 6: error: "i", declared in for-loop initialization, may not be redeclared in this scope
+         int i = 1; ) { }         // Error (for-init, condition)
+             ^
+
+"Test_name.c", line 5: warning: variable "i" was declared but never referenced
+    for (int i = 0;
+             ^
+
+"Test_name.c", line 8: error: "i", declared in for-loop initialization, may not be redeclared in this scope
+      int i;                      // Error (for-init, outermost)
+          ^
+
+"Test_name.c", line 9: remark: declaration hides variable "i" (declared at line 8)
+      { int i; }                  // Okay
+            ^
+
+"Test_name.c", line 9: warning: variable "i" was declared but never referenced
+      { int i; }                  // Okay
+            ^
+
+"Test_name.c", line 8: warning: variable "i" was declared but never referenced
+      int i;                      // Error (for-init, outermost)
+          ^
+
+"Test_name.c", line 7: warning: variable "i" was declared but never referenced
+    for (int i = 0; ; ) {	   
+             ^
+
+"Test_name.c", line 13: error: "i", declared in condition, may not be redeclared in this scope
+      int i;                      // Error (condition, outermost)
+          ^
+
+"Test_name.c", line 14: remark: declaration hides variable "i" (declared at line 13)
+      { int i; }                  // Okay
+            ^
+
+"Test_name.c", line 14: warning: variable "i" was declared but never referenced
+      { int i; }                  // Okay
+            ^
+
+"Test_name.c", line 13: warning: variable "i" was declared but never referenced
+      int i;                      // Error (condition, outermost)
+          ^
+
+"Test_name.c", line 18: error: "i", declared in for-loop initialization, may not be redeclared in this scope
+         int i = 1; ) {           // Error (for-init, condition)
+             ^
+
+"Test_name.c", line 19: error: "i", declared in condition, may not be redeclared in this scope
+      int i;                      // Error (for-init/condition, outermost)
+          ^
+
+"Test_name.c", line 20: remark: declaration hides variable "i" (declared at line 19)
+      { int i; }                  // Okay
+            ^
+
+"Test_name.c", line 20: warning: variable "i" was declared but never referenced
+      { int i; }                  // Okay
+            ^
+
+"Test_name.c", line 19: warning: variable "i" was declared but never referenced
+      int i;                      // Error (for-init/condition, outermost)
+          ^
+
+"Test_name.c", line 17: warning: variable "i" was declared but never referenced
+    for (int i = 0;	   
+             ^
+
+5 errors detected in the compilation of "Test_name.c".

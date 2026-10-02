@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 141: warning: variable "a" is used before its value is set
+        a && "Too       " ? static_cast<void>(0) : __assert_fail(0);
+        ^
+          detected during:
+            instantiation of "B<XprType> &B<XprType>::operator,(const B<XprType>::Scalar &) [with XprType=N<M, 0, 3, 0, 0, 0>]" at line 170
+            instantiation of "void check_<NT,s>() [with NT=M, s=3]" at line 175
+            instantiation of "void check<NT>() [with NT=M]" at line 180
+

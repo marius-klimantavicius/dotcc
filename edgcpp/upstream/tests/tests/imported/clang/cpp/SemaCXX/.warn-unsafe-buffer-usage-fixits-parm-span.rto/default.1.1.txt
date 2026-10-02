@@ -1,0 +1,61 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"SemaCXX/warn-unsafe-buffer-usage-fixits-parm-span.cpp", line 13: warning: variable "tmp" was set but never used
+    int tmp;
+        ^
+
+"SemaCXX/warn-unsafe-buffer-usage-fixits-parm-span.cpp", line 25: warning: variable "tmp" was set but never used
+    int tmp;
+        ^
+
+"SemaCXX/warn-unsafe-buffer-usage-fixits-parm-span.cpp", line 32: warning: variable "tmp" was declared but never referenced
+    int tmp = x[5];
+        ^
+
+"SemaCXX/warn-unsafe-buffer-usage-fixits-parm-span.cpp", line 46: warning: variable "tmp" was declared but never referenced
+    int tmp = x[5];
+        ^
+
+"SemaCXX/warn-unsafe-buffer-usage-fixits-parm-span.cpp", line 55: warning: variable "tmp" was declared but never referenced
+      auto tmp = p[5];
+           ^
+
+"SemaCXX/warn-unsafe-buffer-usage-fixits-parm-span.cpp", line 61: warning: variable "tmp" was declared but never referenced
+      int tmp = p[5];
+          ^
+
+"SemaCXX/warn-unsafe-buffer-usage-fixits-parm-span.cpp", line 69: warning: variable "tmp" was declared but never referenced
+      int tmp = p[5];
+          ^
+
+"SemaCXX/warn-unsafe-buffer-usage-fixits-parm-span.cpp", line 77: warning: variable "tmp" was declared but never referenced
+      int tmp = p[5];
+          ^
+
+"SemaCXX/warn-unsafe-buffer-usage-fixits-parm-span.cpp", line 131: warning: variable "tmp" was set but never used
+      int tmp = p[5];
+          ^
+
+"SemaCXX/warn-unsafe-buffer-usage-fixits-parm-span.cpp", line 140: warning: variable "tmp" was set but never used
+    int tmp;
+        ^
+
+"SemaCXX/warn-unsafe-buffer-usage-fixits-parm-span.cpp", line 159: warning: variable "tmp" was declared but never referenced
+    int tmp = x[5];
+        ^
+
+"SemaCXX/warn-unsafe-buffer-usage-fixits-parm-span.cpp", line 165: warning: variable "tmp" was declared but never referenced
+    int tmp = x[5];
+        ^
+
+"SemaCXX/warn-unsafe-buffer-usage-fixits-parm-span.cpp", line 169: warning: a volatile function parameter is deprecated
+  void const_volatile_ptr(int * const volatile x) {
+                          ^
+
+"SemaCXX/warn-unsafe-buffer-usage-fixits-parm-span.cpp", line 175: warning: a volatile function parameter is deprecated
+  void volatile_const_ptr(int * volatile const x) {
+                          ^
+
+"SemaCXX/warn-unsafe-buffer-usage-fixits-parm-span.cpp", line 181: warning: a volatile function parameter is deprecated
+  void const_volatile_ptr_to_const_volatile(const volatile int * const volatile x) {
+                                            ^
+

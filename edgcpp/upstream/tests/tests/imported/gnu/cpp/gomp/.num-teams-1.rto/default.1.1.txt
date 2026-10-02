@@ -1,0 +1,97 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 11: warning: unrecognized #pragma
+    #pragma omp teams num_teams (4 : 6)
+            ^
+
+"Test_name.c", line 13: warning: unrecognized #pragma
+    #pragma omp teams num_teams (7)
+            ^
+
+"Test_name.c", line 21: warning: unrecognized #pragma
+    #pragma omp target teams num_teams (5 : 19)
+            ^
+
+"Test_name.c", line 23: warning: unrecognized #pragma
+    #pragma omp target teams num_teams (21)
+            ^
+
+"Test_name.c", line 31: warning: unrecognized #pragma
+    #pragma omp teams num_teams (fn1 (1) : fn1 (2))
+            ^
+
+"Test_name.c", line 33: warning: unrecognized #pragma
+    #pragma omp teams num_teams (fn1 (3))
+            ^
+
+"Test_name.c", line 41: warning: unrecognized #pragma
+    #pragma omp target teams num_teams (fn1 (4) : fn1 (5))
+            ^
+
+"Test_name.c", line 43: warning: unrecognized #pragma
+    #pragma omp target teams num_teams (fn1 (6))
+            ^
+
+"Test_name.c", line 51: warning: unrecognized #pragma
+    #pragma omp target
+            ^
+
+"Test_name.c", line 52: warning: unrecognized #pragma
+    #pragma omp teams num_teams (fn1 (7) : fn1 (8))
+            ^
+
+"Test_name.c", line 54: warning: unrecognized #pragma
+    #pragma omp target
+            ^
+
+"Test_name.c", line 55: warning: unrecognized #pragma
+    #pragma omp teams num_teams (fn1 (9))
+            ^
+
+"Test_name.c", line 63: warning: unrecognized #pragma
+    #pragma omp teams num_teams (N4 : N6)
+            ^
+
+"Test_name.c", line 65: warning: unrecognized #pragma
+    #pragma omp teams num_teams (N7)
+            ^
+
+"Test_name.c", line 73: warning: unrecognized #pragma
+    #pragma omp target teams num_teams (N5 : N19)
+            ^
+
+"Test_name.c", line 75: warning: unrecognized #pragma
+    #pragma omp target teams num_teams (N21)
+            ^
+
+"Test_name.c", line 83: warning: unrecognized #pragma
+    #pragma omp teams num_teams (fn2 (N1) : fn2 (N2))
+            ^
+
+"Test_name.c", line 85: warning: unrecognized #pragma
+    #pragma omp teams num_teams (fn2 (N3))
+            ^
+
+"Test_name.c", line 93: warning: unrecognized #pragma
+    #pragma omp target teams num_teams (fn2 (N4) : fn2 (N5))
+            ^
+
+"Test_name.c", line 95: warning: unrecognized #pragma
+    #pragma omp target teams num_teams (fn2 (N6))
+            ^
+
+"Test_name.c", line 103: warning: unrecognized #pragma
+    #pragma omp target
+            ^
+
+"Test_name.c", line 104: warning: unrecognized #pragma
+    #pragma omp teams num_teams (fn2 (N7) : fn2 (N8))
+            ^
+
+"Test_name.c", line 106: warning: unrecognized #pragma
+    #pragma omp target
+            ^
+
+"Test_name.c", line 107: warning: unrecognized #pragma
+    #pragma omp teams num_teams (fn2 (N9))
+            ^
+

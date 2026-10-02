@@ -1,0 +1,119 @@
+//type: fp
+//options: 
+# 0 "./vect/costmodel/riscv/rvv/dynamic-lmul2-6.c"
+# 0 "<built-in>"
+# 0 "<command-line>"
+# 1 "/usr/include/stdc-predef.h" 1 3 4
+# 0 "<command-line>" 2
+# 1 "./vect/costmodel/riscv/rvv/dynamic-lmul2-6.c"
+
+
+
+# 1 "/mds/gnu/build/gcc-15-20250223/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/stdint-gcc.h" 1 3 4
+# 34 "/mds/gnu/build/gcc-15-20250223/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/stdint-gcc.h" 3 4
+
+# 34 "/mds/gnu/build/gcc-15-20250223/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/stdint-gcc.h" 3 4
+typedef signed char int8_t;
+
+
+typedef short int int16_t;
+
+
+typedef int int32_t;
+
+
+typedef long int int64_t;
+
+
+typedef unsigned char uint8_t;
+
+
+typedef short unsigned int uint16_t;
+
+
+typedef unsigned int uint32_t;
+
+
+typedef long unsigned int uint64_t;
+
+
+
+
+typedef signed char int_least8_t;
+typedef short int int_least16_t;
+typedef int int_least32_t;
+typedef long int int_least64_t;
+typedef unsigned char uint_least8_t;
+typedef short unsigned int uint_least16_t;
+typedef unsigned int uint_least32_t;
+typedef long unsigned int uint_least64_t;
+
+
+
+typedef signed char int_fast8_t;
+typedef long int int_fast16_t;
+typedef long int int_fast32_t;
+typedef long int int_fast64_t;
+typedef unsigned char uint_fast8_t;
+typedef long unsigned int uint_fast16_t;
+typedef long unsigned int uint_fast32_t;
+typedef long unsigned int uint_fast64_t;
+
+
+
+
+typedef long int intptr_t;
+
+
+typedef long unsigned int uintptr_t;
+
+
+
+
+typedef long int intmax_t;
+typedef long unsigned int uintmax_t;
+# 5 "./vect/costmodel/riscv/rvv/dynamic-lmul2-6.c" 2
+
+# 5 "./vect/costmodel/riscv/rvv/dynamic-lmul2-6.c"
+typedef int8_t v128qi __attribute__ ((vector_size (128)));
+
+v128qi global_v;
+
+v128qi
+foo (int32_t *__restrict a, int32_t *__restrict b, int32_t *__restrict c,
+     int32_t *__restrict a2, int32_t *__restrict b2, int32_t *__restrict c2,
+     int32_t *__restrict a3, int32_t *__restrict b3, int32_t *__restrict c3,
+     int32_t *__restrict a4, int32_t *__restrict b4, int32_t *__restrict c4,
+     int32_t *__restrict a5, int32_t *__restrict b5, int32_t *__restrict c5,
+     int32_t *__restrict d, int32_t *__restrict d2, int32_t *__restrict d3,
+     int32_t *__restrict d4, int32_t *__restrict d5, int n)
+{
+  for (int i = 0; i < 128; i++)
+    b[i] = global_v[i] + 8;
+  for (int i = 0; i < n; i++)
+    {
+      a[i] = b[i] + c[i];
+      b5[i] = b[i] + c[i];
+      a2[i] = b2[i] + c2[i];
+      a3[i] = b3[i] + c3[i];
+      a4[i] = b4[i] + c4[i];
+      a5[i] = a[i] + a4[i];
+      d2[i] = a2[i] + c2[i];
+      d3[i] = a3[i] + c3[i];
+      d4[i] = a4[i] + c4[i];
+      d5[i] = a[i] + a4[i];
+      a[i] = a5[i] + b5[i] + a[i];
+
+      c2[i] = a[i] + c[i];
+      c3[i] = b5[i] * a5[i];
+      c4[i] = a2[i] * a3[i];
+      c5[i] = b5[i] * a2[i];
+      c[i] = a[i] + c3[i];
+      c2[i] = a[i] + c4[i];
+      a5[i] = a[i] + a4[i];
+      a[i] = a[i] + b5[i]
+      + a[i] * a2[i] * a3[i] * a4[i] * a5[i] * c[i] * c2[i] * c3[i]
+   * c4[i] * c5[i] * d[i] * d2[i] * d3[i] * d4[i] * d5[i];
+    }
+    return global_v + 3;
+}

@@ -1,0 +1,57 @@
+#!/bin/bash
+
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+# This script is used to invoke container commands. It provides an entry point
+# for "global" modifications for edg-exec that can't otherwise be well
+# encapsulated. Including the user change from root to the appropriate
+# development user.
+
+#
+# Create the user that's actually going to be doing things.
+#
+
+# This may fail on non-Linux systems
+if ! getent group "$EDG_USER_GROUP_ID" 2>&1 > /dev/null ; then
+  groupadd \
+      --gid "$EDG_USER_GROUP_ID" \
+      dev
+fi
+
+useradd \
+    --no-create-home \
+    --uid "$EDG_USER_ID" \
+    --gid "$EDG_USER_GROUP_ID" \
+    dev
+
+
+#
+# Handle the X authentication token (if any).
+#
+
+if [[ -n "$XAUTH_TOKEN" ]] ; then
+  # If an Xauthority file is present, replace it.
+  if [[ -f $HOME/.Xauthority ]] ; then
+    rm $HOME/.Xauthority
+  fi
+  touch $HOME/.Xauthority
+  xauth add $XAUTH_TOKEN
+fi
+
+
+#
+# Configure important environment variables.
+#
+
+# Configure EDG pylibs
+export PYTHONPATH="/edg/tools/pylibs:$PYTHONPATH"
+
+
+#
+# Run the forwarded bash command line as the user created as part of the launch
+# process.
+#
+exec runuser --pty dev -c "$@"

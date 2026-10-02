@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: error: identifier "__int128" is undefined
+    __int128 get1 (void) { return m_i128; }
+    ^
+
+"Test_name.c", line 10: error: expected a ";"
+    unsigned __int128 get2 (void) { return m_u128; }
+                      ^
+
+"Test_name.c", line 13: warning: parsing restarts here after previous syntax error
+    __int128 m_i128;
+                   ^
+
+"Test_name.c", line 14: error: "__int128" has already been declared in the current scope
+    unsigned __int128 m_u128;
+             ^
+
+"Test_name.c", line 14: error: expected a ";"
+    unsigned __int128 m_u128;
+                      ^
+
+"Test_name.c", line 7: error: identifier "m_i128" is undefined
+    S(void) { m_i128 = 0; m_u128 = 0; }
+              ^
+
+"Test_name.c", line 7: error: identifier "m_u128" is undefined
+    S(void) { m_i128 = 0; m_u128 = 0; }
+                          ^
+
+"Test_name.c", line 9: error: identifier "m_i128" is undefined
+    __int128 get1 (void) { return m_i128; }
+                                  ^
+
+"Test_name.c", line 19: error: identifier "__int128" is undefined
+  __int128 fo1 (void) { return glb.get1 (); }
+  ^
+
+"Test_name.c", line 20: error: expected a ";"
+  unsigned __int128 fo2 (void) { return glb.get2 (); }
+                    ^
+
+9 errors detected in the compilation of "Test_name.c".

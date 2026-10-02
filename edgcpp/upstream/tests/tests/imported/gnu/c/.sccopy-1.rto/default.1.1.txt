@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 7: warning: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+  int __GIMPLE (ssa, startwith ("sccopy"))
+                ^
+
+"Test_name.c", line 7: error: expected a ")"
+  int __GIMPLE (ssa, startwith ("sccopy"))
+                               ^
+
+"Test_name.c", line 8: error: expected a declaration
+  main ()
+  ^
+
+"Test_name.c", line 32: warning: parsing restarts here after previous syntax error
+    a_3 = __PHI (__BB3: a_10, __BB4: a_9);
+                                         ^
+
+"Test_name.c", line 7: warning: standard requires that parameter "ssa" be given a type by a subsequent declaration ("int" assumed)
+  int __GIMPLE (ssa, startwith ("sccopy"))
+                ^
+
+"Test_name.c", line 7: warning: standard requires that parameter "startwith" be given a type by a subsequent declaration ("int" assumed)
+  int __GIMPLE (ssa, startwith ("sccopy"))
+                     ^
+
+"Test_name.c", line 33: error: expected a "{"
+    if (x_7(D) == y_8(D))
+    ^
+
+"Test_name.c", line 78: warning: parsing restarts here after previous syntax error
+  }
+  ^
+
+"Test_name.c", line 78: warning: missing return statement at end of non-void function "__GIMPLE"
+  }
+  ^
+
+3 errors detected in the compilation of "Test_name.c".

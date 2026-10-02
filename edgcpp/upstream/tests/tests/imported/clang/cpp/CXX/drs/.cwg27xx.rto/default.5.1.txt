@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=5 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 43: error: expected a ";"
+  A(T...) -> A<int, sizeof...(T)> requires (sizeof...(T) == 2); // #cwg2707-guide-A
+                                  ^
+
+"Test_name.c", line 68: error: invalid type conversion
+    static_cast<D&>(b);
+    ^
+
+"Test_name.c", line 89: error: no valid std::weak_ordering type found (<compare> must be included)
+  static_assert((static_cast<void*>(&x[0]) <=> static_cast<void*>(&x[1])) == std::strong_ordering::less);
+                ^
+
+"Test_name.c", line 89: error: no valid std::partial_ordering type found (<compare> must be included)
+  static_assert((static_cast<void*>(&x[0]) <=> static_cast<void*>(&x[1])) == std::strong_ordering::less);
+                ^
+
+"Test_name.c", line 183: error: static assertion failed
+    static_assert(sizeof(T) == 1);
+    ^
+"Test_name.c", line 183: note: the final comparison was 4 == 1
+    static_assert(sizeof(T) == 1);
+                            ^
+          detected during instantiation of class "cwg2770::B<T> [with T=int]" at line 193
+
+5 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp0x/initlist-n3922.C", line 14: error: cannot deduce "auto" type
+  auto x2 = { 1, 2.0 };
+  ^
+
+"./cpp0x/initlist-n3922.C", line 15: error: braced initialization of a variable declared with a placeholder type but without "=" requires exactly one element inside the braces
+  auto x3{ 1, 2 };
+         ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 10: warning: function declared with "noreturn" does return
+  template <> void f3<1>() { } // expected-warning {{function declared 'noreturn' should not return}}
+                             ^
+
+"Test_name.c", line 20: warning: function declared with "noreturn" does return
+  void A<0>::foo() {} // expected-warning{{function declared 'noreturn' should not return}}
+                    ^
+

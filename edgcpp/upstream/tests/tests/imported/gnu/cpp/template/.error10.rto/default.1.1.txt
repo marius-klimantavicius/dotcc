@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++03 --no_strict_gnu Test_name.c
+"Test_name.c", line 15: error: space required between adjacent ">" delimiters of nested template argument lists (">>" is the right shift operator)
+  A<A<int>> blah;  // { dg-error "should be '> >' within" }
+         ^
+
+"Test_name.c", line 16: error: expected a ">"
+  A<int>> blah2; // { dg-error "spurious '>>'" }
+       ^
+
+"Test_name.c", line 61: error: expression must have a constant value
+  L<H() >> 5> l;  // { dg-error "" "non-constant" }
+    ^
+
+"Test_name.c", line 73: error: identifier "k1" is undefined
+  A<K<&KFunc>> k1;  // { dg-error "" }
+               ^
+
+"Test_name.c", line 73: error: non-integral operation not allowed in nontype template argument
+  A<K<&KFunc>> k1;  // { dg-error "" }
+            ^
+
+"Test_name.c", line 73: error: expected a ">"
+  A<K<&KFunc>> k1;  // { dg-error "" }
+                 ^
+
+"Test_name.c", line 74: error: identifier "k2" is undefined
+  K<&KFunc>> k2; // { dg-error "" }
+             ^
+
+"Test_name.c", line 74: error: non-integral operation not allowed in nontype template argument
+  K<&KFunc>> k2; // { dg-error "" }
+          ^
+
+"Test_name.c", line 74: error: expected a ">"
+  K<&KFunc>> k2; // { dg-error "" }
+               ^
+
+9 errors detected in the compilation of "Test_name.c".

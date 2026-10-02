@@ -1,0 +1,85 @@
+fe_only -DTEST_NUMBER=3 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 25: warning: statement is unreachable
+    return b2;
+    ^
+
+"Test_name.c", line 26: warning: statement is unreachable
+    return std::move(b1);
+    ^
+
+"Test_name.c", line 27: warning: statement is unreachable
+    return std::move(b2);
+    ^
+
+"Test_name.c", line 40: warning: statement is unreachable
+    return a2;
+    ^
+
+"Test_name.c", line 41: warning: statement is unreachable
+    return b1;
+    ^
+
+"Test_name.c", line 42: warning: statement is unreachable
+    return b2;
+    ^
+
+"Test_name.c", line 44: warning: statement is unreachable
+    return std::move(a1);
+    ^
+
+"Test_name.c", line 45: warning: statement is unreachable
+    return std::move(a2);
+    ^
+
+"Test_name.c", line 46: warning: statement is unreachable
+    return std::move(b1);
+    ^
+
+"Test_name.c", line 47: warning: statement is unreachable
+    return std::move(b2);
+    ^
+
+"Test_name.c", line 54: warning: statement is unreachable
+    return b2;
+    ^
+
+"Test_name.c", line 55: warning: statement is unreachable
+    return std::move(b1);
+    ^
+
+"Test_name.c", line 56: warning: statement is unreachable
+    return std::move(b2);
+    ^
+
+"Test_name.c", line 64: warning: statement is unreachable
+    return a2;
+    ^
+
+"Test_name.c", line 65: warning: statement is unreachable
+    return b1;
+    ^
+
+"Test_name.c", line 66: warning: statement is unreachable
+    return b2;
+    ^
+
+"Test_name.c", line 68: warning: statement is unreachable
+    return std::move(a1);
+    ^
+
+"Test_name.c", line 69: warning: statement is unreachable
+    return std::move(a2);
+    ^
+
+"Test_name.c", line 70: warning: statement is unreachable
+    return std::move(b1);
+    ^
+
+"Test_name.c", line 71: warning: statement is unreachable
+    return std::move(b2);
+    ^
+
+"Test_name.c", line 84: warning: statement is unreachable
+    return std::move(d);
+    ^
+

@@ -1,0 +1,410 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 24: error: expression must have a constant value
+  constexpr bool b3  = p0 <  0;   // { dg-error "25:ordered comparison" }
+                       ^
+"Test_name.c", line 24: note: pointer values cannot be compared because they do not point into the same complete object or they point to subobjects with different accessibility
+  constexpr bool b3  = p0 <  0;   // { dg-error "25:ordered comparison" }
+                          ^
+
+"Test_name.c", line 25: error: expression must have a constant value
+  constexpr bool b4  = p0 <= 0;   // { dg-error "25:ordered comparison" }
+                       ^
+"Test_name.c", line 25: note: pointer values cannot be compared because they do not point into the same complete object or they point to subobjects with different accessibility
+  constexpr bool b4  = p0 <= 0;   // { dg-error "25:ordered comparison" }
+                          ^
+
+"Test_name.c", line 26: error: expression must have a constant value
+  constexpr bool b5  = p0 >  0;   // { dg-error "25:ordered comparison" }
+                       ^
+"Test_name.c", line 26: note: pointer values cannot be compared because they do not point into the same complete object or they point to subobjects with different accessibility
+  constexpr bool b5  = p0 >  0;   // { dg-error "25:ordered comparison" }
+                          ^
+
+"Test_name.c", line 27: error: expression must have a constant value
+  constexpr bool b6  = p0 >= 0;   // { dg-error "25:ordered comparison" }
+                       ^
+"Test_name.c", line 27: note: pointer values cannot be compared because they do not point into the same complete object or they point to subobjects with different accessibility
+  constexpr bool b6  = p0 >= 0;   // { dg-error "25:ordered comparison" }
+                          ^
+
+"Test_name.c", line 32: error: expression must have a constant value
+  constexpr bool b10 = 0 <  p0;   // { dg-error "24:ordered comparison" }
+                       ^
+"Test_name.c", line 32: note: pointer values cannot be compared because they do not point into the same complete object or they point to subobjects with different accessibility
+  constexpr bool b10 = 0 <  p0;   // { dg-error "24:ordered comparison" }
+                         ^
+
+"Test_name.c", line 33: error: expression must have a constant value
+  constexpr bool b11 = 0 <= p0;   // { dg-error "24:ordered comparison" }
+                       ^
+"Test_name.c", line 33: note: pointer values cannot be compared because they do not point into the same complete object or they point to subobjects with different accessibility
+  constexpr bool b11 = 0 <= p0;   // { dg-error "24:ordered comparison" }
+                         ^
+
+"Test_name.c", line 34: error: expression must have a constant value
+  constexpr bool b12 = 0 >  p0;   // { dg-error "24:ordered comparison" }
+                       ^
+"Test_name.c", line 34: note: pointer values cannot be compared because they do not point into the same complete object or they point to subobjects with different accessibility
+  constexpr bool b12 = 0 >  p0;   // { dg-error "24:ordered comparison" }
+                         ^
+
+"Test_name.c", line 35: error: expression must have a constant value
+  constexpr bool b13 = 0 >= p0;   // { dg-error "24:ordered comparison" }
+                       ^
+"Test_name.c", line 35: note: pointer values cannot be compared because they do not point into the same complete object or they point to subobjects with different accessibility
+  constexpr bool b13 = 0 >= p0;   // { dg-error "24:ordered comparison" }
+                         ^
+
+"Test_name.c", line 58: warning: unrecognized GCC pragma
+  #pragma GCC diagnostic push
+              ^
+
+"Test_name.c", line 59: warning: unrecognized GCC pragma
+  #pragma GCC diagnostic ignored "-Wextra"
+              ^
+
+"Test_name.c", line 62: error: expression must have a constant value
+  constexpr bool b0  = p0;        // { dg-error "not a constant expression" }
+                       ^
+"Test_name.c", line 62: note: attempt to access run-time storage
+  constexpr bool b0  = p0;        // { dg-error "not a constant expression" }
+                       ^
+
+"Test_name.c", line 63: error: expression must have a constant value
+  constexpr bool b1  = p0 == 0;   // { dg-error "not a constant expression" }
+                       ^
+"Test_name.c", line 63: note: comparison involves unknown address (e.g., the address of a weak variable)
+  constexpr bool b1  = p0 == 0;   // { dg-error "not a constant expression" }
+                          ^
+
+"Test_name.c", line 64: error: expression must have a constant value
+  constexpr bool b2  = p0 != 0;   // { dg-error "not a constant expression" }
+                       ^
+"Test_name.c", line 64: note: comparison involves unknown address (e.g., the address of a weak variable)
+  constexpr bool b2  = p0 != 0;   // { dg-error "not a constant expression" }
+                          ^
+
+"Test_name.c", line 65: error: expression must have a constant value
+  constexpr bool b4  = p0 <= 0;   // { dg-error "ordered comparison" }
+                       ^
+"Test_name.c", line 65: note: pointer values cannot be compared because they do not point into the same complete object or they point to subobjects with different accessibility
+  constexpr bool b4  = p0 <= 0;   // { dg-error "ordered comparison" }
+                          ^
+
+"Test_name.c", line 66: error: expression must have a constant value
+  constexpr bool b5  = p0 >  0;   // { dg-error "ordered comparison" }
+                       ^
+"Test_name.c", line 66: note: pointer values cannot be compared because they do not point into the same complete object or they point to subobjects with different accessibility
+  constexpr bool b5  = p0 >  0;   // { dg-error "ordered comparison" }
+                          ^
+
+"Test_name.c", line 68: error: expression must have a constant value
+  constexpr bool b7  = !p0;       // { dg-error "not a constant expression" }
+                       ^
+"Test_name.c", line 68: note: attempt to access run-time storage
+  constexpr bool b7  = !p0;       // { dg-error "not a constant expression" }
+                        ^
+
+"Test_name.c", line 69: error: expression must have a constant value
+  constexpr bool b8  = 0 == p0;   // { dg-error "not a constant expression" }
+                       ^
+"Test_name.c", line 69: note: comparison involves unknown address (e.g., the address of a weak variable)
+  constexpr bool b8  = 0 == p0;   // { dg-error "not a constant expression" }
+                         ^
+
+"Test_name.c", line 70: error: expression must have a constant value
+  constexpr bool b9  = 0 != p0;   // { dg-error "not a constant expression" }
+                       ^
+"Test_name.c", line 70: note: comparison involves unknown address (e.g., the address of a weak variable)
+  constexpr bool b9  = 0 != p0;   // { dg-error "not a constant expression" }
+                         ^
+
+"Test_name.c", line 71: error: expression must have a constant value
+  constexpr bool b10 = 0 <  p0;   // { dg-error "ordered comparison" }
+                       ^
+"Test_name.c", line 71: note: pointer values cannot be compared because they do not point into the same complete object or they point to subobjects with different accessibility
+  constexpr bool b10 = 0 <  p0;   // { dg-error "ordered comparison" }
+                         ^
+
+"Test_name.c", line 72: error: expression must have a constant value
+  constexpr bool b13 = 0 >= p0;   // { dg-error "ordered comparison" }
+                       ^
+"Test_name.c", line 72: note: pointer values cannot be compared because they do not point into the same complete object or they point to subobjects with different accessibility
+  constexpr bool b13 = 0 >= p0;   // { dg-error "ordered comparison" }
+                         ^
+
+"Test_name.c", line 74: error: expression must have a constant value
+  constexpr bool b3  = p0 <  0; // { dg-error "ordered comparison" }
+                       ^
+"Test_name.c", line 74: note: pointer values cannot be compared because they do not point into the same complete object or they point to subobjects with different accessibility
+  constexpr bool b3  = p0 <  0; // { dg-error "ordered comparison" }
+                          ^
+
+"Test_name.c", line 75: error: expression must have a constant value
+  constexpr bool b6  = p0 >= 0; // { dg-error "ordered comparison" }
+                       ^
+"Test_name.c", line 75: note: pointer values cannot be compared because they do not point into the same complete object or they point to subobjects with different accessibility
+  constexpr bool b6  = p0 >= 0; // { dg-error "ordered comparison" }
+                          ^
+
+"Test_name.c", line 76: error: expression must have a constant value
+  constexpr bool b11 = 0 <= p0; // { dg-error "ordered comparison" }
+                       ^
+"Test_name.c", line 76: note: pointer values cannot be compared because they do not point into the same complete object or they point to subobjects with different accessibility
+  constexpr bool b11 = 0 <= p0; // { dg-error "ordered comparison" }
+                         ^
+
+"Test_name.c", line 77: error: expression must have a constant value
+  constexpr bool b12 = 0 >  p0; // { dg-error "ordered comparison" }
+                       ^
+"Test_name.c", line 77: note: pointer values cannot be compared because they do not point into the same complete object or they point to subobjects with different accessibility
+  constexpr bool b12 = 0 >  p0; // { dg-error "ordered comparison" }
+                         ^
+
+"Test_name.c", line 79: warning: unrecognized GCC pragma
+  #pragma GCC diagnostic pop
+              ^
+
+"Test_name.c", line 89: warning: unrecognized GCC pragma
+  #pragma GCC diagnostic push
+              ^
+
+"Test_name.c", line 91: warning: unrecognized GCC pragma
+  #pragma GCC diagnostic ignored "-Wextra"
+              ^
+
+"Test_name.c", line 94: warning: unrecognized GCC pragma
+  #pragma GCC diagnostic ignored "-Waddress"
+              ^
+
+"Test_name.c", line 96: error: expression must have a constant value
+  constexpr bool b0  = p1;        // { dg-error "not a constant expression" }
+                       ^
+"Test_name.c", line 96: note: attempt to access run-time storage
+  constexpr bool b0  = p1;        // { dg-error "not a constant expression" }
+                       ^
+
+"Test_name.c", line 97: error: expression must have a constant value
+  constexpr bool b1  = p1 == 0;   // { dg-error "not a constant expression" }
+                       ^
+"Test_name.c", line 97: note: comparison involves unknown address (e.g., the address of a weak variable)
+  constexpr bool b1  = p1 == 0;   // { dg-error "not a constant expression" }
+                          ^
+
+"Test_name.c", line 98: error: expression must have a constant value
+  constexpr bool b2  = p1 != 0;   // { dg-error "not a constant expression" }
+                       ^
+"Test_name.c", line 98: note: comparison involves unknown address (e.g., the address of a weak variable)
+  constexpr bool b2  = p1 != 0;   // { dg-error "not a constant expression" }
+                          ^
+
+"Test_name.c", line 99: error: expression must have a constant value
+  constexpr bool b4  = p1 <= 0;   // { dg-error "ordered comparison" }
+                       ^
+"Test_name.c", line 99: note: pointer values cannot be compared because they do not point into the same complete object or they point to subobjects with different accessibility
+  constexpr bool b4  = p1 <= 0;   // { dg-error "ordered comparison" }
+                          ^
+
+"Test_name.c", line 100: error: expression must have a constant value
+  constexpr bool b5  = p1 >  0;   // { dg-error "ordered comparison" }
+                       ^
+"Test_name.c", line 100: note: pointer values cannot be compared because they do not point into the same complete object or they point to subobjects with different accessibility
+  constexpr bool b5  = p1 >  0;   // { dg-error "ordered comparison" }
+                          ^
+
+"Test_name.c", line 102: error: expression must have a constant value
+  constexpr bool b7  = !p1;       // { dg-error "not a constant expression" }
+                       ^
+"Test_name.c", line 102: note: attempt to access run-time storage
+  constexpr bool b7  = !p1;       // { dg-error "not a constant expression" }
+                        ^
+
+"Test_name.c", line 103: error: expression must have a constant value
+  constexpr bool b8  = 0 == p1;   // { dg-error "not a constant expression" }
+                       ^
+"Test_name.c", line 103: note: comparison involves unknown address (e.g., the address of a weak variable)
+  constexpr bool b8  = 0 == p1;   // { dg-error "not a constant expression" }
+                         ^
+
+"Test_name.c", line 104: error: expression must have a constant value
+  constexpr bool b9  = 0 != p1;   // { dg-error "not a constant expression" }
+                       ^
+"Test_name.c", line 104: note: comparison involves unknown address (e.g., the address of a weak variable)
+  constexpr bool b9  = 0 != p1;   // { dg-error "not a constant expression" }
+                         ^
+
+"Test_name.c", line 105: error: expression must have a constant value
+  constexpr bool b10 = 0 <  p1;   // { dg-error "ordered comparison" }
+                       ^
+"Test_name.c", line 105: note: pointer values cannot be compared because they do not point into the same complete object or they point to subobjects with different accessibility
+  constexpr bool b10 = 0 <  p1;   // { dg-error "ordered comparison" }
+                         ^
+
+"Test_name.c", line 106: error: expression must have a constant value
+  constexpr bool b13 = 0 >= p1;   // { dg-error "ordered comparison" }
+                       ^
+"Test_name.c", line 106: note: pointer values cannot be compared because they do not point into the same complete object or they point to subobjects with different accessibility
+  constexpr bool b13 = 0 >= p1;   // { dg-error "ordered comparison" }
+                         ^
+
+"Test_name.c", line 114: warning: unrecognized GCC pragma
+  #pragma GCC diagnostic pop
+              ^
+
+"Test_name.c", line 21: warning: variable "A::b0" was declared but never referenced
+  constexpr bool b0  = p0;        // { dg-warning "address of .A::i." }
+                 ^
+
+"Test_name.c", line 22: warning: variable "A::b1" was declared but never referenced
+  constexpr bool b1  = p0 == 0;   // { dg-warning "address of .A::i." }
+                 ^
+
+"Test_name.c", line 23: warning: variable "A::b2" was declared but never referenced
+  constexpr bool b2  = p0 != 0;   // { dg-warning "address of .A::i." }
+                 ^
+
+"Test_name.c", line 24: warning: variable "A::b3" was declared but never referenced
+  constexpr bool b3  = p0 <  0;   // { dg-error "25:ordered comparison" }
+                 ^
+
+"Test_name.c", line 25: warning: variable "A::b4" was declared but never referenced
+  constexpr bool b4  = p0 <= 0;   // { dg-error "25:ordered comparison" }
+                 ^
+
+"Test_name.c", line 26: warning: variable "A::b5" was declared but never referenced
+  constexpr bool b5  = p0 >  0;   // { dg-error "25:ordered comparison" }
+                 ^
+
+"Test_name.c", line 27: warning: variable "A::b6" was declared but never referenced
+  constexpr bool b6  = p0 >= 0;   // { dg-error "25:ordered comparison" }
+                 ^
+
+"Test_name.c", line 29: warning: variable "A::b7" was declared but never referenced
+  constexpr bool b7  = !p0;       // { dg-warning "address of .A::i." }
+                 ^
+
+"Test_name.c", line 30: warning: variable "A::b8" was declared but never referenced
+  constexpr bool b8  = 0 == p0;   // { dg-warning "address of .A::i." }
+                 ^
+
+"Test_name.c", line 31: warning: variable "A::b9" was declared but never referenced
+  constexpr bool b9  = 0 != p0;   // { dg-warning "address of .A::i." }
+                 ^
+
+"Test_name.c", line 32: warning: variable "A::b10" was declared but never referenced
+  constexpr bool b10 = 0 <  p0;   // { dg-error "24:ordered comparison" }
+                 ^
+
+"Test_name.c", line 33: warning: variable "A::b11" was declared but never referenced
+  constexpr bool b11 = 0 <= p0;   // { dg-error "24:ordered comparison" }
+                 ^
+
+"Test_name.c", line 34: warning: variable "A::b12" was declared but never referenced
+  constexpr bool b12 = 0 >  p0;   // { dg-error "24:ordered comparison" }
+                 ^
+
+"Test_name.c", line 35: warning: variable "A::b13" was declared but never referenced
+  constexpr bool b13 = 0 >= p0;   // { dg-error "24:ordered comparison" }
+                 ^
+
+"Test_name.c", line 48: warning: variable "B::q0" was declared but never referenced
+  constexpr int *q0 = p0->b;      // { dg-bogus "reinterpret_cast from integer to pointer" }
+                 ^
+
+"Test_name.c", line 62: warning: variable "WeakRefTest1::b0" was declared but never referenced
+  constexpr bool b0  = p0;        // { dg-error "not a constant expression" }
+                 ^
+
+"Test_name.c", line 63: warning: variable "WeakRefTest1::b1" was declared but never referenced
+  constexpr bool b1  = p0 == 0;   // { dg-error "not a constant expression" }
+                 ^
+
+"Test_name.c", line 64: warning: variable "WeakRefTest1::b2" was declared but never referenced
+  constexpr bool b2  = p0 != 0;   // { dg-error "not a constant expression" }
+                 ^
+
+"Test_name.c", line 65: warning: variable "WeakRefTest1::b4" was declared but never referenced
+  constexpr bool b4  = p0 <= 0;   // { dg-error "ordered comparison" }
+                 ^
+
+"Test_name.c", line 66: warning: variable "WeakRefTest1::b5" was declared but never referenced
+  constexpr bool b5  = p0 >  0;   // { dg-error "ordered comparison" }
+                 ^
+
+"Test_name.c", line 68: warning: variable "WeakRefTest1::b7" was declared but never referenced
+  constexpr bool b7  = !p0;       // { dg-error "not a constant expression" }
+                 ^
+
+"Test_name.c", line 69: warning: variable "WeakRefTest1::b8" was declared but never referenced
+  constexpr bool b8  = 0 == p0;   // { dg-error "not a constant expression" }
+                 ^
+
+"Test_name.c", line 70: warning: variable "WeakRefTest1::b9" was declared but never referenced
+  constexpr bool b9  = 0 != p0;   // { dg-error "not a constant expression" }
+                 ^
+
+"Test_name.c", line 71: warning: variable "WeakRefTest1::b10" was declared but never referenced
+  constexpr bool b10 = 0 <  p0;   // { dg-error "ordered comparison" }
+                 ^
+
+"Test_name.c", line 72: warning: variable "WeakRefTest1::b13" was declared but never referenced
+  constexpr bool b13 = 0 >= p0;   // { dg-error "ordered comparison" }
+                 ^
+
+"Test_name.c", line 74: warning: variable "WeakRefTest1::b3" was declared but never referenced
+  constexpr bool b3  = p0 <  0; // { dg-error "ordered comparison" }
+                 ^
+
+"Test_name.c", line 75: warning: variable "WeakRefTest1::b6" was declared but never referenced
+  constexpr bool b6  = p0 >= 0; // { dg-error "ordered comparison" }
+                 ^
+
+"Test_name.c", line 76: warning: variable "WeakRefTest1::b11" was declared but never referenced
+  constexpr bool b11 = 0 <= p0; // { dg-error "ordered comparison" }
+                 ^
+
+"Test_name.c", line 77: warning: variable "WeakRefTest1::b12" was declared but never referenced
+  constexpr bool b12 = 0 >  p0; // { dg-error "ordered comparison" }
+                 ^
+
+"Test_name.c", line 96: warning: variable "WeakRefTest2::b0" was declared but never referenced
+  constexpr bool b0  = p1;        // { dg-error "not a constant expression" }
+                 ^
+
+"Test_name.c", line 97: warning: variable "WeakRefTest2::b1" was declared but never referenced
+  constexpr bool b1  = p1 == 0;   // { dg-error "not a constant expression" }
+                 ^
+
+"Test_name.c", line 98: warning: variable "WeakRefTest2::b2" was declared but never referenced
+  constexpr bool b2  = p1 != 0;   // { dg-error "not a constant expression" }
+                 ^
+
+"Test_name.c", line 99: warning: variable "WeakRefTest2::b4" was declared but never referenced
+  constexpr bool b4  = p1 <= 0;   // { dg-error "ordered comparison" }
+                 ^
+
+"Test_name.c", line 100: warning: variable "WeakRefTest2::b5" was declared but never referenced
+  constexpr bool b5  = p1 >  0;   // { dg-error "ordered comparison" }
+                 ^
+
+"Test_name.c", line 102: warning: variable "WeakRefTest2::b7" was declared but never referenced
+  constexpr bool b7  = !p1;       // { dg-error "not a constant expression" }
+                 ^
+
+"Test_name.c", line 103: warning: variable "WeakRefTest2::b8" was declared but never referenced
+  constexpr bool b8  = 0 == p1;   // { dg-error "not a constant expression" }
+                 ^
+
+"Test_name.c", line 104: warning: variable "WeakRefTest2::b9" was declared but never referenced
+  constexpr bool b9  = 0 != p1;   // { dg-error "not a constant expression" }
+                 ^
+
+"Test_name.c", line 105: warning: variable "WeakRefTest2::b10" was declared but never referenced
+  constexpr bool b10 = 0 <  p1;   // { dg-error "ordered comparison" }
+                 ^
+
+"Test_name.c", line 106: warning: variable "WeakRefTest2::b13" was declared but never referenced
+  constexpr bool b13 = 0 >= p1;   // { dg-error "ordered comparison" }
+                 ^
+
+32 errors detected in the compilation of "Test_name.c".

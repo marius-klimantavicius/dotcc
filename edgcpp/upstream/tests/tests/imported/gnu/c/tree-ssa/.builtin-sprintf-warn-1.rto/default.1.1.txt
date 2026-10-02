@@ -1,0 +1,225 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 192: warning: integer conversion resulted in a change of sign
+    T (-1, "%c",    0);            /* No warning for unknown destination size.  */
+    ^
+
+"Test_name.c", line 230: warning: integer conversion resulted in a change of sign
+    T (-1, "%*s",  0, "");        /* No warning for unknown destination size.  */
+    ^
+
+"Test_name.c", line 241: warning: integer conversion resulted in a change of sign
+    T (-1, "%1s",    "1");        /* No warning for unknown destination size.  */
+    ^
+
+"Test_name.c", line 244: warning: integer conversion resulted in a change of sign
+    T (-1, "%*s",  1, s0);        /* No warning for unknown destination size.  */
+    ^
+
+"Test_name.c", line 296: warning: integer conversion resulted in a change of sign
+    T (-1, "%*s",  INT_MAX - 1, "");
+    ^
+
+"Test_name.c", line 297: warning: integer conversion resulted in a change of sign
+    T (-1, "%*s",  INT_MAX,     ""); /* { dg-warning "writing a terminating nul past the end" "ilp32" { target ilp32 } } */
+    ^
+
+"Test_name.c", line 298: warning: integer conversion resulted in a change of sign
+    T (-1, "X%*s", INT_MAX,     ""); /* { dg-warning "directive output of \[0-9\]+ bytes causes result to exceed .INT_MAX." "lp64" { target lp64 } } */
+    ^
+
+"Test_name.c", line 345: warning: integer conversion resulted in a change of sign
+    T (-1, "%ls",      L"");
+    ^
+
+"Test_name.c", line 389: warning: integer conversion resulted in a change of sign
+    T (-1, "%hhd",        0);
+    ^
+
+"Test_name.c", line 947: warning: integer conversion resulted in a change of sign
+    T (-1, "%Li",        0LL);
+    ^
+
+"Test_name.c", line 958: warning: integer conversion resulted in a change of sign
+    T (-1, "%zi",        (size_t)0);
+    ^
+
+"Test_name.c", line 973: warning: integer conversion resulted in a change of sign
+    T (-1, "%a",         0.0);
+    ^
+
+"Test_name.c", line 974: warning: integer conversion resulted in a change of sign
+    T (-1, "%la",        0.0);
+    ^
+
+"Test_name.c", line 975: warning: integer conversion resulted in a change of sign
+    T (-1, "%.a",        0.0);
+    ^
+
+"Test_name.c", line 976: warning: integer conversion resulted in a change of sign
+    T (-1, "%.la",       0.0);
+    ^
+
+"Test_name.c", line 977: warning: integer conversion resulted in a change of sign
+    T (-1, "%123.a",     0.0);
+    ^
+
+"Test_name.c", line 978: warning: integer conversion resulted in a change of sign
+    T (-1, "%234.la",    0.0);
+    ^
+
+"Test_name.c", line 979: warning: integer conversion resulted in a change of sign
+    T (-1, "%.345a",     0.0);
+    ^
+
+"Test_name.c", line 980: warning: integer conversion resulted in a change of sign
+    T (-1, "%456.567la", 0.0);
+    ^
+
+"Test_name.c", line 1019: warning: integer conversion resulted in a change of sign
+    T (-1, "%E",      0.0);
+    ^
+
+"Test_name.c", line 1020: warning: integer conversion resulted in a change of sign
+    T (-1, "%lE",     0.0);
+    ^
+
+"Test_name.c", line 1021: warning: integer conversion resulted in a change of sign
+    T (-1, "%.E",     0.0);
+    ^
+
+"Test_name.c", line 1022: warning: integer conversion resulted in a change of sign
+    T (-1, "%.lE",    0.0);
+    ^
+
+"Test_name.c", line 1023: warning: integer conversion resulted in a change of sign
+    T (-1, "%123.E",  0.0);
+    ^
+
+"Test_name.c", line 1024: warning: integer conversion resulted in a change of sign
+    T (-1, "%234.lE", 0.0);
+    ^
+
+"Test_name.c", line 1025: warning: integer conversion resulted in a change of sign
+    T (-1, "%.345E",  0.0);
+    ^
+
+"Test_name.c", line 1026: warning: integer conversion resulted in a change of sign
+    T (-1, "%.456lE", 0.0);
+    ^
+
+"Test_name.c", line 1077: warning: integer conversion resulted in a change of sign
+    T (-1, "%s",   s);
+    ^
+
+"Test_name.c", line 1080: warning: integer conversion resulted in a change of sign
+    T (-1, "%.0s", s);
+    ^
+
+"Test_name.c", line 1082: warning: integer conversion resulted in a change of sign
+    T (-1, "%.1s", s);
+    ^
+
+"Test_name.c", line 1084: warning: integer conversion resulted in a change of sign
+    T (-1, "%.2s", s);
+    ^
+
+"Test_name.c", line 1091: warning: integer conversion resulted in a change of sign
+    T (-1, "%*s",  w, "");
+    ^
+
+"Test_name.c", line 1093: warning: integer conversion resulted in a change of sign
+    T (-1, "%*s",  w, "1");
+    ^
+
+"Test_name.c", line 1095: warning: integer conversion resulted in a change of sign
+    T (-1, "%.*s", p, "");
+    ^
+
+"Test_name.c", line 1097: warning: integer conversion resulted in a change of sign
+    T (-1, "%.*s", p, "1");
+    ^
+
+"Test_name.c", line 1124: warning: integer conversion resulted in a change of sign
+    T (-1, "%hhd",        a);
+    ^
+
+"Test_name.c", line 1278: warning: integer conversion resulted in a change of sign
+    T (-1, "%hd",         a);
+    ^
+
+"Test_name.c", line 1324: warning: integer conversion resulted in a change of sign
+    T (-1, "%d",          a);
+    ^
+
+"Test_name.c", line 1376: warning: integer conversion resulted in a change of sign
+    T (-1, "%E",           d);
+    ^
+
+"Test_name.c", line 1377: warning: integer conversion resulted in a change of sign
+    T (-1, "%lE",          d);
+    ^
+
+"Test_name.c", line 1378: warning: integer conversion resulted in a change of sign
+    T (-1, "%.E",          d);
+    ^
+
+"Test_name.c", line 1379: warning: integer conversion resulted in a change of sign
+    T (-1, "%.lE",         d);
+    ^
+
+"Test_name.c", line 1380: warning: integer conversion resulted in a change of sign
+    T (-1, "%*E",    w,    d);
+    ^
+
+"Test_name.c", line 1381: warning: integer conversion resulted in a change of sign
+    T (-1, "%*lE",   w,    d);
+    ^
+
+"Test_name.c", line 1382: warning: integer conversion resulted in a change of sign
+    T (-1, "%.*E",      p, d);
+    ^
+
+"Test_name.c", line 1383: warning: integer conversion resulted in a change of sign
+    T (-1, "%.*lE",     p, d);
+    ^
+
+"Test_name.c", line 1384: warning: integer conversion resulted in a change of sign
+    T (-1, "%*.*E",  w, p, d);
+    ^
+
+"Test_name.c", line 1385: warning: integer conversion resulted in a change of sign
+    T (-1, "%*.*lE", w, p, d);
+    ^
+
+"Test_name.c", line 1420: warning: integer conversion resulted in a change of sign
+    T (-1, "%F",          d);
+    ^
+
+"Test_name.c", line 1421: warning: integer conversion resulted in a change of sign
+    T (-1, "%lF",         d);
+    ^
+
+"Test_name.c", line 1454: warning: integer conversion resulted in a change of sign
+    T (-1, "%c");
+    ^
+
+"Test_name.c", line 1488: warning: integer conversion resulted in a change of sign
+    T (-1, "%d");
+    ^
+
+"Test_name.c", line 1536: warning: integer conversion resulted in a change of sign
+    T (-1, "%c",    0);            /* { dg-warning "specified bound \[0-9\]+ exceeds maximum object size \[0-9\]+" } */
+    ^
+
+"Test_name.c", line 1590: warning: integer conversion resulted in a change of sign
+    T (-1, "%c",    0);           /* { dg-warning "specified bound \[0-9\]+ exceeds maximum object size \[0-9\]+" } */
+    ^
+
+"Test_name.c", line 1590: warning: integer conversion resulted in a change of sign
+    T (-1, "%c",    0);           /* { dg-warning "specified bound \[0-9\]+ exceeds maximum object size \[0-9\]+" } */
+    ^
+
+"Test_name.c", line 1705: warning: integer conversion resulted in a change of sign
+    T (-1, "%s");             /* { dg-warning "specified bound \[0-9\]+ exceeds maximum object size \[0-9\]+" } */
+    ^
+

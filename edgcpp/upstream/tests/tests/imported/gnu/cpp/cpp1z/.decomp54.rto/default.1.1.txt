@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: warning: structured bindings are a C++17 feature
+  auto [b] { a };	// { dg-error "incomplete" }
+       ^
+
+"Test_name.c", line 8: error: incomplete type "int []" is not allowed
+  auto [b] { a };	// { dg-error "incomplete" }
+       ^
+
+"Test_name.c", line 10: warning: structured bindings are a C++17 feature
+  auto [c] = a;	// { dg-error "incomplete" }
+       ^
+
+"Test_name.c", line 10: error: incomplete type "int []" is not allowed
+  auto [c] = a;	// { dg-error "incomplete" }
+       ^
+
+"Test_name.c", line 13: warning: structured bindings are a C++17 feature
+  auto [e] { d };	// { dg-error "too many initializers for" }
+       ^
+
+"Test_name.c", line 13: error: type "int [0]" has no components to bind to
+  auto [e] { d };	// { dg-error "too many initializers for" }
+        ^
+
+"Test_name.c", line 17: warning: structured bindings are a C++17 feature
+  auto [f] = d;	// { dg-error "1 name provided for structured binding" }
+       ^
+
+"Test_name.c", line 17: error: type "int [0]" has no components to bind to
+  auto [f] = d;	// { dg-error "1 name provided for structured binding" }
+        ^
+
+4 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,39 @@
+fe_only -DTEST_NUMBER=1 -A Test_name.c
+"Test_name.c", line 19: warning: missing return statement at end of non-void function "B<T>::f"
+          }
+          ^
+
+"Test_name.c", line 25: error: this declaration has no storage class or type specifier
+  T ) () ; 
+  ^
+
+"Test_name.c", line 25: error: incomplete type "void" is not allowed
+  T ) () ; 
+  ^
+
+"Test_name.c", line 25: error: "T" has already been declared in the current scope
+  T ) () ; 
+  ^
+
+"Test_name.c", line 25: error: expected a ";"
+  T ) () ; 
+    ^
+
+"Test_name.c", line 23: error: "T" has already been declared in the current scope
+          template <class U> struct T {
+                                    ^
+          detected during:
+            instantiation of class "A::T<U> [with U=A]" at line 17
+            instantiation of "T::T<T> B<T>::f(T::T<T>) [with T=A]" at line 38
+
+"Test_name.c", line 18: error: no default constructor exists for class "A::T<A>"
+          new typename T::template T<T>;
+              ^
+          detected during instantiation of "T::T<T> B<T>::f(T::T<T>) [with T=A]" at line 38
+
+"Test_name.c", line 16: error: class "A::T<A>" has no suitable copy constructor
+          f(typename T::template T<T> x = typename T::template T<T>(T()))
+                                          ^
+          detected during instantiation of "T::T<T> B<T>::f(T::T<T>) [with T=A]" at line 38
+
+7 errors detected in the compilation of "Test_name.c".

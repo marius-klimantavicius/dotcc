@@ -1,0 +1,2 @@
+./a.out
+Calling Foo::Foo()

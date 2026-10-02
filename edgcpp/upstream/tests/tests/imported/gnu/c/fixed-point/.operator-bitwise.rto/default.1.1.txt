@@ -1,0 +1,820 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 36: error: expected a ";"
+    short _Fract sf;
+                 ^
+
+"Test_name.c", line 37: warning: expression has no effect
+    _Fract f;
+    ^
+
+"Test_name.c", line 37: warning: variable "_Fract" is used before its value is set
+    _Fract f;
+    ^
+
+"Test_name.c", line 37: error: expected a ";"
+    _Fract f;
+           ^
+
+"Test_name.c", line 38: error: "_Fract" has already been declared in the current scope
+    long _Fract lf;
+         ^
+
+"Test_name.c", line 38: error: expected a ";"
+    long _Fract lf;
+                ^
+
+"Test_name.c", line 39: error: "_Fract" has already been declared in the current scope
+    long long _Fract llf;
+              ^
+
+"Test_name.c", line 39: error: expected a ";"
+    long long _Fract llf;
+                     ^
+
+"Test_name.c", line 40: error: "_Fract" has already been declared in the current scope
+    unsigned short _Fract usf;
+                   ^
+
+"Test_name.c", line 40: error: expected a ";"
+    unsigned short _Fract usf;
+                          ^
+
+"Test_name.c", line 41: error: "_Fract" has already been declared in the current scope
+    unsigned _Fract uf;
+             ^
+
+"Test_name.c", line 41: error: expected a ";"
+    unsigned _Fract uf;
+                    ^
+
+"Test_name.c", line 42: error: "_Fract" has already been declared in the current scope
+    unsigned long _Fract ulf;
+                  ^
+
+"Test_name.c", line 42: error: expected a ";"
+    unsigned long _Fract ulf;
+                         ^
+
+"Test_name.c", line 43: error: "_Fract" has already been declared in the current scope
+    unsigned long long _Fract ullf;
+                       ^
+
+"Test_name.c", line 43: error: expected a ";"
+    unsigned long long _Fract ullf;
+                              ^
+
+"Test_name.c", line 44: error: identifier "_Sat" is undefined
+    _Sat short _Fract Ssf;
+    ^
+
+"Test_name.c", line 44: error: expected a ";"
+    _Sat short _Fract Ssf;
+         ^
+
+"Test_name.c", line 45: error: expected a ";"
+    _Sat _Fract Sf;
+         ^
+
+"Test_name.c", line 46: error: expected a ";"
+    _Sat long _Fract Slf;
+         ^
+
+"Test_name.c", line 47: error: expected a ";"
+    _Sat long long _Fract Sllf;
+         ^
+
+"Test_name.c", line 48: error: expected a ";"
+    _Sat unsigned short _Fract Susf;
+         ^
+
+"Test_name.c", line 49: error: expected a ";"
+    _Sat unsigned _Fract Suf;
+         ^
+
+"Test_name.c", line 50: error: expected a ";"
+    _Sat unsigned long _Fract Sulf;
+         ^
+
+"Test_name.c", line 51: error: expected a ";"
+    _Sat unsigned long long _Fract Sullf;
+         ^
+
+"Test_name.c", line 52: error: expected a ";"
+    short _Accum sa;
+                 ^
+
+"Test_name.c", line 53: warning: expression has no effect
+    _Accum a;
+    ^
+
+"Test_name.c", line 53: warning: variable "_Accum" is used before its value is set
+    _Accum a;
+    ^
+
+"Test_name.c", line 53: error: expected a ";"
+    _Accum a;
+           ^
+
+"Test_name.c", line 54: error: "_Accum" has already been declared in the current scope
+    long _Accum la;
+         ^
+
+"Test_name.c", line 54: error: expected a ";"
+    long _Accum la;
+                ^
+
+"Test_name.c", line 55: error: "_Accum" has already been declared in the current scope
+    long long _Accum lla;
+              ^
+
+"Test_name.c", line 55: error: expected a ";"
+    long long _Accum lla;
+                     ^
+
+"Test_name.c", line 56: error: "_Accum" has already been declared in the current scope
+    unsigned short _Accum usa;
+                   ^
+
+"Test_name.c", line 56: error: expected a ";"
+    unsigned short _Accum usa;
+                          ^
+
+"Test_name.c", line 57: error: "_Accum" has already been declared in the current scope
+    unsigned _Accum ua;
+             ^
+
+"Test_name.c", line 57: error: expected a ";"
+    unsigned _Accum ua;
+                    ^
+
+"Test_name.c", line 58: error: "_Accum" has already been declared in the current scope
+    unsigned long _Accum ula;
+                  ^
+
+"Test_name.c", line 58: error: expected a ";"
+    unsigned long _Accum ula;
+                         ^
+
+"Test_name.c", line 59: error: "_Accum" has already been declared in the current scope
+    unsigned long long _Accum ulla;
+                       ^
+
+"Test_name.c", line 59: error: expected a ";"
+    unsigned long long _Accum ulla;
+                              ^
+
+"Test_name.c", line 60: error: expected a ";"
+    _Sat short _Accum Ssa;
+         ^
+
+"Test_name.c", line 61: error: expected a ";"
+    _Sat _Accum Sa;
+         ^
+
+"Test_name.c", line 62: error: expected a ";"
+    _Sat long _Accum Sla;
+         ^
+
+"Test_name.c", line 63: error: expected a ";"
+    _Sat long long _Accum Slla;
+         ^
+
+"Test_name.c", line 64: error: expected a ";"
+    _Sat unsigned short _Accum Susa;
+         ^
+
+"Test_name.c", line 65: error: expected a ";"
+    _Sat unsigned _Accum Sua;
+         ^
+
+"Test_name.c", line 66: error: expected a ";"
+    _Sat unsigned long _Accum Sula;
+         ^
+
+"Test_name.c", line 67: error: expected a ";"
+    _Sat unsigned long long _Accum Sulla;
+         ^
+
+"Test_name.c", line 73: error: identifier "sf" is undefined
+    BITWISE_OPERATOR(&,sf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 73: error: identifier "sf" is undefined
+    BITWISE_OPERATOR(&,sf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 73: error: identifier "sf" is undefined
+    BITWISE_OPERATOR(&,sf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 73: error: identifier "sf" is undefined
+    BITWISE_OPERATOR(&,sf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 73: error: identifier "sf" is undefined
+    BITWISE_OPERATOR(&,sf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 73: error: identifier "sf" is undefined
+    BITWISE_OPERATOR(&,sf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 74: error: identifier "sf" is undefined
+    BITWISE_OPERATOR(|,sf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 74: error: identifier "sf" is undefined
+    BITWISE_OPERATOR(|,sf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 74: error: identifier "sf" is undefined
+    BITWISE_OPERATOR(|,sf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 74: error: identifier "sf" is undefined
+    BITWISE_OPERATOR(|,sf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 74: error: identifier "sf" is undefined
+    BITWISE_OPERATOR(|,sf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 74: error: identifier "sf" is undefined
+    BITWISE_OPERATOR(|,sf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 75: error: identifier "sf" is undefined
+    BITWISE_OPERATOR(^,sf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 75: error: identifier "sf" is undefined
+    BITWISE_OPERATOR(^,sf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 75: error: identifier "sf" is undefined
+    BITWISE_OPERATOR(^,sf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 75: error: identifier "sf" is undefined
+    BITWISE_OPERATOR(^,sf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 75: error: identifier "sf" is undefined
+    BITWISE_OPERATOR(^,sf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 75: error: identifier "sf" is undefined
+    BITWISE_OPERATOR(^,sf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 76: error: identifier "f" is undefined
+    BITWISE_OPERATOR(&,f); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 76: error: identifier "f" is undefined
+    BITWISE_OPERATOR(&,f); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 76: error: identifier "f" is undefined
+    BITWISE_OPERATOR(&,f); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 76: error: identifier "f" is undefined
+    BITWISE_OPERATOR(&,f); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 76: error: identifier "f" is undefined
+    BITWISE_OPERATOR(&,f); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 76: error: identifier "f" is undefined
+    BITWISE_OPERATOR(&,f); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 77: error: identifier "f" is undefined
+    BITWISE_OPERATOR(|,f); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 77: error: identifier "f" is undefined
+    BITWISE_OPERATOR(|,f); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 77: error: identifier "f" is undefined
+    BITWISE_OPERATOR(|,f); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 77: error: identifier "f" is undefined
+    BITWISE_OPERATOR(|,f); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 77: error: identifier "f" is undefined
+    BITWISE_OPERATOR(|,f); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 77: error: identifier "f" is undefined
+    BITWISE_OPERATOR(|,f); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 78: error: identifier "f" is undefined
+    BITWISE_OPERATOR(^,f); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 78: error: identifier "f" is undefined
+    BITWISE_OPERATOR(^,f); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 78: error: identifier "f" is undefined
+    BITWISE_OPERATOR(^,f); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 78: error: identifier "f" is undefined
+    BITWISE_OPERATOR(^,f); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 78: error: identifier "f" is undefined
+    BITWISE_OPERATOR(^,f); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 78: error: identifier "f" is undefined
+    BITWISE_OPERATOR(^,f); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 79: error: identifier "lf" is undefined
+    BITWISE_OPERATOR(&,lf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 79: error: identifier "lf" is undefined
+    BITWISE_OPERATOR(&,lf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 79: error: identifier "lf" is undefined
+    BITWISE_OPERATOR(&,lf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 79: error: identifier "lf" is undefined
+    BITWISE_OPERATOR(&,lf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 79: error: identifier "lf" is undefined
+    BITWISE_OPERATOR(&,lf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 79: error: identifier "lf" is undefined
+    BITWISE_OPERATOR(&,lf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 80: error: identifier "lf" is undefined
+    BITWISE_OPERATOR(|,lf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 80: error: identifier "lf" is undefined
+    BITWISE_OPERATOR(|,lf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 80: error: identifier "lf" is undefined
+    BITWISE_OPERATOR(|,lf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 80: error: identifier "lf" is undefined
+    BITWISE_OPERATOR(|,lf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 80: error: identifier "lf" is undefined
+    BITWISE_OPERATOR(|,lf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 80: error: identifier "lf" is undefined
+    BITWISE_OPERATOR(|,lf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 81: error: identifier "lf" is undefined
+    BITWISE_OPERATOR(^,lf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 81: error: identifier "lf" is undefined
+    BITWISE_OPERATOR(^,lf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 81: error: identifier "lf" is undefined
+    BITWISE_OPERATOR(^,lf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 81: error: identifier "lf" is undefined
+    BITWISE_OPERATOR(^,lf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 81: error: identifier "lf" is undefined
+    BITWISE_OPERATOR(^,lf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 81: error: identifier "lf" is undefined
+    BITWISE_OPERATOR(^,lf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 82: error: identifier "llf" is undefined
+    BITWISE_OPERATOR(&,llf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 82: error: identifier "llf" is undefined
+    BITWISE_OPERATOR(&,llf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 82: error: identifier "llf" is undefined
+    BITWISE_OPERATOR(&,llf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 82: error: identifier "llf" is undefined
+    BITWISE_OPERATOR(&,llf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 82: error: identifier "llf" is undefined
+    BITWISE_OPERATOR(&,llf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 82: error: identifier "llf" is undefined
+    BITWISE_OPERATOR(&,llf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 83: error: identifier "llf" is undefined
+    BITWISE_OPERATOR(|,llf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 83: error: identifier "llf" is undefined
+    BITWISE_OPERATOR(|,llf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 83: error: identifier "llf" is undefined
+    BITWISE_OPERATOR(|,llf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 83: error: identifier "llf" is undefined
+    BITWISE_OPERATOR(|,llf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 83: error: identifier "llf" is undefined
+    BITWISE_OPERATOR(|,llf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 83: error: identifier "llf" is undefined
+    BITWISE_OPERATOR(|,llf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 84: error: identifier "llf" is undefined
+    BITWISE_OPERATOR(^,llf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 84: error: identifier "llf" is undefined
+    BITWISE_OPERATOR(^,llf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 84: error: identifier "llf" is undefined
+    BITWISE_OPERATOR(^,llf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 84: error: identifier "llf" is undefined
+    BITWISE_OPERATOR(^,llf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 84: error: identifier "llf" is undefined
+    BITWISE_OPERATOR(^,llf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 84: error: identifier "llf" is undefined
+    BITWISE_OPERATOR(^,llf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 85: error: identifier "usf" is undefined
+    BITWISE_OPERATOR(&,usf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 85: error: identifier "usf" is undefined
+    BITWISE_OPERATOR(&,usf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 85: error: identifier "usf" is undefined
+    BITWISE_OPERATOR(&,usf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 85: error: identifier "usf" is undefined
+    BITWISE_OPERATOR(&,usf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 85: error: identifier "usf" is undefined
+    BITWISE_OPERATOR(&,usf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 85: error: identifier "usf" is undefined
+    BITWISE_OPERATOR(&,usf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 86: error: identifier "usf" is undefined
+    BITWISE_OPERATOR(|,usf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 86: error: identifier "usf" is undefined
+    BITWISE_OPERATOR(|,usf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 86: error: identifier "usf" is undefined
+    BITWISE_OPERATOR(|,usf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 86: error: identifier "usf" is undefined
+    BITWISE_OPERATOR(|,usf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 86: error: identifier "usf" is undefined
+    BITWISE_OPERATOR(|,usf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 86: error: identifier "usf" is undefined
+    BITWISE_OPERATOR(|,usf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 87: error: identifier "usf" is undefined
+    BITWISE_OPERATOR(^,usf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 87: error: identifier "usf" is undefined
+    BITWISE_OPERATOR(^,usf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 87: error: identifier "usf" is undefined
+    BITWISE_OPERATOR(^,usf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 87: error: identifier "usf" is undefined
+    BITWISE_OPERATOR(^,usf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 87: error: identifier "usf" is undefined
+    BITWISE_OPERATOR(^,usf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 87: error: identifier "usf" is undefined
+    BITWISE_OPERATOR(^,usf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 88: error: identifier "uf" is undefined
+    BITWISE_OPERATOR(&,uf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 88: error: identifier "uf" is undefined
+    BITWISE_OPERATOR(&,uf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 88: error: identifier "uf" is undefined
+    BITWISE_OPERATOR(&,uf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 88: error: identifier "uf" is undefined
+    BITWISE_OPERATOR(&,uf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 88: error: identifier "uf" is undefined
+    BITWISE_OPERATOR(&,uf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 88: error: identifier "uf" is undefined
+    BITWISE_OPERATOR(&,uf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 89: error: identifier "uf" is undefined
+    BITWISE_OPERATOR(|,uf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 89: error: identifier "uf" is undefined
+    BITWISE_OPERATOR(|,uf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 89: error: identifier "uf" is undefined
+    BITWISE_OPERATOR(|,uf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 89: error: identifier "uf" is undefined
+    BITWISE_OPERATOR(|,uf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 89: error: identifier "uf" is undefined
+    BITWISE_OPERATOR(|,uf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 89: error: identifier "uf" is undefined
+    BITWISE_OPERATOR(|,uf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 90: error: identifier "uf" is undefined
+    BITWISE_OPERATOR(^,uf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 90: error: identifier "uf" is undefined
+    BITWISE_OPERATOR(^,uf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 90: error: identifier "uf" is undefined
+    BITWISE_OPERATOR(^,uf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 90: error: identifier "uf" is undefined
+    BITWISE_OPERATOR(^,uf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 90: error: identifier "uf" is undefined
+    BITWISE_OPERATOR(^,uf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 90: error: identifier "uf" is undefined
+    BITWISE_OPERATOR(^,uf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 91: error: identifier "ulf" is undefined
+    BITWISE_OPERATOR(&,ulf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 91: error: identifier "ulf" is undefined
+    BITWISE_OPERATOR(&,ulf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 91: error: identifier "ulf" is undefined
+    BITWISE_OPERATOR(&,ulf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 91: error: identifier "ulf" is undefined
+    BITWISE_OPERATOR(&,ulf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 91: error: identifier "ulf" is undefined
+    BITWISE_OPERATOR(&,ulf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 91: error: identifier "ulf" is undefined
+    BITWISE_OPERATOR(&,ulf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 92: error: identifier "ulf" is undefined
+    BITWISE_OPERATOR(|,ulf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 92: error: identifier "ulf" is undefined
+    BITWISE_OPERATOR(|,ulf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 92: error: identifier "ulf" is undefined
+    BITWISE_OPERATOR(|,ulf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 92: error: identifier "ulf" is undefined
+    BITWISE_OPERATOR(|,ulf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 92: error: identifier "ulf" is undefined
+    BITWISE_OPERATOR(|,ulf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 92: error: identifier "ulf" is undefined
+    BITWISE_OPERATOR(|,ulf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 93: error: identifier "ulf" is undefined
+    BITWISE_OPERATOR(^,ulf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 93: error: identifier "ulf" is undefined
+    BITWISE_OPERATOR(^,ulf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 93: error: identifier "ulf" is undefined
+    BITWISE_OPERATOR(^,ulf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 93: error: identifier "ulf" is undefined
+    BITWISE_OPERATOR(^,ulf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 93: error: identifier "ulf" is undefined
+    BITWISE_OPERATOR(^,ulf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 93: error: identifier "ulf" is undefined
+    BITWISE_OPERATOR(^,ulf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 94: error: identifier "ullf" is undefined
+    BITWISE_OPERATOR(&,ullf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 94: error: identifier "ullf" is undefined
+    BITWISE_OPERATOR(&,ullf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 94: error: identifier "ullf" is undefined
+    BITWISE_OPERATOR(&,ullf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 94: error: identifier "ullf" is undefined
+    BITWISE_OPERATOR(&,ullf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 94: error: identifier "ullf" is undefined
+    BITWISE_OPERATOR(&,ullf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 94: error: identifier "ullf" is undefined
+    BITWISE_OPERATOR(&,ullf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 95: error: identifier "ullf" is undefined
+    BITWISE_OPERATOR(|,ullf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 95: error: identifier "ullf" is undefined
+    BITWISE_OPERATOR(|,ullf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 95: error: identifier "ullf" is undefined
+    BITWISE_OPERATOR(|,ullf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 95: error: identifier "ullf" is undefined
+    BITWISE_OPERATOR(|,ullf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 95: error: identifier "ullf" is undefined
+    BITWISE_OPERATOR(|,ullf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 95: error: identifier "ullf" is undefined
+    BITWISE_OPERATOR(|,ullf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 96: error: identifier "ullf" is undefined
+    BITWISE_OPERATOR(^,ullf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 96: error: identifier "ullf" is undefined
+    BITWISE_OPERATOR(^,ullf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 96: error: identifier "ullf" is undefined
+    BITWISE_OPERATOR(^,ullf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 96: error: identifier "ullf" is undefined
+    BITWISE_OPERATOR(^,ullf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 96: error: identifier "ullf" is undefined
+    BITWISE_OPERATOR(^,ullf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 96: error: identifier "ullf" is undefined
+    BITWISE_OPERATOR(^,ullf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 97: error: identifier "Ssf" is undefined
+    BITWISE_OPERATOR(&,Ssf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 97: error: identifier "Ssf" is undefined
+    BITWISE_OPERATOR(&,Ssf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 97: error: identifier "Ssf" is undefined
+    BITWISE_OPERATOR(&,Ssf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 97: error: identifier "Ssf" is undefined
+    BITWISE_OPERATOR(&,Ssf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 97: error: identifier "Ssf" is undefined
+    BITWISE_OPERATOR(&,Ssf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 97: error: identifier "Ssf" is undefined
+    BITWISE_OPERATOR(&,Ssf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 98: error: identifier "Ssf" is undefined
+    BITWISE_OPERATOR(|,Ssf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 98: error: identifier "Ssf" is undefined
+    BITWISE_OPERATOR(|,Ssf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 98: error: identifier "Ssf" is undefined
+    BITWISE_OPERATOR(|,Ssf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 98: error: identifier "Ssf" is undefined
+    BITWISE_OPERATOR(|,Ssf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+"Test_name.c", line 98: error: identifier "Ssf" is undefined
+    BITWISE_OPERATOR(|,Ssf); /* { dg-error "invalid operands to binary" } */
+    ^
+
+Error limit reached.
+200 errors detected in the compilation of "Test_name.c".
+Compilation terminated.

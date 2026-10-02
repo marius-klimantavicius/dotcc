@@ -1,0 +1,58 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 8: warning: missing return statement at end of non-void function "lambda [](int)->int"
+    auto nrl = [](int x) -> int { if (x > 0) return x; }; // expected-error{{non-void lambda does not return a value in all control paths}}
+                                                       ^
+
+"Test_name.c", line 11: warning: function declared with "noreturn" does return
+    auto nrl2 = []() [[gnu::noreturn]] { return; }; // expected-warning{{attribute 'gnu::noreturn' ignored}}
+                                         ^
+
+"Test_name.c", line 8: warning: variable "nrl" was declared but never referenced
+    auto nrl = [](int x) -> int { if (x > 0) return x; }; // expected-error{{non-void lambda does not return a value in all control paths}}
+         ^
+
+"Test_name.c", line 11: warning: variable "nrl2" was declared but never referenced
+    auto nrl2 = []() [[gnu::noreturn]] { return; }; // expected-warning{{attribute 'gnu::noreturn' ignored}}
+         ^
+
+"Test_name.c", line 33: error: no instance of function "lambda []() mutable->void" matches the argument list and object (the object has type qualifiers that prevent a match)
+            object type is: const lambda []() mutable->void
+    mlc(); // expected-error{{no matching function for call to object of type}}
+    ^
+
+"Test_name.c", line 38: error: no instance of function "lambda []()->void" matches the argument list and object (the object has type qualifiers that prevent a match)
+            object type is: volatile lambda []()->void
+    lv(); // expected-error{{no matching function for call to object of type}}
+    ^
+
+"Test_name.c", line 39: error: no instance of function "lambda []() mutable->void" matches the argument list and object (the object has type qualifiers that prevent a match)
+            object type is: volatile lambda []() mutable->void
+    mlv(); // expected-error{{no matching function for call to object of type}}
+    ^
+
+"Test_name.c", line 53: warning: variable "tl1" was set but never used
+    auto tl1 = []() throw(int) {};
+         ^
+
+"Test_name.c", line 54: warning: variable "tl2" was set but never used
+    auto tl2 = []() {};
+         ^
+
+"Test_name.c", line 58: warning: variable "ntl1" was set but never used
+    auto ntl1 = []() throw() {};
+         ^
+
+"Test_name.c", line 59: warning: variable "ntl2" was set but never used
+    auto ntl2 = []() noexcept(true) {};
+         ^
+
+"Test_name.c", line 60: warning: variable "ntl3" was set but never used
+    auto ntl3 = []() noexcept {};
+         ^
+
+"Test_name.c", line 16: warning: NULL reference is not allowed
+    bogus_override_if_virtual() : T(*(T*)0) { } // expected-warning {{binding dereferenced null pointer to reference has undefined behavior}}
+                                    ^
+          detected during instantiation of "bogus_override_if_virtual<T>::bogus_override_if_virtual() [with T=lambda []()->void]" at line 41
+
+3 errors detected in the compilation of "Test_name.c".

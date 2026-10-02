@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --g++ Test_name.c
+"Test_name.c", line 13: warning: __real/__imag applied to real value
+  long i = __imag(3L);  // Accepted in GNU modes.  Same as "long i = 0L;".
+           ^
+

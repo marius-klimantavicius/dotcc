@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 11: warning: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+  __declspec(dllexport) int doo1 = 2;
+             ^
+
+"Test_name.c", line 11: warning: explicit type is missing ("int" assumed)
+  __declspec(dllexport) int doo1 = 2;
+  ^
+
+"Test_name.c", line 11: error: a declaration here must declare a parameter
+  __declspec(dllexport) int doo1 = 2;
+                            ^
+
+"Test_name.c", line 11: error: a parameter declaration may not have an initializer
+  __declspec(dllexport) int doo1 = 2;
+                            ^
+
+"Test_name.c", line 12: error: a declaration here must declare a parameter
+  int doo2 = 3;
+      ^
+
+"Test_name.c", line 12: error: a parameter declaration may not have an initializer
+  int doo2 = 3;
+      ^
+
+"Test_name.c", line 13: error: expected a declaration
+  __declspec(dllexport) int foo1 (void) { return 0; }
+  ^
+
+"Test_name.c", line 11: warning: standard requires that parameter "dllexport" be given a type by a subsequent declaration ("int" assumed)
+  __declspec(dllexport) int doo1 = 2;
+             ^
+
+At end of source: error: expected a "{"
+
+At end of source: error: expected a "}"
+
+7 errors detected in the compilation of "Test_name.c".

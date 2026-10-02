@@ -1,0 +1,91 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 17: error: more than one instance of constructor "D1::D1" matches the argument list:
+            function "B1::B1(int)" (declared at line 6), inherited via using decl at line 14
+            function "B2::B2(int)" (declared at line 10), inherited via using decl at line 15
+            argument types are: (int)
+  D1 d1(0); // expected-error {{ambiguous}}
+        ^
+"Test_name.c", line 13: note: number of parameters of function "D1::D1()" does not match the call
+  struct D1 : B1, B2 {
+         ^
+
+"Test_name.c", line 83: warning: variable "c2" was declared but never referenced
+      C c2(static_cast<C&&>(c));
+        ^
+
+"Test_name.c", line 91: error: class "default_ctor::D" has more than one default constructor
+    D d; // ok, implicitly declared
+      ^
+
+"Test_name.c", line 95: error: more than one instance of constructor "default_ctor::D::D" matches the argument list:
+            function "default_ctor::A::A(default_ctor::convert_to_D2)" (declared at line 49), inherited via using decl at line 71
+            function "default_ctor::B::B(default_ctor::convert_to_D2)" (declared at line 61), inherited via using decl at line 73
+            argument types are: (default_ctor::convert_to_D2)
+      D d4(convert_to_D2{}); // expected-error {{ambiguous}}
+           ^
+"Test_name.c", line 73: note: number of parameters of function "default_ctor::D::B()" does not match the call
+      using B::B; // expected-note {{inherited here}}
+      ^
+"Test_name.c", line 73: note: inheriting constructor function "default_ctor::D::B(default_ctor::D &&)" ignored for copy/move-like operation
+      using B::B; // expected-note {{inherited here}}
+      ^
+"Test_name.c", line 71: note: number of parameters of function "default_ctor::D::A()" does not match the call
+      using A::A; // expected-note {{inherited here}}
+      ^
+"Test_name.c", line 71: note: inheriting constructor function "default_ctor::D::A(default_ctor::D &&)" ignored for copy/move-like operation
+      using A::A; // expected-note {{inherited here}}
+      ^
+"Test_name.c", line 76: note: function "default_ctor::D::D(int)" does not match because argument #1 does not match parameter
+      D(int);
+      ^
+
+"Test_name.c", line 96: error: more than one operator "=" matches these operands:
+            function "default_ctor::A::operator=(default_ctor::D &&)" (declared at line 47)
+            function "default_ctor::B::operator=(default_ctor::D &&)" (declared at line 59)
+            operand types are: default_ctor::D = default_ctor::D
+      d = static_cast<D&&>(d); // expected-error {{ambiguous}}
+        ^
+
+"Test_name.c", line 106: error: no instance of constructor "default_ctor::Z::Z" matches the argument list
+            argument types are: (default_ctor::X)
+    Z z1(x); // expected-error {{no match}}
+         ^
+"Test_name.c", line 105: note: function "default_ctor::Z::Z(const default_ctor::Z &)" does not match because argument #1 does not match parameter
+    struct Z : Y { using Y::Y; } volatile z; // expected-note 4{{no known conversion}} expected-note 2{{would lose volatile}} expected-note 3{{requires 0}} expected-note 3{{inherited here}}
+           ^
+"Test_name.c", line 105: note: function "default_ctor::Z::Z(default_ctor::Z &&)" does not match because argument #1 does not match parameter
+    struct Z : Y { using Y::Y; } volatile z; // expected-note 4{{no known conversion}} expected-note 2{{would lose volatile}} expected-note 3{{requires 0}} expected-note 3{{inherited here}}
+           ^
+"Test_name.c", line 105: note: number of parameters of function "default_ctor::Z::Z()" does not match the call
+    struct Z : Y { using Y::Y; } volatile z; // expected-note 4{{no known conversion}} expected-note 2{{would lose volatile}} expected-note 3{{requires 0}} expected-note 3{{inherited here}}
+           ^
+
+"Test_name.c", line 107: error: no instance of constructor "default_ctor::Z::Z" matches the argument list
+            argument types are: (volatile default_ctor::Y)
+    Z z2(y); // expected-error {{no match}}
+         ^
+"Test_name.c", line 105: note: function "default_ctor::Z::Z(const default_ctor::Z &)" does not match because argument #1 does not match parameter
+    struct Z : Y { using Y::Y; } volatile z; // expected-note 4{{no known conversion}} expected-note 2{{would lose volatile}} expected-note 3{{requires 0}} expected-note 3{{inherited here}}
+           ^
+"Test_name.c", line 105: note: function "default_ctor::Z::Z(default_ctor::Z &&)" does not match because argument #1 does not match parameter
+    struct Z : Y { using Y::Y; } volatile z; // expected-note 4{{no known conversion}} expected-note 2{{would lose volatile}} expected-note 3{{requires 0}} expected-note 3{{inherited here}}
+           ^
+"Test_name.c", line 105: note: number of parameters of function "default_ctor::Z::Z()" does not match the call
+    struct Z : Y { using Y::Y; } volatile z; // expected-note 4{{no known conversion}} expected-note 2{{would lose volatile}} expected-note 3{{requires 0}} expected-note 3{{inherited here}}
+           ^
+
+"Test_name.c", line 108: error: no instance of constructor "default_ctor::Z::Z" matches the argument list
+            argument types are: (volatile default_ctor::Z)
+    Z z3(z); // expected-error {{no match}}
+         ^
+"Test_name.c", line 105: note: function "default_ctor::Z::Z(const default_ctor::Z &)" does not match because argument #1 does not match parameter
+    struct Z : Y { using Y::Y; } volatile z; // expected-note 4{{no known conversion}} expected-note 2{{would lose volatile}} expected-note 3{{requires 0}} expected-note 3{{inherited here}}
+           ^
+"Test_name.c", line 105: note: function "default_ctor::Z::Z(default_ctor::Z &&)" does not match because argument #1 does not match parameter
+    struct Z : Y { using Y::Y; } volatile z; // expected-note 4{{no known conversion}} expected-note 2{{would lose volatile}} expected-note 3{{requires 0}} expected-note 3{{inherited here}}
+           ^
+"Test_name.c", line 105: note: number of parameters of function "default_ctor::Z::Z()" does not match the call
+    struct Z : Y { using Y::Y; } volatile z; // expected-note 4{{no known conversion}} expected-note 2{{would lose volatile}} expected-note 3{{requires 0}} expected-note 3{{inherited here}}
+           ^
+
+7 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 17: error: no instance of function template "fn" matches the argument list
+    fn<0> ();  // { dg-error "no matching function" }
+    ^
+"Test_name.c", line 13: note: substituting explicit template arguments "<0>" for function template "fn" failed
+  template<int I> void fn (char (*) [cl<I>::value] = 0 ); // { dg-error "zero-size array" }
+                       ^
+
+1 error detected in the compilation of "Test_name.c".

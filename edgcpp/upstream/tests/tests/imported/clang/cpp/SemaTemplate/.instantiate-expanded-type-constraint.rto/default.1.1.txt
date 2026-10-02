@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 35: error: no instance of function template "T<Ts...>::foo [with Ts=<int, bool>]" matches the argument list
+            argument types are: (int, int, int)
+    T<int, bool>::foo(1, 2, 3); // expected-error{{no matching function for call to 'foo'}}
+    ^
+"Test_name.c", line 22: note: candidate function template "T<Ts...>::foo [with Ts=<int, bool>]" failed deduction
+      static void foo(Us... u, int x) { };
+                  ^
+
+1 error detected in the compilation of "Test_name.c".

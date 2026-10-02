@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=2 --c++11 --gn 150200 --target linux_riscv32 Test_name.c
+"Test_name.c", line 8: warning: unrecognized #pragma
+  #pragma riscv intrinsic "invalid"
+                          ^
+
+"Test_name.c", line 11: warning: unrecognized #pragma
+  #pragma riscv invalid
+                ^
+
+"Test_name.c", line 15: error: expression must have arithmetic, unscoped enum, or pointer type but has type "vint16m1_t" (aka "__rvv_int16m1_t")
+    i16m1 + 1;                    // error
+    ^
+
+1 error detected in the compilation of "Test_name.c".

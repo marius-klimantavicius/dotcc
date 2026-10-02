@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 24: error: destructor name must be qualified
+    friend int ~C ();		// { dg-error "10:return type" }
+               ^
+
+"Test_name.c", line 32: error: destructor name must be qualified
+    friend int ~D () {}		// { dg-error "10:return type" }
+               ^
+
+"Test_name.c", line 31: warning: missing return statement at end of non-void function "D()"
+    friend int D () {}
+                     ^
+
+"Test_name.c", line 34: warning: missing return statement at end of non-void function "D(const D &)"
+    friend int D (const D &) {}
+                              ^
+
+"Test_name.c", line 39: error: function "A::A()" cannot be defined in the current scope
+    friend A::A () {}		// { dg-error "cannot define member" }
+              ^
+
+"Test_name.c", line 40: error: function "A::~A" cannot be defined in the current scope
+    friend A::~A () {}		// { dg-error "cannot define member" }
+              ^
+
+"Test_name.c", line 41: error: function "A::A(const A &)" cannot be defined in the current scope
+    friend A::A (const A &) {}	// { dg-error "cannot define member" }
+              ^
+
+5 errors detected in the compilation of "Test_name.c".

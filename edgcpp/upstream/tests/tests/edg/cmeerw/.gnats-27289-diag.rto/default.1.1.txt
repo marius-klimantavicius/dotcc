@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --c++20 -A -w Test_name.c
+"Test_name.c", line 19: error: expression must be a modifiable lvalue
+      r.cm = 1;                   // error
+      ^
+
+"Test_name.c", line 21: error: expression must be a modifiable lvalue
+      r.A::cm = 1;                // error
+      ^
+
+"Test_name.c", line 26: error: expression must be a modifiable lvalue
+      x.A::cm = 1;                // error
+      ^
+
+3 errors detected in the compilation of "Test_name.c".

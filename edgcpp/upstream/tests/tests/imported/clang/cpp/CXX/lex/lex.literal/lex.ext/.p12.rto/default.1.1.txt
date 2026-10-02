@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 13: error: incomplete type "check<char, 't', 'e', 's', 't'>" is not allowed
+      check<T, str...> chars; // expected-error {{implicit instantiation of undefined template 'check<char, 't', 'e', 's', 't'>'}} \
+                       ^
+          detected during instantiation of "int operator ""_x<T,str...>() [with T=char, str=<'t', 'e', 's', 't'>]" 
+
+"Test_name.c", line 13: error: incomplete type "check<char32_t, 34U, 1090U, 1077U, 1089U, 1090U, 95U, 65536U>" is not allowed
+      check<T, str...> chars; // expected-error {{implicit instantiation of undefined template 'check<char, 't', 'e', 's', 't'>'}} \
+                       ^
+          detected during instantiation of "int operator ""_x<T,str...>() [with T=char32_t, str=<34U, 1090U, 1077U, 1089U, 1090U, 95U, 65536U>]" 
+
+2 errors detected in the compilation of "Test_name.c".

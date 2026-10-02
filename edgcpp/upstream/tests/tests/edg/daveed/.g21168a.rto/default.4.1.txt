@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=4 --gcc --gnu=40000 Test_name.c
+"Test_name.c", line 5: error: external/internal linkage conflict with previous declaration at line 4
+    static void g(void) {}
+                ^
+
+"Test_name.c", line 5: warning: function "g" was declared but never referenced
+    static void g(void) {}
+                ^
+
+1 error detected in the compilation of "Test_name.c".

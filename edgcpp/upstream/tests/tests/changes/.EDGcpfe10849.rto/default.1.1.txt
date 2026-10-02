@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --c --gcc Test_name.c
+"Test_name.c", line 15: warning: "union U" cannot be transparent because it has a field of type "long long" which is not the same size as the first field
+  union U {
+        ^
+

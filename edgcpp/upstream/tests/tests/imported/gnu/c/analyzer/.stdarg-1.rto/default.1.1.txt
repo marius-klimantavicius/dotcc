@@ -1,0 +1,37 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./analyzer/stdarg-1.c", line 73: warning: variable "i" was set but never used
+    int i;
+        ^
+
+"./analyzer/stdarg-1.c", line 97: warning: variable "i" was set but never used
+    int i;
+        ^
+
+"./analyzer/stdarg-1.c", line 152: warning: variable "i" was set but never used
+    int i;
+        ^
+
+"./analyzer/stdarg-1.c", line 183: warning: variable "i" was set but never used
+    int i;
+        ^
+
+"./analyzer/stdarg-1.c", line 195: warning: variable "i" was set but never used
+    int i;
+        ^
+
+"./analyzer/stdarg-1.c", line 215: warning: variable "str" was set but never used
+    const char *str;
+                ^
+
+"./analyzer/stdarg-1.c", line 235: warning: variable "str" was set but never used
+    const char *str;
+                ^
+
+"./analyzer/stdarg-1.c", line 400: warning: variable "i" was declared but never referenced
+    int i;
+        ^
+
+"./analyzer/stdarg-1.c", line 432: warning: variable "i" was set but never used
+    int i;
+        ^
+

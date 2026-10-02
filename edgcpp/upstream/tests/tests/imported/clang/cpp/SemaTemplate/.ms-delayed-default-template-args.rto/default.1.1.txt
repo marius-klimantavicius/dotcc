@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --ms_compatibility --c++11 Test_name.c
+"Test_name.c", line 51: error: identifier "Weber" is undefined
+  template <typename T = Bar<Weber>>  // expected-error {{use of undeclared identifier 'Weber'}}
+                             ^
+
+"Test_name.c", line 73: error: identifier "Zargon" is undefined
+  template <Zargon N> // expected-error {{unknown type name 'Zargon'}}
+            ^
+
+"Test_name.c", line 80: error: identifier "Asdf" is undefined
+  template <typename T, Asdf> // expected-error {{unknown type name 'Asdf'}}
+                        ^
+
+"Test_name.c", line 88: error: identifier "Yodel" is undefined
+  template struct Foo<Yodel>; // expected-error {{use of undeclared identifier 'Yodel'}}
+                      ^
+
+"Test_name.c", line 96: error: identifier "Xylophone" is undefined
+  template <Bar<Xylophone> *P> // expected-error {{use of undeclared identifier 'Xylophone'}}
+                ^
+
+5 errors detected in the compilation of "Test_name.c".

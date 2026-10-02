@@ -1,0 +1,46 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 8: error: expected a ";"
+  unsigned __int128 x, y;
+                    ^
+
+"Test_name.c", line 11: warning: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+  fn1 (z)
+       ^
+
+"Test_name.c", line 12: error: a parameter declaration may not have an initializer
+    __auto_type z = x / y; /* { dg-error "parameter 'z' is initialized" } */
+                ^
+
+"Test_name.c", line 12: error: identifier "x" is undefined
+    __auto_type z = x / y; /* { dg-error "parameter 'z' is initialized" } */
+                    ^
+
+"Test_name.c", line 12: error: identifier "y" is undefined
+    __auto_type z = x / y; /* { dg-error "parameter 'z' is initialized" } */
+                        ^
+
+"Test_name.c", line 12: error: "__auto_type" not allowed here
+    __auto_type z = x / y; /* { dg-error "parameter 'z' is initialized" } */
+    ^
+
+"Test_name.c", line 17: warning: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+  fn2 (z)
+       ^
+
+"Test_name.c", line 18: error: a parameter declaration may not have an initializer
+    __auto_type z = x >> y; /* { dg-error "parameter 'z' is initialized" } */
+                ^
+
+"Test_name.c", line 18: error: identifier "x" is undefined
+    __auto_type z = x >> y; /* { dg-error "parameter 'z' is initialized" } */
+                    ^
+
+"Test_name.c", line 18: error: identifier "y" is undefined
+    __auto_type z = x >> y; /* { dg-error "parameter 'z' is initialized" } */
+                         ^
+
+"Test_name.c", line 18: error: "__auto_type" not allowed here
+    __auto_type z = x >> y; /* { dg-error "parameter 'z' is initialized" } */
+    ^
+
+9 errors detected in the compilation of "Test_name.c".

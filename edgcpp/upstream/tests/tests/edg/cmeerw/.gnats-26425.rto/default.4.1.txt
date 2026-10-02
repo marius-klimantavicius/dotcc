@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=4 --ms_c++20 Test_name.c
+"Test_name.c", line 9: error: type definition is not allowed
+      for (struct S { S(int) { } } s : r) { } // type definition is not allowed
+           ^
+
+"Test_name.c", line 22: error: type definition is not allowed
+    for (; struct S { S(int) { } operator bool() const { return false; } } e = 1; )
+           ^
+
+"Test_name.c", line 47: error: type definition is not allowed
+    for (struct S { S(int) { } } e : r) // type definition is not allowed
+         ^
+
+"Test_name.c", line 69: error: type definition is not allowed
+    if (struct S { S(int) { } operator bool() const { return false; } } e = 1)
+        ^
+
+"Test_name.c", line 97: error: type definition is not allowed
+    switch (struct S { S(int) { } operator int() const { return 0; } } e = 1)
+            ^
+
+"Test_name.c", line 126: error: type definition is not allowed
+    while (struct S { S(int) { } operator bool() const { return false; } } e = 1)
+           ^
+
+"Test_name.c", line 132: error: a storage class may not be specified here
+    for (static int i : arr) { }       // error: storage class
+         ^
+
+"Test_name.c", line 133: error: a storage class may not be specified here
+    for (extern int i : arr) { }       // error: storage class
+         ^
+
+"Test_name.c", line 134: error: mutable is not allowed
+    for (mutable int i : arr) { }      // error: storage class
+         ^
+
+"Test_name.c", line 135: error: thread-local storage class is not valid here
+    for (thread_local int i : arr) { } // error: storage class
+         ^
+
+10 errors detected in the compilation of "Test_name.c".

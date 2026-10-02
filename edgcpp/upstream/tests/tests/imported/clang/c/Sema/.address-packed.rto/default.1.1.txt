@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Sema/address-packed.c", line 281: warning: variable "p32" was set but never used
+    uint32_t *p32;
+              ^
+
+"Sema/address-packed.c", line 329: warning: variable "p32" was set but never used
+    uint32_t *p32;
+              ^
+
+"Sema/address-packed.c", line 335: error: incomplete type "struct fwd" is not allowed
+    struct fwd f;
+               ^
+
+1 error detected in the compilation of "Test_name.c".

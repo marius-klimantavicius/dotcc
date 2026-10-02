@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c --target linux_aarch64 Test_name.c
+"Sema/ptrauth-atomic-ops.c", line 7: error: expected a type specifier
+  int *__ptrauth(2, 1, 100) authenticated_ptr = &i;
+                 ^
+
+"Sema/ptrauth-atomic-ops.c", line 7: error: expected a type specifier
+  int *__ptrauth(2, 1, 100) authenticated_ptr = &i;
+                    ^
+
+"Sema/ptrauth-atomic-ops.c", line 7: error: expected a type specifier
+  int *__ptrauth(2, 1, 100) authenticated_ptr = &i;
+                       ^
+
+"Sema/ptrauth-atomic-ops.c", line 7: warning: unnamed prototyped parameters not allowed when body is present
+  int *__ptrauth(2, 1, 100) authenticated_ptr = &i;
+       ^
+
+"Sema/ptrauth-atomic-ops.c", line 7: error: expected a "{"
+  int *__ptrauth(2, 1, 100) authenticated_ptr = &i;
+                            ^
+
+"Sema/ptrauth-atomic-ops.c", line 12: warning: parsing restarts here after previous syntax error
+  void f() {
+           ^
+
+"Sema/ptrauth-atomic-ops.c", line 14: error: identifier "authenticated_ptr" is undefined
+    __c11_atomic_init((__typeof__(authenticated_ptr) volatile _Atomic *)(long)(&authenticated_ptr), 5);
+                                  ^
+
+"Sema/ptrauth-atomic-ops.c", line 49: error: identifier "non_addr_discriminatedauthenticated_ptr" is undefined
+    __c11_atomic_init((__typeof__(non_addr_discriminatedauthenticated_ptr) volatile _Atomic *)(long)(&non_addr_discriminatedauthenticated_ptr), &j);
+                                  ^
+
+"Sema/ptrauth-atomic-ops.c", line 52: error: expression must be a pointer to a complete object type
+    __atomic_store(&j, (__typeof__(non_addr_discriminatedauthenticated_ptr) volatile _Atomic *)(long)(&non_addr_discriminatedauthenticated_ptr), memory_order_release);
+                       ^
+
+"Sema/ptrauth-atomic-ops.c", line 118: warning: missing return statement at end of non-void function "__ptrauth"
+  }
+  ^
+
+7 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"/mds/clang/clang-22.1.0/build/lib/clang/22/include/__stddef_size_t.h", line 18: warning: declaration of "size_t" does not match the expected type "unsigned int"
+  typedef long unsigned int size_t;
+                            ^
+
+"Sema/attr-malloc.c", line 9: warning: attribute "malloc" does not apply here
+  int no_vars __attribute((malloc));
+                           ^
+
+"Sema/attr-malloc.c", line 17: warning: attribute "malloc" does not apply here
+  __attribute((malloc)) void *(*f)(void);
+               ^
+
+"Sema/attr-malloc.c", line 18: warning: attribute "malloc" does not apply here
+  __attribute((malloc)) int (*g)(void);
+               ^
+

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --c++14 Test_name.c
+"Test_name.c", line 12: error: expression must have a constant value
+    int a [ T{{true}}[0] ];  // Previously caused abort
+            ^
+"Test_name.c", line 5: note: expression cannot be interpreted
+    constexpr A(bool b) noexcept(false) { if (b) throw 0; }
+                                                 ^
+
+1 error detected in the compilation of "Test_name.c".

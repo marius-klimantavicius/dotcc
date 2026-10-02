@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --named_registers --gcc Test_name.c
+"Test_name.c", line 14: error: register names can only be used for register variables
+  int register _EDG_REG_1 r1 __asm__("ax") = 3;
+                                     ^
+
+"Test_name.c", line 14: error: named register is too small for the type of the variable
+  int register _EDG_REG_1 r1 __asm__("ax") = 3;
+      ^
+
+2 errors detected in the compilation of "Test_name.c".

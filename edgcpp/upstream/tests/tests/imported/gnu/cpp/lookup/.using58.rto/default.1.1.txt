@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 19: error: function "Baz(int)" conflicts with using-declaration of function "Y::Baz(int)"
+    extern void Baz (int);  // { dg-error "conflicts with" }
+                ^
+
+1 error detected in the compilation of "Test_name.c".

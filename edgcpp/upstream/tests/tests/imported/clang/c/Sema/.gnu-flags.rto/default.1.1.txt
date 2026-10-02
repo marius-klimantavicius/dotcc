@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -DNONE -DALL -DALL -DNONE -DALIGNOF -DCOMPLEXINT -DOMITTEDOPERAND -DLABELVALUE -DSTATEMENTEXP -DSTATEMENTEXPMACRO -DCOMPOUNDLITERALINITIALIZER -DFLEXIBLEARRAYINITIALIZER -DREDECLAREDENUM -DUNIONCAST -DVARIABLESIZEDTYPENOTATEND -DFOLDINGCONSTANT -DEMPTYSTRUCT --c Test_name.c
+"Test_name.c", line 42: warning: the standard "alignof" operator does not accept an expression argument (use a type instead)
+  _Static_assert(_Alignof(align) > 0, "align's alignment is wrong");
+                         ^
+
+"Test_name.c", line 49: error: _Complex can only be used with floating-point types
+  _Complex short int complexint;
+  ^
+
+"Test_name.c", line 56: warning: controlling expression is constant
+  static const char* omittedoperand = (const char*)0 ?: "Null";
+                                      ^
+
+"Test_name.c", line 78: warning: variable "a" was declared but never referenced
+  	int a = ({ 1; });
+  	    ^
+
+"Test_name.c", line 87: warning: variable "a" was declared but never referenced
+    int a = STMT_EXPR_MACRO(1);
+        ^
+
+"Test_name.c", line 118: warning: use of a const variable in a constant expression is nonstandard in C
+  int data[size];
+           ^
+
+"Test_name.c", line 120: warning: use of a const variable in a constant expression is nonstandard in C
+  void foo(void) { int data[size]; } // OK, always a VLA
+                            ^
+
+"Test_name.c", line 120: warning: variable "data" was declared but never referenced
+  void foo(void) { int data[size]; } // OK, always a VLA
+                       ^
+
+"Test_name.c", line 163: warning: struct or union declares no named members
+  struct {int:5;} swnm;
+                ^
+
+"Test_name.c", line 56: warning: variable "omittedoperand" was declared but never referenced
+  static const char* omittedoperand = (const char*)0 ?: "Null";
+                     ^
+
+1 error detected in the compilation of "Test_name.c".

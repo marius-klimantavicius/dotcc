@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=2 --c++11 -A Test_name.c
+"Test_name.c", line 7: error: this declaration has no storage class or type specifier
+  using U = enum : class { u1 } ; 
+                           ^
+
+"Test_name.c", line 7: error: expected a ";"
+  using U = enum : class { u1 } ; 
+                              ^
+
+"Test_name.c", line 7: error: type definition is not allowed
+  using U = enum : class { u1 } ; 
+                   ^
+
+"Test_name.c", line 7: error: an opaque enum declaration is nonstandard in this context
+  using U = enum : class { u1 } ; 
+                 ^
+
+"Test_name.c", line 8: error: enum "U" has no member "u1"
+  U y = U::u1;
+           ^
+
+5 errors detected in the compilation of "Test_name.c".

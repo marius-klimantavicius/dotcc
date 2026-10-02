@@ -1,0 +1,9 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./torture/hardbool.c", line 18: warning: unknown attribute "hardbool"
+  typedef short __attribute__ ((hardbool (0, ~0))) hbool;
+                                ^
+
+"./torture/hardbool.c", line 20: warning: unknown attribute "__hardbool__"
+  typedef unsigned char __attribute__ ((__hardbool__ (1, 0))) zbool;
+                                        ^
+

@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=6 --c++11 -w --gn 130200 Test_name.c

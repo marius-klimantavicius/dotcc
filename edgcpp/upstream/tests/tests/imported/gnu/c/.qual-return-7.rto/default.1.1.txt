@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 9: error: invalid storage class for a function
+    auto int foo ();                /* { dg-message "note: previous declaration" "different qualifiers" } */
+    ^
+
+"Test_name.c", line 11: warning: type qualifier on return type is meaningless
+    const int foo () { return 0; }  /* { dg-error "conflicting types" "different qualifiers" } */
+    ^
+
+"Test_name.c", line 11: error: declaration is incompatible with "int foo()" (declared at line 9)
+    const int foo () { return 0; }  /* { dg-error "conflicting types" "different qualifiers" } */
+              ^
+
+"Test_name.c", line 11: error: expected a ";"
+    const int foo () { return 0; }  /* { dg-error "conflicting types" "different qualifiers" } */
+                     ^
+
+"Test_name.c", line 14: error: expected a ";"
+    volatile void bar () { }        /* { dg-warning "qualified|volatile" "different qualifiers" } */
+                         ^
+
+"Test_name.c", line 17: error: expected a ";"
+    void baz () { }                 /* { dg-warning "not compatible" "different qualifiers" } */
+                ^
+
+5 errors detected in the compilation of "Test_name.c".

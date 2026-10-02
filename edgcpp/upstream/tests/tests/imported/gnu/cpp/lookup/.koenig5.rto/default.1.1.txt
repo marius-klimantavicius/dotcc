@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 36: error: identifier "One" is undefined
+    One (b); // { dg-error "3:'One' was not declared" }
+    ^
+
+"Test_name.c", line 41: error: identifier "Two" is undefined
+    Two (a); // { dg-error "3:'Two' was not declared" }
+    ^
+
+"Test_name.c", line 49: error: identifier "Three" is undefined
+    Three (a); // { dg-error "3:'Three' was not declared" }
+    ^
+
+3 errors detected in the compilation of "Test_name.c".

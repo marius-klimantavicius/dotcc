@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 5: error: too few arguments for variable template "foo"
+  template <typename> struct bar foo; template <> struct foo<>:  // { dg-error "class template|redeclared" }
+                                                             ^
+
+At end of source: error: expected an identifier
+
+At end of source: error: class or struct definition is missing
+
+At end of source: error: expected a ";"
+
+4 errors detected in the compilation of "Test_name.c".

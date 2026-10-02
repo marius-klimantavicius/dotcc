@@ -1,0 +1,9 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./builtin-object-size-16.c", line 92: warning: unknown attribute "noclone"
+  static __attribute__ ((noclone, noinline)) void
+                         ^
+
+"./builtin-object-size-16.c", line 138: warning: unknown attribute "noclone"
+  static __attribute__ ((noclone, noinline)) void
+                         ^
+

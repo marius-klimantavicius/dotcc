@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 17: error: class "X" has no member "operator--"
+    x.operator--(); // expected-error{{no member named 'operator--'}}
+      ^
+
+"Test_name.c", line 18: error: class "X" has no member "operator float"
+    x.operator float(); // expected-error{{no member named 'operator float'}}
+      ^
+
+"Test_name.c", line 19: error: expected an operator
+    x.operator; // expected-error{{expected a type}}
+              ^
+
+"Test_name.c", line 13: warning: variable "i" was set but never used
+    int i;
+        ^
+
+"Test_name.c", line 26: warning: variable "x" is used before its value is set
+    i = x->operator++();
+        ^
+
+"Test_name.c", line 28: error: class "X" has no member "operator--"
+    x->operator--(); // expected-error{{no member named 'operator--'}}
+       ^
+
+"Test_name.c", line 29: error: class "X" has no member "operator float"
+    x->operator float(); // expected-error{{no member named 'operator float'}}
+       ^
+
+"Test_name.c", line 30: error: expected an operator
+    x->operator; // expected-error{{expected a type}}
+               ^
+
+"Test_name.c", line 24: warning: variable "i" was set but never used
+    int i;
+        ^
+
+"Test_name.c", line 36: warning: last line of file ends without a newline
+  }
+   ^
+
+6 errors detected in the compilation of "Test_name.c".

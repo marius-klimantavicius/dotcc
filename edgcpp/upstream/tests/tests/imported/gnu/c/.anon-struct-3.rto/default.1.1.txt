@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c89 --strict_gnu Test_name.c
+"Test_name.c", line 11: warning: declaration does not declare anything
+    struct A;
+    ^
+
+"Test_name.c", line 14: error: the size of an array must be greater than zero
+  char testB[sizeof(struct B) == 2 * sizeof(struct A) ? 1 : -1];
+             ^
+
+"Test_name.c", line 17: warning: expected an identifier
+    struct D { char d; };
+                        ^
+
+"Test_name.c", line 20: error: the size of an array must be greater than zero
+  char testC[sizeof(struct C) == 2 * sizeof(struct A) ? 1 : -1];
+             ^
+
+"Test_name.c", line 31: warning: declaration does not declare anything
+    typedef_A;
+    ^
+
+"Test_name.c", line 34: error: the size of an array must be greater than zero
+  char testF[sizeof(struct F) == 2 * sizeof(struct A) ? 1 : -1];
+             ^
+
+3 errors detected in the compilation of "Test_name.c".

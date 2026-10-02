@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 6: warning: unknown attribute "bpf_fastcall"
+  __attribute__((bpf_fastcall)) int var; // expected-warning {{'bpf_fastcall' attribute only applies to functions and function pointers}}
+                 ^
+
+"Test_name.c", line 8: warning: unknown attribute "bpf_fastcall"
+  __attribute__((bpf_fastcall)) void func();
+                 ^
+
+"Test_name.c", line 9: warning: unknown attribute "bpf_fastcall"
+  __attribute__((bpf_fastcall(1))) void func_invalid(); // expected-error {{'bpf_fastcall' attribute takes no arguments}}
+                 ^
+
+"Test_name.c", line 11: warning: unknown attribute "bpf_fastcall"
+  void (*ptr1)(void) __attribute__((bpf_fastcall));
+                                    ^
+

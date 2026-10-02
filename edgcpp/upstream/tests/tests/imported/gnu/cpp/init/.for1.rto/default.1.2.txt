@@ -1,0 +1,5 @@
+./a.out
+A ctor
+iteration 0
+iteration 1
+A dtor

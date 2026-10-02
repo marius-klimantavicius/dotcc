@@ -1,0 +1,114 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 Test_name.c
+"Test_name.c", line 10: error: declaration of a member with the same name as its class
+    static int X0; // expected-error{{member 'X0' has the same name as its class}}
+               ^
+
+"Test_name.c", line 15: error: member function with the same name as its class must be a constructor
+    int Xa() {} // expected-error{{constructor cannot have a return type}}
+        ^
+
+"Test_name.c", line 20: error: declaration of a member with the same name as its class
+    enum X1 { }; // expected-error{{member 'X1' has the same name as its class}}
+         ^
+
+"Test_name.c", line 24: error: declaration of a member with the same name as its class
+    struct X1a; // expected-error{{member 'X1a' has the same name as its class}}
+           ^
+
+"Test_name.c", line 28: error: declaration of a member with the same name as its class
+    typedef int X2; // expected-error{{member 'X2' has the same name as its class}}
+                ^
+
+"Test_name.c", line 32: error: declaration of a member with the same name as its class
+    using X2a = int; // expected-error{{member 'X2a' has the same name as its class}}
+          ^
+
+"Test_name.c", line 38: error: declaration of a member with the same name as its class
+    template<typename T> struct X2b; // expected-error{{member 'X2b' has the same name as its class}}
+                                ^
+
+"Test_name.c", line 41: error: declaration of a member with the same name as its class
+    template<typename T> void X2c(); // expected-error{{constructor cannot have a return type}}
+                              ^
+
+"Test_name.c", line 44: error: declaration of a member with the same name as its class
+    template<typename T> static int X2d; // expected-error{{member 'X2d' has the same name as its class}}
+                                    ^
+
+"Test_name.c", line 47: error: declaration of a member with the same name as its class
+    template<typename T> using X2e = int; // expected-error{{member 'X2e' has the same name as its class}}
+                               ^
+
+"Test_name.c", line 53: error: declaration of a member with the same name as its class
+      X3 // expected-error{{member 'X3' has the same name as its class}}
+      ^
+
+"Test_name.c", line 68: error: declaration of a member with the same name as its class
+        unsigned X4; // expected-error{{redeclares 'X4'}}
+                 ^
+
+"Test_name.c", line 76: warning: missing return statement at end of non-void function "B::Da"
+    int Da() {};
+              ^
+
+"Test_name.c", line 91: error: declaration of a member with the same name as its class
+  struct D0 : B { using B::D0; }; // expected-error {{member 'D0' has the same name as its class}}
+                           ^
+
+"Test_name.c", line 92: error: declaration of a member with the same name as its class
+  struct Da : B { using B::Da; }; // expected-error {{member 'Da' has the same name as its class}}
+                           ^
+
+"Test_name.c", line 93: error: declaration of a member with the same name as its class
+  struct D1 : B { using B::D1; }; // expected-error {{member 'D1' has the same name as its class}}
+                           ^
+
+"Test_name.c", line 94: error: declaration of a member with the same name as its class
+  struct D1a : B { using B::D1a; }; // expected-error {{member 'D1a' has the same name as its class}}
+                            ^
+
+"Test_name.c", line 95: error: declaration of a member with the same name as its class
+  struct D2 : B { using B::D2; }; // expected-error {{member 'D2' has the same name as its class}}
+                           ^
+
+"Test_name.c", line 96: error: declaration of a member with the same name as its class
+  struct D2a : B { using B::D2a; }; // expected-error {{member 'D2a' has the same name as its class}}
+                            ^
+
+"Test_name.c", line 97: error: declaration of a member with the same name as its class
+  struct D2b : B { using B::D2b; }; // expected-error {{member 'D2b' has the same name as its class}}
+                            ^
+
+"Test_name.c", line 98: error: declaration of a member with the same name as its class
+  struct D2c : B { using B::D2c; }; // expected-error {{member 'D2c' has the same name as its class}}
+                            ^
+
+"Test_name.c", line 99: error: declaration of a member with the same name as its class
+  struct D2d : B { using B::D2d; }; // expected-error {{member 'D2d' has the same name as its class}}
+                            ^
+
+"Test_name.c", line 100: error: declaration of a member with the same name as its class
+  struct D2e : B { using B::D2e; }; // expected-error {{member 'D2e' has the same name as its class}}
+                            ^
+
+"Test_name.c", line 101: error: declaration of a member with the same name as its class
+  struct D4 : B { using B::D4; }; // expected-error {{member 'D4' has the same name as its class}}
+                           ^
+
+"Test_name.c", line 104: error: declaration of a member with the same name as its class
+    using B::Dtemplate; // expected-error {{member 'Dtemplate' has the same name as its class}}
+             ^
+
+"Test_name.c", line 111: error: declaration of a member with the same name as its class
+    using B::Dtemplate_with_ctors; // expected-error {{member 'Dtemplate_with_ctors' has the same name as its class}}
+             ^
+
+"Test_name.c", line 115: error: declaration of a member with the same name as its class
+    using B::CtorDtorName; // expected-error {{member 'CtorDtorName' has the same name as its class}} expected-note {{non-type declaration found by destructor name lookup}}
+             ^
+
+"Test_name.c", line 123: error: declaration of a member with the same name as its class
+      S = 12  // expected-error {{member 'S' has the same name as its class}}
+      ^
+
+27 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 7: error: a block-scope function may only have extern storage class
+    static void bar1();  // { dg-error "3:.static. specifier invalid" }
+    ^
+
+"Test_name.c", line 9: warning: "inline" is not allowed
+    inline void bar2();  // { dg-error "3:.inline. specifier invalid" }
+    ^
+
+"Test_name.c", line 14: error: "virtual" is not allowed
+    virtual S();  // { dg-error "3:constructors cannot be declared .virtual." }
+    ^
+
+"Test_name.c", line 15: error: "constexpr" is not valid here
+    constexpr int s = 1;  // { dg-error "3:non-static data member .s. declared .constexpr." }
+    ^
+
+"Test_name.c", line 16: error: a destructor cannot be constexpr
+    constexpr ~S();  // { dg-error "3:'constexpr' destructors only available with" "" { target c++17_down } }
+    ^
+
+"Test_name.c", line 19: error: "constexpr" is not valid here
+  typedef constexpr int my_int;  // { dg-error "9:.constexpr. cannot appear in a typedef declaration" }
+          ^
+
+"Test_name.c", line 23: error: "virtual" is not allowed
+    virtual void foo();  // { dg-error "3:function .foo. declared .virtual. inside a union" }
+    ^
+
+"Test_name.c", line 28: error: only nonstatic member functions may be virtual
+    virtual void operator delete(void*);  // { dg-error "3:.operator delete. cannot be declared .virtual." }
+    ^
+
+"Test_name.c", line 31: error: invalid specifier on a parameter
+  void bar(constexpr int);  // { dg-error "10:a parameter cannot be declared .constexpr." }
+           ^
+
+8 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"SemaCXX/printf-cstr.cpp", line 36: warning: a class type that is not trivially copyable passed through ellipsis
+    printf("%d: %s\n", n, hcs);
+                          ^
+
+"SemaCXX/printf-cstr.cpp", line 44: warning: a class type that is not trivially copyable passed through ellipsis
+    printf("%d: %s\n", n, hncs);
+                          ^
+
+"SemaCXX/printf-cstr.cpp", line 51: warning: a class type that is not trivially copyable passed through ellipsis
+    sprintf(str, "%d: %s", n, hcs);
+                              ^
+
+"SemaCXX/printf-cstr.cpp", line 59: warning: a class type that is not trivially copyable passed through ellipsis
+    printf(formatString, hcs, hncs);
+                         ^
+
+"SemaCXX/printf-cstr.cpp", line 59: warning: a class type that is not trivially copyable passed through ellipsis
+    printf(formatString, hcs, hncs);
+                              ^
+
+"SemaCXX/printf-cstr.cpp", line 65: warning: a class type that is not trivially copyable passed through ellipsis
+    printf(extstr, hcs, n);
+                   ^
+
+"SemaCXX/printf-cstr.cpp", line 29: warning: variable "dest" was declared but never referenced
+    char dest[32];
+         ^
+
+"SemaCXX/printf-cstr.cpp", line 81: warning: a class type that is not trivially copyable passed through ellipsis
+    Printf q("%s %d", hcs, 10);
+                      ^
+

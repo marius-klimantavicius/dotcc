@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: error: a lambda is not allowed in an unevaluated expression
+    decltype( [](){ return this; }() ) x; // { dg-error "unevaluated" "" { target c++17_down } }
+              ^
+
+"Test_name.c", line 8: error: "this" cannot be used inside the body of this lambda
+    decltype( [](){ return this; }() ) x; // { dg-error "unevaluated" "" { target c++17_down } }
+                           ^
+
+2 errors detected in the compilation of "Test_name.c".

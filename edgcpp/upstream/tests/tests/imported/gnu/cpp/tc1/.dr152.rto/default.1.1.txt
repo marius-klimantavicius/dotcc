@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 16: error: class "N1::X" has no suitable copy constructor
+      f(x);     // { dg-error "matching" "matching" }
+        ^
+
+"Test_name.c", line 35: error: class "N2::X<float>" has no suitable copy constructor
+      N2::f(x);   // { dg-error "matching" "matching" }
+            ^
+          detected during instantiation of "int N2::foo<T>() [with T=float]" at line 39
+
+2 errors detected in the compilation of "Test_name.c".

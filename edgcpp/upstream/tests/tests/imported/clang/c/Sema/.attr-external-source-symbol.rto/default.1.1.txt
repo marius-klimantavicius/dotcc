@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 5: warning: unknown attribute "external_source_symbol"
+  void threeClauses(void) __attribute__((external_source_symbol(language="Swift", defined_in="module", generated_declaration)));
+                                         ^
+
+"Test_name.c", line 7: warning: unknown attribute "external_source_symbol"
+  void twoClauses(void) __attribute__((external_source_symbol(language="Swift", defined_in="module")));
+                                       ^
+
+"Test_name.c", line 9: warning: unknown attribute "external_source_symbol"
+  void fourClauses(void) __attribute__((external_source_symbol(language="Swift", defined_in="module", generated_declaration, USR="test")));
+                                        ^
+
+"Test_name.c", line 11: warning: unknown attribute "external_source_symbol"
+  void fiveClauses(void) __attribute__((external_source_symbol(language="Swift", defined_in="module", generated_declaration, generated_declaration, USR="test"))); // expected-error {{duplicate 'generated_declaration' clause in an 'external_source_symbol' attribute}}
+                                        ^
+
+"Test_name.c", line 13: warning: unknown attribute "external_source_symbol"
+  void oneClause(void) __attribute__((external_source_symbol(generated_declaration)));
+                                      ^
+
+"Test_name.c", line 16: warning: unknown attribute "external_source_symbol"
+  __attribute__((external_source_symbol)); // expected-error {{'external_source_symbol' attribute takes at least 1 argument}}
+                 ^
+
+"Test_name.c", line 19: error: expected an identifier
+    int (^block)(void) = ^ (void)
+         ^
+
+"Test_name.c", line 19: error: function "<error>" may not be initialized
+    int (^block)(void) = ^ (void)
+                       ^
+
+"Test_name.c", line 19: error: expected an expression
+    int (^block)(void) = ^ (void)
+                         ^
+
+"Test_name.c", line 22: warning: parsing restarts here after previous syntax error
+    };
+     ^
+
+"Test_name.c", line 25: warning: unknown attribute "clang::external_source_symbol"
+  [[clang::external_source_symbol(language="Swift", defined_in="module", generated_declaration)]] void threeClauses2(void);
+    ^
+
+"Test_name.c", line 27: warning: unknown attribute "clang::external_source_symbol"
+  [[clang::external_source_symbol(language="Swift", defined_in="module")]] void twoClauses2(void);
+    ^
+
+"Test_name.c", line 29: warning: unknown attribute "clang::external_source_symbol"
+  [[clang::external_source_symbol(language="Swift", defined_in="module", USR="test", generated_declaration, generated_declaration)]] // expected-error {{duplicate 'generated_declaration' clause in an 'external_source_symbol' attribute}}
+    ^
+
+"Test_name.c", line 32: warning: unknown attribute "clang::external_source_symbol"
+  [[clang::external_source_symbol(generated_declaration)]] void oneClause2(void);
+    ^
+
+"Test_name.c", line 34: warning: unknown attribute "clang::external_source_symbol"
+  [[clang::external_source_symbol]] // expected-error {{'clang::external_source_symbol' attribute takes at least 1 argument}}
+    ^
+
+3 errors detected in the compilation of "Test_name.c".

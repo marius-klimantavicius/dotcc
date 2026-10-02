@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=2 -w --c++11 --clang_version 200100 --target linux_i686 Test_name.c
+"Test_name.c", line 10: error: too few arguments in function call
+      __builtin_elementwise_abs(); // error
+                                ^
+
+"Test_name.c", line 11: error: too few arguments in function call
+      __builtin_elementwise_max(); // error
+                                ^
+
+"Test_name.c", line 12: error: too few arguments in function call
+      __builtin_elementwise_fma(); // error
+                                ^
+
+"Test_name.c", line 15: error: too few arguments in function call
+      __builtin_elementwise_max(vf); // error
+                                  ^
+
+"Test_name.c", line 16: error: too few arguments in function call
+      __builtin_elementwise_fma(vf); // error
+                                  ^
+
+"Test_name.c", line 18: error: too many arguments in function call
+      __builtin_elementwise_abs(vf, vf); // error
+                                    ^
+
+"Test_name.c", line 20: error: both arguments must have the same type
+      __builtin_elementwise_max(vf, vi); // error
+                                ^
+
+"Test_name.c", line 21: error: too few arguments in function call
+      __builtin_elementwise_fma(vf, vf); // error
+                                      ^
+
+"Test_name.c", line 23: error: too many arguments in function call
+      __builtin_elementwise_abs(vf, vf, vf); // error
+                                    ^
+
+"Test_name.c", line 24: error: too many arguments in function call
+      __builtin_elementwise_max(vf, vf, vf); // error
+                                        ^
+
+"Test_name.c", line 26: error: all arguments must have the same type
+      __builtin_elementwise_fma(vf, vi, vf); // error
+                                    ^
+
+"Test_name.c", line 27: error: all arguments must have the same type
+      __builtin_elementwise_fma(vf, vf, vi); // error
+                                        ^
+
+"Test_name.c", line 29: error: too many arguments in function call
+      __builtin_elementwise_abs(vf, vf, vf, vf); // error
+                                    ^
+
+"Test_name.c", line 30: error: too many arguments in function call
+      __builtin_elementwise_max(vf, vf, vf, vf); // error
+                                        ^
+
+"Test_name.c", line 31: error: too many arguments in function call
+      __builtin_elementwise_fma(vf, vf, vf, vf); // error
+                                            ^
+
+15 errors detected in the compilation of "Test_name.c".

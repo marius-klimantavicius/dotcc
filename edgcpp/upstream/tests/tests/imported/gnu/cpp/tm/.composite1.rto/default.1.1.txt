@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: error: identifier "p" is undefined
+    void (*p)() transaction_safe = 0;
+           ^
+
+"Test_name.c", line 8: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+    void (*p)() transaction_safe = 0;
+    ^
+
+"Test_name.c", line 8: error: expected a ";"
+    void (*p)() transaction_safe = 0;
+                ^
+
+3 errors detected in the compilation of "Test_name.c".

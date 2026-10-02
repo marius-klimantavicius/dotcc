@@ -1,0 +1,32 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 32: error: too many arguments in function call
+    (f)(x); // expected-error{{too many arguments to function call, expected 0, have 1; did you mean 'N::f'?}}
+        ^
+
+"Test_name.c", line 33: error: too many arguments in function call
+    ::f(x); // expected-error{{too many arguments to function call, expected 0, have 1; did you mean 'N::f'?}}
+        ^
+
+"Test_name.c", line 51: error: more than one instance of function "M::g" matches the argument list:
+            function "N::g(N::X)" (declared at line 11)
+            function "M::g(N::X)" (declared at line 48)
+            argument types are: (N::X)
+      g(x); // expected-error{{call to 'g' is ambiguous}}
+      ^
+
+"Test_name.c", line 86: error: more than one instance of function "P::h" matches the argument list:
+            function "h(L)" (declared at line 80)
+            function "P::h(L)" (declared at line 83)
+            argument types are: (L)
+        h(l); // expected-error {{call to 'h' is ambiguous}}
+        ^
+
+"Test_name.c", line 149: error: identifier "g1" is undefined
+      g1(s);   // expected-error {{use of undeclared}}
+      ^
+
+"Test_name.c", line 150: error: identifier "g2" is undefined
+      g2(s);   // expected-error {{use of undeclared}}
+      ^
+
+6 errors detected in the compilation of "Test_name.c".

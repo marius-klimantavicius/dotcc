@@ -1,0 +1,53 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./vect/../../gcc.c-torture/execute/pr51581-1.c", line 11: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) void
+                           ^
+
+"./vect/../../gcc.c-torture/execute/pr51581-1.c", line 19: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) void
+                           ^
+
+"./vect/../../gcc.c-torture/execute/pr51581-1.c", line 27: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) void
+                           ^
+
+"./vect/../../gcc.c-torture/execute/pr51581-1.c", line 35: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) void
+                           ^
+
+"./vect/../../gcc.c-torture/execute/pr51581-1.c", line 43: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) void
+                           ^
+
+"./vect/../../gcc.c-torture/execute/pr51581-1.c", line 51: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) void
+                           ^
+
+"./vect/../../gcc.c-torture/execute/pr51581-1.c", line 60: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) void
+                           ^
+
+"./vect/../../gcc.c-torture/execute/pr51581-1.c", line 68: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) void
+                           ^
+
+"./vect/../../gcc.c-torture/execute/pr51581-1.c", line 76: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) void
+                           ^
+
+"./vect/../../gcc.c-torture/execute/pr51581-1.c", line 84: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) void
+                           ^
+
+"./vect/../../gcc.c-torture/execute/pr51581-1.c", line 92: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) void
+                           ^
+
+"./vect/../../gcc.c-torture/execute/pr51581-1.c", line 100: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) void
+                           ^
+
+"./vect/pr51581-1.c", line 12: warning: variable "i" was declared but never referenced
+    int i;
+        ^
+

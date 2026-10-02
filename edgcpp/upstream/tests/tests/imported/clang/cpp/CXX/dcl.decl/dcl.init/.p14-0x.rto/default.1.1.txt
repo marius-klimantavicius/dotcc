@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 35: error: no suitable constructor exists to convert from "int" to "Explicit"
+    Explicit e2 = 42; // expected-error {{no viable conversion}}
+                  ^
+
+"Test_name.c", line 36: error: "NoCopy::NoCopy(const NoCopy &)" (declared at line 14), required for copy that was eliminated, cannot be referenced -- it is a deleted function
+    NoCopy nc = NoCopy(); // expected-error {{call to deleted}}
+                ^
+
+"Test_name.c", line 37: error: "NoMove::NoMove(NoMove &&)" (declared at line 18), required for copy that was eliminated, cannot be referenced -- it is a deleted function
+    NoMove nm = NoMove(); // expected-error {{call to deleted}}
+                ^
+
+"Test_name.c", line 38: error: "Private::Private(int)" (declared at line 21) is inaccessible
+    Private p = 42; // expected-error {{private constructor}}
+                ^
+
+"Test_name.c", line 41: error: the default constructor of "NoDefault" cannot be referenced -- it is a deleted function
+    S() {} // expected-error {{call to deleted constructor of 'NoDefault'}} \
+        ^
+
+"Test_name.c", line 41: error: the default constructor of "NoDefault" cannot be referenced -- it is a deleted function
+    S() {} // expected-error {{call to deleted constructor of 'NoDefault'}} \
+        ^
+
+"Test_name.c", line 41: error: no default constructor exists for class "Explicit"
+    S() {} // expected-error {{call to deleted constructor of 'NoDefault'}} \
+        ^
+
+7 errors detected in the compilation of "Test_name.c".

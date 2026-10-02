@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: error: constexpr function return is non-constant
+    return f((delete[] ap, 42)); // { dg-message "" "" { target c++17_down } }
+           ^
+
+"Test_name.c", line 15: error: expression must have a constant value
+  constexpr int i = g(&a);  // { dg-error "" "" { target c++17_down } }
+                    ^
+"Test_name.c", line 10: note: expression cannot be interpreted
+    return f((delete[] ap, 42)); // { dg-message "" "" { target c++17_down } }
+              ^
+
+"Test_name.c", line 15: warning: variable "i" was declared but never referenced
+  constexpr int i = g(&a);  // { dg-error "" "" { target c++17_down } }
+                ^
+
+2 errors detected in the compilation of "Test_name.c".

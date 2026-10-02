@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 6: error: invalid partial specialization -- class "A<>" is already fully specialized
+  template<char> struct A<> {}; // { dg-error "not deducible|anonymous|declaration" }
+                        ^
+
+"Test_name.c", line 8: error: incomplete type "A<>" is not allowed
+  template<typename T, typename... U> struct A<T, U...> : A<U...> {}; // { dg-error "incomplete type" }
+                                                          ^
+          detected during instantiation of class "A<T, U...> [with T=int, U=<>]" at line 10
+
+2 errors detected in the compilation of "Test_name.c".

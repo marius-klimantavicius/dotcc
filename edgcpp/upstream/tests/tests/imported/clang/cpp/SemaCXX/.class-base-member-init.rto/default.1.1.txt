@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 14: error: member "D::b1" has already been initialized
+      b1(0), // expected-error {{multiple initializations given for non-static member 'b1'}}
+      ^
+
+"Test_name.c", line 16: error: base class "S" has already been initialized
+      S()    // expected-error {{multiple initializations given for base 'S'}}
+      ^
+
+"Test_name.c", line 74: error: only one member of a union may be specified in a constructor initializer list
+      A(short _) : a(0), c(0) {} // expected-error {{initializing multiple members of union}} expected-note {{previous initialization is here}}
+                         ^
+
+"Test_name.c", line 75: error: only one member of a union may be specified in a constructor initializer list
+      A(int _) : d(0), e(0) {} // expected-error {{initializing multiple members of union}} expected-note {{previous initialization is here}}
+                       ^
+
+"Test_name.c", line 76: error: only one member of a union may be specified in a constructor initializer list
+      A(long _) : a(0), d(0) {} // expected-error {{initializing multiple members of union}} expected-note {{previous initialization is here}}
+                        ^
+
+"Test_name.c", line 88: error: base class "test5::Base" has already been initialized
+               decltype(Base(1))(2), // expected-error {{multiple initializations given for base 'decltype(Base(1))' (aka 'Base')}}
+                                ^
+
+"Test_name.c", line 89: error: not a base class of class "test5::A"
+               decltype(int())() { // expected-error {{constructor initializer 'decltype(int())' (aka 'int') does not name a class}}
+               ^
+
+"Test_name.c", line 99: error: member "rdar13185264::X::a" has already been initialized
+            a()  { } // expected-error{{multiple initializations given for non-static member 'a'}}
+            ^
+
+8 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 6: error: decltype(auto) cannot have added type qualifiers
+  decltype(auto) const x = 1; // { dg-error "cannot be cv-qualified" }
+  ^
+
+"Test_name.c", line 7: error: decltype(auto) cannot have added type qualifiers
+  volatile decltype(auto) x2 = 1; // { dg-error "cannot be cv-qualified" }
+           ^
+
+"Test_name.c", line 8: error: decltype(auto) cannot have added type qualifiers
+  const volatile decltype(auto) x3 = 1; // { dg-error "cannot be cv-qualified" }
+                 ^
+
+"Test_name.c", line 9: error: decltype(auto) cannot have added type qualifiers
+  const decltype(auto) fn() { return 42; } // { dg-error "cannot be cv-qualified" }
+        ^
+
+"Test_name.c", line 10: error: decltype(auto) cannot have added type qualifiers
+  const decltype(auto) fn2(); // { dg-error "cannot be cv-qualified" }
+        ^
+
+5 errors detected in the compilation of "Test_name.c".

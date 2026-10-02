@@ -1,0 +1,49 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --signed_chars Test_name.c
+"./warn/Wsign-conversion.C", line 43: warning: integer conversion resulted in a change of sign
+    uc = x ? 1U : -1;
+                  ^
+
+"./warn/Wsign-conversion.C", line 47: warning: integer conversion resulted in a change of sign
+    ui = x ? 1U : -1;
+                  ^
+
+"./warn/Wsign-conversion.C", line 50: warning: integer conversion resulted in a change of sign
+    ui = 1U * -1;
+              ^
+
+"./warn/Wsign-conversion.C", line 55: warning: integer conversion resulted in a change of sign
+    fuc (-1);
+         ^
+
+"./warn/Wsign-conversion.C", line 56: warning: integer conversion resulted in a change of sign
+    uc = -1;
+         ^
+
+"./warn/Wsign-conversion.C", line 57: warning: integer conversion resulted in a change of sign
+    fui (-1);
+         ^
+
+"./warn/Wsign-conversion.C", line 58: warning: integer conversion resulted in a change of sign
+    ui = -1;
+         ^
+
+"./warn/Wsign-conversion.C", line 59: warning: integer conversion resulted in a change of sign
+    fuc ('\xa0');
+         ^
+
+"./warn/Wsign-conversion.C", line 60: warning: integer conversion resulted in a change of sign
+    uc = '\xa0';
+         ^
+
+"./warn/Wsign-conversion.C", line 61: warning: integer conversion resulted in a change of sign
+    fui ('\xa0');
+         ^
+
+"./warn/Wsign-conversion.C", line 62: warning: integer conversion resulted in a change of sign
+    ui = '\xa0';
+         ^
+
+"./warn/Wsign-conversion.C", line 94: warning: integer conversion resulted in a change of sign
+  unsigned fui (unsigned a) { return a + -1; }
+                                         ^
+

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 3: error: ellipsis is not allowed in operator function parameter list
+  int operator *(int, ...); // { dg-error ".int operator\\*\\(int, ...\\). must have an argument of class or enumerated type" }
+      ^
+
+"Test_name.c", line 3: error: nonmember operator requires a parameter with class or enum type
+  int operator *(int, ...); // { dg-error ".int operator\\*\\(int, ...\\). must have an argument of class or enumerated type" }
+      ^
+
+2 errors detected in the compilation of "Test_name.c".

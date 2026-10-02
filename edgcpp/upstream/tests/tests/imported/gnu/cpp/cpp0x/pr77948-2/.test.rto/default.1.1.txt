@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 --no_strict_gnu --c++11 Test_name.c
+"Test_name.c", line 10: warning: variable "qfp" was declared but never referenced
+    auto qfp = 1.0q; // { dg-error "unable to find numeric literal operator" }
+         ^
+
+"Test_name.c", line 11: warning: variable "Qfp" was declared but never referenced
+    auto Qfp = 1.0Q; // { dg-error "unable to find numeric literal operator" }
+         ^
+

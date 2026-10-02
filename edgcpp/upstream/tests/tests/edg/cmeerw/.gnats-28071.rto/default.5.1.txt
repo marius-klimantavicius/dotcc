@@ -1,0 +1,58 @@
+fe_only -DTEST_NUMBER=5 --c++11 --clang_version 200100 Test_name.c
+"Test_name.c", line 11: error: incomplete type "minimal::B" is not allowed
+    struct D : A<T> {             // accepted by gcc
+               ^
+
+"Test_name.c", line 12: error: incomplete type "minimal::B" is not allowed
+      using A<T>::A;              // accepted by gcc
+            ^
+
+"Test_name.c", line 23: error: class "S" has no member class "X"
+    template<typename T> struct C : A<T>::X { };     // accepted by gcc
+                                          ^
+
+"Test_name.c", line 24: error: class "S" has no member class "X"
+    template<typename T> struct CI : A<I<T>>::X { }; // accepted by gcc
+                                              ^
+
+"Test_name.c", line 30: error: class "S" has no member "f"
+      using B::f;                 // accepted by gcc
+               ^
+
+"Test_name.c", line 37: error: class "S" has no member "f"
+      using B::f;                 // accepted by gcc
+               ^
+
+"Test_name.c", line 44: error: name followed by "::" must be a class or namespace name
+    template<typename T> struct C : A<T>::X { }; // error
+                                    ^
+
+"Test_name.c", line 46: error: not a class or struct name
+    template<typename T> struct D : A<T> // error
+                                    ^
+
+"Test_name.c", line 53: error: name followed by "::" must be a class or namespace name
+    template<typename T> struct C : A<T>::X { }; // error
+                                    ^
+
+"Test_name.c", line 55: error: not a class or struct name
+    template<typename T> struct D : A<T> // error
+                                    ^
+
+"Test_name.c", line 62: error: name followed by "::" must be a class or namespace name
+    template<typename T> struct C : A<T>::X { }; // error
+                                    ^
+
+"Test_name.c", line 64: error: not a class or struct name
+    template<typename T> struct D : A<T> // error
+                                    ^
+
+"Test_name.c", line 84: error: name followed by "::" must be a class or namespace name
+    template<typename T> struct C : A<T>::X { }; // error
+                                    ^
+
+"Test_name.c", line 86: error: not a class or struct name
+    template<typename T> struct D : A<T> // error
+                                    ^
+
+14 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c --microsoft Test_name.c
+"Test_name.c", line 18: error: declaration is incompatible with previous "g" (declared at line 17)
+  long g() { return 1; }  // Now a warning; a second routine entry is created.
+       ^
+
+"Test_name.c", line 19: error: declaration is incompatible with previous "h" (declared at line 17)
+  void h() {}             // Now an error.
+       ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 19: error: more than one conversion function from "C" to "const E2" applies:
+            function "B::operator E2 &()" (declared at line 12)
+            function "A::operator E2 &()" (declared at line 8)
+    const E2 &e2 = c; // expected-error {{reference initialization of type 'const E2 &' with initializer of type 'C' is ambiguous}}
+                   ^
+
+"Test_name.c", line 25: error: more than one conversion function from "C" to "const E2" applies:
+            function "B::operator E2 &()" (declared at line 12)
+            function "A::operator E2 &()" (declared at line 8)
+      foo(c); // expected-error {{reference initialization of type 'const E2 &' with initializer of type 'C' is ambiguous}}
+          ^
+
+"Test_name.c", line 27: error: more than one conversion function from "C" to "const E2" applies:
+            function "B::operator E2 &()" (declared at line 12)
+            function "A::operator E2 &()" (declared at line 8)
+      return c; // expected-error {{reference initialization of type 'const E2 &' with initializer of type 'C' is ambiguous}}
+             ^
+
+"Test_name.c", line 47: warning: variable "x" is used before its value is set
+      f(x);
+        ^
+
+"Test_name.c", line 49: error: more than one instance of overloaded function "CWG2352::h1" matches the argument list:
+            function "CWG2352::h1(int *const *const &)" (declared at line 37)
+            function "CWG2352::h1(const int *const *)" (declared at line 38)
+            argument types are: (int **)
+      h1(&x);
+      ^
+
+"Test_name.c", line 50: error: more than one instance of overloaded function "CWG2352::h2" matches the argument list:
+            function "CWG2352::h2(const int *const *const &)" (declared at line 39)
+            function "CWG2352::h2(int *const *)" (declared at line 40)
+            argument types are: (int **)
+      h2(&x);
+      ^
+
+5 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 29: error: "f" is not a class or function template name in the current scope
+    template void f<int>(int);
+                  ^
+
+"Test_name.c", line 34: error: "g" is not a class or function template name in the current scope
+    template void g(int);
+                  ^
+
+"Test_name.c", line 48: error: class "unsupported::y" is not an entity that can be instantiated
+   template struct y;     // expected-error {{template 'y' cannot be referenced with the 'struct' specifier}}
+            ^
+
+"Test_name.c", line 60: error: "g0" is not a class or function template name in the current scope
+    template void g0(int) { } // expected-error {{function cannot be defined in an explicit instantiation; if this declaration is meant to be a function definition, remove the 'template' keyword}}
+                  ^
+
+"Test_name.c", line 60: error: expected a ";"
+    template void g0(int) { } // expected-error {{function cannot be defined in an explicit instantiation; if this declaration is meant to be a function definition, remove the 'template' keyword}}
+                          ^
+
+"Test_name.c", line 68: error: "f0" is not a class or function template name in the current scope
+    template<> void f0<int>(int) { }  // expected-error {{no function template matches function template specialization 'f0'}}
+                    ^
+
+"Test_name.c", line 69: error: class "x0<int>" cannot be specialized in the current scope
+    template<> struct x0<int> { };    // expected-error {{class template specialization of 'x0' must occur at global scope}}
+                      ^
+
+"Test_name.c", line 80: error: "f1" is not a class or function template name in the current scope
+    template void f1<int>(int) { }    // expected-error {{explicit template instantiation cannot have a definition; if this definition is meant to be an explicit specialization, add '<>' after the 'template' keyword}} \
+                  ^
+
+"Test_name.c", line 80: error: expected a ";"
+    template void f1<int>(int) { }    // expected-error {{explicit template instantiation cannot have a definition; if this definition is meant to be an explicit specialization, add '<>' after the 'template' keyword}} \
+                               ^
+
+"Test_name.c", line 91: error: expected a ";"
+  template void f2<int>(int) { }    // expected-error {{explicit template instantiation cannot have a definition; if this definition is meant to be an explicit specialization, add '<>' after the 'template' keyword}}
+                             ^
+
+10 errors detected in the compilation of "Test_name.c".

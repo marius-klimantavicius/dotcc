@@ -1,0 +1,3950 @@
+//type: rp
+//options: 
+# 0 "./torture/fp-int-convert-float80.c"
+# 0 "<built-in>"
+# 0 "<command-line>"
+# 1 "/usr/include/stdc-predef.h" 1 3 4
+# 0 "<command-line>" 2
+# 1 "./torture/fp-int-convert-float80.c"
+
+
+
+
+
+# 1 "./torture/fp-int-convert.h" 1
+
+
+
+# 1 "/mds/gnu/build/gcc-15-20250223/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/limits.h" 1 3 4
+# 34 "/mds/gnu/build/gcc-15-20250223/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/limits.h" 3 4
+# 1 "/mds/gnu/build/gcc-15-20250223/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/syslimits.h" 1 3 4
+
+
+
+
+
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpedantic"
+# 1 "/mds/gnu/build/gcc-15-20250223/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/limits.h" 1 3 4
+# 210 "/mds/gnu/build/gcc-15-20250223/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/limits.h" 3 4
+# 1 "/usr/include/limits.h" 1 3 4
+# 26 "/usr/include/limits.h" 3 4
+# 1 "/usr/include/features.h" 1 3 4
+# 375 "/usr/include/features.h" 3 4
+# 1 "/usr/include/sys/cdefs.h" 1 3 4
+# 392 "/usr/include/sys/cdefs.h" 3 4
+# 1 "/usr/include/bits/wordsize.h" 1 3 4
+# 393 "/usr/include/sys/cdefs.h" 2 3 4
+# 376 "/usr/include/features.h" 2 3 4
+# 399 "/usr/include/features.h" 3 4
+# 1 "/usr/include/gnu/stubs.h" 1 3 4
+# 10 "/usr/include/gnu/stubs.h" 3 4
+# 1 "/usr/include/gnu/stubs-64.h" 1 3 4
+# 11 "/usr/include/gnu/stubs.h" 2 3 4
+# 400 "/usr/include/features.h" 2 3 4
+# 27 "/usr/include/limits.h" 2 3 4
+# 144 "/usr/include/limits.h" 3 4
+# 1 "/usr/include/bits/posix1_lim.h" 1 3 4
+# 160 "/usr/include/bits/posix1_lim.h" 3 4
+# 1 "/usr/include/bits/local_lim.h" 1 3 4
+# 38 "/usr/include/bits/local_lim.h" 3 4
+# 1 "/usr/include/linux/limits.h" 1 3 4
+# 39 "/usr/include/bits/local_lim.h" 2 3 4
+# 161 "/usr/include/bits/posix1_lim.h" 2 3 4
+# 145 "/usr/include/limits.h" 2 3 4
+
+
+
+# 1 "/usr/include/bits/posix2_lim.h" 1 3 4
+# 149 "/usr/include/limits.h" 2 3 4
+# 211 "/mds/gnu/build/gcc-15-20250223/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/limits.h" 2 3 4
+# 10 "/mds/gnu/build/gcc-15-20250223/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/syslimits.h" 2 3 4
+#pragma GCC diagnostic pop
+# 35 "/mds/gnu/build/gcc-15-20250223/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/limits.h" 2 3 4
+# 5 "./torture/fp-int-convert.h" 2
+
+# 5 "./torture/fp-int-convert.h"
+extern void abort (void);
+extern void exit (int);
+
+
+
+
+typedef int TItype __attribute__ ((mode (TI)));
+typedef unsigned int UTItype __attribute__ ((mode (TI)));
+# 7 "./torture/fp-int-convert-float80.c" 2
+
+
+
+
+int
+main (void)
+{
+  do { do { static volatile signed char ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed char)0); fv1 = ((signed char)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed char)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed char)0)) || fv1 != (__float80) ((signed char)0) || fv2 != (__float80) ((signed char)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed char)1); fv1 = ((signed char)1); fv2 = ivin; ivout = fv2; if (ivin != ((signed char)1) || ((1) && ivout != ivin) || ((1) && ivout != ((signed char)1)) || fv1 != (__float80) ((signed char)1) || fv2 != (__float80) ((signed char)1) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed char)(((unsigned char)~(unsigned char)0) >> 1)); fv1 = ((signed char)(((unsigned char)~(unsigned char)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((signed char)(((unsigned char)~(unsigned char)0) >> 1)) || ((((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ivin) || ((((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ((signed char)(((unsigned char)~(unsigned char)0) >> 1))) || fv1 != (__float80) ((signed char)(((unsigned char)~(unsigned char)0) >> 1)) || fv2 != (__float80) ((signed char)(((unsigned char)~(unsigned char)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed char)(unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)); fv1 = ((signed char)(unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((signed char)(unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)) || ((((16384) > sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ivin) || ((((16384) > sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ((signed char)(unsigned char)~(((unsigned char)~(unsigned char)0) >> 1))) || fv1 != (__float80) ((signed char)(unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)) || fv2 != (__float80) ((signed char)(unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed char)(unsigned char)~(unsigned char)0); fv1 = ((signed char)(unsigned char)~(unsigned char)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed char)(unsigned char)~(unsigned char)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed char)(unsigned char)~(unsigned char)0)) || fv1 != (__float80) ((signed char)(unsigned char)~(unsigned char)0) || fv2 != (__float80) ((signed char)(unsigned char)~(unsigned char)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv1 = ((signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv2 = ivin; ivout = fv2; if (ivin != ((signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || ((((64) >= sizeof(signed char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))))) || fv1 != (__float80) ((signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv2 != (__float80) ((signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv1 = ((signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv2 = ivin; ivout = fv2; if (ivin != ((signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || ((((64) >= sizeof(signed char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1)) || fv1 != (__float80) ((signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv2 != (__float80) ((signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv1 = ((signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv2 = ivin; ivout = fv2; if (ivin != ((signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || ((((64) >= sizeof(signed char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1)) || fv1 != (__float80) ((signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv2 != (__float80) ((signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)3 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv1 = ((signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)3 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv2 = ivin; ivout = fv2; if (ivin != ((signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)3 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || ((((64) >= sizeof(signed char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)3 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))))) || fv1 != (__float80) ((signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)3 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv2 != (__float80) ((signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)3 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)3 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv1 = ((signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)3 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv2 = ivin; ivout = fv2; if (ivin != ((signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)3 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || ((((64) >= sizeof(signed char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)3 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1)) || fv1 != (__float80) ((signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)3 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv2 != (__float80) ((signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)3 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)3 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv1 = ((signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)3 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv2 = ivin; ivout = fv2; if (ivin != ((signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)3 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || ((((64) >= sizeof(signed char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)3 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1)) || fv1 != (__float80) ((signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)3 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv2 != (__float80) ((signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)3 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile __float80 fv1, fv2; ivin = (-(signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv1 = (-(signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv2 = ivin; ivout = fv2; if (ivin != (-(signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || ((((64) >= sizeof(signed char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ )) && ivout != (-(signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))))) || fv1 != (__float80) (-(signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv2 != (__float80) (-(signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile __float80 fv1, fv2; ivin = (-(signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv1 = (-(signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv2 = ivin; ivout = fv2; if (ivin != (-(signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || ((((64) >= sizeof(signed char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ )) && ivout != (-(signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1)) || fv1 != (__float80) (-(signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv2 != (__float80) (-(signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile __float80 fv1, fv2; ivin = (-(signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv1 = (-(signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv2 = ivin; ivout = fv2; if (ivin != (-(signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || ((((64) >= sizeof(signed char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ )) && ivout != (-(signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1)) || fv1 != (__float80) (-(signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv2 != (__float80) (-(signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile __float80 fv1, fv2; ivin = (-(signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)3 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv1 = (-(signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)3 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv2 = ivin; ivout = fv2; if (ivin != (-(signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)3 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || ((((64) >= sizeof(signed char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ )) && ivout != (-(signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)3 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))))) || fv1 != (__float80) (-(signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)3 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv2 != (__float80) (-(signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)3 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile __float80 fv1, fv2; ivin = (-(signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)3 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv1 = (-(signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)3 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv2 = ivin; ivout = fv2; if (ivin != (-(signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)3 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || ((((64) >= sizeof(signed char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ )) && ivout != (-(signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)3 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1)) || fv1 != (__float80) (-(signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)3 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv2 != (__float80) (-(signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)3 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile __float80 fv1, fv2; ivin = (-(signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)3 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv1 = (-(signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)3 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv2 = ivin; ivout = fv2; if (ivin != (-(signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)3 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || ((((64) >= sizeof(signed char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ )) && ivout != (-(signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)3 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1)) || fv1 != (__float80) (-(signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)3 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv2 != (__float80) (-(signed char)(((64) >= sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed char)1 : (((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed char)3 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned char)0); fv1 = ((unsigned char)0); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned char)0) || ((1) && ivout != ivin) || ((1) && ivout != ((unsigned char)0)) || fv1 != (__float80) ((unsigned char)0) || fv2 != (__float80) ((unsigned char)0) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned char)1); fv1 = ((unsigned char)1); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned char)1) || ((1) && ivout != ivin) || ((1) && ivout != ((unsigned char)1)) || fv1 != (__float80) ((unsigned char)1) || fv2 != (__float80) ((unsigned char)1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned char)(((unsigned char)~(unsigned char)0) >> 1)); fv1 = ((unsigned char)(((unsigned char)~(unsigned char)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned char)(((unsigned char)~(unsigned char)0) >> 1)) || ((((64) >= sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ivin) || ((((64) >= sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ((unsigned char)(((unsigned char)~(unsigned char)0) >> 1))) || fv1 != (__float80) ((unsigned char)(((unsigned char)~(unsigned char)0) >> 1)) || fv2 != (__float80) ((unsigned char)(((unsigned char)~(unsigned char)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)); fv1 = ((unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)) || ((((16384) > sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ivin) || ((((16384) > sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ((unsigned char)~(((unsigned char)~(unsigned char)0) >> 1))) || fv1 != (__float80) ((unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)) || fv2 != (__float80) ((unsigned char)~(((unsigned char)~(unsigned char)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned char)~(unsigned char)0); fv1 = ((unsigned char)~(unsigned char)0); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned char)~(unsigned char)0) || ((((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((unsigned char)~(unsigned char)0)) || fv1 != (__float80) ((unsigned char)~(unsigned char)0) || fv2 != (__float80) ((unsigned char)~(unsigned char)0) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned char)(((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned char)1 : (((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))); fv1 = ((unsigned char)(((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned char)1 : (((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned char)(((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned char)1 : (((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))) || ((((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((unsigned char)(((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned char)1 : (((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))))) || fv1 != (__float80) ((unsigned char)(((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned char)1 : (((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))) || fv2 != (__float80) ((unsigned char)(((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned char)1 : (((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned char)(((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned char)1 : (((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1); fv1 = ((unsigned char)(((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned char)1 : (((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned char)(((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned char)1 : (((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1) || ((((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((unsigned char)(((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned char)1 : (((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1)) || fv1 != (__float80) ((unsigned char)(((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned char)1 : (((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1) || fv2 != (__float80) ((unsigned char)(((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned char)1 : (((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned char)(((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned char)1 : (((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1); fv1 = ((unsigned char)(((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned char)1 : (((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned char)(((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned char)1 : (((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1) || ((((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((unsigned char)(((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned char)1 : (((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1)) || fv1 != (__float80) ((unsigned char)(((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned char)1 : (((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1) || fv2 != (__float80) ((unsigned char)(((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned char)1 : (((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned char)(((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned char)1 : (((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned char)3 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))); fv1 = ((unsigned char)(((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned char)1 : (((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned char)3 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned char)(((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned char)1 : (((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned char)3 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))) || ((((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((unsigned char)(((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned char)1 : (((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned char)3 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))))) || fv1 != (__float80) ((unsigned char)(((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned char)1 : (((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned char)3 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))) || fv2 != (__float80) ((unsigned char)(((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned char)1 : (((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned char)3 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned char)(((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned char)1 : (((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned char)3 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1); fv1 = ((unsigned char)(((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned char)1 : (((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned char)3 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned char)(((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned char)1 : (((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned char)3 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1) || ((((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((unsigned char)(((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned char)1 : (((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned char)3 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1)) || fv1 != (__float80) ((unsigned char)(((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned char)1 : (((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned char)3 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1) || fv2 != (__float80) ((unsigned char)(((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned char)1 : (((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned char)3 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned char ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned char)(((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned char)1 : (((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned char)3 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1); fv1 = ((unsigned char)(((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned char)1 : (((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned char)3 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned char)(((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned char)1 : (((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned char)3 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1) || ((((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((unsigned char)(((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned char)1 : (((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned char)3 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1)) || fv1 != (__float80) ((unsigned char)(((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned char)1 : (((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned char)3 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1) || fv2 != (__float80) ((unsigned char)(((64) >= sizeof(unsigned char) * 8
+# 14 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned char)1 : (((unsigned char)1 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned char)3 << (sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed char)((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))); fv1 = ((signed char)((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))); fv2 = ivin; ivout = fv2; if (ivin != ((signed char)((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))) || ((((16384) > sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ / 2 - 1)) && ivout != ivin) || ((((16384) > sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ / 2 - 1)) && ivout != ((signed char)((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ / 2 - 1)))) || fv1 != (__float80) ((signed char)((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))) || fv2 != (__float80) ((signed char)((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))) || fv1 != fv2) abort (); } while (0); do { static volatile signed char ivin, ivout; static volatile __float80 fv1, fv2; ivin = (-(signed char)((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))); fv1 = (-(signed char)((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))); fv2 = ivin; ivout = fv2; if (ivin != (-(signed char)((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))) || ((((16384) > sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ / 2 - 1)) && ivout != ivin) || ((((16384) > sizeof(unsigned char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ / 2 - 1)) && ivout != (-(signed char)((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ / 2 - 1)))) || fv1 != (__float80) (-(signed char)((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))) || fv2 != (__float80) (-(signed char)((signed char)1 << (sizeof(signed char) * 8 
+# 14 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))) || fv1 != fv2) abort (); } while (0); } while (0);
+  do { do { static volatile signed short ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed short)0); fv1 = ((signed short)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed short)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed short)0)) || fv1 != (__float80) ((signed short)0) || fv2 != (__float80) ((signed short)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed short)1); fv1 = ((signed short)1); fv2 = ivin; ivout = fv2; if (ivin != ((signed short)1) || ((1) && ivout != ivin) || ((1) && ivout != ((signed short)1)) || fv1 != (__float80) ((signed short)1) || fv2 != (__float80) ((signed short)1) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed short)(((unsigned short)~(unsigned short)0) >> 1)); fv1 = ((signed short)(((unsigned short)~(unsigned short)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((signed short)(((unsigned short)~(unsigned short)0) >> 1)) || ((((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ivin) || ((((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ((signed short)(((unsigned short)~(unsigned short)0) >> 1))) || fv1 != (__float80) ((signed short)(((unsigned short)~(unsigned short)0) >> 1)) || fv2 != (__float80) ((signed short)(((unsigned short)~(unsigned short)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed short)(unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)); fv1 = ((signed short)(unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((signed short)(unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)) || ((((16384) > sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ivin) || ((((16384) > sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ((signed short)(unsigned short)~(((unsigned short)~(unsigned short)0) >> 1))) || fv1 != (__float80) ((signed short)(unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)) || fv2 != (__float80) ((signed short)(unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed short)(unsigned short)~(unsigned short)0); fv1 = ((signed short)(unsigned short)~(unsigned short)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed short)(unsigned short)~(unsigned short)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed short)(unsigned short)~(unsigned short)0)) || fv1 != (__float80) ((signed short)(unsigned short)~(unsigned short)0) || fv2 != (__float80) ((signed short)(unsigned short)~(unsigned short)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv1 = ((signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv2 = ivin; ivout = fv2; if (ivin != ((signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || ((((64) >= sizeof(signed short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))))) || fv1 != (__float80) ((signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv2 != (__float80) ((signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv1 = ((signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv2 = ivin; ivout = fv2; if (ivin != ((signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || ((((64) >= sizeof(signed short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1)) || fv1 != (__float80) ((signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv2 != (__float80) ((signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv1 = ((signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv2 = ivin; ivout = fv2; if (ivin != ((signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || ((((64) >= sizeof(signed short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1)) || fv1 != (__float80) ((signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv2 != (__float80) ((signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)3 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv1 = ((signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)3 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv2 = ivin; ivout = fv2; if (ivin != ((signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)3 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || ((((64) >= sizeof(signed short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)3 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))))) || fv1 != (__float80) ((signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)3 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv2 != (__float80) ((signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)3 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)3 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv1 = ((signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)3 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv2 = ivin; ivout = fv2; if (ivin != ((signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)3 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || ((((64) >= sizeof(signed short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)3 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1)) || fv1 != (__float80) ((signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)3 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv2 != (__float80) ((signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)3 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)3 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv1 = ((signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)3 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv2 = ivin; ivout = fv2; if (ivin != ((signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)3 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || ((((64) >= sizeof(signed short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)3 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1)) || fv1 != (__float80) ((signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)3 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv2 != (__float80) ((signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)3 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile __float80 fv1, fv2; ivin = (-(signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv1 = (-(signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv2 = ivin; ivout = fv2; if (ivin != (-(signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || ((((64) >= sizeof(signed short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ )) && ivout != (-(signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))))) || fv1 != (__float80) (-(signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv2 != (__float80) (-(signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile __float80 fv1, fv2; ivin = (-(signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv1 = (-(signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv2 = ivin; ivout = fv2; if (ivin != (-(signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || ((((64) >= sizeof(signed short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ )) && ivout != (-(signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1)) || fv1 != (__float80) (-(signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv2 != (__float80) (-(signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile __float80 fv1, fv2; ivin = (-(signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv1 = (-(signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv2 = ivin; ivout = fv2; if (ivin != (-(signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || ((((64) >= sizeof(signed short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ )) && ivout != (-(signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1)) || fv1 != (__float80) (-(signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv2 != (__float80) (-(signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile __float80 fv1, fv2; ivin = (-(signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)3 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv1 = (-(signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)3 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv2 = ivin; ivout = fv2; if (ivin != (-(signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)3 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || ((((64) >= sizeof(signed short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ )) && ivout != (-(signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)3 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))))) || fv1 != (__float80) (-(signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)3 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv2 != (__float80) (-(signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)3 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile __float80 fv1, fv2; ivin = (-(signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)3 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv1 = (-(signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)3 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv2 = ivin; ivout = fv2; if (ivin != (-(signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)3 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || ((((64) >= sizeof(signed short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ )) && ivout != (-(signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)3 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1)) || fv1 != (__float80) (-(signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)3 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv2 != (__float80) (-(signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)3 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile __float80 fv1, fv2; ivin = (-(signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)3 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv1 = (-(signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)3 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv2 = ivin; ivout = fv2; if (ivin != (-(signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)3 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || ((((64) >= sizeof(signed short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ )) && ivout != (-(signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)3 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1)) || fv1 != (__float80) (-(signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)3 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv2 != (__float80) (-(signed short)(((64) >= sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed short)1 : (((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed short)3 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned short)0); fv1 = ((unsigned short)0); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned short)0) || ((1) && ivout != ivin) || ((1) && ivout != ((unsigned short)0)) || fv1 != (__float80) ((unsigned short)0) || fv2 != (__float80) ((unsigned short)0) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned short)1); fv1 = ((unsigned short)1); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned short)1) || ((1) && ivout != ivin) || ((1) && ivout != ((unsigned short)1)) || fv1 != (__float80) ((unsigned short)1) || fv2 != (__float80) ((unsigned short)1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned short)(((unsigned short)~(unsigned short)0) >> 1)); fv1 = ((unsigned short)(((unsigned short)~(unsigned short)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned short)(((unsigned short)~(unsigned short)0) >> 1)) || ((((64) >= sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ivin) || ((((64) >= sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ((unsigned short)(((unsigned short)~(unsigned short)0) >> 1))) || fv1 != (__float80) ((unsigned short)(((unsigned short)~(unsigned short)0) >> 1)) || fv2 != (__float80) ((unsigned short)(((unsigned short)~(unsigned short)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)); fv1 = ((unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)) || ((((16384) > sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ivin) || ((((16384) > sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ((unsigned short)~(((unsigned short)~(unsigned short)0) >> 1))) || fv1 != (__float80) ((unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)) || fv2 != (__float80) ((unsigned short)~(((unsigned short)~(unsigned short)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned short)~(unsigned short)0); fv1 = ((unsigned short)~(unsigned short)0); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned short)~(unsigned short)0) || ((((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((unsigned short)~(unsigned short)0)) || fv1 != (__float80) ((unsigned short)~(unsigned short)0) || fv2 != (__float80) ((unsigned short)~(unsigned short)0) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned short)(((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned short)1 : (((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))); fv1 = ((unsigned short)(((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned short)1 : (((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned short)(((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned short)1 : (((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))) || ((((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((unsigned short)(((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned short)1 : (((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))))) || fv1 != (__float80) ((unsigned short)(((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned short)1 : (((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))) || fv2 != (__float80) ((unsigned short)(((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned short)1 : (((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned short)(((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned short)1 : (((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1); fv1 = ((unsigned short)(((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned short)1 : (((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned short)(((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned short)1 : (((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1) || ((((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((unsigned short)(((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned short)1 : (((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1)) || fv1 != (__float80) ((unsigned short)(((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned short)1 : (((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1) || fv2 != (__float80) ((unsigned short)(((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned short)1 : (((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned short)(((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned short)1 : (((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1); fv1 = ((unsigned short)(((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned short)1 : (((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned short)(((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned short)1 : (((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1) || ((((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((unsigned short)(((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned short)1 : (((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1)) || fv1 != (__float80) ((unsigned short)(((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned short)1 : (((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1) || fv2 != (__float80) ((unsigned short)(((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned short)1 : (((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned short)(((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned short)1 : (((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned short)3 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))); fv1 = ((unsigned short)(((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned short)1 : (((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned short)3 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned short)(((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned short)1 : (((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned short)3 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))) || ((((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((unsigned short)(((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned short)1 : (((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned short)3 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))))) || fv1 != (__float80) ((unsigned short)(((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned short)1 : (((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned short)3 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))) || fv2 != (__float80) ((unsigned short)(((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned short)1 : (((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned short)3 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned short)(((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned short)1 : (((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned short)3 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1); fv1 = ((unsigned short)(((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned short)1 : (((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned short)3 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned short)(((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned short)1 : (((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned short)3 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1) || ((((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((unsigned short)(((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned short)1 : (((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned short)3 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1)) || fv1 != (__float80) ((unsigned short)(((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned short)1 : (((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned short)3 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1) || fv2 != (__float80) ((unsigned short)(((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned short)1 : (((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned short)3 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned short ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned short)(((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned short)1 : (((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned short)3 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1); fv1 = ((unsigned short)(((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned short)1 : (((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned short)3 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned short)(((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned short)1 : (((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned short)3 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1) || ((((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((unsigned short)(((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned short)1 : (((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned short)3 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1)) || fv1 != (__float80) ((unsigned short)(((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned short)1 : (((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned short)3 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1) || fv2 != (__float80) ((unsigned short)(((64) >= sizeof(unsigned short) * 8
+# 15 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned short)1 : (((unsigned short)1 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned short)3 << (sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed short)((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))); fv1 = ((signed short)((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))); fv2 = ivin; ivout = fv2; if (ivin != ((signed short)((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))) || ((((16384) > sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ / 2 - 1)) && ivout != ivin) || ((((16384) > sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ / 2 - 1)) && ivout != ((signed short)((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ / 2 - 1)))) || fv1 != (__float80) ((signed short)((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))) || fv2 != (__float80) ((signed short)((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))) || fv1 != fv2) abort (); } while (0); do { static volatile signed short ivin, ivout; static volatile __float80 fv1, fv2; ivin = (-(signed short)((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))); fv1 = (-(signed short)((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))); fv2 = ivin; ivout = fv2; if (ivin != (-(signed short)((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))) || ((((16384) > sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ / 2 - 1)) && ivout != ivin) || ((((16384) > sizeof(unsigned short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ / 2 - 1)) && ivout != (-(signed short)((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ / 2 - 1)))) || fv1 != (__float80) (-(signed short)((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))) || fv2 != (__float80) (-(signed short)((signed short)1 << (sizeof(signed short) * 8 
+# 15 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))) || fv1 != fv2) abort (); } while (0); } while (0);
+  do { do { static volatile signed int ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed int)0); fv1 = ((signed int)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed int)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed int)0)) || fv1 != (__float80) ((signed int)0) || fv2 != (__float80) ((signed int)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed int)1); fv1 = ((signed int)1); fv2 = ivin; ivout = fv2; if (ivin != ((signed int)1) || ((1) && ivout != ivin) || ((1) && ivout != ((signed int)1)) || fv1 != (__float80) ((signed int)1) || fv2 != (__float80) ((signed int)1) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed int)(((unsigned int)~(unsigned int)0) >> 1)); fv1 = ((signed int)(((unsigned int)~(unsigned int)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((signed int)(((unsigned int)~(unsigned int)0) >> 1)) || ((((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ivin) || ((((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ((signed int)(((unsigned int)~(unsigned int)0) >> 1))) || fv1 != (__float80) ((signed int)(((unsigned int)~(unsigned int)0) >> 1)) || fv2 != (__float80) ((signed int)(((unsigned int)~(unsigned int)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed int)(unsigned int)~(((unsigned int)~(unsigned int)0) >> 1)); fv1 = ((signed int)(unsigned int)~(((unsigned int)~(unsigned int)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((signed int)(unsigned int)~(((unsigned int)~(unsigned int)0) >> 1)) || ((((16384) > sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ivin) || ((((16384) > sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ((signed int)(unsigned int)~(((unsigned int)~(unsigned int)0) >> 1))) || fv1 != (__float80) ((signed int)(unsigned int)~(((unsigned int)~(unsigned int)0) >> 1)) || fv2 != (__float80) ((signed int)(unsigned int)~(((unsigned int)~(unsigned int)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed int)(unsigned int)~(unsigned int)0); fv1 = ((signed int)(unsigned int)~(unsigned int)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed int)(unsigned int)~(unsigned int)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed int)(unsigned int)~(unsigned int)0)) || fv1 != (__float80) ((signed int)(unsigned int)~(unsigned int)0) || fv2 != (__float80) ((signed int)(unsigned int)~(unsigned int)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv1 = ((signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv2 = ivin; ivout = fv2; if (ivin != ((signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || ((((64) >= sizeof(signed int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))))) || fv1 != (__float80) ((signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv2 != (__float80) ((signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv1 = ((signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv2 = ivin; ivout = fv2; if (ivin != ((signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || ((((64) >= sizeof(signed int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1)) || fv1 != (__float80) ((signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv2 != (__float80) ((signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv1 = ((signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv2 = ivin; ivout = fv2; if (ivin != ((signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || ((((64) >= sizeof(signed int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1)) || fv1 != (__float80) ((signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv2 != (__float80) ((signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)3 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv1 = ((signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)3 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv2 = ivin; ivout = fv2; if (ivin != ((signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)3 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || ((((64) >= sizeof(signed int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)3 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))))) || fv1 != (__float80) ((signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)3 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv2 != (__float80) ((signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)3 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)3 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv1 = ((signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)3 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv2 = ivin; ivout = fv2; if (ivin != ((signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)3 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || ((((64) >= sizeof(signed int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)3 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1)) || fv1 != (__float80) ((signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)3 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv2 != (__float80) ((signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)3 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)3 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv1 = ((signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)3 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv2 = ivin; ivout = fv2; if (ivin != ((signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)3 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || ((((64) >= sizeof(signed int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)3 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1)) || fv1 != (__float80) ((signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)3 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv2 != (__float80) ((signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)3 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile __float80 fv1, fv2; ivin = (-(signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv1 = (-(signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv2 = ivin; ivout = fv2; if (ivin != (-(signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || ((((64) >= sizeof(signed int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ )) && ivout != (-(signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))))) || fv1 != (__float80) (-(signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv2 != (__float80) (-(signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile __float80 fv1, fv2; ivin = (-(signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv1 = (-(signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv2 = ivin; ivout = fv2; if (ivin != (-(signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || ((((64) >= sizeof(signed int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ )) && ivout != (-(signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1)) || fv1 != (__float80) (-(signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv2 != (__float80) (-(signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile __float80 fv1, fv2; ivin = (-(signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv1 = (-(signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv2 = ivin; ivout = fv2; if (ivin != (-(signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || ((((64) >= sizeof(signed int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ )) && ivout != (-(signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1)) || fv1 != (__float80) (-(signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv2 != (__float80) (-(signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile __float80 fv1, fv2; ivin = (-(signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)3 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv1 = (-(signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)3 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv2 = ivin; ivout = fv2; if (ivin != (-(signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)3 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || ((((64) >= sizeof(signed int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ )) && ivout != (-(signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)3 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))))) || fv1 != (__float80) (-(signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)3 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv2 != (__float80) (-(signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)3 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile __float80 fv1, fv2; ivin = (-(signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)3 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv1 = (-(signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)3 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv2 = ivin; ivout = fv2; if (ivin != (-(signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)3 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || ((((64) >= sizeof(signed int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ )) && ivout != (-(signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)3 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1)) || fv1 != (__float80) (-(signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)3 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv2 != (__float80) (-(signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)3 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile __float80 fv1, fv2; ivin = (-(signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)3 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv1 = (-(signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)3 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv2 = ivin; ivout = fv2; if (ivin != (-(signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)3 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || ((((64) >= sizeof(signed int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ )) && ivout != (-(signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)3 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1)) || fv1 != (__float80) (-(signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)3 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv2 != (__float80) (-(signed int)(((64) >= sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed int)1 : (((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed int)3 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned int ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned int)0); fv1 = ((unsigned int)0); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned int)0) || ((1) && ivout != ivin) || ((1) && ivout != ((unsigned int)0)) || fv1 != (__float80) ((unsigned int)0) || fv2 != (__float80) ((unsigned int)0) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned int ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned int)1); fv1 = ((unsigned int)1); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned int)1) || ((1) && ivout != ivin) || ((1) && ivout != ((unsigned int)1)) || fv1 != (__float80) ((unsigned int)1) || fv2 != (__float80) ((unsigned int)1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned int ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned int)(((unsigned int)~(unsigned int)0) >> 1)); fv1 = ((unsigned int)(((unsigned int)~(unsigned int)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned int)(((unsigned int)~(unsigned int)0) >> 1)) || ((((64) >= sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ivin) || ((((64) >= sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ((unsigned int)(((unsigned int)~(unsigned int)0) >> 1))) || fv1 != (__float80) ((unsigned int)(((unsigned int)~(unsigned int)0) >> 1)) || fv2 != (__float80) ((unsigned int)(((unsigned int)~(unsigned int)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned int ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned int)~(((unsigned int)~(unsigned int)0) >> 1)); fv1 = ((unsigned int)~(((unsigned int)~(unsigned int)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned int)~(((unsigned int)~(unsigned int)0) >> 1)) || ((((16384) > sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ivin) || ((((16384) > sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ((unsigned int)~(((unsigned int)~(unsigned int)0) >> 1))) || fv1 != (__float80) ((unsigned int)~(((unsigned int)~(unsigned int)0) >> 1)) || fv2 != (__float80) ((unsigned int)~(((unsigned int)~(unsigned int)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned int ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned int)~(unsigned int)0); fv1 = ((unsigned int)~(unsigned int)0); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned int)~(unsigned int)0) || ((((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((unsigned int)~(unsigned int)0)) || fv1 != (__float80) ((unsigned int)~(unsigned int)0) || fv2 != (__float80) ((unsigned int)~(unsigned int)0) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned int ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned int)(((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned int)1 : (((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))); fv1 = ((unsigned int)(((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned int)1 : (((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned int)(((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned int)1 : (((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))) || ((((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((unsigned int)(((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned int)1 : (((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))))) || fv1 != (__float80) ((unsigned int)(((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned int)1 : (((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))) || fv2 != (__float80) ((unsigned int)(((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned int)1 : (((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned int ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned int)(((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned int)1 : (((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1); fv1 = ((unsigned int)(((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned int)1 : (((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned int)(((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned int)1 : (((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1) || ((((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((unsigned int)(((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned int)1 : (((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1)) || fv1 != (__float80) ((unsigned int)(((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned int)1 : (((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1) || fv2 != (__float80) ((unsigned int)(((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned int)1 : (((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned int ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned int)(((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned int)1 : (((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1); fv1 = ((unsigned int)(((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned int)1 : (((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned int)(((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned int)1 : (((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1) || ((((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((unsigned int)(((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned int)1 : (((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1)) || fv1 != (__float80) ((unsigned int)(((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned int)1 : (((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1) || fv2 != (__float80) ((unsigned int)(((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned int)1 : (((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned int ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned int)(((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned int)1 : (((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned int)3 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))); fv1 = ((unsigned int)(((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned int)1 : (((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned int)3 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned int)(((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned int)1 : (((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned int)3 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))) || ((((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((unsigned int)(((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned int)1 : (((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned int)3 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))))) || fv1 != (__float80) ((unsigned int)(((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned int)1 : (((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned int)3 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))) || fv2 != (__float80) ((unsigned int)(((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned int)1 : (((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned int)3 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned int ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned int)(((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned int)1 : (((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned int)3 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1); fv1 = ((unsigned int)(((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned int)1 : (((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned int)3 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned int)(((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned int)1 : (((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned int)3 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1) || ((((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((unsigned int)(((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned int)1 : (((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned int)3 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1)) || fv1 != (__float80) ((unsigned int)(((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned int)1 : (((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned int)3 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1) || fv2 != (__float80) ((unsigned int)(((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned int)1 : (((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned int)3 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned int ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned int)(((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned int)1 : (((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned int)3 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1); fv1 = ((unsigned int)(((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned int)1 : (((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned int)3 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned int)(((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned int)1 : (((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned int)3 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1) || ((((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((unsigned int)(((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned int)1 : (((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned int)3 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1)) || fv1 != (__float80) ((unsigned int)(((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned int)1 : (((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned int)3 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1) || fv2 != (__float80) ((unsigned int)(((64) >= sizeof(unsigned int) * 8
+# 16 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned int)1 : (((unsigned int)1 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned int)3 << (sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed int)((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))); fv1 = ((signed int)((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))); fv2 = ivin; ivout = fv2; if (ivin != ((signed int)((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))) || ((((16384) > sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ / 2 - 1)) && ivout != ivin) || ((((16384) > sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ / 2 - 1)) && ivout != ((signed int)((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ / 2 - 1)))) || fv1 != (__float80) ((signed int)((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))) || fv2 != (__float80) ((signed int)((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))) || fv1 != fv2) abort (); } while (0); do { static volatile signed int ivin, ivout; static volatile __float80 fv1, fv2; ivin = (-(signed int)((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))); fv1 = (-(signed int)((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))); fv2 = ivin; ivout = fv2; if (ivin != (-(signed int)((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))) || ((((16384) > sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ / 2 - 1)) && ivout != ivin) || ((((16384) > sizeof(unsigned int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ / 2 - 1)) && ivout != (-(signed int)((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ / 2 - 1)))) || fv1 != (__float80) (-(signed int)((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))) || fv2 != (__float80) (-(signed int)((signed int)1 << (sizeof(signed int) * 8 
+# 16 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))) || fv1 != fv2) abort (); } while (0); } while (0);
+  do { do { static volatile signed long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed long)0); fv1 = ((signed long)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed long)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed long)0)) || fv1 != (__float80) ((signed long)0) || fv2 != (__float80) ((signed long)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed long)1); fv1 = ((signed long)1); fv2 = ivin; ivout = fv2; if (ivin != ((signed long)1) || ((1) && ivout != ivin) || ((1) && ivout != ((signed long)1)) || fv1 != (__float80) ((signed long)1) || fv2 != (__float80) ((signed long)1) || fv1 != fv2) abort (); } while (0); do { static volatile signed long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed long)(((unsigned long)~(unsigned long)0) >> 1)); fv1 = ((signed long)(((unsigned long)~(unsigned long)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((signed long)(((unsigned long)~(unsigned long)0) >> 1)) || ((((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ivin) || ((((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ((signed long)(((unsigned long)~(unsigned long)0) >> 1))) || fv1 != (__float80) ((signed long)(((unsigned long)~(unsigned long)0) >> 1)) || fv2 != (__float80) ((signed long)(((unsigned long)~(unsigned long)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile signed long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed long)(unsigned long)~(((unsigned long)~(unsigned long)0) >> 1)); fv1 = ((signed long)(unsigned long)~(((unsigned long)~(unsigned long)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((signed long)(unsigned long)~(((unsigned long)~(unsigned long)0) >> 1)) || ((((16384) > sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ivin) || ((((16384) > sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ((signed long)(unsigned long)~(((unsigned long)~(unsigned long)0) >> 1))) || fv1 != (__float80) ((signed long)(unsigned long)~(((unsigned long)~(unsigned long)0) >> 1)) || fv2 != (__float80) ((signed long)(unsigned long)~(((unsigned long)~(unsigned long)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile signed long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed long)(unsigned long)~(unsigned long)0); fv1 = ((signed long)(unsigned long)~(unsigned long)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed long)(unsigned long)~(unsigned long)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed long)(unsigned long)~(unsigned long)0)) || fv1 != (__float80) ((signed long)(unsigned long)~(unsigned long)0) || fv2 != (__float80) ((signed long)(unsigned long)~(unsigned long)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv1 = ((signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv2 = ivin; ivout = fv2; if (ivin != ((signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || ((((64) >= sizeof(signed long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))))) || fv1 != (__float80) ((signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv2 != (__float80) ((signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv1 = ((signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv2 = ivin; ivout = fv2; if (ivin != ((signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || ((((64) >= sizeof(signed long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1)) || fv1 != (__float80) ((signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv2 != (__float80) ((signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv1 = ((signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv2 = ivin; ivout = fv2; if (ivin != ((signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || ((((64) >= sizeof(signed long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1)) || fv1 != (__float80) ((signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv2 != (__float80) ((signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)3 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv1 = ((signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)3 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv2 = ivin; ivout = fv2; if (ivin != ((signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)3 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || ((((64) >= sizeof(signed long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)3 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))))) || fv1 != (__float80) ((signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)3 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv2 != (__float80) ((signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)3 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)3 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv1 = ((signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)3 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv2 = ivin; ivout = fv2; if (ivin != ((signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)3 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || ((((64) >= sizeof(signed long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)3 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1)) || fv1 != (__float80) ((signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)3 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv2 != (__float80) ((signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)3 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)3 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv1 = ((signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)3 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv2 = ivin; ivout = fv2; if (ivin != ((signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)3 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || ((((64) >= sizeof(signed long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)3 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1)) || fv1 != (__float80) ((signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)3 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv2 != (__float80) ((signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)3 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed long ivin, ivout; static volatile __float80 fv1, fv2; ivin = (-(signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv1 = (-(signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv2 = ivin; ivout = fv2; if (ivin != (-(signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || ((((64) >= sizeof(signed long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ )) && ivout != (-(signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))))) || fv1 != (__float80) (-(signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv2 != (__float80) (-(signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed long ivin, ivout; static volatile __float80 fv1, fv2; ivin = (-(signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv1 = (-(signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv2 = ivin; ivout = fv2; if (ivin != (-(signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || ((((64) >= sizeof(signed long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ )) && ivout != (-(signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1)) || fv1 != (__float80) (-(signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv2 != (__float80) (-(signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed long ivin, ivout; static volatile __float80 fv1, fv2; ivin = (-(signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv1 = (-(signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv2 = ivin; ivout = fv2; if (ivin != (-(signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || ((((64) >= sizeof(signed long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ )) && ivout != (-(signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1)) || fv1 != (__float80) (-(signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv2 != (__float80) (-(signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed long ivin, ivout; static volatile __float80 fv1, fv2; ivin = (-(signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)3 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv1 = (-(signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)3 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv2 = ivin; ivout = fv2; if (ivin != (-(signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)3 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || ((((64) >= sizeof(signed long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ )) && ivout != (-(signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)3 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))))) || fv1 != (__float80) (-(signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)3 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv2 != (__float80) (-(signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)3 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed long ivin, ivout; static volatile __float80 fv1, fv2; ivin = (-(signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)3 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv1 = (-(signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)3 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv2 = ivin; ivout = fv2; if (ivin != (-(signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)3 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || ((((64) >= sizeof(signed long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ )) && ivout != (-(signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)3 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1)) || fv1 != (__float80) (-(signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)3 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv2 != (__float80) (-(signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)3 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed long ivin, ivout; static volatile __float80 fv1, fv2; ivin = (-(signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)3 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv1 = (-(signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)3 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv2 = ivin; ivout = fv2; if (ivin != (-(signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)3 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || ((((64) >= sizeof(signed long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ )) && ivout != (-(signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)3 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1)) || fv1 != (__float80) (-(signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)3 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv2 != (__float80) (-(signed long)(((64) >= sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long)1 : (((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long)3 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned long)0); fv1 = ((unsigned long)0); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned long)0) || ((1) && ivout != ivin) || ((1) && ivout != ((unsigned long)0)) || fv1 != (__float80) ((unsigned long)0) || fv2 != (__float80) ((unsigned long)0) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned long)1); fv1 = ((unsigned long)1); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned long)1) || ((1) && ivout != ivin) || ((1) && ivout != ((unsigned long)1)) || fv1 != (__float80) ((unsigned long)1) || fv2 != (__float80) ((unsigned long)1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned long)(((unsigned long)~(unsigned long)0) >> 1)); fv1 = ((unsigned long)(((unsigned long)~(unsigned long)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned long)(((unsigned long)~(unsigned long)0) >> 1)) || ((((64) >= sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ivin) || ((((64) >= sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ((unsigned long)(((unsigned long)~(unsigned long)0) >> 1))) || fv1 != (__float80) ((unsigned long)(((unsigned long)~(unsigned long)0) >> 1)) || fv2 != (__float80) ((unsigned long)(((unsigned long)~(unsigned long)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned long)~(((unsigned long)~(unsigned long)0) >> 1)); fv1 = ((unsigned long)~(((unsigned long)~(unsigned long)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned long)~(((unsigned long)~(unsigned long)0) >> 1)) || ((((16384) > sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ivin) || ((((16384) > sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ((unsigned long)~(((unsigned long)~(unsigned long)0) >> 1))) || fv1 != (__float80) ((unsigned long)~(((unsigned long)~(unsigned long)0) >> 1)) || fv2 != (__float80) ((unsigned long)~(((unsigned long)~(unsigned long)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned long)~(unsigned long)0); fv1 = ((unsigned long)~(unsigned long)0); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned long)~(unsigned long)0) || ((((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((unsigned long)~(unsigned long)0)) || fv1 != (__float80) ((unsigned long)~(unsigned long)0) || fv2 != (__float80) ((unsigned long)~(unsigned long)0) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned long)(((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long)1 : (((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))); fv1 = ((unsigned long)(((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long)1 : (((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned long)(((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long)1 : (((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))) || ((((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((unsigned long)(((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long)1 : (((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))))) || fv1 != (__float80) ((unsigned long)(((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long)1 : (((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))) || fv2 != (__float80) ((unsigned long)(((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long)1 : (((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned long)(((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long)1 : (((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1); fv1 = ((unsigned long)(((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long)1 : (((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned long)(((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long)1 : (((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1) || ((((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((unsigned long)(((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long)1 : (((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1)) || fv1 != (__float80) ((unsigned long)(((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long)1 : (((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1) || fv2 != (__float80) ((unsigned long)(((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long)1 : (((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned long)(((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long)1 : (((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1); fv1 = ((unsigned long)(((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long)1 : (((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned long)(((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long)1 : (((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1) || ((((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((unsigned long)(((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long)1 : (((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1)) || fv1 != (__float80) ((unsigned long)(((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long)1 : (((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1) || fv2 != (__float80) ((unsigned long)(((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long)1 : (((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned long)(((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long)1 : (((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long)3 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))); fv1 = ((unsigned long)(((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long)1 : (((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long)3 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned long)(((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long)1 : (((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long)3 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))) || ((((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((unsigned long)(((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long)1 : (((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long)3 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))))) || fv1 != (__float80) ((unsigned long)(((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long)1 : (((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long)3 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))) || fv2 != (__float80) ((unsigned long)(((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long)1 : (((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long)3 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned long)(((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long)1 : (((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long)3 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1); fv1 = ((unsigned long)(((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long)1 : (((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long)3 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned long)(((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long)1 : (((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long)3 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1) || ((((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((unsigned long)(((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long)1 : (((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long)3 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1)) || fv1 != (__float80) ((unsigned long)(((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long)1 : (((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long)3 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1) || fv2 != (__float80) ((unsigned long)(((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long)1 : (((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long)3 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned long)(((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long)1 : (((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long)3 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1); fv1 = ((unsigned long)(((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long)1 : (((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long)3 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned long)(((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long)1 : (((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long)3 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1) || ((((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((unsigned long)(((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long)1 : (((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long)3 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1)) || fv1 != (__float80) ((unsigned long)(((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long)1 : (((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long)3 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1) || fv2 != (__float80) ((unsigned long)(((64) >= sizeof(unsigned long) * 8
+# 17 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long)1 : (((unsigned long)1 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long)3 << (sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed long)((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))); fv1 = ((signed long)((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))); fv2 = ivin; ivout = fv2; if (ivin != ((signed long)((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))) || ((((16384) > sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ / 2 - 1)) && ivout != ivin) || ((((16384) > sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ / 2 - 1)) && ivout != ((signed long)((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ / 2 - 1)))) || fv1 != (__float80) ((signed long)((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))) || fv2 != (__float80) ((signed long)((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))) || fv1 != fv2) abort (); } while (0); do { static volatile signed long ivin, ivout; static volatile __float80 fv1, fv2; ivin = (-(signed long)((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))); fv1 = (-(signed long)((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))); fv2 = ivin; ivout = fv2; if (ivin != (-(signed long)((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))) || ((((16384) > sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ / 2 - 1)) && ivout != ivin) || ((((16384) > sizeof(unsigned long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ / 2 - 1)) && ivout != (-(signed long)((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ / 2 - 1)))) || fv1 != (__float80) (-(signed long)((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))) || fv2 != (__float80) (-(signed long)((signed long)1 << (sizeof(signed long) * 8 
+# 17 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))) || fv1 != fv2) abort (); } while (0); } while (0);
+  do { do { static volatile signed long long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed long long)0); fv1 = ((signed long long)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed long long)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed long long)0)) || fv1 != (__float80) ((signed long long)0) || fv2 != (__float80) ((signed long long)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed long long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed long long)1); fv1 = ((signed long long)1); fv2 = ivin; ivout = fv2; if (ivin != ((signed long long)1) || ((1) && ivout != ivin) || ((1) && ivout != ((signed long long)1)) || fv1 != (__float80) ((signed long long)1) || fv2 != (__float80) ((signed long long)1) || fv1 != fv2) abort (); } while (0); do { static volatile signed long long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed long long)(((unsigned long long)~(unsigned long long)0) >> 1)); fv1 = ((signed long long)(((unsigned long long)~(unsigned long long)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((signed long long)(((unsigned long long)~(unsigned long long)0) >> 1)) || ((((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ivin) || ((((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ((signed long long)(((unsigned long long)~(unsigned long long)0) >> 1))) || fv1 != (__float80) ((signed long long)(((unsigned long long)~(unsigned long long)0) >> 1)) || fv2 != (__float80) ((signed long long)(((unsigned long long)~(unsigned long long)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile signed long long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed long long)(unsigned long long)~(((unsigned long long)~(unsigned long long)0) >> 1)); fv1 = ((signed long long)(unsigned long long)~(((unsigned long long)~(unsigned long long)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((signed long long)(unsigned long long)~(((unsigned long long)~(unsigned long long)0) >> 1)) || ((((16384) > sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ivin) || ((((16384) > sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ((signed long long)(unsigned long long)~(((unsigned long long)~(unsigned long long)0) >> 1))) || fv1 != (__float80) ((signed long long)(unsigned long long)~(((unsigned long long)~(unsigned long long)0) >> 1)) || fv2 != (__float80) ((signed long long)(unsigned long long)~(((unsigned long long)~(unsigned long long)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile signed long long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed long long)(unsigned long long)~(unsigned long long)0); fv1 = ((signed long long)(unsigned long long)~(unsigned long long)0); fv2 = ivin; ivout = fv2; if (ivin != ((signed long long)(unsigned long long)~(unsigned long long)0) || ((1) && ivout != ivin) || ((1) && ivout != ((signed long long)(unsigned long long)~(unsigned long long)0)) || fv1 != (__float80) ((signed long long)(unsigned long long)~(unsigned long long)0) || fv2 != (__float80) ((signed long long)(unsigned long long)~(unsigned long long)0) || fv1 != fv2) abort (); } while (0); do { static volatile signed long long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv1 = ((signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv2 = ivin; ivout = fv2; if (ivin != ((signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || ((((64) >= sizeof(signed long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))))) || fv1 != (__float80) ((signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv2 != (__float80) ((signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed long long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv1 = ((signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv2 = ivin; ivout = fv2; if (ivin != ((signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || ((((64) >= sizeof(signed long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1)) || fv1 != (__float80) ((signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv2 != (__float80) ((signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed long long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv1 = ((signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv2 = ivin; ivout = fv2; if (ivin != ((signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || ((((64) >= sizeof(signed long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1)) || fv1 != (__float80) ((signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv2 != (__float80) ((signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed long long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)3 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv1 = ((signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)3 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv2 = ivin; ivout = fv2; if (ivin != ((signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)3 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || ((((64) >= sizeof(signed long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)3 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))))) || fv1 != (__float80) ((signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)3 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv2 != (__float80) ((signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)3 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed long long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)3 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv1 = ((signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)3 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv2 = ivin; ivout = fv2; if (ivin != ((signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)3 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || ((((64) >= sizeof(signed long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)3 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1)) || fv1 != (__float80) ((signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)3 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv2 != (__float80) ((signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)3 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed long long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)3 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv1 = ((signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)3 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv2 = ivin; ivout = fv2; if (ivin != ((signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)3 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || ((((64) >= sizeof(signed long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)3 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1)) || fv1 != (__float80) ((signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)3 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv2 != (__float80) ((signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)3 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed long long ivin, ivout; static volatile __float80 fv1, fv2; ivin = (-(signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv1 = (-(signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv2 = ivin; ivout = fv2; if (ivin != (-(signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || ((((64) >= sizeof(signed long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ )) && ivout != (-(signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))))) || fv1 != (__float80) (-(signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv2 != (__float80) (-(signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed long long ivin, ivout; static volatile __float80 fv1, fv2; ivin = (-(signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv1 = (-(signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv2 = ivin; ivout = fv2; if (ivin != (-(signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || ((((64) >= sizeof(signed long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ )) && ivout != (-(signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1)) || fv1 != (__float80) (-(signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv2 != (__float80) (-(signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed long long ivin, ivout; static volatile __float80 fv1, fv2; ivin = (-(signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv1 = (-(signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv2 = ivin; ivout = fv2; if (ivin != (-(signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || ((((64) >= sizeof(signed long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ )) && ivout != (-(signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1)) || fv1 != (__float80) (-(signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv2 != (__float80) (-(signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed long long ivin, ivout; static volatile __float80 fv1, fv2; ivin = (-(signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)3 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv1 = (-(signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)3 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))); fv2 = ivin; ivout = fv2; if (ivin != (-(signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)3 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || ((((64) >= sizeof(signed long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ )) && ivout != (-(signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)3 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))))) || fv1 != (__float80) (-(signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)3 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv2 != (__float80) (-(signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)3 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64))))) || fv1 != fv2) abort (); } while (0); do { static volatile signed long long ivin, ivout; static volatile __float80 fv1, fv2; ivin = (-(signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)3 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv1 = (-(signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)3 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1); fv2 = ivin; ivout = fv2; if (ivin != (-(signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)3 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || ((((64) >= sizeof(signed long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ )) && ivout != (-(signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)3 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1)) || fv1 != (__float80) (-(signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)3 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv2 != (__float80) (-(signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)3 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed long long ivin, ivout; static volatile __float80 fv1, fv2; ivin = (-(signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)3 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv1 = (-(signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)3 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1); fv2 = ivin; ivout = fv2; if (ivin != (-(signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)3 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || ((((64) >= sizeof(signed long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(signed long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ )) && ivout != (-(signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)3 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1)) || fv1 != (__float80) (-(signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)3 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv2 != (__float80) (-(signed long long)(((64) >= sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1) ? (signed long long)1 : (((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2)) + ((signed long long)3 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 2 - 64)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned long long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned long long)0); fv1 = ((unsigned long long)0); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned long long)0) || ((1) && ivout != ivin) || ((1) && ivout != ((unsigned long long)0)) || fv1 != (__float80) ((unsigned long long)0) || fv2 != (__float80) ((unsigned long long)0) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned long long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned long long)1); fv1 = ((unsigned long long)1); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned long long)1) || ((1) && ivout != ivin) || ((1) && ivout != ((unsigned long long)1)) || fv1 != (__float80) ((unsigned long long)1) || fv2 != (__float80) ((unsigned long long)1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned long long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned long long)(((unsigned long long)~(unsigned long long)0) >> 1)); fv1 = ((unsigned long long)(((unsigned long long)~(unsigned long long)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned long long)(((unsigned long long)~(unsigned long long)0) >> 1)) || ((((64) >= sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ivin) || ((((64) >= sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ((unsigned long long)(((unsigned long long)~(unsigned long long)0) >> 1))) || fv1 != (__float80) ((unsigned long long)(((unsigned long long)~(unsigned long long)0) >> 1)) || fv2 != (__float80) ((unsigned long long)(((unsigned long long)~(unsigned long long)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned long long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned long long)~(((unsigned long long)~(unsigned long long)0) >> 1)); fv1 = ((unsigned long long)~(((unsigned long long)~(unsigned long long)0) >> 1)); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned long long)~(((unsigned long long)~(unsigned long long)0) >> 1)) || ((((16384) > sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ivin) || ((((16384) > sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) && ivout != ((unsigned long long)~(((unsigned long long)~(unsigned long long)0) >> 1))) || fv1 != (__float80) ((unsigned long long)~(((unsigned long long)~(unsigned long long)0) >> 1)) || fv2 != (__float80) ((unsigned long long)~(((unsigned long long)~(unsigned long long)0) >> 1)) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned long long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned long long)~(unsigned long long)0); fv1 = ((unsigned long long)~(unsigned long long)0); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned long long)~(unsigned long long)0) || ((((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((unsigned long long)~(unsigned long long)0)) || fv1 != (__float80) ((unsigned long long)~(unsigned long long)0) || fv2 != (__float80) ((unsigned long long)~(unsigned long long)0) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned long long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned long long)(((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long long)1 : (((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))); fv1 = ((unsigned long long)(((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long long)1 : (((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned long long)(((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long long)1 : (((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))) || ((((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((unsigned long long)(((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long long)1 : (((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))))) || fv1 != (__float80) ((unsigned long long)(((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long long)1 : (((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))) || fv2 != (__float80) ((unsigned long long)(((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long long)1 : (((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned long long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned long long)(((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long long)1 : (((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1); fv1 = ((unsigned long long)(((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long long)1 : (((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned long long)(((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long long)1 : (((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1) || ((((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((unsigned long long)(((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long long)1 : (((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1)) || fv1 != (__float80) ((unsigned long long)(((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long long)1 : (((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1) || fv2 != (__float80) ((unsigned long long)(((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long long)1 : (((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned long long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned long long)(((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long long)1 : (((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1); fv1 = ((unsigned long long)(((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long long)1 : (((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned long long)(((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long long)1 : (((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1) || ((((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((unsigned long long)(((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long long)1 : (((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1)) || fv1 != (__float80) ((unsigned long long)(((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long long)1 : (((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1) || fv2 != (__float80) ((unsigned long long)(((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long long)1 : (((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned long long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned long long)(((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long long)1 : (((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long long)3 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))); fv1 = ((unsigned long long)(((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long long)1 : (((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long long)3 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned long long)(((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long long)1 : (((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long long)3 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))) || ((((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((unsigned long long)(((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long long)1 : (((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long long)3 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))))) || fv1 != (__float80) ((unsigned long long)(((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long long)1 : (((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long long)3 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))) || fv2 != (__float80) ((unsigned long long)(((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long long)1 : (((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long long)3 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1 - 64))))) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned long long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned long long)(((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long long)1 : (((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long long)3 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1); fv1 = ((unsigned long long)(((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long long)1 : (((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long long)3 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned long long)(((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long long)1 : (((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long long)3 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1) || ((((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((unsigned long long)(((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long long)1 : (((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long long)3 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1)) || fv1 != (__float80) ((unsigned long long)(((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long long)1 : (((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long long)3 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1) || fv2 != (__float80) ((unsigned long long)(((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long long)1 : (((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long long)3 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) + 1) || fv1 != fv2) abort (); } while (0); do { static volatile unsigned long long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((unsigned long long)(((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long long)1 : (((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long long)3 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1); fv1 = ((unsigned long long)(((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long long)1 : (((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long long)3 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1); fv2 = ivin; ivout = fv2; if (ivin != ((unsigned long long)(((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long long)1 : (((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long long)3 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1) || ((((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ivin) || ((((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ )) && ivout != ((unsigned long long)(((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long long)1 : (((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long long)3 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1)) || fv1 != (__float80) ((unsigned long long)(((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long long)1 : (((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long long)3 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1) || fv2 != (__float80) ((unsigned long long)(((64) >= sizeof(unsigned long long) * 8
+# 18 "./torture/fp-int-convert-float80.c"
+ ) ? (unsigned long long)1 : (((unsigned long long)1 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1)) + ((unsigned long long)3 << (sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ - 1 - 64)))) - 1) || fv1 != fv2) abort (); } while (0); do { static volatile signed long long ivin, ivout; static volatile __float80 fv1, fv2; ivin = ((signed long long)((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))); fv1 = ((signed long long)((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))); fv2 = ivin; ivout = fv2; if (ivin != ((signed long long)((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))) || ((((16384) > sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ / 2 - 1)) && ivout != ivin) || ((((16384) > sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ / 2 - 1)) && ivout != ((signed long long)((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ / 2 - 1)))) || fv1 != (__float80) ((signed long long)((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))) || fv2 != (__float80) ((signed long long)((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))) || fv1 != fv2) abort (); } while (0); do { static volatile signed long long ivin, ivout; static volatile __float80 fv1, fv2; ivin = (-(signed long long)((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))); fv1 = (-(signed long long)((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))); fv2 = ivin; ivout = fv2; if (ivin != (-(signed long long)((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))) || ((((16384) > sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ / 2 - 1)) && ivout != ivin) || ((((16384) > sizeof(unsigned long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ / 2 - 1)) && ivout != (-(signed long long)((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ / 2 - 1)))) || fv1 != (__float80) (-(signed long long)((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))) || fv2 != (__float80) (-(signed long long)((signed long long)1 << (sizeof(signed long long) * 8 
+# 18 "./torture/fp-int-convert-float80.c"
+ / 2 - 1))) || fv1 != fv2) abort (); } while (0); } while (0);
+  exit (0);
+}

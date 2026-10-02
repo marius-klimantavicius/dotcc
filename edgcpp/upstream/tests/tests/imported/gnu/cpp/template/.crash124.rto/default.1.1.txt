@@ -1,0 +1,20 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: error: excessive recursion at instantiation of member "IP<T>::r [with T=X *****************************************************************]"
+    static const bool r = IP<T*>::r;  // { dg-error "depth" }
+                          ^
+          detected during:
+            instantiation of class "IP<T> [with T=X ****************************************************************]" at line 9
+            instantiation of class "IP<T> [with T=X ***************************************************************]" at line 9
+            instantiation of class "IP<T> [with T=X **************************************************************]" at line 9
+            instantiation of class "IP<T> [with T=X *************************************************************]" at line 9
+            instantiation of class "IP<T> [with T=X ************************************************************]" at line 9
+            [ 56 instantiation contexts not shown ]
+            instantiation of class "IP<T> [with T=X ***]" at line 9
+            instantiation of class "IP<T> [with T=X **]" at line 9
+            instantiation of class "IP<T> [with T=X *]" at line 14
+            instantiation of class "V<T> [with T=X]" at line 15
+            instantiation of class "V<T> [with T=X]" at line 20
+
+At end of source: error: expected a ";"
+
+2 errors detected in the compilation of "Test_name.c".

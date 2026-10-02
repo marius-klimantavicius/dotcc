@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 Test_name.c
+"Test_name.c", line 24: error: struct "foo" has no field "foa"
+   foa: 1, /* { dg-error ".struct foo. has no member named .foa.; did you mean .foo." } */
+   ^
+
+"Test_name.c", line 39: error: union "u" has no field "colour"
+  union u old_style_u = { colour: 3 }; /* { dg-error ".union u. has no member named .colour.; did you mean .color.?" } */
+                          ^
+
+"Test_name.c", line 49: error: struct "foo" has no field "foa"
+    .foa = 1, /* { dg-error ".struct foo. has no member named .foa.; did you mean .foo." } */
+     ^
+
+"Test_name.c", line 63: error: union "u" has no field "colour"
+  union u c99_style_u = { .colour=3 }; /* { dg-error ".union u. has no member named .colour.; did you mean .color.?" } */
+                           ^
+
+4 errors detected in the compilation of "Test_name.c".

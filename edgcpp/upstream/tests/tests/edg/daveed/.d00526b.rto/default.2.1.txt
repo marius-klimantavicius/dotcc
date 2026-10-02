@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=2 -A Test_name.c
+"Test_name.c", line 19: warning: dynamic initialization in unreachable code
+    D d;
+      ^
+
+"Test_name.c", line 18: error: transfer of control bypasses initialization of:
+            variable "d" (declared at line 19)
+    goto label_1;
+    ^
+
+1 error detected in the compilation of "Test_name.c".

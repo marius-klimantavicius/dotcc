@@ -1,0 +1,95 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 37: error: function "N0::f0(T) [with T=long]" cannot be specialized in the current scope
+    template<> void N0::f0(long) { } // expected-error{{does not enclose namespace}}
+                        ^
+
+"Test_name.c", line 83: error: class "N0::X0<const void>" cannot be specialized in the current scope
+    template<> struct N0::X0<const void> { }; // expected-error{{class template specialization of 'X0' not in a namespace enclosing 'N0'}}
+                      ^
+
+"Test_name.c", line 96: warning: variable templates are a C++14 feature
+  template<typename T> int v0; // expected-note 4{{explicitly specialized declaration is here}}
+                             ^
+
+"Test_name.c", line 104: warning: variable templates are a C++14 feature
+  template<typename T> int v1; // expected-note 4{{explicitly specialized declaration is here}}
+                             ^
+
+"Test_name.c", line 115: error: variable "N0::v0<char [1]>" has already been defined (previous definition at line 97)
+  template<> int N0::v0<char[1]>; // expected-error {{redefinition of 'v0<char[1]>'}}
+                     ^
+
+"Test_name.c", line 116: error: variable "N0::v0<char [2]>" has already been defined (previous definition at line 98)
+  template<> int v0<char[2]>;
+                 ^
+
+"Test_name.c", line 117: error: variable "v1<char [3]>" has already been defined (previous definition at line 105)
+  template<> int ::v1<char[3]>; // expected-warning {{extra qualification}}
+                   ^
+
+"Test_name.c", line 119: error: variable "v1<char [4]>" has already been defined (previous definition at line 106)
+  template<> int v1<char[4]>; // expected-error {{redefinition of 'v1<char[4]>'}}
+                 ^
+
+"Test_name.c", line 122: error: variable "N0::v0<int [5]>" cannot be specialized in the current scope
+  template<> int N0::v0<int[5]>; // expected-error {{not in a namespace enclosing 'N0'}}
+                     ^
+
+"Test_name.c", line 123: error: variable "N0::v0<int [6]>" cannot be specialized in the current scope
+  template<> int v0<int[6]>; // expected-error {{not in a namespace enclosing 'N0'}}
+                 ^
+
+"Test_name.c", line 124: error: variable "v1<int [7]>" cannot be specialized in the current scope
+  template<> int ::v1<int[7]>; // expected-error {{must occur at global scope}}
+                   ^
+
+"Test_name.c", line 125: error: variable "v1<int [8]>" cannot be specialized in the current scope
+  template<> int v1<int[8]>; // expected-error {{must occur at global scope}}
+                 ^
+
+"Test_name.c", line 127: error: variable "N0::v0<char [5]>" cannot be specialized in the current scope
+  template<> int N0::v0<char[5]>; // expected-error {{not in a namespace enclosing 'N0'}}
+                     ^
+
+"Test_name.c", line 129: error: variable "N0::v0<char [6]>" cannot be specialized in the current scope
+  template<> int v0<char[6]>; // expected-error {{not in a namespace enclosing 'N0'}}
+                 ^
+
+"Test_name.c", line 130: error: variable "v1<char [7]>" cannot be specialized in the current scope
+  template<> int ::v1<char[7]>; // expected-error {{must occur at global scope}}
+                   ^
+
+"Test_name.c", line 132: error: variable "v1<char [8]>" cannot be specialized in the current scope
+  template<> int v1<char[8]>; // expected-error {{must occur at global scope}}
+                 ^
+
+"Test_name.c", line 143: error: "void N0::X0<volatile void>::f1(void *)" is not an entity that can be explicitly specialized
+    template<> void X0<volatile void>::f1(void *) { } // expected-error{{no function template matches}}
+                                       ^
+
+"Test_name.c", line 174: warning: member "N0::X0<T>::member [with T=double]" cannot be specialized in the current scope
+    template<> double N0::X0<double>::member = 3.14; // expected-error{{does not enclose namespace}}
+                                      ^
+
+"Test_name.c", line 207: error: class "N0::X0<T>::Inner [with T=unsigned long]" cannot be specialized in the current scope
+    struct N0::X0<unsigned long>::Inner { }; // expected-error{{member class specialization}}
+           ^
+
+"Test_name.c", line 214: error: incomplete type "N0::X0<double>::Inner" is not allowed
+  N0::X0<double>::Inner inner4; // expected-error{{incomplete}}
+                        ^
+
+"Test_name.c", line 244: error: incomplete type "N0::X0<int>::InnerTemplate<int>" is not allowed
+  N0::X0<int>::InnerTemplate<int> inner_template1; // expected-error{{incomplete}}
+                                  ^
+
+"Test_name.c", line 62: error: not a class or struct name
+    struct InnerTemplate : public T { }; // expected-note 1{{explicitly specialized}} \
+                                  ^
+          detected during instantiation of class "N0::X0<T>::InnerTemplate<U> [with T=int, U=unsigned long]" at line 246
+
+"Test_name.c", line 272: error: function "N0::X0<T>::ft1(T, U) [with T=void *, U=long]" cannot be specialized in the current scope
+    void N0::X0<void*>::ft1(void *, long) { } // expected-error{{does not enclose namespace}}
+                        ^
+
+20 errors detected in the compilation of "Test_name.c".

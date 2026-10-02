@@ -1,0 +1,14 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 4: error: identifier "a" is undefined
+  asm int mulword(a,b)
+                  ^
+
+"Test_name.c", line 4: error: identifier "b" is undefined
+  asm int mulword(a,b)
+                    ^
+
+"Test_name.c", line 4: error: "asm" function is nonstandard
+  asm int mulword(a,b)
+  ^
+
+3 errors detected in the compilation of "Test_name.c".

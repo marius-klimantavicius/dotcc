@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 20: error: there are more elements than there are binding names
+    auto &[a, b] = t; // expected-error {{type 'D' binds to 3 elements, but only 2 names were provided}}
+          ^
+          detected during instantiation of "int decomp(T &) [with T=D]" at line 33
+
+"Test_name.c", line 21: error: return value type does not match the function type
+    return a + b; // expected-error {{cannot initialize return object of type 'int' with an rvalue of type 'int *'}}
+           ^
+          detected during instantiation of "int decomp(T &) [with T=E]" at line 34
+
+2 errors detected in the compilation of "Test_name.c".

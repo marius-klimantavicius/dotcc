@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++17 -tused -A Test_name.c
+"Test_name.c", line 8: error: member "N::m" (declared at line 6) is inaccessible
+    int R() { return N::m; }
+                        ^
+
+1 error detected in the compilation of "Test_name.c".

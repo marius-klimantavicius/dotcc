@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --ms_compatibility -DWIN --c Test_name.c
+"Test_name.c", line 12: error: attribute "fastcall" does not take arguments
+  void __attribute__((fastcall(1))) baz(float *a) { // expected-error {{'fastcall' attribute takes no arguments}}
+                              ^
+
+"Test_name.c", line 30: error: attribute "cdecl" does not take arguments
+  void __attribute__((cdecl(1))) ctest1(float x) {} // expected-error {{'cdecl' attribute takes no arguments}}
+                           ^
+
+"Test_name.c", line 36: warning: a value of type "void (__fastcall *)(void)" cannot be used to initialize an entity of type "void (__cdecl *)(void)"
+  void (__attribute__((cdecl)) *ptest1)(void) = test1; // expected-error {{incompatible function pointer types}}
+                                                ^
+
+"Test_name.c", line 61: warning: missing return statement at end of non-void function "device_kernel"
+  }
+  ^
+
+"Test_name.c", line 63: warning: missing return statement at end of non-void function "sycl_kernel"
+  }
+  ^
+
+"Test_name.c", line 71: warning: missing return statement at end of non-void function "ctest4"
+  PROC __attribute__((cdecl)) ctest4(const char *x) {}
+                                                     ^
+
+"Test_name.c", line 79: warning: attribute "stdcall" does not apply here
+  struct type_test {} __attribute__((stdcall));  // expected-warning {{'stdcall' attribute only applies to functions and methods}}
+                                     ^
+
+"Test_name.c", line 81: warning: declaration hides built-in function "__builtin_unreachable"
+  void __vectorcall __builtin_unreachable(); // expected-warning {{vectorcall calling convention is not supported on builtin function}}
+                    ^
+
+2 errors detected in the compilation of "Test_name.c".

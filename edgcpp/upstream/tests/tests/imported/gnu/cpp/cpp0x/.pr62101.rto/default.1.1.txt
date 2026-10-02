@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: error: pure specifier ("= 0") allowed only on virtual functions
+    friend void g(X, int) = 0; // { dg-error "15:initializer specified for friend function" }
+                          ^
+
+"Test_name.c", line 9: error: "= default" cannot be specified on a friend declaration
+    friend void g(X, int) = default; // { dg-error "cannot be defaulted" }
+                          ^
+
+"Test_name.c", line 22: error: "= delete" can only appear on the first declaration of a function
+    friend void g(Y, int) = delete; // { dg-error "not first declaration" }
+                          ^
+
+"Test_name.c", line 30: error: function "f(X, int)" (declared at line 11) cannot be referenced -- it is a deleted function
+    f(x, 5); // { dg-error "use of deleted function" }
+    ^
+
+4 errors detected in the compilation of "Test_name.c".

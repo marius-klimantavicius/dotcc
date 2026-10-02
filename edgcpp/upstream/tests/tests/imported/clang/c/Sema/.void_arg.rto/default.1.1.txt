@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 11: error: a parameter may not have void type
+    X = sizeof(int (void a));    // expected-error {{argument may not have 'void' type}}
+                    ^
+
+"Test_name.c", line 12: error: a parameter may not have void type
+    X = sizeof(int (int, void)); // expected-error {{must be the first and only parameter}}
+                         ^
+
+"Test_name.c", line 13: error: a parameter may not have void type
+    X = sizeof(int (void, ...)); // expected-error {{must be the first and only parameter}}
+                    ^
+
+"Test_name.c", line 15: error: a parameter may not have void type
+    X = sizeof(int (Void a));    // expected-error {{argument may not have 'void' type}}
+                    ^
+
+"Test_name.c", line 16: error: a parameter may not have void type
+    X = sizeof(int (int, Void)); // expected-error {{must be the first and only parameter}}
+                         ^
+
+"Test_name.c", line 17: error: a parameter may not have void type
+    X = sizeof(int (Void, ...)); // expected-error {{must be the first and only parameter}}
+                    ^
+
+"Test_name.c", line 9: warning: variable "X" was set but never used
+    int X;
+        ^
+
+"Test_name.c", line 28: error: declaring a void parameter list with a qualified void type is nonstandard
+  void f(const void);            // expected-error {{parameter must not have type qualifiers}}
+         ^
+
+7 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 16: warning: "A::A(A &)", required for copy that was eliminated, is not callable because reference parameter cannot be bound to rvalue
+  A a = 0; // { dg-error "no match" "" { target c++14_down } }
+        ^
+

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 6: error: an empty template parameter list is not allowed in a template template parameter declaration
+  template<template<> class C> class D; // expected-error{{template template parameter must have its own template parameters}}
+                    ^
+
+"Test_name.c", line 11: error: default argument not at end of parameter list
+           class T = A,  // expected-note{{previous default template argument defined here}}
+                 ^
+
+2 errors detected in the compilation of "Test_name.c".

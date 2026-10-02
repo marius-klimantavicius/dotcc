@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 8: error: identifier "_Decimal32" is undefined
+  _Decimal32 d32a; /* { dg-error "not supported" } */
+  ^
+
+"Test_name.c", line 9: error: identifier "_Decimal64" is undefined
+  _Decimal64 d64a; /* { dg-error "not supported" } */
+  ^
+
+"Test_name.c", line 10: error: identifier "_Decimal128" is undefined
+  _Decimal128 d128a; /* { dg-error "not supported" } */
+  ^
+
+"Test_name.c", line 12: error: extra text after expected end of number
+  _Bool d32b = 1.0DF; /* { dg-error "not supported" } */
+                  ^
+
+"Test_name.c", line 13: error: extra text after expected end of number
+  _Bool d64b = 1.0DD; /* { dg-error "not supported" } */
+                  ^
+
+"Test_name.c", line 14: error: extra text after expected end of number
+  _Bool d128b = 1.0DL; /* { dg-error "not supported" } */
+                   ^
+
+6 errors detected in the compilation of "Test_name.c".

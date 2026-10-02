@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --g++ --c++11 -DCPP11 Test_name.c
+"Test_name.c", line 14: warning: variable "n" was declared but never referenced
+      struct N {} n;  // Previously an error.  Now okay in nonstrict modes.
+                  ^
+

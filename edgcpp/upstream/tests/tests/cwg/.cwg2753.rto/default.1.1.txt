@@ -1,0 +1,9 @@
+cpfe -DTEST_NUMBER=1 --c++23 -tused -A Test_name.c
+"Test_name.c", line 8: warning: variable "b3" was declared but never referenced
+    const bool b3 = r != s;                 // unspecified result
+               ^
+
+"Test_name.c", line 10: warning: variable "b5" was declared but never referenced
+    const bool b5 = r != &test1;            // always true
+               ^
+

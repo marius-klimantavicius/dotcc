@@ -1,0 +1,23 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 18: error: more than one instance of overloaded function "f" matches the argument list:
+            function "f(const int (&)[])" (declared at line 6)
+            function "f(const int (&)[2])" (declared at line 7)
+            argument types are: ({...})
+    if (f ({}) != 1)
+        ^
+
+"Test_name.c", line 25: error: more than one instance of overloaded function "f2" matches the argument list:
+            function "f2(const int (&)[])" (declared at line 9)
+            function "f2(const int (&)[1])" (declared at line 10)
+            argument types are: ({...})
+    if (f2 ({}) != 1)
+        ^
+
+"Test_name.c", line 30: error: more than one instance of overloaded function "f3" matches the argument list:
+            function "f3(const int (&)[])" (declared at line 12)
+            function "f3(const int (&)[1])" (declared at line 13)
+            argument types are: ({...})
+    if (f3 ({}) != 1)
+        ^
+
+3 errors detected in the compilation of "Test_name.c".

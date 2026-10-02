@@ -1,0 +1,77 @@
+fe_only -DTEST_NUMBER=3 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 -DCXX17 -DWITH_WARN -DTAB_SIZE=2 Test_name.c
+"Test_name.c", line 26: warning: statement is unreachable
+    if constexpr (false)
+    ^
+
+"Test_name.c", line 31: warning: statement is unreachable
+      i += 1;
+      ^
+
+"Test_name.c", line 20: warning: variable "x" was declared but never referenced
+      int x = 0;
+          ^
+
+"Test_name.c", line 71: warning: variable "x" was declared but never referenced
+      const int x = 0;
+                ^
+
+"Test_name.c", line 88: warning: statement is unreachable
+    if (i)
+    ^
+
+"Test_name.c", line 144: warning: parameter "i" was set but never used
+  void g0(int i) {
+              ^
+
+"Test_name.c", line 188: warning: parameter "i" was set but never used
+  void g7(int i) {
+              ^
+
+"Test_name.c", line 196: warning: parameter "i" was set but never used
+  void a1(int i) { if (1) i = 4; return; }
+              ^
+
+"Test_name.c", line 198: warning: parameter "i" was set but never used
+  void a2(int i) {
+              ^
+
+"Test_name.c", line 206: warning: parameter "i" was set but never used
+  void a3(int i) {
+              ^
+
+"Test_name.c", line 220: warning: statement is unreachable
+          return;
+          ^
+
+"Test_name.c", line 222: warning: statement is unreachable
+      if (0)
+      ^
+
+"Test_name.c", line 274: warning: statement is unreachable
+    if (1) {
+    ^
+
+"Test_name.c", line 288: warning: statement is unreachable
+    if (1) {
+    ^
+
+"Test_name.c", line 295: warning: statement is unreachable
+    if (1) goto fail; goto fail;
+    ^
+
+"Test_name.c", line 295: warning: statement is unreachable
+    if (1) goto fail; goto fail;
+                      ^
+
+"Test_name.c", line 297: warning: statement is unreachable
+      if (0)
+      ^
+
+"Test_name.c", line 302: warning: statement is unreachable
+      if (0)
+      ^
+
+"Test_name.c", line 315: warning: statement is unreachable
+    goto a;
+    ^
+

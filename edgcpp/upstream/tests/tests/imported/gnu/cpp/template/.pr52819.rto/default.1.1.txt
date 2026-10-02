@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 14: error: expression must have a constant value
+    get<(cfi)function>();  // { dg-error "" }
+        ^
+"Test_name.c", line 14: note: conversion from "void (*)(int *)" to "void (*)(void *)" is invalid in constant-expression evaluation
+    get<(cfi)function>();  // { dg-error "" }
+        ^
+
+"Test_name.c", line 14: error: no instance of function template "get" matches the argument list
+    get<(cfi)function>();  // { dg-error "" }
+    ^
+"Test_name.c", line 10: note: substituting explicit template arguments "<<expression>>" for function template "get" failed
+  void get() { Func(0); }
+       ^
+
+2 errors detected in the compilation of "Test_name.c".

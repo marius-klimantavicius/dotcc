@@ -1,0 +1,151 @@
+fe_only -DTEST_NUMBER=3 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 -DCPP1Y Test_name.c
+"Test_name.c", line 14: error: member "A::wrong" is not a valid class member template
+    template<typename T> CONST T wrong;           // expected-error {{non-static data member 'wrong' cannot be declared as a template}}
+                                 ^
+
+"Test_name.c", line 15: error: member "A::wrong_init" is not a valid class member template
+    template<typename T> CONST T wrong_init = 5;      // expected-error {{non-static data member 'wrong_init' cannot be declared as a template}}
+                                 ^
+
+"Test_name.c", line 15: error: data member initializer is not allowed
+    template<typename T> CONST T wrong_init = 5;      // expected-error {{non-static data member 'wrong_init' cannot be declared as a template}}
+                                            ^
+
+"Test_name.c", line 18: error: member "A::right" is not a valid class member template
+    template<typename T> CONST int right<int,T>;  // expected-error {{non-static data member 'right' cannot be declared as a template}}
+                                   ^
+
+"Test_name.c", line 19: error: member "A::right" is not a valid class member template
+    template<typename T> CONST float right<float,T> = 5;  // expected-error {{non-static data member 'right' cannot be declared as a template}}
+                                     ^
+
+"Test_name.c", line 19: error: data member initializer is not allowed
+    template<typename T> CONST float right<float,T> = 5;  // expected-error {{non-static data member 'right' cannot be declared as a template}}
+                                                    ^
+
+"Test_name.c", line 28: error: explicit instantiation is not allowed in the current scope
+    template static CONST int right<int,int>;     // expected-error {{expected '<' after 'template'}}
+    ^
+
+"Test_name.c", line 52: error: variable template "out_of_line::B2::right" has already been initialized
+    template<typename T, typename T0> CONST T B2::right = T(100);   // expected-error {{static data member 'right' already has an initializer}}
+                                                  ^
+
+"Test_name.c", line 53: error: variable template "out_of_line::B2::right" has already been initialized
+    template<typename T> CONST T B2::right<T,int> = T(5);           // expected-error {{static data member 'right' already has an initializer}}
+                                     ^
+
+"Test_name.c", line 150: error: a member with an in-class initializer must be const
+        template<typename U> static U* Data<U*> = new U();   // expected-error {{non-const static data member must be initialized out of line}}
+                                                  ^
+
+"Test_name.c", line 156: error: a member of type "U *const" cannot have an in-class initializer
+        template<typename U> static U *const Data<U*> = (U*)(0); // expected-error {{static data member of type 'int *const'}}
+                                                        ^
+
+"Test_name.c", line 166: error: member "constexpred::A::wrong" is not a valid class member template
+      template<typename T> constexpr T wrong;           // expected-error {{non-static data member 'wrong' cannot be declared as a template}}
+                                       ^
+
+"Test_name.c", line 168: error: member "constexpred::A::wrong_init" is not a valid class member template
+      template<typename T> constexpr T wrong_init = 5;  // expected-error {{non-static data member 'wrong_init' cannot be declared as a template}}
+                                       ^
+
+"Test_name.c", line 168: error: data member initializer is not allowed
+      template<typename T> constexpr T wrong_init = 5;  // expected-error {{non-static data member 'wrong_init' cannot be declared as a template}}
+                                                  ^
+
+"Test_name.c", line 171: error: member "constexpred::A::right" is not a valid class member template
+      template<typename T> constexpr int right<int,T>;         // expected-error {{non-static data member 'right' cannot be declared as a template}}
+                                         ^
+
+"Test_name.c", line 173: error: member "constexpred::A::right" is not a valid class member template
+      template<typename T> constexpr float right<float,T> = 5; // expected-error {{non-static data member 'right' cannot be declared as a template}}
+                                           ^
+
+"Test_name.c", line 173: error: data member initializer is not allowed
+      template<typename T> constexpr float right<float,T> = 5; // expected-error {{non-static data member 'right' cannot be declared as a template}}
+                                                          ^
+
+"Test_name.c", line 175: error: missing initializer for constexpr variable
+      template<> constexpr float right<float, int>; // expected-error {{declaration of constexpr static data member 'right<float, int>' requires an initializer}}
+                 ^
+
+"Test_name.c", line 176: error: explicit instantiation is not allowed in the current scope
+      template static constexpr int right<int,int>;     // expected-error {{expected '<' after 'template'}}
+      ^
+
+"Test_name.c", line 200: error: variable "in_class_template::D1<T>::Data<int *> [with T=float]" explicitly instantiated more than once
+    template int* D1<float>::Data<int*>; // expected-error {{duplicate explicit instantiation}}
+                             ^
+
+"Test_name.c", line 210: error: variable "in_class_template::D2<T>::Data<int *> [with T=float]" explicitly instantiated more than once
+    template int* D2<float>::Data<int*>; // expected-error {{duplicate explicit instantiation}}
+                             ^
+
+"Test_name.c", line 226: error: declaration is incompatible with variable template "in_class_template::bug_files::D0a<T>::Data [with T=float]" (declared at line 223)
+      template<typename U> U D0a<float>::Data<U*> = U(100);  // expected-error {{redefinition of 'Data'}}
+                                         ^
+
+"Test_name.c", line 262: error: expression must have a constant value
+      static_assert(S<int>::V2<int&> == 789, ""); // expected-error {{}} expected-note {{initializer of 'V2<int &>' is unknown}}
+                    ^
+"Test_name.c", line 262: note: the value of variable "in_class_template::definition_after_outer_instantiation::S<A>::V2<int &> [with A=int]" (declared at line 248) cannot be used as a constant
+      static_assert(S<int>::V2<int&> == 789, ""); // expected-error {{}} expected-note {{initializer of 'V2<int &>' is unknown}}
+                    ^
+
+"Test_name.c", line 265: error: expression must have a constant value
+      static_assert(S<int>::V2<int&> == 789, ""); // FIXME expected-error {{}} expected-note {{initializer of 'V2<int &>' is unknown}}
+                    ^
+"Test_name.c", line 265: note: the value of variable "in_class_template::definition_after_outer_instantiation::S<A>::V2<int &> [with A=int]" (declared at line 248) cannot be used as a constant
+      static_assert(S<int>::V2<int&> == 789, ""); // FIXME expected-error {{}} expected-note {{initializer of 'V2<int &>' is unknown}}
+                    ^
+
+"Test_name.c", line 317: error: not a class or struct name
+      struct X : T::template A<int> {}; // expected-error {{template name refers to non-type template 'in_class_template::bad_reference::S::template A'}}
+                 ^
+          detected during instantiation of class "in_class_template::bad_reference::X<T> [with T=in_class_template::bad_reference::S]" at line 322
+
+"Test_name.c", line 333: error: expected a ";"
+    static int f : I; // expected-error {{static member 'f' cannot be a bit-field}}
+                 ^
+
+"Test_name.c", line 341: error: a class or namespace qualified name is required
+      template <typename> static helper<typename T::error> x;  // expected-error {{type 'int' cannot be used prior to '::' because it has no members}}
+                                                 ^
+          detected during instantiation of class "b20896909::A<T> [with T=int]" at line 344
+
+"Test_name.c", line 341: error: expected a ">"
+      template <typename> static helper<typename T::error> x;  // expected-error {{type 'int' cannot be used prior to '::' because it has no members}}
+                                                  ^
+          detected during instantiation of class "b20896909::A<T> [with T=int]" at line 344
+
+"Test_name.c", line 344: warning: variable "ai" was declared but never referenced
+      A<int> ai;  // expected-note {{in instantiation of}}
+             ^
+
+"Test_name.c", line 395: error: argument list for variable template "dependent_static_var_template::A::n" is missing
+    int &r = A::template n; // expected-error {{use of variable template 'A::template n' requires template arguments}} expected-error {{a template argument list is expected after a name prefixed by the template keyword}}
+                         ^
+
+"Test_name.c", line 404: error: argument list for variable template "dependent_static_var_template::B::n" is missing
+    int &t = B::template n; // expected-error {{use of variable template 'B::template n' requires template arguments}} expected-error {{a template argument list is expected after a name prefixed by the template keyword}}
+                         ^
+
+"Test_name.c", line 422: error: a lambda is not allowed in a constant expression
+        static CONST auto f = [] { return T::template g<s>; };
+                              ^
+
+"Test_name.c", line 429: error: a lambda is not allowed in a constant expression
+        static CONST auto g = [] { return T::template f<t>; };
+                              ^
+
+"Test_name.c", line 422: internal error: assertion failed: duplicate map key in Ptr_map (util.h, line <suppressed> in make_space_for_colliding_key)
+
+        static CONST auto f = [] { return T::template g<s>; };
+                              ^
+
+32 errors and 1 catastrophic error detected in the compilation of "Test_name.c".
+Compilation aborted.
+Aborted
+eccp: front end returned an exit status of 134

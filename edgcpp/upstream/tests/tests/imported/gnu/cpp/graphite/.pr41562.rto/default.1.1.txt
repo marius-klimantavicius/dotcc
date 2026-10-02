@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 15: warning: variable "number_of_regions" is used before its value is set
+     for(region = 0; region < number_of_regions; region++)
+                              ^
+
+"Test_name.c", line 20: warning: missing return statement at end of non-void function "Siren7_EncodeFrame"
+  }
+  ^
+
+"Test_name.c", line 11: warning: variable "region_mlt_bit_counts" was set but never used
+     static int region_mlt_bit_counts[28] = {0};
+                ^
+

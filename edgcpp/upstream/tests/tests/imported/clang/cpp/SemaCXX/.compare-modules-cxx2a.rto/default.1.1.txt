@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --exceptions --c++20 Test_name.c
+"SemaCXX/compare-modules-cxx2a.cpp", line 16: error: no valid std::strong_ordering type found (<compare> must be included)
+  void a() { void(0 <=> 0); }
+                        ^
+
+"SemaCXX/compare-modules-cxx2a.cpp", line 18: error: no valid std::partial_ordering type found (<compare> must be included)
+  struct A {
+         ^
+
+"SemaCXX/compare-modules-cxx2a.cpp", line 18: error: no valid std::weak_ordering type found (<compare> must be included)
+  struct A {
+         ^
+
+"SemaCXX/compare-modules-cxx2a.cpp", line 21: error: function "A::operator<=>(const A &) const" (declared at line 19) cannot be referenced -- it is a deleted function
+  auto va = A() <=> A();
+                ^
+
+"SemaCXX/compare-modules-cxx2a.cpp", line 32: error: function "B::operator<=>(const B &) const" (declared at line 30) cannot be referenced -- it is a deleted function
+  auto vb = B() <=> B();
+                ^
+
+"SemaCXX/compare-modules-cxx2a.cpp", line 41: error: function "C::operator<=>(const C &) const" (declared at line 39) cannot be referenced -- it is a deleted function
+  auto vc = C() <=> C();
+                ^
+
+6 errors detected in the compilation of "Test_name.c".

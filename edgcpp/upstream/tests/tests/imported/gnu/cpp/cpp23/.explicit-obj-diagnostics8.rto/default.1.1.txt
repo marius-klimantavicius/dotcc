@@ -1,0 +1,130 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++23 Test_name.c
+"Test_name.c", line 10: error: the mutable qualifier is not allowed on a lambda with an explicit "this" parameter
+    auto f0 = [](this auto) mutable {}; // { dg-line line_f0 }
+                            ^
+
+"Test_name.c", line 11: error: the mutable qualifier is not allowed on a lambda with an explicit "this" parameter
+    auto f1 = [](this auto&) mutable {}; // { dg-line line_f1 }
+                             ^
+
+"Test_name.c", line 12: error: the mutable qualifier is not allowed on a lambda with an explicit "this" parameter
+    auto f2 = [](this auto const&) mutable {}; // { dg-line line_f2 }
+                                   ^
+
+"Test_name.c", line 13: error: the mutable qualifier is not allowed on a lambda with an explicit "this" parameter
+    auto f3 = [](this auto&&) mutable {}; // { dg-line line_f3 }
+                              ^
+
+"Test_name.c", line 15: error: a member function declared with "static" cannot have an explicit "this" parameter
+    auto g0 = [](this auto) static {}; // { dg-line line_g0 }
+                ^
+
+"Test_name.c", line 16: error: a member function declared with "static" cannot have an explicit "this" parameter
+    auto g1 = [](this auto&) static {}; // { dg-line line_g1 }
+                ^
+
+"Test_name.c", line 17: error: a member function declared with "static" cannot have an explicit "this" parameter
+    auto g2 = [](this auto const&) static {}; // { dg-line line_g2 }
+                ^
+
+"Test_name.c", line 18: error: a member function declared with "static" cannot have an explicit "this" parameter
+    auto g3 = [](this auto&&) static {}; // { dg-line line_g3 }
+                ^
+
+"Test_name.c", line 20: error: the mutable qualifier is not allowed on a lambda with an explicit "this" parameter
+    auto fc0 = [n = 0](this auto) mutable {}; // { dg-line line_fc0 }
+                                  ^
+
+"Test_name.c", line 21: error: the mutable qualifier is not allowed on a lambda with an explicit "this" parameter
+    auto fc1 = [n = 0](this auto&) mutable {}; // { dg-line line_fc1 }
+                                   ^
+
+"Test_name.c", line 22: error: the mutable qualifier is not allowed on a lambda with an explicit "this" parameter
+    auto fc2 = [n = 0](this auto const&) mutable {}; // { dg-line line_fc2 }
+                                         ^
+
+"Test_name.c", line 23: error: the mutable qualifier is not allowed on a lambda with an explicit "this" parameter
+    auto fc3 = [n = 0](this auto&&) mutable {}; // { dg-line line_fc3 }
+                                    ^
+
+"Test_name.c", line 25: error: a "static" lambda expression must have an empty capture specification
+    auto gc0 = [n = 0](this auto) static {}; // { dg-line line_gc0 }
+                                  ^
+
+"Test_name.c", line 26: error: a "static" lambda expression must have an empty capture specification
+    auto gc1 = [n = 0](this auto&) static {}; // { dg-line line_gc1 }
+                                   ^
+
+"Test_name.c", line 27: error: a "static" lambda expression must have an empty capture specification
+    auto gc2 = [n = 0](this auto const&) static {}; // { dg-line line_gc2 }
+                                         ^
+
+"Test_name.c", line 28: error: a "static" lambda expression must have an empty capture specification
+    auto gc3 = [n = 0](this auto&&) static {}; // { dg-line line_gc3 }
+                                    ^
+
+"Test_name.c", line 10: warning: variable "f0" was declared but never referenced
+    auto f0 = [](this auto) mutable {}; // { dg-line line_f0 }
+         ^
+
+"Test_name.c", line 11: warning: variable "f1" was declared but never referenced
+    auto f1 = [](this auto&) mutable {}; // { dg-line line_f1 }
+         ^
+
+"Test_name.c", line 12: warning: variable "f2" was declared but never referenced
+    auto f2 = [](this auto const&) mutable {}; // { dg-line line_f2 }
+         ^
+
+"Test_name.c", line 13: warning: variable "f3" was declared but never referenced
+    auto f3 = [](this auto&&) mutable {}; // { dg-line line_f3 }
+         ^
+
+"Test_name.c", line 15: warning: variable "g0" was declared but never referenced
+    auto g0 = [](this auto) static {}; // { dg-line line_g0 }
+         ^
+
+"Test_name.c", line 16: warning: variable "g1" was declared but never referenced
+    auto g1 = [](this auto&) static {}; // { dg-line line_g1 }
+         ^
+
+"Test_name.c", line 17: warning: variable "g2" was declared but never referenced
+    auto g2 = [](this auto const&) static {}; // { dg-line line_g2 }
+         ^
+
+"Test_name.c", line 18: warning: variable "g3" was declared but never referenced
+    auto g3 = [](this auto&&) static {}; // { dg-line line_g3 }
+         ^
+
+"Test_name.c", line 20: warning: variable "fc0" was declared but never referenced
+    auto fc0 = [n = 0](this auto) mutable {}; // { dg-line line_fc0 }
+         ^
+
+"Test_name.c", line 21: warning: variable "fc1" was declared but never referenced
+    auto fc1 = [n = 0](this auto&) mutable {}; // { dg-line line_fc1 }
+         ^
+
+"Test_name.c", line 22: warning: variable "fc2" was declared but never referenced
+    auto fc2 = [n = 0](this auto const&) mutable {}; // { dg-line line_fc2 }
+         ^
+
+"Test_name.c", line 23: warning: variable "fc3" was declared but never referenced
+    auto fc3 = [n = 0](this auto&&) mutable {}; // { dg-line line_fc3 }
+         ^
+
+"Test_name.c", line 25: warning: variable "gc0" was declared but never referenced
+    auto gc0 = [n = 0](this auto) static {}; // { dg-line line_gc0 }
+         ^
+
+"Test_name.c", line 26: warning: variable "gc1" was declared but never referenced
+    auto gc1 = [n = 0](this auto&) static {}; // { dg-line line_gc1 }
+         ^
+
+"Test_name.c", line 27: warning: variable "gc2" was declared but never referenced
+    auto gc2 = [n = 0](this auto const&) static {}; // { dg-line line_gc2 }
+         ^
+
+"Test_name.c", line 28: warning: variable "gc3" was declared but never referenced
+    auto gc3 = [n = 0](this auto&&) static {}; // { dg-line line_gc3 }
+         ^
+
+16 errors detected in the compilation of "Test_name.c".

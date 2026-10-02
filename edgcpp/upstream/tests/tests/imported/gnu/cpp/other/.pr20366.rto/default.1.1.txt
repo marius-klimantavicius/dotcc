@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./other/pr20366.C", line 71: error: more than one instance of overloaded function "fgetpos" has "C" linkage
+  int fgetpos(FILE *, fpos64_t *);
+      ^
+
+"./other/pr20366.C", line 75: error: more than one instance of overloaded function "fsetpos" has "C" linkage
+  int fsetpos(FILE *, const fpos64_t *);
+      ^
+
+2 errors detected in the compilation of "Test_name.c".

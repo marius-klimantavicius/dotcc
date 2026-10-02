@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: warning: variable "x" was declared but never referenced
+    int x = 1;			  // { dg-message "shadowed" }
+        ^
+
+"Test_name.c", line 9: warning: variable "lambda" was declared but never referenced
+    auto const lambda = [](int x) { // { dg-warning "shadows" }
+               ^
+

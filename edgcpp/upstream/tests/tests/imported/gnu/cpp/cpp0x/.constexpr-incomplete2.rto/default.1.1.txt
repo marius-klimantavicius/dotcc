@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 33: error: expression must have a constant value
+  constexpr D d {};		// { dg-error "non-.constexpr. function" "" { target { ! implicit_constexpr } } }
+                 ^
+"Test_name.c", line 33: note: cannot call non-constexpr function "C<T>::C() [with T=D]" (declared at line 25)
+  constexpr D d {};		// { dg-error "non-.constexpr. function" "" { target { ! implicit_constexpr } } }
+                 ^
+
+"Test_name.c", line 19: warning: variable "a" was declared but never referenced
+  constexpr A a {};
+              ^
+
+"Test_name.c", line 33: warning: variable "d" was declared but never referenced
+  constexpr D d {};		// { dg-error "non-.constexpr. function" "" { target { ! implicit_constexpr } } }
+              ^
+
+1 error detected in the compilation of "Test_name.c".

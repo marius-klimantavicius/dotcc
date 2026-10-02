@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --microsoft Test_name.c
+"Test_name.c", line 18: warning: "C::C(const C &)" (declared implicitly), required for copy that was eliminated, cannot be referenced -- it is a deleted function
+    A(): m(T()) {}  // Previously triggered an error.  Now okay.
+          ^
+          detected during instantiation of "A<T>::A() [with T=C]" at line 27
+

@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++23 Test_name.c
+"Test_name.c", line 8: error: expected a ")"
+  using func_type = void(this int); // { dg-line func_type_line }
+                         ^
+
+"Test_name.c", line 17: error: a member function declared with "static" cannot have an explicit "this" parameter
+      static void f(this S) {} // { dg-line static_member_func_line }
+      ^
+
+"Test_name.c", line 26: error: incomplete type "void" is not allowed
+  void f(this int); // { dg-error "a non-member function cannot have an explicit object parameter" }
+       ^
+
+"Test_name.c", line 26: error: "this" may only be used inside a nonstatic member function
+  void f(this int); // { dg-error "a non-member function cannot have an explicit object parameter" }
+         ^
+
+"Test_name.c", line 26: error: expected a ")"
+  void f(this int); // { dg-error "a non-member function cannot have an explicit object parameter" }
+              ^
+
+"Test_name.c", line 27: error: variable "f" has already been defined (previous definition at line 26)
+  void f(this int) {} // { dg-error "a non-member function cannot have an explicit object parameter" }
+       ^
+
+"Test_name.c", line 27: error: incomplete type "void" is not allowed
+  void f(this int) {} // { dg-error "a non-member function cannot have an explicit object parameter" }
+       ^
+
+"Test_name.c", line 27: error: "this" may only be used inside a nonstatic member function
+  void f(this int) {} // { dg-error "a non-member function cannot have an explicit object parameter" }
+         ^
+
+"Test_name.c", line 27: error: expected a ")"
+  void f(this int) {} // { dg-error "a non-member function cannot have an explicit object parameter" }
+              ^
+
+"Test_name.c", line 27: error: expected a ";"
+  void f(this int) {} // { dg-error "a non-member function cannot have an explicit object parameter" }
+                   ^
+
+10 errors detected in the compilation of "Test_name.c".

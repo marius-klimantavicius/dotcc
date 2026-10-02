@@ -1,0 +1,48 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: error: incomplete type "inc" is not allowed
+  struct alignas(inc) S1 { }; // { dg-error "invalid application" }
+                 ^
+
+"Test_name.c", line 10: error: incomplete type "void" is not allowed
+  struct alignas(void) S2 { }; // { dg-error "invalid application" }
+                 ^
+
+"Test_name.c", line 13: error: incomplete type "void" is not allowed
+  struct alignas(T) S4 {}; // { dg-error "invalid application" }
+                 ^
+          detected during instantiation of class "S4<T> [with T=void]" at line 18
+
+"Test_name.c", line 16: error: incomplete type "inc" is not allowed
+  struct alignas(T) S5 {}; // { dg-error "invalid application" }
+                 ^
+          detected during instantiation of class "S5<T> [with T=inc]" at line 19
+
+"Test_name.c", line 24: warning: alignment-of operator applied to incomplete type
+    auto s1 = alignof(void); // { dg-error "invalid application" }
+              ^
+
+"Test_name.c", line 25: warning: alignment-of operator applied to incomplete type
+    auto s2 = alignof(const void); // { dg-error "invalid application" }
+              ^
+
+"Test_name.c", line 26: warning: alignment-of operator applied to incomplete type
+    auto s3 = __alignof(void); // { dg-warning "invalid application" }
+              ^
+
+"Test_name.c", line 27: error: alignment-of operator applied to incomplete type
+    auto s4 = alignof(inc); // { dg-error "invalid application" }
+              ^
+
+"Test_name.c", line 24: warning: variable "s1" was declared but never referenced
+    auto s1 = alignof(void); // { dg-error "invalid application" }
+         ^
+
+"Test_name.c", line 25: warning: variable "s2" was declared but never referenced
+    auto s2 = alignof(const void); // { dg-error "invalid application" }
+         ^
+
+"Test_name.c", line 26: warning: variable "s3" was declared but never referenced
+    auto s3 = __alignof(void); // { dg-warning "invalid application" }
+         ^
+
+5 errors detected in the compilation of "Test_name.c".

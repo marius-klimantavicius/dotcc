@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 28: warning: variable "test1" is used before its value is set
+    int other_test = test1;      // Ok
+                     ^
+
+"Test_name.c", line 28: warning: variable "other_test" was declared but never referenced
+    int other_test = test1;      // Ok
+        ^
+

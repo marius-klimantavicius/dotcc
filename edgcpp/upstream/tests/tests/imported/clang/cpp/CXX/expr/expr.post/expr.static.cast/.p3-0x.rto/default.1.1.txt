@@ -1,0 +1,144 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 Test_name.c
+"Test_name.c", line 14: warning: variable "ar0" was declared but never referenced
+    A &&ar0 = static_cast<A&&>(a);
+        ^
+
+"Test_name.c", line 15: warning: variable "ar1" was declared but never referenced
+    A &&ar1 = static_cast<A&&>(b);
+        ^
+
+"Test_name.c", line 20: warning: variable "ar6" was declared but never referenced
+    const A &&ar6 = static_cast<const A&&>(a);
+              ^
+
+"Test_name.c", line 21: warning: variable "ar7" was declared but never referenced
+    const A &&ar7 = static_cast<const A&&>(b);
+              ^
+
+"Test_name.c", line 34: warning: expression has no effect
+          static_cast<A&&>(*this);
+          ^
+
+"Test_name.c", line 35: warning: expression has no effect
+          static_cast<const A&&>(*this);
+          ^
+
+"Test_name.c", line 45: error: conversion to inaccessible base class "A" is not allowed
+      static_cast<A&&>(c);        // expected-error {{cannot cast 'C' to its private base class 'A'}}
+                       ^
+
+"Test_name.c", line 45: warning: expression has no effect
+      static_cast<A&&>(c);        // expected-error {{cannot cast 'C' to its private base class 'A'}}
+      ^
+
+"Test_name.c", line 46: error: conversion to inaccessible base class "A" is not allowed
+      static_cast<A&&>(c.that()); // expected-error {{cannot cast 'C' to its private base class 'A'}}
+                       ^
+
+"Test_name.c", line 48: error: conversion to inaccessible base class "A" is not allowed
+      static_cast<const A&&>(c);        // expected-error {{cannot cast 'C' to its private base class 'const A'}}
+                             ^
+
+"Test_name.c", line 48: warning: expression has no effect
+      static_cast<const A&&>(c);        // expected-error {{cannot cast 'C' to its private base class 'const A'}}
+      ^
+
+"Test_name.c", line 49: error: conversion to inaccessible base class "A" is not allowed
+      static_cast<const A&&>(c.that()); // expected-error {{cannot cast 'C' to its private base class 'const A'}}
+                             ^
+
+"Test_name.c", line 53: warning: expression has no effect
+      (A&&)c;
+      ^
+
+"Test_name.c", line 54: warning: expression has no effect
+      (A&&)(C&&)c;
+      ^
+
+"Test_name.c", line 55: warning: expression has no effect
+      (A&&)cc;
+      ^
+
+"Test_name.c", line 56: warning: expression has no effect
+      (A&&)(const C&&)c;
+      ^
+
+"Test_name.c", line 57: warning: expression has no effect
+      (const A&&)c;
+      ^
+
+"Test_name.c", line 58: warning: expression has no effect
+      (const A&&)(C&&)c;
+      ^
+
+"Test_name.c", line 59: warning: expression has no effect
+      (const A&&)cc;
+      ^
+
+"Test_name.c", line 60: warning: expression has no effect
+      (const A&&)(const C&&)c;
+      ^
+
+"Test_name.c", line 71: error: base class "A" is ambiguous
+      static_cast<A&&>(d);      // expected-error {{ambiguous conversion from derived class 'D' to base class 'A'}}
+                       ^
+
+"Test_name.c", line 72: error: base class "A" is ambiguous
+      static_cast<A&&>(d.rv()); // expected-error {{ambiguous conversion from derived class 'D' to base class 'A'}}
+                       ^
+
+"Test_name.c", line 74: error: base class "A" is ambiguous
+      static_cast<const A&&>(d);      // expected-error {{ambiguous conversion from derived class 'D' to base class 'const A'}}
+                             ^
+
+"Test_name.c", line 75: error: base class "A" is ambiguous
+      static_cast<const A&&>(d.rv()); // expected-error {{ambiguous conversion from derived class 'D' to base class 'const A'}}
+                             ^
+
+"Test_name.c", line 77: error: base class "A" is ambiguous
+      (A&&)d;                  // expected-error {{ambiguous conversion from derived class 'D' to base class 'A'}}
+           ^
+
+"Test_name.c", line 78: error: base class "A" is ambiguous
+      (A&&)(D&&)d;             // expected-error {{ambiguous conversion from derived class 'D' to base class 'A'}}
+           ^
+
+"Test_name.c", line 79: error: base class "A" is ambiguous
+      (A&&)cd;                 // expected-error {{ambiguous conversion from derived class 'D' to base class 'A'}}
+           ^
+
+"Test_name.c", line 80: error: base class "A" is ambiguous
+      (A&&)(const D&&)d;       // expected-error {{ambiguous conversion from derived class 'D' to base class 'A'}}
+           ^
+
+"Test_name.c", line 81: error: base class "A" is ambiguous
+      (const A&&)d;            // expected-error {{ambiguous conversion from derived class 'D' to base class 'A'}}
+                 ^
+
+"Test_name.c", line 82: error: base class "A" is ambiguous
+      (const A&&)(D&&)d;       // expected-error {{ambiguous conversion from derived class 'D' to base class 'A'}}
+                 ^
+
+"Test_name.c", line 83: error: base class "A" is ambiguous
+      (const A&&)cd;           // expected-error {{ambiguous conversion from derived class 'D' to base class 'A'}}
+                 ^
+
+"Test_name.c", line 84: error: base class "A" is ambiguous
+      (const A&&)(const D&&)d; // expected-error {{ambiguous conversion from derived class 'D' to base class 'A'}}
+                 ^
+
+"Test_name.c", line 90: error: no instance of function template "GH121429::s" matches the argument list
+  int i = s<A, C>(); // expected-error {{no matching function}}
+          ^
+"Test_name.c", line 88: note: substituting explicit template arguments "<A, GH121429::C>" for function template "GH121429::s" failed
+  auto s(U u = {}) -> decltype(static_cast<T&&>(u)); // expected-note 2 {{substitution failure}}
+       ^
+
+"Test_name.c", line 91: error: no instance of function template "GH121429::s" matches the argument list
+  int j = s<A, D>(); // expected-error {{no matching function}}
+          ^
+"Test_name.c", line 88: note: substituting explicit template arguments "<A, GH121429::D>" for function template "GH121429::s" failed
+  auto s(U u = {}) -> decltype(static_cast<T&&>(u)); // expected-note 2 {{substitution failure}}
+       ^
+
+18 errors detected in the compilation of "Test_name.c".

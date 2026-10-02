@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --c++20 -tused Test_name.c
+"Test_name.c", line 11: error: more than one operator "!=" matches these operands:
+            function "Iterator::operator==(const Iterator &) const" (declared at line 7), with reversed arguments
+            built-in operator "pointer == pointer"
+            built-in operator "pointer != pointer"
+            operand types are: std::nullptr_t != Iterator
+     bool b = nullptr != Iterator{};
+                      ^
+"Test_name.c", line 11: note: built-in operator!=(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+     bool b = nullptr != Iterator{};
+                      ^
+"Test_name.c", line 11: note: built-in operator!=(<nullptr>, <nullptr>) does not match because argument #2 does not match parameter
+     bool b = nullptr != Iterator{};
+                      ^
+"Test_name.c", line 11: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+     bool b = nullptr != Iterator{};
+                      ^
+"Test_name.c", line 11: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #2 does not match parameter
+     bool b = nullptr != Iterator{};
+                      ^
+
+1 error detected in the compilation of "Test_name.c".

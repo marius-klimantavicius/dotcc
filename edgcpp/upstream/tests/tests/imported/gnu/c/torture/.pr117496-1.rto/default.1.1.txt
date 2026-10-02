@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 16: error: too many arguments in function call
+    gargs(main_argc, main_argv, &tracks);
+          ^
+
+"Test_name.c", line 18: error: declaration is incompatible with "void gargs(void)" (declared at line 13)
+  void gargs(int, char *, int *tracksp) {
+       ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,67 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 19: error: initialization is not constant
+  constexpr Mutable mut_member; // expected-error {{must have constant destruction}} expected-note {{in call}}
+                    ^
+"Test_name.c", line 17: note: access to uninitialized object
+    constexpr ~Mutable() { member = member + 1; } // expected-note {{read of mutable member}}
+                                    ^
+
+"Test_name.c", line 34: warning: variable "q" was declared but never referenced
+      int q = hcm.n; // expected-note {{read of mutable}}
+          ^
+
+"Test_name.c", line 37: error: initialization is not constant
+  constexpr MutableConst mc; // expected-error {{must have constant destruction}} expected-note {{in call}}
+                         ^
+"Test_name.c", line 34: note: access to uninitialized object
+      int q = hcm.n; // expected-note {{read of mutable}}
+                 ^
+
+"Test_name.c", line 42: warning: variable "n" was declared but never referenced
+      int n = temp; // expected-note {{outside the expression that created the temporary}}
+          ^
+
+"Test_name.c", line 52: error: expression must have a constant value
+  constexpr auto e = g();  // expected-error {{call to consteval function 'P1073R3::g' is not a constant expression}} \
+                     ^
+"Test_name.c", line 52: note: address of consteval function "P1073R3::f" in constant expression result
+  constexpr auto e = g();  // expected-error {{call to consteval function 'P1073R3::g' is not a constant expression}} \
+                     ^
+
+"Test_name.c", line 5: warning: variable "non_class" was declared but never referenced
+  constexpr int non_class = 42;
+                ^
+
+"Test_name.c", line 6: warning: variable "arr_non_class" was declared but never referenced
+  constexpr int arr_non_class[5] = {1, 2, 3};
+                ^
+
+"Test_name.c", line 12: warning: variable "class_" was declared but never referenced
+  constexpr A class_ = {};
+              ^
+
+"Test_name.c", line 13: warning: variable "arr_class" was declared but never referenced
+  constexpr A arr_class[5] = {{}, {}};
+              ^
+
+"Test_name.c", line 19: warning: variable "mut_member" was declared but never referenced
+  constexpr Mutable mut_member; // expected-error {{must have constant destruction}} expected-note {{in call}}
+                    ^
+
+"Test_name.c", line 25: warning: variable "mut_store" was declared but never referenced
+  constexpr MutableStore mut_store; // expected-error {{must have constant destruction}} expected-note {{in call}}
+                         ^
+
+"Test_name.c", line 37: warning: variable "mc" was declared but never referenced
+  constexpr MutableConst mc; // expected-error {{must have constant destruction}} expected-note {{in call}}
+                         ^
+
+"Test_name.c", line 45: warning: variable "t" was declared but never referenced
+  constexpr Temporary t = {3}; // expected-error {{must have constant destruction}} expected-note {{created here}} expected-note {{in call}}
+                      ^
+
+"Test_name.c", line 52: warning: variable "P1073R3::e" was declared but never referenced
+  constexpr auto e = g();  // expected-error {{call to consteval function 'P1073R3::g' is not a constant expression}} \
+                 ^
+
+3 errors detected in the compilation of "Test_name.c".

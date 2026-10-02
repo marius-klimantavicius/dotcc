@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 14: warning: class template "RefMem<T>" defines no constructor to initialize the following:
+            reference member "RefMem<T>::member"
+  template <class T> class RefMem { // expected-warning{{class 'RefMem<int &>' does not declare any constructor to initialize its non-modifiable members}}
+                           ^
+
+"Test_name.c", line 23: error: reference to reference is not allowed
+          &             // expected-error {{declared as a reference to a reference}}
+          ^
+
+"Test_name.c", line 53: error: pointer to reference is not allowed
+                  *       // expected-error {{declared as a pointer to a reference}}
+                  ^
+
+"Test_name.c", line 58: error: pointer to reference is not allowed
+                   *      // expected-error {{declared as a pointer to a reference}}
+                   ^
+
+"Test_name.c", line 63: error: pointer to reference is not allowed
+          *               // expected-error {{declared as a pointer to a reference}}
+          ^
+
+"Test_name.c", line 67: error: pointer to reference is not allowed
+           *              // expected-error {{declared as a pointer to a reference}}
+           ^
+
+"Test_name.c", line 45: error: pointer to reference is not allowed
+      *                   // expected-error {{declared as a pointer to a reference}}
+      ^
+          detected during instantiation of class "PtrMem<T> [with T=int &]" at line 75
+
+"Test_name.c", line 97: error: array of reference is not allowed
+                  intrefarr
+                  ^
+
+"Test_name.c", line 104: error: array of reference is not allowed
+                   intrefarr
+                   ^
+
+"Test_name.c", line 104: warning: class member typedef may not be redeclared
+                   intrefarr
+                   ^
+
+"Test_name.c", line 111: error: array of reference is not allowed
+          refarr0
+          ^
+
+"Test_name.c", line 116: error: array of reference is not allowed
+           refarr1
+           ^
+
+"Test_name.c", line 80: error: array of reference is not allowed
+      member
+      ^
+          detected during instantiation of class "ArrMem<T> [with T=int &]" at line 125
+
+"Test_name.c", line 87: error: array of reference is not allowed
+      member
+      ^
+          detected during instantiation of class "DepArrMem<T, N> [with T=int &, N=10U]" at line 132
+
+12 errors detected in the compilation of "Test_name.c".

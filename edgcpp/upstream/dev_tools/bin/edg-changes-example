@@ -1,0 +1,182 @@
+#!/usr/bin/env python3
+
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+'''
+Encode non-UTF-8 bytes as «HHHH...» and decode them back.
+
+The Changes file (and similar docs) sometimes embed raw Latin-1, EUC-JP,
+Shift-JIS, or otherwise non-UTF-8 bytes in examples.  Those bytes prevent
+the file from being valid UTF-8.  This tool replaces each maximal run of
+such bytes with a single guillemet-wrapped hex dump («a1d6a4a4») so the
+file itself is UTF-8, while leaving existing UTF-8 text and C/C++ escapes
+such as \\u00b6 untouched.
+
+Encode algorithm (default):
+  Walk the input as a byte stream.  ASCII bytes pass through.  Each maximal
+  run of bytes >= 0x80 is decoded as UTF-8; if the whole run is valid UTF-8
+  it is kept, otherwise the run is written as one marker «HHHH...» (two hex
+  digits per byte, no separators).  Treating the run as a unit avoids
+  leaving accidental UTF-8 islands inside an otherwise non-UTF-8 multibyte
+  example (e.g. a1 d6 a4 a4 a4 a4).
+
+Decode algorithm:
+  In a UTF-8 input, replace each «HHHH...» (one or more HH pairs) with the
+  corresponding raw bytes.  No other escapes are interpreted.  The older
+  per-byte form «HH»«HH» still decodes correctly.
+
+Examples:
+  edg-changes-example encode raw.txt > utf8.txt
+  edg-changes-example decode utf8.txt > raw.txt
+  edg-changes-example encode -o utf8.txt raw.txt
+'''
+
+from __future__ import annotations
+
+import argparse
+import re
+import sys
+from pathlib import Path
+
+OPEN  = '\u00ab'  # «
+CLOSE = '\u00bb'  # »
+# One or more HH pairs inside guillemets (packed runs, or legacy single HH).
+MARKER_RE = re.compile(
+  re.escape(OPEN) + r'((?:[0-9a-fA-F]{2})+)' + re.escape(CLOSE)
+)
+
+def encode_bytes(data: bytes, *, escape_all_non_ascii: bool = False) -> str:
+  '''Return a UTF-8 text string with non-UTF-8 byte runs as «HHHH...».'''
+  out: list[str] = []
+  i = 0
+  n = len(data)
+  while i < n:
+    b = data[i]
+    if b < 0x80:
+      out.append(chr(b))
+      i += 1
+      continue
+
+    j = i
+    while j < n and data[j] >= 0x80:
+      j += 1
+    run = data[i:j]
+
+    if not escape_all_non_ascii:
+      try:
+        out.append(run.decode('utf-8'))
+        i = j
+        continue
+      except UnicodeDecodeError:
+        pass
+
+    out.append(OPEN + run.hex() + CLOSE)
+    i = j
+
+  return ''.join(out)
+
+def decode_text(text: str) -> bytes:
+  '''Expand «HHHH...» markers to raw bytes; leave all other text as UTF-8.'''
+  out = bytearray()
+  pos = 0
+  for match in MARKER_RE.finditer(text):
+    out.extend(text[pos:match.start()].encode('utf-8'))
+    out.extend(bytes.fromhex(match.group(1)))
+    pos = match.end()
+  out.extend(text[pos:].encode('utf-8'))
+  return bytes(out)
+
+def _read_input(path: str | None) -> bytes:
+  if path is None or path == '-':
+    return sys.stdin.buffer.read()
+  return Path(path).read_bytes()
+
+def _write_bytes(path: str | None, data: bytes) -> None:
+  if path is None or path == '-':
+    sys.stdout.buffer.write(data)
+    if sys.stdout.isatty() and not data.endswith(b'\n'):
+      sys.stdout.buffer.write(b'\n')
+  else:
+    Path(path).write_bytes(data)
+
+def _write_text(path: str | None, text: str) -> None:
+  data = text.encode('utf-8')
+  if path is None or path == '-':
+    sys.stdout.buffer.write(data)
+    if sys.stdout.isatty() and not text.endswith('\n'):
+      sys.stdout.buffer.write(b'\n')
+  else:
+    Path(path).write_bytes(data)
+
+def main(argv: list[str] | None = None) -> int:
+  parser = argparse.ArgumentParser(
+    description = (
+      'Encode non-UTF-8 bytes as «HHHH...», or decode those markers back '
+      'to raw bytes.  Unicode escapes such as \\u00b6 are never interpreted.'
+    )
+  )
+  sub = parser.add_subparsers(dest = 'command', required = True)
+
+  enc = sub.add_parser(
+    'encode', help = 'replace non-UTF-8 byte runs with «HHHH...»'
+  )
+  enc.add_argument(
+    'input',
+    nargs = '?',
+    default = '-',
+    help = 'input file (default: stdin)',
+  )
+  enc.add_argument(
+    '-o',
+    '--output',
+    default = '-',
+    help = 'output file (default: stdout)',
+  )
+  enc.add_argument(
+    '--escape-all-non-ascii',
+    action = 'store_true',
+    help = 'escape every byte >= 0x80, including valid UTF-8 sequences',
+  )
+
+  dec = sub.add_parser('decode', help = 'replace «HHHH...» with raw bytes')
+  dec.add_argument(
+    'input',
+    nargs = '?',
+    default = '-',
+    help = 'input file (default: stdin)',
+  )
+  dec.add_argument(
+    '-o',
+    '--output',
+    default = '-',
+    help = 'output file (default: stdout)',
+  )
+
+  args = parser.parse_args(argv)
+
+  if args.command == 'encode':
+    raw = _read_input(args.input)
+    text = encode_bytes(raw, escape_all_non_ascii = args.escape_all_non_ascii)
+    # Encoded output must be valid UTF-8 by construction.
+    text.encode('utf-8')
+    _write_text(args.output, text)
+    return 0
+
+  if args.command == 'decode':
+    raw = _read_input(args.input)
+    try:
+      text = raw.decode('utf-8')
+    except UnicodeDecodeError as exc:
+      print(f'error: input is not valid UTF-8: {exc}', file = sys.stderr)
+      return 1
+    _write_bytes(args.output, decode_text(text))
+    return 0
+
+  parser.error(f'unknown command {args.command!r}')
+  return 2
+
+if __name__ == '__main__':
+  sys.exit(main())

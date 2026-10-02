@@ -1,0 +1,1028 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 111: error: expected a ";"
+    FRACT_INCDEC(short _Fract, hr);
+    ^
+
+"Test_name.c", line 111: error: extra text after expected end of number
+    FRACT_INCDEC(short _Fract, hr);
+    ^
+
+"Test_name.c", line 111: error: identifier "a" is undefined
+    FRACT_INCDEC(short _Fract, hr);
+    ^
+
+"Test_name.c", line 111: error: extra text after expected end of number
+    FRACT_INCDEC(short _Fract, hr);
+    ^
+
+"Test_name.c", line 111: error: identifier "a" is undefined
+    FRACT_INCDEC(short _Fract, hr);
+    ^
+
+"Test_name.c", line 111: error: extra text after expected end of number
+    FRACT_INCDEC(short _Fract, hr);
+    ^
+
+"Test_name.c", line 111: error: identifier "a" is undefined
+    FRACT_INCDEC(short _Fract, hr);
+    ^
+
+"Test_name.c", line 111: error: extra text after expected end of number
+    FRACT_INCDEC(short _Fract, hr);
+    ^
+
+"Test_name.c", line 111: error: identifier "a" is undefined
+    FRACT_INCDEC(short _Fract, hr);
+    ^
+
+"Test_name.c", line 111: error: extra text after expected end of number
+    FRACT_INCDEC(short _Fract, hr);
+    ^
+
+"Test_name.c", line 111: error: identifier "a" is undefined
+    FRACT_INCDEC(short _Fract, hr);
+    ^
+
+"Test_name.c", line 111: error: extra text after expected end of number
+    FRACT_INCDEC(short _Fract, hr);
+    ^
+
+"Test_name.c", line 111: error: identifier "a" is undefined
+    FRACT_INCDEC(short _Fract, hr);
+    ^
+
+"Test_name.c", line 111: error: extra text after expected end of number
+    FRACT_INCDEC(short _Fract, hr);
+    ^
+
+"Test_name.c", line 111: error: identifier "a" is undefined
+    FRACT_INCDEC(short _Fract, hr);
+    ^
+
+"Test_name.c", line 111: error: extra text after expected end of number
+    FRACT_INCDEC(short _Fract, hr);
+    ^
+
+"Test_name.c", line 111: error: identifier "a" is undefined
+    FRACT_INCDEC(short _Fract, hr);
+    ^
+
+"Test_name.c", line 111: error: extra text after expected end of number
+    FRACT_INCDEC(short _Fract, hr);
+    ^
+
+"Test_name.c", line 111: warning: variable "_Fract" was declared but never referenced
+    FRACT_INCDEC(short _Fract, hr);
+    ^
+
+"Test_name.c", line 112: error: identifier "_Fract" is undefined
+    FRACT_INCDEC(_Fract, r);
+    ^
+
+"Test_name.c", line 112: error: extra text after expected end of number
+    FRACT_INCDEC(_Fract, r);
+    ^
+
+"Test_name.c", line 112: error: extra text after expected end of number
+    FRACT_INCDEC(_Fract, r);
+    ^
+
+"Test_name.c", line 112: error: extra text after expected end of number
+    FRACT_INCDEC(_Fract, r);
+    ^
+
+"Test_name.c", line 112: error: extra text after expected end of number
+    FRACT_INCDEC(_Fract, r);
+    ^
+
+"Test_name.c", line 112: error: extra text after expected end of number
+    FRACT_INCDEC(_Fract, r);
+    ^
+
+"Test_name.c", line 112: error: extra text after expected end of number
+    FRACT_INCDEC(_Fract, r);
+    ^
+
+"Test_name.c", line 112: error: extra text after expected end of number
+    FRACT_INCDEC(_Fract, r);
+    ^
+
+"Test_name.c", line 112: error: extra text after expected end of number
+    FRACT_INCDEC(_Fract, r);
+    ^
+
+"Test_name.c", line 112: error: extra text after expected end of number
+    FRACT_INCDEC(_Fract, r);
+    ^
+
+"Test_name.c", line 113: error: expected a ";"
+    FRACT_INCDEC(long _Fract, lr);
+    ^
+
+"Test_name.c", line 113: error: extra text after expected end of number
+    FRACT_INCDEC(long _Fract, lr);
+    ^
+
+"Test_name.c", line 113: warning: concatenation with "lr" in macro "FRACT_INCDEC" does not create a valid token
+    FRACT_INCDEC(long _Fract, lr);
+    ^
+
+"Test_name.c", line 113: error: identifier "a" is undefined
+    FRACT_INCDEC(long _Fract, lr);
+    ^
+
+"Test_name.c", line 113: error: extra text after expected end of number
+    FRACT_INCDEC(long _Fract, lr);
+    ^
+
+"Test_name.c", line 113: warning: concatenation with "lr" in macro "FRACT_INCDEC" does not create a valid token
+    FRACT_INCDEC(long _Fract, lr);
+    ^
+
+"Test_name.c", line 113: error: identifier "a" is undefined
+    FRACT_INCDEC(long _Fract, lr);
+    ^
+
+"Test_name.c", line 113: error: extra text after expected end of number
+    FRACT_INCDEC(long _Fract, lr);
+    ^
+
+"Test_name.c", line 113: warning: concatenation with "lr" in macro "FRACT_INCDEC" does not create a valid token
+    FRACT_INCDEC(long _Fract, lr);
+    ^
+
+"Test_name.c", line 113: error: identifier "a" is undefined
+    FRACT_INCDEC(long _Fract, lr);
+    ^
+
+"Test_name.c", line 113: error: extra text after expected end of number
+    FRACT_INCDEC(long _Fract, lr);
+    ^
+
+"Test_name.c", line 113: warning: concatenation with "lr" in macro "FRACT_INCDEC" does not create a valid token
+    FRACT_INCDEC(long _Fract, lr);
+    ^
+
+"Test_name.c", line 113: error: identifier "a" is undefined
+    FRACT_INCDEC(long _Fract, lr);
+    ^
+
+"Test_name.c", line 113: error: extra text after expected end of number
+    FRACT_INCDEC(long _Fract, lr);
+    ^
+
+"Test_name.c", line 113: warning: concatenation with "lr" in macro "FRACT_INCDEC" does not create a valid token
+    FRACT_INCDEC(long _Fract, lr);
+    ^
+
+"Test_name.c", line 113: error: identifier "a" is undefined
+    FRACT_INCDEC(long _Fract, lr);
+    ^
+
+"Test_name.c", line 113: error: extra text after expected end of number
+    FRACT_INCDEC(long _Fract, lr);
+    ^
+
+"Test_name.c", line 113: warning: concatenation with "lr" in macro "FRACT_INCDEC" does not create a valid token
+    FRACT_INCDEC(long _Fract, lr);
+    ^
+
+"Test_name.c", line 113: error: identifier "a" is undefined
+    FRACT_INCDEC(long _Fract, lr);
+    ^
+
+"Test_name.c", line 113: error: extra text after expected end of number
+    FRACT_INCDEC(long _Fract, lr);
+    ^
+
+"Test_name.c", line 113: warning: concatenation with "lr" in macro "FRACT_INCDEC" does not create a valid token
+    FRACT_INCDEC(long _Fract, lr);
+    ^
+
+"Test_name.c", line 113: error: identifier "a" is undefined
+    FRACT_INCDEC(long _Fract, lr);
+    ^
+
+"Test_name.c", line 113: error: extra text after expected end of number
+    FRACT_INCDEC(long _Fract, lr);
+    ^
+
+"Test_name.c", line 113: warning: concatenation with "lr" in macro "FRACT_INCDEC" does not create a valid token
+    FRACT_INCDEC(long _Fract, lr);
+    ^
+
+"Test_name.c", line 113: error: identifier "a" is undefined
+    FRACT_INCDEC(long _Fract, lr);
+    ^
+
+"Test_name.c", line 113: error: extra text after expected end of number
+    FRACT_INCDEC(long _Fract, lr);
+    ^
+
+"Test_name.c", line 113: warning: concatenation with "lr" in macro "FRACT_INCDEC" does not create a valid token
+    FRACT_INCDEC(long _Fract, lr);
+    ^
+
+"Test_name.c", line 113: warning: variable "_Fract" was declared but never referenced
+    FRACT_INCDEC(long _Fract, lr);
+    ^
+
+"Test_name.c", line 114: error: expected a ";"
+    FRACT_INCDEC(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 114: error: extra text after expected end of number
+    FRACT_INCDEC(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 114: warning: concatenation with "llr" in macro "FRACT_INCDEC" does not create a valid token
+    FRACT_INCDEC(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 114: error: identifier "a" is undefined
+    FRACT_INCDEC(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 114: error: extra text after expected end of number
+    FRACT_INCDEC(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 114: warning: concatenation with "llr" in macro "FRACT_INCDEC" does not create a valid token
+    FRACT_INCDEC(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 114: error: identifier "a" is undefined
+    FRACT_INCDEC(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 114: error: extra text after expected end of number
+    FRACT_INCDEC(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 114: warning: concatenation with "llr" in macro "FRACT_INCDEC" does not create a valid token
+    FRACT_INCDEC(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 114: error: identifier "a" is undefined
+    FRACT_INCDEC(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 114: error: extra text after expected end of number
+    FRACT_INCDEC(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 114: warning: concatenation with "llr" in macro "FRACT_INCDEC" does not create a valid token
+    FRACT_INCDEC(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 114: error: identifier "a" is undefined
+    FRACT_INCDEC(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 114: error: extra text after expected end of number
+    FRACT_INCDEC(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 114: warning: concatenation with "llr" in macro "FRACT_INCDEC" does not create a valid token
+    FRACT_INCDEC(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 114: error: identifier "a" is undefined
+    FRACT_INCDEC(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 114: error: extra text after expected end of number
+    FRACT_INCDEC(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 114: warning: concatenation with "llr" in macro "FRACT_INCDEC" does not create a valid token
+    FRACT_INCDEC(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 114: error: identifier "a" is undefined
+    FRACT_INCDEC(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 114: error: extra text after expected end of number
+    FRACT_INCDEC(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 114: warning: concatenation with "llr" in macro "FRACT_INCDEC" does not create a valid token
+    FRACT_INCDEC(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 114: error: identifier "a" is undefined
+    FRACT_INCDEC(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 114: error: extra text after expected end of number
+    FRACT_INCDEC(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 114: warning: concatenation with "llr" in macro "FRACT_INCDEC" does not create a valid token
+    FRACT_INCDEC(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 114: error: identifier "a" is undefined
+    FRACT_INCDEC(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 114: error: extra text after expected end of number
+    FRACT_INCDEC(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 114: warning: concatenation with "llr" in macro "FRACT_INCDEC" does not create a valid token
+    FRACT_INCDEC(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 114: warning: variable "_Fract" was declared but never referenced
+    FRACT_INCDEC(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 115: error: identifier "_Sat" is undefined
+    FRACT_INCDEC(_Sat short _Fract, hr);
+    ^
+
+"Test_name.c", line 115: error: expected a ";"
+    FRACT_INCDEC(_Sat short _Fract, hr);
+    ^
+
+"Test_name.c", line 115: error: extra text after expected end of number
+    FRACT_INCDEC(_Sat short _Fract, hr);
+    ^
+
+"Test_name.c", line 115: error: identifier "a" is undefined
+    FRACT_INCDEC(_Sat short _Fract, hr);
+    ^
+
+"Test_name.c", line 115: error: extra text after expected end of number
+    FRACT_INCDEC(_Sat short _Fract, hr);
+    ^
+
+"Test_name.c", line 115: error: identifier "a" is undefined
+    FRACT_INCDEC(_Sat short _Fract, hr);
+    ^
+
+"Test_name.c", line 115: error: extra text after expected end of number
+    FRACT_INCDEC(_Sat short _Fract, hr);
+    ^
+
+"Test_name.c", line 115: error: identifier "a" is undefined
+    FRACT_INCDEC(_Sat short _Fract, hr);
+    ^
+
+"Test_name.c", line 115: error: extra text after expected end of number
+    FRACT_INCDEC(_Sat short _Fract, hr);
+    ^
+
+"Test_name.c", line 115: error: identifier "a" is undefined
+    FRACT_INCDEC(_Sat short _Fract, hr);
+    ^
+
+"Test_name.c", line 115: error: extra text after expected end of number
+    FRACT_INCDEC(_Sat short _Fract, hr);
+    ^
+
+"Test_name.c", line 115: error: identifier "a" is undefined
+    FRACT_INCDEC(_Sat short _Fract, hr);
+    ^
+
+"Test_name.c", line 115: error: extra text after expected end of number
+    FRACT_INCDEC(_Sat short _Fract, hr);
+    ^
+
+"Test_name.c", line 115: error: identifier "a" is undefined
+    FRACT_INCDEC(_Sat short _Fract, hr);
+    ^
+
+"Test_name.c", line 115: error: extra text after expected end of number
+    FRACT_INCDEC(_Sat short _Fract, hr);
+    ^
+
+"Test_name.c", line 115: error: identifier "a" is undefined
+    FRACT_INCDEC(_Sat short _Fract, hr);
+    ^
+
+"Test_name.c", line 115: error: extra text after expected end of number
+    FRACT_INCDEC(_Sat short _Fract, hr);
+    ^
+
+"Test_name.c", line 115: error: identifier "a" is undefined
+    FRACT_INCDEC(_Sat short _Fract, hr);
+    ^
+
+"Test_name.c", line 115: error: extra text after expected end of number
+    FRACT_INCDEC(_Sat short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: identifier "_Sat" is undefined
+    FRACT_INCDEC(_Sat _Fract, r);
+    ^
+
+"Test_name.c", line 116: error: expected a ";"
+    FRACT_INCDEC(_Sat _Fract, r);
+    ^
+
+"Test_name.c", line 116: error: extra text after expected end of number
+    FRACT_INCDEC(_Sat _Fract, r);
+    ^
+
+"Test_name.c", line 116: error: identifier "a" is undefined
+    FRACT_INCDEC(_Sat _Fract, r);
+    ^
+
+"Test_name.c", line 116: error: extra text after expected end of number
+    FRACT_INCDEC(_Sat _Fract, r);
+    ^
+
+"Test_name.c", line 116: error: identifier "a" is undefined
+    FRACT_INCDEC(_Sat _Fract, r);
+    ^
+
+"Test_name.c", line 116: error: extra text after expected end of number
+    FRACT_INCDEC(_Sat _Fract, r);
+    ^
+
+"Test_name.c", line 116: error: identifier "a" is undefined
+    FRACT_INCDEC(_Sat _Fract, r);
+    ^
+
+"Test_name.c", line 116: error: extra text after expected end of number
+    FRACT_INCDEC(_Sat _Fract, r);
+    ^
+
+"Test_name.c", line 116: error: identifier "a" is undefined
+    FRACT_INCDEC(_Sat _Fract, r);
+    ^
+
+"Test_name.c", line 116: error: extra text after expected end of number
+    FRACT_INCDEC(_Sat _Fract, r);
+    ^
+
+"Test_name.c", line 116: error: identifier "a" is undefined
+    FRACT_INCDEC(_Sat _Fract, r);
+    ^
+
+"Test_name.c", line 116: error: extra text after expected end of number
+    FRACT_INCDEC(_Sat _Fract, r);
+    ^
+
+"Test_name.c", line 116: error: identifier "a" is undefined
+    FRACT_INCDEC(_Sat _Fract, r);
+    ^
+
+"Test_name.c", line 116: error: extra text after expected end of number
+    FRACT_INCDEC(_Sat _Fract, r);
+    ^
+
+"Test_name.c", line 116: error: identifier "a" is undefined
+    FRACT_INCDEC(_Sat _Fract, r);
+    ^
+
+"Test_name.c", line 116: error: extra text after expected end of number
+    FRACT_INCDEC(_Sat _Fract, r);
+    ^
+
+"Test_name.c", line 116: error: identifier "a" is undefined
+    FRACT_INCDEC(_Sat _Fract, r);
+    ^
+
+"Test_name.c", line 116: error: extra text after expected end of number
+    FRACT_INCDEC(_Sat _Fract, r);
+    ^
+
+"Test_name.c", line 117: error: identifier "_Sat" is undefined
+    FRACT_INCDEC(_Sat long _Fract, lr);
+    ^
+
+"Test_name.c", line 117: error: expected a ";"
+    FRACT_INCDEC(_Sat long _Fract, lr);
+    ^
+
+"Test_name.c", line 117: error: extra text after expected end of number
+    FRACT_INCDEC(_Sat long _Fract, lr);
+    ^
+
+"Test_name.c", line 117: warning: concatenation with "lr" in macro "FRACT_INCDEC" does not create a valid token
+    FRACT_INCDEC(_Sat long _Fract, lr);
+    ^
+
+"Test_name.c", line 117: error: identifier "a" is undefined
+    FRACT_INCDEC(_Sat long _Fract, lr);
+    ^
+
+"Test_name.c", line 117: error: extra text after expected end of number
+    FRACT_INCDEC(_Sat long _Fract, lr);
+    ^
+
+"Test_name.c", line 117: warning: concatenation with "lr" in macro "FRACT_INCDEC" does not create a valid token
+    FRACT_INCDEC(_Sat long _Fract, lr);
+    ^
+
+"Test_name.c", line 117: error: identifier "a" is undefined
+    FRACT_INCDEC(_Sat long _Fract, lr);
+    ^
+
+"Test_name.c", line 117: error: extra text after expected end of number
+    FRACT_INCDEC(_Sat long _Fract, lr);
+    ^
+
+"Test_name.c", line 117: warning: concatenation with "lr" in macro "FRACT_INCDEC" does not create a valid token
+    FRACT_INCDEC(_Sat long _Fract, lr);
+    ^
+
+"Test_name.c", line 117: error: identifier "a" is undefined
+    FRACT_INCDEC(_Sat long _Fract, lr);
+    ^
+
+"Test_name.c", line 117: error: extra text after expected end of number
+    FRACT_INCDEC(_Sat long _Fract, lr);
+    ^
+
+"Test_name.c", line 117: warning: concatenation with "lr" in macro "FRACT_INCDEC" does not create a valid token
+    FRACT_INCDEC(_Sat long _Fract, lr);
+    ^
+
+"Test_name.c", line 117: error: identifier "a" is undefined
+    FRACT_INCDEC(_Sat long _Fract, lr);
+    ^
+
+"Test_name.c", line 117: error: extra text after expected end of number
+    FRACT_INCDEC(_Sat long _Fract, lr);
+    ^
+
+"Test_name.c", line 117: warning: concatenation with "lr" in macro "FRACT_INCDEC" does not create a valid token
+    FRACT_INCDEC(_Sat long _Fract, lr);
+    ^
+
+"Test_name.c", line 117: error: identifier "a" is undefined
+    FRACT_INCDEC(_Sat long _Fract, lr);
+    ^
+
+"Test_name.c", line 117: error: extra text after expected end of number
+    FRACT_INCDEC(_Sat long _Fract, lr);
+    ^
+
+"Test_name.c", line 117: warning: concatenation with "lr" in macro "FRACT_INCDEC" does not create a valid token
+    FRACT_INCDEC(_Sat long _Fract, lr);
+    ^
+
+"Test_name.c", line 117: error: identifier "a" is undefined
+    FRACT_INCDEC(_Sat long _Fract, lr);
+    ^
+
+"Test_name.c", line 117: error: extra text after expected end of number
+    FRACT_INCDEC(_Sat long _Fract, lr);
+    ^
+
+"Test_name.c", line 117: warning: concatenation with "lr" in macro "FRACT_INCDEC" does not create a valid token
+    FRACT_INCDEC(_Sat long _Fract, lr);
+    ^
+
+"Test_name.c", line 117: error: identifier "a" is undefined
+    FRACT_INCDEC(_Sat long _Fract, lr);
+    ^
+
+"Test_name.c", line 117: error: extra text after expected end of number
+    FRACT_INCDEC(_Sat long _Fract, lr);
+    ^
+
+"Test_name.c", line 117: warning: concatenation with "lr" in macro "FRACT_INCDEC" does not create a valid token
+    FRACT_INCDEC(_Sat long _Fract, lr);
+    ^
+
+"Test_name.c", line 117: error: identifier "a" is undefined
+    FRACT_INCDEC(_Sat long _Fract, lr);
+    ^
+
+"Test_name.c", line 117: error: extra text after expected end of number
+    FRACT_INCDEC(_Sat long _Fract, lr);
+    ^
+
+"Test_name.c", line 117: warning: concatenation with "lr" in macro "FRACT_INCDEC" does not create a valid token
+    FRACT_INCDEC(_Sat long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: identifier "_Sat" is undefined
+    FRACT_INCDEC(_Sat long long _Fract, llr);
+    ^
+
+"Test_name.c", line 118: error: expected a ";"
+    FRACT_INCDEC(_Sat long long _Fract, llr);
+    ^
+
+"Test_name.c", line 118: error: extra text after expected end of number
+    FRACT_INCDEC(_Sat long long _Fract, llr);
+    ^
+
+"Test_name.c", line 118: warning: concatenation with "llr" in macro "FRACT_INCDEC" does not create a valid token
+    FRACT_INCDEC(_Sat long long _Fract, llr);
+    ^
+
+"Test_name.c", line 118: error: identifier "a" is undefined
+    FRACT_INCDEC(_Sat long long _Fract, llr);
+    ^
+
+"Test_name.c", line 118: error: extra text after expected end of number
+    FRACT_INCDEC(_Sat long long _Fract, llr);
+    ^
+
+"Test_name.c", line 118: warning: concatenation with "llr" in macro "FRACT_INCDEC" does not create a valid token
+    FRACT_INCDEC(_Sat long long _Fract, llr);
+    ^
+
+"Test_name.c", line 118: error: identifier "a" is undefined
+    FRACT_INCDEC(_Sat long long _Fract, llr);
+    ^
+
+"Test_name.c", line 118: error: extra text after expected end of number
+    FRACT_INCDEC(_Sat long long _Fract, llr);
+    ^
+
+"Test_name.c", line 118: warning: concatenation with "llr" in macro "FRACT_INCDEC" does not create a valid token
+    FRACT_INCDEC(_Sat long long _Fract, llr);
+    ^
+
+"Test_name.c", line 118: error: identifier "a" is undefined
+    FRACT_INCDEC(_Sat long long _Fract, llr);
+    ^
+
+"Test_name.c", line 118: error: extra text after expected end of number
+    FRACT_INCDEC(_Sat long long _Fract, llr);
+    ^
+
+"Test_name.c", line 118: warning: concatenation with "llr" in macro "FRACT_INCDEC" does not create a valid token
+    FRACT_INCDEC(_Sat long long _Fract, llr);
+    ^
+
+"Test_name.c", line 118: error: identifier "a" is undefined
+    FRACT_INCDEC(_Sat long long _Fract, llr);
+    ^
+
+"Test_name.c", line 118: error: extra text after expected end of number
+    FRACT_INCDEC(_Sat long long _Fract, llr);
+    ^
+
+"Test_name.c", line 118: warning: concatenation with "llr" in macro "FRACT_INCDEC" does not create a valid token
+    FRACT_INCDEC(_Sat long long _Fract, llr);
+    ^
+
+"Test_name.c", line 118: error: identifier "a" is undefined
+    FRACT_INCDEC(_Sat long long _Fract, llr);
+    ^
+
+"Test_name.c", line 118: error: extra text after expected end of number
+    FRACT_INCDEC(_Sat long long _Fract, llr);
+    ^
+
+"Test_name.c", line 118: warning: concatenation with "llr" in macro "FRACT_INCDEC" does not create a valid token
+    FRACT_INCDEC(_Sat long long _Fract, llr);
+    ^
+
+"Test_name.c", line 118: error: identifier "a" is undefined
+    FRACT_INCDEC(_Sat long long _Fract, llr);
+    ^
+
+"Test_name.c", line 118: error: extra text after expected end of number
+    FRACT_INCDEC(_Sat long long _Fract, llr);
+    ^
+
+"Test_name.c", line 118: warning: concatenation with "llr" in macro "FRACT_INCDEC" does not create a valid token
+    FRACT_INCDEC(_Sat long long _Fract, llr);
+    ^
+
+"Test_name.c", line 118: error: identifier "a" is undefined
+    FRACT_INCDEC(_Sat long long _Fract, llr);
+    ^
+
+"Test_name.c", line 118: error: extra text after expected end of number
+    FRACT_INCDEC(_Sat long long _Fract, llr);
+    ^
+
+"Test_name.c", line 118: warning: concatenation with "llr" in macro "FRACT_INCDEC" does not create a valid token
+    FRACT_INCDEC(_Sat long long _Fract, llr);
+    ^
+
+"Test_name.c", line 118: error: identifier "a" is undefined
+    FRACT_INCDEC(_Sat long long _Fract, llr);
+    ^
+
+"Test_name.c", line 118: error: extra text after expected end of number
+    FRACT_INCDEC(_Sat long long _Fract, llr);
+    ^
+
+"Test_name.c", line 118: warning: concatenation with "llr" in macro "FRACT_INCDEC" does not create a valid token
+    FRACT_INCDEC(_Sat long long _Fract, llr);
+    ^
+
+"Test_name.c", line 120: error: expected a ";"
+    INCDEC(short _Accum, hk);
+    ^
+
+"Test_name.c", line 120: error: extra text after expected end of number
+    INCDEC(short _Accum, hk);
+    ^
+
+"Test_name.c", line 120: error: identifier "a" is undefined
+    INCDEC(short _Accum, hk);
+    ^
+
+"Test_name.c", line 120: error: extra text after expected end of number
+    INCDEC(short _Accum, hk);
+    ^
+
+"Test_name.c", line 120: error: identifier "a" is undefined
+    INCDEC(short _Accum, hk);
+    ^
+
+"Test_name.c", line 120: error: extra text after expected end of number
+    INCDEC(short _Accum, hk);
+    ^
+
+"Test_name.c", line 120: error: identifier "a" is undefined
+    INCDEC(short _Accum, hk);
+    ^
+
+"Test_name.c", line 120: error: extra text after expected end of number
+    INCDEC(short _Accum, hk);
+    ^
+
+"Test_name.c", line 120: error: identifier "a" is undefined
+    INCDEC(short _Accum, hk);
+    ^
+
+"Test_name.c", line 120: error: extra text after expected end of number
+    INCDEC(short _Accum, hk);
+    ^
+
+"Test_name.c", line 120: error: identifier "a" is undefined
+    INCDEC(short _Accum, hk);
+    ^
+
+"Test_name.c", line 120: error: extra text after expected end of number
+    INCDEC(short _Accum, hk);
+    ^
+
+"Test_name.c", line 120: error: identifier "a" is undefined
+    INCDEC(short _Accum, hk);
+    ^
+
+"Test_name.c", line 120: error: extra text after expected end of number
+    INCDEC(short _Accum, hk);
+    ^
+
+"Test_name.c", line 120: error: identifier "a" is undefined
+    INCDEC(short _Accum, hk);
+    ^
+
+"Test_name.c", line 120: error: extra text after expected end of number
+    INCDEC(short _Accum, hk);
+    ^
+
+"Test_name.c", line 120: error: identifier "a" is undefined
+    INCDEC(short _Accum, hk);
+    ^
+
+"Test_name.c", line 120: error: extra text after expected end of number
+    INCDEC(short _Accum, hk);
+    ^
+
+"Test_name.c", line 120: warning: variable "_Accum" was declared but never referenced
+    INCDEC(short _Accum, hk);
+    ^
+
+"Test_name.c", line 121: error: identifier "_Accum" is undefined
+    INCDEC(_Accum, k);
+    ^
+
+"Test_name.c", line 121: error: extra text after expected end of number
+    INCDEC(_Accum, k);
+    ^
+
+"Test_name.c", line 121: error: extra text after expected end of number
+    INCDEC(_Accum, k);
+    ^
+
+"Test_name.c", line 121: error: extra text after expected end of number
+    INCDEC(_Accum, k);
+    ^
+
+"Test_name.c", line 121: error: extra text after expected end of number
+    INCDEC(_Accum, k);
+    ^
+
+"Test_name.c", line 121: error: extra text after expected end of number
+    INCDEC(_Accum, k);
+    ^
+
+"Test_name.c", line 121: error: extra text after expected end of number
+    INCDEC(_Accum, k);
+    ^
+
+"Test_name.c", line 121: error: extra text after expected end of number
+    INCDEC(_Accum, k);
+    ^
+
+"Test_name.c", line 121: error: extra text after expected end of number
+    INCDEC(_Accum, k);
+    ^
+
+"Test_name.c", line 121: error: extra text after expected end of number
+    INCDEC(_Accum, k);
+    ^
+
+"Test_name.c", line 122: error: expected a ";"
+    INCDEC(long _Accum, lk);
+    ^
+
+"Test_name.c", line 122: error: extra text after expected end of number
+    INCDEC(long _Accum, lk);
+    ^
+
+"Test_name.c", line 122: warning: concatenation with "lk" in macro "INCDEC" does not create a valid token
+    INCDEC(long _Accum, lk);
+    ^
+
+"Test_name.c", line 122: error: identifier "a" is undefined
+    INCDEC(long _Accum, lk);
+    ^
+
+"Test_name.c", line 122: error: extra text after expected end of number
+    INCDEC(long _Accum, lk);
+    ^
+
+"Test_name.c", line 122: warning: concatenation with "lk" in macro "INCDEC" does not create a valid token
+    INCDEC(long _Accum, lk);
+    ^
+
+"Test_name.c", line 122: error: identifier "a" is undefined
+    INCDEC(long _Accum, lk);
+    ^
+
+"Test_name.c", line 122: error: extra text after expected end of number
+    INCDEC(long _Accum, lk);
+    ^
+
+"Test_name.c", line 122: warning: concatenation with "lk" in macro "INCDEC" does not create a valid token
+    INCDEC(long _Accum, lk);
+    ^
+
+"Test_name.c", line 122: error: identifier "a" is undefined
+    INCDEC(long _Accum, lk);
+    ^
+
+"Test_name.c", line 122: error: extra text after expected end of number
+    INCDEC(long _Accum, lk);
+    ^
+
+"Test_name.c", line 122: warning: concatenation with "lk" in macro "INCDEC" does not create a valid token
+    INCDEC(long _Accum, lk);
+    ^
+
+"Test_name.c", line 122: error: identifier "a" is undefined
+    INCDEC(long _Accum, lk);
+    ^
+
+"Test_name.c", line 122: error: extra text after expected end of number
+    INCDEC(long _Accum, lk);
+    ^
+
+"Test_name.c", line 122: warning: concatenation with "lk" in macro "INCDEC" does not create a valid token
+    INCDEC(long _Accum, lk);
+    ^
+
+"Test_name.c", line 122: error: identifier "a" is undefined
+    INCDEC(long _Accum, lk);
+    ^
+
+"Test_name.c", line 122: error: extra text after expected end of number
+    INCDEC(long _Accum, lk);
+    ^
+
+"Test_name.c", line 122: warning: concatenation with "lk" in macro "INCDEC" does not create a valid token
+    INCDEC(long _Accum, lk);
+    ^
+
+"Test_name.c", line 122: error: identifier "a" is undefined
+    INCDEC(long _Accum, lk);
+    ^
+
+"Test_name.c", line 122: error: extra text after expected end of number
+    INCDEC(long _Accum, lk);
+    ^
+
+"Test_name.c", line 122: warning: concatenation with "lk" in macro "INCDEC" does not create a valid token
+    INCDEC(long _Accum, lk);
+    ^
+
+"Test_name.c", line 122: error: identifier "a" is undefined
+    INCDEC(long _Accum, lk);
+    ^
+
+"Test_name.c", line 122: error: extra text after expected end of number
+    INCDEC(long _Accum, lk);
+    ^
+
+"Test_name.c", line 122: warning: concatenation with "lk" in macro "INCDEC" does not create a valid token
+    INCDEC(long _Accum, lk);
+    ^
+
+"Test_name.c", line 122: error: identifier "a" is undefined
+    INCDEC(long _Accum, lk);
+    ^
+
+"Test_name.c", line 122: error: extra text after expected end of number
+    INCDEC(long _Accum, lk);
+    ^
+
+"Test_name.c", line 122: warning: concatenation with "lk" in macro "INCDEC" does not create a valid token
+    INCDEC(long _Accum, lk);
+    ^
+
+"Test_name.c", line 122: warning: variable "_Accum" was declared but never referenced
+    INCDEC(long _Accum, lk);
+    ^
+
+"Test_name.c", line 123: error: expected a ";"
+    INCDEC(long long _Accum, llk);
+    ^
+
+"Test_name.c", line 123: error: extra text after expected end of number
+    INCDEC(long long _Accum, llk);
+    ^
+
+"Test_name.c", line 123: warning: concatenation with "llk" in macro "INCDEC" does not create a valid token
+    INCDEC(long long _Accum, llk);
+    ^
+
+"Test_name.c", line 123: error: identifier "a" is undefined
+    INCDEC(long long _Accum, llk);
+    ^
+
+"Test_name.c", line 123: error: extra text after expected end of number
+    INCDEC(long long _Accum, llk);
+    ^
+
+"Test_name.c", line 123: warning: concatenation with "llk" in macro "INCDEC" does not create a valid token
+    INCDEC(long long _Accum, llk);
+    ^
+
+"Test_name.c", line 123: error: identifier "a" is undefined
+    INCDEC(long long _Accum, llk);
+    ^
+
+"Test_name.c", line 123: error: extra text after expected end of number
+    INCDEC(long long _Accum, llk);
+    ^
+
+"Test_name.c", line 123: warning: concatenation with "llk" in macro "INCDEC" does not create a valid token
+    INCDEC(long long _Accum, llk);
+    ^
+
+"Test_name.c", line 123: error: identifier "a" is undefined
+    INCDEC(long long _Accum, llk);
+    ^
+
+"Test_name.c", line 123: error: extra text after expected end of number
+    INCDEC(long long _Accum, llk);
+    ^
+
+"Test_name.c", line 123: warning: concatenation with "llk" in macro "INCDEC" does not create a valid token
+    INCDEC(long long _Accum, llk);
+    ^
+
+"Test_name.c", line 123: error: identifier "a" is undefined
+    INCDEC(long long _Accum, llk);
+    ^
+
+"Test_name.c", line 123: error: extra text after expected end of number
+    INCDEC(long long _Accum, llk);
+    ^
+
+"Test_name.c", line 123: warning: concatenation with "llk" in macro "INCDEC" does not create a valid token
+    INCDEC(long long _Accum, llk);
+    ^
+
+"Test_name.c", line 123: error: identifier "a" is undefined
+    INCDEC(long long _Accum, llk);
+    ^
+
+"Test_name.c", line 123: error: extra text after expected end of number
+    INCDEC(long long _Accum, llk);
+    ^
+
+"Test_name.c", line 123: warning: concatenation with "llk" in macro "INCDEC" does not create a valid token
+    INCDEC(long long _Accum, llk);
+    ^
+
+"Test_name.c", line 123: error: identifier "a" is undefined
+    INCDEC(long long _Accum, llk);
+    ^
+
+"Test_name.c", line 123: error: extra text after expected end of number
+    INCDEC(long long _Accum, llk);
+    ^
+
+Error limit reached.
+200 errors detected in the compilation of "Test_name.c".
+Compilation terminated.

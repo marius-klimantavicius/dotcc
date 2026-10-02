@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=3 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 11: warning: unrecognized #pragma
+  #pragma init_seg(L".my_seg") // expected-warning {{expected 'compiler', 'lib', 'user', or a string literal}}
+          ^
+
+"Test_name.c", line 12: warning: unrecognized #pragma
+  #pragma init_seg( // expected-warning {{expected 'compiler', 'lib', 'user', or a string literal}}
+          ^
+
+"Test_name.c", line 13: warning: unrecognized #pragma
+  #pragma init_seg asdf // expected-warning {{missing '('}}
+          ^
+
+"Test_name.c", line 14: warning: unrecognized #pragma
+  #pragma init_seg) // expected-warning {{missing '('}}
+          ^
+
+"Test_name.c", line 15: warning: unrecognized #pragma
+  #pragma init_seg("a" "b") // no warning
+          ^
+
+"Test_name.c", line 16: warning: unrecognized #pragma
+  #pragma init_seg("a", "b") // expected-warning {{missing ')'}}
+          ^
+
+"Test_name.c", line 17: warning: unrecognized #pragma
+  #pragma init_seg("a") asdf // expected-warning {{extra tokens at end of '#pragma init_seg'}}
+          ^
+
+"Test_name.c", line 18: warning: unrecognized #pragma
+  #pragma init_seg("\x") // expected-error {{\x used with no following hex digits}}
+          ^
+
+"Test_name.c", line 19: warning: unrecognized #pragma
+  #pragma init_seg("a" L"b") // expected-warning {{expected non-wide string literal in '#pragma init_seg'}}
+          ^
+
+"Test_name.c", line 21: warning: unrecognized #pragma
+  #pragma init_seg(compiler)
+          ^
+
+"Test_name.c", line 27: error: identifier "thread" is undefined
+  int __declspec(thread) x = f(); // expected-error {{initializer for thread-local variable must be a constant expression}}
+                 ^
+
+"Test_name.c", line 27: error: expected a ";"
+  int __declspec(thread) x = f(); // expected-error {{initializer for thread-local variable must be a constant expression}}
+                         ^
+
+2 errors detected in the compilation of "Test_name.c".

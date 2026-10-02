@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=2 --gcc Test_name.c
+"Test_name.c", line 14: warning: integer constant is too large
+  enum a { i = 0x400000000000000000000000000 };
+           ^
+
+"Test_name.c", line 14: warning: some enumerator values cannot be represented by the integral type underlying the enum type
+  enum a { i = 0x400000000000000000000000000 };
+       ^
+

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=4 --c++11 --g++ --diag_error=23 Test_name.c
+"Test_name.c", line 6: error: integer constant is too large
+  auto arr = 0x10000000000000000;
+           ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --microsoft -n Test_name.c
+"Test_name.c", line 4: error: invalid GUID string in __declspec(uuid("..."))
+  class __declspec(uuid("xxx")) A;
+                        ^
+
+"Test_name.c", line 5: error: invalid GUID string in __declspec(uuid("..."))
+  class __declspec(uuid("yyy")) A { };
+                        ^
+
+2 errors detected in the compilation of "Test_name.c".

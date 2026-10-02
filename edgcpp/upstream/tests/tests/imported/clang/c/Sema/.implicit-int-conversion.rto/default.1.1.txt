@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -DSMALL=char -DBIG=int -DNO_DIAG -DSMALL=char -DBIG=int -DSMALL=float -DBIG=double -DNO_DIAG -DSMALL=float -DBIG=double --c Test_name.c
+"Test_name.c", line 9: warning: variable "a" was set but never used
+    SMALL a;
+          ^
+

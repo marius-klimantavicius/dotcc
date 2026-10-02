@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -w -w -w --c Test_name.c
+"Test_name.c", line 7: error: expected a declaration
+  A()
+  ^
+
+1 error detected in the compilation of "Test_name.c".

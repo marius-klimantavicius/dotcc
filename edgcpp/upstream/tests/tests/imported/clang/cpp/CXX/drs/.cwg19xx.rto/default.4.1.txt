@@ -1,0 +1,131 @@
+fe_only -DTEST_NUMBER=4 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 --exceptions --exceptions Test_name.c
+"Test_name.c", line 23: error: namespace "cwg1900::N" has no member "g"
+  int N::g() { return 0; }
+         ^
+
+"Test_name.c", line 39: error: function "cwg1902::B::B(const cwg1902::B &)" (declared at line 33) cannot be referenced -- it is a deleted function
+    B b2(b1);
+         ^
+
+"Test_name.c", line 80: error: declaration of a member with the same name as its class
+      template<typename T> struct A {};
+                                  ^
+
+"Test_name.c", line 84: error: declaration of a member with the same name as its class
+      template<typename T> void B() {}
+                                ^
+
+"Test_name.c", line 88: error: declaration of a member with the same name as its class
+      template<typename T> static int C;
+                                      ^
+
+"Test_name.c", line 93: error: declaration of a member with the same name as its class
+      template<typename T> using D = int;
+                                 ^
+
+"Test_name.c", line 118: error: member "cwg1918::X::x" (declared at line 106) is inaccessible
+      int f() { return X::x; }
+                          ^
+
+"Test_name.c", line 127: error: static assertion failed with ""
+    static_assert(false, "");
+    ^
+
+"Test_name.c", line 182: error: digit separator cannot appear here
+  unsigned b = 0b'01;
+                 ^
+
+"Test_name.c", line 184: error: digit separator cannot appear here
+  unsigned x = 0x'01;
+                 ^
+
+"Test_name.c", line 192: error: exception specification is incompatible with that of previous function "operator new(unsigned long)" (declared implicitly)
+  void *operator new(__SIZE_TYPE__) noexcept { return nullptr; }
+                                    ^
+
+"Test_name.c", line 205: error: copy constructor for class "cwg1959::a" may not have a parameter of type "cwg1959::a"
+      template<typename T> a(T) = delete; // #cwg1959-temp-ctor
+                             ^
+          detected during instantiation of "cwg1959::a::a" based on template argument <cwg1959::a> at line 216
+
+"Test_name.c", line 216: error: the sub-object construction of "cwg1959::b" for inheriting constructors cannot be performed -- the associated constructor is deleted
+    b y = x;
+          ^
+
+"Test_name.c", line 216: error: function "cwg1959::a::a(const cwg1959::a &)" (declared at line 202) cannot be referenced -- it is a deleted function
+    b y = x;
+          ^
+
+"Test_name.c", line 223: error: function "cwg1959::b::b(const cwg1959::b &)" (declared implicitly) cannot be referenced -- it is a deleted function
+    b z = z;
+          ^
+
+"Test_name.c", line 263: error: expected an identifier
+      enum E : int {1};
+                    ^
+
+"Test_name.c", line 266: error: forward declaration of enum type is nonstandard
+    auto *p1 = new enum E : int;
+                        ^
+
+"Test_name.c", line 266: error: incomplete type "cwg1966::E" is not allowed
+    auto *p1 = new enum E : int;
+                   ^
+
+"Test_name.c", line 266: error: cannot deduce "auto" type
+    auto *p1 = new enum E : int;
+    ^
+
+"Test_name.c", line 266: error: expected a ";"
+    auto *p1 = new enum E : int;
+                          ^
+
+"Test_name.c", line 268: error: forward declaration of enum type is nonstandard
+    auto *p2 = new enum F : int {};
+                        ^
+
+"Test_name.c", line 268: error: incomplete type "cwg1966::F" is not allowed
+    auto *p2 = new enum F : int {};
+                   ^
+
+"Test_name.c", line 268: error: cannot deduce "auto" type
+    auto *p2 = new enum F : int {};
+    ^
+
+"Test_name.c", line 268: error: expected a ";"
+    auto *p2 = new enum F : int {};
+                          ^
+
+"Test_name.c", line 270: error: forward declaration of enum type is nonstandard
+    auto *p3 = true ? new enum G : int {};
+                               ^
+
+"Test_name.c", line 270: error: incomplete type "cwg1966::G" is not allowed
+    auto *p3 = true ? new enum G : int {};
+                          ^
+
+"Test_name.c", line 270: error: cannot deduce "auto" type
+    auto *p3 = true ? new enum G : int {};
+    ^
+
+"Test_name.c", line 274: error: a function may not return a value of this type
+    auto h() -> enum E : int {};
+         ^
+
+"Test_name.c", line 274: error: expected a "{"
+    auto h() -> enum E : int {};
+                       ^
+
+"Test_name.c", line 277: error: type definition is not allowed
+    enum X : enum Y : int {} {};
+             ^
+
+"Test_name.c", line 281: error: type definition is not allowed
+      enum X : enum Y : int {} {};
+               ^
+
+"Test_name.c", line 62: warning: variable "cwg1903::A::<unnamed>::c" was declared but never referenced
+        int c;
+            ^
+
+31 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=3 --c99 Test_name.c
+"Test_name.c", line 26: error: an initializer cannot be specified for a flexible array member
+  } u = { 1, 2, 3, 4, 5 };
+                ^
+
+1 error detected in the compilation of "Test_name.c".

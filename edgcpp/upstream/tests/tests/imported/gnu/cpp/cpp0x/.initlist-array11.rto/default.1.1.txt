@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: error: a value of type "const char *" cannot be used to initialize an entity of type "const int"
+    const int (&r)[2] = {1, "foo"}; // { dg-error "conversion" }
+                            ^
+
+"Test_name.c", line 11: error: a value of type "const char *" cannot be used to initialize an entity of type "const int"
+    return f({1, "foo"}); // { dg-error "conversion" }
+                 ^
+
+2 errors detected in the compilation of "Test_name.c".

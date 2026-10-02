@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 13: warning: variable "ux1" was declared but never referenced
+    double ux , uy , uz , rho ,         ux1, uy1, uz1, rho1,         ux2, uy2, uz2, rho2,         u2, px, py;
+                                        ^
+
+"Test_name.c", line 13: warning: variable "uy1" was declared but never referenced
+    double ux , uy , uz , rho ,         ux1, uy1, uz1, rho1,         ux2, uy2, uz2, rho2,         u2, px, py;
+                                             ^
+
+"Test_name.c", line 13: warning: variable "uz1" was declared but never referenced
+    double ux , uy , uz , rho ,         ux1, uy1, uz1, rho1,         ux2, uy2, uz2, rho2,         u2, px, py;
+                                                  ^
+
+"Test_name.c", line 13: warning: variable "ux2" was declared but never referenced
+    double ux , uy , uz , rho ,         ux1, uy1, uz1, rho1,         ux2, uy2, uz2, rho2,         u2, px, py;
+                                                                     ^
+
+"Test_name.c", line 13: warning: variable "uy2" was declared but never referenced
+    double ux , uy , uz , rho ,         ux1, uy1, uz1, rho1,         ux2, uy2, uz2, rho2,         u2, px, py;
+                                                                          ^
+
+"Test_name.c", line 13: warning: variable "uz2" was declared but never referenced
+    double ux , uy , uz , rho ,         ux1, uy1, uz1, rho1,         ux2, uy2, uz2, rho2,         u2, px, py;
+                                                                               ^
+

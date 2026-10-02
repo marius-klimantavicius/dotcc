@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 --exceptions --exceptions Test_name.c
+"Test_name.c", line 14: error: identifier "__externref_t" is undefined
+  __externref_t r1;
+  ^
+
+"Test_name.c", line 15: error: identifier "__externref_t" is undefined
+  static __externref_t table[0];
+         ^
+
+"Test_name.c", line 25: warning: statement is unreachable
+    throw r1;                 // expected-error {{cannot throw a WebAssembly reference type}}
+    ^
+
+"Test_name.c", line 26: warning: statement is unreachable
+    try {}
+    ^
+
+"Test_name.c", line 27: error: identifier "__externref_t" is undefined
+    catch (__externref_t T) { // expected-error {{cannot catch a WebAssembly reference type}}
+           ^
+
+3 errors detected in the compilation of "Test_name.c".

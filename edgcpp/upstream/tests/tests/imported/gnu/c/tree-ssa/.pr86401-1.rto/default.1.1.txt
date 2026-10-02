@@ -1,0 +1,81 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 23: warning: integer conversion resulted in a change of sign
+  unsigned f11 (unsigned x, unsigned y) { unsigned m = 64, n = -128; return ((x | n) + y) & (m - 1); }
+                                                               ^
+
+"Test_name.c", line 24: warning: integer conversion resulted in a change of sign
+  unsigned f12 (unsigned x, unsigned y) { return ((x | -128) + y) & 63; }
+                                                       ^
+
+"Test_name.c", line 25: warning: integer conversion resulted in a change of sign
+  unsigned f13 (unsigned x, unsigned y) { unsigned m = 64, n = -384; return ((x ^ n) + y) & (m - 1); }
+                                                               ^
+
+"Test_name.c", line 26: warning: integer conversion resulted in a change of sign
+  unsigned f14 (unsigned x, unsigned y) { return ((x ^ -384) + y) & 63; }
+                                                       ^
+
+"Test_name.c", line 29: warning: integer conversion resulted in a change of sign
+  unsigned f17 (unsigned x, unsigned y) { unsigned m = 64, n = -128; return (y + (x | n)) & (m - 1); }
+                                                               ^
+
+"Test_name.c", line 30: warning: integer conversion resulted in a change of sign
+  unsigned f18 (unsigned x, unsigned y) { return (y + (x | -128)) & 63; }
+                                                           ^
+
+"Test_name.c", line 31: warning: integer conversion resulted in a change of sign
+  unsigned f19 (unsigned x, unsigned y) { unsigned m = 64, n = -384; return (y + (x ^ n)) & (m - 1); }
+                                                               ^
+
+"Test_name.c", line 32: warning: integer conversion resulted in a change of sign
+  unsigned f20 (unsigned x, unsigned y) { return (y + (x ^ -384)) & 63; }
+                                                           ^
+
+"Test_name.c", line 35: warning: integer conversion resulted in a change of sign
+  unsigned f23 (unsigned x, unsigned y) { unsigned m = 64, n = -128; return ((x | n) - y) & (m - 1); }
+                                                               ^
+
+"Test_name.c", line 36: warning: integer conversion resulted in a change of sign
+  unsigned f24 (unsigned x, unsigned y) { return ((x | -128) - y) & 63; }
+                                                       ^
+
+"Test_name.c", line 37: warning: integer conversion resulted in a change of sign
+  unsigned f25 (unsigned x, unsigned y) { unsigned m = 64, n = -384; return ((x ^ n) - y) & (m - 1); }
+                                                               ^
+
+"Test_name.c", line 38: warning: integer conversion resulted in a change of sign
+  unsigned f26 (unsigned x, unsigned y) { return ((x ^ -384) - y) & 63; }
+                                                       ^
+
+"Test_name.c", line 41: warning: integer conversion resulted in a change of sign
+  unsigned f29 (unsigned x, unsigned y) { unsigned m = 64, n = -128; return (y - (x | n)) & (m - 1); }
+                                                               ^
+
+"Test_name.c", line 42: warning: integer conversion resulted in a change of sign
+  unsigned f30 (unsigned x, unsigned y) { return (y - (x | -128)) & 63; }
+                                                           ^
+
+"Test_name.c", line 43: warning: integer conversion resulted in a change of sign
+  unsigned f31 (unsigned x, unsigned y) { unsigned m = 64, n = -384; return (y - (x ^ n)) & (m - 1); }
+                                                               ^
+
+"Test_name.c", line 44: warning: integer conversion resulted in a change of sign
+  unsigned f32 (unsigned x, unsigned y) { return (y - (x ^ -384)) & 63; }
+                                                           ^
+
+"Test_name.c", line 47: warning: integer conversion resulted in a change of sign
+  unsigned f35 (unsigned x) { unsigned m = 64, n = -128; return (-(x | n)) & (m - 1); }
+                                                   ^
+
+"Test_name.c", line 48: warning: integer conversion resulted in a change of sign
+  unsigned f36 (unsigned x) { return (-(x | -128)) & 63; }
+                                            ^
+
+"Test_name.c", line 49: warning: integer conversion resulted in a change of sign
+  unsigned f37 (unsigned x) { unsigned m = 64, n = -384; return (-(x ^ n)) & (m - 1); }
+                                                   ^
+
+"Test_name.c", line 50: warning: integer conversion resulted in a change of sign
+  unsigned f38 (unsigned x) { return (-(x ^ -384)) & 63; }
+                                            ^
+

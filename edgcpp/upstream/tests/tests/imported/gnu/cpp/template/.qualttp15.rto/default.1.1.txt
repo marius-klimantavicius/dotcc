@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 17: warning: template parameter "T" is not used in or cannot be deduced from the template argument list of class template "X<T::B>"
+  template <class T> struct X<T::template B> // { dg-message "previous" }
+                  ^
+
+"Test_name.c", line 22: error: class template "X" has already been defined (previous definition at line 17)
+  template <class T> struct X<T::template B> // { dg-error "redefinition" }
+                            ^
+
+"Test_name.c", line 34: warning: variable "c" was declared but never referenced
+  	C<A> c;
+  	     ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 12: error: expression must have integral or enum type
+  int *p = new int[1.0]; // Now accepted in C++14 and Microsoft modes.
+                   ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,41 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 32: warning: a variable with static storage duration cannot be defined within an inline function
+    static int d = 6;	/* { dg-warning "declared in inline" } */
+               ^
+
+"Test_name.c", line 20: warning: an entity with internal linkage cannot be referenced within an inline function with external linkage
+    return b;		/* { dg-warning "used in inline" } */
+           ^
+
+"Test_name.c", line 14: warning: an entity with internal linkage cannot be referenced within an inline function with external linkage
+    return a;		/* { dg-warning "used in inline" } */
+           ^
+
+"Test_name.c", line 104: warning: function "fn15" was declared but never referenced
+  fn15 (void)
+  ^
+
+"Test_name.c", line 110: warning: function "fn16" was declared but never referenced
+  fn16 (void)
+  ^
+
+"Test_name.c", line 116: warning: function "fn17" was declared but never referenced
+  fn17 (void)
+  ^
+
+"Test_name.c", line 122: warning: function "fn18" was declared but never referenced
+  fn18 (void)
+  ^
+
+"Test_name.c", line 129: warning: function "fn19" was declared but never referenced
+  fn19 (void)
+  ^
+
+"Test_name.c", line 136: warning: function "fn20" was declared but never referenced
+  fn20 (void)
+  ^
+
+"Test_name.c", line 143: warning: function "fn21" was declared but never referenced
+  fn21 (int i)
+  ^
+

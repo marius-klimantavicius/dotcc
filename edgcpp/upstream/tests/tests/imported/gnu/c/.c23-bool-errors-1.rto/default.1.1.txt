@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 9: error: invalid combination of type specifiers
+  typedef int bool; /* { dg-error "'bool' cannot be defined via 'typedef'" } */
+              ^
+
+"Test_name.c", line 14: error: invalid combination of type specifiers
+  typedef int _Bool; /* { dg-error "'_Bool' cannot be defined via 'typedef'" } */
+              ^
+
+2 errors detected in the compilation of "Test_name.c".

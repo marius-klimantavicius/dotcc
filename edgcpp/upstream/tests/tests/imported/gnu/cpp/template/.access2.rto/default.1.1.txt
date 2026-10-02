@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: error: type "B::X" (declared at line 17) is inaccessible
+    typename T::X x;			// { dg-error "this context" }
+                ^
+          detected during instantiation of class "A<T> [with T=B]" at line 23
+
+"Test_name.c", line 23: warning: variable "ab" was declared but never referenced
+    A<B> ab;				// { dg-message "required" }
+         ^
+
+"Test_name.c", line 13: error: member "B::i" (declared at line 18) is inaccessible
+    int f() { return T::i; }		// { dg-error "this context" }
+                        ^
+          detected during instantiation of "int A2<T>::f() [with T=B]" at line 25
+
+2 errors detected in the compilation of "Test_name.c".

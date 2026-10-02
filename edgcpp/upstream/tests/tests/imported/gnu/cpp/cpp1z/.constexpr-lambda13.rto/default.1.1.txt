@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 5: error: duplicate specifier in declaration
+  auto l1 = []() constexpr constexpr { }; // { dg-error "duplicate" }
+                           ^
+
+"Test_name.c", line 6: error: duplicate specifier in declaration
+  auto l2 = []() mutable mutable { }; // { dg-error "duplicate" }
+                         ^
+
+"Test_name.c", line 7: warning: a "static" lambda expression is nonstandard
+  auto l3 = []() static { };	    // { dg-error "static' only valid in lambda with" "" { target c++20_down } }
+                 ^
+
+2 errors detected in the compilation of "Test_name.c".

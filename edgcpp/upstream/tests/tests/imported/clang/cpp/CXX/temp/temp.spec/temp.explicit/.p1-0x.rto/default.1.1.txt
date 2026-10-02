@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 10: warning: "inline" is not allowed
+  template inline void X<int>::f(); // expected-error{{explicit instantiation cannot be 'inline'}}
+           ^
+
+"Test_name.c", line 14: warning: constexpr non-static member function will not be implicitly 'const' in C++14
+    constexpr int f() { return 0; } // expected-warning{{C++14}}
+    ^
+
+"Test_name.c", line 17: error: "constexpr" is not allowed on an explicit instantiation directive
+  template constexpr int Y<int>::f() const; // expected-error{{explicit instantiation cannot be 'constexpr'}}
+           ^
+
+"Test_name.c", line 25: error: enum "Z<T>::E [with T=int]" is not an entity that can be instantiated
+  template enum Z<int>::E; // expected-error {{enumerations cannot be explicitly instantiated}}
+           ^
+
+"Test_name.c", line 26: error: invalid explicit instantiation declaration
+  template int Z<int>::t; // expected-error {{explicit instantiation of 't' does not refer to}}
+           ^
+
+3 errors detected in the compilation of "Test_name.c".

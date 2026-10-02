@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gcc Test_name.c
+"Test_name.c", line 20: warning: variable-length array field type will be treated as zero-length array field type
+  		double y[sizeof(va)];
+  		         ^
+

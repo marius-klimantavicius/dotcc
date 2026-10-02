@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 16: warning: local class member function "A::f" requires a definition
+      virtual void f();   // Now a warning except in strict mode.
+                   ^
+

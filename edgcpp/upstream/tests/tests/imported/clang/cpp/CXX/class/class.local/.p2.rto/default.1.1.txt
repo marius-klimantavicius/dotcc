@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 12: error: conversion to inaccessible base class "A" is not allowed
+    A *a = &b; // expected-error{{cannot cast 'B' to its private base class 'A'}}
+           ^
+
+"Test_name.c", line 12: warning: variable "a" was declared but never referenced
+    A *a = &b; // expected-error{{cannot cast 'B' to its private base class 'A'}}
+       ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=2 --c++11 -DNEG Test_name.c
+"Test_name.c", line 24: error: no instance of function template "helper" matches the argument list
+            argument types are: (Foo, my_integer_sequence<1, 2>)
+    decltype(helper<Foo, 1, 2, 3>(f, my_integer_sequence<1, 2>{})) thing5{1, 2};
+             ^
+"Test_name.c", line 15: note: candidate function template "helper" failed deduction
+  decltype(T{ I... }) helper(T, my_integer_sequence<I...>);
+                      ^
+
+1 error detected in the compilation of "Test_name.c".

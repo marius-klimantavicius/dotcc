@@ -1,0 +1,413 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 17: warning: integer operation result is out of range
+  static const uint64_t overflow = 1 * 4608 * 1024 * 1024; // expected-warning {{overflow in expression; result is 536'870'912 with type 'int'}}
+                                                   ^
+
+"Test_name.c", line 21: warning: integer operation result is out of range
+    uint64_t overflow = 4608 * 1024 * 1024,
+                                    ^
+
+"Test_name.c", line 23: warning: integer operation result is out of range
+             overflow2 = (uint64_t)(4608 * 1024 * 1024),
+                                                ^
+
+"Test_name.c", line 25: warning: integer operation result is out of range
+             overflow3 = (uint64_t)(4608 * 1024 * 1024 * i),
+                                                ^
+
+"Test_name.c", line 27: warning: integer operation result is out of range
+             overflow4 =  (1ULL * ((4608) * ((1024) * (1024))) + 2ULL),
+                                          ^
+
+"Test_name.c", line 29: warning: integer operation result is out of range
+             multi_overflow = (uint64_t)((uint64_t)(4608 * 1024 * 1024) * (uint64_t)(4608 * 1024 * 1024));
+                                                                ^
+
+"Test_name.c", line 29: warning: integer operation result is out of range
+             multi_overflow = (uint64_t)((uint64_t)(4608 * 1024 * 1024) * (uint64_t)(4608 * 1024 * 1024));
+                                                                                                 ^
+
+"Test_name.c", line 32: warning: integer operation result is out of range
+    overflow += overflow2 = overflow3 = (uint64_t)(4608 * 1024 * 1024);
+                                                               ^
+
+"Test_name.c", line 34: warning: integer operation result is out of range
+    overflow += overflow2 = overflow3 = 4608 * 1024 * 1024;
+                                                    ^
+
+"Test_name.c", line 40: warning: integer operation result is out of range
+    overflow = 4608 * 1024 * 1024 ?  4608 * 1024 * 1024 : 0;
+                           ^
+
+"Test_name.c", line 40: warning: integer operation result is out of range
+    overflow = 4608 * 1024 * 1024 ?  4608 * 1024 * 1024 : 0;
+                                                 ^
+
+"Test_name.c", line 43: warning: integer operation result is out of range
+    overflow =  0 ? 0 : 4608 * 1024 * 1024;
+                                    ^
+
+"Test_name.c", line 46: warning: integer operation result is out of range
+    if (4608 * 1024 * 1024)
+                    ^
+
+"Test_name.c", line 50: warning: statement is unreachable
+    if ((uint64_t)(4608 * 1024 * 1024))
+    ^
+
+"Test_name.c", line 50: warning: integer operation result is out of range
+    if ((uint64_t)(4608 * 1024 * 1024))
+                               ^
+
+"Test_name.c", line 54: warning: statement is unreachable
+    if ((uint64_t)(4608 * 1024 * 1024))
+    ^
+
+"Test_name.c", line 54: warning: integer operation result is out of range
+    if ((uint64_t)(4608 * 1024 * 1024))
+                               ^
+
+"Test_name.c", line 58: warning: statement is unreachable
+    if ((uint64_t)(4608 * 1024 * 1024 * i))
+    ^
+
+"Test_name.c", line 58: warning: integer operation result is out of range
+    if ((uint64_t)(4608 * 1024 * 1024 * i))
+                               ^
+
+"Test_name.c", line 62: warning: integer operation result is out of range
+    if ((1ULL * ((4608) * ((1024) * (1024))) + 2ULL))
+                        ^
+
+"Test_name.c", line 66: warning: statement is unreachable
+    if ((uint64_t)((uint64_t)(4608 * 1024 * 1024) * (uint64_t)(4608 * 1024 * 1024)))
+    ^
+
+"Test_name.c", line 66: warning: integer operation result is out of range
+    if ((uint64_t)((uint64_t)(4608 * 1024 * 1024) * (uint64_t)(4608 * 1024 * 1024)))
+                                          ^
+
+"Test_name.c", line 66: warning: integer operation result is out of range
+    if ((uint64_t)((uint64_t)(4608 * 1024 * 1024) * (uint64_t)(4608 * 1024 * 1024)))
+                                                                           ^
+
+"Test_name.c", line 69: warning: statement is unreachable
+    switch (i) {
+    ^
+
+"Test_name.c", line 71: warning: integer operation result is out of range
+    case 4608 * 1024 * 1024:
+                     ^
+
+"Test_name.c", line 74: warning: integer operation result is out of range
+    case (uint64_t)(4609 * 1024 * 1024):
+                                ^
+
+"Test_name.c", line 77: warning: integer operation result is out of range
+    case ((uint64_t)(4608 * 1024 * 1024 * i)):
+                                 ^
+
+"Test_name.c", line 77: error: expression must have a constant value
+    case ((uint64_t)(4608 * 1024 * 1024 * i)):
+                                          ^
+"Test_name.c", line 77: note: the value of parameter "i" (declared at line 19) cannot be used as a constant
+    case ((uint64_t)(4608 * 1024 * 1024 * i)):
+                                          ^
+
+"Test_name.c", line 80: warning: integer operation result is out of range
+    case ((1ULL * ((4608) * ((1024) * (1024))) + 2ULL)):
+                          ^
+
+"Test_name.c", line 84: warning: integer operation result is out of range
+    case ((uint64_t)((uint64_t)(4608 * 1024 * 1024) * (uint64_t)(4608 * 1024 * 1024))):
+                                            ^
+
+"Test_name.c", line 84: warning: integer operation result is out of range
+    case ((uint64_t)((uint64_t)(4608 * 1024 * 1024) * (uint64_t)(4608 * 1024 * 1024))):
+                                                                             ^
+
+"Test_name.c", line 84: warning: integer conversion resulted in truncation
+    case ((uint64_t)((uint64_t)(4608 * 1024 * 1024) * (uint64_t)(4608 * 1024 * 1024))):
+         ^
+
+"Test_name.c", line 89: warning: integer operation result is out of range
+    while (4608 * 1024 * 1024);
+                       ^
+
+"Test_name.c", line 92: warning: integer operation result is out of range
+    while ((uint64_t)(4608 * 1024 * 1024));
+                                  ^
+
+"Test_name.c", line 92: warning: loop is not reachable
+    while ((uint64_t)(4608 * 1024 * 1024));
+    ^
+
+"Test_name.c", line 95: warning: integer operation result is out of range
+    while ((uint64_t)(4608 * 1024 * 1024));
+                                  ^
+
+"Test_name.c", line 95: warning: loop is not reachable
+    while ((uint64_t)(4608 * 1024 * 1024));
+    ^
+
+"Test_name.c", line 98: warning: integer operation result is out of range
+    while ((uint64_t)(4608 * 1024 * 1024 * i));
+                                  ^
+
+"Test_name.c", line 98: warning: loop is not reachable
+    while ((uint64_t)(4608 * 1024 * 1024 * i));
+    ^
+
+"Test_name.c", line 101: warning: integer operation result is out of range
+    while ((1ULL * ((4608) * ((1024) * (1024))) + 2ULL));
+                           ^
+
+"Test_name.c", line 104: warning: integer operation result is out of range
+    while ((uint64_t)((uint64_t)(4608 * 1024 * 1024) * (uint64_t)(4608 * 1024 * 1024)));
+                                             ^
+
+"Test_name.c", line 104: warning: integer operation result is out of range
+    while ((uint64_t)((uint64_t)(4608 * 1024 * 1024) * (uint64_t)(4608 * 1024 * 1024)));
+                                                                              ^
+
+"Test_name.c", line 104: warning: loop is not reachable
+    while ((uint64_t)((uint64_t)(4608 * 1024 * 1024) * (uint64_t)(4608 * 1024 * 1024)));
+    ^
+
+"Test_name.c", line 107: warning: loop is not reachable
+    do { } while (4608 * 1024 * 1024);
+    ^
+
+"Test_name.c", line 107: warning: integer operation result is out of range
+    do { } while (4608 * 1024 * 1024);
+                              ^
+
+"Test_name.c", line 110: warning: loop is not reachable
+    do { } while ((uint64_t)(4608 * 1024 * 1024));
+    ^
+
+"Test_name.c", line 110: warning: integer operation result is out of range
+    do { } while ((uint64_t)(4608 * 1024 * 1024));
+                                         ^
+
+"Test_name.c", line 113: warning: loop is not reachable
+    do { } while ((uint64_t)(4608 * 1024 * 1024));
+    ^
+
+"Test_name.c", line 113: warning: integer operation result is out of range
+    do { } while ((uint64_t)(4608 * 1024 * 1024));
+                                         ^
+
+"Test_name.c", line 116: warning: loop is not reachable
+    do { } while ((uint64_t)(4608 * 1024 * 1024 * i));
+    ^
+
+"Test_name.c", line 116: warning: integer operation result is out of range
+    do { } while ((uint64_t)(4608 * 1024 * 1024 * i));
+                                         ^
+
+"Test_name.c", line 119: warning: integer operation result is out of range
+    do { } while ((1ULL * ((4608) * ((1024) * (1024))) + 2ULL));
+                                  ^
+
+"Test_name.c", line 122: warning: loop is not reachable
+    do { } while ((uint64_t)((uint64_t)(4608 * 1024 * 1024) * (uint64_t)(4608 * 1024 * 1024)));
+    ^
+
+"Test_name.c", line 122: warning: integer operation result is out of range
+    do { } while ((uint64_t)((uint64_t)(4608 * 1024 * 1024) * (uint64_t)(4608 * 1024 * 1024)));
+                                                    ^
+
+"Test_name.c", line 122: warning: integer operation result is out of range
+    do { } while ((uint64_t)((uint64_t)(4608 * 1024 * 1024) * (uint64_t)(4608 * 1024 * 1024)));
+                                                                                     ^
+
+"Test_name.c", line 127: warning: integer operation result is out of range
+    for (uint64_t i = 4608 * 1024 * 1024;
+                                  ^
+
+"Test_name.c", line 128: warning: integer operation result is out of range
+         (uint64_t)(4608 * 1024 * 1024);
+                                ^
+
+"Test_name.c", line 129: warning: integer operation result is out of range
+         i += (uint64_t)(4608 * 1024 * 1024 * i));
+                                     ^
+
+"Test_name.c", line 127: warning: loop is not reachable
+    for (uint64_t i = 4608 * 1024 * 1024;
+    ^
+
+"Test_name.c", line 134: warning: integer operation result is out of range
+    for (uint64_t i = (1ULL * ((4608) * ((1024) * (1024))) + 2ULL);
+                                      ^
+
+"Test_name.c", line 135: warning: integer operation result is out of range
+         ((uint64_t)((uint64_t)(4608 * 1024 * 1024) * (uint64_t)(4608 * 1024 * 1024)));
+                                            ^
+
+"Test_name.c", line 135: warning: integer operation result is out of range
+         ((uint64_t)((uint64_t)(4608 * 1024 * 1024) * (uint64_t)(4608 * 1024 * 1024)));
+                                                                             ^
+
+"Test_name.c", line 136: warning: integer operation result is out of range
+         i = ((4608 * 1024 * 1024) + ((uint64_t)(4608 * 1024 * 1024))));
+                           ^
+
+"Test_name.c", line 136: warning: integer operation result is out of range
+         i = ((4608 * 1024 * 1024) + ((uint64_t)(4608 * 1024 * 1024))));
+                                                             ^
+
+"Test_name.c", line 134: warning: loop is not reachable
+    for (uint64_t i = (1ULL * ((4608) * ((1024) * (1024))) + 2ULL);
+    ^
+
+"Test_name.c", line 134: warning: variable "i" was set but never used
+    for (uint64_t i = (1ULL * ((4608) * ((1024) * (1024))) + 2ULL);
+                  ^
+
+"Test_name.c", line 139: error: invalid combination of type specifiers
+    _Complex long long x = 4608 * 1024 * 1024;
+    ^
+
+"Test_name.c", line 139: warning: integer operation result is out of range
+    _Complex long long x = 4608 * 1024 * 1024;
+                                       ^
+
+"Test_name.c", line 139: warning: dynamic initialization in unreachable code
+    _Complex long long x = 4608 * 1024 * 1024;
+                       ^
+
+"Test_name.c", line 142: warning: integer operation result is out of range
+    (__real__ x) = 4608 * 1024 * 1024;
+                               ^
+
+"Test_name.c", line 145: warning: integer operation result is out of range
+    (__imag__ x) = 4608 * 1024 * 1024;
+                               ^
+
+"Test_name.c", line 151: warning: integer operation result is out of range
+    a[4608 * 1024 * 1024] = 1i;
+                  ^
+
+"Test_name.c", line 151: warning: subscript out of range
+    a[4608 * 1024 * 1024] = 1i;
+     ^
+
+"Test_name.c", line 151: error: complex integral types are not supported
+    a[4608 * 1024 * 1024] = 1i;
+                             ^
+
+"Test_name.c", line 155: warning: integer operation result is out of range
+    uint64_t b2 = b[4608 * 1024 * 1024] + 1;
+                                ^
+
+"Test_name.c", line 155: warning: variable "b" is used before its value is set
+    uint64_t b2 = b[4608 * 1024 * 1024] + 1;
+                  ^
+
+"Test_name.c", line 158: warning: integer operation result is out of range
+    (void)((i ? (4608 * 1024 * 1024) : (4608 * 1024 * 1024)) + 1);
+                             ^
+
+"Test_name.c", line 158: warning: integer operation result is out of range
+    (void)((i ? (4608 * 1024 * 1024) : (4608 * 1024 * 1024)) + 1);
+                                                    ^
+
+"Test_name.c", line 161: warning: integer operation result is out of range
+    return ((4608 * 1024 * 1024) + ((uint64_t)(4608 * 1024 * 1024)));
+                         ^
+
+"Test_name.c", line 161: warning: integer operation result is out of range
+    return ((4608 * 1024 * 1024) + ((uint64_t)(4608 * 1024 * 1024)));
+                                                           ^
+
+"Test_name.c", line 23: warning: variable "overflow2" was set but never used
+             overflow2 = (uint64_t)(4608 * 1024 * 1024),
+             ^
+
+"Test_name.c", line 25: warning: variable "overflow3" was set but never used
+             overflow3 = (uint64_t)(4608 * 1024 * 1024 * i),
+             ^
+
+"Test_name.c", line 27: warning: variable "overflow4" was declared but never referenced
+             overflow4 =  (1ULL * ((4608) * ((1024) * (1024))) + 2ULL),
+             ^
+
+"Test_name.c", line 29: warning: variable "multi_overflow" was declared but never referenced
+             multi_overflow = (uint64_t)((uint64_t)(4608 * 1024 * 1024) * (uint64_t)(4608 * 1024 * 1024));
+             ^
+
+"Test_name.c", line 36: warning: variable "not_overflow" was declared but never referenced
+    uint64_t not_overflow = 4608 * 1024 * 1024ULL;
+             ^
+
+"Test_name.c", line 37: warning: variable "not_overflow2" was declared but never referenced
+    uint64_t not_overflow2 = (1ULL * ((uint64_t)(4608) * (1024 * 1024)) + 2ULL);
+             ^
+
+"Test_name.c", line 150: warning: variable "a" was set but never used
+    uint64_t a[10];
+             ^
+
+"Test_name.c", line 155: warning: variable "b2" was declared but never referenced
+    uint64_t b2 = b[4608 * 1024 * 1024] + 1;
+             ^
+
+"Test_name.c", line 166: warning: integer operation result is out of range
+    (void)f0(4608 * 1024 * 1024);
+                         ^
+
+"Test_name.c", line 169: warning: integer operation result is out of range
+    uint64_t x = f0(4608 * 1024 * 1024);
+                                ^
+
+"Test_name.c", line 173: warning: integer operation result is out of range
+    (void)(*f0_ptr)(4608 * 1024 * 1024);
+                                ^
+
+"Test_name.c", line 176: warning: integer operation result is out of range
+    (void)f2(0, f0(4608 * 1024 * 1024));
+                               ^
+
+"Test_name.c", line 179: warning: integer operation result is out of range
+    int arr[4608 * 1024 * 1024]; // expected-warning {{overflow in expression; result is 536'870'912 with type 'int'}}
+                        ^
+
+"Test_name.c", line 179: warning: variable "arr" was declared but never referenced
+    int arr[4608 * 1024 * 1024]; // expected-warning {{overflow in expression; result is 536'870'912 with type 'int'}}
+        ^
+
+"Test_name.c", line 189: warning: integer operation result is out of range
+    .x = 4 * 1024 * 1024 * 1024  // expected-warning {{overflow in expression; result is 0 with type 'int'}}
+                         ^
+
+"Test_name.c", line 189: warning: out-of-order initializers are nonstandard in C++
+    .x = 4 * 1024 * 1024 * 1024  // expected-warning {{overflow in expression; result is 0 with type 'int'}}
+     ^
+
+"Test_name.c", line 203: warning: integer operation result is out of range
+    .a0 = 4 * 1024 * 1024 * 1024, // expected-warning {{overflow in expression; result is 0 with type 'int'}}
+                          ^
+
+"Test_name.c", line 205: warning: integer operation result is out of range
+      .a2 = 4 * 1024 * 1024 * 1024, // expected-warning {{overflow in expression; result is 0 with type 'int'}}
+                            ^
+
+"Test_name.c", line 207: warning: integer operation result is out of range
+        .a4 = 4 * 1024 * 1024 * 1024 // expected-warning {{overflow in expression; result is 0 with type 'int'}}
+                              ^
+
+"Test_name.c", line 217: warning: statement is unreachable
+      0;
+      ^
+
+"Test_name.c", line 213: warning: variable "n" was set but never used
+    int n;
+        ^
+
+"Test_name.c", line 17: warning: variable "overflow" was declared but never referenced
+  static const uint64_t overflow = 1 * 4608 * 1024 * 1024; // expected-warning {{overflow in expression; result is 536'870'912 with type 'int'}}
+                        ^
+
+3 errors detected in the compilation of "Test_name.c".

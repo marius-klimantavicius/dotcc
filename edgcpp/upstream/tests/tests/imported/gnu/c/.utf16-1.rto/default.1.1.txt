@@ -1,0 +1,86 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 12: error: identifier "u" is undefined
+  char16_t	c0 = u'a';
+          	     ^
+
+"Test_name.c", line 12: error: expected a ";"
+  char16_t	c0 = u'a';
+          	      ^
+
+"Test_name.c", line 13: error: expected a ";"
+  char16_t	c1 = u'\0';
+          	      ^
+
+"Test_name.c", line 14: error: expected a ";"
+  char16_t	c2 = u'\u0024';
+          	      ^
+
+"Test_name.c", line 15: warning: multicharacter character literal (potential portability problem)
+  char16_t	c3 = u'\u2029';
+          	      ^
+
+"Test_name.c", line 15: error: expected a ";"
+  char16_t	c3 = u'\u2029';
+          	      ^
+
+"Test_name.c", line 16: warning: multicharacter character literal (potential portability problem)
+  char16_t	c4 = u'\u8010';
+          	      ^
+
+"Test_name.c", line 16: error: expected a ";"
+  char16_t	c4 = u'\u8010';
+          	      ^
+
+"Test_name.c", line 19: error: identifier "U" is undefined
+  char16_t	c6 = U'a';
+          	     ^
+
+"Test_name.c", line 19: error: expected a ";"
+  char16_t	c6 = U'a';
+          	      ^
+
+"Test_name.c", line 20: warning: multicharacter character literal (potential portability problem)
+  char16_t	c7 = U'\u2029';
+          	      ^
+
+"Test_name.c", line 20: error: expected a ";"
+  char16_t	c7 = U'\u2029';
+          	      ^
+
+"Test_name.c", line 21: warning: multicharacter character literal (potential portability problem)
+  char16_t	c8 = U'\u8010';
+          	      ^
+
+"Test_name.c", line 21: error: expected a ";"
+  char16_t	c8 = U'\u8010';
+          	      ^
+
+"Test_name.c", line 33: error: expected a ")"
+      if (sizeof (u'a') != sizeof (char16_t))
+                   ^
+
+"Test_name.c", line 35: error: expected a ")"
+      if (sizeof (u'\0') != sizeof (char16_t))
+                   ^
+
+"Test_name.c", line 37: error: expected a ")"
+      if (sizeof (u'\u0024') != sizeof (char16_t))
+                   ^
+
+"Test_name.c", line 39: warning: multicharacter character literal (potential portability problem)
+      if (sizeof (u'\u2029') != sizeof (char16_t))
+                   ^
+
+"Test_name.c", line 39: error: expected a ")"
+      if (sizeof (u'\u2029') != sizeof (char16_t))
+                   ^
+
+"Test_name.c", line 41: warning: multicharacter character literal (potential portability problem)
+      if (sizeof (u'\u8010') != sizeof (char16_t))
+                   ^
+
+"Test_name.c", line 41: error: expected a ")"
+      if (sizeof (u'\u8010') != sizeof (char16_t))
+                   ^
+
+15 errors detected in the compilation of "Test_name.c".

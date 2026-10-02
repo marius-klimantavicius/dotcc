@@ -1,0 +1,417 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 8: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f00 (int x) { return x / 46340 > -46341; }
+                           ^
+
+"Test_name.c", line 9: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f01 (int x) { int a = 46340, b = -46341; return x / a > b; }
+                           ^
+
+"Test_name.c", line 10: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f02 (int x) { return x / 46340 >= 46341; }
+                           ^
+
+"Test_name.c", line 11: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f03 (int x) { int a = 46340, b = 46341; return x / a >= b; }
+                           ^
+
+"Test_name.c", line 12: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f04 (int x) { return x / 46340 < 46341; }
+                           ^
+
+"Test_name.c", line 13: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f05 (int x) { int a = 46340, b = 46341; return x / a < b; }
+                           ^
+
+"Test_name.c", line 14: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f06 (int x) { return x / 46340 <= -46341; }
+                           ^
+
+"Test_name.c", line 15: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f07 (int x) { int a = 46340, b = -46341; return x / a <= b; }
+                           ^
+
+"Test_name.c", line 16: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f08 (int x) { return x / 46340 == -46341; }
+                           ^
+
+"Test_name.c", line 17: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f09 (int x) { int a = 46340, b = -46341; return x / a == b; }
+                           ^
+
+"Test_name.c", line 18: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f10 (int x) { return x / 46340 == 46341; }
+                           ^
+
+"Test_name.c", line 19: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f11 (int x) { int a = 46340, b = 46341; return x / a == b; }
+                           ^
+
+"Test_name.c", line 20: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f12 (int x) { return x / 46340 != -46341; }
+                           ^
+
+"Test_name.c", line 21: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f13 (int x) { int a = 46340, b = -46341; return x / a != b; }
+                           ^
+
+"Test_name.c", line 22: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f14 (int x) { return x / 46340 != 46341; }
+                           ^
+
+"Test_name.c", line 23: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f15 (int x) { int a = 46340, b = 46341; return x / a != b; }
+                           ^
+
+"Test_name.c", line 24: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f16 (int x) { return x / 15 > -15; }
+                           ^
+
+"Test_name.c", line 25: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f17 (int x) { int a = 15, b = -15; return x / a > b; }
+                           ^
+
+"Test_name.c", line 26: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f18 (int x) { return x / 15 > 15; }
+                           ^
+
+"Test_name.c", line 27: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f19 (int x) { int a = 15, b = 15; return x / a > b; }
+                           ^
+
+"Test_name.c", line 28: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f20 (int x) { return x / 15 >= -15; }
+                           ^
+
+"Test_name.c", line 29: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f21 (int x) { int a = 15, b = -15; return x / a >= b; }
+                           ^
+
+"Test_name.c", line 30: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f22 (int x) { return x / 15 >= 15; }
+                           ^
+
+"Test_name.c", line 31: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f23 (int x) { int a = 15, b = 15; return x / a >= b; }
+                           ^
+
+"Test_name.c", line 32: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f24 (int x) { return x / 15 < -15; }
+                           ^
+
+"Test_name.c", line 33: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f25 (int x) { int a = 15, b = -15; return x / a < b; }
+                           ^
+
+"Test_name.c", line 34: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f26 (int x) { return x / 15 < 15; }
+                           ^
+
+"Test_name.c", line 35: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f27 (int x) { int a = 15, b = 15; return x / a < b; }
+                           ^
+
+"Test_name.c", line 36: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f28 (int x) { return x / 15 <= -15; }
+                           ^
+
+"Test_name.c", line 37: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f29 (int x) { int a = 15, b = -15; return x / a <= b; }
+                           ^
+
+"Test_name.c", line 38: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f30 (int x) { return x / 15 <= 15; }
+                           ^
+
+"Test_name.c", line 39: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f31 (int x) { int a = 15, b = 15; return x / a <= b; }
+                           ^
+
+"Test_name.c", line 40: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f32 (int x) { return x / 15 == -15; }
+                           ^
+
+"Test_name.c", line 41: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f33 (int x) { int a = 15, b = -15; return x / a == b; }
+                           ^
+
+"Test_name.c", line 42: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f34 (int x) { return x / 15 == 15; }
+                           ^
+
+"Test_name.c", line 43: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f35 (int x) { int a = 15, b = 15; return x / a == b; }
+                           ^
+
+"Test_name.c", line 44: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f36 (int x) { return x / 15 != -15; }
+                           ^
+
+"Test_name.c", line 45: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f37 (int x) { int a = 15, b = -15; return x / a != b; }
+                           ^
+
+"Test_name.c", line 46: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f38 (int x) { return x / 15 != 15; }
+                           ^
+
+"Test_name.c", line 47: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f39 (int x) { int a = 15, b = 15; return x / a != b; }
+                           ^
+
+"Test_name.c", line 48: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f40 (int x) { return x / -46340 > -46341; }
+                           ^
+
+"Test_name.c", line 49: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f41 (int x) { int a = -46340, b = -46341; return x / a > b; }
+                           ^
+
+"Test_name.c", line 50: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f42 (int x) { return x / -46340 >= 46341; }
+                           ^
+
+"Test_name.c", line 51: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f43 (int x) { int a = -46340, b = 46341; return x / a >= b; }
+                           ^
+
+"Test_name.c", line 52: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f44 (int x) { return x / -46340 < 46341; }
+                           ^
+
+"Test_name.c", line 53: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f45 (int x) { int a = -46340, b = 46341; return x / a < b; }
+                           ^
+
+"Test_name.c", line 54: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f46 (int x) { return x / -46340 <= -46341; }
+                           ^
+
+"Test_name.c", line 55: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f47 (int x) { int a = -46340, b = -46341; return x / a <= b; }
+                           ^
+
+"Test_name.c", line 56: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f48 (int x) { return x / -46340 == 46341; }
+                           ^
+
+"Test_name.c", line 57: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f49 (int x) { int a = -46340, b = 46341; return x / a == b; }
+                           ^
+
+"Test_name.c", line 58: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f50 (int x) { return x / -46340 == -46341; }
+                           ^
+
+"Test_name.c", line 59: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f51 (int x) { int a = -46340, b = -46341; return x / a == b; }
+                           ^
+
+"Test_name.c", line 60: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f52 (int x) { return x / -46340 != 46341; }
+                           ^
+
+"Test_name.c", line 61: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f53 (int x) { int a = -46340, b = 46341; return x / a != b; }
+                           ^
+
+"Test_name.c", line 62: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f54 (int x) { return x / -46340 != -46341; }
+                           ^
+
+"Test_name.c", line 63: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f55 (int x) { int a = -46340, b = -46341; return x / a != b; }
+                           ^
+
+"Test_name.c", line 64: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f56 (int x) { return x / -15 > 15; }
+                           ^
+
+"Test_name.c", line 65: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f57 (int x) { int a = -15, b = 15; return x / a > b; }
+                           ^
+
+"Test_name.c", line 66: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f58 (int x) { return x / -15 > -15; }
+                           ^
+
+"Test_name.c", line 67: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f59 (int x) { int a = -15, b = -15; return x / a > b; }
+                           ^
+
+"Test_name.c", line 68: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f60 (int x) { return x / -15 >= 15; }
+                           ^
+
+"Test_name.c", line 69: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f61 (int x) { int a = -15, b = 15; return x / a >= b; }
+                           ^
+
+"Test_name.c", line 70: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f62 (int x) { return x / -15 >= -15; }
+                           ^
+
+"Test_name.c", line 71: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f63 (int x) { int a = -15, b = -15; return x / a >= b; }
+                           ^
+
+"Test_name.c", line 72: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f64 (int x) { return x / -15 < 15; }
+                           ^
+
+"Test_name.c", line 73: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f65 (int x) { int a = -15, b = 15; return x / a < b; }
+                           ^
+
+"Test_name.c", line 74: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f66 (int x) { return x / -15 < -15; }
+                           ^
+
+"Test_name.c", line 75: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f67 (int x) { int a = -15, b = -15; return x / a < b; }
+                           ^
+
+"Test_name.c", line 76: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f68 (int x) { return x / -15 <= 15; }
+                           ^
+
+"Test_name.c", line 77: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f69 (int x) { int a = -15, b = 15; return x / a <= b; }
+                           ^
+
+"Test_name.c", line 78: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f70 (int x) { return x / -15 <= -15; }
+                           ^
+
+"Test_name.c", line 79: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f71 (int x) { int a = -15, b = -15; return x / a <= b; }
+                           ^
+
+"Test_name.c", line 80: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f72 (int x) { return x / -15 == 15; }
+                           ^
+
+"Test_name.c", line 81: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f73 (int x) { int a = -15, b = 15; return x / a == b; }
+                           ^
+
+"Test_name.c", line 82: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f74 (int x) { return x / -15 == -15; }
+                           ^
+
+"Test_name.c", line 83: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f75 (int x) { int a = -15, b = -15; return x / a == b; }
+                           ^
+
+"Test_name.c", line 84: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f76 (int x) { return x / -15 != 15; }
+                           ^
+
+"Test_name.c", line 85: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f77 (int x) { int a = -15, b = 15; return x / a != b; }
+                           ^
+
+"Test_name.c", line 86: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f78 (int x) { return x / -15 != -15; }
+                           ^
+
+"Test_name.c", line 87: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f79 (int x) { int a = -15, b = -15; return x / a != b; }
+                           ^
+
+"Test_name.c", line 88: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f80 (int x) { return x / -15 > 0; }
+                           ^
+
+"Test_name.c", line 89: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f81 (int x) { int a = -15, b = 0; return x / a > b; }
+                           ^
+
+"Test_name.c", line 90: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f82 (int x) { return x / 15 > 0; }
+                           ^
+
+"Test_name.c", line 91: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f83 (int x) { int a = 15, b = 0; return x / a > b; }
+                           ^
+
+"Test_name.c", line 92: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f84 (int x) { return x / -15 >= 0; }
+                           ^
+
+"Test_name.c", line 93: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f85 (int x) { int a = -15, b = 0; return x / a >= b; }
+                           ^
+
+"Test_name.c", line 94: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f86 (int x) { return x / 15 >= 0; }
+                           ^
+
+"Test_name.c", line 95: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f87 (int x) { int a = 15, b = 0; return x / a >= b; }
+                           ^
+
+"Test_name.c", line 96: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f88 (int x) { return x / -15 < 0; }
+                           ^
+
+"Test_name.c", line 97: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f89 (int x) { int a = -15, b = 0; return x / a < b; }
+                           ^
+
+"Test_name.c", line 98: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f90 (int x) { return x / 15 < 0; }
+                           ^
+
+"Test_name.c", line 99: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f91 (int x) { int a = 15, b = 0; return x / a < b; }
+                           ^
+
+"Test_name.c", line 100: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f92 (int x) { return x / -15 <= 0; }
+                           ^
+
+"Test_name.c", line 101: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f93 (int x) { int a = -15, b = 0; return x / a <= b; }
+                           ^
+
+"Test_name.c", line 102: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f94 (int x) { return x / 15 <= 0; }
+                           ^
+
+"Test_name.c", line 103: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f95 (int x) { int a = 15, b = 0; return x / a <= b; }
+                           ^
+
+"Test_name.c", line 104: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f96 (int x) { return x / -15 == 0; }
+                           ^
+
+"Test_name.c", line 105: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f97 (int x) { int a = -15, b = 0; return x / a == b; }
+                           ^
+
+"Test_name.c", line 106: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f98 (int x) { return x / 15 == 0; }
+                           ^
+
+"Test_name.c", line 107: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f99 (int x) { int a = 15, b = 0; return x / a == b; }
+                           ^
+
+"Test_name.c", line 108: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f100 (int x) { return x / -15 != 0; }
+                           ^
+
+"Test_name.c", line 109: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f101 (int x) { int a = -15, b = 0; return x / a != b; }
+                           ^
+
+"Test_name.c", line 110: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f102 (int x) { return x / 15 != 0; }
+                           ^
+
+"Test_name.c", line 111: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone)) int f103 (int x) { int a = 15, b = 0; return x / a != b; }
+                           ^
+

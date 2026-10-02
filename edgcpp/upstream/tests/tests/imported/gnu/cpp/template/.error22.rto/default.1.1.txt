@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: error: global-scope qualifier (leading "::") is not allowed
+      void ::foo(); // { dg-error "10:invalid use" }
+           ^
+
+"Test_name.c", line 9: error: class "A" has no member "foo"
+      B<&A::foo> b; // { dg-error "'foo' is not a member of 'A'|template argument" }
+            ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 16: error: invalid redeclaration of type name "type" (declared at line 15)
+  using type = decltype(A<int>::f<char>()); // { dg-error "A<int>::f<char>\\(\\)::S1"  }
+        ^
+
+"Test_name.c", line 26: error: type "type" has already been defined (previous definition at line 16)
+  using type = void;
+        ^
+
+"Test_name.c", line 27: error: invalid redeclaration of type name "type" (declared at line 26)
+  using type = decltype(B<int>::f()); // { dg-error "B<int>::f\\(\\)::S2"  }
+        ^
+
+3 errors detected in the compilation of "Test_name.c".

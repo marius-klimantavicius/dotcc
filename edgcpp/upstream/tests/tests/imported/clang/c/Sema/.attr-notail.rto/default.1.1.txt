@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 5: warning: unknown attribute "not_tail_called"
+  int callee0(void) __attribute__((not_tail_called,always_inline)); // expected-error{{'always_inline' and 'not_tail_called' attributes are not compatible}} \
+                                   ^
+
+"Test_name.c", line 7: warning: unknown attribute "not_tail_called"
+  int callee1(void) __attribute__((always_inline,not_tail_called)); // expected-error{{'not_tail_called' and 'always_inline' attributes are not compatible}} \
+                                                 ^
+
+"Test_name.c", line 14: warning: unknown attribute "not_tail_called"
+  int g0 __attribute__((not_tail_called)); // expected-warning {{'not_tail_called' attribute only applies to functions}}
+                        ^
+
+"Test_name.c", line 16: warning: unknown attribute "not_tail_called"
+  int foo2(int a) __attribute__((not_tail_called("abc"))); // expected-error {{'not_tail_called' attribute takes no arguments}}
+                                 ^
+

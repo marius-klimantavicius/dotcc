@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=4 --target linux_aarch64 -w --c++17 --gn 100100 Test_name.c

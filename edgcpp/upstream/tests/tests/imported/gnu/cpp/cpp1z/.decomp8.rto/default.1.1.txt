@@ -1,0 +1,25 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 19: warning: structured bindings are a C++17 feature
+    for (auto & [ x, y ] : a)	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+                ^
+
+"Test_name.c", line 25: warning: structured bindings are a C++17 feature
+    for (const auto [ u, v ] : a)	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+                    ^
+
+"Test_name.c", line 31: warning: structured bindings are a C++17 feature
+    for (auto [ x, y ] : a)	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+              ^
+
+"Test_name.c", line 50: warning: structured bindings are a C++17 feature
+    for (auto & [ x, y ] : b)	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+                ^
+
+"Test_name.c", line 56: warning: structured bindings are a C++17 feature
+    for (const auto [ u, v ] : b)	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+                    ^
+
+"Test_name.c", line 62: warning: structured bindings are a C++17 feature
+    for (auto [ x, y ] : b)	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+              ^
+

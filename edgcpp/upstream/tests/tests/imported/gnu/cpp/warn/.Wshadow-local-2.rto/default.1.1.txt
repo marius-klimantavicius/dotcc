@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 41: warning: variable "f" was declared but never referenced
+      int f = 5;       // { dg-message "shadowed declaration is here" }
+          ^
+
+"Test_name.c", line 60: warning: variable "bar" is used before its value is set
+        func1(bar);
+              ^
+
+"Test_name.c", line 58: warning: variable "cbp" was declared but never referenced
+        Bar *cbp;      // { dg-warning "shadows a previous local" }
+             ^
+
+"Test_name.c", line 59: warning: variable "bp" was declared but never referenced
+        ChildBar *bp;  // { dg-warning "shadows a previous local" }
+                  ^
+
+"Test_name.c", line 53: warning: variable "bar" was declared but never referenced
+      Bar *bar;        // { dg-message "shadowed declaration is here" }
+           ^
+
+"Test_name.c", line 54: warning: variable "cbp" was declared but never referenced
+      ChildBar *cbp;   // { dg-message "shadowed declaration is here" }
+                ^
+
+"Test_name.c", line 55: warning: variable "bp" was declared but never referenced
+      Bar *bp;         // { dg-message "shadowed declaration is here" }
+           ^
+

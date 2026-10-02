@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 6: error: the "struct" keyword may not be used when declaring a template template parameter
+  template<template<typename> struct X> // { dg-error "expected .class. or .typename. before" }
+                              ^
+
+"Test_name.c", line 9: error: expected "class" or "typename"
+  template<template<typename> X> // { dg-error "expected .class. or .typename. before" }
+                              ^
+
+2 errors detected in the compilation of "Test_name.c".

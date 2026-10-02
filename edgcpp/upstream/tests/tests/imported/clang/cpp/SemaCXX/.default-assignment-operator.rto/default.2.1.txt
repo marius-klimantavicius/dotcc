@@ -1,0 +1,23 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 7: warning: class "Base" defines no constructor to initialize the following:
+            reference member "Base::ref"
+  class Base { // expected-warning{{class 'Base' does not declare any constructor to initialize its non-modifiable members}}
+        ^
+
+"Test_name.c", line 51: error: function "X::operator=(const X &)" (declared implicitly) cannot be referenced -- it is a deleted function
+    x = cx;
+      ^
+
+"Test_name.c", line 58: error: function "X::operator=(const X &)" (declared implicitly) cannot be referenced -- it is a deleted function
+    x = cx;
+      ^
+
+"Test_name.c", line 124: error: function "E1::operator=(const E1 &)" (declared implicitly) cannot be referenced -- it is a deleted function
+    e1 = e2;
+       ^
+
+"Test_name.c", line 155: error: function "ProtectedCheck::Z::operator=(const ProtectedCheck::Z &)" (declared implicitly) cannot be referenced -- it is a deleted function
+    void f(Z z) { z = z; }
+                    ^
+
+4 errors detected in the compilation of "Test_name.c".

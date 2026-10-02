@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 9: warning: expression has no effect
+  void f1 (void) { &v; } /* { dg-error "taking address of expression of type 'void'" } */
+                   ^
+
+"Test_name.c", line 12: warning: expression has no effect
+  void f2 (void) { &*pv; } /* { dg-warning "dereferencing" } */
+                   ^
+
+"Test_name.c", line 15: warning: type qualifiers are meaningless in this declaration
+  extern const void cv;
+                    ^
+
+"Test_name.c", line 16: warning: expression has no effect
+  void f3 (void) { &cv; }
+                   ^
+
+"Test_name.c", line 19: warning: expression has no effect
+  void f4 (void) { &*pcv; } /* { dg-warning "dereferencing" } */
+                   ^
+

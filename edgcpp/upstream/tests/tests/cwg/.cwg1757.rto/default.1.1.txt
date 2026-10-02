@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --c++14 -tused -A Test_name.c
+"Test_name.c", line 9: error: expression must have a constant value
+    constexpr int k = s.b;
+                      ^
+"Test_name.c", line 9: note: attempt to access run-time storage
+    constexpr int k = s.b;
+                       ^
+
+"Test_name.c", line 9: warning: variable "k" was declared but never referenced
+    constexpr int k = s.b;
+                  ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,250 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 8: error: identifier "_Fract" is undefined
+  _Fract a0 = 0.5r + 0.5r; /* { dg-warning "overflow" } */
+  ^
+
+"Test_name.c", line 8: error: extra text after expected end of number
+  _Fract a0 = 0.5r + 0.5r; /* { dg-warning "overflow" } */
+                 ^
+
+"Test_name.c", line 8: error: extra text after expected end of number
+  _Fract a0 = 0.5r + 0.5r; /* { dg-warning "overflow" } */
+                        ^
+
+"Test_name.c", line 9: error: identifier "_Fract" is undefined
+  _Fract a1 = 0.5r + 0.6r; /* { dg-warning "overflow" } */
+  ^
+
+"Test_name.c", line 9: error: extra text after expected end of number
+  _Fract a1 = 0.5r + 0.6r; /* { dg-warning "overflow" } */
+                 ^
+
+"Test_name.c", line 9: error: extra text after expected end of number
+  _Fract a1 = 0.5r + 0.6r; /* { dg-warning "overflow" } */
+                        ^
+
+"Test_name.c", line 10: error: identifier "_Fract" is undefined
+  _Fract a2 = 0.5r + -0.6r;
+  ^
+
+"Test_name.c", line 10: error: extra text after expected end of number
+  _Fract a2 = 0.5r + -0.6r;
+                 ^
+
+"Test_name.c", line 10: error: extra text after expected end of number
+  _Fract a2 = 0.5r + -0.6r;
+                         ^
+
+"Test_name.c", line 11: error: identifier "_Fract" is undefined
+  _Fract a3 = -0.5r + 0.6r;
+  ^
+
+"Test_name.c", line 11: error: extra text after expected end of number
+  _Fract a3 = -0.5r + 0.6r;
+                  ^
+
+"Test_name.c", line 11: error: extra text after expected end of number
+  _Fract a3 = -0.5r + 0.6r;
+                         ^
+
+"Test_name.c", line 12: error: identifier "_Fract" is undefined
+  _Fract a4 = -0.5r + -0.5r;
+  ^
+
+"Test_name.c", line 12: error: extra text after expected end of number
+  _Fract a4 = -0.5r + -0.5r;
+                  ^
+
+"Test_name.c", line 12: error: extra text after expected end of number
+  _Fract a4 = -0.5r + -0.5r;
+                          ^
+
+"Test_name.c", line 13: error: identifier "_Fract" is undefined
+  _Fract a5 = -0.5r + -0.6r; /* { dg-warning "overflow" } */
+  ^
+
+"Test_name.c", line 13: error: extra text after expected end of number
+  _Fract a5 = -0.5r + -0.6r; /* { dg-warning "overflow" } */
+                  ^
+
+"Test_name.c", line 13: error: extra text after expected end of number
+  _Fract a5 = -0.5r + -0.6r; /* { dg-warning "overflow" } */
+                          ^
+
+"Test_name.c", line 14: error: identifier "_Fract" is undefined
+  _Fract a6 = 0.0r + __FRACT_MIN__;
+  ^
+
+"Test_name.c", line 14: error: extra text after expected end of number
+  _Fract a6 = 0.0r + __FRACT_MIN__;
+                 ^
+
+"Test_name.c", line 14: error: identifier "__FRACT_MIN__" is undefined
+  _Fract a6 = 0.0r + __FRACT_MIN__;
+                     ^
+
+"Test_name.c", line 15: error: identifier "_Fract" is undefined
+  _Fract a7 = 0.1r + __FRACT_MIN__;
+  ^
+
+"Test_name.c", line 15: error: extra text after expected end of number
+  _Fract a7 = 0.1r + __FRACT_MIN__;
+                 ^
+
+"Test_name.c", line 16: error: identifier "_Fract" is undefined
+  _Fract a8 = -0.1r + __FRACT_MIN__; /* { dg-warning "overflow" } */
+  ^
+
+"Test_name.c", line 16: error: extra text after expected end of number
+  _Fract a8 = -0.1r + __FRACT_MIN__; /* { dg-warning "overflow" } */
+                  ^
+
+"Test_name.c", line 17: error: identifier "_Fract" is undefined
+  _Fract a9 = 0.0r + __FRACT_MAX__;
+  ^
+
+"Test_name.c", line 17: error: extra text after expected end of number
+  _Fract a9 = 0.0r + __FRACT_MAX__;
+                 ^
+
+"Test_name.c", line 17: error: identifier "__FRACT_MAX__" is undefined
+  _Fract a9 = 0.0r + __FRACT_MAX__;
+                     ^
+
+"Test_name.c", line 18: error: identifier "_Fract" is undefined
+  _Fract a10 = 0.1r + __FRACT_MAX__; /* { dg-warning "overflow" } */
+  ^
+
+"Test_name.c", line 18: error: extra text after expected end of number
+  _Fract a10 = 0.1r + __FRACT_MAX__; /* { dg-warning "overflow" } */
+                  ^
+
+"Test_name.c", line 19: error: identifier "_Fract" is undefined
+  _Fract a11 = -0.1r + __FRACT_MAX__;
+  ^
+
+"Test_name.c", line 19: error: extra text after expected end of number
+  _Fract a11 = -0.1r + __FRACT_MAX__;
+                   ^
+
+"Test_name.c", line 21: error: identifier "_Fract" is undefined
+  _Fract b0 = 0.5r - 0.5r;
+  ^
+
+"Test_name.c", line 21: error: extra text after expected end of number
+  _Fract b0 = 0.5r - 0.5r;
+                 ^
+
+"Test_name.c", line 21: error: extra text after expected end of number
+  _Fract b0 = 0.5r - 0.5r;
+                        ^
+
+"Test_name.c", line 22: error: identifier "_Fract" is undefined
+  _Fract b1 = 0.5r - 0.6r;
+  ^
+
+"Test_name.c", line 22: error: extra text after expected end of number
+  _Fract b1 = 0.5r - 0.6r;
+                 ^
+
+"Test_name.c", line 22: error: extra text after expected end of number
+  _Fract b1 = 0.5r - 0.6r;
+                        ^
+
+"Test_name.c", line 23: error: identifier "_Fract" is undefined
+  _Fract b2 = 0.5r - -0.6r; /* { dg-warning "overflow" } */
+  ^
+
+"Test_name.c", line 23: error: extra text after expected end of number
+  _Fract b2 = 0.5r - -0.6r; /* { dg-warning "overflow" } */
+                 ^
+
+"Test_name.c", line 23: error: extra text after expected end of number
+  _Fract b2 = 0.5r - -0.6r; /* { dg-warning "overflow" } */
+                         ^
+
+"Test_name.c", line 24: error: identifier "_Fract" is undefined
+  _Fract b3 = -0.5r - 0.6r; /* { dg-warning "overflow" } */
+  ^
+
+"Test_name.c", line 24: error: extra text after expected end of number
+  _Fract b3 = -0.5r - 0.6r; /* { dg-warning "overflow" } */
+                  ^
+
+"Test_name.c", line 24: error: extra text after expected end of number
+  _Fract b3 = -0.5r - 0.6r; /* { dg-warning "overflow" } */
+                         ^
+
+"Test_name.c", line 25: error: identifier "_Fract" is undefined
+  _Fract b4 = -0.5r - -0.5r;
+  ^
+
+"Test_name.c", line 25: error: extra text after expected end of number
+  _Fract b4 = -0.5r - -0.5r;
+                  ^
+
+"Test_name.c", line 25: error: extra text after expected end of number
+  _Fract b4 = -0.5r - -0.5r;
+                          ^
+
+"Test_name.c", line 26: error: identifier "_Fract" is undefined
+  _Fract b5 = -0.5r - -0.6r;
+  ^
+
+"Test_name.c", line 26: error: extra text after expected end of number
+  _Fract b5 = -0.5r - -0.6r;
+                  ^
+
+"Test_name.c", line 26: error: extra text after expected end of number
+  _Fract b5 = -0.5r - -0.6r;
+                          ^
+
+"Test_name.c", line 27: error: identifier "_Fract" is undefined
+  _Fract b6 = 0.0r - __FRACT_MIN__; /* { dg-warning "overflow" } */
+  ^
+
+"Test_name.c", line 27: error: extra text after expected end of number
+  _Fract b6 = 0.0r - __FRACT_MIN__; /* { dg-warning "overflow" } */
+                 ^
+
+"Test_name.c", line 28: error: identifier "_Fract" is undefined
+  _Fract b7 = 0.1r - __FRACT_MIN__; /* { dg-warning "overflow" } */
+  ^
+
+"Test_name.c", line 28: error: extra text after expected end of number
+  _Fract b7 = 0.1r - __FRACT_MIN__; /* { dg-warning "overflow" } */
+                 ^
+
+"Test_name.c", line 29: error: identifier "_Fract" is undefined
+  _Fract b8 = -0.1r - __FRACT_MIN__;
+  ^
+
+"Test_name.c", line 29: error: extra text after expected end of number
+  _Fract b8 = -0.1r - __FRACT_MIN__;
+                  ^
+
+"Test_name.c", line 30: error: identifier "_Fract" is undefined
+  _Fract b9 = 0.0r - __FRACT_MAX__;
+  ^
+
+"Test_name.c", line 30: error: extra text after expected end of number
+  _Fract b9 = 0.0r - __FRACT_MAX__;
+                 ^
+
+"Test_name.c", line 31: error: identifier "_Fract" is undefined
+  _Fract b10 = 0.1r - __FRACT_MAX__;
+  ^
+
+"Test_name.c", line 31: error: extra text after expected end of number
+  _Fract b10 = 0.1r - __FRACT_MAX__;
+                  ^
+
+"Test_name.c", line 32: error: identifier "_Fract" is undefined
+  _Fract b11 = -0.1r - __FRACT_MAX__; /* { dg-warning "overflow" } */
+  ^
+
+"Test_name.c", line 32: error: extra text after expected end of number
+  _Fract b11 = -0.1r - __FRACT_MAX__; /* { dg-warning "overflow" } */
+                   ^
+
+62 errors detected in the compilation of "Test_name.c".

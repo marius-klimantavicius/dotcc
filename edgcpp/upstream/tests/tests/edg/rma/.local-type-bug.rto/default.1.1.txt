@@ -1,0 +1,14 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 8: error: use of a local type to declare a nonlocal variable
+    extern S a;
+             ^
+
+"Test_name.c", line 9: error: use of a local type to declare a function
+    extern S f();
+             ^
+
+"Test_name.c", line 10: error: use of a local type to declare a function
+    extern void g(S);
+                ^
+
+3 errors detected in the compilation of "Test_name.c".

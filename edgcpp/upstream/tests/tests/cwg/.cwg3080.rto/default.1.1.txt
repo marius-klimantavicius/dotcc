@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 -A -tused --c++11 Test_name.c
+"Test_name.c", line 19: warning: variable "b1" was declared but never referenced
+    B<C> b1;
+         ^
+
+"Test_name.c", line 20: warning: variable "b2" was declared but never referenced
+    B<A> b2;
+         ^
+

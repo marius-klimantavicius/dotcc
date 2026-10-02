@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: error: a literal operator template must have a template parameter list equivalent to "<char ...>"
+    Foo operator ""_Foo(); // { dg-error "7:literal operator template .Foo operator\"\"_Foo\\(\\). has invalid parameter list" }
+        ^
+
+"Test_name.c", line 11: error: a literal operator template must have a template parameter list equivalent to "<char ...>"
+    Foo operator ""_Bar(); // { dg-error "7:literal operator template .Foo operator\"\"_Bar\\(\\). has invalid parameter list" }
+        ^
+
+"Test_name.c", line 14: error: a literal operator template must have a template parameter list equivalent to "<char ...>"
+    Foo operator ""_Bar(); // { dg-error "7:literal operator template .Foo operator\"\"_Bar\\(\\). has invalid parameter list" }
+        ^
+
+3 errors detected in the compilation of "Test_name.c".

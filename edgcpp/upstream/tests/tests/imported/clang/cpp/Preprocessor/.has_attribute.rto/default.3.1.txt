@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=3 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 11: error: this declaration has no storage class or type specifier
+  CXX11(clang::fallthrough)
+  ^
+
+"Test_name.c", line 11: error: expected a ";"
+  CXX11(clang::fallthrough)
+  ^
+
+"Test_name.c", line 101: warning: parsing restarts here after previous syntax error
+  int has_clang_falthrough_3;
+                            ^
+
+"Test_name.c", line 141: error: expected a declaration
+  }
+  ^
+
+"Test_name.c", line 159: error: function call is not allowed in a constant expression
+  #if __has_declspec_attribute(U)
+      ^
+
+4 errors detected in the compilation of "Test_name.c".

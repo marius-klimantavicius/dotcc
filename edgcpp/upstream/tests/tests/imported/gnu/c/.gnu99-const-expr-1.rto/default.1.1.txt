@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 22: warning: __real/__imag applied to real value
+      E2 = __real__ (1 ? 0 : i++), /* { dg-error "constant expression" } */
+           ^
+
+"Test_name.c", line 23: warning: __real/__imag applied to real value
+      E3 = __real__ 0,
+           ^
+
+"Test_name.c", line 24: warning: __real/__imag applied to real value
+      E4 = __imag__ (1 ? 0 : i++), /* { dg-error "constant" } */
+           ^
+
+"Test_name.c", line 25: warning: __real/__imag applied to real value
+      E5 = __imag__ 0,
+           ^
+
+"Test_name.c", line 41: error: _Complex can only be used with floating-point types
+      F1 = (int) (_Complex int) 2i, /* { dg-error "constant expression" } */
+                  ^
+
+"Test_name.c", line 41: error: complex integral types are not supported
+      F1 = (int) (_Complex int) 2i, /* { dg-error "constant expression" } */
+                                 ^
+
+"Test_name.c", line 44: error: complex integral types are not supported
+      F2 = (int) +2i, /* { dg-error "constant expression" } */
+                   ^
+
+"Test_name.c", line 46: error: complex integral types are not supported
+      F3 = (int) (1 + 2i), /* { dg-error "constant expression" } */
+                       ^
+
+"Test_name.c", line 48: error: complex integral types are not supported
+      F4 = (int) 2i /* { dg-error "imaginary" } */
+                  ^
+
+"Test_name.c", line 50: warning: variable "dr" was declared but never referenced
+    static double dr = __real__ (1.0 + 2.0i);
+                  ^
+
+"Test_name.c", line 52: warning: variable "di" was declared but never referenced
+    static double di = __imag__ (1.0 + 2.0i);
+                  ^
+
+"Test_name.c", line 56: warning: variable "j" was declared but never referenced
+    static int j = (1 ? 0 : ({ 0; }));
+               ^
+
+5 errors detected in the compilation of "Test_name.c".

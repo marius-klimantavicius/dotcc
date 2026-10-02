@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 12: warning: unrecognized format function type "__gcc_diag__" ignored
+  void bar (const char *, ...) __attribute__ ((__format__ (__gcc_diag__, 1, 2))); /* { dg-error "'tree' is not defined as a pointer type" } */
+                                                           ^
+

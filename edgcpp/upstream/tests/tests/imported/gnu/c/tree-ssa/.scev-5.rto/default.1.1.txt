@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 9: warning: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+  void __GIMPLE (ssa,startwith ("loop"))
+                 ^
+
+"Test_name.c", line 9: error: expected a ")"
+  void __GIMPLE (ssa,startwith ("loop"))
+                               ^
+
+"Test_name.c", line 10: error: expected a declaration
+  f (int k)
+  ^
+
+"Test_name.c", line 32: warning: parsing restarts here after previous syntax error
+    __MEM <int[1000]> ((int *)&a)[i_12] = 100;
+                                             ^
+
+"Test_name.c", line 33: error: expected a declaration
+    i_9 = i_5 + i_12;
+    ^
+
+"Test_name.c", line 9: warning: standard requires that parameter "ssa" be given a type by a subsequent declaration ("int" assumed)
+  void __GIMPLE (ssa,startwith ("loop"))
+                 ^
+
+"Test_name.c", line 9: warning: standard requires that parameter "startwith" be given a type by a subsequent declaration ("int" assumed)
+  void __GIMPLE (ssa,startwith ("loop"))
+                     ^
+
+"Test_name.c", line 34: error: expected a "{"
+    if (i_9 <= 999ll)
+    ^
+
+"Test_name.c", line 43: warning: parsing restarts here after previous syntax error
+  }
+  ^
+
+4 errors detected in the compilation of "Test_name.c".

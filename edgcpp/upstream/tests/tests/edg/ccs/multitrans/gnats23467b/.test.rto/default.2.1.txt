@@ -1,0 +1,1 @@
+cpfe -DTEST_NUMBER=2 --gnu_version 40902 --c++11 --multi_trans_unit -DTARG1 Test_name.c gnats23467b-2.C

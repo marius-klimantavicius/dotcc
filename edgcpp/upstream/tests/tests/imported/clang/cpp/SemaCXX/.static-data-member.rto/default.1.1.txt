@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 -w Test_name.c
+"Test_name.c", line 16: error: a storage class may not be specified here
+  static double ABC::c = 1.0;  // expected-error {{'static' can only be specified inside the class definition}}
+  ^
+
+"Test_name.c", line 17: error: this declaration has no storage class or type specifier
+  __private_extern__ double ABC::d = 1.0; // expected-error {{static data member definition cannot specify a storage class}}
+  ^
+
+"Test_name.c", line 17: error: expected a ";"
+  __private_extern__ double ABC::d = 1.0; // expected-error {{static data member definition cannot specify a storage class}}
+                     ^
+
+"Test_name.c", line 18: error: a global-scope declaration may not have this storage class
+  auto double ABC::e = 1.0; // expected-error {{static data member definition cannot specify a storage class}}
+  ^
+
+"Test_name.c", line 20: error: a global-scope declaration may not have this storage class
+  register double ABC::f = 1.0; // expected-error {{static data member definition cannot specify a storage class}}
+  ^
+
+5 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,58 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 26: error: function "A1::operator==(const A1 &) const" (declared at line 9) cannot be referenced -- it is a deleted function
+    void(a == a); // expected-error {{deleted}}
+           ^
+
+"Test_name.c", line 27: error: function "A1::operator==(const A1 &) const" (declared at line 9) cannot be referenced -- it is a deleted function
+    void(a != a); // expected-error {{deleted}}
+           ^
+
+"Test_name.c", line 28: error: function "A1::operator<=>(const A1 &) const" (declared at line 10) cannot be referenced -- it is a deleted function
+    void(a <=> a); // expected-error {{deleted}}
+           ^
+
+"Test_name.c", line 29: error: function "A1::operator<=>(const A1 &) const" (declared at line 10) cannot be referenced -- it is a deleted function
+    void(a < a); // expected-error {{deleted}}
+           ^
+
+"Test_name.c", line 30: error: function "A1::operator<=>(const A1 &) const" (declared at line 10) cannot be referenced -- it is a deleted function
+    void(a <= a); // expected-error {{deleted}}
+           ^
+
+"Test_name.c", line 31: error: function "A1::operator<=>(const A1 &) const" (declared at line 10) cannot be referenced -- it is a deleted function
+    void(a > a); // expected-error {{deleted}}
+           ^
+
+"Test_name.c", line 32: error: function "A1::operator<=>(const A1 &) const" (declared at line 10) cannot be referenced -- it is a deleted function
+    void(a >= a); // expected-error {{deleted}}
+           ^
+
+"Test_name.c", line 121: error: no valid std::strong_ordering type found (<compare> must be included)
+  union E1 {
+        ^
+
+"Test_name.c", line 121: error: no valid std::partial_ordering type found (<compare> must be included)
+  union E1 {
+        ^
+
+"Test_name.c", line 121: error: no valid std::weak_ordering type found (<compare> must be included)
+  union E1 {
+        ^
+
+"Test_name.c", line 149: error: a comparison operator defaulted in a class definition must be the first declaration of that comparison operator (function "operator==" (declared at line 143))
+    friend bool operator==(const F&, const F&) = default; // expected-error {{defaulting this equality comparison operator would delete it after its first declaration}} expected-note {{implicitly deleted because 'F' is a union-like class}}
+                ^
+
+"Test_name.c", line 150: error: a comparison operator defaulted in a class definition must be the first declaration of that comparison operator (function "operator!=" (declared at line 144))
+    friend bool operator!=(const F&, const F&) = default; // expected-error {{because it was already declared outside}}
+                ^
+
+"Test_name.c", line 151: error: a comparison operator defaulted in a class definition must be the first declaration of that comparison operator (function "operator<=>" (declared at line 145))
+    friend bool operator<=>(const F&, const F&) = default; // expected-error {{defaulting this three-way comparison operator would delete it after its first declaration}} expected-note {{implicitly deleted because 'F' is a union-like class}}
+                ^
+
+"Test_name.c", line 152: error: a comparison operator defaulted in a class definition must be the first declaration of that comparison operator (function "operator<" (declared at line 146))
+    friend bool operator<(const F&, const F&) = default; // expected-error {{because it was already declared outside}}
+                ^
+
+14 errors detected in the compilation of "Test_name.c".

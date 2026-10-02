@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 7: error: S is not a template
+  void S<T>::mem1();
+       ^
+
+"Test_name.c", line 10: error: S is not a template
+  void S<T>::mem2() {
+       ^
+
+2 errors detected in the compilation of "Test_name.c".

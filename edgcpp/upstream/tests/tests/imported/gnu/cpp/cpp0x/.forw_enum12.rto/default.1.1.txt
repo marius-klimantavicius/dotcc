@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: error: qualified name is not allowed
+    enum S1::E : int { X } e; // { dg-error "extra qualification not allowed" }
+             ^
+
+"Test_name.c", line 15: error: qualified name is not allowed
+    enum class S2::E : int { X } e; // { dg-error "extra qualification not allowed" }
+                   ^
+
+"Test_name.c", line 21: error: qualified name is not allowed
+    enum struct S3::E : int { X } e; // { dg-error "extra qualification not allowed" }
+                    ^
+
+"Test_name.c", line 29: error: qualified name is not allowed
+      enum S4::S5::E : char { X } e; // { dg-error "extra qualification not allowed" }
+                   ^
+
+4 errors detected in the compilation of "Test_name.c".

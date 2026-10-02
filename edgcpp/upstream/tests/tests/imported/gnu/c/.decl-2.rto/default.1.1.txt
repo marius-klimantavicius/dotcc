@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 16: error: "c" has already been declared in the current scope
+      c	/* { dg-error "conflicting types" } */
+      ^
+
+"Test_name.c", line 17: warning: variable "i" is used before its value is set
+      = i;
+        ^
+
+"Test_name.c", line 12: warning: variable "c" was declared but never referenced
+      c	/* { dg-message "note: previous declaration" } */
+      ^
+
+"Test_name.c", line 16: warning: variable "c" was declared but never referenced
+      c	/* { dg-error "conflicting types" } */
+      ^
+
+1 error detected in the compilation of "Test_name.c".

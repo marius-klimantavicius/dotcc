@@ -1,0 +1,5 @@
+eccp -DTEST_NUMBER=1 --c++17 -tused -A Test_name.c
+"Test_name.c", line 15: warning: variable "b" was declared but never referenced
+      const S& b = static_cast<const S&>(s); // temporary int has same lifetime as b
+               ^
+

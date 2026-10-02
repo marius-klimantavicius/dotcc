@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=2 -w --ms_c++20 --target win64 Test_name.c
+"Test_name.c", line 18: error: static assertion failed
+  static_assert(sizeof(Derived) == 32);
+  ^
+"Test_name.c", line 18: note: the final comparison was 48 == 32
+  static_assert(sizeof(Derived) == 32);
+                                ^
+
+"Test_name.c", line 19: error: static assertion failed
+  static_assert(__builtin_offsetof(Derived, c) == 24);
+  ^
+"Test_name.c", line 19: note: the final comparison was 32 == 24
+  static_assert(__builtin_offsetof(Derived, c) == 24);
+                                               ^
+
+2 errors detected in the compilation of "Test_name.c".

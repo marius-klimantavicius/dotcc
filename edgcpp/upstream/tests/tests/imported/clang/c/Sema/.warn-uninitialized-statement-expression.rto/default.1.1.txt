@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 16: warning: variable "i" is used before its value is set
+      int z = i; // expected-warning{{variable 'i' is uninitialized when used within its own initialization}}
+              ^
+
+"Test_name.c", line 16: warning: variable "z" was declared but never referenced
+      int z = i; // expected-warning{{variable 'i' is uninitialized when used within its own initialization}}
+          ^
+
+"Test_name.c", line 37: warning: variable "my_widget" is used before its value is set
+      struct widget z = my_widget; // expected-warning{{variable 'my_widget' is uninitialized when used within its own initialization}}
+                        ^
+
+"Test_name.c", line 37: warning: variable "z" was declared but never referenced
+      struct widget z = my_widget; // expected-warning{{variable 'my_widget' is uninitialized when used within its own initialization}}
+                    ^
+
+"Test_name.c", line 38: warning: variable "x" was declared but never referenced
+      int x = my_widget.x;         //FIXME: There should be an uninitialized warning here
+          ^
+
+"Test_name.c", line 47: warning: variable "a" is used before its value is set
+        b = a; // expected-warning{{variable 'a' is uninitialized when used within its own initialization}}
+            ^
+
+"Test_name.c", line 55: warning: variable "a" is used before its value is set
+      init2(a); // expected-warning{{variable 'a' is uninitialized when used within its own initialization}}
+            ^
+

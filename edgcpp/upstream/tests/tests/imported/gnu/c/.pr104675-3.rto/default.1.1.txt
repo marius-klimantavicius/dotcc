@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 7: error: _Complex can only be used with floating-point types
+  _Complex unsigned int
+  ^
+
+"Test_name.c", line 8: error: _Complex can only be used with floating-point types
+  foo (_Complex unsigned int x)
+       ^
+
+"Test_name.c", line 13: error: _Complex can only be used with floating-point types
+  _Complex unsigned int
+  ^
+
+"Test_name.c", line 14: error: _Complex can only be used with floating-point types
+  bar (_Complex unsigned int x)
+       ^
+
+"Test_name.c", line 19: error: _Complex can only be used with floating-point types
+  _Complex unsigned int
+  ^
+
+"Test_name.c", line 20: error: _Complex can only be used with floating-point types
+  baz (_Complex unsigned int x)
+       ^
+
+"Test_name.c", line 22: error: _Complex can only be used with floating-point types
+    _Complex unsigned int y = x / 2;
+    ^
+
+"Test_name.c", line 26: error: _Complex can only be used with floating-point types
+  _Complex unsigned int
+  ^
+
+"Test_name.c", line 27: error: _Complex can only be used with floating-point types
+  qux (_Complex unsigned int x)
+       ^
+
+"Test_name.c", line 29: error: _Complex can only be used with floating-point types
+    _Complex unsigned int y = x * 2;
+    ^
+
+10 errors detected in the compilation of "Test_name.c".

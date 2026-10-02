@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 16: warning: incomplete type "void" is not allowed
+      using P = int(*)(int(...pack)[sizeof(sizeof(T))]); // expected-error {{invalid application of 'sizeof'}}
+                                                  ^
+          detected during instantiation of "auto PR46377::non_dependent_via_sizeof<T...>() [with T=<float, void>]" at line 25
+

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=2 --g++ Test_name.c
+"Test_name.c", line 19: error: a local class cannot reference a variable-length array type from an enclosing function
+  		double x[sizeof(pva)];
+  		                ^
+
+"Test_name.c", line 20: error: a local class cannot reference a variable-length array type from an enclosing function
+  		double y[sizeof(va)];
+  		                ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=3 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 26: error: namespace "One::Bob" has no tag member named "B"
+  using enum Bob::B; // expected-error{{unknown type name B}}
+                  ^
+
+"Test_name.c", line 26: error: "B" is not an enum type
+  using enum Bob::B; // expected-error{{unknown type name B}}
+             ^
+
+"Test_name.c", line 30: error: class "One::Bob::C" is not an enum type
+  using enum Bob::C; // expected-error{{'Bob::C' is not an enumerated type}}
+             ^
+
+"Test_name.c", line 36: error: identifier "A" is undefined
+  A g; // expected-error{{unknown type name 'A'}}
+  ^
+
+"Test_name.c", line 51: warning: variable "x" was declared but never referenced
+    A_t x = a;
+        ^
+
+"Test_name.c", line 119: error: template parameter "Six::TPL<T>::B [with T=T]" is not an enum type
+    using enum TPL<T>::B; // expected-error{{cannot name a dependent type}}
+               ^
+
+"Test_name.c", line 153: error: template parameter "Seven::C<I>::D" is not an enum type
+    using enum D; // expected-error {{using-enum cannot name a dependent type}}
+               ^
+
+"Test_name.c", line 173: error: identifier "i" is undefined
+  constexpr auto d = i;
+                     ^
+
+"Test_name.c", line 202: error: "a" has already been declared in the current scope
+    using B::a; // expected-error{{target of using declaration}}
+             ^
+
+"Test_name.c", line 219: error: "a" has already been declared in the current scope
+    using enum Bob; // expected-error{{target of using declaration}}
+               ^
+
+"Test_name.c", line 230: error: enumerator "Thirteen::Bob::a" has already been declared in this scope at line 227
+    using enum Bob; // expected-error{{redeclaration of using-enum}}
+               ^
+
+"Test_name.c", line 236: error: enumerator "Thirteen::Bob::a" has already been declared in this scope at line 227
+    using enum Bob; // expected-error{{redeclaration of using-enum}}
+               ^
+
+"Test_name.c", line 247: error: variable "Fourteen::A<int>" is not an enum type
+  using enum A<int>; // expected-error {{A is not an enumerated type}}
+             ^
+
+"Test_name.c", line 273: warning: variable "u" was declared but never referenced
+    auto u = (Mask);
+         ^
+
+"Test_name.c", line 274: warning: variable "v" was declared but never referenced
+    auto v = (Mask << Shift);
+         ^
+
+12 errors detected in the compilation of "Test_name.c".

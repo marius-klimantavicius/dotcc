@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 14: error: expression must have arithmetic or unscoped enum type
+    ( true == false ? 0 : debug ("Some string")); // { dg-error "third operand .* type 'void'.* second operand is neither a throw-expression nor of type 'void'" }
+                          ^
+
+"Test_name.c", line 15: error: operand types are incompatible ("void" and "int")
+    ( true == false ? debug ("Some string") : 0 ); // { dg-error "second operand .* type 'void'.* third operand is neither a throw-expression nor of type 'void'" }
+                                            ^
+
+2 errors detected in the compilation of "Test_name.c".

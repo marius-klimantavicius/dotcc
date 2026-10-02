@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --strict Test_name.c
+"Test_name.c", line 16: warning: variable "s" was declared but never referenced
+  void f() { struct D::S s; }
+                         ^
+
+"Test_name.c", line 19: warning: variable "s" was declared but never referenced
+  	void f() { struct S s; }
+  	                    ^
+

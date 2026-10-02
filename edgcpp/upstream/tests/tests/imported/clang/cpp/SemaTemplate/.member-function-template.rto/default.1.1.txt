@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 35: warning: variable "pm1" was declared but never referenced
+    int& (X::*pm1)(int) = &X::f0;
+              ^
+
+"Test_name.c", line 36: warning: variable "pm2" was declared but never referenced
+    float& (X::*pm2)(float) = &X::f0;
+                ^
+
+"Test_name.c", line 40: warning: variable "pm1" was declared but never referenced
+    int& (X::*pm1)(int) = &X::f1;
+              ^
+
+"Test_name.c", line 41: warning: variable "pm2" was declared but never referenced
+    float& (X::*pm2)(float) = &X::f1;
+                ^
+
+"Test_name.c", line 42: warning: variable "pm3" was declared but never referenced
+    int& (X::*pm3)(float, int) = &X::f1;
+              ^
+
+"Test_name.c", line 76: error: pointer or reference to incomplete type "X2<int>" is not allowed
+    (void)x2->get<float>(); // expected-error{{implicit instantiation of undefined template}}
+          ^
+
+"Test_name.c", line 76: error: type name is not allowed
+    (void)x2->get<float>(); // expected-error{{implicit instantiation of undefined template}}
+                  ^
+
+"Test_name.c", line 76: error: expected an expression
+    (void)x2->get<float>(); // expected-error{{implicit instantiation of undefined template}}
+                         ^
+
+3 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: error: "= delete" can only appear on the first declaration of a function
+  template<> void foo<int> (int) = delete;     // { dg-error "deleted" }
+                                   ^
+
+"Test_name.c", line 17: error: "= delete" can only appear on the first declaration of a function
+  template<> void S::bar<int> (int) = delete;  // { dg-error "deleted" }
+                                      ^
+
+2 errors detected in the compilation of "Test_name.c".

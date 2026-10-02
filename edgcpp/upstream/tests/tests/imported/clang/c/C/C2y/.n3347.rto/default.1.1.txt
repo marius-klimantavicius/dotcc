@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 13: error: variable "f1" was declared with a never-completed type
+  static struct foo f1; /* expected-warning {{tentative definition of variable with internal linkage has incomplete non-array type 'struct foo'}}
+                    ^
+
+"Test_name.c", line 13: warning: variable "f1" was declared but never referenced
+  static struct foo f1; /* expected-warning {{tentative definition of variable with internal linkage has incomplete non-array type 'struct foo'}}
+                    ^
+
+"Test_name.c", line 21: warning: variable "b" was declared but never referenced
+  static struct bar b; /* expected-warning {{tentative definition of variable with internal linkage has incomplete non-array type 'struct bar'}}
+                    ^
+
+1 error detected in the compilation of "Test_name.c".

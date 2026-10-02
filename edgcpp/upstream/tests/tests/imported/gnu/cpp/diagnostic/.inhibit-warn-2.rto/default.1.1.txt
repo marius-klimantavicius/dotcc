@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 37: error: "A<<expression>>::type D::operator=(Expr) [with Expr=int]" (declared at line 31) is inaccessible
+    opt = 0; // { dg-error "private" }
+        ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,91 @@
+"""Nonvirtual inheritance layout/lifetimes/EH against EDG C and real NativeAOT."""
+import json
+import os
+from pathlib import Path
+import shutil
+import sys
+
+
+def verify_inheritance(root, tests, out, nativeaot, run):
+    source=out/'inheritance-oracle.cpp'
+    source.write_text('''#include <inheritance.cpp>
+extern "C" int printf(const char*,...);
+void hook() {}
+int main() { for(int i=0;i<48;++i) { int n; try { n=run_case(i,hook); } catch(int x) { n=x; }
+printf("%d:%d:%d:%llu\\n",i,n,read_live(),read_trace()); } }
+''')
+    c_source=out/'inheritance-oracle.c'
+    run([root/'build/bin/cpfe','--c++17','--gnu_version','130300','-I',tests,
+         '--gen_c_file_name',c_source,'-o',out/'inheritance-oracle.il',source],
+        env=dict(os.environ,EDG_BASE=str(root/'upstream/bases/docker/dev-env/gcc')))
+    candidates=[os.environ.get('EDG_TEST_CLANGXX','clang++')]
+    candidates.extend(str(p) for p in sorted(Path('/usr/lib').glob('llvm-*/bin/clang++')))
+    clang=next((shutil.which(p) for p in candidates if shutil.which(p)),None)
+    if not clang: raise RuntimeError('Clang required for the C oracle')
+    traces=[]
+    for label,compiler in [('gcc','gcc'),('clang',clang)]:
+        exe=out/f'inheritance-oracle-{label}'
+        run([compiler,'-x','c','-w','-std=gnu11',c_source,'-x','none',root/'build/lib/libC.a','-lm','-o',exe])
+        trace=run([exe]).stdout
+        (out/f'inheritance-oracle-{label}.txt').write_text(trace)
+        traces.append(trace)
+    assert traces[0]==traces[1],traces
+    expected=traces[0]
+    values=[93,1,1,1,124,1,92,32,101,104,107,111,1,1,1,41,16,17,51,19,80,51,122,31,1,1,31,1,1,1,1,1,72,1,1,1,105,137,41,1,40,1,1,1,1,1,46,1]
+    assert [tuple(map(int,line.split(':')[:3])) for line in expected.splitlines()]==[(i,n,0) for i,n in enumerate(values)],expected
+    checks=['nonvirtual inheritance: 48 EDG C layout/value/lifetime traces agree under GCC and Clang']
+    for instance in (False,True):
+        mode='instance' if instance else 'static'
+        directory=out/f'inheritance-{mode}'
+        run([sys.executable,root/'dotnet.py',tests/'inheritance.cpp','--emit','managedlib',
+             '--output-dir',directory,'--namespace','','--class-name','Core','--split',
+             'size' if instance else 'function','--split-size','2400',
+             *(['--instance-methods'] if instance else ['--no-nest-types'])])
+        manifest=json.loads((directory/'dot-gen.json').read_text())
+        def method(function, receiver='owner'):
+            prefix=f'_Z{len(function)}{function}'
+            names=[e['method'] for e in manifest['exports'] if e['symbol'].startswith(prefix)]
+            assert len(names)==1,(function,names)
+            return (receiver+'.' if instance else 'Core.')+names[0]
+        host=directory/'host';host.mkdir(exist_ok=True)
+        (host/'Host.csproj').write_text('''<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup>
+<OutputType>Exe</OutputType><TargetFramework>net10.0</TargetFramework>
+<AllowUnsafeBlocks>true</AllowUnsafeBlocks><IsAotCompatible>true</IsAotCompatible>
+</PropertyGroup><ItemGroup><ProjectReference Include="../Generated.csproj" /></ItemGroup></Project>''')
+        (host/'Program.cs').write_text(f'''using System;
+unsafe class EntryPoint {{
+  {('static readonly Core owner = new Core(), second = new Core();' if instance else '')}
+  static readonly Exception injected=new InvalidOperationException("foreign");
+  static void Collect({'Core current' if instance else ''}) {{
+    GC.Collect(2, GCCollectionMode.Forced, true, true); GC.WaitForPendingFinalizers();
+  }}
+  static void Inject({'Core current' if instance else ''}) {{ throw injected; }}
+  static void CrossOwner({'Core current' if instance else ''}) {{ {method('throw_derived','second')}(); }}
+  static void CrossRethrow({'Core current' if instance else ''}) {{ Collect({('current' if instance else '')}); {method('again','second')}(); }}
+  static int Main() {{
+    for(int i=0;i<48;++i) {{ int n={method('run_checked')}(i,&Collect); Console.WriteLine($"{{i}}:{{n}}:{{{method('read_live')}()}}:{{{method('read_trace')}()}}"); }}
+    try {{ {method('run_case')}(12,&Inject); return 91; }} catch(Exception ex) {{
+      if(!Object.ReferenceEquals(ex,injected) || {method('read_live')}()!=0) return 92;
+    }}
+    {method('reset')}(); {method('reset','second')}();
+    if({method('catch_right')}(&CrossOwner)!=1 || {method('read_live','second')}()!=0) return 93;
+    if({method('read_trace','second')}()!=39773381210UL) return 94;
+    {('if('+method('read_trace')+'()!=0) return 95;' if instance else '')}
+    if({method('run_checked')}(22,&CrossRethrow)!=122 || {method('read_live')}()!=0) return 96;
+    if({method('mutate_global')}()!=6 || {method('mutate_global')}()!=7) return 97;
+    {('if('+method('mutate_global','second')+'()!=6) return 98;' if instance else '')}
+    return 0;
+  }}
+}}''')
+        run(['dotnet','build',host/'Host.csproj','-c','Release','--nologo','-p:TreatWarningsAsErrors=true'])
+        commands=[('JIT',['dotnet',host/'bin/Release/net10.0/Host.dll'])]
+        if nativeaot:
+            run(['dotnet','publish',host/'Host.csproj','-c','Release','-r','linux-x64',
+                 '-p:PublishAot=true','-p:IlcTreatWarningsAsErrors=true','-o',host/'aot'])
+            commands.append(('NativeAOT',[host/'aot/Host']))
+        for runtime,command in commands:
+            actual=run(command,timeout=90).stdout
+            (host/f'{runtime}-trace.txt').write_text(actual)
+            assert actual==expected,(mode,runtime,expected,actual)
+            checks.append(f'nonvirtual inheritance/{mode}/{runtime}: 48 C traces; forced GC, adjusted base catches, tail padding, failed construction, origin-owner destruction and foreign identity')
+    return checks

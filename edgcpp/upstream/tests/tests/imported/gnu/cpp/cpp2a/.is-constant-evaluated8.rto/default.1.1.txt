@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 14: warning: 'explicit(bool)' is a C++20 feature
+  struct A { explicit (!__builtin_is_constant_evaluated ()) A (int); };	// { dg-warning "'explicit\\(bool\\)' only available with" "" { target c++17_down } }
+             ^
+
+"Test_name.c", line 14: warning: call to __builtin_is_constant_evaluated appearing in a constant expression always produces "true"
+  struct A { explicit (!__builtin_is_constant_evaluated ()) A (int); };	// { dg-warning "'explicit\\(bool\\)' only available with" "" { target c++17_down } }
+                                                        ^
+
+"Test_name.c", line 15: warning: 'explicit(bool)' is a C++20 feature
+  struct B { explicit (!std::is_constant_evaluated ()) B (int); };	// { dg-warning "'explicit\\(bool\\)' only available with" "" { target c++17_down } }
+             ^
+
+"Test_name.c", line 15: warning: call to is_constant_evaluated appearing in a constant expression always produces "true"
+  struct B { explicit (!std::is_constant_evaluated ()) B (int); };	// { dg-warning "'explicit\\(bool\\)' only available with" "" { target c++17_down } }
+                                                   ^
+
+"Test_name.c", line 16: warning: 'explicit(bool)' is a C++20 feature
+  struct C { explicit (__builtin_is_constant_evaluated ()) C (int); };	// { dg-warning "'explicit\\(bool\\)' only available with" "" { target c++17_down } }
+             ^
+
+"Test_name.c", line 16: warning: call to __builtin_is_constant_evaluated appearing in a constant expression always produces "true"
+  struct C { explicit (__builtin_is_constant_evaluated ()) C (int); };	// { dg-warning "'explicit\\(bool\\)' only available with" "" { target c++17_down } }
+                                                       ^
+
+"Test_name.c", line 17: warning: 'explicit(bool)' is a C++20 feature
+  struct D { explicit (std::is_constant_evaluated ()) D (int); };		// { dg-warning "'explicit\\(bool\\)' only available with" "" { target c++17_down } }
+             ^
+
+"Test_name.c", line 17: warning: call to is_constant_evaluated appearing in a constant expression always produces "true"
+  struct D { explicit (std::is_constant_evaluated ()) D (int); };		// { dg-warning "'explicit\\(bool\\)' only available with" "" { target c++17_down } }
+                                                  ^
+
+"Test_name.c", line 20: error: no suitable constructor exists to convert from "int" to "C"
+  C c = 3;	// { dg-error "conversion from 'int' to non-scalar type 'C' requested" }
+        ^
+
+"Test_name.c", line 21: error: no suitable constructor exists to convert from "int" to "D"
+  D d = 4;	// { dg-error "conversion from 'int' to non-scalar type 'D' requested" }
+        ^
+
+2 errors detected in the compilation of "Test_name.c".

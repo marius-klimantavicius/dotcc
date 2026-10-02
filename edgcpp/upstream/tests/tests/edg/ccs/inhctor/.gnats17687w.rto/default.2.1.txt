@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=2 --c++11 -tused -A Test_name.c
+"Test_name.c", line 17: error: more than one instance of constructor "D<T>::D [with T=int]" matches the argument list:
+            function "B1<T>::B1(U) [with T=int]" (declared at line 6), inherited via using decl at line 13
+            function "B2<T>::B2(U) [with T=int]" (declared at line 9), inherited via using decl at line 14
+            argument types are: (double)
+  D<int> d(2.0);
+           ^
+"Test_name.c", line 12: note: number of parameters of function "D<T>::D() [with T=int]" does not match the call
+  template<class T> struct D: B1<T>, B2<T> {
+                           ^
+
+1 error detected in the compilation of "Test_name.c".

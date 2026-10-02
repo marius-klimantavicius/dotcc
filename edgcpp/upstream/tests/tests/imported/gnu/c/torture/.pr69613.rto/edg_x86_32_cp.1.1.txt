@@ -1,0 +1,14 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc -w Test_name.c
+"Test_name.c", line 14: error: expected a ";"
+  typedef unsigned __int128 u128;
+                            ^
+
+"Test_name.c", line 15: error: expected a ";"
+  typedef unsigned __int128 v32u128 __attribute__ ((vector_size (32)));
+                            ^
+
+"Test_name.c", line 18: error: expected a ";"
+  foo (u32 u32_0, u64 u64_1, u128 u128_1, v32u16 v32u16_0, v32u128 v32u128_0,
+  ^
+
+3 errors detected in the compilation of "Test_name.c".

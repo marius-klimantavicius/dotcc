@@ -1,0 +1,298 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 15: error: expected a ";"
+  	continue a;	/* { dg-error "ISO C does not support 'continue' statement with an identifier operand before" } */
+  	         ^
+
+"Test_name.c", line 17: error: expected a ";"
+  	continue b;	/* { dg-error "ISO C does not support 'continue' statement with an identifier operand before" } */
+  	         ^
+
+"Test_name.c", line 19: error: expected a ";"
+  	continue c;	/* { dg-error "ISO C does not support 'continue' statement with an identifier operand before" } */
+  	         ^
+
+"Test_name.c", line 21: error: expected a ";"
+  	break b;	/* { dg-error "ISO C does not support 'break' statement with an identifier operand before" } */
+  	      ^
+
+"Test_name.c", line 25: warning: unrecognized GCC pragma
+    #pragma GCC unroll 2
+                ^
+
+"Test_name.c", line 30: error: expected a ";"
+  	continue g;	/* { dg-error "ISO C does not support 'continue' statement with an identifier operand before" } */
+  	         ^
+
+"Test_name.c", line 32: error: expected a ";"
+  	continue h;	/* { dg-error "ISO C does not support 'continue' statement with an identifier operand before" } */
+  	         ^
+
+"Test_name.c", line 34: error: expected a ";"
+  	break g;	/* { dg-error "ISO C does not support 'break' statement with an identifier operand before" } */
+  	      ^
+
+"Test_name.c", line 43: error: expected a ";"
+        break k;		/* { dg-error "ISO C does not support 'break' statement with an identifier operand before" } */
+              ^
+
+"Test_name.c", line 45: error: expected a ";"
+        break l;		/* { dg-error "ISO C does not support 'break' statement with an identifier operand before" } */
+              ^
+
+"Test_name.c", line 66: error: expected a ";"
+  		    break ae;		/* { dg-error "ISO C does not support 'break' statement with an identifier operand before" } */
+  		          ^
+
+"Test_name.c", line 68: error: expected a ";"
+  		    break ab;		/* { dg-error "ISO C does not support 'break' statement with an identifier operand before" } */
+  		          ^
+
+"Test_name.c", line 70: error: expected a ";"
+  		    break z;		/* { dg-error "ISO C does not support 'break' statement with an identifier operand before" } */
+  		          ^
+
+"Test_name.c", line 72: error: expected a ";"
+  		    break v;		/* { dg-error "ISO C does not support 'break' statement with an identifier operand before" } */
+  		          ^
+
+"Test_name.c", line 74: error: expected a ";"
+  		    break s;		/* { dg-error "ISO C does not support 'break' statement with an identifier operand before" } */
+  		          ^
+
+"Test_name.c", line 76: error: expected a ";"
+  		    break p;		/* { dg-error "ISO C does not support 'break' statement with an identifier operand before" } */
+  		          ^
+
+"Test_name.c", line 80: error: expected a ";"
+  		    continue aa;	/* { dg-error "ISO C does not support 'continue' statement with an identifier operand before" } */
+  		             ^
+
+"Test_name.c", line 82: error: expected a ";"
+  		    continue y;		/* { dg-error "ISO C does not support 'continue' statement with an identifier operand before" } */
+  		             ^
+
+"Test_name.c", line 84: error: expected a ";"
+  		    continue x;		/* { dg-error "ISO C does not support 'continue' statement with an identifier operand before" } */
+  		             ^
+
+"Test_name.c", line 86: error: expected a ";"
+  		    continue m;		/* { dg-error "ISO C does not support 'continue' statement with an identifier operand before" } */
+  		             ^
+
+"Test_name.c", line 91: error: expected a ";"
+  			break ag;	/* { dg-error "ISO C does not support 'break' statement with an identifier operand before" } */
+  			      ^
+
+"Test_name.c", line 93: error: expected a ";"
+  			continue ah;	/* { dg-error "ISO C does not support 'continue' statement with an identifier operand before" } */
+  			         ^
+
+"Test_name.c", line 110: error: expected a ";"
+        break ak;				/* { dg-error "ISO C does not support 'break' statement with an identifier operand before" } */
+              ^
+
+"Test_name.c", line 112: error: expected a ";"
+        break aj;				/* { dg-error "ISO C does not support 'break' statement with an identifier operand before" } */
+              ^
+
+"Test_name.c", line 114: error: expected a ";"
+        continue ai;			/* { dg-error "ISO C does not support 'continue' statement with an identifier operand before" } */
+                 ^
+
+"Test_name.c", line 121: error: expected a ";"
+  	continue am;			/* { dg-error "ISO C does not support 'continue' statement with an identifier operand before" } */
+  	         ^
+
+"Test_name.c", line 123: error: expected a ";"
+  	break al;			/* { dg-error "ISO C does not support 'break' statement with an identifier operand before" } */
+  	      ^
+
+"Test_name.c", line 132: error: expected a ";"
+  	break ao;			/* { dg-error "ISO C does not support 'break' statement with an identifier operand before" } */
+  	      ^
+
+"Test_name.c", line 134: error: expected a ";"
+  	continue an;			/* { dg-error "ISO C does not support 'continue' statement with an identifier operand before" } */
+  	         ^
+
+"Test_name.c", line 142: error: expected a ";"
+        break ap;				/* { dg-error "ISO C does not support 'break' statement with an identifier operand before" } */
+              ^
+
+"Test_name.c", line 144: error: expected a ";"
+        break aq;				/* { dg-error "ISO C does not support 'break' statement with an identifier operand before" } */
+              ^
+
+"Test_name.c", line 10: warning: label "d" was declared but never referenced
+    d: e: f:;
+    ^
+
+"Test_name.c", line 10: warning: label "e" was declared but never referenced
+    d: e: f:;
+       ^
+
+"Test_name.c", line 10: warning: label "f" was declared but never referenced
+    d: e: f:;
+          ^
+
+"Test_name.c", line 11: warning: label "a" was declared but never referenced
+    a: b: c:
+    ^
+
+"Test_name.c", line 11: warning: label "b" was declared but never referenced
+    a: b: c:
+       ^
+
+"Test_name.c", line 11: warning: label "c" was declared but never referenced
+    a: b: c:
+          ^
+
+"Test_name.c", line 24: warning: label "g" was declared but never referenced
+    g: h:
+    ^
+
+"Test_name.c", line 24: warning: label "h" was declared but never referenced
+    g: h:
+       ^
+
+"Test_name.c", line 36: warning: label "i" was declared but never referenced
+    i: j:;
+    ^
+
+"Test_name.c", line 36: warning: label "j" was declared but never referenced
+    i: j:;
+       ^
+
+"Test_name.c", line 37: warning: label "k" was declared but never referenced
+    k: l:
+    ^
+
+"Test_name.c", line 37: warning: label "l" was declared but never referenced
+    k: l:
+       ^
+
+"Test_name.c", line 47: warning: label "m" was declared but never referenced
+    m: n: o: p:
+    ^
+
+"Test_name.c", line 47: warning: label "n" was declared but never referenced
+    m: n: o: p:
+       ^
+
+"Test_name.c", line 47: warning: label "o" was declared but never referenced
+    m: n: o: p:
+          ^
+
+"Test_name.c", line 47: warning: label "p" was declared but never referenced
+    m: n: o: p:
+             ^
+
+"Test_name.c", line 49: warning: label "q" was declared but never referenced
+      q: r: s: t:
+      ^
+
+"Test_name.c", line 49: warning: label "r" was declared but never referenced
+      q: r: s: t:
+         ^
+
+"Test_name.c", line 49: warning: label "s" was declared but never referenced
+      q: r: s: t:
+            ^
+
+"Test_name.c", line 49: warning: label "t" was declared but never referenced
+      q: r: s: t:
+               ^
+
+"Test_name.c", line 53: warning: label "u" was declared but never referenced
+  	u: v:
+  	^
+
+"Test_name.c", line 53: warning: label "v" was declared but never referenced
+  	u: v:
+  	   ^
+
+"Test_name.c", line 55: warning: label "w" was declared but never referenced
+  	w: x:
+  	^
+
+"Test_name.c", line 55: warning: label "x" was declared but never referenced
+  	w: x:
+  	   ^
+
+"Test_name.c", line 57: warning: label "y" was declared but never referenced
+  	  y: z:
+  	  ^
+
+"Test_name.c", line 57: warning: label "z" was declared but never referenced
+  	  y: z:
+  	     ^
+
+"Test_name.c", line 59: warning: label "aa" was declared but never referenced
+  	    aa: ab: ac:
+  	    ^
+
+"Test_name.c", line 59: warning: label "ab" was declared but never referenced
+  	    aa: ab: ac:
+  	        ^
+
+"Test_name.c", line 59: warning: label "ac" was declared but never referenced
+  	    aa: ab: ac:
+  	            ^
+
+"Test_name.c", line 61: warning: label "ad" was declared but never referenced
+  	      ad: ae: af:
+  	      ^
+
+"Test_name.c", line 61: warning: label "ae" was declared but never referenced
+  	      ad: ae: af:
+  	          ^
+
+"Test_name.c", line 61: warning: label "af" was declared but never referenced
+  	      ad: ae: af:
+  	              ^
+
+"Test_name.c", line 87: warning: label "ag" was declared but never referenced
+  		  ag: ah:
+  		  ^
+
+"Test_name.c", line 87: warning: label "ah" was declared but never referenced
+  		  ag: ah:
+  		      ^
+
+"Test_name.c", line 104: warning: label "ai" was declared but never referenced
+    [[]] [[]] ai:
+              ^
+
+"Test_name.c", line 105: warning: label "aj" was declared but never referenced
+    [[]] [[]] aj:
+              ^
+
+"Test_name.c", line 106: warning: label "ak" was declared but never referenced
+    [[]] [[]] ak:
+              ^
+
+"Test_name.c", line 115: warning: label "al" was declared but never referenced
+    al:
+    ^
+
+"Test_name.c", line 116: warning: label "am" was declared but never referenced
+    [[]] am:
+         ^
+
+"Test_name.c", line 126: warning: label "an" was declared but never referenced
+    an:
+    ^
+
+"Test_name.c", line 127: warning: label "ao" was declared but never referenced
+    [[]] ao:
+         ^
+
+"Test_name.c", line 136: warning: label "ap" was declared but never referenced
+    [[]] ap:
+         ^
+
+"Test_name.c", line 137: warning: label "aq" was declared but never referenced
+    [[]] aq:
+         ^
+
+30 errors detected in the compilation of "Test_name.c".

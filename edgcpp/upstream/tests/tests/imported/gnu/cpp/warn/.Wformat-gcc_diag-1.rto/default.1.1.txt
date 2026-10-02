@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 36: warning: unrecognized format function type "__gcc_diag__" ignored
+  void diag (const char*, ...) FORMAT (diag);
+                               ^
+
+"Test_name.c", line 37: warning: unrecognized format function type "__gcc_cdiag__" ignored
+  void cdiag (const char*, ...) FORMAT (cdiag);
+                                ^
+
+"Test_name.c", line 38: warning: unrecognized format function type "__gcc_tdiag__" ignored
+  void tdiag (const char*, ...) FORMAT (tdiag);
+                                ^
+
+"Test_name.c", line 39: warning: unrecognized format function type "__gcc_cxxdiag__" ignored
+  void cxxdiag (const char*, ...) FORMAT (cxxdiag);
+                                  ^
+
+"Test_name.c", line 40: warning: unrecognized format function type "__gcc_dump_printf__" ignored
+  void dump (const char*, ...) FORMAT (dump_printf);
+                               ^
+

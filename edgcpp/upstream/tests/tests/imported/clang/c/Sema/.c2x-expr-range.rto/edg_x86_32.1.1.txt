@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 9: error: integer constant is too large
+    (void)(*a >> 123456789012345678901uwb <= 0); // expected-warning {{shift count >= width of type}}
+                 ^
+
+"Test_name.c", line 14: error: identifier "__uint128_t" is undefined
+  void test2(__uint128_t *a) {
+             ^
+
+"Test_name.c", line 15: error: identifier "__uint128_t" is undefined
+    (void)(*a >> ((__uint128_t)__UINT64_MAX__ + 1) <= 0); // expected-warning {{shift count >= width of type}}
+                   ^
+
+"Test_name.c", line 15: error: expected a ")"
+    (void)(*a >> ((__uint128_t)__UINT64_MAX__ + 1) <= 0); // expected-warning {{shift count >= width of type}}
+                               ^
+
+"Test_name.c", line 27: warning: shift count is too large
+    return a << 129wb; // expected-warning {{shift count >= width of type}}
+                ^
+
+4 errors detected in the compilation of "Test_name.c".

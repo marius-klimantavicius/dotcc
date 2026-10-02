@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 14: warning: variable "ar" was set but never used
+    int ar[1][i];    // { dg-error "7:ISO C\\+\\+ forbids variable length array .ar" }
+        ^
+
+"Test_name.c", line 24: error: reference to local variable of enclosing function is not allowed
+      int ar[1][i];  // { dg-error "15:size of array .ar. is not an integral" }
+                ^
+
+1 error detected in the compilation of "Test_name.c".

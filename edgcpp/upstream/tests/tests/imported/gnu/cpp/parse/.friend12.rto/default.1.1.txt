@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 7: error: invalid friend declaration
+    friend int i = 0;  // { dg-error "14:.i. is neither function nor member function; cannot be declared friend" }
+    ^
+
+"Test_name.c", line 7: error: expected a ";"
+    friend int i = 0;  // { dg-error "14:.i. is neither function nor member function; cannot be declared friend" }
+                 ^
+
+2 errors detected in the compilation of "Test_name.c".

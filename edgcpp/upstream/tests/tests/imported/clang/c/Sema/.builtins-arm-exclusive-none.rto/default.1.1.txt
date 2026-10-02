@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 10: warning: function "__builtin_arm_ldrex" declared implicitly
+    sum += __builtin_arm_ldrex(addr); // expected-error {{load and store exclusive builtins are not available on this architecture}}
+           ^
+
+"Test_name.c", line 19: warning: function "__builtin_arm_strex" declared implicitly
+    res |= __builtin_arm_strex(4, addr); // expected-error {{load and store exclusive builtins are not available on this architecture}}
+           ^
+
+"Test_name.c", line 28: warning: function "__builtin_arm_ldrexd" declared implicitly
+    sum += __builtin_arm_ldrexd(addr); // expected-error {{load and store exclusive builtins are not available on this architecture}}
+           ^
+
+"Test_name.c", line 37: warning: function "__builtin_arm_strexd" declared implicitly
+    res |= __builtin_arm_strexd(4, addr); // expected-error {{load and store exclusive builtins are not available on this architecture}}
+           ^
+

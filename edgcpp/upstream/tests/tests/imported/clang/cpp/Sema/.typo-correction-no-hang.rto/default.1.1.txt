@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 15: error: identifier "structVar1" is undefined
+        structVar1.fieldName1.member1,  //expected-error{{use of undeclared identifier 'structVar1'}} \
+        ^
+
+"Test_name.c", line 17: error: identifier "structVar2" is undefined
+        structVar2.fieldName2.member2); //expected-error{{use of undeclared identifier 'structVar2'}} \
+        ^
+
+"Test_name.c", line 13: warning: variable "structVar" was declared but never referenced
+    struct rdar38642201 structVar;      //expected-note 2{{'structVar' declared here}}
+                        ^
+
+"Test_name.c", line 37: error: class "B" has no member "deparT"
+    return b.deparT().hours() * 60 + //expected-error{{no member named 'deparT' in 'B'}}
+             ^
+
+"Test_name.c", line 38: error: class "B" has no member "deparT"
+           b.deparT().minutes();     //expected-error{{no member named 'deparT' in 'B'}}
+             ^
+
+"Test_name.c", line 42: error: class "A" has no member "longitude"
+    return b.depar().longitude() + //expected-error{{no member named 'longitude' in 'A'}}
+                     ^
+
+"Test_name.c", line 43: error: class "A" has no member "latitude"
+           b.depar().latitude();   //expected-error{{no member named 'latitude' in 'A'}}
+                     ^
+
+6 errors detected in the compilation of "Test_name.c".

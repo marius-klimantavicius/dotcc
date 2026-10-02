@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=1 --microsoft --multi_trans Test_name.c polyspace20_2.c

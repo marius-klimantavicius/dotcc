@@ -1,0 +1,226 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++26 Test_name.c
+"Test_name.c", line 5: error: expected "class" or "typename"
+  template<template<typename> auto Var>
+                              ^
+
+"Test_name.c", line 5: error: expected a "," or ">"
+  template<template<typename> auto Var>
+                              ^
+
+"Test_name.c", line 7: error: expected "class" or "typename"
+  template<template<auto> auto Var>
+                          ^
+
+"Test_name.c", line 7: error: expected a "," or ">"
+  template<template<auto> auto Var>
+                          ^
+
+"Test_name.c", line 9: error: expected "class" or "typename"
+  template<template<typename> auto Var>
+                              ^
+
+"Test_name.c", line 9: error: expected a "," or ">"
+  template<template<typename> auto Var>
+                              ^
+
+"Test_name.c", line 11: error: expected "class" or "typename"
+  template<template<typename> concept C>
+                              ^
+
+"Test_name.c", line 11: error: expected a "," or ">"
+  template<template<typename> concept C>
+                              ^
+
+"Test_name.c", line 13: error: expected "class" or "typename"
+  template<template<auto> concept C>
+                          ^
+
+"Test_name.c", line 13: error: expected a "," or ">"
+  template<template<auto> concept C>
+                          ^
+
+"Test_name.c", line 16: error: expected "class" or "typename"
+  template<template<typename> auto Var>
+                              ^
+
+"Test_name.c", line 16: error: expected a "," or ">"
+  template<template<typename> auto Var>
+                              ^
+
+"Test_name.c", line 18: error: expected "class" or "typename"
+  template<template<auto> auto Var>
+                          ^
+
+"Test_name.c", line 18: error: expected a "," or ">"
+  template<template<auto> auto Var>
+                          ^
+
+"Test_name.c", line 20: error: expected "class" or "typename"
+  template<template<typename> auto Var>
+                              ^
+
+"Test_name.c", line 20: error: expected a "," or ">"
+  template<template<typename> auto Var>
+                              ^
+
+"Test_name.c", line 22: error: expected "class" or "typename"
+  template<template<typename> concept C>
+                              ^
+
+"Test_name.c", line 22: error: expected a "," or ">"
+  template<template<typename> concept C>
+                              ^
+
+"Test_name.c", line 24: error: expected "class" or "typename"
+  template<template<auto> concept C>
+                          ^
+
+"Test_name.c", line 24: error: expected a "," or ">"
+  template<template<auto> concept C>
+                          ^
+
+"Test_name.c", line 29: error: expected "class" or "typename"
+  template<template<typename> auto... Var>
+                              ^
+
+"Test_name.c", line 29: error: expected a "," or ">"
+  template<template<typename> auto... Var>
+                              ^
+
+"Test_name.c", line 31: error: expected "class" or "typename"
+  template<template<auto> auto... Var>
+                          ^
+
+"Test_name.c", line 31: error: expected a "," or ">"
+  template<template<auto> auto... Var>
+                          ^
+
+"Test_name.c", line 33: error: expected "class" or "typename"
+  template<template<typename> auto... Var>
+                              ^
+
+"Test_name.c", line 33: error: expected a "," or ">"
+  template<template<typename> auto... Var>
+                              ^
+
+"Test_name.c", line 35: error: expected "class" or "typename"
+  template<template<typename> concept... C>
+                              ^
+
+"Test_name.c", line 35: error: expected a "," or ">"
+  template<template<typename> concept... C>
+                              ^
+
+"Test_name.c", line 37: error: expected "class" or "typename"
+  template<template<auto> concept... C>
+                          ^
+
+"Test_name.c", line 37: error: expected a "," or ">"
+  template<template<auto> concept... C>
+                          ^
+
+"Test_name.c", line 40: error: expected "class" or "typename"
+  template<template<typename> auto... Var>
+                              ^
+
+"Test_name.c", line 40: error: expected a "," or ">"
+  template<template<typename> auto... Var>
+                              ^
+
+"Test_name.c", line 42: error: expected "class" or "typename"
+  template<template<auto> auto...  Var>
+                          ^
+
+"Test_name.c", line 42: error: expected a "," or ">"
+  template<template<auto> auto...  Var>
+                          ^
+
+"Test_name.c", line 44: error: expected "class" or "typename"
+  template<template<typename> auto...  Var>
+                              ^
+
+"Test_name.c", line 44: error: expected a "," or ">"
+  template<template<typename> auto...  Var>
+                              ^
+
+"Test_name.c", line 46: error: expected "class" or "typename"
+  template<template<typename> concept... C>
+                              ^
+
+"Test_name.c", line 46: error: expected a "," or ">"
+  template<template<typename> concept... C>
+                              ^
+
+"Test_name.c", line 48: error: expected "class" or "typename"
+  template<template<auto> concept... C>
+                          ^
+
+"Test_name.c", line 48: error: expected a "," or ">"
+  template<template<auto> concept... C>
+                          ^
+
+"Test_name.c", line 54: error: expected "class" or "typename"
+  template<template<auto> concept...>
+                          ^
+
+"Test_name.c", line 54: error: expected a "," or ">"
+  template<template<auto> concept...>
+                          ^
+
+"Test_name.c", line 56: error: expected "class" or "typename"
+  template<template<auto> concept... C>
+                          ^
+
+"Test_name.c", line 56: error: expected a "," or ">"
+  template<template<auto> concept... C>
+                          ^
+
+"Test_name.c", line 58: error: expected "class" or "typename"
+  template<template<auto> concept& C> // expected-error{{expected identifier}} \
+                          ^
+
+"Test_name.c", line 58: error: expected a "," or ">"
+  template<template<auto> concept& C> // expected-error{{expected identifier}} \
+                          ^
+
+"Test_name.c", line 64: error: expected "class" or "typename"
+  template<template<auto> auto...>
+                          ^
+
+"Test_name.c", line 64: error: expected a "," or ">"
+  template<template<auto> auto...>
+                          ^
+
+"Test_name.c", line 66: error: expected "class" or "typename"
+  template<template<auto> auto & C> // expected-error {{expected identifier}} \
+                          ^
+
+"Test_name.c", line 66: error: expected a "," or ">"
+  template<template<auto> auto & C> // expected-error {{expected identifier}} \
+                          ^
+
+"Test_name.c", line 69: error: expected "class" or "typename"
+  template<template<auto> const auto> // expected-error {{expected identifier}} \
+                          ^
+
+"Test_name.c", line 69: error: expected a "," or ">"
+  template<template<auto> const auto> // expected-error {{expected identifier}} \
+                          ^
+
+"Test_name.c", line 75: error: expected a type specifier
+  template<concept> // expected-error {{expected template parameter}} \
+           ^
+
+"Test_name.c", line 78: error: expected a type specifier
+  template<template<concept> auto> // expected-error {{expected template parameter}} \
+                    ^
+
+"Test_name.c", line 78: error: expected "class" or "typename"
+  template<template<concept> auto> // expected-error {{expected template parameter}} \
+                             ^
+
+"Test_name.c", line 78: error: expected a "," or ">"
+  template<template<concept> auto> // expected-error {{expected template parameter}} \
+                             ^
+
+56 errors detected in the compilation of "Test_name.c".

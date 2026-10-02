@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=3 --parse Test_name.c
+"Test_name.c", line 17: error: expected a ":"
+  		case I ... J:
+  		       ^
+
+"Test_name.c", line 18: error: expected a ":"
+  		case I+2 ... J-2:
+  		         ^
+
+2 errors detected in the compilation of "Test_name.c".

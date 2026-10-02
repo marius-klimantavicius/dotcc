@@ -1,0 +1,317 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 10: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 13: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 16: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 19: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 22: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 25: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 28: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 31: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 34: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 37: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 40: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 43: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 46: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 49: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 52: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 55: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 58: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 61: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 64: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 67: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 70: warning: unrecognized #pragma
+    #pragma omp for collapse(2)
+            ^
+
+"Test_name.c", line 74: warning: unrecognized #pragma
+    #pragma omp for collapse(2)
+            ^
+
+"Test_name.c", line 78: warning: unrecognized #pragma
+    #pragma omp for collapse(2)
+            ^
+
+"Test_name.c", line 82: warning: unrecognized #pragma
+    #pragma omp for collapse(2)
+            ^
+
+"Test_name.c", line 86: warning: unrecognized #pragma
+    #pragma omp for collapse(2)
+            ^
+
+"Test_name.c", line 90: warning: unrecognized #pragma
+    #pragma omp for collapse(2)
+            ^
+
+"Test_name.c", line 94: warning: unrecognized #pragma
+    #pragma omp for collapse(2)
+            ^
+
+"Test_name.c", line 98: warning: unrecognized #pragma
+    #pragma omp for collapse(2)
+            ^
+
+"Test_name.c", line 102: warning: unrecognized #pragma
+    #pragma omp for collapse(2)
+            ^
+
+"Test_name.c", line 106: warning: unrecognized #pragma
+    #pragma omp for collapse(2)
+            ^
+
+"Test_name.c", line 110: warning: unrecognized #pragma
+    #pragma omp for collapse(2)
+            ^
+
+"Test_name.c", line 114: warning: unrecognized #pragma
+    #pragma omp for collapse(2)
+            ^
+
+"Test_name.c", line 118: warning: unrecognized #pragma
+    #pragma omp for collapse(2)
+            ^
+
+"Test_name.c", line 122: warning: unrecognized #pragma
+    #pragma omp for collapse(2)
+            ^
+
+"Test_name.c", line 126: warning: unrecognized #pragma
+    #pragma omp for collapse(2)
+            ^
+
+"Test_name.c", line 130: warning: unrecognized #pragma
+    #pragma omp for collapse(2)
+            ^
+
+"Test_name.c", line 134: warning: unrecognized #pragma
+    #pragma omp for collapse(2)
+            ^
+
+"Test_name.c", line 138: warning: unrecognized #pragma
+    #pragma omp for collapse(2)
+            ^
+
+"Test_name.c", line 147: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 150: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 153: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 156: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 159: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 160: warning: variable "i" is used before its value is set
+    for (int i = i; i < 16; i++) /* { dg-error "initializer expression refers to iteration variable" } */
+                 ^
+
+"Test_name.c", line 162: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 163: warning: variable "i" is used before its value is set
+    for (int i = 2 * (i & x); i < 16; i++) /* { dg-error "initializer expression refers to iteration variable" } */
+                      ^
+
+"Test_name.c", line 165: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 166: warning: variable "i" is used before its value is set
+    for (int i = bar (i); i < 16; i++) /* { dg-error "initializer expression refers to iteration variable" } */
+                      ^
+
+"Test_name.c", line 168: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 171: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 174: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 177: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 180: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 183: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 186: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 189: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 192: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 195: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 198: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 201: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 204: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 207: warning: unrecognized #pragma
+    #pragma omp for collapse(2)
+            ^
+
+"Test_name.c", line 211: warning: unrecognized #pragma
+    #pragma omp for collapse(2)
+            ^
+
+"Test_name.c", line 215: warning: unrecognized #pragma
+    #pragma omp for collapse(2)
+            ^
+
+"Test_name.c", line 219: warning: unrecognized #pragma
+    #pragma omp for collapse(2)
+            ^
+
+"Test_name.c", line 223: warning: unrecognized #pragma
+    #pragma omp for collapse(2)
+            ^
+
+"Test_name.c", line 227: warning: unrecognized #pragma
+    #pragma omp for collapse(2)
+            ^
+
+"Test_name.c", line 231: warning: unrecognized #pragma
+    #pragma omp for collapse(2)
+            ^
+
+"Test_name.c", line 235: warning: unrecognized #pragma
+    #pragma omp for collapse(2)
+            ^
+
+"Test_name.c", line 239: warning: unrecognized #pragma
+    #pragma omp for collapse(2)
+            ^
+
+"Test_name.c", line 243: warning: unrecognized #pragma
+    #pragma omp for collapse(2)
+            ^
+
+"Test_name.c", line 247: warning: unrecognized #pragma
+    #pragma omp for collapse(2)
+            ^
+
+"Test_name.c", line 257: warning: unrecognized #pragma
+    #pragma omp for collapse(2)
+            ^
+
+"Test_name.c", line 261: warning: unrecognized #pragma
+    #pragma omp for collapse(2)
+            ^
+
+"Test_name.c", line 265: warning: unrecognized #pragma
+    #pragma omp for collapse(2)
+            ^
+
+"Test_name.c", line 269: warning: unrecognized #pragma
+    #pragma omp for collapse(2)
+            ^
+
+"Test_name.c", line 273: warning: unrecognized #pragma
+    #pragma omp for collapse(2)
+            ^
+
+"Test_name.c", line 277: warning: unrecognized #pragma
+    #pragma omp for collapse(2)
+            ^
+
+"Test_name.c", line 281: warning: unrecognized #pragma
+    #pragma omp for collapse(2)
+            ^
+

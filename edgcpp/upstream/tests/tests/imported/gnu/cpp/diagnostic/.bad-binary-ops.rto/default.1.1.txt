@@ -1,0 +1,52 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 12: error: expression must have arithmetic or unscoped enum type
+    myvec[1] / ptr; // { dg-error "invalid operands" }
+               ^
+
+"Test_name.c", line 12: warning: variable "myvec" is used before its value is set
+    myvec[1] / ptr; // { dg-error "invalid operands" }
+    ^
+
+"Test_name.c", line 12: warning: variable "ptr" is used before its value is set
+    myvec[1] / ptr; // { dg-error "invalid operands" }
+               ^
+
+"Test_name.c", line 31: error: no operator "+" matches these operands
+            operand types are: s + t
+  	  + some_other_function ()); // { dg-error "no match for .operator" }
+  	  ^
+"Test_name.c", line 31: note: built-in operator+(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+  	  + some_other_function ()); // { dg-error "no match for .operator" }
+  	  ^
+"Test_name.c", line 31: note: built-in operator+(<pointer to object>, <ptrdiff_t>) does not match because argument #1 does not match parameter
+  	  + some_other_function ()); // { dg-error "no match for .operator" }
+  	  ^
+"Test_name.c", line 31: note: built-in operator+(<ptrdiff_t>, <pointer to object>) does not match because argument #1 does not match parameter
+  	  + some_other_function ()); // { dg-error "no match for .operator" }
+  	  ^
+
+"Test_name.c", line 47: error: no operator "&&" matches these operands
+            operand types are: s && t
+    return param_s && param_t; // { dg-error "no match for .operator" }
+                   ^
+"Test_name.c", line 47: note: built-in operator&&(<bool>, <bool>) does not match because argument #1 does not match parameter
+    return param_s && param_t; // { dg-error "no match for .operator" }
+                   ^
+
+"Test_name.c", line 71: error: no operator "&&" matches these operands
+            operand types are: s && t
+    return ns_4::foo && ns_4::inner::bar; // { dg-error "no match for .operator" }
+                     ^
+"Test_name.c", line 71: note: built-in operator&&(<bool>, <bool>) does not match because argument #1 does not match parameter
+    return ns_4::foo && ns_4::inner::bar; // { dg-error "no match for .operator" }
+                     ^
+
+"Test_name.c", line 87: error: no operator "&&" matches these operands
+            operand types are: s && t
+    return ::ns_4::foo && ns_4::inner::bar; // { dg-error "no match for .operator" }
+                       ^
+"Test_name.c", line 87: note: built-in operator&&(<bool>, <bool>) does not match because argument #1 does not match parameter
+    return ::ns_4::foo && ns_4::inner::bar; // { dg-error "no match for .operator" }
+                       ^
+
+5 errors detected in the compilation of "Test_name.c".

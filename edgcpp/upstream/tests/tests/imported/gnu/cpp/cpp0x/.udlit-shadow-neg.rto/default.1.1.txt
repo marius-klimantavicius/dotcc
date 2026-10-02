@@ -1,0 +1,41 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 7: warning: a user-provided literal suffix must begin with "_"
+  operator ""L(long double x)  // { dg-warning "floating-point suffix|shadowed by implementation" }
+           ^
+
+"Test_name.c", line 11: warning: a user-provided literal suffix must begin with "_"
+  operator ""ULL(unsigned long long int k)  // { dg-warning "integer suffix|shadowed by implementation" }
+           ^
+
+"Test_name.c", line 15: warning: a user-provided literal suffix must begin with "_"
+  operator ""l(long double x)  // { dg-warning "floating-point suffix|shadowed by implementation" }
+           ^
+
+"Test_name.c", line 19: warning: a user-provided literal suffix must begin with "_"
+  operator ""ull(unsigned long long int k)  // { dg-warning "integer suffix|shadowed by implementation" }
+           ^
+
+"Test_name.c", line 23: warning: a user-provided literal suffix must begin with "_"
+  operator ""z(unsigned long long int k)  // { dg-warning "integer suffix|shadowed by implementation" }
+           ^
+
+"Test_name.c", line 27: warning: a user-provided literal suffix must begin with "_"
+  operator ""uz(unsigned long long int k)  // { dg-warning "integer suffix|shadowed by implementation" }
+           ^
+
+"Test_name.c", line 31: warning: a user-provided literal suffix must begin with "_"
+  operator ""zu(unsigned long long int k)  // { dg-warning "integer suffix|shadowed by implementation" }
+           ^
+
+"Test_name.c", line 35: warning: a user-provided literal suffix must begin with "_"
+  operator ""Z(unsigned long long int k)  // { dg-warning "integer suffix|shadowed by implementation" }
+           ^
+
+"Test_name.c", line 39: warning: a user-provided literal suffix must begin with "_"
+  operator ""UZ(unsigned long long int k)  // { dg-warning "integer suffix|shadowed by implementation" }
+           ^
+
+"Test_name.c", line 43: warning: a user-provided literal suffix must begin with "_"
+  operator ""ZU(unsigned long long int k)  // { dg-warning "integer suffix|shadowed by implementation" }
+           ^
+

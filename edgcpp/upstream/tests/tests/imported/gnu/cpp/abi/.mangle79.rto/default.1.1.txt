@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: warning: explicit "this" parameters are a C++23 feature
+    void foo (this S);		// { dg-warning "explicit object member function only available with" "" { target c++20_down } }
+              ^
+
+"Test_name.c", line 12: warning: explicit "this" parameters are a C++23 feature
+    void bar (this S, T);		// { dg-warning "explicit object member function only available with" "" { target c++20_down } }
+              ^
+
+"Test_name.c", line 12: error: invalid redeclaration of member function template "void S::bar<N,T>(S, T)" (declared at line 10)
+    void bar (this S, T);		// { dg-warning "explicit object member function only available with" "" { target c++20_down } }
+         ^
+
+"Test_name.c", line 14: warning: explicit "this" parameters are a C++23 feature
+    void baz (this const S &);	// { dg-warning "explicit object member function only available with" "" { target c++20_down } }
+              ^
+
+"Test_name.c", line 23: warning: explicit "this" parameters are a C++23 feature
+  S::foo (this S)			// { dg-warning "explicit object member function only available with" "" { target c++20_down } }
+          ^
+
+"Test_name.c", line 35: warning: explicit "this" parameters are a C++23 feature
+  S::bar (this S, T)		// { dg-warning "explicit object member function only available with" "" { target c++20_down } }
+          ^
+
+"Test_name.c", line 35: error: declaration is incompatible with function template "void S::bar<N,T>(S, T)" (declared at line 29)
+  S::bar (this S, T)		// { dg-warning "explicit object member function only available with" "" { target c++20_down } }
+     ^
+
+"Test_name.c", line 45: warning: explicit "this" parameters are a C++23 feature
+  S::baz (this const S &)		// { dg-warning "explicit object member function only available with" "" { target c++20_down } }
+          ^
+
+"Test_name.c", line 52: error: more than one instance of overloaded function "S::foo" matches the argument list:
+            function "S::foo(S)" (declared at line 18)
+            function "S::foo(S)" (declared at line 23)
+            argument types are: (S)
+    S::foo (*p);
+    ^
+
+"Test_name.c", line 55: error: no instance of function template "S::bar" matches the argument list
+            argument types are: (int)
+            object type is: S
+    p->bar <5> (0);
+       ^
+"Test_name.c", line 29: note: number of parameters of function template "S::bar" does not match the call
+  S::bar (S, T)
+     ^
+
+4 errors detected in the compilation of "Test_name.c".

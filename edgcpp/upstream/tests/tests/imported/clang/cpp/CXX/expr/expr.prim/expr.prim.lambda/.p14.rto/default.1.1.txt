@@ -1,0 +1,31 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 19: error: "NonCopyable::NonCopyable(const NonCopyable &)" (declared at line 8) is inaccessible
+    (void)[nc] { }; // expected-error{{capture of variable 'nc' as type 'NonCopyable' calls private copy constructor}}
+           ^
+
+"Test_name.c", line 21: error: "NonCopyable::NonCopyable(const NonCopyable &)" (declared at line 8) is inaccessible
+      ncr.foo();
+      ^
+
+"Test_name.c", line 24: error: class "NonConstCopy" has no copy constructor to copy a const object
+    [nco] {}(); // expected-error{{no matching constructor for initialization of 'const NonConstCopy'}}
+     ^
+
+"Test_name.c", line 64: warning: variable "x" was set but never used
+    auto x = [=] () -> void {
+         ^
+
+"Test_name.c", line 74: warning: variable "x" was set but never used
+      auto x = [this]() -> void {};
+           ^
+
+"Test_name.c", line 102: error: object of abstract class type "rdar14468891::X" is not allowed:
+            function "rdar14468891::X::~X" is a pure virtual function
+      [x]() {}(); // expected-error{{by-copy capture of value of abstract type 'X'}}
+       ^
+
+"Test_name.c", line 110: error: incomplete type "const rdar15560464::X" is not allowed
+          auto& y = param; // expected-error{{by-copy capture of variable 'param' with incomplete type 'const X'}}
+                    ^
+
+5 errors detected in the compilation of "Test_name.c".

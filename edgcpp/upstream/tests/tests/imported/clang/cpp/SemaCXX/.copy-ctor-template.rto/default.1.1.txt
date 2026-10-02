@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 9: error: copy constructor for class "A<int, int>" may not have a parameter of type "A<int, int>"
+      A(A<V, T>); // expected-error{{copy constructor must pass its first argument by reference}}
+        ^
+          detected during instantiation of class "A<T, V> [with T=int, V=int]" at line 13
+
+"Test_name.c", line 14: error: no suitable user-defined conversion from "A<double, int>" to "A<int, double>" exists
+      A<int, double> a1 = A<double, int>(); // No error (not a copy constructor)
+                          ^
+
+2 errors detected in the compilation of "Test_name.c".

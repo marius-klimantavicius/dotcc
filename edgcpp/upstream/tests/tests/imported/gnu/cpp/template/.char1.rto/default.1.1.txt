@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 6: error: invalid narrowing conversion from "int" to "signed char": constant value does not fit in destination type
+  String<signed char, 255> s;		// { dg-error "narrowing conversion" "" { target c++11 } }
+                      ^
+
+1 error detected in the compilation of "Test_name.c".

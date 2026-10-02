@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 11: error: cannot convert to incomplete class "S"
+    g(a); // expected-error {{argument type 'S' is incomplete}}
+      ^
+
+"Test_name.c", line 12: error: function "f" returns incomplete type "S"
+    f(); // expected-error {{calling 'f' with incomplete return type 'S'}}
+     ^
+
+2 errors detected in the compilation of "Test_name.c".

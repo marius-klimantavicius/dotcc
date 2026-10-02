@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 9: error: this operator cannot appear at the top level (without parentheses) in a requires-clause
+    requires r<Ts...>() // { dg-error "enclose" }
+                     ^
+
+"Test_name.c", line 13: error: invalid start of expression in requires clause
+    requires ++N // { dg-error "enclose" }
+             ^
+
+"Test_name.c", line 17: error: this operator cannot appear at the top level (without parentheses) in a requires-clause
+    requires N++ // { dg-error "enclose" }
+              ^
+
+"Test_name.c", line 21: error: this operator cannot appear at the top level (without parentheses) in a requires-clause
+    requires N == 0 // { dg-error "enclose" }
+               ^
+
+"Test_name.c", line 25: error: this operator cannot appear at the top level (without parentheses) in a requires-clause
+    requires N ? true : false // { dg-error "enclose" }
+               ^
+
+"Test_name.c", line 29: error: expected a declaration
+    requires N = 0 // { dg-error "enclose" }
+               ^
+
+"Test_name.c", line 29: error: expected a ";"
+    requires N = 0 // { dg-error "enclose" }
+               ^
+
+7 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++11 --sys_include $RUN_TEST_CURR_DIR/include --clang_version 30200 Test_name.c
+"Test_name.c", line 11: error: a braced-initializer cannot be used with "new auto"
+    auto a = new auto {2};
+                 ^
+
+1 error detected in the compilation of "Test_name.c".

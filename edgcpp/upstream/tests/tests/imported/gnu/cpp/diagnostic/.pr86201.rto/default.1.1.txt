@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: warning: non-void function "fn1<U,V>(V &&)->decltype((<expression>)) [with U=bool, V=double]" should return a value
+    return; // { dg-error "return-statement with no value" }
+          ^
+          detected during instantiation of "auto fn1<U,V>(V &&)->decltype((<expression>)) [with U=bool, V=double]" at line 13
+

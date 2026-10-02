@@ -1,0 +1,8 @@
+# Created with make_win_predef_macro
+microsoft no _M_AMD64 100
+microsoft no _M_X64 100
+microsoft no _MT 1
+# When using gcc 4.7.0 or later, some of the GNU header files (e.g., stddef.h)
+# have GNU-style attributes in them.  This gets rid of those:
+!gnu_or_clang no __attribute__(xyz) /* Ignore */
+!gnu_or_clang no __asm(xyz) /* Ignore */

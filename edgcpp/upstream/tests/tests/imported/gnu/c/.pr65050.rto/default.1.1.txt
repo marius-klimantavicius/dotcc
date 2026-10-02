@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 23: error: incomplete type "struct U []" is not allowed
+  struct U u[] = { { "abc" } }; /* { dg-error "array type has incomplete element type .struct U." } */
+           ^
+
+"Test_name.c", line 22: error: variable "t" was declared with a never-completed type
+  struct T t[5]; /* { dg-error "array type has incomplete element type .struct T." } */
+           ^
+
+"Test_name.c", line 25: error: variable "tt" was declared with a never-completed type
+  TT tt[5]; /* { dg-error "array type has incomplete element type 'TT' {aka 'struct T'}" } */
+     ^
+
+3 errors detected in the compilation of "Test_name.c".

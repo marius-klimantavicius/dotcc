@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gn 69999 --c++14 -tused Test_name.c
+"Test_name.c", line 17: error: a pseudo-destructor reference can only be used for a pseudo-destructor call
+  using X = decltype(p->~S); // Previously accepted.  Now an error.
+                        ^
+
+1 error detected in the compilation of "Test_name.c".

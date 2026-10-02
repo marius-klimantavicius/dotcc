@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: error: operand types are incompatible ("int" and "void *")
+    if (i == p) // { dg-warning "9:ISO C.. forbids comparison between pointer and integer" }
+          ^
+
+"Test_name.c", line 10: error: operand types are incompatible ("int" and "void *")
+    else if (i != p) // { dg-warning "14:ISO C.. forbids comparison between pointer and integer" }
+               ^
+
+"Test_name.c", line 12: warning: missing return statement at end of non-void function "foo"
+  }
+  ^
+
+"Test_name.c", line 16: error: operand types are incompatible ("int" and "void *")
+    if (i < p) // { dg-warning "9:ISO C.. forbids comparison between pointer and integer" }
+          ^
+
+"Test_name.c", line 18: error: operand types are incompatible ("int" and "void *")
+    else if (i >= p) // { dg-warning "14:ISO C.. forbids comparison between pointer and integer" }
+               ^
+
+"Test_name.c", line 20: warning: missing return statement at end of non-void function "bar"
+  }
+  ^
+
+"Test_name.c", line 24: error: operand types are incompatible ("int" and "void *")
+    if (i <= p) // { dg-warning "9:ISO C.. forbids comparison between pointer and integer" }
+          ^
+
+"Test_name.c", line 26: error: operand types are incompatible ("int" and "void *")
+    else if (i > p) // { dg-warning "14:ISO C.. forbids comparison between pointer and integer" }
+               ^
+
+"Test_name.c", line 28: warning: missing return statement at end of non-void function "baz"
+  }
+  ^
+
+6 errors detected in the compilation of "Test_name.c".

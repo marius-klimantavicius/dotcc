@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 30: error: constexpr constructor calls non-constexpr constructor for subobject initialization
+    constexpr S(int i) : x(i) { } // { dg-warning "call to" "" { target c++20_down } }
+                          ^
+
+"Test_name.c", line 33: error: constexpr constructor calls non-constexpr constructor for subobject initialization
+    constexpr S() : S(42, 42) { } // { dg-warning "call to" "" { target c++20_down } }
+                     ^
+
+2 errors detected in the compilation of "Test_name.c".

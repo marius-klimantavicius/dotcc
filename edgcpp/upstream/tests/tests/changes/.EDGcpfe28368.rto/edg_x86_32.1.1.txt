@@ -1,0 +1,7 @@
+fe_only -DTEST_NUMBER=1 --targ linux_aarch64 --clang_v 210100 --c++17 Test_name.c
+eccp: target-specific /edg/workspace/build/gcc-i686/lib_linux_aarch64 does not exist
+eccp: EDG_C_TO_OBJ_DEFAULT_OPTIONS_linux_aarch64 is unset in /edg/workspace/bases/docker/dev-env/gcc-i686/edg_eccp_config
+Command-line error: no "linux_aarch64" --target configuration exists
+
+1 catastrophic error detected in this compilation.
+Compilation terminated.

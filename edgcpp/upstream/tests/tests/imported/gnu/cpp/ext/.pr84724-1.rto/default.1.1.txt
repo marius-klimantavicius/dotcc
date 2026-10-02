@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 7: error: cannot overload functions distinguished by return type alone
+  int __builtin_trap ();		// { dg-warning "ambiguates built-in declaration" }
+      ^
+
+"Test_name.c", line 14: error: a value of type "int *" cannot be used to initialize an entity of type "int"
+    int c (&b);			// { dg-warning "invalid conversion from" }
+           ^
+
+2 errors detected in the compilation of "Test_name.c".

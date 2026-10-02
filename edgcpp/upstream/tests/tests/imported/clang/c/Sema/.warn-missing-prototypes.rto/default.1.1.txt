@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 62: warning: type qualifier on return type is meaningless
+  const struct MyStruct get_struct() { // expected-warning{{no previous prototype for function 'get_struct'}}
+  ^
+
+"Test_name.c", line 66: warning: variable "ret" is used before its value is set
+    return ret;
+           ^
+
+"Test_name.c", line 72: warning: type qualifier on return type is meaningless
+  const  struct MyStruct get_struct_2() {  // expected-warning{{no previous prototype for function 'get_struct_2'}}
+  ^
+
+"Test_name.c", line 76: warning: variable "ret" is used before its value is set
+    return ret;
+           ^
+
+"Test_name.c", line 11: warning: function "g" was declared but never referenced
+  static int g(int x) { return x; }
+             ^
+
+"Test_name.c", line 19: warning: function "g2" was declared but never referenced
+  int g2(int x) { return x; }
+      ^
+

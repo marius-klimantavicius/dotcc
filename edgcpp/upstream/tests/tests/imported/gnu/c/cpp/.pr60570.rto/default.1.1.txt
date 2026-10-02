@@ -1,0 +1,64 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc -E Test_name.c
+# 1 "Test_name.c"
+
+
+ 
+ 
+
+
+int i;
+
+
+
+
+int j;
+
+
+
+"Test_name.c", line 17: error: division by zero
+  #elif 1/0	/* { dg-error "division by zero" } */
+         ^
+
+
+
+
+
+
+"Test_name.c", line 22: error: expected an expression
+  #elif		/* { dg-error "with no expression" } */
+       		                                       ^
+
+
+
+
+
+
+
+
+int l;
+
+
+
+
+
+
+int l;
+
+
+
+
+"Test_name.c", line 42: error: division by zero
+  # elif 1/0	/* { dg-error "division by zero" } */
+          ^
+
+
+
+
+
+
+
+"Test_name.c", line 48: error: expected an expression
+  # elif		/* { dg-error "with no expression" } */
+        		                                       ^
+
+4 errors detected in the compilation of "Test_name.c".

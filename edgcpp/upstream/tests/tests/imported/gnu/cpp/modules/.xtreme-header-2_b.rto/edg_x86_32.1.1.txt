@@ -1,0 +1,814 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 --modules Test_name.c
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/type_traits", line 421: error: identifier "__int128" is undefined
+      struct __is_integral_helper<__int128>
+                                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/type_traits", line 426: error: expected a ">"
+      struct __is_integral_helper<unsigned __int128>
+                                           ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/type_traits", line 812: error: expected a ">"
+     , signed __int128
+              ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/type_traits", line 832: error: expected a ">"
+     , unsigned __int128
+                ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/type_traits", line 1878: error: identifier "__int128" is undefined
+      struct __make_unsigned<__int128>
+                             ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/type_traits", line 1879: error: expected a ";"
+      { using __type = unsigned __int128; };
+                                ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/type_traits", line 2038: error: expected a ">"
+      struct __make_signed<unsigned __int128>
+                                    ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/type_traits", line 2039: error: identifier "__int128" is undefined
+      { using __type = __int128; };
+                       ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/cpp_type_traits.h", line 264: error: identifier "__int128" is undefined
+  __extension__ template<> struct __is_integer<__int128> { enum { __value = 1 }; typedef __true_type __type; }; __extension__ template<> struct __is_integer<unsigned __int128> { enum { __value = 1 }; typedef __true_type __type; };
+                                               ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/cpp_type_traits.h", line 264: error: expected a ">"
+  __extension__ template<> struct __is_integer<__int128> { enum { __value = 1 }; typedef __true_type __type; }; __extension__ template<> struct __is_integer<unsigned __int128> { enum { __value = 1 }; typedef __true_type __type; };
+                                                                                                                                                                      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algobase.h", line 1031: error: identifier "__int128" is undefined
+    __extension__ inline constexpr __int128
+                                   ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algobase.h", line 1032: error: identifier "__int128" is undefined
+    __size_to_integer(__int128 __n) { return __n; }
+                      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algobase.h", line 1034: error: missing initializer for constexpr variable
+    __size_to_integer(unsigned __int128 __n) { return __n; }
+    ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algobase.h", line 1034: error: expected a ";"
+    __size_to_integer(unsigned __int128 __n) { return __n; }
+    ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algobase.h", line 1213: error: name followed by "::" must be a class or namespace name
+        __is_random_access_iter<_II>::__value, bool>::__type
+        ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algobase.h", line 1227: error: name followed by "::" must be a class or namespace name
+        __is_random_access_iter<_II>::__value, bool>::__type
+        ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algobase.h", line 1298: error: identifier "random_access_iterator_tag" is undefined
+      struct __lc_rai<random_access_iterator_tag, random_access_iterator_tag>
+                      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algobase.h", line 1298: error: identifier "random_access_iterator_tag" is undefined
+      struct __lc_rai<random_access_iterator_tag, random_access_iterator_tag>
+                                                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algobase.h", line 1388: error: identifier "ptrdiff_t" is undefined
+   static ptrdiff_t
+          ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algobase.h", line 1924: error: pair is not a template
+      pair<_InputIterator1, _InputIterator2>
+      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algobase.h", line 1951: error: pair is not a template
+      inline pair<_InputIterator1, _InputIterator2>
+             ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algobase.h", line 1986: error: pair is not a template
+      inline pair<_InputIterator1, _InputIterator2>
+             ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algobase.h", line 2003: error: pair is not a template
+      pair<_InputIterator1, _InputIterator2>
+      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algobase.h", line 2033: error: pair is not a template
+      inline pair<_InputIterator1, _InputIterator2>
+             ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algobase.h", line 2070: error: pair is not a template
+      inline pair<_InputIterator1, _InputIterator2>
+             ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algobase.h", line 2102: error: name followed by "::" must be a class or namespace name
+      typename iterator_traits<_InputIterator>::difference_type
+               ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algobase.h", line 2102: error: iterator_traits is not a template
+      typename iterator_traits<_InputIterator>::difference_type
+               ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algobase.h", line 2295: error: expected a declaration
+  }
+  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/initializer_list", line 90: error: identifier "initializer_list" is undefined
+      begin(initializer_list<_Tp> __ils) noexcept
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/initializer_list", line 101: error: identifier "initializer_list" is undefined
+      end(initializer_list<_Tp> __ils) noexcept
+          ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/initializer_list", line 103: error: expected a declaration
+  }
+  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/algorithmfwd.h", line 261: error: pair is not a template
+      pair<_FIter, _FIter>
+      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/algorithmfwd.h", line 267: error: pair is not a template
+      pair<_FIter, _FIter>
+      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/algorithmfwd.h", line 439: error: pair is not a template
+      pair<const _Tp&, const _Tp&>
+      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/algorithmfwd.h", line 444: error: pair is not a template
+      pair<const _Tp&, const _Tp&>
+      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/algorithmfwd.h", line 449: error: pair is not a template
+      pair<_FIter, _FIter>
+      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/algorithmfwd.h", line 454: error: pair is not a template
+      pair<_FIter, _FIter>
+      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/algorithmfwd.h", line 460: error: "min" has already been declared in the current scope
+      min(initializer_list<_Tp>);
+      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/algorithmfwd.h", line 460: error: identifier "initializer_list" is undefined
+      min(initializer_list<_Tp>);
+          ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/algorithmfwd.h", line 462: error: too many template parameters -- does not match previous declaration (declared at line 457)
+    template<typename _Tp, typename _Compare>
+                                    ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/algorithmfwd.h", line 463: error: "constexpr" is not valid here
+      constexpr
+      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/algorithmfwd.h", line 470: error: "max" has already been declared in the current scope
+      max(initializer_list<_Tp>);
+      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/algorithmfwd.h", line 470: error: type name is not allowed
+      max(initializer_list<_Tp>);
+                           ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/algorithmfwd.h", line 470: error: expected an expression
+      max(initializer_list<_Tp>);
+                               ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/algorithmfwd.h", line 472: error: too many template parameters -- does not match previous declaration (declared at line 467)
+    template<typename _Tp, typename _Compare>
+                                    ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/algorithmfwd.h", line 473: error: "constexpr" is not valid here
+      constexpr
+      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/algorithmfwd.h", line 479: error: pair is not a template
+      pair<_Tp, _Tp>
+      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/algorithmfwd.h", line 480: error: "minmax" has already been declared in the current scope
+      minmax(initializer_list<_Tp>);
+      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/algorithmfwd.h", line 480: error: type name is not allowed
+      minmax(initializer_list<_Tp>);
+                              ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/algorithmfwd.h", line 480: error: expected an expression
+      minmax(initializer_list<_Tp>);
+                                  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/algorithmfwd.h", line 484: error: pair is not a template
+      pair<_Tp, _Tp>
+      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/algorithmfwd.h", line 482: error: too many template parameters -- does not match previous declaration (declared at line 477)
+    template<typename _Tp, typename _Compare>
+                                    ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/algorithmfwd.h", line 483: error: "constexpr" is not valid here
+      constexpr
+      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/algorithmfwd.h", line 526: error: pair is not a template
+      pair<_OIter1, _OIter2>
+      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/algorithmfwd.h", line 715: error: name followed by "::" must be a class or namespace name
+      typename iterator_traits<_IIter>::difference_type
+               ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/algorithmfwd.h", line 715: error: iterator_traits is not a template
+      typename iterator_traits<_IIter>::difference_type
+               ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/algorithmfwd.h", line 720: error: name followed by "::" must be a class or namespace name
+      typename iterator_traits<_IIter>::difference_type
+               ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/algorithmfwd.h", line 720: error: iterator_traits is not a template
+      typename iterator_traits<_IIter>::difference_type
+               ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/algorithmfwd.h", line 811: error: pair is not a template
+      pair<_IIter1, _IIter2>
+      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/algorithmfwd.h", line 816: error: pair is not a template
+      pair<_IIter1, _IIter2>
+      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/algorithmfwd.h", line 983: error: expected a declaration
+  }
+  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_heap.h", line 86: error: expected a declaration
+   }
+   ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_heap.h", line 88: error: expected a declaration
+      }
+      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_heap.h", line 249: error: expected a declaration
+      }
+      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/uniform_int_dist.h", line 99: error: uniform_int_distribution is not a template
+   typedef uniform_int_distribution<_IntType> distribution_type;
+           ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/uniform_int_dist.h", line 99: error: identifier "_IntType" is undefined
+   typedef uniform_int_distribution<_IntType> distribution_type;
+                                    ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/uniform_int_dist.h", line 104: error: expected a ")"
+   param_type(_IntType __a,
+                       ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/uniform_int_dist.h", line 104: error: incomplete type "param_type" is not allowed
+   param_type(_IntType __a,
+              ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/uniform_int_dist.h", line 103: error: "explicit" is not allowed
+   explicit
+   ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/uniform_int_dist.h", line 105: error: incomplete type "param_type" is not allowed
+       _IntType __b = __gnu_cxx::__int_traits<_IntType>::__max)
+       ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/uniform_int_dist.h", line 105: error: "_IntType" has already been declared in the current scope
+       _IntType __b = __gnu_cxx::__int_traits<_IntType>::__max)
+       ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/uniform_int_dist.h", line 105: error: expected a ";"
+       _IntType __b = __gnu_cxx::__int_traits<_IntType>::__max)
+                ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/uniform_int_dist.h", line 129: error: member "param_type::_IntType" is not a type name
+   _IntType _M_b;
+   ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/uniform_int_dist.h", line 101: error: no instance of constructor "param_type::param_type" matches the argument list
+            argument types are: (int)
+   param_type() : param_type(0) { }
+                            ^
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/uniform_int_dist.h", line 97: note: function "param_type::param_type(const param_type &)" does not match because argument #1 does not match parameter
+        struct param_type
+               ^
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/uniform_int_dist.h", line 97: note: function "param_type::param_type(param_type &&)" does not match because argument #1 does not match parameter
+        struct param_type
+               ^
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/uniform_int_dist.h", line 101: note: number of parameters of function "param_type::param_type()" does not match the call
+   param_type() : param_type(0) { }
+   ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/uniform_int_dist.h", line 132: error: expected a declaration
+      public:
+      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/uniform_int_dist.h", line 228: error: "__generate" has already been declared in the current scope
+   __generate(result_type* __f, result_type* __t,
+   ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/uniform_int_dist.h", line 228: error: incomplete type "void" is not allowed
+   __generate(result_type* __f, result_type* __t,
+   ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/uniform_int_dist.h", line 228: error: identifier "result_type" is undefined
+   __generate(result_type* __f, result_type* __t,
+              ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/uniform_int_dist.h", line 228: error: identifier "__f" is undefined
+   __generate(result_type* __f, result_type* __t,
+                           ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/uniform_int_dist.h", line 228: error: identifier "__t" is undefined
+   __generate(result_type* __f, result_type* __t,
+                                             ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/uniform_int_dist.h", line 229: error: type name is not allowed
+       _UniformRandomBitGenerator& __urng,
+       ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/uniform_int_dist.h", line 229: error: identifier "__urng" is undefined
+       _UniformRandomBitGenerator& __urng,
+                                   ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/uniform_int_dist.h", line 230: error: expected an expression
+       const param_type& __p)
+       ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/uniform_int_dist.h", line 231: error: expected a ";"
+   { this->__generate_impl(__f, __t, __urng, __p); }
+   ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/uniform_int_dist.h", line 282: error: expected a declaration
+      };
+      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/uniform_int_dist.h", line 286: error: name followed by "::" must be a class or namespace name
+        typename uniform_int_distribution<_IntType>::result_type
+                 ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/uniform_int_dist.h", line 287: error: name followed by "::" must be a class or namespace name
+        uniform_int_distribution<_IntType>::
+        ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/uniform_int_dist.h", line 286: error: uniform_int_distribution is not a template
+        typename uniform_int_distribution<_IntType>::result_type
+                 ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/uniform_int_dist.h", line 287: error: uniform_int_distribution is not a template
+        uniform_int_distribution<_IntType>::
+        ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/uniform_int_dist.h", line 380: error: name followed by "::" must be a class or namespace name
+        uniform_int_distribution<_IntType>::
+        ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/uniform_int_dist.h", line 380: error: uniform_int_distribution is not a template
+        uniform_int_distribution<_IntType>::
+        ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/uniform_int_dist.h", line 466: error: expected a declaration
+  }
+  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/exception.h", line 81: error: expected a declaration
+  }
+  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/new", line 81: error: invalid specifier outside a class declaration
+      virtual const char* what() const throw();
+      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/new", line 81: error: a type qualifier is not allowed on a nonmember function
+      virtual const char* what() const throw();
+                                 ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/new", line 82: error: expected a declaration
+    };
+    ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/new", line 85: error: not a class or struct name
+    class bad_array_new_length : public bad_alloc
+                                        ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/new", line 100: error: identifier "size_t" is undefined
+    enum class align_val_t: size_t {};
+                            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/new", line 124: error: expected a declaration
+  }
+  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/new", line 140: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t)
+                          ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/new", line 155: error: namespace "std" has no member "nothrow_t"
+  [[__nodiscard__]] void* operator new(std::size_t, const std::nothrow_t&)
+                                                               ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/new", line 155: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/new", line 158: error: namespace "std" has no member "nothrow_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, const std::nothrow_t&)
+                                                                 ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/new", line 158: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/new", line 161: error: namespace "std" has no member "nothrow_t"
+  void operator delete(void*, const std::nothrow_t&)
+                                         ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/new", line 164: error: namespace "std" has no member "nothrow_t"
+  void operator delete[](void*, const std::nothrow_t&)
+                                           ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/new", line 168: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t, std::align_val_t)
+                          ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/new", line 171: error: namespace "std" has no member "nothrow_t"
+  [[__nodiscard__]] void* operator new(std::size_t, std::align_val_t, const std::nothrow_t&)
+                                                                                 ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/new", line 171: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t, std::align_val_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/new", line 176: error: namespace "std" has no member "nothrow_t"
+  void operator delete(void*, std::align_val_t, const std::nothrow_t&)
+                                                           ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/new", line 179: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, std::align_val_t)
+                          ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/new", line 182: error: namespace "std" has no member "nothrow_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, std::align_val_t, const std::nothrow_t&)
+                                                                                   ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/new", line 182: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, std::align_val_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/new", line 187: error: namespace "std" has no member "nothrow_t"
+  void operator delete[](void*, std::align_val_t, const std::nothrow_t&)
+                                                             ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/new", line 206: error: first parameter of allocation function must be of type "size_t"
+  void* operator new(std::size_t, void* __p)
+        ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/new", line 210: error: first parameter of allocation function must be of type "size_t"
+  void* operator new[](std::size_t, void* __p)
+        ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/new", line 224: error: expected a declaration
+  }
+  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/new", line 250: error: identifier "size_t" is undefined
+    inline constexpr size_t hardware_constructive_interference_size = 64;
+                     ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/new", line 264: error: expected a declaration
+  }
+  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_construct.h", line 134: error: expected a declaration
+      }
+      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_construct.h", line 301: error: expected a declaration
+  }
+  ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_tempbuf.h", line 211: error: identifier "__p" is undefined
+     _M_buffer = __p.first;
+                 ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_tempbuf.h", line 212: error: expected a declaration
+   }
+   ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_tempbuf.h", line 219: error: identifier "pointer" is undefined
+   pointer _M_buffer;
+   ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_tempbuf.h", line 219: error: variable "_M_buffer" has already been defined (previous definition at line 211)
+   pointer _M_buffer;
+           ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_tempbuf.h", line 220: error: expected a declaration
+        } _M_impl;
+        ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_tempbuf.h", line 222: error: expected a declaration
+      public:
+      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_tempbuf.h", line 249: error: expected a declaration
+        ~_Temporary_buffer()
+        ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_tempbuf.h", line 257: error: "operator=" must be a member function
+        operator=(const _Temporary_buffer&);
+        ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_tempbuf.h", line 257: error: identifier "_Temporary_buffer" is undefined
+        operator=(const _Temporary_buffer&);
+                        ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_tempbuf.h", line 258: error: expected a declaration
+      };
+      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_tempbuf.h", line 322: error: name followed by "::" must be a class or namespace name
+      _Temporary_buffer<_ForwardIterator, _Tp>::
+      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_tempbuf.h", line 322: error: _Temporary_buffer is not a template
+      _Temporary_buffer<_ForwardIterator, _Tp>::
+      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_tempbuf.h", line 323: error: identifier "size_type" is undefined
+      _Temporary_buffer(_ForwardIterator __seed, size_type __original_len)
+                                                 ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_tempbuf.h", line 330: error: expected a declaration
+  }
+  ^
+
+"/usr/include/stdlib.h", line 139: error: identifier "size_t" is undefined
+  extern size_t __ctype_get_mb_cur_max (void) throw () ;
+         ^
+
+"/usr/include/stdlib.h", line 331: error: identifier "size_t" is undefined
+     size_t __statelen) throw () __attribute__ ((__nonnull__ (2)));
+     ^
+
+"/usr/include/stdlib.h", line 361: error: identifier "size_t" is undefined
+     size_t __statelen,
+     ^
+
+"/usr/include/stdlib.h", line 465: error: identifier "size_t" is undefined
+  extern void *malloc (size_t __size) throw () __attribute__ ((__malloc__)) ;
+                       ^
+
+"/usr/include/stdlib.h", line 465: error: expected a ")"
+  extern void *malloc (size_t __size) throw () __attribute__ ((__malloc__)) ;
+                              ^
+
+"/usr/include/stdlib.h", line 465: error: expected a ";"
+  extern void *malloc (size_t __size) throw () __attribute__ ((__malloc__)) ;
+                                      ^
+
+"/usr/include/stdlib.h", line 467: error: expected a ")"
+  extern void *calloc (size_t __nmemb, size_t __size)
+                              ^
+
+"/usr/include/stdlib.h", line 468: error: expected a ";"
+       throw () __attribute__ ((__malloc__)) ;
+       ^
+
+"/usr/include/stdlib.h", line 479: error: "size_t" is not a type name
+  extern void *realloc (void *__ptr, size_t __size)
+                                     ^
+
+"/usr/include/alloca.h", line 32: error: expected a ")"
+  extern void *alloca (size_t __size) throw ();
+                              ^
+
+"/usr/include/alloca.h", line 32: error: expected a ";"
+  extern void *alloca (size_t __size) throw ();
+                                      ^
+
+"/usr/include/stdlib.h", line 497: error: expected a ")"
+  extern void *valloc (size_t __size) throw () __attribute__ ((__malloc__)) ;
+                              ^
+
+"/usr/include/stdlib.h", line 497: error: expected a ";"
+  extern void *valloc (size_t __size) throw () __attribute__ ((__malloc__)) ;
+                                      ^
+
+"/usr/include/stdlib.h", line 502: error: "size_t" is not a type name
+  extern int posix_memalign (void **__memptr, size_t __alignment, size_t __size)
+                                              ^
+
+"/usr/include/stdlib.h", line 502: error: "size_t" is not a type name
+  extern int posix_memalign (void **__memptr, size_t __alignment, size_t __size)
+                                                                  ^
+
+"/usr/include/stdlib.h", line 508: error: expected a ")"
+  extern void *aligned_alloc (size_t __alignment, size_t __size)
+                                     ^
+
+"/usr/include/stdlib.h", line 509: error: expected a ";"
+       throw () __attribute__ ((__malloc__, __alloc_size__ (2)));
+       ^
+
+"/usr/include/stdlib.h", line 755: error: "size_t" is not a type name
+          size_t __nmemb, size_t __size, __compar_fn_t __compar)
+          ^
+
+"/usr/include/stdlib.h", line 755: error: "size_t" is not a type name
+          size_t __nmemb, size_t __size, __compar_fn_t __compar)
+                          ^
+
+"/usr/include/stdlib.h", line 760: error: "size_t" is not a type name
+  extern void qsort (void *__base, size_t __nmemb, size_t __size,
+                                   ^
+
+"/usr/include/stdlib.h", line 760: error: "size_t" is not a type name
+  extern void qsort (void *__base, size_t __nmemb, size_t __size,
+                                                   ^
+
+"/usr/include/stdlib.h", line 763: error: "size_t" is not a type name
+  extern void qsort_r (void *__base, size_t __nmemb, size_t __size,
+                                     ^
+
+"/usr/include/stdlib.h", line 763: error: "size_t" is not a type name
+  extern void qsort_r (void *__base, size_t __nmemb, size_t __size,
+                                                     ^
+
+"/usr/include/stdlib.h", line 839: error: "size_t" is not a type name
+       size_t __len) throw () __attribute__ ((__nonnull__ (3, 4, 5)));
+       ^
+
+"/usr/include/stdlib.h", line 842: error: "size_t" is not a type name
+       size_t __len) throw () __attribute__ ((__nonnull__ (3, 4, 5)));
+       ^
+
+"/usr/include/stdlib.h", line 846: error: "size_t" is not a type name
+        char *__restrict __buf, size_t __len)
+                                ^
+
+"/usr/include/stdlib.h", line 850: error: "size_t" is not a type name
+        char *__restrict __buf, size_t __len)
+                                ^
+
+"/usr/include/stdlib.h", line 859: error: "size_t" is not a type name
+  extern int mblen (const char *__s, size_t __n) throw () ;
+                                     ^
+
+"/usr/include/stdlib.h", line 863: error: "size_t" is not a type name
+       const char *__restrict __s, size_t __n) throw () ;
+                                   ^
+
+"/usr/include/stdlib.h", line 870: error: "size_t" is not a type name
+  extern size_t mbstowcs (wchar_t *__restrict __pwcs,
+         ^
+
+"/usr/include/stdlib.h", line 871: error: "size_t" is not a type name
+     const char *__restrict __s, size_t __n) throw ();
+                                 ^
+
+"/usr/include/stdlib.h", line 873: error: "size_t" is not a type name
+  extern size_t wcstombs (char *__restrict __s,
+         ^
+
+"/usr/include/stdlib.h", line 874: error: "size_t" is not a type name
+     const wchar_t *__restrict __pwcs, size_t __n)
+                                       ^
+
+"/usr/include/stdlib.h", line 936: error: "size_t" is not a type name
+  extern int ptsname_r (int __fd, char *__buf, size_t __buflen)
+                                               ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/std_abs.h", line 90: error: variable "std::__int128" is not a type name
+    __extension__ inline constexpr __int128
+                                   ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/std_abs.h", line 91: error: declaration is incompatible with overloaded function "std::abs" (declared at line 58)
+    abs(__int128 __x) { return __x >= 0 ? __x : -__x; }
+    ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/std_abs.h", line 91: error: expected a ")"
+    abs(__int128 __x) { return __x >= 0 ? __x : -__x; }
+                 ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/std_abs.h", line 91: error: expected a ";"
+    abs(__int128 __x) { return __x >= 0 ? __x : -__x; }
+                      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algo.h", line 3447: error: "minmax" has already been declared in the current scope
+      minmax(initializer_list<_Tp> __l)
+      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algo.h", line 3447: error: type name is not allowed
+      minmax(initializer_list<_Tp> __l)
+                              ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algo.h", line 3447: error: identifier "__l" is undefined
+      minmax(initializer_list<_Tp> __l)
+                                   ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/bits/stl_algo.h", line 3448: error: expected a ";"
+      {
+      ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/cwchar", line 66: error: the global scope has no "mbstate_t"
+    using ::mbstate_t;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/cwchar", line 143: error: the global scope has no "wint_t"
+    using ::wint_t;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/cwchar", line 145: error: the global scope has no "btowc"
+    using ::btowc;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/cwchar", line 146: error: the global scope has no "fgetwc"
+    using ::fgetwc;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/cwchar", line 147: error: the global scope has no "fgetws"
+    using ::fgetws;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/cwchar", line 148: error: the global scope has no "fputwc"
+    using ::fputwc;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/cwchar", line 149: error: the global scope has no "fputws"
+    using ::fputws;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/cwchar", line 150: error: the global scope has no "fwide"
+    using ::fwide;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/cwchar", line 151: error: the global scope has no "fwprintf"
+    using ::fwprintf;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/cwchar", line 152: error: the global scope has no "fwscanf"
+    using ::fwscanf;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/cwchar", line 153: error: the global scope has no "getwc"
+    using ::getwc;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/cwchar", line 154: error: the global scope has no "getwchar"
+    using ::getwchar;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/cwchar", line 155: error: the global scope has no "mbrlen"
+    using ::mbrlen;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/cwchar", line 156: error: the global scope has no "mbrtowc"
+    using ::mbrtowc;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/cwchar", line 157: error: the global scope has no "mbsinit"
+    using ::mbsinit;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/cwchar", line 158: error: the global scope has no "mbsrtowcs"
+    using ::mbsrtowcs;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/cwchar", line 159: error: the global scope has no "putwc"
+    using ::putwc;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/cwchar", line 160: error: the global scope has no "putwchar"
+    using ::putwchar;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/cwchar", line 162: error: the global scope has no "swprintf"
+    using ::swprintf;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/cwchar", line 164: error: the global scope has no "swscanf"
+    using ::swscanf;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/cwchar", line 165: error: the global scope has no "ungetwc"
+    using ::ungetwc;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/cwchar", line 166: error: the global scope has no "vfwprintf"
+    using ::vfwprintf;
+            ^
+
+"/mds/gnu/build/gcc-15.1.0/include/c++/15.1.0/cwchar", line 168: error: the global scope has no "vfwscanf"
+    using ::vfwscanf;
+            ^
+
+Error limit reached.
+200 errors detected in the compilation of "Test_name.c".
+Compilation terminated.

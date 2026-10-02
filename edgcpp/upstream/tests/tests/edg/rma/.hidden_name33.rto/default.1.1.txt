@@ -1,0 +1,14 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 7: error: extra ";" ignored
+  };
+   ^
+
+"Test_name.c", line 12: error: extra ";" ignored
+  };
+   ^
+
+"Test_name.c", line 16: warning: variable "j" was set but never used
+  	int j;
+  	    ^
+
+2 errors detected in the compilation of "Test_name.c".

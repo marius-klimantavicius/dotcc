@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=2 --c++17 --clang_version 190100 Test_name.c
+"Test_name.c", line 18: warning: class template argument deduction for alias templates is a C++20 feature
+    A a(1);                       // accepted by GCC and Clang
+    ^
+
+"Test_name.c", line 32: warning: class template argument deduction for alias templates is a C++20 feature
+    A a(1);                       // accepted by Clang
+    ^
+

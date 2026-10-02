@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 7: error: default argument not at end of parameter list
+  void test_1 (int a, int b = 42, int c, int d); // { dg-line test_1 }
+                              ^
+
+"Test_name.c", line 30: error: default argument not at end of parameter list
+    void member_2 (int a, int b = 42, int c); // { dg-line test_2 }
+                                  ^
+
+"Test_name.c", line 48: error: default argument not at end of parameter list
+    static void member_3 (int a, int b = 42, int c); // { dg-line test_3 }
+                                         ^
+
+"Test_name.c", line 65: error: default argument not at end of parameter list
+  void test_4 (int a, int b = 42, int c); // { dg-line test_4 }
+       ^
+
+4 errors detected in the compilation of "Test_name.c".

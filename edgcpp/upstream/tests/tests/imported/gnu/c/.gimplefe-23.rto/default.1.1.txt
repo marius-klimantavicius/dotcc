@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 7: error: expected a "{"
+  foo (short int s)
+  ^
+
+"Test_name.c", line 12: error: identifier "s" is undefined
+    D_1803 = s;
+             ^
+
+"Test_name.c", line 11: warning: label "bb_2" was declared but never referenced
+  bb_2:
+  ^
+
+"Test_name.c", line 14: warning: label "L0" was declared but never referenced
+  L0:
+  ^
+
+"Test_name.c", line 19: error: function "__GIMPLE" has already been defined (previous definition at line 6)
+  int __GIMPLE ()
+      ^
+
+"Test_name.c", line 20: error: expected a "{"
+  main (int argc, char * * argv)
+  ^
+
+"Test_name.c", line 28: error: identifier "argc" is undefined
+    s = (short int) argc;
+                    ^
+
+"Test_name.c", line 30: warning: function "foo" declared implicitly
+    _2 = foo (_1);
+         ^
+
+"Test_name.c", line 27: warning: label "bb_2" was declared but never referenced
+  bb_2:
+  ^
+
+"Test_name.c", line 33: warning: label "L0" was declared but never referenced
+  L0:
+  ^
+
+5 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,804 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -w --c Test_name.c
+"Test_name.c", line 22: error: complex integral types are not supported
+    EVALF((2.f + 3i) + (4.f + 5i), 6.f + 8i);
+    ^
+
+"Test_name.c", line 22: error: complex integral types are not supported
+    EVALF((2.f + 3i) + (4.f + 5i), 6.f + 8i);
+    ^
+
+"Test_name.c", line 22: error: complex integral types are not supported
+    EVALF((2.f + 3i) + (4.f + 5i), 6.f + 8i);
+    ^
+
+"Test_name.c", line 22: error: complex integral types are not supported
+    EVALF((2.f + 3i) + (4.f + 5i), 6.f + 8i);
+    ^
+
+"Test_name.c", line 22: error: complex integral types are not supported
+    EVALF((2.f + 3i) + (4.f + 5i), 6.f + 8i);
+    ^
+
+"Test_name.c", line 22: error: complex integral types are not supported
+    EVALF((2.f + 3i) + (4.f + 5i), 6.f + 8i);
+    ^
+
+"Test_name.c", line 23: error: complex integral types are not supported
+    EVALF((2.f + 3i) - (4.f + 5i), -2.f - 2i);
+    ^
+
+"Test_name.c", line 23: error: complex integral types are not supported
+    EVALF((2.f + 3i) - (4.f + 5i), -2.f - 2i);
+    ^
+
+"Test_name.c", line 23: error: complex integral types are not supported
+    EVALF((2.f + 3i) - (4.f + 5i), -2.f - 2i);
+    ^
+
+"Test_name.c", line 23: error: complex integral types are not supported
+    EVALF((2.f + 3i) - (4.f + 5i), -2.f - 2i);
+    ^
+
+"Test_name.c", line 23: error: complex integral types are not supported
+    EVALF((2.f + 3i) - (4.f + 5i), -2.f - 2i);
+    ^
+
+"Test_name.c", line 23: error: complex integral types are not supported
+    EVALF((2.f + 3i) - (4.f + 5i), -2.f - 2i);
+    ^
+
+"Test_name.c", line 24: error: complex integral types are not supported
+    EVALF((2.f + 3i) * (4.f + 5i), -7.f + 22i);
+    ^
+
+"Test_name.c", line 24: error: complex integral types are not supported
+    EVALF((2.f + 3i) * (4.f + 5i), -7.f + 22i);
+    ^
+
+"Test_name.c", line 24: error: complex integral types are not supported
+    EVALF((2.f + 3i) * (4.f + 5i), -7.f + 22i);
+    ^
+
+"Test_name.c", line 24: error: complex integral types are not supported
+    EVALF((2.f + 3i) * (4.f + 5i), -7.f + 22i);
+    ^
+
+"Test_name.c", line 24: error: complex integral types are not supported
+    EVALF((2.f + 3i) * (4.f + 5i), -7.f + 22i);
+    ^
+
+"Test_name.c", line 24: error: complex integral types are not supported
+    EVALF((2.f + 3i) * (4.f + 5i), -7.f + 22i);
+    ^
+
+"Test_name.c", line 25: error: complex integral types are not supported
+    EVALF((2.f + 3i) / (4.f + 5i), 0.5609f + 0.0487i);
+    ^
+
+"Test_name.c", line 25: error: complex integral types are not supported
+    EVALF((2.f + 3i) / (4.f + 5i), 0.5609f + 0.0487i);
+    ^
+
+"Test_name.c", line 25: error: complex integral types are not supported
+    EVALF((2.f + 3i) / (4.f + 5i), 0.5609f + 0.0487i);
+    ^
+
+"Test_name.c", line 25: error: complex integral types are not supported
+    EVALF((2.f + 3i) / (4.f + 5i), 0.5609f + 0.0487i);
+    ^
+
+"Test_name.c", line 27: error: complex integral types are not supported
+    EVALF((2. + 3i) + (4. + 5i), 6. + 8i);
+    ^
+
+"Test_name.c", line 27: error: complex integral types are not supported
+    EVALF((2. + 3i) + (4. + 5i), 6. + 8i);
+    ^
+
+"Test_name.c", line 27: error: complex integral types are not supported
+    EVALF((2. + 3i) + (4. + 5i), 6. + 8i);
+    ^
+
+"Test_name.c", line 27: error: complex integral types are not supported
+    EVALF((2. + 3i) + (4. + 5i), 6. + 8i);
+    ^
+
+"Test_name.c", line 27: error: complex integral types are not supported
+    EVALF((2. + 3i) + (4. + 5i), 6. + 8i);
+    ^
+
+"Test_name.c", line 27: error: complex integral types are not supported
+    EVALF((2. + 3i) + (4. + 5i), 6. + 8i);
+    ^
+
+"Test_name.c", line 28: error: complex integral types are not supported
+    EVALF((2. + 3i) - (4. + 5i), -2. - 2i);
+    ^
+
+"Test_name.c", line 28: error: complex integral types are not supported
+    EVALF((2. + 3i) - (4. + 5i), -2. - 2i);
+    ^
+
+"Test_name.c", line 28: error: complex integral types are not supported
+    EVALF((2. + 3i) - (4. + 5i), -2. - 2i);
+    ^
+
+"Test_name.c", line 28: error: complex integral types are not supported
+    EVALF((2. + 3i) - (4. + 5i), -2. - 2i);
+    ^
+
+"Test_name.c", line 28: error: complex integral types are not supported
+    EVALF((2. + 3i) - (4. + 5i), -2. - 2i);
+    ^
+
+"Test_name.c", line 28: error: complex integral types are not supported
+    EVALF((2. + 3i) - (4. + 5i), -2. - 2i);
+    ^
+
+"Test_name.c", line 29: error: complex integral types are not supported
+    EVALF((2. + 3i) * (4. + 5i), -7. + 22i);
+    ^
+
+"Test_name.c", line 29: error: complex integral types are not supported
+    EVALF((2. + 3i) * (4. + 5i), -7. + 22i);
+    ^
+
+"Test_name.c", line 29: error: complex integral types are not supported
+    EVALF((2. + 3i) * (4. + 5i), -7. + 22i);
+    ^
+
+"Test_name.c", line 29: error: complex integral types are not supported
+    EVALF((2. + 3i) * (4. + 5i), -7. + 22i);
+    ^
+
+"Test_name.c", line 29: error: complex integral types are not supported
+    EVALF((2. + 3i) * (4. + 5i), -7. + 22i);
+    ^
+
+"Test_name.c", line 29: error: complex integral types are not supported
+    EVALF((2. + 3i) * (4. + 5i), -7. + 22i);
+    ^
+
+"Test_name.c", line 31: error: complex integral types are not supported
+    EVALF((2. + 3i) / (4. + 5i), .5609 + .0487i);
+    ^
+
+"Test_name.c", line 31: error: complex integral types are not supported
+    EVALF((2. + 3i) / (4. + 5i), .5609 + .0487i);
+    ^
+
+"Test_name.c", line 31: error: complex integral types are not supported
+    EVALF((2. + 3i) / (4. + 5i), .5609 + .0487i);
+    ^
+
+"Test_name.c", line 31: error: complex integral types are not supported
+    EVALF((2. + 3i) / (4. + 5i), .5609 + .0487i);
+    ^
+
+"Test_name.c", line 36: error: complex integral types are not supported
+    EVAL((2 + 3i) + (4 + 5i), 6 + 8i);
+    ^
+
+"Test_name.c", line 36: error: complex integral types are not supported
+    EVAL((2 + 3i) + (4 + 5i), 6 + 8i);
+    ^
+
+"Test_name.c", line 36: error: complex integral types are not supported
+    EVAL((2 + 3i) + (4 + 5i), 6 + 8i);
+    ^
+
+"Test_name.c", line 37: error: complex integral types are not supported
+    EVAL((2 + 3i) - (4 + 5i), -2 - 2i);
+    ^
+
+"Test_name.c", line 37: error: complex integral types are not supported
+    EVAL((2 + 3i) - (4 + 5i), -2 - 2i);
+    ^
+
+"Test_name.c", line 37: error: complex integral types are not supported
+    EVAL((2 + 3i) - (4 + 5i), -2 - 2i);
+    ^
+
+"Test_name.c", line 38: error: complex integral types are not supported
+    EVAL((2 + 3i) * (4 + 5i), -7 + 22i);
+    ^
+
+"Test_name.c", line 38: error: complex integral types are not supported
+    EVAL((2 + 3i) * (4 + 5i), -7 + 22i);
+    ^
+
+"Test_name.c", line 38: error: complex integral types are not supported
+    EVAL((2 + 3i) * (4 + 5i), -7 + 22i);
+    ^
+
+"Test_name.c", line 39: error: complex integral types are not supported
+    EVAL((8 + 30i) / (4 + 5i), 4 + 1i);
+    ^
+
+"Test_name.c", line 39: error: complex integral types are not supported
+    EVAL((8 + 30i) / (4 + 5i), 4 + 1i);
+    ^
+
+"Test_name.c", line 39: error: complex integral types are not supported
+    EVAL((8 + 30i) / (4 + 5i), 4 + 1i);
+    ^
+
+"Test_name.c", line 39: error: static assertion failed with ""
+    EVAL((8 + 30i) / (4 + 5i), 4 + 1i);
+    ^
+
+"Test_name.c", line 44: error: complex integral types are not supported
+    EVALF((2.f + 4i) + 3.f, 5.f + 4i);
+    ^
+
+"Test_name.c", line 44: error: complex integral types are not supported
+    EVALF((2.f + 4i) + 3.f, 5.f + 4i);
+    ^
+
+"Test_name.c", line 44: error: complex integral types are not supported
+    EVALF((2.f + 4i) + 3.f, 5.f + 4i);
+    ^
+
+"Test_name.c", line 44: error: complex integral types are not supported
+    EVALF((2.f + 4i) + 3.f, 5.f + 4i);
+    ^
+
+"Test_name.c", line 45: error: complex integral types are not supported
+    EVALF((2.f + 4i) - 3.f, -1.f + 4i);
+    ^
+
+"Test_name.c", line 45: error: complex integral types are not supported
+    EVALF((2.f + 4i) - 3.f, -1.f + 4i);
+    ^
+
+"Test_name.c", line 45: error: complex integral types are not supported
+    EVALF((2.f + 4i) - 3.f, -1.f + 4i);
+    ^
+
+"Test_name.c", line 45: error: complex integral types are not supported
+    EVALF((2.f + 4i) - 3.f, -1.f + 4i);
+    ^
+
+"Test_name.c", line 46: error: complex integral types are not supported
+    EVALF((2.f + 4i) * 3.f, 6.f + 12i);
+    ^
+
+"Test_name.c", line 46: error: complex integral types are not supported
+    EVALF((2.f + 4i) * 3.f, 6.f + 12i);
+    ^
+
+"Test_name.c", line 46: error: complex integral types are not supported
+    EVALF((2.f + 4i) * 3.f, 6.f + 12i);
+    ^
+
+"Test_name.c", line 46: error: complex integral types are not supported
+    EVALF((2.f + 4i) * 3.f, 6.f + 12i);
+    ^
+
+"Test_name.c", line 47: error: complex integral types are not supported
+    EVALF((2.f + 4i) / 2.f, 1.f + 2i);
+    ^
+
+"Test_name.c", line 47: error: complex integral types are not supported
+    EVALF((2.f + 4i) / 2.f, 1.f + 2i);
+    ^
+
+"Test_name.c", line 47: error: complex integral types are not supported
+    EVALF((2.f + 4i) / 2.f, 1.f + 2i);
+    ^
+
+"Test_name.c", line 47: error: complex integral types are not supported
+    EVALF((2.f + 4i) / 2.f, 1.f + 2i);
+    ^
+
+"Test_name.c", line 49: error: complex integral types are not supported
+    EVALF(3.f + (2.f + 4i), 5.f + 4i);
+    ^
+
+"Test_name.c", line 49: error: complex integral types are not supported
+    EVALF(3.f + (2.f + 4i), 5.f + 4i);
+    ^
+
+"Test_name.c", line 49: error: complex integral types are not supported
+    EVALF(3.f + (2.f + 4i), 5.f + 4i);
+    ^
+
+"Test_name.c", line 49: error: complex integral types are not supported
+    EVALF(3.f + (2.f + 4i), 5.f + 4i);
+    ^
+
+"Test_name.c", line 50: error: complex integral types are not supported
+    EVALF(3.f - (2.f + 4i), 1.f - 4i);
+    ^
+
+"Test_name.c", line 50: error: complex integral types are not supported
+    EVALF(3.f - (2.f + 4i), 1.f - 4i);
+    ^
+
+"Test_name.c", line 50: error: complex integral types are not supported
+    EVALF(3.f - (2.f + 4i), 1.f - 4i);
+    ^
+
+"Test_name.c", line 50: error: complex integral types are not supported
+    EVALF(3.f - (2.f + 4i), 1.f - 4i);
+    ^
+
+"Test_name.c", line 51: error: complex integral types are not supported
+    EVALF(3.f * (2.f + 4i), 6.f + 12i);
+    ^
+
+"Test_name.c", line 51: error: complex integral types are not supported
+    EVALF(3.f * (2.f + 4i), 6.f + 12i);
+    ^
+
+"Test_name.c", line 51: error: complex integral types are not supported
+    EVALF(3.f * (2.f + 4i), 6.f + 12i);
+    ^
+
+"Test_name.c", line 51: error: complex integral types are not supported
+    EVALF(3.f * (2.f + 4i), 6.f + 12i);
+    ^
+
+"Test_name.c", line 52: error: complex integral types are not supported
+    EVALF(3.f / (2.f + 4i), .3f - 0.6i);
+    ^
+
+"Test_name.c", line 52: error: complex integral types are not supported
+    EVALF(3.f / (2.f + 4i), .3f - 0.6i);
+    ^
+
+"Test_name.c", line 54: error: complex integral types are not supported
+    EVALF((2. + 4i) + 3., 5. + 4i);
+    ^
+
+"Test_name.c", line 54: error: complex integral types are not supported
+    EVALF((2. + 4i) + 3., 5. + 4i);
+    ^
+
+"Test_name.c", line 54: error: complex integral types are not supported
+    EVALF((2. + 4i) + 3., 5. + 4i);
+    ^
+
+"Test_name.c", line 54: error: complex integral types are not supported
+    EVALF((2. + 4i) + 3., 5. + 4i);
+    ^
+
+"Test_name.c", line 55: error: complex integral types are not supported
+    EVALF((2. + 4i) - 3., -1. + 4i);
+    ^
+
+"Test_name.c", line 55: error: complex integral types are not supported
+    EVALF((2. + 4i) - 3., -1. + 4i);
+    ^
+
+"Test_name.c", line 55: error: complex integral types are not supported
+    EVALF((2. + 4i) - 3., -1. + 4i);
+    ^
+
+"Test_name.c", line 55: error: complex integral types are not supported
+    EVALF((2. + 4i) - 3., -1. + 4i);
+    ^
+
+"Test_name.c", line 56: error: complex integral types are not supported
+    EVALF((2. + 4i) * 3., 6. + 12i);
+    ^
+
+"Test_name.c", line 56: error: complex integral types are not supported
+    EVALF((2. + 4i) * 3., 6. + 12i);
+    ^
+
+"Test_name.c", line 56: error: complex integral types are not supported
+    EVALF((2. + 4i) * 3., 6. + 12i);
+    ^
+
+"Test_name.c", line 56: error: complex integral types are not supported
+    EVALF((2. + 4i) * 3., 6. + 12i);
+    ^
+
+"Test_name.c", line 57: error: complex integral types are not supported
+    EVALF((2. + 4i) / 2., 1. + 2i);
+    ^
+
+"Test_name.c", line 57: error: complex integral types are not supported
+    EVALF((2. + 4i) / 2., 1. + 2i);
+    ^
+
+"Test_name.c", line 57: error: complex integral types are not supported
+    EVALF((2. + 4i) / 2., 1. + 2i);
+    ^
+
+"Test_name.c", line 57: error: complex integral types are not supported
+    EVALF((2. + 4i) / 2., 1. + 2i);
+    ^
+
+"Test_name.c", line 59: error: complex integral types are not supported
+    EVALF(3. + (2. + 4i), 5. + 4i);
+    ^
+
+"Test_name.c", line 59: error: complex integral types are not supported
+    EVALF(3. + (2. + 4i), 5. + 4i);
+    ^
+
+"Test_name.c", line 59: error: complex integral types are not supported
+    EVALF(3. + (2. + 4i), 5. + 4i);
+    ^
+
+"Test_name.c", line 59: error: complex integral types are not supported
+    EVALF(3. + (2. + 4i), 5. + 4i);
+    ^
+
+"Test_name.c", line 60: error: complex integral types are not supported
+    EVALF(3. - (2. + 4i), 1. - 4i);
+    ^
+
+"Test_name.c", line 60: error: complex integral types are not supported
+    EVALF(3. - (2. + 4i), 1. - 4i);
+    ^
+
+"Test_name.c", line 60: error: complex integral types are not supported
+    EVALF(3. - (2. + 4i), 1. - 4i);
+    ^
+
+"Test_name.c", line 60: error: complex integral types are not supported
+    EVALF(3. - (2. + 4i), 1. - 4i);
+    ^
+
+"Test_name.c", line 61: error: complex integral types are not supported
+    EVALF(3. * (2. + 4i), 6. + 12i);
+    ^
+
+"Test_name.c", line 61: error: complex integral types are not supported
+    EVALF(3. * (2. + 4i), 6. + 12i);
+    ^
+
+"Test_name.c", line 61: error: complex integral types are not supported
+    EVALF(3. * (2. + 4i), 6. + 12i);
+    ^
+
+"Test_name.c", line 61: error: complex integral types are not supported
+    EVALF(3. * (2. + 4i), 6. + 12i);
+    ^
+
+"Test_name.c", line 62: error: complex integral types are not supported
+    EVALF(3. / (2. + 4i), .3 - 0.6i);
+    ^
+
+"Test_name.c", line 62: error: complex integral types are not supported
+    EVALF(3. / (2. + 4i), .3 - 0.6i);
+    ^
+
+"Test_name.c", line 67: error: complex integral types are not supported
+    EVAL((2 + 4i) + 3, 5 + 4i);
+    ^
+
+"Test_name.c", line 67: error: complex integral types are not supported
+    EVAL((2 + 4i) + 3, 5 + 4i);
+    ^
+
+"Test_name.c", line 68: error: complex integral types are not supported
+    EVAL((2 + 4i) - 3, -1 + 4i);
+    ^
+
+"Test_name.c", line 68: error: complex integral types are not supported
+    EVAL((2 + 4i) - 3, -1 + 4i);
+    ^
+
+"Test_name.c", line 69: error: complex integral types are not supported
+    EVAL((2 + 4i) * 3, 6 + 12i);
+    ^
+
+"Test_name.c", line 69: error: complex integral types are not supported
+    EVAL((2 + 4i) * 3, 6 + 12i);
+    ^
+
+"Test_name.c", line 70: error: complex integral types are not supported
+    EVAL((2 + 4i) / 2, 1 + 2i);
+    ^
+
+"Test_name.c", line 70: error: complex integral types are not supported
+    EVAL((2 + 4i) / 2, 1 + 2i);
+    ^
+
+"Test_name.c", line 72: error: complex integral types are not supported
+    EVAL(3 + (2 + 4i), 5 + 4i);
+    ^
+
+"Test_name.c", line 72: error: complex integral types are not supported
+    EVAL(3 + (2 + 4i), 5 + 4i);
+    ^
+
+"Test_name.c", line 73: error: complex integral types are not supported
+    EVAL(3 - (2 + 4i), 1 - 4i);
+    ^
+
+"Test_name.c", line 73: error: complex integral types are not supported
+    EVAL(3 - (2 + 4i), 1 - 4i);
+    ^
+
+"Test_name.c", line 74: error: complex integral types are not supported
+    EVAL(3 * (2 + 4i), 6 + 12i);
+    ^
+
+"Test_name.c", line 74: error: complex integral types are not supported
+    EVAL(3 * (2 + 4i), 6 + 12i);
+    ^
+
+"Test_name.c", line 75: error: complex integral types are not supported
+    EVAL(20 / (2 + 4i), 2 - 4i);
+    ^
+
+"Test_name.c", line 75: error: complex integral types are not supported
+    EVAL(20 / (2 + 4i), 2 - 4i);
+    ^
+
+"Test_name.c", line 80: error: complex integral types are not supported
+    EVALF((2.f + 4i) + 3, 5.f + 4i);
+    ^
+
+"Test_name.c", line 80: error: complex integral types are not supported
+    EVALF((2.f + 4i) + 3, 5.f + 4i);
+    ^
+
+"Test_name.c", line 80: error: complex integral types are not supported
+    EVALF((2.f + 4i) + 3, 5.f + 4i);
+    ^
+
+"Test_name.c", line 80: error: complex integral types are not supported
+    EVALF((2.f + 4i) + 3, 5.f + 4i);
+    ^
+
+"Test_name.c", line 81: error: complex integral types are not supported
+    EVALF((2.f + 4i) - 3, -1.f + 4i);
+    ^
+
+"Test_name.c", line 81: error: complex integral types are not supported
+    EVALF((2.f + 4i) - 3, -1.f + 4i);
+    ^
+
+"Test_name.c", line 81: error: complex integral types are not supported
+    EVALF((2.f + 4i) - 3, -1.f + 4i);
+    ^
+
+"Test_name.c", line 81: error: complex integral types are not supported
+    EVALF((2.f + 4i) - 3, -1.f + 4i);
+    ^
+
+"Test_name.c", line 82: error: complex integral types are not supported
+    EVALF((2.f + 4i) * 3, 6.f + 12i);
+    ^
+
+"Test_name.c", line 82: error: complex integral types are not supported
+    EVALF((2.f + 4i) * 3, 6.f + 12i);
+    ^
+
+"Test_name.c", line 82: error: complex integral types are not supported
+    EVALF((2.f + 4i) * 3, 6.f + 12i);
+    ^
+
+"Test_name.c", line 82: error: complex integral types are not supported
+    EVALF((2.f + 4i) * 3, 6.f + 12i);
+    ^
+
+"Test_name.c", line 83: error: complex integral types are not supported
+    EVALF((2.f + 4i) / 2, 1.f + 2i);
+    ^
+
+"Test_name.c", line 83: error: complex integral types are not supported
+    EVALF((2.f + 4i) / 2, 1.f + 2i);
+    ^
+
+"Test_name.c", line 83: error: complex integral types are not supported
+    EVALF((2.f + 4i) / 2, 1.f + 2i);
+    ^
+
+"Test_name.c", line 83: error: complex integral types are not supported
+    EVALF((2.f + 4i) / 2, 1.f + 2i);
+    ^
+
+"Test_name.c", line 85: error: complex integral types are not supported
+    EVALF(3 + (2.f + 4i), 5.f + 4i);
+    ^
+
+"Test_name.c", line 85: error: complex integral types are not supported
+    EVALF(3 + (2.f + 4i), 5.f + 4i);
+    ^
+
+"Test_name.c", line 85: error: complex integral types are not supported
+    EVALF(3 + (2.f + 4i), 5.f + 4i);
+    ^
+
+"Test_name.c", line 85: error: complex integral types are not supported
+    EVALF(3 + (2.f + 4i), 5.f + 4i);
+    ^
+
+"Test_name.c", line 86: error: complex integral types are not supported
+    EVALF(3 - (2.f + 4i), 1.f - 4i);
+    ^
+
+"Test_name.c", line 86: error: complex integral types are not supported
+    EVALF(3 - (2.f + 4i), 1.f - 4i);
+    ^
+
+"Test_name.c", line 86: error: complex integral types are not supported
+    EVALF(3 - (2.f + 4i), 1.f - 4i);
+    ^
+
+"Test_name.c", line 86: error: complex integral types are not supported
+    EVALF(3 - (2.f + 4i), 1.f - 4i);
+    ^
+
+"Test_name.c", line 87: error: complex integral types are not supported
+    EVALF(3 * (2.f + 4i), 6.f + 12i);
+    ^
+
+"Test_name.c", line 87: error: complex integral types are not supported
+    EVALF(3 * (2.f + 4i), 6.f + 12i);
+    ^
+
+"Test_name.c", line 87: error: complex integral types are not supported
+    EVALF(3 * (2.f + 4i), 6.f + 12i);
+    ^
+
+"Test_name.c", line 87: error: complex integral types are not supported
+    EVALF(3 * (2.f + 4i), 6.f + 12i);
+    ^
+
+"Test_name.c", line 88: error: complex integral types are not supported
+    EVALF(3 / (2.f + 4i), .3f - 0.6i);
+    ^
+
+"Test_name.c", line 88: error: complex integral types are not supported
+    EVALF(3 / (2.f + 4i), .3f - 0.6i);
+    ^
+
+"Test_name.c", line 90: error: complex integral types are not supported
+    EVALF((2. + 4i) + 3, 5. + 4i);
+    ^
+
+"Test_name.c", line 90: error: complex integral types are not supported
+    EVALF((2. + 4i) + 3, 5. + 4i);
+    ^
+
+"Test_name.c", line 90: error: complex integral types are not supported
+    EVALF((2. + 4i) + 3, 5. + 4i);
+    ^
+
+"Test_name.c", line 90: error: complex integral types are not supported
+    EVALF((2. + 4i) + 3, 5. + 4i);
+    ^
+
+"Test_name.c", line 91: error: complex integral types are not supported
+    EVALF((2. + 4i) - 3, -1. + 4i);
+    ^
+
+"Test_name.c", line 91: error: complex integral types are not supported
+    EVALF((2. + 4i) - 3, -1. + 4i);
+    ^
+
+"Test_name.c", line 91: error: complex integral types are not supported
+    EVALF((2. + 4i) - 3, -1. + 4i);
+    ^
+
+"Test_name.c", line 91: error: complex integral types are not supported
+    EVALF((2. + 4i) - 3, -1. + 4i);
+    ^
+
+"Test_name.c", line 92: error: complex integral types are not supported
+    EVALF((2. + 4i) * 3, 6. + 12i);
+    ^
+
+"Test_name.c", line 92: error: complex integral types are not supported
+    EVALF((2. + 4i) * 3, 6. + 12i);
+    ^
+
+"Test_name.c", line 92: error: complex integral types are not supported
+    EVALF((2. + 4i) * 3, 6. + 12i);
+    ^
+
+"Test_name.c", line 92: error: complex integral types are not supported
+    EVALF((2. + 4i) * 3, 6. + 12i);
+    ^
+
+"Test_name.c", line 93: error: complex integral types are not supported
+    EVALF((2. + 4i) / 2, 1. + 2i);
+    ^
+
+"Test_name.c", line 93: error: complex integral types are not supported
+    EVALF((2. + 4i) / 2, 1. + 2i);
+    ^
+
+"Test_name.c", line 93: error: complex integral types are not supported
+    EVALF((2. + 4i) / 2, 1. + 2i);
+    ^
+
+"Test_name.c", line 93: error: complex integral types are not supported
+    EVALF((2. + 4i) / 2, 1. + 2i);
+    ^
+
+"Test_name.c", line 95: error: complex integral types are not supported
+    EVALF(3 + (2. + 4i), 5. + 4i);
+    ^
+
+"Test_name.c", line 95: error: complex integral types are not supported
+    EVALF(3 + (2. + 4i), 5. + 4i);
+    ^
+
+"Test_name.c", line 95: error: complex integral types are not supported
+    EVALF(3 + (2. + 4i), 5. + 4i);
+    ^
+
+"Test_name.c", line 95: error: complex integral types are not supported
+    EVALF(3 + (2. + 4i), 5. + 4i);
+    ^
+
+"Test_name.c", line 96: error: complex integral types are not supported
+    EVALF(3 - (2. + 4i), 1. - 4i);
+    ^
+
+"Test_name.c", line 96: error: complex integral types are not supported
+    EVALF(3 - (2. + 4i), 1. - 4i);
+    ^
+
+"Test_name.c", line 96: error: complex integral types are not supported
+    EVALF(3 - (2. + 4i), 1. - 4i);
+    ^
+
+"Test_name.c", line 96: error: complex integral types are not supported
+    EVALF(3 - (2. + 4i), 1. - 4i);
+    ^
+
+"Test_name.c", line 97: error: complex integral types are not supported
+    EVALF(3 * (2. + 4i), 6. + 12i);
+    ^
+
+"Test_name.c", line 97: error: complex integral types are not supported
+    EVALF(3 * (2. + 4i), 6. + 12i);
+    ^
+
+"Test_name.c", line 97: error: complex integral types are not supported
+    EVALF(3 * (2. + 4i), 6. + 12i);
+    ^
+
+"Test_name.c", line 97: error: complex integral types are not supported
+    EVALF(3 * (2. + 4i), 6. + 12i);
+    ^
+
+"Test_name.c", line 98: error: complex integral types are not supported
+    EVALF(3 / (2. + 4i), .3 - 0.6i);
+    ^
+
+"Test_name.c", line 98: error: complex integral types are not supported
+    EVALF(3 / (2. + 4i), .3 - 0.6i);
+    ^
+
+"Test_name.c", line 103: error: complex integral types are not supported
+    EVALF((2 + 4i) + 3.f, 5.f + 4i);
+    ^
+
+"Test_name.c", line 103: error: complex integral types are not supported
+    EVALF((2 + 4i) + 3.f, 5.f + 4i);
+    ^
+
+"Test_name.c", line 103: error: complex integral types are not supported
+    EVALF((2 + 4i) + 3.f, 5.f + 4i);
+    ^
+
+"Test_name.c", line 103: error: complex integral types are not supported
+    EVALF((2 + 4i) + 3.f, 5.f + 4i);
+    ^
+
+"Test_name.c", line 104: error: complex integral types are not supported
+    EVALF((2 + 4i) - 3.f, -1.f + 4i);
+    ^
+
+"Test_name.c", line 104: error: complex integral types are not supported
+    EVALF((2 + 4i) - 3.f, -1.f + 4i);
+    ^
+
+"Test_name.c", line 104: error: complex integral types are not supported
+    EVALF((2 + 4i) - 3.f, -1.f + 4i);
+    ^
+
+Error limit reached.
+200 errors detected in the compilation of "Test_name.c".
+Compilation terminated.

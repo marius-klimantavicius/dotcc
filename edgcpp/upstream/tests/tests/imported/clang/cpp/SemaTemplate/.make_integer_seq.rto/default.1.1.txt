@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++23 Test_name.c
+"Test_name.c", line 119: error: incomplete type "D<char, A<int, 0>>" is not allowed
+  template struct D<char, A<int, 0>>;
+           ^
+
+"Test_name.c", line 123: error: incomplete type "E<short, A<short, (short)0, (short)1>>" is not allowed
+  template struct E<short, A<short, 0, 1>>;
+           ^
+
+"Test_name.c", line 127: error: incomplete type "F<A, A<long, 0L, 1L, 2L>>" is not allowed
+  template struct F<A, A<long, 0, 1, 2>>;
+           ^
+
+"Test_name.c", line 137: error: no instance of function template "h" matches the argument list
+            argument types are: (H<5, A<int, 0, 1, 2, 3, 4>>)
+  void test_h() { h(H<5>{}); }
+                  ^
+"Test_name.c", line 136: note: candidate function template "h" failed deduction
+  template <int S> void h(H<S>);
+                        ^
+
+4 errors detected in the compilation of "Test_name.c".

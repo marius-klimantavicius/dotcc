@@ -1,0 +1,222 @@
+#!/usr/bin/env python3
+
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+import argparse
+import os
+import re
+import sys
+
+from pathlib import Path
+from typing import Dict, List, Set
+
+# This regex matches a line that starts with "#" or a line that's entirely
+# whitespace.
+IGNORED_LINE_REGEX = re.compile(r'^(#.*|\s*)$')
+
+# This regex matches one of the following:
+#
+#   FOO_BAR=1
+#   |      |^ group three
+#   |      ^ group two
+#   ^ group one
+#
+#   FOO_BAR
+#   |      ^ group two (empty string)
+#   ^ group one
+#   group three is None
+#
+DEFINE_REGEX = re.compile(r'^([A-Za-z0-9_]+)(|=(.*))$')
+
+IMPORT_REGEX = re.compile(r'^import <(.*)>$')
+
+DELETE_REGEX = re.compile(r'^delete ([A-Za-z0-9_]+)$')
+
+WEAK_DELETE_REGEX = re.compile(r'^delete_if_set ([A-Za-z0-9_]+)$')
+
+
+def eprint(*args, **kw_args):
+  print(*args, file = sys.stderr, **kw_args)
+
+def _flush_messages(target_path: Path, messages: List[str]) -> None:
+  # If there's aren't any messages, do nothing.
+  if len(messages) == 0:
+    return
+
+  eprint(f"From \"{target_path}\":")
+  for diagnostic in messages:
+    eprint(f"  {diagnostic}")
+
+  messages.clear()
+
+class CMakeDefInfo:
+  def __init__(self) -> None:
+    self.valid = True
+    self.related_paths : Set[Path] = set()
+    self.definitions : Dict[str, str] = {}
+
+def _load_cmake_def(cmake_info: CMakeDefInfo, root_path: Path,
+                    target_path: Path, *, verbose: bool) -> None:
+  # Resolve target if that hasn't been done already.
+  if not target_path.is_absolute():
+    target_path = root_path.joinpath(target_path)
+
+  # Add the target path to the list of related paths.
+  cmake_info.related_paths.add(target_path)
+
+  # Setup variables for printing messages.
+  user_facing_path = target_path.relative_to(root_path)
+  messages = []
+
+  # Open the file and process the "language"
+  with open(target_path, 'r') as target_file:
+    for line in target_file:
+      # Handle comments
+      if IGNORED_LINE_REGEX.match(line):
+        continue
+
+      # Handle defines
+      define_regex = DEFINE_REGEX.match(line)
+      if define_regex is not None:
+        key = define_regex.group(1)
+        value = define_regex.group(3)
+
+        # Log if we're in verbose mode.
+        if verbose:
+          if key in cmake_info.definitions:
+            old_value = cmake_info.definitions[key]
+            messages.append(
+              f"Overwriting: \"{key}={value}\" (was {old_value})"
+            )
+          else:
+            messages.append(f"Setting: \"{key}={value}\"")
+
+        cmake_info.definitions[key] = value
+        continue
+
+      # Handle imports
+      import_match = IMPORT_REGEX.match(line)
+      if import_match is not None:
+        included_path = Path(f"{import_match.group(1)}.cmakedef")
+
+        # Log if we're in verbose mode.
+        if verbose:
+          messages.append(f"Importing: \"{included_path}\"")
+
+        # Flush any messages for this file, this results in a more linear
+        # output.
+        _flush_messages(user_facing_path, messages)
+
+        # Import the file.
+        _load_cmake_def(
+          cmake_info,
+          root_path,
+          included_path,
+          verbose = verbose
+        )
+        continue
+
+      # Handle deletes
+      delete_match = DELETE_REGEX.match(line)
+      if delete_match is not None:
+        key = delete_match.group(1)
+        if key in cmake_info.definitions:
+          if verbose:
+            messages.append(f"Deleting: \"{key}\"")
+          del cmake_info.definitions[key]
+        else:
+          messages.append(f"Delete requested, but key not set: {key}")
+          cmake_info.valid = False
+        continue
+
+      # Handle weak deletes
+      weak_delete_match = WEAK_DELETE_REGEX.match(line)
+      if weak_delete_match is not None:
+        key = weak_delete_match.group(1)
+        if key in cmake_info.definitions:
+          if verbose:
+            messages.append(f"Deleting: \"{key}\"")
+          del cmake_info.definitions[key]
+        else:
+          messages.append(f"Delete requested, but key not set: {key}")
+        continue
+
+      messages.append(f"Bad cmakedef: \"{line.strip()}\"")
+      cmake_info.valid = False
+
+  _flush_messages(user_facing_path, messages)
+
+def load_cmake_def(root_path: Path, target_path: Path, *,
+                   verbose: bool) -> CMakeDefInfo:
+  '''Process the cmake def file at target_path with respect to the given root
+  path.
+  '''
+  cmake_info = CMakeDefInfo()
+  _load_cmake_def(cmake_info, root_path, target_path, verbose = verbose)
+  return cmake_info
+
+def parse_args():
+  parser = argparse.ArgumentParser(description='EDG cmakedef resolver.')
+  parser.add_argument(
+    '--verbose',
+    dest = 'verbose',
+    action = 'store_true',
+    help = 'enable verbose mode (messages will be written to stderr)'
+  )
+  parser.add_argument(
+    'root',
+    type = Path,
+    help = 'the root of the cmakedefs where lookup starts'
+  )
+  parser.add_argument(
+    'target',
+    type = Path,
+    help = 'the cmakedef file to process'
+  )
+  parser.add_argument(
+    'action',
+    choices = ['print-values', 'print-defines', 'print-paths']
+  )
+  return parser.parse_args()
+
+def print_cmake_info(cmake_info: CMakeDefInfo, action: str) -> None:
+  if action == 'print-values':
+    # The information was invalid, don't try to print the definitions.
+    if not cmake_info.valid:
+      return
+
+    for key, value in cmake_info.definitions.items():
+      if value is not None:
+        print(f"{key}={value}")
+      else:
+        print(key)
+  elif action == 'print-defines':
+    # The information was invalid, don't try to print the definitions.
+    if not cmake_info.valid:
+      return
+
+    for key, value in cmake_info.definitions.items():
+      print(f"#ifndef {key}")
+      if value is not None:
+        print(f"#define {key} {value}")
+      else:
+        print(f"#define {key} 1")
+      print(f"#endif /* {key} */")
+  else:
+    # Even when invalid, we print so the CMake configuration system can pick
+    # up the right set of files to watch.
+    for path in cmake_info.related_paths:
+      print(path)
+
+def main() -> None:
+  args = parse_args()
+  cmake_info = load_cmake_def(args.root, args.target, verbose = args.verbose)
+
+  print_cmake_info(cmake_info, args.action)
+
+  sys.exit(0 if cmake_info.valid else 1)
+
+main()

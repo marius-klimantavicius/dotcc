@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"./cpp2a/construct_at.h", line 52: warning: function "operator new(std::size_t, void *) noexcept" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+    -> decltype (::new ((void *) 0) T (std::declval<A> ()...))
+                   ^
+          detected during instantiation of "std::construct_at" based on template arguments <int, int> at line 11 of "./cpp2a/constexpr-new5.C"
+
+"./cpp2a/construct_at.h", line 51: warning: function "operator new(std::size_t, void *) noexcept" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+    noexcept (noexcept (::new ((void *) 0) T (std::declval<A> ()...)))
+                          ^
+          detected during instantiation of "auto std::construct_at(T *, A &&...)->decltype((<expression>)) [with T=int, A=<int>]" at line 11 of "./cpp2a/constexpr-new5.C"
+
+"./cpp2a/construct_at.h", line 53: warning: function "operator new(std::size_t, void *) noexcept" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+    { return ::new ((void *) l) T (std::forward<A> (a)...); }
+               ^
+          detected during instantiation of "auto std::construct_at(T *, A &&...)->decltype((<expression>)) [with T=int, A=<int>]" at line 11 of "./cpp2a/constexpr-new5.C"
+

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 8: warning: return value type does not match the function type
+    return a; /* { dg-error "10:returning 'int \\*' from a function with return type 'int' makes integer from pointer without a cast" } */
+           ^
+
+"Test_name.c", line 14: warning: return value type does not match the function type
+    return a; /* { dg-error "10:returning 'int' from a function with return type 'int \\*' makes pointer from integer without a cast" } */
+           ^
+

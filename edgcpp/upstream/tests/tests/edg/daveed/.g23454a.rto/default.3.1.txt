@@ -1,0 +1,7 @@
+fe_only -DTEST_NUMBER=3 --c++03 --gnu=70300 -DNEG Test_name.c
+"Test_name.c", line 4: error: initialization requiring a temporary or conversion is not allowed
+  template <typename T, const T& = T()>
+                                   ^
+          detected during processing of template argument list for "ct" based on template argument <int> at line 8
+
+1 error detected in the compilation of "Test_name.c".

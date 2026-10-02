@@ -1,0 +1,137 @@
+fe_only -DTEST_NUMBER=2 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --c++ Test_name.c
+"Test_name.c", line 10: warning: unknown attribute "clang::code_align"
+    [[clang::code_align(8)]]
+      ^
+
+"Test_name.c", line 15: warning: unknown attribute "clang::code_align"
+    [[clang::code_align(4)]]
+      ^
+
+"Test_name.c", line 22: warning: unknown attribute "clang::code_align"
+    [[clang::code_align(12)]] int n[10];
+      ^
+
+"Test_name.c", line 8: warning: variable "a" was set but never used
+    int a[10], b[10];
+        ^
+
+"Test_name.c", line 8: warning: variable "b" was set but never used
+    int a[10], b[10];
+               ^
+
+"Test_name.c", line 22: warning: variable "n" was declared but never referenced
+    [[clang::code_align(12)]] int n[10];
+                                  ^
+
+"Test_name.c", line 30: warning: unknown attribute "clang::code_align"
+    [[clang::code_align(0)]]
+      ^
+
+"Test_name.c", line 34: warning: unknown attribute "clang::code_align"
+    [[clang::code_align(-4)]]
+      ^
+
+"Test_name.c", line 39: warning: unknown attribute "clang::code_align"
+    [[clang::code_align(64.0)]]
+      ^
+
+"Test_name.c", line 43: warning: unknown attribute "clang::code_align"
+    [[clang::code_align()]]
+      ^
+
+"Test_name.c", line 47: warning: unknown attribute "clang::code_align"
+    [[clang::code_align(4,8)]]
+      ^
+
+"Test_name.c", line 51: warning: unknown attribute "clang::code_align"
+    [[clang::code_align(32)]]
+      ^
+
+"Test_name.c", line 56: warning: unknown attribute "clang::code_align"
+    [[clang::code_align("abc")]]
+      ^
+
+"Test_name.c", line 59: warning: unknown attribute "clang::code_align"
+    [[clang::code_align(64)]] // OK
+      ^
+
+"Test_name.c", line 60: warning: unknown attribute "clang::code_align"
+    [[clang::code_align(64)]] // OK
+      ^
+
+"Test_name.c", line 63: warning: unknown attribute "clang::code_align"
+    [[clang::code_align(8)]]  // expected-note{{previous attribute is here}}
+      ^
+
+"Test_name.c", line 64: warning: unknown attribute "clang::code_align"
+    [[clang::code_align(64)]] // expected-error{{conflicting loop attribute 'clang::code_align'}}
+      ^
+
+"Test_name.c", line 67: warning: unknown attribute "clang::code_align"
+    [[clang::code_align(4)]] // expected-note{{previous attribute is here}}
+      ^
+
+"Test_name.c", line 68: warning: unknown attribute "clang::code_align"
+    [[clang::code_align(4)]] // OK
+      ^
+
+"Test_name.c", line 69: warning: unknown attribute "clang::code_align"
+    [[clang::code_align(8)]] // expected-error{{conflicting loop attribute 'clang::code_align'}}
+      ^
+
+"Test_name.c", line 72: warning: unknown attribute "clang::code_align"
+    [[clang::code_align(4)]]  // expected-note 2{{previous attribute is here}}
+      ^
+
+"Test_name.c", line 73: warning: unknown attribute "clang::code_align"
+    [[clang::code_align(4)]]  // OK
+      ^
+
+"Test_name.c", line 74: warning: unknown attribute "clang::code_align"
+    [[clang::code_align(8)]]  // expected-error{{conflicting loop attribute 'clang::code_align'}}
+      ^
+
+"Test_name.c", line 75: warning: unknown attribute "clang::code_align"
+    [[clang::code_align(64)]] // expected-error{{conflicting loop attribute 'clang::code_align'}}
+      ^
+
+"Test_name.c", line 79: warning: unknown attribute "clang::code_align"
+    [[clang::code_align(7)]]
+      ^
+
+"Test_name.c", line 83: warning: unknown attribute "clang::code_align"
+    [[clang::code_align(5000)]]
+      ^
+
+"Test_name.c", line 88: warning: unknown attribute "clang::code_align"
+    [[clang::code_align(9223372036854775808)]]
+      ^
+
+"Test_name.c", line 98: warning: unknown attribute "clang::code_align"
+    [[clang::code_align(-922337203685477)]]
+      ^
+
+"Test_name.c", line 112: warning: unknown attribute "clang::code_align"
+    [[clang::code_align(A)]]
+      ^
+
+"Test_name.c", line 124: warning: unknown attribute "clang::code_align"
+    [[clang::code_align(foo2 + 1)]]
+      ^
+
+"Test_name.c", line 131: warning: unknown attribute "clang::code_align"
+    [[clang::code_align(bars + 1)]]
+      ^
+
+"Test_name.c", line 117: warning: variable "a" was set but never used
+    int a[10];
+        ^
+
+"Test_name.c", line 120: warning: variable "foo2" was declared but never referenced
+    int foo2; // cpp-local-note {{declared here}}
+        ^
+
+"Test_name.c", line 130: warning: variable "bars" was declared but never referenced
+    constexpr int bars = 0;
+                  ^
+

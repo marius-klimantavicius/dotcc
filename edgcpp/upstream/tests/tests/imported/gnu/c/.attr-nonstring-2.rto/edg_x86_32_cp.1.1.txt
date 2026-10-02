@@ -1,0 +1,49 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./range.h", line 13: warning: declaration of "size_t" does not match the expected type "unsigned int"
+  typedef long unsigned int size_t;
+                            ^
+
+"./attr-nonstring-2.c", line 30: warning: integer conversion resulted in truncation
+    sink (strnlen (ns3, 0x7fffffffffffffffL));
+                        ^
+
+"./attr-nonstring-2.c", line 31: warning: integer conversion resulted in truncation
+    sink (strnlen (ns3, 0xffffffffffffffffUL));
+                        ^
+
+"./attr-nonstring-2.c", line 41: warning: integer conversion resulted in truncation
+    sink (strnlen (ns5, 0x7fffffffffffffffL));
+                        ^
+
+"./attr-nonstring-2.c", line 42: warning: integer conversion resulted in truncation
+    sink (strnlen (ns5, 0xffffffffffffffffUL));
+                        ^
+
+"./attr-nonstring-2.c", line 54: warning: integer conversion resulted in truncation
+    sink (strnlen (ns3, unsigned_range ((3), (0x7fffffffffffffffL))));
+                                             ^
+
+"./attr-nonstring-2.c", line 56: warning: integer conversion resulted in truncation
+    sink (strnlen (ns3, unsigned_range ((0x7fffffffffffffffL), (0xffffffffffffffffUL))));
+                                        ^
+
+"./attr-nonstring-2.c", line 56: warning: integer conversion resulted in truncation
+    sink (strnlen (ns3, unsigned_range ((0x7fffffffffffffffL), (0xffffffffffffffffUL))));
+                                                               ^
+
+"./attr-nonstring-2.c", line 98: warning: integer conversion resulted in truncation
+    do { extern __attribute__ ((nonstring)) char arr98[]; memcpy (arr98, "1", 2); sink (strnlen (arr98, 0x7fffffffffffffffL), arr98); } while (0);
+                                                                                                        ^
+
+"./attr-nonstring-2.c", line 99: warning: integer conversion resulted in truncation
+    do { extern __attribute__ ((nonstring)) char arr99[]; memcpy (arr99, "1", 2); sink (strnlen (arr99, 0xffffffffffffffffUL), arr99); } while (0);
+                                                                                                        ^
+
+"./attr-nonstring-2.c", line 101: warning: integer conversion resulted in truncation
+    size_t n = 0x7fffffffffffffffL;
+               ^
+
+"./attr-nonstring-2.c", line 104: warning: integer conversion resulted in truncation
+    n = 0xffffffffffffffffUL;
+        ^
+

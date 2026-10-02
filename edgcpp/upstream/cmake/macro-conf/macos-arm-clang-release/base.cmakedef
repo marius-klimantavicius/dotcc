@@ -1,0 +1,7 @@
+# Import MacOS ARM64 Configuration
+import <support/platform/macos-arm64/base>
+# Import Clang Configuration
+import <support/compiler/clang/macos/base>
+
+# Import Simple Release Configuration
+import <support/simple-conf/release/base>

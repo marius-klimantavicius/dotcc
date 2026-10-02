@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 11: error: a global-scope declaration may not have this storage class
+  } register a;	// { dg-error "register name not specified for 'a'" }
+    ^
+
+"Test_name.c", line 16: warning: a class type that is not trivially copyable passed through ellipsis
+    return foo (a);
+                ^
+
+1 error detected in the compilation of "Test_name.c".

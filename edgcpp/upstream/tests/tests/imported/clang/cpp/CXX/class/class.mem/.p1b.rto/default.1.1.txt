@@ -1,0 +1,40 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 17: error: no instance of constructor "A::B::B" matches the argument list
+    void a2(B b = B()); // expected-error{{use of default argument to function 'B' that is declared later in class 'B'}}
+                  ^
+"Test_name.c", line 24: note: number of parameters of function "A::B::B(const A::B &)" does not match the call
+    class B {
+          ^
+"Test_name.c", line 24: note: number of parameters of function "A::B::B(A::B &&)" does not match the call
+    class B {
+          ^
+"Test_name.c", line 26: note: number of parameters of function "A::B::B(int)" does not match the call
+      B(int b = 42) { // expected-note{{default argument declared here}}
+      ^
+
+"Test_name.c", line 22: error: identifier "first" is undefined
+    void a4(int a = first); // expected-error{{use of undeclared identifier 'first'}}
+                    ^
+
+"Test_name.c", line 32: error: no instance of constructor "A::A" matches the argument list
+      void b1(A a = A()); // expected-error{{use of default argument to function 'A' that is declared later in class 'A'}}
+                    ^
+"Test_name.c", line 10: note: number of parameters of function "A::A(const A &)" does not match the call
+  class A {
+        ^
+"Test_name.c", line 10: note: number of parameters of function "A::A(A &&)" does not match the call
+  class A {
+        ^
+"Test_name.c", line 44: note: number of parameters of function "A::A(int)" does not match the call
+    A(int a = 42); // expected-note{{default argument declared here}}
+    ^
+
+"Test_name.c", line 35: error: identifier "second" is undefined
+      void b2(int a = second); // expected-error{{use of undeclared identifier 'second'}}
+                      ^
+
+"Test_name.c", line 47: error: identifier "third" is undefined
+    void a7(int a = third); // expected-error{{use of undeclared identifier 'third'}}
+                    ^
+
+5 errors detected in the compilation of "Test_name.c".

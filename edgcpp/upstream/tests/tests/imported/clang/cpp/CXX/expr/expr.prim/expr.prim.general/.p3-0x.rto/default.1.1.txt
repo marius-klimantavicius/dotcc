@@ -1,0 +1,19 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 115: error: "this" may only be used inside a nonstatic member function
+      static auto g() -> decltype(this->m); // expected-error{{'this' cannot be used in a static member function declaration}}
+                                  ^
+
+"Test_name.c", line 122: error: "this" may only be used inside a nonstatic member function
+    auto X1::h() -> decltype(m) { return 0; } // expected-error{{'this' cannot be implicitly used in a static member function declaration}}
+                             ^
+
+"Test_name.c", line 165: error: no instance of function template "rdar13473493::wrap<F>::operator() [with F=int (*)(int)]" matches the argument list
+            argument types are: (int)
+            object type is: rdar13473493::wrap<int (*)(int)>
+      w(5); // expected-error{{no matching function for call to object of type 'wrap<int (*)(int)>'}}
+      ^
+"Test_name.c", line 155: note: candidate function template "rdar13473493::wrap<F>::operator() [with F=int (*)(int)]" failed deduction
+      auto operator()(Args&&... args) const -> decltype(wrapped(args...)) // expected-note{{candidate template ignored: substitution failure [with Args = <int>]: member 'wrapped' used before its declaration}}
+           ^
+
+3 errors detected in the compilation of "Test_name.c".

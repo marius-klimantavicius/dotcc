@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 -DNOERROR Test_name.c
+"Test_name.c", line 97: warning: variable "st" was set but never used
+    struct st_long_double1 st;
+                           ^
+
+"Test_name.c", line 106: warning: variable "st" was set but never used
+    struct st_long_double2 st;
+                           ^
+
+"Test_name.c", line 115: warning: variable "st" was set but never used
+    struct st_long_double3 st;
+                           ^
+
+"Test_name.c", line 125: warning: variable "ld" was declared but never referenced
+    long_double ld = 0.42;
+                ^
+

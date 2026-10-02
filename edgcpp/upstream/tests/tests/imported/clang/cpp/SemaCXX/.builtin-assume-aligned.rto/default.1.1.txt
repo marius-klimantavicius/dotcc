@@ -1,0 +1,187 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 8: error: this operator is not allowed in a constant expression
+  constexpr int *k = (int *) __builtin_assume_aligned(p, 16, n = 5);
+                                                               ^
+
+"Test_name.c", line 8: error: the optional third argument of a call to __builtin_assumed_aligned must have integral type
+  constexpr int *k = (int *) __builtin_assume_aligned(p, 16, n = 5);
+                                                     ^
+
+"Test_name.c", line 10: error: expression must have a constant value
+  constexpr void *l = __builtin_assume_aligned(p, 16);
+                      ^
+"Test_name.c", line 10: note: cannot call non-constexpr function "__builtin_assume_aligned" (declared implicitly)
+  constexpr void *l = __builtin_assume_aligned(p, 16);
+                      ^
+
+"Test_name.c", line 14: error: expression must have a constant value
+  constexpr int *c = (int *) __builtin_assume_aligned(p, 16);
+                      ^
+
+"Test_name.c", line 18: error: expression must have a constant value
+  constexpr void *m = __builtin_assume_aligned(&n, 16);
+                      ^
+"Test_name.c", line 18: note: cannot call non-constexpr function "__builtin_assume_aligned" (declared implicitly)
+  constexpr void *m = __builtin_assume_aligned(&n, 16);
+                      ^
+
+"Test_name.c", line 22: error: expression must have a constant value
+  constexpr void *q1 = __builtin_assume_aligned(&n, 4, 2);
+                       ^
+"Test_name.c", line 22: note: cannot call non-constexpr function "__builtin_assume_aligned" (declared implicitly)
+  constexpr void *q1 = __builtin_assume_aligned(&n, 4, 2);
+                       ^
+
+"Test_name.c", line 25: error: expression must have a constant value
+  constexpr void *q2 = __builtin_assume_aligned(&n, 4, -2);
+                       ^
+"Test_name.c", line 25: note: cannot call non-constexpr function "__builtin_assume_aligned" (declared implicitly)
+  constexpr void *q2 = __builtin_assume_aligned(&n, 4, -2);
+                       ^
+
+"Test_name.c", line 26: error: expression must have a constant value
+  constexpr void *q3 = __builtin_assume_aligned(&n, 4, 4);
+                       ^
+"Test_name.c", line 26: note: cannot call non-constexpr function "__builtin_assume_aligned" (declared implicitly)
+  constexpr void *q3 = __builtin_assume_aligned(&n, 4, 4);
+                       ^
+
+"Test_name.c", line 27: error: expression must have a constant value
+  constexpr void *q4 = __builtin_assume_aligned(&n, 4, -4);
+                       ^
+"Test_name.c", line 27: note: cannot call non-constexpr function "__builtin_assume_aligned" (declared implicitly)
+  constexpr void *q4 = __builtin_assume_aligned(&n, 4, -4);
+                       ^
+
+"Test_name.c", line 32: error: expression must have a constant value
+  constexpr void *r1 = __builtin_assume_aligned(&ar1[2], 16);
+                       ^
+"Test_name.c", line 32: note: cannot call non-constexpr function "__builtin_assume_aligned" (declared implicitly)
+  constexpr void *r1 = __builtin_assume_aligned(&ar1[2], 16);
+                       ^
+
+"Test_name.c", line 37: error: expression must have a constant value
+  constexpr void *r2 = __builtin_assume_aligned(&ar2[2], 16);
+                       ^
+"Test_name.c", line 37: note: cannot call non-constexpr function "__builtin_assume_aligned" (declared implicitly)
+  constexpr void *r2 = __builtin_assume_aligned(&ar2[2], 16);
+                       ^
+
+"Test_name.c", line 38: error: expression must have a constant value
+  constexpr void *r3 = __builtin_assume_aligned(&ar2[2], 16, 2);
+                       ^
+"Test_name.c", line 38: note: cannot call non-constexpr function "__builtin_assume_aligned" (declared implicitly)
+  constexpr void *r3 = __builtin_assume_aligned(&ar2[2], 16, 2);
+                       ^
+
+"Test_name.c", line 41: error: expression must have a constant value
+  constexpr void *r4 = __builtin_assume_aligned(&ar2[2], 16, 1);
+                       ^
+"Test_name.c", line 41: note: cannot call non-constexpr function "__builtin_assume_aligned" (declared implicitly)
+  constexpr void *r4 = __builtin_assume_aligned(&ar2[2], 16, 1);
+                       ^
+
+"Test_name.c", line 46: error: expression must have a constant value
+  constexpr void *s1 = __builtin_assume_aligned(x, 32);
+                       ^
+"Test_name.c", line 46: note: cannot call non-constexpr function "__builtin_assume_aligned" (declared implicitly)
+  constexpr void *s1 = __builtin_assume_aligned(x, 32);
+                       ^
+
+"Test_name.c", line 49: error: expression must have a constant value
+  constexpr void *s2 = __builtin_assume_aligned(x, 32, 5);
+                       ^
+"Test_name.c", line 49: note: cannot call non-constexpr function "__builtin_assume_aligned" (declared implicitly)
+  constexpr void *s2 = __builtin_assume_aligned(x, 32, 5);
+                       ^
+
+"Test_name.c", line 50: error: expression must have a constant value
+  constexpr void *s3 = __builtin_assume_aligned(x, 32, -1);
+                       ^
+"Test_name.c", line 50: note: cannot call non-constexpr function "__builtin_assume_aligned" (declared implicitly)
+  constexpr void *s3 = __builtin_assume_aligned(x, 32, -1);
+                       ^
+
+"Test_name.c", line 56: error: expression must have a constant value
+  constexpr void *c1 = __builtin_assume_aligned(p, add(1,1));
+                       ^
+"Test_name.c", line 56: note: cannot call non-constexpr function "__builtin_assume_aligned" (declared implicitly)
+  constexpr void *c1 = __builtin_assume_aligned(p, add(1,1));
+                       ^
+
+"Test_name.c", line 57: error: expression must have a constant value
+  constexpr void *c2 = __builtin_assume_aligned(p, add(2,1)); // expected-error {{not a power of 2}}
+                       ^
+"Test_name.c", line 57: note: cannot call non-constexpr function "__builtin_assume_aligned" (declared implicitly)
+  constexpr void *c2 = __builtin_assume_aligned(p, add(2,1)); // expected-error {{not a power of 2}}
+                       ^
+
+"Test_name.c", line 8: warning: variable "k" was declared but never referenced
+  constexpr int *k = (int *) __builtin_assume_aligned(p, 16, n = 5);
+                 ^
+
+"Test_name.c", line 10: warning: variable "l" was declared but never referenced
+  constexpr void *l = __builtin_assume_aligned(p, 16);
+                  ^
+
+"Test_name.c", line 14: warning: variable "c" was declared but never referenced
+  constexpr int *c = (int *) __builtin_assume_aligned(p, 16);
+                 ^
+
+"Test_name.c", line 18: warning: variable "m" was declared but never referenced
+  constexpr void *m = __builtin_assume_aligned(&n, 16);
+                  ^
+
+"Test_name.c", line 22: warning: variable "q1" was declared but never referenced
+  constexpr void *q1 = __builtin_assume_aligned(&n, 4, 2);
+                  ^
+
+"Test_name.c", line 25: warning: variable "q2" was declared but never referenced
+  constexpr void *q2 = __builtin_assume_aligned(&n, 4, -2);
+                  ^
+
+"Test_name.c", line 26: warning: variable "q3" was declared but never referenced
+  constexpr void *q3 = __builtin_assume_aligned(&n, 4, 4);
+                  ^
+
+"Test_name.c", line 27: warning: variable "q4" was declared but never referenced
+  constexpr void *q4 = __builtin_assume_aligned(&n, 4, -4);
+                  ^
+
+"Test_name.c", line 32: warning: variable "r1" was declared but never referenced
+  constexpr void *r1 = __builtin_assume_aligned(&ar1[2], 16);
+                  ^
+
+"Test_name.c", line 37: warning: variable "r2" was declared but never referenced
+  constexpr void *r2 = __builtin_assume_aligned(&ar2[2], 16);
+                  ^
+
+"Test_name.c", line 38: warning: variable "r3" was declared but never referenced
+  constexpr void *r3 = __builtin_assume_aligned(&ar2[2], 16, 2);
+                  ^
+
+"Test_name.c", line 41: warning: variable "r4" was declared but never referenced
+  constexpr void *r4 = __builtin_assume_aligned(&ar2[2], 16, 1);
+                  ^
+
+"Test_name.c", line 46: warning: variable "s1" was declared but never referenced
+  constexpr void *s1 = __builtin_assume_aligned(x, 32);
+                  ^
+
+"Test_name.c", line 49: warning: variable "s2" was declared but never referenced
+  constexpr void *s2 = __builtin_assume_aligned(x, 32, 5);
+                  ^
+
+"Test_name.c", line 50: warning: variable "s3" was declared but never referenced
+  constexpr void *s3 = __builtin_assume_aligned(x, 32, -1);
+                  ^
+
+"Test_name.c", line 56: warning: variable "c1" was declared but never referenced
+  constexpr void *c1 = __builtin_assume_aligned(p, add(1,1));
+                  ^
+
+"Test_name.c", line 57: warning: variable "c2" was declared but never referenced
+  constexpr void *c2 = __builtin_assume_aligned(p, add(2,1)); // expected-error {{not a power of 2}}
+                  ^
+
+18 errors detected in the compilation of "Test_name.c".

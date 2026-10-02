@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --c++23 -tused -A Test_name.c
+"Test_name.c", line 14: error: more than one instance of overloaded function "C::c" matches the argument list:
+            function "C::c() &" (declared at line 10)
+            function "C::c(int)" (declared at line 11)
+       c();               // error: ambiguous between #2 and #3
+       ^
+
+"Test_name.c", line 15: error: more than one instance of overloaded function "C::c" matches the argument list:
+            function "C::c() &" (declared at line 10)
+            function "C::c(int)" (declared at line 11)
+       (C::c)();          // error: as above
+       ^
+
+"Test_name.c", line 18: error: overload resolution for an address-of-overload-set call may not select implicit-object member function "C::c() &" (declared at line 10)
+       (&C::c)(*this);    // error: selects #2, and is ill-formed [over.match.call.general]/2
+       ^
+
+3 errors detected in the compilation of "Test_name.c".

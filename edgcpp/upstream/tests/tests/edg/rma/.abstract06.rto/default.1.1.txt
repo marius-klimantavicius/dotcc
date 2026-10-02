@@ -1,0 +1,22 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 11: error: object of abstract class type "B" is not allowed:
+            function "B::pure" is a pure virtual function
+  	B member_1;		/* ERROR */
+  	  ^
+
+"Test_name.c", line 12: error: object of abstract class type "D" is not allowed:
+            pure virtual function "B::pure" has no overrider
+  	D member_2;		/* ERROR */
+  	  ^
+
+"Test_name.c", line 13: error: object of abstract class type "B" is not allowed:
+            function "B::pure" is a pure virtual function
+  	static B member_3;	/* ERROR */
+  	         ^
+
+"Test_name.c", line 14: error: object of abstract class type "D" is not allowed:
+            pure virtual function "B::pure" has no overrider
+  	static D member_4;	/* ERROR */
+  	         ^
+
+4 errors detected in the compilation of "Test_name.c".

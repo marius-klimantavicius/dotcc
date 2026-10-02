@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 12: error: the default constructor of "A" cannot be referenced -- it is a deleted function
+  A a;  // { dg-error "deleted|uninitialized const member in 'struct A'|uninitialized reference member in 'struct A'" }
+    ^
+
+"Test_name.c", line 14: error: the default constructor of "B" cannot be referenced -- it is a deleted function
+  B b;  // { dg-error "deleted|uninitialized const member in base 'struct A' of 'struct B'|uninitialized reference member in base 'struct A' of 'struct B'" }
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,48 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c11 Test_name.c
+"Test_name.c", line 15: error: static assertion failed with "__alignof__(g_double) == 8"
+  CHECK_ALIGNMENT(double, g_double, 8);
+  ^
+"Test_name.c", line 15: note: the final comparison was 4 == 8
+  CHECK_ALIGNMENT(double, g_double, 8);
+  ^
+
+"Test_name.c", line 15: error: static assertion failed with "__alignof__(double) == 8"
+  CHECK_ALIGNMENT(double, g_double, 8);
+  ^
+"Test_name.c", line 15: note: the final comparison was 4 == 8
+  CHECK_ALIGNMENT(double, g_double, 8);
+  ^
+
+"Test_name.c", line 15: error: static assertion failed with "_Alignof(double) == 8"
+  CHECK_ALIGNMENT(double, g_double, 8);
+  ^
+"Test_name.c", line 15: note: the final comparison was 4 == 8
+  CHECK_ALIGNMENT(double, g_double, 8);
+  ^
+
+"Test_name.c", line 20: error: static assertion failed with "__alignof__(g_arr3double) == 8"
+  CHECK_ALIGNMENT(arr3double, g_arr3double, 8);
+  ^
+"Test_name.c", line 20: note: the final comparison was 4 == 8
+  CHECK_ALIGNMENT(arr3double, g_arr3double, 8);
+  ^
+
+"Test_name.c", line 20: error: static assertion failed with "__alignof__(arr3double) == 8"
+  CHECK_ALIGNMENT(arr3double, g_arr3double, 8);
+  ^
+"Test_name.c", line 20: note: the final comparison was 4 == 8
+  CHECK_ALIGNMENT(arr3double, g_arr3double, 8);
+  ^
+
+"Test_name.c", line 20: error: static assertion failed with "_Alignof(arr3double) == 8"
+  CHECK_ALIGNMENT(arr3double, g_arr3double, 8);
+  ^
+"Test_name.c", line 20: note: the final comparison was 4 == 8
+  CHECK_ALIGNMENT(arr3double, g_arr3double, 8);
+  ^
+
+"Test_name.c", line 23: warning: last line of file ends without a newline
+  CHECK_ALIGNMENT(enum big_enum, g_bigenum, 8);
+                                               ^
+
+6 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++23 Test_name.c
+"Test_name.c", line 4: error: default argument is not allowed
+    template<class T> void A<T>::B::c(int = 0) {}
+                                            ^
+
+1 error detected in the compilation of "Test_name.c".

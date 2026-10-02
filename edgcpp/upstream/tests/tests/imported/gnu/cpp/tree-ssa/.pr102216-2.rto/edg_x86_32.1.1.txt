@@ -1,0 +1,309 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 421: error: identifier "__int128" is undefined
+      struct __is_integral_helper<__int128>
+                                  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 426: error: expected a ">"
+      struct __is_integral_helper<unsigned __int128>
+                                           ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 812: error: expected a ">"
+     , signed __int128
+              ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 832: error: expected a ">"
+     , unsigned __int128
+                ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 1877: error: identifier "__int128" is undefined
+      struct __make_unsigned<__int128>
+                             ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 1878: error: expected a ";"
+      { using __type = unsigned __int128; };
+                                ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 2037: error: expected a ">"
+      struct __make_signed<unsigned __int128>
+                                    ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 2038: error: identifier "__int128" is undefined
+      { using __type = __int128; };
+                       ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/cpp_type_traits.h", line 264: error: identifier "__int128" is undefined
+  __extension__ template<> struct __is_integer<__int128> { enum { __value = 1 }; typedef __true_type __type; }; __extension__ template<> struct __is_integer<unsigned __int128> { enum { __value = 1 }; typedef __true_type __type; };
+                                               ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/cpp_type_traits.h", line 264: error: expected a ">"
+  __extension__ template<> struct __is_integer<__int128> { enum { __value = 1 }; typedef __true_type __type; }; __extension__ template<> struct __is_integer<unsigned __int128> { enum { __value = 1 }; typedef __true_type __type; };
+                                                                                                                                                                      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1041: error: identifier "__int128" is undefined
+    __extension__ inline constexpr __int128
+                                   ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1042: error: identifier "__int128" is undefined
+    __size_to_integer(__int128 __n) { return __n; }
+                      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1044: error: missing initializer for constexpr variable
+    __size_to_integer(unsigned __int128 __n) { return __n; }
+    ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1044: error: expected a ";"
+    __size_to_integer(unsigned __int128 __n) { return __n; }
+    ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1223: error: identifier "__is_random_access_iter" is undefined
+        __is_random_access_iter<_II>::__value, bool>::__type
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1223: error: type name is not allowed
+        __is_random_access_iter<_II>::__value, bool>::__type
+                                ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1223: error: too few arguments for class template "__gnu_cxx::__enable_if"
+        __is_random_access_iter<_II>::__value, bool>::__type
+                                   ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1223: error: expected a ";"
+        __is_random_access_iter<_II>::__value, bool>::__type
+                                             ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1237: error: identifier "__is_random_access_iter" is undefined
+        __is_random_access_iter<_II>::__value, bool>::__type
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1237: error: type name is not allowed
+        __is_random_access_iter<_II>::__value, bool>::__type
+                                ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1237: error: too few arguments for class template "__gnu_cxx::__enable_if"
+        __is_random_access_iter<_II>::__value, bool>::__type
+                                   ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1237: error: expected a ";"
+        __is_random_access_iter<_II>::__value, bool>::__type
+                                             ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1308: error: identifier "random_access_iterator_tag" is undefined
+      struct __lc_rai<random_access_iterator_tag, random_access_iterator_tag>
+                      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1308: error: identifier "random_access_iterator_tag" is undefined
+      struct __lc_rai<random_access_iterator_tag, random_access_iterator_tag>
+                                                  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1398: error: identifier "ptrdiff_t" is undefined
+   static ptrdiff_t
+          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1934: error: pair is not a template
+      pair<_InputIterator1, _InputIterator2>
+      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1961: error: pair is not a template
+      inline pair<_InputIterator1, _InputIterator2>
+             ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1996: error: pair is not a template
+      inline pair<_InputIterator1, _InputIterator2>
+             ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 2013: error: pair is not a template
+      pair<_InputIterator1, _InputIterator2>
+      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 2043: error: pair is not a template
+      inline pair<_InputIterator1, _InputIterator2>
+             ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 2080: error: pair is not a template
+      inline pair<_InputIterator1, _InputIterator2>
+             ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 2112: error: iterator_traits is not a template
+      typename iterator_traits<_InputIterator>::difference_type
+               ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 2305: error: expected a declaration
+  }
+  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/initializer_list", line 90: error: identifier "initializer_list" is undefined
+      begin(initializer_list<_Tp> __ils) noexcept
+            ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/initializer_list", line 90: error: type name is not allowed
+      begin(initializer_list<_Tp> __ils) noexcept
+                             ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/initializer_list", line 90: error: identifier "__ils" is undefined
+      begin(initializer_list<_Tp> __ils) noexcept
+                                  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/initializer_list", line 90: error: expected a ";"
+      begin(initializer_list<_Tp> __ils) noexcept
+                                         ^
+
+"/usr/include/stdlib.h", line 139: error: identifier "size_t" is undefined
+  extern size_t __ctype_get_mb_cur_max (void) throw () ;
+         ^
+
+"/usr/include/stdlib.h", line 331: error: identifier "size_t" is undefined
+     size_t __statelen) throw () __attribute__ ((__nonnull__ (2)));
+     ^
+
+"/usr/include/stdlib.h", line 361: error: identifier "size_t" is undefined
+     size_t __statelen,
+     ^
+
+"/usr/include/stdlib.h", line 465: error: identifier "size_t" is undefined
+  extern void *malloc (size_t __size) throw () __attribute__ ((__malloc__)) ;
+                       ^
+
+"/usr/include/stdlib.h", line 467: error: identifier "size_t" is undefined
+  extern void *calloc (size_t __nmemb, size_t __size)
+                       ^
+
+"/usr/include/stdlib.h", line 467: error: identifier "size_t" is undefined
+  extern void *calloc (size_t __nmemb, size_t __size)
+                                       ^
+
+"/usr/include/stdlib.h", line 479: error: identifier "size_t" is undefined
+  extern void *realloc (void *__ptr, size_t __size)
+                                     ^
+
+"/usr/include/alloca.h", line 32: error: identifier "size_t" is undefined
+  extern void *alloca (size_t __size) throw ();
+                       ^
+
+"/usr/include/stdlib.h", line 497: error: identifier "size_t" is undefined
+  extern void *valloc (size_t __size) throw () __attribute__ ((__malloc__)) ;
+                       ^
+
+"/usr/include/stdlib.h", line 502: error: identifier "size_t" is undefined
+  extern int posix_memalign (void **__memptr, size_t __alignment, size_t __size)
+                                              ^
+
+"/usr/include/stdlib.h", line 502: error: identifier "size_t" is undefined
+  extern int posix_memalign (void **__memptr, size_t __alignment, size_t __size)
+                                                                  ^
+
+"/usr/include/stdlib.h", line 508: error: identifier "size_t" is undefined
+  extern void *aligned_alloc (size_t __alignment, size_t __size)
+                              ^
+
+"/usr/include/stdlib.h", line 508: error: identifier "size_t" is undefined
+  extern void *aligned_alloc (size_t __alignment, size_t __size)
+                                                  ^
+
+"/usr/include/stdlib.h", line 755: error: identifier "size_t" is undefined
+          size_t __nmemb, size_t __size, __compar_fn_t __compar)
+          ^
+
+"/usr/include/stdlib.h", line 755: error: identifier "size_t" is undefined
+          size_t __nmemb, size_t __size, __compar_fn_t __compar)
+                          ^
+
+"/usr/include/stdlib.h", line 760: error: identifier "size_t" is undefined
+  extern void qsort (void *__base, size_t __nmemb, size_t __size,
+                                   ^
+
+"/usr/include/stdlib.h", line 760: error: identifier "size_t" is undefined
+  extern void qsort (void *__base, size_t __nmemb, size_t __size,
+                                                   ^
+
+"/usr/include/stdlib.h", line 763: error: identifier "size_t" is undefined
+  extern void qsort_r (void *__base, size_t __nmemb, size_t __size,
+                                     ^
+
+"/usr/include/stdlib.h", line 763: error: identifier "size_t" is undefined
+  extern void qsort_r (void *__base, size_t __nmemb, size_t __size,
+                                                     ^
+
+"/usr/include/stdlib.h", line 839: error: identifier "size_t" is undefined
+       size_t __len) throw () __attribute__ ((__nonnull__ (3, 4, 5)));
+       ^
+
+"/usr/include/stdlib.h", line 842: error: identifier "size_t" is undefined
+       size_t __len) throw () __attribute__ ((__nonnull__ (3, 4, 5)));
+       ^
+
+"/usr/include/stdlib.h", line 846: error: identifier "size_t" is undefined
+        char *__restrict __buf, size_t __len)
+                                ^
+
+"/usr/include/stdlib.h", line 850: error: identifier "size_t" is undefined
+        char *__restrict __buf, size_t __len)
+                                ^
+
+"/usr/include/stdlib.h", line 859: error: identifier "size_t" is undefined
+  extern int mblen (const char *__s, size_t __n) throw () ;
+                                     ^
+
+"/usr/include/stdlib.h", line 863: error: identifier "size_t" is undefined
+       const char *__restrict __s, size_t __n) throw () ;
+                                   ^
+
+"/usr/include/stdlib.h", line 870: error: identifier "size_t" is undefined
+  extern size_t mbstowcs (wchar_t *__restrict __pwcs,
+         ^
+
+"/usr/include/stdlib.h", line 871: error: identifier "size_t" is undefined
+     const char *__restrict __s, size_t __n) throw ();
+                                 ^
+
+"/usr/include/stdlib.h", line 873: error: identifier "size_t" is undefined
+  extern size_t wcstombs (char *__restrict __s,
+         ^
+
+"/usr/include/stdlib.h", line 874: error: identifier "size_t" is undefined
+     const wchar_t *__restrict __pwcs, size_t __n)
+                                       ^
+
+"/usr/include/stdlib.h", line 936: error: identifier "size_t" is undefined
+  extern int ptsname_r (int __fd, char *__buf, size_t __buflen)
+                                               ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/std_abs.h", line 90: error: variable "std::__int128" is not a type name
+    __extension__ inline constexpr __int128
+                                   ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/std_abs.h", line 91: error: declaration is incompatible with overloaded function "std::abs" (declared at line 58)
+    abs(__int128 __x) { return __x >= 0 ? __x : -__x; }
+    ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/std_abs.h", line 91: error: expected a ")"
+    abs(__int128 __x) { return __x >= 0 ? __x : -__x; }
+                 ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/std_abs.h", line 91: error: expected a ";"
+    abs(__int128 __x) { return __x >= 0 ? __x : -__x; }
+                      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algo.h", line 3419: error: "minmax" has already been declared in the current scope
+      minmax(initializer_list<_Tp> __l)
+      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algo.h", line 3419: error: type name is not allowed
+      minmax(initializer_list<_Tp> __l)
+                              ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algo.h", line 3419: error: identifier "__l" is undefined
+      minmax(initializer_list<_Tp> __l)
+                                   ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algo.h", line 3420: error: expected a ";"
+      {
+      ^
+
+At end of source: error: expected a ";"
+
+At end of source: error: expected a "}"
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algo.h", line 81: note: to match this "{"
+  {
+  ^
+
+77 errors detected in the compilation of "Test_name.c".

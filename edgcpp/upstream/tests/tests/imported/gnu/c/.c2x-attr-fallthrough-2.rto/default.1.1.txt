@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 7: warning: expected a declaration
+  [[fallthrough]]; /* { dg-error "'fallthrough' attribute at top level" } */
+                 ^
+
+"Test_name.c", line 9: error: attribute "fallthrough" does not apply here
+  int [[fallthrough]] x; /* { dg-error "ignored" } */
+        ^
+
+"Test_name.c", line 11: warning: attribute "fallthrough" does not apply here
+  int g () [[fallthrough]]; /* { dg-error "ignored" } */
+             ^
+
+"Test_name.c", line 13: warning: attribute "fallthrough" does not apply here
+  int array[2] [[fallthrough]]; /* { dg-error "ignored" } */
+                 ^
+
+"Test_name.c", line 15: error: attribute "fallthrough" does not apply here
+  int z = sizeof (int [[fallthrough]]); /* { dg-error "ignored" } */
+                        ^
+
+"Test_name.c", line 20: warning: attribute "fallthrough" does not apply here
+    [[fallthrough]] int b = 2; /* { dg-warning "not followed by" } */
+      ^
+
+"Test_name.c", line 28: error: attribute "fallthrough" does not take arguments
+        [[fallthrough()]]; /* { dg-error "does not take any arguments" } */
+                     ^
+
+"Test_name.c", line 34: error: attribute "fallthrough" does not take arguments
+        [[fallthrough(1)]]; /* { dg-error "does not take any arguments|expected" } */
+                     ^
+
+"Test_name.c", line 38: warning: the "fallthrough" attribute only applies to null statements
+      [[fallthrough]] case 6: break; /* { dg-error "ignored" } */
+        ^
+
+"Test_name.c", line 39: warning: the "fallthrough" attribute only applies to null statements
+      [[fallthrough]] default: break; /* { dg-error "ignored" } */
+        ^
+
+"Test_name.c", line 41: warning: the "fallthrough" attribute only applies to null statements
+    [[fallthrough]] return b; /* { dg-error "ignored" } */
+      ^
+
+"Test_name.c", line 42: warning: attribute "fallthrough" does not apply here
+   [[fallthrough]] label: ; /* { dg-error "ignored" } */
+     ^
+
+4 errors detected in the compilation of "Test_name.c".

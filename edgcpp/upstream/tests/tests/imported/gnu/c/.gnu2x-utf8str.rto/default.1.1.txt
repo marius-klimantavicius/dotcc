@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 8: error: identifier "__CHAR8_TYPE__" is undefined
+  typedef __CHAR8_TYPE__  char8_t;
+          ^
+
+"Test_name.c", line 21: error: a value of type "char [5]" cannot be used to initialize an entity of type "const char8_t []"
+  const char8_t c8buf1[] = u8"text";
+                           ^
+
+"Test_name.c", line 26: error: a value of type "char [5]" cannot be used to initialize an entity of type "const char16_t []"
+  const char16_t c16buf1[] = u8"text";		/* { dg-error "from a string literal with type array of .unsigned char." } */
+                             ^
+
+"Test_name.c", line 27: error: a value of type "char [5]" cannot be used to initialize an entity of type "const char16_t []"
+  const char16_t c16buf2[] = { u8"text" };	/* { dg-error "from a string literal with type array of .unsigned char." } */
+                               ^
+
+"Test_name.c", line 27: error: incomplete type "const char16_t []" is not allowed
+  const char16_t c16buf2[] = { u8"text" };	/* { dg-error "from a string literal with type array of .unsigned char." } */
+                 ^
+
+"Test_name.c", line 28: error: a value of type "char [5]" cannot be used to initialize an entity of type "const char32_t []"
+  const char32_t c32buf1[] = u8"text";		/* { dg-error "from a string literal with type array of .unsigned char." } */
+                             ^
+
+"Test_name.c", line 29: error: a value of type "char [5]" cannot be used to initialize an entity of type "const char32_t []"
+  const char32_t c32buf2[] = { u8"text" };	/* { dg-error "from a string literal with type array of .unsigned char." } */
+                               ^
+
+"Test_name.c", line 29: error: incomplete type "const char32_t []" is not allowed
+  const char32_t c32buf2[] = { u8"text" };	/* { dg-error "from a string literal with type array of .unsigned char." } */
+                 ^
+
+"Test_name.c", line 30: error: a value of type "char [5]" cannot be used to initialize an entity of type "const wchar_t []"
+  const wchar_t wbuf1[] = u8"text";		/* { dg-error "from a string literal with type array of .unsigned char." } */
+                          ^
+
+"Test_name.c", line 31: error: a value of type "char [5]" cannot be used to initialize an entity of type "const wchar_t []"
+  const wchar_t wbuf2[] = { u8"text" };		/* { dg-error "from a string literal with type array of .unsigned char." } */
+                            ^
+
+"Test_name.c", line 31: error: incomplete type "const wchar_t []" is not allowed
+  const wchar_t wbuf2[] = { u8"text" };		/* { dg-error "from a string literal with type array of .unsigned char." } */
+                ^
+
+"Test_name.c", line 35: error: a value of type "char [5]" cannot be used to initialize an entity of type "const char8_t []"
+  const char8_t c8buf3[] = "text";
+                           ^
+
+12 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,49 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./pr38902.c", line 65: warning: variable "local" was declared but never referenced
+  void test0 (void) { char *local = "1234567890abcdefghijklmnopqrstuvwxyz"; char buffer[1024]=""; __builtin_memcpy (buffer, "1234567890abcdefghijklmnopqrstuvwxyz", __builtin_strlen("1234567890abcdefghijklmnopqrstuvwxyz")+1);; if (__builtin_strcmp(buffer, heap) == 0) { ; } else { ; failed++; } };
+                            ^
+
+"./pr38902.c", line 67: warning: variable "local" was declared but never referenced
+  void test2 (void) { char *local = "1234567890abcdefghijklmnopqrstuvwxyz"; char buffer[1024]=""; __builtin_memcpy (buffer, heap, __builtin_strlen(heap)+1);; if (__builtin_strcmp(buffer, heap) == 0) { ; } else { ; failed++; } };
+                            ^
+
+"./pr38902.c", line 69: warning: variable "local" was declared but never referenced
+  void test3 (void) { char *local = "1234567890abcdefghijklmnopqrstuvwxyz"; char buffer[1024]=""; __builtin_memmove (buffer, "1234567890abcdefghijklmnopqrstuvwxyz", __builtin_strlen("1234567890abcdefghijklmnopqrstuvwxyz")+1);; if (__builtin_strcmp(buffer, heap) == 0) { ; } else { ; failed++; } };
+                            ^
+
+"./pr38902.c", line 71: warning: variable "local" was declared but never referenced
+  void test5 (void) { char *local = "1234567890abcdefghijklmnopqrstuvwxyz"; char buffer[1024]=""; __builtin_memmove (buffer, heap, __builtin_strlen(heap)+1);; if (__builtin_strcmp(buffer, heap) == 0) { ; } else { ; failed++; } };
+                            ^
+
+"./pr38902.c", line 73: warning: variable "local" was declared but never referenced
+  void test6 (void) { char *local = "1234567890abcdefghijklmnopqrstuvwxyz"; char buffer[1024]=""; __builtin_strcpy (buffer, "1234567890abcdefghijklmnopqrstuvwxyz");; if (__builtin_strcmp(buffer, heap) == 0) { ; } else { ; failed++; } };
+                            ^
+
+"./pr38902.c", line 75: warning: variable "local" was declared but never referenced
+  void test8 (void) { char *local = "1234567890abcdefghijklmnopqrstuvwxyz"; char buffer[1024]=""; __builtin_strcpy (buffer, heap);; if (__builtin_strcmp(buffer, heap) == 0) { ; } else { ; failed++; } };
+                            ^
+
+"./pr38902.c", line 77: warning: variable "local" was declared but never referenced
+  void test9 (void) { char *local = "1234567890abcdefghijklmnopqrstuvwxyz"; char buffer[1024]=""; sprintf (buffer, "1234567890abcdefghijklmnopqrstuvwxyz");; if (__builtin_strcmp(buffer, heap) == 0) { ; } else { ; failed++; } };
+                            ^
+
+"./pr38902.c", line 79: warning: variable "local" was declared but never referenced
+  void test11 (void) { char *local = "1234567890abcdefghijklmnopqrstuvwxyz"; char buffer[1024]=""; sprintf (buffer, heap);; if (__builtin_strcmp(buffer, heap) == 0) { ; } else { ; failed++; } };
+                             ^
+
+"./pr38902.c", line 81: warning: variable "local" was declared but never referenced
+  void test12 (void) { char *local = "1234567890abcdefghijklmnopqrstuvwxyz"; char buffer[1024]=""; sprintf (buffer, "%s", "1234567890abcdefghijklmnopqrstuvwxyz");; if (__builtin_strcmp(buffer, heap) == 0) { ; } else { ; failed++; } };
+                             ^
+
+"./pr38902.c", line 83: warning: variable "local" was declared but never referenced
+  void test14 (void) { char *local = "1234567890abcdefghijklmnopqrstuvwxyz"; char buffer[1024]=""; sprintf (buffer, "%s", heap);; if (__builtin_strcmp(buffer, heap) == 0) { ; } else { ; failed++; } };
+                             ^
+
+"./pr38902.c", line 85: warning: variable "local" was declared but never referenced
+  void test15 (void) { char *local = "1234567890abcdefghijklmnopqrstuvwxyz"; char buffer[1024]=""; __builtin_strcat (buffer, "1234567890abcdefghijklmnopqrstuvwxyz");; if (__builtin_strcmp(buffer, heap) == 0) { ; } else { ; failed++; } };
+                             ^
+
+"./pr38902.c", line 87: warning: variable "local" was declared but never referenced
+  void test17 (void) { char *local = "1234567890abcdefghijklmnopqrstuvwxyz"; char buffer[1024]=""; __builtin_strcat (buffer, heap);; if (__builtin_strcmp(buffer, heap) == 0) { ; } else { ; failed++; } };
+                             ^
+

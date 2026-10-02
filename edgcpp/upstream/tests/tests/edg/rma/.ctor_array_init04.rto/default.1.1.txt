@@ -1,0 +1,6 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 5: remark: function "SS::~SS" cannot be inlined
+  struct SS {
+         ^
+          detected during implicit generation of "SS::~SS()" at line 11
+

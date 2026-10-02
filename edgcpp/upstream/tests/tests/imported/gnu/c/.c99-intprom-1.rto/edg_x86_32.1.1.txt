@@ -1,0 +1,321 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"./c99-intprom-1.c", line 22: warning: variable "a" was set but never used
+    do { int a = 0; int b = 0; int *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+             ^
+
+"./c99-intprom-1.c", line 22: warning: variable "b" was set but never used
+    do { int a = 0; int b = 0; int *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                        ^
+
+"./c99-intprom-1.c", line 23: warning: variable "a" was set but never used
+    do { unsigned int a = 0; unsigned int b = 0; unsigned int *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                      ^
+
+"./c99-intprom-1.c", line 23: warning: variable "b" was set but never used
+    do { unsigned int a = 0; unsigned int b = 0; unsigned int *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                                          ^
+
+"./c99-intprom-1.c", line 24: warning: variable "a" was set but never used
+    do { long a = 0; long b = 0; long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+              ^
+
+"./c99-intprom-1.c", line 24: warning: variable "b" was set but never used
+    do { long a = 0; long b = 0; long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                          ^
+
+"./c99-intprom-1.c", line 25: warning: variable "a" was set but never used
+    do { unsigned long a = 0; unsigned long b = 0; unsigned long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                       ^
+
+"./c99-intprom-1.c", line 25: warning: variable "b" was set but never used
+    do { unsigned long a = 0; unsigned long b = 0; unsigned long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                                            ^
+
+"./c99-intprom-1.c", line 26: warning: variable "a" was set but never used
+    do { long long a = 0; long long b = 0; long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                   ^
+
+"./c99-intprom-1.c", line 26: warning: variable "b" was set but never used
+    do { long long a = 0; long long b = 0; long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                                    ^
+
+"./c99-intprom-1.c", line 27: warning: variable "a" was set but never used
+    do { unsigned long long a = 0; unsigned long long b = 0; unsigned long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                            ^
+
+"./c99-intprom-1.c", line 27: warning: variable "b" was set but never used
+    do { unsigned long long a = 0; unsigned long long b = 0; unsigned long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                                                      ^
+
+"./c99-intprom-1.c", line 29: warning: variable "a" was set but never used
+    do { int a = 0; long b = 0; long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+             ^
+
+"./c99-intprom-1.c", line 29: warning: variable "b" was set but never used
+    do { int a = 0; long b = 0; long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                         ^
+
+"./c99-intprom-1.c", line 30: warning: variable "a" was set but never used
+    do { int a = 0; long long b = 0; long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+             ^
+
+"./c99-intprom-1.c", line 30: warning: variable "b" was set but never used
+    do { int a = 0; long long b = 0; long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                              ^
+
+"./c99-intprom-1.c", line 31: warning: variable "a" was set but never used
+    do { long a = 0; int b = 0; long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+              ^
+
+"./c99-intprom-1.c", line 31: warning: variable "b" was set but never used
+    do { long a = 0; int b = 0; long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                         ^
+
+"./c99-intprom-1.c", line 32: warning: variable "a" was set but never used
+    do { long a = 0; long long b = 0; long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+              ^
+
+"./c99-intprom-1.c", line 32: warning: variable "b" was set but never used
+    do { long a = 0; long long b = 0; long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                               ^
+
+"./c99-intprom-1.c", line 33: warning: variable "a" was set but never used
+    do { long long a = 0; int b = 0; long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                   ^
+
+"./c99-intprom-1.c", line 33: warning: variable "b" was set but never used
+    do { long long a = 0; int b = 0; long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                              ^
+
+"./c99-intprom-1.c", line 34: warning: variable "a" was set but never used
+    do { long long a = 0; long b = 0; long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                   ^
+
+"./c99-intprom-1.c", line 34: warning: variable "b" was set but never used
+    do { long long a = 0; long b = 0; long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                               ^
+
+"./c99-intprom-1.c", line 36: warning: variable "a" was set but never used
+    do { unsigned int a = 0; unsigned long b = 0; unsigned long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                      ^
+
+"./c99-intprom-1.c", line 36: warning: variable "b" was set but never used
+    do { unsigned int a = 0; unsigned long b = 0; unsigned long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                                           ^
+
+"./c99-intprom-1.c", line 37: warning: variable "a" was set but never used
+    do { unsigned int a = 0; unsigned long long b = 0; unsigned long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                      ^
+
+"./c99-intprom-1.c", line 37: warning: variable "b" was set but never used
+    do { unsigned int a = 0; unsigned long long b = 0; unsigned long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                                                ^
+
+"./c99-intprom-1.c", line 38: warning: variable "a" was set but never used
+    do { unsigned long a = 0; unsigned int b = 0; unsigned long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                       ^
+
+"./c99-intprom-1.c", line 38: warning: variable "b" was set but never used
+    do { unsigned long a = 0; unsigned int b = 0; unsigned long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                                           ^
+
+"./c99-intprom-1.c", line 39: warning: variable "a" was set but never used
+    do { unsigned long a = 0; unsigned long long b = 0; unsigned long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                       ^
+
+"./c99-intprom-1.c", line 39: warning: variable "b" was set but never used
+    do { unsigned long a = 0; unsigned long long b = 0; unsigned long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                                                 ^
+
+"./c99-intprom-1.c", line 40: warning: variable "a" was set but never used
+    do { unsigned long long a = 0; unsigned int b = 0; unsigned long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                            ^
+
+"./c99-intprom-1.c", line 40: warning: variable "b" was set but never used
+    do { unsigned long long a = 0; unsigned int b = 0; unsigned long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                                                ^
+
+"./c99-intprom-1.c", line 41: warning: variable "a" was set but never used
+    do { unsigned long long a = 0; unsigned long b = 0; unsigned long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                            ^
+
+"./c99-intprom-1.c", line 41: warning: variable "b" was set but never used
+    do { unsigned long long a = 0; unsigned long b = 0; unsigned long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                                                 ^
+
+"./c99-intprom-1.c", line 43: warning: variable "a" was set but never used
+    do { int a = 0; unsigned int b = 0; unsigned int *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+             ^
+
+"./c99-intprom-1.c", line 43: warning: variable "b" was set but never used
+    do { int a = 0; unsigned int b = 0; unsigned int *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                                 ^
+
+"./c99-intprom-1.c", line 44: warning: variable "a" was set but never used
+    do { int a = 0; unsigned long b = 0; unsigned long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+             ^
+
+"./c99-intprom-1.c", line 44: warning: variable "b" was set but never used
+    do { int a = 0; unsigned long b = 0; unsigned long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                                  ^
+
+"./c99-intprom-1.c", line 45: warning: variable "a" was set but never used
+    do { int a = 0; unsigned long long b = 0; unsigned long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+             ^
+
+"./c99-intprom-1.c", line 45: warning: variable "b" was set but never used
+    do { int a = 0; unsigned long long b = 0; unsigned long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                                       ^
+
+"./c99-intprom-1.c", line 46: warning: variable "a" was set but never used
+    do { unsigned int a = 0; int b = 0; unsigned int *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                      ^
+
+"./c99-intprom-1.c", line 46: warning: variable "b" was set but never used
+    do { unsigned int a = 0; int b = 0; unsigned int *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                                 ^
+
+"./c99-intprom-1.c", line 47: warning: variable "a" was set but never used
+    do { long a = 0; unsigned long b = 0; unsigned long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+              ^
+
+"./c99-intprom-1.c", line 47: warning: variable "b" was set but never used
+    do { long a = 0; unsigned long b = 0; unsigned long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                                   ^
+
+"./c99-intprom-1.c", line 48: warning: variable "a" was set but never used
+    do { long a = 0; unsigned long long b = 0; unsigned long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+              ^
+
+"./c99-intprom-1.c", line 48: warning: variable "b" was set but never used
+    do { long a = 0; unsigned long long b = 0; unsigned long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                                        ^
+
+"./c99-intprom-1.c", line 49: warning: variable "a" was set but never used
+    do { unsigned long a = 0; int b = 0; unsigned long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                       ^
+
+"./c99-intprom-1.c", line 49: warning: variable "b" was set but never used
+    do { unsigned long a = 0; int b = 0; unsigned long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                                  ^
+
+"./c99-intprom-1.c", line 50: warning: variable "a" was set but never used
+    do { unsigned long a = 0; long b = 0; unsigned long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                       ^
+
+"./c99-intprom-1.c", line 50: warning: variable "b" was set but never used
+    do { unsigned long a = 0; long b = 0; unsigned long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                                   ^
+
+"./c99-intprom-1.c", line 51: warning: variable "a" was set but never used
+    do { long long a = 0; unsigned long long b = 0; unsigned long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                   ^
+
+"./c99-intprom-1.c", line 51: warning: variable "b" was set but never used
+    do { long long a = 0; unsigned long long b = 0; unsigned long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                                             ^
+
+"./c99-intprom-1.c", line 52: warning: variable "a" was set but never used
+    do { unsigned long long a = 0; int b = 0; unsigned long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                            ^
+
+"./c99-intprom-1.c", line 52: warning: variable "b" was set but never used
+    do { unsigned long long a = 0; int b = 0; unsigned long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                                       ^
+
+"./c99-intprom-1.c", line 53: warning: variable "a" was set but never used
+    do { unsigned long long a = 0; long b = 0; unsigned long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                            ^
+
+"./c99-intprom-1.c", line 53: warning: variable "b" was set but never used
+    do { unsigned long long a = 0; long b = 0; unsigned long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                                        ^
+
+"./c99-intprom-1.c", line 54: warning: variable "a" was set but never used
+    do { unsigned long long a = 0; long long b = 0; unsigned long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                            ^
+
+"./c99-intprom-1.c", line 54: warning: variable "b" was set but never used
+    do { unsigned long long a = 0; long long b = 0; unsigned long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                                             ^
+
+"./c99-intprom-1.c", line 57: warning: a value of type "unsigned long *" cannot be assigned to an entity of type "long *"
+    do { unsigned int a = 0; long b = 0; long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                                                                                ^
+
+"./c99-intprom-1.c", line 57: warning: a value of type "long *" cannot be assigned to an entity of type "unsigned long *"
+    do { unsigned int a = 0; long b = 0; long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                                                                                       ^
+
+"./c99-intprom-1.c", line 57: warning: variable "a" was set but never used
+    do { unsigned int a = 0; long b = 0; long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                      ^
+
+"./c99-intprom-1.c", line 57: warning: variable "b" was set but never used
+    do { unsigned int a = 0; long b = 0; long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                                  ^
+
+"./c99-intprom-1.c", line 58: warning: a value of type "unsigned long *" cannot be assigned to an entity of type "long *"
+    do { long a = 0; unsigned int b = 0; long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                                                                                ^
+
+"./c99-intprom-1.c", line 58: warning: a value of type "long *" cannot be assigned to an entity of type "unsigned long *"
+    do { long a = 0; unsigned int b = 0; long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                                                                                       ^
+
+"./c99-intprom-1.c", line 58: warning: variable "a" was set but never used
+    do { long a = 0; unsigned int b = 0; long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+              ^
+
+"./c99-intprom-1.c", line 58: warning: variable "b" was set but never used
+    do { long a = 0; unsigned int b = 0; long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                                  ^
+
+"./c99-intprom-1.c", line 64: warning: variable "a" was set but never used
+    do { unsigned int a = 0; long long b = 0; long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                      ^
+
+"./c99-intprom-1.c", line 64: warning: variable "b" was set but never used
+    do { unsigned int a = 0; long long b = 0; long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                                       ^
+
+"./c99-intprom-1.c", line 65: warning: variable "a" was set but never used
+    do { long long a = 0; unsigned int b = 0; long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                   ^
+
+"./c99-intprom-1.c", line 65: warning: variable "b" was set but never used
+    do { long long a = 0; unsigned int b = 0; long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                                       ^
+
+"./c99-intprom-1.c", line 74: warning: a value of type "long long *" cannot be assigned to an entity of type "unsigned long long *"
+    do { unsigned long a = 0; long long b = 0; unsigned long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                                                                                                    ^
+
+"./c99-intprom-1.c", line 74: warning: a value of type "unsigned long long *" cannot be assigned to an entity of type "long long *"
+    do { unsigned long a = 0; long long b = 0; unsigned long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                                                                                                           ^
+
+"./c99-intprom-1.c", line 74: warning: variable "a" was set but never used
+    do { unsigned long a = 0; long long b = 0; unsigned long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                       ^
+
+"./c99-intprom-1.c", line 74: warning: variable "b" was set but never used
+    do { unsigned long a = 0; long long b = 0; unsigned long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                                        ^
+
+"./c99-intprom-1.c", line 75: warning: a value of type "long long *" cannot be assigned to an entity of type "unsigned long long *"
+    do { long long a = 0; unsigned long b = 0; unsigned long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                                                                                                    ^
+
+"./c99-intprom-1.c", line 75: warning: a value of type "unsigned long long *" cannot be assigned to an entity of type "long long *"
+    do { long long a = 0; unsigned long b = 0; unsigned long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                                                                                                           ^
+
+"./c99-intprom-1.c", line 75: warning: variable "a" was set but never used
+    do { long long a = 0; unsigned long b = 0; unsigned long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                   ^
+
+"./c99-intprom-1.c", line 75: warning: variable "b" was set but never used
+    do { long long a = 0; unsigned long b = 0; unsigned long long *c = 0; __typeof__(a+b) *d = 0; c = d; d = c; } while (0);
+                                        ^
+

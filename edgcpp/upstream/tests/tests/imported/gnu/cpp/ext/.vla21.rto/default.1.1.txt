@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: error: a value of type "struct <unnamed> *" cannot be used to initialize an entity of type "struct <unnamed> [1][n]"
+    struct {} a[1][n] (+a[0]);  // { dg-error "initialized" }
+                       ^
+
+1 error detected in the compilation of "Test_name.c".

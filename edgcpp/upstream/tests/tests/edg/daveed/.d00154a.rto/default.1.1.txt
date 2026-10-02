@@ -1,0 +1,4 @@
+eccp -DTEST_NUMBER=1 --gcc Test_name.c
+eccp: diagnostics generated from compilation of Test_name.int.c:
+Test_name.c:19:1: note: offset of packed bit-field 'd' has changed in GCC 4.4
+eccp: end of diagnostics from compilation of Test_name.int.c

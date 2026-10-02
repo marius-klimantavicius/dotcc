@@ -1,0 +1,23 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 34: error: a reference of type "apply1<add_reference, float>::type" (aka "float &") (not const-qualified) cannot be initialized with a value of type "int"
+  apply1<add_reference, float>::type fr = i; // expected-error{{non-const lvalue reference to type 'float' cannot bind to a value of unrelated type 'int'}}
+                                          ^
+
+"Test_name.c", line 15: error: reference to void is not allowed
+      typedef T& type; // expected-error{{cannot form a reference to 'void'}}
+               ^
+          detected during:
+            instantiation of class "add_reference::apply<T> [with T=void]" at line 27
+            instantiation of class "apply1<MetaFun, T> [with MetaFun=add_reference, T=void]" at line 37
+
+"Test_name.c", line 27: warning: name following "template" must be a template
+    typedef typename MetaFun::template apply<T>::type type; // expected-note{{in instantiation of template class 'add_reference::apply<void>' requested here}} \
+                                       ^
+          detected during instantiation of class "apply1<MetaFun, T> [with MetaFun=bogus, T=int]" at line 39
+
+"Test_name.c", line 27: error: class "bogus::apply" may not have a template argument list
+    typedef typename MetaFun::template apply<T>::type type; // expected-note{{in instantiation of template class 'add_reference::apply<void>' requested here}} \
+                                       ^
+          detected during instantiation of class "apply1<MetaFun, T> [with MetaFun=bogus, T=int]" at line 39
+
+3 errors detected in the compilation of "Test_name.c".

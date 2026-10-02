@@ -1,0 +1,46 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 7: error: attribute "carries_dependency" does not take arguments
+  [[carries_dependency()]] int m3(); // expected-error {{attribute 'carries_dependency' cannot have an argument list}}
+                      ^
+
+"Test_name.c", line 12: warning: attribute "carries_dependency" does not apply here
+  [[carries_dependency]] int (*f4)(); // expected-error {{'carries_dependency' attribute only applies to parameters, Objective-C methods, and functions}}
+    ^
+
+"Test_name.c", line 13: warning: attribute "carries_dependency" does not apply here
+  int (*f5 [[carries_dependency]])(); // expected-error {{'carries_dependency' attribute only applies to}}
+             ^
+
+"Test_name.c", line 14: warning: attribute "carries_dependency" does not apply here
+  int (*f6)() [[carries_dependency]]; // expected-error {{'carries_dependency' attribute cannot be applied to types}}
+                ^
+
+"Test_name.c", line 15: error: attribute "carries_dependency" does not apply here
+  int (*f7)(int n [[carries_dependency]]); // expected-error {{'[[carries_dependency]]' attribute only allowed on parameter in a function declaration}}
+                    ^
+
+"Test_name.c", line 18: error: attribute "carries_dependency" does not apply here
+  int typedef f10(int n [[carries_dependency]]); // expected-error {{'[[carries_dependency]]' attribute only allowed on parameter in a function declaration}}
+                          ^
+
+"Test_name.c", line 22: error: attribute "carries_dependency" does not apply here
+    int (*p)(int n [[carries_dependency]]); // expected-error {{'[[carries_dependency]]' attribute only allowed on parameter in a function declaration}}
+                     ^
+
+"Test_name.c", line 26: warning: attribute "carries_dependency" does not apply here
+    [[carries_dependency]] // expected-error {{'carries_dependency' attribute only applies to}}
+      ^
+
+"Test_name.c", line 27: error: attribute "carries_dependency" does not apply here
+        int (*p)(int n [[carries_dependency]]); // expected-error {{'[[carries_dependency]]' attribute only allowed on parameter in a function declaration}}
+                         ^
+
+"Test_name.c", line 27: warning: variable "p" was declared but never referenced
+        int (*p)(int n [[carries_dependency]]); // expected-error {{'[[carries_dependency]]' attribute only allowed on parameter in a function declaration}}
+              ^
+
+"Test_name.c", line 34: warning: attribute "carries_dependency" does not apply here
+  auto l2 = []() [[carries_dependency]] {}; // expected-error {{'carries_dependency' attribute cannot be applied to types}}
+                   ^
+
+5 errors detected in the compilation of "Test_name.c".

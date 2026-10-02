@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --c++23 -A Test_name.c
+"Test_name.c", line 5: warning: template parameter "T" is not used in declaring the parameter types of function template "lambda []()->auto::operator auto (*)()"
+      auto lambda = [] <typename T, int = ((T)x, 0)> {};  // OK
+                                 ^
+
+"Test_name.c", line 11: warning: template parameter "T" is not used in declaring the parameter types of function template "lambda []()->auto::operator auto (*)()"
+      auto lambda = [] <typename T> {(T)x; };  // OK
+                                 ^
+

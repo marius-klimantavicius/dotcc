@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=5 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 29: warning: predefined meaning of "__has_c_attribute" discarded
+  #define __has_c_attribute __has_c_attribute /* expected-warning {{macro name is a reserved identifier}}
+          ^
+

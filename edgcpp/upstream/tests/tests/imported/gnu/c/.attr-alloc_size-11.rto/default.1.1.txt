@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 69: warning: pointless comparison of unsigned integer with zero
+  TEST (unsigned, 0, ALLOC_MAX);         /* { dg-warning "argument 1 range \\\[13, \[0-9\]+\\\] exceeds maximum object size 12" } */
+  ^
+
+"Test_name.c", line 69: warning: integer conversion resulted in a change of sign
+  TEST (unsigned, 0, ALLOC_MAX);         /* { dg-warning "argument 1 range \\\[13, \[0-9\]+\\\] exceeds maximum object size 12" } */
+  ^
+
+"Test_name.c", line 70: warning: pointless comparison of unsigned integer with zero
+  TEST (unsigned long, 0, ALLOC_MAX);    /* { dg-warning "argument 1 range \\\[13, \[0-9\]+\\\] exceeds maximum object size 12" } */
+  ^
+
+"Test_name.c", line 70: warning: integer conversion resulted in a change of sign
+  TEST (unsigned long, 0, ALLOC_MAX);    /* { dg-warning "argument 1 range \\\[13, \[0-9\]+\\\] exceeds maximum object size 12" } */
+  ^
+
+"Test_name.c", line 71: warning: pointless comparison of unsigned integer with zero
+  TEST (size_t, 0, ALLOC_MAX);           /* { dg-warning "argument 1 range \\\[13, \[0-9\]+\\\] exceeds maximum object size 12" } */
+  ^
+
+"Test_name.c", line 71: warning: integer conversion resulted in a change of sign
+  TEST (size_t, 0, ALLOC_MAX);           /* { dg-warning "argument 1 range \\\[13, \[0-9\]+\\\] exceeds maximum object size 12" } */
+  ^
+

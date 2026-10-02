@@ -1,0 +1,577 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./compat/struct-by-value-22_x.c", line 58: warning: variable-length array field type will be treated as zero-length array field type
+  void testvacE (int n, ...) { va_list ap; if (test_va) { struct S { char a[n]; } s; int fail = 0, i, j; 
+                                                                            ^
+
+"./compat/struct-by-value-22_x.c", line 58: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 58: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvasE (int n, ...) { va_list ap; if (test_va) { struct S { short a[n]; } s; int fail = 0, i, j; 
+                                                                                   ^
+
+"./compat/struct-by-value-22_x.c", line 58: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 58: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvauE (int n, ...) { va_list ap; if (test_va) { struct S { unsigned a[n]; } s; int fail = 0, i, j; 
+                                                                                      ^
+
+"./compat/struct-by-value-22_x.c", line 58: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 58: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvadE (int n, ...) { va_list ap; if (test_va) { struct S { double a[n]; } s; int fail = 0, i, j; 
+                                                                                    ^
+
+"./compat/struct-by-value-22_x.c", line 58: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 59: warning: variable-length array field type will be treated as zero-length array field type
+  void testvacn (int n, ...) { va_list ap; if (test_va) { struct S { int n; char a[n]; } s; int fail = 0, i, j; 
+                                                                                   ^
+
+"./compat/struct-by-value-22_x.c", line 59: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 59: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvasn (int n, ...) { va_list ap; if (test_va) { struct S { int n; short a[n]; } s; int fail = 0, i, j; 
+                                                                                          ^
+
+"./compat/struct-by-value-22_x.c", line 59: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 59: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvaun (int n, ...) { va_list ap; if (test_va) { struct S { int n; unsigned a[n]; } s; int fail = 0, i, j; 
+                                                                                             ^
+
+"./compat/struct-by-value-22_x.c", line 59: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 59: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvadn (int n, ...) { va_list ap; if (test_va) { struct S { int n; double a[n]; } s; int fail = 0, i, j; 
+                                                                                           ^
+
+"./compat/struct-by-value-22_x.c", line 59: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 62: warning: variable-length array field type will be treated as zero-length array field type
+  void testvacScd (int n, ...) { va_list ap; if (test_va) { struct S { Scd s; char a[n]; } s; int fail = 0, i, j; 
+                                                                                     ^
+
+"./compat/struct-by-value-22_x.c", line 62: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 62: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvasScd (int n, ...) { va_list ap; if (test_va) { struct S { Scd s; short a[n]; } s; int fail = 0, i, j; 
+                                                                                            ^
+
+"./compat/struct-by-value-22_x.c", line 62: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 62: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvauScd (int n, ...) { va_list ap; if (test_va) { struct S { Scd s; unsigned a[n]; } s; int fail = 0, i, j; 
+                                                                                               ^
+
+"./compat/struct-by-value-22_x.c", line 62: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 62: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvadScd (int n, ...) { va_list ap; if (test_va) { struct S { Scd s; double a[n]; } s; int fail = 0, i, j; 
+                                                                                             ^
+
+"./compat/struct-by-value-22_x.c", line 62: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 63: warning: variable-length array field type will be treated as zero-length array field type
+  void testvacScdc (int n, ...) { va_list ap; if (test_va) { struct S { Scdc s; char a[n]; } s; int fail = 0, i, j; 
+                                                                                       ^
+
+"./compat/struct-by-value-22_x.c", line 63: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 63: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvasScdc (int n, ...) { va_list ap; if (test_va) { struct S { Scdc s; short a[n]; } s; int fail = 0, i, j; 
+                                                                                              ^
+
+"./compat/struct-by-value-22_x.c", line 63: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 63: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvauScdc (int n, ...) { va_list ap; if (test_va) { struct S { Scdc s; unsigned a[n]; } s; int fail = 0, i, j; 
+                                                                                                 ^
+
+"./compat/struct-by-value-22_x.c", line 63: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 63: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvadScdc (int n, ...) { va_list ap; if (test_va) { struct S { Scdc s; double a[n]; } s; int fail = 0, i, j; 
+                                                                                               ^
+
+"./compat/struct-by-value-22_x.c", line 63: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 64: warning: variable-length array field type will be treated as zero-length array field type
+  void testvacSd (int n, ...) { va_list ap; if (test_va) { struct S { Sd s; char a[n]; } s; int fail = 0, i, j; 
+                                                                                   ^
+
+"./compat/struct-by-value-22_x.c", line 64: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 64: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvasSd (int n, ...) { va_list ap; if (test_va) { struct S { Sd s; short a[n]; } s; int fail = 0, i, j; 
+                                                                                          ^
+
+"./compat/struct-by-value-22_x.c", line 64: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 64: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvauSd (int n, ...) { va_list ap; if (test_va) { struct S { Sd s; unsigned a[n]; } s; int fail = 0, i, j; 
+                                                                                             ^
+
+"./compat/struct-by-value-22_x.c", line 64: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 64: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvadSd (int n, ...) { va_list ap; if (test_va) { struct S { Sd s; double a[n]; } s; int fail = 0, i, j; 
+                                                                                           ^
+
+"./compat/struct-by-value-22_x.c", line 64: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 65: warning: variable-length array field type will be treated as zero-length array field type
+  void testvacSdi (int n, ...) { va_list ap; if (test_va) { struct S { Sdi s; char a[n]; } s; int fail = 0, i, j; 
+                                                                                     ^
+
+"./compat/struct-by-value-22_x.c", line 65: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 65: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvasSdi (int n, ...) { va_list ap; if (test_va) { struct S { Sdi s; short a[n]; } s; int fail = 0, i, j; 
+                                                                                            ^
+
+"./compat/struct-by-value-22_x.c", line 65: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 65: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvauSdi (int n, ...) { va_list ap; if (test_va) { struct S { Sdi s; unsigned a[n]; } s; int fail = 0, i, j; 
+                                                                                               ^
+
+"./compat/struct-by-value-22_x.c", line 65: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 65: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvadSdi (int n, ...) { va_list ap; if (test_va) { struct S { Sdi s; double a[n]; } s; int fail = 0, i, j; 
+                                                                                             ^
+
+"./compat/struct-by-value-22_x.c", line 65: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 66: warning: variable-length array field type will be treated as zero-length array field type
+  void testvacScsds (int n, ...) { va_list ap; if (test_va) { struct S { Scsds s; char a[n]; } s; int fail = 0, i, j; 
+                                                                                         ^
+
+"./compat/struct-by-value-22_x.c", line 66: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 66: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvasScsds (int n, ...) { va_list ap; if (test_va) { struct S { Scsds s; short a[n]; } s; int fail = 0, i, j; 
+                                                                                                ^
+
+"./compat/struct-by-value-22_x.c", line 66: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 66: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvauScsds (int n, ...) { va_list ap; if (test_va) { struct S { Scsds s; unsigned a[n]; } s; int fail = 0, i, j; 
+                                                                                                   ^
+
+"./compat/struct-by-value-22_x.c", line 66: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 66: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvadScsds (int n, ...) { va_list ap; if (test_va) { struct S { Scsds s; double a[n]; } s; int fail = 0, i, j; 
+                                                                                                 ^
+
+"./compat/struct-by-value-22_x.c", line 66: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 67: warning: variable-length array field type will be treated as zero-length array field type
+  void testvacScsdsc (int n, ...) { va_list ap; if (test_va) { struct S { Scsdsc s; char a[n]; } s; int fail = 0, i, j; 
+                                                                                           ^
+
+"./compat/struct-by-value-22_x.c", line 67: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 67: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvasScsdsc (int n, ...) { va_list ap; if (test_va) { struct S { Scsdsc s; short a[n]; } s; int fail = 0, i, j; 
+                                                                                                  ^
+
+"./compat/struct-by-value-22_x.c", line 67: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 67: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvauScsdsc (int n, ...) { va_list ap; if (test_va) { struct S { Scsdsc s; unsigned a[n]; } s; int fail = 0, i, j; 
+                                                                                                     ^
+
+"./compat/struct-by-value-22_x.c", line 67: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 67: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvadScsdsc (int n, ...) { va_list ap; if (test_va) { struct S { Scsdsc s; double a[n]; } s; int fail = 0, i, j; 
+                                                                                                   ^
+
+"./compat/struct-by-value-22_x.c", line 67: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 68: warning: variable-length array field type will be treated as zero-length array field type
+  void testvacScsdis (int n, ...) { va_list ap; if (test_va) { struct S { Scsdis s; char a[n]; } s; int fail = 0, i, j; 
+                                                                                           ^
+
+"./compat/struct-by-value-22_x.c", line 68: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 68: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvasScsdis (int n, ...) { va_list ap; if (test_va) { struct S { Scsdis s; short a[n]; } s; int fail = 0, i, j; 
+                                                                                                  ^
+
+"./compat/struct-by-value-22_x.c", line 68: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 68: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvauScsdis (int n, ...) { va_list ap; if (test_va) { struct S { Scsdis s; unsigned a[n]; } s; int fail = 0, i, j; 
+                                                                                                     ^
+
+"./compat/struct-by-value-22_x.c", line 68: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 68: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvadScsdis (int n, ...) { va_list ap; if (test_va) { struct S { Scsdis s; double a[n]; } s; int fail = 0, i, j; 
+                                                                                                   ^
+
+"./compat/struct-by-value-22_x.c", line 68: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 69: warning: variable-length array field type will be treated as zero-length array field type
+  void testvacScsdisc (int n, ...) { va_list ap; if (test_va) { struct S { Scsdisc s; char a[n]; } s; int fail = 0, i, j; 
+                                                                                             ^
+
+"./compat/struct-by-value-22_x.c", line 69: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 69: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvasScsdisc (int n, ...) { va_list ap; if (test_va) { struct S { Scsdisc s; short a[n]; } s; int fail = 0, i, j; 
+                                                                                                    ^
+
+"./compat/struct-by-value-22_x.c", line 69: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 69: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvauScsdisc (int n, ...) { va_list ap; if (test_va) { struct S { Scsdisc s; unsigned a[n]; } s; int fail = 0, i, j; 
+                                                                                                       ^
+
+"./compat/struct-by-value-22_x.c", line 69: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 69: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvadScsdisc (int n, ...) { va_list ap; if (test_va) { struct S { Scsdisc s; double a[n]; } s; int fail = 0, i, j; 
+                                                                                                     ^
+
+"./compat/struct-by-value-22_x.c", line 69: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 70: warning: variable-length array field type will be treated as zero-length array field type
+  void testvacSsds (int n, ...) { va_list ap; if (test_va) { struct S { Ssds s; char a[n]; } s; int fail = 0, i, j; 
+                                                                                       ^
+
+"./compat/struct-by-value-22_x.c", line 70: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 70: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvasSsds (int n, ...) { va_list ap; if (test_va) { struct S { Ssds s; short a[n]; } s; int fail = 0, i, j; 
+                                                                                              ^
+
+"./compat/struct-by-value-22_x.c", line 70: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 70: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvauSsds (int n, ...) { va_list ap; if (test_va) { struct S { Ssds s; unsigned a[n]; } s; int fail = 0, i, j; 
+                                                                                                 ^
+
+"./compat/struct-by-value-22_x.c", line 70: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 70: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvadSsds (int n, ...) { va_list ap; if (test_va) { struct S { Ssds s; double a[n]; } s; int fail = 0, i, j; 
+                                                                                               ^
+
+"./compat/struct-by-value-22_x.c", line 70: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 71: warning: variable-length array field type will be treated as zero-length array field type
+  void testvacSsdsc (int n, ...) { va_list ap; if (test_va) { struct S { Ssdsc s; char a[n]; } s; int fail = 0, i, j; 
+                                                                                         ^
+
+"./compat/struct-by-value-22_x.c", line 71: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 71: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvasSsdsc (int n, ...) { va_list ap; if (test_va) { struct S { Ssdsc s; short a[n]; } s; int fail = 0, i, j; 
+                                                                                                ^
+
+"./compat/struct-by-value-22_x.c", line 71: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 71: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvauSsdsc (int n, ...) { va_list ap; if (test_va) { struct S { Ssdsc s; unsigned a[n]; } s; int fail = 0, i, j; 
+                                                                                                   ^
+
+"./compat/struct-by-value-22_x.c", line 71: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 71: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvadSsdsc (int n, ...) { va_list ap; if (test_va) { struct S { Ssdsc s; double a[n]; } s; int fail = 0, i, j; 
+                                                                                                 ^
+
+"./compat/struct-by-value-22_x.c", line 71: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 72: warning: variable-length array field type will be treated as zero-length array field type
+  void testvacScssdss (int n, ...) { va_list ap; if (test_va) { struct S { Scssdss s; char a[n]; } s; int fail = 0, i, j; 
+                                                                                             ^
+
+"./compat/struct-by-value-22_x.c", line 72: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 72: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvasScssdss (int n, ...) { va_list ap; if (test_va) { struct S { Scssdss s; short a[n]; } s; int fail = 0, i, j; 
+                                                                                                    ^
+
+"./compat/struct-by-value-22_x.c", line 72: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 72: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvauScssdss (int n, ...) { va_list ap; if (test_va) { struct S { Scssdss s; unsigned a[n]; } s; int fail = 0, i, j; 
+                                                                                                       ^
+
+"./compat/struct-by-value-22_x.c", line 72: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 72: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvadScssdss (int n, ...) { va_list ap; if (test_va) { struct S { Scssdss s; double a[n]; } s; int fail = 0, i, j; 
+                                                                                                     ^
+
+"./compat/struct-by-value-22_x.c", line 72: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 73: warning: variable-length array field type will be treated as zero-length array field type
+  void testvacScssdssc (int n, ...) { va_list ap; if (test_va) { struct S { Scssdssc s; char a[n]; } s; int fail = 0, i, j; 
+                                                                                               ^
+
+"./compat/struct-by-value-22_x.c", line 73: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 73: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvasScssdssc (int n, ...) { va_list ap; if (test_va) { struct S { Scssdssc s; short a[n]; } s; int fail = 0, i, j; 
+                                                                                                      ^
+
+"./compat/struct-by-value-22_x.c", line 73: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 73: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvauScssdssc (int n, ...) { va_list ap; if (test_va) { struct S { Scssdssc s; unsigned a[n]; } s; int fail = 0, i, j; 
+                                                                                                         ^
+
+"./compat/struct-by-value-22_x.c", line 73: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 73: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvadScssdssc (int n, ...) { va_list ap; if (test_va) { struct S { Scssdssc s; double a[n]; } s; int fail = 0, i, j; 
+                                                                                                       ^
+
+"./compat/struct-by-value-22_x.c", line 73: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 74: warning: variable-length array field type will be treated as zero-length array field type
+  void testvacSfi (int n, ...) { va_list ap; if (test_va) { struct S { Sfi s; char a[n]; } s; int fail = 0, i, j; 
+                                                                                     ^
+
+"./compat/struct-by-value-22_x.c", line 74: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 74: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvasSfi (int n, ...) { va_list ap; if (test_va) { struct S { Sfi s; short a[n]; } s; int fail = 0, i, j; 
+                                                                                            ^
+
+"./compat/struct-by-value-22_x.c", line 74: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 74: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvauSfi (int n, ...) { va_list ap; if (test_va) { struct S { Sfi s; unsigned a[n]; } s; int fail = 0, i, j; 
+                                                                                               ^
+
+"./compat/struct-by-value-22_x.c", line 74: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 74: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvadSfi (int n, ...) { va_list ap; if (test_va) { struct S { Sfi s; double a[n]; } s; int fail = 0, i, j; 
+                                                                                             ^
+
+"./compat/struct-by-value-22_x.c", line 74: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 75: warning: variable-length array field type will be treated as zero-length array field type
+  void testvacSfii (int n, ...) { va_list ap; if (test_va) { struct S { Sfii s; char a[n]; } s; int fail = 0, i, j; 
+                                                                                       ^
+
+"./compat/struct-by-value-22_x.c", line 75: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 75: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvasSfii (int n, ...) { va_list ap; if (test_va) { struct S { Sfii s; short a[n]; } s; int fail = 0, i, j; 
+                                                                                              ^
+
+"./compat/struct-by-value-22_x.c", line 75: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 75: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvauSfii (int n, ...) { va_list ap; if (test_va) { struct S { Sfii s; unsigned a[n]; } s; int fail = 0, i, j; 
+                                                                                                 ^
+
+"./compat/struct-by-value-22_x.c", line 75: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 75: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvadSfii (int n, ...) { va_list ap; if (test_va) { struct S { Sfii s; double a[n]; } s; int fail = 0, i, j; 
+                                                                                               ^
+
+"./compat/struct-by-value-22_x.c", line 75: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 76: warning: variable-length array field type will be treated as zero-length array field type
+  void testvacSfifi (int n, ...) { va_list ap; if (test_va) { struct S { Sfifi s; char a[n]; } s; int fail = 0, i, j; 
+                                                                                         ^
+
+"./compat/struct-by-value-22_x.c", line 76: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 76: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvasSfifi (int n, ...) { va_list ap; if (test_va) { struct S { Sfifi s; short a[n]; } s; int fail = 0, i, j; 
+                                                                                                ^
+
+"./compat/struct-by-value-22_x.c", line 76: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 76: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvauSfifi (int n, ...) { va_list ap; if (test_va) { struct S { Sfifi s; unsigned a[n]; } s; int fail = 0, i, j; 
+                                                                                                   ^
+
+"./compat/struct-by-value-22_x.c", line 76: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 76: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvadSfifi (int n, ...) { va_list ap; if (test_va) { struct S { Sfifi s; double a[n]; } s; int fail = 0, i, j; 
+                                                                                                 ^
+
+"./compat/struct-by-value-22_x.c", line 76: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 77: warning: variable-length array field type will be treated as zero-length array field type
+  void testvacSfiifii (int n, ...) { va_list ap; if (test_va) { struct S { Sfiifii s; char a[n]; } s; int fail = 0, i, j; 
+                                                                                             ^
+
+"./compat/struct-by-value-22_x.c", line 77: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 77: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvasSfiifii (int n, ...) { va_list ap; if (test_va) { struct S { Sfiifii s; short a[n]; } s; int fail = 0, i, j; 
+                                                                                                    ^
+
+"./compat/struct-by-value-22_x.c", line 77: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 77: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvauSfiifii (int n, ...) { va_list ap; if (test_va) { struct S { Sfiifii s; unsigned a[n]; } s; int fail = 0, i, j; 
+                                                                                                       ^
+
+"./compat/struct-by-value-22_x.c", line 77: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-22_x.c", line 77: warning: variable-length array field type will be treated as zero-length array field type
+  ; } } void testvadSfiifii (int n, ...) { va_list ap; if (test_va) { struct S { Sfiifii s; double a[n]; } s; int fail = 0, i, j; 
+                                                                                                     ^
+
+"./compat/struct-by-value-22_x.c", line 77: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 14: warning: type qualifiers are ignored (underlying type is a reference)
+    RF const &rf = f;  // Previously triggered an internal error.
+       ^
+
+"Test_name.c", line 14: warning: variable "rf" was declared but never referenced
+    RF const &rf = f;  // Previously triggered an internal error.
+              ^
+

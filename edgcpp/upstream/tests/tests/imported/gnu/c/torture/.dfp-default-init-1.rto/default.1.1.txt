@@ -1,0 +1,206 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 21: error: identifier "_Decimal32" is undefined
+  TYPE zero_int = 0;
+  ^
+
+"Test_name.c", line 22: error: identifier "_Decimal32" is undefined
+  TYPE zero_fp = ZEROFP;
+  ^
+
+"Test_name.c", line 22: error: extra text after expected end of number
+  TYPE zero_fp = ZEROFP;
+                 ^
+
+"Test_name.c", line 23: error: identifier "_Decimal32" is undefined
+  TYPE default_init;
+  ^
+
+"Test_name.c", line 24: error: identifier "_Decimal32" is undefined
+  TYPE empty_init = {};
+  ^
+
+"Test_name.c", line 25: error: identifier "_Decimal32" is undefined
+  TYPE zero_bytes;
+  ^
+
+"Test_name.c", line 26: error: identifier "_Decimal32" is undefined
+  TYPE x;
+  ^
+
+"Test_name.c", line 28: error: identifier "_Decimal32" is undefined
+  struct s { TYPE a, b; };
+             ^
+
+"Test_name.c", line 35: error: identifier "_Decimal32" is undefined
+  const TYPE a_default_init[10];
+        ^
+
+"Test_name.c", line 36: error: identifier "_Decimal32" is undefined
+  const TYPE a_empty_init[10] = {};
+        ^
+
+"Test_name.c", line 37: error: identifier "_Decimal32" is undefined
+  const TYPE a_first_int[10] = { 0 };
+        ^
+
+"Test_name.c", line 38: error: identifier "_Decimal32" is undefined
+  const TYPE a_two_int[10] = { 0, 0 };
+        ^
+
+"Test_name.c", line 68: error: identifier "_Decimal32" is undefined
+    CHECK_ZERO_BYTES (&zero_fp);
+    ^
+
+"Test_name.c", line 69: error: identifier "_Decimal32" is undefined
+    CHECK_ZERO_BYTES (&default_init);
+    ^
+
+"Test_name.c", line 70: error: identifier "_Decimal32" is undefined
+    CHECK_ZERO_BYTES (&empty_init);
+    ^
+
+"Test_name.c", line 71: error: identifier "_Decimal32" is undefined
+    CHECK_ZERO_BYTES (&s_default_init.a);
+    ^
+
+"Test_name.c", line 72: error: identifier "_Decimal32" is undefined
+    CHECK_ZERO_BYTES (&s_default_init.b);
+    ^
+
+"Test_name.c", line 73: error: identifier "_Decimal32" is undefined
+    CHECK_ZERO_BYTES (&s_empty_init.a);
+    ^
+
+"Test_name.c", line 74: error: identifier "_Decimal32" is undefined
+    CHECK_ZERO_BYTES (&s_empty_init.b);
+    ^
+
+"Test_name.c", line 75: error: identifier "_Decimal32" is undefined
+    CHECK_INT_BYTES (&s_first_int.a);
+    ^
+
+"Test_name.c", line 76: error: identifier "_Decimal32" is undefined
+    CHECK_ZERO_BYTES (&s_first_int.b);
+    ^
+
+"Test_name.c", line 77: error: identifier "_Decimal32" is undefined
+    CHECK_INT_BYTES (&s_both_int.a);
+    ^
+
+"Test_name.c", line 78: error: identifier "_Decimal32" is undefined
+    CHECK_INT_BYTES (&s_both_int.b);
+    ^
+
+"Test_name.c", line 79: error: identifier "_Decimal32" is undefined
+    CHECK_ZERO_BYTES (&a_default_init[0]);
+    ^
+
+"Test_name.c", line 80: error: identifier "_Decimal32" is undefined
+    CHECK_ZERO_BYTES (&a_default_init[1]);
+    ^
+
+"Test_name.c", line 81: error: identifier "_Decimal32" is undefined
+    CHECK_ZERO_BYTES (&a_default_init[2]);
+    ^
+
+"Test_name.c", line 82: error: identifier "_Decimal32" is undefined
+    CHECK_ZERO_BYTES (&a_default_init[9]);
+    ^
+
+"Test_name.c", line 83: error: identifier "_Decimal32" is undefined
+    CHECK_ZERO_BYTES (&a_empty_init[0]);
+    ^
+
+"Test_name.c", line 84: error: identifier "_Decimal32" is undefined
+    CHECK_ZERO_BYTES (&a_empty_init[1]);
+    ^
+
+"Test_name.c", line 85: error: identifier "_Decimal32" is undefined
+    CHECK_ZERO_BYTES (&a_empty_init[2]);
+    ^
+
+"Test_name.c", line 86: error: identifier "_Decimal32" is undefined
+    CHECK_ZERO_BYTES (&a_empty_init[9]);
+    ^
+
+"Test_name.c", line 87: error: identifier "_Decimal32" is undefined
+    CHECK_INT_BYTES (&a_first_int[0]);
+    ^
+
+"Test_name.c", line 88: error: identifier "_Decimal32" is undefined
+    CHECK_ZERO_BYTES (&a_first_int[1]);
+    ^
+
+"Test_name.c", line 89: error: identifier "_Decimal32" is undefined
+    CHECK_ZERO_BYTES (&a_first_int[2]);
+    ^
+
+"Test_name.c", line 90: error: identifier "_Decimal32" is undefined
+    CHECK_ZERO_BYTES (&a_first_int[9]);
+    ^
+
+"Test_name.c", line 91: error: identifier "_Decimal32" is undefined
+    CHECK_INT_BYTES (&a_two_int[0]);
+    ^
+
+"Test_name.c", line 92: error: identifier "_Decimal32" is undefined
+    CHECK_INT_BYTES (&a_two_int[1]);
+    ^
+
+"Test_name.c", line 93: error: identifier "_Decimal32" is undefined
+    CHECK_ZERO_BYTES (&a_two_int[2]);
+    ^
+
+"Test_name.c", line 94: error: identifier "_Decimal32" is undefined
+    CHECK_ZERO_BYTES (&a_two_int[9]);
+    ^
+
+"Test_name.c", line 96: error: identifier "_Decimal32" is undefined
+    CHECK_ZERO_BYTES (&s2.a);
+    ^
+
+"Test_name.c", line 97: error: identifier "_Decimal32" is undefined
+    CHECK_ZERO_BYTES (&s2.b);
+    ^
+
+"Test_name.c", line 99: error: identifier "_Decimal32" is undefined
+    CHECK_INT_BYTES (&s3.a);
+    ^
+
+"Test_name.c", line 100: error: identifier "_Decimal32" is undefined
+    CHECK_ZERO_BYTES (&s3.b);
+    ^
+
+"Test_name.c", line 102: error: identifier "_Decimal32" is undefined
+    CHECK_INT_BYTES (&s4.a);
+    ^
+
+"Test_name.c", line 103: error: identifier "_Decimal32" is undefined
+    CHECK_INT_BYTES (&s4.b);
+    ^
+
+"Test_name.c", line 106: error: identifier "_Decimal32" is undefined
+    CHECK_INT_BYTES (&sx.a);
+    ^
+
+"Test_name.c", line 107: error: identifier "_Decimal32" is undefined
+    CHECK_ZERO_BYTES (&sx.b);
+    ^
+
+"Test_name.c", line 109: error: identifier "_Decimal32" is undefined
+    CHECK_ZERO_BYTES (&x);
+    ^
+
+"Test_name.c", line 111: error: identifier "_Decimal32" is undefined
+    CHECK_INT_BYTES (&x);
+    ^
+
+"Test_name.c", line 113: error: identifier "_Decimal32" is undefined
+    CHECK_ZERO_BYTES (&x);
+    ^
+
+"Test_name.c", line 115: error: identifier "_Decimal32" is undefined
+    CHECK_ZERO_BYTES (&x);
+    ^
+
+51 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,3 @@
+fe_only -DTEST_NUMBER=19 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c99 -w -w -w -w -w -w -w -w -w -w ARM-DARWIN-BAREMETAL-32 ARM-DARWIN-BAREMETAL-64 Test_name.c
+eccp: unrecognizable argument: ARM-DARWIN-BAREMETAL-32
+eccp: unrecognizable argument: ARM-DARWIN-BAREMETAL-64

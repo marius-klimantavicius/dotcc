@@ -1,0 +1,21 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 35: warning: unknown attribute "scalar_storage_order"
+      } BIG_ENDIAN u;
+        ^
+
+"Test_name.c", line 36: warning: unknown attribute "scalar_storage_order"
+  } BIG_ENDIAN;
+    ^
+
+"Test_name.c", line 45: warning: unknown attribute "scalar_storage_order"
+      } BIG_ENDIAN u;
+        ^
+
+"Test_name.c", line 46: warning: unknown attribute "scalar_storage_order"
+  } BIG_ENDIAN;
+    ^
+
+"Test_name.c", line 74: warning: unknown attribute "noipa"
+  t_be_net_addr __attribute__((noipa)) be_net_addr(const t_net_addr ip)
+                               ^
+

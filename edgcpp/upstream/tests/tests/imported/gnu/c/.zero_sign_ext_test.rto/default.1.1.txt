@@ -1,0 +1,65 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 27: warning: unknown attribute "noclone"
+  TEST_FN (foo1, short, short, char, 1, TYPE_MIN (char, 0), TYPE_MAX (char, 0));
+  ^
+
+"Test_name.c", line 28: warning: unknown attribute "noclone"
+  TEST_FN (foo2, short, short, char, 1, TYPE_MIN (char, 0) + 1,\
+  ^
+
+"Test_name.c", line 32: warning: unknown attribute "noclone"
+  TEST_FN (foo3, short, short, char, -1, TYPE_MIN (short, 0) + 1,  100);
+  ^
+
+"Test_name.c", line 33: warning: unknown attribute "noclone"
+  TEST_FN (foo4, short, short, char, 1, 12, TYPE_MAX (short, 0) + 1);
+  ^
+
+"Test_name.c", line 36: warning: unknown attribute "noclone"
+  TEST_FN (foo5, unsigned short, unsigned short, unsigned char, 1,\
+  ^
+
+"Test_name.c", line 38: warning: unknown attribute "noclone"
+  TEST_FN (foo6, unsigned short, unsigned short, unsigned char, 1,\
+  ^
+
+"Test_name.c", line 42: warning: unknown attribute "noclone"
+  TEST_FN (foo7, unsigned short, unsigned short, unsigned char, 1,\
+  ^
+
+"Test_name.c", line 44: warning: unknown attribute "noclone"
+  TEST_FN (foo8, unsigned short, unsigned short, unsigned char, 1,\
+  ^
+
+"Test_name.c", line 48: warning: unknown attribute "noclone"
+  TEST_FN (foo9, short, short, unsigned char, -1, 1,\
+  ^
+
+"Test_name.c", line 50: warning: unknown attribute "noclone"
+  TEST_FN (foo10, short, short, unsigned char, 1, 0,\
+  ^
+
+"Test_name.c", line 54: warning: unknown attribute "noclone"
+  TEST_FN (foo11, short, short, unsigned char, 1,\
+  ^
+
+"Test_name.c", line 56: warning: unknown attribute "noclone"
+  TEST_FN (foo12, short, short, unsigned char, 1,\
+  ^
+
+"Test_name.c", line 60: warning: unknown attribute "noclone"
+  TEST_FN (foo13, unsigned short, unsigned short, char, 1,\
+  ^
+
+"Test_name.c", line 62: warning: unknown attribute "noclone"
+  TEST_FN (foo14, unsigned short, unsigned short, char, 1,\
+  ^
+
+"Test_name.c", line 66: warning: unknown attribute "noclone"
+  TEST_FN (foo15, unsigned short, unsigned short, char, 1,\
+  ^
+
+"Test_name.c", line 68: warning: unknown attribute "noclone"
+  TEST_FN (foo16, unsigned short, unsigned short, char, 1,\
+  ^
+

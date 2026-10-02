@@ -1,0 +1,106 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c89 Test_name.c
+"Test_name.c", line 8: warning: variable "i" is used before its value is set
+      i = i + 1;
+          ^
+
+"Test_name.c", line 9: warning: variable "j" was declared but never referenced
+      int j;          /* expected-warning {{mixing declarations and code}} */
+          ^
+
+"Test_name.c", line 13: warning: variable "i" is used before its value is set
+      i = i + 1;
+          ^
+
+"Test_name.c", line 14: warning: variable "j" was declared but never referenced
+      int j;          /* expected-warning {{mixing declarations and code}} */
+          ^
+
+"Test_name.c", line 18: warning: variable "i" is used before its value is set
+      i = i + 1;
+          ^
+
+"Test_name.c", line 19: warning: variable "j" was declared but never referenced
+      __extension__ int j; /* expected-warning {{mixing declarations and code}} */
+                        ^
+
+"Test_name.c", line 27: warning: variable "A" was declared but never referenced
+    int A[i];        /* expected-warning {{variable length array}} */
+        ^
+
+"Test_name.c", line 33: warning: explicit type is missing ("int" assumed)
+  void test5(register);
+                     ^
+
+"Test_name.c", line 37: error: expected an identifier
+  int *__restrict;  /* expected-error {{expected identifier}} */
+                 ^
+
+"Test_name.c", line 44: warning: this declaration has no storage class or type specifier
+  test7;
+  ^
+
+"Test_name.c", line 46: error: identifier "x" is undefined
+  void test8(int, x);
+                  ^
+
+"Test_name.c", line 49: error: identifier "y" is undefined
+  int a(sometype, y) {return 0;}  /* expected-warning {{omitting the parameter name in a function definition is a C23 extension}}*/
+                  ^
+
+"Test_name.c", line 49: warning: unnamed prototyped parameters not allowed when body is present
+  int a(sometype, y) {return 0;}  /* expected-warning {{omitting the parameter name in a function definition is a C23 extension}}*/
+      ^
+
+"Test_name.c", line 53: error: a parameter may not have void type
+  void z;
+  ^
+
+"Test_name.c", line 57: warning: declaring a void parameter list with a typedef is nonstandard
+  void foo(T); /* typedef for void is allowed */
+           ^
+
+"Test_name.c", line 63: warning: "static" is nonstandard here
+  void test11 (int x[static 4]); /* expected-warning {{static array size is a C99 feature}} */
+                     ^
+
+"Test_name.c", line 65: error: a type qualifier is not allowed
+  void test12 (int x[const 4]) { /* expected-warning {{qualifier in array size is a C99 feature}} */
+                     ^
+
+"Test_name.c", line 66: warning: variable "Y" was declared but never referenced
+    int Y[x[1]]; /* expected-warning {{variable length arrays are a C99 feature}} */
+        ^
+
+"Test_name.c", line 94: warning: type qualifier specified more than once
+  const const int c_i; /* expected-warning {{duplicate 'const' declaration specifier}} */
+        ^
+
+"Test_name.c", line 110: warning: return type of function "main" must be "int"
+  void main(void) {} /* expected-error {{'main' must return 'int'}} */
+       ^
+
+"Test_name.c", line 112: warning: type qualifier on return type is meaningless
+  const int main(void) {} /* expected-error {{'main' must return 'int'}} */
+  ^
+
+"Test_name.c", line 112: warning: return type of function "main" must be "int"
+  const int main(void) {} /* expected-error {{'main' must return 'int'}} */
+            ^
+
+"Test_name.c", line 112: error: function "main" has already been defined (previous definition at line 110)
+  const int main(void) {} /* expected-error {{'main' must return 'int'}} */
+            ^
+
+"Test_name.c", line 112: warning: missing return statement at end of non-void function "main"
+  const int main(void) {} /* expected-error {{'main' must return 'int'}} */
+                        ^
+
+"Test_name.c", line 123: warning: variable "a" was declared but never referenced
+    int a[2] = { v, w }; /* expected-warning {{initializer for aggregate is not a compile-time constant}} */
+        ^
+
+"Test_name.c", line 124: warning: variable "t0" was declared but never referenced
+    struct Test17 t0 = { v }; /* expected-warning {{initializer for aggregate is not a compile-time constant}} */
+                  ^
+
+6 errors detected in the compilation of "Test_name.c".

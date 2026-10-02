@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu -E Test_name.c
+# 1 "Test_name.c"
+
+
+
+ 
+ 
+ 
+ 
+
+"Test_name.c", line 9: error: this operator is not allowed in a constant expression
+  #if (1, 2) /* { dg-error "comma" "evaluated comma" } */
+        ^
+
+
+
+
+"Test_name.c", line 12: warning: expression has no effect
+  #if 1 || (1, 2)
+            ^
+
+1 error detected in the compilation of "Test_name.c".

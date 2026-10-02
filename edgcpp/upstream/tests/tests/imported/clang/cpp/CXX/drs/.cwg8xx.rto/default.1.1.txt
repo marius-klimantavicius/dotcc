@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 --exceptions --exceptions Test_name.c
+"Test_name.c", line 12: error: support for exported templates is disabled
+  export template <class T> struct B {};
+  ^
+
+"Test_name.c", line 15: error: support for exported templates is disabled
+  export template<typename T> void f() {}
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

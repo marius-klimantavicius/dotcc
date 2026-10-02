@@ -1,0 +1,30 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 6: error: array of functions is not allowed
+    (operator int[5])();
+                      ^
+
+"Test_name.c", line 6: error: an operator name must be declared as a function
+    (operator int[5])();
+     ^
+
+"Test_name.c", line 8: error: class "A" has no member "operator int"
+  (A::operator int[5])() { return i; }
+      ^
+
+"Test_name.c", line 8: error: array of functions is not allowed
+  (A::operator int[5])() { return i; }
+                       ^
+
+"Test_name.c", line 8: error: expected an expression
+  (A::operator int[5])() { return i; }
+                           ^
+
+"Test_name.c", line 8: error: expected a "}"
+  (A::operator int[5])() { return i; }
+                                   ^
+
+"Test_name.c", line 8: error: expected a declaration
+  (A::operator int[5])() { return i; }
+                                     ^
+
+7 errors detected in the compilation of "Test_name.c".

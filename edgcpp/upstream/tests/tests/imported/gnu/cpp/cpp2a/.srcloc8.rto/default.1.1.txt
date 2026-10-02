@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 11: error: expected "std::source_location::__impl" to be defined to a class with only the data members "_M_function_name", "_M_file_name", "_M_column", "_M_line"
+  auto x = __builtin_source_location ();	// { dg-error "'std::source_location::__impl()' is not a class type" }
+           ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=2 --upc --diag_error=exit_forall Test_name.c
+"Test_name.c", line 17: error: branching into or out of a upc_forall loop is not allowed
+  		break;
+  		^
+
+1 error detected in the compilation of "Test_name.c".

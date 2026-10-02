@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 4: error: expected a string literal
+  void __attribute((abi_tag(foo))) f1() {}  // { dg-error "abi_tag" }
+                            ^
+
+"Test_name.c", line 5: error: wide string literal not allowed
+  void __attribute((abi_tag(L"foo"))) f2(); // { dg-error "abi_tag" }
+                            ^
+
+"Test_name.c", line 7: error: expected a string literal
+  void __attribute((abi_tag(1))) f5();	  // { dg-error "abi_tag" }
+                            ^
+
+3 errors detected in the compilation of "Test_name.c".

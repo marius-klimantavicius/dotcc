@@ -1,0 +1,14 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"./torture/floatn-nan-floath.h", line 26: error: identifier "_Float128x" is undefined
+  volatile _Float128x nans_cst = FLT128X_SNAN;
+           ^
+
+"./torture/floatn-nan-floath.h", line 26: error: identifier "FLT128X_SNAN" is undefined
+  volatile _Float128x nans_cst = FLT128X_SNAN;
+                                 ^
+
+"./torture/floatn-nan-floath.h", line 31: error: identifier "_Float128x" is undefined
+    volatile _Float128x r;
+             ^
+
+3 errors detected in the compilation of "Test_name.c".

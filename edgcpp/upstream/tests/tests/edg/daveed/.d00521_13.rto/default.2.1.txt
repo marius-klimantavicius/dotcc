@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=2 --microsoft -DPOS Test_name.c
+"Test_name.c", line 34: warning: base class dllexport/dllimport specification differs from that of the derived class
+  template<class T> struct D: M<T> {
+                              ^
+          detected during instantiation of class "D<T> [with T=int]" at line 38
+

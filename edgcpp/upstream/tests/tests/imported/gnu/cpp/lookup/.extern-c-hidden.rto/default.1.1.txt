@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: warning: more than one instance of overloaded function "fabsf" has "C" linkage
+    extern "C" float fabsf (float, float); // { dg-error "20:conflicting C language" }
+                     ^
+
+"Test_name.c", line 13: warning: more than one instance of overloaded function "Bob::fabs" has "C" linkage
+  extern "C" double fabs (double); // { dg-error "19:conflicting C language" }
+                    ^
+

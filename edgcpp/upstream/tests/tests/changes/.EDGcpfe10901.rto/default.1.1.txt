@@ -1,0 +1,8 @@
+fe_only -DTEST_NUMBER=1 --microsoft Test_name.c
+"Test_name.c", line 11: warning: variable "x" was declared deprecated
+  int y = x;  // Previously triggered a strange diagnostic.
+          ^
+"Test_name.c", line 10: note: because of a "deprecated" attribute
+  __declspec(deprecated(L"Old")) int x;
+             ^
+

@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=2 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c17 -D_CLANG_DISABLE_CRT_DEPRECATION_WARNINGS Test_name.c
+"Sema/c2x-noreturn.c", line 26: error: attribute "noreturn" does not take arguments
+  [[noreturn(12)]] void func4(void);
+            ^
+
+"Sema/c2x-noreturn.c", line 27: error: attribute "noreturn" does not apply here
+  [[noreturn]] int not_a_func;
+    ^
+
+"Sema/c2x-noreturn.c", line 28: error: attribute "noreturn" does not apply here
+  void func5(void) [[noreturn]];
+                     ^
+
+3 errors detected in the compilation of "Test_name.c".

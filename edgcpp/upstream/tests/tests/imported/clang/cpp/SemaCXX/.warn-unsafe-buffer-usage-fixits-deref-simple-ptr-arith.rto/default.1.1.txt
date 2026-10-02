@@ -1,0 +1,41 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 16: warning: variable "ptr" is used before its value is set
+    *(ptr+5)=1;
+      ^
+
+"Test_name.c", line 27: warning: variable "p" is used before its value is set
+    ;* ( p + 5 ) = 1;
+         ^
+
+"Test_name.c", line 115: warning: variable "ptrrrrrr" is used before its value is set
+    ;* ( ptrrrrrr + 123456 )= 1;
+         ^
+
+"Test_name.c", line 158: warning: variable "ptr" is used before its value is set
+    *(10 + ptr) = 1;
+           ^
+
+"Test_name.c", line 166: warning: variable "ptr" is used before its value is set
+    *(( (10 + ptr)) ) = 1;
+              ^
+
+"Test_name.c", line 174: warning: variable "ptr" is used before its value is set
+    int tmp = *(ptr + 10);
+                ^
+
+"Test_name.c", line 174: warning: variable "tmp" was declared but never referenced
+    int tmp = *(ptr + 10);
+        ^
+
+"Test_name.c", line 185: warning: variable "ptr" is used before its value is set
+    *(ptr + -5) = 1; // skip
+      ^
+
+"Test_name.c", line 190: warning: variable "ptr" is used before its value is set
+    *(ptr - 5) = 1; // skip
+      ^
+
+"Test_name.c", line 195: warning: variable "ptr" is used before its value is set
+    *(ptr - -5) = 1; // FIXME: implement fixit (uncommon case - low priority)
+      ^
+

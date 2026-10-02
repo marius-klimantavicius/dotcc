@@ -1,0 +1,9 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./atomic/pr81316.c", line 13: warning: argument of type "_Atomic(int) *" is incompatible with parameter of type "const volatile void *"
+    while (!__atomic_load_n(&sem1, 2))
+                            ^
+
+"./atomic/pr81316.c", line 26: warning: argument of type "_Atomic(int) *" is incompatible with parameter of type "volatile void *"
+    __atomic_store_n(&sem1, 1, 3);
+                     ^
+

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c99 --embedded_c Test_name.c
+"Test_name.c", line 14: error: multiple named address spaces
+  int _EDG_NAS_B _EDG_NAS_C x;
+                 ^
+
+1 error detected in the compilation of "Test_name.c".

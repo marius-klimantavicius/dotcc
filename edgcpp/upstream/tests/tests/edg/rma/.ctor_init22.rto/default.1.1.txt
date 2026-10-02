@@ -1,0 +1,44 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 7: error: "A::A()" provides no initializer for:
+            const member "A::i"
+    A() { }             // Error
+        ^
+
+"Test_name.c", line 11: warning: class "B" defines no constructor to initialize the following:
+            const member "B::i"
+  struct B {
+         ^
+
+"Test_name.c", line 11: error: implicitly generated constructor for class "B" cannot initialize:
+            const member "B::i"
+  struct B {
+         ^
+          detected during implicit generation of "B::B()" at line 15
+
+"Test_name.c", line 18: remark: class "C" defines no constructor to initialize the following:
+            const member "C::i"
+  struct C {
+         ^
+
+"Test_name.c", line 18: error: implicitly generated constructor for class "C" cannot initialize:
+            const member "C::i"
+  struct C {
+         ^
+          detected during implicit generation of "C::C()" at line 22
+
+"Test_name.c", line 27: remark: class "D" defines no constructor to initialize the following:
+            const member "D::i"
+  struct D {
+         ^
+
+"Test_name.c", line 27: error: implicitly generated constructor for class "D" cannot initialize:
+            const member "D::i"
+  struct D {
+         ^
+          detected during implicit generation of "D::D()" at line 30
+
+"Test_name.c", line 30: error: variable "d1" has an uninitialized const or reference member
+  D d1;                 // Error??? Or okay with uninitialized d1.i?
+    ^
+
+5 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,97 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 8: warning: unknown attribute "nodiscard"
+  struct [[nodiscard]] S {};
+           ^
+
+"Test_name.c", line 13: warning: unknown attribute "nodiscard"
+  enum [[nodiscard]] E {};
+         ^
+
+"Test_name.c", line 17: warning: unknown attribute "nodiscard"
+  [[nodiscard]] int get_i();
+    ^
+
+"Test_name.c", line 19: warning: unknown attribute "nodiscard"
+  [[nodiscard]] volatile int &get_vi();
+    ^
+
+"Test_name.c", line 36: warning: unknown attribute "nodiscard"
+  [[nodiscard]] volatile char &(*fp)(); // expected-warning {{'nodiscard' attribute only applies to functions, classes, or enumerations}}
+    ^
+
+"Test_name.c", line 60: warning: variable "one" is used before its value is set
+    one(); // expected-warning {{ignoring return value of type 'E' declared with 'nodiscard' attribute}}
+    ^
+
+"Test_name.c", line 61: warning: variable "two" is used before its value is set
+    two(); // expected-warning {{ignoring return value of type 'S' declared with 'nodiscard' attribute}}
+    ^
+
+"Test_name.c", line 62: warning: variable "three" is used before its value is set
+    three(); // expected-warning {{ignoring return value of type 'S' declared with 'nodiscard' attribute}}
+    ^
+
+"Test_name.c", line 63: warning: variable "four" is used before its value is set
+    four(); // expected-warning {{ignoring return value of type 'S' declared with 'nodiscard' attribute}}
+    ^
+
+"Test_name.c", line 73: warning: unknown attribute "nodiscard"
+  struct [[nodiscard("reason")]] ReasonStruct {};
+           ^
+
+"Test_name.c", line 76: warning: unknown attribute "nodiscard"
+  struct [[nodiscard("later reason")]] LaterReason {};
+           ^
+
+"Test_name.c", line 81: warning: unknown attribute "nodiscard"
+  [[nodiscard("another reason")]] int another_reason();
+    ^
+
+"Test_name.c", line 84: warning: unknown attribute "nodiscard"
+  [[nodiscard("conflicting reason")]] int conflicting_reason();
+    ^
+
+"Test_name.c", line 86: warning: unknown attribute "nodiscard"
+  [[nodiscard("special reason")]] int conflicting_reason();
+    ^
+
+"Test_name.c", line 97: warning: unknown attribute "nodiscard"
+  struct[[nodiscard("Don't throw me away!")]] ConvertTo{};
+          ^
+
+"Test_name.c", line 100: warning: unknown attribute "nodiscard"
+    [[nodiscard]] S();
+      ^
+
+"Test_name.c", line 102: warning: unknown attribute "nodiscard"
+    [[nodiscard("Don't let that S-Char go!")]] S(char);
+      ^
+
+"Test_name.c", line 105: warning: attribute "warn_unused_result" is ignored for void return type
+    [[gnu::warn_unused_result]] S(double);
+      ^
+
+"Test_name.c", line 107: warning: unknown attribute "nodiscard"
+    [[nodiscard]] operator int();
+      ^
+
+"Test_name.c", line 109: warning: unknown attribute "nodiscard"
+    [[nodiscard("Don't throw away as a double")]] operator double();
+      ^
+
+"Test_name.c", line 113: warning: unknown attribute "nodiscard"
+  struct[[nodiscard("Don't throw me away either!")]] Y{};
+          ^
+
+"Test_name.c", line 157: warning: extra ";" ignored
+    using enum scoped_enum_t;
+                            ^
+
+"Test_name.c", line 167: warning: unknown attribute "nodiscard"
+  [[nodiscard]] X get_X();
+    ^
+
+"Test_name.c", line 169: warning: unknown attribute "nodiscard"
+  [[nodiscard]] X* get_Ptr();
+    ^
+

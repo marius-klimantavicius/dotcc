@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++20 -tused -A Test_name.c
+"Test_name.c", line 3: error: a lambda parameter cannot hide an explicit capture
+  auto z = [a = 42](int a) { return 1; };   // error: parameter and conceptual local variable have the same name
+                        ^
+
+1 error detected in the compilation of "Test_name.c".

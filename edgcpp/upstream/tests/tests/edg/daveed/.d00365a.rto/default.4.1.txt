@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=4 --microsoft Test_name.c
+"Test_name.c", line 36: error: an initializer cannot be specified for a flexible array member whose elements have a nontrivial destructor
+    } e = { 1, { 2, 3, 4 } };  // Not accepted in any mode.
+               ^
+
+1 error detected in the compilation of "Test_name.c".

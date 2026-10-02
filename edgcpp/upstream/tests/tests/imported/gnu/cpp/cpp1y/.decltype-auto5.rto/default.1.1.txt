@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 8: error: decltype(auto) cannot have added type qualifiers
+    const constexpr static decltype(auto) y = 42; // { dg-error "cannot be cv-qualified" }
+                           ^
+
+"Test_name.c", line 11: error: decltype(auto) cannot have added type qualifiers
+    const constexpr decltype(auto) mfn2 () { return 0; } // { dg-error "cannot be cv-qualified" }
+                    ^
+
+"Test_name.c", line 15: error: decltype(auto) cannot have added type qualifiers
+  const constexpr decltype(auto) j = 42; // { dg-error "cannot be cv-qualified" }
+                  ^
+
+"Test_name.c", line 18: error: decltype(auto) cannot have added type qualifiers
+  const decltype(auto) fn2() { return 42; } // { dg-error "cannot be cv-qualified" }
+        ^
+
+"Test_name.c", line 20: error: decltype(auto) cannot have added type qualifiers
+  auto constexpr foo() -> const decltype(auto) // { dg-error "cannot be cv-qualified" }
+                                ^
+
+"Test_name.c", line 36: error: decltype(auto) cannot have added type qualifiers
+  template<const decltype(auto) = 42> // { dg-error "cannot be cv-qualified" }
+                 ^
+
+"Test_name.c", line 36: error: decltype(auto) is not allowed here
+  template<const decltype(auto) = 42> // { dg-error "cannot be cv-qualified" }
+                 ^
+
+"Test_name.c", line 14: warning: variable "i" was declared but never referenced
+  constexpr decltype(auto) i = 42;
+                           ^
+
+"Test_name.c", line 15: warning: variable "j" was declared but never referenced
+  const constexpr decltype(auto) j = 42; // { dg-error "cannot be cv-qualified" }
+                                 ^
+
+7 errors detected in the compilation of "Test_name.c".

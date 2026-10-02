@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 18: error: identifier "__vector" is undefined
+  __vector bool char bc;
+  ^
+
+"Test_name.c", line 18: error: expected a ";"
+  __vector bool char bc;
+                ^
+
+"Test_name.c", line 19: error: identifier "__vector" is undefined
+  __vector bool short bsh;
+  ^
+
+"Test_name.c", line 19: error: expected a ";"
+  __vector bool short bsh;
+                ^
+
+"Test_name.c", line 20: error: identifier "__vector" is undefined
+  __vector bool short int bshi;
+  ^
+
+"Test_name.c", line 20: error: expected a ";"
+  __vector bool short int bshi;
+                ^
+
+"Test_name.c", line 21: error: identifier "__vector" is undefined
+  __vector bool int bi;
+  ^
+
+"Test_name.c", line 21: error: expected a ";"
+  __vector bool int bi;
+                ^
+
+"Test_name.c", line 22: warning: this declaration has no storage class or type specifier
+  __vector _Bool char bc;
+  ^
+
+"Test_name.c", line 22: error: expected a ";"
+  __vector _Bool char bc;
+           ^
+
+"Test_name.c", line 23: warning: this declaration has no storage class or type specifier
+  __vector _Bool short bsh;
+  ^
+
+"Test_name.c", line 23: error: expected a ";"
+  __vector _Bool short bsh;
+           ^
+
+"Test_name.c", line 24: warning: this declaration has no storage class or type specifier
+  __vector _Bool short int bshi;
+  ^
+
+"Test_name.c", line 24: error: expected a ";"
+  __vector _Bool short int bshi;
+           ^
+
+"Test_name.c", line 25: warning: this declaration has no storage class or type specifier
+  __vector _Bool int bi;
+  ^
+
+"Test_name.c", line 25: error: expected a ";"
+  __vector _Bool int bi;
+           ^
+
+12 errors detected in the compilation of "Test_name.c".

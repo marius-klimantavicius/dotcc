@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 22: error: user-defined literal operator not found
+    "two"_w;            // expected-error {{no matching literal operator for call to 'operator""_w' with arguments of types 'const char *' and '__size_t' (aka 'unsigned long')}}
+    ^
+
+"Test_name.c", line 27: warning: missing return statement at end of non-void function "std_example::main"
+  }
+  ^
+
+"Test_name.c", line 24: warning: variable "test1" was declared but never referenced
+    same_type<decltype(v1), long double> test1;
+                                         ^
+
+"Test_name.c", line 25: warning: variable "test2" was declared but never referenced
+    same_type<decltype(v2), std::string> test2;
+                                         ^
+
+"Test_name.c", line 26: warning: variable "test3" was declared but never referenced
+    same_type<decltype(v3), unsigned> test3;
+                                      ^
+
+1 error detected in the compilation of "Test_name.c".

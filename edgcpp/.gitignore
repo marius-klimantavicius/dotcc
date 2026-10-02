@@ -1,0 +1,9 @@
+/build/
+/artifacts/
+__pycache__/
+# Generated copies of the canonical backend/configuration.
+/upstream/src/dot_gen_*.c
+/upstream/src/dot_gen_*.h
+/upstream/src/cmake/cpfe-dot/
+/upstream/src/cmake/cpfe-dot-oracle/
+/upstream/cmake/macro-conf/all-extensions/

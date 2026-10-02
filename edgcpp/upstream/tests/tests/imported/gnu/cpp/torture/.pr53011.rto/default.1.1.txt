@@ -1,0 +1,27 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 10: warning: missing return statement at end of non-void function "WvFastString::operator char *"
+    operator char* () {}
+                       ^
+
+"Test_name.c", line 16: warning: missing return statement at end of non-void function "WvIPNet::is_default"
+    bool is_default() {}
+                       ^
+
+"Test_name.c", line 33: warning: missing return statement at end of non-void function "WvLink::get_autofree"
+    bool get_autofree() {}
+                         ^
+
+"Test_name.c", line 68: error: more than one operator "!=" matches these operands:
+            built-in operator "pointer != pointer"
+            built-in operator "pointer != pointer"
+            operand types are: WvFastString != const char [8]
+    if (dest.is_default() || (table != "default")) WvSubProc checkProc;
+                                    ^
+"Test_name.c", line 68: note: built-in operator!=(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    if (dest.is_default() || (table != "default")) WvSubProc checkProc;
+                                    ^
+"Test_name.c", line 68: note: built-in operator!=(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    if (dest.is_default() || (table != "default")) WvSubProc checkProc;
+                                    ^
+
+1 error detected in the compilation of "Test_name.c".

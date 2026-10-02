@@ -1,0 +1,26 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./builtin-bswap-12.c", line 11: error: identifier "__uint128_t" is undefined
+    __uint128_t n;
+    ^
+
+"./builtin-bswap-12.c", line 20: warning: integer conversion resulted in truncation
+    const u U1 = { .s = { 0x1122334455667788ULL, 0xffffffffffffffffULL } };
+                          ^
+
+"./builtin-bswap-12.c", line 20: warning: integer conversion resulted in truncation
+    const u U1 = { .s = { 0x1122334455667788ULL, 0xffffffffffffffffULL } };
+                                                 ^
+
+"./builtin-bswap-12.c", line 21: warning: integer conversion resulted in truncation
+    const u U2 = { .s = { 0xffffffffffffffffULL, 0x8877665544332211ULL } };
+                          ^
+
+"./builtin-bswap-12.c", line 21: warning: integer conversion resulted in truncation
+    const u U2 = { .s = { 0xffffffffffffffffULL, 0x8877665544332211ULL } };
+                                                 ^
+
+"./builtin-bswap-12.c", line 23: warning: function "__builtin_bswap128" declared implicitly
+    if (__builtin_bswap128 (U1.n) != U2.n)
+        ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 7: error: "x" has already been declared in the current scope
+  int x() { return 0; }; // error - x not unique
+      ^
+
+"Test_name.c", line 7: error: extra ";" ignored
+  int x() { return 0; }; // error - x not unique
+                       ^
+
+2 errors detected in the compilation of "Test_name.c".

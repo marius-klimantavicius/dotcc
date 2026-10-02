@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 Test_name.c
+"Test_name.c", line 8: error: a type qualifier is not allowed on a nonmember function
+    template <typename... Ts> operator auto()(Ts &&... xs) const;
+                                                           ^
+
+"Test_name.c", line 8: error: function returning function is not allowed
+    template <typename... Ts> operator auto()(Ts &&... xs) const;
+                                              ^
+
+2 errors detected in the compilation of "Test_name.c".

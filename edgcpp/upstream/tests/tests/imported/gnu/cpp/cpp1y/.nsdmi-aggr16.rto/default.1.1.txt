@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 16: error: initialization is not constant
+  constexpr B b;
+              ^
+"Test_name.c", line 16: note: invalid use of address of interpreter storage
+  constexpr B b;
+              ^
+
+"Test_name.c", line 21: warning: expression has no effect
+    A a = (true, A{});
+           ^
+
+"Test_name.c", line 24: error: initialization is not constant
+  constexpr C c;
+              ^
+"Test_name.c", line 24: note: invalid use of address of interpreter storage
+  constexpr C c;
+              ^
+
+"Test_name.c", line 32: error: initialization is not constant
+  constexpr D d;
+              ^
+"Test_name.c", line 32: note: invalid use of address of interpreter storage
+  constexpr D d;
+              ^
+
+"Test_name.c", line 45: error: initialization is not constant
+  constexpr E e;
+              ^
+"Test_name.c", line 45: note: invalid use of address of interpreter storage
+  constexpr E e;
+              ^
+
+"Test_name.c", line 54: warning: variable "f" was declared but never referenced
+  constexpr F f;
+              ^
+
+4 errors detected in the compilation of "Test_name.c".

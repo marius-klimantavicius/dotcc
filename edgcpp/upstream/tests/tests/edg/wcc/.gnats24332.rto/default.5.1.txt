@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=5 -W --microsoft_version 1924 --c Test_name.c
+"Test_name.c", line 5: error: expected a type specifier
+  _Pragma("once")
+          ^
+
+"Test_name.c", line 5: error: this declaration has no storage class or type specifier
+  _Pragma("once")
+  ^
+
+At end of source: error: expected a ";"
+
+3 errors detected in the compilation of "Test_name.c".

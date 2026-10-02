@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 6: error: expected a ")"
+  #if defined( x r_paren  // expected-error {{missing ')' after 'defined'}} \
+                 ^
+
+"Test_name.c", line 6: error: extra text after expected end of preprocessing directive
+  #if defined( x r_paren  // expected-error {{missing ')' after 'defined'}} \
+                 ^
+
+2 errors detected in the compilation of "Test_name.c".

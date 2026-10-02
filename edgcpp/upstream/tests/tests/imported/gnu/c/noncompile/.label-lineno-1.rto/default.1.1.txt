@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 13: error: label "my_label" has already been defined (previous definition at line 9)
+   my_label: /* { dg-error "duplicate label" "label lineno" } */
+   ^
+
+"Test_name.c", line 9: warning: label "my_label" was declared but never referenced
+   my_label: /* { dg-message "note: previous definition" "prev label" } */
+   ^
+
+1 error detected in the compilation of "Test_name.c".

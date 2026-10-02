@@ -1,0 +1,4 @@
+./a.out
+M()
+M(M const&)
+M(M&&)

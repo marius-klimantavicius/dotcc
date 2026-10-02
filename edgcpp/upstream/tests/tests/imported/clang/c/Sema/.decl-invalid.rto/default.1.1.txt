@@ -1,0 +1,58 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 6: error: expected either a definition or a tag name
+  typedef union <anonymous> __mbstate_t;  // expected-error {{declaration of anonymous union must be a definition}} expected-warning {{typedef requires a name}}
+                ^
+
+"Test_name.c", line 12: error: expression must have integral type
+    int r[x()];  // expected-error {{size of array has non-integer type 'void'}}
+          ^
+
+"Test_name.c", line 14: warning: explicit type is missing ("int" assumed)
+    static y ?; // expected-error{{unknown type name 'y'}} \
+           ^
+
+"Test_name.c", line 14: error: expected a ";"
+    static y ?; // expected-error{{unknown type name 'y'}} \
+             ^
+
+"Test_name.c", line 16: warning: missing return statement at end of non-void function "a"
+  }
+  ^
+
+"Test_name.c", line 12: warning: variable "r" was declared but never referenced
+    int r[x()];  // expected-error {{size of array has non-integer type 'void'}}
+        ^
+
+"Test_name.c", line 14: warning: variable "y" was declared but never referenced
+    static y ?; // expected-error{{unknown type name 'y'}} \
+           ^
+
+"Test_name.c", line 18: warning: declaration does not declare anything
+  int; // expected-warning {{declaration does not declare anything}}
+  ^
+
+"Test_name.c", line 19: warning: declaration requires a typedef name
+  typedef int; // expected-warning {{typedef requires a name}}
+             ^
+
+"Test_name.c", line 20: warning: declaration does not declare anything
+  const int; // expected-warning {{declaration does not declare anything}}
+  ^
+
+"Test_name.c", line 20: warning: type qualifiers are meaningless in this declaration
+  const int; // expected-warning {{declaration does not declare anything}}
+  ^
+
+"Test_name.c", line 21: error: expected either a definition or a tag name
+  struct; // expected-error {{declaration of anonymous struct must be a definition}} // expected-warning {{declaration does not declare anything}}
+        ^
+
+"Test_name.c", line 23: warning: declaration does not declare anything
+  I; // expected-warning {{declaration does not declare anything}}
+  ^
+
+"Test_name.c", line 25: error: a global-scope declaration may not have this storage class
+  register int test1;     // expected-error {{illegal storage class on file-scoped variable}}
+  ^
+
+5 errors detected in the compilation of "Test_name.c".

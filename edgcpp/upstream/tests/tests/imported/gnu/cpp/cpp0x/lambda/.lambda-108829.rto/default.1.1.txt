@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: error: explicit capture matches default
+    int abyPage = [=, abyPage] { return IDX_PAGE_SIZE; }(); // { dg-error "redundant" }
+                      ^
+
+"Test_name.c", line 9: warning: variable "abyPage" is used before its value is set
+    int abyPage = [=, abyPage] { return IDX_PAGE_SIZE; }(); // { dg-error "redundant" }
+                      ^
+
+1 error detected in the compilation of "Test_name.c".

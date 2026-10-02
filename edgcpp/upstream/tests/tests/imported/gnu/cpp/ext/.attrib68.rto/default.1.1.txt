@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: warning: attribute "aligned" does not apply here
+    enum { e __attribute__ ((aligned (16))) };	// { dg-error "alignment may not be specified for 'e'" }
+                             ^
+

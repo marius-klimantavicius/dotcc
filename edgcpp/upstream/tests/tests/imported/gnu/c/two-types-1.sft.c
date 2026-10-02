@@ -1,0 +1,7 @@
+//type: fn
+//options: --c89 --strict_gnu
+/* { dg-do compile } */
+/* { dg-options "-std=gnu89" } // suppress default -pedantic-errors */
+
+typedef int x, y;
+x y z;			/* { dg-error "" } */

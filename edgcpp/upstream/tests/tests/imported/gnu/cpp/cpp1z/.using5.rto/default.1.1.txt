@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: error: expected a ";"
+    using typename T::type ...;  // { dg-warning "pack expansion" "" { target c++14_down } }
+                           ^
+
+"Test_name.c", line 8: error: parameter pack "T" was referenced but not expanded
+    using typename T::type ...;  // { dg-warning "pack expansion" "" { target c++14_down } }
+                   ^
+
+"Test_name.c", line 8: error: a class or namespace qualified name is required
+    using typename T::type ...;  // { dg-warning "pack expansion" "" { target c++14_down } }
+                   ^
+          detected during instantiation of class "C<T...> [with T=<>]" at line 12
+
+"Test_name.c", line 8: error: expected a ";"
+    using typename T::type ...;  // { dg-warning "pack expansion" "" { target c++14_down } }
+                    ^
+          detected during instantiation of class "C<T...> [with T=<>]" at line 12
+
+"Test_name.c", line 9: error: identifier "type" is undefined
+    void f() { type value; }  // { dg-error "empty pack" }
+               ^
+          detected during instantiation of "void C<T...>::f() [with T=<>]" at line 12
+
+"Test_name.c", line 9: error: expected a ";"
+    void f() { type value; }  // { dg-error "empty pack" }
+                    ^
+          detected during instantiation of "void C<T...>::f() [with T=<>]" at line 12
+
+6 errors detected in the compilation of "Test_name.c".

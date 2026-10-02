@@ -1,0 +1,114 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: error: expected an identifier
+    friend Ts...;		// { dg-warning "variadic friends or friend type declarations with multiple types only available with" "" { target c++23_down } }
+             ^
+
+"Test_name.c", line 10: error: invalid friend declaration
+    friend Ts...;		// { dg-warning "variadic friends or friend type declarations with multiple types only available with" "" { target c++23_down } }
+    ^
+
+"Test_name.c", line 10: error: parameter pack "Ts" was referenced but not expanded
+    friend Ts...;		// { dg-warning "variadic friends or friend type declarations with multiple types only available with" "" { target c++23_down } }
+           ^
+
+"Test_name.c", line 19: error: expected an identifier
+    Ts::Y..., Us...;	// { dg-warning "variadic friends or friend type declarations with multiple types only available with" "" { target c++23_down } }
+         ^
+
+"Test_name.c", line 15: error: invalid friend declaration
+    friend
+    ^
+
+"Test_name.c", line 19: error: expected a ";"
+    Ts::Y..., Us...;	// { dg-warning "variadic friends or friend type declarations with multiple types only available with" "" { target c++23_down } }
+            ^
+
+"Test_name.c", line 19: error: parameter pack "Ts" was referenced but not expanded
+    Ts::Y..., Us...;	// { dg-warning "variadic friends or friend type declarations with multiple types only available with" "" { target c++23_down } }
+    ^
+
+"Test_name.c", line 24: error: expected an identifier
+    friend T, U;		// { dg-warning "variadic friends or friend type declarations with multiple types only available with" "" { target c++23_down } }
+            ^
+
+"Test_name.c", line 24: error: invalid friend declaration
+    friend T, U;		// { dg-warning "variadic friends or friend type declarations with multiple types only available with" "" { target c++23_down } }
+    ^
+
+"Test_name.c", line 24: error: expected a ";"
+    friend T, U;		// { dg-warning "variadic friends or friend type declarations with multiple types only available with" "" { target c++23_down } }
+            ^
+
+"Test_name.c", line 29: error: expected an identifier
+    friend U, Vs..., T;	// { dg-warning "variadic friends or friend type declarations with multiple types only available with" "" { target c++23_down } }
+            ^
+
+"Test_name.c", line 29: error: invalid friend declaration
+    friend U, Vs..., T;	// { dg-warning "variadic friends or friend type declarations with multiple types only available with" "" { target c++23_down } }
+    ^
+
+"Test_name.c", line 29: error: expected a ";"
+    friend U, Vs..., T;	// { dg-warning "variadic friends or friend type declarations with multiple types only available with" "" { target c++23_down } }
+            ^
+
+"Test_name.c", line 43: error: class "A<Ts...>::X [with Ts=<E, F>]" (declared at line 9) is inaccessible
+  class E : A<E, F>::X {};
+                     ^
+
+"Test_name.c", line 44: error: class "A<Ts...>::X [with Ts=<E, F>]" (declared at line 9) is inaccessible
+  class F : A<E, F>::X {};
+                     ^
+
+"Test_name.c", line 45: error: class "B<T, U>::X [with T=G, U=H]" (declared at line 23) is inaccessible
+  class G : B<G, H>::X {};
+                     ^
+
+"Test_name.c", line 46: error: class "B<T, U>::X [with T=G, U=H]" (declared at line 23) is inaccessible
+  class H : B<G, H>::X {};
+                     ^
+
+"Test_name.c", line 47: error: class "C<T, U, Vs...>::X [with T=I, U=J, Vs=<>]" (declared at line 28) is inaccessible
+  class I : C<I, J>::X {};
+                     ^
+
+"Test_name.c", line 48: error: class "C<T, U, Vs...>::X [with T=I, U=J, Vs=<>]" (declared at line 28) is inaccessible
+  class J : C<I, J>::X {};
+                     ^
+
+"Test_name.c", line 49: error: class "C<T, U, Vs...>::X [with T=K, U=L, Vs=<M, N, O>]" (declared at line 28) is inaccessible
+  class K : C<K, L, M, N, O>::X {};
+                              ^
+
+"Test_name.c", line 50: error: class "C<T, U, Vs...>::X [with T=K, U=L, Vs=<M, N, O>]" (declared at line 28) is inaccessible
+  class L : C<K, L, M, N, O>::X {};
+                              ^
+
+"Test_name.c", line 51: error: class "C<T, U, Vs...>::X [with T=K, U=L, Vs=<M, N, O>]" (declared at line 28) is inaccessible
+  class M : C<K, L, M, N, O>::X {};
+                              ^
+
+"Test_name.c", line 52: error: class "C<T, U, Vs...>::X [with T=K, U=L, Vs=<M, N, O>]" (declared at line 28) is inaccessible
+  class N : C<K, L, M, N, O>::X {};
+                              ^
+
+"Test_name.c", line 53: error: class "C<T, U, Vs...>::X [with T=K, U=L, Vs=<M, N, O>]" (declared at line 28) is inaccessible
+  class O : C<K, L, M, N, O>::X {};
+                              ^
+
+"Test_name.c", line 54: error: class "A<A<Ts...>, A<Us...>>::X [with Ts=<Q>, Us=<P, long>]" (declared at line 14) is inaccessible
+  struct Q { class Y : A<A<Q>, A<P, long>>::X {}; };
+                                            ^
+
+"Test_name.c", line 55: error: class "A<A<Ts...>, A<Us...>>::X [with Ts=<Q>, Us=<P, long>]" (declared at line 14) is inaccessible
+  class P : A<A<Q>, A<P, long>>::X {};
+                                 ^
+
+"Test_name.c", line 58: error: class "A<A<Ts...>, A<Us...>>::X [with Ts=<R, S>, Us=<P, double>]" (declared at line 14) is inaccessible
+  class R::Y : A<A<R, S>, A<P, double>>::X {};
+                                         ^
+
+"Test_name.c", line 59: error: class "A<A<Ts...>, A<Us...>>::X [with Ts=<R, S>, Us=<P, double>]" (declared at line 14) is inaccessible
+  class S::Y : A<A<R, S>, A<P, double>>::X {};
+                                         ^
+
+28 errors detected in the compilation of "Test_name.c".

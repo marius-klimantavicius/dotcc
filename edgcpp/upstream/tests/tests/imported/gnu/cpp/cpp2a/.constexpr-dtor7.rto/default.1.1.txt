@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 15: warning: parameter "v" was set but never used
+  foo (S v)
+         ^
+
+"Test_name.c", line 21: error: expression must have a constant value
+  static_assert (foo (S ()));	// { dg-error "non-constant condition for static assertion" }
+                 ^
+"Test_name.c", line 21: note: some dynamic allocations (total number = 1) were not deallocated
+  static_assert (foo (S ()));	// { dg-error "non-constant condition for static assertion" }
+                     ^
+"Test_name.c", line 8: note: allocation occurred here
+    constexpr S () : s(new int) {}	// { dg-error "is not a constant expression because allocated storage has not been deallocated" }
+                       ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 13: error: an unscoped enumeration must be opaque in order to be specialized
+  template <> enum A<long long>::E : long long {};
+                                 ^
+
+"Test_name.c", line 18: error: enum "C<T>::E [with T=int]" has no member "e1"
+  C<int>::E c3 = C<int>::E::e1;	// { dg-error "is not a member of" }
+                            ^
+
+2 errors detected in the compilation of "Test_name.c".

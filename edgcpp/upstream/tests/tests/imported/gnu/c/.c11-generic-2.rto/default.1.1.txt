@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 Test_name.c
+"Test_name.c", line 13: error: a default association already appeared in this _Generic selection
+    _Generic (n, default: 1, default: 2); /* { dg-error "duplicate .*default.* case" } */
+                             ^
+
+"Test_name.c", line 16: error: a type involving a variable length array is not allowed here
+    _Generic (n, int[n]: 0, default: 1);	/* { dg-error "variable length type" } */
+                 ^
+
+"Test_name.c", line 18: error: type must be an object type
+    _Generic (n, struct incomplete: 0, default: 1); /* { dg-error "incomplete type" } */
+                 ^
+
+"Test_name.c", line 19: error: type must be an object type
+    _Generic (n, void: 0, default: 1); /* { dg-error "incomplete type" } */
+                 ^
+
+"Test_name.c", line 22: error: type must be an object type
+    _Generic (n, void (void): 0, default: 1); /* { dg-error "function type" } */
+                 ^
+
+"Test_name.c", line 25: error: duplicate association type ("signed int") in _Generic selection
+    _Generic (&n, int: 5, signed int: 7, default: 23); /* { dg-error "two compatible types" } */
+                          ^
+
+"Test_name.c", line 28: error: no association matches the selector type "int"
+    _Generic (n, void *: 5);	/* { dg-error "not compatible with any association" } */
+    ^
+
+7 errors detected in the compilation of "Test_name.c".

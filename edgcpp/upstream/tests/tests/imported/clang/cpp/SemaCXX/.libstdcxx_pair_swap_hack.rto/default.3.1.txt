@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=3 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --exceptions --exceptions -D__GLIBCXX__=20100000L -DCLASS=pair Test_name.c
+"SemaCXX/libstdcxx_pair_swap_hack.cpp", line 86: error: too many arguments in function call
+        noexcept(noexcept(swap(*this, other)));
+                                      ^
+          detected during instantiation of "void sad::pair<A, B>::swap(sad::pair<A, B> &) [with A=int, B=int]" at line 92
+
+"SemaCXX/libstdcxx_pair_swap_hack.cpp", line 92: error: static assertion failed with ""
+    static_assert(!noexcept(pi.swap(pi)), "");
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

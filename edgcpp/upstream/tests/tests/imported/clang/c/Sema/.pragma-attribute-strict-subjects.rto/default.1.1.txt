@@ -1,0 +1,257 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 5: warning: unrecognized #pragma
+  #pragma clang attribute push (__attribute__((annotate("test"))), apply_to = any(function, variable))
+          ^
+
+"Test_name.c", line 7: warning: unrecognized #pragma
+  #pragma clang attribute pop
+          ^
+
+"Test_name.c", line 11: warning: unrecognized #pragma
+  #pragma clang attribute push (__attribute__((annotate("subRuleContradictions"))), apply_to = any(variable, variable(is_parameter), function(is_member), variable(is_global)))
+          ^
+
+"Test_name.c", line 15: warning: unrecognized #pragma
+  #pragma clang attribute pop
+          ^
+
+"Test_name.c", line 17: warning: unrecognized #pragma
+  #pragma clang attribute push (__attribute__((annotate("subRuleContradictions2"))), apply_to = any(function(is_member), function))
+          ^
+
+"Test_name.c", line 20: warning: unrecognized #pragma
+  #pragma clang attribute pop
+          ^
+
+"Test_name.c", line 22: warning: unrecognized #pragma
+  #pragma clang attribute push (__attribute__((annotate("subRuleContradictions3"))), apply_to = any(variable, variable(unless(is_parameter))))
+          ^
+
+"Test_name.c", line 25: warning: unrecognized #pragma
+  #pragma clang attribute pop
+          ^
+
+"Test_name.c", line 27: warning: unrecognized #pragma
+  #pragma clang attribute push (__attribute__((annotate("negatedSubRuleContradictions1"))), apply_to = any(variable(is_parameter), variable(unless(is_parameter))))
+          ^
+
+"Test_name.c", line 30: warning: unrecognized #pragma
+  #pragma clang attribute pop
+          ^
+
+"Test_name.c", line 32: warning: unrecognized #pragma
+  #pragma clang attribute push (__attribute__((annotate("negatedSubRuleContradictions2"))), apply_to = any(variable(unless(is_parameter)), variable(is_thread_local), function, variable(is_global)))
+          ^
+
+"Test_name.c", line 36: warning: unrecognized #pragma
+  #pragma clang attribute pop
+          ^
+
+"Test_name.c", line 40: warning: unrecognized #pragma
+  #pragma clang attribute push (__attribute__((abi_tag("a"))), apply_to = any(function))
+          ^
+
+"Test_name.c", line 42: warning: unrecognized #pragma
+  #pragma clang attribute pop
+          ^
+
+"Test_name.c", line 44: warning: unrecognized #pragma
+  #pragma clang attribute push (__attribute__((abi_tag("a"))), apply_to = any(record(unless(is_union)), function, variable))
+          ^
+
+"Test_name.c", line 46: warning: unrecognized #pragma
+  #pragma clang attribute pop
+          ^
+
+"Test_name.c", line 48: warning: unrecognized #pragma
+  #pragma clang attribute push (__attribute__((abi_tag("a"))), apply_to = any(function, variable, record(unless(is_union))))
+          ^
+
+"Test_name.c", line 50: warning: unrecognized #pragma
+  #pragma clang attribute pop
+          ^
+
+"Test_name.c", line 52: warning: unrecognized #pragma
+  #pragma clang attribute push (__attribute__((abi_tag("a"))), apply_to = any(variable, record(unless(is_union)), function))
+          ^
+
+"Test_name.c", line 54: warning: unrecognized #pragma
+  #pragma clang attribute pop
+          ^
+
+"Test_name.c", line 56: warning: unrecognized #pragma
+  #pragma clang attribute push (__attribute__((abi_tag("a"))), apply_to = any(function, record(unless(is_union)), variable, enum))
+          ^
+
+"Test_name.c", line 58: warning: unrecognized #pragma
+  #pragma clang attribute pop
+          ^
+
+"Test_name.c", line 60: warning: unrecognized #pragma
+  #pragma clang attribute push (__attribute__((abi_tag("a"))), apply_to = any(enum_constant, function, record(unless(is_union)), variable, variable(is_parameter), enum))
+          ^
+
+"Test_name.c", line 63: warning: unrecognized #pragma
+  #pragma clang attribute pop
+          ^
+
+"Test_name.c", line 65: warning: unrecognized #pragma
+  #pragma clang attribute push (__attribute__((abi_tag("a"))), apply_to = any(function, record(unless(is_union)), enum))
+          ^
+
+"Test_name.c", line 67: warning: unrecognized #pragma
+  #pragma clang attribute pop
+          ^
+
+"Test_name.c", line 71: warning: unrecognized #pragma
+  #pragma clang attribute push (__attribute__((abi_tag("a"))), apply_to = any(function))
+          ^
+
+"Test_name.c", line 73: warning: unrecognized #pragma
+  #pragma clang attribute pop
+          ^
+
+"Test_name.c", line 75: warning: unrecognized #pragma
+  #pragma clang attribute push (__attribute__((abi_tag("a"))), apply_to = variable)
+          ^
+
+"Test_name.c", line 77: warning: unrecognized #pragma
+  #pragma clang attribute pop
+          ^
+
+"Test_name.c", line 79: warning: unrecognized #pragma
+  #pragma clang attribute push (__attribute__((abi_tag("a"))), apply_to = any(record(unless(is_union))))
+          ^
+
+"Test_name.c", line 81: warning: unrecognized #pragma
+  #pragma clang attribute pop
+          ^
+
+"Test_name.c", line 83: warning: unrecognized #pragma
+  #pragma clang attribute push (__attribute__((abi_tag("a"))), apply_to = any(function, variable))
+          ^
+
+"Test_name.c", line 85: warning: unrecognized #pragma
+  #pragma clang attribute pop
+          ^
+
+"Test_name.c", line 87: warning: unrecognized #pragma
+  #pragma clang attribute push (__attribute__((abi_tag("a"))), apply_to = any(variable, record(unless(is_union))))
+          ^
+
+"Test_name.c", line 89: warning: unrecognized #pragma
+  #pragma clang attribute pop
+          ^
+
+"Test_name.c", line 91: warning: unrecognized #pragma
+  #pragma clang attribute push (__attribute__((abi_tag("a"))), apply_to = any(record(unless(is_union)), function))
+          ^
+
+"Test_name.c", line 93: warning: unrecognized #pragma
+  #pragma clang attribute pop
+          ^
+
+"Test_name.c", line 95: warning: unrecognized #pragma
+  #pragma clang attribute push (__attribute__((abi_tag("a"))), apply_to = any(record(unless(is_union)), function, variable))
+          ^
+
+"Test_name.c", line 97: warning: unrecognized #pragma
+  #pragma clang attribute pop
+          ^
+
+"Test_name.c", line 100: warning: unrecognized #pragma
+  #pragma clang attribute push (__attribute__((abi_tag("a"))), apply_to = any(record(unless(is_union)), function, variable, enum, enum_constant))
+          ^
+
+"Test_name.c", line 103: warning: unrecognized #pragma
+  #pragma clang attribute pop
+          ^
+
+"Test_name.c", line 105: warning: unrecognized #pragma
+  #pragma clang attribute push (__attribute__((abi_tag("a"))), apply_to = enum)
+          ^
+
+"Test_name.c", line 108: warning: unrecognized #pragma
+  #pragma clang attribute pop
+          ^
+
+"Test_name.c", line 112: warning: unrecognized #pragma
+  #pragma clang attribute push(__attribute__((abi_tag("b"))), apply_to = any(namespace, record(unless(is_union)), variable, function))
+          ^
+
+"Test_name.c", line 114: warning: unrecognized #pragma
+  #pragma clang attribute pop
+          ^
+
+"Test_name.c", line 116: warning: unrecognized #pragma
+  #pragma clang attribute push(__attribute__((abi_tag("b"))), apply_to = any(namespace))
+          ^
+
+"Test_name.c", line 118: warning: unrecognized #pragma
+  #pragma clang attribute pop
+          ^
+
+"Test_name.c", line 120: warning: unrecognized #pragma
+  #pragma clang attribute push(__attribute__((objc_subclassing_restricted)), apply_to = objc_interface)
+          ^
+
+"Test_name.c", line 122: warning: unrecognized #pragma
+  #pragma clang attribute pop
+          ^
+
+"Test_name.c", line 124: warning: unrecognized #pragma
+  #pragma clang attribute push(__attribute__((objc_subclassing_restricted)), apply_to = objc_interface)
+          ^
+
+"Test_name.c", line 126: warning: unrecognized #pragma
+  #pragma clang attribute pop
+          ^
+
+"Test_name.c", line 128: warning: unrecognized #pragma
+  #pragma clang attribute push(__attribute__((objc_subclassing_restricted)), apply_to = any(objc_interface, objc_protocol))
+          ^
+
+"Test_name.c", line 130: warning: unrecognized #pragma
+  #pragma clang attribute pop
+          ^
+
+"Test_name.c", line 132: warning: unrecognized #pragma
+  #pragma clang attribute push(__attribute__((objc_subclassing_restricted)), apply_to = any(objc_protocol))
+          ^
+
+"Test_name.c", line 136: warning: unrecognized #pragma
+  #pragma clang attribute pop
+          ^
+
+"Test_name.c", line 138: warning: unrecognized #pragma
+  #pragma clang attribute push(__attribute__((objc_subclassing_restricted)), apply_to = any(objc_interface, objc_protocol))
+          ^
+
+"Test_name.c", line 140: warning: unrecognized #pragma
+  #pragma clang attribute pop
+          ^
+
+"Test_name.c", line 142: warning: unrecognized #pragma
+  #pragma clang attribute push(__attribute__((objc_subclassing_restricted)), apply_to = any(objc_protocol))
+          ^
+
+"Test_name.c", line 146: warning: unrecognized #pragma
+  #pragma clang attribute pop
+          ^
+
+"Test_name.c", line 150: warning: unrecognized #pragma
+  #pragma clang attribute push (__attribute__((annotate("test"))), apply_to = objc_method)
+          ^
+
+"Test_name.c", line 152: warning: unrecognized #pragma
+  #pragma clang attribute pop
+          ^
+
+"Test_name.c", line 154: warning: unrecognized #pragma
+  #pragma clang attribute push (__attribute__((annotate("test"))), apply_to = any(objc_interface, objc_protocol))
+          ^
+
+"Test_name.c", line 156: warning: unrecognized #pragma
+  #pragma clang attribute pop
+          ^
+

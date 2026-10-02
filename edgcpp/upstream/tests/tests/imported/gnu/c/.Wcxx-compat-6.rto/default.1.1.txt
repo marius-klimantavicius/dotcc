@@ -1,0 +1,121 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 9: warning: enumerated type mixed with another type
+  enum E1 v1b = D;		/* { dg-warning "invalid in C\[+\]\[+\]" } */
+                ^
+
+"Test_name.c", line 10: warning: enumerated type mixed with another type
+  enum E1 v1c = 0;		/* { dg-warning "invalid in C\[+\]\[+\]" } */
+                ^
+
+"Test_name.c", line 12: warning: enumerated type mixed with another type
+  enum E1 v1e = (enum E2) 0;	/* { dg-warning "invalid in C\[+\]\[+\]" } */
+                ^
+
+"Test_name.c", line 19: warning: enumerated type mixed with another type
+    D,				/* { dg-warning "invalid in C\[+\]\[+\]" } */
+    ^
+
+"Test_name.c", line 20: warning: enumerated type mixed with another type
+    0,				/* { dg-warning "invalid in C\[+\]\[+\]" } */
+    ^
+
+"Test_name.c", line 22: warning: enumerated type mixed with another type
+    (enum E2) 0,			/* { dg-warning "invalid in C\[+\]\[+\]" } */
+    ^
+
+"Test_name.c", line 34: warning: enumerated type mixed with another type
+    { D },			/* { dg-warning "invalid in C\[+\]\[+\]" } */
+      ^
+
+"Test_name.c", line 35: warning: enumerated type mixed with another type
+    { 0 },			/* { dg-warning "invalid in C\[+\]\[+\]" } */
+      ^
+
+"Test_name.c", line 37: warning: enumerated type mixed with another type
+    { (enum E2) 0 },		/* { dg-warning "invalid in C\[+\]\[+\]" } */
+      ^
+
+"Test_name.c", line 44: warning: enumerated type mixed with another type
+    [ 4 ] = { .e1 = D },		/* { dg-warning "invalid in C\[+\]\[+\]" } */
+                    ^
+
+"Test_name.c", line 45: warning: enumerated type mixed with another type
+    [ 3 ] = { .e1 = 0 },		/* { dg-warning "invalid in C\[+\]\[+\]" } */
+                    ^
+
+"Test_name.c", line 47: warning: enumerated type mixed with another type
+    [ 1 ] = { .e1 = (enum E2) 0 }, /* { dg-warning "invalid in C\[+\]\[+\]" } */
+                    ^
+
+"Test_name.c", line 59: warning: enumerated type mixed with another type
+    { D },			/* { dg-warning "invalid in C\[+\]\[+\]" } */
+      ^
+
+"Test_name.c", line 60: warning: enumerated type mixed with another type
+    { 0 },			/* { dg-warning "invalid in C\[+\]\[+\]" } */
+      ^
+
+"Test_name.c", line 62: warning: enumerated type mixed with another type
+    { (enum E2) 0 },		/* { dg-warning "invalid in C\[+\]\[+\]" } */
+      ^
+
+"Test_name.c", line 69: warning: enumerated type mixed with another type
+    [ 4 ] = { .e1 = D },		/* { dg-warning "invalid in C\[+\]\[+\]" } */
+                    ^
+
+"Test_name.c", line 70: warning: enumerated type mixed with another type
+    [ 3 ] = { .e1 = 0 },		/* { dg-warning "invalid in C\[+\]\[+\]" } */
+                    ^
+
+"Test_name.c", line 72: warning: enumerated type mixed with another type
+    [ 1 ] = { .e1 = (enum E2) 0 }, /* { dg-warning "invalid in C\[+\]\[+\]" } */
+                    ^
+
+"Test_name.c", line 87: warning: expression has no effect
+      (0, e1)
+       ^
+
+"Test_name.c", line 81: warning: enumerated type mixed with another type
+      e2,				/* { dg-warning "invalid in C\[+\]\[+\]" } */
+      ^
+
+"Test_name.c", line 83: warning: enumerated type mixed with another type
+      v2a,			/* { dg-warning "invalid in C\[+\]\[+\]" } */
+      ^
+
+"Test_name.c", line 98: warning: expression has no effect
+      { (0, e1) }
+         ^
+
+"Test_name.c", line 92: warning: enumerated type mixed with another type
+      { e2 },			/* { dg-warning "invalid in C\[+\]\[+\]" } */
+        ^
+
+"Test_name.c", line 94: warning: enumerated type mixed with another type
+      { v2a },			/* { dg-warning "invalid in C\[+\]\[+\]" } */
+        ^
+
+"Test_name.c", line 109: warning: expression has no effect
+      { (0, e1) }
+         ^
+
+"Test_name.c", line 103: warning: enumerated type mixed with another type
+      { e2 },			/* { dg-warning "invalid in C\[+\]\[+\]" } */
+        ^
+
+"Test_name.c", line 105: warning: enumerated type mixed with another type
+      { v2a },			/* { dg-warning "invalid in C\[+\]\[+\]" } */
+        ^
+
+"Test_name.c", line 79: warning: variable "va1" was declared but never referenced
+    enum E1 va1[] = {
+            ^
+
+"Test_name.c", line 90: warning: variable "va2" was declared but never referenced
+    struct s1 va2[] = {
+              ^
+
+"Test_name.c", line 101: warning: variable "va3" was declared but never referenced
+    struct s2 va3[] = {
+              ^
+

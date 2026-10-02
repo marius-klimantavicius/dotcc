@@ -1,0 +1,11 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 18: error: function "lambda [](int)->int" cannot be called with the given argument list
+            object type is: const lambda [](int)->int
+  	  return target();
+  	         ^
+"Test_name.c", line 31: note: number of parameters of function "lambda [](int)->int" does not match the call
+  		    [=](int val){ return val * i; });
+  		       ^
+          detected during instantiation of "decltype(auto) pipeline(S, T) [with S=lambda []()->int, T=lambda [](int)->int]" at line 31
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"./dfp/c23-float-dfp-7.c", line 18: error: identifier "_Decimal32" is undefined
+  volatile _Decimal32 d32 = 
+           ^
+
+"./dfp/c23-float-dfp-7.c", line 18: error: function call is not allowed in a constant expression
+                           (__builtin_nansd32 (""))
+                            ^
+
+"./dfp/c23-float-dfp-7.c", line 19: error: identifier "_Decimal64" is undefined
+  volatile _Decimal64 d64 = 
+           ^
+
+"./dfp/c23-float-dfp-7.c", line 19: error: function call is not allowed in a constant expression
+                           (__builtin_nansd64 (""))
+                            ^
+
+"./dfp/c23-float-dfp-7.c", line 20: error: identifier "_Decimal128" is undefined
+  volatile _Decimal128 d128 = 
+           ^
+
+"./dfp/c23-float-dfp-7.c", line 20: error: function call is not allowed in a constant expression
+                             (__builtin_nansd128 (""))
+                              ^
+
+"./dfp/c23-float-dfp-7.c", line 28: error: identifier "_Decimal32" is undefined
+                              , _Decimal32 : 0);
+                                ^
+
+"./dfp/c23-float-dfp-7.c", line 29: error: function call requires a real floating-point argument
+    if (!__builtin_isnan (
+                         ^
+
+"./dfp/c23-float-dfp-7.c", line 31: error: function call requires a real floating-point argument
+    if (!__builtin_isnan (d32))
+                         ^
+
+"./dfp/c23-float-dfp-7.c", line 33: error: identifier "_Decimal64" is undefined
+                              , _Decimal64 : 0);
+                                ^
+
+"./dfp/c23-float-dfp-7.c", line 34: error: function call requires a real floating-point argument
+    if (!__builtin_isnan (
+                         ^
+
+"./dfp/c23-float-dfp-7.c", line 36: error: function call requires a real floating-point argument
+    if (!__builtin_isnan (d64))
+                         ^
+
+"./dfp/c23-float-dfp-7.c", line 38: error: identifier "_Decimal128" is undefined
+                               , _Decimal128 : 0);
+                                 ^
+
+"./dfp/c23-float-dfp-7.c", line 39: error: function call requires a real floating-point argument
+    if (!__builtin_isnan (
+                         ^
+
+"./dfp/c23-float-dfp-7.c", line 41: error: function call requires a real floating-point argument
+    if (!__builtin_isnan (d128))
+                         ^
+
+15 errors detected in the compilation of "Test_name.c".

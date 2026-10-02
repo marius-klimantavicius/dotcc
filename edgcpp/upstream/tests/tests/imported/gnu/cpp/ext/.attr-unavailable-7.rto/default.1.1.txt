@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 14: error: variable "f_n" was declared declared unavailable
+    f_n = 1;    // { dg-error "'f_n' is unavailable" }
+    ^
+"Test_name.c", line 13: note: because of an "unavailable" attribute
+    int& f_n __attribute__((unavailable)) = f_nn;
+                            ^
+
+"Test_name.c", line 19: error: variable "g_n" was declared declared unavailable
+    g_n = 1;    // { dg-error "'g_n' is unavailable" }
+    ^
+"Test_name.c", line 8: note: because of an "unavailable" attribute
+  int& g_n __attribute__((unavailable)) = g_nn;
+                          ^
+
+2 errors detected in the compilation of "Test_name.c".

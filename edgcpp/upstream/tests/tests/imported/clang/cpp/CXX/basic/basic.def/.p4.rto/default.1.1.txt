@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 5: warning: extern inline function "f" was referenced but not defined
+  inline int f(); // expected-warning {{inline function 'f' is not defined}}
+             ^
+
+"Test_name.c", line 6: error: extern inline variable "n" was referenced but not defined
+  extern inline int n; // expected-error {{inline variable 'n' is not defined}}
+                    ^
+
+1 error detected in the compilation of "Test_name.c".

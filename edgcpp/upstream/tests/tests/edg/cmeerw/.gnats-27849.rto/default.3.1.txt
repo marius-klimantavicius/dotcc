@@ -1,0 +1,78 @@
+fe_only -DTEST_NUMBER=3 -w --ms_c++20 --microsoft_version 1928 --target linux_armv7 -DERROR Test_name.c
+"Test_name.c", line 35: error: identifier "__builtin_clz" is undefined
+    __builtin_clz(0);
+    ^
+
+"Test_name.c", line 36: error: identifier "__builtin_clzl" is undefined
+    __builtin_clzl(0);
+    ^
+
+"Test_name.c", line 37: error: identifier "__builtin_clzll" is undefined
+    __builtin_clzll(0);
+    ^
+
+"Test_name.c", line 38: error: identifier "__builtin_ctz" is undefined
+    __builtin_ctz(0);
+    ^
+
+"Test_name.c", line 39: error: identifier "__builtin_ctzl" is undefined
+    __builtin_ctzl(0);
+    ^
+
+"Test_name.c", line 40: error: identifier "__builtin_ctzll" is undefined
+    __builtin_ctzll(0);
+    ^
+
+"Test_name.c", line 41: error: identifier "__builtin_huge_vall" is undefined
+    __builtin_huge_vall();
+    ^
+
+"Test_name.c", line 42: error: identifier "__builtin_memchr" is undefined
+    __builtin_memchr("", 0, 0);
+    ^
+
+"Test_name.c", line 43: error: identifier "__builtin_nanl" is undefined
+    __builtin_nanl("");
+    ^
+
+"Test_name.c", line 44: error: identifier "__builtin_nansl" is undefined
+    __builtin_nansl("");
+    ^
+
+"Test_name.c", line 45: error: identifier "__builtin_popcount" is undefined
+    __builtin_popcount(0);
+    ^
+
+"Test_name.c", line 46: error: identifier "__builtin_popcountl" is undefined
+    __builtin_popcountl(0);
+    ^
+
+"Test_name.c", line 47: error: identifier "__builtin_popcountll" is undefined
+    __builtin_popcountll(0);
+    ^
+
+"Test_name.c", line 48: error: identifier "__builtin_strchr" is undefined
+    __builtin_strchr("", 0);
+    ^
+
+"Test_name.c", line 49: error: identifier "__builtin_strcmp" is undefined
+    __builtin_strcmp("", "");
+    ^
+
+"Test_name.c", line 50: error: identifier "__builtin_strncmp" is undefined
+    __builtin_strncmp("", "", 0);
+    ^
+
+"Test_name.c", line 51: error: identifier "__builtin_wcschr" is undefined
+    __builtin_wcschr(L"", L' ');
+    ^
+
+"Test_name.c", line 52: error: identifier "__builtin_wcscmp" is undefined
+    __builtin_wcscmp(L"", L"");
+    ^
+
+"Test_name.c", line 53: error: identifier "__builtin_wcsncmp" is undefined
+    __builtin_wcsncmp(L"", L"", 0);
+    ^
+
+19 errors detected in the compilation of "Test_name.c".

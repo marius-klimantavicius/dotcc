@@ -1,0 +1,58 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 13: error: argument of type "int" is incompatible with parameter of type "const char *"
+    return callee_1 (first, second, third); // { dg-error "invalid conversion from 'int' to 'const char\\*'" }
+                            ^
+
+"Test_name.c", line 33: error: argument of type "int" is incompatible with parameter of type "const char *"
+    return callee_2 (first, second, third); // { dg-error "invalid conversion from 'int' to 'const char\\*'" }
+                            ^
+
+"Test_name.c", line 56: error: argument of type "int" is incompatible with parameter of type "const char *"
+    return callee_3 (first, second, third); // { dg-error "invalid conversion from 'int' to 'const char\\*'" }
+                            ^
+
+"Test_name.c", line 76: error: argument of type "int" is incompatible with parameter of type "const char *"
+    return s4::member_1 (first, second, third); // { dg-error "invalid conversion from 'int' to 'const char\\*'" }
+                                ^
+
+"Test_name.c", line 96: error: argument of type "int" is incompatible with parameter of type "const char *"
+    return inst.member_1 (first, second, third); // { dg-error "invalid conversion from 'int' to 'const char\\*'" }
+                                 ^
+
+"Test_name.c", line 115: error: argument of type "int" is incompatible with parameter of type "const char *"
+    return ptr->member_1 (first, second, third); // { dg-error "invalid conversion from 'int' to 'const char\\*'" }
+                                 ^
+
+"Test_name.c", line 135: error: no instance of overloaded function "test_7" matches the argument list
+            argument types are: (int, int, float)
+    return test_7 <const char *> (first, second, third); // { dg-error "invalid conversion from 'int' to 'const char\\*'" }
+           ^
+"Test_name.c", line 131: note: function template "test_7(int, T, float)" does not match because argument #2 does not match parameter
+  int test_7 (int one, T two, float three);
+      ^
+
+"Test_name.c", line 155: error: argument of type "int" is incompatible with parameter of type "const char *"
+    return s8 <const char *>::member_1 (first, second, third); // { dg-error "invalid conversion from 'int' to 'const char\\*'" }
+                                               ^
+
+"Test_name.c", line 176: error: argument of type "int" is incompatible with parameter of type "const char *"
+    return inst.member_1 (first, second, third); // { dg-error "invalid conversion from 'int' to 'const char\\*'" }
+                                 ^
+
+"Test_name.c", line 195: error: argument of type "int" is incompatible with parameter of type "int (*)(int, int)"
+    return callee_10 (first, second, third); // { dg-error "invalid conversion from 'int' to 'int \\(\\*\\)\\(int, int\\)'" }
+                             ^
+
+"Test_name.c", line 215: error: argument of type "int" is incompatible with parameter of type "int (*)(int, int)"
+    return callee_11 (first, second, third); // { dg-error "invalid conversion from 'int' to 'int \\(\\*\\)\\(int, int\\)'" }
+                             ^
+
+"Test_name.c", line 237: error: a reference of type "s12 &" (not const-qualified) cannot be initialized with a value of type "int"
+    return callee_12 (first, second, third); // { dg-error "invalid initialization of reference of " }
+                             ^
+
+"Test_name.c", line 257: error: cannot convert to incomplete class "s13"
+    return callee_13 (first, second, third); // { dg-error "has incomplete type" }
+                             ^
+
+13 errors detected in the compilation of "Test_name.c".

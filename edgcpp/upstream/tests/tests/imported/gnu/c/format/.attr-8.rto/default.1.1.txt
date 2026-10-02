@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"./format/attr-8.c", line 27: error: format argument does not have string type
+  __attribute__ ((format (printf, 1, 2)))
+                                  ^
+
+"./format/attr-8.c", line 30: error: format argument does not have string type
+  __attribute__ ((format (printf, 1, 2)))
+                                  ^
+
+"./format/attr-8.c", line 33: error: format argument does not have string type
+  __attribute__ ((format (printf, 1, 2)))
+                                  ^
+
+3 errors detected in the compilation of "Test_name.c".

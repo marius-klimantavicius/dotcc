@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=3 -w --c++20 --microsoft_version 1936 --pack_alignment 4 --target linux_armv7 Test_name.c

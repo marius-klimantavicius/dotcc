@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 6: error: function template "f0" has already been defined (previous definition at line 5)
+  template<class U> void f0(U) { } // expected-error{{redefinition}}
+                         ^
+
+"Test_name.c", line 9: error: function template "f0<I>()" has already been defined (previous definition at line 8)
+  template<int> void f0() { } // expected-error{{redefinition}}
+                     ^
+
+"Test_name.c", line 16: error: function template "f0<X>()" has already been defined (previous definition at line 13)
+    void f0() { } // expected-error{{redefinition}}
+         ^
+
+"Test_name.c", line 24: error: function template "f0(const T &)" has already been defined (previous definition at line 21)
+    typename MetaFun<U*>::type f0(const U&) { while (1) {} } // expected-error{{redefinition}}
+                               ^
+
+4 errors detected in the compilation of "Test_name.c".

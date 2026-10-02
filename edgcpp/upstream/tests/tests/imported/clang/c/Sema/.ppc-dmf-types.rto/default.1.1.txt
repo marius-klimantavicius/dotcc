@@ -1,0 +1,118 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 16: error: identifier "__dmr1024" is undefined
+  typedef __dmr1024 dmr_t;
+          ^
+
+"Test_name.c", line 17: error: identifier "__dmr2048" is undefined
+  typedef __dmr2048 dmrp_t;
+          ^
+
+"Test_name.c", line 56: warning: type qualifier on return type is meaningless
+  const dmr_t testDmrRet4(int *ptr) { // expected-error {{invalid use of PPC MMA type}}
+  ^
+
+"Test_name.c", line 66: warning: type qualifier on return type is meaningless
+  const dmrp_t testDmrPRet4(int *ptr) { // expected-error {{invalid use of PPC MMA type}}
+  ^
+
+"Test_name.c", line 101: error: identifier "__dmr1024" is undefined
+    __dmr1024 *vdmrp = (__dmr1024 *)ptr;
+    ^
+
+"Test_name.c", line 101: error: identifier "vdmrp" is undefined
+    __dmr1024 *vdmrp = (__dmr1024 *)ptr;
+               ^
+
+"Test_name.c", line 101: error: expected an expression
+    __dmr1024 *vdmrp = (__dmr1024 *)ptr;
+                                   ^
+
+"Test_name.c", line 101: error: expected a ";"
+    __dmr1024 *vdmrp = (__dmr1024 *)ptr;
+                                    ^
+
+"Test_name.c", line 102: error: expected a ";"
+    __dmr1024 vdmr1 = *(vdmrp + 0);
+              ^
+
+"Test_name.c", line 103: error: expected a ";"
+    __dmr1024 vdmr2 = *(vdmrp + 1);
+              ^
+
+"Test_name.c", line 104: error: expected a ";"
+    __dmr1024 vdmr3 = *(vdmrp + 2);
+              ^
+
+"Test_name.c", line 105: error: identifier "vdmr1" is undefined
+    if (vdmr1) // expected-error {{statement requires expression of scalar type ('__dmr1024' invalid)}}
+        ^
+
+"Test_name.c", line 107: error: identifier "vdmr2" is undefined
+    if (!vdmr2) // expected-error {{invalid argument type '__dmr1024' to unary expression}}
+         ^
+
+"Test_name.c", line 108: error: identifier "vdmr3" is undefined
+      *(vdmrp + 11) = vdmr3;
+                      ^
+
+"Test_name.c", line 109: error: identifier "vdmr1" is undefined
+    int c1 = vdmr1 && vdmr2; // expected-error {{invalid operands to binary expression ('__dmr1024' and '__dmr1024')}}
+             ^
+
+"Test_name.c", line 109: error: identifier "vdmr2" is undefined
+    int c1 = vdmr1 && vdmr2; // expected-error {{invalid operands to binary expression ('__dmr1024' and '__dmr1024')}}
+                      ^
+
+"Test_name.c", line 110: error: identifier "vdmr3" is undefined
+    int c2 = vdmr2 == vdmr3; // expected-error {{invalid operands to binary expression ('__dmr1024' and '__dmr1024')}}
+                      ^
+
+"Test_name.c", line 116: error: identifier "__dmr1024" is undefined
+    __dmr1024 *vdmrp = (__dmr1024 *)ptr;
+    ^
+
+"Test_name.c", line 116: error: identifier "vdmrp" is undefined
+    __dmr1024 *vdmrp = (__dmr1024 *)ptr;
+               ^
+
+"Test_name.c", line 116: error: expected an expression
+    __dmr1024 *vdmrp = (__dmr1024 *)ptr;
+                                   ^
+
+"Test_name.c", line 116: error: expected a ";"
+    __dmr1024 *vdmrp = (__dmr1024 *)ptr;
+                                    ^
+
+"Test_name.c", line 117: error: expected a ";"
+    __dmr1024 vdmr1 = *(vdmrp + 0);
+              ^
+
+"Test_name.c", line 118: error: expected a ";"
+    __dmr1024 vdmr2 = *(vdmrp + 1);
+              ^
+
+"Test_name.c", line 119: error: expected a ";"
+    __dmr1024 vdmr3 = *(vdmrp + 2);
+              ^
+
+"Test_name.c", line 120: error: identifier "vdmr1" is undefined
+    vdmr1 = -vdmr1;        // expected-error {{invalid argument type '__dmr1024' to unary expression}}
+    ^
+
+"Test_name.c", line 121: error: identifier "vdmr2" is undefined
+    vdmr2 = vdmr1 + vdmr3; // expected-error {{invalid operands to binary expression ('__dmr1024' and '__dmr1024')}}
+    ^
+
+"Test_name.c", line 121: error: identifier "vdmr3" is undefined
+    vdmr2 = vdmr1 + vdmr3; // expected-error {{invalid operands to binary expression ('__dmr1024' and '__dmr1024')}}
+                    ^
+
+"Test_name.c", line 130: warning: this declaration has no storage class or type specifier
+  vector unsigned char testDmrOperators3(int *ptr) {
+  ^
+
+"Test_name.c", line 130: error: expected a ";"
+  vector unsigned char testDmrOperators3(int *ptr) {
+         ^
+
+26 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --microsoft Test_name.c
+"Test_name.c", line 24: warning: "B::B(B &)", required for copy that was eliminated, is not callable because reference parameter cannot be bound to rvalue
+    return f();  // Triggered unbounded recursion (and eventual abort) in
+           ^
+

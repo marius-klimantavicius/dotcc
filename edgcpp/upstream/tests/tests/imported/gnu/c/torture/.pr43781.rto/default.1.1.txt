@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 32: warning: expression has no effect
+    for (g_22.f3 = 0; g_22.f3 <= 0; g_22.f3)
+                                    ^
+
+"Test_name.c", line 39: warning: expression has no effect
+              for (m; m; m++)
+                   ^
+
+"Test_name.c", line 39: warning: variable "m" is used before its value is set
+              for (m; m; m++)
+                   ^
+
+"Test_name.c", line 40: warning: expression has no effect
+                l_453[i][j][k][l][m];
+                ^
+

@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp0x/range-for8.C", line 10: error: type definition is not allowed
+      for (struct S { } *x : { (S*)0, (S*)0 } )
+           ^
+
+"./cpp0x/range-for8.C", line 10: error: identifier "S" is undefined
+      for (struct S { } *x : { (S*)0, (S*)0 } )
+                                ^
+
+"./cpp0x/range-for8.C", line 10: error: expected an expression
+      for (struct S { } *x : { (S*)0, (S*)0 } )
+                                  ^
+
+"./cpp0x/range-for8.C", line 10: error: expected a ","
+      for (struct S { } *x : { (S*)0, (S*)0 } )
+                                   ^
+
+"./cpp0x/range-for8.C", line 10: error: expected an expression
+      for (struct S { } *x : { (S*)0, (S*)0 } )
+                                         ^
+
+"./cpp0x/range-for8.C", line 10: error: expected a ","
+      for (struct S { } *x : { (S*)0, (S*)0 } )
+                                          ^
+
+"./cpp0x/range-for8.C", line 10: error: too many initializer values
+      for (struct S { } *x : { (S*)0, (S*)0 } )
+                                      ^
+
+"./cpp0x/range-for8.C", line 13: error: type definition is not allowed
+      for (struct S { } x : { S(), S() } )
+           ^
+
+"./cpp0x/range-for8.C", line 13: error: identifier "S" is undefined
+      for (struct S { } x : { S(), S() } )
+                              ^
+
+"./cpp0x/range-for8.C", line 13: error: too many initializer values
+      for (struct S { } x : { S(), S() } )
+                                   ^
+
+10 errors detected in the compilation of "Test_name.c".

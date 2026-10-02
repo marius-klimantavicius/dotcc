@@ -1,0 +1,101 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 6: error: expression must have integral or unscoped enum type
+  constexpr bool CausesRecoveryExpr = "test" + 1.0f;
+                                               ^
+
+"Test_name.c", line 21: error: no instance of function template "NoViableCands1" matches the argument list
+    NoViableCands1<int>();
+    ^
+"Test_name.c", line 12: note: substituting "<int>" for function template "NoViableCands1" failed constraints
+  void NoViableCands1(){} // #NVC1
+       ^
+"Test_name.c", line 11: note: atomic constraint must have type bool
+  template<typename T> requires CausesRecoveryExpr // #NVC1REQ
+                                ^
+
+"Test_name.c", line 27: error: no instance of function template "NoViableCands2" matches the argument list
+    NoViableCands2<int>();
+    ^
+"Test_name.c", line 15: note: substituting "<int>" for function template "NoViableCands2" failed constraints
+  void NoViableCands2(){} // #NVC2
+       ^
+"Test_name.c", line 14: note: concept "ReferencesCRE" not satisfied for "<int>"
+  template<typename T> requires ReferencesCRE<T> // #NVC2REQ
+                                ^
+"Test_name.c", line 9: note: atomic constraint must have type bool
+  concept ReferencesCRE = CausesRecoveryExpr; // #subst1
+                          ^
+
+"Test_name.c", line 31: error: no instance of function template "NoViableCands3" matches the argument list
+    NoViableCands3<int>();
+    ^
+"Test_name.c", line 18: note: substituting "<int>" for function template "NoViableCands3" failed constraints
+  void NoViableCands3(){} // #NVC3
+       ^
+"Test_name.c", line 17: note: concept "ReferencesCRE" not satisfied for "<int>"
+  template<ReferencesCRE T> // #NVC3REQ
+           ^
+"Test_name.c", line 9: note: atomic constraint must have type bool
+  concept ReferencesCRE = CausesRecoveryExpr; // #subst1
+                          ^
+
+"Test_name.c", line 93: error: no instance of overloaded function "OtherBadNoViableCands1" matches the argument list
+    OtherBadNoViableCands1<int>();
+    ^
+"Test_name.c", line 79: note: substituting "<int>" for function template "OtherBadNoViableCands1<T>()" failed constraints
+  void OtherBadNoViableCands1(){} // #OBNVC1_ALT
+       ^
+"Test_name.c", line 78: note: atomic constraint evaluates to false
+  template<typename T> requires false // #OBNVC1REQ_ALT
+                                ^
+"Test_name.c", line 76: note: substituting "<int>" for function template "OtherBadNoViableCands1<T>()" failed constraints
+  void OtherBadNoViableCands1(){} // #OBNVC1
+       ^
+"Test_name.c", line 75: note: atomic constraint must have type bool
+  template<typename T> requires CausesRecoveryExpr // #OBNVC1REQ
+                                ^
+
+"Test_name.c", line 99: error: no instance of overloaded function "OtherBadNoViableCands2" matches the argument list
+    OtherBadNoViableCands2<int>();
+    ^
+"Test_name.c", line 85: note: substituting "<int>" for function template "OtherBadNoViableCands2<T>()" failed constraints
+  void OtherBadNoViableCands2(){} // #OBNVC2_ALT
+       ^
+"Test_name.c", line 84: note: atomic constraint evaluates to false
+  template<typename T> requires false// #OBNVC2REQ_ALT
+                                ^
+"Test_name.c", line 82: note: substituting "<int>" for function template "OtherBadNoViableCands2<T>()" failed constraints
+  void OtherBadNoViableCands2(){} // #OBNVC2
+       ^
+"Test_name.c", line 81: note: concept "ReferencesCRE" not satisfied for "<int>"
+  template<typename T> requires ReferencesCRE<T> // #OBNVC2REQ
+                                ^
+"Test_name.c", line 9: note: atomic constraint must have type bool
+  concept ReferencesCRE = CausesRecoveryExpr; // #subst1
+                          ^
+
+"Test_name.c", line 106: error: no instance of overloaded function "OtherBadNoViableCands3" matches the argument list
+    OtherBadNoViableCands3<int>();
+    ^
+"Test_name.c", line 90: note: substituting "<int>" for function template "OtherBadNoViableCands3<T>()" failed constraints
+  void OtherBadNoViableCands3(){} // #OBNVC3_ALT
+       ^
+"Test_name.c", line 89: note: atomic constraint evaluates to false
+  template<typename T> requires false // #OBNVC3REQ_ALT
+                                ^
+"Test_name.c", line 88: note: substituting "<int>" for function template "OtherBadNoViableCands3<T>()" failed constraints
+  void OtherBadNoViableCands3(){} // #OBNVC3
+       ^
+"Test_name.c", line 87: note: concept "ReferencesCRE" not satisfied for "<int>"
+  template<ReferencesCRE T> // #OBNVC3REQ
+           ^
+"Test_name.c", line 9: note: atomic constraint must have type bool
+  concept ReferencesCRE = CausesRecoveryExpr; // #subst1
+                          ^
+
+"Test_name.c", line 213: error: incomplete type "GH58548::formatter<int, int>" is not allowed
+    formatter<decltype(arg), int> ctx; // expected-error {{implicit instantiation of undefined template}}
+                                  ^
+          detected during instantiation of "int GH58548::handle_replacement_field(Ctx) [with Ctx=int]" at line 217
+
+8 errors detected in the compilation of "Test_name.c".

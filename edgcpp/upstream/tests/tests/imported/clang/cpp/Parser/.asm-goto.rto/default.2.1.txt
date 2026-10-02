@@ -1,0 +1,82 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 52: warning: variable "e" is used before its value is set
+    asm ("mov %[e], %[e]" : : [e] "rm" (*e)::a)
+                                         ^
+
+"Test_name.c", line 52: error: expected a ")"
+    asm ("mov %[e], %[e]" : : [e] "rm" (*e)::a)
+                                           ^
+
+"Test_name.c", line 54: error: expected a ";"
+    asm goto ("decl %0;" :: "m"(x) : "memory" : );
+    ^
+
+"Test_name.c", line 56: warning: variable "x" is used before its value is set
+    asm goto ("decl %0;" :: "m"(x) : "memory" );
+                                ^
+
+"Test_name.c", line 56: error: expected a ":"
+    asm goto ("decl %0;" :: "m"(x) : "memory" );
+                                              ^
+
+"Test_name.c", line 62: warning: variable "cond" is used before its value is set
+    asm goto ("testl %0, %0; jne %l3;" :: "r"(cond)::label_true, loop);
+                                              ^
+
+"Test_name.c", line 62: error: operand number for "%l" does not refer to a valid label argument
+    asm goto ("testl %0, %0; jne %l3;" :: "r"(cond)::label_true, loop);
+    ^
+
+"Test_name.c", line 64: error: invalid symbolic operand name "b"
+    asm goto ("decl %0; jnz %l[b]" :: "m"(x) : "memory" : a);
+    ^
+
+"Test_name.c", line 58: error: label "x" was referenced but not defined
+    asm goto ("decl %0;" :: "m"(x) : "memory" :x);
+                                               ^
+
+"Test_name.c", line 60: error: label "b" was referenced but not defined
+    asm goto ("decl %0;" :: "m"(x) : "memory" :b);
+                                               ^
+
+"Test_name.c", line 74: warning: variable "e" is used before its value is set
+    asm ("mov %[e], %[e]" : "=r" (y) : [e] "rm" (*e), "r" (y) :: a)
+                                                  ^
+
+"Test_name.c", line 74: error: expected a ")"
+    asm ("mov %[e], %[e]" : "=r" (y) : [e] "rm" (*e), "r" (y) :: a)
+                                                              ^
+
+"Test_name.c", line 76: error: expected a ";"
+    asm goto ("decl %0;" : "=r" (y) : "m" (x), "r" (y) : "memory" :);
+    ^
+
+"Test_name.c", line 78: warning: variable "x" is used before its value is set
+    asm goto ("decl %0;" : "=r" (y) : "m" (x), "r" (y) : "memory");
+                                           ^
+
+"Test_name.c", line 78: error: expected a ":"
+    asm goto ("decl %0;" : "=r" (y) : "m" (x), "r" (y) : "memory");
+                                                                 ^
+
+"Test_name.c", line 84: warning: variable "cond" is used before its value is set
+    asm goto ("testl %0, %0; jne %l5;" : "=r" (y) : "r" (cond), "r" (y) :: label_true, loop);
+                                                         ^
+
+"Test_name.c", line 84: error: operand number for "%l" does not refer to a valid label argument
+    asm goto ("testl %0, %0; jne %l5;" : "=r" (y) : "r" (cond), "r" (y) :: label_true, loop);
+    ^
+
+"Test_name.c", line 86: error: invalid symbolic operand name "b"
+    asm goto ("decl %0; jnz %l[b]" : "=r" (y) : "m" (x), "r" (y) : "memory" : a);
+    ^
+
+"Test_name.c", line 80: error: label "x" was referenced but not defined
+    asm goto ("decl %0;" : "=r" (y) : "m" (x), "r" (y) : "memory" : x);
+                                                                    ^
+
+"Test_name.c", line 82: error: label "b" was referenced but not defined
+    asm goto ("decl %0;" : "=r" (y) : "m" (x), "r" (y) : "memory" : b);
+                                                                    ^
+
+14 errors detected in the compilation of "Test_name.c".

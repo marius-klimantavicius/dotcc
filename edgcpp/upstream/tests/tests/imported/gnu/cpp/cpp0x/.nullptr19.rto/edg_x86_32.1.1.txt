@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 15: error: more than one instance of overloaded function "k" matches the argument list:
+            function "k(char *)" (declared at line 10)
+            function "k(nullptr_t)" (declared at line 11)
+            argument types are: (int)
+    k(0); /* { dg-error "is ambiguous" } */
+    ^
+
+"Test_name.c", line 16: error: more than one instance of overloaded function "k" matches the argument list:
+            function "k(char *)" (declared at line 10)
+            function "k(nullptr_t)" (declared at line 11)
+            argument types are: (int)
+    k(__null); /* { dg-error "is ambiguous" } */
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

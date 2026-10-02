@@ -1,0 +1,31 @@
+fe_only -DTEST_NUMBER=1 --microsoft Test_name.c
+"Test_name.c", line 16: warning: tag kind of class or struct is incompatible with declaration of class "S" (declared at line 14)
+  __interface S;
+              ^
+
+"Test_name.c", line 20: warning: tag kind of class or struct is incompatible with declaration of __interface "I" (declared at line 19)
+  struct I;
+         ^
+
+"Test_name.c", line 23: warning: tag kind of class or struct is incompatible with declaration of class "C" (declared at line 22)
+  __interface C;
+              ^
+
+"Test_name.c", line 26: error: tag kind of class or struct is incompatible with declaration of union "U" (declared at line 25)
+  __interface U;
+              ^
+
+"Test_name.c", line 30: warning: tag kind of class or struct is incompatible with declaration of __interface "SD" (declared at line 29)
+  __interface SD {};
+              ^
+
+"Test_name.c", line 33: warning: tag kind of class or struct is incompatible with declaration of __interface "ID" (declared at line 32)
+  struct ID {};
+         ^
+
+"Test_name.c", line 38: error: object of abstract class type "CI" is not allowed:
+            "CI" is an interface type
+  __interface CI itf;
+                 ^
+
+2 errors detected in the compilation of "Test_name.c".

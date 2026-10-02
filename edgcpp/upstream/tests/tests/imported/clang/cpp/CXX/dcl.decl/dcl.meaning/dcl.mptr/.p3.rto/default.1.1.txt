@@ -1,0 +1,27 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 21: error: a value of type "int *" cannot be used to initialize an entity of type "int A::*"
+    int A::*ip = &A::s; // expected-error {{cannot initialize a variable of type 'int A::*' with an rvalue of type 'int *'}}
+                 ^
+
+"Test_name.c", line 22: error: expression must have pointer-to-member type
+    a.*&A::s = 10; // expected-error{{right hand operand to .* has non-pointer-to-member type 'int *'}}
+       ^
+
+"Test_name.c", line 24: error: pointer to member of type "int &" is not allowed
+    a.*&A::i = 10; // expected-error{{cannot form a pointer-to-member to member 'i' of reference type 'int &'}}
+       ^
+
+"Test_name.c", line 27: error: pointer to member of type void is not allowed
+    void A::*p = 0; // expected-error{{'p' declared as a member pointer to void}}
+         ^
+
+"Test_name.c", line 27: warning: variable "p" was declared but never referenced
+    void A::*p = 0; // expected-error{{'p' declared as a member pointer to void}}
+             ^
+
+"Test_name.c", line 14: error: pointer to member of type "int &" is not allowed
+    t.*&T::i = 10; // expected-error{{cannot form a pointer-to-member to member 'i' of reference type 'int &'}}
+       ^
+          detected during instantiation of "void ft(T &) [with T=A]" at line 25
+
+5 errors detected in the compilation of "Test_name.c".

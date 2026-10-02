@@ -1,0 +1,38 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 7: error: too many initializer values
+    a2 = { 0 },                 // Initializer list for empty class
+           ^
+
+"Test_name.c", line 13: error: too many initializer values
+    b3 = { 0, 0 },              // Too many initializers
+              ^
+
+"Test_name.c", line 18: error: no suitable constructor exists to convert from "int" to "A"
+    c2 = { 0 },                 // Error?
+           ^
+
+"Test_name.c", line 19: error: no suitable constructor exists to convert from "int" to "A"
+    c3 = { 0, 0 },              // Too many initializers
+           ^
+
+"Test_name.c", line 19: error: too many initializer values
+    c3 = { 0, 0 },              // Too many initializers
+              ^
+
+"Test_name.c", line 25: error: no suitable constructor exists to convert from "int" to "A"
+    d3 = { 0, 0 },              // Error?
+              ^
+
+"Test_name.c", line 26: error: no suitable constructor exists to convert from "int" to "A"
+    d4 = { 0, 0, 0 },           // Error?
+              ^
+
+"Test_name.c", line 27: error: no suitable constructor exists to convert from "int" to "A"
+    d5 = { 0, 0, 0, 0 },        // Too many initializers
+              ^
+
+"Test_name.c", line 27: error: too many initializer values
+    d5 = { 0, 0, 0, 0 },        // Too many initializers
+                    ^
+
+9 errors detected in the compilation of "Test_name.c".

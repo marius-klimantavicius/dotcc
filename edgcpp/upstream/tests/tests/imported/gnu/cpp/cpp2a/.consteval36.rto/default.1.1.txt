@@ -1,0 +1,164 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 11: error: call to consteval function "id" did not produce a valid constant expression
+    1 ? 1 : ((1 ? 1 : 1), id (i)); // { dg-error "call to consteval function|'i' is not a constant expression" }
+                             ^
+"Test_name.c", line 11: note: the value of parameter "i" (declared at line 9) cannot be used as a constant
+    1 ? 1 : ((1 ? 1 : 1), id (i)); // { dg-error "call to consteval function|'i' is not a constant expression" }
+                              ^
+
+"Test_name.c", line 11: warning: expression has no effect
+    1 ? 1 : ((1 ? 1 : 1), id (i)); // { dg-error "call to consteval function|'i' is not a constant expression" }
+             ^
+
+"Test_name.c", line 12: error: call to consteval function "id" did not produce a valid constant expression
+    1 ? 1 : ((1 ? 1 : 1), id (i), 1); // { dg-error "call to consteval function|'i' is not a constant expression" }
+                             ^
+"Test_name.c", line 12: note: the value of parameter "i" (declared at line 9) cannot be used as a constant
+    1 ? 1 : ((1 ? 1 : 1), id (i), 1); // { dg-error "call to consteval function|'i' is not a constant expression" }
+                              ^
+
+"Test_name.c", line 12: warning: expression has no effect
+    1 ? 1 : ((1 ? 1 : 1), id (i), 1); // { dg-error "call to consteval function|'i' is not a constant expression" }
+             ^
+
+"Test_name.c", line 13: error: call to consteval function "id" did not produce a valid constant expression
+    1 ? 1 : ((i ? 1 : 1), id (i), 1); // { dg-error "call to consteval function|'i' is not a constant expression" }
+                             ^
+"Test_name.c", line 13: note: the value of parameter "i" (declared at line 9) cannot be used as a constant
+    1 ? 1 : ((i ? 1 : 1), id (i), 1); // { dg-error "call to consteval function|'i' is not a constant expression" }
+                              ^
+
+"Test_name.c", line 13: warning: expression has no effect
+    1 ? 1 : ((i ? 1 : 1), id (i), 1); // { dg-error "call to consteval function|'i' is not a constant expression" }
+             ^
+
+"Test_name.c", line 14: error: call to consteval function "id" did not produce a valid constant expression
+    1 ? 1 : ((1 ? i : 1), id (i), 1); // { dg-error "call to consteval function|'i' is not a constant expression" }
+                             ^
+"Test_name.c", line 14: note: the value of parameter "i" (declared at line 9) cannot be used as a constant
+    1 ? 1 : ((1 ? i : 1), id (i), 1); // { dg-error "call to consteval function|'i' is not a constant expression" }
+                              ^
+
+"Test_name.c", line 14: warning: expression has no effect
+    1 ? 1 : ((1 ? i : 1), id (i), 1); // { dg-error "call to consteval function|'i' is not a constant expression" }
+             ^
+
+"Test_name.c", line 15: error: call to consteval function "id" did not produce a valid constant expression
+    1 ? 1 : ((1 ? 1 : i), id (i), 1); // { dg-error "call to consteval function|'i' is not a constant expression" }
+                             ^
+"Test_name.c", line 15: note: the value of parameter "i" (declared at line 9) cannot be used as a constant
+    1 ? 1 : ((1 ? 1 : i), id (i), 1); // { dg-error "call to consteval function|'i' is not a constant expression" }
+                              ^
+
+"Test_name.c", line 15: warning: expression has no effect
+    1 ? 1 : ((1 ? 1 : i), id (i), 1); // { dg-error "call to consteval function|'i' is not a constant expression" }
+             ^
+
+"Test_name.c", line 16: error: call to consteval function "id" did not produce a valid constant expression
+    1 ? 1 : ((i ? -i : i), id (i), 1); // { dg-error "call to consteval function|'i' is not a constant expression" }
+                              ^
+"Test_name.c", line 16: note: the value of parameter "i" (declared at line 9) cannot be used as a constant
+    1 ? 1 : ((i ? -i : i), id (i), 1); // { dg-error "call to consteval function|'i' is not a constant expression" }
+                               ^
+
+"Test_name.c", line 16: warning: expression has no effect
+    1 ? 1 : ((i ? -i : i), id (i), 1); // { dg-error "call to consteval function|'i' is not a constant expression" }
+             ^
+
+"Test_name.c", line 17: error: call to consteval function "id" did not produce a valid constant expression
+    1 ? 1 : ((1 ? 1 : id (i)), id (42), 1); // { dg-error "call to consteval function|'i' is not a constant expression" }
+                         ^
+"Test_name.c", line 17: note: the value of parameter "i" (declared at line 9) cannot be used as a constant
+    1 ? 1 : ((1 ? 1 : id (i)), id (42), 1); // { dg-error "call to consteval function|'i' is not a constant expression" }
+                          ^
+
+"Test_name.c", line 18: error: call to consteval function "id" did not produce a valid constant expression
+    1 ? 1 : ((1 ? 1 : id (42)), id (i)); // { dg-error "call to consteval function|'i' is not a constant expression" }
+                                   ^
+"Test_name.c", line 18: note: the value of parameter "i" (declared at line 9) cannot be used as a constant
+    1 ? 1 : ((1 ? 1 : id (42)), id (i)); // { dg-error "call to consteval function|'i' is not a constant expression" }
+                                    ^
+
+"Test_name.c", line 18: warning: expression has no effect
+    1 ? 1 : ((1 ? 1 : id (42)), id (i)); // { dg-error "call to consteval function|'i' is not a constant expression" }
+             ^
+
+"Test_name.c", line 19: error: call to consteval function "id" did not produce a valid constant expression
+    1 ? 1 : ((1 ? 1 : id (42)), id (i), 1); // { dg-error "call to consteval function|'i' is not a constant expression" }
+                                   ^
+"Test_name.c", line 19: note: the value of parameter "i" (declared at line 9) cannot be used as a constant
+    1 ? 1 : ((1 ? 1 : id (42)), id (i), 1); // { dg-error "call to consteval function|'i' is not a constant expression" }
+                                    ^
+
+"Test_name.c", line 19: warning: expression has no effect
+    1 ? 1 : ((1 ? 1 : id (42)), id (i), 1); // { dg-error "call to consteval function|'i' is not a constant expression" }
+             ^
+
+"Test_name.c", line 20: error: call to consteval function "id" did not produce a valid constant expression
+    id (i) ? 1 : ((1 ? 1 : 1), id (i)); // { dg-error "call to consteval function|'i' is not a constant expression" }
+       ^
+"Test_name.c", line 20: note: the value of parameter "i" (declared at line 9) cannot be used as a constant
+    id (i) ? 1 : ((1 ? 1 : 1), id (i)); // { dg-error "call to consteval function|'i' is not a constant expression" }
+        ^
+
+"Test_name.c", line 20: error: call to consteval function "id" did not produce a valid constant expression
+    id (i) ? 1 : ((1 ? 1 : 1), id (i)); // { dg-error "call to consteval function|'i' is not a constant expression" }
+                                  ^
+"Test_name.c", line 20: note: the value of parameter "i" (declared at line 9) cannot be used as a constant
+    id (i) ? 1 : ((1 ? 1 : 1), id (i)); // { dg-error "call to consteval function|'i' is not a constant expression" }
+                                   ^
+
+"Test_name.c", line 20: warning: expression has no effect
+    id (i) ? 1 : ((1 ? 1 : 1), id (i)); // { dg-error "call to consteval function|'i' is not a constant expression" }
+                  ^
+
+"Test_name.c", line 21: error: call to consteval function "id" did not produce a valid constant expression
+    1 ? 1 : ((1 ? 1 : id (i)), id (i)); // { dg-error "call to consteval function|'i' is not a constant expression" }
+                         ^
+"Test_name.c", line 21: note: the value of parameter "i" (declared at line 9) cannot be used as a constant
+    1 ? 1 : ((1 ? 1 : id (i)), id (i)); // { dg-error "call to consteval function|'i' is not a constant expression" }
+                          ^
+
+"Test_name.c", line 21: error: call to consteval function "id" did not produce a valid constant expression
+    1 ? 1 : ((1 ? 1 : id (i)), id (i)); // { dg-error "call to consteval function|'i' is not a constant expression" }
+                                  ^
+"Test_name.c", line 21: note: the value of parameter "i" (declared at line 9) cannot be used as a constant
+    1 ? 1 : ((1 ? 1 : id (i)), id (i)); // { dg-error "call to consteval function|'i' is not a constant expression" }
+                                   ^
+
+"Test_name.c", line 22: error: call to consteval function "id" did not produce a valid constant expression
+    1 ? id (i) : ((1 ? 1 : id (i)), id (i)); // { dg-error "call to consteval function|'i' is not a constant expression" }
+           ^
+"Test_name.c", line 22: note: the value of parameter "i" (declared at line 9) cannot be used as a constant
+    1 ? id (i) : ((1 ? 1 : id (i)), id (i)); // { dg-error "call to consteval function|'i' is not a constant expression" }
+            ^
+
+"Test_name.c", line 22: error: call to consteval function "id" did not produce a valid constant expression
+    1 ? id (i) : ((1 ? 1 : id (i)), id (i)); // { dg-error "call to consteval function|'i' is not a constant expression" }
+                              ^
+"Test_name.c", line 22: note: the value of parameter "i" (declared at line 9) cannot be used as a constant
+    1 ? id (i) : ((1 ? 1 : id (i)), id (i)); // { dg-error "call to consteval function|'i' is not a constant expression" }
+                               ^
+
+"Test_name.c", line 22: error: call to consteval function "id" did not produce a valid constant expression
+    1 ? id (i) : ((1 ? 1 : id (i)), id (i)); // { dg-error "call to consteval function|'i' is not a constant expression" }
+                                       ^
+"Test_name.c", line 22: note: the value of parameter "i" (declared at line 9) cannot be used as a constant
+    1 ? id (i) : ((1 ? 1 : id (i)), id (i)); // { dg-error "call to consteval function|'i' is not a constant expression" }
+                                        ^
+
+"Test_name.c", line 23: error: call to consteval function "id" did not produce a valid constant expression
+    1 ? 1 : ((id (i) ? 1 : 1), id (i)); // { dg-error "call to consteval function|'i' is not a constant expression" }
+                 ^
+"Test_name.c", line 23: note: the value of parameter "i" (declared at line 9) cannot be used as a constant
+    1 ? 1 : ((id (i) ? 1 : 1), id (i)); // { dg-error "call to consteval function|'i' is not a constant expression" }
+                  ^
+
+"Test_name.c", line 23: error: call to consteval function "id" did not produce a valid constant expression
+    1 ? 1 : ((id (i) ? 1 : 1), id (i)); // { dg-error "call to consteval function|'i' is not a constant expression" }
+                                  ^
+"Test_name.c", line 23: note: the value of parameter "i" (declared at line 9) cannot be used as a constant
+    1 ? 1 : ((id (i) ? 1 : 1), id (i)); // { dg-error "call to consteval function|'i' is not a constant expression" }
+                                   ^
+
+18 errors detected in the compilation of "Test_name.c".

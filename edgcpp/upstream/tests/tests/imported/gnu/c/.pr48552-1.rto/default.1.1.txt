@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 18: warning: expression must be a modifiable lvalue
+    __asm volatile ("" : "=r" (*x));	/* { dg-warning "dereferencing" "deref" } */
+                               ^
+
+"Test_name.c", line 31: warning: expression must be a modifiable lvalue
+    __asm volatile ("" : "=m" (*x));	/* { dg-warning "dereferencing" } */
+                               ^
+
+"Test_name.c", line 43: warning: expression must be a modifiable lvalue
+    __asm volatile ("" : "=g" (*x));	/* { dg-warning "dereferencing" "deref" } */
+                               ^
+
+"Test_name.c", line 49: error: incomplete type "struct S" is not allowed
+    __asm volatile ("" : : "r" (*x));	/* { dg-error "invalid use of undefined type" } */
+                                ^
+
+"Test_name.c", line 55: error: expression must be a modifiable lvalue
+    __asm volatile ("" : "=r" (*x));	/* { dg-error "impossible constraint in 'asm'" } */
+                               ^
+
+2 errors detected in the compilation of "Test_name.c".

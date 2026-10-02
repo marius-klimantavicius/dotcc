@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --ms_extensions --c++11 Test_name.c
+"Test_name.c", line 15: error: forward declaration of enum type is nonstandard
+    enum MemberEnumeration; // expected-note {{explicitly specialized declaration is here}} // expected-error {{ISO C++ forbids forward references to 'enum' types}}
+         ^
+
+"Test_name.c", line 23: error: class "A::ClassTemplate<int>" cannot be specialized in the current scope
+  class A::ClassTemplate<int>; // expected-warning {{class template specialization of 'ClassTemplate' not in a namespace enclosing 'A' is a Microsoft extension}}
+        ^
+
+"Test_name.c", line 26: warning: class "A::ClassTemplatePartial<T1, T1 *>" cannot be partially specialized in the current scope
+  class A::ClassTemplatePartial<T1, T1 *> {}; // expected-warning {{class template partial specialization of 'ClassTemplatePartial' not in a namespace enclosing 'A' is a Microsoft extension}}
+           ^
+
+"Test_name.c", line 29: error: class "A::X<T>::MemberClass [with T=int]" cannot be specialized in the current scope
+  struct A::X<int>::MemberClass; // expected-warning {{member class specialization of 'MemberClass' not in class 'X' or an enclosing namespace is a Microsoft extension}}
+         ^
+
+3 errors detected in the compilation of "Test_name.c".

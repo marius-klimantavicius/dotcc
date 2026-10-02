@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=2 --c++20 --set_flag coroutines -tused -DNEG Test_name.c
+"Test_name.c", line 21: error: "A" has no member "await_ready"
+    int i = co_await A();
+                     ^
+
+"Test_name.c", line 21: error: "A" has no member "await_resume"
+    int i = co_await A();
+                     ^
+
+"Test_name.c", line 21: error: "A" has no member "await_suspend"
+    int i = co_await A();
+                     ^
+
+3 errors detected in the compilation of "Test_name.c".

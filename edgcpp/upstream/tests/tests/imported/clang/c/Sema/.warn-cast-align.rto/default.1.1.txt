@@ -1,0 +1,82 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 7: warning: variable "a" was declared but never referenced
+    char *a  = (char*)  P;
+          ^
+
+"Test_name.c", line 8: warning: variable "b" was declared but never referenced
+    short *b = (short*) P; // expected-warning {{cast from 'char *' to 'short *' increases required alignment from 1 to 2}}
+           ^
+
+"Test_name.c", line 9: warning: variable "c" was declared but never referenced
+    int *c   = (int*)   P; // expected-warning {{cast from 'char *' to 'int *' increases required alignment from 1 to 4}}
+         ^
+
+"Test_name.c", line 14: warning: variable "a" was declared but never referenced
+    char *a  = (char*)  P;
+          ^
+
+"Test_name.c", line 15: warning: variable "b" was declared but never referenced
+    short *b = (short*) P;
+           ^
+
+"Test_name.c", line 16: warning: variable "c" was declared but never referenced
+    int *c   = (int*)   P;
+         ^
+
+"Test_name.c", line 19: warning: variable "d" was declared but never referenced
+    char *d  = (char*)  P2;
+          ^
+
+"Test_name.c", line 20: warning: variable "e" was declared but never referenced
+    short *e = (short*) P2;
+           ^
+
+"Test_name.c", line 21: warning: variable "f" was declared but never referenced
+    int *f   = (int*)   P2;
+         ^
+
+"Test_name.c", line 23: warning: variable "g" was declared but never referenced
+    const char *g  = (const char*)  P2;
+                ^
+
+"Test_name.c", line 24: warning: variable "h" was declared but never referenced
+    const short *h = (const short*) P2;
+                 ^
+
+"Test_name.c", line 25: warning: variable "i" was declared but never referenced
+    const int *i   = (const int*)   P2;
+               ^
+
+"Test_name.c", line 27: warning: variable "j" was declared but never referenced
+    const volatile char *j  = (const volatile char*)  P2;
+                         ^
+
+"Test_name.c", line 28: warning: variable "k" was declared but never referenced
+    const volatile short *k = (const volatile short*) P2;
+                          ^
+
+"Test_name.c", line 29: warning: variable "l" was declared but never referenced
+    const volatile int *l   = (const volatile int*)   P2;
+                        ^
+
+"Test_name.c", line 37: warning: variable "a" was declared but never referenced
+    struct A *a = (struct A*) P; // expected-warning {{cast from 'char *' to 'struct A *' increases required alignment from 1 to 16}}
+              ^
+
+"Test_name.c", line 42: warning: variable "b" was declared but never referenced
+    struct B *b = (struct B*) P;
+              ^
+
+"Test_name.c", line 60: warning: variable "i" was set but never used
+    int *i = (int *)s.a;
+         ^
+
+"Test_name.c", line 76: error: identifier "doesnotexist" is undefined
+      doesnotexist world; // expected-error {{unknown type name 'doesnotexist'}}
+      ^
+
+"Test_name.c", line 78: warning: variable "repro" was declared but never referenced
+    void **repro = (void **)&foo.hello; // expected-warning {{cast from 'int *' to 'void **' increases required alignment from 4 to 8}}
+           ^
+
+1 error detected in the compilation of "Test_name.c".

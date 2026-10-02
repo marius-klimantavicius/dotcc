@@ -1,0 +1,46 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 8: warning: rvalue references are a C++11 feature
+    void f(Args &&...) &; // expected-warning{{rvalue references are a C++11 extension}} \
+                ^
+
+"Test_name.c", line 8: warning: a ref-qualifier is nonstandard in this mode
+    void f(Args &&...) &; // expected-warning{{rvalue references are a C++11 extension}} \
+                       ^
+
+"Test_name.c", line 18: warning: "override" and "final" are C++11 features
+    virtual void f() override; // expected-warning {{'override' keyword is a C++11 extension}}
+                 ^
+
+"Test_name.c", line 19: warning: "override" and "final" are C++11 features
+    virtual void g() final; // expected-warning {{'final' keyword is a C++11 extension}}
+                 ^
+
+"Test_name.c", line 24: error: expected a ";"
+    new int {}; // expected-error {{}}
+            ^
+
+"Test_name.c", line 30: warning: "auto" as a type specifier is nonstandard in this mode
+  auto Auto::n = 0; // expected-warning {{'auto' type specifier is a C++11 extension}}
+  ^
+
+"Test_name.c", line 31: warning: "auto" as a type specifier is nonstandard in this mode
+  auto Auto::m = 0; // expected-error {{no member named 'm' in 'Auto'}}
+  ^
+
+"Test_name.c", line 31: error: class "Auto" has no member "m"
+  auto Auto::m = 0; // expected-error {{no member named 'm' in 'Auto'}}
+             ^
+
+"Test_name.c", line 35: error: type must be an object type
+  bool pr21367_a = new int && false;
+                       ^
+
+"Test_name.c", line 35: error: expected a ";"
+  bool pr21367_a = new int && false;
+                              ^
+
+"Test_name.c", line 36: error: expected a ";"
+  bool pr21367_b = &Conv::operator int && false;
+                                          ^
+
+5 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,82 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 10: error: type name is not allowed
+    void testA() { A::typo_first_a<int>(); } // expected-error {{'typo_first_a' does not name a template but is followed by template arguments; did you mean 'typo_first_b'?}}
+                                   ^
+
+"Test_name.c", line 10: error: expected an expression
+    void testA() { A::typo_first_a<int>(); } // expected-error {{'typo_first_a' does not name a template but is followed by template arguments; did you mean 'typo_first_b'?}}
+                                        ^
+
+"Test_name.c", line 15: error: type name is not allowed
+    void testB() { B::typo_first_b<int>(); } // expected-error {{'typo_first_b' does not name a template but is followed by template arguments; did you mean 'A::typo_first_b'?}}
+                                   ^
+
+"Test_name.c", line 15: error: expected an expression
+    void testB() { B::typo_first_b<int>(); } // expected-error {{'typo_first_b' does not name a template but is followed by template arguments; did you mean 'A::typo_first_b'?}}
+                                        ^
+
+"Test_name.c", line 25: error: a pointer to a bound function may only be used to call the function
+    void testMember() { Derived().foo<int>(); } // expected-error-re {{does not name a template but is followed by template arguments{{$}}}}
+                                  ^
+
+"Test_name.c", line 25: error: type name is not allowed
+    void testMember() { Derived().foo<int>(); } // expected-error-re {{does not name a template but is followed by template arguments{{$}}}}
+                                      ^
+
+"Test_name.c", line 25: error: expected an expression
+    void testMember() { Derived().foo<int>(); } // expected-error-re {{does not name a template but is followed by template arguments{{$}}}}
+                                           ^
+
+"Test_name.c", line 30: error: a pointer to a bound function may only be used to call the function
+    void testMember2() { Derived2().goo<int>(); } // expected-error {{member 'goo' of 'InExpr::Derived2' is not a template; did you mean 'foo'?}}
+                                    ^
+
+"Test_name.c", line 30: error: type name is not allowed
+    void testMember2() { Derived2().goo<int>(); } // expected-error {{member 'goo' of 'InExpr::Derived2' is not a template; did you mean 'foo'?}}
+                                        ^
+
+"Test_name.c", line 30: error: expected an expression
+    void testMember2() { Derived2().goo<int>(); } // expected-error {{member 'goo' of 'InExpr::Derived2' is not a template; did you mean 'foo'?}}
+                                             ^
+
+"Test_name.c", line 35: error: type name is not allowed
+      foo<int>(); // expected-error {{'foo' does not name a template but is followed by template arguments; did you mean 'Base::foo'?}}
+          ^
+
+"Test_name.c", line 35: error: expected an expression
+      foo<int>(); // expected-error {{'foo' does not name a template but is followed by template arguments; did you mean 'Base::foo'?}}
+               ^
+
+"Test_name.c", line 36: error: expected an expression
+      foo<>(); // expected-error {{'foo' does not name a template but is followed by template arguments; did you mean 'Base::foo'?}}
+          ^
+
+"Test_name.c", line 37: error: type name is not allowed
+      foo<Base *>(); // expected-error {{'foo' does not name a template but is followed by template arguments; did you mean 'Base::foo'?}}
+          ^
+
+"Test_name.c", line 37: error: expected an expression
+      foo<Base *>(); // expected-error {{'foo' does not name a template but is followed by template arguments; did you mean 'Base::foo'?}}
+                ^
+
+"Test_name.c", line 40: warning: expression has no effect
+      foo<foo; // expected-warning {{self-comparison}}
+      ^
+
+"Test_name.c", line 41: warning: expression has no effect
+      foo<int()>(0); // expected-error {{chained comparison 'X < Y > Z' does not behave the same as a mathematical expression}}
+      ^
+
+"Test_name.c", line 42: warning: expression has no effect
+      foo<int(), true>(false);
+      ^
+
+"Test_name.c", line 42: warning: expression has no effect
+      foo<int(), true>(false);
+      ^
+
+"Test_name.c", line 43: warning: expression has no effect
+      foo<Base{}.n;
+      ^
+
+15 errors detected in the compilation of "Test_name.c".

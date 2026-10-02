@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=3 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 Test_name.c
+"Test_name.c", line 209: error: incompatible exception specifications
+  void (*pp)() throw() = p;
+                         ^
+
+"Test_name.c", line 235: warning: function "cwg2496::S::f()" is hidden by "cwg2496::T::f" -- virtual function override intended?
+      virtual void f() &;
+                   ^
+
+"Test_name.c", line 238: warning: function "cwg2496::S::g() &" is hidden by "cwg2496::T::g" -- virtual function override intended?
+      virtual void g();
+                   ^
+
+"Test_name.c", line 241: warning: function "cwg2496::S::h()" is hidden by "cwg2496::T::h" -- virtual function override intended?
+      virtual void h() &&;
+                   ^
+
+"Test_name.c", line 246: warning: function "cwg2496::S::k() &&" is hidden by "cwg2496::T::k" -- virtual function override intended?
+      virtual void k() &;
+                   ^
+
+"Test_name.c", line 247: warning: function "cwg2496::S::l() &" is hidden by "cwg2496::T::l" -- virtual function override intended?
+      virtual void l() &&;
+                   ^
+
+1 error detected in the compilation of "Test_name.c".

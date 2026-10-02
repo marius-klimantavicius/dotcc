@@ -1,0 +1,8 @@
+./a.out
+Allocated 4 bytes starting at 0x8057210, ending at 0x8057213
+Allocated 240 bytes starting at 0x8057228, ending at 0x8057317
+__throw called
+Pass 1 processing EH stack entry at 0xXXXXXXXX, kind=5
+  EH stack entry at 0xXXXXXXXX, kind=try block
+Destroying object at 0x8057210
+Throw stack at end of free_thrown_object:

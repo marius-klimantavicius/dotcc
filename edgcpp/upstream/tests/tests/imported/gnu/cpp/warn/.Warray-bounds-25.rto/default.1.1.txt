@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 31: warning: pointer points outside of underlying object
+    f (pfa + 4);        // { dg-warning "subscript 4 is outside array bounds of 'int \\\(\\\* ?\\\[3]\\\)\\\(int, ...\\\)'" }
+           ^
+
+"Test_name.c", line 59: warning: pointer points outside of underlying object
+    f (pmfa + 5);       // { dg-warning "subscript 5 is outside array bounds of 'int \\\(A::\\\* ?\\\[4]\\\)\\\(int\\\)'" }
+            ^
+

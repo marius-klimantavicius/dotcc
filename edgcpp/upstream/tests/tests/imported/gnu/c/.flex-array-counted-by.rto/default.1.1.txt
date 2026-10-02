@@ -1,0 +1,53 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./flex-array-counted-by.c", line 9: warning: unknown attribute "counted_by"
+  int x __attribute ((counted_by (size)));
+                      ^
+
+"./flex-array-counted-by.c", line 13: warning: unknown attribute "counted_by"
+    int field __attribute ((counted_by (count)));
+                            ^
+
+"./flex-array-counted-by.c", line 18: warning: unknown attribute "counted_by"
+    int array_1[0] __attribute ((counted_by (count)));
+                                 ^
+
+"./flex-array-counted-by.c", line 24: warning: unknown attribute "counted_by"
+    int array_2[] __attribute ((counted_by ("count")));
+                                ^
+
+"./flex-array-counted-by.c", line 29: warning: unknown attribute "counted_by"
+    int array_3[] __attribute ((counted_by (L"count")));
+                                ^
+
+"./flex-array-counted-by.c", line 34: warning: unknown attribute "counted_by"
+    int array_4[] __attribute ((counted_by (count)));
+                                ^
+
+"./flex-array-counted-by.c", line 40: warning: unknown attribute "counted_by"
+    int array_5[] __attribute ((counted_by (count)));
+                                ^
+
+"./flex-array-counted-by.c", line 45: warning: unknown attribute "counted_by"
+    int array_6[] __attribute ((counted_by (count))) __attribute ((counted_by (count)));
+                                ^
+
+"./flex-array-counted-by.c", line 45: warning: unknown attribute "counted_by"
+    int array_6[] __attribute ((counted_by (count))) __attribute ((counted_by (count)));
+                                                                   ^
+
+"./flex-array-counted-by.c", line 51: warning: unknown attribute "counted_by"
+    int array_7[] __attribute ((counted_by (count1))) __attribute ((counted_by (count2)));
+                                ^
+
+"./flex-array-counted-by.c", line 51: warning: unknown attribute "counted_by"
+    int array_7[] __attribute ((counted_by (count1))) __attribute ((counted_by (count2)));
+                                                                    ^
+
+"./flex-array-counted-by.c", line 56: warning: unknown attribute "counted_by"
+    int array_8[] __attribute ((counted_by (count)));
+                                ^
+
+"./flex-array-counted-by.c", line 62: warning: unknown attribute "counted_by"
+    int array_9[] __attribute ((counted_by (days)));
+                                ^
+

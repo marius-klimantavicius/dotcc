@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 9: error: expected a "{"
+  foo (int * p, __UINTPTR_TYPE__ idx, __UINTPTR_TYPE__ idx2)
+  ^
+
+"Test_name.c", line 15: error: identifier "__MEM" is undefined
+    D1799 = __MEM <unsigned int, 8> ((char *)p + 1 + idx * _Literal (__SIZETYPE__) 2);
+            ^
+
+"Test_name.c", line 15: error: expected an expression
+    D1799 = __MEM <unsigned int, 8> ((char *)p + 1 + idx * _Literal (__SIZETYPE__) 2);
+                   ^
+
+"Test_name.c", line 16: error: expected an expression
+    __MEM <unsigned int, 16> ((char *)&f + 0xfffffffffffffffe) = D1799;
+           ^
+
+"Test_name.c", line 17: error: expected an expression
+    __MEM <int> (&x + idx2) = 1;
+           ^
+
+"Test_name.c", line 18: error: expected an expression
+    __MEM <int, 2> (p + idx * _Literal (__SIZETYPE__) 1) = 1;
+           ^
+
+"Test_name.c", line 19: error: expected an expression
+    __MEM <int> (&x + 2 + idx2) = 1;
+           ^
+
+"Test_name.c", line 20: error: expected an expression
+    __MEM <int> ((char *)&x + 4 + idx * _Literal (__SIZETYPE__) 4 + idx2) = 1;
+           ^
+
+"Test_name.c", line 21: warning: variable "f" is used before its value is set
+    D1800 = f;
+            ^
+
+"Test_name.c", line 13: warning: variable "D1799" was set but never used
+    unsigned int D1799;
+                 ^
+
+8 errors detected in the compilation of "Test_name.c".

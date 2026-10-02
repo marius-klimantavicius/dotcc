@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 6: error: expected a ")"
+  int foo1(int case, int throw, int y) { // expected-error {{invalid parameter name: 'case' is a keyword}} \
+               ^
+
+"Test_name.c", line 9: error: identifier "y" is undefined
+    y = 1;
+    ^
+
+"Test_name.c", line 10: warning: missing return statement at end of non-void function "foo1"
+  }
+  ^
+
+"Test_name.c", line 12: error: expected a ")"
+  int foo2(int case = 1); // expected-error {{invalid parameter}}
+               ^
+
+"Test_name.c", line 17: error: expected a ")"
+  int foo5(int x const); // expected-error {{expected ')'}} expected-note {{to match this '('}}
+                 ^
+
+"Test_name.c", line 20: error: expected a ")"
+  int foo6(int case __attribute((weak))); // expected-error {{invalid parameter}}  \
+               ^
+
+"Test_name.c", line 25: error: expected an identifier
+    int case; // expected-error {{expected unqualified-id}}
+        ^
+
+"Test_name.c", line 27: error: expected an identifier
+      int case; // expected-error {{expected member name or ';'}}
+          ^
+
+"Test_name.c", line 31: error: expected a type specifier
+    void bar(*decltype(1) aux); // expected-error {{a type specifier is required for all declarations}}. \
+             ^
+
+8 errors detected in the compilation of "Test_name.c".

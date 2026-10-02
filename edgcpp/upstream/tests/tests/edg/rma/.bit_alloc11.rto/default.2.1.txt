@@ -1,0 +1,22 @@
+eccp -DTEST_NUMBER=2 -r -x -tused Test_name.c
+"Test_name.c", line 13: remark: return type "int" omitted in declaration of function "main"
+  main() {
+  ^
+
+"Test_name.c", line 14: error: invalid type conversion
+    printf("offset of d = %d\n", (int)&s.d - (int)&s);
+                                 ^
+
+"Test_name.c", line 14: error: invalid type conversion
+    printf("offset of d = %d\n", (int)&s.d - (int)&s);
+                                             ^
+
+"Test_name.c", line 15: error: invalid type conversion
+    printf("offset of e = %d\n", (int)&s.e - (int)&s);
+                                 ^
+
+"Test_name.c", line 15: error: invalid type conversion
+    printf("offset of e = %d\n", (int)&s.e - (int)&s);
+                                             ^
+
+4 errors detected in the compilation of "Test_name.c".

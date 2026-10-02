@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 Test_name.c
+"Test_name.c", line 20: warning: missing return statement at end of non-void function "lambda [](auto)->char"
+      }); // expected-warning {{non-void lambda does not return a value}}
+      ^
+
+"Test_name.c", line 21: warning: missing return statement at end of non-void function "ArrayBuffer::data"
+    } // expected-warning {{non-void function does not return a value}}
+    ^
+
+"Test_name.c", line 27: warning: NULL reference is not allowed
+      *static_cast<Promise *>(nullptr); // expected-warning {{binding dereferenced null}}
+      ^
+          detected during instantiation of "Promise &coroutine_handle<Promise>::promise() const [with Promise=int]" at line 34
+

@@ -1,0 +1,89 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 14: warning: unknown attribute "access"
+  int RW (1) rdwr1_2_3_4 (void*, void*, void*, void*);
+      ^
+
+"Test_name.c", line 15: warning: unknown attribute "access"
+  int RW (2) rdwr1_2_3_4 (void*, void*, void*, void*);
+      ^
+
+"Test_name.c", line 16: warning: unknown attribute "access"
+  int RW (3) rdwr1_2_3_4 (void*, void*, void*, void*);
+      ^
+
+"Test_name.c", line 17: warning: unknown attribute "access"
+  int RW (4) rdwr1_2_3_4 (void*, void*, void*, void*);
+      ^
+
+"Test_name.c", line 32: warning: unknown attribute "access"
+  int RW (4) rdwr4_3_2_1 (void*, void*, void*, void*);
+      ^
+
+"Test_name.c", line 33: warning: unknown attribute "access"
+  int RW (3) rdwr4_3_2_1 (void*, void*, void*, void*);
+      ^
+
+"Test_name.c", line 34: warning: unknown attribute "access"
+  int RW (2) rdwr4_3_2_1 (void*, void*, void*, void*);
+      ^
+
+"Test_name.c", line 35: warning: unknown attribute "access"
+  int RW (1) rdwr4_3_2_1 (void*, void*, void*, void*);
+      ^
+
+"Test_name.c", line 48: warning: unknown attribute "access"
+  int RW (1)                      rdwrall (void*, void*, void*, void*);
+      ^
+
+"Test_name.c", line 49: warning: unknown attribute "access"
+  int RW (1) RW (2)               rdwrall (void*, void*, void*, void*);
+      ^
+
+"Test_name.c", line 49: warning: unknown attribute "access"
+  int RW (1) RW (2)               rdwrall (void*, void*, void*, void*);
+             ^
+
+"Test_name.c", line 50: warning: unknown attribute "access"
+  int RW (1) RW (2) RW (3)        rdwrall (void*, void*, void*, void*);
+      ^
+
+"Test_name.c", line 50: warning: unknown attribute "access"
+  int RW (1) RW (2) RW (3)        rdwrall (void*, void*, void*, void*);
+             ^
+
+"Test_name.c", line 50: warning: unknown attribute "access"
+  int RW (1) RW (2) RW (3)        rdwrall (void*, void*, void*, void*);
+                    ^
+
+"Test_name.c", line 51: warning: unknown attribute "access"
+  int RW (1) RW (2) RW (3) RW (4) rdwrall (void*, void*, void*, void*);
+      ^
+
+"Test_name.c", line 51: warning: unknown attribute "access"
+  int RW (1) RW (2) RW (3) RW (4) rdwrall (void*, void*, void*, void*);
+             ^
+
+"Test_name.c", line 51: warning: unknown attribute "access"
+  int RW (1) RW (2) RW (3) RW (4) rdwrall (void*, void*, void*, void*);
+                    ^
+
+"Test_name.c", line 51: warning: unknown attribute "access"
+  int RW (1) RW (2) RW (3) RW (4) rdwrall (void*, void*, void*, void*);
+                           ^
+
+"Test_name.c", line 78: warning: unknown attribute "access"
+  typedef RW (1) void FWRall (void*, void*, void*, void*);
+          ^
+
+"Test_name.c", line 79: warning: unknown attribute "access"
+  typedef RW (2) void FWRall (void*, void*, void*, void*);
+          ^
+
+"Test_name.c", line 80: warning: unknown attribute "access"
+  typedef RW (3) void FWRall (void*, void*, void*, void*);
+          ^
+
+"Test_name.c", line 81: warning: unknown attribute "access"
+  typedef RW (4) void FWRall (void*, void*, void*, void*);
+          ^
+

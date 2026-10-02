@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 8: error: expression must have a constant value
+  static __PTRDIFF_TYPE__ d = p - (p + 1);
+                                   ^
+"Test_name.c", line 8: note: the value of variable "p" (declared at line 7) cannot be used as a constant
+  static __PTRDIFF_TYPE__ d = p - (p + 1);
+                                   ^
+
+"Test_name.c", line 8: error: expression must have a constant value
+  static __PTRDIFF_TYPE__ d = p - (p + 1);
+                              ^
+"Test_name.c", line 8: note: the value of variable "p" (declared at line 7) cannot be used as a constant
+  static __PTRDIFF_TYPE__ d = p - (p + 1);
+                              ^
+
+"Test_name.c", line 14: error: expression must have a constant value
+    static __PTRDIFF_TYPE__ e = q - (q + 1);
+                                     ^
+"Test_name.c", line 14: note: the value of variable "q" (declared at line 13) cannot be used as a constant
+    static __PTRDIFF_TYPE__ e = q - (q + 1);
+                                     ^
+
+"Test_name.c", line 14: error: expression must have a constant value
+    static __PTRDIFF_TYPE__ e = q - (q + 1);
+                                ^
+"Test_name.c", line 14: note: the value of variable "q" (declared at line 13) cannot be used as a constant
+    static __PTRDIFF_TYPE__ e = q - (q + 1);
+                                ^
+
+"Test_name.c", line 14: warning: variable "e" was declared but never referenced
+    static __PTRDIFF_TYPE__ e = q - (q + 1);
+                            ^
+
+"Test_name.c", line 8: warning: variable "d" was declared but never referenced
+  static __PTRDIFF_TYPE__ d = p - (p + 1);
+                          ^
+
+4 errors detected in the compilation of "Test_name.c".

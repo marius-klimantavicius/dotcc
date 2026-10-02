@@ -1,0 +1,5 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 7: warning: some enumerator values cannot be represented by the integral type underlying the enum type
+  enum C { C1 = (__uint128_t)-1, C2 = ((__uint128_t) 0x123456789abcdef0ULL) << 64 | 0x0fedcba987654321ULL } c;
+       ^
+

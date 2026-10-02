@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --g++ Test_name.c
+"Test_name.c", line 15: warning: null argument provided for parameter marked with attribute "nonnull"
+    pf(0);  // Now a warning, because of the effect of the attribute.
+       ^
+

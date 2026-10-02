@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 6: error: expected a type specifier
+    int x(((struct b {})));  // { dg-error "expected|redefinition" }
+          ^
+
+"Test_name.c", line 11: error: expected a type specifier
+      int x(((struct c {})));  // { dg-error "expected|redefinition" }
+            ^
+
+2 errors detected in the compilation of "Test_name.c".

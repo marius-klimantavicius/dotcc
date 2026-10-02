@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 10: error: invalid argument to attribute "__mode__"
+  int a __attribute__((__mode__(é))); /* { dg-error "unknown machine mode '\\\\U000000e9'" } */
+                                ^
+
+"Test_name.c", line 11: error: zero-length bit field must be unnamed
+  struct s1 { int é : 0; }; /* { dg-error "zero width for bit-field '\\\\U000000e9'" } */
+                  ^
+
+"Test_name.c", line 13: warning: variable "\u00e9" was declared but never referenced
+  void f (int b) { int é[b]; } /* { dg-warning "variable length array '\\\\U000000e9'" } */
+                       ^
+
+"Test_name.c", line 15: error: invalid storage class for a parameter
+  void g (static int é); /* { dg-error "storage class specified for parameter '\\\\U000000e9'" } */
+          ^
+
+"Test_name.c", line 17: warning: extra braces are nonstandard
+  struct s2 { int á; } é = { { 0 } }; /* { dg-warning "braces around scalar initializer" } */
+                             ^
+
+3 errors detected in the compilation of "Test_name.c".

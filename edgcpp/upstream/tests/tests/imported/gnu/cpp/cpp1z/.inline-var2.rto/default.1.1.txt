@@ -1,0 +1,135 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 6: warning: inline variables are a C++17 feature
+  inline int var1 = 4;				// { dg-warning "1:inline variables are only available with" "" { target c++14_down } }
+  ^
+
+"Test_name.c", line 45: error: incomplete type "B" is not allowed
+    static inline struct B var22;			// { dg-error "has incomplete type" }
+    ^
+
+"Test_name.c", line 46: error: incomplete type "C" is not allowed
+    static inline struct C var23 = {};		// { dg-error "has incomplete type" }
+                           ^
+
+"Test_name.c", line 46: error: incomplete type "C" is not allowed
+    static inline struct C var23 = {};		// { dg-error "has incomplete type" }
+    ^
+
+"Test_name.c", line 51: error: const member "W::var25" requires an initializer
+    static inline const int var25;		// { dg-warning "10:inline variables are only available with" "" { target c++14_down } }
+                            ^
+
+"Test_name.c", line 58: error: member "W::var24" has already been defined (previous definition at line 50)
+  int W::var24;					// { dg-error "redefinition of" }
+         ^
+
+"Test_name.c", line 59: error: member "W::var25" has already been defined (previous definition at line 51)
+  const int W::var25;				// { dg-error "redefinition of" }
+               ^
+
+"Test_name.c", line 60: error: member "W::var26" has already been defined (previous definition at line 53)
+  int W::var26;					// { dg-error "redefinition of" }
+         ^
+
+"Test_name.c", line 61: error: member "W::var27" has already been defined (previous definition at line 54)
+  const int W::var27;				// { dg-error "redefinition of" }
+               ^
+
+"Test_name.c", line 62: error: member "W::var28" has already been defined (previous definition at line 55)
+  double W::var28;				// { dg-error "redefinition of" }
+            ^
+
+"Test_name.c", line 63: error: member "W::var29" has already been defined (previous definition at line 56)
+  double const W::var29;				// { dg-error "redefinition of" }
+                  ^
+
+"Test_name.c", line 66: error: a nonstatic data member cannot be declared as inline
+    inline int var30;				// { dg-error "3:'var30' declared as an 'inline' field" }
+    ^
+
+"Test_name.c", line 68: error: invalid storage class for an inline function
+  inline typedef int TT;				// { dg-error "1:'TT' declared as an 'inline' type" }
+         ^
+
+"Test_name.c", line 68: error: inline specifier allowed on function declarations only
+  inline typedef int TT;				// { dg-error "1:'TT' declared as an 'inline' type" }
+  ^
+
+"Test_name.c", line 70: error: invalid specifier on a parameter
+  foo (inline int var31)				// { dg-error "6:'var31' declared as an 'inline' parameter" }
+       ^
+
+"Test_name.c", line 72: warning: "inline" is not allowed
+    inline int var32;				// { dg-error "3:'inline' specifier invalid for variable 'var32' declared at block scope" }
+    ^
+
+"Test_name.c", line 73: warning: "inline" is not allowed
+    static inline int var33;			// { dg-error "10:'inline' specifier invalid for variable 'var33' declared at block scope" }
+           ^
+
+"Test_name.c", line 72: warning: variable "var32" was declared but never referenced
+    inline int var32;				// { dg-error "3:'inline' specifier invalid for variable 'var32' declared at block scope" }
+               ^
+
+"Test_name.c", line 73: warning: variable "var33" was declared but never referenced
+    static inline int var33;			// { dg-error "10:'inline' specifier invalid for variable 'var33' declared at block scope" }
+                      ^
+
+"Test_name.c", line 80: error: incomplete type "B" is not allowed
+    static inline B var35;			// { dg-error "has incomplete type" }
+                    ^
+
+"Test_name.c", line 81: error: incomplete type "C" is not allowed
+    static inline C var36;			// { dg-error "has incomplete type" }
+                    ^
+
+"Test_name.c", line 94: warning: const member "Z<N>::var38" requires an initializer
+    static inline const int var38;		// { dg-warning "10:inline variables are only available with" "" { target c++14_down } }
+                            ^
+
+"Test_name.c", line 104: error: member "Z<N>::var37" has already been defined (previous definition at line 93)
+  int Z<N>::var37;				// { dg-error "redefinition of" }
+            ^
+
+"Test_name.c", line 106: error: member "Z<N>::var38" has already been defined (previous definition at line 94)
+  const int Z<N>::var38;				// { dg-error "redefinition of" }
+                  ^
+
+"Test_name.c", line 94: error: const member "Z<N>::var38 [with N=0]" requires an initializer
+    static inline const int var38;		// { dg-warning "10:inline variables are only available with" "" { target c++14_down } }
+                            ^
+          detected during instantiation of class "Z<N> [with N=0]" at line 107
+
+"Test_name.c", line 109: error: member "Z<N>::var39" has already been defined (previous definition at line 96)
+  int Z<N>::var39;				// { dg-error "redefinition of" }
+            ^
+
+"Test_name.c", line 111: error: member "Z<N>::var40" has already been defined (previous definition at line 97)
+  const int Z<N>::var40;				// { dg-error "redefinition of" }
+                  ^
+
+"Test_name.c", line 113: error: member "Z<N>::var41" has already been defined (previous definition at line 98)
+  double Z<N>::var41;				// { dg-error "redefinition of" }
+               ^
+
+"Test_name.c", line 115: error: member "Z<N>::var42" has already been defined (previous definition at line 99)
+  double const Z<N>::var42;			// { dg-error "redefinition of" }
+                     ^
+
+"Test_name.c", line 119: error: member "Z<N>::var43" has already been defined (previous definition at line 100)
+  const int Z<N>::var43;				// { dg-error "redefinition of" "" { target c++14_down } }
+                  ^
+
+"Test_name.c", line 7: warning: variable "var7" was declared but never referenced
+  static inline int var7 = 9;			// { dg-warning "8:inline variables are only available with" "" { target c++14_down } }
+                    ^
+
+"Test_name.c", line 38: error: extern inline variable "var19" was referenced but not defined
+  extern inline int var19;			// { dg-warning "8:inline variables are only available with" "" { target c++14_down } }
+                    ^
+
+"Test_name.c", line 12: warning: variable "N::var8" was declared but never referenced
+    static inline double var8 = 2.0;		// { dg-warning "10:inline variables are only available with" "" { target c++14_down } }
+                         ^
+
+25 errors detected in the compilation of "Test_name.c".

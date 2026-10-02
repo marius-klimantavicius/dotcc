@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 6: warning: class "X" defines no constructor to initialize the following:
+            reference member "X::flag"
+  class X {
+        ^
+
+"Test_name.c", line 12: warning: class "Y" defines no constructor to initialize the following:
+            const member "Y::var"
+  class Y {
+        ^
+

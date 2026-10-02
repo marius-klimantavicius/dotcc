@@ -1,0 +1,92 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 11: error: expression must have a constant value
+  int b0[a]; /* { dg-error "5:at file scope" } */
+         ^
+"Test_name.c", line 11: note: the value of variable "a" (declared at line 9) cannot be used as a constant
+  int b0[a]; /* { dg-error "5:at file scope" } */
+         ^
+
+"Test_name.c", line 12: error: expression must have a constant value
+  int (*b1)[a]; /* { dg-error "7:at file scope" } */
+            ^
+"Test_name.c", line 12: note: the value of variable "a" (declared at line 9) cannot be used as a constant
+  int (*b1)[a]; /* { dg-error "7:at file scope" } */
+            ^
+
+"Test_name.c", line 13: error: expression must have a constant value
+  int (*b2())[a]; /* { dg-error "at file scope" } */
+              ^
+"Test_name.c", line 13: note: the value of variable "a" (declared at line 9) cannot be used as a constant
+  int (*b2())[a]; /* { dg-error "at file scope" } */
+              ^
+
+"Test_name.c", line 14: error: expression must have a constant value
+  struct b3 { int x[a]; }; /* { dg-error "17:at file scope" } */
+                    ^
+"Test_name.c", line 14: note: the value of variable "a" (declared at line 9) cannot be used as a constant
+  struct b3 { int x[a]; }; /* { dg-error "17:at file scope" } */
+                    ^
+
+"Test_name.c", line 15: error: expression must have a constant value
+  struct b4 { int (*x)[a]; }; /* { dg-error "19:at file scope" } */
+                       ^
+"Test_name.c", line 15: note: the value of variable "a" (declared at line 9) cannot be used as a constant
+  struct b4 { int (*x)[a]; }; /* { dg-error "19:at file scope" } */
+                       ^
+
+"Test_name.c", line 16: error: expression must have a constant value
+  typeof (int [a]) b5; /* { dg-error "at file scope|outside of any function" } */
+               ^
+"Test_name.c", line 16: note: the value of variable "a" (declared at line 9) cannot be used as a constant
+  typeof (int [a]) b5; /* { dg-error "at file scope|outside of any function" } */
+               ^
+
+"Test_name.c", line 18: error: expression must be an integral constant expression
+  int c0[(__UINTPTR_TYPE__)&a]; /* { dg-error "5:at file scope" } */
+         ^
+
+"Test_name.c", line 19: error: expression must be an integral constant expression
+  int (*c1)[(__UINTPTR_TYPE__)&a]; /* { dg-error "7:at file scope" } */
+            ^
+
+"Test_name.c", line 20: error: expression must be an integral constant expression
+  int (*c2())[(__UINTPTR_TYPE__)&a]; /* { dg-error "7:at file scope" } */
+              ^
+
+"Test_name.c", line 21: error: expression must be an integral constant expression
+  struct c3 { int x[(__UINTPTR_TYPE__)&a]; }; /* { dg-error "17:at file scope" } */
+                    ^
+
+"Test_name.c", line 22: error: expression must be an integral constant expression
+  struct c4 { int (*x)[(__UINTPTR_TYPE__)&a]; }; /* { dg-error "19:at file scope" } */
+                       ^
+
+"Test_name.c", line 23: error: expression must be an integral constant expression
+  typeof (int [(__UINTPTR_TYPE__)&a]) c5; /* { dg-error "37:at file scope" } */
+               ^
+
+"Test_name.c", line 25: error: division by zero
+  int d0[1/0]; /* { dg-error "5:at file scope" } */
+          ^
+
+"Test_name.c", line 27: error: division by zero
+  int (*d1)[1/0]; /* { dg-error "7:at file scope" } */
+             ^
+
+"Test_name.c", line 29: error: division by zero
+  int (*d2())[1/0]; /* { dg-error "7:at file scope" } */
+               ^
+
+"Test_name.c", line 31: error: division by zero
+  struct d3 { int x[1/0]; }; /* { dg-error "17:at file scope" } */
+                     ^
+
+"Test_name.c", line 33: error: division by zero
+  struct d4 { int (*x)[1/0]; }; /* { dg-error "19:at file scope" } */
+                        ^
+
+"Test_name.c", line 35: error: division by zero
+  typeof (int [1/0]) d5; /* { dg-error "20:at file scope" } */
+                ^
+
+18 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./torture/pr95268.C", line 21: warning: integer conversion resulted in truncation
+    var_18 = -602739307623583391;
+             ^
+
+"./torture/pr95268.C", line 28: warning: integer conversion resulted in truncation
+    var_37 = 394545925;
+             ^
+
+"./torture/pr95268.C", line 42: warning: integer conversion resulted in truncation
+    var_64 = 10393232284806619711ULL;
+             ^
+

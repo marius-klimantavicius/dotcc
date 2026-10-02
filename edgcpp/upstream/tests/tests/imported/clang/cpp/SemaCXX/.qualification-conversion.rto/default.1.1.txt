@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 12: warning: argument of type "int ***" is incompatible with parameter of type "const int **const *"
+    quals3(ppp); // expected-error {{no matching}}
+           ^
+
+"Test_name.c", line 9: warning: variable "pp2" was declared but never referenced
+    int const * const * pp2 = pp; 
+                        ^
+
+"Test_name.c", line 24: error: argument of type "int A::*A::*A::*" is incompatible with parameter of type "const int A::*A::*const A::*"
+    mquals3(ppp); // expected-error {{no matching}}
+            ^
+
+"Test_name.c", line 21: warning: variable "pp2" was declared but never referenced
+    int const A::* const A::* pp2 = pp;
+                              ^
+
+"Test_name.c", line 35: warning: argument of type "int *(*)[1]" is incompatible with parameter of type "const int *(*)[1]"
+    aquals2a(pp2); // expected-error {{no matching}}
+             ^
+
+"Test_name.c", line 32: warning: variable "p2" was declared but never referenced
+    int const (*p2)[1] = p;
+                ^
+
+1 error detected in the compilation of "Test_name.c".

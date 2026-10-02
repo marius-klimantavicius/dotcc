@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 -DUNDEFINED Test_name.c
+"Test_name.c", line 19: warning: function "std_example::x" was referenced but not defined
+    static int x(); // no definition of x required
+               ^
+
+"Test_name.c", line 31: warning: function "odr_use_in_selected_arm::x" was referenced but not defined
+    static int x(); // expected-warning {{is not defined}}
+               ^
+

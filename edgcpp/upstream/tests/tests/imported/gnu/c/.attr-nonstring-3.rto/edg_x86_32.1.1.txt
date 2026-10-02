@@ -1,0 +1,241 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./range.h", line 13: warning: declaration of "size_t" does not match the expected type "unsigned int"
+  typedef long unsigned int size_t;
+                            ^
+
+"./attr-nonstring-3.c", line 35: warning: integer conversion resulted in truncation
+    size_t n = 0x7fffffffffffffffL;
+               ^
+
+"./attr-nonstring-3.c", line 48: warning: unknown attribute "nonstring"
+    do { extern char a48[]; extern __attribute__ ((nonstring)) char b48[]; sink (strncmp (a48, b48, 3)); } while (0);
+                                                   ^
+
+"./attr-nonstring-3.c", line 49: warning: unknown attribute "nonstring"
+    do { extern char a49[]; extern __attribute__ ((nonstring)) char b49[]; sink (strncmp (a49, b49, n)); } while (0);
+                                                   ^
+
+"./attr-nonstring-3.c", line 50: warning: unknown attribute "nonstring"
+    do { extern char a50[]; extern __attribute__ ((nonstring)) char b50[]; sink (strncmp (a50, b50, n + 1)); } while (0);
+                                                   ^
+
+"./attr-nonstring-3.c", line 52: warning: unknown attribute "nonstring"
+    do { extern char a52[5]; extern __attribute__ ((nonstring)) char b52[]; sink (strncmp (a52, b52, 4)); } while (0);
+                                                    ^
+
+"./attr-nonstring-3.c", line 53: warning: unknown attribute "nonstring"
+    do { extern char a53[5]; extern __attribute__ ((nonstring)) char b53[]; sink (strncmp (a53, b53, 5)); } while (0);
+                                                    ^
+
+"./attr-nonstring-3.c", line 54: warning: unknown attribute "nonstring"
+    do { extern char a54[5]; extern __attribute__ ((nonstring)) char b54[]; sink (strncmp (a54, b54, 6)); } while (0);
+                                                    ^
+
+"./attr-nonstring-3.c", line 55: warning: unknown attribute "nonstring"
+    do { extern char a55[5]; extern __attribute__ ((nonstring)) char b55[]; sink (strncmp (a55, b55, n)); } while (0);
+                                                    ^
+
+"./attr-nonstring-3.c", line 56: warning: unknown attribute "nonstring"
+    do { extern char a56[6]; extern __attribute__ ((nonstring)) char b56[]; sink (strncmp (a56, b56, n + 1)); } while (0);
+                                                    ^
+
+"./attr-nonstring-3.c", line 58: warning: unknown attribute "nonstring"
+    do { extern char a58[]; extern __attribute__ ((nonstring)) char b58[7]; sink (strncmp (a58, b58, n)); } while (0);
+                                                   ^
+
+"./attr-nonstring-3.c", line 60: warning: unknown attribute "nonstring"
+    do { extern char a60[]; extern __attribute__ ((nonstring)) char b60[8]; sink (strncmp (a60, b60, n + 1)); } while (0);
+                                                   ^
+
+"./attr-nonstring-3.c", line 62: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a62[]; extern char b62[]; sink (strncmp (a62, b62, n)); } while (0);
+                                ^
+
+"./attr-nonstring-3.c", line 63: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a63[]; extern char b63[]; sink (strncmp (a63, b63, n + 1)); } while (0);
+                                ^
+
+"./attr-nonstring-3.c", line 65: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a65[9]; extern char b65[]; sink (strncmp (a65, b65, n)); } while (0);
+                                ^
+
+"./attr-nonstring-3.c", line 66: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a66[10]; extern char b66[]; sink (strncmp (a66, b66, n + 1)); } while (0);
+                                ^
+
+"./attr-nonstring-3.c", line 68: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a68[]; extern char b68[11]; sink (strncmp (a68, b68, 11)); } while (0);
+                                ^
+
+"./attr-nonstring-3.c", line 69: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a69[]; extern char b69[11]; sink (strncmp (a69, b69, n)); } while (0);
+                                ^
+
+"./attr-nonstring-3.c", line 70: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a70[]; extern char b70[12]; sink (strncmp (a70, b70, n + 1)); } while (0);
+                                ^
+
+"./attr-nonstring-3.c", line 72: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a72[]; extern __attribute__ ((nonstring)) char b72[]; sink (strncmp (a72, b72, n)); } while (0);
+                                ^
+
+"./attr-nonstring-3.c", line 72: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a72[]; extern __attribute__ ((nonstring)) char b72[]; sink (strncmp (a72, b72, n)); } while (0);
+                                                                               ^
+
+"./attr-nonstring-3.c", line 73: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a73[]; extern __attribute__ ((nonstring)) char b73[]; sink (strncmp (a73, b73, n + 1)); } while (0);
+                                ^
+
+"./attr-nonstring-3.c", line 73: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a73[]; extern __attribute__ ((nonstring)) char b73[]; sink (strncmp (a73, b73, n + 1)); } while (0);
+                                                                               ^
+
+"./attr-nonstring-3.c", line 75: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a75[13]; extern __attribute__ ((nonstring)) char b75[]; sink (strncmp (a75, b75, 13)); } while (0);
+                                ^
+
+"./attr-nonstring-3.c", line 75: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a75[13]; extern __attribute__ ((nonstring)) char b75[]; sink (strncmp (a75, b75, 13)); } while (0);
+                                                                                 ^
+
+"./attr-nonstring-3.c", line 76: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a76[13]; extern __attribute__ ((nonstring)) char b76[]; sink (strncmp (a76, b76, n)); } while (0);
+                                ^
+
+"./attr-nonstring-3.c", line 76: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a76[13]; extern __attribute__ ((nonstring)) char b76[]; sink (strncmp (a76, b76, n)); } while (0);
+                                                                                 ^
+
+"./attr-nonstring-3.c", line 77: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a77[14]; extern __attribute__ ((nonstring)) char b77[]; sink (strncmp (a77, b77, n + 1)); } while (0);
+                                ^
+
+"./attr-nonstring-3.c", line 77: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a77[14]; extern __attribute__ ((nonstring)) char b77[]; sink (strncmp (a77, b77, n + 1)); } while (0);
+                                                                                 ^
+
+"./attr-nonstring-3.c", line 79: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a79[]; extern __attribute__ ((nonstring)) char b79[15]; sink (strncmp (a79, b79, 15)); } while (0);
+                                ^
+
+"./attr-nonstring-3.c", line 79: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a79[]; extern __attribute__ ((nonstring)) char b79[15]; sink (strncmp (a79, b79, 15)); } while (0);
+                                                                               ^
+
+"./attr-nonstring-3.c", line 80: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a80[]; extern __attribute__ ((nonstring)) char b80[15]; sink (strncmp (a80, b80, 16)); } while (0);
+                                ^
+
+"./attr-nonstring-3.c", line 80: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a80[]; extern __attribute__ ((nonstring)) char b80[15]; sink (strncmp (a80, b80, 16)); } while (0);
+                                                                               ^
+
+"./attr-nonstring-3.c", line 81: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a81[]; extern __attribute__ ((nonstring)) char b81[16]; sink (strncmp (a81, b81, n + 1)); } while (0);
+                                ^
+
+"./attr-nonstring-3.c", line 81: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a81[]; extern __attribute__ ((nonstring)) char b81[16]; sink (strncmp (a81, b81, n + 1)); } while (0);
+                                                                               ^
+
+"./attr-nonstring-3.c", line 87: warning: integer conversion resulted in truncation
+    size_t n = 0x7fffffffffffffffL;
+               ^
+
+"./attr-nonstring-3.c", line 100: warning: unknown attribute "nonstring"
+    do { extern char a100[]; extern __attribute__ ((nonstring)) char b100[]; sink (strncmp (a100, b100, n)); } while (0);
+                                                    ^
+
+"./attr-nonstring-3.c", line 101: warning: unknown attribute "nonstring"
+    do { extern char a101[]; extern __attribute__ ((nonstring)) char b101[]; sink (strncmp (a101, b101, n + 1)); } while (0);
+                                                    ^
+
+"./attr-nonstring-3.c", line 103: warning: unknown attribute "nonstring"
+    do { extern char a103[5]; extern __attribute__ ((nonstring)) char b103[]; sink (strncmp (a103, b103, n)); } while (0);
+                                                     ^
+
+"./attr-nonstring-3.c", line 104: warning: unknown attribute "nonstring"
+    do { extern char a104[6]; extern __attribute__ ((nonstring)) char b104[]; sink (strncmp (a104, b104, n + 1)); } while (0);
+                                                     ^
+
+"./attr-nonstring-3.c", line 106: warning: unknown attribute "nonstring"
+    do { extern char a106[]; extern __attribute__ ((nonstring)) char b106[7]; sink (strncmp (a106, b106, n)); } while (0);
+                                                    ^
+
+"./attr-nonstring-3.c", line 108: warning: unknown attribute "nonstring"
+    do { extern char a108[]; extern __attribute__ ((nonstring)) char b108[8]; sink (strncmp (a108, b108, n + 1)); } while (0);
+                                                    ^
+
+"./attr-nonstring-3.c", line 110: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a110[]; extern char b110[]; sink (strncmp (a110, b110, n)); } while (0);
+                                ^
+
+"./attr-nonstring-3.c", line 111: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a111[]; extern char b111[]; sink (strncmp (a111, b111, n + 1)); } while (0);
+                                ^
+
+"./attr-nonstring-3.c", line 113: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a113[9]; extern char b113[]; sink (strncmp (a113, b113, n)); } while (0);
+                                ^
+
+"./attr-nonstring-3.c", line 114: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a114[10]; extern char b114[]; sink (strncmp (a114, b114, n + 1)); } while (0);
+                                ^
+
+"./attr-nonstring-3.c", line 116: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a116[]; extern char b116[11]; sink (strncmp (a116, b116, n)); } while (0);
+                                ^
+
+"./attr-nonstring-3.c", line 117: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a117[]; extern char b117[12]; sink (strncmp (a117, b117, n + 1)); } while (0);
+                                ^
+
+"./attr-nonstring-3.c", line 119: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a119[]; extern __attribute__ ((nonstring)) char b119[]; sink (strncmp (a119, b119, n)); } while (0);
+                                ^
+
+"./attr-nonstring-3.c", line 119: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a119[]; extern __attribute__ ((nonstring)) char b119[]; sink (strncmp (a119, b119, n)); } while (0);
+                                                                                ^
+
+"./attr-nonstring-3.c", line 120: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a120[]; extern __attribute__ ((nonstring)) char b120[]; sink (strncmp (a120, b120, n + 1)); } while (0);
+                                ^
+
+"./attr-nonstring-3.c", line 120: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a120[]; extern __attribute__ ((nonstring)) char b120[]; sink (strncmp (a120, b120, n + 1)); } while (0);
+                                                                                ^
+
+"./attr-nonstring-3.c", line 122: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a122[13]; extern __attribute__ ((nonstring)) char b122[]; sink (strncmp (a122, b122, n)); } while (0);
+                                ^
+
+"./attr-nonstring-3.c", line 122: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a122[13]; extern __attribute__ ((nonstring)) char b122[]; sink (strncmp (a122, b122, n)); } while (0);
+                                                                                  ^
+
+"./attr-nonstring-3.c", line 123: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a123[14]; extern __attribute__ ((nonstring)) char b123[]; sink (strncmp (a123, b123, n + 1)); } while (0);
+                                ^
+
+"./attr-nonstring-3.c", line 123: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a123[14]; extern __attribute__ ((nonstring)) char b123[]; sink (strncmp (a123, b123, n + 1)); } while (0);
+                                                                                  ^
+
+"./attr-nonstring-3.c", line 125: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a125[]; extern __attribute__ ((nonstring)) char b125[15]; sink (strncmp (a125, b125, n)); } while (0);
+                                ^
+
+"./attr-nonstring-3.c", line 125: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a125[]; extern __attribute__ ((nonstring)) char b125[15]; sink (strncmp (a125, b125, n)); } while (0);
+                                                                                ^
+
+"./attr-nonstring-3.c", line 126: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a126[]; extern __attribute__ ((nonstring)) char b126[16]; sink (strncmp (a126, b126, n + 1)); } while (0);
+                                ^
+
+"./attr-nonstring-3.c", line 126: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a126[]; extern __attribute__ ((nonstring)) char b126[16]; sink (strncmp (a126, b126, n + 1)); } while (0);
+                                                                                ^
+

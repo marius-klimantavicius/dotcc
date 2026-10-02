@@ -1,0 +1,78 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 15: error: the default constructor of "bad_union" cannot be referenced -- it is a deleted function
+  bad_union u; // expected-error {{call to implicitly-deleted default constructor}}
+            ^
+
+"Test_name.c", line 15: error: function "bad_union::~bad_union()" (declared implicitly) cannot be referenced -- it is a deleted function
+  bad_union u; // expected-error {{call to implicitly-deleted default constructor}}
+            ^
+
+"Test_name.c", line 19: error: variable "u2" has an uninitialized const or reference member
+  bad_union2 u2; // expected-error {{call to implicitly-deleted default constructor}}
+             ^
+
+"Test_name.c", line 26: error: the default constructor of "bad_anon" cannot be referenced -- it is a deleted function
+  bad_anon a; // expected-error {{call to implicitly-deleted default constructor}}
+           ^
+
+"Test_name.c", line 26: error: function "bad_anon::~bad_anon()" (declared implicitly) cannot be referenced -- it is a deleted function
+  bad_anon a; // expected-error {{call to implicitly-deleted default constructor}}
+           ^
+
+"Test_name.c", line 32: error: variable "a2" has an uninitialized const or reference member
+  bad_anon2 a2; // expected-error {{call to implicitly-deleted default constructor}}
+            ^
+
+"Test_name.c", line 39: error: variable "gu" has an uninitialized const or reference member
+  good_union gu;
+             ^
+
+"Test_name.c", line 46: error: variable "ga" has an uninitialized const or reference member
+  good_anon ga;
+            ^
+
+"Test_name.c", line 60: error: variable "bc" has an uninitialized const or reference member
+  bad_const bc; // expected-error {{call to implicitly-deleted default constructor}}
+            ^
+
+"Test_name.c", line 77: error: the default constructor of "bad_field_default" cannot be referenced -- it is a deleted function
+  bad_field_default bfd; // expected-error {{call to implicitly-deleted default constructor}}
+                    ^
+
+"Test_name.c", line 80: error: the default constructor of "bad_base_default" cannot be referenced -- it is a deleted function
+  bad_base_default bbd; // expected-error {{call to implicitly-deleted default constructor}}
+                   ^
+
+"Test_name.c", line 85: error: no default constructor exists for class "bad_field_dtor"
+  bad_field_dtor bfx; // expected-error {{call to implicitly-deleted default constructor}}
+                 ^
+
+"Test_name.c", line 85: error: function "bad_field_dtor::~bad_field_dtor()" (declared implicitly) cannot be referenced -- it is a deleted function
+  bad_field_dtor bfx; // expected-error {{call to implicitly-deleted default constructor}}
+                 ^
+
+"Test_name.c", line 88: error: the default constructor of "bad_base_dtor" cannot be referenced -- it is a deleted function
+  bad_base_dtor bbx; // expected-error {{call to implicitly-deleted default constructor}}
+                ^
+
+"Test_name.c", line 88: error: function "bad_base_dtor::~bad_base_dtor()" (declared implicitly) cannot be referenced -- it is a deleted function
+  bad_base_dtor bbx; // expected-error {{call to implicitly-deleted default constructor}}
+                ^
+
+"Test_name.c", line 97: error: the default constructor of "has_amb_field" cannot be referenced -- it is a deleted function
+  has_amb_field haf; // expected-error {{call to implicitly-deleted default constructor}}
+                ^
+
+"Test_name.c", line 105: error: the default constructor of "has_inacc_field" cannot be referenced -- it is a deleted function
+  has_inacc_field hif; // expected-error {{call to implicitly-deleted default constructor}}
+                  ^
+
+"Test_name.c", line 120: error: the default constructor of "defaulted_delete" cannot be referenced -- it is a deleted function
+  defaulted_delete dd; // expected-error {{call to implicitly-deleted default constructor}}
+                   ^
+
+"Test_name.c", line 123: error: the default constructor of "no_default" cannot be referenced -- it is a deleted function
+    no_default nd; // expected-note {{because field 'nd' has a deleted default constructor}}
+               ^
+
+19 errors detected in the compilation of "Test_name.c".

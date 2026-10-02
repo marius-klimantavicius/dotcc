@@ -1,0 +1,14 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./torture/float128-nan.c", line 30: error: invalid size for bit field
+      uint64_t mant_low:64;
+                        ^
+
+"./torture/float128-nan.c", line 31: error: invalid size for bit field
+      uint64_t mant_high:47;
+                         ^
+
+"./torture/float128-nan.c", line 41: warning: unknown attribute "noclone"
+  __attribute__((noinline, noclone))
+                           ^
+
+2 errors detected in the compilation of "Test_name.c".

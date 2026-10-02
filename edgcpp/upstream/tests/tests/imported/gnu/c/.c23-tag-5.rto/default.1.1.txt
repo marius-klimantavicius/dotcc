@@ -1,0 +1,5 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 25: warning: a value of type "struct product_iSfd_ *" cannot be used to initialize an entity of type "struct product_iSid_ *"
+  	product_type(iSid_, int, sum_type(id, int, double)) *wp = &y; /* { dg-warning "incompatible pointer type" } */
+  	                                                          ^
+

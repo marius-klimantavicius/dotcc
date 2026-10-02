@@ -1,0 +1,14 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 14: error: "C::i" is ambiguous
+  struct CC : C { using C::i; };
+                        ^
+
+"Test_name.c", line 19: error: "CC::i" is ambiguous
+    CC::i = 0;     // Error
+        ^
+
+"Test_name.c", line 22: error: "CC::j" is ambiguous
+    CC::j = 0;     // Error
+        ^
+
+3 errors detected in the compilation of "Test_name.c".

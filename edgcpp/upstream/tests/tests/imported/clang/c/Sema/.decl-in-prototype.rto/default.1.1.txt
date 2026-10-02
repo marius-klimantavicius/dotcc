@@ -1,0 +1,158 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c17 Test_name.c
+"Test_name.c", line 10: warning: variable "arr1" was declared but never referenced
+    SA(1, AA == 0);
+    ^
+
+"Test_name.c", line 11: warning: variable "arr2" was declared but never referenced
+    SA(2, BB == 1);
+    ^
+
+"Test_name.c", line 16: warning: variable "arr1" was declared but never referenced
+    SA(1, AA == 7);
+    ^
+
+"Test_name.c", line 17: warning: variable "arr2" was declared but never referenced
+    SA(2, BB == 8);
+    ^
+
+"Test_name.c", line 24: warning: declaration is not visible outside of function
+  int f3(struct a { } *); // expected-warning {{will not be visible outside of this function}}
+                ^
+
+"Test_name.c", line 28: warning: declaration is not visible outside of function
+  int f4(struct A { struct b { int j; } t; } *); // expected-warning {{declaration of 'struct A' will not be visible outside of this function}} expected-warning {{redefinition of 'b' will not be visible outside of this function}}
+                ^
+
+"Test_name.c", line 28: warning: declaration is not visible outside of function
+  int f4(struct A { struct b { int j; } t; } *); // expected-warning {{declaration of 'struct A' will not be visible outside of this function}} expected-warning {{redefinition of 'b' will not be visible outside of this function}}
+                           ^
+
+"Test_name.c", line 36: warning: declaration is not visible outside of function
+  int f5(struct aA { struct ab { int j; } b; struct ab { char glorx; } glorx; } *); // expected-warning {{declaration of 'struct aA' will not be visible}} expected-warning {{redefinition of 'ab' will not be visible}} expected-warning {{redefinition of 'ab' will not be visible}}
+                ^
+
+"Test_name.c", line 36: warning: declaration is not visible outside of function
+  int f5(struct aA { struct ab { int j; } b; struct ab { char glorx; } glorx; } *); // expected-warning {{declaration of 'struct aA' will not be visible}} expected-warning {{redefinition of 'ab' will not be visible}} expected-warning {{redefinition of 'ab' will not be visible}}
+                            ^
+
+"Test_name.c", line 36: warning: declaration is not visible outside of function
+  int f5(struct aA { struct ab { int j; } b; struct ab { char glorx; } glorx; } *); // expected-warning {{declaration of 'struct aA' will not be visible}} expected-warning {{redefinition of 'ab' will not be visible}} expected-warning {{redefinition of 'ab' will not be visible}}
+                                                    ^
+
+"Test_name.c", line 36: error: "ab" has already been declared in the current scope
+  int f5(struct aA { struct ab { int j; } b; struct ab { char glorx; } glorx; } *); // expected-warning {{declaration of 'struct aA' will not be visible}} expected-warning {{redefinition of 'ab' will not be visible}} expected-warning {{redefinition of 'ab' will not be visible}}
+                                                    ^
+
+"Test_name.c", line 38: warning: declaration is not visible outside of function
+  void f6(struct z {int b;} c) { // expected-warning {{declaration of 'struct z' will not be visible outside of this function}}
+                 ^
+
+"Test_name.c", line 39: warning: variable "d" was set but never used
+      struct z d;
+               ^
+
+"Test_name.c", line 43: warning: declaration is not visible outside of function
+  void pr19018_1 (enum e19018 { qq } x); // expected-warning{{declaration of 'enum e19018' will not be visible outside of this function}}
+                       ^
+
+"Test_name.c", line 48: warning: declaration is not visible outside of function
+  void f(struct q *, struct __attribute__((aligned(4))) q *); // expected-warning {{will not be visible outside}}
+                ^
+
+"Test_name.c", line 54: warning: use of a const variable in a constant expression is nonstandard in C
+    SA(1, AA == 5); // expected-warning{{variable length array folded to constant array as an extension}}
+    ^
+
+"Test_name.c", line 54: warning: variable "arr1" was declared but never referenced
+    SA(1, AA == 5); // expected-warning{{variable length array folded to constant array as an extension}}
+    ^
+
+"Test_name.c", line 55: warning: variable "arr2" was declared but never referenced
+    SA(2, BB == 0);
+    ^
+
+"Test_name.c", line 59: warning: declaration is not visible outside of function
+    extern void ext(struct S { enum E7 { a, b } o; } p); // expected-warning 2 {{will not be visible}}
+                           ^
+
+"Test_name.c", line 59: warning: declaration is not visible outside of function
+    extern void ext(struct S { enum E7 { a, b } o; } p); // expected-warning 2 {{will not be visible}}
+                                    ^
+
+"Test_name.c", line 60: error: identifier "a" is undefined
+    ext(a); // expected-error {{use of undeclared identifier}}
+        ^
+
+"Test_name.c", line 63: warning: declaration is not visible outside of function
+  int f8(struct S { enum E8 { a, b } o; } p) { // expected-warning 2 {{will not be visible}}
+                ^
+
+"Test_name.c", line 63: warning: declaration is not visible outside of function
+  int f8(struct S { enum E8 { a, b } o; } p) { // expected-warning 2 {{will not be visible}}
+                         ^
+
+"Test_name.c", line 64: warning: variable "o" was declared but never referenced
+    struct S o;
+             ^
+
+"Test_name.c", line 65: warning: variable "x" was declared but never referenced
+    enum E8 x;
+            ^
+
+"Test_name.c", line 71: error: incomplete type "enum E8" is not allowed
+  enum E8 x = a + b; // expected-error 2 {{undeclared identifier}} expected-error {{incomplete type 'enum E8'}}
+          ^
+
+"Test_name.c", line 71: error: identifier "a" is undefined
+  enum E8 x = a + b; // expected-error 2 {{undeclared identifier}} expected-error {{incomplete type 'enum E8'}}
+              ^
+
+"Test_name.c", line 71: error: identifier "b" is undefined
+  enum E8 x = a + b; // expected-error 2 {{undeclared identifier}} expected-error {{incomplete type 'enum E8'}}
+                  ^
+
+"Test_name.c", line 73: warning: declaration is not visible outside of function
+  int f9(struct { enum e { a = 1 } b; } c) { // expected-warning {{will not be visible}}
+                       ^
+
+"Test_name.c", line 78: warning: declaration is not visible outside of function
+    struct S { // expected-warning {{will not be visible}}
+           ^
+
+"Test_name.c", line 79: warning: declaration is not visible outside of function
+      enum E10 { a, b, c } f; // expected-warning {{will not be visible}}
+           ^
+
+"Test_name.c", line 85: warning: declaration is not visible outside of function
+    struct S { // expected-warning {{will not be visible}}
+           ^
+
+"Test_name.c", line 86: warning: declaration is not visible outside of function
+      enum E11 { // expected-warning {{will not be visible}}
+           ^
+
+"Test_name.c", line 89: error: expected an identifier
+    } // expected-error {{expected member name or ';'}}
+    ^
+
+"Test_name.c", line 89: warning: expected a ";"
+    } // expected-error {{expected member name or ';'}}
+    ^
+
+"Test_name.c", line 94: warning: declaration is not visible outside of function
+        struct S12 { } e // expected-warning {{will not be visible}}
+               ^
+
+"Test_name.c", line 96: error: incomplete type "struct S12" is not allowed
+    struct S12 o; // expected-error {{incomplete type}} expected-note {{forward declaration}}
+               ^
+
+"Test_name.c", line 44: error: variable "qq" was declared with a never-completed type
+  enum e19018 qq; //expected-error{{tentative definition has type 'enum e19018' that is never completed}} \
+              ^
+
+"Test_name.c", line 69: error: variable "o" was declared with a never-completed type
+  struct S o; // expected-error {{'struct S' that is never completed}}
+           ^
+
+9 errors detected in the compilation of "Test_name.c".

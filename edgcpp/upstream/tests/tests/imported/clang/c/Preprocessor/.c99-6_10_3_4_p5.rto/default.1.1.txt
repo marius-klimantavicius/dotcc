@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -w --c Test_name.c
+"Test_name.c", line 20: error: expected a type specifier
+              f(y+1) + f(f(z)) % t(t(g)(0) + t)(1); 
+              ^
+
+"Test_name.c", line 20: error: expected a "{"
+              f(y+1) + f(f(z)) % t(t(g)(0) + t)(1); 
+                     ^
+
+"Test_name.c", line 23: error: expected an expression
+  p() i[q()] = { q(1), r(2,3), r(4,), r(,5), r(,) }; 
+                                                  ^
+
+"Test_name.c", line 23: error: expected a ";"
+  p() i[q()] = { q(1), r(2,3), r(4,), r(,5), r(,) }; 
+                                                  ^
+
+4 errors detected in the compilation of "Test_name.c".

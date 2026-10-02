@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c++17 -tused -A Test_name.c
+"Test_name.c", line 7: error: no instance of function template "f" matches the argument list
+            argument types are: (A<1>)
+  f(a); // error: deduction fails for conversion from int
+  ^
+"Test_name.c", line 4: note: candidate function template "f" failed deduction
+  template<short s> void f(A<s>);
+                         ^
+
+1 error detected in the compilation of "Test_name.c".

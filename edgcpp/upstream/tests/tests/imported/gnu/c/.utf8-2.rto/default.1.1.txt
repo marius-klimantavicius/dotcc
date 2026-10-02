@@ -1,0 +1,70 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"./utf8-2.c", line 10: error: identifier "u8" is undefined
+  const char s0[] = u8"ab";
+                    ^
+
+"./utf8-2.c", line 10: error: expected a ";"
+  const char s0[] = u8"ab";
+                      ^
+
+"./utf8-2.c", line 11: error: expected a ";"
+  const char16_t s1[] = u8"ab";
+                          ^
+
+"./utf8-2.c", line 12: error: expected a ";"
+  const char32_t s2[] = u8"ab";
+                          ^
+
+"./utf8-2.c", line 13: error: expected a ";"
+  const wchar_t s3[] = u8"ab";
+                         ^
+
+"./utf8-2.c", line 15: error: expected a ";"
+  const char t0[0] = u8"ab";
+                       ^
+
+"./utf8-2.c", line 16: error: expected a ";"
+  const char t1[1] = u8"ab";
+                       ^
+
+"./utf8-2.c", line 17: error: expected a ";"
+  const char t2[2] = u8"ab";
+                       ^
+
+"./utf8-2.c", line 18: error: expected a ";"
+  const char t3[3] = u8"ab";
+                       ^
+
+"./utf8-2.c", line 19: error: expected a ";"
+  const char t4[4] = u8"ab";
+                       ^
+
+"./utf8-2.c", line 21: error: expected a ";"
+  const char u0[0] = u8"\u2160.";
+                       ^
+
+"./utf8-2.c", line 22: error: expected a ";"
+  const char u1[1] = u8"\u2160.";
+                       ^
+
+"./utf8-2.c", line 23: error: expected a ";"
+  const char u2[2] = u8"\u2160.";
+                       ^
+
+"./utf8-2.c", line 24: error: expected a ";"
+  const char u3[3] = u8"\u2160.";
+                       ^
+
+"./utf8-2.c", line 25: error: expected a ";"
+  const char u4[4] = u8"\u2160.";
+                       ^
+
+"./utf8-2.c", line 26: error: expected a ";"
+  const char u5[5] = u8"\u2160.";
+                       ^
+
+"./utf8-2.c", line 27: error: expected a ";"
+  const char u6[6] = u8"\u2160.";
+                       ^
+
+17 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 7: error: default argument not at end of parameter list
+  template<class T1 = int, // expected-note{{previous default template argument defined here}}
+                 ^
+
+"Test_name.c", line 11: error: default argument not at end of parameter list
+  template<template<class> class = Y1, // expected-note{{previous default template argument defined here}}
+                                 ^
+
+"Test_name.c", line 15: error: default argument not at end of parameter list
+  template<int N = 5,  // expected-note{{previous default template argument defined here}}
+               ^
+
+3 errors detected in the compilation of "Test_name.c".

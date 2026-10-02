@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 --c++14 Test_name.c
+"Test_name.c", line 21: error: declaration is incompatible with function template "void foo::_Construct(T1 *, int)" (declared at line 8)
+    template<typename T1> friend void foo::_Construct(T1* p, double);
+                                           ^
+          detected during instantiation of class "blah<T> [with T=int]" at line 27
+
+"Test_name.c", line 22: error: declaration is incompatible with function template "void foo::_Construct(T1 *, int)" (declared at line 8)
+    template<typename T1> friend void foo::_Construct(T1* p, const char *);
+                                           ^
+          detected during instantiation of class "blah<T> [with T=int]" at line 27
+
+2 errors detected in the compilation of "Test_name.c".

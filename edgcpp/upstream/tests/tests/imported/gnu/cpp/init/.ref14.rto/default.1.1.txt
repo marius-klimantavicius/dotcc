@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: error: a member with reference type is not allowed in a union
+    int &i; // { dg-error "may not have reference type" }
+    ^
+
+"Test_name.c", line 14: error: the default constructor of "A" cannot be referenced -- it is a deleted function
+    A();
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

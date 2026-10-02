@@ -1,0 +1,26 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 13: warning: variable "pc" is used before its value is set
+    pc->i = 1;  // okay
+    ^
+
+"Test_name.c", line 12: warning: variable "pa" was set but never used
+    A *pa;
+       ^
+
+"Test_name.c", line 19: error: member "A::i" (declared at line 6) is inaccessible
+    pc->i = 1;  // error
+        ^
+
+"Test_name.c", line 19: warning: variable "pc" is used before its value is set
+    pc->i = 1;  // error
+    ^
+
+"Test_name.c", line 20: error: conversion to inaccessible base class "B" is not allowed
+    pa = pc;    // error
+         ^
+
+"Test_name.c", line 18: warning: variable "pa" was set but never used
+    A *pa;
+       ^
+
+2 errors detected in the compilation of "Test_name.c".

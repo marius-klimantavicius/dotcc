@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 7: warning: shift count is too large
+  const unsigned long Size = (1l << 58);
+                                    ^
+
+"Test_name.c", line 10: warning: use of a const variable in a constant expression is nonstandard in C
+    char padding[Size]; // expected-warning {{folded to constant}}
+                 ^
+
+"Test_name.c", line 11: warning: use of a const variable in a constant expression is nonstandard in C
+    char more_padding[1][Size]; // expected-warning {{folded to constant}}
+                         ^
+
+"Test_name.c", line 18: warning: use of a const variable in a constant expression is nonstandard in C
+    char padding[Size][Size][Size];  // expected-error {{array is too large}}
+                 ^
+
+"Test_name.c", line 18: warning: use of a const variable in a constant expression is nonstandard in C
+    char padding[Size][Size][Size];  // expected-error {{array is too large}}
+                       ^
+
+"Test_name.c", line 18: warning: use of a const variable in a constant expression is nonstandard in C
+    char padding[Size][Size][Size];  // expected-error {{array is too large}}
+                             ^
+

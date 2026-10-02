@@ -1,0 +1,36 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 12: error: expression must have a constant value
+    explicit(foo()) S(int); // { dg-error "call to" }
+             ^
+"Test_name.c", line 12: note: cannot call non-constexpr function "foo" (declared at line 8)
+    explicit(foo()) S(int); // { dg-error "call to" }
+             ^
+
+"Test_name.c", line 13: error: type name is not allowed
+    explicit(int) S(int, int); // { dg-error "expected" }
+             ^
+
+"Test_name.c", line 14: error: expression must have a constant value
+    explicit(false ? 1 : throw 1) S(int, int, int); // { dg-error "not a constant" }
+             ^
+"Test_name.c", line 14: note: expression cannot be interpreted
+    explicit(false ? 1 : throw 1) S(int, int, int); // { dg-error "not a constant" }
+                         ^
+
+"Test_name.c", line 19: error: invalid redeclaration of member function "S2::S2()" (declared at line 18)
+    explicit(false) S2(); // { dg-error "cannot be overloaded" }
+                    ^
+
+"Test_name.c", line 25: error: copy-list-initialization cannot use a constructor marked "explicit"
+    S s1 = { 1 };
+           ^
+
+"Test_name.c", line 26: error: copy-list-initialization cannot use a constructor marked "explicit"
+    S s2 = { 1, 2 }; // { dg-error "could not convert" }
+           ^
+
+"Test_name.c", line 27: error: copy-list-initialization cannot use a constructor marked "explicit"
+    S s3 = { 1, 2, 3 };
+           ^
+
+7 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,5 @@
+# Enable multiple translation unit support.
+COMPILE_MULTIPLE_TRANSLATION_UNITS=1
+
+# Enable sun extensions in debug builds.
+SUN_EXTENSIONS_ALLOWED=1

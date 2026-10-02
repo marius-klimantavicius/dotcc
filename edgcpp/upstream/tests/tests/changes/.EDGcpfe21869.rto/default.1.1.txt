@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --c++03 --gnu=90100 Test_name.c
+"Test_name.c", line 13: warning: call to __builtin_is_constant_evaluated appearing in a non-constexpr function always produces "false"
+      __builtin_is_constant_evaluated();
+                                     ^
+

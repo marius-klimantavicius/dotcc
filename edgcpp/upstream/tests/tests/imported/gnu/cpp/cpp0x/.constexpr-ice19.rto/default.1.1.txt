@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 14: error: a member of type "const A" cannot have an in-class initializer
+    static constexpr A a {};  // { dg-error "22:the type .const A. of .constexpr. variable .B::a. is not literal" }
+                         ^
+
+"Test_name.c", line 14: error: a constexpr variable must have a literal type or a reference type
+    static constexpr A a {};  // { dg-error "22:the type .const A. of .constexpr. variable .B::a. is not literal" }
+           ^
+
+2 errors detected in the compilation of "Test_name.c".

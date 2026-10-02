@@ -1,0 +1,18 @@
+# Import the base EDG configuration
+import <support/platform/common/base>
+
+EDG_WIN32=1
+
+# Support non-native float and integer values.
+INTEGER_VALUE_REPR_IS_A_HOST_INTEGER=0
+USE_SOFTFLOAT=1
+
+# Allow Microsoft extensions (off by default).
+import <support/feature/microsoft-extensions/on>
+DEFAULT_MICROSOFT_MODE=0
+
+# Set some Windows-friendly behaviors.
+BACKSLASH_CAN_OCCUR_AS_PART_OF_MULTIBYTE_CHAR=0
+DEFAULT_MULTIBYTE_CHARS_IN_SOURCE_ENABLED=1
+DEFAULT_USE_PREDEFINED_MACRO_FILE=0
+RUNTIME_SUPPORTS_ARRAY_LENGTH_CHECK=0

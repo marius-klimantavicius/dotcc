@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c89 Test_name.c
+"Test_name.c", line 16: warning: variable "Val" was declared but never referenced
+    int Val = (void *)0 == (int *)0;
+        ^
+

@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 Test_name.c
+"Test_name.c", line 13: error: thread-local storage class is not valid here
+  _Thread_local struct s; /* { dg-warning "useless" } */
+  ^
+
+"Test_name.c", line 19: warning: variable "x" was declared but never referenced
+    static _Thread_local int x;
+                             ^
+
+"Test_name.c", line 20: warning: variable "b" was declared but never referenced
+    extern _Thread_local long b;
+                              ^
+
+"Test_name.c", line 27: warning: const variable "v" requires an initializer
+    static _Thread_local const int v;
+                                    ^
+
+"Test_name.c", line 29: warning: const variable "p" requires an initializer
+    static _Thread_local int (*const p)[a];
+                                          ^
+
+"Test_name.c", line 27: warning: variable "v" was declared but never referenced
+    static _Thread_local const int v;
+                                   ^
+
+"Test_name.c", line 29: warning: variable "p" was declared but never referenced
+    static _Thread_local int (*const p)[a];
+                                     ^
+
+"Test_name.c", line 8: warning: variable "b" was declared but never referenced
+  static _Thread_local long b;
+                            ^
+
+"Test_name.c", line 10: warning: variable "d" was declared but never referenced
+  _Thread_local static int d;
+                           ^
+
+1 error detected in the compilation of "Test_name.c".

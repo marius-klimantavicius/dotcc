@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./floatn-align.h", line 17: error: static assertion failed with "max_align_t must be at least as aligned as _Float* types"
+  _Static_assert (_Alignof (max_align_t) >= _Alignof (_Float128),
+  ^
+"./floatn-align.h", line 17: note: the final comparison was 8 >= 16
+  _Static_assert (_Alignof (max_align_t) >= _Alignof (_Float128),
+                                         ^
+
+1 error detected in the compilation of "Test_name.c".

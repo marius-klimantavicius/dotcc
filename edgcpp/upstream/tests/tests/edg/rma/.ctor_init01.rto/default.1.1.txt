@@ -1,0 +1,22 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 9: error: "B::B(int)" (declared at line 5) is inaccessible
+  X::X() : B(0), A(-1,-1) {}
+            ^
+
+"Test_name.c", line 9: remark: the initialization of class "A" will be done before that of class "B"
+  X::X() : B(0), A(-1,-1) {}
+                 ^
+
+"Test_name.c", line 9: error: "A::A(int, int)" (declared at line 4) is inaccessible
+  X::X() : B(0), A(-1,-1) {}
+                  ^
+
+"Test_name.c", line 9: error: "C::C()" (declared at line 6) is inaccessible
+  X::X() : B(0), A(-1,-1) {}
+                          ^
+
+"Test_name.c", line 9: error: "D::D()" (declared at line 7) is inaccessible
+  X::X() : B(0), A(-1,-1) {}
+                          ^
+
+4 errors detected in the compilation of "Test_name.c".

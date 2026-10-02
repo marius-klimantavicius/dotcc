@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c11 Test_name.c
+"Test_name.c", line 10: error: attributes may not appear here
+  char c4 _Alignas(32); // expected-error {{expected ';' after top level declarator}} expected-warning {{declaration does not declare anything}}
+          ^
+
+"Test_name.c", line 14: warning: attribute does not apply to any entity
+  _Alignas(int) struct c6; // expected-warning {{'_Alignas' attribute ignored}}
+  ^
+
+1 error detected in the compilation of "Test_name.c".

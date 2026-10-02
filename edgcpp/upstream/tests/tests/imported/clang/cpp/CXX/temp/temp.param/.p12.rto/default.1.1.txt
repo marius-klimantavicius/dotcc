@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 13: error: redefinition of default argument
+           typename T2 = float> // expected-error{{template parameter redefines default argument}}
+                    ^
+
+"Test_name.c", line 23: error: redefinition of default argument
+           template<class> class = Y1> // expected-error{{template parameter redefines default argument}}
+                                 ^
+
+"Test_name.c", line 33: error: redefinition of default argument
+           int M = 7>  // expected-error{{template parameter redefines default argument}}
+               ^
+
+"Test_name.c", line 42: error: class template "Y1" is not compatible with template template parameter "<unnamed>"
+  C1<> c1; // expected-note{{while checking a default template argument}}
+     ^
+
+4 errors detected in the compilation of "Test_name.c".

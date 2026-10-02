@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=3 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 Test_name.c
+"Test_name.c", line 8: error: identifier "selectany" is undefined
+  const int __declspec(selectany) test1 = 0; // expected-error {{'selectany' can only be applied to data items with external linkage}}
+                       ^
+
+"Test_name.c", line 8: error: expected a ";"
+  const int __declspec(selectany) test1 = 0; // expected-error {{'selectany' can only be applied to data items with external linkage}}
+                                  ^
+
+"Test_name.c", line 12: error: explicit type is missing ("int" assumed)
+  extern __declspec(selectany) const int test2; // expected-warning {{attribute declaration must precede definition}}
+         ^
+
+"Test_name.c", line 12: error: variable "__declspec" has already been defined (previous definition at line 8)
+  extern __declspec(selectany) const int test2; // expected-warning {{attribute declaration must precede definition}}
+         ^
+
+"Test_name.c", line 12: error: expected a ";"
+  extern __declspec(selectany) const int test2; // expected-warning {{attribute declaration must precede definition}}
+                               ^
+
+"Test_name.c", line 15: error: variable "__declspec" has already been defined (previous definition at line 8)
+  const int __declspec(selectany) test3 = 42; // Standard usage.
+            ^
+
+"Test_name.c", line 15: error: expected a ";"
+  const int __declspec(selectany) test3 = 42; // Standard usage.
+                                  ^
+
+"Test_name.c", line 20: error: this declaration has no storage class or type specifier
+  __declspec(selectany) constexpr int Test4::sdm; // no warning
+  ^
+
+"Test_name.c", line 20: error: variable "__declspec" has already been defined (previous definition at line 8)
+  __declspec(selectany) constexpr int Test4::sdm; // no warning
+  ^
+
+"Test_name.c", line 20: error: expected a ";"
+  __declspec(selectany) constexpr int Test4::sdm; // no warning
+                        ^
+
+10 errors detected in the compilation of "Test_name.c".

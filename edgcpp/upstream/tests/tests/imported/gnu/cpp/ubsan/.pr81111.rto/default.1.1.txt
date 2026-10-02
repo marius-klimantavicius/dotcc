@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 30: warning: expression has no effect
+    N<long long>::m;
+    ^
+
+"Test_name.c", line 31: warning: expression has no effect
+    N<unsigned long long>::m;
+    ^
+
+"Test_name.c", line 33: warning: expression has no effect
+    N<__int128>::m;
+    ^
+
+"Test_name.c", line 34: warning: expression has no effect
+    N<unsigned __int128>::m;
+    ^
+
+"Test_name.c", line 41: warning: expression has no effect
+    O<long long>::m;
+    ^
+
+"Test_name.c", line 42: warning: expression has no effect
+    O<unsigned long long>::m;
+    ^
+
+"Test_name.c", line 44: warning: expression has no effect
+    O<__int128>::m;
+    ^
+
+"Test_name.c", line 45: warning: expression has no effect
+    O<unsigned __int128>::m;
+    ^
+

@@ -1,0 +1,3 @@
+eccp -DTEST_NUMBER=1 -tused tu2.cpp --c++17 Test_name.c
+tu2.cpp:
+Test_name.c:

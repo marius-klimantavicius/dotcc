@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 40: error: a requires-clause is not allowed here (not a templated function)
+        return [] () requires requires (T t, U u, V v) { t + u + v; } { };
+                     ^
+
+"Test_name.c", line 47: error: no instance of function template "lambda [](V)->auto" matches the argument list
+            argument types are: (std::nullptr_t)
+            object type is: lambda [](V)->auto
+    A<int>::a(0)(nullptr); // { dg-error "no match" }
+    ^
+"Test_name.c", line 9: note: substituting "<std::nullptr_t>" for function template "lambda [](V)->auto" failed constraints
+      return [] <class V> (V) requires requires (T t, U u, V v) { t + u + v; } { };
+                ^
+"Test_name.c", line 9: note: atomic constraint evaluates to false
+      return [] <class V> (V) requires requires (T t, U u, V v) { t + u + v; } { };
+                                       ^
+
+"Test_name.c", line 50: error: no instance of function template "lambda [](V)->auto" matches the argument list
+            argument types are: (std::nullptr_t)
+            object type is: lambda [](V)->auto
+    A<int>::b<int>(0)(nullptr); // { dg-error "no match" }
+    ^
+"Test_name.c", line 14: note: substituting "<std::nullptr_t>" for function template "lambda [](V)->auto" failed constraints
+      return [] <class V> (V) requires requires (T t, U u, V v, W w) { t + u + v + w; } { };
+                ^
+"Test_name.c", line 14: note: atomic constraint evaluates to false
+      return [] <class V> (V) requires requires (T t, U u, V v, W w) { t + u + v + w; } { };
+                                       ^
+
+"Test_name.c", line 53: error: no instance of function template "lambda [](V)->auto" matches the argument list
+            argument types are: (std::nullptr_t)
+            object type is: lambda [](V)->auto
+    A<int>::f()(0)(nullptr); // { dg-error "no match" }
+    ^
+"Test_name.c", line 19: note: substituting "<std::nullptr_t>" for function template "lambda [](V)->auto" failed constraints
+        return [] <class V> (V) requires requires (T t, U u, V v) { t + u + v; } { };
+                  ^
+"Test_name.c", line 19: note: atomic constraint evaluates to false
+        return [] <class V> (V) requires requires (T t, U u, V v) { t + u + v; } { };
+                                         ^
+
+"Test_name.c", line 56: error: no instance of function template "lambda [](V)->auto" matches the argument list
+            argument types are: (std::nullptr_t)
+            object type is: lambda [](V)->auto
+    A<int>::g<int>()(0)(nullptr); // { dg-error "no match" }
+    ^
+"Test_name.c", line 26: note: substituting "<std::nullptr_t>" for function template "lambda [](V)->auto" failed constraints
+        return [] <class V> (V) requires requires (T t, U u, V v, W w) { t + u + v + w; } { };
+                  ^
+"Test_name.c", line 26: note: atomic constraint evaluates to false
+        return [] <class V> (V) requires requires (T t, U u, V v, W w) { t + u + v + w; } { };
+                                         ^
+
+"Test_name.c", line 59: error: no instance of function template "lambda [](V)->auto" matches the argument list
+            argument types are: (std::nullptr_t)
+            object type is: lambda [](V)->auto
+    a<int>(0)(nullptr); // { dg-error "no match" }
+    ^
+"Test_name.c", line 33: note: substituting "<std::nullptr_t>" for function template "lambda [](V)->auto" failed constraints
+    return [] <class V> (V) requires requires (T t, U u, V v) { t + u + v; } { };
+              ^
+"Test_name.c", line 33: note: atomic constraint evaluates to false
+    return [] <class V> (V) requires requires (T t, U u, V v) { t + u + v; } { };
+                                     ^
+
+6 errors detected in the compilation of "Test_name.c".

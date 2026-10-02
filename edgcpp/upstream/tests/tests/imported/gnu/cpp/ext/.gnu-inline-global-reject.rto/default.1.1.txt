@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++03 Test_name.c
+"./ext/gnu-inline-global-reject.C", line 14: error: function was previously declared without the "gnu_inline" attribute
+   __attribute__((gnu_inline)) inline int func_decl_inline_before (void) { return 0; }
+                  ^
+
+"./ext/gnu-inline-global-reject.C", line 19: error: this declaration is missing the gnu_inline attribute specified in the previous declaration at line 18
+   inline int func_decl_inline_after (void);
+              ^
+
+"./ext/gnu-inline-global-reject.C", line 24: error: function "func_def_gnuin_redef" has already been defined (previous definition at line 23)
+   __attribute__((gnu_inline)) inline int func_def_gnuin_redef (void) { return 1; }
+                                          ^
+
+"./ext/gnu-inline-global-reject.C", line 29: error: function "func_def_inline_redef" has already been defined (previous definition at line 28)
+   inline int func_def_inline_redef (void) { return 1; }
+              ^
+
+"./ext/gnu-inline-global-reject.C", line 34: error: this declaration is missing the gnu_inline attribute specified in the previous declaration at line 33
+   inline int func_def_inline_after (void) { return 1; }
+              ^
+
+"./ext/gnu-inline-global-reject.C", line 34: error: function "func_def_inline_after" has already been defined (previous definition at line 33)
+   inline int func_def_inline_after (void) { return 1; }
+              ^
+
+"./ext/gnu-inline-global-reject.C", line 39: error: function was previously declared without the "gnu_inline" attribute
+   __attribute__((gnu_inline)) inline int func_def_inline_before (void) { return 1; }
+                  ^
+
+"./ext/gnu-inline-global-reject.C", line 39: error: function "func_def_inline_before" has already been defined (previous definition at line 38)
+   __attribute__((gnu_inline)) inline int func_def_inline_before (void) { return 1; }
+                                          ^
+
+"./ext/gnu-inline-global-reject.C", line 44: error: function "func_def_before" has already been defined (previous definition at line 43)
+   __attribute__((gnu_inline)) inline int func_def_before (void) { return 1; }
+                                          ^
+
+"./ext/gnu-inline-global-reject.C", line 49: error: function was previously declared without the "gnu_inline" attribute
+   __attribute__((gnu_inline)) inline int func_decl_static_inline_before (void) { return 0; }
+                  ^
+
+10 errors detected in the compilation of "Test_name.c".

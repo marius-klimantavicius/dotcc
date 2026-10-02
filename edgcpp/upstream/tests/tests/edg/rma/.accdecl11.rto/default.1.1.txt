@@ -1,0 +1,9 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --set_flag=no_checking_pragmas --cfront_3.0 Test_name.c
+"Test_name.c", line 23: remark: return type "int" omitted in declaration of function "main"
+  main () {
+  ^
+
+"Test_name.c", line 26: warning: variable "n" was declared but never referenced
+    int n = c.i;  // Does n == 1 (==> access adjustment is "stronger" than
+        ^
+

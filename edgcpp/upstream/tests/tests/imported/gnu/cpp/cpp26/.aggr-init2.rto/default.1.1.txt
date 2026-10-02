@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 --c++14 --c++11 Test_name.c
+"Test_name.c", line 23: error: an initializer cannot be specified for a flexible array member
+      int y[] = { 0 };	// { dg-error "ISO C\\\+\\\+ forbids flexible array member 'y'" "" { target c++11 } }
+              ^
+
+"Test_name.c", line 55: error: too many initializer values
+    char cv[4] = { 'a', 's', 'd', 'f', 0 };	// { dg-error "too many initializers for 'char \\\[4\\\]'" }
+                                       ^
+
+"Test_name.c", line 62: error: no suitable constructor exists to convert from "int" to "N15::u"
+    u c = 1;                        // { dg-error "conversion from 'int' to non-scalar type 'N15::u' requested" }
+          ^
+
+"Test_name.c", line 63: error: too many initializer values
+    u d = { 0, "asdf" };            // { dg-error "too many initializers for 'N15::u'" }
+               ^
+
+"Test_name.c", line 64: error: a value of type "const char *" cannot be used to initialize an entity of type "int"
+    u e = { "asdf" };               // { dg-error "invalid conversion from 'const char\\\*' to 'int'" }
+            ^
+
+5 errors detected in the compilation of "Test_name.c".

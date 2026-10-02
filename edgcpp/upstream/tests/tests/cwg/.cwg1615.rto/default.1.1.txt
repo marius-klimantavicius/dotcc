@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++14 -tused -A Test_name.c
+"Test_name.c", line 4: error: alignment cannot be set to less than the default alignment
+    struct alignas(1) U {
+           ^
+
+1 error detected in the compilation of "Test_name.c".

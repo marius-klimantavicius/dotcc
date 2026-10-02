@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 26: error: function "Sam::Sam(Widget &)" (declared at line 18) cannot be referenced -- it is a deleted function
+      return w; // { dg-error "deleted" "" { target c++20_only } }
+             ^
+
+"Test_name.c", line 32: error: function "Frodo::Frodo(Widget &&)" (declared at line 14) cannot be referenced -- it is a deleted function
+      return w;  // { dg-error "use of deleted function" }
+             ^
+
+"Test_name.c", line 47: error: more than one user-defined conversion from "Together" to "Quest" applies:
+            function "Quest::Quest(Merry &&)" (declared at line 39)
+            function "Quest::Quest(Pippin &&)" (declared at line 40)
+    return t; // { dg-error "ambiguous" "" { target c++23 } }
+           ^
+
+3 errors detected in the compilation of "Test_name.c".

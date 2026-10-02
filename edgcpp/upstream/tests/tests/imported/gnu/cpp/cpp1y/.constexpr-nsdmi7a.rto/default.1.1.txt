@@ -1,0 +1,23 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 27: error: expression must have a constant value
+  static_assert(bar().n == 5, "");
+                ^
+"Test_name.c", line 23: note: attempt to access expired storage
+    a.p->n = 5;
+           ^
+
+"Test_name.c", line 41: error: expression must have a constant value
+  static_assert(baz() == 0, "");
+                ^
+"Test_name.c", line 33: note: attempt to access expired storage
+    b.p->n = 10;
+           ^
+
+"Test_name.c", line 51: error: expression must have a constant value
+  static_assert(quux() == 0, ""); // { dg-error "non-constant" }
+                ^
+"Test_name.c", line 47: note: attempt to access expired storage
+    d.p->n++; // { dg-error "const object" }
+          ^
+
+3 errors detected in the compilation of "Test_name.c".

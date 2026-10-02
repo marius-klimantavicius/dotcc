@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp0x/alignof7.C", line 10: warning: the standard "alignof" operator does not accept an expression argument (use a type instead)
+  template <class T> void f2(decltype(alignof(T{}))) { }
+                                             ^
+

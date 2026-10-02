@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gn 110999 --c Test_name.c
+"Test_name.c", line 15: warning: unnamed prototyped parameters not allowed when body is present
+    void f(int) {}  // Now accepted by default in some GCC and Clang C modes,
+         ^
+

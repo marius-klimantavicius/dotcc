@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --c++03 Test_name.c
+"Test_name.c", line 11: error: an explicit specialization declaration may not be a friend declaration
+      friend void foo(int)        // explicit specialization friend
+      ^
+
+"Test_name.c", line 24: error: an explicit specialization declaration may not be a friend declaration
+      friend void foo(int)        // explicit specialization friend
+      ^
+
+"Test_name.c", line 24: error: function "non_mbr::foo(T) [with T=int]" cannot be specialized in the current scope
+      friend void foo(int)        // explicit specialization friend
+                  ^
+
+3 errors detected in the compilation of "Test_name.c".

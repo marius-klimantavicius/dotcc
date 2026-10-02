@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=3 --c++14 --clang_v=70000 Test_name.c
+"Test_name.c", line 17: warning: variable "l" was declared but never referenced
+        CIArray l;
+                ^
+

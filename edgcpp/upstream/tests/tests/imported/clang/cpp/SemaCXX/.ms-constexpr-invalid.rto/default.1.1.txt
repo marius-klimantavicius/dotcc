@@ -1,0 +1,63 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --ms_compatibility --c++20 --ms_compatibility Test_name.c
+"Test_name.c", line 10: warning: unknown attribute "msvc::constexpr"
+  [[msvc::constexpr]] void f0() { runtime(); } // expected-error {{constexpr function never produces a constant expression}} \
+    ^
+
+"Test_name.c", line 12: warning: unknown attribute "msvc::constexpr"
+  [[msvc::constexpr]] constexpr void f1() {} // expected-error {{attribute 'msvc::constexpr' cannot be applied to the constexpr function 'f1'}}
+    ^
+
+"Test_name.c", line 19: warning: unknown attribute "msvc::constexpr"
+      [[msvc::constexpr]] D1() {} // expected-error {{constexpr constructor not allowed in struct with virtual base class}}
+        ^
+
+"Test_name.c", line 22: warning: unknown attribute "msvc::constexpr"
+  struct [[msvc::constexpr]] S2{}; // expected-error {{'msvc::constexpr' attribute only applies to functions and return statements}}
+           ^
+
+"Test_name.c", line 26: warning: unknown attribute "msvc::constexpr"
+  [[msvc::constexpr]] int f4(int x) { return x > 1 ? 1 + f4(x / 2) : 0; } // expected-note {{non-constexpr function 'f4' cannot be used in a constant expression}} \
+    ^
+
+"Test_name.c", line 30: warning: unknown attribute "msvc::constexpr"
+  constexpr bool f5() { [[msvc::constexpr]] return f4(32) == 5; } // expected-note {{in call to 'f4(32)'}}
+                          ^
+
+"Test_name.c", line 31: error: expression must have a constant value
+  static_assert(f5()); // expected-error {{static assertion expression is not an integral constant expression}} \
+                ^
+"Test_name.c", line 30: note: cannot call non-constexpr function "f4" (declared at line 26)
+  constexpr bool f5() { [[msvc::constexpr]] return f4(32) == 5; } // expected-note {{in call to 'f4(32)'}}
+                                                   ^
+
+"Test_name.c", line 34: warning: unknown attribute "msvc::constexpr"
+  int f6(int x) { [[msvc::constexpr]] return x > 1 ? 1 + f6(x / 2) : 0; } // expected-note {{declared here}} \
+                    ^
+
+"Test_name.c", line 36: warning: unknown attribute "msvc::constexpr"
+  constexpr bool f7() { [[msvc::constexpr]] return f6(32) == 5; } // expected-error {{constexpr function never produces a constant expression}} \
+                          ^
+
+"Test_name.c", line 39: error: expression must have a constant value
+  static_assert(f7()); // expected-error {{static assertion expression is not an integral constant expression}} \
+                ^
+"Test_name.c", line 36: note: cannot call non-constexpr function "f6" (declared at line 34)
+  constexpr bool f7() { [[msvc::constexpr]] return f6(32) == 5; } // expected-error {{constexpr function never produces a constant expression}} \
+                                                   ^
+
+"Test_name.c", line 43: warning: unknown attribute "msvc::constexpr"
+      [[msvc::constexpr]] f4(32); // expected-error {{'msvc::constexpr' attribute only applies to functions and return statements}} \
+        ^
+
+"Test_name.c", line 46: warning: unknown attribute "msvc::constexpr"
+      [[msvc::constexpr]] int i5 = f4(32); // expected-error {{'msvc::constexpr' attribute only applies to functions and return statements}}
+        ^
+
+"Test_name.c", line 49: error: expression must have a constant value
+  static_assert(f8()); // expected-error {{static assertion expression is not an integral constant expression}} \
+                ^
+"Test_name.c", line 43: note: cannot call non-constexpr function "f4" (declared at line 26)
+      [[msvc::constexpr]] f4(32); // expected-error {{'msvc::constexpr' attribute only applies to functions and return statements}} \
+                          ^
+
+3 errors detected in the compilation of "Test_name.c".

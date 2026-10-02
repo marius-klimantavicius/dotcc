@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 23: error: static assertion failed with ""
+  static_assert(S<int>().f() == 1, "");
+  ^
+"Test_name.c", line 23: note: the final comparison was 4 == 1
+  static_assert(S<int>().f() == 1, "");
+                             ^
+
+"Test_name.c", line 27: error: identifier "b" is undefined
+  template<typename T> constexpr int S<T>::g() const { return b; } // expected-error {{enumerator 'b' does not exist in instantiation of 'S<char>'}}
+                                                              ^
+          detected during instantiation of "int S<T>::g() const [with T=char]" at line 28
+
+2 errors detected in the compilation of "Test_name.c".

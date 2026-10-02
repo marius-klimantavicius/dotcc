@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 9: error: expected a ")"
+  void foo(int x; char buf[x], int x);
+                ^
+
+"Test_name.c", line 9: error: identifier "x" is undefined
+  void foo(int x; char buf[x], int x);
+                           ^
+
+"Test_name.c", line 9: error: expected an identifier
+  void foo(int x; char buf[x], int x);
+                               ^
+
+"Test_name.c", line 15: warning: argument of type "char *" is incompatible with parameter of type "int"
+  	foo(buf, 11);	/* { dg-warning "accessing 11 bytes in a region of size 10" } */
+  	    ^
+
+"Test_name.c", line 15: error: too many arguments in function call
+  	foo(buf, 11);	/* { dg-warning "accessing 11 bytes in a region of size 10" } */
+  	         ^
+
+4 errors detected in the compilation of "Test_name.c".

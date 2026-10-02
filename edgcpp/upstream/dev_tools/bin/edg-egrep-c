@@ -1,0 +1,76 @@
+#!/bin/bash
+
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+#
+# This script is invoked during a run_test script to post process the
+# intermediate C file and search for a specified number of occurrances
+# of a pattern to verify if a particular test case should PASS.
+#
+# Command line arguments from run_test are passed as-is to this script and
+# certain arguments (i.e. --egrep_c_* and --output) are consumed locally.
+#
+# Arguments that are specific to this script are:
+# --egrep_c_option option   An option to pass to egrep.  Multiple may be given.
+# --egrep_c_pattern pattern The pattern to be matched in the file.
+# --egrep_c_count count     The number of times to expect pattern in the code.
+#
+
+# Make sure we know which cpfe to invoke.
+if [ -z "$CPFE" ] ; then
+  echo "CPFE is not set." >&2
+  exit 1
+fi
+
+int_c_file=Test_name.int.c
+options=
+pattern=
+expected=1
+
+# Look through the args for any that we need to process.
+args=
+while [ $# != 0 ]
+do
+  # Any options?
+  if [ $1 == --egrep_c_option ] ; then
+    options="$options $2"
+    shift
+  # What pattern to look for?
+  elif [ $1 == --egrep_c_pattern ] ; then
+    pattern="$2"
+    shift
+  # How many times?
+  elif [ $1 == --egrep_c_count ] ; then
+    expected="$2"
+    shift
+  else
+    args="$args $1"
+  fi
+  shift
+done
+set -- $args
+
+# Invoke the front end.
+$CPFE $args
+ret=$?
+if [ $ret != 0 ] ; then
+  echo "'$CPFE $args' failed with return code $ret." >&2
+  exit $ret
+fi
+
+# Make sure the number of pattern occurrances is what we expect.
+if [ -f "$int_c_file" ] ; then
+  count=`grep -E $options $pattern $int_c_file | wc -l | sed 's/^ *//'`
+  echo "Found '$count' instances of '$pattern'."
+  if [ "$count" != "$expected" ] ; then
+    echo "FAIL: Expected '$expected' occurrances."
+    exit 1
+  fi
+else
+  echo "FAIL: No intermediate C file '$int_c_file' generated."
+  exit 1
+fi
+exit 0

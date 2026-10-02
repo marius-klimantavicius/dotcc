@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 90: warning: variable "c" was declared but never referenced
+      B<int, int> c;
+                  ^
+
+"Test_name.c", line 119: error: too few arguments for class template "PartialSpecialization::X0"
+    X0<int> x0i; // expected-error{{too few template arguments for class template 'X0'}}
+          ^
+
+"Test_name.c", line 127: error: a pack expansion cannot be used as an argument for non-pack template parameter "T" of alias template "FixedAliasTemplate::Z"
+    template<typename...Ts> Z<Ts...> &f(Z<Ts...>, Ts...); // expected-error 2{{pack expansion used as argument for non-pack parameter of alias template}}
+                                ^
+
+"Test_name.c", line 127: error: a pack expansion cannot be used as an argument for non-pack template parameter "T" of alias template "FixedAliasTemplate::Z"
+    template<typename...Ts> Z<Ts...> &f(Z<Ts...>, Ts...); // expected-error 2{{pack expansion used as argument for non-pack parameter of alias template}}
+                                            ^
+
+"Test_name.c", line 128: error: no instance of function template "FixedAliasTemplate::f" matches the argument list
+            argument types are: ({...}, int, double)
+    S<int, int, double> &s1 = f({}, 0, 0.0); // expected-error {{no matching function}}
+                              ^
+"Test_name.c", line 127: note: function template "FixedAliasTemplate::f" does not match because argument #1 does not match parameter
+    template<typename...Ts> Z<Ts...> &f(Z<Ts...>, Ts...); // expected-error 2{{pack expansion used as argument for non-pack parameter of alias template}}
+                                      ^
+
+"Test_name.c", line 134: error: a pack expansion cannot be used as an argument for non-pack template parameter "T" of alias template "PR18401::bar"
+    template<typename T, typename... Args> using baz = bar<Args..., T>; // expected-error {{pack expansion used as argument for non-pack parameter of alias template}}
+                                                               ^
+
+"Test_name.c", line 136: error: a pack expansion cannot be used as an argument for non-pack template parameter "T" of alias template "PR18401::baz"
+    template<typename...T> void f(baz<T...>); // expected-error {{no template named 'baz'; did you mean 'bar'}} expected-error {{pack expansion used as argument for non-pack}}
+                                       ^
+
+6 errors detected in the compilation of "Test_name.c".

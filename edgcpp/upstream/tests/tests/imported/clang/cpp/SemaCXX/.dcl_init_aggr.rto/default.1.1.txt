@@ -1,0 +1,81 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 26: error: initialization with "{...}" is not allowed for object of type "NonAggregate"
+  NonAggregate non_aggregate_test = { 1, 2 };
+                                    ^
+
+"Test_name.c", line 33: error: initialization with "{...}" is not allowed for object of type "NonAggregate"
+  NonAggregate non_aggregate_test2[2] = { { 1, 2 }, { 3, 4 } };
+                                          ^
+
+"Test_name.c", line 33: error: no instance of constructor "NonAggregate::NonAggregate" matches the argument list
+            argument types are: (int, int)
+  NonAggregate non_aggregate_test2[2] = { { 1, 2 }, { 3, 4 } };
+                                          ^
+"Test_name.c", line 15: note: number of parameters of function "NonAggregate::NonAggregate(const NonAggregate &)" does not match the call
+  struct NonAggregate {
+         ^
+"Test_name.c", line 20: note: number of parameters of function "NonAggregate::NonAggregate()" does not match the call
+    NonAggregate();
+    ^
+
+"Test_name.c", line 33: error: initialization with "{...}" is not allowed for object of type "NonAggregate"
+  NonAggregate non_aggregate_test2[2] = { { 1, 2 }, { 3, 4 } };
+                                                    ^
+
+"Test_name.c", line 33: error: no instance of constructor "NonAggregate::NonAggregate" matches the argument list
+            argument types are: (int, int)
+  NonAggregate non_aggregate_test2[2] = { { 1, 2 }, { 3, 4 } };
+                                                    ^
+"Test_name.c", line 15: note: number of parameters of function "NonAggregate::NonAggregate(const NonAggregate &)" does not match the call
+  struct NonAggregate {
+         ^
+"Test_name.c", line 20: note: number of parameters of function "NonAggregate::NonAggregate()" does not match the call
+    NonAggregate();
+    ^
+
+"Test_name.c", line 56: error: too many initializer values
+  char cv[4] = { 'a', 's', 'd', 'f', 0 }; // expected-error{{excess elements in array initializer}}
+                                     ^
+
+"Test_name.c", line 60: warning: conversion from a string literal to "char *" is deprecated
+  TooFew too_few = { 1, "asdf" };
+                        ^
+
+"Test_name.c", line 99: error: no default constructor exists for class "NoDefaultConstructor"
+  TooFewError too_few_error = { 1 }; // expected-error{{no matching constructor}}
+                                  ^
+
+"Test_name.c", line 90: error: no default constructor exists for class "NoDefaultConstructor"
+    NoDefaultConstructor nodef;
+                         ^
+          detected during implicit generation of "TooFewError::TooFewError()" at line 101
+
+"Test_name.c", line 109: error: no default constructor exists for class "NoDefaultConstructor"
+  TooFewError too_few_error2[2] = { 1 }; // expected-error{{no matching constructor}}
+                                      ^
+
+"Test_name.c", line 111: error: no default constructor exists for class "NoDefaultConstructor"
+  NoDefaultConstructor too_few_error3[3] = { }; // expected-error {{no matching constructor}} expected-note {{implicit initialization of array element 0}}
+                                             ^
+
+"Test_name.c", line 120: error: no suitable constructor exists to convert from "int" to "Empty"
+  EmptyTest empty_test2 = { 3 }; // expected-error{{initializer for aggregate with no elements requires explicit braces}}
+                            ^
+
+"Test_name.c", line 137: error: variable "r2" has an uninitialized const or reference member
+  HasReference r2 = { 1 } ; // expected-error{{reference member of type 'int &' uninitialized}}
+               ^
+
+"Test_name.c", line 179: error: no suitable constructor exists to convert from "int" to "u"
+  u u3 = 1; // expected-error{{no viable conversion}}
+         ^
+
+"Test_name.c", line 180: error: too many initializer values
+  u u4 = { 0, "asdf" };  // expected-error{{excess elements in union initializer}}
+              ^
+
+"Test_name.c", line 181: error: a value of type "const char *" cannot be used to initialize an entity of type "int"
+  u u5 = { "asdf" }; // expected-error{{cannot initialize a member subobject of type 'int' with an lvalue of type 'const char[5]'}}
+           ^
+
+15 errors detected in the compilation of "Test_name.c".

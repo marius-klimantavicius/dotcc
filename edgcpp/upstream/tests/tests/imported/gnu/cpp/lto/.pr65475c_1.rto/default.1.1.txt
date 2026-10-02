@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 197: warning: missing return statement at end of non-void function "base_num_format::do_real_put(base_num_format::iter_type, std::ios_base &, base_num_format::char_type, ValueType) const"
+    }
+    ^
+
+"Test_name.c", line 227: warning: missing return statement at end of non-void function "create_formatting_impl<CharType>(const std::locale &, shared_ptr)"
+  }
+  ^
+

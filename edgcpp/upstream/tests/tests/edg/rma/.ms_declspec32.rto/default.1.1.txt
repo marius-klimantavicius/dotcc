@@ -1,0 +1,6 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --microsoft_version=1200 -n Test_name.c
+"Test_name.c", line 5: error: an initializer is not allowed on a local declaration of an extern variable
+    _declspec(dllimport) int x = 0;  // error
+                               ^
+
+1 error detected in the compilation of "Test_name.c".

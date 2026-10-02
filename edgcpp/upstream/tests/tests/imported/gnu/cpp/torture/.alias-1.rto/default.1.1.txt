@@ -1,0 +1,17 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./torture/alias-1.C", line 15: warning: unknown attribute "noipa"
+  __attribute__((noipa)) void
+                 ^
+
+"./torture/alias-1.C", line 21: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int
+                 ^
+
+"./torture/alias-1.C", line 27: warning: unknown attribute "noipa"
+  __attribute__((noipa)) void
+                 ^
+
+"./torture/alias-1.C", line 40: warning: unknown attribute "noipa"
+  __attribute__((noipa)) void
+                 ^
+

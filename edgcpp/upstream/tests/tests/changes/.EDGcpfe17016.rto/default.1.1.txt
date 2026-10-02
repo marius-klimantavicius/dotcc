@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 13: error: no instance of function template "g" matches the argument list
+  int r = g<I>();  // Now an error.  Previously erroneously accepted with
+          ^
+"Test_name.c", line 11: note: candidate function template "g" failed deduction
+  template<typename U, int N = sizeof(U)> int g();
+                                              ^
+
+1 error detected in the compilation of "Test_name.c".

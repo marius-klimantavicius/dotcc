@@ -1,0 +1,53 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc -E Test_name.c
+# 1 "Test_name.c"
+
+
+ 
+
+ 
+ 
+
+ 
+
+
+ 
+"Test_name.c", line 13: error: unrecognized preprocessing directive
+  #foo EMPTY			/* { dg-error "invalid" } */
+   ^
+
+
+
+
+ 
+EMPTY #define bar
+
+
+
+
+
+ 
+
+
+
+
+ 
+
+
+
+
+
+
+ 
+"Test_name.c", line 36: error: expected a ")"
+  #if func (			/* { dg-error "unterminated argument" } */
+            			                                          ^
+
+"Test_name.c", line 36: error: improperly terminated macro invocation
+  #if func (			/* { dg-error "unterminated argument" } */
+      ^
+
+"Test_name.c", line 36: error: expected an expression
+  #if func (			/* { dg-error "unterminated argument" } */
+            			                                          ^
+
+4 errors detected in the compilation of "Test_name.c".

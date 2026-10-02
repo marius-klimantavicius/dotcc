@@ -1,0 +1,69 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 8: warning: variable "val" was declared but never referenced
+    int val = array[subscript]; // expected-warning{{array subscript is of type 'char'}}
+        ^
+
+"Test_name.c", line 14: warning: variable "val" was declared but never referenced
+    int val = subscript[array]; // expected-warning{{array subscript is of type 'char'}}
+        ^
+
+"Test_name.c", line 20: warning: variable "val" was declared but never referenced
+    int val = array[subscript]; // expected-warning{{array subscript is of type 'char'}}
+        ^
+
+"Test_name.c", line 26: warning: variable "val" was declared but never referenced
+    int val = subscript[array]; // expected-warning{{array subscript is of type 'char'}}
+        ^
+
+"Test_name.c", line 38: warning: variable "val" was declared but never referenced
+    int val = array[subscript]; // no warning for explicit signed char
+        ^
+
+"Test_name.c", line 44: warning: variable "val" was declared but never referenced
+    int val = array[subscript]; // no warning for unsigned char
+        ^
+
+"Test_name.c", line 51: warning: variable "val" was declared but never referenced
+    int val = array[subscript]; // expected-warning{{array subscript is of type 'char'}}
+        ^
+
+"Test_name.c", line 58: warning: variable "val" was declared but never referenced
+    int val = array[subscript]; // no warning for explicit signed char
+        ^
+
+"Test_name.c", line 65: warning: variable "val" was declared but never referenced
+    int val = array[subscript]; // no warning for unsigned char
+        ^
+
+"Test_name.c", line 70: warning: variable "val" was declared but never referenced
+    int val = array['a']; // no warning for char with known positive value
+        ^
+
+"Test_name.c", line 76: warning: variable "val" was declared but never referenced
+    int val = array[b]; // expected-warning{{array subscript is of type 'char'}}
+        ^
+
+"Test_name.c", line 82: warning: variable "val" was declared but never referenced
+    int val = array[b]; // no warning for char with known positive value
+        ^
+
+"Test_name.c", line 88: warning: variable "val" was declared but never referenced
+    int val = array[b]; // no warning for char with known positive value
+        ^
+
+"Test_name.c", line 96: warning: subscript out of range
+    int val = array[b];
+                   ^
+
+"Test_name.c", line 96: warning: variable "val" was declared but never referenced
+    int val = array[b];
+        ^
+
+"Test_name.c", line 104: warning: subscript out of range
+    int val = array[b];
+                   ^
+
+"Test_name.c", line 104: warning: variable "val" was declared but never referenced
+    int val = array[b];
+        ^
+

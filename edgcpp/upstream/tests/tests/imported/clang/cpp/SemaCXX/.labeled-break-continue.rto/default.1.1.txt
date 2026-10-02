@@ -1,0 +1,118 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 12: error: expected a ";"
+      break l1;
+            ^
+
+"Test_name.c", line 13: warning: statement is unreachable
+      continue l1;
+      ^
+
+"Test_name.c", line 13: error: expected a ";"
+      continue l1;
+               ^
+
+"Test_name.c", line 17: error: expected a ";"
+      break l1; // expected-error {{'break' label does not name an enclosing loop or 'switch'}}
+            ^
+
+"Test_name.c", line 18: warning: statement is unreachable
+      continue l1; // expected-error {{'continue' label does not name an enclosing loop}}
+      ^
+
+"Test_name.c", line 18: error: expected a ";"
+      continue l1; // expected-error {{'continue' label does not name an enclosing loop}}
+               ^
+
+"Test_name.c", line 23: error: expected a ";"
+        break l3;
+              ^
+
+"Test_name.c", line 24: warning: statement is unreachable
+        break l4;
+        ^
+
+"Test_name.c", line 24: error: expected a ";"
+        break l4;
+              ^
+
+"Test_name.c", line 25: warning: statement is unreachable
+        continue l3;
+        ^
+
+"Test_name.c", line 25: error: expected a ";"
+        continue l3;
+                 ^
+
+"Test_name.c", line 26: warning: statement is unreachable
+        continue l4;
+        ^
+
+"Test_name.c", line 26: error: expected a ";"
+        continue l4;
+                 ^
+
+"Test_name.c", line 11: warning: label "l1" was declared but never referenced
+    l1: for (int x : a) {
+    ^
+
+"Test_name.c", line 16: warning: label "l2" was declared but never referenced
+    l2: for (int x : a) {
+    ^
+
+"Test_name.c", line 21: warning: label "l3" was declared but never referenced
+    l3: for (int x : a) {
+    ^
+
+"Test_name.c", line 22: warning: label "l4" was declared but never referenced
+      l4: for (int x : a) {
+      ^
+
+"Test_name.c", line 34: error: expected a ";"
+        break l1; // expected-error {{'break' label does not name an enclosing loop or 'switch'}}
+              ^
+
+"Test_name.c", line 35: warning: statement is unreachable
+        continue l1; // expected-error {{'continue' label does not name an enclosing loop}}
+        ^
+
+"Test_name.c", line 35: error: expected a ";"
+        continue l1; // expected-error {{'continue' label does not name an enclosing loop}}
+                 ^
+
+"Test_name.c", line 36: warning: statement is unreachable
+        1;
+        ^
+
+"Test_name.c", line 39: error: expected a ";"
+        break l1; // expected-error {{'break' label does not name an enclosing loop or 'switch'}}
+              ^
+
+"Test_name.c", line 40: warning: statement is unreachable
+        continue l1; // expected-error {{'continue' label does not name an enclosing loop}}
+        ^
+
+"Test_name.c", line 40: error: expected a ";"
+        continue l1; // expected-error {{'continue' label does not name an enclosing loop}}
+                 ^
+
+"Test_name.c", line 41: warning: statement is unreachable
+        S();
+        ^
+
+"Test_name.c", line 32: warning: label "l1" was declared but never referenced
+    l1: for (
+    ^
+
+"Test_name.c", line 49: error: a break statement may only be used within a loop or switch
+        break a; // expected-error {{'break' label does not name an enclosing loop or 'switch'}}
+        ^
+
+"Test_name.c", line 49: error: expected a ";"
+        break a; // expected-error {{'break' label does not name an enclosing loop or 'switch'}}
+              ^
+
+"Test_name.c", line 50: error: a continue statement may only be used within a loop
+        continue a; // expected-error {{'continue' label does not name an enclosing loop}}
+        ^
+
+eccp: front end returned an exit status of 139

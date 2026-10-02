@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=2 --c++ --target linux_x86_64 --gn 130300 Test_name.c

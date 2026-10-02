@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 20: error: floating-point template parameter is nonstandard
+  template<float f> struct A11; // expected-error{{a non-type template parameter cannot have type 'float'}}
+           ^
+
+1 error detected in the compilation of "Test_name.c".

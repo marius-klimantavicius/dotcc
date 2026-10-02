@@ -1,0 +1,18 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --microsoft_version=1200 -n Test_name.c
+"Test_name.c", line 5: error: use of a local type to declare a nonlocal variable
+    extern class X *p;
+                    ^
+
+"Test_name.c", line 7: error: use of a local type to declare a nonlocal variable
+    extern class Y *q;
+                    ^
+
+"Test_name.c", line 10: warning: use of a local type to declare a function
+    extern void x(class X *p);
+                ^
+
+"Test_name.c", line 12: warning: use of a local type to declare a function
+    extern void y(class Y *q);
+                ^
+
+2 errors detected in the compilation of "Test_name.c".

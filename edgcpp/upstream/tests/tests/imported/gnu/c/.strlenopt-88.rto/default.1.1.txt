@@ -1,0 +1,253 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./strlenopt-88.c", line 26: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) const char* str (size_t n)
+                  ^
+
+"./strlenopt-88.c", line 44: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_eq_1_store_nul_0 (void) { const char *s = str (1); if (strlen (s) == 1) { strcpy (a, s); a[0] = 0; test (44, "len_eq_1_store_nul_0", 0); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 45: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_eq_1_store_nul_1 (void) { const char *s = str (1); if (strlen (s) == 1) { strcpy (a, s); a[1] = 0; test (45, "len_eq_1_store_nul_1", 1); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 46: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_eq_1_store_nul_2 (void) { const char *s = str (1); if (strlen (s) == 1) { strcpy (a, s); a[2] = 0; test (46, "len_eq_1_store_nul_2", 1); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 47: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_eq_1_store_nul_3 (void) { const char *s = str (1); if (strlen (s) == 1) { strcpy (a, s); a[3] = 0; test (47, "len_eq_1_store_nul_3", 1); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 48: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_eq_1_store_nul_4 (void) { const char *s = str (1); if (strlen (s) == 1) { strcpy (a, s); a[4] = 0; test (48, "len_eq_1_store_nul_4", 1); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 50: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_eq_2_store_nul_0 (void) { const char *s = str (2); if (strlen (s) == 2) { strcpy (a, s); a[0] = 0; test (50, "len_eq_2_store_nul_0", 0); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 51: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_eq_2_store_nul_1 (void) { const char *s = str (2); if (strlen (s) == 2) { strcpy (a, s); a[1] = 0; test (51, "len_eq_2_store_nul_1", 1); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 52: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_eq_2_store_nul_2 (void) { const char *s = str (2); if (strlen (s) == 2) { strcpy (a, s); a[2] = 0; test (52, "len_eq_2_store_nul_2", 2); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 53: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_eq_2_store_nul_3 (void) { const char *s = str (2); if (strlen (s) == 2) { strcpy (a, s); a[3] = 0; test (53, "len_eq_2_store_nul_3", 2); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 54: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_eq_2_store_nul_4 (void) { const char *s = str (2); if (strlen (s) == 2) { strcpy (a, s); a[4] = 0; test (54, "len_eq_2_store_nul_4", 2); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 56: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_eq_3_store_nul_0 (void) { const char *s = str (3); if (strlen (s) == 3) { strcpy (a, s); a[0] = 0; test (56, "len_eq_3_store_nul_0", 0); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 57: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_eq_3_store_nul_1 (void) { const char *s = str (3); if (strlen (s) == 3) { strcpy (a, s); a[1] = 0; test (57, "len_eq_3_store_nul_1", 1); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 58: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_eq_3_store_nul_2 (void) { const char *s = str (3); if (strlen (s) == 3) { strcpy (a, s); a[2] = 0; test (58, "len_eq_3_store_nul_2", 2); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 59: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_eq_3_store_nul_3 (void) { const char *s = str (3); if (strlen (s) == 3) { strcpy (a, s); a[3] = 0; test (59, "len_eq_3_store_nul_3", 3); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 60: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_eq_3_store_nul_4 (void) { const char *s = str (3); if (strlen (s) == 3) { strcpy (a, s); a[4] = 0; test (60, "len_eq_3_store_nul_4", 3); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 63: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_gt_1_store_nul_0 (void) { const char *s = str (2); if (strlen (s) > 2) { strcpy (a, s); a[0] = 0; test (63, "len_gt_1_store_nul_0", 0); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 64: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_gt_1_store_nul_1 (void) { const char *s = str (2); if (strlen (s) > 2) { strcpy (a, s); a[1] = 0; test (64, "len_gt_1_store_nul_1", 1); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 65: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_gt_1_store_nul_2 (void) { const char *s = str (2); if (strlen (s) > 2) { strcpy (a, s); a[2] = 0; test (65, "len_gt_1_store_nul_2", 2); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 66: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_gt_1_store_nul_3 (void) { const char *s = str (2); if (strlen (s) > 2) { strcpy (a, s); a[3] = 0; test (66, "len_gt_1_store_nul_3", 2); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 67: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_gt_1_store_nul_4 (void) { const char *s = str (2); if (strlen (s) > 2) { strcpy (a, s); a[4] = 0; test (67, "len_gt_1_store_nul_4", 2); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 69: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_gt_2_store_nul_0 (void) { const char *s = str (3); if (strlen (s) > 2) { strcpy (a, s); a[0] = 0; test (69, "len_gt_2_store_nul_0", 0); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 70: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_gt_2_store_nul_1 (void) { const char *s = str (3); if (strlen (s) > 2) { strcpy (a, s); a[1] = 0; test (70, "len_gt_2_store_nul_1", 1); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 71: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_gt_2_store_nul_2 (void) { const char *s = str (3); if (strlen (s) > 2) { strcpy (a, s); a[2] = 0; test (71, "len_gt_2_store_nul_2", 2); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 72: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_gt_2_store_nul_3 (void) { const char *s = str (3); if (strlen (s) > 2) { strcpy (a, s); a[3] = 0; test (72, "len_gt_2_store_nul_3", 3); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 73: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_gt_2_store_nul_4 (void) { const char *s = str (3); if (strlen (s) > 2) { strcpy (a, s); a[4] = 0; test (73, "len_gt_2_store_nul_4", 3); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 75: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_gt_3_store_nul_0 (void) { const char *s = str (4); if (strlen (s) > 2) { strcpy (a, s); a[0] = 0; test (75, "len_gt_3_store_nul_0", 0); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 76: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_gt_3_store_nul_1 (void) { const char *s = str (4); if (strlen (s) > 2) { strcpy (a, s); a[1] = 0; test (76, "len_gt_3_store_nul_1", 1); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 77: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_gt_3_store_nul_2 (void) { const char *s = str (4); if (strlen (s) > 2) { strcpy (a, s); a[2] = 0; test (77, "len_gt_3_store_nul_2", 2); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 78: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_gt_3_store_nul_3 (void) { const char *s = str (4); if (strlen (s) > 2) { strcpy (a, s); a[3] = 0; test (78, "len_gt_3_store_nul_3", 3); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 79: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_gt_3_store_nul_4 (void) { const char *s = str (4); if (strlen (s) > 2) { strcpy (a, s); a[4] = 0; test (79, "len_gt_3_store_nul_4", 4); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 82: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_1_lt_4_store_nul_0 (void) { const char *s = str (1); if (strlen (s) < 4) { strcpy (a, s); a[0] = 0; test (82, "len_1_lt_4_store_nul_0", 0); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 83: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_1_lt_4_store_nul_1 (void) { const char *s = str (1); if (strlen (s) < 4) { strcpy (a, s); a[1] = 0; test (83, "len_1_lt_4_store_nul_1", 1); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 84: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_1_lt_4_store_nul_2 (void) { const char *s = str (1); if (strlen (s) < 4) { strcpy (a, s); a[2] = 0; test (84, "len_1_lt_4_store_nul_2", 1); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 85: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_1_lt_4_store_nul_3 (void) { const char *s = str (1); if (strlen (s) < 4) { strcpy (a, s); a[3] = 0; test (85, "len_1_lt_4_store_nul_3", 1); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 86: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_1_lt_4_store_nul_4 (void) { const char *s = str (1); if (strlen (s) < 4) { strcpy (a, s); a[4] = 0; test (86, "len_1_lt_4_store_nul_4", 1); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 87: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_1_lt_4_store_nul_5 (void) { const char *s = str (1); if (strlen (s) < 4) { strcpy (a, s); a[5] = 0; test (87, "len_1_lt_4_store_nul_5", 1); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 88: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_1_lt_4_store_nul_6 (void) { const char *s = str (1); if (strlen (s) < 4) { strcpy (a, s); a[6] = 0; test (88, "len_1_lt_4_store_nul_6", 1); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 89: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_1_lt_4_store_nul_7 (void) { const char *s = str (1); if (strlen (s) < 4) { strcpy (a, s); a[7] = 0; test (89, "len_1_lt_4_store_nul_7", 1); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 91: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_2_lt_4_store_nul_0 (void) { const char *s = str (2); if (strlen (s) < 4) { strcpy (a, s); a[0] = 0; test (91, "len_2_lt_4_store_nul_0", 0); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 92: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_2_lt_4_store_nul_1 (void) { const char *s = str (2); if (strlen (s) < 4) { strcpy (a, s); a[1] = 0; test (92, "len_2_lt_4_store_nul_1", 1); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 93: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_2_lt_4_store_nul_2 (void) { const char *s = str (2); if (strlen (s) < 4) { strcpy (a, s); a[2] = 0; test (93, "len_2_lt_4_store_nul_2", 2); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 94: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_2_lt_4_store_nul_3 (void) { const char *s = str (2); if (strlen (s) < 4) { strcpy (a, s); a[3] = 0; test (94, "len_2_lt_4_store_nul_3", 2); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 95: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_2_lt_4_store_nul_4 (void) { const char *s = str (2); if (strlen (s) < 4) { strcpy (a, s); a[4] = 0; test (95, "len_2_lt_4_store_nul_4", 2); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 96: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_2_lt_4_store_nul_5 (void) { const char *s = str (2); if (strlen (s) < 4) { strcpy (a, s); a[5] = 0; test (96, "len_2_lt_4_store_nul_5", 2); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 97: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_2_lt_4_store_nul_6 (void) { const char *s = str (2); if (strlen (s) < 4) { strcpy (a, s); a[6] = 0; test (97, "len_2_lt_4_store_nul_6", 2); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 98: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_2_lt_4_store_nul_7 (void) { const char *s = str (2); if (strlen (s) < 4) { strcpy (a, s); a[7] = 0; test (98, "len_2_lt_4_store_nul_7", 2); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 100: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_3_lt_4_store_nul_0 (void) { const char *s = str (3); if (strlen (s) < 4) { strcpy (a, s); a[0] = 0; test (100, "len_3_lt_4_store_nul_0", 0); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 101: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_3_lt_4_store_nul_1 (void) { const char *s = str (3); if (strlen (s) < 4) { strcpy (a, s); a[1] = 0; test (101, "len_3_lt_4_store_nul_1", 1); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 102: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_3_lt_4_store_nul_2 (void) { const char *s = str (3); if (strlen (s) < 4) { strcpy (a, s); a[2] = 0; test (102, "len_3_lt_4_store_nul_2", 2); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 103: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_3_lt_4_store_nul_3 (void) { const char *s = str (3); if (strlen (s) < 4) { strcpy (a, s); a[3] = 0; test (103, "len_3_lt_4_store_nul_3", 3); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 104: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_3_lt_4_store_nul_4 (void) { const char *s = str (3); if (strlen (s) < 4) { strcpy (a, s); a[4] = 0; test (104, "len_3_lt_4_store_nul_4", 3); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 105: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_3_lt_4_store_nul_5 (void) { const char *s = str (3); if (strlen (s) < 4) { strcpy (a, s); a[5] = 0; test (105, "len_3_lt_4_store_nul_5", 3); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 106: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_3_lt_4_store_nul_6 (void) { const char *s = str (3); if (strlen (s) < 4) { strcpy (a, s); a[6] = 0; test (106, "len_3_lt_4_store_nul_6", 3); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 107: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_3_lt_4_store_nul_7 (void) { const char *s = str (3); if (strlen (s) < 4) { strcpy (a, s); a[7] = 0; test (107, "len_3_lt_4_store_nul_7", 3); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 109: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_7_lt_8_store_nul_0 (void) { const char *s = str (7); if (strlen (s) < 8) { strcpy (a, s); a[0] = 0; test (109, "len_7_lt_8_store_nul_0", 0); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 110: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_7_lt_8_store_nul_1 (void) { const char *s = str (7); if (strlen (s) < 8) { strcpy (a, s); a[1] = 0; test (110, "len_7_lt_8_store_nul_1", 1); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 111: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_7_lt_8_store_nul_2 (void) { const char *s = str (7); if (strlen (s) < 8) { strcpy (a, s); a[2] = 0; test (111, "len_7_lt_8_store_nul_2", 2); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 112: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_7_lt_8_store_nul_3 (void) { const char *s = str (7); if (strlen (s) < 8) { strcpy (a, s); a[3] = 0; test (112, "len_7_lt_8_store_nul_3", 3); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 113: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_7_lt_8_store_nul_4 (void) { const char *s = str (7); if (strlen (s) < 8) { strcpy (a, s); a[4] = 0; test (113, "len_7_lt_8_store_nul_4", 4); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 114: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_7_lt_8_store_nul_5 (void) { const char *s = str (7); if (strlen (s) < 8) { strcpy (a, s); a[5] = 0; test (114, "len_7_lt_8_store_nul_5", 5); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 115: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_7_lt_8_store_nul_6 (void) { const char *s = str (7); if (strlen (s) < 8) { strcpy (a, s); a[6] = 0; test (115, "len_7_lt_8_store_nul_6", 6); } } typedef void dummy_type;
+                  ^
+
+"./strlenopt-88.c", line 116: warning: unknown attribute "noipa"
+  __attribute__ ((noipa)) static void len_7_lt_8_store_nul_7 (void) { const char *s = str (7); if (strlen (s) < 8) { strcpy (a, s); a[7] = 0; test (116, "len_7_lt_8_store_nul_7", 7); } } typedef void dummy_type;
+                  ^
+

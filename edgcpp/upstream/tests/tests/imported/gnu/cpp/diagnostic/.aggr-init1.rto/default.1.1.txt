@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 38: error: expression must have a constant value
+    constexpr static const auto aa1 = Any_of("abcd", "def"); // { dg-message {"abcd", "def"} }
+                                      ^
+"Test_name.c", line 26: note: too few arguments in function call
+      Any(ConstString (&&_vec)[N]) noexcept: vec(_vec){} // { dg-warning "array" }
+                                                      ^
+"Test_name.c", line 34: note: called from:
+    return {{ConstString(c1)...}};
+    ^
+
+"Test_name.c", line 38: warning: variable "aa1" was declared but never referenced
+    constexpr static const auto aa1 = Any_of("abcd", "def"); // { dg-message {"abcd", "def"} }
+                                ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,153 @@
+fe_only -DTEST_NUMBER=2 --ms_c++20 --microsoft_version=1927 Test_name.c
+"Test_name.c", line 16: error: a deduction guide may not be declared for alias template "alias_deduction_guide::A"
+    A(int) -> A<int>;             // deduction guide for alias template
+    ^
+
+"Test_name.c", line 16: error: the return type must directly designate a specialization of the associated class template
+    A(int) -> A<int>;             // deduction guide for alias template
+              ^
+
+"Test_name.c", line 24: error: no viable template argument deduction candidate found for alias template "dependent_nested_name_typename::A"
+    A a{1};                       // error
+      ^
+
+"Test_name.c", line 24: error: cannot deduce class template arguments
+    A a{1};                       // error
+    ^
+
+"Test_name.c", line 45: error: no viable template argument deduction candidate found for alias template "dependent_nested_name_class_template::A"
+    A a1{1};                      // error
+      ^
+
+"Test_name.c", line 45: error: cannot deduce class template arguments
+    A a1{1};                      // error
+    ^
+
+"Test_name.c", line 46: error: no viable template argument deduction candidate found for alias template "dependent_nested_name_class_template::AA"
+    AA a2{2};                     // error
+       ^
+
+"Test_name.c", line 46: error: cannot deduce class template arguments
+    AA a2{2};                     // error
+    ^
+
+"Test_name.c", line 68: error: no instance of constructor "is_deducible_constraint::A" matches the argument list
+            argument types are: (char *, int *)
+    A a2((char *) 0, (int *) 0);  // cannot deduce A<V> from C<char *, int *>
+      ^
+
+"Test_name.c", line 68: error: cannot deduce class template arguments
+    A a2((char *) 0, (int *) 0);  // cannot deduce A<V> from C<char *, int *>
+    ^
+
+"Test_name.c", line 83: error: no instance of constructor "is_deducible_unused_parameter::A" matches the argument list
+            argument types are: (int)
+    A a = 1;                      // cannot deduce W in A
+      ^
+
+"Test_name.c", line 83: error: cannot deduce class template arguments
+    A a = 1;                      // cannot deduce W in A
+    ^
+
+"Test_name.c", line 97: error: no instance of constructor "non_dependent_is_deducible::A" matches the argument list
+            argument types are: (int)
+    A a(1);                       // cannot deduce T in A
+      ^
+
+"Test_name.c", line 97: error: cannot deduce class template arguments
+    A a(1);                       // cannot deduce T in A
+    ^
+
+"Test_name.c", line 125: error: no instance of constructor "failed_substitution::A" matches the argument list
+            argument types are: (int)
+    A a1(1);                      // cannot deduce arguments for A
+      ^
+
+"Test_name.c", line 125: error: cannot deduce class template arguments
+    A a1(1);                      // cannot deduce arguments for A
+    ^
+
+"Test_name.c", line 154: error: no instance of constructor "gpp_class_deduction_alias3::Y" matches the argument list
+            argument types are: (char)
+    Y z{'a'}; // { dg-error "failed|no match" }
+      ^
+
+"Test_name.c", line 154: error: cannot deduce class template arguments
+    Y z{'a'}; // { dg-error "failed|no match" }
+    ^
+
+"Test_name.c", line 170: error: no instance of constructor "gpp_class_deduction_alias8::Y" matches the argument list
+            argument types are: (char)
+    Y z{'a'}; // { dg-error "failed|no match" }
+      ^
+
+"Test_name.c", line 170: error: cannot deduce class template arguments
+    Y z{'a'}; // { dg-error "failed|no match" }
+    ^
+
+"Test_name.c", line 175: error: expected an identifier
+    static_assert(__edg_is_deducible(int, int)); // expect an identifier
+                                     ^
+
+"Test_name.c", line 178: error: type "invalid_is_deducible::INT" is not a class template
+    static_assert(__edg_is_deducible(INT, int)); // not a class template
+                                     ^
+
+"Test_name.c", line 181: error: variable "invalid_is_deducible::i" is not a class template
+    static_assert(__edg_is_deducible(i, int)); // not a class template
+                                     ^
+
+"Test_name.c", line 193: error: no instance of constructor "alias_to_aggregate_with_explicit_guide::Y" matches the argument list
+            argument types are: (int, int)
+    Y y1{0, 1};                   // cannot deduce template arguments
+      ^
+
+"Test_name.c", line 193: error: cannot deduce class template arguments
+    Y y1{0, 1};                   // cannot deduce template arguments
+    ^
+
+"Test_name.c", line 204: error: incomplete type "guide_for_incomplete_type::C<int>" is not allowed
+    C c1{};                       // incomplete type (but deduction succeeds)
+      ^
+
+"Test_name.c", line 205: error: incomplete type "guide_for_incomplete_type::C<long>" is not allowed
+    A a1{};                       // incomplete type (but deduction succeeds)
+      ^
+
+"Test_name.c", line 210: error: incomplete type "guide_for_incomplete_type::C<char>" is not allowed
+    B b1{};                       // incomplete type (but deduction succeeds)
+      ^
+
+"Test_name.c", line 218: error: no instance of constructor "guide_for_incomplete_type::C" matches the argument list
+    C c2{};                       // deduction fails
+      ^
+
+"Test_name.c", line 218: error: cannot deduce class template arguments
+    C c2{};                       // deduction fails
+    ^
+
+"Test_name.c", line 219: error: no instance of constructor "guide_for_incomplete_type::A" matches the argument list
+    A a2{};                       // deduction fails
+      ^
+
+"Test_name.c", line 219: error: cannot deduce class template arguments
+    A a2{};                       // deduction fails
+    ^
+
+"Test_name.c", line 220: error: no instance of constructor "guide_for_incomplete_type::B" matches the argument list
+    B b2{};                       // deduction fails
+      ^
+
+"Test_name.c", line 220: error: cannot deduce class template arguments
+    B b2{};                       // deduction fails
+    ^
+
+"Test_name.c", line 248: error: incomplete type "incomplete_type_with_explicit_guides::C<int>" is not allowed
+    C c0{};                       // incomplete type (but deduction succeeds)
+      ^
+
+"Test_name.c", line 249: error: incomplete type "incomplete_type_with_explicit_guides::C<void>" is not allowed
+    C c1{1};                      // incomplete type (but deduction succeeds)
+      ^
+
+36 errors detected in the compilation of "Test_name.c".

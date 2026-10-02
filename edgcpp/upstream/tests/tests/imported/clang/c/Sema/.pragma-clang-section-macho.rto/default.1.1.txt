@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 5: warning: unrecognized #pragma
+  #pragma clang section bss = "" data = "" rodata = "" text = ""
+          ^
+
+"Test_name.c", line 6: warning: unrecognized #pragma
+  #pragma clang section bss = "" data = "" rodata = "" text = "__TEXT,__text"
+          ^
+
+"Test_name.c", line 7: warning: unrecognized #pragma
+  #pragma clang section bss = "" data = "" rodata = "" text = "badname"                       // expected-error {{argument to #pragma section is not valid for this target: mach-o section specifier requires a segment and section separated by a comma}}
+          ^
+
+"Test_name.c", line 8: warning: unrecognized #pragma
+  #pragma clang section bss = "" data = "" rodata = "" text = "__TEXT,__namethatiswaytoolong" // expected-error {{argument to #pragma section is not valid for this target: mach-o section specifier requires a section whose length is between 1 and 16 characters}}
+          ^
+
+"Test_name.c", line 9: warning: unrecognized #pragma
+  #pragma clang section
+          ^
+

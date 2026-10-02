@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 15: warning: variable "b5" is used before its value is set
+        f2 = (b5 += ok) ? (w7 = 0): (w7 ? 0 : (f2 = ok));
+              ^
+
+"Test_name.c", line 15: warning: variable "ok" is used before its value is set
+        f2 = (b5 += ok) ? (w7 = 0): (w7 ? 0 : (f2 = ok));
+                    ^
+
+"Test_name.c", line 11: warning: variable "f2" was set but never used
+        static int f2;
+                   ^
+

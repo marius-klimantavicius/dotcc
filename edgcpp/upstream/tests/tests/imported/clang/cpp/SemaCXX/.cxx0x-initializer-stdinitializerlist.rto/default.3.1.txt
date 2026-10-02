@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=3 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 -DUNION_TEST Test_name.c
+"Test_name.c", line 16: error: a value of type "int" cannot be used to initialize an entity of type "const int *"
+    auto x = { 1, 2, 3 };
+               ^
+
+"Test_name.c", line 16: error: too many initializer values
+    auto x = { 1, 2, 3 };
+                  ^
+
+2 errors detected in the compilation of "Test_name.c".

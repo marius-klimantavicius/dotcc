@@ -1,0 +1,1 @@
+cpfe -DTEST_NUMBER=1 --multi_trans --gnu_version 80000 -tused Test_name.c gnats23104-p2.C

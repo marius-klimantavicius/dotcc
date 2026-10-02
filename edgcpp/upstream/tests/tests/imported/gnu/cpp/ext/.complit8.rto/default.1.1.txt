@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 10: error: too many initializer values
+      array ( (Entry*[1]) { 0, 0 } ) // { dg-error "initializers|incompatible" }
+                               ^
+
+"Test_name.c", line 10: error: invalid initializer for array member "Array<Entry>::array [with Entry=void *]"
+      array ( (Entry*[1]) { 0, 0 } ) // { dg-error "initializers|incompatible" }
+              ^
+          detected during instantiation of "Array<Entry>::Array() [with Entry=void *]" at line 14
+
+2 errors detected in the compilation of "Test_name.c".

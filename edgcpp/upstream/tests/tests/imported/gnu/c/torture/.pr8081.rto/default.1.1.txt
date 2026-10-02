@@ -1,0 +1,18 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 12: warning: variable-length array field type will be treated as zero-length array field type
+        char val[size];
+                 ^
+
+"Test_name.c", line 18: error: expected a ";"
+      {
+      ^
+
+"Test_name.c", line 21: warning: parsing restarts here after previous syntax error
+    b.val[0] = 1;
+                ^
+
+"Test_name.c", line 15: warning: variable "b" was set but never used
+    block a, b;
+             ^
+
+1 error detected in the compilation of "Test_name.c".

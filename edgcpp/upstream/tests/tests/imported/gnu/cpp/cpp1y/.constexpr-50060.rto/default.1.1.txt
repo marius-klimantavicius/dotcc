@@ -1,0 +1,79 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 92: error: expression must have a constant value
+  static_assert (f0 (0.0) == 0.0, "");
+                 ^
+"Test_name.c", line 19: note: cannot call non-constexpr function "__builtin_sincos" (declared implicitly)
+    __builtin_sincos (x, &y, &z);
+    ^
+
+"Test_name.c", line 93: error: expression must have a constant value
+  static_assert (f1 (0.0) == 1.0, "");
+                 ^
+"Test_name.c", line 28: note: cannot call non-constexpr function "__builtin_sincos" (declared implicitly)
+    __builtin_sincos (x, &y, &z);
+    ^
+
+"Test_name.c", line 94: error: expression must have a constant value
+  static_assert (f2 (6.5) == 0.8125, "");
+                 ^
+"Test_name.c", line 36: note: cannot call non-constexpr function "frexp" (declared at line 9)
+    return frexp (x, &y);
+           ^
+
+"Test_name.c", line 95: error: expression must have a constant value
+  static_assert (f3 (6.5) == 3, "");
+                 ^
+"Test_name.c", line 43: note: cannot call non-constexpr function "frexp" (declared at line 9)
+    frexp (x, &y);
+    ^
+
+"Test_name.c", line 96: error: expression must have a constant value
+  static_assert (f4 (-7.25) == -0.25, "");
+                 ^
+"Test_name.c", line 51: note: cannot call non-constexpr function "modf" (declared at line 10)
+    return modf (x, &y);
+           ^
+
+"Test_name.c", line 97: error: expression must have a constant value
+  static_assert (f5 (-7.25) == -7.0, "");
+                 ^
+"Test_name.c", line 58: note: cannot call non-constexpr function "modf" (declared at line 10)
+    modf (x, &y);
+    ^
+
+"Test_name.c", line 98: error: expression must have a constant value
+  static_assert (f6 (3.0, 2.0) == -1.0, "");
+                 ^
+"Test_name.c", line 66: note: cannot call non-constexpr function "remquo" (declared at line 11)
+    return remquo (x, y, &z);
+           ^
+
+"Test_name.c", line 99: error: expression must have a constant value
+  static_assert (f7 (3.0, 2.0) == 2, "");
+                 ^
+"Test_name.c", line 73: note: cannot call non-constexpr function "remquo" (declared at line 11)
+    remquo (x, y, &z);
+    ^
+
+"Test_name.c", line 100: error: expression must have a constant value
+  static_assert (f8 (0.75) >= 0.20 && f8 (0.75) <= 0.21, "");
+                 ^
+"Test_name.c", line 81: note: cannot call non-constexpr function "__builtin_lgamma_r" (declared implicitly)
+    return __builtin_lgamma_r (x, &y);
+           ^
+
+"Test_name.c", line 101: error: expression must have a constant value
+  static_assert (f8 (0.75) >= 0.20 && f8 (0.75) <= 0.21, "");
+                 ^
+"Test_name.c", line 81: note: cannot call non-constexpr function "__builtin_lgamma_r" (declared implicitly)
+    return __builtin_lgamma_r (x, &y);
+           ^
+
+"Test_name.c", line 102: error: expression must have a constant value
+  static_assert (f9 (0.75) == 1, "");
+                 ^
+"Test_name.c", line 88: note: cannot call non-constexpr function "__builtin_lgamma_r" (declared implicitly)
+    __builtin_lgamma_r (x, &y);
+    ^
+
+11 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 -A -tused --c++26 Test_name.c
+"Test_name.c", line 13: error: expected a type name
+    typename [:T::r1:];       // fails if T​::​r1 is not a reflection of a type
+             ^
+
+"Test_name.c", line 14: error: expected a type name
+    typename [:T::r2:]<int>;  // fails if T​::​r2 is not a reflection of a template Z for which Z<int> is a type
+             ^
+
+2 errors detected in the compilation of "Test_name.c".

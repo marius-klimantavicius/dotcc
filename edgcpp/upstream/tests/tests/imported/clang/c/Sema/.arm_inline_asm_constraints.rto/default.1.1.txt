@@ -1,0 +1,46 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 15: error: unknown asm constraint letter 'j'
+          : [ constant ] "j"(-1), [ input ] "r"(i)
+            ^
+
+"Test_name.c", line 23: error: unknown asm constraint letter 'j'
+          : [ constant ] "j"(0), [ input ] "r"(i)
+            ^
+
+"Test_name.c", line 31: error: unknown asm constraint letter 'j'
+          : [ constant ] "j"(65535), [ input ] "r"(i)
+            ^
+
+"Test_name.c", line 39: error: unknown asm constraint letter 'j'
+          : [ constant ] "j"(65536), [ input ] "r"(i)
+            ^
+
+"Test_name.c", line 237: error: unknown asm constraint letter 'O'
+        : [ constant ] "O"(1), [ input ] "r"(i)
+          ^
+
+"Test_name.c", line 252: error: unknown asm constraint letter 'l'
+        : [ result ] "=l"(res)
+          ^
+
+"Test_name.c", line 253: error: unknown asm constraint letter 'l'
+        : [ constant ] "i"(10), [ input ] "l"(i)
+                                ^
+
+"Test_name.c", line 264: error: unknown asm constraint letter 'h'
+        : [ result ] "=h"(res)
+          ^
+
+"Test_name.c", line 265: error: unknown asm constraint letter 'h'
+        : [ constant ] "i"(10), [ input ] "h"(i)
+                                ^
+
+"Test_name.c", line 288: error: unknown asm constraint letter 'w'
+            : "=w"(x)
+              ^
+
+"Test_name.c", line 289: error: unknown asm constraint letter 'w'
+            : "w"(x)); // No error expected.
+              ^
+
+11 errors detected in the compilation of "Test_name.c".

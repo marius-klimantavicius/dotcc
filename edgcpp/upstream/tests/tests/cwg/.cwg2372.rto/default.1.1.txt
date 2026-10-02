@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 -A --c++20 -tused -e 200 --no_wrap Test_name.c
+"Test_name.c", line 14: error: external/internal linkage conflict with previous declaration at line 6
+        extern int i;      // #3: external linkage, ill-formed
+                   ^
+
+"Test_name.c", line 13: warning: function "f" was declared but never referenced
+        extern void f();   // internal linkage
+                    ^
+
+"Test_name.c", line 14: warning: variable "i" was declared but never referenced
+        extern int i;      // #3: external linkage, ill-formed
+                   ^
+
+"Test_name.c", line 8: warning: function "f" was declared but never referenced
+      extern void f();     // internal linkage
+                  ^
+
+"Test_name.c", line 11: warning: variable "i" was declared but never referenced
+      int i;               // #2: i has no linkage
+          ^
+
+"Test_name.c", line 4: warning: function "f" was declared but never referenced
+    static void f();
+                ^
+
+"Test_name.c", line 6: warning: variable "i" was declared but never referenced
+    static int i = 0;      // #1
+               ^
+
+1 error detected in the compilation of "Test_name.c".

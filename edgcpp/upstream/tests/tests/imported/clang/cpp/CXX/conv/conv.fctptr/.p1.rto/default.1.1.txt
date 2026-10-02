@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 16: error: a value of type "Throw *" (aka "void (*)()") cannot be assigned to an entity of type "Nothrow *" (aka "void (*)() noexcept")
+    a = b; // expected-error {{incompatible function pointer types assigning to 'Nothrow *' (aka 'void (*)() noexcept') from 'Throw *' (aka 'void (*)()')}}
+      ^
+
+"Test_name.c", line 18: error: a value of type "void (S::*)()" cannot be assigned to an entity of type "void (S::*)() noexcept"
+    c = d; // expected-error {{assigning to 'Nothrow S::*' from incompatible type 'Throw S::*': different exception specifications}}
+      ^
+
+"Test_name.c", line 23: error: a value of type "Throw *" (aka "void (*)()") cannot be used to initialize an entity of type "Nothrow *const *" (aka "void (*const *)() noexcept")
+    Nothrow *const *pa = b; // expected-error {{cannot initialize}}
+                         ^
+
+"Test_name.c", line 24: error: a value of type "Nothrow *" (aka "void (*)() noexcept") cannot be used to initialize an entity of type "Throw *const *" (aka "void (*const *)()")
+    Throw *const *pb = a; // expected-error {{cannot initialize}}
+                       ^
+
+"Test_name.c", line 25: error: a value of type "void (S::*)()" cannot be used to initialize an entity of type "Nothrow *const S::*" (aka "void (*const S::*)() noexcept")
+    Nothrow *const S::*pc = d; // expected-error {{cannot initialize}}
+                            ^
+
+"Test_name.c", line 26: error: a value of type "void (S::*)() noexcept" cannot be used to initialize an entity of type "Throw *const S::*" (aka "void (*const S::*)()")
+    Throw *const S::*pd = c; // expected-error {{cannot initialize}}
+                          ^
+
+"Test_name.c", line 41: error: a value of type "void (**)()" cannot be used to initialize an entity of type "void (**)() noexcept"
+    void (**pp)() noexcept = &p; // expected-error {{cannot initialize a variable of type 'void (**)() noexcept' with an rvalue of type 'void (**)()'}}
+                             ^
+
+"Test_name.c", line 44: error: no suitable conversion function from "std_example::S" to "void (*)() noexcept" exists
+    void (*q)() noexcept = S(); // expected-error {{no viable conversion from 'S' to 'void (*)() noexcept'}}
+                           ^
+
+8 errors detected in the compilation of "Test_name.c".

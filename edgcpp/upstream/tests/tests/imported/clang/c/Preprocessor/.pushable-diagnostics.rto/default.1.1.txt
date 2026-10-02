@@ -1,0 +1,69 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 5: warning: unrecognized #pragma
+  #pragma clang diagnostic pop // expected-warning{{pragma diagnostic pop could not pop, no matching push}}
+          ^
+
+"Test_name.c", line 7: warning: unrecognized #pragma
+  #pragma clang diagnostic puhs // expected-warning {{pragma diagnostic expected 'error', 'warning', 'ignored', 'fatal', 'push', or 'pop'}}
+          ^
+
+"Test_name.c", line 9: warning: multicharacter character literal (potential portability problem)
+  int a = 'df'; // expected-warning{{multi-character character constant}}
+          ^
+
+"Test_name.c", line 11: warning: unrecognized #pragma
+  #pragma clang diagnostic push
+          ^
+
+"Test_name.c", line 12: warning: unrecognized #pragma
+  #pragma clang diagnostic ignored "-Wmultichar"
+          ^
+
+"Test_name.c", line 14: warning: multicharacter character literal (potential portability problem)
+  int b = 'df'; // no warning.
+          ^
+
+"Test_name.c", line 15: warning: unrecognized #pragma
+  #pragma clang diagnostic pop
+          ^
+
+"Test_name.c", line 17: warning: multicharacter character literal (potential portability problem)
+  int c = 'df';  // expected-warning{{multi-character character constant}}
+          ^
+
+"Test_name.c", line 19: warning: unrecognized #pragma
+  #pragma clang diagnostic pop // expected-warning{{pragma diagnostic pop could not pop, no matching push}}
+          ^
+
+"Test_name.c", line 24: warning: unrecognized #pragma
+  #pragma clang diagnostic push // now push
+          ^
+
+"Test_name.c", line 26: warning: unrecognized #pragma
+  #pragma clang diagnostic warning "-Weverything" 
+          ^
+
+"Test_name.c", line 30: warning: unrecognized #pragma
+  #pragma clang diagnostic push // push again
+          ^
+
+"Test_name.c", line 31: warning: unrecognized #pragma
+  #pragma clang diagnostic ignored "-Weverything"  // Set to ignore in this level.
+          ^
+
+"Test_name.c", line 33: warning: unrecognized #pragma
+  #pragma clang diagnostic warning "-Weverything"  // Set to warning in this level.
+          ^
+
+"Test_name.c", line 36: warning: unrecognized #pragma
+  #pragma clang diagnostic error "-Weverything"  // Set to error in this level.
+          ^
+
+"Test_name.c", line 39: warning: unrecognized #pragma
+  #pragma clang diagnostic pop // pop should go back to warning level
+          ^
+
+"Test_name.c", line 45: warning: unrecognized #pragma
+  #pragma clang diagnostic pop // Another pop should disble it again
+          ^
+

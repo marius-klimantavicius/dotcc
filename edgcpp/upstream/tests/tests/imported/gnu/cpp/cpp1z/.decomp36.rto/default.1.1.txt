@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 16: warning: structured bindings are a C++17 feature
+    const auto &[a1, a2, a3] = a;		// { dg-warning "only available with" "" { target c++14_down } }
+                ^
+
+"Test_name.c", line 19: warning: structured bindings are a C++17 feature
+    const auto &[d1, d2, d3] = d;		// { dg-warning "only available with" "" { target c++14_down } }
+                ^
+

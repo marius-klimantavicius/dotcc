@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 6: error: qualified name is not allowed
+  template<typename Z> using ::T = void(int n); // { dg-error "" }
+                             ^
+
+"Test_name.c", line 7: error: operator name is not allowed
+  template<typename Z> using operator int = void(int n); // { dg-error "" }
+                             ^
+
+"Test_name.c", line 8: error: expected an identifier
+  template<typename Z> using typename U = void; // { dg-error "" }
+                             ^
+
+"Test_name.c", line 8: error: expected an "="
+  template<typename Z> using typename U = void; // { dg-error "" }
+                             ^
+
+"Test_name.c", line 8: error: a class or namespace qualified name is required
+  template<typename Z> using typename U = void; // { dg-error "" }
+                                      ^
+
+"Test_name.c", line 8: error: expected a ";"
+  template<typename Z> using typename U = void; // { dg-error "" }
+                                        ^
+
+"Test_name.c", line 9: error: expected an identifier
+  template<typename Z> using typename ::V = void(int n); // { dg-error "" }
+                             ^
+
+"Test_name.c", line 9: error: expected an "="
+  template<typename Z> using typename ::V = void(int n); // { dg-error "" }
+                             ^
+
+"Test_name.c", line 9: error: the global scope has no "V"
+  template<typename Z> using typename ::V = void(int n); // { dg-error "" }
+                                        ^
+
+"Test_name.c", line 9: error: expected a ";"
+  template<typename Z> using typename ::V = void(int n); // { dg-error "" }
+                                          ^
+
+"Test_name.c", line 10: error: expected an identifier
+  template<typename Z> using typename ::operator bool = void(int n); // { dg-error "39:declaration" }
+                             ^
+
+"Test_name.c", line 10: error: expected an "="
+  template<typename Z> using typename ::operator bool = void(int n); // { dg-error "39:declaration" }
+                             ^
+
+"Test_name.c", line 10: error: the global scope has no "operator bool"
+  template<typename Z> using typename ::operator bool = void(int n); // { dg-error "39:declaration" }
+                                        ^
+
+"Test_name.c", line 10: error: expected a ";"
+  template<typename Z> using typename ::operator bool = void(int n); // { dg-error "39:declaration" }
+                                                      ^
+
+"Test_name.c", line 12: error: expected a ")"
+  using foo __attribute__((aligned(4)) = int; // { dg-error "" }
+                                       ^
+
+"Test_name.c", line 12: error: expected an "="
+  using foo __attribute__((aligned(4)) = int; // { dg-error "" }
+                                            ^
+
+16 errors detected in the compilation of "Test_name.c".

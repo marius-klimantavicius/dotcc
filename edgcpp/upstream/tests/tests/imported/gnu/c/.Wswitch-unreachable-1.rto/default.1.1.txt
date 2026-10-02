@@ -1,0 +1,24 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 15: warning: dynamic initialization in unreachable code
+      int t = 10; /* { dg-warning "statement will never be executed" } */
+          ^
+
+"Test_name.c", line 13: warning: transfer of control bypasses initialization of:
+            variable "t" (declared at line 15)
+    switch (i)
+    ^
+
+"Test_name.c", line 22: warning: variable "A" was declared but never referenced
+        int A[i];
+            ^
+
+"Test_name.c", line 20: error: transfer of control bypasses initialization of:
+            variable length array "A" (declared at line 22)
+    switch (i)
+    ^
+
+"Test_name.c", line 33: warning: variable "A" was declared but never referenced
+        int A[3];
+            ^
+
+1 error detected in the compilation of "Test_name.c".

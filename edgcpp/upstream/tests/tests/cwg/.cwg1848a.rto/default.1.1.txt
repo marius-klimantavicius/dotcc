@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --c++17 -tused -A Test_name.c
+"Test_name.c", line 3: error: expected a type specifier
+  struct S { (S)(()); (~S)(()); };
+                 ^
+
+"Test_name.c", line 3: error: explicit type is missing ("int" assumed)
+  struct S { (S)(()); (~S)(()); };
+             ^
+
+"Test_name.c", line 3: error: member function with the same name as its class must be a constructor
+  struct S { (S)(()); (~S)(()); };
+              ^
+
+"Test_name.c", line 3: error: expected a type specifier
+  struct S { (S)(()); (~S)(()); };
+                           ^
+
+"Test_name.c", line 3: error: a destructor may not have parameters
+  struct S { (S)(()); (~S)(()); };
+                           ^
+
+5 errors detected in the compilation of "Test_name.c".

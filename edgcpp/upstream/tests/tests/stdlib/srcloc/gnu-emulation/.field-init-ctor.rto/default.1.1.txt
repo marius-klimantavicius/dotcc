@@ -1,0 +1,9 @@
+cpfe -DTEST_NUMBER=1 --no_wrap_diagnostics --c++20 --g++ Test_name.c
+"Test_name.c", line 40: error: static assertion failed
+  static_assert(S().j == 36);
+  ^
+"Test_name.c", line 40: note: the final comparison was 40 == 36
+  static_assert(S().j == 36);
+                      ^
+
+1 error detected in the compilation of "Test_name.c".

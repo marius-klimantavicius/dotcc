@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp0x/initlist38.C", line 20: error: no suitable constructor exists to convert from "int" to "A"
+    B b2 { 1 };
+           ^
+
+1 error detected in the compilation of "Test_name.c".

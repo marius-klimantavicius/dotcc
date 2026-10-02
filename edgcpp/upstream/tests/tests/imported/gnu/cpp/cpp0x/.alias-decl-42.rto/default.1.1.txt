@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 20: error: nontype "B<T>::C [with T=T]" is not a template
+    const bool B<T>::C<U>::value;  // { dg-error "too many" }
+                     ^
+
+"Test_name.c", line 20: warning: variable templates are a C++14 feature
+    const bool B<T>::C<U>::value;  // { dg-error "too many" }
+                                ^
+
+1 error detected in the compilation of "Test_name.c".

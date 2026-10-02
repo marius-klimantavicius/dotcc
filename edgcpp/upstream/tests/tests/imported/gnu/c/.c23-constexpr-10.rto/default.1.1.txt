@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 9: warning: this declaration has no storage class or type specifier
+  constexpr int j = i.x; /* { dg-error "constexpr' integer initializer is not an integer constant expression" } */
+  ^
+
+"Test_name.c", line 9: error: expected a ";"
+  constexpr int j = i.x; /* { dg-error "constexpr' integer initializer is not an integer constant expression" } */
+            ^
+
+"Test_name.c", line 11: warning: this declaration has no storage class or type specifier
+  constexpr struct s i2 = { 3.25f };
+  ^
+
+"Test_name.c", line 11: error: expected a ";"
+  constexpr struct s i2 = { 3.25f };
+            ^
+
+"Test_name.c", line 12: warning: this declaration has no storage class or type specifier
+  constexpr int j2 = i2.x; /* { dg-error "constexpr' integer initializer is not an integer constant expression" } */
+  ^
+
+"Test_name.c", line 12: error: expected a ";"
+  constexpr int j2 = i2.x; /* { dg-error "constexpr' integer initializer is not an integer constant expression" } */
+            ^
+
+"Test_name.c", line 14: warning: this declaration has no storage class or type specifier
+  constexpr int j3 = 2 * 2.5; /* { dg-error "constexpr' integer initializer is not an integer constant expression" } */
+  ^
+
+"Test_name.c", line 14: error: expected a ";"
+  constexpr int j3 = 2 * 2.5; /* { dg-error "constexpr' integer initializer is not an integer constant expression" } */
+            ^
+
+"Test_name.c", line 15: warning: this declaration has no storage class or type specifier
+  constexpr int j4 = 5.0; /* { dg-error "constexpr' integer initializer is not an integer constant expression" } */
+  ^
+
+"Test_name.c", line 15: error: expected a ";"
+  constexpr int j4 = 5.0; /* { dg-error "constexpr' integer initializer is not an integer constant expression" } */
+            ^
+
+5 errors detected in the compilation of "Test_name.c".

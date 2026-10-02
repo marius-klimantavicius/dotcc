@@ -1,0 +1,78 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 21: error: fallthrough statement must precede switch case label or default
+        [[fallthrough]]; // expected-error {{does not directly precede switch label}} \
+        ^
+
+"Test_name.c", line 25: error: fallthrough statement must precede switch case label or default
+        [[fallthrough]]; // expected-error {{does not directly precede switch label}} \
+        ^
+
+"Test_name.c", line 29: error: fallthrough statement must precede switch case label or default
+        [[fallthrough]]; // expected-error {{does not directly precede switch label}} \
+        ^
+
+"Test_name.c", line 32: error: fallthrough statement must precede switch case label or default
+      do [[fallthrough]]; while (1); // expected-error {{does not directly precede switch label}} \
+         ^
+
+"Test_name.c", line 35: error: fallthrough statement must precede switch case label or default
+      do [[fallthrough]]; while (0); // expected-error {{does not directly precede switch label}} \
+         ^
+
+"Test_name.c", line 42: error: fallthrough statement must precede switch case label or default
+        [[fallthrough]];
+        ^
+
+"Test_name.c", line 45: error: fallthrough statement must precede switch case label or default
+      [[fallthrough]]; // expected-error {{does not directly precede switch label}}
+      ^
+
+"Test_name.c", line 56: warning: attribute "fallthrough" does not apply here
+  [[fallthrough]] typedef int n1; // expected-error {{'fallthrough' attribute cannot be applied to a declaration}}
+    ^
+
+"Test_name.c", line 57: error: attribute "fallthrough" does not apply here
+  typedef int [[fallthrough]] n2; // expected-error {{'fallthrough' attribute cannot be applied to types}}
+                ^
+
+"Test_name.c", line 58: warning: attribute "fallthrough" does not apply here
+  typedef int n3 [[fallthrough]]; // expected-error {{'fallthrough' attribute cannot be applied to a declaration}}
+                   ^
+
+"Test_name.c", line 60: warning: attribute "fallthrough" does not apply here
+  enum [[fallthrough]] E { // expected-error {{'fallthrough' attribute cannot be applied to a declaration}}
+         ^
+
+"Test_name.c", line 63: warning: attribute "fallthrough" does not apply here
+  struct [[fallthrough]] S { // expected-error {{'fallthrough' attribute cannot be applied to a declaration}}
+           ^
+
+"Test_name.c", line 67: warning: attribute "fallthrough" does not apply here
+  [[fallthrough]] // expected-error {{'fallthrough' attribute cannot be applied to a declaration}}
+    ^
+
+"Test_name.c", line 69: warning: attribute "fallthrough" does not apply here
+    [[fallthrough]] int n; // expected-error {{'fallthrough' attribute cannot be applied to a declaration}}
+      ^
+
+"Test_name.c", line 70: error: the "fallthrough" attribute only applies to null statements
+    [[fallthrough]] ++n; // expected-error {{'fallthrough' attribute only applies to empty statements}}
+      ^
+
+"Test_name.c", line 70: warning: variable "n" is used before its value is set
+    [[fallthrough]] ++n; // expected-error {{'fallthrough' attribute only applies to empty statements}}
+                      ^
+
+"Test_name.c", line 75: warning: statement is unreachable
+      return;
+      ^
+
+"Test_name.c", line 74: error: fallthrough statement must precede switch case label or default
+      [[fallthrough]];
+                     ^
+
+"Test_name.c", line 80: error: attribute "fallthrough" does not take arguments
+      [[fallthrough(0)]]; // expected-error {{argument list}}
+                   ^
+
+11 errors detected in the compilation of "Test_name.c".

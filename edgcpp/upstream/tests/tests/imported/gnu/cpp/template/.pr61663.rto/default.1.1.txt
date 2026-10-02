@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 17: error: no suitable conversion function from "F" to "int" exists
+    int i = f;
+            ^
+
+"Test_name.c", line 41: error: no suitable user-defined conversion from "const Y" to "X<void>" exists
+    Use (Ref ()); // #4
+         ^
+
+2 errors detected in the compilation of "Test_name.c".

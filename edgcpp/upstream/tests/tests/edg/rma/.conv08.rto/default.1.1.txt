@@ -1,0 +1,22 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 19: error: more than one conversion function from "C" to "int *" applies:
+            function template "A::operator T *()" (declared at line 5)
+            function template "B::operator T *()" (declared at line 9)
+    p = c;                          // Error
+        ^
+
+"Test_name.c", line 20: error: more than one instance of overloaded function "A::operator int *" matches the argument list:
+            function "A::operator T *() [with T=int]" (declared at line 5)
+            function "B::operator T *() [with T=int]" (declared at line 9)
+    p = c.operator int*();          // Error
+          ^
+
+"Test_name.c", line 17: warning: variable "i" was declared but never referenced
+    int i, *p;
+        ^
+
+"Test_name.c", line 17: warning: variable "p" was set but never used
+    int i, *p;
+            ^
+
+2 errors detected in the compilation of "Test_name.c".

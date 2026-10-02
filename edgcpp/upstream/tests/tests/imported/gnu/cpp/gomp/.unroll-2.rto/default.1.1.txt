@@ -1,0 +1,41 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./gomp/unroll-2.C", line 16: warning: unrecognized #pragma
+  #pragma omp for
+          ^
+
+"./gomp/unroll-2.C", line 20: warning: unrecognized #pragma
+  #pragma omp unroll partial(U1)
+          ^
+
+"./gomp/unroll-2.C", line 24: warning: unrecognized #pragma
+  #pragma omp unroll partial(U2)
+          ^
+
+"./gomp/unroll-2.C", line 28: warning: unrecognized #pragma
+  #pragma omp unroll partial(U3)
+          ^
+
+"./gomp/unroll-2.C", line 32: warning: unrecognized #pragma
+  #pragma omp for
+          ^
+
+"./gomp/unroll-2.C", line 33: warning: unrecognized #pragma
+  #pragma omp unroll partial(U1)
+          ^
+
+"./gomp/unroll-2.C", line 37: warning: unrecognized #pragma
+  #pragma omp for
+          ^
+
+"./gomp/unroll-2.C", line 38: warning: unrecognized #pragma
+  #pragma omp unroll partial(U2)
+          ^
+
+"./gomp/unroll-2.C", line 42: warning: unrecognized #pragma
+  #pragma omp for
+          ^
+
+"./gomp/unroll-2.C", line 43: warning: unrecognized #pragma
+  #pragma omp unroll partial(U3)
+          ^
+

@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 11: error: incomplete type "void" is not allowed
+  void b;  // expected-error {{variable has incomplete type 'void'}}
+       ^
+
+"Test_name.c", line 15: error: incomplete type "void" is not allowed
+  static void c; // expected-error {{variable has incomplete type 'void'}}
+              ^
+
+"Test_name.c", line 28: error: incomplete type "int []" is not allowed
+    int ary[]; // expected-error {{definition of variable with array type needs an explicit size or an initializer}}
+        ^
+
+"Test_name.c", line 29: error: incomplete type "void" is not allowed
+    void b; // expected-error {{variable has incomplete type 'void'}}
+         ^
+
+"Test_name.c", line 30: error: incomplete type "struct foo" is not allowed
+    struct foo f; // expected-error {{variable has incomplete type 'struct foo'}}
+               ^
+
+"Test_name.c", line 35: error: expression must be a pointer to a complete object type
+  int (*i)[] = &h+1; // c-error {{arithmetic on a pointer to an incomplete type 'int[]'}}
+               ^
+
+"Test_name.c", line 37: error: incomplete type "struct bar" is not allowed
+  struct bar j = {1}; // expected-error {{variable has incomplete type 'struct bar'}} \
+             ^
+
+"Test_name.c", line 48: error: incomplete type "struct x" is not allowed
+    (void)(1 ? y : y); // c-error 2 {{incomplete type 'struct x' where a complete type is required}}
+               ^
+
+"Test_name.c", line 48: error: incomplete type "struct x" is not allowed
+    (void)(1 ? y : y); // c-error 2 {{incomplete type 'struct x' where a complete type is required}}
+                   ^
+
+"Test_name.c", line 12: error: variable "f" was declared with a never-completed type
+  struct foo f; // c-error {{tentative definition has type 'struct foo' that is never completed}} \
+             ^
+
+"Test_name.c", line 16: error: variable "g" was declared with a never-completed type
+  static struct foo g;  // c-error {{tentative definition has type 'struct foo' that is never completed}} \
+                    ^
+
+"Test_name.c", line 16: warning: variable "g" was declared but never referenced
+  static struct foo g;  // c-error {{tentative definition has type 'struct foo' that is never completed}} \
+                    ^
+
+"Test_name.c", line 24: error: variable "bary" was declared with a never-completed type
+  struct foo bary[]; // c-error {{array has incomplete element type 'struct foo'}} \
+             ^
+
+12 errors detected in the compilation of "Test_name.c".

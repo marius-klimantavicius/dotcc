@@ -1,0 +1,40 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 218: error: the definition of std::initializer_list does not contain the expected constructor
+  	      {
+  	      ^
+
+"Test_name.c", line 219: error: the definition of std::initializer_list does not contain the expected constructor
+  	      {
+  	      ^
+
+"Test_name.c", line 218: error: the definition of std::initializer_list does not contain the expected constructor
+  	      {
+  	      ^
+
+"Test_name.c", line 219: error: the definition of std::initializer_list does not contain the expected constructor
+  	      {
+  	      ^
+
+"Test_name.c", line 218: error: the definition of std::initializer_list does not contain the expected constructor
+  	      {
+  	      ^
+
+"Test_name.c", line 217: error: no instance of constructor "std::multimap<_Key, _Tp, _Compare, _Alloc>::multimap [with _Key=int, _Tp=double, _Compare=std::less<int>, _Alloc=std::allocator<<unnamed>::pair<int, double>>]" matches the argument list
+            argument types are: ({...})
+    Container (
+    ^
+"Test_name.c", line 191: note: function "std::multimap<_Key, _Tp, _Compare, _Alloc>::multimap(const std::multimap<int, double, std::less<int>, std::allocator<<unnamed>::pair<int, double>>> &) [with _Key=int, _Tp=double, _Compare=std::less<int>, _Alloc=std::allocator<<unnamed>::pair<int, double>>]" does not match because argument #1 does not match parameter
+      _Key >, typename _Alloc = allocator < pair < _Key, _Tp > > >class multimap
+                                                                        ^
+"Test_name.c", line 191: note: function "std::multimap<_Key, _Tp, _Compare, _Alloc>::multimap(std::multimap<int, double, std::less<int>, std::allocator<<unnamed>::pair<int, double>>> &&) [with _Key=int, _Tp=double, _Compare=std::less<int>, _Alloc=std::allocator<<unnamed>::pair<int, double>>]" does not match because argument #1 does not match parameter
+      _Key >, typename _Alloc = allocator < pair < _Key, _Tp > > >class multimap
+                                                                        ^
+"Test_name.c", line 204: note: function "std::multimap<_Key, _Tp, _Compare, _Alloc>::multimap(std::initializer_list<std::multimap<_Key, _Tp, _Compare, _Alloc>::value_type>, _Compare, std::multimap<_Key, _Tp, _Compare, _Alloc>::allocator_type) [with _Key=int, _Tp=double, _Compare=std::less<int>, _Alloc=std::allocator<<unnamed>::pair<int, double>>]" does not match because argument #1 does not match parameter
+    multimap (initializer_list < value_type >, _Compare __comp = _Compare (), allocator_type __a = allocator_type ()):
+    ^
+
+"Test_name.c", line 11: warning: member "<unnamed>::integral_constant<_Tp, __v>::value [with _Tp=bool, __v=true]" was declared but never referenced
+      static const _Tp value = __v;
+                       ^
+
+6 errors detected in the compilation of "Test_name.c".

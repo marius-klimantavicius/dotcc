@@ -1,0 +1,57 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -DNONCONST=1 --c Test_name.c
+"Test_name.c", line 20: warning: integer conversion resulted in truncation
+    long l = 222222222222L;
+             ^
+
+"Test_name.c", line 14: warning: variable "f" was declared but never referenced
+    float f = 222222;
+          ^
+
+"Test_name.c", line 15: warning: variable "b" was declared but never referenced
+    double b = 222222222222L;
+           ^
+
+"Test_name.c", line 17: warning: variable "ff" was declared but never referenced
+    float ff = 222222222222L;    // expected-warning {{changes value from 222222222222 to 222222221312}}
+          ^
+
+"Test_name.c", line 18: warning: variable "ffff" was declared but never referenced
+    float ffff = 222222222222UL; // expected-warning {{changes value from 222222222222 to 222222221312}}
+          ^
+
+"Test_name.c", line 22: warning: variable "fff" was declared but never referenced
+    float fff = l; // expected-warning {{implicit conversion from 'long' to 'float' may lose precision}}
+          ^
+
+"Test_name.c", line 29: warning: variable "b" was declared but never referenced
+    float b = 222222222222L + a; // expected-warning {{changes value from 222222222222 to 222222221312}}
+          ^
+
+"Test_name.c", line 31: warning: variable "g" was declared but never referenced
+    float g = 22222222 + 22222222;
+          ^
+
+"Test_name.c", line 32: warning: variable "c" was declared but never referenced
+    float c = 22222222 + 22222223; // expected-warning {{implicit conversion from 'int' to 'float' changes value from 44444445 to 44444444}}
+          ^
+
+"Test_name.c", line 36: warning: variable "d" was declared but never referenced
+    float d = i + a; // expected-warning {{implicit conversion from 'int' to 'float' may lose precision}}
+          ^
+
+"Test_name.c", line 40: warning: variable "f" was declared but never referenced
+    double f = i + e;
+           ^
+
+"Test_name.c", line 48: warning: integer conversion resulted in truncation
+    long b = 222222222222L;
+             ^
+
+"Test_name.c", line 46: warning: variable "a" was declared but never referenced
+    float a = {222222222222L}; // expected-warning {{changes value from 222222222222 to 222222221312}}
+          ^
+
+"Test_name.c", line 50: warning: variable "c" was declared but never referenced
+    float c = {b}; // expected-warning {{implicit conversion from 'long' to 'float' may lose precision}}
+          ^
+

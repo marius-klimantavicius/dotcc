@@ -1,0 +1,18 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --set_flag=no_checking_pragmas --strict Test_name.c
+"Test_name.c", line 8: error: specifying a default argument on this declaration is nonstandard
+  typedef void (T)(int,int=0);
+                          ^
+
+"Test_name.c", line 15: error: specifying a default argument on this declaration is nonstandard
+  void (A::*pma)(int,int=0) = &A::f;
+                        ^
+
+"Test_name.c", line 16: error: specifying a default argument on this declaration is nonstandard
+  void g(void (*pf)(int,int=0)) {
+                           ^
+
+"Test_name.c", line 16: remark: declaration hides variable "pf" (declared at line 9)
+  void g(void (*pf)(int,int=0)) {
+                ^
+
+3 errors detected in the compilation of "Test_name.c".

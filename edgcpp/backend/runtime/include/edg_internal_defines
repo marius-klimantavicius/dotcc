@@ -1,0 +1,8 @@
+// Headers from the pinned EDG revision; this bootstrap uses its Itanium ABI.
+#ifndef __EDG_RUNTIME_USES_NAMESPACES
+#define __EDG_RUNTIME_USES_NAMESPACES 1
+#endif
+#ifndef __EDG_IA64_ABI
+#define __EDG_IA64_ABI 1
+#endif
+#include "../../../upstream/include_c++/edg_internal_defines.stdh"

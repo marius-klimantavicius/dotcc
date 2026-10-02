@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 17: error: declaration aliased to undefined entity "?f0@@YAHH@Z"
+  int g0(void) __attribute__((alias("?f0@@YAHH@Z")));
+                              ^
+
+"Test_name.c", line 25: error: declaration aliased to undefined entity "?f1@@YAHXZ"
+  int g1(void) __attribute__((alias("?f1@@YAHXZ")));
+                              ^
+
+"Test_name.c", line 31: error: declaration aliased to undefined entity "?f3@ns@@YAHXZ"
+  int g3() __attribute__((alias("?f3@ns@@YAHXZ")));
+                          ^
+
+"Test_name.c", line 16: warning: function "f0(float)" was declared but never referenced
+  static float __attribute__((overloadable)) f0(float x) { return x; } // expected-warning{{unused function 'f0'}}
+                                             ^
+
+"Test_name.c", line 15: warning: function "f0(int)" was declared but never referenced
+  static int __attribute__((overloadable)) f0(int x) { return x; } // expected-warning{{unused function 'f0'}}
+                                           ^
+
+"Test_name.c", line 24: warning: function "f1" was declared but never referenced
+  static int f1() { return 42; } // cxx-warning{{unused function 'f1'}}
+             ^
+
+"Test_name.c", line 30: warning: function "ns::f3()" was declared but never referenced
+  static int f3() { return 42; } // cxx-warning{{unused function 'f3'}}
+             ^
+
+"Test_name.c", line 29: warning: function "ns::f3(int)" was declared but never referenced
+  static int f3(int) { return 42; } // cxx-warning{{unused function 'f3'}}
+             ^
+
+3 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 16: warning: "if consteval" and "if not consteval" are not standard in this mode
+    if consteval		// { dg-warning "'if consteval' only available with" "" { target c++20_only } }
+    ^
+
+"Test_name.c", line 29: warning: "if consteval" and "if not consteval" are not standard in this mode
+    if consteval		// { dg-warning "'if consteval' only available with" "" { target c++20_only } }
+    ^
+

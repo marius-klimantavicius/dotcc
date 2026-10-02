@@ -1,0 +1,334 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./pr7356.c", line 3: warning: this declaration has no storage class or type specifier
+  a
+  ^
+
+"/mds/gnu/build/gcc-15-20250223/lib/gcc/x86_64-pc-linux-gnu/15.0.1/include/stddef.h", line 214: error: expected a ";"
+  typedef long unsigned int size_t;
+  ^
+
+"/usr/include/stdlib.h", line 139: error: identifier "size_t" is undefined
+  extern size_t __ctype_get_mb_cur_max (void) __attribute__ ((__nothrow__ , __leaf__)) ;
+         ^
+
+"/usr/include/stdlib.h", line 331: error: identifier "size_t" is undefined
+     size_t __statelen) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (2)));
+     ^
+
+"/usr/include/stdlib.h", line 361: error: identifier "size_t" is undefined
+     size_t __statelen,
+     ^
+
+"/usr/include/stdlib.h", line 465: error: identifier "size_t" is undefined
+  extern void *malloc (size_t __size) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__malloc__)) ;
+                       ^
+
+"/usr/include/stdlib.h", line 467: error: identifier "size_t" is undefined
+  extern void *calloc (size_t __nmemb, size_t __size)
+                       ^
+
+"/usr/include/stdlib.h", line 467: error: identifier "size_t" is undefined
+  extern void *calloc (size_t __nmemb, size_t __size)
+                                       ^
+
+"/usr/include/stdlib.h", line 479: error: identifier "size_t" is undefined
+  extern void *realloc (void *__ptr, size_t __size)
+                                     ^
+
+"/usr/include/alloca.h", line 32: error: identifier "size_t" is undefined
+  extern void *alloca (size_t __size) __attribute__ ((__nothrow__ , __leaf__));
+                       ^
+
+"/usr/include/stdlib.h", line 497: error: identifier "size_t" is undefined
+  extern void *valloc (size_t __size) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__malloc__)) ;
+                       ^
+
+"/usr/include/stdlib.h", line 502: error: identifier "size_t" is undefined
+  extern int posix_memalign (void **__memptr, size_t __alignment, size_t __size)
+                                              ^
+
+"/usr/include/stdlib.h", line 502: error: identifier "size_t" is undefined
+  extern int posix_memalign (void **__memptr, size_t __alignment, size_t __size)
+                                                                  ^
+
+"/usr/include/stdlib.h", line 508: error: identifier "size_t" is undefined
+  extern void *aligned_alloc (size_t __alignment, size_t __size)
+                              ^
+
+"/usr/include/stdlib.h", line 508: error: identifier "size_t" is undefined
+  extern void *aligned_alloc (size_t __alignment, size_t __size)
+                                                  ^
+
+"/usr/include/stdlib.h", line 755: error: identifier "size_t" is undefined
+          size_t __nmemb, size_t __size, __compar_fn_t __compar)
+          ^
+
+"/usr/include/stdlib.h", line 755: error: identifier "size_t" is undefined
+          size_t __nmemb, size_t __size, __compar_fn_t __compar)
+                          ^
+
+"/usr/include/stdlib.h", line 760: error: identifier "size_t" is undefined
+  extern void qsort (void *__base, size_t __nmemb, size_t __size,
+                                   ^
+
+"/usr/include/stdlib.h", line 760: error: identifier "size_t" is undefined
+  extern void qsort (void *__base, size_t __nmemb, size_t __size,
+                                                   ^
+
+"/usr/include/stdlib.h", line 839: error: identifier "size_t" is undefined
+       size_t __len) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (3, 4, 5)));
+       ^
+
+"/usr/include/stdlib.h", line 842: error: identifier "size_t" is undefined
+       size_t __len) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (3, 4, 5)));
+       ^
+
+"/usr/include/stdlib.h", line 846: error: identifier "size_t" is undefined
+        char *__restrict __buf, size_t __len)
+                                ^
+
+"/usr/include/stdlib.h", line 850: error: identifier "size_t" is undefined
+        char *__restrict __buf, size_t __len)
+                                ^
+
+"/usr/include/stdlib.h", line 859: error: identifier "size_t" is undefined
+  extern int mblen (const char *__s, size_t __n) __attribute__ ((__nothrow__ , __leaf__)) ;
+                                     ^
+
+"/usr/include/stdlib.h", line 863: error: identifier "size_t" is undefined
+       const char *__restrict __s, size_t __n) __attribute__ ((__nothrow__ , __leaf__)) ;
+                                   ^
+
+"/usr/include/stdlib.h", line 870: error: identifier "size_t" is undefined
+  extern size_t mbstowcs (wchar_t *__restrict __pwcs,
+         ^
+
+"/usr/include/stdlib.h", line 871: error: identifier "size_t" is undefined
+     const char *__restrict __s, size_t __n) __attribute__ ((__nothrow__ , __leaf__));
+                                 ^
+
+"/usr/include/stdlib.h", line 873: error: identifier "size_t" is undefined
+  extern size_t wcstombs (char *__restrict __s,
+         ^
+
+"/usr/include/stdlib.h", line 874: error: identifier "size_t" is undefined
+     const wchar_t *__restrict __pwcs, size_t __n)
+                                       ^
+
+"/usr/include/libio.h", line 307: error: identifier "size_t" is undefined
+    size_t __pad5;
+    ^
+
+"/usr/include/libio.h", line 311: error: identifier "size_t" is undefined
+    char _unused2[15 * sizeof (int) - 4 * sizeof (void *) - sizeof (size_t)];
+                                                                    ^
+
+"/usr/include/libio.h", line 339: error: "size_t" is not a type name
+  typedef __ssize_t __io_read_fn (void *__cookie, char *__buf, size_t __nbytes);
+                                                               ^
+
+"/usr/include/libio.h", line 348: error: "size_t" is not a type name
+       size_t __n);
+       ^
+
+"/usr/include/libio.h", line 470: error: "size_t" is not a type name
+  extern size_t _IO_sgetn (_IO_FILE *, void *, size_t);
+         ^
+
+"/usr/include/libio.h", line 470: error: "size_t" is not a type name
+  extern size_t _IO_sgetn (_IO_FILE *, void *, size_t);
+                                               ^
+
+"/usr/include/stdio.h", line 319: error: "size_t" is not a type name
+  extern FILE *fmemopen (void *__s, size_t __len, const char *__modes)
+                                    ^
+
+"/usr/include/stdio.h", line 325: error: "size_t" is not a type name
+  extern FILE *open_memstream (char **__bufloc, size_t *__sizeloc) __attribute__ ((__nothrow__ , __leaf__)) ;
+                                                ^
+
+"/usr/include/stdio.h", line 337: error: "size_t" is not a type name
+        int __modes, size_t __n) __attribute__ ((__nothrow__ , __leaf__));
+                     ^
+
+"/usr/include/stdio.h", line 344: error: "size_t" is not a type name
+           size_t __size) __attribute__ ((__nothrow__ , __leaf__));
+           ^
+
+"/usr/include/stdio.h", line 386: error: "size_t" is not a type name
+  extern int snprintf (char *__restrict __s, size_t __maxlen,
+                                             ^
+
+"/usr/include/stdio.h", line 390: error: "size_t" is not a type name
+  extern int vsnprintf (char *__restrict __s, size_t __maxlen,
+                                              ^
+
+"/usr/include/stdio.h", line 666: error: "size_t" is not a type name
+            size_t *__restrict __n, int __delimiter,
+            ^
+
+"/usr/include/stdio.h", line 669: error: "size_t" is not a type name
+          size_t *__restrict __n, int __delimiter,
+          ^
+
+"/usr/include/stdio.h", line 679: error: "size_t" is not a type name
+         size_t *__restrict __n,
+         ^
+
+"/usr/include/stdio.h", line 709: error: "size_t" is not a type name
+  extern size_t fread (void *__restrict __ptr, size_t __size,
+         ^
+
+"/usr/include/stdio.h", line 709: error: "size_t" is not a type name
+  extern size_t fread (void *__restrict __ptr, size_t __size,
+                                               ^
+
+"/usr/include/stdio.h", line 710: error: "size_t" is not a type name
+         size_t __n, FILE *__restrict __stream) ;
+         ^
+
+"/usr/include/stdio.h", line 715: error: "size_t" is not a type name
+  extern size_t fwrite (const void *__restrict __ptr, size_t __size,
+         ^
+
+"/usr/include/stdio.h", line 715: error: "size_t" is not a type name
+  extern size_t fwrite (const void *__restrict __ptr, size_t __size,
+                                                      ^
+
+"/usr/include/stdio.h", line 716: error: "size_t" is not a type name
+          size_t __n, FILE *__restrict __s);
+          ^
+
+"/usr/include/stdio.h", line 737: error: "size_t" is not a type name
+  extern size_t fread_unlocked (void *__restrict __ptr, size_t __size,
+         ^
+
+"/usr/include/stdio.h", line 737: error: "size_t" is not a type name
+  extern size_t fread_unlocked (void *__restrict __ptr, size_t __size,
+                                                        ^
+
+"/usr/include/stdio.h", line 738: error: "size_t" is not a type name
+           size_t __n, FILE *__restrict __stream) ;
+           ^
+
+"/usr/include/stdio.h", line 739: error: "size_t" is not a type name
+  extern size_t fwrite_unlocked (const void *__restrict __ptr, size_t __size,
+         ^
+
+"/usr/include/stdio.h", line 739: error: "size_t" is not a type name
+  extern size_t fwrite_unlocked (const void *__restrict __ptr, size_t __size,
+                                                               ^
+
+"/usr/include/stdio.h", line 740: error: "size_t" is not a type name
+            size_t __n, FILE *__restrict __stream);
+            ^
+
+"/usr/include/string.h", line 43: error: "size_t" is not a type name
+         size_t __n) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1, 2)));
+         ^
+
+"/usr/include/string.h", line 46: error: "size_t" is not a type name
+  extern void *memmove (void *__dest, const void *__src, size_t __n)
+                                                         ^
+
+"/usr/include/string.h", line 55: error: "size_t" is not a type name
+          int __c, size_t __n)
+                   ^
+
+"/usr/include/string.h", line 62: error: "size_t" is not a type name
+  extern void *memset (void *__s, int __c, size_t __n) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1)));
+                                           ^
+
+"/usr/include/string.h", line 65: error: "size_t" is not a type name
+  extern int memcmp (const void *__s1, const void *__s2, size_t __n)
+                                                         ^
+
+"/usr/include/string.h", line 92: error: "size_t" is not a type name
+  extern void *memchr (const void *__s, int __c, size_t __n)
+                                                 ^
+
+"/usr/include/string.h", line 129: error: "size_t" is not a type name
+          const char *__restrict __src, size_t __n)
+                                        ^
+
+"/usr/include/string.h", line 137: error: "size_t" is not a type name
+          size_t __n) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1, 2)));
+          ^
+
+"/usr/include/string.h", line 143: error: "size_t" is not a type name
+  extern int strncmp (const char *__s1, const char *__s2, size_t __n)
+                                                          ^
+
+"/usr/include/string.h", line 150: error: "size_t" is not a type name
+  extern size_t strxfrm (char *__restrict __dest,
+         ^
+
+"/usr/include/string.h", line 151: error: "size_t" is not a type name
+           const char *__restrict __src, size_t __n)
+                                         ^
+
+"/usr/include/string.h", line 165: error: "size_t" is not a type name
+  extern size_t strxfrm_l (char *__dest, const char *__src, size_t __n,
+         ^
+
+"/usr/include/string.h", line 165: error: "size_t" is not a type name
+  extern size_t strxfrm_l (char *__dest, const char *__src, size_t __n,
+                                                            ^
+
+"/usr/include/string.h", line 180: error: "size_t" is not a type name
+  extern char *strndup (const char *__string, size_t __n)
+                                              ^
+
+"/usr/include/string.h", line 281: error: "size_t" is not a type name
+  extern size_t strcspn (const char *__s, const char *__reject)
+         ^
+
+"/usr/include/string.h", line 285: error: "size_t" is not a type name
+  extern size_t strspn (const char *__s, const char *__accept)
+         ^
+
+"/usr/include/string.h", line 395: error: "size_t" is not a type name
+  extern size_t strlen (const char *__s)
+         ^
+
+"/usr/include/string.h", line 402: error: "size_t" is not a type name
+  extern size_t strnlen (const char *__string, size_t __maxlen)
+         ^
+
+"/usr/include/string.h", line 402: error: "size_t" is not a type name
+  extern size_t strnlen (const char *__string, size_t __maxlen)
+                                               ^
+
+"/usr/include/string.h", line 423: error: "size_t" is not a type name
+  extern int strerror_r (int __errnum, char *__buf, size_t __buflen) __asm__ ("" "__xpg_strerror_r") __attribute__ ((__nothrow__ , __leaf__))
+                                                    ^
+
+"/usr/include/string.h", line 447: error: "size_t" is not a type name
+  extern void __bzero (void *__s, size_t __n) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1)));
+                                  ^
+
+"/usr/include/string.h", line 451: error: "size_t" is not a type name
+  extern void bcopy (const void *__src, void *__dest, size_t __n)
+                                                      ^
+
+"/usr/include/string.h", line 455: error: "size_t" is not a type name
+  extern void bzero (void *__s, size_t __n) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1)));
+                                ^
+
+"/usr/include/string.h", line 458: error: "size_t" is not a type name
+  extern int bcmp (const void *__s1, const void *__s2, size_t __n)
+                                                       ^
+
+"/usr/include/string.h", line 536: error: "size_t" is not a type name
+  extern int strncasecmp (const char *__s1, const char *__s2, size_t __n)
+                                                              ^
+
+"/usr/include/string.h", line 573: error: "size_t" is not a type name
+     const char *__restrict __src, size_t __n)
+                                   ^
+
+"/usr/include/string.h", line 576: error: "size_t" is not a type name
+          const char *__restrict __src, size_t __n)
+                                        ^
+
+82 errors detected in the compilation of "Test_name.c".

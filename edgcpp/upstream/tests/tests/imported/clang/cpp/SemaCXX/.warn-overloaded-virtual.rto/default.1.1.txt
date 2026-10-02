@@ -1,0 +1,45 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 11: warning: overloaded function "B1::foo" is hidden by "S1::foo" -- virtual function override intended?
+    void foo(float); // expected-warning {{hides overloaded virtual functions}}
+         ^
+
+"Test_name.c", line 14: warning: overloaded virtual function "B1::foo" is only partially overridden in class "S2"
+  struct S2 : public B1 {
+         ^
+
+"Test_name.c", line 22: warning: overloaded virtual function "B1::foo" is only partially overridden in class "MS1"
+  struct MS1 : public S2, public B2 {
+         ^
+
+"Test_name.c", line 66: warning: function "PR9396::A::f(int)" is hidden by "PR9396::B::f" -- virtual function override intended?
+    static void f() {}
+                ^
+
+"Test_name.c", line 139: warning: overloaded function "<unnamed>::A::foo" is hidden by "<unnamed>::B::foo" -- virtual function override intended?
+      virtual int foo(int) const;
+                  ^
+
+"Test_name.c", line 128: warning: virtual function "<unnamed>::A::foo(bool) const" was not defined (and cannot be defined elsewhere because it is a member of an unnamed namespace)
+      virtual int foo(bool) const;
+                  ^
+
+"Test_name.c", line 130: warning: virtual function "<unnamed>::A::foo(int, int) const" was not defined (and cannot be defined elsewhere because it is a member of an unnamed namespace)
+      virtual int foo(int, int) const;
+                  ^
+
+"Test_name.c", line 132: warning: virtual function "<unnamed>::A::foo(int *) const" was not defined (and cannot be defined elsewhere because it is a member of an unnamed namespace)
+      virtual int foo(int*) const;
+                  ^
+
+"Test_name.c", line 134: warning: virtual function "<unnamed>::A::foo(int) volatile" was not defined (and cannot be defined elsewhere because it is a member of an unnamed namespace)
+      virtual int foo(int) volatile;
+                  ^
+
+"Test_name.c", line 146: warning: function "<unnamed>::base::f" was declared but never referenced
+    void f(char) {}
+         ^
+
+"Test_name.c", line 153: warning: function "<unnamed>::foo" was declared but never referenced
+  void foo(derived &d) {
+       ^
+

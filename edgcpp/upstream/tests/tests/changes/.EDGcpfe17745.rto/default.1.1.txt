@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 11: error: type name is not allowed
+  T r = T{};   // Previously caused an assertion failure
+        ^
+
+"Test_name.c", line 11: error: expected a ";"
+  T r = T{};   // Previously caused an assertion failure
+         ^
+
+2 errors detected in the compilation of "Test_name.c".

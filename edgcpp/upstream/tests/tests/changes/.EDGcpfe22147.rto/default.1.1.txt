@@ -1,0 +1,8 @@
+fe_only -DTEST_NUMBER=1 --microsoft_version=1925 --ms_c++17 --set_flag coroutines Test_name.c
+Internal error: assertion failed: lower_dynamic_init: dynamic init has lifetime other than curr lifetime (lower_init.c, line <suppressed> in lower_dynamic_init)
+
+
+1 catastrophic error detected in the compilation of "Test_name.c".
+Compilation aborted.
+Aborted
+eccp: front end returned an exit status of 134

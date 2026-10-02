@@ -1,0 +1,8 @@
+./a.out
+A1 = ffffffff
+sizeof(t1) = 4, bits = 32
+INT_MIN = 80000000
+INT_MAX = 7fffffff
+sizeof(t2) = 4, bits = 32
+UINT_MAX = ffffffff
+sizeof(t3) = 4, bits = 32

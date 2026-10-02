@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc -E Test_name.c
+# 1 "Test_name.c"
+
+
+ 
+
+ 
+
+ 
+
+ 
+
+"Test_name.c", line 13: warning: extra text after expected end of preprocessing directive
+  #else foo   /* { dg-bogus "extra tokens" "extra tokens in skipped block" } */
+        ^
+
+"Test_name.c", line 14: warning: extra text after expected end of preprocessing directive
+  #endif foo  /* { dg-bogus "extra tokens" "extra tokens in skipped block" } */
+         ^
+
+"Test_name.c", line 15: warning: extra text after expected end of preprocessing directive
+  #endif bar  /* { dg-error "extra tokens" "tokens after #endif" } */
+         ^
+
+
+
+
+
+
+

@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 17: warning: unknown attribute "clang::code_align"
+    [[clang::code_align(16)]] for (int p = 0; p < 128; ++p) {
+      ^
+
+"Test_name.c", line 27: warning: unknown attribute "clang::code_align"
+    [[clang::code_align(4)]] while (i < 30) {
+      ^
+
+"Test_name.c", line 37: warning: unknown attribute "clang::code_align"
+      [[clang::code_align(32)]]  for (int j = 0; j < 128; ++j) {
+        ^
+
+"Test_name.c", line 47: warning: unknown attribute "clang::code_align"
+    [[clang::code_align(64)]]
+      ^
+
+"Test_name.c", line 56: warning: unknown attribute "clang::code_align"
+    [[clang::code_align(4)]] do {
+      ^
+
+"Test_name.c", line 11: warning: variable "a2" was set but never used
+    int a1[10], a2[10];
+                ^
+

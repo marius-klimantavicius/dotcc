@@ -1,0 +1,393 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 14: warning: unknown attribute "access"
+  int RW (1) RW (1) rdwr1_rdwr1 (void*, void*);
+      ^
+
+"Test_name.c", line 14: warning: unknown attribute "access"
+  int RW (1) RW (1) rdwr1_rdwr1 (void*, void*);
+             ^
+
+"Test_name.c", line 15: warning: unknown attribute "access"
+  int RW (2) RW (2) rdwr1_rdwr1 (void*, void*);
+      ^
+
+"Test_name.c", line 15: warning: unknown attribute "access"
+  int RW (2) RW (2) rdwr1_rdwr1 (void*, void*);
+             ^
+
+"Test_name.c", line 16: warning: unknown attribute "access"
+  int RW (1) RW (2) rdwr1_rdwr1 (void*, void*);
+      ^
+
+"Test_name.c", line 16: warning: unknown attribute "access"
+  int RW (1) RW (2) rdwr1_rdwr1 (void*, void*);
+             ^
+
+"Test_name.c", line 17: warning: unknown attribute "access"
+  int RW (2) RW (1) rdwr1_rdwr1 (void*, void*);
+      ^
+
+"Test_name.c", line 17: warning: unknown attribute "access"
+  int RW (2) RW (1) rdwr1_rdwr1 (void*, void*);
+             ^
+
+"Test_name.c", line 20: warning: unknown attribute "access"
+  int RW (1) WO (1) frdwr1_wr1 (void*, void*);    // { dg-warning "attribute 'access\\(write_only, 1\\)' mismatch with mode 'read_write'" }
+      ^
+
+"Test_name.c", line 20: warning: unknown attribute "access"
+  int RW (1) WO (1) frdwr1_wr1 (void*, void*);    // { dg-warning "attribute 'access\\(write_only, 1\\)' mismatch with mode 'read_write'" }
+             ^
+
+"Test_name.c", line 22: warning: unknown attribute "access"
+  int RW (1) grdwr1_wr1 (void*, void*);           // { dg-message "previous declaration here" }
+      ^
+
+"Test_name.c", line 24: warning: unknown attribute "access"
+  int WO (1) grdwr1_wr1 (void*, void*);         // { dg-warning "attribute 'access\\(write_only, 1\\)' mismatch with mode 'read_write'" }
+      ^
+
+"Test_name.c", line 27: warning: unknown attribute "access"
+  int RW (1) RW (1, 2) frdwr1_rdwr1_1 (void*, int);   // { dg-warning "attribute 'access\\(read_write, 1, 2\\)' positional argument 2 missing in previous designation" }
+      ^
+
+"Test_name.c", line 27: warning: unknown attribute "access"
+  int RW (1) RW (1, 2) frdwr1_rdwr1_1 (void*, int);   // { dg-warning "attribute 'access\\(read_write, 1, 2\\)' positional argument 2 missing in previous designation" }
+             ^
+
+"Test_name.c", line 29: warning: unknown attribute "access"
+  int RW (1, 2) RW (1) frdwr1_1_rdwr1 (void*, int);   // { dg-warning "attribute 'access\\(read_write, 1\\)' missing positional argument 2 provided in previous designation" }
+      ^
+
+"Test_name.c", line 29: warning: unknown attribute "access"
+  int RW (1, 2) RW (1) frdwr1_1_rdwr1 (void*, int);   // { dg-warning "attribute 'access\\(read_write, 1\\)' missing positional argument 2 provided in previous designation" }
+                ^
+
+"Test_name.c", line 31: warning: unknown attribute "access"
+  int RW (1)    grdwr1_rdwr1_1 (void*, int);   // { dg-message "previous declaration here" }
+      ^
+
+"Test_name.c", line 32: warning: unknown attribute "access"
+  int RW (1, 2) grdwr1_rdwr1_1 (void*, int);   // { dg-warning "attribute 'access\\(read_write, 1, 2\\)' positional argument 2 missing in previous designation" }
+      ^
+
+"Test_name.c", line 37: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+      ^
+
+"Test_name.c", line 37: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+            ^
+
+"Test_name.c", line 37: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                  ^
+
+"Test_name.c", line 37: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                        ^
+
+"Test_name.c", line 37: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                              ^
+
+"Test_name.c", line 37: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                                    ^
+
+"Test_name.c", line 37: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                                           ^
+
+"Test_name.c", line 37: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                                                  ^
+
+"Test_name.c", line 39: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+      ^
+
+"Test_name.c", line 39: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+            ^
+
+"Test_name.c", line 39: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                  ^
+
+"Test_name.c", line 39: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                        ^
+
+"Test_name.c", line 39: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                              ^
+
+"Test_name.c", line 39: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                                    ^
+
+"Test_name.c", line 39: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                                           ^
+
+"Test_name.c", line 39: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                                                  ^
+
+"Test_name.c", line 41: warning: unknown attribute "access"
+  int WO(1) WO(3) RW(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+      ^
+
+"Test_name.c", line 41: warning: unknown attribute "access"
+  int WO(1) WO(3) RW(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+            ^
+
+"Test_name.c", line 41: warning: unknown attribute "access"
+  int WO(1) WO(3) RW(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                  ^
+
+"Test_name.c", line 41: warning: unknown attribute "access"
+  int WO(1) WO(3) RW(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                        ^
+
+"Test_name.c", line 41: warning: unknown attribute "access"
+  int WO(1) WO(3) RW(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                              ^
+
+"Test_name.c", line 41: warning: unknown attribute "access"
+  int WO(1) WO(3) RW(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                                    ^
+
+"Test_name.c", line 41: warning: unknown attribute "access"
+  int WO(1) WO(3) RW(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                                           ^
+
+"Test_name.c", line 41: warning: unknown attribute "access"
+  int WO(1) WO(3) RW(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                                                  ^
+
+"Test_name.c", line 44: warning: unknown attribute "access"
+  int RW(1) RW(3) RW(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+      ^
+
+"Test_name.c", line 44: warning: unknown attribute "access"
+  int RW(1) RW(3) RW(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+            ^
+
+"Test_name.c", line 44: warning: unknown attribute "access"
+  int RW(1) RW(3) RW(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                  ^
+
+"Test_name.c", line 44: warning: unknown attribute "access"
+  int RW(1) RW(3) RW(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                        ^
+
+"Test_name.c", line 44: warning: unknown attribute "access"
+  int RW(1) RW(3) RW(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                              ^
+
+"Test_name.c", line 44: warning: unknown attribute "access"
+  int RW(1) RW(3) RW(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                                    ^
+
+"Test_name.c", line 44: warning: unknown attribute "access"
+  int RW(1) RW(3) RW(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                                           ^
+
+"Test_name.c", line 44: warning: unknown attribute "access"
+  int RW(1) RW(3) RW(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                                                  ^
+
+"Test_name.c", line 47: warning: unknown attribute "access"
+  int RW(1) WO(3) WO(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+      ^
+
+"Test_name.c", line 47: warning: unknown attribute "access"
+  int RW(1) WO(3) WO(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+            ^
+
+"Test_name.c", line 47: warning: unknown attribute "access"
+  int RW(1) WO(3) WO(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                  ^
+
+"Test_name.c", line 47: warning: unknown attribute "access"
+  int RW(1) WO(3) WO(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                        ^
+
+"Test_name.c", line 47: warning: unknown attribute "access"
+  int RW(1) WO(3) WO(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                              ^
+
+"Test_name.c", line 47: warning: unknown attribute "access"
+  int RW(1) WO(3) WO(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                                    ^
+
+"Test_name.c", line 47: warning: unknown attribute "access"
+  int RW(1) WO(3) WO(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                                           ^
+
+"Test_name.c", line 47: warning: unknown attribute "access"
+  int RW(1) WO(3) WO(5) WO(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                                                  ^
+
+"Test_name.c", line 50: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) RW(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+      ^
+
+"Test_name.c", line 50: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) RW(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+            ^
+
+"Test_name.c", line 50: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) RW(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                  ^
+
+"Test_name.c", line 50: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) RW(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                        ^
+
+"Test_name.c", line 50: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) RW(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                              ^
+
+"Test_name.c", line 50: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) RW(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                                    ^
+
+"Test_name.c", line 50: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) RW(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                                           ^
+
+"Test_name.c", line 50: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) RW(7) RW(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                                                  ^
+
+"Test_name.c", line 53: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) WO(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+      ^
+
+"Test_name.c", line 53: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) WO(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+            ^
+
+"Test_name.c", line 53: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) WO(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                  ^
+
+"Test_name.c", line 53: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) WO(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                        ^
+
+"Test_name.c", line 53: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) WO(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                              ^
+
+"Test_name.c", line 53: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) WO(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                                    ^
+
+"Test_name.c", line 53: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) WO(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                                           ^
+
+"Test_name.c", line 53: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) WO(9) WO(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                                                  ^
+
+"Test_name.c", line 56: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) RW(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+      ^
+
+"Test_name.c", line 56: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) RW(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+            ^
+
+"Test_name.c", line 56: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) RW(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                  ^
+
+"Test_name.c", line 56: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) RW(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                        ^
+
+"Test_name.c", line 56: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) RW(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                              ^
+
+"Test_name.c", line 56: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) RW(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                                    ^
+
+"Test_name.c", line 56: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) RW(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                                           ^
+
+"Test_name.c", line 56: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) RW(11) RW(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                                                  ^
+
+"Test_name.c", line 59: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) WO(11) WO(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+      ^
+
+"Test_name.c", line 59: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) WO(11) WO(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+            ^
+
+"Test_name.c", line 59: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) WO(11) WO(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                  ^
+
+"Test_name.c", line 59: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) WO(11) WO(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                        ^
+
+"Test_name.c", line 59: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) WO(11) WO(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                              ^
+
+"Test_name.c", line 59: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) WO(11) WO(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                                    ^
+
+"Test_name.c", line 59: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) WO(11) WO(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                                           ^
+
+"Test_name.c", line 59: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) WO(11) WO(13) WO(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                                                  ^
+
+"Test_name.c", line 62: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) WO(11) RW(13) RW(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+      ^
+
+"Test_name.c", line 62: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) WO(11) RW(13) RW(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+            ^
+
+"Test_name.c", line 62: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) WO(11) RW(13) RW(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                  ^
+
+"Test_name.c", line 62: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) WO(11) RW(13) RW(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                        ^
+
+"Test_name.c", line 62: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) WO(11) RW(13) RW(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                              ^
+
+"Test_name.c", line 62: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) WO(11) RW(13) RW(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                                    ^
+
+"Test_name.c", line 62: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) WO(11) RW(13) RW(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                                           ^
+
+"Test_name.c", line 62: warning: unknown attribute "access"
+  int RW(1) WO(3) RW(5) WO(7) RW(9) WO(11) RW(13) RW(15) frw1_w3_rw5_w7_rw9_wr11_rw13_w15 (P, P, P, P, P, P, P, P, P, P, P, P, P, P, P, int);
+                                                  ^
+

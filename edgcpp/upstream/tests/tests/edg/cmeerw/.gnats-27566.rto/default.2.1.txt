@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=2 --c++14 Test_name.c
+"Test_name.c", line 14: error: "minimal::A<<unnamed>, <unnamed>>::A(int) [with <unnamed>=0, <unnamed>=int]" (declared at line 8) is inaccessible
+    B<int> b(1);
+             ^
+
+"Test_name.c", line 42: error: "tmpl_cls::A<I, U>::A(int) [with I=0, U=double]" (declared at line 24) is inaccessible
+    B<double> b(1);
+                ^
+
+"Test_name.c", line 43: error: "tmpl_cls::A<I, U>::A(int) [with I=0, U=float]" (declared at line 24) is inaccessible
+    D<float> d(1);
+               ^
+
+"Test_name.c", line 45: error: function "tmpl_cls::A<I, U>::f [with I=0, U=double]" (declared at line 21) is inaccessible
+    int i = B<double>::f() + D<float>::f();
+                       ^
+
+"Test_name.c", line 45: error: function "tmpl_cls::A<I, U>::f [with I=0, U=float]" (declared at line 21) is inaccessible
+    int i = B<double>::f() + D<float>::f();
+                                       ^
+
+"Test_name.c", line 75: error: "tmpl_fn::A<I, U>::A(T) [with I=0, U=double, T=int]" (declared at line 57) is inaccessible
+    B<double> b(1);
+                ^
+
+"Test_name.c", line 76: error: "tmpl_fn::A<I, U>::A(T) [with I=0, U=float, T=int]" (declared at line 57) is inaccessible
+    D<float> d(1);
+               ^
+
+"Test_name.c", line 78: error: function "tmpl_fn::A<I, U>::f() [with I=0, U=double, T=void]" (declared at line 53) is inaccessible
+    int i = B<double>::f() + D<float>::f();
+                       ^
+
+"Test_name.c", line 101: error: "non_tmpl::A::A(int)" (declared at line 87) is inaccessible
+    B b(1);
+        ^
+
+"Test_name.c", line 102: error: "non_tmpl::A::A(int)" (declared at line 87) is inaccessible
+    D d(1);
+        ^
+
+"Test_name.c", line 104: error: function "non_tmpl::A::f" (declared at line 84) is inaccessible
+    int i = B::f() + D::f();
+               ^
+
+"Test_name.c", line 104: error: function "non_tmpl::A::f" (declared at line 84) is inaccessible
+    int i = B::f() + D::f();
+                        ^
+
+12 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,18 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 25: error: the result of a statement expression cannot have a type involving a variable-length array
+  	__auto_type xx = (*({ int N = 2; struct lbm __x = D2Q9; ((const int(*)[9][N])__x.DQ); }));
+  	                    ^
+
+"Test_name.c", line 33: error: the result of a statement expression cannot have a type involving a variable-length array
+  	if (1 != (*({ int N = 2; struct lbm __x = D2Q9; ((const int(*)[9][N])__x.DQ); }))[1][0])
+  	            ^
+
+"Test_name.c", line 36: error: the result of a statement expression cannot have a type involving a variable-length array
+  	if (2 != ARRAY_SIZE(*({ int N = 2; struct lbm __x = D2Q9; ((const int(*)[9][N])__x.DQ); })[1]))
+  	         ^
+
+"Test_name.c", line 36: error: the result of a statement expression cannot have a type involving a variable-length array
+  	if (2 != ARRAY_SIZE(*({ int N = 2; struct lbm __x = D2Q9; ((const int(*)[9][N])__x.DQ); })[1]))
+  	         ^
+
+4 errors detected in the compilation of "Test_name.c".

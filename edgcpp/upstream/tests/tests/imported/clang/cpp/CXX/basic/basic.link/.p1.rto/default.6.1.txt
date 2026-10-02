@@ -1,0 +1,166 @@
+fe_only -DTEST_NUMBER=6 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 25: error: a global module fragment declaration must precede any other declaration
+  module; // expected-error {{'module;' introducing a global module fragment can appear only at the start of the translation unit}}
+  ^
+
+"Test_name.c", line 28: error: cannot declare more than one private module fragment
+  module :private; // expected-error {{private module fragment redefined}}
+          ^
+
+"Test_name.c", line 34: error: a module declaration can only be preceded by a global module fragment
+  export module Foo; // expected-error {{module declaration must occur at the start of the translation unit}}
+                ^
+
+"Test_name.c", line 40: error: variable "a" has already been defined (previous definition at line 21)
+  int a; // #a2
+      ^
+
+"Test_name.c", line 42: error: a global module fragment declaration must precede any other declaration
+  module; // expected-error {{'module;' introducing a global module fragment can appear only at the start of the translation unit}}
+  ^
+
+"Test_name.c", line 43: error: cannot declare more than one private module fragment
+  module :private; // #priv-frag
+          ^
+
+"Test_name.c", line 44: error: variable "b" has already been defined (previous definition at line 27)
+  int b; // ok
+      ^
+
+"Test_name.c", line 45: error: cannot declare more than one private module fragment
+  module :private; // expected-error {{private module fragment redefined}}
+          ^
+
+"Test_name.c", line 49: error: a global module fragment declaration must precede any other declaration
+  module; // expected-error {{missing 'module' declaration at end of global module fragment introduced here}}
+  ^
+
+"Test_name.c", line 51: error: variable "a" has already been defined (previous definition at line 21)
+  int a; // #a2
+      ^
+
+"Test_name.c", line 53: error: a global module fragment declaration must precede any other declaration
+  module; // expected-error {{'module;' introducing a global module fragment can appear only at the start of the translation unit}}
+  ^
+
+"Test_name.c", line 54: error: cannot declare more than one private module fragment
+  module :private; // expected-error {{private module fragment declaration with no preceding module declaration}}
+          ^
+
+"Test_name.c", line 55: error: variable "b" has already been defined (previous definition at line 27)
+  int b; // ok
+      ^
+
+"Test_name.c", line 58: error: a global module fragment declaration must precede any other declaration
+  module;
+  ^
+
+"Test_name.c", line 60: error: a module declaration can only be preceded by a global module fragment
+  export module Foo;
+                ^
+
+"Test_name.c", line 64: error: variable "a" has already been defined (previous definition at line 21)
+  int a; // #a2
+      ^
+
+"Test_name.c", line 67: error: a global module fragment declaration must precede any other declaration
+  module; // expected-error {{'module;' introducing a global module fragment can appear only at the start of the translation unit}}
+  ^
+
+"Test_name.c", line 68: error: variable "b" has already been defined (previous definition at line 27)
+  int b; // ok
+      ^
+
+"Test_name.c", line 72: error: a global module fragment declaration must precede any other declaration
+  module; // expected-error {{missing 'module' declaration at end of global module fragment introduced here}}
+  ^
+
+"Test_name.c", line 74: error: variable "a" has already been defined (previous definition at line 21)
+  int a; // #a2
+      ^
+
+"Test_name.c", line 77: error: a global module fragment declaration must precede any other declaration
+  module; // expected-error {{'module;' introducing a global module fragment can appear only at the start of the translation unit}}
+  ^
+
+"Test_name.c", line 79: error: variable "b" has already been defined (previous definition at line 27)
+  int b; // ok
+      ^
+
+"Test_name.c", line 83: error: a module declaration can only be preceded by a global module fragment
+  export module Foo; // expected-error {{module declaration must occur at the start of the translation unit}}
+                ^
+
+"Test_name.c", line 89: error: variable "a" has already been defined (previous definition at line 21)
+  int a; // #a2
+      ^
+
+"Test_name.c", line 92: error: a global module fragment declaration must precede any other declaration
+  module; // expected-error {{'module;' introducing a global module fragment can appear only at the start of the translation unit}}
+  ^
+
+"Test_name.c", line 94: error: variable "b" has already been defined (previous definition at line 27)
+  int b; // ok
+      ^
+
+"Test_name.c", line 98: error: variable "a" has already been defined (previous definition at line 21)
+  int a; // #a2
+      ^
+
+"Test_name.c", line 100: error: a global module fragment declaration must precede any other declaration
+  module; // expected-error {{'module;' introducing a global module fragment can appear only at the start of the translation unit}}
+  ^
+
+"Test_name.c", line 101: error: cannot declare more than one private module fragment
+  module :private; // #priv-frag
+          ^
+
+"Test_name.c", line 103: error: variable "b" has already been defined (previous definition at line 27)
+  int b; // ok
+      ^
+
+"Test_name.c", line 108: error: variable "a" has already been defined (previous definition at line 21)
+  int a; // #a2
+      ^
+
+"Test_name.c", line 111: error: a global module fragment declaration must precede any other declaration
+  module; // expected-error {{'module;' introducing a global module fragment can appear only at the start of the translation unit}}
+  ^
+
+"Test_name.c", line 112: error: variable "b" has already been defined (previous definition at line 27)
+  int b; // ok
+      ^
+
+"Test_name.c", line 115: error: a global module fragment cannot be exported
+  export module; // expected-error {{global module fragment cannot be exported}}
+  ^
+
+"Test_name.c", line 115: error: a global module fragment declaration must precede any other declaration
+  export module; // expected-error {{global module fragment cannot be exported}}
+         ^
+
+"Test_name.c", line 117: error: a module declaration can only be preceded by a global module fragment
+  export module Foo;
+                ^
+
+"Test_name.c", line 121: error: variable "a" has already been defined (previous definition at line 21)
+  int a; // #a2
+      ^
+
+"Test_name.c", line 124: error: a global module fragment declaration must precede any other declaration
+  module; // expected-error {{'module;' introducing a global module fragment can appear only at the start of the translation unit}}
+  ^
+
+"Test_name.c", line 126: error: cannot declare more than one private module fragment
+  module :private; // #priv-frag
+          ^
+
+"Test_name.c", line 128: error: variable "b" has already been defined (previous definition at line 27)
+  int b; // ok
+      ^
+
+"Test_name.c", line 129: error: cannot declare more than one private module fragment
+  module :private; // expected-error {{private module fragment redefined}}
+          ^
+
+41 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 11: error: identifier "constexpr" is undefined
+    constexpr operator int() const { return 42; }
+    ^
+
+"Test_name.c", line 11: error: return type may not be specified on a conversion function
+    constexpr operator int() const { return 42; }
+    ^
+
+"Test_name.c", line 13: error: identifier "constexpr" is undefined
+  constexpr X x{};
+  ^
+
+"Test_name.c", line 13: error: expected a ";"
+  constexpr X x{};
+              ^
+
+"Test_name.c", line 14: error: identifier "x" is undefined
+  int r = g<x>();  // Previously an error.  Now okay.
+            ^
+
+5 errors detected in the compilation of "Test_name.c".

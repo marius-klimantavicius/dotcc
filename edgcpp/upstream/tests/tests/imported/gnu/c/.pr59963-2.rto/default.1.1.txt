@@ -1,0 +1,53 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 17: warning: integer conversion resulted in truncation
+    return f (0xffffffffL, /* { dg-warning "13:-Woverflow" } */
+              ^
+
+"Test_name.c", line 18: warning: integer conversion resulted in truncation
+              0xffffffffL) /* { dg-warning "13:-Woverflow" } */
+              ^
+
+"Test_name.c", line 19: warning: integer conversion resulted in truncation
+           && f (0xffffffffL, /* { dg-warning "16:-Woverflow" } */
+                 ^
+
+"Test_name.c", line 20: warning: integer conversion resulted in truncation
+                 0xffffffffL); /* { dg-warning "16:-Woverflow" } */
+                 ^
+
+"Test_name.c", line 26: warning: integer conversion resulted in truncation
+    bar (256); /* { dg-warning "8:-Woverflow" } */
+         ^
+
+"Test_name.c", line 28: warning: integer conversion resulted in a change of sign
+    bar8 (-1, /* { dg-warning "9:-Wsign-conversion" } */
+          ^
+
+"Test_name.c", line 29: warning: integer conversion resulted in a change of sign
+           -2, /* { dg-warning "10:-Wsign-conversion" } */
+           ^
+
+"Test_name.c", line 30: warning: integer conversion resulted in a change of sign
+            -3, /* { dg-warning "11:-Wsign-conversion" } */
+            ^
+
+"Test_name.c", line 31: warning: integer conversion resulted in a change of sign
+             -4, /* { dg-warning "12:-Wsign-conversion" } */
+             ^
+
+"Test_name.c", line 32: warning: integer conversion resulted in a change of sign
+              -5, /* { dg-warning "13:-Wsign-conversion" } */
+              ^
+
+"Test_name.c", line 33: warning: integer conversion resulted in a change of sign
+               -6, /* { dg-warning "14:-Wsign-conversion" } */
+               ^
+
+"Test_name.c", line 34: warning: integer conversion resulted in a change of sign
+                -7, /* { dg-warning "15:-Wsign-conversion" } */
+                ^
+
+"Test_name.c", line 35: warning: integer conversion resulted in a change of sign
+                 -8); /* { dg-warning "16:-Wsign-conversion" } */
+                 ^
+

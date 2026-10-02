@@ -1,0 +1,190 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 10: error: identifier "_Defer" is undefined
+    defer {
+    ^
+
+"Test_name.c", line 10: error: expected a ";"
+    defer {
+          ^
+
+"Test_name.c", line 19: warning: parsing restarts here after previous syntax error
+  }
+  ^
+
+"Test_name.c", line 23: warning: statement is unreachable
+    defer { // expected-note {{jump enters a defer statement}}
+    ^
+
+"Test_name.c", line 23: error: identifier "_Defer" is undefined
+    defer { // expected-note {{jump enters a defer statement}}
+    ^
+
+"Test_name.c", line 23: error: expected a ";"
+    defer { // expected-note {{jump enters a defer statement}}
+          ^
+
+"Test_name.c", line 27: warning: parsing restarts here after previous syntax error
+    goto l2; // expected-error {{cannot jump from this goto statement to its label}}
+           ^
+
+"Test_name.c", line 28: error: expected a ";"
+    defer {} // expected-note {{jump bypasses defer statement}}
+          ^
+
+"Test_name.c", line 22: error: label "l1" was referenced but not defined
+    goto l1; // expected-error {{cannot jump from this goto statement to its label}}
+         ^
+
+"Test_name.c", line 34: error: identifier "_Defer" is undefined
+    defer { // expected-note {{jump exits a defer statement}}
+    ^
+
+"Test_name.c", line 34: error: expected a ";"
+    defer { // expected-note {{jump exits a defer statement}}
+          ^
+
+"Test_name.c", line 37: warning: parsing restarts here after previous syntax error
+  }
+  ^
+
+"Test_name.c", line 33: warning: label "x" was declared but never referenced
+    x:
+    ^
+
+"Test_name.c", line 40: error: identifier "_Defer" is undefined
+    defer { // expected-note {{jump exits a defer statement}}
+    ^
+
+"Test_name.c", line 40: error: expected a ";"
+    defer { // expected-note {{jump exits a defer statement}}
+          ^
+
+"Test_name.c", line 44: warning: parsing restarts here after previous syntax error
+  }
+  ^
+
+"Test_name.c", line 47: error: identifier "_Defer" is undefined
+    defer { // expected-note {{jump enters a defer statement}}
+    ^
+
+"Test_name.c", line 47: error: expected a ";"
+    defer { // expected-note {{jump enters a defer statement}}
+          ^
+
+"Test_name.c", line 50: warning: parsing restarts here after previous syntax error
+    goto l2; // expected-error {{cannot jump from this goto statement to its label}}
+           ^
+
+"Test_name.c", line 56: warning: statement is unreachable
+      defer {} // expected-note {{jump bypasses defer statement}}
+      ^
+
+"Test_name.c", line 56: error: identifier "_Defer" is undefined
+      defer {} // expected-note {{jump bypasses defer statement}}
+      ^
+
+"Test_name.c", line 56: error: expected a ";"
+      defer {} // expected-note {{jump bypasses defer statement}}
+            ^
+
+"Test_name.c", line 61: error: identifier "_Defer" is undefined
+      defer {} // expected-note {{jump bypasses defer statement}}
+      ^
+
+"Test_name.c", line 61: error: expected a ";"
+      defer {} // expected-note {{jump bypasses defer statement}}
+            ^
+
+"Test_name.c", line 54: error: label "b" was referenced but not defined
+    goto b; // expected-error {{cannot jump from this goto statement to its label}}
+         ^
+
+"Test_name.c", line 64: error: label "b2" was referenced but not defined
+    goto b2; // expected-error {{cannot jump from this goto statement to its label}}
+         ^
+
+"Test_name.c", line 68: error: identifier "_Defer" is undefined
+    defer { // expected-note {{jump bypasses defer statement}}
+    ^
+
+"Test_name.c", line 68: error: expected a ";"
+    defer { // expected-note {{jump bypasses defer statement}}
+          ^
+
+"Test_name.c", line 76: warning: parsing restarts here after previous syntax error
+  }
+  ^
+
+"Test_name.c", line 79: error: identifier "_Defer" is undefined
+    defer {
+    ^
+
+"Test_name.c", line 79: error: expected a ";"
+    defer {
+          ^
+
+"Test_name.c", line 135: warning: parsing restarts here after previous syntax error
+  }
+  ^
+
+"Test_name.c", line 139: error: identifier "_Defer" is undefined
+      defer {}
+      ^
+
+"Test_name.c", line 139: error: expected a ";"
+      defer {}
+            ^
+
+"Test_name.c", line 146: warning: statement is unreachable
+      defer {}
+      ^
+
+"Test_name.c", line 146: error: identifier "_Defer" is undefined
+      defer {}
+      ^
+
+"Test_name.c", line 146: error: expected a ";"
+      defer {}
+            ^
+
+"Test_name.c", line 151: error: identifier "_Defer" is undefined
+      { defer {} }
+        ^
+
+"Test_name.c", line 151: error: expected a ";"
+      { defer {} }
+              ^
+
+"Test_name.c", line 157: error: identifier "_Defer" is undefined
+      defer {}
+      ^
+
+"Test_name.c", line 157: error: expected a ";"
+      defer {}
+            ^
+
+"Test_name.c", line 142: warning: label "l1" was declared but never referenced
+    l1:
+    ^
+
+"Test_name.c", line 160: warning: label "l4" was declared but never referenced
+    l4:
+    ^
+
+"Test_name.c", line 165: warning: statement is unreachable
+      defer case 12: break; // expected-error {{cannot break out of a defer statement}} \
+      ^
+
+"Test_name.c", line 165: error: identifier "_Defer" is undefined
+      defer case 12: break; // expected-error {{cannot break out of a defer statement}} \
+      ^
+
+"Test_name.c", line 165: error: expected a ";"
+      defer case 12: break; // expected-error {{cannot break out of a defer statement}} \
+            ^
+
+"Test_name.c", line 170: error: expected a ";"
+      defer default: break; // expected-error {{cannot break out of a defer statement}} \
+            ^
+
+33 errors detected in the compilation of "Test_name.c".

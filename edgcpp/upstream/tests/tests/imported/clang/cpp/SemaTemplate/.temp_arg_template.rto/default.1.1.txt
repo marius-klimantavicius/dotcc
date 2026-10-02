@@ -1,0 +1,46 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 30: error: class template "Y" is not compatible with template template parameter "X"
+  A<Y> *a4; // expected-error@#A {{template argument for non-type template parameter must be an expression}}
+    ^
+
+"Test_name.c", line 32: error: class template "TooMany" is not compatible with template template parameter "X"
+  A<TooMany> *a5; // expected-error {{too few template arguments for class template 'TooMany'}}
+    ^
+
+"Test_name.c", line 34: error: class template "X" is not compatible with template template parameter "X"
+  B<X> *a6; // expected-error {{too many template arguments for class template 'X'}}
+    ^
+
+"Test_name.c", line 37: error: class template "Ylong" is not compatible with template template parameter "X"
+  C<Ylong> *a8;
+    ^
+
+"Test_name.c", line 38: error: class template "Yref" is not compatible with template template parameter "X"
+  C<Yref> *a9; // expected-note {{different template parameters}}
+    ^
+
+"Test_name.c", line 42: error: function template "f" is not a class template
+  A<f> *a9; // expected-error{{must be a class template}}
+    ^
+
+"Test_name.c", line 42: error: variable "a9" has already been defined (previous definition at line 38)
+  A<f> *a9; // expected-error{{must be a class template}}
+        ^
+
+"Test_name.c", line 45: warning: use of alternative token "<:" appears to be unintended
+  A<::N::Z> *a10;
+  ^
+
+"Test_name.c", line 45: error: argument list for class template "A" is missing
+  A<::N::Z> *a10;
+  ^
+
+"Test_name.c", line 45: error: invalid specifier for structured binding declaration
+  A<::N::Z> *a10;
+  ^
+
+At end of source: error: missing initializer
+
+At end of source: error: expected a ";"
+
+11 errors detected in the compilation of "Test_name.c".

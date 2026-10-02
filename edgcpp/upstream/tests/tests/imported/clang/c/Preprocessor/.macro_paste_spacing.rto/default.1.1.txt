@@ -1,0 +1,48 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -w --c Test_name.c
+"Test_name.c", line 6: error: identifier "blah" is undefined
+  blah
+  ^
+
+"Test_name.c", line 12: error: identifier "vw" is undefined
+  B(x,y)
+  ^
+
+"Test_name.c", line 14: error: identifier "x" is undefined
+  B(x,)
+  ^
+
+"Test_name.c", line 16: error: identifier "w" is undefined
+  B(,y)
+  ^
+
+"Test_name.c", line 22: error: identifier "a" is undefined
+  C(,,) C(a,,) C(,b,) C(,,c) C(a,b,) C(a,,c) C(,b,c) C(a,b,c)
+        ^
+
+"Test_name.c", line 22: error: identifier "b" is undefined
+  C(,,) C(a,,) C(,b,) C(,,c) C(a,b,) C(a,,c) C(,b,c) C(a,b,c)
+               ^
+
+"Test_name.c", line 22: error: identifier "c" is undefined
+  C(,,) C(a,,) C(,b,) C(,,c) C(a,b,) C(a,,c) C(,b,c) C(a,b,c)
+                      ^
+
+"Test_name.c", line 22: error: identifier "ab" is undefined
+  C(,,) C(a,,) C(,b,) C(,,c) C(a,b,) C(a,,c) C(,b,c) C(a,b,c)
+                             ^
+
+"Test_name.c", line 22: error: identifier "ac" is undefined
+  C(,,) C(a,,) C(,b,) C(,,c) C(a,b,) C(a,,c) C(,b,c) C(a,b,c)
+                                     ^
+
+"Test_name.c", line 22: error: identifier "bc" is undefined
+  C(,,) C(a,,) C(,b,) C(,,c) C(a,b,) C(a,,c) C(,b,c) C(a,b,c)
+                                             ^
+
+"Test_name.c", line 22: error: identifier "abc" is undefined
+  C(,,) C(a,,) C(,b,) C(,,c) C(a,b,) C(a,,c) C(,b,c) C(a,b,c)
+                                                     ^
+
+At end of source: error: expected a ";"
+
+12 errors detected in the compilation of "Test_name.c".

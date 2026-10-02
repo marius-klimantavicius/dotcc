@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=2 -w --c++20 --microsoft_version 1936 --target linux_aarch64 -DHAS_BUG -DBITS=64 Test_name.c

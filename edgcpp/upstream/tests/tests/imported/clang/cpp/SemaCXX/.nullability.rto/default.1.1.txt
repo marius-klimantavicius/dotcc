@@ -1,0 +1,360 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"SemaCXX/nullability.cpp", line 22: warning: nullability qualifiers are only permitted on pointer and pointer-to-member types
+  typedef nullptr_t _Nonnull nonnull_nullptr_t;
+                    ^
+
+"SemaCXX/nullability.cpp", line 25: warning: nullability qualifiers are only permitted on pointer and pointer-to-member types
+  typedef _Nonnull int (X::* member_function_type_2)(int);
+          ^
+
+"SemaCXX/nullability.cpp", line 27: warning: nullability qualifiers are only permitted on pointer and pointer-to-member types
+  typedef _Nonnull int X::* member_data_type_2;
+          ^
+
+"SemaCXX/nullability.cpp", line 32: warning: nullability qualifiers are only permitted on pointer and pointer-to-member types
+    typedef _Nonnull T type;
+            ^
+          detected during instantiation of class "AddNonNull<T> [with T=nullptr_t]" at line 39
+
+"SemaCXX/nullability.cpp", line 32: warning: nullability qualifiers are only permitted on pointer and pointer-to-member types
+    typedef _Nonnull T type;
+            ^
+          detected during instantiation of class "AddNonNull<T> [with T=int]" at line 41
+
+"SemaCXX/nullability.cpp", line 32: warning: nullability qualifiers are only permitted on pointer and pointer-to-member types
+    typedef _Nonnull T type;
+            ^
+          detected during instantiation of class "AddNonNull<T> [with T=NotPtr]" at line 45
+
+"SemaCXX/nullability.cpp", line 46: error: expected either a definition or a tag name
+  struct _Nullable SmartPtr{
+         ^
+
+"SemaCXX/nullability.cpp", line 47: error: explicit type is missing ("int" assumed)
+    SmartPtr();
+    ^
+
+"SemaCXX/nullability.cpp", line 48: error: explicit type is missing ("int" assumed)
+    SmartPtr(nullptr_t);
+    ^
+
+"SemaCXX/nullability.cpp", line 49: error: overloaded function "<unnamed>::SmartPtr" is not a type name
+    SmartPtr(const SmartPtr&);
+                   ^
+
+"SemaCXX/nullability.cpp", line 49: error: explicit type is missing ("int" assumed)
+    SmartPtr(const SmartPtr&);
+    ^
+
+"SemaCXX/nullability.cpp", line 50: error: overloaded function "<unnamed>::SmartPtr" is not a type name
+    SmartPtr(SmartPtr&&);
+             ^
+
+"SemaCXX/nullability.cpp", line 50: error: explicit type is missing ("int" assumed)
+    SmartPtr(SmartPtr&&);
+    ^
+
+"SemaCXX/nullability.cpp", line 51: error: overloaded function "<unnamed>::SmartPtr" is not a type name
+    SmartPtr &operator=(const SmartPtr&);
+    ^
+
+"SemaCXX/nullability.cpp", line 51: error: overloaded function "<unnamed>::SmartPtr" is not a type name
+    SmartPtr &operator=(const SmartPtr&);
+                              ^
+
+"SemaCXX/nullability.cpp", line 52: error: overloaded function "<unnamed>::SmartPtr" is not a type name
+    SmartPtr &operator=(SmartPtr&&);
+    ^
+
+"SemaCXX/nullability.cpp", line 52: error: overloaded function "<unnamed>::SmartPtr" is not a type name
+    SmartPtr &operator=(SmartPtr&&);
+                        ^
+
+"SemaCXX/nullability.cpp", line 54: error: identifier "SmartPtr" is undefined
+  typedef AddNonNull<SmartPtr>::type nonnull_smart_pointer_1;
+                     ^
+
+"SemaCXX/nullability.cpp", line 55: error: expected an identifier
+  template<class> struct _Nullable SmartPtrTemplate{};
+                         ^
+
+"SemaCXX/nullability.cpp", line 55: warning: variable templates are a C++14 feature
+  template<class> struct _Nullable SmartPtrTemplate{};
+                                                     ^
+
+"SemaCXX/nullability.cpp", line 56: error: SmartPtrTemplate is not a template
+  typedef AddNonNull<SmartPtrTemplate<int>>::type nonnull_smart_pointer_2;
+                     ^
+
+"SemaCXX/nullability.cpp", line 32: warning: nullability qualifiers are only permitted on pointer and pointer-to-member types
+    typedef _Nonnull T type;
+            ^
+          detected during instantiation of class "AddNonNull<T> [with T=std::__1::unique_ptr<int>]" at line 62
+
+"SemaCXX/nullability.cpp", line 32: warning: nullability qualifiers are only permitted on pointer and pointer-to-member types
+    typedef _Nonnull T type;
+            ^
+          detected during instantiation of class "AddNonNull<T> [with T=std::__1::function<int ()>]" at line 63
+
+"SemaCXX/nullability.cpp", line 65: error: not a class or struct name
+  class Derived : public SmartPtr {};
+                         ^
+
+"SemaCXX/nullability.cpp", line 66: warning: nullability qualifiers are only permitted on pointer and pointer-to-member types
+  Derived _Nullable x;
+          ^
+
+"SemaCXX/nullability.cpp", line 67: error: not a class or struct name
+  class DerivedPrivate : private SmartPtr {};
+                                 ^
+
+"SemaCXX/nullability.cpp", line 68: warning: nullability qualifiers are only permitted on pointer and pointer-to-member types
+  DerivedPrivate _Nullable y;
+                 ^
+
+"SemaCXX/nullability.cpp", line 73: warning: nullability qualifiers are only permitted on pointer and pointer-to-member types
+    typedef _Nonnull AddNonNull<T> invalid1;
+            ^
+
+"SemaCXX/nullability.cpp", line 74: warning: nullability qualifiers are only permitted on pointer and pointer-to-member types
+    typedef _Nonnull AddNonNull2 invalid2;
+            ^
+
+"SemaCXX/nullability.cpp", line 75: warning: nullability qualifiers are only permitted on pointer and pointer-to-member types
+    typedef _Nonnull AddNonNull2<T> invalid3;
+            ^
+
+"SemaCXX/nullability.cpp", line 80: warning: nullability qualifiers are only permitted on pointer and pointer-to-member types
+    typedef _Nonnull AddNonNull<T> (*invalid4);
+            ^
+
+"SemaCXX/nullability.cpp", line 84: warning: nullability qualifiers are only permitted on pointer and pointer-to-member types
+  void (*accepts_nonnull_1)(_Nonnull int *ptr);
+                            ^
+
+"SemaCXX/nullability.cpp", line 85: warning: nullability qualifiers are only permitted on pointer and pointer-to-member types
+  void (*& accepts_nonnull_2)(_Nonnull int *ptr) = accepts_nonnull_1;
+                              ^
+
+"SemaCXX/nullability.cpp", line 86: warning: nullability qualifiers are only permitted on pointer and pointer-to-member types
+  void (X::* accepts_nonnull_3)(_Nonnull int *ptr);
+                                ^
+
+"SemaCXX/nullability.cpp", line 87: warning: nullability qualifiers are only permitted on pointer and pointer-to-member types
+  void accepts_nonnull_4(_Nonnull int *ptr);
+                         ^
+
+"SemaCXX/nullability.cpp", line 88: warning: nullability qualifiers are only permitted on pointer and pointer-to-member types
+  void (&accepts_nonnull_5)(_Nonnull int *ptr) = accepts_nonnull_4;
+                            ^
+
+"SemaCXX/nullability.cpp", line 89: error: incomplete type "void" is not allowed
+  void accepts_nonnull_6(SmartPtr _Nonnull);
+       ^
+
+"SemaCXX/nullability.cpp", line 89: error: identifier "SmartPtr" is undefined
+  void accepts_nonnull_6(SmartPtr _Nonnull);
+                         ^
+
+"SemaCXX/nullability.cpp", line 89: error: expected a ")"
+  void accepts_nonnull_6(SmartPtr _Nonnull);
+                                  ^
+
+"SemaCXX/nullability.cpp", line 101: warning: nullability qualifiers are only permitted on pointer and pointer-to-member types
+  template<void FP(_Nonnull int*)>
+                   ^
+
+"SemaCXX/nullability.cpp", line 109: error: incomplete type "void" is not allowed
+  void TakeSmartNonnull(SmartPtr _Nonnull);
+       ^
+
+"SemaCXX/nullability.cpp", line 109: error: expected a ")"
+  void TakeSmartNonnull(SmartPtr _Nonnull);
+                                 ^
+
+"SemaCXX/nullability.cpp", line 113: warning: variable "nullable" is used before its value is set
+    void *_Nonnull p(nullable);
+                     ^
+
+"SemaCXX/nullability.cpp", line 122: warning: type qualifier is meaningless on cast type
+    nonnull = (void *_Nonnull)nullable;
+               ^
+
+"SemaCXX/nullability.cpp", line 124: error: expected a ";"
+    SmartPtr _Nullable s_nullable;
+             ^
+
+"SemaCXX/nullability.cpp", line 125: error: expected a ";"
+    SmartPtr _Nonnull s(s_nullable);
+             ^
+
+"SemaCXX/nullability.cpp", line 126: error: expected a ";"
+    SmartPtr _Nonnull s2{s_nullable};
+             ^
+
+"SemaCXX/nullability.cpp", line 127: error: expected a ";"
+    SmartPtr _Nonnull s3 = {s_nullable};
+             ^
+
+"SemaCXX/nullability.cpp", line 128: error: expected a ";"
+    SmartPtr _Nonnull s4 = s_nullable;
+             ^
+
+"SemaCXX/nullability.cpp", line 129: error: expected a ";"
+    SmartPtr _Nonnull s_nonnull;
+             ^
+
+"SemaCXX/nullability.cpp", line 130: error: identifier "s_nonnull" is undefined
+    s_nonnull = s_nullable;
+    ^
+
+"SemaCXX/nullability.cpp", line 130: error: identifier "s_nullable" is undefined
+    s_nonnull = s_nullable;
+                ^
+
+"SemaCXX/nullability.cpp", line 134: error: expected a ")"
+    s_nonnull = (SmartPtr _Nonnull)s_nullable;
+                          ^
+
+"SemaCXX/nullability.cpp", line 134: error: expected a ";"
+    s_nonnull = (SmartPtr _Nonnull)s_nullable;
+                                   ^
+
+"SemaCXX/nullability.cpp", line 135: error: "SmartPtr" is not a type name
+    s_nonnull = static_cast<SmartPtr _Nonnull>(s_nullable);
+                            ^
+
+"SemaCXX/nullability.cpp", line 113: warning: variable "p" was declared but never referenced
+    void *_Nonnull p(nullable);
+                   ^
+
+"SemaCXX/nullability.cpp", line 114: warning: variable "p2" was declared but never referenced
+    void *_Nonnull p2{nullable};
+                   ^
+
+"SemaCXX/nullability.cpp", line 115: warning: variable "p3" was declared but never referenced
+    void *_Nonnull p3 = {nullable};
+                   ^
+
+"SemaCXX/nullability.cpp", line 116: warning: variable "p4" was declared but never referenced
+    void *_Nonnull p4 = nullable;
+                   ^
+
+"SemaCXX/nullability.cpp", line 138: warning: type qualifier on return type is meaningless
+  void *_Nullable ReturnNullable();
+        ^
+
+"SemaCXX/nullability.cpp", line 139: error: this declaration has no storage class or type specifier
+  SmartPtr _Nullable ReturnSmartNullable();
+  ^
+
+"SemaCXX/nullability.cpp", line 139: error: expected a ";"
+  SmartPtr _Nullable ReturnSmartNullable();
+           ^
+
+"SemaCXX/nullability.cpp", line 151: warning: expression has no effect
+    SmartPtr _Nonnull s(ReturnSmartNullable());
+    ^
+
+"SemaCXX/nullability.cpp", line 151: error: expected a ";"
+    SmartPtr _Nonnull s(ReturnSmartNullable());
+             ^
+
+"SemaCXX/nullability.cpp", line 152: warning: expression has no effect
+    SmartPtr _Nonnull s2{ReturnSmartNullable()};
+    ^
+
+"SemaCXX/nullability.cpp", line 152: error: expected a ";"
+    SmartPtr _Nonnull s2{ReturnSmartNullable()};
+             ^
+
+"SemaCXX/nullability.cpp", line 153: warning: expression has no effect
+    SmartPtr _Nonnull s3 = {ReturnSmartNullable()};
+    ^
+
+"SemaCXX/nullability.cpp", line 153: error: expected a ";"
+    SmartPtr _Nonnull s3 = {ReturnSmartNullable()};
+             ^
+
+"SemaCXX/nullability.cpp", line 154: warning: expression has no effect
+    SmartPtr _Nonnull s4 = ReturnSmartNullable();
+    ^
+
+"SemaCXX/nullability.cpp", line 154: error: expected a ";"
+    SmartPtr _Nonnull s4 = ReturnSmartNullable();
+             ^
+
+"SemaCXX/nullability.cpp", line 155: warning: expression has no effect
+    SmartPtr _Nonnull s_nonnull;
+    ^
+
+"SemaCXX/nullability.cpp", line 155: error: expected a ";"
+    SmartPtr _Nonnull s_nonnull;
+             ^
+
+"SemaCXX/nullability.cpp", line 156: error: identifier "s_nonnull" is undefined
+    s_nonnull = ReturnSmartNullable();
+    ^
+
+"SemaCXX/nullability.cpp", line 156: error: identifier "ReturnSmartNullable" is undefined
+    s_nonnull = ReturnSmartNullable();
+                ^
+
+"SemaCXX/nullability.cpp", line 146: warning: variable "nonnull" was set but never used
+    void *_Nonnull nonnull;
+                   ^
+
+"SemaCXX/nullability.cpp", line 171: warning: variable "nonnullB" is used before its value is set
+    p = c ? nonnullB : nonnullD;
+            ^
+
+"SemaCXX/nullability.cpp", line 171: warning: variable "nonnullD" is used before its value is set
+    p = c ? nonnullB : nonnullD;
+                       ^
+
+"SemaCXX/nullability.cpp", line 172: warning: variable "nullableD" is used before its value is set
+    p = c ? nonnullB : nullableD;
+                       ^
+
+"SemaCXX/nullability.cpp", line 173: warning: variable "nullableB" is used before its value is set
+    p = c ? nullableB : nonnullD;
+            ^
+
+"SemaCXX/nullability.cpp", line 165: warning: variable "p" was set but never used
+    Base * _Nonnull p;
+                    ^
+
+"SemaCXX/nullability.cpp", line 187: error: a type qualifier is not allowed
+    auto nestedBad = [](int [2][_Nonnull 2]) {};
+                                ^
+
+"SemaCXX/nullability.cpp", line 189: warning: nullability qualifiers are only permitted on pointer and pointer-to-member types
+    auto withTypedef = [](INTS _Nonnull) {};
+                               ^
+
+"SemaCXX/nullability.cpp", line 191: warning: nullability qualifiers are only permitted on pointer and pointer-to-member types
+    auto withTypedefBad = [](INTS _Nonnull[2]) {};
+                                  ^
+
+"SemaCXX/nullability.cpp", line 187: warning: variable "nestedBad" was declared but never referenced
+    auto nestedBad = [](int [2][_Nonnull 2]) {};
+         ^
+
+"SemaCXX/nullability.cpp", line 191: warning: variable "withTypedefBad" was declared but never referenced
+    auto withTypedefBad = [](INTS _Nonnull[2]) {};
+         ^
+
+"SemaCXX/nullability.cpp", line 195: warning: variable "tip" was declared but never referenced
+    Template<int*> tip;
+                   ^
+
+"SemaCXX/nullability.cpp", line 200: warning: nullability qualifiers are only permitted on pointer and pointer-to-member types
+  template <typename b> using c = b _Nullable;
+                                    ^
+          detected during instantiation of type "GH60344::c<GH60344::a>" at line 201
+
+"SemaCXX/nullability.cpp", line 201: warning: declaration does not declare anything
+  c<a>;
+  ^
+
+42 errors detected in the compilation of "Test_name.c".

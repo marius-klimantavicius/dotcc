@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 6: warning: unknown attribute "gnu::returns_twice"
+  void* fn1 [[gnu::returns_twice, noreturn]] (); // { dg-warning "ignoring attribute 'noreturn' because it conflicts with attribute 'returns_twice'" }
+              ^
+
+"Test_name.c", line 7: warning: unknown attribute "gnu::alloc_align"
+  void* fn2 [[gnu::alloc_align(1), noreturn]] (int); // { dg-warning "ignoring attribute 'noreturn' because it conflicts with attribute 'alloc_align'" }
+              ^
+

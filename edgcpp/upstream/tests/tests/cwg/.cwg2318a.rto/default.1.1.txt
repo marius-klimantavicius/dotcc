@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 -A --c++20 -tused -e 200 --no_wrap Test_name.c
+"Test_name.c", line 6: error: this declaration has no storage class or type specifier
+    n({{1},{2},{3}},Aggr()); // OK, T is Aggr, N is 3
+    ^
+
+"Test_name.c", line 6: error: declaration is incompatible with function template "void n(const T (&)[N], T)" (declared at line 5)
+    n({{1},{2},{3}},Aggr()); // OK, T is Aggr, N is 3
+    ^
+
+"Test_name.c", line 6: error: too many initializer values
+    n({{1},{2},{3}},Aggr()); // OK, T is Aggr, N is 3
+                    ^
+
+"Test_name.c", line 6: error: a parenthesized initializer for a non-class entity must be an expression, not a brace-enclosed list
+    n({{1},{2},{3}},Aggr()); // OK, T is Aggr, N is 3
+      ^
+
+"Test_name.c", line 6: error: too many initializer values
+    n({{1},{2},{3}},Aggr()); // OK, T is Aggr, N is 3
+           ^
+
+5 errors detected in the compilation of "Test_name.c".

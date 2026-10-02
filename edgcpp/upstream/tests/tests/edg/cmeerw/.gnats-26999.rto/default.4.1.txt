@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=4 -w -tused --c++17 --clang_version 170000 Test_name.c
+"Test_name.c", line 277: error: copy-list-initialization cannot use a constructor marked "explicit"
+      s.y = { { U{} } };          // error: strict, MSVC, clang
+            ^
+
+"Test_name.c", line 305: error: more than one instance of constructor "ref_udc::C::C" matches the argument list:
+            function "ref_udc::C::C(const ref_udc::C &)" (declared at line 289)
+            function "ref_udc::C::C(int)" (declared at line 290)
+            argument types are: (ref_udc::D1)
+    C c1{D1{}};                   // error: strict, clang
+        ^
+"Test_name.c", line 288: note: function "ref_udc::C::C(ref_udc::C &&)" does not match because argument #1 does not match parameter
+      C(C &&);
+      ^
+
+"Test_name.c", line 306: error: more than one instance of constructor "ref_udc::C::C" matches the argument list:
+            function "ref_udc::C::C(const ref_udc::C &)" (declared at line 289)
+            function "ref_udc::C::C(int)" (declared at line 290)
+            argument types are: (ref_udc::D2)
+    C c2{D2{}};                   // error: strict, clang
+        ^
+"Test_name.c", line 288: note: function "ref_udc::C::C(ref_udc::C &&)" does not match because argument #1 does not match parameter
+      C(C &&);
+      ^
+
+3 errors detected in the compilation of "Test_name.c".

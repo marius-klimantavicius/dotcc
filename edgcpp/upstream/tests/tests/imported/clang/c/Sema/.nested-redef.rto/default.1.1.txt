@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 5: error: "X" has already been declared in the current scope
+    struct X { } x; // expected-error{{nested redefinition of 'X'}}
+           ^
+
+"Test_name.c", line 20: warning: variable "t" was declared but never referenced
+    struct T t;
+             ^
+
+"Test_name.c", line 21: warning: variable "u" was declared but never referenced
+    struct U u;
+             ^
+
+"Test_name.c", line 26: error: "G" has already been declared in the current scope
+      struct G {}; // expected-error{{nested redefinition of 'G'}}
+             ^
+
+"Test_name.c", line 26: warning: expected an identifier
+      struct G {}; // expected-error{{nested redefinition of 'G'}}
+                 ^
+
+"Test_name.c", line 27: warning: struct or union declares no named members
+    };
+    ^
+
+"Test_name.c", line 32: error: "G" has already been declared in the current scope
+      struct G {}; // expected-error{{nested redefinition of 'G'}}
+             ^
+
+"Test_name.c", line 32: warning: expected an identifier
+      struct G {}; // expected-error{{nested redefinition of 'G'}}
+                 ^
+
+"Test_name.c", line 33: warning: struct or union declares no named members
+    };
+    ^
+
+"Test_name.c", line 35: error: "G" has already been declared in the current scope
+    struct G {}; // expected-error{{redefinition of 'G'}}
+           ^
+
+4 errors detected in the compilation of "Test_name.c".

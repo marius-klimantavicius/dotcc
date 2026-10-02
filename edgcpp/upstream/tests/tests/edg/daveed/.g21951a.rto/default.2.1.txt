@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=2 --gnu=60300 --c++14 Test_name.c
+"Test_name.c", line 6: error: type name is not allowed
+  struct is_same:integral_constant < int, __is_same_as (_Tp, _Up) > {};
+                                                        ^
+
+"Test_name.c", line 6: error: type name is not allowed
+  struct is_same:integral_constant < int, __is_same_as (_Tp, _Up) > {};
+                                                             ^
+
+"Test_name.c", line 6: error: identifier "__is_same_as" is undefined
+  struct is_same:integral_constant < int, __is_same_as (_Tp, _Up) > {};
+                                          ^
+
+3 errors detected in the compilation of "Test_name.c".

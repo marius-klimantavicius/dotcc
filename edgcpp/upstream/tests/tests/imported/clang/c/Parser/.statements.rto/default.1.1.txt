@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 21: warning: variable "X" was declared but never referenced
+    for (int X = 0; 0; (void)0);
+             ^
+
+"Test_name.c", line 39: warning: variable "X" was declared but never referenced
+    int X;  // declaration in a block.
+        ^
+
+"Test_name.c", line 41: warning: label "foo" was declared but never referenced
+  foo:  if (0); // expected-warning {{if statement has empty body}} expected-note {{put the semicolon on a separate line to silence this warning}}
+  ^
+
+"Test_name.c", line 48: warning: variable "x" was declared but never referenced
+    t x = 0;
+      ^
+
+"Test_name.c", line 56: error: expected an expression
+      .           // expected-error {{expected expression}}
+      ^
+
+"Test_name.c", line 57: error: expected a ";"
+     while (0);
+     ^
+
+"Test_name.c", line 62: error: expected a ";"
+  }
+  ^
+
+"Test_name.c", line 66: error: identifier "undecl" is undefined
+    undecl // expected-error {{use of undeclared identifier 'undecl'}}
+    ^
+
+"Test_name.c", line 67: error: expected a ";"
+  }
+  ^
+
+"Test_name.c", line 74: error: expected an expression
+      {
+      ^
+
+"Test_name.c", line 79: warning: parsing restarts here after previous syntax error
+      ;
+      ^
+
+"Test_name.c", line 82: error: expected an expression
+  }
+  ^
+
+"Test_name.c", line 81: warning: expression has no effect
+    return 4, // expected-error {{expected ';' after return statement}}
+           ^
+
+"Test_name.c", line 82: error: expected a ";"
+  }
+  ^
+
+"Test_name.c", line 70: warning: variable "T" was declared but never referenced
+    int T[] = {1, 2, };
+        ^
+
+"Test_name.c", line 72: warning: variable "X" was set but never used
+    int X;
+        ^
+
+8 errors detected in the compilation of "Test_name.c".

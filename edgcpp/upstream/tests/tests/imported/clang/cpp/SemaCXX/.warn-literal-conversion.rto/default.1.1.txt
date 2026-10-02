@@ -1,0 +1,109 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 10: warning: variable "y0" was declared but never referenced
+    int y0 = 1.2222F; // expected-warning {{implicit conversion from 'float' to 'int' changes value from 1.2222 to 1}}
+        ^
+
+"Test_name.c", line 11: warning: variable "y1" was declared but never referenced
+    int y1 = (1.2222F); // expected-warning {{implicit conversion from 'float' to 'int' changes value from 1.2222 to 1}}
+        ^
+
+"Test_name.c", line 12: warning: variable "y2" was declared but never referenced
+    int y2 = (((1.2222F))); // expected-warning {{implicit conversion from 'float' to 'int' changes value from 1.2222 to 1}}
+        ^
+
+"Test_name.c", line 13: warning: variable "y3" was declared but never referenced
+    int y3 = 12E-1F; // expected-warning {{implicit conversion from 'float' to 'int' changes value from 1.2 to 1}}
+        ^
+
+"Test_name.c", line 14: warning: variable "y4" was declared but never referenced
+    int y4 = 1.23E1F; // expected-warning {{implicit conversion from 'float' to 'int' changes value from 12.3 to 12}}
+        ^
+
+"Test_name.c", line 16: warning: variable "y5" was declared but never referenced
+    int y5 = 1.2222; // expected-warning {{implicit conversion from 'double' to 'int' changes value from 1.2222 to 1}}
+        ^
+
+"Test_name.c", line 17: warning: variable "y6" was declared but never referenced
+    int y6 = 12E-1; // expected-warning {{implicit conversion from 'double' to 'int' changes value from 1.2 to 1}}
+        ^
+
+"Test_name.c", line 18: warning: variable "y7" was declared but never referenced
+    int y7 = 1.23E1; // expected-warning {{implicit conversion from 'double' to 'int' changes value from 12.3 to 12}}
+        ^
+
+"Test_name.c", line 19: warning: variable "y8" was set but never used
+    int y8 = (1.23E1); // expected-warning {{implicit conversion from 'double' to 'int' changes value from 12.3 to 12}}
+        ^
+
+"Test_name.c", line 25: warning: variable "y9" was declared but never referenced
+    int y9(1.23F); // expected-warning {{implicit conversion from 'float' to 'int' changes value from 1.23 to 1}}
+        ^
+
+"Test_name.c", line 30: warning: variable "y10" was declared but never referenced
+    int y10 = -1.2F;  // expected-warning {{implicit conversion from 'float' to 'int' changes value from -1.2 to -1}}
+        ^
+
+"Test_name.c", line 35: warning: variable "z" was declared but never referenced
+    int z = sales_tax_rate;
+        ^
+
+"Test_name.c", line 39: warning: variable "x" was declared but never referenced
+    int x = 24 * 0.5;
+        ^
+
+"Test_name.c", line 40: warning: variable "y" was declared but never referenced
+    int y = (24*60*60) * 0.25;
+        ^
+
+"Test_name.c", line 41: warning: variable "pennies" was declared but never referenced
+    int pennies = 123.45 * 100;
+        ^
+
+"Test_name.c", line 55: warning: floating-point value does not fit in required integral type
+    short s = 32768.0; // expected-warning{{implicit conversion of out of range value from 'double' to 'short' is undefined}}
+              ^
+
+"Test_name.c", line 56: warning: floating-point value does not fit in required integral type
+    unsigned short us = 65536.0; // expected-warning{{implicit conversion of out of range value from 'double' to 'unsigned short' is undefined}}
+                        ^
+
+"Test_name.c", line 58: warning: floating-point value does not fit in required integral type
+    short s2 = -32769.0; // expected-warning{{implicit conversion of out of range value from 'double' to 'short' is undefined}}
+               ^
+
+"Test_name.c", line 59: warning: floating-point value does not fit in required integral type
+    unsigned short us2 = -65537.0; // expected-warning{{implicit conversion of out of range value from 'double' to 'unsigned short' is undefined}}
+                         ^
+
+"Test_name.c", line 47: warning: variable "b1" was declared but never referenced
+    bool b1 = 0.99f; // expected-warning {{implicit conversion from 'float' to 'bool' changes value from 0.99 to true}}
+         ^
+
+"Test_name.c", line 48: warning: variable "b2" was declared but never referenced
+    bool b2 = 0.99; // expected-warning {{implicit conversion from 'double' to 'bool' changes value from 0.99 to true}}
+         ^
+
+"Test_name.c", line 51: warning: variable "b3" was declared but never referenced
+    bool b3 = 0.0f;
+         ^
+
+"Test_name.c", line 52: warning: variable "b4" was declared but never referenced
+    bool b4 = 0.0;
+         ^
+
+"Test_name.c", line 55: warning: variable "s" was declared but never referenced
+    short s = 32768.0; // expected-warning{{implicit conversion of out of range value from 'double' to 'short' is undefined}}
+          ^
+
+"Test_name.c", line 56: warning: variable "us" was declared but never referenced
+    unsigned short us = 65536.0; // expected-warning{{implicit conversion of out of range value from 'double' to 'unsigned short' is undefined}}
+                   ^
+
+"Test_name.c", line 58: warning: variable "s2" was declared but never referenced
+    short s2 = -32769.0; // expected-warning{{implicit conversion of out of range value from 'double' to 'short' is undefined}}
+          ^
+
+"Test_name.c", line 59: warning: variable "us2" was declared but never referenced
+    unsigned short us2 = -65537.0; // expected-warning{{implicit conversion of out of range value from 'double' to 'unsigned short' is undefined}}
+                   ^
+

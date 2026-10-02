@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 11: error: attribute "maybe_unused" does not take arguments
+  struct [[maybe_unused("Wrong")]] S3 { // expected-error {{'maybe_unused' cannot have an argument list}}
+                       ^
+
+"Test_name.c", line 16: error: attribute "maybe_unused" does not apply here
+    int a[10] [[maybe_unused]]; // expected-error {{'maybe_unused' attribute cannot be applied to types}}
+                ^
+
+"Test_name.c", line 16: warning: variable "a" was declared but never referenced
+    int a[10] [[maybe_unused]]; // expected-error {{'maybe_unused' attribute cannot be applied to types}}
+        ^
+
+2 errors detected in the compilation of "Test_name.c".

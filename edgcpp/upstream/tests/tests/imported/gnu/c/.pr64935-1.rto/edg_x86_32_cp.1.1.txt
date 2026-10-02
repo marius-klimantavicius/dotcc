@@ -1,0 +1,45 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c89 --strict_gnu Test_name.c
+"Test_name.c", line 20: warning: shift count is too large
+        t3 = a[k >> 1] ^ b[j & 5] ^ d[p >> 32] ^ e[o >> 4] ^ f[n >> 6]
+                                           ^
+
+"Test_name.c", line 22: warning: shift count is too large
+        t2 = a[l >> 6] ^ b[k & 1] ^ c[j >> 1] ^ d[q >> 32] ^ e[p >> 4]
+                                                       ^
+
+"Test_name.c", line 26: warning: shift count is too large
+        z = a[n >> 56] ^ b[m & 15] ^ c[l & 15] ^ d[k >> 2] ^ e[j >> 4]
+                   ^
+
+"Test_name.c", line 28: warning: shift count is too large
+        y = a[o >> 56] ^ b[n & 15] ^ c[m >> 40] ^ d[l >> 2] ^ e[k >> 4]
+                   ^
+
+"Test_name.c", line 28: warning: shift count is too large
+        y = a[o >> 56] ^ b[n & 15] ^ c[m >> 40] ^ d[l >> 2] ^ e[k >> 4]
+                                            ^
+
+"Test_name.c", line 30: warning: shift count is too large
+        x = a[p >> 56] ^ b[o & 15] ^ c[n >> 40] ^ d[m >> 2] ^ e[l >> 4]
+                   ^
+
+"Test_name.c", line 30: warning: shift count is too large
+        x = a[p >> 56] ^ b[o & 15] ^ c[n >> 40] ^ d[m >> 2] ^ e[l >> 4]
+                                            ^
+
+"Test_name.c", line 45: warning: shift count is too large
+        t1 = a[u >> 6] ^ b[t & 15] ^ c[s & 5] ^ d[r >> 32] ^ e[t6 >> 4]
+                                                       ^
+
+"Test_name.c", line 47: warning: shift count is too large
+        z = a[v >> 56] ^ b[u >> 48 & 1] ^ c[t >> 40 & 1] ^ d[s] ^ e[r >> 1 & 1]
+                   ^
+
+"Test_name.c", line 47: warning: shift count is too large
+        z = a[v >> 56] ^ b[u >> 48 & 1] ^ c[t >> 40 & 1] ^ d[s] ^ e[r >> 1 & 1]
+                                ^
+
+"Test_name.c", line 47: warning: shift count is too large
+        z = a[v >> 56] ^ b[u >> 48 & 1] ^ c[t >> 40 & 1] ^ d[s] ^ e[r >> 1 & 1]
+                                                 ^
+

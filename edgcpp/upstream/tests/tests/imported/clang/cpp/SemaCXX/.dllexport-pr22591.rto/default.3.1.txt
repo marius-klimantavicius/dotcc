@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=3 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 25: error: incomplete type "__declspec" is not allowed
+  struct __declspec(dllexport) S {
+                    ^
+
+"Test_name.c", line 25: error: expected a ";"
+  struct __declspec(dllexport) S {
+                               ^
+
+2 errors detected in the compilation of "Test_name.c".

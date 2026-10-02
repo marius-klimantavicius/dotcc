@@ -1,0 +1,46 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 14: error: expression must have a constant value
+  constexpr int b = foo (0, -1);	// { dg-message "in .constexpr. expansion of " }
+                    ^
+"Test_name.c", line 11: note: cannot access position -1 in array of 6 elements
+    return a[y];			   // { dg-error "is outside the bounds" }
+            ^
+
+"Test_name.c", line 15: error: expression must have a constant value
+  constexpr int c = foo (0, 6);	// { dg-message "in .constexpr. expansion of " }
+                    ^
+"Test_name.c", line 11: note: attempt to access storage one position past the end of an array of 6 elements
+    return a[y];			   // { dg-error "is outside the bounds" }
+            ^
+
+"Test_name.c", line 16: error: expression must have a constant value
+  constexpr int d = foo (6, 0);	// { dg-message "in .constexpr. expansion of " }
+                    ^
+"Test_name.c", line 10: note: attempt to access storage one position past the end of an array of 6 elements
+    a[x] = 0;			   // { dg-error "is outside the bounds" }
+         ^
+
+"Test_name.c", line 17: error: expression must have a constant value
+  constexpr int e = foo (-1, 0);	// { dg-message "in .constexpr. expansion of " }
+                    ^
+"Test_name.c", line 10: note: cannot access position -1 in array of 6 elements
+    a[x] = 0;			   // { dg-error "is outside the bounds" }
+     ^
+
+"Test_name.c", line 14: warning: variable "b" was declared but never referenced
+  constexpr int b = foo (0, -1);	// { dg-message "in .constexpr. expansion of " }
+                ^
+
+"Test_name.c", line 15: warning: variable "c" was declared but never referenced
+  constexpr int c = foo (0, 6);	// { dg-message "in .constexpr. expansion of " }
+                ^
+
+"Test_name.c", line 16: warning: variable "d" was declared but never referenced
+  constexpr int d = foo (6, 0);	// { dg-message "in .constexpr. expansion of " }
+                ^
+
+"Test_name.c", line 17: warning: variable "e" was declared but never referenced
+  constexpr int e = foo (-1, 0);	// { dg-message "in .constexpr. expansion of " }
+                ^
+
+4 errors detected in the compilation of "Test_name.c".

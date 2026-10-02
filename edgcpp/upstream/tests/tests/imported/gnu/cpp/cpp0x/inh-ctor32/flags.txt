@@ -1,0 +1,1 @@
+//require:SKIPTHISTEST bad test does not compile in gcc

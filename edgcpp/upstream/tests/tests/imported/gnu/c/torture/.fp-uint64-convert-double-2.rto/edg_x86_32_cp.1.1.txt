@@ -1,0 +1,20 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./torture/fp-uint64-convert-double-2.c", line 17: warning: integer conversion resulted in truncation
+    long unsigned int x = 0x8000000000000001;
+                          ^
+
+"./torture/fp-uint64-convert-double-2.c", line 31: warning: integer conversion resulted in truncation
+    long unsigned int x = 0x8000000000000001;
+                          ^
+
+"./torture/fp-uint64-convert-double-2.c", line 45: warning: integer conversion resulted in truncation
+    long unsigned int x = 0x8000000000000001;
+                          ^
+
+"./torture/fp-uint64-convert-double-2.c", line 59: warning: integer conversion resulted in truncation
+    long unsigned int x = 0x8000000000000001;
+                          ^
+
+/usr/sbin/ld: Test_name.o: undefined reference to symbol 'fesetround@@GLIBC_2.1'
+/usr/sbin/ld: /lib/libm.so.6: error adding symbols: DSO missing from command line
+collect2: error: ld returned 1 exit status

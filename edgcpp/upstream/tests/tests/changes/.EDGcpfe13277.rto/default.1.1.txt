@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 12: error: no default constructor exists for class "S"
+  S x[3] = {};  // Previously accepted.  Now an error.
+            ^
+
+"Test_name.c", line 13: error: expected an expression
+  S y({});  // Previously accepted.  Now an error.
+      ^
+
+2 errors detected in the compilation of "Test_name.c".

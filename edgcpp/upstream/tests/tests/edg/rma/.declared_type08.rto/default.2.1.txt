@@ -1,0 +1,21 @@
+cpfe -DTEST_NUMBER=2 -r -x -tused --anachronisms Test_name.c
+"Test_name.c", line 8: remark: parameter "n" was never referenced
+  void addscalar(const int n, int m) { }
+                           ^
+
+"Test_name.c", line 8: remark: parameter "m" was never referenced
+  void addscalar(const int n, int m) { }
+                                  ^
+
+"Test_name.c", line 9: warning: old-style parameter list (anachronism)
+  void addscalar2(n,m) const int n, m; { }
+                  ^
+
+"Test_name.c", line 9: remark: parameter "n" was never referenced
+  void addscalar2(n,m) const int n, m; { }
+                                 ^
+
+"Test_name.c", line 9: remark: parameter "m" was never referenced
+  void addscalar2(n,m) const int n, m; { }
+                                    ^
+

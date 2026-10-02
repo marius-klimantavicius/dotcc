@@ -1,0 +1,41 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./compat/union-by-value-1_y.c", line 83: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/union-by-value-1_y.c", line 84: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/union-by-value-1_y.c", line 85: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/union-by-value-1_y.c", line 86: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/union-by-value-1_y.c", line 87: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/union-by-value-1_y.c", line 88: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/union-by-value-1_y.c", line 89: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/union-by-value-1_y.c", line 90: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/union-by-value-1_y.c", line 91: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/union-by-value-1_y.c", line 92: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+

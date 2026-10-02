@@ -1,0 +1,126 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 9: error: identifier "startwith" is undefined
+  void __RTL (startwith ("ira")) foo (void *ptr)
+              ^
+
+"Test_name.c", line 9: error: expected a ")"
+  void __RTL (startwith ("ira")) foo (void *ptr)
+                         ^
+
+"Test_name.c", line 9: error: expected a "{"
+  void __RTL (startwith ("ira")) foo (void *ptr)
+                                 ^
+
+"Test_name.c", line 11: error: identifier "function" is undefined
+    (function "foo"
+     ^
+
+"Test_name.c", line 11: error: expected a ")"
+    (function "foo"
+              ^
+
+"Test_name.c", line 15: warning: parsing restarts here after previous syntax error
+      ) ;; param "ptr"
+        ^
+
+"Test_name.c", line 15: error: identifier "param" is undefined
+      ) ;; param "ptr"
+           ^
+
+"Test_name.c", line 15: error: expected a ";"
+      ) ;; param "ptr"
+                 ^
+
+"Test_name.c", line 30: warning: parsing restarts here after previous syntax error
+        ) ;; block 2
+          ^
+
+"Test_name.c", line 30: error: identifier "block" is undefined
+        ) ;; block 2
+             ^
+
+"Test_name.c", line 30: error: expected a ";"
+        ) ;; block 2
+                   ^
+
+"Test_name.c", line 31: error: identifier "insn" is undefined
+      ) ;; insn-chain
+           ^
+
+"Test_name.c", line 31: error: identifier "chain" is undefined
+      ) ;; insn-chain
+                ^
+
+"Test_name.c", line 32: error: expected a ";"
+    ) ;; function
+    ^
+
+"Test_name.c", line 33: error: expected a ";"
+  }
+  ^
+
+"Test_name.c", line 35: error: identifier "startwith" is undefined
+  void __RTL (startwith ("ira")) bar (void *ptr)
+              ^
+
+"Test_name.c", line 35: error: expected a ")"
+  void __RTL (startwith ("ira")) bar (void *ptr)
+                         ^
+
+"Test_name.c", line 35: error: function "__RTL" has already been defined (previous definition at line 9)
+  void __RTL (startwith ("ira")) bar (void *ptr)
+       ^
+
+"Test_name.c", line 35: error: expected a "{"
+  void __RTL (startwith ("ira")) bar (void *ptr)
+                                 ^
+
+"Test_name.c", line 37: error: identifier "function" is undefined
+    (function "bar"
+     ^
+
+"Test_name.c", line 37: error: expected a ")"
+    (function "bar"
+              ^
+
+"Test_name.c", line 41: warning: parsing restarts here after previous syntax error
+      ) ;; param "ptr"
+        ^
+
+"Test_name.c", line 41: error: identifier "param" is undefined
+      ) ;; param "ptr"
+           ^
+
+"Test_name.c", line 41: error: expected a ";"
+      ) ;; param "ptr"
+                 ^
+
+"Test_name.c", line 56: warning: parsing restarts here after previous syntax error
+        ) ;; block 2
+          ^
+
+"Test_name.c", line 56: error: identifier "block" is undefined
+        ) ;; block 2
+             ^
+
+"Test_name.c", line 56: error: expected a ";"
+        ) ;; block 2
+                   ^
+
+"Test_name.c", line 57: error: identifier "insn" is undefined
+      ) ;; insn-chain
+           ^
+
+"Test_name.c", line 57: error: identifier "chain" is undefined
+      ) ;; insn-chain
+                ^
+
+"Test_name.c", line 58: error: expected a ";"
+    ) ;; function
+    ^
+
+"Test_name.c", line 59: error: expected a ";"
+  }
+  ^
+
+27 errors detected in the compilation of "Test_name.c".

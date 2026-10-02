@@ -1,0 +1,40 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 18: error: class "Y1" has no member "type"
+    friend typename T::type; // expected-error{{no type named 'type' in 'Y1'}}
+                       ^
+          detected during instantiation of class "X1<T> [with T=Y1]" at line 31
+
+"Test_name.c", line 41: error: type "B<T>::ty" is not a class template
+    template <typename S> friend class B<S>::ty; // expected-warning {{dependent nested name specifier 'B<S>' for friend class declaration is not supported}}
+                                             ^
+          detected during instantiation of class "A<T> [with T=int]" at line 48
+
+"Test_name.c", line 57: error: invalid friend declaration
+    const volatile friend int; // expected-error {{'friend' must appear first in a non-function declaration}} \
+    ^
+
+"Test_name.c", line 62: error: invalid friend declaration
+    friend const int; // expected-error {{'const' is invalid in friend declarations}}
+    ^
+
+"Test_name.c", line 63: error: invalid friend declaration
+    friend volatile int; // expected-error {{'volatile' is invalid in friend declarations}}
+    ^
+
+"Test_name.c", line 64: error: invalid specifier in class template declaration
+    template <typename T> friend const class X; // expected-error {{'const' is invalid in friend declarations}}
+                                 ^
+
+"Test_name.c", line 68: error: invalid friend declaration
+    friend __restrict PtrToInt; // expected-error {{'restrict' is invalid in friend declarations}} \
+    ^
+
+"Test_name.c", line 70: error: invalid friend declaration
+    friend _Atomic int; // expected-error {{'_Atomic' is invalid in friend declarations}}
+    ^
+
+"Test_name.c", line 74: warning: type qualifier on return type is meaningless
+    const int friend foo2(void);
+    ^
+
+8 errors detected in the compilation of "Test_name.c".

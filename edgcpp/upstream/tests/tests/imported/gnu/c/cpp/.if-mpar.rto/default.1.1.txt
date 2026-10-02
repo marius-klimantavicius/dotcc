@@ -1,0 +1,72 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc -E Test_name.c
+# 1 "Test_name.c"
+
+
+ 
+
+
+ 
+
+ 
+"Test_name.c", line 9: error: expected a ")"
+  #if (1          /* { dg-error "5:missing '\\)'" "missing ')' no. 1" } */
+                                                                          ^
+
+
+
+
+"Test_name.c", line 12: error: expected a ")"
+  #if 2 * (3 + 4	/* { dg-error "9:missing '\\)'" "missing ')' no. 2" } */
+                	                                                        ^
+
+
+
+
+"Test_name.c", line 15: error: extra text after expected end of preprocessing directive
+  #if (2))	/* { dg-error "8:missing '\\('" "missing '(' no. 1" } */
+         ^
+
+
+
+
+"Test_name.c", line 18: error: expected an expression
+  #if )		/* { dg-error "5:missing '\\('" "missing '(' no. 2" } */
+      ^
+
+
+
+
+"Test_name.c", line 21: error: extra text after expected end of preprocessing directive
+  #if 4)		/* { dg-error "6:missing '\\('" "missing '(' no. 3" } */
+       ^
+
+
+
+
+"Test_name.c", line 24: error: expected an expression
+  #if (		/* { dg-error "5:missing '\\)'" "missing ')' no. 3" } */
+       		                                                        ^
+
+"Test_name.c", line 24: error: expected a ")"
+  #if (		/* { dg-error "5:missing '\\)'" "missing ')' no. 3" } */
+       		                                                        ^
+
+
+
+
+"Test_name.c", line 27: error: expected a ")"
+  #if ((2 + 3) + 5 /* { dg-error "5:missing '\\)'" "missing ')' no. 3" } */
+                                                                           ^
+
+
+
+
+"Test_name.c", line 30: error: expected a ")"
+  #if ((2 + 3 + 5 /* { dg-error "6:missing '\\)'" "missing ')' no. 3" } */
+                                                                          ^
+
+"Test_name.c", line 30: error: expected a ")"
+  #if ((2 + 3 + 5 /* { dg-error "6:missing '\\)'" "missing ')' no. 3" } */
+                                                                          ^
+
+10 errors detected in the compilation of "Test_name.c".

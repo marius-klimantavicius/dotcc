@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=3 --diag_warn complex_integral_type --gnu_version=40000 -DNEG --gcc Test_name.c
+"Test_name.c", line 18: error: extra text after expected end of number
+  __complex float z3 = 1Lj;
+                         ^
+
+"Test_name.c", line 22: error: extra text after expected end of number
+  __complex float z5 = 1je6;
+                        ^
+
+"Test_name.c", line 23: error: extra text after expected end of number
+  __complex float z6 = 1.2ifj;
+                            ^
+
+"Test_name.c", line 24: error: extra text after expected end of number
+  __complex float z7 = 1LLj;
+                          ^
+
+"Test_name.c", line 28: error: extra text after expected end of number
+  __complex float z9 = 1FJ;
+                        ^
+
+"Test_name.c", line 30: warning: complex integral types are not supported
+  __complex float z10 = 0J;
+                         ^
+
+"Test_name.c", line 31: warning: complex integral types are not supported
+  __complex float z11 = 1J;
+                         ^
+
+"Test_name.c", line 32: warning: complex integral types are not supported
+  __complex float z12 = 12J;
+                          ^
+
+5 errors detected in the compilation of "Test_name.c".

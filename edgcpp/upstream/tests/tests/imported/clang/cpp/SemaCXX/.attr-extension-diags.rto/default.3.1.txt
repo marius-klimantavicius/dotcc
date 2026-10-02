@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=3 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 9: warning: unknown attribute "deprecated"
+  [[deprecated]] int func1(); // ext-warning {{use of the 'deprecated' attribute is a C++14 extension}}
+    ^
+
+"Test_name.c", line 10: warning: unknown attribute "deprecated"
+  [[deprecated("msg")]] int func2(); // ext-warning {{use of the 'deprecated' attribute is a C++14 extension}}
+    ^
+
+"Test_name.c", line 12: warning: unknown attribute "nodiscard"
+  [[nodiscard]] int func3(); // ext-warning {{use of the 'nodiscard' attribute is a C++17 extension}}
+    ^
+
+"Test_name.c", line 13: warning: unknown attribute "nodiscard"
+  [[nodiscard("msg")]] int func4(); // ext-warning {{use of the 'nodiscard' attribute is a C++20 extension}}
+    ^
+
+"Test_name.c", line 16: warning: unknown attribute "likely"
+    if (true) [[likely]]; // ext-warning {{use of the 'likely' attribute is a C++20 extension}}
+                ^
+

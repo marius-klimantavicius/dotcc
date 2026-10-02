@@ -1,0 +1,82 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 -W --unicode=UTF-8 Test_name.c
+"Test_name.c", line 9: error: multicharacter character literal (potential portability problem)
+  int a = 'abcd';						// { dg-warning "multi-character character constant" }
+          ^
+
+"Test_name.c", line 10: error: multicharacter character literal (potential portability problem)
+  int b = '\x61\x62\x63\x64';				// { dg-warning "multi-character character constant" }
+          ^
+
+"Test_name.c", line 11: error: multicharacter character literal (potential portability problem)
+  int c = 'á';
+          ^
+
+"Test_name.c", line 12: error: multicharacter character literal (potential portability problem)
+  int d = '😁';						// { dg-error "converting to execution character set" }
+          ^
+
+"Test_name.c", line 13: error: multicharacter character literal (potential portability problem)
+  int e = '\N{FACE WITH TEARS OF JOY}';			// { dg-error "converting UCN to execution character set" }
+          ^
+
+"Test_name.c", line 15: error: multicharacter character literal (potential portability problem)
+  int f = '\U0001F602';					// { dg-error "converting UCN to execution character set" }
+          ^
+
+"Test_name.c", line 16: error: too many characters in character constant
+  wchar_t g = L'abcd';					// { dg-error "multi-character literal cannot have an encoding prefix" "" { target c++23 } }
+              ^
+
+"Test_name.c", line 18: error: too many characters in character constant
+  wchar_t h = L'\x61\x62\x63\x64';			// { dg-error "multi-character literal cannot have an encoding prefix" "" { target c++23 } }
+              ^
+
+"Test_name.c", line 21: error: too many characters in character constant
+  char16_t j = u'abcd';					// { dg-error "multi-character literal cannot have an encoding prefix" }
+               ^
+
+"Test_name.c", line 22: error: too many characters in character constant
+  char16_t k = u'\x61\x62\x63\x64';			// { dg-error "multi-character literal cannot have an encoding prefix" }
+               ^
+
+"Test_name.c", line 24: error: invalid character for char16_t literal
+  char16_t m = u'😁';					// { dg-error "character not encodable in a single code unit" }
+                 ^
+
+"Test_name.c", line 25: error: invalid character for char16_t literal
+  char16_t n = u'\N{FACE WITH TEARS OF JOY}';		// { dg-error "character not encodable in a single code unit" { target c++23 } }
+                 ^
+
+"Test_name.c", line 27: error: invalid character for char16_t literal
+  char16_t o = u'\U0001F602';				// { dg-error "character not encodable in a single code unit" }
+                 ^
+
+"Test_name.c", line 28: error: too many characters in character constant
+  char32_t p = U'abcd';					// { dg-error "multi-character literal cannot have an encoding prefix" }
+               ^
+
+"Test_name.c", line 29: error: too many characters in character constant
+  char32_t q = U'\x61\x62\x63\x64';			// { dg-error "multi-character literal cannot have an encoding prefix" }
+               ^
+
+"Test_name.c", line 56: error: character value is out of range
+  int an = '\x123456789';					// { dg-error "hex escape sequence out of range" }
+            ^
+
+"Test_name.c", line 57: error: character value is out of range
+  wchar_t ao = L'\x123456789abcdef0';			// { dg-error "hex escape sequence out of range" }
+                 ^
+
+"Test_name.c", line 59: error: character value is out of range
+  char32_t aq = U'\x123456789abcdef0';			// { dg-error "hex escape sequence out of range" }
+                  ^
+
+"Test_name.c", line 69: error: character value is out of range
+  int au = '\x1234';					// { dg-error "hex escape sequence out of range" }
+            ^
+
+"Test_name.c", line 70: error: too many characters in character literal -- extra leading characters ignored
+  int av = 'abcdefghijklmnop';				// { dg-warning "multi-character literal with \[0-9]+ characters exceeds 'int' size of \[0-9]+ bytes" }
+           ^
+
+20 errors detected in the compilation of "Test_name.c".

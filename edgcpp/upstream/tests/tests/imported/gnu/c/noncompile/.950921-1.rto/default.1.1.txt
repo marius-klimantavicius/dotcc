@@ -1,0 +1,20 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 5: error: identifier "X" is undefined
+    a = (X) 0,	/* { dg-error "undeclared|not integer|parse error|syntax error|expected" } */
+         ^
+
+"Test_name.c", line 5: error: expected a "}"
+    a = (X) 0,	/* { dg-error "undeclared|not integer|parse error|syntax error|expected" } */
+            ^
+"Test_name.c", line 4: note: to match this "{"
+  {
+  ^
+
+"Test_name.c", line 11: error: expected a "}"
+    d = (X) 0	/* { dg-error "undeclared|not integer|parse error|syntax error|expected" } */
+            ^
+"Test_name.c", line 10: note: to match this "{"
+  {
+  ^
+
+3 errors detected in the compilation of "Test_name.c".

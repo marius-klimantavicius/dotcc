@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu=150200 Test_name.c
+"Test_name.c", line 12: warning: conversion may change the value
+    __complex__ long double x = v;
+                                ^
+

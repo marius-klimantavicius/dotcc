@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 17: error: "d" has already been declared in the current scope
+    double d;	 /* { dg-bogus "warning" "warning in place of error" } */
+           ^
+
+"Test_name.c", line 17: warning: variable "d" was declared but never referenced
+    double d;	 /* { dg-bogus "warning" "warning in place of error" } */
+           ^
+
+"Test_name.c", line 24: warning: variable "d" was declared but never referenced
+      double d;			/* { dg-warning "shadows a parameter" } */
+             ^
+
+"Test_name.c", line 32: warning: variable "local" was declared but never referenced
+      int local;			/* { dg-warning "shadows a previous local" } */
+          ^
+
+"Test_name.c", line 30: warning: variable "local" was declared but never referenced
+    int local;			/* { dg-message "shadowed declaration" } */
+        ^
+
+1 error detected in the compilation of "Test_name.c".

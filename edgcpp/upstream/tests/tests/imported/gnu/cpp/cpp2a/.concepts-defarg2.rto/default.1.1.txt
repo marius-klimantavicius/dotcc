@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 13: error: no instance of function template "f" matches the argument list
+            argument types are: (int)
+  static_assert(f(0));
+                ^
+"Test_name.c", line 9: note: concept "C" not satisfied for "<int>"
+  constexpr bool f(C auto) {
+                   ^
+
+"Test_name.c", line 15: error: the deduced placeholder type "int" failed the type constraint
+  C auto x = 0;
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

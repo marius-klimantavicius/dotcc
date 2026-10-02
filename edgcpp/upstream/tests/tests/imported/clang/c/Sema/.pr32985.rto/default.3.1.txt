@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=3 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c89 --strict_gnu Test_name.c

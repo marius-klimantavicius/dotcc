@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --microsoft Test_name.c
+"Test_name.c", line 24: error: incomplete type "I" is not allowed
+  template<class> struct P { I i; };
+                               ^
+          detected during:
+            instantiation of class "P<<unnamed>> [with <unnamed>=void]" at line 29
+            instantiation of class "C<T> [with T=P<void>]" at line 31
+
+1 error detected in the compilation of "Test_name.c".

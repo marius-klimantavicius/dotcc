@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 22: warning: function "S::operator new" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+    S* s2 = new (1,2,3) S(1, __null); // expected-warning {{missing sentinel in function call}}
+            ^
+
+"Test_name.c", line 23: warning: argument must be a constant null pointer value
+    s2->a(1,2,3); // expected-warning {{missing sentinel in function call}}
+              ^
+

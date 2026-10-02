@@ -1,0 +1,113 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: warning: a user-provided literal suffix must begin with "_"
+  operator ""i(unsigned long long n)
+           ^
+
+"Test_name.c", line 13: warning: a user-provided literal suffix must begin with "_"
+  operator ""I(unsigned long long n)
+           ^
+
+"Test_name.c", line 17: warning: a user-provided literal suffix must begin with "_"
+  operator ""j(unsigned long long n)
+           ^
+
+"Test_name.c", line 21: warning: a user-provided literal suffix must begin with "_"
+  operator ""J(unsigned long long n)
+           ^
+
+"Test_name.c", line 45: warning: a user-provided literal suffix must begin with "_"
+  operator ""k(long double n)
+           ^
+
+"Test_name.c", line 49: warning: a user-provided literal suffix must begin with "_"
+  operator ""K(long double n)
+           ^
+
+"Test_name.c", line 53: warning: a user-provided literal suffix must begin with "_"
+  operator ""r(long double n)
+           ^
+
+"Test_name.c", line 57: warning: a user-provided literal suffix must begin with "_"
+  operator ""R(long double n)
+           ^
+
+"Test_name.c", line 63: warning: a user-provided literal suffix must begin with "_"
+  operator ""w(long double n)
+           ^
+
+"Test_name.c", line 67: warning: a user-provided literal suffix must begin with "_"
+  operator ""W(long double n)
+           ^
+
+"Test_name.c", line 71: warning: a user-provided literal suffix must begin with "_"
+  operator ""q(long double n)
+           ^
+
+"Test_name.c", line 75: warning: a user-provided literal suffix must begin with "_"
+  operator ""Q(long double n)
+           ^
+
+"Test_name.c", line 81: warning: variable "ii" was declared but never referenced
+    auto ii = 1i;
+         ^
+
+"Test_name.c", line 82: warning: variable "Ii" was declared but never referenced
+    auto Ii = 1I;
+         ^
+
+"Test_name.c", line 83: warning: variable "ji" was declared but never referenced
+    auto ji = 1j;
+         ^
+
+"Test_name.c", line 84: warning: variable "Ji" was declared but never referenced
+    auto Ji = 1J;
+         ^
+
+"Test_name.c", line 86: warning: variable "ifp" was declared but never referenced
+    auto ifp = 1.0i;
+         ^
+
+"Test_name.c", line 87: warning: variable "Ifp" was declared but never referenced
+    auto Ifp = 1.0I;
+         ^
+
+"Test_name.c", line 88: warning: variable "jfp" was declared but never referenced
+    auto jfp = 1.0j;
+         ^
+
+"Test_name.c", line 89: warning: variable "Jfp" was declared but never referenced
+    auto Jfp = 1.0J;
+         ^
+
+"Test_name.c", line 91: warning: variable "kfp" was declared but never referenced
+    auto kfp = 1.0k;
+         ^
+
+"Test_name.c", line 92: warning: variable "Kfp" was declared but never referenced
+    auto Kfp = 1.0K;
+         ^
+
+"Test_name.c", line 93: warning: variable "rfp" was declared but never referenced
+    auto rfp = 1.0r;
+         ^
+
+"Test_name.c", line 94: warning: variable "Rfp" was declared but never referenced
+    auto Rfp = 1.0R;
+         ^
+
+"Test_name.c", line 96: warning: variable "wfp" was declared but never referenced
+    auto wfp = 1.0w;
+         ^
+
+"Test_name.c", line 97: warning: variable "Wfp" was declared but never referenced
+    auto Wfp = 1.0W;
+         ^
+
+"Test_name.c", line 98: warning: variable "qfp" was declared but never referenced
+    auto qfp = 1.0q;
+         ^
+
+"Test_name.c", line 99: warning: variable "Qfp" was declared but never referenced
+    auto Qfp = 1.0Q;
+         ^
+

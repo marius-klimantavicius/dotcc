@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --g++ Test_name.c
+"Test_name.c", line 15: warning: parameter "b" was set but never used
+  void f(int &i, bool b) {
+                      ^
+

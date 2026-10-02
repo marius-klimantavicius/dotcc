@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 6: error: identifier "size_t" is undefined
+  class C { static void* operator new(size_t); }; // { dg-error "37:.size_t. has not been declared" }
+                                      ^
+
+"Test_name.c", line 8: error: identifier "size_t" is undefined
+  void* C::operator new(size_t) { return 0; } // { dg-error "" }
+                        ^
+
+"Test_name.c", line 9: error: "integer" is not a nonstatic data member or base class of class "D"
+  class D { D(int i): integer(i){}}; // { dg-error "" }
+                      ^
+
+3 errors detected in the compilation of "Test_name.c".

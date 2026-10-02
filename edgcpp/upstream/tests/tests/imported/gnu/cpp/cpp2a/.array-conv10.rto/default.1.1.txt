@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 13: error: a reference of type "int (&)[3]" (not const-qualified) cannot be initialized with a value of type "int []"
+  int (&x)[3] = y; // { dg-error "cannot bind reference" }
+                ^
+
+"Test_name.c", line 14: error: a reference of type "int (&)[3]" (not const-qualified) cannot be initialized with a value of type "int []"
+  int (&z)[3] = a; // { dg-error "cannot bind reference" }
+                ^
+
+"Test_name.c", line 22: error: argument of type "int (*)[]" is incompatible with parameter of type "int (*)[3]"
+    f(b); // { dg-error "cannot convert" }
+      ^
+
+"Test_name.c", line 23: error: a reference of type "int (&)[3]" (not const-qualified) cannot be initialized with a value of type "int []"
+    f2(c); // { dg-error "cannot bind reference" }
+       ^
+
+4 errors detected in the compilation of "Test_name.c".

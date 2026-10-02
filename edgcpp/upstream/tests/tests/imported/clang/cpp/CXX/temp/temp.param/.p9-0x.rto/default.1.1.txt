@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 7: error: a parameter pack cannot have a default
+  template<typename ...Types = int> // expected-error{{template parameter pack cannot have a default argument}}
+                             ^
+
+"Test_name.c", line 10: error: a parameter pack cannot have a default
+  template<int ...Values = 0> // expected-error{{template parameter pack cannot have a default argument}}
+                         ^
+
+"Test_name.c", line 15: error: a parameter pack cannot have a default
+  template<template<class> class ...Templates = vector> // expected-error{{template parameter pack cannot have a default argument}}
+                                              ^
+
+"Test_name.c", line 19: error: a default template argument in a friend declaration may only be specified in a definition
+    template<typename T = int> // expected-error{{default template argument not permitted on a friend template}}
+                      ^
+
+"Test_name.c", line 34: error: a default template argument cannot be specified on the definition of a member of a class template outside the template
+    template<typename T> template<typename U = int> struct A1<T>::B { }; // expected-error{{cannot add a default template argument to the definition of a member of a class template}}
+                                           ^
+
+"Test_name.c", line 43: error: a default template argument cannot be specified on the definition of a member of a class template outside the template
+    template<typename T = int> void X2<T>::f0() { } // expected-error{{cannot add a default template argument to the definition of a member of a class template}} 
+                      ^
+
+"Test_name.c", line 44: error: a default template argument cannot be specified on the definition of a member of a class template outside the template
+    template<typename T> template<typename U = int> void X2<T>::f1() { } // expected-error{{cannot add a default template argument to the definition of a member of a class template}}
+                                           ^
+
+7 errors detected in the compilation of "Test_name.c".

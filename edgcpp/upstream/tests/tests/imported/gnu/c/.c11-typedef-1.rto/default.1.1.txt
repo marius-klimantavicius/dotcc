@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 Test_name.c
+"./c11-typedef-1.c", line 19: error: invalid redeclaration of type name "TE" (declared at line 17)
+  typedef int TE;
+              ^
+
+"./c11-typedef-1.c", line 30: error: invalid redeclaration of type name "A2" (declared at line 28)
+  typedef IA A2;
+             ^
+
+"./c11-typedef-1.c", line 32: error: invalid redeclaration of type name "IA" (declared at line 26)
+  typedef A3 IA;
+             ^
+
+"./c11-typedef-1.c", line 36: error: invalid redeclaration of type name "F" (declared at line 34)
+  typedef void F(enum e);
+               ^
+
+"./c11-typedef-1.c", line 40: error: invalid redeclaration of type name "G" (declared at line 38)
+  typedef enum e G(void);
+                 ^
+
+"./c11-typedef-1.c", line 44: error: invalid redeclaration of type name "P" (declared at line 42)
+  typedef enum e *P;
+                  ^
+
+"./c11-typedef-1.c", line 48: error: invalid redeclaration of type name "F2" (declared at line 46)
+  typedef void F2(int);
+               ^
+
+"./c11-typedef-1.c", line 56: error: invalid redeclaration of type name "FN" (declared at line 55)
+    typedef void FN(int (*p)[b]);
+                 ^
+
+"./c11-typedef-1.c", line 57: error: invalid redeclaration of type name "FN" (declared at line 56)
+    typedef void FN(int (*p)[*]);
+                 ^
+
+"./c11-typedef-1.c", line 58: error: invalid redeclaration of type name "FN" (declared at line 57)
+    typedef void FN(int (*p)[1]);
+                 ^
+
+"./c11-typedef-1.c", line 60: error: invalid redeclaration of type name "FN2" (declared at line 59)
+    typedef void FN2(int (*p)[b]);
+                 ^
+
+"./c11-typedef-1.c", line 61: error: invalid redeclaration of type name "FN2" (declared at line 60)
+    typedef void FN2(int (*p)[*]);
+                 ^
+
+"./c11-typedef-1.c", line 62: error: invalid redeclaration of type name "FN2" (declared at line 61)
+    typedef void FN2(int (*p)[]);
+                 ^
+
+"./c11-typedef-1.c", line 64: error: invalid redeclaration of type name "AV" (declared at line 63)
+    typedef int AV[b-1];
+                ^
+
+"./c11-typedef-1.c", line 68: error: invalid redeclaration of type name "VF" (declared at line 67)
+    typedef AAb *VF(void);
+                 ^
+
+15 errors detected in the compilation of "Test_name.c".

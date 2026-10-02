@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: error: transfer of control into an exception handler
+      goto l2;       // { dg-message "from here" }
+      ^
+
+"Test_name.c", line 15: error: transfer of control into a try block
+      goto l1;       // { dg-message "from here|enters 'try' block" }
+      ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 13: error: a storage class is not allowed in an explicit specialization
+  template<> static void f<int>(int); // spec-warning{{explicit specialization cannot have a storage class}}
+             ^
+
+"Test_name.c", line 14: warning: storage specifier ignored
+  template static void f<float>(float); // expected-error{{explicit instantiation cannot have a storage class}}
+           ^
+
+"Test_name.c", line 19: error: a storage class is not allowed in an explicit specialization
+  template<> static void g<int>(int); // spec-warning{{explicit specialization cannot have a storage class}}
+             ^
+
+"Test_name.c", line 20: warning: storage specifier ignored
+  template static void g<float>(float); // expected-error{{explicit instantiation cannot have a storage class}}
+           ^
+
+"Test_name.c", line 33: error: a storage class may not be specified here
+  template static int X<int>::value; // expected-error{{explicit instantiation cannot have a storage class}}
+           ^
+
+"Test_name.c", line 35: error: a storage class is not allowed in an explicit specialization
+  template<> static int X<float>::value; // spec-warning{{explicit specialization cannot have a storage class}}
+             ^
+
+"Test_name.c", line 42: error: a storage class is not allowed in an explicit specialization
+    static void f1<int>(); // spec-warning{{explicit specialization cannot have a storage class}}
+    ^
+
+"Test_name.c", line 22: warning: function "g(T) [with T=double]" was declared but never referenced
+  template<> void g<double>(double);
+                  ^
+
+"Test_name.c", line 19: warning: function "g(T) [with T=int]" was declared but never referenced
+  template<> static void g<int>(int); // spec-warning{{explicit specialization cannot have a storage class}}
+                         ^
+
+5 errors detected in the compilation of "Test_name.c".

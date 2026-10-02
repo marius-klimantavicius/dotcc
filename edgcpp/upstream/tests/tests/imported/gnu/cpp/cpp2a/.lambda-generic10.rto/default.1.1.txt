@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 9: warning: constant "T" is not used in declaring the parameter types of function template "lambda [](int, ...)->auto::operator auto (*)(int, ...)"
+    sink ([] <int T> (int...) { return 1; }	// { dg-warning "omission of ',' before varargs '...' is deprecated" "" { target c++26 } }
+                  ^
+          detected during instantiation of "void f<args...>() [with args=<1, 2, 3>]" at line 15
+

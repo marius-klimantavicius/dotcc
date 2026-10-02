@@ -1,0 +1,190 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++26 Test_name.c
+"Test_name.c", line 14: error: expected an identifier
+    friend Pack...;
+               ^
+
+"Test_name.c", line 14: error: invalid friend declaration
+    friend Pack...;
+    ^
+
+"Test_name.c", line 14: error: parameter pack "Pack" was referenced but not expanded
+    friend Pack...;
+           ^
+
+"Test_name.c", line 19: error: expected an identifier
+    friend A, B, C;
+            ^
+
+"Test_name.c", line 19: error: invalid friend declaration
+    friend A, B, C;
+    ^
+
+"Test_name.c", line 19: error: expected a ";"
+    friend A, B, C;
+            ^
+
+"Test_name.c", line 25: error: function "X<Pack...>::f [with Pack=<A>]" (declared at line 15) is inaccessible
+      X<A>::f();
+            ^
+
+"Test_name.c", line 26: error: function "Y::g" (declared at line 20) is inaccessible
+      Y::g();
+         ^
+
+"Test_name.c", line 32: error: function "X<Pack...>::f [with Pack=<B, C>]" (declared at line 15) is inaccessible
+      X<B, C>::f();
+               ^
+
+"Test_name.c", line 33: error: function "Y::g" (declared at line 20) is inaccessible
+      Y::g();
+         ^
+
+"Test_name.c", line 39: error: function "X<Pack...>::f [with Pack=<A, B, C>]" (declared at line 15) is inaccessible
+      X<A, B, C>::f();
+                  ^
+
+"Test_name.c", line 40: error: function "Y::g" (declared at line 20) is inaccessible
+      Y::g();
+         ^
+
+"Test_name.c", line 46: error: function "X<Pack...>::f [with Pack=<A, B, C>]" (declared at line 15) is inaccessible
+      X<A, B, C>::f(); // expected-error {{'f' is a private member of 'X<A, B, C>'}}
+                  ^
+
+"Test_name.c", line 47: error: function "Y::g" (declared at line 20) is inaccessible
+      Y::g(); // expected-error {{'g' is a private member of 'Y'}}
+         ^
+
+"Test_name.c", line 62: error: parameter pack "Pack" was referenced but not expanded
+      friend Template<Pack>...;
+                      ^
+
+"Test_name.c", line 62: error: expected an identifier
+      friend Template<Pack>...;
+                           ^
+
+"Test_name.c", line 62: error: invalid friend declaration
+      friend Template<Pack>...;
+      ^
+
+"Test_name.c", line 67: warning: variable "z" was declared but never referenced
+    Z<int, long, char> z;
+                       ^
+
+"Test_name.c", line 68: warning: variable "inner" was declared but never referenced
+    Z<int, long, char>::Inner<TS> inner;
+                                  ^
+
+"Test_name.c", line 74: error: expected an identifier
+    friend Ts...;
+             ^
+
+"Test_name.c", line 74: error: invalid friend declaration
+    friend Ts...;
+    ^
+
+"Test_name.c", line 74: error: parameter pack "Ts" was referenced but not expanded
+    friend Ts...;
+           ^
+
+"Test_name.c", line 88: error: "p2893r3_examples::Passkey<Ts...>::Passkey() [with Ts=<p2893r3_examples::Foo, p2893r3_examples::Bar, p2893r3_examples::Baz>]" (declared at line 75) is inaccessible
+    Foo() { C c; c.f({}); }
+                     ^
+
+"Test_name.c", line 92: error: "p2893r3_examples::Passkey<Ts...>::Passkey() [with Ts=<p2893r3_examples::Foo, p2893r3_examples::Bar, p2893r3_examples::Baz>]" (declared at line 75) is inaccessible
+    Bar() { C c; c.f({}); }
+                     ^
+
+"Test_name.c", line 96: error: "p2893r3_examples::Passkey<Ts...>::Passkey() [with Ts=<p2893r3_examples::Foo, p2893r3_examples::Bar, p2893r3_examples::Baz>]" (declared at line 75) is inaccessible
+    Baz() { C c; c.f({}); }
+                     ^
+
+"Test_name.c", line 100: error: "p2893r3_examples::Passkey<Ts...>::Passkey() [with Ts=<p2893r3_examples::Foo, p2893r3_examples::Bar, p2893r3_examples::Baz>]" (declared at line 75) is inaccessible
+    Quux() { C c; c.f({}); } // expected-error {{calling a private constructor of class 'p2893r3_examples::Passkey<p2893r3_examples::Foo, p2893r3_examples::Bar, p2893r3_examples::Baz>'}}
+                      ^
+
+"Test_name.c", line 113: error: parameter pack "MsgTs" was referenced but not expanded
+    friend Receiver<Dispatcher, MsgTs>...;
+                                ^
+
+"Test_name.c", line 113: error: expected an identifier
+    friend Receiver<Dispatcher, MsgTs>...;
+                                      ^
+
+"Test_name.c", line 113: error: invalid friend declaration
+    friend Receiver<Dispatcher, MsgTs>...;
+    ^
+
+"Test_name.c", line 128: error: expected an identifier
+    friend Ts...;
+             ^
+
+"Test_name.c", line 128: error: invalid friend declaration
+    friend Ts...;
+    ^
+
+"Test_name.c", line 128: error: parameter pack "Ts" was referenced but not expanded
+    friend Ts...;
+           ^
+
+"Test_name.c", line 133: error: expected an identifier
+    friend Ts::Nested..., Us...;
+                     ^
+
+"Test_name.c", line 133: error: invalid friend declaration
+    friend Ts::Nested..., Us...;
+    ^
+
+"Test_name.c", line 133: error: expected a ";"
+    friend Ts::Nested..., Us...;
+                        ^
+
+"Test_name.c", line 133: error: parameter pack "Ts" was referenced but not expanded
+    friend Ts::Nested..., Us...;
+           ^
+
+"Test_name.c", line 143: error: expected an identifier
+    friend class Friend<U>...;
+                          ^
+
+"Test_name.c", line 143: error: invalid friend declaration
+    friend class Friend<U>...;
+    ^
+
+"Test_name.c", line 143: error: parameter pack "Friend" was referenced but not expanded
+    friend class Friend<U>...;
+                 ^
+
+"Test_name.c", line 149: error: member "template_template::S<U, Friend...>::a [with U=int, Friend=<template_template::T>]" (declared at line 144) is inaccessible
+    static_assert(S<U, T>::a == 42);
+                           ^
+          detected during instantiation of class "template_template::T<U> [with U=int]" at line 155
+
+"Test_name.c", line 150: error: member "template_template::S<U, Friend...>::a [with U=int, Friend=<template_template::T>]" (declared at line 144) is inaccessible
+    static_assert(S<U, T>::a == 43); // expected-error {{static assertion failed due to requirement 'template_template::S<int, template_template::T>::a == 43'}} \
+                           ^
+          detected during instantiation of class "template_template::T<U> [with U=int]" at line 155
+
+"Test_name.c", line 150: error: static assertion failed
+    static_assert(S<U, T>::a == 43); // expected-error {{static assertion failed due to requirement 'template_template::S<int, template_template::T>::a == 43'}} \
+    ^
+"Test_name.c", line 150: note: the final comparison was 42 == 43
+    static_assert(S<U, T>::a == 43); // expected-error {{static assertion failed due to requirement 'template_template::S<int, template_template::T>::a == 43'}} \
+                             ^
+          detected during instantiation of class "template_template::T<U> [with U=int]" at line 155
+
+"Test_name.c", line 155: warning: variable "t" was declared but never referenced
+    T<int> t; // expected-note {{in instantiation of}}
+           ^
+
+"Test_name.c", line 106: error: member "p2893r3_examples::Dispatcher<MsgTs...>::private_ [with MsgTs=<int, float>]" (declared at line 116) is inaccessible
+      static_cast<Derived*>(this)->private_ += 1;
+                                   ^
+          detected during instantiation of "void p2893r3_examples::Receiver<Derived, MsgT>::receive(MsgT) [with Derived=p2893r3_examples::Dispatcher<int, float>, MsgT=int]" at line 121
+
+"Test_name.c", line 106: error: member "p2893r3_examples::Dispatcher<MsgTs...>::private_ [with MsgTs=<int, float>]" (declared at line 116) is inaccessible
+      static_cast<Derived*>(this)->private_ += 1;
+                                   ^
+          detected during instantiation of "void p2893r3_examples::Receiver<Derived, MsgT>::receive(MsgT) [with Derived=p2893r3_examples::Dispatcher<int, float>, MsgT=float]" at line 122
+
+42 errors detected in the compilation of "Test_name.c".

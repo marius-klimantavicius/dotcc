@@ -1,0 +1,37 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 9: warning: variable "f0a" was declared but never referenced
+    int (*f0a)(int, int) = f0;
+          ^
+
+"Test_name.c", line 10: warning: variable "f0b" was declared but never referenced
+    int (*f0b)(int, int) = &f0;
+          ^
+
+"Test_name.c", line 11: warning: variable "f0c" was declared but never referenced
+    float (*f0c)(float, int) = &f0;
+            ^
+
+"Test_name.c", line 18: warning: variable "f1a" was declared but never referenced
+    float (*f1a)(float, int) = f1;
+            ^
+
+"Test_name.c", line 19: warning: variable "f1b" was declared but never referenced
+    float (*f1b)(float, int) = &f1;
+            ^
+
+"Test_name.c", line 20: warning: variable "f1c" was declared but never referenced
+    float (*f1c)(float) = f1;
+            ^
+
+"Test_name.c", line 21: warning: variable "f1d" was declared but never referenced
+    float (*f1d)(float) = (f1);
+            ^
+
+"Test_name.c", line 22: warning: variable "f1e" was declared but never referenced
+    float (*f1e)(float) = &f1;
+            ^
+
+"Test_name.c", line 23: warning: variable "f1f" was declared but never referenced
+    float (*f1f)(float) = (&f1);
+            ^
+

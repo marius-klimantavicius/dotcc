@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 6: error: too many arguments for template template parameter "b"
+  struct a<b<f, d...>, c> {
+                ^
+
+"Test_name.c", line 5: warning: template template parameter "b" is not used in or cannot be deduced from the template argument list of class template "a<<error-type>, c>"
+  template <template <typename> class b, typename c, typename f, typename... d>
+                                      ^
+
+"Test_name.c", line 5: warning: template parameter "f" is not used in or cannot be deduced from the template argument list of class template "a<<error-type>, c>"
+  template <template <typename> class b, typename c, typename f, typename... d>
+                                                              ^
+
+"Test_name.c", line 5: warning: template parameter "d" is not used in or cannot be deduced from the template argument list of class template "a<<error-type>, c>"
+  template <template <typename> class b, typename c, typename f, typename... d>
+                                                                             ^
+
+"Test_name.c", line 13: error: incomplete type "a<h<int (s::*)()>, int (s::*)()>" is not allowed
+  template <typename j, typename c> using k = typename a<j, c>::e;
+                                                       ^
+          detected during:
+            instantiation of type "k<h<int (s::*)()>, int (s::*)()>" at line 14
+            instantiation of type "l<j>::m<int (s::*)()> [with j=h<int (s::*)()>]" at line 18
+            instantiation of class "n<j>::p<f> [with j=h<int (s::*)()>, f=int (s::*)()]" at line 22
+            instantiation of class "F<f, j> [with f=int (s::*)(), j=h<int (s::*)()>]" at line 26
+            instantiation of class "r<f, j> [with f=int (s::*)(), j=h<int (s::*)()>]" at line 31
+
+"Test_name.c", line 16: error: a class or namespace qualified name is required
+    typedef typename j::g o;
+                     ^
+          detected during:
+            instantiation of class "n<j> [with j=<error-type>]" at line 26
+            instantiation of class "r<f, j> [with f=int (s::*)(), j=h<int (s::*)()>]" at line 31
+
+"Test_name.c", line 16: error: global-scope qualifier (leading "::") is not allowed
+    typedef typename j::g o;
+                      ^
+          detected during:
+            instantiation of class "n<j> [with j=<error-type>]" at line 26
+            instantiation of class "r<f, j> [with f=int (s::*)(), j=h<int (s::*)()>]" at line 31
+
+"Test_name.c", line 16: error: expected a ";"
+    typedef typename j::g o;
+                          ^
+          detected during:
+            instantiation of class "n<j> [with j=<error-type>]" at line 26
+            instantiation of class "r<f, j> [with f=int (s::*)(), j=h<int (s::*)()>]" at line 31
+
+"Test_name.c", line 26: error: class "n<<error-type>>" has no member "o"
+    typename n<typename F<f, j>::q>::o operator[](long);
+                                     ^
+          detected during instantiation of class "r<f, j> [with f=int (s::*)(), j=h<int (s::*)()>]" at line 31
+
+6 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 24: error: call to consteval function "foobar(auto) [with <auto-1>=int]" did not produce a valid constant expression
+    foobar (x); // { dg-error "10:call to consteval function .foobar<int>\\(x\\). is not a constant expression" }
+           ^
+"Test_name.c", line 24: note: the value of parameter "x" (declared at line 22) cannot be used as a constant
+    foobar (x); // { dg-error "10:call to consteval function .foobar<int>\\(x\\). is not a constant expression" }
+            ^
+
+"Test_name.c", line 46: error: call to consteval function "f2(auto) [with <auto-1>=int]" did not produce a valid constant expression
+    f2 (x); // { dg-error "6:call to consteval function .f2<int>\\(x\\). is not a constant expression|not a constant expression" }
+       ^
+"Test_name.c", line 46: note: the value of parameter "x" (declared at line 44) cannot be used as a constant
+    f2 (x); // { dg-error "6:call to consteval function .f2<int>\\(x\\). is not a constant expression|not a constant expression" }
+        ^
+
+2 errors detected in the compilation of "Test_name.c".

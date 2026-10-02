@@ -1,0 +1,58 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 10: warning: attribute "internal_linkage" does not apply here
+    int x __attribute__((internal_linkage)); // expected-warning{{'internal_linkage' attribute only applies to variables, functions, and classes}}
+                         ^
+
+"Test_name.c", line 21: warning: attribute "internal_linkage" does not apply here
+      int z  __attribute__((internal_linkage)); // expected-warning{{'internal_linkage' attribute only applies to}}
+                            ^
+
+"Test_name.c", line 25: error: the "internal_linkage" attribute did not appear on a prior declaration
+  __attribute__((internal_linkage)) void A::f4() {} // expected-error{{'internal_linkage' attribute does not appear on the first declaration}}
+                 ^
+
+"Test_name.c", line 27: error: the "internal_linkage" attribute did not appear on a prior declaration
+  __attribute__((internal_linkage)) int A::zz; // expected-error{{'internal_linkage' attribute does not appear on the first declaration}}
+                 ^
+
+"Test_name.c", line 29: warning: attribute "internal_linkage" does not apply here
+  namespace Z __attribute__((internal_linkage)) { // expected-warning{{'internal_linkage' attribute only applies to}}
+                             ^
+
+"Test_name.c", line 32: error: attribute "internal_linkage" does not take arguments
+  __attribute__((internal_linkage("foo"))) int g() {} // expected-error{{'internal_linkage' attribute takes no arguments}}
+                                 ^
+
+"Test_name.c", line 32: warning: missing return statement at end of non-void function "g"
+  __attribute__((internal_linkage("foo"))) int g() {} // expected-error{{'internal_linkage' attribute takes no arguments}}
+                                                    ^
+
+"Test_name.c", line 34: warning: missing return statement at end of non-void function "h"
+  [[clang::internal_linkage]] int h() {}
+                                       ^
+
+"Test_name.c", line 36: warning: attribute "internal_linkage" does not apply here
+  enum struct __attribute__((internal_linkage)) E { // expected-warning{{'internal_linkage' attribute only applies to}}
+                             ^
+
+"Test_name.c", line 46: warning: attribute "clang::internal_linkage" does not apply here
+  void g(int a [[clang::internal_linkage]]) { // expected-warning{{'clang::internal_linkage' attribute only applies to variables, functions and classes}}
+                 ^
+
+"Test_name.c", line 47: warning: variable "x" was declared but never referenced
+    int x [[clang::internal_linkage]]; // expected-warning{{'internal_linkage' attribute on a non-static local variable is ignored}}
+        ^
+
+"Test_name.c", line 48: warning: variable "y" was declared but never referenced
+    static int y [[clang::internal_linkage]];
+               ^
+
+"Test_name.c", line 5: warning: function "f" was declared but never referenced
+  int f() __attribute__((internal_linkage));
+      ^
+
+"Test_name.c", line 34: warning: function "h" was declared but never referenced
+  [[clang::internal_linkage]] int h() {}
+                                  ^
+
+3 errors detected in the compilation of "Test_name.c".

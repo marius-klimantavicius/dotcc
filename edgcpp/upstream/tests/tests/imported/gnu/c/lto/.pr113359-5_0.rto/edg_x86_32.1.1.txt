@@ -1,0 +1,37 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 63: warning: unknown attribute "noipa"
+  void __attribute__((noipa))
+                      ^
+
+"Test_name.c", line 67: warning: integer conversion resulted in truncation
+    ga.s.arr[0].ay = CL1;
+                     ^
+
+"Test_name.c", line 68: warning: integer conversion resulted in truncation
+    ga.s.arr[0].az = CL2;
+                     ^
+
+"Test_name.c", line 70: warning: integer conversion resulted in truncation
+    ga.s.arr[1].ay = CL1;
+                     ^
+
+"Test_name.c", line 71: warning: integer conversion resulted in truncation
+    ga.s.arr[1].az = CL2;
+                     ^
+
+"Test_name.c", line 74: warning: integer conversion resulted in truncation
+    gb.s.arr[0].by = CL1;
+                     ^
+
+"Test_name.c", line 75: warning: integer conversion resulted in truncation
+    gb.s.arr[0].bz = CL2;
+                     ^
+
+"Test_name.c", line 77: warning: integer conversion resulted in truncation
+    gb.s.arr[1].by = CL1;
+                     ^
+
+"Test_name.c", line 78: warning: integer conversion resulted in truncation
+    gb.s.arr[1].bz = CL2;
+                     ^
+

@@ -1,0 +1,94 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 -w Test_name.c
+"./init-string-2.c", line 24: error: a value of type "int [4]" cannot be used to initialize an entity of type "volatile ushrt []"
+  volatile ushrt a6[] = L"foo";
+                        ^
+
+"./init-string-2.c", line 26: error: a value of type "char [4]" cannot be used to initialize an entity of type "schar []" (aka "enum <unnamed> []")
+  schar a7[] = "foo";
+               ^
+
+"./init-string-2.c", line 27: error: a value of type "char [4]" cannot be used to initialize an entity of type "uchar []" (aka "enum <unnamed> []")
+  uchar a8[] = "foo";
+               ^
+
+"./init-string-2.c", line 28: error: a value of type "char [4]" cannot be used to initialize an entity of type "const schar []"
+  const schar a9[] = "foo";
+                     ^
+
+"./init-string-2.c", line 29: error: a value of type "int [4]" cannot be used to initialize an entity of type "short []"
+  short a10[] = L"foo";
+                ^
+
+"./init-string-2.c", line 31: error: a value of type "int [4]" cannot be used to initialize an entity of type "char []"
+  char a12[] = L"foo";
+               ^
+
+"./init-string-2.c", line 32: error: a value of type "char [4]" cannot be used to initialize an entity of type "wchar_t []" (aka "int []")
+  wchar_t a13[] = "foo";
+                  ^
+
+"./init-string-2.c", line 39: error: integer conversion resulted in truncation
+  volatile ushrt b6[] = { L"foo" };
+                          ^
+
+"./init-string-2.c", line 41: error: a value of type "char [4]" cannot be used to initialize an entity of type "schar []" (aka "enum <unnamed> []")
+  schar b7[] = { "foo" };
+                 ^
+
+"./init-string-2.c", line 41: error: incomplete type "schar []" (aka "enum <unnamed> []") is not allowed
+  schar b7[] = { "foo" };
+        ^
+
+"./init-string-2.c", line 42: error: integer conversion resulted in truncation
+  uchar b8[] = { "foo" };
+                 ^
+
+"./init-string-2.c", line 43: error: a value of type "char [4]" cannot be used to initialize an entity of type "const schar []"
+  const schar b9[] = { "foo" };
+                       ^
+
+"./init-string-2.c", line 43: error: incomplete type "const schar []" is not allowed
+  const schar b9[] = { "foo" };
+              ^
+
+"./init-string-2.c", line 44: error: integer conversion resulted in truncation
+  short b10[] = { L"foo" };
+                  ^
+
+"./init-string-2.c", line 46: error: a value of type "int [4]" cannot be used to initialize an entity of type "char []"
+  char b12[] = { L"foo" };
+                 ^
+
+"./init-string-2.c", line 46: error: incomplete type "char []" is not allowed
+  char b12[] = { L"foo" };
+       ^
+
+"./init-string-2.c", line 47: error: a value of type "char [4]" cannot be used to initialize an entity of type "wchar_t []" (aka "int []")
+  wchar_t b13[] = { "foo" };
+                    ^
+
+"./init-string-2.c", line 47: error: incomplete type "wchar_t []" (aka "int []") is not allowed
+  wchar_t b13[] = { "foo" };
+          ^
+
+"./init-string-2.c", line 51: error: integer conversion resulted in truncation
+  struct s c = { "foo", 0, L"bar" };
+                           ^
+
+"./init-string-2.c", line 52: error: integer conversion resulted in truncation
+  struct s d = { .c = L"bar", .a = "foo" };
+                      ^
+
+"./init-string-2.c", line 54: error: integer conversion resulted in truncation
+  ushrt *e = (ushrt [7]){ L"bar" };
+                          ^
+
+"./init-string-2.c", line 57: error: integer conversion resulted in truncation
+  ushrt g[5][5] = { L"foo", L"bar" };
+                    ^
+
+"./init-string-2.c", line 57: error: integer conversion resulted in truncation
+  ushrt g[5][5] = { L"foo", L"bar" };
+                            ^
+
+23 errors detected in the compilation of "Test_name.c".

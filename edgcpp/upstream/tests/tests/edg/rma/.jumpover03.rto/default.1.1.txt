@@ -1,0 +1,44 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 6: error: transfer of control bypasses initialization of:
+            variable "i" (declared at line 12)
+      case 2:  goto L2;            // Error: jump over i
+               ^
+
+"Test_name.c", line 7: error: transfer of control bypasses initialization of:
+            variable "i" (declared at line 12)
+            variable "j" (declared at line 20)
+      case 3:  goto L3;            // Error: jump over i,j
+               ^
+
+"Test_name.c", line 15: error: transfer of control bypasses initialization of:
+            variable "j" (declared at line 20)
+        case 3:  goto L3;          // Error: jump over j
+                 ^
+
+"Test_name.c", line 32: error: transfer of control bypasses initialization of:
+            variable "j" (declared at line 20)
+        case 3:  goto L3;          // Okay
+                 ^
+
+"Test_name.c", line 8: error: transfer of control bypasses initialization of:
+            variable "i" (declared at line 12)
+      case 4:  goto L4;            // Error: jump over i,j
+               ^
+
+"Test_name.c", line 39: error: transfer of control bypasses initialization of:
+            variable "i" (declared at line 12)
+      case 2:  goto L2;            // Okay
+               ^
+
+"Test_name.c", line 40: error: transfer of control bypasses initialization of:
+            variable "i" (declared at line 12)
+            variable "j" (declared at line 20)
+      case 3:  goto L3;            // Error: jump over j
+               ^
+
+"Test_name.c", line 41: error: transfer of control bypasses initialization of:
+            variable "i" (declared at line 12)
+      case 4:  goto L4;            // Error: jump over j
+               ^
+
+8 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 13: error: identifier "S" is undefined
+    S s; /* { dg-error "unknown type name .S.; use .struct. keyword to refer to the type" } */
+    ^
+
+"Test_name.c", line 13: error: expected a ";"
+    S s; /* { dg-error "unknown type name .S.; use .struct. keyword to refer to the type" } */
+      ^
+
+"Test_name.c", line 14: error: identifier "U" is undefined
+    U u; /* { dg-error "unknown type name .U.; use .union. keyword to refer to the type" } */
+    ^
+
+"Test_name.c", line 14: error: expected a ";"
+    U u; /* { dg-error "unknown type name .U.; use .union. keyword to refer to the type" } */
+      ^
+
+"Test_name.c", line 15: error: identifier "E" is undefined
+    E e; /* { dg-error "unknown type name .E.; use .enum. keyword to refer to the type" } */
+    ^
+
+"Test_name.c", line 15: error: expected a ";"
+    E e; /* { dg-error "unknown type name .E.; use .enum. keyword to refer to the type" } */
+      ^
+
+"Test_name.c", line 24: error: identifier "T" is undefined
+    T t; /* { dg-error "unknown type name .T.; use .struct. keyword to refer to the type" } */
+    ^
+
+"Test_name.c", line 24: error: expected a ";"
+    T t; /* { dg-error "unknown type name .T.; use .struct. keyword to refer to the type" } */
+      ^
+
+"Test_name.c", line 25: error: identifier "V" is undefined
+    V v; /* { dg-error "unknown type name .V.; use .union. keyword to refer to the type" } */
+    ^
+
+"Test_name.c", line 25: error: expected a ";"
+    V v; /* { dg-error "unknown type name .V.; use .union. keyword to refer to the type" } */
+      ^
+
+"Test_name.c", line 26: error: identifier "F" is undefined
+    F f; /* { dg-error "unknown type name .F.; use .enum. keyword to refer to the type" } */
+    ^
+
+"Test_name.c", line 26: error: expected a ";"
+    F f; /* { dg-error "unknown type name .F.; use .enum. keyword to refer to the type" } */
+      ^
+
+12 errors detected in the compilation of "Test_name.c".

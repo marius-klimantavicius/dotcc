@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: warning: variable "x" is used before its value is set
+    [x]{} = 0;			// { dg-error "lambda" }
+     ^
+
+"Test_name.c", line 9: error: no operator "=" matches these operands
+            operand types are: lambda []()->void = int
+    [x]{} = 0;			// { dg-error "lambda" }
+          ^
+"Test_name.c", line 9: note: function "lambda []()->void::operator=" does not match because argument #1 does not match parameter
+    [x]{} = 0;			// { dg-error "lambda" }
+    ^
+
+1 error detected in the compilation of "Test_name.c".

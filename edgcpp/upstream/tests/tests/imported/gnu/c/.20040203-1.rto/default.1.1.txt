@@ -1,0 +1,37 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c89 --strict_gnu Test_name.c
+"Test_name.c", line 10: warning: controlling expression is constant
+  int bug_if(void) { if (a.c) return 1; else return 0; }
+                         ^
+
+"Test_name.c", line 11: warning: controlling expression is constant
+  int bug_while(void) { while (a.c); }
+                               ^
+
+"Test_name.c", line 12: warning: controlling expression is constant
+  int bug_do_while(void) { do ; while (a.c); }
+                                       ^
+
+"Test_name.c", line 13: warning: controlling expression is constant
+  int bug_for(void) { for ( ; a.c; ) ; }
+                              ^
+
+"Test_name.c", line 14: warning: controlling expression is constant
+  int bug_or(void) { return (a.c || 1); }
+                             ^
+
+"Test_name.c", line 15: warning: controlling expression is constant
+  int bug_and(void) { return (a.c && 1); }
+                              ^
+
+"Test_name.c", line 16: warning: controlling expression is constant
+  int bug_cond(void) { return (a.c ? 1 : 0); }
+                               ^
+
+"Test_name.c", line 17: warning: controlling expression is constant
+  char *bug_cond2(void) { return (a.c ? : 0); }
+                                  ^
+
+"Test_name.c", line 18: warning: controlling expression is constant
+  int bug_not(void) { return !a.c; }
+                              ^
+

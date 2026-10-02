@@ -1,0 +1,57 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 15: warning: variable "d1" was declared but never referenced
+    D d1 = {42};
+      ^
+
+"Test_name.c", line 16: warning: variable "d2" was declared but never referenced
+    D d2 = {{42}};
+      ^
+
+"Test_name.c", line 18: warning: variable "d4" was declared but never referenced
+    D d4 = D{42};
+      ^
+
+"Test_name.c", line 19: warning: variable "d5" was declared but never referenced
+    D d5 = D{{42}};
+      ^
+
+"Test_name.c", line 21: warning: variable "d7" was declared but never referenced
+    D d7 = {D{42}};
+      ^
+
+"Test_name.c", line 22: warning: variable "d8" was declared but never referenced
+    D d8 = {D{{42}}};
+      ^
+
+"Test_name.c", line 24: warning: variable "d10" was declared but never referenced
+    D d10 = {{D{42}}}; // { dg-warning "initializing a base class of type .B. results in object slicing" }
+      ^
+
+"Test_name.c", line 25: warning: variable "d11" was declared but never referenced
+    D d11 = {{D{{42}}}}; // { dg-warning "initializing a base class of type .B. results in object slicing" }
+      ^
+
+"Test_name.c", line 27: warning: variable "dd1" was declared but never referenced
+    D dd1{42};
+      ^
+
+"Test_name.c", line 28: warning: variable "dd2" was declared but never referenced
+    D dd2{{42}};
+      ^
+
+"Test_name.c", line 30: warning: variable "dd7" was declared but never referenced
+    D dd7{D{42}};
+      ^
+
+"Test_name.c", line 31: warning: variable "dd8" was declared but never referenced
+    D dd8{D{{42}}};
+      ^
+
+"Test_name.c", line 33: warning: variable "dd10" was declared but never referenced
+    D dd10{{D{42}}}; // { dg-warning "initializing a base class of type .B. results in object slicing" }
+      ^
+
+"Test_name.c", line 34: warning: variable "dd11" was declared but never referenced
+    D dd11{{D{{42}}}}; // { dg-warning "initializing a base class of type .B. results in object slicing" }
+      ^
+

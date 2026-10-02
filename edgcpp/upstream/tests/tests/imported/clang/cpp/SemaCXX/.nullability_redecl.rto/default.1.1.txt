@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 6: warning: nullability qualifiers are only permitted on pointer and pointer-to-member types
+  using Foo1 = Foo _Nonnull; // expected-error{{nullability specifier '_Nonnull' cannot be applied to non-pointer type 'Foo'}}
+                   ^
+
+"Test_name.c", line 7: error: expected either a definition or a tag name
+  class _Nullable Foo;
+        ^
+
+"Test_name.c", line 8: warning: nullability qualifiers are only permitted on pointer and pointer-to-member types
+  using Foo2 = Foo _Nonnull;
+                   ^
+
+"Test_name.c", line 10: warning: nullability qualifiers are only permitted on pointer and pointer-to-member types
+  using Foo3 = Foo _Nonnull;
+                   ^
+
+"Test_name.c", line 14: warning: nullability qualifiers are only permitted on pointer and pointer-to-member types
+  using Bar1 = Bar<int> _Nonnull; // expected-error{{nullability specifier '_Nonnull' cannot be applied to non-pointer type 'Bar<int>'}}
+                        ^
+
+"Test_name.c", line 16: error: expected an identifier
+  class _Nullable Bar;
+        ^
+
+"Test_name.c", line 16: warning: variable templates are a C++14 feature
+  class _Nullable Bar;
+                     ^
+
+"Test_name.c", line 17: warning: nullability qualifiers are only permitted on pointer and pointer-to-member types
+  using Bar2 = Bar<int> _Nonnull;
+                        ^
+
+"Test_name.c", line 20: warning: nullability qualifiers are only permitted on pointer and pointer-to-member types
+  using Bar3 = Bar<int> _Nonnull;
+                        ^
+
+"Test_name.c", line 24: warning: nullability qualifiers are only permitted on pointer and pointer-to-member types
+    using UP1 = unique_ptr<int> _Nonnull;
+                                ^
+
+"Test_name.c", line 26: warning: nullability qualifiers are only permitted on pointer and pointer-to-member types
+    using UP2 = unique_ptr<int> _Nonnull;
+                                ^
+
+"Test_name.c", line 28: warning: nullability qualifiers are only permitted on pointer and pointer-to-member types
+    using UP3 = unique_ptr<int> _Nonnull;
+                                ^
+
+2 errors detected in the compilation of "Test_name.c".

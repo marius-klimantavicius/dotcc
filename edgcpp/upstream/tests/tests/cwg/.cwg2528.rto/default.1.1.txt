@@ -1,0 +1,5 @@
+cpfe -DTEST_NUMBER=1 --c++20 -tused -A Test_name.c
+"Test_name.c", line 4: warning: expression has no effect
+      i <=> ui;
+      ^
+

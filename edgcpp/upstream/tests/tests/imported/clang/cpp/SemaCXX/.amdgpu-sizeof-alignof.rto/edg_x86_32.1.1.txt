@@ -1,0 +1,137 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 9: warning: unknown attribute "address_space"
+  typedef __attribute__((address_space(1))) void *global_ptr_t;
+                         ^
+
+"Test_name.c", line 10: warning: unknown attribute "address_space"
+  typedef __attribute__((address_space(2))) void *constant_ptr_t;
+                         ^
+
+"Test_name.c", line 11: warning: unknown attribute "address_space"
+  typedef __attribute__((address_space(3))) void *local_ptr_t;
+                         ^
+
+"Test_name.c", line 12: warning: unknown attribute "address_space"
+  typedef __attribute__((address_space(5))) void *private_ptr_t;
+                         ^
+
+"Test_name.c", line 15: error: static assertion failed with "bad size"
+    static_assert(sizeof(size_t) == 8, "bad size");
+    ^
+"Test_name.c", line 15: note: the final comparison was 4 == 8
+    static_assert(sizeof(size_t) == 8, "bad size");
+                                 ^
+
+"Test_name.c", line 16: error: static assertion failed with "bad alignment"
+    static_assert(alignof(size_t) == 8, "bad alignment");
+    ^
+"Test_name.c", line 16: note: the final comparison was 4 == 8
+    static_assert(alignof(size_t) == 8, "bad alignment");
+                                  ^
+
+"Test_name.c", line 17: error: static assertion failed with "bad size"
+    static_assert(sizeof(intptr_t) == 8, "bad size");
+    ^
+"Test_name.c", line 17: note: the final comparison was 4 == 8
+    static_assert(sizeof(intptr_t) == 8, "bad size");
+                                   ^
+
+"Test_name.c", line 18: error: static assertion failed with "bad alignment"
+    static_assert(alignof(intptr_t) == 8, "bad alignment");
+    ^
+"Test_name.c", line 18: note: the final comparison was 4 == 8
+    static_assert(alignof(intptr_t) == 8, "bad alignment");
+                                    ^
+
+"Test_name.c", line 19: error: static assertion failed with "bad size"
+    static_assert(sizeof(uintptr_t) == 8, "bad size");
+    ^
+"Test_name.c", line 19: note: the final comparison was 4 == 8
+    static_assert(sizeof(uintptr_t) == 8, "bad size");
+                                    ^
+
+"Test_name.c", line 20: error: static assertion failed with "bad alignment"
+    static_assert(alignof(uintptr_t) == 8, "bad alignment");
+    ^
+"Test_name.c", line 20: note: the final comparison was 4 == 8
+    static_assert(alignof(uintptr_t) == 8, "bad alignment");
+                                     ^
+
+"Test_name.c", line 21: error: static assertion failed with "bad size"
+    static_assert(sizeof(ptrdiff_t) == 8, "bad size");
+    ^
+"Test_name.c", line 21: note: the final comparison was 4 == 8
+    static_assert(sizeof(ptrdiff_t) == 8, "bad size");
+                                    ^
+
+"Test_name.c", line 22: error: static assertion failed with "bad alignment"
+    static_assert(alignof(ptrdiff_t) == 8, "bad alignment");
+    ^
+"Test_name.c", line 22: note: the final comparison was 4 == 8
+    static_assert(alignof(ptrdiff_t) == 8, "bad alignment");
+                                     ^
+
+"Test_name.c", line 30: error: static assertion failed with "bad size"
+    static_assert(sizeof(long) == 8, "bad size");
+    ^
+"Test_name.c", line 30: note: the final comparison was 4 == 8
+    static_assert(sizeof(long) == 8, "bad size");
+                               ^
+
+"Test_name.c", line 31: error: static assertion failed with "bad alignment"
+    static_assert(alignof(long) == 8, "bad alignment");
+    ^
+"Test_name.c", line 31: note: the final comparison was 4 == 8
+    static_assert(alignof(long) == 8, "bad alignment");
+                                ^
+
+"Test_name.c", line 37: error: static assertion failed with "bad alignment"
+    static_assert(alignof(double) == 8, "bad alignment");
+    ^
+"Test_name.c", line 37: note: the final comparison was 4 == 8
+    static_assert(alignof(double) == 8, "bad alignment");
+                                  ^
+
+"Test_name.c", line 39: error: static assertion failed with "bad size"
+    static_assert(sizeof(void*) == 8, "bad size");
+    ^
+"Test_name.c", line 39: note: the final comparison was 4 == 8
+    static_assert(sizeof(void*) == 8, "bad size");
+                                ^
+
+"Test_name.c", line 40: error: static assertion failed with "bad alignment"
+    static_assert(alignof(void*) == 8, "bad alignment");
+    ^
+"Test_name.c", line 40: note: the final comparison was 4 == 8
+    static_assert(alignof(void*) == 8, "bad alignment");
+                                 ^
+
+"Test_name.c", line 41: error: static assertion failed with "bad size"
+    static_assert(sizeof(global_ptr_t) == 8, "bad size");
+    ^
+"Test_name.c", line 41: note: the final comparison was 4 == 8
+    static_assert(sizeof(global_ptr_t) == 8, "bad size");
+                                       ^
+
+"Test_name.c", line 42: error: static assertion failed with "bad alignment"
+    static_assert(alignof(global_ptr_t) == 8, "bad alignment");
+    ^
+"Test_name.c", line 42: note: the final comparison was 4 == 8
+    static_assert(alignof(global_ptr_t) == 8, "bad alignment");
+                                        ^
+
+"Test_name.c", line 43: error: static assertion failed with "bad size"
+    static_assert(sizeof(constant_ptr_t) == 8, "bad size");
+    ^
+"Test_name.c", line 43: note: the final comparison was 4 == 8
+    static_assert(sizeof(constant_ptr_t) == 8, "bad size");
+                                         ^
+
+"Test_name.c", line 44: error: static assertion failed with "bad alignment"
+    static_assert(alignof(constant_ptr_t) == 8, "bad alignment");
+    ^
+"Test_name.c", line 44: note: the final comparison was 4 == 8
+    static_assert(alignof(constant_ptr_t) == 8, "bad alignment");
+                                          ^
+
+17 errors detected in the compilation of "Test_name.c".

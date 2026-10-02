@@ -1,0 +1,34 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 18: error: declaration does not declare anything
+  		CA;
+  		^
+
+"Test_name.c", line 29: error: declaration does not declare anything
+  		CA;
+  		^
+
+"Test_name.c", line 37: error: declaration does not declare anything
+  		SELSF;
+  		^
+
+"Test_name.c", line 45: error: declaration does not declare anything
+  		SELS;
+  		^
+
+"Test_name.c", line 58: error: class "_SELSF" has no member "doc"
+          x2.doc = 0;
+             ^
+
+"Test_name.c", line 59: error: class "_SELS" has no member "doc"
+          x3.doc = 0;
+             ^
+
+"Test_name.c", line 60: error: class "_SEL" has no member "doc"
+  	eelsel.doc = 0;
+  	       ^
+
+"Test_name.c", line 53: warning: variable "x1" was set but never used
+          CA x1;
+             ^
+
+7 errors detected in the compilation of "Test_name.c".

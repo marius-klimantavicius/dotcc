@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 12: error: no instance of constructor "array" matches the argument list
+            argument types are: (int, int, int)
+  array a = { 1, 2, 3 };  // { dg-error "" }
+        ^
+
+"Test_name.c", line 12: error: cannot deduce class template arguments
+  array a = { 1, 2, 3 };  // { dg-error "" }
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

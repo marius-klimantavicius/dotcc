@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: warning: variable "v2" was set but never used
+    vector signed int v2, v3;
+                      ^
+
+"Test_name.c", line 9: warning: variable "v3" was set but never used
+    vector signed int v2, v3;
+                          ^
+
+"Test_name.c", line 10: warning: variable "v4" was set but never used
+    vector signed int v4;
+                      ^
+

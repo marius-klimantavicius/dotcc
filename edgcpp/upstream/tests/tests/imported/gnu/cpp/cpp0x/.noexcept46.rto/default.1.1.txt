@@ -1,0 +1,20 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 12: error: exception specification is incompatible with that of previous function "g" (declared at line 7):
+            previously specified: no exceptions will be thrown
+    friend void g() noexcept(false); // { dg-error "different exception specifier" }
+                    ^
+
+"Test_name.c", line 13: error: exception specification is incompatible with that of previous function "h" (declared at line 8):
+            previously specified: no exceptions will be thrown
+    friend void h() noexcept(false); // { dg-error "different exception specifier" }
+                    ^
+
+"Test_name.c", line 17: error: exception specification is incompatible with that of previous function "f" (declared at line 6)
+    friend void f() noexcept(true); // { dg-error "different exception specifier" }
+                    ^
+
+"Test_name.c", line 27: error: exception specification is incompatible with that of previous function "o" (declared at line 22)
+    friend void o() noexcept(true); // { dg-error "different exception specifier" }
+                    ^
+
+4 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 12: error: pointer to member of reference type is not allowed
+  void (A::*& (A::*x))();  // Previously triggered an abort.
+                   ^
+
+1 error detected in the compilation of "Test_name.c".

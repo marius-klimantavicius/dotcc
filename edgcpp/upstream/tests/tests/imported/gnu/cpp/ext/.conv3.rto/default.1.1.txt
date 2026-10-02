@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 13: error: no instance of function template "S::f" matches the argument list and object (the object has type qualifiers that prevent a match)
+            object type is: const S
+    s.f<void>(); // { dg-warning "discards qualifiers" }
+      ^
+
+"Test_name.c", line 14: error: no instance of function template "S::g" matches the argument list and object (the object has type qualifiers that prevent a match)
+            object type is: const S
+    s.g<void>(); // { dg-warning "discards qualifiers" }
+      ^
+
+2 errors detected in the compilation of "Test_name.c".

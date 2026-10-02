@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++23 Test_name.c
+"Test_name.c", line 16: error: expression must have a constant value
+  constexpr int x = bar (); // { dg-error "called in a constant expression" }
+                    ^
+"Test_name.c", line 13: note: attempt to read from volatile storage
+    return i;  // { dg-warning "lvalue-to-rvalue conversion of a volatile lvalue" }
+           ^
+
+"Test_name.c", line 16: warning: variable "x" was declared but never referenced
+  constexpr int x = bar (); // { dg-error "called in a constant expression" }
+                ^
+
+1 error detected in the compilation of "Test_name.c".

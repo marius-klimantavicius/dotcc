@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 26: warning: variable "pv" is used before its value is set
+    pf = reinterpret_cast <PF>(pv);
+                               ^
+
+"Test_name.c", line 30: warning: variable "po" is used before its value is set
+    pf = reinterpret_cast <PF>(po);
+                               ^
+
+"Test_name.c", line 34: warning: a value of type "PF" (aka "void (*)()") cannot be assigned to an entity of type "PV" (aka "void *")
+    pv = pf; // { dg-error "invalid conversion" }
+       ^
+
+"Test_name.c", line 35: error: a value of type "PV" (aka "void *") cannot be assigned to an entity of type "PF" (aka "void (*)()")
+    pf = pv; // { dg-error "invalid conversion" }
+       ^
+
+1 error detected in the compilation of "Test_name.c".

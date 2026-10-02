@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 8: error: invalid combination of type specifiers
+        if (a a(int auto)JUNK)  // { dg-error "two or more data types|condition declares a function" }
+                    ^
+
+"Test_name.c", line 8: error: a condition declaration must declare a variable
+        if (a a(int auto)JUNK)  // { dg-error "two or more data types|condition declares a function" }
+              ^
+
+"Test_name.c", line 8: error: expected a ")"
+        if (a a(int auto)JUNK)  // { dg-error "two or more data types|condition declares a function" }
+                         ^
+
+"Test_name.c", line 16: error: invalid combination of type specifiers
+        for (;d d(int auto)JUNK;)  // { dg-error "two or more data types|condition declares a function" }
+                      ^
+
+"Test_name.c", line 16: error: a condition declaration must declare a variable
+        for (;d d(int auto)JUNK;)  // { dg-error "two or more data types|condition declares a function" }
+                ^
+
+"Test_name.c", line 16: error: expected a ";"
+        for (;d d(int auto)JUNK;)  // { dg-error "two or more data types|condition declares a function" }
+                           ^
+
+"Test_name.c", line 24: error: invalid combination of type specifiers
+        while (g g(int auto)JUNK)  // { dg-error "two or more data types|condition declares a function" }
+                       ^
+
+"Test_name.c", line 24: error: a condition declaration must declare a variable
+        while (g g(int auto)JUNK)  // { dg-error "two or more data types|condition declares a function" }
+                 ^
+
+"Test_name.c", line 24: error: expected a ")"
+        while (g g(int auto)JUNK)  // { dg-error "two or more data types|condition declares a function" }
+                            ^
+
+9 errors detected in the compilation of "Test_name.c".

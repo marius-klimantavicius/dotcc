@@ -1,0 +1,9 @@
+cpfe -DTEST_NUMBER=1 --c++23 -tused -A Test_name.c
+"Test_name.c", line 9: error: more than one instance of overloaded function "g" matches the argument list:
+            function "g(const int *)" (declared at line 6)
+            function "g(const volatile int *const &)" (declared at line 7)
+            argument types are: (int *)
+    int k = g(p);          // calls g(const int*)
+            ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 16: error: "D<T>::D() [with T=int]" (declared at line 10) is inaccessible
+  D<int> d;  // { dg-error "is private" }
+         ^
+
+"Test_name.c", line 11: error: "B::B()" (declared at line 7) is inaccessible
+      {  // { dg-error "is private" }
+      ^
+          detected during instantiation of "D<T>::D() [with T=int]" at line 16
+
+"Test_name.c", line 13: warning: variable "x00" is used before its value is set
+          foo(x00);
+              ^
+          detected during instantiation of "D<T>::D() [with T=int]" at line 16
+
+2 errors detected in the compilation of "Test_name.c".

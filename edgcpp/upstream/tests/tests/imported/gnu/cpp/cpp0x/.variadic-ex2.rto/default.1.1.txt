@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: error: parameter pack "Types" was referenced but not expanded
+  template<class... Types> void B<Types>::f4() { } // { dg-error "packs not expanded" }
+                                  ^
+
+"Test_name.c", line 10: error: template argument list must match the parameter list
+  template<class... Types> void B<Types>::f4() { } // { dg-error "packs not expanded" }
+                                ^
+
+2 errors detected in the compilation of "Test_name.c".

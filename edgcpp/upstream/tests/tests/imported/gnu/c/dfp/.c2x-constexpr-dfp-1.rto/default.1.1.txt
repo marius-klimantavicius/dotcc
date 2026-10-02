@@ -1,0 +1,804 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 7: error: identifier "constexpr" is undefined
+  constexpr _Decimal32 v1 = __DEC32_MIN__;
+  ^
+
+"Test_name.c", line 7: error: expected a ";"
+  constexpr _Decimal32 v1 = __DEC32_MIN__;
+                       ^
+
+"Test_name.c", line 7: error: extra text after expected end of number
+  constexpr _Decimal32 v1 = __DEC32_MIN__;
+                            ^
+
+"Test_name.c", line 8: error: identifier "constexpr" is undefined
+  constexpr _Decimal32 v2 = __DEC32_SUBNORMAL_MIN__;
+  ^
+
+"Test_name.c", line 8: error: expected a ";"
+  constexpr _Decimal32 v2 = __DEC32_SUBNORMAL_MIN__;
+                       ^
+
+"Test_name.c", line 8: error: extra text after expected end of number
+  constexpr _Decimal32 v2 = __DEC32_SUBNORMAL_MIN__;
+                            ^
+
+"Test_name.c", line 9: error: identifier "constexpr" is undefined
+  constexpr _Decimal32 v3 = -__DEC32_MAX__;
+  ^
+
+"Test_name.c", line 9: error: expected a ";"
+  constexpr _Decimal32 v3 = -__DEC32_MAX__;
+                       ^
+
+"Test_name.c", line 9: error: extra text after expected end of number
+  constexpr _Decimal32 v3 = -__DEC32_MAX__;
+                             ^
+
+"Test_name.c", line 10: error: identifier "constexpr" is undefined
+  constexpr _Decimal64 v4 = __DEC32_MIN__;
+  ^
+
+"Test_name.c", line 10: error: expected a ";"
+  constexpr _Decimal64 v4 = __DEC32_MIN__;
+                       ^
+
+"Test_name.c", line 10: error: extra text after expected end of number
+  constexpr _Decimal64 v4 = __DEC32_MIN__;
+                            ^
+
+"Test_name.c", line 11: error: identifier "constexpr" is undefined
+  constexpr _Decimal64 v5 = __DEC32_SUBNORMAL_MIN__;
+  ^
+
+"Test_name.c", line 11: error: expected a ";"
+  constexpr _Decimal64 v5 = __DEC32_SUBNORMAL_MIN__;
+                       ^
+
+"Test_name.c", line 11: error: extra text after expected end of number
+  constexpr _Decimal64 v5 = __DEC32_SUBNORMAL_MIN__;
+                            ^
+
+"Test_name.c", line 12: error: identifier "constexpr" is undefined
+  constexpr _Decimal64 v6 = -__DEC32_MAX__;
+  ^
+
+"Test_name.c", line 12: error: expected a ";"
+  constexpr _Decimal64 v6 = -__DEC32_MAX__;
+                       ^
+
+"Test_name.c", line 12: error: extra text after expected end of number
+  constexpr _Decimal64 v6 = -__DEC32_MAX__;
+                             ^
+
+"Test_name.c", line 13: error: identifier "constexpr" is undefined
+  constexpr _Decimal64 v7 = __DEC64_MIN__;
+  ^
+
+"Test_name.c", line 13: error: expected a ";"
+  constexpr _Decimal64 v7 = __DEC64_MIN__;
+                       ^
+
+"Test_name.c", line 13: error: extra text after expected end of number
+  constexpr _Decimal64 v7 = __DEC64_MIN__;
+                            ^
+
+"Test_name.c", line 14: error: identifier "constexpr" is undefined
+  constexpr _Decimal64 v8 = __DEC64_SUBNORMAL_MIN__;
+  ^
+
+"Test_name.c", line 14: error: expected a ";"
+  constexpr _Decimal64 v8 = __DEC64_SUBNORMAL_MIN__;
+                       ^
+
+"Test_name.c", line 14: error: extra text after expected end of number
+  constexpr _Decimal64 v8 = __DEC64_SUBNORMAL_MIN__;
+                            ^
+
+"Test_name.c", line 15: error: identifier "constexpr" is undefined
+  constexpr _Decimal64 v9 = -__DEC64_MAX__;
+  ^
+
+"Test_name.c", line 15: error: expected a ";"
+  constexpr _Decimal64 v9 = -__DEC64_MAX__;
+                       ^
+
+"Test_name.c", line 15: error: extra text after expected end of number
+  constexpr _Decimal64 v9 = -__DEC64_MAX__;
+                             ^
+
+"Test_name.c", line 16: error: identifier "constexpr" is undefined
+  constexpr _Decimal128 v10 = __DEC32_MIN__;
+  ^
+
+"Test_name.c", line 16: error: expected a ";"
+  constexpr _Decimal128 v10 = __DEC32_MIN__;
+                        ^
+
+"Test_name.c", line 16: error: extra text after expected end of number
+  constexpr _Decimal128 v10 = __DEC32_MIN__;
+                              ^
+
+"Test_name.c", line 17: error: identifier "constexpr" is undefined
+  constexpr _Decimal128 v11 = __DEC32_SUBNORMAL_MIN__;
+  ^
+
+"Test_name.c", line 17: error: expected a ";"
+  constexpr _Decimal128 v11 = __DEC32_SUBNORMAL_MIN__;
+                        ^
+
+"Test_name.c", line 17: error: extra text after expected end of number
+  constexpr _Decimal128 v11 = __DEC32_SUBNORMAL_MIN__;
+                              ^
+
+"Test_name.c", line 18: error: identifier "constexpr" is undefined
+  constexpr _Decimal128 v12 = -__DEC32_MAX__;
+  ^
+
+"Test_name.c", line 18: error: expected a ";"
+  constexpr _Decimal128 v12 = -__DEC32_MAX__;
+                        ^
+
+"Test_name.c", line 18: error: extra text after expected end of number
+  constexpr _Decimal128 v12 = -__DEC32_MAX__;
+                               ^
+
+"Test_name.c", line 19: error: identifier "constexpr" is undefined
+  constexpr _Decimal128 v13 = __DEC64_MIN__;
+  ^
+
+"Test_name.c", line 19: error: expected a ";"
+  constexpr _Decimal128 v13 = __DEC64_MIN__;
+                        ^
+
+"Test_name.c", line 19: error: extra text after expected end of number
+  constexpr _Decimal128 v13 = __DEC64_MIN__;
+                              ^
+
+"Test_name.c", line 20: error: identifier "constexpr" is undefined
+  constexpr _Decimal128 v14 = __DEC64_SUBNORMAL_MIN__;
+  ^
+
+"Test_name.c", line 20: error: expected a ";"
+  constexpr _Decimal128 v14 = __DEC64_SUBNORMAL_MIN__;
+                        ^
+
+"Test_name.c", line 20: error: extra text after expected end of number
+  constexpr _Decimal128 v14 = __DEC64_SUBNORMAL_MIN__;
+                              ^
+
+"Test_name.c", line 21: error: identifier "constexpr" is undefined
+  constexpr _Decimal128 v15 = -__DEC64_MAX__;
+  ^
+
+"Test_name.c", line 21: error: expected a ";"
+  constexpr _Decimal128 v15 = -__DEC64_MAX__;
+                        ^
+
+"Test_name.c", line 21: error: extra text after expected end of number
+  constexpr _Decimal128 v15 = -__DEC64_MAX__;
+                               ^
+
+"Test_name.c", line 22: error: identifier "constexpr" is undefined
+  constexpr _Decimal128 v16 = __DEC128_MIN__;
+  ^
+
+"Test_name.c", line 22: error: expected a ";"
+  constexpr _Decimal128 v16 = __DEC128_MIN__;
+                        ^
+
+"Test_name.c", line 22: error: extra text after expected end of number
+  constexpr _Decimal128 v16 = __DEC128_MIN__;
+                              ^
+
+"Test_name.c", line 23: error: identifier "constexpr" is undefined
+  constexpr _Decimal128 v17 = __DEC128_SUBNORMAL_MIN__;
+  ^
+
+"Test_name.c", line 23: error: expected a ";"
+  constexpr _Decimal128 v17 = __DEC128_SUBNORMAL_MIN__;
+                        ^
+
+"Test_name.c", line 23: error: extra text after expected end of number
+  constexpr _Decimal128 v17 = __DEC128_SUBNORMAL_MIN__;
+                              ^
+
+"Test_name.c", line 24: error: identifier "constexpr" is undefined
+  constexpr _Decimal128 v18 = -__DEC128_MAX__;
+  ^
+
+"Test_name.c", line 24: error: expected a ";"
+  constexpr _Decimal128 v18 = -__DEC128_MAX__;
+                        ^
+
+"Test_name.c", line 24: error: extra text after expected end of number
+  constexpr _Decimal128 v18 = -__DEC128_MAX__;
+                               ^
+
+"Test_name.c", line 25: error: identifier "constexpr" is undefined
+  constexpr _Decimal32 v19 = 1234567L;
+  ^
+
+"Test_name.c", line 25: error: expected a ";"
+  constexpr _Decimal32 v19 = 1234567L;
+                       ^
+
+"Test_name.c", line 26: error: identifier "constexpr" is undefined
+  constexpr _Decimal32 v20 = -123456700000LL;
+  ^
+
+"Test_name.c", line 26: error: expected a ";"
+  constexpr _Decimal32 v20 = -123456700000LL;
+                       ^
+
+"Test_name.c", line 27: error: identifier "constexpr" is undefined
+  constexpr _Decimal64 v21 = 1234567890123456LL;
+  ^
+
+"Test_name.c", line 27: error: expected a ";"
+  constexpr _Decimal64 v21 = 1234567890123456LL;
+                       ^
+
+"Test_name.c", line 28: error: identifier "constexpr" is undefined
+  constexpr _Decimal64 v22 = -123456789012345600LL;
+  ^
+
+"Test_name.c", line 28: error: expected a ";"
+  constexpr _Decimal64 v22 = -123456789012345600LL;
+                       ^
+
+"Test_name.c", line 29: error: identifier "constexpr" is undefined
+  constexpr _Decimal128 v23 = (unsigned long long) -1;
+  ^
+
+"Test_name.c", line 29: error: expected a ";"
+  constexpr _Decimal128 v23 = (unsigned long long) -1;
+                        ^
+
+"Test_name.c", line 30: error: identifier "constexpr" is undefined
+  constexpr _Decimal32 v24 = 1e-101DL;
+  ^
+
+"Test_name.c", line 30: error: expected a ";"
+  constexpr _Decimal32 v24 = 1e-101DL;
+                       ^
+
+"Test_name.c", line 30: error: extra text after expected end of number
+  constexpr _Decimal32 v24 = 1e-101DL;
+                                   ^
+
+"Test_name.c", line 31: error: identifier "constexpr" is undefined
+  constexpr _Decimal64 v25 = 1e-398DL;
+  ^
+
+"Test_name.c", line 31: error: expected a ";"
+  constexpr _Decimal64 v25 = 1e-398DL;
+                       ^
+
+"Test_name.c", line 31: error: extra text after expected end of number
+  constexpr _Decimal64 v25 = 1e-398DL;
+                                   ^
+
+"Test_name.c", line 32: error: identifier "constexpr" is undefined
+  constexpr _Decimal32 v26 = __builtin_infd128 ();
+  ^
+
+"Test_name.c", line 32: error: expected a ";"
+  constexpr _Decimal32 v26 = __builtin_infd128 ();
+                       ^
+
+"Test_name.c", line 33: error: identifier "constexpr" is undefined
+  constexpr _Decimal128 v27 = __builtin_infd32 ();
+  ^
+
+"Test_name.c", line 33: error: expected a ";"
+  constexpr _Decimal128 v27 = __builtin_infd32 ();
+                        ^
+
+"Test_name.c", line 34: error: identifier "constexpr" is undefined
+  constexpr _Decimal64 v28 = __builtin_nand128 ("");
+  ^
+
+"Test_name.c", line 34: error: expected a ";"
+  constexpr _Decimal64 v28 = __builtin_nand128 ("");
+                       ^
+
+"Test_name.c", line 35: error: identifier "constexpr" is undefined
+  constexpr _Decimal128 v29 = __builtin_nand32 ("");
+  ^
+
+"Test_name.c", line 35: error: expected a ";"
+  constexpr _Decimal128 v29 = __builtin_nand32 ("");
+                        ^
+
+"Test_name.c", line 36: error: identifier "constexpr" is undefined
+  constexpr _Decimal32 v30 = __builtin_nansd32 ("");
+  ^
+
+"Test_name.c", line 36: error: expected a ";"
+  constexpr _Decimal32 v30 = __builtin_nansd32 ("");
+                       ^
+
+"Test_name.c", line 37: error: identifier "constexpr" is undefined
+  constexpr _Decimal64 v31 = __builtin_nansd64 ("");
+  ^
+
+"Test_name.c", line 37: error: expected a ";"
+  constexpr _Decimal64 v31 = __builtin_nansd64 ("");
+                       ^
+
+"Test_name.c", line 38: error: identifier "constexpr" is undefined
+  constexpr _Decimal128 v32 = __builtin_nansd128 ("");
+  ^
+
+"Test_name.c", line 38: error: expected a ";"
+  constexpr _Decimal128 v32 = __builtin_nansd128 ("");
+                        ^
+
+"Test_name.c", line 39: error: identifier "constexpr" is undefined
+  constexpr _Decimal32 v33 = {};
+  ^
+
+"Test_name.c", line 39: error: expected a ";"
+  constexpr _Decimal32 v33 = {};
+                       ^
+
+"Test_name.c", line 40: error: identifier "constexpr" is undefined
+  constexpr _Decimal64 v34 = {};
+  ^
+
+"Test_name.c", line 40: error: expected a ";"
+  constexpr _Decimal64 v34 = {};
+                       ^
+
+"Test_name.c", line 41: error: identifier "constexpr" is undefined
+  constexpr _Decimal128 v35 = {};
+  ^
+
+"Test_name.c", line 41: error: expected a ";"
+  constexpr _Decimal128 v35 = {};
+                        ^
+
+"Test_name.c", line 42: error: identifier "constexpr" is undefined
+  constexpr _Decimal32 v36 = 0.0;
+  ^
+
+"Test_name.c", line 42: error: expected a ";"
+  constexpr _Decimal32 v36 = 0.0;
+                       ^
+
+"Test_name.c", line 43: error: identifier "constexpr" is undefined
+  constexpr _Decimal32 v37 = 0.0009765625;
+  ^
+
+"Test_name.c", line 43: error: expected a ";"
+  constexpr _Decimal32 v37 = 0.0009765625;
+                       ^
+
+"Test_name.c", line 44: error: identifier "constexpr" is undefined
+  constexpr _Decimal64 v38 = 6.103515625e-05;
+  ^
+
+"Test_name.c", line 44: error: expected a ";"
+  constexpr _Decimal64 v38 = 6.103515625e-05;
+                       ^
+
+"Test_name.c", line 45: error: identifier "constexpr" is undefined
+  constexpr _Decimal32 v39 = __builtin_inf ();
+  ^
+
+"Test_name.c", line 45: error: expected a ";"
+  constexpr _Decimal32 v39 = __builtin_inf ();
+                       ^
+
+"Test_name.c", line 46: error: identifier "constexpr" is undefined
+  constexpr _Decimal32 v40 = __builtin_nan ("");
+  ^
+
+"Test_name.c", line 46: error: expected a ";"
+  constexpr _Decimal32 v40 = __builtin_nan ("");
+                       ^
+
+"Test_name.c", line 51: error: identifier "constexpr" is undefined
+    (constexpr _Decimal32) { __DEC32_MIN__ };
+     ^
+
+"Test_name.c", line 51: error: expected a ")"
+    (constexpr _Decimal32) { __DEC32_MIN__ };
+               ^
+
+"Test_name.c", line 51: error: expected a ";"
+    (constexpr _Decimal32) { __DEC32_MIN__ };
+                           ^
+
+"Test_name.c", line 51: error: extra text after expected end of number
+    (constexpr _Decimal32) { __DEC32_MIN__ };
+                             ^
+
+"Test_name.c", line 52: error: expected a ")"
+    (constexpr _Decimal32) { __DEC32_SUBNORMAL_MIN__ };
+               ^
+
+"Test_name.c", line 52: error: expected a ";"
+    (constexpr _Decimal32) { __DEC32_SUBNORMAL_MIN__ };
+                           ^
+
+"Test_name.c", line 52: error: extra text after expected end of number
+    (constexpr _Decimal32) { __DEC32_SUBNORMAL_MIN__ };
+                             ^
+
+"Test_name.c", line 53: error: expected a ")"
+    (constexpr _Decimal32) { -__DEC32_MAX__ };
+               ^
+
+"Test_name.c", line 53: error: expected a ";"
+    (constexpr _Decimal32) { -__DEC32_MAX__ };
+                           ^
+
+"Test_name.c", line 53: error: extra text after expected end of number
+    (constexpr _Decimal32) { -__DEC32_MAX__ };
+                              ^
+
+"Test_name.c", line 54: error: expected a ")"
+    (constexpr _Decimal64) { __DEC32_MIN__ };
+               ^
+
+"Test_name.c", line 54: error: expected a ";"
+    (constexpr _Decimal64) { __DEC32_MIN__ };
+                           ^
+
+"Test_name.c", line 54: error: extra text after expected end of number
+    (constexpr _Decimal64) { __DEC32_MIN__ };
+                             ^
+
+"Test_name.c", line 55: error: expected a ")"
+    (constexpr _Decimal64) { __DEC32_SUBNORMAL_MIN__ };
+               ^
+
+"Test_name.c", line 55: error: expected a ";"
+    (constexpr _Decimal64) { __DEC32_SUBNORMAL_MIN__ };
+                           ^
+
+"Test_name.c", line 55: error: extra text after expected end of number
+    (constexpr _Decimal64) { __DEC32_SUBNORMAL_MIN__ };
+                             ^
+
+"Test_name.c", line 56: error: expected a ")"
+    (constexpr _Decimal64) { -__DEC32_MAX__ };
+               ^
+
+"Test_name.c", line 56: error: expected a ";"
+    (constexpr _Decimal64) { -__DEC32_MAX__ };
+                           ^
+
+"Test_name.c", line 56: error: extra text after expected end of number
+    (constexpr _Decimal64) { -__DEC32_MAX__ };
+                              ^
+
+"Test_name.c", line 57: error: expected a ")"
+    (constexpr _Decimal64) { __DEC64_MIN__ };
+               ^
+
+"Test_name.c", line 57: error: expected a ";"
+    (constexpr _Decimal64) { __DEC64_MIN__ };
+                           ^
+
+"Test_name.c", line 57: error: extra text after expected end of number
+    (constexpr _Decimal64) { __DEC64_MIN__ };
+                             ^
+
+"Test_name.c", line 58: error: expected a ")"
+    (constexpr _Decimal64) { __DEC64_SUBNORMAL_MIN__ };
+               ^
+
+"Test_name.c", line 58: error: expected a ";"
+    (constexpr _Decimal64) { __DEC64_SUBNORMAL_MIN__ };
+                           ^
+
+"Test_name.c", line 58: error: extra text after expected end of number
+    (constexpr _Decimal64) { __DEC64_SUBNORMAL_MIN__ };
+                             ^
+
+"Test_name.c", line 59: error: expected a ")"
+    (constexpr _Decimal64) { -__DEC64_MAX__ };
+               ^
+
+"Test_name.c", line 59: error: expected a ";"
+    (constexpr _Decimal64) { -__DEC64_MAX__ };
+                           ^
+
+"Test_name.c", line 59: error: extra text after expected end of number
+    (constexpr _Decimal64) { -__DEC64_MAX__ };
+                              ^
+
+"Test_name.c", line 60: error: expected a ")"
+    (constexpr _Decimal128) { __DEC32_MIN__ };
+               ^
+
+"Test_name.c", line 60: error: expected a ";"
+    (constexpr _Decimal128) { __DEC32_MIN__ };
+                            ^
+
+"Test_name.c", line 60: error: extra text after expected end of number
+    (constexpr _Decimal128) { __DEC32_MIN__ };
+                              ^
+
+"Test_name.c", line 61: error: expected a ")"
+    (constexpr _Decimal128) { __DEC32_SUBNORMAL_MIN__ };
+               ^
+
+"Test_name.c", line 61: error: expected a ";"
+    (constexpr _Decimal128) { __DEC32_SUBNORMAL_MIN__ };
+                            ^
+
+"Test_name.c", line 61: error: extra text after expected end of number
+    (constexpr _Decimal128) { __DEC32_SUBNORMAL_MIN__ };
+                              ^
+
+"Test_name.c", line 62: error: expected a ")"
+    (constexpr _Decimal128) { -__DEC32_MAX__ };
+               ^
+
+"Test_name.c", line 62: error: expected a ";"
+    (constexpr _Decimal128) { -__DEC32_MAX__ };
+                            ^
+
+"Test_name.c", line 62: error: extra text after expected end of number
+    (constexpr _Decimal128) { -__DEC32_MAX__ };
+                               ^
+
+"Test_name.c", line 63: error: expected a ")"
+    (constexpr _Decimal128) { __DEC64_MIN__ };
+               ^
+
+"Test_name.c", line 63: error: expected a ";"
+    (constexpr _Decimal128) { __DEC64_MIN__ };
+                            ^
+
+"Test_name.c", line 63: error: extra text after expected end of number
+    (constexpr _Decimal128) { __DEC64_MIN__ };
+                              ^
+
+"Test_name.c", line 64: error: expected a ")"
+    (constexpr _Decimal128) { __DEC64_SUBNORMAL_MIN__ };
+               ^
+
+"Test_name.c", line 64: error: expected a ";"
+    (constexpr _Decimal128) { __DEC64_SUBNORMAL_MIN__ };
+                            ^
+
+"Test_name.c", line 64: error: extra text after expected end of number
+    (constexpr _Decimal128) { __DEC64_SUBNORMAL_MIN__ };
+                              ^
+
+"Test_name.c", line 65: error: expected a ")"
+    (constexpr _Decimal128) { -__DEC64_MAX__ };
+               ^
+
+"Test_name.c", line 65: error: expected a ";"
+    (constexpr _Decimal128) { -__DEC64_MAX__ };
+                            ^
+
+"Test_name.c", line 65: error: extra text after expected end of number
+    (constexpr _Decimal128) { -__DEC64_MAX__ };
+                               ^
+
+"Test_name.c", line 66: error: expected a ")"
+    (constexpr _Decimal128) { __DEC128_MIN__ };
+               ^
+
+"Test_name.c", line 66: error: expected a ";"
+    (constexpr _Decimal128) { __DEC128_MIN__ };
+                            ^
+
+"Test_name.c", line 66: error: extra text after expected end of number
+    (constexpr _Decimal128) { __DEC128_MIN__ };
+                              ^
+
+"Test_name.c", line 67: error: expected a ")"
+    (constexpr _Decimal128) { __DEC128_SUBNORMAL_MIN__ };
+               ^
+
+"Test_name.c", line 67: error: expected a ";"
+    (constexpr _Decimal128) { __DEC128_SUBNORMAL_MIN__ };
+                            ^
+
+"Test_name.c", line 67: error: extra text after expected end of number
+    (constexpr _Decimal128) { __DEC128_SUBNORMAL_MIN__ };
+                              ^
+
+"Test_name.c", line 68: error: expected a ")"
+    (constexpr _Decimal128) { -__DEC128_MAX__ };
+               ^
+
+"Test_name.c", line 68: error: expected a ";"
+    (constexpr _Decimal128) { -__DEC128_MAX__ };
+                            ^
+
+"Test_name.c", line 68: error: extra text after expected end of number
+    (constexpr _Decimal128) { -__DEC128_MAX__ };
+                               ^
+
+"Test_name.c", line 69: error: expected a ")"
+    (constexpr _Decimal32) { 1234567L };
+               ^
+
+"Test_name.c", line 69: error: expected a ";"
+    (constexpr _Decimal32) { 1234567L };
+                           ^
+
+"Test_name.c", line 70: error: expected a ")"
+    (constexpr _Decimal32) { -123456700000LL };
+               ^
+
+"Test_name.c", line 70: error: expected a ";"
+    (constexpr _Decimal32) { -123456700000LL };
+                           ^
+
+"Test_name.c", line 71: error: expected a ")"
+    (constexpr _Decimal64) { 1234567890123456LL };
+               ^
+
+"Test_name.c", line 71: error: expected a ";"
+    (constexpr _Decimal64) { 1234567890123456LL };
+                           ^
+
+"Test_name.c", line 72: error: expected a ")"
+    (constexpr _Decimal64) { -123456789012345600LL };
+               ^
+
+"Test_name.c", line 72: error: expected a ";"
+    (constexpr _Decimal64) { -123456789012345600LL };
+                           ^
+
+"Test_name.c", line 73: error: expected a ")"
+    (constexpr _Decimal128) { (unsigned long long) -1 };
+               ^
+
+"Test_name.c", line 73: error: expected a ";"
+    (constexpr _Decimal128) { (unsigned long long) -1 };
+                            ^
+
+"Test_name.c", line 74: error: expected a ")"
+    (constexpr _Decimal32) { 1e-101DL };
+               ^
+
+"Test_name.c", line 74: error: expected a ";"
+    (constexpr _Decimal32) { 1e-101DL };
+                           ^
+
+"Test_name.c", line 74: error: extra text after expected end of number
+    (constexpr _Decimal32) { 1e-101DL };
+                                   ^
+
+"Test_name.c", line 75: error: expected a ")"
+    (constexpr _Decimal64) { 1e-398DL };
+               ^
+
+"Test_name.c", line 75: error: expected a ";"
+    (constexpr _Decimal64) { 1e-398DL };
+                           ^
+
+"Test_name.c", line 75: error: extra text after expected end of number
+    (constexpr _Decimal64) { 1e-398DL };
+                                   ^
+
+"Test_name.c", line 76: error: expected a ")"
+    (constexpr _Decimal32) { __builtin_infd128 () };
+               ^
+
+"Test_name.c", line 76: error: expected a ";"
+    (constexpr _Decimal32) { __builtin_infd128 () };
+                           ^
+
+"Test_name.c", line 77: error: expected a ")"
+    (constexpr _Decimal128) { __builtin_infd32 () };
+               ^
+
+"Test_name.c", line 77: error: expected a ";"
+    (constexpr _Decimal128) { __builtin_infd32 () };
+                            ^
+
+"Test_name.c", line 78: error: expected a ")"
+    (constexpr _Decimal64) { __builtin_nand128 ("") };
+               ^
+
+"Test_name.c", line 78: error: expected a ";"
+    (constexpr _Decimal64) { __builtin_nand128 ("") };
+                           ^
+
+"Test_name.c", line 79: error: expected a ")"
+    (constexpr _Decimal128) { __builtin_nand32 ("") };
+               ^
+
+"Test_name.c", line 79: error: expected a ";"
+    (constexpr _Decimal128) { __builtin_nand32 ("") };
+                            ^
+
+"Test_name.c", line 80: error: expected a ")"
+    (constexpr _Decimal32) { __builtin_nansd32 ("") };
+               ^
+
+"Test_name.c", line 80: error: expected a ";"
+    (constexpr _Decimal32) { __builtin_nansd32 ("") };
+                           ^
+
+"Test_name.c", line 81: error: expected a ")"
+    (constexpr _Decimal64) { __builtin_nansd64 ("") };
+               ^
+
+"Test_name.c", line 81: error: expected a ";"
+    (constexpr _Decimal64) { __builtin_nansd64 ("") };
+                           ^
+
+"Test_name.c", line 82: error: expected a ")"
+    (constexpr _Decimal128) { __builtin_nansd128 ("") };
+               ^
+
+"Test_name.c", line 82: error: expected a ";"
+    (constexpr _Decimal128) { __builtin_nansd128 ("") };
+                            ^
+
+"Test_name.c", line 83: error: expected a ")"
+    (constexpr _Decimal32) {};
+               ^
+
+"Test_name.c", line 83: error: expected a ";"
+    (constexpr _Decimal32) {};
+                           ^
+
+"Test_name.c", line 84: error: expected a ")"
+    (constexpr _Decimal64) {};
+               ^
+
+"Test_name.c", line 84: error: expected a ";"
+    (constexpr _Decimal64) {};
+                           ^
+
+"Test_name.c", line 85: error: expected a ")"
+    (constexpr _Decimal128) {};
+               ^
+
+"Test_name.c", line 85: error: expected a ";"
+    (constexpr _Decimal128) {};
+                            ^
+
+"Test_name.c", line 86: error: expected a ")"
+    (constexpr _Decimal32) { 0.0 };
+               ^
+
+"Test_name.c", line 86: error: expected a ";"
+    (constexpr _Decimal32) { 0.0 };
+                           ^
+
+"Test_name.c", line 87: error: expected a ")"
+    (constexpr _Decimal32) { 0.0009765625 };
+               ^
+
+"Test_name.c", line 87: error: expected a ";"
+    (constexpr _Decimal32) { 0.0009765625 };
+                           ^
+
+"Test_name.c", line 88: error: expected a ")"
+    (constexpr _Decimal64) { 6.103515625e-05 };
+               ^
+
+"Test_name.c", line 88: error: expected a ";"
+    (constexpr _Decimal64) { 6.103515625e-05 };
+                           ^
+
+"Test_name.c", line 89: error: expected a ")"
+    (constexpr _Decimal32) { __builtin_inf () };
+               ^
+
+"Test_name.c", line 89: error: expected a ";"
+    (constexpr _Decimal32) { __builtin_inf () };
+                           ^
+
+"Test_name.c", line 90: error: expected a ")"
+    (constexpr _Decimal32) { __builtin_nan ("") };
+               ^
+
+Error limit reached.
+200 errors detected in the compilation of "Test_name.c".
+Compilation terminated.

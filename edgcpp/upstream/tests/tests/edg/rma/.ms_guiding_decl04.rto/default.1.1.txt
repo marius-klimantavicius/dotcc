@@ -1,0 +1,5 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --microsoft Test_name.c
+"Test_name.c", line 7: warning: "void operator-(const C<T> &, const C<T> &)" declares a non-template function -- add <> to refer to a template instance
+      friend void operator-(const C<T>& x, const C<T>& y);
+                  ^
+

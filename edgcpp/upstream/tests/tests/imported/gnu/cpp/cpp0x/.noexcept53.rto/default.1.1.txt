@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 14: error: exception specification is incompatible with that of previous function "S::f1" (declared at line 7)
+  S::f1() noexcept // { dg-error "different exception specifier" }
+          ^
+
+"Test_name.c", line 20: error: allowing all exceptions is incompatible with previous function "S::f2" (declared at line 8)
+  {
+  ^
+
+"Test_name.c", line 24: error: identifier "nosuchfn" is undefined
+    void f1() noexcept(noexcept(nosuchfn())); // { dg-error "not declared in this scope" }
+                                ^
+
+"Test_name.c", line 25: error: identifier "nothere" is undefined
+    void f2() noexcept(noexcept(nothere)); // { dg-error "not declared in this scope" }
+                                ^
+
+"Test_name.c", line 26: error: identifier "nosuchfn" is undefined
+    void f3() noexcept(noexcept(nosuchfn())) { } // { dg-error "not declared in this scope" }
+                                ^
+
+"Test_name.c", line 27: error: identifier "nothere" is undefined
+    void f4() noexcept(noexcept(nothere)) { } // { dg-error "not declared in this scope" }
+                                ^
+
+6 errors detected in the compilation of "Test_name.c".

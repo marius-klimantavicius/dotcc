@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 27: error: a reference of type "double *&" (not const-qualified) cannot be initialized with a value of type "int *"
+  double*& get_double_ptr() { return X0<int*>::value; } // expected-error{{non-const lvalue reference to type 'double *' cannot bind to a value of unrelated type 'int *'}}
+                                     ^
+
+"Test_name.c", line 33: warning: variable templates are a C++14 feature
+  template<typename T> T x; // expected-warning 0-1{{variable templates are a C++14 extension}}
+                          ^
+
+"Test_name.c", line 13: error: no suitable constructor exists to convert from "int" to "X2"
+  T X0<T>::value = 0; // expected-error{{no viable conversion}}
+                   ^
+          detected during implicit definition of "X2 X0<T>::value [with T=X2]" at line 30
+
+2 errors detected in the compilation of "Test_name.c".

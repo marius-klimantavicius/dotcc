@@ -1,0 +1,1 @@
+cpfe -DTEST_NUMBER=1 --c++17 --no_exceptions Test_name.c

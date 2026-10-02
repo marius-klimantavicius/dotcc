@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 13: warning: use of the result of an assignment to a volatile scalar object is deprecated
+    z = (b ? x : y) = 1; // { dg-warning "using value of assignment" "" { target c++20 } }
+        ^
+
+"Test_name.c", line 14: warning: use of "=" where "==" may have been intended
+    ((z = 2) ? x : y) = 1; // { dg-warning "using value of assignment" "" { target c++20 } }
+     ^
+

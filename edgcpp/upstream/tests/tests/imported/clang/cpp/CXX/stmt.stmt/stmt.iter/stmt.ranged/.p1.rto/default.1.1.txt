@@ -1,0 +1,308 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 10: error: this range-based "for" statement requires a suitable "begin" function and none was found
+      for (int& it : x) { // expected-error {{invalid range expression of type 'int'; no viable 'begin' function available}}
+                     ^
+
+"Test_name.c", line 10: error: this range-based "for" statement requires a suitable "end" function and none was found
+      for (int& it : x) { // expected-error {{invalid range expression of type 'int'; no viable 'begin' function available}}
+                     ^
+
+"Test_name.c", line 94: error: a value of type "int" cannot be used to initialize an entity of type "char *"
+    for (char *a : A()) { // expected-error {{cannot initialize a variable of type 'char *' with an lvalue of type 'int'}}
+                      ^
+
+"Test_name.c", line 96: error: a value of type "int" cannot be used to initialize an entity of type "char *"
+    for (char *a : X::B()) { // expected-error {{cannot initialize a variable of type 'char *' with an lvalue of type 'int'}}
+                         ^
+
+"Test_name.c", line 99: error: cannot determine which instance of overloaded function "f" is intended
+    for (double a : f) { // expected-error {{cannot use type '<overloaded function type>' as a range}}
+                    ^
+
+"Test_name.c", line 105: error: cannot deduce "auto" type
+    for (auto *a : A()) { // expected-error {{variable 'a' with type 'auto *' has incompatible initializer of type 'int'}}
+               ^
+
+"Test_name.c", line 108: error: no suitable constructor exists to convert from "int" to "X::A"
+    for (A NS:A()) { // expected-error {{no viable conversion from 'int' to 'A'}}
+                 ^
+
+"Test_name.c", line 110: error: identifier "not_in_scope" is undefined
+    for (auto not_in_scope : not_in_scope) { // expected-error {{use of undeclared identifier 'not_in_scope'}}
+                             ^
+
+"Test_name.c", line 115: error: identifier "__range" is undefined
+        __range.begin(); // expected-error {{use of undeclared identifier '__range'}}
+        ^
+
+"Test_name.c", line 116: error: identifier "__begin" is undefined
+        ++__begin; // expected-error {{use of undeclared identifier '__begin'}}
+          ^
+
+"Test_name.c", line 117: error: identifier "__end" is undefined
+        --__end; // expected-error {{use of undeclared identifier '__end'}}
+          ^
+
+"Test_name.c", line 122: error: a value of type "void" cannot be used to initialize an entity of type "void &&"
+    for (auto a : f()) // expected-error {{cannot use type 'void' as a range}}
+                  ^
+
+"Test_name.c", line 122: error: this range-based "for" statement requires a suitable "begin" function and none was found
+    for (auto a : f()) // expected-error {{cannot use type 'void' as a range}}
+                  ^
+
+"Test_name.c", line 122: error: this range-based "for" statement requires a suitable "end" function and none was found
+    for (auto a : f()) // expected-error {{cannot use type 'void' as a range}}
+                  ^
+
+"Test_name.c", line 126: error: a range-based "for" statement cannot operate on an array of unknown size or incomplete type "int []"
+    for (auto a : incomplete) // expected-error {{cannot use incomplete type 'int[]' as a range}}
+                  ^
+
+"Test_name.c", line 129: error: a range-based "for" statement cannot operate on an array of unknown size or incomplete type "Incomplete [2]"
+    for (auto &a : also_incomplete) // expected-error {{cannot use incomplete type 'struct Incomplete[2]' as a range}}
+                   ^
+
+"Test_name.c", line 136: error: a value of type "void" cannot be used to initialize an entity of type "void"
+    for (auto a : VoidBegin()) // expected-error {{cannot use type 'void' as an iterator}}
+                  ^
+
+"Test_name.c", line 136: error: a value of type "void" cannot be used to initialize an entity of type "void"
+    for (auto a : VoidBegin()) // expected-error {{cannot use type 'void' as an iterator}}
+                  ^
+
+"Test_name.c", line 136: error: the iterator type in this range-based "for" statement is "void", which is not a pointer type or an iterator-like class type
+    for (auto a : VoidBegin()) // expected-error {{cannot use type 'void' as an iterator}}
+                  ^
+
+"Test_name.c", line 143: error: return types for "begin" and "end" functions used in a range-based "for" statement must be the same ("begin" return type is "int *", "end" return type is "null_t")
+    for (auto a : Differ())
+                  ^
+
+"Test_name.c", line 151: error: expected a ";"
+    for (void f() : "error") // expected-error {{for range declaration must declare a variable}}
+                  ^
+
+"Test_name.c", line 154: error: a storage class may not be specified here
+    for (extern int a : A()) {} // expected-error {{loop variable 'a' may not be declared 'extern'}}
+         ^
+
+"Test_name.c", line 155: error: a storage class may not be specified here
+    for (static int a : A()) {} // expected-error {{loop variable 'a' may not be declared 'static'}}
+         ^
+
+"Test_name.c", line 156: error: thread-local storage class is not valid here
+    for (thread_local int a : A()) {} // expected-error {{loop variable 'a' may not be declared 'thread_local'}}
+         ^
+
+"Test_name.c", line 157: warning: use of the "register" storage class specifier is deprecated
+    for (register int a : A()) {} // expected-error {{loop variable 'a' may not be declared 'register'}} expected-warning 0-1{{register}} expected-error 0-1{{register}}
+         ^
+
+"Test_name.c", line 157: error: a storage class may not be specified here
+    for (register int a : A()) {} // expected-error {{loop variable 'a' may not be declared 'register'}} expected-warning 0-1{{register}} expected-error 0-1{{register}}
+         ^
+
+"Test_name.c", line 160: error: this range-based "for" statement requires a suitable "begin" function and none was found
+    for (auto u : X::NoBeginADL()) { // expected-error {{invalid range expression of type 'X::NoBeginADL'; no viable 'begin' function available}}
+                  ^
+
+"Test_name.c", line 162: error: this range-based "for" statement requires a suitable "end" function and none was found
+    for (auto u : X::NoEndADL()) { // expected-error {{invalid range expression of type 'X::NoEndADL'; no viable 'end' function available}}
+                  ^
+
+"Test_name.c", line 171: error: this range-based "for" statement requires a suitable "begin" function and none was found
+    for (auto u : NoBegin()) { // expected-error {{no viable 'begin' function available}}
+                  ^
+
+"Test_name.c", line 171: error: this range-based "for" statement requires a suitable "end" function and none was found
+    for (auto u : NoBegin()) { // expected-error {{no viable 'begin' function available}}
+                  ^
+
+"Test_name.c", line 173: error: this range-based "for" statement requires a suitable "begin" function and none was found
+    for (auto u : NoEnd()) { // expected-error {{no viable 'end' function available}}
+                  ^
+
+"Test_name.c", line 173: error: this range-based "for" statement requires a suitable "end" function and none was found
+    for (auto u : NoEnd()) { // expected-error {{no viable 'end' function available}}
+                  ^
+
+"Test_name.c", line 180: error: cannot deduce "auto" type
+    for (auto u : NoIncr()) { // expected-error {{arithmetic on a pointer to void}}\
+              ^
+
+"Test_name.c", line 180: error: incomplete type "void" is not allowed
+    for (auto u : NoIncr()) { // expected-error {{arithmetic on a pointer to void}}\
+                          ^
+
+"Test_name.c", line 189: error: no operator "!=" matches these operands
+            operand types are: NoNotEq != NoNotEq
+    for (auto u : NoNotEq()) { // expected-error {{invalid operands to binary expression}}\
+                  ^
+"Test_name.c", line 189: note: built-in operator!=(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    for (auto u : NoNotEq()) { // expected-error {{invalid operands to binary expression}}\
+                  ^
+"Test_name.c", line 189: note: built-in operator!=(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    for (auto u : NoNotEq()) { // expected-error {{invalid operands to binary expression}}\
+                  ^
+
+"Test_name.c", line 200: error: no operator "*" matches these operands
+            operand types are: * NoDeref
+    for (auto u : NoDeref()) { // expected-error {{indirection requires pointer operand}} \
+                  ^
+"Test_name.c", line 200: note: built-in operator*(<pointer to object>) does not match because argument #1 does not match parameter
+    for (auto u : NoDeref()) { // expected-error {{indirection requires pointer operand}} \
+                  ^
+"Test_name.c", line 200: note: built-in operator*(<pointer to function>) does not match because argument #1 does not match parameter
+    for (auto u : NoDeref()) { // expected-error {{indirection requires pointer operand}} \
+                  ^
+
+"Test_name.c", line 213: error: this range-based "for" statement requires a suitable "begin" function and none was found
+    for (int n : 42) { // expected-error {{invalid range expression of type 'int'; no viable 'begin' function available}}
+                 ^
+
+"Test_name.c", line 213: error: this range-based "for" statement requires a suitable "end" function and none was found
+    for (int n : 42) { // expected-error {{invalid range expression of type 'int'; no viable 'begin' function available}}
+                 ^
+
+"Test_name.c", line 216: error: this range-based "for" statement requires a suitable "begin" function and none was found
+    for (auto a : *also_incomplete) { // expected-error {{cannot use incomplete type 'struct Incomplete' as a range}}
+                  ^
+
+"Test_name.c", line 216: error: this range-based "for" statement requires a suitable "end" function and none was found
+    for (auto a : *also_incomplete) { // expected-error {{cannot use incomplete type 'struct Incomplete' as a range}}
+                  ^
+
+"Test_name.c", line 128: error: variable "also_incomplete", declared using a local type, must be defined in this translation unit
+    extern struct Incomplete also_incomplete[2]; // expected-note 2{{forward declaration}}
+                             ^
+
+"Test_name.c", line 133: warning: local class member function "VoidBegin::begin" requires a definition
+      void begin(); // expected-note {{selected 'begin' function with iterator type 'void'}}
+           ^
+
+"Test_name.c", line 134: warning: local class member function "VoidBegin::end" requires a definition
+      void end();
+           ^
+
+"Test_name.c", line 140: warning: local class member function "Differ::begin" requires a definition
+      int *begin();
+           ^
+
+"Test_name.c", line 141: warning: local class member function "Differ::end" requires a definition
+      null_t end();
+             ^
+
+"Test_name.c", line 177: warning: local class member function "NoIncr::begin" requires a definition
+      void *begin(); // expected-note {{selected 'begin' function with iterator type 'void *'}}
+            ^
+
+"Test_name.c", line 178: warning: local class member function "NoIncr::end" requires a definition
+      void *end();
+            ^
+
+"Test_name.c", line 185: warning: local class member function "NoNotEq::begin" requires a definition
+      NoNotEq begin(); // expected-note {{selected 'begin' function with iterator type 'NoNotEq'}}
+              ^
+
+"Test_name.c", line 186: warning: local class member function "NoNotEq::end" requires a definition
+      NoNotEq end();
+              ^
+
+"Test_name.c", line 194: warning: local class member function "NoDeref::begin" requires a definition
+      NoDeref begin(); // expected-note {{selected 'begin' function}}
+              ^
+
+"Test_name.c", line 195: warning: local class member function "NoDeref::end" requires a definition
+      NoDeref end();
+              ^
+
+"Test_name.c", line 196: warning: local class member function "NoDeref::operator++" requires a definition
+      void operator++();
+           ^
+
+"Test_name.c", line 197: warning: local class member function "NoDeref::operator!=" requires a definition
+      bool operator!=(NoDeref &);
+           ^
+
+"Test_name.c", line 205: warning: local class member function "NoCopy::NoCopy()" requires a definition
+      NoCopy();
+      ^
+
+"Test_name.c", line 207: warning: local class member function "NoCopy::begin" requires a definition
+      int *begin();
+           ^
+
+"Test_name.c", line 208: warning: local class member function "NoCopy::end" requires a definition
+      int *end();
+           ^
+
+"Test_name.c", line 270: error: this range-based "for" statement requires a suitable "begin" function and none was found
+    for (auto u : NS::NoADL()) { // expected-error {{invalid range expression of type 'NS::NoADL'; no viable 'begin' function available}}
+                  ^
+
+"Test_name.c", line 270: error: this range-based "for" statement requires a suitable "end" function and none was found
+    for (auto u : NS::NoADL()) { // expected-error {{invalid range expression of type 'NS::NoADL'; no viable 'begin' function available}}
+                  ^
+
+"Test_name.c", line 272: error: a value of type "void" cannot be used to initialize an entity of type "void"
+    for (auto a : VoidBeginADL()) { // expected-error {{cannot use type 'void' as an iterator}}
+                  ^
+
+"Test_name.c", line 272: error: a value of type "void" cannot be used to initialize an entity of type "void"
+    for (auto a : VoidBeginADL()) { // expected-error {{cannot use type 'void' as an iterator}}
+                  ^
+
+"Test_name.c", line 272: error: the iterator type in this range-based "for" statement is "void", which is not a pointer type or an iterator-like class type
+    for (auto a : VoidBeginADL()) { // expected-error {{cannot use type 'void' as an iterator}}
+                  ^
+
+"Test_name.c", line 341: error: this range-based "for" statement requires a suitable "end" function and none was found
+      for (auto x : c) {} // expected-error {{invalid range expression of type 'NC::C'; no viable 'end' function available}}
+                    ^
+
+"Test_name.c", line 342: error: this range-based "for" statement requires a suitable "begin" function and none was found
+      for (auto x : d) {} // expected-error {{invalid range expression of type 'ND::D'; no viable 'begin' function available}}
+                    ^
+
+"Test_name.c", line 343: error: this range-based "for" statement requires a suitable "begin" function and none was found
+      for (auto x : e) {} // expected-error {{invalid range expression of type 'NE::E'; no viable 'begin' function available}}
+                    ^
+
+"Test_name.c", line 344: error: this range-based "for" statement requires a suitable "end" function and none was found
+      for (auto x : f) {} // expected-error {{invalid range expression of type 'NF::F'; no viable 'end' function available}}
+                    ^
+
+"Test_name.c", line 222: error: no suitable conversion function from "X::A" to "int" exists
+    for (U u : t) { // expected-error {{no viable conversion from 'X::A' to 'int'}}
+                ^
+          detected during instantiation of "void h<T,U>(T) [with T=X::A (&)[13], U=int]" at line 231
+
+"Test_name.c", line 235: error: this range-based "for" statement requires a suitable "begin" function and none was found
+    for (auto u : t) { // expected-error {{invalid range expression of type 'X::A *'; no viable 'begin' function available}} \
+                  ^
+          detected during instantiation of "void i(T) [with T=X::A [13]]" at line 241
+
+"Test_name.c", line 235: error: this range-based "for" statement requires a suitable "end" function and none was found
+    for (auto u : t) { // expected-error {{invalid range expression of type 'X::A *'; no viable 'begin' function available}} \
+                  ^
+          detected during instantiation of "void i(T) [with T=X::A [13]]" at line 241
+
+"Test_name.c", line 235: error: no instance of function "X::A::begin" matches the argument list and object (the object has type qualifiers that prevent a match)
+            object type is: const X::A
+    for (auto u : t) { // expected-error {{invalid range expression of type 'X::A *'; no viable 'begin' function available}} \
+                  ^
+          detected during instantiation of "void i(T) [with T=const X::A]" at line 242
+
+"Test_name.c", line 235: error: no instance of function "X::A::end" matches the argument list and object (the object has type qualifiers that prevent a match)
+            object type is: const X::A
+    for (auto u : t) { // expected-error {{invalid range expression of type 'X::A *'; no viable 'begin' function available}} \
+                  ^
+          detected during instantiation of "void i(T) [with T=const X::A]" at line 242
+
+"Test_name.c", line 286: error: expression must have class type but it has type "const int"
+      auto &x = t.get(); // expected-error{{member reference base type 'const int' is not a structure or union}}
+                ^
+          detected during instantiation of "void rdar13712739::foo(const T &) [with T=int]" at line 290
+
+55 errors detected in the compilation of "Test_name.c".

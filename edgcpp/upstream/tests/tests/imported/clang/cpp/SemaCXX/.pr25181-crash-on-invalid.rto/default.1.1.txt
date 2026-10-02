@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 7: warning: declaration of "T" hides template parameter
+    template <typename T> // expected-error {{declaration of 'T' shadows template parameter}}
+                       ^
+
+"Test_name.c", line 8: error: qualified name is not allowed
+    void Foo<T>::method(T *) const throw() {} // expected-error {{nested name specifier 'Foo<T>' for declaration does not refer into a class, class template or class template partial specialization}}
+         ^
+
+1 error detected in the compilation of "Test_name.c".

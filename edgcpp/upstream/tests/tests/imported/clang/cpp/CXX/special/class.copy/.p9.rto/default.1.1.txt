@@ -1,0 +1,46 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 42: error: no instance of constructor "ImplicitNonConstCopy1::ImplicitNonConstCopy1" matches the argument list
+            argument types are: (const ImplicitNonConstCopy1)
+    (void)sizeof(ImplicitNonConstCopy1(cincc1)); // expected-error{{no matching conversion for functional-style cast from 'const ImplicitNonConstCopy1' to 'ImplicitNonConstCopy1'}}
+                 ^
+"Test_name.c", line 20: note: function "ImplicitNonConstCopy1::ImplicitNonConstCopy1(ImplicitNonConstCopy1 &)" does not match because argument #1 does not match parameter
+  struct ImplicitNonConstCopy1 : NonConstCopy { // expected-note {{candidate constructor}}
+         ^
+"Test_name.c", line 21: note: number of parameters of function "ImplicitNonConstCopy1::ImplicitNonConstCopy1()" does not match the call
+    ImplicitNonConstCopy1(); // expected-note {{candidate constructor}}
+    ^
+
+"Test_name.c", line 43: error: no instance of constructor "ImplicitNonConstCopy2::ImplicitNonConstCopy2" matches the argument list
+            argument types are: (const ImplicitNonConstCopy2)
+    (void)sizeof(ImplicitNonConstCopy2(cincc2)); // expected-error{{no matching conversion for functional-style cast from 'const ImplicitNonConstCopy2' to 'ImplicitNonConstCopy2'}}
+                 ^
+"Test_name.c", line 24: note: function "ImplicitNonConstCopy2::ImplicitNonConstCopy2(ImplicitNonConstCopy2 &)" does not match because argument #1 does not match parameter
+  struct ImplicitNonConstCopy2 { // expected-note {{candidate constructor}}
+         ^
+"Test_name.c", line 25: note: number of parameters of function "ImplicitNonConstCopy2::ImplicitNonConstCopy2()" does not match the call
+    ImplicitNonConstCopy2(); // expected-note {{candidate constructor}}
+    ^
+
+"Test_name.c", line 44: error: no instance of constructor "ImplicitNonConstCopy3::ImplicitNonConstCopy3" matches the argument list
+            argument types are: (const ImplicitNonConstCopy3)
+    (void)sizeof(ImplicitNonConstCopy3(cincc3)); // expected-error{{no matching conversion for functional-style cast from 'const ImplicitNonConstCopy3' to 'ImplicitNonConstCopy3'}}
+                 ^
+"Test_name.c", line 29: note: function "ImplicitNonConstCopy3::ImplicitNonConstCopy3(ImplicitNonConstCopy3 &)" does not match because argument #1 does not match parameter
+  struct ImplicitNonConstCopy3 { // expected-note {{candidate constructor}}
+         ^
+"Test_name.c", line 30: note: number of parameters of function "ImplicitNonConstCopy3::ImplicitNonConstCopy3()" does not match the call
+    ImplicitNonConstCopy3(); // expected-note {{candidate constructor}}
+    ^
+
+"Test_name.c", line 45: error: no instance of constructor "ImplicitNonConstCopy4::ImplicitNonConstCopy4" matches the argument list
+            argument types are: (const ImplicitNonConstCopy4)
+    (void)sizeof(ImplicitNonConstCopy4(cincc4)); // expected-error{{no matching conversion for functional-style cast from 'const ImplicitNonConstCopy4' to 'ImplicitNonConstCopy4'}}
+                 ^
+"Test_name.c", line 34: note: function "ImplicitNonConstCopy4::ImplicitNonConstCopy4(ImplicitNonConstCopy4 &)" does not match because argument #1 does not match parameter
+  struct ImplicitNonConstCopy4 : VirtualInheritsNonConstCopy { // expected-note {{candidate constructor}}
+         ^
+"Test_name.c", line 35: note: number of parameters of function "ImplicitNonConstCopy4::ImplicitNonConstCopy4()" does not match the call
+    ImplicitNonConstCopy4(); // expected-note {{candidate constructor}}
+    ^
+
+4 errors detected in the compilation of "Test_name.c".

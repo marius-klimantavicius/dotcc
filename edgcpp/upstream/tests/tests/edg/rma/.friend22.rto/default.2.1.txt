@@ -1,0 +1,22 @@
+cpfe -DTEST_NUMBER=2 -r -x -tused Test_name.c
+"Test_name.c", line 9: warning: nonstandard local-class friend declaration -- no prior declaration in the enclosing scope
+      friend void yyy(D &d) {};
+                  ^
+
+"Test_name.c", line 9: error: use of a local type to declare a function
+      friend void yyy(D &d) {};
+                  ^
+
+"Test_name.c", line 9: error: function "yyy" cannot be defined in the current scope
+      friend void yyy(D &d) {};
+                            ^
+
+"Test_name.c", line 9: remark: parameter "d" was never referenced
+      friend void yyy(D &d) {};
+                         ^
+
+"Test_name.c", line 4: warning: function "xxx" was declared but never referenced
+  static void xxx()
+              ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 5: error: type definition is not allowed
+  enum struct a : struct {};
+                  ^
+
+"Test_name.c", line 6: error: type definition is not allowed
+  template <class b> enum class a : class c{};
+                                    ^
+
+"Test_name.c", line 6: error: an enumeration template declaration must refer to a previously declared member of a class template
+  template <class b> enum class a : class c{};
+                                ^
+
+"Test_name.c", line 7: error: enum "a" (declared at line 5) was previously declared with a different base type
+  enum struct a {b};
+              ^
+
+4 errors detected in the compilation of "Test_name.c".

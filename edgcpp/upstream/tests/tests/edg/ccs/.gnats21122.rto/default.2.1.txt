@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=2 -w --microsoft_version 1916 Test_name.c
+"Test_name.c", line 13: error: an "asm" declaration is not allowed here
+      }
+      ^
+
+1 error detected in the compilation of "Test_name.c".

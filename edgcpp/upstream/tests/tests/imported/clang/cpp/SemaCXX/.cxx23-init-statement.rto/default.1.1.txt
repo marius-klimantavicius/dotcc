@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++23 Test_name.c
+"Test_name.c", line 21: error: class "lambda []()->void" has no member "foo"
+    if  (using U = decltype([]{}.foo); true) {}  // expected-error {{no member named 'foo'}}
+                                 ^
+          detected during instantiation of "void GH63627::err<T>() [with T=int]" at line 32
+
+"Test_name.c", line 23: error: class "lambda []()->void" has no member "foo"
+    for (using U = decltype([]{}.foo);          // expected-error {{no member named 'foo'}}
+                                 ^
+          detected during instantiation of "void GH63627::err<T>() [with T=int]" at line 32
+
+"Test_name.c", line 26: error: class "lambda []()->void" has no member "foo"
+    for (using U = decltype([]{}.foo);          // expected-error {{no member named 'foo'}}
+                                 ^
+          detected during instantiation of "void GH63627::err<T>() [with T=int]" at line 32
+
+3 errors detected in the compilation of "Test_name.c".

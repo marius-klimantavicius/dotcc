@@ -1,0 +1,74 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: error: a value of type "std::nullptr_t" cannot be used to initialize an entity of type "int"
+  int ia1[2] = { nullptr };                 // { dg-error "cannot convert 'std::nullptr_t' to 'int'" }
+                 ^
+
+"Test_name.c", line 11: error: a value of type "std::nullptr_t" cannot be used to initialize an entity of type "int"
+  int ia2[2] = { nullptr, 0 };              // { dg-error "cannot convert 'std::nullptr_t' to 'int'" }
+                 ^
+
+"Test_name.c", line 12: error: a value of type "std::nullptr_t" cannot be used to initialize an entity of type "int"
+  int ia3[] = { nullptr, 0 };               // { dg-error "cannot convert 'std::nullptr_t' to 'int'" }
+                ^
+
+"Test_name.c", line 14: error: a value of type "std::nullptr_t" cannot be used to initialize an entity of type "int"
+  int ia4[2] = { (std::nullptr_t)0 };      // { dg-error "cannot convert 'std::nullptr_t' to 'int'" }
+                 ^
+
+"Test_name.c", line 15: error: a value of type "std::nullptr_t" cannot be used to initialize an entity of type "int"
+  int ia5[2] = { (std::nullptr_t)0, 0 };   // { dg-error "cannot convert 'std::nullptr_t' to 'int'" }
+                 ^
+
+"Test_name.c", line 16: error: a value of type "std::nullptr_t" cannot be used to initialize an entity of type "int"
+  int ia6[] = { (std::nullptr_t)0, 0 };    // { dg-error "cannot convert 'std::nullptr_t' to 'int'" }
+                ^
+
+"Test_name.c", line 19: error: a value of type "std::nullptr_t" cannot be used to initialize an entity of type "const char"
+  const char ca1[2] = { nullptr, 0 };       // { dg-error "cannot convert 'std::nullptr_t' to 'const char'" }
+                        ^
+
+"Test_name.c", line 21: error: a value of type "char *" cannot be used to initialize an entity of type "const char"
+  const char ca2[2] = { (char*)nullptr, 0 };// { dg-error "invalid conversion from 'char\\\*' to 'char'" }
+                        ^
+
+"Test_name.c", line 23: error: a value of type "std::nullptr_t" cannot be used to initialize an entity of type "const char"
+  const char ca3[2] = { std::nullptr_t () };// { dg-error "cannot convert 'std::nullptr_t'" }
+                        ^
+
+"Test_name.c", line 35: error: a value of type "void *" cannot be used to initialize an entity of type "MemPtr" (aka "int S::*")
+  MemPtr mp3[3] = { 0, (void*)0 };          // { dg-error "cannot convert 'void\\\*' to 'MemPtr' " }
+                       ^
+
+"Test_name.c", line 36: error: a value of type "S *" cannot be used to initialize an entity of type "MemPtr" (aka "int S::*")
+  MemPtr mp4[3] = { 0, (S*)0 };             // { dg-error "cannot convert 'S\\\*' to 'MemPtr' " }
+                       ^
+
+"Test_name.c", line 37: error: no suitable conversion function from "S" to "MemPtr" (aka "int S::*") exists
+  MemPtr mp5[3] = { 0, S () };              // { dg-error "cannot convert 'S' to 'MemPtr' " }
+                       ^
+
+"Test_name.c", line 42: error: a value of type "void *" cannot be used to initialize an entity of type "MemFuncPtr" (aka "int (S::*)()")
+  MemFuncPtr mfp3[3] = { 0, (void*)0 };     // { dg-error "cannot convert 'void\\\*' to 'MemFuncPtr' " }
+                            ^
+
+"Test_name.c", line 43: error: a value of type "S *" cannot be used to initialize an entity of type "MemFuncPtr" (aka "int (S::*)()")
+  MemFuncPtr mfp4[3] = { 0, (S*)0 };        // { dg-error "cannot convert 'S\\\*' to 'MemFuncPtr' " }
+                            ^
+
+"Test_name.c", line 44: error: no suitable conversion function from "S" to "MemFuncPtr" (aka "int (S::*)()") exists
+  MemFuncPtr mfp5[3] = { 0, S () };         // { dg-error "cannot convert 'S' to 'MemFuncPtr' " }
+                            ^
+
+"Test_name.c", line 19: warning: variable "ca1" was declared but never referenced
+  const char ca1[2] = { nullptr, 0 };       // { dg-error "cannot convert 'std::nullptr_t' to 'const char'" }
+             ^
+
+"Test_name.c", line 21: warning: variable "ca2" was declared but never referenced
+  const char ca2[2] = { (char*)nullptr, 0 };// { dg-error "invalid conversion from 'char\\\*' to 'char'" }
+             ^
+
+"Test_name.c", line 23: warning: variable "ca3" was declared but never referenced
+  const char ca3[2] = { std::nullptr_t () };// { dg-error "cannot convert 'std::nullptr_t'" }
+             ^
+
+15 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=3 --c++17 --gnu_version 110100 Test_name.c
+"Test_name.c", line 65: error: incomplete type "accepted_by_gcc_10::B<>" is not allowed
+    struct C : public B<T ...>    // use of incomplete type for gcc 11
+                      ^
+          detected during instantiation of class "accepted_by_gcc_10::C<T...> [with T=<>]" at line 74
+
+"Test_name.c", line 87: error: incomplete type "accepted_by_gcc_10_additional_arg::B<>" is not allowed
+    struct C : public B<T ...>    // use of incomplete type for gcc 11
+                      ^
+          detected during instantiation of class "accepted_by_gcc_10_additional_arg::C<T...> [with T=<>]" at line 98
+
+2 errors detected in the compilation of "Test_name.c".

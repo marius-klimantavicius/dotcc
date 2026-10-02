@@ -1,0 +1,7 @@
+./a.out
+A::A(), 1
+A::A(), 2
+throwing...
+A::~A(), 2
+A::~A(), 1
+catch

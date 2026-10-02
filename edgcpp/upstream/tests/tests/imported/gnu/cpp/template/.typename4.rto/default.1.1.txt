@@ -1,0 +1,7 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 4: error: argument list for class template "B::C" is missing
+  template <typename T> struct A { typedef typename T::C V; }; // { dg-error "not a type" }
+                                                    ^
+          detected during instantiation of class "A<T> [with T=B]" at line 5
+
+1 error detected in the compilation of "Test_name.c".

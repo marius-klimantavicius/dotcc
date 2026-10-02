@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 21: warning: function "B::foo" was declared deprecated
+    b.foo ();					// { dg-warning "'virtual int B::foo\\\(\\\)' is deprecated" }
+      ^
+"Test_name.c", line 11: note: because of a "deprecated" attribute
+    [[deprecated]] int foo () { return 0; }	// { dg-message "declared here" }
+      ^
+
+"Test_name.c", line 23: error: function "C::foo" was declared declared unavailable
+    c.foo ();					// { dg-error "'virtual int C::foo\\\(\\\)' is unavailable" }
+      ^
+"Test_name.c", line 14: note: because of an "unavailable" attribute
+    [[gnu::unavailable]] int foo () { return 0; }	// { dg-message "declared here" }
+      ^
+
+1 error detected in the compilation of "Test_name.c".

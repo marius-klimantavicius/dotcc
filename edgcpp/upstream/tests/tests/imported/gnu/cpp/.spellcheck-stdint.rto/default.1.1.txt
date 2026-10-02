@@ -1,0 +1,98 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./spellcheck-stdint.C", line 4: error: identifier "INT8_MAX" is undefined
+  char c = INT8_MAX;
+           ^
+
+"./spellcheck-stdint.C", line 7: error: identifier "INT16_MAX" is undefined
+  short s = INT16_MAX;
+            ^
+
+"./spellcheck-stdint.C", line 10: error: identifier "INT32_MAX" is undefined
+  int i = INT32_MAX;
+          ^
+
+"./spellcheck-stdint.C", line 13: error: identifier "INT64_MAX" is undefined
+  long l = INT64_MAX;
+           ^
+
+"./spellcheck-stdint.C", line 16: error: identifier "intptr_t" is undefined
+  intptr_t test_intptr (void)
+  ^
+
+"./spellcheck-stdint.C", line 24: error: identifier "INTPTR_MAX" is undefined
+    return (int) INTPTR_MAX;
+                 ^
+
+"./spellcheck-stdint.C", line 28: error: identifier "uintptr_t" is undefined
+  uintptr_t test_uintptr (void)
+  ^
+
+"./spellcheck-stdint.C", line 36: error: identifier "UINTPTR_MAX" is undefined
+    return (unsigned int) UINTPTR_MAX;
+                          ^
+
+"./spellcheck-stdint.C", line 40: error: identifier "int8_t" is undefined
+  int8_t i8;
+  ^
+
+"./spellcheck-stdint.C", line 42: error: identifier "int16_t" is undefined
+  int16_t i16;
+  ^
+
+"./spellcheck-stdint.C", line 44: error: identifier "int32_t" is undefined
+  int32_t i32;
+  ^
+
+"./spellcheck-stdint.C", line 46: error: identifier "int64_t" is undefined
+  int64_t i64;
+  ^
+
+"./spellcheck-stdint.C", line 51: error: identifier "UINT8_MAX" is undefined
+    char bu8[(unsigned int)UINT8_MAX];
+                           ^
+
+"./spellcheck-stdint.C", line 53: error: identifier "UINT16_MAX" is undefined
+    char bu16[(unsigned int)UINT16_MAX];
+                            ^
+
+"./spellcheck-stdint.C", line 55: error: identifier "UINT32_MAX" is undefined
+    char bu32[(unsigned int)UINT32_MAX];
+                            ^
+
+"./spellcheck-stdint.C", line 57: error: identifier "UINT64_MAX" is undefined
+    char bu64[(unsigned int)UINT64_MAX];
+                            ^
+
+"./spellcheck-stdint.C", line 60: error: identifier "uint8_t" is undefined
+    auto ui8 = (uint8_t) 8;
+                ^
+
+"./spellcheck-stdint.C", line 60: error: expected a ";"
+    auto ui8 = (uint8_t) 8;
+                         ^
+
+"./spellcheck-stdint.C", line 62: error: identifier "uint16_t" is undefined
+    auto ui16 = (uint16_t) 16;
+                 ^
+
+"./spellcheck-stdint.C", line 62: error: expected a ";"
+    auto ui16 = (uint16_t) 16;
+                           ^
+
+"./spellcheck-stdint.C", line 64: error: identifier "uint32_t" is undefined
+    auto ui32 = (uint32_t) 32;
+                 ^
+
+"./spellcheck-stdint.C", line 64: error: expected a ";"
+    auto ui32 = (uint32_t) 32;
+                           ^
+
+"./spellcheck-stdint.C", line 66: error: identifier "uint64_t" is undefined
+    auto ui64 = (uint64_t) 64;
+                 ^
+
+"./spellcheck-stdint.C", line 66: error: expected a ";"
+    auto ui64 = (uint64_t) 64;
+                           ^
+
+24 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c89 Test_name.c
+"Test_name.c", line 9: warning: white space is required between the macro name "foo" and its replacement text
+  #define foo`bar   /* expected-error {{whitespace required after macro name}} */
+             ^
+
+"Test_name.c", line 10: warning: white space is required between the macro name "foo2" and its replacement text
+  #define foo2!bar  /* expected-warning {{whitespace recommended after macro name}} */
+              ^
+

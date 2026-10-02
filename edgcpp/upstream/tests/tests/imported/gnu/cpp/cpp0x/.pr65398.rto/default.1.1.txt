@@ -1,0 +1,136 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 17: error: expression must have a constant value
+  constexpr char d1 = *(&s[4] - 0); // { dg-error "array subscript" }
+                      ^
+"Test_name.c", line 17: note: attempt to access storage one position past the end of an array of 4 elements
+  constexpr char d1 = *(&s[4] - 0); // { dg-error "array subscript" }
+                      ^
+
+"Test_name.c", line 22: error: expression must have a constant value
+  constexpr char d6 = *(&s[4] - 5);  // { dg-error "array subscript" }
+                      ^
+"Test_name.c", line 22: note: cannot set pointer before the first array element
+  constexpr char d6 = *(&s[4] - 5);  // { dg-error "array subscript" }
+                              ^
+
+"Test_name.c", line 25: warning: subscript out of range
+  constexpr char e1 = *(&s[5] - 1); // { dg-error "array subscript" }
+                          ^
+
+"Test_name.c", line 25: error: expression must have a constant value
+  constexpr char e1 = *(&s[5] - 1); // { dg-error "array subscript" }
+                      ^
+"Test_name.c", line 25: note: cannot access position 5 in array of 4 elements
+  constexpr char e1 = *(&s[5] - 1); // { dg-error "array subscript" }
+                          ^
+
+"Test_name.c", line 26: warning: subscript out of range
+  constexpr char e2 = *(&s[5] - 2); // { dg-error "array subscript" }
+                          ^
+
+"Test_name.c", line 26: error: expression must have a constant value
+  constexpr char e2 = *(&s[5] - 2); // { dg-error "array subscript" }
+                      ^
+"Test_name.c", line 26: note: cannot access position 5 in array of 4 elements
+  constexpr char e2 = *(&s[5] - 2); // { dg-error "array subscript" }
+                          ^
+
+"Test_name.c", line 27: warning: subscript out of range
+  constexpr char e3 = *(&s[5] - 3); // { dg-error "array subscript" }
+                          ^
+
+"Test_name.c", line 27: error: expression must have a constant value
+  constexpr char e3 = *(&s[5] - 3); // { dg-error "array subscript" }
+                      ^
+"Test_name.c", line 27: note: cannot access position 5 in array of 4 elements
+  constexpr char e3 = *(&s[5] - 3); // { dg-error "array subscript" }
+                          ^
+
+"Test_name.c", line 50: error: expression must have a constant value
+  constexpr char j1 = *(&l[4] - 0); // { dg-error "array subscript" }
+                      ^
+"Test_name.c", line 50: note: attempt to access storage one position past the end of an array of 4 elements
+  constexpr char j1 = *(&l[4] - 0); // { dg-error "array subscript" }
+                      ^
+
+"Test_name.c", line 55: error: expression must have a constant value
+  constexpr char j6 = *(&l[4] - 5);  // { dg-error "array subscript" }
+                      ^
+"Test_name.c", line 55: note: cannot set pointer before the first array element
+  constexpr char j6 = *(&l[4] - 5);  // { dg-error "array subscript" }
+                              ^
+
+"Test_name.c", line 58: warning: subscript out of range
+  constexpr char k1 = *(&l[5] - 1); // { dg-error "array subscript" }
+                          ^
+
+"Test_name.c", line 58: error: expression must have a constant value
+  constexpr char k1 = *(&l[5] - 1); // { dg-error "array subscript" }
+                      ^
+"Test_name.c", line 58: note: cannot access position 5 in array of 4 elements
+  constexpr char k1 = *(&l[5] - 1); // { dg-error "array subscript" }
+                          ^
+
+"Test_name.c", line 59: warning: subscript out of range
+  constexpr char k2 = *(&l[5] - 2); // { dg-error "array subscript" }
+                          ^
+
+"Test_name.c", line 59: error: expression must have a constant value
+  constexpr char k2 = *(&l[5] - 2); // { dg-error "array subscript" }
+                      ^
+"Test_name.c", line 59: note: cannot access position 5 in array of 4 elements
+  constexpr char k2 = *(&l[5] - 2); // { dg-error "array subscript" }
+                          ^
+
+"Test_name.c", line 60: warning: subscript out of range
+  constexpr char k3 = *(&l[5] - 3); // { dg-error "array subscript" }
+                          ^
+
+"Test_name.c", line 60: error: expression must have a constant value
+  constexpr char k3 = *(&l[5] - 3); // { dg-error "array subscript" }
+                      ^
+"Test_name.c", line 60: note: cannot access position 5 in array of 4 elements
+  constexpr char k3 = *(&l[5] - 3); // { dg-error "array subscript" }
+                          ^
+
+"Test_name.c", line 17: warning: variable "d1" was declared but never referenced
+  constexpr char d1 = *(&s[4] - 0); // { dg-error "array subscript" }
+                 ^
+
+"Test_name.c", line 22: warning: variable "d6" was declared but never referenced
+  constexpr char d6 = *(&s[4] - 5);  // { dg-error "array subscript" }
+                 ^
+
+"Test_name.c", line 25: warning: variable "e1" was declared but never referenced
+  constexpr char e1 = *(&s[5] - 1); // { dg-error "array subscript" }
+                 ^
+
+"Test_name.c", line 26: warning: variable "e2" was declared but never referenced
+  constexpr char e2 = *(&s[5] - 2); // { dg-error "array subscript" }
+                 ^
+
+"Test_name.c", line 27: warning: variable "e3" was declared but never referenced
+  constexpr char e3 = *(&s[5] - 3); // { dg-error "array subscript" }
+                 ^
+
+"Test_name.c", line 50: warning: variable "j1" was declared but never referenced
+  constexpr char j1 = *(&l[4] - 0); // { dg-error "array subscript" }
+                 ^
+
+"Test_name.c", line 55: warning: variable "j6" was declared but never referenced
+  constexpr char j6 = *(&l[4] - 5);  // { dg-error "array subscript" }
+                 ^
+
+"Test_name.c", line 58: warning: variable "k1" was declared but never referenced
+  constexpr char k1 = *(&l[5] - 1); // { dg-error "array subscript" }
+                 ^
+
+"Test_name.c", line 59: warning: variable "k2" was declared but never referenced
+  constexpr char k2 = *(&l[5] - 2); // { dg-error "array subscript" }
+                 ^
+
+"Test_name.c", line 60: warning: variable "k3" was declared but never referenced
+  constexpr char k3 = *(&l[5] - 3); // { dg-error "array subscript" }
+                 ^
+
+10 errors detected in the compilation of "Test_name.c".

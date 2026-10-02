@@ -1,0 +1,167 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++26 Test_name.c
+"Test_name.c", line 28: error: a requires-clause is not allowed here (not a templated function)
+                             requires(sizeof(U) == 32) // #Type8-requirement
+                             ^
+
+"Test_name.c", line 46: warning: template parameter "<unnamed>" is not used in declaring the parameter types of function template "lambda_calls::lambda []()->auto::operator auto (*)()"
+  template <class> using U = decltype([]<True> {}.template operator()<int>());
+                                             ^
+          detected during instantiation of type "lambda_calls::U<int>" at line 48
+
+"Test_name.c", line 19: error: no instance of function template "lambda_calls::S<T>::lambda [](lambda_calls::False auto...)->auto [with T=int]" matches the argument list
+            argument types are: (int)
+            object type is: lambda [](lambda_calls::False auto...)->auto
+    template <class U> using type5 = decltype([](False auto...) {}(1)); // #Type5
+                                              ^
+"Test_name.c", line 19: note: substituting "<int>" for function template "lambda_calls::S<T>::lambda [](lambda_calls::False auto...)->auto [with T=int]" failed constraints
+    template <class U> using type5 = decltype([](False auto...) {}(1)); // #Type5
+                                                ^
+"Test_name.c", line 19: note: concept "lambda_calls::False" not satisfied for "<int>"
+    template <class U> using type5 = decltype([](False auto...) {}(1)); // #Type5
+                                                 ^
+"Test_name.c", line 10: note: atomic constraint evaluates to false
+  concept False = false; // #False
+                  ^
+          detected during instantiation of type "lambda_calls::S<T>::type5<void> [with T=int]" at line 55
+
+"Test_name.c", line 22: warning: template parameter "<unnamed>" is not used in declaring the parameter types of function template "lambda_calls::S<int>::lambda []()->auto::operator auto (*)()"
+    using type6 = decltype([]<True> {}.template operator()<char>());
+                                  ^
+          detected during instantiation of type "lambda_calls::S<T>::type6<void> [with T=int]" at line 62
+
+"Test_name.c", line 24: warning: template parameter "<unnamed>" is not used in declaring the parameter types of function template "lambda_calls::S<int>::lambda []()->auto::operator auto (*)()"
+    using type7 = decltype([]<False> {}.template operator()<char>()); // #Type7
+                                   ^
+          detected during instantiation of type "lambda_calls::S<T>::type7<void> [with T=int]" at line 63
+
+"Test_name.c", line 24: error: no instance of function template "lambda_calls::S<T>::lambda []()->auto [with T=int]" matches the argument list
+            object type is: lambda []()->auto
+    using type7 = decltype([]<False> {}.template operator()<char>()); // #Type7
+                                                 ^
+"Test_name.c", line 24: note: substituting "<char>" for function template "lambda_calls::S<T>::lambda []()->auto [with T=int]" failed constraints
+    using type7 = decltype([]<False> {}.template operator()<char>()); // #Type7
+                             ^
+"Test_name.c", line 24: note: concept "lambda_calls::False" not satisfied for "<char>"
+    using type7 = decltype([]<False> {}.template operator()<char>()); // #Type7
+                              ^
+"Test_name.c", line 10: note: atomic constraint evaluates to false
+  concept False = false; // #False
+                  ^
+          detected during instantiation of type "lambda_calls::S<T>::type7<void> [with T=int]" at line 63
+
+"Test_name.c", line 32: warning: template parameter "<unnamed>" is not used in declaring the parameter types of function template "lambda_calls::S<int>::lambda [](long, long, char)->auto::operator auto (*)(long, long, char)"
+    using type9 = decltype([]<True>(U...) {}.template operator()<char>(U()...));
+                                  ^
+          detected during instantiation of type "lambda_calls::S<T>::type9<long, long, char> [with T=int]" at line 76
+
+"Test_name.c", line 32: error: argument list for alias template "lambda_calls::U" is missing
+    using type9 = decltype([]<True>(U...) {}.template operator()<char>(U()...));
+                                    ^
+          detected during:
+            instantiation of "lambda_calls::S<T>::lambda [](long, long, char)->auto [with T=int]" based on template argument <char> at line 32
+            instantiation of type "lambda_calls::S<T>::type9<long, long, char> [with T=int]" at line 76
+
+"Test_name.c", line 32: error: cannot deduce the return type of function "lambda [](long, long, char)->auto [with <unnamed>=char]" (declared at line 32); it has not been defined
+    using type9 = decltype([]<True>(U...) {}.template operator()<char>(U()...));
+                                                      ^
+          detected during instantiation of type "lambda_calls::S<T>::type9<long, long, char> [with T=int]" at line 76
+
+"Test_name.c", line 35: warning: template parameter "V" is not used in declaring the parameter types of function template "lambda_calls::S<int>::lambda []()->auto::operator auto (*)()"
+    using type10 = decltype([]<class V> { return V(); }.template operator()<U>());
+                                     ^
+          detected during instantiation of type "lambda_calls::S<T>::type10<int> [with T=int]" at line 77
+
+"Test_name.c", line 40: warning: template parameter "<unnamed>" is not used in declaring the parameter types of function template "lambda_calls::lambda []()->auto::operator auto (*)()"
+  template <class> using Meow = decltype([]<True> {}.template operator()<int>());
+                                                ^
+          detected during instantiation of type "lambda_calls::Meow<int>" at line 80
+
+"Test_name.c", line 43: warning: template parameter "<unnamed>" is not used in declaring the parameter types of function template "lambda_calls::lambda [](char, int, long, unsigned int)->auto::operator auto (*)(char, int, long, unsigned int)"
+  using MeowMeow = decltype([]<True>(U...) {}.template operator()<char>(U()...));
+                                   ^
+          detected during instantiation of type "lambda_calls::MeowMeow<char, int, long, unsigned int>" at line 81
+
+"Test_name.c", line 43: error: argument list for alias template "lambda_calls::U" is missing
+  using MeowMeow = decltype([]<True>(U...) {}.template operator()<char>(U()...));
+                                     ^
+          detected during:
+            instantiation of "lambda [](char, int, long, unsigned int)->auto" based on template argument <char> at line 43
+            instantiation of type "lambda_calls::MeowMeow<char, int, long, unsigned int>" at line 81
+
+"Test_name.c", line 43: error: cannot deduce the return type of function "lambda [](char, int, long, unsigned int)->auto [with <unnamed>=char]" (declared at line 43); it has not been defined
+  using MeowMeow = decltype([]<True>(U...) {}.template operator()<char>(U()...));
+                                                       ^
+          detected during instantiation of type "lambda_calls::MeowMeow<char, int, long, unsigned int>" at line 81
+
+"Test_name.c", line 79: warning: variable "x" was declared but never referenced
+    int x = T11()();
+        ^
+
+"Test_name.c", line 100: error: identifier "T" is undefined
+    return Value<T, U...> + V + (int)sizeof(Param);
+                 ^
+          detected during:
+            instantiation of function "lambda [](auto)->auto [with V=0, <auto-1>=const char *]" at line 101
+            instantiation of type "lambda_calls::GH82104::T14<char, char>" at line 103
+            instantiation of type "lambda_calls::GH82104::T15<char>" at line 105
+
+"Test_name.c", line 100: error: argument list for alias template "lambda_calls::U" is missing
+    return Value<T, U...> + V + (int)sizeof(Param);
+                    ^
+          detected during:
+            instantiation of function "lambda [](auto)->auto [with V=0, <auto-1>=const char *]" at line 101
+            instantiation of type "lambda_calls::GH82104::T14<char, char>" at line 103
+            instantiation of type "lambda_calls::GH82104::T15<char>" at line 105
+
+"Test_name.c", line 100: error: expected a ">"
+    return Value<T, U...> + V + (int)sizeof(Param);
+                     ^
+          detected during:
+            instantiation of function "lambda [](auto)->auto [with V=0, <auto-1>=const char *]" at line 101
+            instantiation of type "lambda_calls::GH82104::T14<char, char>" at line 103
+            instantiation of type "lambda_calls::GH82104::T15<char>" at line 105
+
+"Test_name.c", line 121: warning: constant "m" is not used in declaring the parameter types of function template "lambda_calls::GH89853::lambda []()->auto::operator auto (*)()"
+  static constexpr auto innocuous = []<int m> { return m; };
+                                           ^
+          detected during instantiation of "const auto lambda_calls::GH89853::innocuous [with <unnamed>=void]" at line 123
+
+"Test_name.c", line 129: error: expected a "," or ">"
+                []<char c> {
+                         ^
+
+"Test_name.c", line 129: error: expected a "{"
+                []<char c> {
+                         ^
+
+"Test_name.c", line 129: error: expected a "}"
+                []<char c> {
+                         ^
+
+"Test_name.c", line 129: error: expected a "}"
+                []<char c> {
+                           ^
+
+"Test_name.c", line 150: warning: parsing restarts here after previous syntax error
+  } // namespace GH89853
+  ^
+
+"Test_name.c", line 152: error: expected a "," or ">"
+  namespace GH105885 {
+  ^
+
+At end of source: error: expected a declaration
+
+At end of source: error: expected a ";"
+
+At end of source: error: expected a "}"
+"Test_name.c", line 118: note: to match this "{"
+  namespace GH89853 {
+                    ^
+
+At end of source: error: expected a "}"
+"Test_name.c", line 4: note: to match this "{"
+  namespace lambda_calls {
+                         ^
+
+19 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,81 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c99 Test_name.c
+"Sema/i-c-e.c", line 6: warning: missing return statement at end of non-void function "a"
+  int a(void) {int p; *(1 ? &p : (void*)(0 && (a(),1))) = 10;}
+                                                             ^
+
+"Sema/i-c-e.c", line 25: error: expression must have a constant value
+       expr
+       ^
+"Sema/i-c-e.c", line 25: note: the value of variable "expr" (declared at line 10) cannot be used as a constant
+       expr
+       ^
+
+"Sema/i-c-e.c", line 33: warning: statement is unreachable
+    char not_vla[__builtin_constant_p(1) ? ({ 42; }) : -1];
+                                              ^
+
+"Sema/i-c-e.c", line 35: warning: function "_Static_assert" declared implicitly
+    _Static_assert(sizeof(not_vla) == 42, "");
+    ^
+
+"Sema/i-c-e.c", line 42: warning: statement is unreachable
+    char also_not_vla[__builtin_expect(({ 76; }), 0)];
+                                          ^
+
+"Sema/i-c-e.c", line 63: warning: unrecognized character escape sequence
+      case sizeof("\ploooong"): func(4);
+                   ^
+
+"Sema/i-c-e.c", line 72: warning: expression has no effect
+  int comma1[0?1,2:3];
+               ^
+
+"Sema/i-c-e.c", line 73: warning: expression has no effect
+  int comma2[1 || (1, 2)];
+                   ^
+
+"Sema/i-c-e.c", line 76: error: this operator is not allowed in a constant expression
+  int comma3[(1, 2)];
+               ^
+
+"Sema/i-c-e.c", line 80: error: expression must be an integral constant expression
+  char pbcp[__builtin_constant_p(4) ? (intptr_t)&expr : 0];
+            ^
+
+"Sema/i-c-e.c", line 83: error: division by zero
+  int illegaldiv1b[1 && 1/0];
+                         ^
+
+"Sema/i-c-e.c", line 85: error: division by zero
+  int illegaldiv2[1/0];
+                   ^
+
+"Sema/i-c-e.c", line 86: warning: integer operation result is out of range
+  int illegaldiv3[(-2147483647 -1) / -1];
+                                   ^
+
+"Sema/i-c-e.c", line 86: error: the size of an array must be greater than zero
+  int illegaldiv3[(-2147483647 -1) / -1];
+                  ^
+
+"Sema/i-c-e.c", line 88: error: division by zero
+  int illegaldiv4[0 / (1 / 0)];
+                         ^
+
+"Sema/i-c-e.c", line 91: warning: __real/__imag applied to real value
+  int realop[(__real__ 4) == 4 ? 1 : -1];
+              ^
+
+"Sema/i-c-e.c", line 92: warning: __real/__imag applied to real value
+  int imagop[(__imag__ 4) == 0 ? 1 : -1];
+              ^
+
+"Sema/i-c-e.c", line 94: error: division by zero
+  int *PR14729 = 0 ?: 1/0;
+                       ^
+
+"Sema/i-c-e.c", line 94: warning: a value of type "int" cannot be used to initialize an entity of type "int *"
+  int *PR14729 = 0 ?: 1/0;
+                 ^
+
+8 errors detected in the compilation of "Test_name.c".

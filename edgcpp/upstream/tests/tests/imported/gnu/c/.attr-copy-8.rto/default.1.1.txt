@@ -1,0 +1,218 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 25: warning: unknown attribute "copy"
+    ATTR (copy ((struct A *)0)) short m_pa_0;
+    ^
+
+"Test_name.c", line 27: warning: unknown attribute "copy"
+    ATTR (copy ((struct A *)(1, 0))) int m_pa_1_0;
+    ^
+
+"Test_name.c", line 29: warning: unknown attribute "copy"
+    ATTR (copy ((struct A *)(0, 1))) long m_pa_0_1;
+    ^
+
+"Test_name.c", line 32: warning: unknown attribute "copy"
+    ATTR (copy (*(struct A *)0)) short m_xpa_0;
+    ^
+
+"Test_name.c", line 34: warning: unknown attribute "copy"
+    ATTR (copy (*(struct A *)(1, 0))) int m_xpa_1_0;
+    ^
+
+"Test_name.c", line 36: warning: unknown attribute "copy"
+    ATTR (copy (*(struct A *)(0, 1))) long m_xpa_0_1;
+    ^
+
+"Test_name.c", line 39: warning: unknown attribute "copy"
+    ATTR (copy (((struct A *)0)[0])) short m_arpa_0;
+    ^
+
+"Test_name.c", line 41: warning: unknown attribute "copy"
+    ATTR (copy (((struct A *)(1, 0))[0])) int m_arpa_1_0;
+    ^
+
+"Test_name.c", line 43: warning: unknown attribute "copy"
+    ATTR (copy (((struct A *)(0, 1))[0])) long m_arpa_0_1;
+    ^
+
+"Test_name.c", line 47: warning: unknown attribute "copy"
+    ATTR (copy (a)) short m_ra;
+    ^
+
+"Test_name.c", line 49: warning: unknown attribute "copy"
+    ATTR (copy (b.a)) int m_rb_a;
+    ^
+
+"Test_name.c", line 51: warning: unknown attribute "copy"
+    ATTR (copy (b.pa)) long m_rb_pa;
+    ^
+
+"Test_name.c", line 54: warning: unknown attribute "copy"
+    ATTR (copy (&a)) short m_ara;
+    ^
+
+"Test_name.c", line 56: warning: unknown attribute "copy"
+    ATTR (copy (&b.a)) int m_arb_a;
+    ^
+
+"Test_name.c", line 58: warning: unknown attribute "copy"
+    ATTR (copy (*b.pa)) long m_xb_pa;
+    ^
+
+"Test_name.c", line 60: warning: unknown attribute "copy"
+    ATTR (copy (b.pa[0])) long m_arb_pa;
+    ^
+
+"Test_name.c", line 63: warning: unknown attribute "copy"
+    ATTR (copy (*pa)) short m_xpa;
+    ^
+
+"Test_name.c", line 65: warning: unknown attribute "copy"
+    ATTR (copy (pa[0])) short m_arpa;
+    ^
+
+"Test_name.c", line 68: warning: unknown attribute "copy"
+    ATTR (copy (ab[0].a)) int m_arab_a;
+    ^
+
+"Test_name.c", line 70: warning: unknown attribute "copy"
+    ATTR (copy (ab[1].pa)) long m_arab_pa;
+    ^
+
+"Test_name.c", line 72: warning: unknown attribute "copy"
+    ATTR (copy (*ab[2].pa)) int m_xarab_pa;
+    ^
+
+"Test_name.c", line 74: warning: unknown attribute "copy"
+    ATTR (copy (ab[3].pa->bf)) unsigned int m_arab_pa_bf: 1;
+    ^
+
+"Test_name.c", line 76: warning: unknown attribute "copy"
+    ATTR (copy (pb->a)) int m_pb_a;
+    ^
+
+"Test_name.c", line 78: warning: unknown attribute "copy"
+    ATTR (copy (pb->pa)) long m_pb_pa;
+    ^
+
+"Test_name.c", line 80: warning: unknown attribute "copy"
+    ATTR (copy (*pb->pa)) int m_xpb_pa;
+    ^
+
+"Test_name.c", line 82: warning: unknown attribute "copy"
+    ATTR (copy (pb->pa->bf)) unsigned int m_pb_pa_bf: 1;
+    ^
+
+"Test_name.c", line 84: warning: unknown attribute "copy"
+    ATTR (aligned (4), copy ((struct A *)(0))) short m_a4_pa_0;
+    ^
+
+"Test_name.c", line 89: error: static assertion failed
+  _Static_assert (__builtin_has_attribute (((C*)0)->m_pa_0, packed));
+  ^
+
+"Test_name.c", line 90: error: static assertion failed
+  _Static_assert (__builtin_has_attribute (((C*)0)->m_pa_1_0, packed));
+  ^
+
+"Test_name.c", line 91: error: static assertion failed
+  _Static_assert (__builtin_has_attribute (((C*)0)->m_pa_0_1, packed));
+  ^
+
+"Test_name.c", line 93: error: static assertion failed
+  _Static_assert (__builtin_has_attribute (((C*)0)->m_xpa_0, packed));
+  ^
+
+"Test_name.c", line 94: error: static assertion failed
+  _Static_assert (__builtin_has_attribute (((C*)0)->m_xpa_1_0, packed));
+  ^
+
+"Test_name.c", line 95: error: static assertion failed
+  _Static_assert (__builtin_has_attribute (((C*)0)->m_xpa_0_1, packed));
+  ^
+
+"Test_name.c", line 97: error: static assertion failed
+  _Static_assert (__builtin_has_attribute (((C*)0)->m_arpa_0, packed));
+  ^
+
+"Test_name.c", line 98: error: static assertion failed
+  _Static_assert (__builtin_has_attribute (((C*)0)->m_arpa_1_0, packed));
+  ^
+
+"Test_name.c", line 99: error: static assertion failed
+  _Static_assert (__builtin_has_attribute (((C*)0)->m_arpa_0_1, packed));
+  ^
+
+"Test_name.c", line 101: error: static assertion failed
+  _Static_assert (__builtin_has_attribute (((C*)0)->m_ra, packed));
+  ^
+
+"Test_name.c", line 102: error: static assertion failed
+  _Static_assert (__builtin_has_attribute (((C*)0)->m_rb_a, packed));
+  ^
+
+"Test_name.c", line 103: error: static assertion failed
+  _Static_assert (__builtin_has_attribute (((C*)0)->m_rb_pa, packed));
+  ^
+
+"Test_name.c", line 105: error: static assertion failed
+  _Static_assert (__builtin_has_attribute (((C*)0)->m_ara, packed));
+  ^
+
+"Test_name.c", line 106: error: static assertion failed
+  _Static_assert (__builtin_has_attribute (((C*)0)->m_arb_a, packed));
+  ^
+
+"Test_name.c", line 107: error: static assertion failed
+  _Static_assert (__builtin_has_attribute (((C*)0)->m_xb_pa, packed));
+  ^
+
+"Test_name.c", line 108: error: static assertion failed
+  _Static_assert (__builtin_has_attribute (((C*)0)->m_arb_pa, packed));
+  ^
+
+"Test_name.c", line 110: error: static assertion failed
+  _Static_assert (__builtin_has_attribute (((C*)0)->m_xpa, packed));
+  ^
+
+"Test_name.c", line 111: error: static assertion failed
+  _Static_assert (__builtin_has_attribute (((C*)0)->m_arpa, packed));
+  ^
+
+"Test_name.c", line 113: error: static assertion failed
+  _Static_assert (__builtin_has_attribute (((C*)0)->m_arab_a, packed));
+  ^
+
+"Test_name.c", line 114: error: static assertion failed
+  _Static_assert (__builtin_has_attribute (((C*)0)->m_arab_pa, packed));
+  ^
+
+"Test_name.c", line 115: error: static assertion failed
+  _Static_assert (__builtin_has_attribute (((C*)0)->m_xarab_pa, packed));
+  ^
+
+"Test_name.c", line 116: error: static assertion failed
+  _Static_assert (__builtin_has_attribute (((C*)0)->m_arab_pa_bf, packed));
+  ^
+
+"Test_name.c", line 118: error: static assertion failed
+  _Static_assert (__builtin_has_attribute (((C*)0)->m_pb_a, packed));
+  ^
+
+"Test_name.c", line 119: error: static assertion failed
+  _Static_assert (__builtin_has_attribute (((C*)0)->m_pb_pa, packed));
+  ^
+
+"Test_name.c", line 120: error: static assertion failed
+  _Static_assert (__builtin_has_attribute (((C*)0)->m_xpb_pa, packed));
+  ^
+
+"Test_name.c", line 121: error: static assertion failed
+  _Static_assert (__builtin_has_attribute (((C*)0)->m_pb_pa_bf, packed));
+  ^
+
+"Test_name.c", line 123: error: static assertion failed
+  _Static_assert (__builtin_has_attribute (((C*)0)->m_a4_pa_0, packed));
+  ^
+
+27 errors detected in the compilation of "Test_name.c".

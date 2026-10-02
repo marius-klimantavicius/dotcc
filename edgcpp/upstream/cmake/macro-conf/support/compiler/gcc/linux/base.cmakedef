@@ -1,0 +1,4 @@
+# GCC provides the quadmath header, so enable it here.
+USE_QUADMATH_LIBRARY=1
+# GCC supports __float80.
+FLOAT80_ENABLING_POSSIBLE=1

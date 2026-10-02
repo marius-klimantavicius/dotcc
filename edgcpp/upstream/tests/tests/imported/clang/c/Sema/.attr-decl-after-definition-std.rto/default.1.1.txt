@@ -1,0 +1,19 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 13: warning: function "frob" was declared deprecated
+    frob(0); // expected-warning {{'frob' is deprecated}}
+    ^
+"Test_name.c", line 9: note: because of a "deprecated" attribute
+  [[deprecated]] int frob(int); // expected-note 2 {{'frob' has been explicitly marked deprecated here}}
+    ^
+
+"Test_name.c", line 20: warning: function "frob" was declared deprecated
+    frob(0); // expected-warning {{'frob' is deprecated}} \
+    ^
+"Test_name.c", line 9: note: because of a "deprecated" attribute
+  [[deprecated]] int frob(int); // expected-note 2 {{'frob' has been explicitly marked deprecated here}}
+    ^
+
+"Test_name.c", line 20: warning: ignoring return value from routine declared with "nodiscard" attribute
+    frob(0); // expected-warning {{'frob' is deprecated}} \
+        ^
+

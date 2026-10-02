@@ -1,0 +1,35 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: error: incomplete type "double []" is not allowed
+  int *p = new double[] = { 1, 2, 3}; // { dg-error "invalid use of array with unspecified bounds" }
+               ^
+
+"Test_name.c", line 8: error: too many initializer values
+  int *p = new double[] = { 1, 2, 3}; // { dg-error "invalid use of array with unspecified bounds" }
+                               ^
+
+"Test_name.c", line 9: error: incomplete type "double []" is not allowed
+  int *p2 = new double[] = (1, 2, 3); // { dg-error "invalid use of array with unspecified bounds" }
+                ^
+
+"Test_name.c", line 9: warning: expression has no effect
+  int *p2 = new double[] = (1, 2, 3); // { dg-error "invalid use of array with unspecified bounds" }
+                            ^
+
+"Test_name.c", line 9: warning: expression has no effect
+  int *p2 = new double[] = (1, 2, 3); // { dg-error "invalid use of array with unspecified bounds" }
+                            ^
+
+"Test_name.c", line 11: error: incomplete type "Aggr []" is not allowed
+  Aggr *p3 = new Aggr[]( 1, 2, 3 ); // { dg-error "could not convert|parenthesized initializer" }
+                 ^
+
+"Test_name.c", line 12: error: incomplete type "char []" is not allowed
+  char *p4 = new char[]("foo", "a"); // { dg-error "invalid conversion|parenthesized initializer" }
+                 ^
+
+"Test_name.c", line 17: error: a value of type "const char *" cannot be used to initialize an entity of type "int"
+    return new int[]{t...}; // { dg-error "invalid conversion" }
+                     ^
+          detected during instantiation of "int *fn(T...) [with T=<const char *>]" at line 23
+
+6 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=3 Test_name.c
+"Test_name.c", line 17: error: expected a ")"
+      asm("fsinx %[Rads], %[Res]": [Res]"=f"(r): [Rads]"f"(a));
+                                 ^
+
+"Test_name.c", line 18: warning: variable "r" is used before its value is set
+      return r;
+             ^
+
+1 error detected in the compilation of "Test_name.c".

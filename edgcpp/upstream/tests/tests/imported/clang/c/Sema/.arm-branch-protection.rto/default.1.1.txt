@@ -1,0 +1,129 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 7: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m55,branch-protection=bti"))) void f1(void) {}
+                        ^
+
+"Test_name.c", line 7: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m55,branch-protection=bti"))) void f1(void) {}
+                        ^
+
+"Test_name.c", line 8: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m55,branch-protection=pac-ret"))) void f2(void) {}
+                        ^
+
+"Test_name.c", line 8: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m55,branch-protection=pac-ret"))) void f2(void) {}
+                        ^
+
+"Test_name.c", line 9: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m55,branch-protection=bti+pac-ret"))) void f3(void) {}
+                        ^
+
+"Test_name.c", line 9: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m55,branch-protection=bti+pac-ret"))) void f3(void) {}
+                        ^
+
+"Test_name.c", line 10: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m55,branch-protection=bti+pac-ret+leaf"))) void f4(void) {}
+                        ^
+
+"Test_name.c", line 10: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m55,branch-protection=bti+pac-ret+leaf"))) void f4(void) {}
+                        ^
+
+"Test_name.c", line 12: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m33,branch-protection=bti"))) void f5(void) {}
+                        ^
+
+"Test_name.c", line 12: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m33,branch-protection=bti"))) void f5(void) {}
+                        ^
+
+"Test_name.c", line 13: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m33,branch-protection=pac-ret"))) void f6(void) {}
+                        ^
+
+"Test_name.c", line 13: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m33,branch-protection=pac-ret"))) void f6(void) {}
+                        ^
+
+"Test_name.c", line 14: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m33,branch-protection=bti+pac-ret"))) void f7(void) {}
+                        ^
+
+"Test_name.c", line 14: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m33,branch-protection=bti+pac-ret"))) void f7(void) {}
+                        ^
+
+"Test_name.c", line 15: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m33,branch-protection=bti+pac-ret+leaf"))) void f8(void) {}
+                        ^
+
+"Test_name.c", line 15: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m33,branch-protection=bti+pac-ret+leaf"))) void f8(void) {}
+                        ^
+
+"Test_name.c", line 17: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m3,branch-protection=bti"))) void f9(void) {}
+                        ^
+
+"Test_name.c", line 17: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m3,branch-protection=bti"))) void f9(void) {}
+                        ^
+
+"Test_name.c", line 18: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m3,branch-protection=pac-ret"))) void f10(void) {}
+                        ^
+
+"Test_name.c", line 18: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m3,branch-protection=pac-ret"))) void f10(void) {}
+                        ^
+
+"Test_name.c", line 19: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m3,branch-protection=bti+pac-ret"))) void f11(void) {}
+                        ^
+
+"Test_name.c", line 19: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m3,branch-protection=bti+pac-ret"))) void f11(void) {}
+                        ^
+
+"Test_name.c", line 20: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m3,branch-protection=bti+pac-ret+leaf"))) void f12(void) {}
+                        ^
+
+"Test_name.c", line 20: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m3,branch-protection=bti+pac-ret+leaf"))) void f12(void) {}
+                        ^
+
+"Test_name.c", line 22: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m4,branch-protection=bti"))) void f13(void) {}
+                        ^
+
+"Test_name.c", line 22: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m4,branch-protection=bti"))) void f13(void) {}
+                        ^
+
+"Test_name.c", line 23: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m4,branch-protection=pac-ret"))) void f14(void) {}
+                        ^
+
+"Test_name.c", line 23: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m4,branch-protection=pac-ret"))) void f14(void) {}
+                        ^
+
+"Test_name.c", line 24: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m4,branch-protection=bti+pac-ret"))) void f15(void) {}
+                        ^
+
+"Test_name.c", line 24: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m4,branch-protection=bti+pac-ret"))) void f15(void) {}
+                        ^
+
+"Test_name.c", line 25: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m4,branch-protection=bti+pac-ret+leaf"))) void f16(void) {}
+                        ^
+
+"Test_name.c", line 25: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m4,branch-protection=bti+pac-ret+leaf"))) void f16(void) {}
+                        ^
+

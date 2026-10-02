@@ -1,0 +1,78 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 9: error: identifier "startwith" is undefined
+  int __RTL (startwith ("cprop_hardreg"))
+             ^
+
+"Test_name.c", line 9: error: expected a ")"
+  int __RTL (startwith ("cprop_hardreg"))
+                        ^
+
+"Test_name.c", line 10: error: expected a "{"
+  f ()
+  ^
+
+"Test_name.c", line 12: error: identifier "function" is undefined
+  (function "f"
+   ^
+
+"Test_name.c", line 12: error: expected a ")"
+  (function "f"
+            ^
+
+"Test_name.c", line 16: warning: parsing restarts here after previous syntax error
+        (cnote 6 [bb 2] NOTE_INSN_BASIC_BLOCK)
+                                             ^
+
+"Test_name.c", line 17: error: identifier "cinsn" is undefined
+        (cinsn 100 (set (reg:DI x0)
+         ^
+
+"Test_name.c", line 17: error: expected a ")"
+        (cinsn 100 (set (reg:DI x0)
+               ^
+
+"Test_name.c", line 20: warning: parsing restarts here after previous syntax error
+  		   (const_int 16777213))))
+  		                      ^
+
+"Test_name.c", line 20: error: expected a ";"
+  		   (const_int 16777213))))
+  		                       ^
+
+"Test_name.c", line 21: error: identifier "Extra" is undefined
+        ;; Extra insn, to avoid all of the above from being deleted by DCE
+           ^
+
+"Test_name.c", line 21: error: expected a ";"
+        ;; Extra insn, to avoid all of the above from being deleted by DCE
+                          ^
+
+"Test_name.c", line 24: warning: parsing restarts here after previous syntax error
+      ) ;; block 2
+        ^
+
+"Test_name.c", line 24: error: identifier "block" is undefined
+      ) ;; block 2
+           ^
+
+"Test_name.c", line 24: error: expected a ";"
+      ) ;; block 2
+                 ^
+
+"Test_name.c", line 25: error: identifier "chain" is undefined
+    ) ;; insn-chain
+              ^
+
+"Test_name.c", line 26: error: expected a ";"
+  ) ;; function
+  ^
+
+"Test_name.c", line 27: error: expected a ";"
+  }
+  ^
+
+"Test_name.c", line 27: warning: missing return statement at end of non-void function "__RTL"
+  }
+  ^
+
+15 errors detected in the compilation of "Test_name.c".

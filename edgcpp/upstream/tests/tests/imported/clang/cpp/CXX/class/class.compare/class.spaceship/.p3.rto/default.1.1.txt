@@ -1,0 +1,48 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 19: error: no valid std::weak_ordering type found (<compare> must be included)
+  static_assert(A{1, 2, 3, 4, 5} <= A{1, 2, 3, 4, 5});
+                                                    ^
+
+"Test_name.c", line 19: error: no valid std::partial_ordering type found (<compare> must be included)
+  static_assert(A{1, 2, 3, 4, 5} <= A{1, 2, 3, 4, 5});
+                                                    ^
+
+"Test_name.c", line 20: error: static assertion failed
+  static_assert(A{1, 2, 3, 4, 5} <= A{0, 20, 3, 4, 5}); // expected-error {{failed}}
+  ^
+"Test_name.c", line 20: note: the final comparison was 1 <= 0
+  static_assert(A{1, 2, 3, 4, 5} <= A{0, 20, 3, 4, 5}); // expected-error {{failed}}
+                                 ^
+
+"Test_name.c", line 24: error: static assertion failed
+  static_assert(A{1, 2, 3, 4, 5} <= A{1, 2, 3, 4, 0}); // expected-error {{failed}}
+  ^
+"Test_name.c", line 24: note: the final comparison was 1 <= 0
+  static_assert(A{1, 2, 3, 4, 5} <= A{1, 2, 3, 4, 0}); // expected-error {{failed}}
+                                 ^
+
+"Test_name.c", line 36: error: function "operator<=>(const B &, const B &)" (declared at line 34) cannot be referenced -- it is a deleted function
+  static_assert(B{1, 2, 3, 4, 5} >= B{1, 2, 3, 4, 5});
+                                 ^
+
+"Test_name.c", line 37: error: function "operator<=>(const B &, const B &)" (declared at line 34) cannot be referenced -- it is a deleted function
+  static_assert(B{1, 2, 3, 4, 5} >= B{0, 20, 3, 4, 5}); // expected-error {{failed}}
+                                 ^
+
+"Test_name.c", line 38: error: function "operator<=>(const B &, const B &)" (declared at line 34) cannot be referenced -- it is a deleted function
+  static_assert(B{1, 2, 3, 4, 5} >= B{1, 0, 30, 4, 5}); // expected-error {{failed}}
+                                 ^
+
+"Test_name.c", line 39: error: function "operator<=>(const B &, const B &)" (declared at line 34) cannot be referenced -- it is a deleted function
+  static_assert(B{1, 2, 3, 4, 5} >= B{1, 2, 0, 40, 5}); // expected-error {{failed}}
+                                 ^
+
+"Test_name.c", line 40: error: function "operator<=>(const B &, const B &)" (declared at line 34) cannot be referenced -- it is a deleted function
+  static_assert(B{1, 2, 3, 4, 5} >= B{1, 2, 3, 0, 50}); // expected-error {{failed}}
+                                 ^
+
+"Test_name.c", line 41: error: function "operator<=>(const B &, const B &)" (declared at line 34) cannot be referenced -- it is a deleted function
+  static_assert(B{1, 2, 3, 4, 5} >= B{1, 2, 3, 4, 0}); // expected-error {{failed}}
+                                 ^
+
+10 errors detected in the compilation of "Test_name.c".

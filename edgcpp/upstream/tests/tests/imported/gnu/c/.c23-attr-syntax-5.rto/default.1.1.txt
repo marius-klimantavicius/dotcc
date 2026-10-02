@@ -1,0 +1,145 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 8: warning: unknown attribute "unknown_attribute"
+  [[unknown_attribute]]; /* { dg-error "attribute ignored" } */
+    ^
+
+"Test_name.c", line 10: warning: unknown attribute "unknown_attribute"
+  [[unknown_attribute]] extern int a; /* { dg-error "attribute ignored" } */
+    ^
+
+"Test_name.c", line 11: warning: unknown attribute "unknown_attribute"
+  extern int [[unknown_attribute(123)]] a; /* { dg-error "attribute ignored" } */
+               ^
+
+"Test_name.c", line 12: warning: unknown attribute "unknown_attribute"
+  extern int a [[unknown_attribute("")]]; /* { dg-error "attribute ignored" } */
+                 ^
+
+"Test_name.c", line 14: warning: unknown attribute "unknown_attribute"
+  int f () [[unknown_attribute]]; /* { dg-error "attribute ignored" } */
+             ^
+
+"Test_name.c", line 15: warning: unknown attribute "unknown_attribute"
+  int f (void) [[unknown_attribute(1)]]; /* { dg-error "attribute ignored" } */
+                 ^
+
+"Test_name.c", line 16: warning: unknown attribute "unknown_attribute"
+  int g ([[unknown_attribute]] int a); /* { dg-error "attribute ignored" } */
+           ^
+
+"Test_name.c", line 17: warning: unknown attribute "unknown_attribute"
+  int g (int [[unknown_attribute]] a); /* { dg-error "attribute ignored" } */
+               ^
+
+"Test_name.c", line 18: warning: unknown attribute "unknown_attribute"
+  int g (int a [[unknown_attribute]]); /* { dg-error "attribute ignored" } */
+                 ^
+
+"Test_name.c", line 19: warning: unknown attribute "unknown_attribute"
+  int g ([[unknown_attribute]] int); /* { dg-error "attribute ignored" } */
+           ^
+
+"Test_name.c", line 20: warning: unknown attribute "unknown_attribute"
+  int g (int [[unknown_attribute]]); /* { dg-error "attribute ignored" } */
+               ^
+
+"Test_name.c", line 21: warning: unknown attribute "unknown_attribute"
+  int g (int) [[unknown_attribute]]; /* { dg-error "attribute ignored" } */
+                ^
+
+"Test_name.c", line 23: warning: unknown attribute "unknown_attribute"
+  int *[[unknown_attribute]] p; /* { dg-error "attribute ignored" } */
+         ^
+
+"Test_name.c", line 24: warning: unknown attribute "unknown_attribute"
+  int b[3] [[unknown_attribute]]; /* { dg-error "attribute ignored" } */
+             ^
+
+"Test_name.c", line 26: warning: unknown attribute "unknown_attribute"
+  int h (int () [[unknown_attribute]]); /* { dg-error "attribute ignored" } */
+                  ^
+
+"Test_name.c", line 28: warning: unknown attribute "unknown_attribute"
+  struct [[unknown_attribute]] s; /* { dg-error "attribute ignored" } */
+           ^
+
+"Test_name.c", line 29: warning: unknown attribute "unknown_attribute"
+  union [[unknown_attribute]] u; /* { dg-error "attribute ignored" } */
+          ^
+
+"Test_name.c", line 31: warning: unknown attribute "unknown_attribute"
+  struct [[unknown_attribute]] s2 { int a; }; /* { dg-error "attribute ignored" } */
+           ^
+
+"Test_name.c", line 32: warning: unknown attribute "unknown_attribute"
+  union [[unknown_attribute(x)]] u2 { int a; }; /* { dg-error "attribute ignored" } */
+          ^
+
+"Test_name.c", line 34: warning: unknown attribute "unknown_attribute"
+  struct s3 { [[unknown_attribute]] int a; }; /* { dg-error "attribute ignored" } */
+                ^
+
+"Test_name.c", line 35: warning: unknown attribute "unknown_attribute"
+  struct s4 { int [[unknown_attribute]] a; }; /* { dg-error "attribute ignored" } */
+                    ^
+
+"Test_name.c", line 36: warning: unknown attribute "unknown_attribute"
+  union u3 { [[unknown_attribute]] int a; }; /* { dg-error "attribute ignored" } */
+               ^
+
+"Test_name.c", line 37: warning: unknown attribute "unknown_attribute"
+  union u4 { int [[unknown_attribute]] a; }; /* { dg-error "attribute ignored" } */
+                   ^
+
+"Test_name.c", line 39: warning: unknown attribute "unknown_attribute"
+  int z = sizeof (int [[unknown_attribute]]); /* { dg-error "attribute ignored" } */
+                        ^
+
+"Test_name.c", line 41: warning: unknown attribute "unknown_attribute"
+  enum [[unknown_attribute]] { E1 }; /* { dg-error "attribute ignored" } */
+         ^
+
+"Test_name.c", line 42: warning: unknown attribute "unknown_attribute"
+  enum { E2 [[unknown_attribute]] }; /* { dg-error "attribute ignored" } */
+              ^
+
+"Test_name.c", line 43: warning: unknown attribute "unknown_attribute"
+  enum { E3 [[unknown_attribute]] = 4 }; /* { dg-error "attribute ignored" } */
+              ^
+
+"Test_name.c", line 46: warning: unknown attribute "unknown_attribute"
+  func (void) [[unknown_attribute]] { /* { dg-error "attribute ignored" } */
+                ^
+
+"Test_name.c", line 47: warning: unknown attribute "unknown_attribute"
+    [[unknown_attribute]] int var; /* { dg-error "attribute ignored" } */
+      ^
+
+"Test_name.c", line 48: warning: unknown attribute "unknown_attribute"
+    [[unknown_attribute]] { } /* { dg-error "attribute ignored" } */
+      ^
+
+"Test_name.c", line 49: warning: unknown attribute "unknown_attribute"
+    [[unknown_attribute(!)]]; /* { dg-error "attribute ignored" } */
+      ^
+
+"Test_name.c", line 50: warning: unknown attribute "unknown_attribute"
+    [[unknown_attribute]] var = 1; /* { dg-error "attribute ignored" } */
+      ^
+
+"Test_name.c", line 51: warning: unknown attribute "unknown_attribute"
+    [[unknown_attribute]] x: var = 2; /* { dg-error "attribute ignored" } */
+      ^
+
+"Test_name.c", line 52: warning: unknown attribute "unknown_attribute"
+    for ([[unknown_attribute]] int zz = 1; zz < 10; zz++) ; /* { dg-error "attribute ignored" } */
+           ^
+
+"Test_name.c", line 47: warning: variable "var" was set but never used
+    [[unknown_attribute]] int var; /* { dg-error "attribute ignored" } */
+                              ^
+
+"Test_name.c", line 51: warning: label "x" was declared but never referenced
+    [[unknown_attribute]] x: var = 2; /* { dg-error "attribute ignored" } */
+                          ^
+

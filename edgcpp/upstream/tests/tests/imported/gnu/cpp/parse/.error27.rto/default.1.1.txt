@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++03 -W Test_name.c
+"Test_name.c", line 8: error: class "KrSelectionMode" has already been defined (previous definition at line 6)
+  struct KrSelectionMode {  virtual void init() = 0; }; // { dg-error "8:redefinition of 'struct KrSelectionMode'" }
+         ^
+
+"Test_name.c", line 9: error: class "KrKDESelectionMode" has already been defined (previous definition at line 7)
+  struct KrKDESelectionMode : public KrSelectionMode { void init() { } }; // { dg-error "8:redefinition of 'struct KrKDESelectionMode'" }
+         ^
+
+2 errors detected in the compilation of "Test_name.c".

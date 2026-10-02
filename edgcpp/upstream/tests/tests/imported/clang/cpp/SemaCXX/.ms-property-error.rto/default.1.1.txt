@@ -1,0 +1,142 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --ms_compatibility Test_name.c
+"Test_name.c", line 9: warning: parameter "i" was set but never used
+    void PutX(int i, int j, int k) { j = i = k; } // expected-note {{'PutX' declared here}}
+                  ^
+
+"Test_name.c", line 9: warning: parameter "j" was set but never used
+    void PutX(int i, int j, int k) { j = i = k; } // expected-note {{'PutX' declared here}}
+                         ^
+
+"Test_name.c", line 12: warning: parameter "i" was set but never used
+    void PutY(int i, int j, int k) { j = i = k; } // expected-note {{'PutY' declared here}}
+                  ^
+
+"Test_name.c", line 12: warning: parameter "j" was set but never used
+    void PutY(int i, int j, int k) { j = i = k; } // expected-note {{'PutY' declared here}}
+                         ^
+
+"Test_name.c", line 36: error: function "S::GetX" cannot be called with the given argument list
+            argument types are: (int, int, int)
+            object type is: S
+    int j = (p1->x)[223][11][2]; // expected-error {{too many arguments to function call, expected 2, have 3}}
+            ^
+"Test_name.c", line 8: note: number of parameters of function "S::GetX" does not match the call
+    int GetX(int i, int j) { return i+j; } // expected-note {{'GetX' declared here}}
+        ^
+
+"Test_name.c", line 37: error: function "S::PutX" cannot be called with the given argument list
+            argument types are: (int, int)
+            object type is: S
+    (p1->x[23]) = argc; // expected-error {{too few arguments to function call, expected 3, have 2}}
+    ^
+"Test_name.c", line 9: note: number of parameters of function "S::PutX" does not match the call
+    void PutX(int i, int j, int k) { j = i = k; } // expected-note {{'PutX' declared here}}
+         ^
+
+"Test_name.c", line 38: error: function "S::GetY" cannot be called with the given argument list
+            argument types are: (int, int, int, int)
+            object type is: S
+    int k = (p1->y)[223][11][2][4]; // expected-error {{too many arguments to function call, expected 2, have 4}}
+            ^
+"Test_name.c", line 11: note: number of parameters of function "S::GetY" does not match the call
+    int GetY(int i, int j) { return i+j; } // expected-note {{'GetY' declared here}}
+        ^
+
+"Test_name.c", line 39: error: function "S::PutY" cannot be called with the given argument list
+            argument types are: (int, int)
+            object type is: S
+    (p1->y[23]) = argc; // expected-error {{too few arguments to function call, expected 3, have 2}}
+    ^
+"Test_name.c", line 12: note: number of parameters of function "S::PutY" does not match the call
+    void PutY(int i, int j, int k) { j = i = k; } // expected-note {{'PutY' declared here}}
+         ^
+
+"Test_name.c", line 40: error: function "St<T>::GetX [with T=float]" cannot be called with the given argument list
+            object type is: St<float>
+    float j1 = (p2->x); // expected-error {{too few arguments to function call, expected 2, have 0}}
+               ^
+"Test_name.c", line 20: note: number of parameters of function "St<T>::GetX [with T=float]" does not match the call
+    T GetX(T i, T j) { return i+j; } // expected-note 3 {{'GetX' declared here}}
+      ^
+
+"Test_name.c", line 41: error: function "St<T>::PutX [with T=float]" cannot be called with the given argument list
+            argument types are: (int, int, int, char *)
+            object type is: St<float>
+    ((p2->x)[23])[1][2] = *argv; // expected-error {{too many arguments to function call, expected 3, have 4}}
+    ^
+"Test_name.c", line 21: note: number of parameters of function "St<T>::PutX [with T=float]" does not match the call
+    T PutX(T i, T j, T k) { return j = i = k; }  // expected-note 2 {{'PutX' declared here}}
+      ^
+
+"Test_name.c", line 42: error: a value of type "float" cannot be assigned to an entity of type "char **"
+    argv = p2->x[11][22] = argc; // expected-error {{assigning to 'char **' from incompatible type 'float'}}
+         ^
+
+"Test_name.c", line 43: error: function "St<T>::GetX [with T=float]" cannot be called with the given argument list
+            argument types are: (int)
+            object type is: St<float>
+    return ++(((p2->x)[23])); // expected-error {{too few arguments to function call, expected 2, have 1}}
+             ^
+"Test_name.c", line 20: note: number of parameters of function "St<T>::GetX [with T=float]" does not match the call
+    T GetX(T i, T j) { return i+j; } // expected-note 3 {{'GetX' declared here}}
+      ^
+
+"Test_name.c", line 43: error: function "St<T>::PutX [with T=float]" cannot be called with the given argument list
+            argument types are: (int, <error-type>)
+            object type is: St<float>
+    return ++(((p2->x)[23])); // expected-error {{too few arguments to function call, expected 2, have 1}}
+             ^
+"Test_name.c", line 21: note: number of parameters of function "St<T>::PutX [with T=float]" does not match the call
+    T PutX(T i, T j, T k) { return j = i = k; }  // expected-note 2 {{'PutX' declared here}}
+      ^
+
+"Test_name.c", line 23: error: function "St<T>::PutX [with T=int]" cannot be called with the given argument list
+            argument types are: (int, int)
+            object type is: St<int>
+      x[1] = 0; // expected-error {{too few arguments to function call, expected 3, have 2}}
+      ^
+"Test_name.c", line 21: note: number of parameters of function "St<T>::PutX [with T=int]" does not match the call
+    T PutX(T i, T j, T k) { return j = i = k; }  // expected-note 2 {{'PutX' declared here}}
+      ^
+          detected during instantiation of "St<T>::~St() [with T=int]" at line 35
+
+"Test_name.c", line 21: warning: parameter "i" was set but never used
+    T PutX(T i, T j, T k) { return j = i = k; }  // expected-note 2 {{'PutX' declared here}}
+             ^
+          detected during:
+            instantiation of "T St<T>::PutX(T, T, T) [with T=int]" at line 24
+            instantiation of "St<T>::~St() [with T=int]" at line 35
+
+"Test_name.c", line 21: warning: parameter "j" was set but never used
+    T PutX(T i, T j, T k) { return j = i = k; }  // expected-note 2 {{'PutX' declared here}}
+                  ^
+          detected during:
+            instantiation of "T St<T>::PutX(T, T, T) [with T=int]" at line 24
+            instantiation of "St<T>::~St() [with T=int]" at line 35
+
+"Test_name.c", line 26: error: function "St<T>::GetX [with T=int]" cannot be called with the given argument list
+            argument types are: (int, int, int)
+            object type is: St<int>
+      x[1][2] = x[3][4][5]; // expected-error {{too many arguments to function call, expected 2, have 3}}
+                ^
+"Test_name.c", line 20: note: number of parameters of function "St<T>::GetX [with T=int]" does not match the call
+    T GetX(T i, T j) { return i+j; } // expected-note 3 {{'GetX' declared here}}
+      ^
+          detected during instantiation of "St<T>::~St() [with T=int]" at line 35
+
+"Test_name.c", line 27: error: a value of type "int" cannot be assigned to an entity of type "char *"
+      ptr = x[1][2] = x[3][4]; // expected-error {{incompatible integer to pointer conversion assigning to 'char *' from 'int'}}
+          ^
+          detected during instantiation of "St<T>::~St() [with T=int]" at line 35
+
+"Test_name.c", line 21: warning: parameter "i" was set but never used
+    T PutX(T i, T j, T k) { return j = i = k; }  // expected-note 2 {{'PutX' declared here}}
+             ^
+          detected during instantiation of "T St<T>::PutX(T, T, T) [with T=float]" at line 42
+
+"Test_name.c", line 21: warning: parameter "j" was set but never used
+    T PutX(T i, T j, T k) { return j = i = k; }  // expected-note 2 {{'PutX' declared here}}
+                  ^
+          detected during instantiation of "T St<T>::PutX(T, T, T) [with T=float]" at line 42
+
+12 errors detected in the compilation of "Test_name.c".

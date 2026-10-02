@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp2a/desig11.C", line 8: error: a designator cannot be used with a non-aggregate type "int"
+  int x = foo ({.foo = 0});
+                 ^
+
+"./cpp2a/desig11.C", line 10: error: _Complex can only be used with floating-point types
+  int bar (_Complex int);
+           ^
+
+"./cpp2a/desig11.C", line 14: error: a designator cannot be used with a non-aggregate type "std::initializer_list<int>"
+  int z = baz ({.one = 1, .two = 2, .three = 3});
+                 ^
+
+3 errors detected in the compilation of "Test_name.c".

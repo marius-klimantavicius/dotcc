@@ -1,0 +1,1 @@
+cpfe -DTEST_NUMBER=2 --gcc -DFIX Test_name.c

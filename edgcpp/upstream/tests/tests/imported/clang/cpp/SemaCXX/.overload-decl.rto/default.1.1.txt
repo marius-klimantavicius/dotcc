@@ -1,0 +1,46 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 13: error: cannot overload functions distinguished by return type alone
+  int f(int, Float); // expected-error {{functions that differ only in their return type cannot be overloaded}}
+      ^
+
+"Test_name.c", line 16: error: cannot overload functions distinguished by return type alone
+  int g(); // expected-error {{functions that differ only in their return type cannot be overloaded}}
+      ^
+
+"Test_name.c", line 25: error: invalid redeclaration of member function "X::f(int)" (declared at line 22)
+    void f(INT); // expected-error{{cannot be redeclared}}
+         ^
+
+"Test_name.c", line 29: error: cannot overload functions distinguished by return type alone
+    int g(int, Float); // expected-error {{functions that differ only in their return type cannot be overloaded}}
+        ^
+
+"Test_name.c", line 32: error: invalid redeclaration of member function "X::g(int)" (declared at line 27)
+    static void g(int); // expected-error {{static and non-static member functions with the same parameter types cannot be overloaded}}
+                ^
+
+"Test_name.c", line 33: error: invalid redeclaration of member function "X::g(float)" (declared at line 31)
+    static void g(float); // expected-error {{class member cannot be redeclared}}
+                ^
+
+"Test_name.c", line 36: error: invalid redeclaration of member function "X::h()" (declared at line 35)
+    void h() __restrict; // expected-error {{class member cannot be redeclared}}
+         ^
+
+"Test_name.c", line 40: error: declaration is incompatible with previous "main" (declared at line 39)
+  int main(int,char**) {} // expected-error {{conflicting types for 'main'}}
+      ^
+
+"Test_name.c", line 40: warning: missing return statement at end of non-void function "main(int, char **)"
+  int main(int,char**) {} // expected-error {{conflicting types for 'main'}}
+                        ^
+
+"Test_name.c", line 47: error: static and nonstatic member functions with same parameter types cannot be overloaded
+    void f() const;
+         ^
+
+"Test_name.c", line 53: error: static and nonstatic member functions with same parameter types cannot be overloaded
+    static void f();
+                ^
+
+10 errors detected in the compilation of "Test_name.c".

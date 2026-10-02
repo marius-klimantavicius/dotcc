@@ -1,0 +1,13 @@
+eccp -DTEST_NUMBER=1 -r -x -tused --cfront_3.0 Test_name.c
+"Test_name.c", line 8: remark: declaration hides variable "i" (declared at line 6)
+      for (int i = 0; i < j; ++i) { }
+               ^
+
+"Test_name.c", line 6: warning: variable "i" was declared but never referenced
+    int i = 0;
+        ^
+
+"Test_name.c", line 12: remark: return type "int" omitted in declaration of function "main"
+  main() {
+  ^
+

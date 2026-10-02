@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: error: invalid type for a bit field
+    A: 0 // { dg-error "" }
+    ^
+
+"Test_name.c", line 9: error: expected a ";"
+  };
+  ^
+
+"Test_name.c", line 8: error: incomplete type "A<int>" is not allowed
+    A: 0 // { dg-error "" }
+     ^
+          detected during instantiation of class "A<<unnamed>> [with <unnamed>=int]" at line 11
+
+3 errors detected in the compilation of "Test_name.c".

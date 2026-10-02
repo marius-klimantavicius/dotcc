@@ -1,0 +1,49 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 21: warning: enumerated type mixed with another type
+  } s = { 12 }; // expected-warning {{implicit conversion from 'int' to enumeration type 'enum E1' is invalid in C++}} \
+          ^
+
+"Test_name.c", line 26: warning: enumerated type mixed with another type
+    enum E1 e = 12; // expected-warning {{implicit conversion from 'int' to enumeration type 'enum E1' is invalid in C++}} \
+                ^
+
+"Test_name.c", line 33: warning: enumerated type mixed with another type
+    e = x;    // expected-warning {{implicit conversion from 'int' to enumeration type 'enum E1' is invalid in C++}} \
+      ^
+
+"Test_name.c", line 35: warning: enumerated type mixed with another type
+    return x; // expected-warning {{implicit conversion from 'int' to enumeration type 'enum E1' is invalid in C++}} \
+           ^
+
+"Test_name.c", line 48: warning: enumerated type mixed with another type
+    enum E1 e1 = E2_Zero; // expected-warning {{implicit conversion from enumeration type 'enum E2' to different enumeration type 'enum E1'}} \
+                 ^
+
+"Test_name.c", line 50: warning: enumerated type mixed with another type
+    e1 = E2_Zero;         // expected-warning {{implicit conversion from enumeration type 'enum E2' to different enumeration type 'enum E1'}}   \
+       ^
+
+"Test_name.c", line 52: warning: enumerated type mixed with another type
+    return E2_Zero;       // expected-warning {{implicit conversion from enumeration type 'enum E2' to different enumeration type 'enum E1'}} \
+           ^
+
+"Test_name.c", line 48: warning: variable "e1" was set but never used
+    enum E1 e1 = E2_Zero; // expected-warning {{implicit conversion from enumeration type 'enum E2' to different enumeration type 'enum E1'}} \
+            ^
+
+"Test_name.c", line 63: warning: enumerated type mixed with another type
+      (x = 12,  // expected-warning {{implicit conversion from 'int' to enumeration type 'enum E1' is invalid in C++}} \
+         ^
+
+"Test_name.c", line 61: warning: variable "x" was set but never used
+    enum E1 x;
+            ^
+
+"Test_name.c", line 69: warning: variable "x" was declared but never referenced
+    enum E1 x;
+            ^
+
+"Test_name.c", line 74: warning: enumerated type mixed with another type
+    return ((void)1, 2); // expected-warning {{implicit conversion from 'int' to enumeration type 'enum E1' is invalid in C++}} \
+           ^
+

@@ -1,0 +1,104 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 15: warning: type "dep_int" was declared deprecated
+  dep_int dv; /* { dg-warning "deprecated" } */
+          ^
+"Test_name.c", line 13: note: because of a "deprecated" attribute
+  [[deprecated]] typedef int dep_int;
+    ^
+
+"Test_name.c", line 20: warning: function "f1" was declared deprecated
+    f1 (); /* { dg-warning "deprecated" } */
+    ^
+"Test_name.c", line 11: note: because of a "deprecated" attribute
+  [[deprecated]] void f1 (void);
+    ^
+
+"Test_name.c", line 27: warning: variable "a" was declared deprecated ("for this reason")
+    return a; /* { dg-warning "for this reason" } */
+           ^
+"Test_name.c", line 26: note: because of a "deprecated" attribute
+    [[deprecated ("for this reason")]] int a = 1;
+      ^
+
+"Test_name.c", line 34: warning: variable "a" was declared deprecated
+    return a; /* { dg-warning "deprecated" } */
+           ^
+"Test_name.c", line 33: note: because of a "deprecated" attribute
+    int a [[__deprecated__]] = 1;
+            ^
+
+"Test_name.c", line 42: warning: field "a" was declared deprecated ("some other message")
+    return x.a; /* { dg-warning "some other message" } */
+             ^
+"Test_name.c", line 37: note: because of a "deprecated" attribute
+  struct s2 { [[__deprecated__("some other message")]] int a; int b [[deprecated]]; } x;
+                ^
+
+"Test_name.c", line 48: warning: field "b" was declared deprecated
+    return x.b; /* { dg-warning "deprecated" } */
+             ^
+"Test_name.c", line 37: note: because of a "deprecated" attribute
+  struct s2 { [[__deprecated__("some other message")]] int a; int b [[deprecated]]; } x;
+                                                                      ^
+
+"Test_name.c", line 56: warning: constant "E1" was declared deprecated ("third message")
+    return E1; /* { dg-warning "third message" } */
+           ^
+"Test_name.c", line 51: note: because of a "deprecated" attribute
+  enum e { E1 [[deprecated("third message")]] };
+                ^
+
+"Test_name.c", line 62: warning: parameter "y" was declared deprecated
+    return y; /* { dg-warning "deprecated" } */
+           ^
+"Test_name.c", line 60: note: because of a "deprecated" attribute
+  f7 ([[deprecated]] int y)
+        ^
+
+"Test_name.c", line 70: warning: union "u" was declared deprecated
+    union u var; /* { dg-warning "deprecated" } */
+            ^
+"Test_name.c", line 65: note: because of a "deprecated" attribute
+  union [[__deprecated__]] u { int x; };
+          ^
+
+"Test_name.c", line 70: warning: variable "var" was declared but never referenced
+    union u var; /* { dg-warning "deprecated" } */
+            ^
+
+"Test_name.c", line 78: warning: enum "edep" was declared deprecated ("edep reason")
+    enum edep var; /* { dg-warning "edep reason" } */
+              ^
+"Test_name.c", line 73: note: because of a "deprecated" attribute
+  enum [[deprecated("edep reason")]] edep { E2 };
+         ^
+
+"Test_name.c", line 78: warning: variable "var" was declared but never referenced
+    enum edep var; /* { dg-warning "edep reason" } */
+              ^
+
+"Test_name.c", line 86: warning: field "a" was declared deprecated
+    return y.a; /* { dg-warning "deprecated" } */
+             ^
+"Test_name.c", line 81: note: because of a "deprecated" attribute
+  union u2 { [[__deprecated__]] int a; int b [[deprecated]]; } y;
+               ^
+
+"Test_name.c", line 92: warning: field "b" was declared deprecated
+    return y.b; /* { dg-warning "deprecated" } */
+             ^
+"Test_name.c", line 81: note: because of a "deprecated" attribute
+  union u2 { [[__deprecated__]] int a; int b [[deprecated]]; } y;
+                                               ^
+
+"Test_name.c", line 100: warning: struct "s" was declared deprecated
+    struct s var; /* { dg-warning "deprecated" } */
+             ^
+"Test_name.c", line 95: note: because of a "deprecated" attribute
+  struct [[deprecated]] s { int x; };
+           ^
+
+"Test_name.c", line 100: warning: variable "var" was declared but never referenced
+    struct s var; /* { dg-warning "deprecated" } */
+             ^
+

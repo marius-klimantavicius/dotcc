@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=3 --c++20 Test_name.c
+"Test_name.c", line 5: warning: comparison is ambiguous in standard C++20 because the implied comparison operator with reversed parameters is an equally good match -- this is usually caused by a missing "const" qualifier on the comparison operator; see "X::operator==" (declared at line 4)
+  bool b = X() == X();
+               ^
+

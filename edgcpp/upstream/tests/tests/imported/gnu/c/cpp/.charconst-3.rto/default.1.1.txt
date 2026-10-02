@@ -1,0 +1,17 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./cpp/charconst-3.c", line 20: warning: multicharacter character literal (potential portability problem)
+    if ('ab' != (int) ((unsigned char) 'a' * scale + (unsigned char) 'b'))
+        ^
+
+"./cpp/charconst-3.c", line 23: warning: multicharacter character literal (potential portability problem)
+    if ('\234b' != (int) ((unsigned char) '\234' * (unsigned int) scale + (unsigned char) 'b'))
+        ^
+
+"./cpp/charconst-3.c", line 26: warning: multicharacter character literal (potential portability problem)
+    if ('b\234' != (int) ((unsigned char) 'b' * scale + (unsigned char) '\234'))
+        ^
+
+"./cpp/charconst-3.c", line 39: warning: multicharacter character literal (potential portability problem)
+    if ('\234aaa' > 0)
+        ^
+

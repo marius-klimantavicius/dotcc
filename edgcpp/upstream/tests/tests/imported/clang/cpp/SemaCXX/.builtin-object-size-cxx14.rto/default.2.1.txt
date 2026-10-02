@@ -1,0 +1,84 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 37: error: expression must have a constant value
+  static_assert(bos0() == sizeof(char) * 5, "");
+                ^
+"Test_name.c", line 16: note: cannot call non-constexpr function "__builtin_object_size" (declared implicitly)
+    return __builtin_object_size(&cs[k], 0);
+           ^
+
+"Test_name.c", line 38: error: expression must have a constant value
+  static_assert(bos1() == sizeof(char) * 5, "");
+                ^
+"Test_name.c", line 22: note: cannot call non-constexpr function "__builtin_object_size" (declared implicitly)
+    return __builtin_object_size(&cs[k], 1);
+           ^
+
+"Test_name.c", line 39: error: expression must have a constant value
+  static_assert(bos2() == sizeof(char) * 5, "");
+                ^
+"Test_name.c", line 28: note: cannot call non-constexpr function "__builtin_object_size" (declared implicitly)
+    return __builtin_object_size(&cs[k], 2);
+           ^
+
+"Test_name.c", line 40: error: expression must have a constant value
+  static_assert(bos3() == sizeof(char) * 5, "");
+                ^
+"Test_name.c", line 34: note: cannot call non-constexpr function "__builtin_object_size" (declared implicitly)
+    return __builtin_object_size(&cs[k], 3);
+           ^
+
+"Test_name.c", line 72: error: function "in_enable_if::copy5CharsInto" cannot be called with the given argument list
+            argument types are: (char [6])
+    copy5CharsInto(buf);
+    ^
+
+"Test_name.c", line 75: error: function "in_enable_if::copy5CharsIntoStrict" cannot be called with the given argument list
+            argument types are: (char [6])
+    copy5CharsIntoStrict(large.buf);
+    ^
+
+"Test_name.c", line 80: error: function "in_enable_if::copy5CharsInto" cannot be called with the given argument list
+            argument types are: (char [6])
+    copy5CharsInto(buf);
+    ^
+
+"Test_name.c", line 83: error: function "in_enable_if::copy5CharsIntoStrict" cannot be called with the given argument list
+            argument types are: (char [6])
+    copy5CharsIntoStrict(large.buf);
+    ^
+
+"Test_name.c", line 91: error: function "in_enable_if::copy5CharsInto" cannot be called with the given argument list
+            argument types are: (char [6])
+    copy5CharsInto(buf);
+    ^
+
+"Test_name.c", line 96: error: function "in_enable_if::copy5CharsIntoStrict" cannot be called with the given argument list
+            argument types are: (char [6])
+    copy5CharsIntoStrict(large.buf);
+    ^
+
+"Test_name.c", line 101: error: function "in_enable_if::copy5CharsInto" cannot be called with the given argument list
+            argument types are: (char [5])
+    copy5CharsInto(buf); // expected-error{{no matching function for call}}
+    ^
+
+"Test_name.c", line 104: error: function "in_enable_if::copy5CharsIntoStrict" cannot be called with the given argument list
+            argument types are: (char [5])
+    copy5CharsIntoStrict(small.buf); // expected-error{{no matching function for call}}
+    ^
+
+"Test_name.c", line 112: error: expression must have a constant value
+    constexpr size_t bos_name = __builtin_object_size(invalid_base().name, 1);
+                                ^
+"Test_name.c", line 112: note: cannot call non-constexpr function "InvalidBase::invalid_base" (declared at line 111)
+    constexpr size_t bos_name = __builtin_object_size(invalid_base().name, 1);
+                                                      ^
+
+"Test_name.c", line 117: error: expression must have a constant value
+    constexpr size_t bos_dtor = __builtin_object_size(&(T&)(T&&)invalid_base_2(), 0);
+                                ^
+"Test_name.c", line 117: note: cannot call non-constexpr function "InvalidBase::invalid_base_2" (declared at line 116)
+    constexpr size_t bos_dtor = __builtin_object_size(&(T&)(T&&)invalid_base_2(), 0);
+                                                                ^
+
+14 errors detected in the compilation of "Test_name.c".

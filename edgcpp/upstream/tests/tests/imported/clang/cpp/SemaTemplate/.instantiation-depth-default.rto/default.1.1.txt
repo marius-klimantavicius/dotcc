@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 13: error: excessive recursion at instantiation of class "X<64, int ****************************************************************>"
+  template<int N, typename T> struct X : X<N+1, T*> {};
+                                         ^
+          detected during:
+            instantiation of class "X<N, T> [with N=63, T=int ***************************************************************]" at line 13
+            instantiation of class "X<N, T> [with N=62, T=int **************************************************************]" at line 13
+            instantiation of class "X<N, T> [with N=61, T=int *************************************************************]" at line 13
+            instantiation of class "X<N, T> [with N=60, T=int ************************************************************]" at line 13
+            instantiation of class "X<N, T> [with N=59, T=int ***********************************************************]" at line 13
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "X<N, T> [with N=4, T=int ****]" at line 13
+            instantiation of class "X<N, T> [with N=3, T=int ***]" at line 13
+            instantiation of class "X<N, T> [with N=2, T=int **]" at line 13
+            instantiation of class "X<N, T> [with N=1, T=int *]" at line 13
+            instantiation of class "X<N, T> [with N=0, T=int]" at line 19
+
+"Test_name.c", line 13: error: incomplete type "X<64, int ****************************************************************>" is not allowed
+  template<int N, typename T> struct X : X<N+1, T*> {};
+                                         ^
+          detected during:
+            instantiation of class "X<N, T> [with N=63, T=int ***************************************************************]" at line 13
+            instantiation of class "X<N, T> [with N=62, T=int **************************************************************]" at line 13
+            instantiation of class "X<N, T> [with N=61, T=int *************************************************************]" at line 13
+            instantiation of class "X<N, T> [with N=60, T=int ************************************************************]" at line 13
+            instantiation of class "X<N, T> [with N=59, T=int ***********************************************************]" at line 13
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "X<N, T> [with N=4, T=int ****]" at line 13
+            instantiation of class "X<N, T> [with N=3, T=int ***]" at line 13
+            instantiation of class "X<N, T> [with N=2, T=int **]" at line 13
+            instantiation of class "X<N, T> [with N=1, T=int *]" at line 13
+            instantiation of class "X<N, T> [with N=0, T=int]" at line 19
+
+2 errors detected in the compilation of "Test_name.c".

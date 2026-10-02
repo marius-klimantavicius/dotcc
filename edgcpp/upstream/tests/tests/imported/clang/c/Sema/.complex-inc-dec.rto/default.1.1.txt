@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c99 Test_name.c
+"Test_name.c", line 10: warning: variable "cf" is used before its value is set
+    ++cf;  // expected-warning {{'++' on an object of complex type is a C2y extension}}
+      ^
+
+"Test_name.c", line 11: warning: variable "cd" is used before its value is set
+    ++cd;  // expected-warning {{'++' on an object of complex type is a C2y extension}}
+      ^
+
+"Test_name.c", line 12: warning: variable "cld" is used before its value is set
+    ++cld; // expected-warning {{'++' on an object of complex type is a C2y extension}}
+      ^
+

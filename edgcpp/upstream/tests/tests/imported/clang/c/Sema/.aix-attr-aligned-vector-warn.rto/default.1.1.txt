@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 6: error: identifier "vector" is undefined
+  int escape(vector int*);
+             ^
+
+"Test_name.c", line 6: error: invalid combination of type specifiers
+  int escape(vector int*);
+                    ^
+
+"Test_name.c", line 8: warning: explicit type is missing ("int" assumed)
+  typedef vector int __attribute__((aligned(8))) UnderAlignedVI;
+          ^
+
+"Test_name.c", line 8: error: expected a ";"
+  typedef vector int __attribute__((aligned(8))) UnderAlignedVI;
+                 ^
+
+"Test_name.c", line 9: error: identifier "UnderAlignedVI" is undefined
+  UnderAlignedVI TypedefedGlobal;
+  ^
+
+"Test_name.c", line 11: error: invalid combination of type specifiers
+  vector int V __attribute__((aligned(8))); // expected-warning {{requested alignment is less than minimum alignment of 16 for type '__vector int' (vector of 4 'int' values)}}
+         ^
+
+"Test_name.c", line 12: error: invalid combination of type specifiers
+  vector int V __attribute__((aligned(8))); // expected-warning {{requested alignment is less than minimum alignment of 16 for type '__vector int' (vector of 4 'int' values)}}
+         ^
+
+"Test_name.c", line 15: error: identifier "UnderAlignedVI" is undefined
+    UnderAlignedVI TypedefedLocal;
+    ^
+
+7 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 14: error: no instance of "foobar" matches the argument list
+            argument types are: (S<double>, int)
+    foobar(S<double>{}, int{}); // { dg-error "" }
+    ^
+"Test_name.c", line 9: note: substituting "<int>" for function template "foobar" failed constraints
+    friend void foobar(S, t2) {}
+                ^
+Note: atomic constraint evaluates to false
+
+1 error detected in the compilation of "Test_name.c".

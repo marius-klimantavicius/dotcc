@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --exceptions --exceptions Test_name.c
+"Test_name.c", line 30: error: class "A" has no member "y"
+  void f(T, U*) noexcept(T::y); // #2
+                            ^
+          detected during instantiation of "void N1::f(T, U *) [with T=A, U=int]" at line 36
+
+"Test_name.c", line 50: error: class "A" has no member "y"
+  void f(T, U**) noexcept(T::y); // expected-error {{no member named 'y' in 'A'}}
+                             ^
+          detected during instantiation of "void N2::f(T, U **) [with T=A, U=int]" at line 62
+
+"Test_name.c", line 97: error: class "A" has no member "y"
+  void f(T, U*) noexcept(T::y); // #2
+                            ^
+          detected during instantiation of "void N4::f(T, U *) [with T=A, U=int]" at line 102
+
+3 errors detected in the compilation of "Test_name.c".

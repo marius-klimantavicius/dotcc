@@ -1,0 +1,9 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --microsoft -n Test_name.c
+"Test_name.c", line 15: warning: missing return statement at end of non-void function "IST(PM)"
+  inline int IST(PM pmc) { }
+                           ^
+
+"Test_name.c", line 15: remark: parameter "pmc" was never referenced
+  inline int IST(PM pmc) { }
+                    ^
+

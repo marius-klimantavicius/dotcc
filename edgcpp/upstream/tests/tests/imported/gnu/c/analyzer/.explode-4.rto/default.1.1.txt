@@ -1,0 +1,201 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 61: warning: function "USB_DEVICE" declared implicitly
+    USBDevice *udev = USB_DEVICE(s);
+                      ^
+
+"Test_name.c", line 61: warning: a value of type "int" cannot be used to initialize an entity of type "USBDevice *" (aka "struct USBDevice *")
+    USBDevice *udev = USB_DEVICE(s);
+                      ^
+
+"Test_name.c", line 69: warning: function "usb_ep_reset" declared implicitly
+    usb_ep_reset(udev);
+    ^
+
+"Test_name.c", line 70: warning: function "libusb_get_active_config_descriptor" declared implicitly
+    rc = libusb_get_active_config_descriptor(s->dev, &conf);
+         ^
+
+"Test_name.c", line 73: warning: function "trace_usb_host_parse_interface" declared implicitly
+      trace_usb_host_parse_interface();
+      ^
+
+"Test_name.c", line 79: warning: function "usb_ep_get_type" declared implicitly
+        if (usb_ep_get_type(udev) != 255) {
+            ^
+
+"Test_name.c", line 80: warning: function "trace_usb_host_parse_error" declared implicitly
+          trace_usb_host_parse_error();
+          ^
+
+"Test_name.c", line 82: warning: function "trace_usb_host_parse_endpoint" declared implicitly
+        trace_usb_host_parse_endpoint(s->bus_num, s->addr);
+        ^
+
+"Test_name.c", line 83: warning: function "usb_ep_set_max_packet_size" declared implicitly
+        usb_ep_set_max_packet_size(udev);
+        ^
+
+"Test_name.c", line 84: warning: function "usb_ep_set_type" declared implicitly
+        usb_ep_set_type(udev);
+        ^
+
+"Test_name.c", line 85: warning: function "usb_ep_set_ifnum" declared implicitly
+        usb_ep_set_ifnum(udev);
+        ^
+
+"Test_name.c", line 86: warning: function "usb_ep_set_halted" declared implicitly
+        usb_ep_set_halted(udev);
+        ^
+
+"Test_name.c", line 88: warning: function "libusb_get_ss_endpoint_companion_descriptor" declared implicitly
+            libusb_get_ss_endpoint_companion_descriptor(
+            ^
+
+"Test_name.c", line 90: warning: function "usb_ep_set_max_streams" declared implicitly
+          usb_ep_set_max_streams(udev);
+          ^
+
+"Test_name.c", line 91: warning: function "libusb_free_ss_endpoint_companion_descriptor" declared implicitly
+          libusb_free_ss_endpoint_companion_descriptor(endp_ss_comp);
+          ^
+
+"Test_name.c", line 60: warning: variable "tname" was declared but never referenced
+    static const char *tname[] = {};
+                       ^
+
+"Test_name.c", line 67: warning: variable "ep" was set but never used
+    int ep;
+        ^
+
+"Test_name.c", line 68: warning: variable "rc" was set but never used
+    int rc, i, e;
+        ^
+
+"Test_name.c", line 97: warning: function "USB_DEVICE" declared implicitly
+    USBDevice *udev = USB_DEVICE(s);
+                      ^
+
+"Test_name.c", line 97: warning: a value of type "int" cannot be used to initialize an entity of type "USBDevice *" (aka "struct USBDevice *")
+    USBDevice *udev = USB_DEVICE(s);
+                      ^
+
+"Test_name.c", line 102: warning: function "libusb_get_bus_number" declared implicitly
+      bus_num = libusb_get_bus_number(dev);
+                ^
+
+"Test_name.c", line 103: warning: function "libusb_get_device_address" declared implicitly
+      addr = libusb_get_device_address(dev);
+             ^
+
+"Test_name.c", line 104: warning: function "trace_usb_host_open_started" declared implicitly
+      trace_usb_host_open_started(bus_num, addr);
+      ^
+
+"Test_name.c", line 105: warning: function "libusb_open" declared implicitly
+      libusb_open(dev, &s->dh);
+      ^
+
+"Test_name.c", line 106: warning: function "trace_usb_host_open_hostfd" declared implicitly
+      trace_usb_host_open_hostfd(hostfd);
+      ^
+
+"Test_name.c", line 107: warning: function "libusb_wrap_sys_device" declared implicitly
+      libusb_wrap_sys_device(ctx, &s->dh);
+      ^
+
+"Test_name.c", line 108: warning: function "libusb_get_device" declared implicitly
+      dev = libusb_get_device(s->dh);
+            ^
+
+"Test_name.c", line 108: warning: a value of type "int" cannot be assigned to an entity of type "libusb_device *" (aka "struct libusb_device *")
+      dev = libusb_get_device(s->dh);
+          ^
+
+"Test_name.c", line 112: warning: function "usb_host_detach_kernel" declared implicitly
+    usb_host_detach_kernel(s);
+    ^
+
+"Test_name.c", line 113: warning: function "libusb_get_device_descriptor" declared implicitly
+    libusb_get_device_descriptor(dev, &s->ddesc);
+    ^
+
+"Test_name.c", line 114: warning: function "usb_host_get_port" declared implicitly
+    usb_host_get_port(s->dev, s->port, sizeof(s->port));
+    ^
+
+"Test_name.c", line 115: warning: function "usb_ep_init" declared implicitly
+    usb_ep_init(udev);
+    ^
+
+"Test_name.c", line 117: warning: function "libusb_get_device_speed" declared implicitly
+    libusb_get_device_speed(dev);
+    ^
+
+"Test_name.c", line 118: warning: function "usb_device_attach" declared implicitly
+    usb_device_attach(udev, &local_err);
+    ^
+
+"Test_name.c", line 120: warning: function "error_report_err" declared implicitly
+      error_report_err(local_err);
+      ^
+
+"Test_name.c", line 125: warning: function "trace_usb_host_open_failure" declared implicitly
+    trace_usb_host_open_failure();
+    ^
+
+"Test_name.c", line 127: warning: function "usb_host_release_interfaces" declared implicitly
+      usb_host_release_interfaces(s);
+      ^
+
+"Test_name.c", line 128: warning: function "libusb_reset_device" declared implicitly
+      libusb_reset_device(s->dh);
+      ^
+
+"Test_name.c", line 129: warning: function "usb_host_attach_kernel" declared implicitly
+      usb_host_attach_kernel(s);
+      ^
+
+"Test_name.c", line 131: warning: missing return statement at end of non-void function "usb_host_open"
+  }
+  ^
+
+"Test_name.c", line 140: warning: function "usb_host_init" declared implicitly
+    if (usb_host_init() != 0) {
+        ^
+
+"Test_name.c", line 141: warning: function "libusb_get_device_list" declared implicitly
+      n = libusb_get_device_list(ctx, &devs);
+          ^
+
+"Test_name.c", line 143: warning: function "libusb_get_device_descriptor" declared implicitly
+        if (libusb_get_device_descriptor(devs[i], &ddesc) != 0) {
+            ^
+
+"Test_name.c", line 147: warning: function "libusb_get_bus_number" declared implicitly
+          if (f->bus_num > 0 && f->bus_num != libusb_get_bus_number(devs[i])) {
+                                              ^
+
+"Test_name.c", line 153: warning: function "libusb_free_device_list" declared implicitly
+      libusb_free_device_list(devs, 1);
+      ^
+
+"Test_name.c", line 154: warning: function "qemu_add_vm_change_state_handler" declared implicitly
+      qemu_add_vm_change_state_handler(usb_host_vm_state, NULL);
+      ^
+
+"Test_name.c", line 155: warning: function "timer_new_ms" declared implicitly
+      timer_new_ms(usb_host_auto_check, NULL);
+      ^
+
+"Test_name.c", line 156: warning: function "trace_usb_host_auto_scan_enabled" declared implicitly
+      trace_usb_host_auto_scan_enabled();
+      ^
+
+"Test_name.c", line 158: warning: function "timer_mod" declared implicitly
+    timer_mod(usb_auto_timer, qemu_clock_get_ms() + 2000);
+    ^
+
+"Test_name.c", line 158: warning: function "qemu_clock_get_ms" declared implicitly
+    timer_mod(usb_auto_timer, qemu_clock_get_ms() + 2000);
+                              ^
+

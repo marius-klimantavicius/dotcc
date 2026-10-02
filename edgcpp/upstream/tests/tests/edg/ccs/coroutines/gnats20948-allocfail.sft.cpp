@@ -1,0 +1,25 @@
+//type:fp
+//options_all:--c++20 --set_flag coroutines -tused
+
+#include <coroutine>
+using namespace std;
+
+typedef decltype(sizeof(int)) size_t;
+
+namespace std { struct nothrow_t {}; }
+void* operator new(size_t, const nothrow_t&);
+
+struct A {
+  struct promise_type {
+    void return_void();
+    A get_return_object();
+    static A get_return_object_on_allocation_failure();
+    auto initial_suspend() { return suspend_always{}; }
+    auto final_suspend() noexcept { return suspend_always{}; }
+    void unhandled_exception();
+  };
+};
+
+A f(int, float) {
+  co_return;
+}

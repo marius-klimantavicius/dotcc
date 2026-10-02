@@ -1,0 +1,169 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 11: warning: unrecognized #pragma
+  #pragma omp threadprivate (t)
+          ^
+
+"Test_name.c", line 22: warning: unrecognized #pragma
+  #pragma omp p shared (x, x) // { dg-error "more than once" }
+          ^
+
+"Test_name.c", line 24: warning: unrecognized #pragma
+  #pragma omp p private (x) private (x) // { dg-error "more than once" }
+          ^
+
+"Test_name.c", line 26: warning: unrecognized #pragma
+  #pragma omp p shared (x) firstprivate (x) // { dg-error "more than once" }
+          ^
+
+"Test_name.c", line 28: warning: unrecognized #pragma
+  #pragma omp p firstprivate (x, x) // { dg-error "more than once" }
+          ^
+
+"Test_name.c", line 30: warning: unrecognized #pragma
+  #pragma omp p for shared (x) lastprivate (x) // { dg-error "more than once" }
+          ^
+
+"Test_name.c", line 33: warning: unrecognized #pragma
+  #pragma omp p for private (x) lastprivate (x) // { dg-error "more than once" }
+          ^
+
+"Test_name.c", line 36: warning: unrecognized #pragma
+  #pragma omp p for lastprivate (x, x) // { dg-error "more than once" }
+          ^
+
+"Test_name.c", line 39: warning: unrecognized #pragma
+  #pragma omp p for linear (x, x) // { dg-error "more than once" }
+          ^
+
+"Test_name.c", line 42: warning: unrecognized #pragma
+  #pragma omp single private (x) copyprivate (x) // { dg-error "more than once" }
+          ^
+
+"Test_name.c", line 44: warning: unrecognized #pragma
+  #pragma omp p shared (bar) // { dg-error "is not a variable" }
+          ^
+
+"Test_name.c", line 46: warning: unrecognized #pragma
+  #pragma omp p private (bar) // { dg-error "is not a variable" }
+          ^
+
+"Test_name.c", line 48: warning: unrecognized #pragma
+  #pragma omp p firstprivate (bar) // { dg-error "is not a variable" }
+          ^
+
+"Test_name.c", line 50: warning: unrecognized #pragma
+  #pragma omp p reduction (+:pp) // { dg-error "user defined reduction not found for" }
+          ^
+
+"Test_name.c", line 52: warning: unrecognized #pragma
+  #pragma omp p reduction (*:s) // { dg-error "user defined reduction not found for" }
+          ^
+
+"Test_name.c", line 54: warning: unrecognized #pragma
+  #pragma omp p reduction (-:a)
+          ^
+
+"Test_name.c", line 57: warning: unrecognized #pragma
+  #pragma omp p reduction (*:d)
+          ^
+
+"Test_name.c", line 59: warning: unrecognized #pragma
+  #pragma omp p reduction (|:d) // { dg-error "user defined reduction not found for" }
+          ^
+
+"Test_name.c", line 61: warning: unrecognized #pragma
+  #pragma omp p reduction (&:d) // { dg-error "user defined reduction not found for" }
+          ^
+
+"Test_name.c", line 63: warning: unrecognized #pragma
+  #pragma omp p copyin (d) // { dg-error "must be 'threadprivate'" }
+          ^
+
+"Test_name.c", line 65: warning: unrecognized #pragma
+  #pragma omp p copyin (x) // { dg-error "must be 'threadprivate'" }
+          ^
+
+"Test_name.c", line 67: warning: unrecognized #pragma
+  #pragma omp p for firstprivate (x) lastprivate (x)
+          ^
+
+"Test_name.c", line 70: warning: unrecognized #pragma
+  #pragma omp p private (q) // { dg-error "unspecified bounds" }
+          ^
+
+"Test_name.c", line 72: warning: unrecognized #pragma
+  #pragma omp p firstprivate (q) // { dg-error "unspecified bounds" }
+          ^
+
+"Test_name.c", line 74: warning: unrecognized #pragma
+  #pragma omp p for lastprivate (q) // { dg-error "unspecified bounds" }
+          ^
+
+"Test_name.c", line 77: warning: unrecognized #pragma
+  #pragma omp p shared (t) // { dg-error "predetermined 'threadprivate'" }
+          ^
+
+"Test_name.c", line 79: warning: unrecognized #pragma
+  #pragma omp p private (t) // { dg-error "predetermined 'threadprivate'" }
+          ^
+
+"Test_name.c", line 81: warning: unrecognized #pragma
+  #pragma omp p firstprivate (t) // { dg-error "predetermined 'threadprivate'" }
+          ^
+
+"Test_name.c", line 83: warning: unrecognized #pragma
+  #pragma omp p for lastprivate (t) // { dg-error "predetermined 'threadpriv" }
+          ^
+
+"Test_name.c", line 86: warning: unrecognized #pragma
+  #pragma omp p reduction (*:t) // { dg-error "predetermined 'threadprivate'" }
+          ^
+
+"Test_name.c", line 88: warning: unrecognized #pragma
+  #pragma omp p for linear (t) // { dg-error "predetermined 'threadprivate'" }
+          ^
+
+"Test_name.c", line 91: warning: unrecognized #pragma
+  #pragma omp p shared (c)
+          ^
+
+"Test_name.c", line 93: warning: unrecognized #pragma
+  #pragma omp p private (c) // { dg-error "may appear only in 'shared' or 'firstprivate' clauses" }
+          ^
+
+"Test_name.c", line 95: warning: unrecognized #pragma
+  #pragma omp p firstprivate (c)
+          ^
+
+"Test_name.c", line 97: warning: unrecognized #pragma
+  #pragma omp p for lastprivate (c) // { dg-error "may appear only in 'shared' or 'firstprivate' clauses" }
+          ^
+
+"Test_name.c", line 100: warning: unrecognized #pragma
+  #pragma omp p reduction (*:c) // { dg-error "may appear only in 'shared' or 'firstprivate' clauses" }
+          ^
+
+"Test_name.c", line 102: warning: unrecognized #pragma
+  #pragma omp p for linear (c:2) // { dg-error "may appear only in 'shared' or 'firstprivate' clauses" }
+          ^
+
+"Test_name.c", line 16: warning: variable "pp" was declared but never referenced
+    char *pp;
+          ^
+
+"Test_name.c", line 17: warning: variable "s" was declared but never referenced
+    struct S { int i; int j; } s;
+                               ^
+
+"Test_name.c", line 18: warning: variable "a" was declared but never referenced
+    char a[32];
+         ^
+
+"Test_name.c", line 19: warning: variable "d" was set but never used
+    double d;
+           ^
+
+"Test_name.c", line 21: warning: variable "c" was declared but never referenced
+    const int c = 8;
+              ^
+

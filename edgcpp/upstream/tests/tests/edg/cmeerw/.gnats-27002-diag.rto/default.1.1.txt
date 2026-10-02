@@ -1,0 +1,28 @@
+fe_only -DTEST_NUMBER=1 --c++20 -A Test_name.c
+"Test_name.c", line 17: error: missing co_return statement while "std::coroutine_traits<X, const lambda [](int)->X *, int>::promise_type" (aka "X::promise_type") has no "return_void" at end of function "lambda [](int)->X"
+  auto l1 = [] (int) -> X {
+               ^
+
+"Test_name.c", line 21: error: missing co_return statement while "std::coroutine_traits<X, const lambda [](int)->X *, int>::promise_type" (aka "X::promise_type") has no "return_void" at end of function "lambda [](int)->X"
+  auto l2 = []<typename T = void> (int) -> X {
+              ^
+
+"Test_name.c", line 25: error: missing co_return statement while "std::coroutine_traits<X, const lambda [](auto)->X *, int>::promise_type" (aka "X::promise_type") has no "return_void" at end of function "lambda [](auto)->X [with <auto-1>=int]"
+  auto l3 = [] (auto) -> X {
+               ^
+          detected during instantiation of function "lambda [](auto)->X [with <auto-1>=int]" at line 27
+
+"Test_name.c", line 31: error: "std::coroutine_traits<X, const lambda [](int)->X *, int>::promise_type" (aka "X::promise_type") has no member "return_void"
+    co_return;
+    ^
+
+"Test_name.c", line 36: error: "std::coroutine_traits<X, const lambda [](int)->X *, int>::promise_type" (aka "X::promise_type") has no member "return_void"
+    co_return;
+    ^
+
+"Test_name.c", line 41: error: "std::coroutine_traits<X, const lambda [](auto)->X *, int>::promise_type" (aka "X::promise_type") has no member "return_void"
+    co_return;
+    ^
+          detected during instantiation of function "lambda [](auto)->X [with <auto-1>=int]" at line 42
+
+6 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 7: warning: operator may not be a static member function
+    static int &operator[] (int);	// { dg-warning "may be a static member function only with" "" { target c++20_down } }
+                ^
+
+"Test_name.c", line 8: warning: operator may not be a static member function
+    static int &operator[] ();	// { dg-warning "may be a static member function only with" "" { target c++20_down } }
+                ^
+
+"Test_name.c", line 8: error: too few parameters for this operator function
+    static int &operator[] ();	// { dg-warning "may be a static member function only with" "" { target c++20_down } }
+                ^
+
+"Test_name.c", line 10: warning: operator may not be a static member function
+    static int &operator[] (int, int, int);	// { dg-warning "may be a static member function only with" "" { target c++20_down } }
+                ^
+
+"Test_name.c", line 10: error: too many parameters for this operator function
+    static int &operator[] (int, int, int);	// { dg-warning "may be a static member function only with" "" { target c++20_down } }
+                ^
+
+2 errors detected in the compilation of "Test_name.c".

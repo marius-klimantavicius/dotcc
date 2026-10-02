@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 8: warning: missing return statement at end of non-void function "add_struct_3"
+  struct s_3 add_struct_3 (struct s_3 s){}
+                                         ^
+
+"Test_name.c", line 9: warning: explicit type is missing ("int" assumed)
+  wack_struct_3 (void)
+  ^
+
+"Test_name.c", line 11: warning: variable "i" was declared but never referenced
+    int i; register struct s_3 u = z_3;
+        ^
+

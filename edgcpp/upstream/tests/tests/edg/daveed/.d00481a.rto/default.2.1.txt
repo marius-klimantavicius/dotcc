@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=2 --upc Test_name.c
+"Test_name.c", line 14: error: expression must have a constant value
+  int a[THREADS];
+        ^
+
+1 error detected in the compilation of "Test_name.c".

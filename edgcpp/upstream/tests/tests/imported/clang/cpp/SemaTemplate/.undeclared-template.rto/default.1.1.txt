@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 5: error: notdefined is not a template
+  template<typename T> notdefined<T::any> PR45207; // expected-error {{no template named 'notdefined'}}
+                       ^
+
+"Test_name.c", line 8: error: identifier "notdefined" is undefined
+  template<typename T> int var_template(notdefined<T::any>); // expected-error {{undeclared identifier 'notdefined'}} expected-error {{expected expression}}
+                                        ^
+
+"Test_name.c", line 11: error: expected an expression
+  template<typename T> int fn_template(notdefined<T::any>, int); // expected-error {{undeclared identifier 'notdefined'}} expected-error {{expected expression}} expected-error {{expected '('}}
+                                                         ^
+
+"Test_name.c", line 11: error: type name is not allowed
+  template<typename T> int fn_template(notdefined<T::any>, int); // expected-error {{undeclared identifier 'notdefined'}} expected-error {{expected expression}} expected-error {{expected '('}}
+                                                           ^
+
+"Test_name.c", line 11: error: too many initializer values
+  template<typename T> int fn_template(notdefined<T::any>, int); // expected-error {{undeclared identifier 'notdefined'}} expected-error {{expected expression}} expected-error {{expected '('}}
+                                                           ^
+
+5 errors detected in the compilation of "Test_name.c".

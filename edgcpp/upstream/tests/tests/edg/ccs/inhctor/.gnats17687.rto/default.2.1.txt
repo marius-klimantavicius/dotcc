@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=2 --c++17 -DNEG Test_name.c
+"Test_name.c", line 28: error: more than one instance of constructor "D1::D1" matches the argument list:
+            function "B1::B1(int)" (declared at line 9), inherited via using decl at line 22
+            function "B2::B2(int)" (declared at line 16), inherited via using decl at line 23
+            argument types are: (int)
+  D1 d1(0);    // ill-formed: ambiguous
+        ^
+"Test_name.c", line 21: note: number of parameters of function "D1::D1()" does not match the call
+  struct D1 : B1, B2 {
+         ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,268 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --exceptions --exceptions --c++03 --exceptions --exceptions Test_name.c
+"Test_name.c", line 15: warning: declaration of "i" hides handler parameter
+      int i; // expected-error {{redefinition of 'i'}}
+          ^
+
+"Test_name.c", line 14: warning: variable "j" was declared but never referenced
+      int j = i;
+          ^
+
+"Test_name.c", line 15: warning: variable "i" was declared but never referenced
+      int i; // expected-error {{redefinition of 'i'}}
+          ^
+
+"Test_name.c", line 17: error: incomplete type "void" is not allowed
+    } catch(void v) { // expected-error {{cannot catch incomplete type 'void'}}
+            ^
+
+"Test_name.c", line 18: error: incomplete type "A" is not allowed
+    } catch(A a) { // expected-error {{cannot catch incomplete type 'A'}}
+            ^
+
+"Test_name.c", line 19: error: pointer or reference to incomplete type "A" is not allowed
+    } catch(A *a) { // expected-error {{cannot catch pointer to incomplete type 'A'}}
+            ^
+
+"Test_name.c", line 20: error: pointer or reference to incomplete type "A" is not allowed
+    } catch(A &a) { // expected-error {{cannot catch reference to incomplete type 'A'}}
+            ^
+
+"Test_name.c", line 21: error: abstract class type "Abstract" is not allowed as catch type:
+            function "Abstract::f" is a pure virtual function
+    } catch(Abstract) { // expected-error {{variable type 'Abstract' is an abstract class}}
+            ^
+
+"Test_name.c", line 25: warning: variable "ref" was declared but never referenced
+        int ref = k;
+            ^
+
+"Test_name.c", line 27: error: identifier "i" is undefined
+      int j = i; // expected-error {{use of undeclared identifier 'i'}}
+              ^
+
+"Test_name.c", line 23: warning: variable "ref" was declared but never referenced
+      int ref = k;
+          ^
+
+"Test_name.c", line 32: error: handler is masked by default handler
+    } catch(int) {
+            ^
+
+"Test_name.c", line 38: warning: statement is unreachable
+    throw 0;
+    ^
+
+"Test_name.c", line 39: warning: statement is unreachable
+    throw throw; // expected-error {{cannot throw object of incomplete type 'void'}}
+    ^
+
+"Test_name.c", line 39: error: a throw expression may not have void type
+    throw throw; // expected-error {{cannot throw object of incomplete type 'void'}}
+          ^
+
+"Test_name.c", line 40: warning: statement is unreachable
+    throw (A*)0; // expected-error {{cannot throw pointer to object of incomplete type 'A'}}
+    ^
+
+"Test_name.c", line 40: error: a throw expression may not have pointer-to-incomplete type
+    throw (A*)0; // expected-error {{cannot throw pointer to object of incomplete type 'A'}}
+          ^
+
+"Test_name.c", line 46: warning: statement is unreachable
+    goto l4; // expected-error {{cannot jump}}
+    ^
+
+"Test_name.c", line 47: warning: statement is unreachable
+    goto l3; // expected-error {{cannot jump}}
+    ^
+
+"Test_name.c", line 48: warning: statement is unreachable
+    goto l2; // expected-error {{cannot jump}}
+    ^
+
+"Test_name.c", line 49: warning: statement is unreachable
+    goto l1;
+    ^
+
+"Test_name.c", line 50: warning: statement is unreachable
+    try { // expected-note 4 {{jump bypasses initialization of try block}}
+    ^
+
+"Test_name.c", line 48: error: transfer of control into a try block
+    goto l2; // expected-error {{cannot jump}}
+    ^
+
+"Test_name.c", line 53: warning: statement is unreachable
+      goto l4; // expected-error {{cannot jump}}
+      ^
+
+"Test_name.c", line 54: warning: statement is unreachable
+      goto l3; // expected-error {{cannot jump}}
+      ^
+
+"Test_name.c", line 55: warning: statement is unreachable
+      goto l2;
+      ^
+
+"Test_name.c", line 56: warning: statement is unreachable
+      goto l1;
+      ^
+
+"Test_name.c", line 47: error: transfer of control into an exception handler
+    goto l3; // expected-error {{cannot jump}}
+    ^
+
+"Test_name.c", line 54: error: transfer of control into an exception handler
+      goto l3; // expected-error {{cannot jump}}
+      ^
+
+"Test_name.c", line 60: warning: statement is unreachable
+      goto l4; // expected-error {{cannot jump}}
+      ^
+
+"Test_name.c", line 61: warning: statement is unreachable
+      goto l3;
+      ^
+
+"Test_name.c", line 62: warning: statement is unreachable
+      goto l2; // expected-error {{cannot jump}}
+      ^
+
+"Test_name.c", line 62: error: transfer of control into a try block
+      goto l2; // expected-error {{cannot jump}}
+      ^
+
+"Test_name.c", line 63: warning: statement is unreachable
+      goto l1;
+      ^
+
+"Test_name.c", line 46: error: transfer of control into an exception handler
+    goto l4; // expected-error {{cannot jump}}
+    ^
+
+"Test_name.c", line 53: error: transfer of control into an exception handler
+      goto l4; // expected-error {{cannot jump}}
+      ^
+
+"Test_name.c", line 60: error: transfer of control into an exception handler
+      goto l4; // expected-error {{cannot jump}}
+      ^
+
+"Test_name.c", line 67: warning: statement is unreachable
+      goto l4;
+      ^
+
+"Test_name.c", line 68: warning: statement is unreachable
+      goto l3; // expected-error {{cannot jump}}
+      ^
+
+"Test_name.c", line 68: error: transfer of control into an exception handler
+      goto l3; // expected-error {{cannot jump}}
+      ^
+
+"Test_name.c", line 69: warning: statement is unreachable
+      goto l2; // expected-error {{cannot jump}}
+      ^
+
+"Test_name.c", line 69: error: transfer of control into a try block
+      goto l2; // expected-error {{cannot jump}}
+      ^
+
+"Test_name.c", line 70: warning: statement is unreachable
+      goto l1;
+      ^
+
+"Test_name.c", line 74: warning: statement is unreachable
+    goto l4; // expected-error {{cannot jump}}
+    ^
+
+"Test_name.c", line 74: error: transfer of control into an exception handler
+    goto l4; // expected-error {{cannot jump}}
+    ^
+
+"Test_name.c", line 75: warning: statement is unreachable
+    goto l3; // expected-error {{cannot jump}}
+    ^
+
+"Test_name.c", line 75: error: transfer of control into an exception handler
+    goto l3; // expected-error {{cannot jump}}
+    ^
+
+"Test_name.c", line 76: warning: statement is unreachable
+    goto l2; // expected-error {{cannot jump}}
+    ^
+
+"Test_name.c", line 76: error: transfer of control into a try block
+    goto l2; // expected-error {{cannot jump}}
+    ^
+
+"Test_name.c", line 77: warning: statement is unreachable
+    goto l1;
+    ^
+
+"Test_name.c", line 88: error: a return statement is not allowed in a handler of a function try block of a constructor
+            return; // expected-error {{return in the catch of a function try block of a constructor is illegal}}
+            ^
+
+"Test_name.c", line 100: error: a return statement is not allowed in a handler of a function try block of a constructor
+      return; // expected-error {{return in the catch of a function try block of a constructor is illegal}}
+      ^
+
+"Test_name.c", line 104: error: a return statement is not allowed in a handler of a function try block of a constructor
+          return; // expected-error {{return in the catch of a function try block of a constructor is illegal}}
+          ^
+
+"Test_name.c", line 114: error: object of abstract class type "foo" is not allowed:
+            function "foo::test" is a pure virtual function
+      throw *this; // expected-error{{cannot throw an object of abstract type 'foo'}}
+            ^
+
+"Test_name.c", line 166: warning: rvalue references are a C++11 feature
+  void rval_ref() throw (int &&); // expected-error {{rvalue reference type 'int &&' is not allowed in exception specification}}
+                             ^
+
+"Test_name.c", line 180: warning: handler is potentially masked by previous handler for type "HandlerInversion::B &"
+    } catch (D &d) { // expected-warning {{exception of type 'D &' will be caught by earlier handler}}
+             ^
+
+"Test_name.c", line 187: warning: handler is potentially masked by previous handler for type "HandlerInversion::B *"
+    } catch (D *d) { // expected-warning {{exception of type 'D *' will be caught by earlier handler}}
+             ^
+
+"Test_name.c", line 214: warning: handler is potentially masked by previous handler for type "HandlerInversion::B &"
+    } catch (D2 &d) {  // expected-warning {{exception of type 'D2 &' will be caught by earlier handler}}
+             ^
+
+"Test_name.c", line 233: warning: handler is potentially masked by previous handler for type "const HandlerInversion::B &"
+    } catch (D2 &d) {  // expected-warning {{exception of type 'D2 &' will be caught by earlier handler}}
+             ^
+
+"Test_name.c", line 238: warning: handler is potentially masked by previous handler for type "HandlerInversion::B &"
+    } catch (const D2 &d) {  // expected-warning {{exception of type 'const D2 &' will be caught by earlier handler}}
+             ^
+
+"Test_name.c", line 243: warning: handler is potentially masked by previous handler for type "HandlerInversion::B"
+    } catch (D &d) { // expected-warning {{exception of type 'D &' will be caught by earlier handler}}
+             ^
+
+"Test_name.c", line 257: error: class "ConstVolatileThrow::S" has no suitable copy constructor
+    throw CVS(); // precxx17-error{{no matching constructor for initialization}}
+          ^
+
+"Test_name.c", line 275: error: "ConstVolatileCatch::S::S(const ConstVolatileCatch::S &)" (declared at line 267) is inaccessible
+    } catch (volatile S s) { // expected-error {{calling a private constructor}}
+                        ^
+
+"Test_name.c", line 283: error: a variable-length array type is not allowed
+    } catch (int(*)[i]) { // expected-error{{cannot catch variably modified type}} \
+             ^
+
+"Test_name.c", line 291: warning: variable "i" is used before its value is set
+    } catch (int(*)[i]) { // expected-error{{cannot catch variably modified type}} \
+                    ^
+
+"Test_name.c", line 291: error: a variable-length array type is not allowed
+    } catch (int(*)[i]) { // expected-error{{cannot catch variably modified type}} \
+             ^
+
+29 errors detected in the compilation of "Test_name.c".

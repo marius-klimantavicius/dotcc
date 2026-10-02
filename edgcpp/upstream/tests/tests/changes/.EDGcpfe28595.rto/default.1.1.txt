@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++ --clang_v 210100 --c++ --clang_v 210100 Test_name.c
+"Test_name.c", line 16: error: too few arguments in function call
+  int j = __builtin_invoke();  // Previously segfaulted.  Now an error.
+                           ^
+
+1 error detected in the compilation of "Test_name.c".

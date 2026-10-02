@@ -1,0 +1,9 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 16: warning: unknown attribute "regparm"
+    __attribute((regparm(3))) void
+                 ^
+
+"Test_name.c", line 39: warning: unknown attribute "regparm"
+    void (__attribute((regparm(3))) Base::* pfm)(int *, int *) = &Base::set;
+                       ^
+

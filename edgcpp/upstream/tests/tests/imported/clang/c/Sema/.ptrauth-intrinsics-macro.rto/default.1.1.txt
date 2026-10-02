@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Sema/ptrauth-intrinsics-macro.c", line 46: warning: parameter "dp" was set but never used
+  void test_sign_constant(int *dp) {
+                               ^
+

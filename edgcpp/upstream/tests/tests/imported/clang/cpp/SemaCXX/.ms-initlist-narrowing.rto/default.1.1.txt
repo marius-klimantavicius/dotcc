@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --ms_extensions --c++11 Test_name.c
+"Test_name.c", line 5: warning: invalid narrowing conversion from "double" to "int"
+  int ai[] = { 1, 2.0 };  // expected-error {{type 'double' cannot be narrowed to 'int' in initializer list}} expected-note {{silence}}
+                  ^
+
+"Test_name.c", line 18: warning: invalid narrowing conversion from "double" to "float"
+    Agg<float> f2 = {d};  // expected-error {{non-constant-expression cannot be narrowed from type 'double' to 'float'}} expected-note {{silence}}
+                     ^
+
+"Test_name.c", line 14: warning: variable "f8" was declared but never referenced
+    Agg<float> f8 = {1E50};  // expected-error {{constant expression evaluates to 1.000000e+50 which cannot be narrowed to type 'float'}} expected-note {{silence}}
+               ^
+
+"Test_name.c", line 18: warning: variable "f2" was declared but never referenced
+    Agg<float> f2 = {d};  // expected-error {{non-constant-expression cannot be narrowed from type 'double' to 'float'}} expected-note {{silence}}
+               ^
+

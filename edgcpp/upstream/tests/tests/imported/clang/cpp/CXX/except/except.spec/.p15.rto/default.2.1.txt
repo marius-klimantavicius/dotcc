@@ -1,0 +1,7 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --exceptions --exceptions Test_name.c
+"Test_name.c", line 34: error: exception specification is incompatible with that of previous function "operator delete(void *, double)" (declared at line 32):
+            previously specified but omitted here: "int"
+  void operator delete(void*, double) noexcept; // expected-error {{does not match}}
+                                      ^
+
+1 error detected in the compilation of "Test_name.c".

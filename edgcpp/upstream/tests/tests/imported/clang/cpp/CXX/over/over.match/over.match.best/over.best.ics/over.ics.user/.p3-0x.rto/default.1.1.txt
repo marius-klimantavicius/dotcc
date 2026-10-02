@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 14: error: no suitable conversion function from "PR6285::D" to "int" exists
+    int f() { return D(); } // expected-error{{no viable conversion}}
+                     ^
+
+1 error detected in the compilation of "Test_name.c".

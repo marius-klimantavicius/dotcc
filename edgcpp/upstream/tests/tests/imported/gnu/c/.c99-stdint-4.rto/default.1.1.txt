@@ -1,0 +1,225 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"./c99-stdint-3.c", line 16: warning: a value of type "int8_t *" (aka "signed char *") cannot be used to initialize an entity of type "uint8_t *" (aka "unsigned char *")
+    do { int8_t a; uint8_t *b = &a; uint8_t c; int8_t *d = &c; } while (0);
+                                ^
+
+"./c99-stdint-3.c", line 16: warning: a value of type "uint8_t *" (aka "unsigned char *") cannot be used to initialize an entity of type "int8_t *" (aka "signed char *")
+    do { int8_t a; uint8_t *b = &a; uint8_t c; int8_t *d = &c; } while (0);
+                                                           ^
+
+"./c99-stdint-3.c", line 16: warning: variable "b" was declared but never referenced
+    do { int8_t a; uint8_t *b = &a; uint8_t c; int8_t *d = &c; } while (0);
+                            ^
+
+"./c99-stdint-3.c", line 16: warning: variable "d" was declared but never referenced
+    do { int8_t a; uint8_t *b = &a; uint8_t c; int8_t *d = &c; } while (0);
+                                                       ^
+
+"./c99-stdint-3.c", line 19: warning: a value of type "int16_t *" (aka "short *") cannot be used to initialize an entity of type "uint16_t *" (aka "unsigned short *")
+    do { int16_t a; uint16_t *b = &a; uint16_t c; int16_t *d = &c; } while (0);
+                                  ^
+
+"./c99-stdint-3.c", line 19: warning: a value of type "uint16_t *" (aka "unsigned short *") cannot be used to initialize an entity of type "int16_t *" (aka "short *")
+    do { int16_t a; uint16_t *b = &a; uint16_t c; int16_t *d = &c; } while (0);
+                                                               ^
+
+"./c99-stdint-3.c", line 19: warning: variable "b" was declared but never referenced
+    do { int16_t a; uint16_t *b = &a; uint16_t c; int16_t *d = &c; } while (0);
+                              ^
+
+"./c99-stdint-3.c", line 19: warning: variable "d" was declared but never referenced
+    do { int16_t a; uint16_t *b = &a; uint16_t c; int16_t *d = &c; } while (0);
+                                                           ^
+
+"./c99-stdint-3.c", line 22: warning: a value of type "int32_t *" (aka "int *") cannot be used to initialize an entity of type "uint32_t *" (aka "unsigned int *")
+    do { int32_t a; uint32_t *b = &a; uint32_t c; int32_t *d = &c; } while (0);
+                                  ^
+
+"./c99-stdint-3.c", line 22: warning: a value of type "uint32_t *" (aka "unsigned int *") cannot be used to initialize an entity of type "int32_t *" (aka "int *")
+    do { int32_t a; uint32_t *b = &a; uint32_t c; int32_t *d = &c; } while (0);
+                                                               ^
+
+"./c99-stdint-3.c", line 22: warning: variable "b" was declared but never referenced
+    do { int32_t a; uint32_t *b = &a; uint32_t c; int32_t *d = &c; } while (0);
+                              ^
+
+"./c99-stdint-3.c", line 22: warning: variable "d" was declared but never referenced
+    do { int32_t a; uint32_t *b = &a; uint32_t c; int32_t *d = &c; } while (0);
+                                                           ^
+
+"./c99-stdint-3.c", line 25: warning: a value of type "int64_t *" (aka "long *") cannot be used to initialize an entity of type "uint64_t *" (aka "unsigned long *")
+    do { int64_t a; uint64_t *b = &a; uint64_t c; int64_t *d = &c; } while (0);
+                                  ^
+
+"./c99-stdint-3.c", line 25: warning: a value of type "uint64_t *" (aka "unsigned long *") cannot be used to initialize an entity of type "int64_t *" (aka "long *")
+    do { int64_t a; uint64_t *b = &a; uint64_t c; int64_t *d = &c; } while (0);
+                                                               ^
+
+"./c99-stdint-3.c", line 25: warning: variable "b" was declared but never referenced
+    do { int64_t a; uint64_t *b = &a; uint64_t c; int64_t *d = &c; } while (0);
+                              ^
+
+"./c99-stdint-3.c", line 25: warning: variable "d" was declared but never referenced
+    do { int64_t a; uint64_t *b = &a; uint64_t c; int64_t *d = &c; } while (0);
+                                                           ^
+
+"./c99-stdint-3.c", line 27: warning: a value of type "int_least8_t *" (aka "signed char *") cannot be used to initialize an entity of type "uint_least8_t *" (aka "unsigned char *")
+    do { int_least8_t a; uint_least8_t *b = &a; uint_least8_t c; int_least8_t *d = &c; } while (0);
+                                            ^
+
+"./c99-stdint-3.c", line 27: warning: a value of type "uint_least8_t *" (aka "unsigned char *") cannot be used to initialize an entity of type "int_least8_t *" (aka "signed char *")
+    do { int_least8_t a; uint_least8_t *b = &a; uint_least8_t c; int_least8_t *d = &c; } while (0);
+                                                                                   ^
+
+"./c99-stdint-3.c", line 27: warning: variable "b" was declared but never referenced
+    do { int_least8_t a; uint_least8_t *b = &a; uint_least8_t c; int_least8_t *d = &c; } while (0);
+                                        ^
+
+"./c99-stdint-3.c", line 27: warning: variable "d" was declared but never referenced
+    do { int_least8_t a; uint_least8_t *b = &a; uint_least8_t c; int_least8_t *d = &c; } while (0);
+                                                                               ^
+
+"./c99-stdint-3.c", line 28: warning: a value of type "int_least16_t *" (aka "short *") cannot be used to initialize an entity of type "uint_least16_t *" (aka "unsigned short *")
+    do { int_least16_t a; uint_least16_t *b = &a; uint_least16_t c; int_least16_t *d = &c; } while (0);
+                                              ^
+
+"./c99-stdint-3.c", line 28: warning: a value of type "uint_least16_t *" (aka "unsigned short *") cannot be used to initialize an entity of type "int_least16_t *" (aka "short *")
+    do { int_least16_t a; uint_least16_t *b = &a; uint_least16_t c; int_least16_t *d = &c; } while (0);
+                                                                                       ^
+
+"./c99-stdint-3.c", line 28: warning: variable "b" was declared but never referenced
+    do { int_least16_t a; uint_least16_t *b = &a; uint_least16_t c; int_least16_t *d = &c; } while (0);
+                                          ^
+
+"./c99-stdint-3.c", line 28: warning: variable "d" was declared but never referenced
+    do { int_least16_t a; uint_least16_t *b = &a; uint_least16_t c; int_least16_t *d = &c; } while (0);
+                                                                                   ^
+
+"./c99-stdint-3.c", line 29: warning: a value of type "int_least32_t *" (aka "int *") cannot be used to initialize an entity of type "uint_least32_t *" (aka "unsigned int *")
+    do { int_least32_t a; uint_least32_t *b = &a; uint_least32_t c; int_least32_t *d = &c; } while (0);
+                                              ^
+
+"./c99-stdint-3.c", line 29: warning: a value of type "uint_least32_t *" (aka "unsigned int *") cannot be used to initialize an entity of type "int_least32_t *" (aka "int *")
+    do { int_least32_t a; uint_least32_t *b = &a; uint_least32_t c; int_least32_t *d = &c; } while (0);
+                                                                                       ^
+
+"./c99-stdint-3.c", line 29: warning: variable "b" was declared but never referenced
+    do { int_least32_t a; uint_least32_t *b = &a; uint_least32_t c; int_least32_t *d = &c; } while (0);
+                                          ^
+
+"./c99-stdint-3.c", line 29: warning: variable "d" was declared but never referenced
+    do { int_least32_t a; uint_least32_t *b = &a; uint_least32_t c; int_least32_t *d = &c; } while (0);
+                                                                                   ^
+
+"./c99-stdint-3.c", line 30: warning: a value of type "int_least64_t *" (aka "long *") cannot be used to initialize an entity of type "uint_least64_t *" (aka "unsigned long *")
+    do { int_least64_t a; uint_least64_t *b = &a; uint_least64_t c; int_least64_t *d = &c; } while (0);
+                                              ^
+
+"./c99-stdint-3.c", line 30: warning: a value of type "uint_least64_t *" (aka "unsigned long *") cannot be used to initialize an entity of type "int_least64_t *" (aka "long *")
+    do { int_least64_t a; uint_least64_t *b = &a; uint_least64_t c; int_least64_t *d = &c; } while (0);
+                                                                                       ^
+
+"./c99-stdint-3.c", line 30: warning: variable "b" was declared but never referenced
+    do { int_least64_t a; uint_least64_t *b = &a; uint_least64_t c; int_least64_t *d = &c; } while (0);
+                                          ^
+
+"./c99-stdint-3.c", line 30: warning: variable "d" was declared but never referenced
+    do { int_least64_t a; uint_least64_t *b = &a; uint_least64_t c; int_least64_t *d = &c; } while (0);
+                                                                                   ^
+
+"./c99-stdint-3.c", line 31: warning: a value of type "int_fast8_t *" (aka "signed char *") cannot be used to initialize an entity of type "uint_fast8_t *" (aka "unsigned char *")
+    do { int_fast8_t a; uint_fast8_t *b = &a; uint_fast8_t c; int_fast8_t *d = &c; } while (0);
+                                          ^
+
+"./c99-stdint-3.c", line 31: warning: a value of type "uint_fast8_t *" (aka "unsigned char *") cannot be used to initialize an entity of type "int_fast8_t *" (aka "signed char *")
+    do { int_fast8_t a; uint_fast8_t *b = &a; uint_fast8_t c; int_fast8_t *d = &c; } while (0);
+                                                                               ^
+
+"./c99-stdint-3.c", line 31: warning: variable "b" was declared but never referenced
+    do { int_fast8_t a; uint_fast8_t *b = &a; uint_fast8_t c; int_fast8_t *d = &c; } while (0);
+                                      ^
+
+"./c99-stdint-3.c", line 31: warning: variable "d" was declared but never referenced
+    do { int_fast8_t a; uint_fast8_t *b = &a; uint_fast8_t c; int_fast8_t *d = &c; } while (0);
+                                                                           ^
+
+"./c99-stdint-3.c", line 32: warning: a value of type "int_fast16_t *" (aka "long *") cannot be used to initialize an entity of type "uint_fast16_t *" (aka "unsigned long *")
+    do { int_fast16_t a; uint_fast16_t *b = &a; uint_fast16_t c; int_fast16_t *d = &c; } while (0);
+                                            ^
+
+"./c99-stdint-3.c", line 32: warning: a value of type "uint_fast16_t *" (aka "unsigned long *") cannot be used to initialize an entity of type "int_fast16_t *" (aka "long *")
+    do { int_fast16_t a; uint_fast16_t *b = &a; uint_fast16_t c; int_fast16_t *d = &c; } while (0);
+                                                                                   ^
+
+"./c99-stdint-3.c", line 32: warning: variable "b" was declared but never referenced
+    do { int_fast16_t a; uint_fast16_t *b = &a; uint_fast16_t c; int_fast16_t *d = &c; } while (0);
+                                        ^
+
+"./c99-stdint-3.c", line 32: warning: variable "d" was declared but never referenced
+    do { int_fast16_t a; uint_fast16_t *b = &a; uint_fast16_t c; int_fast16_t *d = &c; } while (0);
+                                                                               ^
+
+"./c99-stdint-3.c", line 33: warning: a value of type "int_fast32_t *" (aka "long *") cannot be used to initialize an entity of type "uint_fast32_t *" (aka "unsigned long *")
+    do { int_fast32_t a; uint_fast32_t *b = &a; uint_fast32_t c; int_fast32_t *d = &c; } while (0);
+                                            ^
+
+"./c99-stdint-3.c", line 33: warning: a value of type "uint_fast32_t *" (aka "unsigned long *") cannot be used to initialize an entity of type "int_fast32_t *" (aka "long *")
+    do { int_fast32_t a; uint_fast32_t *b = &a; uint_fast32_t c; int_fast32_t *d = &c; } while (0);
+                                                                                   ^
+
+"./c99-stdint-3.c", line 33: warning: variable "b" was declared but never referenced
+    do { int_fast32_t a; uint_fast32_t *b = &a; uint_fast32_t c; int_fast32_t *d = &c; } while (0);
+                                        ^
+
+"./c99-stdint-3.c", line 33: warning: variable "d" was declared but never referenced
+    do { int_fast32_t a; uint_fast32_t *b = &a; uint_fast32_t c; int_fast32_t *d = &c; } while (0);
+                                                                               ^
+
+"./c99-stdint-3.c", line 34: warning: a value of type "int_fast64_t *" (aka "long *") cannot be used to initialize an entity of type "uint_fast64_t *" (aka "unsigned long *")
+    do { int_fast64_t a; uint_fast64_t *b = &a; uint_fast64_t c; int_fast64_t *d = &c; } while (0);
+                                            ^
+
+"./c99-stdint-3.c", line 34: warning: a value of type "uint_fast64_t *" (aka "unsigned long *") cannot be used to initialize an entity of type "int_fast64_t *" (aka "long *")
+    do { int_fast64_t a; uint_fast64_t *b = &a; uint_fast64_t c; int_fast64_t *d = &c; } while (0);
+                                                                                   ^
+
+"./c99-stdint-3.c", line 34: warning: variable "b" was declared but never referenced
+    do { int_fast64_t a; uint_fast64_t *b = &a; uint_fast64_t c; int_fast64_t *d = &c; } while (0);
+                                        ^
+
+"./c99-stdint-3.c", line 34: warning: variable "d" was declared but never referenced
+    do { int_fast64_t a; uint_fast64_t *b = &a; uint_fast64_t c; int_fast64_t *d = &c; } while (0);
+                                                                               ^
+
+"./c99-stdint-3.c", line 36: warning: a value of type "intptr_t *" (aka "long *") cannot be used to initialize an entity of type "uintptr_t *" (aka "unsigned long *")
+    do { intptr_t a; uintptr_t *b = &a; uintptr_t c; intptr_t *d = &c; } while (0);
+                                    ^
+
+"./c99-stdint-3.c", line 36: warning: a value of type "uintptr_t *" (aka "unsigned long *") cannot be used to initialize an entity of type "intptr_t *" (aka "long *")
+    do { intptr_t a; uintptr_t *b = &a; uintptr_t c; intptr_t *d = &c; } while (0);
+                                                                   ^
+
+"./c99-stdint-3.c", line 36: warning: variable "b" was declared but never referenced
+    do { intptr_t a; uintptr_t *b = &a; uintptr_t c; intptr_t *d = &c; } while (0);
+                                ^
+
+"./c99-stdint-3.c", line 36: warning: variable "d" was declared but never referenced
+    do { intptr_t a; uintptr_t *b = &a; uintptr_t c; intptr_t *d = &c; } while (0);
+                                                               ^
+
+"./c99-stdint-3.c", line 38: warning: a value of type "intmax_t *" (aka "long *") cannot be used to initialize an entity of type "uintmax_t *" (aka "unsigned long *")
+    do { intmax_t a; uintmax_t *b = &a; uintmax_t c; intmax_t *d = &c; } while (0);
+                                    ^
+
+"./c99-stdint-3.c", line 38: warning: a value of type "uintmax_t *" (aka "unsigned long *") cannot be used to initialize an entity of type "intmax_t *" (aka "long *")
+    do { intmax_t a; uintmax_t *b = &a; uintmax_t c; intmax_t *d = &c; } while (0);
+                                                                   ^
+
+"./c99-stdint-3.c", line 38: warning: variable "b" was declared but never referenced
+    do { intmax_t a; uintmax_t *b = &a; uintmax_t c; intmax_t *d = &c; } while (0);
+                                ^
+
+"./c99-stdint-3.c", line 38: warning: variable "d" was declared but never referenced
+    do { intmax_t a; uintmax_t *b = &a; uintmax_t c; intmax_t *d = &c; } while (0);
+                                                               ^
+

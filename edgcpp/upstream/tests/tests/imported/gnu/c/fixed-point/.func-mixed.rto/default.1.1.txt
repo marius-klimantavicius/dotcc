@@ -1,0 +1,702 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 27: error: expected a ";"
+  FUNC (short _Fract, sf)
+  ^
+
+"Test_name.c", line 71: error: extra text after expected end of number
+    TEST (short _Fract, sf, hr)
+    ^
+
+"Test_name.c", line 71: error: extra text after expected end of number
+    TEST (short _Fract, sf, hr)
+    ^
+
+"Test_name.c", line 71: error: extra text after expected end of number
+    TEST (short _Fract, sf, hr)
+    ^
+
+"Test_name.c", line 71: error: extra text after expected end of number
+    TEST (short _Fract, sf, hr)
+    ^
+
+"Test_name.c", line 71: error: extra text after expected end of number
+    TEST (short _Fract, sf, hr)
+    ^
+
+"Test_name.c", line 71: error: extra text after expected end of number
+    TEST (short _Fract, sf, hr)
+    ^
+
+"Test_name.c", line 71: error: extra text after expected end of number
+    TEST (short _Fract, sf, hr)
+    ^
+
+"Test_name.c", line 71: error: extra text after expected end of number
+    TEST (short _Fract, sf, hr)
+    ^
+
+"Test_name.c", line 71: error: extra text after expected end of number
+    TEST (short _Fract, sf, hr)
+    ^
+
+"Test_name.c", line 71: error: extra text after expected end of number
+    TEST (short _Fract, sf, hr)
+    ^
+
+"Test_name.c", line 72: error: extra text after expected end of number
+    TEST (_Fract, f, r)
+    ^
+
+"Test_name.c", line 72: error: extra text after expected end of number
+    TEST (_Fract, f, r)
+    ^
+
+"Test_name.c", line 72: error: extra text after expected end of number
+    TEST (_Fract, f, r)
+    ^
+
+"Test_name.c", line 72: error: extra text after expected end of number
+    TEST (_Fract, f, r)
+    ^
+
+"Test_name.c", line 72: error: extra text after expected end of number
+    TEST (_Fract, f, r)
+    ^
+
+"Test_name.c", line 72: error: extra text after expected end of number
+    TEST (_Fract, f, r)
+    ^
+
+"Test_name.c", line 72: error: extra text after expected end of number
+    TEST (_Fract, f, r)
+    ^
+
+"Test_name.c", line 72: error: extra text after expected end of number
+    TEST (_Fract, f, r)
+    ^
+
+"Test_name.c", line 72: error: extra text after expected end of number
+    TEST (_Fract, f, r)
+    ^
+
+"Test_name.c", line 72: error: extra text after expected end of number
+    TEST (_Fract, f, r)
+    ^
+
+"Test_name.c", line 73: error: extra text after expected end of number
+    TEST (long _Fract, lf, lr)
+    ^
+
+"Test_name.c", line 73: warning: concatenation with "lr" in macro "TEST" does not create a valid token
+    TEST (long _Fract, lf, lr)
+    ^
+
+"Test_name.c", line 73: error: extra text after expected end of number
+    TEST (long _Fract, lf, lr)
+    ^
+
+"Test_name.c", line 73: warning: concatenation with "lr" in macro "TEST" does not create a valid token
+    TEST (long _Fract, lf, lr)
+    ^
+
+"Test_name.c", line 73: error: extra text after expected end of number
+    TEST (long _Fract, lf, lr)
+    ^
+
+"Test_name.c", line 73: warning: concatenation with "lr" in macro "TEST" does not create a valid token
+    TEST (long _Fract, lf, lr)
+    ^
+
+"Test_name.c", line 73: error: extra text after expected end of number
+    TEST (long _Fract, lf, lr)
+    ^
+
+"Test_name.c", line 73: warning: concatenation with "lr" in macro "TEST" does not create a valid token
+    TEST (long _Fract, lf, lr)
+    ^
+
+"Test_name.c", line 73: error: extra text after expected end of number
+    TEST (long _Fract, lf, lr)
+    ^
+
+"Test_name.c", line 73: warning: concatenation with "lr" in macro "TEST" does not create a valid token
+    TEST (long _Fract, lf, lr)
+    ^
+
+"Test_name.c", line 73: error: extra text after expected end of number
+    TEST (long _Fract, lf, lr)
+    ^
+
+"Test_name.c", line 73: warning: concatenation with "lr" in macro "TEST" does not create a valid token
+    TEST (long _Fract, lf, lr)
+    ^
+
+"Test_name.c", line 73: error: extra text after expected end of number
+    TEST (long _Fract, lf, lr)
+    ^
+
+"Test_name.c", line 73: warning: concatenation with "lr" in macro "TEST" does not create a valid token
+    TEST (long _Fract, lf, lr)
+    ^
+
+"Test_name.c", line 73: error: extra text after expected end of number
+    TEST (long _Fract, lf, lr)
+    ^
+
+"Test_name.c", line 73: warning: concatenation with "lr" in macro "TEST" does not create a valid token
+    TEST (long _Fract, lf, lr)
+    ^
+
+"Test_name.c", line 73: error: extra text after expected end of number
+    TEST (long _Fract, lf, lr)
+    ^
+
+"Test_name.c", line 73: warning: concatenation with "lr" in macro "TEST" does not create a valid token
+    TEST (long _Fract, lf, lr)
+    ^
+
+"Test_name.c", line 73: error: extra text after expected end of number
+    TEST (long _Fract, lf, lr)
+    ^
+
+"Test_name.c", line 73: warning: concatenation with "lr" in macro "TEST" does not create a valid token
+    TEST (long _Fract, lf, lr)
+    ^
+
+"Test_name.c", line 74: error: extra text after expected end of number
+    TEST (long long _Fract, llf, llr)
+    ^
+
+"Test_name.c", line 74: warning: concatenation with "llr" in macro "TEST" does not create a valid token
+    TEST (long long _Fract, llf, llr)
+    ^
+
+"Test_name.c", line 74: error: extra text after expected end of number
+    TEST (long long _Fract, llf, llr)
+    ^
+
+"Test_name.c", line 74: warning: concatenation with "llr" in macro "TEST" does not create a valid token
+    TEST (long long _Fract, llf, llr)
+    ^
+
+"Test_name.c", line 74: error: extra text after expected end of number
+    TEST (long long _Fract, llf, llr)
+    ^
+
+"Test_name.c", line 74: warning: concatenation with "llr" in macro "TEST" does not create a valid token
+    TEST (long long _Fract, llf, llr)
+    ^
+
+"Test_name.c", line 74: error: extra text after expected end of number
+    TEST (long long _Fract, llf, llr)
+    ^
+
+"Test_name.c", line 74: warning: concatenation with "llr" in macro "TEST" does not create a valid token
+    TEST (long long _Fract, llf, llr)
+    ^
+
+"Test_name.c", line 74: error: extra text after expected end of number
+    TEST (long long _Fract, llf, llr)
+    ^
+
+"Test_name.c", line 74: warning: concatenation with "llr" in macro "TEST" does not create a valid token
+    TEST (long long _Fract, llf, llr)
+    ^
+
+"Test_name.c", line 74: error: extra text after expected end of number
+    TEST (long long _Fract, llf, llr)
+    ^
+
+"Test_name.c", line 74: warning: concatenation with "llr" in macro "TEST" does not create a valid token
+    TEST (long long _Fract, llf, llr)
+    ^
+
+"Test_name.c", line 74: error: extra text after expected end of number
+    TEST (long long _Fract, llf, llr)
+    ^
+
+"Test_name.c", line 74: warning: concatenation with "llr" in macro "TEST" does not create a valid token
+    TEST (long long _Fract, llf, llr)
+    ^
+
+"Test_name.c", line 74: error: extra text after expected end of number
+    TEST (long long _Fract, llf, llr)
+    ^
+
+"Test_name.c", line 74: warning: concatenation with "llr" in macro "TEST" does not create a valid token
+    TEST (long long _Fract, llf, llr)
+    ^
+
+"Test_name.c", line 74: error: extra text after expected end of number
+    TEST (long long _Fract, llf, llr)
+    ^
+
+"Test_name.c", line 74: warning: concatenation with "llr" in macro "TEST" does not create a valid token
+    TEST (long long _Fract, llf, llr)
+    ^
+
+"Test_name.c", line 74: error: extra text after expected end of number
+    TEST (long long _Fract, llf, llr)
+    ^
+
+"Test_name.c", line 74: warning: concatenation with "llr" in macro "TEST" does not create a valid token
+    TEST (long long _Fract, llf, llr)
+    ^
+
+"Test_name.c", line 75: error: extra text after expected end of number
+    TEST (unsigned short _Fract, usf, uhr)
+    ^
+
+"Test_name.c", line 75: error: extra text after expected end of number
+    TEST (unsigned short _Fract, usf, uhr)
+    ^
+
+"Test_name.c", line 75: error: extra text after expected end of number
+    TEST (unsigned short _Fract, usf, uhr)
+    ^
+
+"Test_name.c", line 75: error: extra text after expected end of number
+    TEST (unsigned short _Fract, usf, uhr)
+    ^
+
+"Test_name.c", line 75: error: extra text after expected end of number
+    TEST (unsigned short _Fract, usf, uhr)
+    ^
+
+"Test_name.c", line 75: error: extra text after expected end of number
+    TEST (unsigned short _Fract, usf, uhr)
+    ^
+
+"Test_name.c", line 75: error: extra text after expected end of number
+    TEST (unsigned short _Fract, usf, uhr)
+    ^
+
+"Test_name.c", line 75: error: extra text after expected end of number
+    TEST (unsigned short _Fract, usf, uhr)
+    ^
+
+"Test_name.c", line 75: error: extra text after expected end of number
+    TEST (unsigned short _Fract, usf, uhr)
+    ^
+
+"Test_name.c", line 75: error: extra text after expected end of number
+    TEST (unsigned short _Fract, usf, uhr)
+    ^
+
+"Test_name.c", line 76: error: extra text after expected end of number
+    TEST (unsigned _Fract, uf, ur)
+    ^
+
+"Test_name.c", line 76: error: extra text after expected end of number
+    TEST (unsigned _Fract, uf, ur)
+    ^
+
+"Test_name.c", line 76: error: extra text after expected end of number
+    TEST (unsigned _Fract, uf, ur)
+    ^
+
+"Test_name.c", line 76: error: extra text after expected end of number
+    TEST (unsigned _Fract, uf, ur)
+    ^
+
+"Test_name.c", line 76: error: extra text after expected end of number
+    TEST (unsigned _Fract, uf, ur)
+    ^
+
+"Test_name.c", line 76: error: extra text after expected end of number
+    TEST (unsigned _Fract, uf, ur)
+    ^
+
+"Test_name.c", line 76: error: extra text after expected end of number
+    TEST (unsigned _Fract, uf, ur)
+    ^
+
+"Test_name.c", line 76: error: extra text after expected end of number
+    TEST (unsigned _Fract, uf, ur)
+    ^
+
+"Test_name.c", line 76: error: extra text after expected end of number
+    TEST (unsigned _Fract, uf, ur)
+    ^
+
+"Test_name.c", line 76: error: extra text after expected end of number
+    TEST (unsigned _Fract, uf, ur)
+    ^
+
+"Test_name.c", line 77: error: extra text after expected end of number
+    TEST (unsigned long _Fract, ulf, ulr)
+    ^
+
+"Test_name.c", line 77: error: extra text after expected end of number
+    TEST (unsigned long _Fract, ulf, ulr)
+    ^
+
+"Test_name.c", line 77: error: extra text after expected end of number
+    TEST (unsigned long _Fract, ulf, ulr)
+    ^
+
+"Test_name.c", line 77: error: extra text after expected end of number
+    TEST (unsigned long _Fract, ulf, ulr)
+    ^
+
+"Test_name.c", line 77: error: extra text after expected end of number
+    TEST (unsigned long _Fract, ulf, ulr)
+    ^
+
+"Test_name.c", line 77: error: extra text after expected end of number
+    TEST (unsigned long _Fract, ulf, ulr)
+    ^
+
+"Test_name.c", line 77: error: extra text after expected end of number
+    TEST (unsigned long _Fract, ulf, ulr)
+    ^
+
+"Test_name.c", line 77: error: extra text after expected end of number
+    TEST (unsigned long _Fract, ulf, ulr)
+    ^
+
+"Test_name.c", line 77: error: extra text after expected end of number
+    TEST (unsigned long _Fract, ulf, ulr)
+    ^
+
+"Test_name.c", line 77: error: extra text after expected end of number
+    TEST (unsigned long _Fract, ulf, ulr)
+    ^
+
+"Test_name.c", line 78: error: extra text after expected end of number
+    TEST (unsigned long long _Fract, ullf, ullr)
+    ^
+
+"Test_name.c", line 78: error: extra text after expected end of number
+    TEST (unsigned long long _Fract, ullf, ullr)
+    ^
+
+"Test_name.c", line 78: error: extra text after expected end of number
+    TEST (unsigned long long _Fract, ullf, ullr)
+    ^
+
+"Test_name.c", line 78: error: extra text after expected end of number
+    TEST (unsigned long long _Fract, ullf, ullr)
+    ^
+
+"Test_name.c", line 78: error: extra text after expected end of number
+    TEST (unsigned long long _Fract, ullf, ullr)
+    ^
+
+"Test_name.c", line 78: error: extra text after expected end of number
+    TEST (unsigned long long _Fract, ullf, ullr)
+    ^
+
+"Test_name.c", line 78: error: extra text after expected end of number
+    TEST (unsigned long long _Fract, ullf, ullr)
+    ^
+
+"Test_name.c", line 78: error: extra text after expected end of number
+    TEST (unsigned long long _Fract, ullf, ullr)
+    ^
+
+"Test_name.c", line 78: error: extra text after expected end of number
+    TEST (unsigned long long _Fract, ullf, ullr)
+    ^
+
+"Test_name.c", line 78: error: extra text after expected end of number
+    TEST (unsigned long long _Fract, ullf, ullr)
+    ^
+
+"Test_name.c", line 79: error: extra text after expected end of number
+    TEST (_Sat short _Fract, Ssf, hr)
+    ^
+
+"Test_name.c", line 79: error: extra text after expected end of number
+    TEST (_Sat short _Fract, Ssf, hr)
+    ^
+
+"Test_name.c", line 79: error: extra text after expected end of number
+    TEST (_Sat short _Fract, Ssf, hr)
+    ^
+
+"Test_name.c", line 79: error: extra text after expected end of number
+    TEST (_Sat short _Fract, Ssf, hr)
+    ^
+
+"Test_name.c", line 79: error: extra text after expected end of number
+    TEST (_Sat short _Fract, Ssf, hr)
+    ^
+
+"Test_name.c", line 79: error: extra text after expected end of number
+    TEST (_Sat short _Fract, Ssf, hr)
+    ^
+
+"Test_name.c", line 79: error: extra text after expected end of number
+    TEST (_Sat short _Fract, Ssf, hr)
+    ^
+
+"Test_name.c", line 79: error: extra text after expected end of number
+    TEST (_Sat short _Fract, Ssf, hr)
+    ^
+
+"Test_name.c", line 79: error: extra text after expected end of number
+    TEST (_Sat short _Fract, Ssf, hr)
+    ^
+
+"Test_name.c", line 79: error: extra text after expected end of number
+    TEST (_Sat short _Fract, Ssf, hr)
+    ^
+
+"Test_name.c", line 80: error: extra text after expected end of number
+    TEST (_Sat _Fract, Sf, r)
+    ^
+
+"Test_name.c", line 80: error: extra text after expected end of number
+    TEST (_Sat _Fract, Sf, r)
+    ^
+
+"Test_name.c", line 80: error: extra text after expected end of number
+    TEST (_Sat _Fract, Sf, r)
+    ^
+
+"Test_name.c", line 80: error: extra text after expected end of number
+    TEST (_Sat _Fract, Sf, r)
+    ^
+
+"Test_name.c", line 80: error: extra text after expected end of number
+    TEST (_Sat _Fract, Sf, r)
+    ^
+
+"Test_name.c", line 80: error: extra text after expected end of number
+    TEST (_Sat _Fract, Sf, r)
+    ^
+
+"Test_name.c", line 80: error: extra text after expected end of number
+    TEST (_Sat _Fract, Sf, r)
+    ^
+
+"Test_name.c", line 80: error: extra text after expected end of number
+    TEST (_Sat _Fract, Sf, r)
+    ^
+
+"Test_name.c", line 80: error: extra text after expected end of number
+    TEST (_Sat _Fract, Sf, r)
+    ^
+
+"Test_name.c", line 80: error: extra text after expected end of number
+    TEST (_Sat _Fract, Sf, r)
+    ^
+
+"Test_name.c", line 81: error: extra text after expected end of number
+    TEST (_Sat long _Fract, Slf, lr)
+    ^
+
+"Test_name.c", line 81: warning: concatenation with "lr" in macro "TEST" does not create a valid token
+    TEST (_Sat long _Fract, Slf, lr)
+    ^
+
+"Test_name.c", line 81: error: extra text after expected end of number
+    TEST (_Sat long _Fract, Slf, lr)
+    ^
+
+"Test_name.c", line 81: warning: concatenation with "lr" in macro "TEST" does not create a valid token
+    TEST (_Sat long _Fract, Slf, lr)
+    ^
+
+"Test_name.c", line 81: error: extra text after expected end of number
+    TEST (_Sat long _Fract, Slf, lr)
+    ^
+
+"Test_name.c", line 81: warning: concatenation with "lr" in macro "TEST" does not create a valid token
+    TEST (_Sat long _Fract, Slf, lr)
+    ^
+
+"Test_name.c", line 81: error: extra text after expected end of number
+    TEST (_Sat long _Fract, Slf, lr)
+    ^
+
+"Test_name.c", line 81: warning: concatenation with "lr" in macro "TEST" does not create a valid token
+    TEST (_Sat long _Fract, Slf, lr)
+    ^
+
+"Test_name.c", line 81: error: extra text after expected end of number
+    TEST (_Sat long _Fract, Slf, lr)
+    ^
+
+"Test_name.c", line 81: warning: concatenation with "lr" in macro "TEST" does not create a valid token
+    TEST (_Sat long _Fract, Slf, lr)
+    ^
+
+"Test_name.c", line 81: error: extra text after expected end of number
+    TEST (_Sat long _Fract, Slf, lr)
+    ^
+
+"Test_name.c", line 81: warning: concatenation with "lr" in macro "TEST" does not create a valid token
+    TEST (_Sat long _Fract, Slf, lr)
+    ^
+
+"Test_name.c", line 81: error: extra text after expected end of number
+    TEST (_Sat long _Fract, Slf, lr)
+    ^
+
+"Test_name.c", line 81: warning: concatenation with "lr" in macro "TEST" does not create a valid token
+    TEST (_Sat long _Fract, Slf, lr)
+    ^
+
+"Test_name.c", line 81: error: extra text after expected end of number
+    TEST (_Sat long _Fract, Slf, lr)
+    ^
+
+"Test_name.c", line 81: warning: concatenation with "lr" in macro "TEST" does not create a valid token
+    TEST (_Sat long _Fract, Slf, lr)
+    ^
+
+"Test_name.c", line 81: error: extra text after expected end of number
+    TEST (_Sat long _Fract, Slf, lr)
+    ^
+
+"Test_name.c", line 81: warning: concatenation with "lr" in macro "TEST" does not create a valid token
+    TEST (_Sat long _Fract, Slf, lr)
+    ^
+
+"Test_name.c", line 81: error: extra text after expected end of number
+    TEST (_Sat long _Fract, Slf, lr)
+    ^
+
+"Test_name.c", line 81: warning: concatenation with "lr" in macro "TEST" does not create a valid token
+    TEST (_Sat long _Fract, Slf, lr)
+    ^
+
+"Test_name.c", line 82: error: extra text after expected end of number
+    TEST (_Sat long long _Fract, Sllf, llr)
+    ^
+
+"Test_name.c", line 82: warning: concatenation with "llr" in macro "TEST" does not create a valid token
+    TEST (_Sat long long _Fract, Sllf, llr)
+    ^
+
+"Test_name.c", line 82: error: extra text after expected end of number
+    TEST (_Sat long long _Fract, Sllf, llr)
+    ^
+
+"Test_name.c", line 82: warning: concatenation with "llr" in macro "TEST" does not create a valid token
+    TEST (_Sat long long _Fract, Sllf, llr)
+    ^
+
+"Test_name.c", line 82: warning: parsing restarts here after previous syntax error
+    TEST (_Sat long long _Fract, Sllf, llr)
+    ^
+
+"Test_name.c", line 82: error: expected a declaration
+    TEST (_Sat long long _Fract, Sllf, llr)
+    ^
+
+"Test_name.c", line 82: error: extra text after expected end of number
+    TEST (_Sat long long _Fract, Sllf, llr)
+    ^
+
+"Test_name.c", line 82: warning: concatenation with "llr" in macro "TEST" does not create a valid token
+    TEST (_Sat long long _Fract, Sllf, llr)
+    ^
+
+"Test_name.c", line 83: error: extra text after expected end of number
+    TEST (_Sat unsigned short _Fract, Susf, uhr)
+    ^
+
+"Test_name.c", line 84: error: extra text after expected end of number
+    TEST (_Sat unsigned _Fract, Suf, ur)
+    ^
+
+"Test_name.c", line 85: error: extra text after expected end of number
+    TEST (_Sat unsigned long _Fract, Sulf, ulr)
+    ^
+
+"Test_name.c", line 86: error: extra text after expected end of number
+    TEST (_Sat unsigned long long _Fract, Sullf, ullr)
+    ^
+
+"Test_name.c", line 87: error: extra text after expected end of number
+    TEST (short _Accum, sa, hk)
+    ^
+
+"Test_name.c", line 88: error: extra text after expected end of number
+    TEST (_Accum, a, k)
+    ^
+
+"Test_name.c", line 89: error: extra text after expected end of number
+    TEST (long _Accum, la, lk)
+    ^
+
+"Test_name.c", line 89: warning: concatenation with "lk" in macro "TEST" does not create a valid token
+    TEST (long _Accum, la, lk)
+    ^
+
+"Test_name.c", line 90: error: extra text after expected end of number
+    TEST (long long _Accum, lla, llk)
+    ^
+
+"Test_name.c", line 90: warning: concatenation with "llk" in macro "TEST" does not create a valid token
+    TEST (long long _Accum, lla, llk)
+    ^
+
+"Test_name.c", line 91: error: extra text after expected end of number
+    TEST (unsigned short _Accum, usa, uhk)
+    ^
+
+"Test_name.c", line 92: error: extra text after expected end of number
+    TEST (unsigned _Accum, ua, uk)
+    ^
+
+"Test_name.c", line 93: error: extra text after expected end of number
+    TEST (unsigned long _Accum, ula, ulk)
+    ^
+
+"Test_name.c", line 94: error: extra text after expected end of number
+    TEST (unsigned long long _Accum, ulla, ullk)
+    ^
+
+"Test_name.c", line 95: error: extra text after expected end of number
+    TEST (_Sat short _Accum, Ssa, hk)
+    ^
+
+"Test_name.c", line 96: error: extra text after expected end of number
+    TEST (_Sat _Accum, Sa, k)
+    ^
+
+"Test_name.c", line 97: error: extra text after expected end of number
+    TEST (_Sat long _Accum, Sla, lk)
+    ^
+
+"Test_name.c", line 97: warning: concatenation with "lk" in macro "TEST" does not create a valid token
+    TEST (_Sat long _Accum, Sla, lk)
+    ^
+
+"Test_name.c", line 98: error: extra text after expected end of number
+    TEST (_Sat long long _Accum, Slla, llk)
+    ^
+
+"Test_name.c", line 98: warning: concatenation with "llk" in macro "TEST" does not create a valid token
+    TEST (_Sat long long _Accum, Slla, llk)
+    ^
+
+"Test_name.c", line 99: error: extra text after expected end of number
+    TEST (_Sat unsigned short _Accum, Susa, uhk)
+    ^
+
+"Test_name.c", line 100: error: extra text after expected end of number
+    TEST (_Sat unsigned _Accum, Sua, uk)
+    ^
+
+"Test_name.c", line 101: error: extra text after expected end of number
+    TEST (_Sat unsigned long _Accum, Sula, ulk)
+    ^
+
+"Test_name.c", line 102: error: extra text after expected end of number
+    TEST (_Sat unsigned long long _Accum, Sulla, ullk)
+    ^
+
+"Test_name.c", line 104: warning: parsing restarts here after previous syntax error
+    return 0;
+            ^
+
+"Test_name.c", line 105: error: expected a declaration
+  }
+  ^
+
+136 errors detected in the compilation of "Test_name.c".

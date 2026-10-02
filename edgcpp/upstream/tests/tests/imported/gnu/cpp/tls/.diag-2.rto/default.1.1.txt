@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 8: error: multiple thread-local storage specifiers
+  __thread __thread int g3;	/* { dg-error "duplicate '__thread'" } */
+           ^
+
+"Test_name.c", line 9: error: only static and extern variables can use thread-local storage
+  typedef __thread int g4;	/* { dg-error "9:multiple storage classes" } */
+  ^
+
+"Test_name.c", line 13: error: only static and extern variables can use thread-local storage
+    __thread int l1;		/* { dg-error "3:function-scope .l1. implicitly auto and declared '__thread'" } */
+                 ^
+
+"Test_name.c", line 14: error: invalid combination of type specifiers
+    auto __thread int l2;		/* { dg-error "3:multiple storage classes|data types" } */
+                  ^
+
+"Test_name.c", line 14: error: only static and extern variables can use thread-local storage
+    auto __thread int l2;		/* { dg-error "3:multiple storage classes|data types" } */
+                      ^
+
+"Test_name.c", line 16: error: only static and extern variables can use thread-local storage
+    register __thread int l4;	/* { dg-error "3:multiple storage classes" } */
+                          ^
+
+"Test_name.c", line 13: warning: variable "l1" was declared but never referenced
+    __thread int l1;		/* { dg-error "3:function-scope .l1. implicitly auto and declared '__thread'" } */
+                 ^
+
+"Test_name.c", line 16: warning: variable "l4" was declared but never referenced
+    register __thread int l4;	/* { dg-error "3:multiple storage classes" } */
+                          ^
+
+"Test_name.c", line 19: error: only static and extern variables can use thread-local storage
+  __thread void f1 ();		/* { dg-error "1:storage class .__thread. invalid for function" } */
+                ^
+
+"Test_name.c", line 20: error: only static and extern variables can use thread-local storage
+  extern __thread void f2 ();	/* { dg-error "8:storage class .__thread. invalid for function" } */
+                       ^
+
+"Test_name.c", line 21: error: only static and extern variables can use thread-local storage
+  static __thread void f3 ();	/* { dg-error "8:storage class .__thread. invalid for function" } */
+                       ^
+
+"Test_name.c", line 22: error: only static and extern variables can use thread-local storage
+  __thread void f4 () { }		/* { dg-error "1:storage class .__thread. invalid for function" } */
+                ^
+
+"Test_name.c", line 24: error: only static and extern variables can use thread-local storage
+  void bar(__thread int p1);	/* { dg-error "10:storage class specified for parameter" } */
+           ^
+
+"Test_name.c", line 27: error: only static and extern variables can use thread-local storage
+    __thread int i;		/* { dg-error "3:storage class specified" } */
+                 ^
+
+"Test_name.c", line 7: warning: variable "g2" was declared but never referenced
+  __thread static int g2;		/* { dg-error "'__thread' before 'static'" } */
+                      ^
+
+"Test_name.c", line 21: warning: function "f3" was declared but never referenced
+  static __thread void f3 ();	/* { dg-error "8:storage class .__thread. invalid for function" } */
+                       ^
+
+12 errors detected in the compilation of "Test_name.c".

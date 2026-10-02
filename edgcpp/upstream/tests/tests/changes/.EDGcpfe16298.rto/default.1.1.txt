@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 17: error: identifier "decltype" is undefined
+    decltype (f) g;
+    ^
+
+"Test_name.c", line 17: error: expected a ";"
+    decltype (f) g;
+                 ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 56: warning: variable "b" was declared but never referenced
+    decltype(a = a) b = a;              // expected-warning {{expression with side effects has no effect in an unevaluated context}}
+                    ^
+
+"Test_name.c", line 64: warning: variable "a" is used before its value is set
+    a = a; // expected-warning{{explicitly assigning}}
+        ^
+          detected during instantiation of "void g<T>() [with T=int]" at line 67
+

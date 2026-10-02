@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 --strict_gnu Test_name.c
+"Test_name.c", line 8: error: _Complex can only be used with floating-point types
+  foo (_Complex int ci, _Complex long long cl)
+       ^
+
+"Test_name.c", line 8: error: invalid combination of type specifiers
+  foo (_Complex int ci, _Complex long long cl)
+                        ^
+
+2 errors detected in the compilation of "Test_name.c".

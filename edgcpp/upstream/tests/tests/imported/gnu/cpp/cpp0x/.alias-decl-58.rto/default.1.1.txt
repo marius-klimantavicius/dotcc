@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: error: name followed by "::" must be a class or namespace name
+  template < typename X > A < X >::a; // { dg-error "" }
+                          ^
+
+"Test_name.c", line 9: warning: variable templates are a C++14 feature
+  template < typename X > A < X >::a; // { dg-error "" }
+                                    ^
+
+1 error detected in the compilation of "Test_name.c".

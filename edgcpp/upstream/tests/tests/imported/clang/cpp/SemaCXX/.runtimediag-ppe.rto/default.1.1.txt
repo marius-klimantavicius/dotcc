@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 18: warning: shift count is too large
+  void test2() { (void)typeid(P(1 << 32)); } // expected-warning {{shift count >= width of type}}
+                                     ^
+
+"Test_name.c", line 20: warning: shift count is too large
+  void test3() { 1 ? (void)0 : (void)typeid(P(1 << 32)); }
+                                                   ^
+

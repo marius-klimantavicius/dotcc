@@ -1,0 +1,14 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 9: error: "D::i" is ambiguous
+    i = 0;      // ambiguous
+    ^
+
+"Test_name.c", line 10: error: base class "A" is ambiguous
+    A::i = 0;   // ambiguous
+       ^
+
+"Test_name.c", line 13: error: "D::i" is ambiguous
+    D::i = 0;   // ambiguous
+       ^
+
+3 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: error: nonmember operator requires a parameter with class or enum type
+  void operator+(T, T);		// { dg-error "6:.void operator\\+\\(T, T\\) \\\[with T = int\\\]. must have an argument of class or enumerated type" }
+       ^
+          detected during instantiation of "operator+" based on template argument <int> at line 13
+
+"Test_name.c", line 13: warning: expression has no effect
+    operator+<int>;		// { dg-error "cannot resolve" }
+    ^
+
+1 error detected in the compilation of "Test_name.c".

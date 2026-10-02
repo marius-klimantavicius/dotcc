@@ -1,0 +1,924 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 24: error: expected a ";"
+  FUNC (short _Fract, sf, hr)
+  ^
+
+"Test_name.c", line 24: error: identifier "sfb" is undefined
+  FUNC (short _Fract, sf, hr)
+  ^
+
+"Test_name.c", line 24: error: extra text after expected end of number
+  FUNC (short _Fract, sf, hr)
+  ^
+
+"Test_name.c", line 24: error: identifier "sfc" is undefined
+  FUNC (short _Fract, sf, hr)
+  ^
+
+"Test_name.c", line 24: error: extra text after expected end of number
+  FUNC (short _Fract, sf, hr)
+  ^
+
+"Test_name.c", line 25: error: variable "_Fract" is not a type name
+  FUNC (_Fract, f, r)
+  ^
+
+"Test_name.c", line 25: error: extra text after expected end of number
+  FUNC (_Fract, f, r)
+  ^
+
+"Test_name.c", line 25: error: extra text after expected end of number
+  FUNC (_Fract, f, r)
+  ^
+
+"Test_name.c", line 26: error: declaration is incompatible with "volatile short _Fract" (declared at line 24)
+  FUNC (long _Fract, lf, lr)
+  ^
+
+"Test_name.c", line 26: error: expected a ";"
+  FUNC (long _Fract, lf, lr)
+  ^
+
+"Test_name.c", line 26: error: identifier "lfb" is undefined
+  FUNC (long _Fract, lf, lr)
+  ^
+
+"Test_name.c", line 26: error: extra text after expected end of number
+  FUNC (long _Fract, lf, lr)
+  ^
+
+"Test_name.c", line 26: warning: concatenation with "lr" in macro "FUNC" does not create a valid token
+  FUNC (long _Fract, lf, lr)
+  ^
+
+"Test_name.c", line 26: error: identifier "lfc" is undefined
+  FUNC (long _Fract, lf, lr)
+  ^
+
+"Test_name.c", line 26: error: extra text after expected end of number
+  FUNC (long _Fract, lf, lr)
+  ^
+
+"Test_name.c", line 26: warning: concatenation with "lr" in macro "FUNC" does not create a valid token
+  FUNC (long _Fract, lf, lr)
+  ^
+
+"Test_name.c", line 27: error: declaration is incompatible with "volatile short _Fract" (declared at line 26)
+  FUNC (long long _Fract, llf, llr)
+  ^
+
+"Test_name.c", line 27: error: expected a ";"
+  FUNC (long long _Fract, llf, llr)
+  ^
+
+"Test_name.c", line 27: error: identifier "llfb" is undefined
+  FUNC (long long _Fract, llf, llr)
+  ^
+
+"Test_name.c", line 27: error: extra text after expected end of number
+  FUNC (long long _Fract, llf, llr)
+  ^
+
+"Test_name.c", line 27: warning: concatenation with "llr" in macro "FUNC" does not create a valid token
+  FUNC (long long _Fract, llf, llr)
+  ^
+
+"Test_name.c", line 27: error: identifier "llfc" is undefined
+  FUNC (long long _Fract, llf, llr)
+  ^
+
+"Test_name.c", line 27: error: extra text after expected end of number
+  FUNC (long long _Fract, llf, llr)
+  ^
+
+"Test_name.c", line 27: warning: concatenation with "llr" in macro "FUNC" does not create a valid token
+  FUNC (long long _Fract, llf, llr)
+  ^
+
+"Test_name.c", line 28: error: declaration is incompatible with "volatile short _Fract" (declared at line 27)
+  FUNC (unsigned short _Fract, usf, uhr)
+  ^
+
+"Test_name.c", line 28: error: expected a ";"
+  FUNC (unsigned short _Fract, usf, uhr)
+  ^
+
+"Test_name.c", line 28: error: identifier "usfb" is undefined
+  FUNC (unsigned short _Fract, usf, uhr)
+  ^
+
+"Test_name.c", line 28: error: extra text after expected end of number
+  FUNC (unsigned short _Fract, usf, uhr)
+  ^
+
+"Test_name.c", line 28: error: identifier "usfc" is undefined
+  FUNC (unsigned short _Fract, usf, uhr)
+  ^
+
+"Test_name.c", line 28: error: extra text after expected end of number
+  FUNC (unsigned short _Fract, usf, uhr)
+  ^
+
+"Test_name.c", line 29: error: declaration is incompatible with "volatile short _Fract" (declared at line 28)
+  FUNC (unsigned _Fract, uf, ur)
+  ^
+
+"Test_name.c", line 29: error: expected a ";"
+  FUNC (unsigned _Fract, uf, ur)
+  ^
+
+"Test_name.c", line 29: error: identifier "ufb" is undefined
+  FUNC (unsigned _Fract, uf, ur)
+  ^
+
+"Test_name.c", line 29: error: extra text after expected end of number
+  FUNC (unsigned _Fract, uf, ur)
+  ^
+
+"Test_name.c", line 29: error: identifier "ufc" is undefined
+  FUNC (unsigned _Fract, uf, ur)
+  ^
+
+"Test_name.c", line 29: error: extra text after expected end of number
+  FUNC (unsigned _Fract, uf, ur)
+  ^
+
+"Test_name.c", line 30: error: declaration is incompatible with "volatile short _Fract" (declared at line 29)
+  FUNC (unsigned long _Fract, ulf, ulr)
+  ^
+
+"Test_name.c", line 30: error: expected a ";"
+  FUNC (unsigned long _Fract, ulf, ulr)
+  ^
+
+"Test_name.c", line 30: error: identifier "ulfb" is undefined
+  FUNC (unsigned long _Fract, ulf, ulr)
+  ^
+
+"Test_name.c", line 30: error: extra text after expected end of number
+  FUNC (unsigned long _Fract, ulf, ulr)
+  ^
+
+"Test_name.c", line 30: error: identifier "ulfc" is undefined
+  FUNC (unsigned long _Fract, ulf, ulr)
+  ^
+
+"Test_name.c", line 30: error: extra text after expected end of number
+  FUNC (unsigned long _Fract, ulf, ulr)
+  ^
+
+"Test_name.c", line 31: error: declaration is incompatible with "volatile short _Fract" (declared at line 30)
+  FUNC (long long _Fract, ullf, ullr)
+  ^
+
+"Test_name.c", line 31: error: expected a ";"
+  FUNC (long long _Fract, ullf, ullr)
+  ^
+
+"Test_name.c", line 31: error: identifier "ullfb" is undefined
+  FUNC (long long _Fract, ullf, ullr)
+  ^
+
+"Test_name.c", line 31: error: extra text after expected end of number
+  FUNC (long long _Fract, ullf, ullr)
+  ^
+
+"Test_name.c", line 31: error: identifier "ullfc" is undefined
+  FUNC (long long _Fract, ullf, ullr)
+  ^
+
+"Test_name.c", line 31: error: extra text after expected end of number
+  FUNC (long long _Fract, ullf, ullr)
+  ^
+
+"Test_name.c", line 32: warning: explicit type is missing ("int" assumed)
+  FUNC (_Sat short _Fract, Ssf, hr)
+  ^
+
+"Test_name.c", line 32: error: expected a ";"
+  FUNC (_Sat short _Fract, Ssf, hr)
+  ^
+
+"Test_name.c", line 32: error: identifier "Ssfb" is undefined
+  FUNC (_Sat short _Fract, Ssf, hr)
+  ^
+
+"Test_name.c", line 32: error: extra text after expected end of number
+  FUNC (_Sat short _Fract, Ssf, hr)
+  ^
+
+"Test_name.c", line 32: error: identifier "Ssfc" is undefined
+  FUNC (_Sat short _Fract, Ssf, hr)
+  ^
+
+"Test_name.c", line 32: error: extra text after expected end of number
+  FUNC (_Sat short _Fract, Ssf, hr)
+  ^
+
+"Test_name.c", line 33: error: variable "_Sat" is not a type name
+  FUNC (_Sat _Fract, Sf, r)
+  ^
+
+"Test_name.c", line 33: error: expected a ";"
+  FUNC (_Sat _Fract, Sf, r)
+  ^
+
+"Test_name.c", line 33: error: identifier "Sfb" is undefined
+  FUNC (_Sat _Fract, Sf, r)
+  ^
+
+"Test_name.c", line 33: error: extra text after expected end of number
+  FUNC (_Sat _Fract, Sf, r)
+  ^
+
+"Test_name.c", line 33: error: identifier "Sfc" is undefined
+  FUNC (_Sat _Fract, Sf, r)
+  ^
+
+"Test_name.c", line 33: error: extra text after expected end of number
+  FUNC (_Sat _Fract, Sf, r)
+  ^
+
+"Test_name.c", line 34: warning: explicit type is missing ("int" assumed)
+  FUNC (_Sat long _Fract, Slf, lr)
+  ^
+
+"Test_name.c", line 34: error: expected a ";"
+  FUNC (_Sat long _Fract, Slf, lr)
+  ^
+
+"Test_name.c", line 34: error: identifier "Slfb" is undefined
+  FUNC (_Sat long _Fract, Slf, lr)
+  ^
+
+"Test_name.c", line 34: error: extra text after expected end of number
+  FUNC (_Sat long _Fract, Slf, lr)
+  ^
+
+"Test_name.c", line 34: warning: concatenation with "lr" in macro "FUNC" does not create a valid token
+  FUNC (_Sat long _Fract, Slf, lr)
+  ^
+
+"Test_name.c", line 34: error: identifier "Slfc" is undefined
+  FUNC (_Sat long _Fract, Slf, lr)
+  ^
+
+"Test_name.c", line 34: error: extra text after expected end of number
+  FUNC (_Sat long _Fract, Slf, lr)
+  ^
+
+"Test_name.c", line 34: warning: concatenation with "lr" in macro "FUNC" does not create a valid token
+  FUNC (_Sat long _Fract, Slf, lr)
+  ^
+
+"Test_name.c", line 35: warning: explicit type is missing ("int" assumed)
+  FUNC (_Sat long long _Fract, Sllf, llr)
+  ^
+
+"Test_name.c", line 35: error: expected a ";"
+  FUNC (_Sat long long _Fract, Sllf, llr)
+  ^
+
+"Test_name.c", line 35: error: identifier "Sllfb" is undefined
+  FUNC (_Sat long long _Fract, Sllf, llr)
+  ^
+
+"Test_name.c", line 35: error: extra text after expected end of number
+  FUNC (_Sat long long _Fract, Sllf, llr)
+  ^
+
+"Test_name.c", line 35: warning: concatenation with "llr" in macro "FUNC" does not create a valid token
+  FUNC (_Sat long long _Fract, Sllf, llr)
+  ^
+
+"Test_name.c", line 35: error: identifier "Sllfc" is undefined
+  FUNC (_Sat long long _Fract, Sllf, llr)
+  ^
+
+"Test_name.c", line 35: error: extra text after expected end of number
+  FUNC (_Sat long long _Fract, Sllf, llr)
+  ^
+
+"Test_name.c", line 35: warning: concatenation with "llr" in macro "FUNC" does not create a valid token
+  FUNC (_Sat long long _Fract, Sllf, llr)
+  ^
+
+"Test_name.c", line 36: warning: explicit type is missing ("int" assumed)
+  FUNC (_Sat unsigned short _Fract, Susf, uhr)
+  ^
+
+"Test_name.c", line 36: error: expected a ";"
+  FUNC (_Sat unsigned short _Fract, Susf, uhr)
+  ^
+
+"Test_name.c", line 36: error: identifier "Susfb" is undefined
+  FUNC (_Sat unsigned short _Fract, Susf, uhr)
+  ^
+
+"Test_name.c", line 36: error: extra text after expected end of number
+  FUNC (_Sat unsigned short _Fract, Susf, uhr)
+  ^
+
+"Test_name.c", line 36: error: identifier "Susfc" is undefined
+  FUNC (_Sat unsigned short _Fract, Susf, uhr)
+  ^
+
+"Test_name.c", line 36: error: extra text after expected end of number
+  FUNC (_Sat unsigned short _Fract, Susf, uhr)
+  ^
+
+"Test_name.c", line 37: warning: explicit type is missing ("int" assumed)
+  FUNC (_Sat unsigned _Fract, Suf, ur)
+  ^
+
+"Test_name.c", line 37: error: expected a ";"
+  FUNC (_Sat unsigned _Fract, Suf, ur)
+  ^
+
+"Test_name.c", line 37: error: identifier "Sufb" is undefined
+  FUNC (_Sat unsigned _Fract, Suf, ur)
+  ^
+
+"Test_name.c", line 37: error: extra text after expected end of number
+  FUNC (_Sat unsigned _Fract, Suf, ur)
+  ^
+
+"Test_name.c", line 37: error: identifier "Sufc" is undefined
+  FUNC (_Sat unsigned _Fract, Suf, ur)
+  ^
+
+"Test_name.c", line 37: error: extra text after expected end of number
+  FUNC (_Sat unsigned _Fract, Suf, ur)
+  ^
+
+"Test_name.c", line 38: warning: explicit type is missing ("int" assumed)
+  FUNC (_Sat unsigned long _Fract, Sulf, ulr)
+  ^
+
+"Test_name.c", line 38: error: expected a ";"
+  FUNC (_Sat unsigned long _Fract, Sulf, ulr)
+  ^
+
+"Test_name.c", line 38: error: identifier "Sulfb" is undefined
+  FUNC (_Sat unsigned long _Fract, Sulf, ulr)
+  ^
+
+"Test_name.c", line 38: error: extra text after expected end of number
+  FUNC (_Sat unsigned long _Fract, Sulf, ulr)
+  ^
+
+"Test_name.c", line 38: error: identifier "Sulfc" is undefined
+  FUNC (_Sat unsigned long _Fract, Sulf, ulr)
+  ^
+
+"Test_name.c", line 38: error: extra text after expected end of number
+  FUNC (_Sat unsigned long _Fract, Sulf, ulr)
+  ^
+
+"Test_name.c", line 39: warning: explicit type is missing ("int" assumed)
+  FUNC (_Sat long long _Fract, Sullf, ullr)
+  ^
+
+"Test_name.c", line 39: error: expected a ";"
+  FUNC (_Sat long long _Fract, Sullf, ullr)
+  ^
+
+"Test_name.c", line 39: error: identifier "Sullfb" is undefined
+  FUNC (_Sat long long _Fract, Sullf, ullr)
+  ^
+
+"Test_name.c", line 39: error: extra text after expected end of number
+  FUNC (_Sat long long _Fract, Sullf, ullr)
+  ^
+
+"Test_name.c", line 39: error: identifier "Sullfc" is undefined
+  FUNC (_Sat long long _Fract, Sullf, ullr)
+  ^
+
+"Test_name.c", line 39: error: extra text after expected end of number
+  FUNC (_Sat long long _Fract, Sullf, ullr)
+  ^
+
+"Test_name.c", line 40: error: expected a ";"
+  FUNC (short _Accum, sa, hk)
+  ^
+
+"Test_name.c", line 40: error: identifier "sab" is undefined
+  FUNC (short _Accum, sa, hk)
+  ^
+
+"Test_name.c", line 40: error: extra text after expected end of number
+  FUNC (short _Accum, sa, hk)
+  ^
+
+"Test_name.c", line 40: error: identifier "sac" is undefined
+  FUNC (short _Accum, sa, hk)
+  ^
+
+"Test_name.c", line 40: error: extra text after expected end of number
+  FUNC (short _Accum, sa, hk)
+  ^
+
+"Test_name.c", line 41: error: variable "_Accum" is not a type name
+  FUNC (_Accum, a, k)
+  ^
+
+"Test_name.c", line 41: error: extra text after expected end of number
+  FUNC (_Accum, a, k)
+  ^
+
+"Test_name.c", line 41: error: extra text after expected end of number
+  FUNC (_Accum, a, k)
+  ^
+
+"Test_name.c", line 42: error: declaration is incompatible with "volatile short _Accum" (declared at line 40)
+  FUNC (long _Accum, la, lk)
+  ^
+
+"Test_name.c", line 42: error: expected a ";"
+  FUNC (long _Accum, la, lk)
+  ^
+
+"Test_name.c", line 42: error: identifier "lab" is undefined
+  FUNC (long _Accum, la, lk)
+  ^
+
+"Test_name.c", line 42: error: extra text after expected end of number
+  FUNC (long _Accum, la, lk)
+  ^
+
+"Test_name.c", line 42: warning: concatenation with "lk" in macro "FUNC" does not create a valid token
+  FUNC (long _Accum, la, lk)
+  ^
+
+"Test_name.c", line 42: error: identifier "lac" is undefined
+  FUNC (long _Accum, la, lk)
+  ^
+
+"Test_name.c", line 42: error: extra text after expected end of number
+  FUNC (long _Accum, la, lk)
+  ^
+
+"Test_name.c", line 42: warning: concatenation with "lk" in macro "FUNC" does not create a valid token
+  FUNC (long _Accum, la, lk)
+  ^
+
+"Test_name.c", line 43: error: declaration is incompatible with "volatile short _Accum" (declared at line 42)
+  FUNC (long long _Accum, lla, llk)
+  ^
+
+"Test_name.c", line 43: error: expected a ";"
+  FUNC (long long _Accum, lla, llk)
+  ^
+
+"Test_name.c", line 43: error: identifier "llab" is undefined
+  FUNC (long long _Accum, lla, llk)
+  ^
+
+"Test_name.c", line 43: error: extra text after expected end of number
+  FUNC (long long _Accum, lla, llk)
+  ^
+
+"Test_name.c", line 43: warning: concatenation with "llk" in macro "FUNC" does not create a valid token
+  FUNC (long long _Accum, lla, llk)
+  ^
+
+"Test_name.c", line 43: error: identifier "llac" is undefined
+  FUNC (long long _Accum, lla, llk)
+  ^
+
+"Test_name.c", line 43: error: extra text after expected end of number
+  FUNC (long long _Accum, lla, llk)
+  ^
+
+"Test_name.c", line 43: warning: concatenation with "llk" in macro "FUNC" does not create a valid token
+  FUNC (long long _Accum, lla, llk)
+  ^
+
+"Test_name.c", line 44: error: declaration is incompatible with "volatile short _Accum" (declared at line 43)
+  FUNC (unsigned short _Accum, usa, uhk)
+  ^
+
+"Test_name.c", line 44: error: expected a ";"
+  FUNC (unsigned short _Accum, usa, uhk)
+  ^
+
+"Test_name.c", line 44: error: identifier "usab" is undefined
+  FUNC (unsigned short _Accum, usa, uhk)
+  ^
+
+"Test_name.c", line 44: error: extra text after expected end of number
+  FUNC (unsigned short _Accum, usa, uhk)
+  ^
+
+"Test_name.c", line 44: error: identifier "usac" is undefined
+  FUNC (unsigned short _Accum, usa, uhk)
+  ^
+
+"Test_name.c", line 44: error: extra text after expected end of number
+  FUNC (unsigned short _Accum, usa, uhk)
+  ^
+
+"Test_name.c", line 45: error: declaration is incompatible with "volatile short _Accum" (declared at line 44)
+  FUNC (unsigned _Accum, ua, uk)
+  ^
+
+"Test_name.c", line 45: error: expected a ";"
+  FUNC (unsigned _Accum, ua, uk)
+  ^
+
+"Test_name.c", line 45: error: identifier "uab" is undefined
+  FUNC (unsigned _Accum, ua, uk)
+  ^
+
+"Test_name.c", line 45: error: extra text after expected end of number
+  FUNC (unsigned _Accum, ua, uk)
+  ^
+
+"Test_name.c", line 45: error: identifier "uac" is undefined
+  FUNC (unsigned _Accum, ua, uk)
+  ^
+
+"Test_name.c", line 45: error: extra text after expected end of number
+  FUNC (unsigned _Accum, ua, uk)
+  ^
+
+"Test_name.c", line 46: error: declaration is incompatible with "volatile short _Accum" (declared at line 45)
+  FUNC (unsigned long _Accum, ula, ulk)
+  ^
+
+"Test_name.c", line 46: error: expected a ";"
+  FUNC (unsigned long _Accum, ula, ulk)
+  ^
+
+"Test_name.c", line 46: error: identifier "ulab" is undefined
+  FUNC (unsigned long _Accum, ula, ulk)
+  ^
+
+"Test_name.c", line 46: error: extra text after expected end of number
+  FUNC (unsigned long _Accum, ula, ulk)
+  ^
+
+"Test_name.c", line 46: error: identifier "ulac" is undefined
+  FUNC (unsigned long _Accum, ula, ulk)
+  ^
+
+"Test_name.c", line 46: error: extra text after expected end of number
+  FUNC (unsigned long _Accum, ula, ulk)
+  ^
+
+"Test_name.c", line 47: error: declaration is incompatible with "volatile short _Accum" (declared at line 46)
+  FUNC (long long _Accum, ulla, ullk)
+  ^
+
+"Test_name.c", line 47: error: expected a ";"
+  FUNC (long long _Accum, ulla, ullk)
+  ^
+
+"Test_name.c", line 47: error: identifier "ullab" is undefined
+  FUNC (long long _Accum, ulla, ullk)
+  ^
+
+"Test_name.c", line 47: error: extra text after expected end of number
+  FUNC (long long _Accum, ulla, ullk)
+  ^
+
+"Test_name.c", line 47: error: identifier "ullac" is undefined
+  FUNC (long long _Accum, ulla, ullk)
+  ^
+
+"Test_name.c", line 47: error: extra text after expected end of number
+  FUNC (long long _Accum, ulla, ullk)
+  ^
+
+"Test_name.c", line 48: warning: explicit type is missing ("int" assumed)
+  FUNC (_Sat short _Accum, Ssa, hk)
+  ^
+
+"Test_name.c", line 48: error: expected a ";"
+  FUNC (_Sat short _Accum, Ssa, hk)
+  ^
+
+"Test_name.c", line 48: error: identifier "Ssab" is undefined
+  FUNC (_Sat short _Accum, Ssa, hk)
+  ^
+
+"Test_name.c", line 48: error: extra text after expected end of number
+  FUNC (_Sat short _Accum, Ssa, hk)
+  ^
+
+"Test_name.c", line 48: error: identifier "Ssac" is undefined
+  FUNC (_Sat short _Accum, Ssa, hk)
+  ^
+
+"Test_name.c", line 48: error: extra text after expected end of number
+  FUNC (_Sat short _Accum, Ssa, hk)
+  ^
+
+"Test_name.c", line 49: error: variable "_Sat" is not a type name
+  FUNC (_Sat _Accum, Sa, k)
+  ^
+
+"Test_name.c", line 49: error: expected a ";"
+  FUNC (_Sat _Accum, Sa, k)
+  ^
+
+"Test_name.c", line 49: error: identifier "Sab" is undefined
+  FUNC (_Sat _Accum, Sa, k)
+  ^
+
+"Test_name.c", line 49: error: extra text after expected end of number
+  FUNC (_Sat _Accum, Sa, k)
+  ^
+
+"Test_name.c", line 49: error: identifier "Sac" is undefined
+  FUNC (_Sat _Accum, Sa, k)
+  ^
+
+"Test_name.c", line 49: error: extra text after expected end of number
+  FUNC (_Sat _Accum, Sa, k)
+  ^
+
+"Test_name.c", line 50: warning: explicit type is missing ("int" assumed)
+  FUNC (_Sat long _Accum, Sla, lk)
+  ^
+
+"Test_name.c", line 50: error: expected a ";"
+  FUNC (_Sat long _Accum, Sla, lk)
+  ^
+
+"Test_name.c", line 50: error: identifier "Slab" is undefined
+  FUNC (_Sat long _Accum, Sla, lk)
+  ^
+
+"Test_name.c", line 50: error: extra text after expected end of number
+  FUNC (_Sat long _Accum, Sla, lk)
+  ^
+
+"Test_name.c", line 50: warning: concatenation with "lk" in macro "FUNC" does not create a valid token
+  FUNC (_Sat long _Accum, Sla, lk)
+  ^
+
+"Test_name.c", line 50: error: identifier "Slac" is undefined
+  FUNC (_Sat long _Accum, Sla, lk)
+  ^
+
+"Test_name.c", line 50: error: extra text after expected end of number
+  FUNC (_Sat long _Accum, Sla, lk)
+  ^
+
+"Test_name.c", line 50: warning: concatenation with "lk" in macro "FUNC" does not create a valid token
+  FUNC (_Sat long _Accum, Sla, lk)
+  ^
+
+"Test_name.c", line 51: warning: explicit type is missing ("int" assumed)
+  FUNC (_Sat long long _Accum, Slla, llk)
+  ^
+
+"Test_name.c", line 51: error: expected a ";"
+  FUNC (_Sat long long _Accum, Slla, llk)
+  ^
+
+"Test_name.c", line 51: error: identifier "Sllab" is undefined
+  FUNC (_Sat long long _Accum, Slla, llk)
+  ^
+
+"Test_name.c", line 51: error: extra text after expected end of number
+  FUNC (_Sat long long _Accum, Slla, llk)
+  ^
+
+"Test_name.c", line 51: warning: concatenation with "llk" in macro "FUNC" does not create a valid token
+  FUNC (_Sat long long _Accum, Slla, llk)
+  ^
+
+"Test_name.c", line 51: error: identifier "Sllac" is undefined
+  FUNC (_Sat long long _Accum, Slla, llk)
+  ^
+
+"Test_name.c", line 51: error: extra text after expected end of number
+  FUNC (_Sat long long _Accum, Slla, llk)
+  ^
+
+"Test_name.c", line 51: warning: concatenation with "llk" in macro "FUNC" does not create a valid token
+  FUNC (_Sat long long _Accum, Slla, llk)
+  ^
+
+"Test_name.c", line 52: warning: explicit type is missing ("int" assumed)
+  FUNC (_Sat unsigned short _Accum, Susa, uhk)
+  ^
+
+"Test_name.c", line 52: error: expected a ";"
+  FUNC (_Sat unsigned short _Accum, Susa, uhk)
+  ^
+
+"Test_name.c", line 52: error: identifier "Susab" is undefined
+  FUNC (_Sat unsigned short _Accum, Susa, uhk)
+  ^
+
+"Test_name.c", line 52: error: extra text after expected end of number
+  FUNC (_Sat unsigned short _Accum, Susa, uhk)
+  ^
+
+"Test_name.c", line 52: error: identifier "Susac" is undefined
+  FUNC (_Sat unsigned short _Accum, Susa, uhk)
+  ^
+
+"Test_name.c", line 52: error: extra text after expected end of number
+  FUNC (_Sat unsigned short _Accum, Susa, uhk)
+  ^
+
+"Test_name.c", line 53: warning: explicit type is missing ("int" assumed)
+  FUNC (_Sat unsigned _Accum, Sua, uk)
+  ^
+
+"Test_name.c", line 53: error: expected a ";"
+  FUNC (_Sat unsigned _Accum, Sua, uk)
+  ^
+
+"Test_name.c", line 53: error: identifier "Suab" is undefined
+  FUNC (_Sat unsigned _Accum, Sua, uk)
+  ^
+
+"Test_name.c", line 53: error: extra text after expected end of number
+  FUNC (_Sat unsigned _Accum, Sua, uk)
+  ^
+
+"Test_name.c", line 53: error: identifier "Suac" is undefined
+  FUNC (_Sat unsigned _Accum, Sua, uk)
+  ^
+
+"Test_name.c", line 53: error: extra text after expected end of number
+  FUNC (_Sat unsigned _Accum, Sua, uk)
+  ^
+
+"Test_name.c", line 54: warning: explicit type is missing ("int" assumed)
+  FUNC (_Sat unsigned long _Accum, Sula, ulk)
+  ^
+
+"Test_name.c", line 54: error: expected a ";"
+  FUNC (_Sat unsigned long _Accum, Sula, ulk)
+  ^
+
+"Test_name.c", line 54: error: identifier "Sulab" is undefined
+  FUNC (_Sat unsigned long _Accum, Sula, ulk)
+  ^
+
+"Test_name.c", line 54: error: extra text after expected end of number
+  FUNC (_Sat unsigned long _Accum, Sula, ulk)
+  ^
+
+"Test_name.c", line 54: error: identifier "Sulac" is undefined
+  FUNC (_Sat unsigned long _Accum, Sula, ulk)
+  ^
+
+"Test_name.c", line 54: error: extra text after expected end of number
+  FUNC (_Sat unsigned long _Accum, Sula, ulk)
+  ^
+
+"Test_name.c", line 55: warning: explicit type is missing ("int" assumed)
+  FUNC (_Sat long long _Accum, Sulla, ullk)
+  ^
+
+"Test_name.c", line 55: error: expected a ";"
+  FUNC (_Sat long long _Accum, Sulla, ullk)
+  ^
+
+"Test_name.c", line 55: error: identifier "Sullab" is undefined
+  FUNC (_Sat long long _Accum, Sulla, ullk)
+  ^
+
+"Test_name.c", line 55: error: extra text after expected end of number
+  FUNC (_Sat long long _Accum, Sulla, ullk)
+  ^
+
+"Test_name.c", line 55: error: identifier "Sullac" is undefined
+  FUNC (_Sat long long _Accum, Sulla, ullk)
+  ^
+
+"Test_name.c", line 55: error: extra text after expected end of number
+  FUNC (_Sat long long _Accum, Sulla, ullk)
+  ^
+
+"Test_name.c", line 69: error: identifier "sfa" is undefined
+    TEST(sf)
+    ^
+
+"Test_name.c", line 69: error: identifier "sfb" is undefined
+    TEST(sf)
+    ^
+
+"Test_name.c", line 69: error: identifier "sfc" is undefined
+    TEST(sf)
+    ^
+
+"Test_name.c", line 71: error: identifier "lfa" is undefined
+    TEST(lf)
+    ^
+
+"Test_name.c", line 71: error: identifier "lfb" is undefined
+    TEST(lf)
+    ^
+
+"Test_name.c", line 71: error: identifier "lfc" is undefined
+    TEST(lf)
+    ^
+
+"Test_name.c", line 72: error: identifier "llfa" is undefined
+    TEST(llf)
+    ^
+
+"Test_name.c", line 72: error: identifier "llfb" is undefined
+    TEST(llf)
+    ^
+
+"Test_name.c", line 72: error: identifier "llfc" is undefined
+    TEST(llf)
+    ^
+
+"Test_name.c", line 73: error: identifier "usfa" is undefined
+    TEST(usf)
+    ^
+
+"Test_name.c", line 73: error: identifier "usfb" is undefined
+    TEST(usf)
+    ^
+
+"Test_name.c", line 73: error: identifier "usfc" is undefined
+    TEST(usf)
+    ^
+
+"Test_name.c", line 74: error: identifier "ufa" is undefined
+    TEST(uf)
+    ^
+
+"Test_name.c", line 74: error: identifier "ufb" is undefined
+    TEST(uf)
+    ^
+
+"Test_name.c", line 74: error: identifier "ufc" is undefined
+    TEST(uf)
+    ^
+
+"Test_name.c", line 75: error: identifier "ulfa" is undefined
+    TEST(ulf)
+    ^
+
+"Test_name.c", line 75: error: identifier "ulfb" is undefined
+    TEST(ulf)
+    ^
+
+"Test_name.c", line 75: error: identifier "ulfc" is undefined
+    TEST(ulf)
+    ^
+
+"Test_name.c", line 76: error: identifier "ullfa" is undefined
+    TEST(ullf)
+    ^
+
+"Test_name.c", line 76: error: identifier "ullfb" is undefined
+    TEST(ullf)
+    ^
+
+"Test_name.c", line 76: error: identifier "ullfc" is undefined
+    TEST(ullf)
+    ^
+
+"Test_name.c", line 77: error: identifier "Ssfa" is undefined
+    TEST(Ssf)
+    ^
+
+"Test_name.c", line 77: error: identifier "Ssfb" is undefined
+    TEST(Ssf)
+    ^
+
+"Test_name.c", line 77: error: identifier "Ssfc" is undefined
+    TEST(Ssf)
+    ^
+
+"Test_name.c", line 78: error: identifier "Sfa" is undefined
+    TEST(Sf)
+    ^
+
+"Test_name.c", line 78: error: identifier "Sfb" is undefined
+    TEST(Sf)
+    ^
+
+"Test_name.c", line 78: error: identifier "Sfc" is undefined
+    TEST(Sf)
+    ^
+
+"Test_name.c", line 79: error: identifier "Slfa" is undefined
+    TEST(Slf)
+    ^
+
+"Test_name.c", line 79: error: identifier "Slfb" is undefined
+    TEST(Slf)
+    ^
+
+"Test_name.c", line 79: error: identifier "Slfc" is undefined
+    TEST(Slf)
+    ^
+
+Error limit reached.
+200 errors detected in the compilation of "Test_name.c".
+Compilation terminated.

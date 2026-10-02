@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --c++23 Test_name.c
+"Test_name.c", line 11: warning: template parameter "<unnamed>" is not used in declaring the parameter types of function template "lambda []()->void::operator auto (*)()->void"
+  auto l = []<typename> requires true -> void { };  // Previously a spurious
+                      ^
+

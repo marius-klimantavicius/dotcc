@@ -1,0 +1,514 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 68: error: array is too large
+      p = new short [MAX];                // { dg-error "size .\[0-9\]+. of array" }
+                    ^
+
+"Test_name.c", line 69: error: array is too large
+      p = new short [MAX - 1];            // { dg-error "size .\[0-9\]+. of array" }
+                    ^
+
+"Test_name.c", line 70: error: array is too large
+      p = new short [MAX - 2];            // { dg-error "size .\[0-9\]+. of array" }
+                    ^
+
+"Test_name.c", line 71: error: array is too large
+      p = new short [MAX - 99];           // { dg-error "size .\[0-9\]+. of array" }
+                    ^
+
+"Test_name.c", line 110: error: array is too large
+      p = new char [2][MAX];              // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                      ^
+
+"Test_name.c", line 111: error: array is too large
+      p = new char [2][MAX - 1];          // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                      ^
+
+"Test_name.c", line 112: error: array is too large
+      p = new char [2][MAX - 2];          // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                      ^
+
+"Test_name.c", line 119: error: array is too large
+      p = new char [MAX][MAX];            // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                        ^
+
+"Test_name.c", line 120: error: array is too large
+      p = new char [MAX][MAX - 1];        // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                        ^
+
+"Test_name.c", line 121: error: array is too large
+      p = new char [MAX][MAX - 2];        // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                        ^
+
+"Test_name.c", line 122: error: array is too large
+      p = new char [MAX][MAX / 2];        // { dg-error "size .\[0-9\]+. of array" }
+                        ^
+
+"Test_name.c", line 123: error: array is too large
+      p = new char [MAX][MAX / 2 - 1];    // { dg-error "size .\[0-9\]+. of array" }
+                        ^
+
+"Test_name.c", line 124: error: array is too large
+      p = new char [MAX][MAX / 2 - 2];    // { dg-error "size .\[0-9\]+. of array" }
+                        ^
+
+"Test_name.c", line 125: error: array is too large
+      p = new char [MAX][MAX / 2 - 7];    // { dg-error "size .\[0-9\]+. of array" }
+                        ^
+
+"Test_name.c", line 126: error: array is too large
+      p = new char [MAX][MAX / 2 - 8];    // { dg-error "size .\[0-9\]+. of array" }
+                        ^
+
+"Test_name.c", line 127: error: array is too large
+      p = new char [MAX][2];              // { dg-error "size .\[0-9\]+. of array" }
+                        ^
+
+"Test_name.c", line 165: error: array is too large
+      p = new char [1][2][MAX];           // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                         ^
+
+"Test_name.c", line 166: error: array is too large
+      p = new char [1][2][MAX - 1];       // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                         ^
+
+"Test_name.c", line 167: error: array is too large
+      p = new char [1][2][MAX - 2];       // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                         ^
+
+"Test_name.c", line 168: error: array is too large
+      p = new char [1][2][MAX - 99];      // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                         ^
+
+"Test_name.c", line 187: error: array is too large
+      p = new char [2][1][MAX];           // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                         ^
+
+"Test_name.c", line 188: error: array is too large
+      p = new char [2][1][MAX - 1];       // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                         ^
+
+"Test_name.c", line 189: error: array is too large
+      p = new char [2][1][MAX - 2];       // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                         ^
+
+"Test_name.c", line 190: error: array is too large
+      p = new char [2][1][MAX - 99];      // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                         ^
+
+"Test_name.c", line 209: error: array is too large
+      p = new char [2][2][MAX];           // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                         ^
+
+"Test_name.c", line 210: error: array is too large
+      p = new char [2][2][MAX - 1];       // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                         ^
+
+"Test_name.c", line 211: error: array is too large
+      p = new char [2][2][MAX - 2];       // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                         ^
+
+"Test_name.c", line 212: error: array is too large
+      p = new char [2][2][MAX - 99];      // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                         ^
+
+"Test_name.c", line 213: error: array is too large
+      p = new char [2][2][MAX / 2];       // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                         ^
+
+"Test_name.c", line 214: error: array is too large
+      p = new char [2][2][MAX / 2 - 1];   // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                         ^
+
+"Test_name.c", line 215: error: array is too large
+      p = new char [2][2][MAX / 2 - 2];   // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                         ^
+
+"Test_name.c", line 216: error: array is too large
+      p = new char [2][2][MAX / 2 - 3];   // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                         ^
+
+"Test_name.c", line 217: error: array is too large
+      p = new char [2][2][MAX / 2 - 4];   // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                         ^
+
+"Test_name.c", line 218: error: array is too large
+      p = new char [2][2][MAX / 2 - 5];   // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                         ^
+
+"Test_name.c", line 219: error: array is too large
+      p = new char [2][2][MAX / 2 - 6];   // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                         ^
+
+"Test_name.c", line 220: error: array is too large
+      p = new char [2][2][MAX / 2 - 7];   // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                         ^
+
+"Test_name.c", line 221: error: array is too large
+      p = new char [2][2][MAX / 2 - 8];   // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                         ^
+
+"Test_name.c", line 233: error: array is too large
+      p = new char [2][MAX][2];           // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                           ^
+
+"Test_name.c", line 234: error: array is too large
+      p = new char [2][MAX - 1][2];       // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                               ^
+
+"Test_name.c", line 235: error: array is too large
+      p = new char [2][MAX - 2][2];       // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                               ^
+
+"Test_name.c", line 236: error: array is too large
+      p = new char [2][MAX - 99][2];      // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                                ^
+
+"Test_name.c", line 237: error: array is too large
+      p = new char [2][MAX / 2][2];       // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                               ^
+
+"Test_name.c", line 238: error: array is too large
+      p = new char [2][MAX / 2 - 1][2];   // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                                   ^
+
+"Test_name.c", line 239: error: array is too large
+      p = new char [2][MAX / 2 - 2][2];   // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                                   ^
+
+"Test_name.c", line 240: error: array is too large
+      p = new char [2][MAX / 2 - 3][2];   // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                                   ^
+
+"Test_name.c", line 241: error: array is too large
+      p = new char [2][MAX / 2 - 4][2];   // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                                   ^
+
+"Test_name.c", line 242: error: array is too large
+      p = new char [2][MAX / 2 - 5][2];   // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                                   ^
+
+"Test_name.c", line 243: error: array is too large
+      p = new char [2][MAX / 2 - 6][2];   // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                                   ^
+
+"Test_name.c", line 244: error: array is too large
+      p = new char [2][MAX / 2 - 7][2];   // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                                   ^
+
+"Test_name.c", line 245: error: array is too large
+      p = new char [2][MAX / 2 - 8][2];   // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                                   ^
+
+"Test_name.c", line 257: error: array is too large
+      p = new char [MAX][2][2];           // { dg-error "size .\[0-9\]+. of array" }
+                           ^
+
+"Test_name.c", line 258: error: array is too large
+      p = new char [MAX - 1][2][2];       // { dg-error "size .\[0-9\]+. of array" }
+                               ^
+
+"Test_name.c", line 259: error: array is too large
+      p = new char [MAX - 2][2][2];       // { dg-error "size .\[0-9\]+. of array" }
+                               ^
+
+"Test_name.c", line 260: error: array is too large
+      p = new char [MAX - 99][2][2];      // { dg-error "size .\[0-9\]+. of array" }
+                                ^
+
+"Test_name.c", line 261: error: array is too large
+      p = new char [MAX / 2][2][2];       // { dg-error "size .\[0-9\]+. of array" }
+                               ^
+
+"Test_name.c", line 262: error: array is too large
+      p = new char [MAX / 2 - 1][2][2];   // { dg-error "size .\[0-9\]+. of array" }
+                                   ^
+
+"Test_name.c", line 263: error: array is too large
+      p = new char [MAX / 2 - 2][2][2];   // { dg-error "size .\[0-9\]+. of array" }
+                                   ^
+
+"Test_name.c", line 264: error: array is too large
+      p = new char [MAX / 2 - 3][2][2];   // { dg-error "size .\[0-9\]+. of array" }
+                                   ^
+
+"Test_name.c", line 265: error: array is too large
+      p = new char [MAX / 2 - 4][2][2];   // { dg-error "size .\[0-9\]+. of array" }
+                                   ^
+
+"Test_name.c", line 266: error: array is too large
+      p = new char [MAX / 2 - 5][2][2];   // { dg-error "size .\[0-9\]+. of array" }
+                                   ^
+
+"Test_name.c", line 267: error: array is too large
+      p = new char [MAX / 2 - 6][2][2];   // { dg-error "size .\[0-9\]+. of array" }
+                                   ^
+
+"Test_name.c", line 268: error: array is too large
+      p = new char [MAX / 2 - 7][2][2];   // { dg-error "size .\[0-9\]+. of array" }
+                                   ^
+
+"Test_name.c", line 269: error: array is too large
+      p = new char [MAX / 2 - 8][2][2];   // { dg-error "size .\[0-9\]+. of array" }
+                                   ^
+
+"Test_name.c", line 281: error: array is too large
+      p = new char [MAX][MAX][MAX];         // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                             ^
+
+"Test_name.c", line 282: error: array is too large
+      p = new char [MAX][MAX][MAX / 2];     // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                             ^
+
+"Test_name.c", line 283: error: array is too large
+      p = new char [MAX][MAX / 2][MAX];     // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                                 ^
+
+"Test_name.c", line 284: error: array is too large
+      p = new char [MAX][MAX / 2][MAX / 2]; // { dg-error "size of (unnamed )?array" }
+                                 ^
+
+"Test_name.c", line 285: error: array is too large
+      p = new char [MAX / 2][MAX / 2][MAX / 2]; // { dg-error "size of (unnamed )?array" }
+                                     ^
+
+"Test_name.c", line 307: error: array is too large
+      p = new char [N]    [N][N][N][N][N][N][N];  // { dg-error "size .\[0-9\]+. of array" "" { target { ! msp430_large } } }
+                                            ^
+
+"Test_name.c", line 369: error: array is too large
+      p = new (p) B [2][MAX];             // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                       ^
+
+"Test_name.c", line 370: error: array is too large
+      p = new (p) B [2][MAX - 1];         // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                       ^
+
+"Test_name.c", line 371: error: array is too large
+      p = new (p) B [2][MAX - 2];         // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                       ^
+
+"Test_name.c", line 378: error: array is too large
+      p = new (p) B [MAX][MAX];           // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                         ^
+
+"Test_name.c", line 379: error: array is too large
+      p = new (p) B [MAX][MAX - 1];       // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                         ^
+
+"Test_name.c", line 380: error: array is too large
+      p = new (p) B [MAX][MAX - 2];       // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                         ^
+
+"Test_name.c", line 381: error: array is too large
+      p = new (p) B [MAX][MAX / 2];       // { dg-error "size .\[0-9\]+. of array" }
+                         ^
+
+"Test_name.c", line 382: error: array is too large
+      p = new (p) B [MAX][MAX / 2 - 1];   // { dg-error "size .\[0-9\]+. of array" }
+                         ^
+
+"Test_name.c", line 383: error: array is too large
+      p = new (p) B [MAX][MAX / 2 - 2];   // { dg-error "size .\[0-9\]+. of array" }
+                         ^
+
+"Test_name.c", line 384: error: array is too large
+      p = new (p) B [MAX][MAX / 2 - 7];   // { dg-error "size .\[0-9\]+. of array" }
+                         ^
+
+"Test_name.c", line 385: error: array is too large
+      p = new (p) B [MAX][MAX / 2 - 8];   // { dg-error "size .\[0-9\]+. of array" }
+                         ^
+
+"Test_name.c", line 386: error: array is too large
+      p = new (p) B [MAX][2];             // { dg-error "size .\[0-9\]+. of array" }
+                         ^
+
+"Test_name.c", line 424: error: array is too large
+      p = new (p) B [1][2][MAX];          // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                          ^
+
+"Test_name.c", line 425: error: array is too large
+      p = new (p) B [1][2][MAX - 1];      // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                          ^
+
+"Test_name.c", line 426: error: array is too large
+      p = new (p) B [1][2][MAX - 2];      // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                          ^
+
+"Test_name.c", line 427: error: array is too large
+      p = new (p) B [1][2][MAX - 99];     // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                          ^
+
+"Test_name.c", line 446: error: array is too large
+      p = new (p) B [2][1][MAX];          // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                          ^
+
+"Test_name.c", line 447: error: array is too large
+      p = new (p) B [2][1][MAX - 1];      // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                          ^
+
+"Test_name.c", line 448: error: array is too large
+      p = new (p) B [2][1][MAX - 2];      // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                          ^
+
+"Test_name.c", line 449: error: array is too large
+      p = new (p) B [2][1][MAX - 99];     // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                          ^
+
+"Test_name.c", line 468: error: array is too large
+      p = new (p) B [2][2][MAX];          // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                          ^
+
+"Test_name.c", line 469: error: array is too large
+      p = new (p) B [2][2][MAX - 1];      // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                          ^
+
+"Test_name.c", line 470: error: array is too large
+      p = new (p) B [2][2][MAX - 2];      // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                          ^
+
+"Test_name.c", line 471: error: array is too large
+      p = new (p) B [2][2][MAX - 99];     // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                          ^
+
+"Test_name.c", line 472: error: array is too large
+      p = new (p) B [2][2][MAX / 2];      // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                          ^
+
+"Test_name.c", line 473: error: array is too large
+      p = new (p) B [2][2][MAX / 2 - 1];  // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                          ^
+
+"Test_name.c", line 474: error: array is too large
+      p = new (p) B [2][2][MAX / 2 - 2];  // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                          ^
+
+"Test_name.c", line 475: error: array is too large
+      p = new (p) B [2][2][MAX / 2 - 3];  // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                          ^
+
+"Test_name.c", line 476: error: array is too large
+      p = new (p) B [2][2][MAX / 2 - 4];  // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                          ^
+
+"Test_name.c", line 477: error: array is too large
+      p = new (p) B [2][2][MAX / 2 - 5];  // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                          ^
+
+"Test_name.c", line 478: error: array is too large
+      p = new (p) B [2][2][MAX / 2 - 6];  // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                          ^
+
+"Test_name.c", line 479: error: array is too large
+      p = new (p) B [2][2][MAX / 2 - 7];  // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                          ^
+
+"Test_name.c", line 480: error: array is too large
+      p = new (p) B [2][2][MAX / 2 - 8];  // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                          ^
+
+"Test_name.c", line 492: error: array is too large
+      p = new (p) B [2][MAX][2];          // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                            ^
+
+"Test_name.c", line 493: error: array is too large
+      p = new (p) B [2][MAX - 1][2];      // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                                ^
+
+"Test_name.c", line 494: error: array is too large
+      p = new (p) B [2][MAX - 2][2];      // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                                ^
+
+"Test_name.c", line 495: error: array is too large
+      p = new (p) B [2][MAX - 99][2];     // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                                 ^
+
+"Test_name.c", line 496: error: array is too large
+      p = new (p) B [2][MAX / 2][2];      // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                                ^
+
+"Test_name.c", line 497: error: array is too large
+      p = new (p) B [2][MAX / 2 - 1][2];  // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                                    ^
+
+"Test_name.c", line 498: error: array is too large
+      p = new (p) B [2][MAX / 2 - 2][2];  // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                                    ^
+
+"Test_name.c", line 499: error: array is too large
+      p = new (p) B [2][MAX / 2 - 3][2];  // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                                    ^
+
+"Test_name.c", line 500: error: array is too large
+      p = new (p) B [2][MAX / 2 - 4][2];  // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                                    ^
+
+"Test_name.c", line 501: error: array is too large
+      p = new (p) B [2][MAX / 2 - 5][2];  // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                                    ^
+
+"Test_name.c", line 502: error: array is too large
+      p = new (p) B [2][MAX / 2 - 6][2];  // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                                    ^
+
+"Test_name.c", line 503: error: array is too large
+      p = new (p) B [2][MAX / 2 - 7][2];  // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                                    ^
+
+"Test_name.c", line 504: error: array is too large
+      p = new (p) B [2][MAX / 2 - 8][2];  // { dg-error "size .\[0-9\]+. of (unnamed )?array" }
+                                    ^
+
+"Test_name.c", line 516: error: array is too large
+      p = new (p) B [MAX][2][2];          // { dg-error "size .\[0-9\]+. of array" }
+                            ^
+
+"Test_name.c", line 517: error: array is too large
+      p = new (p) B [MAX - 1][2][2];      // { dg-error "size .\[0-9\]+. of array" }
+                                ^
+
+"Test_name.c", line 518: error: array is too large
+      p = new (p) B [MAX - 2][2][2];      // { dg-error "size .\[0-9\]+. of array" }
+                                ^
+
+"Test_name.c", line 519: error: array is too large
+      p = new (p) B [MAX - 99][2][2];     // { dg-error "size .\[0-9\]+. of array" }
+                                 ^
+
+"Test_name.c", line 520: error: array is too large
+      p = new (p) B [MAX / 2][2][2];      // { dg-error "size .\[0-9\]+. of array" }
+                                ^
+
+"Test_name.c", line 521: error: array is too large
+      p = new (p) B [MAX / 2 - 1][2][2];  // { dg-error "size .\[0-9\]+. of array" }
+                                    ^
+
+"Test_name.c", line 522: error: array is too large
+      p = new (p) B [MAX / 2 - 2][2][2];  // { dg-error "size .\[0-9\]+. of array" }
+                                    ^
+
+"Test_name.c", line 523: error: array is too large
+      p = new (p) B [MAX / 2 - 3][2][2];  // { dg-error "size .\[0-9\]+. of array" }
+                                    ^
+
+"Test_name.c", line 524: error: array is too large
+      p = new (p) B [MAX / 2 - 4][2][2];  // { dg-error "size .\[0-9\]+. of array" }
+                                    ^
+
+"Test_name.c", line 525: error: array is too large
+      p = new (p) B [MAX / 2 - 5][2][2];  // { dg-error "size .\[0-9\]+. of array" }
+                                    ^
+
+"Test_name.c", line 526: error: array is too large
+      p = new (p) B [MAX / 2 - 6][2][2];  // { dg-error "size .\[0-9\]+. of array" }
+                                    ^
+
+"Test_name.c", line 527: error: array is too large
+      p = new (p) B [MAX / 2 - 7][2][2];  // { dg-error "size .\[0-9\]+. of array" }
+                                    ^
+
+"Test_name.c", line 528: error: array is too large
+      p = new (p) B [MAX / 2 - 8][2][2];  // { dg-error "size .\[0-9\]+. of array" }
+                                    ^
+
+128 errors detected in the compilation of "Test_name.c".

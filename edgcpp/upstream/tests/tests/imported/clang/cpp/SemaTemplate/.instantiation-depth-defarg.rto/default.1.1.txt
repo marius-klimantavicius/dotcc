@@ -1,0 +1,530 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 6: error: excessive recursion at instantiation of class "S<64>"
+    typedef typename S<N-1>::type type;
+                             ^
+          detected during:
+            instantiation of class "S<N> [with N=65]" at line 6
+            instantiation of class "S<N> [with N=66]" at line 6
+            instantiation of class "S<N> [with N=67]" at line 6
+            instantiation of class "S<N> [with N=68]" at line 6
+            instantiation of class "S<N> [with N=69]" at line 6
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "S<N> [with N=124]" at line 6
+            instantiation of class "S<N> [with N=125]" at line 6
+            instantiation of class "S<N> [with N=126]" at line 6
+            instantiation of class "S<N> [with N=127]" at line 6
+            instantiation of class "S<N> [with N=128]" at line 19
+
+"Test_name.c", line 6: error: incomplete type "S<64>" is not allowed
+    typedef typename S<N-1>::type type;
+                     ^
+          detected during:
+            instantiation of class "S<N> [with N=65]" at line 6
+            instantiation of class "S<N> [with N=66]" at line 6
+            instantiation of class "S<N> [with N=67]" at line 6
+            instantiation of class "S<N> [with N=68]" at line 6
+            instantiation of class "S<N> [with N=69]" at line 6
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "S<N> [with N=124]" at line 6
+            instantiation of class "S<N> [with N=125]" at line 6
+            instantiation of class "S<N> [with N=126]" at line 6
+            instantiation of class "S<N> [with N=127]" at line 6
+            instantiation of class "S<N> [with N=128]" at line 19
+
+"Test_name.c", line 6: error: excessive recursion at instantiation of class "S<192>"
+    typedef typename S<N-1>::type type;
+                             ^
+          detected during:
+            instantiation of class "S<N> [with N=193]" at line 6
+            instantiation of class "S<N> [with N=194]" at line 6
+            instantiation of class "S<N> [with N=195]" at line 6
+            instantiation of class "S<N> [with N=196]" at line 6
+            instantiation of class "S<N> [with N=197]" at line 6
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "S<N> [with N=252]" at line 6
+            instantiation of class "S<N> [with N=253]" at line 6
+            instantiation of class "S<N> [with N=254]" at line 6
+            instantiation of class "S<N> [with N=255]" at line 6
+            instantiation of class "S<N> [with N=256]" at line 20
+
+"Test_name.c", line 6: error: incomplete type "S<192>" is not allowed
+    typedef typename S<N-1>::type type;
+                     ^
+          detected during:
+            instantiation of class "S<N> [with N=193]" at line 6
+            instantiation of class "S<N> [with N=194]" at line 6
+            instantiation of class "S<N> [with N=195]" at line 6
+            instantiation of class "S<N> [with N=196]" at line 6
+            instantiation of class "S<N> [with N=197]" at line 6
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "S<N> [with N=252]" at line 6
+            instantiation of class "S<N> [with N=253]" at line 6
+            instantiation of class "S<N> [with N=254]" at line 6
+            instantiation of class "S<N> [with N=255]" at line 6
+            instantiation of class "S<N> [with N=256]" at line 20
+
+"Test_name.c", line 6: error: excessive recursion at instantiation of class "S<320>"
+    typedef typename S<N-1>::type type;
+                             ^
+          detected during:
+            instantiation of class "S<N> [with N=321]" at line 6
+            instantiation of class "S<N> [with N=322]" at line 6
+            instantiation of class "S<N> [with N=323]" at line 6
+            instantiation of class "S<N> [with N=324]" at line 6
+            instantiation of class "S<N> [with N=325]" at line 6
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "S<N> [with N=380]" at line 6
+            instantiation of class "S<N> [with N=381]" at line 6
+            instantiation of class "S<N> [with N=382]" at line 6
+            instantiation of class "S<N> [with N=383]" at line 6
+            instantiation of class "S<N> [with N=384]" at line 21
+
+"Test_name.c", line 6: error: incomplete type "S<320>" is not allowed
+    typedef typename S<N-1>::type type;
+                     ^
+          detected during:
+            instantiation of class "S<N> [with N=321]" at line 6
+            instantiation of class "S<N> [with N=322]" at line 6
+            instantiation of class "S<N> [with N=323]" at line 6
+            instantiation of class "S<N> [with N=324]" at line 6
+            instantiation of class "S<N> [with N=325]" at line 6
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "S<N> [with N=380]" at line 6
+            instantiation of class "S<N> [with N=381]" at line 6
+            instantiation of class "S<N> [with N=382]" at line 6
+            instantiation of class "S<N> [with N=383]" at line 6
+            instantiation of class "S<N> [with N=384]" at line 21
+
+"Test_name.c", line 6: error: excessive recursion at instantiation of class "S<448>"
+    typedef typename S<N-1>::type type;
+                             ^
+          detected during:
+            instantiation of class "S<N> [with N=449]" at line 6
+            instantiation of class "S<N> [with N=450]" at line 6
+            instantiation of class "S<N> [with N=451]" at line 6
+            instantiation of class "S<N> [with N=452]" at line 6
+            instantiation of class "S<N> [with N=453]" at line 6
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "S<N> [with N=508]" at line 6
+            instantiation of class "S<N> [with N=509]" at line 6
+            instantiation of class "S<N> [with N=510]" at line 6
+            instantiation of class "S<N> [with N=511]" at line 6
+            instantiation of class "S<N> [with N=512]" at line 22
+
+"Test_name.c", line 6: error: incomplete type "S<448>" is not allowed
+    typedef typename S<N-1>::type type;
+                     ^
+          detected during:
+            instantiation of class "S<N> [with N=449]" at line 6
+            instantiation of class "S<N> [with N=450]" at line 6
+            instantiation of class "S<N> [with N=451]" at line 6
+            instantiation of class "S<N> [with N=452]" at line 6
+            instantiation of class "S<N> [with N=453]" at line 6
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "S<N> [with N=508]" at line 6
+            instantiation of class "S<N> [with N=509]" at line 6
+            instantiation of class "S<N> [with N=510]" at line 6
+            instantiation of class "S<N> [with N=511]" at line 6
+            instantiation of class "S<N> [with N=512]" at line 22
+
+"Test_name.c", line 6: error: excessive recursion at instantiation of class "S<576>"
+    typedef typename S<N-1>::type type;
+                             ^
+          detected during:
+            instantiation of class "S<N> [with N=577]" at line 6
+            instantiation of class "S<N> [with N=578]" at line 6
+            instantiation of class "S<N> [with N=579]" at line 6
+            instantiation of class "S<N> [with N=580]" at line 6
+            instantiation of class "S<N> [with N=581]" at line 6
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "S<N> [with N=636]" at line 6
+            instantiation of class "S<N> [with N=637]" at line 6
+            instantiation of class "S<N> [with N=638]" at line 6
+            instantiation of class "S<N> [with N=639]" at line 6
+            instantiation of class "S<N> [with N=640]" at line 23
+
+"Test_name.c", line 6: error: incomplete type "S<576>" is not allowed
+    typedef typename S<N-1>::type type;
+                     ^
+          detected during:
+            instantiation of class "S<N> [with N=577]" at line 6
+            instantiation of class "S<N> [with N=578]" at line 6
+            instantiation of class "S<N> [with N=579]" at line 6
+            instantiation of class "S<N> [with N=580]" at line 6
+            instantiation of class "S<N> [with N=581]" at line 6
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "S<N> [with N=636]" at line 6
+            instantiation of class "S<N> [with N=637]" at line 6
+            instantiation of class "S<N> [with N=638]" at line 6
+            instantiation of class "S<N> [with N=639]" at line 6
+            instantiation of class "S<N> [with N=640]" at line 23
+
+"Test_name.c", line 6: error: excessive recursion at instantiation of class "S<704>"
+    typedef typename S<N-1>::type type;
+                             ^
+          detected during:
+            instantiation of class "S<N> [with N=705]" at line 6
+            instantiation of class "S<N> [with N=706]" at line 6
+            instantiation of class "S<N> [with N=707]" at line 6
+            instantiation of class "S<N> [with N=708]" at line 6
+            instantiation of class "S<N> [with N=709]" at line 6
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "S<N> [with N=764]" at line 6
+            instantiation of class "S<N> [with N=765]" at line 6
+            instantiation of class "S<N> [with N=766]" at line 6
+            instantiation of class "S<N> [with N=767]" at line 6
+            instantiation of class "S<N> [with N=768]" at line 24
+
+"Test_name.c", line 6: error: incomplete type "S<704>" is not allowed
+    typedef typename S<N-1>::type type;
+                     ^
+          detected during:
+            instantiation of class "S<N> [with N=705]" at line 6
+            instantiation of class "S<N> [with N=706]" at line 6
+            instantiation of class "S<N> [with N=707]" at line 6
+            instantiation of class "S<N> [with N=708]" at line 6
+            instantiation of class "S<N> [with N=709]" at line 6
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "S<N> [with N=764]" at line 6
+            instantiation of class "S<N> [with N=765]" at line 6
+            instantiation of class "S<N> [with N=766]" at line 6
+            instantiation of class "S<N> [with N=767]" at line 6
+            instantiation of class "S<N> [with N=768]" at line 24
+
+"Test_name.c", line 6: error: excessive recursion at instantiation of class "S<832>"
+    typedef typename S<N-1>::type type;
+                             ^
+          detected during:
+            instantiation of class "S<N> [with N=833]" at line 6
+            instantiation of class "S<N> [with N=834]" at line 6
+            instantiation of class "S<N> [with N=835]" at line 6
+            instantiation of class "S<N> [with N=836]" at line 6
+            instantiation of class "S<N> [with N=837]" at line 6
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "S<N> [with N=892]" at line 6
+            instantiation of class "S<N> [with N=893]" at line 6
+            instantiation of class "S<N> [with N=894]" at line 6
+            instantiation of class "S<N> [with N=895]" at line 6
+            instantiation of class "S<N> [with N=896]" at line 25
+
+"Test_name.c", line 6: error: incomplete type "S<832>" is not allowed
+    typedef typename S<N-1>::type type;
+                     ^
+          detected during:
+            instantiation of class "S<N> [with N=833]" at line 6
+            instantiation of class "S<N> [with N=834]" at line 6
+            instantiation of class "S<N> [with N=835]" at line 6
+            instantiation of class "S<N> [with N=836]" at line 6
+            instantiation of class "S<N> [with N=837]" at line 6
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "S<N> [with N=892]" at line 6
+            instantiation of class "S<N> [with N=893]" at line 6
+            instantiation of class "S<N> [with N=894]" at line 6
+            instantiation of class "S<N> [with N=895]" at line 6
+            instantiation of class "S<N> [with N=896]" at line 25
+
+"Test_name.c", line 6: error: excessive recursion at instantiation of class "S<960>"
+    typedef typename S<N-1>::type type;
+                             ^
+          detected during:
+            instantiation of class "S<N> [with N=961]" at line 6
+            instantiation of class "S<N> [with N=962]" at line 6
+            instantiation of class "S<N> [with N=963]" at line 6
+            instantiation of class "S<N> [with N=964]" at line 6
+            instantiation of class "S<N> [with N=965]" at line 6
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "S<N> [with N=1020]" at line 6
+            instantiation of class "S<N> [with N=1021]" at line 6
+            instantiation of class "S<N> [with N=1022]" at line 6
+            instantiation of class "S<N> [with N=1023]" at line 6
+            instantiation of class "S<N> [with N=1024]" at line 26
+
+"Test_name.c", line 6: error: incomplete type "S<960>" is not allowed
+    typedef typename S<N-1>::type type;
+                     ^
+          detected during:
+            instantiation of class "S<N> [with N=961]" at line 6
+            instantiation of class "S<N> [with N=962]" at line 6
+            instantiation of class "S<N> [with N=963]" at line 6
+            instantiation of class "S<N> [with N=964]" at line 6
+            instantiation of class "S<N> [with N=965]" at line 6
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "S<N> [with N=1020]" at line 6
+            instantiation of class "S<N> [with N=1021]" at line 6
+            instantiation of class "S<N> [with N=1022]" at line 6
+            instantiation of class "S<N> [with N=1023]" at line 6
+            instantiation of class "S<N> [with N=1024]" at line 26
+
+"Test_name.c", line 6: error: excessive recursion at instantiation of class "S<1088>"
+    typedef typename S<N-1>::type type;
+                             ^
+          detected during:
+            instantiation of class "S<N> [with N=1089]" at line 6
+            instantiation of class "S<N> [with N=1090]" at line 6
+            instantiation of class "S<N> [with N=1091]" at line 6
+            instantiation of class "S<N> [with N=1092]" at line 6
+            instantiation of class "S<N> [with N=1093]" at line 6
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "S<N> [with N=1148]" at line 6
+            instantiation of class "S<N> [with N=1149]" at line 6
+            instantiation of class "S<N> [with N=1150]" at line 6
+            instantiation of class "S<N> [with N=1151]" at line 6
+            instantiation of class "S<N> [with N=1152]" at line 27
+
+"Test_name.c", line 6: error: incomplete type "S<1088>" is not allowed
+    typedef typename S<N-1>::type type;
+                     ^
+          detected during:
+            instantiation of class "S<N> [with N=1089]" at line 6
+            instantiation of class "S<N> [with N=1090]" at line 6
+            instantiation of class "S<N> [with N=1091]" at line 6
+            instantiation of class "S<N> [with N=1092]" at line 6
+            instantiation of class "S<N> [with N=1093]" at line 6
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "S<N> [with N=1148]" at line 6
+            instantiation of class "S<N> [with N=1149]" at line 6
+            instantiation of class "S<N> [with N=1150]" at line 6
+            instantiation of class "S<N> [with N=1151]" at line 6
+            instantiation of class "S<N> [with N=1152]" at line 27
+
+"Test_name.c", line 6: error: excessive recursion at instantiation of class "S<1216>"
+    typedef typename S<N-1>::type type;
+                             ^
+          detected during:
+            instantiation of class "S<N> [with N=1217]" at line 6
+            instantiation of class "S<N> [with N=1218]" at line 6
+            instantiation of class "S<N> [with N=1219]" at line 6
+            instantiation of class "S<N> [with N=1220]" at line 6
+            instantiation of class "S<N> [with N=1221]" at line 6
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "S<N> [with N=1276]" at line 6
+            instantiation of class "S<N> [with N=1277]" at line 6
+            instantiation of class "S<N> [with N=1278]" at line 6
+            instantiation of class "S<N> [with N=1279]" at line 6
+            instantiation of class "S<N> [with N=1280]" at line 28
+
+"Test_name.c", line 6: error: incomplete type "S<1216>" is not allowed
+    typedef typename S<N-1>::type type;
+                     ^
+          detected during:
+            instantiation of class "S<N> [with N=1217]" at line 6
+            instantiation of class "S<N> [with N=1218]" at line 6
+            instantiation of class "S<N> [with N=1219]" at line 6
+            instantiation of class "S<N> [with N=1220]" at line 6
+            instantiation of class "S<N> [with N=1221]" at line 6
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "S<N> [with N=1276]" at line 6
+            instantiation of class "S<N> [with N=1277]" at line 6
+            instantiation of class "S<N> [with N=1278]" at line 6
+            instantiation of class "S<N> [with N=1279]" at line 6
+            instantiation of class "S<N> [with N=1280]" at line 28
+
+"Test_name.c", line 6: error: excessive recursion at instantiation of class "S<1344>"
+    typedef typename S<N-1>::type type;
+                             ^
+          detected during:
+            instantiation of class "S<N> [with N=1345]" at line 6
+            instantiation of class "S<N> [with N=1346]" at line 6
+            instantiation of class "S<N> [with N=1347]" at line 6
+            instantiation of class "S<N> [with N=1348]" at line 6
+            instantiation of class "S<N> [with N=1349]" at line 6
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "S<N> [with N=1404]" at line 6
+            instantiation of class "S<N> [with N=1405]" at line 6
+            instantiation of class "S<N> [with N=1406]" at line 6
+            instantiation of class "S<N> [with N=1407]" at line 6
+            instantiation of class "S<N> [with N=1408]" at line 29
+
+"Test_name.c", line 6: error: incomplete type "S<1344>" is not allowed
+    typedef typename S<N-1>::type type;
+                     ^
+          detected during:
+            instantiation of class "S<N> [with N=1345]" at line 6
+            instantiation of class "S<N> [with N=1346]" at line 6
+            instantiation of class "S<N> [with N=1347]" at line 6
+            instantiation of class "S<N> [with N=1348]" at line 6
+            instantiation of class "S<N> [with N=1349]" at line 6
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "S<N> [with N=1404]" at line 6
+            instantiation of class "S<N> [with N=1405]" at line 6
+            instantiation of class "S<N> [with N=1406]" at line 6
+            instantiation of class "S<N> [with N=1407]" at line 6
+            instantiation of class "S<N> [with N=1408]" at line 29
+
+"Test_name.c", line 6: error: excessive recursion at instantiation of class "S<1472>"
+    typedef typename S<N-1>::type type;
+                             ^
+          detected during:
+            instantiation of class "S<N> [with N=1473]" at line 6
+            instantiation of class "S<N> [with N=1474]" at line 6
+            instantiation of class "S<N> [with N=1475]" at line 6
+            instantiation of class "S<N> [with N=1476]" at line 6
+            instantiation of class "S<N> [with N=1477]" at line 6
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "S<N> [with N=1532]" at line 6
+            instantiation of class "S<N> [with N=1533]" at line 6
+            instantiation of class "S<N> [with N=1534]" at line 6
+            instantiation of class "S<N> [with N=1535]" at line 6
+            instantiation of class "S<N> [with N=1536]" at line 30
+
+"Test_name.c", line 6: error: incomplete type "S<1472>" is not allowed
+    typedef typename S<N-1>::type type;
+                     ^
+          detected during:
+            instantiation of class "S<N> [with N=1473]" at line 6
+            instantiation of class "S<N> [with N=1474]" at line 6
+            instantiation of class "S<N> [with N=1475]" at line 6
+            instantiation of class "S<N> [with N=1476]" at line 6
+            instantiation of class "S<N> [with N=1477]" at line 6
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "S<N> [with N=1532]" at line 6
+            instantiation of class "S<N> [with N=1533]" at line 6
+            instantiation of class "S<N> [with N=1534]" at line 6
+            instantiation of class "S<N> [with N=1535]" at line 6
+            instantiation of class "S<N> [with N=1536]" at line 30
+
+"Test_name.c", line 6: error: excessive recursion at instantiation of class "S<1600>"
+    typedef typename S<N-1>::type type;
+                             ^
+          detected during:
+            instantiation of class "S<N> [with N=1601]" at line 6
+            instantiation of class "S<N> [with N=1602]" at line 6
+            instantiation of class "S<N> [with N=1603]" at line 6
+            instantiation of class "S<N> [with N=1604]" at line 6
+            instantiation of class "S<N> [with N=1605]" at line 6
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "S<N> [with N=1660]" at line 6
+            instantiation of class "S<N> [with N=1661]" at line 6
+            instantiation of class "S<N> [with N=1662]" at line 6
+            instantiation of class "S<N> [with N=1663]" at line 6
+            instantiation of class "S<N> [with N=1664]" at line 31
+
+"Test_name.c", line 6: error: incomplete type "S<1600>" is not allowed
+    typedef typename S<N-1>::type type;
+                     ^
+          detected during:
+            instantiation of class "S<N> [with N=1601]" at line 6
+            instantiation of class "S<N> [with N=1602]" at line 6
+            instantiation of class "S<N> [with N=1603]" at line 6
+            instantiation of class "S<N> [with N=1604]" at line 6
+            instantiation of class "S<N> [with N=1605]" at line 6
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "S<N> [with N=1660]" at line 6
+            instantiation of class "S<N> [with N=1661]" at line 6
+            instantiation of class "S<N> [with N=1662]" at line 6
+            instantiation of class "S<N> [with N=1663]" at line 6
+            instantiation of class "S<N> [with N=1664]" at line 31
+
+"Test_name.c", line 6: error: excessive recursion at instantiation of class "S<1728>"
+    typedef typename S<N-1>::type type;
+                             ^
+          detected during:
+            instantiation of class "S<N> [with N=1729]" at line 6
+            instantiation of class "S<N> [with N=1730]" at line 6
+            instantiation of class "S<N> [with N=1731]" at line 6
+            instantiation of class "S<N> [with N=1732]" at line 6
+            instantiation of class "S<N> [with N=1733]" at line 6
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "S<N> [with N=1788]" at line 6
+            instantiation of class "S<N> [with N=1789]" at line 6
+            instantiation of class "S<N> [with N=1790]" at line 6
+            instantiation of class "S<N> [with N=1791]" at line 6
+            instantiation of class "S<N> [with N=1792]" at line 32
+
+"Test_name.c", line 6: error: incomplete type "S<1728>" is not allowed
+    typedef typename S<N-1>::type type;
+                     ^
+          detected during:
+            instantiation of class "S<N> [with N=1729]" at line 6
+            instantiation of class "S<N> [with N=1730]" at line 6
+            instantiation of class "S<N> [with N=1731]" at line 6
+            instantiation of class "S<N> [with N=1732]" at line 6
+            instantiation of class "S<N> [with N=1733]" at line 6
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "S<N> [with N=1788]" at line 6
+            instantiation of class "S<N> [with N=1789]" at line 6
+            instantiation of class "S<N> [with N=1790]" at line 6
+            instantiation of class "S<N> [with N=1791]" at line 6
+            instantiation of class "S<N> [with N=1792]" at line 32
+
+"Test_name.c", line 6: error: excessive recursion at instantiation of class "S<1856>"
+    typedef typename S<N-1>::type type;
+                             ^
+          detected during:
+            instantiation of class "S<N> [with N=1857]" at line 6
+            instantiation of class "S<N> [with N=1858]" at line 6
+            instantiation of class "S<N> [with N=1859]" at line 6
+            instantiation of class "S<N> [with N=1860]" at line 6
+            instantiation of class "S<N> [with N=1861]" at line 6
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "S<N> [with N=1916]" at line 6
+            instantiation of class "S<N> [with N=1917]" at line 6
+            instantiation of class "S<N> [with N=1918]" at line 6
+            instantiation of class "S<N> [with N=1919]" at line 6
+            instantiation of class "S<N> [with N=1920]" at line 33
+
+"Test_name.c", line 6: error: incomplete type "S<1856>" is not allowed
+    typedef typename S<N-1>::type type;
+                     ^
+          detected during:
+            instantiation of class "S<N> [with N=1857]" at line 6
+            instantiation of class "S<N> [with N=1858]" at line 6
+            instantiation of class "S<N> [with N=1859]" at line 6
+            instantiation of class "S<N> [with N=1860]" at line 6
+            instantiation of class "S<N> [with N=1861]" at line 6
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "S<N> [with N=1916]" at line 6
+            instantiation of class "S<N> [with N=1917]" at line 6
+            instantiation of class "S<N> [with N=1918]" at line 6
+            instantiation of class "S<N> [with N=1919]" at line 6
+            instantiation of class "S<N> [with N=1920]" at line 33
+
+"Test_name.c", line 6: error: excessive recursion at instantiation of class "S<1984>"
+    typedef typename S<N-1>::type type;
+                             ^
+          detected during:
+            instantiation of class "S<N> [with N=1985]" at line 6
+            instantiation of class "S<N> [with N=1986]" at line 6
+            instantiation of class "S<N> [with N=1987]" at line 6
+            instantiation of class "S<N> [with N=1988]" at line 6
+            instantiation of class "S<N> [with N=1989]" at line 6
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "S<N> [with N=2044]" at line 6
+            instantiation of class "S<N> [with N=2045]" at line 6
+            instantiation of class "S<N> [with N=2046]" at line 6
+            instantiation of class "S<N> [with N=2047]" at line 6
+            instantiation of class "S<N> [with N=2048]" at line 34
+
+"Test_name.c", line 6: error: incomplete type "S<1984>" is not allowed
+    typedef typename S<N-1>::type type;
+                     ^
+          detected during:
+            instantiation of class "S<N> [with N=1985]" at line 6
+            instantiation of class "S<N> [with N=1986]" at line 6
+            instantiation of class "S<N> [with N=1987]" at line 6
+            instantiation of class "S<N> [with N=1988]" at line 6
+            instantiation of class "S<N> [with N=1989]" at line 6
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "S<N> [with N=2044]" at line 6
+            instantiation of class "S<N> [with N=2045]" at line 6
+            instantiation of class "S<N> [with N=2046]" at line 6
+            instantiation of class "S<N> [with N=2047]" at line 6
+            instantiation of class "S<N> [with N=2048]" at line 34
+
+"Test_name.c", line 7: error: incomplete type "S<1984>" is not allowed
+    static int f(int n = S<N-1>::f()); // \
+                         ^
+          detected during:
+            instantiation of "int S<N>::f(int) [with N=1985]" at line 7
+            instantiation of "int S<N>::f(int) [with N=1986]" at line 7
+            instantiation of "int S<N>::f(int) [with N=1987]" at line 7
+            instantiation of "int S<N>::f(int) [with N=1988]" at line 7
+            instantiation of "int S<N>::f(int) [with N=1989]" at line 7
+            [ 54 instantiation contexts not shown ]
+            instantiation of "int S<N>::f(int) [with N=2044]" at line 7
+            instantiation of "int S<N>::f(int) [with N=2045]" at line 7
+            instantiation of "int S<N>::f(int) [with N=2046]" at line 7
+            instantiation of "int S<N>::f(int) [with N=2047]" at line 7
+            instantiation of "int S<N>::f(int) [with N=2048]" at line 38
+
+33 errors detected in the compilation of "Test_name.c".

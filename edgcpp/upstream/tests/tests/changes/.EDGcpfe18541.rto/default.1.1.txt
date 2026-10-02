@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 14: error: expected a ";"
+    B(int) noexcept;
+           ^
+
+"Test_name.c", line 17: error: a using-declaration may not name a constructor or destructor
+    using B::B;  // Previously produced a spurious error.  Now okay.
+             ^
+
+"Test_name.c", line 18: error: data member initializer is not allowed
+    int i = 42;
+          ^
+
+3 errors detected in the compilation of "Test_name.c".

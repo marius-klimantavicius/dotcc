@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 6: warning: variable "x0" was declared but never referenced
+    int x0[1073741824]; // expected-error{{array is too large}}
+        ^
+
+"Test_name.c", line 7: warning: variable "x1" was declared but never referenced
+    int x1[1073741824 + 1]; // expected-error{{array is too large}}
+        ^
+
+"Test_name.c", line 8: warning: variable "x2" was declared but never referenced
+    int x2[(unsigned)1073741824]; // expected-error{{array is too large}}
+        ^
+
+"Test_name.c", line 9: warning: variable "x3" was declared but never referenced
+    int x3[(unsigned)1073741824 + 1]; // expected-error{{array is too large}}
+        ^
+
+"Test_name.c", line 10: warning: variable "x4" was declared but never referenced
+    int x4[1073741824 - 1];
+        ^
+

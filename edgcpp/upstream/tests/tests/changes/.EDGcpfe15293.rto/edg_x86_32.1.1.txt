@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --g++ Test_name.c
+"Test_name.c", line 14: warning: incorrect use of va_start
+    __builtin_va_start(ap, 42);  // Now accepted with a warning in GNU C++
+                           ^
+
+"Test_name.c", line 13: warning: variable "ap" was set but never used
+    __builtin_va_list  ap;
+                       ^
+

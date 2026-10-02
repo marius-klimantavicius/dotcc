@@ -1,0 +1,14 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --set_flag=no_checking_pragmas --strict Test_name.c
+"Test_name.c", line 9: error: declaration is incompatible with previous "x" (declared at line 5)
+    extern A x;
+             ^
+
+"Test_name.c", line 9: error: use of a local type to declare a nonlocal variable
+    extern A x;
+             ^
+
+"Test_name.c", line 10: error: use of a local type to declare a function
+    extern void g(A);
+                ^
+
+3 errors detected in the compilation of "Test_name.c".

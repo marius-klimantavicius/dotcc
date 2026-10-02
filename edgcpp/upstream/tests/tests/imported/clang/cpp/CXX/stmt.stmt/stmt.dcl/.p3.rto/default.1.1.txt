@@ -1,0 +1,20 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 18: warning: variable "xs" was declared but never referenced
+   X xs[16];
+     ^
+
+"Test_name.c", line 36: error: transfer of control bypasses initialization of:
+            variable "y" (declared at line 37)
+    goto end; // expected-error{{cannot jump from this goto statement to its label}}
+    ^
+
+"Test_name.c", line 47: warning: transfer of control bypasses initialization of:
+            variable "z" (declared at line 52)
+    goto end;
+    ^
+
+"Test_name.c", line 52: warning: variable "z" was declared but never referenced
+    Z z;
+      ^
+
+1 error detected in the compilation of "Test_name.c".

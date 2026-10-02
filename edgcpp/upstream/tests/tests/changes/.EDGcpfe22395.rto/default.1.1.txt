@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --c++14 --gnu_version=70500 Test_name.c
+"Test_name.c", line 13: warning: variable "lm" was declared but never referenced
+  constexpr auto lm = [](int i) { return i; };
+                 ^
+

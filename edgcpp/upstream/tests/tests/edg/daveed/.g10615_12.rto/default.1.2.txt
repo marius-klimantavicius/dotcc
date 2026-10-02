@@ -1,0 +1,7 @@
+./a.out
+## Test M
+Move-assign M
+## Test S
+Move-assign M
+Move-assign M
+Move-assign M

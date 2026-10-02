@@ -1,0 +1,69 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 16: warning: variable "a" was declared but never referenced
+    int a = uc & 0xff;
+        ^
+
+"Test_name.c", line 17: warning: variable "b" was declared but never referenced
+    int b = sc & 0x7f;
+        ^
+
+"Test_name.c", line 18: warning: variable "c" was declared but never referenced
+    int c = 0xff & uc;
+        ^
+
+"Test_name.c", line 19: warning: variable "d" was declared but never referenced
+    int d = 0x7f & sc;
+        ^
+
+"Test_name.c", line 20: warning: variable "e" was declared but never referenced
+    int e = uc & sc;
+        ^
+
+"Test_name.c", line 21: warning: variable "f" was declared but never referenced
+    unsigned char f = (int) uc;
+                  ^
+
+"Test_name.c", line 22: warning: variable "g" was declared but never referenced
+    signed char g = (int) sc;
+                ^
+
+"Test_name.c", line 23: warning: variable "h" was declared but never referenced
+    unsigned char h = (unsigned int) (short int) uc;
+                  ^
+
+"Test_name.c", line 24: warning: variable "i" was declared but never referenced
+    signed char i = (int) (unsigned short int) sc;	/* { dg-warning "conversion from .int. to .signed char. may change value" "" { target { int32plus } } } */
+                ^
+
+"Test_name.c", line 25: warning: variable "j" was declared but never referenced
+    unsigned char j = (unsigned int) (short int) us;	/* { dg-warning "may change value" } */
+                  ^
+
+"Test_name.c", line 26: warning: variable "k" was declared but never referenced
+    signed char k = (int) (unsigned short int) ss;	/* { dg-warning "may change value" } */
+                ^
+
+"Test_name.c", line 31: warning: variable "a" was declared but never referenced
+    signed char a = (unsigned char) sc;		/* { dg-warning "may change the sign" } */
+                ^
+
+"Test_name.c", line 32: warning: variable "b" was declared but never referenced
+    unsigned char b = (signed char) uc;		/* { dg-warning "may change the sign" } */
+                  ^
+
+"Test_name.c", line 33: warning: variable "c" was declared but never referenced
+    signed char c = (int) (unsigned char) sc;	/* { dg-warning "may change the sign" } */
+                ^
+
+"Test_name.c", line 34: warning: variable "d" was declared but never referenced
+    unsigned char d = (int) (signed char) uc;	/* { dg-warning "may change the sign" } */
+                  ^
+
+"Test_name.c", line 35: warning: variable "e" was declared but never referenced
+    int e = (unsigned int) si;			/* { dg-warning "may change the sign" } */
+        ^
+
+"Test_name.c", line 36: warning: variable "f" was declared but never referenced
+    unsigned int f = (int) ui;			/* { dg-warning "may change the sign" } */
+                 ^
+

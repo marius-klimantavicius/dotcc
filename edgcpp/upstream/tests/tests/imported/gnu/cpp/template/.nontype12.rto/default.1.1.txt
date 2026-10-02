@@ -1,0 +1,48 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 8: error: floating-point template parameter is nonstandard
+    template<T> int foo();                        // { dg-error "double" "" { target c++17_down } }
+             ^
+          detected during instantiation of class "A<T> [with T=double]" at line 16
+
+"Test_name.c", line 9: error: floating-point template parameter is nonstandard
+    template<template<T> class> int bar();        // { dg-bogus {double[^\n]*\n[^\n]*C:7:[^\n]*double} "" { xfail c++17_down } }
+                      ^
+          detected during instantiation of class "A<T> [with T=double]" at line 16
+
+"Test_name.c", line 12: error: floating-point template parameter is nonstandard
+    template<T> struct X;                         // { dg-error "double" "" { target c++17_down } }
+             ^
+          detected during instantiation of class "A<T> [with T=double]" at line 16
+
+"Test_name.c", line 20: error: floating-point template parameter is nonstandard
+    template<double> int foo();                   // { dg-error "double" "" { target c++17_down } }
+             ^
+
+"Test_name.c", line 21: error: floating-point template parameter is nonstandard
+    template<template<double> class> int bar();   // { dg-error "double" "" { target c++17_down } }
+                      ^
+
+"Test_name.c", line 22: error: floating-point template parameter is nonstandard
+    template<double> struct X;                    // { dg-error "double" "" { target c++17_down } }
+             ^
+
+"Test_name.c", line 25: error: a template parameter may not have void type
+  template<void> int foo();                       // { dg-error "void" }
+           ^
+
+"Test_name.c", line 26: error: a template parameter may not have void type
+  template<template<void> class> int bar();       // { dg-error "void" }
+                    ^
+
+"Test_name.c", line 27: error: a template parameter may not have void type
+  template<void> struct X;                        // { dg-error "void" }
+           ^
+
+"Test_name.c", line 31: error: floating-point template parameter is nonstandard
+    template<T> int foo();                        // { dg-error "double" "" { target c++17_down } }
+             ^
+          detected during:
+            instantiation of class "C<T> [with T=double]" at line 34
+            instantiation of "int baz(T) [with T=double]" at line 38
+
+10 errors detected in the compilation of "Test_name.c".

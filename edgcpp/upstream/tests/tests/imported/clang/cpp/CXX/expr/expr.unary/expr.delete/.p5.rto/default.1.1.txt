@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 11: warning: delete of pointer to incomplete class
+  void f0(T0 *a) { delete a; } // expected-warning {{deleting pointer to incomplete type}}
+                          ^
+
+"Test_name.c", line 16: warning: delete of pointer to incomplete class
+  struct T1_A { T *x; ~T1_A() { delete x; } }; // expected-warning {{deleting pointer to incomplete type}}
+                                       ^
+          detected during instantiation of "T1_A<T>::~T1_A() [with T=T1_B]" at line 18
+
+"Test_name.c", line 33: error: "T3_A::~T3_A() noexcept" (declared at line 47) is inaccessible
+      delete a; // expected-error{{calling a private destructor of class 'T3_A'}}
+             ^
+          detected during instantiation of "void T3_B<T>::f0(T *) [with T=T3_A]" at line 40
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,18 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 9: error: nonstandard local-class friend declaration -- no prior declaration in the enclosing scope
+        friend void f();
+                    ^
+
+"Test_name.c", line 10: error: nonstandard local-class friend declaration -- no prior declaration in the enclosing scope
+        friend void ff();
+                    ^
+
+"Test_name.c", line 11: error: declaration is incompatible with previous "fff" (declared at line 7)
+        friend void fff();
+                    ^
+
+"Test_name.c", line 7: warning: variable "fff" was declared but never referenced
+      int fff;
+          ^
+
+3 errors detected in the compilation of "Test_name.c".

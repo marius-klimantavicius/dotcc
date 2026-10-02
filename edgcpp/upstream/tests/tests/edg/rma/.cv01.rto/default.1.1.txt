@@ -1,0 +1,22 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 9: error: class "X" has no suitable copy constructor
+  X x = 0;
+        ^
+
+"Test_name.c", line 10: error: "X::X(const volatile X &)", required for copy that was eliminated, is not callable because reference parameter cannot be bound to rvalue
+  X f(int i) { return X(i); }
+                      ^
+
+"Test_name.c", line 11: error: class "X" has no suitable copy constructor
+  X a[2] = { 0, 0 };
+             ^
+
+"Test_name.c", line 11: error: class "X" has no suitable copy constructor
+  X a[2] = { 0, 0 };
+                ^
+
+"Test_name.c", line 14: error: "X::X(const volatile X &)", required for copy that was eliminated, is not callable because reference parameter cannot be bound to rvalue
+    g(X(1));
+      ^
+
+5 errors detected in the compilation of "Test_name.c".

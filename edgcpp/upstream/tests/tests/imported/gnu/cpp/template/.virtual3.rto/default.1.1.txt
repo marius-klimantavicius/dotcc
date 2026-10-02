@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 12: error: "A<<unnamed>>::~A() [with <unnamed>=0]" (declared at line 7) is inaccessible
+    B() {}			// { dg-error "context" }
+        ^
+
+"Test_name.c", line 12: error: "A<<unnamed>>::~A() [with <unnamed>=1]" (declared at line 7) is inaccessible
+    B() {}			// { dg-error "context" }
+        ^
+
+2 errors detected in the compilation of "Test_name.c".

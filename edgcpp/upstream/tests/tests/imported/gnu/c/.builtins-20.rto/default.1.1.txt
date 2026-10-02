@@ -1,0 +1,154 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./builtins-20.c", line 202: error: complex integral types are not supported
+    if (x*1i != -(-x*1i))
+           ^
+
+"./builtins-20.c", line 202: error: complex integral types are not supported
+    if (x*1i != -(-x*1i))
+                      ^
+
+"./builtins-20.c", line 205: error: complex integral types are not supported
+    if (x+(x-y)*1i != -(-x+(y-x)*1i))
+                 ^
+
+"./builtins-20.c", line 205: error: complex integral types are not supported
+    if (x+(x-y)*1i != -(-x+(y-x)*1i))
+                                  ^
+
+"./builtins-20.c", line 208: error: complex integral types are not supported
+    if (x+(x-y)*1i != -(-x-(x-y)*1i))
+                 ^
+
+"./builtins-20.c", line 208: error: complex integral types are not supported
+    if (x+(x-y)*1i != -(-x-(x-y)*1i))
+                                  ^
+
+"./builtins-20.c", line 211: error: complex integral types are not supported
+    if (ccos(tan(x)+sin(y)*1i) != ccos(-tan(-x)+-sin(-y)*1i))
+                            ^
+
+"./builtins-20.c", line 211: error: complex integral types are not supported
+    if (ccos(tan(x)+sin(y)*1i) != ccos(-tan(-x)+-sin(-y)*1i))
+                                                          ^
+
+"./builtins-20.c", line 214: error: complex integral types are not supported
+    if (ccos(tan(x)+sin(x-y)*1i) != ccos(-tan(-x)-sin(y-x)*1i))
+                              ^
+
+"./builtins-20.c", line 214: error: complex integral types are not supported
+    if (ccos(tan(x)+sin(x-y)*1i) != ccos(-tan(-x)-sin(y-x)*1i))
+                                                            ^
+
+"./builtins-20.c", line 217: error: complex integral types are not supported
+    if (-5+x*1i != -~(5+x*1i))
+              ^
+
+"./builtins-20.c", line 217: error: complex integral types are not supported
+    if (-5+x*1i != -~(5+x*1i))
+                           ^
+
+"./builtins-20.c", line 220: error: complex integral types are not supported
+    if (tan(x)+tan(y)*1i != -~(tan(-x)+tan(y)*1i))
+                       ^
+
+"./builtins-20.c", line 220: error: complex integral types are not supported
+    if (tan(x)+tan(y)*1i != -~(tan(-x)+tan(y)*1i))
+                                               ^
+
+"./builtins-20.c", line 430: error: complex integral types are not supported
+    if (x+(x-y)*1i != -(-x+(y-x)*1i))
+                 ^
+
+"./builtins-20.c", line 430: error: complex integral types are not supported
+    if (x+(x-y)*1i != -(-x+(y-x)*1i))
+                                  ^
+
+"./builtins-20.c", line 433: error: complex integral types are not supported
+    if (x+(x-y)*1i != -(-x-(x-y)*1i))
+                 ^
+
+"./builtins-20.c", line 433: error: complex integral types are not supported
+    if (x+(x-y)*1i != -(-x-(x-y)*1i))
+                                  ^
+
+"./builtins-20.c", line 436: error: complex integral types are not supported
+    if (ccosf(tanf(x)+sinf(y)*1i) != ccosf(-tanf(-x)+-sinf(-y)*1i))
+                               ^
+
+"./builtins-20.c", line 436: error: complex integral types are not supported
+    if (ccosf(tanf(x)+sinf(y)*1i) != ccosf(-tanf(-x)+-sinf(-y)*1i))
+                                                                ^
+
+"./builtins-20.c", line 439: error: complex integral types are not supported
+    if (ccosf(tanf(x)+sinf(x-y)*1i) != ccosf(-tanf(-x)-sinf(y-x)*1i))
+                                 ^
+
+"./builtins-20.c", line 439: error: complex integral types are not supported
+    if (ccosf(tanf(x)+sinf(x-y)*1i) != ccosf(-tanf(-x)-sinf(y-x)*1i))
+                                                                  ^
+
+"./builtins-20.c", line 442: error: complex integral types are not supported
+    if (-5+x*1i != -~(5+x*1i))
+              ^
+
+"./builtins-20.c", line 442: error: complex integral types are not supported
+    if (-5+x*1i != -~(5+x*1i))
+                           ^
+
+"./builtins-20.c", line 445: error: complex integral types are not supported
+    if (tanf(x)+tanf(y)*1i != -~(tanf(-x)+tanf(y)*1i))
+                         ^
+
+"./builtins-20.c", line 445: error: complex integral types are not supported
+    if (tanf(x)+tanf(y)*1i != -~(tanf(-x)+tanf(y)*1i))
+                                                   ^
+
+"./builtins-20.c", line 657: error: complex integral types are not supported
+    if (x+(x-y)*1i != -(-x+(y-x)*1i))
+                 ^
+
+"./builtins-20.c", line 657: error: complex integral types are not supported
+    if (x+(x-y)*1i != -(-x+(y-x)*1i))
+                                  ^
+
+"./builtins-20.c", line 660: error: complex integral types are not supported
+    if (x+(x-y)*1i != -(-x-(x-y)*1i))
+                 ^
+
+"./builtins-20.c", line 660: error: complex integral types are not supported
+    if (x+(x-y)*1i != -(-x-(x-y)*1i))
+                                  ^
+
+"./builtins-20.c", line 663: error: complex integral types are not supported
+    if (ccosl(tanl(x)+sinl(y)*1i) != ccosl(-tanl(-x)+-sinl(-y)*1i))
+                               ^
+
+"./builtins-20.c", line 663: error: complex integral types are not supported
+    if (ccosl(tanl(x)+sinl(y)*1i) != ccosl(-tanl(-x)+-sinl(-y)*1i))
+                                                                ^
+
+"./builtins-20.c", line 666: error: complex integral types are not supported
+    if (ccosl(tanl(x)+sinl(x-y)*1i) != ccosl(-tanl(-x)-sinl(y-x)*1i))
+                                 ^
+
+"./builtins-20.c", line 666: error: complex integral types are not supported
+    if (ccosl(tanl(x)+sinl(x-y)*1i) != ccosl(-tanl(-x)-sinl(y-x)*1i))
+                                                                  ^
+
+"./builtins-20.c", line 669: error: complex integral types are not supported
+    if (-5+x*1i != -~(5+x*1i))
+              ^
+
+"./builtins-20.c", line 669: error: complex integral types are not supported
+    if (-5+x*1i != -~(5+x*1i))
+                           ^
+
+"./builtins-20.c", line 672: error: complex integral types are not supported
+    if (tanl(x)+tanl(y)*1i != -~(tanl(-x)+tanl(y)*1i))
+                         ^
+
+"./builtins-20.c", line 672: error: complex integral types are not supported
+    if (tanl(x)+tanl(y)*1i != -~(tanl(-x)+tanl(y)*1i))
+                                                   ^
+
+38 errors detected in the compilation of "Test_name.c".

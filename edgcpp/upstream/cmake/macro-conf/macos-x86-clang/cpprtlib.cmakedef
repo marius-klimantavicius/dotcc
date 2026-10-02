@@ -1,0 +1,2 @@
+# Import MacOS Configuration
+import <support/platform/macos/cpprtlib>

@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c11 Test_name.c
+"Test_name.c", line 15: warning: variable "tl" was declared but never referenced
+    static _Thread_local int tl;   /* compat-warning {{'_Thread_local' is incompatible with C standards before C11}}
+                             ^
+
+"Test_name.c", line 18: warning: variable "c" was declared but never referenced
+    _Alignas(8) char c;            /* compat-warning {{'_Alignas' is incompatible with C standards before C11}}
+                     ^
+
+"Test_name.c", line 21: warning: variable "i1" was declared but never referenced
+    _Atomic int i1;                /* compat-warning {{'_Atomic' is incompatible with C standards before C11}}
+                ^
+
+"Test_name.c", line 24: warning: variable "i2" was declared but never referenced
+    _Atomic(int) i2;               /* compat-warning {{'_Atomic' is incompatible with C standards before C11}}
+                 ^
+

@@ -1,0 +1,22 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 16: error: type "B::B" (declared at line 6) is inaccessible
+    B::f();          // okay
+    ^
+
+"Test_name.c", line 17: error: function "B::f" (declared at line 8) is inaccessible
+    this->f();       // no access
+          ^
+
+"Test_name.c", line 18: error: type "B::B" (declared at line 6) is inaccessible
+    this->B::f();    // no access
+          ^
+
+"Test_name.c", line 19: error: function "B::f" (declared at line 8) is inaccessible
+    f();             // no access
+    ^
+
+"Test_name.c", line 20: error: function "B::g" (declared at line 9) is inaccessible
+    g();             // no access
+    ^
+
+5 errors detected in the compilation of "Test_name.c".

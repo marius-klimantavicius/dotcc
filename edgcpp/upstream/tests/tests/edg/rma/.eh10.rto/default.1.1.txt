@@ -1,0 +1,42 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 4: error: expected a ")"
+  void f() throw(int(13)){}
+                     ^
+
+"Test_name.c", line 5: error: expected a ")"
+  void g() throw(float,int(13),int(0)) {}
+                           ^
+
+"Test_name.c", line 5: error: expected a ")"
+  void g() throw(float,int(13),int(0)) {}
+                                   ^
+
+"Test_name.c", line 5: remark: redundant type in exception specification
+  void g() throw(float,int(13),int(0)) {}
+                               ^
+
+"Test_name.c", line 6: error: expected a "("
+  void h() throw int(13) {}
+                 ^
+
+"Test_name.c", line 6: error: expected a ")"
+  void h() throw int(13) {}
+                     ^
+
+"Test_name.c", line 6: error: expected a ")"
+  void h() throw int(13) {}
+                         ^
+
+"Test_name.c", line 7: error: expected a ")"
+  void i() throw(int(13),int(0)){}
+                     ^
+
+"Test_name.c", line 7: error: expected a ")"
+  void i() throw(int(13),int(0)){}
+                             ^
+
+"Test_name.c", line 7: remark: redundant type in exception specification
+  void i() throw(int(13),int(0)){}
+                         ^
+
+8 errors detected in the compilation of "Test_name.c".

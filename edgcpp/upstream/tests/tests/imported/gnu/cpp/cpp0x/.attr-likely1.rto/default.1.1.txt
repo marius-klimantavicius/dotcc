@@ -1,0 +1,414 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 14: error: attribute "likely" does not take arguments
+    [[likely (1)]];			// { dg-error "'likely' attribute does not take any arguments" }
+             ^
+
+"Test_name.c", line 16: warning: attribute "likely" does not apply here
+    [[likely]] int x1;			// { dg-warning "'likely' attribute ignored" }
+      ^
+
+"Test_name.c", line 18: warning: attribute "likely" does not apply here
+    auto a = [] [[likely]] () {};		// { dg-warning "ISO C\\\+\\\+ 'likely' attribute does not apply to functions; treating as '\\\[\\\[gnu::hot\\\]\\\]'" }
+                  ^
+
+"Test_name.c", line 19: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+    auto b = [] constexpr [[likely]] {};	// { dg-warning "'likely' attribute ignored" }
+                ^
+
+"Test_name.c", line 19: error: constexpr lambdas are not enabled in this mode
+    auto b = [] constexpr [[likely]] {};	// { dg-warning "'likely' attribute ignored" }
+                ^
+
+"Test_name.c", line 19: warning: attribute "likely" does not apply here
+    auto b = [] constexpr [[likely]] {};	// { dg-warning "'likely' attribute ignored" }
+                            ^
+
+"Test_name.c", line 22: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+    auto c = [] noexcept [[likely]] {};	// { dg-warning "'likely' attribute ignored" }
+                ^
+
+"Test_name.c", line 22: warning: attribute "likely" does not apply here
+    auto c = [] noexcept [[likely]] {};	// { dg-warning "'likely' attribute ignored" }
+                           ^
+
+"Test_name.c", line 24: warning: attribute "likely" does not apply here
+    auto d = [] () [[likely]] {};		// { dg-warning "'likely' attribute ignored" }
+                     ^
+
+"Test_name.c", line 25: warning: attribute "likely" does not apply here
+    auto e = new int [n] [[likely]];	// { dg-warning "attributes ignored on outermost array type in new expression" }
+                           ^
+
+"Test_name.c", line 26: warning: attribute "likely" does not apply here
+    auto e2 = new int [n] [[likely]] [42];// { dg-warning "attributes ignored on outermost array type in new expression" }
+                            ^
+
+"Test_name.c", line 27: warning: attribute "likely" does not apply here
+    auto f = new int [n][42] [[likely]];	// { dg-warning "'likely' attribute ignored" }
+                               ^
+
+"Test_name.c", line 35: warning: attribute "likely" does not apply here
+    if ([[likely]] int x = 0) {}		// { dg-warning "'likely' attribute ignored" }
+          ^
+
+"Test_name.c", line 43: warning: attribute "likely" does not apply here
+    for ([[likely]] auto a : arr) {}	// { dg-warning "'likely' attribute ignored" }
+           ^
+
+"Test_name.c", line 44: warning: structured bindings are a C++17 feature
+    for ([[likely]] auto [a, b] : arr2) {}// { dg-warning "'likely' attribute ignored" }
+                         ^
+
+"Test_name.c", line 44: warning: attribute "likely" does not apply here
+    for ([[likely]] auto [a, b] : arr2) {}// { dg-warning "'likely' attribute ignored" }
+           ^
+
+"Test_name.c", line 44: warning: structured binding "a" was declared but never referenced
+    for ([[likely]] auto [a, b] : arr2) {}// { dg-warning "'likely' attribute ignored" }
+                          ^
+
+"Test_name.c", line 46: warning: attribute "likely" does not apply here
+    [[likely]] asm ("");			// { dg-warning "attributes ignored on 'asm' declaration" }
+      ^
+
+"Test_name.c", line 47: warning: attribute "likely" does not apply here
+    try {} catch ([[likely]] int x) {}	// { dg-warning "'likely' attribute ignored" }
+                    ^
+
+"Test_name.c", line 48: warning: attribute "likely" does not apply here
+    try {} catch ([[likely]] int) {}	// { dg-warning "'likely' attribute ignored" }
+                    ^
+
+"Test_name.c", line 49: warning: attributes may not appear here
+    try {} catch (int [[likely]] x) {}	// { dg-warning "attribute ignored" }
+                        ^
+
+"Test_name.c", line 50: warning: attributes may not appear here
+    try {} catch (int [[likely]]) {}	// { dg-warning "attribute ignored" }
+                        ^
+
+"Test_name.c", line 51: warning: attribute "likely" does not apply here
+    try {} catch (int x [[likely]]) {}	// { dg-warning "'likely' attribute ignored" }
+                          ^
+
+"Test_name.c", line 16: warning: variable "x1" was declared but never referenced
+    [[likely]] int x1;			// { dg-warning "'likely' attribute ignored" }
+                   ^
+
+"Test_name.c", line 18: warning: variable "a" was declared but never referenced
+    auto a = [] [[likely]] () {};		// { dg-warning "ISO C\\\+\\\+ 'likely' attribute does not apply to functions; treating as '\\\[\\\[gnu::hot\\\]\\\]'" }
+         ^
+
+"Test_name.c", line 19: warning: variable "b" was declared but never referenced
+    auto b = [] constexpr [[likely]] {};	// { dg-warning "'likely' attribute ignored" }
+         ^
+
+"Test_name.c", line 22: warning: variable "c" was declared but never referenced
+    auto c = [] noexcept [[likely]] {};	// { dg-warning "'likely' attribute ignored" }
+         ^
+
+"Test_name.c", line 24: warning: variable "d" was declared but never referenced
+    auto d = [] () [[likely]] {};		// { dg-warning "'likely' attribute ignored" }
+         ^
+
+"Test_name.c", line 54: warning: attribute "likely" does not apply here
+  [[likely]] int bar ();			// { dg-warning "ISO C\\\+\\\+ 'likely' attribute does not apply to functions; treating as '\\\[\\\[gnu::hot\\\]\\\]'" }
+    ^
+
+"Test_name.c", line 55: warning: attribute "likely" does not apply here
+  using foobar [[likely]] = int;		// { dg-warning "'likely' attribute ignored" }
+                 ^
+
+"Test_name.c", line 56: warning: attribute "likely" does not apply here
+  [[likely]] int a;			// { dg-warning "'likely' attribute ignored" }
+    ^
+
+"Test_name.c", line 57: warning: structured bindings are a C++17 feature
+  [[likely]] auto [b, c] = arr;		// { dg-warning "'likely' attribute ignored" }
+                  ^
+
+"Test_name.c", line 57: warning: attribute "likely" does not apply here
+  [[likely]] auto [b, c] = arr;		// { dg-warning "'likely' attribute ignored" }
+    ^
+
+"Test_name.c", line 59: error: attribute "likely" does not apply here
+  [[likely]];				// { dg-warning "attribute ignored" }
+    ^
+
+"Test_name.c", line 60: error: attribute does not apply to any entity
+  inline [[likely]] void baz () {}	// { dg-warning "attribute ignored" }
+         ^
+
+"Test_name.c", line 62: error: attribute does not apply to any entity
+  constexpr [[likely]] int qux () { return 0; }	// { dg-warning "attribute ignored" }
+            ^
+
+"Test_name.c", line 64: warning: attribute "likely" does not apply here
+  int [[likely]] d;			// { dg-warning "attribute ignored" }
+        ^
+
+"Test_name.c", line 65: warning: attribute "likely" does not apply here
+  int const [[likely]] e = 1;		// { dg-warning "attribute ignored" }
+              ^
+
+"Test_name.c", line 66: warning: attribute "likely" does not apply here
+  struct A {} [[likely]];			// { dg-warning "attribute ignored in declaration of 'struct A'" }
+                ^
+
+"Test_name.c", line 67: warning: attribute "likely" does not apply here
+  struct A [[likely]];			// { dg-warning "attribute ignored" }
+             ^
+
+"Test_name.c", line 67: warning: declaration does not declare anything
+  struct A [[likely]];			// { dg-warning "attribute ignored" }
+  ^
+
+"Test_name.c", line 68: warning: attribute "likely" does not apply here
+  struct A [[likely]] a1;			// { dg-warning "attribute ignored" }
+             ^
+
+"Test_name.c", line 69: warning: attribute "likely" does not apply here
+  A [[likely]] a2;			// { dg-warning "attribute ignored" }
+      ^
+
+"Test_name.c", line 70: warning: attribute "likely" does not apply here
+  enum B { B0 } [[likely]];		// { dg-warning "attribute ignored in declaration of 'enum B'" }
+                  ^
+
+"Test_name.c", line 71: warning: attribute "likely" does not apply here
+  enum B [[likely]];			// { dg-warning "attribute ignored" }
+           ^
+
+"Test_name.c", line 71: warning: declaration does not declare anything
+  enum B [[likely]];			// { dg-warning "attribute ignored" }
+  ^
+
+"Test_name.c", line 72: warning: attribute "likely" does not apply here
+  enum B [[likely]] b1;			// { dg-warning "attribute ignored" }
+           ^
+
+"Test_name.c", line 73: warning: attribute "likely" does not apply here
+  B [[likely]] b2;			// { dg-warning "attribute ignored" }
+      ^
+
+"Test_name.c", line 74: warning: attribute "likely" does not apply here
+  struct [[likely]] C {};			// { dg-warning "'likely' attribute ignored" }
+           ^
+
+"Test_name.c", line 75: warning: attribute "likely" does not apply here
+  int f [[likely]];			// { dg-warning "'likely' attribute ignored" }
+          ^
+
+"Test_name.c", line 76: warning: attribute "likely" does not apply here
+  int g[2] [[likely]];			// { dg-warning "'likely' attribute ignored" }
+             ^
+
+"Test_name.c", line 77: warning: attribute "likely" does not apply here
+  int g2 [[likely]] [2];			// { dg-warning "'likely' attribute ignored" }
+           ^
+
+"Test_name.c", line 78: warning: attribute "likely" does not apply here
+  int corge () [[likely]];		// { dg-warning "'likely' attribute ignored" }
+                 ^
+
+"Test_name.c", line 79: warning: attribute "likely" does not apply here
+  int *[[likely]] h;			// { dg-warning "'likely' attribute ignored" }
+         ^
+
+"Test_name.c", line 80: warning: attribute "likely" does not apply here
+  int & [[likely]] i = f;			// { dg-warning "'likely' attribute ignored" }
+          ^
+
+"Test_name.c", line 81: warning: attribute "likely" does not apply here
+  int && [[likely]] j = 0;		// { dg-warning "'likely' attribute ignored" }
+           ^
+
+"Test_name.c", line 82: warning: attribute "likely" does not apply here
+  int S::* [[likely]] k;			// { dg-warning "'likely' attribute ignored" }
+             ^
+
+"Test_name.c", line 83: warning: attribute "likely" does not apply here
+  auto l = sizeof (int [2] [[likely]]);	// { dg-warning "'likely' attribute ignored" }
+                             ^
+
+"Test_name.c", line 84: warning: attribute "likely" does not apply here
+  int freddy ([[likely]] int a,		// { dg-warning "'likely' attribute ignored" }
+                ^
+
+"Test_name.c", line 85: warning: attribute "likely" does not apply here
+  	    [[likely]] int,		// { dg-warning "'likely' attribute ignored" }
+  	      ^
+
+"Test_name.c", line 86: warning: attribute "likely" does not apply here
+  	    [[likely]] int c = 0,	// { dg-warning "'likely' attribute ignored" }
+  	      ^
+
+"Test_name.c", line 87: warning: attribute "likely" does not apply here
+  	    [[likely]] int = 0);	// { dg-warning "'likely' attribute ignored" }
+  	      ^
+
+"Test_name.c", line 89: warning: attribute "likely" does not apply here
+  corge ([[likely]] int a,		// { dg-warning "'likely' attribute ignored" }
+           ^
+
+"Test_name.c", line 90: warning: attribute "likely" does not apply here
+         [[likely]] int,			// { dg-warning "'likely' attribute ignored" }
+           ^
+
+"Test_name.c", line 91: warning: attribute "likely" does not apply here
+         [[likely]] int c = 0,		// { dg-warning "'likely' attribute ignored" }
+           ^
+
+"Test_name.c", line 92: warning: attribute "likely" does not apply here
+         [[likely]] int = 0)		// { dg-warning "'likely' attribute ignored" }
+           ^
+
+"Test_name.c", line 95: warning: attribute "likely" does not apply here
+  [[likely]] void
+    ^
+
+"Test_name.c", line 99: warning: attribute "likely" does not apply here
+  int grault (int [[likely]] a,		// { dg-warning "attribute ignored" }
+                    ^
+
+"Test_name.c", line 100: warning: attribute "likely" does not apply here
+  	    int [[likely]],		// { dg-warning "attribute ignored" }
+  	          ^
+
+"Test_name.c", line 101: warning: attribute "likely" does not apply here
+  	    int [[likely]] c = 0,	// { dg-warning "attribute ignored" }
+  	          ^
+
+"Test_name.c", line 102: warning: attribute "likely" does not apply here
+  	    int [[likely]] = 0);	// { dg-warning "attribute ignored" }
+  	          ^
+
+"Test_name.c", line 104: warning: attribute "likely" does not apply here
+  waldo (int [[likely]] a,		// { dg-warning "attribute ignored" }
+               ^
+
+"Test_name.c", line 105: warning: attribute "likely" does not apply here
+         int [[likely]],			// { dg-warning "attribute ignored" }
+               ^
+
+"Test_name.c", line 106: warning: attribute "likely" does not apply here
+         int [[likely]] c = 0,		// { dg-warning "attribute ignored" }
+               ^
+
+"Test_name.c", line 107: warning: attribute "likely" does not apply here
+         int [[likely]] = 0)		// { dg-warning "attribute ignored" }
+               ^
+
+"Test_name.c", line 110: warning: attribute "likely" does not apply here
+  int plugh (int a [[likely]],		// { dg-warning "'likely' attribute ignored" }
+                     ^
+
+"Test_name.c", line 111: warning: attribute "likely" does not apply here
+  	    int b [[likely]] = 0);	// { dg-warning "'likely' attribute ignored" }
+  	            ^
+
+"Test_name.c", line 113: warning: attribute "likely" does not apply here
+  thud (int a [[likely]],			// { dg-warning "'likely' attribute ignored" }
+                ^
+
+"Test_name.c", line 114: warning: attribute "likely" does not apply here
+        int b [[likely]] = 0)		// { dg-warning "'likely' attribute ignored" }
+                ^
+
+"Test_name.c", line 117: warning: attribute "likely" does not apply here
+  enum [[likely]] D { D0 };		// { dg-warning "'likely' attribute ignored" }
+         ^
+
+"Test_name.c", line 118: warning: attribute "likely" does not apply here
+  enum class [[likely]] E { E0 };		// { dg-warning "'likely' attribute ignored" }
+               ^
+
+"Test_name.c", line 120: warning: attribute "likely" does not apply here
+  enum [[likely]] F;			// { dg-warning "type attributes ignored after type is already defined" }
+         ^
+
+"Test_name.c", line 122: warning: attribute "likely" does not apply here
+    G0 [[likely]],			// { dg-warning "'likely' attribute ignored" }
+         ^
+
+"Test_name.c", line 123: warning: attribute "likely" does not apply here
+    G1 [[likely]] = 2			// { dg-warning "'likely' attribute ignored" }
+         ^
+
+"Test_name.c", line 125: warning: attribute "likely" does not apply here
+  namespace [[likely]] H { using H0 = int; }	// { dg-warning "'likely' attribute directive ignored" } */
+              ^
+
+"Test_name.c", line 126: warning: attribute "likely" does not apply here
+  namespace [[likely]] {}			// { dg-warning "'likely' attribute directive ignored" }
+              ^
+
+"Test_name.c", line 127: error: attributes are not allowed here
+  [[likely]] using namespace H;		// { dg-warning "'likely' attribute directive ignored" }
+  ^
+
+"Test_name.c", line 128: warning: attribute "likely" does not apply here
+  struct [[likely]] I			// { dg-warning "'likely' attribute ignored" }
+           ^
+
+"Test_name.c", line 130: warning: attributes ignored here because they do not apply to a declared entity
+    [[likely]];				// { dg-error "declaration does not declare anything" }
+      ^
+
+"Test_name.c", line 131: warning: attribute "likely" does not apply here
+    [[likely]] int i;			// { dg-warning "'likely' attribute ignored" }
+      ^
+
+"Test_name.c", line 132: warning: attribute "likely" does not apply here
+    [[likely]] int foo ();		// { dg-warning "ISO C\\\+\\\+ 'likely' attribute does not apply to functions; treating as '\\\[\\\[gnu::hot\\\]\\\]'" }
+      ^
+
+"Test_name.c", line 133: warning: attribute "likely" does not apply here
+    [[likely]] int bar () { return 1; }	// { dg-warning "ISO C\\\+\\\+ 'likely' attribute does not apply to functions; treating as '\\\[\\\[gnu::hot\\\]\\\]'" }
+      ^
+
+"Test_name.c", line 134: warning: attribute "likely" does not apply here
+    [[likely]] int : 0;			// { dg-warning "'likely' attribute ignored" }
+      ^
+
+"Test_name.c", line 135: warning: attribute "likely" does not apply here
+    [[likely]] int i2 : 5;		// { dg-warning "'likely' attribute ignored" }
+      ^
+
+"Test_name.c", line 136: warning: attribute "likely" does not apply here
+    [[likely]] static int i3;		// { dg-warning "'likely' attribute ignored" }
+      ^
+
+"Test_name.c", line 139: warning: attribute "likely" does not apply here
+  [[likely]] int I::i4 = 0;		// { dg-warning "'likely' attribute ignored" }
+    ^
+
+"Test_name.c", line 140: warning: attribute "likely" does not apply here
+  struct J : [[likely]] C {};		// { dg-warning "attributes on base specifiers are ignored" }
+               ^
+
+"Test_name.c", line 145: warning: attribute "likely" does not apply here
+  typedef int L [[likely]];		// { dg-warning "'likely' attribute ignored" }
+                  ^
+
+"Test_name.c", line 149: warning: attribute "likely" does not apply here
+  struct [[likely]] M<int> { int m; };	// { dg-warning "'likely' attribute ignored" }
+           ^
+
+"Test_name.c", line 150: warning: attribute "likely" does not apply here
+  typedef int N[2] [[likely]];		// { dg-warning "'likely' attribute ignored" }
+                     ^
+
+"Test_name.c", line 151: warning: attribute "likely" does not apply here
+  typedef int O [[likely]] [2];		// { dg-warning "'likely' attribute ignored" }
+                  ^
+
+"Test_name.c", line 57: warning: structured binding "b" was declared but never referenced
+  [[likely]] auto [b, c] = arr;		// { dg-warning "'likely' attribute ignored" }
+                   ^
+
+"Test_name.c", line 65: warning: variable "e" was declared but never referenced
+  int const [[likely]] e = 1;		// { dg-warning "attribute ignored" }
+                       ^
+
+6 errors detected in the compilation of "Test_name.c".

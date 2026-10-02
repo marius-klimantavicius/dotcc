@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 6: warning: target attribute not recognized
+  int __attribute__((target("arch=rv64g"))) foo(void) { return 0; }
+                            ^
+
+"Test_name.c", line 8: error: function "foo" has already been defined (previous definition at line 6)
+  int __attribute__((target("arch=rv64gc"))) foo(void) { return 0; }
+                                             ^
+
+"Test_name.c", line 8: warning: target attribute not recognized
+  int __attribute__((target("arch=rv64gc"))) foo(void) { return 0; }
+                            ^
+
+"Test_name.c", line 11: warning: target attribute not recognized
+  int __attribute__((target("arch=+notafeature"))) UnsupportFeature(void) { return 0; }
+                            ^
+
+"Test_name.c", line 14: warning: target attribute not recognized
+  int __attribute__((target("arch=-notafeature"))) UnsupportNegativeFeature(void) { return 0; }
+                            ^
+
+"Test_name.c", line 17: warning: target attribute not recognized
+  int __attribute__((target("arch=+zba,zbb"))) WithoutPlus(void) { return 0; }
+                            ^
+
+"Test_name.c", line 17: warning: target attribute not recognized
+  int __attribute__((target("arch=+zba,zbb"))) WithoutPlus(void) { return 0; }
+                            ^
+
+"Test_name.c", line 20: warning: target attribute not recognized
+  int __attribute__((target("arch=zba"))) WithoutPlus2(void) { return 0; }
+                            ^
+
+1 error detected in the compilation of "Test_name.c".

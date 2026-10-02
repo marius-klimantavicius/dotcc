@@ -1,0 +1,49 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 19: warning: unrecognized #pragma
+    #pragma omp parallel shared(a, b, c, d, e, f, g)
+            ^
+
+"Test_name.c", line 22: warning: unrecognized #pragma
+    #pragma omp parallel private(a, b, c, d, f, g)
+            ^
+
+"Test_name.c", line 24: warning: unrecognized #pragma
+    #pragma omp parallel private(e)		// { dg-error "context" }
+            ^
+
+"Test_name.c", line 27: warning: unrecognized #pragma
+    #pragma omp parallel firstprivate(a, b, c, d, e, g)
+            ^
+
+"Test_name.c", line 29: warning: unrecognized #pragma
+    #pragma omp parallel firstprivate(f)		// { dg-error "context" }
+            ^
+
+"Test_name.c", line 32: warning: unrecognized #pragma
+    #pragma omp parallel sections lastprivate(a, b, d, c, f)
+            ^
+
+"Test_name.c", line 34: warning: unrecognized #pragma
+    #pragma omp parallel sections lastprivate(e)	// { dg-error "context" }
+            ^
+
+"Test_name.c", line 36: warning: unrecognized #pragma
+    #pragma omp parallel sections lastprivate(g)	// { dg-error "context" }
+            ^
+
+"Test_name.c", line 38: warning: unrecognized #pragma
+    #pragma omp parallel sections firstprivate(e) lastprivate(e)
+            ^
+
+"Test_name.c", line 17: warning: variable "a" was declared but never referenced
+    A a; B b; C c; D d; E e(0); F f; G g;
+      ^
+
+"Test_name.c", line 17: warning: variable "d" was declared but never referenced
+    A a; B b; C c; D d; E e(0); F f; G g;
+                     ^
+
+"Test_name.c", line 17: warning: variable "g" was declared but never referenced
+    A a; B b; C c; D d; E e(0); F f; G g;
+                                       ^
+

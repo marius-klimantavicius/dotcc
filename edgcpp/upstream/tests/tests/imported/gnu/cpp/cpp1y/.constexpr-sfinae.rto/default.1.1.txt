@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 188: warning: missing return statement at end of non-void function "FlowOffTheEnd::undefined_if_0"
+  constexpr bool undefined_if_0 (int i) { switch (i) case 1: return 1; }
+                                                                       ^
+
+"Test_name.c", line 189: warning: missing return statement at end of non-void function "FlowOffTheEnd::undefined_if_1"
+  constexpr bool undefined_if_1 (int i) { switch (i) case 0: return 1; }
+                                                                       ^
+
+"Test_name.c", line 96: warning: variable "NullPointerArithmetic::d00" was declared but never referenced
+  constexpr __PTRDIFF_TYPE__ d00 = a [0] - a [0];
+                             ^
+
+"Test_name.c", line 97: warning: variable "NullPointerArithmetic::d11" was declared but never referenced
+  constexpr __PTRDIFF_TYPE__ d11 = a [1] - a [1];
+                             ^
+

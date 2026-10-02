@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=3 --microsoft --microsoft_version=1310 -DNEWNEG=1300 Test_name.c
+"Test_name.c", line 15: warning: declaration requires a typedef name
+  typedef struct S {};
+                     ^
+
+"Test_name.c", line 19: warning: omission of explicit type is nonstandard ("int" assumed)
+    S();
+    ^
+
+"Test_name.c", line 21: error: expected an identifier
+    I();
+      ^
+
+1 error detected in the compilation of "Test_name.c".

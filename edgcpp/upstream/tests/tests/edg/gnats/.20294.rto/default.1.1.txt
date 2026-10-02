@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 --microsoft -E Test_name.c
+#line 1 "Test_name.c"
+
+
+
+"Test_name.c", line 4: error: cannot open source file "empty.h"
+  #include < empty.h> // error, leading whitespace is part of the name
+                                                                      ^
+
+
+
+1 error detected in the compilation of "Test_name.c".

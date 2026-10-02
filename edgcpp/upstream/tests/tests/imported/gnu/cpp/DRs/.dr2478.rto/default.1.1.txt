@@ -1,0 +1,52 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 56: error: expression must have a constant value
+  long S<long>::x = S<long> ().foo ();	// { dg-bogus "'constinit' variable 'S<long int>::x' does not have a constant initializer" "" { xfail *-*-* } }
+                    ^
+"Test_name.c", line 56: note: cannot call non-constexpr function "S<T>::foo [with T=long]" (declared at line 11)
+  long S<long>::x = S<long> ().foo ();	// { dg-bogus "'constinit' variable 'S<long int>::x' does not have a constant initializer" "" { xfail *-*-* } }
+                               ^
+
+"Test_name.c", line 60: error: expression must have a constant value
+  constinit long S<long>::y = S<long> ().foo ();	// { dg-error "'constinit' variable 'S<long int>::y' does not have a constant initializer" }
+                              ^
+"Test_name.c", line 60: note: cannot call non-constexpr function "S<T>::foo [with T=long]" (declared at line 11)
+  constinit long S<long>::y = S<long> ().foo ();	// { dg-error "'constinit' variable 'S<long int>::y' does not have a constant initializer" }
+                                         ^
+
+"Test_name.c", line 63: error: expression must have a constant value
+  constinit auto a = S<char> ().foo ();	// { dg-error "'constinit' variable 'a' does not have a constant initializer" }
+                     ^
+"Test_name.c", line 63: note: cannot call non-constexpr function "S<T>::foo [with T=char]" (declared at line 11)
+  constinit auto a = S<char> ().foo ();	// { dg-error "'constinit' variable 'a' does not have a constant initializer" }
+                                ^
+
+"Test_name.c", line 67: error: expression must have a constant value
+  constinit auto d = S<int> ().bar ();	// { dg-error "'constinit' variable 'd' does not have a constant initializer" }
+                     ^
+"Test_name.c", line 67: note: cannot call non-constexpr function "S<T>::bar [with T=int]" (declared at line 36)
+  constinit auto d = S<int> ().bar ();	// { dg-error "'constinit' variable 'd' does not have a constant initializer" }
+                               ^
+
+"Test_name.c", line 70: error: expression must have a constant value
+  constinit auto f = S<char> ().qux ();	// { dg-error "'constinit' variable 'f' does not have a constant initializer" }
+                     ^
+"Test_name.c", line 70: note: cannot call non-constexpr function "S<T>::qux [with T=char]" (declared at line 50)
+  constinit auto f = S<char> ().qux ();	// { dg-error "'constinit' variable 'f' does not have a constant initializer" }
+                                ^
+
+"Test_name.c", line 72: error: expression must have a constant value
+  constinit auto g = S<int> ().baz ();	// { dg-error "'constinit' variable 'g' does not have a constant initializer" }
+                     ^
+"Test_name.c", line 72: note: cannot call non-constexpr function "S<T>::baz [with T=int]" (declared at line 13)
+  constinit auto g = S<int> ().baz ();	// { dg-error "'constinit' variable 'g' does not have a constant initializer" }
+                               ^
+
+"Test_name.c", line 21: error: expression must have a constant value
+  T S<T>::x = S<T> ().foo ();	// { dg-error "'constinit' variable 'S<char>::x' does not have a constant initializer" }
+              ^
+"Test_name.c", line 21: note: cannot call non-constexpr function "S<T>::foo [with T=char]" (declared at line 11)
+  T S<T>::x = S<T> ().foo ();	// { dg-error "'constinit' variable 'S<char>::x' does not have a constant initializer" }
+                      ^
+          detected during implicit definition of "char S<T>::x [with T=char]" at line 75
+
+7 errors detected in the compilation of "Test_name.c".

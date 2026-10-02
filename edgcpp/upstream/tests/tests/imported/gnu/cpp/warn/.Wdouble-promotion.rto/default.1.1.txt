@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./warn/Wdouble-promotion.C", line 26: warning: variable "local_f" was set but never used
+    float local_f;
+          ^
+
+"./warn/Wdouble-promotion.C", line 27: warning: variable "local_cf" was set but never used
+    _Complex float local_cf;
+                   ^
+
+"./warn/Wdouble-promotion.C", line 61: warning: variable "local_f" was set but never used
+    float local_f;
+          ^
+
+"./warn/Wdouble-promotion.C", line 62: warning: variable "local_cf" was set but never used
+    _Complex float local_cf;
+                   ^
+

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 11: warning: structured bindings are a C++17 feature
+    auto [b] { [&a](){} };	// { dg-error "cannot decompose lambda closure type" }
+         ^
+
+"Test_name.c", line 11: error: structured binding cannot bind to closure type
+    auto [b] { [&a](){} };	// { dg-error "cannot decompose lambda closure type" }
+         ^
+
+1 error detected in the compilation of "Test_name.c".

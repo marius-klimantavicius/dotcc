@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=2 --c11 -A Test_name.c
+"Test_name.c", line 8: error: the alignment of an array of unspecified bound is nonstandard in C
+  long k = _Alignof(int[]);
+                    ^
+
+1 error detected in the compilation of "Test_name.c".

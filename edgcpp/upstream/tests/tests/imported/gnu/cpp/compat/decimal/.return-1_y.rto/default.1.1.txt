@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./compat/decimal/return-1_y.C", line 1: error: invalid argument to attribute "mode"
+  typedef float dec32 __attribute__((mode(SD)));
+                                          ^
+
+"./compat/decimal/return-1_y.C", line 2: error: invalid argument to attribute "mode"
+  typedef float dec64 __attribute__((mode(DD)));
+                                          ^
+
+"./compat/decimal/return-1_y.C", line 3: error: invalid argument to attribute "mode"
+  typedef float dec128 __attribute__((mode(TD)));
+                                           ^
+
+3 errors detected in the compilation of "Test_name.c".

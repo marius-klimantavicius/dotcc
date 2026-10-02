@@ -1,0 +1,265 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 32: warning: integer conversion resulted in a change of sign
+      int d2a = 1 ? Foo<bool>::D : i; // expected-warning {{operand of ? changes signedness: 'test1::Foo<bool>::(unnamed enum at }}
+                ^
+
+"Test_name.c", line 33: warning: integer conversion resulted in a change of sign
+      int d2b = 1 ? Foo<bool>::D : i; // expected-warning {{warn-sign-conversion.cpp:13:5)' to 'int'}}
+                ^
+
+"Test_name.c", line 34: warning: integer conversion resulted in a change of sign
+      int d3a = 1 ? B : Foo<bool>::D; // expected-warning {{operand of ? changes signedness: 'test1::Foo<bool>::(unnamed enum at }}
+                    ^
+
+"Test_name.c", line 34: warning: integer conversion resulted in a change of sign
+      int d3a = 1 ? B : Foo<bool>::D; // expected-warning {{operand of ? changes signedness: 'test1::Foo<bool>::(unnamed enum at }}
+                ^
+
+"Test_name.c", line 35: warning: integer conversion resulted in a change of sign
+      int d3b = 1 ? B : Foo<bool>::D; // expected-warning {{warn-sign-conversion.cpp:13:5)' to 'int'}}
+                    ^
+
+"Test_name.c", line 35: warning: integer conversion resulted in a change of sign
+      int d3b = 1 ? B : Foo<bool>::D; // expected-warning {{warn-sign-conversion.cpp:13:5)' to 'int'}}
+                ^
+
+"Test_name.c", line 36: warning: integer conversion resulted in a change of sign
+      int d4a = 1 ? Foo<bool>::D : B; // expected-warning {{operand of ? changes signedness: 'test1::Foo<bool>::(unnamed enum at }}
+                                   ^
+
+"Test_name.c", line 36: warning: integer conversion resulted in a change of sign
+      int d4a = 1 ? Foo<bool>::D : B; // expected-warning {{operand of ? changes signedness: 'test1::Foo<bool>::(unnamed enum at }}
+                ^
+
+"Test_name.c", line 37: warning: integer conversion resulted in a change of sign
+      int d4b = 1 ? Foo<bool>::D : B; // expected-warning {{warn-sign-conversion.cpp:13:5)' to 'int'}}
+                                   ^
+
+"Test_name.c", line 37: warning: integer conversion resulted in a change of sign
+      int d4b = 1 ? Foo<bool>::D : B; // expected-warning {{warn-sign-conversion.cpp:13:5)' to 'int'}}
+                ^
+
+"Test_name.c", line 41: warning: integer conversion resulted in a change of sign
+      int e2a = 1 ? E : i; // expected-warning {{operand of ? changes signedness: 'test1::(unnamed enum at }}
+                ^
+
+"Test_name.c", line 42: warning: integer conversion resulted in a change of sign
+      int e2b = 1 ? E : i; // expected-warning {{warn-sign-conversion.cpp:16:3)' to 'int'}}
+                ^
+
+"Test_name.c", line 43: warning: integer conversion resulted in a change of sign
+      int e3a = 1 ? E : B; // expected-warning {{operand of ? changes signedness: 'test1::(unnamed enum at }}
+                        ^
+
+"Test_name.c", line 43: warning: integer conversion resulted in a change of sign
+      int e3a = 1 ? E : B; // expected-warning {{operand of ? changes signedness: 'test1::(unnamed enum at }}
+                ^
+
+"Test_name.c", line 44: warning: integer conversion resulted in a change of sign
+      int e3b = 1 ? E : B; // expected-warning {{warn-sign-conversion.cpp:16:3)' to 'int'}}
+                        ^
+
+"Test_name.c", line 44: warning: integer conversion resulted in a change of sign
+      int e3b = 1 ? E : B; // expected-warning {{warn-sign-conversion.cpp:16:3)' to 'int'}}
+                ^
+
+"Test_name.c", line 45: warning: integer conversion resulted in a change of sign
+      int e4a = 1 ? B : E; // expected-warning {{operand of ? changes signedness: 'test1::(unnamed enum at }}
+                    ^
+
+"Test_name.c", line 45: warning: integer conversion resulted in a change of sign
+      int e4a = 1 ? B : E; // expected-warning {{operand of ? changes signedness: 'test1::(unnamed enum at }}
+                ^
+
+"Test_name.c", line 46: warning: integer conversion resulted in a change of sign
+      int e4b = 1 ? B : E; // expected-warning {{warn-sign-conversion.cpp:16:3)' to 'int'}}
+                    ^
+
+"Test_name.c", line 46: warning: integer conversion resulted in a change of sign
+      int e4b = 1 ? B : E; // expected-warning {{warn-sign-conversion.cpp:16:3)' to 'int'}}
+                ^
+
+"Test_name.c", line 21: warning: variable "a1" was declared but never referenced
+      int a1 = 1 ? i : A;
+          ^
+
+"Test_name.c", line 22: warning: variable "a2" was declared but never referenced
+      int a2 = 1 ? A : i;
+          ^
+
+"Test_name.c", line 24: warning: variable "b1" was declared but never referenced
+      int b1 = 1 ? i : B;
+          ^
+
+"Test_name.c", line 25: warning: variable "b2" was declared but never referenced
+      int b2 = 1 ? B : i;
+          ^
+
+"Test_name.c", line 27: warning: variable "c1" was declared but never referenced
+      int c1 = 1 ? i : Foo<bool>::C;
+          ^
+
+"Test_name.c", line 28: warning: variable "c2" was declared but never referenced
+      int c2 = 1 ? Foo<bool>::C : i;
+          ^
+
+"Test_name.c", line 30: warning: variable "d1a" was declared but never referenced
+      int d1a = 1 ? i : Foo<bool>::D; // expected-warning {{test1::Foo<bool>::(unnamed enum at }}
+          ^
+
+"Test_name.c", line 31: warning: variable "d1b" was declared but never referenced
+      int d1b = 1 ? i : Foo<bool>::D; // expected-warning {{warn-sign-conversion.cpp:13:5)' to 'int'}}
+          ^
+
+"Test_name.c", line 32: warning: variable "d2a" was declared but never referenced
+      int d2a = 1 ? Foo<bool>::D : i; // expected-warning {{operand of ? changes signedness: 'test1::Foo<bool>::(unnamed enum at }}
+          ^
+
+"Test_name.c", line 33: warning: variable "d2b" was declared but never referenced
+      int d2b = 1 ? Foo<bool>::D : i; // expected-warning {{warn-sign-conversion.cpp:13:5)' to 'int'}}
+          ^
+
+"Test_name.c", line 34: warning: variable "d3a" was declared but never referenced
+      int d3a = 1 ? B : Foo<bool>::D; // expected-warning {{operand of ? changes signedness: 'test1::Foo<bool>::(unnamed enum at }}
+          ^
+
+"Test_name.c", line 35: warning: variable "d3b" was declared but never referenced
+      int d3b = 1 ? B : Foo<bool>::D; // expected-warning {{warn-sign-conversion.cpp:13:5)' to 'int'}}
+          ^
+
+"Test_name.c", line 36: warning: variable "d4a" was declared but never referenced
+      int d4a = 1 ? Foo<bool>::D : B; // expected-warning {{operand of ? changes signedness: 'test1::Foo<bool>::(unnamed enum at }}
+          ^
+
+"Test_name.c", line 37: warning: variable "d4b" was declared but never referenced
+      int d4b = 1 ? Foo<bool>::D : B; // expected-warning {{warn-sign-conversion.cpp:13:5)' to 'int'}}
+          ^
+
+"Test_name.c", line 39: warning: variable "e1a" was declared but never referenced
+      int e1a = 1 ? i : E; // expected-warning {{operand of ? changes signedness: 'test1::(unnamed enum at }}
+          ^
+
+"Test_name.c", line 40: warning: variable "e1b" was declared but never referenced
+      int e1b = 1 ? i : E; // expected-warning {{warn-sign-conversion.cpp:16:3)' to 'int'}}
+          ^
+
+"Test_name.c", line 41: warning: variable "e2a" was declared but never referenced
+      int e2a = 1 ? E : i; // expected-warning {{operand of ? changes signedness: 'test1::(unnamed enum at }}
+          ^
+
+"Test_name.c", line 42: warning: variable "e2b" was declared but never referenced
+      int e2b = 1 ? E : i; // expected-warning {{warn-sign-conversion.cpp:16:3)' to 'int'}}
+          ^
+
+"Test_name.c", line 43: warning: variable "e3a" was declared but never referenced
+      int e3a = 1 ? E : B; // expected-warning {{operand of ? changes signedness: 'test1::(unnamed enum at }}
+          ^
+
+"Test_name.c", line 44: warning: variable "e3b" was declared but never referenced
+      int e3b = 1 ? E : B; // expected-warning {{warn-sign-conversion.cpp:16:3)' to 'int'}}
+          ^
+
+"Test_name.c", line 45: warning: variable "e4a" was declared but never referenced
+      int e4a = 1 ? B : E; // expected-warning {{operand of ? changes signedness: 'test1::(unnamed enum at }}
+          ^
+
+"Test_name.c", line 46: warning: variable "e4b" was declared but never referenced
+      int e4b = 1 ? B : E; // expected-warning {{warn-sign-conversion.cpp:16:3)' to 'int'}}
+          ^
+
+"Test_name.c", line 73: warning: integer conversion resulted in a change of sign
+      int d2 = 1 ? Foo<bool>::D : i; // expected-warning {{operand of ? changes signedness: 'test2::Foo<bool>::Named4' to 'int'}}
+               ^
+
+"Test_name.c", line 74: warning: integer conversion resulted in a change of sign
+      int d3 = 1 ? B : Foo<bool>::D; // expected-warning {{operand of ? changes signedness: 'test2::Foo<bool>::Named4' to 'int'}}
+                   ^
+
+"Test_name.c", line 74: warning: integer conversion resulted in a change of sign
+      int d3 = 1 ? B : Foo<bool>::D; // expected-warning {{operand of ? changes signedness: 'test2::Foo<bool>::Named4' to 'int'}}
+               ^
+
+"Test_name.c", line 75: warning: integer conversion resulted in a change of sign
+      int d4 = 1 ? Foo<bool>::D : B; // expected-warning {{operand of ? changes signedness: 'test2::Foo<bool>::Named4' to 'int'}}
+                                  ^
+
+"Test_name.c", line 75: warning: integer conversion resulted in a change of sign
+      int d4 = 1 ? Foo<bool>::D : B; // expected-warning {{operand of ? changes signedness: 'test2::Foo<bool>::Named4' to 'int'}}
+               ^
+
+"Test_name.c", line 78: warning: integer conversion resulted in a change of sign
+      int e2 = 1 ? E : i; // expected-warning {{operand of ? changes signedness: 'test2::Named5' to 'int'}}
+               ^
+
+"Test_name.c", line 79: warning: integer conversion resulted in a change of sign
+      int e3 = 1 ? E : B; // expected-warning {{operand of ? changes signedness: 'test2::Named5' to 'int'}}
+                       ^
+
+"Test_name.c", line 79: warning: integer conversion resulted in a change of sign
+      int e3 = 1 ? E : B; // expected-warning {{operand of ? changes signedness: 'test2::Named5' to 'int'}}
+               ^
+
+"Test_name.c", line 80: warning: integer conversion resulted in a change of sign
+      int e4 = 1 ? B : E; // expected-warning {{operand of ? changes signedness: 'test2::Named5' to 'int'}}
+                   ^
+
+"Test_name.c", line 80: warning: integer conversion resulted in a change of sign
+      int e4 = 1 ? B : E; // expected-warning {{operand of ? changes signedness: 'test2::Named5' to 'int'}}
+               ^
+
+"Test_name.c", line 63: warning: variable "a1" was declared but never referenced
+      int a1 = 1 ? i : A;
+          ^
+
+"Test_name.c", line 64: warning: variable "a2" was declared but never referenced
+      int a2 = 1 ? A : i;
+          ^
+
+"Test_name.c", line 66: warning: variable "b1" was declared but never referenced
+      int b1 = 1 ? i : B;
+          ^
+
+"Test_name.c", line 67: warning: variable "b2" was declared but never referenced
+      int b2 = 1 ? B : i;
+          ^
+
+"Test_name.c", line 69: warning: variable "c1" was declared but never referenced
+      int c1 = 1 ? i : Foo<bool>::C;
+          ^
+
+"Test_name.c", line 70: warning: variable "c2" was declared but never referenced
+      int c2 = 1 ? Foo<bool>::C : i;
+          ^
+
+"Test_name.c", line 72: warning: variable "d1" was declared but never referenced
+      int d1 = 1 ? i : Foo<bool>::D; // expected-warning {{operand of ? changes signedness: 'test2::Foo<bool>::Named4' to 'int'}}
+          ^
+
+"Test_name.c", line 73: warning: variable "d2" was declared but never referenced
+      int d2 = 1 ? Foo<bool>::D : i; // expected-warning {{operand of ? changes signedness: 'test2::Foo<bool>::Named4' to 'int'}}
+          ^
+
+"Test_name.c", line 74: warning: variable "d3" was declared but never referenced
+      int d3 = 1 ? B : Foo<bool>::D; // expected-warning {{operand of ? changes signedness: 'test2::Foo<bool>::Named4' to 'int'}}
+          ^
+
+"Test_name.c", line 75: warning: variable "d4" was declared but never referenced
+      int d4 = 1 ? Foo<bool>::D : B; // expected-warning {{operand of ? changes signedness: 'test2::Foo<bool>::Named4' to 'int'}}
+          ^
+
+"Test_name.c", line 77: warning: variable "e1" was declared but never referenced
+      int e1 = 1 ? i : E; // expected-warning {{operand of ? changes signedness: 'test2::Named5' to 'int'}}
+          ^
+
+"Test_name.c", line 78: warning: variable "e2" was declared but never referenced
+      int e2 = 1 ? E : i; // expected-warning {{operand of ? changes signedness: 'test2::Named5' to 'int'}}
+          ^
+
+"Test_name.c", line 79: warning: variable "e3" was declared but never referenced
+      int e3 = 1 ? E : B; // expected-warning {{operand of ? changes signedness: 'test2::Named5' to 'int'}}
+          ^
+
+"Test_name.c", line 80: warning: variable "e4" was declared but never referenced
+      int e4 = 1 ? B : E; // expected-warning {{operand of ? changes signedness: 'test2::Named5' to 'int'}}
+          ^
+

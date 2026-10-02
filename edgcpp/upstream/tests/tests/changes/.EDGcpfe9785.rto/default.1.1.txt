@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 17: error: pointer to member of type "int &" is not allowed
+    S().*(&S::x);  // Previously resulted in an internal error.  Now, a
+          ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 57: error: no instance of constructor "GH140773::ConstString" matches the argument list
+            argument types are: (lambda []()->int)
+    static constexpr ConstString kFilename{[] { // #kFileName
+                                 ^
+          detected during instantiation of "const GH140773::ConstString GH140773::Foo<<unnamed>>::kFilename [with <unnamed>=int, <unnamed>='a']" at line 57
+
+"Test_name.c", line 57: error: cannot deduce class template arguments
+    static constexpr ConstString kFilename{[] { // #kFileName
+                     ^
+          detected during instantiation of "const GH140773::ConstString GH140773::Foo<<unnamed>>::kFilename [with <unnamed>=int, <unnamed>='a']" at line 57
+
+"Test_name.c", line 9: warning: variable "k" was declared but never referenced
+  constexpr bool k = DominatorTreeBase<false>::IsPostDominator;
+                 ^
+
+"Test_name.c", line 19: warning: variable "CompleteType::n" was declared but never referenced
+    constexpr int n = X<true>::value;
+                  ^
+
+2 errors detected in the compilation of "Test_name.c".

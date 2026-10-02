@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 17: error: no instance of function template "f" matches the argument list
+    f<int>(); // { dg-error "no match" }
+    ^
+"Test_name.c", line 9: note: number of parameters of function template "f" does not match the call
+  void f(A<alignof(T)>) { }
+       ^
+
+1 error detected in the compilation of "Test_name.c".

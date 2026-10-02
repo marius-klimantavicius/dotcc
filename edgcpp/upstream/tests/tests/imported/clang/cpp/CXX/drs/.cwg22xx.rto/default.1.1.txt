@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 --exceptions --exceptions Test_name.c
+"Test_name.c", line 34: error: a qualified type is nonstandard for anonymous bit fields
+    const unsigned : 1;
+    ^
+
+"Test_name.c", line 36: error: a qualified type is nonstandard for anonymous bit fields
+    volatile unsigned : 1;
+    ^
+
+"Test_name.c", line 38: error: a qualified type is nonstandard for anonymous bit fields
+    const volatile unsigned : 1;
+    ^
+
+3 errors detected in the compilation of "Test_name.c".

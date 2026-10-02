@@ -1,0 +1,9 @@
+cpfe -DTEST_NUMBER=1 --c++23 -A Test_name.c
+"Test_name.c", line 6: warning: variable "b1" was declared but never referenced
+      bool b1 = f == g;     // OK
+           ^
+
+"Test_name.c", line 7: warning: variable "b2" was declared but never referenced
+      bool b2 = f > g;      // error: different types
+           ^
+

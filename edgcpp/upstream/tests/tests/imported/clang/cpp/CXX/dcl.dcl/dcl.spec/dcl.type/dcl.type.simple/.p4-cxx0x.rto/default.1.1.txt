@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 34: error: cannot determine which instance of overloaded function "f0" is intended
+  decltype(f0) f0_a; // expected-error{{reference to overloaded function could not be resolved; did you mean to call it?}}
+           ^
+
+1 error detected in the compilation of "Test_name.c".

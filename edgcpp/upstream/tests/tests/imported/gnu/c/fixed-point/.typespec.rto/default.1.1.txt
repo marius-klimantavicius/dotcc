@@ -1,0 +1,876 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 10: error: incomplete type "void" is not allowed
+  void _Fract *x0;  /* { dg-error "" "void _Fract" } */
+       ^
+
+"Test_name.c", line 10: error: expected a ";"
+  void _Fract *x0;  /* { dg-error "" "void _Fract" } */
+              ^
+
+"Test_name.c", line 11: error: expected a ";"
+  char _Fract *x3;  /* { dg-error "" "char _Fract" } */
+              ^
+
+"Test_name.c", line 12: error: expected a ";"
+  short _Fract *x6;
+               ^
+
+"Test_name.c", line 13: error: expected a ";"
+  int _Fract *x9;   /* { dg-error "" "int _Fract" } */
+             ^
+
+"Test_name.c", line 14: error: expected a ";"
+  long _Fract *x12;
+              ^
+
+"Test_name.c", line 15: error: expected a ";"
+  float _Fract *x15;   /* { dg-error "" "float _Fract" } */
+               ^
+
+"Test_name.c", line 16: error: expected a ";"
+  double _Fract *x18;   /* { dg-error "" "double _Fract" } */
+                ^
+
+"Test_name.c", line 17: error: expected a ";"
+  signed _Fract *x21;
+                ^
+
+"Test_name.c", line 18: error: expected a ";"
+  _Bool _Fract *x24;   /* { dg-error "" "_Bool _Fract" } */
+               ^
+
+"Test_name.c", line 19: error: expected a ";"
+  int _Fract *x27;    /* { dg-error "" "int _Fract" } */
+             ^
+
+"Test_name.c", line 20: error: expected a ";"
+  type _Fract *x30;   /* { dg-error "" "type _Fract" } */
+              ^
+
+"Test_name.c", line 21: error: expected a ";"
+  char signed _Fract *x33;  /* { dg-error "" "char signed _Fract" } */
+                     ^
+
+"Test_name.c", line 22: error: expected a ";"
+  char unsigned _Fract *x36; /* { dg-error "" "char unsigned _Fract" } */
+                       ^
+
+"Test_name.c", line 23: error: expected a ";"
+  short _Fract *x39;
+               ^
+
+"Test_name.c", line 24: error: expected a ";"
+  short signed _Fract *x42;
+                      ^
+
+"Test_name.c", line 25: error: expected a ";"
+  short unsigned _Fract *x45;
+                        ^
+
+"Test_name.c", line 26: warning: this declaration has no storage class or type specifier
+  _Fract short*x48;
+  ^
+
+"Test_name.c", line 26: error: expected a ";"
+  _Fract short*x48;
+         ^
+
+"Test_name.c", line 27: warning: this declaration has no storage class or type specifier
+  _Fract short signed*x51;
+  ^
+
+"Test_name.c", line 27: error: expected a ";"
+  _Fract short signed*x51;
+         ^
+
+"Test_name.c", line 28: warning: this declaration has no storage class or type specifier
+  _Fract short unsigned*x54;
+  ^
+
+"Test_name.c", line 28: error: expected a ";"
+  _Fract short unsigned*x54;
+         ^
+
+"Test_name.c", line 29: warning: this declaration has no storage class or type specifier
+  _Fract long*x57;
+  ^
+
+"Test_name.c", line 29: error: expected a ";"
+  _Fract long*x57;
+         ^
+
+"Test_name.c", line 30: warning: this declaration has no storage class or type specifier
+  _Fract long signed*x60;
+  ^
+
+"Test_name.c", line 30: error: expected a ";"
+  _Fract long signed*x60;
+         ^
+
+"Test_name.c", line 31: warning: this declaration has no storage class or type specifier
+  _Fract long unsigned*x63;
+  ^
+
+"Test_name.c", line 31: error: expected a ";"
+  _Fract long unsigned*x63;
+         ^
+
+"Test_name.c", line 32: warning: this declaration has no storage class or type specifier
+  _Fract signed long*x66;
+  ^
+
+"Test_name.c", line 32: error: expected a ";"
+  _Fract signed long*x66;
+         ^
+
+"Test_name.c", line 33: warning: this declaration has no storage class or type specifier
+  _Fract signed short*x69;
+  ^
+
+"Test_name.c", line 33: error: expected a ";"
+  _Fract signed short*x69;
+         ^
+
+"Test_name.c", line 34: error: expected a ";"
+  int signed _Fract *x72;  /* { dg-error "" "int signed _Fract" } */
+                    ^
+
+"Test_name.c", line 35: error: expected a ";"
+  int unsigned _Fract *x75;  /* { dg-error "" "int unsigned _Fract" } */
+                      ^
+
+"Test_name.c", line 36: error: expected a ";"
+  long int _Fract *x78;  /* { dg-error "" "long int _Fract" } */
+                  ^
+
+"Test_name.c", line 37: error: expected a ";"
+  long long _Fract *x81;
+                   ^
+
+"Test_name.c", line 38: error: expected a ";"
+  long double _Fract *x84;  /* { dg-error "" "long double _Fract" } */
+                     ^
+
+"Test_name.c", line 39: error: expected a ";"
+  long signed _Fract *x87;
+                     ^
+
+"Test_name.c", line 40: error: expected a ";"
+  long unsigned _Fract *x90;
+                       ^
+
+"Test_name.c", line 41: error: expected a ";"
+  double long _Fract *x93;  /* { dg-error "" "double long _Fract" } */
+                     ^
+
+"Test_name.c", line 42: error: expected a ";"
+  signed char _Fract *x96;   /* { dg-error "" "signed char _Fract" } */
+                     ^
+
+"Test_name.c", line 43: error: expected a ";"
+  signed short _Fract *x99;
+                      ^
+
+"Test_name.c", line 44: error: expected a ";"
+  signed int _Fract *x102;  /* { dg-error "" "signed int _Fract" } */
+                    ^
+
+"Test_name.c", line 45: error: expected a ";"
+  signed long _Fract *x105;
+                     ^
+
+"Test_name.c", line 46: error: expected a ";"
+  unsigned char _Fract *x108; /* { dg-error "" "unsigned char _Fract" } */
+                       ^
+
+"Test_name.c", line 47: error: expected a ";"
+  unsigned short _Fract *x111;
+                        ^
+
+"Test_name.c", line 48: error: expected a ";"
+  unsigned int _Fract *x114; /* { dg-error "" "unsigned int _Fract" } */
+                      ^
+
+"Test_name.c", line 49: error: expected a ";"
+  unsigned long _Fract *x117;
+                       ^
+
+"Test_name.c", line 50: error: expected a ";"
+  short int signed _Fract *x120; /* { dg-error "" "short int signed _Fract" } */
+                          ^
+
+"Test_name.c", line 51: error: expected a ";"
+  short int unsigned _Fract *x123; /* { dg-error "" "short int unsigned _Fract" } */
+                            ^
+
+"Test_name.c", line 52: error: expected a ";"
+  short signed int _Fract *x126; /* { dg-error "" "short signed int _Fract" } */
+                          ^
+
+"Test_name.c", line 53: error: expected a ";"
+  short unsigned int _Fract *x129; /* { dg-error "" "short unsigned int _Fract" } */
+                            ^
+
+"Test_name.c", line 54: error: expected a ";"
+  int short signed _Fract *x132; /* { dg-error "" "int short signed _Fract" } */
+                          ^
+
+"Test_name.c", line 55: error: expected a ";"
+  int short unsigned _Fract *x135; /* { dg-error "" "int short unsigned _Fract" } */
+                            ^
+
+"Test_name.c", line 56: error: expected a ";"
+  int long long _Fract *x138; /* { dg-error "" "int long long _Fract" } */
+                       ^
+
+"Test_name.c", line 57: error: expected a ";"
+  int long signed _Fract *x141; /* { dg-error "" "int long signed _Fract" } */
+                         ^
+
+"Test_name.c", line 58: error: expected a ";"
+  int long unsigned _Fract *x144; /* { dg-error "" "int long unsigned _Fract" } */
+                           ^
+
+"Test_name.c", line 59: error: expected a ";"
+  int signed short _Fract *x147; /* { dg-error "" "int signed short _Fract" } */
+                          ^
+
+"Test_name.c", line 60: error: expected a ";"
+  int signed long _Fract *x150; /* { dg-error "" "int signed long _Fract" } */
+                         ^
+
+"Test_name.c", line 61: error: expected a ";"
+  int unsigned short _Fract *x153; /* { dg-error "" "int unsigned short _Fract" } */
+                            ^
+
+"Test_name.c", line 62: error: expected a ";"
+  int unsigned long _Fract *x156; /* { dg-error "" "int unsigned long _Fract" } */
+                           ^
+
+"Test_name.c", line 63: error: expected a ";"
+  long int long _Fract *x159; /* { dg-error "" "long int long _Fract" } */
+                       ^
+
+"Test_name.c", line 64: error: expected a ";"
+  long int signed _Fract *x162; /* { dg-error "" "long int signed _Fract" } */
+                         ^
+
+"Test_name.c", line 65: error: expected a ";"
+  long int unsigned _Fract *x165; /* { dg-error "" "long int unsigned _Fract" } */
+                           ^
+
+"Test_name.c", line 66: error: expected a ";"
+  long long int _Fract *x168; /* { dg-error "" "long long int _Fract" } */
+                       ^
+
+"Test_name.c", line 67: error: expected a ";"
+  long long signed _Fract *x171;
+                          ^
+
+"Test_name.c", line 68: error: expected a ";"
+  long long unsigned _Fract *x175;
+                            ^
+
+"Test_name.c", line 69: error: expected a ";"
+  long signed int _Fract *x178; /* { dg-error "" "long signed int _Fract" } */
+                         ^
+
+"Test_name.c", line 70: error: expected a ";"
+  long unsigned int _Fract *x181; /* { dg-error "" "long unsigned int _Fract" } */
+                           ^
+
+"Test_name.c", line 71: error: expected a ";"
+  long unsigned long _Fract *x184;
+                            ^
+
+"Test_name.c", line 72: error: expected a ";"
+  signed short int _Fract *x187; /* { dg-error "" "signed short int _Fract" } */
+                          ^
+
+"Test_name.c", line 73: error: expected a ";"
+  signed int short _Fract *x190; /* { dg-error "" "signed int short _Fract" } */
+                          ^
+
+"Test_name.c", line 74: error: expected a ";"
+  signed int long _Fract *x192; /* { dg-error "" "signed int long _Fract" } */
+                         ^
+
+"Test_name.c", line 75: error: expected a ";"
+  signed long int _Fract *x195; /* { dg-error "" "signed long int _Fract" } */
+                         ^
+
+"Test_name.c", line 76: error: expected a ";"
+  signed long long _Fract *x198;
+                          ^
+
+"Test_name.c", line 77: error: expected a ";"
+  unsigned short int _Fract *x201; /* { dg-error "" "unsigned short int _Fract" } */
+                            ^
+
+"Test_name.c", line 78: error: expected a ";"
+  unsigned int short _Fract *x204; /* { dg-error "" "unsigned int short _Fract" } */
+                            ^
+
+"Test_name.c", line 79: error: expected a ";"
+  unsigned int long _Fract *x207; /* { dg-error "" "unsigned int long _Fract" } */
+                           ^
+
+"Test_name.c", line 80: error: expected a ";"
+  unsigned long int _Fract *x210; /* { dg-error "" "unsigned long int _Fract" } */
+                           ^
+
+"Test_name.c", line 81: error: expected a ";"
+  unsigned long long _Fract *x213;
+                            ^
+
+"Test_name.c", line 82: error: expected a ";"
+  int long long signed _Fract *x216; /* { dg-error "" "int long long signed _Fract" } */
+                              ^
+
+"Test_name.c", line 83: error: expected a ";"
+  int long long unsigned _Fract *x219; /* { dg-error "" "int long long unsigned _Fract" } */
+                                ^
+
+"Test_name.c", line 84: error: expected a ";"
+  int long signed long _Fract *x222; /* { dg-error "" "int long signed long _Fract" } */
+                              ^
+
+"Test_name.c", line 85: error: expected a ";"
+  int long unsigned long _Fract *x226; /* { dg-error "" "int long unsigned long _Fract" } */
+                                ^
+
+"Test_name.c", line 86: error: expected a ";"
+  int signed long long _Fract *x229; /* { dg-error "" "int signed long long _Fract" } */
+                              ^
+
+"Test_name.c", line 87: error: expected a ";"
+  int unsigned long long _Fract *x232; /* { dg-error "" "int unsigned long long _Fract" } */
+                                ^
+
+"Test_name.c", line 88: error: expected a ";"
+  long int long signed _Fract *x235; /* { dg-error "" "long int long signed _Fract" } */
+                              ^
+
+"Test_name.c", line 89: error: expected a ";"
+  long int long unsigned _Fract *x238; /* { dg-error "" "long int long unsigned _Fract" } */
+                                ^
+
+"Test_name.c", line 90: error: expected a ";"
+  long int signed long _Fract *x241; /* { dg-error "" "long int signed long _Fract" } */
+                              ^
+
+"Test_name.c", line 91: error: expected a ";"
+  long int unsigned long _Fract *x244; /* { dg-error "" "long int unsigned long _Fract" } */
+                                ^
+
+"Test_name.c", line 92: error: expected a ";"
+  long long int signed _Fract *x247; /* { dg-error "" "long long int signed _Fract" } */
+                              ^
+
+"Test_name.c", line 93: error: expected a ";"
+  long long int unsigned _Fract *x250; /* { dg-error "" "long long int unsigned _Fract" } */
+                                ^
+
+"Test_name.c", line 94: error: expected a ";"
+  long long signed int _Fract *x253; /* { dg-error "" "long long signed int _Fract" } */
+                              ^
+
+"Test_name.c", line 95: error: expected a ";"
+  long long unsigned int _Fract *x256; /* { dg-error "" "long long unsigned int _Fract" } */
+                                ^
+
+"Test_name.c", line 96: error: expected a ";"
+  long signed int long _Fract *x259; /* { dg-error "" "long signed int long _Fract" } */
+                              ^
+
+"Test_name.c", line 97: error: expected a ";"
+  long signed long int _Fract *x262; /* { dg-error "" "long signed long int _Fract" } */
+                              ^
+
+"Test_name.c", line 98: error: expected a ";"
+  long unsigned int long _Fract *x265; /* { dg-error "" "long unsigned int long _Fract" } */
+                                ^
+
+"Test_name.c", line 99: error: expected a ";"
+  long unsigned long int _Fract *x268; /* { dg-error "" "long unsigned long int _Fract" } */
+                                ^
+
+"Test_name.c", line 100: error: expected a ";"
+  signed long long int _Fract *x271; /* { dg-error "" "signed long long int _Fract" } */
+                              ^
+
+"Test_name.c", line 101: error: expected a ";"
+  unsigned int long long _Fract *x274; /* { dg-error "" "unsigned int long long _Fract" } */
+                                ^
+
+"Test_name.c", line 102: error: expected a ";"
+  unsigned long int long _Fract *x277; /* { dg-error "" "unsigned long int long _Fract" } */
+                                ^
+
+"Test_name.c", line 103: error: expected a ";"
+  unsigned long long int _Fract *x280; /* { dg-error "" "unsigned long long int _Fract" } */
+                                ^
+
+"Test_name.c", line 104: error: variable "_Fract" is not a type name
+  _Complex _Fract *x283; /* { dg-error "" "_Complex _Fract" } */
+           ^
+
+"Test_name.c", line 104: error: _Complex can only be used with floating-point types
+  _Complex _Fract *x283; /* { dg-error "" "_Complex _Fract" } */
+  ^
+
+"Test_name.c", line 105: warning: this declaration has no storage class or type specifier
+  _Fract _Complex *x286; /* { dg-error "" "_Fract _Complex" } */
+  ^
+
+"Test_name.c", line 105: error: expected a ";"
+  _Fract _Complex *x286; /* { dg-error "" "_Fract _Complex" } */
+         ^
+
+"Test_name.c", line 106: error: expected a ";"
+  unsigned _Fract *x289;
+                  ^
+
+"Test_name.c", line 107: error: expected a ";"
+  signed _Fract *x292;
+                ^
+
+"Test_name.c", line 109: error: incomplete type "void" is not allowed
+  void _Accum *k0;  /* { dg-error "" "void _Accum" } */
+       ^
+
+"Test_name.c", line 109: error: expected a ";"
+  void _Accum *k0;  /* { dg-error "" "void _Accum" } */
+              ^
+
+"Test_name.c", line 110: error: expected a ";"
+  char _Accum *k3;  /* { dg-error "" "char _Accum" } */
+              ^
+
+"Test_name.c", line 111: error: expected a ";"
+  short _Accum *k6;
+               ^
+
+"Test_name.c", line 112: error: expected a ";"
+  int _Accum *k9;   /* { dg-error "" "int _Accum" } */
+             ^
+
+"Test_name.c", line 113: error: expected a ";"
+  long _Accum *k12;
+              ^
+
+"Test_name.c", line 114: error: expected a ";"
+  float _Accum *k15;   /* { dg-error "" "float _Accum" } */
+               ^
+
+"Test_name.c", line 115: error: expected a ";"
+  double _Accum *k18;   /* { dg-error "" "double _Accum" } */
+                ^
+
+"Test_name.c", line 116: error: expected a ";"
+  signed _Accum *k21;
+                ^
+
+"Test_name.c", line 117: error: expected a ";"
+  _Bool _Accum *k24;   /* { dg-error "" "_Bool _Accum" } */
+               ^
+
+"Test_name.c", line 118: error: expected a ";"
+  int _Accum *k27;    /* { dg-error "" "int _Accum" } */
+             ^
+
+"Test_name.c", line 119: error: expected a ";"
+  type _Accum *k30;   /* { dg-error "" "type _Accum" } */
+              ^
+
+"Test_name.c", line 120: error: expected a ";"
+  char signed _Accum *k33;  /* { dg-error "" "char signed _Accum" } */
+                     ^
+
+"Test_name.c", line 121: error: expected a ";"
+  char unsigned _Accum *k36; /* { dg-error "" "char unsigned _Accum" } */
+                       ^
+
+"Test_name.c", line 122: error: expected a ";"
+  short _Accum *k39;
+               ^
+
+"Test_name.c", line 123: error: expected a ";"
+  short signed _Accum *k42;
+                      ^
+
+"Test_name.c", line 124: error: expected a ";"
+  short unsigned _Accum *k45;
+                        ^
+
+"Test_name.c", line 125: warning: this declaration has no storage class or type specifier
+  _Accum short*k48;
+  ^
+
+"Test_name.c", line 125: error: expected a ";"
+  _Accum short*k48;
+         ^
+
+"Test_name.c", line 126: warning: this declaration has no storage class or type specifier
+  _Accum short signed*k51;
+  ^
+
+"Test_name.c", line 126: error: expected a ";"
+  _Accum short signed*k51;
+         ^
+
+"Test_name.c", line 127: warning: this declaration has no storage class or type specifier
+  _Accum short unsigned*k54;
+  ^
+
+"Test_name.c", line 127: error: expected a ";"
+  _Accum short unsigned*k54;
+         ^
+
+"Test_name.c", line 128: warning: this declaration has no storage class or type specifier
+  _Accum long*k57;
+  ^
+
+"Test_name.c", line 128: error: expected a ";"
+  _Accum long*k57;
+         ^
+
+"Test_name.c", line 129: warning: this declaration has no storage class or type specifier
+  _Accum long signed*k60;
+  ^
+
+"Test_name.c", line 129: error: expected a ";"
+  _Accum long signed*k60;
+         ^
+
+"Test_name.c", line 130: warning: this declaration has no storage class or type specifier
+  _Accum long unsigned*k63;
+  ^
+
+"Test_name.c", line 130: error: expected a ";"
+  _Accum long unsigned*k63;
+         ^
+
+"Test_name.c", line 131: warning: this declaration has no storage class or type specifier
+  _Accum signed long*k66;
+  ^
+
+"Test_name.c", line 131: error: expected a ";"
+  _Accum signed long*k66;
+         ^
+
+"Test_name.c", line 132: warning: this declaration has no storage class or type specifier
+  _Accum signed short*k69;
+  ^
+
+"Test_name.c", line 132: error: expected a ";"
+  _Accum signed short*k69;
+         ^
+
+"Test_name.c", line 133: error: expected a ";"
+  int signed _Accum *k72;  /* { dg-error "" "int signed _Accum" } */
+                    ^
+
+"Test_name.c", line 134: error: expected a ";"
+  int unsigned _Accum *k75;  /* { dg-error "" "int unsigned _Accum" } */
+                      ^
+
+"Test_name.c", line 135: error: expected a ";"
+  long int _Accum *k78;  /* { dg-error "" "long int _Accum" } */
+                  ^
+
+"Test_name.c", line 136: error: expected a ";"
+  long long _Accum *k81;
+                   ^
+
+"Test_name.c", line 137: error: expected a ";"
+  long double _Accum *k84;  /* { dg-error "" "long double _Accum" } */
+                     ^
+
+"Test_name.c", line 138: error: expected a ";"
+  long signed _Accum *k87;
+                     ^
+
+"Test_name.c", line 139: error: expected a ";"
+  long unsigned _Accum *k90;
+                       ^
+
+"Test_name.c", line 140: error: expected a ";"
+  double long _Accum *k93;  /* { dg-error "" "double long _Accum" } */
+                     ^
+
+"Test_name.c", line 141: error: expected a ";"
+  signed char _Accum *k96;   /* { dg-error "" "signed char _Accum" } */
+                     ^
+
+"Test_name.c", line 142: error: expected a ";"
+  signed short _Accum *k99;
+                      ^
+
+"Test_name.c", line 143: error: expected a ";"
+  signed int _Accum *k102;  /* { dg-error "" "signed int _Accum" } */
+                    ^
+
+"Test_name.c", line 144: error: expected a ";"
+  signed long _Accum *k105;
+                     ^
+
+"Test_name.c", line 145: error: expected a ";"
+  unsigned char _Accum *k108; /* { dg-error "" "unsigned char _Accum" } */
+                       ^
+
+"Test_name.c", line 146: error: expected a ";"
+  unsigned short _Accum *k111;
+                        ^
+
+"Test_name.c", line 147: error: expected a ";"
+  unsigned int _Accum *k114; /* { dg-error "" "unsigned int _Accum" } */
+                      ^
+
+"Test_name.c", line 148: error: expected a ";"
+  unsigned long _Accum *k117;
+                       ^
+
+"Test_name.c", line 149: error: expected a ";"
+  short int signed _Accum *k120; /* { dg-error "" "short int signed _Accum" } */
+                          ^
+
+"Test_name.c", line 150: error: expected a ";"
+  short int unsigned _Accum *k123; /* { dg-error "" "short int unsigned _Accum" } */
+                            ^
+
+"Test_name.c", line 151: error: expected a ";"
+  short signed int _Accum *k126; /* { dg-error "" "short signed int _Accum" } */
+                          ^
+
+"Test_name.c", line 152: error: expected a ";"
+  short unsigned int _Accum *k129; /* { dg-error "" "short unsigned int _Accum" } */
+                            ^
+
+"Test_name.c", line 153: error: expected a ";"
+  int short signed _Accum *k132; /* { dg-error "" "int short signed _Accum" } */
+                          ^
+
+"Test_name.c", line 154: error: expected a ";"
+  int short unsigned _Accum *k135; /* { dg-error "" "int short unsigned _Accum" } */
+                            ^
+
+"Test_name.c", line 155: error: expected a ";"
+  int long long _Accum *k138; /* { dg-error "" "int long long _Accum" } */
+                       ^
+
+"Test_name.c", line 156: error: expected a ";"
+  int long signed _Accum *k141; /* { dg-error "" "int long signed _Accum" } */
+                         ^
+
+"Test_name.c", line 157: error: expected a ";"
+  int long unsigned _Accum *k144; /* { dg-error "" "int long unsigned _Accum" } */
+                           ^
+
+"Test_name.c", line 158: error: expected a ";"
+  int signed short _Accum *k147; /* { dg-error "" "int signed short _Accum" } */
+                          ^
+
+"Test_name.c", line 159: error: expected a ";"
+  int signed long _Accum *k150; /* { dg-error "" "int signed long _Accum" } */
+                         ^
+
+"Test_name.c", line 160: error: expected a ";"
+  int unsigned short _Accum *k153; /* { dg-error "" "int unsigned short _Accum" } */
+                            ^
+
+"Test_name.c", line 161: error: expected a ";"
+  int unsigned long _Accum *k156; /* { dg-error "" "int unsigned long _Accum" } */
+                           ^
+
+"Test_name.c", line 162: error: expected a ";"
+  long int long _Accum *k159; /* { dg-error "" "long int long _Accum" } */
+                       ^
+
+"Test_name.c", line 163: error: expected a ";"
+  long int signed _Accum *k162; /* { dg-error "" "long int signed _Accum" } */
+                         ^
+
+"Test_name.c", line 164: error: expected a ";"
+  long int unsigned _Accum *k165; /* { dg-error "" "long int unsigned _Accum" } */
+                           ^
+
+"Test_name.c", line 165: error: expected a ";"
+  long long int _Accum *k168; /* { dg-error "" "long long int _Accum" } */
+                       ^
+
+"Test_name.c", line 166: error: expected a ";"
+  long long signed _Accum *k171;
+                          ^
+
+"Test_name.c", line 167: error: expected a ";"
+  long long unsigned _Accum *k175;
+                            ^
+
+"Test_name.c", line 168: error: expected a ";"
+  long signed int _Accum *k178; /* { dg-error "" "long signed int _Accum" } */
+                         ^
+
+"Test_name.c", line 169: error: expected a ";"
+  long unsigned int _Accum *k181; /* { dg-error "" "long unsigned int _Accum" } */
+                           ^
+
+"Test_name.c", line 170: error: expected a ";"
+  long unsigned long _Accum *k184;
+                            ^
+
+"Test_name.c", line 171: error: expected a ";"
+  signed short int _Accum *k187; /* { dg-error "" "signed short int _Accum" } */
+                          ^
+
+"Test_name.c", line 172: error: expected a ";"
+  signed int short _Accum *k190; /* { dg-error "" "signed int short _Accum" } */
+                          ^
+
+"Test_name.c", line 173: error: expected a ";"
+  signed int long _Accum *k192; /* { dg-error "" "signed int long _Accum" } */
+                         ^
+
+"Test_name.c", line 174: error: expected a ";"
+  signed long int _Accum *k195; /* { dg-error "" "signed long int _Accum" } */
+                         ^
+
+"Test_name.c", line 175: error: expected a ";"
+  signed long long _Accum *k198;
+                          ^
+
+"Test_name.c", line 176: error: expected a ";"
+  unsigned short int _Accum *k201; /* { dg-error "" "unsigned short int _Accum" } */
+                            ^
+
+"Test_name.c", line 177: error: expected a ";"
+  unsigned int short _Accum *k204; /* { dg-error "" "unsigned int short _Accum" } */
+                            ^
+
+"Test_name.c", line 178: error: expected a ";"
+  unsigned int long _Accum *k207; /* { dg-error "" "unsigned int long _Accum" } */
+                           ^
+
+"Test_name.c", line 179: error: expected a ";"
+  unsigned long int _Accum *k210; /* { dg-error "" "unsigned long int _Accum" } */
+                           ^
+
+"Test_name.c", line 180: error: expected a ";"
+  unsigned long long _Accum *k213;
+                            ^
+
+"Test_name.c", line 181: error: expected a ";"
+  int long long signed _Accum *k216; /* { dg-error "" "int long long signed _Accum" } */
+                              ^
+
+"Test_name.c", line 182: error: expected a ";"
+  int long long unsigned _Accum *k219; /* { dg-error "" "int long long unsigned _Accum" } */
+                                ^
+
+"Test_name.c", line 183: error: expected a ";"
+  int long signed long _Accum *k222; /* { dg-error "" "int long signed long _Accum" } */
+                              ^
+
+"Test_name.c", line 184: error: expected a ";"
+  int long unsigned long _Accum *k226; /* { dg-error "" "int long unsigned long _Accum" } */
+                                ^
+
+"Test_name.c", line 185: error: expected a ";"
+  int signed long long _Accum *k229; /* { dg-error "" "int signed long long _Accum" } */
+                              ^
+
+"Test_name.c", line 186: error: expected a ";"
+  int unsigned long long _Accum *k232; /* { dg-error "" "int unsigned long long _Accum" } */
+                                ^
+
+"Test_name.c", line 187: error: expected a ";"
+  long int long signed _Accum *k235; /* { dg-error "" "long int long signed _Accum" } */
+                              ^
+
+"Test_name.c", line 188: error: expected a ";"
+  long int long unsigned _Accum *k238; /* { dg-error "" "long int long unsigned _Accum" } */
+                                ^
+
+"Test_name.c", line 189: error: expected a ";"
+  long int signed long _Accum *k241; /* { dg-error "" "long int signed long _Accum" } */
+                              ^
+
+"Test_name.c", line 190: error: expected a ";"
+  long int unsigned long _Accum *k244; /* { dg-error "" "long int unsigned long _Accum" } */
+                                ^
+
+"Test_name.c", line 191: error: expected a ";"
+  long long int signed _Accum *k247; /* { dg-error "" "long long int signed _Accum" } */
+                              ^
+
+"Test_name.c", line 192: error: expected a ";"
+  long long int unsigned _Accum *k250; /* { dg-error "" "long long int unsigned _Accum" } */
+                                ^
+
+"Test_name.c", line 193: error: expected a ";"
+  long long signed int _Accum *k253; /* { dg-error "" "long long signed int _Accum" } */
+                              ^
+
+"Test_name.c", line 194: error: expected a ";"
+  long long unsigned int _Accum *k256; /* { dg-error "" "long long unsigned int _Accum" } */
+                                ^
+
+"Test_name.c", line 195: error: expected a ";"
+  long signed int long _Accum *k259; /* { dg-error "" "long signed int long _Accum" } */
+                              ^
+
+"Test_name.c", line 196: error: expected a ";"
+  long signed long int _Accum *k262; /* { dg-error "" "long signed long int _Accum" } */
+                              ^
+
+"Test_name.c", line 197: error: expected a ";"
+  long unsigned int long _Accum *k265; /* { dg-error "" "long unsigned int long _Accum" } */
+                                ^
+
+"Test_name.c", line 198: error: expected a ";"
+  long unsigned long int _Accum *k268; /* { dg-error "" "long unsigned long int _Accum" } */
+                                ^
+
+"Test_name.c", line 199: error: expected a ";"
+  signed long long int _Accum *k271; /* { dg-error "" "signed long long int _Accum" } */
+                              ^
+
+"Test_name.c", line 200: error: expected a ";"
+  unsigned int long long _Accum *k274; /* { dg-error "" "unsigned int long long _Accum" } */
+                                ^
+
+"Test_name.c", line 201: error: expected a ";"
+  unsigned long int long _Accum *k277; /* { dg-error "" "unsigned long int long _Accum" } */
+                                ^
+
+"Test_name.c", line 202: error: expected a ";"
+  unsigned long long int _Accum *k280; /* { dg-error "" "unsigned long long int _Accum" } */
+                                ^
+
+"Test_name.c", line 203: error: variable "_Accum" is not a type name
+  _Complex _Accum *k283; /* { dg-error "" "_Complex _Accum" } */
+           ^
+
+"Test_name.c", line 203: error: _Complex can only be used with floating-point types
+  _Complex _Accum *k283; /* { dg-error "" "_Complex _Accum" } */
+  ^
+
+"Test_name.c", line 204: warning: this declaration has no storage class or type specifier
+  _Accum _Complex *k286; /* { dg-error "" "_Accum _Complex" } */
+  ^
+
+"Test_name.c", line 204: error: expected a ";"
+  _Accum _Complex *k286; /* { dg-error "" "_Accum _Complex" } */
+         ^
+
+"Test_name.c", line 205: error: expected a ";"
+  unsigned _Accum *k289;
+                  ^
+
+"Test_name.c", line 206: error: expected a ";"
+  signed _Accum *k292;
+                ^
+
+Error limit reached.
+200 errors detected in the compilation of "Test_name.c".
+Compilation terminated.

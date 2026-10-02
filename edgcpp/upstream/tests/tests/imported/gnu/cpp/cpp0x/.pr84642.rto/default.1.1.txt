@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 5: error: this declaration has no storage class or type specifier
+  a(int(const &&__attribute__((b(auto;))))) // { dg-error "parameter declaration|with no type|before|expected constructor" }
+  ^
+
+"Test_name.c", line 5: error: expected an expression
+  a(int(const &&__attribute__((b(auto;))))) // { dg-error "parameter declaration|with no type|before|expected constructor" }
+        ^
+
+At end of source: error: expected a ";"
+
+3 errors detected in the compilation of "Test_name.c".

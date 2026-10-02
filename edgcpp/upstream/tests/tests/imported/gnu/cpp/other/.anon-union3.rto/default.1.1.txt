@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 7: error: invalid combination of type specifiers
+    auto union      // { dg-error "storage class" "" { target { ! c++11 } } }
+         ^
+
+"Test_name.c", line 11: error: invalid storage class for a class member
+    register union  // { dg-error "storage class" }
+    ^
+
+"Test_name.c", line 15: warning: declaration does not declare anything
+    static union    // { dg-error "storage class" }
+    ^
+
+"Test_name.c", line 19: error: invalid storage class for a class member
+    extern union    // { dg-error "storage class" }
+    ^
+
+"Test_name.c", line 23: error: storage class "mutable" is not allowed for anonymous unions
+    mutable union   // { dg-error "storage class" }
+    ^
+
+4 errors detected in the compilation of "Test_name.c".

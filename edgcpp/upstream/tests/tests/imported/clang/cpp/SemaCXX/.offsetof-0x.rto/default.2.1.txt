@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 16: warning: offsetof applied to a type other than a standard-layout class
+    int i = __builtin_offsetof(P, fieldThatPointsToANonPODType.m); // expected-warning{{'offsetof' on non-standard-layout type 'P'}}
+                               ^
+
+"Test_name.c", line 16: warning: variable "i" was declared but never referenced
+    int i = __builtin_offsetof(P, fieldThatPointsToANonPODType.m); // expected-warning{{'offsetof' on non-standard-layout type 'P'}}
+        ^
+

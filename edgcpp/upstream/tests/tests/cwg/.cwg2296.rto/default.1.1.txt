@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 -A --c++20 Test_name.c
+"Test_name.c", line 5: error: no instance of constructor "X::X" matches the argument list
+  void fun(U u = U());
+                 ^
+"Test_name.c", line 7: note: number of parameters of function "X::X(const X &) noexcept" does not match the call
+  struct X {
+         ^
+"Test_name.c", line 7: note: number of parameters of function "X::X(X &&) noexcept" does not match the call
+  struct X {
+         ^
+"Test_name.c", line 8: note: number of parameters of function "X::X(int)" does not match the call
+    X(int) {}
+    ^
+          detected during instantiation of "void fun(U) [with U=X]" at line 18
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 8: error: cast to type "int [2][N]" is not allowed
+    sizeof ((int [2][N])a); /* { dg-error "cast specifies array type" } */
+             ^
+
+1 error detected in the compilation of "Test_name.c".

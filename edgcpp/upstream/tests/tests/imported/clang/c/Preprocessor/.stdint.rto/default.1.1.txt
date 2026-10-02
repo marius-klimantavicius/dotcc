@@ -1,0 +1,20 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Preprocessor/stdint.c", line 1654: error: expected a type specifier
+  INT8_MAX_ (127)
+             ^
+
+"Preprocessor/stdint.c", line 1654: warning: explicit type is missing ("int" assumed)
+  INT8_MAX_ (127)
+  ^
+
+"Preprocessor/stdint.c", line 1654: warning: unnamed prototyped parameters not allowed when body is present
+  INT8_MAX_ (127)
+  ^
+
+"Preprocessor/stdint.c", line 1655: error: expected a "{"
+  INT8_MIN_ (-128)
+  ^
+
+At end of source: error: expected a "}"
+
+3 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,25 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp0x/auto2.C", line 38: warning: variable "p2" was set but never used
+    auto *p2 = &p;
+          ^
+
+"./cpp0x/auto2.C", line 42: warning: variable "fp" was set but never used
+    auto (*fp)() = f;
+           ^
+
+"./cpp0x/auto2.C", line 46: warning: variable "pm" was set but never used
+    auto A::* pm = &A::i;
+              ^
+
+"./cpp0x/auto2.C", line 50: warning: variable "pmf" was set but never used
+    auto (A::*pmf)() = &A::f;
+              ^
+
+"./cpp0x/auto2.C", line 72: warning: variable "j" was declared but never referenced
+    auto j = 42, k = 24;
+         ^
+
+"./cpp0x/auto2.C", line 72: warning: variable "k" was declared but never referenced
+    auto j = 42, k = 24;
+                 ^
+

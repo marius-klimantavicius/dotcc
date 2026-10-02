@@ -1,0 +1,9 @@
+cpfe -DTEST_NUMBER=1 --module_import_diagnostics -d-module_report --c++20 --modules Test_name.c
+module "shared_gen" ("coroutine.h"), line 3 (col. 13): error: class template "std::coroutine_handle" has already been defined (previous definition at line 2)
+
+"Test_name.c", line 7: error: identifier "handle_t" is undefined
+  handle_t x;
+  ^
+
+3 modules declarations processed (0 failed).
+2 errors detected in the compilation of "Test_name.c".

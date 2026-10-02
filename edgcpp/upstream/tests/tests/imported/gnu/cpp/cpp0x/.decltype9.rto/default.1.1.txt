@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: error: declaration is incompatible with "int A<<unnamed>>::i" (declared at line 7)
+  template<int N> int A<N>::i(decltype (A::i));	// { dg-error "no declaration" }
+                            ^
+
+1 error detected in the compilation of "Test_name.c".

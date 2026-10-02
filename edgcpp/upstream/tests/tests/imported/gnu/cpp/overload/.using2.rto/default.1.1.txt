@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 51: error: function "_exit(int) throw()" conflicts with using-declaration of function "std::_exit(int) throw()"
+    void _exit (int) throw (); // { dg-error "conflicts" "conflicts" }
+         ^
+
+"Test_name.c", line 55: error: function "C1() throw()" conflicts with using-declaration of function "std::C1() throw()"
+    void C1 (void) throw (); // { dg-error "conflicts" "conflicts" }
+         ^
+
+"Test_name.c", line 64: error: using-declaration of function "std::abort() throw()" conflicts with function "abort() throw()" (declared at line 50)
+  using std::abort; // { dg-error "conflicts" }
+             ^
+
+"Test_name.c", line 66: error: using-declaration of function "std::C2() throw()" conflicts with function "C2() throw()" (declared at line 59)
+  using std::C2; // { dg-error "conflicts" }
+             ^
+
+"Test_name.c", line 88: error: more than one instance of overloaded function "C3" matches the argument list:
+            function "std::C3() throw()" (declared at line 34)
+            function "other::C3() throw()" (declared at line 39)
+    C3 (); // { dg-error "ambiguous" }
+    ^
+"Test_name.c", line 71: note: number of parameters of function "C3(long) throw()" does not match the call
+    long C3 (long) throw ();
+         ^
+"Test_name.c", line 61: note: number of parameters of function "C3(int) throw()" does not match the call
+    int C3 (int) throw ();
+        ^
+
+5 errors detected in the compilation of "Test_name.c".

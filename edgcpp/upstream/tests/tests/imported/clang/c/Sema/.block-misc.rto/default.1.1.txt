@@ -1,0 +1,394 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 7: error: expected an identifier
+  int (^IFP) ();
+       ^
+
+"Test_name.c", line 8: error: expected an identifier
+  int (^II) (int);
+       ^
+
+"Test_name.c", line 10: error: expected an identifier
+    int (^PFR) (int) = 0; // OK
+         ^
+
+"Test_name.c", line 10: error: function "<error>" may not be initialized
+    int (^PFR) (int) = 0; // OK
+                     ^
+
+"Test_name.c", line 11: error: identifier "PFR" is undefined
+    PFR = II;             // OK
+    ^
+
+"Test_name.c", line 11: error: identifier "II" is undefined
+    PFR = II;             // OK
+          ^
+
+"Test_name.c", line 16: error: identifier "IFP" is undefined
+    if (PFR == IFP)       // OK
+               ^
+
+"Test_name.c", line 19: error: expected a ")"
+    if (PFR == (int (^) (int))IFP) // OK
+                     ^
+
+"Test_name.c", line 19: error: cast to type "int (int)" is not allowed
+    if (PFR == (int (^) (int))IFP) // OK
+                ^
+
+"Test_name.c", line 19: error: identifier "IFP" is undefined
+    if (PFR == (int (^) (int))IFP) // OK
+                              ^
+
+"Test_name.c", line 31: error: identifier "IFP" is undefined
+    return PFR != IFP;    // OK
+                  ^
+
+"Test_name.c", line 34: error: expected a ")"
+  int test2(double (^S)()) {
+                    ^
+
+"Test_name.c", line 34: warning: unnamed prototyped parameters not allowed when body is present
+  int test2(double (^S)()) {
+      ^
+
+"Test_name.c", line 35: error: expected an identifier
+    double (^I)(int)  = (void*) S;
+            ^
+
+"Test_name.c", line 35: error: function "<error>" may not be initialized
+    double (^I)(int)  = (void*) S;
+                      ^
+
+"Test_name.c", line 35: error: identifier "S" is undefined
+    double (^I)(int)  = (void*) S;
+                                ^
+
+"Test_name.c", line 36: error: identifier "I" is undefined
+    (void*)I = (void *)S; // expected-error {{assignment to cast is illegal, lvalue casts are not supported}}
+           ^
+
+"Test_name.c", line 47: error: expected an identifier
+  int^ x; // expected-error {{block pointer to non-function type is invalid}}
+     ^
+
+"Test_name.c", line 48: error: expected an identifier
+  int^^ x1; // expected-error {{block pointer to non-function type is invalid}} expected-error {{block pointer to non-function type is invalid}}
+     ^
+
+"Test_name.c", line 51: error: expected an identifier
+    char *^ y; // expected-error {{block pointer to non-function type is invalid}}
+          ^
+
+"Test_name.c", line 59: error: expected an expression
+    ^{
+    ^
+
+"Test_name.c", line 65: warning: parsing restarts here after previous syntax error
+    }();
+       ^
+
+"Test_name.c", line 73: error: expected an expression
+    bar(^{ test5g = 1; });
+        ^
+
+"Test_name.c", line 77: error: expected an expression
+    return ^{
+           ^
+
+"Test_name.c", line 82: error: expected an identifier
+  void (^test7a)();
+        ^
+
+"Test_name.c", line 83: error: expected a ")"
+  int test7(void (^p)()) {
+                  ^
+
+"Test_name.c", line 83: warning: unnamed prototyped parameters not allowed when body is present
+  int test7(void (^p)()) {
+      ^
+
+"Test_name.c", line 84: error: identifier "test7a" is undefined
+    return test7a == p;
+           ^
+
+"Test_name.c", line 84: error: identifier "p" is undefined
+    return test7a == p;
+                     ^
+
+"Test_name.c", line 90: error: expected an expression
+    ^{ goto somelabel; }();   // expected-error {{use of undeclared label 'somelabel'}}
+    ^
+
+"Test_name.c", line 89: warning: label "somelabel" was declared but never referenced
+  somelabel:
+  ^
+
+"Test_name.c", line 95: warning: statement is unreachable
+    ^{ somelabel: ; }();
+    ^
+
+"Test_name.c", line 95: error: expected an expression
+    ^{ somelabel: ; }();
+    ^
+
+"Test_name.c", line 94: error: label "somelabel" was referenced but not defined
+    goto somelabel;       // expected-error {{use of undeclared label 'somelabel'}}
+         ^
+
+"Test_name.c", line 101: error: expected an expression
+    ^{ case 42: ; }();     // expected-error {{'case' statement not in switch statement}}
+    ^
+
+"Test_name.c", line 108: error: expected an expression
+      ^{ break; }();     // expected-error {{'break' statement not in loop or switch statement}}
+      ^
+
+"Test_name.c", line 112: error: expected an expression
+      ^{ break; }();     // expected-error {{'break' statement not in loop or switch statement}}
+      ^
+
+"Test_name.c", line 115: error: expected an identifier
+  void (^test12f)(void);
+        ^
+
+"Test_name.c", line 117: error: identifier "test12f" is undefined
+    test12f = ^test12f;  // expected-error {{type name requires a specifier or qualifier}} expected-error {{expected expression}}
+    ^
+
+"Test_name.c", line 117: error: expected an expression
+    test12f = ^test12f;  // expected-error {{type name requires a specifier or qualifier}} expected-error {{expected expression}}
+              ^
+
+"Test_name.c", line 120: error: expected an expression
+  void *test13 = ^{
+                 ^
+
+"Test_name.c", line 126: warning: parsing restarts here after previous syntax error
+  };
+   ^
+
+"Test_name.c", line 130: error: expected an expression
+    static void *P = ^{  // expected-error {{initializer element is not a compile-time constant}}
+                     ^
+
+"Test_name.c", line 136: warning: parsing restarts here after previous syntax error
+    };
+     ^
+
+"Test_name.c", line 129: warning: variable "X" was declared but never referenced
+    int X = 32;
+        ^
+
+"Test_name.c", line 130: warning: variable "P" was declared but never referenced
+    static void *P = ^{  // expected-error {{initializer element is not a compile-time constant}}
+                 ^
+
+"Test_name.c", line 141: error: expected a ")"
+  void foo(long (^comp)()) { // expected-note{{passing argument to parameter 'comp' here}}
+                 ^
+
+"Test_name.c", line 141: warning: unnamed prototyped parameters not allowed when body is present
+  void foo(long (^comp)()) { // expected-note{{passing argument to parameter 'comp' here}}
+       ^
+
+"Test_name.c", line 144: error: expected an identifier
+  void (^test15f)(void);
+        ^
+
+"Test_name.c", line 146: error: expected an expression
+    foo(^{ return LESS; }); // expected-error {{incompatible block pointer types passing 'int (^)(void)' to parameter of type 'long (^)()'}}
+        ^
+
+"Test_name.c", line 149: warning: this declaration has no storage class or type specifier
+  __block int test16i;  // expected-error {{__block attribute not allowed, only allowed on local variables}}
+  ^
+
+"Test_name.c", line 149: error: expected a ";"
+  __block int test16i;  // expected-error {{__block attribute not allowed, only allowed on local variables}}
+          ^
+
+"Test_name.c", line 151: error: variable "__block" is not a type name
+  void test16(__block int i) { // expected-error {{__block attribute not allowed, only allowed on local variables}}
+              ^
+
+"Test_name.c", line 151: error: invalid combination of type specifiers
+  void test16(__block int i) { // expected-error {{__block attribute not allowed, only allowed on local variables}}
+                      ^
+
+"Test_name.c", line 153: warning: explicit type is missing ("int" assumed)
+    extern __block double extern_var; // expected-error {{__block attribute not allowed, only allowed on local variables}}
+           ^
+
+"Test_name.c", line 153: error: expected a ";"
+    extern __block double extern_var; // expected-error {{__block attribute not allowed, only allowed on local variables}}
+                   ^
+
+"Test_name.c", line 154: warning: explicit type is missing ("int" assumed)
+    static __block char * pch; // expected-error {{__block attribute not allowed, only allowed on local variables}}
+           ^
+
+"Test_name.c", line 154: error: "__block" has already been declared in the current scope
+    static __block char * pch; // expected-error {{__block attribute not allowed, only allowed on local variables}}
+           ^
+
+"Test_name.c", line 154: error: expected a ";"
+    static __block char * pch; // expected-error {{__block attribute not allowed, only allowed on local variables}}
+                   ^
+
+"Test_name.c", line 155: warning: expression has no effect
+    __block int a[size]; // expected-error {{__block attribute not allowed on declaration with a variably modified type}}
+    ^
+
+"Test_name.c", line 155: error: expected a ";"
+    __block int a[size]; // expected-error {{__block attribute not allowed on declaration with a variably modified type}}
+            ^
+
+"Test_name.c", line 156: warning: expression has no effect
+    __block int (*ap)[size]; // expected-error {{__block attribute not allowed on declaration with a variably modified type}}
+    ^
+
+"Test_name.c", line 156: error: expected a ";"
+    __block int (*ap)[size]; // expected-error {{__block attribute not allowed on declaration with a variably modified type}}
+            ^
+
+"Test_name.c", line 152: warning: variable "size" was declared but never referenced
+    int size = 5;
+        ^
+
+"Test_name.c", line 162: error: expected an identifier
+    void (^bp)(int);
+          ^
+
+"Test_name.c", line 164: error: expected an identifier
+    void (^bp1)();
+          ^
+
+"Test_name.c", line 165: error: identifier "bp" is undefined
+    void *vp = bp;
+               ^
+
+"Test_name.c", line 169: error: identifier "bp1" is undefined
+    f(1 ? bp : bp1);
+               ^
+
+"Test_name.c", line 170: warning: variable "rp" is used before its value is set
+    (void)(bp > rp); // expected-error {{invalid operands}}
+                ^
+
+"Test_name.c", line 186: error: expected an identifier
+    void (^const  blockA)(void) = ^{ };  // expected-note {{variable 'blockA' declared const here}}
+          ^
+
+"Test_name.c", line 186: error: function "<error>" may not be initialized
+    void (^const  blockA)(void) = ^{ };  // expected-note {{variable 'blockA' declared const here}}
+                                ^
+
+"Test_name.c", line 186: error: expected an expression
+    void (^const  blockA)(void) = ^{ };  // expected-note {{variable 'blockA' declared const here}}
+                                  ^
+
+"Test_name.c", line 187: error: identifier "blockA" is undefined
+    blockA = ^{ }; // expected-error {{cannot assign to variable 'blockA' with const-qualified type 'void (^const)(void)}}
+    ^
+
+"Test_name.c", line 187: error: expected an expression
+    blockA = ^{ }; // expected-error {{cannot assign to variable 'blockA' with const-qualified type 'void (^const)(void)}}
+             ^
+
+"Test_name.c", line 193: warning: statement is unreachable
+    __block int x; // expected-note {{jump bypasses setup of __block variable}}
+    ^
+
+"Test_name.c", line 193: warning: expression has no effect
+    __block int x; // expected-note {{jump bypasses setup of __block variable}}
+    ^
+
+"Test_name.c", line 193: error: expected a ";"
+    __block int x; // expected-note {{jump bypasses setup of __block variable}}
+            ^
+
+"Test_name.c", line 195: error: identifier "x" is undefined
+    x = 0;
+    ^
+
+"Test_name.c", line 196: error: expected an expression
+    ^(){ ++x; }();
+    ^
+
+"Test_name.c", line 205: error: expected an expression
+    ^{
+    ^
+
+"Test_name.c", line 208: warning: parsing restarts here after previous syntax error
+    }();
+       ^
+
+"Test_name.c", line 202: warning: variable "vla" was set but never used
+    int vla[n]; // expected-note {{declared here}}
+        ^
+
+"Test_name.c", line 203: warning: variable "vm" was declared but never referenced
+    int (*vm)[n] = 0; // expected-note {{declared here}}
+          ^
+
+"Test_name.c", line 213: warning: expression has no effect
+    __block int b[10]; // expected-note {{declared here}}
+    ^
+
+"Test_name.c", line 213: error: expected a ";"
+    __block int b[10]; // expected-note {{declared here}}
+            ^
+
+"Test_name.c", line 215: error: expected an expression
+    ^{
+    ^
+
+"Test_name.c", line 218: warning: parsing restarts here after previous syntax error
+    }();
+       ^
+
+"Test_name.c", line 212: warning: variable "a" was set but never used
+    int a[7]; // expected-note {{declared here}}
+        ^
+
+"Test_name.c", line 221: error: expected an identifier
+  const char * (^func)(void) = ^{ return __func__; };
+                ^
+
+"Test_name.c", line 221: error: function "<error>" may not be initialized
+  const char * (^func)(void) = ^{ return __func__; };
+                             ^
+
+"Test_name.c", line 221: error: expected an expression
+  const char * (^func)(void) = ^{ return __func__; };
+                               ^
+
+"Test_name.c", line 222: error: expected an identifier
+  const char * (^function)(void) = ^{ return __FUNCTION__; };
+                ^
+
+"Test_name.c", line 222: error: function "<error>" may not be initialized
+  const char * (^function)(void) = ^{ return __FUNCTION__; };
+                                 ^
+
+"Test_name.c", line 222: error: expected an expression
+  const char * (^function)(void) = ^{ return __FUNCTION__; };
+                                   ^
+
+"Test_name.c", line 223: error: expected an identifier
+  const char * (^pretty)(void) = ^{ return __PRETTY_FUNCTION__; };
+                ^
+
+"Test_name.c", line 223: error: function "<error>" may not be initialized
+  const char * (^pretty)(void) = ^{ return __PRETTY_FUNCTION__; };
+                               ^
+
+"Test_name.c", line 223: error: expected an expression
+  const char * (^pretty)(void) = ^{ return __PRETTY_FUNCTION__; };
+                                 ^
+
+"Test_name.c", line 71: warning: variable "test5g" was declared but never referenced
+  static int test5g;
+             ^
+
+72 errors detected in the compilation of "Test_name.c".

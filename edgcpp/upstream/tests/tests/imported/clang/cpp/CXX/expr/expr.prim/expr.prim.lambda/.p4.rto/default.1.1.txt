@@ -1,0 +1,40 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 23: error: a brace-enclosed list does not provide a return type for this lambda
+      case 2: return { 1, 2.0 }; //expected-error{{cannot deduce}}
+                     ^
+
+"Test_name.c", line 50: error: function "lambda []()->Incomplete" returns incomplete type "Incomplete"
+    auto l1 = [] () -> Incomplete { }; // expected-error{{incomplete result type 'Incomplete' in lambda expression}}
+                 ^
+
+"Test_name.c", line 50: warning: missing return statement at end of non-void function "lambda []()->Incomplete"
+    auto l1 = [] () -> Incomplete { }; // expected-error{{incomplete result type 'Incomplete' in lambda expression}}
+                                    ^
+
+"Test_name.c", line 54: error: a local class cannot reference a variable-length array type from an enclosing function
+    auto l2 = [] () -> vla { }; // expected-error{{function cannot return array type 'vla' (aka 'int[N]')}}
+                       ^
+
+"Test_name.c", line 50: warning: variable "l1" was declared but never referenced
+    auto l1 = [] () -> Incomplete { }; // expected-error{{incomplete result type 'Incomplete' in lambda expression}}
+         ^
+
+"Test_name.c", line 54: warning: variable "l2" was declared but never referenced
+    auto l2 = [] () -> vla { }; // expected-error{{function cannot return array type 'vla' (aka 'int[N]')}}
+         ^
+
+"Test_name.c", line 62: error: a local class cannot reference a variable-length array type from an enclosing function
+    auto l2 = []() -> vla {}; // expected-error{{function cannot return array type 'vla' (aka 'int[N]')}}
+                      ^
+
+"Test_name.c", line 59: error: function "lambda []()->Incomplete" returns incomplete type "Incomplete"
+    auto l1 = []() -> T {}; // expected-error{{incomplete result type 'Incomplete' in lambda expression}}
+                ^
+          detected during instantiation of "void test_result_type_tpl<T>(int) [with T=Incomplete]" at line 66
+
+"Test_name.c", line 59: warning: missing return statement at end of non-void function "lambda []()->Incomplete"
+    auto l1 = []() -> T {}; // expected-error{{incomplete result type 'Incomplete' in lambda expression}}
+                         ^
+          detected during instantiation of "void test_result_type_tpl<T>(int) [with T=Incomplete]" at line 66
+
+5 errors detected in the compilation of "Test_name.c".

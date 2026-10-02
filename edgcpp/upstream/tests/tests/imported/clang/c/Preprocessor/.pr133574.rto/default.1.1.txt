@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 105: error: identifier "__FLT_EVAL_METHOD__" is undefined
+      return __FL\
+             ^
+
+"Test_name.c", line 110: error: identifier "__FLT_EVAL_METHOD__" is undefined
+      return FLT_EVAL_METHOD_LBR;
+             ^
+
+2 errors detected in the compilation of "Test_name.c".

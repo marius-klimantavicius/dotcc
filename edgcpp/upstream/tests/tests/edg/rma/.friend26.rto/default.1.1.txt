@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 17: error: member "S2::i" (declared at line 14) is inaccessible
+  void S1::f() { S2::i = 0; }
+                     ^
+
+"Test_name.c", line 19: error: member "S2::i" (declared at line 14) is inaccessible
+  void S1::g() { S2::i = 0; }
+                     ^
+
+2 errors detected in the compilation of "Test_name.c".

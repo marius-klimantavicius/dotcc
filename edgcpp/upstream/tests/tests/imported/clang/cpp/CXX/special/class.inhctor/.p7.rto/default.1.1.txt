@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 23: error: more than one instance of constructor "D1::D1" matches the argument list:
+            function "B1::B1(int)" (declared at line 9), inherited via using decl at line 15
+            function "B2::B2(int)" (declared at line 12), inherited via using decl at line 16
+            argument types are: (int)
+  D1 d1(0); // expected-error {{ambiguous}}
+        ^
+"Test_name.c", line 14: note: number of parameters of function "D1::D1()" does not match the call
+  struct D1 : B1, B2 {
+         ^
+
+1 error detected in the compilation of "Test_name.c".

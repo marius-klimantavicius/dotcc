@@ -1,0 +1,260 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./ext/builtin-operator-new-2.C", line 14: error: no instance of overloaded function "operator new" matches the argument list
+            argument types are: (int, long long, long, int)
+    void *c = __builtin_operator_new (32, 1LL, 1L, 1);
+              ^
+"./ext/builtin-operator-new-2.C", line 5: note: number of parameters of function "operator new(std::size_t, float, double)" does not match the call
+  void *operator new (std::size_t, float, double);
+        ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 206: note: number of parameters of function "operator new(std::size_t, void *) noexcept" does not match the call
+  void* operator new(std::size_t, void* __p)
+        ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 171: note: number of parameters of function "operator new(std::size_t, std::align_val_t, const std::nothrow_t &) noexcept" does not match the call
+  [[__nodiscard__]] void* operator new(std::size_t, std::align_val_t, const std::nothrow_t&)
+                          ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 155: note: number of parameters of function "operator new(std::size_t, const std::nothrow_t &) noexcept" does not match the call
+  [[__nodiscard__]] void* operator new(std::size_t, const std::nothrow_t&)
+                          ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 168: note: number of parameters of function "operator new(std::size_t, std::align_val_t)" does not match the call
+  [[__nodiscard__]] void* operator new(std::size_t, std::align_val_t)
+                          ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 137: note: number of parameters of function "operator new(std::size_t)" does not match the call
+  [[__nodiscard__]] void* operator new(std::size_t)
+                          ^
+
+"./ext/builtin-operator-new-2.C", line 15: error: no instance of overloaded function "operator delete" matches the argument list
+            argument types are: (void *, long long, long, int)
+    __builtin_operator_delete (c, 1LL, 1L, 1);
+    ^
+"./ext/builtin-operator-new-2.C", line 6: note: number of parameters of function "operator delete(void *, float, double) noexcept" does not match the call
+  void operator delete (void *, float, double);
+       ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 217: note: number of parameters of function "operator delete(void *, void *) noexcept" does not match the call
+  inline void operator delete (void*, void*)
+              ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 176: note: number of parameters of function "operator delete(void *, std::align_val_t, const std::nothrow_t &) noexcept" does not match the call
+  void operator delete(void*, std::align_val_t, const std::nothrow_t&)
+       ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 161: note: number of parameters of function "operator delete(void *, const std::nothrow_t &) noexcept" does not match the call
+  void operator delete(void*, const std::nothrow_t&)
+       ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 174: note: number of parameters of function "operator delete(void *, std::align_val_t) noexcept" does not match the call
+  void operator delete(void*, std::align_val_t)
+       ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 191: note: number of parameters of function "operator delete(void *, std::size_t, std::align_val_t) noexcept" does not match the call
+  void operator delete(void*, std::size_t, std::align_val_t)
+       ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 148: note: number of parameters of function "operator delete(void *, std::size_t) noexcept" does not match the call
+  void operator delete(void*, std::size_t)
+       ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 143: note: number of parameters of function "operator delete(void *) noexcept" does not match the call
+  void operator delete(void*) noexcept
+       ^
+
+"./ext/builtin-operator-new-2.C", line 16: error: no instance of overloaded function "operator new" matches the argument list
+    void *d = __builtin_operator_new ();
+              ^
+"./ext/builtin-operator-new-2.C", line 5: note: number of parameters of function "operator new(std::size_t, float, double)" does not match the call
+  void *operator new (std::size_t, float, double);
+        ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 206: note: number of parameters of function "operator new(std::size_t, void *) noexcept" does not match the call
+  void* operator new(std::size_t, void* __p)
+        ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 171: note: number of parameters of function "operator new(std::size_t, std::align_val_t, const std::nothrow_t &) noexcept" does not match the call
+  [[__nodiscard__]] void* operator new(std::size_t, std::align_val_t, const std::nothrow_t&)
+                          ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 155: note: number of parameters of function "operator new(std::size_t, const std::nothrow_t &) noexcept" does not match the call
+  [[__nodiscard__]] void* operator new(std::size_t, const std::nothrow_t&)
+                          ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 168: note: number of parameters of function "operator new(std::size_t, std::align_val_t)" does not match the call
+  [[__nodiscard__]] void* operator new(std::size_t, std::align_val_t)
+                          ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 137: note: number of parameters of function "operator new(std::size_t)" does not match the call
+  [[__nodiscard__]] void* operator new(std::size_t)
+                          ^
+
+"./ext/builtin-operator-new-2.C", line 17: error: no instance of overloaded function "operator delete" matches the argument list
+    __builtin_operator_delete ();
+    ^
+"./ext/builtin-operator-new-2.C", line 6: note: number of parameters of function "operator delete(void *, float, double) noexcept" does not match the call
+  void operator delete (void *, float, double);
+       ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 217: note: number of parameters of function "operator delete(void *, void *) noexcept" does not match the call
+  inline void operator delete (void*, void*)
+              ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 176: note: number of parameters of function "operator delete(void *, std::align_val_t, const std::nothrow_t &) noexcept" does not match the call
+  void operator delete(void*, std::align_val_t, const std::nothrow_t&)
+       ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 161: note: number of parameters of function "operator delete(void *, const std::nothrow_t &) noexcept" does not match the call
+  void operator delete(void*, const std::nothrow_t&)
+       ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 174: note: number of parameters of function "operator delete(void *, std::align_val_t) noexcept" does not match the call
+  void operator delete(void*, std::align_val_t)
+       ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 191: note: number of parameters of function "operator delete(void *, std::size_t, std::align_val_t) noexcept" does not match the call
+  void operator delete(void*, std::size_t, std::align_val_t)
+       ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 148: note: number of parameters of function "operator delete(void *, std::size_t) noexcept" does not match the call
+  void operator delete(void*, std::size_t)
+       ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 143: note: number of parameters of function "operator delete(void *) noexcept" does not match the call
+  void operator delete(void*) noexcept
+       ^
+
+"./ext/builtin-operator-new-2.C", line 27: error: no instance of overloaded function "operator new" matches the argument list
+            argument types are: (int, long long, long, int)
+    void *c = __builtin_operator_new (32, 1LL, 1L, 1);
+              ^
+"./ext/builtin-operator-new-2.C", line 5: note: number of parameters of function "operator new(std::size_t, float, double)" does not match the call
+  void *operator new (std::size_t, float, double);
+        ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 206: note: number of parameters of function "operator new(std::size_t, void *) noexcept" does not match the call
+  void* operator new(std::size_t, void* __p)
+        ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 171: note: number of parameters of function "operator new(std::size_t, std::align_val_t, const std::nothrow_t &) noexcept" does not match the call
+  [[__nodiscard__]] void* operator new(std::size_t, std::align_val_t, const std::nothrow_t&)
+                          ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 155: note: number of parameters of function "operator new(std::size_t, const std::nothrow_t &) noexcept" does not match the call
+  [[__nodiscard__]] void* operator new(std::size_t, const std::nothrow_t&)
+                          ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 168: note: number of parameters of function "operator new(std::size_t, std::align_val_t)" does not match the call
+  [[__nodiscard__]] void* operator new(std::size_t, std::align_val_t)
+                          ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 137: note: number of parameters of function "operator new(std::size_t)" does not match the call
+  [[__nodiscard__]] void* operator new(std::size_t)
+                          ^
+
+"./ext/builtin-operator-new-2.C", line 28: error: no instance of overloaded function "operator delete" matches the argument list
+            argument types are: (void *, long long, long, int)
+    __builtin_operator_delete (c, 1LL, 1L, 1);
+    ^
+"./ext/builtin-operator-new-2.C", line 6: note: number of parameters of function "operator delete(void *, float, double) noexcept" does not match the call
+  void operator delete (void *, float, double);
+       ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 217: note: number of parameters of function "operator delete(void *, void *) noexcept" does not match the call
+  inline void operator delete (void*, void*)
+              ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 176: note: number of parameters of function "operator delete(void *, std::align_val_t, const std::nothrow_t &) noexcept" does not match the call
+  void operator delete(void*, std::align_val_t, const std::nothrow_t&)
+       ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 161: note: number of parameters of function "operator delete(void *, const std::nothrow_t &) noexcept" does not match the call
+  void operator delete(void*, const std::nothrow_t&)
+       ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 174: note: number of parameters of function "operator delete(void *, std::align_val_t) noexcept" does not match the call
+  void operator delete(void*, std::align_val_t)
+       ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 191: note: number of parameters of function "operator delete(void *, std::size_t, std::align_val_t) noexcept" does not match the call
+  void operator delete(void*, std::size_t, std::align_val_t)
+       ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 148: note: number of parameters of function "operator delete(void *, std::size_t) noexcept" does not match the call
+  void operator delete(void*, std::size_t)
+       ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 143: note: number of parameters of function "operator delete(void *) noexcept" does not match the call
+  void operator delete(void*) noexcept
+       ^
+
+"./ext/builtin-operator-new-2.C", line 29: error: no instance of overloaded function "operator new" matches the argument list
+    void *d = __builtin_operator_new ();
+              ^
+"./ext/builtin-operator-new-2.C", line 5: note: number of parameters of function "operator new(std::size_t, float, double)" does not match the call
+  void *operator new (std::size_t, float, double);
+        ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 206: note: number of parameters of function "operator new(std::size_t, void *) noexcept" does not match the call
+  void* operator new(std::size_t, void* __p)
+        ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 171: note: number of parameters of function "operator new(std::size_t, std::align_val_t, const std::nothrow_t &) noexcept" does not match the call
+  [[__nodiscard__]] void* operator new(std::size_t, std::align_val_t, const std::nothrow_t&)
+                          ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 155: note: number of parameters of function "operator new(std::size_t, const std::nothrow_t &) noexcept" does not match the call
+  [[__nodiscard__]] void* operator new(std::size_t, const std::nothrow_t&)
+                          ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 168: note: number of parameters of function "operator new(std::size_t, std::align_val_t)" does not match the call
+  [[__nodiscard__]] void* operator new(std::size_t, std::align_val_t)
+                          ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 137: note: number of parameters of function "operator new(std::size_t)" does not match the call
+  [[__nodiscard__]] void* operator new(std::size_t)
+                          ^
+
+"./ext/builtin-operator-new-2.C", line 30: error: no instance of overloaded function "operator delete" matches the argument list
+    __builtin_operator_delete ();
+    ^
+"./ext/builtin-operator-new-2.C", line 6: note: number of parameters of function "operator delete(void *, float, double) noexcept" does not match the call
+  void operator delete (void *, float, double);
+       ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 217: note: number of parameters of function "operator delete(void *, void *) noexcept" does not match the call
+  inline void operator delete (void*, void*)
+              ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 176: note: number of parameters of function "operator delete(void *, std::align_val_t, const std::nothrow_t &) noexcept" does not match the call
+  void operator delete(void*, std::align_val_t, const std::nothrow_t&)
+       ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 161: note: number of parameters of function "operator delete(void *, const std::nothrow_t &) noexcept" does not match the call
+  void operator delete(void*, const std::nothrow_t&)
+       ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 174: note: number of parameters of function "operator delete(void *, std::align_val_t) noexcept" does not match the call
+  void operator delete(void*, std::align_val_t)
+       ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 191: note: number of parameters of function "operator delete(void *, std::size_t, std::align_val_t) noexcept" does not match the call
+  void operator delete(void*, std::size_t, std::align_val_t)
+       ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 148: note: number of parameters of function "operator delete(void *, std::size_t) noexcept" does not match the call
+  void operator delete(void*, std::size_t)
+       ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 143: note: number of parameters of function "operator delete(void *) noexcept" does not match the call
+  void operator delete(void*) noexcept
+       ^
+
+"./ext/builtin-operator-new-2.C", line 40: error: no instance of overloaded function "operator new" matches the argument list
+            argument types are: (int, long long, long, int)
+    U c = __builtin_operator_new (sz, v, 1L, 1);
+          ^
+"./ext/builtin-operator-new-2.C", line 5: note: number of parameters of function "operator new(std::size_t, float, double)" does not match the call
+  void *operator new (std::size_t, float, double);
+        ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 206: note: number of parameters of function "operator new(std::size_t, void *) noexcept" does not match the call
+  void* operator new(std::size_t, void* __p)
+        ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 171: note: number of parameters of function "operator new(std::size_t, std::align_val_t, const std::nothrow_t &) noexcept" does not match the call
+  [[__nodiscard__]] void* operator new(std::size_t, std::align_val_t, const std::nothrow_t&)
+                          ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 155: note: number of parameters of function "operator new(std::size_t, const std::nothrow_t &) noexcept" does not match the call
+  [[__nodiscard__]] void* operator new(std::size_t, const std::nothrow_t&)
+                          ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 168: note: number of parameters of function "operator new(std::size_t, std::align_val_t)" does not match the call
+  [[__nodiscard__]] void* operator new(std::size_t, std::align_val_t)
+                          ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 137: note: number of parameters of function "operator new(std::size_t)" does not match the call
+  [[__nodiscard__]] void* operator new(std::size_t)
+                          ^
+          detected during instantiation of "void baz<T,U,V>(void *, T, V) [with T=int, U=void *, V=long long]" at line 48
+
+"./ext/builtin-operator-new-2.C", line 41: error: no instance of overloaded function "operator delete" matches the argument list
+            argument types are: (void *, long long, long, int)
+    __builtin_operator_delete (c, v, 1L, 1);
+    ^
+"./ext/builtin-operator-new-2.C", line 6: note: number of parameters of function "operator delete(void *, float, double) noexcept" does not match the call
+  void operator delete (void *, float, double);
+       ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 217: note: number of parameters of function "operator delete(void *, void *) noexcept" does not match the call
+  inline void operator delete (void*, void*)
+              ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 176: note: number of parameters of function "operator delete(void *, std::align_val_t, const std::nothrow_t &) noexcept" does not match the call
+  void operator delete(void*, std::align_val_t, const std::nothrow_t&)
+       ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 161: note: number of parameters of function "operator delete(void *, const std::nothrow_t &) noexcept" does not match the call
+  void operator delete(void*, const std::nothrow_t&)
+       ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 174: note: number of parameters of function "operator delete(void *, std::align_val_t) noexcept" does not match the call
+  void operator delete(void*, std::align_val_t)
+       ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 191: note: number of parameters of function "operator delete(void *, std::size_t, std::align_val_t) noexcept" does not match the call
+  void operator delete(void*, std::size_t, std::align_val_t)
+       ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 148: note: number of parameters of function "operator delete(void *, std::size_t) noexcept" does not match the call
+  void operator delete(void*, std::size_t)
+       ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 143: note: number of parameters of function "operator delete(void *) noexcept" does not match the call
+  void operator delete(void*) noexcept
+       ^
+          detected during instantiation of "void baz<T,U,V>(void *, T, V) [with T=int, U=void *, V=long long]" at line 48
+
+10 errors detected in the compilation of "Test_name.c".

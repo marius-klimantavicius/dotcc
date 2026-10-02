@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --c++20 --set_flag coroutines -tused Test_name.c
+"Test_name.c", line 15: error: a coroutine with a deduced return type is invalid
+  auto g() {
+       ^
+
+"Test_name.c", line 19: error: a coroutine with a deduced return type is invalid
+  auto h() {
+       ^
+
+"Test_name.c", line 23: error: a coroutine with a deduced return type is invalid
+  auto i() {
+       ^
+
+3 errors detected in the compilation of "Test_name.c".

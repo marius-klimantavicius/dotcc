@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./20050105-2.c", line 14: warning: variable "ap" is used before its value is set
+   ap, x
+   ^
+
+"./20050105-2.c", line 22: warning: variable "ap" is used before its value is set
+   ap, x
+   ^
+
+"./20050105-2.c", line 30: warning: variable "ap" is used before its value is set
+   ap, x
+   ^
+

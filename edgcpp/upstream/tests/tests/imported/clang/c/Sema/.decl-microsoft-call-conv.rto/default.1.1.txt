@@ -1,0 +1,86 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -w --c Test_name.c
+"Test_name.c", line 8: error: incomplete type "void" is not allowed
+  void __fastcall CrcGenerateTableFastcall(void);
+       ^
+
+"Test_name.c", line 8: error: expected a ";"
+  void __fastcall CrcGenerateTableFastcall(void);
+                  ^
+
+"Test_name.c", line 9: error: expected a ";"
+  void __fastcall CrcGenerateTableFastcall();
+                  ^
+
+"Test_name.c", line 10: error: expected a ";"
+  void __fastcall CrcGenerateTableFastcall() {}
+                  ^
+
+"Test_name.c", line 12: error: incomplete type "void" is not allowed
+  void __stdcall CrcGenerateTableStdcall();
+       ^
+
+"Test_name.c", line 12: error: expected a ";"
+  void __stdcall CrcGenerateTableStdcall();
+                 ^
+
+"Test_name.c", line 13: error: expected a ";"
+  void __stdcall CrcGenerateTableStdcall() {}
+                 ^
+
+"Test_name.c", line 15: error: incomplete type "void" is not allowed
+  void __thiscall CrcGenerateTableThiscall();
+       ^
+
+"Test_name.c", line 15: error: expected a ";"
+  void __thiscall CrcGenerateTableThiscall();
+                  ^
+
+"Test_name.c", line 16: error: expected a ";"
+  void __thiscall CrcGenerateTableThiscall() {}
+                  ^
+
+"Test_name.c", line 18: error: incomplete type "void" is not allowed
+  void __pascal CrcGenerateTablePascal();
+       ^
+
+"Test_name.c", line 18: error: expected a ";"
+  void __pascal CrcGenerateTablePascal();
+                ^
+
+"Test_name.c", line 19: error: expected a ";"
+  void __pascal CrcGenerateTablePascal() {}
+                ^
+
+"Test_name.c", line 21: error: incomplete type "void" is not allowed
+  void __vectorcall CrcGenerateTableVectorcall();
+       ^
+
+"Test_name.c", line 21: error: expected a ";"
+  void __vectorcall CrcGenerateTableVectorcall();
+                    ^
+
+"Test_name.c", line 22: error: expected a ";"
+  void __vectorcall CrcGenerateTableVectorcall() {}
+                    ^
+
+"Test_name.c", line 25: error: expected a ";"
+  void __stdcall CrcGenerateTableNoProtoStdcall(); // expected-warning{{function with no prototype cannot use the stdcall calling convention}}
+                 ^
+
+"Test_name.c", line 26: error: expected a ";"
+  void __thiscall CrcGenerateTableNoProtoThiscall(); // expected-error{{function with no prototype cannot use the thiscall calling convention}}
+                  ^
+
+"Test_name.c", line 27: error: expected a ";"
+  void __pascal CrcGenerateTableNoProtoPascal(); // expected-error{{function with no prototype cannot use the pascal calling convention}}
+                ^
+
+"Test_name.c", line 28: error: expected a ";"
+  void __vectorcall CrcGenerateTableNoProtoVectorcall(); // expected-error{{function with no prototype cannot use the vectorcall calling convention}}
+                    ^
+
+"Test_name.c", line 30: error: expected a ";"
+  void __fastcall CrcGenerateTableNoProtoDefFastcall() {}
+                  ^
+
+21 errors detected in the compilation of "Test_name.c".

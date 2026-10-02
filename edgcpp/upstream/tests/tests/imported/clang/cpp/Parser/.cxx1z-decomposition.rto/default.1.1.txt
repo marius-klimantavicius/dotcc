@@ -1,0 +1,626 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 --exceptions Test_name.c
+"Test_name.c", line 17: warning: structured binding "a" was declared but never referenced
+        for (auto [a, b, c] = S();;) {}
+                   ^
+
+"Test_name.c", line 18: warning: statement is unreachable
+        if (auto [a, b, c] = S(); true) {}
+        ^
+
+"Test_name.c", line 18: warning: structured binding "a" was declared but never referenced
+        if (auto [a, b, c] = S(); true) {}
+                  ^
+
+"Test_name.c", line 19: warning: structured binding "a" was declared but never referenced
+        switch (auto [a, b, c] = S(); 0) { case 0:; }
+                      ^
+
+"Test_name.c", line 15: warning: structured binding "a" was declared but never referenced
+      auto [a, b, c] = S();
+            ^
+
+"Test_name.c", line 28: warning: structured binding "a" was declared but never referenced
+      for (auto [a, b, c] : arr) {
+                 ^
+
+"Test_name.c", line 37: error: identifier "a" is undefined
+    void f(auto [a, b, c]); // cxx17-error {{'auto' not allowed in function prototype}} expected-error 1+{{'a'}}
+                 ^
+
+"Test_name.c", line 37: error: expected a "]"
+    void f(auto [a, b, c]); // cxx17-error {{'auto' not allowed in function prototype}} expected-error 1+{{'a'}}
+                  ^
+
+"Test_name.c", line 37: error: identifier "b" is undefined
+    void f(auto [a, b, c]); // cxx17-error {{'auto' not allowed in function prototype}} expected-error 1+{{'a'}}
+                    ^
+
+"Test_name.c", line 37: error: identifier "c" is undefined
+    void f(auto [a, b, c]); // cxx17-error {{'auto' not allowed in function prototype}} expected-error 1+{{'a'}}
+                       ^
+
+"Test_name.c", line 37: error: expected a ")"
+    void f(auto [a, b, c]); // cxx17-error {{'auto' not allowed in function prototype}} expected-error 1+{{'a'}}
+                        ^
+
+"Test_name.c", line 42: error: structured binding is not allowed in a condition
+      for (; auto [a, b, c] = S(); ) {} // pre2c-warning {{structured binding declaration in a condition is a C++2c extension}} expected-error {{value of type 'S' is not contextually convertible to 'bool'}}
+                  ^
+
+"Test_name.c", line 43: error: structured binding is not allowed in a condition
+      if (auto [a, b, c] = S()) {} // pre2c-warning {{structured binding declaration in a condition is a C++2c extension}} expected-error {{value of type 'S' is not contextually convertible to 'bool'}}
+               ^
+
+"Test_name.c", line 44: error: structured binding is not allowed in a condition
+      if (int n; auto [a, b, c] = S()) {} // pre2c-warning {{structured binding declaration in a condition is a C++2c extension}} expected-error {{value of type 'S' is not contextually convertible to 'bool'}}
+                      ^
+
+"Test_name.c", line 44: warning: variable "n" was declared but never referenced
+      if (int n; auto [a, b, c] = S()) {} // pre2c-warning {{structured binding declaration in a condition is a C++2c extension}} expected-error {{value of type 'S' is not contextually convertible to 'bool'}}
+              ^
+
+"Test_name.c", line 45: error: structured binding is not allowed in a condition
+      switch (auto [a, b, c] = S()) {} // pre2c-warning {{structured binding declaration in a condition is a C++2c extension}} expected-error {{statement requires expression of integer type ('S' invalid)}}
+                   ^
+
+"Test_name.c", line 46: error: structured binding is not allowed in a condition
+      switch (int n; auto [a, b, c] = S()) {} // pre2c-warning {{structured binding declaration in a condition is a C++2c extension}} expected-error {{statement requires expression of integer type ('S' invalid)}}
+                          ^
+
+"Test_name.c", line 46: warning: variable "n" was declared but never referenced
+      switch (int n; auto [a, b, c] = S()) {} // pre2c-warning {{structured binding declaration in a condition is a C++2c extension}} expected-error {{statement requires expression of integer type ('S' invalid)}}
+                  ^
+
+"Test_name.c", line 47: error: structured binding is not allowed in a condition
+      while (auto [a, b, c] = S()) {} // pre2c-warning {{structured binding declaration in a condition is a C++2c extension}} expected-error {{value of type 'S' is not contextually convertible to 'bool'}}
+                  ^
+
+"Test_name.c", line 51: error: identifier "a" is undefined
+      catch (auto [a, b, c]) {} // expected-error {{'auto' not allowed in exception declaration}} expected-error 1+{{'a'}}
+                   ^
+
+"Test_name.c", line 51: error: identifier "b" is undefined
+      catch (auto [a, b, c]) {} // expected-error {{'auto' not allowed in exception declaration}} expected-error 1+{{'a'}}
+                      ^
+
+"Test_name.c", line 51: error: identifier "c" is undefined
+      catch (auto [a, b, c]) {} // expected-error {{'auto' not allowed in exception declaration}} expected-error 1+{{'a'}}
+                         ^
+
+"Test_name.c", line 56: error: expected an identifier
+      auto [a, b, c] = S(); // expected-error {{not permitted in this context}}
+           ^
+
+"Test_name.c", line 56: error: identifier "a" is undefined
+      auto [a, b, c] = S(); // expected-error {{not permitted in this context}}
+            ^
+
+"Test_name.c", line 56: error: expected a "]"
+      auto [a, b, c] = S(); // expected-error {{not permitted in this context}}
+             ^
+
+"Test_name.c", line 56: warning: nonstandard use of "auto" to both deduce the type from an initializer and to announce a trailing return type
+      auto [a, b, c] = S(); // expected-error {{not permitted in this context}}
+      ^
+
+"Test_name.c", line 56: error: cannot deduce "auto" type (initializer required)
+      auto [a, b, c] = S(); // expected-error {{not permitted in this context}}
+               ^
+
+"Test_name.c", line 56: error: expected a ";"
+      auto [a, b, c] = S(); // expected-error {{not permitted in this context}}
+                   ^
+
+"Test_name.c", line 57: error: expected an identifier
+      static auto [a, b, c] = S(); // expected-error {{not permitted in this context}}
+                  ^
+
+"Test_name.c", line 57: error: expected a "]"
+      static auto [a, b, c] = S(); // expected-error {{not permitted in this context}}
+                    ^
+
+"Test_name.c", line 57: warning: nonstandard use of "auto" to both deduce the type from an initializer and to announce a trailing return type
+      static auto [a, b, c] = S(); // expected-error {{not permitted in this context}}
+             ^
+
+"Test_name.c", line 57: error: "b" has already been declared in the current scope
+      static auto [a, b, c] = S(); // expected-error {{not permitted in this context}}
+                      ^
+
+"Test_name.c", line 57: error: cannot deduce "auto" type (initializer required)
+      static auto [a, b, c] = S(); // expected-error {{not permitted in this context}}
+                      ^
+
+"Test_name.c", line 57: error: "c" has already been declared in the current scope
+      static auto [a, b, c] = S(); // expected-error {{not permitted in this context}}
+                         ^
+
+"Test_name.c", line 57: error: expected a ";"
+      static auto [a, b, c] = S(); // expected-error {{not permitted in this context}}
+                          ^
+
+"Test_name.c", line 64: warning: structured binding "a" was declared but never referenced
+      const volatile auto &[a] = n; // post2b-warning {{volatile qualifier in structured binding declaration is deprecated}}
+                            ^
+
+"Test_name.c", line 74: error: a structured binding cannot declare an explicit storage class
+      static auto &[a] = n; // cxx17-warning {{declared 'static' is a C++20 extension}}
+      ^
+
+"Test_name.c", line 75: error: a structured binding cannot declare an explicit storage class
+      thread_local auto &[b] = n; // cxx17-warning {{declared 'thread_local' is a C++20 extension}}
+      ^
+
+"Test_name.c", line 76: error: a structured binding cannot declare an explicit storage class
+      extern auto &[c] = n; // expected-error {{cannot be declared 'extern'}} expected-error {{declaration of block scope identifier with linkage cannot have an initializer}}
+      ^
+
+"Test_name.c", line 78: error: expected an identifier
+        mutable auto &[d] = n; // expected-error {{not permitted in this context}}
+                      ^
+
+"Test_name.c", line 78: error: identifier "d" is undefined
+        mutable auto &[d] = n; // expected-error {{not permitted in this context}}
+                       ^
+
+"Test_name.c", line 78: error: data member initializer is not allowed
+        mutable auto &[d] = n; // expected-error {{not permitted in this context}}
+                          ^
+
+"Test_name.c", line 81: error: expected an identifier
+        virtual auto &[e] = n; // expected-error {{not permitted in this context}}
+                      ^
+
+"Test_name.c", line 81: error: identifier "e" is undefined
+        virtual auto &[e] = n; // expected-error {{not permitted in this context}}
+                       ^
+
+"Test_name.c", line 81: error: "virtual" is not allowed
+        virtual auto &[e] = n; // expected-error {{not permitted in this context}}
+        ^
+
+"Test_name.c", line 81: error: expected a ";"
+        virtual auto &[e] = n; // expected-error {{not permitted in this context}}
+                          ^
+
+"Test_name.c", line 82: error: "auto" is not allowed here
+        explicit auto &[f] = n; // expected-error {{not permitted in this context}}
+                 ^
+
+"Test_name.c", line 82: error: expected an identifier
+        explicit auto &[f] = n; // expected-error {{not permitted in this context}}
+                       ^
+
+"Test_name.c", line 82: error: this constant expression has type "void (*)()" instead of the required "unsigned long" type
+        explicit auto &[f] = n; // expected-error {{not permitted in this context}}
+                        ^
+
+"Test_name.c", line 82: error: data member initializer is not allowed
+        explicit auto &[f] = n; // expected-error {{not permitted in this context}}
+                           ^
+
+"Test_name.c", line 85: error: expected an identifier
+        friend auto &[g] = n; // expected-error {{'auto' not allowed}} expected-error {{friends can only be classes or functions}}
+                     ^
+
+"Test_name.c", line 85: error: identifier "g" is undefined
+        friend auto &[g] = n; // expected-error {{'auto' not allowed}} expected-error {{friends can only be classes or functions}}
+                      ^
+
+"Test_name.c", line 85: error: invalid friend declaration
+        friend auto &[g] = n; // expected-error {{'auto' not allowed}} expected-error {{friends can only be classes or functions}}
+        ^
+
+"Test_name.c", line 85: error: expected a ";"
+        friend auto &[g] = n; // expected-error {{'auto' not allowed}} expected-error {{friends can only be classes or functions}}
+                         ^
+
+"Test_name.c", line 87: error: a structured binding cannot declare an explicit storage class
+      typedef auto &[h] = n; // expected-error {{cannot be declared 'typedef'}}
+      ^
+
+"Test_name.c", line 87: error: "auto" is not allowed here
+      typedef auto &[h] = n; // expected-error {{cannot be declared 'typedef'}}
+              ^
+
+"Test_name.c", line 87: error: expected a ";"
+      typedef auto &[h] = n; // expected-error {{cannot be declared 'typedef'}}
+                        ^
+
+"Test_name.c", line 88: error: a structured binding cannot be declared "constexpr"
+      constexpr auto &[i] = n; // pre2c-error {{cannot be declared 'constexpr'}}
+      ^
+
+"Test_name.c", line 74: warning: structured binding "a" was declared but never referenced
+      static auto &[a] = n; // cxx17-warning {{declared 'static' is a C++20 extension}}
+                    ^
+
+"Test_name.c", line 75: warning: structured binding "b" was declared but never referenced
+      thread_local auto &[b] = n; // cxx17-warning {{declared 'thread_local' is a C++20 extension}}
+                          ^
+
+"Test_name.c", line 76: warning: structured binding "c" was declared but never referenced
+      extern auto &[c] = n; // expected-error {{cannot be declared 'extern'}} expected-error {{declaration of block scope identifier with linkage cannot have an initializer}}
+                    ^
+
+"Test_name.c", line 88: warning: structured binding "i" was declared but never referenced
+      constexpr auto &[i] = n; // pre2c-error {{cannot be declared 'constexpr'}}
+                       ^
+
+"Test_name.c", line 91: error: a structured binding cannot be declared "inline"
+    static constexpr inline thread_local auto &[j1] = n;
+                     ^
+
+"Test_name.c", line 97: error: a structured binding cannot declare an explicit storage class
+    static thread_local auto &[j2] = n;
+    ^
+
+"Test_name.c", line 102: error: a structured binding cannot be declared "inline"
+    inline auto &[k] = n; // expected-error {{cannot be declared 'inline'}}
+    ^
+
+"Test_name.c", line 105: error: expected an identifier
+    auto ([c]) = s; // expected-error {{structured binding declaration cannot be declared with parentheses}}
+          ^
+
+"Test_name.c", line 105: error: identifier "c" is undefined
+    auto ([c]) = s; // expected-error {{structured binding declaration cannot be declared with parentheses}}
+           ^
+
+"Test_name.c", line 108: error: invalid specifier for structured binding declaration
+      S [a] = s; // expected-error {{cannot be declared with type 'S'}}
+      ^
+
+"Test_name.c", line 109: error: expected an expression
+      decltype(auto) [b] = s; // expected-error {{cannot be declared with type 'decltype(auto)'}}
+               ^
+
+"Test_name.c", line 109: error: type name is not allowed
+      decltype(auto) [b] = s; // expected-error {{cannot be declared with type 'decltype(auto)'}}
+      ^
+
+"Test_name.c", line 109: error: identifier "b" is undefined
+      decltype(auto) [b] = s; // expected-error {{cannot be declared with type 'decltype(auto)'}}
+                      ^
+
+"Test_name.c", line 110: error: expected an identifier
+      auto ([c2]) = s; // cxx17-error {{structured binding declaration cannot be declared with parenthese}} \
+            ^
+
+"Test_name.c", line 110: error: identifier "c2" is undefined
+      auto ([c2]) = s; // cxx17-error {{structured binding declaration cannot be declared with parenthese}} \
+             ^
+
+"Test_name.c", line 115: error: expected an expression
+      auto [d]() = s; // expected-error {{expected ';'}} expected-error {{expected expression}}
+               ^
+
+"Test_name.c", line 115: error: expected a ")"
+      auto [d]() = s; // expected-error {{expected ';'}} expected-error {{expected expression}}
+                    ^
+
+"Test_name.c", line 116: error: missing initializer
+      auto [e][1] = s; // expected-error {{expected ';'}} expected-error {{requires an initializer}}
+              ^
+
+"Test_name.c", line 116: error: cannot deduce "auto" type (initializer required)
+      auto [e][1] = s; // expected-error {{expected ';'}} expected-error {{requires an initializer}}
+           ^
+
+"Test_name.c", line 116: error: expected a ";"
+      auto [e][1] = s; // expected-error {{expected ';'}} expected-error {{requires an initializer}}
+              ^
+
+"Test_name.c", line 119: error: invalid specifier for structured binding declaration
+      int [K] arr = {0}; // expected-error {{expected ';'}} expected-error {{cannot be declared with type 'int'}} expected-error {{structured binding declaration '[K]' requires an initializer}}
+      ^
+
+"Test_name.c", line 119: error: missing initializer
+      int [K] arr = {0}; // expected-error {{expected ';'}} expected-error {{cannot be declared with type 'int'}} expected-error {{structured binding declaration '[K]' requires an initializer}}
+              ^
+
+"Test_name.c", line 119: error: expected a ";"
+      int [K] arr = {0}; // expected-error {{expected ';'}} expected-error {{cannot be declared with type 'int'}} expected-error {{structured binding declaration '[K]' requires an initializer}}
+              ^
+
+"Test_name.c", line 120: error: invalid specifier for structured binding declaration
+      int [5] arr = {0}; // expected-error {{place the brackets after the name}}
+      ^
+
+"Test_name.c", line 120: error: missing initializer
+      int [5] arr = {0}; // expected-error {{place the brackets after the name}}
+              ^
+
+"Test_name.c", line 120: error: expected a ";"
+      int [5] arr = {0}; // expected-error {{place the brackets after the name}}
+              ^
+
+"Test_name.c", line 122: error: invalid structured binding syntax
+      auto *[f] = s; // expected-error {{cannot be declared with type 'auto *'}} expected-error {{incompatible initializer}}
+           ^
+
+"Test_name.c", line 122: error: cannot deduce "auto" type
+      auto *[f] = s; // expected-error {{cannot be declared with type 'auto *'}} expected-error {{incompatible initializer}}
+      ^
+
+"Test_name.c", line 123: error: cannot deduce "auto" type
+      auto S::*[g] = s; // expected-error {{cannot be declared with type 'auto S::*'}} expected-error {{incompatible initializer}}
+      ^
+
+"Test_name.c", line 133: error: missing initializer
+      auto [bad_attr_2] [[]] = s; // expected-error {{expected ';'}} expected-error {{}}
+                        ^
+
+"Test_name.c", line 133: error: cannot deduce "auto" type (initializer required)
+      auto [bad_attr_2] [[]] = s; // expected-error {{expected ';'}} expected-error {{}}
+           ^
+
+"Test_name.c", line 133: error: expected a ";"
+      auto [bad_attr_2] [[]] = s; // expected-error {{expected ';'}} expected-error {{}}
+                        ^
+
+"Test_name.c", line 108: warning: variable "<struct binding 22>" was declared but never referenced
+      S [a] = s; // expected-error {{cannot be declared with type 'S'}}
+        ^
+
+"Test_name.c", line 119: warning: variable "<struct binding 25>" was declared but never referenced
+      int [K] arr = {0}; // expected-error {{expected ';'}} expected-error {{cannot be declared with type 'int'}} expected-error {{structured binding declaration '[K]' requires an initializer}}
+          ^
+
+"Test_name.c", line 120: warning: variable "<struct binding 26>" was declared but never referenced
+      int [5] arr = {0}; // expected-error {{place the brackets after the name}}
+          ^
+
+"Test_name.c", line 126: warning: structured binding "ok_1" was declared but never referenced
+      auto &&[ok_1] = S();
+              ^
+
+"Test_name.c", line 127: warning: structured binding "ok_2" was declared but never referenced
+      auto &[ok_2] = s;
+             ^
+
+"Test_name.c", line 130: warning: structured binding "ok_3" was declared but never referenced
+      [[]] auto [ok_3] = s;
+                 ^
+
+"Test_name.c", line 131: warning: structured binding "ok_4" was declared but never referenced
+      alignas(S) auto [ok_4] = s;
+                       ^
+
+"Test_name.c", line 140: error: a structured binding cannot be combined with other declarators
+      auto [a] = s, [b] = s; // expected-error {{must be the only declaration}}
+           ^
+
+"Test_name.c", line 140: error: a structured binding cannot be combined with other declarators
+      auto [a] = s, [b] = s; // expected-error {{must be the only declaration}}
+                    ^
+
+"Test_name.c", line 141: error: a structured binding cannot be combined with other declarators
+      auto [c] = s,  d = s; // expected-error {{must be the only declaration}}
+           ^
+
+"Test_name.c", line 142: error: a structured binding cannot be combined with other declarators
+      auto  e  = s, [f] = s; // expected-error {{must be the only declaration}}
+                    ^
+
+"Test_name.c", line 143: error: a structured binding cannot be combined with other declarators
+      auto g = s, h = s, i = s, [j] = s; // expected-error {{must be the only declaration}}
+                                ^
+
+"Test_name.c", line 140: warning: structured binding "a" was declared but never referenced
+      auto [a] = s, [b] = s; // expected-error {{must be the only declaration}}
+            ^
+
+"Test_name.c", line 141: warning: structured binding "c" was declared but never referenced
+      auto [c] = s,  d = s; // expected-error {{must be the only declaration}}
+            ^
+
+"Test_name.c", line 142: warning: variable "e" was declared but never referenced
+      auto  e  = s, [f] = s; // expected-error {{must be the only declaration}}
+            ^
+
+"Test_name.c", line 142: warning: structured binding "f" was declared but never referenced
+      auto  e  = s, [f] = s; // expected-error {{must be the only declaration}}
+                     ^
+
+"Test_name.c", line 143: warning: variable "g" was declared but never referenced
+      auto g = s, h = s, i = s, [j] = s; // expected-error {{must be the only declaration}}
+           ^
+
+"Test_name.c", line 143: warning: variable "h" was declared but never referenced
+      auto g = s, h = s, i = s, [j] = s; // expected-error {{must be the only declaration}}
+                  ^
+
+"Test_name.c", line 143: warning: variable "i" was declared but never referenced
+      auto g = s, h = s, i = s, [j] = s; // expected-error {{must be the only declaration}}
+                         ^
+
+"Test_name.c", line 143: warning: structured binding "j" was declared but never referenced
+      auto g = s, h = s, i = s, [j] = s; // expected-error {{must be the only declaration}}
+                                 ^
+
+"Test_name.c", line 150: error: structured binding templates are not permitted
+    template<typename T> auto [a, b, c] = n; // expected-error {{structured binding declaration cannot be a template}}
+                              ^
+
+"Test_name.c", line 157: error: missing initializer
+      auto &[bad1]; // expected-error {{structured binding declaration '[bad1]' requires an initializer}}
+                  ^
+
+"Test_name.c", line 157: error: reference variable "<struct binding 40>" requires an initializer
+      auto &[bad1]; // expected-error {{structured binding declaration '[bad1]' requires an initializer}}
+                  ^
+
+"Test_name.c", line 157: error: cannot deduce "auto" type (initializer required)
+      auto &[bad1]; // expected-error {{structured binding declaration '[bad1]' requires an initializer}}
+            ^
+
+"Test_name.c", line 157: warning: variable "<struct binding 40>" is used before its value is set
+      auto &[bad1]; // expected-error {{structured binding declaration '[bad1]' requires an initializer}}
+             ^
+
+"Test_name.c", line 158: error: too many initializer values
+      const auto &[bad2](S{}, S{}); // expected-error {{initializer for variable '[bad2]' with type 'const auto &' contains multiple expressions}}
+                              ^
+
+"Test_name.c", line 159: error: expected an expression
+      const auto &[bad3](); // expected-error {{expected expression}}
+                         ^
+
+"Test_name.c", line 159: error: expected a ")"
+      const auto &[bad3](); // expected-error {{expected expression}}
+                          ^
+
+"Test_name.c", line 163: error: invalid specifier for structured binding declaration
+      S [goodish3] = { 4 }; // expected-error {{cannot be declared with type 'S'}}
+      ^
+
+"Test_name.c", line 164: error: invalid specifier for structured binding declaration
+      S [goodish4] { 4 }; // expected-error {{cannot be declared with type 'S'}}
+      ^
+
+"Test_name.c", line 158: warning: structured binding "bad2" was declared but never referenced
+      const auto &[bad2](S{}, S{}); // expected-error {{initializer for variable '[bad2]' with type 'const auto &' contains multiple expressions}}
+                   ^
+
+"Test_name.c", line 160: warning: structured binding "good1" was declared but never referenced
+      auto &[good1] = arr;
+             ^
+
+"Test_name.c", line 161: warning: structured binding "good2" was declared but never referenced
+      auto &&[good2] = S{};
+              ^
+
+"Test_name.c", line 162: warning: structured binding "good3" was declared but never referenced
+      const auto &[good3](S{});
+                   ^
+
+"Test_name.c", line 163: warning: variable "<struct binding 46>" was declared but never referenced
+      S [goodish3] = { 4 }; // expected-error {{cannot be declared with type 'S'}}
+        ^
+
+"Test_name.c", line 164: warning: variable "<struct binding 47>" was declared but never referenced
+      S [goodish4] { 4 }; // expected-error {{cannot be declared with type 'S'}}
+        ^
+
+"Test_name.c", line 177: error: expected an identifier
+      auto [[]] = S{0}; // expected-error {{expected unqualified-id}}
+                ^
+
+"Test_name.c", line 178: error: expected an identifier
+      auto [ alignas(42) a, foo ] = S{0}; // expected-error {{an attribute list cannot appear here}}
+             ^
+
+"Test_name.c", line 178: error: there are more elements than there are binding names
+      auto [ alignas(42) a, foo ] = S{0}; // expected-error {{an attribute list cannot appear here}}
+           ^
+
+"Test_name.c", line 179: error: expected an identifier
+      auto [ c, [[]] d ] = S{0}; // expected-error {{an attribute list cannot appear here}}
+                ^
+
+"Test_name.c", line 179: error: expected a "]"
+      auto [ c, [[]] d ] = S{0}; // expected-error {{an attribute list cannot appear here}}
+                         ^
+
+"Test_name.c", line 179: error: there are more elements than there are binding names
+      auto [ c, [[]] d ] = S{0}; // expected-error {{an attribute list cannot appear here}}
+           ^
+
+"Test_name.c", line 180: error: expected an identifier
+      auto [ e, alignas(42) f ] = S{0}; // expected-error {{an attribute list cannot appear here}}
+                ^
+
+"Test_name.c", line 180: error: expected a "]"
+      auto [ e, alignas(42) f ] = S{0}; // expected-error {{an attribute list cannot appear here}}
+                                ^
+
+"Test_name.c", line 180: error: there are more elements than there are binding names
+      auto [ e, alignas(42) f ] = S{0}; // expected-error {{an attribute list cannot appear here}}
+           ^
+
+"Test_name.c", line 178: warning: structured binding "foo" was declared but never referenced
+      auto [ alignas(42) a, foo ] = S{0}; // expected-error {{an attribute list cannot appear here}}
+                            ^
+
+"Test_name.c", line 179: warning: structured binding "c" was declared but never referenced
+      auto [ c, [[]] d ] = S{0}; // expected-error {{an attribute list cannot appear here}}
+             ^
+
+"Test_name.c", line 180: warning: structured binding "e" was declared but never referenced
+      auto [ e, alignas(42) f ] = S{0}; // expected-error {{an attribute list cannot appear here}}
+             ^
+
+"Test_name.c", line 184: error: expected a "]"
+      auto [ a alignas(42) [[]], b alignas(42) [[]]] = S{0}; // expected-error 2{{'alignas' attribute only applies to variables, data members and tag types}} \
+               ^
+
+"Test_name.c", line 184: error: there are more elements than there are binding names
+      auto [ a alignas(42) [[]], b alignas(42) [[]]] = S{0}; // expected-error 2{{'alignas' attribute only applies to variables, data members and tag types}} \
+           ^
+
+"Test_name.c", line 186: error: expected a "]"
+      auto [ c [[]] alignas(42), d [[]] alignas(42) [[]]] = S{0}; // expected-error 2{{'alignas' attribute only applies to variables, data members and tag types}} \
+               ^
+
+"Test_name.c", line 186: error: there are more elements than there are binding names
+      auto [ c [[]] alignas(42), d [[]] alignas(42) [[]]] = S{0}; // expected-error 2{{'alignas' attribute only applies to variables, data members and tag types}} \
+           ^
+
+"Test_name.c", line 184: warning: structured binding "a" was declared but never referenced
+      auto [ a alignas(42) [[]], b alignas(42) [[]]] = S{0}; // expected-error 2{{'alignas' attribute only applies to variables, data members and tag types}} \
+             ^
+
+"Test_name.c", line 186: warning: structured binding "c" was declared but never referenced
+      auto [ c [[]] alignas(42), d [[]] alignas(42) [[]]] = S{0}; // expected-error 2{{'alignas' attribute only applies to variables, data members and tag types}} \
+             ^
+
+"Test_name.c", line 191: error: expected a "]"
+  auto [G1 [[deprecated]], G2 [[deprecated]]] = S{42}; // #deprecated-here
+           ^
+
+"Test_name.c", line 191: error: there are more elements than there are binding names
+  auto [G1 [[deprecated]], G2 [[deprecated]]] = S{42}; // #deprecated-here
+       ^
+
+"Test_name.c", line 195: error: identifier "G2" is undefined
+    return G1 + G2; // expected-warning {{'G1' is deprecated}} expected-note@#deprecated-here {{here}} \
+                ^
+
+"Test_name.c", line 201: error: expected a "]"
+    auto [a alignas(42) // expected-error {{'alignas' attribute only applies to variables, data members and tag types}}
+            ^
+
+"Test_name.c", line 205: warning: parsing restarts here after previous syntax error
+          likely, // expected-error {{'likely' attribute cannot be applied to a declaration}}
+                ^
+
+"Test_name.c", line 201: error: there are more elements than there are binding names
+    auto [a alignas(42) // expected-error {{'alignas' attribute only applies to variables, data members and tag types}}
+         ^
+
+"Test_name.c", line 201: warning: structured binding "a" was declared but never referenced
+    auto [a alignas(42) // expected-error {{'alignas' attribute only applies to variables, data members and tag types}}
+          ^
+
+"Test_name.c", line 12: warning: structured binding "SimpleDecl::a_x" was declared but never referenced
+    auto [a_x, b_x, c_x] = S();
+          ^
+
+"Test_name.c", line 91: warning: structured binding "BadSpecifiers::j1" was declared but never referenced
+    static constexpr inline thread_local auto &[j1] = n;
+                                                ^
+
+"Test_name.c", line 97: warning: structured binding "BadSpecifiers::j2" was declared but never referenced
+    static thread_local auto &[j2] = n;
+                               ^
+
+"Test_name.c", line 102: warning: structured binding "BadSpecifiers::k" was declared but never referenced
+    inline auto &[k] = n; // expected-error {{cannot be declared 'inline'}}
+                  ^
+
+"Test_name.c", line 104: warning: variable "BadSpecifiers::K" was declared but never referenced
+    const int K = 5;
+              ^
+
+107 errors detected in the compilation of "Test_name.c".

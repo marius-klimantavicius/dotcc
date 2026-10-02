@@ -1,0 +1,118 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 11: error: excessive recursion at instantiation of class "DerivedType<336>"
+  class DerivedType : public DerivedType< Seq - 1 > { };
+                             ^
+          detected during:
+            instantiation of class "DerivedType<Seq> [with Seq=337]" at line 11
+            instantiation of class "DerivedType<Seq> [with Seq=338]" at line 11
+            instantiation of class "DerivedType<Seq> [with Seq=339]" at line 11
+            instantiation of class "DerivedType<Seq> [with Seq=340]" at line 11
+            instantiation of class "DerivedType<Seq> [with Seq=341]" at line 11
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "DerivedType<Seq> [with Seq=396]" at line 11
+            instantiation of class "DerivedType<Seq> [with Seq=397]" at line 11
+            instantiation of class "DerivedType<Seq> [with Seq=398]" at line 11
+            instantiation of class "DerivedType<Seq> [with Seq=399]" at line 11
+            instantiation of class "DerivedType<Seq> [with Seq=400]" at line 17
+
+"Test_name.c", line 11: error: incomplete type "DerivedType<336>" is not allowed
+  class DerivedType : public DerivedType< Seq - 1 > { };
+                             ^
+          detected during:
+            instantiation of class "DerivedType<Seq> [with Seq=337]" at line 11
+            instantiation of class "DerivedType<Seq> [with Seq=338]" at line 11
+            instantiation of class "DerivedType<Seq> [with Seq=339]" at line 11
+            instantiation of class "DerivedType<Seq> [with Seq=340]" at line 11
+            instantiation of class "DerivedType<Seq> [with Seq=341]" at line 11
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "DerivedType<Seq> [with Seq=396]" at line 11
+            instantiation of class "DerivedType<Seq> [with Seq=397]" at line 11
+            instantiation of class "DerivedType<Seq> [with Seq=398]" at line 11
+            instantiation of class "DerivedType<Seq> [with Seq=399]" at line 11
+            instantiation of class "DerivedType<Seq> [with Seq=400]" at line 17
+
+"Test_name.c", line 18: error: class "DerivedType<400>" has no member "i"
+    d.i = 42;
+      ^
+
+"Test_name.c", line 19: error: class "DerivedType<400>" has no member "i"
+    d.i = 42;
+      ^
+
+"Test_name.c", line 20: error: class "DerivedType<400>" has no member "i"
+    d.i = 42;
+      ^
+
+"Test_name.c", line 21: error: class "DerivedType<400>" has no member "i"
+    d.i = 42;
+      ^
+
+"Test_name.c", line 22: error: class "DerivedType<400>" has no member "i"
+    d.i = 42;
+      ^
+
+"Test_name.c", line 23: error: class "DerivedType<400>" has no member "i"
+    d.i = 42;
+      ^
+
+"Test_name.c", line 24: error: class "DerivedType<400>" has no member "i"
+    d.i = 42;
+      ^
+
+"Test_name.c", line 25: error: class "DerivedType<400>" has no member "i"
+    d.i = 42;
+      ^
+
+"Test_name.c", line 26: error: class "DerivedType<400>" has no member "i"
+    d.i = 42;
+      ^
+
+"Test_name.c", line 27: error: class "DerivedType<400>" has no member "i"
+    d.i = 42;
+      ^
+
+"Test_name.c", line 28: error: class "DerivedType<400>" has no member "i"
+    d.i = 42;
+      ^
+
+"Test_name.c", line 29: error: class "DerivedType<400>" has no member "i"
+    d.i = 42;
+      ^
+
+"Test_name.c", line 30: error: class "DerivedType<400>" has no member "i"
+    d.i = 42;
+      ^
+
+"Test_name.c", line 31: error: class "DerivedType<400>" has no member "i"
+    d.i = 42;
+      ^
+
+"Test_name.c", line 32: error: class "DerivedType<400>" has no member "i"
+    d.i = 42;
+      ^
+
+"Test_name.c", line 33: error: class "DerivedType<400>" has no member "i"
+    d.i = 42;
+      ^
+
+"Test_name.c", line 34: error: class "DerivedType<400>" has no member "i"
+    d.i = 42;
+      ^
+
+"Test_name.c", line 35: error: class "DerivedType<400>" has no member "i"
+    d.i = 42;
+      ^
+
+"Test_name.c", line 36: error: class "DerivedType<400>" has no member "i"
+    d.i = 42;
+      ^
+
+"Test_name.c", line 37: error: class "DerivedType<400>" has no member "i"
+    d.i = 42;
+      ^
+
+"Test_name.c", line 38: error: class "DerivedType<400>" has no member "i"
+    return d.i;
+             ^
+
+23 errors detected in the compilation of "Test_name.c".

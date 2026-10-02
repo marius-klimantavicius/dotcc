@@ -1,0 +1,238 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 --exceptions Test_name.c
+"Test_name.c", line 10: error: expected a string literal
+  static_assert (true, (""));	// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                       ^
+
+"Test_name.c", line 13: error: expected a ")"
+  static_assert (true, "" + 0);	// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                          ^
+
+"Test_name.c", line 16: error: expected a string literal
+  static_assert (true, 0);	// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                       ^
+
+"Test_name.c", line 20: error: expected a string literal
+  static_assert (true, A {});	// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                       ^
+
+"Test_name.c", line 24: error: expected a string literal
+  static_assert (true, B {});	// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                       ^
+
+"Test_name.c", line 28: error: expected a string literal
+  static_assert (true, C {});	// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                       ^
+
+"Test_name.c", line 32: error: expected a string literal
+  static_assert (true, D {});	// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                       ^
+
+"Test_name.c", line 36: error: expected a string literal
+  static_assert (true, E {});	// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                       ^
+
+"Test_name.c", line 41: error: expected a string literal
+  static_assert (true, F {});	// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                       ^
+
+"Test_name.c", line 47: error: expected a string literal
+  static_assert (true, G {});	// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                       ^
+
+"Test_name.c", line 52: error: expected a string literal
+  static_assert (true, H {});	// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                       ^
+
+"Test_name.c", line 55: error: expected a string literal
+  static_assert (true, I {});	// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                       ^
+
+"Test_name.c", line 60: error: expected a string literal
+  static_assert (true, J (1));	// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                       ^
+
+"Test_name.c", line 61: error: expected a string literal
+  static_assert (false, J (0));	// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                        ^
+
+"Test_name.c", line 63: error: expected a string literal
+  static_assert (false, J (1));	// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                        ^
+
+"Test_name.c", line 65: warning: constexpr non-static member function will not be implicitly 'const' in C++14
+  struct K { constexpr operator int () { return 4; } };
+             ^
+
+"Test_name.c", line 66: warning: constexpr non-static member function will not be implicitly 'const' in C++14
+  struct L { constexpr operator const char * () { return "test"; } };
+             ^
+
+"Test_name.c", line 69: error: expected a string literal
+  static_assert (true, M {});	// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                       ^
+
+"Test_name.c", line 70: error: expected a string literal
+  static_assert (false, M {});	// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                        ^
+
+"Test_name.c", line 82: error: expected a string literal
+  static_assert (false, O {});	// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                        ^
+
+"Test_name.c", line 88: error: expected a string literal
+  static_assert (false, P (0));	// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                        ^
+
+"Test_name.c", line 90: error: expected a string literal
+  static_assert (false, P (2));	// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                        ^
+
+"Test_name.c", line 96: error: expected a string literal
+  static_assert (false, Q (0));	// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                        ^
+
+"Test_name.c", line 98: error: expected a string literal
+  static_assert (false, Q (1));	// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                        ^
+
+"Test_name.c", line 105: error: expected a string literal
+  static_assert (false, R (0));	// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                        ^
+
+"Test_name.c", line 107: error: expected a string literal
+  static_assert (false, R (2));	// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                        ^
+
+"Test_name.c", line 113: error: expected a string literal
+  static_assert (true, S {});	// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                       ^
+
+"Test_name.c", line 114: error: expected a string literal
+  static_assert (false, S {});	// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                        ^
+
+"Test_name.c", line 127: error: expected a string literal
+  static_assert (true, string_view{});				// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                       ^
+
+"Test_name.c", line 128: error: expected a string literal
+  static_assert (false, string_view ("test"));			// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                        ^
+
+"Test_name.c", line 130: error: expected a string literal
+  static_assert (false, string_view ("א"));			// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                        ^
+
+"Test_name.c", line 132: error: expected a string literal
+  static_assert (false, string_view (0, nullptr));		// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                        ^
+
+"Test_name.c", line 134: error: expected a string literal
+  static_assert (false, string_view (4, "testwithextrachars"));	// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                        ^
+
+"Test_name.c", line 136: error: expected a string literal
+  static_assert (false, string_view (42, "test"));		// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                        ^
+
+"Test_name.c", line 146: error: expected a string literal
+  static_assert (true, array<char, 2> { 'O', 'K' });		// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                       ^
+
+"Test_name.c", line 147: error: expected a string literal
+  static_assert (true, array<wchar_t, 2> { L'O', L'K' });		// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                       ^
+
+"Test_name.c", line 150: error: expected a string literal
+  static_assert (false, array<char, 4> { 't', 'e', 's', 't' });	// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                        ^
+
+"Test_name.c", line 157: error: expected a string literal
+    static_assert (false, a);					// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                          ^
+
+"Test_name.c", line 156: warning: variable "a" was declared but never referenced
+    constexpr auto a = array<char, 4> { 't', 'e', 's', 't' };
+                   ^
+
+"Test_name.c", line 181: error: expected a string literal
+  static_assert (true, W{});		// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                       ^
+
+"Test_name.c", line 185: error: expected a string literal
+  static_assert (true, X{});		// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                       ^
+
+"Test_name.c", line 187: warning: constexpr non-static member function will not be implicitly 'const' in C++14
+  struct Y { constexpr int size () { return 4; }
+             ^
+
+"Test_name.c", line 188: warning: constexpr non-static member function will not be implicitly 'const' in C++14
+  	   constexpr const char *data (int) { return "test"; } };
+  	   ^
+
+"Test_name.c", line 189: error: expected a string literal
+  static_assert (true, Y{});		// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                       ^
+
+"Test_name.c", line 204: error: expected a string literal
+    static_assert (true, A<int>{});	// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                         ^
+
+"Test_name.c", line 217: error: expected a string literal
+    static_assert (true, C{});		// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                         ^
+
+"Test_name.c", line 235: error: expected a string literal
+      static_assert (false, T{});	// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                            ^
+
+"Test_name.c", line 239: error: expected a string literal
+      static_assert (false, T{});	// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                            ^
+
+"Test_name.c", line 245: error: expected a string literal
+    static_assert (false, "foo"_myd);	// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                          ^
+
+"Test_name.c", line 248: error: expected a ")"
+    static_assert (false, "foo" + E{});	// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                                ^
+
+"Test_name.c", line 248: error: static assertion failed with "foo"
+    static_assert (false, "foo" + E{});	// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+    ^
+
+"Test_name.c", line 253: error: expected a string literal
+    static_assert (true, H{});		// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                         ^
+
+"Test_name.c", line 254: error: expected a string literal
+    static_assert (false, H{});		// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                          ^
+
+"Test_name.c", line 259: error: expected a string literal
+    static_assert (true, I{});		// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                         ^
+
+"Test_name.c", line 260: error: expected a string literal
+    static_assert (false, I{});		// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                          ^
+
+"Test_name.c", line 303: error: expected a string literal
+    static_assert (true, Q ());	// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                         ^
+
+"Test_name.c", line 304: error: expected a string literal
+    static_assert (false, Q {});	// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                          ^
+
+"Test_name.c", line 310: error: expected a string literal
+    static_assert (true, R ());	// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                         ^
+
+"Test_name.c", line 311: error: expected a string literal
+    static_assert (false, R {});	// { dg-warning "'static_assert' with non-string message only available with" "" { target c++23_down } }
+                          ^
+
+54 errors detected in the compilation of "Test_name.c".

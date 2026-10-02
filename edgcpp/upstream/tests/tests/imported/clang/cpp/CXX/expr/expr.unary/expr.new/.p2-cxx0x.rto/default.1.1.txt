@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 16: error: cannot deduce "auto" type (initializer required)
+    new auto; // expected-error{{new expression for type 'auto' requires a constructor argument}}
+        ^
+
+"Test_name.c", line 17: error: expected an expression
+    new (const auto)(); // expected-error{{new expression for type 'const auto' requires a constructor argument}}
+                     ^
+
+"Test_name.c", line 17: error: expected a ")"
+    new (const auto)(); // expected-error{{new expression for type 'const auto' requires a constructor argument}}
+                      ^
+
+"Test_name.c", line 18: error: expected a ")"
+    new (auto) (1,2,3); // expected-error{{new expression for type 'auto' contains multiple constructor arguments}}
+                 ^
+
+"Test_name.c", line 19: error: braced initialization of a variable declared with a placeholder type but without "=" requires exactly one element inside the braces
+    new auto {}; // expected-error{{new expression for type 'auto' requires a constructor argument}}
+             ^
+
+"Test_name.c", line 19: error: cannot deduce "auto" type
+    new auto {}; // expected-error{{new expression for type 'auto' requires a constructor argument}}
+        ^
+
+"Test_name.c", line 20: error: braced initialization of a variable declared with a placeholder type but without "=" requires exactly one element inside the braces
+    new auto {1,2,3}; // expected-error{{new expression for type 'auto' contains multiple constructor arguments}}
+             ^
+
+"Test_name.c", line 20: error: an #include <initializer_list> is needed prior to a use of std::initializer_list, including an implicit use
+    new auto {1,2,3}; // expected-error{{new expression for type 'auto' contains multiple constructor arguments}}
+             ^
+
+"Test_name.c", line 20: error: cannot deduce "auto" type
+    new auto {1,2,3}; // expected-error{{new expression for type 'auto' contains multiple constructor arguments}}
+        ^
+
+"Test_name.c", line 20: error: too many initializer values
+    new auto {1,2,3}; // expected-error{{new expression for type 'auto' contains multiple constructor arguments}}
+                ^
+
+"Test_name.c", line 21: error: braced initialization of a variable declared with a placeholder type but without "=" requires exactly one element inside the braces
+    new auto ({1,2,3}); // expected-error{{cannot deduce actual type for 'auto' from parenthesized initializer list}}
+              ^
+
+"Test_name.c", line 21: error: an #include <initializer_list> is needed prior to a use of std::initializer_list, including an implicit use
+    new auto ({1,2,3}); // expected-error{{cannot deduce actual type for 'auto' from parenthesized initializer list}}
+              ^
+
+"Test_name.c", line 21: error: cannot deduce "auto" type
+    new auto ({1,2,3}); // expected-error{{cannot deduce actual type for 'auto' from parenthesized initializer list}}
+        ^
+
+13 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp0x/pr58781.C", line 7: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+  operator""_s(const char32_t *a, size_t b)
+  ^
+
+"./cpp0x/pr58781.C", line 15: error: user-defined literal operator not found
+    using a = decltype(U"\x1181"_s);
+                       ^
+
+"./cpp0x/pr58781.C", line 16: error: user-defined literal operator not found
+    using b = decltype(U"\x8111"_s);
+                       ^
+
+"./cpp0x/pr58781.C", line 17: error: user-defined literal operator not found
+    using c = decltype(U" \x1181"_s);
+                       ^
+
+4 errors detected in the compilation of "Test_name.c".

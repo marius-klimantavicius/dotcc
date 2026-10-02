@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: error: invalid literal operator name
+  void operator "" "boo" _ya(unsigned long long); // { dg-error "expected empty string after" }
+                ^
+
+"Test_name.c", line 8: error: expected a ";"
+  void operator "" "boo" _ya(unsigned long long); // { dg-error "expected empty string after" }
+                         ^
+
+"Test_name.c", line 11: error: invalid literal operator name
+  void operator "" "boo"_ya(unsigned long long); // { dg-error "expected empty string after" }
+                ^
+
+"Test_name.c", line 13: error: invalid literal operator name
+  void operator "" u""_u(unsigned long long); // { dg-error "invalid encoding prefix in literal operator" }
+                ^
+
+"Test_name.c", line 15: error: invalid literal operator name
+  void operator u"" ""_v(unsigned long long); // { dg-error "invalid encoding prefix in literal operator" }
+                ^
+
+"Test_name.c", line 17: error: invalid literal operator name
+  void operator U"" ""_w(unsigned long long); // { dg-error "invalid encoding prefix in literal operator" }
+                ^
+
+"Test_name.c", line 19: error: invalid literal operator name
+  void operator L"" ""_x(unsigned long long); // { dg-error "invalid encoding prefix in literal operator" }
+                ^
+
+"Test_name.c", line 21: error: invalid literal operator name
+  void operator u8"" ""_y(unsigned long long); // { dg-error "invalid encoding prefix in literal operator" }
+                ^
+
+"Test_name.c", line 23: error: string literals with different character kinds cannot be concatenated
+  void operator u"" L""_z(unsigned long long); // { dg-error "concatenation of string literals with conflicting encoding prefixes" }
+                    ^
+
+"Test_name.c", line 23: error: invalid literal operator name
+  void operator u"" L""_z(unsigned long long); // { dg-error "concatenation of string literals with conflicting encoding prefixes" }
+                ^
+
+"Test_name.c", line 26: error: user-defined literal suffix does not match the earlier "_p"
+  void operator ""_p ""_q(unsigned long long); // { dg-error "inconsistent user-defined literal suffixes" }
+                       ^
+
+"Test_name.c", line 26: error: invalid literal operator name
+  void operator ""_p ""_q(unsigned long long); // { dg-error "inconsistent user-defined literal suffixes" }
+                         ^
+
+"Test_name.c", line 28: error: invalid literal operator name
+  void operator "" "" while(unsigned long long); // { dg-error "unexpected keyword; remove space between quotes and suffix identifier" }
+                      ^
+
+"Test_name.c", line 28: error: expected a ";"
+  void operator "" "" while(unsigned long long); // { dg-error "unexpected keyword; remove space between quotes and suffix identifier" }
+                      ^
+
+"Test_name.c", line 30: error: invalid literal operator name
+  void operator "" ""(unsigned long long); // { dg-error "expected suffix identifier" }
+                     ^
+
+15 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=2 -tused --c++11 --g++ Test_name.c
+"Test_name.c", line 26: warning: "void foo(lookup::S<T> &)" declares a non-template function -- add <> to refer to a template instance
+      friend void foo(S &s);
+                  ^
+
+"Test_name.c", line 55: error: no instance of function template "friend_templ_func::h" matches the argument list
+      h<C<A>>();                  // known issue in g++ mode
+      ^
+"Test_name.c", line 51: note: substituting explicit template arguments "<friend_templ_func::C<friend_templ_func::A>>" for function template "friend_templ_func::h" failed
+    decltype(f(T4{}, 1)) h();
+                         ^
+
+"Test_name.c", line 16: error: no instance of overloaded function "lookup::foo" matches the argument list
+            argument types are: (lookup::S<int>)
+      foo(s);
+      ^
+"Test_name.c", line 10: note: function "lookup::foo(int)" does not match because argument #1 does not match parameter
+    void foo(int)
+         ^
+
+2 errors detected in the compilation of "Test_name.c".

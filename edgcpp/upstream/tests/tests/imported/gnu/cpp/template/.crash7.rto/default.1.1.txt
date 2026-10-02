@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 12: warning: template parameter "<unnamed>" is not used in declaring the parameter types of function template "A<<unnamed>>::A"
+      template <typename> A(typename A::X) {} // { dg-error "does not name a type" }
+                        ^
+
+"Test_name.c", line 12: error: class "A<void>" has no member "X"
+      template <typename> A(typename A::X) {} // { dg-error "does not name a type" }
+                                        ^
+          detected during instantiation of class "A<<unnamed>> [with <unnamed>=void]" at line 15
+
+"Test_name.c", line 15: error: no default constructor exists for class "A<void>"
+  A<void> a;			// { dg-error "no match" }
+          ^
+
+2 errors detected in the compilation of "Test_name.c".

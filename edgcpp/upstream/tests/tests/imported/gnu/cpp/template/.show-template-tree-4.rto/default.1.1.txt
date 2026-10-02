@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 19: error: no suitable user-defined conversion from "s<0, 2, 2>" to "s<0, 1, 2>" exists
+    takes_s (s<0, 2>()); // { dg-error "could not convert '.*' from 's<.\\.\\.\\..,2>' to 's<.\\.\\.\\..,1>'" }
+             ^
+
+"Test_name.c", line 26: error: no suitable user-defined conversion from "s<1, 1, 2>" to "s<0, 1, 2>" exists
+    takes_s (s<1>()); // { dg-error "could not convert '.*' from 's<1>' to 's<0>'" }
+             ^
+
+"Test_name.c", line 32: error: no suitable user-defined conversion from "s<0, 1, 3>" to "s<0, 1, 2>" exists
+    takes_s (s<0, 1, 3>()); // { dg-error "could not convert '.*' from 's<.\\.\\.\\..,.\\.\\.\\..,3>' to 's<.\\.\\.\\..,.\\.\\.\\..,2>'" }
+             ^
+
+"Test_name.c", line 40: error: no suitable user-defined conversion from "s<3, 2, 0>" to "s<0, 1, 2>" exists
+    takes_s (s<3, 2, 0>()); // { dg-error "could not convert '.*' from 's<3,2,0>' to 's<0,1,2>'" }
+             ^
+
+"Test_name.c", line 48: error: no suitable user-defined conversion from "s<3, 2, 1>" to "s<0, 1, 2>" exists
+    takes_s (s<3, 2, 1>()); // { dg-error "could not convert '.*' from 's<3,2,1>' to 's<0,1,2>'" }
+             ^
+
+"Test_name.c", line 56: error: no suitable user-defined conversion from "s<0, 1, 2>" to "s<0, 1, 3>" exists
+    takes_s013 (s<0, 1, 2>()); // { dg-error "could not convert '.*' from 's<.\\.\\.\\..,.\\.\\.\\..,2>' to 's<.\\.\\.\\..,.\\.\\.\\..,3>'" }
+                ^
+
+"Test_name.c", line 64: error: no suitable user-defined conversion from "s<0, 1, 2>" to "s<3, 2, 1>" exists
+    takes_s321 (s<>());        // { dg-error "could not convert '.*' from 's<0,1,2>' to 's<3,2,1>'" }
+                ^
+
+"Test_name.c", line 72: error: no suitable user-defined conversion from "s<0, 1, 3>" to "s<3, 2, 1>" exists
+    takes_s321 (s<0, 1, 3>()); // { dg-error "could not convert '.*' from 's<0,1,3>' to 's<3,2,1>'" }
+                ^
+
+"Test_name.c", line 80: error: no suitable user-defined conversion from "s<3, 2, 0>" to "s<3, 2, 1>" exists
+    takes_s321 (s<3, 2, 0>()); // { dg-error "could not convert '.*' from 's<.\\.\\.\\..,.\\.\\.\\..,0>' to 's<.\\.\\.\\..,.\\.\\.\\..,1>'" }
+                ^
+
+"Test_name.c", line 90: error: no suitable user-defined conversion from "s<1, 2, 3>" to "s<3, 2, 1>" exists
+    takes_s321 (s<1, 2, 3>()); // { dg-error "could not convert '.*' from 's<1,.\\.\\.\\..,3>' to 's<3,.\\.\\.\\..,1>'" }
+                ^
+
+10 errors detected in the compilation of "Test_name.c".

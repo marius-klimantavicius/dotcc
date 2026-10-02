@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 11: error: a field declaration cannot have a type involving a variable length array
+    struct S { int ar[1][i]; } s;
+                   ^
+
+"Test_name.c", line 23: error: a field declaration cannot have a type involving a variable length array
+    union U { int ar[1][i]; } u;
+                  ^
+
+2 errors detected in the compilation of "Test_name.c".

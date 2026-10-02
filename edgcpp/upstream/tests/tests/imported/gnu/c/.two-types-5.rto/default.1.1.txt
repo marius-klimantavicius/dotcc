@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c89 --strict_gnu Test_name.c
+"Test_name.c", line 7: error: expected a ";"
+  struct g {} /* { dg-error "expected ';', identifier or " } */
+  ^
+
+"Test_name.c", line 8: error: expected a ";"
+  int f(); /* { dg-error "expected ';', identifier or " } */
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

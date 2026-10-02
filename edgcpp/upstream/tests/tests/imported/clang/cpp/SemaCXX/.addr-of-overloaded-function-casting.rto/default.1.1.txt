@@ -1,0 +1,130 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 20: error: cannot determine which instance of overloaded function "f" is intended
+    { bool b = (void (&)(char))f; } // expected-error{{does not match required type}}
+                               ^
+
+"Test_name.c", line 21: error: cannot determine which instance of overloaded function "f" is intended
+    { bool b = (void (*)(char))f; } // expected-error{{does not match required type}}
+                               ^
+
+"Test_name.c", line 23: warning: variable "b" was declared but never referenced
+    { bool b = (void (&)(int))f; } //ok
+           ^
+
+"Test_name.c", line 24: warning: variable "b" was declared but never referenced
+    { bool b = (void (*)(int))f; } //ok
+           ^
+
+"Test_name.c", line 26: error: cannot determine which instance of overloaded function "f" is intended
+    { bool b = static_cast<void (&)(char)>(f); } // expected-error{{does not match}}
+                                           ^
+
+"Test_name.c", line 27: error: cannot determine which instance of overloaded function "f" is intended
+    { bool b = static_cast<void (*)(char)>(f); } // expected-error{{address of overloaded function}}
+                                           ^
+
+"Test_name.c", line 29: warning: variable "b" was declared but never referenced
+    { bool b = static_cast<void (&)(int)>(f); } //ok
+           ^
+
+"Test_name.c", line 30: warning: variable "b" was declared but never referenced
+    { bool b = static_cast<void (*)(int)>(f); } //ok
+           ^
+
+"Test_name.c", line 33: error: cannot determine which instance of overloaded function "f" is intended
+    { bool b = reinterpret_cast<void (&)(char)>(f); } // expected-error{{cannot resolve}}
+                                                ^
+
+"Test_name.c", line 34: error: cannot determine which instance of overloaded function "f" is intended
+    { bool b = reinterpret_cast<void (*)(char)>(f); } // expected-error{{cannot resolve}}
+                                                ^
+
+"Test_name.c", line 36: warning: variable "b" was declared but never referenced
+    { bool b = reinterpret_cast<void (*)(char)>(g); } //ok
+           ^
+
+"Test_name.c", line 37: error: invalid type conversion
+    { bool b = static_cast<void (*)(char)>(g); } // expected-error{{not allowed}}
+               ^
+
+"Test_name.c", line 39: error: cannot determine which instance of overloaded function "f" is intended
+    { bool b = reinterpret_cast<void (&)(int)>(f); } // expected-error{{cannot resolve}}
+                                               ^
+
+"Test_name.c", line 40: error: cannot determine which instance of overloaded function "f" is intended
+    { bool b = reinterpret_cast<void (*)(int)>(f); } // expected-error{{cannot resolve}}
+                                               ^
+
+"Test_name.c", line 42: error: cannot determine which instance of overloaded function "t" is intended
+    { bool b = (int (&)(char))t; } // expected-error{{does not match}}
+                              ^
+
+"Test_name.c", line 43: error: cannot determine which instance of overloaded function "t" is intended
+    { bool b = (int (*)(char))t; } // expected-error{{does not match}}
+                              ^
+
+"Test_name.c", line 45: warning: variable "b" was declared but never referenced
+    { bool b = (void (&)(int))t; } //ok
+           ^
+
+"Test_name.c", line 46: warning: variable "b" was declared but never referenced
+    { bool b = (void (*)(int))t; } //ok
+           ^
+
+"Test_name.c", line 48: warning: variable "b" was declared but never referenced
+    { bool b = static_cast<void (&)(char)>(t); } //ok
+           ^
+
+"Test_name.c", line 49: warning: variable "b" was declared but never referenced
+    { bool b = static_cast<void (*)(char)>(t); } //ok
+           ^
+
+"Test_name.c", line 51: warning: variable "b" was declared but never referenced
+    { bool b = static_cast<void (&)(int)>(t); } //ok
+           ^
+
+"Test_name.c", line 52: warning: variable "b" was declared but never referenced
+    { bool b = static_cast<void (*)(int)>(t); } //ok
+           ^
+
+"Test_name.c", line 55: error: cannot determine which instance of overloaded function "t" is intended
+    { bool b = reinterpret_cast<void (&)(char)>(t); } // expected-error{{cannot resolve}}
+                                                ^
+
+"Test_name.c", line 56: error: cannot determine which instance of overloaded function "t" is intended
+    { bool b = reinterpret_cast<void (*)(char)>(t); } // expected-error{{cannot resolve}}
+                                                ^
+
+"Test_name.c", line 58: warning: variable "b" was declared but never referenced
+    { bool b = reinterpret_cast<int (*)(char)>(g); } //ok
+           ^
+
+"Test_name.c", line 59: error: cannot determine which instance of overloaded function "t" is intended
+    { bool b = static_cast<int (*)(char)>(t); } // expected-error{{cannot be static_cast}}
+                                          ^
+
+"Test_name.c", line 60: error: cannot determine which instance of overloaded function "t" is intended
+    { bool b = static_cast<int (&)(char)>(t); } // expected-error{{does not match required}}
+                                          ^
+
+"Test_name.c", line 62: error: cannot determine which instance of overloaded function "f" is intended
+    { bool b = static_cast<void (&)(char)>(f); } // expected-error{{does not match}}
+                                           ^
+
+"Test_name.c", line 69: error: function "a" may not be initialized
+      FnType a = static_cast<FnType>(f); // expected-error{{address of overloaded function}}
+               ^
+
+"Test_name.c", line 69: error: cast to type "FnType" (aka "void (int)") is not allowed
+      FnType a = static_cast<FnType>(f); // expected-error{{address of overloaded function}}
+                             ^
+
+"Test_name.c", line 70: error: function "b" may not be initialized
+      FnType b = (FnType)(f); // expected-error{{address of overloaded function}}
+               ^
+
+"Test_name.c", line 70: error: cast to type "FnType" (aka "void (int)") is not allowed
+      FnType b = (FnType)(f); // expected-error{{address of overloaded function}}
+                  ^
+
+20 errors detected in the compilation of "Test_name.c".

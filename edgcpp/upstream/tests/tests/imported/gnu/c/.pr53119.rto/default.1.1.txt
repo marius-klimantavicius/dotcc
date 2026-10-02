@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 16: warning: variable "az" was declared but never referenced
+    struct a az = { 0 };
+             ^
+
+"Test_name.c", line 17: warning: variable "anz" was declared but never referenced
+    struct a anz = { 1 };   /* { dg-warning "missing initializer for" } */
+             ^
+
+"Test_name.c", line 18: warning: variable "aez" was declared but never referenced
+    struct a aez = { 0, 0 };   /* { dg-warning "missing initializer for" } */
+             ^
+
+"Test_name.c", line 20: warning: variable "bz" was declared but never referenced
+    struct b bz = { 0 };
+             ^
+
+"Test_name.c", line 21: warning: variable "bnz" was declared but never referenced
+    struct b bnz = { 0, 0, 0, 0, 0, 0 };  /* { dg-warning "missing braces" }  */
+             ^
+

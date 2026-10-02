@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 11: warning: enumerated type mixed with another type
+    enum e e, q = 0; /* { dg-warning "17:enum conversion from 'int' to 'enum e' in initialization is invalid" } */
+                  ^
+
+"Test_name.c", line 12: warning: enumerated type mixed with another type
+    e = 0; /* { dg-warning "5:enum conversion from 'int' to 'enum e' in assignment is invalid" } */
+      ^
+
+"Test_name.c", line 13: warning: expression has no effect
+    1; return 0; /* { dg-warning "13:enum conversion from 'int' to 'enum e' in return is invalid" } */
+    ^
+
+"Test_name.c", line 13: warning: enumerated type mixed with another type
+    1; return 0; /* { dg-warning "13:enum conversion from 'int' to 'enum e' in return is invalid" } */
+              ^
+
+"Test_name.c", line 11: warning: variable "e" was set but never used
+    enum e e, q = 0; /* { dg-warning "17:enum conversion from 'int' to 'enum e' in initialization is invalid" } */
+           ^
+
+"Test_name.c", line 11: warning: variable "q" was declared but never referenced
+    enum e e, q = 0; /* { dg-warning "17:enum conversion from 'int' to 'enum e' in initialization is invalid" } */
+              ^
+

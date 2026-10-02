@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 7: error: a parameter pack cannot have a default
+  template<typename... Args = int>  // { dg-error "cannot have a default" }
+                            ^
+
+"Test_name.c", line 8: error: default argument is not allowed
+  void f(Args... args = 0); // { dg-error "cannot have a default argument" }
+                      ^
+
+"Test_name.c", line 11: error: default argument is not allowed
+  void g(Args... = 0); // { dg-error "cannot have a default argument" }
+                 ^
+
+"Test_name.c", line 14: error: a parameter pack cannot have a default
+  template<int, typename T = A, int T::*...p = 0 > struct B {}; // { dg-error "cannot have a default argument|no default argument" }
+                                             ^
+
+"Test_name.c", line 18: error: a parameter pack cannot have a default
+  template<int, typename T = A, int T::*... = 0 > struct C {}; // { dg-error "cannot have a default argument|no default argument" }
+                                            ^
+
+5 errors detected in the compilation of "Test_name.c".

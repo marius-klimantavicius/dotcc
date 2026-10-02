@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 21: error: declaration is incompatible with previous "i" (declared at line 4)
+      long i; // { dg-error "10:conflicting C language linkage" }
+           ^
+
+"Test_name.c", line 22: error: declaration is incompatible with previous "f" (declared at line 5)
+      double f; // { dg-error "12:conflicting C language linkage" }
+             ^
+
+"Test_name.c", line 23: warning: more than one instance of overloaded function "OK::fn" has "C" linkage
+      int fn (); // { dg-error "9:conflicting C language linkage" }
+          ^
+
+2 errors detected in the compilation of "Test_name.c".

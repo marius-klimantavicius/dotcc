@@ -1,0 +1,22 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --gnu_version=80200 -tused -e 200 --no_wrap Test_name.c
+"./ext/mv17.C", line 18: error: target attribute not recognized
+  int bar () __attribute__((target("arch=btver2")));
+                                   ^
+
+"./ext/mv17.C", line 19: error: target attribute not recognized
+  int bar () __attribute__((target("arch=haswell")));
+                                   ^
+
+"./ext/mv17.C", line 82: error: target attribute not recognized
+  int __attribute__ ((target("arch=btver2")))
+                             ^
+
+"./ext/mv17.C", line 88: error: target attribute not recognized
+  int __attribute__ ((target("arch=haswell")))
+                             ^
+
+"./ext/mv17.C", line 89: error: function "bar" has already been defined (previous definition at line 83)
+  bar ()
+  ^
+
+5 errors detected in the compilation of "Test_name.c".

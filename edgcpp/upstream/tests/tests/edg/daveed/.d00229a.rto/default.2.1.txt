@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=2 --g++ -DNEG Test_name.c
+"Test_name.c", line 19: error: an asm name is not allowed on a nonstatic member declaration
+  	int field __asm__("myfield");
+  	                  ^
+
+"Test_name.c", line 23: warning: function declared with "noreturn" does return
+  void S::n() {}
+               ^
+
+1 error detected in the compilation of "Test_name.c".

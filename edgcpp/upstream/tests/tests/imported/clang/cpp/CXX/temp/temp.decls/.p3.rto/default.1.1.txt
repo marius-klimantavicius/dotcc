@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 6: error: a template-id is not allowed
+  template<typename T> using A<T*> = char; // expected-error {{partial specialization of alias templates is not permitted}}
+                             ^
+
+"Test_name.c", line 7: error: an alias template cannot be explicitly specialized
+  template<> using A<char> = char; // expected-error {{explicit specialization of alias templates is not permitted}}
+  ^
+
+"Test_name.c", line 8: error: expected an identifier
+  template using A<char> = char; // expected-error {{explicit instantiation of alias templates is not permitted}}
+           ^
+
+"Test_name.c", line 8: error: invalid explicit instantiation declaration
+  template using A<char> = char; // expected-error {{explicit instantiation of alias templates is not permitted}}
+           ^
+
+"Test_name.c", line 9: error: "A" has already been declared in the current scope
+  using A<char> = char; // expected-error {{name defined in alias declaration must be an identifier}}
+        ^
+
+5 errors detected in the compilation of "Test_name.c".

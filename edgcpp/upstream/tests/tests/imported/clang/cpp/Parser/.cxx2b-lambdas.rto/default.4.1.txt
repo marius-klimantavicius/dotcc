@@ -1,0 +1,138 @@
+fe_only -DTEST_NUMBER=4 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 18: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  auto L0 = [] constexpr {}; // cxx11-error {{return type 'void' is not a literal type}}
+               ^
+
+"Test_name.c", line 20: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  auto L1 = [] mutable {};
+               ^
+
+"Test_name.c", line 22: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  auto L2 = [] noexcept {};
+               ^
+
+"Test_name.c", line 23: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  auto L3 = [] constexpr mutable {}; // cxx11-error {{return type 'void' is not a literal type}}
+               ^
+
+"Test_name.c", line 24: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  auto L4 = [] mutable constexpr {}; // cxx11-error {{return type 'void' is not a literal type}}
+               ^
+
+"Test_name.c", line 25: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  auto L5 = [] constexpr mutable noexcept {}; // cxx11-error {{return type 'void' is not a literal type}}
+               ^
+
+"Test_name.c", line 27: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  auto L6 = [s = 1] mutable {};
+                    ^
+
+"Test_name.c", line 29: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  auto L7 = [s = 1] constexpr mutable noexcept {}; // cxx11-error {{return type 'void' is not a literal type}}
+                    ^
+
+"Test_name.c", line 31: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  auto L8 = [] -> bool { return true; };
+               ^
+
+"Test_name.c", line 32: warning: explicit lambda template parameters are a C++20 feature
+  auto L9 = []<typename T> { return true; };
+              ^
+
+"Test_name.c", line 32: warning: template parameter "T" is not used in declaring the parameter types of function template "lambda []()->auto::operator auto (*)()"
+  auto L9 = []<typename T> { return true; };
+                        ^
+
+"Test_name.c", line 34: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  auto L10 = []<typename T> noexcept { return true; };
+                            ^
+
+"Test_name.c", line 34: warning: template parameter "T" is not used in declaring the parameter types of function template "lambda []()->auto noexcept::operator auto (*)() noexcept"
+  auto L10 = []<typename T> noexcept { return true; };
+                         ^
+
+"Test_name.c", line 36: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  auto L11 = []<typename T> -> bool { return true; };
+                            ^
+
+"Test_name.c", line 36: warning: template parameter "T" is not used in declaring the parameter types of function template "lambda []()->bool::operator auto (*)()->bool"
+  auto L11 = []<typename T> -> bool { return true; };
+                         ^
+
+"Test_name.c", line 46: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  auto XL0 = [] mutable constexpr mutable {};    // expected-error{{cannot appear multiple times}} cxx11-error {{return type 'void' is not a literal type}}
+                ^
+
+"Test_name.c", line 46: error: duplicate specifier in declaration
+  auto XL0 = [] mutable constexpr mutable {};    // expected-error{{cannot appear multiple times}} cxx11-error {{return type 'void' is not a literal type}}
+                                  ^
+
+"Test_name.c", line 47: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  auto XL1 = [] constexpr mutable constexpr {};  // expected-error{{cannot appear multiple times}} cxx11-error {{return type 'void' is not a literal type}}
+                ^
+
+"Test_name.c", line 47: error: duplicate specifier in declaration
+  auto XL1 = [] constexpr mutable constexpr {};  // expected-error{{cannot appear multiple times}} cxx11-error {{return type 'void' is not a literal type}}
+                                  ^
+
+"Test_name.c", line 48: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  auto XL2 = []) constexpr mutable constexpr {}; // expected-error{{expected body of lambda expression}}
+               ^
+
+"Test_name.c", line 48: error: expected a "{" introducing a lambda body
+  auto XL2 = []) constexpr mutable constexpr {}; // expected-error{{expected body of lambda expression}}
+               ^
+
+"Test_name.c", line 48: error: expected a ";"
+  auto XL2 = []) constexpr mutable constexpr {}; // expected-error{{expected body of lambda expression}}
+               ^
+
+"Test_name.c", line 49: error: invalid specifier on a parameter
+  auto XL3 = []( constexpr mutable constexpr {}; // expected-error{{invalid storage class specifier}} \
+                 ^
+
+"Test_name.c", line 49: error: invalid storage class for a parameter
+  auto XL3 = []( constexpr mutable constexpr {}; // expected-error{{invalid storage class specifier}} \
+                           ^
+
+"Test_name.c", line 49: error: invalid specifier on a parameter
+  auto XL3 = []( constexpr mutable constexpr {}; // expected-error{{invalid storage class specifier}} \
+                                   ^
+
+"Test_name.c", line 49: error: explicit type is missing ("int" assumed)
+  auto XL3 = []( constexpr mutable constexpr {}; // expected-error{{invalid storage class specifier}} \
+                                             ^
+
+"Test_name.c", line 49: error: expected a ")"
+  auto XL3 = []( constexpr mutable constexpr {}; // expected-error{{invalid storage class specifier}} \
+                                             ^
+
+"Test_name.c", line 59: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  auto XL4 = [] requires true {}; // expected-error{{expected body}}
+                ^
+
+"Test_name.c", line 59: error: expected a "{" introducing a lambda body
+  auto XL4 = [] requires true {}; // expected-error{{expected body}}
+                ^
+
+"Test_name.c", line 59: error: expected a ";"
+  auto XL4 = [] requires true {}; // expected-error{{expected body}}
+                ^
+
+"Test_name.c", line 61: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  auto XL5 = []<auto> requires true requires true {}; // expected-error{{expected body}}
+                      ^
+
+"Test_name.c", line 61: error: expected a "{"
+  auto XL5 = []<auto> requires true requires true {}; // expected-error{{expected body}}
+                      ^
+
+At end of source: error: expected a "}"
+
+"Test_name.c", line 61: warning: constant "<unnamed>" is not used in declaring the parameter types of function template "lambda []()->auto::operator auto (*)()"
+  auto XL5 = []<auto> requires true requires true {}; // expected-error{{expected body}}
+                    ^
+
+At end of source: error: expected a ";"
+
+14 errors detected in the compilation of "Test_name.c".

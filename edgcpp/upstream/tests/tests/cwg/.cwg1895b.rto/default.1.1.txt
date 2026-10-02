@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++17 -A -tused Test_name.c
+"Test_name.c", line 8: error: variable "s" has an uninitialized const or reference member
+    } s;
+      ^
+
+1 error detected in the compilation of "Test_name.c".

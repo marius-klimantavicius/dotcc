@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=2 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 9: warning: this declaration has no storage class or type specifier
+  C2x(fallthrough)
+  ^
+
+"Test_name.c", line 9: error: expected a ";"
+  C2x(fallthrough)
+  ^
+
+"Test_name.c", line 24: warning: parsing restarts here after previous syntax error
+  C2x(selectany); // Known attribute not supported in C mode
+                ^
+
+"Test_name.c", line 27: warning: this declaration has no storage class or type specifier
+  C2x(frobble) // Unknown attribute
+  ^
+
+"Test_name.c", line 27: error: expected a ";"
+  C2x(frobble) // Unknown attribute
+  ^
+
+"Test_name.c", line 54: warning: parsing restarts here after previous syntax error
+  int has_nodiscard;
+                   ^
+
+2 errors detected in the compilation of "Test_name.c".

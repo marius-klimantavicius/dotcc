@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 5: error: this declaration has no storage class or type specifier
+  template<operator< struct A {}; // { dg-error "10:declaration" }
+           ^
+
+"Test_name.c", line 5: error: operator name is not allowed
+  template<operator< struct A {}; // { dg-error "10:declaration" }
+           ^
+
+"Test_name.c", line 5: error: expected a "," or ">"
+  template<operator< struct A {}; // { dg-error "10:declaration" }
+                     ^
+
+"Test_name.c", line 5: error: expected a declaration
+  template<operator< struct A {}; // { dg-error "10:declaration" }
+                              ^
+
+"Test_name.c", line 5: error: expected a ";"
+  template<operator< struct A {}; // { dg-error "10:declaration" }
+                              ^
+
+5 errors detected in the compilation of "Test_name.c".

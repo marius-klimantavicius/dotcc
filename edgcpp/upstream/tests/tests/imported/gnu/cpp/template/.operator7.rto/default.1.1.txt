@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++03 --no_strict_gnu Test_name.c
+"Test_name.c", line 6: error: expected an operator
+  template<operator T> void foo()         // { dg-error "before|template" }
+                    ^
+
+"Test_name.c", line 6: error: this declaration has no storage class or type specifier
+  template<operator T> void foo()         // { dg-error "before|template" }
+           ^
+
+"Test_name.c", line 6: error: expected a "," or ">"
+  template<operator T> void foo()         // { dg-error "before|template" }
+                    ^
+
+3 errors detected in the compilation of "Test_name.c".

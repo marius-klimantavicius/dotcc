@@ -1,0 +1,94 @@
+fe_only -DTEST_NUMBER=3 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++26 Test_name.c
+"Test_name.c", line 22: error: static assertion failed with "instantiated Invalid"
+  struct Invalid { static_assert(false, "instantiated Invalid"); }; // #err-invalid
+                   ^
+          detected during:
+            instantiation of class "Invalid<T> [with T=int]" at line 25
+            instantiation of "int f(T, Invalid<T>) [with T=int]" at line 28
+
+"Test_name.c", line 22: error: static assertion failed with "instantiated Invalid"
+  struct Invalid { static_assert(false, "instantiated Invalid"); }; // #err-invalid
+                   ^
+          detected during:
+            instantiation of class "Invalid<T> [with T=long]" at line 25
+            instantiation of "int f(T, Invalid<T>) [with T=long]" at line 41
+
+"Test_name.c", line 51: error: static assertion failed with "instantiated Invalid2"
+  struct Invalid2 { static_assert(false, "instantiated Invalid2"); }; // #err-qualifiers
+                    ^
+          detected during:
+            instantiation of class "Invalid2<T> [with T=int]" at line 54
+            instantiation of "int ref(T, Invalid2<T>) [with T=int]" at line 57
+
+"Test_name.c", line 92: error: static assertion failed
+  static_assert(__is_constructible(Movable, const Movable&));
+  ^
+
+"Test_name.c", line 102: error: static assertion failed
+  static_assert(__is_constructible(Movable, int));
+  ^
+
+"Test_name.c", line 119: error: static assertion failed with "instantiated member"
+          static_assert(false, "instantiated member"); //#err-qualified-member
+          ^
+          detected during instantiation of "auto Members<T>::g(auto) [with T=int [2], <auto-1>=int]" at line 136
+
+"Test_name.c", line 162: error: incomplete type "RefBinding::remove_reference<<unnamed>>" is not allowed
+  template <typename _Tp> remove_reference<_Tp>::type move(_Tp &&);
+                          ^
+
+"Test_name.c", line 188: error: static assertion failed
+    static_assert(sizeof(T) == 0); // #GH62096-err
+    ^
+"Test_name.c", line 188: note: the final comparison was 4 == 0
+    static_assert(sizeof(T) == 0); // #GH62096-err
+                            ^
+          detected during instantiation of class "GH62096::Oops<T> [with T=int]" at line 198
+
+"Test_name.c", line 188: error: static assertion failed
+    static_assert(sizeof(T) == 0); // #GH62096-err
+    ^
+"Test_name.c", line 188: note: the final comparison was 2 == 0
+    static_assert(sizeof(T) == 0); // #GH62096-err
+                            ^
+          detected during instantiation of class "GH62096::Oops<T> [with T=short]" at line 199
+
+"Test_name.c", line 306: error: more than one operator "+" matches these operands:
+            function "GH147374::operator+(GH147374::Bar, GH147374::String)" (declared at line 295)
+            function "GH147374::Bar::operator+(GH147374::String) const" (declared at line 294)
+            operand types are: GH147374::Bar + GH147374::String
+      a + b;
+        ^
+"Test_name.c", line 291: note: function template "GH147374::operator+(T, GH147374::String &&)" does not match because argument #2 does not match parameter
+  template <typename T> void operator+(T, String &&) = delete;
+                             ^
+"Test_name.c", line 306: note: built-in operator+(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+      a + b;
+        ^
+"Test_name.c", line 306: note: built-in operator+(<pointer to object>, <ptrdiff_t>) does not match because argument #1 does not match parameter
+      a + b;
+        ^
+"Test_name.c", line 306: note: built-in operator+(<ptrdiff_t>, <pointer to object>) does not match because argument #1 does not match parameter
+      a + b;
+        ^
+
+"Test_name.c", line 310: error: more than one operator "+" matches these operands:
+            function "GH147374::operator+(GH147374::Baz, GH147374::String)" (declared at line 300)
+            function "GH147374::Baz::operator+(GH147374::String)" (declared at line 299)
+            operand types are: GH147374::Baz + GH147374::String
+      z + b;
+        ^
+"Test_name.c", line 291: note: function template "GH147374::operator+(T, GH147374::String &&)" does not match because argument #2 does not match parameter
+  template <typename T> void operator+(T, String &&) = delete;
+                             ^
+"Test_name.c", line 310: note: built-in operator+(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+      z + b;
+        ^
+"Test_name.c", line 310: note: built-in operator+(<pointer to object>, <ptrdiff_t>) does not match because argument #1 does not match parameter
+      z + b;
+        ^
+"Test_name.c", line 310: note: built-in operator+(<ptrdiff_t>, <pointer to object>) does not match because argument #1 does not match parameter
+      z + b;
+        ^
+
+11 errors detected in the compilation of "Test_name.c".

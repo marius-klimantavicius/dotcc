@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 35: error: a variable-length array type is not allowed
+    int *compound_literal_vla = (int[i]){}; // compat-warning {{use of an empty initializer is incompatible with C standards before C23}} \
+                                 ^
+
+"Test_name.c", line 64: error: a compound literal is not allowed in an integral constant expression
+    _Static_assert((int){} == 0, "what?");  // compat-warning {{use of an empty initializer is incompatible with C standards before C23}} \
+                    ^
+
+"Test_name.c", line 14: warning: variable "s" was declared but never referenced
+    struct S { int x, y; } s = {}; // compat-warning {{use of an empty initializer is incompatible with C standards before C23}} \
+                           ^
+
+"Test_name.c", line 18: warning: variable "j" was declared but never referenced
+    int j = (int){}; // compat-warning {{use of an empty initializer is incompatible with C standards before C23}} \
+        ^
+
+"Test_name.c", line 27: warning: variable "unknown_size" was declared but never referenced
+    int unknown_size[] = {}; // pedantic-warning {{zero size arrays are an extension}} \
+        ^
+
+"Test_name.c", line 30: warning: variable "vla" was declared but never referenced
+    int vla[i] = {}; // compat-warning {{use of an empty initializer is incompatible with C standards before C23}} \
+        ^
+
+"Test_name.c", line 44: warning: variable "t1" was declared but never referenced
+    } t1 = { 1, {} }; // compat-warning {{use of an empty initializer is incompatible with C standards before C23}} \
+      ^
+
+"Test_name.c", line 47: warning: variable "t2" was declared but never referenced
+    struct T t2 = {
+             ^
+
+"Test_name.c", line 54: warning: variable "t3" was declared but never referenced
+    struct T t3 = {
+             ^
+
+2 errors detected in the compilation of "Test_name.c".

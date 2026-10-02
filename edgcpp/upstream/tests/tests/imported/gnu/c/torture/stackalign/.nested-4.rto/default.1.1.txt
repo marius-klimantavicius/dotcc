@@ -1,0 +1,14 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./torture/stackalign/nested-4.c", line 20: error: expected a ";"
+      {
+      ^
+
+"./torture/stackalign/nested-4.c", line 26: warning: parsing restarts here after previous syntax error
+    h();
+       ^
+
+"./torture/stackalign/nested-4.c", line 27: warning: label "lab" was declared but never referenced
+  lab:
+  ^
+
+1 error detected in the compilation of "Test_name.c".

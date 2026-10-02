@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --microsoft_v 1912 --ms_c++17 Test_name.c
+"Test_name.c", line 8: warning: exception specification for virtual function "B::f" is incompatible with that of overridden function "A::f"
+                virtual void f() { }
+                             ^
+

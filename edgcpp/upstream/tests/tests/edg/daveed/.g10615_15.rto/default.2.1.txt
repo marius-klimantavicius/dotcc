@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=2 --c++11 -A Test_name.c
+"Test_name.c", line 12: error: a value of type "A &(A::*)(const A &)" cannot be used to initialize an entity of type "pmf" (aka "A &(A::*)(A &&)")
+  pmf p = &A::operator=;
+          ^
+
+"Test_name.c", line 12: error: function "A::operator=(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+  pmf p = &A::operator=;
+              ^
+
+2 errors detected in the compilation of "Test_name.c".

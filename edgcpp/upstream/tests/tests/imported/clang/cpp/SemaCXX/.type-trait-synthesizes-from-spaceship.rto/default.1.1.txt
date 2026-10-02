@@ -1,0 +1,162 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 5: error: expected a type specifier
+  static_assert(!__builtin_lt_synthesizes_from_spaceship()); // expected-error {{expected a type}}
+                                                         ^
+
+"Test_name.c", line 5: error: expected a ","
+  static_assert(!__builtin_lt_synthesizes_from_spaceship()); // expected-error {{expected a type}}
+                                                         ^
+
+"Test_name.c", line 5: error: expected a type specifier
+  static_assert(!__builtin_lt_synthesizes_from_spaceship()); // expected-error {{expected a type}}
+                                                         ^
+
+"Test_name.c", line 6: error: expected a ","
+  static_assert(!__builtin_lt_synthesizes_from_spaceship(int)); // expected-error {{type trait requires 2 arguments; have 1 argument}}
+                                                            ^
+
+"Test_name.c", line 6: error: expected a type specifier
+  static_assert(!__builtin_lt_synthesizes_from_spaceship(int)); // expected-error {{type trait requires 2 arguments; have 1 argument}}
+                                                            ^
+
+"Test_name.c", line 7: error: expected a ")"
+  static_assert(!__builtin_lt_synthesizes_from_spaceship(int, int, int)); // expected-error {{type trait requires 2 arguments; have 3 argument}}
+                                                                 ^
+
+"Test_name.c", line 7: error: expected a string literal
+  static_assert(!__builtin_lt_synthesizes_from_spaceship(int, int, int)); // expected-error {{type trait requires 2 arguments; have 3 argument}}
+                                                                   ^
+
+"Test_name.c", line 7: error: expected a ";"
+  static_assert(!__builtin_lt_synthesizes_from_spaceship(int, int, int)); // expected-error {{type trait requires 2 arguments; have 3 argument}}
+                                                                       ^
+
+"Test_name.c", line 8: error: expected a type specifier
+  static_assert(!__builtin_lt_synthesizes_from_spaceship(int, 0)); // expected-error {{expected a type}}
+                                                              ^
+
+"Test_name.c", line 10: error: expected a type specifier
+  static_assert(!__builtin_le_synthesizes_from_spaceship()); // expected-error {{expected a type}}
+                                                         ^
+
+"Test_name.c", line 10: error: expected a ","
+  static_assert(!__builtin_le_synthesizes_from_spaceship()); // expected-error {{expected a type}}
+                                                         ^
+
+"Test_name.c", line 10: error: expected a type specifier
+  static_assert(!__builtin_le_synthesizes_from_spaceship()); // expected-error {{expected a type}}
+                                                         ^
+
+"Test_name.c", line 11: error: expected a ","
+  static_assert(!__builtin_le_synthesizes_from_spaceship(int)); // expected-error {{type trait requires 2 arguments; have 1 argument}}
+                                                            ^
+
+"Test_name.c", line 11: error: expected a type specifier
+  static_assert(!__builtin_le_synthesizes_from_spaceship(int)); // expected-error {{type trait requires 2 arguments; have 1 argument}}
+                                                            ^
+
+"Test_name.c", line 12: error: expected a ")"
+  static_assert(!__builtin_le_synthesizes_from_spaceship(int, int, int)); // expected-error {{type trait requires 2 arguments; have 3 argument}}
+                                                                 ^
+
+"Test_name.c", line 12: error: expected a string literal
+  static_assert(!__builtin_le_synthesizes_from_spaceship(int, int, int)); // expected-error {{type trait requires 2 arguments; have 3 argument}}
+                                                                   ^
+
+"Test_name.c", line 12: error: expected a ";"
+  static_assert(!__builtin_le_synthesizes_from_spaceship(int, int, int)); // expected-error {{type trait requires 2 arguments; have 3 argument}}
+                                                                       ^
+
+"Test_name.c", line 13: error: expected a type specifier
+  static_assert(!__builtin_le_synthesizes_from_spaceship(int, 0)); // expected-error {{expected a type}}
+                                                              ^
+
+"Test_name.c", line 15: error: expected a type specifier
+  static_assert(!__builtin_gt_synthesizes_from_spaceship()); // expected-error {{expected a type}}
+                                                         ^
+
+"Test_name.c", line 15: error: expected a ","
+  static_assert(!__builtin_gt_synthesizes_from_spaceship()); // expected-error {{expected a type}}
+                                                         ^
+
+"Test_name.c", line 15: error: expected a type specifier
+  static_assert(!__builtin_gt_synthesizes_from_spaceship()); // expected-error {{expected a type}}
+                                                         ^
+
+"Test_name.c", line 16: error: expected a ","
+  static_assert(!__builtin_gt_synthesizes_from_spaceship(int)); // expected-error {{type trait requires 2 arguments; have 1 argument}}
+                                                            ^
+
+"Test_name.c", line 16: error: expected a type specifier
+  static_assert(!__builtin_gt_synthesizes_from_spaceship(int)); // expected-error {{type trait requires 2 arguments; have 1 argument}}
+                                                            ^
+
+"Test_name.c", line 17: error: expected a ")"
+  static_assert(!__builtin_gt_synthesizes_from_spaceship(int, int, int)); // expected-error {{type trait requires 2 arguments; have 3 argument}}
+                                                                 ^
+
+"Test_name.c", line 17: error: expected a string literal
+  static_assert(!__builtin_gt_synthesizes_from_spaceship(int, int, int)); // expected-error {{type trait requires 2 arguments; have 3 argument}}
+                                                                   ^
+
+"Test_name.c", line 17: error: expected a ";"
+  static_assert(!__builtin_gt_synthesizes_from_spaceship(int, int, int)); // expected-error {{type trait requires 2 arguments; have 3 argument}}
+                                                                       ^
+
+"Test_name.c", line 18: error: expected a type specifier
+  static_assert(!__builtin_gt_synthesizes_from_spaceship(int, 0)); // expected-error {{expected a type}}
+                                                              ^
+
+"Test_name.c", line 20: error: expected a type specifier
+  static_assert(!__builtin_ge_synthesizes_from_spaceship()); // expected-error {{expected a type}}
+                                                         ^
+
+"Test_name.c", line 20: error: expected a ","
+  static_assert(!__builtin_ge_synthesizes_from_spaceship()); // expected-error {{expected a type}}
+                                                         ^
+
+"Test_name.c", line 20: error: expected a type specifier
+  static_assert(!__builtin_ge_synthesizes_from_spaceship()); // expected-error {{expected a type}}
+                                                         ^
+
+"Test_name.c", line 21: error: expected a ","
+  static_assert(!__builtin_ge_synthesizes_from_spaceship(int)); // expected-error {{type trait requires 2 arguments; have 1 argument}}
+                                                            ^
+
+"Test_name.c", line 21: error: expected a type specifier
+  static_assert(!__builtin_ge_synthesizes_from_spaceship(int)); // expected-error {{type trait requires 2 arguments; have 1 argument}}
+                                                            ^
+
+"Test_name.c", line 22: error: expected a ")"
+  static_assert(!__builtin_ge_synthesizes_from_spaceship(int, int, int)); // expected-error {{type trait requires 2 arguments; have 3 argument}}
+                                                                 ^
+
+"Test_name.c", line 22: error: expected a string literal
+  static_assert(!__builtin_ge_synthesizes_from_spaceship(int, int, int)); // expected-error {{type trait requires 2 arguments; have 3 argument}}
+                                                                   ^
+
+"Test_name.c", line 22: error: expected a ";"
+  static_assert(!__builtin_ge_synthesizes_from_spaceship(int, int, int)); // expected-error {{type trait requires 2 arguments; have 3 argument}}
+                                                                       ^
+
+"Test_name.c", line 23: error: expected a type specifier
+  static_assert(!__builtin_ge_synthesizes_from_spaceship(int, 0)); // expected-error {{expected a type}}
+                                                              ^
+
+"Test_name.c", line 192: error: static assertion failed
+  static_assert(!__builtin_lt_synthesizes_from_spaceship(const DefaultedCmpAndSpaceship&, const DefaultedCmpAndSpaceship&));
+  ^
+
+"Test_name.c", line 193: error: static assertion failed
+  static_assert(!__builtin_le_synthesizes_from_spaceship(const DefaultedCmpAndSpaceship&, const DefaultedCmpAndSpaceship&));
+  ^
+
+"Test_name.c", line 194: error: static assertion failed
+  static_assert(!__builtin_gt_synthesizes_from_spaceship(const DefaultedCmpAndSpaceship&, const DefaultedCmpAndSpaceship&));
+  ^
+
+"Test_name.c", line 195: error: static assertion failed
+  static_assert(!__builtin_ge_synthesizes_from_spaceship(const DefaultedCmpAndSpaceship&, const DefaultedCmpAndSpaceship&));
+  ^
+
+40 errors detected in the compilation of "Test_name.c".

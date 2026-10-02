@@ -1,0 +1,114 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++23 Test_name.c
+"Test_name.c", line 22: error: static assertion failed with "qualification of decltype((n)) does not match qualification of Self"
+      static_assert(is_const_v<Self> == is_const_v<__remove_reference (decltype((n)))>, // { dg-bogus {static assertion failed: qualification of decltype\(\(n\)\) does not match qualification of Self} }
+      ^
+"Test_name.c", line 22: note: the final comparison was 0 == 1
+      static_assert(is_const_v<Self> == is_const_v<__remove_reference (decltype((n)))>, // { dg-bogus {static assertion failed: qualification of decltype\(\(n\)\) does not match qualification of Self} }
+                                     ^
+          detected during instantiation of function "lambda [](Self) static->auto [with Self=lambda [](Self) static->auto]" at line 36
+
+"Test_name.c", line 52: error: static assertion failed with "qualification of decltype((n)) does not match qualification of Self"
+      static_assert(is_const_v<Self> == is_const_v<__remove_reference (decltype((n)))>, // { dg-bogus {static assertion failed: qualification of decltype\(\(n\)\) does not match qualification of Self} }
+      ^
+"Test_name.c", line 52: note: the final comparison was 0 == 1
+      static_assert(is_const_v<Self> == is_const_v<__remove_reference (decltype((n)))>, // { dg-bogus {static assertion failed: qualification of decltype\(\(n\)\) does not match qualification of Self} }
+                                     ^
+          detected during instantiation of function "lambda [](Self) static->auto [with Self=lambda [](Self) static->auto]" at line 66
+
+"Test_name.c", line 93: error: static assertion failed with "qualification of decltype((n)) does not match qualification of Self"
+      static_assert(is_const_v<Self> == is_const_v<__remove_reference (decltype((n)))>, // { dg-bogus {static assertion failed: qualification of decltype\(\(n\)\) does not match qualification of Self} }
+      ^
+"Test_name.c", line 93: note: the final comparison was 0 == 1
+      static_assert(is_const_v<Self> == is_const_v<__remove_reference (decltype((n)))>, // { dg-bogus {static assertion failed: qualification of decltype\(\(n\)\) does not match qualification of Self} }
+                                     ^
+          detected during instantiation of function "lambda [](Self &) static->auto [with Self=lambda [](Self &) static->auto]" at line 107
+
+"Test_name.c", line 125: error: static assertion failed with "qualification of decltype((n)) does not match qualification of Self"
+      static_assert(is_const_v<Self> == is_const_v<__remove_reference (decltype((n)))>, // { dg-bogus {static assertion failed: qualification of decltype\(\(n\)\) does not match qualification of Self} }
+      ^
+"Test_name.c", line 125: note: the final comparison was 0 == 1
+      static_assert(is_const_v<Self> == is_const_v<__remove_reference (decltype((n)))>, // { dg-bogus {static assertion failed: qualification of decltype\(\(n\)\) does not match qualification of Self} }
+                                     ^
+          detected during instantiation of function "lambda [](Self &) static->auto [with Self=lambda [](Self &) static->auto]" at line 139
+
+"Test_name.c", line 307: error: static assertion failed with "qualification of decltype((n)) does not match qualification of Self"
+      static_assert(is_const_v<Self> == is_const_v<__remove_reference (decltype((n)))>, // { dg-bogus {static assertion failed: qualification of decltype\(\(n\)\) does not match qualification of Self} }
+      ^
+"Test_name.c", line 307: note: the final comparison was 0 == 1
+      static_assert(is_const_v<Self> == is_const_v<__remove_reference (decltype((n)))>, // { dg-bogus {static assertion failed: qualification of decltype\(\(n\)\) does not match qualification of Self} }
+                                     ^
+          detected during:
+            instantiation of function "lambda [](Self) static->auto [with Self=lambda [](Self) static->auto]" at line 321
+            instantiation of "void dep0() [with <unnamed>=void]" at line 872
+
+"Test_name.c", line 337: error: static assertion failed with "qualification of decltype((n)) does not match qualification of Self"
+      static_assert(is_const_v<Self> == is_const_v<__remove_reference (decltype((n)))>, // { dg-bogus {static assertion failed: qualification of decltype\(\(n\)\) does not match qualification of Self} }
+      ^
+"Test_name.c", line 337: note: the final comparison was 0 == 1
+      static_assert(is_const_v<Self> == is_const_v<__remove_reference (decltype((n)))>, // { dg-bogus {static assertion failed: qualification of decltype\(\(n\)\) does not match qualification of Self} }
+                                     ^
+          detected during:
+            instantiation of function "lambda [](Self) static->auto [with Self=lambda [](Self) static->auto]" at line 351
+            instantiation of "void dep0() [with <unnamed>=void]" at line 872
+
+"Test_name.c", line 378: error: static assertion failed with "qualification of decltype((n)) does not match qualification of Self"
+      static_assert(is_const_v<Self> == is_const_v<__remove_reference (decltype((n)))>, // { dg-bogus {static assertion failed: qualification of decltype\(\(n\)\) does not match qualification of Self} }
+      ^
+"Test_name.c", line 378: note: the final comparison was 0 == 1
+      static_assert(is_const_v<Self> == is_const_v<__remove_reference (decltype((n)))>, // { dg-bogus {static assertion failed: qualification of decltype\(\(n\)\) does not match qualification of Self} }
+                                     ^
+          detected during:
+            instantiation of function "lambda [](Self &) static->auto [with Self=lambda [](Self &) static->auto]" at line 392
+            instantiation of "void dep0() [with <unnamed>=void]" at line 872
+
+"Test_name.c", line 410: error: static assertion failed with "qualification of decltype((n)) does not match qualification of Self"
+      static_assert(is_const_v<Self> == is_const_v<__remove_reference (decltype((n)))>, // { dg-bogus {static assertion failed: qualification of decltype\(\(n\)\) does not match qualification of Self} }
+      ^
+"Test_name.c", line 410: note: the final comparison was 0 == 1
+      static_assert(is_const_v<Self> == is_const_v<__remove_reference (decltype((n)))>, // { dg-bogus {static assertion failed: qualification of decltype\(\(n\)\) does not match qualification of Self} }
+                                     ^
+          detected during:
+            instantiation of function "lambda [](Self &) static->auto [with Self=lambda [](Self &) static->auto]" at line 424
+            instantiation of "void dep0() [with <unnamed>=void]" at line 872
+
+"Test_name.c", line 594: error: static assertion failed with "qualification of decltype((n)) does not match qualification of Self"
+      static_assert(is_const_v<Self> == is_const_v<__remove_reference (decltype((n)))>, // { dg-bogus {static assertion failed: qualification of decltype\(\(n\)\) does not match qualification of Self} }
+      ^
+"Test_name.c", line 594: note: the final comparison was 0 == 1
+      static_assert(is_const_v<Self> == is_const_v<__remove_reference (decltype((n)))>, // { dg-bogus {static assertion failed: qualification of decltype\(\(n\)\) does not match qualification of Self} }
+                                     ^
+          detected during:
+            instantiation of function "lambda [](Self) static->auto [with Self=lambda [](Self) static->auto]" at line 608
+            instantiation of "void dep1() [with T=int]" at line 873
+
+"Test_name.c", line 624: error: static assertion failed with "qualification of decltype((n)) does not match qualification of Self"
+      static_assert(is_const_v<Self> == is_const_v<__remove_reference (decltype((n)))>, // { dg-bogus {static assertion failed: qualification of decltype\(\(n\)\) does not match qualification of Self} }
+      ^
+"Test_name.c", line 624: note: the final comparison was 0 == 1
+      static_assert(is_const_v<Self> == is_const_v<__remove_reference (decltype((n)))>, // { dg-bogus {static assertion failed: qualification of decltype\(\(n\)\) does not match qualification of Self} }
+                                     ^
+          detected during:
+            instantiation of function "lambda [](Self) static->auto [with Self=lambda [](Self) static->auto]" at line 638
+            instantiation of "void dep1() [with T=int]" at line 873
+
+"Test_name.c", line 665: error: static assertion failed with "qualification of decltype((n)) does not match qualification of Self"
+      static_assert(is_const_v<Self> == is_const_v<__remove_reference (decltype((n)))>, // { dg-bogus {static assertion failed: qualification of decltype\(\(n\)\) does not match qualification of Self} }
+      ^
+"Test_name.c", line 665: note: the final comparison was 0 == 1
+      static_assert(is_const_v<Self> == is_const_v<__remove_reference (decltype((n)))>, // { dg-bogus {static assertion failed: qualification of decltype\(\(n\)\) does not match qualification of Self} }
+                                     ^
+          detected during:
+            instantiation of function "lambda [](Self &) static->auto [with Self=lambda [](Self &) static->auto]" at line 679
+            instantiation of "void dep1() [with T=int]" at line 873
+
+"Test_name.c", line 697: error: static assertion failed with "qualification of decltype((n)) does not match qualification of Self"
+      static_assert(is_const_v<Self> == is_const_v<__remove_reference (decltype((n)))>, // { dg-bogus {static assertion failed: qualification of decltype\(\(n\)\) does not match qualification of Self} }
+      ^
+"Test_name.c", line 697: note: the final comparison was 0 == 1
+      static_assert(is_const_v<Self> == is_const_v<__remove_reference (decltype((n)))>, // { dg-bogus {static assertion failed: qualification of decltype\(\(n\)\) does not match qualification of Self} }
+                                     ^
+          detected during:
+            instantiation of function "lambda [](Self &) static->auto [with Self=lambda [](Self &) static->auto]" at line 711
+            instantiation of "void dep1() [with T=int]" at line 873
+
+12 errors detected in the compilation of "Test_name.c".

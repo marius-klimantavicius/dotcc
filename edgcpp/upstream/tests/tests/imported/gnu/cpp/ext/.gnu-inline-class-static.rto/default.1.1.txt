@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./ext/gnu-inline-global.C", line 27: error: function "gnu_test_static::func1" has already been defined (previous definition at line 26)
+   int gnu_test_static::func1 (void) { return 2; }
+                        ^
+
+"./ext/gnu-inline-global.C", line 33: error: function "gnu_test_static::func2" has already been defined (previous definition at line 32)
+   int gnu_test_static::func2 (void) { return 2; }
+                        ^
+
+"./ext/gnu-inline-global.C", line 44: error: function "gnu_test_static::func4" has already been defined (previous definition at line 43)
+   int gnu_test_static::func4 (void) { return 1; }
+                        ^
+
+"./ext/gnu-inline-global.C", line 50: error: function "gnu_test_static::func5" has already been defined (previous definition at line 49)
+   int gnu_test_static::func5 (void) { return 1; }
+                        ^
+
+4 errors detected in the compilation of "Test_name.c".

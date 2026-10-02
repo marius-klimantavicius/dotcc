@@ -1,0 +1,117 @@
+fe_only -DTEST_NUMBER=4 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++23 Test_name.c
+"Test_name.c", line 23: warning: ignoring return value type with "nodiscard" attribute
+    get_s(); // expected-warning {{ignoring return value of type 'S' declared with 'nodiscard' attribute}}
+         ^
+
+"Test_name.c", line 24: warning: ignoring return value from routine declared with "nodiscard" attribute
+    get_i(); // expected-warning {{ignoring return value of function declared with 'nodiscard' attribute}}
+         ^
+
+"Test_name.c", line 25: warning: ignoring return value from routine declared with "nodiscard" attribute
+    get_vi(); // expected-warning {{ignoring return value of function declared with 'nodiscard' attribute}}
+          ^
+
+"Test_name.c", line 26: warning: ignoring return value type with "nodiscard" attribute
+    get_e(); // expected-warning {{ignoring return value of type 'E' declared with 'nodiscard' attribute}}
+         ^
+
+"Test_name.c", line 36: warning: attribute "nodiscard" does not apply here
+  [[nodiscard]] volatile char &(*fp)(); // expected-warning {{'nodiscard' attribute only applies to functions, classes, or enumerations}}
+    ^
+
+"Test_name.c", line 60: warning: variable "one" is used before its value is set
+    one(); // expected-warning {{ignoring return value of type 'E' declared with 'nodiscard' attribute}}
+    ^
+
+"Test_name.c", line 60: warning: ignoring return value type with "nodiscard" attribute
+    one(); // expected-warning {{ignoring return value of type 'E' declared with 'nodiscard' attribute}}
+       ^
+
+"Test_name.c", line 61: warning: variable "two" is used before its value is set
+    two(); // expected-warning {{ignoring return value of type 'S' declared with 'nodiscard' attribute}}
+    ^
+
+"Test_name.c", line 61: warning: ignoring return value type with "nodiscard" attribute
+    two(); // expected-warning {{ignoring return value of type 'S' declared with 'nodiscard' attribute}}
+       ^
+
+"Test_name.c", line 62: warning: variable "three" is used before its value is set
+    three(); // expected-warning {{ignoring return value of type 'S' declared with 'nodiscard' attribute}}
+    ^
+
+"Test_name.c", line 62: warning: ignoring return value type with "nodiscard" attribute
+    three(); // expected-warning {{ignoring return value of type 'S' declared with 'nodiscard' attribute}}
+         ^
+
+"Test_name.c", line 63: warning: variable "four" is used before its value is set
+    four(); // expected-warning {{ignoring return value of type 'S' declared with 'nodiscard' attribute}}
+    ^
+
+"Test_name.c", line 63: warning: ignoring return value type with "nodiscard" attribute
+    four(); // expected-warning {{ignoring return value of type 'S' declared with 'nodiscard' attribute}}
+        ^
+
+"Test_name.c", line 90: warning: ignoring return value type with "nodiscard" attribute ("reason")
+    get_reason(); // expected-warning {{ignoring return value of type 'ReasonStruct' declared with 'nodiscard' attribute: reason}}
+              ^
+
+"Test_name.c", line 91: warning: ignoring return value type with "nodiscard" attribute ("later reason")
+    get_later_reason(); // expected-warning {{ignoring return value of type 'LaterReason' declared with 'nodiscard' attribute: later reason}}
+                    ^
+
+"Test_name.c", line 92: warning: ignoring return value from routine declared with "nodiscard" attribute ("another reason")
+    another_reason(); // expected-warning {{ignoring return value of function declared with 'nodiscard' attribute: another reason}}
+                  ^
+
+"Test_name.c", line 93: warning: ignoring return value from routine declared with "nodiscard" attribute ("conflicting reason")
+    conflicting_reason(); // expected-warning {{ignoring return value of function declared with 'nodiscard' attribute: special reason}}
+                      ^
+
+"Test_name.c", line 105: warning: attribute "warn_unused_result" is ignored for void return type
+    [[gnu::warn_unused_result]] S(double);
+      ^
+
+"Test_name.c", line 117: warning: constructor used to create discarded object has "nodiscard" attribute
+    S();    // expected-warning {{ignoring temporary created by a constructor declared with 'nodiscard' attribute}}
+    ^
+
+"Test_name.c", line 118: warning: constructor used to create discarded object has "nodiscard" attribute ("Don't let that S-Char go!")
+    S('A'); // expected-warning {{ignoring temporary created by a constructor declared with 'nodiscard' attribute: Don't let that S-Char go!}}
+    ^
+
+"Test_name.c", line 121: warning: type of discarded object has "nodiscard" attribute ("Don't throw me away either!")
+    Y(); // expected-warning {{ignoring temporary of type 'Y' declared with 'nodiscard' attribute: Don't throw me away either!}}
+    ^
+
+"Test_name.c", line 123: warning: type of discarded object has "nodiscard" attribute ("Don't throw me away!")
+    ConvertTo{}; // expected-warning {{ignoring return value of type 'ConvertTo' declared with 'nodiscard' attribute: Don't throw me away!}}
+    ^
+
+"Test_name.c", line 130: warning: ignoring return value type with "nodiscard" attribute ("Don't throw me away!")
+    (ConvertTo) s;
+    ^
+
+"Test_name.c", line 131: warning: ignoring return value from routine declared with "nodiscard" attribute
+    (int)s; // expected-warning {{ignoring return value of function declared with 'nodiscard' attribute}}
+         ^
+
+"Test_name.c", line 132: warning: constructor used to create discarded object has "nodiscard" attribute ("Don't let that S-Char go!")
+    (S)'c'; // expected-warning {{ignoring temporary created by a constructor declared with 'nodiscard' attribute: Don't let that S-Char go!}}
+    ^
+
+"Test_name.c", line 135: warning: ignoring return value type with "nodiscard" attribute ("Don't throw me away!")
+    static_cast<ConvertTo>(s);
+    ^
+
+"Test_name.c", line 136: warning: ignoring return value from routine declared with "nodiscard" attribute
+    static_cast<int>(s); // expected-warning {{ignoring return value of function declared with 'nodiscard' attribute}}
+                     ^
+
+"Test_name.c", line 137: warning: ignoring return value from routine declared with "nodiscard" attribute ("Don't throw away as a double")
+    static_cast<double>(s); // expected-warning {{ignoring return value of function declared with 'nodiscard' attribute: Don't throw away as a double}}
+                        ^
+
+"Test_name.c", line 172: warning: ignoring return value from routine declared with "nodiscard" attribute
+    get_X(); // expected-warning{{ignoring return value of function declared with 'nodiscard' attribute}}
+         ^
+

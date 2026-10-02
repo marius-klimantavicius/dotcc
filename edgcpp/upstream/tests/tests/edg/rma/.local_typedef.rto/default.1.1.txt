@@ -1,0 +1,74 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 8: error: no suitable constructor exists to convert from "int" to "A<int>"
+    A<I> a = 1;
+             ^
+
+"Test_name.c", line 12: error: no suitable user-defined conversion from "A<int>" to "A<int [3]>" exists
+    A<JA> c = b;
+              ^
+
+"Test_name.c", line 14: error: no suitable user-defined conversion from "A<int [3]>" to "A<int *>" exists
+    A<PJ> d = c;
+              ^
+
+"Test_name.c", line 16: error: no suitable user-defined conversion from "A<int *>" to "A<int *[2][3]>" exists
+    A<PJA> e = d;
+               ^
+
+"Test_name.c", line 18: error: no suitable user-defined conversion from "A<int *[2][3]>" to "A<int (*)(int, int *)>" exists
+    A<F> f = e;
+             ^
+
+"Test_name.c", line 18: remark: variable "f" was declared but never referenced
+    A<F> f = e;
+         ^
+
+"Test_name.c", line 29: error: no suitable constructor exists to convert from "int" to "B<I>" (aka "B<int>")
+    B<I> a = 1;
+             ^
+
+"Test_name.c", line 31: error: no suitable user-defined conversion from "B<I>" (aka "B<int>") to "B<JB>" (aka "B<int [3]>") exists
+    B<JB> c = b;
+              ^
+
+"Test_name.c", line 32: error: no suitable user-defined conversion from "B<JB>" (aka "B<int [3]>") to "B<PJ>" (aka "B<int *>") exists
+    B<PJ> d = c;
+              ^
+
+"Test_name.c", line 33: error: no suitable user-defined conversion from "B<PJ>" (aka "B<int *>") to "B<PJB>" (aka "B<int *[2][3]>") exists
+    B<PJB> e = d;
+               ^
+
+"Test_name.c", line 34: error: no suitable user-defined conversion from "B<PJB>" (aka "B<int *[2][3]>") to "B<F>" (aka "B<int (*)(int, int *)>") exists
+    B<F> f = e;
+             ^
+
+"Test_name.c", line 34: remark: variable "f" was declared but never referenced
+    B<F> f = e;
+         ^
+
+"Test_name.c", line 39: error: no suitable constructor exists to convert from "int" to "B<I>" (aka "B<int>")
+    B<LI> a = 1;
+              ^
+
+"Test_name.c", line 43: error: no suitable user-defined conversion from "B<I>" (aka "B<int>") to "B<JB>" (aka "B<int [3]>") exists
+    B<LJB> c = b;
+               ^
+
+"Test_name.c", line 45: error: no suitable user-defined conversion from "B<JB>" (aka "B<int [3]>") to "B<PJ>" (aka "B<int *>") exists
+    B<LPJ> d = c;
+               ^
+
+"Test_name.c", line 47: error: no suitable user-defined conversion from "B<PJ>" (aka "B<int *>") to "B<PJB>" (aka "B<int *[2][3]>") exists
+    B<LPJB> e = d;
+                ^
+
+"Test_name.c", line 49: error: no suitable user-defined conversion from "B<PJB>" (aka "B<int *[2][3]>") to "B<F>" (aka "B<int (*)(int, int *)>") exists
+    B<LF> f = e;
+              ^
+
+"Test_name.c", line 49: remark: variable "f" was declared but never referenced
+    B<LF> f = e;
+          ^
+
+15 errors detected in the compilation of "Test_name.c".

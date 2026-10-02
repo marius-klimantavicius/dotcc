@@ -1,0 +1,266 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 9: error: static assertion failed
+  static_assert((0.0 + 0.0j) != (0.0 + 0.0j)); // expected-error {{static assertion}} \
+  ^
+
+"Test_name.c", line 21: error: static assertion failed
+  static_assert((1.0 + 0.0j) == (0.0 + 0.0j)); // expected-error {{static assertion}} \
+  ^
+
+"Test_name.c", line 24: error: static assertion failed
+  static_assert((1.0 + 1.0j) == (1.0 + 0.0j)); // expected-error {{static assertion}} \
+  ^
+
+"Test_name.c", line 27: error: static assertion failed
+  static_assert((0.0 + 1.0j) == (1.0 + 1.0j)); // expected-error {{static assertion}} \
+  ^
+
+"Test_name.c", line 30: error: static assertion failed
+  static_assert((-1.0 + 1.0j) == (0.0 + 1.0j)); // expected-error {{static assertion}} \
+  ^
+
+"Test_name.c", line 33: error: static assertion failed
+  static_assert((-1.0 + 0.0j) == (-1.0 + 1.0j)); // expected-error {{static assertion}} \
+  ^
+
+"Test_name.c", line 36: error: static assertion failed
+  static_assert((-1.0 - 1.0j) == (-1.0 + 0.0j)); // expected-error {{static assertion}} \
+  ^
+
+"Test_name.c", line 39: error: static assertion failed
+  static_assert((0.0 - 1.0j) == (-1.0 - 1.0j)); // expected-error {{static assertion}} \
+  ^
+
+"Test_name.c", line 42: error: static assertion failed
+  static_assert((1.0 - 1.0j) == (0.0 - 1.0j)); // expected-error {{static assertion}} \
+  ^
+
+"Test_name.c", line 70: error: expression must have a constant value
+  static_assert(__builtin_isinf_sign(__imag__(InfInf * InfInf)) == 1);
+                ^
+"Test_name.c", line 70: note: cannot call non-constexpr function "__builtin_isinf_sign" (declared implicitly)
+  static_assert(__builtin_isinf_sign(__imag__(InfInf * InfInf)) == 1);
+                ^
+
+"Test_name.c", line 72: error: expression must have a constant value
+  static_assert(__builtin_isinf_sign(__real__((__builtin_inf() + 1.0j) * 1.0)) == 1);
+                ^
+"Test_name.c", line 72: note: cannot call non-constexpr function "__builtin_isinf_sign" (declared implicitly)
+  static_assert(__builtin_isinf_sign(__real__((__builtin_inf() + 1.0j) * 1.0)) == 1);
+                ^
+
+"Test_name.c", line 73: error: expression must have a constant value
+  static_assert(__builtin_isinf_sign(__imag__((1.0 + InfC) * 1.0)) == 1);
+                ^
+"Test_name.c", line 73: note: cannot call non-constexpr function "__builtin_isinf_sign" (declared implicitly)
+  static_assert(__builtin_isinf_sign(__imag__((1.0 + InfC) * 1.0)) == 1);
+                ^
+
+"Test_name.c", line 74: error: expression must have a constant value
+  static_assert(__builtin_isinf_sign(__real__(1.0 * (__builtin_inf() + 1.0j))) == 1);
+                ^
+"Test_name.c", line 74: note: cannot call non-constexpr function "__builtin_isinf_sign" (declared implicitly)
+  static_assert(__builtin_isinf_sign(__real__(1.0 * (__builtin_inf() + 1.0j))) == 1);
+                ^
+
+"Test_name.c", line 75: error: expression must have a constant value
+  static_assert(__builtin_isinf_sign(__imag__(1.0 * (1.0 + InfC))) == 1);
+                ^
+"Test_name.c", line 75: note: cannot call non-constexpr function "__builtin_isinf_sign" (declared implicitly)
+  static_assert(__builtin_isinf_sign(__imag__(1.0 * (1.0 + InfC))) == 1);
+                ^
+
+"Test_name.c", line 76: error: expression must have a constant value
+  static_assert(__builtin_isinf_sign(__real__((__builtin_inf() + 1.0j) * (1.0 + 1.0j))) == 1);
+                ^
+"Test_name.c", line 76: note: cannot call non-constexpr function "__builtin_isinf_sign" (declared implicitly)
+  static_assert(__builtin_isinf_sign(__real__((__builtin_inf() + 1.0j) * (1.0 + 1.0j))) == 1);
+                ^
+
+"Test_name.c", line 77: error: expression must have a constant value
+  static_assert(__builtin_isinf_sign(__real__((1.0 + 1.0j) * (__builtin_inf() + 1.0j))) == 1);
+                ^
+"Test_name.c", line 77: note: cannot call non-constexpr function "__builtin_isinf_sign" (declared implicitly)
+  static_assert(__builtin_isinf_sign(__real__((1.0 + 1.0j) * (__builtin_inf() + 1.0j))) == 1);
+                ^
+
+"Test_name.c", line 78: error: expression must have a constant value
+  static_assert(__builtin_isinf_sign(__real__((__builtin_inf() + 1.0j) * (__builtin_inf() + 1.0j))) == 1);
+                ^
+"Test_name.c", line 78: note: cannot call non-constexpr function "__builtin_isinf_sign" (declared implicitly)
+  static_assert(__builtin_isinf_sign(__real__((__builtin_inf() + 1.0j) * (__builtin_inf() + 1.0j))) == 1);
+                ^
+
+"Test_name.c", line 79: error: expression must have a constant value
+  static_assert(__builtin_isinf_sign(__real__((1.0 + InfC) * (1.0 + 1.0j))) == -1);
+                ^
+"Test_name.c", line 79: note: cannot call non-constexpr function "__builtin_isinf_sign" (declared implicitly)
+  static_assert(__builtin_isinf_sign(__real__((1.0 + InfC) * (1.0 + 1.0j))) == -1);
+                ^
+
+"Test_name.c", line 80: error: expression must have a constant value
+  static_assert(__builtin_isinf_sign(__imag__((1.0 + InfC) * (1.0 + 1.0j))) == 1);
+                ^
+"Test_name.c", line 80: note: cannot call non-constexpr function "__builtin_isinf_sign" (declared implicitly)
+  static_assert(__builtin_isinf_sign(__imag__((1.0 + InfC) * (1.0 + 1.0j))) == 1);
+                ^
+
+"Test_name.c", line 81: error: expression must have a constant value
+  static_assert(__builtin_isinf_sign(__real__((1.0 + 1.0j) * (1.0 + InfC))) == -1);
+                ^
+"Test_name.c", line 81: note: cannot call non-constexpr function "__builtin_isinf_sign" (declared implicitly)
+  static_assert(__builtin_isinf_sign(__real__((1.0 + 1.0j) * (1.0 + InfC))) == -1);
+                ^
+
+"Test_name.c", line 82: error: expression must have a constant value
+  static_assert(__builtin_isinf_sign(__imag__((1.0 + 1.0j) * (1.0 + InfC))) == 1);
+                ^
+"Test_name.c", line 82: note: cannot call non-constexpr function "__builtin_isinf_sign" (declared implicitly)
+  static_assert(__builtin_isinf_sign(__imag__((1.0 + 1.0j) * (1.0 + InfC))) == 1);
+                ^
+
+"Test_name.c", line 83: error: expression must have a constant value
+  static_assert(__builtin_isinf_sign(__real__((1.0 + InfC) * (1.0 + InfC))) == -1);
+                ^
+"Test_name.c", line 83: note: cannot call non-constexpr function "__builtin_isinf_sign" (declared implicitly)
+  static_assert(__builtin_isinf_sign(__real__((1.0 + InfC) * (1.0 + InfC))) == -1);
+                ^
+
+"Test_name.c", line 84: error: expression must have a constant value
+  static_assert(__builtin_isinf_sign(__real__(InfInf * InfInf)) == 0);
+                ^
+"Test_name.c", line 84: note: cannot call non-constexpr function "__builtin_isinf_sign" (declared implicitly)
+  static_assert(__builtin_isinf_sign(__real__(InfInf * InfInf)) == 0);
+                ^
+
+"Test_name.c", line 85: error: expression must have a constant value
+  static_assert(__builtin_isinf_sign(__real__((__builtin_inf() + 1.0j) / (1.0 + 1.0j))) == 1);
+                ^
+"Test_name.c", line 85: note: cannot call non-constexpr function "__builtin_isinf_sign" (declared implicitly)
+  static_assert(__builtin_isinf_sign(__real__((__builtin_inf() + 1.0j) / (1.0 + 1.0j))) == 1);
+                ^
+
+"Test_name.c", line 86: error: expression must have a constant value
+  static_assert(__builtin_isinf_sign(__imag__(1.0 + (InfC) / (1.0 + 1.0j))) == 1);
+                ^
+"Test_name.c", line 86: note: cannot call non-constexpr function "__builtin_isinf_sign" (declared implicitly)
+  static_assert(__builtin_isinf_sign(__imag__(1.0 + (InfC) / (1.0 + 1.0j))) == 1);
+                ^
+
+"Test_name.c", line 87: error: expression must have a constant value
+  static_assert(__builtin_isinf_sign(__imag__((InfInf) / (1.0 + 1.0j))) == 0);
+                ^
+"Test_name.c", line 87: note: cannot call non-constexpr function "__builtin_isinf_sign" (declared implicitly)
+  static_assert(__builtin_isinf_sign(__imag__((InfInf) / (1.0 + 1.0j))) == 0);
+                ^
+
+"Test_name.c", line 88: error: expression must have a constant value
+  static_assert(__builtin_isinf_sign(__real__((__builtin_inf() + 1.0j) / 1.0)) == 1);
+                ^
+"Test_name.c", line 88: note: cannot call non-constexpr function "__builtin_isinf_sign" (declared implicitly)
+  static_assert(__builtin_isinf_sign(__real__((__builtin_inf() + 1.0j) / 1.0)) == 1);
+                ^
+
+"Test_name.c", line 89: error: expression must have a constant value
+  static_assert(__builtin_isinf_sign(__imag__(1.0 + (InfC) / 1.0)) == 1);
+                ^
+"Test_name.c", line 89: note: cannot call non-constexpr function "__builtin_isinf_sign" (declared implicitly)
+  static_assert(__builtin_isinf_sign(__imag__(1.0 + (InfC) / 1.0)) == 1);
+                ^
+
+"Test_name.c", line 90: error: expression must have a constant value
+  static_assert(__builtin_isinf_sign(__imag__((InfInf) / 1.0)) == 1);
+                ^
+"Test_name.c", line 90: note: cannot call non-constexpr function "__builtin_isinf_sign" (declared implicitly)
+  static_assert(__builtin_isinf_sign(__imag__((InfInf) / 1.0)) == 1);
+                ^
+
+"Test_name.c", line 91: error: static assertion failed
+  static_assert(((1.0 + 1.0j) / (__builtin_inf() + 1.0j)) == (0.0 + 0.0j));
+  ^
+
+"Test_name.c", line 92: error: static assertion failed
+  static_assert(((1.0 + 1.0j) / (1.0 + InfC)) == (0.0 + 0.0j));
+  ^
+
+"Test_name.c", line 93: error: static assertion failed
+  static_assert(((1.0 + 1.0j) / (InfInf)) == (0.0 + 0.0j));
+  ^
+
+"Test_name.c", line 94: error: static assertion failed
+  static_assert(((1.0 + 1.0j) / __builtin_inf()) == (0.0 + 0.0j));
+  ^
+
+"Test_name.c", line 95: error: static assertion failed
+  static_assert(1.0j / 0.0 == 1); // expected-error {{static assertion}} \
+  ^
+
+"Test_name.c", line 97: error: expression must have a constant value
+  static_assert(__builtin_isinf_sign(__real__((1.0 + 1.0j) / (0.0 + 0.0j))) == 1);
+                ^
+"Test_name.c", line 97: note: cannot call non-constexpr function "__builtin_isinf_sign" (declared implicitly)
+  static_assert(__builtin_isinf_sign(__real__((1.0 + 1.0j) / (0.0 + 0.0j))) == 1);
+                ^
+
+"Test_name.c", line 98: warning: division by zero
+  static_assert(__builtin_isinf_sign(__real__((1.0 + 1.0j) / 0.0)) == 1); // expected-error {{static assertion}} \
+                                                             ^
+
+"Test_name.c", line 98: error: expression must have a constant value
+  static_assert(__builtin_isinf_sign(__real__((1.0 + 1.0j) / 0.0)) == 1); // expected-error {{static assertion}} \
+                ^
+"Test_name.c", line 98: note: cannot call non-constexpr function "__builtin_isinf_sign" (declared implicitly)
+  static_assert(__builtin_isinf_sign(__real__((1.0 + 1.0j) / 0.0)) == 1); // expected-error {{static assertion}} \
+                ^
+
+"Test_name.c", line 100: error: expression must have a constant value
+  static_assert(__builtin_isinf_sign(__real__((__builtin_inf() + 1.0j) / (0.0 + 0.0j))) == 1);
+                ^
+"Test_name.c", line 100: note: cannot call non-constexpr function "__builtin_isinf_sign" (declared implicitly)
+  static_assert(__builtin_isinf_sign(__real__((__builtin_inf() + 1.0j) / (0.0 + 0.0j))) == 1);
+                ^
+
+"Test_name.c", line 101: error: expression must have a constant value
+  static_assert(__builtin_isinf_sign(__imag__((1.0 + InfC) / (0.0 + 0.0j))) == 1);
+                ^
+"Test_name.c", line 101: note: cannot call non-constexpr function "__builtin_isinf_sign" (declared implicitly)
+  static_assert(__builtin_isinf_sign(__imag__((1.0 + InfC) / (0.0 + 0.0j))) == 1);
+                ^
+
+"Test_name.c", line 102: error: expression must have a constant value
+  static_assert(__builtin_isinf_sign(__imag__((InfInf) / (0.0 + 0.0j))) == 1);
+                ^
+"Test_name.c", line 102: note: cannot call non-constexpr function "__builtin_isinf_sign" (declared implicitly)
+  static_assert(__builtin_isinf_sign(__imag__((InfInf) / (0.0 + 0.0j))) == 1);
+                ^
+
+"Test_name.c", line 103: warning: division by zero
+  static_assert(__builtin_isinf_sign(__real__((__builtin_inf() + 1.0j) / 0.0)) == 1); // expected-error {{static assertion}} \
+                                                                         ^
+
+"Test_name.c", line 103: error: expression must have a constant value
+  static_assert(__builtin_isinf_sign(__real__((__builtin_inf() + 1.0j) / 0.0)) == 1); // expected-error {{static assertion}} \
+                ^
+"Test_name.c", line 103: note: cannot call non-constexpr function "__builtin_isinf_sign" (declared implicitly)
+  static_assert(__builtin_isinf_sign(__real__((__builtin_inf() + 1.0j) / 0.0)) == 1); // expected-error {{static assertion}} \
+                ^
+
+"Test_name.c", line 105: warning: division by zero
+  static_assert(__builtin_isinf_sign(__imag__((1.0 + InfC) / 0.0)) == 1); // expected-error {{static assertion}} \
+                                                             ^
+
+"Test_name.c", line 105: error: expression must have a constant value
+  static_assert(__builtin_isinf_sign(__imag__((1.0 + InfC) / 0.0)) == 1); // expected-error {{static assertion}} \
+                ^
+"Test_name.c", line 105: note: cannot call non-constexpr function "__builtin_isinf_sign" (declared implicitly)
+  static_assert(__builtin_isinf_sign(__imag__((1.0 + InfC) / 0.0)) == 1); // expected-error {{static assertion}} \
+                ^
+
+"Test_name.c", line 107: error: expression must have a constant value
+  static_assert(__builtin_isinf_sign(__imag__((InfInf) / 0.0)) == 1); // expected-error {{static assertion}} \
+                ^
+"Test_name.c", line 107: note: cannot call non-constexpr function "__builtin_isinf_sign" (declared implicitly)
+  static_assert(__builtin_isinf_sign(__imag__((InfInf) / 0.0)) == 1); // expected-error {{static assertion}} \
+                ^
+
+42 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++26 Test_name.c
+"Test_name.c", line 12: warning: unnamed parameter in requires-expression has no effect
+  requires requires(T...[0]) { {T...[0](0)}; }
+                           ^
+
+"Test_name.c", line 25: warning: dynamic initialization in unreachable code
+      typename T...[1]::foo b = 0;
+                            ^
+
+"Test_name.c", line 28: warning: statement is unreachable
+      new T...[0];
+      ^
+
+"Test_name.c", line 19: warning: variable "test" was declared but never referenced
+      T...[0] (*test)(const volatile T...[0]**);
+                ^
+
+"Test_name.c", line 29: warning: constant "<unnamed>" is not used in declaring the parameter types of function template "lambda [](T...[0] *)->T...[0]::operator auto (*)(T...[0] *)->T...[0]"
+      [[maybe_unused]] auto l = []<T...[0]>(T...[0][1]) -> T...[0]{ return {}; };
+                                          ^
+          detected during instantiation of "const T...[0] S<T...>::f(T...[0] &&) [with T=<int, base>]" at line 42
+

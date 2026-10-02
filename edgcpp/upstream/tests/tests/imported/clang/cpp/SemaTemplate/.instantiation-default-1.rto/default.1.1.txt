@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 26: error: pointer to reference is not allowed
+           typename T2 = const T*>  // expected-error{{'T2' declared as a pointer to a reference}}
+                                ^
+          detected during processing of template argument list for "Def2" based on template argument <int_ref_t> at line 38
+
+"Test_name.c", line 41: error: class "Def1<const int, const int>" has already been defined (previous definition at line 10)
+  template<> struct Def1<const int> { }; // expected-error{{redefinition of 'Def1<const int>'}}
+                    ^
+
+2 errors detected in the compilation of "Test_name.c".

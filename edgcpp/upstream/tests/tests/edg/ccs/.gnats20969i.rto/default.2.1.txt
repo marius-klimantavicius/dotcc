@@ -1,0 +1,1 @@
+cpfe -DTEST_NUMBER=2 --c++11 --short_enums --clang Test_name.c

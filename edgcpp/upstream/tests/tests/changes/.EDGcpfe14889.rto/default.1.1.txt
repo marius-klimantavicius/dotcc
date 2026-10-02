@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 14: error: expected an expression
+    return []{ return N; }();  // Previously an error; now okay.
+           ^
+
+"Test_name.c", line 13: warning: variable "N" was declared but never referenced
+    int const N = 3;
+              ^
+
+1 error detected in the compilation of "Test_name.c".

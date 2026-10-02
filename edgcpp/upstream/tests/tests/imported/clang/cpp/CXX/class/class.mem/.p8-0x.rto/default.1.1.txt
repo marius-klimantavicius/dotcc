@@ -1,0 +1,46 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 10: error: duplicate function modifier
+    virtual void g() override override; // expected-error {{class member already marked 'override'}}
+                 ^
+
+"Test_name.c", line 11: error: duplicate function modifier
+    virtual void h() final final; // expected-error {{class member already marked 'final'}}
+                 ^
+
+"Test_name.c", line 22: error: member function declared with "override" does not override a base class member
+    void g() override; // expected-error {{only virtual member functions can be marked 'override'}}
+         ^
+
+"Test_name.c", line 23: error: expected a ";"
+    int h override; // expected-error {{only virtual member functions can be marked 'override'}}
+          ^
+
+"Test_name.c", line 20: warning: function "Base2::e2()" is hidden by "B::e2" -- virtual function override intended?
+    virtual void e1() override, e2(int);  // No error.
+                                ^
+
+"Test_name.c", line 28: error: nonvirtual function cannot be declared with "final" modifier
+    void g() final; // expected-error {{only virtual member functions can be marked 'final'}}
+         ^
+
+"Test_name.c", line 29: error: expected a ";"
+    int h final; // expected-error {{only virtual member functions can be marked 'final'}}
+          ^
+
+"Test_name.c", line 38: error: duplicate function modifier
+      virtual void g() override override {} // expected-error {{class member already marked 'override'}}
+                   ^
+
+"Test_name.c", line 39: error: duplicate function modifier
+      virtual void h() final final {} // expected-error {{class member already marked 'final'}}
+                   ^
+
+"Test_name.c", line 48: error: member function declared with "override" does not override a base class member
+      void g() override {} // expected-error {{only virtual member functions can be marked 'override'}}
+           ^
+
+"Test_name.c", line 53: error: nonvirtual function cannot be declared with "final" modifier
+      void g() final {} // expected-error {{only virtual member functions can be marked 'final'}}
+           ^
+
+10 errors detected in the compilation of "Test_name.c".

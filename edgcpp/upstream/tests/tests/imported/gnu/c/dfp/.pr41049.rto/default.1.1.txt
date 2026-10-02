@@ -1,0 +1,804 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"./dfp/pr41049.c", line 82: error: identifier "_Decimal32" is undefined
+    volatile _Decimal32 x, a, b, c, d, e, f, g, h;
+             ^
+
+"./dfp/pr41049.c", line 88: error: extra text after expected end of number
+    x = 0.DF; si = 0; ui = 0; sll = 0LL; ull = 0ULL; a = si; b = sll; c = ui; d = ull; e = 0; f = 0; g = 0LL; h = 0ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+          ^
+
+"./dfp/pr41049.c", line 88: error: identifier "_Decimal32" is undefined
+    x = 0.DF; si = 0; ui = 0; sll = 0LL; ull = 0ULL; a = si; b = sll; c = ui; d = ull; e = 0; f = 0; g = 0LL; h = 0ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                               ^
+
+"./dfp/pr41049.c", line 89: error: extra text after expected end of number
+    x = 1.DF; si = 1; ui = 1; sll = 1LL; ull = 1ULL; a = si; b = sll; c = ui; d = ull; e = 1; f = 1; g = 1LL; h = 1ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+          ^
+
+"./dfp/pr41049.c", line 89: error: identifier "_Decimal32" is undefined
+    x = 1.DF; si = 1; ui = 1; sll = 1LL; ull = 1ULL; a = si; b = sll; c = ui; d = ull; e = 1; f = 1; g = 1LL; h = 1ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                               ^
+
+"./dfp/pr41049.c", line 90: error: extra text after expected end of number
+    x = 5.DF; si = 5; ui = 5; sll = 5LL; ull = 5ULL; a = si; b = sll; c = ui; d = ull; e = 5; f = 5; g = 5LL; h = 5ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+          ^
+
+"./dfp/pr41049.c", line 90: error: identifier "_Decimal32" is undefined
+    x = 5.DF; si = 5; ui = 5; sll = 5LL; ull = 5ULL; a = si; b = sll; c = ui; d = ull; e = 5; f = 5; g = 5LL; h = 5ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                               ^
+
+"./dfp/pr41049.c", line 91: error: extra text after expected end of number
+    x = 9.DF; si = 9; ui = 9; sll = 9LL; ull = 9ULL; a = si; b = sll; c = ui; d = ull; e = 9; f = 9; g = 9LL; h = 9ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+          ^
+
+"./dfp/pr41049.c", line 91: error: identifier "_Decimal32" is undefined
+    x = 9.DF; si = 9; ui = 9; sll = 9LL; ull = 9ULL; a = si; b = sll; c = ui; d = ull; e = 9; f = 9; g = 9LL; h = 9ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                               ^
+
+"./dfp/pr41049.c", line 92: error: extra text after expected end of number
+    x = 10.DF; si = 10; ui = 10; sll = 10LL; ull = 10ULL; a = si; b = sll; c = ui; d = ull; e = 10; f = 10; g = 10LL; h = 10ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+           ^
+
+"./dfp/pr41049.c", line 92: error: identifier "_Decimal32" is undefined
+    x = 10.DF; si = 10; ui = 10; sll = 10LL; ull = 10ULL; a = si; b = sll; c = ui; d = ull; e = 10; f = 10; g = 10LL; h = 10ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                        ^
+
+"./dfp/pr41049.c", line 93: error: extra text after expected end of number
+    x = 50.DF; si = 50; ui = 50; sll = 50LL; ull = 50ULL; a = si; b = sll; c = ui; d = ull; e = 50; f = 50; g = 50LL; h = 50ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+           ^
+
+"./dfp/pr41049.c", line 93: error: identifier "_Decimal32" is undefined
+    x = 50.DF; si = 50; ui = 50; sll = 50LL; ull = 50ULL; a = si; b = sll; c = ui; d = ull; e = 50; f = 50; g = 50LL; h = 50ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                        ^
+
+"./dfp/pr41049.c", line 94: error: extra text after expected end of number
+    x = 90.DF; si = 90; ui = 90; sll = 90LL; ull = 90ULL; a = si; b = sll; c = ui; d = ull; e = 90; f = 90; g = 90LL; h = 90ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+           ^
+
+"./dfp/pr41049.c", line 94: error: identifier "_Decimal32" is undefined
+    x = 90.DF; si = 90; ui = 90; sll = 90LL; ull = 90ULL; a = si; b = sll; c = ui; d = ull; e = 90; f = 90; g = 90LL; h = 90ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                        ^
+
+"./dfp/pr41049.c", line 95: error: extra text after expected end of number
+    x = 100.DF; si = 100; ui = 100; sll = 100LL; ull = 100ULL; a = si; b = sll; c = ui; d = ull; e = 100; f = 100; g = 100LL; h = 100ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+            ^
+
+"./dfp/pr41049.c", line 95: error: identifier "_Decimal32" is undefined
+    x = 100.DF; si = 100; ui = 100; sll = 100LL; ull = 100ULL; a = si; b = sll; c = ui; d = ull; e = 100; f = 100; g = 100LL; h = 100ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                 ^
+
+"./dfp/pr41049.c", line 96: error: extra text after expected end of number
+    x = 500.DF; si = 500; ui = 500; sll = 500LL; ull = 500ULL; a = si; b = sll; c = ui; d = ull; e = 500; f = 500; g = 500LL; h = 500ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+            ^
+
+"./dfp/pr41049.c", line 96: error: identifier "_Decimal32" is undefined
+    x = 500.DF; si = 500; ui = 500; sll = 500LL; ull = 500ULL; a = si; b = sll; c = ui; d = ull; e = 500; f = 500; g = 500LL; h = 500ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                 ^
+
+"./dfp/pr41049.c", line 97: error: extra text after expected end of number
+    x = 900.DF; si = 900; ui = 900; sll = 900LL; ull = 900ULL; a = si; b = sll; c = ui; d = ull; e = 900; f = 900; g = 900LL; h = 900ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+            ^
+
+"./dfp/pr41049.c", line 97: error: identifier "_Decimal32" is undefined
+    x = 900.DF; si = 900; ui = 900; sll = 900LL; ull = 900ULL; a = si; b = sll; c = ui; d = ull; e = 900; f = 900; g = 900LL; h = 900ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                 ^
+
+"./dfp/pr41049.c", line 98: error: extra text after expected end of number
+    x = 1000.DF; si = 1000; ui = 1000; sll = 1000LL; ull = 1000ULL; a = si; b = sll; c = ui; d = ull; e = 1000; f = 1000; g = 1000LL; h = 1000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+             ^
+
+"./dfp/pr41049.c", line 98: error: identifier "_Decimal32" is undefined
+    x = 1000.DF; si = 1000; ui = 1000; sll = 1000LL; ull = 1000ULL; a = si; b = sll; c = ui; d = ull; e = 1000; f = 1000; g = 1000LL; h = 1000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                          ^
+
+"./dfp/pr41049.c", line 99: error: extra text after expected end of number
+    x = 5000.DF; si = 5000; ui = 5000; sll = 5000LL; ull = 5000ULL; a = si; b = sll; c = ui; d = ull; e = 5000; f = 5000; g = 5000LL; h = 5000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+             ^
+
+"./dfp/pr41049.c", line 99: error: identifier "_Decimal32" is undefined
+    x = 5000.DF; si = 5000; ui = 5000; sll = 5000LL; ull = 5000ULL; a = si; b = sll; c = ui; d = ull; e = 5000; f = 5000; g = 5000LL; h = 5000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                          ^
+
+"./dfp/pr41049.c", line 100: error: extra text after expected end of number
+    x = 9000.DF; si = 9000; ui = 9000; sll = 9000LL; ull = 9000ULL; a = si; b = sll; c = ui; d = ull; e = 9000; f = 9000; g = 9000LL; h = 9000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+             ^
+
+"./dfp/pr41049.c", line 100: error: identifier "_Decimal32" is undefined
+    x = 9000.DF; si = 9000; ui = 9000; sll = 9000LL; ull = 9000ULL; a = si; b = sll; c = ui; d = ull; e = 9000; f = 9000; g = 9000LL; h = 9000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                          ^
+
+"./dfp/pr41049.c", line 101: error: extra text after expected end of number
+    x = 10000.DF; si = 10000; ui = 10000; sll = 10000LL; ull = 10000ULL; a = si; b = sll; c = ui; d = ull; e = 10000; f = 10000; g = 10000LL; h = 10000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+              ^
+
+"./dfp/pr41049.c", line 101: error: identifier "_Decimal32" is undefined
+    x = 10000.DF; si = 10000; ui = 10000; sll = 10000LL; ull = 10000ULL; a = si; b = sll; c = ui; d = ull; e = 10000; f = 10000; g = 10000LL; h = 10000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                                   ^
+
+"./dfp/pr41049.c", line 102: error: extra text after expected end of number
+    x = 50000.DF; si = 50000; ui = 50000; sll = 50000LL; ull = 50000ULL; a = si; b = sll; c = ui; d = ull; e = 50000; f = 50000; g = 50000LL; h = 50000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+              ^
+
+"./dfp/pr41049.c", line 102: error: identifier "_Decimal32" is undefined
+    x = 50000.DF; si = 50000; ui = 50000; sll = 50000LL; ull = 50000ULL; a = si; b = sll; c = ui; d = ull; e = 50000; f = 50000; g = 50000LL; h = 50000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                                   ^
+
+"./dfp/pr41049.c", line 103: error: extra text after expected end of number
+    x = 90000.DF; si = 90000; ui = 90000; sll = 90000LL; ull = 90000ULL; a = si; b = sll; c = ui; d = ull; e = 90000; f = 90000; g = 90000LL; h = 90000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+              ^
+
+"./dfp/pr41049.c", line 103: error: identifier "_Decimal32" is undefined
+    x = 90000.DF; si = 90000; ui = 90000; sll = 90000LL; ull = 90000ULL; a = si; b = sll; c = ui; d = ull; e = 90000; f = 90000; g = 90000LL; h = 90000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                                   ^
+
+"./dfp/pr41049.c", line 104: error: extra text after expected end of number
+    x = 100000.DF; si = 100000; ui = 100000; sll = 100000LL; ull = 100000ULL; a = si; b = sll; c = ui; d = ull; e = 100000; f = 100000; g = 100000LL; h = 100000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+               ^
+
+"./dfp/pr41049.c", line 104: error: identifier "_Decimal32" is undefined
+    x = 100000.DF; si = 100000; ui = 100000; sll = 100000LL; ull = 100000ULL; a = si; b = sll; c = ui; d = ull; e = 100000; f = 100000; g = 100000LL; h = 100000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                                            ^
+
+"./dfp/pr41049.c", line 105: error: extra text after expected end of number
+    x = 500000.DF; si = 500000; ui = 500000; sll = 500000LL; ull = 500000ULL; a = si; b = sll; c = ui; d = ull; e = 500000; f = 500000; g = 500000LL; h = 500000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+               ^
+
+"./dfp/pr41049.c", line 105: error: identifier "_Decimal32" is undefined
+    x = 500000.DF; si = 500000; ui = 500000; sll = 500000LL; ull = 500000ULL; a = si; b = sll; c = ui; d = ull; e = 500000; f = 500000; g = 500000LL; h = 500000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                                            ^
+
+"./dfp/pr41049.c", line 106: error: extra text after expected end of number
+    x = 900000.DF; si = 900000; ui = 900000; sll = 900000LL; ull = 900000ULL; a = si; b = sll; c = ui; d = ull; e = 900000; f = 900000; g = 900000LL; h = 900000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+               ^
+
+"./dfp/pr41049.c", line 106: error: identifier "_Decimal32" is undefined
+    x = 900000.DF; si = 900000; ui = 900000; sll = 900000LL; ull = 900000ULL; a = si; b = sll; c = ui; d = ull; e = 900000; f = 900000; g = 900000LL; h = 900000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                                            ^
+
+"./dfp/pr41049.c", line 107: error: extra text after expected end of number
+    x = 1000000.DF; si = 1000000; ui = 1000000; sll = 1000000LL; ull = 1000000ULL; a = si; b = sll; c = ui; d = ull; e = 1000000; f = 1000000; g = 1000000LL; h = 1000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                ^
+
+"./dfp/pr41049.c", line 107: error: identifier "_Decimal32" is undefined
+    x = 1000000.DF; si = 1000000; ui = 1000000; sll = 1000000LL; ull = 1000000ULL; a = si; b = sll; c = ui; d = ull; e = 1000000; f = 1000000; g = 1000000LL; h = 1000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                                                     ^
+
+"./dfp/pr41049.c", line 108: error: extra text after expected end of number
+    x = 5000000.DF; si = 5000000; ui = 5000000; sll = 5000000LL; ull = 5000000ULL; a = si; b = sll; c = ui; d = ull; e = 5000000; f = 5000000; g = 5000000LL; h = 5000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                ^
+
+"./dfp/pr41049.c", line 108: error: identifier "_Decimal32" is undefined
+    x = 5000000.DF; si = 5000000; ui = 5000000; sll = 5000000LL; ull = 5000000ULL; a = si; b = sll; c = ui; d = ull; e = 5000000; f = 5000000; g = 5000000LL; h = 5000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                                                     ^
+
+"./dfp/pr41049.c", line 109: error: extra text after expected end of number
+    x = 9000000.DF; si = 9000000; ui = 9000000; sll = 9000000LL; ull = 9000000ULL; a = si; b = sll; c = ui; d = ull; e = 9000000; f = 9000000; g = 9000000LL; h = 9000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                ^
+
+"./dfp/pr41049.c", line 109: error: identifier "_Decimal32" is undefined
+    x = 9000000.DF; si = 9000000; ui = 9000000; sll = 9000000LL; ull = 9000000ULL; a = si; b = sll; c = ui; d = ull; e = 9000000; f = 9000000; g = 9000000LL; h = 9000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                                                     ^
+
+"./dfp/pr41049.c", line 110: error: extra text after expected end of number
+    x = 10000000.DF; si = 10000000; ui = 10000000; sll = 10000000LL; ull = 10000000ULL; a = si; b = sll; c = ui; d = ull; e = 10000000; f = 10000000; g = 10000000LL; h = 10000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                 ^
+
+"./dfp/pr41049.c", line 110: error: identifier "_Decimal32" is undefined
+    x = 10000000.DF; si = 10000000; ui = 10000000; sll = 10000000LL; ull = 10000000ULL; a = si; b = sll; c = ui; d = ull; e = 10000000; f = 10000000; g = 10000000LL; h = 10000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                                                              ^
+
+"./dfp/pr41049.c", line 111: error: extra text after expected end of number
+    x = 50000000.DF; si = 50000000; ui = 50000000; sll = 50000000LL; ull = 50000000ULL; a = si; b = sll; c = ui; d = ull; e = 50000000; f = 50000000; g = 50000000LL; h = 50000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                 ^
+
+"./dfp/pr41049.c", line 111: error: identifier "_Decimal32" is undefined
+    x = 50000000.DF; si = 50000000; ui = 50000000; sll = 50000000LL; ull = 50000000ULL; a = si; b = sll; c = ui; d = ull; e = 50000000; f = 50000000; g = 50000000LL; h = 50000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                                                              ^
+
+"./dfp/pr41049.c", line 112: error: extra text after expected end of number
+    x = 90000000.DF; si = 90000000; ui = 90000000; sll = 90000000LL; ull = 90000000ULL; a = si; b = sll; c = ui; d = ull; e = 90000000; f = 90000000; g = 90000000LL; h = 90000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                 ^
+
+"./dfp/pr41049.c", line 112: error: identifier "_Decimal32" is undefined
+    x = 90000000.DF; si = 90000000; ui = 90000000; sll = 90000000LL; ull = 90000000ULL; a = si; b = sll; c = ui; d = ull; e = 90000000; f = 90000000; g = 90000000LL; h = 90000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                                                              ^
+
+"./dfp/pr41049.c", line 113: error: extra text after expected end of number
+    x = 100000000.DF; si = 100000000; ui = 100000000; sll = 100000000LL; ull = 100000000ULL; a = si; b = sll; c = ui; d = ull; e = 100000000; f = 100000000; g = 100000000LL; h = 100000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                  ^
+
+"./dfp/pr41049.c", line 113: error: identifier "_Decimal32" is undefined
+    x = 100000000.DF; si = 100000000; ui = 100000000; sll = 100000000LL; ull = 100000000ULL; a = si; b = sll; c = ui; d = ull; e = 100000000; f = 100000000; g = 100000000LL; h = 100000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                                                                       ^
+
+"./dfp/pr41049.c", line 114: error: extra text after expected end of number
+    x = 500000000.DF; si = 500000000; ui = 500000000; sll = 500000000LL; ull = 500000000ULL; a = si; b = sll; c = ui; d = ull; e = 500000000; f = 500000000; g = 500000000LL; h = 500000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                  ^
+
+"./dfp/pr41049.c", line 114: error: identifier "_Decimal32" is undefined
+    x = 500000000.DF; si = 500000000; ui = 500000000; sll = 500000000LL; ull = 500000000ULL; a = si; b = sll; c = ui; d = ull; e = 500000000; f = 500000000; g = 500000000LL; h = 500000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                                                                       ^
+
+"./dfp/pr41049.c", line 115: error: extra text after expected end of number
+    x = 900000000.DF; si = 900000000; ui = 900000000; sll = 900000000LL; ull = 900000000ULL; a = si; b = sll; c = ui; d = ull; e = 900000000; f = 900000000; g = 900000000LL; h = 900000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                  ^
+
+"./dfp/pr41049.c", line 115: error: identifier "_Decimal32" is undefined
+    x = 900000000.DF; si = 900000000; ui = 900000000; sll = 900000000LL; ull = 900000000ULL; a = si; b = sll; c = ui; d = ull; e = 900000000; f = 900000000; g = 900000000LL; h = 900000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                                                                       ^
+
+"./dfp/pr41049.c", line 116: error: extra text after expected end of number
+    x = 1000000000.DF; si = 1000000000; ui = 1000000000; sll = 1000000000LL; ull = 1000000000ULL; a = si; b = sll; c = ui; d = ull; e = 1000000000; f = 1000000000; g = 1000000000LL; h = 1000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                   ^
+
+"./dfp/pr41049.c", line 116: error: identifier "_Decimal32" is undefined
+    x = 1000000000.DF; si = 1000000000; ui = 1000000000; sll = 1000000000LL; ull = 1000000000ULL; a = si; b = sll; c = ui; d = ull; e = 1000000000; f = 1000000000; g = 1000000000LL; h = 1000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&e,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&f,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&g,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&h,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                                                                                ^
+
+"./dfp/pr41049.c", line 117: error: extra text after expected end of number
+    x = 5000000000.DF; sll = 5000000000LL; ull = 5000000000ULL; b = sll; d = ull; f = 5000000000LL; g = 5000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                   ^
+
+"./dfp/pr41049.c", line 117: error: identifier "_Decimal32" is undefined
+    x = 5000000000.DF; sll = 5000000000LL; ull = 5000000000ULL; b = sll; d = ull; f = 5000000000LL; g = 5000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                              ^
+
+"./dfp/pr41049.c", line 118: error: extra text after expected end of number
+    x = 9000000000.DF; sll = 9000000000LL; ull = 9000000000ULL; b = sll; d = ull; f = 9000000000LL; g = 9000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                   ^
+
+"./dfp/pr41049.c", line 118: error: identifier "_Decimal32" is undefined
+    x = 9000000000.DF; sll = 9000000000LL; ull = 9000000000ULL; b = sll; d = ull; f = 9000000000LL; g = 9000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                              ^
+
+"./dfp/pr41049.c", line 119: error: extra text after expected end of number
+    x = 10000000000.DF; sll = 10000000000LL; ull = 10000000000ULL; b = sll; d = ull; f = 10000000000LL; g = 10000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                    ^
+
+"./dfp/pr41049.c", line 119: error: identifier "_Decimal32" is undefined
+    x = 10000000000.DF; sll = 10000000000LL; ull = 10000000000ULL; b = sll; d = ull; f = 10000000000LL; g = 10000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                   ^
+
+"./dfp/pr41049.c", line 120: error: extra text after expected end of number
+    x = 50000000000.DF; sll = 50000000000LL; ull = 50000000000ULL; b = sll; d = ull; f = 50000000000LL; g = 50000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                    ^
+
+"./dfp/pr41049.c", line 120: error: identifier "_Decimal32" is undefined
+    x = 50000000000.DF; sll = 50000000000LL; ull = 50000000000ULL; b = sll; d = ull; f = 50000000000LL; g = 50000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                   ^
+
+"./dfp/pr41049.c", line 121: error: extra text after expected end of number
+    x = 90000000000.DF; sll = 90000000000LL; ull = 90000000000ULL; b = sll; d = ull; f = 90000000000LL; g = 90000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                    ^
+
+"./dfp/pr41049.c", line 121: error: identifier "_Decimal32" is undefined
+    x = 90000000000.DF; sll = 90000000000LL; ull = 90000000000ULL; b = sll; d = ull; f = 90000000000LL; g = 90000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                   ^
+
+"./dfp/pr41049.c", line 122: error: extra text after expected end of number
+    x = 100000000000.DF; sll = 100000000000LL; ull = 100000000000ULL; b = sll; d = ull; f = 100000000000LL; g = 100000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                     ^
+
+"./dfp/pr41049.c", line 122: error: identifier "_Decimal32" is undefined
+    x = 100000000000.DF; sll = 100000000000LL; ull = 100000000000ULL; b = sll; d = ull; f = 100000000000LL; g = 100000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                        ^
+
+"./dfp/pr41049.c", line 123: error: extra text after expected end of number
+    x = 500000000000.DF; sll = 500000000000LL; ull = 500000000000ULL; b = sll; d = ull; f = 500000000000LL; g = 500000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                     ^
+
+"./dfp/pr41049.c", line 123: error: identifier "_Decimal32" is undefined
+    x = 500000000000.DF; sll = 500000000000LL; ull = 500000000000ULL; b = sll; d = ull; f = 500000000000LL; g = 500000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                        ^
+
+"./dfp/pr41049.c", line 124: error: extra text after expected end of number
+    x = 900000000000.DF; sll = 900000000000LL; ull = 900000000000ULL; b = sll; d = ull; f = 900000000000LL; g = 900000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                     ^
+
+"./dfp/pr41049.c", line 124: error: identifier "_Decimal32" is undefined
+    x = 900000000000.DF; sll = 900000000000LL; ull = 900000000000ULL; b = sll; d = ull; f = 900000000000LL; g = 900000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                        ^
+
+"./dfp/pr41049.c", line 125: error: extra text after expected end of number
+    x = 1000000000000.DF; sll = 1000000000000LL; ull = 1000000000000ULL; b = sll; d = ull; f = 1000000000000LL; g = 1000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                      ^
+
+"./dfp/pr41049.c", line 125: error: identifier "_Decimal32" is undefined
+    x = 1000000000000.DF; sll = 1000000000000LL; ull = 1000000000000ULL; b = sll; d = ull; f = 1000000000000LL; g = 1000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                             ^
+
+"./dfp/pr41049.c", line 126: error: extra text after expected end of number
+    x = 5000000000000.DF; sll = 5000000000000LL; ull = 5000000000000ULL; b = sll; d = ull; f = 5000000000000LL; g = 5000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                      ^
+
+"./dfp/pr41049.c", line 126: error: identifier "_Decimal32" is undefined
+    x = 5000000000000.DF; sll = 5000000000000LL; ull = 5000000000000ULL; b = sll; d = ull; f = 5000000000000LL; g = 5000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                             ^
+
+"./dfp/pr41049.c", line 127: error: extra text after expected end of number
+    x = 9000000000000.DF; sll = 9000000000000LL; ull = 9000000000000ULL; b = sll; d = ull; f = 9000000000000LL; g = 9000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                      ^
+
+"./dfp/pr41049.c", line 127: error: identifier "_Decimal32" is undefined
+    x = 9000000000000.DF; sll = 9000000000000LL; ull = 9000000000000ULL; b = sll; d = ull; f = 9000000000000LL; g = 9000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                             ^
+
+"./dfp/pr41049.c", line 128: error: extra text after expected end of number
+    x = 10000000000000.DF; sll = 10000000000000LL; ull = 10000000000000ULL; b = sll; d = ull; f = 10000000000000LL; g = 10000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                       ^
+
+"./dfp/pr41049.c", line 128: error: identifier "_Decimal32" is undefined
+    x = 10000000000000.DF; sll = 10000000000000LL; ull = 10000000000000ULL; b = sll; d = ull; f = 10000000000000LL; g = 10000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                  ^
+
+"./dfp/pr41049.c", line 129: error: extra text after expected end of number
+    x = 50000000000000.DF; sll = 50000000000000LL; ull = 50000000000000ULL; b = sll; d = ull; f = 50000000000000LL; g = 50000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                       ^
+
+"./dfp/pr41049.c", line 129: error: identifier "_Decimal32" is undefined
+    x = 50000000000000.DF; sll = 50000000000000LL; ull = 50000000000000ULL; b = sll; d = ull; f = 50000000000000LL; g = 50000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                  ^
+
+"./dfp/pr41049.c", line 130: error: extra text after expected end of number
+    x = 90000000000000.DF; sll = 90000000000000LL; ull = 90000000000000ULL; b = sll; d = ull; f = 90000000000000LL; g = 90000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                       ^
+
+"./dfp/pr41049.c", line 130: error: identifier "_Decimal32" is undefined
+    x = 90000000000000.DF; sll = 90000000000000LL; ull = 90000000000000ULL; b = sll; d = ull; f = 90000000000000LL; g = 90000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                  ^
+
+"./dfp/pr41049.c", line 131: error: extra text after expected end of number
+    x = 100000000000000.DF; sll = 100000000000000LL; ull = 100000000000000ULL; b = sll; d = ull; f = 100000000000000LL; g = 100000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                        ^
+
+"./dfp/pr41049.c", line 131: error: identifier "_Decimal32" is undefined
+    x = 100000000000000.DF; sll = 100000000000000LL; ull = 100000000000000ULL; b = sll; d = ull; f = 100000000000000LL; g = 100000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                       ^
+
+"./dfp/pr41049.c", line 132: error: extra text after expected end of number
+    x = 500000000000000.DF; sll = 500000000000000LL; ull = 500000000000000ULL; b = sll; d = ull; f = 500000000000000LL; g = 500000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                        ^
+
+"./dfp/pr41049.c", line 132: error: identifier "_Decimal32" is undefined
+    x = 500000000000000.DF; sll = 500000000000000LL; ull = 500000000000000ULL; b = sll; d = ull; f = 500000000000000LL; g = 500000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                       ^
+
+"./dfp/pr41049.c", line 133: error: extra text after expected end of number
+    x = 900000000000000.DF; sll = 900000000000000LL; ull = 900000000000000ULL; b = sll; d = ull; f = 900000000000000LL; g = 900000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                        ^
+
+"./dfp/pr41049.c", line 133: error: identifier "_Decimal32" is undefined
+    x = 900000000000000.DF; sll = 900000000000000LL; ull = 900000000000000ULL; b = sll; d = ull; f = 900000000000000LL; g = 900000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                       ^
+
+"./dfp/pr41049.c", line 134: error: extra text after expected end of number
+    x = 1000000000000000.DF; sll = 1000000000000000LL; ull = 1000000000000000ULL; b = sll; d = ull; f = 1000000000000000LL; g = 1000000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                         ^
+
+"./dfp/pr41049.c", line 134: error: identifier "_Decimal32" is undefined
+    x = 1000000000000000.DF; sll = 1000000000000000LL; ull = 1000000000000000ULL; b = sll; d = ull; f = 1000000000000000LL; g = 1000000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                            ^
+
+"./dfp/pr41049.c", line 135: error: extra text after expected end of number
+    x = 5000000000000000.DF; sll = 5000000000000000LL; ull = 5000000000000000ULL; b = sll; d = ull; f = 5000000000000000LL; g = 5000000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                         ^
+
+"./dfp/pr41049.c", line 135: error: identifier "_Decimal32" is undefined
+    x = 5000000000000000.DF; sll = 5000000000000000LL; ull = 5000000000000000ULL; b = sll; d = ull; f = 5000000000000000LL; g = 5000000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                            ^
+
+"./dfp/pr41049.c", line 136: error: extra text after expected end of number
+    x = 9000000000000000.DF; sll = 9000000000000000LL; ull = 9000000000000000ULL; b = sll; d = ull; f = 9000000000000000LL; g = 9000000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                         ^
+
+"./dfp/pr41049.c", line 136: error: identifier "_Decimal32" is undefined
+    x = 9000000000000000.DF; sll = 9000000000000000LL; ull = 9000000000000000ULL; b = sll; d = ull; f = 9000000000000000LL; g = 9000000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                            ^
+
+"./dfp/pr41049.c", line 137: error: extra text after expected end of number
+    x = 10000000000000000.DF; sll = 10000000000000000LL; ull = 10000000000000000ULL; b = sll; d = ull; f = 10000000000000000LL; g = 10000000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                          ^
+
+"./dfp/pr41049.c", line 137: error: identifier "_Decimal32" is undefined
+    x = 10000000000000000.DF; sll = 10000000000000000LL; ull = 10000000000000000ULL; b = sll; d = ull; f = 10000000000000000LL; g = 10000000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                                 ^
+
+"./dfp/pr41049.c", line 138: error: extra text after expected end of number
+    x = 50000000000000000.DF; sll = 50000000000000000LL; ull = 50000000000000000ULL; b = sll; d = ull; f = 50000000000000000LL; g = 50000000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                          ^
+
+"./dfp/pr41049.c", line 138: error: identifier "_Decimal32" is undefined
+    x = 50000000000000000.DF; sll = 50000000000000000LL; ull = 50000000000000000ULL; b = sll; d = ull; f = 50000000000000000LL; g = 50000000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                                 ^
+
+"./dfp/pr41049.c", line 139: error: extra text after expected end of number
+    x = 90000000000000000.DF; sll = 90000000000000000LL; ull = 90000000000000000ULL; b = sll; d = ull; f = 90000000000000000LL; g = 90000000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                          ^
+
+"./dfp/pr41049.c", line 139: error: identifier "_Decimal32" is undefined
+    x = 90000000000000000.DF; sll = 90000000000000000LL; ull = 90000000000000000ULL; b = sll; d = ull; f = 90000000000000000LL; g = 90000000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                                 ^
+
+"./dfp/pr41049.c", line 140: error: extra text after expected end of number
+    x = 100000000000000000.DF; sll = 100000000000000000LL; ull = 100000000000000000ULL; b = sll; d = ull; f = 100000000000000000LL; g = 100000000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                           ^
+
+"./dfp/pr41049.c", line 140: error: identifier "_Decimal32" is undefined
+    x = 100000000000000000.DF; sll = 100000000000000000LL; ull = 100000000000000000ULL; b = sll; d = ull; f = 100000000000000000LL; g = 100000000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                                      ^
+
+"./dfp/pr41049.c", line 141: error: extra text after expected end of number
+    x = 500000000000000000.DF; sll = 500000000000000000LL; ull = 500000000000000000ULL; b = sll; d = ull; f = 500000000000000000LL; g = 500000000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                           ^
+
+"./dfp/pr41049.c", line 141: error: identifier "_Decimal32" is undefined
+    x = 500000000000000000.DF; sll = 500000000000000000LL; ull = 500000000000000000ULL; b = sll; d = ull; f = 500000000000000000LL; g = 500000000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                                      ^
+
+"./dfp/pr41049.c", line 142: error: extra text after expected end of number
+    x = 900000000000000000.DF; sll = 900000000000000000LL; ull = 900000000000000000ULL; b = sll; d = ull; f = 900000000000000000LL; g = 900000000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                           ^
+
+"./dfp/pr41049.c", line 142: error: identifier "_Decimal32" is undefined
+    x = 900000000000000000.DF; sll = 900000000000000000LL; ull = 900000000000000000ULL; b = sll; d = ull; f = 900000000000000000LL; g = 900000000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                                      ^
+
+"./dfp/pr41049.c", line 143: error: extra text after expected end of number
+    x = 1000000000000000000.DF; sll = 1000000000000000000LL; ull = 1000000000000000000ULL; b = sll; d = ull; f = 1000000000000000000LL; g = 1000000000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                            ^
+
+"./dfp/pr41049.c", line 143: error: identifier "_Decimal32" is undefined
+    x = 1000000000000000000.DF; sll = 1000000000000000000LL; ull = 1000000000000000000ULL; b = sll; d = ull; f = 1000000000000000000LL; g = 1000000000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                                           ^
+
+"./dfp/pr41049.c", line 144: error: extra text after expected end of number
+    x = 5000000000000000000.DF; sll = 5000000000000000000LL; ull = 5000000000000000000ULL; b = sll; d = ull; f = 5000000000000000000LL; g = 5000000000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                            ^
+
+"./dfp/pr41049.c", line 144: error: identifier "_Decimal32" is undefined
+    x = 5000000000000000000.DF; sll = 5000000000000000000LL; ull = 5000000000000000000ULL; b = sll; d = ull; f = 5000000000000000000LL; g = 5000000000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                                           ^
+
+"./dfp/pr41049.c", line 145: error: extra text after expected end of number
+    x = 9000000000000000000.DF; sll = 9000000000000000000LL; ull = 9000000000000000000ULL; b = sll; d = ull; f = 9000000000000000000LL; g = 9000000000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                            ^
+
+"./dfp/pr41049.c", line 145: error: identifier "_Decimal32" is undefined
+    x = 9000000000000000000.DF; sll = 9000000000000000000LL; ull = 9000000000000000000ULL; b = sll; d = ull; f = 9000000000000000000LL; g = 9000000000000000000ULL; if ((__builtin_memcmp ((void *)&x, (void *)&b, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&d, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&f, (void *)&d,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&g, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                                                                           ^
+
+"./dfp/pr41049.c", line 147: error: extra text after expected end of number
+    x = 0.DF; si = 0; sll = 0LL; a = si; b = sll; c = 0; d = 0LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+          ^
+
+"./dfp/pr41049.c", line 147: error: identifier "_Decimal32" is undefined
+    x = 0.DF; si = 0; sll = 0LL; a = si; b = sll; c = 0; d = 0LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                         ^
+
+"./dfp/pr41049.c", line 148: error: extra text after expected end of number
+    x = -1.DF; si = -1; sll = -1LL; a = si; b = sll; c = -1; d = -1LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+           ^
+
+"./dfp/pr41049.c", line 148: error: identifier "_Decimal32" is undefined
+    x = -1.DF; si = -1; sll = -1LL; a = si; b = sll; c = -1; d = -1LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                              ^
+
+"./dfp/pr41049.c", line 149: error: extra text after expected end of number
+    x = -5.DF; si = -5; sll = -5LL; a = si; b = sll; c = -5; d = -5LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+           ^
+
+"./dfp/pr41049.c", line 149: error: identifier "_Decimal32" is undefined
+    x = -5.DF; si = -5; sll = -5LL; a = si; b = sll; c = -5; d = -5LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                              ^
+
+"./dfp/pr41049.c", line 150: error: extra text after expected end of number
+    x = -9.DF; si = -9; sll = -9LL; a = si; b = sll; c = -9; d = -9LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+           ^
+
+"./dfp/pr41049.c", line 150: error: identifier "_Decimal32" is undefined
+    x = -9.DF; si = -9; sll = -9LL; a = si; b = sll; c = -9; d = -9LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                              ^
+
+"./dfp/pr41049.c", line 151: error: extra text after expected end of number
+    x = -10.DF; si = -10; sll = -10LL; a = si; b = sll; c = -10; d = -10LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+            ^
+
+"./dfp/pr41049.c", line 151: error: identifier "_Decimal32" is undefined
+    x = -10.DF; si = -10; sll = -10LL; a = si; b = sll; c = -10; d = -10LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                   ^
+
+"./dfp/pr41049.c", line 152: error: extra text after expected end of number
+    x = -50.DF; si = -50; sll = -50LL; a = si; b = sll; c = -50; d = -50LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+            ^
+
+"./dfp/pr41049.c", line 152: error: identifier "_Decimal32" is undefined
+    x = -50.DF; si = -50; sll = -50LL; a = si; b = sll; c = -50; d = -50LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                   ^
+
+"./dfp/pr41049.c", line 153: error: extra text after expected end of number
+    x = -90.DF; si = -90; sll = -90LL; a = si; b = sll; c = -90; d = -90LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+            ^
+
+"./dfp/pr41049.c", line 153: error: identifier "_Decimal32" is undefined
+    x = -90.DF; si = -90; sll = -90LL; a = si; b = sll; c = -90; d = -90LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                   ^
+
+"./dfp/pr41049.c", line 154: error: extra text after expected end of number
+    x = -100.DF; si = -100; sll = -100LL; a = si; b = sll; c = -100; d = -100LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+             ^
+
+"./dfp/pr41049.c", line 154: error: identifier "_Decimal32" is undefined
+    x = -100.DF; si = -100; sll = -100LL; a = si; b = sll; c = -100; d = -100LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                        ^
+
+"./dfp/pr41049.c", line 155: error: extra text after expected end of number
+    x = -500.DF; si = -500; sll = -500LL; a = si; b = sll; c = -500; d = -500LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+             ^
+
+"./dfp/pr41049.c", line 155: error: identifier "_Decimal32" is undefined
+    x = -500.DF; si = -500; sll = -500LL; a = si; b = sll; c = -500; d = -500LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                        ^
+
+"./dfp/pr41049.c", line 156: error: extra text after expected end of number
+    x = -900.DF; si = -900; sll = -900LL; a = si; b = sll; c = -900; d = -900LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+             ^
+
+"./dfp/pr41049.c", line 156: error: identifier "_Decimal32" is undefined
+    x = -900.DF; si = -900; sll = -900LL; a = si; b = sll; c = -900; d = -900LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                        ^
+
+"./dfp/pr41049.c", line 157: error: extra text after expected end of number
+    x = -1000.DF; si = -1000; sll = -1000LL; a = si; b = sll; c = -1000; d = -1000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+              ^
+
+"./dfp/pr41049.c", line 157: error: identifier "_Decimal32" is undefined
+    x = -1000.DF; si = -1000; sll = -1000LL; a = si; b = sll; c = -1000; d = -1000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                             ^
+
+"./dfp/pr41049.c", line 158: error: extra text after expected end of number
+    x = -5000.DF; si = -5000; sll = -5000LL; a = si; b = sll; c = -5000; d = -5000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+              ^
+
+"./dfp/pr41049.c", line 158: error: identifier "_Decimal32" is undefined
+    x = -5000.DF; si = -5000; sll = -5000LL; a = si; b = sll; c = -5000; d = -5000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                             ^
+
+"./dfp/pr41049.c", line 159: error: extra text after expected end of number
+    x = -9000.DF; si = -9000; sll = -9000LL; a = si; b = sll; c = -9000; d = -9000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+              ^
+
+"./dfp/pr41049.c", line 159: error: identifier "_Decimal32" is undefined
+    x = -9000.DF; si = -9000; sll = -9000LL; a = si; b = sll; c = -9000; d = -9000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                             ^
+
+"./dfp/pr41049.c", line 160: error: extra text after expected end of number
+    x = -10000.DF; si = -10000; sll = -10000LL; a = si; b = sll; c = -10000; d = -10000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+               ^
+
+"./dfp/pr41049.c", line 160: error: identifier "_Decimal32" is undefined
+    x = -10000.DF; si = -10000; sll = -10000LL; a = si; b = sll; c = -10000; d = -10000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                  ^
+
+"./dfp/pr41049.c", line 161: error: extra text after expected end of number
+    x = -50000.DF; si = -50000; sll = -50000LL; a = si; b = sll; c = -50000; d = -50000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+               ^
+
+"./dfp/pr41049.c", line 161: error: identifier "_Decimal32" is undefined
+    x = -50000.DF; si = -50000; sll = -50000LL; a = si; b = sll; c = -50000; d = -50000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                  ^
+
+"./dfp/pr41049.c", line 162: error: extra text after expected end of number
+    x = -90000.DF; si = -90000; sll = -90000LL; a = si; b = sll; c = -90000; d = -90000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+               ^
+
+"./dfp/pr41049.c", line 162: error: identifier "_Decimal32" is undefined
+    x = -90000.DF; si = -90000; sll = -90000LL; a = si; b = sll; c = -90000; d = -90000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                  ^
+
+"./dfp/pr41049.c", line 163: error: extra text after expected end of number
+    x = -100000.DF; si = -100000; sll = -100000LL; a = si; b = sll; c = -100000; d = -100000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                ^
+
+"./dfp/pr41049.c", line 163: error: identifier "_Decimal32" is undefined
+    x = -100000.DF; si = -100000; sll = -100000LL; a = si; b = sll; c = -100000; d = -100000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                       ^
+
+"./dfp/pr41049.c", line 164: error: extra text after expected end of number
+    x = -500000.DF; si = -500000; sll = -500000LL; a = si; b = sll; c = -500000; d = -500000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                ^
+
+"./dfp/pr41049.c", line 164: error: identifier "_Decimal32" is undefined
+    x = -500000.DF; si = -500000; sll = -500000LL; a = si; b = sll; c = -500000; d = -500000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                       ^
+
+"./dfp/pr41049.c", line 165: error: extra text after expected end of number
+    x = -900000.DF; si = -900000; sll = -900000LL; a = si; b = sll; c = -900000; d = -900000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                ^
+
+"./dfp/pr41049.c", line 165: error: identifier "_Decimal32" is undefined
+    x = -900000.DF; si = -900000; sll = -900000LL; a = si; b = sll; c = -900000; d = -900000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                       ^
+
+"./dfp/pr41049.c", line 166: error: extra text after expected end of number
+    x = -1000000.DF; si = -1000000; sll = -1000000LL; a = si; b = sll; c = -1000000; d = -1000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                 ^
+
+"./dfp/pr41049.c", line 166: error: identifier "_Decimal32" is undefined
+    x = -1000000.DF; si = -1000000; sll = -1000000LL; a = si; b = sll; c = -1000000; d = -1000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                            ^
+
+"./dfp/pr41049.c", line 167: error: extra text after expected end of number
+    x = -5000000.DF; si = -5000000; sll = -5000000LL; a = si; b = sll; c = -5000000; d = -5000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                 ^
+
+"./dfp/pr41049.c", line 167: error: identifier "_Decimal32" is undefined
+    x = -5000000.DF; si = -5000000; sll = -5000000LL; a = si; b = sll; c = -5000000; d = -5000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                            ^
+
+"./dfp/pr41049.c", line 168: error: extra text after expected end of number
+    x = -9000000.DF; si = -9000000; sll = -9000000LL; a = si; b = sll; c = -9000000; d = -9000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                 ^
+
+"./dfp/pr41049.c", line 168: error: identifier "_Decimal32" is undefined
+    x = -9000000.DF; si = -9000000; sll = -9000000LL; a = si; b = sll; c = -9000000; d = -9000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                            ^
+
+"./dfp/pr41049.c", line 169: error: extra text after expected end of number
+    x = -10000000.DF; si = -10000000; sll = -10000000LL; a = si; b = sll; c = -10000000; d = -10000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                  ^
+
+"./dfp/pr41049.c", line 169: error: identifier "_Decimal32" is undefined
+    x = -10000000.DF; si = -10000000; sll = -10000000LL; a = si; b = sll; c = -10000000; d = -10000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                 ^
+
+"./dfp/pr41049.c", line 170: error: extra text after expected end of number
+    x = -50000000.DF; si = -50000000; sll = -50000000LL; a = si; b = sll; c = -50000000; d = -50000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                  ^
+
+"./dfp/pr41049.c", line 170: error: identifier "_Decimal32" is undefined
+    x = -50000000.DF; si = -50000000; sll = -50000000LL; a = si; b = sll; c = -50000000; d = -50000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                 ^
+
+"./dfp/pr41049.c", line 171: error: extra text after expected end of number
+    x = -90000000.DF; si = -90000000; sll = -90000000LL; a = si; b = sll; c = -90000000; d = -90000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                  ^
+
+"./dfp/pr41049.c", line 171: error: identifier "_Decimal32" is undefined
+    x = -90000000.DF; si = -90000000; sll = -90000000LL; a = si; b = sll; c = -90000000; d = -90000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                 ^
+
+"./dfp/pr41049.c", line 172: error: extra text after expected end of number
+    x = -100000000.DF; si = -100000000; sll = -100000000LL; a = si; b = sll; c = -100000000; d = -100000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                   ^
+
+"./dfp/pr41049.c", line 172: error: identifier "_Decimal32" is undefined
+    x = -100000000.DF; si = -100000000; sll = -100000000LL; a = si; b = sll; c = -100000000; d = -100000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                      ^
+
+"./dfp/pr41049.c", line 173: error: extra text after expected end of number
+    x = -500000000.DF; si = -500000000; sll = -500000000LL; a = si; b = sll; c = -500000000; d = -500000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                   ^
+
+"./dfp/pr41049.c", line 173: error: identifier "_Decimal32" is undefined
+    x = -500000000.DF; si = -500000000; sll = -500000000LL; a = si; b = sll; c = -500000000; d = -500000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                      ^
+
+"./dfp/pr41049.c", line 174: error: extra text after expected end of number
+    x = -900000000.DF; si = -900000000; sll = -900000000LL; a = si; b = sll; c = -900000000; d = -900000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                   ^
+
+"./dfp/pr41049.c", line 174: error: identifier "_Decimal32" is undefined
+    x = -900000000.DF; si = -900000000; sll = -900000000LL; a = si; b = sll; c = -900000000; d = -900000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                      ^
+
+"./dfp/pr41049.c", line 175: error: extra text after expected end of number
+    x = -1000000000.DF; si = -1000000000; sll = -1000000000LL; a = si; b = sll; c = -1000000000; d = -1000000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                    ^
+
+"./dfp/pr41049.c", line 175: error: identifier "_Decimal32" is undefined
+    x = -1000000000.DF; si = -1000000000; sll = -1000000000LL; a = si; b = sll; c = -1000000000; d = -1000000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&c,sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&d,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                                                           ^
+
+"./dfp/pr41049.c", line 176: error: extra text after expected end of number
+    x = -5000000000.DF; sll = -5000000000LL; a = sll; b = -5000000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                    ^
+
+"./dfp/pr41049.c", line 176: error: identifier "_Decimal32" is undefined
+    x = -5000000000.DF; sll = -5000000000LL; a = sll; b = -5000000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                ^
+
+"./dfp/pr41049.c", line 177: error: extra text after expected end of number
+    x = -9000000000.DF; sll = -9000000000LL; a = sll; b = -9000000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                    ^
+
+"./dfp/pr41049.c", line 177: error: identifier "_Decimal32" is undefined
+    x = -9000000000.DF; sll = -9000000000LL; a = sll; b = -9000000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                ^
+
+"./dfp/pr41049.c", line 178: error: extra text after expected end of number
+    x = -10000000000.DF; sll = -10000000000LL; a = sll; b = -10000000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                     ^
+
+"./dfp/pr41049.c", line 178: error: identifier "_Decimal32" is undefined
+    x = -10000000000.DF; sll = -10000000000LL; a = sll; b = -10000000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                   ^
+
+"./dfp/pr41049.c", line 179: error: extra text after expected end of number
+    x = -50000000000.DF; sll = -50000000000LL; a = sll; b = -50000000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                     ^
+
+"./dfp/pr41049.c", line 179: error: identifier "_Decimal32" is undefined
+    x = -50000000000.DF; sll = -50000000000LL; a = sll; b = -50000000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                   ^
+
+"./dfp/pr41049.c", line 180: error: extra text after expected end of number
+    x = -90000000000.DF; sll = -90000000000LL; a = sll; b = -90000000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                     ^
+
+"./dfp/pr41049.c", line 180: error: identifier "_Decimal32" is undefined
+    x = -90000000000.DF; sll = -90000000000LL; a = sll; b = -90000000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                   ^
+
+"./dfp/pr41049.c", line 181: error: extra text after expected end of number
+    x = -100000000000.DF; sll = -100000000000LL; a = sll; b = -100000000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                      ^
+
+"./dfp/pr41049.c", line 181: error: identifier "_Decimal32" is undefined
+    x = -100000000000.DF; sll = -100000000000LL; a = sll; b = -100000000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                      ^
+
+"./dfp/pr41049.c", line 182: error: extra text after expected end of number
+    x = -500000000000.DF; sll = -500000000000LL; a = sll; b = -500000000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                      ^
+
+"./dfp/pr41049.c", line 182: error: identifier "_Decimal32" is undefined
+    x = -500000000000.DF; sll = -500000000000LL; a = sll; b = -500000000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                      ^
+
+"./dfp/pr41049.c", line 183: error: extra text after expected end of number
+    x = -900000000000.DF; sll = -900000000000LL; a = sll; b = -900000000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                      ^
+
+"./dfp/pr41049.c", line 183: error: identifier "_Decimal32" is undefined
+    x = -900000000000.DF; sll = -900000000000LL; a = sll; b = -900000000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                      ^
+
+"./dfp/pr41049.c", line 184: error: extra text after expected end of number
+    x = -1000000000000.DF; sll = -1000000000000LL; a = sll; b = -1000000000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                       ^
+
+"./dfp/pr41049.c", line 184: error: identifier "_Decimal32" is undefined
+    x = -1000000000000.DF; sll = -1000000000000LL; a = sll; b = -1000000000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                         ^
+
+"./dfp/pr41049.c", line 185: error: extra text after expected end of number
+    x = -5000000000000.DF; sll = -5000000000000LL; a = sll; b = -5000000000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                       ^
+
+"./dfp/pr41049.c", line 185: error: identifier "_Decimal32" is undefined
+    x = -5000000000000.DF; sll = -5000000000000LL; a = sll; b = -5000000000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                         ^
+
+"./dfp/pr41049.c", line 186: error: extra text after expected end of number
+    x = -9000000000000.DF; sll = -9000000000000LL; a = sll; b = -9000000000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                       ^
+
+"./dfp/pr41049.c", line 186: error: identifier "_Decimal32" is undefined
+    x = -9000000000000.DF; sll = -9000000000000LL; a = sll; b = -9000000000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                         ^
+
+"./dfp/pr41049.c", line 187: error: extra text after expected end of number
+    x = -10000000000000.DF; sll = -10000000000000LL; a = sll; b = -10000000000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                        ^
+
+"./dfp/pr41049.c", line 187: error: identifier "_Decimal32" is undefined
+    x = -10000000000000.DF; sll = -10000000000000LL; a = sll; b = -10000000000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                                                                                                                                            ^
+
+"./dfp/pr41049.c", line 188: error: extra text after expected end of number
+    x = -50000000000000.DF; sll = -50000000000000LL; a = sll; b = -50000000000000LL; if ((__builtin_memcmp ((void *)&x, (void *)&a, sizeof (_Decimal32)) != 0) || (__builtin_memcmp ((void *)&x, (void *)&b,sizeof (_Decimal32)) != 0)) __builtin_abort ();;
+                        ^
+
+Error limit reached.
+200 errors detected in the compilation of "Test_name.c".
+Compilation terminated.

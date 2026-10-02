@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 6: error: statement may not appear in a constexpr function
+  constexpr int Test1(int x) { enum E { y = 1 }; return x; }  // { dg-error "not a return-statement" "" { target { c++11_only } } }
+                               ^
+
+"Test_name.c", line 8: error: statement may not appear in a constexpr function
+  constexpr int Test2(int x) { struct T { }; return x; }  // { dg-error "not a return-statement" "" { target { c++11_only } } }
+                               ^
+
+"Test_name.c", line 20: error: statement may not appear in a constexpr constructor
+    constexpr S1() { enum E { y = 1 }; }  // { dg-error "does not have empty body" "" { target { c++11_only } } }
+                     ^
+
+"Test_name.c", line 25: error: statement may not appear in a constexpr constructor
+    constexpr S2() { struct T { }; }  // { dg-error "does not have empty body" "" { target { c++11_only } } }
+                     ^
+
+4 errors detected in the compilation of "Test_name.c".

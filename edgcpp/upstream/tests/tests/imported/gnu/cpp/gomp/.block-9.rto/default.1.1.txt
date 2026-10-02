@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 10: warning: unrecognized #pragma
+    #pragma omp parallel		// { dg-warning "statement will never be executed" }
+            ^
+
+"Test_name.c", line 12: warning: unrecognized #pragma
+    #pragma omp for
+            ^
+
+"Test_name.c", line 15: warning: unrecognized #pragma
+    #pragma omp critical
+            ^
+
+"Test_name.c", line 17: warning: unrecognized #pragma
+    #pragma omp master
+            ^
+
+"Test_name.c", line 19: warning: unrecognized #pragma
+    #pragma omp sections
+            ^
+
+"Test_name.c", line 21: warning: unrecognized #pragma
+      #pragma omp section
+              ^
+
+"Test_name.c", line 24: warning: unrecognized #pragma
+    #pragma omp ordered
+            ^
+

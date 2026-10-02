@@ -1,0 +1,8 @@
+./a.out
+f<int>():
+~A()
+~A()
+f<short>():
+~A()
+~A()
+Done with g()

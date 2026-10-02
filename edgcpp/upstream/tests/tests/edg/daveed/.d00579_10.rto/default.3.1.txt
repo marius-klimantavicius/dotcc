@@ -1,0 +1,25 @@
+cpfe -DTEST_NUMBER=3 --g++ --gnu_version=40000 -DNEG2 Test_name.c
+"Test_name.c", line 23: warning: __real/__imag applied to real value
+  	__imag 1.0;
+  	^
+
+"Test_name.c", line 23: warning: expression has no effect
+  	__imag 1.0;
+  	^
+
+"Test_name.c", line 25: warning: __real/__imag applied to real value
+  	__real f = 2.0;
+  	^
+
+"Test_name.c", line 30: warning: __real/__imag applied to real value
+  	__imag 1;
+  	^
+
+"Test_name.c", line 30: warning: expression has no effect
+  	__imag 1;
+  	^
+
+"Test_name.c", line 24: warning: variable "f" was set but never used
+  	float f = 1.0;
+  	      ^
+

@@ -1,0 +1,5 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --microsoft -n Test_name.c
+"Test_name.c", line 23: remark: declaration hides variable "y" (declared at line 7)
+    static int __declspec(allocate("xxx")) y;
+                                           ^
+

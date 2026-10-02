@@ -1,0 +1,97 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./strlenopt-76.c", line 23: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void lower_bound_assign_into_empty (void)
+                  ^
+
+"./strlenopt-76.c", line 23: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void lower_bound_assign_into_empty (void)
+                                     ^
+
+"./strlenopt-76.c", line 31: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void lower_bound_assign_into_longest (void)
+                  ^
+
+"./strlenopt-76.c", line 31: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void lower_bound_assign_into_longest (void)
+                                     ^
+
+"./strlenopt-76.c", line 40: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void lower_bound_assign_into_empty_idx_3 (int idx)
+                  ^
+
+"./strlenopt-76.c", line 40: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void lower_bound_assign_into_empty_idx_3 (int idx)
+                                     ^
+
+"./strlenopt-76.c", line 49: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void lower_bound_assign_into_longest_idx_2 (int idx)
+                  ^
+
+"./strlenopt-76.c", line 49: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void lower_bound_assign_into_longest_idx_2 (int idx)
+                                     ^
+
+"./strlenopt-76.c", line 59: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void lower_bound_memcpy_into_empty (void)
+                  ^
+
+"./strlenopt-76.c", line 59: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void lower_bound_memcpy_into_empty (void)
+                                     ^
+
+"./strlenopt-76.c", line 65: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void lower_bound_memcpy_into_longest (void)
+                  ^
+
+"./strlenopt-76.c", line 65: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void lower_bound_memcpy_into_longest (void)
+                                     ^
+
+"./strlenopt-76.c", line 72: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void lower_bound_memcpy_memcpy_into_empty (void)
+                  ^
+
+"./strlenopt-76.c", line 72: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void lower_bound_memcpy_memcpy_into_empty (void)
+                                     ^
+
+"./strlenopt-76.c", line 79: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void lower_bound_memcpy_memcpy_into_longest (void)
+                  ^
+
+"./strlenopt-76.c", line 79: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void lower_bound_memcpy_memcpy_into_longest (void)
+                                     ^
+
+"./strlenopt-76.c", line 87: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void memove_forward_strlen (void)
+                  ^
+
+"./strlenopt-76.c", line 87: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void memove_forward_strlen (void)
+                                     ^
+
+"./strlenopt-76.c", line 96: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void memove_backward_into_empty_strlen (void)
+                  ^
+
+"./strlenopt-76.c", line 96: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void memove_backward_into_empty_strlen (void)
+                                     ^
+
+"./strlenopt-76.c", line 105: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void memove_backward_into_longest_strlen (void)
+                  ^
+
+"./strlenopt-76.c", line 105: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void memove_backward_into_longest_strlen (void)
+                                     ^
+
+"./strlenopt-76.c", line 114: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void memove_strcmp (void)
+                  ^
+
+"./strlenopt-76.c", line 114: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void memove_strcmp (void)
+                                     ^
+

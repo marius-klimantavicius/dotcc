@@ -1,0 +1,18 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 4: error: type definition is not allowed
+  void f(struct A { int i; } a, struct B { int i; int j; } *pb) { }
+         ^
+
+"Test_name.c", line 4: error: type definition is not allowed
+  void f(struct A { int i; } a, struct B { int i; int j; } *pb) { }
+                                ^
+
+"Test_name.c", line 4: remark: parameter "a" was never referenced
+  void f(struct A { int i; } a, struct B { int i; int j; } *pb) { }
+                             ^
+
+"Test_name.c", line 4: remark: parameter "pb" was never referenced
+  void f(struct A { int i; } a, struct B { int i; int j; } *pb) { }
+                                                            ^
+
+2 errors detected in the compilation of "Test_name.c".

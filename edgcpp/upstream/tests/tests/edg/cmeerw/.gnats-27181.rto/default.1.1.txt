@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=1 -w --c++20 --microsoft_version 1936 --target win64 -DBITS=64 Test_name.c

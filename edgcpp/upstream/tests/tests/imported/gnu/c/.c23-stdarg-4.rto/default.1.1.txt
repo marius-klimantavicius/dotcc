@@ -1,0 +1,10 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"./c23-stdarg-4.c", line 28: error: identifier "random" is undefined
+   ap, random ! ignored, ignored ** text
+       ^
+
+"./c23-stdarg-4.c", line 28: error: expected a ")"
+   ap, random ! ignored, ignored ** text
+              ^
+
+2 errors detected in the compilation of "Test_name.c".

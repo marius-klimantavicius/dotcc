@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 10: warning: conversion from a string literal to "char *" is deprecated
+    f<int,char*,double>("aa",3.0);
+                        ^
+
+"Test_name.c", line 17: warning: conversion from a string literal to "char *" is deprecated
+    f<int,char*>("aa",3.0); // Z is deduced to be double
+                 ^
+
+"Test_name.c", line 26: error: no instance of function template "f" matches the argument list
+            argument types are: (const char [3], double)
+    f("aa",3.0); // expected-error{{no matching}}
+    ^
+"Test_name.c", line 7: note: candidate function template "f" failed deduction
+  template<class X, class Y, class Z> X f(Y,Z); // expected-note {{candidate template ignored: couldn't infer template argument 'X'}}
+                                        ^
+
+1 error detected in the compilation of "Test_name.c".

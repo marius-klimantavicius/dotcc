@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 17: error: incomplete type "Foo2<int>::Base1" is not allowed
+    struct Derived : Base1, Base2 {}; // expected-error {{implicit instantiation of undefined member 'Foo2<int>::Base1'}} \
+                     ^
+          detected during instantiation of class "Foo2<T>::Derived [with T=int]" at line 21
+
+"Test_name.c", line 17: error: incomplete type "Foo2<int>::Base2" is not allowed
+    struct Derived : Base1, Base2 {}; // expected-error {{implicit instantiation of undefined member 'Foo2<int>::Base1'}} \
+                            ^
+          detected during instantiation of class "Foo2<T>::Derived [with T=int]" at line 21
+
+2 errors detected in the compilation of "Test_name.c".

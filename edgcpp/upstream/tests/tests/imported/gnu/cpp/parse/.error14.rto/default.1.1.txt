@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+At end of source: error: expected a "}"
+"Test_name.c", line 7: note: to match this "{"
+  {
+  ^
+
+"Test_name.c", line 24: error: expected an expression
+  };   // { dg-error "1:expected primary-expression before '.' token" "primary"  }
+  ^
+
+"Test_name.c", line 24: error: expected a ")"
+  };   // { dg-error "1:expected primary-expression before '.' token" "primary"  }
+  ^
+
+"Test_name.c", line 21: error: no instance of function template "X::Zinc" matches the argument list
+            argument types are: (<error-type>)
+          Zinc<int>( //);
+          ^
+"Test_name.c", line 13: note: number of parameters of function template "X::Zinc" does not match the call
+      template< typename Z > void Zinc()
+                                  ^
+
+"Test_name.c", line 24: error: expected a ";"
+  };   // { dg-error "1:expected primary-expression before '.' token" "primary"  }
+  ^
+
+At end of source: error: expected a ";"
+
+6 errors detected in the compilation of "Test_name.c".

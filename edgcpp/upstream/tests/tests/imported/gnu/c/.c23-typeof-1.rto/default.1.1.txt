@@ -1,0 +1,126 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 19: warning: type qualifier is meaningless on cast type
+  extern typeof ((const int) vi) i;
+                  ^
+
+"Test_name.c", line 20: warning: type qualifier is meaningless on cast type
+  extern typeof ((volatile int) vi) i;
+                  ^
+
+"Test_name.c", line 28: warning: type qualifier is meaningless on cast type
+  extern typeof ((const int) ci) i;
+                  ^
+
+"Test_name.c", line 34: warning: type qualifier on return type is meaningless
+  const int fci (void);
+  ^
+
+"Test_name.c", line 46: warning: type qualifier is meaningless on cast type
+  extern typeof ((_Atomic int) ai) i;
+                  ^
+
+"Test_name.c", line 50: warning: type qualifier on return type is meaningless
+  _Atomic int fai (void);
+  ^
+
+"Test_name.c", line 75: error: declaration is incompatible with "volatile char vc" (declared at line 68)
+  extern typeof (*cpvc) vc;
+                        ^
+
+"Test_name.c", line 79: error: declaration is incompatible with "char cc" (declared at line 73)
+  extern const char cc;
+                    ^
+
+"Test_name.c", line 106: error: this operator is not allowed in a constant expression
+  int s = sizeof (typeof (int (*)[++i]));
+                                  ^
+
+"Test_name.c", line 131: warning: function declared with "noreturn" does return
+  void fg2 (void) {}
+                   ^
+
+"Test_name.c", line 132: warning: function declared with "noreturn" does return
+  _Noreturn void fg2a (void) { abort (); }
+                                         ^
+
+"Test_name.c", line 133: warning: function declared with "noreturn" does return
+  [[noreturn]] void fg2b (void) { abort (); }
+                                            ^
+
+"Test_name.c", line 134: warning: function declared with "noreturn" does return
+  void fg3 (void) {}
+                   ^
+
+"Test_name.c", line 135: warning: function declared with "noreturn" does return
+  _Noreturn void fg3a (void) { abort (); }
+                                         ^
+
+"Test_name.c", line 136: warning: function declared with "noreturn" does return
+  [[noreturn]] void fg3b (void) { abort (); }
+                                            ^
+
+"Test_name.c", line 137: warning: function declared with "noreturn" does return
+  void fg4 (void) {}
+                   ^
+
+"Test_name.c", line 138: warning: function declared with "noreturn" does return
+  _Noreturn void fg4a (void) { abort (); }
+                                         ^
+
+"Test_name.c", line 139: warning: function declared with "noreturn" does return
+  [[noreturn]] void fg4b (void) { abort (); }
+                                            ^
+
+"Test_name.c", line 140: warning: function declared with "noreturn" does return
+  void fg5 (void) {}
+                   ^
+
+"Test_name.c", line 141: warning: function declared with "noreturn" does return
+  _Noreturn void fg5a (void) { abort (); }
+                                         ^
+
+"Test_name.c", line 142: warning: function declared with "noreturn" does return
+  [[noreturn]] void fg5b (void) { abort (); }
+                                            ^
+
+"Test_name.c", line 159: warning: variable "p" was set but never used
+    typeof (int (*)[++u2]) p = 0;
+                           ^
+
+"Test_name.c", line 164: warning: variable "q" was set but never used
+    typeof_unqual (int (*)[++u2]) q = 0;
+                                  ^
+
+"Test_name.c", line 183: warning: variable "q2" was declared but never referenced
+    typeof ((int (*)[++u2]) 0) q2;
+                               ^
+
+"Test_name.c", line 186: warning: variable "q3" was declared but never referenced
+    typeof ((void) 0, (int (*)[++u2]) 0) q3;
+                                         ^
+
+"Test_name.c", line 189: warning: variable "q4" was declared but never referenced
+    typeof ((int (*)[++u2]) 0, 0) q4;
+                                  ^
+
+"Test_name.c", line 192: warning: variable "q5" was declared but never referenced
+    typeof_unqual ((int (*)[++u2]) 0) q5;
+                                      ^
+
+"Test_name.c", line 195: warning: variable "q6" was declared but never referenced
+    typeof_unqual ((void) 0, (int (*)[++u2]) 0) q6;
+                                                ^
+
+"Test_name.c", line 198: warning: variable "q7" was declared but never referenced
+    typeof_unqual ((int (*)[++u2]) 0, 0) q7;
+                                         ^
+
+"Test_name.c", line 203: warning: variable "pp" was declared but never referenced
+    typeof (pa = &a2) pp;
+                      ^
+
+"Test_name.c", line 206: warning: variable "pp2" was declared but never referenced
+    typeof_unqual (pa = &a1) pp2;
+                             ^
+
+3 errors detected in the compilation of "Test_name.c".

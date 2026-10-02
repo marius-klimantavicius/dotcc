@@ -1,0 +1,58 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 9: error: invalid type for defaulted constructor
+      Const(const Const&&) = default; // expected-error {{the parameter for an explicitly-defaulted move constructor may not be const}}
+      ^
+
+"Test_name.c", line 10: error: invalid type for defaulted assignment operator
+      Const& operator=(const Const&&) = default; // expected-error {{the parameter for an explicitly-defaulted move assignment operator may not be const}}
+             ^
+
+"Test_name.c", line 14: error: invalid type for defaulted constructor
+      Volatile(volatile Volatile&&) = default; // expected-error {{the parameter for an explicitly-defaulted move constructor may not be volatile}}
+      ^
+
+"Test_name.c", line 15: error: invalid type for defaulted assignment operator
+      Volatile& operator=(volatile Volatile&&) = default; // expected-error {{the parameter for an explicitly-defaulted move assignment operator may not be volatile}}
+                ^
+
+"Test_name.c", line 19: error: invalid type for defaulted assignment operator
+      AssignmentRet1&& operator=(AssignmentRet1&&) = default; // expected-error {{explicitly-defaulted move assignment operator must return 'AssignmentRet1 &'}}
+                       ^
+
+"Test_name.c", line 23: error: invalid type for defaulted assignment operator
+      const AssignmentRet2& operator=(AssignmentRet2&&) = default; // expected-error {{explicitly-defaulted move assignment operator must return 'AssignmentRet2 &'}}
+                            ^
+
+"Test_name.c", line 27: error: invalid type for defaulted assignment operator
+      ConstAssignment& operator=(ConstAssignment&&) const = default; // expected-error {{an explicitly-defaulted move assignment operator may not have 'const', 'constexpr' or 'volatile' qualifiers}}
+                       ^
+
+"Test_name.c", line 33: error: invalid type for defaulted constructor
+      Volatile(const volatile Volatile&) = default; // expected-error {{the parameter for an explicitly-defaulted copy constructor may not be volatile}}
+      ^
+
+"Test_name.c", line 34: error: invalid type for defaulted assignment operator
+      Volatile& operator=(const volatile Volatile&) = default; // expected-error {{the parameter for an explicitly-defaulted copy assignment operator may not be volatile}}
+                ^
+
+"Test_name.c", line 61: error: the parameter of this defaulted copy-constructor cannot be const because a base or member copy constructor parameter is non-const
+      BadConst(const BadConst&) = default; // expected-error {{is const, but}}
+      ^
+
+"Test_name.c", line 62: error: the parameter of this defaulted assignment operator cannot be const because a base or member copy assignment parameter is non-const
+      BadConst& operator=(const BadConst&) = default; // expected-error {{is const, but}}
+                ^
+
+"Test_name.c", line 67: error: invalid type for defaulted assignment operator
+      AssignmentRet1&& operator=(const AssignmentRet1&) = default; // expected-error {{explicitly-defaulted copy assignment operator must return 'AssignmentRet1 &'}}
+                       ^
+
+"Test_name.c", line 71: error: invalid type for defaulted assignment operator
+      const AssignmentRet2& operator=(const AssignmentRet2&) = default; // expected-error {{explicitly-defaulted copy assignment operator must return 'AssignmentRet2 &'}}
+                            ^
+
+"Test_name.c", line 75: error: invalid type for defaulted assignment operator
+      ConstAssignment& operator=(const ConstAssignment&) const = default; // expected-error {{an explicitly-defaulted copy assignment operator may not have 'const', 'constexpr' or 'volatile' qualifiers}}
+                       ^
+
+14 errors detected in the compilation of "Test_name.c".

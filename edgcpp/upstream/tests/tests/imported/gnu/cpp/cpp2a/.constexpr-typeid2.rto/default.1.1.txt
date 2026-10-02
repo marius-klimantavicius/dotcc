@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"./cpp2a/constexpr-typeid2.C", line 36: error: static assertion failed
+  static_assert (&typeid (r) == &typeid (D));
+  ^
+
+1 error detected in the compilation of "Test_name.c".

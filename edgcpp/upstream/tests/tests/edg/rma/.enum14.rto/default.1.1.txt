@@ -1,0 +1,6 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 5: error: a value of type "E" cannot be used to initialize an entity of type "int (*)()"
+  int (*pf2)() = e1;
+                 ^
+
+1 error detected in the compilation of "Test_name.c".

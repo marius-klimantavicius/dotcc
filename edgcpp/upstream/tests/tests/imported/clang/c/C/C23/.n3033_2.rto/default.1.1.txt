@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 5: error: "##" may not be first in a __VA_OPT__ operand
+  #define H1(X, ...)       X __VA_OPT__(##) __VA_ARGS__ // expected-error {{'##' cannot appear at start of __VA_OPT__ argument}}
+                                        ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,22 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 13: error: identifier "__int128_t" is undefined
+  __int128_t v = 0;
+  ^
+
+"Test_name.c", line 14: error: identifier "__int128_t" is undefined
+  __int128_t expected = 0;
+  ^
+
+"Test_name.c", line 15: error: identifier "__int128_t" is undefined
+  __int128_t max = ~0;
+  ^
+
+"Test_name.c", line 16: error: identifier "__int128_t" is undefined
+  __int128_t desired = ~0;
+  ^
+
+"Test_name.c", line 17: error: identifier "__int128_t" is undefined
+  __int128_t zero = 0;
+  ^
+
+5 errors detected in the compilation of "Test_name.c".

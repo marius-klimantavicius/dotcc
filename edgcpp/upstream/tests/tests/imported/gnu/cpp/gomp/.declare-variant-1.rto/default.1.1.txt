@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 12: warning: unrecognized #pragma
+    #pragma omp declare variant (foo) match (user={condition(0)})	// { dg-error "'declare variant' on constructor" }
+            ^
+
+"Test_name.c", line 14: warning: unrecognized #pragma
+    #pragma omp declare variant (foo) match (user={condition(0)})	// { dg-error "'declare variant' on destructor" }
+            ^
+
+"Test_name.c", line 16: warning: unrecognized #pragma
+    #pragma omp declare variant (bar) match (user={condition(0)})	// { dg-error "'declare variant' on constructor" }
+            ^
+
+"Test_name.c", line 18: warning: unrecognized #pragma
+    #pragma omp declare variant (quux) match (user={condition(0)})	// { dg-error "'declare variant' on constructor" }
+            ^
+
+"Test_name.c", line 21: warning: unrecognized #pragma
+    #pragma omp declare variant (baz) match (user={condition(0)})	// { dg-error "'declare variant' on defaulted" "" { target c++11 } }
+            ^
+
+"Test_name.c", line 23: warning: unrecognized #pragma
+    #pragma omp declare variant (qux) match (user={condition(0)})	// { dg-error "'declare variant' on deleted" "" { target c++11 } }
+            ^
+
+"Test_name.c", line 29: warning: unrecognized #pragma
+  #pragma omp declare variant (corge) match (user={condition(0)})
+          ^
+

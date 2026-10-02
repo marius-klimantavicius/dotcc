@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 17: error: more than one operator "==" matches these operands:
+            built-in operator "pointer-to-member == pointer-to-member"
+            built-in operator "pointer-to-member == pointer-to-member"
+            operand types are: const String == const String
+    return ignoreCase ? equalIgnoringCase(a, b) : (a == b); } // { dg-error "ambiguous" }
+                                                     ^
+"Test_name.c", line 17: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    return ignoreCase ? equalIgnoringCase(a, b) : (a == b); } // { dg-error "ambiguous" }
+                                                     ^
+"Test_name.c", line 17: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    return ignoreCase ? equalIgnoringCase(a, b) : (a == b); } // { dg-error "ambiguous" }
+                                                     ^
+
+1 error detected in the compilation of "Test_name.c".

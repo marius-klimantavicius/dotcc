@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 6: error: namespace "N" has no member "foo"
+  int f (void) { return N::foo; }		 // { dg-error "'foo' is not a member of 'N'; did you mean 'N::M::foo'\\?" }
+                           ^
+
+"Test_name.c", line 8: error: the global scope has no "foo"
+  int g (void) { return ::foo; }	// { dg-error "'::foo' has not been declared; did you mean 'N::M::foo'\\?" }
+                          ^
+
+2 errors detected in the compilation of "Test_name.c".

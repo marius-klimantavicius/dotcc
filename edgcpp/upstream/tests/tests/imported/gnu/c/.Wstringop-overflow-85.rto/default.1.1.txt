@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 25: warning: unknown attribute "noipa"
+  NOIPA void a4_p1_a8_p3 (int i)
+  ^
+
+"Test_name.c", line 44: warning: unknown attribute "noipa"
+  NOIPA void a4_p1_a8_p5 (int i)
+  ^
+
+"Test_name.c", line 60: warning: unknown attribute "noipa"
+  NOIPA void a4_p1_a8_p7 (int i)
+  ^
+
+"Test_name.c", line 77: warning: unknown attribute "noipa"
+  NOIPA void mp_1_a4_p1_a8_p7 (int i, int j)
+  ^
+
+"Test_name.c", line 103: warning: unknown attribute "noipa"
+  NOIPA void mp1_a4_p1_a8_p5 (int i, int j)
+  ^
+
+"Test_name.c", line 129: warning: unknown attribute "noipa"
+  NOIPA void mp1_a4_p1_a8_p4 (int i, int j)
+  ^
+

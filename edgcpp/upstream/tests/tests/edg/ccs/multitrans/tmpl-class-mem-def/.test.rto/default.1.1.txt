@@ -1,0 +1,1 @@
+cpfe -DTEST_NUMBER=1 --multi_trans -tused -A -w --diag_warning=1055,768,2949 --diag_suppress=1204,961 Test_name.c tmpl-class-mem-def-p2.C tmpl-class-mem-def-p3.C

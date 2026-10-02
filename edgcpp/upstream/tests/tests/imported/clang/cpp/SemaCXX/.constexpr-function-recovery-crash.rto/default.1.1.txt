@@ -1,0 +1,197 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 --exceptions Test_name.c
+"Test_name.c", line 9: error: identifier "invalid" is undefined
+      while (invalid()) {} // expected-error {{use of undeclared identifier}}
+             ^
+
+"Test_name.c", line 15: error: identifier "invalid" is undefined
+    while (invalid()) {} // expected-error {{use of undeclared identifier}}
+           ^
+
+"Test_name.c", line 20: error: identifier "invalid" is undefined
+    int *p = new int(invalid()); // expected-error {{use of undeclared identifier}}
+                     ^
+
+"Test_name.c", line 40: error: identifier "a" is undefined
+    for (;; a++); // expected-error {{use of undeclared identifier}}  \
+            ^
+
+"Test_name.c", line 42: warning: statement is unreachable
+    return 1;
+    ^
+
+"Test_name.c", line 48: error: identifier "a" is undefined
+      for (;; a++) { // expected-error {{use of undeclared identifier}}
+              ^
+
+"Test_name.c", line 57: warning: statement is unreachable
+    throw "bad";
+    ^
+
+"Test_name.c", line 69: error: expression must have a constant value
+    return f<1>(f<x>(1)); // expected-error {{no matching function for call to 'f'}}
+                  ^
+"Test_name.c", line 69: note: the value of parameter "x" (declared at line 68) cannot be used as a constant
+    return f<1>(f<x>(1)); // expected-error {{no matching function for call to 'f'}}
+                  ^
+
+"Test_name.c", line 69: error: no instance of function template "f" matches the argument list
+            argument types are: (int)
+    return f<1>(f<x>(1)); // expected-error {{no matching function for call to 'f'}}
+                ^
+"Test_name.c", line 65: note: substituting explicit template arguments "<<expression>>" for function template "f" failed
+  template<int x> constexpr int f(int y) { // expected-note {{candidate template ignored}}
+                                ^
+
+"Test_name.c", line 72: error: identifier "undef" is undefined
+  constexpr int test10() { return undef(); } // expected-error {{use of undeclared identifier 'undef'}}
+                                  ^
+
+"Test_name.c", line 75: error: identifier "undef" is undefined
+  struct X {} array[] = {undef()}; // expected-error {{use of undeclared identifier 'undef'}}
+                         ^
+
+"Test_name.c", line 80: error: return value type does not match the function type
+  constexpr int test12() { return "wrong"; } // expected-error {{cannot initialize return object of type 'int'}}
+                                  ^
+
+"Test_name.c", line 90: error: expected an expression
+  TEST_EVALUATE(Switch, switch (!!){});              // expected-error + {{}}
+  ^
+
+"Test_name.c", line 91: error: expected an expression
+  TEST_EVALUATE(SwitchInit, switch (auto x = !!){}); // expected-error + {{}}
+  ^
+
+"Test_name.c", line 92: error: identifier "invalid_value" is undefined
+  TEST_EVALUATE(SwitchCondValDep, switch (invalid_value) { default: break; });    // expected-error + {{}}
+  ^
+
+"Test_name.c", line 93: error: expected an expression
+  TEST_EVALUATE(For, for (!!){}); // expected-error + {{}}
+  ^
+
+"Test_name.c", line 93: error: expected a ";"
+  TEST_EVALUATE(For, for (!!){}); // expected-error + {{}}
+  ^
+
+"Test_name.c", line 93: error: expected an expression
+  TEST_EVALUATE(For, for (!!){}); // expected-error + {{}}
+  ^
+
+"Test_name.c", line 93: error: expected a ";"
+  TEST_EVALUATE(For, for (!!){}); // expected-error + {{}}
+  ^
+
+"Test_name.c", line 97: error: expected an expression
+  TEST_EVALUATE(ForRange, for (auto x : !!){}); // expected-error + {{}}
+  ^
+
+"Test_name.c", line 97: error: expression must have a constant value
+  TEST_EVALUATE(ForRange, for (auto x : !!){}); // expected-error + {{}}
+  ^
+
+"Test_name.c", line 98: error: expected an expression
+  TEST_EVALUATE(While, while (!!){});           // expected-error + {{}}
+  ^
+
+"Test_name.c", line 99: error: expected an expression
+  TEST_EVALUATE(DoWhile, do {} while (!!););    // expected-error + {{}}
+  ^
+
+"Test_name.c", line 100: error: expected a ">"
+  TEST_EVALUATE(DoWhileCond, do {} while (some_cond < 10););    // expected-error {{use of undeclared identifier}}  \
+  ^
+
+"Test_name.c", line 102: error: expected an expression
+  TEST_EVALUATE(If, if (!!){};);                // expected-error + {{}}
+  ^
+
+"Test_name.c", line 103: error: expected an expression
+  TEST_EVALUATE(IfInit, if (auto x = !!; 1){};);// expected-error + {{}}
+  ^
+
+"Test_name.c", line 104: error: expected an expression
+  TEST_EVALUATE(ForInit, for (!!;;){};);// expected-error + {{}}
+  ^
+
+"Test_name.c", line 104: warning: statement is unreachable
+  TEST_EVALUATE(ForInit, for (!!;;){};);// expected-error + {{}}
+  ^
+
+"Test_name.c", line 107: error: expected an expression
+  TEST_EVALUATE(ForCond, for (; !!;){};);// expected-error + {{}}
+  ^
+
+"Test_name.c", line 108: error: expected an expression
+  TEST_EVALUATE(ForInc, for (;; !!){};);// expected-error + {{}}
+  ^
+
+"Test_name.c", line 108: warning: statement is unreachable
+  TEST_EVALUATE(ForInc, for (;; !!){};);// expected-error + {{}}
+  ^
+
+"Test_name.c", line 111: error: identifier "some_cond" is undefined
+  TEST_EVALUATE(ForCondUnDef, for (;some_cond;){};);        // expected-error + {{}}
+  ^
+
+"Test_name.c", line 81: warning: variable "force12" was declared but never referenced
+  constexpr int force12 = test12();          // expected-error {{must be initialized by a constant}}
+                ^
+
+"Test_name.c", line 90: warning: variable "forceEvaluateSwitch" was declared but never referenced
+  TEST_EVALUATE(Switch, switch (!!){});              // expected-error + {{}}
+  ^
+
+"Test_name.c", line 91: warning: variable "forceEvaluateSwitchInit" was declared but never referenced
+  TEST_EVALUATE(SwitchInit, switch (auto x = !!){}); // expected-error + {{}}
+  ^
+
+"Test_name.c", line 92: warning: variable "forceEvaluateSwitchCondValDep" was declared but never referenced
+  TEST_EVALUATE(SwitchCondValDep, switch (invalid_value) { default: break; });    // expected-error + {{}}
+  ^
+
+"Test_name.c", line 93: warning: variable "forceEvaluateFor" was declared but never referenced
+  TEST_EVALUATE(For, for (!!){}); // expected-error + {{}}
+  ^
+
+"Test_name.c", line 97: warning: variable "forceEvaluateForRange" was declared but never referenced
+  TEST_EVALUATE(ForRange, for (auto x : !!){}); // expected-error + {{}}
+  ^
+
+"Test_name.c", line 98: warning: variable "forceEvaluateWhile" was declared but never referenced
+  TEST_EVALUATE(While, while (!!){});           // expected-error + {{}}
+  ^
+
+"Test_name.c", line 99: warning: variable "forceEvaluateDoWhile" was declared but never referenced
+  TEST_EVALUATE(DoWhile, do {} while (!!););    // expected-error + {{}}
+  ^
+
+"Test_name.c", line 100: warning: variable "forceEvaluateDoWhileCond" was declared but never referenced
+  TEST_EVALUATE(DoWhileCond, do {} while (some_cond < 10););    // expected-error {{use of undeclared identifier}}  \
+  ^
+
+"Test_name.c", line 102: warning: variable "forceEvaluateIf" was declared but never referenced
+  TEST_EVALUATE(If, if (!!){};);                // expected-error + {{}}
+  ^
+
+"Test_name.c", line 103: warning: variable "forceEvaluateIfInit" was declared but never referenced
+  TEST_EVALUATE(IfInit, if (auto x = !!; 1){};);// expected-error + {{}}
+  ^
+
+"Test_name.c", line 104: warning: variable "forceEvaluateForInit" was declared but never referenced
+  TEST_EVALUATE(ForInit, for (!!;;){};);// expected-error + {{}}
+  ^
+
+"Test_name.c", line 107: warning: variable "forceEvaluateForCond" was declared but never referenced
+  TEST_EVALUATE(ForCond, for (; !!;){};);// expected-error + {{}}
+  ^
+
+"Test_name.c", line 108: warning: variable "forceEvaluateForInc" was declared but never referenced
+  TEST_EVALUATE(ForInc, for (;; !!){};);// expected-error + {{}}
+  ^
+
+"Test_name.c", line 111: warning: variable "forceEvaluateForCondUnDef" was declared but never referenced
+  TEST_EVALUATE(ForCondUnDef, for (;some_cond;){};);        // expected-error + {{}}
+  ^
+
+28 errors detected in the compilation of "Test_name.c".

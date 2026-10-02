@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 5: error: variable "px" is not a type name
+  template <class T> inline void f(T) throw(px) { }
+                                            ^
+
+"Test_name.c", line 6: error: return type "int" omitted in declaration of function "main"
+  main() {
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

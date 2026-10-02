@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 39: error: const variable "a" requires an initializer -- class "A" has no user-provided default constructor
+      const A a; // { dg-error "uninitialized 'const" }
+              ^
+
+"Test_name.c", line 39: warning: variable "a" was declared but never referenced
+      const A a; // { dg-error "uninitialized 'const" }
+              ^
+
+1 error detected in the compilation of "Test_name.c".

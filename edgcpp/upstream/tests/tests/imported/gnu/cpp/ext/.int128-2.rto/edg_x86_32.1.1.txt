@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./ext/int128-2.h", line 7: error: identifier "__int128" is undefined
+    struct limits<__int128> { };
+                  ^
+
+"./ext/int128-2.h", line 10: error: expected a ">"
+    struct limits<unsigned __int128> { };
+                           ^
+
+2 errors detected in the compilation of "Test_name.c".

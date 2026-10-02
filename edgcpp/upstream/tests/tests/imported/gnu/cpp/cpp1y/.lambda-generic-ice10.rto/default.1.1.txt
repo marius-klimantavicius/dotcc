@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 14: error: a variable declared with an auto type specifier cannot appear in its own initializer
+    auto f = [&](auto i) { if (f); };  // { dg-error "use of .f. before deduction of .auto." }
+                               ^
+
+"Test_name.c", line 14: error: cannot capture "f" (declared at line 14)
+    auto f = [&](auto i) { if (f); };  // { dg-error "use of .f. before deduction of .auto." }
+                               ^
+          detected during:
+            instantiation of function "lambda [](auto)->auto [with <auto-1>=int]" at line 9
+            instantiation of "void foo(F) [with F=lambda [](auto)->auto]" at line 15
+            instantiation of "void bar(T) [with T=int]" at line 19
+
+2 errors detected in the compilation of "Test_name.c".

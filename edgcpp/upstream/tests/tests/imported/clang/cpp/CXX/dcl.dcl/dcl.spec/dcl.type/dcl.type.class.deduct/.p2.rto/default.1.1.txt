@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 13: error: cannot deduce class template arguments
+  A *q = new A(0); // expected-error {{cannot form pointer to deduced class template specialization type}}
+  ^
+
+"Test_name.c", line 16: error: argument list for class template "A" is missing
+    operator A() { // expected-error {{argument deduction not allowed in conversion function type}}
+             ^
+
+"Test_name.c", line 21: error: argument list for class template "A" is missing
+  void f(A a); // expected-error {{argument deduction not allowed in function prototype}}
+         ^
+
+"Test_name.c", line 22: error: argument list for class template "A" is missing
+  A f(); // expected-error {{argument deduction not allowed in function return type}}
+  ^
+
+"Test_name.c", line 24: error: argument list for class template "A" is missing
+  template<A a> // cxx17-error {{argument deduction not allowed in template parameter}}
+           ^
+
+5 errors detected in the compilation of "Test_name.c".

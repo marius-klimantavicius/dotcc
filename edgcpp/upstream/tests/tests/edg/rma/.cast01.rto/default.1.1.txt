@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 6: error: type "A::A" (declared at line 4) is inaccessible
+  class C : private B { void f(); void g(A*); };
+                                         ^
+
+"Test_name.c", line 13: error: type "A::A" (declared at line 4) is inaccessible
+    g((A*)&c);
+       ^
+
+2 errors detected in the compilation of "Test_name.c".

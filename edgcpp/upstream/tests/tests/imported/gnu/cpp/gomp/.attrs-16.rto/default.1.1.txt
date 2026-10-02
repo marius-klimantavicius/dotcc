@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 7: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive (assumes no_openmp, absent (target, teams) holds (i < 32U) holds (i < 32U))]];
+    ^
+
+"Test_name.c", line 13: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive (assumes no_openmp_routines)]];
+    ^
+
+"Test_name.c", line 14: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive (assumes no_parallelism)]];
+    ^
+
+"Test_name.c", line 15: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive (assumes absent (for))]];
+    ^
+
+"Test_name.c", line 21: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive (assumes absent (atomic, barrier, cancel, cancellation point) absent (critical, depobj)
+    ^
+

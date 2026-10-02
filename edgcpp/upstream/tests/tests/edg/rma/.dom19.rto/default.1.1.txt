@@ -1,0 +1,42 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 20: error: base class "B" is ambiguous
+    B::i = 0;  // error
+       ^
+
+"Test_name.c", line 21: error: base class "B" is ambiguous
+    B::j = 0;  // error
+       ^
+
+"Test_name.c", line 22: error: a nonstatic member reference must be relative to a specific object
+    C::j = 0;  // error
+       ^
+
+"Test_name.c", line 23: error: a nonstatic member reference must be relative to a specific object
+    C::k = 0;  // error
+       ^
+
+"Test_name.c", line 25: error: "X::j" is ambiguous
+    X::j = 0;  // error
+       ^
+
+"Test_name.c", line 27: error: "Y::i" is ambiguous
+    Y::i = 0;  // error
+       ^
+
+"Test_name.c", line 30: error: "D::i" is ambiguous
+    D::i = 0;   // error
+       ^
+
+"Test_name.c", line 31: error: "D::j" is ambiguous
+    D::j = 0;   // error
+       ^
+
+"Test_name.c", line 33: error: "D::i" is ambiguous
+    i = 0;  // error
+    ^
+
+"Test_name.c", line 34: error: "D::j" is ambiguous
+    j = 0;  // error
+    ^
+
+10 errors detected in the compilation of "Test_name.c".

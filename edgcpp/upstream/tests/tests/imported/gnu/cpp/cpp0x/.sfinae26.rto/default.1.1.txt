@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 40: error: no instance of constructor "S<T...>::S [with T=<bool>]" matches the argument list
+            argument types are: (int)
+  S<bool> s(0);			// { dg-error "no match" }
+            ^
+"Test_name.c", line 33: note: function "S<T...>::S(const S<bool> &) [with T=<bool>]" does not match because argument #1 does not match parameter
+  struct S {
+         ^
+"Test_name.c", line 33: note: function "S<T...>::S(S<bool> &&) [with T=<bool>]" does not match because argument #1 does not match parameter
+  struct S {
+         ^
+"Test_name.c", line 37: note: candidate function template "S<T...>::S(U...) [with T=<bool>]" failed deduction
+    S(U...){}
+    ^
+
+1 error detected in the compilation of "Test_name.c".

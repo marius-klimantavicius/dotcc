@@ -1,0 +1,82 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 13: error: "a0" has already been declared in the current scope
+    int a0; /* { dg-error "redeclaration" } */
+        ^
+
+"Test_name.c", line 12: warning: variable "a0" was declared but never referenced
+    int a0; /* { dg-message "note: previous declaration" } */
+        ^
+
+"Test_name.c", line 13: warning: variable "a0" was declared but never referenced
+    int a0; /* { dg-error "redeclaration" } */
+        ^
+
+"Test_name.c", line 20: error: "a1" has already been declared in the current scope
+    static int a1; /* { dg-error "redeclaration" } */
+               ^
+
+"Test_name.c", line 19: warning: variable "a1" was declared but never referenced
+    int a1; /* { dg-message "note: previous declaration" } */
+        ^
+
+"Test_name.c", line 20: warning: variable "a1" was declared but never referenced
+    static int a1; /* { dg-error "redeclaration" } */
+               ^
+
+"Test_name.c", line 27: error: "a2" has already been declared in the current scope
+    extern int a2; /* { dg-error "follows declaration with no linkage" } */
+               ^
+
+"Test_name.c", line 26: warning: variable "a2" was declared but never referenced
+    int a2; /* { dg-message "note: previous declaration" } */
+        ^
+
+"Test_name.c", line 34: error: "a3" has already been declared in the current scope
+    int a3; /* { dg-error "redeclaration" } */
+        ^
+
+"Test_name.c", line 33: warning: variable "a3" was declared but never referenced
+    static int a3; /* { dg-message "note: previous declaration" } */
+               ^
+
+"Test_name.c", line 34: warning: variable "a3" was declared but never referenced
+    int a3; /* { dg-error "redeclaration" } */
+        ^
+
+"Test_name.c", line 41: error: "a4" has already been declared in the current scope
+    static int a4; /* { dg-error "redeclaration" } */
+               ^
+
+"Test_name.c", line 40: warning: variable "a4" was declared but never referenced
+    static int a4; /* { dg-message "note: previous declaration" } */
+               ^
+
+"Test_name.c", line 41: warning: variable "a4" was declared but never referenced
+    static int a4; /* { dg-error "redeclaration" } */
+               ^
+
+"Test_name.c", line 48: error: "a5" has already been declared in the current scope
+    extern int a5; /* { dg-error "follows declaration with no linkage" } */
+               ^
+
+"Test_name.c", line 47: warning: variable "a5" was declared but never referenced
+    static int a5; /* { dg-message "note: previous declaration" } */
+               ^
+
+"Test_name.c", line 55: error: "a6" has already been declared in the current scope
+    int a6; /* { dg-error "follows extern declaration" } */
+        ^
+
+"Test_name.c", line 55: warning: variable "a6" was declared but never referenced
+    int a6; /* { dg-error "follows extern declaration" } */
+        ^
+
+"Test_name.c", line 62: error: "a7" has already been declared in the current scope
+    static int a7; /* { dg-error "follows extern declaration" } */
+               ^
+
+"Test_name.c", line 62: warning: variable "a7" was declared but never referenced
+    static int a7; /* { dg-error "follows extern declaration" } */
+               ^
+
+8 errors detected in the compilation of "Test_name.c".

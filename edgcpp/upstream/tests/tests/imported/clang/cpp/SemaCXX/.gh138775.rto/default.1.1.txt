@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 12: error: identifier "consteval" is undefined
+  template<typename T> consteval T::type f();
+                       ^
+
+"Test_name.c", line 12: error: "T" is not a class template
+  template<typename T> consteval T::type f();
+                                 ^
+
+"Test_name.c", line 12: error: expected a ";"
+  template<typename T> consteval T::type f();
+                                         ^
+
+"Test_name.c", line 16: error: this declaration has no storage class or type specifier
+  constinit int x = 4;
+  ^
+
+"Test_name.c", line 16: error: expected a ";"
+  constinit int x = 4;
+            ^
+
+5 errors detected in the compilation of "Test_name.c".

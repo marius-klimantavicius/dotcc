@@ -1,0 +1,20 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 Test_name.c
+"./atomic/stdatomic-generic.c", line 27: warning: argument of type "_Atomic(test_struct) *" is incompatible with parameter of type "const void *"
+    if (memcmp (&a, &zero, size))
+                ^
+
+"./atomic/stdatomic-generic.c", line 33: warning: argument of type "_Atomic(test_struct) *" is incompatible with parameter of type "const void *"
+    if (memcmp (&a, &ones, size))
+                ^
+
+"./atomic/stdatomic-generic.c", line 42: warning: argument of type "_Atomic(test_struct) *" is incompatible with parameter of type "const void *"
+    if (memcmp (&a, &zero, size))
+                ^
+
+/usr/sbin/ld: Test_name.o: in function `main':
+Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_store'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_exchange'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_load'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_compare_exchange'
+/usr/sbin/ld: Test_name.int.c:(.text+0xXX): undefined reference to `__atomic_compare_exchange'
+collect2: error: ld returned 1 exit status

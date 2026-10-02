@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 27: warning: operand types are incompatible ("float *" and "int *")
+    return M1(a, b); /* { dg-message "in expansion of macro 'M1'" } */
+           ^
+
+"Test_name.c", line 27: warning: subtraction of pointer types "float *" and "int *" is nonstandard
+    return M1(a, b); /* { dg-message "in expansion of macro 'M1'" } */
+           ^
+
+"Test_name.c", line 55: warning: operand types are incompatible ("float *" and "int *")
+    return M2(&a, &b); /* { dg-message "in expansion of macro 'M2'" } */
+           ^
+
+"Test_name.c", line 55: warning: subtraction of pointer types "float *" and "int *" is nonstandard
+    return M2(&a, &b); /* { dg-message "in expansion of macro 'M2'" } */
+           ^
+
+"Test_name.c", line 84: warning: operand types are incompatible ("float *" and "int *")
+    return M3(&); /* { dg-message "in expansion of macro 'M3'" } */
+           ^
+
+"Test_name.c", line 84: warning: subtraction of pointer types "float *" and "int *" is nonstandard
+    return M3(&); /* { dg-message "in expansion of macro 'M3'" } */
+           ^
+
+"Test_name.c", line 113: warning: operand types are incompatible ("float *" and "int *")
+    return M4; /* { dg-message "in expansion of macro 'M4'" } */
+           ^
+
+"Test_name.c", line 113: warning: subtraction of pointer types "float *" and "int *" is nonstandard
+    return M4; /* { dg-message "in expansion of macro 'M4'" } */
+           ^
+

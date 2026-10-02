@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 6: error: a parameter may not have void type
+      void a, // expected-error{{'void' must be the first and only parameter if specified}}
+      ^
+
+"Test_name.c", line 9: error: a parameter may not have void type
+      void d, // expected-error{{'void' must be the first and only parameter if specified}}
+      ^
+
+"Test_name.c", line 11: error: a parameter may not have void type
+      void f) // expected-error{{'void' must be the first and only parameter if specified}}
+      ^
+
+"Test_name.c", line 16: error: a parameter may not have void type
+      void, // expected-error{{'void' must be the first and only parameter if specified}}
+      ^
+
+"Test_name.c", line 20: error: a parameter may not have void type
+      void, // expected-error{{'void' must be the first and only parameter if specified}}
+      ^
+
+"Test_name.c", line 25: error: a parameter may not have void type
+        void,  // expected-error{{'void' must be the first and only parameter if specified}}
+        ^
+
+"Test_name.c", line 26: error: a parameter may not have void type
+        void); // expected-error{{'void' must be the first and only parameter if specified}}
+        ^
+
+7 errors detected in the compilation of "Test_name.c".

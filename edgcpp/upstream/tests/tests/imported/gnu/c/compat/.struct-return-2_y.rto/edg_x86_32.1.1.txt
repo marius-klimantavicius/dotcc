@@ -1,0 +1,193 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./compat/struct-return-2_y.c", line 74: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 76: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 77: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 78: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 79: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 80: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 81: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 82: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 83: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 84: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 85: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 86: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 87: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 88: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 89: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 90: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 92: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 94: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 95: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 96: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 97: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 98: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 99: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 100: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 101: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 102: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 103: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 104: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 105: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 106: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 107: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 108: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 110: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 112: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 113: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 114: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 115: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 116: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 117: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 118: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 119: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 120: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 121: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 122: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 123: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 124: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 125: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-return-2_y.c", line 126: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+

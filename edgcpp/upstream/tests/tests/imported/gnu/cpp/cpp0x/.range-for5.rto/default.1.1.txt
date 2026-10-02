@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 36: error: return types for "begin" and "end" functions used in a range-based "for" statement must be the same ("begin" return type is "int *", "end" return type is "int")
+    for (int x : c) // { dg-error "inconsistent|conversion|comparison" }
+                 ^
+
+"Test_name.c", line 42: error: no suitable constructor exists to convert from "int" to "Explicit"
+    for (Explicit x : a) // { dg-error "conversion" }
+                       ^
+
+"Test_name.c", line 53: error: "i", declared as iterator of range-based "for" statement, may not be redeclared in this scope
+      int i;			// { dg-error "redeclaration" }
+          ^
+
+"Test_name.c", line 53: warning: variable "i" was declared but never referenced
+      int i;			// { dg-error "redeclaration" }
+          ^
+
+"Test_name.c", line 50: warning: variable "i" was declared but never referenced
+    int i;
+        ^
+
+3 errors detected in the compilation of "Test_name.c".

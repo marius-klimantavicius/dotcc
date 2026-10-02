@@ -1,0 +1,6 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 5: error: cannot overload functions distinguished by return type alone
+  extern "C++" int f();    // error
+                   ^
+
+1 error detected in the compilation of "Test_name.c".

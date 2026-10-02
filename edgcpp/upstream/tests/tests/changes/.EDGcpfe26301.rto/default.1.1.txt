@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 -w -A --c++20 Test_name.c
+"Test_name.c", line 16: error: expression must have a constant value
+  static_assert(f());  // Previously okay.  Now an error.
+                ^
+"Test_name.c", line 13: note: deallocation does not match allocation kind (one is for an array and the other not)
+    delete new int[42];
+    ^
+"Test_name.c", line 13: note: allocation occurred here
+    delete new int[42];
+           ^
+
+1 error detected in the compilation of "Test_name.c".

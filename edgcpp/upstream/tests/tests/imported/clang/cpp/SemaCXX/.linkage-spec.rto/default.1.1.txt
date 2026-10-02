@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 -DW_RETAINED_LANGUAGE_LINKAGE Test_name.c
+"Test_name.c", line 78: error: function "pr7859_a" has already been defined (previous definition at line 77)
+  extern "C" void pr7859_a(int) {} // expected-error {{redefinition}}
+                  ^
+
+"Test_name.c", line 81: error: more than one instance of overloaded function "pr7859_b" has "C" linkage
+  extern "C" void pr7859_b(int) {} // expected-error {{conflicting}}
+                  ^
+
+"Test_name.c", line 84: error: more than one instance of overloaded function "pr7859_c" has "C" linkage
+  extern "C" void pr7859_c(int) {} // expected-error {{conflicting}}
+                  ^
+
+"Test_name.c", line 131: error: incomplete type "void" is not allowed
+  extern "C" void PR16167; // expected-error {{variable has incomplete type 'void'}}
+                  ^
+
+"Test_name.c", line 132: error: incomplete type "void" is not allowed
+  extern void PR16167_0; // expected-error {{variable has incomplete type 'void'}}
+              ^
+
+"Test_name.c", line 144: warning: function "<unnamed>::foo_pr7927" was declared but never referenced
+    void foo_pr7927() {
+         ^
+
+5 errors detected in the compilation of "Test_name.c".

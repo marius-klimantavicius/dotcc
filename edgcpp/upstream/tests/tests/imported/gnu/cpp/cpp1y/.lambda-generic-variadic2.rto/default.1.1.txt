@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp1y/lambda-generic-variadic2.C", line 23: error: "auto" is not allowed here
+    X::f([](auto... xs){});
+            ^
+
+"./cpp1y/lambda-generic-variadic2.C", line 23: error: expected a ")"
+    X::f([](auto... xs){});
+                    ^
+
+"./cpp1y/lambda-generic-variadic2.C", line 15: error: no suitable user-defined conversion from "lambda [](<error-type>, ...)->void" to "F" (aka "std::function<void ()>") exists
+      g(t);
+        ^
+          detected during instantiation of "void X::f(T) [with T=lambda [](<error-type>, ...)->void]" at line 23
+
+3 errors detected in the compilation of "Test_name.c".

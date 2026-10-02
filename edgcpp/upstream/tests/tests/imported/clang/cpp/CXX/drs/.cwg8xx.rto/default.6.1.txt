@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=6 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++23 --exceptions --exceptions Test_name.c
+"Test_name.c", line 12: error: an export declaration can only appear in a module interface unit
+  export template <class T> struct B {};
+  ^
+
+"Test_name.c", line 15: error: an export declaration can only appear in a module interface unit
+  export template<typename T> void f() {}
+  ^
+
+"Test_name.c", line 26: error: function "cwg873::f(T &&) [with T=int &]" (declared at line 23) cannot be referenced -- it is a deleted function
+    f(i); // calls f<int&>(int&)
+    ^
+
+"Test_name.c", line 29: error: function "cwg873::f(T &&) [with T=int]" (declared at line 24) cannot be referenced -- it is a deleted function
+    f(0); // calls f<int>(int&&)
+    ^
+
+"Test_name.c", line 38: error: function "main" cannot be deleted
+  int main() = delete;
+      ^
+
+5 errors detected in the compilation of "Test_name.c".

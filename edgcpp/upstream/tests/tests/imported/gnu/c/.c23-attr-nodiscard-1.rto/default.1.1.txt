@@ -1,0 +1,65 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 29: warning: the "nodiscard" attribute does not apply to destructors or routines with void return type
+  [[nodiscard]] void v (void); /* { dg-warning "void return type" } */
+    ^
+
+"Test_name.c", line 36: warning: ignoring return value from routine declared with "nodiscard" attribute
+    c1 (); /* { dg-warning "ignoring return value" } */
+       ^
+
+"Test_name.c", line 37: warning: ignoring return value from routine declared with "nodiscard" attribute ("some reason")
+    c2 (); /* { dg-warning "some reason" } */
+       ^
+
+"Test_name.c", line 38: warning: ignoring return value type with "nodiscard" attribute ("struct reason")
+    cs1 (); /* { dg-warning "struct reason" } */
+        ^
+
+"Test_name.c", line 39: warning: ignoring return value type with "nodiscard" attribute
+    cs2 (); /* { dg-warning "ignoring return value of type" } */
+        ^
+
+"Test_name.c", line 40: warning: ignoring return value type with "nodiscard" attribute
+    cs3 (); /* { dg-warning "ignoring return value of type" } */
+        ^
+
+"Test_name.c", line 41: warning: ignoring return value type with "nodiscard" attribute
+    cu1 (); /* { dg-warning "ignoring return value of type" } */
+        ^
+
+"Test_name.c", line 42: warning: ignoring return value type with "nodiscard" attribute ("union reason")
+    cu2 (); /* { dg-warning "union reason" } */
+        ^
+
+"Test_name.c", line 43: warning: ignoring return value type with "nodiscard" attribute
+    ce1 (); /* { dg-warning "ignoring return value of type" } */
+        ^
+
+"Test_name.c", line 44: warning: ignoring return value type with "nodiscard" attribute ("enum reason")
+    ce2 (); /* { dg-warning "enum reason" } */
+        ^
+
+"Test_name.c", line 46: warning: ignoring return value from routine declared with "nodiscard" attribute
+    c1 (), ok (); /* { dg-warning "ignoring return value" } */
+       ^
+
+"Test_name.c", line 47: warning: ignoring return value type with "nodiscard" attribute ("struct reason")
+    cs1 (), ok (); /* { dg-warning "struct reason" } */
+        ^
+
+"Test_name.c", line 48: warning: ignoring return value type with "nodiscard" attribute
+    ok (), cu1 (); /* { dg-warning "ignoring return value" } */
+               ^
+
+"Test_name.c", line 49: warning: ignoring return value type with "nodiscard" attribute ("enum reason")
+    ok (), (ok (), (ok (), ce2 ())); /* { dg-warning "enum reason" } */
+                               ^
+
+"Test_name.c", line 50: warning: ignoring return value type with "nodiscard" attribute
+    (ok (), cu1 ()), ok (); /* { dg-warning "ignoring return value" } */
+                ^
+
+"Test_name.c", line 52: warning: ignoring return value type with "nodiscard" attribute
+    (i ? ce1 : ce1a) (); /* { dg-warning "ignoring return value of type" } */
+                     ^
+

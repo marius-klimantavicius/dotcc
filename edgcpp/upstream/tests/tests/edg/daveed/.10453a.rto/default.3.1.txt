@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=3 --gcc -DNEG Test_name.c
+"Test_name.c", line 8: error: identifier "_Imaginary" is undefined
+  _Imaginary ii = 1.0i;
+  ^
+
+1 error detected in the compilation of "Test_name.c".

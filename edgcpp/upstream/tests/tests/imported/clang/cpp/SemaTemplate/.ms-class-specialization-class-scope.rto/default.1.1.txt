@@ -1,0 +1,45 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --ms_extensions --ms_extensions Test_name.c
+"Test_name.c", line 12: error: explicit specialization of class "A::X<int>" must precede its first use (at line 10)
+    template<> struct X<int>; // expected-error {{explicit specialization of 'A::X<int>' after instantiation}}
+                      ^
+
+"Test_name.c", line 13: warning: invalid redeclaration of nested class
+    template<> struct X<char>; // expected-note {{forward declaration}}
+                      ^
+
+"Test_name.c", line 15: error: incomplete type "A::X<char>" is not allowed
+    X<char>::x b; // expected-error {{incomplete type 'A::X<char>' named in nested name specifier}}
+    ^
+
+"Test_name.c", line 24: error: class "A::X<float>" has already been defined (previous definition at line 23)
+    template<> struct X<float> {}; // expected-error {{redefinition of 'X<float>'}}
+                      ^
+
+"Test_name.c", line 28: error: class "A::X<float>" has no member "x"
+  A::X<float>::x axf; // expected-error {{no type named 'x'}}
+               ^
+
+"Test_name.c", line 36: warning: invalid redeclaration of nested class
+    template<> struct X<int>; // expected-error {{explicit specialization of 'X<int>' after instantiation}}
+                      ^
+
+"Test_name.c", line 37: warning: invalid redeclaration of nested class
+    template<> struct X<char>; // expected-note {{forward declaration}}
+                      ^
+
+"Test_name.c", line 36: error: explicit specialization of class "B<T>::X<int> [with T=float]" must precede its first use (at line 34)
+    template<> struct X<int>; // expected-error {{explicit specialization of 'X<int>' after instantiation}}
+                      ^
+          detected during instantiation of class "B<T> [with T=float]" at line 51
+
+"Test_name.c", line 39: error: incomplete type "B<float>::X<char>" is not allowed
+    typename X<char>::x b; // expected-error {{incomplete type 'B<float>::X<char>' named in nested name specifier}}
+             ^
+          detected during instantiation of class "B<T> [with T=float]" at line 51
+
+"Test_name.c", line 48: error: class "B<T>::X<float> [with T=float]" has already been defined (previous definition at line 47)
+    template<> struct X<T> {}; // expected-error {{redefinition of 'X<float>'}}
+                      ^
+          detected during instantiation of class "B<T> [with T=float]" at line 51
+
+7 errors detected in the compilation of "Test_name.c".

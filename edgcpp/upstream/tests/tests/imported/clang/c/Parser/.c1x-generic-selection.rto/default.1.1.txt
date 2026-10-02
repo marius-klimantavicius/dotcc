@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c11 Test_name.c
+"Test_name.c", line 6: error: expected a "("
+    _Generic; // expected-error {{expected '('}}
+            ^
+
+"Test_name.c", line 6: error: expected an expression
+    _Generic; // expected-error {{expected '('}}
+            ^
+
+"Test_name.c", line 6: error: expected a ","
+    _Generic; // expected-error {{expected '('}}
+            ^
+
+"Test_name.c", line 6: error: expected a type specifier
+    _Generic; // expected-error {{expected '('}}
+            ^
+
+"Test_name.c", line 6: error: expected a ":"
+    _Generic; // expected-error {{expected '('}}
+            ^
+
+"Test_name.c", line 6: error: expected an expression
+    _Generic; // expected-error {{expected '('}}
+            ^
+
+"Test_name.c", line 6: error: expected a ")"
+    _Generic; // expected-error {{expected '('}}
+            ^
+
+"Test_name.c", line 7: error: expected a ","
+    (void) _Generic(0); // expected-error {{expected ','}}
+                     ^
+
+"Test_name.c", line 7: error: expected a type specifier
+    (void) _Generic(0); // expected-error {{expected ','}}
+                     ^
+
+"Test_name.c", line 7: error: expected a ":"
+    (void) _Generic(0); // expected-error {{expected ','}}
+                     ^
+
+"Test_name.c", line 7: error: expected an expression
+    (void) _Generic(0); // expected-error {{expected ','}}
+                     ^
+
+"Test_name.c", line 8: error: type must be an object type
+    (void) _Generic(0, void); // expected-error {{expected ':'}}
+                       ^
+
+"Test_name.c", line 8: error: expected a ":"
+    (void) _Generic(0, void); // expected-error {{expected ':'}}
+                           ^
+
+"Test_name.c", line 8: error: expected an expression
+    (void) _Generic(0, void); // expected-error {{expected ':'}}
+                           ^
+
+"Test_name.c", line 11: error: a default association already appeared in this _Generic selection
+        default: 0); // expected-error {{duplicate default generic association}}
+        ^
+
+15 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 7: error: a class or namespace qualified name is required
+  typedef typename X::Y<> y;  // { dg-error "" }
+                   ^
+
+"Test_name.c", line 7: error: Y is not a template
+  typedef typename X::Y<> y;  // { dg-error "" }
+                      ^
+
+"Test_name.c", line 7: error: expected a ";"
+  typedef typename X::Y<> y;  // { dg-error "" }
+                          ^
+
+3 errors detected in the compilation of "Test_name.c".

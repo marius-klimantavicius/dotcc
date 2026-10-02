@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 6: error: expression must have a constant value
+  struct {int x;} x = a; // expected-error {{with an expression of incompatible type 'int'}}
+                      ^
+"Test_name.c", line 6: note: the value of variable "a" (declared at line 5) cannot be used as a constant
+  struct {int x;} x = a; // expected-error {{with an expression of incompatible type 'int'}}
+                      ^
+
+1 error detected in the compilation of "Test_name.c".

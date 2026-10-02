@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 19: error: duplicate parameter name
+    X (*x)(int(y), int(y)) = Y<int, float>(), ++y;
+                       ^
+
+"Test_name.c", line 19: error: no suitable conversion function from "Y<int, float>" to "X (*)(int, int)" exists
+    X (*x)(int(y), int(y)) = Y<int, float>(), ++y;
+                             ^
+
+"Test_name.c", line 19: error: expected an identifier
+    X (*x)(int(y), int(y)) = Y<int, float>(), ++y;
+                                              ^
+
+"Test_name.c", line 18: warning: variable "y" was declared but never referenced
+    int y = 0;
+        ^
+
+3 errors detected in the compilation of "Test_name.c".

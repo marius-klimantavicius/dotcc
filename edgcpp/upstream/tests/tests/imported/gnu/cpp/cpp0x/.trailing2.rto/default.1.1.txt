@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: error: "auto" function requires a trailing return type
+  auto f2 ();		// { dg-error "1:.f2. function uses .auto. type specifier without trailing return type" "" { target { ! c++14 } } }
+  ^
+
+"Test_name.c", line 9: error: a trailing return type requires the "auto" type specifier
+  int f3 () -> int;	// { dg-error "1:.f3. function with trailing return type" }
+            ^
+
+"Test_name.c", line 10: error: a function declarator with a trailing return type must be preceded by a simple "auto" type specifier
+  auto *f4 () -> int;	// { dg-error "1:.f4. function with trailing return type" }
+       ^
+
+"Test_name.c", line 15: error: "auto" function requires a trailing return type
+    auto f6 ();		// { dg-error "3:.f6. function uses .auto. type specifier without trailing return type" "" { target { ! c++14 } } }
+    ^
+
+"Test_name.c", line 16: error: a trailing return type requires the "auto" type specifier
+    int f7 () -> int;	// { dg-error "3:.f7. function with trailing return type" }
+              ^
+
+"Test_name.c", line 17: error: a function declarator with a trailing return type must be preceded by a simple "auto" type specifier
+    auto *f8 () -> int;	// { dg-error "3:.f8. function with trailing return type" }
+         ^
+
+6 errors detected in the compilation of "Test_name.c".

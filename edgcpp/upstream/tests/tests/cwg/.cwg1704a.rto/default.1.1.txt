@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++17 -tused -A Test_name.c
+"Test_name.c", line 5: error: declaration is incompatible with "int var<int>" (declared at line 4)
+     template int *var<int>;      // error: instantiated variable has type int
+                   ^
+
+1 error detected in the compilation of "Test_name.c".

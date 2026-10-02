@@ -1,0 +1,185 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./range.h", line 13: warning: declaration of "size_t" does not match the expected type "unsigned int"
+  typedef long unsigned int size_t;
+                            ^
+
+"./attr-nonstring-2.c", line 22: warning: unknown attribute "nonstring"
+    __attribute__ ((nonstring)) char ns3[3];
+                    ^
+
+"./attr-nonstring-2.c", line 30: warning: integer conversion resulted in truncation
+    sink (strnlen (ns3, 0x7fffffffffffffffL));
+                        ^
+
+"./attr-nonstring-2.c", line 31: warning: integer conversion resulted in truncation
+    sink (strnlen (ns3, 0xffffffffffffffffUL));
+                        ^
+
+"./attr-nonstring-2.c", line 33: warning: unknown attribute "nonstring"
+    __attribute__ ((nonstring)) char ns5[5];
+                    ^
+
+"./attr-nonstring-2.c", line 41: warning: integer conversion resulted in truncation
+    sink (strnlen (ns5, 0x7fffffffffffffffL));
+                        ^
+
+"./attr-nonstring-2.c", line 42: warning: integer conversion resulted in truncation
+    sink (strnlen (ns5, 0xffffffffffffffffUL));
+                        ^
+
+"./attr-nonstring-2.c", line 48: warning: unknown attribute "nonstring"
+    __attribute__ ((nonstring)) char ns3[3];
+                    ^
+
+"./attr-nonstring-2.c", line 54: warning: integer conversion resulted in truncation
+    sink (strnlen (ns3, unsigned_range ((3), (0x7fffffffffffffffL))));
+                                             ^
+
+"./attr-nonstring-2.c", line 56: warning: integer conversion resulted in truncation
+    sink (strnlen (ns3, unsigned_range ((0x7fffffffffffffffL), (0xffffffffffffffffUL))));
+                                        ^
+
+"./attr-nonstring-2.c", line 56: warning: integer conversion resulted in truncation
+    sink (strnlen (ns3, unsigned_range ((0x7fffffffffffffffL), (0xffffffffffffffffUL))));
+                                                               ^
+
+"./attr-nonstring-2.c", line 70: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char arr70[3]; memcpy (arr70, "1", 2); sink (strnlen (arr70, 1), arr70); } while (0);
+                                ^
+
+"./attr-nonstring-2.c", line 71: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char arr71[3]; memcpy (arr71, "1", 2); sink (strnlen (arr71, 2), arr71); } while (0);
+                                ^
+
+"./attr-nonstring-2.c", line 72: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char arr72[3]; memcpy (arr72, "1", 2); sink (strnlen (arr72, 3), arr72); } while (0);
+                                ^
+
+"./attr-nonstring-2.c", line 73: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char arr73[3]; memcpy (arr73, "12", 3); sink (strnlen (arr73, 1), arr73); } while (0);
+                                ^
+
+"./attr-nonstring-2.c", line 74: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char arr74[3]; memcpy (arr74, "12", 3); sink (strnlen (arr74, 9), arr74); } while (0);
+                                ^
+
+"./attr-nonstring-2.c", line 75: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char arr75[3]; memcpy (arr75, "123", 3); sink (strnlen (arr75, 1), arr75); } while (0);
+                                ^
+
+"./attr-nonstring-2.c", line 76: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char arr76[3]; memcpy (arr76, "123", 3); sink (strnlen (arr76, 4), arr76); } while (0);
+                                ^
+
+"./attr-nonstring-2.c", line 77: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char arr77[3]; memcpy (arr77, "123", 3); sink (strnlen (arr77, 9), arr77); } while (0);
+                                ^
+
+"./attr-nonstring-2.c", line 79: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char arr79[5]; memcpy (arr79, "1", 2); sink (strnlen (arr79, 1), arr79); } while (0);
+                                ^
+
+"./attr-nonstring-2.c", line 80: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char arr80[5]; memcpy (arr80, "1", 2); sink (strnlen (arr80, 2), arr80); } while (0);
+                                ^
+
+"./attr-nonstring-2.c", line 81: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char arr81[5]; memcpy (arr81, "1", 2); sink (strnlen (arr81, 9), arr81); } while (0);
+                                ^
+
+"./attr-nonstring-2.c", line 83: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char arr83[5]; memcpy (arr83, "12", 3); sink (strnlen (arr83, 1), arr83); } while (0);
+                                ^
+
+"./attr-nonstring-2.c", line 84: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char arr84[5]; memcpy (arr84, "12", 3); sink (strnlen (arr84, 9), arr84); } while (0);
+                                ^
+
+"./attr-nonstring-2.c", line 85: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char arr85[5]; memcpy (arr85, "123", 3); sink (strnlen (arr85, 1), arr85); } while (0);
+                                ^
+
+"./attr-nonstring-2.c", line 86: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char arr86[5]; memcpy (arr86, "123", 3); sink (strnlen (arr86, 5), arr86); } while (0);
+                                ^
+
+"./attr-nonstring-2.c", line 87: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char arr87[5]; memcpy (arr87, "123", 3); sink (strnlen (arr87, 6), arr87); } while (0);
+                                ^
+
+"./attr-nonstring-2.c", line 92: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char arr92[]; memcpy (arr92, "1", 1); sink (strnlen (arr92, 1), arr92); } while (0);
+                                ^
+
+"./attr-nonstring-2.c", line 93: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char arr93[]; memcpy (arr93, "1", 1); sink (strnlen (arr93, 2), arr93); } while (0);
+                                ^
+
+"./attr-nonstring-2.c", line 94: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char arr94[]; memcpy (arr94, "1", 2); sink (strnlen (arr94, 1), arr94); } while (0);
+                                ^
+
+"./attr-nonstring-2.c", line 95: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char arr95[]; memcpy (arr95, "1", 2); sink (strnlen (arr95, 2), arr95); } while (0);
+                                ^
+
+"./attr-nonstring-2.c", line 96: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char arr96[]; memcpy (arr96, "1", 2); sink (strnlen (arr96, 3), arr96); } while (0);
+                                ^
+
+"./attr-nonstring-2.c", line 97: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char arr97[]; memcpy (arr97, "1", 2); sink (strnlen (arr97, 9), arr97); } while (0);
+                                ^
+
+"./attr-nonstring-2.c", line 98: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char arr98[]; memcpy (arr98, "1", 2); sink (strnlen (arr98, 0x7fffffffffffffffL), arr98); } while (0);
+                                ^
+
+"./attr-nonstring-2.c", line 98: warning: integer conversion resulted in truncation
+    do { extern __attribute__ ((nonstring)) char arr98[]; memcpy (arr98, "1", 2); sink (strnlen (arr98, 0x7fffffffffffffffL), arr98); } while (0);
+                                                                                                        ^
+
+"./attr-nonstring-2.c", line 99: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char arr99[]; memcpy (arr99, "1", 2); sink (strnlen (arr99, 0xffffffffffffffffUL), arr99); } while (0);
+                                ^
+
+"./attr-nonstring-2.c", line 99: warning: integer conversion resulted in truncation
+    do { extern __attribute__ ((nonstring)) char arr99[]; memcpy (arr99, "1", 2); sink (strnlen (arr99, 0xffffffffffffffffUL), arr99); } while (0);
+                                                                                                        ^
+
+"./attr-nonstring-2.c", line 101: warning: integer conversion resulted in truncation
+    size_t n = 0x7fffffffffffffffL;
+               ^
+
+"./attr-nonstring-2.c", line 102: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char arr102[]; memcpy (arr102, "123", 3); sink (strnlen (arr102, n), arr102); } while (0);
+                                ^
+
+"./attr-nonstring-2.c", line 103: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char arr103[]; memcpy (arr103, "123", 3); sink (strnlen (arr103, n + 1), arr103); } while (0);
+                                ^
+
+"./attr-nonstring-2.c", line 104: warning: integer conversion resulted in truncation
+    n = 0xffffffffffffffffUL;
+        ^
+
+"./attr-nonstring-2.c", line 105: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char arr105[]; memcpy (arr105, "123", 3); sink (strnlen (arr105, n), arr105); } while (0);
+                                ^
+
+"./attr-nonstring-2.c", line 111: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char arr111[3]; memcpy (arr111, "1", 2); sink (strnlen (arr111, unsigned_range ((0), (1))), arr111); } while (0);
+                                ^
+
+"./attr-nonstring-2.c", line 112: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char arr112[3]; memcpy (arr112, "1", 2); sink (strnlen (arr112, unsigned_range ((3), (9))), arr112); } while (0);
+                                ^
+
+"./attr-nonstring-2.c", line 113: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char arr113[3]; memcpy (arr113, "123", 3); sink (strnlen (arr113, unsigned_range ((4), (5))), arr113); } while (0);
+                                ^
+
+"./attr-nonstring-2.c", line 114: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char arr114[3]; memcpy (arr114, "123", 3); sink (strnlen (arr114, unsigned_range ((5), (9))), arr114); } while (0);
+                                ^
+

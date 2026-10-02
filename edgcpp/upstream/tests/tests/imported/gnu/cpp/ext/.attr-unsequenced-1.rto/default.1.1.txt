@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: warning: unknown attribute "gnu::noipa"
+  [[gnu::noipa]] U
+    ^
+
+"Test_name.c", line 10: warning: unknown attribute "gnu::unsequenced"
+  foo (T x, T y, T z) [[gnu::unsequenced]]
+                        ^
+
+"Test_name.c", line 18: warning: unknown attribute "gnu::noipa"
+  [[gnu::noipa]] T
+    ^
+
+"Test_name.c", line 19: warning: unknown attribute "gnu::unsequenced"
+  bar (T x, T y, T z) [[gnu::unsequenced]]
+                        ^
+
+"Test_name.c", line 25: warning: unknown attribute "gnu::unsequenced"
+  baz () [[gnu::unsequenced]]
+           ^
+
+"Test_name.c", line 33: warning: unknown attribute "gnu::unsequenced"
+  qux () [[gnu::unsequenced]]
+           ^
+
+"Test_name.c", line 45: warning: unknown attribute "gnu::noipa"
+  [[gnu::noipa]] U
+    ^
+
+"Test_name.c", line 46: warning: unknown attribute "gnu::unsequenced"
+  corge (T x, T y, T z) [[gnu::unsequenced]]	// { dg-warning "'unsequenced' attribute on function type without pointer arguments returning 'void'" }
+                          ^
+

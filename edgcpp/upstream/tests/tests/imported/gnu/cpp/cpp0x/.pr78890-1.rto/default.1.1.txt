@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 11: error: a member with reference type is not allowed in a union
+      int &b = a;		// { dg-error "may not have reference type" }
+      ^
+
+"Test_name.c", line 14: warning: variable "c" was declared but never referenced
+    auto c = b + 1;
+         ^
+
+1 error detected in the compilation of "Test_name.c".

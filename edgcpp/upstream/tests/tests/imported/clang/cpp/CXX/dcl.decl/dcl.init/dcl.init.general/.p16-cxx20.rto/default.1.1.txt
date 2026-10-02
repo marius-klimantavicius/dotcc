@@ -1,0 +1,147 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 16: error: expression must have a constant value
+      static_assert(B().x == 0);
+                    ^
+"Test_name.c", line 16: note: access to uninitialized object
+      static_assert(B().x == 0);
+                       ^
+
+"Test_name.c", line 27: error: class "P0960R3::A" has no suitable copy constructor
+      A a1(va);
+           ^
+
+"Test_name.c", line 28: error: class "P0960R3::A" has no suitable copy constructor
+      A a2 = va; // expected-error {{no matching constructor for initialization of 'A'}}
+             ^
+
+"Test_name.c", line 29: error: class "P0960R3::A" has no suitable copy constructor
+      A a3 {va};
+            ^
+
+"Test_name.c", line 30: error: class "P0960R3::A" has no suitable copy constructor
+      A a4 = {va}; // expected-error {{no matching constructor for initialization of 'A'}}
+              ^
+
+"Test_name.c", line 33: error: class "P0960R3::A" has no suitable copy constructor
+          return va; // expected-error {{no matching constructor for initialization of 'A'}}
+                 ^
+
+"Test_name.c", line 34: warning: statement is unreachable
+          return {va}; // expected-error {{no matching constructor for initialization of 'A'}}
+          ^
+
+"Test_name.c", line 34: error: class "P0960R3::A" has no suitable copy constructor
+          return {va}; // expected-error {{no matching constructor for initialization of 'A'}}
+                  ^
+
+"Test_name.c", line 39: error: class "P0960R3::A" has no suitable copy constructor
+      int j = g({va}); // expected-error {{no matching constructor for initialization of 'A'}}
+                 ^
+
+"Test_name.c", line 47: error: more than one user-defined conversion from "P0960R3::Ambig" to "P0960R3::A" applies:
+            function "P0960R3::Ambig::operator const P0960R3::A &()" (declared at line 42)
+            function "P0960R3::Ambig::operator P0960R3::A &&()" (declared at line 43)
+      A a5(Ambig {}); // expected-error {{call to constructor of 'A' is ambiguous}}
+           ^
+
+"Test_name.c", line 48: error: more than one user-defined conversion from "P0960R3::Ambig" to "P0960R3::A" applies:
+            function "P0960R3::Ambig::operator const P0960R3::A &()" (declared at line 42)
+            function "P0960R3::Ambig::operator P0960R3::A &&()" (declared at line 43)
+      A a6 = Ambig {}; // expected-error {{conversion from 'Ambig' to 'A' is ambiguous}}
+             ^
+
+"Test_name.c", line 53: error: no suitable constructor exists to convert from "int" to "P0960R3::A"
+      A a10 = 1; // expected-error {{no viable conversion from 'int' to 'A'}}
+              ^
+
+"Test_name.c", line 64: error: no instance of constructor "P0960R3::B::B" matches the argument list
+            argument types are: (volatile P0960R3::B)
+      B b1(vb); // expected-error {{no matching constructor for initialization of 'B'}}
+           ^
+"Test_name.c", line 58: note: function "P0960R3::B::B(const P0960R3::B &)" does not match because argument #1 does not match parameter
+      struct B { // expected-note 12 {{candidate constructor}}
+             ^
+"Test_name.c", line 58: note: function "P0960R3::B::B(P0960R3::B &&)" does not match because argument #1 does not match parameter
+      struct B { // expected-note 12 {{candidate constructor}}
+             ^
+"Test_name.c", line 58: note: number of parameters of function "P0960R3::B::B() noexcept" does not match the call
+      struct B { // expected-note 12 {{candidate constructor}}
+             ^
+
+"Test_name.c", line 65: error: class "P0960R3::B" has no suitable copy constructor
+      B b2 = vb; // expected-error {{no matching constructor for initialization of 'B'}}
+             ^
+
+"Test_name.c", line 66: error: class "P0960R3::B" has no suitable copy constructor
+      B b3 {vb}; // expected-error {{no matching constructor for initialization of 'B'}}
+            ^
+
+"Test_name.c", line 67: error: class "P0960R3::B" has no suitable copy constructor
+      B b4 = {vb}; // expected-error {{no matching constructor for initialization of 'B'}}
+              ^
+
+"Test_name.c", line 84: error: function "P0960R3::C::C(const P0960R3::C &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      C c1(c); // expected-error {{call to implicitly-deleted copy constructor of 'C'}}
+           ^
+
+"Test_name.c", line 85: error: function "P0960R3::C::C(const P0960R3::C &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      C c2 = c; // expected-error {{call to implicitly-deleted copy constructor of 'C'}}
+             ^
+
+"Test_name.c", line 86: error: function "P0960R3::C::C(const P0960R3::C &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      C c3 {c}; // expected-error {{call to implicitly-deleted copy constructor of 'C'}}
+            ^
+
+"Test_name.c", line 87: error: function "P0960R3::C::C(const P0960R3::C &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      C c4 = {c}; // expected-error {{call to implicitly-deleted copy constructor of 'C'}}
+              ^
+
+"Test_name.c", line 91: error: class "P0960R3::C" has no suitable copy constructor
+      C c5(vc);
+           ^
+
+"Test_name.c", line 92: error: class "P0960R3::C" has no suitable copy constructor
+      C c6 = vc; // expected-error {{no matching constructor for initialization of 'C'}}
+             ^
+
+"Test_name.c", line 93: error: class "P0960R3::C" has no suitable copy constructor
+      C c7 {vc};
+            ^
+
+"Test_name.c", line 94: error: class "P0960R3::C" has no suitable copy constructor
+      C c8 = {vc}; // expected-error {{no matching constructor for initialization of 'C'}}
+              ^
+
+"Test_name.c", line 113: error: conversion to inaccessible base class "P0960R3::D" is not allowed
+      D d1(dd); // expected-error {{cannot cast 'const DD' to its private base class 'const D'}}
+           ^
+
+"Test_name.c", line 114: error: conversion to inaccessible base class "P0960R3::D" is not allowed
+      D d2 = dd; // expected-error {{cannot cast 'const DD' to its private base class 'const D'}}
+             ^
+
+"Test_name.c", line 115: error: conversion to inaccessible base class "P0960R3::D" is not allowed
+      D d3 {dd}; // expected-error {{cannot cast 'const DD' to its private base class 'const D'}}
+            ^
+
+"Test_name.c", line 116: error: conversion to inaccessible base class "P0960R3::D" is not allowed
+      D d4 = {dd}; // expected-error {{cannot cast 'const DD' to its private base class 'const D'}}
+              ^
+
+"Test_name.c", line 118: error: no suitable user-defined conversion from "volatile P0960R3::DD" to "P0960R3::D" exists
+      D d5(vdd);
+           ^
+
+"Test_name.c", line 119: error: no suitable user-defined conversion from "volatile P0960R3::DD" to "P0960R3::D" exists
+      D d6 = vdd; // expected-error {{no matching constructor for initialization of 'D'}}
+             ^
+
+"Test_name.c", line 120: error: no suitable user-defined conversion from "volatile P0960R3::DD" to "P0960R3::D" exists
+      D d7 {vdd};
+            ^
+
+"Test_name.c", line 121: error: no suitable user-defined conversion from "volatile P0960R3::DD" to "P0960R3::D" exists
+      D d8 = {vdd}; // expected-error {{no matching constructor for initialization of 'D'}}
+              ^
+
+31 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,13 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 23: warning: variable "e" was declared but never referenced
+  	type e;
+  	     ^
+
+"Test_name.c", line 33: warning: variable "x" was declared but never referenced
+      type x;
+           ^
+
+"Test_name.c", line 46: warning: variable "x" was declared but never referenced
+      C::type x;
+              ^
+

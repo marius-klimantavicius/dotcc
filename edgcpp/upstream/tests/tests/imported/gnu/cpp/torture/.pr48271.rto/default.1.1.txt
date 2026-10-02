@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 36: warning: missing return statement at end of non-void function "ByteBlob::RawFree"
+    }
+    ^
+
+"Test_name.c", line 51: warning: missing return statement at end of non-void function "ByteBlob::Append"
+    }
+    ^
+
+"Test_name.c", line 75: warning: expression has no effect
+  	T ();
+  	^
+          detected during:
+            instantiation of "FixedSizeArray<T>::~FixedSizeArray() [with T=int]" at line 75
+            instantiation of "FixedSizeArray<T>::~FixedSizeArray() [with T=SmallArray::SubArray]" at line 84
+

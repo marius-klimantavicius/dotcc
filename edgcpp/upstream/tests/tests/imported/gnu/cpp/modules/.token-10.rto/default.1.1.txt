@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 --modules Test_name.c
+"Test_name.c", line 6: warning: this appears to be the start of a preprocessor directive, but the lack of a ';' followed immediately by a newline prevents that
+  export module foo.bar:baz.bob semi
+  ^
+
+"Test_name.c", line 6: error: an export declaration can only appear in a module interface unit
+  export module foo.bar:baz.bob semi
+  ^
+
+"Test_name.c", line 6: error: identifier "module" is undefined
+  export module foo.bar:baz.bob semi
+         ^
+
+"Test_name.c", line 6: error: expected a ";"
+  export module foo.bar:baz.bob semi
+                   ^
+
+3 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,127 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --exceptions Test_name.c
+"Test_name.c", line 5: error: "= default" can only appear on default constructors, copy/move constructors, copy/move assignment operators, and destructors
+  void fn() = default; // expected-error {{only special member}}
+              ^
+
+"Test_name.c", line 7: error: "= default" can only appear on default constructors, copy/move constructors, copy/move assignment operators, and destructors
+    void fn() = default; // expected-error {{only special member}}
+         ^
+
+"Test_name.c", line 96: error: name followed by "::" must be a class or namespace name
+      Error() noexcept(T::error); // expected-error {{type 'int' cannot be used prior to '::' because it has no members}} expected-error {{type 'char'}}
+                       ^
+          detected during instantiation of "DefaultedFnExceptionSpec::Error<T>::Error() [with T=char]" at line 104
+
+"Test_name.c", line 101: error: name followed by "::" must be a class or namespace name
+      ~Error() noexcept(T::error); // expected-error {{type 'int' cannot be used prior to '::' because it has no members}} expected-error {{type 'char'}}
+                        ^
+          detected during instantiation of "DefaultedFnExceptionSpec::Error<T>::~Error() [with T=char]" at line 104
+
+"Test_name.c", line 98: error: name followed by "::" must be a class or namespace name
+      Error(Error&&) noexcept(T::error); // expected-error {{type 'int' cannot be used prior to '::' because it has no members}}
+                              ^
+          detected during:
+            instantiation of "DefaultedFnExceptionSpec::Error<T>::Error(DefaultedFnExceptionSpec::Error<T> &&) [with T=int]" at line 114
+            implicit generation of "DefaultedFnExceptionSpec::DelayImplicit::DelayImplicit(DefaultedFnExceptionSpec::DelayImplicit &&)" at line 114
+
+"Test_name.c", line 101: error: name followed by "::" must be a class or namespace name
+      ~Error() noexcept(T::error); // expected-error {{type 'int' cannot be used prior to '::' because it has no members}} expected-error {{type 'char'}}
+                        ^
+          detected during:
+            instantiation of "DefaultedFnExceptionSpec::Error<T>::~Error() [with T=int]" at line 114
+            implicit generation of "DefaultedFnExceptionSpec::DelayImplicit::DelayImplicit(DefaultedFnExceptionSpec::DelayImplicit &&)" at line 114
+
+"Test_name.c", line 99: error: name followed by "::" must be a class or namespace name
+      Error &operator=(const Error&) noexcept(T::error); // expected-error {{type 'int' cannot be used prior to '::' because it has no members}} expected-error {{type 'double'}}
+                                              ^
+          detected during instantiation of "DefaultedFnExceptionSpec::Error<T> &DefaultedFnExceptionSpec::Error<T>::operator=(const DefaultedFnExceptionSpec::Error<T> &) [with T=double]" at line 120
+
+"Test_name.c", line 133: error: function "PR13527::X::X()" has already been defined (previous definition at line 126)
+    X::X() = default; // expected-error {{redefinition}}
+       ^
+
+"Test_name.c", line 134: error: function "PR13527::X::X(const PR13527::X &)" has already been defined (previous definition at line 127)
+    X::X(const X&) = default; // expected-error {{redefinition}}
+       ^
+
+"Test_name.c", line 135: error: function "PR13527::X::X(PR13527::X &&)" has already been defined (previous definition at line 128)
+    X::X(X&&) = default; // expected-error {{redefinition}}
+       ^
+
+"Test_name.c", line 136: error: function "PR13527::X::operator=(const PR13527::X &)" has already been defined (previous definition at line 129)
+    X &X::operator=(const X&) = default; // expected-error {{redefinition}}
+          ^
+
+"Test_name.c", line 137: error: function "PR13527::X::operator=(PR13527::X &&)" has already been defined (previous definition at line 130)
+    X &X::operator=(X&&) = default; // expected-error {{redefinition}}
+          ^
+
+"Test_name.c", line 138: error: function "PR13527::X::~X" has already been defined (previous definition at line 131)
+    X::~X() = default; // expected-error {{redefinition}}
+       ^
+
+"Test_name.c", line 148: error: function "PR13527::Y::Y()" has already been defined (previous definition at line 141)
+    Y::Y() noexcept = default; // expected-error {{definition of explicitly defaulted}}
+       ^
+
+"Test_name.c", line 149: error: function "PR13527::Y::Y(const PR13527::Y &)" has already been defined (previous definition at line 142)
+    Y::Y(const Y&) noexcept = default; // expected-error {{definition of explicitly defaulted}}
+       ^
+
+"Test_name.c", line 150: error: function "PR13527::Y::Y(PR13527::Y &&)" has already been defined (previous definition at line 143)
+    Y::Y(Y&&) noexcept = default; // expected-error {{definition of explicitly defaulted}}
+       ^
+
+"Test_name.c", line 151: error: function "PR13527::Y::operator=(const PR13527::Y &)" has already been defined (previous definition at line 144)
+    Y &Y::operator=(const Y&) noexcept = default; // expected-error {{definition of explicitly defaulted}}
+          ^
+
+"Test_name.c", line 152: error: function "PR13527::Y::operator=(PR13527::Y &&)" has already been defined (previous definition at line 145)
+    Y &Y::operator=(Y&&) noexcept = default; // expected-error {{definition of explicitly defaulted}}
+          ^
+
+"Test_name.c", line 153: error: function "PR13527::Y::~Y" has already been defined (previous definition at line 146)
+    Y::~Y() = default; // expected-error {{definition of explicitly defaulted}}
+       ^
+
+"Test_name.c", line 161: error: function "PR27699::X::X()" has already been defined (previous definition at line 160)
+    X::X() = default; // expected-error {{redefinition of 'X'}}
+       ^
+
+"Test_name.c", line 179: error: template argument list must match the parameter list
+    Outer<T>::Inner1<T>::~Inner1() = delete; // expected-error {{nested name specifier 'Outer<T>::Inner1<T>' for declaration does not refer into a class, class template or class template partial specialization}}  expected-error {{only functions can have deleted definitions}}
+    ^
+
+"Test_name.c", line 182: error: template argument list must match the parameter list
+    Outer<T>::Inner2<T>::~Inner2() = default; // expected-error {{nested name specifier 'Outer<T>::Inner2<T>' for declaration does not refer into a class, class template or class template partial specialization}}
+    ^
+
+"Test_name.c", line 182: error: function templates cannot be defaulted
+    Outer<T>::Inner2<T>::~Inner2() = default; // expected-error {{nested name specifier 'Outer<T>::Inner2<T>' for declaration does not refer into a class, class template or class template partial specialization}}
+    ^
+
+"Test_name.c", line 186: error: this declaration may not have extern "C" linkage
+   template<typename _Tp> // expected-error {{templates must have C++ linkage}}
+   ^
+
+"Test_name.c", line 205: error: invalid type for defaulted assignment operator
+    ExplicitBool &operator=(bool) = default; // expected-error{{only special member functions may be defaulted}}
+                  ^
+
+"Test_name.c", line 212: warning: missing return statement at end of non-void function "PR27941::fn"
+  }
+  ^
+
+"Test_name.c", line 230: error: invalid type for defaulted constructor
+    X(T) = default;  // expected-error {{only special member functions}}
+    ^
+
+"Test_name.c", line 234: error: invalid type for defaulted constructor
+    X(U) = default;
+    ^
+
+"Test_name.c", line 242: error: invalid type for defaulted constructor
+    explicit E(const int &) = default;
+             ^
+
+28 errors detected in the compilation of "Test_name.c".

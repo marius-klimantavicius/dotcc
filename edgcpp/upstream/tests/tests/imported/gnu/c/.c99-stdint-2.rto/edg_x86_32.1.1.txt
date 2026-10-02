@@ -1,0 +1,986 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"./c99-stdint-1.c", line 87: warning: variable "a" was declared but never referenced
+    do { int a[sizeof(int8_t) * 8 
+             ^
+
+"./c99-stdint-1.c", line 88: warning: variable "a" was declared but never referenced
+    do { int8_t a; int b[(int8_t)-1 < 0 ? 1 : -1]; } while (0); do { __typeof__((
+                ^
+
+"./c99-stdint-1.c", line 88: warning: variable "b" was declared but never referenced
+    do { int8_t a; int b[(int8_t)-1 < 0 ? 1 : -1]; } while (0); do { __typeof__((
+                       ^
+
+"./c99-stdint-1.c", line 88: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((int8_t)0 + 0) *b = &a; } while (0); do { __typeof__((
+                                    ^
+
+"./c99-stdint-1.c", line 88: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((int8_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                    ^
+
+"./c99-stdint-1.c", line 88: warning: variable "a" was declared but never referenced
+   )) a; __typeof__((int8_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                                                  ^
+
+"./c99-stdint-1.c", line 93: warning: variable "a" was declared but never referenced
+    do { int a[sizeof(int16_t) * 8 
+             ^
+
+"./c99-stdint-1.c", line 94: warning: variable "a" was declared but never referenced
+    do { int16_t a; int b[(int16_t)-1 < 0 ? 1 : -1]; } while (0); do { __typeof__((
+                 ^
+
+"./c99-stdint-1.c", line 94: warning: variable "b" was declared but never referenced
+    do { int16_t a; int b[(int16_t)-1 < 0 ? 1 : -1]; } while (0); do { __typeof__((
+                        ^
+
+"./c99-stdint-1.c", line 94: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((int16_t)0 + 0) *b = &a; } while (0); do { __typeof__((
+                                     ^
+
+"./c99-stdint-1.c", line 94: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((int16_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                     ^
+
+"./c99-stdint-1.c", line 94: warning: variable "a" was declared but never referenced
+   )) a; __typeof__((int16_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                                                   ^
+
+"./c99-stdint-1.c", line 99: warning: variable "a" was declared but never referenced
+    do { int a[sizeof(int32_t) * 8 
+             ^
+
+"./c99-stdint-1.c", line 100: warning: variable "a" was declared but never referenced
+    do { int32_t a; int b[(int32_t)-1 < 0 ? 1 : -1]; } while (0); do { __typeof__((
+                 ^
+
+"./c99-stdint-1.c", line 100: warning: variable "b" was declared but never referenced
+    do { int32_t a; int b[(int32_t)-1 < 0 ? 1 : -1]; } while (0); do { __typeof__((
+                        ^
+
+"./c99-stdint-1.c", line 100: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((int32_t)0 + 0) *b = &a; } while (0); do { __typeof__((
+                                     ^
+
+"./c99-stdint-1.c", line 100: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((int32_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                     ^
+
+"./c99-stdint-1.c", line 100: warning: variable "a" was declared but never referenced
+   )) a; __typeof__((int32_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                                                   ^
+
+"./c99-stdint-1.c", line 105: error: the size of an array must be greater than zero
+    do { int a[sizeof(int64_t) * 8 
+               ^
+
+"./c99-stdint-1.c", line 106: warning: variable "a" was declared but never referenced
+    do { int64_t a; int b[(int64_t)-1 < 0 ? 1 : -1]; } while (0); do { __typeof__((
+                 ^
+
+"./c99-stdint-1.c", line 106: warning: variable "b" was declared but never referenced
+    do { int64_t a; int b[(int64_t)-1 < 0 ? 1 : -1]; } while (0); do { __typeof__((
+                        ^
+
+"./c99-stdint-1.c", line 106: warning: a value of type "long long *" cannot be used to initialize an entity of type "long *"
+   )) a; __typeof__((int64_t)0 + 0) *b = &a; } while (0); do { __typeof__((
+                                         ^
+
+"./c99-stdint-1.c", line 106: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((int64_t)0 + 0) *b = &a; } while (0); do { __typeof__((
+                                     ^
+
+"./c99-stdint-1.c", line 106: warning: a value of type "long long *" cannot be used to initialize an entity of type "long *"
+   )) a; __typeof__((int64_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                         ^
+
+"./c99-stdint-1.c", line 106: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((int64_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                     ^
+
+"./c99-stdint-1.c", line 106: error: the size of an array must be greater than zero
+   )) a; __typeof__((int64_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                                                     ^
+
+"./c99-stdint-1.c", line 111: warning: variable "a" was declared but never referenced
+    do { int a[sizeof(uint8_t) * 8 
+             ^
+
+"./c99-stdint-1.c", line 112: warning: variable "a" was declared but never referenced
+    do { uint8_t a; int b[(uint8_t)-1 < 0 ? -1 : 1]; } while (0); do { __typeof__((
+                 ^
+
+"./c99-stdint-1.c", line 112: warning: variable "b" was declared but never referenced
+    do { uint8_t a; int b[(uint8_t)-1 < 0 ? -1 : 1]; } while (0); do { __typeof__((
+                        ^
+
+"./c99-stdint-1.c", line 112: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((uint8_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                     ^
+
+"./c99-stdint-1.c", line 112: warning: variable "a" was declared but never referenced
+   )) a; __typeof__((uint8_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                                                   ^
+
+"./c99-stdint-1.c", line 117: warning: variable "a" was declared but never referenced
+    do { int a[sizeof(uint16_t) * 8 
+             ^
+
+"./c99-stdint-1.c", line 118: warning: variable "a" was declared but never referenced
+    do { uint16_t a; int b[(uint16_t)-1 < 0 ? -1 : 1]; } while (0); do { __typeof__((
+                  ^
+
+"./c99-stdint-1.c", line 118: warning: variable "b" was declared but never referenced
+    do { uint16_t a; int b[(uint16_t)-1 < 0 ? -1 : 1]; } while (0); do { __typeof__((
+                         ^
+
+"./c99-stdint-1.c", line 118: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((uint16_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                      ^
+
+"./c99-stdint-1.c", line 118: warning: variable "a" was declared but never referenced
+   )) a; __typeof__((uint16_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                                                    ^
+
+"./c99-stdint-1.c", line 123: warning: variable "a" was declared but never referenced
+    do { int a[sizeof(uint32_t) * 8 
+             ^
+
+"./c99-stdint-1.c", line 124: warning: variable "a" was declared but never referenced
+    do { uint32_t a; int b[(uint32_t)-1 < 0 ? -1 : 1]; } while (0); do { __typeof__((
+                  ^
+
+"./c99-stdint-1.c", line 124: warning: variable "b" was declared but never referenced
+    do { uint32_t a; int b[(uint32_t)-1 < 0 ? -1 : 1]; } while (0); do { __typeof__((
+                         ^
+
+"./c99-stdint-1.c", line 124: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((uint32_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                      ^
+
+"./c99-stdint-1.c", line 124: warning: variable "a" was declared but never referenced
+   )) a; __typeof__((uint32_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                                                    ^
+
+"./c99-stdint-1.c", line 129: error: the size of an array must be greater than zero
+    do { int a[sizeof(uint64_t) * 8 
+               ^
+
+"./c99-stdint-1.c", line 130: warning: variable "a" was declared but never referenced
+    do { uint64_t a; int b[(uint64_t)-1 < 0 ? -1 : 1]; } while (0); do { __typeof__((
+                  ^
+
+"./c99-stdint-1.c", line 130: warning: variable "b" was declared but never referenced
+    do { uint64_t a; int b[(uint64_t)-1 < 0 ? -1 : 1]; } while (0); do { __typeof__((
+                         ^
+
+"./c99-stdint-1.c", line 130: warning: a value of type "unsigned long long *" cannot be used to initialize an entity of type "unsigned long *"
+   )) a; __typeof__((uint64_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                          ^
+
+"./c99-stdint-1.c", line 130: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((uint64_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                      ^
+
+"./c99-stdint-1.c", line 130: error: the size of an array must be greater than zero
+   )) a; __typeof__((uint64_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                                                      ^
+
+"./c99-stdint-1.c", line 139: warning: variable "a" was declared but never referenced
+    do { int a[sizeof(int_least8_t) * 8 
+             ^
+
+"./c99-stdint-1.c", line 140: warning: variable "a" was declared but never referenced
+    do { int a[sizeof(int_fast8_t) >= sizeof(int_least8_t) ? 1 : -1]; } while (0);
+             ^
+
+"./c99-stdint-1.c", line 141: warning: variable "a" was declared but never referenced
+    do { int_least8_t a; int b[(int_least8_t)-1 < 0 ? 1 : -1]; } while (0); do { __typeof__((
+                      ^
+
+"./c99-stdint-1.c", line 141: warning: variable "b" was declared but never referenced
+    do { int_least8_t a; int b[(int_least8_t)-1 < 0 ? 1 : -1]; } while (0); do { __typeof__((
+                             ^
+
+"./c99-stdint-1.c", line 141: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((int_least8_t)0 + 0) *b = &a; } while (0); do { __typeof__((
+                                          ^
+
+"./c99-stdint-1.c", line 141: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((int_least8_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                          ^
+
+"./c99-stdint-1.c", line 141: warning: variable "a" was declared but never referenced
+   )) a; __typeof__((int_least8_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                                                        ^
+
+"./c99-stdint-1.c", line 142: warning: variable "a" was declared but never referenced
+    do { int a[sizeof(int_least16_t) * 8 
+             ^
+
+"./c99-stdint-1.c", line 143: warning: variable "a" was declared but never referenced
+    do { int a[sizeof(int_fast16_t) >= sizeof(int_least16_t) ? 1 : -1]; } while (0);
+             ^
+
+"./c99-stdint-1.c", line 144: warning: variable "a" was declared but never referenced
+    do { int_least16_t a; int b[(int_least16_t)-1 < 0 ? 1 : -1]; } while (0); do { __typeof__((
+                       ^
+
+"./c99-stdint-1.c", line 144: warning: variable "b" was declared but never referenced
+    do { int_least16_t a; int b[(int_least16_t)-1 < 0 ? 1 : -1]; } while (0); do { __typeof__((
+                              ^
+
+"./c99-stdint-1.c", line 144: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((int_least16_t)0 + 0) *b = &a; } while (0); do { __typeof__((
+                                           ^
+
+"./c99-stdint-1.c", line 144: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((int_least16_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                           ^
+
+"./c99-stdint-1.c", line 144: warning: variable "a" was declared but never referenced
+   )) a; __typeof__((int_least16_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                                                         ^
+
+"./c99-stdint-1.c", line 145: warning: variable "a" was declared but never referenced
+    do { int a[sizeof(int_least32_t) * 8 
+             ^
+
+"./c99-stdint-1.c", line 146: warning: variable "a" was declared but never referenced
+    do { int a[sizeof(int_fast32_t) >= sizeof(int_least32_t) ? 1 : -1]; } while (0);
+             ^
+
+"./c99-stdint-1.c", line 147: warning: variable "a" was declared but never referenced
+    do { int_least32_t a; int b[(int_least32_t)-1 < 0 ? 1 : -1]; } while (0); do { __typeof__((
+                       ^
+
+"./c99-stdint-1.c", line 147: warning: variable "b" was declared but never referenced
+    do { int_least32_t a; int b[(int_least32_t)-1 < 0 ? 1 : -1]; } while (0); do { __typeof__((
+                              ^
+
+"./c99-stdint-1.c", line 147: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((int_least32_t)0 + 0) *b = &a; } while (0); do { __typeof__((
+                                           ^
+
+"./c99-stdint-1.c", line 147: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((int_least32_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                           ^
+
+"./c99-stdint-1.c", line 147: warning: variable "a" was declared but never referenced
+   )) a; __typeof__((int_least32_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                                                         ^
+
+"./c99-stdint-1.c", line 148: error: the size of an array must be greater than zero
+    do { int a[sizeof(int_least64_t) * 8 
+               ^
+
+"./c99-stdint-1.c", line 149: warning: variable "a" was declared but never referenced
+    do { int a[sizeof(int_fast64_t) >= sizeof(int_least64_t) ? 1 : -1]; } while (0);
+             ^
+
+"./c99-stdint-1.c", line 150: warning: variable "a" was declared but never referenced
+    do { int_least64_t a; int b[(int_least64_t)-1 < 0 ? 1 : -1]; } while (0); do { __typeof__((
+                       ^
+
+"./c99-stdint-1.c", line 150: warning: variable "b" was declared but never referenced
+    do { int_least64_t a; int b[(int_least64_t)-1 < 0 ? 1 : -1]; } while (0); do { __typeof__((
+                              ^
+
+"./c99-stdint-1.c", line 150: warning: a value of type "long long *" cannot be used to initialize an entity of type "long *"
+   )) a; __typeof__((int_least64_t)0 + 0) *b = &a; } while (0); do { __typeof__((
+                                               ^
+
+"./c99-stdint-1.c", line 150: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((int_least64_t)0 + 0) *b = &a; } while (0); do { __typeof__((
+                                           ^
+
+"./c99-stdint-1.c", line 150: warning: a value of type "long long *" cannot be used to initialize an entity of type "long *"
+   )) a; __typeof__((int_least64_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                               ^
+
+"./c99-stdint-1.c", line 150: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((int_least64_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                           ^
+
+"./c99-stdint-1.c", line 150: error: the size of an array must be greater than zero
+   )) a; __typeof__((int_least64_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                                                           ^
+
+"./c99-stdint-1.c", line 151: warning: variable "a" was declared but never referenced
+    do { int a[sizeof(uint_least8_t) * 8 
+             ^
+
+"./c99-stdint-1.c", line 152: warning: variable "a" was declared but never referenced
+    do { int a[sizeof(uint_fast8_t) >= sizeof(uint_least8_t) ? 1 : -1]; } while (0);
+             ^
+
+"./c99-stdint-1.c", line 153: warning: variable "a" was declared but never referenced
+    do { uint_least8_t a; int b[(uint_least8_t)-1 < 0 ? -1 : 1]; } while (0); do { __typeof__((
+                       ^
+
+"./c99-stdint-1.c", line 153: warning: variable "b" was declared but never referenced
+    do { uint_least8_t a; int b[(uint_least8_t)-1 < 0 ? -1 : 1]; } while (0); do { __typeof__((
+                              ^
+
+"./c99-stdint-1.c", line 153: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((uint_least8_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                           ^
+
+"./c99-stdint-1.c", line 153: warning: variable "a" was declared but never referenced
+   )) a; __typeof__((uint_least8_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                                                         ^
+
+"./c99-stdint-1.c", line 154: warning: variable "a" was declared but never referenced
+    do { int a[sizeof(uint_least16_t) * 8 
+             ^
+
+"./c99-stdint-1.c", line 155: warning: variable "a" was declared but never referenced
+    do { int a[sizeof(uint_fast16_t) >= sizeof(uint_least16_t) ? 1 : -1]; } while (0);
+             ^
+
+"./c99-stdint-1.c", line 156: warning: variable "a" was declared but never referenced
+    do { uint_least16_t a; int b[(uint_least16_t)-1 < 0 ? -1 : 1]; } while (0); do { __typeof__((
+                        ^
+
+"./c99-stdint-1.c", line 156: warning: variable "b" was declared but never referenced
+    do { uint_least16_t a; int b[(uint_least16_t)-1 < 0 ? -1 : 1]; } while (0); do { __typeof__((
+                               ^
+
+"./c99-stdint-1.c", line 156: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((uint_least16_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                            ^
+
+"./c99-stdint-1.c", line 156: warning: variable "a" was declared but never referenced
+   )) a; __typeof__((uint_least16_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                                                          ^
+
+"./c99-stdint-1.c", line 157: warning: variable "a" was declared but never referenced
+    do { int a[sizeof(uint_least32_t) * 8 
+             ^
+
+"./c99-stdint-1.c", line 158: warning: variable "a" was declared but never referenced
+    do { int a[sizeof(uint_fast32_t) >= sizeof(uint_least32_t) ? 1 : -1]; } while (0);
+             ^
+
+"./c99-stdint-1.c", line 159: warning: variable "a" was declared but never referenced
+    do { uint_least32_t a; int b[(uint_least32_t)-1 < 0 ? -1 : 1]; } while (0); do { __typeof__((
+                        ^
+
+"./c99-stdint-1.c", line 159: warning: variable "b" was declared but never referenced
+    do { uint_least32_t a; int b[(uint_least32_t)-1 < 0 ? -1 : 1]; } while (0); do { __typeof__((
+                               ^
+
+"./c99-stdint-1.c", line 159: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((uint_least32_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                            ^
+
+"./c99-stdint-1.c", line 159: warning: variable "a" was declared but never referenced
+   )) a; __typeof__((uint_least32_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                                                          ^
+
+"./c99-stdint-1.c", line 160: error: the size of an array must be greater than zero
+    do { int a[sizeof(uint_least64_t) * 8 
+               ^
+
+"./c99-stdint-1.c", line 161: warning: variable "a" was declared but never referenced
+    do { int a[sizeof(uint_fast64_t) >= sizeof(uint_least64_t) ? 1 : -1]; } while (0);
+             ^
+
+"./c99-stdint-1.c", line 162: warning: variable "a" was declared but never referenced
+    do { uint_least64_t a; int b[(uint_least64_t)-1 < 0 ? -1 : 1]; } while (0); do { __typeof__((
+                        ^
+
+"./c99-stdint-1.c", line 162: warning: variable "b" was declared but never referenced
+    do { uint_least64_t a; int b[(uint_least64_t)-1 < 0 ? -1 : 1]; } while (0); do { __typeof__((
+                               ^
+
+"./c99-stdint-1.c", line 162: warning: a value of type "unsigned long long *" cannot be used to initialize an entity of type "unsigned long *"
+   )) a; __typeof__((uint_least64_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                                ^
+
+"./c99-stdint-1.c", line 162: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((uint_least64_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                            ^
+
+"./c99-stdint-1.c", line 162: error: the size of an array must be greater than zero
+   )) a; __typeof__((uint_least64_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                                                            ^
+
+"./c99-stdint-1.c", line 168: warning: variable "a" was declared but never referenced
+    do { int a[sizeof(int_fast8_t) * 8 
+             ^
+
+"./c99-stdint-1.c", line 169: warning: variable "a" was declared but never referenced
+    do { int_fast8_t a; int b[(int_fast8_t)-1 < 0 ? 1 : -1]; } while (0); do { __typeof__((
+                     ^
+
+"./c99-stdint-1.c", line 169: warning: variable "b" was declared but never referenced
+    do { int_fast8_t a; int b[(int_fast8_t)-1 < 0 ? 1 : -1]; } while (0); do { __typeof__((
+                            ^
+
+"./c99-stdint-1.c", line 169: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((int_fast8_t)0 + 0) *b = &a; } while (0); do { __typeof__((
+                                         ^
+
+"./c99-stdint-1.c", line 169: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((int_fast8_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                         ^
+
+"./c99-stdint-1.c", line 169: warning: variable "a" was declared but never referenced
+   )) a; __typeof__((int_fast8_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                                                       ^
+
+"./c99-stdint-1.c", line 170: warning: variable "a" was declared but never referenced
+    do { int a[sizeof(int_fast16_t) * 8 
+             ^
+
+"./c99-stdint-1.c", line 171: warning: variable "a" was declared but never referenced
+    do { int_fast16_t a; int b[(int_fast16_t)-1 < 0 ? 1 : -1]; } while (0); do { __typeof__((
+                      ^
+
+"./c99-stdint-1.c", line 171: warning: variable "b" was declared but never referenced
+    do { int_fast16_t a; int b[(int_fast16_t)-1 < 0 ? 1 : -1]; } while (0); do { __typeof__((
+                             ^
+
+"./c99-stdint-1.c", line 171: warning: a value of type "long long *" cannot be used to initialize an entity of type "long *"
+   )) a; __typeof__((int_fast16_t)0 + 0) *b = &a; } while (0); do { __typeof__((
+                                              ^
+
+"./c99-stdint-1.c", line 171: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((int_fast16_t)0 + 0) *b = &a; } while (0); do { __typeof__((
+                                          ^
+
+"./c99-stdint-1.c", line 171: warning: a value of type "long long *" cannot be used to initialize an entity of type "long *"
+   )) a; __typeof__((int_fast16_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                              ^
+
+"./c99-stdint-1.c", line 171: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((int_fast16_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                          ^
+
+"./c99-stdint-1.c", line 171: error: the size of an array must be greater than zero
+   )) a; __typeof__((int_fast16_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                                                          ^
+
+"./c99-stdint-1.c", line 172: warning: variable "a" was declared but never referenced
+    do { int a[sizeof(int_fast32_t) * 8 
+             ^
+
+"./c99-stdint-1.c", line 173: warning: variable "a" was declared but never referenced
+    do { int_fast32_t a; int b[(int_fast32_t)-1 < 0 ? 1 : -1]; } while (0); do { __typeof__((
+                      ^
+
+"./c99-stdint-1.c", line 173: warning: variable "b" was declared but never referenced
+    do { int_fast32_t a; int b[(int_fast32_t)-1 < 0 ? 1 : -1]; } while (0); do { __typeof__((
+                             ^
+
+"./c99-stdint-1.c", line 173: warning: a value of type "long long *" cannot be used to initialize an entity of type "long *"
+   )) a; __typeof__((int_fast32_t)0 + 0) *b = &a; } while (0); do { __typeof__((
+                                              ^
+
+"./c99-stdint-1.c", line 173: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((int_fast32_t)0 + 0) *b = &a; } while (0); do { __typeof__((
+                                          ^
+
+"./c99-stdint-1.c", line 173: warning: a value of type "long long *" cannot be used to initialize an entity of type "long *"
+   )) a; __typeof__((int_fast32_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                              ^
+
+"./c99-stdint-1.c", line 173: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((int_fast32_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                          ^
+
+"./c99-stdint-1.c", line 173: error: the size of an array must be greater than zero
+   )) a; __typeof__((int_fast32_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                                                          ^
+
+"./c99-stdint-1.c", line 174: error: the size of an array must be greater than zero
+    do { int a[sizeof(int_fast64_t) * 8 
+               ^
+
+"./c99-stdint-1.c", line 175: warning: variable "a" was declared but never referenced
+    do { int_fast64_t a; int b[(int_fast64_t)-1 < 0 ? 1 : -1]; } while (0); do { __typeof__((
+                      ^
+
+"./c99-stdint-1.c", line 175: warning: variable "b" was declared but never referenced
+    do { int_fast64_t a; int b[(int_fast64_t)-1 < 0 ? 1 : -1]; } while (0); do { __typeof__((
+                             ^
+
+"./c99-stdint-1.c", line 175: warning: a value of type "long long *" cannot be used to initialize an entity of type "long *"
+   )) a; __typeof__((int_fast64_t)0 + 0) *b = &a; } while (0); do { __typeof__((
+                                              ^
+
+"./c99-stdint-1.c", line 175: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((int_fast64_t)0 + 0) *b = &a; } while (0); do { __typeof__((
+                                          ^
+
+"./c99-stdint-1.c", line 175: warning: a value of type "long long *" cannot be used to initialize an entity of type "long *"
+   )) a; __typeof__((int_fast64_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                              ^
+
+"./c99-stdint-1.c", line 175: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((int_fast64_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                          ^
+
+"./c99-stdint-1.c", line 175: error: the size of an array must be greater than zero
+   )) a; __typeof__((int_fast64_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                                                          ^
+
+"./c99-stdint-1.c", line 176: warning: variable "a" was declared but never referenced
+    do { int a[sizeof(uint_fast8_t) * 8 
+             ^
+
+"./c99-stdint-1.c", line 177: warning: variable "a" was declared but never referenced
+    do { uint_fast8_t a; int b[(uint_fast8_t)-1 < 0 ? -1 : 1]; } while (0); do { __typeof__((
+                      ^
+
+"./c99-stdint-1.c", line 177: warning: variable "b" was declared but never referenced
+    do { uint_fast8_t a; int b[(uint_fast8_t)-1 < 0 ? -1 : 1]; } while (0); do { __typeof__((
+                             ^
+
+"./c99-stdint-1.c", line 177: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((uint_fast8_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                          ^
+
+"./c99-stdint-1.c", line 177: warning: variable "a" was declared but never referenced
+   )) a; __typeof__((uint_fast8_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                                                        ^
+
+"./c99-stdint-1.c", line 178: warning: variable "a" was declared but never referenced
+    do { int a[sizeof(uint_fast16_t) * 8 
+             ^
+
+"./c99-stdint-1.c", line 179: warning: variable "a" was declared but never referenced
+    do { uint_fast16_t a; int b[(uint_fast16_t)-1 < 0 ? -1 : 1]; } while (0); do { __typeof__((
+                       ^
+
+"./c99-stdint-1.c", line 179: warning: variable "b" was declared but never referenced
+    do { uint_fast16_t a; int b[(uint_fast16_t)-1 < 0 ? -1 : 1]; } while (0); do { __typeof__((
+                              ^
+
+"./c99-stdint-1.c", line 179: warning: a value of type "unsigned long long *" cannot be used to initialize an entity of type "unsigned long *"
+   )) a; __typeof__((uint_fast16_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                               ^
+
+"./c99-stdint-1.c", line 179: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((uint_fast16_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                           ^
+
+"./c99-stdint-1.c", line 179: error: the size of an array must be greater than zero
+   )) a; __typeof__((uint_fast16_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                                                           ^
+
+"./c99-stdint-1.c", line 180: warning: variable "a" was declared but never referenced
+    do { int a[sizeof(uint_fast32_t) * 8 
+             ^
+
+"./c99-stdint-1.c", line 181: warning: variable "a" was declared but never referenced
+    do { uint_fast32_t a; int b[(uint_fast32_t)-1 < 0 ? -1 : 1]; } while (0); do { __typeof__((
+                       ^
+
+"./c99-stdint-1.c", line 181: warning: variable "b" was declared but never referenced
+    do { uint_fast32_t a; int b[(uint_fast32_t)-1 < 0 ? -1 : 1]; } while (0); do { __typeof__((
+                              ^
+
+"./c99-stdint-1.c", line 181: warning: a value of type "unsigned long long *" cannot be used to initialize an entity of type "unsigned long *"
+   )) a; __typeof__((uint_fast32_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                               ^
+
+"./c99-stdint-1.c", line 181: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((uint_fast32_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                           ^
+
+"./c99-stdint-1.c", line 181: error: the size of an array must be greater than zero
+   )) a; __typeof__((uint_fast32_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                                                           ^
+
+"./c99-stdint-1.c", line 182: error: the size of an array must be greater than zero
+    do { int a[sizeof(uint_fast64_t) * 8 
+               ^
+
+"./c99-stdint-1.c", line 183: warning: variable "a" was declared but never referenced
+    do { uint_fast64_t a; int b[(uint_fast64_t)-1 < 0 ? -1 : 1]; } while (0); do { __typeof__((
+                       ^
+
+"./c99-stdint-1.c", line 183: warning: variable "b" was declared but never referenced
+    do { uint_fast64_t a; int b[(uint_fast64_t)-1 < 0 ? -1 : 1]; } while (0); do { __typeof__((
+                              ^
+
+"./c99-stdint-1.c", line 183: warning: a value of type "unsigned long long *" cannot be used to initialize an entity of type "unsigned long *"
+   )) a; __typeof__((uint_fast64_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                               ^
+
+"./c99-stdint-1.c", line 183: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((uint_fast64_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                           ^
+
+"./c99-stdint-1.c", line 183: error: the size of an array must be greater than zero
+   )) a; __typeof__((uint_fast64_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                                                           ^
+
+"./c99-stdint-1.c", line 190: warning: variable "a" was declared but never referenced
+    do { intptr_t a; int b[(intptr_t)-1 < 0 ? 1 : -1]; } while (0); do { __typeof__((
+                  ^
+
+"./c99-stdint-1.c", line 190: warning: variable "b" was declared but never referenced
+    do { intptr_t a; int b[(intptr_t)-1 < 0 ? 1 : -1]; } while (0); do { __typeof__((
+                         ^
+
+"./c99-stdint-1.c", line 190: warning: a value of type "long long *" cannot be used to initialize an entity of type "long *"
+   )) a; __typeof__((intptr_t)0 + 0) *b = &a; } while (0); do { __typeof__((
+                                          ^
+
+"./c99-stdint-1.c", line 190: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((intptr_t)0 + 0) *b = &a; } while (0); do { __typeof__((
+                                      ^
+
+"./c99-stdint-1.c", line 190: warning: a value of type "long long *" cannot be used to initialize an entity of type "long *"
+   )) a; __typeof__((intptr_t)0 + 0) *b = &a; } while (0); do { int a[((((
+                                          ^
+
+"./c99-stdint-1.c", line 190: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((intptr_t)0 + 0) *b = &a; } while (0); do { int a[((((
+                                      ^
+
+"./c99-stdint-1.c", line 190: error: the size of an array must be greater than zero
+   )) a; __typeof__((intptr_t)0 + 0) *b = &a; } while (0); do { int a[((((
+                                                                      ^
+
+"./c99-stdint-1.c", line 193: warning: variable "a" was declared but never referenced
+    do { uintptr_t a; int b[(uintptr_t)-1 < 0 ? -1 : 1]; } while (0); do { __typeof__((
+                   ^
+
+"./c99-stdint-1.c", line 193: warning: variable "b" was declared but never referenced
+    do { uintptr_t a; int b[(uintptr_t)-1 < 0 ? -1 : 1]; } while (0); do { __typeof__((
+                          ^
+
+"./c99-stdint-1.c", line 193: warning: a value of type "unsigned long long *" cannot be used to initialize an entity of type "unsigned long *"
+   )) a; __typeof__((uintptr_t)0 + 0) *b = &a; } while (0); do { int a[((((
+                                           ^
+
+"./c99-stdint-1.c", line 193: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((uintptr_t)0 + 0) *b = &a; } while (0); do { int a[((((
+                                       ^
+
+"./c99-stdint-1.c", line 193: error: the size of an array must be greater than zero
+   )) a; __typeof__((uintptr_t)0 + 0) *b = &a; } while (0); do { int a[((((
+                                                                       ^
+
+"./c99-stdint-1.c", line 200: error: the size of an array must be greater than zero
+    do { int a[sizeof(intmax_t) * 8 
+               ^
+
+"./c99-stdint-1.c", line 201: error: the size of an array must be greater than zero
+    do { int a[sizeof(intmax_t) >= sizeof(long long) ? 1 : -1]; } while (0);
+               ^
+
+"./c99-stdint-1.c", line 202: warning: variable "a" was declared but never referenced
+    do { int a[sizeof(intmax_t) >= sizeof(int_fast8_t) ? 1 : -1]; } while (0);
+             ^
+
+"./c99-stdint-1.c", line 203: warning: variable "a" was declared but never referenced
+    do { int a[sizeof(intmax_t) >= sizeof(int_fast16_t) ? 1 : -1]; } while (0);
+             ^
+
+"./c99-stdint-1.c", line 204: warning: variable "a" was declared but never referenced
+    do { int a[sizeof(intmax_t) >= sizeof(int_fast32_t) ? 1 : -1]; } while (0);
+             ^
+
+"./c99-stdint-1.c", line 205: warning: variable "a" was declared but never referenced
+    do { int a[sizeof(intmax_t) >= sizeof(int_fast64_t) ? 1 : -1]; } while (0);
+             ^
+
+"./c99-stdint-1.c", line 206: warning: variable "a" was declared but never referenced
+    do { intmax_t a; int b[(intmax_t)-1 < 0 ? 1 : -1]; } while (0); do { __typeof__((
+                  ^
+
+"./c99-stdint-1.c", line 206: warning: variable "b" was declared but never referenced
+    do { intmax_t a; int b[(intmax_t)-1 < 0 ? 1 : -1]; } while (0); do { __typeof__((
+                         ^
+
+"./c99-stdint-1.c", line 206: warning: a value of type "long long *" cannot be used to initialize an entity of type "long *"
+   )) a; __typeof__((intmax_t)0 + 0) *b = &a; } while (0); do { __typeof__((
+                                          ^
+
+"./c99-stdint-1.c", line 206: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((intmax_t)0 + 0) *b = &a; } while (0); do { __typeof__((
+                                      ^
+
+"./c99-stdint-1.c", line 206: warning: a value of type "long long *" cannot be used to initialize an entity of type "long *"
+   )) a; __typeof__((intmax_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                          ^
+
+"./c99-stdint-1.c", line 206: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((intmax_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                      ^
+
+"./c99-stdint-1.c", line 206: error: the size of an array must be greater than zero
+   )) a; __typeof__((intmax_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                                                      ^
+
+"./c99-stdint-1.c", line 207: error: the size of an array must be greater than zero
+    do { int a[sizeof(uintmax_t) * 8 
+               ^
+
+"./c99-stdint-1.c", line 208: error: the size of an array must be greater than zero
+    do { int a[sizeof(uintmax_t) >= sizeof(unsigned long long) ? 1 : -1]; } while (0);
+               ^
+
+"./c99-stdint-1.c", line 209: warning: variable "a" was declared but never referenced
+    do { int a[sizeof(uintmax_t) >= sizeof(uint_fast8_t) ? 1 : -1]; } while (0);
+             ^
+
+"./c99-stdint-1.c", line 210: warning: variable "a" was declared but never referenced
+    do { int a[sizeof(uintmax_t) >= sizeof(uint_fast16_t) ? 1 : -1]; } while (0);
+             ^
+
+"./c99-stdint-1.c", line 211: warning: variable "a" was declared but never referenced
+    do { int a[sizeof(uintmax_t) >= sizeof(uint_fast32_t) ? 1 : -1]; } while (0);
+             ^
+
+"./c99-stdint-1.c", line 212: warning: variable "a" was declared but never referenced
+    do { int a[sizeof(uintmax_t) >= sizeof(uint_fast64_t) ? 1 : -1]; } while (0);
+             ^
+
+"./c99-stdint-1.c", line 213: warning: variable "a" was declared but never referenced
+    do { uintmax_t a; int b[(uintmax_t)-1 < 0 ? -1 : 1]; } while (0); do { __typeof__((
+                   ^
+
+"./c99-stdint-1.c", line 213: warning: variable "b" was declared but never referenced
+    do { uintmax_t a; int b[(uintmax_t)-1 < 0 ? -1 : 1]; } while (0); do { __typeof__((
+                          ^
+
+"./c99-stdint-1.c", line 213: warning: a value of type "unsigned long long *" cannot be used to initialize an entity of type "unsigned long *"
+   )) a; __typeof__((uintmax_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                           ^
+
+"./c99-stdint-1.c", line 213: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((uintmax_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                       ^
+
+"./c99-stdint-1.c", line 213: error: the size of an array must be greater than zero
+   )) a; __typeof__((uintmax_t)0 + 0) *b = &a; } while (0); do { int a[(((
+                                                                       ^
+
+"./c99-stdint-1.c", line 219: warning: variable "a" was declared but never referenced
+    do { long int a; int b[(long int)-1 < 0 ? 1 : -1]; } while (0); do { __typeof__((
+                  ^
+
+"./c99-stdint-1.c", line 219: warning: variable "b" was declared but never referenced
+    do { long int a; int b[(long int)-1 < 0 ? 1 : -1]; } while (0); do { __typeof__((
+                         ^
+
+"./c99-stdint-1.c", line 219: warning: a value of type "long long *" cannot be used to initialize an entity of type "long *"
+   )) a; __typeof__((long int)0 + 0) *b = &a; } while (0); do { __typeof__((
+                                          ^
+
+"./c99-stdint-1.c", line 219: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((long int)0 + 0) *b = &a; } while (0); do { __typeof__((
+                                      ^
+
+"./c99-stdint-1.c", line 219: warning: a value of type "long long *" cannot be used to initialize an entity of type "long *"
+   )) a; __typeof__((long int)0 + 0) *b = &a; } while (0); do { int a[((((
+                                          ^
+
+"./c99-stdint-1.c", line 219: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((long int)0 + 0) *b = &a; } while (0); do { int a[((((
+                                      ^
+
+"./c99-stdint-1.c", line 219: error: the size of an array must be greater than zero
+   )) a; __typeof__((long int)0 + 0) *b = &a; } while (0); do { int a[((((
+                                                                      ^
+
+"./c99-stdint-1.c", line 221: warning: variable "a" was declared but never referenced
+    do { int a[(((sig_atomic_t)-1 < 0 ? ((((
+             ^
+
+"./c99-stdint-1.c", line 223: warning: variable "a" was declared but never referenced
+    do { long unsigned int a; int b[(long unsigned int)-1 < 0 ? -1 : 1]; } while (0); do { __typeof__((
+                           ^
+
+"./c99-stdint-1.c", line 223: warning: variable "b" was declared but never referenced
+    do { long unsigned int a; int b[(long unsigned int)-1 < 0 ? -1 : 1]; } while (0); do { __typeof__((
+                                  ^
+
+"./c99-stdint-1.c", line 223: warning: a value of type "unsigned long long *" cannot be used to initialize an entity of type "unsigned long *"
+   )) a; __typeof__((long unsigned int)0 + 0) *b = &a; } while (0); do { int a[((((
+                                                   ^
+
+"./c99-stdint-1.c", line 223: warning: variable "b" was declared but never referenced
+   )) a; __typeof__((long unsigned int)0 + 0) *b = &a; } while (0); do { int a[((((
+                                               ^
+
+"./c99-stdint-1.c", line 223: error: the size of an array must be greater than zero
+   )) a; __typeof__((long unsigned int)0 + 0) *b = &a; } while (0); do { int a[((((
+                                                                               ^
+
+"./c99-stdint-1.c", line 224: warning: variable "a" was declared but never referenced
+    do { int a[(((int)-1 < 0 ? ((((
+             ^
+
+"./c99-stdint-1.c", line 225: warning: variable "a" was declared but never referenced
+    do { int a[(((unsigned int)-1 < 0 ? ((((
+             ^
+
+"./c99-stdint-1.c", line 231: warning: variable "b" was declared but never referenced
+    do { __typeof__(01) a; __typeof__((int_least8_t)0 + 0) *b = &a; } while (0); do { __typeof__(2) a; __typeof__((int_least8_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3) a; __typeof__((int_least8_t)0 + 0) *b = &a; } while (0); do { int a[(12 == 12 && 012 == 012 && 0x12 == 0x12) ? 1 : -1]; } while (0);;
+                                                            ^
+
+"./c99-stdint-1.c", line 231: warning: variable "b" was declared but never referenced
+    do { __typeof__(01) a; __typeof__((int_least8_t)0 + 0) *b = &a; } while (0); do { __typeof__(2) a; __typeof__((int_least8_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3) a; __typeof__((int_least8_t)0 + 0) *b = &a; } while (0); do { int a[(12 == 12 && 012 == 012 && 0x12 == 0x12) ? 1 : -1]; } while (0);;
+                                                                                                                                        ^
+
+"./c99-stdint-1.c", line 231: warning: variable "b" was declared but never referenced
+    do { __typeof__(01) a; __typeof__((int_least8_t)0 + 0) *b = &a; } while (0); do { __typeof__(2) a; __typeof__((int_least8_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3) a; __typeof__((int_least8_t)0 + 0) *b = &a; } while (0); do { int a[(12 == 12 && 012 == 012 && 0x12 == 0x12) ? 1 : -1]; } while (0);;
+                                                                                                                                                                                                                      ^
+
+"./c99-stdint-1.c", line 231: warning: variable "a" was declared but never referenced
+    do { __typeof__(01) a; __typeof__((int_least8_t)0 + 0) *b = &a; } while (0); do { __typeof__(2) a; __typeof__((int_least8_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3) a; __typeof__((int_least8_t)0 + 0) *b = &a; } while (0); do { int a[(12 == 12 && 012 == 012 && 0x12 == 0x12) ? 1 : -1]; } while (0);;
+                                                                                                                                                                                                                                                    ^
+
+"./c99-stdint-1.c", line 232: warning: variable "b" was declared but never referenced
+    do { __typeof__(01) a; __typeof__((int_least16_t)0 + 0) *b = &a; } while (0); do { __typeof__(2) a; __typeof__((int_least16_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3) a; __typeof__((int_least16_t)0 + 0) *b = &a; } while (0); do { int a[(12 == 12 && 012 == 012 && 0x12 == 0x12) ? 1 : -1]; } while (0);;
+                                                             ^
+
+"./c99-stdint-1.c", line 232: warning: variable "b" was declared but never referenced
+    do { __typeof__(01) a; __typeof__((int_least16_t)0 + 0) *b = &a; } while (0); do { __typeof__(2) a; __typeof__((int_least16_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3) a; __typeof__((int_least16_t)0 + 0) *b = &a; } while (0); do { int a[(12 == 12 && 012 == 012 && 0x12 == 0x12) ? 1 : -1]; } while (0);;
+                                                                                                                                          ^
+
+"./c99-stdint-1.c", line 232: warning: variable "b" was declared but never referenced
+    do { __typeof__(01) a; __typeof__((int_least16_t)0 + 0) *b = &a; } while (0); do { __typeof__(2) a; __typeof__((int_least16_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3) a; __typeof__((int_least16_t)0 + 0) *b = &a; } while (0); do { int a[(12 == 12 && 012 == 012 && 0x12 == 0x12) ? 1 : -1]; } while (0);;
+                                                                                                                                                                                                                         ^
+
+"./c99-stdint-1.c", line 232: warning: variable "a" was declared but never referenced
+    do { __typeof__(01) a; __typeof__((int_least16_t)0 + 0) *b = &a; } while (0); do { __typeof__(2) a; __typeof__((int_least16_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3) a; __typeof__((int_least16_t)0 + 0) *b = &a; } while (0); do { int a[(12 == 12 && 012 == 012 && 0x12 == 0x12) ? 1 : -1]; } while (0);;
+                                                                                                                                                                                                                                                       ^
+
+"./c99-stdint-1.c", line 233: warning: variable "b" was declared but never referenced
+    do { __typeof__(01) a; __typeof__((int_least32_t)0 + 0) *b = &a; } while (0); do { __typeof__(2) a; __typeof__((int_least32_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3) a; __typeof__((int_least32_t)0 + 0) *b = &a; } while (0); do { int a[(12 == 12 && 012 == 012 && 0x12 == 0x12) ? 1 : -1]; } while (0);;
+                                                             ^
+
+"./c99-stdint-1.c", line 233: warning: variable "b" was declared but never referenced
+    do { __typeof__(01) a; __typeof__((int_least32_t)0 + 0) *b = &a; } while (0); do { __typeof__(2) a; __typeof__((int_least32_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3) a; __typeof__((int_least32_t)0 + 0) *b = &a; } while (0); do { int a[(12 == 12 && 012 == 012 && 0x12 == 0x12) ? 1 : -1]; } while (0);;
+                                                                                                                                          ^
+
+"./c99-stdint-1.c", line 233: warning: variable "b" was declared but never referenced
+    do { __typeof__(01) a; __typeof__((int_least32_t)0 + 0) *b = &a; } while (0); do { __typeof__(2) a; __typeof__((int_least32_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3) a; __typeof__((int_least32_t)0 + 0) *b = &a; } while (0); do { int a[(12 == 12 && 012 == 012 && 0x12 == 0x12) ? 1 : -1]; } while (0);;
+                                                                                                                                                                                                                         ^
+
+"./c99-stdint-1.c", line 233: warning: variable "a" was declared but never referenced
+    do { __typeof__(01) a; __typeof__((int_least32_t)0 + 0) *b = &a; } while (0); do { __typeof__(2) a; __typeof__((int_least32_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3) a; __typeof__((int_least32_t)0 + 0) *b = &a; } while (0); do { int a[(12 == 12 && 012 == 012 && 0x12 == 0x12) ? 1 : -1]; } while (0);;
+                                                                                                                                                                                                                                                       ^
+
+"./c99-stdint-1.c", line 234: warning: variable "b" was declared but never referenced
+    do { __typeof__(01L) a; __typeof__((int_least64_t)0 + 0) *b = &a; } while (0); do { __typeof__(2L) a; __typeof__((int_least64_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3L) a; __typeof__((int_least64_t)0 + 0) *b = &a; } while (0); do { int a[(12L == 12 && 012L == 012 && 0x12L == 0x12) ? 1 : -1]; } while (0);;
+                                                              ^
+
+"./c99-stdint-1.c", line 234: warning: variable "b" was declared but never referenced
+    do { __typeof__(01L) a; __typeof__((int_least64_t)0 + 0) *b = &a; } while (0); do { __typeof__(2L) a; __typeof__((int_least64_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3L) a; __typeof__((int_least64_t)0 + 0) *b = &a; } while (0); do { int a[(12L == 12 && 012L == 012 && 0x12L == 0x12) ? 1 : -1]; } while (0);;
+                                                                                                                                            ^
+
+"./c99-stdint-1.c", line 234: warning: variable "b" was declared but never referenced
+    do { __typeof__(01L) a; __typeof__((int_least64_t)0 + 0) *b = &a; } while (0); do { __typeof__(2L) a; __typeof__((int_least64_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3L) a; __typeof__((int_least64_t)0 + 0) *b = &a; } while (0); do { int a[(12L == 12 && 012L == 012 && 0x12L == 0x12) ? 1 : -1]; } while (0);;
+                                                                                                                                                                                                                            ^
+
+"./c99-stdint-1.c", line 234: warning: variable "a" was declared but never referenced
+    do { __typeof__(01L) a; __typeof__((int_least64_t)0 + 0) *b = &a; } while (0); do { __typeof__(2L) a; __typeof__((int_least64_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3L) a; __typeof__((int_least64_t)0 + 0) *b = &a; } while (0); do { int a[(12L == 12 && 012L == 012 && 0x12L == 0x12) ? 1 : -1]; } while (0);;
+                                                                                                                                                                                                                                                          ^
+
+"./c99-stdint-1.c", line 235: warning: variable "b" was declared but never referenced
+    do { __typeof__(01L) a; __typeof__((intmax_t)0 + 0) *b = &a; } while (0); do { __typeof__(2L) a; __typeof__((intmax_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3L) a; __typeof__((intmax_t)0 + 0) *b = &a; } while (0); do { int a[(12L == 12 && 012L == 012 && 0x12L == 0x12) ? 1 : -1]; } while (0);;
+                                                         ^
+
+"./c99-stdint-1.c", line 235: warning: variable "b" was declared but never referenced
+    do { __typeof__(01L) a; __typeof__((intmax_t)0 + 0) *b = &a; } while (0); do { __typeof__(2L) a; __typeof__((intmax_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3L) a; __typeof__((intmax_t)0 + 0) *b = &a; } while (0); do { int a[(12L == 12 && 012L == 012 && 0x12L == 0x12) ? 1 : -1]; } while (0);;
+                                                                                                                                  ^
+
+"./c99-stdint-1.c", line 235: warning: variable "b" was declared but never referenced
+    do { __typeof__(01L) a; __typeof__((intmax_t)0 + 0) *b = &a; } while (0); do { __typeof__(2L) a; __typeof__((intmax_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3L) a; __typeof__((intmax_t)0 + 0) *b = &a; } while (0); do { int a[(12L == 12 && 012L == 012 && 0x12L == 0x12) ? 1 : -1]; } while (0);;
+                                                                                                                                                                                                             ^
+
+"./c99-stdint-1.c", line 235: warning: variable "a" was declared but never referenced
+    do { __typeof__(01L) a; __typeof__((intmax_t)0 + 0) *b = &a; } while (0); do { __typeof__(2L) a; __typeof__((intmax_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3L) a; __typeof__((intmax_t)0 + 0) *b = &a; } while (0); do { int a[(12L == 12 && 012L == 012 && 0x12L == 0x12) ? 1 : -1]; } while (0);;
+                                                                                                                                                                                                                                           ^
+
+"./c99-stdint-1.c", line 236: warning: variable "b" was declared but never referenced
+    do { __typeof__(01) a; __typeof__((uint_least8_t)0 + 0) *b = &a; } while (0); do { __typeof__(2) a; __typeof__((uint_least8_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3) a; __typeof__((uint_least8_t)0 + 0) *b = &a; } while (0); do { int a[(12 == 12 && 012 == 012 && 0x12 == 0x12) ? 1 : -1]; } while (0);;
+                                                             ^
+
+"./c99-stdint-1.c", line 236: warning: variable "b" was declared but never referenced
+    do { __typeof__(01) a; __typeof__((uint_least8_t)0 + 0) *b = &a; } while (0); do { __typeof__(2) a; __typeof__((uint_least8_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3) a; __typeof__((uint_least8_t)0 + 0) *b = &a; } while (0); do { int a[(12 == 12 && 012 == 012 && 0x12 == 0x12) ? 1 : -1]; } while (0);;
+                                                                                                                                          ^
+
+"./c99-stdint-1.c", line 236: warning: variable "b" was declared but never referenced
+    do { __typeof__(01) a; __typeof__((uint_least8_t)0 + 0) *b = &a; } while (0); do { __typeof__(2) a; __typeof__((uint_least8_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3) a; __typeof__((uint_least8_t)0 + 0) *b = &a; } while (0); do { int a[(12 == 12 && 012 == 012 && 0x12 == 0x12) ? 1 : -1]; } while (0);;
+                                                                                                                                                                                                                         ^
+
+"./c99-stdint-1.c", line 236: warning: variable "a" was declared but never referenced
+    do { __typeof__(01) a; __typeof__((uint_least8_t)0 + 0) *b = &a; } while (0); do { __typeof__(2) a; __typeof__((uint_least8_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3) a; __typeof__((uint_least8_t)0 + 0) *b = &a; } while (0); do { int a[(12 == 12 && 012 == 012 && 0x12 == 0x12) ? 1 : -1]; } while (0);;
+                                                                                                                                                                                                                                                       ^
+
+"./c99-stdint-1.c", line 237: warning: variable "b" was declared but never referenced
+    do { __typeof__(01) a; __typeof__((uint_least16_t)0 + 0) *b = &a; } while (0); do { __typeof__(2) a; __typeof__((uint_least16_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3) a; __typeof__((uint_least16_t)0 + 0) *b = &a; } while (0); do { int a[(12 == 12 && 012 == 012 && 0x12 == 0x12) ? 1 : -1]; } while (0);;
+                                                              ^
+
+"./c99-stdint-1.c", line 237: warning: variable "b" was declared but never referenced
+    do { __typeof__(01) a; __typeof__((uint_least16_t)0 + 0) *b = &a; } while (0); do { __typeof__(2) a; __typeof__((uint_least16_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3) a; __typeof__((uint_least16_t)0 + 0) *b = &a; } while (0); do { int a[(12 == 12 && 012 == 012 && 0x12 == 0x12) ? 1 : -1]; } while (0);;
+                                                                                                                                            ^
+
+"./c99-stdint-1.c", line 237: warning: variable "b" was declared but never referenced
+    do { __typeof__(01) a; __typeof__((uint_least16_t)0 + 0) *b = &a; } while (0); do { __typeof__(2) a; __typeof__((uint_least16_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3) a; __typeof__((uint_least16_t)0 + 0) *b = &a; } while (0); do { int a[(12 == 12 && 012 == 012 && 0x12 == 0x12) ? 1 : -1]; } while (0);;
+                                                                                                                                                                                                                            ^
+
+"./c99-stdint-1.c", line 237: warning: variable "a" was declared but never referenced
+    do { __typeof__(01) a; __typeof__((uint_least16_t)0 + 0) *b = &a; } while (0); do { __typeof__(2) a; __typeof__((uint_least16_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3) a; __typeof__((uint_least16_t)0 + 0) *b = &a; } while (0); do { int a[(12 == 12 && 012 == 012 && 0x12 == 0x12) ? 1 : -1]; } while (0);;
+                                                                                                                                                                                                                                                          ^
+
+"./c99-stdint-1.c", line 238: warning: variable "b" was declared but never referenced
+    do { __typeof__(01U) a; __typeof__((uint_least32_t)0 + 0) *b = &a; } while (0); do { __typeof__(2U) a; __typeof__((uint_least32_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3U) a; __typeof__((uint_least32_t)0 + 0) *b = &a; } while (0); do { int a[(12U == 12 && 012U == 012 && 0x12U == 0x12) ? 1 : -1]; } while (0);;
+                                                               ^
+
+"./c99-stdint-1.c", line 238: warning: variable "b" was declared but never referenced
+    do { __typeof__(01U) a; __typeof__((uint_least32_t)0 + 0) *b = &a; } while (0); do { __typeof__(2U) a; __typeof__((uint_least32_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3U) a; __typeof__((uint_least32_t)0 + 0) *b = &a; } while (0); do { int a[(12U == 12 && 012U == 012 && 0x12U == 0x12) ? 1 : -1]; } while (0);;
+                                                                                                                                              ^
+
+"./c99-stdint-1.c", line 238: warning: variable "b" was declared but never referenced
+    do { __typeof__(01U) a; __typeof__((uint_least32_t)0 + 0) *b = &a; } while (0); do { __typeof__(2U) a; __typeof__((uint_least32_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3U) a; __typeof__((uint_least32_t)0 + 0) *b = &a; } while (0); do { int a[(12U == 12 && 012U == 012 && 0x12U == 0x12) ? 1 : -1]; } while (0);;
+                                                                                                                                                                                                                               ^
+
+"./c99-stdint-1.c", line 238: warning: variable "a" was declared but never referenced
+    do { __typeof__(01U) a; __typeof__((uint_least32_t)0 + 0) *b = &a; } while (0); do { __typeof__(2U) a; __typeof__((uint_least32_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3U) a; __typeof__((uint_least32_t)0 + 0) *b = &a; } while (0); do { int a[(12U == 12 && 012U == 012 && 0x12U == 0x12) ? 1 : -1]; } while (0);;
+                                                                                                                                                                                                                                                             ^
+
+"./c99-stdint-1.c", line 239: warning: variable "b" was declared but never referenced
+    do { __typeof__(01UL) a; __typeof__((uint_least64_t)0 + 0) *b = &a; } while (0); do { __typeof__(2UL) a; __typeof__((uint_least64_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3UL) a; __typeof__((uint_least64_t)0 + 0) *b = &a; } while (0); do { int a[(12UL == 12 && 012UL == 012 && 0x12UL == 0x12) ? 1 : -1]; } while (0);;
+                                                                ^
+
+"./c99-stdint-1.c", line 239: warning: variable "b" was declared but never referenced
+    do { __typeof__(01UL) a; __typeof__((uint_least64_t)0 + 0) *b = &a; } while (0); do { __typeof__(2UL) a; __typeof__((uint_least64_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3UL) a; __typeof__((uint_least64_t)0 + 0) *b = &a; } while (0); do { int a[(12UL == 12 && 012UL == 012 && 0x12UL == 0x12) ? 1 : -1]; } while (0);;
+                                                                                                                                                ^
+
+"./c99-stdint-1.c", line 239: warning: variable "b" was declared but never referenced
+    do { __typeof__(01UL) a; __typeof__((uint_least64_t)0 + 0) *b = &a; } while (0); do { __typeof__(2UL) a; __typeof__((uint_least64_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3UL) a; __typeof__((uint_least64_t)0 + 0) *b = &a; } while (0); do { int a[(12UL == 12 && 012UL == 012 && 0x12UL == 0x12) ? 1 : -1]; } while (0);;
+                                                                                                                                                                                                                                  ^
+
+"./c99-stdint-1.c", line 239: warning: variable "a" was declared but never referenced
+    do { __typeof__(01UL) a; __typeof__((uint_least64_t)0 + 0) *b = &a; } while (0); do { __typeof__(2UL) a; __typeof__((uint_least64_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3UL) a; __typeof__((uint_least64_t)0 + 0) *b = &a; } while (0); do { int a[(12UL == 12 && 012UL == 012 && 0x12UL == 0x12) ? 1 : -1]; } while (0);;
+                                                                                                                                                                                                                                                                ^
+
+"./c99-stdint-1.c", line 240: warning: variable "b" was declared but never referenced
+    do { __typeof__(01UL) a; __typeof__((uintmax_t)0 + 0) *b = &a; } while (0); do { __typeof__(2UL) a; __typeof__((uintmax_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3UL) a; __typeof__((uintmax_t)0 + 0) *b = &a; } while (0); do { int a[(12UL == 12 && 012UL == 012 && 0x12UL == 0x12) ? 1 : -1]; } while (0);;
+                                                           ^
+
+"./c99-stdint-1.c", line 240: warning: variable "b" was declared but never referenced
+    do { __typeof__(01UL) a; __typeof__((uintmax_t)0 + 0) *b = &a; } while (0); do { __typeof__(2UL) a; __typeof__((uintmax_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3UL) a; __typeof__((uintmax_t)0 + 0) *b = &a; } while (0); do { int a[(12UL == 12 && 012UL == 012 && 0x12UL == 0x12) ? 1 : -1]; } while (0);;
+                                                                                                                                      ^
+
+"./c99-stdint-1.c", line 240: warning: variable "b" was declared but never referenced
+    do { __typeof__(01UL) a; __typeof__((uintmax_t)0 + 0) *b = &a; } while (0); do { __typeof__(2UL) a; __typeof__((uintmax_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3UL) a; __typeof__((uintmax_t)0 + 0) *b = &a; } while (0); do { int a[(12UL == 12 && 012UL == 012 && 0x12UL == 0x12) ? 1 : -1]; } while (0);;
+                                                                                                                                                                                                                   ^
+
+"./c99-stdint-1.c", line 240: warning: variable "a" was declared but never referenced
+    do { __typeof__(01UL) a; __typeof__((uintmax_t)0 + 0) *b = &a; } while (0); do { __typeof__(2UL) a; __typeof__((uintmax_t)0 + 0) *b = &a; } while (0); do { __typeof__(0x3UL) a; __typeof__((uintmax_t)0 + 0) *b = &a; } while (0); do { int a[(12UL == 12 && 012UL == 012 && 0x12UL == 0x12) ? 1 : -1]; } while (0);;
+                                                                                                                                                                                                                                                 ^
+
+26 errors detected in the compilation of "Test_name.c".

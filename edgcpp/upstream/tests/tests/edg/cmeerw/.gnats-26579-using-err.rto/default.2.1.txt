@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=2 -w --c++11 --gn 130200 Test_name.c
+"Test_name.c", line 25: error: cannot deduce "auto" type
+      auto p = &D<0>::f<int>;
+      ^
+
+1 error detected in the compilation of "Test_name.c".

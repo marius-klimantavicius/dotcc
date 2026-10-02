@@ -1,0 +1,70 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 9: error: expected a ";"
+      break l1;
+            ^
+
+"Test_name.c", line 10: warning: statement is unreachable
+      continue l1;
+      ^
+
+"Test_name.c", line 10: error: expected a ";"
+      continue l1;
+               ^
+
+"Test_name.c", line 14: error: expected a ";"
+      break l2;
+            ^
+
+"Test_name.c", line 15: warning: statement is unreachable
+      continue l2;
+      ^
+
+"Test_name.c", line 15: error: expected a ";"
+      continue l2;
+               ^
+
+"Test_name.c", line 19: error: expected a ";"
+      break l3;
+            ^
+
+"Test_name.c", line 20: warning: statement is unreachable
+      continue l3;
+      ^
+
+"Test_name.c", line 20: error: expected a ";"
+      continue l3;
+               ^
+
+"Test_name.c", line 25: error: expected a ";"
+        break l4;
+              ^
+
+"Test_name.c", line 8: warning: label "l1" was declared but never referenced
+    l1: while (true) {
+    ^
+
+"Test_name.c", line 13: warning: label "l2" was declared but never referenced
+    l2: for (;;) {
+    ^
+
+"Test_name.c", line 18: warning: label "l3" was declared but never referenced
+    l3: do {
+    ^
+
+"Test_name.c", line 23: warning: label "l4" was declared but never referenced
+    l4: switch (1) {
+    ^
+
+"Test_name.c", line 31: error: a break statement may only be used within a loop or switch
+    break l1; // expected-error {{'break' label does not name an enclosing loop or 'switch'}}
+    ^
+
+"Test_name.c", line 31: error: expected a ";"
+    break l1; // expected-error {{'break' label does not name an enclosing loop or 'switch'}}
+          ^
+
+"Test_name.c", line 32: error: a continue statement may only be used within a loop
+    continue l1; // expected-error {{'continue' label does not name an enclosing loop}}
+    ^
+
+eccp: front end returned an exit status of 139

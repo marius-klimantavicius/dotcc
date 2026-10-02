@@ -1,0 +1,52 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 27: error: no suitable constructor exists to convert from "int" to "D2"
+  D2 fd2() { return 1; } // expected-error {{no viable conversion}}
+                    ^
+
+"Test_name.c", line 35: error: no suitable constructor exists to convert from "int" to "D3"
+  D3 fd3() { return 1; } // expected-error {{no viable conversion}}
+                    ^
+
+"Test_name.c", line 50: error: no instance of overloaded function "T1<T>::T1 [with T=int]" matches the specified type
+    friend T1<int>::T1(int); // expected-error {{cannot befriend target of using declaration}}
+                    ^
+
+"Test_name.c", line 51: error: no instance of overloaded function "T1<T>::T1 [with T=int]" matches the specified type
+    friend T1<int>::T1(int, int); // expected-error {{cannot befriend target of using declaration}}
+                    ^
+
+"Test_name.c", line 52: error: no instance of overloaded function "T2<T>::T2 [with T=int]" matches the specified type
+    friend T2<int>::T2(int); // expected-error {{cannot befriend target of using declaration}}
+                    ^
+
+"Test_name.c", line 53: error: no instance of overloaded function "T2<T>::T2 [with T=int]" matches the specified type
+    friend T2<int>::T2(int, int); // expected-error {{cannot befriend target of using declaration}}
+                    ^
+
+"Test_name.c", line 54: error: no instance of overloaded function "T3<T>::T3 [with T=int]" matches the specified type
+    friend T3<int>::T3(int); // expected-error {{cannot befriend target of using declaration}}
+                    ^
+
+"Test_name.c", line 55: error: no instance of overloaded function "T3<T>::T3 [with T=int]" matches the specified type
+    friend T3<int>::T3(int, int); // expected-error {{cannot befriend target of using declaration}}
+                    ^
+
+"Test_name.c", line 69: error: copy-list-initialization cannot use a constructor marked "explicit"
+  T4<void> t4b = {0, 0}; // expected-error {{chosen constructor is explicit}}
+                 ^
+
+"Test_name.c", line 70: error: more than one instance of constructor "U4<T>::U4 [with T=void]" matches the argument list:
+            function "T4<void>::T4(T, int)" (declared implicitly), inherited via using decl at line 66
+            function "T4<T>::T4(U) [with T=void]" (declared at line 63), inherited via using decl at line 66
+            argument types are: (int)
+  U4<void> u4a = {0};
+                 ^
+"Test_name.c", line 65: note: number of parameters of function "U4<T>::U4() [with T=void]" does not match the call
+  template<typename T> struct U4 : T4<T> {
+                              ^
+
+"Test_name.c", line 71: error: copy-list-initialization cannot use a constructor marked "explicit"
+  U4<void> u4b = {0, 0}; // expected-error {{chosen constructor is explicit}}
+                 ^
+
+11 errors detected in the compilation of "Test_name.c".

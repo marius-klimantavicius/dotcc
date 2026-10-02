@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++23 Test_name.c
+"Test_name.c", line 100: error: function "GH142835::S::operator=(GH142835::S &, const GH142835::S &)" (declared at line 91) cannot be referenced -- it is a deleted function
+    s2 = s1;
+       ^
+
+1 error detected in the compilation of "Test_name.c".

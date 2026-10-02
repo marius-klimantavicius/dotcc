@@ -1,0 +1,40 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 45: error: expression must have integral or enum type
+    switch (a); 			// { dg-error "" }
+            ^
+
+"Test_name.c", line 46: error: no suitable conversion function from "A" to "bool" exists
+    bool b = a;			// { dg-error "" }
+             ^
+
+"Test_name.c", line 47: error: no suitable conversion function from "A" to "bool" exists
+    f(a);				// { dg-error "" }
+      ^
+
+"Test_name.c", line 48: error: no suitable conversion function from "A" to "bool" exists
+    B b2 = { a };			// { dg-error "" }
+             ^
+
+"Test_name.c", line 49: error: no operator "+" matches these operands
+            operand types are: A + bool
+    a + true;			// { dg-error "5:no match" }
+      ^
+"Test_name.c", line 49: note: built-in operator+(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    a + true;			// { dg-error "5:no match" }
+      ^
+"Test_name.c", line 49: note: built-in operator+(<pointer to object>, <ptrdiff_t>) does not match because argument #1 does not match parameter
+    a + true;			// { dg-error "5:no match" }
+      ^
+"Test_name.c", line 49: note: built-in operator+(<ptrdiff_t>, <pointer to object>) does not match because argument #1 does not match parameter
+    a + true;			// { dg-error "5:no match" }
+      ^
+
+"Test_name.c", line 50: error: operand types are incompatible ("A" and "bool")
+    b ? a : true;			// { dg-error "5:?:" }
+          ^
+
+"Test_name.c", line 51: error: operand types are incompatible ("A" and "bool")
+    a ? a : true;			// { dg-error "5:?:" }
+          ^
+
+7 errors detected in the compilation of "Test_name.c".

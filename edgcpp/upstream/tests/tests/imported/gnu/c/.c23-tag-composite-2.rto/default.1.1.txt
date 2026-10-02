@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 12: warning: const variable "y" requires an initializer
+  	const struct foo { int (*(*i)())[3]; } y;
+  	                                        ^
+
+"Test_name.c", line 13: error: incomplete type "int []" is not allowed
+  	_Static_assert(3 * sizeof(int) == sizeof(*((1 ? &x : &y)->i())), "");
+  	                                        ^
+
+1 error detected in the compilation of "Test_name.c".

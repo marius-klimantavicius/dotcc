@@ -1,0 +1,57 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 11: error: incomplete type "struct s" is not allowed
+    struct s v, *p; // expected-error {{variable has incomplete type 'struct s'}}
+             ^
+
+"Test_name.c", line 11: warning: variable "p" was set but never used
+    struct s v, *p; // expected-error {{variable has incomplete type 'struct s'}}
+                 ^
+
+"Test_name.c", line 16: error: array of void is not allowed
+  void *k (void l[2]) {          // expected-error {{array has incomplete element type}}
+                ^
+
+"Test_name.c", line 25: warning: array of elements containing a flexible array member is nonstandard
+  struct vari *func(struct vari a[]) { // expected-warning {{'struct vari' may not be used as an array element due to flexible array member}}
+                                ^
+
+"Test_name.c", line 29: error: array of functions is not allowed
+  int foo[](void);  // expected-error {{'foo' declared as array of functions}}
+            ^
+
+"Test_name.c", line 30: error: array of functions is not allowed
+  int foo2[1](void);  // expected-error {{'foo2' declared as array of functions}}
+              ^
+
+"Test_name.c", line 34: error: array of functions is not allowed
+  pfunc xx(int f[](void)) { // expected-error {{'f' declared as array of functions}}
+                   ^
+
+"Test_name.c", line 40: error: expression must have integral type
+    int size_not_int[f]; // expected-error {{size of array has non-integer type 'float'}}
+                     ^
+
+"Test_name.c", line 40: warning: variable "f" is used before its value is set
+    int size_not_int[f]; // expected-error {{size of array has non-integer type 'float'}}
+                     ^
+
+"Test_name.c", line 41: error: the size of an array must be greater than zero
+    int negative_size[1-2]; // expected-error{{array with a negative size}}
+                      ^
+
+"Test_name.c", line 42: warning: variable "zero_size" was declared but never referenced
+    int zero_size[0]; // expected-warning{{zero size arrays are an extension}}
+        ^
+
+"Test_name.c", line 46: error: expression must have a constant value
+  typedef int TA[I]; // expected-error {{variable length array declaration not allowed at file scope}}
+                 ^
+"Test_name.c", line 46: note: the value of variable "I" (declared at line 45) cannot be used as a constant
+  typedef int TA[I]; // expected-error {{variable length array declaration not allowed at file scope}}
+                 ^
+
+"Test_name.c", line 51: warning: argument of type "const char *" is incompatible with parameter of type "char *"
+    strFunc(staticAry); // expected-warning{{passing 'const char[5]' to parameter of type 'char *' discards qualifiers}}
+            ^
+
+8 errors detected in the compilation of "Test_name.c".

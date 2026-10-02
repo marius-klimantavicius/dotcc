@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 51: error: no instance of function template "g1" matches the argument list
+    g1<X, X>(); // { dg-error "" }
+    ^
+"Test_name.c", line 40: note: substituting "<X, X>" for function template "g1" failed constraints
+  void g1() { }
+       ^
+"Test_name.c", line 39: note: atomic constraint evaluates to false
+    requires (!(C<A> && C<B>))
+              ^
+
+"Test_name.c", line 52: error: no instance of function template "g2" matches the argument list
+    g2<X, X>(); // { dg-error "" }
+    ^
+"Test_name.c", line 44: note: substituting "<X, X>" for function template "g2" failed constraints
+  void g2() { }
+       ^
+"Test_name.c", line 43: note: atomic constraint evaluates to false
+    requires (!C<A> || !C<B>)
+              ^
+"Test_name.c", line 43: note: atomic constraint evaluates to false
+    requires (!C<A> || !C<B>)
+                       ^
+
+"Test_name.c", line 53: warning: last line of file ends without a newline
+  }
+   ^
+
+2 errors detected in the compilation of "Test_name.c".

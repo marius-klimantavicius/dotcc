@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++23 Test_name.c
+"Test_name.c", line 19: error: expected a "{" introducing a lambda body
+  void t1() { int a = [] __arm_streaming; }
+                         ^
+
+"Test_name.c", line 19: error: expected a ";"
+  void t1() { int a = [] __arm_streaming; }
+                         ^
+
+"Test_name.c", line 29: warning: attribute "assume" does not apply here
+  void t2() { int a = [] [[assume(true)]]; }
+                           ^
+
+"Test_name.c", line 29: error: expected a "{" introducing a lambda body
+  void t2() { int a = [] [[assume(true)]]; }
+                                         ^
+
+3 errors detected in the compilation of "Test_name.c".

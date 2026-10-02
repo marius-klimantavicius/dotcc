@@ -1,0 +1,118 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: error: an incomplete class type is not allowed
+  bool nas1 = __has_nothrow_assign(I); // { dg-error "incomplete type" }
+              ^
+
+"Test_name.c", line 15: error: an incomplete class type is not allowed
+  bool tas1 = __has_trivial_assign(I); // { dg-error "incomplete type" }
+              ^
+
+"Test_name.c", line 21: error: an incomplete class type is not allowed
+  bool nco1 = __has_nothrow_constructor(I); // { dg-error "incomplete type" }
+              ^
+
+"Test_name.c", line 27: error: an incomplete class type is not allowed
+  bool tco1 = __has_trivial_constructor(I); // { dg-error "incomplete type" }
+              ^
+
+"Test_name.c", line 33: error: an incomplete class type is not allowed
+  bool ncp1 = __has_nothrow_copy(I); // { dg-error "incomplete type" }
+              ^
+
+"Test_name.c", line 39: error: an incomplete class type is not allowed
+  bool tcp1 = __has_trivial_copy(I); // { dg-error "incomplete type" }
+              ^
+
+"Test_name.c", line 45: error: an incomplete class type is not allowed
+  bool tde1 = __has_trivial_destructor(I); // { dg-error "incomplete type" }
+              ^
+
+"Test_name.c", line 67: error: an incomplete class type is not allowed
+  bool vde1 = __has_virtual_destructor(I); // { dg-error "incomplete type" }
+              ^
+
+"Test_name.c", line 68: error: an incomplete class type is not allowed
+  bool vde2 = __has_virtual_destructor(U);
+              ^
+
+"Test_name.c", line 78: error: an incomplete class type is not allowed
+  bool abs1 = __is_abstract(I); // { dg-error "incomplete type" }
+              ^
+
+"Test_name.c", line 79: error: an incomplete class type is not allowed
+  bool abs2 = __is_abstract(U);
+              ^
+
+"Test_name.c", line 89: error: an incomplete class type is not allowed
+  bool emp1 = __is_empty(I); // { dg-error "incomplete type" }
+              ^
+
+"Test_name.c", line 90: error: an incomplete class type is not allowed
+  bool emp2 = __is_empty(U);
+              ^
+
+"Test_name.c", line 100: error: an incomplete class type is not allowed
+  bool pol1 = __is_polymorphic(I); // { dg-error "incomplete type" }
+              ^
+
+"Test_name.c", line 101: error: an incomplete class type is not allowed
+  bool pol2 = __is_polymorphic(U);
+              ^
+
+"Test_name.c", line 113: error: type of array element must be complete
+  bool agg1 = __is_aggregate(I); // { dg-error "incomplete type" }
+              ^
+
+"Test_name.c", line 114: error: type of array element must be complete
+  bool agg2 = __is_aggregate(U); // { dg-error "incomplete type" }
+              ^
+
+"Test_name.c", line 116: error: type of array element must be complete
+  bool agg4 = __is_aggregate(I[]);
+              ^
+
+"Test_name.c", line 117: error: type of array element must be complete
+  bool agg5 = __is_aggregate(U[]);
+              ^
+
+"Test_name.c", line 119: error: type of array element must be complete
+  bool agg7 = __is_aggregate(I[1]);
+              ^
+
+"Test_name.c", line 120: error: type of array element must be complete
+  bool agg8 = __is_aggregate(U[1]);
+              ^
+
+"Test_name.c", line 124: error: an incomplete class type is not allowed
+  bool fin1 = __is_final(I); // { dg-error "incomplete type" }
+              ^
+
+"Test_name.c", line 125: error: an incomplete class type is not allowed
+  bool fin2 = __is_final(U); // { dg-error "incomplete type" }
+              ^
+
+"Test_name.c", line 137: error: an incomplete class type is not allowed
+  bool pod1 = __is_pod(I); // { dg-error "incomplete type" }
+              ^
+
+"Test_name.c", line 138: error: an incomplete class type is not allowed
+  bool pod2 = __is_pod(U); // { dg-error "incomplete type" }
+              ^
+
+"Test_name.c", line 140: error: an incomplete class type is not allowed
+  bool pod4 = __is_pod(I[]); // { dg-error "incomplete type" }
+              ^
+
+"Test_name.c", line 141: error: an incomplete class type is not allowed
+  bool pod5 = __is_pod(U[]); // { dg-error "incomplete type" }
+              ^
+
+"Test_name.c", line 143: error: an incomplete class type is not allowed
+  bool pod7 = __is_pod(I[1]); // { dg-error "incomplete type" }
+              ^
+
+"Test_name.c", line 144: error: an incomplete class type is not allowed
+  bool pod8 = __is_pod(U[1]); // { dg-error "incomplete type" }
+              ^
+
+29 errors detected in the compilation of "Test_name.c".

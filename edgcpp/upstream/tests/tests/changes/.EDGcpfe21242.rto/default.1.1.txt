@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=1 --microsoft -w --c++ --microsoft_version 1920 --ms_c++17 Test_name.c

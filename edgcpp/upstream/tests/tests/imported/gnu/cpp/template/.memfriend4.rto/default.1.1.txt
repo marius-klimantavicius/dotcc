@@ -1,0 +1,20 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 51: error: member "C::i" (declared at line 16) is inaccessible
+    c.i = 0;
+      ^
+
+"Test_name.c", line 50: warning: variable "c" was set but never used
+    C c;
+      ^
+
+"Test_name.c", line 39: error: member "C::i" (declared at line 16) is inaccessible
+    c.i = 0;
+      ^
+          detected during instantiation of "void A<T *>::f<t>() [with T=int, t=&d2]" at line 61
+
+"Test_name.c", line 45: error: member "C::i" (declared at line 16) is inaccessible
+    c.i = 0;
+      ^
+          detected during instantiation of "void A<char>::f<t>() [with t='a']" at line 63
+
+3 errors detected in the compilation of "Test_name.c".

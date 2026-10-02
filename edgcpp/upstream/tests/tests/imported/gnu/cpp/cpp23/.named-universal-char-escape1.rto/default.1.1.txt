@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++23 Test_name.c
+"Test_name.c", line 9: warning: empty named Unicode character escape
+  int b = a\N{});				// { dg-warning "empty named universal character escape sequence; treating it as separate tokens" "" { target c++23 } }
+              ^
+
+"Test_name.c", line 10: warning: character cannot appear in a Unicode name
+  int c = a\N{);				// { dg-warning "'\\\\N\\\{' not terminated with '\\\}' after \\\\N\\\{; treating it as separate tokens" "" { target c++23 } }
+              ^
+
+"Test_name.c", line 13: error: the name "abc" does not designate a known Unicode character
+  int f = a\N{abc});			// { dg-warning "'\\\\N\\\{abc\\\}' is not a valid universal character; treating it as separate tokens" "" { target c++23 } }
+              ^
+
+"Test_name.c", line 14: warning: character cannot appear in a Unicode name
+  int g = a\N{ABC.123});			// { dg-warning "'\\\\N\\\{' not terminated with '\\\}' after \\\\N\\\{ABC; treating it as separate tokens" "" { target c++23 } }
+                 ^
+
+"Test_name.c", line 15: error: the name "NON-EXISTENT CHAR" does not designate a known Unicode character
+  int h = a\N{NON-EXISTENT CHAR});	// { dg-error "is not a valid universal character" "" { target c++23 } }
+              ^
+
+"Test_name.c", line 17: error: the name "Latin_Small_Letter_A_With_Acute" does not designate a known Unicode character
+  int i = a\N{Latin_Small_Letter_A_With_Acute});	// { dg-warning "'\\\\N\\\{Latin_Small_Letter_A_With_Acute\\\}' is not a valid universal character; treating it as separate tokens" "" { target c++23 } }
+              ^
+
+3 errors detected in the compilation of "Test_name.c".

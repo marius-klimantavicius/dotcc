@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 -DDIAG1 -DDIAG1 -DDIAG2 -DDIAG1 -DDIAG2 Test_name.c

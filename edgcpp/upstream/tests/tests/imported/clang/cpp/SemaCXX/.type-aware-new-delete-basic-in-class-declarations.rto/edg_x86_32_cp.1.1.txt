@@ -1,0 +1,162 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++26 Test_name.c
+"Test_name.c", line 16: error: first parameter of allocation function must be of type "size_t"
+    void *operator new(std::type_identity<S>, size_t, std::align_val_t); // #1
+          ^
+
+"Test_name.c", line 17: error: first parameter of deallocation function must be of type "void *"
+    void operator delete(std::type_identity<S>, void *, size_t, std::align_val_t); // #2
+         ^
+
+"Test_name.c", line 24: error: first parameter of allocation function must be of type "size_t"
+    void *operator new(std::type_identity<S2<T>>, size_t, std::align_val_t); // #3
+          ^
+
+"Test_name.c", line 25: error: first parameter of deallocation function must be of type "void *"
+    void operator delete(std::type_identity<S2<T>>, void *, size_t, std::align_val_t); // #4
+         ^
+
+"Test_name.c", line 32: error: first parameter of allocation function must be of type "size_t"
+    template <typename T> void *operator new(std::type_identity<T>, size_t, std::align_val_t); // #5
+                                ^
+
+"Test_name.c", line 33: error: first parameter of deallocation function must be of type "void *"
+    template <typename T> void operator delete(std::type_identity<T>, void *, size_t, std::align_val_t); // #6
+                               ^
+
+"Test_name.c", line 40: error: first parameter of allocation function must be of type "size_t"
+    template <typename T> void *operator new(std::type_identity<T>, size_t, std::align_val_t); // #7
+                                ^
+
+"Test_name.c", line 41: error: first parameter of deallocation function must be of type "void *"
+    template <typename T> void operator delete(std::type_identity<T>, void *, size_t, std::align_val_t); // #8
+                               ^
+
+"Test_name.c", line 42: error: first parameter of deallocation function must be of type "void *"
+    template <typename T> void operator delete(std::type_identity<T>, S4 *, std::destroying_delete_t, size_t, std::align_val_t); // #9
+                               ^
+
+"Test_name.c", line 49: error: first parameter of deallocation function must be of type "void *"
+    template <typename T> void operator delete(std::type_identity<T>, T *, size_t, std::align_val_t); // #10
+                               ^
+
+"Test_name.c", line 55: error: first parameter of allocation function must be of type "size_t"
+    template <typename T> void *operator new(std::type_identity<S6>, T, std::align_val_t); // #11
+                                ^
+
+"Test_name.c", line 58: error: first parameter of deallocation function must be of type "void *"
+    template <typename T> void operator delete(std::type_identity<S6>, T, size_t, std::align_val_t); // #12
+                               ^
+
+"Test_name.c", line 65: error: first parameter of allocation function must be of type "size_t"
+    template <typename T> void *operator new(std::type_identity<T>, U, std::align_val_t); // #13
+                                ^
+
+"Test_name.c", line 68: error: first parameter of deallocation function must be of type "void *"
+    template <typename T> void operator delete(std::type_identity<T>, U, size_t, std::align_val_t); // #14
+                               ^
+
+"Test_name.c", line 71: error: first parameter of deallocation function must be of type "void *"
+    template <typename T> void operator delete(std::type_identity<T>, S7 *, std::destroying_delete_t, U, std::align_val_t); // #15
+                               ^
+
+"Test_name.c", line 73: error: a destroying operator delete cannot have parameters other than std::size_t and std::align_val_t
+    void operator delete(S7 *, std::destroying_delete_t, U); // #16
+         ^
+
+"Test_name.c", line 77: warning: variable "s" was declared but never referenced
+    S7<int> s;
+            ^
+
+"Test_name.c", line 83: error: first parameter of allocation function must be of type "size_t"
+    template <typename T, typename U> void *operator new(std::type_identity<T>, U, std::align_val_t); // #17
+                                            ^
+
+"Test_name.c", line 86: error: first parameter of deallocation function must be of type "void *"
+    template <typename T, typename U> void operator delete(std::type_identity<T>, U, size_t, std::align_val_t); // #18
+                                           ^
+
+"Test_name.c", line 89: error: first parameter of deallocation function must be of type "void *"
+    template <typename T, typename U> void operator delete(std::type_identity<T>, S8 *, std::destroying_delete_t, U, std::align_val_t); // #19
+                                           ^
+
+"Test_name.c", line 99: error: first parameter of allocation function must be of type "size_t"
+    template <typename T> void *operator new(Alias<std::type_identity<T>>, Alias<size_t>, std::align_val_t); // #20
+                                ^
+
+"Test_name.c", line 101: error: first parameter of allocation function must be of type "size_t"
+    void *operator new(Alias<std::type_identity<int>>, size_t, std::align_val_t);
+          ^
+
+"Test_name.c", line 103: error: first parameter of deallocation function must be of type "void *"
+    template <typename T> void operator delete(Alias<std::type_identity<T>>, void *, size_t, std::align_val_t); // #21
+                               ^
+
+"Test_name.c", line 105: error: first parameter of deallocation function must be of type "void *"
+    void operator delete(Alias<std::type_identity<int>>, void *, size_t, std::align_val_t);
+         ^
+
+"Test_name.c", line 109: error: first parameter of allocation function must be of type "size_t"
+    template <typename T> void *operator new(TypeIdentityAlias<T>, size_t, std::align_val_t); // #22
+                                ^
+
+"Test_name.c", line 111: error: first parameter of allocation function must be of type "size_t"
+    void *operator new(TypeIdentityAlias<int>, size_t, std::align_val_t);
+          ^
+
+"Test_name.c", line 113: error: first parameter of deallocation function must be of type "void *"
+    template <typename T> void operator delete(TypeIdentityAlias<T>, void *, size_t, std::align_val_t); // #23
+                               ^
+
+"Test_name.c", line 115: error: first parameter of deallocation function must be of type "void *"
+    void operator delete(TypeIdentityAlias<int>, void *, size_t, std::align_val_t);
+         ^
+
+"Test_name.c", line 120: error: function "S9::operator new" cannot be called with the given argument list
+            argument types are: (unsigned int)
+    S9 *s9 = new S9;
+             ^
+"Test_name.c", line 98: note: number of parameters of function "S9::operator new" does not match the call
+    void *operator new(Alias<size_t>, std::align_val_t);
+          ^
+
+"Test_name.c", line 127: error: first parameter of allocation function must be of type "size_t"
+    template <typename T> void *operator new(TypedefAlias, size_t, std::align_val_t);
+                                ^
+
+"Test_name.c", line 129: error: first parameter of allocation function must be of type "size_t"
+    void *operator new(TypedefAlias, size_t, std::align_val_t);
+          ^
+
+"Test_name.c", line 131: error: first parameter of deallocation function must be of type "void *"
+    template <typename T> void operator delete(TypedefAlias, void *, size_t, std::align_val_t);
+                               ^
+
+"Test_name.c", line 133: error: first parameter of deallocation function must be of type "void *"
+    void operator delete(TypedefAlias, void *, size_t, std::align_val_t);
+         ^
+
+"Test_name.c", line 137: error: first parameter of allocation function must be of type "size_t"
+    template <typename T> void *operator new(UsingAlias, size_t, std::align_val_t);
+                                ^
+
+"Test_name.c", line 139: error: first parameter of allocation function must be of type "size_t"
+    void *operator new(UsingAlias, size_t, std::align_val_t);
+          ^
+
+"Test_name.c", line 141: error: first parameter of deallocation function must be of type "void *"
+    template <typename T> void operator delete(UsingAlias, void *, size_t, std::align_val_t);
+                               ^
+
+"Test_name.c", line 143: error: first parameter of deallocation function must be of type "void *"
+    void operator delete(UsingAlias, void *, size_t, std::align_val_t);
+         ^
+
+"Test_name.c", line 148: error: first parameter of allocation function must be of type "size_t"
+    void *operator new(std::type_identity<S13>, size_t, std::align_val_t);
+          ^
+
+"Test_name.c", line 150: error: first parameter of deallocation function must be of type "void *"
+    void operator delete(std::type_identity<S13>, void*, size_t, std::align_val_t);
+         ^
+
+38 errors detected in the compilation of "Test_name.c".

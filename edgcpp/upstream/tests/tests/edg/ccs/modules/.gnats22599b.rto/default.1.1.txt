@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --modules -E Test_name.c
+#line 1 "Test_name.c"
+
+
+
+
+module X;
+
+
+
+
+
+
+void
+import_function() {}
+
+void
+import1() {}

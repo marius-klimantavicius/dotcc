@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 9: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive (declare variant(variant_fn) match(construct={dispatch}) adjust_args(need_device_ptr: x,y) adjust_args(nothing: z))]]
+    ^
+
+"Test_name.c", line 14: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (dispatch is_device_ptr(y))]]
+      ^
+
+"Test_name.c", line 16: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (dispatch device(0))]]
+      ^
+
+"Test_name.c", line 18: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (dispatch nocontext(1) novariants(1))]]
+      ^
+
+"Test_name.c", line 20: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (dispatch depend(inout: x) nowait)]]
+      ^
+

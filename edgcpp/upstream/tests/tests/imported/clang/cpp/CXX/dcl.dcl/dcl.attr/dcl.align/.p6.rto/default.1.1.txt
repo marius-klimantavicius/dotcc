@@ -1,0 +1,47 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 6: error: specified alignment (8) is different from alignment (4) specified on a previous declaration
+  alignas(8) int n1; // expected-error {{redeclaration has different alignment requirement (8 vs 4)}}
+  ^
+
+"Test_name.c", line 9: error: specified alignment (4) is different from alignment (8) specified on a previous declaration
+  alignas(4) extern int n2; // expected-error {{different alignment requirement (4 vs 8)}}
+  ^
+
+"Test_name.c", line 12: error: specified alignment (4) is different from alignment (8) specified on a previous declaration
+  alignas(4) extern int n3; // expected-error {{different alignment requirement (4 vs 8)}}
+  ^
+
+"Test_name.c", line 21: warning: alignment attribute must also appear on definition at line 20
+  alignas(8) extern int n6; // expected-note {{declared with 'alignas' attribute here}}
+  ^
+
+"Test_name.c", line 26: error: alignment attribute must also appear on definition at line 27
+  alignas(8) extern int n8; // expected-note {{declared with 'alignas' attribute here}}
+  ^
+
+"Test_name.c", line 30: warning: alignment attribute must also appear on definition at line 29
+  alignas(4) extern int n9; // expected-note {{declared with 'alignas' attribute here}}
+  ^
+
+"Test_name.c", line 33: error: alignment attribute must also appear on definition at line 35
+  struct alignas(16) S; // expected-note {{declared with 'alignas' attribute here}}
+         ^
+
+"Test_name.c", line 40: error: specified alignment (4) is different from alignment (2) specified on a previous declaration
+  struct alignas(4) T; // expected-error {{redeclaration has different alignment requirement (4 vs 2)}}
+         ^
+
+"Test_name.c", line 46: warning: alignment attribute must also appear on definition at line 45
+  struct alignas(1) V; // expected-note {{declared with 'alignas' attribute here}}
+         ^
+
+"Test_name.c", line 64: error: incomplete type "Incomplete" is not allowed
+  alignas(4) struct Incomplete incomplete; // expected-error {{incomplete type}} expected-note {{forward declaration}}
+                               ^
+
+"Test_name.c", line 59: error: specified alignment (8) is different from alignment (2) specified on a previous declaration
+  alignas(O) alignas(P) char X<M, N, O, P>::Buffer[32]; // expected-error {{redeclaration has different alignment requirement (8 vs 2)}}
+             ^
+          detected during implicit definition of "char X<M, N, O, P>::Buffer[32] [with M=1, N=2, O=4, P=8]" at line 61
+
+8 errors detected in the compilation of "Test_name.c".

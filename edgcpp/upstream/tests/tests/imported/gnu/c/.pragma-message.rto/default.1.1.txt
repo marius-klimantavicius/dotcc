@@ -1,0 +1,85 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 5: warning: unrecognized #pragma
+  #pragma message                  /* { dg-warning "expected a string" } */
+          ^
+
+"Test_name.c", line 6: warning: unrecognized #pragma
+  #pragma message 0                /* { dg-warning "expected a string" } */
+          ^
+
+"Test_name.c", line 7: warning: unrecognized #pragma
+  #pragma message id               /* { dg-warning "expected a string" } */
+          ^
+
+"Test_name.c", line 8: warning: unrecognized #pragma
+  #pragma message (                /* { dg-warning "expected a string" } */
+          ^
+
+"Test_name.c", line 9: warning: unrecognized #pragma
+  #pragma message (0               /* { dg-warning "expected a string" } */
+          ^
+
+"Test_name.c", line 10: warning: unrecognized #pragma
+  #pragma message (id              /* { dg-warning "expected a string" } */
+          ^
+
+"Test_name.c", line 11: warning: unrecognized #pragma
+  #pragma message ()               /* { dg-warning "expected a string" } */
+          ^
+
+"Test_name.c", line 12: warning: unrecognized #pragma
+  #pragma message (0)              /* { dg-warning "expected a string" } */
+          ^
+
+"Test_name.c", line 13: warning: unrecognized #pragma
+  #pragma message (id)             /* { dg-warning "expected a string" } */
+          ^
+
+"Test_name.c", line 20: warning: unrecognized #pragma
+  #pragma message "
+          ^
+
+"Test_name.c", line 23: warning: unrecognized #pragma
+  #pragma message "Bad 1
+          ^
+
+"Test_name.c", line 26: warning: unrecognized #pragma
+  #pragma message ("Bad 2
+          ^
+
+"Test_name.c", line 29: warning: unrecognized #pragma
+  #pragma message ("Bad 3"
+          ^
+
+"Test_name.c", line 32: warning: unrecognized #pragma
+  #pragma message "" junk
+          ^
+
+"Test_name.c", line 35: warning: unrecognized #pragma
+  #pragma message ("") junk
+          ^
+
+"Test_name.c", line 38: warning: unrecognized #pragma
+  #pragma message ""               /* No output expected for empty messages.  */
+          ^
+
+"Test_name.c", line 39: warning: unrecognized #pragma
+  #pragma message ("")
+          ^
+
+"Test_name.c", line 41: warning: unrecognized #pragma
+  #pragma message "Okay 1"         /* { dg-message "Okay 1" } */
+          ^
+
+"Test_name.c", line 42: warning: unrecognized #pragma
+  #pragma message ("Okay 2")       /* { dg-message "Okay 2" } */
+          ^
+
+"Test_name.c", line 44: warning: unrecognized #pragma
+  #pragma message ("Okay " THREE)  /* { dg-message "Okay 3" } */
+          ^
+
+"Test_name.c", line 49: warning: unrecognized #pragma
+  TODO(Okay 4) /* { dg-message "in expansion of macro 'TODO'" } */
+  ^
+

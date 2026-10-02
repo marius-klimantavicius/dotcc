@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 6: error: a variable cannot have both "common" and "internal_linkage" attributes
+  int var2 __attribute__((internal_linkage,common)); // expected-error{{'common' and 'internal_linkage' attributes are not compatible}} \
+                                           ^
+
+"Test_name.c", line 8: error: a variable cannot have both "common" and "internal_linkage" attributes
+  int var3 __attribute__((common,internal_linkage)); // expected-error{{'internal_linkage' and 'common' attributes are not compatible}} \
+                                 ^
+
+"Test_name.c", line 12: error: a variable cannot have both "common" and "internal_linkage" attributes
+  int var4 __attribute__((internal_linkage)); // expected-error{{'internal_linkage' and 'common' attributes are not compatible}} \
+                          ^
+
+"Test_name.c", line 16: error: external/internal linkage conflict with previous declaration at line 15
+  int var5 __attribute__((common)); // expected-error{{'common' and 'internal_linkage' attributes are not compatible}}
+      ^
+
+"Test_name.c", line 16: error: a variable cannot have both "common" and "internal_linkage" attributes
+  int var5 __attribute__((common)); // expected-error{{'common' and 'internal_linkage' attributes are not compatible}}
+                          ^
+
+"Test_name.c", line 18: warning: missing return statement at end of non-void function "f"
+  __attribute__((internal_linkage)) int f(void) {}
+                                                 ^
+
+"Test_name.c", line 22: error: attribute "internal_linkage" does not take arguments
+  __attribute__((internal_linkage("foo"))) int g(void) {} // expected-error{{'internal_linkage' attribute takes no arguments}}
+                                 ^
+
+"Test_name.c", line 22: warning: missing return statement at end of non-void function "g"
+  __attribute__((internal_linkage("foo"))) int g(void) {} // expected-error{{'internal_linkage' attribute takes no arguments}}
+                                                        ^
+
+"Test_name.c", line 25: error: a variable cannot have both "common" and "internal_linkage" attributes
+  int var7 [[clang::internal_linkage]] __attribute__((common)); // expected-error{{'common' and 'clang::internal_linkage' attributes are not compatible}} \
+                                                      ^
+
+"Test_name.c", line 27: error: a variable cannot have both "common" and "internal_linkage" attributes
+  __attribute__((common)) int var8 [[clang::internal_linkage]]; // expected-error{{'clang::internal_linkage' and 'common' attributes are not compatible}} \
+                 ^
+
+"Test_name.c", line 5: warning: variable "var" was declared but never referenced
+  int var __attribute__((internal_linkage));
+      ^
+
+"Test_name.c", line 6: warning: variable "var2" was declared but never referenced
+  int var2 __attribute__((internal_linkage,common)); // expected-error{{'common' and 'internal_linkage' attributes are not compatible}} \
+      ^
+
+"Test_name.c", line 18: warning: function "f" was declared but never referenced
+  __attribute__((internal_linkage)) int f(void) {}
+                                        ^
+
+"Test_name.c", line 24: warning: variable "var6" was declared but never referenced
+  int var6 [[clang::internal_linkage]];
+      ^
+
+"Test_name.c", line 25: warning: variable "var7" was declared but never referenced
+  int var7 [[clang::internal_linkage]] __attribute__((common)); // expected-error{{'common' and 'clang::internal_linkage' attributes are not compatible}} \
+      ^
+
+"Test_name.c", line 27: warning: variable "var8" was declared but never referenced
+  __attribute__((common)) int var8 [[clang::internal_linkage]]; // expected-error{{'clang::internal_linkage' and 'common' attributes are not compatible}} \
+                              ^
+
+8 errors detected in the compilation of "Test_name.c".

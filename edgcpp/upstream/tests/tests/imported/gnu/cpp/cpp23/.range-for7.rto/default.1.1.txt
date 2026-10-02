@@ -1,0 +1,9 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 --c++17 Test_name.c
+"./cpp23/range-for1.C", line 9: error: static assertion failed with ""
+  static_assert (201603L >= 202211L, "");
+  ^
+"./cpp23/range-for1.C", line 9: note: the final comparison was 201603 >= 202211
+  static_assert (201603L >= 202211L, "");
+                         ^
+
+1 error detected in the compilation of "Test_name.c".

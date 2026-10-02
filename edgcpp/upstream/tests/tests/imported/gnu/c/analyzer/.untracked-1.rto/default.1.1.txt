@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./analyzer/untracked-1.c", line 22: warning: variable "s1" was declared but never referenced
+    static struct st s1 = { "./analyzer/untracked-1.c", 22 };
+                     ^
+
+"./analyzer/untracked-1.c", line 65: warning: variable "bi5" was declared but never referenced
+    boxed_int bi5 = { i };
+              ^
+
+"./analyzer/untracked-1.c", line 78: warning: variable "bi7" is used before its value is set
+    return bi7.value;
+           ^
+
+"./analyzer/untracked-1.c", line 103: warning: variable "s10" was set but never used
+    static struct st s10 = { "./analyzer/untracked-1.c", 103 };
+                     ^
+
+"./analyzer/untracked-1.c", line 112: warning: missing return statement at end of non-void function "test_12"
+  }
+  ^
+

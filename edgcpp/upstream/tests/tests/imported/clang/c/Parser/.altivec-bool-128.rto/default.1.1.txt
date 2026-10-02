@@ -1,0 +1,82 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 14: error: identifier "__vector" is undefined
+  __vector bool __int128 v1_bi128;          // expected-error {{use of '__int128' with '__vector bool' requires VSX support enabled (on POWER10 or later)}}
+  ^
+
+"Test_name.c", line 14: error: expected a ";"
+  __vector bool __int128 v1_bi128;          // expected-error {{use of '__int128' with '__vector bool' requires VSX support enabled (on POWER10 or later)}}
+                ^
+
+"Test_name.c", line 15: error: identifier "__vector" is undefined
+  __vector __bool __int128 v2_bi128;        // expected-error {{use of '__int128' with '__vector bool' requires VSX support enabled (on POWER10 or later)}}
+  ^
+
+"Test_name.c", line 15: error: expected a ";"
+  __vector __bool __int128 v2_bi128;        // expected-error {{use of '__int128' with '__vector bool' requires VSX support enabled (on POWER10 or later)}}
+                  ^
+
+"Test_name.c", line 16: error: identifier "vector" is undefined
+  vector bool __int128 v3_bi128;            // expected-error {{use of '__int128' with '__vector bool' requires VSX support enabled (on POWER10 or later)}}
+  ^
+
+"Test_name.c", line 16: error: expected a ";"
+  vector bool __int128 v3_bi128;            // expected-error {{use of '__int128' with '__vector bool' requires VSX support enabled (on POWER10 or later)}}
+              ^
+
+"Test_name.c", line 17: error: identifier "vector" is undefined
+  vector __bool __int128 v4_bi128;          // expected-error {{use of '__int128' with '__vector bool' requires VSX support enabled (on POWER10 or later)}}
+  ^
+
+"Test_name.c", line 17: error: expected a ";"
+  vector __bool __int128 v4_bi128;          // expected-error {{use of '__int128' with '__vector bool' requires VSX support enabled (on POWER10 or later)}}
+                ^
+
+"Test_name.c", line 18: error: identifier "__vector" is undefined
+  __vector bool unsigned __int128 v5_bi128; // expected-error {{cannot use 'unsigned' with '__vector bool'}} expected-error {{use of '__int128' with '__vector bool' requires VSX support enabled (on POWER10 or later)}}
+  ^
+
+"Test_name.c", line 18: error: expected a ";"
+  __vector bool unsigned __int128 v5_bi128; // expected-error {{cannot use 'unsigned' with '__vector bool'}} expected-error {{use of '__int128' with '__vector bool' requires VSX support enabled (on POWER10 or later)}}
+                ^
+
+"Test_name.c", line 19: error: identifier "__vector" is undefined
+  __vector bool signed __int128 v6_bi128;   // expected-error {{cannot use 'signed' with '__vector bool'}} expected-error {{use of '__int128' with '__vector bool' requires VSX support enabled (on POWER10 or later)}}
+  ^
+
+"Test_name.c", line 19: error: expected a ";"
+  __vector bool signed __int128 v6_bi128;   // expected-error {{cannot use 'signed' with '__vector bool'}} expected-error {{use of '__int128' with '__vector bool' requires VSX support enabled (on POWER10 or later)}}
+                ^
+
+"Test_name.c", line 20: error: identifier "vector" is undefined
+  vector bool unsigned __int128 v7_bi128;   // expected-error {{cannot use 'unsigned' with '__vector bool'}} expected-error {{use of '__int128' with '__vector bool' requires VSX support enabled (on POWER10 or later)}}
+  ^
+
+"Test_name.c", line 20: error: expected a ";"
+  vector bool unsigned __int128 v7_bi128;   // expected-error {{cannot use 'unsigned' with '__vector bool'}} expected-error {{use of '__int128' with '__vector bool' requires VSX support enabled (on POWER10 or later)}}
+              ^
+
+"Test_name.c", line 21: error: identifier "vector" is undefined
+  vector bool signed __int128 v8_bi128;     // expected-error {{cannot use 'signed' with '__vector bool'}} expected-error {{use of '__int128' with '__vector bool' requires VSX support enabled (on POWER10 or later)}}
+  ^
+
+"Test_name.c", line 21: error: expected a ";"
+  vector bool signed __int128 v8_bi128;     // expected-error {{cannot use 'signed' with '__vector bool'}} expected-error {{use of '__int128' with '__vector bool' requires VSX support enabled (on POWER10 or later)}}
+              ^
+
+"Test_name.c", line 22: error: identifier "__vector" is undefined
+  __vector __bool signed __int128 v9_bi128; // expected-error {{cannot use 'signed' with '__vector bool'}} expected-error {{use of '__int128' with '__vector bool' requires VSX support enabled (on POWER10 or later)}}
+  ^
+
+"Test_name.c", line 22: error: expected a ";"
+  __vector __bool signed __int128 v9_bi128; // expected-error {{cannot use 'signed' with '__vector bool'}} expected-error {{use of '__int128' with '__vector bool' requires VSX support enabled (on POWER10 or later)}}
+                  ^
+
+"Test_name.c", line 23: error: identifier "vector" is undefined
+  vector __bool signed __int128 v10_bi128;  // expected-error {{cannot use 'signed' with '__vector bool'}} expected-error {{use of '__int128' with '__vector bool' requires VSX support enabled (on POWER10 or later)}}
+  ^
+
+"Test_name.c", line 23: error: expected a ";"
+  vector __bool signed __int128 v10_bi128;  // expected-error {{cannot use 'signed' with '__vector bool'}} expected-error {{use of '__int128' with '__vector bool' requires VSX support enabled (on POWER10 or later)}}
+                ^
+
+20 errors detected in the compilation of "Test_name.c".

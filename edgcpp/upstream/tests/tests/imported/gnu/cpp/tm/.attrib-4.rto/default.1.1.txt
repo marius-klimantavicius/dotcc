@@ -1,0 +1,41 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 11: warning: unknown attribute "transaction_safe"
+  struct __ts A
+         ^
+
+"Test_name.c", line 17: warning: unknown attribute "transaction_callable"
+  struct __tc B : public A
+         ^
+
+"Test_name.c", line 19: warning: unknown attribute "transaction_callable"
+    void f() __tc;  // { dg-error ".transaction_callable. overriding .transaction_safe." }
+             ^
+
+"Test_name.c", line 26: warning: unknown attribute "transaction_callable"
+    void g() __tc;  // { dg-error ".transaction_callable. overriding .transaction_safe." }
+             ^
+
+"Test_name.c", line 31: warning: unknown attribute "transaction_safe"
+    void g() __ts;
+             ^
+
+"Test_name.c", line 32: warning: unknown attribute "transaction_unsafe"
+    void h() __tu;  // { dg-error ".transaction_unsafe. overriding .transaction_callable." }
+             ^
+
+"Test_name.c", line 37: warning: unknown attribute "transaction_pure"
+    virtual void f() __tp;
+                     ^
+
+"Test_name.c", line 38: warning: unknown attribute "transaction_pure"
+    virtual void g() __tp;
+                     ^
+
+"Test_name.c", line 43: warning: unknown attribute "transaction_safe"
+    void f() __ts;  // { dg-error ".transaction_safe. overriding .transaction_pure." }
+             ^
+
+"Test_name.c", line 49: warning: unknown attribute "transaction_safe"
+    void g() __ts;  // { dg-error ".transaction_safe. overriding .transaction_pure." }
+             ^
+

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics -w Test_name.c
+"Test_name.c", line 10: error: expression must have a constant value
+    typedef test<N - 1> prior;
+                 ^
+"Test_name.c", line 10: note: value exceeds range of "int"
+    typedef test<N - 1> prior;
+                   ^
+          detected during instantiation of class "test<N> [with N=-2147483648]" at line 13
+
+1 error detected in the compilation of "Test_name.c".

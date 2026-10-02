@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=2 --upc --c99 Test_name.c
+"Test_name.c", line 17: error: expression must be an lvalue or a function designator
+  	printf("%x\n", &THREADS);
+  	                ^
+
+1 error detected in the compilation of "Test_name.c".

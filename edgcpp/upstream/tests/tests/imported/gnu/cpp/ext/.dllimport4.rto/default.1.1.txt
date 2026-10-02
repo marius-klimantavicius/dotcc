@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 6: warning: unknown attribute "dllimport"
+  __attribute__((dllimport))  void bar () { }	// { dg-error "definition" }
+                 ^
+
+"Test_name.c", line 8: warning: unknown attribute "dllimport"
+  __attribute__((dllimport))  int foo = 1;	// { dg-error "definition" }
+                 ^
+
+"Test_name.c", line 12: warning: unknown attribute "dllimport"
+    __attribute__((dllimport)) int faa = 1;	// { dg-error "definition" }
+                   ^
+
+"Test_name.c", line 16: warning: unknown attribute "dllimport"
+  __attribute__((dllimport)) int fee (1);		// { dg-error "definition" }
+                 ^
+
+"Test_name.c", line 22: warning: unknown attribute "dllimport"
+    __attribute__ ((dllimport)) static const int i = 1;  // OK
+                    ^
+
+"Test_name.c", line 28: warning: variable "j" was declared but never referenced
+    const int* j = &F::i;
+               ^
+
+"Test_name.c", line 33: warning: unknown attribute "dllimport"
+    __attribute__ ((dllimport)) static const int i = 1;
+                    ^
+

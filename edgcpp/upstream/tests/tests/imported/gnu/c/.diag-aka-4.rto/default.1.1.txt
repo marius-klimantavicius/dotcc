@@ -1,0 +1,322 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 14: warning: a value of type "int *" cannot be used to initialize an entity of type "struct_wrapper *" (aka "struct struct_wrapper *")
+    struct_wrapper *ptr = &x; /* { dg-error {initialization of 'struct_wrapper \*' from incompatible pointer type 'int \*'} } */
+                          ^
+
+"Test_name.c", line 15: warning: a value of type "int *" cannot be used to initialize an entity of type "const struct_wrapper *"
+    const struct_wrapper *const_ptr = &x; /* { dg-error {initialization of 'const struct_wrapper \*' from incompatible pointer type 'int \*'} } */
+                                      ^
+
+"Test_name.c", line 16: warning: a value of type "int *" cannot be used to initialize an entity of type "volatile struct_wrapper *"
+    volatile struct_wrapper *volatile_ptr = &x; /* { dg-error {initialization of 'volatile struct_wrapper \*' from incompatible pointer type 'int \*'} } */
+                                            ^
+
+"Test_name.c", line 17: warning: a value of type "int *" cannot be used to initialize an entity of type "struct_wrapper (*)[10]" (aka "struct struct_wrapper (*)[10]")
+    struct_wrapper (*aptr)[10] = &x; /* { dg-error {initialization of 'struct_wrapper \(\*\)\[10\]' from incompatible pointer type 'int \*'} } */
+                                 ^
+
+"Test_name.c", line 18: warning: a value of type "int *" cannot be used to initialize an entity of type "struct_wrapper (*)(int)" (aka "struct struct_wrapper (*)(int)")
+    struct_wrapper (*f1)(int) = &x; /* { dg-error {initialization of 'struct_wrapper \(\*\)\(int\)' from incompatible pointer type 'int \*'} } */
+                                ^
+
+"Test_name.c", line 19: warning: a value of type "int *" cannot be used to initialize an entity of type "int (*)(struct_wrapper)" (aka "int (*)(struct struct_wrapper)")
+    int (*f2)(struct_wrapper) = &x; /* { dg-error {initialization of 'int \(\*\)\(struct_wrapper\)' from incompatible pointer type 'int \*'} } */
+                                ^
+
+"Test_name.c", line 20: error: a value of type "int" cannot be assigned to an entity of type "struct_wrapper" (aka "struct struct_wrapper")
+    y = x; /* { dg-error {incompatible types when assigning to type 'struct_wrapper' from type 'int'} } */
+      ^
+
+"Test_name.c", line 12: warning: parameter "y" was set but never used
+  void test_struct_wrapper (struct_wrapper y, int x)
+                                           ^
+
+"Test_name.c", line 14: warning: variable "ptr" was declared but never referenced
+    struct_wrapper *ptr = &x; /* { dg-error {initialization of 'struct_wrapper \*' from incompatible pointer type 'int \*'} } */
+                    ^
+
+"Test_name.c", line 15: warning: variable "const_ptr" was declared but never referenced
+    const struct_wrapper *const_ptr = &x; /* { dg-error {initialization of 'const struct_wrapper \*' from incompatible pointer type 'int \*'} } */
+                          ^
+
+"Test_name.c", line 16: warning: variable "volatile_ptr" was declared but never referenced
+    volatile struct_wrapper *volatile_ptr = &x; /* { dg-error {initialization of 'volatile struct_wrapper \*' from incompatible pointer type 'int \*'} } */
+                             ^
+
+"Test_name.c", line 17: warning: variable "aptr" was declared but never referenced
+    struct_wrapper (*aptr)[10] = &x; /* { dg-error {initialization of 'struct_wrapper \(\*\)\[10\]' from incompatible pointer type 'int \*'} } */
+                     ^
+
+"Test_name.c", line 18: warning: variable "f1" was declared but never referenced
+    struct_wrapper (*f1)(int) = &x; /* { dg-error {initialization of 'struct_wrapper \(\*\)\(int\)' from incompatible pointer type 'int \*'} } */
+                     ^
+
+"Test_name.c", line 19: warning: variable "f2" was declared but never referenced
+    int (*f2)(struct_wrapper) = &x; /* { dg-error {initialization of 'int \(\*\)\(struct_wrapper\)' from incompatible pointer type 'int \*'} } */
+          ^
+
+"Test_name.c", line 25: warning: a value of type "int *" cannot be used to initialize an entity of type "anon_struct_wrapper *" (aka "struct <unnamed> *")
+    anon_struct_wrapper *ptr = &x; /* { dg-error {initialization of 'anon_struct_wrapper \*' from incompatible pointer type 'int \*'} } */
+                               ^
+
+"Test_name.c", line 26: warning: a value of type "int *" cannot be used to initialize an entity of type "const anon_struct_wrapper *"
+    const anon_struct_wrapper *const_ptr = &x; /* { dg-error {initialization of 'const anon_struct_wrapper \*' from incompatible pointer type 'int \*'} } */
+                                           ^
+
+"Test_name.c", line 27: warning: a value of type "int *" cannot be used to initialize an entity of type "volatile anon_struct_wrapper *"
+    volatile anon_struct_wrapper *volatile_ptr = &x; /* { dg-error {initialization of 'volatile anon_struct_wrapper \*' from incompatible pointer type 'int \*'} } */
+                                                 ^
+
+"Test_name.c", line 28: warning: a value of type "int *" cannot be used to initialize an entity of type "anon_struct_wrapper (*)[10]" (aka "struct <unnamed> (*)[10]")
+    anon_struct_wrapper (*aptr)[10] = &x; /* { dg-error {initialization of 'anon_struct_wrapper \(\*\)\[10\]' from incompatible pointer type 'int \*'} } */
+                                      ^
+
+"Test_name.c", line 29: warning: a value of type "int *" cannot be used to initialize an entity of type "anon_struct_wrapper (*)(int)" (aka "struct <unnamed> (*)(int)")
+    anon_struct_wrapper (*f1)(int) = &x; /* { dg-error {initialization of 'anon_struct_wrapper \(\*\)\(int\)' from incompatible pointer type 'int \*'} } */
+                                     ^
+
+"Test_name.c", line 30: warning: a value of type "int *" cannot be used to initialize an entity of type "int (*)(anon_struct_wrapper)" (aka "int (*)(struct <unnamed>)")
+    int (*f2)(anon_struct_wrapper) = &x; /* { dg-error {initialization of 'int \(\*\)\(anon_struct_wrapper\)' from incompatible pointer type 'int \*'} } */
+                                     ^
+
+"Test_name.c", line 31: error: a value of type "int" cannot be assigned to an entity of type "anon_struct_wrapper" (aka "struct <unnamed>")
+    y = x; /* { dg-error {incompatible types when assigning to type 'anon_struct_wrapper' from type 'int'} } */
+      ^
+
+"Test_name.c", line 23: warning: parameter "y" was set but never used
+  void test_anon_struct_wrapper (anon_struct_wrapper y, int x)
+                                                     ^
+
+"Test_name.c", line 25: warning: variable "ptr" was declared but never referenced
+    anon_struct_wrapper *ptr = &x; /* { dg-error {initialization of 'anon_struct_wrapper \*' from incompatible pointer type 'int \*'} } */
+                         ^
+
+"Test_name.c", line 26: warning: variable "const_ptr" was declared but never referenced
+    const anon_struct_wrapper *const_ptr = &x; /* { dg-error {initialization of 'const anon_struct_wrapper \*' from incompatible pointer type 'int \*'} } */
+                               ^
+
+"Test_name.c", line 27: warning: variable "volatile_ptr" was declared but never referenced
+    volatile anon_struct_wrapper *volatile_ptr = &x; /* { dg-error {initialization of 'volatile anon_struct_wrapper \*' from incompatible pointer type 'int \*'} } */
+                                  ^
+
+"Test_name.c", line 28: warning: variable "aptr" was declared but never referenced
+    anon_struct_wrapper (*aptr)[10] = &x; /* { dg-error {initialization of 'anon_struct_wrapper \(\*\)\[10\]' from incompatible pointer type 'int \*'} } */
+                          ^
+
+"Test_name.c", line 29: warning: variable "f1" was declared but never referenced
+    anon_struct_wrapper (*f1)(int) = &x; /* { dg-error {initialization of 'anon_struct_wrapper \(\*\)\(int\)' from incompatible pointer type 'int \*'} } */
+                          ^
+
+"Test_name.c", line 30: warning: variable "f2" was declared but never referenced
+    int (*f2)(anon_struct_wrapper) = &x; /* { dg-error {initialization of 'int \(\*\)\(anon_struct_wrapper\)' from incompatible pointer type 'int \*'} } */
+          ^
+
+"Test_name.c", line 36: warning: a value of type "int *" cannot be used to initialize an entity of type "union_wrapper *" (aka "union union_wrapper *")
+    union_wrapper *ptr = &x; /* { dg-error {initialization of 'union_wrapper \*' from incompatible pointer type 'int \*'} } */
+                         ^
+
+"Test_name.c", line 37: warning: a value of type "int *" cannot be used to initialize an entity of type "const union_wrapper *"
+    const union_wrapper *const_ptr = &x; /* { dg-error {initialization of 'const union_wrapper \*' from incompatible pointer type 'int \*'} } */
+                                     ^
+
+"Test_name.c", line 38: warning: a value of type "int *" cannot be used to initialize an entity of type "volatile union_wrapper *"
+    volatile union_wrapper *volatile_ptr = &x; /* { dg-error {initialization of 'volatile union_wrapper \*' from incompatible pointer type 'int \*'} } */
+                                           ^
+
+"Test_name.c", line 39: warning: a value of type "int *" cannot be used to initialize an entity of type "union_wrapper (*)[10]" (aka "union union_wrapper (*)[10]")
+    union_wrapper (*aptr)[10] = &x; /* { dg-error {initialization of 'union_wrapper \(\*\)\[10\]' from incompatible pointer type 'int \*'} } */
+                                ^
+
+"Test_name.c", line 40: warning: a value of type "int *" cannot be used to initialize an entity of type "union_wrapper (*)(int)" (aka "union union_wrapper (*)(int)")
+    union_wrapper (*f1)(int) = &x; /* { dg-error {initialization of 'union_wrapper \(\*\)\(int\)' from incompatible pointer type 'int \*'} } */
+                               ^
+
+"Test_name.c", line 41: warning: a value of type "int *" cannot be used to initialize an entity of type "int (*)(union_wrapper)" (aka "int (*)(union union_wrapper)")
+    int (*f2)(union_wrapper) = &x; /* { dg-error {initialization of 'int \(\*\)\(union_wrapper\)' from incompatible pointer type 'int \*'} } */
+                               ^
+
+"Test_name.c", line 42: error: a value of type "int" cannot be assigned to an entity of type "union_wrapper" (aka "union union_wrapper")
+    y = x; /* { dg-error {incompatible types when assigning to type 'union_wrapper' from type 'int'} } */
+      ^
+
+"Test_name.c", line 34: warning: parameter "y" was set but never used
+  void test_union_wrapper (union_wrapper y, int x)
+                                         ^
+
+"Test_name.c", line 36: warning: variable "ptr" was declared but never referenced
+    union_wrapper *ptr = &x; /* { dg-error {initialization of 'union_wrapper \*' from incompatible pointer type 'int \*'} } */
+                   ^
+
+"Test_name.c", line 37: warning: variable "const_ptr" was declared but never referenced
+    const union_wrapper *const_ptr = &x; /* { dg-error {initialization of 'const union_wrapper \*' from incompatible pointer type 'int \*'} } */
+                         ^
+
+"Test_name.c", line 38: warning: variable "volatile_ptr" was declared but never referenced
+    volatile union_wrapper *volatile_ptr = &x; /* { dg-error {initialization of 'volatile union_wrapper \*' from incompatible pointer type 'int \*'} } */
+                            ^
+
+"Test_name.c", line 39: warning: variable "aptr" was declared but never referenced
+    union_wrapper (*aptr)[10] = &x; /* { dg-error {initialization of 'union_wrapper \(\*\)\[10\]' from incompatible pointer type 'int \*'} } */
+                    ^
+
+"Test_name.c", line 40: warning: variable "f1" was declared but never referenced
+    union_wrapper (*f1)(int) = &x; /* { dg-error {initialization of 'union_wrapper \(\*\)\(int\)' from incompatible pointer type 'int \*'} } */
+                    ^
+
+"Test_name.c", line 41: warning: variable "f2" was declared but never referenced
+    int (*f2)(union_wrapper) = &x; /* { dg-error {initialization of 'int \(\*\)\(union_wrapper\)' from incompatible pointer type 'int \*'} } */
+          ^
+
+"Test_name.c", line 47: warning: a value of type "int *" cannot be used to initialize an entity of type "anon_union_wrapper *" (aka "union <unnamed> *")
+    anon_union_wrapper *ptr = &x; /* { dg-error {initialization of 'anon_union_wrapper \*' from incompatible pointer type 'int \*'} } */
+                              ^
+
+"Test_name.c", line 48: warning: a value of type "int *" cannot be used to initialize an entity of type "const anon_union_wrapper *"
+    const anon_union_wrapper *const_ptr = &x; /* { dg-error {initialization of 'const anon_union_wrapper \*' from incompatible pointer type 'int \*'} } */
+                                          ^
+
+"Test_name.c", line 49: warning: a value of type "int *" cannot be used to initialize an entity of type "volatile anon_union_wrapper *"
+    volatile anon_union_wrapper *volatile_ptr = &x; /* { dg-error {initialization of 'volatile anon_union_wrapper \*' from incompatible pointer type 'int \*'} } */
+                                                ^
+
+"Test_name.c", line 50: warning: a value of type "int *" cannot be used to initialize an entity of type "anon_union_wrapper (*)[10]" (aka "union <unnamed> (*)[10]")
+    anon_union_wrapper (*aptr)[10] = &x; /* { dg-error {initialization of 'anon_union_wrapper \(\*\)\[10\]' from incompatible pointer type 'int \*'} } */
+                                     ^
+
+"Test_name.c", line 51: warning: a value of type "int *" cannot be used to initialize an entity of type "anon_union_wrapper (*)(int)" (aka "union <unnamed> (*)(int)")
+    anon_union_wrapper (*f1)(int) = &x; /* { dg-error {initialization of 'anon_union_wrapper \(\*\)\(int\)' from incompatible pointer type 'int \*'} } */
+                                    ^
+
+"Test_name.c", line 52: warning: a value of type "int *" cannot be used to initialize an entity of type "int (*)(anon_union_wrapper)" (aka "int (*)(union <unnamed>)")
+    int (*f2)(anon_union_wrapper) = &x; /* { dg-error {initialization of 'int \(\*\)\(anon_union_wrapper\)' from incompatible pointer type 'int \*'} } */
+                                    ^
+
+"Test_name.c", line 53: error: a value of type "int" cannot be assigned to an entity of type "anon_union_wrapper" (aka "union <unnamed>")
+    y = x; /* { dg-error {incompatible types when assigning to type 'anon_union_wrapper' from type 'int'} } */
+      ^
+
+"Test_name.c", line 45: warning: parameter "y" was set but never used
+  void test_anon_union_wrapper (anon_union_wrapper y, int x)
+                                                   ^
+
+"Test_name.c", line 47: warning: variable "ptr" was declared but never referenced
+    anon_union_wrapper *ptr = &x; /* { dg-error {initialization of 'anon_union_wrapper \*' from incompatible pointer type 'int \*'} } */
+                        ^
+
+"Test_name.c", line 48: warning: variable "const_ptr" was declared but never referenced
+    const anon_union_wrapper *const_ptr = &x; /* { dg-error {initialization of 'const anon_union_wrapper \*' from incompatible pointer type 'int \*'} } */
+                              ^
+
+"Test_name.c", line 49: warning: variable "volatile_ptr" was declared but never referenced
+    volatile anon_union_wrapper *volatile_ptr = &x; /* { dg-error {initialization of 'volatile anon_union_wrapper \*' from incompatible pointer type 'int \*'} } */
+                                 ^
+
+"Test_name.c", line 50: warning: variable "aptr" was declared but never referenced
+    anon_union_wrapper (*aptr)[10] = &x; /* { dg-error {initialization of 'anon_union_wrapper \(\*\)\[10\]' from incompatible pointer type 'int \*'} } */
+                         ^
+
+"Test_name.c", line 51: warning: variable "f1" was declared but never referenced
+    anon_union_wrapper (*f1)(int) = &x; /* { dg-error {initialization of 'anon_union_wrapper \(\*\)\(int\)' from incompatible pointer type 'int \*'} } */
+                         ^
+
+"Test_name.c", line 52: warning: variable "f2" was declared but never referenced
+    int (*f2)(anon_union_wrapper) = &x; /* { dg-error {initialization of 'int \(\*\)\(anon_union_wrapper\)' from incompatible pointer type 'int \*'} } */
+          ^
+
+"Test_name.c", line 58: warning: a value of type "int *" cannot be used to initialize an entity of type "enum_wrapper *" (aka "enum enum_wrapper *")
+    enum_wrapper *ptr = &x; /* { dg-error {initialization of 'enum_wrapper \*' from incompatible pointer type 'int \*'} } */
+                        ^
+
+"Test_name.c", line 59: warning: a value of type "int *" cannot be used to initialize an entity of type "const enum_wrapper *"
+    const enum_wrapper *const_ptr = &x; /* { dg-error {initialization of 'const enum_wrapper \*' from incompatible pointer type 'int \*'} } */
+                                    ^
+
+"Test_name.c", line 60: warning: a value of type "int *" cannot be used to initialize an entity of type "volatile enum_wrapper *"
+    volatile enum_wrapper *volatile_ptr = &x; /* { dg-error {initialization of 'volatile enum_wrapper \*' from incompatible pointer type 'int \*'} } */
+                                          ^
+
+"Test_name.c", line 61: warning: a value of type "int *" cannot be used to initialize an entity of type "enum_wrapper (*)[10]" (aka "enum enum_wrapper (*)[10]")
+    enum_wrapper (*aptr)[10] = &x; /* { dg-error {initialization of 'enum_wrapper \(\*\)\[10\]' from incompatible pointer type 'int \*'} } */
+                               ^
+
+"Test_name.c", line 62: warning: a value of type "int *" cannot be used to initialize an entity of type "enum_wrapper (*)(int)" (aka "enum enum_wrapper (*)(int)")
+    enum_wrapper (*f1)(int) = &x; /* { dg-error {initialization of 'enum_wrapper \(\*\)\(int\)' from incompatible pointer type 'int \*'} } */
+                              ^
+
+"Test_name.c", line 63: warning: a value of type "int *" cannot be used to initialize an entity of type "int (*)(enum_wrapper)" (aka "int (*)(enum enum_wrapper)")
+    int (*f2)(enum_wrapper) = &x; /* { dg-error {initialization of 'int \(\*\)\(enum_wrapper\)' from incompatible pointer type 'int \*'} } */
+                              ^
+
+"Test_name.c", line 58: warning: variable "ptr" was declared but never referenced
+    enum_wrapper *ptr = &x; /* { dg-error {initialization of 'enum_wrapper \*' from incompatible pointer type 'int \*'} } */
+                  ^
+
+"Test_name.c", line 59: warning: variable "const_ptr" was declared but never referenced
+    const enum_wrapper *const_ptr = &x; /* { dg-error {initialization of 'const enum_wrapper \*' from incompatible pointer type 'int \*'} } */
+                        ^
+
+"Test_name.c", line 60: warning: variable "volatile_ptr" was declared but never referenced
+    volatile enum_wrapper *volatile_ptr = &x; /* { dg-error {initialization of 'volatile enum_wrapper \*' from incompatible pointer type 'int \*'} } */
+                           ^
+
+"Test_name.c", line 61: warning: variable "aptr" was declared but never referenced
+    enum_wrapper (*aptr)[10] = &x; /* { dg-error {initialization of 'enum_wrapper \(\*\)\[10\]' from incompatible pointer type 'int \*'} } */
+                   ^
+
+"Test_name.c", line 62: warning: variable "f1" was declared but never referenced
+    enum_wrapper (*f1)(int) = &x; /* { dg-error {initialization of 'enum_wrapper \(\*\)\(int\)' from incompatible pointer type 'int \*'} } */
+                   ^
+
+"Test_name.c", line 63: warning: variable "f2" was declared but never referenced
+    int (*f2)(enum_wrapper) = &x; /* { dg-error {initialization of 'int \(\*\)\(enum_wrapper\)' from incompatible pointer type 'int \*'} } */
+          ^
+
+"Test_name.c", line 68: warning: a value of type "int *" cannot be used to initialize an entity of type "anon_enum_wrapper *" (aka "enum <unnamed> *")
+    anon_enum_wrapper *ptr = &x; /* { dg-error {initialization of 'anon_enum_wrapper \*' from incompatible pointer type 'int \*'} } */
+                             ^
+
+"Test_name.c", line 69: warning: a value of type "int *" cannot be used to initialize an entity of type "const anon_enum_wrapper *"
+    const anon_enum_wrapper *const_ptr = &x; /* { dg-error {initialization of 'const anon_enum_wrapper \*' from incompatible pointer type 'int \*'} } */
+                                         ^
+
+"Test_name.c", line 70: warning: a value of type "int *" cannot be used to initialize an entity of type "volatile anon_enum_wrapper *"
+    volatile anon_enum_wrapper *volatile_ptr = &x; /* { dg-error {initialization of 'volatile anon_enum_wrapper \*' from incompatible pointer type 'int \*'} } */
+                                               ^
+
+"Test_name.c", line 71: warning: a value of type "int *" cannot be used to initialize an entity of type "anon_enum_wrapper (*)[10]" (aka "enum <unnamed> (*)[10]")
+    anon_enum_wrapper (*aptr)[10] = &x; /* { dg-error {initialization of 'anon_enum_wrapper \(\*\)\[10\]' from incompatible pointer type 'int \*'} } */
+                                    ^
+
+"Test_name.c", line 72: warning: a value of type "int *" cannot be used to initialize an entity of type "anon_enum_wrapper (*)(int)" (aka "enum <unnamed> (*)(int)")
+    anon_enum_wrapper (*f1)(int) = &x; /* { dg-error {initialization of 'anon_enum_wrapper \(\*\)\(int\)' from incompatible pointer type 'int \*'} } */
+                                   ^
+
+"Test_name.c", line 73: warning: a value of type "int *" cannot be used to initialize an entity of type "int (*)(anon_enum_wrapper)" (aka "int (*)(enum <unnamed>)")
+    int (*f2)(anon_enum_wrapper) = &x; /* { dg-error {initialization of 'int \(\*\)\(anon_enum_wrapper\)' from incompatible pointer type 'int \*'} } */
+                                   ^
+
+"Test_name.c", line 68: warning: variable "ptr" was declared but never referenced
+    anon_enum_wrapper *ptr = &x; /* { dg-error {initialization of 'anon_enum_wrapper \*' from incompatible pointer type 'int \*'} } */
+                       ^
+
+"Test_name.c", line 69: warning: variable "const_ptr" was declared but never referenced
+    const anon_enum_wrapper *const_ptr = &x; /* { dg-error {initialization of 'const anon_enum_wrapper \*' from incompatible pointer type 'int \*'} } */
+                             ^
+
+"Test_name.c", line 70: warning: variable "volatile_ptr" was declared but never referenced
+    volatile anon_enum_wrapper *volatile_ptr = &x; /* { dg-error {initialization of 'volatile anon_enum_wrapper \*' from incompatible pointer type 'int \*'} } */
+                                ^
+
+"Test_name.c", line 71: warning: variable "aptr" was declared but never referenced
+    anon_enum_wrapper (*aptr)[10] = &x; /* { dg-error {initialization of 'anon_enum_wrapper \(\*\)\[10\]' from incompatible pointer type 'int \*'} } */
+                        ^
+
+"Test_name.c", line 72: warning: variable "f1" was declared but never referenced
+    anon_enum_wrapper (*f1)(int) = &x; /* { dg-error {initialization of 'anon_enum_wrapper \(\*\)\(int\)' from incompatible pointer type 'int \*'} } */
+                        ^
+
+"Test_name.c", line 73: warning: variable "f2" was declared but never referenced
+    int (*f2)(anon_enum_wrapper) = &x; /* { dg-error {initialization of 'int \(\*\)\(anon_enum_wrapper\)' from incompatible pointer type 'int \*'} } */
+          ^
+
+4 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,2 @@
+fe_only -DTEST_NUMBER=13 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 fallthrough]] Test_name.c
+eccp: unrecognizable argument: fallthrough]]

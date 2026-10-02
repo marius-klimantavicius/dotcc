@@ -1,0 +1,5 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 --strict_gnu Test_name.c
+"Test_name.c", line 13: warning: variable-length array field type will be treated as zero-length array field type
+  	typedef struct E { int a[N]; int b; } *B;
+  	                         ^
+

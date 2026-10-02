@@ -1,0 +1,162 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 14: warning: const variable "c" requires an initializer
+    const int c;
+               ^
+
+"Test_name.c", line 16: warning: variable "a1" was set but never used
+    { __typeof__(n) a1; a1=0; }
+                    ^
+
+"Test_name.c", line 17: warning: const variable "a2" requires an initializer
+    { __typeof__(c) a2; a2=0; } /* { dg-error "read-only" "correct error" } */
+                      ^
+
+"Test_name.c", line 17: error: expression must be a modifiable lvalue
+    { __typeof__(c) a2; a2=0; } /* { dg-error "read-only" "correct error" } */
+                        ^
+
+"Test_name.c", line 18: warning: variable "a3" was set but never used
+    { __typeof__((int)n) a3; a3=0; }
+                         ^
+
+"Test_name.c", line 19: warning: variable "a4" was set but never used
+    { __typeof__((int)c) a4; a4=0; } /* { dg-bogus "read-only" "bogus error" } */
+                         ^
+
+"Test_name.c", line 20: warning: type qualifier is meaningless on cast type
+    { __typeof__((const int)n) a5; a5=0; }
+                  ^
+
+"Test_name.c", line 20: warning: variable "a5" was set but never used
+    { __typeof__((const int)n) a5; a5=0; }
+                               ^
+
+"Test_name.c", line 21: warning: type qualifier is meaningless on cast type
+    { __typeof__((const int)c) a6; a6=0; }
+                  ^
+
+"Test_name.c", line 21: warning: variable "a6" was set but never used
+    { __typeof__((const int)c) a6; a6=0; }
+                               ^
+
+"Test_name.c", line 22: warning: variable "a7" was set but never used
+    { __typeof__(0) a7; a7=0; }
+                    ^
+
+"Test_name.c", line 23: warning: variable "a8" was set but never used
+    { __typeof__(1) a8; a8=0; }
+                    ^
+
+"Test_name.c", line 25: warning: variable "b0" was set but never used
+    { __typeof__(n+n) b0; b0=0; }
+                      ^
+
+"Test_name.c", line 26: warning: variable "b1" was set but never used
+    { __typeof__(n+c) b1; b1=0; }
+                      ^
+
+"Test_name.c", line 27: warning: variable "b2" was set but never used
+    { __typeof__(c+n) b2; b2=0; }
+                      ^
+
+"Test_name.c", line 28: warning: variable "b3" was set but never used
+    { __typeof__(c+c) b3; b3=0; }
+                      ^
+
+"Test_name.c", line 30: warning: variable "c0" was set but never used
+    { __typeof__(0+n) c0; c0=0; }
+                      ^
+
+"Test_name.c", line 31: warning: variable "c1" was set but never used
+    { __typeof__(0+c) c1; c1=0; }
+                      ^
+
+"Test_name.c", line 32: warning: variable "c2" was set but never used
+    { __typeof__(n+0) c2; c2=0; }
+                      ^
+
+"Test_name.c", line 33: warning: variable "c3" was set but never used
+    { __typeof__(c+0) c3; c3=0; }
+                      ^
+
+"Test_name.c", line 35: warning: variable "d0" was set but never used
+    { __typeof__(1+n) d0; d0=0; }
+                      ^
+
+"Test_name.c", line 36: warning: variable "d1" was set but never used
+    { __typeof__(1+c) d1; d1=0; }
+                      ^
+
+"Test_name.c", line 37: warning: variable "d2" was set but never used
+    { __typeof__(n+1) d2; d2=0; }
+                      ^
+
+"Test_name.c", line 38: warning: variable "d3" was set but never used
+    { __typeof__(c+1) d3; d3=0; }
+                      ^
+
+"Test_name.c", line 40: warning: variable "e0" was set but never used
+    { __typeof__(((int)n)+((int)n)) e0; e0=0; }
+                                    ^
+
+"Test_name.c", line 41: warning: variable "e1" was set but never used
+    { __typeof__(((int)n)+((int)c)) e1; e1=0; }
+                                    ^
+
+"Test_name.c", line 42: warning: variable "e2" was set but never used
+    { __typeof__(((int)c)+((int)n)) e2; e2=0; }
+                                    ^
+
+"Test_name.c", line 43: warning: variable "e3" was set but never used
+    { __typeof__(((int)c)+((int)c)) e3; e3=0; }
+                                    ^
+
+"Test_name.c", line 45: warning: type qualifier is meaningless on cast type
+    { __typeof__(((const int)n)+((const int)n)) f0; f0=0; }
+                   ^
+
+"Test_name.c", line 45: warning: type qualifier is meaningless on cast type
+    { __typeof__(((const int)n)+((const int)n)) f0; f0=0; }
+                                  ^
+
+"Test_name.c", line 45: warning: variable "f0" was set but never used
+    { __typeof__(((const int)n)+((const int)n)) f0; f0=0; }
+                                                ^
+
+"Test_name.c", line 46: warning: type qualifier is meaningless on cast type
+    { __typeof__(((const int)n)+((const int)c)) f1; f1=0; }
+                   ^
+
+"Test_name.c", line 46: warning: type qualifier is meaningless on cast type
+    { __typeof__(((const int)n)+((const int)c)) f1; f1=0; }
+                                  ^
+
+"Test_name.c", line 46: warning: variable "f1" was set but never used
+    { __typeof__(((const int)n)+((const int)c)) f1; f1=0; }
+                                                ^
+
+"Test_name.c", line 47: warning: type qualifier is meaningless on cast type
+    { __typeof__(((const int)c)+((const int)n)) f2; f2=0; }
+                   ^
+
+"Test_name.c", line 47: warning: type qualifier is meaningless on cast type
+    { __typeof__(((const int)c)+((const int)n)) f2; f2=0; }
+                                  ^
+
+"Test_name.c", line 47: warning: variable "f2" was set but never used
+    { __typeof__(((const int)c)+((const int)n)) f2; f2=0; }
+                                                ^
+
+"Test_name.c", line 48: warning: type qualifier is meaningless on cast type
+    { __typeof__(((const int)c)+((const int)c)) f3; f3=0; }
+                   ^
+
+"Test_name.c", line 48: warning: type qualifier is meaningless on cast type
+    { __typeof__(((const int)c)+((const int)c)) f3; f3=0; }
+                                  ^
+
+"Test_name.c", line 48: warning: variable "f3" was set but never used
+    { __typeof__(((const int)c)+((const int)c)) f3; f3=0; }
+                                                ^
+
+1 error detected in the compilation of "Test_name.c".

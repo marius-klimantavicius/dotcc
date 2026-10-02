@@ -1,0 +1,110 @@
+fe_only -DTEST_NUMBER=3 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 -DMACOS --exceptions Test_name.c
+"Test_name.c", line 55: error: no instance of overloaded "operator new" matches the argument list
+            argument types are: (unsigned int, std::align_val_t)
+    p = new ((std::align_val_t)8) OveralignedS;
+        ^
+"Test_name.c", line 33: note: number of parameters of function "operator new(std::size_t, std::align_val_t, long long)" does not match the call
+  void *operator new(std::size_t, std::align_val_t, long long);
+        ^
+"Test_name.c", line 26: note: number of parameters of function "operator new(std::size_t, std::align_val_t, const std::nothrow_t &)" does not match the call
+  void *operator new(std::size_t __sz, std::align_val_t, const std::nothrow_t&) noexcept;
+        ^
+"Test_name.c", line 23: note: function "operator new(std::size_t, const std::nothrow_t &)" does not match because argument #2 does not match parameter
+  void *operator new(std::size_t __sz, const std::nothrow_t&) noexcept;
+        ^
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+
+"Test_name.c", line 60: error: no instance of overloaded "operator new[]" matches the argument list
+            argument types are: (unsigned int, std::align_val_t)
+    pa = new ((std::align_val_t)8) OveralignedS[4];
+         ^
+"Test_name.c", line 27: note: number of parameters of function "operator new[](std::size_t, std::align_val_t, const std::nothrow_t &)" does not match the call
+  void *operator new[](std::size_t __sz, std::align_val_t, const std::nothrow_t&) noexcept;
+        ^
+"Test_name.c", line 24: note: function "operator new[](std::size_t, const std::nothrow_t &)" does not match because argument #2 does not match parameter
+  void *operator new[](std::size_t __sz, const std::nothrow_t&) noexcept;
+        ^
+Note: number of parameters of function "operator new[](unsigned int)" does not match the call
+
+"Test_name.c", line 175: error: no instance of overloaded function "operator new" matches the argument list
+            argument types are: (int, std::align_val_t)
+    void *p = operator new(128, (std::align_val_t)64);
+              ^
+"Test_name.c", line 33: note: number of parameters of function "operator new(std::size_t, std::align_val_t, long long)" does not match the call
+  void *operator new(std::size_t, std::align_val_t, long long);
+        ^
+"Test_name.c", line 26: note: number of parameters of function "operator new(std::size_t, std::align_val_t, const std::nothrow_t &)" does not match the call
+  void *operator new(std::size_t __sz, std::align_val_t, const std::nothrow_t&) noexcept;
+        ^
+"Test_name.c", line 23: note: function "operator new(std::size_t, const std::nothrow_t &)" does not match because argument #2 does not match parameter
+  void *operator new(std::size_t __sz, const std::nothrow_t&) noexcept;
+        ^
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+
+"Test_name.c", line 176: error: no instance of overloaded function "operator delete" matches the argument list
+            argument types are: (void *, std::align_val_t)
+    operator delete(p, (std::align_val_t)64);
+    ^
+"Test_name.c", line 30: note: number of parameters of function "operator delete(void *, std::size_t, std::align_val_t)" does not match the call
+  void operator delete(void*, std::size_t, std::align_val_t) noexcept;
+       ^
+"Test_name.c", line 28: note: number of parameters of function "operator delete(void *, std::align_val_t, const std::nothrow_t &)" does not match the call
+  void operator delete(void *, std::align_val_t, const std::nothrow_t&);
+       ^
+Note: function "operator delete(void *, unsigned int)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator delete(void *)" does not match the call
+
+"Test_name.c", line 177: error: no instance of overloaded function "operator new[]" matches the argument list
+            argument types are: (int, std::align_val_t)
+    p = operator new[](128, (std::align_val_t)64);
+        ^
+"Test_name.c", line 27: note: number of parameters of function "operator new[](std::size_t, std::align_val_t, const std::nothrow_t &)" does not match the call
+  void *operator new[](std::size_t __sz, std::align_val_t, const std::nothrow_t&) noexcept;
+        ^
+"Test_name.c", line 24: note: function "operator new[](std::size_t, const std::nothrow_t &)" does not match because argument #2 does not match parameter
+  void *operator new[](std::size_t __sz, const std::nothrow_t&) noexcept;
+        ^
+Note: number of parameters of function "operator new[](unsigned int)" does not match the call
+
+"Test_name.c", line 178: error: no instance of overloaded function "operator delete[]" matches the argument list
+            argument types are: (void *, std::align_val_t)
+    operator delete[](p, (std::align_val_t)64);
+    ^
+"Test_name.c", line 31: note: number of parameters of function "operator delete[](void *, std::size_t, std::align_val_t)" does not match the call
+  void operator delete[](void*, std::size_t, std::align_val_t) noexcept;
+       ^
+"Test_name.c", line 29: note: number of parameters of function "operator delete[](void *, std::align_val_t, const std::nothrow_t &)" does not match the call
+  void operator delete[](void *, std::align_val_t, const std::nothrow_t&);
+       ^
+Note: function "operator delete[](void *, unsigned int)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator delete[](void *)" does not match the call
+
+"Test_name.c", line 179: error: no instance of overloaded function "operator new" matches the argument list
+            argument types are: (int, std::align_val_t)
+    p = __builtin_operator_new(128, (std::align_val_t)64);
+        ^
+"Test_name.c", line 33: note: number of parameters of function "operator new(std::size_t, std::align_val_t, long long)" does not match the call
+  void *operator new(std::size_t, std::align_val_t, long long);
+        ^
+"Test_name.c", line 26: note: number of parameters of function "operator new(std::size_t, std::align_val_t, const std::nothrow_t &)" does not match the call
+  void *operator new(std::size_t __sz, std::align_val_t, const std::nothrow_t&) noexcept;
+        ^
+"Test_name.c", line 23: note: function "operator new(std::size_t, const std::nothrow_t &)" does not match because argument #2 does not match parameter
+  void *operator new(std::size_t __sz, const std::nothrow_t&) noexcept;
+        ^
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+
+"Test_name.c", line 180: error: no instance of overloaded function "operator delete" matches the argument list
+            argument types are: (void *, std::align_val_t)
+    __builtin_operator_delete(p, (std::align_val_t)64);
+    ^
+"Test_name.c", line 30: note: number of parameters of function "operator delete(void *, std::size_t, std::align_val_t)" does not match the call
+  void operator delete(void*, std::size_t, std::align_val_t) noexcept;
+       ^
+"Test_name.c", line 28: note: number of parameters of function "operator delete(void *, std::align_val_t, const std::nothrow_t &)" does not match the call
+  void operator delete(void *, std::align_val_t, const std::nothrow_t&);
+       ^
+Note: function "operator delete(void *, unsigned int)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator delete(void *)" does not match the call
+
+8 errors detected in the compilation of "Test_name.c".

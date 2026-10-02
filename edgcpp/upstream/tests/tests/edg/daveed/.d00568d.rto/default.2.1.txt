@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=2 --g++ Test_name.c
+"Test_name.c", line 29: error: a symbolic match constraint must refer to one of the first ten operands
+  	     "[N]"(12));
+  	     ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,160 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 12: error: return type is not identical to nor covariant with return type "int" of overridden virtual function "T1::A::f"
+    virtual void f(); // expected-error{{virtual function 'f' has a different return type ('void') than the function it overrides (which has return type 'int')}}
+                 ^
+
+"Test_name.c", line 28: error: return type is not identical to nor covariant with return type "T2::a *" of overridden virtual function "T2::A::f"
+    virtual b* f(); // expected-error{{return type of virtual function 'f' is not covariant with the return type of the function it overrides ('b *' is not derived from 'a *')}}
+               ^
+
+"Test_name.c", line 29: error: return type is not identical to nor covariant with return type "int *" of overridden virtual function "T2::A::g"
+    virtual char *g(); // expected-error{{virtual function 'g' has a different return type ('char *') than the function it overrides (which has return type 'int *')}}
+                  ^
+
+"Test_name.c", line 44: error: return type is not identical to nor covariant with return type "T3::a *" of overridden virtual function "T3::A::f"
+    virtual b* f(); // expected-error{{invalid covariant return for virtual function: 'a' is a private base class of 'b'}}
+               ^
+
+"Test_name.c", line 60: error: return type is not identical to nor covariant with return type "T4::a *" of overridden virtual function "T4::A::f"
+    virtual b* f(); // expected-error{{return type of virtual function 'f' is not covariant with the return type of the function it overrides (ambiguous conversion from derived class 'b' to base class 'a':\n\
+               ^
+
+"Test_name.c", line 72: warning: type qualifier on return type is meaningless
+    virtual a* const f();
+               ^
+
+"Test_name.c", line 73: warning: type qualifier on return type is meaningless
+    virtual a* const g(); // expected-note{{overridden virtual function is here}}
+               ^
+
+"Test_name.c", line 77: warning: type qualifier on return type is meaningless
+    virtual a* const f();
+               ^
+
+"Test_name.c", line 78: error: return type is not identical to nor covariant with return type "T5::a *const" of overridden virtual function "T5::A::g"
+    virtual a* g(); // expected-error{{return type of virtual function 'g' is not covariant with the return type of the function it overrides ('a *' has different qualifiers than 'a *const')}}
+               ^
+
+"Test_name.c", line 115: error: return type is not identical to nor covariant with return type "T6::a *" of overridden virtual function "T6::A::unqualified_vs_const_class"
+    const a* unqualified_vs_const_class() override; // expected-error{{return type of virtual function 'unqualified_vs_const_class' is not covariant with the return type of the function it overrides (class type 'const a *' does not have the same cv-qualification as or less cv-qualification than class type 'a *')}}
+             ^
+
+"Test_name.c", line 115: error: member function declared with "override" does not override a base class member
+    const a* unqualified_vs_const_class() override; // expected-error{{return type of virtual function 'unqualified_vs_const_class' is not covariant with the return type of the function it overrides (class type 'const a *' does not have the same cv-qualification as or less cv-qualification than class type 'a *')}}
+             ^
+
+"Test_name.c", line 118: error: return type is not identical to nor covariant with return type "T6::a *" of overridden virtual function "T6::A::unqualified_vs_volatile_class"
+    volatile a* unqualified_vs_volatile_class() override; // expected-error{{return type of virtual function 'unqualified_vs_volatile_class' is not covariant with the return type of the function it overrides (class type 'volatile a *' does not have the same cv-qualification as or less cv-qualification than class type 'a *')}}
+                ^
+
+"Test_name.c", line 118: error: member function declared with "override" does not override a base class member
+    volatile a* unqualified_vs_volatile_class() override; // expected-error{{return type of virtual function 'unqualified_vs_volatile_class' is not covariant with the return type of the function it overrides (class type 'volatile a *' does not have the same cv-qualification as or less cv-qualification than class type 'a *')}}
+                ^
+
+"Test_name.c", line 120: error: return type is not identical to nor covariant with return type "const T6::a *" of overridden virtual function "T6::A::const_vs_volatile_class"
+    volatile a* const_vs_volatile_class() override; // expected-error{{return type of virtual function 'const_vs_volatile_class' is not covariant with the return type of the function it overrides (class type 'volatile a *' does not have the same cv-qualification as or less cv-qualification than class type 'const a *')}}
+                ^
+
+"Test_name.c", line 120: error: member function declared with "override" does not override a base class member
+    volatile a* const_vs_volatile_class() override; // expected-error{{return type of virtual function 'const_vs_volatile_class' is not covariant with the return type of the function it overrides (class type 'volatile a *' does not have the same cv-qualification as or less cv-qualification than class type 'const a *')}}
+                ^
+
+"Test_name.c", line 121: error: return type is not identical to nor covariant with return type "volatile T6::a *" of overridden virtual function "T6::A::volatile_vs_const_class"
+    const a* volatile_vs_const_class() override; // expected-error{{return type of virtual function 'volatile_vs_const_class' is not covariant with the return type of the function it overrides (class type 'const a *' does not have the same cv-qualification as or less cv-qualification than class type 'volatile a *')}}
+             ^
+
+"Test_name.c", line 121: error: member function declared with "override" does not override a base class member
+    const a* volatile_vs_const_class() override; // expected-error{{return type of virtual function 'volatile_vs_const_class' is not covariant with the return type of the function it overrides (class type 'const a *' does not have the same cv-qualification as or less cv-qualification than class type 'volatile a *')}}
+             ^
+
+"Test_name.c", line 124: error: return type is not identical to nor covariant with return type "const T6::a *" of overridden virtual function "T6::A::const_vs_const_volatile_class"
+    const volatile a* const_vs_const_volatile_class() override; // expected-error{{return type of virtual function 'const_vs_const_volatile_class' is not covariant with the return type of the function it overrides (class type 'const volatile a *' does not have the same cv-qualification as or less cv-qualification than class type 'const a *')}}
+                      ^
+
+"Test_name.c", line 124: error: member function declared with "override" does not override a base class member
+    const volatile a* const_vs_const_volatile_class() override; // expected-error{{return type of virtual function 'const_vs_const_volatile_class' is not covariant with the return type of the function it overrides (class type 'const volatile a *' does not have the same cv-qualification as or less cv-qualification than class type 'const a *')}}
+                      ^
+
+"Test_name.c", line 127: error: return type is not identical to nor covariant with return type "volatile T6::a *" of overridden virtual function "T6::A::volatile_vs_const_volatile_class"
+    const volatile a* volatile_vs_const_volatile_class() override; // expected-error{{return type of virtual function 'volatile_vs_const_volatile_class' is not covariant with the return type of the function it overrides (class type 'const volatile a *' does not have the same cv-qualification as or less cv-qualification than class type 'volatile a *')}}
+                      ^
+
+"Test_name.c", line 127: error: member function declared with "override" does not override a base class member
+    const volatile a* volatile_vs_const_volatile_class() override; // expected-error{{return type of virtual function 'volatile_vs_const_volatile_class' is not covariant with the return type of the function it overrides (class type 'const volatile a *' does not have the same cv-qualification as or less cv-qualification than class type 'volatile a *')}}
+                      ^
+
+"Test_name.c", line 130: error: return type is not identical to nor covariant with return type "T6::a *" of overridden virtual function "T6::A::unqualified_vs_const_volatile_class"
+    const volatile a* unqualified_vs_const_volatile_class() override; // expected-error{{return type of virtual function 'unqualified_vs_const_volatile_class' is not covariant with the return type of the function it overrides (class type 'const volatile a *' does not have the same cv-qualification as or less cv-qualification than class type 'a *')}}
+                      ^
+
+"Test_name.c", line 130: error: member function declared with "override" does not override a base class member
+    const volatile a* unqualified_vs_const_volatile_class() override; // expected-error{{return type of virtual function 'unqualified_vs_const_volatile_class' is not covariant with the return type of the function it overrides (class type 'const volatile a *' does not have the same cv-qualification as or less cv-qualification than class type 'a *')}}
+                      ^
+
+"Test_name.c", line 133: warning: return type is not identical to return type "const int *" of overridden virtual function "T6::A::const_vs_unqualified_non_class"
+    int* const_vs_unqualified_non_class() override; // expected-error{{virtual function 'const_vs_unqualified_non_class' has a different return type ('int *') than the function it overrides (which has return type 'const int *')}}
+         ^
+
+"Test_name.c", line 134: error: return type is not identical to nor covariant with return type "int *" of overridden virtual function "T6::A::unqualified_vs_const_non_class"
+    const int* unqualified_vs_const_non_class() override; // expected-error{{virtual function 'unqualified_vs_const_non_class' has a different return type ('const int *') than the function it overrides (which has return type 'int *')}}
+               ^
+
+"Test_name.c", line 134: error: member function declared with "override" does not override a base class member
+    const int* unqualified_vs_const_non_class() override; // expected-error{{virtual function 'unqualified_vs_const_non_class' has a different return type ('const int *') than the function it overrides (which has return type 'int *')}}
+               ^
+
+"Test_name.c", line 161: error: return type is not identical to nor covariant with return type "T8::a *" of overridden virtual function "T8::A::f"
+      b* f(); // expected-error {{return type of virtual function 'f' is not covariant with the return type of the function it overrides ('b' is incomplete)}}
+         ^
+
+"Test_name.c", line 169: error: the size of an array must be greater than zero
+      int a[sizeof(T) ? -1 : -1]; // expected-error {{array with a negative size}}
+            ^
+          detected during instantiation of class "T9::b<T> [with T=int]" at line 177
+
+"Test_name.c", line 191: error: pure specifier ("= 0") allowed only on virtual functions
+    void f(int) = 0; // expected-error{{not virtual and cannot be declared pure}}
+                ^
+          detected during instantiation of class "Foo<Base> [with Base=Base2]" at line 199
+
+"Test_name.c", line 220: warning: function "Foo3::f(int)" is hidden by "Bar3<T>::f [with T=float]" -- virtual function override intended?
+    void f(T);
+         ^
+          detected during instantiation of class "Bar3<T> [with T=float]" at line 225
+
+"Test_name.c", line 225: error: object of abstract class type "Bar3<float>" is not allowed:
+            pure virtual function "Foo3::f" has no overrider
+    Bar3<float> b3f; // expected-error{{is an abstract class}}
+                ^
+
+"Test_name.c", line 224: warning: variable "b3i" was declared but never referenced
+    Bar3<int> b3i; // okay
+              ^
+
+"Test_name.c", line 225: warning: variable "b3f" was declared but never referenced
+    Bar3<float> b3f; // expected-error{{is an abstract class}}
+                ^
+
+"Test_name.c", line 277: error: return type is not identical to nor covariant with return type "type_dependent_covariance::B *" of overridden virtual function "type_dependent_covariance::X<N>::f1 [with N=0]"
+      virtual TD<M>* f1(); // expected-error{{return type of virtual function 'f1' is not covariant with the return type of the function it overrides ('TD<1> *'}}
+                     ^
+          detected during instantiation of class "type_dependent_covariance::X1<N, M> [with N=0, M=1]" at line 282
+
+"Test_name.c", line 278: error: return type is not identical to nor covariant with return type "type_dependent_covariance::TB<1> *" of overridden virtual function "type_dependent_covariance::X<N>::f2 [with N=1]"
+      virtual D* f2(); // expected-error{{return type of virtual function 'f2' is not covariant with the return type of the function it overrides ('D *' is not derived from 'TB<1> *')}}
+                 ^
+          detected during instantiation of class "type_dependent_covariance::X1<N, M> [with N=1, M=0]" at line 283
+
+"Test_name.c", line 308: error: return type is not identical to nor covariant with return type "T11::A &" of overridden virtual function "T11::C::f"
+      virtual B&& f(); // expected-error {{virtual function 'f' has a different return type ('B &&') than the function it overrides (which has return type 'A &')}}
+                  ^
+
+"Test_name.c", line 321: error: return type is not identical to nor covariant with return type "T12::A &&" of overridden virtual function "T12::C::f"
+      virtual B& f(); // expected-error {{virtual function 'f' has a different return type ('B &') than the function it overrides (which has return type 'A &&')}}
+                 ^
+
+"Test_name.c", line 333: error: only nonstatic member functions may be virtual
+      static void foo() {} // expected-error{{'static' member function 'foo' overrides a virtual function}}
+                  ^
+
+31 errors detected in the compilation of "Test_name.c".

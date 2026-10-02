@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"./cpp1y/new2.C", line 28: warning: variable "tmp" was declared but never referenced
+    int tmp = *x;
+        ^
+
+"./cpp1y/new2.C", line 35: warning: variable "tmp" was declared but never referenced
+    int tmp = x[4];
+        ^
+

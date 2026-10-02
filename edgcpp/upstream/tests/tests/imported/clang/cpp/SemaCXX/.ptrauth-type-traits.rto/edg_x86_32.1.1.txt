@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++26 Test_name.c
+"Test_name.c", line 189: error: type name is not allowed
+  static_assert( __builtin_is_cpp_trivially_relocatable(AddressDiscriminatedPtr) == !ADDR_DISC_ENABLED);
+                                                        ^
+
+"Test_name.c", line 189: error: identifier "__builtin_is_cpp_trivially_relocatable" is undefined
+  static_assert( __builtin_is_cpp_trivially_relocatable(AddressDiscriminatedPtr) == !ADDR_DISC_ENABLED);
+                 ^
+
+"Test_name.c", line 190: error: type name is not allowed
+  static_assert( __builtin_is_cpp_trivially_relocatable(AddressDiscriminatedInt64) == !ADDR_DISC_ENABLED);
+                                                        ^
+
+"Test_name.c", line 191: error: type name is not allowed
+  static_assert( __builtin_is_cpp_trivially_relocatable(AddressDiscriminatedFields) == !ADDR_DISC_ENABLED);
+                                                        ^
+
+"Test_name.c", line 192: error: type name is not allowed
+  static_assert( __builtin_is_cpp_trivially_relocatable(AddressDiscriminatedFieldInBaseClass) == !ADDR_DISC_ENABLED);
+                                                        ^
+
+"Test_name.c", line 193: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(NonAddressDiscriminatedVTablePtr));
+                                                        ^
+
+"Test_name.c", line 194: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(NonAddressDiscriminatedVTablePtr2));
+                                                        ^
+
+"Test_name.c", line 195: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(AddressDiscriminatedVTablePtr));
+                                                        ^
+
+"Test_name.c", line 196: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(NoAddressDiscriminatedBaseClasses));
+                                                        ^
+
+"Test_name.c", line 197: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(AddressDiscriminatedPrimaryBase));
+                                                        ^
+
+"Test_name.c", line 198: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(AddressDiscriminatedSecondaryBase));
+                                                        ^
+
+"Test_name.c", line 199: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(EmbdeddedAddressDiscriminatedPolymorphicClass));
+                                                        ^
+
+12 errors detected in the compilation of "Test_name.c".

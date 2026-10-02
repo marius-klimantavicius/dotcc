@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./torture/harden-cfr-throw.C", line 7: warning: unknown attribute "__optimize__"
+  void __attribute__ ((__optimize__ (1))) h2(void);
+                       ^
+
+"./torture/harden-cfr-throw.C", line 8: warning: unknown attribute "__optimize__"
+  void __attribute__ ((__optimize__ (1))) h2b(void);
+                       ^
+

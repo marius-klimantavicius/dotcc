@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 30: error: too many arguments in function call
+          qmi_message_pbm_get_all_capabilities_output_capability_basic_information_get_printable_message_init_offset,
+          ^
+
+"Test_name.c", line 52: error: too many arguments in function call
+        qmi_message_tlv_read_guint8(&tmp);
+                                    ^
+
+2 errors detected in the compilation of "Test_name.c".

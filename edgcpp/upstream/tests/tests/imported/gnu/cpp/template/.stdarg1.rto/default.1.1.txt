@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./template/stdarg1.C", line 20: error: _Complex can only be used with floating-point types
+                 _Complex int
+                 ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --c23 Test_name.c
+"Test_name.c", line 5: warning: variable "y" was declared but never referenced
+    typeof(typeof(const char*)[4]) y = {
+                                   ^
+

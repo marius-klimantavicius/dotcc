@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 7: warning: the "externally_visible" attribute can only appear on functions and variables with external linkage
+  extern void foo1 (void) __attribute__((externally_visible));
+                                         ^
+
+"Test_name.c", line 11: error: expected a ";"
+    __attribute__((externally_visible)) void foo3 (void) { }	/* { dg-warning "have effect only on public" } */
+                                                         ^
+
+"Test_name.c", line 14: error: external/internal linkage conflict with previous declaration at line 11
+  __attribute__((externally_visible)) static void foo3 (void) { }	/* { dg-warning "have effect only on public" } */
+                                                  ^
+
+"Test_name.c", line 14: warning: the "externally_visible" attribute can only appear on functions and variables with external linkage
+  __attribute__((externally_visible)) static void foo3 (void) { }	/* { dg-warning "have effect only on public" } */
+                 ^
+
+"Test_name.c", line 17: warning: the "externally_visible" attribute can only appear on functions and variables with external linkage
+  extern int bar1 __attribute__((externally_visible));		/* { dg-warning "have effect only on public" } */
+                                 ^
+
+"Test_name.c", line 19: warning: the "externally_visible" attribute can only appear on functions and variables with external linkage
+  static int bar2 __attribute__((externally_visible));		/* { dg-warning "have effect only on public" } */
+                                 ^
+
+"Test_name.c", line 23: warning: the "externally_visible" attribute can only appear on functions and variables with external linkage
+    static int bar3 __attribute__((externally_visible));		/* { dg-warning "have effect only on public" } */
+                                   ^
+
+"Test_name.c", line 23: warning: variable "bar3" was declared but never referenced
+    static int bar3 __attribute__((externally_visible));		/* { dg-warning "have effect only on public" } */
+               ^
+
+"Test_name.c", line 28: warning: the "externally_visible" attribute can only appear on functions and variables with external linkage
+    int bar4 __attribute__((externally_visible));			/* { dg-warning "have effect only on public" } */
+                            ^
+
+"Test_name.c", line 28: warning: variable "bar4" was declared but never referenced
+    int bar4 __attribute__((externally_visible));			/* { dg-warning "have effect only on public" } */
+        ^
+
+"Test_name.c", line 33: warning: attribute "externally_visible" does not apply here
+  } __attribute__((externally_visible));				/* { dg-warning "does not apply to types" } */
+                   ^
+
+"Test_name.c", line 35: warning: attribute "externally_visible" does not apply here
+  typedef int B __attribute__((externally_visible));		/* { dg-warning "attribute ignored" } */
+                               ^
+
+"Test_name.c", line 6: warning: function "foo1" was declared but never referenced
+  static void foo1 (void) { }					/* { dg-warning "have effect only on public" } */
+              ^
+
+"Test_name.c", line 14: warning: function "foo3" was declared but never referenced
+  __attribute__((externally_visible)) static void foo3 (void) { }	/* { dg-warning "have effect only on public" } */
+                                                  ^
+
+"Test_name.c", line 16: warning: variable "bar1" was declared but never referenced
+  static int bar1;
+             ^
+
+"Test_name.c", line 19: warning: variable "bar2" was declared but never referenced
+  static int bar2 __attribute__((externally_visible));		/* { dg-warning "have effect only on public" } */
+             ^
+
+2 errors detected in the compilation of "Test_name.c".

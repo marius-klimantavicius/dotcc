@@ -1,0 +1,309 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 50: warning: variable "b31" was set but never used
+      int b31;
+          ^
+
+"Test_name.c", line 52: warning: label "label02" was declared but never referenced
+      label01: label02: label03: label04: label05:
+               ^
+
+"Test_name.c", line 52: warning: label "label03" was declared but never referenced
+      label01: label02: label03: label04: label05:
+                        ^
+
+"Test_name.c", line 52: warning: label "label04" was declared but never referenced
+      label01: label02: label03: label04: label05:
+                                 ^
+
+"Test_name.c", line 52: warning: label "label05" was declared but never referenced
+      label01: label02: label03: label04: label05:
+                                          ^
+
+"Test_name.c", line 53: warning: label "label06" was declared but never referenced
+      label06: label07: label08: label09: label10:
+      ^
+
+"Test_name.c", line 53: warning: label "label07" was declared but never referenced
+      label06: label07: label08: label09: label10:
+               ^
+
+"Test_name.c", line 53: warning: label "label08" was declared but never referenced
+      label06: label07: label08: label09: label10:
+                        ^
+
+"Test_name.c", line 53: warning: label "label09" was declared but never referenced
+      label06: label07: label08: label09: label10:
+                                 ^
+
+"Test_name.c", line 53: warning: label "label10" was declared but never referenced
+      label06: label07: label08: label09: label10:
+                                          ^
+
+"Test_name.c", line 54: warning: label "label11" was declared but never referenced
+      label11: label12: label13: label14: label15:
+      ^
+
+"Test_name.c", line 54: warning: label "label12" was declared but never referenced
+      label11: label12: label13: label14: label15:
+               ^
+
+"Test_name.c", line 54: warning: label "label13" was declared but never referenced
+      label11: label12: label13: label14: label15:
+                        ^
+
+"Test_name.c", line 54: warning: label "label14" was declared but never referenced
+      label11: label12: label13: label14: label15:
+                                 ^
+
+"Test_name.c", line 54: warning: label "label15" was declared but never referenced
+      label11: label12: label13: label14: label15:
+                                          ^
+
+"Test_name.c", line 55: warning: label "label16" was declared but never referenced
+      label16: label17: label18: label19: label20:
+      ^
+
+"Test_name.c", line 55: warning: label "label17" was declared but never referenced
+      label16: label17: label18: label19: label20:
+               ^
+
+"Test_name.c", line 55: warning: label "label18" was declared but never referenced
+      label16: label17: label18: label19: label20:
+                        ^
+
+"Test_name.c", line 55: warning: label "label19" was declared but never referenced
+      label16: label17: label18: label19: label20:
+                                 ^
+
+"Test_name.c", line 55: warning: label "label20" was declared but never referenced
+      label16: label17: label18: label19: label20:
+                                          ^
+
+"Test_name.c", line 56: warning: label "label21" was declared but never referenced
+      label21: label22: label23: label24: label25:
+      ^
+
+"Test_name.c", line 56: warning: label "label22" was declared but never referenced
+      label21: label22: label23: label24: label25:
+               ^
+
+"Test_name.c", line 56: warning: label "label23" was declared but never referenced
+      label21: label22: label23: label24: label25:
+                        ^
+
+"Test_name.c", line 56: warning: label "label24" was declared but never referenced
+      label21: label22: label23: label24: label25:
+                                 ^
+
+"Test_name.c", line 56: warning: label "label25" was declared but never referenced
+      label21: label22: label23: label24: label25:
+                                          ^
+
+"Test_name.c", line 57: warning: label "label26" was declared but never referenced
+      label26: label27: label28: label29: label30:
+      ^
+
+"Test_name.c", line 57: warning: label "label27" was declared but never referenced
+      label26: label27: label28: label29: label30:
+               ^
+
+"Test_name.c", line 57: warning: label "label28" was declared but never referenced
+      label26: label27: label28: label29: label30:
+                        ^
+
+"Test_name.c", line 57: warning: label "label29" was declared but never referenced
+      label26: label27: label28: label29: label30:
+                                 ^
+
+"Test_name.c", line 57: warning: label "label30" was declared but never referenced
+      label26: label27: label28: label29: label30:
+                                          ^
+
+"Test_name.c", line 58: warning: label "label31" was declared but never referenced
+      label31:
+      ^
+
+"Test_name.c", line 92: warning: variable "b01" was set but never used
+      int b01, b02, b03, b04, b05, b06, b07, b08, b09, b10;
+          ^
+
+"Test_name.c", line 92: warning: variable "b02" was set but never used
+      int b01, b02, b03, b04, b05, b06, b07, b08, b09, b10;
+               ^
+
+"Test_name.c", line 92: warning: variable "b03" was set but never used
+      int b01, b02, b03, b04, b05, b06, b07, b08, b09, b10;
+                    ^
+
+"Test_name.c", line 92: warning: variable "b04" was set but never used
+      int b01, b02, b03, b04, b05, b06, b07, b08, b09, b10;
+                         ^
+
+"Test_name.c", line 92: warning: variable "b05" was set but never used
+      int b01, b02, b03, b04, b05, b06, b07, b08, b09, b10;
+                              ^
+
+"Test_name.c", line 92: warning: variable "b06" was set but never used
+      int b01, b02, b03, b04, b05, b06, b07, b08, b09, b10;
+                                   ^
+
+"Test_name.c", line 92: warning: variable "b07" was set but never used
+      int b01, b02, b03, b04, b05, b06, b07, b08, b09, b10;
+                                        ^
+
+"Test_name.c", line 92: warning: variable "b08" was set but never used
+      int b01, b02, b03, b04, b05, b06, b07, b08, b09, b10;
+                                             ^
+
+"Test_name.c", line 92: warning: variable "b09" was set but never used
+      int b01, b02, b03, b04, b05, b06, b07, b08, b09, b10;
+                                                  ^
+
+"Test_name.c", line 92: warning: variable "b10" was set but never used
+      int b01, b02, b03, b04, b05, b06, b07, b08, b09, b10;
+                                                       ^
+
+"Test_name.c", line 93: warning: variable "b11" was set but never used
+      int b11, b12, b13, b14, b15, b16, b17, b18, b19, b20;
+          ^
+
+"Test_name.c", line 93: warning: variable "b12" was set but never used
+      int b11, b12, b13, b14, b15, b16, b17, b18, b19, b20;
+               ^
+
+"Test_name.c", line 93: warning: variable "b13" was set but never used
+      int b11, b12, b13, b14, b15, b16, b17, b18, b19, b20;
+                    ^
+
+"Test_name.c", line 93: warning: variable "b14" was set but never used
+      int b11, b12, b13, b14, b15, b16, b17, b18, b19, b20;
+                         ^
+
+"Test_name.c", line 93: warning: variable "b15" was set but never used
+      int b11, b12, b13, b14, b15, b16, b17, b18, b19, b20;
+                              ^
+
+"Test_name.c", line 93: warning: variable "b16" was set but never used
+      int b11, b12, b13, b14, b15, b16, b17, b18, b19, b20;
+                                   ^
+
+"Test_name.c", line 93: warning: variable "b17" was set but never used
+      int b11, b12, b13, b14, b15, b16, b17, b18, b19, b20;
+                                        ^
+
+"Test_name.c", line 93: warning: variable "b18" was set but never used
+      int b11, b12, b13, b14, b15, b16, b17, b18, b19, b20;
+                                             ^
+
+"Test_name.c", line 93: warning: variable "b19" was set but never used
+      int b11, b12, b13, b14, b15, b16, b17, b18, b19, b20;
+                                                  ^
+
+"Test_name.c", line 93: warning: variable "b20" was set but never used
+      int b11, b12, b13, b14, b15, b16, b17, b18, b19, b20;
+                                                       ^
+
+"Test_name.c", line 94: warning: variable "b21" was set but never used
+      int b21, b22, b23, b24, b25, b26, b27, b28, b29, b30;
+          ^
+
+"Test_name.c", line 94: warning: variable "b22" was set but never used
+      int b21, b22, b23, b24, b25, b26, b27, b28, b29, b30;
+               ^
+
+"Test_name.c", line 94: warning: variable "b23" was set but never used
+      int b21, b22, b23, b24, b25, b26, b27, b28, b29, b30;
+                    ^
+
+"Test_name.c", line 94: warning: variable "b24" was set but never used
+      int b21, b22, b23, b24, b25, b26, b27, b28, b29, b30;
+                         ^
+
+"Test_name.c", line 94: warning: variable "b25" was set but never used
+      int b21, b22, b23, b24, b25, b26, b27, b28, b29, b30;
+                              ^
+
+"Test_name.c", line 94: warning: variable "b26" was set but never used
+      int b21, b22, b23, b24, b25, b26, b27, b28, b29, b30;
+                                   ^
+
+"Test_name.c", line 94: warning: variable "b27" was set but never used
+      int b21, b22, b23, b24, b25, b26, b27, b28, b29, b30;
+                                        ^
+
+"Test_name.c", line 94: warning: variable "b28" was set but never used
+      int b21, b22, b23, b24, b25, b26, b27, b28, b29, b30;
+                                             ^
+
+"Test_name.c", line 94: warning: variable "b29" was set but never used
+      int b21, b22, b23, b24, b25, b26, b27, b28, b29, b30;
+                                                  ^
+
+"Test_name.c", line 94: warning: variable "b30" was set but never used
+      int b21, b22, b23, b24, b25, b26, b27, b28, b29, b30;
+                                                       ^
+
+"Test_name.c", line 95: warning: variable "b31" was set but never used
+      int b31;
+          ^
+
+"Test_name.c", line 155: warning: variable "b17" was set but never used
+      int b11, b12, b13, b14, b15, b16, b17, b18, b19, b20;
+                                        ^
+
+"Test_name.c", line 155: warning: variable "b18" was set but never used
+      int b11, b12, b13, b14, b15, b16, b17, b18, b19, b20;
+                                             ^
+
+"Test_name.c", line 155: warning: variable "b19" was set but never used
+      int b11, b12, b13, b14, b15, b16, b17, b18, b19, b20;
+                                                  ^
+
+"Test_name.c", line 155: warning: variable "b20" was set but never used
+      int b11, b12, b13, b14, b15, b16, b17, b18, b19, b20;
+                                                       ^
+
+"Test_name.c", line 156: warning: variable "b21" was set but never used
+      int b21, b22, b23, b24, b25, b26, b27, b28, b29, b30;
+          ^
+
+"Test_name.c", line 156: warning: variable "b22" was set but never used
+      int b21, b22, b23, b24, b25, b26, b27, b28, b29, b30;
+               ^
+
+"Test_name.c", line 156: warning: variable "b23" was set but never used
+      int b21, b22, b23, b24, b25, b26, b27, b28, b29, b30;
+                    ^
+
+"Test_name.c", line 156: warning: variable "b24" was set but never used
+      int b21, b22, b23, b24, b25, b26, b27, b28, b29, b30;
+                         ^
+
+"Test_name.c", line 156: warning: variable "b25" was set but never used
+      int b21, b22, b23, b24, b25, b26, b27, b28, b29, b30;
+                              ^
+
+"Test_name.c", line 156: warning: variable "b26" was set but never used
+      int b21, b22, b23, b24, b25, b26, b27, b28, b29, b30;
+                                   ^
+
+"Test_name.c", line 156: warning: variable "b27" was set but never used
+      int b21, b22, b23, b24, b25, b26, b27, b28, b29, b30;
+                                        ^
+
+"Test_name.c", line 156: warning: variable "b28" was set but never used
+      int b21, b22, b23, b24, b25, b26, b27, b28, b29, b30;
+                                             ^
+
+"Test_name.c", line 156: warning: variable "b29" was set but never used
+      int b21, b22, b23, b24, b25, b26, b27, b28, b29, b30;
+                                                  ^
+
+"Test_name.c", line 156: warning: variable "b30" was set but never used
+      int b21, b22, b23, b24, b25, b26, b27, b28, b29, b30;
+                                                       ^
+
+"Test_name.c", line 157: warning: variable "b31" was set but never used
+      int b31;
+          ^
+

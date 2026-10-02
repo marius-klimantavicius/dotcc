@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=1 --multi_trans --gcc Test_name.c d00385a_2.c

@@ -1,0 +1,46 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 7: error: incomplete type "void" is not allowed
+  void f(void (*)() transaction_safe) {}
+       ^
+
+"Test_name.c", line 7: error: expected an expression
+  void f(void (*)() transaction_safe) {}
+                ^
+
+"Test_name.c", line 7: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+  void f(void (*)() transaction_safe) {}
+         ^
+
+"Test_name.c", line 7: error: expected a ")"
+  void f(void (*)() transaction_safe) {}
+                    ^
+
+"Test_name.c", line 7: error: expected a ";"
+  void f(void (*)() transaction_safe) {}
+                                      ^
+
+"Test_name.c", line 16: warning: parsing restarts here after previous syntax error
+  template <class T> struct A { };
+                                 ^
+
+"Test_name.c", line 17: error: variable "f" has already been defined (previous definition at line 7)
+  void f(A<void () const transaction_safe>) { }
+       ^
+
+"Test_name.c", line 17: error: incomplete type "void" is not allowed
+  void f(A<void () const transaction_safe>) { }
+       ^
+
+"Test_name.c", line 17: error: identifier "A" is undefined
+  void f(A<void () const transaction_safe>) { }
+         ^
+
+"Test_name.c", line 17: error: expected a ")"
+  void f(A<void () const transaction_safe>) { }
+                   ^
+
+"Test_name.c", line 17: error: expected a ";"
+  void f(A<void () const transaction_safe>) { }
+                                            ^
+
+10 errors detected in the compilation of "Test_name.c".

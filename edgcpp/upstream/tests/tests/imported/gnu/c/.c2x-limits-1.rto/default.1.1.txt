@@ -1,0 +1,45 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 -E Test_name.c
+# 1 "Test_name.c"
+
+
+# 1 "./c2x-limits-1.c"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 1 "/usr/include/stdc-predef.h"
+# 1 "<command-line>"
+# 1 "./c2x-limits-1.c"
+
+
+
+
+# 1 "/mds/gnu/build/gcc-13.1.0/lib/gcc/x86_64-pc-linux-gnu/13.1.0/include/limits.h"
+# 34 "/mds/gnu/build/gcc-13.1.0/lib/gcc/x86_64-pc-linux-gnu/13.1.0/include/limits.h"
+# 1 "/mds/gnu/build/gcc-13.1.0/lib/gcc/x86_64-pc-linux-gnu/13.1.0/include/syslimits.h"
+
+
+
+
+
+
+# 1 "/mds/gnu/build/gcc-13.1.0/lib/gcc/x86_64-pc-linux-gnu/13.1.0/include/limits.h"
+# 205 "/mds/gnu/build/gcc-13.1.0/lib/gcc/x86_64-pc-linux-gnu/13.1.0/include/limits.h"
+# 1 "/usr/include/limits.h"
+# 26 "/usr/include/limits.h"
+# 1 "/usr/include/features.h"
+# 375 "/usr/include/features.h"
+# 1 "/usr/include/sys/cdefs.h"
+# 392 "/usr/include/sys/cdefs.h"
+# 1 "/usr/include/bits/wordsize.h"
+# 393 "/usr/include/sys/cdefs.h"
+# 376 "/usr/include/features.h"
+# 399 "/usr/include/features.h"
+# 1 "/usr/include/gnu/stubs.h"
+# 10 "/usr/include/gnu/stubs.h"
+# 1 "/usr/include/gnu/stubs-64.h"
+# 11 "/usr/include/gnu/stubs.h"
+# 400 "/usr/include/features.h"
+# 27 "/usr/include/limits.h"
+# 206 "/mds/gnu/build/gcc-13.1.0/lib/gcc/x86_64-pc-linux-gnu/13.1.0/include/limits.h"
+# 8 "/mds/gnu/build/gcc-13.1.0/lib/gcc/x86_64-pc-linux-gnu/13.1.0/include/syslimits.h"
+# 35 "/mds/gnu/build/gcc-13.1.0/lib/gcc/x86_64-pc-linux-gnu/13.1.0/include/limits.h"
+# 6 "./c2x-limits-1.c"

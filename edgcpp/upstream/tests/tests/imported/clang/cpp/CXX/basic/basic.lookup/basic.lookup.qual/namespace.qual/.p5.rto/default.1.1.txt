@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 30: error: "AB::x" is ambiguous
+    struct AB::x foo; // expected-error {{reference to 'x' is ambiguous}}
+               ^
+
+"Test_name.c", line 31: error: "AB::x" is ambiguous
+    int i = AB::x; // expected-error {{reference to 'x' is ambiguous}}
+                ^
+
+"Test_name.c", line 34: error: "AB::y" is ambiguous
+    float f = AB::y; // expected-error {{a type named 'y' is hidden by a declaration in a different namespace}}
+                  ^
+
+"Test_name.c", line 33: warning: variable "bar" was declared but never referenced
+    struct AB::y bar;
+                 ^
+
+3 errors detected in the compilation of "Test_name.c".

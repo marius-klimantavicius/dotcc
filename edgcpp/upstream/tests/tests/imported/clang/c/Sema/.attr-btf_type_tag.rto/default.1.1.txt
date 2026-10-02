@@ -1,0 +1,138 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 12: warning: unknown attribute "btf_type_tag"
+  int __attribute__((btf_type_tag("tag1", "tag2"))) *invalid1; // expected-error {{'btf_type_tag' attribute takes one argument}}
+                     ^
+
+"Test_name.c", line 13: warning: unknown attribute "btf_type_tag"
+  int __attribute__((btf_type_tag(2))) *invalid2; // expected-error {{expected string literal as argument of 'btf_type_tag' attribute}}
+                     ^
+
+"Test_name.c", line 15: warning: unknown attribute "btf_type_tag"
+  int * __tag1 __tag2 * __tag3 __tag4 * __tag5 __tag6 *g;
+        ^
+
+"Test_name.c", line 15: warning: unknown attribute "btf_type_tag"
+  int * __tag1 __tag2 * __tag3 __tag4 * __tag5 __tag6 *g;
+               ^
+
+"Test_name.c", line 15: warning: unknown attribute "btf_type_tag"
+  int * __tag1 __tag2 * __tag3 __tag4 * __tag5 __tag6 *g;
+                        ^
+
+"Test_name.c", line 15: warning: unknown attribute "btf_type_tag"
+  int * __tag1 __tag2 * __tag3 __tag4 * __tag5 __tag6 *g;
+                               ^
+
+"Test_name.c", line 15: warning: unknown attribute "btf_type_tag"
+  int * __tag1 __tag2 * __tag3 __tag4 * __tag5 __tag6 *g;
+                                        ^
+
+"Test_name.c", line 15: warning: unknown attribute "btf_type_tag"
+  int * __tag1 __tag2 * __tag3 __tag4 * __tag5 __tag6 *g;
+                                               ^
+
+"Test_name.c", line 18: warning: unknown attribute "btf_type_tag"
+  typedef __fn_t __tag1 __tag2 * __tag3 __tag4 *__fn2_t;
+                 ^
+
+"Test_name.c", line 18: warning: unknown attribute "btf_type_tag"
+  typedef __fn_t __tag1 __tag2 * __tag3 __tag4 *__fn2_t;
+                        ^
+
+"Test_name.c", line 18: warning: unknown attribute "btf_type_tag"
+  typedef __fn_t __tag1 __tag2 * __tag3 __tag4 *__fn2_t;
+                                 ^
+
+"Test_name.c", line 18: warning: unknown attribute "btf_type_tag"
+  typedef __fn_t __tag1 __tag2 * __tag3 __tag4 *__fn2_t;
+                                        ^
+
+"Test_name.c", line 20: warning: unknown attribute "btf_type_tag"
+    int __tag1 * __tag2 * __tag3 *a;
+        ^
+
+"Test_name.c", line 20: warning: unknown attribute "btf_type_tag"
+    int __tag1 * __tag2 * __tag3 *a;
+                 ^
+
+"Test_name.c", line 20: warning: unknown attribute "btf_type_tag"
+    int __tag1 * __tag2 * __tag3 *a;
+                          ^
+
+"Test_name.c", line 21: warning: unknown attribute "btf_type_tag"
+    int __tag1 __tag2 __tag3 *b;
+        ^
+
+"Test_name.c", line 21: warning: unknown attribute "btf_type_tag"
+    int __tag1 __tag2 __tag3 *b;
+               ^
+
+"Test_name.c", line 21: warning: unknown attribute "btf_type_tag"
+    int __tag1 __tag2 __tag3 *b;
+                      ^
+
+"Test_name.c", line 25: warning: unknown attribute "btf_type_tag"
+  int __tag4 * __tag5 * __tag6 *foo1(struct t __tag1 * __tag2 * __tag3 *a1) {
+      ^
+
+"Test_name.c", line 25: warning: unknown attribute "btf_type_tag"
+  int __tag4 * __tag5 * __tag6 *foo1(struct t __tag1 * __tag2 * __tag3 *a1) {
+               ^
+
+"Test_name.c", line 25: warning: unknown attribute "btf_type_tag"
+  int __tag4 * __tag5 * __tag6 *foo1(struct t __tag1 * __tag2 * __tag3 *a1) {
+                        ^
+
+"Test_name.c", line 25: warning: unknown attribute "btf_type_tag"
+  int __tag4 * __tag5 * __tag6 *foo1(struct t __tag1 * __tag2 * __tag3 *a1) {
+                                              ^
+
+"Test_name.c", line 25: warning: unknown attribute "btf_type_tag"
+  int __tag4 * __tag5 * __tag6 *foo1(struct t __tag1 * __tag2 * __tag3 *a1) {
+                                                       ^
+
+"Test_name.c", line 25: warning: unknown attribute "btf_type_tag"
+  int __tag4 * __tag5 * __tag6 *foo1(struct t __tag1 * __tag2 * __tag3 *a1) {
+                                                                ^
+
+"Test_name.c", line 26: warning: unknown attribute "btf_type_tag"
+    return (int __tag4 * __tag5 * __tag6 *)a1[0][0]->d;
+                ^
+
+"Test_name.c", line 26: warning: unknown attribute "btf_type_tag"
+    return (int __tag4 * __tag5 * __tag6 *)a1[0][0]->d;
+                         ^
+
+"Test_name.c", line 26: warning: unknown attribute "btf_type_tag"
+    return (int __tag4 * __tag5 * __tag6 *)a1[0][0]->d;
+                                  ^
+
+"Test_name.c", line 30: warning: unknown attribute "btf_type_tag"
+  int g1 = _Generic((int *)0, int __tag1 *: 0);
+                                  ^
+
+"Test_name.c", line 31: warning: unknown attribute "btf_type_tag"
+  int g2 = _Generic((int __tag1 *)0, int *: 0);
+                         ^
+
+"Test_name.c", line 33: warning: unknown attribute "btf_type_tag"
+                    int __tag1 * : 0, // expected-note {{compatible type 'int  __attribute__((btf_type_tag("tag1")))*' (aka 'int *') specified here}}
+                        ^
+
+"Test_name.c", line 34: error: duplicate association type ("int *") in _Generic selection
+                    int * : 0, // expected-error {{type 'int *' in generic association compatible with previously specified type 'int  __attribute__((btf_type_tag("tag1")))*' (aka 'int *')}}
+                    ^
+
+"Test_name.c", line 38: warning: unknown attribute "btf_type_tag"
+  void bar2(int __tag1 *a) __attribute__((overloadable)) { asm volatile (""); } // expected-note {{previous definition is here}}
+                ^
+
+"Test_name.c", line 39: error: function "bar2" has already been defined (previous definition at line 38)
+  void bar2(int *a) __attribute__((overloadable)) { asm volatile (""); } // expected-error {{redefinition of 'bar2'}}
+       ^
+
+"Test_name.c", line 40: warning: unknown attribute "btf_type_tag"
+  void foo2(int __tag1 *a, int *b) {
+                ^
+
+2 errors detected in the compilation of "Test_name.c".

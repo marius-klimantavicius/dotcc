@@ -1,0 +1,69 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 10: warning: unknown attribute "unsequenced"
+  [[unsequenced]]; /* { dg-error "ignored" } */
+    ^
+
+"Test_name.c", line 12: warning: unknown attribute "unsequenced"
+  int [[unsequenced]] var; /* { dg-error "ignored" } */
+        ^
+
+"Test_name.c", line 14: warning: unknown attribute "unsequenced"
+  int array_with_dep_type[2] [[unsequenced]]; /* { dg-error "ignored" } */
+                               ^
+
+"Test_name.c", line 16: warning: unknown attribute "unsequenced"
+  [[unsequenced]] int fn1 (); /* { dg-error "standard 'unsequenced' attribute can only be applied to function declarators or type specifiers with function type" } */
+    ^
+
+"Test_name.c", line 18: warning: unknown attribute "unsequenced"
+  [[unsequenced]] int fn2 (), fn3 (); /* { dg-error "standard 'unsequenced' attribute can only be applied to function declarators or type specifiers with function type" } */
+    ^
+
+"Test_name.c", line 20: warning: unknown attribute "unsequenced"
+  int var2 [[unsequenced]]; /* { dg-warning "'unsequenced' attribute only applies to function types" } */
+             ^
+
+"Test_name.c", line 22: warning: unknown attribute "unsequenced"
+  int fn4 [[unsequenced]] (); /* { dg-error "standard 'unsequenced' attribute can only be applied to function declarators or type specifiers with function type" } */
+            ^
+
+"Test_name.c", line 24: warning: unknown attribute "unsequenced"
+  int [[unsequenced]] fn5 (); /* { dg-error "ignored" } */
+        ^
+
+"Test_name.c", line 26: warning: unknown attribute "__unsequenced__"
+  int z = sizeof (int [[__unsequenced__]]); /* { dg-error "ignored" } */
+                        ^
+
+"Test_name.c", line 31: warning: unknown attribute "unsequenced"
+  fn6 (int x, double y) [[unsequenced]]
+                          ^
+
+"Test_name.c", line 41: warning: unknown attribute "unsequenced"
+    [[unsequenced]]; /* { dg-error "ignored" } */
+      ^
+
+"Test_name.c", line 42: warning: unknown attribute "unsequenced"
+    [[unsequenced]] a = 1; /* { dg-error "ignored" } */
+      ^
+
+"Test_name.c", line 43: warning: unknown attribute "unsequenced"
+    [[unsequenced]] label: ; /* { dg-warning "'unsequenced' attribute only applies to function types" } */
+      ^
+
+"Test_name.c", line 46: warning: unknown attribute "unsequenced"
+      [[unsequenced]] case 1: ; /* { dg-warning "'unsequenced' attribute only applies to function types" } */
+        ^
+
+"Test_name.c", line 47: warning: unknown attribute "unsequenced"
+      [[unsequenced]] default: ; /* { dg-warning "'unsequenced' attribute only applies to function types" } */
+        ^
+
+"Test_name.c", line 40: warning: variable "a" was set but never used
+    int a;
+        ^
+
+"Test_name.c", line 43: warning: label "label" was declared but never referenced
+    [[unsequenced]] label: ; /* { dg-warning "'unsequenced' attribute only applies to function types" } */
+                    ^
+

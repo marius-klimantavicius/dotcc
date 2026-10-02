@@ -1,0 +1,13 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c89 --strict_gnu -w Test_name.c dll-11a.c
+Test_name.c:
+dll-11a.c:
+/usr/sbin/ld: dll-11a.o: in function `main':
+dll-11a.int.c:(.text+0xXX): undefined reference to `i1'
+/usr/sbin/ld: dll-11a.int.c:(.text+0xXX): undefined reference to `i3'
+/usr/sbin/ld: dll-11a.int.c:(.text+0xXX): undefined reference to `i4'
+/usr/sbin/ld: dll-11a.int.c:(.text+0xXX): undefined reference to `i5'
+/usr/sbin/ld: dll-11a.int.c:(.text+0xXX): undefined reference to `e1'
+/usr/sbin/ld: dll-11a.int.c:(.text+0xXX): undefined reference to `e3'
+/usr/sbin/ld: dll-11a.int.c:(.text+0xXX): undefined reference to `e4'
+/usr/sbin/ld: dll-11a.int.c:(.text+0xXX): undefined reference to `e5'
+collect2: error: ld returned 1 exit status

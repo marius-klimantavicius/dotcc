@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./range.h", line 13: warning: declaration of "size_t" does not match the expected type "unsigned int"
+  typedef long unsigned int size_t;
+                            ^
+
+"./Wstringop-overflow-52.c", line 26: warning: arithmetic on pointer to void or function type
+      memset (p - 1, 0, 12345);
+                ^
+
+"./Wstringop-overflow-52.c", line 28: warning: integer conversion resulted in truncation
+      memset (p,0, 0x7fffffffffffffffL - 1);
+                   ^
+
+"./Wstringop-overflow-52.c", line 35: warning: integer conversion resulted in truncation
+      memset (p - 1234, 0, 0x7fffffffffffffffL - 1);
+                           ^
+
+"./Wstringop-overflow-52.c", line 43: warning: integer conversion resulted in truncation
+      memset (p - 1234, 0, 0x7fffffffffffffffL - 1);
+                           ^
+
+"./Wstringop-overflow-52.c", line 51: warning: integer conversion resulted in truncation
+      memset (p - 1234, 0, 0x7fffffffffffffffL - 1);
+                           ^
+
+"./Wstringop-overflow-52.c", line 59: warning: integer conversion resulted in truncation
+      memset (p - 1234, 0, 0x7fffffffffffffffL - 1);
+                           ^
+

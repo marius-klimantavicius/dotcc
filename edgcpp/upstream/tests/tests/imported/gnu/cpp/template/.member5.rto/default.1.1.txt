@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 32: error: function "N2::S::foo<_i>() [with _i=0]" cannot be instantiated -- no template definition was supplied
+  template void S::foo< 0 >();    // { dg-error "no definition available" "no def" }
+           ^
+
+1 error detected in the compilation of "Test_name.c".

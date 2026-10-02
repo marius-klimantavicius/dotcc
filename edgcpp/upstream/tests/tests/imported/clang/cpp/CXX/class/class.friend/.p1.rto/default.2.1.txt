@@ -1,0 +1,93 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 36: error: invalid friend declaration
+    friend int Outer::Inner::intfield; // expected-error {{friends can only be classes or functions}}
+    ^
+
+"Test_name.c", line 37: error: class "Outer::Inner" has no member "missing_field"
+    friend int Outer::Inner::missing_field; //expected-error {{friends can only be classes or functions}}
+                             ^
+
+"Test_name.c", line 37: error: invalid friend declaration
+    friend int Outer::Inner::missing_field; //expected-error {{friends can only be classes or functions}}
+    ^
+
+"Test_name.c", line 39: error: invalid friend declaration
+    friend int myglobal;   // expected-error {{friends can only be classes or functions}}
+    ^
+
+"Test_name.c", line 45: error: identifier "UndeclaredSoFar" is undefined
+    UndeclaredSoFar x; // expected-error {{unknown type name 'UndeclaredSoFar'}}
+    ^
+
+"Test_name.c", line 48: warning: pointless friend declaration
+    friend void A::a_member();
+                   ^
+
+"Test_name.c", line 56: error: class "Derived" has no member "missing_member"
+    friend void Derived::missing_member(); // expected-error {{friend declaration of 'missing_member' does not match any declaration in 'Derived'}}
+                         ^
+
+"Test_name.c", line 58: error: inherited member is not allowed
+    friend void Derived::base_member(); // expected-error {{friend declaration of 'base_member' does not match any declaration in 'Derived'}}
+                         ^
+
+"Test_name.c", line 65: error: too few parameters for this operator function
+    friend A operator|(const A& r); // expected-error {{overloaded 'operator|' must be a binary operator (has 1 parameter)}}
+             ^
+
+"Test_name.c", line 67: error: conversion function must be a nonstatic member function
+    friend operator bool() const; // expected-error {{must use a qualified name when declaring a conversion operator as a friend}} \
+           ^
+
+"Test_name.c", line 67: error: a type qualifier is not allowed on a nonmember function
+    friend operator bool() const; // expected-error {{must use a qualified name when declaring a conversion operator as a friend}} \
+                           ^
+
+"Test_name.c", line 77: error: invalid friend declaration
+    friend int Unknown::thing(); // expected-error {{use of undeclared identifier}}
+    ^
+
+"Test_name.c", line 77: error: expected a ";"
+    friend int Unknown::thing(); // expected-error {{use of undeclared identifier}}
+                      ^
+
+"Test_name.c", line 78: error: invalid friend declaration
+    friend int friendfunc(), Unknown::thing(); // expected-error {{use of undeclared identifier}}
+    ^
+
+"Test_name.c", line 78: error: expected a ";"
+    friend int friendfunc(), Unknown::thing(); // expected-error {{use of undeclared identifier}}
+                                    ^
+
+"Test_name.c", line 79: error: invalid friend declaration
+    friend int friendfunc(), Unknown::thing() : 4; // expected-error {{use of undeclared identifier}}
+    ^
+
+"Test_name.c", line 79: error: expected a ";"
+    friend int friendfunc(), Unknown::thing() : 4; // expected-error {{use of undeclared identifier}}
+                                    ^
+
+"Test_name.c", line 82: error: class "A" has no member "UndeclaredSoFar"
+  A::UndeclaredSoFar y; // expected-error {{no type named 'UndeclaredSoFar' in 'A'}}
+     ^
+
+"Test_name.c", line 93: error: expected an identifier
+    friend B<U>() {} // expected-error {{must use a qualified name when declaring a constructor as a friend}}
+                ^
+
+"Test_name.c", line 93: warning: variable templates are a C++14 feature
+    friend B<U>() {} // expected-error {{must use a qualified name when declaring a constructor as a friend}}
+                  ^
+
+"Test_name.c", line 93: error: invalid friend declaration
+    friend B<U>() {} // expected-error {{must use a qualified name when declaring a constructor as a friend}}
+                ^
+
+At end of source: error: expected a "}"
+"Test_name.c", line 91: note: to match this "{"
+  class B {
+          ^
+
+At end of source: error: expected a ";"
+
+21 errors detected in the compilation of "Test_name.c".

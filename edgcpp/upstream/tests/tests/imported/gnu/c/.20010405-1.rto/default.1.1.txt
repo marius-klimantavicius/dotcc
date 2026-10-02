@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 12: error: declaration is incompatible with previous "bar" (declared at line 3)
+    extern double bar();
+                  ^
+
+"Test_name.c", line 18: error: too many arguments in function call
+      b = bar(&a);
+              ^
+
+"Test_name.c", line 14: warning: variable "b" was set but never used
+    static double b;
+                  ^
+
+"Test_name.c", line 5: warning: a variable with static storage duration cannot be defined within an inline function
+    static double a;
+                  ^
+
+2 errors detected in the compilation of "Test_name.c".

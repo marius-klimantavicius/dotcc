@@ -1,0 +1,17 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 Test_name.c
+"./c11-noreturn-2.c", line 25: warning: function declared with "noreturn" does return
+    return 1;
+    ^
+
+"./c11-noreturn-2.c", line 32: warning: function declared with "noreturn" does return
+    return;
+    ^
+
+"./c11-noreturn-2.c", line 39: warning: function declared with "noreturn" does return
+  }
+  ^
+
+"./c11-noreturn-2.c", line 46: warning: function declared with "noreturn" does return
+  }
+  ^
+

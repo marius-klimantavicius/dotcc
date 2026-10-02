@@ -1,0 +1,29 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 160: warning: unrecognized GCC pragma
+  #pragma GCC optimize(0)
+              ^
+
+"Test_name.c", line 170: warning: unknown attribute "noipa"
+  __attribute__((noipa))
+                 ^
+
+"Test_name.c", line 177: warning: unknown attribute "noipa"
+  __attribute__((noipa))
+                 ^
+
+"Test_name.c", line 186: warning: unknown attribute "noipa"
+  __attribute__((noipa))
+                 ^
+
+"Test_name.c", line 195: warning: unknown attribute "noipa"
+  __attribute__((noipa)) __attribute__((optimize(3)))
+                 ^
+
+"Test_name.c", line 195: warning: unknown attribute "optimize"
+  __attribute__((noipa)) __attribute__((optimize(3)))
+                                        ^
+
+"Test_name.c", line 222: warning: unknown attribute "noipa"
+  __attribute__((noipa))
+                 ^
+

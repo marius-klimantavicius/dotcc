@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --microsoft Test_name.c
+"Test_name.c", line 15: error: a value of type "void (S::*)()" cannot be used to initialize an entity of type "void (__stdcall S::*)()"
+  void (__stdcall S::*pmf)() = &S::f;  // Error when the 4.1 change was made;
+                               ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --c99 --embedded_c Test_name.c
+"Test_name.c", line 24: error: a value of type "_EDG_NAS_A int *" cannot be assigned to an entity of type "_EDG_NAS_B int *"
+     pb = pa; // Error
+        ^
+
+"Test_name.c", line 25: error: a value of type "_EDG_NAS_A int *" cannot be assigned to an entity of type "_EDG_NAS_C int *"
+     pc = pa; // Error
+        ^
+
+"Test_name.c", line 26: error: a value of type "_EDG_NAS_C int *" cannot be assigned to an entity of type "_EDG_NAS_A int *"
+     pa = pc; // Error
+        ^
+
+"Test_name.c", line 27: error: a value of type "int *" cannot be assigned to an entity of type "_EDG_NAS_A int *"
+     pa = p; // Error
+        ^
+
+"Test_name.c", line 28: error: a value of type "int *" cannot be assigned to an entity of type "_EDG_NAS_B int *"
+     pb = p; // Error
+        ^
+
+5 errors detected in the compilation of "Test_name.c".

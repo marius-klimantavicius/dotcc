@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --microsoft_version 1900 --set_flag coroutines -tused Test_name.c
+"Test_name.c", line 18: error: a co_await expression is not allowed inside a catch clause
+      co_await f(); //(!)
+      ^
+
+1 error detected in the compilation of "Test_name.c".

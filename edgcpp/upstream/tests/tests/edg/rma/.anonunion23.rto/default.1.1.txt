@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --cfront_3.0 Test_name.c
+"Test_name.c", line 11: error: invalid union member -- class "S" has a disallowed member function
+      S s;
+        ^
+
+"Test_name.c", line 17: warning: variable "u1" was set but never used
+    T u1, u2;
+      ^
+
+1 error detected in the compilation of "Test_name.c".

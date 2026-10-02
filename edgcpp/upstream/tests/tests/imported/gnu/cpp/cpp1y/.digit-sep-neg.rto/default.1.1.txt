@@ -1,0 +1,78 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 11: error: digit separator cannot appear here
+    i = 1048''576; // { dg-error "adjacent digit separators" }
+            ^
+
+"Test_name.c", line 12: error: digit separator cannot appear here
+    i = 0X'100000; // { dg-error "digit separator after base indicator" }
+          ^
+
+"Test_name.c", line 13: error: digit separator cannot appear here
+    i = 0x'100000; // { dg-error "digit separator after base indicator" }
+          ^
+
+"Test_name.c", line 14: error: digit separator cannot appear here
+    i = 0004''000'000; // { dg-error "adjacent digit separators" }
+            ^
+
+"Test_name.c", line 16: error: digit separator cannot appear here
+    i = 0b'0001'0000'0000'0000'0000'0000; // { dg-error "digit separator after base indicator" }
+          ^
+
+"Test_name.c", line 17: error: digit separator cannot appear here
+    i = 0b0001'0000'0000'0000'0000'0000'; // { dg-error "38:missing terminating" }
+                                       ^
+
+"Test_name.c", line 18: error: digit separator cannot appear here
+    unsigned u = 0b0001'0000'0000'0000'0000'0000'U; // { dg-error "digit separator outside digit sequence" }
+                                                ^
+
+"Test_name.c", line 21: error: digit separator cannot appear here
+    d = 1'.602'176'565e-19; // { dg-warning "multi-character" }
+         ^
+
+"Test_name.c", line 22: error: digit separator cannot appear here
+    d = 1.'602'176'565e-19; // { dg-error "digit separator adjacent to decimal point" }
+          ^
+
+"Test_name.c", line 23: error: digit separator cannot appear here
+    d = 1.602''176'565e-19; // { dg-error "adjacent digit separators" }
+             ^
+
+"Test_name.c", line 24: error: digit separator cannot appear here
+    d = 1.602'176'565'e-19; // { dg-error "digit separator adjacent to exponent" }
+                     ^
+
+"Test_name.c", line 25: error: digit separator cannot appear here
+    d = 1.602'176'565e'-19; // { dg-error "21:missing terminating" }
+                      ^
+
+"Test_name.c", line 26: error: digit separator cannot appear here
+    d = 1.602'176'565e-'19; // { dg-error "digit separator adjacent to exponent" }
+                       ^
+
+"Test_name.c", line 28: error: digit separator cannot appear here
+    d = 1.602'176'565e-19'; // { dg-error "24:missing terminating" }
+                         ^
+
+"Test_name.c", line 29: error: digit separator cannot appear here
+    float f = 1.602'176'565e-19'F; // { dg-error "digit separator outside digit sequence" }
+                               ^
+
+"Test_name.c", line 10: warning: variable "i" was set but never used
+    int32_t i = 0;
+            ^
+
+"Test_name.c", line 18: warning: variable "u" was declared but never referenced
+    unsigned u = 0b0001'0000'0000'0000'0000'0000'U; // { dg-error "digit separator outside digit sequence" }
+             ^
+
+"Test_name.c", line 20: warning: variable "d" was set but never used
+    double d = 0.0;
+           ^
+
+"Test_name.c", line 29: warning: variable "f" was declared but never referenced
+    float f = 1.602'176'565e-19'F; // { dg-error "digit separator outside digit sequence" }
+          ^
+
+15 errors detected in the compilation of "Test_name.c".

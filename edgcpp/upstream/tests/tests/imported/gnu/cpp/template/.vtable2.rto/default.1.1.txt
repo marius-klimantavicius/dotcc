@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 17: error: excessive recursion at instantiation of function "parent<T>::f [with T=inner<inner<inner<inner<inner<inner<inner</* etc... */>>>>>>>]"
+      { parent<inner<T> > p; };
+                           ^
+          detected during:
+            implicit generation of "parent<T>::parent() noexcept [with T=inner<inner<inner<inner<inner<inner<inner</* etc... */>>>>>>>]" at line 17
+            instantiation of class "parent<T> [with T=inner<inner<inner<inner<inner<inner<inner</* etc... */>>>>>>>]" at line 17
+            instantiation of "void parent<T>::f() [with T=inner<inner<inner<inner<inner<inner<inner</* etc... */>>>>>>>]" at line 17
+            implicit generation of "parent<T>::parent() noexcept [with T=inner<inner<inner<inner<inner<inner<inner</* etc... */>>>>>>>]" at line 17
+            instantiation of class "parent<T> [with T=inner<inner<inner<inner<inner<inner<inner</* etc... */>>>>>>>]" at line 17
+            [ 182 instantiation contexts not shown ]
+            instantiation of class "parent<T> [with T=inner<inner<int>>]" at line 17
+            instantiation of "void parent<T>::f() [with T=inner<int>]" at line 17
+            implicit generation of "parent<T>::parent() noexcept [with T=inner<int>]" at line 17
+            instantiation of class "parent<T> [with T=inner<int>]" at line 17
+            instantiation of "void parent<T>::f() [with T=int]" at line 20
+
+1 error detected in the compilation of "Test_name.c".

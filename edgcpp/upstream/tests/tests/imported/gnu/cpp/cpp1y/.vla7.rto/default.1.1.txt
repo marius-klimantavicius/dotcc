@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 11: error: a variable captured by a lambda cannot have a type involving a variable-length array
+    [&x](int i) {			// { dg-prune-output "sorry" }
+      ^
+
+"Test_name.c", line 12: error: a variable captured by a lambda cannot have a type involving a variable-length array
+      x[0][i] = 0;	     	// { dg-prune-output "not captured" }
+      ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++23 -tused Test_name.c
+"Test_name.c", line 4: error: an ellipsis parameter is not permitted in a requires-expression
+    concept C = requires(T t, ...) {  // error: terminates with an ellipsis
+                              ^
+
+1 error detected in the compilation of "Test_name.c".

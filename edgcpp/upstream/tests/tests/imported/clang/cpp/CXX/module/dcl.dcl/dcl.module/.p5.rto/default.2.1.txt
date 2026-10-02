@@ -1,0 +1,58 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 -DIMPLEMENTATION Test_name.c
+"Test_name.c", line 29: error: a global module fragment declaration must precede any other declaration
+  module;
+  ^
+
+"Test_name.c", line 31: error: class template "type_template" has already been defined (previous definition at line 15)
+  template<typename T> struct type_template {
+                              ^
+
+"Test_name.c", line 36: error: function "type_template<T>::f" has already been defined (previous definition at line 20)
+  template<typename T> void type_template<T>::f(type) {}
+                                              ^
+
+"Test_name.c", line 39: error: class template "default_template_args" has already been defined (previous definition at line 22)
+  struct default_template_args {};
+         ^
+
+"Test_name.c", line 41: error: cannot declare more than one module
+  module Foo;
+         ^
+
+"Test_name.c", line 45: error: a global module fragment declaration must precede any other declaration
+  module;
+  ^
+
+"Test_name.c", line 46: error: cannot declare more than one module
+  module Foo;
+         ^
+
+"Test_name.c", line 48: error: class template "type_template" has already been defined (previous definition at line 15)
+  template<typename T> struct type_template {
+                              ^
+
+"Test_name.c", line 53: error: function "type_template<T>::f" has already been defined (previous definition at line 36)
+  template<typename T> void type_template<T>::f(type) {}
+                                              ^
+
+"Test_name.c", line 56: error: class template "default_template_args" has already been defined (previous definition at line 22)
+  struct default_template_args {};
+         ^
+
+"Test_name.c", line 60: error: a module cannot have an interface dependency on itself
+  import Foo;
+         ^
+
+"Test_name.c", line 62: error: class template "type_template" has already been defined (previous definition at line 15)
+  template<typename T> struct type_template {
+                              ^
+
+"Test_name.c", line 67: error: function "type_template<T>::f" has already been defined (previous definition at line 53)
+  template<typename T> void type_template<T>::f(type) {}
+                                              ^
+
+"Test_name.c", line 70: error: class template "default_template_args" has already been defined (previous definition at line 22)
+  struct default_template_args {};
+         ^
+
+14 errors detected in the compilation of "Test_name.c".

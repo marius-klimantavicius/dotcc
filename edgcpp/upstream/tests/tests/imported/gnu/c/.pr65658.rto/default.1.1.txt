@@ -1,0 +1,85 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 37: warning: function "external_function5" declared implicitly
+        external_function5 (((void *) 0), 0, (void *) &foo);
+        ^
+
+"Test_name.c", line 39: warning: missing return statement at end of non-void function "undefinit1"
+  }
+  ^
+
+"Test_name.c", line 47: warning: function "fn10" declared implicitly
+    if (fn10 ())
+        ^
+
+"Test_name.c", line 51: warning: function "external_function1" declared implicitly
+        ret = external_function1 (3 + u * 10, 10);
+              ^
+
+"Test_name.c", line 54: warning: function "external_function6" declared implicitly
+        external_function6 (0, 0, 0, problemp + problem);
+        ^
+
+"Test_name.c", line 54: warning: arithmetic on pointer to void or function type
+        external_function6 (0, 0, 0, problemp + problem);
+                                              ^
+
+"Test_name.c", line 57: warning: missing return statement at end of non-void function "undefinit2"
+  }
+  ^
+
+"Test_name.c", line 63: warning: function "external_function3" declared implicitly
+    if (external_function3 (((void *) 0), ((void *) 0), &amt, 0, 0))
+        ^
+
+"Test_name.c", line 77: warning: function "fn2" declared implicitly
+    if (fn2 ())
+        ^
+
+"Test_name.c", line 79: warning: function "fn4" declared implicitly
+    if (fn4 (101))
+        ^
+
+"Test_name.c", line 83: warning: missing return statement at end of non-void function "setup"
+  }
+  ^
+
+"Test_name.c", line 89: warning: function "external_function" declared implicitly
+    if (external_function (1))
+        ^
+
+"Test_name.c", line 91: warning: function "external_function" declared implicitly
+    if (external_function (1))
+        ^
+
+"Test_name.c", line 93: warning: function "external_function" declared implicitly
+    if (external_function (1))
+        ^
+
+"Test_name.c", line 96: warning: function "getopt_long" declared implicitly
+  	  getopt_long (argc, argv, ((void *) 0), ((void *) 0),
+  	  ^
+
+"Test_name.c", line 104: warning: function "external_function" declared implicitly
+  	  external_function (1);
+  	  ^
+
+"Test_name.c", line 26: warning: variable "undef1" was declared but never referenced
+  static unsigned int undef1, undef2, undef3, undef4, undef5, undef6;
+                      ^
+
+"Test_name.c", line 26: warning: variable "undef2" was declared but never referenced
+  static unsigned int undef1, undef2, undef3, undef4, undef5, undef6;
+                              ^
+
+"Test_name.c", line 26: warning: variable "undef3" was declared but never referenced
+  static unsigned int undef1, undef2, undef3, undef4, undef5, undef6;
+                                      ^
+
+"Test_name.c", line 26: warning: variable "undef4" was declared but never referenced
+  static unsigned int undef1, undef2, undef3, undef4, undef5, undef6;
+                                              ^
+
+"Test_name.c", line 26: warning: variable "undef5" was declared but never referenced
+  static unsigned int undef1, undef2, undef3, undef4, undef5, undef6;
+                                                      ^
+

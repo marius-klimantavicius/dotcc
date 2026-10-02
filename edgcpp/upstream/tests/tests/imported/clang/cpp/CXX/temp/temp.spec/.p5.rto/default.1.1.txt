@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 7: error: function "f(T) [with T=int]" explicitly instantiated more than once
+  template void f(int); // expected-error{{duplicate explicit instantiation}}
+                ^
+
+"Test_name.c", line 23: error: class "X0<int>" explicitly instantiated more than once
+  template struct X0<int>; // expected-error{{duplicate explicit instantiation}}
+           ^
+
+"Test_name.c", line 26: error: function "X0<T>::f [with T=float]" explicitly instantiated more than once
+  template void X0<float>::f(float); // expected-error{{duplicate explicit instantiation}}
+                           ^
+
+"Test_name.c", line 29: error: union "X0<T>::Inner [with T=float]" explicitly instantiated more than once
+  template union X0<float>::Inner; // expected-error{{duplicate explicit instantiation}}
+           ^
+
+"Test_name.c", line 32: error: member "X0<T>::value [with T=float]" explicitly instantiated more than once
+  template float X0<float>::value; // expected-error{{duplicate explicit instantiation}}
+                            ^
+
+5 errors detected in the compilation of "Test_name.c".

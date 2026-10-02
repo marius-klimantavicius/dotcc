@@ -1,0 +1,102 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 20: warning: variable "v4" is used before its value is set
+    e = (E)v4;
+           ^
+
+"Test_name.c", line 23: error: invalid type conversion
+    v2 = (t2)v1; // expected-error {{invalid conversion between vector type \
+         ^
+
+"Test_name.c", line 23: warning: variable "v1" is used before its value is set
+    v2 = (t2)v1; // expected-error {{invalid conversion between vector type \
+             ^
+
+"Test_name.c", line 25: error: invalid type conversion
+    v1 = (t1)v2; // expected-error {{invalid conversion between vector type \
+         ^
+
+"Test_name.c", line 29: error: invalid type conversion
+    v1 = (t1)(char *)10; // expected-error {{invalid conversion between vector \
+         ^
+
+"Test_name.c", line 32: error: invalid type conversion
+    v1 = (t1)(short)10; // expected-error {{invalid conversion between vector \
+         ^
+
+"Test_name.c", line 36: error: invalid type conversion
+    short r2 = (short)v1; // expected-error {{invalid conversion between vector \
+               ^
+
+"Test_name.c", line 38: error: invalid type conversion
+    char *r3 = (char *)v1; // expected-error {{invalid conversion between vector\
+               ^
+
+"Test_name.c", line 16: warning: variable "v3" was set but never used
+    t3 v3;
+       ^
+
+"Test_name.c", line 35: warning: variable "r1" was declared but never referenced
+    long long r1 = (long long)v1;
+              ^
+
+"Test_name.c", line 61: error: mixed vector-scalar operation not allowed
+    f2 += d; // expected-error {{cannot convert between scalar type 'double' and vector type 'float2' (vector of 2 'float' values) as implicit conversion would cause truncation}}
+       ^
+
+"Test_name.c", line 61: warning: variable "f2" is used before its value is set
+    f2 += d; // expected-error {{cannot convert between scalar type 'double' and vector type 'float2' (vector of 2 'float' values) as implicit conversion would cause truncation}}
+    ^
+
+"Test_name.c", line 61: warning: variable "d" is used before its value is set
+    f2 += d; // expected-error {{cannot convert between scalar type 'double' and vector type 'float2' (vector of 2 'float' values) as implicit conversion would cause truncation}}
+          ^
+
+"Test_name.c", line 62: error: mixed vector-scalar operation not allowed
+    d += f2; // expected-error {{assigning to 'double' from incompatible type 'float2' (vector of 2 'float' values)}}
+      ^
+
+"Test_name.c", line 63: error: a value of type "__attribute((vector_size(8))) double" cannot be assigned to an entity of type "double"
+    a = 3.0 + vget_low_f64(v);
+      ^
+
+"Test_name.c", line 64: error: a value of type "__attribute((vector_size(8))) double" cannot be assigned to an entity of type "double"
+    b = vget_low_f64(v) + 3.0;
+      ^
+
+"Test_name.c", line 65: error: a value of type "float64x1_t" (aka "__attribute((vector_size(8))) double") cannot be assigned to an entity of type "double"
+    c = vget_low_f64(v);
+      ^
+
+"Test_name.c", line 66: error: mixed vector-scalar operation not allowed
+    c -= vget_low_f64(v);
+      ^
+
+"Test_name.c", line 68: error: a value of type "float2" (aka "__attribute((vector_size(8))) float") cannot be assigned to an entity of type "double"
+    d = f2; // expected-error {{assigning to 'double' from incompatible type 'float2'}}
+      ^
+
+"Test_name.c", line 69: error: mixed vector-scalar operation not allowed
+    d = d + f2; // expected-error {{assigning to 'double' from incompatible type 'float2'}}
+          ^
+
+"Test_name.c", line 59: warning: variable "a" was set but never used
+    double d, a, b, c;
+              ^
+
+"Test_name.c", line 59: warning: variable "b" was set but never used
+    double d, a, b, c;
+                 ^
+
+"Test_name.c", line 77: error: a value of type "void *" cannot be assigned to an entity of type "short_sizeof_pointer" (aka "__attribute((vector_size(8UL))) short")
+    v = ptr; // expected-error-re {{assigning to 'short_sizeof_pointer' (vector of {{[0-9]+}} 'short' values) from incompatible type 'void *'}}
+      ^
+
+"Test_name.c", line 77: warning: variable "ptr" is used before its value is set
+    v = ptr; // expected-error-re {{assigning to 'short_sizeof_pointer' (vector of {{[0-9]+}} 'short' values) from incompatible type 'void *'}}
+        ^
+
+"Test_name.c", line 78: error: a value of type "short_sizeof_pointer" (aka "__attribute((vector_size(8UL))) short") cannot be assigned to an entity of type "void *"
+    ptr = v; // expected-error {{assigning to 'void *' from incompatible type 'short_sizeof_pointer'}}
+        ^
+
+16 errors detected in the compilation of "Test_name.c".

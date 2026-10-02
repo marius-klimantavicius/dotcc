@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 18: warning: variable "d" was declared but never referenced
+      int *d = &y;
+           ^
+
+"Test_name.c", line 20: warning: variable "e" was declared but never referenced
+      int *e = &z;
+           ^
+
+"Test_name.c", line 12: warning: variable "f" was set but never used
+    int *f = 0;
+         ^
+

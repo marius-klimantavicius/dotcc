@@ -1,0 +1,27 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 7: error: a virtual function cannot have a trailing requires clause
+    virtual void f1() requires (sizeof(T) == 0);
+                      ^
+
+"Test_name.c", line 9: error: a virtual function cannot have a trailing requires clause
+    virtual void f2() requires (sizeof(T) == 1);
+                      ^
+
+"Test_name.c", line 15: error: a virtual function cannot have a trailing requires clause
+    virtual void f1() requires (sizeof(T) == 0) override {}
+                      ^
+
+"Test_name.c", line 15: error: expected a ";"
+    virtual void f1() requires (sizeof(T) == 0) override {}
+                                                ^
+
+"Test_name.c", line 19: error: a virtual function cannot have a trailing requires clause
+  template<typename T> struct C : T {void f() requires true; };
+                                              ^
+          detected during instantiation of class "C<T> [with T=D]" at line 22
+
+"Test_name.c", line 23: warning: last line of file ends without a newline
+  // expected-note@-1{{in instantiation of template class 'C<D>' requested here}}
+                                                                                 ^
+
+5 errors detected in the compilation of "Test_name.c".

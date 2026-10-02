@@ -1,0 +1,94 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 14: warning: this declaration has no storage class or type specifier
+  constexpr struct {
+  ^
+
+"Test_name.c", line 14: error: expected a ";"
+  constexpr struct {
+            ^
+
+"Test_name.c", line 18: warning: parsing restarts here after previous syntax error
+  } s = { 1, 2 };
+                ^
+
+"Test_name.c", line 19: error: identifier "s" is undefined
+  static_assert(s.a == 1 && s.b == 2);
+                ^
+
+"Test_name.c", line 19: error: this operator is not allowed in an integral constant expression
+  static_assert(s.a == 1 && s.b == 2);
+                 ^
+
+"Test_name.c", line 19: error: this operator is not allowed in an integral constant expression
+  static_assert(s.a == 1 && s.b == 2);
+                             ^
+
+"Test_name.c", line 21: warning: this declaration has no storage class or type specifier
+  constexpr union {
+  ^
+
+"Test_name.c", line 21: error: expected a ";"
+  constexpr union {
+            ^
+
+"Test_name.c", line 24: warning: parsing restarts here after previous syntax error
+  } u = {3};
+           ^
+
+"Test_name.c", line 25: error: identifier "u" is undefined
+  static_assert(u.c == 3);
+                ^
+
+"Test_name.c", line 25: error: this operator is not allowed in an integral constant expression
+  static_assert(u.c == 3);
+                 ^
+
+"Test_name.c", line 27: warning: this declaration has no storage class or type specifier
+  constexpr struct {
+  ^
+
+"Test_name.c", line 27: error: expected a ";"
+  constexpr struct {
+            ^
+
+"Test_name.c", line 34: warning: parsing restarts here after previous syntax error
+  } t = {{.b = 1}, 2};
+                     ^
+
+"Test_name.c", line 35: error: identifier "t" is undefined
+  static_assert(t.b == 1 && t.c == 2);
+                ^
+
+"Test_name.c", line 35: error: this operator is not allowed in an integral constant expression
+  static_assert(t.b == 1 && t.c == 2);
+                 ^
+
+"Test_name.c", line 35: error: this operator is not allowed in an integral constant expression
+  static_assert(t.b == 1 && t.c == 2);
+                             ^
+
+"Test_name.c", line 37: warning: this declaration has no storage class or type specifier
+  constexpr struct {
+  ^
+
+"Test_name.c", line 37: error: expected a ";"
+  constexpr struct {
+            ^
+
+"Test_name.c", line 44: warning: parsing restarts here after previous syntax error
+  } v = {.b = 1, 2};
+                   ^
+
+"Test_name.c", line 45: error: identifier "v" is undefined
+  static_assert(v.b == 1 && v.c == 2);
+                ^
+
+"Test_name.c", line 45: error: this operator is not allowed in an integral constant expression
+  static_assert(v.b == 1 && v.c == 2);
+                 ^
+
+"Test_name.c", line 45: error: this operator is not allowed in an integral constant expression
+  static_assert(v.b == 1 && v.c == 2);
+                             ^
+
+15 errors detected in the compilation of "Test_name.c".

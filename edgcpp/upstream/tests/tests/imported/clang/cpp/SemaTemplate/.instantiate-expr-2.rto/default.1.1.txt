@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 46: warning: variable "xy" was declared but never referenced
+    XY *xy = a1;
+        ^
+
+"Test_name.c", line 48: warning: variable "xx" was declared but never referenced
+    XX *xx = a4;
+        ^
+
+"Test_name.c", line 50: warning: variable "yy" was declared but never referenced
+    YY *yy = a2;
+        ^
+
+"Test_name.c", line 52: warning: variable "zz" was declared but never referenced
+    ZZ *zz = a8;
+        ^
+
+"Test_name.c", line 68: warning: variable "uz" was declared but never referenced
+    UZ *uz = a8;
+        ^
+

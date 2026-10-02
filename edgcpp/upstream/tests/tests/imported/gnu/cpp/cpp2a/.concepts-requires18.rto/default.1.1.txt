@@ -1,0 +1,87 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 15: error: static assertion failed
+  static_assert(requires { requires false; }); // { dg-error "static assertion failed" }
+  ^
+
+"Test_name.c", line 17: error: static assertion failed
+  static_assert(requires { requires integer<void>; }); // { dg-error "static assertion failed" }
+  ^
+
+"Test_name.c", line 20: error: static assertion failed
+  static_assert(requires { requires c1<void>; }); // { dg-error "static assertion failed" }
+  ^
+
+"Test_name.c", line 21: error: reference to void is not allowed
+  static_assert(requires { requires subst<void&>; }); // { dg-error "cannot declare|failed" }
+                                              ^
+
+"Test_name.c", line 21: error: static assertion failed
+  static_assert(requires { requires subst<void&>; }); // { dg-error "cannot declare|failed" }
+  ^
+
+"Test_name.c", line 25: error: static assertion failed
+  static_assert(c1<void>); // { dg-error "static assertion failed" }
+  ^
+
+"Test_name.c", line 72: error: no instance of function template "f1" matches the argument list
+    f1<void>(); // { dg-error "no match" }
+    ^
+"Test_name.c", line 28: note: substituting "<void>" for function template "f1" failed constraints
+  void f1() { }
+       ^
+"Test_name.c", line 27: note: concept "c1" not satisfied for "<void>"
+  template<c1 T>
+           ^
+"Test_name.c", line 12: note: atomic constraint evaluates to false
+  concept c1 = requires { requires integer<T> || subst<T&>; }; // { dg-message "in requirements" }
+               ^
+
+"Test_name.c", line 76: error: no instance of function template "f2" matches the argument list
+    f2<void>(); // { dg-error "no match" }
+    ^
+"Test_name.c", line 32: note: substituting "<void>" for function template "f2" failed constraints
+  void f2();
+       ^
+"Test_name.c", line 31: note: atomic constraint evaluates to false
+    requires requires { requires integer<T> || subst<T&>; } // { dg-message "in requirements" }
+             ^
+
+"Test_name.c", line 81: error: no instance of function template "data<T>::f1 [with T=char]" matches the argument list
+            object type is: data<char>
+    x.f1<void>(); // { dg-error "no matching function" }
+      ^
+"Test_name.c", line 38: note: substituting "<void>" for function template "data<T>::f1 [with T=char]" failed constraints
+    void f1() {}
+         ^
+"Test_name.c", line 37: note: concept "c1" not satisfied for "<void>"
+    template<c1 U>
+             ^
+"Test_name.c", line 12: note: atomic constraint evaluates to false
+  concept c1 = requires { requires integer<T> || subst<T&>; }; // { dg-message "in requirements" }
+               ^
+
+"Test_name.c", line 84: error: no instance of function template "data<T>::f2 [with T=char]" matches the argument list
+            object type is: data<char>
+    x.f2<void>(); // { dg-error "no matching function" }
+      ^
+"Test_name.c", line 42: note: substituting "<void>" for function template "data<T>::f2 [with T=char]" failed constraints
+    void f2() {}
+         ^
+"Test_name.c", line 41: note: atomic constraint evaluates to false
+      requires requires { requires integer<U> || subst<U&>; } // { dg-message in requirements" }
+               ^
+
+"Test_name.c", line 44: error: static assertion failed
+    static_assert(requires { requires subst<T&>; }); // { dg-error "forming reference|failed" }
+    ^
+          detected during instantiation of class "data<T> [with T=void]" at line 86
+
+"Test_name.c", line 90: error: static assertion failed
+    static_assert(t.test<void>()); // { dg-error "static assertion failed" }
+    ^
+
+"Test_name.c", line 86: warning: variable "fail" was declared but never referenced
+    data<void> fail;
+               ^
+
+12 errors detected in the compilation of "Test_name.c".

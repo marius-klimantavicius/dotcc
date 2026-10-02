@@ -1,0 +1,5 @@
+eccp -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 7: warning: bit field cannot contain all values of the enumerated type
+    E e : 3;
+          ^
+

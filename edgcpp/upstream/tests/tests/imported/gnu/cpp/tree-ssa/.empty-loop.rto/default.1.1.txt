@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./tree-ssa/empty-loop.C", line 17: warning: ignoring return value from routine declared with "nodiscard" attribute
+      it->length();
+                ^
+
+"./tree-ssa/empty-loop.C", line 20: warning: ignoring return value from routine declared with "nodiscard" attribute
+      it->length();
+                ^
+
+"./tree-ssa/empty-loop.C", line 28: warning: ignoring return value from routine declared with "nodiscard" attribute
+          it0->length();
+                     ^
+
+"./tree-ssa/empty-loop.C", line 29: warning: ignoring return value from routine declared with "nodiscard" attribute
+          it1->length();
+                     ^
+

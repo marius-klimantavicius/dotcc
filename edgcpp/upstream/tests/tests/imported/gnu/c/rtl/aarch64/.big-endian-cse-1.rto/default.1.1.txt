@@ -1,0 +1,70 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 7: error: identifier "startwith" is undefined
+  void __RTL (startwith ("vregs")) foo (void *ptr1, void *ptr2)
+              ^
+
+"Test_name.c", line 7: error: expected a ")"
+  void __RTL (startwith ("vregs")) foo (void *ptr1, void *ptr2)
+                         ^
+
+"Test_name.c", line 7: error: expected a "{"
+  void __RTL (startwith ("vregs")) foo (void *ptr1, void *ptr2)
+                                   ^
+
+"Test_name.c", line 9: error: identifier "function" is undefined
+    (function "foo"
+     ^
+
+"Test_name.c", line 9: error: expected a ")"
+    (function "foo"
+              ^
+
+"Test_name.c", line 13: warning: parsing restarts here after previous syntax error
+      ) ;; param "ptr1"
+        ^
+
+"Test_name.c", line 13: error: identifier "param" is undefined
+      ) ;; param "ptr1"
+           ^
+
+"Test_name.c", line 13: error: expected a ";"
+      ) ;; param "ptr1"
+                 ^
+
+"Test_name.c", line 17: warning: parsing restarts here after previous syntax error
+      ) ;; param "ptr2"
+        ^
+
+"Test_name.c", line 17: error: expected a ";"
+      ) ;; param "ptr2"
+                 ^
+
+"Test_name.c", line 39: warning: parsing restarts here after previous syntax error
+        ) ;; block 2
+          ^
+
+"Test_name.c", line 39: error: identifier "block" is undefined
+        ) ;; block 2
+             ^
+
+"Test_name.c", line 39: error: expected a ";"
+        ) ;; block 2
+                   ^
+
+"Test_name.c", line 40: error: identifier "insn" is undefined
+      ) ;; insn-chain
+           ^
+
+"Test_name.c", line 40: error: identifier "chain" is undefined
+      ) ;; insn-chain
+                ^
+
+"Test_name.c", line 41: error: expected a ";"
+    ) ;; function
+    ^
+
+"Test_name.c", line 42: error: expected a ";"
+  }
+  ^
+
+14 errors detected in the compilation of "Test_name.c".

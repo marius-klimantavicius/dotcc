@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: warning: variable "a" was declared but never referenced
+  static int a = Foo (0);
+             ^
+
+"Test_name.c", line 11: warning: variable "b" was declared but never referenced
+  static int b = Foo (1);
+             ^
+
+"Test_name.c", line 12: warning: variable "d" was declared but never referenced
+  static int d = Foo (3);
+             ^
+
+"Test_name.c", line 13: warning: variable "c" was declared but never referenced
+  static int c = Foo (2);
+             ^
+
+"Test_name.c", line 14: warning: variable "e" was declared but never referenced
+  static int e = Foo (4);
+             ^
+
+"Test_name.c", line 15: warning: variable "g" was declared but never referenced
+  static int g = Foo (6);
+             ^
+
+"Test_name.c", line 16: warning: variable "f" was declared but never referenced
+  static int f = Foo (5);
+             ^
+

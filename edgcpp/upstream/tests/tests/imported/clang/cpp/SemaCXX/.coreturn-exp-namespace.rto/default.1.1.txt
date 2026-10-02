@@ -1,0 +1,114 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 Test_name.c
+"SemaCXX/coreturn-exp-namespace.cpp", line 86: error: identifier "co_await" is undefined
+  void test0() { co_await a; }
+                 ^
+
+"SemaCXX/coreturn-exp-namespace.cpp", line 88: error: identifier "co_await" is undefined
+  float test1() { co_await a; }
+                  ^
+
+"SemaCXX/coreturn-exp-namespace.cpp", line 88: warning: missing return statement at end of non-void function "test1"
+  float test1() { co_await a; }
+                              ^
+
+"SemaCXX/coreturn-exp-namespace.cpp", line 91: error: identifier "co_await" is undefined
+    co_await a;
+    ^
+
+"SemaCXX/coreturn-exp-namespace.cpp", line 92: warning: missing return statement at end of non-void function "test2"
+  }
+  ^
+
+"SemaCXX/coreturn-exp-namespace.cpp", line 96: error: identifier "co_return" is undefined
+      co_return 42;
+      ^
+
+"SemaCXX/coreturn-exp-namespace.cpp", line 96: error: expected a ";"
+      co_return 42;
+                ^
+
+"SemaCXX/coreturn-exp-namespace.cpp", line 97: warning: missing return statement at end of non-void function "test2a"
+  }
+  ^
+
+"SemaCXX/coreturn-exp-namespace.cpp", line 100: error: identifier "co_await" is undefined
+    co_await a;
+    ^
+
+"SemaCXX/coreturn-exp-namespace.cpp", line 106: error: identifier "co_return" is undefined
+    co_return 42;
+    ^
+
+"SemaCXX/coreturn-exp-namespace.cpp", line 106: error: expected a ";"
+    co_return 42;
+              ^
+
+"SemaCXX/coreturn-exp-namespace.cpp", line 107: warning: missing return statement at end of non-void function "test4"
+  }
+  ^
+
+"SemaCXX/coreturn-exp-namespace.cpp", line 110: error: identifier "co_await" is undefined
+    co_await a;
+    ^
+
+"SemaCXX/coreturn-exp-namespace.cpp", line 115: error: identifier "co_return" is undefined
+      co_return 42;
+      ^
+
+"SemaCXX/coreturn-exp-namespace.cpp", line 115: error: expected a ";"
+      co_return 42;
+                ^
+
+"SemaCXX/coreturn-exp-namespace.cpp", line 120: error: identifier "co_return" is undefined
+      co_return 42;
+      ^
+
+"SemaCXX/coreturn-exp-namespace.cpp", line 120: error: expected a ";"
+      co_return 42;
+                ^
+
+"SemaCXX/coreturn-exp-namespace.cpp", line 122: error: identifier "co_return" is undefined
+      co_return 101;
+      ^
+
+"SemaCXX/coreturn-exp-namespace.cpp", line 122: error: expected a ";"
+      co_return 101;
+                ^
+
+"SemaCXX/coreturn-exp-namespace.cpp", line 126: error: identifier "co_await" is undefined
+    co_await a;
+    ^
+
+"SemaCXX/coreturn-exp-namespace.cpp", line 127: warning: missing return statement at end of non-void function "test8"
+  }
+  ^
+
+"SemaCXX/coreturn-exp-namespace.cpp", line 131: error: identifier "co_return" is undefined
+      co_return;
+      ^
+
+"SemaCXX/coreturn-exp-namespace.cpp", line 132: warning: missing return statement at end of non-void function "test9"
+  }
+  ^
+
+"SemaCXX/coreturn-exp-namespace.cpp", line 135: error: identifier "co_await" is undefined
+    co_await a;
+    ^
+
+"SemaCXX/coreturn-exp-namespace.cpp", line 136: warning: missing return statement at end of non-void function "test10"
+  }
+  ^
+
+"SemaCXX/coreturn-exp-namespace.cpp", line 140: error: identifier "co_return" is undefined
+      co_return 42;
+      ^
+
+"SemaCXX/coreturn-exp-namespace.cpp", line 140: error: expected a ";"
+      co_return 42;
+                ^
+
+"SemaCXX/coreturn-exp-namespace.cpp", line 141: warning: missing return statement at end of non-void function "test11"
+  }
+  ^
+
+20 errors detected in the compilation of "Test_name.c".

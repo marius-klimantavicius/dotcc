@@ -1,0 +1,49 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 13: warning: unknown attribute "address_space"
+  void *p1(void _AS1 *p) { return p; } 
+                ^
+
+"Test_name.c", line 14: warning: unknown attribute "address_space"
+  void *p2(void _AS2 *p) { return p; } // expected-error {{returning '_AS2 void *' from a function with result type 'void *' changes address space of pointer}}
+                ^
+
+"Test_name.c", line 15: warning: unknown attribute "address_space"
+  void *p3(void _AS3 *p) { return p; }
+                ^
+
+"Test_name.c", line 16: warning: unknown attribute "address_space"
+  void *p4(void _AS4 *p) { return p; }
+                ^
+
+"Test_name.c", line 17: warning: unknown attribute "address_space"
+  void *p5(void _AS5 *p) { return p; } // expected-error {{returning '_AS5 void *' from a function with result type 'void *' changes address space of pointer}}
+                ^
+
+"Test_name.c", line 18: warning: unknown attribute "address_space"
+  void *pi(void _AS999 *p) { return p; } // expected-error {{returning '_AS999 void *' from a function with result type 'void *' changes address space of pointer}}
+                ^
+
+"Test_name.c", line 19: warning: unknown attribute "opencl_local"
+  void *pc(void __attribute__((opencl_local)) *p) { return p; } // expected-error {{returning '__local void *' from a function with result type 'void *' changes address space of pointer}}
+                               ^
+
+"Test_name.c", line 20: warning: unknown attribute "address_space"
+  void _AS1 *r0(void _AS1 *p) { return p; }
+       ^
+
+"Test_name.c", line 20: warning: unknown attribute "address_space"
+  void _AS1 *r0(void _AS1 *p) { return p; }
+                     ^
+
+"Test_name.c", line 21: warning: unknown attribute "address_space"
+  void _AS1 *r1(void *p) { return p; } // expected-error {{returning 'void *' from a function with result type '_AS1 void *' changes address space of pointer}}
+       ^
+
+"Test_name.c", line 22: warning: unknown attribute "address_space"
+  void _AS1 *r2(void *p) { return (void _AS1 *)p; }
+       ^
+
+"Test_name.c", line 22: warning: unknown attribute "address_space"
+  void _AS1 *r2(void *p) { return (void _AS1 *)p; }
+                                        ^
+

@@ -1,0 +1,86 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 3: error: identifier "TYPE" is undefined
+  void add90 (TYPE a[restrict N], TYPE b[restrict N], TYPE c[restrict N])
+              ^
+
+"Test_name.c", line 3: error: identifier "N" is undefined
+  void add90 (TYPE a[restrict N], TYPE b[restrict N], TYPE c[restrict N])
+                              ^
+
+"Test_name.c", line 3: error: identifier "TYPE" is undefined
+  void add90 (TYPE a[restrict N], TYPE b[restrict N], TYPE c[restrict N])
+                                  ^
+
+"Test_name.c", line 3: error: identifier "TYPE" is undefined
+  void add90 (TYPE a[restrict N], TYPE b[restrict N], TYPE c[restrict N])
+                                                      ^
+
+"Test_name.c", line 17: error: identifier "TYPE" is undefined
+  void add270 (TYPE a[restrict N], TYPE b[restrict N], TYPE c[restrict N])
+               ^
+
+"Test_name.c", line 17: error: identifier "N" is undefined
+  void add270 (TYPE a[restrict N], TYPE b[restrict N], TYPE c[restrict N])
+                               ^
+
+"Test_name.c", line 17: error: identifier "TYPE" is undefined
+  void add270 (TYPE a[restrict N], TYPE b[restrict N], TYPE c[restrict N])
+                                   ^
+
+"Test_name.c", line 17: error: identifier "TYPE" is undefined
+  void add270 (TYPE a[restrict N], TYPE b[restrict N], TYPE c[restrict N])
+                                                       ^
+
+"Test_name.c", line 31: error: identifier "TYPE" is undefined
+  void addMixed (TYPE a[restrict N], TYPE b[restrict N], TYPE c[restrict N])
+                 ^
+
+"Test_name.c", line 31: error: identifier "N" is undefined
+  void addMixed (TYPE a[restrict N], TYPE b[restrict N], TYPE c[restrict N])
+                                 ^
+
+"Test_name.c", line 31: error: identifier "TYPE" is undefined
+  void addMixed (TYPE a[restrict N], TYPE b[restrict N], TYPE c[restrict N])
+                                     ^
+
+"Test_name.c", line 31: error: identifier "TYPE" is undefined
+  void addMixed (TYPE a[restrict N], TYPE b[restrict N], TYPE c[restrict N])
+                                                         ^
+
+"Test_name.c", line 45: error: identifier "TYPE" is undefined
+  void add90HandUnrolled (TYPE a[restrict N], TYPE b[restrict N],
+                          ^
+
+"Test_name.c", line 45: error: identifier "N" is undefined
+  void add90HandUnrolled (TYPE a[restrict N], TYPE b[restrict N],
+                                          ^
+
+"Test_name.c", line 45: error: identifier "TYPE" is undefined
+  void add90HandUnrolled (TYPE a[restrict N], TYPE b[restrict N],
+                                              ^
+
+"Test_name.c", line 46: error: identifier "TYPE" is undefined
+  			TYPE c[restrict N])
+  			^
+
+"Test_name.c", line 62: error: identifier "TYPE" is undefined
+  void add90Hybrid (TYPE a[restrict N], TYPE b[restrict N], TYPE c[restrict N],
+                    ^
+
+"Test_name.c", line 62: error: identifier "N" is undefined
+  void add90Hybrid (TYPE a[restrict N], TYPE b[restrict N], TYPE c[restrict N],
+                                    ^
+
+"Test_name.c", line 62: error: identifier "TYPE" is undefined
+  void add90Hybrid (TYPE a[restrict N], TYPE b[restrict N], TYPE c[restrict N],
+                                        ^
+
+"Test_name.c", line 62: error: identifier "TYPE" is undefined
+  void add90Hybrid (TYPE a[restrict N], TYPE b[restrict N], TYPE c[restrict N],
+                                                            ^
+
+"Test_name.c", line 63: error: identifier "TYPE" is undefined
+  		  TYPE d[restrict N])
+  		  ^
+
+21 errors detected in the compilation of "Test_name.c".

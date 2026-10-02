@@ -1,0 +1,63 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 28: error: overloaded function "X1<T>::X1" is not a template
+  template<typename T> X1<T>::X1<T>(int) { } // expected-error{{out-of-line constructor for 'X1' cannot have template arguments}}
+                              ^
+
+"Test_name.c", line 29: error: overloaded function "X1<T>::X1" is not a template
+  template<typename T> (X1<T>::X1<T>)(float) { } // expected-error{{out-of-line constructor for 'X1' cannot have template arguments}}
+                               ^
+
+"Test_name.c", line 32: error: overloaded function "X0::X0" is not a type name
+  X0::X0 X0::f1() { return X0(); } // expected-error{{qualified reference to 'X0' is a constructor name rather than a type in this context}}
+  ^
+
+"Test_name.c", line 32: error: declaration is incompatible with "X0 X0::f1()" (declared at line 8)
+  X0::X0 X0::f1() { return X0(); } // expected-error{{qualified reference to 'X0' is a constructor name rather than a type in this context}}
+             ^
+
+"Test_name.c", line 36: error: overloaded function "X1<T>::X1" is not a template
+  template<typename T> X1<T>::X1<T> X1<T>::f2() { } // expected-warning{{missing 'typename'}}
+                              ^
+
+"Test_name.c", line 36: error: no instance of overloaded function "X1<T>::f2" matches the specified type
+  template<typename T> X1<T>::X1<T> X1<T>::f2() { } // expected-warning{{missing 'typename'}}
+                                           ^
+
+"Test_name.c", line 37: error: overloaded function "X1<T>::X1" is not a template
+  template<typename T> X1<T>::X1<T> (X1<T>::f2)(int) { } // expected-warning{{missing 'typename'}}
+                              ^
+
+"Test_name.c", line 37: warning: variable templates are a C++14 feature
+  template<typename T> X1<T>::X1<T> (X1<T>::f2)(int) { } // expected-warning{{missing 'typename'}}
+                                     ^
+
+"Test_name.c", line 99: error: function "sfinae::f<T>(T::X0 *) [with T=X0]" (declared at line 97) cannot be referenced -- it is a deleted function
+    void g() { f<X0>(0); }
+               ^
+
+"Test_name.c", line 139: error: function "InhCtor::A::T" (declared at line 125) is inaccessible
+    int n = b.T(); // expected-error {{'T' is a protected member of 'InhCtor::A'}}
+              ^
+
+"Test_name.c", line 139: error: protected function "InhCtor::A::T" (declared at line 125) is not accessible through a "InhCtor::B" pointer or object
+    int n = b.T(); // expected-error {{'T' is a protected member of 'InhCtor::A'}}
+              ^
+
+"Test_name.c", line 195: error: a class-qualified name is required
+      using InhCtor::NS::NS; // expected-error {{using declaration in class refers into 'InhCtor::NS', which is not a class}}
+            ^
+
+"Test_name.c", line 202: error: a class-qualified name is required
+      using I::I; // expected-error {{'I' (aka 'int') is not a class, namespace, or enumeration}}
+            ^
+
+"Test_name.c", line 202: error: expected a ";"
+      using I::I; // expected-error {{'I' (aka 'int') is not a class, namespace, or enumeration}}
+             ^
+
+"Test_name.c", line 205: warning: inheriting constructors must be inherited from a direct base class
+      using T::T; // expected-error {{type 'int' cannot be used prior to '::' because it has no members}}
+               ^
+          detected during instantiation of class "InhCtor::UsingIntTemplate<T> [with T=int]" at line 207
+
+13 errors detected in the compilation of "Test_name.c".

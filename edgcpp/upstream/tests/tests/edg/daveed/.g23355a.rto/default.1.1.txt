@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++11 Test_name.c
+"Test_name.c", line 10: error: expected a comma (the one-argument version of static_assert is not enabled in this mode)
+  static_assert(!__is_constructible(XX));;
+                                       ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc -E Test_name.c
+# 1 "Test_name.c"
+
+
+ 
+
+ 
+
+ 
+
+ 
+
+"Test_name.c", line 11: error: expected an expression
+  #if		/* { dg-error "no expression" "empty #if" } */
+     		                                              ^
+
+
+
+
+"Test_name.c", line 14: error: expected an expression
+  #if ~		/* { dg-error "no right op" "no unary operand" } */
+       		                                                   ^
+
+
+
+
+"Test_name.c", line 17: error: this operator is not allowed in a preprocessing expression
+  #if 3 + * 6 + 4  /* { dg-error "no right op" "no right operand" } */
+          ^
+
+
+
+
+"Test_name.c", line 20: error: extra text after expected end of preprocessing directive
+  #if 2 ~2	/* { dg-error "missing bin" "no binary operator" } */
+        ^
+
+
+
+
+"Test_name.c", line 23: error: function call is not allowed in a constant expression
+  #if 1 + 2 (3)   /* { dg-error "missing bin" "immediate then open paren" } */
+          ^
+
+
+
+
+"Test_name.c", line 26: error: extra text after expected end of preprocessing directive
+  #if (2) 4 * 2  /* { dg-error "missing bin" "close paren then immediate" } */
+          ^
+
+
+
+
+"Test_name.c", line 29: error: expected an expression
+  #if == 2  /* { dg-error "no left op" } */
+      ^
+
+
+
+
+"Test_name.c", line 32: error: expected an expression
+  #if (==2)  /* { dg-error "no left op" } */
+       ^
+
+8 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,134 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 12: error: a requires-clause is not allowed here (not a templated function)
+  void f1(int a) requires true;         // { dg-error "non-templated" }
+                 ^
+
+"Test_name.c", line 13: error: a requires-clause is not allowed here (not a templated function)
+  auto f2(int a) -> bool requires true; // { dg-error "non-templated" }
+                         ^
+
+"Test_name.c", line 14: error: a requires-clause is not allowed here (not a templated function)
+  auto f3(int a) requires true -> bool; // { dg-error "" } requires-clause precedes trailing-return-type
+                 ^
+
+"Test_name.c", line 14: error: this operator cannot appear at the top level (without parentheses) in a requires-clause
+  auto f3(int a) requires true -> bool; // { dg-error "" } requires-clause precedes trailing-return-type
+                               ^
+
+"Test_name.c", line 14: error: operator -> or ->* applied to "bool" instead of to a pointer type
+  auto f3(int a) requires true -> bool; // { dg-error "" } requires-clause precedes trailing-return-type
+                          ^
+
+"Test_name.c", line 14: error: expected a member name
+  auto f3(int a) requires true -> bool; // { dg-error "" } requires-clause precedes trailing-return-type
+                                  ^
+
+"Test_name.c", line 15: error: a requires-clause is not allowed here (not a templated function)
+  typedef void fn_t() requires true;    // { dg-error "typedef" }
+                      ^
+
+"Test_name.c", line 16: error: a requires-clause is not allowed here (not a templated function)
+  void (*pf)() requires true;           // { dg-error "non-function" }
+               ^
+
+"Test_name.c", line 17: error: a requires-clause is not allowed here (not a templated function)
+  void (*fn(int))() requires false;     // { dg-error "return type" }
+                    ^
+
+"Test_name.c", line 18: error: incomplete type "void" is not allowed
+  void g(int (*)() requires true);      // { dg-error "parameter|non-function" }
+       ^
+
+"Test_name.c", line 18: error: expected an expression
+  void g(int (*)() requires true);      // { dg-error "parameter|non-function" }
+               ^
+
+"Test_name.c", line 18: error: expected a ")"
+  void g(int (*)() requires true);      // { dg-error "parameter|non-function" }
+                   ^
+
+"Test_name.c", line 19: error: expected an expression
+  auto* p = new (void(*)(char) requires true); // { dg-error "type-id" }
+                       ^
+
+"Test_name.c", line 19: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+  auto* p = new (void(*)(char) requires true); // { dg-error "type-id" }
+                 ^
+
+"Test_name.c", line 19: error: type name is not allowed
+  auto* p = new (void(*)(char) requires true); // { dg-error "type-id" }
+                         ^
+
+"Test_name.c", line 19: error: expected a ")"
+  auto* p = new (void(*)(char) requires true); // { dg-error "type-id" }
+                               ^
+
+"Test_name.c", line 19: error: expected a type specifier
+  auto* p = new (void(*)(char) requires true); // { dg-error "type-id" }
+                                             ^
+
+"Test_name.c", line 31: error: no instance of function template "f5" matches the argument list
+            argument types are: (void *)
+    f5((void*)0); // { dg-error "" }
+    ^
+"Test_name.c", line 21: note: substituting "<void *>" for function template "f5" failed constraints
+  void f5(auto a) requires requires (decltype(a) x) { -x; } { } // { dg-message "in requirements" }
+       ^
+"Test_name.c", line 21: note: atomic constraint evaluates to false
+  void f5(auto a) requires requires (decltype(a) x) { -x; } { } // { dg-message "in requirements" }
+                           ^
+
+"Test_name.c", line 39: error: atomic constraint must have type bool
+  template<int N> requires N struct S1 { }; // { dg-error "does not have type" }
+                           ^
+
+"Test_name.c", line 40: error: template constraint not satisfied
+  S1<1> x0; // { dg-error "template constraint failure|does not have type" }
+      ^
+"Test_name.c", line 39: note: substitution of arguments "<1>" for requires-clause failed
+  template<int N> requires N struct S1 { }; // { dg-error "does not have type" }
+                           ^
+"Test_name.c", line 39: note: atomic constraint failed substitution
+  template<int N> requires N struct S1 { }; // { dg-error "does not have type" }
+                           ^
+
+"Test_name.c", line 42: error: this operator cannot appear at the top level (without parentheses) in a requires-clause
+  template<int N> requires N == 0 struct S2 { }; // { dg-error "does not have type|must be enclosed" }
+                             ^
+
+"Test_name.c", line 47: error: template constraint not satisfied
+  S4<int, 0> x1;      // { dg-error "template constraint failure" }
+           ^
+"Test_name.c", line 46: note: substitution of arguments "<int, 0>" for requires-clause failed
+  template<typename T, T X> requires X struct S4 { }; // { dg-error "bool" }
+                                     ^
+"Test_name.c", line 46: note: atomic constraint must have type bool
+  template<typename T, T X> requires X struct S4 { }; // { dg-error "bool" }
+                                     ^
+
+"Test_name.c", line 49: error: template constraint not satisfied
+  S4<bool, false> x3; // { dg-error "template constraint failure" }
+                ^
+"Test_name.c", line 46: note: substitution of arguments "<bool, false>" for requires-clause failed
+  template<typename T, T X> requires X struct S4 { }; // { dg-error "bool" }
+                                     ^
+"Test_name.c", line 46: note: atomic constraint evaluates to false
+  template<typename T, T X> requires X struct S4 { }; // { dg-error "bool" }
+                                     ^
+
+"Test_name.c", line 63: error: invalid start of expression in requires clause
+    requires Streamable<T> && !Range<T> // { dg-error "must be enclosed" }
+                              ^
+
+"Test_name.c", line 72: error: no instance of function template "print2" matches the argument list
+            argument types are: (const char [6])
+    print2("hello"); // { dg-error "" }
+    ^
+"Test_name.c", line 68: note: substituting "<char [6]>" for function template "print2" failed constraints
+  void print2(const T& x) { }
+       ^
+"Test_name.c", line 67: note: atomic constraint evaluates to false
+    requires Streamable<T> && (!Range<T>)
+                               ^
+
+25 errors detected in the compilation of "Test_name.c".

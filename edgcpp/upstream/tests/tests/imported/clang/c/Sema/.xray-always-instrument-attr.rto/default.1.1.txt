@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c11 Test_name.c
+"Test_name.c", line 4: warning: unknown attribute "xray_always_instrument"
+  void foo(void) __attribute__((xray_always_instrument));
+                                ^
+
+"Test_name.c", line 6: warning: unknown attribute "xray_always_instrument"
+  struct __attribute__((xray_always_instrument)) a { int x; }; // expected-warning {{'xray_always_instrument' attribute only applies to functions and Objective-C methods}}
+                        ^
+
+"Test_name.c", line 8: warning: unknown attribute "xray_always_instrument"
+  void bar(void) __attribute__((xray_always_instrument("not-supported"))); // expected-error {{'xray_always_instrument' attribute takes no arguments}}
+                                ^
+

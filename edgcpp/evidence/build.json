@@ -1,0 +1,30 @@
+{
+  "recorded_utc": "2026-10-01T02:32:37.366729+00:00",
+  "edg_commit": "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f",
+  "dotcc_commit": "6b6f1305ae08224b479135f4c3bc45851febcd16",
+  "compiler": "GCC 13.3.0",
+  "dotnet_sdk": "10.0.111",
+  "platform": "Linux x86_64",
+  "binaries": {
+    "bin/cpfe": {
+      "bytes": 23145904,
+      "sha256": "aa03aa37fc33e0e9374ea9572f3876a16fd4c1886aaa00eaed015e7c538fc473"
+    },
+    "bin/cpfe-cp": {
+      "bytes": 22616760,
+      "sha256": "9a0d1e60ca8f17635a86217f242a8e3c1800753084447918289553c6dd72d553"
+    },
+    "bin/cdisp": {
+      "bytes": 1790712,
+      "sha256": "74a99fd876be633926e4c7a849c2f1d981d7df81225a53b34e882758c1c148b0"
+    },
+    "lib/libC.a": {
+      "bytes": 743006,
+      "sha256": "f068889b4d56a590bfd33c94d67d5422c46c916eb2bbdd77891261eb02f2eed9"
+    },
+    "lib_linux_x86_64/libC.a": {
+      "bytes": 743726,
+      "sha256": "a1942143042fa66fe455751e8da78131fa9f5d81db66b9d9173c223842816368"
+    }
+  }
+}

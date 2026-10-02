@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=2 --c++03 Test_name.c
+"Test_name.c", line 7: error: more than one instance of overloaded function "f" matches the argument list:
+            function "f(char)" (declared at line 5)
+            function "f(const char *)" (declared at line 6)
+            argument types are: (const int)
+    int r = f(zero);  // Previously always ambiguous because "zero" was
+            ^
+
+1 error detected in the compilation of "Test_name.c".

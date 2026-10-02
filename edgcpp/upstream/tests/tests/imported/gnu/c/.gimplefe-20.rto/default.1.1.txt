@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 8: error: expected a "{"
+  double __GIMPLE() f()
+                    ^
+
+"Test_name.c", line 15: error: identifier "t1_2" is undefined
+    t1_2 = __real a;
+    ^
+
+"Test_name.c", line 16: error: identifier "t2_3" is undefined
+    t2_3 = __imag a;
+    ^
+
+"Test_name.c", line 10: warning: variable "t1" was declared but never referenced
+    double t1;
+           ^
+
+"Test_name.c", line 11: warning: variable "t2" was declared but never referenced
+    double t2;
+           ^
+
+"Test_name.c", line 14: warning: label "bb1" was declared but never referenced
+  bb1:
+  ^
+
+3 errors detected in the compilation of "Test_name.c".

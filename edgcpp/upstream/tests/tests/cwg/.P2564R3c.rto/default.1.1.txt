@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --c++20 -tused -A Test_name.c
+"Test_name.c", line 7: error: identifier "f" is undefined
+  auto a = &f<char>; // ok, f<char> is not an immediate function
+            ^
+
+"Test_name.c", line 12: error: call to consteval function "id(int)" did not produce a valid constant expression
+  constexpr T h(T t = id(x)) { // h<int> is not an immediate function
+                        ^
+"Test_name.c", line 12: note: the value of variable "x" (declared at line 9) cannot be used as a constant
+  constexpr T h(T t = id(x)) { // h<int> is not an immediate function
+                         ^
+          detected during:
+            instantiation of "T h(T) [with T=int]" at line 18
+            instantiation of "T hh<T>() [with T=int]" at line 21
+
+2 errors detected in the compilation of "Test_name.c".

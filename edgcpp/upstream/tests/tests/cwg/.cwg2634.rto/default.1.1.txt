@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++23 Test_name.c
+"Test_name.c", line 15: error: member "D::d" (declared at line 6) is inaccessible
+      t.d = 10;              // #2 error: ::X is not a friend of f::D
+        ^
+
+1 error detected in the compilation of "Test_name.c".

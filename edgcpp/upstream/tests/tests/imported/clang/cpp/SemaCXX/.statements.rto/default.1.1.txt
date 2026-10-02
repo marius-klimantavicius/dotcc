@@ -1,0 +1,35 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 16: warning: dynamic initialization in unreachable code
+    X x;         // expected-note {{jump bypasses variable initialization}} 
+      ^
+
+"Test_name.c", line 15: error: transfer of control bypasses initialization of:
+            variable "x" (declared at line 16)
+    goto later;  // expected-error {{cannot jump}}
+    ^
+
+"Test_name.c", line 23: warning: variable "x" was declared but never referenced
+    void a() { goto out; A x; out: return; }
+                           ^
+
+"Test_name.c", line 27: error: expression must be a modifiable lvalue
+      __asm__ ("":"+r" (test3)); // expected-error{{invalid lvalue in asm output}}
+                        ^
+
+"Test_name.c", line 33: error: cannot determine which instance of overloaded function "test4" is intended
+    __asm__ ("":"+r" (test4)); // expected-error{{invalid lvalue in asm output}}
+                      ^
+
+"Test_name.c", line 33: error: expression must be a modifiable lvalue
+    __asm__ ("":"+r" (test4)); // expected-error{{invalid lvalue in asm output}}
+                      ^
+
+"Test_name.c", line 37: warning: variable "buf" is used before its value is set
+    __asm__ ("":"+r" (buf));
+                      ^
+
+"Test_name.c", line 75: error: statement expressions are only allowed in block scope
+      int j = ({i;}); // expected-error {{invalid use of non-static data member 'i'}}
+               ^
+
+5 errors detected in the compilation of "Test_name.c".

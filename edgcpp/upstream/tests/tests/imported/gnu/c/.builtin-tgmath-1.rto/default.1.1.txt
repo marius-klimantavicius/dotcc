@@ -1,0 +1,786 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 48: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1v (f), 2, var_f);
+    ^
+
+"Test_name.c", line 48: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1v (f), 2, var_f);
+    ^
+
+"Test_name.c", line 48: error: declaration is incompatible with previous "var_f" (declared at line 19)
+    CHECK_CALL (t1v (f), 2, var_f);
+    ^
+
+"Test_name.c", line 49: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1v (vf), 3, var_f);
+    ^
+
+"Test_name.c", line 49: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1v (vf), 3, var_f);
+    ^
+
+"Test_name.c", line 50: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1v (d), 5, var_d);
+    ^
+
+"Test_name.c", line 50: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1v (d), 5, var_d);
+    ^
+
+"Test_name.c", line 50: error: declaration is incompatible with previous "var_d" (declared at line 20)
+    CHECK_CALL (t1v (d), 5, var_d);
+    ^
+
+"Test_name.c", line 51: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1v (ld), 7, var_ld);
+    ^
+
+"Test_name.c", line 51: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1v (ld), 7, var_ld);
+    ^
+
+"Test_name.c", line 51: error: declaration is incompatible with previous "var_ld" (declared at line 21)
+    CHECK_CALL (t1v (ld), 7, var_ld);
+    ^
+
+"Test_name.c", line 52: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1v (i), 7, var_d);
+    ^
+
+"Test_name.c", line 52: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1v (i), 7, var_d);
+    ^
+
+"Test_name.c", line 53: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1v (ll), 8, var_d);
+    ^
+
+"Test_name.c", line 53: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1v (ll), 8, var_d);
+    ^
+
+"Test_name.c", line 54: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1vr (f), 2, var_f);
+    ^
+
+"Test_name.c", line 54: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1vr (f), 2, var_f);
+    ^
+
+"Test_name.c", line 55: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1vr (vf), 3, var_f);
+    ^
+
+"Test_name.c", line 55: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1vr (vf), 3, var_f);
+    ^
+
+"Test_name.c", line 56: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1vr (d), 5, var_d);
+    ^
+
+"Test_name.c", line 56: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1vr (d), 5, var_d);
+    ^
+
+"Test_name.c", line 57: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1vr (ld), 7, var_ld);
+    ^
+
+"Test_name.c", line 57: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1vr (ld), 7, var_ld);
+    ^
+
+"Test_name.c", line 58: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1vr (i), 7, var_d);
+    ^
+
+"Test_name.c", line 58: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1vr (i), 7, var_d);
+    ^
+
+"Test_name.c", line 59: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1vr (ll), 8, var_d);
+    ^
+
+"Test_name.c", line 59: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t1vr (ll), 8, var_d);
+    ^
+
+"Test_name.c", line 78: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t2v (1, f), 2, var_f);
+    ^
+
+"Test_name.c", line 78: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t2v (1, f), 2, var_f);
+    ^
+
+"Test_name.c", line 79: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t2v (2, d), 6, var_d);
+    ^
+
+"Test_name.c", line 79: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t2v (2, d), 6, var_d);
+    ^
+
+"Test_name.c", line 80: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t2v (3, ld), 12, var_ld);
+    ^
+
+"Test_name.c", line 80: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t2v (3, ld), 12, var_ld);
+    ^
+
+"Test_name.c", line 81: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t2v (4, i), 18, var_d);
+    ^
+
+"Test_name.c", line 81: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t2v (4, i), 18, var_d);
+    ^
+
+"Test_name.c", line 82: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t2v (5, ll), 27, var_d);
+    ^
+
+"Test_name.c", line 82: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t2v (5, ll), 27, var_d);
+    ^
+
+"Test_name.c", line 100: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t3v (f), 2, var_i);
+    ^
+
+"Test_name.c", line 100: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t3v (f), 2, var_i);
+    ^
+
+"Test_name.c", line 101: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t3v (d), 4, var_i);
+    ^
+
+"Test_name.c", line 101: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t3v (d), 4, var_i);
+    ^
+
+"Test_name.c", line 102: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t3v (ld), 6, var_i);
+    ^
+
+"Test_name.c", line 102: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t3v (ld), 6, var_i);
+    ^
+
+"Test_name.c", line 103: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t3v (s), 6, var_i);
+    ^
+
+"Test_name.c", line 103: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t3v (s), 6, var_i);
+    ^
+
+"Test_name.c", line 123: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t4v (f1, f2), 12, var_f);
+    ^
+
+"Test_name.c", line 123: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t4v (f1, f2), 12, var_f);
+    ^
+
+"Test_name.c", line 124: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t4v (f2, f1), 21, var_f);
+    ^
+
+"Test_name.c", line 124: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t4v (f2, f1), 21, var_f);
+    ^
+
+"Test_name.c", line 125: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t4v (f1, d1), 103, var_d);
+    ^
+
+"Test_name.c", line 125: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t4v (f1, d1), 103, var_d);
+    ^
+
+"Test_name.c", line 126: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t4v (d2, f2), 402, var_d);
+    ^
+
+"Test_name.c", line 126: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t4v (d2, f2), 402, var_d);
+    ^
+
+"Test_name.c", line 127: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t4v (f1, l), 106, var_d);
+    ^
+
+"Test_name.c", line 127: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t4v (f1, l), 106, var_d);
+    ^
+
+"Test_name.c", line 128: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t4v (ld, f1), 5001, var_ld);
+    ^
+
+"Test_name.c", line 128: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t4v (ld, f1), 5001, var_ld);
+    ^
+
+"Test_name.c", line 129: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t4v (l, l), 606, var_d);
+    ^
+
+"Test_name.c", line 129: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t4v (l, l), 606, var_d);
+    ^
+
+"Test_name.c", line 130: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t4v (l, ld), 6005, var_ld);
+    ^
+
+"Test_name.c", line 130: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t4v (l, ld), 6005, var_ld);
+    ^
+
+"Test_name.c", line 145: error: complex integral types are not supported
+    _Complex float cf = 2 + 3i;
+                             ^
+
+"Test_name.c", line 147: error: complex integral types are not supported
+    _Complex double cd = 5 + 6i;
+                              ^
+
+"Test_name.c", line 149: error: complex integral types are not supported
+    _Complex long double cld = 8 + 9i;
+                                    ^
+
+"Test_name.c", line 151: error: _Complex can only be used with floating-point types
+    _Complex int ci = 11 + 12i;
+    ^
+
+"Test_name.c", line 151: error: complex integral types are not supported
+    _Complex int ci = 11 + 12i;
+                             ^
+
+"Test_name.c", line 152: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t5v (f), 2, var_f);
+    ^
+
+"Test_name.c", line 152: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t5v (f), 2, var_f);
+    ^
+
+"Test_name.c", line 153: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t5v (cf), 12, var_f);
+    ^
+
+"Test_name.c", line 153: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t5v (cf), 12, var_f);
+    ^
+
+"Test_name.c", line 154: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t5v (d), 6, var_d);
+    ^
+
+"Test_name.c", line 154: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t5v (d), 6, var_d);
+    ^
+
+"Test_name.c", line 155: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t5v (cd), 31, var_d);
+    ^
+
+"Test_name.c", line 155: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t5v (cd), 31, var_d);
+    ^
+
+"Test_name.c", line 156: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t5v (ld), 10, var_ld);
+    ^
+
+"Test_name.c", line 156: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t5v (ld), 10, var_ld);
+    ^
+
+"Test_name.c", line 157: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t5v (cld), 56, var_ld);
+    ^
+
+"Test_name.c", line 157: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t5v (cld), 56, var_ld);
+    ^
+
+"Test_name.c", line 158: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t5v (i), 12, var_d);
+    ^
+
+"Test_name.c", line 158: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t5v (i), 12, var_d);
+    ^
+
+"Test_name.c", line 159: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t5v (ci), 61, var_d);
+    ^
+
+"Test_name.c", line 159: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t5v (ci), 61, var_d);
+    ^
+
+"Test_name.c", line 174: error: complex integral types are not supported
+    _Complex float cf = 2 + 3i;
+                             ^
+
+"Test_name.c", line 176: error: complex integral types are not supported
+    _Complex double cd = 5 + 6i;
+                              ^
+
+"Test_name.c", line 178: error: complex integral types are not supported
+    _Complex long double cld = 8 + 9i;
+                                    ^
+
+"Test_name.c", line 180: error: _Complex can only be used with floating-point types
+    _Complex int ci = 11 + 12i;
+    ^
+
+"Test_name.c", line 180: error: complex integral types are not supported
+    _Complex int ci = 11 + 12i;
+                             ^
+
+"Test_name.c", line 181: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t6v (f), 2, var_cf);
+    ^
+
+"Test_name.c", line 181: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t6v (f), 2, var_cf);
+    ^
+
+"Test_name.c", line 181: error: declaration is incompatible with previous "var_cf" (declared at line 22)
+    CHECK_CALL (t6v (f), 2, var_cf);
+    ^
+
+"Test_name.c", line 182: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t6v (cf), 3 + 3i, var_cf);
+    ^
+
+"Test_name.c", line 182: error: complex integral types are not supported
+    CHECK_CALL (t6v (cf), 3 + 3i, var_cf);
+    ^
+
+"Test_name.c", line 182: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t6v (cf), 3 + 3i, var_cf);
+    ^
+
+"Test_name.c", line 183: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t6v (d), 6, var_cd);
+    ^
+
+"Test_name.c", line 183: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t6v (d), 6, var_cd);
+    ^
+
+"Test_name.c", line 183: error: declaration is incompatible with previous "var_cd" (declared at line 23)
+    CHECK_CALL (t6v (d), 6, var_cd);
+    ^
+
+"Test_name.c", line 184: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t6v (cd), 7 + 6i, var_cd);
+    ^
+
+"Test_name.c", line 184: error: complex integral types are not supported
+    CHECK_CALL (t6v (cd), 7 + 6i, var_cd);
+    ^
+
+"Test_name.c", line 184: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t6v (cd), 7 + 6i, var_cd);
+    ^
+
+"Test_name.c", line 185: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t6v (ld), 10, var_cld);
+    ^
+
+"Test_name.c", line 185: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t6v (ld), 10, var_cld);
+    ^
+
+"Test_name.c", line 185: error: declaration is incompatible with previous "var_cld" (declared at line 24)
+    CHECK_CALL (t6v (ld), 10, var_cld);
+    ^
+
+"Test_name.c", line 186: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t6v (cld), 11 + 9i, var_cld);
+    ^
+
+"Test_name.c", line 186: error: complex integral types are not supported
+    CHECK_CALL (t6v (cld), 11 + 9i, var_cld);
+    ^
+
+"Test_name.c", line 186: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t6v (cld), 11 + 9i, var_cld);
+    ^
+
+"Test_name.c", line 187: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t6v (i), 12, var_cd);
+    ^
+
+"Test_name.c", line 187: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t6v (i), 12, var_cd);
+    ^
+
+"Test_name.c", line 188: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t6v (ci), 13 + 12i, var_cd);
+    ^
+
+"Test_name.c", line 188: error: complex integral types are not supported
+    CHECK_CALL (t6v (ci), 13 + 12i, var_cd);
+    ^
+
+"Test_name.c", line 188: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t6v (ci), 13 + 12i, var_cd);
+    ^
+
+"Test_name.c", line 206: error: complex integral types are not supported
+    _Complex float cf = 2 + 3i;
+                             ^
+
+"Test_name.c", line 208: error: complex integral types are not supported
+    _Complex double cd = 5 + 6i;
+                              ^
+
+"Test_name.c", line 210: error: complex integral types are not supported
+    _Complex long double cld = 8 + 9i;
+                                    ^
+
+"Test_name.c", line 212: error: _Complex can only be used with floating-point types
+    _Complex int ci = 11 + 12i;
+    ^
+
+"Test_name.c", line 212: error: complex integral types are not supported
+    _Complex int ci = 11 + 12i;
+                             ^
+
+"Test_name.c", line 213: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t7v (f), 2, var_f);
+    ^
+
+"Test_name.c", line 213: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t7v (f), 2, var_f);
+    ^
+
+"Test_name.c", line 214: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t7v (cf), 4, var_f);
+    ^
+
+"Test_name.c", line 214: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t7v (cf), 4, var_f);
+    ^
+
+"Test_name.c", line 215: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t7v (d), 7, var_d);
+    ^
+
+"Test_name.c", line 215: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t7v (d), 7, var_d);
+    ^
+
+"Test_name.c", line 216: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t7v (cd), 9, var_d);
+    ^
+
+"Test_name.c", line 216: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t7v (cd), 9, var_d);
+    ^
+
+"Test_name.c", line 217: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t7v (ld), 12, var_ld);
+    ^
+
+"Test_name.c", line 217: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t7v (ld), 12, var_ld);
+    ^
+
+"Test_name.c", line 218: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t7v (cld), 14, var_ld);
+    ^
+
+"Test_name.c", line 218: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t7v (cld), 14, var_ld);
+    ^
+
+"Test_name.c", line 219: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t7v (i), 13, var_d);
+    ^
+
+"Test_name.c", line 219: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t7v (i), 13, var_d);
+    ^
+
+"Test_name.c", line 220: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t7v (ci), 15, var_d);
+    ^
+
+"Test_name.c", line 220: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t7v (ci), 15, var_d);
+    ^
+
+"Test_name.c", line 238: error: complex integral types are not supported
+    _Complex float cf = 2 + 3i;
+                             ^
+
+"Test_name.c", line 240: error: complex integral types are not supported
+    _Complex double cd = 5 + 6i;
+                              ^
+
+"Test_name.c", line 242: error: complex integral types are not supported
+    _Complex long double cld = 8 + 9i;
+                                    ^
+
+"Test_name.c", line 244: error: _Complex can only be used with floating-point types
+    _Complex int ci = 11 + 12i;
+    ^
+
+"Test_name.c", line 244: error: complex integral types are not supported
+    _Complex int ci = 11 + 12i;
+                             ^
+
+"Test_name.c", line 245: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t8v (f), 2, var_f);
+    ^
+
+"Test_name.c", line 245: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t8v (f), 2, var_f);
+    ^
+
+"Test_name.c", line 246: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t8v (cf), 4 + 3i, var_cf);
+    ^
+
+"Test_name.c", line 246: error: complex integral types are not supported
+    CHECK_CALL (t8v (cf), 4 + 3i, var_cf);
+    ^
+
+"Test_name.c", line 246: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t8v (cf), 4 + 3i, var_cf);
+    ^
+
+"Test_name.c", line 247: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t8v (d), 7, var_d);
+    ^
+
+"Test_name.c", line 247: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t8v (d), 7, var_d);
+    ^
+
+"Test_name.c", line 248: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t8v (cd), 9 + 6i, var_cd);
+    ^
+
+"Test_name.c", line 248: error: complex integral types are not supported
+    CHECK_CALL (t8v (cd), 9 + 6i, var_cd);
+    ^
+
+"Test_name.c", line 248: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t8v (cd), 9 + 6i, var_cd);
+    ^
+
+"Test_name.c", line 249: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t8v (ld), 12, var_ld);
+    ^
+
+"Test_name.c", line 249: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t8v (ld), 12, var_ld);
+    ^
+
+"Test_name.c", line 250: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t8v (cld), 14 + 9i, var_cld);
+    ^
+
+"Test_name.c", line 250: error: complex integral types are not supported
+    CHECK_CALL (t8v (cld), 14 + 9i, var_cld);
+    ^
+
+"Test_name.c", line 250: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t8v (cld), 14 + 9i, var_cld);
+    ^
+
+"Test_name.c", line 251: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t8v (i), 13, var_d);
+    ^
+
+"Test_name.c", line 251: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t8v (i), 13, var_d);
+    ^
+
+"Test_name.c", line 252: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t8v (ci), 15 + 12i, var_cd);
+    ^
+
+"Test_name.c", line 252: error: complex integral types are not supported
+    CHECK_CALL (t8v (ci), 15 + 12i, var_cd);
+    ^
+
+"Test_name.c", line 252: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t8v (ci), 15 + 12i, var_cd);
+    ^
+
+"Test_name.c", line 270: error: complex integral types are not supported
+    _Complex float cf = 2 + 3i;
+                             ^
+
+"Test_name.c", line 272: error: complex integral types are not supported
+    _Complex double cd = 5 + 6i;
+                              ^
+
+"Test_name.c", line 274: error: complex integral types are not supported
+    _Complex long double cld = 8 + 9i;
+                                    ^
+
+"Test_name.c", line 276: error: _Complex can only be used with floating-point types
+    _Complex int ci = 11 + 12i;
+    ^
+
+"Test_name.c", line 276: error: complex integral types are not supported
+    _Complex int ci = 11 + 12i;
+                             ^
+
+"Test_name.c", line 277: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t9v (f, f), 11, var_f);
+    ^
+
+"Test_name.c", line 277: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t9v (f, f), 11, var_f);
+    ^
+
+"Test_name.c", line 278: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t9v (f, cf), 201 + 300i, var_cf);
+    ^
+
+"Test_name.c", line 278: error: complex integral types are not supported
+    CHECK_CALL (t9v (f, cf), 201 + 300i, var_cf);
+    ^
+
+"Test_name.c", line 278: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t9v (f, cf), 201 + 300i, var_cf);
+    ^
+
+"Test_name.c", line 279: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t9v (cf, f), 102 + 3i, var_cf);
+    ^
+
+"Test_name.c", line 279: error: complex integral types are not supported
+    CHECK_CALL (t9v (cf, f), 102 + 3i, var_cf);
+    ^
+
+"Test_name.c", line 279: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t9v (cf, f), 102 + 3i, var_cf);
+    ^
+
+"Test_name.c", line 280: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t9v (f, i), 10001, var_d);
+    ^
+
+"Test_name.c", line 280: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t9v (f, i), 10001, var_d);
+    ^
+
+"Test_name.c", line 281: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t9v (i, f), 1010, var_d);
+    ^
+
+"Test_name.c", line 281: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t9v (i, f), 1010, var_d);
+    ^
+
+"Test_name.c", line 282: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t9v (d, d), 4004, var_d);
+    ^
+
+"Test_name.c", line 282: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t9v (d, d), 4004, var_d);
+    ^
+
+"Test_name.c", line 283: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t9v (d, cd), 50004 + 60000i, var_cd);
+    ^
+
+"Test_name.c", line 283: error: complex integral types are not supported
+    CHECK_CALL (t9v (d, cd), 50004 + 60000i, var_cd);
+    ^
+
+"Test_name.c", line 283: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t9v (d, cd), 50004 + 60000i, var_cd);
+    ^
+
+"Test_name.c", line 284: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t9v (ld, i), 1000007, var_ld);
+    ^
+
+"Test_name.c", line 284: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t9v (ld, i), 1000007, var_ld);
+    ^
+
+"Test_name.c", line 285: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t9v (cf, cld), 8000002 + 9000003i, var_cld);
+    ^
+
+"Test_name.c", line 285: error: complex integral types are not supported
+    CHECK_CALL (t9v (cf, cld), 8000002 + 9000003i, var_cld);
+    ^
+
+"Test_name.c", line 285: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t9v (cf, cld), 8000002 + 9000003i, var_cld);
+    ^
+
+"Test_name.c", line 286: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t9v (i, i), 10010, var_d);
+    ^
+
+"Test_name.c", line 286: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t9v (i, i), 10010, var_d);
+    ^
+
+"Test_name.c", line 287: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t9v (ci, i), 100011 + 12i, var_cd);
+    ^
+
+"Test_name.c", line 287: error: complex integral types are not supported
+    CHECK_CALL (t9v (ci, i), 100011 + 12i, var_cd);
+    ^
+
+"Test_name.c", line 287: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t9v (ci, i), 100011 + 12i, var_cd);
+    ^
+
+"Test_name.c", line 304: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t10v (f), 2, var_f);
+    ^
+
+"Test_name.c", line 304: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t10v (f), 2, var_f);
+    ^
+
+"Test_name.c", line 305: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t10v (d), 3, var_f);
+    ^
+
+"Test_name.c", line 305: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t10v (d), 3, var_f);
+    ^
+
+"Test_name.c", line 306: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t10v (ld), 5, var_f);
+    ^
+
+"Test_name.c", line 306: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t10v (ld), 5, var_f);
+    ^
+
+"Test_name.c", line 307: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t10v (s), 5, var_f);
+    ^
+
+"Test_name.c", line 307: warning: function "__builtin_tgmath" declared implicitly
+    CHECK_CALL (t10v (s), 5, var_f);
+    ^
+
+44 errors detected in the compilation of "Test_name.c".

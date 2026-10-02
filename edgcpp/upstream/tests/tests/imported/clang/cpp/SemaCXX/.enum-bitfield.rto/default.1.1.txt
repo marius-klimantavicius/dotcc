@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 12: error: underlying type of enum type must be an integral type
+    enum E : Z; // expected-error{{invalid underlying type}}
+             ^
+
+"Test_name.c", line 12: error: expected a "{"
+    enum E : Z; // expected-error{{invalid underlying type}}
+              ^
+
+"Test_name.c", line 12: error: expected an identifier
+    enum E : Z; // expected-error{{invalid underlying type}}
+              ^
+
+"Test_name.c", line 12: error: expected a "}"
+    enum E : Z; // expected-error{{invalid underlying type}}
+              ^
+
+"Test_name.c", line 19: error: this constant expression has type "Z" instead of the required integral or enum type
+    enum E : Z(); // expected-error{{anonymous bit-field}} expected-error{{integral constant expression must have integral or unscoped enumeration type, not 'Z'}}
+             ^
+
+5 errors detected in the compilation of "Test_name.c".

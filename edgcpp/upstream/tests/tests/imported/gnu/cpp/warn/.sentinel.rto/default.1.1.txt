@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: warning: argument must be a constant null pointer value
+    ex (1, 0);		/* { dg-warning "missing sentinel in function call" } */
+           ^
+
+"Test_name.c", line 10: warning: argument must be a constant null pointer value
+    ex (1, 0L);		/* { dg-warning "missing sentinel in function call" } */
+           ^
+

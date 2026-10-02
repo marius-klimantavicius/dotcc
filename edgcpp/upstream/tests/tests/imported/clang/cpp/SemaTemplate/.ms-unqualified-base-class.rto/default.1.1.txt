@@ -1,0 +1,52 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 --ms_compatibility Test_name.c
+"Test_name.c", line 19: error: argument list for class template "Base" is missing
+    Derived() : Base() {} // before-warning {{unqualified base initializer of class templates is a Microsoft extension}}
+                ^
+          detected during instantiation of "Derived<T>::Derived() [with T=int]" at line 73
+
+"Test_name.c", line 33: error: argument list for class template "AggregateBase" is missing
+    AggregateDerived(T j) : AggregateBase{4}, i{j} {} // before-warning {{unqualified base initializer of class templates is a Microsoft extension}}
+                            ^
+          detected during instantiation of "AggregateDerived<T>::AggregateDerived(T) [with T=int]" at line 75
+
+"Test_name.c", line 35: error: argument list for class template "AggregateBase" is missing
+      return i + AggregateBase::i; // expected-warning {{use of undeclared identifier 'AggregateBase'; unqualified lookup into dependent bases of class template 'AggregateDerived' is a Microsoft extension}}
+                 ^
+          detected during instantiation of "int AggregateDerived<T>::f() [with T=int]" at line 77
+
+"Test_name.c", line 45: error: argument list for class template "MultiTypesBase" is missing
+    MultiTypesDerived() : MultiTypesBase{} {} // before-warning {{unqualified base initializer of class templates is a Microsoft extension}}
+                          ^
+          detected during instantiation of "MultiTypesDerived<T, U>::MultiTypesDerived() [with T=int, U=double]" at line 79
+
+"Test_name.c", line 54: error: argument list for class template "IntegerBase" is missing
+    IntegerDerived() : IntegerBase{} {} // before-warning {{unqualified base initializer of class templates is a Microsoft extension}}
+                       ^
+          detected during instantiation of "IntegerDerived<I>::IntegerDerived() [with I=4]" at line 81
+
+"Test_name.c", line 93: error: argument list for class template "Vec" is missing
+    Index() : Vec() {} // before-warning {{unqualified base initializer of class templates is a Microsoft extension}}
+              ^
+          detected during instantiation of "Index<TDim>::Index() [with TDim=0]" at line 96
+
+"Test_name.c", line 100: error: argument list for class template "Vec" is missing
+    Array() : Vec() {} // before-warning {{unqualified base initializer of class templates is a Microsoft extension}}
+              ^
+          detected during instantiation of "Array<T>::Array() [with T=double]" at line 103
+
+"Test_name.c", line 106: error: "NonExistent" is not a nonstatic data member or base class of class "Wrong<double>"
+    Wrong() : NonExistent() {} // expected-error {{member initializer 'NonExistent' does not name a non-static data member or base class}}
+              ^
+          detected during instantiation of "Wrong<T>::Wrong() [with T=double]" at line 109
+
+"Test_name.c", line 112: error: too few arguments for class template "Vec"
+    Wrong2() : Vec<T>() {} // expected-error {{too few template arguments for class template 'Vec'}}
+                    ^
+          detected during instantiation of "Wrong2<T>::Wrong2() [with T=double]" at line 115
+
+"Test_name.c", line 118: error: argument list for class template "Base" is missing
+    Wrong3() : Base() {} // expected-error {{member initializer 'Base' does not name a non-static data member or base class}}
+               ^
+          detected during instantiation of "Wrong3<T>::Wrong3() [with T=double]" at line 121
+
+10 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 27: error: constant "Class" is not a type name
+    Class *val_;            // expected-error {{must use 'struct' tag}}
+    ^
+
+"Test_name.c", line 28: error: constant "Class" is not a type name
+    void setClass(Class *); // expected-error {{must use 'struct' tag}}
+                  ^
+
+"Test_name.c", line 31: error: constant "Class" is not a type name
+  void Record::setClass(Class *val) { // expected-error {{variable has incomplete type 'void'}} \
+                        ^
+
+3 errors detected in the compilation of "Test_name.c".

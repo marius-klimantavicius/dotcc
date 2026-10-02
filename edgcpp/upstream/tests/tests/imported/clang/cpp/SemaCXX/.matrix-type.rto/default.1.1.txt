@@ -1,0 +1,93 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 5: warning: unknown attribute "matrix_type"
+  using matrix_double_t = double __attribute__((matrix_type(6, 6)));
+                                                ^
+
+"Test_name.c", line 6: warning: unknown attribute "matrix_type"
+  using matrix_float_t = float __attribute__((matrix_type(6, 6)));
+                                              ^
+
+"Test_name.c", line 7: warning: unknown attribute "matrix_type"
+  using matrix_int_t = int __attribute__((matrix_type(6, 6)));
+                                          ^
+
+"Test_name.c", line 10: warning: unknown attribute "matrix_type"
+    using matrix1_t = int __attribute__((matrix_type(Rows, 1)));    // expected-error{{matrix_type attribute requires an integer constant}}
+                                         ^
+
+"Test_name.c", line 11: warning: unknown attribute "matrix_type"
+    using matrix2_t = int __attribute__((matrix_type(1, Columns))); // expected-error{{matrix_type attribute requires an integer constant}}
+                                         ^
+
+"Test_name.c", line 12: warning: unknown attribute "matrix_type"
+    using matrix3_t = int __attribute__((matrix_type(C, C)));       // expected-error{{matrix_type attribute requires an integer constant}}
+                                         ^
+
+"Test_name.c", line 13: warning: unknown attribute "matrix_type"
+    using matrix4_t = int __attribute__((matrix_type(-1, 1)));      // expected-error{{matrix row size too large}}
+                                         ^
+
+"Test_name.c", line 14: warning: unknown attribute "matrix_type"
+    using matrix5_t = int __attribute__((matrix_type(1, -1)));      // expected-error{{matrix column size too large}}
+                                         ^
+
+"Test_name.c", line 15: warning: unknown attribute "matrix_type"
+    using matrix6_t = int __attribute__((matrix_type(0, 1)));       // expected-error{{zero matrix size}}
+                                         ^
+
+"Test_name.c", line 16: warning: unknown attribute "matrix_type"
+    using matrix7_t = int __attribute__((matrix_type(1, 0)));       // expected-error{{zero matrix size}}
+                                         ^
+
+"Test_name.c", line 17: warning: unknown attribute "matrix_type"
+    using matrix7_t = int __attribute__((matrix_type(char, 0)));    // expected-error{{expected '(' for function-style cast or type construction}}
+                                         ^
+
+"Test_name.c", line 18: warning: unknown attribute "matrix_type"
+    using matrix8_t = int __attribute__((matrix_type(1048576, 1))); // expected-error{{matrix row size too large}}
+                                         ^
+
+"Test_name.c", line 19: warning: unknown attribute "matrix_type"
+    using matrix8_t = int __attribute__((matrix_type(1048576, 1048576))); // expected-error{{matrix row and column size too large}}
+                                         ^
+
+"Test_name.c", line 30: warning: unknown attribute "matrix_type"
+    using matrix1_t = char *__attribute__((matrix_type(1, 1)));    // expected-error{{invalid matrix element type 'char *'}}
+                                           ^
+
+"Test_name.c", line 31: warning: unknown attribute "matrix_type"
+    using matrix2_t = S1 __attribute__((matrix_type(1, 1)));       // expected-error{{invalid matrix element type 'S1'}}
+                                        ^
+
+"Test_name.c", line 32: warning: unknown attribute "matrix_type"
+    using matrix3_t = bool __attribute__((matrix_type(1, 1)));     // expected-error{{invalid matrix element type 'bool'}}
+                                          ^
+
+"Test_name.c", line 33: warning: unknown attribute "matrix_type"
+    using matrix4_t = TestEnum __attribute__((matrix_type(1, 1))); // expected-error{{invalid matrix element type 'TestEnum'}}
+                                              ^
+
+"Test_name.c", line 37: warning: unknown attribute "matrix_type"
+    using m2 = _BitInt(7) __attribute__((matrix_type(4, 4))); // expected-error{{'_BitInt' matrix element width must be a power of 2}}
+                                         ^
+
+"Test_name.c", line 38: warning: unknown attribute "matrix_type"
+    using m3 = _BitInt(9) __attribute__((matrix_type(4, 4))); // expected-error{{'_BitInt' matrix element width must be a power of 2}}
+                                         ^
+
+"Test_name.c", line 39: warning: unknown attribute "matrix_type"
+    using m4 = _BitInt(12) __attribute__((matrix_type(4, 4))); // expected-error{{'_BitInt' matrix element width must be a power of 2}}
+                                          ^
+
+"Test_name.c", line 40: warning: unknown attribute "matrix_type"
+    using m5 = _BitInt(8) __attribute__((matrix_type(4, 4)));
+                                         ^
+
+"Test_name.c", line 41: warning: unknown attribute "matrix_type"
+    using m6 = _BitInt(64) __attribute__((matrix_type(4, 4)));
+                                          ^
+
+"Test_name.c", line 42: warning: unknown attribute "matrix_type"
+    using m7 = _BitInt(256) __attribute__((matrix_type(4, 4)));
+                                           ^
+

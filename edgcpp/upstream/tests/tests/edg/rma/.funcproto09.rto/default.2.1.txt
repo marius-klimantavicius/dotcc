@@ -1,0 +1,22 @@
+cpfe -DTEST_NUMBER=2 -r -x -tused Test_name.c
+"Test_name.c", line 7: error: identifier "a" is undefined
+  int foo(a,b) int a; enum E *b; { return a; }
+          ^
+
+"Test_name.c", line 7: error: identifier "b" is undefined
+  int foo(a,b) int a; enum E *b; { return a; }
+            ^
+
+"Test_name.c", line 7: error: expected a "{"
+  int foo(a,b) int a; enum E *b; { return a; }
+               ^
+
+"Test_name.c", line 7: error: identifier "a" is undefined
+  int foo(a,b) int a; enum E *b; { return a; }
+                                          ^
+
+"Test_name.c", line 12: remark: return type "int" omitted in declaration of function "main"
+  main()
+  ^
+
+4 errors detected in the compilation of "Test_name.c".

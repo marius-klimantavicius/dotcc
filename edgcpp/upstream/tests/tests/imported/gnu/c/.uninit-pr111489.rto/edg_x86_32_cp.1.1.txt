@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./uninit-pr111489.c", line 103: warning: shift count is too large
+              cur_rowid = (((((cur_partp) & 0x400000000) ? 1 : 0)) ? (uint64_t)(((((int64_t)((((uint64_t)(sav_rowid) & ((uint64_t)1 << 63)) ? (int64_t)(((sav_rowid) & 0x7FFFFFFFFFFF0000) >> 16) : (int64_t)(((sav_rowid) & 0xFFFFFF00) >> 8)))) << 16) + (i)) | ((uint64_t)1 << 63)) : (uint64_t)((((int32_t)((((uint64_t)(sav_rowid) & ((uint64_t)1 << 63)) ? (int64_t)(((sav_rowid) & 0x7FFFFFFFFFFF0000) >> 16) : (int64_t)(((sav_rowid) & 0xFFFFFF00) >> 8)))) << 8) + (i)));
+                                                                                                                                       ^
+
+"./uninit-pr111489.c", line 103: warning: shift count is too large
+              cur_rowid = (((((cur_partp) & 0x400000000) ? 1 : 0)) ? (uint64_t)(((((int64_t)((((uint64_t)(sav_rowid) & ((uint64_t)1 << 63)) ? (int64_t)(((sav_rowid) & 0x7FFFFFFFFFFF0000) >> 16) : (int64_t)(((sav_rowid) & 0xFFFFFF00) >> 8)))) << 16) + (i)) | ((uint64_t)1 << 63)) : (uint64_t)((((int32_t)((((uint64_t)(sav_rowid) & ((uint64_t)1 << 63)) ? (int64_t)(((sav_rowid) & 0x7FFFFFFFFFFF0000) >> 16) : (int64_t)(((sav_rowid) & 0xFFFFFF00) >> 8)))) << 8) + (i)));
+                                                                                                                                                                                                                                                                                  ^
+
+"./uninit-pr111489.c", line 103: warning: shift count is too large
+              cur_rowid = (((((cur_partp) & 0x400000000) ? 1 : 0)) ? (uint64_t)(((((int64_t)((((uint64_t)(sav_rowid) & ((uint64_t)1 << 63)) ? (int64_t)(((sav_rowid) & 0x7FFFFFFFFFFF0000) >> 16) : (int64_t)(((sav_rowid) & 0xFFFFFF00) >> 8)))) << 16) + (i)) | ((uint64_t)1 << 63)) : (uint64_t)((((int32_t)((((uint64_t)(sav_rowid) & ((uint64_t)1 << 63)) ? (int64_t)(((sav_rowid) & 0x7FFFFFFFFFFF0000) >> 16) : (int64_t)(((sav_rowid) & 0xFFFFFF00) >> 8)))) << 8) + (i)));
+                                                                                                                                                                                                                                                                                                                                                          ^
+

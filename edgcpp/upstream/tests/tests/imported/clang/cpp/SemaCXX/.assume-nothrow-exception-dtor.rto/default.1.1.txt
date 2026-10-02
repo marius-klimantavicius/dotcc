@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --exceptions Test_name.c
+"Test_name.c", line 14: warning: statement is unreachable
+    throw B();  // expected-error{{cannot throw object of type 'B' with a potentially-throwing destructor}}
+    ^
+
+"Test_name.c", line 15: warning: statement is unreachable
+    throw new B;
+    ^
+
+"Test_name.c", line 16: warning: statement is unreachable
+    throw B1(); // expected-error{{cannot throw object of type 'B1' with a potentially-throwing destructor}}
+    ^
+
+"Test_name.c", line 18: warning: statement is unreachable
+    throw b2;   // expected-error{{cannot throw object of type 'B2' with a potentially-throwing destructor}}
+    ^
+
+"Test_name.c", line 18: warning: variable "b2" is used before its value is set
+    throw b2;   // expected-error{{cannot throw object of type 'B2' with a potentially-throwing destructor}}
+          ^
+
+"Test_name.c", line 19: warning: statement is unreachable
+    throw c;
+    ^
+
+"Test_name.c", line 20: warning: dynamic initialization in unreachable code
+    MoveOnly m;
+             ^
+

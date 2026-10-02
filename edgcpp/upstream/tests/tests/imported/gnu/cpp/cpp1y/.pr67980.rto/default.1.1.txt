@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 8: warning: shift count is negative
+      return (value << -Y);
+                       ^
+          detected during instantiation of "T cpp14_constexpr_then<Y,T>(T) [with Y=1, T=int]" at line 23
+
+"Test_name.c", line 18: warning: shift count is negative
+      return (value << -Y);
+                       ^
+          detected during instantiation of "T cpp14_constexpr_else<Y,T>(T) [with Y=1, T=int]" at line 24
+

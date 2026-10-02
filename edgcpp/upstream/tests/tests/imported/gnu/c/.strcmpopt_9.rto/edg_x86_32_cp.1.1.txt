@@ -1,0 +1,165 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./strlenopt.h", line 6: warning: declaration of "size_t" does not match the expected type "unsigned int"
+  typedef long unsigned int size_t;
+                            ^
+
+"./strcmpopt_8.c", line 36: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL - 2); if (!(0 > __builtin_strncmp ("123", "1234", max))) failure_on_line (36); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 37: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL - 1); if (!(0 > __builtin_strncmp ("123", "1234", max))) failure_on_line (37); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 38: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL); if (!(0 > __builtin_strncmp ("123", "1234", max))) failure_on_line (38); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 45: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL - 2); if (!(0 < __builtin_strncmp ("123" + 1, "1234", max))) failure_on_line (45); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 46: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL - 1); if (!(0 < __builtin_strncmp ("123" + 1, "1234", max))) failure_on_line (46); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 47: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL); if (!(0 < __builtin_strncmp ("123" + 1, "1234", max))) failure_on_line (47); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 53: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL - 1); if (!(0 > __builtin_strncmp ("123" + 1, "1234" + 1, max))) failure_on_line (53); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 54: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL); if (!(0 > __builtin_strncmp ("123" + 1, "1234" + 1, max))) failure_on_line (54); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 60: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL - 1); if (!(0 > __builtin_strncmp ("123" + 3, "1234" + 1, max))) failure_on_line (60); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 61: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL); if (!(0 > __builtin_strncmp ("123" + 3, "1234" + 1, max))) failure_on_line (61); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 71: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL - 2); if (!(zero > __builtin_strncmp ("123", "1234", max))) failure_on_line (71); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 72: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL - 1); if (!(zero > __builtin_strncmp ("123", "1234", max))) failure_on_line (72); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 73: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL); if (!(zero > __builtin_strncmp ("123", "1234", max))) failure_on_line (73); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 80: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL - 2); if (!(zero < __builtin_strncmp ("123" + 1, "1234", max))) failure_on_line (80); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 81: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL - 1); if (!(zero < __builtin_strncmp ("123" + 1, "1234", max))) failure_on_line (81); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 82: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL); if (!(zero < __builtin_strncmp ("123" + 1, "1234", max))) failure_on_line (82); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 88: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL - 1); if (!(zero > __builtin_strncmp ("123" + 1, "1234" + 1, max))) failure_on_line (88); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 89: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL); if (!(zero > __builtin_strncmp ("123" + 1, "1234" + 1, max))) failure_on_line (89); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 95: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL - 1); if (!(zero > __builtin_strncmp ("123" + 3, "1234" + 1, max))) failure_on_line (95); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 96: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL); if (!(zero > __builtin_strncmp ("123" + 3, "1234" + 1, max))) failure_on_line (96); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 112: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL - 2); if (!(0 > __builtin_strncmp (s123, s1234, max))) failure_on_line (112); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 113: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL - 1); if (!(0 > __builtin_strncmp (s123, s1234, max))) failure_on_line (113); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 114: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL); if (!(0 > __builtin_strncmp (s123, s1234, max))) failure_on_line (114); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 121: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL - 2); if (!(0 < __builtin_strncmp (s123 + 1, s1234, max))) failure_on_line (121); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 122: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL - 1); if (!(0 < __builtin_strncmp (s123 + 1, s1234, max))) failure_on_line (122); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 123: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL); if (!(0 < __builtin_strncmp (s123 + 1, s1234, max))) failure_on_line (123); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 129: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL - 1); if (!(0 > __builtin_strncmp (s123 + 1, s1234 + 1, max))) failure_on_line (129); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 130: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL); if (!(0 > __builtin_strncmp (s123 + 1, s1234 + 1, max))) failure_on_line (130); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 136: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL - 1); if (!(0 > __builtin_strncmp (s123 + 3, s1234 + 1, max))) failure_on_line (136); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 137: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL); if (!(0 > __builtin_strncmp (s123 + 3, s1234 + 1, max))) failure_on_line (137); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 147: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL - 2); if (!(zero > __builtin_strncmp (s123, s1234, max))) failure_on_line (147); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 148: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL - 1); if (!(zero > __builtin_strncmp (s123, s1234, max))) failure_on_line (148); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 149: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL); if (!(zero > __builtin_strncmp (s123, s1234, max))) failure_on_line (149); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 156: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL - 2); if (!(zero < __builtin_strncmp (s123 + 1, s1234, max))) failure_on_line (156); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 157: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL - 1); if (!(zero < __builtin_strncmp (s123 + 1, s1234, max))) failure_on_line (157); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 158: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL); if (!(zero < __builtin_strncmp (s123 + 1, s1234, max))) failure_on_line (158); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 164: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL - 1); if (!(zero > __builtin_strncmp (s123 + 1, s1234 + 1, max))) failure_on_line (164); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 165: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL); if (!(zero > __builtin_strncmp (s123 + 1, s1234 + 1, max))) failure_on_line (165); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 171: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL - 1); if (!(zero > __builtin_strncmp (s123 + 3, s1234 + 1, max))) failure_on_line (171); } while (0);
+                      ^
+
+"./strcmpopt_8.c", line 172: warning: integer conversion resulted in truncation
+    do { max = ident (0xffffffffffffffffUL); if (!(zero > __builtin_strncmp (s123 + 3, s1234 + 1, max))) failure_on_line (172); } while (0);
+                      ^
+

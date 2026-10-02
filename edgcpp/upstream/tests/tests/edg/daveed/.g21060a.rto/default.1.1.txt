@@ -1,0 +1,19 @@
+fe_only -DTEST_NUMBER=1 --c++14 --clang_v=50000 -tused Test_name.c
+"Test_name.c", line 26: warning: declaration is incompatible with constant "long <unnamed>" (declared at line 4)
+  template <class, int d> struct b : ai<d, int> {};
+                       ^
+
+"Test_name.c", line 27: warning: declaration is incompatible with constant "long d" (declared at line 6)
+  template <typename, int d, typename> class f {
+                          ^
+
+"Test_name.c", line 46: error: function "c<k, k>::ah [with k=int]" (declared at line 22) is inaccessible
+   typedef f<double, av::ah()> aw;
+                         ^
+
+"Test_name.c", line 42: error: member "f<<unnamed>, d, <unnamed>>::ag [with <unnamed>=int, d=1, <unnamed>=int]" (declared at line 33) is inaccessible
+   return {an<ar>(n), am<as, ar::ag>(n)};
+                                 ^
+          detected during instantiation of "j<false, f<double, 2, ai<2UL, int>::e>> aq<<unnamed>,k,ap>(c<k, ap>) [with <unnamed>=f<double, 4, int>, k=float, ap=float]" at line 48
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,27 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: error: class "S<int>" was declared declared unavailable
+  S<int> s;			// { dg-error "unavailable" }
+         ^
+"Test_name.c", line 7: note: because of an "unavailable" attribute
+  template<typename T> struct __attribute__ ((unavailable)) S {};
+                                              ^
+
+"Test_name.c", line 17: error: function "f<T>() [with T=int]" was declared declared unavailable
+    f<int>();			// { dg-error "unavailable" }
+    ^
+"Test_name.c", line 13: note: because of an "unavailable" attribute
+  template <class T> void f() __attribute__ ((unavailable));
+                                              ^
+
+"Test_name.c", line 18: error: function "f<T>() [with T=char]" was declared declared unavailable
+    void (*p)() = f<char>;	// { dg-error "unavailable" }
+                  ^
+"Test_name.c", line 13: note: because of an "unavailable" attribute
+  template <class T> void f() __attribute__ ((unavailable));
+                                              ^
+
+"Test_name.c", line 18: warning: variable "p" was declared but never referenced
+    void (*p)() = f<char>;	// { dg-error "unavailable" }
+           ^
+
+3 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,46 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++23 Test_name.c
+"Test_name.c", line 9: error: type name is not allowed
+    decltype(long *) a = 42;   // expected-error {{expected '(' for function-style cast or type construction}} \
+             ^
+
+"Test_name.c", line 9: error: expected an expression
+    decltype(long *) a = 42;   // expected-error {{expected '(' for function-style cast or type construction}} \
+                   ^
+
+"Test_name.c", line 11: error: type name is not allowed
+    decltype(auto *) a = 42;   // expected-error {{expected '(' for function-style cast or type construction}} \
+             ^
+
+"Test_name.c", line 11: error: expected an expression
+    decltype(auto *) a = 42;   // expected-error {{expected '(' for function-style cast or type construction}} \
+                   ^
+
+"Test_name.c", line 11: error: "a" has already been declared in the current scope
+    decltype(auto *) a = 42;   // expected-error {{expected '(' for function-style cast or type construction}} \
+                     ^
+
+"Test_name.c", line 13: error: invalid type conversion
+    decltype(auto()) c = 42;   // cxx23-error {{initializer for functional-style cast to 'auto' is empty}} \
+             ^
+
+"Test_name.c", line 7: warning: variable "b" was declared but never referenced
+    decltype(auto(42)) b = 42; // cxx20-error {{'auto' not allowed here}} \
+                       ^
+
+"Test_name.c", line 30: error: identifier "y" is undefined
+  void e(auto (*p)(int y) -> decltype(y)) {}
+                                      ^
+
+"Test_name.c", line 44: warning: declaration is incompatible with previous "s" (declared at line 38)
+      auto(s)()->M; // expected-error {{redefinition of 's' as different kind of symbol}}
+           ^
+
+"Test_name.c", line 48: warning: variable "a" was declared but never referenced
+      int a = (auto(0)); // cxx23-warning {{before C++23}} \
+          ^
+
+"Test_name.c", line 52: warning: variable "b" was declared but never referenced
+      int b = (auto{0}); // cxx23-warning {{before C++23}} \
+          ^
+
+7 errors detected in the compilation of "Test_name.c".

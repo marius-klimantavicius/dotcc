@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 15: error: incomplete type "long []" is not allowed
+  struct D3: D2 { long d3i, d3ax[]; };
+                            ^
+
+"Test_name.c", line 24: warning: function "operator new(unsigned long, void *)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+      new (p) D1 ();
+      ^
+
+"Test_name.c", line 30: warning: function "operator new(unsigned long, void *)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+      new (p) D1 ();                      // { dg-warning "-Warray-bounds" }
+      ^
+
+"Test_name.c", line 100: warning: function "operator new(unsigned long, void *)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+      new (p) D2 ();
+      ^
+
+"Test_name.c", line 106: warning: function "operator new(unsigned long, void *)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+      new (p) D2 ();                      // { dg-warning "-Warray-bounds" }
+      ^
+
+"Test_name.c", line 191: warning: function "operator new(unsigned long, void *)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+      new (p) D3 ();
+      ^
+
+"Test_name.c", line 197: warning: function "operator new(unsigned long, void *)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+      new (p) D3 ();                      // { dg-warning "-Warray-bounds" }
+      ^
+
+1 error detected in the compilation of "Test_name.c".

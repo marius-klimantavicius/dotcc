@@ -1,0 +1,37 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 13: warning: "if consteval" and "if not consteval" are not standard in this mode
+      if consteval {	// { dg-warning "'if consteval' only available with" "" { target c++20_only } }
+      ^
+
+"Test_name.c", line 28: warning: "if consteval" and "if not consteval" are not standard in this mode
+    if consteval		// { dg-warning "'if consteval' only available with" "" { target c++20_only } }
+    ^
+
+"Test_name.c", line 36: warning: "if consteval" and "if not consteval" are not standard in this mode
+    if ! consteval	// { dg-warning "'if consteval' only available with" "" { target c++20_only } }
+    ^
+
+"Test_name.c", line 46: warning: "if consteval" and "if not consteval" are not standard in this mode
+    if consteval		// { dg-warning "'if consteval' only available with" "" { target c++20_only } }
+    ^
+
+"Test_name.c", line 50: warning: "if consteval" and "if not consteval" are not standard in this mode
+    if not consteval	// { dg-warning "'if consteval' only available with" "" { target c++20_only } }
+    ^
+
+"Test_name.c", line 62: warning: "if consteval" and "if not consteval" are not standard in this mode
+    if consteval		// { dg-warning "'if consteval' only available with" "" { target c++20_only } }
+    ^
+
+"Test_name.c", line 70: warning: "if consteval" and "if not consteval" are not standard in this mode
+    if ! consteval	// { dg-warning "'if consteval' only available with" "" { target c++20_only } }
+    ^
+
+"Test_name.c", line 80: warning: "if consteval" and "if not consteval" are not standard in this mode
+    if consteval		// { dg-warning "'if consteval' only available with" "" { target c++20_only } }
+    ^
+
+"Test_name.c", line 84: warning: "if consteval" and "if not consteval" are not standard in this mode
+    if not consteval	// { dg-warning "'if consteval' only available with" "" { target c++20_only } }
+    ^
+

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 --strict_gnu Test_name.c
+"Test_name.c", line 7: error: invalid storage class for a function
+  register int x() asm (""); /* { dg-error "invalid storage class" } */
+  ^
+
+"Test_name.c", line 8: error: invalid storage class for a function
+  register float y() asm (""); /* { dg-error "invalid storage class" } */
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

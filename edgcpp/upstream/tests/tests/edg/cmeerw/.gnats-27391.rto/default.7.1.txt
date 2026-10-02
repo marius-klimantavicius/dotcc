@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=7 --c++11 --gn 130100 --target linux_armv7 Test_name.c
+"Test_name.c", line 27: error: static assertion failed with "returns int for 12.4.0 and 13.2.0"
+  static_assert(is_int<decltype(__builtin_arm_ssat(0, 0u))>::value, "returns int for 12.4.0 and 13.2.0");
+  ^
+
+"Test_name.c", line 28: error: static assertion failed with "returns int for 12.4.0 and 13.2.0"
+  static_assert(is_int<decltype(__builtin_arm_ssat16(0, 0u))>::value, "returns int for 12.4.0 and 13.2.0");
+  ^
+
+"Test_name.c", line 29: error: static assertion failed with "returns int for 12.4.0 and 13.2.0"
+  static_assert(is_int<decltype(__builtin_arm_usat16(0, 0u))>::value, "returns int for 12.4.0 and 13.2.0");
+  ^
+
+3 errors detected in the compilation of "Test_name.c".

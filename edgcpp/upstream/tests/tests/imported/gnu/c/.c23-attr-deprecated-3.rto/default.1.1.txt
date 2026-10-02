@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 7: error: expected a string literal
+  [[deprecated()]] int a; /* { dg-error "parentheses must be omitted if attribute argument list is empty" } */
+               ^
+
+"Test_name.c", line 9: error: expected a string literal
+  [[deprecated(0)]] int b; /* { dg-error "expected" } */
+               ^
+
+"Test_name.c", line 11: error: expected a ")"
+  [[deprecated("", 123)]] int c; /* { dg-error "expected" } */
+                 ^
+
+"Test_name.c", line 13: error: expected a string literal
+  [[deprecated((""))]] int d; /* { dg-error "expected" } */
+               ^
+
+4 errors detected in the compilation of "Test_name.c".

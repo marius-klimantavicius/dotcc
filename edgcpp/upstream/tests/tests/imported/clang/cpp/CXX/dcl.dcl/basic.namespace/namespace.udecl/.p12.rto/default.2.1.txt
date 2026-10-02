@@ -1,0 +1,28 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 142: error: more than one instance of overloaded function "test3::Derived2::foo" matches the argument list:
+            function template "Opaque<2U> test3::Derived2::foo<n>()" (declared at line 122)
+            function template "Opaque<1U> test3::Base::foo<n>()" (declared at line 113)
+      expect<2>(Derived2().foo<0>());
+                           ^
+"Test_name.c", line 112: note: substituting explicit template arguments "<0>" for function template "test3::Base::foo<T>()" failed
+      template <class T> Opaque<0> foo() { return Opaque<0>(); }
+                                   ^
+
+"Test_name.c", line 145: error: more than one instance of overloaded function "test3::Derived4::foo" matches the argument list:
+            function template "Opaque<3U> test3::Derived4::foo<T>()" (declared at line 132)
+            function template "Opaque<0U> test3::Base::foo<T>()" (declared at line 112)
+      expect<3>(Derived4().foo<int>());
+                           ^
+"Test_name.c", line 113: note: substituting explicit template arguments "<int>" for function template "test3::Base::foo<n>()" failed
+      template <int n> Opaque<1> foo() { return Opaque<1>(); }
+                                 ^
+
+"Test_name.c", line 165: error: function "test4::Base::bar(T) [with T=int]" (declared at line 155) is inaccessible
+      d.bar<int>(3); // expected-error {{'bar' is a protected member}}
+        ^
+
+"Test_name.c", line 193: warning: parameter "d" was set but never used
+    void f(Derived d) {
+                   ^
+
+3 errors detected in the compilation of "Test_name.c".

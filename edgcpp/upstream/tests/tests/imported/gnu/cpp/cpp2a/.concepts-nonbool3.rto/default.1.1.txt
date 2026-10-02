@@ -1,0 +1,31 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 7: error: template constraint not satisfied
+  int a = f<0>(); // { dg-error "no match" }
+          ^
+"Test_name.c", line 6: note: substitution of arguments "<0>" for requires-clause failed
+  template <auto V> int f() requires C<V>;
+                                     ^
+"Test_name.c", line 5: note: atomic constraint evaluates to false
+  template <auto V> concept C = false || V || false; // { dg-error "has type 'int'" }
+                                ^
+"Test_name.c", line 5: note: atomic constraint must have type bool
+  template <auto V> concept C = false || V || false; // { dg-error "has type 'int'" }
+                                         ^
+
+"Test_name.c", line 7: error: no instance of function template "f" matches the argument list
+  int a = f<0>(); // { dg-error "no match" }
+          ^
+"Test_name.c", line 6: note: substituting "<0>" for function template "f" failed constraints
+  template <auto V> int f() requires C<V>;
+                        ^
+"Test_name.c", line 6: note: concept "C" not satisfied for "<0>"
+  template <auto V> int f() requires C<V>;
+                                     ^
+"Test_name.c", line 5: note: atomic constraint evaluates to false
+  template <auto V> concept C = false || V || false; // { dg-error "has type 'int'" }
+                                ^
+"Test_name.c", line 5: note: atomic constraint must have type bool
+  template <auto V> concept C = false || V || false; // { dg-error "has type 'int'" }
+                                         ^
+
+2 errors detected in the compilation of "Test_name.c".

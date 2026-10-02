@@ -1,0 +1,2 @@
+fe_only -DTEST_NUMBER=12 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 --c++ %-DX64TYPE=ULLONG Test_name.c
+eccp: unrecognizable argument: %-DX64TYPE=ULLONG

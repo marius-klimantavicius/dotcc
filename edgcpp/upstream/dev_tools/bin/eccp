@@ -1,0 +1,70 @@
+#!/bin/bash
+
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+# Tooling eccp driver
+#
+# usage: eccp [eccp_options...]
+#
+# This is a script which searches for the "real" eccp script and then forwards
+# all arguments.  It's driven entirely by environment variables.
+#
+# The following paths will be checked to find eccp:
+#   - $ECCP
+#   - $EDG_BASE/bin/eccp
+#   - $EDG_BASE/util/bin/eccp
+#   - $(dirname "$CPFE")/eccp
+#
+# If none of these files exist an error will be emitted and the script will
+# exit with error code 1.
+#
+# This script also supports post processing via the "jq" tool if
+# EDG_ECCP_JQ_POST_PROCESS is set and jq is installed on the system.  This is
+# intended for working with EDG's SARIF output mode (and the corresponding
+# output).
+#
+
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+ECCP=${ECCP-$EDG_BASE/bin/eccp}
+if [ ! -f $ECCP ] ; then
+  ECCP=$EDG_BASE/util/bin/eccp
+  if [ ! -f $ECCP ] ; then
+    ECCP=
+  fi
+fi
+if [ -z "$ECCP" ] ; then
+  ECCP=`dirname "$CPFE"`/eccp
+  if [ ! -f $ECCP ] ; then
+    ECCP=
+  fi
+fi
+if [ "$ECCP" = "" ] ; then
+  echo $0: ECCP environment variable not set or found.
+  exit 1
+fi
+
+if [ "$(readlink -f "$ECCP")" = "$(readlink -f "$SCRIPT_DIR/eccp")" ] ; then
+  echo "$0: ECCP environment variable incorrectly resolves to the eccp" \
+       "discovery script \"$SCRIPT_DIR/eccp\"."
+  exit 1
+fi
+
+# Save the value of the enviroment variable and then clear the environment
+# variable so that we don't just loop executing this command over and over.
+eccp_to_use=$ECCP
+unset ECCP
+if [ ! -z "$EDG_ECCP_JQ_POST_PROCESS" ] ; then
+  # Run eccp with post processing provided by jq (for JSON based output types)
+  if ! command -v "jq" &> /dev/null ; then
+     echo "$0: jq required for EDG_ECCP_JQ_POST_PROCESS."
+     exit 1
+  fi
+  exec $eccp_to_use "$@" 2>&1 | jq .
+else
+  # Run eccp without post processing
+  exec $eccp_to_use "$@"
+fi

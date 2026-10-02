@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 126: warning: missing return statement at end of non-void function "H::data"
+  	  }
+  	  ^
+
+"Test_name.c", line 97: warning: variable "i" is used before its value is set
+    for (int i; i; ++i)
+                ^
+          detected during:
+            instantiation of "void matrix_assign<F,<unnamed>,M,E,C>(M, matrix_expression<E>, int, C) [with F=D, <unnamed>=int, M=H, E=J<H, C>, C=H::orientation_category]" at line 111
+            instantiation of "void matrix_assign<F,M,E>(M, matrix_expression<E>) [with F=D, M=H, E=J<H, C>]" at line 121
+            instantiation of "H::H(matrix_expression<AE>) [with AE=J<H, C>]" at line 128
+
+"Test_name.c", line 71: warning: missing return statement at end of non-void function "matrix_expression<E>::operator()"
+      E &operator()() {}
+                       ^
+          detected during:
+            instantiation of "void indexing_matrix_assign<F,M,E>(M, matrix_expression<E>, int) [with F=D, M=H, E=J<H, C>]" at line 105
+            instantiation of "void matrix_assign<F,<unnamed>,M,E,C>(M, matrix_expression<E>, int, C) [with F=D, <unnamed>=int, M=H, E=J<H, C>, C=H::orientation_category]" at line 111
+            instantiation of "void matrix_assign<F,M,E>(M, matrix_expression<E>) [with F=D, M=H, E=J<H, C>]" at line 121
+            instantiation of "H::H(matrix_expression<AE>) [with AE=J<H, C>]" at line 128
+

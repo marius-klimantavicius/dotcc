@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 8: error: list-initialization of an object type "tuple" is not allowed because the type is incomplete
+  template <decltype(tuple {})> // { dg-error "invalid use of incomplete type" }
+                           ^
+
+"Test_name.c", line 8: error: incomplete type "tuple" is not allowed
+  template <decltype(tuple {})> // { dg-error "invalid use of incomplete type" }
+                     ^
+
+"Test_name.c", line 12: error: list-initialization of an object type "tuple" is not allowed because the type is incomplete
+  decltype(tuple {}) d; // { dg-error "invalid use of incomplete type" }
+                 ^
+
+"Test_name.c", line 12: error: incomplete type "tuple" is not allowed
+  decltype(tuple {}) d; // { dg-error "invalid use of incomplete type" }
+           ^
+
+4 errors detected in the compilation of "Test_name.c".

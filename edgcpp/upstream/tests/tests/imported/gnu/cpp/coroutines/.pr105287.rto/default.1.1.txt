@@ -1,0 +1,27 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: warning: "std::coroutine_handle<<unnamed>>::operator std::coroutine_handle<void>() [with <unnamed>=void]" will not be called for implicit or explicit conversions
+    operator coroutine_handle<>();
+    ^
+          detected during instantiation of class "std::coroutine_handle<<unnamed>> [with <unnamed>=void]" at line 22
+
+"Test_name.c", line 44: warning: variable "b" was declared but never referenced
+     int b = 5;
+         ^
+
+"Test_name.c", line 48: warning: variable "c" was declared but never referenced
+     int c = 10;
+         ^
+
+"Test_name.c", line 50: error: identifier "co_await" is undefined
+   co_await BoolAwaiter(true) && co_await IntAwaiter(a); 
+   ^
+
+"Test_name.c", line 50: error: expected a ";"
+   co_await BoolAwaiter(true) && co_await IntAwaiter(a); 
+                              ^
+
+"Test_name.c", line 52: warning: missing return statement at end of non-void function "my_coro"
+   }
+   ^
+
+2 errors detected in the compilation of "Test_name.c".

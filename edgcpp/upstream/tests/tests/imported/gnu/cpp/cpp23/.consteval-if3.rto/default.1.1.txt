@@ -1,0 +1,9 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 10: warning: "if consteval" and "if not consteval" are not standard in this mode
+    if consteval { return true; } else { return false; }	// { dg-warning "'if consteval' only available with" "" { target c++20_only } }
+    ^
+
+"Test_name.c", line 34: warning: variable "arr" was set but never used
+    char arr[n] = {}; // char[13]
+         ^
+

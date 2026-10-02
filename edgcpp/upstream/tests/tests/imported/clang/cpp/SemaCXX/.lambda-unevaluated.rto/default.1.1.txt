@@ -1,0 +1,229 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 31: error: name followed by "::" must be a class or namespace name
+  auto g(T) -> decltype([]() { T::invalid; } ());
+                               ^
+
+"Test_name.c", line 32: error: cannot deduce "auto" type
+  auto e = g(0); // expected-error@-1{{type 'int' cannot be used prior to '::'}}
+  ^
+
+"Test_name.c", line 44: error: template instantiation resulted in unexpected function type of "auto (lambda []()->int)" (the meaning of a name may have changed since the template declaration -- the type of the template is "auto (decltype((<expression>)))")
+    foo<int>({});
+                ^
+          detected during instantiation of "foo" based on template argument <int> at line 44
+
+"Test_name.c", line 44: error: cannot deduce the return type of function "foo<T>(decltype((<expression>))) [with T=int]" (declared at line 39); it has not been defined
+    foo<int>({});
+    ^
+
+"Test_name.c", line 56: error: template instantiation resulted in unexpected function type of "auto (lambda []()->int)" (the meaning of a name may have changed since the template declaration -- the type of the template is "auto (decltype((<expression>)))")
+    C<int>{}.foo<long>({});
+                          ^
+          detected during instantiation of "C<T>::foo [with T=int]" based on template argument <long> at line 56
+
+"Test_name.c", line 56: error: cannot deduce the return type of function "C<T>::foo<U>(decltype((<expression>))) [with T=int, U=long]" (declared at line 50); it has not been defined
+    C<int>{}.foo<long>({});
+             ^
+
+"Test_name.c", line 63: error: more than one instance of overloaded function "PR52073::f" matches the argument list:
+            function template "void PR52073::f<<unnamed>>(decltype((<expression>)))" (declared at line 61)
+            function template "void PR52073::f<<unnamed>>(decltype((<expression>)))" (declared at line 62)
+            argument types are: ({...})
+  void use_f() { f<int>({}); } // expected-error {{ambiguous}}
+                 ^
+
+"Test_name.c", line 67: error: identifier "N" is undefined
+  template<int N> void g(const char (*)[([]{ return N; })()]) {} // expected-note {{candidate}}
+                                                    ^
+
+"Test_name.c", line 66: error: identifier "N" is undefined
+  template<int N> void g(const char (*)[([]{ return N; })()]) {} // expected-note {{candidate}}
+                                                    ^
+
+"Test_name.c", line 68: error: no instance of overloaded function "PR52073::g" matches the argument list
+            argument types are: (const char (*)[6])
+  void use_g() { g<6>(&"hello"); } // expected-error {{ambiguous}}
+                 ^
+"Test_name.c", line 67: note: substituting explicit template arguments "<6>" for function template "PR52073::g<N>(const char (*)[<expression>])" failed
+  template<int N> void g(const char (*)[([]{ return N; })()]) {} // expected-note {{candidate}}
+                       ^
+"Test_name.c", line 66: note: substituting explicit template arguments "<6>" for function template "PR52073::g<N>(const char (*)[<expression>])" failed
+  template<int N> void g(const char (*)[([]{ return N; })()]) {} // expected-note {{candidate}}
+                       ^
+
+"Test_name.c", line 79: error: declaration is incompatible with "void GH51416::A<T>::spam(decltype((<expression>)))" (declared at line 75)
+  void A<T>::spam(decltype([] {})) // expected-error{{out-of-line definition of 'spam' does not match}}
+             ^
+
+"Test_name.c", line 89: error: declaration is incompatible with function template "void GH51416::B::spam<T>(decltype((<expression>)))" (declared at line 85)
+  void B::spam(decltype([] {})) {} // expected-error{{out-of-line definition of 'spam' does not match}}
+          ^
+
+"Test_name.c", line 111: error: template instantiation resulted in unexpected function type of "auto (const int &)->GH50376::alias<int>" (aka "auto (const int &)->GH50376::foo_t<int, lambda [](int)->int>") (the meaning of a name may have changed since the template declaration -- the type of the template is "auto (const T &)->GH50376::alias<T>" (aka "auto (const T &)->GH50376::foo_t<T, decltype((<expression>))>"))
+    auto const error = fun(i); // expected-note{{in instantiation}}
+                             ^
+          detected during instantiation of "GH50376::fun" based on template argument <int> at line 111
+
+"Test_name.c", line 111: warning: variable "i" is used before its value is set
+    auto const error = fun(i); // expected-note{{in instantiation}}
+                           ^
+
+"Test_name.c", line 119: error: template instantiation resulted in unexpected function type of "void (lambda []()->void (*)[4])" (the meaning of a name may have changed since the template declaration -- the type of the template is "void (decltype((<expression>)) (*)[sizeof(T)])")
+    spam<int>();
+               ^
+          detected during instantiation of "GH51414::spam" based on template argument <int> at line 119
+
+"Test_name.c", line 126: error: cannot determine which instance of function template "GH51641::foo" is intended
+  static_assert(!__is_same(decltype(foo<int>), void));
+                                    ^
+
+"Test_name.c", line 131: warning: a "static" lambda expression is nonstandard
+  Nothing<[]() static { return 0; }()> nothing;
+               ^
+
+"Test_name.c", line 134: warning: a "static" lambda expression is nonstandard
+  Nothing<[]() static { return 0; }> nothingT;
+               ^
+
+"Test_name.c", line 137: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  concept True = [] static { return true; }();
+                    ^
+
+"Test_name.c", line 137: warning: a "static" lambda expression is nonstandard
+  concept True = [] static { return true; }();
+                    ^
+
+"Test_name.c", line 140: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  static_assert(sizeof([] static { return 0; }));
+                          ^
+
+"Test_name.c", line 140: warning: a "static" lambda expression is nonstandard
+  static_assert(sizeof([] static { return 0; }));
+                          ^
+
+"Test_name.c", line 141: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  static_assert(sizeof([] static { return 0; }()));
+                          ^
+
+"Test_name.c", line 141: warning: a "static" lambda expression is nonstandard
+  static_assert(sizeof([] static { return 0; }()));
+                          ^
+
+"Test_name.c", line 143: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  void f()  noexcept(noexcept([] static { return 0; }()));
+                                 ^
+
+"Test_name.c", line 143: warning: a "static" lambda expression is nonstandard
+  void f()  noexcept(noexcept([] static { return 0; }()));
+                                 ^
+
+"Test_name.c", line 145: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  using a = decltype([] static { return 0; });
+                        ^
+
+"Test_name.c", line 145: warning: a "static" lambda expression is nonstandard
+  using a = decltype([] static { return 0; });
+                        ^
+
+"Test_name.c", line 146: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  using b = decltype([] static { return 0; }());
+                        ^
+
+"Test_name.c", line 146: warning: a "static" lambda expression is nonstandard
+  using b = decltype([] static { return 0; }());
+                        ^
+
+"Test_name.c", line 147: warning: a "static" lambda expression is nonstandard
+  using c = decltype([]() static noexcept(noexcept([] { return 0; }())) { return 0; });
+                          ^
+
+"Test_name.c", line 148: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  using d = decltype(sizeof([] static { return 0; }));
+                               ^
+
+"Test_name.c", line 148: warning: a "static" lambda expression is nonstandard
+  using d = decltype(sizeof([] static { return 0; }));
+                               ^
+
+"Test_name.c", line 161: error: name followed by "::" must be a class or namespace name
+      []() { T::foo(); }; // expected-error{{type 'int' cannot be used prior to '::'}}
+             ^
+
+"Test_name.c", line 167: error: static assertion failed
+  static_assert(!lambda_works<int>); // expected-note {{while checking the satisfaction of concept 'lambda_works<int>' requested here}}
+  ^
+
+"Test_name.c", line 171: error: name followed by "::" must be a class or namespace name
+  int* func(T) requires requires { []() { T::foo(); }; }; // expected-error{{type 'int' cannot be used prior to '::'}}
+                                          ^
+
+"Test_name.c", line 177: error: static assertion failed
+  static_assert(__is_same(decltype(func(0)), double*)); // expected-note {{while checking constraint satisfaction for template 'func<int>' required here}}
+  ^
+
+"Test_name.c", line 182: error: name followed by "::" must be a class or namespace name
+  auto direct_lambda(T) -> decltype([] { T::foo(); }) {}
+                                         ^
+
+"Test_name.c", line 186: error: template instantiation resulted in unexpected function type of "auto (int)->lambda []()->void" (the meaning of a name may have changed since the template declaration -- the type of the template is "auto (T)->decltype((<expression>))")
+      direct_lambda(0); // expected-error@-4 {{type 'int' cannot be used prior to '::'}}
+                      ^
+          detected during instantiation of "lambda_in_constraints::direct_lambda" based on template argument <int> at line 186
+
+"Test_name.c", line 189: warning: variable "x" was declared but never referenced
+      bool x = requires { direct_lambda(0); }; // expected-error@-7 {{type 'int' cannot be used prior to '::'}}
+           ^
+
+"Test_name.c", line 233: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+    requires requires { [&] -> decltype(value) {}; }
+                            ^
+
+"Test_name.c", line 239: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+    requires requires { [&] -> decltype(value) { return 2; }; } {} // #S-requires
+                            ^
+
+"Test_name.c", line 244: error: a parameter is not allowed
+    static auto bar(auto value) -> decltype([&] { return value; }()) {
+                                                         ^
+
+"Test_name.c", line 262: error: no instance of function template "GH88081::S::foo" matches the argument list
+            argument types are: (int)
+    S::foo(42);
+    ^
+"Test_name.c", line 241: note: candidate function template "GH88081::S::foo" failed deduction
+    static auto foo(auto value) -> decltype([&]() -> decltype(value) {}()) { return {}; } // #S-foo
+                ^
+
+"Test_name.c", line 244: error: identifier "value" is undefined
+    static auto bar(auto value) -> decltype([&] { return value; }()) {
+                                                         ^
+
+"Test_name.c", line 263: error: no instance of function template "GH88081::S::bar" matches the argument list
+            argument types are: (const char [4])
+    S::bar("str");
+    ^
+"Test_name.c", line 244: note: candidate function template "GH88081::S::bar" failed deduction
+    static auto bar(auto value) -> decltype([&] { return value; }()) {
+                ^
+
+"Test_name.c", line 264: error: no instance of function template "GH88081::S::bar" matches the argument list
+            argument types are: (double)
+    S::bar(0.618);
+    ^
+"Test_name.c", line 244: note: candidate function template "GH88081::S::bar" failed deduction
+    static auto bar(auto value) -> decltype([&] { return value; }()) {
+                ^
+
+"Test_name.c", line 290: error: reference to local variable of enclosing function is not allowed
+    return [](auto w = [&] { return x; }) { }; // expected-error {{lambda expression in default argument cannot capture any entity}}
+                                    ^
+
+"Test_name.c", line 290: error: invalid reference to an outer-scope local variable in a lambda body
+    return [](auto w = [&] { return x; }) { }; // expected-error {{lambda expression in default argument cannot capture any entity}}
+                                    ^
+
+"Test_name.c", line 224: warning: variable "GH69307::Ret" was declared but never referenced
+  constexpr auto Ret = ICE()(1);
+                 ^
+
+28 errors detected in the compilation of "Test_name.c".

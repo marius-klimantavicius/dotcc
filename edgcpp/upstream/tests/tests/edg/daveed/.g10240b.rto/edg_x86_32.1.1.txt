@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gcc --gnu_version=30200 Test_name.c
+"Test_name.c", line 7: error: expected a ")"
+             : : "r"(i) );
+                  ^
+
+"Test_name.c", line 7: error: missing closing quote
+             : : "r"(i) );
+                   ^
+
+At end of source: error: expected a ";"
+
+"Test_name.c", line 5: warning: variable "i" was declared but never referenced
+         int i = (__EDG_SIZE_TYPE__)"%[oops]";
+             ^
+
+At end of source: error: expected a "}"
+"Test_name.c", line 4: note: to match this "{"
+     void f() {
+              ^
+
+4 errors detected in the compilation of "Test_name.c".

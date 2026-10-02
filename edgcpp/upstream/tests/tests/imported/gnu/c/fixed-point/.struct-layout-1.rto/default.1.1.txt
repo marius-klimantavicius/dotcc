@@ -1,0 +1,42 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"./fixed-point/struct-layout-1.c", line 12: error: expected a ";"
+    long _Fract a[0];
+                ^
+
+"./fixed-point/struct-layout-1.c", line 19: error: expected a ";"
+      long _Fract e;
+                  ^
+
+"./fixed-point/struct-layout-1.c", line 27: error: expected a ";"
+      long _Fract c;
+                  ^
+
+"./fixed-point/struct-layout-1.c", line 34: error: expected a ";"
+    long _Fract b[0];
+                ^
+
+"./fixed-point/struct-layout-1.c", line 41: error: expected a ";"
+      long _Fract c[0];
+                  ^
+
+"./fixed-point/struct-layout-1.c", line 65: warning: variable "s1" is used before its value is set
+    if (check_var (2, s1, 2LL) == 0)
+                      ^
+
+"./fixed-point/struct-layout-1.c", line 67: warning: variable "s2" is used before its value is set
+    if (check_var (2, s2, 2LL) == 0)
+                      ^
+
+"./fixed-point/struct-layout-1.c", line 69: warning: variable "s3" is used before its value is set
+    if (check_var (2, s3, 2LL) == 0)
+                      ^
+
+"./fixed-point/struct-layout-1.c", line 71: warning: variable "s4" is used before its value is set
+    if (check_var (2, s4, 2LL) == 0)
+                      ^
+
+"./fixed-point/struct-layout-1.c", line 73: warning: variable "s5" is used before its value is set
+    if (check_var (2, s5, 2LL) == 0)
+                      ^
+
+5 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,70 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 --c++03 Test_name.c
+"Test_name.c", line 16: warning: offsetof applied to a type other than a standard-layout class
+    int i = __builtin_offsetof(P, fieldThatPointsToANonPODType.m); // expected-warning{{'offsetof' on non-POD type 'P'}}
+                               ^
+
+"Test_name.c", line 16: warning: variable "i" was declared but never referenced
+    int i = __builtin_offsetof(P, fieldThatPointsToANonPODType.m); // expected-warning{{'offsetof' on non-POD type 'P'}}
+        ^
+
+"Test_name.c", line 21: warning: offsetof applied to a type other than a standard-layout class
+  int o = __builtin_offsetof(Derived, x); // expected-warning{{'offsetof' on non-POD type}}
+                             ^
+
+"Test_name.c", line 23: warning: offsetof applied to a type other than a standard-layout class
+  const int o2 = sizeof(__builtin_offsetof(Derived, x));
+                                           ^
+
+"Test_name.c", line 31: warning: variable "array0" was declared but never referenced
+    int array0[__builtin_offsetof(HasArray, array[5])];
+        ^
+
+"Test_name.c", line 32: warning: variable "array1" was declared but never referenced
+    int array1[__builtin_offsetof(HasArray, array[i])]; // expected-warning {{variable length arrays in C++ are a Clang extension}}
+        ^
+
+"Test_name.c", line 41: error: second operand of offsetof may not be a bit field
+  int test3 = __builtin_offsetof(struct has_bitfields, j); // expected-error{{cannot compute offset of bit-field 'j'}}
+                                                       ^
+
+"Test_name.c", line 56: warning: offsetof applied to a type other than a standard-layout class
+  int derived1[__builtin_offsetof(Derived2, x) == 0? 1 : -1]; // expected-warning{{'offsetof' on non-POD type 'Derived2'}}
+                                  ^
+
+"Test_name.c", line 57: warning: offsetof applied to a type other than a standard-layout class
+  int derived2[__builtin_offsetof(Derived2, y)  == 4? 1 : -1]; // expected-warning{{'offsetof' on non-POD type 'Derived2'}}
+                                  ^
+
+"Test_name.c", line 58: warning: offsetof applied to a type other than a standard-layout class
+  int derived3[__builtin_offsetof(Derived2, z)  == 8? 1 : -1]; // expected-warning{{'offsetof' on non-POD type 'Derived2'}}
+                                  ^
+
+"Test_name.c", line 71: warning: offsetof applied to a type other than a standard-layout class
+  int anonstruct[__builtin_offsetof(bar, x) == 0 ? 1 : -1]; // expected-warning{{'offsetof' on non-POD type 'bar'}}
+                                    ^
+
+"Test_name.c", line 78: error: a pointer to a bound function may only be used to call the function
+  int ltor = __builtin_offsetof(struct LtoRCheck, a[LtoRCheck().f]); // \
+                                                                ^
+
+"Test_name.c", line 86: warning: offsetof applied to a type other than a standard-layout class
+    void Fun() { (void)__builtin_offsetof(Derived, Field); } // expected-warning {{'offsetof' on non-POD type}} \
+                                          ^
+
+"Test_name.c", line 86: error: cannot apply offsetof to a member of a virtual base
+    void Fun() { (void)__builtin_offsetof(Derived, Field); } // expected-warning {{'offsetof' on non-POD type}} \
+                       ^
+
+"Test_name.c", line 92: error: type definition is not allowed
+    return __builtin_offsetof(struct A // expected-error {{'A' cannot be defined in a type specifier}}
+                              ^
+
+"Test_name.c", line 92: error: expected a class, struct, or union type
+    return __builtin_offsetof(struct A // expected-error {{'A' cannot be defined in a type specifier}}
+                              ^
+
+"Test_name.c", line 23: warning: variable "o2" was declared but never referenced
+  const int o2 = sizeof(__builtin_offsetof(Derived, x));
+            ^
+
+5 errors detected in the compilation of "Test_name.c".

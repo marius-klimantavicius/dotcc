@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 6: error: this declaration has no storage class or type specifier
+  _BitInt(63) a;			// { dg-error "expected" }
+  ^
+
+"Test_name.c", line 6: error: expected a ";"
+  _BitInt(63) a;			// { dg-error "expected" }
+              ^
+
+"Test_name.c", line 7: error: variable "_BitInt" has already been defined (previous definition at line 6)
+  unsigned _BitInt(31) b;		// { dg-error "expected" }
+           ^
+
+"Test_name.c", line 7: error: expected a ";"
+  unsigned _BitInt(31) b;		// { dg-error "expected" }
+                       ^
+
+"Test_name.c", line 8: warning: a user-provided literal suffix must begin with "_"
+  int c = 21wb;			// { dg-error "invalid suffix 'wb' on integer constant" "" { target c++98_only } }
+          ^
+
+"Test_name.c", line 8: error: user-defined literal operator not found
+  int c = 21wb;			// { dg-error "invalid suffix 'wb' on integer constant" "" { target c++98_only } }
+          ^
+
+"Test_name.c", line 10: warning: a user-provided literal suffix must begin with "_"
+  long long d = 60594869054uwb;	// { dg-error "invalid suffix 'uwb' on integer constant" "" { target c++98_only } }
+                ^
+
+"Test_name.c", line 10: error: user-defined literal operator not found
+  long long d = 60594869054uwb;	// { dg-error "invalid suffix 'uwb' on integer constant" "" { target c++98_only } }
+                ^
+
+6 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,78 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 10: error: this declaration has no storage class or type specifier
+  __vector long vl;			/* { dg-error "invalid for 64" } */
+  ^
+
+"Test_name.c", line 10: error: expected a ";"
+  __vector long vl;			/* { dg-error "invalid for 64" } */
+           ^
+
+"Test_name.c", line 11: error: this declaration has no storage class or type specifier
+  __vector unsigned long vul;		/* { dg-error "invalid for 64" } */
+  ^
+
+"Test_name.c", line 11: error: variable "__vector" has already been defined (previous definition at line 10)
+  __vector unsigned long vul;		/* { dg-error "invalid for 64" } */
+  ^
+
+"Test_name.c", line 11: error: expected a ";"
+  __vector unsigned long vul;		/* { dg-error "invalid for 64" } */
+           ^
+
+"Test_name.c", line 12: error: this declaration has no storage class or type specifier
+  __vector signed long vsl;		/* { dg-error "invalid for 64" } */
+  ^
+
+"Test_name.c", line 12: error: variable "__vector" has already been defined (previous definition at line 10)
+  __vector signed long vsl;		/* { dg-error "invalid for 64" } */
+  ^
+
+"Test_name.c", line 12: error: expected a ";"
+  __vector signed long vsl;		/* { dg-error "invalid for 64" } */
+           ^
+
+"Test_name.c", line 13: error: variable "__vector" is not a type name
+  __vector __bool long int vbli;		/* { dg-error "invalid for 64" } */
+  ^
+
+"Test_name.c", line 13: error: expected a ";"
+  __vector __bool long int vbli;		/* { dg-error "invalid for 64" } */
+                  ^
+
+"Test_name.c", line 14: error: this declaration has no storage class or type specifier
+  __vector long int vli;			/* { dg-error "invalid for 64" } */
+  ^
+
+"Test_name.c", line 14: error: variable "__vector" has already been defined (previous definition at line 10)
+  __vector long int vli;			/* { dg-error "invalid for 64" } */
+  ^
+
+"Test_name.c", line 14: error: expected a ";"
+  __vector long int vli;			/* { dg-error "invalid for 64" } */
+           ^
+
+"Test_name.c", line 15: error: this declaration has no storage class or type specifier
+  __vector unsigned long int vuli;	/* { dg-error "invalid for 64" } */
+  ^
+
+"Test_name.c", line 15: error: variable "__vector" has already been defined (previous definition at line 10)
+  __vector unsigned long int vuli;	/* { dg-error "invalid for 64" } */
+  ^
+
+"Test_name.c", line 15: error: expected a ";"
+  __vector unsigned long int vuli;	/* { dg-error "invalid for 64" } */
+           ^
+
+"Test_name.c", line 16: error: this declaration has no storage class or type specifier
+  __vector signed long int vsli;		/* { dg-error "invalid for 64" } */
+  ^
+
+"Test_name.c", line 16: error: variable "__vector" has already been defined (previous definition at line 10)
+  __vector signed long int vsli;		/* { dg-error "invalid for 64" } */
+  ^
+
+"Test_name.c", line 16: error: expected a ";"
+  __vector signed long int vsli;		/* { dg-error "invalid for 64" } */
+           ^
+
+19 errors detected in the compilation of "Test_name.c".

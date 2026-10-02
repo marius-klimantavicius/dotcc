@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 11: warning: variable "k" is used before its value is set
+      return k; /* { dg-warning "'k' is used uninitialized" }  */
+             ^
+          detected during instantiation of "Q1<T>::x Q2<T>::f() [with T=int]" at line 14
+

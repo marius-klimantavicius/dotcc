@@ -1,0 +1,340 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++23 Test_name.c
+"Test_name.c", line 20: warning: variable "gold" was declared but never referenced
+    constexpr auto gold = array_size(gold_medal_mel); // ok
+                   ^
+
+"Test_name.c", line 44: error: expression must have a constant value
+    static_assert(pswam->phelps() == 28);   // expected-error {{static assertion expression is not an integral constant expression}} \
+                  ^
+"Test_name.c", line 44: note: the value of variable "pswam" (declared at line 43) cannot be used as a constant
+    static_assert(pswam->phelps() == 28);   // expected-error {{static assertion expression is not an integral constant expression}} \
+                  ^
+
+"Test_name.c", line 48: error: expression must have a constant value
+    static_assert(swam.lochte() == 12);     // expected-error {{static assertion expression is not an integral constant expression}} \
+                  ^
+"Test_name.c", line 48: note: attempt to access run-time storage
+    static_assert(swam.lochte() == 12);     // expected-error {{static assertion expression is not an integral constant expression}} \
+                             ^
+
+"Test_name.c", line 50: error: expression must have a constant value
+    static_assert(swam.coughlin == 12);     // expected-error {{static assertion expression is not an integral constant expression}} \
+                  ^
+"Test_name.c", line 50: note: attempt to access run-time storage
+    static_assert(swam.coughlin == 12);     // expected-error {{static assertion expression is not an integral constant expression}} \
+                      ^
+
+"Test_name.c", line 58: error: expression must have a constant value
+  constexpr auto& gallagher = typeid(trident);    // expected-error {{constexpr variable 'gallagher' must be initialized by a constant expression}} \
+                              ^
+"Test_name.c", line 58: note: attempt to access run-time storage
+  constexpr auto& gallagher = typeid(trident);    // expected-error {{constexpr variable 'gallagher' must be initialized by a constant expression}} \
+                              ^
+
+"Test_name.c", line 77: warning: variable "x" was declared but never referenced
+    constexpr int x = c.f();
+                  ^
+
+"Test_name.c", line 78: warning: variable "y" was declared but never referenced
+    constexpr int y = c.g();
+                  ^
+
+"Test_name.c", line 96: warning: statement is unreachable
+      return 0;
+      ^
+
+"Test_name.c", line 133: warning: missing return statement at end of non-void function "GH26067::main"
+  }
+  ^
+
+"Test_name.c", line 142: warning: variable "x" was declared but never referenced
+    (void)[&]() { constexpr int x = f(); };
+                                ^
+
+"Test_name.c", line 139: warning: variable "x" was declared but never referenced
+    constexpr int x = f();
+                  ^
+
+"Test_name.c", line 161: warning: missing return statement at end of non-void function "GH118063::g"
+  }
+  ^
+
+"Test_name.c", line 184: warning: expression has no effect
+    constinit int& g = (x,y); // expected-warning {{left operand of comma operator has no effect}}
+                        ^
+
+"Test_name.c", line 210: error: expression must have a constant value
+    constexpr int &r = r; // expected-error {{must be initialized by a constant expression}} \
+                       ^
+"Test_name.c", line 210: note: access to uninitialized object
+    constexpr int &r = r; // expected-error {{must be initialized by a constant expression}} \
+                       ^
+
+"Test_name.c", line 213: warning: expression has no effect
+    constexpr int &rr = (rr, y);
+                         ^
+
+"Test_name.c", line 215: warning: variable "x" is used before its value is set
+      int &x = x; // expected-warning {{reference 'x' is not yet bound to a value when used within its own initialization}} \
+               ^
+
+"Test_name.c", line 220: error: expression must have a constant value
+    constexpr int &gg = g(); // expected-error {{must be initialized by a constant expression}} \
+                        ^
+"Test_name.c", line 215: note: access to uninitialized object
+      int &x = x; // expected-warning {{reference 'x' is not yet bound to a value when used within its own initialization}} \
+               ^
+
+"Test_name.c", line 223: warning: variable "x" is used before its value is set
+      int &x = x; // expected-warning {{reference 'x' is not yet bound to a value when used within its own initialization}} \
+               ^
+
+"Test_name.c", line 228: error: expression must have a constant value
+    constexpr int gg2 = g2(); // expected-error {{must be initialized by a constant expression}} \
+                        ^
+"Test_name.c", line 223: note: access to uninitialized object
+      int &x = x; // expected-warning {{reference 'x' is not yet bound to a value when used within its own initialization}} \
+               ^
+
+"Test_name.c", line 231: warning: variable "x" is used before its value is set
+      int &x = (x,y); // expected-warning{{left operand of comma operator has no effect}} \
+                ^
+
+"Test_name.c", line 231: warning: expression has no effect
+      int &x = (x,y); // expected-warning{{left operand of comma operator has no effect}} \
+                ^
+
+"Test_name.c", line 240: warning: variable "x" is used before its value is set
+      uintptr_t * &x = x; // expected-warning {{reference 'x' is not yet bound to a value when used within its own initialization}} \
+                       ^
+
+"Test_name.c", line 246: error: expression must have a constant value
+    constexpr uintptr_t gg4 = g4(); // expected-error {{must be initialized by a constant expression}} \
+                              ^
+"Test_name.c", line 240: note: access to uninitialized object
+      uintptr_t * &x = x; // expected-warning {{reference 'x' is not yet bound to a value when used within its own initialization}} \
+                       ^
+
+"Test_name.c", line 249: warning: variable "x" is used before its value is set
+      int &x = x; // expected-warning {{reference 'x' is not yet bound to a value when used within its own initialization}} \
+               ^
+
+"Test_name.c", line 254: error: expression must have a constant value
+    constexpr uintptr_t gg5 = g5(); // expected-error {{must be initialized by a constant expression}} \
+                              ^
+"Test_name.c", line 249: note: access to uninitialized object
+      int &x = x; // expected-warning {{reference 'x' is not yet bound to a value when used within its own initialization}} \
+               ^
+
+"Test_name.c", line 262: error: expression must have a constant value
+      constexpr const int &v1 = x; // expected-error {{must be initialized by a constant expression}} \
+                                ^
+"Test_name.c", line 262: note: a pointer or reference to parameter "x" (declared at line 261) cannot be used as a constant
+      constexpr const int &v1 = x; // expected-error {{must be initialized by a constant expression}} \
+                                ^
+
+"Test_name.c", line 264: warning: expression has no effect
+      constexpr const int &v2 = (x, arbitrary); // expected-warning {{left operand of comma operator has no effect}}
+                                 ^
+
+"Test_name.c", line 265: error: expression must have a constant value
+      constexpr int v3 = x; // expected-error {{must be initialized by a constant expression}} \
+                         ^
+"Test_name.c", line 265: note: attempt to access run-time storage
+      constexpr int v3 = x; // expected-error {{must be initialized by a constant expression}} \
+                         ^
+
+"Test_name.c", line 267: error: expression must have a constant value
+      static_assert(x==arbitrary); // expected-error {{static assertion expression is not an integral constant expression}} \
+                    ^
+"Test_name.c", line 267: note: attempt to access run-time storage
+      static_assert(x==arbitrary); // expected-error {{static assertion expression is not an integral constant expression}} \
+                    ^
+
+"Test_name.c", line 262: warning: variable "v1" was declared but never referenced
+      constexpr const int &v1 = x; // expected-error {{must be initialized by a constant expression}} \
+                           ^
+
+"Test_name.c", line 264: warning: variable "v2" was declared but never referenced
+      constexpr const int &v2 = (x, arbitrary); // expected-warning {{left operand of comma operator has no effect}}
+                           ^
+
+"Test_name.c", line 265: warning: variable "v3" was declared but never referenced
+      constexpr int v3 = x; // expected-error {{must be initialized by a constant expression}} \
+                    ^
+
+"Test_name.c", line 277: error: expression must have a constant value
+    constexpr int y = f(); // expected-error {{constexpr variable 'y' must be initialized by a constant expression}} expected-note {{in call to 'f()'}}
+                      ^
+"Test_name.c", line 275: note: the value of variable "dropped_note::x" (declared at line 274) cannot be used as a constant
+    constexpr int f() { return x; } // nointerpreter-note {{read of non-constexpr variable 'x'}} \
+                               ^
+
+"Test_name.c", line 284: error: expression must have a constant value
+      constexpr B* b = dynamic_cast<B*>(&a); // expected-error {{must be initialized by a constant expression}} \
+                       ^
+"Test_name.c", line 284: note: attempt to access run-time storage
+      constexpr B* b = dynamic_cast<B*>(&a); // expected-error {{must be initialized by a constant expression}} \
+                       ^
+
+"Test_name.c", line 287: error: expression must have a constant value
+      constexpr void* b2 = dynamic_cast<void*>(&a); // expected-error {{must be initialized by a constant expression}} \
+                           ^
+"Test_name.c", line 287: note: attempt to access run-time storage
+      constexpr void* b2 = dynamic_cast<void*>(&a); // expected-error {{must be initialized by a constant expression}} \
+                           ^
+
+"Test_name.c", line 284: warning: variable "b" was declared but never referenced
+      constexpr B* b = dynamic_cast<B*>(&a); // expected-error {{must be initialized by a constant expression}} \
+                   ^
+
+"Test_name.c", line 287: warning: variable "b2" was declared but never referenced
+      constexpr void* b2 = dynamic_cast<void*>(&a); // expected-error {{must be initialized by a constant expression}} \
+                      ^
+
+"Test_name.c", line 296: error: expression must have a constant value
+      constexpr int t2 = a - b; // expected-error {{constexpr variable 't2' must be initialized by a constant expression}} \
+                         ^
+"Test_name.c", line 296: note: invalid pointer difference in constexpr evaluation
+      constexpr int t2 = a - b; // expected-error {{constexpr variable 't2' must be initialized by a constant expression}} \
+                           ^
+
+"Test_name.c", line 299: error: expression must have a constant value
+      constexpr int t3 = a - &c[2];  // expected-error {{constexpr variable 't3' must be initialized by a constant expression}} \
+                         ^
+"Test_name.c", line 299: note: cannot access position 2 in array of 1 elements
+      constexpr int t3 = a - &c[2];  // expected-error {{constexpr variable 't3' must be initialized by a constant expression}} \
+                               ^
+
+"Test_name.c", line 295: warning: variable "t1" was declared but never referenced
+      constexpr int t1 = a - a;
+                    ^
+
+"Test_name.c", line 296: warning: variable "t2" was declared but never referenced
+      constexpr int t2 = a - b; // expected-error {{constexpr variable 't2' must be initialized by a constant expression}} \
+                    ^
+
+"Test_name.c", line 299: warning: variable "t3" was declared but never referenced
+      constexpr int t3 = a - &c[2];  // expected-error {{constexpr variable 't3' must be initialized by a constant expression}} \
+                    ^
+
+"Test_name.c", line 311: error: expression must have a constant value
+    constexpr B &t1 = (B&)a; // expected-error {{must be initialized by a constant expression}} \
+                      ^
+"Test_name.c", line 311: note: attempt to access run-time storage
+    constexpr B &t1 = (B&)a; // expected-error {{must be initialized by a constant expression}} \
+                      ^
+
+"Test_name.c", line 314: error: expression must have a constant value
+    constexpr B &t2 = (B&)(A&)b; // expected-error {{must be initialized by a constant expression}} \
+                      ^
+"Test_name.c", line 314: note: attempt to access run-time storage
+    constexpr B &t2 = (B&)(A&)b; // expected-error {{must be initialized by a constant expression}} \
+                      ^
+
+"Test_name.c", line 318: error: expression must have a constant value
+    constexpr bool t3 = &b + 1 == &(B&)(A&)b; // interpreter-error {{must be initialized by a constant expression}} \
+                        ^
+"Test_name.c", line 318: note: attempt to access run-time storage
+    constexpr bool t3 = &b + 1 == &(B&)(A&)b; // interpreter-error {{must be initialized by a constant expression}} \
+                                   ^
+
+"Test_name.c", line 320: error: expression must have a constant value
+    constexpr C &t4 = (C&)(A&)b; // expected-error {{must be initialized by a constant expression}} \
+                      ^
+"Test_name.c", line 320: note: attempt to access run-time storage
+    constexpr C &t4 = (C&)(A&)b; // expected-error {{must be initialized by a constant expression}} \
+                      ^
+
+"Test_name.c", line 335: error: expression must have a constant value
+    static_assert(f1(false, extern_n)); // interpreter-error {{static assertion expression is not an integral constant expression}} \
+                  ^
+"Test_name.c", line 330: note: the value of variable "pointer_comparisons::extern_n" (declared at line 326) cannot be used as a constant
+        return &extern_n == &n;
+                ^
+"Test_name.c", line 332: note: called from:
+      return f1(true, n);
+               ^
+
+"Test_name.c", line 337: error: expression must have a constant value
+    static_assert(&extern_n != &extern_n2); // expected-error {{static assertion expression is not an integral constant expression}} \
+                  ^
+"Test_name.c", line 337: note: comparison involves unknown address (e.g., the address of a weak variable)
+    static_assert(&extern_n != &extern_n2); // expected-error {{static assertion expression is not an integral constant expression}} \
+                            ^
+
+"Test_name.c", line 352: error: expression must have a constant value
+    static_assert(!f3()); // expected-error {{static assertion expression is not an integral constant expression}} \
+                  ^
+"Test_name.c", line 349: note: the value of variable "pointer_comparisons::extern_n" (declared at line 326) cannot be used as a constant
+      return &x == &extern_n; // nointerpreter-note {{comparison between pointers to unrelated objects '&x' and '&extern_n' has unspecified value}} \
+                    ^
+
+"Test_name.c", line 361: error: expression must have a constant value
+    static_assert(!f4()); // expected-error {{static assertion expression is not an integral constant expression}} \
+                  ^
+"Test_name.c", line 356: note: the value of variable "pointer_comparisons::extern_n" (declared at line 326) cannot be used as a constant
+      bool b = p == &extern_n; // nointerpreter-note {{comparison between pointers to unrelated objects '&{*new int#0}' and '&extern_n' has unspecified value}} \
+                     ^
+
+"Test_name.c", line 384: error: expression must have a constant value
+    constexpr const char (&Str)[] = f();
+                                    ^
+"Test_name.c", line 383: note: conversion from "const char [2]" to "const char []" is invalid in constant-expression evaluation
+    constexpr const char (&f())[] {return "a";}
+                                          ^
+
+"Test_name.c", line 386: error: function "GH149188::enable_if_2::foo" cannot be called with the given argument list
+        constexpr int x = foo();
+                          ^
+
+"Test_name.c", line 393: error: expression must have a constant value
+    constexpr int x = c <= c+8; // interpreter-error {{constexpr variable 'x' must be initialized by a constant expression}} \
+                      ^
+"Test_name.c", line 393: note: cannot access position 8 in array of 1 elements
+    constexpr int x = c <= c+8; // interpreter-error {{constexpr variable 'x' must be initialized by a constant expression}} \
+                            ^
+
+"Test_name.c", line 400: error: expression must have a constant value
+    constexpr int bases = (void*)(X*)&z <= (Y*)&z; // expected-error {{constexpr variable 'bases' must be initialized by a constant expression}} \
+                          ^
+"Test_name.c", line 400: note: pointer values cannot be compared because they do not point into the same complete object or they point to subobjects with different accessibility
+    constexpr int bases = (void*)(X*)&z <= (Y*)&z; // expected-error {{constexpr variable 'bases' must be initialized by a constant expression}} \
+                                        ^
+
+"Test_name.c", line 433: error: expression must have a constant value
+    static_assert(sub(arr, arr) == 0);
+                  ^
+"Test_name.c", line 433: note: conversion from "const int [3]" to "const int []" is invalid in constant-expression evaluation
+    static_assert(sub(arr, arr) == 0);
+                      ^
+
+"Test_name.c", line 228: warning: variable "uninit_reference_used::gg2" was declared but never referenced
+    constexpr int gg2 = g2(); // expected-error {{must be initialized by a constant expression}} \
+                  ^
+
+"Test_name.c", line 246: warning: variable "uninit_reference_used::gg4" was declared but never referenced
+    constexpr uintptr_t gg4 = g4(); // expected-error {{must be initialized by a constant expression}} \
+                        ^
+
+"Test_name.c", line 254: warning: variable "uninit_reference_used::gg5" was declared but never referenced
+    constexpr uintptr_t gg5 = g5(); // expected-error {{must be initialized by a constant expression}} \
+                        ^
+
+"Test_name.c", line 277: warning: variable "dropped_note::y" was declared but never referenced
+    constexpr int y = f(); // expected-error {{constexpr variable 'y' must be initialized by a constant expression}} expected-note {{in call to 'f()'}}
+                  ^
+
+"Test_name.c", line 318: warning: variable "casting::t3" was declared but never referenced
+    constexpr bool t3 = &b + 1 == &(B&)(A&)b; // interpreter-error {{must be initialized by a constant expression}} \
+                   ^
+
+"Test_name.c", line 393: warning: variable "GH150015::x" was declared but never referenced
+    constexpr int x = c <= c+8; // interpreter-error {{constexpr variable 'x' must be initialized by a constant expression}} \
+                  ^
+
+"Test_name.c", line 400: warning: variable "GH150015::bases" was declared but never referenced
+    constexpr int bases = (void*)(X*)&z <= (Y*)&z; // expected-error {{constexpr variable 'bases' must be initialized by a constant expression}} \
+                  ^
+
+30 errors detected in the compilation of "Test_name.c".

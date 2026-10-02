@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: error: static assertion failed with "__is_constructible(T&&, T)"
+  SA (__is_constructible(T&&, T));
+  ^
+
+"Test_name.c", line 11: error: static assertion failed with "__is_constructible(const T&, T)"
+  SA (__is_constructible(const T&, T));
+  ^
+
+"Test_name.c", line 13: error: static assertion failed with "__is_nothrow_constructible(T&&, T)"
+  SA (__is_nothrow_constructible(T&&, T));
+  ^
+
+"Test_name.c", line 14: error: static assertion failed with "__is_nothrow_constructible(const T&, T)"
+  SA (__is_nothrow_constructible(const T&, T));
+  ^
+
+"Test_name.c", line 16: error: static assertion failed with "__is_trivially_constructible(T&&, T)"
+  SA (__is_trivially_constructible(T&&, T));
+  ^
+
+"Test_name.c", line 17: error: static assertion failed with "__is_trivially_constructible(const T&, T)"
+  SA (__is_trivially_constructible(const T&, T));
+  ^
+
+"Test_name.c", line 20: error: static assertion failed with "__is_convertible(T, T&&)"
+  SA (__is_convertible(T, T&&));
+  ^
+
+"Test_name.c", line 21: error: static assertion failed with "__is_convertible(T, const T&)"
+  SA (__is_convertible(T, const T&));
+  ^
+
+"Test_name.c", line 23: error: static assertion failed with "__is_nothrow_convertible(T, T&&)"
+  SA (__is_nothrow_convertible(T, T&&));
+  ^
+
+"Test_name.c", line 24: error: static assertion failed with "__is_nothrow_convertible(T, const T&)"
+  SA (__is_nothrow_convertible(T, const T&));
+  ^
+
+10 errors detected in the compilation of "Test_name.c".

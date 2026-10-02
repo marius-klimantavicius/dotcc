@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 10: error: a nontype template parameter may not have class type
+  template<> template<struct T> void A<0>::foo() {} // { dg-error "class type|incomplete" }
+                      ^
+
+"Test_name.c", line 10: error: declaration is incompatible with function template "void A<<unnamed>>::foo<<unnamed>>() [with <unnamed>=0]" (declared at line 7)
+  template<> template<struct T> void A<0>::foo() {} // { dg-error "class type|incomplete" }
+                                           ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,14 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --microsoft_version=1200 -n Test_name.c
+"Test_name.c", line 6: error: variable "shi_MemDefaultPool" may not be initialized
+  __declspec(dllimport) MEM_POOL shi_MemDefaultPool = 0;
+                                 ^
+
+"Test_name.c", line 8: error: a function declared "dllimport" may not be defined
+  __declspec(dllimport) void f() { }
+                             ^
+
+"Test_name.c", line 9: error: redeclaration cannot add dllexport/dllimport to "f" (declared at line 8)
+  __declspec(dllimport) void f();
+                             ^
+
+3 errors detected in the compilation of "Test_name.c".

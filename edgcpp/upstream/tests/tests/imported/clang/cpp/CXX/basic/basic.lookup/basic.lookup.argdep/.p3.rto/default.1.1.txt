@@ -1,0 +1,40 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 19: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+        foo(A::Foo()); // expected-error {{not a function}}
+        ^
+
+"Test_name.c", line 35: error: too many arguments in function call
+        f(t); // expected-error {{too many arguments}}
+          ^
+
+"Test_name.c", line 56: error: no suitable conversion function from "test_adl_suppression_by_block_scope::N::S" to "char" exists
+      f(s); // expected-error {{no viable conversion from 'N::S' to 'char'}}
+        ^
+
+"Test_name.c", line 63: error: no instance of overloaded function "f" matches the argument list
+            argument types are: (test_adl_suppression_by_block_scope::N::S)
+      f(s); // expected-error {{no matching function}}
+      ^
+"Test_name.c", line 46: note: function "test_adl_suppression_by_block_scope::M::f" does not match because argument #1 does not match parameter
+    namespace M { void f(int); } // expected-note 2{{candidate}}
+                       ^
+"Test_name.c", line 61: note: function "f(char)" does not match because argument #1 does not match parameter
+      extern void f(char); // expected-note {{candidate}}
+                  ^
+
+"Test_name.c", line 70: error: no instance of overloaded function "f" matches the argument list
+            argument types are: (test_adl_suppression_by_block_scope::N::S)
+      f(s); // expected-error {{no matching function}}
+      ^
+"Test_name.c", line 69: note: function "f(char)" does not match because argument #1 does not match parameter
+      extern void f(char); // expected-note {{candidate}}
+                  ^
+"Test_name.c", line 46: note: function "test_adl_suppression_by_block_scope::M::f" does not match because argument #1 does not match parameter
+    namespace M { void f(int); } // expected-note 2{{candidate}}
+                       ^
+
+"Test_name.c", line 84: error: too many arguments in function call
+      f(s); // expected-error {{too many arguments}}
+        ^
+
+6 errors detected in the compilation of "Test_name.c".

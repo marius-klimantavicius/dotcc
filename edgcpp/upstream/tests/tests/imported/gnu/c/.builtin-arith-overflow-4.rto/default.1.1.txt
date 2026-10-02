@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 32: warning: argument of type "_Atomic(int) *" is incompatible with parameter of type "int *"
+    __builtin_sadd_overflow (a, b, &c);	/* { dg-warning "passing argument 3 of '__builtin_sadd_overflow' from incompatible pointer type" } */
+                                   ^
+
+"Test_name.c", line 38: warning: argument of type "_Atomic(long) *" is incompatible with parameter of type "long *"
+    __builtin_ssubl_overflow (d, e, &f);	/* { dg-warning "passing argument 3 of '__builtin_ssubl_overflow' from incompatible pointer type" } */
+                                    ^
+
+"Test_name.c", line 44: warning: argument of type "_Atomic(long long) *" is incompatible with parameter of type "long long *"
+    __builtin_smulll_overflow (g, h, &i);	/* { dg-warning "passing argument 3 of '__builtin_smulll_overflow' from incompatible pointer type" } */
+                                     ^
+

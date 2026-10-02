@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=1 --c99 --embedded_c Test_name.c

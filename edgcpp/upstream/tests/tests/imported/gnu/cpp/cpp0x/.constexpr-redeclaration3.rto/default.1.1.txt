@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 11: error: statement may not appear in a constexpr function
+      constexpr bool bar(void);
+      ^
+
+"Test_name.c", line 15: error: expression must have a constant value
+  static_assert(foo(), "");
+                ^
+"Test_name.c", line 15: note: this call cannot be evaluated because the target function function "foo" (declared at line 10) is not constexpr or not completely defined yet
+  static_assert(foo(), "");
+                   ^
+
+2 errors detected in the compilation of "Test_name.c".

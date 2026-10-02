@@ -1,0 +1,49 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 26: warning: unknown attribute "assume_aligned"
+  void *atest() __attribute__((assume_aligned(q))); // expected-error {{requested alignment is not a power of 2}}
+                               ^
+
+"Test_name.c", line 29: warning: unknown attribute "assume_aligned"
+  void *atest2() __attribute__((assume_aligned(q, o))); // expected-error {{requested alignment is not a power of 2}}
+                                ^
+
+"Test_name.c", line 40: warning: unknown attribute "assume_aligned"
+  template<typename T> __attribute__((assume_aligned(sizeof(int(T()))))) T *f();
+                                      ^
+
+"Test_name.c", line 46: warning: unknown attribute "assume_aligned"
+  template<typename T> __attribute__((assume_aligned(sizeof((int(T())))))) T *g();
+                                      ^
+
+"Test_name.c", line 52: warning: unknown attribute "assume_aligned"
+  T *atest3() __attribute__((assume_aligned(31, o))); // expected-error {{requested alignment is not a power of 2}}
+                             ^
+
+"Test_name.c", line 55: warning: unknown attribute "assume_aligned"
+  T *atest4() __attribute__((assume_aligned(32, o)));
+                             ^
+
+"Test_name.c", line 58: warning: unknown attribute "assume_aligned"
+  T atest5(int) __attribute__((assume_aligned(2)));
+                               ^
+
+"Test_name.c", line 61: warning: unknown attribute "assume_aligned"
+  int atest6(int) __attribute__((assume_aligned(2)));
+                                 ^
+
+"Test_name.c", line 69: warning: unknown attribute "assume_aligned"
+  class __attribute__((assume_aligned(32))) x {
+                       ^
+
+"Test_name.c", line 74: warning: unknown attribute "assume_aligned"
+  x foo() __attribute__((assume_aligned(32)));
+                         ^
+
+"Test_name.c", line 89: warning: unknown attribute "assume_aligned"
+  void *atest5() __attribute__((assume_aligned(X::x))); // expected-error {{requested alignment is not a power of 2}}
+                                ^
+
+"Test_name.c", line 101: warning: unknown attribute "assume_aligned"
+  __attribute__((assume_aligned(4))) T f(T x); // expected-warning {{'assume_aligned' attribute only applies to return values that are pointers or references}}
+                 ^
+

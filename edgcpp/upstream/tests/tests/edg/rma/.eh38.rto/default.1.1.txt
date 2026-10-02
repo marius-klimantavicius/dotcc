@@ -1,0 +1,14 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 8: error: incompatible exception specifications
+  void (&pf3)() throw(int) = f;         // Error
+                             ^
+
+"Test_name.c", line 10: error: incompatible exception specifications
+  void (&pf5)() throw() = f;            // Error
+                          ^
+
+"Test_name.c", line 11: error: incompatible exception specifications
+  void (&pf6)() throw() = ff;           // Error
+                          ^
+
+3 errors detected in the compilation of "Test_name.c".

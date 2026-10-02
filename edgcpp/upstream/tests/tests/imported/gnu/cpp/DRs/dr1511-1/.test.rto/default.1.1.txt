@@ -1,0 +1,11 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c dr1511-2.C
+Test_name.c:
+dr1511-2.C:
+"dr1511-2.C", line 7: warning: variable "v1" was declared but never referenced
+  const int v1 = 5;
+            ^
+
+"dr1511-2.C", line 9: warning: variable "v3" was declared but never referenced
+  cint v3 = 7;
+       ^
+

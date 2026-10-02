@@ -1,0 +1,82 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 10: error: expected an identifier
+  int y,; /* { dg-error "expected" } */
+        ^
+
+"Test_name.c", line 15: error: expected an identifier
+    int b,;    /* { dg-error "expected" } */
+          ^
+
+"Test_name.c", line 17: error: expected an identifier
+    int e,f,;  /* { dg-error "expected" } */
+            ^
+
+"Test_name.c", line 19: error: expected an identifier
+    int j,k,l,;/* { dg-error "expected" } */
+              ^
+
+"Test_name.c", line 20: error: expected an identifier
+    int m,,,n; /* { dg-error "expected" } */
+          ^
+
+"Test_name.c", line 20: error: expected an identifier
+    int m,,,n; /* { dg-error "expected" } */
+           ^
+
+"Test_name.c", line 14: warning: variable "a" was declared but never referenced
+    int a;
+        ^
+
+"Test_name.c", line 15: warning: variable "b" was declared but never referenced
+    int b,;    /* { dg-error "expected" } */
+        ^
+
+"Test_name.c", line 16: warning: variable "c" was declared but never referenced
+    int c,d;
+        ^
+
+"Test_name.c", line 16: warning: variable "d" was declared but never referenced
+    int c,d;
+          ^
+
+"Test_name.c", line 17: warning: variable "e" was declared but never referenced
+    int e,f,;  /* { dg-error "expected" } */
+        ^
+
+"Test_name.c", line 17: warning: variable "f" was declared but never referenced
+    int e,f,;  /* { dg-error "expected" } */
+          ^
+
+"Test_name.c", line 18: warning: variable "g" was declared but never referenced
+    int g,h,i;
+        ^
+
+"Test_name.c", line 18: warning: variable "h" was declared but never referenced
+    int g,h,i;
+          ^
+
+"Test_name.c", line 18: warning: variable "i" was declared but never referenced
+    int g,h,i;
+            ^
+
+"Test_name.c", line 19: warning: variable "j" was declared but never referenced
+    int j,k,l,;/* { dg-error "expected" } */
+        ^
+
+"Test_name.c", line 19: warning: variable "k" was declared but never referenced
+    int j,k,l,;/* { dg-error "expected" } */
+          ^
+
+"Test_name.c", line 19: warning: variable "l" was declared but never referenced
+    int j,k,l,;/* { dg-error "expected" } */
+            ^
+
+"Test_name.c", line 20: warning: variable "m" was declared but never referenced
+    int m,,,n; /* { dg-error "expected" } */
+        ^
+
+"Test_name.c", line 20: warning: variable "n" was declared but never referenced
+    int m,,,n; /* { dg-error "expected" } */
+            ^
+
+6 errors detected in the compilation of "Test_name.c".

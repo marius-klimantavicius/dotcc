@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 6: error: identifier "bar" is undefined
+    if (int foo = f(bar)) {}     // expected-error{{use of undeclared identifier 'bar'}}
+                    ^
+
+"Test_name.c", line 7: error: identifier "bar" is undefined
+    while (int foo = f(bar)) {}  // expected-error{{use of undeclared identifier 'bar'}}
+                       ^
+
+"Test_name.c", line 8: error: identifier "bar" is undefined
+    for (int foo = f(bar);;) {}  // expected-error{{use of undeclared identifier 'bar'}}
+                     ^
+
+"Test_name.c", line 11: warning: statement is unreachable
+    if (int foo = f(bar)) {}
+    ^
+
+"Test_name.c", line 11: warning: variable "bar" is used before its value is set
+    if (int foo = f(bar)) {}
+                    ^
+
+"Test_name.c", line 15: warning: statement is unreachable
+    return 0;
+    ^
+
+3 errors detected in the compilation of "Test_name.c".

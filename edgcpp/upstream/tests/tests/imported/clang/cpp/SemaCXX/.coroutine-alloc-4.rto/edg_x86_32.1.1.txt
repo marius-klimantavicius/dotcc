@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"SemaCXX/coroutine-alloc-4.cpp", line 7: warning: declaration of "size_t" does not match the expected type "unsigned int"
+      typedef long unsigned int size_t;
+                                ^
+
+"SemaCXX/coroutine-alloc-4.cpp", line 8: error: enum "std::align_val_t" was previously declared with a different base type
+      enum class align_val_t : size_t {};
+                 ^
+
+"SemaCXX/coroutine-alloc-4.cpp", line 18: error: first parameter of allocation function must be of type "size_t"
+      void *operator new(std::size_t);
+            ^
+
+"SemaCXX/coroutine-alloc-4.cpp", line 33: error: first parameter of allocation function must be of type "size_t"
+      void *operator new(std::size_t, std::align_val_t);
+            ^
+
+"SemaCXX/coroutine-alloc-4.cpp", line 49: error: first parameter of allocation function must be of type "size_t"
+      void *operator new(std::size_t, std::align_val_t) noexcept;
+            ^
+
+"SemaCXX/coroutine-alloc-4.cpp", line 50: error: first parameter of allocation function must be of type "size_t"
+      void *operator new(std::size_t) noexcept;
+            ^
+
+"SemaCXX/coroutine-alloc-4.cpp", line 56: error: no nothrow variant of the global "operator new" found for coroutine state allocation
+  task3 f2() {
+        ^
+
+"SemaCXX/coroutine-alloc-4.cpp", line 67: error: first parameter of allocation function must be of type "size_t"
+      void *operator new(std::size_t, std::align_val_t, int, double, int) noexcept;
+            ^
+
+"SemaCXX/coroutine-alloc-4.cpp", line 108: error: no nothrow variant of the global "operator new" found for coroutine state allocation
+  task6 f5() {
+        ^
+
+"SemaCXX/coroutine-alloc-4.cpp", line 108: error: promise type "std::coroutine_traits<task6>::promise_type" (aka "task6::promise_type") must declare get_return_object_on_allocation_failure as a static member function requiring no arguments
+  task6 f5() {
+        ^
+
+"SemaCXX/coroutine-alloc-4.cpp", line 112: error: first parameter of allocation function must be of type "size_t"
+  void *operator new(std::size_t, std::align_val_t, std::nothrow_t) noexcept;
+        ^
+
+"SemaCXX/coroutine-alloc-4.cpp", line 114: error: no nothrow variant of the global "operator new" found for coroutine state allocation
+  task6 f6() {
+        ^
+
+"SemaCXX/coroutine-alloc-4.cpp", line 114: error: promise type "std::coroutine_traits<task6>::promise_type" (aka "task6::promise_type") must declare get_return_object_on_allocation_failure as a static member function requiring no arguments
+  task6 f6() {
+        ^
+
+12 errors detected in the compilation of "Test_name.c".

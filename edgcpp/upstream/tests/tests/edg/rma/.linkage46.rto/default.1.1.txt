@@ -1,0 +1,13 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 5: warning: variable "j" was declared but never referenced
+  const int j = 0;
+            ^
+
+"Test_name.c", line 9: warning: variable "q" was declared but never referenced
+    const int q = 3;
+              ^
+
+"Test_name.c", line 14: warning: variable "x" was declared but never referenced
+  const int x = 0;
+            ^
+

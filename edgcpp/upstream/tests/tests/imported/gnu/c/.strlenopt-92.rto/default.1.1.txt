@@ -1,0 +1,13 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./strlenopt-92.c", line 7: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int
+                 ^
+
+"./strlenopt-92.c", line 15: warning: unknown attribute "noipa"
+  __attribute__((noipa)) char *
+                 ^
+
+"./strlenopt-92.c", line 36: warning: unknown attribute "noipa"
+  __attribute__((noipa)) char *
+                 ^
+

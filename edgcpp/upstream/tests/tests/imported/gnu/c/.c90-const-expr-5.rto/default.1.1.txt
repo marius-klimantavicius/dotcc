@@ -1,0 +1,61 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 20: warning: a value of type "int *" cannot be assigned to an entity of type "long *"
+    q = (j ? p : (V *)0); /* { dg-error "5:assignment to 'long int \\*' from incompatible pointer type 'int \\*'" } */
+      ^
+
+"Test_name.c", line 21: warning: a value of type "int *" cannot be assigned to an entity of type "long *"
+    q = (j ? p : (void *)0); /* { dg-error "5:assignment to 'long int \\*' from incompatible pointer type 'int \\*'" } */
+      ^
+
+"Test_name.c", line 23: warning: expression has no effect
+    (void (*)(void))(V *)0;
+    ^
+
+"Test_name.c", line 24: warning: expression has no effect
+    (void (*)(void))(void *)0;
+    ^
+
+"Test_name.c", line 27: warning: a value of type "const void *" cannot be assigned to an entity of type "void (*)(void)"
+    fp = (const void *)0; /* { dg-error "6:ISO C forbids assignment between function pointer and 'void \\*'" } */
+       ^
+
+"Test_name.c", line 31: warning: expression has no effect
+    fp == 0;
+    ^
+
+"Test_name.c", line 32: warning: expression has no effect
+    0 == fp;
+    ^
+
+"Test_name.c", line 33: warning: expression has no effect
+    fp == (void *)0;
+    ^
+
+"Test_name.c", line 34: warning: expression has no effect
+    (void *)0 == fp;
+    ^
+
+"Test_name.c", line 35: warning: expression has no effect
+    fp == (V *)0;
+    ^
+
+"Test_name.c", line 36: warning: expression has no effect
+    (V *)0 == fp;
+    ^
+
+"Test_name.c", line 37: warning: expression has no effect
+    fp == (V *)1; /* { dg-error "6:ISO C forbids comparison of 'void \\*' with function pointer" } */
+    ^
+
+"Test_name.c", line 38: warning: expression has no effect
+    (V *)1 == fp; /* { dg-error "10:ISO C forbids comparison of 'void \\*' with function pointer" } */
+    ^
+
+"Test_name.c", line 39: warning: expression has no effect
+    fp == (const void *)0; /* { dg-error "6:ISO C forbids comparison of 'void \\*' with function pointer" } */
+    ^
+
+"Test_name.c", line 40: warning: expression has no effect
+    (const void *)0 == fp; /* { dg-error "19:ISO C forbids comparison of 'void \\*' with function pointer" } */
+    ^
+

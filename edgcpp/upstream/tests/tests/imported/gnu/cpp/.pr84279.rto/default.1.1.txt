@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 33: warning: variable "o" is used before its value is set
+  bool B::C::m1 (S, A &x) { bool o; x = m4 (); return o; }
+                                                      ^
+
+"Test_name.c", line 37: warning: variable "x" is used before its value is set
+  void B::m5 (D *c) { unsigned x; C ar; A am; if (ar.m1 (c->e, am)) m6 (x, am); }
+                                                                        ^
+

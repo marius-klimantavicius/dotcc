@@ -1,0 +1,101 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 Test_name.c
+"./Wconversion-real-integer.c", line 34: warning: floating-point value does not fit in required integral type
+    fui (-1.0);
+         ^
+
+"./Wconversion-real-integer.c", line 35: warning: floating-point value does not fit in required integral type
+    ui = -1.0;
+         ^
+
+"./Wconversion-real-integer.c", line 25: warning: variable "f" was declared but never referenced
+    float f = 3;
+          ^
+
+"./Wconversion-real-integer.c", line 87: warning: floating-point value does not fit in required integral type
+    fss (4294967294.0);
+         ^
+
+"./Wconversion-real-integer.c", line 88: warning: floating-point value does not fit in required integral type
+    ss = 4294967294.0;
+         ^
+
+"./Wconversion-real-integer.c", line 89: warning: floating-point value does not fit in required integral type
+    fss (-4294967294.0);
+         ^
+
+"./Wconversion-real-integer.c", line 90: warning: floating-point value does not fit in required integral type
+    ss = -4294967294.0;
+         ^
+
+"./Wconversion-real-integer.c", line 91: warning: floating-point value does not fit in required integral type
+    fus (4294967294.0);
+         ^
+
+"./Wconversion-real-integer.c", line 92: warning: floating-point value does not fit in required integral type
+    us = 4294967294.0;
+         ^
+
+"./Wconversion-real-integer.c", line 93: warning: floating-point value does not fit in required integral type
+    fus (-4294967294.0);
+         ^
+
+"./Wconversion-real-integer.c", line 94: warning: floating-point value does not fit in required integral type
+    us = -4294967294.0;
+         ^
+
+"./Wconversion-real-integer.c", line 96: warning: floating-point value does not fit in required integral type
+    fsc (500.0);
+         ^
+
+"./Wconversion-real-integer.c", line 97: warning: floating-point value does not fit in required integral type
+    sc = 500.0;
+         ^
+
+"./Wconversion-real-integer.c", line 98: warning: floating-point value does not fit in required integral type
+    fsc (-500.0);
+         ^
+
+"./Wconversion-real-integer.c", line 99: warning: floating-point value does not fit in required integral type
+    sc = -500.0;
+         ^
+
+"./Wconversion-real-integer.c", line 100: warning: floating-point value does not fit in required integral type
+    fuc (500.0);
+         ^
+
+"./Wconversion-real-integer.c", line 101: warning: floating-point value does not fit in required integral type
+    uc = 500.0;
+         ^
+
+"./Wconversion-real-integer.c", line 102: warning: floating-point value does not fit in required integral type
+    fuc (-500.0);
+         ^
+
+"./Wconversion-real-integer.c", line 103: warning: floating-point value does not fit in required integral type
+    uc = -500.0;
+         ^
+
+"./Wconversion-real-integer.c", line 111: warning: floating-point value does not fit in required integral type
+    fus (-500.0);
+         ^
+
+"./Wconversion-real-integer.c", line 112: warning: floating-point value does not fit in required integral type
+    us = -500.0;
+         ^
+
+"./Wconversion-real-integer.c", line 82: warning: variable "us" was set but never used
+    unsigned short int us;
+                       ^
+
+"./Wconversion-real-integer.c", line 83: warning: variable "ss" was set but never used
+    short int ss;
+              ^
+
+"./Wconversion-real-integer.c", line 84: warning: variable "uc" was set but never used
+    unsigned char uc;
+                  ^
+
+"./Wconversion-real-integer.c", line 85: warning: variable "sc" was set but never used
+    signed char sc;
+                ^
+

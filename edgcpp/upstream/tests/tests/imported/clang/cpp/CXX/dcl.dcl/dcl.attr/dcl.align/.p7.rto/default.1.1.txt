@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 14: error: alignment cannot be set to less than the default alignment
+    alignas(A) T buffer[N]; // expected-error {{requested alignment is less than minimum alignment of 4 for type 'int[1]'}}
+    ^
+          detected during instantiation of class "Y<T, A, N> [with T=int, A=char, N=1]" at line 18
+
+"Test_name.c", line 21: error: type name is not allowed
+    int x = alignof int;  // expected-error {{expected parentheses around type name in alignof expression}}
+                    ^
+
+"Test_name.c", line 21: warning: the standard "alignof" operator does not accept an expression argument (use a type instead)
+    int x = alignof int;  // expected-error {{expected parentheses around type name in alignof expression}}
+                    ^
+
+2 errors detected in the compilation of "Test_name.c".

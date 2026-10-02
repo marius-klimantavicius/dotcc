@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --microsoft -n Test_name.c
+"Test_name.c", line 7: error: pointer-to-member representation "__single_inheritance" is too restrictive for class "D"
+  class D : A, B { char *pc; };  // error
+        ^
+
+"Test_name.c", line 9: error: pointer-to-member representation "__multiple_inheritance" is too restrictive for class "E"
+  class E : virtual A, virtual B { };  // error
+        ^
+
+2 errors detected in the compilation of "Test_name.c".

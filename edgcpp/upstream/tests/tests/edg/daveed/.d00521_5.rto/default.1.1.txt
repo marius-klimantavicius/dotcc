@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --microsoft Test_name.c
+"Test_name.c", line 23: error: a member of a class declared with dllexport/dllimport cannot itself be declared with such a specifier
+  EXP void f();  // Error: cannot specify a DLL interface if the class
+  ^
+
+1 error detected in the compilation of "Test_name.c".

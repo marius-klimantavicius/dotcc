@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=4 --g++ Test_name.c
+"Test_name.c", line 25: warning: alignment-of operator applied to incomplete type
+  	printf("b: %d\n", __alignof(b));
+  	                  ^
+
+"Test_name.c", line 27: warning: alignment-of operator applied to incomplete type
+                                           __alignof(const void));
+                                           ^
+
+"Test_name.c", line 28: error: alignment-of operator applied to incomplete type
+    __alignof(struct S);
+    ^
+
+1 error detected in the compilation of "Test_name.c".

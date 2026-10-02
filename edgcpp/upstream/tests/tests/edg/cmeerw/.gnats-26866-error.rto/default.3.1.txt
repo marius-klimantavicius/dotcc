@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=3 --c++11 --clang_version 160000 Test_name.c
+"Test_name.c", line 12: warning: this declaration cannot have multiple "template <...>" clauses
+    template <class T> struct A<T*> {
+                              ^
+
+"Test_name.c", line 18: error: template nesting depth does not match the previous declaration of function "additional_empty_decl_scope::A<T *>::f"
+    template <class T> void A<T*>::f(T) {}
+                                   ^
+
+"Test_name.c", line 20: error: template argument list must match the parameter list
+    template <class T> void A<T*>::g(T) {}
+                            ^
+
+"Test_name.c", line 29: warning: this declaration cannot have multiple "template <...>" clauses
+    template <class T> struct A<T*> {
+                              ^
+
+"Test_name.c", line 36: error: template nesting depth does not match the previous declaration of function "additional_two_empty_decl_scopes::A<T *>::f"
+    template <class T> void A<T*>::f(T) {}
+                                   ^
+
+"Test_name.c", line 38: error: template argument list must match the parameter list
+    template <class T> void A<T*>::g(T) {}
+                            ^
+
+4 errors detected in the compilation of "Test_name.c".

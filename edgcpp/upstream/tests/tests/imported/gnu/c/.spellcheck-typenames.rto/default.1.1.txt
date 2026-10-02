@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 9: error: identifier "singed" is undefined
+  void test_2 (singed char e); /* { dg-error "14: unknown type name .singed.; did you mean .signed.?" } */
+               ^
+
+"Test_name.c", line 9: error: invalid combination of type specifiers
+  void test_2 (singed char e); /* { dg-error "14: unknown type name .singed.; did you mean .signed.?" } */
+                      ^
+
+"Test_name.c", line 16: error: identifier "car" is undefined
+  void test_3 (car e); /* { dg-error "14: unknown type name .car.; did you mean .char.?" } */
+               ^
+
+"Test_name.c", line 24: error: expected a ")"
+  void test_4 (signed car e); /* { dg-error "25: before .e." } */
+                          ^
+
+"Test_name.c", line 34: error: identifier "some_thing_t" is undefined
+  some_thing_t test_5; /* { dg-error "1: unknown type name .some_thing_t.; did you mean .something_t.?" } */
+  ^
+
+"Test_name.c", line 49: error: identifier "int64" is undefined
+  int64 i; /* { dg-error "unknown type name 'int64'; did you mean 'int64_t'?" } */
+  ^
+
+"Test_name.c", line 58: error: identifier "nonsensical_suggestion_t" is undefined
+  nonsensical_suggestion_t var; /* { dg-bogus "did you mean" } */
+  ^
+
+"Test_name.c", line 71: error: identifier "foo_t" is undefined
+  foo_t *foo_ptr; /* { dg-error "1: unknown type name .foo_t.; use .struct. keyword to refer to the type" } */
+  ^
+
+"Test_name.c", line 84: error: identifier "bar_t" is undefined
+  bar_t *bar_ptr; /* { dg-error "1: unknown type name .bar_t.; use .union. keyword to refer to the type" } */
+  ^
+
+"Test_name.c", line 97: error: identifier "baz" is undefined
+  baz value; /* { dg-error "1: unknown type name .baz.; use .enum. keyword to refer to the type" } */
+  ^
+
+"Test_name.c", line 105: warning: this declaration has no storage class or type specifier
+  singed char ch; /* { dg-error "7: before .char." } */
+  ^
+
+"Test_name.c", line 105: error: expected a ";"
+  singed char ch; /* { dg-error "7: before .char." } */
+         ^
+
+"Test_name.c", line 42: error: variable "test_6" was declared with a never-completed type
+  struct some_thing test_6; /* { dg-error "storage size of .test_6. isn't known" } */
+                    ^
+
+12 errors detected in the compilation of "Test_name.c".

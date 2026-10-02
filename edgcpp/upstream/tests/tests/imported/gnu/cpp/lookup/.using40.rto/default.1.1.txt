@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 17: warning: duplicate using-declaration of "Base::f" ignored
+      using Base::f; // { dg-error "redeclaration" }
+      ^
+
+"Test_name.c", line 20: warning: duplicate using-declaration of "Base::type" ignored
+      using Base::type; // { dg-error "redeclaration" }
+      ^
+
+"Test_name.c", line 23: warning: duplicate using-declaration of "Base::Type" ignored
+      using Base::Type; // { dg-error "redeclaration" }
+      ^
+
+"Test_name.c", line 26: warning: duplicate using-declaration of "Base::i" ignored
+      using Base::i; // { dg-error "redeclaration" }
+      ^
+
+"Test_name.c", line 29: warning: duplicate using-declaration of "Base::j" ignored
+      using Base::j; // { dg-error "redeclaration" }
+      ^
+

@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 18: warning: variable "y" is used before its value is set
+      asm goto("" : "+S"(x), "+D"(y) : "r"(x) :: indirect_1, indirect_2);
+                                  ^
+
+"Test_name.c", line 35: warning: statement is unreachable
+    if (x) {
+    ^
+
+"Test_name.c", line 32: warning: label "normal" was declared but never referenced
+  normal:
+  ^
+
+"Test_name.c", line 56: warning: variable "y" is used before its value is set
+    asm goto("" : "+S"(x), "+D"(y) : "r"(x) :: indirect, fallthrough);
+                                ^
+

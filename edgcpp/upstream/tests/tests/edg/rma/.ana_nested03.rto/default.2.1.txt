@@ -1,0 +1,42 @@
+cpfe -DTEST_NUMBER=2 -r -x -tused Test_name.c
+"Test_name.c", line 9: error: identifier "B" is undefined
+  B b;
+  ^
+
+"Test_name.c", line 10: error: identifier "E" is undefined
+  E e;
+  ^
+
+"Test_name.c", line 11: error: identifier "T" is undefined
+  T t;
+  ^
+
+"Test_name.c", line 12: remark: return type "int" omitted in declaration of function "main"
+  main() {
+  ^
+
+"Test_name.c", line 13: error: identifier "B" is undefined
+    B b;
+    ^
+
+"Test_name.c", line 13: remark: declaration hides variable "b" (declared at line 9)
+    B b;
+      ^
+
+"Test_name.c", line 14: error: identifier "E" is undefined
+    E e;
+    ^
+
+"Test_name.c", line 14: remark: declaration hides variable "e" (declared at line 10)
+    E e;
+      ^
+
+"Test_name.c", line 15: error: identifier "T" is undefined
+    T t;
+    ^
+
+"Test_name.c", line 15: remark: declaration hides variable "t" (declared at line 11)
+    T t;
+      ^
+
+6 errors detected in the compilation of "Test_name.c".

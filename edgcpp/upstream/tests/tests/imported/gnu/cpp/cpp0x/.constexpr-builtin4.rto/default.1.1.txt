@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: error: expression must have a constant value
+  constexpr v4sf a = __builtin_convertvector (v4si { 1, 2, -3, -4 }, v4sf);
+                     ^
+"Test_name.c", line 8: note: expression cannot be interpreted
+  constexpr v4sf a = __builtin_convertvector (v4si { 1, 2, -3, -4 }, v4sf);
+                     ^
+
+"Test_name.c", line 16: error: expression must have a constant value
+  constexpr v4sf b = foo (v4si { 3, 4, -1, -2 });
+                     ^
+"Test_name.c", line 13: note: expression cannot be interpreted
+    return __builtin_convertvector (x, v4sf);
+           ^
+
+2 errors detected in the compilation of "Test_name.c".

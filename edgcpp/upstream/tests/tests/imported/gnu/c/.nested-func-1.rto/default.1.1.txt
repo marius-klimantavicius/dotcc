@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 12: error: expected a ";"
+      void bar1 (void) { break; } /* { dg-error "break statement" "break switch 1" } */
+                       ^
+
+"Test_name.c", line 17: error: expected a ";"
+      void bar2 (void) { break; } /* { dg-error "break statement" "break switch 2" } */
+                       ^
+
+"Test_name.c", line 20: error: expected a ";"
+      void bar3 (void) { break; } /* { dg-error "break statement" "break while" } */
+                       ^
+
+"Test_name.c", line 23: error: expected a ";"
+      void bar4 (void) { break; } /* { dg-error "break statement" "break do" } */
+                       ^
+
+"Test_name.c", line 22: warning: loop is not reachable
+    do {
+    ^
+
+"Test_name.c", line 26: error: expected a ";"
+      void bar5 (void) { break; } /* { dg-error "break statement" "break for" } */
+                       ^
+
+"Test_name.c", line 25: warning: loop is not reachable
+    for (;;) {
+    ^
+
+"Test_name.c", line 29: error: expected a ";"
+      void bar6 (void) { continue; } /* { dg-error "continue statement" "continue while" } */
+                       ^
+
+"Test_name.c", line 28: warning: loop is not reachable
+    while (1) {
+    ^
+
+"Test_name.c", line 32: error: expected a ";"
+      void bar7 (void) { continue; } /* { dg-error "continue statement" "continue do" } */
+                       ^
+
+"Test_name.c", line 31: warning: loop is not reachable
+    do {
+    ^
+
+"Test_name.c", line 35: error: expected a ";"
+      void bar8 (void) { continue; } /* { dg-error "continue statement" "continue for" } */
+                       ^
+
+"Test_name.c", line 34: warning: loop is not reachable
+    for (;;) {
+    ^
+
+8 errors detected in the compilation of "Test_name.c".

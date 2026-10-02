@@ -1,0 +1,58 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 5: error: this declaration has no storage class or type specifier
+  typdef int my_int; // { dg-error "1: 'typdef' does not name a type; did you mean 'typedef'\\?" }
+  ^
+
+"Test_name.c", line 5: error: expected a ";"
+  typdef int my_int; // { dg-error "1: 'typdef' does not name a type; did you mean 'typedef'\\?" }
+         ^
+
+"Test_name.c", line 6: error: this declaration has no storage class or type specifier
+  inlien int i_fn(); // { dg-error "1: 'inlien' does not name a type; did you mean 'inline'\\?" }
+  ^
+
+"Test_name.c", line 6: error: expected a ";"
+  inlien int i_fn(); // { dg-error "1: 'inlien' does not name a type; did you mean 'inline'\\?" }
+         ^
+
+"Test_name.c", line 7: error: this declaration has no storage class or type specifier
+  coonst int ci = 1; // { dg-error "1: 'coonst' does not name a type; did you mean 'const'\\?" }
+  ^
+
+"Test_name.c", line 7: error: expected a ";"
+  coonst int ci = 1; // { dg-error "1: 'coonst' does not name a type; did you mean 'const'\\?" }
+         ^
+
+"Test_name.c", line 8: error: this declaration has no storage class or type specifier
+  voltil int vi = 2; // { dg-error "1: 'voltil' does not name a type; did you mean 'volatile'\\?" }
+  ^
+
+"Test_name.c", line 8: error: expected a ";"
+  voltil int vi = 2; // { dg-error "1: 'voltil' does not name a type; did you mean 'volatile'\\?" }
+         ^
+
+"Test_name.c", line 11: error: identifier "explict" is undefined
+    explict my_class(int); // { dg-error "3: 'explict' does not name a type; did you mean 'explicit'\\?" }
+    ^
+
+"Test_name.c", line 11: error: member function with the same name as its class must be a constructor
+    explict my_class(int); // { dg-error "3: 'explict' does not name a type; did you mean 'explicit'\\?" }
+            ^
+
+"Test_name.c", line 12: error: this declaration has no storage class or type specifier
+    friends double f_fn(); // { dg-error "3: 'friends' does not name a type; did you mean 'friend'\\?" }
+    ^
+
+"Test_name.c", line 12: error: expected a ";"
+    friends double f_fn(); // { dg-error "3: 'friends' does not name a type; did you mean 'friend'\\?" }
+            ^
+
+"Test_name.c", line 13: error: this declaration has no storage class or type specifier
+    virtial double v_fn(); // { dg-error "3: 'virtial' does not name a type; did you mean 'virtual'\\?" }
+    ^
+
+"Test_name.c", line 13: error: expected a ";"
+    virtial double v_fn(); // { dg-error "3: 'virtial' does not name a type; did you mean 'virtual'\\?" }
+            ^
+
+14 errors detected in the compilation of "Test_name.c".

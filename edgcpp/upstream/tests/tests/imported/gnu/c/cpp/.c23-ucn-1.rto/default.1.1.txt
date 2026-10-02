@@ -1,0 +1,2561 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 7: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0000'
+        ^
+
+"Test_name.c", line 9: warning: a universal character name cannot designate a character in the basic character set
+  void *tu0 = U"\u0000";
+                ^
+
+"Test_name.c", line 10: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000000'
+        ^
+
+"Test_name.c", line 12: warning: a universal character name cannot designate a character in the basic character set
+  void *tU0 = U"\U00000000";
+                ^
+
+"Test_name.c", line 13: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0001'
+        ^
+
+"Test_name.c", line 15: warning: a universal character name cannot designate a character in the basic character set
+  void *tu1 = U"\u0001";
+                ^
+
+"Test_name.c", line 16: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000001'
+        ^
+
+"Test_name.c", line 18: warning: a universal character name cannot designate a character in the basic character set
+  void *tU1 = U"\U00000001";
+                ^
+
+"Test_name.c", line 19: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0002'
+        ^
+
+"Test_name.c", line 21: warning: a universal character name cannot designate a character in the basic character set
+  void *tu2 = U"\u0002";
+                ^
+
+"Test_name.c", line 22: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000002'
+        ^
+
+"Test_name.c", line 24: warning: a universal character name cannot designate a character in the basic character set
+  void *tU2 = U"\U00000002";
+                ^
+
+"Test_name.c", line 25: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0003'
+        ^
+
+"Test_name.c", line 27: warning: a universal character name cannot designate a character in the basic character set
+  void *tu3 = U"\u0003";
+                ^
+
+"Test_name.c", line 28: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000003'
+        ^
+
+"Test_name.c", line 30: warning: a universal character name cannot designate a character in the basic character set
+  void *tU3 = U"\U00000003";
+                ^
+
+"Test_name.c", line 31: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0004'
+        ^
+
+"Test_name.c", line 33: warning: a universal character name cannot designate a character in the basic character set
+  void *tu4 = U"\u0004";
+                ^
+
+"Test_name.c", line 34: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000004'
+        ^
+
+"Test_name.c", line 36: warning: a universal character name cannot designate a character in the basic character set
+  void *tU4 = U"\U00000004";
+                ^
+
+"Test_name.c", line 37: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0005'
+        ^
+
+"Test_name.c", line 39: warning: a universal character name cannot designate a character in the basic character set
+  void *tu5 = U"\u0005";
+                ^
+
+"Test_name.c", line 40: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000005'
+        ^
+
+"Test_name.c", line 42: warning: a universal character name cannot designate a character in the basic character set
+  void *tU5 = U"\U00000005";
+                ^
+
+"Test_name.c", line 43: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0006'
+        ^
+
+"Test_name.c", line 45: warning: a universal character name cannot designate a character in the basic character set
+  void *tu6 = U"\u0006";
+                ^
+
+"Test_name.c", line 46: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000006'
+        ^
+
+"Test_name.c", line 48: warning: a universal character name cannot designate a character in the basic character set
+  void *tU6 = U"\U00000006";
+                ^
+
+"Test_name.c", line 49: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0007'
+        ^
+
+"Test_name.c", line 51: warning: a universal character name cannot designate a character in the basic character set
+  void *tu7 = U"\u0007";
+                ^
+
+"Test_name.c", line 52: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000007'
+        ^
+
+"Test_name.c", line 54: warning: a universal character name cannot designate a character in the basic character set
+  void *tU7 = U"\U00000007";
+                ^
+
+"Test_name.c", line 55: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0008'
+        ^
+
+"Test_name.c", line 57: warning: a universal character name cannot designate a character in the basic character set
+  void *tu8 = U"\u0008";
+                ^
+
+"Test_name.c", line 58: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000008'
+        ^
+
+"Test_name.c", line 60: warning: a universal character name cannot designate a character in the basic character set
+  void *tU8 = U"\U00000008";
+                ^
+
+"Test_name.c", line 61: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0009'
+        ^
+
+"Test_name.c", line 63: warning: a universal character name cannot designate a character in the basic character set
+  void *tu9 = U"\u0009";
+                ^
+
+"Test_name.c", line 64: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000009'
+        ^
+
+"Test_name.c", line 66: warning: a universal character name cannot designate a character in the basic character set
+  void *tU9 = U"\U00000009";
+                ^
+
+"Test_name.c", line 67: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u000a'
+        ^
+
+"Test_name.c", line 69: warning: a universal character name cannot designate a character in the basic character set
+  void *tu10 = U"\u000a";
+                 ^
+
+"Test_name.c", line 70: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000000a'
+        ^
+
+"Test_name.c", line 72: warning: a universal character name cannot designate a character in the basic character set
+  void *tU10 = U"\U0000000a";
+                 ^
+
+"Test_name.c", line 73: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u000b'
+        ^
+
+"Test_name.c", line 75: warning: a universal character name cannot designate a character in the basic character set
+  void *tu11 = U"\u000b";
+                 ^
+
+"Test_name.c", line 76: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000000b'
+        ^
+
+"Test_name.c", line 78: warning: a universal character name cannot designate a character in the basic character set
+  void *tU11 = U"\U0000000b";
+                 ^
+
+"Test_name.c", line 79: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u000c'
+        ^
+
+"Test_name.c", line 81: warning: a universal character name cannot designate a character in the basic character set
+  void *tu12 = U"\u000c";
+                 ^
+
+"Test_name.c", line 82: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000000c'
+        ^
+
+"Test_name.c", line 84: warning: a universal character name cannot designate a character in the basic character set
+  void *tU12 = U"\U0000000c";
+                 ^
+
+"Test_name.c", line 85: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u000d'
+        ^
+
+"Test_name.c", line 87: warning: a universal character name cannot designate a character in the basic character set
+  void *tu13 = U"\u000d";
+                 ^
+
+"Test_name.c", line 88: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000000d'
+        ^
+
+"Test_name.c", line 90: warning: a universal character name cannot designate a character in the basic character set
+  void *tU13 = U"\U0000000d";
+                 ^
+
+"Test_name.c", line 91: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u000e'
+        ^
+
+"Test_name.c", line 93: warning: a universal character name cannot designate a character in the basic character set
+  void *tu14 = U"\u000e";
+                 ^
+
+"Test_name.c", line 94: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000000e'
+        ^
+
+"Test_name.c", line 96: warning: a universal character name cannot designate a character in the basic character set
+  void *tU14 = U"\U0000000e";
+                 ^
+
+"Test_name.c", line 97: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u000f'
+        ^
+
+"Test_name.c", line 99: warning: a universal character name cannot designate a character in the basic character set
+  void *tu15 = U"\u000f";
+                 ^
+
+"Test_name.c", line 100: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000000f'
+        ^
+
+"Test_name.c", line 102: warning: a universal character name cannot designate a character in the basic character set
+  void *tU15 = U"\U0000000f";
+                 ^
+
+"Test_name.c", line 103: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0010'
+        ^
+
+"Test_name.c", line 105: warning: a universal character name cannot designate a character in the basic character set
+  void *tu16 = U"\u0010";
+                 ^
+
+"Test_name.c", line 106: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000010'
+        ^
+
+"Test_name.c", line 108: warning: a universal character name cannot designate a character in the basic character set
+  void *tU16 = U"\U00000010";
+                 ^
+
+"Test_name.c", line 109: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0011'
+        ^
+
+"Test_name.c", line 111: warning: a universal character name cannot designate a character in the basic character set
+  void *tu17 = U"\u0011";
+                 ^
+
+"Test_name.c", line 112: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000011'
+        ^
+
+"Test_name.c", line 114: warning: a universal character name cannot designate a character in the basic character set
+  void *tU17 = U"\U00000011";
+                 ^
+
+"Test_name.c", line 115: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0012'
+        ^
+
+"Test_name.c", line 117: warning: a universal character name cannot designate a character in the basic character set
+  void *tu18 = U"\u0012";
+                 ^
+
+"Test_name.c", line 118: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000012'
+        ^
+
+"Test_name.c", line 120: warning: a universal character name cannot designate a character in the basic character set
+  void *tU18 = U"\U00000012";
+                 ^
+
+"Test_name.c", line 121: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0013'
+        ^
+
+"Test_name.c", line 123: warning: a universal character name cannot designate a character in the basic character set
+  void *tu19 = U"\u0013";
+                 ^
+
+"Test_name.c", line 124: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000013'
+        ^
+
+"Test_name.c", line 126: warning: a universal character name cannot designate a character in the basic character set
+  void *tU19 = U"\U00000013";
+                 ^
+
+"Test_name.c", line 127: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0014'
+        ^
+
+"Test_name.c", line 129: warning: a universal character name cannot designate a character in the basic character set
+  void *tu20 = U"\u0014";
+                 ^
+
+"Test_name.c", line 130: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000014'
+        ^
+
+"Test_name.c", line 132: warning: a universal character name cannot designate a character in the basic character set
+  void *tU20 = U"\U00000014";
+                 ^
+
+"Test_name.c", line 133: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0015'
+        ^
+
+"Test_name.c", line 135: warning: a universal character name cannot designate a character in the basic character set
+  void *tu21 = U"\u0015";
+                 ^
+
+"Test_name.c", line 136: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000015'
+        ^
+
+"Test_name.c", line 138: warning: a universal character name cannot designate a character in the basic character set
+  void *tU21 = U"\U00000015";
+                 ^
+
+"Test_name.c", line 139: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0016'
+        ^
+
+"Test_name.c", line 141: warning: a universal character name cannot designate a character in the basic character set
+  void *tu22 = U"\u0016";
+                 ^
+
+"Test_name.c", line 142: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000016'
+        ^
+
+"Test_name.c", line 144: warning: a universal character name cannot designate a character in the basic character set
+  void *tU22 = U"\U00000016";
+                 ^
+
+"Test_name.c", line 145: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0017'
+        ^
+
+"Test_name.c", line 147: warning: a universal character name cannot designate a character in the basic character set
+  void *tu23 = U"\u0017";
+                 ^
+
+"Test_name.c", line 148: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000017'
+        ^
+
+"Test_name.c", line 150: warning: a universal character name cannot designate a character in the basic character set
+  void *tU23 = U"\U00000017";
+                 ^
+
+"Test_name.c", line 151: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0018'
+        ^
+
+"Test_name.c", line 153: warning: a universal character name cannot designate a character in the basic character set
+  void *tu24 = U"\u0018";
+                 ^
+
+"Test_name.c", line 154: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000018'
+        ^
+
+"Test_name.c", line 156: warning: a universal character name cannot designate a character in the basic character set
+  void *tU24 = U"\U00000018";
+                 ^
+
+"Test_name.c", line 157: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0019'
+        ^
+
+"Test_name.c", line 159: warning: a universal character name cannot designate a character in the basic character set
+  void *tu25 = U"\u0019";
+                 ^
+
+"Test_name.c", line 160: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000019'
+        ^
+
+"Test_name.c", line 162: warning: a universal character name cannot designate a character in the basic character set
+  void *tU25 = U"\U00000019";
+                 ^
+
+"Test_name.c", line 163: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u001a'
+        ^
+
+"Test_name.c", line 165: warning: a universal character name cannot designate a character in the basic character set
+  void *tu26 = U"\u001a";
+                 ^
+
+"Test_name.c", line 166: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000001a'
+        ^
+
+"Test_name.c", line 168: warning: a universal character name cannot designate a character in the basic character set
+  void *tU26 = U"\U0000001a";
+                 ^
+
+"Test_name.c", line 169: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u001b'
+        ^
+
+"Test_name.c", line 171: warning: a universal character name cannot designate a character in the basic character set
+  void *tu27 = U"\u001b";
+                 ^
+
+"Test_name.c", line 172: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000001b'
+        ^
+
+"Test_name.c", line 174: warning: a universal character name cannot designate a character in the basic character set
+  void *tU27 = U"\U0000001b";
+                 ^
+
+"Test_name.c", line 175: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u001c'
+        ^
+
+"Test_name.c", line 177: warning: a universal character name cannot designate a character in the basic character set
+  void *tu28 = U"\u001c";
+                 ^
+
+"Test_name.c", line 178: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000001c'
+        ^
+
+"Test_name.c", line 180: warning: a universal character name cannot designate a character in the basic character set
+  void *tU28 = U"\U0000001c";
+                 ^
+
+"Test_name.c", line 181: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u001d'
+        ^
+
+"Test_name.c", line 183: warning: a universal character name cannot designate a character in the basic character set
+  void *tu29 = U"\u001d";
+                 ^
+
+"Test_name.c", line 184: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000001d'
+        ^
+
+"Test_name.c", line 186: warning: a universal character name cannot designate a character in the basic character set
+  void *tU29 = U"\U0000001d";
+                 ^
+
+"Test_name.c", line 187: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u001e'
+        ^
+
+"Test_name.c", line 189: warning: a universal character name cannot designate a character in the basic character set
+  void *tu30 = U"\u001e";
+                 ^
+
+"Test_name.c", line 190: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000001e'
+        ^
+
+"Test_name.c", line 192: warning: a universal character name cannot designate a character in the basic character set
+  void *tU30 = U"\U0000001e";
+                 ^
+
+"Test_name.c", line 193: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u001f'
+        ^
+
+"Test_name.c", line 195: warning: a universal character name cannot designate a character in the basic character set
+  void *tu31 = U"\u001f";
+                 ^
+
+"Test_name.c", line 196: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000001f'
+        ^
+
+"Test_name.c", line 198: warning: a universal character name cannot designate a character in the basic character set
+  void *tU31 = U"\U0000001f";
+                 ^
+
+"Test_name.c", line 199: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0020'
+        ^
+
+"Test_name.c", line 201: warning: a universal character name cannot designate a character in the basic character set
+  void *tu32 = U"\u0020";
+                 ^
+
+"Test_name.c", line 202: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000020'
+        ^
+
+"Test_name.c", line 204: warning: a universal character name cannot designate a character in the basic character set
+  void *tU32 = U"\U00000020";
+                 ^
+
+"Test_name.c", line 205: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0021'
+        ^
+
+"Test_name.c", line 207: warning: a universal character name cannot designate a character in the basic character set
+  void *tu33 = U"\u0021";
+                 ^
+
+"Test_name.c", line 208: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000021'
+        ^
+
+"Test_name.c", line 210: warning: a universal character name cannot designate a character in the basic character set
+  void *tU33 = U"\U00000021";
+                 ^
+
+"Test_name.c", line 211: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0022'
+        ^
+
+"Test_name.c", line 213: warning: a universal character name cannot designate a character in the basic character set
+  void *tu34 = U"\u0022";
+                 ^
+
+"Test_name.c", line 214: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000022'
+        ^
+
+"Test_name.c", line 216: warning: a universal character name cannot designate a character in the basic character set
+  void *tU34 = U"\U00000022";
+                 ^
+
+"Test_name.c", line 217: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0023'
+        ^
+
+"Test_name.c", line 219: warning: a universal character name cannot designate a character in the basic character set
+  void *tu35 = U"\u0023";
+                 ^
+
+"Test_name.c", line 220: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000023'
+        ^
+
+"Test_name.c", line 222: warning: a universal character name cannot designate a character in the basic character set
+  void *tU35 = U"\U00000023";
+                 ^
+
+"Test_name.c", line 229: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0025'
+        ^
+
+"Test_name.c", line 231: warning: a universal character name cannot designate a character in the basic character set
+  void *tu37 = U"\u0025";
+                 ^
+
+"Test_name.c", line 232: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000025'
+        ^
+
+"Test_name.c", line 234: warning: a universal character name cannot designate a character in the basic character set
+  void *tU37 = U"\U00000025";
+                 ^
+
+"Test_name.c", line 235: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0026'
+        ^
+
+"Test_name.c", line 237: warning: a universal character name cannot designate a character in the basic character set
+  void *tu38 = U"\u0026";
+                 ^
+
+"Test_name.c", line 238: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000026'
+        ^
+
+"Test_name.c", line 240: warning: a universal character name cannot designate a character in the basic character set
+  void *tU38 = U"\U00000026";
+                 ^
+
+"Test_name.c", line 241: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0027'
+        ^
+
+"Test_name.c", line 243: warning: a universal character name cannot designate a character in the basic character set
+  void *tu39 = U"\u0027";
+                 ^
+
+"Test_name.c", line 244: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000027'
+        ^
+
+"Test_name.c", line 246: warning: a universal character name cannot designate a character in the basic character set
+  void *tU39 = U"\U00000027";
+                 ^
+
+"Test_name.c", line 247: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0028'
+        ^
+
+"Test_name.c", line 249: warning: a universal character name cannot designate a character in the basic character set
+  void *tu40 = U"\u0028";
+                 ^
+
+"Test_name.c", line 250: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000028'
+        ^
+
+"Test_name.c", line 252: warning: a universal character name cannot designate a character in the basic character set
+  void *tU40 = U"\U00000028";
+                 ^
+
+"Test_name.c", line 253: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0029'
+        ^
+
+"Test_name.c", line 255: warning: a universal character name cannot designate a character in the basic character set
+  void *tu41 = U"\u0029";
+                 ^
+
+"Test_name.c", line 256: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000029'
+        ^
+
+"Test_name.c", line 258: warning: a universal character name cannot designate a character in the basic character set
+  void *tU41 = U"\U00000029";
+                 ^
+
+"Test_name.c", line 259: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u002a'
+        ^
+
+"Test_name.c", line 261: warning: a universal character name cannot designate a character in the basic character set
+  void *tu42 = U"\u002a";
+                 ^
+
+"Test_name.c", line 262: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000002a'
+        ^
+
+"Test_name.c", line 264: warning: a universal character name cannot designate a character in the basic character set
+  void *tU42 = U"\U0000002a";
+                 ^
+
+"Test_name.c", line 265: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u002b'
+        ^
+
+"Test_name.c", line 267: warning: a universal character name cannot designate a character in the basic character set
+  void *tu43 = U"\u002b";
+                 ^
+
+"Test_name.c", line 268: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000002b'
+        ^
+
+"Test_name.c", line 270: warning: a universal character name cannot designate a character in the basic character set
+  void *tU43 = U"\U0000002b";
+                 ^
+
+"Test_name.c", line 271: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u002c'
+        ^
+
+"Test_name.c", line 273: warning: a universal character name cannot designate a character in the basic character set
+  void *tu44 = U"\u002c";
+                 ^
+
+"Test_name.c", line 274: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000002c'
+        ^
+
+"Test_name.c", line 276: warning: a universal character name cannot designate a character in the basic character set
+  void *tU44 = U"\U0000002c";
+                 ^
+
+"Test_name.c", line 277: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u002d'
+        ^
+
+"Test_name.c", line 279: warning: a universal character name cannot designate a character in the basic character set
+  void *tu45 = U"\u002d";
+                 ^
+
+"Test_name.c", line 280: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000002d'
+        ^
+
+"Test_name.c", line 282: warning: a universal character name cannot designate a character in the basic character set
+  void *tU45 = U"\U0000002d";
+                 ^
+
+"Test_name.c", line 283: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u002e'
+        ^
+
+"Test_name.c", line 285: warning: a universal character name cannot designate a character in the basic character set
+  void *tu46 = U"\u002e";
+                 ^
+
+"Test_name.c", line 286: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000002e'
+        ^
+
+"Test_name.c", line 288: warning: a universal character name cannot designate a character in the basic character set
+  void *tU46 = U"\U0000002e";
+                 ^
+
+"Test_name.c", line 289: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u002f'
+        ^
+
+"Test_name.c", line 291: warning: a universal character name cannot designate a character in the basic character set
+  void *tu47 = U"\u002f";
+                 ^
+
+"Test_name.c", line 292: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000002f'
+        ^
+
+"Test_name.c", line 294: warning: a universal character name cannot designate a character in the basic character set
+  void *tU47 = U"\U0000002f";
+                 ^
+
+"Test_name.c", line 295: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0030'
+        ^
+
+"Test_name.c", line 297: warning: a universal character name cannot designate a character in the basic character set
+  void *tu48 = U"\u0030";
+                 ^
+
+"Test_name.c", line 298: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000030'
+        ^
+
+"Test_name.c", line 300: warning: a universal character name cannot designate a character in the basic character set
+  void *tU48 = U"\U00000030";
+                 ^
+
+"Test_name.c", line 301: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0031'
+        ^
+
+"Test_name.c", line 303: warning: a universal character name cannot designate a character in the basic character set
+  void *tu49 = U"\u0031";
+                 ^
+
+"Test_name.c", line 304: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000031'
+        ^
+
+"Test_name.c", line 306: warning: a universal character name cannot designate a character in the basic character set
+  void *tU49 = U"\U00000031";
+                 ^
+
+"Test_name.c", line 307: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0032'
+        ^
+
+"Test_name.c", line 309: warning: a universal character name cannot designate a character in the basic character set
+  void *tu50 = U"\u0032";
+                 ^
+
+"Test_name.c", line 310: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000032'
+        ^
+
+"Test_name.c", line 312: warning: a universal character name cannot designate a character in the basic character set
+  void *tU50 = U"\U00000032";
+                 ^
+
+"Test_name.c", line 313: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0033'
+        ^
+
+"Test_name.c", line 315: warning: a universal character name cannot designate a character in the basic character set
+  void *tu51 = U"\u0033";
+                 ^
+
+"Test_name.c", line 316: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000033'
+        ^
+
+"Test_name.c", line 318: warning: a universal character name cannot designate a character in the basic character set
+  void *tU51 = U"\U00000033";
+                 ^
+
+"Test_name.c", line 319: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0034'
+        ^
+
+"Test_name.c", line 321: warning: a universal character name cannot designate a character in the basic character set
+  void *tu52 = U"\u0034";
+                 ^
+
+"Test_name.c", line 322: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000034'
+        ^
+
+"Test_name.c", line 324: warning: a universal character name cannot designate a character in the basic character set
+  void *tU52 = U"\U00000034";
+                 ^
+
+"Test_name.c", line 325: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0035'
+        ^
+
+"Test_name.c", line 327: warning: a universal character name cannot designate a character in the basic character set
+  void *tu53 = U"\u0035";
+                 ^
+
+"Test_name.c", line 328: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000035'
+        ^
+
+"Test_name.c", line 330: warning: a universal character name cannot designate a character in the basic character set
+  void *tU53 = U"\U00000035";
+                 ^
+
+"Test_name.c", line 331: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0036'
+        ^
+
+"Test_name.c", line 333: warning: a universal character name cannot designate a character in the basic character set
+  void *tu54 = U"\u0036";
+                 ^
+
+"Test_name.c", line 334: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000036'
+        ^
+
+"Test_name.c", line 336: warning: a universal character name cannot designate a character in the basic character set
+  void *tU54 = U"\U00000036";
+                 ^
+
+"Test_name.c", line 337: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0037'
+        ^
+
+"Test_name.c", line 339: warning: a universal character name cannot designate a character in the basic character set
+  void *tu55 = U"\u0037";
+                 ^
+
+"Test_name.c", line 340: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000037'
+        ^
+
+"Test_name.c", line 342: warning: a universal character name cannot designate a character in the basic character set
+  void *tU55 = U"\U00000037";
+                 ^
+
+"Test_name.c", line 343: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0038'
+        ^
+
+"Test_name.c", line 345: warning: a universal character name cannot designate a character in the basic character set
+  void *tu56 = U"\u0038";
+                 ^
+
+"Test_name.c", line 346: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000038'
+        ^
+
+"Test_name.c", line 348: warning: a universal character name cannot designate a character in the basic character set
+  void *tU56 = U"\U00000038";
+                 ^
+
+"Test_name.c", line 349: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0039'
+        ^
+
+"Test_name.c", line 351: warning: a universal character name cannot designate a character in the basic character set
+  void *tu57 = U"\u0039";
+                 ^
+
+"Test_name.c", line 352: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000039'
+        ^
+
+"Test_name.c", line 354: warning: a universal character name cannot designate a character in the basic character set
+  void *tU57 = U"\U00000039";
+                 ^
+
+"Test_name.c", line 355: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u003a'
+        ^
+
+"Test_name.c", line 357: warning: a universal character name cannot designate a character in the basic character set
+  void *tu58 = U"\u003a";
+                 ^
+
+"Test_name.c", line 358: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000003a'
+        ^
+
+"Test_name.c", line 360: warning: a universal character name cannot designate a character in the basic character set
+  void *tU58 = U"\U0000003a";
+                 ^
+
+"Test_name.c", line 361: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u003b'
+        ^
+
+"Test_name.c", line 363: warning: a universal character name cannot designate a character in the basic character set
+  void *tu59 = U"\u003b";
+                 ^
+
+"Test_name.c", line 364: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000003b'
+        ^
+
+"Test_name.c", line 366: warning: a universal character name cannot designate a character in the basic character set
+  void *tU59 = U"\U0000003b";
+                 ^
+
+"Test_name.c", line 367: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u003c'
+        ^
+
+"Test_name.c", line 369: warning: a universal character name cannot designate a character in the basic character set
+  void *tu60 = U"\u003c";
+                 ^
+
+"Test_name.c", line 370: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000003c'
+        ^
+
+"Test_name.c", line 372: warning: a universal character name cannot designate a character in the basic character set
+  void *tU60 = U"\U0000003c";
+                 ^
+
+"Test_name.c", line 373: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u003d'
+        ^
+
+"Test_name.c", line 375: warning: a universal character name cannot designate a character in the basic character set
+  void *tu61 = U"\u003d";
+                 ^
+
+"Test_name.c", line 376: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000003d'
+        ^
+
+"Test_name.c", line 378: warning: a universal character name cannot designate a character in the basic character set
+  void *tU61 = U"\U0000003d";
+                 ^
+
+"Test_name.c", line 379: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u003e'
+        ^
+
+"Test_name.c", line 381: warning: a universal character name cannot designate a character in the basic character set
+  void *tu62 = U"\u003e";
+                 ^
+
+"Test_name.c", line 382: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000003e'
+        ^
+
+"Test_name.c", line 384: warning: a universal character name cannot designate a character in the basic character set
+  void *tU62 = U"\U0000003e";
+                 ^
+
+"Test_name.c", line 385: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u003f'
+        ^
+
+"Test_name.c", line 387: warning: a universal character name cannot designate a character in the basic character set
+  void *tu63 = U"\u003f";
+                 ^
+
+"Test_name.c", line 388: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000003f'
+        ^
+
+"Test_name.c", line 390: warning: a universal character name cannot designate a character in the basic character set
+  void *tU63 = U"\U0000003f";
+                 ^
+
+"Test_name.c", line 397: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0041'
+        ^
+
+"Test_name.c", line 399: warning: a universal character name cannot designate a character in the basic character set
+  void *tu65 = U"\u0041";
+                 ^
+
+"Test_name.c", line 400: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000041'
+        ^
+
+"Test_name.c", line 402: warning: a universal character name cannot designate a character in the basic character set
+  void *tU65 = U"\U00000041";
+                 ^
+
+"Test_name.c", line 403: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0042'
+        ^
+
+"Test_name.c", line 405: warning: a universal character name cannot designate a character in the basic character set
+  void *tu66 = U"\u0042";
+                 ^
+
+"Test_name.c", line 406: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000042'
+        ^
+
+"Test_name.c", line 408: warning: a universal character name cannot designate a character in the basic character set
+  void *tU66 = U"\U00000042";
+                 ^
+
+"Test_name.c", line 409: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0043'
+        ^
+
+"Test_name.c", line 411: warning: a universal character name cannot designate a character in the basic character set
+  void *tu67 = U"\u0043";
+                 ^
+
+"Test_name.c", line 412: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000043'
+        ^
+
+"Test_name.c", line 414: warning: a universal character name cannot designate a character in the basic character set
+  void *tU67 = U"\U00000043";
+                 ^
+
+"Test_name.c", line 415: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0044'
+        ^
+
+"Test_name.c", line 417: warning: a universal character name cannot designate a character in the basic character set
+  void *tu68 = U"\u0044";
+                 ^
+
+"Test_name.c", line 418: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000044'
+        ^
+
+"Test_name.c", line 420: warning: a universal character name cannot designate a character in the basic character set
+  void *tU68 = U"\U00000044";
+                 ^
+
+"Test_name.c", line 421: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0045'
+        ^
+
+"Test_name.c", line 423: warning: a universal character name cannot designate a character in the basic character set
+  void *tu69 = U"\u0045";
+                 ^
+
+"Test_name.c", line 424: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000045'
+        ^
+
+"Test_name.c", line 426: warning: a universal character name cannot designate a character in the basic character set
+  void *tU69 = U"\U00000045";
+                 ^
+
+"Test_name.c", line 427: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0046'
+        ^
+
+"Test_name.c", line 429: warning: a universal character name cannot designate a character in the basic character set
+  void *tu70 = U"\u0046";
+                 ^
+
+"Test_name.c", line 430: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000046'
+        ^
+
+"Test_name.c", line 432: warning: a universal character name cannot designate a character in the basic character set
+  void *tU70 = U"\U00000046";
+                 ^
+
+"Test_name.c", line 433: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0047'
+        ^
+
+"Test_name.c", line 435: warning: a universal character name cannot designate a character in the basic character set
+  void *tu71 = U"\u0047";
+                 ^
+
+"Test_name.c", line 436: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000047'
+        ^
+
+"Test_name.c", line 438: warning: a universal character name cannot designate a character in the basic character set
+  void *tU71 = U"\U00000047";
+                 ^
+
+"Test_name.c", line 439: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0048'
+        ^
+
+"Test_name.c", line 441: warning: a universal character name cannot designate a character in the basic character set
+  void *tu72 = U"\u0048";
+                 ^
+
+"Test_name.c", line 442: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000048'
+        ^
+
+"Test_name.c", line 444: warning: a universal character name cannot designate a character in the basic character set
+  void *tU72 = U"\U00000048";
+                 ^
+
+"Test_name.c", line 445: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0049'
+        ^
+
+"Test_name.c", line 447: warning: a universal character name cannot designate a character in the basic character set
+  void *tu73 = U"\u0049";
+                 ^
+
+"Test_name.c", line 448: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000049'
+        ^
+
+"Test_name.c", line 450: warning: a universal character name cannot designate a character in the basic character set
+  void *tU73 = U"\U00000049";
+                 ^
+
+"Test_name.c", line 451: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u004a'
+        ^
+
+"Test_name.c", line 453: warning: a universal character name cannot designate a character in the basic character set
+  void *tu74 = U"\u004a";
+                 ^
+
+"Test_name.c", line 454: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000004a'
+        ^
+
+"Test_name.c", line 456: warning: a universal character name cannot designate a character in the basic character set
+  void *tU74 = U"\U0000004a";
+                 ^
+
+"Test_name.c", line 457: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u004b'
+        ^
+
+"Test_name.c", line 459: warning: a universal character name cannot designate a character in the basic character set
+  void *tu75 = U"\u004b";
+                 ^
+
+"Test_name.c", line 460: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000004b'
+        ^
+
+"Test_name.c", line 462: warning: a universal character name cannot designate a character in the basic character set
+  void *tU75 = U"\U0000004b";
+                 ^
+
+"Test_name.c", line 463: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u004c'
+        ^
+
+"Test_name.c", line 465: warning: a universal character name cannot designate a character in the basic character set
+  void *tu76 = U"\u004c";
+                 ^
+
+"Test_name.c", line 466: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000004c'
+        ^
+
+"Test_name.c", line 468: warning: a universal character name cannot designate a character in the basic character set
+  void *tU76 = U"\U0000004c";
+                 ^
+
+"Test_name.c", line 469: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u004d'
+        ^
+
+"Test_name.c", line 471: warning: a universal character name cannot designate a character in the basic character set
+  void *tu77 = U"\u004d";
+                 ^
+
+"Test_name.c", line 472: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000004d'
+        ^
+
+"Test_name.c", line 474: warning: a universal character name cannot designate a character in the basic character set
+  void *tU77 = U"\U0000004d";
+                 ^
+
+"Test_name.c", line 475: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u004e'
+        ^
+
+"Test_name.c", line 477: warning: a universal character name cannot designate a character in the basic character set
+  void *tu78 = U"\u004e";
+                 ^
+
+"Test_name.c", line 478: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000004e'
+        ^
+
+"Test_name.c", line 480: warning: a universal character name cannot designate a character in the basic character set
+  void *tU78 = U"\U0000004e";
+                 ^
+
+"Test_name.c", line 481: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u004f'
+        ^
+
+"Test_name.c", line 483: warning: a universal character name cannot designate a character in the basic character set
+  void *tu79 = U"\u004f";
+                 ^
+
+"Test_name.c", line 484: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000004f'
+        ^
+
+"Test_name.c", line 486: warning: a universal character name cannot designate a character in the basic character set
+  void *tU79 = U"\U0000004f";
+                 ^
+
+"Test_name.c", line 487: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0050'
+        ^
+
+"Test_name.c", line 489: warning: a universal character name cannot designate a character in the basic character set
+  void *tu80 = U"\u0050";
+                 ^
+
+"Test_name.c", line 490: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000050'
+        ^
+
+"Test_name.c", line 492: warning: a universal character name cannot designate a character in the basic character set
+  void *tU80 = U"\U00000050";
+                 ^
+
+"Test_name.c", line 493: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0051'
+        ^
+
+"Test_name.c", line 495: warning: a universal character name cannot designate a character in the basic character set
+  void *tu81 = U"\u0051";
+                 ^
+
+"Test_name.c", line 496: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000051'
+        ^
+
+"Test_name.c", line 498: warning: a universal character name cannot designate a character in the basic character set
+  void *tU81 = U"\U00000051";
+                 ^
+
+"Test_name.c", line 499: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0052'
+        ^
+
+"Test_name.c", line 501: warning: a universal character name cannot designate a character in the basic character set
+  void *tu82 = U"\u0052";
+                 ^
+
+"Test_name.c", line 502: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000052'
+        ^
+
+"Test_name.c", line 504: warning: a universal character name cannot designate a character in the basic character set
+  void *tU82 = U"\U00000052";
+                 ^
+
+"Test_name.c", line 505: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0053'
+        ^
+
+"Test_name.c", line 507: warning: a universal character name cannot designate a character in the basic character set
+  void *tu83 = U"\u0053";
+                 ^
+
+"Test_name.c", line 508: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000053'
+        ^
+
+"Test_name.c", line 510: warning: a universal character name cannot designate a character in the basic character set
+  void *tU83 = U"\U00000053";
+                 ^
+
+"Test_name.c", line 511: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0054'
+        ^
+
+"Test_name.c", line 513: warning: a universal character name cannot designate a character in the basic character set
+  void *tu84 = U"\u0054";
+                 ^
+
+"Test_name.c", line 514: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000054'
+        ^
+
+"Test_name.c", line 516: warning: a universal character name cannot designate a character in the basic character set
+  void *tU84 = U"\U00000054";
+                 ^
+
+"Test_name.c", line 517: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0055'
+        ^
+
+"Test_name.c", line 519: warning: a universal character name cannot designate a character in the basic character set
+  void *tu85 = U"\u0055";
+                 ^
+
+"Test_name.c", line 520: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000055'
+        ^
+
+"Test_name.c", line 522: warning: a universal character name cannot designate a character in the basic character set
+  void *tU85 = U"\U00000055";
+                 ^
+
+"Test_name.c", line 523: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0056'
+        ^
+
+"Test_name.c", line 525: warning: a universal character name cannot designate a character in the basic character set
+  void *tu86 = U"\u0056";
+                 ^
+
+"Test_name.c", line 526: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000056'
+        ^
+
+"Test_name.c", line 528: warning: a universal character name cannot designate a character in the basic character set
+  void *tU86 = U"\U00000056";
+                 ^
+
+"Test_name.c", line 529: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0057'
+        ^
+
+"Test_name.c", line 531: warning: a universal character name cannot designate a character in the basic character set
+  void *tu87 = U"\u0057";
+                 ^
+
+"Test_name.c", line 532: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000057'
+        ^
+
+"Test_name.c", line 534: warning: a universal character name cannot designate a character in the basic character set
+  void *tU87 = U"\U00000057";
+                 ^
+
+"Test_name.c", line 535: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0058'
+        ^
+
+"Test_name.c", line 537: warning: a universal character name cannot designate a character in the basic character set
+  void *tu88 = U"\u0058";
+                 ^
+
+"Test_name.c", line 538: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000058'
+        ^
+
+"Test_name.c", line 540: warning: a universal character name cannot designate a character in the basic character set
+  void *tU88 = U"\U00000058";
+                 ^
+
+"Test_name.c", line 541: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0059'
+        ^
+
+"Test_name.c", line 543: warning: a universal character name cannot designate a character in the basic character set
+  void *tu89 = U"\u0059";
+                 ^
+
+"Test_name.c", line 544: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000059'
+        ^
+
+"Test_name.c", line 546: warning: a universal character name cannot designate a character in the basic character set
+  void *tU89 = U"\U00000059";
+                 ^
+
+"Test_name.c", line 547: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u005a'
+        ^
+
+"Test_name.c", line 549: warning: a universal character name cannot designate a character in the basic character set
+  void *tu90 = U"\u005a";
+                 ^
+
+"Test_name.c", line 550: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000005a'
+        ^
+
+"Test_name.c", line 552: warning: a universal character name cannot designate a character in the basic character set
+  void *tU90 = U"\U0000005a";
+                 ^
+
+"Test_name.c", line 553: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u005b'
+        ^
+
+"Test_name.c", line 555: warning: a universal character name cannot designate a character in the basic character set
+  void *tu91 = U"\u005b";
+                 ^
+
+"Test_name.c", line 556: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000005b'
+        ^
+
+"Test_name.c", line 558: warning: a universal character name cannot designate a character in the basic character set
+  void *tU91 = U"\U0000005b";
+                 ^
+
+"Test_name.c", line 559: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u005c'
+        ^
+
+"Test_name.c", line 561: warning: a universal character name cannot designate a character in the basic character set
+  void *tu92 = U"\u005c";
+                 ^
+
+"Test_name.c", line 562: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000005c'
+        ^
+
+"Test_name.c", line 564: warning: a universal character name cannot designate a character in the basic character set
+  void *tU92 = U"\U0000005c";
+                 ^
+
+"Test_name.c", line 565: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u005d'
+        ^
+
+"Test_name.c", line 567: warning: a universal character name cannot designate a character in the basic character set
+  void *tu93 = U"\u005d";
+                 ^
+
+"Test_name.c", line 568: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000005d'
+        ^
+
+"Test_name.c", line 570: warning: a universal character name cannot designate a character in the basic character set
+  void *tU93 = U"\U0000005d";
+                 ^
+
+"Test_name.c", line 571: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u005e'
+        ^
+
+"Test_name.c", line 573: warning: a universal character name cannot designate a character in the basic character set
+  void *tu94 = U"\u005e";
+                 ^
+
+"Test_name.c", line 574: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000005e'
+        ^
+
+"Test_name.c", line 576: warning: a universal character name cannot designate a character in the basic character set
+  void *tU94 = U"\U0000005e";
+                 ^
+
+"Test_name.c", line 577: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u005f'
+        ^
+
+"Test_name.c", line 579: warning: a universal character name cannot designate a character in the basic character set
+  void *tu95 = U"\u005f";
+                 ^
+
+"Test_name.c", line 580: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000005f'
+        ^
+
+"Test_name.c", line 582: warning: a universal character name cannot designate a character in the basic character set
+  void *tU95 = U"\U0000005f";
+                 ^
+
+"Test_name.c", line 589: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0061'
+        ^
+
+"Test_name.c", line 591: warning: a universal character name cannot designate a character in the basic character set
+  void *tu97 = U"\u0061";
+                 ^
+
+"Test_name.c", line 592: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000061'
+        ^
+
+"Test_name.c", line 594: warning: a universal character name cannot designate a character in the basic character set
+  void *tU97 = U"\U00000061";
+                 ^
+
+"Test_name.c", line 595: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0062'
+        ^
+
+"Test_name.c", line 597: warning: a universal character name cannot designate a character in the basic character set
+  void *tu98 = U"\u0062";
+                 ^
+
+"Test_name.c", line 598: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000062'
+        ^
+
+"Test_name.c", line 600: warning: a universal character name cannot designate a character in the basic character set
+  void *tU98 = U"\U00000062";
+                 ^
+
+"Test_name.c", line 601: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0063'
+        ^
+
+"Test_name.c", line 603: warning: a universal character name cannot designate a character in the basic character set
+  void *tu99 = U"\u0063";
+                 ^
+
+"Test_name.c", line 604: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000063'
+        ^
+
+"Test_name.c", line 606: warning: a universal character name cannot designate a character in the basic character set
+  void *tU99 = U"\U00000063";
+                 ^
+
+"Test_name.c", line 607: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0064'
+        ^
+
+"Test_name.c", line 609: warning: a universal character name cannot designate a character in the basic character set
+  void *tu100 = U"\u0064";
+                  ^
+
+"Test_name.c", line 610: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000064'
+        ^
+
+"Test_name.c", line 612: warning: a universal character name cannot designate a character in the basic character set
+  void *tU100 = U"\U00000064";
+                  ^
+
+"Test_name.c", line 613: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0065'
+        ^
+
+"Test_name.c", line 615: warning: a universal character name cannot designate a character in the basic character set
+  void *tu101 = U"\u0065";
+                  ^
+
+"Test_name.c", line 616: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000065'
+        ^
+
+"Test_name.c", line 618: warning: a universal character name cannot designate a character in the basic character set
+  void *tU101 = U"\U00000065";
+                  ^
+
+"Test_name.c", line 619: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0066'
+        ^
+
+"Test_name.c", line 621: warning: a universal character name cannot designate a character in the basic character set
+  void *tu102 = U"\u0066";
+                  ^
+
+"Test_name.c", line 622: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000066'
+        ^
+
+"Test_name.c", line 624: warning: a universal character name cannot designate a character in the basic character set
+  void *tU102 = U"\U00000066";
+                  ^
+
+"Test_name.c", line 625: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0067'
+        ^
+
+"Test_name.c", line 627: warning: a universal character name cannot designate a character in the basic character set
+  void *tu103 = U"\u0067";
+                  ^
+
+"Test_name.c", line 628: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000067'
+        ^
+
+"Test_name.c", line 630: warning: a universal character name cannot designate a character in the basic character set
+  void *tU103 = U"\U00000067";
+                  ^
+
+"Test_name.c", line 631: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0068'
+        ^
+
+"Test_name.c", line 633: warning: a universal character name cannot designate a character in the basic character set
+  void *tu104 = U"\u0068";
+                  ^
+
+"Test_name.c", line 634: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000068'
+        ^
+
+"Test_name.c", line 636: warning: a universal character name cannot designate a character in the basic character set
+  void *tU104 = U"\U00000068";
+                  ^
+
+"Test_name.c", line 637: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0069'
+        ^
+
+"Test_name.c", line 639: warning: a universal character name cannot designate a character in the basic character set
+  void *tu105 = U"\u0069";
+                  ^
+
+"Test_name.c", line 640: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000069'
+        ^
+
+"Test_name.c", line 642: warning: a universal character name cannot designate a character in the basic character set
+  void *tU105 = U"\U00000069";
+                  ^
+
+"Test_name.c", line 643: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u006a'
+        ^
+
+"Test_name.c", line 645: warning: a universal character name cannot designate a character in the basic character set
+  void *tu106 = U"\u006a";
+                  ^
+
+"Test_name.c", line 646: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000006a'
+        ^
+
+"Test_name.c", line 648: warning: a universal character name cannot designate a character in the basic character set
+  void *tU106 = U"\U0000006a";
+                  ^
+
+"Test_name.c", line 649: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u006b'
+        ^
+
+"Test_name.c", line 651: warning: a universal character name cannot designate a character in the basic character set
+  void *tu107 = U"\u006b";
+                  ^
+
+"Test_name.c", line 652: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000006b'
+        ^
+
+"Test_name.c", line 654: warning: a universal character name cannot designate a character in the basic character set
+  void *tU107 = U"\U0000006b";
+                  ^
+
+"Test_name.c", line 655: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u006c'
+        ^
+
+"Test_name.c", line 657: warning: a universal character name cannot designate a character in the basic character set
+  void *tu108 = U"\u006c";
+                  ^
+
+"Test_name.c", line 658: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000006c'
+        ^
+
+"Test_name.c", line 660: warning: a universal character name cannot designate a character in the basic character set
+  void *tU108 = U"\U0000006c";
+                  ^
+
+"Test_name.c", line 661: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u006d'
+        ^
+
+"Test_name.c", line 663: warning: a universal character name cannot designate a character in the basic character set
+  void *tu109 = U"\u006d";
+                  ^
+
+"Test_name.c", line 664: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000006d'
+        ^
+
+"Test_name.c", line 666: warning: a universal character name cannot designate a character in the basic character set
+  void *tU109 = U"\U0000006d";
+                  ^
+
+"Test_name.c", line 667: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u006e'
+        ^
+
+"Test_name.c", line 669: warning: a universal character name cannot designate a character in the basic character set
+  void *tu110 = U"\u006e";
+                  ^
+
+"Test_name.c", line 670: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000006e'
+        ^
+
+"Test_name.c", line 672: warning: a universal character name cannot designate a character in the basic character set
+  void *tU110 = U"\U0000006e";
+                  ^
+
+"Test_name.c", line 673: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u006f'
+        ^
+
+"Test_name.c", line 675: warning: a universal character name cannot designate a character in the basic character set
+  void *tu111 = U"\u006f";
+                  ^
+
+"Test_name.c", line 676: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000006f'
+        ^
+
+"Test_name.c", line 678: warning: a universal character name cannot designate a character in the basic character set
+  void *tU111 = U"\U0000006f";
+                  ^
+
+"Test_name.c", line 679: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0070'
+        ^
+
+"Test_name.c", line 681: warning: a universal character name cannot designate a character in the basic character set
+  void *tu112 = U"\u0070";
+                  ^
+
+"Test_name.c", line 682: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000070'
+        ^
+
+"Test_name.c", line 684: warning: a universal character name cannot designate a character in the basic character set
+  void *tU112 = U"\U00000070";
+                  ^
+
+"Test_name.c", line 685: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0071'
+        ^
+
+"Test_name.c", line 687: warning: a universal character name cannot designate a character in the basic character set
+  void *tu113 = U"\u0071";
+                  ^
+
+"Test_name.c", line 688: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000071'
+        ^
+
+"Test_name.c", line 690: warning: a universal character name cannot designate a character in the basic character set
+  void *tU113 = U"\U00000071";
+                  ^
+
+"Test_name.c", line 691: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0072'
+        ^
+
+"Test_name.c", line 693: warning: a universal character name cannot designate a character in the basic character set
+  void *tu114 = U"\u0072";
+                  ^
+
+"Test_name.c", line 694: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000072'
+        ^
+
+"Test_name.c", line 696: warning: a universal character name cannot designate a character in the basic character set
+  void *tU114 = U"\U00000072";
+                  ^
+
+"Test_name.c", line 697: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0073'
+        ^
+
+"Test_name.c", line 699: warning: a universal character name cannot designate a character in the basic character set
+  void *tu115 = U"\u0073";
+                  ^
+
+"Test_name.c", line 700: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000073'
+        ^
+
+"Test_name.c", line 702: warning: a universal character name cannot designate a character in the basic character set
+  void *tU115 = U"\U00000073";
+                  ^
+
+"Test_name.c", line 703: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0074'
+        ^
+
+"Test_name.c", line 705: warning: a universal character name cannot designate a character in the basic character set
+  void *tu116 = U"\u0074";
+                  ^
+
+"Test_name.c", line 706: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000074'
+        ^
+
+"Test_name.c", line 708: warning: a universal character name cannot designate a character in the basic character set
+  void *tU116 = U"\U00000074";
+                  ^
+
+"Test_name.c", line 709: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0075'
+        ^
+
+"Test_name.c", line 711: warning: a universal character name cannot designate a character in the basic character set
+  void *tu117 = U"\u0075";
+                  ^
+
+"Test_name.c", line 712: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000075'
+        ^
+
+"Test_name.c", line 714: warning: a universal character name cannot designate a character in the basic character set
+  void *tU117 = U"\U00000075";
+                  ^
+
+"Test_name.c", line 715: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0076'
+        ^
+
+"Test_name.c", line 717: warning: a universal character name cannot designate a character in the basic character set
+  void *tu118 = U"\u0076";
+                  ^
+
+"Test_name.c", line 718: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000076'
+        ^
+
+"Test_name.c", line 720: warning: a universal character name cannot designate a character in the basic character set
+  void *tU118 = U"\U00000076";
+                  ^
+
+"Test_name.c", line 721: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0077'
+        ^
+
+"Test_name.c", line 723: warning: a universal character name cannot designate a character in the basic character set
+  void *tu119 = U"\u0077";
+                  ^
+
+"Test_name.c", line 724: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000077'
+        ^
+
+"Test_name.c", line 726: warning: a universal character name cannot designate a character in the basic character set
+  void *tU119 = U"\U00000077";
+                  ^
+
+"Test_name.c", line 727: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0078'
+        ^
+
+"Test_name.c", line 729: warning: a universal character name cannot designate a character in the basic character set
+  void *tu120 = U"\u0078";
+                  ^
+
+"Test_name.c", line 730: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000078'
+        ^
+
+"Test_name.c", line 732: warning: a universal character name cannot designate a character in the basic character set
+  void *tU120 = U"\U00000078";
+                  ^
+
+"Test_name.c", line 733: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0079'
+        ^
+
+"Test_name.c", line 735: warning: a universal character name cannot designate a character in the basic character set
+  void *tu121 = U"\u0079";
+                  ^
+
+"Test_name.c", line 736: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000079'
+        ^
+
+"Test_name.c", line 738: warning: a universal character name cannot designate a character in the basic character set
+  void *tU121 = U"\U00000079";
+                  ^
+
+"Test_name.c", line 739: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u007a'
+        ^
+
+"Test_name.c", line 741: warning: a universal character name cannot designate a character in the basic character set
+  void *tu122 = U"\u007a";
+                  ^
+
+"Test_name.c", line 742: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000007a'
+        ^
+
+"Test_name.c", line 744: warning: a universal character name cannot designate a character in the basic character set
+  void *tU122 = U"\U0000007a";
+                  ^
+
+"Test_name.c", line 745: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u007b'
+        ^
+
+"Test_name.c", line 747: warning: a universal character name cannot designate a character in the basic character set
+  void *tu123 = U"\u007b";
+                  ^
+
+"Test_name.c", line 748: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000007b'
+        ^
+
+"Test_name.c", line 750: warning: a universal character name cannot designate a character in the basic character set
+  void *tU123 = U"\U0000007b";
+                  ^
+
+"Test_name.c", line 751: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u007c'
+        ^
+
+"Test_name.c", line 753: warning: a universal character name cannot designate a character in the basic character set
+  void *tu124 = U"\u007c";
+                  ^
+
+"Test_name.c", line 754: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000007c'
+        ^
+
+"Test_name.c", line 756: warning: a universal character name cannot designate a character in the basic character set
+  void *tU124 = U"\U0000007c";
+                  ^
+
+"Test_name.c", line 757: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u007d'
+        ^
+
+"Test_name.c", line 759: warning: a universal character name cannot designate a character in the basic character set
+  void *tu125 = U"\u007d";
+                  ^
+
+"Test_name.c", line 760: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000007d'
+        ^
+
+"Test_name.c", line 762: warning: a universal character name cannot designate a character in the basic character set
+  void *tU125 = U"\U0000007d";
+                  ^
+
+"Test_name.c", line 763: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u007e'
+        ^
+
+"Test_name.c", line 765: warning: a universal character name cannot designate a character in the basic character set
+  void *tu126 = U"\u007e";
+                  ^
+
+"Test_name.c", line 766: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000007e'
+        ^
+
+"Test_name.c", line 768: warning: a universal character name cannot designate a character in the basic character set
+  void *tU126 = U"\U0000007e";
+                  ^
+
+"Test_name.c", line 769: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u007f'
+        ^
+
+"Test_name.c", line 771: warning: a universal character name cannot designate a character in the basic character set
+  void *tu127 = U"\u007f";
+                  ^
+
+"Test_name.c", line 772: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000007f'
+        ^
+
+"Test_name.c", line 774: warning: a universal character name cannot designate a character in the basic character set
+  void *tU127 = U"\U0000007f";
+                  ^
+
+"Test_name.c", line 775: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0080'
+        ^
+
+"Test_name.c", line 777: warning: a universal character name cannot designate a character in the basic character set
+  void *tu128 = U"\u0080";
+                  ^
+
+"Test_name.c", line 778: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000080'
+        ^
+
+"Test_name.c", line 780: warning: a universal character name cannot designate a character in the basic character set
+  void *tU128 = U"\U00000080";
+                  ^
+
+"Test_name.c", line 781: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0081'
+        ^
+
+"Test_name.c", line 783: warning: a universal character name cannot designate a character in the basic character set
+  void *tu129 = U"\u0081";
+                  ^
+
+"Test_name.c", line 784: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000081'
+        ^
+
+"Test_name.c", line 786: warning: a universal character name cannot designate a character in the basic character set
+  void *tU129 = U"\U00000081";
+                  ^
+
+"Test_name.c", line 787: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0082'
+        ^
+
+"Test_name.c", line 789: warning: a universal character name cannot designate a character in the basic character set
+  void *tu130 = U"\u0082";
+                  ^
+
+"Test_name.c", line 790: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000082'
+        ^
+
+"Test_name.c", line 792: warning: a universal character name cannot designate a character in the basic character set
+  void *tU130 = U"\U00000082";
+                  ^
+
+"Test_name.c", line 793: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0083'
+        ^
+
+"Test_name.c", line 795: warning: a universal character name cannot designate a character in the basic character set
+  void *tu131 = U"\u0083";
+                  ^
+
+"Test_name.c", line 796: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000083'
+        ^
+
+"Test_name.c", line 798: warning: a universal character name cannot designate a character in the basic character set
+  void *tU131 = U"\U00000083";
+                  ^
+
+"Test_name.c", line 799: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0084'
+        ^
+
+"Test_name.c", line 801: warning: a universal character name cannot designate a character in the basic character set
+  void *tu132 = U"\u0084";
+                  ^
+
+"Test_name.c", line 802: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000084'
+        ^
+
+"Test_name.c", line 804: warning: a universal character name cannot designate a character in the basic character set
+  void *tU132 = U"\U00000084";
+                  ^
+
+"Test_name.c", line 805: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0085'
+        ^
+
+"Test_name.c", line 807: warning: a universal character name cannot designate a character in the basic character set
+  void *tu133 = U"\u0085";
+                  ^
+
+"Test_name.c", line 808: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000085'
+        ^
+
+"Test_name.c", line 810: warning: a universal character name cannot designate a character in the basic character set
+  void *tU133 = U"\U00000085";
+                  ^
+
+"Test_name.c", line 811: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0086'
+        ^
+
+"Test_name.c", line 813: warning: a universal character name cannot designate a character in the basic character set
+  void *tu134 = U"\u0086";
+                  ^
+
+"Test_name.c", line 814: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000086'
+        ^
+
+"Test_name.c", line 816: warning: a universal character name cannot designate a character in the basic character set
+  void *tU134 = U"\U00000086";
+                  ^
+
+"Test_name.c", line 817: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0087'
+        ^
+
+"Test_name.c", line 819: warning: a universal character name cannot designate a character in the basic character set
+  void *tu135 = U"\u0087";
+                  ^
+
+"Test_name.c", line 820: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000087'
+        ^
+
+"Test_name.c", line 822: warning: a universal character name cannot designate a character in the basic character set
+  void *tU135 = U"\U00000087";
+                  ^
+
+"Test_name.c", line 823: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0088'
+        ^
+
+"Test_name.c", line 825: warning: a universal character name cannot designate a character in the basic character set
+  void *tu136 = U"\u0088";
+                  ^
+
+"Test_name.c", line 826: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000088'
+        ^
+
+"Test_name.c", line 828: warning: a universal character name cannot designate a character in the basic character set
+  void *tU136 = U"\U00000088";
+                  ^
+
+"Test_name.c", line 829: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0089'
+        ^
+
+"Test_name.c", line 831: warning: a universal character name cannot designate a character in the basic character set
+  void *tu137 = U"\u0089";
+                  ^
+
+"Test_name.c", line 832: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000089'
+        ^
+
+"Test_name.c", line 834: warning: a universal character name cannot designate a character in the basic character set
+  void *tU137 = U"\U00000089";
+                  ^
+
+"Test_name.c", line 835: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u008a'
+        ^
+
+"Test_name.c", line 837: warning: a universal character name cannot designate a character in the basic character set
+  void *tu138 = U"\u008a";
+                  ^
+
+"Test_name.c", line 838: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000008a'
+        ^
+
+"Test_name.c", line 840: warning: a universal character name cannot designate a character in the basic character set
+  void *tU138 = U"\U0000008a";
+                  ^
+
+"Test_name.c", line 841: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u008b'
+        ^
+
+"Test_name.c", line 843: warning: a universal character name cannot designate a character in the basic character set
+  void *tu139 = U"\u008b";
+                  ^
+
+"Test_name.c", line 844: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000008b'
+        ^
+
+"Test_name.c", line 846: warning: a universal character name cannot designate a character in the basic character set
+  void *tU139 = U"\U0000008b";
+                  ^
+
+"Test_name.c", line 847: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u008c'
+        ^
+
+"Test_name.c", line 849: warning: a universal character name cannot designate a character in the basic character set
+  void *tu140 = U"\u008c";
+                  ^
+
+"Test_name.c", line 850: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000008c'
+        ^
+
+"Test_name.c", line 852: warning: a universal character name cannot designate a character in the basic character set
+  void *tU140 = U"\U0000008c";
+                  ^
+
+"Test_name.c", line 853: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u008d'
+        ^
+
+"Test_name.c", line 855: warning: a universal character name cannot designate a character in the basic character set
+  void *tu141 = U"\u008d";
+                  ^
+
+"Test_name.c", line 856: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000008d'
+        ^
+
+"Test_name.c", line 858: warning: a universal character name cannot designate a character in the basic character set
+  void *tU141 = U"\U0000008d";
+                  ^
+
+"Test_name.c", line 859: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u008e'
+        ^
+
+"Test_name.c", line 861: warning: a universal character name cannot designate a character in the basic character set
+  void *tu142 = U"\u008e";
+                  ^
+
+"Test_name.c", line 862: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000008e'
+        ^
+
+"Test_name.c", line 864: warning: a universal character name cannot designate a character in the basic character set
+  void *tU142 = U"\U0000008e";
+                  ^
+
+"Test_name.c", line 865: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u008f'
+        ^
+
+"Test_name.c", line 867: warning: a universal character name cannot designate a character in the basic character set
+  void *tu143 = U"\u008f";
+                  ^
+
+"Test_name.c", line 868: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000008f'
+        ^
+
+"Test_name.c", line 870: warning: a universal character name cannot designate a character in the basic character set
+  void *tU143 = U"\U0000008f";
+                  ^
+
+"Test_name.c", line 871: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0090'
+        ^
+
+"Test_name.c", line 873: warning: a universal character name cannot designate a character in the basic character set
+  void *tu144 = U"\u0090";
+                  ^
+
+"Test_name.c", line 874: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000090'
+        ^
+
+"Test_name.c", line 876: warning: a universal character name cannot designate a character in the basic character set
+  void *tU144 = U"\U00000090";
+                  ^
+
+"Test_name.c", line 877: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0091'
+        ^
+
+"Test_name.c", line 879: warning: a universal character name cannot designate a character in the basic character set
+  void *tu145 = U"\u0091";
+                  ^
+
+"Test_name.c", line 880: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000091'
+        ^
+
+"Test_name.c", line 882: warning: a universal character name cannot designate a character in the basic character set
+  void *tU145 = U"\U00000091";
+                  ^
+
+"Test_name.c", line 883: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0092'
+        ^
+
+"Test_name.c", line 885: warning: a universal character name cannot designate a character in the basic character set
+  void *tu146 = U"\u0092";
+                  ^
+
+"Test_name.c", line 886: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000092'
+        ^
+
+"Test_name.c", line 888: warning: a universal character name cannot designate a character in the basic character set
+  void *tU146 = U"\U00000092";
+                  ^
+
+"Test_name.c", line 889: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0093'
+        ^
+
+"Test_name.c", line 891: warning: a universal character name cannot designate a character in the basic character set
+  void *tu147 = U"\u0093";
+                  ^
+
+"Test_name.c", line 892: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000093'
+        ^
+
+"Test_name.c", line 894: warning: a universal character name cannot designate a character in the basic character set
+  void *tU147 = U"\U00000093";
+                  ^
+
+"Test_name.c", line 895: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0094'
+        ^
+
+"Test_name.c", line 897: warning: a universal character name cannot designate a character in the basic character set
+  void *tu148 = U"\u0094";
+                  ^
+
+"Test_name.c", line 898: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000094'
+        ^
+
+"Test_name.c", line 900: warning: a universal character name cannot designate a character in the basic character set
+  void *tU148 = U"\U00000094";
+                  ^
+
+"Test_name.c", line 901: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0095'
+        ^
+
+"Test_name.c", line 903: warning: a universal character name cannot designate a character in the basic character set
+  void *tu149 = U"\u0095";
+                  ^
+
+"Test_name.c", line 904: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000095'
+        ^
+
+"Test_name.c", line 906: warning: a universal character name cannot designate a character in the basic character set
+  void *tU149 = U"\U00000095";
+                  ^
+
+"Test_name.c", line 907: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0096'
+        ^
+
+"Test_name.c", line 909: warning: a universal character name cannot designate a character in the basic character set
+  void *tu150 = U"\u0096";
+                  ^
+
+"Test_name.c", line 910: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000096'
+        ^
+
+"Test_name.c", line 912: warning: a universal character name cannot designate a character in the basic character set
+  void *tU150 = U"\U00000096";
+                  ^
+
+"Test_name.c", line 913: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0097'
+        ^
+
+"Test_name.c", line 915: warning: a universal character name cannot designate a character in the basic character set
+  void *tu151 = U"\u0097";
+                  ^
+
+"Test_name.c", line 916: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000097'
+        ^
+
+"Test_name.c", line 918: warning: a universal character name cannot designate a character in the basic character set
+  void *tU151 = U"\U00000097";
+                  ^
+
+"Test_name.c", line 919: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0098'
+        ^
+
+"Test_name.c", line 921: warning: a universal character name cannot designate a character in the basic character set
+  void *tu152 = U"\u0098";
+                  ^
+
+"Test_name.c", line 922: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000098'
+        ^
+
+"Test_name.c", line 924: warning: a universal character name cannot designate a character in the basic character set
+  void *tU152 = U"\U00000098";
+                  ^
+
+"Test_name.c", line 925: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u0099'
+        ^
+
+"Test_name.c", line 927: warning: a universal character name cannot designate a character in the basic character set
+  void *tu153 = U"\u0099";
+                  ^
+
+"Test_name.c", line 928: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U00000099'
+        ^
+
+"Test_name.c", line 930: warning: a universal character name cannot designate a character in the basic character set
+  void *tU153 = U"\U00000099";
+                  ^
+
+"Test_name.c", line 931: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u009a'
+        ^
+
+"Test_name.c", line 933: warning: a universal character name cannot designate a character in the basic character set
+  void *tu154 = U"\u009a";
+                  ^
+
+"Test_name.c", line 934: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000009a'
+        ^
+
+"Test_name.c", line 936: warning: a universal character name cannot designate a character in the basic character set
+  void *tU154 = U"\U0000009a";
+                  ^
+
+"Test_name.c", line 937: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u009b'
+        ^
+
+"Test_name.c", line 939: warning: a universal character name cannot designate a character in the basic character set
+  void *tu155 = U"\u009b";
+                  ^
+
+"Test_name.c", line 940: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000009b'
+        ^
+
+"Test_name.c", line 942: warning: a universal character name cannot designate a character in the basic character set
+  void *tU155 = U"\U0000009b";
+                  ^
+
+"Test_name.c", line 943: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u009c'
+        ^
+
+"Test_name.c", line 945: warning: a universal character name cannot designate a character in the basic character set
+  void *tu156 = U"\u009c";
+                  ^
+
+"Test_name.c", line 946: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000009c'
+        ^
+
+"Test_name.c", line 948: warning: a universal character name cannot designate a character in the basic character set
+  void *tU156 = U"\U0000009c";
+                  ^
+
+"Test_name.c", line 949: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u009d'
+        ^
+
+"Test_name.c", line 951: warning: a universal character name cannot designate a character in the basic character set
+  void *tu157 = U"\u009d";
+                  ^
+
+"Test_name.c", line 952: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000009d'
+        ^
+
+"Test_name.c", line 954: warning: a universal character name cannot designate a character in the basic character set
+  void *tU157 = U"\U0000009d";
+                  ^
+
+"Test_name.c", line 955: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u009e'
+        ^
+
+"Test_name.c", line 957: warning: a universal character name cannot designate a character in the basic character set
+  void *tu158 = U"\u009e";
+                  ^
+
+"Test_name.c", line 958: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000009e'
+        ^
+
+"Test_name.c", line 960: warning: a universal character name cannot designate a character in the basic character set
+  void *tU158 = U"\U0000009e";
+                  ^
+
+"Test_name.c", line 961: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\u009f'
+        ^
+
+"Test_name.c", line 963: warning: a universal character name cannot designate a character in the basic character set
+  void *tu159 = U"\u009f";
+                  ^
+
+"Test_name.c", line 964: warning: a universal character name cannot designate a character in the basic character set
+  #if U'\U0000009f'
+        ^
+
+"Test_name.c", line 966: warning: a universal character name cannot designate a character in the basic character set
+  void *tU159 = U"\U0000009f";
+                  ^
+
+"Test_name.c", line 974: warning: a universal character name cannot designate a surrogate code point
+  #if U'\ud800' /* { dg-error "is not a valid universal character" } */
+        ^
+
+"Test_name.c", line 976: warning: a universal character name cannot designate a surrogate code point
+  void *tud800 = U"\ud800"; /* { dg-error "is not a valid universal character" } */
+                   ^
+
+"Test_name.c", line 977: warning: a universal character name cannot designate a surrogate code point
+  #if U'\U0000d800' /* { dg-error "is not a valid universal character" } */
+        ^
+
+"Test_name.c", line 979: warning: a universal character name cannot designate a surrogate code point
+  void *tUd800 = U"\U0000d800"; /* { dg-error "is not a valid universal character" } */
+                   ^
+
+"Test_name.c", line 981: warning: a universal character name cannot designate a surrogate code point
+  #if U'\udfff' /* { dg-error "is not a valid universal character" } */
+        ^
+
+"Test_name.c", line 983: warning: a universal character name cannot designate a surrogate code point
+  void *tudfff = U"\udfff"; /* { dg-error "is not a valid universal character" } */
+                   ^
+
+"Test_name.c", line 984: warning: a universal character name cannot designate a surrogate code point
+  #if U'\U0000dfff' /* { dg-error "is not a valid universal character" } */
+        ^
+
+"Test_name.c", line 986: warning: a universal character name cannot designate a surrogate code point
+  void *tUdfff = U"\U0000dfff"; /* { dg-error "is not a valid universal character" } */
+                   ^
+
+"Test_name.c", line 992: warning: a universal character name must designate a valid code point
+  #if U'\U00110000' /* { dg-error "is outside the UCS codespace" } */
+        ^
+
+"Test_name.c", line 994: warning: a universal character name must designate a valid code point
+  void *tU110000 = U"\U00110000"; /* { dg-error "is outside the UCS codespace" } */
+                     ^
+
+"Test_name.c", line 996: warning: a universal character name must designate a valid code point
+  #if U'\Uffffffff' /* { dg-error "is not a valid universal character" } */
+        ^
+
+"Test_name.c", line 998: warning: a universal character name must designate a valid code point
+  void *tUffffffff = U"\Uffffffff"; /* { dg-error "is not a valid universal character" } */
+                       ^
+

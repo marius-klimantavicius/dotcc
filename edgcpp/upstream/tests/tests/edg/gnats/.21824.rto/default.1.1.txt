@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --microsoft_v 1914 --ms_c++17 Test_name.c
+"Test_name.c", line 9: warning: default argument is not allowed
+  void S<T>::f(int = 0) {}
+                     ^
+

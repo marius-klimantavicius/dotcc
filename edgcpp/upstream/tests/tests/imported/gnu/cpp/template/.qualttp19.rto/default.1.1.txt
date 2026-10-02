@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 30: warning: type qualifiers are meaningless here
+    typedef const r_type cr_type;
+            ^
+
+"Test_name.c", line 31: error: class "call_traits<int &>" has no member "type_less_spec"
+    call_traits<cr_type>::type_less_spec var  = num; // { dg-error "" }
+                          ^
+
+"Test_name.c", line 31: warning: variable "num" is used before its value is set
+    call_traits<cr_type>::type_less_spec var  = num; // { dg-error "" }
+                                                ^
+
+"Test_name.c", line 34: warning: variable "var2" was declared but never referenced
+    call_traits<const int&>::type_more_spec var2 = num;
+                                            ^
+
+"Test_name.c", line 38: warning: variable "var3" was declared but never referenced
+    call_traits<std_cr_type>::type_more_spec var3 = num;
+                                             ^
+
+"Test_name.c", line 42: warning: variable "var4" was declared but never referenced
+    call_traits<r_type>::type_more_spec var4;
+                                        ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 13: warning: argument of type "int" is incompatible with parameter of type "const volatile void *"
+    __builtin_assume_separate_storage(a, 3); // expected-error {{incompatible integer to pointer conversion}}
+                                         ^
+
+"Test_name.c", line 13: warning: conversion of nonzero integer to pointer
+    __builtin_assume_separate_storage(a, 3); // expected-error {{incompatible integer to pointer conversion}}
+                                         ^
+
+"Test_name.c", line 14: warning: argument of type "int" is incompatible with parameter of type "const volatile void *"
+    __builtin_assume_separate_storage(3, a); // expected-error {{incompatible integer to pointer conversion}}
+                                      ^
+
+"Test_name.c", line 14: warning: conversion of nonzero integer to pointer
+    __builtin_assume_separate_storage(3, a); // expected-error {{incompatible integer to pointer conversion}}
+                                      ^
+

@@ -1,0 +1,151 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 47: warning: expression has no effect
+    *ft;
+    ^
+
+"Test_name.c", line 29: warning: expression has no effect
+    *pt;
+    ^
+          detected during instantiation of "void dependent(T, T *, T U::*, T (&)(), T (&)[4]) [with T=A, U=B]" at line 67
+
+"Test_name.c", line 30: warning: expression has no effect
+    +pt;
+    ^
+          detected during instantiation of "void dependent(T, T *, T U::*, T (&)(), T (&)[4]) [with T=A, U=B]" at line 67
+
+"Test_name.c", line 31: error: expression must have arithmetic or unscoped enum type
+    -pt; // expected-error {{invalid argument type 'T *' to unary expression}}
+     ^
+          detected during instantiation of "void dependent(T, T *, T U::*, T (&)(), T (&)[4]) [with T=A, U=B]" at line 67
+
+"Test_name.c", line 32: warning: expression has no effect
+    !pt;
+    ^
+          detected during instantiation of "void dependent(T, T *, T U::*, T (&)(), T (&)[4]) [with T=A, U=B]" at line 67
+
+"Test_name.c", line 33: error: expression must have integral or unscoped enum type
+    ~pt; // expected-error {{invalid argument type 'T *' to unary expression}}
+     ^
+          detected during instantiation of "void dependent(T, T *, T U::*, T (&)(), T (&)[4]) [with T=A, U=B]" at line 67
+
+"Test_name.c", line 34: warning: expression has no effect
+    &pt;
+    ^
+          detected during instantiation of "void dependent(T, T *, T U::*, T (&)(), T (&)[4]) [with T=A, U=B]" at line 67
+
+"Test_name.c", line 38: error: operand of "*" must be a pointer but has type "A B::*"
+    *mpt; // expected-error {{indirection requires pointer operand ('T U::*' invalid)}}
+     ^
+          detected during instantiation of "void dependent(T, T *, T U::*, T (&)(), T (&)[4]) [with T=A, U=B]" at line 67
+
+"Test_name.c", line 39: error: expression must have arithmetic or unscoped enum type
+    +mpt; // expected-error {{invalid argument type 'T U::*' to unary expression}}
+     ^
+          detected during instantiation of "void dependent(T, T *, T U::*, T (&)(), T (&)[4]) [with T=A, U=B]" at line 67
+
+"Test_name.c", line 40: error: expression must have arithmetic or unscoped enum type
+    -mpt; // expected-error {{invalid argument type 'T U::*' to unary expression}}
+     ^
+          detected during instantiation of "void dependent(T, T *, T U::*, T (&)(), T (&)[4]) [with T=A, U=B]" at line 67
+
+"Test_name.c", line 41: warning: expression has no effect
+    !mpt;
+    ^
+          detected during instantiation of "void dependent(T, T *, T U::*, T (&)(), T (&)[4]) [with T=A, U=B]" at line 67
+
+"Test_name.c", line 42: error: expression must have integral or unscoped enum type
+    ~mpt; // expected-error {{invalid argument type 'T U::*' to unary expression}}
+     ^
+          detected during instantiation of "void dependent(T, T *, T U::*, T (&)(), T (&)[4]) [with T=A, U=B]" at line 67
+
+"Test_name.c", line 43: warning: expression has no effect
+    &mpt;
+    ^
+          detected during instantiation of "void dependent(T, T *, T U::*, T (&)(), T (&)[4]) [with T=A, U=B]" at line 67
+
+"Test_name.c", line 44: error: expression must have arithmetic, unscoped enum, or pointer type
+    ++mpt; // expected-error {{cannot increment value of type 'T U::*'}}
+      ^
+          detected during instantiation of "void dependent(T, T *, T U::*, T (&)(), T (&)[4]) [with T=A, U=B]" at line 67
+
+"Test_name.c", line 45: error: expression must have arithmetic, unscoped enum, or pointer type
+    --mpt; // expected-error {{cannot decrement value of type 'T U::*'}}
+      ^
+          detected during instantiation of "void dependent(T, T *, T U::*, T (&)(), T (&)[4]) [with T=A, U=B]" at line 67
+
+"Test_name.c", line 48: warning: expression has no effect
+    +ft;
+    ^
+          detected during instantiation of "void dependent(T, T *, T U::*, T (&)(), T (&)[4]) [with T=A, U=B]" at line 67
+
+"Test_name.c", line 49: error: expression must have arithmetic or unscoped enum type
+    -ft; // expected-error {{invalid argument type 'T (*)()' to unary expression}}
+     ^
+          detected during instantiation of "void dependent(T, T *, T U::*, T (&)(), T (&)[4]) [with T=A, U=B]" at line 67
+
+"Test_name.c", line 50: warning: expression has no effect
+    !ft;
+    ^
+          detected during instantiation of "void dependent(T, T *, T U::*, T (&)(), T (&)[4]) [with T=A, U=B]" at line 67
+
+"Test_name.c", line 51: error: expression must have integral or unscoped enum type
+    ~ft; // expected-error {{invalid argument type 'T (*)()' to unary expression}}
+     ^
+          detected during instantiation of "void dependent(T, T *, T U::*, T (&)(), T (&)[4]) [with T=A, U=B]" at line 67
+
+"Test_name.c", line 52: warning: expression has no effect
+    &ft;
+    ^
+          detected during instantiation of "void dependent(T, T *, T U::*, T (&)(), T (&)[4]) [with T=A, U=B]" at line 67
+
+"Test_name.c", line 53: error: expression must be a pointer to a complete object type
+    ++ft; // expected-error {{cannot increment value of type 'T ()'}}
+      ^
+          detected during instantiation of "void dependent(T, T *, T U::*, T (&)(), T (&)[4]) [with T=A, U=B]" at line 67
+
+"Test_name.c", line 54: error: expression must be a pointer to a complete object type
+    --ft; // expected-error {{cannot decrement value of type 'T ()'}}
+      ^
+          detected during instantiation of "void dependent(T, T *, T U::*, T (&)(), T (&)[4]) [with T=A, U=B]" at line 67
+
+"Test_name.c", line 56: warning: expression has no effect
+    *at;
+    ^
+          detected during instantiation of "void dependent(T, T *, T U::*, T (&)(), T (&)[4]) [with T=A, U=B]" at line 67
+
+"Test_name.c", line 57: warning: expression has no effect
+    +at;
+    ^
+          detected during instantiation of "void dependent(T, T *, T U::*, T (&)(), T (&)[4]) [with T=A, U=B]" at line 67
+
+"Test_name.c", line 58: error: expression must have arithmetic or unscoped enum type
+    -at; // expected-error {{invalid argument type 'T *' to unary expression}}
+     ^
+          detected during instantiation of "void dependent(T, T *, T U::*, T (&)(), T (&)[4]) [with T=A, U=B]" at line 67
+
+"Test_name.c", line 59: warning: expression has no effect
+    !at;
+    ^
+          detected during instantiation of "void dependent(T, T *, T U::*, T (&)(), T (&)[4]) [with T=A, U=B]" at line 67
+
+"Test_name.c", line 60: error: expression must have integral or unscoped enum type
+    ~at; // expected-error {{invalid argument type 'T *' to unary expression}}
+     ^
+          detected during instantiation of "void dependent(T, T *, T U::*, T (&)(), T (&)[4]) [with T=A, U=B]" at line 67
+
+"Test_name.c", line 61: warning: expression has no effect
+    &at;
+    ^
+          detected during instantiation of "void dependent(T, T *, T U::*, T (&)(), T (&)[4]) [with T=A, U=B]" at line 67
+
+"Test_name.c", line 62: error: expression must be a modifiable lvalue
+    ++at; // expected-error {{cannot increment value of type 'T[4]'}}
+      ^
+          detected during instantiation of "void dependent(T, T *, T U::*, T (&)(), T (&)[4]) [with T=A, U=B]" at line 67
+
+"Test_name.c", line 63: error: expression must be a modifiable lvalue
+    --at; // expected-error {{cannot decrement value of type 'T[4]'}}
+      ^
+          detected during instantiation of "void dependent(T, T *, T U::*, T (&)(), T (&)[4]) [with T=A, U=B]" at line 67
+
+16 errors detected in the compilation of "Test_name.c".

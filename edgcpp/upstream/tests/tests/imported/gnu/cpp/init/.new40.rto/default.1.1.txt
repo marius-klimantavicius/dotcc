@@ -1,0 +1,13 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./init/new40.C", line 63: warning: integer conversion resulted in a change of sign
+      expected_size = -1;
+                      ^
+
+"./init/new40.C", line 74: warning: integer conversion resulted in a change of sign
+      expected_size = -1;
+                      ^
+
+"./init/new40.C", line 89: warning: integer conversion resulted in a change of sign
+    expected_size = -1;
+                    ^
+

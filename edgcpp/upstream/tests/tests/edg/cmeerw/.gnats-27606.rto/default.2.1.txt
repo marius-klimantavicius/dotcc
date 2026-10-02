@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=2 --c++11 --diag_warning 2361 --set_flag diag_override_does_not_affect_sfinae Test_name.c
+"user.h", line 10: warning: invalid narrowing conversion from "double" to "float"
+    auto v{ float{ d } };
+                   ^
+

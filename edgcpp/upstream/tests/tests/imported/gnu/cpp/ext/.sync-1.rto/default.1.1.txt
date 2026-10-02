@@ -1,0 +1,113 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 18: warning: variable "pp" was set but never used
+  TEST2(__sync_fetch_and_add)
+  ^
+
+"Test_name.c", line 18: warning: variable "pp" was set but never used
+  TEST2(__sync_fetch_and_add)
+  ^
+
+"Test_name.c", line 19: warning: variable "pp" was set but never used
+  TEST2(__sync_fetch_and_sub)
+  ^
+
+"Test_name.c", line 19: warning: variable "pp" was set but never used
+  TEST2(__sync_fetch_and_sub)
+  ^
+
+"Test_name.c", line 20: warning: variable "pp" was set but never used
+  TEST2(__sync_fetch_and_or)
+  ^
+
+"Test_name.c", line 20: warning: variable "pp" was set but never used
+  TEST2(__sync_fetch_and_or)
+  ^
+
+"Test_name.c", line 21: warning: variable "pp" was set but never used
+  TEST2(__sync_fetch_and_and)
+  ^
+
+"Test_name.c", line 21: warning: variable "pp" was set but never used
+  TEST2(__sync_fetch_and_and)
+  ^
+
+"Test_name.c", line 22: warning: variable "pp" was set but never used
+  TEST2(__sync_fetch_and_xor)
+  ^
+
+"Test_name.c", line 22: warning: variable "pp" was set but never used
+  TEST2(__sync_fetch_and_xor)
+  ^
+
+"Test_name.c", line 23: warning: variable "pp" was set but never used
+  TEST2(__sync_fetch_and_nand)
+  ^
+
+"Test_name.c", line 23: warning: variable "pp" was set but never used
+  TEST2(__sync_fetch_and_nand)
+  ^
+
+"Test_name.c", line 25: warning: variable "pp" was set but never used
+  TEST2(__sync_add_and_fetch)
+  ^
+
+"Test_name.c", line 25: warning: variable "pp" was set but never used
+  TEST2(__sync_add_and_fetch)
+  ^
+
+"Test_name.c", line 26: warning: variable "pp" was set but never used
+  TEST2(__sync_sub_and_fetch)
+  ^
+
+"Test_name.c", line 26: warning: variable "pp" was set but never used
+  TEST2(__sync_sub_and_fetch)
+  ^
+
+"Test_name.c", line 27: warning: variable "pp" was set but never used
+  TEST2(__sync_or_and_fetch)
+  ^
+
+"Test_name.c", line 27: warning: variable "pp" was set but never used
+  TEST2(__sync_or_and_fetch)
+  ^
+
+"Test_name.c", line 28: warning: variable "pp" was set but never used
+  TEST2(__sync_and_and_fetch)
+  ^
+
+"Test_name.c", line 28: warning: variable "pp" was set but never used
+  TEST2(__sync_and_and_fetch)
+  ^
+
+"Test_name.c", line 29: warning: variable "pp" was set but never used
+  TEST2(__sync_xor_and_fetch)
+  ^
+
+"Test_name.c", line 29: warning: variable "pp" was set but never used
+  TEST2(__sync_xor_and_fetch)
+  ^
+
+"Test_name.c", line 30: warning: variable "pp" was set but never used
+  TEST2(__sync_nand_and_fetch)
+  ^
+
+"Test_name.c", line 30: warning: variable "pp" was set but never used
+  TEST2(__sync_nand_and_fetch)
+  ^
+
+"Test_name.c", line 32: warning: variable "pp" was set but never used
+  TEST2(__sync_lock_test_and_set)
+  ^
+
+"Test_name.c", line 32: warning: variable "pp" was set but never used
+  TEST2(__sync_lock_test_and_set)
+  ^
+
+"Test_name.c", line 41: warning: variable "pp" was set but never used
+  TEST3(int)
+  ^
+
+"Test_name.c", line 42: warning: variable "pp" was set but never used
+  TEST3(long)
+  ^
+

@@ -1,0 +1,98 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++23 -W Test_name.c
+"Test_name.c", line 66: error: invalid redeclaration of member function "S::f0()" (declared at line 65)
+    void f0(this S); // { dg-error "cannot be overloaded with" }
+         ^
+
+"Test_name.c", line 69: error: invalid redeclaration of member function "S::f1()" (declared at line 68)
+    void f1(this S const); // { dg-error "cannot be overloaded with" }
+         ^
+
+"Test_name.c", line 72: error: a volatile function parameter is deprecated
+    void f2(this S volatile); // { dg-error "cannot be overloaded with" }
+            ^
+
+"Test_name.c", line 72: error: invalid redeclaration of member function "S::f2()" (declared at line 71)
+    void f2(this S volatile); // { dg-error "cannot be overloaded with" }
+         ^
+
+"Test_name.c", line 75: error: a volatile function parameter is deprecated
+    void f3(this S const volatile); // { dg-error "cannot be overloaded with" }
+            ^
+
+"Test_name.c", line 75: error: invalid redeclaration of member function "S::f3()" (declared at line 74)
+    void f3(this S const volatile); // { dg-error "cannot be overloaded with" }
+         ^
+
+"Test_name.c", line 84: error: a volatile function parameter is deprecated
+    void fc2(this S volatile); // { dg-bogus "" }
+             ^
+
+"Test_name.c", line 87: error: a volatile function parameter is deprecated
+    void fc3(this S const volatile); // { dg-bogus "" }
+             ^
+
+"Test_name.c", line 96: error: a volatile function parameter is deprecated
+    void fv2(this S volatile); // { dg-bogus "" }
+             ^
+
+"Test_name.c", line 99: error: a volatile function parameter is deprecated
+    void fv3(this S const volatile); // { dg-bogus "" }
+             ^
+
+"Test_name.c", line 108: error: a volatile function parameter is deprecated
+    void fcv2(this S volatile); // { dg-bogus "" }
+              ^
+
+"Test_name.c", line 111: error: a volatile function parameter is deprecated
+    void fcv3(this S const volatile); // { dg-bogus "" }
+              ^
+
+"Test_name.c", line 116: error: invalid redeclaration of member function "S::g0(S)" (declared at line 115)
+    void g0(); // { dg-error "cannot be overloaded with" }
+         ^
+
+"Test_name.c", line 119: error: invalid redeclaration of member function "S::g1(S)" (declared at line 118)
+    void g1(); // { dg-error "cannot be overloaded with" }
+         ^
+
+"Test_name.c", line 121: error: a volatile function parameter is deprecated
+    void g2(this S volatile); // { dg-note "previous declaration" }
+            ^
+
+"Test_name.c", line 122: error: invalid redeclaration of member function "S::g2(S)" (declared at line 121)
+    void g2(); // { dg-error "cannot be overloaded with" }
+         ^
+
+"Test_name.c", line 124: error: a volatile function parameter is deprecated
+    void g3(this S const volatile); // { dg-note "previous declaration" }
+            ^
+
+"Test_name.c", line 125: error: invalid redeclaration of member function "S::g3(S)" (declared at line 124)
+    void g3(); // { dg-error "cannot be overloaded with" }
+         ^
+
+"Test_name.c", line 133: error: a volatile function parameter is deprecated
+    void gc2(this S volatile); // { dg-bogus "" }
+             ^
+
+"Test_name.c", line 136: error: a volatile function parameter is deprecated
+    void gc3(this S const volatile); // { dg-bogus "" }
+             ^
+
+"Test_name.c", line 145: error: a volatile function parameter is deprecated
+    void gv2(this S volatile); // { dg-bogus "" }
+             ^
+
+"Test_name.c", line 148: error: a volatile function parameter is deprecated
+    void gv3(this S const volatile); // { dg-bogus "" }
+             ^
+
+"Test_name.c", line 157: error: a volatile function parameter is deprecated
+    void gcv2(this S volatile); // { dg-bogus "" }
+              ^
+
+"Test_name.c", line 160: error: a volatile function parameter is deprecated
+    void gcv3(this S const volatile); // { dg-bogus "" }
+              ^
+
+24 errors detected in the compilation of "Test_name.c".

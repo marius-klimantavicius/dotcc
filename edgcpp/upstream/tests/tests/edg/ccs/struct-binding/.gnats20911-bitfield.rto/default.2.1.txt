@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=2 --c++20 -DNEG Test_name.c
+"Test_name.c", line 11: error: taking the address of a bit field is not allowed
+    [&] { return a; }();
+                 ^
+
+"Test_name.c", line 12: error: taking the address of a bit field is not allowed
+    [&a = a] { return a; }();
+          ^
+
+"Test_name.c", line 13: error: taking the address of a bit field is not allowed
+    [&a] { return a; }();
+      ^
+
+3 errors detected in the compilation of "Test_name.c".

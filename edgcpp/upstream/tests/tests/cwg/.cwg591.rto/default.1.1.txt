@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++17 -tused -A Test_name.c
+"Test_name.c", line 12: error: incomplete type "A<T>::B::M" (aka "void") is not allowed
+      M m; // OK, A<T>::M
+        ^
+
+1 error detected in the compilation of "Test_name.c".

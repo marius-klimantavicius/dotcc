@@ -1,0 +1,27 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 23: error: explicit type is missing ("int" assumed)
+  _S_construct(); // expected-error {{a type specifier is required}}
+  ^
+
+"Test_name.c", line 23: error: invalid redeclaration of member function "basic_string<aT, <unnamed>, oc>::_S_construct()" (declared at line 19)
+  _S_construct(); // expected-error {{a type specifier is required}}
+  ^
+
+At end of source: error: expected a "}"
+"Test_name.c", line 33: note: to match this "{"
+  struct system_error:runtime_error{ // expected-note {{to match}}
+                                   ^
+
+"Test_name.c", line 34: error: "time_error" is not a nonstatic data member or base class of class "system_error"
+  system_error():time_error("" // expected-error 3 {{expected}} expected-note {{to match}}
+                 ^
+
+At end of source: error: no default constructor exists for class "runtime_error"
+
+At end of source: error: expected a "{"
+
+At end of source: error: expected a "}"
+
+At end of source: error: expected a ";"
+
+8 errors detected in the compilation of "Test_name.c".

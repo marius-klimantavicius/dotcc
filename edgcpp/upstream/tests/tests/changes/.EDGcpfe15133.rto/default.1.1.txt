@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 16: error: a template argument may not reference a local type
+    X<struct S> x;  // Previously triggered an internal error in the
+      ^
+
+"Test_name.c", line 16: warning: variable "x" was declared but never referenced
+    X<struct S> x;  // Previously triggered an internal error in the
+                ^
+
+1 error detected in the compilation of "Test_name.c".

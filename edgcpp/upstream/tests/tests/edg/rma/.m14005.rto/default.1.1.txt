@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 7: error: expected "class"
+  template < template<class T> > class x { T i; }; // error - syntax
+                               ^
+
+"Test_name.c", line 7: error: identifier "T" is undefined
+  template < template<class T> > class x { T i; }; // error - syntax
+                                           ^
+
+2 errors detected in the compilation of "Test_name.c".

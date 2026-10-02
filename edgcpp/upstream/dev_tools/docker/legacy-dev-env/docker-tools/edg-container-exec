@@ -1,0 +1,80 @@
+#!/bin/bash
+
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+# This script is used to invoke container commands. It provides an entry point
+# for "global" modifications for edg-exec that can't otherwise be well
+# encapsulated. Including the user change from root to the appropriate
+# development user.
+
+#
+# Create the user that's actually going to be doing things.
+#
+
+# This may fail on non-Linux systems
+if ! getent group "$EDG_USER_GROUP_ID" 2>&1 > /dev/null ; then
+  groupadd \
+      --gid "$EDG_USER_GROUP_ID" \
+      dev
+fi
+
+useradd \
+    --no-create-home \
+    --uid "$EDG_USER_ID" \
+    --gid "$EDG_USER_GROUP_ID" \
+    dev
+
+#
+# Make a directory for user daemon programs.
+#
+user_daemon_dir="/run/user/$EDG_USER_ID"
+mkdir --mode=700 "$user_daemon_dir"
+chown "$EDG_USER_ID:$EDG_USER_GROUP_ID" "$user_daemon_dir"
+
+
+#
+# Handle the X authentication token (if any).
+#
+
+if [[ -n "$XAUTH_TOKEN" ]] ; then
+  # If an Xauthority file is present, replace it.
+  if [[ -f $HOME/.Xauthority ]] ; then
+    rm $HOME/.Xauthority
+  fi
+  touch $HOME/.Xauthority
+  xauth add $XAUTH_TOKEN
+fi
+
+
+#
+# Configure important environment variables.
+#
+
+if [[ -d '/edg/workspace/dev_tools' ]] ; then
+  # Configure EDG PATH and Python pylibs
+  #
+  # In this context the container PATH is given priority.  This makes sure the
+  # /edg/native-tools/bin takes priority (and thus the native binaries built
+  # for docker are used over native binaries built for the host).
+  #
+  export PATH="$PATH:/edg/workspace/dev_tools/bin"
+  export PYTHONPATH="$PYTHONPATH:/edg/workspace/dev_tools/pylibs"
+
+  # Configure EDG compiler scraping exports
+  export EDG_GCC_INCL_SCRAPE=$(edg-scrape-compiler gcc --lang c++ includes)
+  export EDG_GCC_CINCL_SCRAPE=$(edg-scrape-compiler gcc --lang c includes)
+  export EDG_GCC_VER_SCRAPE=$(edg-scrape-compiler gcc version)
+  export EDG_CLANG_INCL_SCRAPE=$(edg-scrape-compiler clang --lang c++ includes)
+  export EDG_CLANG_CINCL_SCRAPE=$(edg-scrape-compiler clang --lang c includes)
+  export EDG_CLANG_VER_SCRAPE=$(edg-scrape-compiler clang version)
+fi
+
+
+#
+# Run the forwarded bash command line as the user created as part of the launch
+# process.
+#
+exec runuser dev --session-command "$@"

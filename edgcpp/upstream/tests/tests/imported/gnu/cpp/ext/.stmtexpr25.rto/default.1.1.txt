@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 14: error: a dynamically-initialized local static variable is not allowed inside of a statement expression
+        ({ static const int inner = (throw 1, 1); &inner; }) // { dg-error "static" "" }
+                            ^
+
+"Test_name.c", line 13: error: expression must have a constant value
+      {
+      ^
+"Test_name.c", line 14: note: constant-evaluation cannot go through the declaration of a variable with static or thread storage duration
+        ({ static const int inner = (throw 1, 1); &inner; }) // { dg-error "static" "" }
+           ^
+
+"Test_name.c", line 15: internal error: assertion failed: failed to mark object lifetime as useless (il.c, line <suppressed> in mark_object_lifetime_as_useless)
+
+      };
+       ^
+
+2 errors and 1 catastrophic error detected in the compilation of "Test_name.c".
+Compilation aborted.
+Aborted
+eccp: front end returned an exit status of 134

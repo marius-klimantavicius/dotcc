@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --c++ -E Test_name.c
+#line 1 "Test_name.c"
+
+
+  using module = int;
+  module i;       
+  int foo() {
+    return i;
+  }
+
+
+
+
+

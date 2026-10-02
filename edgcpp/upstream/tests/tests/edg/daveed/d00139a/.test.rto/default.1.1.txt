@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=1 -A --multi_trans_unit Test_name.c d00139a_2.c d00139a_3.c

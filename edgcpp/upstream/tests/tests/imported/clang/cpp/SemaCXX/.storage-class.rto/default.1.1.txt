@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 8: error: a storage class may not be specified here
+  extern struct Test1 {}; // expected-warning {{'extern' is not permitted on a declaration of a type}}
+  ^
+
+1 error detected in the compilation of "Test_name.c".

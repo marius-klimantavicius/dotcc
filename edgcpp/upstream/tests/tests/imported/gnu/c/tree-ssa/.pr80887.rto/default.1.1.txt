@@ -1,0 +1,58 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 8: error: identifier "startwith" is undefined
+  void __GIMPLE (startwith("fre"))
+                 ^
+
+"Test_name.c", line 8: error: expected a ")"
+  void __GIMPLE (startwith("fre"))
+                           ^
+
+"Test_name.c", line 9: error: expected a "{"
+  f()
+  ^
+
+"Test_name.c", line 28: error: identifier "u_9" is undefined
+    u_9 = _4 + 4294967295u;
+    ^
+
+"Test_name.c", line 29: error: identifier "a_10" is undefined
+    a_10 = pos;
+    ^
+
+"Test_name.c", line 30: warning: function "_Literal" declared implicitly
+    _5 = a_10 + _Literal (int) -1;
+                ^
+
+"Test_name.c", line 30: error: expected an expression
+    _5 = a_10 + _Literal (int) -1;
+                          ^
+
+"Test_name.c", line 31: error: identifier "t1_11" is undefined
+    t1_11 = (unsigned int) _5;
+    ^
+
+"Test_name.c", line 33: error: identifier "t2_12" is undefined
+    t2_12 = _6 + 4294967294u;
+    ^
+
+"Test_name.c", line 11: warning: variable "t2" was declared but never referenced
+    unsigned int t2;
+                 ^
+
+"Test_name.c", line 12: warning: variable "t1" was declared but never referenced
+    unsigned int t1;
+                 ^
+
+"Test_name.c", line 13: warning: variable "a" was declared but never referenced
+    int a;
+        ^
+
+"Test_name.c", line 14: warning: variable "u" was declared but never referenced
+    unsigned int u;
+                 ^
+
+"Test_name.c", line 22: warning: label "bb_2" was declared but never referenced
+  bb_2:
+  ^
+
+8 errors detected in the compilation of "Test_name.c".

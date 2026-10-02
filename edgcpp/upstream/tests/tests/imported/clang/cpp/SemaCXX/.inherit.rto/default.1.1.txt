@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 10: error: duplicate specifier in declaration
+  class B3 : virtual virtual A { }; // expected-error{{duplicate 'virtual' in base specifier}}
+                     ^
+
+"Test_name.c", line 17: error: incomplete type "D" is not allowed
+  class E : public D { }; // expected-error{{base class has incomplete type}}
+                   ^
+
+"Test_name.c", line 21: error: not a class or struct name
+  class F : public I { }; // expected-error{{base specifier must name a class}}
+                   ^
+
+"Test_name.c", line 23: error: a union is not allowed to have a base class
+  union U1 : public A { }; // expected-error{{unions cannot have base classes}}
+           ^
+
+"Test_name.c", line 27: error: a class cannot not derive from a union
+  class G : public U2 { }; // expected-error{{unions cannot be base classes}}
+                   ^
+
+"Test_name.c", line 33: error: duplicate base class name
+  class H : G_copy, A, G_copy_2, // expected-error{{base class 'G_copy' (aka 'G') specified more than once as a direct base class}}
+                       ^
+
+"Test_name.c", line 34: error: duplicate base class name
+            public G_copy_3 { }; // expected-error{{base class 'G_copy' (aka 'G') specified more than once as a direct base class}}
+                   ^
+
+"Test_name.c", line 37: error: cannot derive from a class with a flexible array member
+  struct K : J { }; // expected-error{{base class 'J' has a flexible array member}}
+             ^
+
+8 errors detected in the compilation of "Test_name.c".

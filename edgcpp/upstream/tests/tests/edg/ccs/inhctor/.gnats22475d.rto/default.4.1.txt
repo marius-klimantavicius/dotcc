@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=4 --clang_version 80000 Test_name.c
+"Test_name.c", line 7: error: name followed by "::" must be a class or namespace name
+    using Derived::NotABase::NotABase;
+                   ^
+          detected during instantiation of class "Derived<T> [with T=int]" at line 10
+
+"Test_name.c", line 10: error: no instance of constructor "Derived<T>::Derived [with T=int]" matches the argument list
+            argument types are: (int)
+  Derived<int> x(1);
+                 ^
+"Test_name.c", line 6: note: function "Derived<T>::Derived(const Derived<int> &) [with T=int]" does not match because argument #1 does not match parameter
+  template<typename T> struct Derived : public Base<T> {
+                              ^
+"Test_name.c", line 6: note: function "Derived<T>::Derived(Derived<int> &&) [with T=int]" does not match because argument #1 does not match parameter
+  template<typename T> struct Derived : public Base<T> {
+                              ^
+"Test_name.c", line 6: note: number of parameters of function "Derived<T>::Derived() [with T=int]" does not match the call
+  template<typename T> struct Derived : public Base<T> {
+                              ^
+
+2 errors detected in the compilation of "Test_name.c".

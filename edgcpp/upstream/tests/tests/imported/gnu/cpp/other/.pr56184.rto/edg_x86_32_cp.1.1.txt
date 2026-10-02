@@ -1,0 +1,37 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 61: warning: missing return statement at end of non-void function "tree_check"
+  }
+  ^
+
+"Test_name.c", line 68: warning: missing return statement at end of non-void function "contains_struct_check"
+  }
+  ^
+
+"Test_name.c", line 199: warning: variable "l" is used before its value is set
+       add_type_for_runtime (((tree_check ((l), "../../../gcc-4.8~svn195526/gcc/lto-streamer-in.c", 346, __FUNCTION__, (TREE_LIST)))->list.value));
+                                            ^
+
+"Test_name.c", line 202: warning: missing return statement at end of non-void function "input_eh_region"
+  }
+  ^
+
+"Test_name.c", line 207: warning: variable "root_region" was declared but never referenced
+    long long i, root_region, len;
+                 ^
+
+"Test_name.c", line 226: warning: variable "i" is used before its value is set
+    while (i)
+           ^
+
+"Test_name.c", line 225: warning: variable "size" was declared but never referenced
+    unsigned int i, size;
+                    ^
+
+"Test_name.c", line 241: warning: variable "tag" was set but never used
+    enum LTO_tags tag;
+                  ^
+
+"Test_name.c", line 255: warning: variable "data_in" is used before its value is set
+    input_function (fn_decl, data_in, &ib_main);
+                             ^
+

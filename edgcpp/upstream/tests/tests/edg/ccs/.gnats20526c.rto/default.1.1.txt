@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++ Test_name.c
+"Test_name.c", line 10: error: operand types are incompatible ("char *" and "const A")
+    (0 ? s : a); // 'a' should have type "const A"
+           ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: warning: template parameter "Args" is not used in or cannot be deduced from the template argument list of class template "foo<Args::is_applied...>"
+  template<typename ... Args>
+                        ^
+
+"Test_name.c", line 21: warning: variable "i" was declared but never referenced
+      foo<applied, applied> i;
+                            ^
+

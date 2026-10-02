@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./vect/pr64252.c", line 36: warning: enumerated type mixed with another type
+           ff->a[i].f = 0;
+                      ^
+
+"./vect/pr64252.c", line 38: warning: integer conversion resulted in a change of sign
+           ff->a[i].p = -1;
+                        ^
+
+"./vect/pr64252.c", line 45: warning: enumerated type mixed with another type
+               fc->a[i + j].f = 0;
+                              ^
+
+"./vect/pr64252.c", line 47: warning: integer conversion resulted in a change of sign
+               fc->a[i + j].p = -1;
+                                ^
+
+"./vect/pr64252.c", line 60: warning: unrecognized GCC pragma
+  #pragma GCC novector
+              ^
+
+"./vect/pr64252.c", line 62: warning: integer conversion resulted in a change of sign
+      if (q[0].a[i].f != 0 || q[0].a[i].c != i || q[0].a[i].p != -1)
+                                                                 ^
+

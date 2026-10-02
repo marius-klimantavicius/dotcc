@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++23 Test_name.c
+"Test_name.c", line 9: warning: statement is unreachable
+      switch(using foo = int; 0) { //expected-warning {{unused type alias 'foo'}}
+      ^
+
+"Test_name.c", line 25: warning: variable "foo" was set but never used
+          y foo = 0;
+            ^
+
+"Test_name.c", line 15: warning: variable "x" was declared but never referenced
+      int x; // expected-warning {{unused variable 'x'}}
+          ^
+

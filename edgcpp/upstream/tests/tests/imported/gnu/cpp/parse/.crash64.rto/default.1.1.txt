@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: error: a value of type "void" cannot be used to initialize an entity of type "int"
+    int i = ({ L: ; });  // { dg-error "void value not ignored" }
+            ^
+
+"Test_name.c", line 8: warning: label "L" was declared but never referenced
+    int i = ({ L: ; });  // { dg-error "void value not ignored" }
+               ^
+
+1 error detected in the compilation of "Test_name.c".

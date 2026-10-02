@@ -1,0 +1,675 @@
+#!/usr/bin/env python3
+
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+import argparse
+import asyncio
+import contextlib
+import os
+import re
+import shutil
+import subprocess
+import sys
+import tempfile
+
+import edgtest
+import edgtest.exec
+import edgutil
+
+from datetime import datetime
+from typing import Dict, List, Optional, Tuple
+from pathlib import Path, PurePosixPath
+
+from edgutil import eprint
+
+def parse_args() -> argparse.Namespace:
+  parser = argparse.ArgumentParser(
+    description = (
+      'EDG utility script to create a test run from a diff that is suitable '
+      'for review using edgy-review.'
+    )
+  )
+  parser.add_argument(
+    '--runs-dir',
+    dest = 'test_runs_directory',
+    type = Path,
+    help = 'override the directory where tests runs are stored'
+  )
+  parser.add_argument(
+    '--run-timestamp',
+    dest = 'test_run_timestamp',
+    type = str,
+    help = (
+      'override the timestamp when creating a new test run '
+      '(does not apply to replay runs)'
+    )
+  )
+  parser.add_argument(
+    'diff_file',
+    help = 'the diff file to rematerialize into rt files'
+  )
+  return parser.parse_args()
+
+GIT_DIFF_REGEX = re.compile(r'^diff --git a/(.*) b/(.*)$')
+
+class DiffFileDescr:
+  def __init__(self, file_name: str, diff_file: Path) -> None:
+    self.file_name = file_name
+    self.diff_file = diff_file
+
+TOOL_PATH_PATCH = edgutil.RequiredToolPath('patch')
+
+def build_diff_files(diff_file: Path,
+                     tmp_diffs_dir: Path) -> List[DiffFileDescr]:
+  diff_files = []
+
+  with contextlib.ExitStack() as exit_stack:
+    diff_file_handle = exit_stack.enter_context(open(diff_file))
+
+    curr_diff_file_descr = None
+    diff_file_to_handle = {}
+
+    for line in diff_file_handle:
+      line_match = GIT_DIFF_REGEX.match(line)
+      if line_match is not None:
+        if curr_diff_file_descr is not None:
+          # Close the file handle for the previous diff file (if any) to
+          # prevent file handle exaustion.
+          diff_file_to_handle[curr_diff_file_descr.diff_file].close()
+          del diff_file_to_handle[curr_diff_file_descr.diff_file]
+          curr_diff_file_descr = None
+
+        from_file = line_match.group(1)
+        to_file = line_match.group(2)
+        if from_file != to_file:
+          eprint('Unhandled diff type')
+          sys.exit(1)
+
+        # As an optimization, filter out non-test files that might be present
+        # in the diff.
+        if not from_file.startswith('tests/'):
+          continue
+
+        tmp_file_path = tmp_diffs_dir / f"{len(diff_files)}.diff"
+        curr_diff_file_descr = DiffFileDescr(
+          from_file,
+          tmp_file_path
+        )
+        diff_files.append(curr_diff_file_descr)
+        diff_file_to_handle[tmp_file_path] = exit_stack.enter_context(
+          open(tmp_file_path, 'w')
+        )
+      elif curr_diff_file_descr is None:
+        continue
+
+      # Accumulate the lines of the individual diff.
+      diff_file_to_handle[curr_diff_file_descr.diff_file].write(line)
+
+  return diff_files
+
+class TestChangeState:
+  def __init__(self) -> None:
+    self.tests = set()
+    self.configs = set()
+
+def collect_affected_tests(test_home: Path,
+                           diff_files: List[DiffFileDescr]) -> TestChangeState:
+  result = TestChangeState()
+
+  tests_dir = test_home / 'tests'
+  expectations_dir = test_home / 'expectations'
+
+  for diff_file in diff_files:
+    file_path = test_home.parent.joinpath(PurePosixPath(diff_file.file_name))
+
+    if file_path.is_relative_to(tests_dir):
+      # A file in a test suite.
+      orig_file_path = file_path
+
+      file_extensions = ''.join(file_path.suffixes)
+      if file_extensions in edgtest.DEFAULT_TEST_EXTENSIONS:
+        # A test file itself.
+        result.tests.add(file_path)
+        continue
+
+      test_file_found = False
+      while not test_file_found and file_path != (test_home / 'tests'):
+        if not file_path.exists():
+          # This may be a new associed file or recording; continue to
+          # the parent directory
+          file_path = file_path.parent
+          continue
+
+        if file_path.is_dir():
+          if file_path.stem.startswith('.') and file_path.suffix == '.rto':
+            # This is a recording update.
+            bare_file_name = file_path.stem[1:]
+            for file_extension in edgtest.DEFAULT_TEST_EXTENSIONS:
+              candidate_test_file = (
+                file_path.parent / f"{bare_file_name}.{file_extension}"
+              )
+              if candidate_test_file.exists():
+                result.tests.add(candidate_test_file)
+                if orig_file_path.stem != 'default':
+                  result.configs.add(orig_file_path.stem)
+                break
+            test_file_found = True
+          else:
+            # Look for all mft files that might be associated with this file.
+            for possible_test in posix_path.iterdir():
+              if possible_test.suffixes[0] == '.mft':
+                result.tests.add(candidate_test_file)
+                test_file_found = True
+        # File not found, move on to the parent.
+        file_path = file_path.parent
+    elif (file_path.is_relative_to(expectations_dir) and
+          file_path.suffix == '.log'):
+      config_name = file_path.parent.name
+      suite_name = file_path.stem
+      # An expectations update.
+      with open(diff_file.diff_file) as file_handle:
+        for line in file_handle:
+          if line.startswith('---') or line.startswith('+++'):
+              # Do not take in lines like:
+              #
+              #   --- a/tests/expectations/edg_x86_64_cp/modules.log
+              #   +++ b/tests/expectations/edg_x86_64_cp/modules.log
+              #
+              continue
+
+          if line.startswith('-') or line.startswith('+'):
+            # Do a naive parse to get the test file name.
+            test_file_rel_path = PurePosixPath(line[1:].split(':')[0])
+            result.tests.add(
+              tests_dir.joinpath(suite_name, test_file_rel_path)
+            )
+            result.configs.add(config_name)
+
+  return result
+
+async def patch_file(output_dir: Path,
+                     input_dir: Path,
+                     relative_path: PurePosixPath,
+                     diff_file_path: Path) -> bool:
+  patch_proc = await asyncio.create_subprocess_exec(
+    str(TOOL_PATH_PATCH),
+    str(input_dir.joinpath(relative_path)),
+    str(diff_file_path),
+    '-o',
+    str(output_dir.joinpath(relative_path)),
+    stdout = asyncio.subprocess.DEVNULL
+  )
+  await patch_proc.wait()
+  return patch_proc.returncode == 0
+
+async def patch_files_with_prefix(loop: asyncio.AbstractEventLoop,
+                                  output_dir: Path,
+                                  input_dir: Path,
+                                  prefix: str,
+                                  diff_files: List[DiffFileDescr]) -> bool:
+  subtasks = []
+
+  for diff_file in diff_files:
+    if not diff_file.file_name.startswith(prefix):
+      continue
+    subtasks.append(loop.create_task(
+      patch_file(
+        output_dir,
+        input_dir,
+        PurePosixPath(diff_file.file_name.replace(prefix, '')),
+        diff_file.diff_file
+      )
+    ))
+
+  return all(await asyncio.gather(*subtasks))
+
+async def materialize_tests(loop: asyncio.AbstractEventLoop,
+                            test_home: Path,
+                            output_dir: Path,
+                            diff_files: List[DiffFileDescr],
+                            test_change_state: TestChangeState) -> bool:
+  tests_dir = test_home / 'tests'
+
+  # First create a copy of all relevant tests.
+  for test in test_change_state.tests:
+    relative_dir = test.parent.relative_to(tests_dir)
+    edgtest.copy_raw_test_files(test, output_dir.joinpath(relative_dir))
+
+  # Patch the tests.
+  return await patch_files_with_prefix(
+    loop,
+    output_dir,
+    tests_dir,
+    'tests/tests/',
+    diff_files
+  )
+
+def get_num_cases(recordings_dir: Path) -> int:
+  '''Return the max case number N found in default.N.C.txt recordings.'''
+  if not recordings_dir.is_dir():
+    return 0
+  max_case = 0
+  for path in recordings_dir.glob('default.*.*.txt'):
+    parts = path.name.split('.')
+    if len(parts) != 4:
+      continue
+    try:
+      max_case = max(max_case, int(parts[1]))
+    except ValueError:
+      continue
+  return max_case
+
+def get_num_commands(recordings_dir: Path, case_number: int) -> int:
+  '''Return the max command number C for case N in default.N.C.txt files.'''
+  if not recordings_dir.is_dir():
+    return 0
+  max_command = 0
+  for path in recordings_dir.glob(f"default.{case_number}.*.txt"):
+    parts = path.name.split('.')
+    if len(parts) != 4:
+      continue
+    try:
+      max_command = max(max_command, int(parts[2]))
+    except ValueError:
+      continue
+  return max_command
+
+def get_nth_recording(config: str,
+                      case_number: int,
+                      command_number: int,
+                      recordings_dir: Path) -> Optional[Path]:
+  config_recording_file = (
+    recordings_dir / f"{config}.{case_number}.{command_number}.txt"
+  )
+  if config_recording_file.exists():
+    return config_recording_file
+
+  default_recording_file = (
+    recordings_dir / f"default.{case_number}.{command_number}.txt"
+  )
+  if default_recording_file.exists():
+    return default_recording_file
+
+  return None
+
+def get_matches_recording(config: str,
+                          case_number: int,
+                          recordings_dir: Path) -> Optional[Path]:
+  config_recording_file = (
+    recordings_dir / f"{config}.{case_number}.matches.txt"
+  )
+  if config_recording_file.exists():
+    return config_recording_file
+
+  default_recording_file = (
+    recordings_dir / f"default.{case_number}.matches.txt"
+  )
+  if default_recording_file.exists():
+    return default_recording_file
+
+  return None
+
+def get_status_for_test_key(expectations: List[str], test_key: str) -> str:
+  for expectation in expectations:
+    if expectation.startswith(test_key):
+      _, parsed_status = edgtest.runtest.parse_test_status(expectation)
+      return parsed_status.normalized_status
+  return 'PASS'
+
+async def simulate_test(test_home: Path, config_run_dir: Path,
+                        patched_tests_dir: Path, config: str,
+                        old_expectations: List[str],
+                        new_expectations: List[str],
+                        test_path: Path) -> List[str]:
+  test_status_lines = []
+
+  relative_test_path = test_path.relative_to(test_home / 'tests')
+  patched_test_file = patched_tests_dir.joinpath(relative_test_path)
+  test_descript = edgtest.runtest.load_single_description(
+    patched_test_file
+  )
+  rt_file_path = config_run_dir.joinpath(relative_test_path).with_suffix(
+    edgtest.runtest.RUN_TEST_OUTPUT_SUFFIX
+  )
+  rt_file_path.parent.mkdir(exist_ok = True, parents = True)
+
+  test_recordings = edgtest.runtest.get_assoc_recordings_path(test_path)
+  patched_test_recordings = edgtest.runtest.get_assoc_recordings_path(
+    patched_test_file
+  )
+
+  # Figure out how many cases we need to examine output files for.
+  case_traversal = test_descript.traverse_cases()
+  test_options = [
+    (mode, cmd_case_opts) for mode, cmd_opts, cmd_case_opts in case_traversal
+  ]
+  num_cases = max([
+    get_num_cases(test_recordings),
+    get_num_cases(patched_test_recordings),
+    len(test_options)
+  ])
+
+  while len(test_options) < num_cases:
+    # This should only happen in the case of reduction of test cases.
+    # Use 's' (SKIP_TEST) as a placeholder mode.
+    test_options.append((
+      edgtest.runtest.test_type_to_string(edgtest.runtest.TestType.SKIP_TEST),
+      []
+    ))
+
+  with tempfile.TemporaryDirectory() as tmp_dir_name:
+    tmp_dir = Path(tmp_dir_name)
+    rt_metadata_cases = []
+    rt_contents = edgtest.runtest.RtTarContents()
+
+    for idx, (mode, options) in enumerate(test_options, start = 1):
+      case_dir = tmp_dir / str(idx)
+      case_dir.mkdir()
+
+      num_commands = max([
+        get_num_commands(test_recordings, idx),
+        get_num_commands(patched_test_recordings, idx),
+        1
+      ])
+
+      command_metadata = []
+      matches_metadata = None
+      any_mismatch = False
+
+      for command_number in range(1, num_commands + 1):
+        cmd_dir = case_dir / str(command_number)
+        cmd_dir.mkdir()
+
+        old_rec = get_nth_recording(
+          config,
+          idx,
+          command_number,
+          test_recordings
+        )
+        new_rec = get_nth_recording(
+          config,
+          idx,
+          command_number,
+          patched_test_recordings
+        )
+
+        output_txt = cmd_dir / 'output.txt'
+        if new_rec is None:
+          output_txt.touch()
+          command_str = ''
+          body_for_diff = output_txt
+        else:
+          command_str = edgtest.exec.read_output_command_line(new_rec)
+          edgtest.runtest.copy_recording_for_diff(new_rec, output_txt)
+          body_for_diff = output_txt
+
+        change_diff_path = cmd_dir / 'change.diff'
+        output_cmp_result, diff_hash = (
+          await edgtest.exec.check_output_mismatch(
+            old_rec,
+            body_for_diff,
+            os.environ,
+            change_diff_path
+          )
+        )
+        rt_contents.add_case_file(
+          output_txt,
+          idx,
+          str(command_number),
+          'output.txt'
+        )
+        if change_diff_path.exists():
+          rt_contents.add_case_file(
+            change_diff_path,
+            idx,
+            str(command_number),
+            'change.diff'
+          )
+
+        if output_cmp_result != edgtest.exec.OutputComparison.EQUAL:
+          any_mismatch = True
+
+        command_metadata.append({
+          'command': command_str,
+          'diff_hash': diff_hash
+        })
+
+      old_matches = get_matches_recording(config, idx, test_recordings)
+      new_matches = get_matches_recording(
+        config,
+        idx,
+        patched_test_recordings
+      )
+      if old_matches is not None or new_matches is not None:
+        matches_dir = case_dir / 'matches'
+        matches_dir.mkdir()
+        matches_txt = matches_dir / 'output.txt'
+        if new_matches is None:
+          matches_txt.touch()
+        else:
+          shutil.copyfile(new_matches, matches_txt)
+
+        matches_change_diff = matches_dir / 'change.diff'
+        matches_diff_hash = await edgtest.runtest.write_content_diff(
+          old_matches,
+          matches_txt,
+          matches_change_diff,
+          env = os.environ,
+          skip_expected_command_line = False
+        )
+        rt_contents.add_case_file(
+          matches_txt,
+          idx,
+          'matches',
+          'output.txt'
+        )
+        if matches_change_diff.exists():
+          rt_contents.add_case_file(
+            matches_change_diff,
+            idx,
+            'matches',
+            'change.diff'
+          )
+          any_mismatch = True
+
+        matches_metadata = {'diff_hash': matches_diff_hash}
+
+      test_type_str = edgtest.runtest.test_type_to_string(mode)
+      all_opts = [f"-DTEST_NUMBER={idx}", *options]
+      test_details = f"{test_type_str}:{' '.join(all_opts)}:"
+      key_str = f"{'/'.join(relative_test_path.parts[1:])}:{test_details}"
+      old_status = get_status_for_test_key(old_expectations, key_str)
+      new_status = get_status_for_test_key(new_expectations, key_str)
+
+      # Add the mismatch string if needed.
+      if any_mismatch:
+        new_status = f"{new_status}--OUTPUT MISMATCH"
+
+      case_entry = {
+        'status': {
+          'type': test_type_str,
+          'variant': ' '.join(all_opts),
+          'result': new_status
+        },
+        'commands': command_metadata
+      }
+      if matches_metadata is not None:
+        case_entry['matches'] = matches_metadata
+      rt_metadata_cases.append(case_entry)
+
+      # Make test status lines.
+      if old_status != 'PASS':
+        test_status_lines.append(
+          f"- {relative_test_path.as_posix()} {test_details}{old_status}:\n"
+        )
+        test_status_lines.append(
+          f"+ {relative_test_path.as_posix()} {test_details}{new_status}:\n"
+        )
+      elif any_mismatch:
+        test_status_lines.append(
+          f"+ {relative_test_path.as_posix()} {test_details}{new_status}:\n"
+        )
+
+    if len(rt_metadata_cases) > 0:
+      # relative_test_path is already suite/... (relative to test_home/tests),
+      # matching live runs that use path relative to top_dir.parent.
+      await asyncio.to_thread(
+        edgtest.runtest.finalize_rt_tar,
+        rt_contents,
+        rt_metadata_cases,
+        rt_file_path,
+        path = relative_test_path.as_posix(),
+        remark = ''
+      )
+
+  return test_status_lines
+
+def load_test_suite_expectations(all_expectations: Dict[str, List[str]],
+                                 suite_file: Path) -> None:
+  with open(suite_file, 'r') as file_handle:
+    for line in file_handle:
+      test_name = f"{suite_file.stem}/{line.split(':')[0]}"
+      if test_name not in all_expectations:
+        all_expectations[test_name] = []
+      all_expectations[test_name].append(line.strip())
+
+async def simulate_config_testing(
+                           loop: asyncio.AbstractEventLoop,
+                           test_home: Path, new_run_dir: Path,
+                           patched_tests_dir: Path, config: str,
+                           diff_files: List[DiffFileDescr],
+                           tests: List[Path]) -> None:
+  subtasks = []
+
+  config_run_dir = new_run_dir / config
+  config_run_dir.mkdir()
+
+  old_expectations = {}
+  new_expectations = {}
+  with tempfile.TemporaryDirectory() as tmp_dir:
+    src_expectations = test_home / 'expectations' / config
+    dst_expectations = Path(tmp_dir, 'expectations', config)
+    dst_expectations.mkdir(parents = True)
+
+    # Load the old expectations and copy the files to the tmp directory
+    # (important so that expectations files that weren't modified are still
+    # loaded and files that were modified are present to be patched).
+    for suite_file in src_expectations.iterdir():
+      load_test_suite_expectations(old_expectations, suite_file)
+
+      shutil.copy2(suite_file, dst_expectations / suite_file.name)
+
+    # Overwrite/patch any modified expectations files.
+    await patch_files_with_prefix(
+      loop,
+      dst_expectations,
+      src_expectations,
+      f"tests/expectations/{config}/",
+      diff_files
+    )
+
+    # Load the new expectations.
+    for suite_file in dst_expectations.iterdir():
+      load_test_suite_expectations(new_expectations, suite_file)
+
+  for test_path in tests:
+    rel_test_path_str = str(
+      test_path.relative_to(test_home / 'tests')
+    )
+    subtasks.append(loop.create_task(
+      simulate_test(
+        test_home,
+        config_run_dir,
+        patched_tests_dir,
+        config,
+        old_expectations.get(rel_test_path_str, []),
+        new_expectations.get(rel_test_path_str, []),
+        test_path
+      )
+    ))
+
+  tests_status_lines = await asyncio.gather(*subtasks)
+  with open(config_run_dir / 'changes.elog', 'w') as file_handle:
+    for test_status_lines in tests_status_lines:
+      for status_line in test_status_lines:
+        file_handle.write(status_line)
+
+async def simulate_testing(loop: asyncio.AbstractEventLoop,
+                           test_home: Path, new_run_dir: Path,
+                           patched_tests_dir: Path,
+                           diff_files: List[DiffFileDescr],
+                           test_change_state: TestChangeState) -> None:
+  subtasks = []
+
+  for config in test_change_state.configs:
+    subtasks.append(loop.create_task(simulate_config_testing(
+      loop,
+      test_home,
+      new_run_dir,
+      patched_tests_dir,
+      config,
+      diff_files,
+      test_change_state.tests
+    )))
+
+  await asyncio.gather(*subtasks)
+
+def main() -> None:
+  args = parse_args()
+
+  TOOL_PATH_PATCH.exit_if_not_found()
+
+  test_home = edgtest.load_test_home_or_exit()
+
+  test_runs_dir = args.test_runs_directory or test_home / 'runs'
+  current_time = (
+    datetime.strptime(args.test_run_timestamp, edgutil.RUN_TIMESTAMP_FORMAT)
+    if args.test_run_timestamp else datetime.now()
+  )
+  timestamp = current_time.strftime(edgutil.RUN_TIMESTAMP_FORMAT)
+
+  new_run_dir = test_runs_dir / timestamp
+  new_run_dir.mkdir(parents = True)
+
+  with contextlib.ExitStack() as exit_stack:
+    tmp_dir = exit_stack.enter_context(tempfile.TemporaryDirectory())
+    tmp_diffs_dir = Path(tmp_dir, 'diffs')
+    tmp_diffs_dir.mkdir()
+
+    diff_files = build_diff_files(args.diff_file, tmp_diffs_dir)
+    test_change_state = collect_affected_tests(test_home, diff_files)
+
+    tmp_tests_dir = Path(tmp_dir, 'tests')
+    tmp_tests_dir.mkdir()
+
+    patched_tests_dir = new_run_dir / 'patched-tests'
+
+    async def _materialize_tests(loop: asyncio.AbstractEventLoop) -> bool:
+      return await materialize_tests(
+        loop,
+        test_home,
+        patched_tests_dir,
+        diff_files,
+        test_change_state
+      )
+
+    if not edgutil.run_asyncio_loop(_materialize_tests):
+      eprint('The patch failed to apply to the current test state.')
+      sys.exit(1)
+
+    async def _simulate_testing(loop: asyncio.AbstractEventLoop) -> None:
+      await simulate_testing(
+        loop,
+        test_home,
+        new_run_dir,
+        patched_tests_dir,
+        diff_files,
+        test_change_state
+      )
+
+    edgutil.run_asyncio_loop(_simulate_testing)
+
+main()

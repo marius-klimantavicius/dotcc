@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --clang_v=34200 Test_name.c
+"Test_name.c", line 11: warning: variable "c" was declared but never referenced
+    vec16s c = param+(vec16s)p;
+           ^
+

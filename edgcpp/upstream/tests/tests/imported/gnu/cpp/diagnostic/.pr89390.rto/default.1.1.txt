@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 12: error: enum "bar" has no member "~bar"
+    bar::~bar ();    // { dg-error "8: '~bar' is not a member of 'bar'" }
+         ^
+
+"Test_name.c", line 24: error: enum "ns::baz" has no member "~baz"
+    ns::baz::~baz ();    // { dg-error "12: '~ns::baz' is not a member of 'ns::baz'" }
+             ^
+
+"Test_name.c", line 33: error: incomplete type "second" is not allowed
+  second::~first() {} // { dg-error "9: declaration of '~first' as member of 'second'" }
+  ^
+
+"Test_name.c", line 41: error: expected a declaration
+  ~test_t();  // { dg-error "typedef-name 'test_t' used as destructor declarator" }
+  ^
+
+4 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,1 @@
+cpfe -DTEST_NUMBER=1 --c++17 -tused --gnu_version 70000 Test_name.c

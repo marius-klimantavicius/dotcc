@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 15: error: deduction guide must be declared in the same scope as class template "N::A"
+  N::A(T) -> N::A<T>;	  // { dg-error "should have been declared inside .N" }
+  ^
+
+1 error detected in the compilation of "Test_name.c".

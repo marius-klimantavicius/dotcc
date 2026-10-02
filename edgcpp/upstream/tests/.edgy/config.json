@@ -1,0 +1,62 @@
+{
+  "config": {
+    "c": {
+      "bin_path_env": [
+        "CPFE"
+      ],
+      "variants": [
+        {
+          "name": "edg_x86_64"
+        },
+        {
+          "name": "edg_x86_32"
+        }
+      ]
+    },
+    "cpp": {
+      "bin_path_env": {
+        "c": [
+          "CPFE"
+        ],
+        "cpp": [
+          "CPFE_CP"
+        ]
+      },
+      "variants": [
+        {
+          "name": "edg_x86_64_cp"
+        },
+        {
+          "name": "edg_x86_32_cp"
+        }
+      ]
+    }
+  },
+  "config_sets": {
+    "default": [
+      "edg_x86_64",
+      "edg_x86_64_cp"
+    ],
+    "x86": [
+      "edg_x86_64",
+      "edg_x86_64_cp",
+      "edg_x86_32",
+      "edg_x86_32_cp"
+    ]
+  },
+  "test_suites": {
+    "primary": [
+      "sandbox",
+      "changes",
+      "regressions",
+      "edg",
+      "cwg",
+      "stdlib",
+      "modules",
+      "reflections",
+      "imported"
+    ],
+    "secondary": [
+    ]
+  }
+}

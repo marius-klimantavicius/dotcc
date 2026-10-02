@@ -1,0 +1,53 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 --c++03 Test_name.c
+"Test_name.c", line 65: warning: variable "p" is used before its value is set
+    tmp = p[5];
+          ^
+
+"Test_name.c", line 66: warning: variable "q" is used before its value is set
+    tmp = q[5];
+          ^
+
+"Test_name.c", line 73: warning: variable "x" is used before its value is set
+    tmp = x[5];
+          ^
+
+"Test_name.c", line 74: warning: variable "y" is used before its value is set
+    tmp = y[5];
+          ^
+
+"Test_name.c", line 75: warning: variable "z" is used before its value is set
+    tmp = z[5];
+          ^
+
+"Test_name.c", line 76: warning: variable "w" is used before its value is set
+    tmp = w[5];
+          ^
+
+"Test_name.c", line 62: warning: variable "tmp" was set but never used
+    int tmp;
+        ^
+
+"Test_name.c", line 80: warning: variable "tmp" was set but never used
+    int tmp;
+        ^
+
+"Test_name.c", line 100: warning: variable "p" is used before its value is set
+    tmp = p[5];
+          ^
+
+"Test_name.c", line 101: warning: variable "q" is used before its value is set
+    tmp = q[5];
+          ^
+
+"Test_name.c", line 97: warning: variable "tmp" was set but never used
+    int tmp;
+        ^
+
+"Test_name.c", line 107: warning: variable "p" is used before its value is set
+    tmp = p[5];
+          ^
+
+"Test_name.c", line 105: warning: variable "tmp" was set but never used
+    int tmp;
+        ^
+

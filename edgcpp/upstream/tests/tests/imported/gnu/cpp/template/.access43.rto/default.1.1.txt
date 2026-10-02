@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 13: error: class template "B<E, Alloc>" has no member "foo"
+  int B<E, Alloc>::foo (Enum m) { return 42; } // { dg-error "is private" }
+                   ^
+
+"Test_name.c", line 13: error: identifier "Enum" is undefined
+  int B<E, Alloc>::foo (Enum m) { return 42; } // { dg-error "is private" }
+                        ^
+
+2 errors detected in the compilation of "Test_name.c".

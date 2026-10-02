@@ -1,0 +1,2 @@
+BUILD_ARGS=/std:c++20 A.ixx
+REQUIRES_FILES=A.ixx

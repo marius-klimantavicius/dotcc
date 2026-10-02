@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: warning: attribute does not apply to any entity
+    struct S { short f[3]; } [[gnu::aligned (N)]]; // { dg-warning "ignored" }
+                               ^
+
+"Test_name.c", line 13: warning: variable "s" was declared but never referenced
+    A<4>::S s;
+            ^
+

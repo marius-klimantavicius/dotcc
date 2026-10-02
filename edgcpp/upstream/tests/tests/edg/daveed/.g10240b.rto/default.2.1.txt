@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=2 --gcc --gnu_version=30300 Test_name.c
+"Test_name.c", line 5: warning: integer conversion resulted in truncation
+         int i = (__EDG_SIZE_TYPE__)"%[oops]";
+                 ^
+
+"Test_name.c", line 6: error: missing closing quote
+         asm("
+             ^
+
+1 error detected in the compilation of "Test_name.c".

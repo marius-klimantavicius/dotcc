@@ -1,0 +1,235 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --exceptions --exceptions --c++14 Test_name.c
+"Test_name.c", line 6: warning: unknown attribute "cpu_dispatch"
+  void __attribute__((cpu_dispatch(atom, invalid))) invalid_cpu();
+                      ^
+
+"Test_name.c", line 8: warning: unknown attribute "cpu_specific"
+  void __attribute__((cpu_specific(atom))) no_default(void);
+                      ^
+
+"Test_name.c", line 9: warning: unknown attribute "cpu_specific"
+  void __attribute__((cpu_specific(sandybridge)))  no_default(void);
+                      ^
+
+"Test_name.c", line 12: warning: unknown attribute "cpu_specific"
+    int __attribute__((cpu_specific(sandybridge))) bar(void);
+                       ^
+
+"Test_name.c", line 13: warning: unknown attribute "cpu_specific"
+    int __attribute__((cpu_specific(ivybridge))) bar(void);
+                       ^
+
+"Test_name.c", line 13: error: invalid redeclaration of member function "MVReference::bar()" (declared at line 12)
+    int __attribute__((cpu_specific(ivybridge))) bar(void);
+                                                 ^
+
+"Test_name.c", line 14: warning: unknown attribute "cpu_specific"
+    int __attribute__((cpu_specific(sandybridge))) foo(void);
+                       ^
+
+"Test_name.c", line 22: error: nonstandard form for taking the address of a member function
+    +MVReference::bar;
+     ^
+
+"Test_name.c", line 22: error: expression must have arithmetic or unscoped enum type
+    +MVReference::bar;
+     ^
+
+"Test_name.c", line 24: error: nonstandard form for taking the address of a member function
+    +MVReference::foo;
+     ^
+
+"Test_name.c", line 24: error: expression must have arithmetic or unscoped enum type
+    +MVReference::foo;
+     ^
+
+"Test_name.c", line 26: warning: expression has no effect
+    &MVReference::bar;
+    ^
+
+"Test_name.c", line 28: warning: expression has no effect
+    &MVReference::foo;
+    ^
+
+"Test_name.c", line 32: warning: unknown attribute "cpu_specific"
+  constexpr int __attribute__((cpu_specific(sandybridge))) foo(void);
+                               ^
+
+"Test_name.c", line 34: warning: unknown attribute "cpu_specific"
+  int __attribute__((cpu_specific(sandybridge))) foo2(void);
+                     ^
+
+"Test_name.c", line 36: warning: unknown attribute "cpu_specific"
+  constexpr int __attribute__((cpu_specific(ivybridge))) foo2(void);
+                               ^
+
+"Test_name.c", line 36: error: function "foo2" (declared at line 34) was previously not declared constexpr
+  constexpr int __attribute__((cpu_specific(ivybridge))) foo2(void);
+  ^
+
+"Test_name.c", line 38: warning: unknown attribute "cpu_specific"
+  static int __attribute__((cpu_specific(sandybridge))) bar(void);
+                            ^
+
+"Test_name.c", line 40: warning: unknown attribute "cpu_dispatch"
+  int __attribute__((cpu_dispatch(ivybridge))) bar(void) {}
+                     ^
+
+"Test_name.c", line 40: warning: missing return statement at end of non-void function "bar"
+  int __attribute__((cpu_dispatch(ivybridge))) bar(void) {}
+                                                          ^
+
+"Test_name.c", line 43: warning: unknown attribute "cpu_specific"
+  extern int __attribute__((cpu_specific(sandybridge))) bar2(void);
+                            ^
+
+"Test_name.c", line 44: warning: unknown attribute "cpu_dispatch"
+  int __attribute__((cpu_dispatch(ivybridge))) bar2(void) {}
+                     ^
+
+"Test_name.c", line 44: warning: missing return statement at end of non-void function "bar2"
+  int __attribute__((cpu_dispatch(ivybridge))) bar2(void) {}
+                                                           ^
+
+"Test_name.c", line 47: warning: unknown attribute "cpu_specific"
+  int __attribute__((cpu_specific(sandybridge))) bar3(void);
+                     ^
+
+"Test_name.c", line 48: warning: unknown attribute "cpu_dispatch"
+  static int __attribute__((cpu_dispatch(ivybridge))) bar3(void) {}
+                            ^
+
+"Test_name.c", line 48: warning: missing return statement at end of non-void function "<unnamed>::bar3"
+  static int __attribute__((cpu_dispatch(ivybridge))) bar3(void) {}
+                                                                  ^
+
+"Test_name.c", line 52: warning: unknown attribute "cpu_specific"
+  inline int __attribute__((cpu_specific(sandybridge))) baz(void);
+                            ^
+
+"Test_name.c", line 54: warning: unknown attribute "cpu_specific"
+  int __attribute__((cpu_specific(ivybridge))) baz(void) {return 1;}
+                     ^
+
+"Test_name.c", line 56: warning: unknown attribute "cpu_specific"
+  void __attribute__((cpu_specific(atom))) diff_return(void);
+                      ^
+
+"Test_name.c", line 58: warning: unknown attribute "cpu_specific"
+  int __attribute__((cpu_specific(sandybridge))) diff_return(void);
+                     ^
+
+"Test_name.c", line 58: error: cannot overload functions distinguished by return type alone
+  int __attribute__((cpu_specific(sandybridge))) diff_return(void);
+                                                 ^
+
+"Test_name.c", line 60: warning: unknown attribute "cpu_specific"
+  int __attribute__((cpu_specific(atom))) diff_noexcept(void) noexcept(true);
+                     ^
+
+"Test_name.c", line 63: warning: unknown attribute "cpu_specific"
+  int __attribute__((cpu_specific(sandybridge))) diff_noexcept(void) noexcept(false);
+                     ^
+
+"Test_name.c", line 63: error: exception specification is incompatible with that of previous function "diff_noexcept" (declared at line 60):
+            previously specified: no exceptions will be thrown
+  int __attribute__((cpu_specific(sandybridge))) diff_noexcept(void) noexcept(false);
+                                                                     ^
+
+"Test_name.c", line 68: warning: unknown attribute "cpu_specific"
+  int __attribute__((cpu_specific(atom))) foo(T) { return 0; }
+                     ^
+
+"Test_name.c", line 71: warning: unknown attribute "cpu_specific"
+  int __attribute__((cpu_specific(sandybridge))) foo2(T);
+                     ^
+
+"Test_name.c", line 76: warning: unknown attribute "cpu_specific"
+    int __attribute__((cpu_specific(atom))) foo(T) { return 0; }
+                       ^
+
+"Test_name.c", line 80: warning: unknown attribute "cpu_dispatch"
+    int __attribute__((cpu_dispatch(ivybridge))) foo2(T) {}
+                       ^
+
+"Test_name.c", line 83: warning: unknown attribute "cpu_specific"
+    virtual void __attribute__((cpu_specific(atom))) virt();
+                                ^
+
+"Test_name.c", line 87: warning: unknown attribute "cpu_specific"
+  int __attribute__((cpu_specific(atom))) diff_mangle(void) { return 0; }
+                     ^
+
+"Test_name.c", line 90: warning: unknown attribute "cpu_specific"
+  int __attribute__((cpu_specific(sandybridge))) diff_mangle(void) { return 0; }
+                     ^
+
+"Test_name.c", line 90: error: function "diff_mangle" has already been defined (previous definition at line 87)
+  int __attribute__((cpu_specific(sandybridge))) diff_mangle(void) { return 0; }
+                                                 ^
+
+"Test_name.c", line 92: warning: unknown attribute "cpu_specific"
+  __attribute__((cpu_specific(atom))) void DiffDecl();
+                 ^
+
+"Test_name.c", line 98: warning: unknown attribute "cpu_dispatch"
+  __attribute__((cpu_dispatch(atom))) void DiffDecl();
+                 ^
+
+"Test_name.c", line 98: error: function "N::DiffDecl()" conflicts with using-declaration of function "DiffDecl()"
+  __attribute__((cpu_dispatch(atom))) void DiffDecl();
+                                           ^
+
+"Test_name.c", line 103: warning: unknown attribute "cpu_specific"
+    __attribute__((cpu_specific(atom))) SpecialFuncs();
+                   ^
+
+"Test_name.c", line 105: warning: unknown attribute "cpu_specific"
+    __attribute__((cpu_specific(atom))) ~SpecialFuncs();
+                   ^
+
+"Test_name.c", line 108: warning: unknown attribute "cpu_specific"
+    SpecialFuncs& __attribute__((cpu_specific(atom))) operator=(const SpecialFuncs&) = default;
+                                 ^
+
+"Test_name.c", line 110: warning: unknown attribute "cpu_specific"
+    SpecialFuncs& __attribute__((cpu_specific(atom))) operator=(SpecialFuncs&&) = delete;
+                                 ^
+
+"Test_name.c", line 114: warning: unknown attribute "cpu_specific"
+    int __attribute__((cpu_specific(atom, ivybridge))) foo(int);
+                       ^
+
+"Test_name.c", line 117: warning: unknown attribute "cpu_specific"
+  int __attribute__((cpu_specific(atom, ivybridge))) OutOfLine::foo(int) { return 0; }
+                     ^
+
+"Test_name.c", line 118: warning: unknown attribute "cpu_specific"
+  int __attribute__((cpu_specific(sandybridge))) OutOfLine::foo(int) { return 1; }
+                     ^
+
+"Test_name.c", line 118: error: function "OutOfLine::foo" has already been defined (previous definition at line 117)
+  int __attribute__((cpu_specific(sandybridge))) OutOfLine::foo(int) { return 1; }
+                                                            ^
+
+"Test_name.c", line 121: warning: unknown attribute "clang::cpu_specific"
+  [[clang::cpu_specific(ivybridge,atom)]] int CppSpelling(){}
+    ^
+
+"Test_name.c", line 121: warning: missing return statement at end of non-void function "CppSpelling"
+  [[clang::cpu_specific(ivybridge,atom)]] int CppSpelling(){}
+                                                            ^
+
+"Test_name.c", line 124: warning: unknown attribute "cpu_dispatch"
+  auto x = []() __attribute__((cpu_dispatch(atom))) {};
+                               ^
+
+"Test_name.c", line 40: warning: function "bar" was declared but never referenced
+  int __attribute__((cpu_dispatch(ivybridge))) bar(void) {}
+                                               ^
+
+"Test_name.c", line 48: warning: function "<unnamed>::bar3" was declared but never referenced
+  static int __attribute__((cpu_dispatch(ivybridge))) bar3(void) {}
+                                                      ^
+
+11 errors detected in the compilation of "Test_name.c".

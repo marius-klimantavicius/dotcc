@@ -1,0 +1,118 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp0x/udlit-implicit-conv-neg.C", line 9: error: user-defined literal operator not found
+  int i = 12_bar;
+          ^
+
+"./cpp0x/udlit-implicit-conv-neg.C", line 11: error: user-defined literal operator not found
+  double d = 1.2_foo;
+             ^
+
+"./cpp0x/udlit-implicit-conv-neg.C", line 21: error: user-defined literal operator not found
+  int cwcx = 'c'_wchar_t;
+             ^
+
+"./cpp0x/udlit-implicit-conv-neg.C", line 22: error: user-defined literal operator not found
+  int cc16 = 'c'_char16_t;
+             ^
+
+"./cpp0x/udlit-implicit-conv-neg.C", line 23: error: user-defined literal operator not found
+  int cc32 = 'c'_char32_t;
+             ^
+
+"./cpp0x/udlit-implicit-conv-neg.C", line 25: error: user-defined literal operator not found
+  int wccx = L'c'_char;
+             ^
+
+"./cpp0x/udlit-implicit-conv-neg.C", line 26: error: user-defined literal operator not found
+  int wcc16 = L'c'_char16_t;
+              ^
+
+"./cpp0x/udlit-implicit-conv-neg.C", line 27: error: user-defined literal operator not found
+  int wcc32 = L'c'_char32_t;
+              ^
+
+"./cpp0x/udlit-implicit-conv-neg.C", line 29: error: user-defined literal operator not found
+  int c16c = u'c'_char;
+             ^
+
+"./cpp0x/udlit-implicit-conv-neg.C", line 30: error: user-defined literal operator not found
+  int c16wc = u'c'_wchar_t;
+              ^
+
+"./cpp0x/udlit-implicit-conv-neg.C", line 31: error: user-defined literal operator not found
+  int c16c32 = u'c'_char32_t;
+               ^
+
+"./cpp0x/udlit-implicit-conv-neg.C", line 33: error: user-defined literal operator not found
+  int c32c = U'c'_char;
+             ^
+
+"./cpp0x/udlit-implicit-conv-neg.C", line 34: error: user-defined literal operator not found
+  int c32wc = U'c'_wchar_t;
+              ^
+
+"./cpp0x/udlit-implicit-conv-neg.C", line 35: error: user-defined literal operator not found
+  int c32c16 = U'c'_char16_t;
+               ^
+
+"./cpp0x/udlit-implicit-conv-neg.C", line 45: error: user-defined literal operator not found
+  int strwstr = "str"_wchar_t_str;
+                ^
+
+"./cpp0x/udlit-implicit-conv-neg.C", line 46: error: user-defined literal operator not found
+  int strstr16 = "str"_char16_t_str;
+                 ^
+
+"./cpp0x/udlit-implicit-conv-neg.C", line 47: error: user-defined literal operator not found
+  int strstr32 = "str"_char32_t_str;
+                 ^
+
+"./cpp0x/udlit-implicit-conv-neg.C", line 49: error: user-defined literal operator not found
+  int str8wstr = u8"str"_wchar_t_str;
+                 ^
+
+"./cpp0x/udlit-implicit-conv-neg.C", line 50: error: user-defined literal operator not found
+  int str8str16 = u8"str"_char16_t_str;
+                  ^
+
+"./cpp0x/udlit-implicit-conv-neg.C", line 51: error: user-defined literal operator not found
+  int str8str32 = u8"str"_char32_t_str;
+                  ^
+
+"./cpp0x/udlit-implicit-conv-neg.C", line 53: error: user-defined literal operator not found
+  int wstrstr = L"str"_char_str;
+                ^
+
+"./cpp0x/udlit-implicit-conv-neg.C", line 54: error: user-defined literal operator not found
+  int wstrstr16 = L"str"_char16_t_str;
+                  ^
+
+"./cpp0x/udlit-implicit-conv-neg.C", line 55: error: user-defined literal operator not found
+  int wstrstr32 = L"str"_char32_t_str;
+                  ^
+
+"./cpp0x/udlit-implicit-conv-neg.C", line 57: error: user-defined literal operator not found
+  int str16str = u"str"_char_str;
+                 ^
+
+"./cpp0x/udlit-implicit-conv-neg.C", line 58: error: user-defined literal operator not found
+  int str16wstr = u"str"_wchar_t_str;
+                  ^
+
+"./cpp0x/udlit-implicit-conv-neg.C", line 59: error: user-defined literal operator not found
+  int str16str32 = u"str"_char32_t_str;
+                   ^
+
+"./cpp0x/udlit-implicit-conv-neg.C", line 61: error: user-defined literal operator not found
+  int str32str = U"str"_char_str;
+                 ^
+
+"./cpp0x/udlit-implicit-conv-neg.C", line 62: error: user-defined literal operator not found
+  int str32wstr = U"str"_wchar_t_str;
+                  ^
+
+"./cpp0x/udlit-implicit-conv-neg.C", line 63: error: user-defined literal operator not found
+  int str32str16 = U"str"_char16_t_str;
+                   ^
+
+29 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: error: invalid storage class for a class member
+    extern void *copy (void) // { dg-error "storage class specified" }
+    ^
+
+"Test_name.c", line 12: error: invalid storage class for a class member
+    extern A &operator= (const A &) // { dg-error "storage class specified" }
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 3: error: function "g" may not be initialized
+    void g(double) = delete;
+                   ^
+
+"Test_name.c", line 3: error: expected an expression
+    void g(double) = delete;
+                           ^
+
+"Test_name.c", line 5: error: invalid storage class for a template declaration
+    template<class T> auto f(T t) -> decltype(g(t));
+                      ^
+
+"Test_name.c", line 5: error: explicit type is missing ("int" assumed)
+    template<class T> auto f(T t) -> decltype(g(t));
+                      ^
+
+"Test_name.c", line 5: error: expected a ";"
+    template<class T> auto f(T t) -> decltype(g(t));
+                                  ^
+
+5 errors detected in the compilation of "Test_name.c".

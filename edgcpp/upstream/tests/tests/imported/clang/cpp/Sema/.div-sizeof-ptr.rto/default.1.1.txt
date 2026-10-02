@@ -1,0 +1,73 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 14: warning: variable "a1" was declared but never referenced
+    int a1 = sizeof(p) / sizeof(*p);    // expected-warning {{'sizeof (p)' will return the size of the pointer, not the array itself}}
+        ^
+
+"Test_name.c", line 15: warning: variable "a2" was declared but never referenced
+    int a2 = sizeof p / sizeof *p;      // expected-warning {{'sizeof p' will return the size of the pointer, not the array itself}}
+        ^
+
+"Test_name.c", line 16: warning: variable "a3" was declared but never referenced
+    int a3 = sizeof(p) / sizeof(int);   // expected-warning {{'sizeof (p)' will return the size of the pointer, not the array itself}}
+        ^
+
+"Test_name.c", line 17: warning: variable "a4" was declared but never referenced
+    int a4 = sizeof(p) / sizeof(p[0]);  // expected-warning {{'sizeof (p)' will return the size of the pointer, not the array itself}}
+        ^
+
+"Test_name.c", line 18: warning: variable "a5" was declared but never referenced
+    int a5 = sizeof(p) / sizeof(int32); // expected-warning {{'sizeof (p)' will return the size of the pointer, not the array itself}}
+        ^
+
+"Test_name.c", line 19: warning: variable "a6" was declared but never referenced
+    int a6 = sizeof(r) / sizeof(int);   // expected-warning {{'sizeof (r)' will return the size of the pointer, not the array itself}}
+        ^
+
+"Test_name.c", line 22: warning: variable "a7" was declared but never referenced
+    int a7 = sizeof(d) / sizeof(int32); // expected-warning {{'sizeof (d)' will return the size of the pointer, not the array itself}}
+        ^
+
+"Test_name.c", line 23: warning: variable "a8" was declared but never referenced
+    int a8 = sizeof(d) / sizeof(int);  // expected-warning {{'sizeof (d)' will return the size of the pointer, not the array itself}}
+        ^
+
+"Test_name.c", line 25: warning: variable "a9" was declared but never referenced
+    int a9 = sizeof(*q) / sizeof(**q); // expected-warning {{'sizeof (*q)' will return the size of the pointer, not the array itself}}
+        ^
+
+"Test_name.c", line 26: warning: variable "a10" was declared but never referenced
+    int a10 = sizeof(p) / sizeof(decltype(*p)); // expected-warning {{'sizeof (p)' will return the size of the pointer, not the array itself}}
+        ^
+
+"Test_name.c", line 29: warning: variable "b1" was declared but never referenced
+    int b1 = sizeof(int *) / sizeof(int);
+        ^
+
+"Test_name.c", line 30: warning: variable "b2" was declared but never referenced
+    int b2 = sizeof(p) / sizeof(p);
+        ^
+
+"Test_name.c", line 31: warning: variable "b3" was declared but never referenced
+    int b3 = sizeof(*q) / sizeof(q);
+        ^
+
+"Test_name.c", line 32: warning: variable "b4" was declared but never referenced
+    int b4 = sizeof(p) / sizeof(char);
+        ^
+
+"Test_name.c", line 35: warning: variable "c1" was declared but never referenced
+    int c1 = sizeof(arr) / sizeof(*arr);
+        ^
+
+"Test_name.c", line 36: warning: variable "c2" was declared but never referenced
+    int c2 = sizeof(arr) / sizeof(arr[0]);
+        ^
+
+"Test_name.c", line 37: warning: variable "c3" was declared but never referenced
+    int c3 = sizeof(arr) / sizeof(int);
+        ^
+
+"Test_name.c", line 40: warning: variable "d1" was declared but never referenced
+    int d1 = sizeof(arr2) / sizeof(*arr2);
+        ^
+

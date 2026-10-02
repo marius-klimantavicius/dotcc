@@ -1,0 +1,129 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./pr94589-5.c", line 8: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int f3 (double i, double j) { int c; if (i == j) c = 0; else if (i < j) c = -1; else if (i > j) c = 1; else c = 2; return c > 0; }
+                 ^
+
+"./pr94589-5.c", line 9: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int f4 (double i, double j) { int c; if (i == j) c = 0; else if (i < j) c = -1; else if (i > j) c = 1; else c = 2; return c < 0; }
+                 ^
+
+"./pr94589-5.c", line 10: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int f5 (double i, double j) { int c; if (i == j) c = 0; else if (i < j) c = -1; else if (i > j) c = 1; else c = 2; return c >= 0; }
+                 ^
+
+"./pr94589-5.c", line 11: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int f6 (double i, double j) { int c; if (i == j) c = 0; else if (i < j) c = -1; else if (i > j) c = 1; else c = 2; return c <= 0; }
+                 ^
+
+"./pr94589-5.c", line 12: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int f7 (double i, double j) { int c; if (i == j) c = 0; else if (i < j) c = -1; else if (i > j) c = 1; else c = 2; return c == -1; }
+                 ^
+
+"./pr94589-5.c", line 13: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int f8 (double i, double j) { int c; if (i == j) c = 0; else if (i < j) c = -1; else if (i > j) c = 1; else c = 2; return c != -1; }
+                 ^
+
+"./pr94589-5.c", line 14: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int f9 (double i, double j) { int c; if (i == j) c = 0; else if (i < j) c = -1; else if (i > j) c = 1; else c = 2; return c > -1; }
+                 ^
+
+"./pr94589-5.c", line 15: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int f10 (double i, double j) { int c; if (i == j) c = 0; else if (i < j) c = -1; else if (i > j) c = 1; else c = 2; return c <= -1; }
+                 ^
+
+"./pr94589-5.c", line 16: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int f11 (double i, double j) { int c; if (i == j) c = 0; else if (i < j) c = -1; else if (i > j) c = 1; else c = 2; return c == 1; }
+                 ^
+
+"./pr94589-5.c", line 17: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int f12 (double i, double j) { int c; if (i == j) c = 0; else if (i < j) c = -1; else if (i > j) c = 1; else c = 2; return c != 1; }
+                 ^
+
+"./pr94589-5.c", line 18: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int f13 (double i, double j) { int c; if (i == j) c = 0; else if (i < j) c = -1; else if (i > j) c = 1; else c = 2; return c < 1; }
+                 ^
+
+"./pr94589-5.c", line 19: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int f14 (double i, double j) { int c; if (i == j) c = 0; else if (i < j) c = -1; else if (i > j) c = 1; else c = 2; return c >= 1; }
+                 ^
+
+"./pr94589-5.c", line 20: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int f17 (double i) { int c; if (i == 5.0) c = 0; else if (i < 5.0) c = -1; else if (i > 5.0) c = 1; else c = 2; return c > 0; }
+                 ^
+
+"./pr94589-5.c", line 21: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int f18 (double i) { int c; if (i == 5.0) c = 0; else if (i < 5.0) c = -1; else if (i > 5.0) c = 1; else c = 2; return c < 0; }
+                 ^
+
+"./pr94589-5.c", line 22: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int f19 (double i) { int c; if (i == 5.0) c = 0; else if (i < 5.0) c = -1; else if (i > 5.0) c = 1; else c = 2; return c >= 0; }
+                 ^
+
+"./pr94589-5.c", line 23: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int f20 (double i) { int c; if (i == 5.0) c = 0; else if (i < 5.0) c = -1; else if (i > 5.0) c = 1; else c = 2; return c <= 0; }
+                 ^
+
+"./pr94589-5.c", line 24: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int f21 (double i) { int c; if (i == 5.0) c = 0; else if (i < 5.0) c = -1; else if (i > 5.0) c = 1; else c = 2; return c == -1; }
+                 ^
+
+"./pr94589-5.c", line 25: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int f22 (double i) { int c; if (i == 5.0) c = 0; else if (i < 5.0) c = -1; else if (i > 5.0) c = 1; else c = 2; return c != -1; }
+                 ^
+
+"./pr94589-5.c", line 26: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int f23 (double i) { int c; if (i == 5.0) c = 0; else if (i < 5.0) c = -1; else if (i > 5.0) c = 1; else c = 2; return c > -1; }
+                 ^
+
+"./pr94589-5.c", line 27: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int f24 (double i) { int c; if (i == 5.0) c = 0; else if (i < 5.0) c = -1; else if (i > 5.0) c = 1; else c = 2; return c <= -1; }
+                 ^
+
+"./pr94589-5.c", line 28: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int f25 (double i) { int c; if (i == 5.0) c = 0; else if (i < 5.0) c = -1; else if (i > 5.0) c = 1; else c = 2; return c == 1; }
+                 ^
+
+"./pr94589-5.c", line 29: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int f26 (double i) { int c; if (i == 5.0) c = 0; else if (i < 5.0) c = -1; else if (i > 5.0) c = 1; else c = 2; return c != 1; }
+                 ^
+
+"./pr94589-5.c", line 30: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int f27 (double i) { int c; if (i == 5.0) c = 0; else if (i < 5.0) c = -1; else if (i > 5.0) c = 1; else c = 2; return c < 1; }
+                 ^
+
+"./pr94589-5.c", line 31: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int f28 (double i) { int c; if (i == 5.0) c = 0; else if (i < 5.0) c = -1; else if (i > 5.0) c = 1; else c = 2; return c >= 1; }
+                 ^
+
+"./pr94589-5.c", line 32: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int f29 (double i, double j) { int c; if (i == j) c = 0; else if (i < j) c = -1; else if (i > j) c = 1; else c = 2; return (c & ~1) == 0; }
+                 ^
+
+"./pr94589-5.c", line 33: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int f30 (double i, double j) { int c; if (i == j) c = 0; else if (i < j) c = -1; else if (i > j) c = 1; else c = 2; return (c & ~1) != 0; }
+                 ^
+
+"./pr94589-5.c", line 34: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int f31 (double i) { int c; if (i == 5.0) c = 0; else if (i < 5.0) c = -1; else if (i > 5.0) c = 1; else c = 2; return (c & ~1) == 0; }
+                 ^
+
+"./pr94589-5.c", line 35: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int f32 (double i) { int c; if (i == 5.0) c = 0; else if (i < 5.0) c = -1; else if (i > 5.0) c = 1; else c = 2; return (c & ~1) != 0; }
+                 ^
+
+"./pr94589-6.c", line 6: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int f1 (double i, double j) { int c; if (i == j) c = 0; else if (i < j) c = -1; else if (i > j) c = 1; else c = 2; return c == 0; }
+                 ^
+
+"./pr94589-6.c", line 7: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int f2 (double i, double j) { int c; if (i == j) c = 0; else if (i < j) c = -1; else if (i > j) c = 1; else c = 2; return c != 0; }
+                 ^
+
+"./pr94589-6.c", line 8: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int f15 (double i) { int c; if (i == 5.0) c = 0; else if (i < 5.0) c = -1; else if (i > 5.0) c = 1; else c = 2; return c == 0; }
+                 ^
+
+"./pr94589-6.c", line 9: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int f16 (double i) { int c; if (i == 5.0) c = 0; else if (i < 5.0) c = -1; else if (i > 5.0) c = 1; else c = 2; return c != 0; }
+                 ^
+

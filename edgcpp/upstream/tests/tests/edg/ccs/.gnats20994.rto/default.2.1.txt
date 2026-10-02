@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=2 --c++17 -w -A Test_name.c
+"Test_name.c", line 11: error: a value of type "int" cannot be used to initialize an entity of type "A"
+    A a2 = { 1 };         // Error 1
+             ^
+
+"Test_name.c", line 12: error: invalid narrowing conversion from "int" to "A": constant value does not fit in destination type
+    A a3{ 1000 };         // Error 2
+          ^
+
+"Test_name.c", line 13: error: invalid narrowing conversion from "int" to "A": constant value does not fit in destination type
+    A a4 = { 1000 };      // Error 3
+             ^
+
+"Test_name.c", line 14: error: invalid narrowing conversion from "double" to "A"
+    A a5{ 1.5 };          // Error 4
+          ^
+
+"Test_name.c", line 15: error: invalid narrowing conversion from "double" to "A"
+    A a6 = { 1.5 };       // Error 5
+             ^
+
+"Test_name.c", line 16: error: invalid narrowing conversion from "double" to "A"
+    A a7{ 1000.5 };       // Error 6
+          ^
+
+"Test_name.c", line 17: error: invalid narrowing conversion from "double" to "A"
+    A a8 = { 1000.5 };    // Error 7 of 7
+             ^
+
+"Test_name.c", line 19: error: a value of type "int" cannot be used to initialize an entity of type "B"
+    B b1{1};              // Not allowed
+         ^
+
+"Test_name.c", line 20: error: a value of type "double" cannot be used to initialize an entity of type "B"
+    B b2{1.5};            // Not allowed even if narrowing
+         ^
+
+9 errors detected in the compilation of "Test_name.c".

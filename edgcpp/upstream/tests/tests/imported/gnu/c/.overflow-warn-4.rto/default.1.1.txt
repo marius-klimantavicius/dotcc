@@ -1,0 +1,110 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 Test_name.c
+"./overflow-warn-4.c", line 15: error: division by zero
+    E3 = 1 / 0,
+           ^
+
+"./overflow-warn-4.c", line 19: error: division by zero
+    E4 = 0 * (1 / 0),
+                ^
+
+"./overflow-warn-4.c", line 21: warning: integer operation result is out of range
+                + 1,
+                ^
+
+"./overflow-warn-4.c", line 24: warning: integer operation result is out of range
+                     + 1),
+                     ^
+
+"./overflow-warn-4.c", line 32: error: division by zero
+    int : 0 * (1 / 0);
+                 ^
+
+"./overflow-warn-4.c", line 34: warning: integer operation result is out of range
+                      + 1);
+                      ^
+
+"./overflow-warn-4.c", line 43: warning: integer operation result is out of range
+                   + 1;
+                   ^
+
+"./overflow-warn-4.c", line 43: warning: variable "c" was declared but never referenced
+    int c = 0x7fffffff 
+        ^
+
+"./overflow-warn-4.c", line 48: warning: integer operation result is out of range
+                         + 1;
+                         ^
+
+"./overflow-warn-4.c", line 54: warning: integer operation result is out of range
+                        + 1);
+                        ^
+
+"./overflow-warn-4.c", line 57: error: division by zero
+  void *q = 0 * (1 / 0);
+                   ^
+
+"./overflow-warn-4.c", line 57: warning: a value of type "int" cannot be used to initialize an entity of type "void *"
+  void *q = 0 * (1 / 0);
+            ^
+
+"./overflow-warn-4.c", line 67: error: division by zero
+      case 0 * (1/0):
+                 ^
+
+"./overflow-warn-4.c", line 70: warning: integer operation result is out of range
+                           + 1):
+                           ^
+
+"./overflow-warn-4.c", line 79: warning: integer operation result is out of range
+                  + 1;
+                  ^
+
+"./overflow-warn-4.c", line 85: warning: integer operation result is out of range
+                  + 1 - 0x7fffffff
+                  ^
+
+"./overflow-warn-4.c", line 85: warning: integer operation result is out of range
+                  + 1 - 0x7fffffff
+                      ^
+
+"./overflow-warn-4.c", line 94: warning: integer conversion resulted in a change of sign
+    fsc (0x7f 
+         ^
+
+"./overflow-warn-4.c", line 98: warning: integer conversion resulted in a change of sign
+    fuc (-1);
+         ^
+
+"./overflow-warn-4.c", line 102: warning: integer conversion resulted in truncation
+    fuc (-
+         ^
+
+"./overflow-warn-4.c", line 117: warning: integer conversion resulted in a change of sign
+    fsi ((unsigned)0x7fffffff 
+         ^
+
+"./overflow-warn-4.c", line 118: warning: integer conversion resulted in a change of sign
+    si = (unsigned)0x7fffffff 
+         ^
+
+"./overflow-warn-4.c", line 120: warning: integer conversion resulted in a change of sign
+    fsi ((unsigned)0x7fffffff 
+         ^
+
+"./overflow-warn-4.c", line 121: warning: integer conversion resulted in a change of sign
+    si = (unsigned)0x7fffffff 
+         ^
+
+"./overflow-warn-4.c", line 125: warning: integer conversion resulted in a change of sign
+    fui (-1);
+         ^
+
+"./overflow-warn-4.c", line 126: warning: integer conversion resulted in a change of sign
+    ui = -1;
+         ^
+
+"./overflow-warn-4.c", line 127: warning: integer conversion resulted in a change of sign
+    ui = x ? -1 : 1U;
+             ^
+
+5 errors detected in the compilation of "Test_name.c".

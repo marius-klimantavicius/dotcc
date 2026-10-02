@@ -1,0 +1,109 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 6: warning: attribute namespace "omp" is unrecognized
+  [[omp::sequence (directive (requires, atomic_default_mem_order (seq_cst)))]];
+    ^
+
+"Test_name.c", line 7: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive (declare reduction (plus: int: omp_out += omp_in) initializer (omp_priv = 0))]];
+    ^
+
+"Test_name.c", line 9: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive (declare target (a))]];
+    ^
+
+"Test_name.c", line 11: warning: attribute namespace "omp" is unrecognized
+  [[omp::sequence (omp::directive (threadprivate (t)))]];
+    ^
+
+"Test_name.c", line 13: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive (declare target, to (b), link (c), enter (e))]];
+    ^
+
+"Test_name.c", line 14: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive (declare target)]];
+    ^
+
+"Test_name.c", line 15: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive (declare target)]];
+    ^
+
+"Test_name.c", line 17: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive (end declare target)]];
+    ^
+
+"Test_name.c", line 18: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive (end declare target)]];
+    ^
+
+"Test_name.c", line 19: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive (begin declare target, device_type (any))]];
+    ^
+
+"Test_name.c", line 20: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive (begin declare target)]];
+    ^
+
+"Test_name.c", line 22: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive (end declare target)]];
+    ^
+
+"Test_name.c", line 23: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive (end declare target)]];
+    ^
+
+"Test_name.c", line 24: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive (begin declare target device_type (host))]];
+    ^
+
+"Test_name.c", line 25: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive (declare target)]];
+    ^
+
+"Test_name.c", line 27: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive (end declare target)]];
+    ^
+
+"Test_name.c", line 28: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive (end declare target)]];
+    ^
+
+"Test_name.c", line 29: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive (declare target)]];
+    ^
+
+"Test_name.c", line 30: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive (begin declare target, device_type (nohost))]];
+    ^
+
+"Test_name.c", line 32: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive (end declare target)]];
+    ^
+
+"Test_name.c", line 33: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive (end declare target)]];
+    ^
+
+"Test_name.c", line 34: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive (nothing)]];
+    ^
+
+"Test_name.c", line 35: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive (begin assumes no_openmp no_openmp_routines no_parallelism
+    ^
+
+"Test_name.c", line 43: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive (end assumes)]];
+    ^
+
+"Test_name.c", line 44: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive (begin assumes, no_openmp, no_openmp_routines, no_parallelism,
+    ^
+
+"Test_name.c", line 51: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive (begin assumes no_openmp)]];
+    ^
+
+"Test_name.c", line 53: warning: attribute namespace "omp" is unrecognized
+  [[omp::sequence (omp::directive (end assumes), omp::directive (end assumes))]];
+    ^
+

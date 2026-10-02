@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: error: no operator "!" matches these operands
+            operand types are: ! X::S
+  	 { return !x; }(x); // { dg-error "no match for 'operator!'" }
+  	          ^
+"Test_name.c", line 8: note: built-in operator!(<bool>) does not match because argument #1 does not match parameter
+  	 { return !x; }(x); // { dg-error "no match for 'operator!'" }
+  	          ^
+          detected during instantiation of "bool Foo(T) [with T=X::S]" at line 21
+
+1 error detected in the compilation of "Test_name.c".

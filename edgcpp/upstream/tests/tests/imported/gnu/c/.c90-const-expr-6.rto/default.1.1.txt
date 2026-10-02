@@ -1,0 +1,27 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 12: error: expression must have a constant value
+  int n = 0, p[n * 0 + 1]; /* { dg-error "variabl|cannot be evaluated" } */
+               ^
+"Test_name.c", line 12: note: the value of variable "n" (declared at line 12) cannot be used as a constant
+  int n = 0, p[n * 0 + 1]; /* { dg-error "variabl|cannot be evaluated" } */
+               ^
+
+"Test_name.c", line 35: error: expression must have a constant value
+    int a : (n * 0 + 1); /* { dg-error "constant" } */
+             ^
+"Test_name.c", line 35: note: the value of variable "n" (declared at line 12) cannot be used as a constant
+    int a : (n * 0 + 1); /* { dg-error "constant" } */
+             ^
+
+"Test_name.c", line 54: error: expression must have a constant value
+      case (n * 0 + 1): /* { dg-error "constant" } */
+            ^
+"Test_name.c", line 54: note: the value of variable "n" (declared at line 12) cannot be used as a constant
+      case (n * 0 + 1): /* { dg-error "constant" } */
+            ^
+
+"Test_name.c", line 51: warning: variable "v" was declared but never referenced
+    int v[1 + ((intptr_t) (void *) 0)]; /* { dg-error "variab|cannot be evaluated" } */
+        ^
+
+3 errors detected in the compilation of "Test_name.c".

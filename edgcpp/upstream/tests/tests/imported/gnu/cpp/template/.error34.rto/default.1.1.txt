@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: error: expected a type specifier
+    A<__builtin_offsetof(T, x)>();	// { dg-error "type/value mismatch|offsetof\\(T, x\\)|template-id" }
+      ^
+
+"Test_name.c", line 8: error: type used as constructor name does not match type "A<T>"
+    A<__builtin_offsetof(T, x)>();	// { dg-error "type/value mismatch|offsetof\\(T, x\\)|template-id" }
+    ^
+
+"Test_name.c", line 13: error: expected a type specifier
+    B<__builtin_offsetof(T, x.y)>();	// { dg-error "type/value mismatch|offsetof\\(T, x.y\\)|template-id" }
+      ^
+
+"Test_name.c", line 13: error: type used as constructor name does not match type "B<T>"
+    B<__builtin_offsetof(T, x.y)>();	// { dg-error "type/value mismatch|offsetof\\(T, x.y\\)|template-id" }
+    ^
+
+"Test_name.c", line 18: error: expected a type specifier
+    C<__builtin_offsetof(T, x[6])>();	// { dg-error "type/value mismatch|offsetof\\(T, x\\\[6\\\]\\)|template-id" }
+      ^
+
+"Test_name.c", line 18: error: type used as constructor name does not match type "C<T>"
+    C<__builtin_offsetof(T, x[6])>();	// { dg-error "type/value mismatch|offsetof\\(T, x\\\[6\\\]\\)|template-id" }
+    ^
+
+"Test_name.c", line 23: error: expected a type specifier
+    D<__builtin_offsetof(T, x.y[6].z)>();	// { dg-error "type/value mismatch|offsetof\\(T, x.y\\\[6\\\].z\\)|template-id" }
+      ^
+
+"Test_name.c", line 23: error: type used as constructor name does not match type "D<T>"
+    D<__builtin_offsetof(T, x.y[6].z)>();	// { dg-error "type/value mismatch|offsetof\\(T, x.y\\\[6\\\].z\\)|template-id" }
+    ^
+
+"Test_name.c", line 30: error: expected a type specifier
+    F<__builtin_offsetof(E, x)>();	// { dg-error "type/value mismatch|offsetof\\(E, x\\)|template-id" }
+      ^
+
+"Test_name.c", line 30: error: type used as constructor name does not match type "F<T>"
+    F<__builtin_offsetof(E, x)>();	// { dg-error "type/value mismatch|offsetof\\(E, x\\)|template-id" }
+    ^
+
+10 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 25: error: expression must have a constant value
+  static_assert (bar (), "");	// { dg-error "non-constant condition for static assertion" }
+                 ^
+"Test_name.c", line 14: note: invalid access to inactive member "V::a" of union (member "V::b" is active)
+    return (f.*m) == 42;  // { dg-error "accessing 'V::a' member instead of initialized 'V::b' member in constant expression" }
+             ^
+
+1 error detected in the compilation of "Test_name.c".

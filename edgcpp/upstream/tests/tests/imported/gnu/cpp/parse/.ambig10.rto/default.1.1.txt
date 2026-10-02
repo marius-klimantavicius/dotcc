@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 20: error: an explicit template argument list is not allowed on this declaration
+    A value<0>; // { dg-error "invalid declaration" }
+      ^
+
+"Test_name.c", line 21: error: an explicit template argument list is not allowed on this declaration
+    A value<0>(); // { dg-error "invalid declaration" }
+      ^
+
+2 errors detected in the compilation of "Test_name.c".

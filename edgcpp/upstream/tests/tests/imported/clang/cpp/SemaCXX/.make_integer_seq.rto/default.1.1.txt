@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 40: error: type must be an integral type
+  using ErrorSeq = __make_integer_seq<Seq, T, N>; // expected-error{{must have non-negative sequence length}} \
+                                           ^
+          detected during instantiation of type "ErrorSeq<Color, Blue>" at line 46
+
+"Test_name.c", line 40: error: type must be an integral type
+  using ErrorSeq = __make_integer_seq<Seq, T, N>; // expected-error{{must have non-negative sequence length}} \
+                                              ^
+          detected during instantiation of type "ErrorSeq<Color, Blue>" at line 46
+
+"Test_name.c", line 40: error: integer constant must be greater than or equal to zero
+  using ErrorSeq = __make_integer_seq<Seq, T, N>; // expected-error{{must have non-negative sequence length}} \
+                                              ^
+          detected during instantiation of type "ErrorSeq<int, -5>" at line 48
+
+"Test_name.c", line 51: error: function template "f" is not a class template
+  __make_integer_seq<f, int, 0> x; // expected-error{{template template parameter must be a class template or type alias template}}
+                     ^
+
+"Test_name.c", line 53: error: class template "__make_integer_seq" is not compatible with template template parameter "S"
+  __make_integer_seq<__make_integer_seq, int, 10> PR28494; // expected-note{{different template parameters}}
+                     ^
+
+5 errors detected in the compilation of "Test_name.c".

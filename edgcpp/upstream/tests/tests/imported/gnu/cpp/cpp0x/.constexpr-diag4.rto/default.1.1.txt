@@ -1,0 +1,7 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 26: error: constexpr "B1::B1()" provides no initializer for:
+            member "B1::a1"
+      constexpr B1() {} // { dg-error "B1::a1" "" { target c++17_down } }
+                     ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=40300 --g++ Test_name.c
+"Test_name.c", line 17: error: identifier "n" is undefined
+  void f(int n, double a[n], double b[gn][n]) {
+                         ^
+
+"Test_name.c", line 17: error: expression must have a constant value
+  void f(int n, double a[n], double b[gn][n]) {
+                                      ^
+
+2 errors detected in the compilation of "Test_name.c".

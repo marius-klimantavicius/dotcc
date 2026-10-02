@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 10: error: a global-scope declaration may not have this storage class
+  auto int ao; // expected-error {{illegal storage class on file-scoped variable}}
+  ^
+
+"Test_name.c", line 15: error: invalid storage class for a function
+  auto void af(); // expected-error {{illegal storage class on function}}
+  ^
+
+"Test_name.c", line 20: warning: use of the "register" storage class specifier is deprecated
+  register int ro; // expected-error {{illegal storage class on file-scoped variable}}
+  ^
+
+"Test_name.c", line 20: error: a global-scope declaration may not have this storage class
+  register int ro; // expected-error {{illegal storage class on file-scoped variable}}
+  ^
+
+"Test_name.c", line 27: error: invalid storage class for a function
+  register void rf(); // expected-error {{illegal storage class on function}}
+  ^
+
+"Test_name.c", line 30: error: invalid storage class for a class member
+    auto int ao; // expected-error {{storage class specified for a member declaration}}
+    ^
+
+"Test_name.c", line 34: error: invalid storage class for a class member
+    auto void af(); // expected-error {{storage class specified for a member declaration}}
+    ^
+
+"Test_name.c", line 39: error: invalid storage class for a class member
+    register int ro; // expected-error {{storage class specified for a member declaration}}
+    ^
+
+"Test_name.c", line 40: error: invalid storage class for a class member
+    register void rf(); // expected-error {{storage class specified for a member declaration}}
+    ^
+
+"Test_name.c", line 55: error: invalid storage class for a function
+    auto void abf(); // expected-error {{illegal storage class on function}}
+    ^
+
+"Test_name.c", line 67: error: invalid storage class for a function
+    register void rbf(); // expected-error {{illegal storage class on function}}
+    ^
+
+"Test_name.c", line 51: warning: variable "abo" was declared but never referenced
+    auto int abo;
+             ^
+
+"Test_name.c", line 60: warning: variable "rbo" was declared but never referenced
+    register int rbo;
+                 ^
+
+10 errors detected in the compilation of "Test_name.c".

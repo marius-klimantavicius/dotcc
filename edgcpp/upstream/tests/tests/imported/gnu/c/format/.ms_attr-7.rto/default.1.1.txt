@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"./format/ms_attr-7.c", line 9: warning: unrecognized format function type "ms_printf" ignored
+  __attribute__((format(ms_printf, 1, 2))) void (*tformatprintf0) (const char *, ...);
+                        ^
+
+"./format/ms_attr-7.c", line 10: warning: unrecognized format function type "ms_printf" ignored
+  void (*tformatprintf1) (const char *, ...) __attribute__((format(ms_printf, 1, 2)));
+                                                                   ^
+
+"./format/ms_attr-7.c", line 11: warning: unrecognized format function type "ms_printf" ignored
+  void (__attribute__((format(ms_printf, 1, 2))) *tformatprintf2) (const char *, ...);
+                              ^
+
+"./format/ms_attr-7.c", line 12: warning: unrecognized format function type "ms_printf" ignored
+  void (__attribute__((format(ms_printf, 1, 2))) ****tformatprintf3) (const char *, ...);
+                              ^
+
+"./format/ms_attr-7.c", line 14: warning: attribute "format_arg" does not apply here
+  char * (__attribute__((format_arg(1))) *tformat_arg) (const char *);
+                         ^
+

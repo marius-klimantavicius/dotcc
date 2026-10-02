@@ -1,0 +1,489 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 10: warning: unrecognized #pragma
+  #pragma clang loop vectorize_width(V) interleave_count(I)
+          ^
+
+"Test_name.c", line 15: warning: unrecognized #pragma
+  #pragma clang loop vectorize_width(V + 4) interleave_count(I + 4)
+          ^
+
+"Test_name.c", line 23: warning: unrecognized #pragma
+    /* expected-error {{invalid value '-1'; must be positive}} */ #pragma clang loop vectorize_width(V)
+                                                                          ^
+
+"Test_name.c", line 28: warning: unrecognized #pragma
+    /* expected-error {{invalid value '0'; must be positive}} */ #pragma clang loop vectorize_width(V / 2)
+                                                                         ^
+
+"Test_name.c", line 36: warning: unrecognized #pragma
+    /* expected-error {{invalid value '-1'; must be positive}} */ #pragma clang loop interleave_count(I)
+                                                                          ^
+
+"Test_name.c", line 41: warning: unrecognized #pragma
+    /* expected-error {{invalid value '0'; must be positive}} */ #pragma clang loop interleave_count(2 % I)
+                                                                         ^
+
+"Test_name.c", line 49: warning: unrecognized #pragma
+    /* expected-error {{invalid argument of type 'char'; expected an integer type}} */ #pragma clang loop vectorize_width(V)
+                                                                                               ^
+
+"Test_name.c", line 57: warning: unrecognized #pragma
+    /* expected-error {{invalid argument of type 'bool'; expected an integer type}} */ #pragma clang loop vectorize_width(V)
+                                                                                               ^
+
+"Test_name.c", line 65: warning: unrecognized #pragma
+    /* expected-error {{use of undeclared identifier 'Vec'}} */ #pragma clang loop vectorize_width(Vec) interleave_count(I) /*
+                                                                        ^
+
+"Test_name.c", line 67: warning: unrecognized #pragma
+    /* expected-error {{use of undeclared identifier 'Int'}} */ #pragma clang loop vectorize_width(V) interleave_count(Int)
+                                                                        ^
+
+"Test_name.c", line 76: warning: unrecognized #pragma
+    /* expected-error {{invalid value '-1'; must be positive}} */ #pragma clang loop vectorize_width(Value)
+                                                                          ^
+
+"Test_name.c", line 81: warning: unrecognized #pragma
+    /* expected-error {{invalid value '-1'; must be positive}} */ #pragma clang loop vectorize_width(Value, fixed)
+                                                                          ^
+
+"Test_name.c", line 90: warning: unrecognized #pragma
+  #pragma clang loop vectorize(enable)
+          ^
+
+"Test_name.c", line 91: warning: unrecognized #pragma
+  #pragma clang loop interleave(enable)
+          ^
+
+"Test_name.c", line 92: warning: unrecognized #pragma
+  #pragma clang loop vectorize_predicate(enable)
+          ^
+
+"Test_name.c", line 93: warning: unrecognized #pragma
+  #pragma clang loop unroll(full)
+          ^
+
+"Test_name.c", line 98: warning: unrecognized #pragma
+  #pragma clang loop vectorize_width(4)
+          ^
+
+"Test_name.c", line 99: warning: unrecognized #pragma
+  #pragma clang loop interleave_count(8)
+          ^
+
+"Test_name.c", line 100: warning: unrecognized #pragma
+  #pragma clang loop unroll_count(16)
+          ^
+
+"Test_name.c", line 105: warning: unrecognized #pragma
+  #pragma clang loop vectorize(disable)
+          ^
+
+"Test_name.c", line 106: warning: unrecognized #pragma
+  #pragma clang loop interleave(disable)
+          ^
+
+"Test_name.c", line 107: warning: unrecognized #pragma
+  #pragma clang loop vectorize_predicate(disable)
+          ^
+
+"Test_name.c", line 108: warning: unrecognized #pragma
+  #pragma clang loop unroll(disable)
+          ^
+
+"Test_name.c", line 113: warning: unrecognized #pragma
+  #pragma clang loop vectorize_width(4) interleave_count(8) unroll_count(16)
+          ^
+
+"Test_name.c", line 118: warning: unrecognized #pragma
+  #pragma clang loop interleave_count(16)
+          ^
+
+"Test_name.c", line 125: warning: unrecognized #pragma
+  #pragma clang loop vectorize(disable) interleave(disable) unroll(disable) vectorize_predicate(disable)
+          ^
+
+"Test_name.c", line 130: warning: unrecognized #pragma
+  #pragma clang loop distribute(enable)
+          ^
+
+"Test_name.c", line 135: warning: unrecognized #pragma
+  #pragma clang loop distribute(disable)
+          ^
+
+"Test_name.c", line 142: warning: unrecognized #pragma
+  /* expected-error {{expected '('}} */ #pragma clang loop vectorize
+                                                ^
+
+"Test_name.c", line 143: warning: unrecognized #pragma
+  /* expected-error {{expected '('}} */ #pragma clang loop interleave
+                                                ^
+
+"Test_name.c", line 144: warning: unrecognized #pragma
+  /* expected-error {{expected '('}} */ #pragma clang loop vectorize_predicate
+                                                ^
+
+"Test_name.c", line 145: warning: unrecognized #pragma
+  /* expected-error {{expected '('}} */ #pragma clang loop unroll
+                                                ^
+
+"Test_name.c", line 146: warning: unrecognized #pragma
+  /* expected-error {{expected '('}} */ #pragma clang loop distribute
+                                                ^
+
+"Test_name.c", line 148: warning: unrecognized #pragma
+  /* expected-error {{expected ')'}} */ #pragma clang loop vectorize(enable
+                                                ^
+
+"Test_name.c", line 149: warning: unrecognized #pragma
+  /* expected-error {{expected ')'}} */ #pragma clang loop interleave(enable
+                                                ^
+
+"Test_name.c", line 150: warning: unrecognized #pragma
+  /* expected-error {{expected ')'}} */ #pragma clang loop vectorize_predicate(enable
+                                                ^
+
+"Test_name.c", line 151: warning: unrecognized #pragma
+  /* expected-error {{expected ')'}} */ #pragma clang loop unroll(full
+                                                ^
+
+"Test_name.c", line 152: warning: unrecognized #pragma
+  /* expected-error {{expected ')'}} */ #pragma clang loop distribute(enable
+                                                ^
+
+"Test_name.c", line 154: warning: unrecognized #pragma
+  /* expected-error {{expected ')'}} */ #pragma clang loop vectorize_width(4
+                                                ^
+
+"Test_name.c", line 155: warning: unrecognized #pragma
+  /* expected-error {{expected ')'}} */ #pragma clang loop interleave_count(4
+                                                ^
+
+"Test_name.c", line 156: warning: unrecognized #pragma
+  /* expected-error {{expected ')'}} */ #pragma clang loop unroll_count(4
+                                                ^
+
+"Test_name.c", line 158: warning: unrecognized #pragma
+  /* expected-error {{missing argument; expected 'enable', 'assume_safety' or 'disable'}} */ #pragma clang loop vectorize()
+                                                                                                     ^
+
+"Test_name.c", line 159: warning: unrecognized #pragma
+  /* expected-error {{missing argument; expected an integer value}} */ #pragma clang loop interleave_count()
+                                                                               ^
+
+"Test_name.c", line 160: warning: unrecognized #pragma
+  /* expected-error {{missing argument; expected 'enable', 'full' or 'disable'}} */ #pragma clang loop unroll()
+                                                                                            ^
+
+"Test_name.c", line 161: warning: unrecognized #pragma
+  /* expected-error {{missing argument; expected 'enable' or 'disable'}} */ #pragma clang loop distribute()
+                                                                                    ^
+
+"Test_name.c", line 163: warning: unrecognized #pragma
+  /* expected-error {{missing option; expected vectorize, vectorize_width, interleave, interleave_count, unroll, unroll_count, pipeline, pipeline_initiation_interval, vectorize_predicate, or distribute}} */ #pragma clang loop
+                                                                                                                                                                                                                       ^
+
+"Test_name.c", line 164: warning: unrecognized #pragma
+  /* expected-error {{invalid option 'badkeyword'}} */ #pragma clang loop badkeyword
+                                                               ^
+
+"Test_name.c", line 165: warning: unrecognized #pragma
+  /* expected-error {{invalid option 'badkeyword'}} */ #pragma clang loop badkeyword(enable)
+                                                               ^
+
+"Test_name.c", line 166: warning: unrecognized #pragma
+  /* expected-error {{invalid option 'badkeyword'}} */ #pragma clang loop vectorize(enable) badkeyword(4)
+                                                               ^
+
+"Test_name.c", line 167: warning: unrecognized #pragma
+  /* expected-warning {{extra tokens at end of '#pragma clang loop'}} */ #pragma clang loop vectorize(enable) ,
+                                                                                 ^
+
+"Test_name.c", line 172: warning: unrecognized #pragma
+  /* expected-error {{invalid value '0'; must be positive}} */ #pragma clang loop vectorize_width(0)
+                                                                       ^
+
+"Test_name.c", line 173: warning: unrecognized #pragma
+  /* expected-error {{invalid value '0'; must be positive}} */ #pragma clang loop interleave_count(0)
+                                                                       ^
+
+"Test_name.c", line 174: warning: unrecognized #pragma
+  /* expected-error {{invalid value '0'; must be positive}} */ #pragma clang loop unroll_count(0)
+                                                                       ^
+
+"Test_name.c", line 176: warning: unrecognized #pragma
+  /* expected-error {{expression is not an integral constant expression}} expected-note {{division by zero}} */ #pragma clang loop vectorize_width(10 / 0)
+                                                                                                                        ^
+
+"Test_name.c", line 177: warning: unrecognized #pragma
+  /* expected-error {{invalid value '0'; must be positive}} */ #pragma clang loop interleave_count(10 / 5 - 2)
+                                                                       ^
+
+"Test_name.c", line 191: warning: unrecognized #pragma
+  /* expected-error {{value '3000000000' is too large}} */ #pragma clang loop vectorize_width(3000000000)
+                                                                   ^
+
+"Test_name.c", line 192: warning: unrecognized #pragma
+  /* expected-error {{value '3000000000' is too large}} */ #pragma clang loop interleave_count(3000000000)
+                                                                   ^
+
+"Test_name.c", line 193: warning: unrecognized #pragma
+  /* expected-error {{value '3000000000' is too large}} */ #pragma clang loop unroll_count(3000000000)
+                                                                   ^
+
+"Test_name.c", line 198: warning: unrecognized #pragma
+  /* expected-warning {{extra tokens at end of '#pragma clang loop'}} */ #pragma clang loop vectorize_width(1 +) 1
+                                                                                 ^
+
+"Test_name.c", line 199: warning: unrecognized #pragma
+  /* expected-warning {{extra tokens at end of '#pragma clang loop'}} */ #pragma clang loop vectorize_width(1) +1
+                                                                                 ^
+
+"Test_name.c", line 201: warning: unrecognized #pragma
+  /* expected-error {{expected expression}} */ #pragma clang loop vectorize_width(VV +/ 2) /*
+                                                       ^
+
+"Test_name.c", line 203: warning: unrecognized #pragma
+  /* expected-error {{use of undeclared identifier 'undefined'}} */ #pragma clang loop vectorize_width(VV+undefined) /*
+                                                                            ^
+
+"Test_name.c", line 205: warning: unrecognized #pragma
+  /* expected-error {{expected ')'}} */ #pragma clang loop vectorize_width(1+(^*/2 * ()
+                                                ^
+
+"Test_name.c", line 206: warning: unrecognized #pragma
+  /* expected-warning {{extra tokens at end of '#pragma clang loop' - ignored}} */ #pragma clang loop vectorize_width(1+(-0[0]))))))
+                                                                                           ^
+
+"Test_name.c", line 208: warning: unrecognized #pragma
+  /* expected-error {{use of undeclared identifier 'badvalue'}} */ #pragma clang loop vectorize_width(badvalue) /*
+                                                                           ^
+
+"Test_name.c", line 210: warning: unrecognized #pragma
+  /* expected-error {{use of undeclared identifier 'badvalue'}} */ #pragma clang loop interleave_count(badvalue)
+                                                                           ^
+
+"Test_name.c", line 211: warning: unrecognized #pragma
+  /* expected-error {{use of undeclared identifier 'badvalue'}} */ #pragma clang loop unroll_count(badvalue)
+                                                                           ^
+
+"Test_name.c", line 216: warning: unrecognized #pragma
+  /* expected-error {{invalid argument; expected 'enable', 'assume_safety' or 'disable'}} */ #pragma clang loop vectorize(badidentifier)
+                                                                                                     ^
+
+"Test_name.c", line 217: warning: unrecognized #pragma
+  /* expected-error {{invalid argument; expected 'enable', 'assume_safety' or 'disable'}} */ #pragma clang loop interleave(badidentifier)
+                                                                                                     ^
+
+"Test_name.c", line 218: warning: unrecognized #pragma
+  /* expected-error {{invalid argument; expected 'enable', 'full' or 'disable'}} */ #pragma clang loop unroll(badidentifier)
+                                                                                            ^
+
+"Test_name.c", line 219: warning: unrecognized #pragma
+  /* expected-error {{invalid argument; expected 'enable' or 'disable'}} */ #pragma clang loop distribute(badidentifier)
+                                                                                    ^
+
+"Test_name.c", line 226: warning: unrecognized #pragma
+  /* expected-error {{expected ')'}} */ #pragma clang loop vectorize(()
+                                                ^
+
+"Test_name.c", line 227: warning: unrecognized #pragma
+  /* expected-error {{invalid argument; expected 'enable', 'assume_safety' or 'disable'}} */ #pragma clang loop interleave(*)
+                                                                                                     ^
+
+"Test_name.c", line 228: warning: unrecognized #pragma
+  /* expected-error {{invalid argument; expected 'enable', 'full' or 'disable'}} */ #pragma clang loop unroll(=)
+                                                                                            ^
+
+"Test_name.c", line 229: warning: unrecognized #pragma
+  /* expected-error {{invalid argument; expected 'enable' or 'disable'}} */ #pragma clang loop distribute(+)
+                                                                                    ^
+
+"Test_name.c", line 230: warning: unrecognized #pragma
+  /* expected-error {{type name requires a specifier or qualifier}} expected-error {{expected expression}} */ #pragma clang loop vectorize_width(^) /* expected-note {{vectorize_width loop hint malformed; use vectorize_width(X, fixed) or vectorize_width(X, scalable) where X is an integer, or vectorize_width('fixed' or 'scalable')}} */
+                                                                                                                      ^
+
+"Test_name.c", line 231: warning: unrecognized #pragma
+  /* expected-error {{expected expression}} expected-error {{expected expression}} */ #pragma clang loop interleave_count(/)
+                                                                                              ^
+
+"Test_name.c", line 232: warning: unrecognized #pragma
+  /* expected-error {{expected expression}} expected-error {{expected expression}} */ #pragma clang loop unroll_count(==)
+                                                                                              ^
+
+"Test_name.c", line 237: warning: unrecognized #pragma
+  #pragma clang loop vectorize(enable)
+          ^
+
+"Test_name.c", line 250: warning: unrecognized #pragma
+  #pragma clang loop vectorize_width(4)
+          ^
+
+"Test_name.c", line 251: warning: unrecognized #pragma
+  /* expected-error {{incompatible directives 'vectorize(disable)' and 'vectorize_width(4)'}} */ #pragma clang loop vectorize(disable)
+                                                                                                         ^
+
+"Test_name.c", line 252: warning: unrecognized #pragma
+  #pragma clang loop interleave_count(4)
+          ^
+
+"Test_name.c", line 253: warning: unrecognized #pragma
+  /* expected-error {{incompatible directives 'interleave(disable)' and 'interleave_count(4)'}} */ #pragma clang loop interleave(disable)
+                                                                                                           ^
+
+"Test_name.c", line 254: warning: unrecognized #pragma
+  #pragma clang loop unroll_count(4)
+          ^
+
+"Test_name.c", line 255: warning: unrecognized #pragma
+  /* expected-error {{incompatible directives 'unroll(disable)' and 'unroll_count(4)'}} */ #pragma clang loop unroll(disable)
+                                                                                                   ^
+
+"Test_name.c", line 260: warning: unrecognized #pragma
+  #pragma clang loop vectorize(enable)
+          ^
+
+"Test_name.c", line 261: warning: unrecognized #pragma
+  /* expected-error {{duplicate directives 'vectorize(enable)' and 'vectorize(disable)'}} */ #pragma clang loop vectorize(disable)
+                                                                                                     ^
+
+"Test_name.c", line 262: warning: unrecognized #pragma
+  #pragma clang loop interleave(enable)
+          ^
+
+"Test_name.c", line 263: warning: unrecognized #pragma
+  /* expected-error {{duplicate directives 'interleave(enable)' and 'interleave(disable)'}} */ #pragma clang loop interleave(disable)
+                                                                                                       ^
+
+"Test_name.c", line 264: warning: unrecognized #pragma
+  #pragma clang loop vectorize_predicate(enable)
+          ^
+
+"Test_name.c", line 266: warning: unrecognized #pragma
+  #pragma clang loop vectorize_predicate(disable)
+          ^
+
+"Test_name.c", line 267: warning: unrecognized #pragma
+  #pragma clang loop unroll(full)
+          ^
+
+"Test_name.c", line 268: warning: unrecognized #pragma
+  /* expected-error {{duplicate directives 'unroll(full)' and 'unroll(disable)'}} */ #pragma clang loop unroll(disable)
+                                                                                             ^
+
+"Test_name.c", line 269: warning: unrecognized #pragma
+  #pragma clang loop distribute(enable)
+          ^
+
+"Test_name.c", line 270: warning: unrecognized #pragma
+  /* expected-error {{duplicate directives 'distribute(enable)' and 'distribute(disable)'}} */ #pragma clang loop distribute(disable)
+                                                                                                       ^
+
+"Test_name.c", line 275: warning: unrecognized #pragma
+  #pragma clang loop vectorize(disable)
+          ^
+
+"Test_name.c", line 276: warning: unrecognized #pragma
+  /* expected-error {{incompatible directives 'vectorize(disable)' and 'vectorize_width(4)'}} */ #pragma clang loop vectorize_width(4)
+                                                                                                         ^
+
+"Test_name.c", line 277: warning: unrecognized #pragma
+  #pragma clang loop interleave(disable)
+          ^
+
+"Test_name.c", line 278: warning: unrecognized #pragma
+  /* expected-error {{incompatible directives 'interleave(disable)' and 'interleave_count(4)'}} */ #pragma clang loop interleave_count(4)
+                                                                                                           ^
+
+"Test_name.c", line 279: warning: unrecognized #pragma
+  #pragma clang loop unroll(disable)
+          ^
+
+"Test_name.c", line 280: warning: unrecognized #pragma
+  /* expected-error {{incompatible directives 'unroll(disable)' and 'unroll_count(4)'}} */ #pragma clang loop unroll_count(4)
+                                                                                                   ^
+
+"Test_name.c", line 285: warning: unrecognized #pragma
+  #pragma clang loop vectorize_width(8)
+          ^
+
+"Test_name.c", line 286: warning: unrecognized #pragma
+  /* expected-error {{duplicate directives 'vectorize_width(8)' and 'vectorize_width(4)'}} */ #pragma clang loop vectorize_width(4)
+                                                                                                      ^
+
+"Test_name.c", line 287: warning: unrecognized #pragma
+  #pragma clang loop interleave_count(8)
+          ^
+
+"Test_name.c", line 288: warning: unrecognized #pragma
+  /* expected-error {{duplicate directives 'interleave_count(8)' and 'interleave_count(4)'}} */ #pragma clang loop interleave_count(4)
+                                                                                                        ^
+
+"Test_name.c", line 289: warning: unrecognized #pragma
+  #pragma clang loop unroll_count(8)
+          ^
+
+"Test_name.c", line 290: warning: unrecognized #pragma
+  /* expected-error {{duplicate directives 'unroll_count(8)' and 'unroll_count(4)'}} */ #pragma clang loop unroll_count(4)
+                                                                                                ^
+
+"Test_name.c", line 295: warning: unrecognized #pragma
+  #pragma clang loop unroll(full)
+          ^
+
+"Test_name.c", line 296: warning: unrecognized #pragma
+  /* expected-error {{incompatible directives 'unroll(full)' and 'unroll_count(4)'}} */ #pragma clang loop unroll_count(4)
+                                                                                                ^
+
+"Test_name.c", line 301: warning: unrecognized #pragma
+  #pragma clang loop interleave(enable)
+          ^
+
+"Test_name.c", line 200: warning: variable "VV" was declared but never referenced
+  const int VV = 4;
+            ^
+
+"Test_name.c", line 305: warning: unrecognized #pragma
+  #pragma clang loop vectorize_predicate(enable)
+          ^
+
+"Test_name.c", line 310: warning: unrecognized #pragma
+  #pragma clang loop vectorize(enable, extra)
+          ^
+
+"Test_name.c", line 311: warning: variable "i" is used before its value is set
+  /* expected-warning {{extra tokens at end of '#pragma clang loop vectorize' - ignored}}*/ while (i-6 < Length) {
+                                                                                                   ^
+
+"Test_name.c", line 315: warning: unrecognized #pragma
+  #pragma clang loop interleave(enable, extra)
+          ^
+
+"Test_name.c", line 320: warning: unrecognized #pragma
+  #pragma clang loop unroll(enable, extra)
+          ^
+
+"Test_name.c", line 325: warning: unrecognized #pragma
+  #pragma clang loop vectorize_predicate(enable, extra)
+          ^
+
+"Test_name.c", line 330: warning: unrecognized #pragma
+  #pragma clang loop pipeline(disable, extra)
+          ^
+
+"Test_name.c", line 335: warning: unrecognized #pragma
+  /* expected-warning {{extra tokens at end of '#pragma clang loop vectorize_width' - ignored}}*/ #pragma clang loop vectorize_width(2, scalable, extra)
+                                                                                                          ^
+
+"Test_name.c", line 336: warning: unrecognized #pragma
+  /* expected-warning {{extra tokens at end of '#pragma clang loop interleave_count' - ignored}}*/ #pragma clang loop interleave_count(2, extra)
+                                                                                                           ^
+
+"Test_name.c", line 337: warning: unrecognized #pragma
+  /* expected-warning {{extra tokens at end of '#pragma clang loop unroll_count' - ignored}}*/ #pragma clang loop unroll_count(2, extra)
+                                                                                                       ^
+
+"Test_name.c", line 338: warning: unrecognized #pragma
+  /* expected-warning {{extra tokens at end of '#pragma clang loop pipeline_initiation_interval' - ignored}}*/ #pragma clang loop pipeline_initiation_interval(2, extra)
+                                                                                                                       ^
+

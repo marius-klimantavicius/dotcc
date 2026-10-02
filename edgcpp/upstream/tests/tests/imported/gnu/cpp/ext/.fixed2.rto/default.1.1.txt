@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: warning: a user-provided literal suffix must begin with "_"
+    throw 0r;	// { dg-error "not supported" }
+          ^
+
+"Test_name.c", line 8: error: user-defined literal operator not found
+    throw 0r;	// { dg-error "not supported" }
+          ^
+
+1 error detected in the compilation of "Test_name.c".

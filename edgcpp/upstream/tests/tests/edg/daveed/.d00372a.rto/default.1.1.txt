@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --g++ Test_name.c
+"Test_name.c", line 37: warning: the qualifier on this friend declaration is ignored
+          friend void N1::foo();
+                      ^
+

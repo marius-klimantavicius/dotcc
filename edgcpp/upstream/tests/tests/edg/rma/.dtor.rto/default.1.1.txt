@@ -1,0 +1,20 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 6: error: "A::~A()" (declared at line 4) is inaccessible
+  class C { A x; };
+        ^
+          detected during:
+            implicit generation of "C::~C()" at line 8
+            implicit generation of "D::~D()" at line 8
+
+"Test_name.c", line 5: error: "A::~A()" (declared at line 4) is inaccessible
+  class B : public A {};
+        ^
+          detected during:
+            implicit generation of "B::~B()" at line 8
+            implicit generation of "D::~D()" at line 8
+
+"Test_name.c", line 8: error: "D::D()" (declared at line 7) is inaccessible
+  D d;
+    ^
+
+3 errors detected in the compilation of "Test_name.c".

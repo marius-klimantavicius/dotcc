@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --g++ Test_name.c
+"Test_name.c", line 15: warning: a reduction in alignment without the "packed" attribute is ignored
+  template<class T> struct __attribute__((aligned(sizeof(T)))) S {
+                                          ^
+          detected during instantiation of class "S<T> [with T=char]" at line 20
+
+"Test_name.c", line 27: error: class template "S" has already been defined (previous definition at line 15)
+  template<class T> struct __attribute__((aligned(sizeof(T)))) S {
+                                                               ^
+
+1 error detected in the compilation of "Test_name.c".

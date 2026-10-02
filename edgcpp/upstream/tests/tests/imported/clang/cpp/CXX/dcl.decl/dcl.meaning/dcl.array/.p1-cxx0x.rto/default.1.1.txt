@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 7: error: "auto" type cannot appear in top-level array type
+    auto a[5] = b; // expected-error{{variable 'a' with type 'auto[5]' has incompatible initializer of type 'int[5]'}}
+    ^
+
+"Test_name.c", line 7: error: initialization with "{...}" expected for aggregate object
+    auto a[5] = b; // expected-error{{variable 'a' with type 'auto[5]' has incompatible initializer of type 'int[5]'}}
+                ^
+
+"Test_name.c", line 8: error: "auto" type cannot appear in top-level array type
+    auto *c[5] = b; // expected-error{{variable 'c' with type 'auto *[5]' has incompatible initializer of type 'int[5]'}}
+    ^
+
+"Test_name.c", line 8: error: initialization with "{...}" expected for aggregate object
+    auto *c[5] = b; // expected-error{{variable 'c' with type 'auto *[5]' has incompatible initializer of type 'int[5]'}}
+                 ^
+
+"Test_name.c", line 6: warning: variable "b" was declared but never referenced
+    int b[5];
+        ^
+
+4 errors detected in the compilation of "Test_name.c".

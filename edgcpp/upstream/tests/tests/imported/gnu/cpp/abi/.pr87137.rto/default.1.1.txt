@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 34: warning: unknown attribute "ms_struct"
+  TEST(NSFun,,int fun (););
+  ^
+
+"Test_name.c", line 35: warning: unknown attribute "ms_struct"
+  TEST(SFun,,static int fun (););
+  ^
+
+"Test_name.c", line 36: warning: unknown attribute "ms_struct"
+  TEST(Tdef,,typedef int tdef;);
+  ^
+
+"Test_name.c", line 38: warning: unknown attribute "ms_struct"
+  TEST(Var,,static int var;);
+  ^
+
+"Test_name.c", line 40: warning: unknown attribute "ms_struct"
+  TEST(Use,:base,using base::f;);
+  ^
+
+"Test_name.c", line 41: warning: unknown attribute "ms_struct"
+  TEST(Tmpl,,template<unsigned> class X {};);
+  ^
+
+"Test_name.c", line 42: warning: unknown attribute "ms_struct"
+  TEST(TmplFN,,template<unsigned> void fu (););
+  ^
+

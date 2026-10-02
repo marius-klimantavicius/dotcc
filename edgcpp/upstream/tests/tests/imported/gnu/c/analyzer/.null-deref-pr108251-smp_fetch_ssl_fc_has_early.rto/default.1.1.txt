@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 63: warning: arithmetic on pointer to void or function type
+   return ((struct connection *)(((void *)(t)) - ((long)&((struct connection *)0)->obj_type)));
+                                               ^
+
+"Test_name.c", line 55: warning: function "obj_type" was declared but never referenced
+  static inline enum obj_type obj_type(const enum obj_type *t)
+                              ^
+

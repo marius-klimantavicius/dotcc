@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=2 --gnu_version=40000 --g++ Test_name.c
+"Test_name.c", line 23: error: invalid type conversion
+  	printf("%f\n", (float)z);
+  	               ^
+
+1 error detected in the compilation of "Test_name.c".

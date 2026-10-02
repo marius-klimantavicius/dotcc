@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 28: warning: null argument provided for parameter marked with attribute "nonnull"
+    fnonnull_static_array (0);        // { dg-warning "\\\[-Wnonnull" }
+                           ^
+
+"Test_name.c", line 31: warning: null argument provided for parameter marked with attribute "nonnull"
+    fnonnull_vla (0, 0);              // { dg-warning "\\\[-Wnonnull" }
+                     ^
+
+"Test_name.c", line 34: warning: null argument provided for parameter marked with attribute "nonnull"
+    fnonnull_static_vla (0, 0);       // { dg-warning "\\\[-Wnonnull" }
+                            ^
+
+"Test_name.c", line 38: warning: unrecognized GCC pragma
+  #pragma GCC optimize ("1")
+              ^
+

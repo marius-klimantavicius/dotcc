@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 4: error: invalid destructor declaration
+  struct { ~S() { } } x;
+           ^
+
+"Test_name.c", line 4: error: use of a type with no linkage to declare a variable with linkage
+  struct { ~S() { } } x;
+                      ^
+
+2 errors detected in the compilation of "Test_name.c".

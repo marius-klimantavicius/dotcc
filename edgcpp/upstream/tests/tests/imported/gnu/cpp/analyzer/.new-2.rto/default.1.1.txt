@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --exceptions Test_name.c
+"./analyzer/new-2.C", line 17: warning: variable "z" was set but never used
+    int z = *y + 2;
+        ^
+
+"./analyzer/new-2.C", line 34: warning: variable "b" was declared but never referenced
+      int b = *x + 3;
+          ^
+
+"./analyzer/new-2.C", line 36: warning: variable "a" was declared but never referenced
+      int a = *y + 2;
+          ^
+
+"./analyzer/new-2.C", line 49: warning: variable "n" is used before its value is set
+    int *arr = ::new int[n];
+                         ^
+
+"./analyzer/new-2.C", line 60: warning: variable "z" was set but never used
+    int z = *y + 2;
+        ^
+

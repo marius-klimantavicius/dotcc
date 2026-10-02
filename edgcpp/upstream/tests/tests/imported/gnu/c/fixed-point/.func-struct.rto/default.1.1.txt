@@ -1,0 +1,578 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 14: error: expected a ";"
+    short _Fract sf;
+                 ^
+
+"Test_name.c", line 16: error: identifier "_Fract" is undefined
+    _Fract f;
+    ^
+
+"Test_name.c", line 18: error: "_Fract" has already been declared in the current scope
+    long _Fract lf;
+         ^
+
+"Test_name.c", line 18: error: expected a ";"
+    long _Fract lf;
+                ^
+
+"Test_name.c", line 20: error: "_Fract" has already been declared in the current scope
+    long long _Fract llf;
+              ^
+
+"Test_name.c", line 20: error: expected a ";"
+    long long _Fract llf;
+                     ^
+
+"Test_name.c", line 22: error: "_Fract" has already been declared in the current scope
+    unsigned short _Fract usf;
+                   ^
+
+"Test_name.c", line 22: error: expected a ";"
+    unsigned short _Fract usf;
+                          ^
+
+"Test_name.c", line 24: error: "_Fract" has already been declared in the current scope
+    unsigned _Fract uf;
+             ^
+
+"Test_name.c", line 24: error: expected a ";"
+    unsigned _Fract uf;
+                    ^
+
+"Test_name.c", line 26: error: "_Fract" has already been declared in the current scope
+    unsigned long _Fract ulf;
+                  ^
+
+"Test_name.c", line 26: error: expected a ";"
+    unsigned long _Fract ulf;
+                         ^
+
+"Test_name.c", line 28: error: "_Fract" has already been declared in the current scope
+    unsigned long long _Fract ullf;
+                       ^
+
+"Test_name.c", line 28: error: expected a ";"
+    unsigned long long _Fract ullf;
+                              ^
+
+"Test_name.c", line 30: warning: this declaration has no storage class or type specifier
+    _Sat short _Fract Ssf;
+    ^
+
+"Test_name.c", line 30: error: expected a ";"
+    _Sat short _Fract Ssf;
+         ^
+
+"Test_name.c", line 32: error: identifier "_Sat" is undefined
+    _Sat _Fract Sf;
+    ^
+
+"Test_name.c", line 32: error: "_Fract" has already been declared in the current scope
+    _Sat _Fract Sf;
+         ^
+
+"Test_name.c", line 32: error: expected a ";"
+    _Sat _Fract Sf;
+                ^
+
+"Test_name.c", line 34: warning: this declaration has no storage class or type specifier
+    _Sat long _Fract Slf;
+    ^
+
+"Test_name.c", line 34: error: "_Sat" has already been declared in the current scope
+    _Sat long _Fract Slf;
+    ^
+
+"Test_name.c", line 34: error: expected a ";"
+    _Sat long _Fract Slf;
+         ^
+
+"Test_name.c", line 36: warning: this declaration has no storage class or type specifier
+    _Sat long long _Fract Sllf;
+    ^
+
+"Test_name.c", line 36: error: "_Sat" has already been declared in the current scope
+    _Sat long long _Fract Sllf;
+    ^
+
+"Test_name.c", line 36: error: expected a ";"
+    _Sat long long _Fract Sllf;
+         ^
+
+"Test_name.c", line 38: warning: this declaration has no storage class or type specifier
+    _Sat unsigned short _Fract Susf;
+    ^
+
+"Test_name.c", line 38: error: "_Sat" has already been declared in the current scope
+    _Sat unsigned short _Fract Susf;
+    ^
+
+"Test_name.c", line 38: error: expected a ";"
+    _Sat unsigned short _Fract Susf;
+         ^
+
+"Test_name.c", line 40: warning: this declaration has no storage class or type specifier
+    _Sat unsigned _Fract Suf;
+    ^
+
+"Test_name.c", line 40: error: "_Sat" has already been declared in the current scope
+    _Sat unsigned _Fract Suf;
+    ^
+
+"Test_name.c", line 40: error: expected a ";"
+    _Sat unsigned _Fract Suf;
+         ^
+
+"Test_name.c", line 42: warning: this declaration has no storage class or type specifier
+    _Sat unsigned long _Fract Sulf;
+    ^
+
+"Test_name.c", line 42: error: "_Sat" has already been declared in the current scope
+    _Sat unsigned long _Fract Sulf;
+    ^
+
+"Test_name.c", line 42: error: expected a ";"
+    _Sat unsigned long _Fract Sulf;
+         ^
+
+"Test_name.c", line 44: warning: this declaration has no storage class or type specifier
+    _Sat unsigned long long _Fract Sullf;
+    ^
+
+"Test_name.c", line 44: error: "_Sat" has already been declared in the current scope
+    _Sat unsigned long long _Fract Sullf;
+    ^
+
+"Test_name.c", line 44: error: expected a ";"
+    _Sat unsigned long long _Fract Sullf;
+         ^
+
+"Test_name.c", line 46: error: expected a ";"
+    short _Accum sa;
+                 ^
+
+"Test_name.c", line 48: error: identifier "_Accum" is undefined
+    _Accum a;
+    ^
+
+"Test_name.c", line 50: error: "_Accum" has already been declared in the current scope
+    long _Accum la;
+         ^
+
+"Test_name.c", line 50: error: expected a ";"
+    long _Accum la;
+                ^
+
+"Test_name.c", line 52: error: "_Accum" has already been declared in the current scope
+    long long _Accum lla;
+              ^
+
+"Test_name.c", line 52: error: expected a ";"
+    long long _Accum lla;
+                     ^
+
+"Test_name.c", line 54: error: "_Accum" has already been declared in the current scope
+    unsigned short _Accum usa;
+                   ^
+
+"Test_name.c", line 54: error: expected a ";"
+    unsigned short _Accum usa;
+                          ^
+
+"Test_name.c", line 56: error: "_Accum" has already been declared in the current scope
+    unsigned _Accum ua;
+             ^
+
+"Test_name.c", line 56: error: expected a ";"
+    unsigned _Accum ua;
+                    ^
+
+"Test_name.c", line 58: error: "_Accum" has already been declared in the current scope
+    unsigned long _Accum ula;
+                  ^
+
+"Test_name.c", line 58: error: expected a ";"
+    unsigned long _Accum ula;
+                         ^
+
+"Test_name.c", line 60: error: "_Accum" has already been declared in the current scope
+    unsigned long long _Accum ulla;
+                       ^
+
+"Test_name.c", line 60: error: expected a ";"
+    unsigned long long _Accum ulla;
+                              ^
+
+"Test_name.c", line 62: warning: this declaration has no storage class or type specifier
+    _Sat short _Accum Ssa;
+    ^
+
+"Test_name.c", line 62: error: "_Sat" has already been declared in the current scope
+    _Sat short _Accum Ssa;
+    ^
+
+"Test_name.c", line 62: error: expected a ";"
+    _Sat short _Accum Ssa;
+         ^
+
+"Test_name.c", line 64: error: identifier "_Sat" is undefined
+    _Sat _Accum Sa;
+    ^
+
+"Test_name.c", line 64: error: "_Accum" has already been declared in the current scope
+    _Sat _Accum Sa;
+         ^
+
+"Test_name.c", line 64: error: expected a ";"
+    _Sat _Accum Sa;
+                ^
+
+"Test_name.c", line 66: warning: this declaration has no storage class or type specifier
+    _Sat long _Accum Sla;
+    ^
+
+"Test_name.c", line 66: error: "_Sat" has already been declared in the current scope
+    _Sat long _Accum Sla;
+    ^
+
+"Test_name.c", line 66: error: expected a ";"
+    _Sat long _Accum Sla;
+         ^
+
+"Test_name.c", line 68: warning: this declaration has no storage class or type specifier
+    _Sat long long _Accum Slla;
+    ^
+
+"Test_name.c", line 68: error: "_Sat" has already been declared in the current scope
+    _Sat long long _Accum Slla;
+    ^
+
+"Test_name.c", line 68: error: expected a ";"
+    _Sat long long _Accum Slla;
+         ^
+
+"Test_name.c", line 70: warning: this declaration has no storage class or type specifier
+    _Sat unsigned short _Accum Susa;
+    ^
+
+"Test_name.c", line 70: error: "_Sat" has already been declared in the current scope
+    _Sat unsigned short _Accum Susa;
+    ^
+
+"Test_name.c", line 70: error: expected a ";"
+    _Sat unsigned short _Accum Susa;
+         ^
+
+"Test_name.c", line 72: warning: this declaration has no storage class or type specifier
+    _Sat unsigned _Accum Sua;
+    ^
+
+"Test_name.c", line 72: error: "_Sat" has already been declared in the current scope
+    _Sat unsigned _Accum Sua;
+    ^
+
+"Test_name.c", line 72: error: expected a ";"
+    _Sat unsigned _Accum Sua;
+         ^
+
+"Test_name.c", line 74: warning: this declaration has no storage class or type specifier
+    _Sat unsigned long _Accum Sula;
+    ^
+
+"Test_name.c", line 74: error: "_Sat" has already been declared in the current scope
+    _Sat unsigned long _Accum Sula;
+    ^
+
+"Test_name.c", line 74: error: expected a ";"
+    _Sat unsigned long _Accum Sula;
+         ^
+
+"Test_name.c", line 76: warning: this declaration has no storage class or type specifier
+    _Sat unsigned long long _Accum Sulla;
+    ^
+
+"Test_name.c", line 76: error: "_Sat" has already been declared in the current scope
+    _Sat unsigned long long _Accum Sulla;
+    ^
+
+"Test_name.c", line 76: error: expected a ";"
+    _Sat unsigned long long _Accum Sulla;
+         ^
+
+"Test_name.c", line 78: error: extra text after expected end of number
+  } nums = { 0.1hr, 'a',
+                ^
+
+"Test_name.c", line 79: error: extra text after expected end of number
+  	   0.2r, 'b',
+  	      ^
+
+"Test_name.c", line 80: error: extra text after expected end of number
+  	   0.3lr, 'c',
+  	       ^
+
+"Test_name.c", line 81: error: extra text after expected end of number
+  	   0.4llr, 'd',
+  	       ^
+
+"Test_name.c", line 82: error: extra text after expected end of number
+  	   0.5uhr, 'e',
+  	      ^
+
+"Test_name.c", line 83: error: extra text after expected end of number
+  	   0.6ur, 'f',
+  	      ^
+
+"Test_name.c", line 84: error: extra text after expected end of number
+  	   0.7ulr, 'g',
+  	      ^
+
+"Test_name.c", line 85: error: extra text after expected end of number
+  	   0.8ullr, 'h',
+  	      ^
+
+"Test_name.c", line 86: error: extra text after expected end of number
+  	   0.11r, 'i',
+  	       ^
+
+"Test_name.c", line 87: error: extra text after expected end of number
+  	   0.22r, 'j',
+  	       ^
+
+"Test_name.c", line 88: error: extra text after expected end of number
+  	   0.33lr, 'k',
+  	        ^
+
+"Test_name.c", line 89: error: extra text after expected end of number
+  	   0.44llr, 'l',
+  	        ^
+
+"Test_name.c", line 90: error: extra text after expected end of number
+  	   0.55uhr, 'm',
+  	       ^
+
+"Test_name.c", line 91: error: extra text after expected end of number
+  	   0.66ur, 'n',
+  	       ^
+
+"Test_name.c", line 92: error: extra text after expected end of number
+  	   0.77ulr, 'o',
+  	       ^
+
+"Test_name.c", line 93: error: extra text after expected end of number
+  	   0.88ullr, 'p',
+  	       ^
+
+"Test_name.c", line 94: error: extra text after expected end of number
+  	   0.1hk, 'q',
+  	      ^
+
+"Test_name.c", line 95: error: extra text after expected end of number
+  	   0.2k, 'r',
+  	      ^
+
+"Test_name.c", line 96: error: extra text after expected end of number
+  	   0.3lk, 's',
+  	       ^
+
+"Test_name.c", line 97: error: extra text after expected end of number
+  	   0.4llk, 't',
+  	       ^
+
+"Test_name.c", line 98: error: extra text after expected end of number
+  	   0.5uhk, 'u',
+  	      ^
+
+"Test_name.c", line 99: error: extra text after expected end of number
+  	   0.6uk, 'v',
+  	      ^
+
+"Test_name.c", line 100: error: extra text after expected end of number
+  	   0.7ulk, 'w',
+  	      ^
+
+"Test_name.c", line 101: error: extra text after expected end of number
+  	   0.8ullk, 'x',
+  	      ^
+
+"Test_name.c", line 102: error: extra text after expected end of number
+  	   0.11k, 'y',
+  	       ^
+
+"Test_name.c", line 103: error: extra text after expected end of number
+  	   0.22k, 'z',
+  	       ^
+
+"Test_name.c", line 104: error: extra text after expected end of number
+  	   0.33lk, '0',
+  	        ^
+
+"Test_name.c", line 105: error: extra text after expected end of number
+  	   0.44llk, '1',
+  	        ^
+
+"Test_name.c", line 106: error: extra text after expected end of number
+  	   0.55uhk, '2',
+  	       ^
+
+"Test_name.c", line 107: error: extra text after expected end of number
+  	   0.66uk, '3',
+  	       ^
+
+"Test_name.c", line 108: error: extra text after expected end of number
+  	   0.77ulk, '4',
+  	       ^
+
+"Test_name.c", line 109: error: extra text after expected end of number
+  	   0.88ullk, '5'
+  	       ^
+
+"Test_name.c", line 119: error: expected a ";"
+  FUNC (short _Fract, sf)
+  ^
+
+"Test_name.c", line 159: error: extra text after expected end of number
+    TEST (short _Fract, sf, 0.1hr)
+    ^
+
+"Test_name.c", line 160: error: extra text after expected end of number
+    TEST (_Fract, f, 0.2r)
+    ^
+
+"Test_name.c", line 161: error: extra text after expected end of number
+    TEST (long _Fract, lf, 0.3lr)
+    ^
+
+"Test_name.c", line 162: error: extra text after expected end of number
+    TEST (long long _Fract, llf, 0.4llr)
+    ^
+
+"Test_name.c", line 163: error: extra text after expected end of number
+    TEST (unsigned short _Fract, usf, 0.5uhr)
+    ^
+
+"Test_name.c", line 164: error: extra text after expected end of number
+    TEST (unsigned _Fract, uf, 0.6ur)
+    ^
+
+"Test_name.c", line 165: error: extra text after expected end of number
+    TEST (unsigned long _Fract, ulf, 0.7ulr)
+    ^
+
+"Test_name.c", line 166: error: extra text after expected end of number
+    TEST (unsigned long long _Fract, ullf, 0.8ullr)
+    ^
+
+"Test_name.c", line 167: error: extra text after expected end of number
+    TEST (_Sat short _Fract, Ssf, 0.11hr)
+    ^
+
+"Test_name.c", line 168: error: extra text after expected end of number
+    TEST (_Sat _Fract, Sf, 0.22r)
+    ^
+
+"Test_name.c", line 169: error: extra text after expected end of number
+    TEST (_Sat long _Fract, Slf, 0.33lr)
+    ^
+
+"Test_name.c", line 170: error: extra text after expected end of number
+    TEST (_Sat long long _Fract, Sllf, 0.44llr)
+    ^
+
+"Test_name.c", line 171: error: extra text after expected end of number
+    TEST (_Sat unsigned short _Fract, Susf, 0.55uhr)
+    ^
+
+"Test_name.c", line 172: error: extra text after expected end of number
+    TEST (_Sat unsigned _Fract, Suf, 0.66ur)
+    ^
+
+"Test_name.c", line 173: error: extra text after expected end of number
+    TEST (_Sat unsigned long _Fract, Sulf, 0.77ulr)
+    ^
+
+"Test_name.c", line 174: error: extra text after expected end of number
+    TEST (_Sat unsigned long long _Fract, Sullf, 0.88ullr)
+    ^
+
+"Test_name.c", line 174: warning: parsing restarts here after previous syntax error
+    TEST (_Sat unsigned long long _Fract, Sullf, 0.88ullr)
+    ^
+
+"Test_name.c", line 174: error: expected a declaration
+    TEST (_Sat unsigned long long _Fract, Sullf, 0.88ullr)
+    ^
+
+"Test_name.c", line 175: error: extra text after expected end of number
+    TEST (short _Accum, sa, 0.1hk)
+    ^
+
+"Test_name.c", line 176: error: extra text after expected end of number
+    TEST (_Accum, a, 0.2k)
+    ^
+
+"Test_name.c", line 177: error: extra text after expected end of number
+    TEST (long _Accum, la, 0.3lk)
+    ^
+
+"Test_name.c", line 178: error: extra text after expected end of number
+    TEST (long long _Accum, lla, 0.4llk)
+    ^
+
+"Test_name.c", line 179: error: extra text after expected end of number
+    TEST (unsigned short _Accum, usa, 0.5uhk)
+    ^
+
+"Test_name.c", line 180: error: extra text after expected end of number
+    TEST (unsigned _Accum, ua, 0.6uk)
+    ^
+
+"Test_name.c", line 181: error: extra text after expected end of number
+    TEST (unsigned long _Accum, ula, 0.7ulk)
+    ^
+
+"Test_name.c", line 182: error: extra text after expected end of number
+    TEST (unsigned long long _Accum, ulla, 0.8ullk)
+    ^
+
+"Test_name.c", line 183: error: extra text after expected end of number
+    TEST (_Sat short _Accum, Ssa, 0.11hk)
+    ^
+
+"Test_name.c", line 184: error: extra text after expected end of number
+    TEST (_Sat _Accum, Sa, 0.22k)
+    ^
+
+"Test_name.c", line 185: error: extra text after expected end of number
+    TEST (_Sat long _Accum, Sla, 0.33lk)
+    ^
+
+"Test_name.c", line 186: error: extra text after expected end of number
+    TEST (_Sat long long _Accum, Slla, 0.44llk)
+    ^
+
+"Test_name.c", line 187: error: extra text after expected end of number
+    TEST (_Sat unsigned short _Accum, Susa, 0.55uhk)
+    ^
+
+"Test_name.c", line 188: error: extra text after expected end of number
+    TEST (_Sat unsigned _Accum, Sua, 0.66uk)
+    ^
+
+"Test_name.c", line 189: error: extra text after expected end of number
+    TEST (_Sat unsigned long _Accum, Sula, 0.77ulk)
+    ^
+
+"Test_name.c", line 190: error: extra text after expected end of number
+    TEST (_Sat unsigned long long _Accum, Sulla, 0.88ullk)
+    ^
+
+"Test_name.c", line 192: warning: parsing restarts here after previous syntax error
+    return 0;
+            ^
+
+"Test_name.c", line 193: error: expected a declaration
+  }
+  ^
+
+128 errors detected in the compilation of "Test_name.c".

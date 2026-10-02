@@ -1,0 +1,121 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 13: warning: expression has no effect
+    (char *) i;
+    ^
+
+"Test_name.c", line 14: warning: expression has no effect
+    (char *) d;
+    ^
+
+"Test_name.c", line 15: warning: expression has no effect
+    (char *) s1;
+    ^
+
+"Test_name.c", line 16: warning: expression has no effect
+    (char *) s2;
+    ^
+
+"Test_name.c", line 17: warning: expression has no effect
+    (char *) c;
+    ^
+
+"Test_name.c", line 19: warning: expression has no effect
+    (int *) i;
+    ^
+
+"Test_name.c", line 20: warning: expression has no effect
+    (int *) d; /* { dg-warning "dereferencing type-punned pointer might break strict-aliasing rules" } */
+    ^
+
+"Test_name.c", line 21: warning: expression has no effect
+    (int *) s1; /* { dg-warning "dereferencing type-punned pointer might break strict-aliasing rules" } */
+    ^
+
+"Test_name.c", line 22: warning: expression has no effect
+    (int *) s2; /* { dg-warning "dereferencing type-punned pointer might break strict-aliasing rules" } */
+    ^
+
+"Test_name.c", line 23: warning: expression has no effect
+    (int *) c;
+    ^
+
+"Test_name.c", line 25: warning: expression has no effect
+    (double *) i; /* { dg-warning "dereferencing type-punned pointer might break strict-aliasing rules" } */
+    ^
+
+"Test_name.c", line 26: warning: expression has no effect
+    (double *) d;
+    ^
+
+"Test_name.c", line 27: warning: expression has no effect
+    (double *) s1; /* { dg-warning "dereferencing type-punned pointer might break strict-aliasing rules" } */
+    ^
+
+"Test_name.c", line 28: warning: expression has no effect
+    (double *) s2; /* { dg-warning "dereferencing type-punned pointer might break strict-aliasing rules" } */
+    ^
+
+"Test_name.c", line 29: warning: expression has no effect
+    (double *) c;
+    ^
+
+"Test_name.c", line 31: warning: expression has no effect
+    (struct incomplete *) i; /* { dg-warning "dereferencing type-punned pointer might break strict-aliasing rules" } */
+    ^
+
+"Test_name.c", line 32: warning: expression has no effect
+    (struct incomplete *) d; /* { dg-warning "dereferencing type-punned pointer might break strict-aliasing rules" } */
+    ^
+
+"Test_name.c", line 33: warning: expression has no effect
+    (struct incomplete *) s1; /* { dg-warning "dereferencing type-punned pointer might break strict-aliasing rules" } */
+    ^
+
+"Test_name.c", line 34: warning: expression has no effect
+    (struct incomplete *) s2; /* { dg-warning "dereferencing type-punned pointer might break strict-aliasing rules" } */
+    ^
+
+"Test_name.c", line 35: warning: expression has no effect
+    (struct incomplete *) c; /* { dg-warning "dereferencing type-punned pointer might break strict-aliasing rules" } */
+    ^
+
+"Test_name.c", line 37: warning: expression has no effect
+    (struct s1 *) i; /* { dg-warning "dereferencing type-punned pointer might break strict-aliasing rules" } */
+    ^
+
+"Test_name.c", line 38: warning: expression has no effect
+    (struct s1 *) d; /* { dg-warning "dereferencing type-punned pointer might break strict-aliasing rules" } */
+    ^
+
+"Test_name.c", line 39: warning: expression has no effect
+    (struct s1 *) s1;
+    ^
+
+"Test_name.c", line 40: warning: expression has no effect
+    (struct s1 *) s2; /* { dg-warning "dereferencing type-punned pointer might break strict-aliasing rules" } */
+    ^
+
+"Test_name.c", line 41: warning: expression has no effect
+    (struct s1 *) c;
+    ^
+
+"Test_name.c", line 43: warning: expression has no effect
+    (struct s2 *) i; /* { dg-warning "dereferencing type-punned pointer might break strict-aliasing rules" } */
+    ^
+
+"Test_name.c", line 44: warning: expression has no effect
+    (struct s2 *) d; /* { dg-warning "dereferencing type-punned pointer might break strict-aliasing rules" } */
+    ^
+
+"Test_name.c", line 45: warning: expression has no effect
+    (struct s2 *) s1; /* { dg-warning "dereferencing type-punned pointer might break strict-aliasing rules" } */
+    ^
+
+"Test_name.c", line 46: warning: expression has no effect
+    (struct s2 *) s2;
+    ^
+
+"Test_name.c", line 47: warning: expression has no effect
+    (struct s2 *) c;
+    ^
+

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++17 -tused -A Test_name.c
+"Test_name.c", line 4: error: declaration of a member with the same name as its class
+    template<typename> struct A {};
+                              ^
+
+1 error detected in the compilation of "Test_name.c".

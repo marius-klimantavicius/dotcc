@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=3 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 -w -DW32 Test_name.c
+"Test_name.c", line 25: error: static assertion failed
+  static_assert(__has_unique_object_representations(B));
+  ^
+
+"Test_name.c", line 31: error: static assertion failed
+  static_assert(!__has_unique_object_representations(C));
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

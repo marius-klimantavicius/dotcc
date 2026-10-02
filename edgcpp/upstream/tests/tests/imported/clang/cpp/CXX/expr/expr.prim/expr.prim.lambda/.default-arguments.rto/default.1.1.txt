@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 19: error: identifier "i" is undefined
+    auto l2 = [](int i, int j = i) {}; // expected-error{{default argument references parameter 'i'}}
+                                ^
+
+"Test_name.c", line 22: error: reference to local variable of enclosing function is not allowed
+    auto l3 = [](int i = foo) {}; // expected-error{{default argument references local variable 'foo' of enclosing function}}
+                         ^
+
+"Test_name.c", line 15: warning: variable "l1" was declared but never referenced
+    auto l1 = [](int i,
+         ^
+
+"Test_name.c", line 19: warning: variable "l2" was declared but never referenced
+    auto l2 = [](int i, int j = i) {}; // expected-error{{default argument references parameter 'i'}}
+         ^
+
+"Test_name.c", line 22: warning: variable "l3" was declared but never referenced
+    auto l3 = [](int i = foo) {}; // expected-error{{default argument references local variable 'foo' of enclosing function}}
+         ^
+
+"Test_name.c", line 39: error: no instance of constructor "NoDefaultCtor::NoDefaultCtor" matches the argument list
+    auto l1 = [](const T& value = T()) { };  // expected-error{{no matching constructor for initialization of 'NoDefaultCtor'}} \
+                                  ^
+"Test_name.c", line 32: note: number of parameters of function "NoDefaultCtor::NoDefaultCtor" does not match the call
+    NoDefaultCtor(const NoDefaultCtor&); // expected-note{{candidate constructor}} \
+    ^
+          detected during instantiation of "void defargs_in_template_unused(T) [with T=NoDefaultCtor]" at line 45
+
+"Test_name.c", line 49: error: no instance of constructor "NoDefaultCtor::NoDefaultCtor" matches the argument list
+    auto l1 = [](const T& value = T()) { }; // expected-error{{no matching constructor for initialization of 'NoDefaultCtor'}} \
+                                  ^
+"Test_name.c", line 32: note: number of parameters of function "NoDefaultCtor::NoDefaultCtor" does not match the call
+    NoDefaultCtor(const NoDefaultCtor&); // expected-note{{candidate constructor}} \
+    ^
+          detected during instantiation of "void defargs_in_template_used<T>() [with T=NoDefaultCtor]" at line 55
+
+4 errors detected in the compilation of "Test_name.c".

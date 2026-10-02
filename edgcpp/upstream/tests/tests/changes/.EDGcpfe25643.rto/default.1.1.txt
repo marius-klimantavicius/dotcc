@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gcc --gnu_version=90400 Test_name.c
+"Test_name.c", line 20: warning: variable "var" was declared but never referenced
+                   (void)0)]){}) var;
+                                 ^
+

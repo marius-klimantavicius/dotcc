@@ -1,0 +1,33 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 --strict_gnu Test_name.c
+"Test_name.c", line 17: warning: unknown attribute "noipa"
+  __attribute__((noipa)) void
+                 ^
+
+"Test_name.c", line 27: warning: unknown attribute "noipa"
+  __attribute__((noipa)) void
+                 ^
+
+"Test_name.c", line 39: warning: unknown attribute "noipa"
+  __attribute__((noipa)) void
+                 ^
+
+"Test_name.c", line 50: warning: unknown attribute "noipa"
+  __attribute__((noipa)) void
+                 ^
+
+"Test_name.c", line 60: warning: unknown attribute "noipa"
+  __attribute__((noipa)) void
+                 ^
+
+"Test_name.c", line 145: warning: unknown attribute "noipa"
+  __attribute__((noipa)) void
+                 ^
+
+"Test_name.c", line 170: warning: unknown attribute "noipa"
+  __attribute__((noipa)) void
+                 ^
+
+"Test_name.c", line 191: warning: unknown attribute "noipa"
+  __attribute__((noipa)) void
+                 ^
+

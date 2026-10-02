@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 19: error: class template "A::B" is not compatible with template template parameter "TT"
+  	X<T::template B> x; // { dg-error "type" }
+  	  ^
+          detected during instantiation of class "C<T> [with T=A]" at line 24
+
+"Test_name.c", line 24: warning: variable "c" was declared but never referenced
+  	C<A> c; // { dg-message "required" }
+  	     ^
+
+1 error detected in the compilation of "Test_name.c".

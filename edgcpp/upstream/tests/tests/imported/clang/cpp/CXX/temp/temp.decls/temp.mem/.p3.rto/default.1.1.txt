@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 6: error: "virtual" is not allowed in a function template declaration
+    template <class C> virtual void g(C); // expected-error{{'virtual' cannot be specified on member function templates}}
+                       ^
+
+1 error detected in the compilation of "Test_name.c".

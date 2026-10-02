@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 5: warning: unknown attribute "returns_twice"
+  int a __attribute__((returns_twice)); // expected-warning {{'returns_twice' attribute only applies to functions}}
+                       ^
+
+"Test_name.c", line 7: warning: unknown attribute "returns_twice"
+  __attribute__((returns_twice)) void t0(void) {
+                 ^
+
+"Test_name.c", line 10: warning: unknown attribute "returns_twice"
+  void t1(void) __attribute__((returns_twice));
+                               ^
+
+"Test_name.c", line 12: warning: unknown attribute "returns_twice"
+  void t2(void) __attribute__((returns_twice(2))); // expected-error {{'returns_twice' attribute takes no arguments}}
+                               ^
+
+"Test_name.c", line 14: warning: unknown attribute "returns_twice"
+  typedef void (*t3)(void) __attribute__((returns_twice)); // expected-warning {{'returns_twice' attribute only applies to functions}}
+                                          ^
+

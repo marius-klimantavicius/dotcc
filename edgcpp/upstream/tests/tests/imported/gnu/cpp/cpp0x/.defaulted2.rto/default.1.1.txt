@@ -1,0 +1,51 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 7: error: "= delete" can only appear on the first declaration of a function
+  void f() = delete;		// { dg-error "deleted" }
+             ^
+
+"Test_name.c", line 12: error: "= default" can only appear on default constructors, copy/move constructors, copy/move assignment operators, and destructors
+    void f() = default;		// { dg-error "default" }
+         ^
+
+"Test_name.c", line 15: error: function "A::A()" has already been defined (previous definition at line 11)
+  A::A() = default;		// { dg-error "redefinition" }
+     ^
+
+"Test_name.c", line 18: error: function "g" has already been defined (previous definition at line 17)
+  void g() = delete;		// { dg-error "redefinition" }
+       ^
+
+"Test_name.c", line 26: error: const variable "b" requires an initializer -- class "B" has no user-provided default constructor
+  const B b;			// { dg-error "uninitialized 'const" }
+          ^
+
+"Test_name.c", line 35: error: nondeleted function overrides deleted function "C::f"
+    virtual void f();		// { dg-error "non-deleted function" }
+                 ^
+
+"Test_name.c", line 41: error: "E::E()" provides no initializer for:
+            const member "E::b"
+    E() { }			// { dg-error "uninitialized" }
+        ^
+
+"Test_name.c", line 66: error: function "F::F(const F &)" (declared at line 47) cannot be referenced -- it is a deleted function
+    F f2(f);			// { dg-error "use" }
+         ^
+
+"Test_name.c", line 67: error: const object requires an initializer -- class "B" has no user-provided default constructor
+    const B* b = new const B;		// { dg-error "uninitialized const" }
+                     ^
+
+"Test_name.c", line 68: error: the default constructor of "U" cannot be referenced -- it is a deleted function
+    U u;				// { dg-error "deleted" }
+      ^
+
+"Test_name.c", line 66: warning: variable "f2" was declared but never referenced
+    F f2(f);			// { dg-error "use" }
+      ^
+
+"Test_name.c", line 26: warning: variable "b" was declared but never referenced
+  const B b;			// { dg-error "uninitialized 'const" }
+          ^
+
+10 errors detected in the compilation of "Test_name.c".

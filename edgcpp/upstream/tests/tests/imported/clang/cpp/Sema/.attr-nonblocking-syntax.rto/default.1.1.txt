@@ -1,0 +1,186 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 7: warning: unrecognized #pragma
+  #pragma clang diagnostic ignored "-Wunused-variable"
+          ^
+
+"Test_name.c", line 8: warning: unrecognized #pragma
+  #pragma clang diagnostic ignored "-Wperf-constraint-implies-noexcept"
+          ^
+
+"Test_name.c", line 16: warning: unknown attribute "clang::nonblocking"
+  void nl_function() [[clang::nonblocking]];
+                       ^
+
+"Test_name.c", line 20: warning: unknown attribute "clang::nonblocking"
+  void (*nl_func_a)() [[clang::nonblocking]];
+                        ^
+
+"Test_name.c", line 24: warning: unknown attribute "clang::nonblocking"
+  static void nlReceiver(void (*nl_func)() [[clang::nonblocking]]);
+                                             ^
+
+"Test_name.c", line 28: warning: unknown attribute "clang::nonblocking"
+  typedef void (*nl_fp_type)() [[clang::nonblocking]];
+                                 ^
+
+"Test_name.c", line 30: warning: unknown attribute "clang::nonblocking"
+  using nl_fp_talias = void (*)() [[clang::nonblocking]];
+                                    ^
+
+"Test_name.c", line 41: warning: unknown attribute "clang::nonblocking"
+    void (*nl_func_field)() [[clang::nonblocking]];
+                              ^
+
+"Test_name.c", line 46: warning: unknown attribute "clang::nonblocking"
+  void nl1() [[clang::nonblocking]] [[clang::nonallocating]];
+               ^
+
+"Test_name.c", line 46: warning: unknown attribute "clang::nonallocating"
+  void nl1() [[clang::nonblocking]] [[clang::nonallocating]];
+                                      ^
+
+"Test_name.c", line 49: warning: unknown attribute "clang::nonallocating"
+  void nl2() [[clang::nonallocating]] [[clang::nonblocking]];
+               ^
+
+"Test_name.c", line 49: warning: unknown attribute "clang::nonblocking"
+  void nl2() [[clang::nonallocating]] [[clang::nonblocking]];
+                                        ^
+
+"Test_name.c", line 57: warning: unknown attribute "clang::nonblocking"
+    virtual void nb_method() [[clang::nonblocking]];
+                               ^
+
+"Test_name.c", line 67: warning: unknown attribute "clang::nonblocking"
+    void nb_method2() [[clang::nonblocking(V)]];
+                        ^
+
+"Test_name.c", line 74: error: expected an identifier
+  void (^nl_block1)() [[clang::nonblocking]] = ^() [[clang::nonblocking]] {};
+        ^
+
+"Test_name.c", line 74: warning: unknown attribute "clang::nonblocking"
+  void (^nl_block1)() [[clang::nonblocking]] = ^() [[clang::nonblocking]] {};
+                        ^
+
+"Test_name.c", line 74: error: function "square_brackets::<error>" may not be initialized
+  void (^nl_block1)() [[clang::nonblocking]] = ^() [[clang::nonblocking]] {};
+                                             ^
+
+"Test_name.c", line 74: error: expected an expression
+  void (^nl_block1)() [[clang::nonblocking]] = ^() [[clang::nonblocking]] {};
+                                               ^
+
+"Test_name.c", line 77: error: expected an identifier
+  int (^nl_block2)() [[clang::nonblocking]] = ^() [[clang::nonblocking]] { return 0; };
+       ^
+
+"Test_name.c", line 77: warning: unknown attribute "clang::nonblocking"
+  int (^nl_block2)() [[clang::nonblocking]] = ^() [[clang::nonblocking]] { return 0; };
+                       ^
+
+"Test_name.c", line 77: error: function "square_brackets::<error>" may not be initialized
+  int (^nl_block2)() [[clang::nonblocking]] = ^() [[clang::nonblocking]] { return 0; };
+                                            ^
+
+"Test_name.c", line 77: error: expected an expression
+  int (^nl_block2)() [[clang::nonblocking]] = ^() [[clang::nonblocking]] { return 0; };
+                                              ^
+
+"Test_name.c", line 81: error: identifier "nl_block1" is undefined
+  static void blockCaller() { nl_block1(); }
+                              ^
+
+"Test_name.c", line 87: warning: unknown attribute "clang::nonblocking"
+  auto nl_lambda = []() [[clang::nonblocking]] {};
+                          ^
+
+"Test_name.c", line 93: warning: unknown attribute "clang::blocking"
+  void nl_func_false() [[clang::blocking]];
+                         ^
+
+"Test_name.c", line 96: warning: unknown attribute "clang::blocking"
+  auto nl_lambda_false = []() [[clang::blocking]] {};
+                                ^
+
+"Test_name.c", line 107: warning: unknown attribute "nonblocking"
+  void nl_function() __attribute__((nonblocking));
+                                    ^
+
+"Test_name.c", line 111: warning: unknown attribute "nonblocking"
+  __attribute__((nonblocking)) void nl_function();
+                 ^
+
+"Test_name.c", line 115: warning: unknown attribute "nonblocking"
+  void (*nl_func_a)() __attribute__((nonblocking));
+                                     ^
+
+"Test_name.c", line 119: warning: unknown attribute "nonblocking"
+  __attribute__((nonblocking)) void (*nl_func_b)();
+                 ^
+
+"Test_name.c", line 123: warning: unknown attribute "nonblocking"
+  static void nlReceiver(void (*nl_func)() __attribute__((nonblocking)));
+                                                          ^
+
+"Test_name.c", line 128: warning: unknown attribute "nonblocking"
+  typedef void (*nl_fp_type)() __attribute__((nonblocking));
+                                              ^
+
+"Test_name.c", line 130: warning: unknown attribute "nonblocking"
+  using nl_fp_talias = __attribute__((nonblocking)) void (*)();
+                                      ^
+
+"Test_name.c", line 141: warning: unknown attribute "nonblocking"
+    void (*nl_func_field)() __attribute__((nonblocking));
+                                           ^
+
+"Test_name.c", line 151: warning: unknown attribute "clang::nonallocating"
+  void na_function() [[clang::nonallocating]];
+                       ^
+
+"Test_name.c", line 154: warning: unknown attribute "clang::nonallocating"
+  void na_true_function() [[clang::nonallocating(true)]];
+                            ^
+
+"Test_name.c", line 157: warning: unknown attribute "clang::nonallocating"
+  void na_false_function() [[clang::nonallocating(false)]];
+                             ^
+
+"Test_name.c", line 160: warning: unknown attribute "clang::allocating"
+  void alloc_function() [[clang::allocating]];
+                          ^
+
+"Test_name.c", line 167: warning: unknown attribute "clang::nonblocking"
+  void t0() [[clang::nonblocking(1 - 1)]];
+              ^
+
+"Test_name.c", line 169: warning: unknown attribute "clang::nonblocking"
+  void t1() [[clang::nonblocking(1 + 1)]];
+              ^
+
+"Test_name.c", line 174: warning: unknown attribute "clang::nonblocking"
+    void nb_method() [[clang::nonblocking(V)]];
+                       ^
+
+"Test_name.c", line 177: warning: unknown attribute "clang::nonblocking"
+  void t3() [[clang::nonblocking]]
+              ^
+
+"Test_name.c", line 194: warning: unknown attribute "clang::nonblocking"
+    void td_method() [[clang::nonblocking(X::is_nb)]];
+                       ^
+
+"Test_name.c", line 24: warning: function "square_brackets::nlReceiver" was declared but never referenced
+  static void nlReceiver(void (*nl_func)() [[clang::nonblocking]]);
+              ^
+
+"Test_name.c", line 81: warning: function "square_brackets::blockCaller" was declared but never referenced
+  static void blockCaller() { nl_block1(); }
+              ^
+
+"Test_name.c", line 123: warning: function "gnu_style::nlReceiver" was declared but never referenced
+  static void nlReceiver(void (*nl_func)() __attribute__((nonblocking)));
+              ^
+
+7 errors detected in the compilation of "Test_name.c".

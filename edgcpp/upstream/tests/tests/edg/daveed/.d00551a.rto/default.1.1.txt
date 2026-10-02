@@ -1,0 +1,9 @@
+eccp -DTEST_NUMBER=1 --g++ --gnu_version=40000 Test_name.c
+"Test_name.c", line 24: warning: offsetof applied to a type other than a standard-layout class
+  	printf("%d %d\n", __builtin_offsetof(A, i),
+  	                                     ^
+
+"Test_name.c", line 25: warning: offsetof applied to a type other than a standard-layout class
+  	                  __builtin_offsetof(A, k));
+  	                                     ^
+

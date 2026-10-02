@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 11: error: argument of type "const char *" is incompatible with parameter of type "double"
+    dummy = __builtin_expect_with_probability(x > 0, 1, "aa"); // expected-error {{cannot initialize a parameter of type 'double' with an lvalue of type 'const char[3]'}}
+                                                        ^
+
+"Test_name.c", line 15: error: identifier "__DBL_EPSILON__" is undefined
+    dummy = __builtin_expect_with_probability(x > 0, 1, 1.0 + __DBL_EPSILON__); // expected-error {{probability argument to __builtin_expect_with_probability is outside the range [0.0, 1.0]}}
+                                                              ^
+
+"Test_name.c", line 16: error: identifier "__DBL_DENORM_MIN__" is undefined
+    dummy = __builtin_expect_with_probability(x > 0, 1, -__DBL_DENORM_MIN__); // expected-error {{probability argument to __builtin_expect_with_probability is outside the range [0.0, 1.0]}}
+                                                         ^
+
+"Test_name.c", line 6: warning: variable "dummy" was set but never used
+    bool dummy = false;
+         ^
+
+3 errors detected in the compilation of "Test_name.c".

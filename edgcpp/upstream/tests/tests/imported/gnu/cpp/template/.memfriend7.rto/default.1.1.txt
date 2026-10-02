@@ -1,0 +1,82 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 80: error: member "C::ii" (declared at line 20) is inaccessible
+    c.ii = 0;				// { dg-error "context" }
+      ^
+
+"Test_name.c", line 79: warning: variable "c" was set but never used
+    C c;
+      ^
+
+"Test_name.c", line 92: error: member "C::ii" (declared at line 20) is inaccessible
+    c.ii = 0;				// { dg-error "context" }
+      ^
+
+"Test_name.c", line 91: warning: variable "c" was set but never used
+    C c;
+      ^
+
+"Test_name.c", line 98: error: member "C::ii" (declared at line 20) is inaccessible
+    c.ii = 0;				// { dg-error "context" }
+      ^
+
+"Test_name.c", line 97: warning: variable "c" was set but never used
+    C c;
+      ^
+
+"Test_name.c", line 105: error: member "C::ii" (declared at line 20) is inaccessible
+    c.ii = 0;				// { dg-error "context" }
+      ^
+
+"Test_name.c", line 104: warning: variable "c" was set but never used
+    C c;
+      ^
+
+"Test_name.c", line 117: error: member "C::ii" (declared at line 20) is inaccessible
+    c.ii = 0;				// { dg-error "context" }
+      ^
+
+"Test_name.c", line 116: warning: variable "c" was set but never used
+    C c;
+      ^
+
+"Test_name.c", line 41: error: member "C::ii" (declared at line 20) is inaccessible
+    c.ii = 0;				// { dg-error "context" }
+      ^
+          detected during instantiation of "void A<T *>::f(int) [with T=int]" at line 123
+
+"Test_name.c", line 53: error: member "C::ii" (declared at line 20) is inaccessible
+    c.ii = 0;				// { dg-error "context" }
+      ^
+          detected during instantiation of "int A<T *>::h() [with T=int]" at line 126
+
+"Test_name.c", line 60: error: member "C::ii" (declared at line 20) is inaccessible
+    c.ii = 0;				// { dg-error "context" }
+      ^
+          detected during instantiation of "void A<T *>::i(char) [with T=int]" at line 127
+
+"Test_name.c", line 47: error: member "C::ii" (declared at line 20) is inaccessible
+    c.ii = 0;				// { dg-error "context" }
+      ^
+          detected during instantiation of "void A<T *>::g<U>() [with T=int, U=char]" at line 124
+
+"Test_name.c", line 47: error: member "C::ii" (declared at line 20) is inaccessible
+    c.ii = 0;				// { dg-error "context" }
+      ^
+          detected during instantiation of "void A<T *>::g<U>() [with T=int, U=int]" at line 125
+
+"Test_name.c", line 66: error: member "C::ii" (declared at line 20) is inaccessible
+    c.ii = 0;				// { dg-error "context" }
+      ^
+          detected during instantiation of "void A<T *>::j<<unnamed>>() [with T=int, <unnamed>=1]" at line 128
+
+"Test_name.c", line 86: error: member "C::ii" (declared at line 20) is inaccessible
+    c.ii = 0;				// { dg-error "context" }
+      ^
+          detected during instantiation of "void A<char>::g<U>() [with U=char]" at line 131
+
+"Test_name.c", line 111: error: member "C::ii" (declared at line 20) is inaccessible
+    c.ii = 0;				// { dg-error "context" }
+      ^
+          detected during instantiation of "void A<char>::j<<unnamed>>() [with <unnamed>=1]" at line 135
+
+13 errors detected in the compilation of "Test_name.c".

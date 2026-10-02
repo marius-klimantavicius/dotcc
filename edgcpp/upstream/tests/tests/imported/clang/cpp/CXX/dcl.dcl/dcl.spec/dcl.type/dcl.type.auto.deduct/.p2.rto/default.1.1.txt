@@ -1,0 +1,27 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++23 Test_name.c
+"Test_name.c", line 28: warning: variable "lr" was set but never used
+    A &lr = a;
+       ^
+
+"Test_name.c", line 29: warning: variable "lrc" was set but never used
+    A const &lrc = a;
+             ^
+
+"Test_name.c", line 30: warning: variable "rr" was set but never used
+    A &&rr = static_cast<A &&>(a);
+        ^
+
+"Test_name.c", line 31: warning: variable "rrc" was set but never used
+    A const &&rrc = static_cast<A &&>(a);
+              ^
+
+"Test_name.c", line 50: error: "A::A(const A &)" (declared at line 74) is inaccessible
+  template <class T> constexpr auto decay_copy(T &&v) { return static_cast<T &&>(v); } // expected-error {{calling a protected constructor}}
+                                                               ^
+          detected during instantiation of "auto decay_copy(T &&) [with T=A &]" at line 65
+
+"Test_name.c", line 82: warning: variable "auto_x::u" was declared but never referenced
+  } u = auto(Uncopyable(auto(Uncopyable(42))));
+    ^
+
+1 error detected in the compilation of "Test_name.c".

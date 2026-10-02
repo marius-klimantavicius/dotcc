@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 42: error: template constraint not satisfied
+  S3<int, int, char> x0; // { dg-error "template constraint failure" }
+                   ^
+"Test_name.c", line 41: note: type constraint failed for "char"
+  template<Int... Ts> struct S3 { }; // requires (C<Ts> && ...)
+           ^
+"Test_name.c", line 27: note: atomic constraint evaluates to false
+  concept Int = __is_same_as(T, int);
+                ^
+
+"Test_name.c", line 45: error: template constraint not satisfied
+  S4<0, 1, 2, 'a'> x1; // { dg-error "placeholder constraints not satisfied" }
+              ^
+"Test_name.c", line 44: note: type constraint failed for "char"
+  template<Int auto... Xs> struct S4 { }; // requires (C<X> && ...) with each X deduced
+           ^
+"Test_name.c", line 27: note: atomic constraint evaluates to false
+  concept Int = __is_same_as(T, int);
+                ^
+
+2 errors detected in the compilation of "Test_name.c".

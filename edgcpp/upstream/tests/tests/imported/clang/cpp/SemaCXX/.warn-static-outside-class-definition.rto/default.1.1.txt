@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --ms_compatibility --ms_compatibility Test_name.c
+"Test_name.c", line 10: warning: a storage class may not be specified here
+  template <typename T> static int C::foo(T) { 
+                        ^
+
+"Test_name.c", line 19: warning: a storage class may not be specified here
+  template <class T> static void S<T>::f() {}
+                     ^
+

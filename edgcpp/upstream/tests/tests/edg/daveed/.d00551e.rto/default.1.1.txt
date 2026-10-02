@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --g++ -tused --gnu_version=40000 Test_name.c
+"Test_name.c", line 23: warning: offsetof applied to a type other than a standard-layout class
+  	__builtin_offsetof(D, i);
+  	                   ^
+
+"Test_name.c", line 23: error: member "B::i" (declared at line 16) is inaccessible
+  	__builtin_offsetof(D, i);
+  	                      ^
+
+"Test_name.c", line 23: warning: expression has no effect
+  	__builtin_offsetof(D, i);
+  	^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 41: warning: pointer points outside of underlying object
+    __builtin_sprintf(buffer, "%%d%d%d"+9, 1, 2);
+                                       ^
+
+"Test_name.c", line 59: warning: pointer points outside of underlying object
+    __builtin_sprintf(buffer, "%%d%d%d"+9, 1, 2, 3);
+                                       ^
+

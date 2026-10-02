@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: error: expected a ";"
+    char b:8 alignas(int);	// { dg-warning "ISO C\\+\\+ allows bit-field attributes only before the ':' token" }
+             ^
+
+"Test_name.c", line 10: error: two consecutive left square brackets always introduce an attribute list but an attribute list cannot appear here
+    char c:8 [[gnu::aligned(8)]];	// { dg-warning "ISO C\\+\\+ allows bit-field attributes only before the ':' token" }
+             ^
+
+"Test_name.c", line 10: error: a lambda is not allowed in a constant expression
+    char c:8 [[gnu::aligned(8)]];	// { dg-warning "ISO C\\+\\+ allows bit-field attributes only before the ':' token" }
+              ^
+
+"Test_name.c", line 10: error: identifier "gnu" is undefined
+    char c:8 [[gnu::aligned(8)]];	// { dg-warning "ISO C\\+\\+ allows bit-field attributes only before the ':' token" }
+               ^
+
+"Test_name.c", line 10: error: expected a "]"
+    char c:8 [[gnu::aligned(8)]];	// { dg-warning "ISO C\\+\\+ allows bit-field attributes only before the ':' token" }
+                  ^
+
+"Test_name.c", line 10: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+    char c:8 [[gnu::aligned(8)]];	// { dg-warning "ISO C\\+\\+ allows bit-field attributes only before the ':' token" }
+                               ^
+
+"Test_name.c", line 10: error: expected a "{" introducing a lambda body
+    char c:8 [[gnu::aligned(8)]];	// { dg-warning "ISO C\\+\\+ allows bit-field attributes only before the ':' token" }
+                               ^
+
+6 errors detected in the compilation of "Test_name.c".

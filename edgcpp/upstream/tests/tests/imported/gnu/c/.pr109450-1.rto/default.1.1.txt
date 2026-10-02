@@ -1,0 +1,13 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 8: warning: declaration is not visible outside of function
+  int bar(int n, struct foo* x)	/* { dg-warning "not be visible" } */
+                        ^
+
+"Test_name.c", line 11: warning: variable-length array field type will be treated as zero-length array field type
+  	struct foo { char buf[n++]; }* p = x;
+  	                      ^
+
+"Test_name.c", line 11: warning: variable "p" was declared but never referenced
+  	struct foo { char buf[n++]; }* p = x;
+  	                               ^
+

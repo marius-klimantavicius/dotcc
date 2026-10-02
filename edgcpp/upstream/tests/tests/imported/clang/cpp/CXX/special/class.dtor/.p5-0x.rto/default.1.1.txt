@@ -1,0 +1,59 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 23: error: function "A1::~A1()" (declared implicitly) cannot be referenced -- it is a deleted function
+  A1 a1; // expected-error {{deleted function}}
+     ^
+
+"Test_name.c", line 30: error: function "A2::~A2()" (declared implicitly) cannot be referenced -- it is a deleted function
+  A2 a2; // expected-error {{deleted function}}
+     ^
+
+"Test_name.c", line 35: error: function "A3::~A3()" (declared implicitly) cannot be referenced -- it is a deleted function
+  A3 a3; // expected-error {{deleted function}}
+     ^
+
+"Test_name.c", line 42: error: function "A4::~A4()" (declared implicitly) cannot be referenced -- it is a deleted function
+  A4 a4; // expected-error {{deleted function}}
+     ^
+
+"Test_name.c", line 50: error: function "B1::~B1()" (declared implicitly) cannot be referenced -- it is a deleted function
+  B1 b1; // expected-error {{deleted function}}
+     ^
+
+"Test_name.c", line 60: error: function "B3::~B3()" (declared implicitly) cannot be referenced -- it is a deleted function
+  B3 b3; // expected-error {{deleted function}}
+     ^
+
+"Test_name.c", line 82: error: function "C1::~C1()" (declared implicitly) cannot be referenced -- it is a deleted function
+  struct C1 : DeletedDtor { C1(); } c1; // expected-error {{deleted function}} expected-note {{base class 'DeletedDtor' has a deleted destructor}}
+                                    ^
+
+"Test_name.c", line 84: error: function "C3::~C3()" (declared implicitly) cannot be referenced -- it is a deleted function
+  struct C3 : virtual DeletedDtor { C3(); } c3; // expected-error {{deleted function}} expected-note {{base class 'DeletedDtor' has a deleted destructor}}
+                                            ^
+
+"Test_name.c", line 90: error: function "D1::operator delete" (declared at line 90) is inaccessible
+    void operator delete(void*); // expected-note {{here}}
+         ^
+          detected during:
+            implicit generation of "D2::~D2()" at line 97
+            implicit generation of "D2::D2()" at line 97
+
+"Test_name.c", line 99: error: a non-placement operator delete must be visible in a class with a virtual destructor
+    virtual ~D3() = default; // expected-note {{explicitly defaulted function was implicitly deleted here}}
+            ^
+          detected during implicit generation of "D3::D3()" at line 102
+
+"Test_name.c", line 104: error: function "D4::operator delete(void *)" (declared at line 105) cannot be referenced -- it is a deleted function
+    virtual ~D4() = default; // expected-note {{implicitly deleted here}}
+            ^
+          detected during implicit generation of "D4::D4()" at line 106
+
+"Test_name.c", line 90: error: function "D1::operator delete" (declared at line 90) is inaccessible
+    void operator delete(void*); // expected-note {{here}}
+         ^
+
+"Test_name.c", line 112: error: deleted function overrides nondeleted function "D1::~D1"
+    ~D6() = delete; // expected-error {{deleted function '~D6' cannot override a non-deleted}}
+    ^
+
+13 errors detected in the compilation of "Test_name.c".

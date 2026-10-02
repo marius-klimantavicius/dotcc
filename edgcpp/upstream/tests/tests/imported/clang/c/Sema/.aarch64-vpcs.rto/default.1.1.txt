@@ -1,0 +1,37 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c --target linux_aarch64 Test_name.c
+"Test_name.c", line 5: warning: unknown attribute "aarch64_vector_pcs"
+  typedef __attribute__((aarch64_vector_pcs)) int invalid_typedef; // expected-warning {{'aarch64_vector_pcs' only applies to function types; type here is 'int'}}
+                         ^
+
+"Test_name.c", line 7: warning: unknown attribute "aarch64_vector_pcs"
+  void __attribute__((aarch64_vector_pcs(0))) foo0(void); // expected-error {{'aarch64_vector_pcs' attribute takes no arguments}}
+                      ^
+
+"Test_name.c", line 9: warning: unknown attribute "aarch64_vector_pcs"
+  void __attribute__((aarch64_vector_pcs, preserve_all)) foo1(void); // expected-error {{not compatible}}
+                      ^
+
+"Test_name.c", line 9: warning: unknown attribute "preserve_all"
+  void __attribute__((aarch64_vector_pcs, preserve_all)) foo1(void); // expected-error {{not compatible}}
+                                          ^
+
+"Test_name.c", line 11: warning: attribute is supported only in 32-bit x86 configurations
+  void __attribute__((cdecl)) foo2(void);                // expected-note {{previous declaration is here}}
+                      ^
+
+"Test_name.c", line 12: warning: unknown attribute "aarch64_vector_pcs"
+  void __attribute__((aarch64_vector_pcs)) foo2(void) {} // expected-error {{function declared 'aarch64_vector_pcs' here was previously declared 'cdecl'}}
+                      ^
+
+"Test_name.c", line 15: warning: unknown attribute "aarch64_vector_pcs"
+  void __attribute__((aarch64_vector_pcs)) foo3(void) {} // expected-error {{function declared 'aarch64_vector_pcs' here was previously declared without calling convention}}
+                      ^
+
+"Test_name.c", line 18: warning: unknown attribute "aarch64_vector_pcs"
+  typedef int __attribute__((aarch64_vector_pcs)) (*aavpcs_fn_ty)(void);
+                             ^
+
+"Test_name.c", line 19: warning: parameter "ptr1" was set but never used
+  void foo4(fn_ty ptr1, aavpcs_fn_ty ptr2) {
+                  ^
+

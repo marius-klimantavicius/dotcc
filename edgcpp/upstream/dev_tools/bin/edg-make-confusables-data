@@ -1,0 +1,32 @@
+#!/bin/sh
+
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+# Edit data in the format of unicode.org/Public/security/latest/confusables.txt
+# ($1) to be the initializer for confusable_map in lexical.h ($2).
+
+if [ $# -lt 2 ] ; then
+  echo 'Usage:' $0 '<Unicode confusables.txt> <initializer-data>'
+  exit 1
+fi
+
+input_file=$1
+output_file=$2
+
+sed -e 's/#.*$//' $input_file | \
+sed -e '/^\s*$/d' | \
+sed -e 's/ ;\sMA\s*$//' | \
+sed -e 's/ /, /g' | \
+sed -e 's/ ;\s/ { /' | \
+sed -e 's/^/      { /' | \
+sed -e 's/$/ } },/' | \
+sed -e 's/ \([0-9A-F][0-9A-F][0-9A-F][0-9A-F][ ,]\)/ 0\1/g' | \
+sed -e 's/ \([012]\)/ 0x\1/g' | \
+sort | \
+sed -e 's/\(0x....., 0x....., 0x....., 0x....., 0x.....,\)/\1\n                  /g' | \
+sed -e '1i \ \ = {' | \
+sed -e '$d' | \
+sed -e '$a \ \ }' > $output_file

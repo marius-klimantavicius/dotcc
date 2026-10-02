@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 7: error: this declaration has no storage class or type specifier
+      template<operator+> void foo() {}   // { dg-error "14:declaration" }
+               ^
+
+"Test_name.c", line 7: error: operator name is not allowed
+      template<operator+> void foo() {}   // { dg-error "14:declaration" }
+               ^
+
+2 errors detected in the compilation of "Test_name.c".

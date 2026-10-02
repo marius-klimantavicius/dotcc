@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=1 --microsoft -DNOSEP Test_name.c

@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 11: warning: variable "x" was set but never used
+          int x[N][M]; // OK: N and M are not "used"
+              ^
+
+"Test_name.c", line 10: warning: variable "m2" was declared but never referenced
+       auto m2 = [i]{
+            ^
+
+"Test_name.c", line 22: error: this enclosing-function local variable cannot be referenced in this lambda body because an enclosing lambda does not allow implicit captures
+          /*auto m4=*/[&,j]{      // { dg-error "j. is not captured" }
+                         ^
+
+"Test_name.c", line 23: error: this enclosing-function local variable cannot be referenced in this lambda body because an enclosing lambda does not allow implicit captures
+            int x = n;	        // { dg-error "n. is not captured" }
+                    ^
+
+"Test_name.c", line 26: error: invalid reference to an outer-scope local variable in a lambda body
+            x += i;		// { dg-error "i. is not captured" }
+                 ^
+
+"Test_name.c", line 21: warning: variable "m3" was declared but never referenced
+        auto m3 = [this,m]{
+             ^
+
+"Test_name.c", line 8: warning: variable "m1" was declared but never referenced
+    auto m1 = [=]{
+         ^
+
+3 errors detected in the compilation of "Test_name.c".

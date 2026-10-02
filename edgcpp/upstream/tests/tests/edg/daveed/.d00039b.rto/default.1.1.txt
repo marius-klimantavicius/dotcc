@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 19: error: declaration is incompatible with function template "int V::init(T)" (declared at line 16)
+              template<class T> friend void V::init(T);
+                                               ^
+
+1 error detected in the compilation of "Test_name.c".

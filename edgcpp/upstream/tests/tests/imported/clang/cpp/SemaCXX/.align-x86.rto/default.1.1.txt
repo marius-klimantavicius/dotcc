@@ -1,0 +1,80 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 19: error: static assertion failed with "alignof(type) != ABI"
+    static_assert(alignof(type) == ABI, "alignof(type) != ABI");
+    ^
+"Test_name.c", line 19: note: the final comparison was 8 == 4
+    static_assert(alignof(type) == ABI, "alignof(type) != ABI");
+                                ^
+          detected during instantiation of class "check_alignment<T, ABI, Preferred> [with T=double, ABI=4UL, Preferred=8UL]" at line 23
+
+"Test_name.c", line 19: error: static assertion failed with "alignof(type) != ABI"
+    static_assert(alignof(type) == ABI, "alignof(type) != ABI");
+    ^
+"Test_name.c", line 19: note: the final comparison was 8 == 4
+    static_assert(alignof(type) == ABI, "alignof(type) != ABI");
+                                ^
+          detected during instantiation of class "check_alignment<T, ABI, Preferred> [with T=long long, ABI=4UL, Preferred=8UL]" at line 24
+
+"Test_name.c", line 19: error: static assertion failed with "alignof(type) != ABI"
+    static_assert(alignof(type) == ABI, "alignof(type) != ABI");
+    ^
+"Test_name.c", line 19: note: the final comparison was 8 == 4
+    static_assert(alignof(type) == ABI, "alignof(type) != ABI");
+                                ^
+          detected during instantiation of class "check_alignment<T, ABI, Preferred> [with T=unsigned long long, ABI=4UL, Preferred=8UL]" at line 25
+
+"Test_name.c", line 17: error: static assertion failed with "__alignof__(value) != Preferred"
+    static_assert(__alignof__(value) == Preferred, "__alignof__(value) != Preferred");
+    ^
+"Test_name.c", line 17: note: the final comparison was 8 == 4
+    static_assert(__alignof__(value) == Preferred, "__alignof__(value) != Preferred");
+                                     ^
+          detected during instantiation of class "check_alignment<T, ABI, Preferred> [with T=complex_double, ABI=4UL, Preferred=4UL]" at line 26
+
+"Test_name.c", line 18: error: static assertion failed with "__alignof__(type) != Preferred"
+    static_assert(__alignof__(type) == Preferred, "__alignof__(type) != Preferred");
+    ^
+"Test_name.c", line 18: note: the final comparison was 8 == 4
+    static_assert(__alignof__(type) == Preferred, "__alignof__(type) != Preferred");
+                                    ^
+          detected during instantiation of class "check_alignment<T, ABI, Preferred> [with T=complex_double, ABI=4UL, Preferred=4UL]" at line 26
+
+"Test_name.c", line 19: error: static assertion failed with "alignof(type) != ABI"
+    static_assert(alignof(type) == ABI, "alignof(type) != ABI");
+    ^
+"Test_name.c", line 19: note: the final comparison was 8 == 4
+    static_assert(alignof(type) == ABI, "alignof(type) != ABI");
+                                ^
+          detected during instantiation of class "check_alignment<T, ABI, Preferred> [with T=complex_double, ABI=4UL, Preferred=4UL]" at line 26
+
+"Test_name.c", line 19: error: static assertion failed with "alignof(type) != ABI"
+    static_assert(alignof(type) == ABI, "alignof(type) != ABI");
+    ^
+"Test_name.c", line 19: note: the final comparison was 8 == 4
+    static_assert(alignof(type) == ABI, "alignof(type) != ABI");
+                                ^
+          detected during instantiation of class "check_alignment<T, ABI, Preferred> [with T=double [3], ABI=4UL, Preferred=8UL]" at line 36
+
+"Test_name.c", line 19: error: static assertion failed with "alignof(type) != ABI"
+    static_assert(alignof(type) == ABI, "alignof(type) != ABI");
+    ^
+"Test_name.c", line 19: note: the final comparison was 8 == 4
+    static_assert(alignof(type) == ABI, "alignof(type) != ABI");
+                                ^
+          detected during instantiation of class "check_alignment<T, ABI, Preferred> [with T=big_enum, ABI=4UL, Preferred=8UL]" at line 39
+
+"Test_name.c", line 50: error: static assertion failed with ""
+  static_assert(sizeof(aligned_before_struct[1])    == 4, ""); // expected-error {{size of array element}}
+  ^
+"Test_name.c", line 50: note: the final comparison was 3 == 4
+  static_assert(sizeof(aligned_before_struct[1])    == 4, ""); // expected-error {{size of array element}}
+                                                    ^
+
+"Test_name.c", line 52: error: static assertion failed with ""
+  static_assert(sizeof(aligned_before_struct[2][1]) == 8, ""); // expected-error {{size of array element}}
+  ^
+"Test_name.c", line 52: note: the final comparison was 6 == 8
+  static_assert(sizeof(aligned_before_struct[2][1]) == 8, ""); // expected-error {{size of array element}}
+                                                    ^
+
+10 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,6 @@
+# Import Release Configuration
+import <support/build-type/debug/base>
+
+# Enable Checking
+CHECKING=1
+EXPENSIVE_CHECKING=1

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 7: error: an initializer is not allowed on a local declaration of an extern variable
+    extern int i __attribute__((unused)) = 0;  // { dg-error "14:.i. has both .extern. and initializer" }
+                                         ^
+
+1 error detected in the compilation of "Test_name.c".

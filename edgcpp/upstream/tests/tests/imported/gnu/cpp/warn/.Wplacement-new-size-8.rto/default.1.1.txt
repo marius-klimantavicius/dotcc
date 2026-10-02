@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 42: warning: pointer points outside of underlying object
+      new (ca1 - 1) S<1>;         // { dg-warning "constructing an object of type 'S<1>' and size '1' in a region of type 'char \\\[1]' and size '0'" }
+               ^
+
+"Test_name.c", line 78: warning: pointer points outside of underlying object
+      new (ca2 - 2 + i) S<2>;
+               ^
+
+"Test_name.c", line 132: warning: pointer points outside of underlying object
+      new (ca2 - 2 + i) S<2>;
+               ^
+

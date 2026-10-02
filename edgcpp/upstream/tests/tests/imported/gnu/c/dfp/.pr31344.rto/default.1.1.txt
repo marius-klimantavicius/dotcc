@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 18: warning: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+  extern void __host_to_ieee_32 (_Decimal32, decimal32 *);
+                                 ^
+
+"Test_name.c", line 18: error: a typedef name may not be redeclared as a parameter
+  extern void __host_to_ieee_32 (_Decimal32, decimal32 *);
+                                             ^
+
+"Test_name.c", line 18: error: expected a ")"
+  extern void __host_to_ieee_32 (_Decimal32, decimal32 *);
+                                                       ^
+
+"Test_name.c", line 18: warning: identifier-list parameters may only be used in a function definition
+  extern void __host_to_ieee_32 (_Decimal32, decimal32 *);
+              ^
+
+"Test_name.c", line 21: error: identifier "_Decimal32" is undefined
+  foo (_Decimal32 arg)
+       ^
+
+3 errors detected in the compilation of "Test_name.c".

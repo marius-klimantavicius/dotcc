@@ -1,0 +1,84 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 -DCLANG_ABI_COMPAT=14 Test_name.c
+"Test_name.c", line 9: error: static assertion failed with ""
+    static_assert(B == __has_trivial_copy(T), "");
+    ^
+"Test_name.c", line 9: note: the final comparison was 0 == 1
+    static_assert(B == __has_trivial_copy(T), "");
+                    ^
+          detected during:
+            instantiation of class "trivially_copyable_check<T, B> [with T=NonConstCopy, B=false]" at line 18
+            instantiation of type "not_trivially_copyable<NonConstCopy>" at line 36
+
+"Test_name.c", line 78: error: static assertion failed with ""
+  static_assert(!__is_trivially_constructible(MutableTemplateCtorMember, const MutableTemplateCtorMember &), "");
+  ^
+
+"Test_name.c", line 85: error: static assertion failed with ""
+  static_assert(!__is_trivially_constructible(MutableTemplateCtorMember2, const MutableTemplateCtorMember2 &), "");
+  ^
+
+"Test_name.c", line 109: error: static assertion failed with ""
+  static_assert(__has_trivial_copy(DerivedFromTNT), "");
+  ^
+
+"Test_name.c", line 110: error: static assertion failed with ""
+  static_assert(__is_trivially_constructible(DerivedFromTNT, DerivedFromTNT), "");
+  ^
+
+"Test_name.c", line 111: error: static assertion failed with ""
+  static_assert(__is_trivially_constructible(DerivedFromTNT, DerivedFromTNT &), "");
+  ^
+
+"Test_name.c", line 112: error: static assertion failed with ""
+  static_assert(__is_trivially_constructible(DerivedFromTNT, const DerivedFromTNT &), "");
+  ^
+
+"Test_name.c", line 114: error: static assertion failed with ""
+  static_assert(__is_trivially_constructible(DerivedFromTNT, DerivedFromTNT &&), "");
+  ^
+
+"Test_name.c", line 115: error: static assertion failed with ""
+  static_assert(__is_trivially_constructible(DerivedFromTNT, const DerivedFromTNT &&), "");
+  ^
+
+"Test_name.c", line 123: error: static assertion failed with ""
+  static_assert(__has_trivial_copy(TNTMember), "");
+  ^
+
+"Test_name.c", line 124: error: static assertion failed with ""
+  static_assert(__is_trivially_constructible(TNTMember, TNTMember), "");
+  ^
+
+"Test_name.c", line 125: error: static assertion failed with ""
+  static_assert(__is_trivially_constructible(TNTMember, TNTMember &), "");
+  ^
+
+"Test_name.c", line 126: error: static assertion failed with ""
+  static_assert(__is_trivially_constructible(TNTMember, const TNTMember &), "");
+  ^
+
+"Test_name.c", line 128: error: static assertion failed with ""
+  static_assert(__is_trivially_constructible(TNTMember, TNTMember &&), "");
+  ^
+
+"Test_name.c", line 129: error: static assertion failed with ""
+  static_assert(__is_trivially_constructible(TNTMember, const TNTMember &&), "");
+  ^
+
+"Test_name.c", line 154: error: static assertion failed with ""
+  static_assert(!__is_trivially_constructible(UseTemplateCtorNoMove, UseTemplateCtorNoMove &&), "");
+  ^
+
+"Test_name.c", line 188: error: static assertion failed with ""
+    static_assert(__is_trivially_constructible(TopNoAccess, TopNoAccess &&), "");
+    ^
+
+"Test_name.c", line 220: error: static assertion failed with ""
+    static_assert(!__is_trivially_constructible(Test, const Test &), "");
+    ^
+
+"Test_name.c", line 222: error: static assertion failed with ""
+    static_assert(!__is_trivially_constructible(Test, Test &&), "");
+    ^
+
+19 errors detected in the compilation of "Test_name.c".

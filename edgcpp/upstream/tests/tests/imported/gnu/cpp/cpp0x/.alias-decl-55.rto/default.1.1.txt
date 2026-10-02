@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 18: error: excessive recursion at instantiation of function "rec<T,num>() [with T=Base, num=-63]"
+    return rec<T, num - 1>();  
+           ^
+          detected during:
+            instantiation of "const sp<T> rec<T,num>() [with T=Base, num=-62]" at line 18
+            instantiation of "const sp<T> rec<T,num>() [with T=Base, num=-61]" at line 18
+            instantiation of "const sp<T> rec<T,num>() [with T=Base, num=-60]" at line 18
+            instantiation of "const sp<T> rec<T,num>() [with T=Base, num=-59]" at line 18
+            instantiation of "const sp<T> rec<T,num>() [with T=Base, num=-58]" at line 18
+            [ 54 instantiation contexts not shown ]
+            instantiation of "const sp<T> rec<T,num>() [with T=Base, num=-3]" at line 18
+            instantiation of "const sp<T> rec<T,num>() [with T=Base, num=-2]" at line 18
+            instantiation of "const sp<T> rec<T,num>() [with T=Base, num=-1]" at line 18
+            instantiation of "const sp<T> rec<T,num>() [with T=Base, num=0]" at line 18
+            instantiation of "const sp<T> rec<T,num>() [with T=Base, num=1]" at line 22
+
+"Test_name.c", line 21: warning: function "f" was declared but never referenced
+  static void f(void) {
+              ^
+
+1 error detected in the compilation of "Test_name.c".

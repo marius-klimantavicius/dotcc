@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 --c++17 -tused Test_name.c
+"Test_name.c", line 14: error: cannot convert to incomplete class "A<void>::X"
+  B b(0);
+      ^
+          detected during implicit generation of "B::B(c &&, A<void>::X) [with c=int]" at line 14
+
+"Test_name.c", line 7: error: incomplete type "A<void>::X" is not allowed
+    template <class c> A(c &&, X = X());
+                                   ^
+          detected during instantiation of "A<<unnamed>>::A(c &&, A<<unnamed>>::X) [with <unnamed>=void, c=int]" at line 14
+
+2 errors detected in the compilation of "Test_name.c".

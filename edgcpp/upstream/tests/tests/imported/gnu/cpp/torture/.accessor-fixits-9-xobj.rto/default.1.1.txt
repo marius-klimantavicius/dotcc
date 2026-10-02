@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++23 Test_name.c
+"Test_name.c", line 22: error: class "t1" has no member "ratio"
+    return ptr_1->ratio; // { dg-error "'class t1' has no member named 'ratio'; did you mean 'int t1::m_ratio'\\? \\(accessible via 'int t1::get_ratio\\(this const t1&\\)'\\)" }
+                  ^
+
+"Test_name.c", line 46: error: class "t2" has no member "m_colour"
+    return ptr_2->m_colour; // { dg-error "'class t2' has no member named 'm_colour'; did you mean 'int t2::m_color'\\? \\(accessible via 'int t2::get_color\\(this const t2&\\)'\\)" }
+                  ^
+
+"Test_name.c", line 64: error: class "t3" has no member "m_colour"
+    return ptr_3->m_colour; // { dg-error "'class t3' has no member named 'm_colour'; did you mean 'int t2::m_color'\\? \\(accessible via 'int t2::get_color\\(this const t2&\\)'\\)" }
+                  ^
+
+"Test_name.c", line 87: error: class "t4" has no member "m_colour"
+    return ptr_4->m_colour; // { dg-error "'class t4' has no member named 'm_colour'; did you mean 'int t4::m_color'\\? \\(not accessible from this context\\)" }
+                  ^
+
+"Test_name.c", line 112: error: class "t5" has no member "m_colour"
+    return ptr_5->m_colour; // { dg-error "'class t5' has no member named 'm_colour'; did you mean 'int t5::m_color'\\? \\(not accessible from this context\\)" }
+                  ^
+
+5 errors detected in the compilation of "Test_name.c".

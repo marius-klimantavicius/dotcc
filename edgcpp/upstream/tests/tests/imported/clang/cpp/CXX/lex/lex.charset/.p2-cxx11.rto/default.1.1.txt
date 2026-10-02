@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 28: warning: a universal character name cannot designate a surrogate code point
+  wchar_t wd800 = L'\ud800'; // expected-error {{invalid universal character}}
+                    ^
+
+"Test_name.c", line 29: warning: a universal character name cannot designate a surrogate code point
+  wchar_t wdfff = L'\udfff'; // expected-error {{invalid universal character}}
+                    ^
+
+"Test_name.c", line 34: warning: a universal character name must designate a valid code point
+  char32_t w110000 = U'\U00110000'; // expected-error {{invalid universal character}}
+                       ^
+
+"Test_name.c", line 41: warning: a universal character name must designate a valid code point
+  const wchar_t *p6 = L"foo \U00110000 bar"; // expected-error {{invalid universal character}}
+                            ^
+
+"Test_name.c", line 42: warning: a universal character name cannot designate a surrogate code point
+  const char *p7 = u8"foo \U0000d800 bar"; // expected-error {{invalid universal character}}
+                          ^
+
+"Test_name.c", line 43: warning: a universal character name cannot designate a surrogate code point
+  const char16_t *p8 = u"foo \U0000dfff bar"; // expected-error {{invalid universal character}}
+                             ^
+

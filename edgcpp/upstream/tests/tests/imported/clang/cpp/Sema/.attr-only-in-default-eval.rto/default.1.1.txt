@@ -1,0 +1,41 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 5: warning: unknown attribute "clang::available_only_in_default_eval_method"
+  typedef float float_t [[clang::available_only_in_default_eval_method]];
+                          ^
+
+"Test_name.c", line 6: warning: unknown attribute "available_only_in_default_eval_method"
+  using double_t __attribute__((available_only_in_default_eval_method)) = double;
+                                ^
+
+"Test_name.c", line 9: warning: unknown attribute "available_only_in_default_eval_method"
+  class  __attribute__((available_only_in_default_eval_method)) C1 {
+                        ^
+
+"Test_name.c", line 12: warning: unknown attribute "clang::available_only_in_default_eval_method"
+  class  [[clang::available_only_in_default_eval_method]] C2 {
+           ^
+
+"Test_name.c", line 16: warning: unknown attribute "clang::available_only_in_default_eval_method"
+  struct [[clang::available_only_in_default_eval_method]] S1;
+           ^
+
+"Test_name.c", line 18: warning: unknown attribute "available_only_in_default_eval_method"
+  struct __attribute__((available_only_in_default_eval_method)) S2;
+                        ^
+
+"Test_name.c", line 21: warning: unknown attribute "available_only_in_default_eval_method"
+  void __attribute__((available_only_in_default_eval_method)) foo();
+                      ^
+
+"Test_name.c", line 23: warning: unknown attribute "clang::available_only_in_default_eval_method"
+  void [[clang::available_only_in_default_eval_method]] goo();
+         ^
+
+"Test_name.c", line 25: warning: unknown attribute "clang::available_only_in_default_eval_method"
+  void bar() [[clang::available_only_in_default_eval_method]];
+               ^
+
+"Test_name.c", line 27: warning: unknown attribute "available_only_in_default_eval_method"
+  void barz() __attribute__((available_only_in_default_eval_method));
+                             ^
+

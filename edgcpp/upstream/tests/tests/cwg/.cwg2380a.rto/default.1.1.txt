@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 -A --c++20 -tused -e 200 --no_wrap Test_name.c
+"Test_name.c", line 5: error: an enclosing-function local variable cannot be referenced in a lambda body unless it is in the capture list
+      [] { n = 1; };        // error, n is not odr-usable due to intervening lambda-expression
+           ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./analyzer/vfunc-5.C", line 29: warning: variable "B" was declared but never referenced
+      Base B, *base_ptr;
+           ^
+
+"./analyzer/vfunc-5.C", line 34: warning: variable "n" was declared but never referenced
+      int n = *D.ptr;
+          ^
+

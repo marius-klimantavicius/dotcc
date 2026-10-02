@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 7: warning: declaring a reference with "mutable" is nonstandard
+    mutable int &q; /* { dg-warning "3:reference .q. cannot be declared .mutable." } */
+    ^
+
+"Test_name.c", line 6: warning: class "X" defines no constructor to initialize the following:
+            reference member "X::q"
+  class X {
+        ^
+

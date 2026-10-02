@@ -1,0 +1,60 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 41: error: default constructor for "GH62361::B<char, void *>" is not eligible
+      B<char> b1; // expected-error {{no matching constructor}}
+              ^
+
+"Test_name.c", line 42: error: default constructor for "GH62361::B<char, void *>" is not eligible
+      B<char> b2{}; // expected-error {{no matching constructor}}
+                ^
+
+"Test_name.c", line 43: error: default constructor for "GH62361::B<char, void *>" is not eligible
+      B<char> b3 = {}; // expected-error {{no matching constructor}}
+                   ^
+
+"Test_name.c", line 44: error: default constructor for "GH62361::B<char, void *>" is not eligible
+      new B<char>{}; // expected-error {{no matching constructor}}
+                 ^
+
+"Test_name.c", line 45: error: no instance of constructor "GH62361::B<T, U>::B [with T=char, U=void *]" matches the argument list
+      new B<char>(); // expected-error {{no matching constructor}}
+                 ^
+"Test_name.c", line 6: note: number of parameters of function "GH62361::B<T, U>::B(const GH62361::B<char, void *> &) [with T=char, U=void *]" does not match the call
+    template <typename T, typename U = void*> struct B { // expected-note 14{{candidate}}
+                                                     ^
+"Test_name.c", line 6: note: number of parameters of function "GH62361::B<T, U>::B(GH62361::B<char, void *> &&) [with T=char, U=void *]" does not match the call
+    template <typename T, typename U = void*> struct B { // expected-note 14{{candidate}}
+                                                     ^
+"Test_name.c", line 7: note: constraint on candidate function "GH62361::B<T, U>::B() [with T=char, U=void *]" not satisfied
+      B() // expected-note 7{{not viable}}
+      ^
+
+"Test_name.c", line 46: error: no instance of function template "GH62361::g" matches the argument list
+            argument types are: ({...})
+      g<char>({}); // expected-error {{no matching function}}
+      ^
+"Test_name.c", line 16: note: function template "GH62361::g" does not match because argument #1 does not match parameter
+    void g(B<T>); // expected-note {{cannot convert}}
+         ^
+
+"Test_name.c", line 47: error: default constructor for "GH62361::B<char, void *>" is not eligible
+      B<char>{}; // expected-error {{no matching constructor}}
+             ^
+
+"Test_name.c", line 48: error: no instance of constructor "GH62361::B<T, U>::B [with T=char, U=void *]" matches the argument list
+      B<char>(); // expected-error {{no matching constructor}}
+      ^
+"Test_name.c", line 6: note: number of parameters of function "GH62361::B<T, U>::B(const GH62361::B<char, void *> &) [with T=char, U=void *]" does not match the call
+    template <typename T, typename U = void*> struct B { // expected-note 14{{candidate}}
+                                                     ^
+"Test_name.c", line 6: note: number of parameters of function "GH62361::B<T, U>::B(GH62361::B<char, void *> &&) [with T=char, U=void *]" does not match the call
+    template <typename T, typename U = void*> struct B { // expected-note 14{{candidate}}
+                                                     ^
+"Test_name.c", line 7: note: constraint on candidate function "GH62361::B<T, U>::B() [with T=char, U=void *]" not satisfied
+      B() // expected-note 7{{not viable}}
+      ^
+
+"Test_name.c", line 41: warning: variable "b1" was declared but never referenced
+      B<char> b1; // expected-error {{no matching constructor}}
+              ^
+
+8 errors detected in the compilation of "Test_name.c".

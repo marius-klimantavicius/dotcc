@@ -1,0 +1,58 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 20: error: the operand of a const_cast to an rvalue reference type cannot be a non-class prvalue
+    int *&&ptr2 = const_cast<int *&&>(prvalue<const int*>()); // expected-error {{const_cast from rvalue to reference type 'int *&&'}}
+                                      ^
+
+"Test_name.c", line 26: error: expression must be an lvalue
+    int *&ptr7 = const_cast<int *&>(xvalue<const int*>()); // expected-error {{const_cast from rvalue to reference type 'int *&'}}
+                                    ^
+
+"Test_name.c", line 27: error: expression must be an lvalue
+    int *&ptr8 = const_cast<int *&>(prvalue<const int*>()); // expected-error {{const_cast from rvalue to reference type 'int *&'}}
+                                    ^
+
+"Test_name.c", line 29: error: expression must be an lvalue
+    X &ptrA = const_cast<X&>(xvalue<X>()); // expected-error {{const_cast from rvalue to reference type 'X &'}}
+                             ^
+
+"Test_name.c", line 30: error: expression must be an lvalue
+    X &ptrB = const_cast<X&>(prvalue<X>()); // expected-error {{const_cast from rvalue to reference type 'X &'}}
+                             ^
+
+"Test_name.c", line 18: warning: variable "ptr0" was declared but never referenced
+    int *&&ptr0 = const_cast<int *&&>(ptr);
+           ^
+
+"Test_name.c", line 21: warning: variable "ptr3" was declared but never referenced
+    X &&ptr3 = const_cast<X&&>(x);
+        ^
+
+"Test_name.c", line 25: warning: variable "ptr6" was declared but never referenced
+    int *&ptr6 = const_cast<int *&>(ptr);
+          ^
+
+"Test_name.c", line 28: warning: variable "ptr9" was declared but never referenced
+    X &ptr9 = const_cast<X&>(x);
+       ^
+
+"Test_name.c", line 42: error: taking the address of a bit field is not allowed
+    unsigned &t0 = const_cast<unsigned&>(a.ubf); // expected-error {{const_cast from bit-field lvalue to reference type}}
+                                         ^
+
+"Test_name.c", line 43: error: taking the address of a bit field is not allowed
+    unsigned &t1 = const_cast<unsigned&>(a.foo(), a.ubf); // expected-error {{const_cast from bit-field lvalue to reference type}}
+                                         ^
+
+"Test_name.c", line 44: error: taking the address of a bit field is not allowed
+    unsigned &t2 = const_cast<unsigned&>(a.pred() ? a.ubf : a.ubf); // expected-error {{const_cast from bit-field lvalue to reference type}}
+                                         ^
+
+"Test_name.c", line 45: error: taking the address of a bit field is not allowed
+    unsigned &t3 = const_cast<unsigned&>(a.pred() ? a.ubf : a.uv); // expected-error {{const_cast from bit-field lvalue to reference type}}
+                                         ^
+
+"Test_name.c", line 46: error: expression must be an lvalue
+    unsigned &t4 = const_cast<unsigned&>(a.pred() ? a.ubf : a.sv); // expected-error {{const_cast from rvalue to reference type}}
+                                         ^
+
+10 errors detected in the compilation of "Test_name.c".

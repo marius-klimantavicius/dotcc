@@ -1,0 +1,32 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 9: warning: returning reference to local temporary
+    return Empty{};  // { dg-message "note: declared here" }
+           ^
+
+"Test_name.c", line 13: warning: returning reference to local variable
+    return e;
+           ^
+
+"Test_name.c", line 16: error: expression must have a constant value
+  constexpr Empty a = empty();  // { dg-error "outside its lifetime" }
+                      ^
+"Test_name.c", line 16: note: attempt to access expired storage
+  constexpr Empty a = empty();  // { dg-error "outside its lifetime" }
+                           ^
+
+"Test_name.c", line 17: error: expression must have a constant value
+  constexpr Empty b = empty_parm({});  // { dg-error "outside its lifetime" }
+                      ^
+"Test_name.c", line 17: note: attempt to access expired storage
+  constexpr Empty b = empty_parm({});  // { dg-error "outside its lifetime" }
+                                ^
+
+"Test_name.c", line 16: warning: variable "a" was declared but never referenced
+  constexpr Empty a = empty();  // { dg-error "outside its lifetime" }
+                  ^
+
+"Test_name.c", line 17: warning: variable "b" was declared but never referenced
+  constexpr Empty b = empty_parm({});  // { dg-error "outside its lifetime" }
+                  ^
+
+2 errors detected in the compilation of "Test_name.c".

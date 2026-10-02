@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 10: error: a variable declared with an auto type specifier cannot appear in its own initializer
+  A a = a; // expected-error{{variable 'a' declared with deduced type 'A' cannot appear in its own initializer}}
+        ^
+
+1 error detected in the compilation of "Test_name.c".

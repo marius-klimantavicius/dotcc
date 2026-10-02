@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --c Test_name.c
+"Test_name.c", line 4: error: expected a declaration
+  // 11/22/13 [EDGcpfe/8542,EDGcpfe/14697]
+  ^
+
+"Test_name.c", line 10: error: missing closing quote
+  // address type.  In the case of bit fields, the field's width is taken into
+                                                        ^
+
+"Test_name.c", line 12: warning: parsing restarts here after previous syntax error
+  typedef __EDG_PTRDIFF_TYPE__ Int;
+                                  ^
+
+"Test_name.c", line 14: error: identifier "Int" is undefined
+  struct S { Int bits: 10; } s = { (Int)&x };
+             ^
+
+"Test_name.c", line 14: error: identifier "Int" is undefined
+  struct S { Int bits: 10; } s = { (Int)&x };
+                                    ^
+
+"Test_name.c", line 14: error: expression must have a constant value
+  struct S { Int bits: 10; } s = { (Int)&x };
+                                         ^
+
+"Test_name.c", line 15: error: expected a declaration
+    // Now an error in C modes.
+    ^
+
+6 errors detected in the compilation of "Test_name.c".

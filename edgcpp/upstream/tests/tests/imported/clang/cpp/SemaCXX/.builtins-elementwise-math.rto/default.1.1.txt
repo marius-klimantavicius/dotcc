@@ -1,0 +1,169 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 21: warning: variable "b" was set but never used
+    int b = 1;
+        ^
+
+"Test_name.c", line 28: warning: variable "b" was set but never used
+    float b = 1.0f;
+          ^
+
+"Test_name.c", line 35: warning: variable "b" was set but never used
+    int b = 1;
+        ^
+
+"Test_name.c", line 43: warning: variable "b" was set but never used
+    int b = 1;
+        ^
+
+"Test_name.c", line 51: warning: variable "b" was set but never used
+    int b = 1;
+        ^
+
+"Test_name.c", line 59: warning: variable "b" was set but never used
+    int b = 1;
+        ^
+
+"Test_name.c", line 67: warning: variable "b" was set but never used
+    float b = 1.0f;
+          ^
+
+"Test_name.c", line 75: warning: variable "b" was set but never used
+    float b = 1.0f;
+          ^
+
+"Test_name.c", line 83: warning: variable "b" was set but never used
+    float b = 1.0f;
+          ^
+
+"Test_name.c", line 91: warning: variable "b" was set but never used
+    float b = 1.0f;
+          ^
+
+"Test_name.c", line 99: warning: variable "b" was set but never used
+    float b = 42.3;
+          ^
+
+"Test_name.c", line 106: warning: variable "b" was set but never used
+    float b = 42.3;
+          ^
+
+"Test_name.c", line 113: warning: variable "b" was set but never used
+    float b = 42.3;
+          ^
+
+"Test_name.c", line 120: warning: variable "b" was set but never used
+    float b = 42.3;
+          ^
+
+"Test_name.c", line 127: warning: variable "b" was set but never used
+    float b = 42.3;
+          ^
+
+"Test_name.c", line 134: warning: variable "b" was set but never used
+    float b = 42.3;
+          ^
+
+"Test_name.c", line 141: warning: variable "b" was set but never used
+    float b = 42.3;
+          ^
+
+"Test_name.c", line 148: warning: variable "b" was set but never used
+    float b = 42.3;
+          ^
+
+"Test_name.c", line 155: warning: variable "b" was set but never used
+    float b = 42.3;
+          ^
+
+"Test_name.c", line 162: warning: variable "b" was set but never used
+    float b = 42.3;
+          ^
+
+"Test_name.c", line 169: warning: variable "b" was set but never used
+    float b = 42.3;
+          ^
+
+"Test_name.c", line 176: warning: variable "b" was set but never used
+    float b = 42.3;
+          ^
+
+"Test_name.c", line 183: warning: variable "b" was set but never used
+    float b = 42.3;
+          ^
+
+"Test_name.c", line 190: warning: variable "b" was set but never used
+    float b = 42.3;
+          ^
+
+"Test_name.c", line 197: warning: variable "b" was set but never used
+    float b = 42.3;
+          ^
+
+"Test_name.c", line 204: warning: variable "b" was set but never used
+    float b = 42.3;
+          ^
+
+"Test_name.c", line 211: warning: variable "b" was set but never used
+    float b = 42.3;
+          ^
+
+"Test_name.c", line 218: warning: variable "b" was set but never used
+    float b = 42.3;
+          ^
+
+"Test_name.c", line 225: warning: variable "b" was set but never used
+    float b = 42.3;
+          ^
+
+"Test_name.c", line 232: warning: variable "b" was set but never used
+    float b = 42.3;
+          ^
+
+"Test_name.c", line 239: warning: variable "b" was set but never used
+    float b = 42.3;
+          ^
+
+"Test_name.c", line 246: warning: variable "b" was set but never used
+    float b = 42.3;
+          ^
+
+"Test_name.c", line 253: warning: variable "b" was set but never used
+    float b = 42.3;
+          ^
+
+"Test_name.c", line 260: warning: variable "b" was set but never used
+    float b = 42.3;
+          ^
+
+"Test_name.c", line 267: warning: variable "b" was set but never used
+    float b = 42.3;
+          ^
+
+"Test_name.c", line 274: warning: variable "b" was set but never used
+    float b = -4.0f;
+          ^
+
+"Test_name.c", line 282: warning: variable "b" was set but never used
+    float b = -4.0f;
+          ^
+
+"Test_name.c", line 283: warning: variable "c" was set but never used
+    float c = 1.0f;
+          ^
+
+"Test_name.c", line 292: warning: variable "b" was set but never used
+    double b = 1;
+           ^
+
+"Test_name.c", line 300: warning: variable "b" was set but never used
+    double b = 1;
+           ^
+
+"Test_name.c", line 308: warning: variable "b" was set but never used
+    int b = 1;
+        ^
+
+"Test_name.c", line 315: warning: variable "b" was set but never used
+    int b = 1;
+        ^
+

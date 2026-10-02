@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 11: error: no instance of function template "f0" matches the required type
+    int (*f0c)(int, float) = f0; // expected-error{{address of overloaded function 'f0' does not match required type 'int (int, float)'}}
+                             ^
+
+"Test_name.c", line 9: warning: variable "f0a" was declared but never referenced
+    int (*f0a)(int, int) = f0;
+          ^
+
+"Test_name.c", line 10: warning: variable "f0b" was declared but never referenced
+    int (*f0b)(int, int) = &f0;
+          ^
+
+1 error detected in the compilation of "Test_name.c".

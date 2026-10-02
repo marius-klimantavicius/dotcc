@@ -1,0 +1,286 @@
+fe_only -DTEST_NUMBER=5 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 18: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  auto L0 = [] constexpr {}; // cxx11-error {{return type 'void' is not a literal type}}
+               ^
+
+"Test_name.c", line 20: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  auto L1 = [] mutable {};
+               ^
+
+"Test_name.c", line 22: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  auto L2 = [] noexcept {};
+               ^
+
+"Test_name.c", line 23: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  auto L3 = [] constexpr mutable {}; // cxx11-error {{return type 'void' is not a literal type}}
+               ^
+
+"Test_name.c", line 24: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  auto L4 = [] mutable constexpr {}; // cxx11-error {{return type 'void' is not a literal type}}
+               ^
+
+"Test_name.c", line 25: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  auto L5 = [] constexpr mutable noexcept {}; // cxx11-error {{return type 'void' is not a literal type}}
+               ^
+
+"Test_name.c", line 27: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  auto L6 = [s = 1] mutable {};
+                    ^
+
+"Test_name.c", line 29: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  auto L7 = [s = 1] constexpr mutable noexcept {}; // cxx11-error {{return type 'void' is not a literal type}}
+                    ^
+
+"Test_name.c", line 31: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  auto L8 = [] -> bool { return true; };
+               ^
+
+"Test_name.c", line 32: warning: template parameter "T" is not used in declaring the parameter types of function template "lambda []()->auto::operator auto (*)()"
+  auto L9 = []<typename T> { return true; };
+                        ^
+
+"Test_name.c", line 34: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  auto L10 = []<typename T> noexcept { return true; };
+                            ^
+
+"Test_name.c", line 34: warning: template parameter "T" is not used in declaring the parameter types of function template "lambda []()->auto noexcept::operator auto (*)() noexcept"
+  auto L10 = []<typename T> noexcept { return true; };
+                         ^
+
+"Test_name.c", line 36: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  auto L11 = []<typename T> -> bool { return true; };
+                            ^
+
+"Test_name.c", line 36: warning: template parameter "T" is not used in declaring the parameter types of function template "lambda []()->bool::operator auto (*)()->bool"
+  auto L11 = []<typename T> -> bool { return true; };
+                         ^
+
+"Test_name.c", line 38: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  auto L12 = [] consteval {};
+                ^
+
+"Test_name.c", line 39: error: a requires-clause is not allowed here (not a templated function)
+  auto L13 = []() requires true {}; // expected-error{{non-templated function cannot have a requires clause}}
+                  ^
+
+"Test_name.c", line 40: warning: constant "<unnamed>" is not used in declaring the parameter types of function template "lambda []()->auto::operator auto (*)()"
+  auto L14 = []<auto> requires true() requires true {};
+                    ^
+
+"Test_name.c", line 41: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  auto L15 = []<auto> requires true noexcept {};
+                                    ^
+
+"Test_name.c", line 41: warning: constant "<unnamed>" is not used in declaring the parameter types of function template "lambda []()->auto noexcept::operator auto (*)() noexcept"
+  auto L15 = []<auto> requires true noexcept {};
+                    ^
+
+"Test_name.c", line 46: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  auto XL0 = [] mutable constexpr mutable {};    // expected-error{{cannot appear multiple times}} cxx11-error {{return type 'void' is not a literal type}}
+                ^
+
+"Test_name.c", line 46: error: duplicate specifier in declaration
+  auto XL0 = [] mutable constexpr mutable {};    // expected-error{{cannot appear multiple times}} cxx11-error {{return type 'void' is not a literal type}}
+                                  ^
+
+"Test_name.c", line 47: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  auto XL1 = [] constexpr mutable constexpr {};  // expected-error{{cannot appear multiple times}} cxx11-error {{return type 'void' is not a literal type}}
+                ^
+
+"Test_name.c", line 47: error: duplicate specifier in declaration
+  auto XL1 = [] constexpr mutable constexpr {};  // expected-error{{cannot appear multiple times}} cxx11-error {{return type 'void' is not a literal type}}
+                                  ^
+
+"Test_name.c", line 48: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  auto XL2 = []) constexpr mutable constexpr {}; // expected-error{{expected body of lambda expression}}
+               ^
+
+"Test_name.c", line 48: error: expected a "{" introducing a lambda body
+  auto XL2 = []) constexpr mutable constexpr {}; // expected-error{{expected body of lambda expression}}
+               ^
+
+"Test_name.c", line 48: error: expected a ";"
+  auto XL2 = []) constexpr mutable constexpr {}; // expected-error{{expected body of lambda expression}}
+               ^
+
+"Test_name.c", line 49: error: invalid specifier on a parameter
+  auto XL3 = []( constexpr mutable constexpr {}; // expected-error{{invalid storage class specifier}} \
+                 ^
+
+"Test_name.c", line 49: error: invalid storage class for a parameter
+  auto XL3 = []( constexpr mutable constexpr {}; // expected-error{{invalid storage class specifier}} \
+                           ^
+
+"Test_name.c", line 49: error: invalid specifier on a parameter
+  auto XL3 = []( constexpr mutable constexpr {}; // expected-error{{invalid storage class specifier}} \
+                                   ^
+
+"Test_name.c", line 49: error: explicit type is missing ("int" assumed)
+  auto XL3 = []( constexpr mutable constexpr {}; // expected-error{{invalid storage class specifier}} \
+                                             ^
+
+"Test_name.c", line 49: error: expected a ")"
+  auto XL3 = []( constexpr mutable constexpr {}; // expected-error{{invalid storage class specifier}} \
+                                             ^
+
+"Test_name.c", line 59: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  auto XL4 = [] requires true {}; // expected-error{{expected body}}
+                ^
+
+"Test_name.c", line 59: error: a trailing-requires-clause is not permitted when the lambda parameter list is omitted
+  auto XL4 = [] requires true {}; // expected-error{{expected body}}
+                ^
+
+"Test_name.c", line 59: error: a requires-clause is not allowed here (not a templated function)
+  auto XL4 = [] requires true {}; // expected-error{{expected body}}
+                ^
+
+"Test_name.c", line 61: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  auto XL5 = []<auto> requires true requires true {}; // expected-error{{expected body}}
+                                    ^
+
+"Test_name.c", line 61: error: a trailing-requires-clause is not permitted when the lambda parameter list is omitted
+  auto XL5 = []<auto> requires true requires true {}; // expected-error{{expected body}}
+                                    ^
+
+"Test_name.c", line 61: warning: constant "<unnamed>" is not used in declaring the parameter types of function template "lambda []()->auto::operator auto (*)()"
+  auto XL5 = []<auto> requires true requires true {}; // expected-error{{expected body}}
+                    ^
+
+"Test_name.c", line 62: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  auto XL6 = []<auto> requires true noexcept requires true {}; // expected-error{{expected body}}
+                                    ^
+
+"Test_name.c", line 62: error: a trailing-requires-clause is not permitted when the lambda parameter list is omitted
+  auto XL6 = []<auto> requires true noexcept requires true {}; // expected-error{{expected body}}
+                                             ^
+
+"Test_name.c", line 62: warning: constant "<unnamed>" is not used in declaring the parameter types of function template "lambda []()->auto noexcept::operator auto (*)() noexcept"
+  auto XL6 = []<auto> requires true noexcept requires true {}; // expected-error{{expected body}}
+                    ^
+
+"Test_name.c", line 65: warning: a "static" lambda expression is nonstandard
+  auto XL7 = []() static static {}; // expected-error {{cannot appear multiple times}}
+                  ^
+
+"Test_name.c", line 65: error: duplicate specifier in declaration
+  auto XL7 = []() static static {}; // expected-error {{cannot appear multiple times}}
+                         ^
+
+"Test_name.c", line 66: warning: a "static" lambda expression is nonstandard
+  auto XL8 = []() static mutable {}; // expected-error {{cannot be both mutable and static}}
+                  ^
+
+"Test_name.c", line 66: error: a lambda expression cannot be both "mutable" and "static"
+  auto XL8 = []() static mutable {}; // expected-error {{cannot be both mutable and static}}
+                         ^
+
+"Test_name.c", line 68: warning: a "static" lambda expression is nonstandard
+  auto XL9 = []() static consteval {};
+                  ^
+
+"Test_name.c", line 71: warning: a "static" lambda expression is nonstandard
+  auto XL10 = []() static constexpr {}; // cxx11-error {{return type 'void' is not a literal type}}
+                   ^
+
+"Test_name.c", line 74: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  auto XL11 = [] static {};
+                 ^
+
+"Test_name.c", line 74: warning: a "static" lambda expression is nonstandard
+  auto XL11 = [] static {};
+                 ^
+
+"Test_name.c", line 75: warning: a "static" lambda expression is nonstandard
+  auto XL12 = []() static {};
+                   ^
+
+"Test_name.c", line 76: warning: a "static" lambda expression is nonstandard
+  auto XL13 = []() static extern {};  // expected-error {{expected body of lambda expression}}
+                   ^
+
+"Test_name.c", line 76: error: expected a "{" introducing a lambda body
+  auto XL13 = []() static extern {};  // expected-error {{expected body of lambda expression}}
+                          ^
+
+"Test_name.c", line 76: error: expected a ";"
+  auto XL13 = []() static extern {};  // expected-error {{expected body of lambda expression}}
+                          ^
+
+"Test_name.c", line 77: error: expected a "{" introducing a lambda body
+  auto XL14 = []() extern {};  // expected-error {{expected body of lambda expression}}
+                   ^
+
+"Test_name.c", line 77: error: expected a ";"
+  auto XL14 = []() extern {};  // expected-error {{expected body of lambda expression}}
+                   ^
+
+"Test_name.c", line 82: error: a "static" lambda expression must have an empty capture specification
+    auto SC1 = [&]() static {}; // expected-error {{a static lambda cannot have any captures}}
+                     ^
+
+"Test_name.c", line 83: error: a "static" lambda expression must have an empty capture specification
+    auto SC4 = [x]() static {}; // expected-error {{a static lambda cannot have any captures}}
+                     ^
+
+"Test_name.c", line 83: warning: variable "x" is used before its value is set
+    auto SC4 = [x]() static {}; // expected-error {{a static lambda cannot have any captures}}
+                ^
+
+"Test_name.c", line 84: error: a "static" lambda expression must have an empty capture specification
+    auto SC2 = [&x]() static {}; // expected-error {{a static lambda cannot have any captures}}
+                      ^
+
+"Test_name.c", line 85: error: a "static" lambda expression must have an empty capture specification
+    auto SC3 = [y=x]() static {}; // expected-error {{a static lambda cannot have any captures}}
+                       ^
+
+"Test_name.c", line 86: error: a "static" lambda expression must have an empty capture specification
+    auto SC5 = [&y = x]() static {}; // expected-error {{a static lambda cannot have any captures}}
+                          ^
+
+"Test_name.c", line 87: error: a "static" lambda expression must have an empty capture specification
+    auto SC6 = [=]() static {}; // expected-error {{a static lambda cannot have any captures}}
+                     ^
+
+"Test_name.c", line 91: error: a "static" lambda expression must have an empty capture specification
+        [this]() static {}(); // expected-error {{a static lambda cannot have any captures}}
+                 ^
+
+"Test_name.c", line 92: error: a "static" lambda expression must have an empty capture specification
+        [*this]() static {}(); // expected-error {{a static lambda cannot have any captures}}
+                  ^
+
+"Test_name.c", line 82: warning: variable "SC1" was declared but never referenced
+    auto SC1 = [&]() static {}; // expected-error {{a static lambda cannot have any captures}}
+         ^
+
+"Test_name.c", line 83: warning: variable "SC4" was declared but never referenced
+    auto SC4 = [x]() static {}; // expected-error {{a static lambda cannot have any captures}}
+         ^
+
+"Test_name.c", line 84: warning: variable "SC2" was declared but never referenced
+    auto SC2 = [&x]() static {}; // expected-error {{a static lambda cannot have any captures}}
+         ^
+
+"Test_name.c", line 85: warning: variable "SC3" was declared but never referenced
+    auto SC3 = [y=x]() static {}; // expected-error {{a static lambda cannot have any captures}}
+         ^
+
+"Test_name.c", line 86: warning: variable "SC5" was declared but never referenced
+    auto SC5 = [&y = x]() static {}; // expected-error {{a static lambda cannot have any captures}}
+         ^
+
+"Test_name.c", line 87: warning: variable "SC6" was declared but never referenced
+    auto SC6 = [=]() static {}; // expected-error {{a static lambda cannot have any captures}}
+         ^
+
+"Test_name.c", line 100: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+    return [n] static { return n; }(); // expected-error {{a static lambda cannot have any captures}}
+               ^
+
+"Test_name.c", line 100: error: a "static" lambda expression must have an empty capture specification
+    return [n] static { return n; }(); // expected-error {{a static lambda cannot have any captures}}
+               ^
+
+29 errors detected in the compilation of "Test_name.c".

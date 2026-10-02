@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 9: error: expected an expression
+    int n = 4 + ; // expected-error {{expected expression}}
+                ^
+
+"Test_name.c", line 10: error: variable "a" has already been defined (previous definition at line 7)
+  } a; // expected-error {{redefinition}}
+    ^
+
+"Test_name.c", line 15: error: expected a ";"
+    int b = 2;
+    ^
+
+"Test_name.c", line 16: error: identifier "b" is undefined
+    int c = b; // expected-error {{undeclared identifier}}
+            ^
+
+"Test_name.c", line 23: error: expected a "{"
+    R1() : a {}
+              ^
+
+"Test_name.c", line 23: error: expected a "}"
+    R1() : a {}
+              ^
+
+"Test_name.c", line 44: error: a member with an in-class initializer must be const
+    static int n = delete; // expected-error {{only functions can have deleted definitions}}
+                 ^
+
+"Test_name.c", line 44: error: expected an expression
+    static int n = delete; // expected-error {{only functions can have deleted definitions}}
+                         ^
+
+8 errors detected in the compilation of "Test_name.c".

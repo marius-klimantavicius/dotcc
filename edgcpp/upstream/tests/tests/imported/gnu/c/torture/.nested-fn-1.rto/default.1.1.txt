@@ -1,0 +1,74 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 15: error: expected a ";"
+    {
+    ^
+
+"Test_name.c", line 18: warning: parsing restarts here after previous syntax error
+    return should_not_appear1 ();
+                                ^
+
+"Test_name.c", line 19: warning: missing return statement at end of non-void function "fn1"
+  }
+  ^
+
+"Test_name.c", line 12: warning: variable "i" was declared but never referenced
+    int i = x;
+        ^
+
+"Test_name.c", line 27: error: expected a ";"
+    {
+    ^
+
+"Test_name.c", line 30: warning: parsing restarts here after previous syntax error
+    return x;
+            ^
+
+"Test_name.c", line 31: warning: missing return statement at end of non-void function "fn2"
+  }
+  ^
+
+"Test_name.c", line 24: warning: variable "i" was declared but never referenced
+    int i = x;
+        ^
+
+"Test_name.c", line 41: error: expected a ";"
+    {
+    ^
+
+"Test_name.c", line 46: warning: parsing restarts here after previous syntax error
+    return should_appear1 ();
+                            ^
+
+"Test_name.c", line 47: warning: missing return statement at end of non-void function "fn3"
+  }
+  ^
+
+"Test_name.c", line 38: warning: variable "i" was declared but never referenced
+    int i = x;
+        ^
+
+"Test_name.c", line 55: error: expected a ";"
+    {
+    ^
+
+"Test_name.c", line 60: warning: parsing restarts here after previous syntax error
+    return 0 ? should_not_appear3 () : 1;
+                                        ^
+
+"Test_name.c", line 61: warning: missing return statement at end of non-void function "fn4"
+  }
+  ^
+
+"Test_name.c", line 52: warning: variable "i" was declared but never referenced
+    int i = x;
+        ^
+
+"Test_name.c", line 69: error: expected a ";"
+    {
+    ^
+
+"Test_name.c", line 72: warning: parsing restarts here after previous syntax error
+    check (should_appear2);
+                          ^
+
+5 errors detected in the compilation of "Test_name.c".

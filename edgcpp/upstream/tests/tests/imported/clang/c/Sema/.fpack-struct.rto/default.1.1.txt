@@ -1,0 +1,3 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 %-DEXPECTED_STRUCT_SIZE=5 %-DEXPECTED_STRUCT_SIZE=6 --c Test_name.c
+eccp: unrecognizable argument: %-DEXPECTED_STRUCT_SIZE=5
+eccp: unrecognizable argument: %-DEXPECTED_STRUCT_SIZE=6

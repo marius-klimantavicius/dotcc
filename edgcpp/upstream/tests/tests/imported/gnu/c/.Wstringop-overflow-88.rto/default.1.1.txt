@@ -1,0 +1,73 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 59: warning: subscript out of range
+    p->a[2] = 2;      // { dg-warning "-Wstringop-overflow" }
+    ^
+
+"Test_name.c", line 60: warning: subscript out of range
+    p->a[3] = 3;      // { dg-warning "-Wstringop-overflow" }
+        ^
+
+"Test_name.c", line 70: warning: subscript out of range
+    p->a[3] = 3;      // { dg-warning "-Wstringop-overflow" }
+    ^
+
+"Test_name.c", line 110: warning: subscript out of range
+    p->a[2] = 2;      // { dg-warning "-Wstringop-overflow" }
+    ^
+
+"Test_name.c", line 111: warning: subscript out of range
+    p->a[3] = 3;      // { dg-warning "-Wstringop-overflow" }
+        ^
+
+"Test_name.c", line 121: warning: subscript out of range
+    p->a[3] = 3;      // { dg-warning "-Wstringop-overflow" }
+    ^
+
+"Test_name.c", line 161: warning: subscript out of range
+    p->a[2] = 2;      // { dg-warning "-Wstringop-overflow" }
+    ^
+
+"Test_name.c", line 162: warning: subscript out of range
+    p->a[3] = 3;      // { dg-warning "-Wstringop-overflow" }
+        ^
+
+"Test_name.c", line 172: warning: subscript out of range
+    p->a[3] = 3;      // { dg-warning "-Wstringop-overflow" }
+    ^
+
+"Test_name.c", line 212: warning: subscript out of range
+    p->a[2] = 2;      // { dg-warning "-Wstringop-overflow" }
+    ^
+
+"Test_name.c", line 213: warning: subscript out of range
+    p->a[3] = 3;      // { dg-warning "-Wstringop-overflow" }
+        ^
+
+"Test_name.c", line 223: warning: subscript out of range
+    p->a[3] = 3;      // { dg-warning "-Wstringop-overflow" }
+    ^
+
+"Test_name.c", line 263: warning: subscript out of range
+    p->a[2] = 2;      // { dg-warning "-Wstringop-overflow" }
+    ^
+
+"Test_name.c", line 264: warning: subscript out of range
+    p->a[3] = 3;      // { dg-warning "-Wstringop-overflow" }
+        ^
+
+"Test_name.c", line 274: warning: subscript out of range
+    p->a[3] = 3;      // { dg-warning "-Wstringop-overflow" }
+    ^
+
+"Test_name.c", line 317: warning: subscript out of range
+    p->a[2] = 2;      // { dg-warning "-Wstringop-overflow" }
+    ^
+
+"Test_name.c", line 318: warning: subscript out of range
+    p->a[3] = 3;      // { dg-warning "-Wstringop-overflow" }
+        ^
+
+"Test_name.c", line 328: warning: subscript out of range
+    p->a[3] = 3;      // { dg-warning "-Wstringop-overflow" }
+    ^
+

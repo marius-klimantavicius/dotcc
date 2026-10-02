@@ -1,0 +1,57 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 10: warning: missing return statement at end of non-void function "getGlobalCRC"
+    unsigned int getGlobalCRC (void) { }
+                                       ^
+
+"Test_name.c", line 31: warning: variable "t" is used before its value is set
+         hbAssignCodes (&code[t][0], &len[t][0], minLen, maxLen, alphaSize);
+                              ^
+
+"Test_name.c", line 31: warning: variable "minLen" is used before its value is set
+         hbAssignCodes (&code[t][0], &len[t][0], minLen, maxLen, alphaSize);
+                                                 ^
+
+"Test_name.c", line 31: warning: variable "maxLen" is used before its value is set
+         hbAssignCodes (&code[t][0], &len[t][0], minLen, maxLen, alphaSize);
+                                                         ^
+
+"Test_name.c", line 31: warning: variable "alphaSize" is used before its value is set
+         hbAssignCodes (&code[t][0], &len[t][0], minLen, maxLen, alphaSize);
+                                                                 ^
+
+"Test_name.c", line 40: warning: variable "nSelectors" is used before its value is set
+     for (i = 0; i < nSelectors;i++)     { }
+                     ^
+
+"Test_name.c", line 41: warning: variable "nGroups" is used before its value is set
+     for (t = 0; t < nGroups;t++)
+                     ^
+
+"Test_name.c", line 23: warning: variable "v" was declared but never referenced
+     int v, t, i, j, gs, ge, totc, bt, bc, iter;
+         ^
+
+"Test_name.c", line 23: warning: variable "totc" was declared but never referenced
+     int v, t, i, j, gs, ge, totc, bt, bc, iter;
+                             ^
+
+"Test_name.c", line 23: warning: variable "bt" was declared but never referenced
+     int v, t, i, j, gs, ge, totc, bt, bc, iter;
+                                   ^
+
+"Test_name.c", line 23: warning: variable "bc" was declared but never referenced
+     int v, t, i, j, gs, ge, totc, bt, bc, iter;
+                                       ^
+
+"Test_name.c", line 23: warning: variable "iter" was declared but never referenced
+     int v, t, i, j, gs, ge, totc, bt, bc, iter;
+                                           ^
+
+"Test_name.c", line 24: warning: variable "selCtr" was declared but never referenced
+     int nSelectors, alphaSize, minLen, maxLen, selCtr;
+                                                ^
+
+"Test_name.c", line 25: warning: variable "nBytes" was declared but never referenced
+     int nGroups, nBytes;
+                  ^
+

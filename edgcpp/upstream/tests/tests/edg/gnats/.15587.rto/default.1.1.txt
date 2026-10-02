@@ -1,0 +1,18 @@
+cpfe -DTEST_NUMBER=1 --microsoft --c++14 Test_name.c
+"Test_name.c", line 4: warning: dynamic exception specifications are deprecated
+      ~A() throw(int);
+           ^
+
+"Test_name.c", line 6: error: static assertion failed with "A{} is NOT noexcept"
+  static_assert(noexcept(A{}), "A{} is NOT noexcept");
+  ^
+
+"Test_name.c", line 10: warning: dynamic exception specifications are deprecated
+      ~B() throw(int);
+           ^
+
+"Test_name.c", line 12: error: static assertion failed with "B{} is NOT noexcept"
+  static_assert(noexcept(B{}), "B{} is NOT noexcept");
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

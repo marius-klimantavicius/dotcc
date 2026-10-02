@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./spellcheck-pr78656.C", line 7: error: namespace "std" has no member "allocate"
+    return std::allocate<char>().allocate(n);
+                ^
+
+"./spellcheck-pr78656.C", line 7: error: type name is not allowed
+    return std::allocate<char>().allocate(n);
+                         ^
+
+"./spellcheck-pr78656.C", line 7: error: expected an expression
+    return std::allocate<char>().allocate(n);
+                               ^
+
+"./spellcheck-pr78656.C", line 20: error: namespace "std" has no member "alocator"
+    return std::alocator<char>().allocate(n);
+                ^
+
+"./spellcheck-pr78656.C", line 20: error: type name is not allowed
+    return std::alocator<char>().allocate(n);
+                         ^
+
+"./spellcheck-pr78656.C", line 20: error: expected an expression
+    return std::alocator<char>().allocate(n);
+                               ^
+
+6 errors detected in the compilation of "Test_name.c".

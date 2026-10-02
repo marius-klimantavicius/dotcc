@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++23 Test_name.c
+"Test_name.c", line 10: warning: unrecognized #pragma
+  #pragma omp target map(arr1[4,C:])
+          ^
+
+"Test_name.c", line 13: warning: unrecognized #pragma
+  #pragma omp target map(arr1[4,5:C,7])
+          ^
+
+"Test_name.c", line 16: warning: unrecognized #pragma
+  #pragma omp target map(arr1[:8,C,10])
+          ^
+
+"Test_name.c", line 24: warning: unrecognized #pragma
+  #pragma omp target map(arr1[4,5:])
+          ^
+
+"Test_name.c", line 27: warning: unrecognized #pragma
+  #pragma omp target map(arr1[4,5:6,7])
+          ^
+
+"Test_name.c", line 30: warning: unrecognized #pragma
+  #pragma omp target map(arr1[:8,9,10])
+          ^
+
+"Test_name.c", line 23: warning: variable "arr1" was declared but never referenced
+    int arr1[40];
+        ^
+
+"Test_name.c", line 9: warning: variable "arr1" was declared but never referenced
+    int arr1[40];
+        ^
+

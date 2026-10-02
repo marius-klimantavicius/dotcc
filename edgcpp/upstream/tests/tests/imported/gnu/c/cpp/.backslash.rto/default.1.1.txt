@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 14: warning: white space between backslash and newline in line splice ignored
+  #define beta(a, b, c) \ 
+                         ^
+
+"Test_name.c", line 15: warning: white space between backslash and newline in line splice ignored
+  	a, \	
+  	    ^
+
+"Test_name.c", line 16: warning: white space between backslash and newline in line splice ignored
+  	b, \ 	
+  	    ^
+

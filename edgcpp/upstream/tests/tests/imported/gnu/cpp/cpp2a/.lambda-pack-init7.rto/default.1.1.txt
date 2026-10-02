@@ -1,0 +1,7 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 13: error: cannot deduce "auto" type
+    [...args = forward<Args> /*(args)*/] { // { dg-error "14:" }
+     ^
+          detected during instantiation of "void foo(Args &&...) [with Args=<S>]" at line 19
+
+1 error detected in the compilation of "Test_name.c".

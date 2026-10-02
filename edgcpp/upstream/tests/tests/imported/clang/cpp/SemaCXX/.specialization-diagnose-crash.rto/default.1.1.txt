@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 25: error: the default constructor of "Variant<V1, V2, void>" cannot be referenced -- it is a deleted function
+    Variant<V1, V2>(); // expected-error {{call to deleted constructor}}
+    ^
+
+1 error detected in the compilation of "Test_name.c".

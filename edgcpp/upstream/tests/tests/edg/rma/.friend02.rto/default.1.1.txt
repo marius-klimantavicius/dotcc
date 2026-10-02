@@ -1,0 +1,18 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 8: error: member "B::j" (declared at line 5) is inaccessible
+    B::j = 0;
+       ^
+
+"Test_name.c", line 9: error: class "B" has no member "k"
+    B::k = 0;
+       ^
+
+"Test_name.c", line 10: error: name followed by "::" must be a class or namespace name
+    C::k = 0;
+    ^
+
+"Test_name.c", line 12: error: class "A" has no member "f"
+  class C { friend void A::f(); };
+                           ^
+
+4 errors detected in the compilation of "Test_name.c".

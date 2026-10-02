@@ -1,0 +1,7 @@
+# Import Linux Configuration
+import <support/platform/linux-x86_64/base>
+# Import Clang Configuration
+import <support/compiler/clang/linux/base>
+
+# Import Simple Release Configuration
+import <support/simple-conf/release/base>

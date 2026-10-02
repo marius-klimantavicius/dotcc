@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 Test_name.c
+"./c11-align-1.c", line 37: warning: variable "auto_ll" was declared but never referenced
+    _Alignas (max_align_t) long long auto_ll;
+                                     ^
+
+"./c11-align-1.c", line 41: warning: attribute does not apply to any entity
+  _Alignas (0) struct s;
+  ^
+

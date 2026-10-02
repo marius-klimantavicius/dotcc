@@ -1,0 +1,30 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 --strict_gnu Test_name.c
+"Test_name.c", line 13: error: identifier "_Decimal128" is undefined
+    _Decimal128 d128;
+    ^
+
+"Test_name.c", line 14: error: expected a ";"
+    unsigned __int128 u128;
+                      ^
+
+"Test_name.c", line 23: error: expected a ";"
+    unsigned __int128 i = U128 (0x3041ed09bead87c0ULL, 0x378d8e6400000001ULL);
+                      ^
+
+"Test_name.c", line 25: error: identifier "_Decimal128" is undefined
+    _Decimal128 d128;
+    ^
+
+"Test_name.c", line 26: error: union "u" has no field "u128"
+    x.u128 = i;
+      ^
+
+"Test_name.c", line 26: error: identifier "i" is undefined
+    x.u128 = i;
+             ^
+
+"Test_name.c", line 23: warning: variable "__int128" was declared but never referenced
+    unsigned __int128 i = U128 (0x3041ed09bead87c0ULL, 0x378d8e6400000001ULL);
+             ^
+
+6 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 30: warning: expression has no effect
+    baz () { bar<F, B<>>; }
+             ^
+
+"Test_name.c", line 22: warning: expression has no effect
+      auto c = [&] { m.l; };
+                     ^
+          detected during:
+            instantiation of "void foo<T,U,V>(U, V) [with T=E<0, 0, 0>, U=int, V=int]" at line 33
+            instantiation of "B<A<int>> D::F<<unnamed>, <unnamed>, <unnamed>>::baz() [with <unnamed>=false, <unnamed>=false, <unnamed>=false]" at line 14
+            instantiation of "void bar<F,<unnamed>>() [with F=D::F, <unnamed>=B<A<int>>]" 
+
+"Test_name.c", line 14: warning: expression has no effect
+    F<0, 0, 0>::baz;
+    ^
+          detected during instantiation of "void bar<F,<unnamed>>() [with F=D::F, <unnamed>=B<A<int>>]" 
+

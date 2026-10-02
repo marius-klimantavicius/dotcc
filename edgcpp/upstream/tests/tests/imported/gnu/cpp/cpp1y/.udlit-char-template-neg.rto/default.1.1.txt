@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 7: error: a literal operator template must have a template parameter list equivalent to "<char ...>"
+    operator"" _script() // { dg-error "3:literal operator template" }
+    ^
+
+"Test_name.c", line 10: error: user-defined literal operator not found
+  int i = "hi!"_script;
+          ^
+
+2 errors detected in the compilation of "Test_name.c".

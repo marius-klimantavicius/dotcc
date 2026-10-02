@@ -1,0 +1,261 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 15: error: an incomplete class type is not allowed
+  static_assert(!__is_abstract(IncompleteUnion), "unions are never abstract");
+  ^
+
+"Test_name.c", line 34: error: object of abstract class type "C" is not allowed:
+            function "C::f" is a pure virtual function
+  C *d = new C; // expected-error {{allocating an object of abstract class type 'C'}}
+             ^
+
+"Test_name.c", line 36: error: object of abstract class type "C" is not allowed:
+            function "C::f" is a pure virtual function
+  C c; // expected-error {{variable type 'C' is an abstract class}}
+    ^
+
+"Test_name.c", line 37: error: parameter of abstract class type "C" is not allowed:
+            function "C::f" is a pure virtual function
+  void t1(C c);
+          ^
+
+"Test_name.c", line 38: error: parameter of abstract class type "C" is not allowed:
+            function "C::f" is a pure virtual function
+  void t2(C);
+          ^
+
+"Test_name.c", line 39: error: parameter of abstract class type "C" is not allowed:
+            function "C::f" is a pure virtual function
+  void t3(C c){} // expected-error {{parameter type 'C' is an abstract class}}
+          ^
+
+"Test_name.c", line 40: error: parameter of abstract class type "C" is not allowed:
+            function "C::f" is a pure virtual function
+  void t4(C){} // expected-error {{parameter type 'C' is an abstract class}}
+          ^
+
+"Test_name.c", line 43: error: object of abstract class type "C" is not allowed:
+            function "C::f" is a pure virtual function
+    C c; // expected-error {{field type 'C' is an abstract class}}
+      ^
+
+"Test_name.c", line 49: error: a cast to abstract class "C" is not allowed:
+            function "C::f" is a pure virtual function
+    C(); // expected-error {{allocating an object of abstract class type 'C'}}
+    ^
+
+"Test_name.c", line 50: error: a cast to abstract class "C" is not allowed:
+            function "C::f" is a pure virtual function
+    t5(C()); // expected-error {{allocating an object of abstract class type 'C'}}
+       ^
+
+"Test_name.c", line 53: error: array of abstract class "C" is not allowed:
+            function "C::f" is a pure virtual function
+  C e1[2]; // expected-error {{array of abstract class type 'C'}}
+    ^
+
+"Test_name.c", line 54: error: array of abstract class "C" is not allowed:
+            function "C::f" is a pure virtual function
+  C (*e2)[2]; // expected-error {{array of abstract class type 'C'}}
+      ^
+
+"Test_name.c", line 55: error: array of abstract class "C" is not allowed:
+            function "C::f" is a pure virtual function
+  C (**e3)[2]; // expected-error {{array of abstract class type 'C'}}
+       ^
+
+"Test_name.c", line 59: error: parameter of abstract class type "C" is not allowed:
+            function "C::f" is a pure virtual function
+  void t7(void (*)(C));
+                   ^
+
+"Test_name.c", line 61: error: parameter of abstract class type "C" is not allowed:
+            function "C::f" is a pure virtual function
+  typedef void (*Func)(C);
+                       ^
+
+"Test_name.c", line 76: error: parameter of abstract class type "F" is not allowed:
+            function "F::f" is a pure virtual function
+      void w(F c) = delete;
+             ^
+
+"Test_name.c", line 75: error: parameter of abstract class type "F" is not allowed:
+            function "F::f" is a pure virtual function
+      void v(F c);
+             ^
+
+"Test_name.c", line 74: error: parameter of abstract class type "F" is not allowed:
+            function "F::f" is a pure virtual function
+      void u(F c){} // expected-error {{parameter type 'F' is an abstract class}}
+             ^
+
+"Test_name.c", line 70: error: parameter of abstract class type "F" is not allowed:
+            function "F::f" is a pure virtual function
+      void h(F c) = delete;
+             ^
+
+"Test_name.c", line 69: error: parameter of abstract class type "F" is not allowed:
+            function "F::f" is a pure virtual function
+      void g(F c);
+             ^
+
+"Test_name.c", line 68: error: parameter of abstract class type "F" is not allowed:
+            function "F::f" is a pure virtual function
+      void f(F c){}  // expected-error {{parameter type 'F' is an abstract class}}
+             ^
+
+"Test_name.c", line 94: error: parameter of abstract class type "Abstract" is not allowed:
+            function "Abstract::f" is a pure virtual function
+  void h(Abstract a);
+         ^
+
+"Test_name.c", line 90: error: parameter of abstract class type "Abstract" is not allowed:
+            function "Abstract::f" is a pure virtual function
+    void h(Abstract a);
+           ^
+
+"Test_name.c", line 87: error: parameter of abstract class type "Abstract" is not allowed:
+            function "Abstract::f" is a pure virtual function
+  void t8(Abstract a);
+          ^
+
+"Test_name.c", line 128: warning: variable "b" was declared but never referenced
+    B b;
+      ^
+
+"Test_name.c", line 199: warning: variable "c" was declared but never referenced
+      C c;
+        ^
+
+"Test_name.c", line 206: error: parameter of abstract class type "test2::X1" is not allowed:
+            function "test2::X1::xfunc" is a pure virtual function
+      void g(X1 parm7){}        // expected-error {{parameter type 'X1' is an abstract class}}
+             ^
+
+"Test_name.c", line 213: error: parameter of abstract class type "test2::X2<N>" is not allowed:
+            function "test2::X2<N>::xfunc" is a pure virtual function
+      void g(X2 parm10){}        // expected-error {{parameter type 'X2<N>' is an abstract class}}
+             ^
+
+"Test_name.c", line 220: error: incomplete type "test3::A" is not allowed
+      A x; // expected-error {{field has incomplete type}}
+        ^
+
+"Test_name.c", line 226: error: incomplete type "test3::B" is not allowed
+      B x; // expected-error {{field has incomplete type}}
+        ^
+
+"Test_name.c", line 236: error: object of abstract class type "test3::D" is not allowed:
+            function "test3::D::abstract" is a pure virtual function
+      static D x; // expected-error {{abstract class}}
+               ^
+
+"Test_name.c", line 248: error: object of abstract class type "test4::B<T>" is not allowed:
+            function "test4::B<T>::abstract" is a pure virtual function
+      B x; // expected-error {{abstract class}}
+        ^
+
+"Test_name.c", line 258: error: object of abstract class type "test4::D<T>" is not allowed:
+            function "test4::D<T>::abstract" is a pure virtual function
+      static D x; // expected-error {{abstract class}}
+               ^
+
+"Test_name.c", line 264: error: object of abstract class type "test5::A" is not allowed:
+            function "test5::A::~A" is a pure virtual function
+    const A &a = 0; // expected-error {{abstract class}}
+                 ^
+
+"Test_name.c", line 265: error: object of abstract class type "test5::A" is not allowed:
+            function "test5::A::~A" is a pure virtual function
+    void f(const A &a = 0); // expected-error {{abstract class}}
+                        ^
+
+"Test_name.c", line 267: error: object of abstract class type "test5::A" is not allowed:
+            function "test5::A::~A" is a pure virtual function
+    void h() { g(0); } // expected-error {{abstract class}}
+                 ^
+
+"Test_name.c", line 290: error: a cast to abstract class "pr12658::C" is not allowed:
+            function "pr12658::C::f" is a pure virtual function
+      foo(C(99)); // expected-error {{allocating an object of abstract class type 'C'}}
+          ^
+
+"Test_name.c", line 301: error: the default constructor of "pr16659::B" cannot be referenced -- it is a deleted function
+      C() : A(37) {}
+                  ^
+
+"Test_name.c", line 314: error: function "pr16659::Z::operator=(const pr16659::Z &)" (declared implicitly) cannot be referenced -- it is a deleted function
+    void f(Z &a, const Z &b) { a = b; } // expected-error {{copy assignment operator is implicitly deleted}}
+                                 ^
+
+"Test_name.c", line 322: warning: inline variables are a C++17 feature
+    static inline inline_var v = 0; // expected-error {{incomplete type}} expected-warning {{extension}}
+           ^
+
+"Test_name.c", line 322: error: incomplete type "inline_var" is not allowed
+    static inline inline_var v = 0; // expected-error {{incomplete type}} expected-warning {{extension}}
+                             ^
+
+"Test_name.c", line 322: error: incomplete type "inline_var" is not allowed
+    static inline inline_var v = 0; // expected-error {{incomplete type}} expected-warning {{extension}}
+    ^
+
+"Test_name.c", line 334: error: incomplete type "var_template_def" is not allowed
+    static inline var_template_def v = {}; // expected-error {{incomplete type}} expected-warning 2{{extension}}
+                                   ^
+
+"Test_name.c", line 339: error: parameter of abstract class type "friend_fn" is not allowed:
+            function "friend_fn::f" is a pure virtual function
+    friend void g(friend_fn);
+                  ^
+
+"Test_name.c", line 344: error: parameter of abstract class type "friend_fn_def" is not allowed:
+            function "friend_fn_def::f" is a pure virtual function
+    friend void g(friend_fn_def) {} // expected-error {{abstract class}}
+                  ^
+
+"Test_name.c", line 350: error: parameter of abstract class type "friend_template" is not allowed:
+            function "friend_template::f" is a pure virtual function
+    friend void g(friend_template);
+                  ^
+
+"Test_name.c", line 356: error: parameter of abstract class type "friend_template_def" is not allowed:
+            function "friend_template_def::f" is a pure virtual function
+    friend void g(friend_template_def) {} // expected-error {{abstract class}}
+                  ^
+
+"Test_name.c", line 364: error: parameter of abstract class type "GH63012::foo" is not allowed:
+            function "GH63012::foo::~foo" is a pure virtual function
+  void f(foo) = delete;
+         ^
+
+"Test_name.c", line 365: error: function returning abstract class "GH63012::foo" is not allowed:
+            function "GH63012::foo::~foo" is a pure virtual function
+  foo  i() = delete;
+       ^
+
+"Test_name.c", line 366: error: parameter of abstract class type "GH63012::foo" is not allowed:
+            function "GH63012::foo::~foo" is a pure virtual function
+  void h(foo);
+         ^
+
+"Test_name.c", line 367: error: function returning abstract class "GH63012::foo" is not allowed:
+            function "GH63012::foo::~foo" is a pure virtual function
+  foo  g();
+       ^
+
+"Test_name.c", line 377: error: parameter of abstract class type "GH63012::S" is not allowed:
+            function "GH63012::S::func" is a pure virtual function
+    void func(S) = delete;
+              ^
+
+"Test_name.c", line 378: error: parameter of abstract class type "GH63012::S" is not allowed:
+            function "GH63012::S::func" is a pure virtual function
+    void other(S);
+               ^
+
+"Test_name.c", line 379: error: parameter of abstract class type "GH63012::S" is not allowed:
+            function "GH63012::S::func" is a pure virtual function
+    void yet_another(S) {} // expected-error{{parameter type 'S' is an abstract class}}
+                     ^
+
+51 errors detected in the compilation of "Test_name.c".

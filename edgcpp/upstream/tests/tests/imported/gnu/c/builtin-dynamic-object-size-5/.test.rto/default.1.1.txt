@@ -1,0 +1,23 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c builtin-dynamic-object-size-5-main.c
+Test_name.c:
+"./builtin-object-size-5.c", line 79: warning: subscript out of range
+    char *p = &buf[0x90000004];
+                  ^
+
+"./builtin-object-size-5.c", line 87: warning: subscript out of range
+    char *p = &buf[-4];
+                  ^
+
+builtin-dynamic-object-size-5-main.c:
+/usr/sbin/ld: Test_name.o: in function `test1':
+Test_name.int.c:(.text+0xXX): undefined reference to `buf'
+/usr/sbin/ld: Test_name.o: in function `test2':
+Test_name.int.c:(.text+0xXX): undefined reference to `buf'
+/usr/sbin/ld: Test_name.o: in function `test3':
+Test_name.int.c:(.text+0xXX): undefined reference to `buf'
+/usr/sbin/ld: Test_name.o: in function `test4':
+Test_name.int.c:(.text+0xXX): undefined reference to `buf'
+/usr/sbin/ld: Test_name.o: in function `test5':
+Test_name.int.c:(.text+0xXX): undefined reference to `buf'
+/usr/sbin/ld: Test_name.o:Test_name.int.c:(.text+0xXX): more undefined references to `buf' follow
+collect2: error: ld returned 1 exit status

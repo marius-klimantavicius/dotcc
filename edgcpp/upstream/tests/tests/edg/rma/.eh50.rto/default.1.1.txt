@@ -1,0 +1,26 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 6: error: exception specification is not allowed
+  typedef void (*fpt)(void) throw(int);
+                            ^
+
+"Test_name.c", line 10: error: exception specification is not allowed
+  typedef void (&frt)(void) throw(int);
+                            ^
+
+"Test_name.c", line 14: error: exception specification is not allowed
+  typedef void (ft)(void) throw(int);
+                          ^
+
+"Test_name.c", line 18: error: exception specification is not allowed
+  typedef void (*fpt2)(void (*)(void) throw(int));
+                                      ^
+
+"Test_name.c", line 22: error: exception specification is not allowed
+  typedef void (&fpt3)(void (*)(void) throw(int));
+                                      ^
+
+"Test_name.c", line 26: error: exception specification is not allowed
+  typedef void (ft2)(void (*)(void) throw(int));
+                                    ^
+
+6 errors detected in the compilation of "Test_name.c".

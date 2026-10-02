@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 --modules Test_name.c
+"Test_name.c", line 28: error: an export declaration cannot export a name with internal linkage
+  export using s::a1;  // { dg-error "does not have external linkage" }
+               ^
+
+"Test_name.c", line 29: error: an export declaration cannot export a name with internal linkage
+  export using s::b1;  // { dg-error "does not have external linkage" }
+               ^
+
+"Test_name.c", line 30: error: an export declaration cannot export a name with internal linkage
+  export using s::x1;  // { dg-error "does not have external linkage" }
+               ^
+
+"Test_name.c", line 31: error: an export declaration cannot export a name with internal linkage
+  export using s::y1;  // { dg-error "does not have external linkage" }
+               ^
+
+"Test_name.c", line 32: error: an export declaration cannot export a name with internal linkage
+  export using s::f1;  // { dg-error "does not have external linkage" }
+               ^
+
+"Test_name.c", line 33: error: an export declaration cannot export a name with internal linkage
+  export using s::g1;  // { dg-error "does not have external linkage" }
+               ^
+
+"Test_name.c", line 16: warning: variable "s::<unnamed>::x1" was declared but never referenced
+      int x1;  // { dg-message "declared here with internal linkage" }
+          ^
+
+"Test_name.c", line 21: warning: function "s::<unnamed>::f1" was declared but never referenced
+      void f1();  // { dg-message "declared here with internal linkage" }
+           ^
+
+6 errors detected in the compilation of "Test_name.c".

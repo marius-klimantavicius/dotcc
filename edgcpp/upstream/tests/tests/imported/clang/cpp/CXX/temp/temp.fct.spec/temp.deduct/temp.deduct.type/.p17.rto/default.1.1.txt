@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 10: error: no instance of function template "f" matches the argument list
+            argument types are: (A<1>)
+    f(a); // expected-error{{no matching function for call}}
+    ^
+"Test_name.c", line 6: note: candidate function template "f" failed deduction
+  template<short s> void f(A<s>); // expected-note{{candidate template ignored: substitution failure}}
+                         ^
+
+"Test_name.c", line 31: error: no instance of overloaded function "h" matches the argument list
+            argument types are: (int [5], A<5>)
+    h(array, a); // expected-error{{no matching function for call}}
+    ^
+"Test_name.c", line 27: note: candidate function template "h(int (&)[s], A<s>)" failed deduction
+  template<short s> void h(int (&)[s], A<s>);  // expected-note{{candidate template ignored: substitution failure}}
+                         ^
+"Test_name.c", line 20: note: number of parameters of function template "h(int (&)[s])" does not match the call
+  template<short s> void h(int (&)[s]); // expected-note{{candidate function template not viable: requires 1 argument, but 2 were provided}}
+                         ^
+
+2 errors detected in the compilation of "Test_name.c".

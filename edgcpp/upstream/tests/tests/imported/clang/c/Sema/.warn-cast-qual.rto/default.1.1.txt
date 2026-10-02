@@ -1,0 +1,85 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Sema/warn-cast-qual.c", line 27: warning: variable "intptrptr" is used before its value is set
+    const int **intptrptrc = (const int **)intptrptr;
+                                           ^
+
+"Sema/warn-cast-qual.c", line 31: warning: variable "intptr" is used before its value is set
+    const int *intptrc = (const int *)intptr;
+                                      ^
+
+"Sema/warn-cast-qual.c", line 34: warning: variable "charptrptrc" is used before its value is set
+    char **charptrptr = (char **)charptrptrc;
+                                 ^
+
+"Sema/warn-cast-qual.c", line 37: warning: variable "constcharptr" is used before its value is set
+    char *charptr = (char *)constcharptr;
+                            ^
+
+"Sema/warn-cast-qual.c", line 11: warning: variable "ptrptr2" was declared but never referenced
+    char **ptrptr2 = 0;
+           ^
+
+"Sema/warn-cast-qual.c", line 12: warning: variable "y" was declared but never referenced
+    char *y = (char *)ptr;
+          ^
+
+"Sema/warn-cast-qual.c", line 13: warning: variable "y1" was declared but never referenced
+    char **y1 = (char **)ptrptr;
+           ^
+
+"Sema/warn-cast-qual.c", line 14: warning: variable "y2" was declared but never referenced
+    const char **y2 = (const char **)ptrptr;
+                 ^
+
+"Sema/warn-cast-qual.c", line 15: warning: variable "y3" was declared but never referenced
+    char *const *y3 = (char *const *)ptrptr;
+                 ^
+
+"Sema/warn-cast-qual.c", line 16: warning: variable "y4" was declared but never referenced
+    const char **y4 = (const char **)ptrcptr;
+                 ^
+
+"Sema/warn-cast-qual.c", line 18: warning: variable "z" was declared but never referenced
+    char *z = (char *)(uintptr_t)(const void *)ptr;
+          ^
+
+"Sema/warn-cast-qual.c", line 19: warning: variable "z1" was declared but never referenced
+    char *z1 = (char *)(const void *)ptr;
+          ^
+
+"Sema/warn-cast-qual.c", line 22: warning: variable "vol2" was declared but never referenced
+    char *vol2 = (char *)vol;
+          ^
+
+"Sema/warn-cast-qual.c", line 24: warning: variable "volc2" was declared but never referenced
+    char *volc2 = (char *)volc;
+          ^
+
+"Sema/warn-cast-qual.c", line 27: warning: variable "intptrptrc" was declared but never referenced
+    const int **intptrptrc = (const int **)intptrptr;
+                ^
+
+"Sema/warn-cast-qual.c", line 28: warning: variable "intptrptrv" was declared but never referenced
+    volatile int **intptrptrv = (volatile int **)intptrptr;
+                   ^
+
+"Sema/warn-cast-qual.c", line 31: warning: variable "intptrc" was declared but never referenced
+    const int *intptrc = (const int *)intptr;
+               ^
+
+"Sema/warn-cast-qual.c", line 34: warning: variable "charptrptr" was declared but never referenced
+    char **charptrptr = (char **)charptrptrc;
+           ^
+
+"Sema/warn-cast-qual.c", line 38: warning: variable "constcharptr2" was declared but never referenced
+    const char *constcharptr2 = (char *)constcharptr;
+                ^
+
+"Sema/warn-cast-qual.c", line 39: warning: variable "charptr2" was declared but never referenced
+    const char *charptr2 = (char *)charptr;
+                ^
+
+"Sema/warn-cast-qual.c", line 99: warning: variable "S" was set but never used
+    struct C S = {0, 0};
+             ^
+

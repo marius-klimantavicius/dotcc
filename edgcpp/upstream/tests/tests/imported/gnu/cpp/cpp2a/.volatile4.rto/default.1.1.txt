@@ -1,0 +1,106 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 31: warning: a volatile function parameter is deprecated
+  fn (volatile int i)
+      ^
+
+"Test_name.c", line 30: warning: type qualifier on return type is meaningless
+  volatile int
+  ^
+
+"Test_name.c", line 31: warning: a volatile return type is deprecated
+  fn (volatile int i)
+  ^
+
+"Test_name.c", line 37: warning: a volatile operand to an increment expression is deprecated
+    v++;
+    ^
+
+"Test_name.c", line 38: warning: a volatile operand to an increment expression is deprecated
+    ++v;
+      ^
+
+"Test_name.c", line 39: warning: a volatile operand to a decrement expression is deprecated
+    v--;
+    ^
+
+"Test_name.c", line 40: warning: a volatile operand to a decrement expression is deprecated
+    --v;
+      ^
+
+"Test_name.c", line 41: warning: a volatile operand to an increment expression is deprecated
+    p++;
+    ^
+
+"Test_name.c", line 42: warning: a volatile operand to an increment expression is deprecated
+    ++p;
+      ^
+
+"Test_name.c", line 43: warning: a volatile operand to a decrement expression is deprecated
+    p--;
+    ^
+
+"Test_name.c", line 44: warning: a volatile operand to a decrement expression is deprecated
+    --p;
+      ^
+
+"Test_name.c", line 61: warning: use of the result of an assignment to a volatile scalar object is deprecated
+    i = vi = 42;
+        ^
+
+"Test_name.c", line 68: warning: use of the result of an assignment to a volatile scalar object is deprecated
+    static_cast<void>(i = vi = 42);
+                          ^
+
+"Test_name.c", line 70: warning: use of the result of an assignment to a volatile scalar object is deprecated
+    (void)(i = vi = 42);
+               ^
+
+"Test_name.c", line 91: warning: use of a volatile qualifier on a structured binding is deprecated
+    const volatile auto & [cvxr, cvyr] = a;
+    ^
+
+"Test_name.c", line 92: warning: use of a volatile qualifier on a structured binding is deprecated
+    volatile auto & [vxr, vyr] = a;
+    ^
+
+"Test_name.c", line 73: warning: variable "x" was declared but never referenced
+    decltype(vi = 42) x = vi;
+                      ^
+
+"Test_name.c", line 74: warning: variable "x3" was declared but never referenced
+    decltype(i = vi = 42) x3 = i;
+                          ^
+
+"Test_name.c", line 86: warning: variable "x2" was declared but never referenced
+    decltype(vi -= 42) x2 = vi;
+                       ^
+
+"Test_name.c", line 90: warning: structured binding "cxr" was declared but never referenced
+    const auto & [cxr, cyr] = a;
+                  ^
+
+"Test_name.c", line 91: warning: structured binding "cvxr" was declared but never referenced
+    const volatile auto & [cvxr, cvyr] = a;
+                           ^
+
+"Test_name.c", line 92: warning: structured binding "vxr" was declared but never referenced
+    volatile auto & [vxr, vyr] = a;
+                     ^
+
+"Test_name.c", line 99: warning: use of the result of an assignment to a volatile scalar object is deprecated
+    i = j = k;
+        ^
+
+"Test_name.c", line 108: warning: use of the result of an assignment to a volatile scalar object is deprecated
+    i = u.c = 42;
+        ^
+
+"Test_name.c", line 113: warning: use of the result of an assignment to a volatile scalar object is deprecated
+    j = t.a = 3;
+        ^
+
+"Test_name.c", line 136: warning: use of the result of an assignment to a volatile scalar object is deprecated
+    u = t = 42;
+        ^
+          detected during instantiation of "void raccoon<T>() [with T=int]" at line 143
+

@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 7: error: a cast expression in a requires-clause must be parenthesized
+  template <typename T> requires (bool(T()))
+                                 ^
+
+"Test_name.c", line 7: error: cast to type "bool (T (*)())" is not allowed
+  template <typename T> requires (bool(T()))
+                                  ^
+
+"Test_name.c", line 8: error: type name is not allowed
+  int A();
+  ^
+
+"Test_name.c", line 8: error: explicit type is missing ("int" assumed)
+  int A();
+      ^
+
+"Test_name.c", line 9: error: a cast expression in a requires-clause must be parenthesized
+  template <typename U> requires (bool(U()))
+                                 ^
+
+"Test_name.c", line 9: error: cast to type "bool (U (*)())" is not allowed
+  template <typename U> requires (bool(U()))
+                                  ^
+
+"Test_name.c", line 10: error: type name is not allowed
+  int A();
+  ^
+
+"Test_name.c", line 10: error: explicit type is missing ("int" assumed)
+  int A();
+      ^
+
+"Test_name.c", line 26: error: declaration is incompatible with function template "int diag::orig::A<T>()" (declared at line 18)
+  int orig::A();
+            ^
+
+"Test_name.c", line 29: error: declaration is incompatible with function template "int diag::orig::B<T>()" (declared at line 20)
+  int orig::B();
+            ^
+
+"Test_name.c", line 32: error: declaration is incompatible with function template "int diag::orig::C<T>()" (declared at line 22)
+  int orig::C();
+            ^
+
+"Test_name.c", line 58: error: declaration is incompatible with function template "int diag::TA<N>::A<TT>()" (declared at line 54)
+  template <template <unsigned> class TT> int TA<N>::A() { return sizeof(TT<N>); }
+                                                     ^
+
+12 errors detected in the compilation of "Test_name.c".

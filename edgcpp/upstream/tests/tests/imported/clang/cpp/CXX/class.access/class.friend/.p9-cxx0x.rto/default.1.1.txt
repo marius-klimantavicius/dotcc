@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 18: error: function "test0::X::f" (declared at line 14) is inaccessible
+      friend void X::f(); // expected-error {{friend function 'f' is a private member of 'test0::X'}}
+                     ^
+
+"Test_name.c", line 59: error: function "test3::X::f" (declared at line 54) is inaccessible
+      friend void X::f(); // expected-error {{friend function 'f' is a private member of 'test3::X'}}
+                     ^
+          detected during instantiation of class "test3::Y<T> [with T=float]" at line 62
+
+"Test_name.c", line 83: error: function "test5::X<T>::f [with T=int]" (declared at line 79) is inaccessible
+      friend void X<T>::f(); // expected-error {{friend function 'f' is a private member of 'test5::X<int>'}}
+                        ^
+          detected during instantiation of class "test5::Y<T> [with T=int]" at line 86
+
+"Test_name.c", line 99: error: function "test6::X<T>::f [with T=int]" (declared at line 94) is inaccessible
+      friend void X<T>::f(); // expected-error {{friend function 'f' is a private member of 'test6::X<int>'}}
+                        ^
+          detected during instantiation of class "test6::Y<T> [with T=int]" at line 102
+
+4 errors detected in the compilation of "Test_name.c".

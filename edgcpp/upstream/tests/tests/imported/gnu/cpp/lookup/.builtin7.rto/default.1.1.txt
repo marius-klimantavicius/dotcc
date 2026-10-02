@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 5: warning: declaration of "size_t" does not match the expected type "unsigned long"
+  typedef unsigned int size_t;
+                       ^
+
+"Test_name.c", line 14: warning: expression has no effect
+    (bool)&calloc;
+    ^
+
+"Test_name.c", line 15: warning: expression has no effect
+    (bool)&::calloc;
+    ^
+
+"Test_name.c", line 13: warning: variable "pfn" was declared but never referenced
+    char *(*pfn) = (char *(*)) calloc ;
+            ^
+

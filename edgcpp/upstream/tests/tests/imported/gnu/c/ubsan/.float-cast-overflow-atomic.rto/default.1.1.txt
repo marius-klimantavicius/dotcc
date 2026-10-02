@@ -1,0 +1,181 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 Test_name.c
+"Test_name.c", line 71: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_ARITH (-7, -20, *);
+    ^
+
+"Test_name.c", line 71: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_ARITH (-7, -20, *);
+    ^
+
+"Test_name.c", line 71: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_ARITH (-7, -20, *);
+    ^
+
+"Test_name.c", line 71: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_ARITH (-7, -20, *);
+    ^
+
+"Test_name.c", line 71: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_ARITH (-7, -20, *);
+    ^
+
+"Test_name.c", line 71: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_ARITH (-7, -20, *);
+    ^
+
+"Test_name.c", line 71: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_ARITH (-7, -20, *);
+    ^
+
+"Test_name.c", line 71: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_ARITH (-7, -20, *);
+    ^
+
+"Test_name.c", line 71: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_ARITH (-7, -20, *);
+    ^
+
+"Test_name.c", line 82: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_ARITH (-70, -10, /);
+    ^
+
+"Test_name.c", line 82: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_ARITH (-70, -10, /);
+    ^
+
+"Test_name.c", line 82: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_ARITH (-70, -10, /);
+    ^
+
+"Test_name.c", line 82: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_ARITH (-70, -10, /);
+    ^
+
+"Test_name.c", line 82: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_ARITH (-70, -10, /);
+    ^
+
+"Test_name.c", line 82: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_ARITH (-70, -10, /);
+    ^
+
+"Test_name.c", line 82: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_ARITH (-70, -10, /);
+    ^
+
+"Test_name.c", line 82: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_ARITH (-70, -10, /);
+    ^
+
+"Test_name.c", line 82: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_ARITH (-70, -10, /);
+    ^
+
+"Test_name.c", line 93: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_INT (-7, -2, %);
+    ^
+
+"Test_name.c", line 93: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_INT (-7, -2, %);
+    ^
+
+"Test_name.c", line 93: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_INT (-7, -2, %);
+    ^
+
+"Test_name.c", line 93: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_INT (-7, -2, %);
+    ^
+
+"Test_name.c", line 93: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_INT (-7, -2, %);
+    ^
+
+"Test_name.c", line 93: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_INT (-7, -2, %);
+    ^
+
+"Test_name.c", line 93: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_INT (-7, -2, %);
+    ^
+
+"Test_name.c", line 93: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_INT (-7, -2, %);
+    ^
+
+"Test_name.c", line 93: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_INT (-7, -2, %);
+    ^
+
+"Test_name.c", line 101: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_ARITH (-7, -20, +);
+    ^
+
+"Test_name.c", line 101: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_ARITH (-7, -20, +);
+    ^
+
+"Test_name.c", line 101: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_ARITH (-7, -20, +);
+    ^
+
+"Test_name.c", line 101: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_ARITH (-7, -20, +);
+    ^
+
+"Test_name.c", line 101: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_ARITH (-7, -20, +);
+    ^
+
+"Test_name.c", line 101: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_ARITH (-7, -20, +);
+    ^
+
+"Test_name.c", line 101: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_ARITH (-7, -20, +);
+    ^
+
+"Test_name.c", line 101: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_ARITH (-7, -20, +);
+    ^
+
+"Test_name.c", line 101: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_ARITH (-7, -20, +);
+    ^
+
+"Test_name.c", line 115: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_ARITH (-7, -20, -);
+    ^
+
+"Test_name.c", line 115: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_ARITH (-7, -20, -);
+    ^
+
+"Test_name.c", line 115: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_ARITH (-7, -20, -);
+    ^
+
+"Test_name.c", line 115: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_ARITH (-7, -20, -);
+    ^
+
+"Test_name.c", line 115: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_ARITH (-7, -20, -);
+    ^
+
+"Test_name.c", line 115: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_ARITH (-7, -20, -);
+    ^
+
+"Test_name.c", line 115: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_ARITH (-7, -20, -);
+    ^
+
+"Test_name.c", line 115: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_ARITH (-7, -20, -);
+    ^
+
+"Test_name.c", line 115: warning: integer conversion resulted in a change of sign
+    TEST_COMPOUND_ARITH (-7, -20, -);
+    ^
+

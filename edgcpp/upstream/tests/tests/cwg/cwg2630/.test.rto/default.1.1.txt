@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=1 --ms_c++latest -tused --modules --microsoft_version 1929 --ms_mod_file_map A.ifc --target win32 Test_name.c

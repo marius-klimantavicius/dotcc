@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --ms_permissive Test_name.c
+"Test_name.c", line 13: warning: initial value of reference to non-const must be an lvalue
+  C &c = C();  // Anachronism still accepted in permissive Microsoft mode.
+         ^
+

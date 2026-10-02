@@ -1,0 +1,100 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --set_flag=no_very_expensive_checking --exceptions --exceptions --c++17 Test_name.c
+"Test_name.c", line N: error: vector operation does not apply to vector with non-integral type
+    (void)(four_floats ? 1 : 1); // expected-error {{is not contextually convertible to 'bool'}}}
+                         ^
+
+"Test_name.c", line N: error: vector operation does not apply to vector with non-integral type
+    (void)(two_doubles ? 1 : 1); // expected-error {{is not contextually convertible to 'bool'}}}
+                         ^
+
+"Test_name.c", line N: error: operand types are incompatible ("void" and "FourInts" (aka "__attribute((vector_size(16))) int"))
+    (void)(four_ints ? (void)1 : four_ints); // expected-error {{GNU vector conditional operand cannot be void}}
+                               ^
+
+"Test_name.c", line N: error: operand types are incompatible ("FourInts" (aka "__attribute((vector_size(16))) int") and "void")
+    (void)(four_ints ?: (void)1);            // expected-error {{GNU vector conditional operand cannot be void}}
+                      ^
+
+"Test_name.c", line N: error: operand types are incompatible ("FourInts" (aka "__attribute((vector_size(16))) int") and "TwoLongLong" (aka "__attribute((vector_size(16))) long long"))
+    (void)(four_ints ? two_ll : two_ll);             // expected-error {{vector condition type 'FourInts' (vector of 4 'int' values) and result type 'TwoLongLong' (vector of 2 'long long' values) do not have the same number of elements}}
+                     ^
+
+"Test_name.c", line N: error: operand types are incompatible ("FourInts" (aka "__attribute((vector_size(16))) int") and "FourLongLong" (aka "__attribute((vector_size(32))) long long"))
+    (void)(four_ints ? four_ll : four_ll);           // expected-error {{vector condition type 'FourInts' (vector of 4 'int' values) and result type 'FourLongLong' (vector of 4 'long long' values) do not have elements of the same size}}
+                     ^
+
+"Test_name.c", line N: error: operand types are incompatible ("FourInts" (aka "__attribute((vector_size(16))) int") and "TwoDoubles" (aka "__attribute((vector_size(16))) double"))
+    (void)(four_ints ? two_doubles : two_doubles);   // expected-error {{vector condition type 'FourInts' (vector of 4 'int' values) and result type 'TwoDoubles' (vector of 2 'double' values) do not have the same number of elements}}
+                     ^
+
+"Test_name.c", line N: error: operand types are incompatible ("FourInts" (aka "__attribute((vector_size(16))) int") and "FourDoubles" (aka "__attribute((vector_size(32))) double"))
+    (void)(four_ints ? four_doubles : four_doubles); // expected-error {{vector condition type 'FourInts' (vector of 4 'int' values) and result type 'FourDoubles' (vector of 4 'double' values) do not have elements of the same size}}
+                     ^
+
+"Test_name.c", line N: error: operand types are incompatible ("FourInts" (aka "__attribute((vector_size(16))) int") and "TwoInts" (aka "__attribute((vector_size(8))) int"))
+    (void)(four_ints ?: two_ints);                   // expected-error {{vector operands to the vector conditional must be the same type ('FourInts' (vector of 4 'int' values) and 'TwoInts' (vector of 2 'int' values)}}
+                      ^
+
+"Test_name.c", line N: error: operand types are incompatible ("FourInts" (aka "__attribute((vector_size(16))) int") and "FourDoubles" (aka "__attribute((vector_size(32))) double"))
+    (void)(four_ints ?: four_doubles);               // expected-error {{vector operands to the vector conditional must be the same type ('FourInts' (vector of 4 'int' values) and 'FourDoubles' (vector of 4 'double' values)}}
+                      ^
+
+"Test_name.c", line N: error: the element type of the vector condition ("int") must have the same size as the element type of the result ("double")
+    (void)(four_ints ? 3.0f : 3.0); // expected-error {{vector condition type 'FourInts' (vector of 4 'int' values) and result type '__attribute__((__vector_size__(4 * sizeof(double)))) double' (vector of 4 'double' values) do not have elements of the same size}}
+                     ^
+
+"Test_name.c", line N: error: the element type of the vector condition ("int") must have the same size as the element type of the result ("long long")
+    (void)(four_ints ? 5ll : 5);    // expected-error {{vector condition type 'FourInts' (vector of 4 'int' values) and result type '__attribute__((__vector_size__(4 * sizeof(long long)))) long long' (vector of 4 'long long' values) do not have elements of the same size}}
+                     ^
+
+"Test_name.c", line N: error: operand types are incompatible ("FourInts" (aka "__attribute((vector_size(16))) int") and "double")
+    (void)(four_ints ?: 3.0);       // expected-error {{cannot convert between scalar type 'double' and vector type 'FourInts' (vector of 4 'int' values) as implicit conversion would cause truncation}}
+                      ^
+
+"Test_name.c", line N: error: the element type of the vector condition ("short") must have the same size as the element type of the result ("int")
+    (void)(four_shorts ? (short)5 : (unsigned short)5); // expected-error {{vector condition type 'FourShorts' (vector of 4 'short' values) and result type '__attribute__((__vector_size__(4 * sizeof(int)))) int' (vector of 4 'int' values) do not have elements of the same size}}
+                       ^
+
+"Test_name.c", line N: error: the element type of the vector condition ("short") must have the same size as the element type of the result ("int")
+    (void)(four_shorts ? uss : shrt);  // expected-error {{vector condition type 'FourShorts' (vector of 4 'short' values) and result type '__attribute__((__vector_size__(4 * sizeof(int)))) int' (vector of 4 'int' values) do not have elements of the same size}}
+                       ^
+
+"Test_name.c", line N: error: operand types are incompatible ("FourUInts" (aka "__attribute((vector_size(16))) unsigned int") and "FourFloats" (aka "__attribute((vector_size(16))) float"))
+    (void)(four_ints ? four_uints : four_floats); // expected-error {{vector operands to the vector conditional must be the same type ('FourUInts' (vector of 4 'unsigned int' values) and 'FourFloats' (vector of 4 'float' values))}}
+                                  ^
+
+"Test_name.c", line N: error: operand types are incompatible ("FourUInts" (aka "__attribute((vector_size(16))) unsigned int") and "FourInts" (aka "__attribute((vector_size(16))) int"))
+    (void)(four_ints ? four_uints : four_ints);   // expected-error {{vector operands to the vector conditional must be the same type ('FourUInts' (vector of 4 'unsigned int' values) and 'FourInts' (vector of 4 'int' values))}}
+                                  ^
+
+"Test_name.c", line N: error: operand types are incompatible ("FourInts" (aka "__attribute((vector_size(16))) int") and "FourUInts" (aka "__attribute((vector_size(16))) unsigned int"))
+    (void)(four_ints ? four_ints : four_uints);   // expected-error {{vector operands to the vector conditional must be the same type ('FourInts' (vector of 4 'int' values) and 'FourUInts' (vector of 4 'unsigned int' values))}}
+                                 ^
+
+"Test_name.c", line N: error: operand types are incompatible ("FourUInts" (aka "__attribute((vector_size(16))) unsigned int") and "float")
+    (void)(four_ints ? four_uints : 3.0f);
+                                  ^
+
+"Test_name.c", line N: error: operand types are incompatible ("FourInts" (aka "__attribute((vector_size(16))) int") and "float")
+    (void)(four_ints ? four_ints : 3.0f);
+                                 ^
+
+"Test_name.c", line N: error: operand types are incompatible ("FourUInts" (aka "__attribute((vector_size(16))) unsigned int") and "E")
+    (void)(four_ints ? four_uints : e);  // expected-error {{cannot convert between scalar type 'E' and vector type 'FourUInts'}}
+                                  ^
+
+"Test_name.c", line N: error: operand types are incompatible ("FourUInts" (aka "__attribute((vector_size(16))) unsigned int") and "SE")
+    (void)(four_ints ? four_uints : se); // expected-error {{cannot convert between vector and non-scalar values ('FourUInts' (vector of 4 'unsigned int' values) and 'SE'}}
+                                  ^
+
+"Test_name.c", line N: error: static assertion failed
+
+"Test_name.c", line N: error: static assertion failed
+
+"Test_name.c", line N: internal error: assertion failed
+
+
+24 errors and 1 catastrophic error detected in the compilation of "Test_name.c".
+Compilation aborted.
+Aborted
+eccp: front end returned an exit status of 134

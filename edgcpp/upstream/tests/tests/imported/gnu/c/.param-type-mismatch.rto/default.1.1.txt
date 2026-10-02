@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 13: warning: argument of type "int" is incompatible with parameter of type "const char *"
+    return callee_1 (first, second, third); /* { dg-warning "passing argument 2 of 'callee_1' makes pointer from integer without a cast" }  */
+                            ^
+
+"Test_name.c", line 33: warning: argument of type "int" is incompatible with parameter of type "const char *"
+    return callee_2 (first, second, third); /* { dg-warning "passing argument 2 of 'callee_2' makes pointer from integer without a cast" } */
+                            ^
+
+"Test_name.c", line 56: warning: argument of type "int" is incompatible with parameter of type "const char *"
+    return callee_3 (first, second, third); // { dg-warning "passing argument 2 of 'callee_3' makes pointer from integer without a cast" }
+                            ^
+
+"Test_name.c", line 76: error: argument of type "const char *" is incompatible with parameter of type "float"
+    return callee_4 (first, second, third); /* { dg-error "incompatible type for argument 2 of 'callee_4'" }  */
+                            ^
+
+"Test_name.c", line 96: error: argument of type "const char *" is incompatible with parameter of type "float"
+    return callee_5 (first, second, third); /* { dg-error "incompatible type for argument 2 of 'callee_5'" }  */
+                            ^
+
+"Test_name.c", line 116: warning: argument of type "int" is incompatible with parameter of type "int (*)(int, int)"
+    return callee_6 (first, second, third); /* { dg-warning "passing argument 2 of 'callee_6' makes pointer from integer without a cast" } */
+                            ^
+
+"Test_name.c", line 136: warning: argument of type "int" is incompatible with parameter of type "int (*)(int, int)"
+    return callee_7 (first, second, third); /* { dg-warning "passing argument 2 of 'callee_7' makes pointer from integer without a cast" } */
+                            ^
+
+"Test_name.c", line 156: warning: argument of type "int *" is incompatible with parameter of type "float *"
+    return callee_8 (first, second, third); /* { dg-warning "passing argument 2 of 'callee_8' from incompatible pointer type" } */
+                            ^
+
+"Test_name.c", line 176: warning: argument of type "unsigned int *" is incompatible with parameter of type "int *"
+    return callee_9 (first, second, third); /* { dg-warning "pointer targets in passing argument 2 of 'callee_9' differ in signedness" } */
+                            ^
+
+2 errors detected in the compilation of "Test_name.c".

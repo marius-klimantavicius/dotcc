@@ -1,0 +1,49 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./template/explicit-args2.C", line 26: warning: expression has no effect
+    typeid(&S::bar<int>);
+    ^
+
+"./template/explicit-args2.C", line 28: warning: expression has no effect
+    (void*)(&S::foo<int>);
+    ^
+
+"./template/explicit-args2.C", line 31: warning: expression has no effect
+    typeid(&S::foo<int>);
+    ^
+
+"./template/explicit-args2.C", line 33: warning: expression has no effect
+    (void*)(&N1::foo<int>);
+    ^
+
+"./template/explicit-args2.C", line 36: warning: expression has no effect
+    typeid(&N1::foo<int>);
+    ^
+
+"./template/explicit-args2.C", line 38: warning: expression has no effect
+    (void*)(&foo<int>);
+    ^
+
+"./template/explicit-args2.C", line 41: warning: expression has no effect
+    typeid(&foo<int>);
+    ^
+
+"./template/explicit-args2.C", line 43: warning: expression has no effect
+    &foo<int> == 0;
+    ^
+
+"./template/explicit-args2.C", line 25: warning: variable "a" was declared but never referenced
+    decltype(&S::bar<int>) a;
+                           ^
+
+"./template/explicit-args2.C", line 30: warning: variable "b" was declared but never referenced
+    decltype(&S::foo<int>) b;
+                           ^
+
+"./template/explicit-args2.C", line 35: warning: variable "c" was declared but never referenced
+    decltype(&N1::foo<int>) c;
+                            ^
+
+"./template/explicit-args2.C", line 40: warning: variable "d" was declared but never referenced
+    decltype(&foo<int>) d;
+                        ^
+

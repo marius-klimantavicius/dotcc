@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=5 --c++11 --clang_version 50000 Test_name.c
+"Test_name.c", line 5: error: a fully qualified constructor call is not allowed
+  struct S { S(){} } s1{S::S()};
+                        ^
+
+"Test_name.c", line 7: error: a fully qualified constructor call is not allowed
+  S s2{S::S()};
+       ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --microsoft_v 1910 Test_name.c
+"Test_name.c", line 9: error: no instance of function template "f" matches the argument list
+            argument types are: ({...})
+    f<int, float>( {} );
+    ^
+"Test_name.c", line 6: note: substituting explicit template arguments "<int, float>" for function template "f" failed
+  int f(X<P1..., P2...>);
+      ^
+
+1 error detected in the compilation of "Test_name.c".

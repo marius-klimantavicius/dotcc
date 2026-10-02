@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++14 Test_name.c
+"Test_name.c", line 15: error: class "S" has no member "operator auto"
+    S().operator auto();  // Previously accepted; now an error.
+        ^
+
+1 error detected in the compilation of "Test_name.c".

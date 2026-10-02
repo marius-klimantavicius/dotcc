@@ -1,0 +1,16 @@
+#!/bin/bash
+# If external names need an underscore added, add it here
+underscore_needed=0
+$CPFE --dump_configuration |& grep "TARG_EXTERNAL_NAMES_GET_UNDERSCORE_ADDED 1" > /dev/null 2>&1
+if [ $? -eq 0 ]; then
+  underscore_needed=1
+fi
+set -o pipefail
+if [ $underscore_needed -eq 0 ]; then
+  $CPFE $* 2>&1 | $EDG_DECODE_PATH
+else
+  $CPFE $* 2>&1 | sed -e 's|-> |-> _|g' | $EDG_DECODE_PATH
+fi
+result=$?
+set +o pipefail
+exit $result

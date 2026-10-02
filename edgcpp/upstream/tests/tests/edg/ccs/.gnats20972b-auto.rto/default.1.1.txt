@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=1 --c++11 --sys_include $RUN_TEST_CURR_DIR/include --clang_version 30200 Test_name.c

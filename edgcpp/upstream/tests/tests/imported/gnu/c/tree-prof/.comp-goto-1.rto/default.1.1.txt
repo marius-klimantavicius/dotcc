@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c17 --strict_gnu Test_name.c
+"./tree-prof/comp-goto-1.c", line 82: warning: arithmetic on pointer to void or function type
+   program[i].f1.offset = op_map[program[i].f1.offset] - base_addr;
+                                                       ^
+
+"./tree-prof/comp-goto-1.c", line 90: warning: arithmetic on pointer to void or function type
+    goto *(base_addr + insn.f1.offset);
+                     ^
+
+"./tree-prof/comp-goto-1.c", line 108: warning: arithmetic on pointer to void or function type
+       goto *(base_addr + insn.f1.offset);
+                        ^
+
+"./tree-prof/comp-goto-1.c", line 116: warning: arithmetic on pointer to void or function type
+       goto *(base_addr + insn.f1.offset);
+                        ^
+
+"./tree-prof/comp-goto-1.c", line 140: warning: integer conversion resulted in a change of sign
+    a_page = (a_page + 4096 - 1) & -4096;
+                                   ^
+

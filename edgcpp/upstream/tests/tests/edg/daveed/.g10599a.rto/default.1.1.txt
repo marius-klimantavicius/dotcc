@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++0x Test_name.c
+"Test_name.c", line 5: error: declaration is incompatible with "S x" (declared at line 5)
+  auto x = 42;
+       ^
+
+1 error detected in the compilation of "Test_name.c".

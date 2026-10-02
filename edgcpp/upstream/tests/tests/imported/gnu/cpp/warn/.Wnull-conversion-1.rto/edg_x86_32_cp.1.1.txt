@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./warn/Wnull-conversion-1.C", line 9: error: a value of type "bool" cannot be used to initialize an entity of type "int *"
+    int* t = false;
+             ^
+
+"./warn/Wnull-conversion-1.C", line 12: error: a value of type "bool" cannot be assigned to an entity of type "int *"
+    p = false;
+      ^
+
+"./warn/Wnull-conversion-1.C", line 14: error: a value of type "unsigned int" cannot be used to initialize an entity of type "int *"
+    int* r = sizeof(char) / 2;
+             ^
+
+"./warn/Wnull-conversion-1.C", line 15: error: argument of type "bool" is incompatible with parameter of type "int *"
+    func1(false);
+          ^
+
+"./warn/Wnull-conversion-1.C", line 11: warning: variable "p" was set but never used
+    int* p;
+         ^
+
+"./warn/Wnull-conversion-1.C", line 17: warning: variable "i" was declared but never referenced
+    int i = 
+        ^
+
+4 errors detected in the compilation of "Test_name.c".

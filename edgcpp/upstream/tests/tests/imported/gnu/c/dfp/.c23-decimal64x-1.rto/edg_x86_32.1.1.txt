@@ -1,0 +1,130 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 7: error: extra text after expected end of number
+  int a = (int) 1.1D64x;
+                   ^
+
+"Test_name.c", line 8: error: extra text after expected end of number
+  int b = (int) 2.d64x;
+                  ^
+
+"Test_name.c", line 9: error: identifier "_Decimal64x" is undefined
+  _Decimal64x c = 1;
+  ^
+
+"Test_name.c", line 12: error: extra text after expected end of number
+  static_assert (expr_has_type (1.1D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 12: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (1.1D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 13: error: extra text after expected end of number
+  static_assert (expr_has_type (2.d64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 13: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (2.d64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 14: error: extra text after expected end of number
+  static_assert (expr_has_type (.33D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 14: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (.33D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 15: error: extra text after expected end of number
+  static_assert (expr_has_type (2e1d64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 15: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (2e1d64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 16: error: extra text after expected end of number
+  static_assert (expr_has_type (.3e2D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 16: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (.3e2D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 17: error: extra text after expected end of number
+  static_assert (expr_has_type (4.5e3d64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 17: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (4.5e3d64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 18: error: extra text after expected end of number
+  static_assert (expr_has_type (5.e0D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 18: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (5.e0D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 19: error: extra text after expected end of number
+  static_assert (expr_has_type (1e+2d64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 19: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (1e+2d64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 20: error: extra text after expected end of number
+  static_assert (expr_has_type (1000e-3D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 20: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (1000e-3D64x, _Decimal64x));
+                 ^
+
+"Test_name.c", line 21: error: identifier "__DEC64X_MIN__" is undefined
+  static_assert (expr_has_type (__DEC64X_MIN__, _Decimal64x));
+                 ^
+
+"Test_name.c", line 21: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (__DEC64X_MIN__, _Decimal64x));
+                 ^
+
+"Test_name.c", line 22: error: identifier "__DEC64X_MAX__" is undefined
+  static_assert (expr_has_type (__DEC64X_MAX__, _Decimal64x));
+                 ^
+
+"Test_name.c", line 22: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (__DEC64X_MAX__, _Decimal64x));
+                 ^
+
+"Test_name.c", line 23: error: identifier "__DEC64X_EPSILON__" is undefined
+  static_assert (expr_has_type (__DEC64X_EPSILON__, _Decimal64x));
+                 ^
+
+"Test_name.c", line 23: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (__DEC64X_EPSILON__, _Decimal64x));
+                 ^
+
+"Test_name.c", line 24: error: identifier "__DEC64X_SUBNORMAL_MIN__" is undefined
+  static_assert (expr_has_type (__DEC64X_SUBNORMAL_MIN__, _Decimal64x));
+                 ^
+
+"Test_name.c", line 24: error: identifier "_Decimal64x" is undefined
+  static_assert (expr_has_type (__DEC64X_SUBNORMAL_MIN__, _Decimal64x));
+                 ^
+
+"Test_name.c", line 49: error: identifier "_Decimal64x" is undefined
+  _Decimal64x
+  ^
+
+"Test_name.c", line 50: error: identifier "_Decimal64x" is undefined
+  foo (_Decimal64x x, _Decimal64x y)
+       ^
+
+"Test_name.c", line 50: error: identifier "_Decimal64x" is undefined
+  foo (_Decimal64x x, _Decimal64x y)
+                      ^
+
+32 errors detected in the compilation of "Test_name.c".

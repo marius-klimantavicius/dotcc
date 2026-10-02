@@ -1,0 +1,13 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./builtins-55.c", line 33: warning: statement is unreachable
+    if (__builtin_lceil(x) != __builtin_llceil(x))
+    ^
+
+"./builtins-55.c", line 50: warning: statement is unreachable
+    if (__builtin_lceilf(x) != __builtin_llceilf(x))
+    ^
+
+"./builtins-55.c", line 67: warning: statement is unreachable
+    if (__builtin_lceill(x) != __builtin_llceill(x))
+    ^
+

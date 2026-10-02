@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 26: error: no instance of constructor "vector" matches the argument list
+            argument types are: (<unknown-type>)
+  vector a = &Task<int>; // { dg-error "deduction|no match" }
+         ^
+
+"Test_name.c", line 26: error: cannot deduce class template arguments
+  vector a = &Task<int>; // { dg-error "deduction|no match" }
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 10: warning: a value of type "char [2]" cannot be used to initialize an entity of type "char [0]"
+    static char b[0] = "b";	/* { dg-warning "initializer-string for array of 'char' is too long" } */
+                       ^
+
+"Test_name.c", line 12: warning: a value of type "char [3]" cannot be used to initialize an entity of type "char [1]"
+    static char d[1] = "de";	/* { dg-warning "initializer-string for array of 'char' is too long" } */
+                       ^
+
+"Test_name.c", line 9: warning: variable "a" was declared but never referenced
+    static char a[0] = "";
+                ^
+
+"Test_name.c", line 10: warning: variable "b" was declared but never referenced
+    static char b[0] = "b";	/* { dg-warning "initializer-string for array of 'char' is too long" } */
+                ^
+
+"Test_name.c", line 11: warning: variable "c" was declared but never referenced
+    static char c[1] = "c";
+                ^
+
+"Test_name.c", line 12: warning: variable "d" was declared but never referenced
+    static char d[1] = "de";	/* { dg-warning "initializer-string for array of 'char' is too long" } */
+                ^
+

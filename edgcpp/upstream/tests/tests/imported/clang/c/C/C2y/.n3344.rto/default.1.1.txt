@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 18: error: declaring a void parameter list with a qualified void type is nonstandard
+  void baz(volatile void);         // expected-error {{'void' as parameter must not have type qualifiers}}
+           ^
+
+"Test_name.c", line 19: error: declaring a void parameter list with a qualified void type is nonstandard
+  void bar(const void);            // expected-error {{'void' as parameter must not have type qualifiers}}
+           ^
+
+"Test_name.c", line 20: error: a parameter may not have void type
+  void foo(register void);         // expected-error {{invalid storage class specifier in function declarator}}
+           ^
+
+"Test_name.c", line 21: error: a parameter may not have void type
+  void foop(void register);        // expected-error {{invalid storage class specifier in function declarator}}
+            ^
+
+"Test_name.c", line 22: error: invalid storage class for a parameter
+  void quux(static void);          // expected-error {{invalid storage class specifier in function declarator}}
+            ^
+
+"Test_name.c", line 23: error: invalid storage class for a parameter
+  void quobble(auto void);         // expected-error {{invalid storage class specifier in function declarator}}
+               ^
+
+"Test_name.c", line 24: error: invalid storage class for a parameter
+  void quubble(extern void);       // expected-error {{invalid storage class specifier in function declarator}}
+               ^
+
+"Test_name.c", line 30: error: invalid storage class for a parameter
+  void quabble(_Thread_local void); // expected-error {{'_Thread_local' is only allowed on variable declarations}}
+               ^
+
+"Test_name.c", line 32: error: a parameter may not have void type
+  void bing(void, ...);            // expected-error {{'void' must be the first and only parameter if specified}}
+            ^
+
+9 errors detected in the compilation of "Test_name.c".

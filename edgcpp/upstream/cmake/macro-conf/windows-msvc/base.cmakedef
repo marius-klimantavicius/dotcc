@@ -1,0 +1,7 @@
+# Import Windows Configuration
+import <support/platform/windows-x86_64/base>
+# Import MSVC Configuration
+import <support/compiler/msvc/base>
+
+# Import Debug Configuration
+import <support/simple-conf/debug/base>

@@ -1,0 +1,41 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 30: warning: unrecognized #pragma
+      #pragma omp parallel allocate (allocator (h): x) private (x)
+              ^
+
+"Test_name.c", line 29: warning: variable "x" was set but never used
+      int x = 0;
+          ^
+
+"Test_name.c", line 42: warning: unrecognized #pragma
+      #pragma omp parallel allocate (allocator (h): x) private (x) // { dg-error "'allocate' clause allocator expression has type 'N2::omp_allocator_handle_t' rather than 'omp_allocator_handle_t'" }
+              ^
+
+"Test_name.c", line 41: warning: variable "x" was set but never used
+      int x = 0;
+          ^
+
+"Test_name.c", line 51: warning: unrecognized #pragma
+      #pragma omp parallel allocate (allocator(omp_default_mem_alloc):s) firstprivate (s)
+              ^
+
+"Test_name.c", line 62: warning: unrecognized #pragma
+      #pragma omp parallel allocate (allocator(omp_default_mem_alloc):s) firstprivate (s)
+              ^
+
+"Test_name.c", line 73: warning: unrecognized #pragma
+    #pragma omp parallel firstprivate (x) allocate (allocator(t), align (N): x)
+            ^
+
+"Test_name.c", line 82: warning: unrecognized #pragma
+    #pragma omp parallel firstprivate (x) allocate (allocator(t): x)	// { dg-error "'allocate' clause allocator expression has type 'int' rather than 'omp_allocator_handle_t'" }
+            ^
+
+"Test_name.c", line 91: warning: unrecognized #pragma
+    #pragma omp parallel firstprivate (x) allocate (allocator(t), align (N): x) // { dg-error "'allocate' clause 'align' modifier argument needs to be positive constant power of two integer expression" }
+            ^
+
+"Test_name.c", line 100: warning: unrecognized #pragma
+    #pragma omp parallel firstprivate (x) allocate (align ((T) 16): x) // { dg-error "'allocate' clause 'align' modifier argument needs to be positive constant power of two integer expression" }
+            ^
+

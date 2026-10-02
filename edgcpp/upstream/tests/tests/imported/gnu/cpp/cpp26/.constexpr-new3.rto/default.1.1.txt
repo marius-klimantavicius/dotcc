@@ -1,0 +1,23 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++26 Test_name.c
+"./cpp26/constexpr-new3.C", line 45: error: expression must have a constant value
+  constexpr bool a = foo ();
+                     ^
+"./cpp26/constexpr-new3.C", line 20: note: a placement new-expression cannot be constant-evaluated
+    new (b + 1) int[] {2, 3};
+    ^
+
+"./cpp26/constexpr-new3.C", line 46: error: expression must have a constant value
+  constexpr bool b = bar ();
+                     ^
+"./cpp26/constexpr-new3.C", line 30: note: a placement new-expression cannot be constant-evaluated
+    new (b) int[] {1, 2, 3, 4};
+    ^
+
+"./cpp26/constexpr-new3.C", line 47: error: expression must have a constant value
+  constexpr bool c = baz ();
+                     ^
+"./cpp26/constexpr-new3.C", line 40: note: a placement new-expression cannot be constant-evaluated
+    new (b) long (42);
+    ^
+
+3 errors detected in the compilation of "Test_name.c".

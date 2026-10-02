@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: error: operand types are incompatible ("int" and "std::nullptr_t")
+    if( n == nullptr ); // { dg-error "invalid operands of types " }
+          ^
+
+"Test_name.c", line 12: error: operand types are incompatible ("int" and "std::nullptr_t")
+    if( m == nullptr ); // { dg-error "invalid operands of types " }
+          ^
+
+"Test_name.c", line 14: error: operand types are incompatible ("int" and "std::nullptr_t")
+    if( n == mynull ); // { dg-error "invalid operands of types " }
+          ^
+
+"Test_name.c", line 15: error: operand types are incompatible ("int" and "std::nullptr_t")
+    if( m == mynull ); // { dg-error "invalid operands of types " }
+          ^
+
+4 errors detected in the compilation of "Test_name.c".

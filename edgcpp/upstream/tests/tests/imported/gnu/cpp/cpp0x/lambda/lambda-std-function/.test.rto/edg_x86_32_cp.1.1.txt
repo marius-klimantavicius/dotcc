@@ -1,0 +1,50 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 137: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 140: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 155: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 158: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 206: error: first parameter of allocation function must be of type "size_t"
+  void* operator new(std::size_t, void* __p)
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 210: error: first parameter of allocation function must be of type "size_t"
+  void* operator new[](std::size_t, void* __p)
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/std_function.h", line 154: error: function "operator new" cannot be called with the given argument list
+            argument types are: (unsigned int, void *)
+       ::new (__dest._M_access()) _Functor(std::forward<_Fn>(__f));
+         ^
+Note: number of parameters of function "operator new" does not match the call
+          detected during:
+            instantiation of "void std::_Function_base::_Base_manager<_Functor>::_M_create(std::_Any_data &, _Fn &&, std::true_type) [with _Functor=lambda []()->int, _Fn=lambda []()->int]" at line 217
+            instantiation of "void std::_Function_base::_Base_manager<_Functor>::_M_init_functor(std::_Any_data &, _Fn &&) [with _Functor=lambda []()->int, _Fn=lambda []()->int]" at line 452
+            instantiation of "std::function<_Res (_ArgTypes...)>::function(_Functor &&) [with _Res=int, _ArgTypes=<>, _Functor=lambda []()->int, _Constraints=void]" at line 12 of "./cpp0x/lambda/lambda-std-function.C"
+            instantiation of "FN f(T) [with T=lambda [](int)->int]" at line 17 of "./cpp0x/lambda/lambda-std-function.C"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/std_function.h", line 154: error: function "operator new" cannot be called with the given argument list
+            argument types are: (unsigned int, void *)
+       ::new (__dest._M_access()) _Functor(std::forward<_Fn>(__f));
+         ^
+Note: number of parameters of function "operator new" does not match the call
+          detected during:
+            instantiation of "void std::_Function_base::_Base_manager<_Functor>::_M_create(std::_Any_data &, _Fn &&, std::true_type) [with _Functor=lambda []()->int, _Fn=const lambda []()->int &]" at line 217
+            instantiation of "void std::_Function_base::_Base_manager<_Functor>::_M_init_functor(std::_Any_data &, _Fn &&) [with _Functor=lambda []()->int, _Fn=const lambda []()->int &]" at line 201
+            instantiation of "bool std::_Function_base::_Base_manager<_Functor>::_M_manager(std::_Any_data &, const std::_Any_data &, std::_Manager_operation) [with _Functor=lambda []()->int]" at line 284
+            instantiation of "bool std::_Function_handler<_Res (_ArgTypes...), _Functor>::_M_manager(std::_Any_data &, const std::_Any_data &, std::_Manager_operation) [with _Res=int, _Functor=lambda []()->int, _ArgTypes=<>]" at line 454
+            instantiation of "std::function<_Res (_ArgTypes...)>::function(_Functor &&) [with _Res=int, _ArgTypes=<>, _Functor=lambda []()->int, _Constraints=void]" at line 12 of "./cpp0x/lambda/lambda-std-function.C"
+            instantiation of "FN f(T) [with T=lambda [](int)->int]" at line 17 of "./cpp0x/lambda/lambda-std-function.C"
+
+8 errors detected in the compilation of "Test_name.c".

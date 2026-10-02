@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --ms_extensions --c++11 Test_name.c
+"Test_name.c", line 7: error: interface types cannot have user-declared constructors or destructors
+    I1();
+    ^
+
+"Test_name.c", line 9: error: interface types cannot have user-declared constructors or destructors
+    ~I1();
+    ^
+
+"Test_name.c", line 12: error: interface types cannot have user-declared member operators
+    bool operator!();
+         ^
+
+"Test_name.c", line 14: error: interface types cannot have user-declared member operators
+    operator int();
+    ^
+
+"Test_name.c", line 16: error: interface types cannot have data members
+    struct { int a; };
+                     ^
+
+"Test_name.c", line 20: error: interface types cannot specify "private" or "protected"
+  protected: // expected-error {{interface types cannot specify 'protected' access}}
+  ^
+
+"Test_name.c", line 21: error: interface types cannot have typedef members
+    typedef void void_t;
+                 ^
+
+"Test_name.c", line 22: error: interface types cannot have typedef members
+    using int_t = int;
+          ^
+
+"Test_name.c", line 23: error: interface types cannot specify "private" or "protected"
+  private:   // expected-error {{interface types cannot specify 'private' access}}
+  ^
+
+"Test_name.c", line 29: error: interface types cannot have data members
+    int i;
+        ^
+
+"Test_name.c", line 31: error: interface types cannot have static member functions
+    static int fn1();
+    ^
+
+"Test_name.c", line 32: error: interface types cannot specify "private" or "protected"
+  private:   // expected-error {{interface types cannot specify 'private' access}}
+  ^
+
+"Test_name.c", line 35: error: interface types cannot specify "private" or "protected"
+  protected: // expected-error {{interface types cannot specify 'protected' access}}
+  ^
+
+"Test_name.c", line 53: error: interface types cannot specify "private" or "protected"
+  __interface I5 : private I1 {
+                   ^
+
+"Test_name.c", line 57: error: interface types can only derive from other interface types
+  __interface I6 : X {
+                   ^
+
+"Test_name.c", line 116: error: interface types can only derive from other interface types
+    __interface Foo : Base {};
+                      ^
+
+16 errors detected in the compilation of "Test_name.c".

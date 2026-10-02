@@ -1,0 +1,22 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --microsoft -n Test_name.c
+"Test_name.c", line 5: error: incomplete type "void" is not allowed
+  void f(x, ...) int x; { }
+       ^
+
+"Test_name.c", line 5: error: identifier "x" is undefined
+  void f(x, ...) int x; { }
+         ^
+
+"Test_name.c", line 5: error: expected an expression
+  void f(x, ...) int x; { }
+            ^
+
+"Test_name.c", line 5: error: expected a ";"
+  void f(x, ...) int x; { }
+                 ^
+
+"Test_name.c", line 5: error: expected a declaration
+  void f(x, ...) int x; { }
+                        ^
+
+5 errors detected in the compilation of "Test_name.c".

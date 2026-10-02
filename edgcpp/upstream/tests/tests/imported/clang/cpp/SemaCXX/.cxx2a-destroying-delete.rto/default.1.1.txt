@@ -1,0 +1,70 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 --exceptions Test_name.c
+"Test_name.c", line 21: error: first parameter of deallocation function must be of type "void *"
+  void operator delete(A*, std::destroying_delete_t); // expected-error {{1st parameter of 'operator delete' must have type 'void *'}}
+       ^
+
+"Test_name.c", line 28: error: a destroying operator delete cannot have parameters other than std::size_t and std::align_val_t
+    void operator delete(A*, std::destroying_delete_t, int); // expected-error {{destroying operator delete can have only an optional size and optional alignment parameter}}
+         ^
+
+"Test_name.c", line 32: error: first parameter of deallocation function must be of type "void *"
+    void operator delete(struct X*, std::destroying_delete_t, std::size_t, ...); // expected-error {{1st parameter of destroying 'operator delete' must have type 'A *'}}
+         ^
+
+"Test_name.c", line 58: error: function "delete_selection::B::operator delete(delete_selection::B *, std::destroying_delete_t) noexcept" (declared at line 56) cannot be referenced -- it is a deleted function
+    void delete_B(B *b) { delete b; } // expected-error {{deleted}}
+                          ^
+
+"Test_name.c", line 71: error: function "delete_selection::C::operator delete(delete_selection::C *, std::destroying_delete_t) noexcept" (declared at line 64) cannot be referenced -- it is a deleted function
+    C *new_C() { return new C; }
+                        ^
+
+"Test_name.c", line 77: error: function "delete_selection::D::operator delete(delete_selection::D *, std::destroying_delete_t, std::align_val_t) noexcept" (declared at line 75) cannot be referenced -- it is a deleted function
+    void delete_D(D *d) { delete d; } // expected-error {{deleted}}
+                          ^
+
+"Test_name.c", line 83: error: function "delete_selection::E::operator delete(delete_selection::E *, std::destroying_delete_t, std::align_val_t) noexcept" (declared at line 81) cannot be referenced -- it is a deleted function
+    void delete_E(E *e) { delete e; } // expected-error {{deleted}}
+                          ^
+
+"Test_name.c", line 89: error: function "delete_selection::F::operator delete(delete_selection::F *, std::destroying_delete_t, std::size_t) noexcept" (declared at line 87) cannot be referenced -- it is a deleted function
+    void delete_F(F *f) { delete f; } // expected-error {{deleted}}
+                          ^
+
+"Test_name.c", line 95: error: function "delete_selection::G::operator delete(delete_selection::G *, std::destroying_delete_t, std::size_t) noexcept" (declared at line 93) cannot be referenced -- it is a deleted function
+    void delete_G(G *g) { delete g; } // expected-error {{deleted}}
+                          ^
+
+"Test_name.c", line 101: error: function "delete_selection::H::operator delete(delete_selection::H *, std::destroying_delete_t, std::size_t, std::align_val_t) noexcept" (declared at line 99) cannot be referenced -- it is a deleted function
+    void delete_H(H *h) { delete h; } // expected-error {{deleted}}
+                          ^
+
+"Test_name.c", line 107: error: function "delete_selection::I::operator delete(delete_selection::I *, std::destroying_delete_t, std::size_t, std::align_val_t) noexcept" (declared at line 105) cannot be referenced -- it is a deleted function
+    void delete_I(I *i) { delete i; } // expected-error {{deleted}}
+                          ^
+
+"Test_name.c", line 143: error: first parameter of deallocation function must be of type "void *"
+      void operator delete(typename id_struct<D>::type *, std::destroying_delete_t); // expected-error {{use 'templated::D<T> *'}}
+           ^
+
+"Test_name.c", line 156: error: "dtor_access::S::~S() noexcept" (declared at line 151) is inaccessible
+    void f() { delete new S; }
+                      ^
+
+"Test_name.c", line 170: error: "dtor_access::T::~T() noexcept" (declared at line 161) is inaccessible
+    void g() { delete (T *)new U; } // expected-error {{calling a protected destructor of class 'T'}}
+                      ^
+
+"Test_name.c", line 184: error: function "delete_from_new::A::operator delete(delete_from_new::A *, std::destroying_delete_t) noexcept" (declared at line 176) cannot be referenced -- it is a deleted function
+      new A; // calls ::operator delete
+      ^
+
+"Test_name.c", line 185: error: function "delete_from_new::B::operator delete(delete_from_new::B *, std::destroying_delete_t) noexcept" (declared at line 181) cannot be referenced -- it is a deleted function
+      new B; // calls B::operator delete
+      ^
+
+"Test_name.c", line 196: error: first parameter of deallocation function must be of type "void *"
+      void operator delete(S) { } // expected-error {{1st parameter of 'operator delete' must have type 'void *'}}
+           ^
+
+17 errors detected in the compilation of "Test_name.c".

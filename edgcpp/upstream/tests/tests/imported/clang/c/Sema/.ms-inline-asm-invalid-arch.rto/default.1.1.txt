@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 6: error: expected a "("
+    __asm nop // expected-error {{unsupported architecture 'powerpc64' for MS-style inline assembly}}
+          ^
+
+"Test_name.c", line 7: error: expected an asm string
+  }
+  ^
+
+"Test_name.c", line 7: error: expected a ")"
+  }
+  ^
+
+"Test_name.c", line 7: error: expected a ";"
+  }
+  ^
+
+4 errors detected in the compilation of "Test_name.c".

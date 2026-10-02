@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 32: error: "void A<short>::B::f()" is not an entity that can be explicitly specialized
+  template<> void A<short>::B::f() { /* ... */ } // expected-error{{no function template matches function template specialization 'f'}}
+                               ^
+
+"Test_name.c", line 36: error: template argument list must match the parameter list
+  template<class U> void A<short>::C<U>::f() { /* ... */ } // expected-error{{template parameter list matching the non-templated nested type 'A<short>' should be empty ('template<>')}}
+                         ^
+
+2 errors detected in the compilation of "Test_name.c".

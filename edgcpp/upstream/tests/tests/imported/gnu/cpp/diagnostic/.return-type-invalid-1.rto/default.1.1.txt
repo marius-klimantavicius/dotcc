@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 5: error: member function with the same name as its class must be a constructor
+    int S1();  // { dg-error "3:return type" }
+        ^
+
+"Test_name.c", line 6: error: return type may not be specified on a destructor
+    int ~S1();  // { dg-error "3:return type" }
+    ^
+
+"Test_name.c", line 7: error: return type may not be specified on a conversion function
+    int operator int();  // { dg-error "3:return type" }
+    ^
+
+"Test_name.c", line 12: warning: type qualifier on return type is meaningless
+    const int S2();  // { dg-error "3:return type" }
+    ^
+
+"Test_name.c", line 12: error: member function with the same name as its class must be a constructor
+    const int S2();  // { dg-error "3:return type" }
+              ^
+
+"Test_name.c", line 13: error: return type may not be specified on a destructor
+    const int ~S2();  // { dg-error "3:return type" }
+    ^
+
+"Test_name.c", line 14: error: return type may not be specified on a conversion function
+    const int operator int();  // { dg-error "3:return type" }
+    ^
+
+"Test_name.c", line 19: warning: type qualifier on return type is meaningless
+    volatile int S3();  // { dg-error "3:return type" }
+    ^
+
+"Test_name.c", line 19: error: member function with the same name as its class must be a constructor
+    volatile int S3();  // { dg-error "3:return type" }
+                 ^
+
+"Test_name.c", line 20: error: return type may not be specified on a destructor
+    volatile int ~S3();  // { dg-error "3:return type" }
+    ^
+
+"Test_name.c", line 21: error: return type may not be specified on a conversion function
+    volatile int operator int(); // { dg-error "3:return type" } 
+    ^
+
+"Test_name.c", line 26: warning: type qualifier on return type is meaningless
+    const volatile int S4();  // { dg-error "3:return type" }
+    ^
+
+"Test_name.c", line 26: error: member function with the same name as its class must be a constructor
+    const volatile int S4();  // { dg-error "3:return type" }
+                       ^
+
+"Test_name.c", line 27: error: return type may not be specified on a destructor
+    const volatile int ~S4();  // { dg-error "3:return type" }
+    ^
+
+"Test_name.c", line 28: error: return type may not be specified on a conversion function
+    const volatile int operator int();  // { dg-error "3:return type" }
+    ^
+
+12 errors detected in the compilation of "Test_name.c".

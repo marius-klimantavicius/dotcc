@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --c++20 -tused Test_name.c
+"Test_name.c", line 24: error: expression must have a constant value
+      static_assert(pswam->phelps() == 28);   // error: lvalue-to-rvalue conversion on a pointer
+                    ^
+"Test_name.c", line 24: note: the value of variable "pswam" (declared at line 23) cannot be used as a constant
+      static_assert(pswam->phelps() == 28);   // error: lvalue-to-rvalue conversion on a pointer
+                    ^
+
+"Test_name.c", line 26: error: expression must have a constant value
+      static_assert(swam.lochte() == 12);     // error: invoking virtual function on reference
+                    ^
+"Test_name.c", line 26: note: attempt to access run-time storage
+      static_assert(swam.lochte() == 12);     // error: invoking virtual function on reference
+                               ^
+
+"Test_name.c", line 28: error: expression must have a constant value
+      static_assert(swam.coughlin == 12);     // error: lvalue-to-rvalue conversion on an object
+                    ^
+"Test_name.c", line 28: note: attempt to access run-time storage
+      static_assert(swam.coughlin == 12);     // error: lvalue-to-rvalue conversion on an object
+                        ^
+
+"Test_name.c", line 35: error: expression must have a constant value
+  constexpr auto& gallagher = typeid(trident);    // error: constexpr-unknown dynamic type
+                              ^
+"Test_name.c", line 35: note: attempt to access run-time storage
+  constexpr auto& gallagher = typeid(trident);    // error: constexpr-unknown dynamic type
+                              ^
+
+4 errors detected in the compilation of "Test_name.c".

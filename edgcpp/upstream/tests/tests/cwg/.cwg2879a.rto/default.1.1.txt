@@ -1,0 +1,6 @@
+cpfe -DTEST_NUMBER=1 --c++23 -A Test_name.c
+"Test_name.c", line 5: error: the operand of a const_cast to an rvalue reference type cannot be a non-class prvalue
+    auto &&r2 = const_cast<A&&>(CA{}); 
+                                ^
+
+1 error detected in the compilation of "Test_name.c".

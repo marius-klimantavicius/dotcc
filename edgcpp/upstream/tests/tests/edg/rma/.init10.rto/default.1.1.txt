@@ -1,0 +1,21 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 5: remark: class "D" defines no constructor to initialize the following:
+            reference member "D::i"
+    struct D {
+           ^
+
+"Test_name.c", line 5: error: implicitly generated constructor for class "D" cannot initialize:
+            reference member "D::i"
+    struct D {
+           ^
+          detected during implicit generation of "D::D()" at line 8
+
+"Test_name.c", line 8: warning: variable "d1" was declared but never referenced
+    static D d1;
+             ^
+
+"Test_name.c", line 11: warning: variable "d4" was declared but never referenced
+    static D d4 = { i };
+             ^
+
+1 error detected in the compilation of "Test_name.c".

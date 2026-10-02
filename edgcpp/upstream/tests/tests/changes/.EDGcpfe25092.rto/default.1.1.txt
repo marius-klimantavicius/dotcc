@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gn 90100 Test_name.c
+"Test_name.c", line 11: warning: 'explicit(bool)' is a C++20 feature
+  struct A { explicit(true) A() {} };  // Now accepted with a warning in
+             ^
+

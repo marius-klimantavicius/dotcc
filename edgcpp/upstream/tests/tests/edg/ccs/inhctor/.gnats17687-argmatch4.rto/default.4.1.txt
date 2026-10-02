@@ -1,0 +1,28 @@
+fe_only -DTEST_NUMBER=4 --c++17 --microsoft Test_name.c
+"Test_name.c", line 16: error: more than one instance of constructor "B::B" matches the argument list:
+            function "B::B(short, double)" (declared at line 12)
+            function "A::A(double, short)" (declared at line 7), inherited via using decl at line 13
+            argument types are: (int)
+  B b(5); // Ambiguous
+      ^
+"Test_name.c", line 10: note: function "B::B(const B &)" does not match because argument #1 does not match parameter
+  struct B : A
+         ^
+"Test_name.c", line 10: note: function "B::B(B &&)" does not match because argument #1 does not match parameter
+  struct B : A
+         ^
+
+"Test_name.c", line 17: error: more than one instance of constructor "B::B" matches the argument list:
+            function "B::B(short, double)" (declared at line 12)
+            function "A::A(double, short)" (declared at line 7), inherited via using decl at line 13
+            argument types are: (int, int)
+  B b2(5, 10); // Ambiguous
+       ^
+"Test_name.c", line 10: note: number of parameters of function "B::B(const B &)" does not match the call
+  struct B : A
+         ^
+"Test_name.c", line 10: note: number of parameters of function "B::B(B &&)" does not match the call
+  struct B : A
+         ^
+
+2 errors detected in the compilation of "Test_name.c".

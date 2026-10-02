@@ -1,0 +1,118 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 40: error: "D::a" is ambiguous
+    d.a; // expected-error{{non-static member 'a' found in multiple base-class subobjects of type 'A':}}
+      ^
+
+"Test_name.c", line 42: error: "D::c" is ambiguous
+    d.c; // expected-error{{member 'c' found in multiple base classes of different types}}
+      ^
+
+"Test_name.c", line 43: error: "D::d" is ambiguous
+    d.d; // expected-error{{member 'd' found in multiple base classes of different types}}
+      ^
+
+"Test_name.c", line 44: error: "D::f" is ambiguous
+    d.f(0); // expected-error{{non-static member 'f' found in multiple base-class subobjects of type 'A':}}
+      ^
+
+"Test_name.c", line 52: error: "D::E3" is ambiguous
+    D::E3 e3; // expected-error{{multiple base classes}}
+       ^
+
+"Test_name.c", line 47: warning: variable "e" was declared but never referenced
+    D::E e = D::enumerator; // okay
+         ^
+
+"Test_name.c", line 48: warning: variable "t" was declared but never referenced
+    D::type t = 0; // okay
+            ^
+
+"Test_name.c", line 50: warning: variable "e2" was declared but never referenced
+    D::E2 e2 = D::enumerator2; // okay
+          ^
+
+"Test_name.c", line 56: error: "D::a" is ambiguous
+    a; // expected-error{{non-static member 'a' found in multiple base-class subobjects of type 'A':}}
+    ^
+
+"Test_name.c", line 58: error: "D::c" is ambiguous
+    c; // expected-error{{member 'c' found in multiple base classes of different types}}
+    ^
+
+"Test_name.c", line 59: error: "D::d" is ambiguous
+    d; // expected-error{{member 'd' found in multiple base classes of different types}}
+    ^
+
+"Test_name.c", line 60: error: "D::f" is ambiguous
+    f(0); // expected-error{{non-static member 'f' found in multiple base-class subobjects of type 'A':}}
+    ^
+
+"Test_name.c", line 68: error: "D::E3" is ambiguous
+    E3 e3; // expected-error{{member 'E3' found in multiple base classes of different types}}
+    ^
+
+"Test_name.c", line 63: warning: variable "e" was declared but never referenced
+    E e = enumerator; // okay
+      ^
+
+"Test_name.c", line 64: warning: variable "t" was declared but never referenced
+    type t = 0; // okay
+         ^
+
+"Test_name.c", line 66: warning: variable "e2" was declared but never referenced
+    E2 e2 = enumerator2; // okay
+       ^
+
+"Test_name.c", line 99: error: "D2::d" is ambiguous
+    d2.d; // expected-error{{member 'd' found in multiple base classes of different types}}
+       ^
+
+"Test_name.c", line 108: error: "D2::E3" is ambiguous
+    D2::E3 e3; // expected-error{{member 'E3' found in multiple base classes of different types}}
+        ^
+
+"Test_name.c", line 110: error: "G::a" is ambiguous
+    g.a; // expected-error{{non-static member 'a' found in multiple base-class subobjects of type 'A':}}
+      ^
+
+"Test_name.c", line 103: warning: variable "e" was declared but never referenced
+    D2::E e = D2::enumerator; // okay
+          ^
+
+"Test_name.c", line 104: warning: variable "t" was declared but never referenced
+    D2::type t = 0; // okay
+             ^
+
+"Test_name.c", line 106: warning: variable "e2" was declared but never referenced
+    D2::E2 e2 = D2::enumerator2; // okay
+           ^
+
+"Test_name.c", line 118: error: "D2::d" is ambiguous
+    d; // expected-error{{member 'd' found in multiple base classes of different types}}
+    ^
+
+"Test_name.c", line 127: error: "D2::E3" is ambiguous
+    E3 e3; // expected-error{{member 'E3' found in multiple base classes of different types}}
+    ^
+
+"Test_name.c", line 122: warning: variable "e" was declared but never referenced
+    E e = enumerator; // okay
+      ^
+
+"Test_name.c", line 123: warning: variable "t" was declared but never referenced
+    type t = 0; // okay
+         ^
+
+"Test_name.c", line 125: warning: variable "e2" was declared but never referenced
+    E2 e2 = enumerator2; // okay
+       ^
+
+"Test_name.c", line 131: error: "G::a" is ambiguous
+    a; // expected-error{{non-static member 'a' found in multiple base-class subobjects of type 'A':}}
+    ^
+
+"Test_name.c", line 149: error: "UsesAmbigMemberType::type" is ambiguous
+    type t; // expected-error{{member 'type' found in multiple base classes of different types}}
+    ^
+
+17 errors detected in the compilation of "Test_name.c".

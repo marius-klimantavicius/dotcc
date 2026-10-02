@@ -1,0 +1,70 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 17: error: identifier "__FLT_EVAL_METHOD__" is undefined
+    printf("FP: %d\n", __FLT_EVAL_METHOD__);
+                       ^
+
+"Test_name.c", line 22: warning: unrecognized #pragma
+  #pragma clang fp eval_method(double)
+          ^
+
+"Test_name.c", line 24: error: identifier "__FLT_EVAL_METHOD__" is undefined
+    printf("FP: %d\n", __FLT_EVAL_METHOD__);
+                       ^
+
+"Test_name.c", line 34: warning: unrecognized #pragma
+  #pragma clang fp eval_method(value)
+          ^
+
+"Test_name.c", line 43: error: identifier "__FLT_EVAL_METHOD__" is undefined
+    auto a = __FLT_EVAL_METHOD__;
+             ^
+
+"Test_name.c", line 46: warning: unrecognized #pragma
+  #pragma clang fp eval_method(double)
+          ^
+
+"Test_name.c", line 56: warning: unrecognized #pragma
+  #pragma clang fp eval_method(source)
+          ^
+
+"Test_name.c", line 58: error: identifier "__FLT_EVAL_METHOD__" is undefined
+      int i = __FLT_EVAL_METHOD__; // ok, not in a scope changed by the pragma
+              ^
+
+"Test_name.c", line 62: warning: unrecognized #pragma
+  #pragma clang fp eval_method(source)
+          ^
+
+"Test_name.c", line 64: error: identifier "__FLT_EVAL_METHOD__" is undefined
+      int i = __FLT_EVAL_METHOD__;
+              ^
+
+"Test_name.c", line 72: error: identifier "__FLT_EVAL_METHOD__" is undefined
+    return __FLT_EVAL_METHOD__;
+           ^
+
+"Test_name.c", line 78: warning: unrecognized #pragma
+  #pragma clang fp eval_method(double)
+          ^
+
+"Test_name.c", line 81: error: identifier "__FLT_EVAL_METHOD__" is undefined
+      return __FLT_EVAL_METHOD__;
+             ^
+
+"Test_name.c", line 84: warning: unrecognized #pragma
+  #pragma clang fp eval_method(extended)
+          ^
+
+"Test_name.c", line 87: error: identifier "__FLT_EVAL_METHOD__" is undefined
+      return __FLT_EVAL_METHOD__;
+             ^
+
+"Test_name.c", line 93: warning: unrecognized #pragma
+  #pragma clang fp eval_method(source)
+          ^
+
+"Test_name.c", line 96: warning: unrecognized #pragma
+  #pragma clang fp eval_method(double)
+          ^
+
+8 errors detected in the compilation of "Test_name.c".

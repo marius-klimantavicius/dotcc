@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./other/array1.C", line 8: error: an array may not have elements of this type
+   const char *s = typeid(double[][]).name();
+                                  ^
+
+1 error detected in the compilation of "Test_name.c".

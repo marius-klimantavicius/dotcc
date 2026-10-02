@@ -1,0 +1,50 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 --strict_gnu Test_name.c
+"Test_name.c", line 14: error: identifier "_Decimal128" is undefined
+    _Decimal128 d128;
+    ^
+
+"Test_name.c", line 15: error: expected a ";"
+    unsigned __int128 u128;
+                      ^
+
+"Test_name.c", line 24: error: expected a ";"
+    unsigned __int128 i = U128 (0x6e79000000000000ULL, 0x1ULL);
+                      ^
+
+"Test_name.c", line 26: error: identifier "_Decimal128" is undefined
+    _Decimal128 d128;
+    ^
+
+"Test_name.c", line 27: error: union "u" has no field "u128"
+    x.u128 = i;
+      ^
+
+"Test_name.c", line 27: error: identifier "i" is undefined
+    x.u128 = i;
+             ^
+
+"Test_name.c", line 33: error: identifier "_Decimal128" is undefined
+    _Decimal128 t1233 = 0.e1233DL, t1234 = 0.e1234DL, t1235 = 0.e1235DL;
+    ^
+
+"Test_name.c", line 33: error: extra text after expected end of number
+    _Decimal128 t1233 = 0.e1233DL, t1234 = 0.e1234DL, t1235 = 0.e1235DL;
+                               ^
+
+"Test_name.c", line 33: error: extra text after expected end of number
+    _Decimal128 t1233 = 0.e1233DL, t1234 = 0.e1234DL, t1235 = 0.e1235DL;
+                                                  ^
+
+"Test_name.c", line 33: error: extra text after expected end of number
+    _Decimal128 t1233 = 0.e1233DL, t1234 = 0.e1234DL, t1235 = 0.e1235DL;
+                                                                     ^
+
+"Test_name.c", line 34: error: identifier "_Decimal128" is undefined
+    _Decimal128 dx;
+    ^
+
+"Test_name.c", line 24: warning: variable "__int128" was declared but never referenced
+    unsigned __int128 i = U128 (0x6e79000000000000ULL, 0x1ULL);
+             ^
+
+11 errors detected in the compilation of "Test_name.c".

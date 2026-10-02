@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c17 --strict_gnu Test_name.c
+"Test_name.c", line 11: warning: declaration is not visible outside of function
+    struct S *	/* { dg-warning "declared inside parameter list will not be visible outside of this definition or declaration" } */
+           ^
+
+"Test_name.c", line 33: error: declaring a void parameter list with a qualified void type is nonstandard
+    const void	/* { dg-error "'void' as only parameter may not be qualified" } */
+    ^
+
+"Test_name.c", line 40: error: a parameter may not have void type
+     void,	/* { dg-error "'void' must be the only parameter" } */
+     ^
+
+"Test_name.c", line 39: warning: unnamed prototyped parameters not allowed when body is present
+  f4 (
+  ^
+
+"Test_name.c", line 49: error: expected a ")"
+     x;		/* { dg-error "parameter 'x' has just a forward declaration" } */
+      ^
+
+"Test_name.c", line 51: error: expected a ";"
+     )
+     ^
+
+4 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 14: warning: unrecognized #pragma
+  #pragma omp declare variant(construct) match(construct={dispatch}) adjust_args(need_device_ptr: x,y) /* { dg-error "'construct' undeclared here \\(not in a function\\)" } */
+          ^
+
+"Test_name.c", line 15: warning: unrecognized #pragma
+  #pragma omp declare variant(noconstruct) match(implementation={vendor(gnu)}) /* { dg-error "'noconstruct' undeclared here \\(not in a function\\)" } */
+          ^
+
+"Test_name.c", line 23: warning: unrecognized #pragma
+   #pragma omp dispatch device(0) is_device_ptr(s)
+           ^
+
+"Test_name.c", line 27: warning: unrecognized #pragma
+   #pragma omp dispatch device(0) is_device_ptr(y)
+           ^
+

@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 24: error: the default constructor for "A" is explicit
+    T t = {};			// { dg-error "explicit" }
+          ^
+          detected during instantiation of "void f<T>() [with T=A]" at line 33
+
+"Test_name.c", line 24: error: the default constructor for "B" is explicit
+    T t = {};			// { dg-error "explicit" }
+          ^
+          detected during instantiation of "void f<T>() [with T=B]" at line 34
+
+"Test_name.c", line 24: error: no default constructor exists for class "C"
+    T t = {};			// { dg-error "explicit" }
+          ^
+          detected during instantiation of "void f<T>() [with T=C]" at line 35
+
+"Test_name.c", line 24: error: no default constructor exists for class "D"
+    T t = {};			// { dg-error "explicit" }
+          ^
+          detected during instantiation of "void f<T>() [with T=D]" at line 36
+
+"Test_name.c", line 28: error: the default constructor for "A" is explicit
+    x({});			// { dg-error "explicit" }
+      ^
+          detected during instantiation of "void g<T>() [with T=A]" at line 38
+
+"Test_name.c", line 28: error: the default constructor for "B" is explicit
+    x({});			// { dg-error "explicit" }
+      ^
+          detected during instantiation of "void g<T>() [with T=B]" at line 39
+
+"Test_name.c", line 28: error: no default constructor exists for class "C"
+    x({});			// { dg-error "explicit" }
+      ^
+          detected during instantiation of "void g<T>() [with T=C]" at line 40
+
+"Test_name.c", line 28: error: no default constructor exists for class "D"
+    x({});			// { dg-error "explicit" }
+      ^
+          detected during instantiation of "void g<T>() [with T=D]" at line 41
+
+8 errors detected in the compilation of "Test_name.c".

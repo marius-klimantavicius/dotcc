@@ -1,0 +1,406 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 35: error: the size of an array in "new" must be non-negative
+      p = new char [-1];           // { dg-error "19:size .-1. of array is negative" }
+                    ^
+
+"Test_name.c", line 36: error: the size of an array must be greater than zero
+      p = new char [2][-3];        // { dg-error "22:size .-3. of array|narrowing conversion" }
+                       ^
+
+"Test_name.c", line 37: error: the size of an array in "new" must be non-negative
+      p = new char [-4][5];        // { dg-error "19:size .-4. of array is negative" }
+                    ^
+
+"Test_name.c", line 38: error: the size of an array in "new" must be non-negative
+      p = new char [-6][-7];       // { dg-error "19:size .-6. of array|narrowing conversion" }
+                    ^
+
+"Test_name.c", line 38: error: the size of an array must be greater than zero
+      p = new char [-6][-7];       // { dg-error "19:size .-6. of array|narrowing conversion" }
+                        ^
+
+"Test_name.c", line 40: error: the size of an array in "new" must be non-negative
+      p = new (p) char [-1];       // { dg-error "23:size .-1. of array is negative" }
+                        ^
+
+"Test_name.c", line 41: error: the size of an array must be greater than zero
+      p = new (p) char [2][-3];    // { dg-error "26:size .-3. of array|narrowing conversion" }
+                           ^
+
+"Test_name.c", line 42: error: the size of an array in "new" must be non-negative
+      p = new (p) char [-4][5];    // { dg-error "23:size .-4. of array is negative" }
+                        ^
+
+"Test_name.c", line 43: error: the size of an array in "new" must be non-negative
+      p = new (p) char [-6][-7];   // { dg-error "23:size .-6. of array|narrowing conversion" }
+                        ^
+
+"Test_name.c", line 43: error: the size of an array must be greater than zero
+      p = new (p) char [-6][-7];   // { dg-error "23:size .-6. of array|narrowing conversion" }
+                            ^
+
+"Test_name.c", line 45: error: the size of an array in "new" must be non-negative
+      p = new (p) A [-1];          // { dg-error "20:size .-1. of array is negative" }
+                     ^
+
+"Test_name.c", line 46: error: the size of an array must be greater than zero
+      p = new (p) A [2][-3];       // { dg-error "23:size .-3. of array|narrowing conversion" }
+                        ^
+
+"Test_name.c", line 47: error: the size of an array in "new" must be non-negative
+      p = new (p) A [-4][5];       // { dg-error "20:size .-4. of array is negative" }
+                     ^
+
+"Test_name.c", line 48: error: the size of an array in "new" must be non-negative
+      p = new (p) A [-6][-7];      // { dg-error "20:size .-6. of array|narrowing conversion" }
+                     ^
+
+"Test_name.c", line 48: error: the size of an array must be greater than zero
+      p = new (p) A [-6][-7];      // { dg-error "20:size .-6. of array|narrowing conversion" }
+                         ^
+
+"Test_name.c", line 50: error: the size of an array in "new" must be non-negative
+      p = new (p) B [-1];          // { dg-error "20:size .-1. of array is negative" }
+                     ^
+
+"Test_name.c", line 51: error: the size of an array must be greater than zero
+      p = new (p) B [2][-3];       // { dg-error "23:size .-3. of array|narrowing conversion" }
+                        ^
+
+"Test_name.c", line 52: error: the size of an array in "new" must be non-negative
+      p = new (p) B [-4][5];       // { dg-error "20:size .-4. of array is negative" }
+                     ^
+
+"Test_name.c", line 53: error: the size of an array in "new" must be non-negative
+      p = new (p) B [-6][-7];      // { dg-error "size .-6. of array|narrowing conversion" }
+                     ^
+
+"Test_name.c", line 53: error: the size of an array must be greater than zero
+      p = new (p) B [-6][-7];      // { dg-error "size .-6. of array|narrowing conversion" }
+                         ^
+
+"Test_name.c", line 55: error: the size of an array in "new" must be non-negative
+      p = new (&b) B [-1];          // { dg-error "21:size .-1. of array is negative" }
+                      ^
+
+"Test_name.c", line 56: error: the size of an array must be greater than zero
+      p = new (&b) B [2][-3];       // { dg-error "24:size .-3. of array|narrowing conversion" }
+                         ^
+
+"Test_name.c", line 57: error: the size of an array in "new" must be non-negative
+      p = new (&b) B [-4][5];       // { dg-error "21:size .-4. of array is negative" }
+                      ^
+
+"Test_name.c", line 58: error: the size of an array in "new" must be non-negative
+      p = new (&b) B [-6][-7];      // { dg-error "21:size .-6. of array|narrowing conversion" }
+                      ^
+
+"Test_name.c", line 58: error: the size of an array must be greater than zero
+      p = new (&b) B [-6][-7];      // { dg-error "21:size .-6. of array|narrowing conversion" }
+                          ^
+
+"Test_name.c", line 60: error: the size of an array in "new" must be non-negative
+      p = new char [1 - 2];         // { dg-error "21:size .-1. of array is negative" }
+                    ^
+
+"Test_name.c", line 61: error: the size of an array in "new" must be non-negative
+      p = new (p) char [2 - 3];     // { dg-error "25:size .-1. of array is negative" }
+                        ^
+
+"Test_name.c", line 62: error: the size of an array in "new" must be non-negative
+      p = new A [2 < 1 ? -1 : -2];  // { dg-error "22:size .-2. of array is negative" }
+                 ^
+
+"Test_name.c", line 63: error: the size of an array in "new" must be non-negative
+      p = new (p) B [2 - 3 * 2];    // { dg-error "22:size .-4. of array is negative" }
+                     ^
+
+"Test_name.c", line 64: error: the size of an array must be greater than zero
+      p = new (&b) B [1][2 - 3 * 2];// { dg-error "26:size .-4. of array|narrowing conversion" }
+                         ^
+
+"Test_name.c", line 83: error: the size of an array in "new" must be non-negative
+      p = new char [i1];           // { dg-error "19:size .-1. of array is negative" }
+                    ^
+
+"Test_name.c", line 84: error: the size of an array must be greater than zero
+      p = new char [2][i3];        // { dg-error "22:size .-3. of array|narrowing conversion" }
+                       ^
+
+"Test_name.c", line 85: error: the size of an array in "new" must be non-negative
+      p = new char [i4][5];        // { dg-error "19:size .-4. of array is negative" }
+                    ^
+
+"Test_name.c", line 86: error: the size of an array in "new" must be non-negative
+      p = new char [i6][i7];       // { dg-error "19:size .-6. of array|narrowing conversion" }
+                    ^
+
+"Test_name.c", line 86: error: the size of an array must be greater than zero
+      p = new char [i6][i7];       // { dg-error "19:size .-6. of array|narrowing conversion" }
+                        ^
+
+"Test_name.c", line 88: error: the size of an array in "new" must be non-negative
+      p = new (p) char [i1];       // { dg-error "23:size .-1. of array is negative" }
+                        ^
+
+"Test_name.c", line 89: error: the size of an array must be greater than zero
+      p = new (p) char [2][i3];    // { dg-error "26:size .-3. of array|narrowing conversion" }
+                           ^
+
+"Test_name.c", line 90: error: the size of an array in "new" must be non-negative
+      p = new (p) char [i4][5];    // { dg-error "23:size .-4. of array is negative" }
+                        ^
+
+"Test_name.c", line 91: error: the size of an array in "new" must be non-negative
+      p = new (p) char [i6][i7];   // { dg-error "23:size .-6. of array|narrowing conversion" }
+                        ^
+
+"Test_name.c", line 91: error: the size of an array must be greater than zero
+      p = new (p) char [i6][i7];   // { dg-error "23:size .-6. of array|narrowing conversion" }
+                            ^
+
+"Test_name.c", line 93: error: the size of an array in "new" must be non-negative
+      p = new (p) A [i1];          // { dg-error "20:size .-1. of array is negative" }
+                     ^
+
+"Test_name.c", line 94: error: the size of an array must be greater than zero
+      p = new (p) A [2][i3];       // { dg-error "23:size .-3. of array|narrowing conversion" }
+                        ^
+
+"Test_name.c", line 95: error: the size of an array in "new" must be non-negative
+      p = new (p) A [i4][5];       // { dg-error "20:size .-4. of array is negative" }
+                     ^
+
+"Test_name.c", line 96: error: the size of an array in "new" must be non-negative
+      p = new (p) A [i6][i7];      // { dg-error "20:size .-6. of array|narrowing conversion" }
+                     ^
+
+"Test_name.c", line 96: error: the size of an array must be greater than zero
+      p = new (p) A [i6][i7];      // { dg-error "20:size .-6. of array|narrowing conversion" }
+                         ^
+
+"Test_name.c", line 98: error: the size of an array in "new" must be non-negative
+      p = new (p) B [i1];          // { dg-error "20:size .-1. of array is negative" }
+                     ^
+
+"Test_name.c", line 99: error: the size of an array must be greater than zero
+      p = new (p) B [2][i3];       // { dg-error "23:size .-3. of array|narrowing conversion" }
+                        ^
+
+"Test_name.c", line 100: error: the size of an array in "new" must be non-negative
+      p = new (p) B [i4][5];       // { dg-error "20:size .-4. of array is negative" }
+                     ^
+
+"Test_name.c", line 101: error: the size of an array in "new" must be non-negative
+      p = new (p) B [i6][i7];      // { dg-error "20:size .-6. of array|narrowing conversion" }
+                     ^
+
+"Test_name.c", line 101: error: the size of an array must be greater than zero
+      p = new (p) B [i6][i7];      // { dg-error "20:size .-6. of array|narrowing conversion" }
+                         ^
+
+"Test_name.c", line 103: error: the size of an array in "new" must be non-negative
+      p = new (&b) B [i1];          // { dg-error "21:size .-1. of array is negative" }
+                      ^
+
+"Test_name.c", line 104: error: the size of an array must be greater than zero
+      p = new (&b) B [2][i3];       // { dg-error "24:size .-3. of array|narrowing conversion" }
+                         ^
+
+"Test_name.c", line 105: error: the size of an array in "new" must be non-negative
+      p = new (&b) B [i4][5];       // { dg-error "21:size .-4. of array is negative" }
+                      ^
+
+"Test_name.c", line 106: error: the size of an array in "new" must be non-negative
+      p = new (&b) B [i6][i7];      // { dg-error "21:size .-6. of array|narrowing conversion" }
+                      ^
+
+"Test_name.c", line 106: error: the size of an array must be greater than zero
+      p = new (&b) B [i6][i7];      // { dg-error "21:size .-6. of array|narrowing conversion" }
+                          ^
+
+"Test_name.c", line 108: error: the size of an array in "new" must be non-negative
+      p = new short [i1 - 2];       // { dg-error "23:size .-3. of array is negative" }
+                     ^
+
+"Test_name.c", line 109: error: the size of an array in "new" must be non-negative
+      p = new (p) bool [i2 - 3];    // { dg-error "26:size .-5. of array is negative" }
+                        ^
+
+"Test_name.c", line 110: error: the size of an array in "new" must be non-negative
+      p = new A [2 < 1 ? i1 : i2];  // { dg-error "22:size .-2. of array is negative" }
+                 ^
+
+"Test_name.c", line 111: error: the size of an array in "new" must be non-negative
+      p = new (p) B [2 + i3 * 2];   // { dg-error "22:size .-4. of array is negative" }
+                     ^
+
+"Test_name.c", line 112: error: the size of an array must be greater than zero
+      p = new (&b) B [1][i1 - 3 * 2];// { dg-error "27:size .-7. of array|narrowing conversion" }
+                         ^
+
+"Test_name.c", line 78: warning: variable "i5" was declared but never referenced
+      static const signed long long i5 = -5;
+                                    ^
+
+"Test_name.c", line 136: warning: integer conversion resulted in a change of sign
+      p = new char [s1];           // { dg-error "19:size .-1. of array is negative" }
+                    ^
+
+"Test_name.c", line 137: error: this constant expression has type "const S" instead of the required "unsigned int" type
+      p = new char [2][s3];        // { dg-error "22:size .-3. of array|narrowing conversion" }
+                       ^
+
+"Test_name.c", line 138: warning: integer conversion resulted in a change of sign
+      p = new char [s4][5];        // { dg-error "19:size .-4. of array is negative" }
+                    ^
+
+"Test_name.c", line 138: error: array is too large
+      p = new char [s4][5];        // { dg-error "19:size .-4. of array is negative" }
+                       ^
+
+"Test_name.c", line 139: warning: integer conversion resulted in a change of sign
+      p = new char [s6][s7];       // { dg-error "19:size .-6. of array|narrowing conversion" }
+                    ^
+
+"Test_name.c", line 139: error: this constant expression has type "const S" instead of the required "unsigned int" type
+      p = new char [s6][s7];       // { dg-error "19:size .-6. of array|narrowing conversion" }
+                        ^
+
+"Test_name.c", line 141: warning: integer conversion resulted in a change of sign
+      p = new (p) char [s1];       // { dg-error "23:size .-1. of array is negative" }
+                        ^
+
+"Test_name.c", line 142: error: this constant expression has type "const S" instead of the required "unsigned int" type
+      p = new (p) char [2][s3];    // { dg-error "26:size .-3. of array|narrowing conversion" }
+                           ^
+
+"Test_name.c", line 143: warning: integer conversion resulted in a change of sign
+      p = new (p) char [s4][5];    // { dg-error "23:size .-4. of array is negative" }
+                        ^
+
+"Test_name.c", line 143: error: array is too large
+      p = new (p) char [s4][5];    // { dg-error "23:size .-4. of array is negative" }
+                           ^
+
+"Test_name.c", line 144: warning: integer conversion resulted in a change of sign
+      p = new (p) char [s6][s7];   // { dg-error "23:size .-6. of array|narrowing conversion" }
+                        ^
+
+"Test_name.c", line 144: error: this constant expression has type "const S" instead of the required "unsigned int" type
+      p = new (p) char [s6][s7];   // { dg-error "23:size .-6. of array|narrowing conversion" }
+                            ^
+
+"Test_name.c", line 146: warning: integer conversion resulted in a change of sign
+      p = new (p) A [s1];          // { dg-error "20:size .-1. of array is negative" }
+                     ^
+
+"Test_name.c", line 146: error: array is too large
+      p = new (p) A [s1];          // { dg-error "20:size .-1. of array is negative" }
+                    ^
+
+"Test_name.c", line 147: error: this constant expression has type "const S" instead of the required "unsigned int" type
+      p = new (p) A [2][s3];       // { dg-error "23:size .-3. of array|narrowing conversion" }
+                        ^
+
+"Test_name.c", line 148: warning: integer conversion resulted in a change of sign
+      p = new (p) A [s4][5];       // { dg-error "20:size .-4. of array is negative" }
+                     ^
+
+"Test_name.c", line 148: error: array is too large
+      p = new (p) A [s4][5];       // { dg-error "20:size .-4. of array is negative" }
+                        ^
+
+"Test_name.c", line 149: warning: integer conversion resulted in a change of sign
+      p = new (p) A [s6][s7];      // { dg-error "20:size .-6. of array|narrowing conversion" }
+                     ^
+
+"Test_name.c", line 149: error: this constant expression has type "const S" instead of the required "unsigned int" type
+      p = new (p) A [s6][s7];      // { dg-error "20:size .-6. of array|narrowing conversion" }
+                         ^
+
+"Test_name.c", line 151: warning: integer conversion resulted in a change of sign
+      p = new (p) B [s1];          // { dg-error "20:size .-1. of array is negative" }
+                     ^
+
+"Test_name.c", line 151: error: array is too large
+      p = new (p) B [s1];          // { dg-error "20:size .-1. of array is negative" }
+                    ^
+
+"Test_name.c", line 152: error: this constant expression has type "const S" instead of the required "unsigned int" type
+      p = new (p) B [2][s3];       // { dg-error "23:size .-3. of array|narrowing conversion" }
+                        ^
+
+"Test_name.c", line 153: warning: integer conversion resulted in a change of sign
+      p = new (p) B [s4][5];       // { dg-error "20:size .-4. of array is negative" }
+                     ^
+
+"Test_name.c", line 153: error: array is too large
+      p = new (p) B [s4][5];       // { dg-error "20:size .-4. of array is negative" }
+                        ^
+
+"Test_name.c", line 154: warning: integer conversion resulted in a change of sign
+      p = new (p) B [s6][s7];      // { dg-error "20:size .-6. of array|narrowing conversion" }
+                     ^
+
+"Test_name.c", line 154: error: this constant expression has type "const S" instead of the required "unsigned int" type
+      p = new (p) B [s6][s7];      // { dg-error "20:size .-6. of array|narrowing conversion" }
+                         ^
+
+"Test_name.c", line 156: warning: integer conversion resulted in a change of sign
+      p = new (&b) B [s1];          // { dg-error "21:size .-1. of array is negative" }
+                      ^
+
+"Test_name.c", line 156: error: array is too large
+      p = new (&b) B [s1];          // { dg-error "21:size .-1. of array is negative" }
+                     ^
+
+"Test_name.c", line 157: error: this constant expression has type "const S" instead of the required "unsigned int" type
+      p = new (&b) B [2][s3];       // { dg-error "24:size .-3. of array|narrowing conversion" }
+                         ^
+
+"Test_name.c", line 158: warning: integer conversion resulted in a change of sign
+      p = new (&b) B [s4][5];       // { dg-error "21:size .-4. of array is negative" }
+                      ^
+
+"Test_name.c", line 158: error: array is too large
+      p = new (&b) B [s4][5];       // { dg-error "21:size .-4. of array is negative" }
+                         ^
+
+"Test_name.c", line 159: warning: integer conversion resulted in a change of sign
+      p = new (&b) B [s6][s7];      // { dg-error "21:size .-6. of array|narrowing conversion" }
+                      ^
+
+"Test_name.c", line 159: error: this constant expression has type "const S" instead of the required "unsigned int" type
+      p = new (&b) B [s6][s7];      // { dg-error "21:size .-6. of array|narrowing conversion" }
+                          ^
+
+"Test_name.c", line 161: error: the size of an array in "new" must be non-negative
+      p = new int [s1 + s2];           // { dg-error "21:size .-3. of array is negative" }
+                   ^
+
+"Test_name.c", line 162: error: the size of an array in "new" must be non-negative
+      p = new (p) long [2 * s3];       // { dg-error "25:size .-6. of array is negative" }
+                        ^
+
+"Test_name.c", line 163: warning: integer conversion resulted in a change of sign
+      p = new A [s2 < s1 ? s1 : s2];   // { dg-error "size .-1. of array is negative" }
+                 ^
+
+"Test_name.c", line 163: error: array is too large
+      p = new A [s2 < s1 ? s1 : s2];   // { dg-error "size .-1. of array is negative" }
+                ^
+
+"Test_name.c", line 164: error: the size of an array in "new" must be non-negative
+      p = new (p) B [s7 - s2 * 2];     // { dg-error "23:size .-3. of array is negative" }
+                     ^
+
+"Test_name.c", line 165: error: the size of an array must be greater than zero
+      p = new (&b) B [9][s4 - s1 * 2]; // { dg-error "27:size .-2. of array|narrowing conversion" }
+                         ^
+
+"Test_name.c", line 129: warning: variable "s5" was declared but never referenced
+      } s1 (-1), s2 (-2), s3 (-3), s4 (-4), s5 (-5), s6 (-6), s7 (-7);
+                                            ^
+
+83 errors detected in the compilation of "Test_name.c".

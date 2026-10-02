@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp0x/udlit-args-neg.C", line 8: error: at least one parameter expected for a literal operator
+  operator ""_Foo();
+  ^
+
+"./cpp0x/udlit-args-neg.C", line 11: error: invalid first parameter type ("int *") for literal operator; pointer to non-const type is not allowed
+  operator ""_Foo(int *);
+  ^
+
+"./cpp0x/udlit-args-neg.C", line 14: error: invalid integer parameter type ("unsigned long") for literal operator; expected a character type or unsigned long long
+  operator ""_Foo(unsigned long int);
+  ^
+
+"./cpp0x/udlit-args-neg.C", line 17: error: invalid floating-point parameter type ("double") for literal operator; expected long double
+  operator ""_Foo(double);
+  ^
+
+"./cpp0x/udlit-args-neg.C", line 20: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+  operator ""_Foo(const float *, std::size_t);
+  ^
+
+"./cpp0x/udlit-args-neg.C", line 23: error: invalid second parameter type ("int") for literal operator; must be size_t
+  operator ""_Foo(const wchar_t *, int);
+  ^
+
+"./cpp0x/udlit-args-neg.C", line 26: error: invalid parameter type "const char16_t *" for literal operator
+  operator ""_Foo(const char16_t *);
+  ^
+
+"./cpp0x/udlit-args-neg.C", line 29: error: a literal operator cannot have an ellipsis parameter
+  operator ""_Foo(char...);
+  ^
+
+"./cpp0x/udlit-args-neg.C", line 33: error: too many parameters for this literal operator
+  operator ""_Foo(unsigned long long int, char);
+  ^
+
+"./cpp0x/udlit-args-neg.C", line 36: error: too many parameters for this literal operator
+  operator ""_Foo(const char *, std::size_t, int);
+  ^
+
+"./cpp0x/udlit-args-neg.C", line 39: error: invalid parameter type "long double &" for literal operator
+  operator ""_Foo(long double &);
+  ^
+
+"./cpp0x/udlit-args-neg.C", line 42: error: too many parameters for this literal operator
+  operator ""_Foo(std::size_t, const char16_t *);
+  ^
+
+12 errors detected in the compilation of "Test_name.c".

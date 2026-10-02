@@ -1,0 +1,120 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 100: error: enum "std::align_val_t" was previously declared with a different base type
+    enum class align_val_t: size_t {};
+               ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 137: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 140: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 155: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 158: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 168: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t, std::align_val_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 171: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t, std::align_val_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 179: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, std::align_val_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 182: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, std::align_val_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 206: error: first parameter of allocation function must be of type "size_t"
+  void* operator new(std::size_t, void* __p)
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 210: error: first parameter of allocation function must be of type "size_t"
+  void* operator new[](std::size_t, void* __p)
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/cpp_type_traits.h", line 553: error: identifier "__int128" is undefined
+      struct __memcpyable_integer<__int128> { enum { __width = 128 }; };
+                                  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/cpp_type_traits.h", line 556: error: expected a ">"
+      struct __memcpyable_integer<unsigned __int128> { enum { __width = 128 }; };
+                                           ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/ext/numeric_traits.h", line 132: error: identifier "__int128" is undefined
+    __extension__ template<> struct __is_integer_nonstrict<__int128> { enum { __value = 1 }; typedef std::__true_type __type; enum { __width = 128 }; }; __extension__ template<> struct __is_integer_nonstrict<unsigned __int128> { enum { __value = 1 }; typedef std::__true_type __type; enum { __width = 128 }; };
+                                                           ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/ext/numeric_traits.h", line 132: error: expected a ">"
+    __extension__ template<> struct __is_integer_nonstrict<__int128> { enum { __value = 1 }; typedef std::__true_type __type; enum { __width = 128 }; }; __extension__ template<> struct __is_integer_nonstrict<unsigned __int128> { enum { __value = 1 }; typedef std::__true_type __type; enum { __width = 128 }; };
+                                                                                                                                                                                                                         ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_tempbuf.h", line 94: error: no instance of overloaded function "operator new" matches the argument list
+            argument types are: (unsigned long, std::nothrow_t)
+   return (_Tp*) __builtin_operator_new(__len * sizeof(_Tp), nothrow_t());
+                 ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/string_view", line 869: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+      operator""sv(const char* __str, size_t __len) noexcept
+      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/string_view", line 873: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+      operator""sv(const wchar_t* __str, size_t __len) noexcept
+      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/string_view", line 883: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+      operator""sv(const char16_t* __str, size_t __len) noexcept
+      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/string_view", line 887: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+      operator""sv(const char32_t* __str, size_t __len) noexcept
+      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/basic_string.h", line 4774: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+      operator""s(const char* __str, size_t __len)
+      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/basic_string.h", line 4779: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+      operator""s(const wchar_t* __str, size_t __len)
+      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/basic_string.h", line 4791: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+      operator""s(const char16_t* __str, size_t __len)
+      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/basic_string.h", line 4796: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+      operator""s(const char32_t* __str, size_t __len)
+      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/memory_resource.h", line 78: error: no instance of overloaded function "operator new" matches the argument list
+            argument types are: (std::size_t, void *)
+      { return ::operator new(__bytes, do_allocate(__bytes, __alignment)); }
+               ^
+Note: function "operator new(unsigned int, std::align_val_t)" does not match because argument #2 does not match parameter
+Note: number of parameters of function "operator new(unsigned int)" does not match the call
+
+"./cpp1z/decomp37.C", line 16: warning: missing return statement at end of non-void function "get<N>(X &)"
+  }
+  ^
+
+"./cpp1z/decomp37.C", line 32: warning: missing return statement at end of non-void function "get<N>(X2 &)"
+  }
+  ^
+
+"./cpp1z/decomp37.C", line 46: warning: missing return statement at end of non-void function "X3::get<N>()"
+    }
+    ^
+
+25 errors detected in the compilation of "Test_name.c".

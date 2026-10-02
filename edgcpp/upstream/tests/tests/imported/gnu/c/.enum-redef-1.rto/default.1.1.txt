@@ -1,0 +1,74 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 4: error: this declaration of enum "a" does not declare the same type as the declaration at line 3
+  enum a { B }; /* { dg-bogus "nested redefinition" } */
+       ^
+
+"Test_name.c", line 7: error: expected an identifier
+  enum empty {}; /* { dg-error "empty enum is invalid" } */
+              ^
+
+"Test_name.c", line 8: error: expected an identifier
+  enum empty {}; /* { dg-bogus "nested redefinition" } */
+              ^
+
+"Test_name.c", line 12: error: this declaration of enum "nested_first" does not declare the same type as the declaration at line 11
+    C1 = sizeof(enum nested_first { C1a }), /* { dg-error "nested redefinition of 'enum nested_first" } */
+                     ^
+
+"Test_name.c", line 12: error: incomplete type "enum nested_first" is not allowed
+    C1 = sizeof(enum nested_first { C1a }), /* { dg-error "nested redefinition of 'enum nested_first" } */
+                ^
+
+"Test_name.c", line 13: error: this declaration of enum "nested_first" does not declare the same type as the declaration at line 11
+    C2 = sizeof(enum nested_first { C2a }) /* { dg-error "redeclaration of 'enum nested_first'" "" } */
+                     ^
+
+"Test_name.c", line 13: error: incomplete type "enum nested_first" is not allowed
+    C2 = sizeof(enum nested_first { C2a }) /* { dg-error "redeclaration of 'enum nested_first'" "" } */
+                ^
+
+"Test_name.c", line 18: error: this declaration of enum "nested_second" does not declare the same type as the declaration at line 16
+    D2 = sizeof(enum nested_second { D2a }), /* { dg-error "nested redefinition of 'enum nested_second" } */
+                     ^
+
+"Test_name.c", line 18: error: incomplete type "enum nested_second" is not allowed
+    D2 = sizeof(enum nested_second { D2a }), /* { dg-error "nested redefinition of 'enum nested_second" } */
+                ^
+
+"Test_name.c", line 19: error: this declaration of enum "nested_second" does not declare the same type as the declaration at line 16
+    D3 = sizeof(enum nested_second { D3a }) /* { dg-error "redeclaration of 'enum nested_second'" "" } */
+                     ^
+
+"Test_name.c", line 19: error: incomplete type "enum nested_second" is not allowed
+    D3 = sizeof(enum nested_second { D3a }) /* { dg-error "redeclaration of 'enum nested_second'" "" } */
+                ^
+
+"Test_name.c", line 24: error: this declaration of enum "nested_repeat" does not declare the same type as the declaration at line 22
+    F = sizeof(enum nested_repeat { Fa }) /* { dg-error "nested redefinition of 'enum nested_repeat" } */
+                    ^
+
+"Test_name.c", line 23: error: this declaration of enum "nested_repeat" does not declare the same type as the declaration at line 22
+  enum nested_repeat { /* { dg-error "redeclaration of 'enum nested_repeat'" "" } */
+       ^
+
+"Test_name.c", line 28: error: expected an identifier
+    G1 = sizeof(enum nested_empty {}), /* { dg-error "nested redefinition of 'enum nested_empty" } */
+                                   ^
+
+"Test_name.c", line 28: error: this declaration of enum "nested_empty" does not declare the same type as the declaration at line 27
+    G1 = sizeof(enum nested_empty {}), /* { dg-error "nested redefinition of 'enum nested_empty" } */
+                     ^
+
+"Test_name.c", line 28: error: incomplete type "enum nested_empty" is not allowed
+    G1 = sizeof(enum nested_empty {}), /* { dg-error "nested redefinition of 'enum nested_empty" } */
+                ^
+
+"Test_name.c", line 30: error: this declaration of enum "nested_empty" does not declare the same type as the declaration at line 27
+    G2 = sizeof(enum nested_empty { G2a })
+                     ^
+
+"Test_name.c", line 30: error: incomplete type "enum nested_empty" is not allowed
+    G2 = sizeof(enum nested_empty { G2a })
+                ^
+
+18 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --c99 --embedded_c Test_name.c
+"Test_name.c", line 15: warning: function "f" declared implicitly
+  T x; int i = sizeof f ( T ) ( _EDG_NAS_A ) ; 
+                      ^
+
+"Test_name.c", line 15: error: type name is not allowed
+  T x; int i = sizeof f ( T ) ( _EDG_NAS_A ) ; 
+                          ^
+
+"Test_name.c", line 15: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+  T x; int i = sizeof f ( T ) ( _EDG_NAS_A ) ; 
+                      ^
+
+"Test_name.c", line 15: error: a named address space qualifier is not allowed here
+  T x; int i = sizeof f ( T ) ( _EDG_NAS_A ) ; 
+                                ^
+
+"Test_name.c", line 16: error: variable "i" has already been initialized
+  T x; int i = sizeof f ( T ) ( _EDG_REG_1 ) ; 
+           ^
+
+"Test_name.c", line 16: error: type name is not allowed
+  T x; int i = sizeof f ( T ) ( _EDG_REG_1 ) ; 
+                          ^
+
+"Test_name.c", line 16: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+  T x; int i = sizeof f ( T ) ( _EDG_REG_1 ) ; 
+                      ^
+
+"Test_name.c", line 16: error: a named-register storage class is not allowed here
+  T x; int i = sizeof f ( T ) ( _EDG_REG_1 ) ; 
+                                ^
+
+7 errors detected in the compilation of "Test_name.c".

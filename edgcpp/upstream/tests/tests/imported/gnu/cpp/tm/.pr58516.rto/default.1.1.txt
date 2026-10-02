@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: error: identifier "__transaction_atomic" is undefined
+    __transaction_atomic noexcept(false) {}
+    ^
+
+"Test_name.c", line 8: error: expected a ";"
+    __transaction_atomic noexcept(false) {}
+                         ^
+
+2 errors detected in the compilation of "Test_name.c".

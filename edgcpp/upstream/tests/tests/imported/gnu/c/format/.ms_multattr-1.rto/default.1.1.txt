@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"./format/ms_multattr-1.c", line 15: warning: unrecognized format function type "__ms_printf__" ignored
+       __attribute__((__format__(__ms_printf__, 1, 0)))
+                                 ^
+
+"./format/ms_multattr-1.c", line 16: warning: unrecognized format function type "__ms_scanf__" ignored
+       __attribute__((__format__(__ms_scanf__, 3, 4)));
+                                 ^
+
+"./format/ms_multattr-1.c", line 19: warning: unrecognized format function type "__ms_scanf__" ignored
+       __attribute__((__format__(__ms_scanf__, 3, 4)))
+                                 ^
+
+"./format/ms_multattr-1.c", line 20: warning: unrecognized format function type "__ms_printf__" ignored
+       __attribute__((__format__(__ms_printf__, 1, 0)));
+                                 ^
+
+"./format/ms_multattr-1.c", line 23: warning: unrecognized format function type "__ms_printf__" ignored
+       __attribute__((__format__(__ms_printf__, 1, 0)));
+                                 ^
+
+"./format/ms_multattr-1.c", line 25: warning: unrecognized format function type "__ms_scanf__" ignored
+       __attribute__((__format__(__ms_scanf__, 3, 4)));
+                                 ^
+
+"./format/ms_multattr-1.c", line 28: warning: unrecognized format function type "__ms_scanf__" ignored
+       __attribute__((__format__(__ms_scanf__, 3, 4)));
+                                 ^
+
+"./format/ms_multattr-1.c", line 30: warning: unrecognized format function type "__ms_printf__" ignored
+       __attribute__((__format__(__ms_printf__, 1, 0)));
+                                 ^
+

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 17: error: no instance of function template "bar" matches the argument list
+    bar<&B::foo>();  // { dg-error "template argument|no match|convert" }
+    ^
+"Test_name.c", line 13: note: substituting explicit template arguments "<<expression>>" for function template "bar" failed
+  template<void (A::*)()> void bar(); // { dg-message "note" }
+                               ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,126 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --exceptions --exceptions --c++03 Test_name.c
+"Test_name.c", line 18: error: type definition is not allowed
+    (void)((struct S2 { int x; }*)0); // expected-error{{cannot be defined}}
+            ^
+
+"Test_name.c", line 22: error: type definition is not allowed
+    (void)static_cast<struct S4 { int x; } *>(0); // expected-error{{cannot be defined}}
+                      ^
+
+"Test_name.c", line 20: warning: variable "s3" was declared but never referenced
+    struct S3 { int x; } s3;
+                         ^
+
+"Test_name.c", line 25: error: type definition is not allowed in function return type declaration
+  struct S5 { int x; } f1() { return S5(); } // expected-error{{result type}}
+  ^
+
+"Test_name.c", line 27: error: type definition is not allowed
+  void f2(struct S6 { int x; } p); // expected-error{{parameter type}}
+          ^
+
+"Test_name.c", line 30: error: type definition is not allowed
+    short foo6 (enum bar0 {qq} bar3); // expected-error{{cannot be defined in a parameter type}}
+                ^
+
+"Test_name.c", line 33: error: type definition is not allowed
+  void pr19018_1 (enum e19018_1 {qq} x); // expected-error{{cannot be defined in a parameter type}}
+                  ^
+
+"Test_name.c", line 34: error: type definition is not allowed
+  void pr19018_1a (enum e19018_1 {qq} x); // expected-error{{cannot be defined in a parameter type}}
+                   ^
+
+"Test_name.c", line 35: error: identifier "e19018_1" is undefined
+  e19018_1 x2;
+  ^
+
+"Test_name.c", line 37: error: type definition is not allowed
+  void pr19018_2 (enum {qq} x); // expected-error{{cannot be defined in a parameter type}}
+                  ^
+
+"Test_name.c", line 38: error: type definition is not allowed
+  void pr19018_3 (struct s19018_2 {int qq;} x); // expected-error{{cannot be defined in a parameter type}}
+                  ^
+
+"Test_name.c", line 39: error: type definition is not allowed
+  void pr19018_4 (struct {int qq;} x); // expected-error{{cannot be defined in a parameter type}}
+                  ^
+
+"Test_name.c", line 40: error: type definition is not allowed
+  void pr19018_5 (struct { void qq(); } x); // expected-error{{cannot be defined in a parameter type}}
+                  ^
+
+"Test_name.c", line 41: error: type definition is not allowed
+  void pr19018_5 (struct s19018_2 { void qq(); } x); // expected-error{{cannot be defined in a parameter type}}
+                  ^
+
+"Test_name.c", line 45: error: type definition is not allowed
+    void func1(enum t19018 {qq} x); // expected-error{{cannot be defined in a parameter type}}
+               ^
+
+"Test_name.c", line 46: error: type definition is not allowed
+    void func2(enum t19018 {qq} x); // expected-error{{cannot be defined in a parameter type}}
+               ^
+
+"Test_name.c", line 47: error: type definition is not allowed
+    void func3(enum {qq} x);        // expected-error{{cannot be defined in a parameter type}}
+               ^
+
+"Test_name.c", line 48: error: type definition is not allowed
+    void func4(struct t19018 {int qq;} x);  // expected-error{{cannot be defined in a parameter type}}
+               ^
+
+"Test_name.c", line 49: error: type definition is not allowed
+    void func5(struct {int qq;} x); // expected-error{{cannot be defined in a parameter type}}
+               ^
+
+"Test_name.c", line 50: error: type definition is not allowed
+    void func6(struct { void qq(); } x); // expected-error{{cannot be defined in a parameter type}}
+               ^
+
+"Test_name.c", line 51: error: type definition is not allowed
+    void func7(struct t19018 { void qq(); } x); // expected-error{{cannot be defined in a parameter type}}
+               ^
+
+"Test_name.c", line 52: error: type definition is not allowed
+    void func8(struct { int qq() { return xx; }; } x); // expected-error{{cannot be defined in a parameter type}}
+               ^
+
+"Test_name.c", line 53: error: type definition is not allowed
+    void func9(struct t19018 { int qq() { return xx; }; } x); // expected-error{{cannot be defined in a parameter type}}
+               ^
+
+"Test_name.c", line 57: error: type definition is not allowed
+    void func1 (enum en_2 {qq} x); // expected-error{{cannot be defined in a parameter type}}
+                ^
+
+"Test_name.c", line 58: error: identifier "en_2" is undefined
+    en_2 x1;
+    ^
+
+"Test_name.c", line 59: error: type definition is not allowed
+    void func2 (enum en_3 {qq} x); // expected-error{{cannot be defined in a parameter type}}
+                ^
+
+"Test_name.c", line 60: error: forward declaration of enum type is nonstandard
+    enum en_3 x2;
+         ^
+
+"Test_name.c", line 60: error: incomplete type "en_3" is not allowed
+    enum en_3 x2;
+              ^
+
+"Test_name.c", line 64: error: type definition is not allowed
+    short bar5 (struct foo4 {} bar2); // expected-error{{'foo4' cannot be defined in a parameter type}}
+                ^
+
+"Test_name.c", line 65: error: identifier "foo4" is undefined
+    long foo5 (float foo6 = foo4);
+                            ^
+
+"Test_name.c", line 70: error: type definition is not allowed
+  void func_with_eh_and_type(struct type_in_eh {} o) throw(int) {}
+                             ^
+
+30 errors detected in the compilation of "Test_name.c".

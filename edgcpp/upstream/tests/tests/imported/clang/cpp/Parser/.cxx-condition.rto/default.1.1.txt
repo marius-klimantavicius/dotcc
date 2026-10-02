@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 9: warning: variable "a" is used before its value is set
+    while (a) ;
+           ^
+
+"Test_name.c", line 10: error: a condition declaration must include an initializer
+    while (int x) ; // expected-error {{variable declaration in condition must have an initializer}}
+               ^
+
+"Test_name.c", line 10: warning: variable "x" was declared but never referenced
+    while (int x) ; // expected-error {{variable declaration in condition must have an initializer}}
+               ^
+
+"Test_name.c", line 16: error: a parenthesized initializer is not permitted for a condition declaration
+    if (S a(42)) {} // expected-error {{variable declaration in condition cannot have a parenthesized initializer}}
+          ^
+
+2 errors detected in the compilation of "Test_name.c".

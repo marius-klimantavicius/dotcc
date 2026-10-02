@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 14: error: identifier "__UINT32_TYPE__" is undefined
+    __UINT32_TYPE__ val32;
+    ^
+
+"Test_name.c", line 15: error: identifier "__UINT64_TYPE__" is undefined
+    __UINT64_TYPE__ val64;
+    ^
+
+"Test_name.c", line 18: error: identifier "__ATOMIC_SEQ_CST" is undefined
+    val32 = __builtin_amdgcn_atomic_inc32(&val32, val32, __ATOMIC_SEQ_CST, "");
+                                                         ^
+
+"Test_name.c", line 18: error: identifier "__builtin_amdgcn_atomic_inc32" is undefined
+    val32 = __builtin_amdgcn_atomic_inc32(&val32, val32, __ATOMIC_SEQ_CST, "");
+            ^
+
+"Test_name.c", line 21: error: identifier "__builtin_amdgcn_atomic_inc64" is undefined
+    val64 = __builtin_amdgcn_atomic_inc64(&val64, val64, __ATOMIC_SEQ_CST, "");
+            ^
+
+"Test_name.c", line 24: error: identifier "__builtin_amdgcn_atomic_dec32" is undefined
+    val32 = __builtin_amdgcn_atomic_dec32(&val32, val32, __ATOMIC_SEQ_CST, "");
+            ^
+
+"Test_name.c", line 27: error: identifier "__builtin_amdgcn_atomic_dec64" is undefined
+    val64 = __builtin_amdgcn_atomic_dec64(&val64, val64, __ATOMIC_SEQ_CST, "");
+            ^
+
+7 errors detected in the compilation of "Test_name.c".

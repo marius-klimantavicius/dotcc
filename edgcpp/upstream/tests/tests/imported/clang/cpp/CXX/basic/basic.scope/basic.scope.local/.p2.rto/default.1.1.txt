@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --exceptions --exceptions Test_name.c
+"Test_name.c", line 6: error: "i" has already been declared in the current scope
+    int i; // expected-error{{redefinition of 'i'}}
+        ^
+
+"Test_name.c", line 6: warning: variable "i" was declared but never referenced
+    int i; // expected-error{{redefinition of 'i'}}
+        ^
+
+"Test_name.c", line 10: warning: variable "i" was declared but never referenced
+    int i; // expected-error{{redefinition of 'i'}}
+        ^
+
+"Test_name.c", line 15: warning: parameter "i" may not be redeclared in a catch clause of function try block
+  } catch (int i) { // expected-error {{redefinition of 'i'}}
+               ^
+
+"Test_name.c", line 20: warning: parameter "i" may not be redeclared in a catch clause of function try block
+    int i; // expected-error{{redefinition of 'i'}}
+        ^
+
+"Test_name.c", line 20: warning: variable "i" was declared but never referenced
+    int i; // expected-error{{redefinition of 'i'}}
+        ^
+
+"Test_name.c", line 24: warning: variable "i" was declared but never referenced
+    int i;
+        ^
+
+"Test_name.c", line 26: error: identifier "i" is undefined
+    int j = i; // expected-error{{use of undeclared identifier 'i'}}
+            ^
+
+"Test_name.c", line 31: warning: declaration of "i" hides handler parameter
+    int i; // expected-error{{redefinition of 'i'}}
+        ^
+
+"Test_name.c", line 31: warning: variable "i" was declared but never referenced
+    int i; // expected-error{{redefinition of 'i'}}
+        ^
+
+"Test_name.c", line 37: warning: declaration of "i" hides handler parameter
+      int i; // expected-error{{redefinition of 'i'}}
+          ^
+
+"Test_name.c", line 37: warning: variable "i" was declared but never referenced
+      int i; // expected-error{{redefinition of 'i'}}
+          ^
+
+"Test_name.c", line 44: warning: variable "i" was declared but never referenced
+      int i;
+          ^
+
+"Test_name.c", line 42: warning: variable "i" was declared but never referenced
+    int i;
+        ^
+
+"Test_name.c", line 52: warning: variable "b" was declared but never referenced
+        int b; // FIXME: this probably should be invalid, maybe
+            ^
+
+"Test_name.c", line 60: warning: variable "b" was declared but never referenced
+        int b; // FIXME: decide whether this is valid
+            ^
+
+2 errors detected in the compilation of "Test_name.c".

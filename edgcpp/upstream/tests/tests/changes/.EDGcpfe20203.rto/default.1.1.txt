@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++14 Test_name.c
+"Test_name.c", line 13: error: duplicate specifier in declaration
+  auto lm = []() mutable mutable { return 1; };  // Now an error again.
+                         ^
+
+1 error detected in the compilation of "Test_name.c".

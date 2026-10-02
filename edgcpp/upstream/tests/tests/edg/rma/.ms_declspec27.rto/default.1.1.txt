@@ -1,0 +1,9 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --microsoft_version=1400 -n Test_name.c
+"Test_name.c", line 4: remark: parameter "p" was never referenced
+  __declspec(dllimport) inline void f(struct S *p) { }
+                                                ^
+
+"Test_name.c", line 9: remark: return type "int" omitted in declaration of function "main"
+  main() {
+  ^
+

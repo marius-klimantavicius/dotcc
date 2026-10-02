@@ -1,0 +1,32 @@
+fe_only -DTEST_NUMBER=2 --c++20 --clang_version 180100 Test_name.c
+"Test_name.c", line 14: error: static assertion failed
+      static_assert(I == 0);
+      ^
+"Test_name.c", line 14: note: the final comparison was 2 == 0
+      static_assert(I == 0);
+                      ^
+          detected during:
+            instantiation of class "B<T>::N<I> [with T=int, I=2]" at line 19
+            instantiation of class "B<T>::N2 [with T=int]" at line 29
+
+"Test_name.c", line 14: error: static assertion failed
+      static_assert(I == 0);
+      ^
+"Test_name.c", line 14: note: the final comparison was 3 == 0
+      static_assert(I == 0);
+                      ^
+          detected during:
+            instantiation of class "B<T>::N<I> [with T=int, I=3]" at line 20
+            instantiation of class "B<T>::N3 [with T=int]" at line 29
+
+"Test_name.c", line 14: error: static assertion failed
+      static_assert(I == 0);
+      ^
+"Test_name.c", line 14: note: the final comparison was 1 == 0
+      static_assert(I == 0);
+                      ^
+          detected during:
+            instantiation of class "B<T>::N<I> [with T=int, I=1]" at line 18
+            instantiation of class "B<T>::N1 [with T=int]" at line 29
+
+3 errors detected in the compilation of "Test_name.c".

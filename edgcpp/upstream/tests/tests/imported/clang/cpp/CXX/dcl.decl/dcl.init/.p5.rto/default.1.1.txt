@@ -1,0 +1,20 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 13: error: reference variable "r" requires an initializer
+  IR r; // expected-error {{declaration of reference variable 'r' requires an initializer}}
+      ^
+
+"Test_name.c", line 14: error: invalid type conversion
+  int n = IR(); // expected-error {{reference to type 'int' requires an initializer}}
+          ^
+
+"Test_name.c", line 17: error: implicitly generated constructor for class "S" cannot initialize:
+            reference member "S::x"
+  struct S { // expected-error {{implicit default constructor for 'S' must explicitly initialize the reference member}}
+         ^
+          detected during implicit generation of "S::S()" at line 20
+
+"Test_name.c", line 60: warning: field initializers are a C++11 feature
+    int &r = n; // expected-warning 0-1{{C++11}}
+           ^
+
+3 errors detected in the compilation of "Test_name.c".

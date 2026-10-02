@@ -1,0 +1,30 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 10: error: declaration is incompatible with previous "Z" (declared at line 6)
+      friend void Z();
+                  ^
+
+"Test_name.c", line 5: warning: variable "X" was declared but never referenced
+    int X, Y;
+        ^
+
+"Test_name.c", line 5: warning: variable "Y" was declared but never referenced
+    int X, Y;
+           ^
+
+"Test_name.c", line 11: warning: variable "a" was declared but never referenced
+    } a;
+      ^
+
+"Test_name.c", line 12: warning: variable "px" was declared but never referenced
+    struct X *px;
+              ^
+
+"Test_name.c", line 13: warning: variable "py" was declared but never referenced
+    struct Y *py;
+              ^
+
+"Test_name.c", line 14: warning: variable "pz" was declared but never referenced
+    struct Z *pz;
+              ^
+
+1 error detected in the compilation of "Test_name.c".

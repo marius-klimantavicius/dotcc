@@ -1,0 +1,10 @@
+./a.out
+My_R1    : e2 59 d1 48 b4 aa d9 bb
+My_R2    : e2 59 d1 48 b4 aa d9 bb
+Local_R1 : e2 59 d1 48 b4 aa d9 bb
+Local_R2 : e2 59 d1 48 b4 aa d9 bb
+Local_R1 : e2 59 d1 48 b4 aa d9 bb
+Local_R2 : e2 59 d1 48 b4 aa d9 bb
+Local_R1 : e2 59 d1 48 b4 aa d9 bb
+Local_R2 : e2 59 d1 48 b4 aa d9 bb
+

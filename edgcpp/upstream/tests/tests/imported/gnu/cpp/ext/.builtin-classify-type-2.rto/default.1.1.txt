@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: error: expected an expression
+    __builtin_classify_type (enum E { E1, E2 });	// { dg-error "types may not be defined in '__builtin_classify_type' calls" }
+                             ^
+
+"Test_name.c", line 9: warning: expression has no effect
+    __builtin_classify_type (enum E { E1, E2 });	// { dg-error "types may not be defined in '__builtin_classify_type' calls" }
+    ^
+
+"Test_name.c", line 10: error: expected an expression
+    __builtin_classify_type (struct S { int s; });// { dg-error "types may not be defined in '__builtin_classify_type' calls" }
+                             ^
+
+"Test_name.c", line 10: warning: expression has no effect
+    __builtin_classify_type (struct S { int s; });// { dg-error "types may not be defined in '__builtin_classify_type' calls" }
+    ^
+
+"Test_name.c", line 11: error: expected an expression
+    __builtin_classify_type (union U { int u; });	// { dg-error "types may not be defined in '__builtin_classify_type' calls" }
+                             ^
+
+"Test_name.c", line 11: warning: expression has no effect
+    __builtin_classify_type (union U { int u; });	// { dg-error "types may not be defined in '__builtin_classify_type' calls" }
+    ^
+
+"Test_name.c", line 12: error: type name is not allowed
+    __builtin_classify_type (int [2 * n + 36]);
+                             ^
+
+"Test_name.c", line 12: warning: expression has no effect
+    __builtin_classify_type (int [2 * n + 36]);
+    ^
+
+4 errors detected in the compilation of "Test_name.c".

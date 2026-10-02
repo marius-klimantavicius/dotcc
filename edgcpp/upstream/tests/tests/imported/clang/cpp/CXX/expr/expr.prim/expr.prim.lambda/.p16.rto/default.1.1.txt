@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 15: error: function "X::X(const X &)" (declared at line 7) cannot be referenced -- it is a deleted function
+      [x] { // expected-error{{call to deleted constructor of 'X'}}
+       ^
+
+"Test_name.c", line 21: error: function "X::X(const X &)" (declared at line 7) cannot be referenced -- it is a deleted function
+        [x] { // expected-error{{call to deleted constructor of 'const X'}}
+         ^
+
+"Test_name.c", line 29: error: qualifiers dropped in binding reference of type "int &" to initializer of type "const int"
+        int &x = a;  // expected-error{{binding reference of type 'int' to value of type 'const int' drops 'const' qualifier}}
+                 ^
+
+"Test_name.c", line 30: error: qualifiers dropped in binding reference of type "int &" to initializer of type "const int"
+        int &x2 = a; // expected-error{{binding reference of type 'int' to value of type 'const int' drops 'const' qualifier}}
+                  ^
+
+"Test_name.c", line 37: error: qualifiers dropped in binding reference of type "int &" to initializer of type "const int"
+          int &x = a;  // expected-error{{binding reference of type 'int' to value of type 'const int' drops 'const' qualifier}}
+                   ^
+
+"Test_name.c", line 38: error: qualifiers dropped in binding reference of type "int &" to initializer of type "const int"
+          int &x2 = a; // expected-error{{binding reference of type 'int' to value of type 'const int' drops 'const' qualifier}}
+                    ^
+
+6 errors detected in the compilation of "Test_name.c".

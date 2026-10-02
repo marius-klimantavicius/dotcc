@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 13: error: incomplete type "char []" is not allowed
+  	  _Static_assert(4 == sizeof(*q.y), "");
+  	                            ^
+
+"Test_name.c", line 15: error: declaration is incompatible with previous "q" (declared at line 10)
+  	{ extern struct f { char (*x)[2]; char (*y)[]; } q; (void)q; }	/* { dg-error "conflicting" } */
+  	                                                 ^
+
+"Test_name.c", line 17: error: a field declaration cannot have a type involving a variable length array
+  	{ struct f { char (*x)[n]; char (*y)[3]; }* qp = &q; (void)*qp; }
+  	                    ^
+
+"Test_name.c", line 17: warning: a value of type "struct f *" cannot be used to initialize an entity of type "struct f *"
+  	{ struct f { char (*x)[n]; char (*y)[3]; }* qp = &q; (void)*qp; }
+  	                                                 ^
+
+"Test_name.c", line 20: warning: variable-length array field type will be treated as zero-length array field type
+  	  static struct g { int a; char buf[n]; } *p; (void)p;
+  	                                    ^
+
+3 errors detected in the compilation of "Test_name.c".

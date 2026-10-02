@@ -1,0 +1,36 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 17: error: more than one instance of overloaded function "f" matches the argument list:
+            function template "int f<<unnamed>>(int)" (declared at line 7)
+            function template "int f<<unnamed>>(int)" (declared at line 12)
+            argument types are: (int)
+  int i1 = f<1>(0); // expected-error{{call to 'f' is ambiguous}}
+           ^
+
+"Test_name.c", line 18: warning: integer conversion resulted in truncation
+  int i2 = f<1000>(0);
+             ^
+
+"Test_name.c", line 18: error: more than one instance of overloaded function "f" matches the argument list:
+            function template "int f<<unnamed>>(int)" (declared at line 7)
+            function template "int f<<unnamed>>(int)" (declared at line 12)
+            argument types are: (int)
+  int i2 = f<1000>(0);
+           ^
+
+"Test_name.c", line 41: error: no instance of function template "PR6707::f2" matches the argument list
+            argument types are: (PR6707::X<int, 10>, PR6707::X<char, '\n'>)
+      f2(X<int, 10>(), X<char, ten>()); // expected-error {{no matching}}
+      ^
+"Test_name.c", line 36: note: candidate function template "PR6707::f2" failed deduction
+    void f2(X<T, Value>, X<U, Value>);
+         ^
+
+"Test_name.c", line 42: error: no instance of function template "PR6707::f2" matches the argument list
+            argument types are: (PR6707::X<char, '\n'>, PR6707::X<int, 10>)
+      f2(X<char, 10>(), X<int, ten>()); // expected-error {{no matching}}
+      ^
+"Test_name.c", line 36: note: candidate function template "PR6707::f2" failed deduction
+    void f2(X<T, Value>, X<U, Value>);
+         ^
+
+4 errors detected in the compilation of "Test_name.c".

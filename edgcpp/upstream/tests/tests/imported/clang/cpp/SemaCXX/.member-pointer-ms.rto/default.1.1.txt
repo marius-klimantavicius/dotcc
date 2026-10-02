@@ -1,0 +1,220 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --ms_compatibility -w -DVMB Test_name.c
+"Test_name.c", line 91: error: static assertion failed with ""
+  static_assert(sizeof(int IncSingle::*)        == kSingleDataSize, "");
+  ^
+"Test_name.c", line 91: note: the final comparison was 8 == 4
+  static_assert(sizeof(int IncSingle::*)        == kSingleDataSize, "");
+                                                ^
+
+"Test_name.c", line 92: error: static assertion failed with ""
+  static_assert(sizeof(int IncMultiple::*)      == kMultipleDataSize, "");
+  ^
+"Test_name.c", line 92: note: the final comparison was 8 == 4
+  static_assert(sizeof(int IncMultiple::*)      == kMultipleDataSize, "");
+                                                ^
+
+"Test_name.c", line 94: error: static assertion failed with ""
+  static_assert(sizeof(void (IncSingle::*)())   == kSingleFunctionSize, "");
+  ^
+"Test_name.c", line 94: note: the final comparison was 16 == 8
+  static_assert(sizeof(void (IncSingle::*)())   == kSingleFunctionSize, "");
+                                                ^
+
+"Test_name.c", line 108: error: static assertion failed with ""
+  static_assert(sizeof(int IncUnspecified::*) == kUnspecifiedDataSize, "");
+  ^
+"Test_name.c", line 108: note: the final comparison was 8 == 12
+  static_assert(sizeof(int IncUnspecified::*) == kUnspecifiedDataSize, "");
+                                              ^
+
+"Test_name.c", line 109: error: static assertion failed with ""
+  static_assert(sizeof(void (IncUnspecified::*)()) == kUnspecifiedFunctionSize, "");
+  ^
+"Test_name.c", line 109: note: the final comparison was 16 == 24
+  static_assert(sizeof(void (IncUnspecified::*)()) == kUnspecifiedFunctionSize, "");
+                                                   ^
+
+"Test_name.c", line 117: error: static assertion failed with ""
+  static_assert(sizeof(int Single::*)        == kSingleDataSize, "");
+  ^
+"Test_name.c", line 117: note: the final comparison was 8 == 4
+  static_assert(sizeof(int Single::*)        == kSingleDataSize, "");
+                                             ^
+
+"Test_name.c", line 118: error: static assertion failed with ""
+  static_assert(sizeof(int Multiple::*)      == kMultipleDataSize, "");
+  ^
+"Test_name.c", line 118: note: the final comparison was 8 == 4
+  static_assert(sizeof(int Multiple::*)      == kMultipleDataSize, "");
+                                             ^
+
+"Test_name.c", line 120: error: static assertion failed with ""
+  static_assert(sizeof(void (Single::*)())   == kSingleFunctionSize, "");
+  ^
+"Test_name.c", line 120: note: the final comparison was 16 == 8
+  static_assert(sizeof(void (Single::*)())   == kSingleFunctionSize, "");
+                                             ^
+
+"Test_name.c", line 136: error: static assertion failed with ""
+  static_assert(sizeof(int X<IncSingle>::*)           == kSingleDataSize, "");
+  ^
+"Test_name.c", line 136: note: the final comparison was 8 == 4
+  static_assert(sizeof(int X<IncSingle>::*)           == kSingleDataSize, "");
+                                                      ^
+
+"Test_name.c", line 137: error: static assertion failed with ""
+  static_assert(sizeof(int X<IncMultiple>::*)         == kMultipleDataSize, "");
+  ^
+"Test_name.c", line 137: note: the final comparison was 8 == 4
+  static_assert(sizeof(int X<IncMultiple>::*)         == kMultipleDataSize, "");
+                                                      ^
+
+"Test_name.c", line 139: error: static assertion failed with ""
+  static_assert(sizeof(int X<IncUnspecified>::*)      == kUnspecifiedDataSize, "");
+  ^
+"Test_name.c", line 139: note: the final comparison was 8 == 12
+  static_assert(sizeof(int X<IncUnspecified>::*)      == kUnspecifiedDataSize, "");
+                                                      ^
+
+"Test_name.c", line 140: error: static assertion failed with ""
+  static_assert(sizeof(void (X<IncSingle>::*)())      == kSingleFunctionSize, "");
+  ^
+"Test_name.c", line 140: note: the final comparison was 16 == 8
+  static_assert(sizeof(void (X<IncSingle>::*)())      == kSingleFunctionSize, "");
+                                                      ^
+
+"Test_name.c", line 143: error: static assertion failed with ""
+  static_assert(sizeof(void (X<IncUnspecified>::*)()) == kUnspecifiedFunctionSize, "");
+  ^
+"Test_name.c", line 143: note: the final comparison was 16 == 24
+  static_assert(sizeof(void (X<IncUnspecified>::*)()) == kUnspecifiedFunctionSize, "");
+                                                      ^
+
+"Test_name.c", line 147: error: static assertion failed with ""
+  static_assert(sizeof(int Y<Single>::*)        == kSingleDataSize, "");
+  ^
+"Test_name.c", line 147: note: the final comparison was 8 == 4
+  static_assert(sizeof(int Y<Single>::*)        == kSingleDataSize, "");
+                                                ^
+
+"Test_name.c", line 148: error: static assertion failed with ""
+  static_assert(sizeof(int Y<Multiple>::*)      == kMultipleDataSize, "");
+  ^
+"Test_name.c", line 148: note: the final comparison was 8 == 4
+  static_assert(sizeof(int Y<Multiple>::*)      == kMultipleDataSize, "");
+                                                ^
+
+"Test_name.c", line 150: error: static assertion failed with ""
+  static_assert(sizeof(void (Y<Single>::*)())   == kSingleFunctionSize, "");
+  ^
+"Test_name.c", line 150: note: the final comparison was 16 == 8
+  static_assert(sizeof(void (Y<Single>::*)())   == kSingleFunctionSize, "");
+                                                ^
+
+"Test_name.c", line 156: error: static assertion failed with ""
+  static_assert(sizeof(int B::*) == kSingleDataSize, "");
+  ^
+"Test_name.c", line 156: note: the final comparison was 8 == 4
+  static_assert(sizeof(int B::*) == kSingleDataSize, "");
+                                 ^
+
+"Test_name.c", line 164: error: static assertion failed with ""
+  static_assert(sizeof(void (CC::*)()) == kSingleFunctionSize, "");
+  ^
+"Test_name.c", line 164: note: the final comparison was 16 == 8
+  static_assert(sizeof(void (CC::*)()) == kSingleFunctionSize, "");
+                                       ^
+
+"Test_name.c", line 185: error: static assertion failed with ""
+  static_assert(sizeof(variable_forces_sizing) == kUnspecifiedDataSize, "");
+  ^
+"Test_name.c", line 185: note: the final comparison was 8 == 12
+  static_assert(sizeof(variable_forces_sizing) == kUnspecifiedDataSize, "");
+                                               ^
+
+"Test_name.c", line 186: error: static assertion failed with ""
+  static_assert(sizeof(MemPtr1) == kUnspecifiedDataSize, "");
+  ^
+"Test_name.c", line 186: note: the final comparison was 8 == 12
+  static_assert(sizeof(MemPtr1) == kUnspecifiedDataSize, "");
+                                ^
+
+"Test_name.c", line 187: error: static assertion failed with ""
+  static_assert(sizeof(MemPtr2) == kSingleDataSize, "");
+  ^
+"Test_name.c", line 187: note: the final comparison was 8 == 4
+  static_assert(sizeof(MemPtr2) == kSingleDataSize, "");
+                                ^
+
+"Test_name.c", line 197: error: static assertion failed with ""
+  static_assert(sizeof(MemPtrInBody::MemPtr) == kSingleDataSize, "");
+  ^
+"Test_name.c", line 197: note: the final comparison was 8 == 4
+  static_assert(sizeof(MemPtrInBody::MemPtr) == kSingleDataSize, "");
+                                             ^
+
+"Test_name.c", line 204: error: static assertion failed with ""
+    static_assert(sizeof(int T::*) == kSingleDataSize, "");
+    ^
+"Test_name.c", line 204: note: the final comparison was 8 == 4
+    static_assert(sizeof(int T::*) == kSingleDataSize, "");
+                                   ^
+          detected during instantiation of class "SingleTemplate<void (T::*)()> [with T=IncSingle]" at line 217
+
+"Test_name.c", line 205: error: static assertion failed with ""
+    static_assert(sizeof(void (T::*)()) == kSingleFunctionSize, "");
+    ^
+"Test_name.c", line 205: note: the final comparison was 16 == 8
+    static_assert(sizeof(void (T::*)()) == kSingleFunctionSize, "");
+                                        ^
+          detected during instantiation of class "SingleTemplate<void (T::*)()> [with T=IncSingle]" at line 217
+
+"Test_name.c", line 212: error: static assertion failed with ""
+    static_assert(sizeof(int T::*) == kUnspecifiedDataSize, "");
+    ^
+"Test_name.c", line 212: note: the final comparison was 8 == 12
+    static_assert(sizeof(int T::*) == kUnspecifiedDataSize, "");
+                                   ^
+          detected during instantiation of class "UnspecTemplate<void (T::*)()> [with T=NewUnspecified]" at line 218
+
+"Test_name.c", line 213: error: static assertion failed with ""
+    static_assert(sizeof(void (T::*)()) == kUnspecifiedFunctionSize, "");
+    ^
+"Test_name.c", line 213: note: the final comparison was 16 == 24
+    static_assert(sizeof(void (T::*)()) == kUnspecifiedFunctionSize, "");
+                                        ^
+          detected during instantiation of class "UnspecTemplate<void (T::*)()> [with T=NewUnspecified]" at line 218
+
+"Test_name.c", line 222: error: static assertion failed with ""
+  static_assert(sizeof(void (NewUnspecified::*)()) == kUnspecifiedFunctionSize, "");
+  ^
+"Test_name.c", line 222: note: the final comparison was 16 == 24
+  static_assert(sizeof(void (NewUnspecified::*)()) == kUnspecifiedFunctionSize, "");
+                                                   ^
+
+"Test_name.c", line 275: error: static assertion failed with ""
+  static_assert(sizeof(int TrulySingleInheritance::*) == kMultipleDataSize, "");
+  ^
+"Test_name.c", line 275: note: the final comparison was 8 == 4
+  static_assert(sizeof(int TrulySingleInheritance::*) == kMultipleDataSize, "");
+                                                      ^
+
+"Test_name.c", line 285: error: static assertion failed with ""
+  static_assert(sizeof(int SingleInheritanceAsVirtualAfterPragma::*) == 12, "");
+  ^
+"Test_name.c", line 285: note: the final comparison was 8 == 12
+  static_assert(sizeof(int SingleInheritanceAsVirtualAfterPragma::*) == 12, "");
+                                                                     ^
+
+"Test_name.c", line 292: error: static assertion failed with ""
+  static_assert(sizeof(int SingleInheritanceAsVirtualBeforePragma::*) == 12, "");
+  ^
+"Test_name.c", line 292: note: the final comparison was 8 == 12
+  static_assert(sizeof(int SingleInheritanceAsVirtualBeforePragma::*) == 12, "");
+                                                                      ^
+
+"Test_name.c", line 302: error: pointer-to-member representation "__single_inheritance" has already been set for class "merging::M"
+  struct __multiple_inheritance M; // expected-error{{inheritance model does not match previous declaration}}
+         ^
+
+31 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,80 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: error: "constexpr" is not valid here
+  constexpr struct pixel {        // { dg-error ".constexpr." }
+  ^
+
+"Test_name.c", line 23: error: expression must have a constant value
+  constexpr pixel small(2);	// { dg-message "in .constexpr. expansion of " }
+                        ^
+"Test_name.c", line 18: note: constexpr function "square" (declared at line 7) is not defined
+    : x(square(a)), y(square(a))	// { dg-error "square" }
+        ^
+
+"Test_name.c", line 26: error: invalid specifier on a parameter
+  int next(constexpr int x) {	// { dg-error "parameter" }
+           ^
+
+"Test_name.c", line 31: error: missing initializer for constexpr variable
+  extern constexpr int memsz;	// { dg-error "definition" }
+         ^
+
+"Test_name.c", line 34: error: a constexpr function cannot have a nonliteral return type "void"
+  constexpr void f(int x)		// { dg-error "void" "" { target c++11_only } }
+                 ^
+
+"Test_name.c", line 38: error: constexpr function return is non-constant
+  { return --x; }			// { dg-error "-- x" "" { target c++11_only } }
+           ^
+
+"Test_name.c", line 42: error: statement may not appear in a constexpr function
+    int r = 1;
+    ^
+
+"Test_name.c", line 43: error: statement may not appear in a constexpr function
+    while (--n > 0) r *= x;
+                    ^
+
+"Test_name.c", line 43: error: statement may not appear in a constexpr function
+    while (--n > 0) r *= x;
+    ^
+
+"Test_name.c", line 50: warning: constexpr non-static member function will not be implicitly 'const' in C++14
+    constexpr bool is_on(); // { dg-error "not a literal type" "" { target c++11_only } } debug_flag not literal type
+    ^
+
+"Test_name.c", line 59: error: function "bar" has already been defined (previous definition at line 55)
+  int bar(int x, int y)		// { dg-error "redefinition" }
+      ^
+
+"Test_name.c", line 59: error: function "bar" (declared at line 55) was previously declared constexpr
+  int bar(int x, int y)		// { dg-error "redefinition" }
+      ^
+
+"Test_name.c", line 66: error: const variable "origin" requires an initializer -- class "pixel2" has no user-provided default constructor
+  constexpr pixel2 origin;	     // { dg-error "uninitialized 'const" }
+                         ^
+
+"Test_name.c", line 71: error: expression must have a constant value
+  extern constexpr const int* tp = addr(5); // { dg-error "" }
+                                   ^
+"Test_name.c", line 71: note: reference or pointer to temporary with limited lifetime
+  extern constexpr const int* tp = addr(5); // { dg-error "" }
+                                   ^
+
+"Test_name.c", line 7: warning: extern inline function "square" was referenced but not defined
+  constexpr int square(int x);	// { dg-message "never defined" }
+                ^
+
+"Test_name.c", line 23: warning: variable "small" was declared but never referenced
+  constexpr pixel small(2);	// { dg-message "in .constexpr. expansion of " }
+                  ^
+
+"Test_name.c", line 65: warning: variable "ur" was declared but never referenced
+  constexpr pixel2 ur = { 1294, 1024 };// OK
+                   ^
+
+"Test_name.c", line 66: warning: variable "origin" was declared but never referenced
+  constexpr pixel2 origin;	     // { dg-error "uninitialized 'const" }
+                   ^
+
+13 errors detected in the compilation of "Test_name.c".

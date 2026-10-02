@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++20 -tused -A Test_name.c
+"Test_name.c", line 3: error: duplicate parameter name
+  int f(int x,int x);  // error: different entities for x
+                  ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,56 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 11: error: too few arguments for class template "X"
+  X<> *x3; // expected-error{{too few template arguments for class template 'X'}}
+    ^
+
+"Test_name.c", line 24: error: class "a<bool>" has no member "v"
+  template<class T, bool = a<T>::v> struct p { }; // expected-error {{no member named 'v'}}
+                                 ^
+          detected during processing of template argument list for "p" based on template argument <bool> at line 26
+
+"Test_name.c", line 54: error: class "X1<int>" has no member "type"
+    template<typename U = typename X1<T>::type> // expected-error{{no type named 'type' in 'X1<int>'}} \
+                                          ^
+          detected during instantiation of class "X2<T> [with T=int]" at line 76
+
+"Test_name.c", line 58: error: class "X1<int>" has no member "value"
+    template<T Value = X1<T>::value> // expected-error{{no member named 'value' in 'X1<int>'}} \
+                              ^
+          detected during instantiation of class "X2<T> [with T=int]" at line 76
+
+"Test_name.c", line 126: error: class template "X5" is not compatible with template template parameter "B"
+  X6<long long> x6b; // expected-note {{while checking a default template argument used here}}
+              ^
+
+"Test_name.c", line 130: error: class "B<int>" is not a class template
+  template<template<class> class X = B<int> > struct X7; // expected-error{{must be a class template}}
+                                     ^
+
+"Test_name.c", line 163: error: a class or namespace qualified name is required
+      template <class U = typename T::type> static void f(int) {} // expected-error {{type 'int' cannot be used prior to '::' because it has no members}}
+                                   ^
+          detected during instantiation of class "DR1635::X<T> [with T=int]" at line 170
+
+"Test_name.c", line 163: error: expected a "," or ">"
+      template <class U = typename T::type> static void f(int) {} // expected-error {{type 'int' cannot be used prior to '::' because it has no members}}
+                                    ^
+          detected during instantiation of class "DR1635::X<T> [with T=int]" at line 170
+
+"Test_name.c", line 170: warning: missing return statement at end of non-void function "DR1635::g"
+    int g() { X<int>::f(0); } // expected-note {{in instantiation of template class 'DR1635::X<int>' requested here}}
+                            ^
+
+"Test_name.c", line 183: error: expected an expression
+    C(T t = ); // expected-error {{expected expression}}
+            ^
+
+"Test_name.c", line 185: error: no default constructor exists for class "C<int>"
+  C<int> obj;
+         ^
+
+"Test_name.c", line 175: error: name followed by "::" must be a class or namespace name
+      int g1(int defarg = T::error);  // expected-error{{type 'int' cannot be used prior to '::' because it has no members}} \
+                          ^
+          detected during instantiation of "void NondefDecls::f1<T>() [with T=int]" at line 178
+
+11 errors detected in the compilation of "Test_name.c".

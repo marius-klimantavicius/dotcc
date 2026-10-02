@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 17: error: initialization is not constant
+  constexpr D d;	// { dg-message "in 'constexpr' expansion of" }
+              ^
+"Test_name.c", line 14: note: constexpr function "B::B(int)" (declared at line 9) is not defined
+    constexpr D () : B (42) { }	// { dg-error "used before its definition" }
+              ^
+
+"Test_name.c", line 17: warning: variable "d" was declared but never referenced
+  constexpr D d;	// { dg-message "in 'constexpr' expansion of" }
+              ^
+
+"Test_name.c", line 9: warning: function "B::B(int)" was referenced but not defined
+    constexpr B (int);	// { dg-warning "used but never defined" }
+              ^
+
+1 error detected in the compilation of "Test_name.c".

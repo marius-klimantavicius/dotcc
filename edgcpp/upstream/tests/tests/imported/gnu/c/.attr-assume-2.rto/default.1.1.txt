@@ -1,0 +1,70 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 7: warning: attribute "gnu::__assume__" does not apply here
+  [[gnu::__assume__ (1)]] void f1 (void);	/* { dg-warning "'assume' attribute not followed by ';'" } */
+    ^
+
+"Test_name.c", line 9: warning: attribute "gnu::assume" does not apply here
+  typedef int intx [[gnu::assume (1)]];	/* { dg-warning "'assume' attribute ignored" } */
+                     ^
+
+"Test_name.c", line 10: warning: expected a declaration
+  [[__gnu__::assume (1)]];		/* { dg-warning "'assume' attribute at top level" } */
+                         ^
+
+"Test_name.c", line 11: warning: attribute "assume" does not apply here
+  __attribute__((assume (1))) void f1b ();/* { dg-warning "'assume' attribute not followed by ';'" } */
+                 ^
+
+"Test_name.c", line 13: warning: attribute "assume" does not apply here
+  typedef int inty __attribute__((assume (1)));	/* { dg-warning "'assume' attribute ignored" } */
+                                  ^
+
+"Test_name.c", line 19: error: expected a "("
+    [[gnu::assume]];			/* { dg-error "wrong number of arguments specified for 'assume' attribute" } */
+                 ^
+
+"Test_name.c", line 21: error: expected an expression
+    [[gnu::__assume__ ()]];		/* { dg-error "parentheses must be omitted if attribute argument list is empty" } */
+                       ^
+
+"Test_name.c", line 24: error: expected a ")"
+    [[gnu::assume (1, 1)]];		/* { dg-error "wrong number of arguments specified for 'assume' attribute" } */
+                    ^
+
+"Test_name.c", line 26: error: the "assume" attribute can only apply to a null statement
+    [[gnu::assume (1)]] i = 1;		/* { dg-warning "'assume' attribute ignored" } */
+                        ^
+
+"Test_name.c", line 27: error: expected a ")"
+    [[gnu::assume (i = 1)]];		/* { dg-error "expected" } */
+                     ^
+
+"Test_name.c", line 29: error: expected a "("
+    __attribute__((assume));		/* { dg-error "wrong number of arguments specified for 'assume' attribute" } */
+                         ^
+
+"Test_name.c", line 31: error: expected an expression
+    __attribute__((assume ()));		/* { dg-error "wrong number of arguments specified for 'assume' attribute" } */
+                           ^
+
+"Test_name.c", line 33: error: expected a ")"
+    __attribute__((assume (1, 1)));	/* { dg-error "wrong number of arguments specified for 'assume' attribute" } */
+                            ^
+
+"Test_name.c", line 35: error: expected a ")"
+    __attribute__((assume (i = 1)));	/* { dg-error "expected" } */
+                             ^
+
+"Test_name.c", line 18: warning: variable "i" was set but never used
+    int i;
+        ^
+
+"Test_name.c", line 65: error: expression must have arithmetic or pointer type
+    [[gnu::assume (s)]];			/* { dg-error "used struct type value where scalar is required" } */
+                   ^
+
+"Test_name.c", line 66: error: expression must have arithmetic or pointer type
+    __attribute__((assume (s)));		/* { dg-error "used struct type value where scalar is required" } */
+                           ^
+
+11 errors detected in the compilation of "Test_name.c".

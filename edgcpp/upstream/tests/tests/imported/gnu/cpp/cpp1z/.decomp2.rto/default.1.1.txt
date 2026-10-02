@@ -1,0 +1,66 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: warning: a user-provided literal suffix must begin with "_"
+  __complex__ double b = 5.0 + 6.0i;
+                               ^
+
+"Test_name.c", line 8: error: user-defined literal operator not found
+  __complex__ double b = 5.0 + 6.0i;
+                               ^
+
+"Test_name.c", line 9: error: _Complex can only be used with floating-point types
+  __complex__ int c = 7 + 8i;
+  ^
+
+"Test_name.c", line 9: error: user-defined literal operator not found
+  __complex__ int c = 7 + 8i;
+                          ^
+
+"Test_name.c", line 14: warning: structured bindings are a C++17 feature
+    auto & [ d, e, f, g ] = a;	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+           ^
+
+"Test_name.c", line 14: error: type "__attribute((vector_size(16UL))) int" has no components to bind to
+    auto & [ d, e, f, g ] = a;	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+           ^
+
+"Test_name.c", line 15: warning: structured bindings are a C++17 feature
+    auto [ h, i, j, k ] = a;	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+         ^
+
+"Test_name.c", line 15: error: type "__attribute((vector_size(16UL))) int" has no components to bind to
+    auto [ h, i, j, k ] = a;	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+         ^
+
+"Test_name.c", line 16: warning: structured bindings are a C++17 feature
+    auto [ l, m ] = b;		// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+         ^
+
+"Test_name.c", line 16: error: type "double __complex__" has no components to bind to
+    auto [ l, m ] = b;		// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+         ^
+
+"Test_name.c", line 17: warning: structured bindings are a C++17 feature
+    auto & [ n, o ] = b;		// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+           ^
+
+"Test_name.c", line 17: error: type "double __complex__" has no components to bind to
+    auto & [ n, o ] = b;		// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+           ^
+
+"Test_name.c", line 18: warning: structured bindings are a C++17 feature
+    auto & [ p, q ] = c;		// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+           ^
+
+"Test_name.c", line 19: warning: structured bindings are a C++17 feature
+    auto [ r, s ] = c;		// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+         ^
+
+"Test_name.c", line 53: error: user-defined literal operator not found
+        || b != 15.0 + 12.0i
+                       ^
+
+"Test_name.c", line 54: error: user-defined literal operator not found
+        || c != 25 + 27i)
+                     ^
+
+9 errors detected in the compilation of "Test_name.c".

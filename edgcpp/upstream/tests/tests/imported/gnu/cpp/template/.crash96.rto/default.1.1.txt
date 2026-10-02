@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 7: error: this declaration cannot have multiple "template <...>" clauses
+    template<int> template<int> void A::foo() {} // { dg-error "36:extra qualification" }
+                                ^
+
+"Test_name.c", line 7: error: qualified name is not allowed
+    template<int> template<int> void A::foo() {} // { dg-error "36:extra qualification" }
+                                     ^
+
+2 errors detected in the compilation of "Test_name.c".

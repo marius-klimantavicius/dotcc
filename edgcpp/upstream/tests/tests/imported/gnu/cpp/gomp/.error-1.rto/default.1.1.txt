@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 10: warning: unrecognized #pragma
+        #pragma omp error								// { dg-bogus "'pragma omp error' encountered" }
+                ^
+
+"Test_name.c", line 14: warning: unrecognized #pragma
+        #pragma omp error at(compilation) severity(warning) message("foo")	// { dg-warning "'pragma omp error' encountered: foo" }
+                ^
+
+"Test_name.c", line 18: warning: unrecognized #pragma
+        #pragma omp error message("bar")						// { dg-error "'pragma omp error' encountered: bar" }
+                ^
+
+"Test_name.c", line 22: warning: unrecognized #pragma
+        #pragma omp error message("baz")						// { dg-bogus "'pragma omp error' encountered" }
+                ^
+
+"Test_name.c", line 30: warning: unrecognized #pragma
+    #pragma omp error at(execution) message (x)
+            ^
+
+"Test_name.c", line 40: warning: unrecognized #pragma
+    #pragma omp error at(execution) message (x)					// { dg-error "could not convert" }
+            ^
+

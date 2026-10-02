@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 28: warning: call to is_constant_evaluated appearing in a constant expression always produces "true"
+  static_assert (__builtin_constant_p (0) + 2 * std::is_constant_evaluated () == 3, "");
+                                                                           ^
+
+"Test_name.c", line 29: warning: call to is_constant_evaluated appearing in a constant expression always produces "true"
+  static_assert (__builtin_constant_p (a) + 2 * std::is_constant_evaluated () == 2, "");
+                                                                           ^
+
+"Test_name.c", line 30: warning: call to is_constant_evaluated appearing in a constant expression always produces "true"
+  static_assert (foo (0) + 2 * std::is_constant_evaluated () == 3, "");
+                                                          ^
+
+"Test_name.c", line 31: warning: call to is_constant_evaluated appearing in a constant expression always produces "true"
+  static_assert (bar (0) + 2 * std::is_constant_evaluated () == 2, "");
+                                                          ^
+

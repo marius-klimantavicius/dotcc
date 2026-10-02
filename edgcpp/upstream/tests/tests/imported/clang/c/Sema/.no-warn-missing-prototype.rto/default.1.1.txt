@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --ms_compatibility -w -DMS --ms_compatibility -DMS --c Test_name.c
+"Test_name.c", line 17: error: identifier "wchar_t" is undefined
+  int wmain(int, wchar_t *[], wchar_t *[]) {
+                 ^
+
+"Test_name.c", line 17: error: identifier "wchar_t" is undefined
+  int wmain(int, wchar_t *[], wchar_t *[]) {
+                              ^
+
+"Test_name.c", line 21: error: identifier "wchar_t" is undefined
+  int wWinMain(void*, void*, wchar_t*, int) {
+                             ^
+
+"Test_name.c", line 29: error: identifier "bool" is undefined
+  bool DllMain(void*, unsigned, void*) {
+  ^
+
+"Test_name.c", line 30: error: identifier "true" is undefined
+    return true;
+           ^
+
+5 errors detected in the compilation of "Test_name.c".

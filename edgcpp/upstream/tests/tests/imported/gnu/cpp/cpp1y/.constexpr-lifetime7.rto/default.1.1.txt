@@ -1,0 +1,131 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 14: error: expression must have a constant value
+  constexpr int j = f (&i);
+                    ^
+"Test_name.c", line 9: note: a pseudo-destructor call is not permitted in a constant-expression
+    p->~T ();   // { dg-error "destroying" }
+          ^
+
+"Test_name.c", line 71: error: expression must have a constant value
+  constexpr bool i1 = test_access<int>();        // { dg-message "in .constexpr." }
+                      ^
+"Test_name.c", line 20: note: a pseudo-destructor call is not permitted in a constant-expression
+    x.~T();
+        ^
+
+"Test_name.c", line 72: error: expression must have a constant value
+  constexpr bool i2 = test_modification<int>();  // { dg-message "in .constexpr." }
+                      ^
+"Test_name.c", line 28: note: a pseudo-destructor call is not permitted in a constant-expression
+    x.~T();
+        ^
+
+"Test_name.c", line 73: error: expression must have a constant value
+  constexpr bool i3 = test_scope<int>();         // { dg-message "in .constexpr." }
+                      ^
+"Test_name.c", line 37: note: a pseudo-destructor call is not permitted in a constant-expression
+      x.~T();
+          ^
+
+"Test_name.c", line 74: error: expression must have a constant value
+  constexpr bool i4 = test_destroy_temp<int>();  // { dg-message "in .constexpr." "" { xfail *-*-* } }
+                      ^
+"Test_name.c", line 44: note: a pseudo-destructor call is not permitted in a constant-expression
+    T{}.~T();  // { dg-error "destroying" }
+          ^
+
+"Test_name.c", line 75: error: expression must have a constant value
+  constexpr bool i5 = test_parameter(int{});     // { dg-error "destroying" }
+                      ^
+"Test_name.c", line 51: note: a pseudo-destructor call is not permitted in a constant-expression
+    t.~T();
+        ^
+
+"Test_name.c", line 79: error: expression must have a constant value
+  constexpr bool t1 = test_access<Trivial>();        // { dg-message "in .constexpr." }
+                      ^
+"Test_name.c", line 20: note: an explicit destructor call is not permitted in a constant-expression
+    x.~T();
+        ^
+
+"Test_name.c", line 80: error: expression must have a constant value
+  constexpr bool t2 = test_modification<Trivial>();  // { dg-message "in .constexpr." }
+                      ^
+"Test_name.c", line 28: note: an explicit destructor call is not permitted in a constant-expression
+    x.~T();
+        ^
+
+"Test_name.c", line 81: error: expression must have a constant value
+  constexpr bool t3 = test_scope<Trivial>();         // { dg-message "in .constexpr." }
+                      ^
+"Test_name.c", line 37: note: an explicit destructor call is not permitted in a constant-expression
+      x.~T();
+          ^
+
+"Test_name.c", line 82: error: expression must have a constant value
+  constexpr bool t4 = test_destroy_temp<Trivial>();  // { dg-message "in .constexpr." }
+                      ^
+"Test_name.c", line 44: note: an explicit destructor call is not permitted in a constant-expression
+    T{}.~T();  // { dg-error "destroying" }
+          ^
+
+"Test_name.c", line 83: error: expression must have a constant value
+  constexpr bool t5 = test_parameter(Trivial{});     // { dg-error "destroying" }
+                      ^
+"Test_name.c", line 51: note: an explicit destructor call is not permitted in a constant-expression
+    t.~T();
+        ^
+
+"Test_name.c", line 14: warning: variable "j" was declared but never referenced
+  constexpr int j = f (&i);
+                ^
+
+"Test_name.c", line 71: warning: variable "i1" was declared but never referenced
+  constexpr bool i1 = test_access<int>();        // { dg-message "in .constexpr." }
+                 ^
+
+"Test_name.c", line 72: warning: variable "i2" was declared but never referenced
+  constexpr bool i2 = test_modification<int>();  // { dg-message "in .constexpr." }
+                 ^
+
+"Test_name.c", line 73: warning: variable "i3" was declared but never referenced
+  constexpr bool i3 = test_scope<int>();         // { dg-message "in .constexpr." }
+                 ^
+
+"Test_name.c", line 74: warning: variable "i4" was declared but never referenced
+  constexpr bool i4 = test_destroy_temp<int>();  // { dg-message "in .constexpr." "" { xfail *-*-* } }
+                 ^
+
+"Test_name.c", line 75: warning: variable "i5" was declared but never referenced
+  constexpr bool i5 = test_parameter(int{});     // { dg-error "destroying" }
+                 ^
+
+"Test_name.c", line 76: warning: variable "i6" was declared but never referenced
+  constexpr bool i6 = test_bindings<int>();
+                 ^
+
+"Test_name.c", line 79: warning: variable "t1" was declared but never referenced
+  constexpr bool t1 = test_access<Trivial>();        // { dg-message "in .constexpr." }
+                 ^
+
+"Test_name.c", line 80: warning: variable "t2" was declared but never referenced
+  constexpr bool t2 = test_modification<Trivial>();  // { dg-message "in .constexpr." }
+                 ^
+
+"Test_name.c", line 81: warning: variable "t3" was declared but never referenced
+  constexpr bool t3 = test_scope<Trivial>();         // { dg-message "in .constexpr." }
+                 ^
+
+"Test_name.c", line 82: warning: variable "t4" was declared but never referenced
+  constexpr bool t4 = test_destroy_temp<Trivial>();  // { dg-message "in .constexpr." }
+                 ^
+
+"Test_name.c", line 83: warning: variable "t5" was declared but never referenced
+  constexpr bool t5 = test_parameter(Trivial{});     // { dg-error "destroying" }
+                 ^
+
+"Test_name.c", line 84: warning: variable "t6" was declared but never referenced
+  constexpr bool t6 = test_bindings<Trivial>();
+                 ^
+
+11 errors detected in the compilation of "Test_name.c".

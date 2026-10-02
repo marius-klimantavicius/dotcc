@@ -1,0 +1,45 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 20: error: parameter pack "Args" was referenced but not expanded
+    requires Integral<Args>... // { dg-error "parameter packs not expanded|expected unqualified-id" }
+                      ^
+
+"Test_name.c", line 20: error: expected a declaration
+    requires Integral<Args>... // { dg-error "parameter packs not expanded|expected unqualified-id" }
+                           ^
+
+"Test_name.c", line 20: error: expected a ";"
+    requires Integral<Args>... // { dg-error "parameter packs not expanded|expected unqualified-id" }
+                           ^
+
+"Test_name.c", line 31: error: type constraint uses concept "Nonnegative" (declared at line 10) that is not a type concept (i.e., a concept template whose first parameter is a type parameter)
+  template<Nonnegative... Args> // { dg-error "does not constrain a type" }
+           ^
+
+"Test_name.c", line 42: error: no instance of function template "f1" matches the argument list
+    f1<int, int>(); // { dg-error "" }
+    ^
+"Test_name.c", line 16: note: substitution of arguments "<int, int>" for concept-id failed
+    requires Integral<Args...> // { dg-error "non-pack parameter" }
+             ^
+
+"Test_name.c", line 44: error: no instance of function template "f3" matches the argument list
+    f3<int, void>(); // { dg-error "" }
+    ^
+"Test_name.c", line 24: note: concept "Integral" not satisfied for "<void>"
+    requires (Integral<Args> && ...)
+              ^
+
+"Test_name.c", line 46: error: no instance of function template "f4" matches the argument list
+    f4<int, void>(); // { dg-error "" }
+    ^
+"Test_name.c", line 28: note: substituting "<int, void>" for function template "f4" failed constraints
+  void f4() { }
+       ^
+"Test_name.c", line 27: note: concept "Integral" not satisfied for "<void>"
+  template<Integral... Args>
+           ^
+"Test_name.c", line 7: note: atomic constraint evaluates to false
+  concept Integral = __is_same_as(T, int);
+                     ^
+
+7 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: error: identifier "i" is undefined
+    constexpr A() { i; }  // { dg-error "declared|empty body" }
+                    ^
+
+"Test_name.c", line 8: error: statement may not appear in a constexpr constructor
+    constexpr A() { i; }  // { dg-error "declared|empty body" }
+                    ^
+
+2 errors detected in the compilation of "Test_name.c".

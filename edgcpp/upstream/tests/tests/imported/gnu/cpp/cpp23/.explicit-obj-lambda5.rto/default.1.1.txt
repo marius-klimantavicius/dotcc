@@ -1,0 +1,12 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++23 Test_name.c
+"Test_name.c", line 20: error: there is more than one way an object of type "lambda [](S) static->int" can be called for the argument list:
+            surrogate function from conversion function "lambda [](S) static->int::operator int (*)(S)() const noexcept"
+            function "lambda [](S) static->int" (declared at line 19)
+    if (f () != magic)
+        ^
+
+"Test_name.c", line 19: warning: variable "f" was set but never used
+    auto f = [](this S self){ return self._v; };
+         ^
+
+1 error detected in the compilation of "Test_name.c".

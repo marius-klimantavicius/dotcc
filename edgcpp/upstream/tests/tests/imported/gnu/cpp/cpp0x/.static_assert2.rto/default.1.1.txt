@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 6: error: static assertion failed with "I must be an even number"
+    static_assert( I % 2 == 0, "I must be an even number"); // { dg-error "even number" }
+    ^
+"Test_name.c", line 6: note: the final comparison was 1 == 0
+    static_assert( I % 2 == 0, "I must be an even number"); // { dg-error "even number" }
+                         ^
+          detected during instantiation of class "accept_evens<I> [with I=1]" at line 34
+
+"Test_name.c", line 16: error: static assertion failed with "I must be an odd number"
+    static_assert( I % 2 == 1, "I must be an odd number"); // { dg-error "odd number" }
+    ^
+"Test_name.c", line 16: note: the final comparison was 0 == 1
+    static_assert( I % 2 == 1, "I must be an odd number"); // { dg-error "odd number" }
+                         ^
+          detected during instantiation of "void accept_odds<I>() [with I=2]" at line 27
+
+2 errors detected in the compilation of "Test_name.c".

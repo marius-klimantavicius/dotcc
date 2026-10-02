@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 5: error: expected a type specifier
+  char __ptrauth(0) a;
+                 ^
+
+"Test_name.c", line 5: warning: unnamed prototyped parameters not allowed when body is present
+  char __ptrauth(0) a;
+       ^
+
+"Test_name.c", line 5: error: expected a "{"
+  char __ptrauth(0) a;
+                    ^
+
+"Test_name.c", line 29: warning: parsing restarts here after previous syntax error
+  struct S1 {
+            ^
+
+"Test_name.c", line 30: error: expected a type specifier
+    __SIZE_TYPE__ __ptrauth(0) f0;
+                            ^
+
+"Test_name.c", line 30: error: declaration is incompatible with previous "__ptrauth" (declared at line 5)
+    __SIZE_TYPE__ __ptrauth(0) f0;
+                  ^
+
+"Test_name.c", line 30: error: expected a ";"
+    __SIZE_TYPE__ __ptrauth(0) f0;
+                               ^
+
+"Test_name.c", line 31: warning: missing return statement at end of non-void function "__ptrauth"
+  };
+  ^
+
+"Test_name.c", line 33: error: expected a type specifier
+  void x(unsigned long long __ptrauth(0) f0);
+                                      ^
+
+"Test_name.c", line 33: error: expected a ")"
+  void x(unsigned long long __ptrauth(0) f0);
+                                         ^
+
+"Test_name.c", line 36: error: expected a type specifier
+  unsigned long long __ptrauth(0) y();
+                               ^
+
+"Test_name.c", line 36: error: function "__ptrauth" has already been defined (previous definition at line 5)
+  unsigned long long __ptrauth(0) y();
+                     ^
+
+"Test_name.c", line 36: warning: unnamed prototyped parameters not allowed when body is present
+  unsigned long long __ptrauth(0) y();
+                     ^
+
+"Test_name.c", line 36: error: expected a "{"
+  unsigned long long __ptrauth(0) y();
+                                  ^
+
+At end of source: warning: missing return statement at end of non-void function "__ptrauth"
+
+At end of source: error: expected a "}"
+
+11 errors detected in the compilation of "Test_name.c".

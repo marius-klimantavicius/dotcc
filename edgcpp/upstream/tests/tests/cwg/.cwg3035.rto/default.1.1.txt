@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 -A --c++20 Test_name.c
+"Test_name.c", line 5: error: types cannot be declared in anonymous unions
+    int x = [] { return 42; }();  // error
+            ^
+
+1 error detected in the compilation of "Test_name.c".

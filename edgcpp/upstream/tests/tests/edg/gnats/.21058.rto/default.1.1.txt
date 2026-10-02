@@ -1,0 +1,6 @@
+cpfe -DTEST_NUMBER=1 --clang Test_name.c
+"Test_name.c", line 2: error: expected a ";"
+  int __cdecl func() { return 0; }
+              ^
+
+1 error detected in the compilation of "Test_name.c".

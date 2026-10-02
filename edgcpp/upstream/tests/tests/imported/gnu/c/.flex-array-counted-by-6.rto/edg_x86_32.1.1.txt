@@ -1,0 +1,9 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./builtin-object-size-common.h", line 1: warning: declaration of "size_t" does not match the expected type "unsigned int"
+  typedef long unsigned int size_t;
+                            ^
+
+"./flex-array-counted-by-6.c", line 13: warning: unknown attribute "counted_by"
+         char data[] __attribute__((counted_by(data_len)));
+                                    ^
+

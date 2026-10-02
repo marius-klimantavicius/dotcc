@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 23: warning: variable "i" was declared but never referenced
+    Beta<0>::Y i = 0;		// { dg-error "within this context" }
+               ^
+
+"Test_name.c", line 23: error: type "Beta<<unnamed>>::Y [with <unnamed>=0]" (declared at line 16) is inaccessible
+    Beta<0>::Y i = 0;		// { dg-error "within this context" }
+             ^
+          detected during instantiation of "int bar<<unnamed>>() [with <unnamed>=0]" at line 27
+
+"Test_name.c", line 24: error: type "Alpha::X" (declared at line 10) is inaccessible
+    return Alpha::X ();		// { dg-error "within this context" }
+                  ^
+          detected during instantiation of "int bar<<unnamed>>() [with <unnamed>=0]" at line 27
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=6 --ms_c++20 --microsoft_version 1944 Test_name.c
+"Test_name.c", line 10: error: incomplete type "minimal::B<int, minimal::A>" is not allowed
+    B<int, A> b;
+              ^
+
+"Test_name.c", line 28: error: incomplete type "alias_in_partial_spec::B<int, alias_in_partial_spec::C>" is not allowed
+    B<int, C> b2;
+              ^
+
+"Test_name.c", line 45: error: incomplete type "base_template_in_partial_spec::B<int, base_template_in_partial_spec::A>" is not allowed
+    B<int, A> b1;
+              ^
+
+3 errors detected in the compilation of "Test_name.c".

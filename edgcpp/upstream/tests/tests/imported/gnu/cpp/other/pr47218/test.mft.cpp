@@ -1,0 +1,62 @@
+//source_files: pr47218-1.C
+//type: lp
+//options: 
+# 0 "./other/pr47218.C"
+# 0 "<built-in>"
+# 0 "<command-line>"
+# 1 "/usr/include/stdc-predef.h" 1 3 4
+# 0 "<command-line>" 2
+# 1 "./other/pr47218.C"
+
+
+
+
+# 1 "./other/pr47218.h" 1
+
+class FooBaseBase0
+{
+public:
+  virtual ~FooBaseBase0 () {}
+};
+
+class FooBaseBase1
+{
+public:
+  virtual void Bar() {}
+};
+
+
+class FooBase: public FooBaseBase0, public FooBaseBase1
+{
+public:
+  virtual void Bar() {}
+};
+
+class Foo2: public FooBase
+{
+public:
+  ~Foo2 ();
+  virtual void Bar();
+};
+
+class Foo3: public FooBase
+{
+public:
+  ~Foo3 ();
+  virtual void Bar();
+};
+# 6 "./other/pr47218.C" 2
+
+Foo3::~Foo3 ()
+{
+  ((FooBaseBase1*)this)->Bar();
+}
+
+void Foo3::Bar()
+{
+}
+
+int main ()
+{
+  return 0;
+}

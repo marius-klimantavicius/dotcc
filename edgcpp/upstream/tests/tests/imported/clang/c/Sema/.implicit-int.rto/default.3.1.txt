@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=3 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 8: warning: explicit type is missing ("int" assumed)
+  foo(void) { /* expected-warning {{type specifier missing, defaults to 'int'}} \
+  ^
+
+"Test_name.c", line 14: warning: this declaration has no storage class or type specifier
+  y;  /* expected-warning {{type specifier missing, defaults to 'int'}} \
+  ^
+
+"Test_name.c", line 18: error: expected a type specifier
+  void f((x));  /* expected-warning {{type specifier missing, defaults to 'int'}} \
+         ^
+
+"Test_name.c", line 30: error: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+  h19_insline(n)  /* ext-error {{parameter 'n' was not declared, defaults to 'int'; ISO C99 and later do not support implicit int}} \
+              ^
+
+"Test_name.c", line 30: warning: standard requires that parameter "n" be given a type by a subsequent declaration ("int" assumed)
+  h19_insline(n)  /* ext-error {{parameter 'n' was not declared, defaults to 'int'; ISO C99 and later do not support implicit int}} \
+              ^
+
+"Test_name.c", line 33: warning: explicit type is missing ("int" assumed)
+    ILPAD();  /* expected-warning {{type specifier missing, defaults to 'int'}} \
+    ^
+
+"Test_name.c", line 33: warning: variable "i" was declared but never referenced
+    ILPAD();  /* expected-warning {{type specifier missing, defaults to 'int'}} \
+    ^
+
+"Test_name.c", line 40: warning: this declaration has no storage class or type specifier
+   __extension__ __attribute__((packed)) x : 4; /* expected-warning {{type specifier missing, defaults to 'int'}} \
+                                         ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 10: error: expected an expression
+    return f<(2*__integer_pack(N))...>(); // { dg-bogus "sorry" "" { xfail *-*-* } }
+                ^
+
+"Test_name.c", line 10: error: pack expansion does not make use of any argument packs
+    return f<(2*__integer_pack(N))...>(); // { dg-bogus "sorry" "" { xfail *-*-* } }
+                                  ^
+
+"Test_name.c", line 10: error: expected a ";"
+    return f<(2*__integer_pack(N))...>(); // { dg-bogus "sorry" "" { xfail *-*-* } }
+                                  ^
+          detected during instantiation of "int h<N>() [with N=3]" at line 12
+
+3 errors detected in the compilation of "Test_name.c".

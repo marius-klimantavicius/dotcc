@@ -1,0 +1,23 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 7: error: argument of type "int *" is incompatible with template parameter of type "unsigned int"
+  using type = __type_pack_element<&p, int>;      // { dg-error "not an integral constant" }
+                                   ^
+
+"Test_name.c", line 8: error: value exceeds number of template arguments
+  using type = __type_pack_element<1, int>;       // { dg-error "out of range" }
+                                   ^
+
+"Test_name.c", line 9: error: value exceeds number of template arguments
+  using type = __type_pack_element<2, int, char>; // { dg-error "out of range" }
+                                   ^
+
+"Test_name.c", line 10: error: invalid narrowing conversion from "int" to "unsigned int": constant value does not fit in destination type
+  using type = __type_pack_element<-1, int>;      // { dg-error "negative" }
+                                   ^
+
+"Test_name.c", line 13: error: value exceeds number of template arguments
+  using __type_pack_element_t = __type_pack_element<N, Ts...>;
+                                                    ^
+          detected during instantiation of type "__type_pack_element_t<3, int, char, long>" at line 16
+
+5 errors detected in the compilation of "Test_name.c".

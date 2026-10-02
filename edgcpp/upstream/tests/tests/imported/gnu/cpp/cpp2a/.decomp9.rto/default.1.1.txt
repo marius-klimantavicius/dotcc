@@ -1,0 +1,74 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 13: warning: structured bindings are a C++17 feature
+    auto [i, j] = a;		// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+         ^
+
+"Test_name.c", line 14: warning: structured bindings are a C++17 feature
+    auto [k, l] = b;		// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+         ^
+
+"Test_name.c", line 20: warning: structured bindings are a C++17 feature
+    static auto [m, n] = a;	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+                ^
+
+"Test_name.c", line 20: error: a structured binding cannot declare an explicit storage class
+    static auto [m, n] = a;	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+    ^
+
+"Test_name.c", line 22: warning: structured bindings are a C++17 feature
+    static auto [o, p] = b;	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+                ^
+
+"Test_name.c", line 22: error: a structured binding cannot declare an explicit storage class
+    static auto [o, p] = b;	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+    ^
+
+"Test_name.c", line 26: warning: structured bindings are a C++17 feature
+      static auto [m, n] = a;	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+                  ^
+
+"Test_name.c", line 26: error: a structured binding cannot declare an explicit storage class
+      static auto [m, n] = a;	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+      ^
+
+"Test_name.c", line 32: warning: structured bindings are a C++17 feature
+      static auto [m, n] = a;	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+                  ^
+
+"Test_name.c", line 32: error: a structured binding cannot declare an explicit storage class
+      static auto [m, n] = a;	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+      ^
+
+"Test_name.c", line 45: warning: structured bindings are a C++17 feature
+    static auto [m, n] = a;	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+                ^
+
+"Test_name.c", line 45: error: a structured binding cannot declare an explicit storage class
+    static auto [m, n] = a;	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+    ^
+
+"Test_name.c", line 47: warning: structured bindings are a C++17 feature
+    static auto [o, p] = b;	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+                ^
+
+"Test_name.c", line 47: error: a structured binding cannot declare an explicit storage class
+    static auto [o, p] = b;	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+    ^
+
+"Test_name.c", line 51: warning: structured bindings are a C++17 feature
+      static auto [m, n] = a;	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+                  ^
+
+"Test_name.c", line 51: error: a structured binding cannot declare an explicit storage class
+      static auto [m, n] = a;	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+      ^
+
+"Test_name.c", line 56: warning: structured bindings are a C++17 feature
+      static auto [m, n] = a;	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+                  ^
+
+"Test_name.c", line 56: error: a structured binding cannot declare an explicit storage class
+      static auto [m, n] = a;	// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+      ^
+
+8 errors detected in the compilation of "Test_name.c".

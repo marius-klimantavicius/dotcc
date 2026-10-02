@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 16: error: invalid argument to attribute "mode"
+        typedef float __decfloat32 __attribute__ ((mode (SD)));
+                                                         ^
+
+"Test_name.c", line 34: warning: missing return statement at end of non-void function "__gnu_cxx::__normal_iterator<_Iterator, _Container>::base"
+      const _Iterator & base () const {}
+                                       ^
+          detected during:
+            instantiation of "bool __gnu_cxx::operator==(const __gnu_cxx::__normal_iterator<_IteratorL, _Container> &, const __gnu_cxx::__normal_iterator<_IteratorR, _Container> &) [with _IteratorL=const std::decimal::decimal32 *, _IteratorR=const std::decimal::decimal32 *, _Container=std::vector<std::decimal::decimal32, std::allocator<std::decimal::decimal32>>]" at line 97
+            instantiation of "bool std::vector<_Tp, _Alloc>::empty() const [with _Tp=std::decimal::decimal32, _Alloc=std::allocator<std::decimal::decimal32>]" at line 118
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,46 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 7: error: expected an identifier
+  asm const ("");    /* { dg-error {expected '\(' before 'const'} } */
+             ^
+
+"Test_name.c", line 7: error: "asm" must be used with a function definition
+  asm const ("");    /* { dg-error {expected '\(' before 'const'} } */
+             ^
+
+"Test_name.c", line 9: error: "restrict" is not allowed
+  asm restrict (""); /* { dg-error {expected '\(' before 'restrict'} } */
+      ^
+
+"Test_name.c", line 9: error: expected an identifier
+  asm restrict (""); /* { dg-error {expected '\(' before 'restrict'} } */
+                ^
+
+"Test_name.c", line 9: error: "asm" must be used with a function definition
+  asm restrict (""); /* { dg-error {expected '\(' before 'restrict'} } */
+                ^
+
+"Test_name.c", line 10: error: expected an identifier
+  asm inline ("");   /* { dg-error {expected '\(' before 'inline'} } */
+              ^
+
+"Test_name.c", line 10: error: "asm" must be used with a function definition
+  asm inline ("");   /* { dg-error {expected '\(' before 'inline'} } */
+              ^
+
+"Test_name.c", line 10: warning: inline specifier allowed on function declarations only
+  asm inline ("");   /* { dg-error {expected '\(' before 'inline'} } */
+      ^
+
+"Test_name.c", line 11: error: expected an identifier
+  asm goto ("");     /* { dg-error {expected '\(' before 'goto'} } */
+      ^
+
+"Test_name.c", line 11: error: expected a type specifier
+  asm goto ("");     /* { dg-error {expected '\(' before 'goto'} } */
+            ^
+
+"Test_name.c", line 11: error: "asm" must be used with a function definition
+  asm goto ("");     /* { dg-error {expected '\(' before 'goto'} } */
+               ^
+
+10 errors detected in the compilation of "Test_name.c".

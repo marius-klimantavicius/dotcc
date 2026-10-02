@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c++17 Test_name.c
+"Test_name.c", line 5: error: identifier "constinit" is undefined
+    constinit int i = 42;
+    ^
+
+"Test_name.c", line 5: error: expected a ";"
+    constinit int i = 42;
+              ^
+
+2 errors detected in the compilation of "Test_name.c".

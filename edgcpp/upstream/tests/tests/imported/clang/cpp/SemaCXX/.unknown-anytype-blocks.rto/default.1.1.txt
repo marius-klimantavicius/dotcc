@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 6: error: this declaration has no storage class or type specifier
+    __unknown_anytype (^foo)();
+    ^
+
+"Test_name.c", line 6: error: expected an expression
+    __unknown_anytype (^foo)();
+                       ^
+
+"Test_name.c", line 6: error: expected a ";"
+    __unknown_anytype (^foo)();
+                            ^
+
+"Test_name.c", line 7: error: this declaration has no storage class or type specifier
+    __unknown_anytype (^bar)();
+    ^
+
+"Test_name.c", line 7: error: variable "test1::__unknown_anytype" has already been defined (previous definition at line 6)
+    __unknown_anytype (^bar)();
+    ^
+
+"Test_name.c", line 7: error: expected an expression
+    __unknown_anytype (^bar)();
+                       ^
+
+"Test_name.c", line 7: error: expected a ";"
+    __unknown_anytype (^bar)();
+                            ^
+
+"Test_name.c", line 9: error: identifier "foo" is undefined
+      auto ret1 = (int)foo();
+                       ^
+
+"Test_name.c", line 10: error: identifier "bar" is undefined
+      auto ret2 = bar(); // expected-error {{'bar' has unknown return type; cast the call to its declared return type}}
+                  ^
+
+9 errors detected in the compilation of "Test_name.c".

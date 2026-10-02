@@ -1,0 +1,106 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 8: error: identifier "_Decimal32" is undefined
+  struct s { _Decimal32 d32; } sv;
+             ^
+
+"Test_name.c", line 9: error: identifier "_Decimal32" is undefined
+  union u { _Decimal32 d32; } uv;
+            ^
+
+"Test_name.c", line 11: error: identifier "_Decimal32" is undefined
+  _Decimal32 d32;
+  ^
+
+"Test_name.c", line 12: error: identifier "_Decimal64" is undefined
+  _Decimal64 d64;
+  ^
+
+"Test_name.c", line 13: error: identifier "_Decimal128" is undefined
+  _Decimal128 d128;
+  ^
+
+"Test_name.c", line 15: error: identifier "_Decimal32" is undefined
+  _Decimal32* d32p;
+  ^
+
+"Test_name.c", line 16: error: identifier "_Decimal64" is undefined
+  _Decimal64* d64p;
+  ^
+
+"Test_name.c", line 17: error: identifier "_Decimal128" is undefined
+  _Decimal128* d128p;
+  ^
+
+"Test_name.c", line 22: error: identifier "_Decimal32" is undefined
+    (_Decimal32 []) d32p; /* { dg-error "cast specifies array type" } */
+     ^
+
+"Test_name.c", line 22: error: expected an expression
+    (_Decimal32 []) d32p; /* { dg-error "cast specifies array type" } */
+                 ^
+
+"Test_name.c", line 22: error: expected a ";"
+    (_Decimal32 []) d32p; /* { dg-error "cast specifies array type" } */
+                    ^
+
+"Test_name.c", line 23: error: expected a ";"
+    (_Decimal32 ()) d32p; /* { dg-error "cast specifies function type" } */
+                    ^
+
+"Test_name.c", line 24: error: identifier "_Decimal64" is undefined
+    (_Decimal64 []) d64p; /* { dg-error "cast specifies array type" } */
+     ^
+
+"Test_name.c", line 24: error: expected an expression
+    (_Decimal64 []) d64p; /* { dg-error "cast specifies array type" } */
+                 ^
+
+"Test_name.c", line 24: error: expected a ";"
+    (_Decimal64 []) d64p; /* { dg-error "cast specifies array type" } */
+                    ^
+
+"Test_name.c", line 25: error: expected a ";"
+    (_Decimal64 ()) d64p; /* { dg-error "cast specifies function type" } */
+                    ^
+
+"Test_name.c", line 26: error: identifier "_Decimal128" is undefined
+    (_Decimal128 []) d128p; /* { dg-error "cast specifies array type" } */
+     ^
+
+"Test_name.c", line 26: error: expected an expression
+    (_Decimal128 []) d128p; /* { dg-error "cast specifies array type" } */
+                  ^
+
+"Test_name.c", line 26: error: expected a ";"
+    (_Decimal128 []) d128p; /* { dg-error "cast specifies array type" } */
+                     ^
+
+"Test_name.c", line 27: error: expected a ";"
+    (_Decimal128 ()) d128p; /* { dg-error "cast specifies function type" } */
+                     ^
+
+"Test_name.c", line 36: error: expected a ";"
+    (_Decimal32) sv; /* { dg-error "aggregate value used where a floating-point was expected" } */
+                 ^
+
+"Test_name.c", line 37: error: expected a ";"
+    (_Decimal32) uv; /* { dg-error "aggregate value used where a floating-point was expected" } */
+                 ^
+
+"Test_name.c", line 38: error: expected a ";"
+    (_Decimal64) sv; /* { dg-error "aggregate value used where a floating-point was expected" } */
+                 ^
+
+"Test_name.c", line 39: error: expected a ";"
+    (_Decimal64) uv; /* { dg-error "aggregate value used where a floating-point was expected" } */
+                 ^
+
+"Test_name.c", line 40: error: expected a ";"
+    (_Decimal128) sv; /* { dg-error "aggregate value used where a floating-point was expected" } */
+                  ^
+
+"Test_name.c", line 41: error: expected a ";"
+    (_Decimal128) uv; /* { dg-error "aggregate value used where a floating-point was expected" } */
+                  ^
+
+26 errors detected in the compilation of "Test_name.c".

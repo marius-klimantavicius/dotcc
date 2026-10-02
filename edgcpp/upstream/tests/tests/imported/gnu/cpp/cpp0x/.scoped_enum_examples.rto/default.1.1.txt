@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 6: error: a value of type "Col" cannot be used to initialize an entity of type "int"
+  int x = Col::red; // { dg-error "cannot convert" }
+          ^
+
+"Test_name.c", line 11: error: expression must have bool type (or be convertible to bool)
+    if (y) { } // { dg-error "could not convert" }
+        ^
+
+"Test_name.c", line 17: warning: variable "d" was set but never used
+    direction d;
+              ^
+
+"Test_name.c", line 26: error: identifier "high" is undefined
+    a = high;                     // { dg-error "not declared in this scope" }
+        ^
+
+"Test_name.c", line 25: warning: variable "a" was set but never used
+    altitude a;
+             ^
+
+3 errors detected in the compilation of "Test_name.c".

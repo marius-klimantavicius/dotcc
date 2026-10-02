@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./analyzer/out-of-bounds-write-struct-arr.c", line 14: warning: subscript out of range
+    arr[-100].x = x;
+       ^
+
+"./analyzer/out-of-bounds-write-struct-arr.c", line 21: warning: subscript out of range
+    arr[-2].x = x;
+       ^
+
+"./analyzer/out-of-bounds-write-struct-arr.c", line 28: warning: subscript out of range
+    arr[-1].x = x;
+       ^
+
+"./analyzer/out-of-bounds-write-struct-arr.c", line 45: warning: subscript out of range
+    arr[10].x = x;
+    ^
+
+"./analyzer/out-of-bounds-write-struct-arr.c", line 53: warning: subscript out of range
+    arr[11].x = x;
+       ^
+
+"./analyzer/out-of-bounds-write-struct-arr.c", line 61: warning: subscript out of range
+    arr[100].x = x;
+       ^
+

@@ -1,0 +1,36 @@
+fe_only -DTEST_NUMBER=1 --c++11 --gn 130200 Test_name.c
+"Test_name.c", line 38: error: more than one instance of overloaded function "Dependent<I>::f2 [with I=0]" matches the argument list:
+            function template "void Dependent<I>::f2<B,<unnamed>>() [with I=0]" (declared at line 22)
+            function template "void Dependent<I>::f2<B,<unnamed>>() [with I=0]" (declared at line 25)
+    d0.f2<false>();               // ambiguous
+       ^
+
+"Test_name.c", line 39: error: more than one instance of overloaded function "Dependent<I>::s2 [with I=0]" matches the argument list:
+            function template "void Dependent<I>::s2<B,<unnamed>>() [with I=0]" (declared at line 28)
+            function template "void Dependent<I>::s2<B,<unnamed>>() [with I=0]" (declared at line 31)
+    d0.s2<false>();               // ambiguous
+       ^
+
+"Test_name.c", line 68: error: more than one instance of overloaded function "FnType<I>::f2 [with I=0]" matches the argument list:
+            function template "C<<expression>> FnType<I>::f2<B>() [with I=0]" (declared at line 47)
+            function template "C<<expression>> FnType<I>::f2<B>() [with I=0]" (declared at line 50)
+    ft0.f2<false>();              // ambiguous
+        ^
+
+"Test_name.c", line 69: error: more than one instance of overloaded function "FnType<I>::f4 [with I=0]" matches the argument list:
+            function template "void FnType<I>::f4<B>(C<<expression>>::type) [with I=0]" (declared at line 53)
+            function template "void FnType<I>::f4<B>(C<<expression>>::type) [with I=0]" (declared at line 56)
+            argument types are: (int)
+            object type is: FnType<0>
+    ft0.f4<false>(0);             // ambiguous
+        ^
+
+"Test_name.c", line 70: error: more than one instance of overloaded function "FnType<I>::f5 [with I=0]" matches the argument list:
+            function template "void FnType<I>::f5<B>(decltype(C<<expression>>::v)) [with I=0]" (declared at line 59)
+            function template "void FnType<I>::f5<B>(decltype(C<<expression>>::v)) [with I=0]" (declared at line 62)
+            argument types are: (int)
+            object type is: FnType<0>
+    ft0.f5<false>(0);             // ambiguous
+        ^
+
+5 errors detected in the compilation of "Test_name.c".

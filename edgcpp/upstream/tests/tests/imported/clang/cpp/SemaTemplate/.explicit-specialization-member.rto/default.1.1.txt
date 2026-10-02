@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 --exceptions Test_name.c
+"Test_name.c", line 17: error: not a class or struct name
+    class numpunct : public locale::facet // expected-error{{use of undeclared identifier 'locale'}} \
+                            ^
+
+"Test_name.c", line 17: error: class or struct definition is missing
+    class numpunct : public locale::facet // expected-error{{use of undeclared identifier 'locale'}} \
+                                  ^
+
+"Test_name.c", line 21: warning: parsing restarts here after previous syntax error
+    };
+     ^
+
+"Test_name.c", line 22: error: member function "PR6161::numpunct<_CharT>::~numpunct [with _CharT=char]" may not be redeclared outside its class
+    numpunct<char>::~numpunct();
+                    ^
+
+"Test_name.c", line 31: error: explicit specialization of class "PR12331::S<T>::U [with T=int]" must precede its first use (at line 28)
+    template<> struct S<int>::U { static const int n = sizeof(int); }; // expected-error {{explicit specialization of 'U' after instantiation}}
+                      ^
+
+"Test_name.c", line 47: error: declaration is incompatible with function template "void PR18246::Baz<T>::bar<N>()" (declared at line 43)
+    void Baz<T>::bar<0>() { // expected-error {{cannot specialize a member of an unspecialized template}}
+                 ^
+
+"Test_name.c", line 56: error: declaration is incompatible with function template "void PR19340::Helper<T>::func<N>(const T *)" (declared at line 53)
+  template<typename T> void Helper<T>::func<2>() {} // expected-error {{cannot specialize a member}}
+                                       ^
+
+"Test_name.c", line 64: error: declaration is incompatible with "int SpecLoc::A<T>::n [with T=int]" (declared at line 61)
+    template<> float A<int>::n; // expected-error {{different type}}
+                             ^
+
+7 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 12: warning: unknown attribute "transaction_wrap"
+  void g1(void) W(f1);
+                ^
+
+"Test_name.c", line 13: warning: unknown attribute "transaction_wrap"
+  void g2(void) W(f2);	/* { dg-error "is not compatible" } */
+                ^
+
+"Test_name.c", line 14: warning: unknown attribute "transaction_wrap"
+  void g3(void) W(i3);	/* { dg-error "is not a function" } */
+                ^
+
+"Test_name.c", line 15: warning: unknown attribute "transaction_wrap"
+  void g4(void) W(f4);	/* { dg-error "not declared in this scope\|not an identifier" } */
+                ^
+
+"Test_name.c", line 16: warning: unknown attribute "transaction_wrap"
+  void g5(void) W(1);	/* { dg-error "not an identifier" } */
+                ^
+
+"Test_name.c", line 17: warning: unknown attribute "transaction_wrap"
+  void g6(void) W("f1");	/* { dg-error "not an identifier" } */
+                ^
+
+"Test_name.c", line 18: warning: unknown attribute "transaction_wrap"
+  void g7(void) W(f7);	/* { dg-error "is not compatible" } */
+                ^
+

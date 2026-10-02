@@ -1,0 +1,203 @@
+fe_only -DTEST_NUMBER=5 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 --ms_compatibility --exceptions --exceptions Test_name.c
+"Test_name.c", line 14: error: invalid combination of type specifiers
+  typedef unsigned short char16_t;
+  ^
+
+"Test_name.c", line 15: error: invalid combination of type specifiers
+  typedef unsigned int char32_t;
+                       ^
+
+"Test_name.c", line 20: error: expected an identifier
+  struct _Atomic {
+         ^
+
+"Test_name.c", line 21: error: expected a type specifier
+    _Atomic() {}
+            ^
+
+"Test_name.c", line 21: error: expected an identifier
+    _Atomic() {}
+              ^
+
+"Test_name.c", line 21: error: expected a ";"
+    _Atomic() {}
+              ^
+
+"Test_name.c", line 25: error: expected an identifier
+  struct atomic : _Atomic<T> {
+                  ^
+
+"Test_name.c", line 26: error: expected an identifier
+    typedef _Atomic<T> TheBase;
+                   ^
+
+"Test_name.c", line 26: error: explicit type is missing ("int" assumed)
+    typedef _Atomic<T> TheBase;
+                   ^
+
+"Test_name.c", line 27: error: identifier "TheBase" is undefined
+    TheBase field;
+    ^
+
+"Test_name.c", line 58: error: identifier "type_info" is undefined
+    void f(const type_info &a);
+                 ^
+
+"Test_name.c", line 68: warning: transfer of control bypasses initialization of:
+            variable "c" (declared at line 69)
+        goto foo; // expected-warning {{jump from this goto statement to its label is a Microsoft extension}}
+        ^
+
+"Test_name.c", line 79: warning: transfer of control bypasses initialization of:
+            variable "y" (declared at line 80)
+    goto end; // expected-warning{{jump from this goto statement to its label is a Microsoft extension}}
+    ^
+
+"Test_name.c", line 88: warning: variable "x" was set but never used
+        int x = 56; // expected-note {{jump bypasses variable initialization}}
+            ^
+
+"Test_name.c", line 86: warning: transfer of control bypasses initialization of:
+            variable "x" (declared at line 88)
+      switch (c) {
+      ^
+
+"Test_name.c", line 97: warning: statement is unreachable
+    try { // expected-note {{jump bypasses initialization of try block}}
+    ^
+
+"Test_name.c", line 96: error: transfer of control into a try block
+    goto l2; // expected-error {{cannot jump}}
+    ^
+
+"Test_name.c", line 106: warning: dynamic initialization in unreachable code
+    int a = 3; // expected-note {{jump bypasses variable initialization}}
+        ^
+
+"Test_name.c", line 104: warning: variable "ps" was declared but never referenced
+    static void *ps[] = { &&a0 };
+                 ^
+
+"Test_name.c", line 106: warning: variable "a" was declared but never referenced
+    int a = 3; // expected-note {{jump bypasses variable initialization}}
+        ^
+
+"Test_name.c", line 127: error: function "PR11826::pair::pair(const PR11826::pair &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      pair p = p0;
+               ^
+
+"Test_name.c", line 147: error: function "PR11826_for_symmetry::pair::operator=(const PR11826_for_symmetry::pair &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      p = p0;
+        ^
+
+"Test_name.c", line 179: error: class "using_tag_redeclaration::S" cannot be defined in the current scope
+      struct S {}; // expected-note {{previous definition is here}}
+             ^
+
+"Test_name.c", line 182: error: incomplete type "using_tag_redeclaration::S" is not allowed
+      N::S s1;
+           ^
+
+"Test_name.c", line 183: error: incomplete type "using_tag_redeclaration::S" is not allowed
+      S s2;
+        ^
+
+"Test_name.c", line 187: error: incomplete type "S" is not allowed
+      S s3; // expected-error {{variable has incomplete type 'S'}}
+        ^
+
+"Test_name.c", line 191: error: class "using_tag_redeclaration::S" cannot be defined in the current scope
+      struct S {}; // expected-error {{redefinition of 'S'}}
+             ^
+
+"Test_name.c", line 242: error: forward declaration of enum type is nonstandard
+  enum ENUM; // expected-warning {{forward references to 'enum' types are a Microsoft extension}}
+       ^
+
+"Test_name.c", line 245: error: forward declaration of enum type is nonstandard
+  enum ENUM1* var3 = 0;// expected-warning {{forward references to 'enum' types are a Microsoft extension}}
+       ^
+
+"Test_name.c", line 253: warning: integer conversion resulted in truncation
+  	ENUM2_c = 0x100000000 // expected-warning {{enumerator value is not representable in the underlying type 'int'}}
+  	          ^
+
+"Test_name.c", line 257: error: forward declaration of enum type is nonstandard
+    enum E *p; // expected-warning {{forward references to 'enum' types are a Microsoft extension}}
+         ^
+
+"Test_name.c", line 288: error: invalid type conversion
+    Bar g_bar = { (Foo::MemberFcnPtr)Foo::ZERO };
+                  ^
+
+"Test_name.c", line 295: error: a value of type "int" cannot be used to initialize an entity of type "int *"
+    int *p1 = (int)k; // expected-error {{cannot initialize}}
+              ^
+
+"Test_name.c", line 299: error: a value of type "int" cannot be used to initialize an entity of type "int *"
+    int *p2 = (int)r; // expected-error {{cannot initialize}}
+              ^
+
+"Test_name.c", line 302: error: a value of type "int" cannot be used to initialize an entity of type "int *"
+    int *p = f(); // expected-error {{cannot initialize}}
+             ^
+
+"Test_name.c", line 311: error: more than one instance of overloaded function "signed_hex_i64::f" matches the argument list:
+            function "signed_hex_i64::f(long long)" (declared at line 306)
+            function "signed_hex_i64::f(int)" (declared at line 307)
+            argument types are: (unsigned long long)
+    f(0xffffffffffffffffLL);
+    ^
+
+"Test_name.c", line 312: warning: a user-provided literal suffix must begin with "_"
+    f(0xffffffffffffffffi64);
+      ^
+
+"Test_name.c", line 312: warning: integer constant is too large
+    f(0xffffffffffffffffi64);
+      ^
+
+"Test_name.c", line 326: warning: variable "a1" was declared but never referenced
+    void *a1 = function_prototype;  // expected-warning {{implicit conversion between pointer-to-function and pointer-to-object is a Microsoft extension}}
+          ^
+
+"Test_name.c", line 327: warning: variable "a2" was declared but never referenced
+    void *a2 = &function_prototype; // expected-warning {{implicit conversion between pointer-to-function and pointer-to-object is a Microsoft extension}}
+          ^
+
+"Test_name.c", line 328: warning: variable "a3" was declared but never referenced
+    void *a3 = function_ptr;        // expected-warning {{implicit conversion between pointer-to-function and pointer-to-object is a Microsoft extension}}
+          ^
+
+"Test_name.c", line 355: warning: exception specification is incompatible with that of previous function "microsoft_exception_spec::foo" (declared at line 354)
+  void foo() throw(); // expected-warning {{exception specification in declaration does not match previous declaration}}
+             ^
+
+"Test_name.c", line 387: warning: allowing all exceptions is incompatible with previous function "microsoft_exception_spec::f4" (declared at line 386)
+  void f4() {}       // expected-warning {{'f4' is missing exception specification 'throw()'}}
+            ^
+
+"Test_name.c", line 390: warning: allowing all exceptions is incompatible with previous function "microsoft_exception_spec::f5" (declared at line 389)
+  void f5() {}
+            ^
+
+"Test_name.c", line 393: warning: allowing all exceptions is incompatible with previous function "microsoft_exception_spec::f6" (declared at line 392)
+  void f6() {}        // expected-error {{'f6' is missing exception specification 'noexcept'}}
+            ^
+
+"Test_name.c", line 234: warning: variable "var" was declared but never referenced
+      const T::Type var = 2; // expected-warning {{missing 'typename'}}
+                    ^
+          detected during instantiation of "void MissingTypename::function_missing_typename<T>(T::Type) [with T=MissingTypename::D]" at line 237
+
+"Test_name.c", line 269: error: non-scalar type "void" cannot be used in a pseudo-destructor call
+      _Ptr->~_Ty();  // expected-warning {{pseudo-destructors on type void are a Microsoft extension}}
+      ^
+          detected during instantiation of "void PR11791::del(_Ty *) [with _Ty=void]" at line 274
+
+"Test_name.c", line 290: error: return value type does not match the function type
+    template<int N> int *get_n() { return N; }   // expected-warning {{expression which evaluates to zero treated as a null pointer constant}}
+                                          ^
+          detected during instantiation of "int *IntToNullPtrConv::get_n<N>() [with N=0]" at line 291
+
+29 errors detected in the compilation of "Test_name.c".

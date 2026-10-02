@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 8: error: invalid template parameter list for std::initializer_list (it should be one ordinary type parameter with no default)
+  class initializer_list;
+        ^
+
+"Test_name.c", line 14: error: an #include <initializer_list> is needed prior to a use of std::initializer_list, including an implicit use
+  auto x = {1}; // expected-note {{in instantiation of default argument for 'initializer_list<int>' required here}}
+           ^
+
+"Test_name.c", line 14: error: cannot deduce "auto" type
+  auto x = {1}; // expected-note {{in instantiation of default argument for 'initializer_list<int>' required here}}
+  ^
+
+"Test_name.c", line 17: error: an #include <initializer_list> is needed prior to a use of std::initializer_list, including an implicit use
+  	for(int x : {1, 2}); // expected-note {{in instantiation of default argument for 'initializer_list<int>' required here}}
+  	            ^
+
+"Test_name.c", line 17: error: cannot deduce type of range in range-based "for" statement
+  	for(int x : {1, 2}); // expected-note {{in instantiation of default argument for 'initializer_list<int>' required here}}
+  	            ^
+
+5 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"./gnu99-const-expr-2.c", line 21: warning: integer operation result is out of range
+                                           + 1), b, c);
+                                           ^
+
+"./gnu99-const-expr-2.c", line 23: error: division by zero
+    a = __builtin_choose_expr (1 / 0, 0, 0);
+                                 ^
+
+1 error detected in the compilation of "Test_name.c".

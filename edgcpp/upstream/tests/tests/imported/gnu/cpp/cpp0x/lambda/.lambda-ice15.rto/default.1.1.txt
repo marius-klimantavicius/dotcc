@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: error: nonstandard form for taking the address of a member function
+      [=] { return foo; };  // { dg-error "cannot convert" }
+                   ^
+
+"Test_name.c", line 15: error: cannot determine which instance of overloaded function "A::bar" is intended
+      [=] { return bar; };  // { dg-error "unable to deduce" }
+                   ^
+
+2 errors detected in the compilation of "Test_name.c".

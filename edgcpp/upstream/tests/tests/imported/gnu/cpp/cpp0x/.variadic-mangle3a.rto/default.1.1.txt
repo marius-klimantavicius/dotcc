@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 13: error: no instance of function template "A::f" matches the argument list
+            argument types are: (int [6], int, int, int, int)
+            object type is: A
+  void g(A a) { int arr[6]; a.f<int, int>(arr, 1, 2, 3, 4); }
+                              ^
+"Test_name.c", line 11: note: function template "A::f" does not match because argument #1 does not match parameter
+        void f(N<A..., B, C...> &, B, C...);
+             ^
+
+1 error detected in the compilation of "Test_name.c".

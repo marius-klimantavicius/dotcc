@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 8: warning: attribute "__cold__" does not apply here
+  int var1 __attribute__((__cold__)); // expected-warning{{'__cold__' attribute only applies to functions}}
+                          ^
+
+"Test_name.c", line 9: warning: attribute "__hot__" does not apply here
+  int var2 __attribute__((__hot__)); // expected-warning{{'__hot__' attribute only applies to functions}}
+                          ^
+

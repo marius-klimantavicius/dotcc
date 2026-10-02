@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 4: error: expected an identifier
+  #pragma redefine_extname		/* { dg-warning "malformed" } */
+                          		                                ^
+
+"Test_name.c", line 5: error: expected an identifier
+  #pragma redefine_extname foo		/* { dg-warning "malformed" } */
+                              		                                ^
+
+"Test_name.c", line 6: error: expected an identifier
+  #pragma redefine_extname foo 1		/* { dg-warning "malformed" } */
+                               ^
+
+"Test_name.c", line 7: error: extra text after expected end of preprocessing directive
+  #pragma redefine_extname foo bar 2	/* { dg-warning "junk" } */
+                                   ^
+
+4 errors detected in the compilation of "Test_name.c".

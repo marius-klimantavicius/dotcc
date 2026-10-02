@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --g++ Test_name.c
+"Test_name.c", line 19: error: invalid argument to attribute "__init_priority__"
+  	struct S x __attribute__((__init_priority__(65536))) = f();
+  	                                            ^
+
+"Test_name.c", line 21: warning: requested initialization priority is reserved for internal use
+  struct S y __attribute__((__init_priority__(1))) = f();
+                            ^
+
+"Test_name.c", line 29: warning: attribute "__init_priority__" does not apply to local variables
+    struct S lx __attribute__((__init_priority__(102))) = f();
+                               ^
+
+"Test_name.c", line 30: warning: attribute "__init_priority__" does not apply to local variables
+    static struct S sx __attribute__((__init_priority__(102))) = f();
+                                      ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,85 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 21: warning: unrecognized #pragma
+  #pragma acc parallel copyin (a[0:N]) copyout (b[0:N])
+          ^
+
+"Test_name.c", line 31: warning: unrecognized #pragma
+  #pragma acc cache /* { dg-error "expected '\\\(' before end of line" } */
+          ^
+
+"Test_name.c", line 32: warning: unrecognized #pragma
+  #pragma acc cache a[0:N] /* { dg-error "expected '\\\(' before 'a'" } */
+          ^
+
+"Test_name.c", line 34: warning: unrecognized #pragma
+  #pragma acc cache (a) /* { dg-error "expected '\\\['" } */
+          ^
+
+"Test_name.c", line 35: warning: unrecognized #pragma
+  #pragma acc cache ( /* { dg-error "expected (identifier|unqualified-id) before end of line" } */
+          ^
+
+"Test_name.c", line 36: warning: unrecognized #pragma
+  #pragma acc cache () /* { dg-error "expected (identifier|unqualified-id) before '\\\)' token" } */
+          ^
+
+"Test_name.c", line 37: warning: unrecognized #pragma
+  #pragma acc cache (,) /* { dg-error "expected (identifier|unqualified-id) before '(,|\\\))' token" } */
+          ^
+
+"Test_name.c", line 38: warning: unrecognized #pragma
+  #pragma acc cache (a[0:N] /* { dg-error "expected '\\\)' before end of line" } */
+          ^
+
+"Test_name.c", line 39: warning: unrecognized #pragma
+  #pragma acc cache (a[0:N],) /* { dg-error "expected (identifier|unqualified-id) before '(,|\\\))' token" "" { xfail c } } */
+          ^
+
+"Test_name.c", line 40: warning: unrecognized #pragma
+  #pragma acc cache (a[0:N]) copyin (a[0:N]) /* { dg-error "expected end of line before 'copyin'" } */
+          ^
+
+"Test_name.c", line 41: warning: unrecognized #pragma
+  #pragma acc cache () /* { dg-error "expected (identifier|unqualified-id) before '\\\)' token" } */
+          ^
+
+"Test_name.c", line 42: warning: unrecognized #pragma
+  #pragma acc cache (a[0:N] b[0:N]) /* { dg-error "expected '\\\)' before 'b'" } */
+          ^
+
+"Test_name.c", line 43: warning: unrecognized #pragma
+  #pragma acc cache (a[0:N] b[0:N}) /* { dg-error "expected '\\\)' before 'b'" } */
+          ^
+
+"Test_name.c", line 45: warning: unrecognized #pragma
+  #pragma acc cache (a[0:N] /* { dg-error "expected '\\\)' before end of line" } */
+          ^
+
+"Test_name.c", line 46: warning: unrecognized #pragma
+  #pragma acc cache (a[0:N]) ( /* { dg-error "expected end of line before '\\(' token" } */
+          ^
+
+"Test_name.c", line 47: warning: unrecognized #pragma
+  #pragma acc cache (a[0:N]) ii /* { dg-error "expected end of line before 'ii'" } */
+          ^
+
+"Test_name.c", line 48: warning: unrecognized #pragma
+  #pragma acc cache (a[0:N] ii) /* { dg-error "expected '\\)' before 'ii'" } */
+          ^
+
+"Test_name.c", line 65: warning: expression has no effect
+    &test<0>;
+    ^
+
+"Test_name.c", line 27: warning: variable "idx" was declared but never referenced
+          const int idx = ii;
+                    ^
+
+"Test_name.c", line 29: warning: variable "len" was declared but never referenced
+          const int len = n;
+                    ^
+
+"Test_name.c", line 63: warning: function "instantiate" was declared but never referenced
+  instantiate ()
+  ^
+

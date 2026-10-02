@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 18: error: no instance of function template "f" matches the argument list
+            argument types are: (int, non_addable)
+    using U = decltype(f(42, non_addable{})); // { dg-error "" }
+                       ^
+"Test_name.c", line 10: note: substituting "<int, non_addable>" for function template "f" failed constraints
+  void f(T t, U u) { t + u; }
+       ^
+"Test_name.c", line 9: note: concept "C" not satisfied for "<int, non_addable>"
+    requires C<T,U>
+             ^
+"Test_name.c", line 6: note: atomic constraint evaluates to false
+  concept C = requires (T t, U u) { t + u; }; // { dg-message "in requirements" }
+              ^
+
+1 error detected in the compilation of "Test_name.c".

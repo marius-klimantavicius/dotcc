@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 11: error: "c", declared in condition, may not be redeclared in this scope
+        int c = 4; // { dg-error "redeclaration" }
+            ^
+
+"Test_name.c", line 11: warning: variable "c" was declared but never referenced
+        int c = 4; // { dg-error "redeclaration" }
+            ^
+
+"Test_name.c", line 9: warning: variable "c" was declared but never referenced
+      int c;
+          ^
+
+"Test_name.c", line 15: error: "c", declared in condition, may not be redeclared in this scope
+      int c = 4; // { dg-error "redeclaration" }
+          ^
+
+"Test_name.c", line 15: warning: variable "c" was declared but never referenced
+      int c = 4; // { dg-error "redeclaration" }
+          ^
+
+"Test_name.c", line 17: error: "c" has already been declared in the current scope
+    if (int c = 2; int c = 6) // { dg-error "redeclaration" }
+                       ^
+
+"Test_name.c", line 18: error: "c", declared in condition, may not be redeclared in this scope
+      int c = 4; // { dg-error "redeclaration" }
+          ^
+
+"Test_name.c", line 18: warning: variable "c" was declared but never referenced
+      int c = 4; // { dg-error "redeclaration" }
+          ^
+
+"Test_name.c", line 17: warning: variable "c" was declared but never referenced
+    if (int c = 2; int c = 6) // { dg-error "redeclaration" }
+            ^
+
+4 errors detected in the compilation of "Test_name.c".

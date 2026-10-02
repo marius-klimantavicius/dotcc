@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=1 --sun --sun_linker_scope Test_name.c

@@ -1,0 +1,69 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --cfront_3.0 Test_name.c
+"Test_name.c", line 6: warning: transfer of control bypasses initialization of:
+            variable "j" (declared at line 11)
+      case 1:  goto L1;     // error: jump over j;             (cfront j)
+               ^
+
+"Test_name.c", line 7: warning: transfer of control bypasses initialization of:
+            variable "j" (declared at line 11)
+            variable "k" (declared at line 26)
+      case 2:  goto L2;     // error: jump over j,k;           (cfront k)
+               ^
+
+"Test_name.c", line 14: warning: transfer of control bypasses initialization of:
+            variable "k" (declared at line 26)
+      case 2:  goto L2;     // error: jump over k;             (cfront k)
+               ^
+
+"Test_name.c", line 22: warning: transfer of control bypasses initialization of:
+            variable "k" (declared at line 26)
+        case 2:  goto L2;   // error: jump over k;             (cfront k)
+                 ^
+
+"Test_name.c", line 26: warning: variable "k" was declared but never referenced
+      int k = 0;
+          ^
+
+"Test_name.c", line 34: warning: variable "l" was declared but never referenced
+      int l = 0;
+          ^
+
+"Test_name.c", line 8: warning: transfer of control bypasses initialization of:
+            variable "j" (declared at line 11)
+      case 3:  goto L3;     // error: jump over j;             (cfront j)
+               ^
+
+"Test_name.c", line 9: warning: transfer of control bypasses initialization of:
+            variable "j" (declared at line 11)
+            variable "m" (declared at line 37)
+      case 4:  goto L4;     // error: jump over j,m;           (cfront m)
+               ^
+
+"Test_name.c", line 16: warning: transfer of control bypasses initialization of:
+            variable "m" (declared at line 37)
+      case 4:  goto L4;     // error: jump over m;             (cfront m)
+               ^
+
+"Test_name.c", line 24: warning: transfer of control bypasses initialization of:
+            variable "m" (declared at line 37)
+        case 4:  goto L4;   // error: jump over m (also k,l?)  (cfront m)
+                 ^
+
+"Test_name.c", line 32: warning: transfer of control bypasses initialization of:
+            variable "m" (declared at line 37)
+        case 4:  goto L4;   // error: jump over m (also l?)    (cfront m)
+                 ^
+
+"Test_name.c", line 41: warning: transfer of control bypasses initialization of:
+            variable "k" (declared at line 26)
+      case 2:  goto L2;     // error: jump over k;            (cfront generic)
+               ^
+
+"Test_name.c", line 11: warning: variable "j" was declared but never referenced
+    int j = 0;
+        ^
+
+"Test_name.c", line 37: warning: variable "m" was declared but never referenced
+    int m = 0;
+        ^
+

@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 42: warning: variable "l1" was declared but never referenced
+  constexpr auto l1 = list("monkey", 123.4, cons(1, 2), nullptr);
+                 ^
+

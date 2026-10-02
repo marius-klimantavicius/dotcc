@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=2 --c++11 --clang -DCLANG --diag_warn=23 Test_name.c
+"Test_name.c", line 6: warning: integer constant is too large
+  auto arr = 0x10000000000000000;
+           ^
+

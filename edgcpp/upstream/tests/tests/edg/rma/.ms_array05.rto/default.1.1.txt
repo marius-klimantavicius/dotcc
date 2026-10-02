@@ -1,0 +1,6 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --microsoft -n Test_name.c
+"Test_name.c", line 10: error: cannot derive from a class with a flexible array member
+  struct T : S { };
+             ^
+
+1 error detected in the compilation of "Test_name.c".

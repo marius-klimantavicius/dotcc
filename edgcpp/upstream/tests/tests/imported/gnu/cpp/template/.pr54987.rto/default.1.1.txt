@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 51: error: more than one instance of overloaded function "foo" matches the argument list:
+            function template "void foo(T, Template1<make_type<T>::type>)" (declared at line 38)
+            function template "void foo(T, Template2<make_type<T>::type>)" (declared at line 43)
+            argument types are: (Argument1, Template1<Argument2>)
+    foo( a, t );  // { dg-error "ambiguous" }
+    ^
+
+1 error detected in the compilation of "Test_name.c".

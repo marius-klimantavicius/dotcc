@@ -1,0 +1,112 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 --exceptions --exceptions Test_name.c
+"Test_name.c", line 31: warning: explicit enum base types are a C++11 feature
+  enum E : char { e };
+         ^
+
+"Test_name.c", line 158: error: this operator is not allowed in an integral constant expression
+    static_assert(&a + 1 == &b, "");
+    ^
+
+"Test_name.c", line 158: error: this operator is not allowed in an integral constant expression
+    static_assert(&a + 1 == &b, "");
+    ^
+
+"Test_name.c", line 165: warning: incrementing a bool value is deprecated
+      ++b;
+        ^
+
+"Test_name.c", line 168: warning: incrementing a bool value is deprecated
+      b++;
+      ^
+
+"Test_name.c", line 171: error: bool type is not allowed
+      --b;
+        ^
+
+"Test_name.c", line 173: error: bool type is not allowed
+      b--;
+      ^
+
+"Test_name.c", line 194: error: "cwg1658::DefCtor::A::A()" (declared at line 182) is inaccessible
+      struct E : A { E(); virtual void foo() = 0; }; // #cwg1658-E1
+                 ^
+
+"Test_name.c", line 202: error: "cwg1658::DefCtor::A::A()" (declared at line 182) is inaccessible
+      struct F : virtual A { F(); }; // #cwg1658-F1
+                         ^
+
+"Test_name.c", line 211: error: "cwg1658::DefCtor::B::~B()" (declared at line 183) is inaccessible
+      struct G : B { G(); virtual void foo() = 0; }; // #cwg1658-G1
+                 ^
+
+"Test_name.c", line 219: error: "cwg1658::DefCtor::B::~B()" (declared at line 183) is inaccessible
+      struct H : virtual B { H(); }; // #cwg1658-H1
+                         ^
+
+"Test_name.c", line 237: error: "cwg1658::Dtor::B::~B()" (declared at line 230) is inaccessible
+      G::~G() = default; // #cwg1658-G2-dtor
+         ^
+
+"Test_name.c", line 245: error: "cwg1658::Dtor::B::~B()" (declared at line 230) is inaccessible
+      H::~H() = default; // #cwg1658-H2-dtor
+         ^
+
+"Test_name.c", line 261: error: no default constructor exists for class "cwg1658::MemInit::A"
+        C() {}
+            ^
+
+"Test_name.c", line 274: error: no instance of overloaded function "cwg1658::CopyCtorParamType::B::B" matches the specified type
+        friend B::B(const B&) throw();
+                  ^
+
+"Test_name.c", line 281: warning: rvalue references are a C++11 feature
+      class A { A(const A&); A(A&&); }; // #cwg1658-A5
+                                ^
+
+"Test_name.c", line 292: error: "cwg1658::CopyCtor::A::A(const cwg1658::CopyCtor::A &)" (declared at line 281) is inaccessible
+      struct E : A { E(const E&); E(E&&); virtual void foo() = 0; }; // #cwg1658-E5
+                 ^
+
+"Test_name.c", line 292: error: "cwg1658::CopyCtor::A::A(cwg1658::CopyCtor::A &&)" (declared at line 281) is inaccessible
+      struct E : A { E(const E&); E(E&&); virtual void foo() = 0; }; // #cwg1658-E5
+                 ^
+
+"Test_name.c", line 309: error: "cwg1658::CopyCtor::A::A(const cwg1658::CopyCtor::A &)" (declared at line 281) is inaccessible
+      struct F : virtual A { F(const F&); F(F&&); }; // #cwg1658-F5
+                         ^
+
+"Test_name.c", line 309: error: "cwg1658::CopyCtor::A::A(cwg1658::CopyCtor::A &&)" (declared at line 281) is inaccessible
+      struct F : virtual A { F(const F&); F(F&&); }; // #cwg1658-F5
+                         ^
+
+"Test_name.c", line 338: error: static assertion failed with ""
+    static_assert(!__is_standard_layout(C), "");
+    ^
+
+"Test_name.c", line 349: error: static assertion failed with ""
+    static_assert(!__is_standard_layout(Y<E>), "");
+    ^
+
+"Test_name.c", line 351: error: static assertion failed with ""
+    static_assert(!__is_standard_layout(Y<G>), "");
+    ^
+
+"Test_name.c", line 352: error: static assertion failed with ""
+    static_assert(!__is_standard_layout(Y<H>), "");
+    ^
+
+"Test_name.c", line 375: error: no operator "+" matches these operands
+            operand types are: cwg1687::To<int *> + double
+    int *a = To<int*>() + 100.0;
+                        ^
+"Test_name.c", line 375: note: built-in operator+(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    int *a = To<int*>() + 100.0;
+                        ^
+"Test_name.c", line 375: note: built-in operator+(<pointer to object>, <ptrdiff_t>) does not match because argument #2 does not match parameter
+    int *a = To<int*>() + 100.0;
+                        ^
+"Test_name.c", line 375: note: built-in operator+(<ptrdiff_t>, <pointer to object>) does not match because argument #1 does not match parameter
+    int *a = To<int*>() + 100.0;
+                        ^
+
+21 errors detected in the compilation of "Test_name.c".

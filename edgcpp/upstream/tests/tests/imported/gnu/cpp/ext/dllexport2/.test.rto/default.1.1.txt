@@ -1,0 +1,104 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics dllexport2a.cc Test_name.c
+dllexport2a.cc:
+Test_name.c:
+"Test_name.c", line 20: error: this declaration has no storage class or type specifier
+  __declspec(dllexport) inline void i1() {}
+  ^
+
+"Test_name.c", line 20: error: identifier "dllexport" is undefined
+  __declspec(dllexport) inline void i1() {}
+             ^
+
+"Test_name.c", line 20: error: expected a ";"
+  __declspec(dllexport) inline void i1() {}
+                        ^
+
+"Test_name.c", line 34: warning: parsing restarts here after previous syntax error
+  void i3();
+           ^
+
+"Test_name.c", line 36: error: this declaration has no storage class or type specifier
+  __declspec(dllexport) inline void e3() {}
+  ^
+
+"Test_name.c", line 36: error: variable "__declspec" has already been defined (previous definition at line 20)
+  __declspec(dllexport) inline void e3() {}
+  ^
+
+"Test_name.c", line 36: error: expected a ";"
+  __declspec(dllexport) inline void e3() {}
+                        ^
+
+"Test_name.c", line 39: error: this declaration has no storage class or type specifier
+  __declspec(dllexport) void i4();
+  ^
+
+"Test_name.c", line 39: error: variable "__declspec" has already been defined (previous definition at line 20)
+  __declspec(dllexport) void i4();
+  ^
+
+"Test_name.c", line 39: error: expected a ";"
+  __declspec(dllexport) void i4();
+                        ^
+
+"Test_name.c", line 42: error: this declaration has no storage class or type specifier
+  __declspec(dllexport) extern void e4();
+  ^
+
+"Test_name.c", line 42: error: variable "__declspec" has already been defined (previous definition at line 20)
+  __declspec(dllexport) extern void e4();
+  ^
+
+"Test_name.c", line 42: error: expected a ";"
+  __declspec(dllexport) extern void e4();
+                        ^
+
+"Test_name.c", line 45: error: this declaration has no storage class or type specifier
+  __declspec(dllexport) inline void i5();
+  ^
+
+"Test_name.c", line 45: error: variable "__declspec" has already been defined (previous definition at line 20)
+  __declspec(dllexport) inline void i5();
+  ^
+
+"Test_name.c", line 45: error: expected a ";"
+  __declspec(dllexport) inline void i5();
+                        ^
+
+"Test_name.c", line 48: error: this declaration has no storage class or type specifier
+  __declspec(dllexport) inline void e5();
+  ^
+
+"Test_name.c", line 48: error: variable "__declspec" has already been defined (previous definition at line 20)
+  __declspec(dllexport) inline void e5();
+  ^
+
+"Test_name.c", line 48: error: expected a ";"
+  __declspec(dllexport) inline void e5();
+                        ^
+
+"Test_name.c", line 53: error: this declaration has no storage class or type specifier
+  __declspec(dllexport) inline void i6();
+  ^
+
+"Test_name.c", line 53: error: variable "__declspec" has already been defined (previous definition at line 20)
+  __declspec(dllexport) inline void i6();
+  ^
+
+"Test_name.c", line 53: error: expected a ";"
+  __declspec(dllexport) inline void i6();
+                        ^
+
+"Test_name.c", line 54: error: this declaration has no storage class or type specifier
+  __declspec(dllexport) extern inline void e6();
+  ^
+
+"Test_name.c", line 54: error: variable "__declspec" has already been defined (previous definition at line 20)
+  __declspec(dllexport) extern inline void e6();
+  ^
+
+"Test_name.c", line 54: error: expected a ";"
+  __declspec(dllexport) extern inline void e6();
+                        ^
+
+24 errors detected in the compilation of "Test_name.c".

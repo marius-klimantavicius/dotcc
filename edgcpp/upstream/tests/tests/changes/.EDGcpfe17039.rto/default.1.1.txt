@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 14: error: explicit type is missing ("int" assumed)
+  extern constexpr int v = 0;
+         ^
+
+"Test_name.c", line 14: error: expected a ";"
+  extern constexpr int v = 0;
+                   ^
+
+"Test_name.c", line 19: error: identifier "v" is undefined
+  template<typename T> void f(X<const T&, v>) {}
+                                          ^
+
+"Test_name.c", line 21: error: identifier "v" is undefined
+    X<const int&, v> x;
+                  ^
+
+4 errors detected in the compilation of "Test_name.c".

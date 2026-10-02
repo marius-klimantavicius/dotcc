@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 12: warning: explicit type is missing ("int" assumed)
+    return &(const bad_type) { .a = 0 }; /* { dg-error "unknown type name" } */
+             ^
+
+"Test_name.c", line 12: error: expected a ")"
+    return &(const bad_type) { .a = 0 }; /* { dg-error "unknown type name" } */
+                   ^
+
+"Test_name.c", line 12: error: a designator cannot be used with a non-aggregate type "int"
+    return &(const bad_type) { .a = 0 }; /* { dg-error "unknown type name" } */
+                                ^
+
+"Test_name.c", line 12: warning: return value type does not match the function type
+    return &(const bad_type) { .a = 0 }; /* { dg-error "unknown type name" } */
+           ^
+
+"Test_name.c", line 12: warning: returning pointer to local temporary
+    return &(const bad_type) { .a = 0 }; /* { dg-error "unknown type name" } */
+           ^
+
+2 errors detected in the compilation of "Test_name.c".

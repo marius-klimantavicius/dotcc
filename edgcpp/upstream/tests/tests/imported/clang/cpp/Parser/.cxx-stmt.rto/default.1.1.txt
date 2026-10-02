@@ -1,0 +1,63 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --exceptions --exceptions Test_name.c
+"Test_name.c", line 17: error: expected a "{"
+    try; // expected-error {{expected '{'}}
+       ^
+
+"Test_name.c", line 20: error: expected a "("
+    catch; // expected-error {{expected '('}}
+         ^
+
+"Test_name.c", line 23: warning: parsing restarts here after previous syntax error
+    catch (...); // expected-error {{expected '{'}}
+          ^
+
+"Test_name.c", line 23: error: expected a "{"
+    catch (...); // expected-error {{expected '{'}}
+               ^
+
+"Test_name.c", line 26: error: expected a "("
+    catch {} // expected-error {{expected '('}}
+          ^
+
+"Test_name.c", line 27: error: expected a "{"
+  }
+  ^
+
+"Test_name.c", line 29: error: expected a ";"
+  void f3() try {
+            ^
+
+"Test_name.c", line 40: warning: parsing restarts here after previous syntax error
+  };
+   ^
+
+"Test_name.c", line 42: error: name followed by "::" must be a class or namespace name
+  A::A(char) : i(0) try {} // expected-error {{expected '{' or ','}}
+  ^
+
+"Test_name.c", line 42: error: type name is not allowed
+  A::A(char) : i(0) try {} // expected-error {{expected '{' or ','}}
+       ^
+
+"Test_name.c", line 42: error: expected a ";"
+  A::A(char) : i(0) try {} // expected-error {{expected '{' or ','}}
+             ^
+
+"Test_name.c", line 48: warning: parsing restarts here after previous syntax error
+  struct Type { };
+                 ^
+
+"Test_name.c", line 51: error: expected a ";"
+  void f4() {
+            ^
+
+"Test_name.c", line 50: warning: variable "Kind" was declared but never referenced
+  enum { Type } Kind;
+                ^
+
+At end of source: error: expected a "}"
+"Test_name.c", line 16: note: to match this "{"
+  {
+  ^
+
+11 errors detected in the compilation of "Test_name.c".

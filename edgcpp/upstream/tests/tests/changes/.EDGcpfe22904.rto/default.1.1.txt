@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 13: error: identifier "constexpr" is undefined
+  constexpr CI &ci = CI{11, 22, 33};
+  ^
+
+"Test_name.c", line 13: error: "CI" has already been declared in the current scope
+  constexpr CI &ci = CI{11, 22, 33};
+            ^
+
+"Test_name.c", line 13: error: expected a ";"
+  constexpr CI &ci = CI{11, 22, 33};
+               ^
+
+"Test_name.c", line 14: error: this declaration has no storage class or type specifier
+  static_assert(ci[1] == 22, "");  // Previously an error.  Now okay.
+  ^
+
+"Test_name.c", line 14: error: identifier "ci" is undefined
+  static_assert(ci[1] == 22, "");  // Previously an error.  Now okay.
+                ^
+
+"Test_name.c", line 14: error: too many initializer values
+  static_assert(ci[1] == 22, "");  // Previously an error.  Now okay.
+                             ^
+
+6 errors detected in the compilation of "Test_name.c".

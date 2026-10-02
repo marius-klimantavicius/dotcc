@@ -1,0 +1,40 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 -E Test_name.c
+# 1 "Test_name.c"
+
+
+
+ 
+ 
+ 
+
+ 
+
+
+
+
+
+
+ 
+"Test_name.c", line 17: warning: incompatible redefinition of macro "m2" (declared at line 16)
+  #define m2(\u00C1) /* { dg-error "redefined" } */
+          ^
+
+
+
+
+
+
+
+
+ 
+"Test_name.c", line 25: warning: incompatible redefinition of macro "m3" (declared at line 24)
+  #define m3(\u00c1) \u00C1 /* { dg-error "redefined" } */
+          ^
+
+
+
+
+
+
+
+ 

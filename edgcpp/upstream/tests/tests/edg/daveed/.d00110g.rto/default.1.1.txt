@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gcc Test_name.c
+"Test_name.c", line 22: warning: excess initializers are ignored
+  struct S myS = { 3, { { string: "A" }, { string: "B" }, { string: "C" }
+                        ^
+

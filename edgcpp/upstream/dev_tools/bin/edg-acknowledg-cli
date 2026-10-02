@@ -1,0 +1,271 @@
+#!/usr/bin/env python3
+
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+import argparse
+import asyncio
+import json
+import os
+import sys
+import uuid
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
+
+import edgbench
+import edgtest
+import edgutil
+
+from edgacknowledg import (
+  IncompatibleProtocolVersion,
+  is_ui_section_type,
+  review_display_name,
+  section_slug,
+  utc_now_iso,
+)
+from edgacknowledg.client import (
+  BackgroundWorkerPool,
+  BatchClient,
+  BatchClientSession,
+  ReviewClient,
+  add_endpoint_arguments,
+  form_section_http_url,
+)
+from edgacknowledg.client.bench import (
+  DEFAULT_THRESHOLD_FAST,
+  DEFAULT_THRESHOLD_SLOW,
+  BenchEditHandler,
+  BenchReviewSession,
+  BenchSourceHandler,
+  resolve_baseline_dir,
+)
+from edgacknowledg.client.shared import ReviewClientHandler
+from edgacknowledg.client.test import TestEditHandler, TestSourceHandler
+from edgutil import eprint
+
+
+def print_connection_status(status_message: str) -> None:
+  eprint(f"[Connection] {status_message}")
+
+
+class _CliConnectionStatusListener:
+  '''Print batch socket lifecycle events for the CLI.'''
+
+  def connected(self) -> None:
+    print_connection_status('Batch socket connected!')
+
+  def attempting_reconnect(self) -> None:
+    print_connection_status('Attempting to reconnect...')
+
+  def disconnected(self) -> None:
+    print_connection_status('Disconnected.')
+
+
+def parse_args() -> argparse.Namespace:
+  '''Parse the commandline arguments for this script.'''
+  parser = argparse.ArgumentParser(
+    description = (
+      'Launch one or more AcknowlEDG review sections over the /batch endpoint'
+    )
+  )
+  parser.add_argument(
+    '--api-key',
+    dest = 'api_key',
+    default = os.environ.get('EDG_ACKNOWLEDG_API_KEY'),
+    help = 'API key for /batch (or EDG_ACKNOWLEDG_API_KEY)'
+  )
+  add_endpoint_arguments(parser)
+  parser.add_argument(
+    'json_file',
+    type = Path,
+    help = 'JSON file describing reviews and sections to serve'
+  )
+  return parser.parse_args()
+
+
+def _make_bench_session(parameters: Dict[str, Any],
+                        bench_home: Path,
+                        sessions: Dict[Tuple[str, str], BenchReviewSession]
+                        ) -> BenchReviewSession:
+  root = Path(parameters['root'])
+  tag = str(parameters['tag'])
+  key = (str(root.resolve()), tag)
+  session = sessions.get(key)
+  if session is not None:
+    return session
+
+  session = BenchReviewSession(
+    bench_home = bench_home,
+    run_dir = root,
+    baseline_dir = resolve_baseline_dir(bench_home, tag),
+    tag = tag,
+    threshold_slow = float(
+      parameters.get('slower_threshold', DEFAULT_THRESHOLD_SLOW)
+    ),
+    threshold_fast = float(
+      parameters.get('faster_threshold', DEFAULT_THRESHOLD_FAST)
+    )
+  )
+  sessions[key] = session
+  return session
+
+
+def _make_handler(section: Dict[str, Any],
+                  *,
+                  test_home: Optional[Path],
+                  bench_home: Optional[Path],
+                  bench_sessions: Dict[Tuple[str, str], BenchReviewSession],
+                  worker_pool: BackgroundWorkerPool
+                  ) -> ReviewClientHandler:
+  section_name = str(section['name'])
+  section_type = str(section['type'])
+  slug = section.get('slug')
+  if not slug:
+    slug = section_slug(section_name)
+  else:
+    slug = str(slug)
+  parameters = section.get('parameters') or {}
+
+  if section_type == 'test.src':
+    if test_home is None:
+      raise ValueError('test home required for test.src sections')
+    return TestSourceHandler(
+      section_name,
+      slug,
+      test_home,
+      Path(parameters['root'])
+    )
+  if section_type == 'test.edit':
+    return TestEditHandler(section_name, slug, worker_pool)
+  if section_type == 'bench.src':
+    if bench_home is None:
+      raise ValueError('bench home required for bench.src sections')
+    session = _make_bench_session(parameters, bench_home, bench_sessions)
+    return BenchSourceHandler(section_name, slug, session, worker_pool)
+  if section_type == 'bench.edit':
+    if bench_home is None:
+      raise ValueError('bench home required for bench.edit sections')
+    session = _make_bench_session(parameters, bench_home, bench_sessions)
+    return BenchEditHandler(section_name, slug, session, worker_pool)
+
+  raise ValueError(f"unsupported section type: {section_type}")
+
+
+async def build_review_client(session: BatchClientSession,
+                              raw: Dict[str, Any],
+                              worker_pool: BackgroundWorkerPool
+                              ) -> ReviewClient:
+  '''Parse one review JSON object into a ``ReviewClient``.'''
+  if 'id' not in raw:
+    raise ValueError('review is missing required field "id"')
+
+  review = await session.create_review(
+    uuid.UUID(str(raw['id'])),
+    review_display_name(raw.get('name')),
+    str(raw.get('timestamp') or utc_now_iso())
+  )
+
+  sections = list(raw.get('sections') or [])
+  needs_test = any(
+    str(section.get('type', '')).startswith('test.') for section in sections
+  )
+  needs_bench = any(
+    str(section.get('type', '')).startswith('bench.') for section in sections
+  )
+
+  test_home: Optional[Path] = None
+  bench_home: Optional[Path] = None
+  if needs_test:
+    test_home = edgtest.load_test_home_or_exit()
+  if needs_bench:
+    bench_home = edgbench.load_benchmark_home_or_exit()
+
+  bench_sessions: Dict[Tuple[str, str], BenchReviewSession] = {}
+  for section in sections:
+    if 'name' not in section or 'type' not in section:
+      raise ValueError('section requires "name" and "type"')
+    if 'parameters' not in section:
+      raise ValueError('section requires "parameters"')
+    handler = _make_handler(
+      section,
+      test_home = test_home,
+      bench_home = bench_home,
+      bench_sessions = bench_sessions,
+      worker_pool = worker_pool
+    )
+    await review.add_section(handler)
+
+  return review
+
+
+def load_review_dicts(json_file: Path) -> List[Dict[str, Any]]:
+  with open(json_file, 'r') as file_handle:
+    payload = json.load(file_handle)
+  if not isinstance(payload, dict) or 'reviews' not in payload:
+    raise ValueError('JSON root must be an object with a "reviews" array')
+  reviews = payload['reviews']
+  if not isinstance(reviews, list) or len(reviews) == 0:
+    raise ValueError('"reviews" must be a non-empty array')
+  return reviews
+
+
+def print_section_urls(ui_host: str,
+                       ui_port: int,
+                       review: ReviewClient) -> None:
+  '''Print UI URLs for each section of a configured review.'''
+  for handler in review.sections():
+    if not is_ui_section_type(handler.subscription_type):
+      continue
+    url = form_section_http_url(
+      ui_host,
+      ui_port,
+      review.review_id,
+      handler.subscription_type,
+      handler.slug
+    )
+    if url is None:
+      continue
+    print_connection_status(f"  {url}")
+
+
+def main() -> None:
+  args = parse_args()
+
+  try:
+    review_dicts = load_review_dicts(args.json_file)
+  except (OSError, ValueError, json.JSONDecodeError) as ex:
+    eprint(f"Failed to load review JSON: {ex}")
+    sys.exit(1)
+
+  async def run_tasks(loop: asyncio.AbstractEventLoop) -> None:
+    try:
+      worker_pool = BackgroundWorkerPool()
+      async with BatchClient(
+        api_host = args.api_hostname,
+        api_port = args.api_port,
+        api_key = args.api_key,
+        status_listener = _CliConnectionStatusListener()
+      ) as session:
+        try:
+          for raw in review_dicts:
+            review = await build_review_client(
+              session, raw, worker_pool
+            )
+            print_connection_status(
+              f"Serving review \"{review.name}\" ({review.review_id})."
+            )
+            print_section_urls(args.ui_hostname, args.ui_port, review)
+        except (OSError, ValueError) as ex:
+          eprint(f"Failed to build reviews: {ex}")
+          raise SystemExit(1) from ex
+    except IncompatibleProtocolVersion:
+      eprint('Client out of date, please update tools.')
+    except asyncio.CancelledError:
+      pass
+
+  edgutil.run_asyncio_loop(run_tasks)
+
+
+main()

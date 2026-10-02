@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 5: error: qualified name is not allowed in member declaration
+    static A::f();
+           ^
+
+"Test_name.c", line 5: error: explicit type is missing ("int" assumed)
+    static A::f();
+           ^
+
+2 errors detected in the compilation of "Test_name.c".

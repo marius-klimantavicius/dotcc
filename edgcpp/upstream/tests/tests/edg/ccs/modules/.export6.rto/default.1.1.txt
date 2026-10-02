@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --c++20 Test_name.c
+"Test_name.c", line 7: error: exporting individual class members is not allowed
+    export void mem_func();
+    ^
+
+"Test_name.c", line 8: error: exporting individual class members is not allowed
+    export int mem_var;
+    ^
+
+"Test_name.c", line 9: error: exporting individual class members is not allowed
+    export template<typename T> T templ_func(T x);
+    ^
+
+3 errors detected in the compilation of "Test_name.c".

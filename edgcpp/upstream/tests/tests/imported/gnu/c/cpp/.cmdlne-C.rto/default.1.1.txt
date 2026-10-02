@@ -1,0 +1,31 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc -E Test_name.c
+# 1 "Test_name.c"
+
+
+ 
+
+ 
+ 
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+"Test_name.c", line 25: catastrophic error: #error directive: not_a_macro is!
+  #error not_a_macro is!
+   ^
+
+1 catastrophic error detected in the compilation of "Test_name.c".
+Compilation terminated.

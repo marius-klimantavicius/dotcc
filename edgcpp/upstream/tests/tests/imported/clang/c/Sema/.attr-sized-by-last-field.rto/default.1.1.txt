@@ -1,0 +1,77 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 14: warning: unknown attribute "sized_by"
+    struct bar *ptr __sized_by(bork); // expected-error {{use of undeclared identifier 'bork'}}
+                    ^
+
+"Test_name.c", line 22: warning: unknown attribute "sized_by"
+      int * ptr __sized_by(size); // expected-error {{'sized_by' field 'size' isn't within the same struct as the annotated pointer}}
+                ^
+
+"Test_name.c", line 30: warning: unknown attribute "sized_by"
+      int * ptr __sized_by(size); // expected-error {{'sized_by' field 'size' isn't within the same struct as the annotated pointer}}
+                ^
+
+"Test_name.c", line 40: warning: unknown attribute "sized_by"
+      int * ptr __sized_by(size); // expected-error {{'sized_by' field 'size' isn't within the same struct as the annotated pointer}}
+                ^
+
+"Test_name.c", line 51: warning: unknown attribute "sized_by"
+      int * ptr __sized_by(size); // expected-error {{use of undeclared identifier 'size'}}
+                ^
+
+"Test_name.c", line 62: warning: unknown attribute "sized_by"
+      int * ptr __sized_by(size); // expected-error {{use of undeclared identifier 'size'}}
+                ^
+
+"Test_name.c", line 71: warning: unknown attribute "sized_by"
+    int * ptr __sized_by(size); // expected-error {{use of undeclared identifier 'size'}}
+              ^
+
+"Test_name.c", line 76: warning: unknown attribute "sized_by"
+    struct bar **ptr __sized_by(blork); // expected-error {{use of undeclared identifier 'blork'}}
+                     ^
+
+"Test_name.c", line 83: warning: unknown attribute "sized_by"
+    struct bar ** ptr __sized_by(global); // expected-error {{field 'global' in 'sized_by' not inside structure}}
+                      ^
+
+"Test_name.c", line 90: warning: unknown attribute "sized_by"
+    struct bar *self[] __sized_by(self);
+                       ^
+
+"Test_name.c", line 95: warning: unknown attribute "sized_by"
+    struct bar ** ptr __sized_by(dbl_size); // expected-error {{'sized_by' requires a non-boolean integer type argument}}
+                      ^
+
+"Test_name.c", line 100: warning: unknown attribute "sized_by"
+    struct bar ** ptr __sized_by(integers); // expected-error {{'sized_by' requires a non-boolean integer type argument}}
+                      ^
+
+"Test_name.c", line 105: warning: unknown attribute "sized_by"
+    struct bar *non_c99_fam[0] __sized_by(size); // expected-error {{'sized_by' only applies to pointers; did you mean to use 'counted_by'?}}
+                               ^
+
+"Test_name.c", line 112: warning: unknown attribute "sized_by"
+      int * ptr __sized_by(crount); // expected-error {{use of undeclared identifier 'crount'}}
+                ^
+
+"Test_name.c", line 123: warning: unknown attribute "sized_by"
+    struct size_unknown * ptr __sized_by(size);
+                              ^
+
+"Test_name.c", line 128: warning: unknown attribute "sized_by"
+    const struct size_unknown * ptr __sized_by(size);
+                                    ^
+
+"Test_name.c", line 133: warning: unknown attribute "sized_by"
+    void * ptr __sized_by(size);
+               ^
+
+"Test_name.c", line 140: warning: unknown attribute "sized_by"
+    fn_ty* * ptr __sized_by(size);
+                 ^
+
+"Test_name.c", line 146: warning: unknown attribute "sized_by"
+    fn_ty * ptr __sized_by(size);
+                ^
+

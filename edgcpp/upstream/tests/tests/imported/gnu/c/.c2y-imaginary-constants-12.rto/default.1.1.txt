@@ -1,0 +1,98 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 7: error: complex integral types are not supported
+  _Complex float a = 1i;		/* { dg-error "imaginary constants are a GCC extension" } */
+                      ^
+
+"Test_name.c", line 8: error: complex integral types are not supported
+  _Complex float b = 2j;		/* { dg-error "imaginary constants are a GCC extension" } */
+                      ^
+
+"Test_name.c", line 9: error: complex integral types are not supported
+  _Complex float c = 3I;		/* { dg-error "imaginary constants are a GCC extension" } */
+                      ^
+
+"Test_name.c", line 10: error: complex integral types are not supported
+  _Complex float d = 4J;		/* { dg-error "imaginary constants are a GCC extension" } */
+                      ^
+
+"Test_name.c", line 11: error: extra text after expected end of number
+  _Complex double e = 1il;	/* { dg-error "imaginary constants are a GCC extension" } */
+                       ^
+
+"Test_name.c", line 12: error: extra text after expected end of number
+  _Complex double f = 2Lj;	/* { dg-error "imaginary constants are a GCC extension" } */
+                        ^
+
+"Test_name.c", line 13: error: extra text after expected end of number
+  _Complex double g = 3lI;	/* { dg-error "imaginary constants are a GCC extension" } */
+                        ^
+
+"Test_name.c", line 14: error: extra text after expected end of number
+  _Complex double h = 4JL;	/* { dg-error "imaginary constants are a GCC extension" } */
+                       ^
+
+"Test_name.c", line 15: error: extra text after expected end of number
+  _Complex long double i = 1ill;	/* { dg-error "imaginary constants are a GCC extension" } */
+                            ^
+
+"Test_name.c", line 16: error: extra text after expected end of number
+  _Complex long double j = 2LLj;	/* { dg-error "imaginary constants are a GCC extension" } */
+                              ^
+
+"Test_name.c", line 17: error: extra text after expected end of number
+  _Complex long double k = 3llI;	/* { dg-error "imaginary constants are a GCC extension" } */
+                              ^
+
+"Test_name.c", line 18: error: extra text after expected end of number
+  _Complex long double l = 4JLL;	/* { dg-error "imaginary constants are a GCC extension" } */
+                            ^
+
+"Test_name.c", line 19: error: complex integral types are not supported
+  __extension__ _Complex float m = 1i;
+                                    ^
+
+"Test_name.c", line 20: error: complex integral types are not supported
+  __extension__ _Complex float n = 2j;
+                                    ^
+
+"Test_name.c", line 21: error: complex integral types are not supported
+  __extension__ _Complex float o = 3I;
+                                    ^
+
+"Test_name.c", line 22: error: complex integral types are not supported
+  __extension__ _Complex float p = 4J;
+                                    ^
+
+"Test_name.c", line 23: error: extra text after expected end of number
+  __extension__ _Complex double q = 1il;
+                                     ^
+
+"Test_name.c", line 24: error: extra text after expected end of number
+  __extension__ _Complex double r = 2Lj;
+                                      ^
+
+"Test_name.c", line 25: error: extra text after expected end of number
+  __extension__ _Complex double s = 3lI;
+                                      ^
+
+"Test_name.c", line 26: error: extra text after expected end of number
+  __extension__ _Complex double t = 4JL;
+                                     ^
+
+"Test_name.c", line 27: error: extra text after expected end of number
+  __extension__ _Complex long double u = 1ill;
+                                          ^
+
+"Test_name.c", line 28: error: extra text after expected end of number
+  __extension__ _Complex long double v = 2LLj;
+                                            ^
+
+"Test_name.c", line 29: error: extra text after expected end of number
+  __extension__ _Complex long double w = 3llI;
+                                            ^
+
+"Test_name.c", line 30: error: extra text after expected end of number
+  __extension__ _Complex long double x = 4JLL;
+                                          ^
+
+24 errors detected in the compilation of "Test_name.c".

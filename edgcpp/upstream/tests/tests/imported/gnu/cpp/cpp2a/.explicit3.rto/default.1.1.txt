@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"./cpp2a/explicit3.C", line 22: warning: variable "p" was declared but never referenced
+    pair<int, int> p{1, 2};
+                   ^
+
+"./cpp2a/explicit3.C", line 23: warning: variable "p2" was declared but never referenced
+    pair<int, int> p2 = {1, 2};
+                   ^
+

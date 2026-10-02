@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 6: error: expected an identifier
+      char = 4;  // expected-error {{expected identifier}}
+           ^
+
+"Test_name.c", line 11: error: expected a type specifier
+  typedef xtype (*x)(void* handle); // expected-error {{function cannot return function type}} expected-error 2{{type specifier missing, defaults to 'int'}}
+                 ^
+
+"Test_name.c", line 11: error: function returning function is not allowed
+  typedef xtype (*x)(void* handle); // expected-error {{function cannot return function type}} expected-error 2{{type specifier missing, defaults to 'int'}}
+                     ^
+
+"Test_name.c", line 18: error: a function type is not allowed here
+      ytype globals_size; // expected-error {{field 'globals_size' declared as a function}}
+            ^
+
+"Test_name.c", line 27: error: identifier "UndefinedType" is undefined
+    UndefinedType undef; // expected-error {{unknown type name 'UndefinedType'}}
+    ^
+
+"Test_name.c", line 28: error: a function type is not allowed here
+    FunctionType fun; // expected-error {{field 'fun' declared as a function}}
+                 ^
+
+"Test_name.c", line 34: error: expected an identifier
+  static void bar(hid_t, char); // expected-error {{expected identifier}}
+                         ^
+
+"Test_name.c", line 34: warning: identifier-list parameters may only be used in a function definition
+  static void bar(hid_t, char); // expected-error {{expected identifier}}
+              ^
+
+"Test_name.c", line 36: error: identifier "hid_t" is undefined
+  static void bar(hid_t p, char); // expected-error {{unknown type name 'hid_t'}}
+                  ^
+
+"Test_name.c", line 36: error: declaration is incompatible with "void bar()" (declared at line 34)
+  static void bar(hid_t p, char); // expected-error {{unknown type name 'hid_t'}}
+              ^
+
+"Test_name.c", line 43: warning: identifier-list parameters may only be used in a function definition
+  void test2(undef); // expected-error {{a parameter list without types is only allowed in a function definition}}
+       ^
+
+"Test_name.c", line 47: error: declaration is incompatible with "void test3()" (declared at line 46)
+  void test3; // expected-error {{incomplete type}}
+       ^
+
+"Test_name.c", line 47: error: incomplete type "void" is not allowed
+  void test3; // expected-error {{incomplete type}}
+       ^
+
+"Test_name.c", line 48: error: declaration is incompatible with "<error-type> test3" (declared at line 47)
+  void test3() { }
+       ^
+
+"Test_name.c", line 50: error: ellipsis with no explicit parameters is nonstandard
+  void ellipsis1(...); // expected-error {{ISO C requires a named parameter before '...'}}
+       ^
+
+"Test_name.c", line 34: warning: static function "bar" treated as extern because it was referenced but not defined
+  static void bar(hid_t, char); // expected-error {{expected identifier}}
+              ^
+
+13 errors detected in the compilation of "Test_name.c".

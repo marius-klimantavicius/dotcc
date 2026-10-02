@@ -1,0 +1,61 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 21: error: no instance of function template "A<B>::f [with B=false]" matches the argument list
+    A<false>::f<0>(); // { dg-error "no match|constraints" }
+    ^
+"Test_name.c", line 13: note: substituting "<0>" for function template "A<B>::f [with B=false]" failed constraints
+    template<C<B> auto V> static void f();
+                                      ^
+"Test_name.c", line 13: note: concept "C" not satisfied for "<int, false>"
+    template<C<B> auto V> static void f();
+             ^
+"Test_name.c", line 7: note: atomic constraint evaluates to false
+  concept C = B;
+              ^
+
+"Test_name.c", line 24: error: no instance of function template "A<B>::g [with B=false]" matches the argument list
+            argument types are: (X<0>)
+    A<false>::g(X<0>{}); // { dg-error "no match|constraints" }
+    ^
+"Test_name.c", line 14: note: substituting "<0>" for function template "A<B>::g [with B=false]" failed constraints
+    template<C<B> auto V> static void g(X<V>);
+                                      ^
+"Test_name.c", line 14: note: concept "C" not satisfied for "<int, false>"
+    template<C<B> auto V> static void g(X<V>);
+             ^
+"Test_name.c", line 7: note: atomic constraint evaluates to false
+  concept C = B;
+              ^
+
+"Test_name.c", line 27: error: template constraint not satisfied
+    bool v2 = A<false>::value<0>;  // { dg-error "constraints" }
+                              ^
+"Test_name.c", line 15: note: type constraint failed for "int"
+    template<C<B> auto V> static inline int value;
+             ^
+"Test_name.c", line 7: note: atomic constraint evaluates to false
+  concept C = B;
+              ^
+
+"Test_name.c", line 30: error: template constraint not satisfied
+    A<false>::D<0> d2; // { dg-error "constraints" }
+                ^
+"Test_name.c", line 16: note: type constraint failed for "int"
+    template<C<B> auto V> struct D { };
+             ^
+"Test_name.c", line 7: note: atomic constraint evaluates to false
+  concept C = B;
+              ^
+
+"Test_name.c", line 26: warning: variable "v1" was declared but never referenced
+    bool v1 = A<true>::value<0>;
+         ^
+
+"Test_name.c", line 29: warning: variable "d1" was declared but never referenced
+    A<true>::D<0> d1;
+                  ^
+
+"Test_name.c", line 30: warning: variable "d2" was declared but never referenced
+    A<false>::D<0> d2; // { dg-error "constraints" }
+                   ^
+
+4 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: error: identifier "X" is undefined
+      X x;                   // { dg-error "" }
+      ^
+
+"Test_name.c", line 10: error: incomplete type "foo" is not allowed
+      foo(X)              {} // { dg-error "" }
+          ^
+
+"Test_name.c", line 12: error: expected a ";"
+  };
+  ^
+
+"Test_name.c", line 11: error: expected a ";"
+      foo(X y, int) : x() {} // { dg-error "" }
+      ^
+
+4 errors detected in the compilation of "Test_name.c".

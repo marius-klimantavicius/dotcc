@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"SemaCXX/override-in-system-header.cpp", line 8: warning: extra ";" ignored
+    virtual unsigned AddRef(void) = 0;;
+                                      ^
+
+"SemaCXX/override-in-system-header.cpp", line 15: warning: extra ";" ignored
+    virtual unsigned AddRef(void) = 0;;
+                                      ^
+

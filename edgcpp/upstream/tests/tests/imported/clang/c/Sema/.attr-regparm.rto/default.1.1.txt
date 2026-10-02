@@ -1,0 +1,49 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 5: warning: unknown attribute "regparm"
+  __attribute((regparm(2))) int x0(void);
+               ^
+
+"Test_name.c", line 6: warning: unknown attribute "regparm"
+  __attribute((regparm(1.0))) int x1(void); // expected-error{{'regparm' attribute requires an integer constant}}
+               ^
+
+"Test_name.c", line 7: warning: unknown attribute "regparm"
+  __attribute((regparm(-1))) int x2(void); // expected-error{{'regparm' parameter must be between 0 and 3 inclusive}}
+               ^
+
+"Test_name.c", line 8: warning: unknown attribute "regparm"
+  __attribute((regparm(5))) int x3(void); // expected-error{{'regparm' parameter must be between 0 and 3 inclusive}}
+               ^
+
+"Test_name.c", line 9: warning: unknown attribute "regparm"
+  __attribute((regparm(5,3))) int x4(void); // expected-error{{'regparm' attribute takes one argument}}
+               ^
+
+"Test_name.c", line 11: warning: unknown attribute "regparm"
+  void __attribute__((regparm(3))) x5(int);
+                      ^
+
+"Test_name.c", line 13: warning: unknown attribute "regparm"
+  void __attribute__((regparm(2))) x5(int); // expected-error{{function declared with regparm(2) attribute was previously declared with the regparm(3) attribute}}
+                      ^
+
+"Test_name.c", line 15: warning: unknown attribute "gnu::regparm"
+  [[gnu::regparm(3)]] void x6(int); // expected-note{{previous declaration is here}}
+    ^
+
+"Test_name.c", line 16: warning: unknown attribute "gnu::regparm"
+  [[gnu::regparm(2)]] void x6(int); // expected-error{{function declared with regparm(2) attribute was previously declared with the regparm(3) attribute}}
+    ^
+
+"Test_name.c", line 17: warning: unknown attribute "gnu::regparm"
+  void x6 [[gnu::regparm(3)]] (int);
+            ^
+
+"Test_name.c", line 18: warning: unknown attribute "gnu::regparm"
+  void [[gnu::regparm(3)]] x6(int); // expected-warning{{'regparm' only applies to function types; type here is 'void'}}
+         ^
+
+"Test_name.c", line 19: warning: unknown attribute "gnu::regparm"
+  void x6(int) [[gnu::regparm(3)]]; // expected-warning{{GCC does not allow the 'gnu::regparm' attribute to be written on a type}}
+                 ^
+

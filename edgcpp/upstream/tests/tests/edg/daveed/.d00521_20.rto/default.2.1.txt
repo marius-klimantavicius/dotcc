@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=2 --microsoft -DSINGLE Test_name.c
+"Test_name.c", line 14: error: a function declared "dllimport" may not be defined
+  __declspec(dllimport) void f() {}
+                             ^
+
+"Test_name.c", line 23: error: a function declared "dllimport" may not be defined
+  __declspec(dllimport) void X::f() {}
+                                ^
+
+2 errors detected in the compilation of "Test_name.c".

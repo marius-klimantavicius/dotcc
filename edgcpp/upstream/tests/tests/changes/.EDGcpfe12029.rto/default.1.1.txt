@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --microsoft Test_name.c
+"Test_name.c", line 12: warning: declaring a void parameter list with a template parameter is nonstandard
+  template<typename T, void (*F)(T)> struct C {};
+                                 ^
+          detected during processing of template argument list for "C" based on template argument <void> at line 14
+

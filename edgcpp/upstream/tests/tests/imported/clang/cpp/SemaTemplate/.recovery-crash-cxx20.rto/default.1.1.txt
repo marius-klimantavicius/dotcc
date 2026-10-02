@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 22: warning: variable "b" is used before its value is set
+      test_is_bool(b.test);
+                   ^
+
+"Test_name.c", line 25: warning: variable "c" is used before its value is set
+      test_is_bool(c.test);
+                   ^
+
+"Test_name.c", line 26: warning: missing return statement at end of non-void function "GH49093::main"
+    }
+    ^
+
+"Test_name.c", line 32: error: cannot deduce the return type of function "GH107047::A::test" (declared at line 31); it has not been defined
+      static constexpr int s = test< 1 >();      // expected-error {{'test' does not refer to a template}}
+                               ^
+
+"Test_name.c", line 32: error: operand types are incompatible ("<error-type> (*)()" and "int")
+      static constexpr int s = test< 1 >();      // expected-error {{'test' does not refer to a template}}
+                                   ^
+
+"Test_name.c", line 32: error: expected an expression
+      static constexpr int s = test< 1 >();      // expected-error {{'test' does not refer to a template}}
+                                         ^
+
+3 errors detected in the compilation of "Test_name.c".

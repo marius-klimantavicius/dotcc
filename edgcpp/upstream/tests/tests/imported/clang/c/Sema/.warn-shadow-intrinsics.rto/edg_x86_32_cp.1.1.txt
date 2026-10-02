@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"/mds/clang/clang-22.1.0/build/lib/clang/22/include/xmmintrin.h", line 1432: warning: function "__builtin_ia32_cvtss2si64" declared implicitly
+    return __builtin_ia32_cvtss2si64((__v4sf)__a);
+           ^
+
+"/mds/clang/clang-22.1.0/build/lib/clang/22/include/xmmintrin.h", line 1541: warning: function "__builtin_ia32_cvttss2si64" declared implicitly
+    return __builtin_ia32_cvttss2si64((__v4sf)__a);
+           ^
+
+"/mds/clang/clang-22.1.0/build/lib/clang/22/include/emmintrin.h", line 3291: warning: function "__builtin_ia32_cvtsd2si64" declared implicitly
+    return __builtin_ia32_cvtsd2si64((__v2df)__a);
+           ^
+
+"/mds/clang/clang-22.1.0/build/lib/clang/22/include/emmintrin.h", line 3311: warning: function "__builtin_ia32_cvttsd2si64" declared implicitly
+    return __builtin_ia32_cvttsd2si64((__v2df)__a);
+           ^
+
+"/mds/clang/clang-22.1.0/build/lib/clang/22/include/emmintrin.h", line 4098: warning: function "__builtin_ia32_movnti64" declared implicitly
+    __builtin_ia32_movnti64((long long *)__p, __a);
+    ^
+

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang_v 220100 --c++03 Test_name.c
+"Test_name.c", line 14: warning: "auto" as a type specifier is nonstandard in this mode
+  void f(Pair p) { auto [x, y] = p; (void)x; (void)y; }
+                   ^
+
+"Test_name.c", line 14: warning: structured bindings are a C++17 feature
+  void f(Pair p) { auto [x, y] = p; (void)x; (void)y; }
+                        ^
+

@@ -1,0 +1,82 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 9: error: expected a ")"
+    int v2 = typeof(int)(1,2); // expected-error {{excess elements in scalar initializer}}
+                          ^
+
+"Test_name.c", line 11: error: cast to incomplete array type "arr" (aka "int []") is not allowed
+    arr(); // expected-error {{array types cannot be value-initialized}}
+    ^
+
+"Test_name.c", line 13: error: cast to type "fn_ty" (aka "void ()") is not allowed
+    fn_ty(); // expected-error {{cannot create object of function type 'fn_ty'}}
+    ^
+
+"Test_name.c", line 14: error: cast to type "fn_ty" (aka "void ()") is not allowed
+    fn_ty(0); // expected-error {{functional-style cast from 'int' to 'fn_ty'}}
+    ^
+
+"Test_name.c", line 15: error: cast to type "fn_ty" (aka "void ()") is not allowed
+    fn_ty(0, 0); // expected-error {{cannot create object of function type 'fn_ty'}}
+    ^
+
+"Test_name.c", line 17: error: cast to type "fn_ty" (aka "void ()") is not allowed
+    fn_ty{}; // expected-error {{cannot create object of function type 'fn_ty'}}
+    ^
+
+"Test_name.c", line 18: error: cast to type "fn_ty" (aka "void ()") is not allowed
+    fn_ty{0}; // expected-error {{cannot create object of function type 'fn_ty'}}
+    ^
+
+"Test_name.c", line 19: error: cast to type "fn_ty" (aka "void ()") is not allowed
+    fn_ty{0, 0}; // expected-error {{cannot create object of function type 'fn_ty'}}
+    ^
+
+"Test_name.c", line 19: error: too many initializer values
+    fn_ty{0, 0}; // expected-error {{cannot create object of function type 'fn_ty'}}
+             ^
+
+"Test_name.c", line 20: error: cast to type "fn_ty" (aka "void ()") is not allowed
+    fn_ty({}); // expected-error {{cannot create object of function type 'fn_ty'}}
+    ^
+
+"Test_name.c", line 23: error: type name is not allowed
+    int v5 = int; // expected-error {{expected '(' for function-style cast or type construction}}
+             ^
+
+"Test_name.c", line 26: error: operand types are incompatible ("T" (aka "int") and "int *")
+    bool v6 = T(0) == p;
+                   ^
+
+"Test_name.c", line 26: warning: variable "p" is used before its value is set
+    bool v6 = T(0) == p;
+                      ^
+
+"Test_name.c", line 31: warning: conversion from a string literal to "char *" is deprecated
+    str = "a string";
+        ^
+
+"Test_name.c", line 38: warning: conversion from a string literal to pointer-to-character (non-const) is deprecated
+    wstr = L"a wide string";
+         ^
+
+"Test_name.c", line 8: warning: variable "v1" was declared but never referenced
+    float v1 = float(1);
+          ^
+
+"Test_name.c", line 9: warning: variable "v2" was declared but never referenced
+    int v2 = typeof(int)(1,2); // expected-error {{excess elements in scalar initializer}}
+        ^
+
+"Test_name.c", line 22: warning: variable "v4" was declared but never referenced
+    int v4 = int();
+        ^
+
+"Test_name.c", line 30: warning: variable "str" was set but never used
+    char *str;
+          ^
+
+"Test_name.c", line 37: warning: variable "wstr" was set but never used
+    wchar_t *wstr;
+             ^
+
+12 errors detected in the compilation of "Test_name.c".

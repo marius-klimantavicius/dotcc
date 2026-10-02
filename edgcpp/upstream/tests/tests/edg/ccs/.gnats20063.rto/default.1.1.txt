@@ -1,0 +1,1 @@
+cpfe -DTEST_NUMBER=1 --diag_error 1143 --gcc Test_name.c

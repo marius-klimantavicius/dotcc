@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --upc Test_name.c
+"Test_name.c", line 21: error: expression must have a constant value
+  Biggy c[(THREADS*4)/(3*THREADS)];
+                     ^
+
+"Test_name.c", line 22: error: expression must have a constant value
+  shared Biggy d[THREADS+THREADS];
+                        ^
+
+2 errors detected in the compilation of "Test_name.c".

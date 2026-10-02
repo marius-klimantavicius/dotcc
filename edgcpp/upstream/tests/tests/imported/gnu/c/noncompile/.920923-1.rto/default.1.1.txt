@@ -1,0 +1,282 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 5: warning: explicit type is missing ("int" assumed)
+  typedef BYTE unsigned char;	/* { dg-error "expected" } */
+          ^
+
+"Test_name.c", line 5: error: expected a ";"
+  typedef BYTE unsigned char;	/* { dg-error "expected" } */
+               ^
+
+"Test_name.c", line 9: error: identifier "caddr_t" is undefined
+  struct PENT { caddr_t v_addr; };/* { dg-error "unknown type name" } */
+                ^
+
+"Test_name.c", line 21: error: expected either a definition or a tag name
+  	  struct *PTP p_tablep;	/* { dg-error "expected" } */
+  	         ^
+
+"Test_name.c", line 21: warning: declaration does not declare anything
+  	  struct *PTP p_tablep;	/* { dg-error "expected" } */
+  	  ^
+
+"Test_name.c", line 22: error: expected either a definition or a tag name
+  	  struct *PTE p_entry;
+  	         ^
+
+"Test_name.c", line 22: warning: declaration does not declare anything
+  	  struct *PTE p_entry;
+  	  ^
+
+"Test_name.c", line 23: warning: struct or union declares no named members
+       } u;
+       ^
+
+"Test_name.c", line 26: error: expected a ")"
+  typedef struct PTP (u.p_tablep);/* { dg-error "expected" } */
+                       ^
+
+"Test_name.c", line 37: warning: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+  mmu_walk_find(va)
+                ^
+
+"Test_name.c", line 38: error: identifier "caddr_t" is undefined
+  caddr_t va;			/* { dg-error "unknown type name" } */
+  ^
+
+"Test_name.c", line 41: error: identifier "mmu_base" is undefined
+       if (mmu_base[Level1(va)]->valid==0x0) { /* { dg-error "undeclared" } */
+           ^
+
+"Test_name.c", line 41: error: too many arguments in function call
+       if (mmu_base[Level1(va)]->valid==0x0) { /* { dg-error "undeclared" } */
+                           ^
+
+"Test_name.c", line 42: error: identifier "l1_base" is undefined
+  	  l1_base = mmu_base[Level1(va)]->(u.p_tablep) = p_alloc(); /* { dg-error "expected|undeclared" } */
+  	  ^
+
+"Test_name.c", line 42: error: too many arguments in function call
+  	  l1_base = mmu_base[Level1(va)]->(u.p_tablep) = p_alloc(); /* { dg-error "expected|undeclared" } */
+  	                            ^
+
+"Test_name.c", line 42: error: expected a field name
+  	  l1_base = mmu_base[Level1(va)]->(u.p_tablep) = p_alloc(); /* { dg-error "expected|undeclared" } */
+  	                                  ^
+
+"Test_name.c", line 43: error: too many arguments in function call
+  	  mmu_base[Level1(va)]->valid = 0x3;
+  	                  ^
+
+"Test_name.c", line 44: error: identifier "idx" is undefined
+  	  for (idx=0; idx<LEVEL1_ENTRIES; idx++) /* { dg-error "undeclared" } */
+  	       ^
+
+"Test_name.c", line 44: error: identifier "LEVEL1_ENTRIES" is undefined
+  	  for (idx=0; idx<LEVEL1_ENTRIES; idx++) /* { dg-error "undeclared" } */
+  	                  ^
+
+"Test_name.c", line 48: error: identifier "l1_base" is undefined
+  	  l1_base = mmu_base[Level1(va)]->(u.p_tablep); /* { dg-error "expected" } */
+  	  ^
+
+"Test_name.c", line 48: error: too many arguments in function call
+  	  l1_base = mmu_base[Level1(va)]->(u.p_tablep); /* { dg-error "expected" } */
+  	                            ^
+
+"Test_name.c", line 48: error: expected a field name
+  	  l1_base = mmu_base[Level1(va)]->(u.p_tablep); /* { dg-error "expected" } */
+  	                                  ^
+
+"Test_name.c", line 50: error: identifier "l1_base" is undefined
+       if (l1_base[Level2(va)]->valid==0x0) {
+           ^
+
+"Test_name.c", line 50: error: too many arguments in function call
+       if (l1_base[Level2(va)]->valid==0x0) {
+                          ^
+
+"Test_name.c", line 52: error: identifier "l2_base" is undefined
+  	  l2_base = l1_base[Level2(va)]->(u.p_tablep) = p_alloc(); /* { dg-error "expected|undeclared" } */
+  	  ^
+
+"Test_name.c", line 52: error: too many arguments in function call
+  	  l2_base = l1_base[Level2(va)]->(u.p_tablep) = p_alloc(); /* { dg-error "expected|undeclared" } */
+  	                           ^
+
+"Test_name.c", line 52: error: expected a field name
+  	  l2_base = l1_base[Level2(va)]->(u.p_tablep) = p_alloc(); /* { dg-error "expected|undeclared" } */
+  	                                 ^
+
+"Test_name.c", line 53: error: too many arguments in function call
+  	  l1_base[Level2(va)]->valid = 0x3;
+  	                 ^
+
+"Test_name.c", line 54: error: identifier "idx" is undefined
+  	  for (idx=0; idx<LEVEL2_ENTRIES; idx++) /* { dg-error "undeclared" } */
+  	       ^
+
+"Test_name.c", line 54: error: identifier "LEVEL2_ENTRIES" is undefined
+  	  for (idx=0; idx<LEVEL2_ENTRIES; idx++) /* { dg-error "undeclared" } */
+  	                  ^
+
+"Test_name.c", line 58: error: identifier "l2_base" is undefined
+  	  l2_base = mmu_base[Level2(va)]->(u.p_tablep); /* { dg-error "expected" } */
+  	  ^
+
+"Test_name.c", line 58: error: identifier "mmu_base" is undefined
+  	  l2_base = mmu_base[Level2(va)]->(u.p_tablep); /* { dg-error "expected" } */
+  	            ^
+
+"Test_name.c", line 58: error: too many arguments in function call
+  	  l2_base = mmu_base[Level2(va)]->(u.p_tablep); /* { dg-error "expected" } */
+  	                            ^
+
+"Test_name.c", line 58: error: expected a field name
+  	  l2_base = mmu_base[Level2(va)]->(u.p_tablep); /* { dg-error "expected" } */
+  	                                  ^
+
+"Test_name.c", line 60: error: identifier "l2_base" is undefined
+       page_addr = l2_base[Level2(va)]->valid;
+                   ^
+
+"Test_name.c", line 60: error: too many arguments in function call
+       page_addr = l2_base[Level2(va)]->valid;
+                                  ^
+
+"Test_name.c", line 40: warning: variable "page_addr" was set but never used
+       BYTE *page_addr; /* { dg-error "unknown type name" } */
+             ^
+
+"Test_name.c", line 56: error: label "build_page" was referenced but not defined
+  	  goto build_page; /* { dg-error "used but not defined" } */
+  	       ^
+
+"Test_name.c", line 64: warning: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+  a_translate(va_op, v_addr)
+              ^
+
+"Test_name.c", line 66: error: identifier "caddr_t" is undefined
+  caddr_t v_addr;			/* { dg-error "unknown type name" } */
+  ^
+
+"Test_name.c", line 69: error: identifier "caddr_t" is undefined
+       register caddr_t p_addr;	/* { dg-error "unknown type name" } */
+                ^
+
+"Test_name.c", line 70: error: identifier "ITEMBITS" is undefined
+       bucket = mem_hash+((((v_addr)>>ITEMBITS))&hash_mask);  /* { dg-error "undeclared" } */
+                                      ^
+
+"Test_name.c", line 70: error: identifier "hash_mask" is undefined
+       bucket = mem_hash+((((v_addr)>>ITEMBITS))&hash_mask);  /* { dg-error "undeclared" } */
+                                                 ^
+
+"Test_name.c", line 72: error: expected a ")"
+  	  if (bucket->v_addr == ((v_addr)>>ITEMBITS) {	/* { dg-error "expected|undeclared|no member" } */
+  	                                             ^
+
+"Test_name.c", line 77: warning: parsing restarts here after previous syntax error
+       } while((bucket++)->v_addr != ((caddr_t)0));  /* { dg-error "expected|undeclared|no member" } */
+       ^
+
+"Test_name.c", line 77: error: expected a statement
+       } while((bucket++)->v_addr != ((caddr_t)0));  /* { dg-error "expected|undeclared|no member" } */
+       ^
+
+"Test_name.c", line 77: error: identifier "caddr_t" is undefined
+       } while((bucket++)->v_addr != ((caddr_t)0));  /* { dg-error "expected|undeclared|no member" } */
+                                       ^
+
+"Test_name.c", line 77: error: expected a ")"
+       } while((bucket++)->v_addr != ((caddr_t)0));  /* { dg-error "expected|undeclared|no member" } */
+                                               ^
+
+"Test_name.c", line 80: error: struct "PENT" has no field "p_addr"
+       p_addr = (--bucket)->p_addr;	/* { dg-error "no member" } */
+                            ^
+
+"Test_name.c", line 83: error: identifier "BUCKET_FULL" is undefined
+       case BUCKET_FULL:		/* { dg-error "undeclared" } */
+            ^
+
+"Test_name.c", line 84: error: too many arguments in function call
+  	  enlarge_hash_table(mem_hash);
+  	                     ^
+
+"Test_name.c", line 85: error: identifier "caddr_t" is undefined
+       case((caddr_t)0):		/* { dg-error "expected" } */
+             ^
+
+"Test_name.c", line 85: error: expected a ")"
+       case((caddr_t)0):		/* { dg-error "expected" } */
+                     ^
+
+"Test_name.c", line 86: error: too many arguments in function call
+  	  p_addr = fill_item_entry(va_op, v_addr);
+  	                           ^
+
+"Test_name.c", line 88: error: expected a ")"
+       case((caddr_t)1):		/* { dg-error "expected" } */
+                     ^
+
+"Test_name.c", line 90: error: too many arguments in function call
+  	  ((void)(((0))?0:(__eprintf("Failed assertion`%s'at line%d of`%s'.\n",
+  	                             ^
+
+"Test_name.c", line 93: warning: missing return statement at end of non-void function "a_translate"
+  }
+  ^
+
+"Test_name.c", line 79: warning: label "page_miss" was declared but never referenced
+   page_miss:
+   ^
+
+"Test_name.c", line 96: warning: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+  flush_hash(hasht, hash_size)
+             ^
+
+"Test_name.c", line 104: error: identifier "caddr_t" is undefined
+  	  bucket->v_addr = ((caddr_t)0);/* { dg-error "undeclared|expected|no member" } */
+  	                     ^
+
+"Test_name.c", line 104: error: expected a ")"
+  	  bucket->v_addr = ((caddr_t)0);/* { dg-error "undeclared|expected|no member" } */
+  	                             ^
+
+"Test_name.c", line 105: error: struct "PENT" has no field "p_addr"
+  	  bucket->p_addr = ((caddr_t)0);/* { dg-error "no member|expected" } */
+  	          ^
+
+"Test_name.c", line 105: error: expected a ")"
+  	  bucket->p_addr = ((caddr_t)0);/* { dg-error "no member|expected" } */
+  	                             ^
+
+"Test_name.c", line 106: error: struct "PENT" has no field "perm_set"
+  	  bucket->perm_set = VA_EMPTY;	/* { dg-error "undeclared|no member" } */
+  	          ^
+
+"Test_name.c", line 106: error: identifier "VA_EMPTY" is undefined
+  	  bucket->perm_set = VA_EMPTY;	/* { dg-error "undeclared|no member" } */
+  	                     ^
+
+"Test_name.c", line 118: error: too many arguments in function call
+  	     : (__eprintf("Failed assertion`%s'at line%d of`%s'.\n",
+  	                  ^
+
+"Test_name.c", line 121: error: identifier "hash_num" is undefined
+       hash_num = INIT_NUM_ENTRIES * 3;	/* { dg-error "undeclared" } */
+       ^
+
+"Test_name.c", line 121: error: identifier "INIT_NUM_ENTRIES" is undefined
+       hash_num = INIT_NUM_ENTRIES * 3;	/* { dg-error "undeclared" } */
+                  ^
+
+"Test_name.c", line 125: error: too many arguments in function call
+  	     : (__eprintf("Failed assertion`%s'at line%d of`%s'.\n",
+  	                  ^
+
+"Test_name.c", line 129: error: too many arguments in function call
+       build_ptables(mem_base, 1024*(1<<13)); /* { dg-bogus "integer overflow" "int smaller than 32 bits" { xfail int16 } } */
+                     ^
+
+59 errors detected in the compilation of "Test_name.c".

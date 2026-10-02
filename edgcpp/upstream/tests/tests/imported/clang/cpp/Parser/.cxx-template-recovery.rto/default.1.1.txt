@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 6: error: Foo is not a template
+  void Foo<T>::Bar(void* aRawPtr) { // expected-error {{no template named 'Foo'}}
+       ^
+
+"Test_name.c", line 15: warning: variable "object" was declared but never referenced
+  const baz::klass object; // ok
+                   ^
+
+1 error detected in the compilation of "Test_name.c".

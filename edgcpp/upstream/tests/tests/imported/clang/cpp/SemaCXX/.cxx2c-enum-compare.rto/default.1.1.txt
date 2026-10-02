@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++26 Test_name.c
+"Test_name.c", line 9: warning: variable "b" was declared but never referenced
+      int b = e <= 3.7; // both-error {{invalid comparison of enumeration type 'E1' with floating-point type 'double'}}
+          ^
+
+"Test_name.c", line 10: warning: variable "k" was declared but never referenced
+      int k = f - e; // expected-error {{invalid arithmetic between different enumeration types ('E2' and 'E1')}}
+          ^
+
+"Test_name.c", line 11: warning: variable "x" was declared but never referenced
+      int x = 1 ? e : f; // expected-error {{invalid conditional expression between different enumeration types ('E1' and 'E2')}}
+          ^
+

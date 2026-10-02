@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 18: warning: variable "i" was declared but never referenced
+    for (int i = n ? 3 : 4; auto x : a)
+             ^
+
+"Test_name.c", line 27: warning: variable "i" was declared but never referenced
+    for (int i = n; auto x : a)
+             ^
+
+"Test_name.c", line 30: warning: variable "i" was declared but never referenced
+    for (int i = n ? n ? n : 3 : 3; auto x : a)
+             ^
+
+"Test_name.c", line 33: warning: variable "i" was declared but never referenced
+    for (int i = n ? n ? 3 : n ? 3 : 3 : 3; auto x : a)
+             ^
+
+"Test_name.c", line 42: error: expected a ":"
+    for (auto x = n ? 1 : 2 : a) // { dg-error "initializer" }
+                ^
+
+"Test_name.c", line 42: error: this range-based "for" statement requires a suitable "begin" function and none was found
+    for (auto x = n ? 1 : 2 : a) // { dg-error "initializer" }
+                          ^
+
+"Test_name.c", line 42: error: this range-based "for" statement requires a suitable "end" function and none was found
+    for (auto x = n ? 1 : 2 : a) // { dg-error "initializer" }
+                          ^
+
+"Test_name.c", line 42: error: expected a ")"
+    for (auto x = n ? 1 : 2 : a) // { dg-error "initializer" }
+                            ^
+
+"Test_name.c", line 45: error: expected a ":"
+    for (int i = 1; auto x = n ? 1 : 2 : a) // { dg-error "initializer" }
+                           ^
+
+"Test_name.c", line 45: error: this range-based "for" statement requires a suitable "begin" function and none was found
+    for (int i = 1; auto x = n ? 1 : 2 : a) // { dg-error "initializer" }
+                                     ^
+
+"Test_name.c", line 45: error: this range-based "for" statement requires a suitable "end" function and none was found
+    for (int i = 1; auto x = n ? 1 : 2 : a) // { dg-error "initializer" }
+                                     ^
+
+"Test_name.c", line 45: error: expected a ")"
+    for (int i = 1; auto x = n ? 1 : 2 : a) // { dg-error "initializer" }
+                                       ^
+
+"Test_name.c", line 45: warning: variable "i" was declared but never referenced
+    for (int i = 1; auto x = n ? 1 : 2 : a) // { dg-error "initializer" }
+             ^
+
+"Test_name.c", line 21: warning: label "a" was declared but never referenced
+    for (int i = n ? ({ a: 3; }) : 4; i < 10; i++)
+                        ^
+
+"Test_name.c", line 24: warning: label "L" was declared but never referenced
+    for (int i = n ? ({ L: 3; }) : 4; auto x : a)
+                        ^
+
+8 errors detected in the compilation of "Test_name.c".

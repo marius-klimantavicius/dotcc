@@ -1,0 +1,89 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 21: warning: unknown attribute "noipa"
+  ATTR (noipa) void*
+  ^
+
+"Test_name.c", line 29: warning: unknown attribute "noipa"
+  ATTR (noipa) void*
+  ^
+
+"Test_name.c", line 37: warning: unknown attribute "noipa"
+  ATTR (noipa) void*
+  ^
+
+"Test_name.c", line 49: warning: unknown attribute "noipa"
+  ATTR (noipa) intptr_t
+  ^
+
+"Test_name.c", line 61: warning: unknown attribute "noipa"
+  ATTR (noipa) void*
+  ^
+
+"Test_name.c", line 73: warning: unknown attribute "noipa"
+  ATTR (noipa) void*
+  ^
+
+"Test_name.c", line 82: warning: unknown attribute "noipa"
+  ATTR (noipa) void*
+  ^
+
+"Test_name.c", line 96: warning: unknown attribute "noipa"
+  ATTR (noipa) void*
+  ^
+
+"Test_name.c", line 103: warning: variable "r" is used before its value is set
+    void *r = q ? r ? a : b : c;
+                  ^
+
+"Test_name.c", line 107: warning: unknown attribute "noipa"
+  ATTR (noipa) void*
+  ^
+
+"Test_name.c", line 120: warning: unknown attribute "noipa"
+  ATTR (noipa) void*
+  ^
+
+"Test_name.c", line 132: warning: unknown attribute "noipa"
+  ATTR (noipa) void*
+  ^
+
+"Test_name.c", line 143: warning: unknown attribute "noipa"
+  ATTR (noipa) void*
+  ^
+
+"Test_name.c", line 153: warning: unknown attribute "noipa"
+  ATTR (noipa) void*
+  ^
+
+"Test_name.c", line 162: warning: unknown attribute "noipa"
+  ATTR (noipa) void*
+  ^
+
+"Test_name.c", line 170: warning: unknown attribute "noipa"
+  ATTR (noipa) void*
+  ^
+
+"Test_name.c", line 181: warning: unknown attribute "noipa"
+  ATTR (noipa) void*
+  ^
+
+"Test_name.c", line 192: warning: unknown attribute "noipa"
+  ATTR (noipa) void*
+  ^
+
+"Test_name.c", line 203: warning: unknown attribute "noipa"
+  ATTR (noipa) void*
+  ^
+
+"Test_name.c", line 214: warning: unknown attribute "noipa"
+  ATTR (noipa) void*
+  ^
+
+"Test_name.c", line 227: warning: unknown attribute "noipa"
+  ATTR (noipa) void*
+  ^
+
+"Test_name.c", line 239: warning: unknown attribute "noipa"
+  ATTR (noipa) void*
+  ^
+

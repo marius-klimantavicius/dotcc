@@ -1,0 +1,141 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 12: warning: enumerated type mixed with another type
+  CCTestEnum test = 50; // expected-warning {{integer constant not in range of enumerated type 'CCTestEnum'}}
+                    ^
+
+"Test_name.c", line 13: warning: enumerated type mixed with another type
+  CCTestEnum test1 = -50; // expected-warning {{integer constant not in range of enumerated type 'CCTestEnum'}}
+                     ^
+
+"Test_name.c", line 13: warning: integer conversion resulted in a change of sign
+  CCTestEnum test1 = -50; // expected-warning {{integer constant not in range of enumerated type 'CCTestEnum'}}
+                     ^
+
+"Test_name.c", line 16: warning: enumerated type mixed with another type
+  static const CCTestEnum SilenceWithCast1 = 51; // expected-warning {{integer constant not in range of enumerated type 'CCTestEnum'}}
+                                             ^
+
+"Test_name.c", line 18: warning: type qualifier is meaningless on cast type
+  static const CCTestEnum SilenceWithCast3 = (const CCTestEnum) 51; // no-warning
+                                              ^
+
+"Test_name.c", line 19: warning: type qualifier is meaningless on cast type
+  static const CCTestEnum SilenceWithCast4 = (const volatile CCTestEnum) 51; // no-warning
+                                              ^
+
+"Test_name.c", line 22: warning: enumerated type mixed with another type
+    CCTestEnum SilenceWithCast1 = 51; // expected-warning {{integer constant not in range of enumerated type 'CCTestEnum'}}
+                                  ^
+
+"Test_name.c", line 24: warning: type qualifier is meaningless on cast type
+    CCTestEnum SilenceWithCast3 = (const CCTestEnum) 51; // no-warning
+                                   ^
+
+"Test_name.c", line 25: warning: type qualifier is meaningless on cast type
+    CCTestEnum SilenceWithCast4 = (const volatile CCTestEnum) 51; // no-warning
+                                   ^
+
+"Test_name.c", line 27: warning: enumerated type mixed with another type
+    const CCTestEnum SilenceWithCast1c = 51; // expected-warning {{integer constant not in range of enumerated type 'CCTestEnum'}}
+                                         ^
+
+"Test_name.c", line 29: warning: type qualifier is meaningless on cast type
+    const CCTestEnum SilenceWithCast3c = (const CCTestEnum) 51; // no-warning
+                                          ^
+
+"Test_name.c", line 30: warning: type qualifier is meaningless on cast type
+    const CCTestEnum SilenceWithCast4c = (const volatile CCTestEnum) 51; // no-warning
+                                          ^
+
+"Test_name.c", line 22: warning: variable "SilenceWithCast1" was declared but never referenced
+    CCTestEnum SilenceWithCast1 = 51; // expected-warning {{integer constant not in range of enumerated type 'CCTestEnum'}}
+               ^
+
+"Test_name.c", line 23: warning: variable "SilenceWithCast2" was declared but never referenced
+    CCTestEnum SilenceWithCast2 = (CCTestEnum) 51; // no-warning
+               ^
+
+"Test_name.c", line 24: warning: variable "SilenceWithCast3" was declared but never referenced
+    CCTestEnum SilenceWithCast3 = (const CCTestEnum) 51; // no-warning
+               ^
+
+"Test_name.c", line 25: warning: variable "SilenceWithCast4" was declared but never referenced
+    CCTestEnum SilenceWithCast4 = (const volatile CCTestEnum) 51; // no-warning
+               ^
+
+"Test_name.c", line 27: warning: variable "SilenceWithCast1c" was declared but never referenced
+    const CCTestEnum SilenceWithCast1c = 51; // expected-warning {{integer constant not in range of enumerated type 'CCTestEnum'}}
+                     ^
+
+"Test_name.c", line 28: warning: variable "SilenceWithCast2c" was declared but never referenced
+    const CCTestEnum SilenceWithCast2c = (CCTestEnum) 51; // no-warning
+                     ^
+
+"Test_name.c", line 29: warning: variable "SilenceWithCast3c" was declared but never referenced
+    const CCTestEnum SilenceWithCast3c = (const CCTestEnum) 51; // no-warning
+                     ^
+
+"Test_name.c", line 30: warning: variable "SilenceWithCast4c" was declared but never referenced
+    const CCTestEnum SilenceWithCast4c = (const volatile CCTestEnum) 51; // no-warning
+                     ^
+
+"Test_name.c", line 34: warning: enumerated type mixed with another type
+    return 20; // expected-warning {{integer constant not in range of enumerated type 'CCTestEnum'}}
+           ^
+
+"Test_name.c", line 39: warning: enumerated type mixed with another type
+    *t = 20; // expected-warning {{integer constant not in range of enumerated type 'enum Test2'}}
+       ^
+
+"Test_name.c", line 40: warning: enumerated type mixed with another type
+    return 10; // expected-warning {{integer constant not in range of enumerated type 'enum Test2'}}
+           ^
+
+"Test_name.c", line 56: warning: enumerated type mixed with another type
+    CCTestEnum test = 1; // expected-warning {{integer constant not in range of enumerated type 'CCTestEnum'}}
+                      ^
+
+"Test_name.c", line 57: warning: enumerated type mixed with another type
+    test = 600; // expected-warning {{integer constant not in range of enumerated type 'CCTestEnum'}}
+         ^
+
+"Test_name.c", line 58: warning: enumerated type mixed with another type
+    foo(2); // expected-warning {{integer constant not in range of enumerated type 'CCTestEnum'}}
+        ^
+
+"Test_name.c", line 59: warning: enumerated type mixed with another type
+    foo(-1); // expected-warning {{integer constant not in range of enumerated type 'CCTestEnum'}}
+        ^
+
+"Test_name.c", line 59: warning: integer conversion resulted in a change of sign
+    foo(-1); // expected-warning {{integer constant not in range of enumerated type 'CCTestEnum'}}
+        ^
+
+"Test_name.c", line 60: warning: enumerated type mixed with another type
+    foo(4);
+        ^
+
+"Test_name.c", line 61: warning: enumerated type mixed with another type
+    foo(Two+1);
+        ^
+
+"Test_name.c", line 56: warning: variable "test" was set but never used
+    CCTestEnum test = 1; // expected-warning {{integer constant not in range of enumerated type 'CCTestEnum'}}
+               ^
+
+"Test_name.c", line 16: warning: variable "SilenceWithCast1" was declared but never referenced
+  static const CCTestEnum SilenceWithCast1 = 51; // expected-warning {{integer constant not in range of enumerated type 'CCTestEnum'}}
+                          ^
+
+"Test_name.c", line 17: warning: variable "SilenceWithCast2" was declared but never referenced
+  static const CCTestEnum SilenceWithCast2 = (CCTestEnum) 51; // no-warning
+                          ^
+
+"Test_name.c", line 18: warning: variable "SilenceWithCast3" was declared but never referenced
+  static const CCTestEnum SilenceWithCast3 = (const CCTestEnum) 51; // no-warning
+                          ^
+
+"Test_name.c", line 19: warning: variable "SilenceWithCast4" was declared but never referenced
+  static const CCTestEnum SilenceWithCast4 = (const volatile CCTestEnum) 51; // no-warning
+                          ^
+

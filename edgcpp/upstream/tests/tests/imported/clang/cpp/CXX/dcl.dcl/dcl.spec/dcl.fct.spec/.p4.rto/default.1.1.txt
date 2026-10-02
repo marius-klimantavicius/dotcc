@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 12: error: function "func_01" has already been defined (previous definition at line 10)
+    friend void func_01() {} // expected-error{{redefinition of 'func_01'}}
+                ^
+
+"Test_name.c", line 22: error: function "func_03" has already been defined (previous definition at line 20)
+    friend inline void func_03() {} // expected-error{{inline declaration of 'func_03' follows non-inline definition}}
+                       ^
+
+"Test_name.c", line 26: error: function "func_04" has already been defined (previous definition at line 25)
+  inline void func_04() {} // expected-error{{inline declaration of 'func_04' follows non-inline definition}}
+              ^
+
+3 errors detected in the compilation of "Test_name.c".

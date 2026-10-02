@@ -1,0 +1,70 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 8: error: expected a ";"
+    template<typename T> int foo(T), bar(T, T); // expected-error{{single entity}}
+                                   ^
+
+"Test_name.c", line 17: error: "test1::Derived<T>::Base" is ambiguous
+      typename Derived::Base<float>::t x; // expected-error {{found in multiple base classes of different types}}
+                        ^
+
+"Test_name.c", line 46: error: "test2::X<T...>::x [with T=<test2::A, test2::B>]" is ambiguous
+      X<A, B>::x<int>(); // expected-error {{found in multiple base classes of different types}}
+               ^
+
+"Test_name.c", line 46: error: type name is not allowed
+      X<A, B>::x<int>(); // expected-error {{found in multiple base classes of different types}}
+                 ^
+
+"Test_name.c", line 46: error: expected an expression
+      X<A, B>::x<int>(); // expected-error {{found in multiple base classes of different types}}
+                      ^
+
+"Test_name.c", line 47: error: "test2::X<T...>::x [with T=<test2::A, test2::C>]" is ambiguous
+      X<A, C>::x<int>(); // expected-error {{found in multiple base classes of different types}}
+               ^
+
+"Test_name.c", line 47: error: type name is not allowed
+      X<A, C>::x<int>(); // expected-error {{found in multiple base classes of different types}}
+                 ^
+
+"Test_name.c", line 47: error: expected an expression
+      X<A, C>::x<int>(); // expected-error {{found in multiple base classes of different types}}
+                      ^
+
+"Test_name.c", line 48: error: "test2::X<T...>::x [with T=<test2::B, test2::C>]" is ambiguous
+      X<B, C>::x<int>(); // expected-error {{found in multiple base classes of different types}}
+               ^
+
+"Test_name.c", line 48: error: type name is not allowed
+      X<B, C>::x<int>(); // expected-error {{found in multiple base classes of different types}}
+                 ^
+
+"Test_name.c", line 48: error: expected an expression
+      X<B, C>::x<int>(); // expected-error {{found in multiple base classes of different types}}
+                      ^
+
+"Test_name.c", line 49: error: "test2::X<T...>::x [with T=<test2::A, test2::B, test2::C>]" is ambiguous
+      X<A, B, C>::x<int>(); // expected-error {{found in multiple base classes of different types}}
+                  ^
+
+"Test_name.c", line 49: error: type name is not allowed
+      X<A, B, C>::x<int>(); // expected-error {{found in multiple base classes of different types}}
+                    ^
+
+"Test_name.c", line 49: error: expected an expression
+      X<A, B, C>::x<int>(); // expected-error {{found in multiple base classes of different types}}
+                         ^
+
+"Test_name.c", line 50: error: "test2::X<T...>::x [with T=<test2::A, test2::B, test2::D>]" is ambiguous
+      X<A, B, D>::x<int>(); // expected-error {{found in multiple base classes of different types}}
+                  ^
+
+"Test_name.c", line 50: error: type name is not allowed
+      X<A, B, D>::x<int>(); // expected-error {{found in multiple base classes of different types}}
+                    ^
+
+"Test_name.c", line 50: error: expected an expression
+      X<A, B, D>::x<int>(); // expected-error {{found in multiple base classes of different types}}
+                         ^
+
+17 errors detected in the compilation of "Test_name.c".

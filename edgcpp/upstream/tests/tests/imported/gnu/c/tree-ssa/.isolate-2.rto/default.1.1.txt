@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 11: warning: unknown attribute "returns_nonnull"
+  int * foo(int a) __attribute__((returns_nonnull));
+                                  ^
+
+"Test_name.c", line 12: warning: unknown attribute "returns_nonnull"
+  int * bar(void) __attribute__((returns_nonnull));
+                                 ^
+

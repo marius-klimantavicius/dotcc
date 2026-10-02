@@ -1,0 +1,10 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 24: error: a parameter is not allowed
+  g (int a, int b[fp ((int [2]) { a, a + 2 })])
+                                  ^
+
+"Test_name.c", line 24: error: a parameter is not allowed
+  g (int a, int b[fp ((int [2]) { a, a + 2 })])
+                                     ^
+
+2 errors detected in the compilation of "Test_name.c".

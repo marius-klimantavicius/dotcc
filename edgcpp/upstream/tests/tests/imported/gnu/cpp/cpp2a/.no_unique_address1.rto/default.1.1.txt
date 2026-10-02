@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 5: warning: attribute does not apply to any entity
+  [[no_unique_address]] struct B { }; // { dg-warning "attribute" }
+    ^
+
+"Test_name.c", line 6: warning: attribute "no_unique_address" does not apply here
+  [[no_unique_address]] int i;	    // { dg-warning "attribute" }
+    ^
+
+"Test_name.c", line 7: warning: attribute "no_unique_address" does not apply here
+  [[no_unique_address]] void f();	    // { dg-warning "attribute" }
+    ^
+
+"Test_name.c", line 12: warning: attribute "no_unique_address" does not apply here
+    [[no_unique_address]] void f();   // { dg-warning "attribute" }
+      ^
+
+"Test_name.c", line 13: warning: attribute "no_unique_address" does not apply here
+    [[no_unique_address]] static B c; // { dg-warning "attribute" }
+      ^
+

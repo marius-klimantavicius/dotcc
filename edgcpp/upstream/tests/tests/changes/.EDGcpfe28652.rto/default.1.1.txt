@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gn 160001 --c++14 Test_name.c
+"Test_name.c", line 12: warning: explicit "this" parameters are a C++23 feature
+    int f(this S const& self) { return 0; }
+          ^
+

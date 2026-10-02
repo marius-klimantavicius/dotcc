@@ -1,0 +1,233 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 13: error: no instance of function template "Nested::f1" matches the argument list
+            argument types are: (X<int, int, double>, X<double, int, double>)
+    int a1 = f1(X<int, int, double>(), X<double, int, double>());
+             ^
+"Test_name.c", line 10: note: candidate function template "Nested::f1" failed deduction
+    template<typename ...T> int f1(X<T, T...>... a); // expected-note +{{packs of different lengths for parameter 'T'}}
+                                ^
+
+"Test_name.c", line 15: error: no instance of function template "Nested::f1" matches the argument list
+            argument types are: (X<int>, X<double>)
+    int a3 = f1(X<int>(), X<double>()); // expected-error {{no matching}}
+             ^
+"Test_name.c", line 10: note: function template "Nested::f1" does not match because argument #1 does not match parameter
+    template<typename ...T> int f1(X<T, T...>... a); // expected-note +{{packs of different lengths for parameter 'T'}}
+                                ^
+
+"Test_name.c", line 16: error: no instance of function template "Nested::f1" matches the argument list
+            argument types are: (X<int, int>, X<int>)
+    int a4 = f1(X<int, int>(), X<int>()); // expected-error {{no matching}}
+             ^
+"Test_name.c", line 10: note: function template "Nested::f1" does not match because argument #1 does not match parameter
+    template<typename ...T> int f1(X<T, T...>... a); // expected-note +{{packs of different lengths for parameter 'T'}}
+                                ^
+
+"Test_name.c", line 17: error: no instance of function template "Nested::f1" matches the argument list
+            argument types are: (X<int>, X<int, int>)
+    int a5 = f1(X<int>(), X<int, int>()); // expected-error {{no matching}}
+             ^
+"Test_name.c", line 10: note: function template "Nested::f1" does not match because argument #1 does not match parameter
+    template<typename ...T> int f1(X<T, T...>... a); // expected-note +{{packs of different lengths for parameter 'T'}}
+                                ^
+
+"Test_name.c", line 18: error: no instance of function template "Nested::f1" matches the argument list
+            argument types are: (X<int, int, int>, X<int, int, int>, X<int, int, int, int>)
+    int a6 = f1(X<int, int, int>(), X<int, int, int>(), X<int, int, int, int>()); // expected-error {{no matching}}
+             ^
+"Test_name.c", line 10: note: function template "Nested::f1" does not match because argument #1 does not match parameter
+    template<typename ...T> int f1(X<T, T...>... a); // expected-note +{{packs of different lengths for parameter 'T'}}
+                                ^
+
+"Test_name.c", line 20: error: no instance of function template "Nested::f2" matches the argument list
+            argument types are: (P<X<int, double>, int>, P<X<int, double>, double>)
+    int b1 = f2(P<X<int, double>, int>(), P<X<int, double>, double>());
+             ^
+"Test_name.c", line 11: note: candidate function template "Nested::f2" failed deduction
+    template<typename ...T> int f2(P<X<T...>, T> ...a); // expected-note +{{packs of different lengths for parameter 'T'}}
+                                ^
+
+"Test_name.c", line 21: error: no instance of function template "Nested::f2" matches the argument list
+            argument types are: (P<X<int, double>, int>, P<X<int, double>, double>, P<X<int, double>, char>)
+    int b2 = f2(P<X<int, double>, int>(), P<X<int, double>, double>(), P<X<int, double>, char>()); // expected-error {{no matching}}
+             ^
+"Test_name.c", line 11: note: candidate function template "Nested::f2" failed deduction
+    template<typename ...T> int f2(P<X<T...>, T> ...a); // expected-note +{{packs of different lengths for parameter 'T'}}
+                                ^
+
+"Test_name.c", line 32: error: no instance of function template "PR14841::f" matches the argument list
+            argument types are: (PR14841::A<char, short>)
+      f<char, short, int>(a); // expected-error {{no matching function}}
+      ^
+"Test_name.c", line 26: note: candidate function template "PR14841::f" failed deduction
+    template<typename ...Ts> void f(A<Ts...>); // expected-note {{substitution failure [with Ts = <char, short, int>]: too many template arg}}
+                                  ^
+
+"Test_name.c", line 60: error: no instance of function template "PR14615::comment2::check" matches the argument list
+            argument types are: (int, int)
+      void f() { check<char>(1, 2); } // expected-error {{no matching function}}
+                 ^
+"Test_name.c", line 59: note: candidate function template "PR14615::comment2::check" failed deduction
+      char check(B...); // expected-note {{undefined template 'PR14615::comment2::X<char, int>'}}
+           ^
+
+"Test_name.c", line 67: error: no instance of function template "PR14615::comment3::check" matches the argument list
+            argument types are: (int, int)
+      void f() { check<char>(1, 2); } // expected-error {{no matching function}}
+                 ^
+"Test_name.c", line 66: note: candidate function template "PR14615::comment3::check" failed deduction
+      char check(B...); // expected-note {{undefined template 'PR14615::comment3::X<char, int>'}}
+           ^
+
+"Test_name.c", line 76: warning: fold expressions are nonstandard in this mode
+        return (X + ... + 0); // expected-warning {{extension}}
+                  ^
+
+"Test_name.c", line 106: error: no instance of function template "fully_expanded_packs::A<T...>::f [with T=<int, int>]" matches the argument list
+      A<int, int>::f<0>(); // expected-error {{no matching function}}
+      ^
+"Test_name.c", line 73: note: candidate function template "fully_expanded_packs::A<T...>::f [with T=<int, int>]" failed deduction
+      template<T ...X> static constexpr int f() {
+                                            ^
+
+"Test_name.c", line 107: error: no instance of function template "fully_expanded_packs::A<T...>::g [with T=<int, int>]" matches the argument list
+      A<int, int>::g(); // expected-error {{no matching function}}
+      ^
+"Test_name.c", line 79: note: candidate function template "fully_expanded_packs::A<T...>::g [with T=<int, int>]" failed deduction
+      template<T ...X, int Y> static constexpr int g() {
+                                                   ^
+
+"Test_name.c", line 108: error: no instance of function template "fully_expanded_packs::A<T...>::g [with T=<int, int>]" matches the argument list
+      A<int, int>::g<>(); // expected-error {{no matching function}}
+      ^
+"Test_name.c", line 79: note: candidate function template "fully_expanded_packs::A<T...>::g [with T=<int, int>]" failed deduction
+      template<T ...X, int Y> static constexpr int g() {
+                                                   ^
+
+"Test_name.c", line 109: error: no instance of function template "fully_expanded_packs::A<T...>::g [with T=<int, int>]" matches the argument list
+      A<int, int>::g<0>(); // expected-error {{no matching function}}
+      ^
+"Test_name.c", line 79: note: candidate function template "fully_expanded_packs::A<T...>::g [with T=<int, int>]" failed deduction
+      template<T ...X, int Y> static constexpr int g() {
+                                                   ^
+
+"Test_name.c", line 110: error: no instance of function template "fully_expanded_packs::A<T...>::g [with T=<int, int>]" matches the argument list
+      A<int, int>::g<0, 0>(); // expected-error {{no matching function}}
+      ^
+"Test_name.c", line 79: note: candidate function template "fully_expanded_packs::A<T...>::g [with T=<int, int>]" failed deduction
+      template<T ...X, int Y> static constexpr int g() {
+                                                   ^
+
+"Test_name.c", line 111: error: no instance of function template "fully_expanded_packs::A<T...>::f [with T=<>]" matches the argument list
+      A<>::f<0>(); // expected-error {{no matching function}}
+      ^
+"Test_name.c", line 73: note: substituting explicit template arguments "<0>" for function template "fully_expanded_packs::A<T...>::f [with T=<>]" failed
+      template<T ...X> static constexpr int f() {
+                                            ^
+
+"Test_name.c", line 112: error: no instance of function template "fully_expanded_packs::A<T...>::g [with T=<>]" matches the argument list
+      A<>::g(); // expected-error {{no matching function}}
+      ^
+"Test_name.c", line 79: note: candidate function template "fully_expanded_packs::A<T...>::g [with T=<>]" failed deduction
+      template<T ...X, int Y> static constexpr int g() {
+                                                   ^
+
+"Test_name.c", line 113: error: no instance of function template "fully_expanded_packs::A<T...>::g [with T=<>]" matches the argument list
+      A<>::g<>(); // expected-error {{no matching function}}
+      ^
+"Test_name.c", line 79: note: candidate function template "fully_expanded_packs::A<T...>::g [with T=<>]" failed deduction
+      template<T ...X, int Y> static constexpr int g() {
+                                                   ^
+
+"Test_name.c", line 114: error: no instance of function template "fully_expanded_packs::A<T...>::g [with T=<>]" matches the argument list
+      A<>::g<0, 0>(); // expected-error {{no matching function}}
+      ^
+"Test_name.c", line 79: note: substituting explicit template arguments "<0, 0>" for function template "fully_expanded_packs::A<T...>::g [with T=<>]" failed
+      template<T ...X, int Y> static constexpr int g() {
+                                                   ^
+
+"Test_name.c", line 115: error: no instance of function template "fully_expanded_packs::A<T...>::h [with T=<>]" matches the argument list
+      A<>::h<>(); // expected-error {{no matching function}}
+      ^
+"Test_name.c", line 86: note: candidate function template "fully_expanded_packs::A<T...>::h [with T=<>]" failed deduction
+      template<T ...X, int Y, T ...Z> static constexpr int h() {
+                                                           ^
+
+"Test_name.c", line 116: error: no instance of function template "fully_expanded_packs::A<T...>::h [with T=<int>]" matches the argument list
+      A<int>::h<>(); // expected-error {{no matching function}}
+      ^
+"Test_name.c", line 86: note: candidate function template "fully_expanded_packs::A<T...>::h [with T=<int>]" failed deduction
+      template<T ...X, int Y, T ...Z> static constexpr int h() {
+                                                           ^
+
+"Test_name.c", line 118: error: no instance of function template "fully_expanded_packs::A<T...>::h [with T=<>]" matches the argument list
+      A<>::h<0, 0>(); // expected-error {{no matching function}}
+      ^
+"Test_name.c", line 86: note: substituting explicit template arguments "<0, 0>" for function template "fully_expanded_packs::A<T...>::h [with T=<>]" failed
+      template<T ...X, int Y, T ...Z> static constexpr int h() {
+                                                           ^
+
+"Test_name.c", line 150: error: no instance of function template "partial_full_mix::A<T...>::f [with T=<int, float>]" matches the argument list
+            argument types are: (partial_full_mix::pair<int, char>, partial_full_mix::pair<float, double>, partial_full_mix::pair<void, long>)
+            object type is: partial_full_mix::A<int, float>
+    pair<tuple<int, float>, tuple<char, double>> k2 = A<int, float>().f<char>(pair<int, char>(), pair<float, double>(), pair<void, long>()); // expected-error {{no match}}
+                                                                      ^
+"Test_name.c", line 138: note: candidate function template "partial_full_mix::A<T...>::f [with T=<int, float>]" failed deduction
+      template<typename ...U> static pair<tuple<T...>, tuple<U...>> f(pair<T, U> ...p);
+                                                                    ^
+
+"Test_name.c", line 151: error: no instance of function template "partial_full_mix::A<T...>::f [with T=<int, float>]" matches the argument list
+            argument types are: (partial_full_mix::pair<int, char>, partial_full_mix::pair<float, double>)
+            object type is: partial_full_mix::A<int, float>
+    pair<tuple<int, float>, tuple<char, double>> k3 = A<int, float>().f<char, double, void>(pair<int, char>(), pair<float, double>()); // expected-error {{no match}}
+                                                                      ^
+"Test_name.c", line 138: note: candidate function template "partial_full_mix::A<T...>::f [with T=<int, float>]" failed deduction
+      template<typename ...U> static pair<tuple<T...>, tuple<U...>> f(pair<T, U> ...p);
+                                                                    ^
+
+"Test_name.c", line 154: error: no instance of function template "partial_full_mix::A<T...>::g [with T=<int, float>]" matches the argument list
+            argument types are: (partial_full_mix::pair<int, char>, partial_full_mix::pair<float, double>, partial_full_mix::pair<void, long>)
+            object type is: partial_full_mix::A<int, float>
+    pair<tuple<int, float>, tuple<char, double>> k4 = A<int, float>().g<char>(pair<int, char>(), pair<float, double>(), pair<void, long>()); // expected-error {{no match}}
+                                                                      ^
+"Test_name.c", line 142: note: candidate function template "partial_full_mix::A<T...>::g [with T=<int, float>]" failed deduction
+      template<typename ...U> static pair<tuple<T...>, tuple<U...>> g(pair<T, U> ...p, ...);
+                                                                    ^
+
+"Test_name.c", line 162: error: expected a ")"
+      template <typename... U> void f(void(*...)(T, U)); // expected-warning {{ISO C++11 requires a parenthesized pack declaration to have a name}}
+                                            ^
+
+"Test_name.c", line 162: error: parameter pack "T" was referenced but not expanded
+      template <typename... U> void f(void(*...)(T, U)); // expected-warning {{ISO C++11 requires a parenthesized pack declaration to have a name}}
+                                                 ^
+
+"Test_name.c", line 162: error: parameter pack "U" was referenced but not expanded
+      template <typename... U> void f(void(*...)(T, U)); // expected-warning {{ISO C++11 requires a parenthesized pack declaration to have a name}}
+                                                    ^
+
+"Test_name.c", line 166: error: no instance of function template "substitution_vs_function_deduction::A<T...>::f [with T=<int>]" matches the argument list
+            argument types are: (void (int, int))
+            object type is: substitution_vs_function_deduction::A<int>
+      A<int>().f(f);
+               ^
+"Test_name.c", line 162: note: candidate function template "substitution_vs_function_deduction::A<T...>::f [with T=<int>]" failed deduction
+      template <typename... U> void f(void(*...)(T, U)); // expected-warning {{ISO C++11 requires a parenthesized pack declaration to have a name}}
+                                    ^
+
+"Test_name.c", line 208: error: pack "Us" does not have the same number of elements as "Ts"
+    template <class... Us> using Y = X<void(Ts, Us)...>; // #GH17042_Y
+                                                ^
+          detected during instantiation of type "GH17042::X<Ts...>::Y<T...> [with Ts=<int, int>]" at line 212
+
+"Test_name.c", line 246: error: pack "Args2" does not have the same number of elements as "Args1"
+    using B = C<void(Args1<T>, Args2<T>)...>;
+                               ^
+          detected during instantiation of type "GH17042::TemplateTemplateParameters::Ttp<T, Args1...>::B<Args...> [with T=int, Args1=<GH17042::TemplateTemplateParameters::D, GH17042::TemplateTemplateParameters::D>]" at line 251
+
+"Test_name.c", line 256: error: pack "Args2" does not have the same number of elements as "Args1"
+    template <int... Args2> using B = Nttp<(Args1 + Args2)...>;
+                                                    ^
+          detected during instantiation of type "GH17042::NTTP::Nttp<Args1...>::B<Args...> [with Args1=<1, 2, 3>]" at line 259
+
+32 errors detected in the compilation of "Test_name.c".

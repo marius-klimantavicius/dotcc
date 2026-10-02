@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 7: error: statement expressions are only allowed in block scope
+  A<({})> a; /* { dg-error "forbids braced-groups within expressions|statement-expressions|template argument 1 is invalid|invalid type" } */
+     ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,804 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 421: error: identifier "__int128" is undefined
+      struct __is_integral_helper<__int128>
+                                  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 426: error: expected a ">"
+      struct __is_integral_helper<unsigned __int128>
+                                           ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 812: error: expected a ">"
+     , signed __int128
+              ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 832: error: expected a ">"
+     , unsigned __int128
+                ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 1877: error: identifier "__int128" is undefined
+      struct __make_unsigned<__int128>
+                             ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 1878: error: expected a ";"
+      { using __type = unsigned __int128; };
+                                ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 2037: error: expected a ">"
+      struct __make_signed<unsigned __int128>
+                                    ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 2038: error: identifier "__int128" is undefined
+      { using __type = __int128; };
+                       ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/cpp_type_traits.h", line 264: error: identifier "__int128" is undefined
+  __extension__ template<> struct __is_integer<__int128> { enum { __value = 1 }; typedef __true_type __type; }; __extension__ template<> struct __is_integer<unsigned __int128> { enum { __value = 1 }; typedef __true_type __type; };
+                                               ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/cpp_type_traits.h", line 264: error: expected a ">"
+  __extension__ template<> struct __is_integer<__int128> { enum { __value = 1 }; typedef __true_type __type; }; __extension__ template<> struct __is_integer<unsigned __int128> { enum { __value = 1 }; typedef __true_type __type; };
+                                                                                                                                                                      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1041: error: identifier "__int128" is undefined
+    __extension__ inline constexpr __int128
+                                   ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1042: error: identifier "__int128" is undefined
+    __size_to_integer(__int128 __n) { return __n; }
+                      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1044: error: missing initializer for constexpr variable
+    __size_to_integer(unsigned __int128 __n) { return __n; }
+    ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1044: error: expected a ";"
+    __size_to_integer(unsigned __int128 __n) { return __n; }
+    ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1223: error: identifier "__is_random_access_iter" is undefined
+        __is_random_access_iter<_II>::__value, bool>::__type
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1223: error: type name is not allowed
+        __is_random_access_iter<_II>::__value, bool>::__type
+                                ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1223: error: too few arguments for class template "__gnu_cxx::__enable_if"
+        __is_random_access_iter<_II>::__value, bool>::__type
+                                   ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1223: error: expected a ";"
+        __is_random_access_iter<_II>::__value, bool>::__type
+                                             ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1237: error: identifier "__is_random_access_iter" is undefined
+        __is_random_access_iter<_II>::__value, bool>::__type
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1237: error: type name is not allowed
+        __is_random_access_iter<_II>::__value, bool>::__type
+                                ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1237: error: too few arguments for class template "__gnu_cxx::__enable_if"
+        __is_random_access_iter<_II>::__value, bool>::__type
+                                   ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1237: error: expected a ";"
+        __is_random_access_iter<_II>::__value, bool>::__type
+                                             ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1308: error: identifier "random_access_iterator_tag" is undefined
+      struct __lc_rai<random_access_iterator_tag, random_access_iterator_tag>
+                      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1308: error: identifier "random_access_iterator_tag" is undefined
+      struct __lc_rai<random_access_iterator_tag, random_access_iterator_tag>
+                                                  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1398: error: identifier "ptrdiff_t" is undefined
+   static ptrdiff_t
+          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1934: error: pair is not a template
+      pair<_InputIterator1, _InputIterator2>
+      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1961: error: pair is not a template
+      inline pair<_InputIterator1, _InputIterator2>
+             ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1996: error: pair is not a template
+      inline pair<_InputIterator1, _InputIterator2>
+             ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 2013: error: pair is not a template
+      pair<_InputIterator1, _InputIterator2>
+      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 2043: error: pair is not a template
+      inline pair<_InputIterator1, _InputIterator2>
+             ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 2080: error: pair is not a template
+      inline pair<_InputIterator1, _InputIterator2>
+             ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 2112: error: iterator_traits is not a template
+      typename iterator_traits<_InputIterator>::difference_type
+               ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 2305: error: expected a declaration
+  }
+  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/exception.h", line 81: error: expected a declaration
+  }
+  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 81: error: invalid specifier outside a class declaration
+      virtual const char* what() const throw();
+      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 81: error: a type qualifier is not allowed on a nonmember function
+      virtual const char* what() const throw();
+                                 ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 82: error: expected a declaration
+    };
+    ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 85: error: not a class or struct name
+    class bad_array_new_length : public bad_alloc
+                                        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 100: error: identifier "size_t" is undefined
+    enum class align_val_t: size_t {};
+                            ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 124: error: expected a declaration
+  }
+  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 140: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 155: error: namespace "std" has no member "nothrow_t"
+  [[__nodiscard__]] void* operator new(std::size_t, const std::nothrow_t&)
+                                                               ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 155: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 158: error: namespace "std" has no member "nothrow_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, const std::nothrow_t&)
+                                                                 ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 158: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 161: error: namespace "std" has no member "nothrow_t"
+  void operator delete(void*, const std::nothrow_t&)
+                                         ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 164: error: namespace "std" has no member "nothrow_t"
+  void operator delete[](void*, const std::nothrow_t&)
+                                           ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 168: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t, std::align_val_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 171: error: namespace "std" has no member "nothrow_t"
+  [[__nodiscard__]] void* operator new(std::size_t, std::align_val_t, const std::nothrow_t&)
+                                                                                 ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 171: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t, std::align_val_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 176: error: namespace "std" has no member "nothrow_t"
+  void operator delete(void*, std::align_val_t, const std::nothrow_t&)
+                                                           ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 179: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, std::align_val_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 182: error: namespace "std" has no member "nothrow_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, std::align_val_t, const std::nothrow_t&)
+                                                                                   ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 182: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, std::align_val_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 187: error: namespace "std" has no member "nothrow_t"
+  void operator delete[](void*, std::align_val_t, const std::nothrow_t&)
+                                                             ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 206: error: first parameter of allocation function must be of type "size_t"
+  void* operator new(std::size_t, void* __p)
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 210: error: first parameter of allocation function must be of type "size_t"
+  void* operator new[](std::size_t, void* __p)
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 224: error: expected a declaration
+  }
+  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 250: error: identifier "size_t" is undefined
+    inline constexpr size_t hardware_constructive_interference_size = 64;
+                     ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 264: error: expected a declaration
+  }
+  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/new_allocator.h", line 92: error: function "__new_allocator" is not a type name
+        __new_allocator(const __new_allocator&) noexcept { }
+                              ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/new_allocator.h", line 97: error: overloaded function "__new_allocator" is not a template
+   __new_allocator(const __new_allocator<_Tp1>&) noexcept { }
+                         ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/new_allocator.h", line 100: error: overloaded function "__new_allocator" is not a type name
+        __new_allocator& operator=(const __new_allocator&) = default;
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/new_allocator.h", line 100: error: "operator=" must be a member function
+        __new_allocator& operator=(const __new_allocator&) = default;
+                         ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/new_allocator.h", line 100: error: overloaded function "__new_allocator" is not a type name
+        __new_allocator& operator=(const __new_allocator&) = default;
+                                         ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/new_allocator.h", line 100: error: "= default" can only appear on default constructors, copy/move constructors, copy/move assignment operators, and destructors
+        __new_allocator& operator=(const __new_allocator&) = default;
+                                                             ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/new_allocator.h", line 104: error: expected a declaration
+        ~__new_allocator() noexcept { }
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/new_allocator.h", line 149: error: expected a declaration
+     }
+     ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/new_allocator.h", line 152: error: expected a declaration
+        }
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/new_allocator.h", line 241: error: expected a declaration
+  }
+  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/allocator.h", line 101: error: identifier "true_type" is undefined
+   = true_type;
+     ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/allocator.h", line 120: error: expected a declaration
+      };
+      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/allocator.h", line 133: error: __allocator_base is not a template
+      class allocator : public __allocator_base<_Tp>
+                               ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/allocator.h", line 137: error: identifier "size_t" is undefined
+        typedef size_t size_type;
+                ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/allocator.h", line 138: error: identifier "ptrdiff_t" is undefined
+        typedef ptrdiff_t difference_type;
+                ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/allocator.h", line 155: error: identifier "true_type" is undefined
+        using propagate_on_container_move_assignment = true_type;
+                                                       ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/allocator.h", line 160: error: identifier "true_type" is undefined
+   = true_type;
+     ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/allocator.h", line 300: error: expected a declaration
+  }
+  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 137: error: identifier "_Arg2" is undefined
+        typedef _Arg2 second_argument_type;
+                ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 140: error: identifier "_Result" is undefined
+        typedef _Result result_type;
+                ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 141: error: expected a declaration
+      } __attribute__ ((__deprecated__));
+      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 184: error: binary_function is not a template
+      struct plus : public binary_function<_Tp, _Tp, _Tp>
+                           ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 195: error: binary_function is not a template
+      struct minus : public binary_function<_Tp, _Tp, _Tp>
+                            ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 205: error: binary_function is not a template
+      struct multiplies : public binary_function<_Tp, _Tp, _Tp>
+                                 ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 215: error: binary_function is not a template
+      struct divides : public binary_function<_Tp, _Tp, _Tp>
+                              ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 225: error: binary_function is not a template
+      struct modulus : public binary_function<_Tp, _Tp, _Tp>
+                              ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 235: error: unary_function is not a template
+      struct negate : public unary_function<_Tp, _Tp>
+                             ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 370: error: binary_function is not a template
+      struct equal_to : public binary_function<_Tp, _Tp, bool>
+                               ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 380: error: binary_function is not a template
+      struct not_equal_to : public binary_function<_Tp, _Tp, bool>
+                                   ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 390: error: binary_function is not a template
+      struct greater : public binary_function<_Tp, _Tp, bool>
+                              ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 400: error: binary_function is not a template
+      struct less : public binary_function<_Tp, _Tp, bool>
+                           ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 410: error: binary_function is not a template
+      struct greater_equal : public binary_function<_Tp, _Tp, bool>
+                                    ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 420: error: binary_function is not a template
+      struct less_equal : public binary_function<_Tp, _Tp, bool>
+                                 ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 430: error: binary_function is not a template
+      struct greater<_Tp*> : public binary_function<_Tp*, _Tp*, bool>
+                                    ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 445: error: binary_function is not a template
+      struct less<_Tp*> : public binary_function<_Tp*, _Tp*, bool>
+                                 ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 460: error: binary_function is not a template
+      struct greater_equal<_Tp*> : public binary_function<_Tp*, _Tp*, bool>
+                                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 475: error: binary_function is not a template
+      struct less_equal<_Tp*> : public binary_function<_Tp*, _Tp*, bool>
+                                       ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 542: error: identifier "false_type" is undefined
+   _S_cmp(_Tp&& __t, _Up&& __u, false_type)
+                                ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 547: error: identifier "true_type" is undefined
+   _S_cmp(_Tp&& __t, _Up&& __u, true_type) noexcept
+                                ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 556: error: not a class or struct name
+   struct __not_overloaded2 : true_type { };
+                              ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 560: error: __void_t is not a template
+   struct __not_overloaded2<_Tp, _Up, __void_t<
+                                      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 562: error: not a class or struct name
+   : false_type { };
+     ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 570: error: __void_t is not a template
+   struct __not_overloaded<_Tp, _Up, __void_t<
+                                     ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 572: error: not a class or struct name
+   : false_type { };
+     ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 575: error: __and_ is not a template
+   using __ptr_cmp = __and_<__not_overloaded<_Tp, _Up>,
+                     ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 576: error: identifier "is_convertible" is undefined
+         is_convertible<_Tp, const volatile void*>,
+         ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 576: error: type name is not allowed
+         is_convertible<_Tp, const volatile void*>,
+                        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 576: error: expected a ";"
+         is_convertible<_Tp, const volatile void*>,
+                                                  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 604: error: identifier "false_type" is undefined
+   _S_cmp(_Tp&& __t, _Up&& __u, false_type)
+                                ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 609: error: identifier "true_type" is undefined
+   _S_cmp(_Tp&& __t, _Up&& __u, true_type) noexcept
+                                ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 618: error: not a class or struct name
+   struct __not_overloaded2 : true_type { };
+                              ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 622: error: __void_t is not a template
+   struct __not_overloaded2<_Tp, _Up, __void_t<
+                                      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 624: error: not a class or struct name
+   : false_type { };
+     ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 632: error: __void_t is not a template
+   struct __not_overloaded<_Tp, _Up, __void_t<
+                                     ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 634: error: not a class or struct name
+   : false_type { };
+     ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 637: error: __and_ is not a template
+   using __ptr_cmp = __and_<__not_overloaded<_Tp, _Up>,
+                     ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 638: error: identifier "is_convertible" is undefined
+         is_convertible<_Tp, const volatile void*>,
+         ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 638: error: type name is not allowed
+         is_convertible<_Tp, const volatile void*>,
+                        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 638: error: expected a ";"
+         is_convertible<_Tp, const volatile void*>,
+                                                  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 666: error: identifier "false_type" is undefined
+   _S_cmp(_Tp&& __t, _Up&& __u, false_type)
+                                ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 671: error: identifier "true_type" is undefined
+   _S_cmp(_Tp&& __t, _Up&& __u, true_type) noexcept
+                                ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 680: error: not a class or struct name
+   struct __not_overloaded2 : true_type { };
+                              ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 684: error: __void_t is not a template
+   struct __not_overloaded2<_Tp, _Up, __void_t<
+                                      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 686: error: not a class or struct name
+   : false_type { };
+     ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 694: error: __void_t is not a template
+   struct __not_overloaded<_Tp, _Up, __void_t<
+                                     ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 696: error: not a class or struct name
+   : false_type { };
+     ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 699: error: __and_ is not a template
+   using __ptr_cmp = __and_<__not_overloaded<_Tp, _Up>,
+                     ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 700: error: identifier "is_convertible" is undefined
+         is_convertible<_Tp, const volatile void*>,
+         ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 700: error: type name is not allowed
+         is_convertible<_Tp, const volatile void*>,
+                        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 700: error: expected a ";"
+         is_convertible<_Tp, const volatile void*>,
+                                                  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 728: error: identifier "false_type" is undefined
+   _S_cmp(_Tp&& __t, _Up&& __u, false_type)
+                                ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 733: error: identifier "true_type" is undefined
+   _S_cmp(_Tp&& __t, _Up&& __u, true_type) noexcept
+                                ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 742: error: not a class or struct name
+   struct __not_overloaded2 : true_type { };
+                              ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 746: error: __void_t is not a template
+   struct __not_overloaded2<_Tp, _Up, __void_t<
+                                      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 748: error: not a class or struct name
+   : false_type { };
+     ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 756: error: __void_t is not a template
+   struct __not_overloaded<_Tp, _Up, __void_t<
+                                     ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 758: error: not a class or struct name
+   : false_type { };
+     ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 761: error: __and_ is not a template
+   using __ptr_cmp = __and_<__not_overloaded<_Tp, _Up>,
+                     ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 762: error: identifier "is_convertible" is undefined
+         is_convertible<_Tp, const volatile void*>,
+         ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 762: error: type name is not allowed
+         is_convertible<_Tp, const volatile void*>,
+                        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 762: error: expected a ";"
+         is_convertible<_Tp, const volatile void*>,
+                                                  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 793: error: binary_function is not a template
+      struct logical_and : public binary_function<_Tp, _Tp, bool>
+                                  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 803: error: binary_function is not a template
+      struct logical_or : public binary_function<_Tp, _Tp, bool>
+                                 ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 813: error: unary_function is not a template
+      struct logical_not : public unary_function<_Tp, bool>
+                                  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 890: error: binary_function is not a template
+      struct bit_and : public binary_function<_Tp, _Tp, _Tp>
+                              ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 899: error: binary_function is not a template
+      struct bit_or : public binary_function<_Tp, _Tp, _Tp>
+                             ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 908: error: binary_function is not a template
+      struct bit_xor : public binary_function<_Tp, _Tp, _Tp>
+                              ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 917: error: unary_function is not a template
+      struct bit_not : public unary_function<_Tp, _Tp>
+                              ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 1022: error: unary_function is not a template
+      : public unary_function<typename _Predicate::argument_type, bool>
+               ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 1049: error: binary_function is not a template
+      : public binary_function<typename _Predicate::first_argument_type,
+               ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 1102: error: unary_function is not a template
+      class pointer_to_unary_function : public unary_function<_Arg, _Result>
+                                               ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 1129: error: binary_function is not a template
+      : public binary_function<_Arg1, _Arg2, _Result>
+               ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 1156: error: unary_function is not a template
+      : public unary_function<_Tp, _Tp>
+               ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 1172: error: unary_function is not a template
+      : public unary_function<_Pair, typename _Pair::first_type>
+               ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 1197: error: unary_function is not a template
+      : public unary_function<_Pair, typename _Pair::second_type>
+               ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 1229: error: unary_function is not a template
+      class mem_fun_t : public unary_function<_Tp*, _Ret>
+                               ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 1246: error: unary_function is not a template
+      class const_mem_fun_t : public unary_function<const _Tp*, _Ret>
+                                     ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 1263: error: unary_function is not a template
+      class mem_fun_ref_t : public unary_function<_Tp, _Ret>
+                                   ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 1280: error: unary_function is not a template
+      class const_mem_fun_ref_t : public unary_function<_Tp, _Ret>
+                                         ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 1297: error: binary_function is not a template
+      class mem_fun1_t : public binary_function<_Tp*, _Arg, _Ret>
+                                ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 1314: error: binary_function is not a template
+      class const_mem_fun1_t : public binary_function<const _Tp*, _Arg, _Ret>
+                                      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 1331: error: binary_function is not a template
+      class mem_fun1_ref_t : public binary_function<_Tp, _Arg, _Ret>
+                                    ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 1348: error: binary_function is not a template
+      class const_mem_fun1_ref_t : public binary_function<_Tp, _Arg, _Ret>
+                                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 1417: error: __void_t is not a template
+    template<typename _Func, typename _SfinaeType, typename = __void_t<>>
+                                                              ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 1423: error: __void_t is not a template
+      __void_t<typename _Func::is_transparent>>
+      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_function.h", line 1438: error: expected a declaration
+  }
+  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/backward/binders.h", line 135: error: binder1st is not a template
+      inline binder1st<_Operation>
+             ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/backward/binders.h", line 145: error: unary_function is not a template
+      : public unary_function<typename _Operation::first_argument_type,
+               ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/backward/binders.h", line 180: error: expected a declaration
+  }
+  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_construct.h", line 134: error: expected a declaration
+      }
+      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_construct.h", line 300: error: expected a declaration
+  }
+  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/alloc_traits.h", line 70: error: expected a declaration
+        };
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/alloc_traits.h", line 78: error: identifier "__void_t" is undefined
+          __void_t<typename _Tp::template rebind<_Up>::other>>
+          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/alloc_traits.h", line 78: error: type name is not allowed
+          __void_t<typename _Tp::template rebind<_Up>::other>>
+                   ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/alloc_traits.h", line 77: error: __rebind is not a template
+        struct __rebind<_Tp, _Up,
+               ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/alloc_traits.h", line 78: error: expected a ";"
+          __void_t<typename _Tp::template rebind<_Up>::other>>
+                                                            ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/alloc_traits.h", line 89: error: expected a declaration
+    protected:
+    ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/alloc_traits.h", line 105: error: "__equal" has already been declared in the current scope
+        using __equal = __type_identity<typename _Tp::is_always_equal>;
+              ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/alloc_traits.h", line 105: error: __type_identity is not a template
+        using __equal = __type_identity<typename _Tp::is_always_equal>;
+                        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/alloc_traits.h", line 124: error: __void_t is not a template
+       __void_t<__allocate_hint_t<_Alloc, _Sz, _Vp>>>
+       ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/alloc_traits.h", line 161: error: __void_t is not a template
+        __void_t<__construct_t<_Alloc, _Tp, _Args...>>,
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/alloc_traits.h", line 174: error: __void_t is not a template
+        __has_new_expr<_Tp, __void_t<__new_expr_t<_Tp, _Args...>>, _Args...>
+                            ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/alloc_traits.h", line 196: error: __void_t is not a template
+         __void_t<__destroy_t<_Alloc, _Tp>>>
+         ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/alloc_traits.h", line 213: error: __void_t is not a template
+          __void_t<__max_size_t<_Alloc>>>
+          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/alloc_traits.h", line 232: error: __void_t is not a template
+        static constexpr bool __has_soccc<_Alloc, __void_t<__soccc_t<_Alloc>>>
+                                                  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/alloc_traits.h", line 235: error: expected a declaration
+    };
+    ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/alloc_traits.h", line 239: error: a class or namespace qualified name is required
+        = typename __allocator_traits_base::template __rebind<_Alloc, _Up>::type;
+                   ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/alloc_traits.h", line 239: error: __rebind is not a template
+        = typename __allocator_traits_base::template __rebind<_Alloc, _Up>::type;
+                                                     ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/alloc_traits.h", line 239: error: expected a ";"
+        = typename __allocator_traits_base::template __rebind<_Alloc, _Up>::type;
+                                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/alloc_traits.h", line 249: error: not a class or struct name
+      struct allocator_traits : __allocator_traits_base
+                                ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/alloc_traits.h", line 261: error: __detected_or_t is not a template
+        using pointer = __detected_or_t<value_type*, __pointer, _Alloc>;
+                        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/alloc_traits.h", line 261: error: identifier "__pointer" is undefined
+        using pointer = __detected_or_t<value_type*, __pointer, _Alloc>;
+                                                     ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/alloc_traits.h", line 268: error: pointer_traits is not a template
+     using type = typename pointer_traits<pointer>::template rebind<_Tp>;
+                           ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/alloc_traits.h", line 268: error: expected a ";"
+     using type = typename pointer_traits<pointer>::template rebind<_Tp>;
+                                                                       ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/alloc_traits.h", line 272: error: __void_t is not a template
+   struct _Ptr<_Func, _Tp, __void_t<_Func<_Alloc>>>
+                           ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/alloc_traits.h", line 280: error: pointer_traits is not a template
+   { using type = typename pointer_traits<_PtrT>::difference_type; };
+                           ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/alloc_traits.h", line 283: error: __void_t is not a template
+   struct _Diff<_A2, _PtrT, __void_t<typename _A2::difference_type>>
+                            ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/alloc_traits.h", line 288: error: make_unsigned is not a template
+   struct _Size : make_unsigned<_DiffT> { };
+                  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/alloc_traits.h", line 291: error: __void_t is not a template
+   struct _Size<_A2, _DiffT, __void_t<typename _A2::size_type>>
+                             ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/alloc_traits.h", line 342: error: __detected_or_t is not a template
+   = __detected_or_t<false_type, __pocca, _Alloc>;
+     ^
+
+Error limit reached.
+200 errors detected in the compilation of "Test_name.c".
+Compilation terminated.

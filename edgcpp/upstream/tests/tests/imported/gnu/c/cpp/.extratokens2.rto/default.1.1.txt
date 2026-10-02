@@ -1,0 +1,32 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc -E Test_name.c
+# 1 "Test_name.c"
+
+
+ 
+
+ 
+ 
+
+
+ 
+
+
+ 
+
+"Test_name.c", line 16: warning: extra text after expected end of preprocessing directive
+  #else foo	/* { dg-bogus "extra tokens" "bad warning" } */
+        ^
+
+"Test_name.c", line 17: warning: extra text after expected end of preprocessing directive
+  #endif /	/* { dg-bogus "extra tokens" "bad warning" } */
+         ^
+
+
+
+
+
+
+
+# 36 "file.c"
+
+ 

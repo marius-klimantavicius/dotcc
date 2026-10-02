@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 5: warning: unknown attribute "disable_tail_calls"
+  [[disable_tail_calls, noduplicate]] void f() {} // expected-warning {{unknown attribute 'disable_tail_calls'}} expected-warning {{unknown attribute 'noduplicate'}}
+    ^
+
+"Test_name.c", line 5: warning: unknown attribute "noduplicate"
+  [[disable_tail_calls, noduplicate]] void f() {} // expected-warning {{unknown attribute 'disable_tail_calls'}} expected-warning {{unknown attribute 'noduplicate'}}
+                        ^
+
+"Test_name.c", line 7: warning: unknown attribute "clang::disable_tail_calls"
+  [[using clang: disable_tail_calls, noduplicate]] void g() {} // ok
+                 ^
+
+"Test_name.c", line 7: warning: unknown attribute "clang::noduplicate"
+  [[using clang: disable_tail_calls, noduplicate]] void g() {} // ok
+                                     ^
+
+"Test_name.c", line 9: warning: unknown attribute "using"
+  [[using]] extern int n; // expected-error {{expected identifier}}
+    ^
+
+"Test_name.c", line 10: warning: attribute namespace "foo" is unrecognized
+  [[using foo
+          ^
+
+"Test_name.c", line 11: error: expected a ":"
+  ] // expected-error {{expected ':'}}
+  ^
+
+"Test_name.c", line 13: warning: unknown attribute "using"
+  [[using 42:]] extern int n; // expected-error {{expected identifier}}
+    ^
+
+"Test_name.c", line 13: error: expected a ","
+  [[using 42:]] extern int n; // expected-error {{expected identifier}}
+          ^
+
+"Test_name.c", line 15: warning: attribute namespace "blah" is unrecognized
+  [[using blah: clang::optnone]] extern int n; // expected-error {{attribute with scope specifier cannot follow}} expected-warning {{only applies to functions}}
+          ^
+
+"Test_name.c", line 15: error: an attribute namespace may not be used here (because a "using" prefix was specified)
+  [[using blah: clang::optnone]] extern int n; // expected-error {{attribute with scope specifier cannot follow}} expected-warning {{only applies to functions}}
+                ^
+
+"Test_name.c", line 17: warning: unknown attribute "clang::unknown_attr"
+  [[using clang: unknown_attr]] extern int n; // expected-warning {{unknown attribute}}
+                 ^
+
+"Test_name.c", line 18: warning: attribute namespace "unknown_ns" is unrecognized
+  [[using unknown_ns: something]] extern int n; // expected-warning {{unknown attribute}}
+          ^
+
+3 errors detected in the compilation of "Test_name.c".

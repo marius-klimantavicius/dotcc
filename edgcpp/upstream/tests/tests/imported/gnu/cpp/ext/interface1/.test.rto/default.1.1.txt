@@ -1,0 +1,15 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics interface1a.cc Test_name.c
+interface1a.cc:
+"interface1.h", line 1: warning: unrecognized #pragma
+  #pragma interface
+          ^
+
+Test_name.c:
+"./ext/interface1.C", line 6: warning: unrecognized #pragma
+  #pragma implementation
+          ^
+
+"./ext/interface1.h", line 1: warning: unrecognized #pragma
+  #pragma interface
+          ^
+

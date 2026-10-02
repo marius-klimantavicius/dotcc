@@ -1,0 +1,129 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 -E Test_name.c
+# 1 "Test_name.c"
+
+
+ 
+ 
+ 
+
+
+
+
+"Test_name.c", line 10: error: the #if for this directive is missing
+  #elifdef A /* { dg-error "'#elifdef' without '#if'" } */
+   ^
+
+"Test_name.c", line 11: error: the #if for this directive is missing
+  #elifdef B /* { dg-error "'#elifdef' without '#if'" } */
+   ^
+
+"Test_name.c", line 12: error: the #if for this directive is missing
+  #elifndef A /* { dg-error "'#elifndef' without '#if'" } */
+   ^
+
+"Test_name.c", line 13: error: the #if for this directive is missing
+  #elifndef B /* { dg-error "'#elifndef' without '#if'" } */
+   ^
+
+
+
+
+
+
+"Test_name.c", line 17: error: directive is not allowed -- an #else has already appeared
+  #elifdef A /* { dg-error "'#elifdef' after '#else'" } */
+   ^
+
+
+
+
+
+
+"Test_name.c", line 22: error: directive is not allowed -- an #else has already appeared
+  #elifdef B /* { dg-error "'#elifdef' after '#else'" } */
+   ^
+
+
+
+
+
+
+"Test_name.c", line 27: error: directive is not allowed -- an #else has already appeared
+  #elifndef A /* { dg-error "'#elifndef' after '#else'" } */
+   ^
+
+
+
+
+
+
+"Test_name.c", line 32: error: directive is not allowed -- an #else has already appeared
+  #elifndef B /* { dg-error "'#elifndef' after '#else'" } */
+   ^
+
+
+
+
+
+
+"Test_name.c", line 36: warning: extra text after expected end of preprocessing directive
+  #elifdef A = /* { dg-error "extra tokens at end of '#elifdef' directive" } */
+             ^
+
+
+
+
+
+"Test_name.c", line 40: warning: extra text after expected end of preprocessing directive
+  #elifdef B = /* { dg-error "extra tokens at end of '#elifdef' directive" } */
+             ^
+
+
+
+
+
+"Test_name.c", line 44: warning: extra text after expected end of preprocessing directive
+  #elifndef A = /* { dg-error "extra tokens at end of '#elifndef' directive" } */
+              ^
+
+
+
+
+
+"Test_name.c", line 48: warning: extra text after expected end of preprocessing directive
+  #elifndef B = /* { dg-error "extra tokens at end of '#elifndef' directive" } */
+              ^
+
+
+
+
+
+"Test_name.c", line 52: error: expected an identifier
+  #elifdef /* { dg-error "no macro name given in '#elifdef' directive" } */
+                                                                           ^
+
+
+
+
+
+"Test_name.c", line 56: error: expected an identifier
+  #elifndef /* { dg-error "no macro name given in '#elifndef' directive" } */
+                                                                             ^
+
+
+
+
+
+"Test_name.c", line 60: error: expected an identifier
+  #elifdef , /* { dg-error "macro names must be identifiers" } */
+           ^
+
+
+
+
+
+"Test_name.c", line 64: error: expected an identifier
+  #elifndef , /* { dg-error "macro names must be identifiers" } */
+            ^
+
+12 errors detected in the compilation of "Test_name.c".

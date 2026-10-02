@@ -1,0 +1,49 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 994: warning: enumerated type mixed with another type
+      *type = 0x0103;
+            ^
+
+"Test_name.c", line 997: warning: enumerated type mixed with another type
+      *type = 0x0104;
+            ^
+
+"Test_name.c", line 1000: warning: enumerated type mixed with another type
+      *type = 0x0105;
+            ^
+
+"Test_name.c", line 1003: warning: enumerated type mixed with another type
+      *type = 0x0110;
+            ^
+
+"Test_name.c", line 1006: warning: enumerated type mixed with another type
+      *type = 0x0111;
+            ^
+
+"Test_name.c", line 1009: warning: enumerated type mixed with another type
+      *type = 0x0112;
+            ^
+
+"Test_name.c", line 1012: warning: enumerated type mixed with another type
+      *type = 0x0113;
+            ^
+
+"Test_name.c", line 1015: warning: enumerated type mixed with another type
+      *type = 0x0114;
+            ^
+
+"Test_name.c", line 1018: warning: enumerated type mixed with another type
+      *type = 0x301;
+            ^
+
+"Test_name.c", line 1021: warning: enumerated type mixed with another type
+      *type = 0x0120;
+            ^
+
+"Test_name.c", line 1024: warning: enumerated type mixed with another type
+      *type = 0x0121;
+            ^
+
+"Test_name.c", line 1027: warning: enumerated type mixed with another type
+      *type = 0x0122;
+            ^
+

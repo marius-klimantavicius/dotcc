@@ -1,0 +1,204 @@
+// Consume EDG's partial-EH region tables at translation time. The generated
+// program uses CLR unwinding; no native EH tables, stack offsets or setjmp.
+#if !GENERATE_EH_TABLES || DO_FULL_PORTABLE_EH_LOWERING
+#error "The C# cleanup emitter requires EDG partial EH tables."
+#endif
+bool cleanup_cursor_used=false;
+a_variable_ptr cleanup_region_var=nullptr, cleanup_array_var=nullptr, cleanup_this=nullptr;
+std::set<unsigned long long> cleanup_references;
+std::map<a_variable_ptr,a_constant_ptr> cleanup_initializers;
+struct cleanup_region {
+  a_routine_ptr destructor;
+  a_constant_ptr handle;
+  unsigned long long next, flags;
+  a_constant_ptr condition;
+  a_constant_ptr vtt;
+  unsigned long long vtt_flags;
+};
+std::map<unsigned long long,cleanup_region> cleanup_regions;
+std::vector<std::vector<a_constant_ptr>> cleanup_arrays;
+unsigned long long cleanup_integer(a_constant_ptr c) {
+  if(!c || c->kind!=ck_integer)unsupported("non-integer cleanup table field");
+  a_boolean overflow;
+  auto result=unsigned_value_of_integer_constant(c,&overflow);
+  if(overflow)unsupported("overflow in cleanup table field");
+  return result;
+}
+std::vector<a_constant_ptr> cleanup_fields(a_constant_ptr c,size_t count) {
+  if(!c || c->kind!=ck_aggregate)unsupported("cleanup table aggregate");
+  std::vector<a_constant_ptr> result;
+  for(auto p=c->variant.aggregate.first_constant;p;p=p->next)result.push_back(p);
+  if(count && result.size()!=count)unsupported("cleanup table field count");
+  return result;
+}
+std::vector<a_constant_ptr> cleanup_table(a_variable_ptr v) {
+  if(!v)return {};
+  auto found=cleanup_initializers.find(v);
+  if(found==cleanup_initializers.end())unsupported("missing cleanup table initializer");
+  return cleanup_fields(found->second,0);
+}
+void find_cleanup_prologue(a_statement_ptr s) {
+  if(!s)return;
+  if(s->kind==stmk_expr && s->expr && s->expr->kind==enk_lowered_eh_construct &&
+     s->expr->variant.lowered_eh.kind==leck_function_prologue) {
+    auto p=s->expr->variant.lowered_eh.variant.prologue_info;
+    if(cleanup_region_var || cleanup_array_var)unsupported("multiple cleanup prologues");
+    cleanup_region_var=p->region_table; cleanup_array_var=p->array_table;
+  }
+  if(s->kind==stmk_block)
+    for(auto p=s->variant.block.statements;p;p=p->next)find_cleanup_prologue(p);
+}
+void collect_cleanup_initializers(a_scope_ptr scope) {
+  for(auto p=scope->local_static_variable_inits;p;p=p->next) {
+    if(p->variable==cleanup_region_var || p->variable==cleanup_array_var) {
+      if(p->init_kind!=initk_static)unsupported("dynamic cleanup table initializer");
+      cleanup_initializers[p->variable]=p->initializer.constant;
+    }
+  }
+  for(auto child=scope->scopes;child;child=child->next)collect_cleanup_initializers(child);
+}
+void prepare_cleanup(a_scope_ptr scope) {
+  cleanup_cursor_used=false; cleanup_region_var=nullptr; cleanup_array_var=nullptr; cleanup_this=nullptr;
+  cleanup_regions.clear(); cleanup_arrays.clear(); cleanup_references.clear();
+  find_cleanup_prologue(scope->assoc_block);
+  cleanup_initializers.clear(); collect_cleanup_initializers(scope);
+  for(auto p=scope->variant.routine.parameters;p;p=p->next)
+    if(p->is_this_parameter)cleanup_this=p;
+  for(auto c:cleanup_table(cleanup_array_var))cleanup_arrays.push_back(cleanup_fields(c,3));
+  auto entries=cleanup_table(cleanup_region_var);
+  if(entries.size()>4096)unsupported("more than 4096 EH table entries");
+  for(size_t i=0;i<entries.size();++i) {
+    auto f=cleanup_fields(entries[i],4);
+    auto dtor=f[0];
+    auto flags=cleanup_integer(f[3]);
+    bool guard=(flags & 0x80)!=0;
+    if(!guard && (dtor->kind!=ck_address || dtor->variant.address.kind!=abk_routine ||
+       dtor->variant.address.offset))unsupported("cleanup destructor constant");
+    cleanup_region r={guard?nullptr:dtor->variant.address.variant.routine,f[1],cleanup_integer(f[2]),flags,nullptr,nullptr,0};
+    // 0x40 means VLA when combined with ARRAY. 0x20 is a VTT supplement only
+    // for a non-array base-subobject entry (0x40); reject other interpretations.
+    if((r.flags & ~0xffULL) || ((r.flags & 0x48)==0x48) || ((r.flags & 0x20) && !(r.flags & 0x40)) ||
+       ((r.flags & 4) && (r.flags & (0x20|0x40))))
+      unsupported("cleanup region flags",(int)r.flags);
+    auto index=i;
+    if(r.flags & 2) {
+      if(++i>=entries.size())unsupported("missing cleanup condition entry");
+      auto condition=cleanup_fields(entries[i],4);
+      if(cleanup_integer(condition[3])!=0)unsupported("cleanup condition flags");
+      r.condition=condition[1];
+    }
+    if(r.flags & 0x20) {
+      if(++i>=entries.size())unsupported("missing cleanup VTT supplement");
+      auto supplement=cleanup_fields(entries[i],4);
+      r.vtt=supplement[1];r.vtt_flags=cleanup_integer(supplement[3]);
+      if(r.vtt_flags & ~1ULL)unsupported("cleanup VTT flags");
+    }
+    cleanup_regions[index]=r;
+  }
+  for(auto &entry:cleanup_regions) {
+    std::set<unsigned long long> visited;
+    for(auto index=entry.first;index!=null_eh_region_number;) {
+      if(!visited.insert(index).second)unsupported("cyclic cleanup region chain");
+      auto found=cleanup_regions.find(index);
+      if(found==cleanup_regions.end())unsupported("invalid cleanup region link");
+      index=found->second.next;
+    }
+  }
+}
+unsigned long long cleanup_state(unsigned long long region) {
+  return region==null_eh_region_number?0:region+1;
+}
+string cleanup_transition(unsigned long long region,const string &slot) {
+  cleanup_cursor_used=true;
+  cleanup_references.insert(region);
+  return slot+" = "+std::to_string(cleanup_state(region))+";\n";
+}
+string cleanup_handle(a_constant_ptr c,unsigned long long flags) {
+  if(c && c->kind==ck_address && c->variant.address.kind==abk_variable) {
+    string address="((byte*)("+constant(c)+"))";
+    return (flags & 1)?"(*(byte**)"+address+")":address;
+  }
+  if(flags & 0x10) {
+    if(!cleanup_this || (flags & 1))unsupported("cleanup this handle");
+    return "((byte*)"+variable(cleanup_this)+" + "+std::to_string(cleanup_integer(c))+"UL)";
+  }
+  if(!c || c->kind!=ck_stack_offset || !c->variant.stack_offset.variable)
+    unsupported("cleanup variable handle");
+  auto &p=c->variant.stack_offset;
+  string base=variable(p.variable);
+  if(!(flags & 1))base="&("+base+")";
+  return "((byte*)("+base+") + "+std::to_string(p.offset)+"UL)";
+}
+string emit_cleanup() {
+  for(auto n:cleanup_references)
+    if(n!=null_eh_region_number && !cleanup_regions.count(n))unsupported("unknown cleanup state");
+  string result;
+  for(auto &entry:cleanup_regions) {
+    auto &region=entry.second;
+    auto r=region.destructor;
+    if(region.flags & 0x80) {
+      ensure_lifecycle();
+      result+="case "+std::to_string(entry.first+1)+": __edg_cleanup_state = "+std::to_string(cleanup_state(region.next))+"; __edg_guard_finish("+cleanup_handle(region.handle,region.flags)+", false); break;\n";
+      continue;
+    }
+    if(r && r->compiler_generated && r->source_corresp.name &&
+       string(r->source_corresp.name)=="__destroy_exception_object") {
+      // Release this handler's use after its locals and catch parameter.
+      // Rethrows retain the payload; the final release calls its destructor.
+      if(region.flags)unsupported("exception object cleanup flags");
+      result+="case "+std::to_string(entry.first+1)+": __edg_cleanup_state = "+
+          std::to_string(cleanup_state(region.next))+"; __edg_current_catch!.Leave(); break;\n";
+      continue;
+    }
+    if(!r || r->function_def_number==NULL_function_def_number)unsupported("external cleanup destructor");
+    auto rt=skip_typerefs(r->type);
+    auto params=rt->variant.routine.extra_info->param_type_list;
+    bool sized_delete=(region.flags & 12)==12;
+    if(!params || skip_typerefs(rt->variant.routine.return_type)->kind!=tk_void ||
+       ((region.vtt || sized_delete)?(!params->next || params->next->next ||
+         (sized_delete?type(params->next->type)!="ulong":skip_typerefs(params->next->type)->kind!=tk_pointer)):params->next!=nullptr))
+      unsupported("destructor ABI");
+    string destruction;
+    if(region.flags & 4) {
+      string address,size_arg;
+      if(sized_delete) {
+        auto index=cleanup_integer(region.handle);
+        if(index>=cleanup_arrays.size())unsupported("sized delete array table index");
+        auto &a=cleanup_arrays[index];
+        address=cleanup_handle(a[0],region.flags);
+        size_arg=", "+std::to_string(cleanup_integer(a[1]))+"UL";
+      } else address=cleanup_handle(region.handle,region.flags);
+      // throw.c uses the array supplement's element_size for sized delete,
+      // and does not call either form for a null allocation address.
+      destruction="{ byte* allocation = "+address+"; if(allocation != null) "+name(r,"f")+
+          "(("+type(params->type)+")allocation"+size_arg+"); }";
+    } else if(region.flags & 8) {
+      auto index=cleanup_integer(region.handle);
+      if(index>=cleanup_arrays.size())unsupported("cleanup array index");
+      auto &a=cleanup_arrays[index];
+      auto size=cleanup_integer(a[1]),count=cleanup_integer(a[2]);
+      if(!size || count>64*1024*1024 || size>64*1024*1024 || count*size>64*1024*1024)
+        unsupported("dynamic or excessive cleanup array");
+      ensure_array_helpers();
+      destruction="__edg_vec_cleanup("+cleanup_handle(a[0],region.flags)+", "+std::to_string(count)+
+          "UL, "+std::to_string(size)+"UL, ("+array_callback_type()+")"+routine_address(r)+");";
+    } else {
+      destruction=name(r,"f")+"(("+type(params->type)+")"+cleanup_handle(region.handle,region.flags);
+      if(region.vtt)destruction+=", ("+type(params->next->type)+")"+cleanup_handle(region.vtt,region.vtt_flags);
+      destruction+=");";
+    }
+    if(region.condition) {
+      string flag="(*(int*)"+cleanup_handle(region.condition,0)+")";
+      destruction="if ("+flag+" != 0) { "+flag+" = 0; "+destruction+" }";
+    }
+    result+="case "+std::to_string(entry.first+1)+": __edg_cleanup_state = "+
+            std::to_string(cleanup_state(region.next))+";\n"+destruction+" break;\n";
+  }
+  return result;
+}
+string cleanup_unwind(const string &boundary) {
+  return "try { while (__edg_cleanup_state != "+boundary+") { switch (__edg_cleanup_state) {\n"
+      "/*__EDG_CLEANUP_CASES__*/\n"
+      "default: global::System.Environment.FailFast(\"Invalid EDG cleanup boundary\"); break;\n"
+      "} } } catch (global::System.Exception cleanup_error) { global::System.Environment.FailFast(\"Destructor threw during unwinding\", cleanup_error); }\n";
+}

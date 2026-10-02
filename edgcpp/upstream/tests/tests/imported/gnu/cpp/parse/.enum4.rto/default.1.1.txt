@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++03 --no_strict_gnu Test_name.c
+"Test_name.c", line 10: error: identifier "B0" is undefined
+    B = B0,	// { dg-error "was not declared|overflow" }
+        ^
+
+"Test_name.c", line 11: error: identifier "C0" is undefined
+    C = C0	// { dg-error "was not declared" }
+        ^
+
+2 errors detected in the compilation of "Test_name.c".

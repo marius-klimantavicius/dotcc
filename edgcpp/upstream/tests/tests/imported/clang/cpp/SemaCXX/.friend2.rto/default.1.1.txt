@@ -1,0 +1,84 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 13: error: function "func1" has already been defined (previous definition at line 10)
+    friend void func1(int) {}  // expected-error{{redefinition of 'func1'}}
+                ^
+
+"Test_name.c", line 33: error: function "func3" has already been defined (previous definition at line 30)
+    friend void func3(int) {}  // expected-error{{redefinition of 'func3'}}
+                ^
+          detected during instantiation of class "C3b<T> [with T=long]" at line 35
+
+"Test_name.c", line 64: error: function "func6" has already been defined (previous definition at line 61)
+    friend void func6(int) {}  // expected-error{{redefinition of 'func6'}}
+                ^
+          detected during instantiation of class "C6b<T> [with T=int *]" at line 67
+
+"Test_name.c", line 71: error: function "func7" has already been defined (previous definition at line 71)
+    friend void func7(int) {}  // expected-error{{redefinition of 'func7'}}
+                ^
+          detected during instantiation of class "C7<T> [with T=int *]" at line 75
+
+"Test_name.c", line 112: error: function "func_20" has already been defined (previous definition at line 109)
+  void func_20() {} // expected-error{{redefinition of 'func_20'}}
+       ^
+
+"Test_name.c", line 118: error: function "func_21" has already been defined (previous definition at line 115)
+    friend void func_21() {} // expected-error{{redefinition of 'func_21'}}
+                ^
+          detected during instantiation of class "C21b<T> [with T=int]" at line 121
+
+"Test_name.c", line 131: error: function "func_22" has already been defined (previous definition at line 124)
+  void func_22() {} // expected-error{{redefinition of 'func_22'}}
+       ^
+
+"Test_name.c", line 171: error: function template "func_34" has already been defined (previous definition at line 168)
+    template<typename T> friend void func_34(T *x) {} // expected-error{{redefinition of 'func_34'}}
+                                     ^
+          detected during instantiation of class "C34<T1> [with T1=int]" at line 174
+
+"Test_name.c", line 184: error: function template "func_35" has already been defined (previous definition at line 180)
+    template<typename T> friend void func_35(T *x) {} // expected-error{{redefinition of 'func_35'}}
+                                     ^
+          detected during instantiation of class "C35b<T1> [with T1=int]" at line 188
+
+"Test_name.c", line 194: error: function template "func_36" has already been defined (previous definition at line 194)
+    template<typename T> friend void func_36(T *x) {}  // expected-error{{redefinition of 'func_36'}}
+                                     ^
+          detected during instantiation of class "C36<T1> [with T1=long]" at line 199
+
+"Test_name.c", line 209: error: function template "func_37" has already been defined (previous definition at line 205)
+  template<typename T> void func_37(T *x) {} // expected-error{{redefinition of 'func_37'}}
+                            ^
+
+"Test_name.c", line 220: error: function "pr22307::leak" has already been defined (previous definition at line 220)
+    friend int leak(t) { return sizeof(v); }  // expected-error{{redefinition of 'leak'}} expected-note{{previous definition is here}}
+               ^
+          detected during instantiation of class "pr22307::m<v> [with v=short]" at line 224
+
+"Test_name.c", line 228: warning: missing return statement at end of non-void function "pr22307::main"
+  }
+  ^
+
+"Test_name.c", line 242: warning: missing return statement at end of non-void function "pr17923::main"
+  int main() { f(1234); }
+                        ^
+
+"Test_name.c", line 260: warning: missing return statement at end of non-void function "pr17923a::main"
+  }
+  ^
+
+"Test_name.c", line 270: warning: missing return statement at end of non-void function "pr8035::main"
+  }
+  ^
+
+"Test_name.c", line 285: error: function "pr14785::operator+" has already been defined (previous definition at line 288)
+    friend void operator+(int const &, Somewhat<T> const &) {}  // expected-error{{redefinition of 'operator+'}}
+                ^
+          detected during instantiation of class "pr14785::Somewhat<T> [with T=char]" at line 289
+
+"Test_name.c", line 322: error: function template "PR39742::friend_function_template" has already been defined (previous definition at line 321)
+    friend void friend_function_template() {}  // expected-error{{redefinition of 'friend_function_template'}}
+                ^
+          detected during instantiation of class "PR39742::wrapper<<unnamed>> [with <unnamed>=int]" at line 327
+
+14 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./warn/var-args1.C", line 9: error: incorrect use of va_arg
+         int&
+         ^
+
+"./warn/var-args1.C", line 8: warning: variable "i" was set but never used
+      int i;
+          ^
+
+1 error detected in the compilation of "Test_name.c".

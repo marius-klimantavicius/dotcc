@@ -1,0 +1,24 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 16: error: expression must have a constant value
+    constexpr int x = u.x; // { dg-error "mutable" }
+                      ^
+"Test_name.c", line 16: note: access to uninitialized object
+    constexpr int x = u.x; // { dg-error "mutable" }
+                       ^
+
+"Test_name.c", line 19: error: expression must have a constant value
+    constexpr int y = v.y; // { dg-error "mutable" }
+                      ^
+"Test_name.c", line 19: note: access to uninitialized object
+    constexpr int y = v.y; // { dg-error "mutable" }
+                       ^
+
+"Test_name.c", line 16: warning: variable "x" was declared but never referenced
+    constexpr int x = u.x; // { dg-error "mutable" }
+                  ^
+
+"Test_name.c", line 19: warning: variable "y" was declared but never referenced
+    constexpr int y = v.y; // { dg-error "mutable" }
+                  ^
+
+2 errors detected in the compilation of "Test_name.c".

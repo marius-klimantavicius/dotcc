@@ -1,0 +1,290 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 18: warning: variable "i" is used before its value is set
+    for (int i; i < 1; ++i) {}
+                ^
+
+"Test_name.c", line 19: warning: variable "i" is used before its value is set
+    for (int i; i < 1; ) {}  // expected-warning {{variable 'i' used in loop condition not modified in loop body}}
+                ^
+
+"Test_name.c", line 20: warning: variable "i" is used before its value is set
+    for (int i; i < 1; ) { ++i; }
+                ^
+
+"Test_name.c", line 21: warning: variable "i" is used before its value is set
+    for (int i; i < 1; ) { return; }
+                ^
+
+"Test_name.c", line 22: warning: variable "i" is used before its value is set
+    for (int i; i < 1; ) { break; }
+                ^
+
+"Test_name.c", line 23: warning: variable "i" is used before its value is set
+    for (int i; i < 1; ) { goto exit_loop; }
+                ^
+
+"Test_name.c", line 25: warning: variable "i" is used before its value is set
+    for (int i; i < 1; ) { by_ref(i); }
+                ^
+
+"Test_name.c", line 26: warning: variable "i" is used before its value is set
+    for (int i; i < 1; ) { by_value(i); }  // expected-warning {{variable 'i' used in loop condition not modified in loop body}}
+                ^
+
+"Test_name.c", line 27: warning: variable "i" is used before its value is set
+    for (int i; i < 1; ) { by_pointer(&i); }
+                ^
+
+"Test_name.c", line 29: warning: variable "i" is used before its value is set
+    for (int i; i < 1; ++i)
+                ^
+
+"Test_name.c", line 30: warning: variable "j" is used before its value is set
+      for (int j; j < 1; ++j)
+                  ^
+
+"Test_name.c", line 32: warning: variable "i" is used before its value is set
+    for (int i; i < 1; ++i)
+                ^
+
+"Test_name.c", line 33: warning: variable "j" is used before its value is set
+      for (int j; j < 1; ++i)  // expected-warning {{variable 'j' used in loop condition not modified in loop body}}
+                  ^
+
+"Test_name.c", line 35: warning: variable "i" is used before its value is set
+    for (int i; i < 1; ++i)
+                ^
+
+"Test_name.c", line 39: warning: variable "i" is used before its value is set
+    for (int *i, *j; i < j; ++i) {}
+                     ^
+
+"Test_name.c", line 39: warning: variable "j" is used before its value is set
+    for (int *i, *j; i < j; ++i) {}
+                         ^
+
+"Test_name.c", line 40: warning: variable "i" is used before its value is set
+    for (int *i, *j; i < j;) {}  // expected-warning {{variables 'i' and 'j' used in loop condition not modified in loop body}}
+                     ^
+
+"Test_name.c", line 40: warning: variable "j" is used before its value is set
+    for (int *i, *j; i < j;) {}  // expected-warning {{variables 'i' and 'j' used in loop condition not modified in loop body}}
+                         ^
+
+"Test_name.c", line 43: warning: variable "i" is used before its value is set
+    for (int *i; *i; ) {}
+                  ^
+
+"Test_name.c", line 51: warning: variable "i" is used before its value is set
+    for (; i; ) {} // expected-warning {{variable 'i' used in loop condition not modified in loop body}}
+           ^
+
+"Test_name.c", line 55: warning: variable "j" is used before its value is set
+    for (; i < j; ) {} // expected-warning {{variables 'i' and 'j' used in loop condition not modified in loop body}}
+               ^
+
+"Test_name.c", line 76: warning: variable "ptr" is used before its value is set
+    for (; ptr == __null; ) {} // expected-warning {{variable 'ptr' used in loop condition not modified in loop body}}
+           ^
+
+"Test_name.c", line 84: error: complex integral types are not supported
+    for (; i != 3i; ) {} // expected-warning {{variable 'i' used in loop condition not modified in loop body}}
+                 ^
+
+"Test_name.c", line 85: error: complex integral types are not supported
+    for (; i != 3i; ) { ++i; }
+                 ^
+
+"Test_name.c", line 88: warning: variable "k" is used before its value is set
+    for (; i ? j : k; ) {} // expected-warning {{variables 'i', 'j', and 'k' used in loop condition not modified in loop body}}
+                   ^
+
+"Test_name.c", line 93: warning: use of "=" where "==" may have been intended
+    for (; i; ) { j = (i = 1) ? i : i; }
+                      ^
+
+"Test_name.c", line 127: warning: variable "a" is used before its value is set
+    for (; a;);  // expected-warning {{variable 'a' used in loop condition not modified in loop body}}
+           ^
+
+"Test_name.c", line 128: warning: variable "b" is used before its value is set
+    for (; a + b;);  // expected-warning {{variables 'a' and 'b' used in loop condition not modified in loop body}}
+               ^
+
+"Test_name.c", line 129: warning: variable "c" is used before its value is set
+    for (; a + b + c;);  // expected-warning {{variables 'a', 'b', and 'c' used in loop condition not modified in loop body}}
+                   ^
+
+"Test_name.c", line 130: warning: variable "d" is used before its value is set
+    for (; a + b + c + d;);  // expected-warning {{variables 'a', 'b', 'c', and 'd' used in loop condition not modified in loop body}}
+                       ^
+
+"Test_name.c", line 131: warning: variable "e" is used before its value is set
+    for (; a + b + c + d + e;);  // expected-warning {{variables used in loop condition not modified in loop body}}
+                           ^
+
+"Test_name.c", line 132: warning: variable "f" is used before its value is set
+    for (; a + b + c + d + e + f;);  // expected-warning {{variables used in loop condition not modified in loop body}}
+                               ^
+
+"Test_name.c", line 140: warning: variable "a" is used before its value is set
+    for (int a; a+a+a+a+a+a+a+a+a+a;); // \
+                ^
+
+"Test_name.c", line 142: warning: variable "a" is used before its value is set
+    for (int a; a+a+a+a+a+a+a+a+a+a+a;); // \
+                ^
+
+"Test_name.c", line 144: warning: variable "a" is used before its value is set
+    for (int a; a+a+a+a+a+a+a+a+a+a+a+a+a+a+a+a+a+a+a+a;);  // \
+                ^
+
+"Test_name.c", line 146: warning: variable "a" is used before its value is set
+    for (int a; a+a+a+a+a+a+a+a+a+a+a+a+a+a+a+a+a+a+a+a+a+a+a+a+a+a+a+a+a+a;);//\
+                ^
+
+"Test_name.c", line 166: warning: statement is unreachable
+      ++i;  // expected-warning{{incremented both}}
+      ^
+
+"Test_name.c", line 164: warning: loop is not reachable
+    for (;;i++) {  // expected-note{{incremented here}}
+    ^
+
+"Test_name.c", line 170: warning: statement is unreachable
+      i++;  // expected-warning{{incremented both}}
+      ^
+
+"Test_name.c", line 172: warning: loop is not reachable
+    for (;;++i) {  // expected-note{{incremented here}}
+    ^
+
+"Test_name.c", line 176: warning: loop is not reachable
+    for (;;i--) {  // expected-note{{decremented here}}
+    ^
+
+"Test_name.c", line 182: warning: statement is unreachable
+      --i;  // expected-warning{{decremented both}}
+      ^
+
+"Test_name.c", line 180: warning: loop is not reachable
+    for (;;i--) {  // expected-note{{decremented here}}
+    ^
+
+"Test_name.c", line 186: warning: statement is unreachable
+      i--;  // expected-warning{{decremented both}}
+      ^
+
+"Test_name.c", line 188: warning: loop is not reachable
+    for (;;--i) {  // expected-note{{decremented here}}
+    ^
+
+"Test_name.c", line 193: warning: loop is not reachable
+    for (;;++i)
+    ^
+
+"Test_name.c", line 195: warning: loop is not reachable
+    for (;;--i)
+    ^
+
+"Test_name.c", line 201: warning: statement is unreachable
+      i++;
+      ^
+
+"Test_name.c", line 199: warning: loop is not reachable
+    for (;;i++) {
+    ^
+
+"Test_name.c", line 205: warning: statement is unreachable
+      i--;
+      ^
+
+"Test_name.c", line 203: warning: loop is not reachable
+    for (;;i--) {
+    ^
+
+"Test_name.c", line 209: warning: loop is not reachable
+    for (;;i--) { // expected-note{{decremented here}}
+    ^
+
+"Test_name.c", line 229: warning: statement is unreachable
+      ++i;  // expected-warning{{incremented both}}
+      ^
+
+"Test_name.c", line 227: warning: loop is not reachable
+    for (;;i++) {  // expected-note{{incremented here}}
+    ^
+
+"Test_name.c", line 233: warning: statement is unreachable
+      i++;  // expected-warning{{incremented both}}
+      ^
+
+"Test_name.c", line 235: warning: loop is not reachable
+    for (;;++i) {  // expected-note{{incremented here}}
+    ^
+
+"Test_name.c", line 239: warning: loop is not reachable
+    for (;;i--) {  // expected-note{{decremented here}}
+    ^
+
+"Test_name.c", line 245: warning: statement is unreachable
+      --i;  // expected-warning{{decremented both}}
+      ^
+
+"Test_name.c", line 243: warning: loop is not reachable
+    for (;;i--) {  // expected-note{{decremented here}}
+    ^
+
+"Test_name.c", line 249: warning: statement is unreachable
+      i--;  // expected-warning{{decremented both}}
+      ^
+
+"Test_name.c", line 251: warning: loop is not reachable
+    for (;;--i) {  // expected-note{{decremented here}}
+    ^
+
+"Test_name.c", line 256: warning: loop is not reachable
+    for (;;++i)
+    ^
+
+"Test_name.c", line 258: warning: loop is not reachable
+    for (;;--i)
+    ^
+
+"Test_name.c", line 264: warning: statement is unreachable
+      i++;
+      ^
+
+"Test_name.c", line 262: warning: loop is not reachable
+    for (;;i++) {
+    ^
+
+"Test_name.c", line 268: warning: statement is unreachable
+      i--;
+      ^
+
+"Test_name.c", line 266: warning: loop is not reachable
+    for (;;i--) {
+    ^
+
+"Test_name.c", line 272: warning: loop is not reachable
+    for (;;i--) { // expected-note{{decremented here}}
+    ^
+
+"Test_name.c", line 288: warning: structured binding "i" was declared but never referenced
+    for (auto[i, j, k] = arr;;) { }
+              ^
+
+"Test_name.c", line 289: warning: loop is not reachable
+    for (auto[i, j, k] = arr; i < j; ++i, ++j) { }
+    ^
+
+"Test_name.c", line 296: warning: structured binding "i" was declared but never referenced
+    for (auto[i, j, k] = arr; a < b;) { }  // expected-warning{{variables 'a' and 'b' used in loop condition not modified in loop body}}
+              ^
+
+"Test_name.c", line 297: warning: structured binding "i" was declared but never referenced
+    for (auto[i, j, k] = arr; a < b; ++a) { }
+              ^
+
+2 errors detected in the compilation of "Test_name.c".

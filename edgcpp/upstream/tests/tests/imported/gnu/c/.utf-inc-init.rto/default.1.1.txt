@@ -1,0 +1,114 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 19: error: identifier "u" is undefined
+  } a[] = { { { u"foo" }, 1 }, [0].S[2] = u'x', [0].S[4] = u'y' };
+                ^
+
+"Test_name.c", line 19: error: expected a ","
+  } a[] = { { { u"foo" }, 1 }, [0].S[2] = u'x', [0].S[4] = u'y' };
+                 ^
+
+"Test_name.c", line 19: error: expected a ","
+  } a[] = { { { u"foo" }, 1 }, [0].S[2] = u'x', [0].S[4] = u'y' };
+                                           ^
+
+"Test_name.c", line 19: error: expected a ","
+  } a[] = { { { u"foo" }, 1 }, [0].S[2] = u'x', [0].S[4] = u'y' };
+                                                            ^
+
+"Test_name.c", line 20: error: expected a ","
+  struct A b[] = { { { u"foo" }, 1 }, [0] = { .S[0] = u'b' } };
+                        ^
+
+"Test_name.c", line 20: error: expected a ","
+  struct A b[] = { { { u"foo" }, 1 }, [0] = { .S[0] = u'b' } };
+                                                       ^
+
+"Test_name.c", line 21: error: expected a ","
+  struct A c[] = { { { u"foo" }, 1 }, [0].S = { u"a" }, [0].M = 2 };
+                        ^
+
+"Test_name.c", line 21: error: expected a ","
+  struct A c[] = { { { u"foo" }, 1 }, [0].S = { u"a" }, [0].M = 2 };
+                                                 ^
+
+"Test_name.c", line 26: error: identifier "U" is undefined
+  } d[] = { { { U"foo" }, 1 }, [0].S[2] = U'x', [0].S[4] = U'y' };
+                ^
+
+"Test_name.c", line 26: error: expected a ","
+  } d[] = { { { U"foo" }, 1 }, [0].S[2] = U'x', [0].S[4] = U'y' };
+                 ^
+
+"Test_name.c", line 26: error: expected a ","
+  } d[] = { { { U"foo" }, 1 }, [0].S[2] = U'x', [0].S[4] = U'y' };
+                                           ^
+
+"Test_name.c", line 26: error: expected a ","
+  } d[] = { { { U"foo" }, 1 }, [0].S[2] = U'x', [0].S[4] = U'y' };
+                                                            ^
+
+"Test_name.c", line 27: error: expected a ","
+  struct B e[] = { { { U"foo" }, 1 }, [0] = { .S[0] = U'b' } };
+                        ^
+
+"Test_name.c", line 27: error: expected a ","
+  struct B e[] = { { { U"foo" }, 1 }, [0] = { .S[0] = U'b' } };
+                                                       ^
+
+"Test_name.c", line 28: error: expected a ","
+  struct B f[] = { { { U"foo" }, 1 }, [0].S = { U"a" }, [0].M = 2 };
+                        ^
+
+"Test_name.c", line 28: error: expected a ","
+  struct B f[] = { { { U"foo" }, 1 }, [0].S = { U"a" }, [0].M = 2 };
+                                                 ^
+
+"Test_name.c", line 32: error: too few arguments in function call
+    if (memcmp (a[0].S, u"fox\0y", 6 * sizeof(char16_t)) || a[0].M != 1)
+                         ^
+
+"Test_name.c", line 32: error: expected a ")"
+    if (memcmp (a[0].S, u"fox\0y", 6 * sizeof(char16_t)) || a[0].M != 1)
+                         ^
+
+"Test_name.c", line 34: error: too few arguments in function call
+    if (memcmp (b[0].S, u"b\0\0\0\0", 6) || b[0].M)
+                         ^
+
+"Test_name.c", line 34: error: expected a ")"
+    if (memcmp (b[0].S, u"b\0\0\0\0", 6) || b[0].M)
+                         ^
+
+"Test_name.c", line 36: error: too few arguments in function call
+    if (memcmp (c[0].S, u"a\0\0\0\0", 6) || c[0].M != 2)
+                         ^
+
+"Test_name.c", line 36: error: expected a ")"
+    if (memcmp (c[0].S, u"a\0\0\0\0", 6) || c[0].M != 2)
+                         ^
+
+"Test_name.c", line 39: error: too few arguments in function call
+    if (memcmp (d[0].S, U"fox\0y", 6 * sizeof(char32_t)) || d[0].M != 1)
+                         ^
+
+"Test_name.c", line 39: error: expected a ")"
+    if (memcmp (d[0].S, U"fox\0y", 6 * sizeof(char32_t)) || d[0].M != 1)
+                         ^
+
+"Test_name.c", line 41: error: too few arguments in function call
+    if (memcmp (e[0].S, U"b\0\0\0\0", 6) || e[0].M)
+                         ^
+
+"Test_name.c", line 41: error: expected a ")"
+    if (memcmp (e[0].S, U"b\0\0\0\0", 6) || e[0].M)
+                         ^
+
+"Test_name.c", line 43: error: too few arguments in function call
+    if (memcmp (f[0].S, U"a\0\0\0\0", 6) || f[0].M != 2)
+                         ^
+
+"Test_name.c", line 43: error: expected a ")"
+    if (memcmp (f[0].S, U"a\0\0\0\0", 6) || f[0].M != 2)
+                         ^
+
+28 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,58 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++26 Test_name.c
+"Test_name.c", line 11: error: "_" has already been declared in the current scope
+    auto &[_, _] = s;
+              ^
+
+"Test_name.c", line 12: error: "_" has already been declared in the current scope
+    auto &[a1, _] = s; // expected-warning {{unused variable '[a1, _]'}}
+               ^
+
+"Test_name.c", line 13: error: "_" has already been declared in the current scope
+    auto &[_, b2] = s; // expected-warning {{unused variable '[_, b2]'}}
+           ^
+
+"Test_name.c", line 15: error: expected a "]"
+    auto &[a3 [[maybe_unused]], b3 [[maybe_unused]]] = s;
+              ^
+
+"Test_name.c", line 15: error: there are more elements than there are binding names
+    auto &[a3 [[maybe_unused]], b3 [[maybe_unused]]] = s;
+          ^
+
+"Test_name.c", line 16: error: expected a "]"
+    auto &[a4, b4 [[maybe_unused]]] = s; // expected-warning {{unused variable '[a4, b4]'}}
+                  ^
+
+"Test_name.c", line 17: error: expected a "]"
+    auto &[a5 [[maybe_unused]], b5] = s; // expected-warning {{unused variable '[a5, b5]'}}
+              ^
+
+"Test_name.c", line 17: error: there are more elements than there are binding names
+    auto &[a5 [[maybe_unused]], b5] = s; // expected-warning {{unused variable '[a5, b5]'}}
+          ^
+
+"Test_name.c", line 11: warning: structured binding "_" was declared but never referenced
+    auto &[_, _] = s;
+           ^
+
+"Test_name.c", line 12: warning: structured binding "a1" was declared but never referenced
+    auto &[a1, _] = s; // expected-warning {{unused variable '[a1, _]'}}
+           ^
+
+"Test_name.c", line 13: warning: structured binding "_" was declared but never referenced
+    auto &[_, b2] = s; // expected-warning {{unused variable '[_, b2]'}}
+           ^
+
+"Test_name.c", line 15: warning: structured binding "a3" was declared but never referenced
+    auto &[a3 [[maybe_unused]], b3 [[maybe_unused]]] = s;
+           ^
+
+"Test_name.c", line 16: warning: structured binding "a4" was declared but never referenced
+    auto &[a4, b4 [[maybe_unused]]] = s; // expected-warning {{unused variable '[a4, b4]'}}
+           ^
+
+"Test_name.c", line 17: warning: structured binding "a5" was declared but never referenced
+    auto &[a5 [[maybe_unused]], b5] = s; // expected-warning {{unused variable '[a5, b5]'}}
+           ^
+
+8 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,27 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 14: error: no operator "++" matches these operands
+            operand types are: X ++
+    x++; // { dg-warning "trying prefix operator" } 
+     ^
+"Test_name.c", line 8: note: number of parameters of function "X::operator++" does not match the call
+  struct X { void operator++(); }; 
+                  ^
+"Test_name.c", line 14: note: built-in operator++(<non-bool arithmetic>, <integral>) does not match because argument #1 does not match parameter
+    x++; // { dg-warning "trying prefix operator" } 
+     ^
+"Test_name.c", line 14: note: built-in operator++(<pointer to object>, <integral>) does not match because argument #1 does not match parameter
+    x++; // { dg-warning "trying prefix operator" } 
+     ^
+
+"Test_name.c", line 16: error: no operator "++" matches these operands
+            operand types are: Y ++
+    y++; // { dg-warning "trying prefix operator" } 
+     ^
+"Test_name.c", line 16: note: built-in operator++(<non-bool arithmetic>, <integral>) does not match because argument #1 does not match parameter
+    y++; // { dg-warning "trying prefix operator" } 
+     ^
+"Test_name.c", line 16: note: built-in operator++(<pointer to object>, <integral>) does not match because argument #1 does not match parameter
+    y++; // { dg-warning "trying prefix operator" } 
+     ^
+
+2 errors detected in the compilation of "Test_name.c".

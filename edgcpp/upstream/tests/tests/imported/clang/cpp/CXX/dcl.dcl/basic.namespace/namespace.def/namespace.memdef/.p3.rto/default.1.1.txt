@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 113: error: function "test6::ns::B::foo" (declared at line 100) is inaccessible
+        ns::B::foo(); // expected-error {{'foo' is a private member of 'test6::ns::B'}}
+               ^
+
+"Test_name.c", line 171: error: function "test7c::ns2::B::foo" (declared at line 164) is inaccessible
+        ns2::B::foo(); // expected-error {{'foo' is a private member of 'test7c::ns2::B'}}
+                ^
+
+"Test_name.c", line 89: error: function "test5::ns::A::foo" (declared at line 79) is inaccessible
+      ns::A::foo(); // expected-error {{'foo' is a private member of 'test5::ns::A'}}
+             ^
+          detected during instantiation of "void test5::f(T) [with T=long]" at line 93
+
+3 errors detected in the compilation of "Test_name.c".

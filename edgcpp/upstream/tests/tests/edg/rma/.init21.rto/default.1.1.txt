@@ -1,0 +1,26 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 12: error: initialization with "{...}" is not allowed for object of type "A"
+  A a = {1L};                        // error
+        ^
+
+"Test_name.c", line 14: error: initialization with "{...}" is not allowed for object of type "A"
+  A aa[] = { {1L}, {2L} };           // no ctor is called
+             ^
+
+"Test_name.c", line 14: error: initialization with "{...}" is not allowed for object of type "A"
+  A aa[] = { {1L}, {2L} };           // no ctor is called
+                   ^
+
+"Test_name.c", line 18: error: initialization with "{...}" is not allowed for object of type "B"
+  B b = {1L};                                  // error
+        ^
+
+"Test_name.c", line 20: error: initialization with "{...}" is not allowed for object of type "B"
+  B bb[] = { {1L}, {2L} };                     // no ctor is called
+             ^
+
+"Test_name.c", line 20: error: initialization with "{...}" is not allowed for object of type "B"
+  B bb[] = { {1L}, {2L} };                     // no ctor is called
+                   ^
+
+6 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=4 --c Test_name.c
+"Test_name.c", line 14: warning: type qualifier specified more than once
+  int const const icc = 32;
+            ^
+
+"Test_name.c", line 15: warning: type qualifier specified more than once
+  int volatile volatile ivv;
+               ^
+

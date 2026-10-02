@@ -1,0 +1,1 @@
+//require:SKIP THIS TEST cannot do pedantic and gcc mode at the same time and it matters for this test

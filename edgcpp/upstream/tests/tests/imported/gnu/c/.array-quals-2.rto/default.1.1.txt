@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c17 --strict_gnu Test_name.c
+"Test_name.c", line 15: warning: operand types are incompatible ("T *" (aka "const char (*)[1]") and "U *" (aka "volatile char (*)[1]"))
+  void *f(void) { return 1 ? p : q; } /* { dg-warning "pointers to arrays with different qualifiers" } */
+                               ^
+

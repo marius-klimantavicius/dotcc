@@ -1,0 +1,574 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --gnu_version=80200 -tused -e 200 --no_wrap Test_name.c
+"./ext/pr57362.C", line 6: error: target attribute not recognized
+  __attribute__((target("128bit-long-double")))
+                        ^
+
+"./ext/pr57362.C", line 8: error: target attribute not recognized
+  __attribute__((target("80387")))
+                        ^
+
+"./ext/pr57362.C", line 9: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 10: error: target attribute not recognized
+  __attribute__((target("96bit-long-double")))
+                        ^
+
+"./ext/pr57362.C", line 11: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 12: error: target attribute not recognized
+  __attribute__((target("long-double-80")))
+                        ^
+
+"./ext/pr57362.C", line 13: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 14: error: target attribute not recognized
+  __attribute__((target("long-double-64")))
+                        ^
+
+"./ext/pr57362.C", line 15: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 16: error: target attribute not recognized
+  __attribute__((target("accumulate-outgoing-args")))
+                        ^
+
+"./ext/pr57362.C", line 17: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 18: error: target attribute not recognized
+  __attribute__((target("align-double")))
+                        ^
+
+"./ext/pr57362.C", line 19: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 20: error: target attribute not recognized
+  __attribute__((target("align-stringops")))
+                        ^
+
+"./ext/pr57362.C", line 21: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 22: error: target attribute not recognized
+  __attribute__((target("fancy-math-387")))
+                        ^
+
+"./ext/pr57362.C", line 23: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 24: error: target attribute not recognized
+  __attribute__((target("force-drap")))
+                        ^
+
+"./ext/pr57362.C", line 25: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 26: error: target attribute not recognized
+  __attribute__((target("fp-ret-in-387")))
+                        ^
+
+"./ext/pr57362.C", line 27: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 28: error: target attribute not recognized
+  __attribute__((target("hard-float")))
+                        ^
+
+"./ext/pr57362.C", line 29: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 30: error: target attribute not recognized
+  __attribute__((target("ieee-fp")))
+                        ^
+
+"./ext/pr57362.C", line 31: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 32: error: target attribute not recognized
+  __attribute__((target("inline-all-stringops")))
+                        ^
+
+"./ext/pr57362.C", line 33: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 34: error: target attribute not recognized
+  __attribute__((target("inline-stringops-dynamically")))
+                        ^
+
+"./ext/pr57362.C", line 35: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 36: error: target attribute not recognized
+  __attribute__((target("intel-syntax")))
+                        ^
+
+"./ext/pr57362.C", line 37: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 38: error: target attribute not recognized
+  __attribute__((target("ms-bitfields")))
+                        ^
+
+"./ext/pr57362.C", line 39: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 40: error: target attribute not recognized
+  __attribute__((target("no-align-stringops")))
+                        ^
+
+"./ext/pr57362.C", line 41: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 42: error: target attribute not recognized
+  __attribute__((target("no-fancy-math-387")))
+                        ^
+
+"./ext/pr57362.C", line 43: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 44: error: target attribute not recognized
+  __attribute__((target("no-push-args")))
+                        ^
+
+"./ext/pr57362.C", line 45: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 46: error: target attribute not recognized
+  __attribute__((target("no-red-zone")))
+                        ^
+
+"./ext/pr57362.C", line 47: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 48: error: target attribute not recognized
+  __attribute__((target("omit-leaf-frame-pointer")))
+                        ^
+
+"./ext/pr57362.C", line 49: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 50: error: target attribute not recognized
+  __attribute__((target("pc32")))
+                        ^
+
+"./ext/pr57362.C", line 51: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 52: error: target attribute not recognized
+  __attribute__((target("pc64")))
+                        ^
+
+"./ext/pr57362.C", line 53: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 54: error: target attribute not recognized
+  __attribute__((target("pc80")))
+                        ^
+
+"./ext/pr57362.C", line 55: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 56: error: target attribute not recognized
+  __attribute__((target("push-args")))
+                        ^
+
+"./ext/pr57362.C", line 57: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 58: error: target attribute not recognized
+  __attribute__((target("red-zone")))
+                        ^
+
+"./ext/pr57362.C", line 59: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 60: error: target attribute not recognized
+  __attribute__((target("rtd")))
+                        ^
+
+"./ext/pr57362.C", line 61: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 62: error: target attribute not recognized
+  __attribute__((target("soft-float")))
+                        ^
+
+"./ext/pr57362.C", line 63: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 64: error: target attribute not recognized
+  __attribute__((target("sseregparm")))
+                        ^
+
+"./ext/pr57362.C", line 65: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 66: error: target attribute not recognized
+  __attribute__((target("stackrealign")))
+                        ^
+
+"./ext/pr57362.C", line 67: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 68: error: target attribute not recognized
+  __attribute__((target("stack-arg-probe")))
+                        ^
+
+"./ext/pr57362.C", line 69: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 70: error: target attribute not recognized
+  __attribute__((target("tls-direct-seg-refs")))
+                        ^
+
+"./ext/pr57362.C", line 71: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 72: error: target attribute not recognized
+  __attribute__((target("vect8-ret-in-mem")))
+                        ^
+
+"./ext/pr57362.C", line 73: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 74: error: target attribute not recognized
+  __attribute__((target("recip")))
+                        ^
+
+"./ext/pr57362.C", line 75: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 76: error: target attribute not recognized
+  __attribute__((target("cld")))
+                        ^
+
+"./ext/pr57362.C", line 77: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 78: error: target attribute not recognized
+  __attribute__((target("vzeroupper")))
+                        ^
+
+"./ext/pr57362.C", line 79: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 80: error: target attribute not recognized
+  __attribute__((target("dispatch-scheduler")))
+                        ^
+
+"./ext/pr57362.C", line 81: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 82: error: target attribute not recognized
+  __attribute__((target("prefer-avx128")))
+                        ^
+
+"./ext/pr57362.C", line 83: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 84: error: target attribute not recognized
+  __attribute__((target("prefer-vector-width=128")))
+                        ^
+
+"./ext/pr57362.C", line 85: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 86: error: target attribute not recognized
+  __attribute__((target("prefer-vector-width=256")))
+                        ^
+
+"./ext/pr57362.C", line 87: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 88: error: target attribute not recognized
+  __attribute__((target("32")))
+                        ^
+
+"./ext/pr57362.C", line 89: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 90: error: target attribute not recognized
+  __attribute__((target("64")))
+                        ^
+
+"./ext/pr57362.C", line 91: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 92: error: target attribute not recognized
+  __attribute__((target("x32")))
+                        ^
+
+"./ext/pr57362.C", line 93: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 96: error: target attribute not recognized
+  __attribute__((target("3dnow")))
+                        ^
+
+"./ext/pr57362.C", line 97: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 98: error: target attribute not recognized
+  __attribute__((target("3dnowa")))
+                        ^
+
+"./ext/pr57362.C", line 99: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 114: error: target attribute not recognized
+  __attribute__((target("no-sse4")))
+                        ^
+
+"./ext/pr57362.C", line 115: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 116: error: target attribute not recognized
+  __attribute__((target("sse5")))
+                        ^
+
+"./ext/pr57362.C", line 117: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 130: error: target attribute not recognized
+  __attribute__((target("lwp")))
+                        ^
+
+"./ext/pr57362.C", line 131: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 132: error: target attribute not recognized
+  __attribute__((target("abm")))
+                        ^
+
+"./ext/pr57362.C", line 133: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 140: error: target attribute not recognized
+  __attribute__((target("lzcnt")))
+                        ^
+
+"./ext/pr57362.C", line 141: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 142: error: target attribute not recognized
+  __attribute__((target("hle")))
+                        ^
+
+"./ext/pr57362.C", line 143: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 144: error: target attribute not recognized
+  __attribute__((target("rdseed")))
+                        ^
+
+"./ext/pr57362.C", line 145: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 146: error: target attribute not recognized
+  __attribute__((target("prfchw")))
+                        ^
+
+"./ext/pr57362.C", line 147: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 148: error: target attribute not recognized
+  __attribute__((target("adx")))
+                        ^
+
+"./ext/pr57362.C", line 149: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 150: error: target attribute not recognized
+  __attribute__((target("fxsr")))
+                        ^
+
+"./ext/pr57362.C", line 151: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 152: error: target attribute not recognized
+  __attribute__((target("xsave")))
+                        ^
+
+"./ext/pr57362.C", line 153: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 154: error: target attribute not recognized
+  __attribute__((target("xsaveopt")))
+                        ^
+
+"./ext/pr57362.C", line 155: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 156: error: target attribute not recognized
+  __attribute__((target("tbm")))
+                        ^
+
+"./ext/pr57362.C", line 157: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 158: error: target attribute not recognized
+  __attribute__((target("cx16")))
+                        ^
+
+"./ext/pr57362.C", line 159: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 160: error: target attribute not recognized
+  __attribute__((target("sahf")))
+                        ^
+
+"./ext/pr57362.C", line 161: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 162: error: target attribute not recognized
+  __attribute__((target("movbe")))
+                        ^
+
+"./ext/pr57362.C", line 163: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 164: error: target attribute not recognized
+  __attribute__((target("crc32")))
+                        ^
+
+"./ext/pr57362.C", line 165: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 170: error: target attribute not recognized
+  __attribute__((target("sse2avx")))
+                        ^
+
+"./ext/pr57362.C", line 171: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 172: error: target attribute not recognized
+  __attribute__((target("fsgsbase")))
+                        ^
+
+"./ext/pr57362.C", line 173: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 174: error: target attribute not recognized
+  __attribute__((target("rdrnd")))
+                        ^
+
+"./ext/pr57362.C", line 175: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 176: error: target attribute not recognized
+  __attribute__((target("f16c")))
+                        ^
+
+"./ext/pr57362.C", line 177: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 178: error: target attribute not recognized
+  __attribute__((target("fentry")))
+                        ^
+
+"./ext/pr57362.C", line 179: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 180: error: target attribute not recognized
+  __attribute__((target("8bit-idiv")))
+                        ^
+
+"./ext/pr57362.C", line 181: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 182: error: target attribute not recognized
+  __attribute__((target("avx256-split-unaligned-load")))
+                        ^
+
+"./ext/pr57362.C", line 183: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 184: error: target attribute not recognized
+  __attribute__((target("avx256-split-unaligned-store")))
+                        ^
+
+"./ext/pr57362.C", line 185: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+"./ext/pr57362.C", line 186: error: target attribute not recognized
+  __attribute__((target("rtm")))
+                        ^
+
+"./ext/pr57362.C", line 187: error: function "foo" has already been defined (previous definition at line 7)
+  int foo(void) { return 1; }
+      ^
+
+143 errors detected in the compilation of "Test_name.c".

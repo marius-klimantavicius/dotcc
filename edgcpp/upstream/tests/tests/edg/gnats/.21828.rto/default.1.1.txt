@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --microsoft_v 1915 --no_ms_permissive Test_name.c
+"Test_name.c", line 4: warning: attribute does not apply to any entity
+  using X = __declspec(deprecated("msg")) T;
+                       ^
+

@@ -1,0 +1,23 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 32: warning: constant "C::U" was declared deprecated ("unused")
+    auto j = C::U; // { dg-warning ".U. is deprecated" }
+                ^
+"Test_name.c", line 12: note: because of a "deprecated" attribute
+      U [[deprecated("unused")]],
+          ^
+
+"Test_name.c", line 34: warning: constant "D<Tp>::Y [with Tp=int]" was declared deprecated ("unused")
+    auto k = D<int>::Y; // { dg-warning ".Y. is deprecated" }
+                     ^
+"Test_name.c", line 24: note: because of a "deprecated" attribute
+        Y [[deprecated("unused")]],
+            ^
+
+"Test_name.c", line 32: warning: variable "j" was declared but never referenced
+    auto j = C::U; // { dg-warning ".U. is deprecated" }
+         ^
+
+"Test_name.c", line 34: warning: variable "k" was declared but never referenced
+    auto k = D<int>::Y; // { dg-warning ".Y. is deprecated" }
+         ^
+

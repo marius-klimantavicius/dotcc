@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --microsoft Test_name.c
+"Test_name.c", line 16: error: interface types cannot have virtual base classes
+  __interface ID1: virtual private IB1 {};
+                   ^
+
+"Test_name.c", line 16: error: interface types cannot specify "private" or "protected"
+  __interface ID1: virtual private IB1 {};
+                           ^
+
+"Test_name.c", line 19: error: interface types can only derive from other interface types
+  __interface ID2: SB {};
+                   ^
+
+3 errors detected in the compilation of "Test_name.c".

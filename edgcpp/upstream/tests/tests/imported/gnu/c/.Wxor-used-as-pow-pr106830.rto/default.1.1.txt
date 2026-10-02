@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 7: warning: integer constant is too large
+    (__int128)(18302628885633695743 << 4) ^ 0; /* { dg-warning "integer constant is so large that it is unsigned" } */
+              ^
+
+"Test_name.c", line 7: warning: expression has no effect
+    (__int128)(18302628885633695743 << 4) ^ 0; /* { dg-warning "integer constant is so large that it is unsigned" } */
+    ^
+

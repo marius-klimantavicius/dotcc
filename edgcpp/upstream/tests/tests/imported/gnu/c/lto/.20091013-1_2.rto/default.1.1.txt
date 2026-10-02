@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c17 --strict_gnu Test_name.c
+"Test_name.c", line 87: warning: variable "ft_face" is used before its value is set
+         font->ppem = f1(ft_face, height);
+                         ^
+
+"Test_name.c", line 164: warning: variable "can_use_bitmap" is used before its value is set
+      if((ret = find_in_cache(hfont, &lf, &dcmat, can_use_bitmap)) != ((void *)0))
+                                                  ^
+

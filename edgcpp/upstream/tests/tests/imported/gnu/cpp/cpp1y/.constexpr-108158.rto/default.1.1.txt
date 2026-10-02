@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 33: warning: variable "nocount" was declared but never referenced
+  constexpr auto nocount = ze_set.lookup(4, int());
+                 ^
+
+"Test_name.c", line 34: warning: variable "nocount2" was declared but never referenced
+  constexpr auto nocount2 = unordered_set<3>{}.lookup(4, int());
+                 ^
+

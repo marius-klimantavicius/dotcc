@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 6: error: a value of type "void *" cannot be used to initialize an entity of type "int"
+  int ia1[2] = { (void*)0 };              // { dg-error "invalid conversion from 'void\\\*'" }
+                 ^
+
+"Test_name.c", line 7: error: a value of type "void *" cannot be used to initialize an entity of type "int"
+  int ia2[2] = { (void*)0, 0 };           // { dg-error "invalid conversion from 'void\\\*'" }
+                 ^
+
+"Test_name.c", line 8: error: a value of type "void *" cannot be used to initialize an entity of type "int"
+  int ia3[] = { (void*)0, 0 };            // { dg-error "invalid conversion from 'void\\\*'" }
+                ^
+
+"Test_name.c", line 15: error: a value of type "char *" cannot be used to initialize an entity of type "const char"
+  const char ca1[2] = { (char*)0, 0 };    // { dg-error "invalid conversion from 'char\\\*'" }
+                        ^
+
+"Test_name.c", line 21: error: a value of type "Func *" (aka "void (*)()") cannot be used to initialize an entity of type "const char"
+  const char ca6[2] = { (Func*)0, 0 };    // { dg-error "invalid conversion from 'void \\\(\\\*\\\)\\\(\\\)' to 'char'" }
+                        ^
+
+"Test_name.c", line 27: error: a value of type "MemPtr" (aka "int S::*") cannot be used to initialize an entity of type "const char"
+  const char ca4[2] = { (MemPtr)0, 0 };   // { dg-error "cannot convert 'MemPtr' " }
+                        ^
+
+"Test_name.c", line 28: error: a value of type "MemFuncPtr" (aka "int (S::*)()") cannot be used to initialize an entity of type "const char"
+  const char ca5[2] = { (MemFuncPtr)0, 0 };   // { dg-error "cannot convert 'int \\\(S::\\\*\\\)\\\(\\\)' "  }
+                        ^
+
+"Test_name.c", line 15: warning: variable "ca1" was declared but never referenced
+  const char ca1[2] = { (char*)0, 0 };    // { dg-error "invalid conversion from 'char\\\*'" }
+             ^
+
+"Test_name.c", line 17: warning: variable "ca2" was declared but never referenced
+  const char ca2[2] = { __null, 0 };      // { dg-warning "\\\[-Wconversion-null" }
+             ^
+
+"Test_name.c", line 21: warning: variable "ca6" was declared but never referenced
+  const char ca6[2] = { (Func*)0, 0 };    // { dg-error "invalid conversion from 'void \\\(\\\*\\\)\\\(\\\)' to 'char'" }
+             ^
+
+"Test_name.c", line 27: warning: variable "ca4" was declared but never referenced
+  const char ca4[2] = { (MemPtr)0, 0 };   // { dg-error "cannot convert 'MemPtr' " }
+             ^
+
+"Test_name.c", line 28: warning: variable "ca5" was declared but never referenced
+  const char ca5[2] = { (MemFuncPtr)0, 0 };   // { dg-error "cannot convert 'int \\\(S::\\\*\\\)\\\(\\\)' "  }
+             ^
+
+7 errors detected in the compilation of "Test_name.c".

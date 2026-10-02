@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 12: error: expression must have integral type
+    switch (d) /* { dg-error "switch quantity not an integer" } */
+            ^
+
+"Test_name.c", line 15: error: expression must have integral type
+    switch (p) /* { dg-error "switch quantity not an integer" } */
+            ^
+
+"Test_name.c", line 20: error: expression must be an integral constant expression
+      case (void *)0: ; /* { dg-error "pointers are not permitted as case values" } */
+           ^
+
+"Test_name.c", line 24: error: expression must be an integral constant expression
+      case (double)0: ; /* { dg-error "case label does not reduce to an integer constant" } */
+           ^
+
+"Test_name.c", line 36: error: the second constant in a case range must be larger than the first
+      case 0 ... -1: ; /* { dg-warning "empty range specified" } */
+                 ^
+
+"Test_name.c", line 40: error: the second constant in a case range must be larger than the first
+      case 0 ... -2: ; /* { dg-warning "empty range specified" } */
+                 ^
+
+"Test_name.c", line 47: error: default label has already appeared in this switch
+      default: ; /* { dg-error "multiple default labels in one switch" } */
+      ^
+
+"Test_name.c", line 53: error: case label value has already appeared in this switch at line 51
+      case 0: ; /* { dg-error "duplicate case value" } */
+           ^
+
+"Test_name.c", line 55: error: a case label may only be used within a switch
+   case 1: ; /* { dg-error "case label not within a switch statement" } */
+   ^
+
+"Test_name.c", line 56: error: a default label may only be used within a switch
+   default: ; /* { dg-error "'default' label not within a switch statement" } */
+   ^
+
+"Test_name.c", line 57: error: a break statement may only be used within a loop or switch
+     break; /* { dg-error "break statement not within loop or switch" } */
+     ^
+
+"Test_name.c", line 58: error: a continue statement may only be used within a loop
+     continue; /* { dg-error "continue statement not within a loop" } */
+     ^
+
+eccp: front end returned an exit status of 139

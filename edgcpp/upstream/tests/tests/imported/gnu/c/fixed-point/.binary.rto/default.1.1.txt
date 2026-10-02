@@ -1,0 +1,932 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 116: error: expected a ";"
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: extra text after expected end of number
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: "_Fract" has already been declared in the current scope
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: expected a ";"
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: extra text after expected end of number
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: identifier "a" is undefined
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: identifier "b" is undefined
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: extra text after expected end of number
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: identifier "a" is undefined
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: identifier "b" is undefined
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: extra text after expected end of number
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: identifier "a" is undefined
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: identifier "b" is undefined
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: extra text after expected end of number
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: identifier "b" is undefined
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: identifier "a" is undefined
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: extra text after expected end of number
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: identifier "b" is undefined
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: identifier "a" is undefined
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: identifier "a" is undefined
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: identifier "b" is undefined
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: identifier "a" is undefined
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: identifier "b" is undefined
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: identifier "a" is undefined
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: identifier "b" is undefined
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: identifier "a" is undefined
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: identifier "b" is undefined
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: identifier "a" is undefined
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: identifier "b" is undefined
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: identifier "a" is undefined
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: identifier "b" is undefined
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: identifier "a" is undefined
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: identifier "b" is undefined
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: identifier "a" is undefined
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: identifier "b" is undefined
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: extra text after expected end of number
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: extra text after expected end of number
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: extra text after expected end of number
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: extra text after expected end of number
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: extra text after expected end of number
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: error: extra text after expected end of number
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: warning: variable "_Fract" was declared but never referenced
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 116: warning: variable "_Fract" was declared but never referenced
+    BINARY(short _Fract, hr);
+    ^
+
+"Test_name.c", line 117: error: identifier "_Fract" is undefined
+    BINARY(_Fract, r);
+    ^
+
+"Test_name.c", line 117: error: extra text after expected end of number
+    BINARY(_Fract, r);
+    ^
+
+"Test_name.c", line 117: error: identifier "_Fract" is undefined
+    BINARY(_Fract, r);
+    ^
+
+"Test_name.c", line 117: error: extra text after expected end of number
+    BINARY(_Fract, r);
+    ^
+
+"Test_name.c", line 117: error: extra text after expected end of number
+    BINARY(_Fract, r);
+    ^
+
+"Test_name.c", line 117: error: extra text after expected end of number
+    BINARY(_Fract, r);
+    ^
+
+"Test_name.c", line 117: error: extra text after expected end of number
+    BINARY(_Fract, r);
+    ^
+
+"Test_name.c", line 117: error: extra text after expected end of number
+    BINARY(_Fract, r);
+    ^
+
+"Test_name.c", line 117: error: extra text after expected end of number
+    BINARY(_Fract, r);
+    ^
+
+"Test_name.c", line 117: error: extra text after expected end of number
+    BINARY(_Fract, r);
+    ^
+
+"Test_name.c", line 117: error: extra text after expected end of number
+    BINARY(_Fract, r);
+    ^
+
+"Test_name.c", line 117: error: extra text after expected end of number
+    BINARY(_Fract, r);
+    ^
+
+"Test_name.c", line 117: error: extra text after expected end of number
+    BINARY(_Fract, r);
+    ^
+
+"Test_name.c", line 117: error: extra text after expected end of number
+    BINARY(_Fract, r);
+    ^
+
+"Test_name.c", line 118: error: expected a ";"
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: extra text after expected end of number
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: warning: concatenation with "lr" in macro "BINARY" does not create a valid token
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: "_Fract" has already been declared in the current scope
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: expected a ";"
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: extra text after expected end of number
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: warning: concatenation with "lr" in macro "BINARY" does not create a valid token
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: identifier "a" is undefined
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: identifier "b" is undefined
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: extra text after expected end of number
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: warning: concatenation with "lr" in macro "BINARY" does not create a valid token
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: identifier "a" is undefined
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: identifier "b" is undefined
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: extra text after expected end of number
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: warning: concatenation with "lr" in macro "BINARY" does not create a valid token
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: identifier "a" is undefined
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: identifier "b" is undefined
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: extra text after expected end of number
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: warning: concatenation with "lr" in macro "BINARY" does not create a valid token
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: identifier "b" is undefined
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: identifier "a" is undefined
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: extra text after expected end of number
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: warning: concatenation with "lr" in macro "BINARY" does not create a valid token
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: identifier "b" is undefined
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: identifier "a" is undefined
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: identifier "a" is undefined
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: identifier "b" is undefined
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: identifier "a" is undefined
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: identifier "b" is undefined
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: identifier "a" is undefined
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: identifier "b" is undefined
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: identifier "a" is undefined
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: identifier "b" is undefined
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: identifier "a" is undefined
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: identifier "b" is undefined
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: identifier "a" is undefined
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: identifier "b" is undefined
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: identifier "a" is undefined
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: identifier "b" is undefined
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: identifier "a" is undefined
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: identifier "b" is undefined
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: extra text after expected end of number
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: warning: concatenation with "lr" in macro "BINARY" does not create a valid token
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: extra text after expected end of number
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: warning: concatenation with "lr" in macro "BINARY" does not create a valid token
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: extra text after expected end of number
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: warning: concatenation with "lr" in macro "BINARY" does not create a valid token
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: extra text after expected end of number
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: warning: concatenation with "lr" in macro "BINARY" does not create a valid token
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: extra text after expected end of number
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: warning: concatenation with "lr" in macro "BINARY" does not create a valid token
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: error: extra text after expected end of number
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: warning: concatenation with "lr" in macro "BINARY" does not create a valid token
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: warning: variable "_Fract" was declared but never referenced
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 118: warning: variable "_Fract" was declared but never referenced
+    BINARY(long _Fract, lr);
+    ^
+
+"Test_name.c", line 119: error: expected a ";"
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: extra text after expected end of number
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: warning: concatenation with "llr" in macro "BINARY" does not create a valid token
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: "_Fract" has already been declared in the current scope
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: expected a ";"
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: extra text after expected end of number
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: warning: concatenation with "llr" in macro "BINARY" does not create a valid token
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: identifier "a" is undefined
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: identifier "b" is undefined
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: extra text after expected end of number
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: warning: concatenation with "llr" in macro "BINARY" does not create a valid token
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: identifier "a" is undefined
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: identifier "b" is undefined
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: extra text after expected end of number
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: warning: concatenation with "llr" in macro "BINARY" does not create a valid token
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: identifier "a" is undefined
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: identifier "b" is undefined
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: extra text after expected end of number
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: warning: concatenation with "llr" in macro "BINARY" does not create a valid token
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: identifier "b" is undefined
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: identifier "a" is undefined
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: extra text after expected end of number
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: warning: concatenation with "llr" in macro "BINARY" does not create a valid token
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: identifier "b" is undefined
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: identifier "a" is undefined
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: identifier "a" is undefined
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: identifier "b" is undefined
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: identifier "a" is undefined
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: identifier "b" is undefined
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: identifier "a" is undefined
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: identifier "b" is undefined
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: identifier "a" is undefined
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: identifier "b" is undefined
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: identifier "a" is undefined
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: identifier "b" is undefined
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: identifier "a" is undefined
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: identifier "b" is undefined
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: identifier "a" is undefined
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: identifier "b" is undefined
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: identifier "a" is undefined
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: identifier "b" is undefined
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: extra text after expected end of number
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: warning: concatenation with "llr" in macro "BINARY" does not create a valid token
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: extra text after expected end of number
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: warning: concatenation with "llr" in macro "BINARY" does not create a valid token
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: extra text after expected end of number
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: warning: concatenation with "llr" in macro "BINARY" does not create a valid token
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: extra text after expected end of number
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: warning: concatenation with "llr" in macro "BINARY" does not create a valid token
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: extra text after expected end of number
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: warning: concatenation with "llr" in macro "BINARY" does not create a valid token
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: error: extra text after expected end of number
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: warning: concatenation with "llr" in macro "BINARY" does not create a valid token
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: warning: variable "_Fract" was declared but never referenced
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 119: warning: variable "_Fract" was declared but never referenced
+    BINARY(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 120: error: expected a ";"
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: extra text after expected end of number
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: "_Fract" has already been declared in the current scope
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: expected a ";"
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: extra text after expected end of number
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: identifier "a" is undefined
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: identifier "b" is undefined
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: extra text after expected end of number
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: identifier "a" is undefined
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: identifier "b" is undefined
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: extra text after expected end of number
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: identifier "a" is undefined
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: identifier "b" is undefined
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: extra text after expected end of number
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: identifier "b" is undefined
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: identifier "a" is undefined
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: extra text after expected end of number
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: identifier "b" is undefined
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: identifier "a" is undefined
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: identifier "a" is undefined
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: identifier "b" is undefined
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: identifier "a" is undefined
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: identifier "b" is undefined
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: identifier "a" is undefined
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: identifier "b" is undefined
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: identifier "a" is undefined
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: identifier "b" is undefined
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: identifier "a" is undefined
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: identifier "b" is undefined
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: identifier "a" is undefined
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: identifier "b" is undefined
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: identifier "a" is undefined
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: identifier "b" is undefined
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: identifier "a" is undefined
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: identifier "b" is undefined
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: extra text after expected end of number
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: extra text after expected end of number
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: extra text after expected end of number
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: extra text after expected end of number
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: extra text after expected end of number
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: error: extra text after expected end of number
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: warning: variable "_Fract" was declared but never referenced
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 120: warning: variable "_Fract" was declared but never referenced
+    BINARY(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 121: error: expected a ";"
+    BINARY(unsigned _Fract, ur);
+    ^
+
+"Test_name.c", line 121: error: extra text after expected end of number
+    BINARY(unsigned _Fract, ur);
+    ^
+
+"Test_name.c", line 121: error: "_Fract" has already been declared in the current scope
+    BINARY(unsigned _Fract, ur);
+    ^
+
+"Test_name.c", line 121: error: expected a ";"
+    BINARY(unsigned _Fract, ur);
+    ^
+
+"Test_name.c", line 121: error: extra text after expected end of number
+    BINARY(unsigned _Fract, ur);
+    ^
+
+"Test_name.c", line 121: error: identifier "a" is undefined
+    BINARY(unsigned _Fract, ur);
+    ^
+
+"Test_name.c", line 121: error: identifier "b" is undefined
+    BINARY(unsigned _Fract, ur);
+    ^
+
+"Test_name.c", line 121: error: extra text after expected end of number
+    BINARY(unsigned _Fract, ur);
+    ^
+
+"Test_name.c", line 121: error: identifier "a" is undefined
+    BINARY(unsigned _Fract, ur);
+    ^
+
+"Test_name.c", line 121: error: identifier "b" is undefined
+    BINARY(unsigned _Fract, ur);
+    ^
+
+"Test_name.c", line 121: error: extra text after expected end of number
+    BINARY(unsigned _Fract, ur);
+    ^
+
+"Test_name.c", line 121: error: identifier "a" is undefined
+    BINARY(unsigned _Fract, ur);
+    ^
+
+"Test_name.c", line 121: error: identifier "b" is undefined
+    BINARY(unsigned _Fract, ur);
+    ^
+
+"Test_name.c", line 121: error: extra text after expected end of number
+    BINARY(unsigned _Fract, ur);
+    ^
+
+"Test_name.c", line 121: error: identifier "b" is undefined
+    BINARY(unsigned _Fract, ur);
+    ^
+
+"Test_name.c", line 121: error: identifier "a" is undefined
+    BINARY(unsigned _Fract, ur);
+    ^
+
+"Test_name.c", line 121: error: extra text after expected end of number
+    BINARY(unsigned _Fract, ur);
+    ^
+
+"Test_name.c", line 121: error: identifier "b" is undefined
+    BINARY(unsigned _Fract, ur);
+    ^
+
+"Test_name.c", line 121: error: identifier "a" is undefined
+    BINARY(unsigned _Fract, ur);
+    ^
+
+"Test_name.c", line 121: error: identifier "a" is undefined
+    BINARY(unsigned _Fract, ur);
+    ^
+
+"Test_name.c", line 121: error: identifier "b" is undefined
+    BINARY(unsigned _Fract, ur);
+    ^
+
+"Test_name.c", line 121: error: identifier "a" is undefined
+    BINARY(unsigned _Fract, ur);
+    ^
+
+Error limit reached.
+200 errors detected in the compilation of "Test_name.c".
+Compilation terminated.

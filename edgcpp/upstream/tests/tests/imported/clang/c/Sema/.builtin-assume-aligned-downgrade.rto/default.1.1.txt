@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 9: warning: argument of type "int" is incompatible with parameter of type "const void *"
+    a = (int *)__builtin_assume_aligned(b, 32); // expected-error {{non-pointer argument to '__builtin_assume_aligned' is not allowed}}
+                                        ^
+
+"Test_name.c", line 10: warning: argument of type "int" is incompatible with parameter of type "const void *"
+    int *y = __builtin_assume_aligned(1, 1); // expected-error {{non-pointer argument to '__builtin_assume_aligned' is not allowed}}
+                                      ^
+
+"Test_name.c", line 10: warning: conversion of nonzero integer to pointer
+    int *y = __builtin_assume_aligned(1, 1); // expected-error {{non-pointer argument to '__builtin_assume_aligned' is not allowed}}
+                                      ^
+
+"Test_name.c", line 11: warning: missing return statement at end of non-void function "test"
+  }
+  ^
+
+"Test_name.c", line 8: warning: parameter "a" was set but never used
+  int test(int *a, int b) {
+                ^
+

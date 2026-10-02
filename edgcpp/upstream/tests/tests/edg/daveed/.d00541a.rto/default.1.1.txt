@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --microsoft Test_name.c
+"Test_name.c", line 18: warning: calling convention specified here is ignored
+  __stdcall C::C(){}
+  ^
+

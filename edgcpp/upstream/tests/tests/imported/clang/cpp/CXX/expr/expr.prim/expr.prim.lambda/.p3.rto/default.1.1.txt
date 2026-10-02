@@ -1,0 +1,32 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 9: error: no instance of constructor "lambda []()->void::<unnamed>" matches the argument list
+            argument types are: (int)
+    decltype(lambda) foo = { 1 }; // expected-error{{no matching constructor}}
+                           ^
+"Test_name.c", line 8: note: function "lambda []()->void::<unnamed>(const lambda []()->void &)" does not match because argument #1 does not match parameter
+    auto lambda = [i]() -> void {}; // expected-note 2{{candidate constructor}}
+                  ^
+"Test_name.c", line 8: note: function "lambda []()->void::<unnamed>(lambda []()->void &&)" does not match because argument #1 does not match parameter
+    auto lambda = [i]() -> void {}; // expected-note 2{{candidate constructor}}
+                  ^
+"Test_name.c", line 8: note: number of parameters of function "lambda []()->void::<unnamed>()" does not match the call
+    auto lambda = [i]() -> void {}; // expected-note 2{{candidate constructor}}
+                  ^
+
+"Test_name.c", line 13: error: the default constructor of "lambda []()->void" cannot be referenced -- it is a deleted function
+    decltype(lambda2) bar = {}; // expected-error{{no matching constructor}}
+                            ^
+
+"Test_name.c", line 8: warning: variable "lambda" was set but never used
+    auto lambda = [i]() -> void {}; // expected-note 2{{candidate constructor}}
+         ^
+
+"Test_name.c", line 12: warning: variable "lambda2" was set but never used
+    auto lambda2 = []{}; // expected-note 2{{candidate constructor}}
+         ^
+
+"Test_name.c", line 17: error: a lambda is not allowed in a constant expression
+  constexpr auto literal = []{};
+                           ^
+
+3 errors detected in the compilation of "Test_name.c".

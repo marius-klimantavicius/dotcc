@@ -1,0 +1,53 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 7: warning: unknown attribute "zero_call_used_regs"
+  void failure1(void) _zero_call_used_regs();                   // expected-error {{takes one argument}}
+                      ^
+
+"Test_name.c", line 8: warning: unknown attribute "zero_call_used_regs"
+  void failure2(void) _zero_call_used_regs("used", "used-gpr"); // expected-error {{takes one argument}}
+                      ^
+
+"Test_name.c", line 9: warning: unknown attribute "zero_call_used_regs"
+  void failure3(void) _zero_call_used_regs(0);                  // expected-error {{expected string literal}}
+                      ^
+
+"Test_name.c", line 10: warning: unknown attribute "zero_call_used_regs"
+  void failure4(void) _zero_call_used_regs("hello");            // expected-warning {{argument not supported: hello}}
+                      ^
+
+"Test_name.c", line 12: warning: unknown attribute "zero_call_used_regs"
+  void success1(void) _zero_call_used_regs("skip");
+                      ^
+
+"Test_name.c", line 13: warning: unknown attribute "zero_call_used_regs"
+  void success2(void) _zero_call_used_regs("used-gpr-arg");
+                      ^
+
+"Test_name.c", line 14: warning: unknown attribute "zero_call_used_regs"
+  void success3(void) _zero_call_used_regs("used-gpr");
+                      ^
+
+"Test_name.c", line 15: warning: unknown attribute "zero_call_used_regs"
+  void success4(void) _zero_call_used_regs("used-arg");
+                      ^
+
+"Test_name.c", line 16: warning: unknown attribute "zero_call_used_regs"
+  void success5(void) _zero_call_used_regs("used");
+                      ^
+
+"Test_name.c", line 17: warning: unknown attribute "zero_call_used_regs"
+  void success6(void) _zero_call_used_regs("all-gpr-arg");
+                      ^
+
+"Test_name.c", line 18: warning: unknown attribute "zero_call_used_regs"
+  void success7(void) _zero_call_used_regs("all-gpr");
+                      ^
+
+"Test_name.c", line 19: warning: unknown attribute "zero_call_used_regs"
+  void success8(void) _zero_call_used_regs("all-arg");
+                      ^
+
+"Test_name.c", line 20: warning: unknown attribute "zero_call_used_regs"
+  void success9(void) _zero_call_used_regs("all");
+                      ^
+

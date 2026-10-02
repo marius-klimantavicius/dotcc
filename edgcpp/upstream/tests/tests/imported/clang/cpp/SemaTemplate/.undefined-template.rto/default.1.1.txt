@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 Test_name.c
+"SemaTemplate/undefined-template.cpp", line 27: error: declaration is incompatible with "char C1<T>::C2<T1>::s_var_2 [with T=int, T1=long]" (declared at line 14)
+  extern template void C1<int>::C2<long>::s_var_2;
+                                          ^
+
+1 error detected in the compilation of "Test_name.c".

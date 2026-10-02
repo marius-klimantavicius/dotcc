@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 18: error: nonstandard form for taking the address of a member function
+      void (A::*q)() = &(A::f);       // { dg-error "27:ISO C\\+\\+ forbids taking the address of an unqualified or parenthesized" }
+                       ^
+
+"Test_name.c", line 19: error: nonstandard form for taking the address of a member function
+      foo(&g<int>);                   // { dg-error "cannot convert" }
+          ^
+
+"Test_name.c", line 17: warning: variable "p" was declared but never referenced
+      void (A::*p)() = &A::f;
+                ^
+
+"Test_name.c", line 18: warning: variable "q" was declared but never referenced
+      void (A::*q)() = &(A::f);       // { dg-error "27:ISO C\\+\\+ forbids taking the address of an unqualified or parenthesized" }
+                ^
+
+2 errors detected in the compilation of "Test_name.c".

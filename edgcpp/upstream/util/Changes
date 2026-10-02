@@ -1,0 +1,2777 @@
+Version 7.0, September 28, 2026
+
+9/27/26  [EDGcpfe/29061]
+
+mk_errinfo could produce incorrect output (e.g., missing font changes)
+when the -rst option was used.  Now fixed.
+
+-------------------------------------------------------------------------------
+Version 6.9, July 20, 2026
+
+8/25/26  [EDGcpfe/29018]
+Use a standard shebang line in make_predef_macro_table
+
+The make_predef_macro_table script previously did not use a standard POSIX
+shebang line; this is now fixed.
+
+
+6/29/26  [EDGcpfe/28929]
+Spaces are improperly processed on various options
+
+Previously, various options (like --sys_include) did not properly quote
+their arguments, resulting in arguments unintentionally decaying into multiple
+arguments (if the argument contained a space).  This is now fixed.
+
+
+5/14/26  [EDGcpfe/28833]
+Demangled names for fabricated field names of base objects
+
+The front end creates fabricated names for some field names in lowered
+classes.  The demangler has been updated to provide demangled names for
+such fields.  This change is for both the IA-64 and Cfront ABIs.
+
+
+3/4/26   [EDGcpfe/28581]
+reStructuredText output from mk_errinfo
+
+In addition to LaTeX and Maker Markup Language (Adobe FrameMaker) formats,
+mk_errinfo now also supports reStructuredText (see
+https://docutils.sourceforge.io/rst.html) when creating a human-readable
+summary description of the front end's diagnostic messages for inclusion in
+the front end documentation.  For example,
+
+  mk_errinfo -rst error_msg.txt error_tag.txt err_msgs.rst
+
+
+-------------------------------------------------------------------------------
+Version 6.8, November 21, 2025
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 6.7, January 27, 2025
+
+8/12/25  [EDGcpfe/28388]
+Unbounded allocation of memory on malformed IA-64 mangled name
+
+Some malformed IA-64 mangled names could cause edg_decode to allocate a
+large amount of memory, causing unspecified behavior.  Now fixed.
+
+
+6/25/25  [EDGcpfe/28025]
+Add supporting command-line options for writing named modules
+
+The front end now supports the following modules-related options:
+
+  --create_module_interface file
+  Write an EDG IFC module file for a module interface unit to file.
+
+  --create_module_internal_partition file
+  Write an EDG IFC module file for a module implementation unit to file.
+
+  --module_interface
+  Write an EDG IFC module file for a module interface unit in the current
+  working directory; the filename is derived from the parsed module
+  declaration.
+
+  --module_internal_partition
+  Write an EDG IFC module file for a module implementation unit in the current
+  working directory; the filename is derived from the parsed module
+  declaration.
+
+The following options have been removed: --ms_mod_interface,
+--no_ms_mod_interface, --ms_internal_partition, --no_ms_internal_partition.
+The new options are only required if creating an EDG IFC module file is
+desired.
+
+
+4/16/25  [EDGcpfe/28111]
+Fix eccp overly greedy file collection
+
+Previously, the command line argument parsing in eccp was overly greedy.  This
+could result in an option like --ms_mod_file_map=foo=foo.cpp being treated as a
+cpp file instead of a command line option.
+
+
+4/15/25  [EDGcpfe/28103]
+Thread safety for demangling
+
+The code in decode.c has been modified to make it thread-safe when compiled
+with MULTIPLE_THREAD_COMPILATION set to TRUE.  Notably, this change does not
+introduce any multi-threaded demangling utility program.
+
+
+1/27/25  [EDGcpfe/27888]
+Replace uses of sprintf with snprintf
+
+Uses of sprintf in the util directory have been replaced by safer calls to
+snprintf.
+
+
+1/2/25   [EDGcpfe/27800]
+Multi-threaded POSIX front end daemon
+
+A new multi-threaded daemon has been implemented and a corresponding new
+utility program (cfe_daemon_client.c) has been added (see the Changes file in
+the src directory for more information).
+
+
+12/9/24  [EDGcpfe/27785]
+Avoid stack overflow on non-mangled Cfront names with multiple underscores
+
+Demangling strings in the Cfront ABI that contain "__" can cause the demangler
+to assume that the strings are mangled identifiers when they aren't.  In the
+case of a string like "x__update", the demangler had mistakenly tried to
+demangle the identifier, resulting in a stack overflow.  That has now been
+fixed.
+
+
+12/9/24  [EDGcpfe/27786]
+Modernize temporary file creation
+
+eccp now uses mktemp to create temporary directories instead of the PID
+(process identifier).
+
+
+12/2/24  [EDGcpfe/27746]
+Floating-point demangling changes
+
+In the Cfront ABI, clang's __fp16 type is now recognized and demangled.
+
+In the IA-64 ABI, the demangled names for the std::floatN_t types have been
+changed to _FloatN (to better match the demangled names from GNU and clang).
+
+
+11/11/24 [EDGcpfe/27715]
+Fix eccp default argument processing
+
+Previously, eccp would incorrectly prefer arguments specified in
+EDG_CPFE_DEFAULT_OPTIONS over those specified explicitly on the command line.
+In practice, this resulted in any option present in EDG_CPFE_DEFAULT_OPTIONS
+being the only option eccp would accept.  Now fixed.
+
+
+10/9/24  [EDGcpfe/27569]
+Cfront ABI: read past end of buffer when demangling some invalid identifiers
+
+In the Cfront ABI, decode_identifier had read past the end of the buffer
+on some invalid identifiers (like "___it").  Now fixed.
+
+
+9/16/24  [EDGcpfe/27560]
+GNU/Clang compatibility: __GLIBCXX_BITSIZE_INT_N_0 and __GLIBCXX_TYPE_INT_N_0
+
+The make_predef_macro_table tool has been updated to remove any predefined
+macro settings for __GLIBCXX_BITSIZE_INT_N_0 and __GLIBCXX_TYPE_INT_N_0 as
+those are now set dynamically in the front end.
+
+
+1/30/24  [EDGcpfe/26984]
+Cfront ABI: Demangling of _Float16, _Float32x, _Float64x types
+
+The demangler had failed to demangle names that contain _Float16, _Float32x,
+or _Float64x types and is now fixed.
+
+
+-------------------------------------------------------------------------------
+Version 6.6, December 18, 2023
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 6.5, June 21, 2023
+
+10/8/23  [EDGcpfe/26706]
+IA64-ABI: add demangling support for template arguments in vendor extended type
+
+A change was made in the demangling of vendor extended types to allow for
+optional template arguments in a vendor extended type:
+
+  <builtin-type> ::= u <source-name> [<template-args>] # vendor extended type
+
+
+7/26/23  [EDGcpfe/26525]
+Remove predefined macro definition for _M_X64 and _M_AMD64
+
+Previously, make_win_predef_macro defined _M_AMD64 and _M_X64.  This
+functionality has been removed, and the front end is now responsible for
+setting these macro definitions.
+
+
+6/5/23   [EDGcpfe/26345]
+Added %u error message fill-in
+
+mk_errinfo has been updated to support the %u fill-in (with the -mml
+command-line option).
+
+
+3/16/23  [EDGcpfe/26146]
+Fixed issues with dettarg calculations, primarily affecting 32-bit systems
+
+Previously ik_int was not handled by the improvements introduced by
+EDGcpfe/25681 in version 6.4 (see entry of 10/14/22).  This resulted in dettarg
+being unable to calculate the jmp_buf buffer size if it was determined (for
+alignment purposes) that the jmp_buf buffer should be composed of integers.
+This is now fixed.
+
+Additionally, a pre-existing issue where alignment was not calculated correctly
+for the jmp_buf type has been fixed.
+
+
+-------------------------------------------------------------------------------
+Version 6.4, October 25, 2022
+
+10/14/22 [EDGcpfe/25681]
+Improve dettarg setjmp and jmp_buf deduction support
+
+dettarg now supports calculating JMP_BUF definitions for jmp_buf
+implementations that are not based on arrays of integer types.
+
+Additionally, dettarg now properly supports libraries that remap "setjmp" to a
+different underlying function via a macro.  As an example, libstdc++ (at the
+time of writing) has switched to define setjmp as:
+
+  #define setjmp(env) _setjmp(env)
+
+where _setjmp is the actual function EDG should be calling.
+
+
+9/30/22  [EDGcpfe/20094,EDGcpfe/20264,EDGcpfe/25494]
+GNU/Clang compatibility: _Float16
+
+Demangling now supports the _Float16 16-bit floating-point type.
+
+
+1/21/22  [EDGcpfe/25004]
+IA-64 ABI demangling issue
+
+IA-64 ABI mangled names that contain a two-character substitution followed by a
+name that begins with "_I" had been improperly demangled.  For example,
+_ZSt9_Is_slash had been demangled as "std(_Is_slash)" and is now properly
+demangled as "std::_Is_slash".
+
+
+1/3/22   [EDGcpfe/24962]
+Rename a_substitution struct
+
+In some cases, the a_substitution struct in decode.c could conflict with a
+similarly named struct in lower_name.c.  To avoid such a collision the one
+in decode.c has now been renamed a_substitution_location.
+
+
+Version 6.3, December 13, 2021
+
+4/5/21   [EDGcpfe/24035]
+Add the --ms_await_strict command-line option to eccp
+
+The --ms_await_strict command-line option has been added to the eccp script.
+
+
+2/16/21  [EDGcpfe/23906]
+Add --il_display command-line option to eccp
+
+The --il_display command-line option has been added to the eccp script.
+
+
+-------------------------------------------------------------------------------
+Version 6.2, February 10, 2021
+
+9/21/20  [EDGcpfe/23362]
+Demangling for designated initializers
+
+Following the implementation of designated initializer mangling in the
+front end, support has been added for demangling names with designated
+initializer mangling.  The Cfront ABI uses the same mangling structure as
+the IA-64 ABI.
+
+
+8/7/20   [EDGcpfe/23225]
+Options for --[no_]utf8_char_literals
+
+The options controlling support for UTF-8 character literals (see
+EDGcpfe/16385) were inadvertently omitted from eccp.  This is now fixed.
+
+
+8/3/20   [EDGcpfe/20033,EDGcpfe/20276,EDGcpfe/22245]
+Demangling for template parameter objects
+
+As a result of the changes for nontype template parameters of class type or
+floating-point type (a C++20 feature), demangling has been added for template
+parameter objects.  The IA-64 ABI has not been officially updated to reflect
+these changes but GCC uses "TA" for these objects and these are now properly
+decoded.  The Cfront ABI uses "__TPO__".
+
+
+-------------------------------------------------------------------------------
+Version 6.1, July 24, 2020
+
+6/29/20  [EDGcpfe/23022]
+Demangling for spaceship operator
+
+Demangling for the spaceship (<=>) operator has been added for both the
+IA-64 and Cfront configurations.
+
+
+4/14/20  [EDGcpfe/22614]
+Have dettarg consider long long integer types
+
+The dettarg program determines various host-specific configuration
+information for use in configuring the front end.  Previously the "long long"
+integer type had not been considered as a possible integer type for various
+types (e.g., size_t) and is now (when HAVE_LONG_LONG is TRUE).
+
+
+3/16/20  [EDGcpfe/17687]
+IA-64 ABI: Demangling for inheriting constructors
+
+Demangling for inheriting constructors (see the Changes entry in the src
+directory) has now been added.  Changes were only required for the IA-64 ABI.
+
+
+1/8/20   [EDGcpfe/22182]
+IA-64 ABI demangling failure
+
+Certain IA-64 mangled names (with multiple substitutions, involving templates)
+could not be demangled properly.  One such example is
+_Z1fIcEiN1XIXL_Z1CIT_EEEE4TypeEN1YIXL_ZS1_IS2_EEEE4TypeE.  That now demangles
+to "int f<char>(X<C<T1>>::Type, Y<C<T1>>::Type)".
+
+
+-------------------------------------------------------------------------------
+Version 6.0, December 5, 2019
+
+8/8/19   [EDGcpfe/21114]
+Demangling certain local functions in the Cfront ABI
+
+Some mangled names had failed to demangle properly when using the Cfront ABI.
+Affected names have a local function indication immediately following
+template arguments.  The following is a mangled name that had failed to
+properly decode:
+
+  for_each__tm__64_P17V__tm__9_XCiL_1_841__Ul1_FR17V__tm__9_XCiL_1_8__L1__exec__Fv__3stdFZ1ZT1Z2Z_Z2Z
+
+It now decodes to:
+
+  T2 std::for_each<T1, T2>(T1, T1, T2) [with T1=V<(int)8> *, T2=exec()::[lambda(V<(int)8> &) (instance 1)]]
+
+
+07/25/19 [EDGcpfe/21614]
+Increase MAX_ERRORS in mk_errinfo
+
+The number of error messages in the front end has grown larger than the
+3000 allocated.  That number has been increased to 10000.
+
+
+-------------------------------------------------------------------------------
+Version 5.1, July 12, 2019
+
+3/15/19  [EDGcpfe/20530,EDGcpfe/20644]
+C++20: Demangling of char8_t
+
+A change has been made to add demangling support for the C++20 char8_t type.
+In the IA-64 ABI, "Du" is used to represent the type while "D8" is used in the
+Cfront ABI.
+
+Note that "Du" had previously been used (in the IA-64 ABI) to represent
+__underlying_type and has been repurposed for char8_t.
+
+
+1/8/19   [EDGcpfe/20702]
+IA-64 ABI demangling of vector types
+
+GCC 5.0 and later uses the string "Dv" to mangle vector types, and although
+the IA-64 ABI document has not yet been updated to include this (as of this
+writing), the "Dv" mangling is part of the <builtin-type> grammar production
+which typically does not have a substitution recorded, except for vendor
+extensions.  Since vector types were originally vendor extensions, it appears
+that GCC makes an exception for these types as well.  The front end has always
+recorded a substitution for vector types, but the decoding mechanism had
+not previously expected one.  That has been changed and a mangled name like
+_Z14_mm_packs_pi16Dv2_iS_ can now be properly demangled.
+
+
+12/4/18  [EDGcpfe/20541]
+IA-64 ABI demangling of vendor extended type qualifiers
+
+The IA-64 ABI specifies a vendor extended type qualifier mangling:
+
+  <extended-qualifier> ::= U <source-name> [<template-args>]
+                                              # vendor extended type qualifier
+
+Previously, only EDG-specific manglings were demangled, but a change has been
+made to demangle non-EDG-specific uses of this mangling as well.
+
+
+11/16/18 [EDGcpfe/20476]
+Prelinker: Disable check for both instantiation and explicit specialization
+
+The prelinker has the ability to check for the presence of both an
+instantiation and an explicit specialization of an external entity.
+This check can result in spurious errors in some cases.  Because it
+can't be fixed without a mangling change, and only works in the cfront
+ABI, it is now disabled by default.
+
+Because of this issue, use of this feature is no longer recommended,
+but it can be enabled by setting PL_DEFAULT_CHECK_SPECIALIZATION_ERRORS
+to TRUE in edg_prelink.h, or by passing the "-s1" option to the prelinker.
+
+
+-------------------------------------------------------------------------------
+Version 5.0, August 10, 2018
+
+4/3/18   [EDGcpfe/19512]
+Suppress __STDC* macros in make_predef_macro_table output
+
+A number of __STDC_* and __STDCPP_* macro values are now suppressed when
+running make_predef_macro_table (so these don't end up in a
+predefined_macros.txt file).  All of these macros are set by the front end
+in various configurations.
+
+
+1/16/18  [EDGcpfe/19144]
+Suppress feature test macros in make_predef_macro_table output
+
+Feature test macros (i.e., __cpp_*) are now suppressed when running
+make_predef_macro_table (so these don't end up in a predefined_macros.txt
+file).
+
+
+11/6/17  [EDGcpfe/18923]
+Undefined behavior when demangling IA-64 user-defined operator name
+
+The string created to hold an IA-64 ABI user-defined operator name had not been
+properly NULL terminated.
+
+
+11/4/17  [EDGcpfe/17567,EDGcpfe/18915]
+IA-64 ABI: demangling of vector types
+
+Demangling of IA-64 vector types (Dv<number>_<type>) has been added.
+
+
+10/11/17 [EDGcpfe/18850]
+Possible buffer overflow in decode.c in Cfront ABI
+
+The buffer allocated for demangling of a Cfront parameter reference could
+overflow in certain cases and has now been fixed.
+
+
+-------------------------------------------------------------------------------
+Version 4.14, September 12, 2017
+
+8/24/17  [EDGcpfe/17685,EDGcpfe/18636]
+Demangling for exception specifications in function types
+
+Demangling support for exception specifications in function types has been
+added for both IA-64 and Cfront ABIs.
+
+
+7/30/17  [EDGcpfe/17704,EDGcpfe/17954,EDGcpfe/18622]
+Prelinker support for inline variables
+
+A minor change was made to the prelinker to avoid attempting to demangle
+unmangled inline variable names, which can occur for global scope inline
+variables.
+
+
+7/7/17   [EDGcpfe/17691,EDGcpfe/18560,EDGcpfe/18561]
+Demangling for fold expressions
+
+Added demangling support for C++17 fold expressions (in both Cfront and
+IA-64 ABIs).
+
+
+4/5/17   [EDGcpfe/17413,EDGcpfe/17705]
+Demangling for structured binding containers
+
+Added demangling support for C++17 structured binding containers (in both
+Cfront and IA-64 ABIs).
+
+
+4/3/17   [EDGcpfe/18168]
+Demangling support for __float80/__float128
+
+Support for demangling __float80/__float128 types has now been added for
+both Cfront and IA-64 ABIs.
+
+
+-------------------------------------------------------------------------------
+Version 4.13, February 22, 2017
+
+10/18/16 [EDGcpfe/17433]
+Demangling of nested template parameters in the Cfront ABI
+
+Previously the invented names of template parameters used when demangling
+Cfront mangled names had been re-used for some nested template cases, causing
+demangled strings with the likes of "[with T1=T1]".  A change has been made to
+use different template parameter names in such cases.  For example, the mangled
+name f2__tm__2_i__FZ1Z_YOcl_2_18foo__tm__4_Z1Z__1NI1IO had been demangled as:
+
+  decltype((N::foo<T1> [with T1=T1](param#1))) f2<T1>(T1) [with T1=int]
+
+and is now:
+
+  decltype((N::foo<U1> [with U1=T1](param#1))) f2<T1>(T1) [with T1=int]
+
+There are no changes to mangled names.
+
+
+-------------------------------------------------------------------------------
+Version 4.12, October 5, 2016
+
+8/25/16  [EDGcpfe/17455]
+Microsoft compatibility: add --[no_]ms_permissive command-line options
+
+The --[no_]ms_permissive command-line options (which emulates Microsoft's
+/permissive[-] options) have been added to eccp.sh.
+
+
+6/27/16  [EDGcpfe/16967,EDGcpfe/17000]
+Microsoft compatibility: add --ms_c++14 and --ms_c++latest command-line options
+
+The --ms_c++14 and --ms_c++latest command-line options have been added to
+eccp.sh (to emulate the behavior of Visual Studio's /std:c++14 and
+/std:c++latest command-line options respectively).
+
+
+6/2/16   [EDGcpfe/17260]
+Add _M_X64 to make_win_predef_macro_table.c
+
+The macro _M_X64 is now checked for by make_win_predef_macro_table.c.
+
+
+-------------------------------------------------------------------------------
+Version 4.11, May 12, 2016
+
+5/10/16  [EDGcpfe/17165]
+mk_errinfo: Add support for %d fill-in
+
+The changes for EDGcpfe/16084 added the %d fill-in, but mk_errinfo had not
+been updated to support it (with the -mml command-line option).  Now fixed.
+
+
+2/26/16  [EDGcpfe/16845]
+Remove __has_include and __has_include_next as predefined macros
+
+A change has been made to make_predef_macro_table to eliminate __has_include
+and __has_include_next as predefined macros that are copied from GNU
+(these are implemented by the front end).
+
+
+2/17/16  [EDGcpfe/16776]
+Demangling of abi_tag attribute
+
+A change has been made to be more consistent with the way GNU abi_tag
+attributes are displayed in mangled names.  Tags are now annotated as
+'[abi:tag]' rather than '__attribute((abi_tag("tag")))'.  The change
+affects both IA-64 and Cfront ABIs.
+
+
+2/11/16  [EDGcpfe/16687]
+Demangling of co_await operator
+
+A change has been made to demangle the co_await operator in both Cfront and
+IA-64 ABIs.
+
+
+1/18/16  [EDGcpfe/16757]
+Cfront demangling of names starting with "__li"
+
+As a result of demangling changes for demangling of user-defined literals
+(EDGcpfe/9252), demangling of a Cfront name starting with "__li" had failed.
+Now fixed.  The following example produces the mangled name "__lib__1NFv"
+which had failed to be decoded:
+
+  namespace N {
+    void __lib();
+  }
+  int main() {
+    N::__lib();
+  }
+
+
+12/20/15 [EDGcpfe/16731]
+Demangling of local types in template argument lists
+
+In the Cfront ABI, a local type that had appeared in a template argument list
+had caused demangling to fail.  For this example (with --c++11):
+
+  template <typename T> struct A {
+    A() { while(0); }
+  };
+  void f() {
+    struct LocalType {};
+    A<LocalType> a;
+  }
+
+the mangled name __ct__32A__tm__23_20LocalType__L1__f__FvFv had failed to
+be decoded and now decodes to:
+
+A<T1>::A<f()::LocalType (instance 1)>() [with T1=f()::LocalType (instance 1)]
+
+
+12/1/15  [EDGcpfe/16502]
+--ms_extensions and --ms_compatibility command-line options
+
+The eccp script has been updated to include the --[no_]ms_extensions and
+--[no_]ms_compatibility command-line options.
+
+
+7/25/15  [EDGcpfe/16011]
+Clang compatibility: Predefined macros
+
+The make_predef_macro_table utility has been modified to accept a new
+--clang option.  The option takes a single argument: a pathname to a
+clang executable which will be invoked to determine the list of predefined
+macros that it defines (in both C and C++ modes).  The resulting
+predefined_macros.txt file is suitable for use with clang emulation mode.
+
+If using both GNU and clang emulation modes, make_predef_macro_table can
+be invoked twice, once to generate GNU predefined macros and a second time
+to generate clang predefined macros and the resulting files combined to create
+a predefined_macros.txt file that will support both emulation modes.
+
+
+6/26/15  [EDGcpfe/16348]
+Add --c++17 command-line option to eccp
+
+In preparation for the next version of the C++ standard, currently referred
+to as C++17, the --c++17 command-line option has been added.  This option
+currently has the same effect as --c++14.
+
+
+6/24/15  [EDGcpfe/16339]
+Demangling of qualified pointer-to-member constants
+
+The demangled name of a pointer-to-member constant whose member is either
+cv-qualified or ref-qualified (or both) had failed to include an indication of
+either qualification.  This had been a problem in both the Cfront and IA-64
+ABIs and is now fixed.  For example (with --c++11):
+
+  struct A {
+    void f() const &&;
+  };
+  typedef void (A::* PMF)() const &&;
+  template<PMF P> struct B {
+    B();
+  };
+  int main() {
+    B<&A::f> b;
+  }
+
+Generates Cfront mangled name __ct__39B__tm__30_XCM1ACF_Ev_vLM0_L_2_n1_5f__1AFv
+and IA-64 ABI mangled name _ZN1BIXadL_ZNKO1A1fEvEEEC1Ev which now demangle
+to: "B<N1>::B<&A::f const&&>() [with N1=&A::f const&&]" and
+"B<(&A::f const &&)>::B()" respectively.
+
+
+-------------------------------------------------------------------------------
+Version 4.10.1, June 23, 2015
+
+6/15/15  [EDGcpfe/16275]
+IA-64 ABI: Incorrect demangled names for some pointer-to-member types
+
+The IA-64 ABI typically records substitutions for cv-qualified and unqualified
+versions of types that appear in a mangled name.  That rule does not apply
+to function types where any ref- or cv-qualification is treated as an
+indivisible part of the function type.  This had caused incorrect demangled
+names for some types that involved pointer-to-member types and substitutions.
+For example:
+
+  struct A {};
+  void f(void (A::*)() const, void (A::*)() const) {}
+
+This results in a mangled name of: _Z1fM1AKFvvES1_.  The demangled name had
+been:
+
+  f(void (A::*)() const, void () const)
+
+and is now:
+
+  f(void (A::*)() const, void (A::*)() const)
+
+
+6/12/15  [EDGcpfe/10878,EDGcpfe/16276]
+Increase limit on length of demangled names
+
+The edg_decode tool had limited the length of a demangled name to 15000 bytes;
+that limit has been lifted (a dynamically-allocated buffer is now used and
+reallocated in cases where the demangled name exceeds the original limit).
+
+
+5/6/15   [EDGcpfe/16147]
+Demangling of template argument packs
+
+Mangled names that contained template argument packs had an extra set
+of angle brackets in the demangled output.  In the example below
+(with --c++11), the IA-64 ABI mangled name for f<A<int>> is
+_Z1fIJ1AIJiEEEEvDpT_, but the demangled name had been
+"void f<<A<<int>>>>(T1...)" and is now demangled to "void f<A<int>>(T1...)".
+Similarly, the Cfront demangled name had been "void f<T1>(T1...) [with
+T1...=<A<<int>>>]" and is now "void f<T1>(T1...) [with T1...=A<int>]".
+
+  template<class... T> struct A {};
+  template<class... Args> void f(Args... args);
+  void g() {
+    auto x = f<A<int>>;
+  }
+
+
+4/23/15  [EDGcpfe/15604,EDGcpfe/15397,EDGcpfe/15717,EDGcpfe/15851,
+          EDGcpfe/16160]
+Specifying target configuration at run time
+
+The --target and --dump_legacy_as_target command-line options have been
+added to the eccp script.  When the --target command-line option is given,
+or if EDG_DEFAULT_TARGET is set, the directory searched for libraries,
+typically $EDG_BASE/lib, is changed to include the configuration name, e.g.,
+$EDG_BASE/lib_my_config if "--target my_config" is specified.  Also, the value
+of the environment variable EDG_C_TO_OBJ_DEFAULT_OPTIONS_$target (where
+$target is the name of the specified target configuration, e.g.,
+EDG_C_TO_OBJ_DEFAULT_OPTIONS_my_config in this example) is used in place of the
+EDG_C_TO_OBJ_DEFAULT_OPTIONS environment variable (to allow target-specific
+options to be passed to the back end compiler, e.g., -m32).  See the Changes
+entry in the src directory for more information.
+
+In addition, front end command-line options that don't require a source file
+(e.g., --version) no longer result in an error when eccp is invoked without
+a source file.
+
+A change has also been made to make_predef_macro_table to pass command-line
+options other than --gcc and --g++ to gcc/g++.  This can be used to specify
+options like -m32, for example.
+
+A new tool, make_win_predef_macro_table.c, has been added that effectively
+does what make_predef_macro_table currently does, but for Microsoft Visual
+Studio rather than gcc.  That is, when compiled with a version of Microsoft
+Visual Studio, it outputs the necessary predefined_macros.txt file to
+generate the same predefined macros as Microsoft Visual Studio.  See
+make_win_predef_macro_table.c for more information.
+
+
+3/6/15   [EDGcpfe/16068]
+eccp script hadn't allowed Clang C mode
+
+Changes to the eccp script to allow Clang emulation mode inadvertently
+neglected to allow Clang C emulation mode (i.e., --c --clang).  Now fixed.
+
+
+1/28/15  [EDGcpfe/15939]
+Demangling support for decltype(auto)
+
+Demangling support for decltype(auto) has been added.  The IA-64 ABI uses the
+string "Dc" to represent this type and the Cfront ABI uses the EDG-specific
+"q" mangling.
+
+
+1/27/15  [EDGcpfe/15897]
+GNU compatibility: demangling for abi_tag attribute
+
+Demangling support for the GNU "abi_tag" attribute has been added.  In the
+IA-64 ABI case, the mangling follows that used by GNU (though not at present
+part of the IA-64 ABI standard), namely using "B<count><tag>" as a suffix
+to a name (where <count> indicates the number of characters in the <tag>
+abi_tag attribute argument).  For the Cfront ABI, "__ab<count><tag>" is used
+as a prefix to convey the same information.
+
+
+-------------------------------------------------------------------------------
+Version 4.10, December 23, 2014
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 4.9, April 17, 2014
+
+4/14/14  [EDGcpfe/15046]
+Using mk_errinfo to create documentation with label fill-ins
+
+If a label fill-in contained a non-alphanumeric character, mk_errinfo would
+terminate with an "unterminated label fill-in" message when invoked with
+the -d or -mml command-line option.  Now fixed.
+
+
+-------------------------------------------------------------------------------
+Version 4.8, October 18, 2013
+
+8/28/13 [EDGcpfe/9167,EDGcpfe/12359]
+C++11: Support for thread_local
+
+Demangling of compiler-generated wrapper routine names that are introduced
+in some front end configurations when lowering thread_local variables.
+In the Cfront ABI, __THI__ and __THW__ are prefixed to the variable name
+for the thread_local initialization and wrapper routines, respectively.
+
+Also, edg_prelink has been updated to recognize the 'L' symbol type in
+output from "nm" (for thread-local storage on Solaris systems).
+
+
+7/19/13  [EDGcpfe/10662]
+C++11 const-correctness
+
+C++11 removed the previously-deprecated implicit conversion from a narrow
+string literal to char*.  In order to permit their compilation as C++11
+code, decode.c, edg_munch.c, edg_prelink.c, and mk_errinfo.c have been
+changed to use the new a_const_char typedef that has been added to basics.h
+(see the EDGcpfe/10662 entry in the src/Changes file for a more detailed
+discussion), and mk_errinfo now uses that typedef in the output err_data.h
+file.  In addition, dettarg.c has been changed to use const char instead of
+char for pointers to read-only string data.
+
+
+5/22/13  [EDGcpfe/14014]
+Infinite loop caused stack overflow when demangling some IA-64 names
+
+As a result of the demangling changes to handle the ambiguity that is
+present in the IA-64 demangling for conversion functions (see the
+Changes entry for EDGcpfe/10044), the demangling of certain conversion
+function mangled names had resulted in an infinite loop during demangling
+which caused a stack overflow.  For example, demangling "_ZN1AcvPT_IS1_EEv"
+had caused this problem, now fixed.
+
+
+-------------------------------------------------------------------------------
+Version 4.7, May 21, 2013
+
+5/17/13  [EDGcpfe/7689,EDGcpfe/13901]
+C++11: Delegating constructors
+
+Add demangling for the EDG-specific delegation constructors ("C9") and
+destructors ("D9").
+
+
+5/9/13   [EDGcpfe/14012]
+Demangling of an expression in a variable-sized array
+
+A change has been made to demangle an expression that appears as an
+array bound in a variable-sized array type in the Cfront ABI (the IA-64 ABI
+demangling had previously allowed this).
+
+
+4/23/13  [EDGcpfe/8627]
+C++11: demangling ref-qualifiers on member functions
+
+A change has been made to demangle ref-qualifiers that may be found on member
+function types.  The IA-64 ABI mangling scheme is followed for IA-64 ABI
+configurations.  For Cfront configurations, an optional "_R" (for an lvalue
+ref-qualifier) or "_E" (for an rvalue ref-qualifier) may follow the "F"
+encoding for a function type, and is demangled appropriately.
+
+
+-------------------------------------------------------------------------------
+Version 4.6, March 30, 2013
+
+No Changes.
+
+
+-------------------------------------------------------------------------------
+Version 4.5, October 5, 2012
+
+9/4/12   [EDGcpfe/10617,EDGcpfe/11496,EDGcpfe/12018]
+Add demangling for C++11 noexcept operator
+
+Changes have been made to demangle the C++11 noexcept operator in both
+IA-64 and Cfront ABIs.  The mangling string "nx" is used in both ABIs to
+indicate a noexcept operator.  See the 9/3/12 Changes entry in the src
+directory for more about the noexcept operator and specifier.
+
+
+6/26/12  [EDGcpfe/9170]
+Add demangling for C++11 brace-enclosed initializer lists
+
+Changes have been made to demangle C++11 brace-enclosed initializer
+lists in both IA-64 and Cfront ABIs.  The EDG-specific Cfront ABI mangling
+mirrors that of the IA-64 ABI and uses the same character sequence
+(i.e., "il" and "tl") for its encoding.  In the Cfront ABI, the "bi" sequence
+is used to indicate a brace-enclosed initializer on a new/gcnew operation.
+
+
+5/30/12  [EDGcpfe/12923]
+Add demangling for g++ "restrict" qualifier in Cfront ABIs
+
+The edg_decode tool has been updated to recognize the newly added
+(and EDG-specific) "Dr" encoding for the "restrict" type qualifier in the
+Cfront ABI (the IA-64 ABI already has an encoding for "restrict").
+
+
+2/28/12  [EDGcpfe/11527]
+Add --inline_statement_limit command line option to eccp
+
+An --inline_statement_limit command line option has been added to eccp to
+override the default limit on the maximum size of an inlined function.
+
+
+2/21/12  [EDGcpfe/12717]
+Handle label fill-in strings when producing error documentation
+
+The mk_errinfo tool has been updated to handle the new label fill-in facility
+by emitting the label value itself when producing documentation for
+error codes (e.g., "the %[answer] is" is simply emitted as "the answer is"
+in the documentation in the current font).
+
+
+2/10/12  [EDGcpfe/11655]
+Demangling of call operations where ADL is suppressed
+
+Changes have been made to both IA-64 and Cfront ABI demangling to accommodate
+the mangled named generated for a call operation where argument-dependent
+lookup is suppressed by the use of parentheses.
+
+
+1/22/12  [EDGcpfe/12622]
+Add --c++03 command line option to eccp
+
+A --c++03 command line option has been added to eccp to enable parsing of
+C++ code that adheres to the ISO/IEC 14882:2003 standard.
+
+
+-------------------------------------------------------------------------------
+Version 4.4, December 21, 2011
+
+12/13/11 [EDGcpfe/12513]
+Remove __EXCEPTIONS from list of predefined macros
+
+Change the make_predef_macro_table script so that it doesn't capture the
+value of __EXCEPTIONS in the predefined-macros.txt file (by default this
+macro is set by the front end as appropriate at run-time).
+
+
+10/6/11 [EDGcpfe/12323]
+Handle arguments with spaces in eccp
+
+Previously, specifying an argument like -DCLASS="ref class" to eccp had
+resulted in the argument being split into two separate arguments before being
+passed to the front end, resulting in an error.  The script has been updated to
+quote or escape arguments that contain spaces (as well as a set of other
+characters which are interpreted by the shell).
+
+
+9/14/11 [EDGcpfe/11746,EDGcpfe/11557]
+Demangling of "this" in mangled names with late-specified return types
+
+Changes have been made to both IA-64 and Cfront ABI demangling in order to
+accommodate the mangled names generated by the front end when using "this" in
+decltype expressions in late-specified return types in member functions, as
+required by core issue 1207 (see N3282).  The IA-64 standard mangling ("fpT")
+is now demangled in the IA-64 ABI case, and a parameter reference with a
+parameter number of zero is treated as "this" in the Cfront case.
+
+
+8/3/11  [EDGcpfe/8739,EDGcpfe/9831,EDGcpfe/9890,EDGcpfe/11024,EDGcpfe/11227]
+GNU compatibility: 128-bit integer types
+
+A change has been made to enable demangling of 128-bit integer types.  In the
+Cfront-like ABI, these types have been assigned the encodings "m16" for
+__int128_t and "Um16" for __uint128_t (following the types added for the
+Microsoft __intN types -- see the Changes entry of 12/21/99).  The IA-64 ABI
+standard encodings ("n" and "o") are used in the IA-64 configuration.
+
+
+6/17/11 [EDGcpfe/8403,EDGcpfe/10669,EDGcpfe/11510,EDGcpfe/11628,EDGcpfe/11684,
+         EDGcpfe/11800]
+C++0x: Changes for char16_t/char32_t types
+
+A change has been made to enable demangling of the new C++0x char16_t and
+char32_t types.  In the Cfront-like ABI, these types have been assigned the
+encodings "g" and "k", respectively.
+
+The make_predef_macro_table script has been updated to suppress the
+__CHAR16_TYPE__ and __CHAR32_TYPE__ macros from the predefined_macros.txt file.
+These macros are now set by the front end.
+
+
+4/8/11   [EDGcpfe/11620]
+Add --c_to_obj_option option to eccp
+
+A new option, --c_to_obj_option, has been added to the eccp script to
+allow passing of command line options to the back end compiler.  The
+command line argument that appears after --c_to_obj_option on the command
+line is passed (without any interpretation) to the back end compiler.
+For example:
+
+  eccp --c_to_obj_option -Wall -x -c ex.c
+
+
+-------------------------------------------------------------------------------
+Version 4.3, March 17, 2011
+
+3/15/11  [EDGcpfe/11177]
+Variadic template name demangling
+
+Changes have been made to both IA-64 and Cfront ABI demangling in
+order to accommodate the mangled names generated by the front end when
+processing variadic templates (a C++0x feature).  In the case of the IA-64 ABI,
+we've submitted updates to the ABI spec and we conform to the updated
+specification.  The front end documentation has been updated to include the new
+mangling codes for the Cfront ABI.
+
+
+1/7/11   [EDGcpfe/11254]
+GNU C++ compatibility: __GXX_RTTI macro
+
+The make_predef_macro_table script has been updated to suppress the __GXX_RTTI
+macro from occurring in the predefined_macros.txt file.  This macro is now set
+by the front end.
+
+
+11/12/10 [EDGcpfe/11157]
+Potential buffer overrun issue in mk_errinfo
+
+An input buffer of exactly 32767 characters (not including the newline) had
+resulted in a buffer overrun.  This has now been fixed (resulting in an
+error message that the line is too long).
+
+
+10/29/10 [EDGcpfe/11063]
+Demangle encodings for C++/CLI handles and tracking references
+
+The front end has introduced new mangled encodings for the C++/CLI concepts of
+handles ("H" is used in the Cfront ABI and "U8__handle" in the IA-64 ABI) and
+tracking references ("Tr" is used in the Cfront ABI and "U8__trkref" in the
+IA-64 ABI).  A change has been made to demangle these mangled names.  Note that
+the IA-64 ABI mangled encodings use a vendor extended type qualifier as
+specified in the IA-64 ABI.  Using a vendor extension for type qualifiers to
+represent these declarators avoids having to introduce an EDG-specific
+modification to the IA-64 ABI (which may cause a conflict in future IA-64 ABI
+revisions).
+
+
+8/26/10  [EDGcpfe/10967]
+Compilation error in decode.c when compiling lib_src on Mac OS X
+
+A compilation error when scanning "using namespace std;" had occurred on
+some platforms (e.g., Mac OS X) when compiling decode.c as part of lib_src.
+This has now been fixed.
+
+
+-------------------------------------------------------------------------------
+Version 4.2, August 25, 2010
+
+8/13/10  [EDGcpfe/10929]
+Missing cv-qualification on certain demangled names (IA-64 ABI)
+
+In cases where a substitution is used for a <template-prefix> and the
+substitution has cv-qualifiers, those cv-qualifiers were not reflected in
+the demangled name.  In this example, the two template functions have
+distinct mangled names, but their demangled names had been the same:
+
+  template <class T> struct A {};
+  template <class T, class U> void f();
+  void g() {
+    f<A<char>, A<int> >();
+    f<A<char>, const A<int> >();
+  }
+
+
+7/21/10  [EDGcpfe/10463]
+Mangling changes to support new SFINAE rules
+
+Substantial additions have been made to both IA-64 and Cfront ABI mangling in
+order to accommodate the additional expression operators and constructs that
+can arise because of the new SFINAE rules of WG21 paper N2634, and, in the
+case of the IA-64 ABI, we've submitted updates to the ABI spec and we conform
+to the updated specification.  The front end documentation has been updated to
+include the new mangling codes for the Cfront ABI.
+
+
+6/24/10  [EDGcpfe/10772]
+Add --no_demangle option to eccp
+
+A new option, --no_demangle, has been added to the eccp script to prevent
+the post-processing of linker and nm output by the demangler (edg_decode).
+
+
+3/24/10  [EDGcpfe/10148]
+__cxa_demangle now available in the IA-64 ABI runtime library
+
+Changes have been made to decode.c to allow decode.c to be cross
+compiled (as part of the runtime library built in the lib_src directory).
+Typically, decode.c is compiled for the host platform (and used as part of the
+host-based edg_decode and edg_prelink tools).  The IA-64 ABI specifies that the
+__cxa_demangle routine be available to programs on the target platform to
+demangle mangled names.  decode.c can now be built for the target platform by
+setting the new COMPILE_DECODE_FOR_LIB_SRC configuration macro to TRUE.  When
+TRUE, header files from the front end are no longer included (although
+header files from lib_src are now required).  Additionally, values for the
+following configuration macros must be supplied: DEFAULT_EMULATE_GNU_ABI_BUGS
+and USE_LONG_DOUBLE_FOR_HOST_FP_VALUE.  COMPILE_DECODE_FOR_LIB_SRC can only be
+used with the IA-64 ABI (i.e., IA64_ABI must be TRUE).  Note that the
+__cxa_demangle routine may be in the __cxxabiv1 namespace in certain runtime
+configurations.
+
+
+1/11/10  [EDGcpfe/10361]
+Incorrect demangling of lambdas in static data member initializers (IA-64 ABI)
+
+The demangled output for IA-64 ABI mangled names involving a lambda in a static
+data member initializer was incorrect, causing substitutions that followed the
+lambda to refer to incorrect entities.  In the example that follows, the
+operator() for the lambda (whose mangled name is _ZNK1SI1AE1xMUlPS0_E_clES3_)
+is now demangled properly ("S<A>::x::[lambda(A *) (instance 1)]::operator ()(A
+*) const").
+
+  struct A {};
+  template <class T> struct S {
+    static T *x;
+  };
+  template <class T> T *S<T>::x = [](T *s){ return s; }(nullptr);
+  template A *S<A>::x;
+
+
+1/9/10   [EDGcpfe/10044]
+Incorrect demangling of IA-64 ABI template conversion operators
+
+Mangled names of template conversion operators that contained substitutions
+were incorrectly demangled.  This has now been fixed.  For example,
+_ZN1ScvT_I1AIS2_IiEEEEv is now decoded as "S::operator T1<A<A<int>>>()".
+
+
+1/7/10   [EDGcpfe/10132]
+_Complex types not demangled properly in IA-64 ABI
+
+_Complex types were not properly demangled when using the IA-64 ABI.  This has
+now been fixed.  For example, _Z1fICdET_S1_ had failed to demangle and now
+produces "T1 f<_Complex double>(T1)".
+
+
+11/13/09 [EDGcpfe/10204]
+Demangle IA-64 ABI builtin type vendor extensions
+
+IA-64 builtin type vendor extensions that use the
+
+  <builtin-type> ::= u <source-name>  # vendor extended type
+
+rule are now properly demangled.  For example, _Z3foou11__va_list__ is now
+decoded as foo(__va_list__).
+
+
+10/14/09 [EDGcpfe/10142]
+Buffer overflow when uncompressing invalid Cfront mangled name
+
+When decode_identifier (when compiled to decode Cfront names) was given a
+certain class of invalid mangled names (those indicating a compressed name,
+where the name is longer than the indicated compressed length), the
+output_buffer argument would be written to beyond size indicated by the
+output_buffer_size argument.  The buffer overflow has now been fixed; an
+error is indicated to the caller in *err (but *buffer_overflow_err is FALSE
+because no amount of additional buffer space would allow the invalid input to
+be properly uncompressed).  This invalid input would cause an overflow:
+"__CPR5__12345Xoverflow".
+
+
+10/1/09  [EDGcpfe/10129]
+Offsets for demangled IA-64 thunk symbols show as large integers
+
+The offsets of mangled names for IA-64 thunks were mistakenly displayed as
+unsigned values, resulting in large positive values rather than negative
+numbers.  This regression was introduced in 4.1 and is now fixed.  For example,
+the mangled name _ZTv0_n24_N3c21D0Ev had produced (on 32 bit systems):
+
+  Thunk for (offset 0, virtual offset 4294967272) c21::~c21() [deleting]
+
+and now produces:
+
+  Thunk for (offset 0, virtual offset -24) c21::~c21() [deleting]
+
+
+9/30/09  [EDGcpfe/8623, EDGcpfe/9926, EDGcpfe/10102]
+C++0x: Demangling support for nullptr
+
+Support for demangling the new C++0x builtin type "decltype(nullptr)" has been
+added.  The encodings for the new type are "Dn" (IA-64) and "n" (Cfront).
+For example:
+
+  template <class T> void f(T) {}
+  void f1(void) {
+    f(nullptr);   // IA-64:  _Z1fIDnEvT_
+                  //         void f<std::nullptr_t>(T1)
+                  // Cfront: f__tm__2_n__FZ1Z_v
+                  //         void f<T1>(T1) [with T1=std::nullptr_t]
+  }
+
+
+9/14/09  [EDGcpfe/10090]
+Prelinker: support for Mac OS Snow Leopard nm output
+
+The prelinker has been updated to handle the nm output of Mac OS X 10.6
+The "-fMacOSX64" option should be used on such systems.
+
+See the edg_eccp_config.macosx file in the sample_edg_eccp_config
+directory for more information about configuring eccp on Mac OS X.
+
+
+8/20/09  [EDGcpfe/8232, EDGcpfe/9382]
+Emit return type in IA-64 ABI decoding of template functions
+
+The return type of mangled template functions is now emitted when demangling
+IA-64 ABI mangled names (the return type was already emitted in the Cfront
+ABI).  For example, the mangled name _Z1fIiEvf now produces the string
+"void f<int>(float)".
+
+
+-------------------------------------------------------------------------------
+Version 4.1, August 6, 2009
+
+7/27/09  [EDGcpfe/9554]
+Demangling of lambdas and unnamed types
+
+A change has been made to demangle the lambda and unnamed class/struct/union
+and enum type encodings that are now emitted by the front end.  The Cfront
+encodings are an EDG extension (though encoding-wise, they appear as any
+user defined type -- except that they begin with "__U").  The IA-64 ABI
+specification details the encoding of such types in C++0x.  Here is an
+example that shows the original unnamed types, their encodings in both
+ABIs as well as the decoded output in each case:
+
+  int module_id = 0;
+  struct { int i; } s;
+      // IA-64:  _ZN25_INTERNAL_4_ex_c_afc2b591Ut_E
+      //         [local to ex_c]::[unnamed type (instance 1)]
+      // Cfront: __Q2_26__INTERNAL_4_ex_c_afc2b5915__Ut1
+      //         [local to ex_c]::[unnamed type (instance 1)]
+  struct A {
+    enum { e = 1 } E;
+      // IA-64:  _ZN1AUt_E
+      //         A::[unnamed type (instance 1)]
+      // Cfront: __Q2_1A5__Ut1
+      //         A::[unnamed type (instance 1)]
+    static int m;
+  } a;
+  int A::m = [](float x) { return (int)x; }(2.0);
+      // IA-64:  _ZN1A1mMUlfE_E
+      //         A::m::[lambda(float) (instance 1)]
+      // Cfront: __Q3_1A1m8__Um1_Ff
+      //         A::m::[lambda(float) (instance 1)]
+  void f(int i = [](char a, char b) { return a - b; }('1', '0')) {}
+      // IA-64:  _ZZ1fiEd_UlccE_
+      //         f(int)::[default argument 1 (from end)]::
+      //                                      [lambda(char, char) (instance 1)]
+      // Cfront: __23__Ud1_1_FcT1__L0__f__Fi
+      //         f(int)::[lambda(char, char) in default argument 1 (from end)
+      //                                                          (instance 1)]
+
+
+6/12/09  [EDGcpfe/9428]
+Demangling of individuated entities
+
+In C++0x, local and unnamed types can now be used as template type arguments,
+meaning that local and unnamed types can now appear in the mangled names of
+functions.  To ensure that these unnamed classes/enums as well as types defined
+in static functions are differentiated from similar constructs in other
+translation units, the type names are "individuated" by the front end.
+Individuated entities are mangled "as if" they are part of a translation unit
+specific namespace (this fabricated "namespace" incorporates the translation
+unit's module id to provide a unique symbol).  Mangled names that are
+individuated are now recognized during demangling and the individuated
+namespace name is replaced with "[local to <filename>]" in the demangled
+output.  This mangling scheme is used in both IA-64 and Cfront ABIs (and is an
+EDG extension to the IA-64 ABI).
+
+For example, these are mangled names for a function template that
+takes an unnamed struct and an unnamed enum as template type arguments:
+
+  _Z1fIN22_INTERNAL_3_x_c__Z2f1v4__C1ENS0_4__E2EEvT_T0_
+
+is now demangled as (IA-64 ABI):
+
+  f<[local to x_c]::__C1, [local to x_c]::__E2>(T1, T2)
+
+and
+
+  __CPR87__f__tm__67_Q2_23__INTERNAL_3_x_c_f1__Fv4__C1Q2_J13J4__E2__FZ1ZZ2Z_v
+
+is demangled as (Cfront ABI):
+
+ void f<T1, T2>(T1, T2) [with T1=[local to x_c]::__C1, T2=[local to x_c]::__E2]
+
+
+
+3/13/09  [EDGcpfe/8056]
+Demangling of rvalue references
+
+The demangling of rvalue references (a C++0x feature) has been implemented.
+ 
+
+3/13/09  [EDGcpfe/9611]
+Change IA-64 mangled encoding of Microsoft explicitly overridden functions
+
+The IA-64 ABI mangling of Microsoft explicitly overridden functions
+used the local extension 'O' (see the Changes entry of 7/18/03).  The letter
+'O' has since been designated to encode rvalue references in the IA-64 ABI.
+To avoid a conflict, the letter 'Q' will now be used as a local extension to
+the IA-64 ABI when encoding Microsoft explicitly overridden functions.
+The Cfront ABI is unchanged.
+
+1/19/09  [EDGcpfe/9439]
+Extra space removed in demangler output on cv-qualifier on pointer type
+
+The output of the Cfront ABI demangler has been tweaked slightly to
+remove an extra space following a cv-qualifier on a pointer.  For
+example,
+
+  foo__tm__4_CPi__FZ1Z_i
+
+is now demangled as
+
+  int foo<T1>(T1) [with T1=int *const]
+                                     ^extra space here eliminated
+
+
+1/15/09  [EDGcpfe/7932, EDGcpfe/8999]
+Detect array overflow in mk_errinfo
+
+mk_errinfo has fixed size arrays that are used to build the table of
+error messages and error tags.  We make sure that these arrays are large
+enough for the error_msg.txt table that we provide, but customers could
+cause them to overflow if they add their own messages.  mk_errinfo will
+now issue an internal error if the tables need to be made larger.
+
+
+12/11/08 [EDGcpfe/6851]
+Generate include guard test in error message files
+
+mk_errinfo now generates include guard tests in the files it produces.
+These files are not actually included more than once by the front end,
+but this was done in case customer changes should give rise to such a
+condition.
+
+
+-------------------------------------------------------------------------------
+Version 4.0, December 5, 2008
+
+11/3/08  [EDGcpfe/8945]
+Demangling of typeid operator
+
+A change has been made to demangle the typeid operator in a mangled
+encoding for an expression.  In the Cfront ABI, the "ty" string indicates
+the typeid operator; in the IA-64 ABI the strings "v17typeide" and "v16typeid"
+are used (the former representation is used when typeid refers to an
+expression, the latter a type).  This case comes up in Microsoft mode for
+template parameters.
+
+
+8/31/08  [EDGcpfe/9197]
+Demangling of identifiers containing "$" in IA-64 ABI
+
+The name demangler for the IA-64 ABI now handles identifier names
+that contain the "$" character.
+
+7/22/08  Demangling of GNU vector_size attribute
+
+The demangler now handles mangled names that include the GNU
+__atribute__((vector_size(N))), in both the Cfront and IA-64 ABIs.
+Note that the IA-64 mangling matches gcc, which does not encode
+the size in the name.
+
+7/3/08   IA-64 ABI demangling of non-external names
+
+The spec for the IA-64 ABI indicates that it should be possible to
+call __cxa_demangle with a name that does not begin with "_Z"
+and the name in that case should be considered to be a mangled type
+name.  That is now handled by our version.  Note that this change
+is not visible when edg_decode is run -- type names will still be
+left unchanged when run through that filter.
+
+6/10/08  getopt: handling of command line options beginning with "--"
+
+Previously the local implementation of getopt treated any argument
+that started with "--" as the argument "--" and returned EOF (-1).
+Now getopt will return '?' when it finds an argument beginning with
+the string "--" (that is not "--").  This change affects all utilities
+in this directory that use getopt to parse command line arguments
+(i.e., edg_decode, edg_munch, edg_prelink) on platforms where the local
+version of getopt is used (i.e., when  (!__SYSV__ || __VMS__) is TRUE).
+As a result, these utilities may issue an error when presented with
+command line arguments that begin with "--" where the arguments were
+silently ignored previously (the utilities differ in their handling of
+these command line errors):
+
+  $ edg_prelink --help
+  unrecognized option: --help
+  C++ prelinker: error: command line error
+
+10/9/07  Prelinker: improved handling of parentheses and quoted strings in
+         compiler invocations
+
+The prelinker inserts escapes into the command it uses to recompile source
+files.  It has been updated to better handle parentheses outside of quoted
+strings and quoted strings with embedded quotes, escapes, and spaces.
+For example, the following command can now be used to compile and link the
+example below.  Formerly, this would fail when the compiler was invoked
+from the prelinker.
+
+  eccp -c -DSTR='"A\"BC"' -DCHR="'\''"  -c ex.c
+  eccp ex.o
+
+  extern "C" int printf(const char *, ...);
+  template <class T> void f(T){}
+  int main() {
+    printf("%s %c\n", STR, CHR);
+    f(1);
+  }
+
+As mentioned above, the change also allows spaces to be used in quoted strings,
+but note that the eccp script does not handle arguments with embedded spaces.
+
+-------------------------------------------------------------------------------
+Version 3.10, September 23, 2007
+
+6/1/07   Add casts to allow decode.c to be compiled by a C++ compiler
+
+Casts of values returned by malloc/realloc were missing, causing
+compilation errors when using a C++ compiler (rather than the more
+typical C compiler).  This is now fixed.
+
+-------------------------------------------------------------------------------
+Version 3.9, March 23, 2007
+
+3/16/07  eccp: typo in --preinclude option
+
+A typo in the eccp script would cause it to accept and pass on to the front
+end a malformed --preinclude option (e.g., --preincludexxx).  Now fixed.
+
+-------------------------------------------------------------------------------
+Version 3.8, July 14, 2006
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 3.7, January 12, 2006
+
+10/10/05 mk_errinfo: incorrect test of STDLIB_H_INCLUDED
+
+There was an incorrect test of STDLIB_H_INCLUDED in mk_errinfo.c.  This
+could result in errors when compiling mk_errinfo.c in some environments.
+Now fixed.
+
+10/7/05  Prelinker: support for Mac OS X nm output
+
+The prelinker has been updated to handle the nm output of Mac OS X 10.4.
+The "-fMacOSX" option should be used on such systems.
+
+See the edg_eccp_config.macosx file in the sample_edg_eccp_config
+directory for more information about configuring eccp on Mac OS X.
+
+10/2/05  Demangling for builtin operations
+
+The demangler now demangles the new encodings for "builtin operations",
+used to represent vendor-specific extensions.  Specifically, the
+Microsoft __is_base_of operation is the first builtin operation.
+
+-------------------------------------------------------------------------------
+Version 3.6, June 7, 2005
+
+5/11/05  eccp: path name of edg_decode program when using --nm option
+
+The --nm option to eccp is a debugging feature used to run nm on the
+object files created by a compilation.  The EDG_DECODE_PATH environment
+variable, if set, is used by eccp to determine the pathname of the
+edg_decode executable, but the --nm option did not make use of this
+environment variable.  This has been fixed.
+
+3/28/05  Minor prelinker cleanup
+
+There were a few routines in edg_prelink.c that should have been declared
+static, but were not.  In addition, pl_assertion_failed should have only
+been included when CHECKING was enabled.  These are now fixed.
+
+-------------------------------------------------------------------------------
+Version 3.5, November 8, 2004
+
+10/27/04 IA-64 name demangling: cv-qualifier on substitution
+
+The IA-64 ABI demangler now correctly handles a cv-qualifier on a
+substitution.
+
+  _ZN1T1fEPKS_  --> T::f(const T*)
+  _ZN1T1fEPKSa  --> T::f(const std::allocator*)
+
+The "const" was missing on each of those previously.
+
+10/13/04 eccp: one-instantiation-per-object and --cpfe_only option
+
+If the --cpfe_only option was specified when using one-instantiation-per-object
+mode, the .int.c files for the instantiation files were still being compiled
+by the underlying C compiler, but should not have been.  This has been fixed.
+
+7/9/04  Include guards added to getopt.h
+
+On some systems, the system header files include getopt.h.  This can
+result in getopt.h being included more than once when compiling the
+prelinker.  Include guard code has been added to getopt.h to permit it
+to be included more than once.
+
+5/17/04 eccp: EDG_BASE directory exported
+
+The EDG_BASE environment variable is now exported so that it can be used
+by the front end to find the predefined macro file.
+
+-------------------------------------------------------------------------------
+Version 3.4, May 8, 2004
+
+4/14/04 Demangling of constructor name for class named __ctype
+
+In general, user code is not allowed to use double underscores in
+names, and demangling of such names cannot be guaranteed to work
+in the Cfront-like ABI.  However, in the particular case in this
+example, we were able to do a special-case workaround to allow a
+class whose name begins with "__ct", for which the constructor name
+__ct__7__ctypeFv was not correctly demangled previously.
+
+  #define NAME __ctype
+  class NAME {
+  public:
+      NAME(){};
+  };
+  int main(){
+    NAME x;
+  }
+
+1/19/04 Demangling of vtable name with class beginning with "S"
+
+Some virtual function table names were not demangled correctly in
+the Cfront-like ABI.  Specifically, in a case like
+
+  __vtbl__43MailPieceDirectionController__SharedTop2000__7Top2000
+
+where a class name is used in a multi-level vtable name, and
+the class name begins with a capital "S", the name mangler
+failed to demangle the name.  ("__S" is the template
+specialization indication, and fooled the demangler.)  Fixed.
+
+8/16/03 Demangling of GNU min/max operators
+
+The GNU min/max operators "<?" and ">?" were added in version 3.2, but
+we forgot to update the demangler to handle them in mangled names.
+That is now done, both for the IA-64 ABI:
+
+  _ZN1Zv23maxERS_
+  _ZN1Zv23minERS_
+  _Z1gILi1EEv1AIXv23minT_Li2EEE
+  _Z2g2ILi1EEv1AIXv23maxT_Li2EEE
+
+and for the Cfront-like ABI:
+
+  __mx__1ZFR1Z
+  __mn__1ZFR1Z
+  g__tm__9_XCiL_1_1__F26A__tm__17_XOmn2Z1ZCiL_1_2O_v
+  g2__tm__9_XCiL_1_1__F26A__tm__17_XOmx2Z1ZCiL_1_2O_v
+
+8/11/03 Demangling of virtual function table names, Cfront-like ABI
+
+A change made in version 3.2 (see Changes entry of 7/10/03) broke
+demangling of virtual function table names for classes whose names
+begin with "Q".  Now working again.
+
+  __vtbl__4Quid
+
+-------------------------------------------------------------------------------
+Version 3.3, July 31, 2003
+
+7/18/03  Demangling for Microsoft explicit overriding extension
+
+The name demangler (in both Cfront-like and IA-64 ABI modes)
+has been enhanced to understand and demangle the encoding for
+an explicitly overridden function for the Microsoft extension
+that allows explicit specification of overriding.  See the
+primary Changes file for details.
+
+7/16/03  IA-64 ABI demangling, predefined substitutions as types
+
+The IA-64 ABI demangler did not correctly demangle predefined
+substitutions (e.g., "So") when they appeared as types; the
+corresponding string was output twice.  The demangling was
+correct when the predefined substitutions appear as members
+of qualified names, which is usually where they appear.
+Now fixed.  An example that gave incorrect output previously:
+
+   _ZTVSo
+
+7/15/03  Demangling fixes, Cfront-like ABI: not falling off end of items
+         with lengths
+
+The name mangling scheme for the Cfront-like ABI uses lengths preceding
+certain items.  In some cases, the demangler did not properly stop
+scanning a subitem at the end of the number of characters indicated
+in the length, and because of that failed to demangle a name
+properly.  This happened in particular when a type or list of types
+appeared at the end of the subitem.  Now fixed.
+
+   __nw__18X__L0__main__FiPPcSFUi
+
+This involved a fairly large set of changes to decode.c, though for
+the most part they are mechanical.  The demangling for the IA-64 ABI
+was not affected (it does not use lengths).
+
+7/10/03  Demangling fixes, Cfront-like ABI: virtual function table names,
+         function-local entities
+
+Several demangling problems have been fixed in the Cfront-like ABI:
+
+-- A virtual function table name in which a base class name has more
+   than one derivation step is now demangled correctly
+
+   __vtbl__38B__L0__main__FiPPc__D__L1__main__FiPPc__18F__L2__main__FiPPc
+
+   (The fix for the Changes entry of 2/19/03 was not quite right.)
+
+-- A virtual function name in a pointer-to-member constant is now
+   demangled correctly when it is a member of a local class
+
+   g__FP53X__tm__44_XCMQ2_1A1BFQ2_1A1B_vLM0_L_2_n1_10f__Q2_1A1B
+
+-- Certain address-of-member references are now demangled correctly
+
+   f__tm__8_X5v__1B__FR13A__tm__5_XZ1Z_v
+
+-- Certain function-local types are now fully identified in the
+   demangled name.  Formerly, they did not give the containing
+   function information.
+
+   __ct__15A__L0__main__FvFv
+
+-------------------------------------------------------------------------------
+Version 3.2, May 12, 2003
+
+5/6/03   Demangling for __alignof__ operator, IA-64 ABI
+
+The mangling code for the __alignof__ operator in the IA-64 ABI
+has been changed to make it match the one used by g++.  The 
+demangler has been updated accordingly.
+
+4/15/03  Prelinker: memory allocation error
+
+When using one-instantiation-per-object mode, the prelinker allocated
+one too few bytes of memory when constructing the instantiation file
+name.  This has been fixed.
+
+3/19/03  Compilation of mk_errinfo.c on MacOS X 10.2.x
+
+MacOS X 10.2.x places malloc.h in a "sys" subdirectory.  mk_errinfo.c was
+updated to compile correctly on that platform.
+
+2/20/03  Demangling of non-nested type names with template arguments,
+         Cfront-like ABI
+
+In version 3.1, the Cfront-like ABI mangling for a type that is
+not nested but does have template arguments changed to include
+leading underscores and a length.
+
+Old: MyTemp__tm__2_i
+New: __15MyTemp__tm__2_i
+
+These names are not external, and as such the demangler is not
+strictly speaking required to handle them.  However, it did handle
+the old form, so it has been updated to also handle the new form.
+
+2/19/03  Demangling of virtual function table names, Cfront-like ABI
+
+Certain mangled names of virtual function tables in the Cfront-like
+ABI did not demangle correctly.  Now fixed.
+
+-------------------------------------------------------------------------------
+Version 3.1, January 26, 2003
+
+1/2/03   Prelinker: diagnose attempt to build without automatic instantiation
+
+The prelinker requires that AUTOMATIC_TEMPLATE_INSTANTIATION be TRUE in
+order to build properly.  A preprocessor check and #error directive have
+been added to enforce this requirement.
+
+12/05/02 eccp: .ii/.ti file options when not using automatic instantiation
+
+In some cases the eccp script would pass the --ii_file and/or
+--template_info_file options to the front end even when automatic
+instantiation was disabled in eccp.  This has been fixed.
+
+11/26/02 Prelinker: support for IA-64 alternate entry points
+
+A new .ti file entry kind has been added to handle alternate entry
+points for constructors and destructors when using the IA-64 ABI in
+conjunction with INSTANTIATE_EXTERN_INLINE.  The prelinker has been
+updated to process the new entries.
+
+10/8/02  eccp: allow .s files to be used
+
+Assembler files with a .s suffix may now be included on the eccp command
+line.  Such files are compiled by the underlying C compiler.
+
+9/12/02  Demangling fixes: closing delimiters on sizeof(expr) and []
+
+The demangling for expressions in the Cfront-like ABI got closing
+delimiters wrong in two cases:  "sizeof(expr)" came out as "sizeof(expr"
+(missing closing parenthesis), and "x[y]" came out as "x[]y".  (At the
+moment, it's not thought to be possible to get the front end to put
+put a [] operator in a mangled name, but it probably will be in
+the future.)
+
+9/11/02  Demangling for IA-64 ABI
+
+The demangler now understands the name mangling of the IA-64 ABI
+when IA64_ABI is set to TRUE.
+
+7/9/02   eccp: eliminated use of "match" option
+
+eccp made use of the "match" option of the expr command.  This option is
+not supported on some versions of expr (notably newer verions of Solaris).
+The ":" form of the option, which is more widely available, is now used
+instead.
+-------------------------------------------------------------------------------
+Version 3.0, May 9, 2002
+
+5/8/02   Demangling of names with nested externalized function names
+
+Names of variables promoted out of externalized static functions
+are now demangled correctly.  An example of a name that formerly
+was not demangled is
+
+x__L4____STF__sft3__tm__9_1Z2AA2AA__FZ1ZRCZ2__tm__2_sZRCZ3__tm__2_sZ_RC1Z__test_7_c_e9076052
+
+4/17/02  Demangling of nested unnamed namespaces
+
+The special mangling for a nested unnamed namespace, __N with nothing
+following it, is now demangled correctly as <unnamed>.
+
+4/17/02  Demangling of local class names
+
+A bug in the demangling of local class names has been fixed.
+An example of a mangled name that was not demangled correctly
+is __STF____dt__10LC2__L6097Fv__test_1_c_garr1.
+
+4/3/02   Demangling of sizeof(expression)
+
+A new encoding for a sizeof operator applied to an expression is
+now generated by the front end and demangled by the demangler.
+The "sz" for sizeof is followed by "e" to indicate an expression
+instead of a type.  Also applies to alignof and uuidof.
+
+3/2/02   Prelinker: invalid .ti file changed to normal error
+
+If the contents of the .ti file become corrupted, the prelinker would
+issue an internal error.  A common cause of a corrupted .ti file is the
+fact that the file as written by the front end is invalid until it is
+later updated by the driver (because the command-line information is missing
+from the file written by the front end).  The internal errors have been
+replaced with an error that indicates that the template information file
+is corrupted.
+
+2/14/02  Demangling of template member addresses in nontype template arguments
+
+A bug in demangling for nontype template arguments that are the address
+of a member that is a template instance has been corrected.  An example
+of a name that was not demangled correctly is
+
+__dt__73CT7__tm__62_XCPFSc_Sc50mt1__tm__3_Sc__Q2_2N127CT6__tm__16_XCPFSc_Sc3tf11BFv
+
+1/18/02  Demangling of virtual function table names for ambiguous base classes
+
+The name mangling for virtual function tables for ambiguous base classes
+has been changed in some cases: the "__A" suffix now sometimes has a
+number following it to distinguish multiple ambiguous base classes with
+the same name.  The demangler has been changed to demangle such names.
+
+8/9/01   eccp: exit status for generated C compilation errors
+
+If the underlying C compiler exits with a non-zero status, eccp now
+returns an abort status to distinguish this case from a case where
+the front end reports errors.
+
+8/2/01   Prelinker: removal of one-instantiation-per-object files
+
+The prelinker removes object files created in one-instantiation-per-object
+mode when it detects the files are no longer needed.  If an explicit
+instantiation of a template was added to some other file, the prelinker
+could mistakenly remove the object created by the compilation of the
+other file.  This could result in a prelinker loop or other incorrect
+behavior.  This has been fixed.
+
+7/19/01  Prelinker: handling of internal errors
+
+The prelinker now uses the front end configuration flag EXIT_ON_INTERNAL_ERROR
+to specify how the prelinker should exit when an internal error is detected.
+The prelinker now calls abort() if EXIT_ON_INTERNAL_ERROR is FALSE.
+
+6/27/01  Prelinker: detection of instantiation loops
+
+An error in the data structures passed to the prelinker, or an inconsistency
+between the data structures and the generated object code can result in
+a prelinker loop in which the same entity is repeatedly assigned to and
+removed from a given file.  The prelinker now detects such cases and
+issues an internal error.  Because this will detect the most common cases
+of instantiation loops, the limit on the number of prelinker iterations has
+been increased to 300 to permit the use of more deeply recursive templates.
+
+1/15/01  eccp: Temporary file not removed in some cases
+
+When using one instantiation per object mode, a temporary file used by
+eccp (named "il<process-id>") did not get removed when using the -k or
+--keep_gen_c option.  This has been fixed.
+
+-------------------------------------------------------------------------------
+Version 2.45, December 26, 2000
+
+12/13/00 Demangling of "?" operator in template names
+
+The name demangler now correctly handles the "?" operator in
+expressions in nontype template arguments.
+
+-------------------------------------------------------------------------------
+Version 2.44, August 1, 2000
+
+3/22/00  eccp: environment variable changes
+
+The eccp environment variable EDG_DEFAULT_LIB_PATHS, which specifies
+the library paths implicitly used by the linker, has been renamed
+EDG_LINKER_LIB_PATHS.  EDG_DEFAULT_LIB_PATHS is now used for a new
+variable that provides a list of library path directives that is
+passed to both the prelinker and linker.
+
+12/21/99 Mangling for Microsoft __intN types
+
+The name demangler can now demangle the encoding for the Microsoft-specific
+integer types __int8, __int16, __int32 and __int64 (and their unsigned
+variants).  These are distinct built-in types when emulating Microsoft Visual
+C++ 6.0 and higher (earlier versions treat these types as typedefs for standard
+integer types).
+
+-------------------------------------------------------------------------------
+Version 2.43, December 8, 1999
+
+12/1/99  Mangling for template template parameters
+
+The name demangler can now demangle template template parameters.
+
+12/1/99  Demangling of unnamed namespace names
+
+The mangled form of an unnamed namespace name now includes a unique
+string after the "__N".  The demangler has been updated to ignore the
+extra characters, and put out "<unnamed>".
+
+8/17/99  Utility program build problems in strict C++ mode
+
+The utility programs have been updated so that they compile properly
+in strict C++ mode.  Some of the problems were a result of the change to
+make string literals const.  Others were related to the linkage of the
+function pointer passed to the qsort and bsearch routines.
+
+8/13/99  Prelinker: build problem on some systems
+
+The prelinker did not compile on some systems (e.g., Red Hat 6.0) on which
+the assignment of stderr to a FILE* is not a static initialization.  Now fixed.
+-------------------------------------------------------------------------------
+Version 2.42, August 12, 1999
+
+8/11/99  Demangling of promoted local static names
+
+Certain mangled names of promoted local static variables were not
+demangled correctly (e.g., i__L14__f__Fv).  Now fixed.
+
+8/4/99   Prelinker: Default SGI nm options changed for Irix 6.x
+
+The options passed to the nm command on Irix have been changed from
+"-Bopg" to "-Bop", which we are told is the appropriate set of options
+for Irix 6.x.
+
+7/28/99  Prelinker: informational messages now directed to stderr
+
+Formerly, information messages (e.g., "f(int) assigned to t.c") were
+directed to standard output.  They are now directed to the standard
+error device instead.
+
+7/2/99   Prelinker: error output of "nm" command no longer discarded
+
+Formerly, any error output of the "nm" command was discarded.  It
+will now go to wherever stderr is directed.
+
+6/23/99  Demangling of invalid name like x__1
+
+An invalid name like x__1 was demangled as ::x.  Now, an error is
+reported.
+
+6/2/99   Instantiation object suffix when not using the C-generating back end
+
+The prelinker removes instantiation object files that are no longer needed.
+To do so, it must know the file suffix that is used for such files.
+Formerly, it assumed that the suffix was either ".int.o" or ".int.obj",
+neither of which is correct when a "real" back end is being used.  The
+prelinker now uses ".o" or ".obj" when the back end is not the C or C++
+generating back end.
+
+4/27/99  Prelinker accepts nm code of "R" for read-only variable definition
+
+The Linux "nm" command uses a type code of "R" to indicate the definition
+of a variable that can be placed in read-only memory.  The prelinker
+has been modified to recognize this type code.
+
+4/27/99  Prelinker calls fopen with a null file name
+
+A bug in edg_prelink caused it to call fopen with a null file name pointer.
+This happens to work on most systems, but is not correct.  Now fixed.
+
+4/17/99  Incorrect required_buffer_size returned on attempt to demangle
+         compressed name
+
+The demangler returns a required_buffer_size, intended to allow the caller
+to allocate a larger buffer for the output if the demangled form of the
+name will not fit in the buffer.  When the input mangled name is a
+compressed name, the value returned was not large enough (the routine
+uses the buffer also as working storage to uncompress the name, and
+the size passed back to the caller did not account for that space
+requirement).  As a consequence, the demangling process would fail
+even when a buffer of the requested size was provided.  Now fixed.
+
+Note that if the buffer size given is smaller than the size of the
+uncompressed mangled name, the size returned will be enough to uncompress
+the name but not enough to produce the demangled form.  The caller must
+be prepared in that case to loop a second time (the length returned
+the second time will be correct).  [Patch sent out 5/27/99.]
+
+3/16/99  Demangling of compressed names
+
+In some cases, the demangler failed to demangle compressed mangled names.
+Now fixed.  [Patch sent out 3/19/99.]
+
+3/12/99  Prelinker problem in copy-if-nonlocal mode
+
+When the processing for template information files was added a bug was
+introduced in copy-if-nonlocal mode that would cause the remote instantiation
+request file to be updated instead of the local one when a remote instantiation
+request file was copied to the local directory.  This has been fixed.
+-------------------------------------------------------------------------------
+Version 2.41, March 5, 1999
+
+2/17/99  Compression in mangled names
+
+The name demangler now uncompresses mangled names, which begin with "__CPR".
+
+2/16/99  "uu" for __uuidof operator in mangled encoding of expression
+
+The encoding "uu" is now used for the Microsoft __uuidof operator
+in the mangled encoding for an expression.
+-------------------------------------------------------------------------------
+Version 2.40, December 8, 1998
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 2.39, August 10, 1998
+
+7/30/98  Prelinker fails when object file name is also an archive member name
+
+A bug was introduced into the prelinker in version 2.37, when
+one-instantiation-per-object support was added, that would cause the
+prelinker to fail if an object file name specified on the command-line
+was the same as an object file name found in an archive that is being
+used.  This has been fixed.
+
+7/29/98  eccp: driver name can be changed for diagnostic purposes
+
+The eccp script now uses a variable for the driver name to be displayed
+in diagnostic messages, making it simpler for those who would like to
+use a different name for the script.
+
+7/29/98  Ignore "--" option in eccp
+
+The eccp script now ignores the "--" option.
+
+7/29/98  Handling of duplicate names in edg_munch
+
+The "nm" command on some systems produces duplicate entries for __sti
+and __std functions, causing edg_munch to call the routines more than
+once.  edg_munch has been modified to detect duplicate entries, but
+only if they are adjacent to one another in the "nm" output.
+
+7/10/98  Prelinker erroneously finds .ti file for archive
+
+The prelinker used information from a template information (.ti) file
+even when the associated file was a library (.a or .lib) file.  Template
+information files should only be used when the associated file is an
+object (.o or .obj) file.  This has been fixed.
+
+7/10/98  Return type of __sti routines
+
+Originally, the return type of the __sti routines generated by the
+front end was "char".  In version 2.18 this was changed to "void", but
+edg_munch was not changed accordingly.  edg_munch has now been changed
+to match the front end.
+
+6/3/98   Prelinker does not handle nonlocal files properly in
+         one-instantiation-per-object mode
+
+When using one-instantiation-per-object mode, the prelinker does not handle
+nonlocal instantiation files properly.  When files are linked using
+a command such as
+
+	eccp --one some_dir/a.o b.o
+
+"some_dir" needs to be used as a prefix to the instantiation directory
+specified in some_dir/a.ti.  This has been fixed.
+
+5/31/98  INSTANTIATION_OBJECT_SUFFIX set incorrectly when __MICROSOFT_OS__
+         is TRUE
+
+edg_prelink.h did not set INSTANTIATION_OBJECT_SUFFIX properly when
+__MICROSOFT_OS__ is TRUE.  This would cause the prelinker to fail when
+one-instantiation-per-object mode was used on such systems.
+
+4/27/98  Prelinker problem when nonlocal files are used in conjunction with
+         a definition list file
+
+When a definition list file is being used and nonlocal files are specified,
+a local and nonlocal file could both end up "adopting" the same instantiation,
+resulting in a prelinker internal error.  This has been fixed.
+
+4/25/98  Demangling of virtual function table names with three parts
+
+The name demangler now demangles virtual function tables that name three
+classes, as in "virtual function table for A in B in C".  Such names are
+used for virtual function tables generated for use during subobject
+destruction or construction in the presence of virtual base classes.
+
+3/25/98  Output file option must be included in the instantiation command line
+         in eccp
+
+The eccp script did not include the -o option in the instantiation command
+line.  This would cause the prelinker to fail after recompiling a file that
+was originally compiled with the -o option.  This has been fixed.
+
+3/3/98   Template information files not handled correctly by -o option in eccp
+
+When using the -o option to specify an object file name for a compilation
+(i.e., when the -c option is also being used) eccp did not pass the
+--template_info_file option to the front end to indicate the name of
+the template information file to be created.  This has been fixed.
+-------------------------------------------------------------------------------
+Version 2.38, January 13, 1998
+
+1/11/98  Demangling of some ambiguous mangled names
+
+Some mangled names using an old form for literal lengths (the cfront
+form) that causes some ambiguities were not successfully demangled by
+edg_decode, and cfront's demangler manages to handle them.  Those cases
+are now demangled by edg_decode as well.  Examples:
+
+  f01__FPF15S__pt__7_XCiL15_v
+  f03__FM1CF15S__pt__7_XCiL15_v
+
+12/18/97 Prelinker gets internal error when file name contains a drive
+         specification
+
+On Windows 95 or Windows NT, the prelinker would get an internal error
+if an object file name or library name included a drive specification.
+This has been fixed.
+
+-------------------------------------------------------------------------------
+Version 2.37, October 18, 1997
+
+11/25/97 Prelinker problem when not using .ti files
+
+The prelinker could abort or create an invalid .ii file when configured
+to not use a .ti file and when a .ii file was removed.  This has been
+fixed.
+
+10/16/97 --list_object_files option to eccp (-b option to prelinker)
+
+An option has been added to the eccp script and prelinker to permit
+a list of object files to be displayed.  This is intended to be
+used with the --one_instantiation_per_object option to get a list
+of object files that includes the generated instantiation object files.
+This option can be used when generating a library, for example:
+
+  ar r mylib.a `eccp --one_instantiation_per_object --list_object_files *.o`
+
+10/15/97 Improved interface between the prelinker and front end
+
+The interface between the front end and prelinker has been modified to
+reduce the number of times that the front end must be invoked to
+generate the complete set of instantiations needed by a program.
+See the front end Changes file entry for more information.
+
+10/15/97 Improved diagnostic when instantiation is assigned to more than
+         one .ii file
+
+If the prelinker detects that an instantiation has been assigned to
+more than one .ii file, the names of the first two files in which the
+instantiation was found are now displayed.  This situation can occur
+if an overlapping set of object files is used to link two different
+programs.
+
+10/13/97 Ability to put instantiation flags in a separate file
+
+The prelinker and eccp script have been modified to make use of
+template information files generated by the front end.  See the front
+end Changes file entry for more information.
+
+10/9/97  Name demangling: __STF__ form for externalized static functions
+
+Static functions made external (for the one-instantiation-per-object-file
+feature) are now mangled with names beginning with __STF__.  The name
+demangler now decodes that form.
+
+10/8/97  Abbreviated command line options
+
+The eccp script now accepts abbreviated keyword command line options.
+Only as many initial characters as are required to uniquely identify
+an option are needed.  For example, "--bo" may be used to specify
+the "--bool" option.
+
+9/28/97  Name demangling: __STV__ form for externalized statics
+
+Static variables made external are now mangled with names beginning
+with __STV__.  The name demangler now decodes that form.
+
+7/24/97  EDG_INCLDIR environment variable used by eccp
+
+The eccp script now uses EDG_INCLDIR, if set, as the default include directory
+when compiling C++ code (EDG_CINCLDIR was already used as the default
+directory when compiling C).  If this environment variable is not set,
+EDG_BASE/include is used.
+
+-------------------------------------------------------------------------------
+Version 2.36, June 17, 1997
+
+4/22/97  Building the prelinker on Windows
+
+edg_prelink.c was including unistd.h, which is not necessarily available
+under Windows.  Also, on Windows the popen() and pclose() functions must
+be called using the names _popen() and _pclose(). 
+
+4/11/97  Name demangling: cfront-style local names
+
+decode.c now recognizes and demangles cfront-style local names, e.g.,
+"__2i" for "i".
+
+4/11/97  Name demangling: function-local names
+
+decode.c now understands more mangled names of entities local to
+functions.  The name of the function is also now put out at the beginning
+of the name, followed by "::", which works better for multi-level names.
+
+  func__15A__L0__main__FvFv  --> main()::A::func()
+  i__L0__f__tm__2_i__FZ1Z_v  --> void f<T1>(T1) [with T1=int]::i
+
+-------------------------------------------------------------------------------
+Version 2.35, February 28, 1997
+
+2/24/97  Name demangling: index in pointer-to-member-function
+
+decode.c did not understand a length on the index field of a pointer-to-
+member-function encoding when the length used the new form ("_nnn_").
+Now fixed.
+
+2/7/97   Memory allocation error in prelinker
+
+Under certain circumstances the prelinker would not allocate sufficient
+memory for the construction of the command line used to recompile a
+file.  This has been fixed.
+
+1/3/97   Invariant name used in "removed" error codes
+
+The enumeration name used for "removed" error messages has been changed
+to use the error message number instead of a counter of removed messages.
+This was done to eliminate gratuitous changes in the error codes from
+one release to another.
+-------------------------------------------------------------------------------
+Version 2.34, December 18, 1996
+
+12/13/96 Name demangling for partial specializations
+
+The name demangler now recognizes the "__ps__" marker that introduces
+the first template argument list on a partial specialization of a
+class template.
+
+12/11/96 Speed improvement on name demangling
+
+The name demangling code was agonizingly slow on demangling very large
+names (a 3000-character name could take 10 minutes on a workstation).
+The offending piece of the algorithm has been changed.
+
+11/4/96  Demangling of names for interface routines for covariant return types
+
+The implementation of virtual functions with covariant return types
+uses interface routines with names that begin with "__VFE__".  These
+are now demangled correctly.
+
+10/22/96 decode.h and decode.c copyrighted but not proprietary
+
+We've changed the copyright notices in decode.h and decode.c to make
+those files freely redistributable.  They're copyrighted, but they're
+not proprietary.  This was done to allow incorporation of those files
+into the GNU debugger gdb, and debuggers in general.
+
+-------------------------------------------------------------------------------
+Version 2.33, October 2, 1996
+
+9/26/96  Name demangler and initialization guard variables for local statics
+
+Local static variables of extern inline functions are now promoted out
+of the functions and made external so that all copies of the function
+will use the same static variables.  The initialization guard variables
+for those local statics are also made external, and they have mangled
+names beginning with "__LSG__", followed by the mangled name for the
+promoted local variable.  The name demangler now demangles such guard
+variable names.
+
+9/26/96  Name demangler and names of types/variables promoted out of functions
+
+The name demangler can now demangle names of variables and types promoted
+out of functions in IL lowering.  The "__Lnn" piece of such mangled names
+has been moved to between the local entity name and the mangled name of
+the function, instead of at the end, to make demangling easier.  The scope
+number in the "__Lnn" has also been made relative to the function.
+(These two changes have no ABI implications, since such names have been,
+by definition, internal to a compilation.)  A mangled name like
+"j__L2__f__Fv" (formerly something like "j__f__Fv__L10") is now demangled
+as "j in block 2 of function f()".
+
+9/24/96  -b option failed to restore C++ mode in eccp
+
+The -b option (cfront compatibility) should cause eccp to operate
+in C++ mode.  A bug prevented this from occurring.  This has been
+fixed.
+
+9/24/96  mk_errinfo can now generate MML documentation files
+
+The -mml option has been added to mk_errinfo.  This option causes it
+to produce a file in MML format.  MML is "Maker Markup Language", a
+language that can be imported into FrameMaker.
+
+9/17/96  --strip option added to eccp
+
+The --strip option has been added to the eccp script.  This option causes
+the "strip" command to be run on the executable file that is produced.
+
+8/13/96  "K" for extern C recognized by name demangler
+
+The name demangler now recognizes a "K" following the "F" for a function
+type as indicating an function type with extern "C" linkage.  The "K"
+is just ignored; there's no representation for this information in
+the demangled form.
+
+7/23/96  Added option to eccp to convert relative -I paths to absolute paths
+
+An option has been added to the eccp script that causes it to convert
+relative include directory paths to absolute paths when building the
+command line in the .ii file.  This is sometimes necessary when using
+the --prelink_copy_if_nonlocal option.  In such cases, path names that
+are relative to the original directory need to be converted into
+absolute path names in order for the command line to be correct
+when copied to the new directory.  This option is enabled by
+setting the environment variable EDG_USE_ABSOLUTE_INCL_DIR_PATHS to 1.
+
+7/2/96   Incorrect error test in mk_errinfo
+
+mk_errinfo was incorrectly checking for an error when opening the err_data.h
+file.  This could result in an abort if the file could not be opened.
+-------------------------------------------------------------------------------
+Version 2.32, June 28, 1996
+
+5/25/96  Prelinker diagnostic when nm exits with an error
+
+The prelinker now issues a warning if the nm command that is
+executed returns a nonzero return status.
+
+5/15/96  Improved prelinker message when .ii file is not writable
+
+A better diagnostic is now issued if the .ii file is not writable
+when the prelinker attempts to update it.  The diagnostic now
+indicates the file name and the fact that it is not writable.
+
+5/6/96   Name demangler enhancements for distinct template mangling
+
+The name demangler has been enhanced to deal with the new form of
+mangling for templates.  See the primary Changes file for details
+on the new encodings.
+
+5/6/96   Error if an entity is both specialized and instantiated
+
+The prelinker now issues an error if an entity is referenced as both
+an explicit specialization and a generated instantiation.  This
+feature will only work if the special name mangling for specializations
+is enabled in the front end.  The feature can be enabled or disabled
+using the -s1 or -s0 option to the prelinker.  The default value for
+this option is specified by the PL_DEFAULT_CHECK_SPECIALIZATION_ERRORS
+flag in edg_prelink.h.
+
+3/4/96   Error status returned by prelinker when recompiles fail
+
+The prelinker uses the system() function to recompile source files
+to generate instantiations.  When the eccp command returns a nonzero
+status (via the system() function) to the prelinker, the system()
+function shifts the return status 8 bits to the left before
+returning it.  The prelinker has been modified to adjust the
+return value by shifting it back to the right.
+
+2/28/96  Configuration file that defines variables used by eccp
+
+eccp now looks in the directory specified by the EDG_BASE environment
+variable for a file named edg_eccp_config.  If such a file exists,
+eccp includes it to define additional environment variables that may
+be needed.
+
+2/22/96  Bug in name demangling of nested class name in virtual function
+         table name
+
+In version 2.30 of the front end, name mangling for virtual function tables
+was changed to make it match cfront more closely.  The change duplicated
+a quirk of the cfront name mangling scheme, one that doesn't really make
+much sense.  Specifically, the virtual function table for the class A::B
+is now put out as __vtbl__7Q2_1A1B; note the length "7" in front of the
+nested class name, which was not present before version 2.30.  This change
+unfortunately confused the name demangler, which is understandable since
+the name is ambiguous: the new form is also the name that is generated if
+the programmer has a class called "Q2_1A1B".  The demangler has now been
+changed to recognize this case and treat it as the nested class name
+instead of the less-likely "Q2_1A1B".
+
+2/22/96  Reentrancy in name demangler
+
+The state variables used in decode.c have been moved into a structure, and
+a pointer to the structure is passed around.  This allows the name demangler
+to be used where reentrancy is required.
+
+-------------------------------------------------------------------------------
+Version 2.31, January 19, 1996
+
+1/17/96  eccp option to prelink object files to be put in a library
+
+The --prelink_objects option has been added to eccp.  This option
+causes object files to be processed by the prelinker, but suppresses
+the actual link step.  This can be used to prelink a set of object
+files that are to be put into a library.
+
+1/17/96  eccp and prelinker option to remove instantiation flags
+
+The --remove_instantiation_flags option has been added to eccp.  This
+option causes the prelinker to recompile all of the source files
+associated with the object files being linked using the
+--suppress_instantiation_flags option, which suppresses
+the generation of the __TIR__, __CBI__, and __DNI__ flags in
+the generated object files.
+
+1/10/96  edg_prelink inserts escapes before quotes in command line
+
+The prelinker now inserts an escape before quotes found in the
+compilation command line in the .ii file.
+
+1/4/96   Permit verbose mode to be turned off in the prelinker
+
+A new configuration flag has been added to edg_prelink.h called
+PL_DEFAULT_VERBOSE_MODE.  This lets you specify whether or not
+the prelinker should produce verbose output by default.  A new
+command line option (-q) has been added to the prelinker that specifies
+that verbose output should not be produced. 
+
+12/27/95 Building the utility programs with the Sun C++ compiler
+
+The changes have been made that are necessary for the utility programs
+to be compiled  with the Sun C++ compiler on SunOS 4.1.3.
+
+12/22/95 Use of malloc.h in edg_prelink.c and edg_munch.c
+
+These files no longer include malloc.h when __ANSIC__ is defined.
+
+10/12/95 edg_munch option to ignore initial input lines
+
+edg_munch now support a command line option that causes it to ignore
+the initial N lines of input.  This is useful on systems like
+Solaris that include a header in the nm output.  The option 
+is -iN, where N is the number of lines to be ignored.
+
+10/12/95 Change in path used for nm on Solaris in edg_prelink
+
+edg_prelink now looks for nm in the user's search path on Solaris
+instead of having a directory name included in the default nm command.
+
+10/12/95 New eccp environment variable for edg_munch options
+
+The environment variable EDG_MUNCH_OPTIONS can now be used to
+specify the options to be passed to edg_munch.
+-------------------------------------------------------------------------------
+Version 2.30, October 10, 1995
+
+10/10/95 mk_errinfo updated to handle %np error message fill-ins
+
+The mk_errinfo program now supports the %np fill-in used to
+force the parameter types to appear when function name appears
+in a symbol fill-in.
+
+9/20/95  eccp support for naming object files
+
+The -o option may now be used in conjunction with the -c option
+to name the object file generated by a compilation.  This feature
+uses the new --ii_file command line option of the front end to
+ensure that the .ii file name matches the name of the object file
+being generated.
+
+8/21/95  Missing newline at end of file given to edg_decode
+
+If final line of the input to edg_decode ends without a newline, and a
+mangled identifier is the last thing on that line, a garbage character
+(== EOF) was written to the output file.  Now fixed.
+
+8/21/95  Display of false and true in name demangling
+
+Name demangling now puts out false and true in template arguments of
+bool type (formerly, (bool)0 and (bool)1 were put out).
+
+7/26/95  Checking return value of popen in edg_prelink
+
+edg_prelink did not check the return value of popen to determine
+whether an error occurred.  This could result in an abort if
+the nm process could not be created for some reason.  This has
+been fixed.
+
+7/26/95  Executable permissions when using "patch" with eccp
+
+eccp has been changed to respect the umask setting when changing
+the permissions on the executable file when using "patch" to
+handle static initialization.
+
+7/21/95  eccp and prelinker support for -Bstatic and -Bdynamic
+
+The -Bstatic and -Bdynamic options are now supported by eccp and
+edg_prelink.  This support consists of passing the options along to the
+linker retaining their position relative to the object files and
+libraries specified on the command line.
+
+7/21/95  eccp and the -G option
+
+eccp now supports the -G option for building shared libraries.  This
+option is passed to the linker and causes eccp to suppress the
+patch/munch phase when created the linked output file.
+
+7/21/95  eccp and reporting prelinker failures
+
+Formerly, a prelinker failure (returning a nonzero status) would not
+by itself cause eccp to return a failure status (the assumption was
+that a prelinker error would also result in a linker error).  Now,
+to be sure that an error will not go unnoticed, eccp will always return
+an failure status if the prelinker fails.
+
+5/30/95  eccp bug using expr command
+
+The eccp script contained two expr commands that were not properly formed.
+These caused problems on some systems (e.g., Linux).
+
+5/25/95  Prelinker diagnostic issued if nm produces no output
+
+The prelinker now issues a warning when nm produces no output.
+This is usually an indication that there is some sort of
+configuration problem (e.g., looking for the nm command in the
+wrong place).
+
+5/25/95  Prelinker bug handling first line of an archive
+
+A bug in edg_prelink resulted in the first line of nm output for an
+archive file to be ignored.  This has been corrected.
+
+-------------------------------------------------------------------------------
+Version 2.29, May 24, 1995
+
+5/3/95   Mangled codes for array new (nwa) and array delete (dla) are
+	 now demangled
+
+5/2/95   Mangled code "b" is demangled as "bool"
+
+3/28/95  eccp and the order of object files and libraries passed to the linker
+
+Formerly, eccp maintained separate lists of object files, libraries
+specified as full path names, and libraries specified using the
+-lname option.  These lists were then passed separately to the linker.
+Now, a single list is maintained preserving the order specified by the
+user.  This change required a corresponding change in the prelinker.
+
+3/22/95  Header files used by mk_errinfo
+
+Uses of nonstandard header files have been removed from mk_errinfo.c.
+
+3/18/95  Demangling of local variable names
+
+Variable names of the form "__nn_mm_name", where "nn" and "mm" are decimal
+numbers, are generated by the C-generating back end for local variables.
+These are now decoded by decode.c.  This is not intended to be a complete
+solution to demangling local names; this just happens to be one easy
+case that's frequently asked for.
+
+3/3/95   eccp use of --gen_c_file_name option 
+
+When compiling multiple source files, eccp would keep appending additional
+--gen_c_file_name options to the string passed to the front end.  This
+worked, as the front end would use the last name passed (which was the
+right one).  Only the correct name is passed now.
+
+-------------------------------------------------------------------------------
+Version 2.28, March 2, 1995
+
+1/13/95  Allow multi-character symbol types in HP/UX nm output
+
+Some versions of HP/UX nm produce multi-character types such as "TS".
+edg_prelink now allows (and discards) additional characters in the
+type field when the -fHPUX option is used.
+
+1/11/95  Mangled code "w" is demangled as "wchar_t"
+
+1/3/95   Incorrect handling of HP/UX nm output
+
+A bug has been fixed in edg_prelink that caused the prelinker to
+incorrectly process the nm output under HP/UX.
+
+-------------------------------------------------------------------------------
+Version 2.27, December 22, 1994
+
+12/20/94 Change in -p option
+
+The -p option is now used to indicate that profiling code is
+to be generated.  This option is passed to the underlying
+C compiler and causes _p to be appended to library names specified
+by the -l option.
+
+Formerly, this option indicated that the file should be compiled in
+C++ mode.  This may now be specified using the --c++ option.
+
+12/20/94 EDG_LIBRARY_OPTION
+
+The EDG_LIBRARY_OPTION may be used to specify the string used as the
+library directory option name.  The default value is -L.
+
+12/20/94 Change in EDG_STD_LIBS
+
+Formerly, EDG_STD_LIBS contained a string to be passed to the linker
+such as "-lstd -lxyz".  It has been changed to a colon separated list of
+library names (e.g., "std:xyz").
+
+12/20/94 -ofile_name now supported
+
+It is now possible to specify an output file name without a space
+between the "-o" and the file name.
+
+12/20/94 EDG_DEFAULT_INCLUDE_DIRS
+
+This new environment variable has been added.  It may be set to
+a colon separated list of include file paths.  An empty path is
+translated to "-I.".
+
+11/30/94 Fix eccp problem when using -l option and templates
+
+eccp would incorrectly use -tused when a command line like
+
+  eccp x.c -labc
+
+was used.  This could result in multiple definition errors or
+the use of a generated instantiation when a specialization from
+the library should be used.  This has been corrected.
+
+11/4/94  Added support for Gnu binutils nm output to the prelinker
+
+The prelinker now accepts the nm output from the Gnu binutils
+nm command.  The -fgnu option is used to select this format.
+
+10/24/94 Handling of nonlocal files by the prelinker
+
+The prelinker and the eccp script now provide several different
+options for the handling of nonlocal object files (i.e., object files
+that reside in another directory).
+
+Before this change, the prelinker would probably fail if an
+instantiation were assigned to a nonlocal object file.
+
+In the default mode, instantiations may now be assigned to nonlocal
+object files.  This will result in the nonlocal file being
+recompiled in the same directory as it was originally compiled in.
+The prelinker has been modified to always prefer assignments to
+local files.  In other words, assignments will only be made to
+nonlocal files when there is no local file that can supply the
+needed instantiation.
+
+If the --prelink_local_only option is specified, instantiations
+will not be assigned to nonlocal files.  Because the prelinker now
+assigns instantiations to local files whenever possible, this will
+result in link errors (because of missing instantiations) in cases
+in which nonlocal instantiations would otherwise be done.
+
+If the --prelink_copy_if_nonlocal option is specified, the
+prelinker will, instead of assigning an instantiation to a nonlocal
+file, copy the nonlocal .ii file to the local directory and
+recompiled the file locally.  This mode assumes that the same
+command line (except for the name of the file to be compiled) may
+be used to compile the file in both the nonlocal and local
+directories.
+
+The prelinker uses single character options instead of the keyword
+options now used by eccp.  The --prelink_local_only option
+is translated to the -D option to edg_prelink.  The
+--prelink_copy_if_nonlocal option is translated to -N.
+
+10/24/94 Change in handling of EDG_GEN_C_SUFFIX
+
+The handling of the EDG_GEN_C_SUFFIX variable has been expanded
+to allow the entire suffix to be specified.  Formerly, only
+the portion of the suffix that follows the .int could be specified.
+
+10/20/94 Order of -L options passed to the prelinker
+
+-L options were being passed to the prelinker in the wrong sequence.
+Specifically, the system directories were incorrectly placed at the
+front of the list instead of after any user specified directories.
+
+-------------------------------------------------------------------------------
+Version 2.26, October 13, 1994
+
+10/5/94 Generated C file suffix
+
+The environment variable EDG_GEN_C_SUFFIX may now be used to select
+an alternate suffix for the generated C file.
+
+9/14/94 Prelinker loop when libraries are specified in the wrong order
+
+A bug has been fixed that could cause the prelinker to loop when
+library files are specified in the wrong order.  The prelinker has
+been changed to suppress the instantiation of any entity for which
+a definition has been seen in an archive, even if the symbol from
+that archive was not actually linked in.
+
+9/8/94  Decoding of names with leading double underscore
+
+decode.c was changed so that it can decode names that in their original
+source form begin with a double underscore, e.g., __f__Fi, which is __f(int).
+
+-------------------------------------------------------------------------------
+Version 2.24, July 8, 1994
+
+6/27/94 required_buffer_size parameter on decode_identifier
+
+There is now a required_buffer_size parameter in decode_identifier,
+which returns the buffer size needed.  That is useful when a buffer
+overflow occurs (it tells you how big a buffer must be allocated to
+try again).
+
+6/10/94 Changes in command line handling
+
+The eccp script has been changed to accommodate the same command line
+changes that were made in the front end.
+
+In addition to the changes described for the front end, eccp now uses
+the -O option to specify that the C compiler used to compile the
+generated code should be invoked with optimization requested.
+
+The -g option no longer causes the .int.c file to be retained.
+A separate option (-k or --keep_gen_c) is now available to
+request that the .int.c file be preserved.
+
+The -gn option (which was equivalent to the new -g --keep_int_c) has been
+eliminated.
+
+The --driver_debug option has been added to display, for debugging
+purposes, the commands executed by the driver.
+-------------------------------------------------------------------------------
+Version 2.23, May 25, 1994
+
+4/11/94 edg_prelink displays identifiers in demangled form
+
+edg_demangle now calls decode_identifier and displays identifiers
+in decoded format.  The -m option can be used to display the
+names in the old mangled format.
+
+4/11/94 edg_prelink allows substitution in error strings
+
+edg_prelink now provides a simple text insertion facility to
+insert variable information in error messages.
+
+4/5/94  eccp uses edg_decode to demangle the names in linker output
+
+The eccp script has been modified to use edg_decode to demangle
+names in the output of the linker.
+
+4/5/94  Name demangler
+
+A name demangler has been added.  The code is contained in decode.c,
+and a filter program that uses the code is in edg_decode.c.
+
+3/18/94 -L and -l options now supported by edg_prelink
+
+The -L and -l linker options are now passed from eccp to the prelinker so
+that the prelinker can include the libraries specified by the -l options
+when determining which templates need to be instantiated.
+
+3/17/94 Command line option change
+
+The -l (don't limit recursion) option has been renamed to -r.  This has
+been changed to allow the use of the -l option to specify library names.
+
+3/1/94  Changes to facilitate error message catalogs
+
+edg_prelink.c has been modified to simplify the task of using
+a message catalog for the storage of error messages.
+
+-------------------------------------------------------------------------------
+Version 2.22, February 26, 1994
+
+2/21/94  Display of underlying C compiler diagnostics
+
+Output from the underlying C compiler is bracketed by special messages
+from eccp so that the source of the messages is more clear.  This
+change was motivated by the fact that the C generating back end now
+issues #line directives so the file name used by the C compiler in
+diagnostics is now the original source file name instead of the
+.int.c file name.
+
+2/9/94   Purify option
+
+The "-purify" option has been added to eccp.  This allows you to link
+programs with purify.
+
+1/17/94  Portability issues
+
+edg_munch incorrectly used a char as the return value of getc.  edg_munch
+and edg_prelink failed to cast the argument of isalpha to unsigned char.
+These have been fixed.
+
+edg_prelink.h no longer explicitly declares popen().  The declaration
+from stdio.h is now used.
+
+fclose was being called to close a file even when the open failed.  This
+has been corrected.
+
+1/5/94   Version of getopt routine now provided
+
+The utility programs now provide their own version of the getopt
+routine for use on systems that do not provide a getopt.
+
+1/5/94   Temporary directory used by eccp
+
+The eccp script now uses the environment variable TMPDIR as the temporary
+directory.  If TMPDIR is not set, /tmp is used.
+-------------------------------------------------------------------------------
+Version 2.21, December 21, 1993
+
+12/16/93 Change in name of prelinker options
+
+The nm format option for Solaris has been changed from SVR4 to Solaris
+because we learned that the Solaris format is actually different from
+the standard SVR4 format.
+
+The M88K option has been renamed to SVR4 because it more closely matches
+the standard SVR4 nm output.
+
+12/14/93 Command line information in .ii file in preprocessing mode
+
+The eccp script no longer updates the command line information in the .ii
+file when invoked with options that cause the compiler to be
+executed in preprocessing mode (i.e., -P, -E, -H, -M).
+
+11/15/93 Prelinker problem with eliminated instantiation sites
+
+Under some conditions the prelinker failed to reassign an instantiation
+after the current instantiation site has been changed in such a way
+that the instantiation can no longer be generated.  This has been fixed.
+
+11/15/93 Aborting compilations that are executed by the prelinker
+
+If a compilation is aborted while the prelinker is recompiling a file
+(but before the new object file has been created) an application may
+be left in a state in which simply typing "make" will not result
+in the application being successfully built.  The user would need to
+either remove the .o file or touch the .c file and rerun make.
+This problem has been solved by having the prelinker remove the .o
+file before recompiling a file.

@@ -1,0 +1,19 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 8: error: expected a "("
+    { // expected-note {{to match this}}
+    ^
+
+At end of source: error: expected an asm string
+
+At end of source: error: expected a ")"
+
+At end of source: error: expected a ";"
+
+At end of source: warning: missing return statement at end of non-void function "t_fail"
+
+At end of source: error: expected a "}"
+"Test_name.c", line 6: note: to match this "{"
+  int t_fail(void) { // expected-note {{to match this}}
+                   ^
+
+5 errors detected in the compilation of "Test_name.c".

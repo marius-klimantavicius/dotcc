@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c17 --strict_gnu Test_name.c
+"Test_name.c", line 10: warning: a value of type "int (*)(int)" cannot be used to initialize an entity of type "_Bool (*)()"
+    _Bool (*f) () = __builtin_abs;	/* { dg-warning "initialization of '_Bool \\(\\*\\)\\(\\)' from pointer to .__builtin_abs. with incompatible type .int \\\(\\\*\\\)." } */
+                    ^
+

@@ -1,0 +1,98 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 15: error: declaration is incompatible with previous "N::foo" (declared at line 8)
+      int foo(int); // expected-error {{functions that differ only in their return type cannot be overloaded}}
+          ^
+
+"Test_name.c", line 16: error: declaration is incompatible with previous "N::bar" (declared at line 9)
+      int bar(int); // expected-error {{functions that differ only in their return type cannot be overloaded}}
+          ^
+
+"Test_name.c", line 24: error: declaration is incompatible with previous "N::foo" (declared at line 8)
+          float foo(int); // expected-error {{functions that differ only in their return type cannot be overloaded}}
+                ^
+
+"Test_name.c", line 25: error: declaration is incompatible with previous "N::bar" (declared at line 9)
+          float bar(int); // expected-error {{functions that differ only in their return type cannot be overloaded}}
+                ^
+
+"Test_name.c", line 26: error: declaration is incompatible with previous "N::baz" (declared at line 17)
+          float baz(int); // expected-error {{functions that differ only in their return type cannot be overloaded}}
+                ^
+
+"Test_name.c", line 20: warning: variable "foo" was declared but never referenced
+        int foo;
+            ^
+
+"Test_name.c", line 21: warning: variable "bar" was declared but never referenced
+        int bar;
+            ^
+
+"Test_name.c", line 22: warning: variable "baz" was declared but never referenced
+        int baz;
+            ^
+
+"Test_name.c", line 34: error: declaration is incompatible with previous "N::foo" (declared at line 8)
+        float foo(int); // expected-error {{functions that differ only in their return type cannot be overloaded}}
+              ^
+
+"Test_name.c", line 43: error: class "A" has no member "Notypocorrection"
+  void A::Notypocorrection() { // expected-error {{out-of-line definition of 'Notypocorrection' does not match any declaration in 'A'; did you mean 'typocorrection'}}
+          ^
+
+"Test_name.c", line 51: error: nonstandard local-class friend declaration -- no prior declaration in the enclosing scope
+        friend void bar(); // expected-error {{cannot define friend function 'bar' in a local class definition; did you mean 'Bar'}}
+                    ^
+
+"Test_name.c", line 62: error: class "B" has no member "Notypocorrection"
+  void B::Notypocorrection(int) { // expected-error {{out-of-line definition of 'Notypocorrection' does not match any declaration in 'B'; did you mean 'typocorrection'}}
+          ^
+
+"Test_name.c", line 67: error: inherited member is not allowed
+  int Y::f() { return 3; } // expected-error {{out-of-line definition of 'f' does not match any declaration in 'Y'}}
+         ^
+
+"Test_name.c", line 81: error: declaration is incompatible with "void Bar::f(test1::Foo::Inner) const" (declared at line 76)
+  void Bar::f(Foo::Inner foo) { // expected-error {{out-of-line definition of 'f' does not match any declaration in 'Bar'}}
+            ^
+
+"Test_name.c", line 91: error: class "Crash" has no member "cart"
+  void Crash::cart(int count) const {} // expected-error {{out-of-line definition of 'cart' does not match any declaration in 'Crash'}}
+              ^
+
+"Test_name.c", line 91: error: a type qualifier is not allowed on a nonmember function
+  void Crash::cart(int count) const {} // expected-error {{out-of-line definition of 'cart' does not match any declaration in 'Crash'}}
+                              ^
+
+"Test_name.c", line 93: error: class "Crash" has no member "chart"
+  void Crash::chart(int count) const {} // expected-error {{out-of-line definition of 'chart' does not match any declaration in 'Crash'}}
+              ^
+
+"Test_name.c", line 93: error: a type qualifier is not allowed on a nonmember function
+  void Crash::chart(int count) const {} // expected-error {{out-of-line definition of 'chart' does not match any declaration in 'Crash'}}
+                               ^
+
+"Test_name.c", line 102: error: declaration is incompatible with "int TestConst::getit() const" (declared at line 98)
+  int TestConst::getit() { // expected-error {{out-of-line definition of 'getit' does not match any declaration in 'TestConst'}}
+                 ^
+
+"Test_name.c", line 106: error: declaration is incompatible with "void TestConst::setit(int)" (declared at line 99)
+  void TestConst::setit(int) const { // expected-error {{out-of-line definition of 'setit' does not match any declaration in 'TestConst'}}
+                  ^
+
+"Test_name.c", line 110: error: class "J" has no member "typo_"
+  int J::typo_() { return 3; } // expected-error {{out-of-line definition of 'typo_' does not match any declaration in 'J'}}
+         ^
+
+"Test_name.c", line 127: error: namespace "redecl_typo::Foo" has no member "isGood"
+  bool Foo::isGood() { // expected-error {{out-of-line definition of 'isGood' does not match any declaration in namespace 'redecl_typo::Foo'; did you mean 'Bar::Foo::isGood'?}}
+            ^
+
+"Test_name.c", line 130: error: namespace "redecl_typo::Foo" has no member "beEvil"
+  void Foo::beEvil() {} // expected-error {{out-of-line definition of 'beEvil' does not match any declaration in namespace 'redecl_typo::Foo'; did you mean 'BeEvil'?}}
+            ^
+
+"Test_name.c", line 137: error: declaration is incompatible with "void CVQualFun::func(int, int &)" (declared at line 134)
+  void CVQualFun::func(const int a, int b) {} // expected-error {{out-of-line definition of 'func' does not match any declaration in 'CVQualFun'}}
+                  ^
+
+21 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,69 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 19: warning: controlling expression is constant
+    assert1(0 && "foo");
+    ^
+
+"Test_name.c", line 20: warning: controlling expression is constant
+    assert1("foo" && 0);
+    ^
+
+"Test_name.c", line 21: warning: controlling expression is constant
+    assert1(0 || "foo"); // expected-warning {{string literal}}
+    ^
+
+"Test_name.c", line 22: warning: controlling expression is constant
+    assert1("foo"); // expected-warning {{string literal}}
+    ^
+
+"Test_name.c", line 24: warning: controlling expression is constant
+    assert2(0 && "foo");
+    ^
+
+"Test_name.c", line 25: warning: controlling expression is constant
+    assert2("foo" && 0);
+    ^
+
+"Test_name.c", line 26: warning: controlling expression is constant
+    assert2(0 || "foo"); // expected-warning {{string literal}}
+    ^
+
+"Test_name.c", line 27: warning: controlling expression is constant
+    assert2("foo"); // expected-warning {{string literal}}
+    ^
+
+"Test_name.c", line 31: warning: controlling expression is constant
+    if ("hi") {}           // expected-warning {{string literal}}
+        ^
+
+"Test_name.c", line 32: warning: controlling expression is constant
+    while ("hello") {}     // expected-warning {{string literal}}
+           ^
+
+"Test_name.c", line 33: warning: controlling expression is constant
+    for (;"howdy";) {}     // expected-warning {{string literal}}
+          ^
+
+"Test_name.c", line 33: warning: loop is not reachable
+    for (;"howdy";) {}     // expected-warning {{string literal}}
+    ^
+
+"Test_name.c", line 34: warning: loop is not reachable
+    do { } while ("hey");  // expected-warning {{string literal}}
+    ^
+
+"Test_name.c", line 34: warning: controlling expression is constant
+    do { } while ("hey");  // expected-warning {{string literal}}
+                  ^
+
+"Test_name.c", line 35: warning: controlling expression is constant
+    int x = "hey" ? 1 : 2; // expected-warning {{string literal}}
+            ^
+
+"Test_name.c", line 35: warning: dynamic initialization in unreachable code
+    int x = "hey" ? 1 : 2; // expected-warning {{string literal}}
+        ^
+
+"Test_name.c", line 35: warning: variable "x" was declared but never referenced
+    int x = "hey" ? 1 : 2; // expected-warning {{string literal}}
+        ^
+

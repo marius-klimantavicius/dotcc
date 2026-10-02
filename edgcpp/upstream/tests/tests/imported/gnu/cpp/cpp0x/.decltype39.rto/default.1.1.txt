@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 12: error: a nonstatic member reference must be relative to a specific object
+    static t check(X*, decltype(T::fun())* = 0); // { dg-error "without object" }
+                                ^
+          detected during instantiation of class "has_static<T> [with T=test]" at line 21
+
+"Test_name.c", line 16: error: name followed by "::" must be a class or namespace name
+    static const bool value = ret::value;
+                              ^
+          detected during instantiation of class "has_static<T> [with T=test]" at line 21
+
+2 errors detected in the compilation of "Test_name.c".

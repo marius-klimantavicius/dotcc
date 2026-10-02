@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 20: warning: variable "a" was declared but never referenced
+      B<A<wchar_t const[3]>::type> a;
+                                   ^
+          detected during:
+            instantiation of "D<BaseT>::char_type D<BaseT>::parse(const D<BaseT>::char_type *, const D<BaseT>::char_type *, BaseT::callback_type) [with BaseT=F]" at line 47
+            instantiation of "void parse_format(CharT *, ParserT, CallbackT) [with CharT=const wchar_t, ParserT=D<F>, CallbackT=date_time_format_parser_callback<wchar_t>]" at line 55
+            instantiation of "void parse_date_time_format(const CharT *, const CharT *, date_time_format_parser_callback<CharT> &) [with CharT=wchar_t]" at line 57
+

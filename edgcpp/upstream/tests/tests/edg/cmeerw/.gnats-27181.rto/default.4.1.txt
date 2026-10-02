@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=4 -w --c++20 --microsoft_version 1936 --target linux_armv7 -DBITS=32 Test_name.c

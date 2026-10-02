@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --c --gcc Test_name.c
+"Test_name.c", line 26: warning: type qualifiers on function types are ignored
+  F const *pf;  // Previously silently accepted in C mode.  C++ modes
+    ^
+
+"Test_name.c", line 28: warning: parameter "p" was set but never used
+  void g(F *p) {
+            ^
+
+"Test_name.c", line 33: warning: type qualifiers on function types are ignored
+  void (*p)() = (const typeof(f)*)f;  // Previously aborted.
+                 ^
+

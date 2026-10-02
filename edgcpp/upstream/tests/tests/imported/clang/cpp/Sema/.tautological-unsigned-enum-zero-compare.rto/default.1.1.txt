@@ -1,0 +1,53 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 28: warning: variable "a" is used before its value is set
+    if (a < 0) // unsigned-warning {{comparison of unsigned enum expression < 0 is always false}}
+        ^
+
+"Test_name.c", line 64: warning: pointless comparison of unsigned integer with zero
+    if (b < 0) // unsigned-signed-warning {{comparison of unsigned enum expression < 0 is always false}}
+          ^
+
+"Test_name.c", line 64: warning: variable "b" is used before its value is set
+    if (b < 0) // unsigned-signed-warning {{comparison of unsigned enum expression < 0 is always false}}
+        ^
+
+"Test_name.c", line 70: warning: pointless comparison of unsigned integer with zero
+    if (0 <= b) // unsigned-signed-warning {{comparison of 0 <= unsigned enum expression is always true}}
+          ^
+
+"Test_name.c", line 74: warning: pointless comparison of unsigned integer with zero
+    if (0 > b) // unsigned-signed-warning {{comparison of 0 > unsigned enum expression is always false}}
+          ^
+
+"Test_name.c", line 76: warning: pointless comparison of unsigned integer with zero
+    if (b >= 0) // unsigned-signed-warning {{comparison of unsigned enum expression >= 0 is always true}}
+          ^
+
+"Test_name.c", line 81: warning: pointless comparison of unsigned integer with zero
+    if (b < 0U) // unsigned-signed-warning {{comparison of unsigned enum expression < 0 is always false}}
+          ^
+
+"Test_name.c", line 87: warning: pointless comparison of unsigned integer with zero
+    if (0U <= b) // unsigned-signed-warning {{comparison of 0 <= unsigned enum expression is always true}}
+           ^
+
+"Test_name.c", line 91: warning: pointless comparison of unsigned integer with zero
+    if (0U > b) // unsigned-signed-warning {{comparison of 0 > unsigned enum expression is always false}}
+           ^
+
+"Test_name.c", line 93: warning: pointless comparison of unsigned integer with zero
+    if (b >= 0U) // unsigned-signed-warning {{comparison of unsigned enum expression >= 0 is always true}}
+          ^
+
+"Test_name.c", line 98: warning: variable "c" is used before its value is set
+    if (c < 0)
+        ^
+
+"Test_name.c", line 145: warning: pointless comparison of unsigned integer with zero
+    if (a < 0) // unsigned-signed-warning {{comparison of unsigned enum expression < 0 is always false}}
+          ^
+
+"Test_name.c", line 145: warning: variable "a" is used before its value is set
+    if (a < 0) // unsigned-signed-warning {{comparison of unsigned enum expression < 0 is always false}}
+        ^
+

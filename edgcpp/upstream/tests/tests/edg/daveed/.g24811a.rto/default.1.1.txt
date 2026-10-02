@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++17 Test_name.c
+"Test_name.c", line 5: error: a value of type "void (**)() noexcept" cannot be used to initialize an entity of type "void (**)()"
+    void (**pp)() = &p;  // Previously accepted.  Now an error.
+                    ^
+
+1 error detected in the compilation of "Test_name.c".

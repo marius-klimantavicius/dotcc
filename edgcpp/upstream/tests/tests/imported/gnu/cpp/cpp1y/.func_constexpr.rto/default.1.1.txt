@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 31: error: static assertion failed with "0 == __builtin_strcmp (f2, "constexpr const char* pretty_function()")"
+  Compare (f2, "constexpr const char* pretty_function()");
+  ^
+"Test_name.c", line 31: note: the final comparison was 0 == -1
+  Compare (f2, "constexpr const char* pretty_function()");
+  ^
+
+1 error detected in the compilation of "Test_name.c".

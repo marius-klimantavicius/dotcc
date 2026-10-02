@@ -1,0 +1,23 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 24: error: no default constructor exists for class "IntHolder"
+      T value; 	// expected-note {{member is declared here}}
+        ^
+          detected during:
+            implicit generation of "X<T, U>::Inner::Inner() [with T=IntHolder, U=int]" at line 38
+            instantiation of class "X<T, U>::Inner [with T=IntHolder, U=int]" at line 38
+
+"Test_name.c", line 72: error: "X<T, U>::X() [with T=IntHolder, U=long]" is not an entity that can be explicitly specialized
+  X<IntHolder, long>::X() { } // expected-error{{instantiated member}}
+                      ^
+
+"Test_name.c", line 14: error: no default constructor exists for class "IntHolder"
+      T t; // expected-error{{no matching}}
+        ^
+          detected during instantiation of "void X<T, U>::f() [with T=IntHolder, U=int]" at line 36
+
+"Test_name.c", line 32: error: no default constructor exists for class "IntHolder"
+  T X<T, U>::value; // expected-error{{no matching constructor}}
+             ^
+          detected during implicit definition of "IntHolder X<T, U>::value [with T=IntHolder, U=int]" at line 45
+
+4 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 42: error: incomplete type "C" is not allowed
+    switch (c) { // expected-error{{incomplete class type}}
+            ^
+
+"Test_name.c", line 75: error: a case label may only be used within a switch
+          case 1: // expected-error {{'case' statement not in switch statement}}
+          ^
+
+"Test_name.c", line 76: error: a break statement may only be used within a loop or switch
+          break; // expected-error {{'break' statement not in loop or switch statement}}
+          ^
+
+"Test_name.c", line 77: error: a default label may only be used within a switch
+          default: // expected-error {{'default' statement not in switch statement}}
+          ^
+
+"Test_name.c", line 78: error: a continue statement may only be used within a loop
+          continue; // expected-error {{'continue' statement not in loop statement}}
+          ^
+
+eccp: front end returned an exit status of 139

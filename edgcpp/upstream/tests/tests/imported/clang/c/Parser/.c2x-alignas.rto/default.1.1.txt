@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 5: warning: attribute does not apply to any entity
+  _Alignas(int) struct c1; // expected-warning {{'_Alignas' attribute ignored}}
+  ^
+
+"Test_name.c", line 6: warning: attribute does not apply to any entity
+  alignas(int) struct c1; // expected-warning {{'alignas' attribute ignored}}
+  ^
+
+"Test_name.c", line 24: warning: variable "a" was declared but never referenced
+      __attribute__(()) [[]] alignas(int) int a; // expected-error {{an attribute list cannot appear here}}
+                                              ^
+
+"Test_name.c", line 25: warning: variable "b" was declared but never referenced
+      __attribute__(()) alignas(int) [[]] int b; // expected-error {{an attribute list cannot appear here}}
+                                              ^
+
+"Test_name.c", line 26: warning: variable "c" was declared but never referenced
+      __attribute__(()) alignas(int) int c; // expected-none
+                                         ^
+
+"Test_name.c", line 27: warning: variable "d" was declared but never referenced
+      [[]] __attribute__(()) alignas(int) int d; // expected-none
+                                              ^
+
+"Test_name.c", line 28: warning: variable "e" was declared but never referenced
+      alignas(int) [[]] __attribute__(()) int e; // expected-error {{an attribute list cannot appear here}}
+                                              ^
+

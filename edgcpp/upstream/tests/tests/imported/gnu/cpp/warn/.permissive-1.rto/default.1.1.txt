@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 --c++11 Test_name.c
+"Test_name.c", line 7: error: expression must have a constant value
+  enum A { AA = -1 << 4 }; // { dg-warning "operand of shift expression" "" { target { c++11 && c++17_down } } }
+                ^
+"Test_name.c", line 7: note: left-shifting a negative value has undefined behavior
+  enum A { AA = -1 << 4 }; // { dg-warning "operand of shift expression" "" { target { c++11 && c++17_down } } }
+                   ^
+
+"Test_name.c", line 8: error: expression must have a constant value
+  enum B { BB = 1 << -4 }; // { dg-warning "operand of shift expression" }
+                ^
+"Test_name.c", line 8: note: shift count is negative
+  enum B { BB = 1 << -4 }; // { dg-warning "operand of shift expression" }
+                     ^
+
+"Test_name.c", line 9: error: expression must have a constant value
+  enum C { CC = 1 << __SIZEOF_INT__ * 4 * __CHAR_BIT__ - 4 }; // { dg-warning "operand of shift expression" }
+                ^
+"Test_name.c", line 9: note: shift count is too large
+  enum C { CC = 1 << __SIZEOF_INT__ * 4 * __CHAR_BIT__ - 4 }; // { dg-warning "operand of shift expression" }
+                                                       ^
+
+"Test_name.c", line 10: error: expression must have a constant value
+  enum D { DD = 10 << __SIZEOF_INT__ * __CHAR_BIT__ - 2 }; // { dg-warning "shift expression" "" { target { c++11 && c++17_down } } }
+                ^
+"Test_name.c", line 10: note: value exceeds range of "int"
+  enum D { DD = 10 << __SIZEOF_INT__ * __CHAR_BIT__ - 2 }; // { dg-warning "shift expression" "" { target { c++11 && c++17_down } } }
+                   ^
+
+4 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --c++17 --gnu_version=100200 Test_name.c
+"Test_name.c", line 17: error: expression must have a constant value
+    enum { e = x == x ? 1 : -1 };  // Now an error in Clang modes, in GNU C++03
+               ^
+"Test_name.c", line 17: note: the value of parameter "x" (declared at line 16) cannot be used as a constant
+    enum { e = x == x ? 1 : -1 };  // Now an error in Clang modes, in GNU C++03
+               ^
+
+1 error detected in the compilation of "Test_name.c".

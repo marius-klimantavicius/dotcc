@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 11: error: this declaration of struct "bar1" does not declare the same type as the declaration at line 10
+  struct bar1 { int r : 17; };			/* { dg-error "redefinition" } */
+         ^
+
+"Test_name.c", line 17: error: declaration is incompatible with "struct <unnamed> x" (declared at line 16)
+  extern struct { int r : 13; } x;		/* { dg-error "conflicting" } */
+                                ^
+
+"Test_name.c", line 20: error: this declaration of struct "bar2" does not declare the same type as the declaration at line 19
+  struct bar2 { int s; int: 15; };		/* { dg-error "redefinition" } */
+         ^
+
+"Test_name.c", line 23: error: this declaration of struct "bar3" does not declare the same type as the declaration at line 22
+  struct bar3 { int s; };				/* { dg-error "redefinition" } */
+         ^
+
+"Test_name.c", line 26: error: this declaration of struct "bar4" does not declare the same type as the declaration at line 25
+  struct bar4 { const int r : 3; };		/* { dg-error "redefinition" } */
+         ^
+
+"Test_name.c", line 29: error: this declaration of struct "bar5" does not declare the same type as the declaration at line 28
+  struct bar5 { int r; };				/* { dg-error "redefinition" } */
+         ^
+
+"Test_name.c", line 35: error: this declaration of union "ubar1" does not declare the same type as the declaration at line 34
+  union ubar1 { int r : 17; };			/* { dg-error "redefinition" } */
+        ^
+
+"Test_name.c", line 41: error: declaration is incompatible with "union <unnamed> y" (declared at line 40)
+  extern union { int r : 13; } y;			/* { dg-error "conflicting" } */
+                               ^
+
+"Test_name.c", line 44: error: this declaration of union "ubar2" does not declare the same type as the declaration at line 43
+  union ubar2 { int s; int : 15; };		/* { dg-error "redefinition" } */
+        ^
+
+"Test_name.c", line 47: error: this declaration of union "ubar3" does not declare the same type as the declaration at line 46
+  union ubar3 { int s: 3; };			/* { dg-error "redefinition" } */
+        ^
+
+"Test_name.c", line 50: error: this declaration of union "ubar4" does not declare the same type as the declaration at line 49
+  union ubar4 { const int r : 3; };		/* { dg-error "redefinition" } */
+        ^
+
+"Test_name.c", line 53: error: this declaration of union "ubar5" does not declare the same type as the declaration at line 52
+  union ubar5 { int r; };				/* { dg-error "redefinition" } */
+        ^
+
+12 errors detected in the compilation of "Test_name.c".

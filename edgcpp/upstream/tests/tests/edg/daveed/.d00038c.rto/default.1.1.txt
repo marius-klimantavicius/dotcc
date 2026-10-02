@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 -x Test_name.c
+"Test_name.c", line 15: error: declaration is incompatible with "void f()" (declared at line 14)
+  void (*f)() throw(int);
+         ^
+
+"Test_name.c", line 18: error: declaration is incompatible with "void (*g)()" (declared at line 17)
+  void g() throw();
+       ^
+
+2 errors detected in the compilation of "Test_name.c".

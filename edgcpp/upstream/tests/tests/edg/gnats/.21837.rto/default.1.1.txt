@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --microsoft_v 1924 --no_ms_permissive Test_name.c
+"Test_name.c", line 3: warning: parameter "p" was set but never used
+  int *f(bool *p) {
+               ^
+

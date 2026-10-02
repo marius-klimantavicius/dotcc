@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 21: warning: the type of function "resolve_foo" ("void *()") is incompatible with an ifunc resolver type
+  __attribute__((ifunc("resolve_foo"))) void foo(); // expected-error{{ifunc must point to a defined function}}
+                 ^
+

@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --ms_extensions --c++11 Test_name.c
+"Test_name.c", line 6: error: "foo" is not a base class member
+    using __super::foo; // expected-error {{'__super' cannot be used with a using declaration}}
+                   ^
+
+"Test_name.c", line 7: error: "XXX" is not a base class member
+    __super::XXX x; // expected-error {{invalid use of '__super', Errors has no base classes}} expected-error {{expected}}
+             ^
+
+"Test_name.c", line 14: error: "foo" is not a base class member
+      auto lambda = []{ __super::foo(); };
+                                 ^
+
+"Test_name.c", line 14: warning: variable "lambda" was declared but never referenced
+      auto lambda = []{ __super::foo(); };
+           ^
+
+"Test_name.c", line 101: warning: variable "c" was declared but never referenced
+      __super::XXX c;
+                   ^
+
+"Test_name.c", line 117: warning: variable "e" was declared but never referenced
+      typename __super::XXX e;
+                            ^
+          detected during instantiation of "void DerivedFromDependentBase<T>::foo() [with T=int]" at line 148
+
+"Test_name.c", line 120: warning: variable "g" was declared but never referenced
+      __super::XXX g;         // expected-error {{missing 'typename'}}
+                   ^
+          detected during instantiation of "void DerivedFromDependentBase<T>::foo() [with T=int]" at line 148
+
+"Test_name.c", line 136: warning: variable "e" was declared but never referenced
+      typename __super::XXX e;
+                            ^
+          detected during instantiation of "void DerivedFromTemplateParameter<T>::foo() [with T=Base1]" at line 150
+
+"Test_name.c", line 139: warning: variable "g" was declared but never referenced
+      __super::XXX g;         // expected-error {{missing 'typename'}}
+                   ^
+          detected during instantiation of "void DerivedFromTemplateParameter<T>::foo() [with T=Base1]" at line 150
+
+3 errors detected in the compilation of "Test_name.c".

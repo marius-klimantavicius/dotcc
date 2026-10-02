@@ -1,0 +1,141 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --exceptions Test_name.c
+"Test_name.c", line 29: error: a constexpr function cannot have a parameter of nonliteral type "NonLiteral"
+    constexpr S(int, NonLiteral, N::C) {} // expected-error {{constexpr constructor's 2nd parameter type 'NonLiteral' is not a literal type}}
+              ^
+
+"Test_name.c", line 30: error: a constexpr function cannot have a parameter of nonliteral type "NonLiteral"
+    constexpr S(int, NonLiteral = 42) {} // expected-error {{constexpr constructor's 2nd parameter type 'NonLiteral' is not a literal type}}
+              ^
+
+"Test_name.c", line 41: error: a constructor for a class with virtual bases cannot be constexpr
+    constexpr T() {} // expected-error {{constexpr constructor not allowed in struct with virtual base class}}
+    ^
+
+"Test_name.c", line 48: error: a constructor for a class with virtual bases cannot be constexpr
+      constexpr C() {} // expected-error {{constexpr constructor not allowed in class with virtual base class}}
+      ^
+
+"Test_name.c", line 55: error: the body of a constexpr constructor cannot be a function try block
+      try
+      ^
+
+"Test_name.c", line 64: error: statement may not appear in a constexpr constructor
+      throw;
+      ^
+
+"Test_name.c", line 85: error: statement may not appear in a constexpr constructor
+      struct U;
+      ^
+
+"Test_name.c", line 95: error: statement may not appear in a constexpr constructor
+      for (int n = 0; n < 10; ++n)
+      ^
+
+"Test_name.c", line 102: error: statement may not appear in a constexpr constructor
+      constexpr int a = 0;
+      ^
+
+"Test_name.c", line 102: warning: variable "a" was declared but never referenced
+      constexpr int a = 0;
+                    ^
+
+"Test_name.c", line 108: error: statement may not appear in a constexpr constructor
+      constexpr int ForwardDecl(int);
+      ^
+
+"Test_name.c", line 126: error: statement may not appear in a constexpr constructor
+      struct S3 { };
+      ^
+
+"Test_name.c", line 132: error: statement may not appear in a constexpr constructor
+      return;
+      ^
+
+"Test_name.c", line 142: error: constexpr "W::W()" provides no initializer for:
+            member "W::n"
+    constexpr W() {}
+                  ^
+
+"Test_name.c", line 175: error: constexpr constructor fails to initialize an anonymous union (defined at line 167)
+    constexpr AnonMembers(int(&)[2]) : a(), c(), g(), h() {}
+                                                          ^
+
+"Test_name.c", line 175: error: constexpr "AnonMembers::AnonMembers(int (&)[2])" provides no initializer for:
+            member "AnonMembers::i"
+    constexpr AnonMembers(int(&)[2]) : a(), c(), g(), h() {}
+                                                          ^
+
+"Test_name.c", line 181: error: constexpr constructor fails to initialize an anonymous union (defined at line 167)
+    constexpr AnonMembers(int(&)[4]) : a(), c(), d(), g(), i() {}
+                                                               ^
+
+"Test_name.c", line 181: error: constexpr "AnonMembers::AnonMembers(int (&)[4])" provides no initializer for:
+            member "AnonMembers::h"
+    constexpr AnonMembers(int(&)[4]) : a(), c(), d(), g(), i() {}
+                                                               ^
+
+"Test_name.c", line 186: error: constexpr constructor fails to initialize an anonymous union (defined at line 150)
+    constexpr AnonMembers(int(&)[5]) : a(), g(), h(), i(), k() {}
+                                                               ^
+
+"Test_name.c", line 191: error: constexpr constructor fails to initialize an anonymous union (defined at line 150)
+    constexpr AnonMembers(int(&)[6]) {}
+                                     ^
+
+"Test_name.c", line 191: error: constexpr constructor fails to initialize an anonymous union (defined at line 167)
+    constexpr AnonMembers(int(&)[6]) {}
+                                     ^
+
+"Test_name.c", line 191: error: constexpr "AnonMembers::AnonMembers(int (&)[6])" provides no initializer for:
+            member "AnonMembers::a"
+            member "AnonMembers::g"
+            member "AnonMembers::h"
+            member "AnonMembers::i"
+    constexpr AnonMembers(int(&)[6]) {}
+                                     ^
+
+"Test_name.c", line 253: error: non-constant initializer for constexpr constructor
+      Literal(0), // expected-note {{non-constexpr constructor}}
+             ^
+
+"Test_name.c", line 256: error: non-constant initializer for constexpr constructor
+      l(0) // expected-note {{non-constexpr constructor}}
+       ^
+
+"Test_name.c", line 275: error: defaulted default constructor cannot be constexpr because the corresponding implicitly declared default constructor would not be constexpr
+  union XU1 { int a; constexpr XU1() = default; };
+                               ^
+
+"Test_name.c", line 285: error: defaulted default constructor cannot be constexpr because the corresponding implicitly declared default constructor would not be constexpr
+    constexpr XU3() = default;
+              ^
+
+"Test_name.c", line 365: error: initialization is not constant
+    constexpr V<int> v; // expected-error {{constant expression}} expected-note {{subobject 'y' is not initialized}}
+                     ^
+"Test_name.c", line 365: note: access to uninitialized subobject (member "PR14503::V<<unnamed>>::y [with <unnamed>=int]")
+    constexpr V<int> v; // expected-error {{constant expression}} expected-note {{subobject 'y' is not initialized}}
+                     ^
+
+"Test_name.c", line 367: error: expression must have a constant value
+    constexpr int k = V<int>().x; // FIXME: ok?
+                      ^
+Note: access to uninitialized object
+
+"Test_name.c", line 199: warning: variable "empty1" was declared but never referenced
+  } constexpr empty1;
+              ^
+
+"Test_name.c", line 205: warning: variable "empty2" was declared but never referenced
+  } constexpr empty2;
+              ^
+
+"Test_name.c", line 365: warning: variable "PR14503::v" was declared but never referenced
+    constexpr V<int> v; // expected-error {{constant expression}} expected-note {{subobject 'y' is not initialized}}
+                     ^
+
+"Test_name.c", line 367: warning: variable "PR14503::k" was declared but never referenced
+    constexpr int k = V<int>().x; // FIXME: ok?
+                  ^
+
+27 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,150 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 7: warning: declaration does not declare anything
+  auto; /* { dg-error "empty declaration" } */
+  ^
+
+"Test_name.c", line 7: error: "auto" not allowed here
+  auto; /* { dg-error "empty declaration" } */
+  ^
+
+"Test_name.c", line 8: error: "auto" must be a placeholder for the complete type of the variable (not for a component of that type)
+  auto *p = (int *) 0; /* { dg-error "plain identifier" } */
+  ^
+
+"Test_name.c", line 9: error: a variable declared with "auto" requires an initializer
+  auto i; /* { dg-error "initialized data declaration" } */
+  ^
+
+"Test_name.c", line 10: error: expected a ";"
+  auto g { } /* { dg-error "initialized data declaration" } */
+         ^
+
+"Test_name.c", line 10: error: a variable declared with "auto" requires an initializer
+  auto g { } /* { dg-error "initialized data declaration" } */
+  ^
+
+"Test_name.c", line 12: warning: the auto specifier is ignored here (invalid in standard C/C++)
+  auto long e0 = 0; /* { dg-error "file-scope declaration" } */
+  ^
+
+"Test_name.c", line 13: warning: the auto specifier is ignored here (invalid in standard C/C++)
+  long auto e1 = 0; /* { dg-error "file-scope declaration" } */
+       ^
+
+"Test_name.c", line 14: warning: the auto specifier is ignored here (invalid in standard C/C++)
+  int auto e2 = 0; /* { dg-error "file-scope declaration" } */
+      ^
+
+"Test_name.c", line 17: error: "auto" must be a placeholder for the complete type of the variable (not for a component of that type)
+  auto e3 = 1; /* { dg-error "underspecified declaration of 'e3', which is already declared in this scope" } */
+  ^
+
+"Test_name.c", line 23: error: "fe1" has already been declared in the current scope
+    auto fe1 = 1; /* { dg-error "underspecified declaration of 'fe1', which is already declared in this scope" } */
+         ^
+
+"Test_name.c", line 23: warning: variable "fe1" was declared but never referenced
+    auto fe1 = 1; /* { dg-error "underspecified declaration of 'fe1', which is already declared in this scope" } */
+         ^
+
+"Test_name.c", line 25: warning: variable "fe2" was declared but never referenced
+    auto fe2 = (struct s *) 0; /* { dg-error "declared in underspecified object initializer" } */
+         ^
+
+"Test_name.c", line 26: warning: variable "fe3" was declared but never referenced
+    auto fe3 = (union u *) 0; /* { dg-error "declared in underspecified object initializer" } */
+         ^
+
+"Test_name.c", line 27: warning: variable "fe4" was declared but never referenced
+    auto fe4 = (struct s2 { int a; }) { }; /* { dg-error "defined in underspecified object initializer" } */
+         ^
+
+"Test_name.c", line 28: warning: variable "fe5" was declared but never referenced
+    auto fe5 = (struct { int a; }) { }; /* { dg-error "defined in underspecified object initializer" } */
+         ^
+
+"Test_name.c", line 29: warning: variable "fe6" was declared but never referenced
+    auto fe6 = (union u2 { int a; }) { }; /* { dg-error "defined in underspecified object initializer" } */
+         ^
+
+"Test_name.c", line 30: warning: variable "fe7" was declared but never referenced
+    auto fe7 = (union { int a; }) { }; /* { dg-error "defined in underspecified object initializer" } */
+         ^
+
+"Test_name.c", line 31: warning: variable "fe8" was declared but never referenced
+    auto fe8 = sizeof (enum e { A }); /* { dg-error "defined in underspecified object initializer" } */
+         ^
+
+"Test_name.c", line 34: warning: variable "fe9" was declared but never referenced
+    auto fe9 = sizeof (enum { B }); /* { dg-error "defined in underspecified object initializer" } */
+         ^
+
+"Test_name.c", line 37: warning: variable "fe10" was declared but never referenced
+    auto fe10 = (struct s3 { int a; }) { }; /* { dg-error "defined in underspecified object initializer" } */
+         ^
+
+"Test_name.c", line 39: warning: variable "fe11" was declared but never referenced
+    auto fe11 = (union u3 { int a; }) { }; /* { dg-error "defined in underspecified object initializer" } */
+         ^
+
+"Test_name.c", line 42: error: "auto" is not allowed here
+  void f2 (auto x); /* { dg-error "storage class specified for parameter" } */
+           ^
+
+"Test_name.c", line 43: error: "auto" is not allowed here
+  void f3 (auto y) { } /* { dg-error "storage class specified for parameter" } */
+           ^
+
+"Test_name.c", line 45: error: a variable declared with an auto type specifier cannot appear in its own initializer
+  auto e4 = sizeof (e4); /* { dg-error "underspecified 'e4' referenced in its initializer" } */
+                    ^
+
+"Test_name.c", line 50: error: a variable declared with an auto type specifier cannot appear in its own initializer
+    auto e5 = sizeof (e5); /* { dg-error "underspecified 'e5' referenced in its initializer" } */
+                      ^
+
+"Test_name.c", line 53: error: more than one storage class may not be specified
+  auto typedef int T; /* { dg-error "'typedef' used with 'auto'" } */
+       ^
+
+"Test_name.c", line 54: error: invalid combination of type specifiers
+  auto auto e6 = 1; /* { dg-error "duplicate 'auto'" } */
+       ^
+
+"Test_name.c", line 55: error: more than one storage class may not be specified
+  static auto int e7 = 1; /* { dg-error "multiple storage classes in declaration specifiers" } */
+         ^
+
+"Test_name.c", line 56: warning: the auto specifier is ignored here (invalid in standard C/C++)
+  _Thread_local auto int e8 = 2; /* { dg-error "'_Thread_local' used with 'auto'" } */
+                ^
+
+"Test_name.c", line 57: warning: the auto specifier is ignored here (invalid in standard C/C++)
+  _Thread_local int auto e9 = 3; /* { dg-error "'_Thread_local' used with 'auto'" } */
+                    ^
+
+"Test_name.c", line 60: error: more than one storage class may not be specified
+  typedef auto int T2; /* { dg-error "multiple storage classes in declaration specifiers" } */
+          ^
+
+"Test_name.c", line 65: error: more than one storage class may not be specified
+    static int auto e10 = 3; /* { dg-error "multiple storage classes in declaration specifiers" } */
+               ^
+
+"Test_name.c", line 65: warning: variable "e10" was declared but never referenced
+    static int auto e10 = 3; /* { dg-error "multiple storage classes in declaration specifiers" } */
+                    ^
+
+"Test_name.c", line 71: error: initialization with "{...}" is not allowed for "auto"
+    static auto l = { 0L }; /* { dg-error "expected expression" } */
+                    ^
+
+"Test_name.c", line 72: error: initialization with "{...}" is not allowed for "auto"
+    const auto i3 [[]] = { 4, }; /* { dg-error "expected expression" } */
+                         ^
+
+"Test_name.c", line 55: warning: variable "e7" was declared but never referenced
+  static auto int e7 = 1; /* { dg-error "multiple storage classes in declaration specifiers" } */
+                  ^
+
+18 errors detected in the compilation of "Test_name.c".

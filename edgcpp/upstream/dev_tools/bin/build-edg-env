@@ -1,0 +1,202 @@
+#!/usr/bin/env python3
+
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+import argparse
+import os
+import platform
+import runpy
+import shutil
+import signal
+import subprocess
+import sys
+import tempfile
+
+import edgdocker
+import edgutil
+
+from pathlib import Path
+from typing import Any
+
+def _checked_process_run(*args, **kw_args) -> None:
+  result = subprocess.run(*args, **kw_args)
+  if result.returncode != 0:
+    sys.exit(1)
+
+def exec_base_fetch(base_image: str, *, platform_specifier: str) -> None:
+  '''This function is used to update the base docker image.'''
+  docker_args = [
+    'docker', 'pull'
+  ]
+  if platform_specifier is not None:
+    docker_args.extend(['--platform', platform_specifier])
+  docker_args.append(base_image)
+
+  # Execute the fetch with stdout and stderr mapped back to the system.
+  _checked_process_run(
+    docker_args,
+    stdout = sys.stdout,
+    stderr = sys.stderr
+  )
+
+class DockerBuildOptions:
+  def __init__(self, *, quiet: bool, no_cache: bool,
+               platform_specifier: str) -> None:
+    self.quiet = quiet
+    self.no_cache = no_cache
+    self.platform_specifier = platform_specifier
+
+def try_exec_prebuild(tmp_docker_file_dir: Path,
+                      orig_docker_file_dir: Path,
+                      build_options: DockerBuildOptions) -> None:
+  '''This function is used to execute any 'prebuild.py' script for the docker
+  image.
+
+  prebuild.py scripts are python setup scripts specific to the docker image
+  being built that are run in a sub-interpreter to setup the build.
+  '''
+  prebuild_script_path = tmp_docker_file_dir / 'prebuild.py'
+  if not os.path.exists(prebuild_script_path):
+    return
+
+  disp_prebuild_script_path = orig_docker_file_dir / 'prebuild.py'
+  print(f"Executing prebuild script: {disp_prebuild_script_path}")
+  with edgutil.CurrentWorkingDirectorySwap(tmp_docker_file_dir):
+    # The exec_build_pipeline function and build_options object are exported
+    # into the script so that they can be invoked.
+    exported_globals = {
+      'exec_build_pipeline': exec_build_pipeline,
+      'build_options': build_options
+    }
+    runpy.run_path(str(prebuild_script_path), init_globals = exported_globals)
+  print(f"Script execution finished: {disp_prebuild_script_path}")
+
+def exec_build(image_name: str, docker_file_dir: Path,
+               build_options: DockerBuildOptions) -> None:
+  '''This function is used to build the docker image.'''
+
+  docker_args = [
+    'docker',
+    'build',
+    '-t',
+    edgdocker.get_latest_image_tag(image_name, respect_pins = False)
+  ]
+
+  if build_options.no_cache:
+    docker_args.append('--no-cache')
+
+  if build_options.quiet:
+    docker_args.append('-q')
+
+  if build_options.platform_specifier is not None:
+    docker_args.extend(['--platform', build_options.platform_specifier])
+
+  docker_args.append('.')
+
+  # Execute the process in the preresolved working directory containing the
+  # Dockerfile, with stdout and stderr mapped back to the system.
+  _checked_process_run(
+    docker_args,
+    cwd = docker_file_dir,
+    stdout = sys.stdout,
+    stderr = sys.stderr
+  )
+
+def exec_build_pipeline(image_name: str,
+                        build_options: DockerBuildOptions) -> None:
+  '''Run the full build pipeline with the given build options.'''
+  # Do a sanity check to ensure if any script calls this function, it's
+  # calling it with a name that directly works for build-edg-env.
+  if image_name not in edgdocker.BUILDABLE_IMAGES:
+    print(f"No buildable image exists matching the name \"{image_name}\".")
+    sys.exit(1)
+
+  docker_file_dir = edgdocker.get_docker_file_dir(image_name)
+  if not os.path.exists(docker_file_dir):
+    print(f"No image directory exists matching the name \"{image_name}\".")
+    sys.exit(1)
+
+  with tempfile.TemporaryDirectory(prefix = 'docker.') as tmp_dir:
+    tmp_build_dir = Path(tmp_dir, image_name)
+    shutil.copytree(docker_file_dir, tmp_build_dir)
+    try_exec_prebuild(tmp_build_dir, docker_file_dir, build_options)
+    docker_file_path = edgdocker.get_docker_file(image_name)
+    if not os.path.exists(docker_file_path):
+      print(f"No image exists by the name \"{image_name}\".")
+      sys.exit(1)
+
+    base_image_name = edgdocker.get_base_image(docker_file_path)
+    if base_image_name is None:
+      print(f"No base image could be found in {docker_file_path}.")
+      sys.exit(1)
+
+    exec_base_fetch(
+      base_image_name,
+      platform_specifier = build_options.platform_specifier
+    )
+    exec_build(
+      image_name,
+      tmp_build_dir,
+      build_options
+    )
+
+  print(f"EDG image \"{image_name}\" built successfully.")
+
+def die(signum: Any, frame: Any) -> None:
+  sys.exit()
+
+def register_signal_handlers():
+  signal.signal(signal.SIGINT, die)
+  signal.signal(signal.SIGTERM, die)
+
+def parse_args():
+  parser = argparse.ArgumentParser(
+    description='EDG docker environment builder.'
+  )
+  parser.add_argument(
+    '--platform',
+    dest = 'platform_specifier',
+    default = 'linux/amd64',
+    help = 'the desired platform for the image'
+  )
+  parser.add_argument(
+    '--no-cache',
+    dest = 'no_cache',
+    action = 'store_true',
+    help = 'disable the build cache'
+  )
+  parser.add_argument(
+    '--quiet',
+    '-q',
+    dest = 'quiet',
+    action = 'store_true',
+    help = 'instruct docker to be quiet during the build'
+  )
+  parser.add_argument(
+    'image_name',
+    metavar = 'image-name',
+    nargs = '?',
+    default = edgdocker.DEFAULT_IMAGE,
+    choices = edgdocker.BUILDABLE_IMAGES,
+    help = 'the image to build'
+  )
+  return parser.parse_args()
+
+def main() -> None:
+  edgdocker.terminate_if_running_in_docker()
+  register_signal_handlers()
+
+  args = parse_args()
+
+  image_name = args.image_name
+  build_options = DockerBuildOptions(
+    quiet = args.quiet,
+    no_cache = args.no_cache,
+    platform_specifier = args.platform_specifier
+  )
+  exec_build_pipeline(image_name, build_options)
+
+main()

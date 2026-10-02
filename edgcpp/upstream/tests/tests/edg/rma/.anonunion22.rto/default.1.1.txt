@@ -1,0 +1,9 @@
+cpfe -DTEST_NUMBER=1 --c --microsoft Test_name.c
+"Test_name.c", line 15: warning: variable "s" was set but never used
+     struct S s;
+              ^
+
+"Test_name.c", line 16: warning: variable "s2" was set but never used
+     struct S2 s2;
+               ^
+

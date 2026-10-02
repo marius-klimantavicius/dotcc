@@ -1,0 +1,318 @@
+#!/usr/bin/env python3
+
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+import argparse
+import multiprocessing
+import os
+import re
+import shutil
+import signal
+import subprocess
+import sys
+import tempfile
+
+import edgtest
+import edgutil
+
+from pathlib import Path
+from typing import Any, Tuple
+
+# This variable is used to keep output printing orderly.  If it's True the last
+# print did not end with a new line character.
+needs_new_line = False
+
+# This variable is updated when the signal handler has started shutdown
+# procedures.
+shutting_down = False
+
+def print_new_line_if_needed() -> None:
+  global needs_new_line
+
+  if needs_new_line:
+    print('')
+  needs_new_line = False
+
+def print_line(message: str) -> None:
+  print_new_line_if_needed()
+  print(message)
+
+def print_partial_line(message: str) -> None:
+  global needs_new_line
+  print(message, end = '', flush = True)
+  needs_new_line = True
+
+def _launch_daemon(daemon_path: Path, *, for_record: bool) -> subprocess.Popen:
+  args = [str(daemon_path)]
+  if for_record:
+    args = ['rr', 'record', '--', *args]
+  return subprocess.Popen(
+    args,
+    stdout = subprocess.DEVNULL,
+    stderr = subprocess.DEVNULL,
+    # Start a new process group for the daemon so that signals sent to this
+    # process do not make it to edgy.
+    start_new_session = True
+  )
+
+def _run_edgy_daemon(daemon_path: Path, runs_dir: Path, input_file: Path, *,
+                     for_record: bool, verbose: bool) -> Tuple[int, str]:
+  if verbose:
+    print_line('Launching daemon...')
+  daemon_process = _launch_daemon(daemon_path, for_record = for_record)
+  if verbose:
+    print_line('Daemon launched.')
+
+  try:
+    # Execute edgy
+    if verbose:
+      print_line('Launching edgy...')
+    edgy_process = subprocess.Popen(
+      [
+        'edgy',
+        '--fully-random-order',
+        '--crash-avoidance',
+        '--max-failure-count=1',
+        f"--runs-dir={runs_dir}",
+        f"@{input_file}"
+      ],
+      stdout = subprocess.PIPE,
+      stderr = subprocess.STDOUT,
+      # Start a new process group for edgy so that signals sent to this process
+      # do not make it to edgy.
+      start_new_session = True
+    )
+    outs, _ = edgy_process.communicate()
+    return_code = edgy_process.wait()
+    if verbose:
+      print_line('edgy complete.')
+  except SystemExit:
+    if verbose:
+      print_line('Terminating edgy...')
+
+    # Terminate and wait on edgy.
+    edgy_process.terminate()
+    try:
+      edgy_process.wait(1)
+    except subprocess.TimeoutExpired:
+      if verbose:
+        print_line('Forcefully terminating edgy...')
+
+      # It looks like edgy hung, try and terminate the entire edgy process
+      # group to stop run_test instances from creating more output files. If
+      # this fails to correct the situation, the temporary directory removal
+      # may fail with an OSError about non-empty directories.
+      edgy_pgrp = os.getpgid(edgy_process.pid)
+      os.killpg(edgy_pgrp, signal.SIGTERM)
+      # Kill edgy since it's not responding to polite shutdown requests.
+      edgy_process.kill()
+
+    if verbose:
+      print_line('edgy terminated.')
+    raise
+  finally:
+    if verbose:
+      print_line('Terminating daemon...')
+    # Terminate the process.
+    daemon_process.terminate()
+    if verbose:
+      print_line('Daemon terminated.')
+
+  return (return_code, outs.decode())
+
+_LOG_FILE_REGEX = re.compile(r'^Wrote log: (.+)$', re.MULTILINE)
+
+def _count_lines(file_path: Path) -> int:
+  line_count = 0
+  with open(file_path, 'r') as file_handle:
+    for _ in file_handle:
+      line_count += 1
+  return line_count
+
+def _run_reduction(args: argparse.Namespace) -> None:
+  file_tag = args.input_file.stem
+  # Create a temporary directory with mkdtemp. This is used in place of the
+  # TemporaryDirectory class for better compatibility with older Python
+  # versions.
+  tmp_dir_str = tempfile.mkdtemp(prefix = f"err-{file_tag}-")
+  tmp_dir = Path(tmp_dir_str)
+  try:
+    # Create a copy of the input file (so you can pass a log file that might be
+    # deleted by reduction attempts).
+    input_file = tmp_dir / 'initial.txt'
+    test_runs_dir = tmp_dir / 'runs'
+    shutil.copy2(args.input_file, input_file)
+    best_reduction = _count_lines(input_file)
+
+    if args.record:
+      print_line('Attempting to get a recording...')
+    else:
+      result_file = f"best-reduction-{file_tag}.txt"
+      print_line(f"The best reduction will be stored in: {result_file}")
+      print_line(f"Reducing from: {best_reduction}...")
+
+    if args.keep_files:
+      print_line(f"Intermediate files can be found in: {tmp_dir}")
+
+    while True:
+      if not args.record and best_reduction <= args.reduction_target:
+        print_line(
+          f"Stopping because the reduction target ({args.reduction_target}) "
+          'was hit.'
+        )
+        break
+
+      if args.verbose:
+        print_line('Started test run...')
+
+      rc, raw_output = _run_edgy_daemon(
+        args.daemon_path,
+        test_runs_dir,
+        input_file,
+        for_record = args.record,
+        verbose = args.verbose
+      )
+
+      if args.verbose:
+        print_line('Done with test run.')
+
+      execution_log = None
+      changes_log = None
+      for result in _LOG_FILE_REGEX.finditer(raw_output):
+        log_path = Path(result.group(1))
+        if log_path.name == 'executed.elog':
+          execution_log = log_path
+        elif log_path.name == 'changes.elog':
+          changes_log = log_path
+
+      if execution_log is None:
+        edgutil.eprint('Could not find execution log:')
+        edgutil.eprint(raw_output)
+        sys.exit(1)
+
+      if args.verbose:
+        print_line('Done searching.')
+
+      if changes_log == None:
+        print_partial_line('.')
+        continue
+
+      # We're after a recording not a reduction, break so the changes can be
+      # examined.
+      if args.record:
+        print_line('Recording acquired! Use: rr replay')
+        break
+
+      new_reduction = _count_lines(execution_log)
+      if new_reduction < best_reduction:
+        if args.verbose:
+          print_line('Updating best...')
+        # Create the updated files.
+        corresponding_run_dir = edgtest.get_test_runs_in(test_runs_dir)[0]
+        curr_output_file = (
+          tmp_dir / f"best-reduction-{corresponding_run_dir.name}.txt"
+        )
+        shutil.copy2(execution_log, curr_output_file)
+        shutil.copy2(curr_output_file, result_file)
+        if args.verbose:
+          print_line('Done updating best.')
+        # Update the file to rerun.
+        input_file = curr_output_file
+        # Update the best reduction information and inform the user.
+        best_reduction = new_reduction
+        print_line(f"Reduced to: {best_reduction}!")
+      else:
+        print_partial_line('!')
+    # Attempt to clean up the output state if needed.
+    print_new_line_if_needed()
+  finally:
+    if not args.keep_files:
+      shutil.rmtree(tmp_dir)
+
+def parse_args() -> argparse.Namespace:
+  parser = argparse.ArgumentParser(
+    description = 'EDG multi-test race condition reducer.'
+  )
+  parser.add_argument(
+    '--executable',
+    dest = 'daemon_path',
+    default = Path('./bin/cpfe-daemon'),
+    type = Path,
+    help = (
+      'specify where to find the daemon executable '
+      '(by default "./bin/cpfe-daemon")'
+    )
+  )
+  parser.add_argument(
+    '-k',
+    '--keep-files',
+    dest = 'keep_files',
+    action = 'store_true',
+    help = 'keep temporary files that would normally be discarded'
+  )
+  parser.add_argument(
+    '-n',
+    '--stop-after',
+    dest = 'reduction_target',
+    default = multiprocessing.cpu_count() * 2,
+    type = int,
+    help = (
+      'stop after the reduction is at or below this number of tests '
+      '(by default this is the number of CPU cores on the system * 2)'
+    )
+  )
+  parser.add_argument(
+    '-r',
+    '--record',
+    dest = 'record',
+    action = 'store_true',
+    help = 'attempt to get a recording rather than a reduction'
+  )
+  parser.add_argument(
+    '--verbose',
+    dest = 'verbose',
+    action = 'store_true',
+    help = 'enable verbose mode'
+  )
+  parser.add_argument(
+    'input_file',
+    type = Path,
+    help = 'the input file of tests to start reducing'
+  )
+  return parser.parse_args()
+
+def die(signum: Any, frame: Any) -> None:
+  global shutting_down
+  if shutting_down:
+    print_line('Already shutting down...')
+    return
+
+  shutting_down = True
+  print_line('')
+  sys.exit(1)
+
+def register_signal_handlers() -> None:
+  signal.signal(signal.SIGINT, die)
+  signal.signal(signal.SIGTERM, die)
+  signal.signal(signal.SIGPIPE, die)
+
+def main() -> None:
+  args = parse_args()
+
+  register_signal_handlers()
+
+  if not args.daemon_path.exists():
+    resolved_path = args.daemon_path.resolve()
+    edgutil.eprint(f"No daemon executable found at: {resolved_path}")
+    exit(1)
+
+  if args.record and shutil.which('rr') is None:
+    edgutil.eprint('Recording mode requested but rr is not installed.')
+    exit(1)
+
+  _run_reduction(args)
+
+main()

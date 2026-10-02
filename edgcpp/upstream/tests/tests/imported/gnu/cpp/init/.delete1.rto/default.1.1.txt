@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++23 Test_name.c
+"Test_name.c", line 8: warning: delete of pointer to incomplete class
+    delete [] ((C*)p) ; // { dg-warning "3:possible problem detected in invocation of operator .delete \\\[\\\]." "" { target c++23_down } }
+              ^
+

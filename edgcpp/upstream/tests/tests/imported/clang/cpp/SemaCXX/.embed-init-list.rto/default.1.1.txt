@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 58: warning: variable "initializer_list" was declared but never referenced
+    static constexpr auto initializer_list = std::initializer_list<char>{
+                          ^
+
+"Test_name.c", line 62: warning: variable "intinitializer_list" was declared but never referenced
+    static constexpr auto intinitializer_list = std::initializer_list<int>{
+                          ^
+

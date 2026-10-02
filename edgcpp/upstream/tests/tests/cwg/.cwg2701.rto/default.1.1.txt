@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++23 -A -DNO_ERRORS Test_name.c
+"Test_name.c", line 21: error: too few arguments in function call
+    f();               // OK, default arguments provided by declarations in the scope of A
+      ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,134 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 14: error: identifier "_Decimal32" is undefined
+  _Decimal32 var32 = 1.2df;
+  ^
+
+"Test_name.c", line 14: error: extra text after expected end of number
+  _Decimal32 var32 = 1.2df;
+                        ^
+
+"Test_name.c", line 16: error: identifier "_Decimal32" is undefined
+  int __attribute__ ((__noinline__)) foo32 (_Decimal32 param32, _Decimal64 param64, _Decimal128 param128, _Float16 param16)
+                                            ^
+
+"Test_name.c", line 16: error: identifier "_Decimal64" is undefined
+  int __attribute__ ((__noinline__)) foo32 (_Decimal32 param32, _Decimal64 param64, _Decimal128 param128, _Float16 param16)
+                                                                ^
+
+"Test_name.c", line 16: error: identifier "_Decimal128" is undefined
+  int __attribute__ ((__noinline__)) foo32 (_Decimal32 param32, _Decimal64 param64, _Decimal128 param128, _Float16 param16)
+                                                                                    ^
+
+"Test_name.c", line 22: error: identifier "_Decimal32" is undefined
+      + ((((_Decimal32)param16 - var32) / var32) < 0.002df);
+            ^
+
+"Test_name.c", line 22: error: expected a ")"
+      + ((((_Decimal32)param16 - var32) / var32) < 0.002df);
+                       ^
+
+"Test_name.c", line 22: error: extra text after expected end of number
+      + ((((_Decimal32)param16 - var32) / var32) < 0.002df);
+                                                        ^
+
+"Test_name.c", line 25: error: identifier "_Decimal64" is undefined
+  _Decimal64 var64 = 1.2dd;
+  ^
+
+"Test_name.c", line 25: error: extra text after expected end of number
+  _Decimal64 var64 = 1.2dd;
+                        ^
+
+"Test_name.c", line 27: error: identifier "_Decimal32" is undefined
+  int __attribute__ ((__noinline__)) foo64 (_Decimal32 param32, _Decimal64 param64, _Decimal128 param128, _Float16 param16)
+                                            ^
+
+"Test_name.c", line 27: error: identifier "_Decimal64" is undefined
+  int __attribute__ ((__noinline__)) foo64 (_Decimal32 param32, _Decimal64 param64, _Decimal128 param128, _Float16 param16)
+                                                                ^
+
+"Test_name.c", line 27: error: identifier "_Decimal128" is undefined
+  int __attribute__ ((__noinline__)) foo64 (_Decimal32 param32, _Decimal64 param64, _Decimal128 param128, _Float16 param16)
+                                                                                    ^
+
+"Test_name.c", line 33: error: identifier "_Decimal64" is undefined
+      + ((((_Decimal64)param16 - var64) / var64) < 0.002dd);
+            ^
+
+"Test_name.c", line 33: error: expected a ")"
+      + ((((_Decimal64)param16 - var64) / var64) < 0.002dd);
+                       ^
+
+"Test_name.c", line 33: error: extra text after expected end of number
+      + ((((_Decimal64)param16 - var64) / var64) < 0.002dd);
+                                                        ^
+
+"Test_name.c", line 36: error: identifier "_Decimal128" is undefined
+  _Decimal128 var128 = 1.2dl;
+  ^
+
+"Test_name.c", line 36: error: extra text after expected end of number
+  _Decimal128 var128 = 1.2dl;
+                          ^
+
+"Test_name.c", line 38: error: identifier "_Decimal32" is undefined
+  int __attribute__ ((__noinline__)) foo128 (_Decimal32 param32, _Decimal64 param64, _Decimal128 param128, _Float16 param16)
+                                             ^
+
+"Test_name.c", line 38: error: identifier "_Decimal64" is undefined
+  int __attribute__ ((__noinline__)) foo128 (_Decimal32 param32, _Decimal64 param64, _Decimal128 param128, _Float16 param16)
+                                                                 ^
+
+"Test_name.c", line 38: error: identifier "_Decimal128" is undefined
+  int __attribute__ ((__noinline__)) foo128 (_Decimal32 param32, _Decimal64 param64, _Decimal128 param128, _Float16 param16)
+                                                                                     ^
+
+"Test_name.c", line 44: error: identifier "_Decimal128" is undefined
+      + ((((_Decimal128)param16 - var128) / var128) < 0.002dl);
+            ^
+
+"Test_name.c", line 44: error: expected a ")"
+      + ((((_Decimal128)param16 - var128) / var128) < 0.002dl);
+                        ^
+
+"Test_name.c", line 44: error: extra text after expected end of number
+      + ((((_Decimal128)param16 - var128) / var128) < 0.002dl);
+                                                           ^
+
+"Test_name.c", line 49: error: extra text after expected end of number
+    if (foo32 (1.2df, 1.2dd, 1.2dl, (_Float16)1.2) != 4)
+                  ^
+
+"Test_name.c", line 49: error: extra text after expected end of number
+    if (foo32 (1.2df, 1.2dd, 1.2dl, (_Float16)1.2) != 4)
+                         ^
+
+"Test_name.c", line 49: error: extra text after expected end of number
+    if (foo32 (1.2df, 1.2dd, 1.2dl, (_Float16)1.2) != 4)
+                                ^
+
+"Test_name.c", line 52: error: extra text after expected end of number
+    if (foo64 (1.2df, 1.2dd, 1.2dl, (_Float16)1.2) != 4)
+                  ^
+
+"Test_name.c", line 52: error: extra text after expected end of number
+    if (foo64 (1.2df, 1.2dd, 1.2dl, (_Float16)1.2) != 4)
+                         ^
+
+"Test_name.c", line 52: error: extra text after expected end of number
+    if (foo64 (1.2df, 1.2dd, 1.2dl, (_Float16)1.2) != 4)
+                                ^
+
+"Test_name.c", line 55: error: extra text after expected end of number
+    if (foo128 (1.2df, 1.2dd, 1.2dl, (_Float16)1.2) != 4)
+                   ^
+
+"Test_name.c", line 55: error: extra text after expected end of number
+    if (foo128 (1.2df, 1.2dd, 1.2dl, (_Float16)1.2) != 4)
+                          ^
+
+"Test_name.c", line 55: error: extra text after expected end of number
+    if (foo128 (1.2df, 1.2dd, 1.2dl, (_Float16)1.2) != 4)
+                                 ^
+
+33 errors detected in the compilation of "Test_name.c".

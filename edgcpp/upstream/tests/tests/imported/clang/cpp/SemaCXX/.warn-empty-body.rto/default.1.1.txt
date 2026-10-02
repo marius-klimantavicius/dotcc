@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 77: error: expected "while"
+        b();       // expected-error{{expected 'while' in do/while loop}}
+        ^
+
+"Test_name.c", line 82: error: expected "while"
+        b();       // expected-error{{expected 'while' in do/while loop}}
+        ^
+
+"Test_name.c", line 88: warning: statement is unreachable
+        switch(y); // expected-warning{{switch statement has empty body}} expected-note{{put the semicolon on a separate line to silence this warning}}
+        ^
+
+"Test_name.c", line 128: warning: statement is unreachable
+      switch(y) // no-warning
+      ^
+
+"Test_name.c", line 160: warning: statement is unreachable
+      switch (y)
+      ^
+
+"Test_name.c", line 242: warning: statement is unreachable
+      switch(y) // no-warning
+      ^
+
+"Test_name.c", line 256: error: identifier "aa" is undefined
+      aa; // expected-error{{use of undeclared identifier}}
+      ^
+
+"Test_name.c", line 261: error: identifier "bb" is undefined
+      bb; // expected-error{{use of undeclared identifier}}
+      ^
+
+"Test_name.c", line 265: error: identifier "cc" is undefined
+      cc; // expected-error{{use of undeclared identifier}}
+      ^
+
+"Test_name.c", line 268: error: identifier "dd" is undefined
+      dd; // expected-error{{use of undeclared identifier}}
+      ^
+
+6 errors detected in the compilation of "Test_name.c".

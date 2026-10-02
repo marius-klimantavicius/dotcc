@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 6: error: declaration is incompatible with "void blapp(int)" (declared at line 5)
+  void blapp() { } // expected-error {{conflicting types for 'blapp'}}
+       ^
+
+"Test_name.c", line 12: error: declaration is incompatible with "void blarg(int, ...)" (declared at line 11)
+  void blarg() {}       // expected-error {{conflicting types for 'blarg'}}
+       ^
+
+"Test_name.c", line 15: error: declaration is incompatible with "void blerp(short)" (declared at line 14)
+  void blerp(x) int x; {} // expected-error {{conflicting types for 'blerp'}}
+       ^
+
+"Test_name.c", line 19: error: declaration is incompatible with "void foo(int)" (declared at line 17)
+  void foo() {} // expected-error {{conflicting types for 'foo'}}
+       ^
+
+4 errors detected in the compilation of "Test_name.c".

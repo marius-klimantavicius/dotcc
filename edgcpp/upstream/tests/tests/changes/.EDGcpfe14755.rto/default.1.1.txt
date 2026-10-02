@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --microsoft Test_name.c
+"Test_name.c", line 20: error: more than one instance of constructor "D::D" matches the argument list:
+            function "D::D(D &&)" (declared at line 12)
+            function "D::D(int)" (declared at line 13)
+            argument types are: (S)
+  D d(g());  // Accepted in Microsoft modes when the 4.9 change was made
+      ^
+
+1 error detected in the compilation of "Test_name.c".

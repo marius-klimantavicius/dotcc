@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --c++17 -tused -A Test_name.c
+"Test_name.c", line 4: error: an #include <initializer_list> is needed prior to a use of std::initializer_list, including an implicit use
+      for (int i : { 1, 2, 3 })
+                   ^
+
+"Test_name.c", line 4: error: cannot deduce type of range in range-based "for" statement
+      for (int i : { 1, 2, 3 })
+                   ^
+
+"Test_name.c", line 5: error: "i", declared as iterator of range-based "for" statement, may not be redeclared in this scope
+        int i = 1;          // error: redeclaration
+            ^
+
+"Test_name.c", line 5: warning: variable "i" was declared but never referenced
+        int i = 1;          // error: redeclaration
+            ^
+
+3 errors detected in the compilation of "Test_name.c".

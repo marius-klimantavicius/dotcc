@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./pr98213.C", line 15: warning: variable "i_5" is used before its value is set
+      for (int i_5; i_5;) {
+                    ^
+
+"./pr98213.C", line 14: warning: variable "i_0" was declared but never referenced
+    for (int i_0 = 0;;)
+             ^
+

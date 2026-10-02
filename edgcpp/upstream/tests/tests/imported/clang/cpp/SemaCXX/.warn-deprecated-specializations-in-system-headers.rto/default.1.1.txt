@@ -1,0 +1,8 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"SemaCXX/warn-deprecated-specializations-in-system-headers.cpp", line 25: warning: class "traits<int>" was declared deprecated
+  basic_string<int> test1;
+                    ^
+"SemaCXX/warn-deprecated-specializations-in-system-headers.cpp", line 10: note: because of a "deprecated" attribute
+  struct [[deprecated]] traits<int> {};
+           ^
+

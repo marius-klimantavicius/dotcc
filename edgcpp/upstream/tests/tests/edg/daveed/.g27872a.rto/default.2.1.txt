@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=2 --ms_c++23 --microsoft_v=1943 Test_name.c
+"Test_name.c", line 5: error: operator may not be a static member function
+    static int operator()();
+               ^
+
+"Test_name.c", line 8: error: identifier "__cpp_static_call_operator" is undefined
+  static_assert(__cpp_static_call_operator == 202207L);
+                ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c17 --strict_gnu Test_name.c
+"Test_name.c", line 8: warning: standard requires that parameter "jm" be given a type by a subsequent declaration ("int" assumed)
+  en (jm)
+      ^
+
+"Test_name.c", line 17: warning: too few arguments in function call
+    en ();
+        ^
+

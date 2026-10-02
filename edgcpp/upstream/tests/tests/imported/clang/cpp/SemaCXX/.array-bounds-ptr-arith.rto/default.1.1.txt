@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 11: warning: pointer points outside of underlying object
+    swallow("Hello world!" - 6); // expected-warning {{the pointer decremented by 6 refers before the beginning of the array}}
+                           ^
+
+"Test_name.c", line 12: warning: pointer points outside of underlying object
+    swallow("Hello world!" + 14); // expected-warning {{the pointer incremented by 14 refers past the end of the array (that has type 'const char[13]')}}
+                           ^
+
+"Test_name.c", line 16: warning: pointer points outside of underlying object
+    swallow(hello - 6); // expected-warning {{the pointer decremented by 6 refers before the beginning of the array}}
+                  ^
+
+"Test_name.c", line 17: warning: pointer points outside of underlying object
+    swallow(hello + 14); // expected-warning {{the pointer incremented by 14 refers past the end of the array (that has type 'const char[13]')}}
+                  ^
+
+"Test_name.c", line 31: warning: pointer points outside of underlying object
+    swallow(buffer + sizeof("Hello")-1); // expected-warning {{the pointer incremented by 6 refers past the end of the array (that has type 'char[5]')}}
+                   ^
+
+"Test_name.c", line 33: warning: pointer points outside of underlying object
+    if (n > 0 && n <= 6) swallow(buffer + 6 - n); // expected-warning {{the pointer incremented by 6 refers past the end of the array (that has type 'char[5]')}}
+                                        ^
+

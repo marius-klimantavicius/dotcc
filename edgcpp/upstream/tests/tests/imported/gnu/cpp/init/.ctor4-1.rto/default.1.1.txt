@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: warning: class "bar" defines no constructor to initialize the following:
+            const member "bar::a"
+  class bar: public foo {	// { dg-error "uninitialized" }
+        ^
+
+"Test_name.c", line 21: error: the default constructor of "bar" cannot be referenced -- it is a deleted function
+    bar x; // { dg-error "deleted" "" { target c++11 } }
+        ^
+
+1 error detected in the compilation of "Test_name.c".

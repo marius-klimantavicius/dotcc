@@ -1,0 +1,65 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 --strict_gnu Test_name.c
+"Test_name.c", line 22: warning: variable "a" was declared deprecated
+    return a; /* { dg-warning "deprecated" } */
+           ^
+"Test_name.c", line 21: note: because of a "deprecated" attribute
+    [[gnu::deprecated]] int a = 1;
+      ^
+
+"Test_name.c", line 29: warning: variable "a" was declared deprecated
+    return a; /* { dg-warning "deprecated" } */
+           ^
+"Test_name.c", line 28: note: because of a "deprecated" attribute
+    int a [[gnu::deprecated]] = 1;
+            ^
+
+"Test_name.c", line 37: warning: field "a" was declared deprecated
+    return x.a; /* { dg-warning "deprecated" } */
+             ^
+"Test_name.c", line 32: note: because of a "deprecated" attribute
+  struct s2 { [[gnu::deprecated]] int a; int b [[gnu::deprecated]]; } x;
+                ^
+
+"Test_name.c", line 43: warning: field "b" was declared deprecated
+    return x.b; /* { dg-warning "deprecated" } */
+             ^
+"Test_name.c", line 32: note: because of a "deprecated" attribute
+  struct s2 { [[gnu::deprecated]] int a; int b [[gnu::deprecated]]; } x;
+                                                 ^
+
+"Test_name.c", line 51: warning: constant "E1" was declared deprecated
+    return E1; /* { dg-warning "deprecated" } */
+           ^
+"Test_name.c", line 46: note: because of a "deprecated" attribute
+  enum e { E1 [[gnu::deprecated]] };
+                ^
+
+"Test_name.c", line 57: warning: parameter "y" was declared deprecated
+    return y; /* { dg-warning "deprecated" } */
+           ^
+"Test_name.c", line 55: note: because of a "deprecated" attribute
+  f7 ([[gnu::deprecated]] int y)
+        ^
+
+"Test_name.c", line 65: warning: union "u" was declared deprecated
+    union u var; /* { dg-warning "deprecated" } */
+            ^
+"Test_name.c", line 60: note: because of a "deprecated" attribute
+  union [[gnu::deprecated]] u { int x; };
+          ^
+
+"Test_name.c", line 65: warning: variable "var" was declared but never referenced
+    union u var; /* { dg-warning "deprecated" } */
+            ^
+
+"Test_name.c", line 73: warning: enum "edep" was declared deprecated
+    enum edep var; /* { dg-warning "deprecated" } */
+              ^
+"Test_name.c", line 68: note: because of a "deprecated" attribute
+  enum [[gnu::deprecated]] edep { E2 };
+         ^
+
+"Test_name.c", line 73: warning: variable "var" was declared but never referenced
+    enum edep var; /* { dg-warning "deprecated" } */
+              ^
+

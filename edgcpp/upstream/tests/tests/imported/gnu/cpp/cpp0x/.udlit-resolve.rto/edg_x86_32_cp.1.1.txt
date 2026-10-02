@@ -1,0 +1,34 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp0x/udlit-resolve.C", line 14: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+  int operator ""_foo(const char*, std::size_t) { return 7; }
+      ^
+
+"./cpp0x/udlit-resolve.C", line 15: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+  int operator ""_foo(const wchar_t*, std::size_t) { return 8; }
+      ^
+
+"./cpp0x/udlit-resolve.C", line 16: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+  int operator ""_foo(const char16_t*, std::size_t) { return 9; }
+      ^
+
+"./cpp0x/udlit-resolve.C", line 17: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+  int operator ""_foo(const char32_t*, std::size_t) { return 10; }
+      ^
+
+"./cpp0x/udlit-resolve.C", line 30: error: user-defined literal operator not found
+   "abc"_foo == 7
+   ^
+
+"./cpp0x/udlit-resolve.C", line 31: error: user-defined literal operator not found
+   L"abc"_foo == 8
+   ^
+
+"./cpp0x/udlit-resolve.C", line 32: error: user-defined literal operator not found
+   u"abc"_foo == 9
+   ^
+
+"./cpp0x/udlit-resolve.C", line 33: error: user-defined literal operator not found
+   U"abc"_foo == 10
+   ^
+
+8 errors detected in the compilation of "Test_name.c".

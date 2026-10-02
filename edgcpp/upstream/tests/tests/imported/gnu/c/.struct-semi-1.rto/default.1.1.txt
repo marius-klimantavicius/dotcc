@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 9: warning: declaration does not declare anything
+  struct s0 { ; };
+              ^
+
+"Test_name.c", line 9: warning: struct or union declares no named members
+  struct s0 { ; };
+                ^
+
+"Test_name.c", line 12: warning: extra ";" ignored
+    ;
+    ^
+
+"Test_name.c", line 16: warning: extra ";" ignored
+    ;
+    ^
+
+"Test_name.c", line 18: warning: expected a ";"
+  }; /* { dg-warning "no semicolon at end of struct or union" } */
+  ^
+
+"Test_name.c", line 21: warning: expected a ";"
+  }; /* { dg-warning "no semicolon at end of struct or union" } */
+  ^
+

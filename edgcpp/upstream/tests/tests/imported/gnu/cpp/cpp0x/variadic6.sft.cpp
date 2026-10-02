@@ -1,0 +1,14 @@
+//type: fp
+//options: --c++11
+// { dg-do compile { target c++11 } }
+template<typename ... Args>
+struct tuple_base {};
+
+template<typename ... Args>
+struct tuple : public tuple_base<Args...>
+{ 
+};
+
+tuple<> zero;
+tuple<int> one;
+tuple<float, int> two;

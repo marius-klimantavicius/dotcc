@@ -1,0 +1,39 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 -E Test_name.c
+# 1 "Test_name.c"
+
+
+
+ 
+
+ 
+ 
+
+
+
+
+# 12 "line7.c"
+
+"line7.c", line 13: error: expected a line number
+  #line EMPTY_OBJ /* { dg-error "unexpected end of file" } */
+                                                             ^
+
+"line7.c", line 14: error: expected a line number
+  #line X /* { dg-error "is not a positive integer" } */
+        ^
+
+"line7.c", line 15: error: expected a file name
+  #line 16 16 /* { dg-error "is not a valid filename" } */
+           ^
+
+
+
+
+
+# 18 "line7.c"
+# 19 "line7.c"
+# 20 "line7.c"
+"line7.c", line 19: error: extra text after expected end of preprocessing directive
+  #line 20 "line7.c" foo /* { dg-error "extra tokens at end" } */
+                     ^
+
+4 errors detected in the compilation of "Test_name.c".

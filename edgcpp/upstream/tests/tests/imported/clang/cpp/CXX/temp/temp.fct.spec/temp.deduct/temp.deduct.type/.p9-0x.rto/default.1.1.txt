@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 37: error: a parameter pack must be the final template argument in a partial specialization
+    struct UselessPartialSpec<Types..., Tail>; // expected-error{{class template partial specialization contains template parameters that cannot be deduced; this partial specialization will never be used}}
+           ^
+
+"Test_name.c", line 106: error: no instance of function template "DeduceWithDefaultArgs::f" matches the argument list
+            argument types are: (DeduceWithDefaultArgs::X<int, double>)
+      f(X<int, double>{}); // expected-error {{no matching function for call to 'f'}}
+      ^
+"Test_name.c", line 98: note: function template "DeduceWithDefaultArgs::f" does not match because argument #1 does not match parameter
+    template<template<typename...> class Container> void f(Container<int>); // expected-note {{deduced type 'X<[...], (default) int>' of 1st parameter does not match adjusted type 'X<[...], double>' of argument [with Container = X]}}
+                                                         ^
+
+2 errors detected in the compilation of "Test_name.c".

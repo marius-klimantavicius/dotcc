@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: warning: unknown attribute "noclone"
+    virtual __attribute__((noinline, noclone)) unsigned AddRef (void) = 0;
+                                     ^
+
+"Test_name.c", line 50: warning: unknown attribute "noclone"
+    virtual __attribute__((noinline, noclone)) unsigned AddRef (void) override;
+                                     ^
+
+"Test_name.c", line 105: warning: variable "status" is used before its value is set
+    return status;
+           ^
+
+"Test_name.c", line 108: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int
+                 ^
+

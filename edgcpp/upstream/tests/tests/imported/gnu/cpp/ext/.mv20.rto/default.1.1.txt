@@ -1,0 +1,10 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --gnu_version=80200 -tused -e 200 --no_wrap Test_name.c
+"./ext/mv15.C", line 12: error: target attribute not recognized
+  int foo () __attribute__ ((target("arch=nehalem")));
+                                    ^
+
+"./ext/mv15.C", line 36: error: target attribute not recognized
+  int __attribute__ ((target("arch=nehalem")))
+                             ^
+
+2 errors detected in the compilation of "Test_name.c".

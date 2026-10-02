@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 10: warning: type qualifier on return type is meaningless
+  template<> struct S<const void(*)()> { }; // { dg-bogus "ignored" }
+                      ^
+
+"Test_name.c", line 15: warning: type qualifier on return type is meaningless
+  static_assert( ! is_same_v< void(*)(), const void(*)() >, ""); // { dg-bogus "ignored" }
+                                         ^
+
+"Test_name.c", line 18: warning: type qualifier on return type is meaningless
+  auto g() -> const void (*)(); // { dg-bogus "ignored" }
+              ^
+
+"Test_name.c", line 19: warning: type qualifier on return type is meaningless
+  auto g() -> const void (*)() { return nullptr; } // { dg-bogus "ignored" }
+              ^
+
+"Test_name.c", line 22: warning: type qualifier on return type is meaningless
+  const void (*h)() = static_cast<const void (*)()>(h); // { dg-bogus "ignored" }
+  ^
+
+"Test_name.c", line 22: warning: type qualifier on return type is meaningless
+  const void (*h)() = static_cast<const void (*)()>(h); // { dg-bogus "ignored" }
+                                  ^
+
+"Test_name.c", line 25: warning: type qualifier on return type is meaningless
+  const void f(); // { dg-warning "ignored" }
+  ^
+
+"Test_name.c", line 26: warning: type qualifier on return type is meaningless
+  const void f() { } // { dg-warning "ignored" }
+  ^
+

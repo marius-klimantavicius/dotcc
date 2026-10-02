@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 16: error: no instance of function template "lambda [](different_than<...> auto)->auto" matches the argument list
+            argument types are: (int)
+            object type is: lambda [](different_than<...> auto)->auto
+      diff(42)(42); // { dg-error "no match" }
+      ^
+"Test_name.c", line 11: note: substituting "<int>" for function template "lambda [](different_than<...> auto)->auto" failed constraints
+      return [](different_than<B> auto a) {};
+               ^
+"Test_name.c", line 11: note: concept "different_than" not satisfied for "<int, int>"
+      return [](different_than<B> auto a) {};
+                ^
+"Test_name.c", line 7: note: atomic constraint evaluates to false
+  concept different_than = !__is_same_as(A, B);
+                           ^
+
+1 error detected in the compilation of "Test_name.c".

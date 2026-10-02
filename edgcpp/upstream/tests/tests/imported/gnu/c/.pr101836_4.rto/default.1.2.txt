@@ -1,0 +1,5 @@
+./a.out
+ok:  __builtin_object_size(normal->c, 1) == -1
+ok:  __builtin_object_size(trailing_1->c, 1) == -1
+ok:  __builtin_object_size(trailing_0->c, 1) == -1
+ok:  __builtin_object_size(trailing_flex->c, 1) == -1

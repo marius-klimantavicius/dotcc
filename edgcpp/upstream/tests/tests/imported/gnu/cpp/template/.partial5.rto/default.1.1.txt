@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: warning: template parameter "T" is not used in or cannot be deduced from the template argument list of class template "X<T::foo>"
+  template<typename T>
+                    ^
+
+"Test_name.c", line 26: error: the template argument list of the partial specialization includes a nontype argument whose type depends on a template parameter
+  struct Z<T, (T)0> { }; // { dg-error "depends on a template parameter" }
+         ^
+
+1 error detected in the compilation of "Test_name.c".

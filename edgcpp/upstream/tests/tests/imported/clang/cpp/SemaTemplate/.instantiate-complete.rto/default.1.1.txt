@@ -1,0 +1,44 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 -DMSABI Test_name.c
+"Test_name.c", line 16: error: a function type is not allowed here
+    T f; // expected-error{{data member instantiated with function type 'float (int)'}} \
+      ^
+          detected during instantiation of class "X<T> [with T=float (int)]" at line 26
+
+"Test_name.c", line 16: error: a function type is not allowed here
+    T f; // expected-error{{data member instantiated with function type 'float (int)'}} \
+      ^
+          detected during instantiation of class "X<T> [with T=int (int)]" at line 31
+
+"Test_name.c", line 16: error: a function type is not allowed here
+    T f; // expected-error{{data member instantiated with function type 'float (int)'}} \
+      ^
+          detected during instantiation of class "X<T> [with T=char (char)]" at line 38
+
+"Test_name.c", line 16: error: a function type is not allowed here
+    T f; // expected-error{{data member instantiated with function type 'float (int)'}} \
+      ^
+          detected during instantiation of class "X<T> [with T=short (short)]" at line 39
+
+"Test_name.c", line 16: error: a function type is not allowed here
+    T f; // expected-error{{data member instantiated with function type 'float (int)'}} \
+      ^
+          detected during instantiation of class "X<T> [with T=float (float)]" at line 44
+
+"Test_name.c", line 44: error: no default constructor exists for class "X<float (float)>"
+    (void)new X<float(float)>; // expected-note{{in instantiation of template class 'X<float (float)>' requested here}}
+              ^
+
+"Test_name.c", line 65: warning: variable "x1" was declared but never referenced
+    X1<int> &x1 = x2;
+             ^
+
+"Test_name.c", line 133: error: incomplete type "pr7199::A<int>" is not allowed
+      class A<T>::C field; // expected-error {{implicit instantiation of undefined template 'pr7199::A<int>'}}
+            ^
+          detected during instantiation of class "pr7199::B<T> [with T=int]" at line 136
+
+"Test_name.c", line 154: error: no suitable user-defined conversion from "PR8425::FromT<int>" to "PR8425::BaseT<int>" exists
+      BaseT<int> bt(ft);
+                    ^
+
+8 errors detected in the compilation of "Test_name.c".

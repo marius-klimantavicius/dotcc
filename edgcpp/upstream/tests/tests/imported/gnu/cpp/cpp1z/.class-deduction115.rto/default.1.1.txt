@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 17: error: no instance of constructor "B" matches the argument list
+            argument types are: (C<int>)
+  using type = decltype(B{C<int>{}});
+                         ^
+
+"Test_name.c", line 17: error: cannot deduce class template arguments
+  using type = decltype(B{C<int>{}});
+                        ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,7 @@
+fe_only -DTEST_NUMBER=1 --c++20 --multi_trans_unit --header_unit test.h=test.h.rtmod Test_name.c helper.c
+"Test_name.c", line 6: catastrophic error: C++ modules cannot be used when compiling multiple translation units
+  import "test.h";
+  ^
+
+1 catastrophic error detected in the compilation of "Test_name.c".
+Compilation terminated.

@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 Test_name.c
+"Test_name.c", line 9: warning: type qualifier on return type is meaningless
+  const int f1 (void); /* { dg-warning "qualifiers ignored" } */
+  ^
+
+"Test_name.c", line 10: warning: type qualifier on return type is meaningless
+  volatile int f2 (void) { return 0; } /* { dg-warning "qualifiers ignored" } */
+  ^
+
+"Test_name.c", line 11: warning: type qualifier on return type is meaningless
+  const volatile void f3 (void) { } /* { dg-warning "qualifiers ignored" } */
+  ^
+
+"Test_name.c", line 12: warning: type qualifier on return type is meaningless
+  const void f4 (void); /* { dg-warning "qualifiers ignored" } */
+  ^
+
+"Test_name.c", line 13: warning: type qualifier on return type is meaningless
+  _Atomic int f5 (void); /* { dg-warning "qualifiers ignored" } */
+  ^
+
+"Test_name.c", line 14: warning: type qualifier on return type is meaningless
+  _Atomic int f6 (void) { return 0; } /* { dg-warning "qualifiers ignored" } */
+  ^
+

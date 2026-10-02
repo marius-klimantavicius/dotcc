@@ -1,0 +1,51 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 19: error: initialization is not constant
+  constexpr s bang;  // { dg-message "in .constexpr. expansion" }
+              ^
+"Test_name.c", line 15: note: access to uninitialized object
+    constexpr s() : v(v) { } // { dg-error "accessing uninitialized member" }
+                      ^
+
+"Test_name.c", line 31: warning: constexpr non-static member function will not be implicitly 'const' in C++14
+    constexpr int f() { return i; }  // { dg-error "accessing uninitialized member" }
+    ^
+
+"Test_name.c", line 38: error: expression must have a constant value
+  constexpr T t2(t1);		// { dg-message "in .constexpr. expansion" }
+                 ^
+"Test_name.c", line 31: note: access to uninitialized object
+    constexpr int f() { return i; }  // { dg-error "accessing uninitialized member" }
+                               ^
+"Test_name.c", line 33: note: called from:
+    constexpr T(const T& t) : i(f()) { }  // { dg-message "in .constexpr. expansion" }
+                                 ^
+
+"Test_name.c", line 43: warning: constexpr non-static member function will not be implicitly 'const' in C++14
+    constexpr int f(int _i) { return _i; }
+    ^
+
+"Test_name.c", line 44: warning: constexpr non-static member function will not be implicitly 'const' in C++14
+    constexpr int g() { return i; }
+    ^
+
+"Test_name.c", line 19: warning: variable "bang" was declared but never referenced
+  constexpr s bang;  // { dg-message "in .constexpr. expansion" }
+              ^
+
+"Test_name.c", line 26: warning: variable "r" was declared but never referenced
+  constexpr R r;			// { dg-bogus "" }
+              ^
+
+"Test_name.c", line 38: warning: variable "t2" was declared but never referenced
+  constexpr T t2(t1);		// { dg-message "in .constexpr. expansion" }
+              ^
+
+"Test_name.c", line 51: warning: variable "u2" was declared but never referenced
+  constexpr U u2(u1);		// { dg-bogus "" }
+              ^
+
+"Test_name.c", line 52: warning: variable "u3" was declared but never referenced
+  constexpr U u3(1);		// { dg-bogus "" }
+              ^
+
+2 errors detected in the compilation of "Test_name.c".

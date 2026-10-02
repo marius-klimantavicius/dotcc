@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 13: warning: variable "d" was declared but never referenced
+  void test() { D d = {1, .y = 2}; } // expected-warning {{C99 extension}} expected-note {{}}
+                  ^
+

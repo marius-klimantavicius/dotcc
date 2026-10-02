@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 16: warning: variable "path" is used before its value is set
+    FILE *f = fopen (path, "r"); /* { dg-warning "use of uninitialized value 'path'" } */
+                     ^
+
+"Test_name.c", line 24: warning: variable "mode" is used before its value is set
+    FILE *f = fopen (path, mode); /* { dg-warning "use of uninitialized value 'mode'" } */
+                           ^
+
+"Test_name.c", line 32: warning: variable "f" is used before its value is set
+    fclose (f); /* { dg-warning "use of uninitialized value 'f'" } */
+            ^
+
+"Test_name.c", line 39: warning: variable "stream" is used before its value is set
+    return fseek (stream, 0, 0); /* { dg-warning "use of uninitialized value 'stream'" } */
+                  ^
+
+"Test_name.c", line 46: warning: variable "offset" is used before its value is set
+    return fseek (stream, offset, whence); /* { dg-warning "use of uninitialized value 'offset'" } */
+                          ^
+
+"Test_name.c", line 53: warning: variable "whence" is used before its value is set
+    return fseek (stream, offset, whence); /* { dg-warning "use of uninitialized value 'whence'" } */
+                                  ^
+

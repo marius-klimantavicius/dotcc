@@ -1,0 +1,58 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++26 --exceptions Test_name.c
+"SemaCXX/type-aware-coroutines.cpp", line 10: warning: declaration of "size_t" does not match the expected type "unsigned int"
+     typedef long unsigned int size_t;
+                               ^
+
+"SemaCXX/type-aware-coroutines.cpp", line 11: error: enum "std::align_val_t" was previously declared with a different base type
+     enum class align_val_t : size_t {};
+                ^
+
+"SemaCXX/type-aware-coroutines.cpp", line 18: error: first parameter of allocation function must be of type "size_t"
+      void *operator new(std::type_identity<promise_type>, std::size_t sz, std::align_val_t, int);
+            ^
+
+"SemaCXX/type-aware-coroutines.cpp", line 19: error: first parameter of allocation function must be of type "size_t"
+      void *operator new(std::type_identity<promise_type>, std::size_t sz, std::align_val_t, float);
+            ^
+
+"SemaCXX/type-aware-coroutines.cpp", line 20: error: first parameter of deallocation function must be of type "void *"
+      void operator delete(std::type_identity<promise_type>, void *, std::size_t sz, std::align_val_t);
+           ^
+
+"SemaCXX/type-aware-coroutines.cpp", line 21: error: first parameter of deallocation function must be of type "void *"
+      template <typename T> void operator delete(std::type_identity<T>, void *, std::size_t sz, std::align_val_t) = delete;
+                                 ^
+
+"SemaCXX/type-aware-coroutines.cpp", line 34: error: first parameter of allocation function must be of type "size_t"
+      template <typename... Args> void *operator new(std::type_identity<promise_type>, std::size_t sz, std::align_val_t, Args...);
+                                        ^
+
+"SemaCXX/type-aware-coroutines.cpp", line 35: error: first parameter of deallocation function must be of type "void *"
+      void operator delete(std::type_identity<promise_type>, void *, std::size_t sz, std::align_val_t);
+           ^
+
+"SemaCXX/type-aware-coroutines.cpp", line 51: error: first parameter of allocation function must be of type "size_t"
+      void *operator new(std::size_t sz, float);
+            ^
+
+"SemaCXX/type-aware-coroutines.cpp", line 52: error: first parameter of allocation function must be of type "size_t"
+      void *operator new(std::type_identity<promise_type>, std::size_t sz, std::align_val_t, float);
+            ^
+
+"SemaCXX/type-aware-coroutines.cpp", line 67: error: first parameter of allocation function must be of type "size_t"
+      void *operator new(std::size_t sz, float);
+            ^
+
+"SemaCXX/type-aware-coroutines.cpp", line 68: error: first parameter of deallocation function must be of type "void *"
+      template <typename T> void operator delete(std::type_identity<T>, void *, std::size_t, std::align_val_t);
+                                 ^
+
+"SemaCXX/type-aware-coroutines.cpp", line 82: error: first parameter of allocation function must be of type "size_t"
+      void *operator new(std::size_t sz, float);
+            ^
+
+"SemaCXX/type-aware-coroutines.cpp", line 84: error: first parameter of deallocation function must be of type "void *"
+      template <typename T> void operator delete(std::type_identity<T>, void *, std::size_t, std::align_val_t);
+                                 ^
+
+13 errors detected in the compilation of "Test_name.c".

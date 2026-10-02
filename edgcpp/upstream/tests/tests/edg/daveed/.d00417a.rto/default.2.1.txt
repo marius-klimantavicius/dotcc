@@ -1,0 +1,1 @@
+eccp -DTEST_NUMBER=2 --gcc --c99 --gnu_version=30400 Test_name.c

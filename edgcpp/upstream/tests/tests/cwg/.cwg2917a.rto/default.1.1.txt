@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 -A --c++26 Test_name.c
+"Test_name.c", line 12: error: parameter pack "Us" was referenced but not expanded
+    friend class C<Us>::Nested...;     // OK, not a template-declaration
+                   ^
+
+"Test_name.c", line 12: error: expected an identifier
+    friend class C<Us>::Nested...;     // OK, not a template-declaration
+                              ^
+
+"Test_name.c", line 12: error: invalid friend declaration
+    friend class C<Us>::Nested...;     // OK, not a template-declaration
+    ^
+
+3 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 7: warning: explicit lambda template parameters are a C++20 feature
+  auto f = []() { return []<>() {}; };  // { dg-error "expected identifier" }
+                           ^
+
+"Test_name.c", line 7: error: an empty template parameter list is not allowed in a lambda expression
+  auto f = []() { return []<>() {}; };  // { dg-error "expected identifier" }
+                            ^
+
+1 error detected in the compilation of "Test_name.c".

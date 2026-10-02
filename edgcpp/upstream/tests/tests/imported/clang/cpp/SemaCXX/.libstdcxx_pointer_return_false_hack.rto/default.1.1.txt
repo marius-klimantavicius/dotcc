@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"SemaCXX/libstdcxx_pointer_return_false_hack.cpp", line 32: error: return value type does not match the function type
+  void *test2() { return false; }
+                         ^
+
+"SemaCXX/libstdcxx_pointer_return_false_hack.cpp", line 19: error: return value type does not match the function type
+          return false;
+                 ^
+          detected during instantiation of "std::tr1::hashtable<T>::node *std::tr1::hashtable<T>::find_node() [with T=int]" at line 30
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --c11 Test_name.c
+"Test_name.c", line 13: warning: a UTF-16 character constant cannot occupy more than one code unit; value truncated
+  int c = u'\x1f680';  // Previously an error, now okay
+          ^
+

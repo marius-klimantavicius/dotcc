@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 7: error: expected a ")"
+  template<class... Ts> bool b = __is_constructible(Ts...); // expected-error{{type trait requires 1 or more arguments}}
+                                                      ^
+
+"Test_name.c", line 7: error: parameter pack "Ts" was referenced but not expanded
+  template<class... Ts> bool b = __is_constructible(Ts...); // expected-error{{type trait requires 1 or more arguments}}
+                                                    ^
+
+2 errors detected in the compilation of "Test_name.c".

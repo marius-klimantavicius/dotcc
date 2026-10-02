@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: error: an operator name must be declared as a function
+  double operator ""_baddecl; // { dg-error "8:declaration of .operator\"\"_baddecl. as non-function" }
+         ^
+
+"Test_name.c", line 11: error: an operator name must be declared as a function
+    int operator ""_badtmpldecl; // { dg-error "7:declaration of .operator\"\"_badtmpldecl. as non-function" }
+        ^
+
+"Test_name.c", line 11: warning: variable templates are a C++14 feature
+    int operator ""_badtmpldecl; // { dg-error "7:declaration of .operator\"\"_badtmpldecl. as non-function" }
+                               ^
+
+2 errors detected in the compilation of "Test_name.c".

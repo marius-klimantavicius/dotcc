@@ -1,0 +1,58 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 8: warning: type qualifier on return type is meaningless
+    operator const int();
+             ^
+
+"Test_name.c", line 9: warning: "A::operator void()" will not be called for implicit or explicit conversions
+    operator void();
+    ^
+
+"Test_name.c", line 10: warning: type qualifier on return type is meaningless
+    operator const void();
+             ^
+
+"Test_name.c", line 10: warning: "A::operator const void()" will not be called for implicit or explicit conversions
+    operator const void();
+    ^
+
+"Test_name.c", line 11: error: reference to void is not allowed
+    operator void&();
+                 ^
+
+"Test_name.c", line 12: error: reference to void is not allowed
+    operator const void&();
+                       ^
+
+"Test_name.c", line 13: warning: "A::operator A()" will not be called for implicit or explicit conversions
+    operator A();
+    ^
+
+"Test_name.c", line 14: warning: "A::operator const A()" will not be called for implicit or explicit conversions
+    operator const A();
+    ^
+
+"Test_name.c", line 15: warning: "A::operator A &()" will not be called for implicit or explicit conversions
+    operator A&();
+    ^
+
+"Test_name.c", line 16: warning: "A::operator const A &()" will not be called for implicit or explicit conversions
+    operator const A&();
+    ^
+
+"Test_name.c", line 17: warning: "A::operator B()" will not be called for implicit or explicit conversions
+    operator B();
+    ^
+
+"Test_name.c", line 18: warning: "A::operator const B()" will not be called for implicit or explicit conversions
+    operator const B();
+    ^
+
+"Test_name.c", line 19: warning: "A::operator B &()" will not be called for implicit or explicit conversions
+    operator B&();
+    ^
+
+"Test_name.c", line 20: warning: "A::operator const B &()" will not be called for implicit or explicit conversions
+    operator const B&();
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

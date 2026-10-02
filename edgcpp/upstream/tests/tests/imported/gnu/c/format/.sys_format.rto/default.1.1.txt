@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c89 --strict_gnu Test_name.c
+"./format/sys_format.c", line 13: warning: invalid format string conversion
+    foo ("%I64d %I32d %ld %d\n", v1, v2, v2, v3);
+                                 ^
+

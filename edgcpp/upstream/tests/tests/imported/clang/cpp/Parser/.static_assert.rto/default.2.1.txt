@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++26 Test_name.c
+At end of source: error: expected a ")"
+
+At end of source: error: expected a ";"
+
+2 errors detected in the compilation of "Test_name.c".

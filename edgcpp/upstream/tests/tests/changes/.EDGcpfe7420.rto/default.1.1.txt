@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 19: warning: variable "x" was declared but never referenced
+    T* x = "";         // now generated as ((T *)("")),
+       ^
+
+"Test_name.c", line 20: warning: variable "y" was declared but never referenced
+    wchar_t* y = L"";  // now generated as ((wchar_t *)(L""))
+             ^
+

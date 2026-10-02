@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 20: error: class "lambda []()->void" has no member "i"
+    lam.i = 24;			// { dg-error "" "no member named i" }
+        ^
+
+"Test_name.c", line 13: error: class "A<lambda []()->void>" has no member "i"
+    int f() { return this->i; }	// { dg-error "" "no member named i" }
+                           ^
+          detected during instantiation of "int A<T>::f() [with T=lambda []()->void]" at line 22
+
+2 errors detected in the compilation of "Test_name.c".

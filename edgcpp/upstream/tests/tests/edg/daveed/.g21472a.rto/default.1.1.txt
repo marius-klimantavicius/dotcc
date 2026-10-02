@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=1 --g++ --diag_error=940 Test_name.c

@@ -1,0 +1,101 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 -DUSER_DEFINED Test_name.c
+"Test_name.c", line 35: warning: statement is unreachable
+    return a2;
+    ^
+
+"Test_name.c", line 36: warning: statement is unreachable
+    return std::move(a1);
+    ^
+
+"Test_name.c", line 37: warning: statement is unreachable
+    return std::move(a2);
+    ^
+
+"Test_name.c", line 48: warning: statement is unreachable
+    return a2;
+    ^
+
+"Test_name.c", line 49: warning: statement is unreachable
+    return std::move(a1);
+    ^
+
+"Test_name.c", line 50: warning: statement is unreachable
+    return std::move(a2);
+    ^
+
+"Test_name.c", line 52: warning: dynamic initialization in unreachable code
+    B b2;
+      ^
+
+"Test_name.c", line 54: warning: statement is unreachable
+    return b2;
+    ^
+
+"Test_name.c", line 55: warning: statement is unreachable
+    return std::move(b1);
+    ^
+
+"Test_name.c", line 56: warning: statement is unreachable
+    return std::move(b2);
+    ^
+
+"Test_name.c", line 62: warning: statement is unreachable
+    return A();
+    ^
+
+"Test_name.c", line 63: warning: statement is unreachable
+    return test1(a2);
+    ^
+
+"Test_name.c", line 64: warning: statement is unreachable
+    return std::move(A());
+    ^
+
+"Test_name.c", line 69: warning: statement is unreachable
+    return std::move(test1(a2));
+    ^
+
+"Test_name.c", line 80: warning: statement is unreachable
+    return std::move(global_a);
+    ^
+
+"Test_name.c", line 81: warning: dynamic initialization in unreachable code
+    static A static_a;
+             ^
+
+"Test_name.c", line 83: warning: statement is unreachable
+    return std::move(static_a);
+    ^
+
+"Test_name.c", line 89: warning: statement is unreachable
+    return test3();
+    ^
+
+"Test_name.c", line 91: warning: statement is unreachable
+    return std::move(A());
+    ^
+
+"Test_name.c", line 96: warning: statement is unreachable
+    return std::move(test3());
+    ^
+
+"Test_name.c", line 175: warning: statement is unreachable
+    return std::move((a1));
+    ^
+
+"Test_name.c", line 180: warning: statement is unreachable
+    return (std::move(a1));
+    ^
+
+"Test_name.c", line 185: warning: statement is unreachable
+    return (std::move((a1)));
+    ^
+
+"Test_name.c", line 204: warning: statement is unreachable
+    return std::move(wrap1(a));
+    ^
+
+"Test_name.c", line 209: warning: statement is unreachable
+    return std::move(wrap1(wrap2(a)));
+    ^
+

@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 47: warning: expression has no effect
+    sizeof(takes_member_ptr<void (X::*)(float)>);
+    ^
+
+"Test_name.c", line 48: warning: expression has no effect
+    sizeof(takes_member_ptr<void (X::*)(float) const>);
+    ^
+
+"Test_name.c", line 49: warning: expression has no effect
+    sizeof(takes_member_ptr<void (X::*)(float) volatile>);
+    ^
+
+"Test_name.c", line 50: warning: expression has no effect
+    sizeof(takes_member_ptr<void (X::*)(float) const volatile>);
+    ^
+
+"Test_name.c", line 51: warning: expression has no effect
+    sizeof(order_member_ptrs<void (X::*)(float)>::type);
+    ^
+
+"Test_name.c", line 52: warning: expression has no effect
+    sizeof(order_member_ptrs<void (X::*)(float) const>::c_type);
+    ^
+
+"Test_name.c", line 53: warning: expression has no effect
+    sizeof(order_member_ptrs<void (X::*)(float) volatile>::v_type);
+    ^
+
+"Test_name.c", line 54: warning: expression has no effect
+    sizeof(order_member_ptrs<void (X::*)(float) const volatile>::cv_type);
+    ^
+

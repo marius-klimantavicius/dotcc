@@ -1,0 +1,49 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 9: warning: unknown attribute "retain"
+  extern char test1[] __attribute__((retain));       // expected-warning {{'retain' attribute ignored on a non-definition declaration}}
+                                     ^
+
+"Test_name.c", line 10: warning: unknown attribute "retain"
+  extern const char test2[] __attribute__((retain)); // expected-warning {{'retain' attribute ignored on a non-definition declaration}}
+                                           ^
+
+"Test_name.c", line 11: warning: unknown attribute "retain"
+  const char test3[] __attribute__((retain)) = "";
+                                    ^
+
+"Test_name.c", line 13: warning: unknown attribute "retain"
+  struct __attribute__((retain)) s { // expected-warning {{'retain' attribute only applies to variables with non-local storage, functions, and Objective-C methods}}
+                        ^
+
+"Test_name.c", line 17: warning: unknown attribute "retain"
+    static int a __attribute__((retain));
+                                ^
+
+"Test_name.c", line 18: warning: unknown attribute "retain"
+    int b __attribute__((retain)); // expected-warning {{'retain' attribute only applies to variables with non-local storage, functions, and Objective-C methods}}
+                         ^
+
+"Test_name.c", line 20: warning: variable "b" is used before its value is set
+    (void)b;
+          ^
+
+"Test_name.c", line 23: warning: unknown attribute "retain"
+  __attribute__((retain,used)) static void f0(void) {}
+                 ^
+
+"Test_name.c", line 24: warning: unknown attribute "retain"
+  __attribute__((retain)) static void f1(void) {} // expected-warning {{unused function 'f1'}}
+                 ^
+
+"Test_name.c", line 25: warning: unknown attribute "retain"
+  __attribute__((retain)) void f2(void) {}
+                 ^
+
+"Test_name.c", line 29: warning: unknown attribute "retain"
+  int tentative __attribute__((retain));
+                               ^
+
+"Test_name.c", line 24: warning: function "f1" was declared but never referenced
+  __attribute__((retain)) static void f1(void) {} // expected-warning {{unused function 'f1'}}
+                                      ^
+

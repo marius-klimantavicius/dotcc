@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 5: warning: unknown attribute "nomips16"
+  void __attribute__((nomips16)) foo32(void); // expected-warning {{unknown attribute 'nomips16' ignored}}
+                      ^
+
+"Test_name.c", line 6: warning: unknown attribute "mips16"
+  void __attribute__((mips16)) foo16(void); // expected-warning {{unknown attribute 'mips16' ignored}}
+                      ^
+

@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --c++17 Test_name.c
+"Test_name.c", line 20: error: function "A<Ts...>::operator delete(void *, Ts...) [with Ts=<>]" (declared at line 11) cannot be referenced -- it is a deleted function
+  auto *a1 = new A<>; // error expected
+             ^
+
+"Test_name.c", line 21: error: function "A<Ts...>::operator delete(void *, Ts...) [with Ts=<size_t>]" (declared at line 11) cannot be referenced -- it is a deleted function
+  auto *a2 = new A<size_t>; // error expected
+             ^
+
+"Test_name.c", line 22: error: function "A<Ts...>::operator delete(void *, Ts...) [with Ts=<std::align_val_t>]" (declared at line 11) cannot be referenced -- it is a deleted function
+  auto *a3 = new A<std::align_val_t>; // error expected
+             ^
+
+"Test_name.c", line 23: error: function "A<Ts...>::operator delete(void *, Ts...) [with Ts=<size_t, std::align_val_t>]" (declared at line 11) cannot be referenced -- it is a deleted function
+  auto *a4 = new A<size_t, std::align_val_t>; // error expected
+             ^
+
+"Test_name.c", line 24: error: function "B<Ts...>::operator delete(void *, Ts...) [with Ts=<std::align_val_t>]" (declared at line 17) cannot be referenced -- it is a deleted function
+  auto *a5 = new B<std::align_val_t>; // error expected
+             ^
+
+5 errors detected in the compilation of "Test_name.c".

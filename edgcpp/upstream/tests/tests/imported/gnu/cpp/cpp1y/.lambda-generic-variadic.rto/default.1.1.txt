@@ -1,0 +1,47 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 11: error: "auto" is not allowed here
+    auto a = [] (auto, pair<auto,auto> v) { return sizeof (v); };
+                            ^
+
+"Test_name.c", line 11: error: "auto" is not allowed here
+    auto a = [] (auto, pair<auto,auto> v) { return sizeof (v); };
+                                 ^
+
+"Test_name.c", line 12: error: "auto" is not allowed here
+    auto b = [] (auto, pair<pair<auto,auto>,auto>... v) { return sizeof... (v); };
+                                 ^
+
+"Test_name.c", line 12: error: "auto" is not allowed here
+    auto b = [] (auto, pair<pair<auto,auto>,auto>... v) { return sizeof... (v); };
+                                      ^
+
+"Test_name.c", line 12: error: "auto" is not allowed here
+    auto b = [] (auto, pair<pair<auto,auto>,auto>... v) { return sizeof... (v); };
+                                            ^
+
+"Test_name.c", line 12: error: expected a ")"
+    auto b = [] (auto, pair<pair<auto,auto>,auto>... v) { return sizeof... (v); };
+                                                     ^
+
+"Test_name.c", line 12: error: pack expansion does not make use of any argument packs
+    auto b = [] (auto, pair<pair<auto,auto>,auto>... v) { return sizeof... (v); };
+                                                 ^
+
+"Test_name.c", line 12: error: the operand of sizeof... must be a parameter pack name
+    auto b = [] (auto, pair<pair<auto,auto>,auto>... v) { return sizeof... (v); };
+                                                                            ^
+
+"Test_name.c", line 15: error: no instance of function template "lambda [](auto, pair<pair<<error-type>, <error-type>>, <error-type>>)->auto" matches the argument list
+            argument types are: (int, pair<pair<short, char>, double>, pair<pair<float, long>, int>)
+            object type is: lambda [](auto, pair<pair<<error-type>, <error-type>>, <error-type>>)->auto
+    b(2, pair<pair<short,char>, double>(), pair<pair<float,long>, int>());
+    ^
+"Test_name.c", line 12: note: number of parameters of function template "lambda [](auto, pair<pair<<error-type>, <error-type>>, <error-type>>)->auto" does not match the call
+    auto b = [] (auto, pair<pair<auto,auto>,auto>... v) { return sizeof... (v); };
+                ^
+
+"Test_name.c", line 12: warning: variable "b" was set but never used
+    auto b = [] (auto, pair<pair<auto,auto>,auto>... v) { return sizeof... (v); };
+         ^
+
+9 errors detected in the compilation of "Test_name.c".

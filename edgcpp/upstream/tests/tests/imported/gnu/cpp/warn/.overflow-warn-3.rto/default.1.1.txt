@@ -1,0 +1,132 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./warn/overflow-warn-3.C", line 15: error: expression must have a constant value
+    E3 = 1 / 0,
+         ^
+"./warn/overflow-warn-3.C", line 15: note: division by zero
+    E3 = 1 / 0,
+           ^
+
+"./warn/overflow-warn-3.C", line 19: error: expression must have a constant value
+    E4 = 0 * (1 / 0),
+         ^
+"./warn/overflow-warn-3.C", line 19: note: division by zero
+    E4 = 0 * (1 / 0),
+                ^
+
+"./warn/overflow-warn-3.C", line 22: error: expression must have a constant value
+    E5 = 0x7fffffff 
+         ^
+"./warn/overflow-warn-3.C", line 22: note: value exceeds range of "int"
+                + 1,
+                ^
+
+"./warn/overflow-warn-3.C", line 25: error: expression must have a constant value
+    E6 = 0 * (0x7fffffff 
+         ^
+"./warn/overflow-warn-3.C", line 25: note: value exceeds range of "int"
+                     + 1),
+                     ^
+
+"./warn/overflow-warn-3.C", line 33: error: expression must have a constant value
+    int : 0 * (1 / 0);
+          ^
+"./warn/overflow-warn-3.C", line 33: note: division by zero
+    int : 0 * (1 / 0);
+                 ^
+
+"./warn/overflow-warn-3.C", line 38: error: expression must have a constant value
+    int : 0 * (0x7fffffff 
+          ^
+"./warn/overflow-warn-3.C", line 38: note: value exceeds range of "int"
+                      + 1);
+                      ^
+
+"./warn/overflow-warn-3.C", line 47: warning: integer operation result is out of range
+                   + 1;
+                   ^
+
+"./warn/overflow-warn-3.C", line 47: warning: variable "c" was declared but never referenced
+    int c = 0x7fffffff 
+        ^
+
+"./warn/overflow-warn-3.C", line 52: warning: integer operation result is out of range
+                         + 1;
+                         ^
+
+"./warn/overflow-warn-3.C", line 60: warning: integer operation result is out of range
+                        + 1);
+                        ^
+
+"./warn/overflow-warn-3.C", line 60: error: a value of type "int" cannot be used to initialize an entity of type "void *"
+  void *p = 0 * (0x7fffffff 
+            ^
+
+"./warn/overflow-warn-3.C", line 63: warning: division by zero
+  void *q = 0 * (1 / 0);
+                   ^
+
+"./warn/overflow-warn-3.C", line 63: error: a value of type "int" cannot be used to initialize an entity of type "void *"
+  void *q = 0 * (1 / 0);
+            ^
+
+"./warn/overflow-warn-3.C", line 65: error: a value of type "int" cannot be used to initialize an entity of type "void *"
+  void *r = (1 ? 0 : 0x7fffffff 
+            ^
+
+"./warn/overflow-warn-3.C", line 74: error: division by zero
+      case 0 * (1/0):
+                 ^
+
+"./warn/overflow-warn-3.C", line 79: error: integer operation result is out of range
+                           + 1):
+                           ^
+
+"./warn/overflow-warn-3.C", line 88: warning: integer operation result is out of range
+                  + 1;
+                  ^
+
+"./warn/overflow-warn-3.C", line 94: warning: integer operation result is out of range
+                  + 1 - 0x7fffffff
+                  ^
+
+"./warn/overflow-warn-3.C", line 103: warning: integer conversion resulted in a change of sign
+    fsc (0x7f 
+         ^
+
+"./warn/overflow-warn-3.C", line 107: warning: integer conversion resulted in a change of sign
+    fuc (-1);
+         ^
+
+"./warn/overflow-warn-3.C", line 111: warning: integer conversion resulted in truncation
+    fuc (-
+         ^
+
+"./warn/overflow-warn-3.C", line 126: warning: integer conversion resulted in a change of sign
+    fsi ((unsigned)0x7fffffff 
+         ^
+
+"./warn/overflow-warn-3.C", line 127: warning: integer conversion resulted in a change of sign
+    si = (unsigned)0x7fffffff 
+         ^
+
+"./warn/overflow-warn-3.C", line 129: warning: integer conversion resulted in a change of sign
+    fsi ((unsigned)0x7fffffff 
+         ^
+
+"./warn/overflow-warn-3.C", line 130: warning: integer conversion resulted in a change of sign
+    si = (unsigned)0x7fffffff 
+         ^
+
+"./warn/overflow-warn-3.C", line 134: warning: integer conversion resulted in a change of sign
+    fui (-1);
+         ^
+
+"./warn/overflow-warn-3.C", line 135: warning: integer conversion resulted in a change of sign
+    ui = -1;
+         ^
+
+"./warn/overflow-warn-3.C", line 136: warning: integer conversion resulted in a change of sign
+    ui = x ? -1 : 1U;
+             ^
+
+11 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,98 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 7: error: identifier "__rvv_int8m1_t" is undefined
+  __rvv_int8m1_t foo8() { /* expected-error {{RISC-V type '__rvv_int8m1_t' requires the 'zve32x' extension}} */
+  ^
+
+"Test_name.c", line 8: error: identifier "__rvv_int8m1_t" is undefined
+    __rvv_int8m1_t i8m1; /* expected-error {{RISC-V type '__rvv_int8m1_t' requires the 'zve32x' extension}} */
+    ^
+
+"Test_name.c", line 15: error: identifier "__rvv_int16m1_t" is undefined
+  __rvv_int16m1_t foo16() { /* expected-error {{RISC-V type '__rvv_int16m1_t' requires the 'zve32x' extension}} */
+  ^
+
+"Test_name.c", line 16: error: identifier "__rvv_int16m1_t" is undefined
+    __rvv_int16m1_t i16m1; /* expected-error {{RISC-V type '__rvv_int16m1_t' requires the 'zve32x' extension}} */
+    ^
+
+"Test_name.c", line 23: error: identifier "__rvv_int32m1_t" is undefined
+  __rvv_int32m1_t foo32() { /* expected-error {{RISC-V type '__rvv_int32m1_t' requires the 'zve32x' extension}} */
+  ^
+
+"Test_name.c", line 24: error: identifier "__rvv_int32m1_t" is undefined
+    __rvv_int32m1_t i32m1; /* expected-error {{RISC-V type '__rvv_int32m1_t' requires the 'zve32x' extension}} */
+    ^
+
+"Test_name.c", line 31: error: identifier "__rvv_int8m1x2_t" is undefined
+  __rvv_int8m1x2_t bar8() { /* expected-error {{RISC-V type '__rvv_int8m1x2_t' requires the 'zve32x' extension}} */
+  ^
+
+"Test_name.c", line 32: error: identifier "__rvv_int8m1x2_t" is undefined
+    __rvv_int8m1x2_t i8m1x2; /* expected-error {{RISC-V type '__rvv_int8m1x2_t' requires the 'zve32x' extension}} */
+    ^
+
+"Test_name.c", line 39: error: identifier "__rvv_int16m1x2_t" is undefined
+  __rvv_int16m1x2_t bar16() { /* expected-error {{RISC-V type '__rvv_int16m1x2_t' requires the 'zve32x' extension}} */
+  ^
+
+"Test_name.c", line 40: error: identifier "__rvv_int16m1x2_t" is undefined
+    __rvv_int16m1x2_t i16m1x2; /* expected-error {{RISC-V type '__rvv_int16m1x2_t' requires the 'zve32x' extension}} */
+    ^
+
+"Test_name.c", line 47: error: identifier "__rvv_int32m1x2_t" is undefined
+  __rvv_int32m1x2_t bar32() { /* expected-error {{RISC-V type '__rvv_int32m1x2_t' requires the 'zve32x' extension}} */
+  ^
+
+"Test_name.c", line 48: error: identifier "__rvv_int32m1x2_t" is undefined
+    __rvv_int32m1x2_t i32m1x2; /* expected-error {{RISC-V type '__rvv_int32m1x2_t' requires the 'zve32x' extension}} */
+    ^
+
+"Test_name.c", line 55: error: identifier "__rvv_bool1_t" is undefined
+  __rvv_bool1_t vbool1 () { /* expected-error {{RISC-V type '__rvv_bool1_t' requires the 'zve32x' extension}} */
+  ^
+
+"Test_name.c", line 56: error: identifier "__rvv_bool1_t" is undefined
+    __rvv_bool1_t b1; /* expected-error {{RISC-V type '__rvv_bool1_t' requires the 'zve32x' extension}} */
+    ^
+
+"Test_name.c", line 63: error: identifier "__rvv_bool2_t" is undefined
+  __rvv_bool2_t vbool2 () { /* expected-error {{RISC-V type '__rvv_bool2_t' requires the 'zve32x' extension}} */
+  ^
+
+"Test_name.c", line 64: error: identifier "__rvv_bool2_t" is undefined
+    __rvv_bool2_t b2; /* expected-error {{RISC-V type '__rvv_bool2_t' requires the 'zve32x' extension}} */
+    ^
+
+"Test_name.c", line 71: error: identifier "__rvv_bool4_t" is undefined
+  __rvv_bool4_t vbool4 () { /* expected-error {{RISC-V type '__rvv_bool4_t' requires the 'zve32x' extension}} */
+  ^
+
+"Test_name.c", line 72: error: identifier "__rvv_bool4_t" is undefined
+    __rvv_bool4_t b4; /* expected-error {{RISC-V type '__rvv_bool4_t' requires the 'zve32x' extension}} */
+    ^
+
+"Test_name.c", line 79: error: identifier "__rvv_bool8_t" is undefined
+  __rvv_bool8_t vbool8 () { /* expected-error {{RISC-V type '__rvv_bool8_t' requires the 'zve32x' extension}} */
+  ^
+
+"Test_name.c", line 80: error: identifier "__rvv_bool8_t" is undefined
+    __rvv_bool8_t b8; /* expected-error {{RISC-V type '__rvv_bool8_t' requires the 'zve32x' extension}} */
+    ^
+
+"Test_name.c", line 87: error: identifier "__rvv_bool16_t" is undefined
+  __rvv_bool16_t vbool16 () { /* expected-error {{RISC-V type '__rvv_bool16_t' requires the 'zve32x' extension}} */
+  ^
+
+"Test_name.c", line 88: error: identifier "__rvv_bool16_t" is undefined
+    __rvv_bool16_t b16; /* expected-error {{RISC-V type '__rvv_bool16_t' requires the 'zve32x' extension}} */
+    ^
+
+"Test_name.c", line 95: error: identifier "__rvv_bool32_t" is undefined
+  __rvv_bool32_t vbool32 () { /* expected-error {{RISC-V type '__rvv_bool32_t' requires the 'zve32x' extension}} */
+  ^
+
+"Test_name.c", line 96: error: identifier "__rvv_bool32_t" is undefined
+    __rvv_bool32_t b32; /* expected-error {{RISC-V type '__rvv_bool32_t' requires the 'zve32x' extension}} */
+    ^
+
+24 errors detected in the compilation of "Test_name.c".

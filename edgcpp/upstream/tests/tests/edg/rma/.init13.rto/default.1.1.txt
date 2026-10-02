@@ -1,0 +1,109 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 4: remark: class "A" defines no constructor to initialize the following:
+            const member "A::i"
+  struct A {const int i;};
+         ^
+
+"Test_name.c", line 4: error: implicitly generated constructor for class "A" cannot initialize:
+            const member "A::i"
+  struct A {const int i;};
+         ^
+          detected during implicit generation of "A::A()" at line 6
+
+"Test_name.c", line 6: error: variable "a1" has an uninitialized const or reference member
+  A a1;
+    ^
+
+"Test_name.c", line 8: remark: class "B" defines no constructor to initialize the following:
+            reference member "B::ri"
+  struct B {int &ri;};
+         ^
+
+"Test_name.c", line 8: error: implicitly generated constructor for class "B" cannot initialize:
+            reference member "B::ri"
+  struct B {int &ri;};
+         ^
+          detected during implicit generation of "B::B()" at line 10
+
+"Test_name.c", line 11: remark: class "C" defines no constructor to initialize the following:
+            const member "C::i"
+            reference member "C::ri"
+  struct C {const int i; int &ri; };
+         ^
+
+"Test_name.c", line 13: error: variable "c1" has an uninitialized const or reference member
+  C c1 = {1};
+    ^
+
+"Test_name.c", line 11: error: implicitly generated constructor for class "C" cannot initialize:
+            const member "C::i"
+            reference member "C::ri"
+  struct C {const int i; int &ri; };
+         ^
+          detected during implicit generation of "C::C()" at line 14
+
+"Test_name.c", line 16: error: variable "ca1" has an uninitialized const or reference member
+  C ca1[2] = {1, i};
+    ^
+
+"Test_name.c", line 17: error: variable "ca2" has an uninitialized const or reference member
+  C ca2[2] = {1, i, 1};
+    ^
+
+"Test_name.c", line 18: remark: class "D" defines no constructor to initialize the following:
+            const member "D::j"
+  struct D { int i; const int j; int k; };
+         ^
+
+"Test_name.c", line 18: error: implicitly generated constructor for class "D" cannot initialize:
+            const member "D::j"
+  struct D { int i; const int j; int k; };
+         ^
+          detected during implicit generation of "D::D()" at line 20
+
+"Test_name.c", line 20: error: variable "d1" has an uninitialized const or reference member
+  D d1;
+    ^
+
+"Test_name.c", line 26: remark: class "E" defines no constructor to initialize the following:
+            reference member "E::ri"
+  struct E { int i; int& ri; int j; };
+         ^
+
+"Test_name.c", line 26: error: implicitly generated constructor for class "E" cannot initialize:
+            reference member "E::ri"
+  struct E { int i; int& ri; int j; };
+         ^
+          detected during implicit generation of "E::E()" at line 28
+
+"Test_name.c", line 29: error: variable "e2" has an uninitialized const or reference member
+  E e2 = { 1 };
+    ^
+
+"Test_name.c", line 32: error: variable "ea2" has an uninitialized const or reference member
+  E ea2[2] = { 1, i, 1, 1 };
+    ^
+
+"Test_name.c", line 33: error: variable "ea3" has an uninitialized const or reference member
+  E ea3[2] = { 1, i, 1 };
+    ^
+
+"Test_name.c", line 34: error: uninitialized member "F::a" has a const member
+  struct F { A a; B b; C c; };
+               ^
+          detected during implicit generation of "F::F()" at line 36
+
+"Test_name.c", line 37: error: variable "f2" has an uninitialized const or reference member
+  F f2 = { 1, i, 1 };
+    ^
+
+"Test_name.c", line 38: error: uninitialized member "G::a" has a const member
+  struct G { A a[2]; };
+               ^
+          detected during implicit generation of "G::G()" at line 40
+
+"Test_name.c", line 40: error: variable "g1" has an uninitialized const or reference member
+  G g1;
+    ^
+
+17 errors detected in the compilation of "Test_name.c".

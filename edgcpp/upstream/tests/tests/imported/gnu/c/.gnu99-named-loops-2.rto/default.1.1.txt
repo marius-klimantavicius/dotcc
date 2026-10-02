@@ -1,0 +1,70 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 14: error: expected a ";"
+        break label2;		/* { dg-error "'break' statement operand 'label2' does not refer to a named loop or 'switch'; did you mean 'label1'\\\?" } */
+              ^
+
+"Test_name.c", line 16: error: expected a ";"
+      break label3;		/* { dg-error "'break' statement operand 'label3' does not refer to a named loop or 'switch'" } */
+            ^
+
+"Test_name.c", line 22: error: expected a ";"
+  	continue label5;	/* { dg-error "'continue' statement operand 'label5' does not refer to a named loop" } */
+  	         ^
+
+"Test_name.c", line 23: error: expected a ";"
+        break label4;
+              ^
+
+"Test_name.c", line 26: error: expected a ";"
+  	continue label4;	/* { dg-error "'continue' statement operand 'label4' refers to a named 'switch'" } */
+  	         ^
+
+"Test_name.c", line 30: error: expected a ";"
+      continue label7;		/* { dg-error "'continue' statement operand 'label7' does not refer to a named loop; did you mean 'label6'\\\?" } */
+               ^
+
+"Test_name.c", line 36: error: expected a ";"
+      break label8;		/* { dg-error "'break' statement operand 'label8' does not refer to a named loop or 'switch'" } */
+            ^
+
+"Test_name.c", line 39: error: expected a ";"
+      continue label9;		/* { dg-error "'continue' statement operand 'label9' does not refer to a named loop" } */
+               ^
+
+"Test_name.c", line 45: error: expected a ";"
+        break label10;		/* { dg-error "'break' statement operand 'label10' does not refer to a named loop or 'switch'" } */
+              ^
+
+"Test_name.c", line 10: warning: label "label1" was declared but never referenced
+   label1:
+   ^
+
+"Test_name.c", line 12: warning: label "another_label1" was declared but never referenced
+     another_label1:
+     ^
+
+"Test_name.c", line 17: warning: label "label4" was declared but never referenced
+   label4:			/* { dg-message "'switch' name defined here" } */
+   ^
+
+"Test_name.c", line 28: warning: label "label6" was declared but never referenced
+   label6:
+   ^
+
+"Test_name.c", line 31: warning: label "label2" was declared but never referenced
+   label2:
+   ^
+
+"Test_name.c", line 34: warning: label "label8" was declared but never referenced
+   label8:;
+   ^
+
+"Test_name.c", line 37: warning: label "label9" was declared but never referenced
+   label9:;
+   ^
+
+"Test_name.c", line 40: warning: label "label10" was declared but never referenced
+   label10:
+   ^
+
+9 errors detected in the compilation of "Test_name.c".

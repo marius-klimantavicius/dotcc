@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 6: error: variable "x" was declared with a never-completed type
+  static struct foo x;  /* { dg-error "storage size of 'x' isn't known" } */
+                    ^
+
+"Test_name.c", line 6: warning: variable "x" was declared but never referenced
+  static struct foo x;  /* { dg-error "storage size of 'x' isn't known" } */
+                    ^
+
+"Test_name.c", line 7: error: variable "y" was declared with a never-completed type
+  static union bar y;  /* { dg-error "storage size of 'y' isn't known" } */
+                   ^
+
+"Test_name.c", line 7: warning: variable "y" was declared but never referenced
+  static union bar y;  /* { dg-error "storage size of 'y' isn't known" } */
+                   ^
+
+"Test_name.c", line 10: error: variable "p_obj" was declared with a never-completed type
+  static p p_obj;  /* { dg-error "storage size of 'p_obj' isn't known" } */
+           ^
+
+"Test_name.c", line 10: warning: variable "p_obj" was declared but never referenced
+  static p p_obj;  /* { dg-error "storage size of 'p_obj' isn't known" } */
+           ^
+
+"Test_name.c", line 12: error: variable "e_var" was declared with a never-completed type
+  static enum e e_var; /* { dg-error "storage size of 'e_var' isn't known" } */
+                ^
+
+"Test_name.c", line 12: warning: variable "e_var" was declared but never referenced
+  static enum e e_var; /* { dg-error "storage size of 'e_var' isn't known" } */
+                ^
+
+4 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,86 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 14: warning: 'explicit(bool)' is a C++20 feature
+    constexpr explicit (A)(int); // #1
+              ^
+
+"Test_name.c", line 14: error: type name is not allowed
+    constexpr explicit (A)(int); // #1
+                        ^
+
+"Test_name.c", line 14: error: expected an identifier
+    constexpr explicit (A)(int); // #1
+                           ^
+
+"Test_name.c", line 14: error: explicit type is missing ("int" assumed)
+    constexpr explicit (A)(int); // #1
+                          ^
+
+"Test_name.c", line 24: warning: 'explicit(bool)' is a C++20 feature
+    constexpr explicit (A(float)); // #1b
+              ^
+
+"Test_name.c", line 24: error: incomplete type "disambig::A" is not allowed
+    constexpr explicit (A(float)); // #1b
+                        ^
+
+"Test_name.c", line 24: error: type name is not allowed
+    constexpr explicit (A(float)); // #1b
+                          ^
+
+"Test_name.c", line 24: error: declaration does not declare anything
+    constexpr explicit (A(float)); // #1b
+    ^
+
+"Test_name.c", line 24: error: "explicit" is not allowed
+    constexpr explicit (A(float)); // #1b
+    ^
+
+"Test_name.c", line 24: error: "constexpr" is not valid here
+    constexpr explicit (A(float)); // #1b
+    ^
+
+"Test_name.c", line 29: warning: 'explicit(bool)' is a C++20 feature
+    explicit (operator int)(); // #2
+    ^
+
+"Test_name.c", line 29: error: identifier "operator int" is undefined
+    explicit (operator int)(); // #2
+              ^
+
+"Test_name.c", line 29: error: expected an identifier
+    explicit (operator int)(); // #2
+                            ^
+
+"Test_name.c", line 29: error: explicit type is missing ("int" assumed)
+    explicit (operator int)(); // #2
+                           ^
+
+"Test_name.c", line 34: warning: 'explicit(bool)' is a C++20 feature
+    explicit (A::operator float)(); // #2b
+    ^
+
+"Test_name.c", line 34: error: class "disambig::A" has no member "operator float"
+    explicit (A::operator float)(); // #2b
+                 ^
+
+"Test_name.c", line 34: error: expected an identifier
+    explicit (A::operator float)(); // #2b
+                                 ^
+
+"Test_name.c", line 34: error: explicit type is missing ("int" assumed)
+    explicit (A::operator float)(); // #2b
+                                ^
+
+"Test_name.c", line 49: warning: 'explicit(bool)' is a C++20 feature
+    explicit (A()) B(); // #3
+    ^
+
+"Test_name.c", line 54: warning: 'explicit(bool)' is a C++20 feature
+    explicit (C)(B)(A); // #4
+    ^
+
+"Test_name.c", line 58: warning: 'explicit(bool)' is a C++20 feature
+    explicit (operator+(A())) operator int(); // #5
+    ^
+
+14 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,58 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./dfp/union-init.c", line 7: error: identifier "_Decimal128" is undefined
+    _Decimal128 d128;
+    ^
+
+"./dfp/union-init.c", line 14: error: identifier "_Decimal64" is undefined
+    _Decimal64 d64;
+    ^
+
+"./dfp/union-init.c", line 19: error: extra text after expected end of number
+    static union u u1 = { 0.0dl };
+                             ^
+
+"./dfp/union-init.c", line 20: error: extra text after expected end of number
+    static union u u2 = { 4.2dl };
+                             ^
+
+"./dfp/union-init.c", line 23: error: extra text after expected end of number
+    static union n n1 = { 2.2dd };
+                             ^
+
+"./dfp/union-init.c", line 26: error: identifier "_Decimal128" is undefined
+    _Decimal128 d128;
+    ^
+
+"./dfp/union-init.c", line 27: error: identifier "_Decimal64" is undefined
+    _Decimal64 d64;
+    ^
+
+"./dfp/union-init.c", line 30: error: extra text after expected end of number
+    if (u1.d128 != 0.0dl)
+                      ^
+
+"./dfp/union-init.c", line 33: error: extra text after expected end of number
+    if (u2.d128 != 4.2dl)
+                      ^
+
+"./dfp/union-init.c", line 37: error: extra text after expected end of number
+    d128 = 1.23dl;
+               ^
+
+"./dfp/union-init.c", line 38: error: extra text after expected end of number
+    d64 = 4.56dd;
+              ^
+
+"./dfp/union-init.c", line 42: error: extra text after expected end of number
+    if (u4.d128 != 1.23dl)
+                       ^
+
+"./dfp/union-init.c", line 45: internal error: assertion failed at: "overload.c", line <suppressed> in prep_transparent_union_conversion_operand
+
+    u4 = (union u) d;
+                   ^
+
+12 errors and 1 catastrophic error detected in the compilation of "Test_name.c".
+Compilation aborted.
+Aborted
+eccp: front end returned an exit status of 134

@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 12: warning: function "A::f() &" is hidden by "B::f" -- virtual function override intended?
+    void f();			// doesn't override
+         ^
+
+"Test_name.c", line 15: error: object of abstract class type "B" is not allowed:
+            pure virtual function "A::f" has no overrider
+  B b;				// { dg-error "abstract" }
+    ^
+
+1 error detected in the compilation of "Test_name.c".

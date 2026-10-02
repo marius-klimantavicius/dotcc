@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=5 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 -DWITH_PCH Test_name.c
+"Test_name.c", line 15: warning: "delete" applied to a pointer-to-array type treated as delete[]
+    delete a; // expected-warning {{'delete' applied to a pointer-to-array type}}
+           ^
+

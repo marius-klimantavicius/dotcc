@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++23 --exceptions Test_name.c
+"Test_name.c", line 36: error: expression must have a constant value
+      static_assert(f2()); // expected-error {{static assertion expression is not an integral constant expression}}
+                    ^
+"Test_name.c", line 25: note: expression cannot be interpreted
+        constexpr ~Y() noexcept(false) { throw "oops"; }  // expected-note {{subexpression not valid in a constant expression}}
+                                         ^
+"Test_name.c", line 33: note: called from:
+        for (bool b = false; Y x = {b}; b = true) {} // expected-note {{in call to 'x.~Y()'}}
+                               ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,55 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 8: error: the body of a constexpr function cannot be a function try block
+  try {			// { dg-warning "function-try-block body of 'constexpr' function only available with" "" { target c++17_down } }
+  ^
+
+"Test_name.c", line 18: error: the body of a constexpr function cannot be a function try block
+  try {			// { dg-warning "function-try-block body of 'constexpr' function only available with" "" { target c++17_down } }
+  ^
+
+"Test_name.c", line 21: error: statement may not appear in a constexpr function
+      try {			// { dg-warning "'try' in 'constexpr' function only available with" "" { target c++17_down } }
+      ^
+
+"Test_name.c", line 33: error: statement may not appear in a constexpr function
+    try { return true; } catch (...) { return false; }	// { dg-warning "'try' in 'constexpr' function only available with" "" { target c++17_down } }
+    ^
+
+"Test_name.c", line 37: error: the body of a constexpr constructor cannot be a function try block
+    constexpr S () try : m (1)	// { dg-warning "function-try-block body of 'constexpr' constructor only available with" "" { target c++17_down } }
+                   ^
+
+"Test_name.c", line 39: error: statement may not appear in a constexpr constructor
+      try {		// { dg-warning "'try' in 'constexpr' function only available with" "" { target c++17_down } }
+      ^
+
+"Test_name.c", line 53: error: the body of a constexpr constructor cannot be a function try block
+    try {			// { dg-warning "function-try-block body of 'constexpr' constructor only available with" "" { target c++17_down } }
+    ^
+
+"Test_name.c", line 59: error: expression must have a constant value
+  static_assert (bar () == 36, "");
+                 ^
+"Test_name.c", line 59: note: this call cannot be evaluated because the target function function "bar" (declared at line 17) is not constexpr or not completely defined yet
+  static_assert (bar () == 36, "");
+                     ^
+
+"Test_name.c", line 60: error: expression must have a constant value
+  static_assert (baz (), "");
+                 ^
+"Test_name.c", line 60: note: this call cannot be evaluated because the target function function "baz" (declared at line 31) is not constexpr or not completely defined yet
+  static_assert (baz (), "");
+                     ^
+
+"Test_name.c", line 61: error: initialization is not constant
+  constexpr S s;
+              ^
+"Test_name.c", line 61: note: this call cannot be evaluated because the target function function "S::S()" (declared at line 37) is not constexpr or not completely defined yet
+  constexpr S s;
+              ^
+
+"Test_name.c", line 63: warning: variable "t" was declared but never referenced
+  constexpr T t;
+              ^
+
+10 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,73 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 5: warning: unknown attribute "modular_format"
+  int printf(const char *fmt, ...)  __attribute__((modular_format(__modular_printf, "__printf", "float")));  // no-error
+                                                   ^
+
+"Test_name.c", line 6: warning: unknown attribute "modular_format"
+  int myprintf(const char *fmt, ...)  __attribute__((modular_format(__modular_printf, "__printf", "float")));  // expected-error {{'modular_format' attribute requires 'format' attribute}}
+                                                     ^
+
+"Test_name.c", line 8: warning: unknown attribute "modular_format"
+  int string_impl_fn(const char *fmt, ...)  __attribute__((modular_format("__modular_printf", "__printf", "float"), format(printf, 1, 2)));  // expected-error {{'modular_format' attribute requires parameter 1 to be an identifier}}
+                                                           ^
+
+"Test_name.c", line 10: warning: unknown attribute "modular_format"
+  int lprintf(const char *fmt, ...) __attribute__((modular_format(__modular_printf, L"__printf", L"float"), format(printf, 1, 2)));
+                                                   ^
+
+"Test_name.c", line 13: warning: unknown attribute "modular_format"
+  int dupe(const char *fmt, ...)  __attribute__((modular_format(__modular_printf, "__printf", "float", "int", "float"), format(printf, 1, 2))); // expected-error {{duplicate aspect 'float' in 'modular_format' attribute}}
+                                                 ^
+
+"Test_name.c", line 14: warning: unknown attribute "modular_format"
+  int multi_dupe(const char *fmt, ...)  __attribute__((modular_format(__modular_printf, "__printf", "float", "int", "float", "int"), format(printf, 1, 2))); // expected-error {{duplicate aspect 'float' in 'modular_format' attribute}} \
+                                                       ^
+
+"Test_name.c", line 18: warning: unknown attribute "modular_format"
+  int same_attr(const char *fmt, ...) __attribute__((modular_format(__modular_printf, "__printf", "float"), modular_format(__modular_printf, "__printf", "float"), format(printf, 1, 2))); // no-warning
+                                                     ^
+
+"Test_name.c", line 18: warning: unknown attribute "modular_format"
+  int same_attr(const char *fmt, ...) __attribute__((modular_format(__modular_printf, "__printf", "float"), modular_format(__modular_printf, "__printf", "float"), format(printf, 1, 2))); // no-warning
+                                                                                                            ^
+
+"Test_name.c", line 21: warning: unknown attribute "modular_format"
+  int diff_attr(const char *fmt, ...) __attribute__((modular_format(__modular_printf, "__printf", "float"), format(printf, 1, 2), modular_format(__modular_printf, "__printf", "int"))); // expected-error {{attribute 'modular_format' is already applied with different arguments}} expected-note {{conflicting attribute is here}}
+                                                     ^
+
+"Test_name.c", line 21: warning: unknown attribute "modular_format"
+  int diff_attr(const char *fmt, ...) __attribute__((modular_format(__modular_printf, "__printf", "float"), format(printf, 1, 2), modular_format(__modular_printf, "__printf", "int"))); // expected-error {{attribute 'modular_format' is already applied with different arguments}} expected-note {{conflicting attribute is here}}
+                                                                                                                                  ^
+
+"Test_name.c", line 23: warning: unknown attribute "modular_format"
+  int diff_attr2(const char *fmt, ...) __attribute__((modular_format(__modular_printf, "__printf", "float"), format(printf, 1, 2), modular_format(__modular_printf, "__other", "float"))); // expected-error {{attribute 'modular_format' is already applied with different arguments}} expected-note {{conflicting attribute is here}}
+                                                      ^
+
+"Test_name.c", line 23: warning: unknown attribute "modular_format"
+  int diff_attr2(const char *fmt, ...) __attribute__((modular_format(__modular_printf, "__printf", "float"), format(printf, 1, 2), modular_format(__modular_printf, "__other", "float"))); // expected-error {{attribute 'modular_format' is already applied with different arguments}} expected-note {{conflicting attribute is here}}
+                                                                                                                                   ^
+
+"Test_name.c", line 25: warning: unknown attribute "modular_format"
+  int diff_attr3(const char *fmt, ...) __attribute__((modular_format(__modular_printf, "__printf", "float"), format(printf, 1, 2), modular_format(__other, "__printf", "float"))); // expected-error {{attribute 'modular_format' is already applied with different arguments}} expected-note {{conflicting attribute is here}}
+                                                      ^
+
+"Test_name.c", line 25: warning: unknown attribute "modular_format"
+  int diff_attr3(const char *fmt, ...) __attribute__((modular_format(__modular_printf, "__printf", "float"), format(printf, 1, 2), modular_format(__other, "__printf", "float"))); // expected-error {{attribute 'modular_format' is already applied with different arguments}} expected-note {{conflicting attribute is here}}
+                                                                                                                                   ^
+
+"Test_name.c", line 28: warning: unknown attribute "modular_format"
+  int diff_order(const char *fmt, ...) __attribute__((modular_format(__modular_printf, "__printf", "float", "int"), format(printf, 1, 2), modular_format(__modular_printf, "__printf", "int", "float"))); // no-error
+                                                      ^
+
+"Test_name.c", line 28: warning: unknown attribute "modular_format"
+  int diff_order(const char *fmt, ...) __attribute__((modular_format(__modular_printf, "__printf", "float", "int"), format(printf, 1, 2), modular_format(__modular_printf, "__printf", "int", "float"))); // no-error
+                                                                                                                                          ^
+
+"Test_name.c", line 32: warning: unknown attribute "modular_format"
+  int redecl(const char *fmt, ...) __attribute__((modular_format(__modular_printf, "__printf", "float"))); // expected-note {{conflicting attribute is here}}
+                                                  ^
+
+"Test_name.c", line 33: warning: unknown attribute "modular_format"
+  int redecl(const char *fmt, ...) __attribute__((modular_format(__modular_printf, "__printf", "int"))); // expected-error {{attribute 'modular_format' is already applied with different arguments}}
+                                                  ^
+

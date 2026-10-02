@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"C/C2y/n3469.c", line 10: warning: function "_Countof" declared implicitly
+    (void)_Countof(int[12]);
+          ^
+
+"C/C2y/n3469.c", line 10: error: expected an expression
+    (void)_Countof(int[12]);
+                   ^
+
+"C/C2y/n3469.c", line 11: warning: function "_Lengthof" declared implicitly
+    (void)_Lengthof(int[12]);
+          ^
+
+"C/C2y/n3469.c", line 11: error: expected an expression
+    (void)_Lengthof(int[12]);
+                    ^
+
+2 errors detected in the compilation of "Test_name.c".

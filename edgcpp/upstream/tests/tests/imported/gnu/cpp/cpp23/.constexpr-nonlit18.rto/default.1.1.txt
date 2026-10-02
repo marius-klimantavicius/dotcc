@@ -1,0 +1,56 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 17: error: variable in constexpr function does not have automatic storage duration
+    static const int a = f1 (1);		// { dg-error "'a' defined 'static' in 'constexpr' function only available with" "" { target c++20_down } }
+                     ^
+
+"Test_name.c", line 24: error: variable in constexpr function does not have automatic storage duration
+    static const int a = 5;		// { dg-error "'a' defined 'static' in 'constexpr' function only available with" "" { target c++20_down } }
+                     ^
+
+"Test_name.c", line 24: warning: variable "a" was declared but never referenced
+    static const int a = 5;		// { dg-error "'a' defined 'static' in 'constexpr' function only available with" "" { target c++20_down } }
+                     ^
+
+"Test_name.c", line 31: error: variable in constexpr function does not have automatic storage duration
+    static const int a = f1 (1);		// { dg-error "'a' defined 'static' in 'constexpr' function only available with" "" { target c++20_down } }
+                     ^
+
+"Test_name.c", line 35: error: expression must have a constant value
+  constexpr int a4 = f4 ();		// { dg-error "called in a constant expression" }
+                     ^
+"Test_name.c", line 35: note: cannot call non-constexpr function "f4" (declared at line 29)
+  constexpr int a4 = f4 ();		// { dg-error "called in a constant expression" }
+                     ^
+
+"Test_name.c", line 40: error: variable in constexpr function does not have automatic storage duration
+    static const int a = f1 (0);		// { dg-error "'a' defined 'static' in 'constexpr' function only available with" "" { target c++20_down } }
+                     ^
+
+"Test_name.c", line 40: warning: variable "a" was declared but never referenced
+    static const int a = f1 (0);		// { dg-error "'a' defined 'static' in 'constexpr' function only available with" "" { target c++20_down } }
+                     ^
+
+"Test_name.c", line 47: error: variable in constexpr function does not have automatic storage duration
+    static const int a = f1 (0);		// { dg-error "'a' defined 'static' in 'constexpr' function only available with" "" { target c++20_down } }
+                     ^
+
+"Test_name.c", line 47: warning: variable "a" was declared but never referenced
+    static const int a = f1 (0);		// { dg-error "'a' defined 'static' in 'constexpr' function only available with" "" { target c++20_down } }
+                     ^
+
+"Test_name.c", line 51: error: expression must have a constant value
+  constexpr int a6 = f6 ();		// { dg-error "called in a constant expression" "" { target c++20_down } }
+                     ^
+"Test_name.c", line 51: note: cannot call non-constexpr function "f6" (declared at line 45)
+  constexpr int a6 = f6 ();		// { dg-error "called in a constant expression" "" { target c++20_down } }
+                     ^
+
+"Test_name.c", line 35: warning: variable "a4" was declared but never referenced
+  constexpr int a4 = f4 ();		// { dg-error "called in a constant expression" }
+                ^
+
+"Test_name.c", line 51: warning: variable "a6" was declared but never referenced
+  constexpr int a6 = f6 ();		// { dg-error "called in a constant expression" "" { target c++20_down } }
+                ^
+
+7 errors detected in the compilation of "Test_name.c".

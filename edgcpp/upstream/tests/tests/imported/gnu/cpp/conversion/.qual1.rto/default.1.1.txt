@@ -1,0 +1,70 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 11: warning: a value of type "int *(*)[4]" cannot be used to initialize an entity of type "const int *(*)[4]"
+  const int *(*ap2)[4] = &a; // { dg-error "cannot convert" }
+                         ^
+
+"Test_name.c", line 22: error: a value of type "const int *(*)[4]" cannot be used to initialize an entity of type "int *const (*)[4]"
+  int *const(*bp3)[4] = &b; // { dg-error "cannot convert" }
+                        ^
+
+"Test_name.c", line 23: error: a value of type "const int *(*)[4]" cannot be used to initialize an entity of type "int *(*)[4]"
+  int *(*bp4)[4] = &b; // { dg-error "cannot convert" }
+                   ^
+
+"Test_name.c", line 24: error: a value of type "const int *(*)[4]" cannot be used to initialize an entity of type "int *(*const)[4]"
+  int *(*const bp5)[4] = &b; // { dg-error "cannot convert" }
+                         ^
+
+"Test_name.c", line 26: error: a value of type "const int *(*)[4]" cannot be used to initialize an entity of type "int *const (*const)[4]"
+  int *const(*const bp7)[4] = &b; // { dg-error "cannot convert" }
+                              ^
+
+"Test_name.c", line 27: error: a value of type "const int *(*)[4]" cannot be used to initialize an entity of type "int *(*const)[4]"
+  int *(*const bp8)[4] = &b; // { dg-error "cannot convert" }
+                         ^
+
+"Test_name.c", line 31: warning: a value of type "int *(*)[3]" cannot be used to initialize an entity of type "const int *(*)[3]"
+  int const *(*cp2)[3] = c; // { dg-error "cannot convert" }
+                         ^
+
+"Test_name.c", line 52: warning: variable "array2DPtr3" was declared but never referenced
+     double const * const (*array2DPtr3)[3] = array2DPtr2;
+                            ^
+
+"Test_name.c", line 14: warning: variable "ap5" was declared but never referenced
+  int *(*const ap5)[4] = &a;
+               ^
+
+"Test_name.c", line 15: warning: variable "ap6" was declared but never referenced
+  const int *const(*const ap6)[4] = &a;
+                          ^
+
+"Test_name.c", line 16: warning: variable "ap7" was declared but never referenced
+  int *const(*const ap7)[4] = &a;
+                    ^
+
+"Test_name.c", line 17: warning: variable "ap8" was declared but never referenced
+  int *(*const ap8)[4] = &a;
+               ^
+
+"Test_name.c", line 24: warning: variable "bp5" was declared but never referenced
+  int *(*const bp5)[4] = &b; // { dg-error "cannot convert" }
+               ^
+
+"Test_name.c", line 25: warning: variable "bp6" was declared but never referenced
+  const int *const(*const bp6)[4] = &b;
+                          ^
+
+"Test_name.c", line 26: warning: variable "bp7" was declared but never referenced
+  int *const(*const bp7)[4] = &b; // { dg-error "cannot convert" }
+                    ^
+
+"Test_name.c", line 27: warning: variable "bp8" was declared but never referenced
+  int *(*const bp8)[4] = &b; // { dg-error "cannot convert" }
+               ^
+
+"Test_name.c", line 32: warning: variable "cp3" was declared but never referenced
+  int const *const (*const cp3)[3] = c;
+                           ^
+
+5 errors detected in the compilation of "Test_name.c".

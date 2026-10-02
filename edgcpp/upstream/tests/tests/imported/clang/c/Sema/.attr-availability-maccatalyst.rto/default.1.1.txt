@@ -1,0 +1,105 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -D APPEXT --c Test_name.c
+"Test_name.c", line 14: warning: the "availability" attribute used here is ignored
+  void f0(int) __attribute__((availability(maccatalyst,introduced=2.0,deprecated=9.1))); // expected-note {{'f0' has been explicitly marked deprecated here}}
+                              ^
+
+"Test_name.c", line 15: warning: the "availability" attribute used here is ignored
+  void f1(int) __attribute__((availability(maccatalyst,introduced=2.1)));
+                              ^
+
+"Test_name.c", line 16: warning: the "availability" attribute used here is ignored
+  void f2(int) __attribute__((availability(macCatalyst,introduced=2.0,deprecated=9.0))); // expected-note {{'f2' has been explicitly marked deprecated here}}
+                              ^
+
+"Test_name.c", line 17: warning: the "availability" attribute used here is ignored
+  void f3(int) __attribute__((availability(maccatalyst,introduced=3.0, obsoleted=9.0))); // expected-note {{'f3' has been explicitly marked unavailable here}}
+                              ^
+
+"Test_name.c", line 18: warning: the "availability" attribute used here is ignored
+  void f32(int) __attribute__((availability(maccatalyst,introduced=3.0, obsoleted=9.0))); // expected-note {{'f32' has been explicitly marked unavailable here}}
+                               ^
+
+"Test_name.c", line 21: warning: the "availability" attribute used here is ignored
+  void f5(int) __attribute__((availability(maccatalyst,introduced=2.0))) __attribute__((availability(maccatalyst,deprecated=9.0))); // expected-note {{'f5' has been explicitly marked deprecated here}}
+                              ^
+
+"Test_name.c", line 21: warning: the "availability" attribute used here is ignored
+  void f5(int) __attribute__((availability(maccatalyst,introduced=2.0))) __attribute__((availability(maccatalyst,deprecated=9.0))); // expected-note {{'f5' has been explicitly marked deprecated here}}
+                                                                                        ^
+
+"Test_name.c", line 22: warning: the "availability" attribute used here is ignored
+  void f6(int) __attribute__((availability(maccatalyst,deprecated=9.0))); // expected-note {{'f6' has been explicitly marked deprecated here}}
+                              ^
+
+"Test_name.c", line 23: warning: the "availability" attribute used here is ignored
+  void f6(int) __attribute__((availability(macCatalyst,introduced=2.0)));
+                              ^
+
+"Test_name.c", line 26: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(maccatalyst,introduced=3.0, deprecated=4.0)))
+                 ^
+
+"Test_name.c", line 27: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(ios,introduced=2.0, deprecated=5.0)));
+                 ^
+
+"Test_name.c", line 30: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(maccatalyst,introduced=3.0, obsoleted=4.0)))
+                 ^
+
+"Test_name.c", line 31: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(ios,introduced=2.0, obsoleted=5.0)));
+                 ^
+
+"Test_name.c", line 34: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(maccatalyst,unavailable)))
+                 ^
+
+"Test_name.c", line 35: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(ios,introduced=2.0)));
+                 ^
+
+"Test_name.c", line 84: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(maccatalyst,introduced=3.0)))
+                 ^
+
+"Test_name.c", line 85: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(ios,introduced=2.0, deprecated=5.0)));
+                 ^
+
+"Test_name.c", line 88: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(maccatalyst,introduced=3.0)))
+                 ^
+
+"Test_name.c", line 89: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(ios,introduced=2.0, obsoleted=5.0)));
+                 ^
+
+"Test_name.c", line 92: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(maccatalyst,introduced=3.0)))
+                 ^
+
+"Test_name.c", line 93: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(ios,unavailable)));
+                 ^
+
+"Test_name.c", line 96: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(ios,unavailable)));
+                 ^
+
+"Test_name.c", line 99: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(maccatalyst,introduced=3.0)));
+                 ^
+
+"Test_name.c", line 110: warning: the "availability" attribute used here is ignored
+  void f202(void) __attribute__((availability(ios,introduced=2.0, deprecated=5.0))); // expected-note {{here}}
+                                 ^
+
+"Test_name.c", line 111: warning: the "availability" attribute used here is ignored
+  void f203(void) __attribute__((availability(ios,introduced=2.0, obsoleted=5.0))); // expected-note {{here}}
+                                 ^
+
+"Test_name.c", line 112: warning: the "availability" attribute used here is ignored
+  void f204(void) __attribute__((availability(ios,unavailable))); // expected-note {{here}}
+                                 ^
+

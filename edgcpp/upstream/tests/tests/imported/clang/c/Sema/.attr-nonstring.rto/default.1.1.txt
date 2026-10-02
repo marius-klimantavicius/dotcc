@@ -1,0 +1,49 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 14: warning: unknown attribute "nonstring"
+  __attribute__((nonstring)) char bar[3] = "bar"; // compat-warning {{initializer-string for character array is too long for C++, array size is 3 but initializer has size 4 (including the null terminating character)}} \
+                 ^
+
+"Test_name.c", line 19: warning: unknown attribute "nonstring"
+    __attribute__((nonstring)) char fub[3];
+                   ^
+
+"Test_name.c", line 36: warning: unknown attribute "nonstring"
+  __attribute__((nonstring)) void func(void);       // expected-warning {{'nonstring' attribute only applies to variables and non-static data members}}
+                 ^
+
+"Test_name.c", line 37: warning: unknown attribute "nonstring"
+  __attribute__((nonstring("test"))) char eek1[2];  // expected-error {{'nonstring' attribute takes no arguments}}
+                 ^
+
+"Test_name.c", line 38: warning: unknown attribute "nonstring"
+  __attribute__((nonstring)) int eek2;              // expected-warning {{'nonstring' attribute only applies to fields or variables of character array type; type is 'int'}}
+                 ^
+
+"Test_name.c", line 42: warning: a value of type "char [16]" cannot be used to initialize an entity of type "char [3]"
+  char too_big[3] = "this is too big"; // noncxx-warning {{initializer-string for char array is too long}} \
+                    ^
+
+"Test_name.c", line 46: warning: unknown attribute "nonstring"
+  const char md_array[][3] __attribute__((nonstring)) = { "BAR", "FOO", };   // compat-warning 2 {{initializer-string for character array is too long for C++, array size is 3 but initializer has size 4 (including the null terminating character)}} \
+                                          ^
+
+"Test_name.c", line 51: warning: unknown attribute "nonstring"
+    __attribute__((nonstring)) char nonstring[3];
+                   ^
+
+"Test_name.c", line 236: warning: unknown attribute "nonstring"
+  __attribute__((nonstring)) char *ptr1;
+                 ^
+
+"Test_name.c", line 237: warning: unknown attribute "nonstring"
+  __attribute__((nonstring)) const unsigned char *ptr2;
+                 ^
+
+"Test_name.c", line 239: warning: unknown attribute "nonstring"
+    __attribute__((nonstring)) char *ptr1;
+                   ^
+
+"Test_name.c", line 240: warning: unknown attribute "nonstring"
+    __attribute__((nonstring)) const unsigned char *ptr2;
+                   ^
+

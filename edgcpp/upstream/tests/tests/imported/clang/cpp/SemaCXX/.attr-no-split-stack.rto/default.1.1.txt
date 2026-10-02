@@ -1,0 +1,65 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 5: warning: unknown attribute "no_split_stack"
+  int i __attribute__((no_split_stack)); // expected-error {{'no_split_stack' attribute only applies to functions}}
+                       ^
+
+"Test_name.c", line 7: warning: unknown attribute "no_split_stack"
+  void f1() __attribute__((no_split_stack));
+                           ^
+
+"Test_name.c", line 8: warning: unknown attribute "no_split_stack"
+  void f2() __attribute__((no_split_stack(1))); // expected-error {{'no_split_stack' attribute takes no arguments}}
+                           ^
+
+"Test_name.c", line 11: warning: unknown attribute "no_split_stack"
+  void tf1() __attribute__((no_split_stack));
+                            ^
+
+"Test_name.c", line 13: warning: unknown attribute "no_split_stack"
+  int f3(int __attribute__((no_split_stack)), int); // expected-error{{'no_split_stack' attribute only applies to functions}}
+                            ^
+
+"Test_name.c", line 16: warning: unknown attribute "no_split_stack"
+    int f __attribute__((no_split_stack));  // expected-error{{'no_split_stack' attribute only applies to functions}}
+                         ^
+
+"Test_name.c", line 17: warning: unknown attribute "no_split_stack"
+    void mf1() __attribute__((no_split_stack));
+                              ^
+
+"Test_name.c", line 18: warning: unknown attribute "no_split_stack"
+    static void mf2() __attribute__((no_split_stack));
+                                     ^
+
+"Test_name.c", line 21: warning: unknown attribute "gnu::no_split_stack"
+  int ci [[gnu::no_split_stack]]; // expected-error {{'gnu::no_split_stack' attribute only applies to functions}}
+           ^
+
+"Test_name.c", line 23: warning: unknown attribute "gnu::no_split_stack"
+  [[gnu::no_split_stack]] void cf1();
+    ^
+
+"Test_name.c", line 24: warning: unknown attribute "gnu::no_split_stack"
+  [[gnu::no_split_stack(1)]] void cf2(); // expected-error {{'gnu::no_split_stack' attribute takes no arguments}}
+    ^
+
+"Test_name.c", line 27: warning: unknown attribute "gnu::no_split_stack"
+  [[gnu::no_split_stack]]
+    ^
+
+"Test_name.c", line 30: warning: unknown attribute "gnu::no_split_stack"
+  int cf3(int c[[gnu::no_split_stack]], int); // expected-error{{'gnu::no_split_stack' attribute only applies to functions}}
+                 ^
+
+"Test_name.c", line 33: warning: unknown attribute "gnu::no_split_stack"
+    int f [[gnu::no_split_stack]];  // expected-error{{'gnu::no_split_stack' attribute only applies to functions}}
+            ^
+
+"Test_name.c", line 34: warning: unknown attribute "gnu::no_split_stack"
+    [[gnu::no_split_stack]] void mf1();
+      ^
+
+"Test_name.c", line 35: warning: unknown attribute "gnu::no_split_stack"
+    [[gnu::no_split_stack]] static void mf2();
+      ^
+

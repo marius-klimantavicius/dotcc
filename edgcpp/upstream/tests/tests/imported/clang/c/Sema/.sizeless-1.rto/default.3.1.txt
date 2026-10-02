@@ -1,0 +1,87 @@
+fe_only -DTEST_NUMBER=3 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c11 --strict_gnu Test_name.c
+"Test_name.c", line 7: error: identifier "__SVInt8_t" is undefined
+  typedef __SVInt8_t svint8_t;
+          ^
+
+"Test_name.c", line 8: error: identifier "__SVInt16_t" is undefined
+  typedef __SVInt16_t svint16_t;
+          ^
+
+"Test_name.c", line 26: warning: the standard "alignof" operator does not accept an expression argument (use a type instead)
+  int alignof_int8_var = _Alignof(*extern_int8_ptr);    // expected-error {{invalid application of 'alignof' to sizeless type 'svint8_t'}} expected-warning {{GNU extension}}
+                                 ^
+
+"Test_name.c", line 27: warning: the standard "alignof" operator does not accept an expression argument (use a type instead)
+  int alignof_int8_var_ptr = _Alignof(extern_int8_ptr); // expected-warning {{GNU extension}}
+                                     ^
+
+"Test_name.c", line 73: error: expression must have a constant value
+    _Static_assert(__atomic_is_lock_free(1, &local_int8) == __atomic_is_lock_free(1, incomplete_ptr), "");
+                                                                                     ^
+"Test_name.c", line 73: note: the value of variable "incomplete_ptr" (declared at line 54) cannot be used as a constant
+    _Static_assert(__atomic_is_lock_free(1, &local_int8) == __atomic_is_lock_free(1, incomplete_ptr), "");
+                                                                                     ^
+
+"Test_name.c", line 74: error: expression must have a constant value
+    _Static_assert(__atomic_is_lock_free(2, &local_int8) == __atomic_is_lock_free(2, incomplete_ptr), ""); // expected-error {{static assertion expression is not an integral constant expression}}
+                                                                                     ^
+"Test_name.c", line 74: note: the value of variable "incomplete_ptr" (declared at line 54) cannot be used as a constant
+    _Static_assert(__atomic_is_lock_free(2, &local_int8) == __atomic_is_lock_free(2, incomplete_ptr), ""); // expected-error {{static assertion expression is not an integral constant expression}}
+                                                                                     ^
+
+"Test_name.c", line 75: error: expression must have a constant value
+    _Static_assert(__atomic_always_lock_free(1, &local_int8) == __atomic_always_lock_free(1, incomplete_ptr), "");
+                                                                                             ^
+"Test_name.c", line 75: note: the value of variable "incomplete_ptr" (declared at line 54) cannot be used as a constant
+    _Static_assert(__atomic_always_lock_free(1, &local_int8) == __atomic_always_lock_free(1, incomplete_ptr), "");
+                                                                                             ^
+
+"Test_name.c", line 83: warning: expression has no effect
+    0, local_int8; // expected-warning {{left operand of comma operator has no effect}} expected-warning {{expression result unused}}
+    ^
+
+"Test_name.c", line 86: error: expected an expression
+    svint8_t bad_init_int8 = for; // expected-error {{expected expression}}
+                             ^
+
+"Test_name.c", line 99: warning: const variable "uninit_const_int8" requires an initializer
+    const svint8_t uninit_const_int8;       // expected-warning {{default initialization of an object of type 'const svint8_t' (aka 'const __SVInt8_t') leaves the object uninitialized}};
+                                    ^
+
+"Test_name.c", line 104: warning: const variable "uninit_const_volatile_int8" requires an initializer
+    const volatile svint8_t uninit_const_volatile_int8;       // expected-warning {{default initialization of an object of type 'const volatile svint8_t' (aka 'const volatile __SVInt8_t') leaves the object uninitialized}}
+                                                      ^
+
+"Test_name.c", line 186: warning: expression has no effect
+    global_int8_ptr + 1;               // expected-error {{arithmetic on a pointer to sizeless type}}
+    ^
+
+"Test_name.c", line 187: warning: expression has no effect
+    global_int8_ptr - 1;               // expected-error {{arithmetic on a pointer to sizeless type}}
+    ^
+
+"Test_name.c", line 190: warning: expression has no effect
+    global_int8_ptr - global_int8_ptr; // expected-error {{arithmetic on a pointer to sizeless type}}
+    ^
+
+"Test_name.c", line 69: warning: variable "aligned_int" was declared but never referenced
+    int _Alignas(svint8_t) aligned_int; // expected-error {{invalid application of '_Alignas' to sizeless type 'svint8_t'}}
+                           ^
+
+"Test_name.c", line 88: warning: variable "empty_brace_init_int" was declared but never referenced
+    int empty_brace_init_int = {};
+        ^
+
+"Test_name.c", line 112: warning: variable "test_int8" was declared but never referenced
+    _Bool test_int8 = init_int8; // expected-error {{initializing '_Bool' with an expression of incompatible type 'svint8_t'}}
+          ^
+
+"Test_name.c", line 114: warning: variable "int_int8" was declared but never referenced
+    int int_int8 = init_int8; // expected-error {{initializing 'int' with an expression of incompatible type 'svint8_t'}}
+        ^
+
+"Test_name.c", line 16: warning: variable "static_int8_ptr" was declared but never referenced
+  static svint8_t *static_int8_ptr;
+                   ^
+
+6 errors detected in the compilation of "Test_name.c".

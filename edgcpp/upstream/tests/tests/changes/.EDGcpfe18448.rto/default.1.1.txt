@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --microsoft Test_name.c
+"Test_name.c", line 13: warning: declaration overloads built-in function "__annotation"
+  extern "C" void __cdecl __annotation(wchar_t*, ...);
+                          ^
+
+"Test_name.c", line 13: error: more than one instance of overloaded function "__annotation" has "C" linkage
+  extern "C" void __cdecl __annotation(wchar_t*, ...);
+                          ^
+
+1 error detected in the compilation of "Test_name.c".

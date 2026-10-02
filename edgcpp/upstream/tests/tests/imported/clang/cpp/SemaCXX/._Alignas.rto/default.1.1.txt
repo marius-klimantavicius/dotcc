@@ -1,0 +1,82 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 7: error: this declaration has no storage class or type specifier
+  _Alignas(64) int i1;
+  ^
+
+"Test_name.c", line 7: error: expected a ";"
+  _Alignas(64) int i1;
+               ^
+
+"Test_name.c", line 8: error: explicit type is missing ("int" assumed)
+  _Alignas(long long) int i2;
+  ^
+
+"Test_name.c", line 8: error: declaration is incompatible with "int _Alignas" (declared at line 7)
+  _Alignas(long long) int i2;
+  ^
+
+"Test_name.c", line 8: error: expected a "{"
+  _Alignas(long long) int i2;
+                      ^
+
+"Test_name.c", line 11: warning: parsing restarts here after previous syntax error
+  void foo(void) {
+                 ^
+
+"Test_name.c", line 13: error: expected a ";"
+    _Alignas(8) char i4;
+                ^
+
+"Test_name.c", line 14: error: type name is not allowed
+    _Alignas(char) char i5;
+             ^
+
+"Test_name.c", line 14: error: expected a ";"
+    _Alignas(char) char i5;
+                   ^
+
+"Test_name.c", line 16: error: expected a ")"
+    (void)(int _Alignas(64))0; // expected-warning {{'_Alignas' attribute ignored when parsing type}}
+               ^
+
+"Test_name.c", line 18: error: expected a ")"
+    (void)(_Alignas(64) int)0; // c-error {{expected expression}} \
+                        ^
+
+"Test_name.c", line 18: error: expected a ";"
+    (void)(_Alignas(64) int)0; // c-error {{expected expression}} \
+                            ^
+
+"Test_name.c", line 20: warning: missing return statement at end of non-void function "_Alignas"
+  }
+  ^
+
+"Test_name.c", line 23: error: explicit type is missing ("int" assumed)
+    _Alignas(int) int i;
+    ^
+
+"Test_name.c", line 23: error: expected a ";"
+    _Alignas(int) int i;
+                  ^
+
+"Test_name.c", line 24: error: expected a type specifier
+    _Alignas(64) int j;
+             ^
+
+"Test_name.c", line 24: error: explicit type is missing ("int" assumed)
+    _Alignas(64) int j;
+    ^
+
+"Test_name.c", line 24: error: expected a ";"
+    _Alignas(64) int j;
+                 ^
+
+"Test_name.c", line 27: error: incomplete type "void" is not allowed
+  void bar(_Alignas(8) char c1, char _Alignas(char) c2); // expected-error 2 {{'_Alignas' attribute cannot be applied to a function parameter}}
+       ^
+
+"Test_name.c", line 27: error: expected a ")"
+  void bar(_Alignas(8) char c1, char _Alignas(char) c2); // expected-error 2 {{'_Alignas' attribute cannot be applied to a function parameter}}
+                       ^
+
+18 errors detected in the compilation of "Test_name.c".

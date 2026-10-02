@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 12: error: quoted string should contain at least one character
+  #if ''			/* { dg-error "empty" "empty charconst" } */
+      ^
+
+"Test_name.c", line 14: error: quoted string should contain at least one character
+  #if L''			/* { dg-error "empty" "empty wide charconst" } */
+      ^
+
+"Test_name.c", line 16: warning: too many characters in character literal -- extra leading characters ignored
+  #if 'very long'		/* { dg-warning "multi-character literal with \[0-9]+ characters exceeds 'int' size of \[0-9]+ bytes" "long charconst" } */
+      ^
+
+"Test_name.c", line 18: warning: too many characters in character literal -- extra leading characters ignored
+  #if L'very long'	/* { dg-warning "multi-character literal cannot have an encoding prefix" "long wide charconst" } */
+      ^
+
+"Test_name.c", line 21: warning: multicharacter character literal (potential portability problem)
+  #if 'ab'		/* { dg-warning "multi-char" "multi-character" } */
+      ^
+
+"Test_name.c", line 29: error: quoted string should contain at least one character
+    c = '';		/* { dg-error "empty" "empty charconst" } */
+        ^
+
+"Test_name.c", line 30: error: quoted string should contain at least one character
+    w = L'';		/* { dg-error "empty" "empty wide charconst" } */
+        ^
+
+"Test_name.c", line 32: warning: too many characters in character literal -- extra leading characters ignored
+    c = 'very long';	/* { dg-warning "multi-character literal with \[0-9]+ characters exceeds 'int' size of \[0-9]+ bytes" "long charconst" } */
+        ^
+
+"Test_name.c", line 33: warning: too many characters in character literal -- extra leading characters ignored
+    w = L'very long';	/* { dg-warning "multi-character literal cannot have an encoding prefix" "long wide charconst" } */
+        ^
+
+"Test_name.c", line 35: warning: multicharacter character literal (potential portability problem)
+    c = 'ab';		/* { dg-warning "multi-char" "multi-char" } */
+        ^
+
+"Test_name.c", line 37: warning: too many characters in character constant
+    w = L'ab';		/* { dg-warning "multi-character literal cannot have an encoding prefix" "multi-char wide" } */
+        ^
+
+"Test_name.c", line 26: warning: variable "c" was set but never used
+    int c;
+        ^
+
+"Test_name.c", line 27: warning: variable "w" was set but never used
+    __WCHAR_TYPE__ w;
+                   ^
+
+4 errors detected in the compilation of "Test_name.c".

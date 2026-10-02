@@ -1,0 +1,129 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 23: warning: unknown attribute "noipa"
+  NOIPA char* strndup_a0_si (short n)
+  ^
+
+"Test_name.c", line 28: warning: unknown attribute "noipa"
+  NOIPA char* strndup_a0_i (int n)
+  ^
+
+"Test_name.c", line 33: warning: unknown attribute "noipa"
+  NOIPA char* strndup_a0_li (long n)
+  ^
+
+"Test_name.c", line 38: warning: unknown attribute "noipa"
+  NOIPA char* strndup_a0_lli (long long n)
+  ^
+
+"Test_name.c", line 44: warning: unknown attribute "noipa"
+  NOIPA char* strndup_a0_usi (unsigned short n)
+  ^
+
+"Test_name.c", line 49: warning: unknown attribute "noipa"
+  NOIPA char* strndup_a0_ui (unsigned n)
+  ^
+
+"Test_name.c", line 54: warning: unknown attribute "noipa"
+  NOIPA char* strndup_a0_uli (unsigned long n)
+  ^
+
+"Test_name.c", line 59: warning: unknown attribute "noipa"
+  NOIPA char* strndup_a0_ulli (unsigned long long n)
+  ^
+
+"Test_name.c", line 66: warning: unknown attribute "noipa"
+  NOIPA char* strndup_a1_si (short n)
+  ^
+
+"Test_name.c", line 71: warning: unknown attribute "noipa"
+  NOIPA char* strndup_a1_i (int n)
+  ^
+
+"Test_name.c", line 76: warning: unknown attribute "noipa"
+  NOIPA char* strndup_a1_li (long n)
+  ^
+
+"Test_name.c", line 81: warning: unknown attribute "noipa"
+  NOIPA char* strndup_a1_lli (long long n)
+  ^
+
+"Test_name.c", line 87: warning: unknown attribute "noipa"
+  NOIPA char* strndup_a1_usi (unsigned short n)
+  ^
+
+"Test_name.c", line 92: warning: unknown attribute "noipa"
+  NOIPA char* strndup_a1_ui (unsigned n)
+  ^
+
+"Test_name.c", line 97: warning: unknown attribute "noipa"
+  NOIPA char* strndup_a1_uli (unsigned long n)
+  ^
+
+"Test_name.c", line 102: warning: unknown attribute "noipa"
+  NOIPA char* strndup_a1_ulli (unsigned long long n)
+  ^
+
+"Test_name.c", line 108: warning: unknown attribute "noipa"
+  NOIPA size_t strnlen_a0_si (short n)
+  ^
+
+"Test_name.c", line 113: warning: unknown attribute "noipa"
+  NOIPA size_t strnlen_a0_i (int n)
+  ^
+
+"Test_name.c", line 118: warning: unknown attribute "noipa"
+  NOIPA size_t strnlen_a0_li (long n)
+  ^
+
+"Test_name.c", line 123: warning: unknown attribute "noipa"
+  NOIPA size_t strnlen_a0_lli (long long n)
+  ^
+
+"Test_name.c", line 129: warning: unknown attribute "noipa"
+  NOIPA size_t strnlen_a0_usi (unsigned short n)
+  ^
+
+"Test_name.c", line 134: warning: unknown attribute "noipa"
+  NOIPA size_t strnlen_a0_ui (unsigned n)
+  ^
+
+"Test_name.c", line 139: warning: unknown attribute "noipa"
+  NOIPA size_t strnlen_a0_uli (unsigned long n)
+  ^
+
+"Test_name.c", line 144: warning: unknown attribute "noipa"
+  NOIPA size_t strnlen_a0_ulli (unsigned long long n)
+  ^
+
+"Test_name.c", line 151: warning: unknown attribute "noipa"
+  NOIPA size_t strnlen_a1_si (short n)
+  ^
+
+"Test_name.c", line 156: warning: unknown attribute "noipa"
+  NOIPA size_t strnlen_a1_i (int n)
+  ^
+
+"Test_name.c", line 161: warning: unknown attribute "noipa"
+  NOIPA size_t strnlen_a1_li (long n)
+  ^
+
+"Test_name.c", line 166: warning: unknown attribute "noipa"
+  NOIPA size_t strnlen_a1_lli (long long n)
+  ^
+
+"Test_name.c", line 172: warning: unknown attribute "noipa"
+  NOIPA size_t strnlen_a1_usi (unsigned short n)
+  ^
+
+"Test_name.c", line 177: warning: unknown attribute "noipa"
+  NOIPA size_t strnlen_a1_ui (unsigned n)
+  ^
+
+"Test_name.c", line 182: warning: unknown attribute "noipa"
+  NOIPA size_t strnlen_a1_uli (unsigned long n)
+  ^
+
+"Test_name.c", line 187: warning: unknown attribute "noipa"
+  NOIPA size_t strnlen_a1_ulli (unsigned long long n)
+  ^
+

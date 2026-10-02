@@ -1,0 +1,82 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -w -DBORLAND -w --ms_extensions --c Test_name.c
+"Test_name.c", line 52: error: expected __except or __finally
+  }  // expected-error{{expected '__except' or '__finally' block}}
+  ^
+
+"Test_name.c", line 52: error: expected a "{"
+  }  // expected-error{{expected '__except' or '__finally' block}}
+  ^
+
+"Test_name.c", line 54: error: expected a ";"
+  void TEST(void) {
+                  ^
+
+"Test_name.c", line 116: error: expression must have integral type
+    __except ( NotFilterExpression() ) { // expected-error{{filter expression has non-integral type 'const char *'}}
+               ^
+
+"Test_name.c", line 128: error: identifier "try_scope" is undefined
+      (void)try_scope; // expected-error{{undeclared identifier}}
+            ^
+
+"Test_name.c", line 139: error: identifier "try_scope" is undefined
+      (void)try_scope; // expected-error{{undeclared identifier}}
+            ^
+
+"Test_name.c", line 196: error: a __leave statement may only be used within a __try
+    __leave; // expected-error{{'__leave' statement not in __try block}}
+    ^
+
+"Test_name.c", line 200: error: expected a ";"
+      __leave 4; // expected-error{{expected ';' after __leave statement}}
+              ^
+
+"Test_name.c", line 202: error: a __leave statement may only be used within a __try
+      __leave; // expected-error{{'__leave' statement not in __try block}}
+      ^
+
+"Test_name.c", line 208: error: a __leave statement may only be used within a __try
+      __leave; // expected-error{{'__leave' statement not in __try block}}
+      ^
+
+"Test_name.c", line 210: error: a __leave statement may only be used within a __try
+    __leave; // expected-error{{'__leave' statement not in __try block}}
+    ^
+
+"Test_name.c", line 232: error: expected an expression
+        ^{
+        ^
+
+"Test_name.c", line 281: error: expected an expression
+      ^{
+      ^
+
+"Test_name.c", line 289: error: identifier "undeclared_identifier" is undefined
+    } __except(undeclared_identifier) { // expected-error {{use of undeclared identifier 'undeclared_identifier'}} expected-error {{expected expression}}
+               ^
+
+"Test_name.c", line 297: error: expected a ";"
+        continue a; // expected-warning{{jump out of __finally block has undefined behavior}}
+                 ^
+
+"Test_name.c", line 298: error: expected a ";"
+        break a; // expected-warning{{jump out of __finally block has undefined behavior}}
+              ^
+
+"Test_name.c", line 300: error: expected a ";"
+          continue a; // expected-warning{{jump out of __finally block has undefined behavior}}
+                   ^
+
+"Test_name.c", line 301: error: expected a ";"
+          break a; // expected-warning{{jump out of __finally block has undefined behavior}}
+                ^
+
+"Test_name.c", line 302: error: expected a ";"
+          continue b;
+                   ^
+
+"Test_name.c", line 303: error: expected a ";"
+          break b;
+                ^
+
+20 errors detected in the compilation of "Test_name.c".

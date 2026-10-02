@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 143: error: identifier "adl_only" is undefined
+    adl_only(a, d);
+    ^
+
+"Test_name.c", line 336: warning: deleted functions are a C++11 feature
+    operator void() = delete;
+                      ^
+
+"Test_name.c", line 336: warning: "cwg2882::C::operator void()" will not be called for implicit or explicit conversions
+    operator void() = delete;
+    ^
+
+1 error detected in the compilation of "Test_name.c".

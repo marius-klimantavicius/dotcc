@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./warn/Wzero-as-null-pointer-constant-7.C", line 8: warning: variable "x" was declared but never referenced
+    char* x(
+          ^
+
+"./warn/Wzero-as-null-pointer-constant-7.C", line 9: warning: variable "x2" was declared but never referenced
+    char* x2{
+          ^
+
+"./warn/Wzero-as-null-pointer-constant-7.C", line 10: warning: variable "x3" was declared but never referenced
+    char* x3 = 
+          ^
+
+"./warn/Wzero-as-null-pointer-constant-7.C", line 11: warning: variable "x4" was declared but never referenced
+    char* x4(0);
+          ^
+
+"./warn/Wzero-as-null-pointer-constant-7.C", line 12: warning: variable "x5" was declared but never referenced
+    char* x5 = 0;
+          ^
+

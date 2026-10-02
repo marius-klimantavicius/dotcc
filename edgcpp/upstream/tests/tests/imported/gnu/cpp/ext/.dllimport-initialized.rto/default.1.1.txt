@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 5: warning: unknown attribute "dllimport"
+  __attribute__((dllimport)) int i __attribute__((unused)) = 0;  // { dg-error "32:definition of .int i. is marked .dllimport." }
+                 ^
+

@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 14: error: identifier "__transaction_atomic" is undefined
+    __transaction_atomic {
+    ^
+
+"Test_name.c", line 14: error: expected a ";"
+    __transaction_atomic {
+                         ^
+
+"Test_name.c", line 17: warning: parsing restarts here after previous syntax error
+    alloc->l = 2;
+                ^
+
+"Test_name.c", line 13: warning: variable "alloc" was declared but never referenced
+    C* alloc;
+       ^
+
+2 errors detected in the compilation of "Test_name.c".

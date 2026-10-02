@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=2 --c++17 -A Test_name.c
+"Test_name.c", line 6: error: expected a "{"
+      template<typename T> S(T i) : i(i);  // Previously aborted.  Now an error.
+                                        ^
+
+"Test_name.c", line 6: error: expected a "}"
+      template<typename T> S(T i) : i(i);  // Previously aborted.  Now an error.
+                                        ^
+
+2 errors detected in the compilation of "Test_name.c".

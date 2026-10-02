@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: error: no instance of function template "get_ith" matches the argument list
+            argument types are: (int, double, char)
+    get_ith<1, int, double, char, int>(1, 2.0, 'x'); // { dg-error "too few arguments" }
+    ^
+"Test_name.c", line 5: note: number of parameters of function template "get_ith" does not match the call
+  void get_ith(const Args&... args); // { dg-message "note" }
+       ^
+
+1 error detected in the compilation of "Test_name.c".

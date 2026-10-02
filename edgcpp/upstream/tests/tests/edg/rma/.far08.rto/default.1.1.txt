@@ -1,0 +1,48 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 4: error: incomplete type "void" is not allowed
+  void far f(int);
+       ^
+
+"Test_name.c", line 4: error: expected a ";"
+  void far f(int);
+           ^
+
+"Test_name.c", line 5: error: variable "far" has already been defined (previous definition at line 4)
+  void far f(const int p) {}
+       ^
+
+"Test_name.c", line 5: error: expected a ";"
+  void far f(const int p) {}
+           ^
+
+"Test_name.c", line 8: warning: parsing restarts here after previous syntax error
+  };
+   ^
+
+"Test_name.c", line 9: error: variable "far" has already been defined (previous definition at line 4)
+  void far A::f(int p) {}
+       ^
+
+"Test_name.c", line 9: error: expected a ";"
+  void far A::f(int p) {}
+           ^
+
+"Test_name.c", line 11: error: identifier "F" is undefined
+  F ff;
+  ^
+
+"Test_name.c", line 13: error: function type may not come from a typedef
+  F2 far fff;
+     ^
+
+"Test_name.c", line 13: error: declaration is incompatible with "<error-type> far" (declared at line 4)
+  F2 far fff;
+     ^
+
+"Test_name.c", line 13: error: expected a "{"
+  F2 far fff;
+         ^
+
+At end of source: error: expected a "}"
+
+11 errors detected in the compilation of "Test_name.c".

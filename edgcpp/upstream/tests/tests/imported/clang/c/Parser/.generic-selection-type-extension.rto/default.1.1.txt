@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 13: error: expected an expression
+    _Generic(int, int : 0);
+             ^
+
+"Test_name.c", line 19: error: expected an expression
+    _Generic(struct S, default : 0);
+             ^
+
+"Test_name.c", line 20: error: expected an expression
+    _Generic(enum E, default : 0);
+             ^
+
+"Test_name.c", line 21: error: expected an expression
+    _Generic(union U, default : 0);
+             ^
+
+"Test_name.c", line 24: error: expected an expression
+    _Generic(int[12], default : 0);
+             ^
+
+"Test_name.c", line 27: error: expected an expression
+    _Generic(int(*)[12], default : 0);
+             ^
+
+"Test_name.c", line 30: error: expected an expression
+    _Generic((int), int : 0); // expected-error {{expected expression}}
+                  ^
+
+"Test_name.c", line 35: error: expected an expression
+    _Generic(__typeof__(foo())(*)(__typeof__(&foo)), int (*)(int (*)()) : 0); // cpp-error {{expected expression}} \
+             ^
+
+"Test_name.c", line 40: error: expected an expression
+    _Generic(struct T { int a; }, default : 0); // cpp-error {{'T' cannot be defined in a type specifier}}
+             ^
+
+9 errors detected in the compilation of "Test_name.c".

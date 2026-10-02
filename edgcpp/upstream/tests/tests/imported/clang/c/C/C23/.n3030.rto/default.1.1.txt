@@ -1,0 +1,78 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"C/C23/n3030.c", line 7: error: enumeration value is outside the range of its underlying type ("unsigned short")
+    us_violation,
+    ^
+
+"C/C23/n3030.c", line 8: error: enumeration value is outside the range of its underlying type ("unsigned short")
+    us_violation_2 = us_max + 1,
+                     ^
+
+"C/C23/n3030.c", line 16: error: enumeration value is outside the range of its underlying type ("unsigned int")
+    ui_violation,
+    ^
+
+"C/C23/n3030.c", line 29: error: enum "E2" (declared at line 22) was previously declared with a different base type
+  enum E2 : long {
+       ^
+
+"C/C23/n3030.c", line 38: error: incomplete type "enum E3" is not allowed
+    m33 = sizeof(enum E3)
+                 ^
+
+"C/C23/n3030.c", line 40: error: enum "E3" (declared at line 34) was previously declared without an explicit enum base
+  enum E3 : int;
+            ^
+
+"C/C23/n3030.c", line 40: error: enum "E3" (declared at line 34) was previously declared with a different base type
+  enum E3 : int;
+       ^
+
+"C/C23/n3030.c", line 45: error: enumeration value is outside the range of its underlying type ("unsigned long long")
+    m42
+    ^
+
+"C/C23/n3030.c", line 52: error: expected an identifier
+  enum E7 : long int = 0;
+                     ^
+
+"C/C23/n3030.c", line 52: warning: enumerated type mixed with another type
+  enum E7 : long int = 0;
+                       ^
+
+"C/C23/n3030.c", line 57: warning: this declaration has no storage class or type specifier
+  constexpr int a = _Generic(b0, int: 2, unsigned char: 1, default: 0);
+  ^
+
+"C/C23/n3030.c", line 57: error: expected a ";"
+  constexpr int a = _Generic(b0, int: 2, unsigned char: 1, default: 0);
+            ^
+
+"C/C23/n3030.c", line 58: warning: this declaration has no storage class or type specifier
+  constexpr int b = _Generic((enum underlying)b0, int: 2, unsigned char: 1, default: 0);
+  ^
+
+"C/C23/n3030.c", line 58: error: expected a ";"
+  constexpr int b = _Generic((enum underlying)b0, int: 2, unsigned char: 1, default: 0);
+            ^
+
+"C/C23/n3030.c", line 59: error: identifier "a" is undefined
+  static_assert(a == 1);
+                ^
+
+"C/C23/n3030.c", line 60: error: identifier "b" is undefined
+  static_assert(b == 1);
+                ^
+
+"C/C23/n3030.c", line 90: error: enum "e" (declared at line 65) was previously declared with a different base type
+  enum e : short f = 0;
+       ^
+
+"C/C23/n3030.c", line 90: warning: enumerated type mixed with another type
+  enum e : short f = 0;
+                     ^
+
+"C/C23/n3030.c", line 48: error: variable "y" was declared with a never-completed type
+  enum E5 y;
+          ^
+
+15 errors detected in the compilation of "Test_name.c".

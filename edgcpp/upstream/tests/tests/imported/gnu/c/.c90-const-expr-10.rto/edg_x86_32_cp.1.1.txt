@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 12: warning: a value of type "size_t" (aka "unsigned int") cannot be used to initialize an entity of type "void *"
+  void *p = (size_t)(void *)0; /* { dg-error "without a cast" } */
+            ^
+
+"Test_name.c", line 13: warning: a value of type "size_t" (aka "unsigned int") cannot be used to initialize an entity of type "void *"
+  struct s { void *a; } q = { (size_t)(void *)0 }; /* { dg-error "without a cast|near initialization" } */
+                              ^
+
+"Test_name.c", line 18: warning: a value of type "size_t" (aka "unsigned int") cannot be assigned to an entity of type "void *"
+    r = (size_t)(void *)0; /* { dg-error "without a cast" } */
+      ^
+
+"Test_name.c", line 19: warning: return value type does not match the function type
+    return (size_t)(void *)0; /* { dg-error "without a cast" } */
+           ^
+
+"Test_name.c", line 17: warning: variable "r" was set but never used
+    void *r;
+          ^
+
+"Test_name.c", line 25: warning: argument of type "size_t" (aka "unsigned int") is incompatible with parameter of type "void *"
+    g ((size_t)(void *)0); /* { dg-error "without a cast" } */
+       ^
+
+"Test_name.c", line 31: warning: argument of type "size_t" (aka "unsigned int") is incompatible with parameter of type "void *"
+    g2 (0, (size_t)(void *)0); /* { dg-error "without a cast" } */
+           ^
+

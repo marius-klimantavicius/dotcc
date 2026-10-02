@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 6: error: identifier "__unknown_anytype" is undefined
+    extern __unknown_anytype test0;
+           ^
+
+"Test_name.c", line 7: error: identifier "__unknown_anytype" is undefined
+    extern __unknown_anytype test1();
+           ^
+
+"Test_name.c", line 8: error: identifier "__unknown_anytype" is undefined
+    extern __unknown_anytype test2(int);
+           ^
+
+"Test_name.c", line 12: error: identifier "__unknown_anytype" is undefined
+    extern __unknown_anytype foo;
+           ^
+
+"Test_name.c", line 26: error: identifier "__unknown_anytype" is undefined
+    extern __unknown_anytype foo();
+           ^
+
+"Test_name.c", line 33: error: identifier "__unknown_anytype" is undefined
+    extern __unknown_anytype foo;
+           ^
+
+"Test_name.c", line 36: error: cast to type "void ()" is not allowed
+      ((void(void)) foo)(); // expected-error {{variable 'foo' with unknown type cannot be given a function type}}
+        ^
+
+"Test_name.c", line 41: error: identifier "__unknown_anytype" is undefined
+    extern __unknown_anytype test0(...);
+           ^
+
+"Test_name.c", line 42: error: identifier "__unknown_anytype" is undefined
+    extern __unknown_anytype test1(...);
+           ^
+
+"Test_name.c", line 53: error: identifier "__unknown_anytype" is undefined
+    extern __unknown_anytype test0(...);
+           ^
+
+"Test_name.c", line 56: error: incomplete type "test5::X<int>" is not allowed
+      (X<int>)test0(); // expected-error{{implicit instantiation of undefined template 'test5::X<int>'}}
+       ^
+
+"Test_name.c", line 61: error: identifier "__unknown_anytype" is undefined
+    extern __unknown_anytype func();
+           ^
+
+"Test_name.c", line 62: error: identifier "__unknown_anytype" is undefined
+    extern __unknown_anytype var;
+           ^
+
+13 errors detected in the compilation of "Test_name.c".

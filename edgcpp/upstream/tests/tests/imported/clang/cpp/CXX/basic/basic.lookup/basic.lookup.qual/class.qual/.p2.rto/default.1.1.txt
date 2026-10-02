@@ -1,0 +1,53 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 28: error: overloaded function "X1<T>::X1" is not a template
+  template<typename T> X1<T>::X1<T>(int) { } // expected-error{{out-of-line constructor for 'X1' cannot have template arguments}}
+                              ^
+
+"Test_name.c", line 29: error: overloaded function "X1<T>::X1" is not a template
+  template<typename T> (X1<T>::X1<T>)(float) { } // expected-error{{out-of-line constructor for 'X1' cannot have template arguments}}
+                               ^
+
+"Test_name.c", line 32: error: overloaded function "X0::X0" is not a type name
+  X0::X0 X0::f1() { return X0(); } // expected-error{{qualified reference to 'X0' is a constructor name rather than a type in this context}}
+  ^
+
+"Test_name.c", line 32: error: declaration is incompatible with "X0 X0::f1()" (declared at line 8)
+  X0::X0 X0::f1() { return X0(); } // expected-error{{qualified reference to 'X0' is a constructor name rather than a type in this context}}
+             ^
+
+"Test_name.c", line 36: error: overloaded function "X1<T>::X1" is not a template
+  template<typename T> X1<T>::X1<T> X1<T>::f2() { } // expected-warning{{missing 'typename'}}
+                              ^
+
+"Test_name.c", line 36: error: no instance of overloaded function "X1<T>::f2" matches the specified type
+  template<typename T> X1<T>::X1<T> X1<T>::f2() { } // expected-warning{{missing 'typename'}}
+                                           ^
+
+"Test_name.c", line 37: error: overloaded function "X1<T>::X1" is not a template
+  template<typename T> X1<T>::X1<T> (X1<T>::f2)(int) { } // expected-warning{{missing 'typename'}}
+                              ^
+
+"Test_name.c", line 37: warning: variable templates are a C++14 feature
+  template<typename T> X1<T>::X1<T> (X1<T>::f2)(int) { } // expected-warning{{missing 'typename'}}
+                                     ^
+
+"Test_name.c", line 97: warning: deleted functions are a C++11 feature
+    template<typename T> void f(typename T::X0 *) = delete; // expected-warning 0-1{{extension}}
+                                                  ^
+
+"Test_name.c", line 99: error: function "sfinae::f<T>(T::X0 *) [with T=X0]" (declared at line 97) cannot be referenced -- it is a deleted function
+    void g() { f<X0>(0); }
+               ^
+
+"Test_name.c", line 134: error: no instance of constructor "InhCtor::B::B" matches the argument list
+            argument types are: (int)
+    B b(123);      // expected-error {{no matching constructor}}
+        ^
+"Test_name.c", line 128: note: function "InhCtor::B::B(const InhCtor::B &)" does not match because argument #1 does not match parameter
+    struct B : A {
+           ^
+"Test_name.c", line 128: note: number of parameters of function "InhCtor::B::B()" does not match the call
+    struct B : A {
+           ^
+
+9 errors detected in the compilation of "Test_name.c".

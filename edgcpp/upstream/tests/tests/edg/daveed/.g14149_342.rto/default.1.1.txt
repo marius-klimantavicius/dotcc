@@ -1,0 +1,20 @@
+fe_only -DTEST_NUMBER=1 --gnu=60100 Test_name.c
+"Test_name.c", line 10: warning: a user-provided literal suffix must begin with "_"
+  constexpr complex  operator""il(long double __num)
+                             ^
+
+"Test_name.c", line 13: error: no instance of constructor "complex::complex" matches the argument list
+            argument types are: (long double __complex__)
+  const constexpr complex c5 ( 0.5il );
+                               ^
+"Test_name.c", line 4: note: function "complex::complex(const complex &)" does not match because argument #1 does not match parameter
+  struct complex
+         ^
+"Test_name.c", line 4: note: function "complex::complex(complex &&)" does not match because argument #1 does not match parameter
+  struct complex
+         ^
+"Test_name.c", line 6: note: function "complex::complex(long double, long double)" does not match because argument #1 does not match parameter
+    constexpr complex(long double __r = 0.0L, long double __i = 0.0L) : _M_value{ __r, __i } { }
+              ^
+
+1 error detected in the compilation of "Test_name.c".

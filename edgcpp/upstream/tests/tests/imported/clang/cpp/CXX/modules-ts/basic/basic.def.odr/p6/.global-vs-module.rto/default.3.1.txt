@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=3 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 -DUSING Test_name.c
+"Test_name.c", line 23: error: exported templates are no longer in the standard C++ language
+  export module M;
+  ^
+
+"Test_name.c", line 23: error: expected "template"
+  export module M;
+         ^
+
+"Test_name.c", line 26: warning: using-declaration ignored -- it refers to the current namespace
+  using ::var;
+        ^
+
+"Test_name.c", line 27: warning: using-declaration ignored -- it refers to the current namespace
+  using ::func;
+        ^
+
+"Test_name.c", line 28: warning: using-declaration ignored -- it refers to the current namespace
+  using ::str;
+        ^
+
+"Test_name.c", line 29: warning: using-declaration ignored -- it refers to the current namespace
+  using ::type;
+        ^
+
+"Test_name.c", line 30: warning: using-declaration ignored -- it refers to the current namespace
+  using ::var_tpl;
+        ^
+
+"Test_name.c", line 31: warning: using-declaration ignored -- it refers to the current namespace
+  using ::func_tpl;
+        ^
+
+"Test_name.c", line 32: warning: using-declaration ignored -- it refers to the current namespace
+  using ::str_tpl;
+        ^
+
+"Test_name.c", line 33: warning: using-declaration ignored -- it refers to the current namespace
+  using ::type_tpl;
+        ^
+
+2 errors detected in the compilation of "Test_name.c".

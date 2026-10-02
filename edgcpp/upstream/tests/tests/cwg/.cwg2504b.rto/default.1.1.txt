@@ -1,0 +1,14 @@
+cpfe -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 6: error: expected a ";"
+  struct V { V() = default; V(NonTriv); };
+                 ^
+
+"Test_name.c", line 9: error: a using-declaration may not name a constructor or destructor
+    using V::V;
+             ^
+
+"Test_name.c", line 10: error: "A" is not a nonstatic data member or base class of class "A"
+    A() : A(42) { }    // #1, A(42) is equivalent to V(42)
+          ^
+
+3 errors detected in the compilation of "Test_name.c".

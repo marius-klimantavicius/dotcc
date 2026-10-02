@@ -1,0 +1,65 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"./format/ms_attr-2.c", line 9: warning: unrecognized format function type "ms_printf" ignored
+  extern void tformatprintf (const char *, ...) __attribute__((format(ms_printf, 1, 2)));
+                                                                      ^
+
+"./format/ms_attr-2.c", line 10: warning: unrecognized format function type "__ms_printf__" ignored
+  extern void tformat__printf__ (const char *, ...) __attribute__((format(__ms_printf__, 1, 2)));
+                                                                          ^
+
+"./format/ms_attr-2.c", line 11: warning: unrecognized format function type "ms_scanf" ignored
+  extern void tformatscanf (const char *, ...) __attribute__((format(ms_scanf, 1, 2)));
+                                                                     ^
+
+"./format/ms_attr-2.c", line 12: warning: unrecognized format function type "__ms_scanf__" ignored
+  extern void tformat__scanf__ (const char *, ...) __attribute__((format(__ms_scanf__, 1, 2)));
+                                                                         ^
+
+"./format/ms_attr-2.c", line 13: warning: unrecognized format function type "ms_strftime" ignored
+  extern void tformatstrftime (const char *) __attribute__((format(ms_strftime, 1, 0)));
+                                                                   ^
+
+"./format/ms_attr-2.c", line 14: warning: unrecognized format function type "__ms_strftime__" ignored
+  extern void tformat__strftime__ (const char *) __attribute__((format(__ms_strftime__, 1, 0)));
+                                                                       ^
+
+"./format/ms_attr-2.c", line 15: warning: unrecognized format function type "strfmon" ignored
+  extern void tformatstrfmon (const char *, ...) __attribute__((format(strfmon, 1, 2)));
+                                                                       ^
+
+"./format/ms_attr-2.c", line 16: warning: unrecognized format function type "__strfmon__" ignored
+  extern void tformat__strfmon__ (const char *, ...) __attribute__((format(__strfmon__, 1, 2)));
+                                                                           ^
+
+"./format/ms_attr-2.c", line 17: warning: unrecognized format function type "ms_printf" ignored
+  extern void t__format__printf (const char *, ...) __attribute__((__format__(ms_printf, 1, 2)));
+                                                                              ^
+
+"./format/ms_attr-2.c", line 18: warning: unrecognized format function type "__ms_printf__" ignored
+  extern void t__format____printf__ (const char *, ...) __attribute__((__format__(__ms_printf__, 1, 2)));
+                                                                                  ^
+
+"./format/ms_attr-2.c", line 19: warning: unrecognized format function type "ms_scanf" ignored
+  extern void t__format__scanf (const char *, ...) __attribute__((__format__(ms_scanf, 1, 2)));
+                                                                             ^
+
+"./format/ms_attr-2.c", line 20: warning: unrecognized format function type "__ms_scanf__" ignored
+  extern void t__format____scanf__ (const char *, ...) __attribute__((__format__(__ms_scanf__, 1, 2)));
+                                                                                 ^
+
+"./format/ms_attr-2.c", line 21: warning: unrecognized format function type "ms_strftime" ignored
+  extern void t__format__strftime (const char *) __attribute__((__format__(ms_strftime, 1, 0)));
+                                                                           ^
+
+"./format/ms_attr-2.c", line 22: warning: unrecognized format function type "__ms_strftime__" ignored
+  extern void t__format____strftime__ (const char *) __attribute__((__format__(__ms_strftime__, 1, 0)));
+                                                                               ^
+
+"./format/ms_attr-2.c", line 23: warning: unrecognized format function type "strfmon" ignored
+  extern void t__format__strfmon (const char *, ...) __attribute__((__format__(strfmon, 1, 2)));
+                                                                               ^
+
+"./format/ms_attr-2.c", line 24: warning: unrecognized format function type "__strfmon__" ignored
+  extern void t__format____strfmon__ (const char *, ...) __attribute__((__format__(__strfmon__, 1, 2)));
+                                                                                   ^
+

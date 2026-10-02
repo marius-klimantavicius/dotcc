@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --ms_extensions -w Test_name.c
+"Test_name.c", line 11: error: a value of type "const __wchar_t [13]" cannot be used to initialize an entity of type "unsigned short []"
+  unsigned short t[] = L"Hello world!"; // expected-error{{array initializer must be an initializer list}}
+                       ^
+
+"Test_name.c", line 13: error: a value of type "int" cannot be used to initialize an entity of type "__wchar_t []"
+  wchar_t u[] = 1; // expected-error{{array initializer must be an initializer list or wide string literal}}
+                ^
+
+"Test_name.c", line 14: error: a value of type "int" cannot be used to initialize an entity of type "__wchar_t []"
+  __wchar_t v[] = 1; // expected-error{{array initializer must be an initializer list or wide string literal}}
+                  ^
+
+3 errors detected in the compilation of "Test_name.c".

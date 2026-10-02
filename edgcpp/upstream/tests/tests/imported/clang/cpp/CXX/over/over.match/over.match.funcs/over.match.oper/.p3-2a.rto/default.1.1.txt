@@ -1,0 +1,461 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 17: error: expression must have arithmetic, unscoped enum, or pointer type but has type "void"
+    bool cmp = e < e; // expected-error {{invalid operands to binary expression ('void' and 'int')}}
+                 ^
+
+"Test_name.c", line 46: error: function "bullet4::operator<=>(bullet4::X<1>, bullet4::X<2>)" (declared at line 42) cannot be referenced -- it is a deleted function
+    bool lt = x1 < x2; // expected-error {{selected deleted operator '<=>'}}
+                 ^
+
+"Test_name.c", line 47: error: function "bullet4::operator<=>(bullet4::X<1>, bullet4::X<2>)" (declared at line 42) cannot be referenced -- it is a deleted function
+    bool le = x1 <= x2; // expected-error {{selected deleted operator '<=>'}}
+                 ^
+
+"Test_name.c", line 48: error: function "bullet4::operator<=>(bullet4::X<1>, bullet4::X<2>)" (declared at line 42) cannot be referenced -- it is a deleted function
+    bool gt = x1 > x2; // expected-error {{selected deleted operator '<=>'}}
+                 ^
+
+"Test_name.c", line 49: error: function "bullet4::operator<=>(bullet4::X<1>, bullet4::X<2>)" (declared at line 42) cannot be referenced -- it is a deleted function
+    bool ge = x1 >= x2; // expected-error {{selected deleted operator '<=>'}}
+                 ^
+
+"Test_name.c", line 50: error: function "bullet4::operator<=>(bullet4::X<1>, bullet4::X<2>)" (declared at line 42) cannot be referenced -- it is a deleted function
+    bool cmp = x1 <=> x2; // expected-error {{selected deleted operator '<=>'}}
+                  ^
+
+"Test_name.c", line 55: error: function "bullet4::Y::operator<=>(bullet4::X<2>)" (declared at line 35) cannot be referenced -- it is a deleted function
+    bool mem_lt = y < x2; // expected-error {{selected deleted operator '<=>'}}
+                    ^
+
+"Test_name.c", line 56: error: function "bullet4::Y::operator<=>(bullet4::X<2>)" (declared at line 35) cannot be referenced -- it is a deleted function
+    bool mem_le = y <= x2; // expected-error {{selected deleted operator '<=>'}}
+                    ^
+
+"Test_name.c", line 57: error: function "bullet4::Y::operator<=>(bullet4::X<2>)" (declared at line 35) cannot be referenced -- it is a deleted function
+    bool mem_gt = y > x2; // expected-error {{selected deleted operator '<=>'}}
+                    ^
+
+"Test_name.c", line 58: error: function "bullet4::Y::operator<=>(bullet4::X<2>)" (declared at line 35) cannot be referenced -- it is a deleted function
+    bool mem_ge = y >= x2; // expected-error {{selected deleted operator '<=>'}}
+                    ^
+
+"Test_name.c", line 59: error: function "bullet4::Y::operator<=>(bullet4::X<2>)" (declared at line 35) cannot be referenced -- it is a deleted function
+    bool mem_cmp = y <=> x2; // expected-error {{selected deleted operator '<=>'}}
+                     ^
+
+"Test_name.c", line 68: error: function "bullet4::operator<=>(bullet4::X<1>, bullet4::X<2>)" (declared at line 42) cannot be referenced -- it is a deleted function
+    bool rlt = x2 < x1; // expected-error {{selected deleted operator '<=>'}}
+                  ^
+
+"Test_name.c", line 69: error: function "bullet4::operator<=>(bullet4::X<1>, bullet4::X<2>)" (declared at line 42) cannot be referenced -- it is a deleted function
+    bool rle = x2 <= x1; // expected-error {{selected deleted operator '<=>'}}
+                  ^
+
+"Test_name.c", line 70: error: function "bullet4::operator<=>(bullet4::X<1>, bullet4::X<2>)" (declared at line 42) cannot be referenced -- it is a deleted function
+    bool rgt = x2 > x1; // expected-error {{selected deleted operator '<=>'}}
+                  ^
+
+"Test_name.c", line 71: error: function "bullet4::operator<=>(bullet4::X<1>, bullet4::X<2>)" (declared at line 42) cannot be referenced -- it is a deleted function
+    bool rge = x2 >= x1; // expected-error {{selected deleted operator '<=>'}}
+                  ^
+
+"Test_name.c", line 72: error: function "bullet4::operator<=>(bullet4::X<1>, bullet4::X<2>)" (declared at line 42) cannot be referenced -- it is a deleted function
+    bool rcmp = x2 <=> x1; // expected-error {{selected deleted operator '<=>'}}
+                   ^
+
+"Test_name.c", line 77: error: function "bullet4::Y::operator<=>(bullet4::X<2>)" (declared at line 35) cannot be referenced -- it is a deleted function
+    bool mem_rlt = x2 < y; // expected-error {{selected deleted operator '<=>'}}
+                      ^
+
+"Test_name.c", line 78: error: function "bullet4::Y::operator<=>(bullet4::X<2>)" (declared at line 35) cannot be referenced -- it is a deleted function
+    bool mem_rle = x2 <= y; // expected-error {{selected deleted operator '<=>'}}
+                      ^
+
+"Test_name.c", line 79: error: function "bullet4::Y::operator<=>(bullet4::X<2>)" (declared at line 35) cannot be referenced -- it is a deleted function
+    bool mem_rgt = x2 > y; // expected-error {{selected deleted operator '<=>'}}
+                      ^
+
+"Test_name.c", line 80: error: function "bullet4::Y::operator<=>(bullet4::X<2>)" (declared at line 35) cannot be referenced -- it is a deleted function
+    bool mem_rge = x2 >= y; // expected-error {{selected deleted operator '<=>'}}
+                      ^
+
+"Test_name.c", line 81: error: function "bullet4::Y::operator<=>(bullet4::X<2>)" (declared at line 35) cannot be referenced -- it is a deleted function
+    bool mem_rcmp = x2 <=> y; // expected-error {{selected deleted operator '<=>'}}
+                       ^
+
+"Test_name.c", line 89: error: function "bullet4::operator==(bullet4::X<1>, bullet4::X<2>)" (declared at line 85) cannot be referenced -- it is a deleted function
+    bool eq = x1 == x2; // expected-error {{selected deleted operator '=='}}
+                 ^
+
+"Test_name.c", line 90: warning: function "bullet4::operator==" (declared at line 85) selected for operator rewrite does not return type bool
+    bool ne = x1 != x2; // expected-error {{selected deleted operator '=='}}
+                 ^
+
+"Test_name.c", line 90: error: function "bullet4::operator==(bullet4::X<1>, bullet4::X<2>)" (declared at line 85) cannot be referenced -- it is a deleted function
+    bool ne = x1 != x2; // expected-error {{selected deleted operator '=='}}
+                 ^
+
+"Test_name.c", line 95: error: function "bullet4::Y::operator==(bullet4::X<2>)" (declared at line 36) cannot be referenced -- it is a deleted function
+    bool mem_eq = y == x2; // expected-error {{selected deleted operator '=='}}
+                    ^
+
+"Test_name.c", line 96: error: function "bullet4::Y::operator==(bullet4::X<2>)" (declared at line 36) cannot be referenced -- it is a deleted function
+    bool mem_ne = y != x2; // expected-error {{selected deleted operator '=='}}
+                    ^
+
+"Test_name.c", line 104: warning: function "bullet4::operator==" (declared at line 85) selected for operator rewrite does not return type bool
+    bool req = x2 == x1; // expected-error {{selected deleted operator '=='}}
+                  ^
+
+"Test_name.c", line 104: error: function "bullet4::operator==(bullet4::X<1>, bullet4::X<2>)" (declared at line 85) cannot be referenced -- it is a deleted function
+    bool req = x2 == x1; // expected-error {{selected deleted operator '=='}}
+                  ^
+
+"Test_name.c", line 105: warning: function "bullet4::operator==" (declared at line 85) selected for operator rewrite does not return type bool
+    bool rne = x2 != x1; // expected-error {{selected deleted operator '=='}}
+                  ^
+
+"Test_name.c", line 105: error: function "bullet4::operator==(bullet4::X<1>, bullet4::X<2>)" (declared at line 85) cannot be referenced -- it is a deleted function
+    bool rne = x2 != x1; // expected-error {{selected deleted operator '=='}}
+                  ^
+
+"Test_name.c", line 110: error: function "bullet4::Y::operator==(bullet4::X<2>)" (declared at line 36) cannot be referenced -- it is a deleted function
+    bool mem_req = x2 == y; // expected-error {{selected deleted operator '=='}}
+                      ^
+
+"Test_name.c", line 111: error: function "bullet4::Y::operator==(bullet4::X<2>)" (declared at line 36) cannot be referenced -- it is a deleted function
+    bool mem_rne = x2 != y; // expected-error {{selected deleted operator '=='}}
+                      ^
+
+"Test_name.c", line 115: error: no operator "+" matches these operands
+            operand types are: bullet4::X<2> + bullet4::X<1>
+    X<3> reversed_add = x2 + x1; // expected-error {{invalid operands}}
+                           ^
+"Test_name.c", line 114: note: function "bullet4::operator+" does not match because argument #1 does not match parameter
+    X<3> operator+(X<1>, X<2>) = delete; // expected-note {{no known conversion from 'X<2>' to 'X<1>'}}
+         ^
+"Test_name.c", line 115: note: built-in operator+(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    X<3> reversed_add = x2 + x1; // expected-error {{invalid operands}}
+                           ^
+"Test_name.c", line 115: note: built-in operator+(<pointer to object>, <ptrdiff_t>) does not match because argument #1 does not match parameter
+    X<3> reversed_add = x2 + x1; // expected-error {{invalid operands}}
+                           ^
+"Test_name.c", line 115: note: built-in operator+(<ptrdiff_t>, <pointer to object>) does not match because argument #1 does not match parameter
+    X<3> reversed_add = x2 + x1; // expected-error {{invalid operands}}
+                           ^
+
+"Test_name.c", line 136: warning: comparison is ambiguous in standard C++20 because the implied comparison operator with reversed parameters is an equally good match -- this is usually caused by a missing "const" qualifier on the comparison operator; see "P2468R2::SymmetricNonConst::operator==" (declared at line 133)
+  bool cmp_non_const = SymmetricNonConst() == SymmetricNonConst(); // expected-warning {{ambiguous}}
+                                           ^
+
+"Test_name.c", line 154: warning: comparison is ambiguous in standard C++20 because the implied comparison operator with reversed parameters is an equally good match -- this is usually caused by a missing "const" qualifier on the comparison operator; see "P2468R2::D::operator==" (declared at line 152)
+  bool cmp_base_derived = D() == D(); // expected-warning {{ambiguous}}
+                              ^
+
+"Test_name.c", line 217: error: more than one operator "!=" matches these operands:
+            function "P2468R2::ImplicitInt::operator==(const P2468R2::ImplicitInt &) const" (declared at line 214), with reversed arguments
+            built-in operator "pointer == pointer"
+            built-in operator "pointer != pointer"
+            operand types are: std::nullptr_t != P2468R2::ImplicitInt
+  bool implicit_int = nullptr != ImplicitInt{}; // expected-error {{use of overloaded operator '!=' is ambiguous (with operand types 'std::nullptr_t' and 'ImplicitInt')}}
+                              ^
+"Test_name.c", line 217: note: built-in operator!=(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+  bool implicit_int = nullptr != ImplicitInt{}; // expected-error {{use of overloaded operator '!=' is ambiguous (with operand types 'std::nullptr_t' and 'ImplicitInt')}}
+                              ^
+"Test_name.c", line 217: note: built-in operator!=(<nullptr>, <nullptr>) does not match because argument #2 does not match parameter
+  bool implicit_int = nullptr != ImplicitInt{}; // expected-error {{use of overloaded operator '!=' is ambiguous (with operand types 'std::nullptr_t' and 'ImplicitInt')}}
+                              ^
+"Test_name.c", line 217: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+  bool implicit_int = nullptr != ImplicitInt{}; // expected-error {{use of overloaded operator '!=' is ambiguous (with operand types 'std::nullptr_t' and 'ImplicitInt')}}
+                              ^
+"Test_name.c", line 217: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #2 does not match parameter
+  bool implicit_int = nullptr != ImplicitInt{}; // expected-error {{use of overloaded operator '!=' is ambiguous (with operand types 'std::nullptr_t' and 'ImplicitInt')}}
+                              ^
+
+"Test_name.c", line 226: error: no operator "==" matches these operands
+            operand types are: int == P2468R2::example::A
+  bool a2 = 0 == A();  // expected-error {{invalid operands to binary expression ('int' and 'A')}}
+              ^
+"Test_name.c", line 223: note: function template "P2468R2::example::operator==" does not match because argument #1 does not match parameter
+  template<typename T> bool operator==(A, T);     // 1. expected-note {{candidate function template not viable: no known conversion from 'int' to 'A' for 1st argument}}
+                            ^
+"Test_name.c", line 226: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #2 does not match parameter
+  bool a2 = 0 == A();  // expected-error {{invalid operands to binary expression ('int' and 'A')}}
+              ^
+"Test_name.c", line 226: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+  bool a2 = 0 == A();  // expected-error {{invalid operands to binary expression ('int' and 'A')}}
+              ^
+
+"Test_name.c", line 238: error: more than one operator "==" matches these operands:
+            function "P2468R2::example::B::operator==(const P2468R2::example::B &)" (declared at line 229), with reversed arguments
+            function "P2468R2::example::B::operator==(const P2468R2::example::B &)" (declared at line 229)
+            operand types are: P2468R2::example::C == P2468R2::example::B
+  bool c2 = C() == B();  // Search for operator!= inside B never finds 3. expected-warning {{ISO C++20 considers use of overloaded operator '==' (with operand types 'C' and 'B') to be ambiguous despite there being a unique best viable function}}
+                ^
+"Test_name.c", line 223: note: function template "P2468R2::example::operator==" does not match because argument #1 does not match parameter
+  template<typename T> bool operator==(A, T);     // 1. expected-note {{candidate function template not viable: no known conversion from 'int' to 'A' for 1st argument}}
+                            ^
+"Test_name.c", line 238: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+  bool c2 = C() == B();  // Search for operator!= inside B never finds 3. expected-warning {{ISO C++20 considers use of overloaded operator '==' (with operand types 'C' and 'B') to be ambiguous despite there being a unique best viable function}}
+                ^
+"Test_name.c", line 238: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+  bool c2 = C() == B();  // Search for operator!= inside B never finds 3. expected-warning {{ISO C++20 considers use of overloaded operator '==' (with operand types 'C' and 'B') to be ambiguous despite there being a unique best viable function}}
+                ^
+
+"Test_name.c", line 260: error: no operator "==" matches these operands
+            operand types are: int == P2468R2::template_tests::template_with_different_param_name_are_equivalent::A
+  bool x = 0 == A(); // expected-error {{invalid operands to binary expression ('int' and 'A')}}
+             ^
+"Test_name.c", line 258: note: function template "P2468R2::template_tests::template_with_different_param_name_are_equivalent::operator==" does not match because argument #1 does not match parameter
+  template<typename T> bool operator==(A, T); // expected-note {{candidate function template not viable: no known conversion from 'int' to 'A' for 1st argument}}
+                            ^
+"Test_name.c", line 260: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #2 does not match parameter
+  bool x = 0 == A(); // expected-error {{invalid operands to binary expression ('int' and 'A')}}
+             ^
+"Test_name.c", line 260: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+  bool x = 0 == A(); // expected-error {{invalid operands to binary expression ('int' and 'A')}}
+             ^
+
+"Test_name.c", line 269: warning: comparison is ambiguous in standard C++20 because the implied comparison operator with reversed parameters is an equally good match -- this is usually caused by a missing "const" qualifier on the comparison operator; see "P2468R2::template_tests::template_and_non_template::A::operator==" (declared at line 265)
+  bool a = A() == A(); // expected-warning {{ambiguous despite there being a unique best viable function}}
+               ^
+
+"Test_name.c", line 293: error: no operator "==" matches these operands
+            operand types are: int == P2468R2::using_decls::simple::C
+  bool c = 0 == C(); // Rewrite not possible. expected-error {{invalid operands to binary expression ('int' and 'C')}}
+             ^
+"Test_name.c", line 288: note: function "P2468R2::using_decls::simple::operator==" does not match because argument #1 does not match parameter
+  bool operator==(C, int); // expected-note {{candidate function not viable: no known conversion from 'int' to 'C' for 1st argument}}
+       ^
+"Test_name.c", line 293: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #2 does not match parameter
+  bool c = 0 == C(); // Rewrite not possible. expected-error {{invalid operands to binary expression ('int' and 'C')}}
+             ^
+"Test_name.c", line 293: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+  bool c = 0 == C(); // Rewrite not possible. expected-error {{invalid operands to binary expression ('int' and 'C')}}
+             ^
+
+"Test_name.c", line 303: error: no operator "==" matches these operands
+            operand types are: int == P2468R2::using_decls::templated::C
+  bool c = 0 == C(); // Rewrite not possible. expected-error {{invalid operands to binary expression ('int' and 'C')}}
+             ^
+"Test_name.c", line 298: note: function template "P2468R2::using_decls::templated::operator==" does not match because argument #1 does not match parameter
+  bool operator==(C, T); // expected-note {{candidate function template not viable: no known conversion from 'int' to 'C' for 1st argument}}
+       ^
+"Test_name.c", line 303: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #2 does not match parameter
+  bool c = 0 == C(); // Rewrite not possible. expected-error {{invalid operands to binary expression ('int' and 'C')}}
+             ^
+"Test_name.c", line 303: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+  bool c = 0 == C(); // Rewrite not possible. expected-error {{invalid operands to binary expression ('int' and 'C')}}
+             ^
+
+"Test_name.c", line 323: error: operator may not be a static member function
+    static bool operator !=(X const&, X const&); // expected-error {{overloaded 'operator!=' cannot be a static member function}}
+                ^
+
+"Test_name.c", line 325: warning: comparison is ambiguous in standard C++20 because the implied comparison operator with reversed parameters is an equally good match -- this is usually caused by a missing "const" qualifier on the comparison operator; see "P2468R2::static_operators::X::operator==" (declared at line 321)
+  bool x = X() == X(); // expected-warning {{ambiguous}}
+               ^
+
+"Test_name.c", line 338: error: more than one operator "==" matches these operands:
+            function template "bool GH53954::friend_template_1::operator==(const GH53954::friend_template_1::P &, const T &)" (declared at line 333), with reversed arguments
+            function template "bool GH53954::friend_template_1::operator==(const GH53954::friend_template_1::P &, const T &)" (declared at line 333)
+            operand types are: GH53954::friend_template_1::A == GH53954::friend_template_1::B
+  bool check(A a, B b) { return a == b; } // expected-warning {{use of overloaded operator '==' (with operand types 'A' and 'B') to be ambiguous}}
+                                  ^
+"Test_name.c", line 338: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+  bool check(A a, B b) { return a == b; } // expected-warning {{use of overloaded operator '==' (with operand types 'A' and 'B') to be ambiguous}}
+                                  ^
+"Test_name.c", line 338: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+  bool check(A a, B b) { return a == b; } // expected-warning {{use of overloaded operator '==' (with operand types 'A' and 'B') to be ambiguous}}
+                                  ^
+
+"Test_name.c", line 349: error: more than one operator "==" matches these operands:
+            function template "bool GH53954::friend_template_2::operator==(const T &, const GH53954::friend_template_2::P &)" (declared at line 344), with reversed arguments
+            function template "bool GH53954::friend_template_2::operator==(const T &, const GH53954::friend_template_2::P &)" (declared at line 344)
+            operand types are: GH53954::friend_template_2::A == GH53954::friend_template_2::B
+  bool check(A a, B b) { return a == b; } // expected-warning {{use of overloaded operator '==' (with operand types 'A' and 'B') to be ambiguous}}
+                                  ^
+"Test_name.c", line 349: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+  bool check(A a, B b) { return a == b; } // expected-warning {{use of overloaded operator '==' (with operand types 'A' and 'B') to be ambiguous}}
+                                  ^
+"Test_name.c", line 349: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+  bool check(A a, B b) { return a == b; } // expected-warning {{use of overloaded operator '==' (with operand types 'A' and 'B') to be ambiguous}}
+                                  ^
+
+"Test_name.c", line 362: error: more than one operator "==" matches these operands:
+            function template "bool GH53954::friend_template_class_template::operator==(const T &, const GH53954::friend_template_class_template::P<int> &)" (declared at line 356), with reversed arguments
+            function template "bool GH53954::friend_template_class_template::operator==(const T &, const GH53954::friend_template_class_template::P<bool> &)" (declared at line 356)
+            operand types are: GH53954::friend_template_class_template::A == GH53954::friend_template_class_template::B
+  bool check(A a, B b) { return a == b; } // expected-warning {{ambiguous}}
+                                  ^
+"Test_name.c", line 356: note: function template "GH53954::friend_template_class_template::operator==(const T &, const GH53954::friend_template_class_template::P<int> &)" does not match because argument #2 does not match parameter
+    friend bool operator==(const T&, const P&) { // expected-note 2 {{candidate}}
+                ^
+"Test_name.c", line 362: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+  bool check(A a, B b) { return a == b; } // expected-warning {{ambiguous}}
+                                  ^
+"Test_name.c", line 362: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+  bool check(A a, B b) { return a == b; } // expected-warning {{ambiguous}}
+                                  ^
+
+"Test_name.c", line 375: error: more than one operator "!=" matches these operands:
+            function template "bool GH53954::friend_template_fixme::operator==(const T &, const GH53954::friend_template_fixme::P &)" (declared at line 369), with reversed arguments
+            function template "bool GH53954::friend_template_fixme::operator!=(const T &, const GH53954::friend_template_fixme::P &)" (declared at line 371)
+            operand types are: GH53954::friend_template_fixme::A != GH53954::friend_template_fixme::B
+  bool check(A a, B b) { return a != b; } // expected-error{{ambiguous}}
+                                  ^
+"Test_name.c", line 375: note: built-in operator!=(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+  bool check(A a, B b) { return a != b; } // expected-error{{ambiguous}}
+                                  ^
+"Test_name.c", line 375: note: built-in operator!=(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+  bool check(A a, B b) { return a != b; } // expected-error{{ambiguous}}
+                                  ^
+"Test_name.c", line 375: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+  bool check(A a, B b) { return a != b; } // expected-error{{ambiguous}}
+                                  ^
+"Test_name.c", line 375: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+  bool check(A a, B b) { return a != b; } // expected-error{{ambiguous}}
+                                  ^
+
+"Test_name.c", line 386: error: more than one operator "==" matches these operands:
+            function template "bool GH53954::member_template_1::P::operator==(const S &) const" (declared at line 381), with reversed arguments
+            function template "bool GH53954::member_template_1::P::operator==(const S &) const" (declared at line 381)
+            operand types are: GH53954::member_template_1::A == GH53954::member_template_1::B
+  bool check(A a, B b) { return a == b; } // expected-warning {{use of overloaded operator '==' (with operand types 'A' and 'B') to be ambiguous}}
+                                  ^
+"Test_name.c", line 386: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+  bool check(A a, B b) { return a == b; } // expected-warning {{use of overloaded operator '==' (with operand types 'A' and 'B') to be ambiguous}}
+                                  ^
+"Test_name.c", line 386: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+  bool check(A a, B b) { return a == b; } // expected-warning {{use of overloaded operator '==' (with operand types 'A' and 'B') to be ambiguous}}
+                                  ^
+
+"Test_name.c", line 407: error: more than one operator "==" matches these operands:
+            function template "bool GH53954::non_member_template_1::operator==(const GH53954::non_member_template_1::P &, const S &)" (declared at line 402), with reversed arguments
+            function template "bool GH53954::non_member_template_1::operator==(const GH53954::non_member_template_1::P &, const S &)" (declared at line 402)
+            operand types are: GH53954::non_member_template_1::A == GH53954::non_member_template_1::B
+  bool check(A a, B b) { return a == b; } // expected-warning {{use of overloaded operator '==' (with operand types 'A' and 'B') to be ambiguous}}
+                                  ^
+"Test_name.c", line 407: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+  bool check(A a, B b) { return a == b; } // expected-warning {{use of overloaded operator '==' (with operand types 'A' and 'B') to be ambiguous}}
+                                  ^
+"Test_name.c", line 407: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+  bool check(A a, B b) { return a == b; } // expected-warning {{use of overloaded operator '==' (with operand types 'A' and 'B') to be ambiguous}}
+                                  ^
+
+"Test_name.c", line 421: error: more than one operator "==" matches these operands:
+            function template "bool GH53954::non_member_template_2::operator==(const S &, const GH53954::non_member_template_2::P &)" (declared at line 416), with reversed arguments
+            function template "bool GH53954::non_member_template_2::operator==(const S &, const GH53954::non_member_template_2::P &)" (declared at line 416)
+            operand types are: GH53954::non_member_template_2::A == GH53954::non_member_template_2::B
+  bool check(A a, B b) { return a == b; } // expected-warning {{use of overloaded operator '==' (with operand types 'A' and 'B') to be ambiguous}}
+                                  ^
+"Test_name.c", line 421: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+  bool check(A a, B b) { return a == b; } // expected-warning {{use of overloaded operator '==' (with operand types 'A' and 'B') to be ambiguous}}
+                                  ^
+"Test_name.c", line 421: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+  bool check(A a, B b) { return a == b; } // expected-warning {{use of overloaded operator '==' (with operand types 'A' and 'B') to be ambiguous}}
+                                  ^
+
+"Test_name.c", line 433: error: more than one operator "==" matches these operands:
+            function template "bool GH53954::class_and_member_template::S<T>::operator==(const OtherT &) [with T=bool]" (declared at line 428), with reversed arguments
+            function template "bool GH53954::class_and_member_template::S<T>::operator==(const OtherT &) [with T=int]" (declared at line 428)
+            operand types are: GH53954::class_and_member_template::A == GH53954::class_and_member_template::B
+  bool x = A{} == B{}; // expected-warning {{ambiguous}}
+               ^
+"Test_name.c", line 433: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+  bool x = A{} == B{}; // expected-warning {{ambiguous}}
+               ^
+"Test_name.c", line 433: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+  bool x = A{} == B{}; // expected-warning {{ambiguous}}
+               ^
+
+"Test_name.c", line 443: error: more than one operator "==" matches these operands:
+            function template "bool GH53954::ambiguous_case::operator==(GH53954::ambiguous_case::Foo<U>, GH53954::ambiguous_case::Foo<T *>)" (declared at line 439)
+            function template "bool GH53954::ambiguous_case::operator==(GH53954::ambiguous_case::Foo<T *>, GH53954::ambiguous_case::Foo<U>)" (declared at line 440)
+            operand types are: GH53954::ambiguous_case::Foo<int *> == GH53954::ambiguous_case::Foo<int *>
+      Foo<int*>() == Foo<int*>(); // expected-error{{ambiguous}}
+                  ^
+"Test_name.c", line 443: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+      Foo<int*>() == Foo<int*>(); // expected-error{{ambiguous}}
+                  ^
+"Test_name.c", line 443: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+      Foo<int*>() == Foo<int*>(); // expected-error{{ambiguous}}
+                  ^
+
+"Test_name.c", line 455: error: no operator "==" matches these operands
+            operand types are: int == ADL_GH68901::test1::A::S
+  bool a = 0 == A::S(); // expected-error {{invalid operands to binary expression ('int' and 'A::S')}}
+             ^
+"Test_name.c", line 451: note: function "ADL_GH68901::test1::A::operator==" does not match because argument #1 does not match parameter
+  bool operator==(S, int); // expected-note {{no known conversion from 'int' to 'S' for 1st argument}}
+       ^
+"Test_name.c", line 455: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #2 does not match parameter
+  bool a = 0 == A::S(); // expected-error {{invalid operands to binary expression ('int' and 'A::S')}}
+             ^
+"Test_name.c", line 455: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+  bool a = 0 == A::S(); // expected-error {{invalid operands to binary expression ('int' and 'A::S')}}
+             ^
+
+"Test_name.c", line 486: error: no operator "==" matches these operands
+            operand types are: ADL_GH68901::template_::ns::A<int> == ADL_GH68901::template_::ns::B<int>
+      a == b; // expected-error {{invalid operands to binary expression}}
+        ^
+"Test_name.c", line 479: note: candidate function template "ADL_GH68901::template_::ns::operator==" failed deduction
+  template <class T> bool operator==(B<T>, A<T>); // expected-note {{candidate template ignored: could not match 'B' against 'ns::A'}}
+                          ^
+"Test_name.c", line 486: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+      a == b; // expected-error {{invalid operands to binary expression}}
+        ^
+"Test_name.c", line 486: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+      a == b; // expected-error {{invalid operands to binary expression}}
+        ^
+
+"Test_name.c", line 499: error: no operator "==" matches these operands
+            operand types are: int == ADL_GH68901::using_not_eq::A::S
+  bool a = 0 == A::S();  // expected-error {{invalid operands to binary expression}}
+             ^
+"Test_name.c", line 496: note: function "ADL_GH68901::using_not_eq::A::operator==" does not match because argument #1 does not match parameter
+  bool operator==(S, int); // expected-note {{candidate}}
+       ^
+"Test_name.c", line 499: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #2 does not match parameter
+  bool a = 0 == A::S();  // expected-error {{invalid operands to binary expression}}
+             ^
+"Test_name.c", line 499: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+  bool a = 0 == A::S();  // expected-error {{invalid operands to binary expression}}
+             ^
+
+"Test_name.c", line 511: error: no operator "==" matches these operands
+            operand types are: int == ADL_GH68901::using_eqeq::A::S
+  bool a = 0 == A::S();  // expected-error {{invalid operands to binary expression}}
+             ^
+"Test_name.c", line 506: note: function "ADL_GH68901::using_eqeq::A::B::operator==" does not match because argument #1 does not match parameter
+  bool operator==(S, int); // expected-note {{candidate}}
+       ^
+"Test_name.c", line 511: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #2 does not match parameter
+  bool a = 0 == A::S();  // expected-error {{invalid operands to binary expression}}
+             ^
+"Test_name.c", line 511: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+  bool a = 0 == A::S();  // expected-error {{invalid operands to binary expression}}
+             ^
+
+"Test_name.c", line 523: error: more than one operator "==" matches these operands:
+            function "operator==(function_scope_operator_eqeq::X, int)" (declared at line 522), with reversed arguments
+            function "operator==(function_scope_operator_eqeq::X, int)" (declared at line 522)
+            operand types are: function_scope_operator_eqeq::X == function_scope_operator_eqeq::X
+    return x == x; // expected-warning {{ambiguous}}
+             ^
+"Test_name.c", line 523: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    return x == x; // expected-warning {{ambiguous}}
+             ^
+
+"Test_name.c", line 529: error: more than one operator "==" matches these operands:
+            function "operator==(function_scope_operator_eqeq::X, int)" (declared at line 527), with reversed arguments
+            function "operator==(function_scope_operator_eqeq::X, int)" (declared at line 527)
+            operand types are: function_scope_operator_eqeq::X == function_scope_operator_eqeq::X
+    return x == x;  // expected-warning {{ambiguous}}
+             ^
+"Test_name.c", line 529: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    return x == x;  // expected-warning {{ambiguous}}
+             ^
+
+52 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,24 @@
+fe_only -DTEST_NUMBER=1 --c++17 Test_name.c
+"Test_name.c", line 23: error: no instance of function template "dpdt_fn_type::f" matches the argument list
+            argument types are: (dpdt_fn_type::C<int>, dpdt_fn_type::C<long>)
+      f(C<int>{}, C<long>{});     // fails
+      ^
+"Test_name.c", line 14: note: candidate function template "dpdt_fn_type::f" failed deduction
+    void f(C<T>, C<U>) { }
+         ^
+
+"Test_name.c", line 53: error: no instance of function template "decltype_auto_deduction_from_non_paren_init::f" matches the argument list
+    static_assert(f<>() == 0);    // error in C++17 mode
+                  ^
+"Test_name.c", line 42: note: candidate function template "decltype_auto_deduction_from_non_paren_init::f" failed deduction
+    constexpr int f()
+                  ^
+
+"Test_name.c", line 54: error: no instance of function template "decltype_auto_deduction_from_non_paren_init::g" matches the argument list
+    static_assert(g<>() == 0);    // error in C++17 mode
+                  ^
+"Test_name.c", line 48: note: candidate function template "decltype_auto_deduction_from_non_paren_init::g" failed deduction
+    constexpr int g()
+                  ^
+
+3 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,255 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 25: error: invalid nontype template argument of type "int *"
+  using IPn2 = IntPtr<&n + 2>; // expected-error {{not a constant expression}} expected-note {{cannot refer to element 2 of non-array object}}
+                      ^
+
+"Test_name.c", line 33: warning: subscript out of range
+  using IP5 = IntPtr<&s.n[5]>; // expected-error {{not a constant expression}} expected-note {{cannot refer to element 5 of array of 3 elements}}
+                         ^
+
+"Test_name.c", line 33: error: expression must have a constant value
+  using IP5 = IntPtr<&s.n[5]>; // expected-error {{not a constant expression}} expected-note {{cannot refer to element 5 of array of 3 elements}}
+                     ^
+"Test_name.c", line 33: note: cannot access position 5 in array of 3 elements
+  using IP5 = IntPtr<&s.n[5]>; // expected-error {{not a constant expression}} expected-note {{cannot refer to element 5 of array of 3 elements}}
+                         ^
+
+"Test_name.c", line 36: error: a nontype template argument of reference type must bind to a function or to a complete object
+  using IRn = IntRef<*(&n + 1)>; // expected-error {{not a constant expression}} expected-note {{dereferenced pointer past the end of 'n'}}
+                     ^
+
+"Test_name.c", line 37: error: a nontype template argument of reference type must bind to a function or to a complete object
+  using IRn = IntRef<*(&n + 1)>; // expected-error {{not a constant expression}} expected-note {{dereferenced pointer past the end of 'n'}}
+                     ^
+
+"Test_name.c", line 42: error: a nontype template argument of reference type must bind to a function or to a complete object
+  using IR3 = IntRef<s.n[3]>; // expected-error {{not a constant expression}} expected-note {{dereferenced pointer past the end of subobject of 's'}}
+                     ^
+
+"Test_name.c", line 43: error: a nontype template argument of reference type must bind to a function or to a complete object
+  using IR3 = IntRef<*(s.n + 3)>; // expected-error {{not a constant expression}} expected-note {{dereferenced pointer past the end of subobject of 's'}}
+                     ^
+
+"Test_name.c", line 49: error: invalid redeclaration of type name "S123" (declared at line 47)
+  using S123 = Struct<S{1, 2, 4}>; // expected-error {{different types}}
+        ^
+
+"Test_name.c", line 53: error: invalid redeclaration of type name "U1" (declared at line 51)
+  using U1 = Union<U{.b = 1}>; // expected-error {{different types}}
+        ^
+
+"Test_name.c", line 56: error: _Complex can only be used with floating-point types
+  template<_Complex int> struct ComplexInt {};
+           ^
+
+"Test_name.c", line 57: error: complex integral types are not supported
+  using CI = ComplexInt<1 + 3i>;
+                             ^
+
+"Test_name.c", line 58: error: complex integral types are not supported
+  using CI = ComplexInt<3i + 1>;
+                         ^
+
+"Test_name.c", line 60: error: complex or imaginary template parameter type is nonstandard
+  template<_Complex float> struct ComplexFloat {};
+           ^
+
+"Test_name.c", line 76: error: no suitable constructor exists to convert from "int" to "ClassNTTP::A"
+    int k = id<1>; // expected-error {{no viable conversion from 'int' to 'A'}}
+               ^
+
+"Test_name.c", line 84: error: function "ClassNTTP::B::B(int)" (declared at line 81) cannot be referenced -- it is a deleted function
+    Q<1> q; // expected-error {{conversion function from 'int' to 'B' invokes a deleted function}}
+      ^
+
+"Test_name.c", line 92: error: function "ClassNTTP::C::C(const ClassNTTP::C &)" (declared at line 88) cannot be referenced -- it is a deleted function
+    R<c> r; // expected-error {{call to deleted constructor}}
+      ^
+
+"Test_name.c", line 107: error: expression must have a constant value
+    void f(Y<b.i>) {} // expected-error {{reference cannot bind to bit-field in converted constant expression}}
+             ^
+"Test_name.c", line 107: note: attempt to access run-time storage
+    void f(Y<b.i>) {} // expected-error {{reference cannot bind to bit-field in converted constant expression}}
+              ^
+
+"Test_name.c", line 117: error: template instantiation resulted in unexpected function type of "int (CopyCounting::X<CopyCounting::A{1}>)" (the meaning of a name may have changed since the template declaration -- the type of the template is "int (CopyCounting::X<a>)")
+    static_assert(f(X<A{}>()) == 0);
+                              ^
+          detected during instantiation of "CopyCounting::f" based on template argument <CopyCounting::A{0}> at line 117
+
+"Test_name.c", line 121: error: template instantiation resulted in unexpected function type of "void (CopyCounting::Y<CopyCounting::A{2}>)" (the meaning of a name may have changed since the template declaration -- the type of the template is "void (CopyCounting::Y<a>)")
+    void h() { constexpr A a; g<a>(Y<a>{}); }
+                                          ^
+          detected during instantiation of "CopyCounting::g" based on template argument <CopyCounting::A{1}> at line 121
+
+"Test_name.c", line 172: warning: constant "N" is not used in or cannot be deduced from the template argument list of class template "TemplateSpecializations::X<<expression>>"
+    template<int N> // expected-note {{parameter 'N'}}
+                 ^
+
+"Test_name.c", line 183: error: incomplete type "TemplateSpecializations::X<TemplateSpecializations::A{{1, 2, <8 repetitions of 0>}}>" is not allowed
+    static_assert(X<A{1, 2}>::match); // expected-error {{undefined}}
+                  ^
+
+"Test_name.c", line 188: error: incomplete type "TemplateSpecializations::Y<1, TemplateSpecializations::A{{<4 repetitions of 1>, <6 repetitions of 0>}}>" is not allowed
+    Y<1, A{1, 1, 1, 1}> y2; // expected-error {{undefined}}
+                        ^
+
+"Test_name.c", line 193: error: incomplete type "TemplateSpecializations::Z<TemplateSpecializations::A{{1, 2, <8 repetitions of 0>}}, TemplateSpecializations::A{{1, 3, <8 repetitions of 0>}}>" is not allowed
+    Z<A{1, 2}, A{1, 3}> z2; // expected-error {{undefined}}
+                        ^
+
+"Test_name.c", line 200: error: static assertion failed
+    template<A a> struct X { static_assert(a.n == a.m); }; // expected-error {{static assertion failed due to requirement 'Diags::A{1, 2}.n == Diags::A{1, 2}.m'}} \
+                             ^
+"Test_name.c", line 200: note: the final comparison was 1 == 2
+    template<A a> struct X { static_assert(a.n == a.m); }; // expected-error {{static assertion failed due to requirement 'Diags::A{1, 2}.n == Diags::A{1, 2}.m'}} \
+                                               ^
+          detected during instantiation of class "Diags::X<a> [with a=Diags::A{1, 2}]" at line 202
+
+"Test_name.c", line 216: error: more than one partial specialization matches the template argument list of class "CTADPartialOrder::X<int, int, CTADPartialOrder::A<0>{}>"
+            "CTADPartialOrder::X<T, int, a>" (declared at line 208)
+            "CTADPartialOrder::X<T, T, a>" (declared at line 210)
+    static_assert(X<int, int, a>::n == -1); // expected-error {{ambiguous}}
+                                  ^
+
+"Test_name.c", line 216: error: static assertion failed
+    static_assert(X<int, int, a>::n == -1); // expected-error {{ambiguous}}
+    ^
+"Test_name.c", line 216: note: the final comparison was 1 == -1
+    static_assert(X<int, int, a>::n == -1); // expected-error {{ambiguous}}
+                                    ^
+
+"Test_name.c", line 217: error: incomplete type "CTADPartialOrder::X<int *, void, CTADPartialOrder::A<0>{}>" is not allowed
+    static_assert(X<int*, void, a>::n == 2); // expected-error {{undefined}}
+                  ^
+
+"Test_name.c", line 220: error: static assertion failed
+    static_assert(X<float, float, a>::n == 4);
+    ^
+"Test_name.c", line 220: note: the final comparison was 3 == 4
+    static_assert(X<float, float, a>::n == 4);
+                                        ^
+
+"Test_name.c", line 234: error: const variable "UnnamedBitfield::a" requires an initializer -- class "UnnamedBitfield::A" has no user-provided default constructor
+    constexpr A a;
+                 ^
+
+"Test_name.c", line 244: error: expression must have a constant value
+    A<0> a0; // expected-error {{conversion from 'int' to 'const int &' in converted constant expression would bind reference to a temporary}}
+      ^
+"Test_name.c", line 244: note: reference or pointer to temporary with limited lifetime
+    A<0> a0; // expected-error {{conversion from 'int' to 'const int &' in converted constant expression would bind reference to a temporary}}
+      ^
+
+"Test_name.c", line 246: error: a nontype template argument of reference type must bind to a function or to a complete object
+    A<(const int&)1> a1; // expected-error {{reference to temporary object is not allowed in a template argument}}
+      ^
+
+"Test_name.c", line 247: error: expression must have a constant value
+    A<(int&&)2> a2; // expected-error {{reference to temporary object is not allowed in a template argument}}
+      ^
+"Test_name.c", line 247: note: reference or pointer to temporary with limited lifetime
+    A<(int&&)2> a2; // expected-error {{reference to temporary object is not allowed in a template argument}}
+      ^
+
+"Test_name.c", line 252: error: a nontype template argument of reference type must bind to a function or to a complete object
+    A<r3> a3; // expected-error {{reference to temporary object is not allowed in a template argument}}
+      ^
+
+"Test_name.c", line 253: error: a nontype template argument of reference type must bind to a function or to a complete object
+    A<r4> a4; // expected-error {{reference to temporary object is not allowed in a template argument}}
+      ^
+
+"Test_name.c", line 257: error: a nontype template argument of reference type must bind to a function or to a complete object
+    A<x.a[3]> a5; // expected-error {{reference to subobject of temporary object}}
+      ^
+
+"Test_name.c", line 260: error: expression must have a constant value
+    B<&(int&)(int&&)0> b0; // expected-error {{pointer to temporary object}}
+      ^
+"Test_name.c", line 260: note: reference or pointer to temporary with limited lifetime
+    B<&(int&)(int&&)0> b0; // expected-error {{pointer to temporary object}}
+      ^
+
+"Test_name.c", line 261: error: invalid nontype template argument of type "const int *"
+    B<&r3> b3; // expected-error {{pointer to temporary object}}
+      ^
+
+"Test_name.c", line 262: error: invalid nontype template argument of type "const int *"
+    B<&x.a[3]> b5; // expected-error {{pointer to subobject of temporary object}}
+      ^
+
+"Test_name.c", line 266: error: invalid nontype template argument of type "Temporary::C"
+    D<C{nullptr, &r3}> d; // expected-error {{pointer to temporary object}}
+      ^
+
+"Test_name.c", line 271: error: invalid nontype template argument of type "const char (*)[6]"
+    Y<&"hello"> y1; // expected-error {{pointer to string literal}}
+      ^
+
+"Test_name.c", line 272: error: invalid nontype template argument of type "const char (&)[6]"
+    Y<"hello"> y2; // expected-error {{reference to string literal}}
+      ^
+
+"Test_name.c", line 273: error: invalid nontype template argument of type "const char *"
+    Y<+"hello"> y3; // expected-error {{pointer to subobject of string literal}}
+      ^
+
+"Test_name.c", line 274: error: a nontype template argument of reference type must bind to a function or to a complete object
+    Y<"hello"[2]> y4; // expected-error {{reference to subobject of string literal}}
+      ^
+
+"Test_name.c", line 278: error: invalid nontype template argument of type "StringLiteral::A"
+    Y<A{"hello"}> y5; // expected-error {{pointer to subobject of string literal}}
+      ^
+
+"Test_name.c", line 279: error: invalid nontype template argument of type "StringLiteral::B"
+    Y<B{"hello"[2]}> y6; // expected-error {{reference to subobject of string literal}}
+      ^
+
+"Test_name.c", line 284: error: invalid nontype template argument of type "const std::type_info *"
+    Y<&typeid(int)> y1; // expected-error {{pointer to type_info object}}
+      ^
+
+"Test_name.c", line 285: error: a nontype template argument of reference type must bind to a function or to a complete object
+    Y<typeid(int)> y2; // expected-error {{reference to type_info object}}
+      ^
+
+"Test_name.c", line 289: error: invalid nontype template argument of type "TypeInfo::A"
+    Y<A{&typeid(int)}> y3; // expected-error {{pointer to type_info object}}
+      ^
+
+"Test_name.c", line 290: error: invalid nontype template argument of type "TypeInfo::B"
+    Y<B{typeid(int)}> y4; // expected-error {{reference to type_info object}}
+      ^
+
+"Test_name.c", line 300: error: a template argument may not reference a non-external entity
+      Y<__func__>(); // expected-error {{pointer to subobject of predefined '__func__' variable}}
+        ^
+
+"Test_name.c", line 301: error: a template argument may not reference a non-external entity
+      Y<__PRETTY_FUNCTION__>(); // expected-error {{pointer to subobject}}
+        ^
+
+"Test_name.c", line 302: error: a template argument may not reference a non-external entity
+      Y<(__func__)>(); // expected-error {{reference to predefined '__func__' variable}}
+        ^
+
+"Test_name.c", line 303: error: a template argument may not reference a non-external entity
+      Y<&__func__>(); // expected-error {{pointer to predefined '__func__' variable}}
+        ^
+
+"Test_name.c", line 304: error: a template argument may not reference a non-external entity
+      Y<*&__func__>(); // expected-error {{reference to predefined '__func__' variable}}
+        ^
+
+"Test_name.c", line 318: error: no instance of function template "DependentCTAD::f" matches the argument list
+            argument types are: (DependentCTAD::A<DependentCTAD::B<int>{}>)
+      f(A<B(0)>()); // expected-error {{no matching function}}
+      ^
+"Test_name.c", line 312: note: candidate function template "DependentCTAD::f" failed deduction
+    template<template<typename> typename T, T V> void f(A<V>); // expected-note {{couldn't infer template argument 'T'}}
+                                                      ^
+
+53 errors detected in the compilation of "Test_name.c".

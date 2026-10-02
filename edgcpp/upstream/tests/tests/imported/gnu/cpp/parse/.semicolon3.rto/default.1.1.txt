@@ -1,0 +1,98 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++03 Test_name.c
+"Test_name.c", line 108: error: expected a ";"
+  typedef float BAR;
+          ^
+
+"Test_name.c", line 115: error: expected a ";"
+  const int i0 = 1;
+        ^
+
+"Test_name.c", line 122: error: expected a ";"
+  volatile long l0 = 1;
+           ^
+
+"Test_name.c", line 129: error: expected a ";"
+  extern char c0;
+         ^
+
+"Test_name.c", line 136: error: expected a ";"
+  static wchar_t wc0;
+         ^
+
+"Test_name.c", line 143: error: expected a ";"
+  bool b0;
+  ^
+
+"Test_name.c", line 150: error: expected a ";"
+  extern double d0;
+         ^
+
+"Test_name.c", line 157: error: expected a ";"
+  inline short f(void)
+         ^
+
+"Test_name.c", line 152: error: inline specifier allowed on function declarations only
+  class E8
+  ^
+
+"Test_name.c", line 167: error: expected a ";"
+  class D0
+  ^
+
+"Test_name.c", line 177: error: expected a ";"
+  extern class D0 &f0 (void);
+         ^
+
+"Test_name.c", line 184: error: expected a ";"
+  const struct E6 *f1 (void) { return 0; }
+        ^
+
+"Test_name.c", line 196: error: expected a ";"
+  const union U0 *f2 (void) { return 0; }
+        ^
+
+"Test_name.c", line 207: error: expected a ";"
+  static enum e f3 (void) { return U; }
+         ^
+
+"Test_name.c", line 215: error: expected a ";"
+  unsigned int i1 = 2;
+  ^
+
+"Test_name.c", line 223: error: expected a ";"
+  signed long l1 = 3;
+  ^
+
+"Test_name.c", line 228: error: expected a ";"
+      virtual int f2 (void);
+              ^
+
+"Test_name.c", line 231: error: expected a ";"
+  class E17
+  ^
+
+"Test_name.c", line 234: error: expected a ";"
+      mutable int i;
+              ^
+
+"Test_name.c", line 237: error: expected a ";"
+  class E18
+  ^
+
+"Test_name.c", line 242: error: expected a ";"
+  typedef int E18int;
+          ^
+
+"Test_name.c", line 252: error: expected a ";"
+  const int foo(const C0 &x)
+        ^
+
+"Test_name.c", line 33: warning: variable "ok6_var" was declared but never referenced
+  } static ok6_var;		// no complaints
+           ^
+
+"Test_name.c", line 77: warning: variable "ok13_var" was declared but never referenced
+    static *ok13_var;
+            ^
+
+22 errors detected in the compilation of "Test_name.c".

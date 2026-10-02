@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 8: error: "auto" is not allowed here
+  template<> struct A<auto>	// { dg-error "auto|template argument" }
+                      ^
+
+"Test_name.c", line 15: error: "auto" is not allowed here
+    A<auto>().foo<0>();		// { dg-error "auto|template argument" }
+      ^
+
+2 errors detected in the compilation of "Test_name.c".

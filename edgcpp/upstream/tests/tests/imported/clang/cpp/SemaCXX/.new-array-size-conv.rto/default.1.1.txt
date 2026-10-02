@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 36: error: more than one conversion function from "ValueBoth" to a built-in type applies:
+            function "ValueInt::operator int() const" (declared at line 10)
+            function "ValueEnum::operator E() const" (declared at line 17)
+    (void)new int[ValueBoth()]; // expected-error{{ambiguous conversion of array size expression of type 'ValueBoth' to an integral or enumeration type}}
+                  ^
+
+"Test_name.c", line 38: error: base class "ValueInt" is ambiguous
+    (void)new int[TwoValueInts()]; // expected-error{{ambiguous conversion of array size expression of type 'TwoValueInts' to an integral or enumeration type}}
+                  ^
+
+2 errors detected in the compilation of "Test_name.c".

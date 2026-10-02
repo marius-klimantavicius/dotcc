@@ -1,0 +1,261 @@
+#!/usr/bin/env python3
+
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+import argparse
+import re
+import signal
+import sys
+
+import edgtest
+
+from pathlib import Path
+from typing import Any, Dict, List
+
+from edgutil import eprint
+
+def _diff_label_detail(test_id: str, config_names: List[str]) -> str:
+  return f"{test_id} -- {','.join(config_names)}"
+
+def process_grouped_file(rt_file_path: Path,
+                         test_id: str,
+                         config_names: List[str],
+                         *,
+                         collapse: bool) -> None:
+  detail = _diff_label_detail(test_id, config_names)
+  with edgtest.runtest.RunTestOutput(rt_file_path) as rt_output:
+    print(''.join(rt_output.combined_static_diff(
+      from_label = f"Expected Output ({detail})",
+      to_label = f"Observed Output ({detail})",
+      collapse = collapse
+    )), end = '')
+
+class NoopFileNameFilter:
+  def __init__(self) -> None:
+    pass
+
+  def matches(self, path: Path) -> bool:
+    return True
+
+class SimpleFileNameFilter:
+  def __init__(self, text: str) -> None:
+    self._text = text
+
+  def matches(self, path: Path) -> bool:
+    return self._text in str(path)
+
+class RegexFileNameFilter:
+  def __init__(self, expression: str) -> None:
+    self._regex = re.compile(expression)
+
+  def matches(self, path: Path) -> bool:
+    # Use search to provide a "wider" match.
+    return self._regex.search(str(path)) is not None
+
+def walk_files(filter: Any, run_dir: Path, *,
+               do_replays_dir_detection: bool,
+               diffuse: bool) -> None:
+  '''Walk .rt.tar files and print diffs.
+
+  By default, configs that share the same test path and combined_diff_hash
+  are emitted once (with Expected/Observed headers annotated as
+  "Expected Output (test/path -- config_a,config_b)"), and equal command
+  diffs within a file are collapsed. With diffuse=True, every config and
+  every command diff is emitted separately with no compaction.
+  '''
+  file_walker = edgtest.walk_rt_file_directory(
+    run_dir,
+    diff_algorithm = edgtest.detect_diff_discovery_mode(),
+    do_replays_dir_detection = do_replays_dir_detection
+  )
+
+  # test_id -> config_name -> combined_diff_hash.
+  # The hash is read for every mode: a missing combined_diff_hash means the
+  # .rt file has no diffs, so it is omitted even when diffuse.
+  # hash_to_rt_path keeps one representative .rt path per combined_diff_hash.
+  pending: Dict[str, Dict[str, str]] = {}
+  hash_to_rt_path: Dict[str, Path] = {}
+  for file_path in file_walker:
+    try:
+      if not filter.matches(file_path):
+        continue
+      combined_hash = edgtest.runtest.read_combined_diff_hash(file_path)
+      if combined_hash is None:
+        continue
+      test_id, config_name = edgtest.describe_rt_path(file_path, run_dir)
+      if test_id not in pending:
+        pending[test_id] = {}
+      if config_name not in pending[test_id]:
+        pending[test_id][config_name] = combined_hash
+      hash_to_rt_path.setdefault(combined_hash, file_path)
+    except FileNotFoundError:
+      # Nothing to do, the file was briefly present but then destroyed
+      # during processing.  As it no longer exists, it's not particularly
+      # important.
+      pass
+
+  if diffuse:
+    for test_id in sorted(pending):
+      for config_name in sorted(pending[test_id]):
+        try:
+          process_grouped_file(
+            hash_to_rt_path[pending[test_id][config_name]],
+            test_id,
+            [config_name],
+            collapse = False
+          )
+        except FileNotFoundError:
+          pass
+  else:
+    for test_id, groups in edgtest.runtest.group_tests_by_diff_hash(pending):
+      for group in groups:
+        try:
+          process_grouped_file(
+            hash_to_rt_path[group.diff_hash],
+            test_id,
+            group.configs,
+            collapse = True
+          )
+        except FileNotFoundError:
+          pass
+
+CMD_DESCRIPTION = f"""
+EDG tool for comparing test output.
+
+This tool is used to compare the observed output of a test run with the
+expected recorded output.
+
+By default the latest edgy or run_my_tests test run's output will be observed.
+To go to the previous output add the "-b" flag to the command. This can be
+repeated to get even older output.
+
+For example, the following command will examine the 4th most recent test run:
+
+  edg-test-run-diff -bbb
+
+Alternatively, a root path to examine can be specified (this is incompatible
+with the -b flag):
+
+  # Examine all .rt.tar files in $MY_RUNS/2024.08.16-20.58.06/
+  edg-test-run-diff --root $MY_RUNS/2024.08.16-20.58.06/
+
+The root path must exist, otherwise an error will be issued.
+
+This can be combined with a file name filter, for example, to examine
+specifically paths that contain "g++":
+
+  # Using recent test run output
+  edg-test-run-diff g++
+  # Using a specified search root
+  edg-test-run-diff --root $MY_RUNS/2024.08.16-20.58.06/ g++
+
+Use --diffuse to disable compaction and emit every command diff for every
+configuration separately (the pre-deduplication presentation).
+
+-----------------------------------------------------------------------------
+"""
+
+def parse_args() -> argparse.Namespace:
+  '''Parse the commandline arguments for this script.'''
+  parser = argparse.ArgumentParser(
+    description = CMD_DESCRIPTION,
+    formatter_class = argparse.RawDescriptionHelpFormatter
+  )
+  parser.add_argument(
+    '--ignore-replays',
+    dest = 'ignore_replays',
+    action = 'store_true',
+    help = 'ignore edgy test replays when considering test runs'
+  )
+  parser.add_argument(
+    '-r',
+    '--regex',
+    dest = 'use_regex_filter',
+    action = 'store_true',
+    help = 'treat file_name_filter as a regular expression'
+  )
+  parser.add_argument(
+    '-b',
+    dest = 'num_runs_back',
+    action = 'count',
+    default = 0,
+    help = (
+      'examine the previous test run (if this flag is repeated, go back the '
+      'number of times the flag was repeated)'
+    )
+  )
+  parser.add_argument(
+    '--root',
+    dest = 'root_path',
+    type = Path,
+    required = False,
+    help = 'the root path to examine'
+  )
+  parser.add_argument(
+    '--diffuse',
+    dest = 'diffuse',
+    action = 'store_true',
+    help = (
+      'do not compact diffs: emit every command diff for every configuration '
+      'separately'
+    )
+  )
+  parser.add_argument(
+    'file_name_filter',
+    nargs = '?',
+    help = 'a string the .rt.tar file path must contain'
+  )
+  return parser.parse_args()
+
+def die(signum: Any, frame: Any) -> None:
+  sys.exit()
+
+def register_signal_handlers() -> None:
+  signal.signal(signal.SIGINT, die)
+  signal.signal(signal.SIGTERM, die)
+  signal.signal(signal.SIGPIPE, die)
+
+def _get_filter(args: argparse.Namespace) -> Any:
+  if args.file_name_filter is None:
+    return NoopFileNameFilter()
+
+  if args.use_regex_filter:
+    return RegexFileNameFilter(args.file_name_filter)
+  else:
+    return SimpleFileNameFilter(args.file_name_filter)
+
+def main() -> None:
+  args = parse_args()
+
+  register_signal_handlers()
+
+  test_home = edgtest.load_test_home_or_exit()
+  previous_run_dirs = edgtest.get_test_runs(
+    test_home,
+    include_replays = not args.ignore_replays
+  )
+
+  test_comparison = edgtest.TestRunInspection(
+    args.root_path,
+    args.num_runs_back,
+    previous_run_dirs
+  )
+  edgtest.validate_inspection(test_comparison)
+
+  run_dir = test_comparison.get_run_directory()
+  if not run_dir.exists():
+    eprint(f"Path does not exist: {run_dir}")
+    sys.exit(1)
+
+  file_name_filter = _get_filter(args)
+  walk_files(
+    file_name_filter,
+    run_dir,
+    do_replays_dir_detection = test_comparison.is_previous_run_search(),
+    diffuse = args.diffuse
+  )
+
+main()

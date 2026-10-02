@@ -1,0 +1,3033 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --exceptions -DUSE_CAPABILITY=0 Test_name.c
+"SemaCXX/warn-thread-safety-analysis.cpp", line 11: warning: unknown attribute "lockable"
+  class __attribute__((lockable)) Mutex {
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 13: warning: unknown attribute "exclusive_lock_function"
+    void Lock() __attribute__((exclusive_lock_function()));
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 14: warning: unknown attribute "shared_lock_function"
+    void ReaderLock() __attribute__((shared_lock_function()));
+                                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 15: warning: unknown attribute "unlock_function"
+    void Unlock() __attribute__((unlock_function()));
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 16: warning: unknown attribute "release_capability"
+    void ExclusiveUnlock() __attribute__((release_capability()));
+                                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 17: warning: unknown attribute "release_shared_capability"
+    void ReaderUnlock() __attribute__((release_shared_capability()));
+                                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 18: warning: unknown attribute "exclusive_trylock_function"
+    bool TryLock() __attribute__((exclusive_trylock_function(true)));
+                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 19: warning: unknown attribute "shared_trylock_function"
+    bool ReaderTryLock() __attribute__((shared_trylock_function(true)));
+                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 20: warning: unknown attribute "exclusive_lock_function"
+    void LockWhen(const int &cond) __attribute__((exclusive_lock_function()));
+                                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 22: warning: unknown attribute "release_shared_capability"
+    void PromoteShared() __attribute__((release_shared_capability())) __attribute__((exclusive_lock_function()));
+                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 22: warning: unknown attribute "exclusive_lock_function"
+    void PromoteShared() __attribute__((release_shared_capability())) __attribute__((exclusive_lock_function()));
+                                                                                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 23: warning: unknown attribute "release_capability"
+    void DemoteExclusive() __attribute__((release_capability())) __attribute__((shared_lock_function()));
+                                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 23: warning: unknown attribute "shared_lock_function"
+    void DemoteExclusive() __attribute__((release_capability())) __attribute__((shared_lock_function()));
+                                                                                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 28: warning: unknown attribute "assert_exclusive_lock"
+    void AssertHeld() __attribute__((assert_exclusive_lock()));
+                                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 29: warning: unknown attribute "assert_shared_lock"
+    void AssertReaderHeld() __attribute__((assert_shared_lock()));
+                                           ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 32: warning: unknown attribute "scoped_lockable"
+  class __attribute__((scoped_lockable)) MutexLock {
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 34: warning: unknown attribute "exclusive_lock_function"
+    MutexLock(Mutex *mu) __attribute__((exclusive_lock_function(mu)));
+                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 35: warning: unknown attribute "exclusive_locks_required"
+    MutexLock(Mutex *mu, bool adopt) __attribute__((exclusive_locks_required(mu)));
+                                                    ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 36: warning: unknown attribute "unlock_function"
+    ~MutexLock() __attribute__((unlock_function()));
+                                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 39: warning: unknown attribute "scoped_lockable"
+  class __attribute__((scoped_lockable)) ReaderMutexLock {
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 41: warning: unknown attribute "shared_lock_function"
+    ReaderMutexLock(Mutex *mu) __attribute__((shared_lock_function(mu)));
+                                              ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 42: warning: unknown attribute "shared_locks_required"
+    ReaderMutexLock(Mutex *mu, bool adopt) __attribute__((shared_locks_required(mu)));
+                                                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 43: warning: unknown attribute "unlock_function"
+    ~ReaderMutexLock() __attribute__((unlock_function()));
+                                      ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 46: warning: unknown attribute "scoped_lockable"
+  class __attribute__((scoped_lockable)) ReleasableMutexLock {
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 48: warning: unknown attribute "exclusive_lock_function"
+    ReleasableMutexLock(Mutex *mu) __attribute__((exclusive_lock_function(mu)));
+                                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 49: warning: unknown attribute "unlock_function"
+    ~ReleasableMutexLock() __attribute__((unlock_function()));
+                                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 51: warning: unknown attribute "unlock_function"
+    void Release() __attribute__((unlock_function()));
+                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 54: warning: unknown attribute "scoped_lockable"
+  class __attribute__((scoped_lockable)) DoubleMutexLock {
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 56: warning: unknown attribute "exclusive_lock_function"
+    DoubleMutexLock(Mutex *mu1, Mutex *mu2) __attribute__((exclusive_lock_function(mu1, mu2)));
+                                                           ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 57: warning: unknown attribute "unlock_function"
+    ~DoubleMutexLock() __attribute__((unlock_function()));
+                                      ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 61: warning: unknown attribute "scoped_lockable"
+  class __attribute__((scoped_lockable)) TemplateMutexLock {
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 63: warning: unknown attribute "exclusive_lock_function"
+    TemplateMutexLock(Mu *mu) __attribute__((exclusive_lock_function(mu)));
+                                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 64: warning: unknown attribute "unlock_function"
+    ~TemplateMutexLock() __attribute__((unlock_function()));
+                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 68: warning: unknown attribute "scoped_lockable"
+  class __attribute__((scoped_lockable)) VariadicMutexLock {
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 70: warning: unknown attribute "exclusive_lock_function"
+    VariadicMutexLock(Mus *...mus) __attribute__((exclusive_lock_function(mus...)));
+                                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 71: warning: unknown attribute "unlock_function"
+    ~VariadicMutexLock() __attribute__((unlock_function()));
+                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 76: warning: unknown attribute "shared_lock_function"
+  void beginNoWarnOnReads() __attribute__((shared_lock_function("*")));
+                                           ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 77: warning: unknown attribute "unlock_function"
+  void endNoWarnOnReads() __attribute__((unlock_function("*")));
+                                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 78: warning: unknown attribute "exclusive_lock_function"
+  void beginNoWarnOnWrites() __attribute__((exclusive_lock_function("*")));
+                                            ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 79: warning: unknown attribute "unlock_function"
+  void endNoWarnOnWrites() __attribute__((unlock_function("*")));
+                                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 145: warning: unknown attribute "acquired_after"
+  Mutex sls_mu2 __attribute__((acquired_after(sls_mu)));
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 146: warning: unknown attribute "guarded_var"
+  int sls_guard_var __attribute__((guarded_var)) = 0;
+                                   ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 147: warning: unknown attribute "guarded_by"
+  int sls_guardby_var __attribute__((guarded_by(sls_mu))) = 0;
+                                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 154: warning: unknown attribute "guarded_by"
+     int x __attribute__((guarded_by(mu)));
+                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 155: warning: unknown attribute "exclusive_lock_function"
+     void MyLock() __attribute__((exclusive_lock_function(mu)));
+                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 162: warning: unknown attribute "guarded_by"
+         bool a __attribute__((guarded_by(lock)));
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 163: warning: unknown attribute "guarded_by"
+         bool b __attribute__((guarded_by(strct.lock)));
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 164: warning: unknown attribute "pt_guarded_by"
+         bool *ptr_a __attribute__((pt_guarded_by(lock)));
+                                    ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 165: warning: unknown attribute "pt_guarded_by"
+         bool *ptr_b __attribute__((pt_guarded_by(strct.lock)));
+                                    ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 166: warning: unknown attribute "acquired_before"
+         Mutex lock1 __attribute__((acquired_before(lock))) __attribute__((acquired_before(strct.lock)));
+                                    ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 166: warning: unknown attribute "acquired_before"
+         Mutex lock1 __attribute__((acquired_before(lock))) __attribute__((acquired_before(strct.lock)));
+                                                                           ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 167: warning: unknown attribute "acquired_after"
+         Mutex lock2 __attribute__((acquired_after(lock))) __attribute__((acquired_after(strct.lock)));
+                                    ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 167: warning: unknown attribute "acquired_after"
+         Mutex lock2 __attribute__((acquired_after(lock))) __attribute__((acquired_after(strct.lock)));
+                                                                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 198: warning: variable "x" was declared but never referenced
+    int x = sls_guard_var;
+        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 216: warning: variable "x" was declared but never referenced
+    int x = sls_guardby_var;
+        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 400: warning: unknown attribute "exclusive_lock_function"
+    void globalLock() __attribute__((exclusive_lock_function(aa_mu)));
+                                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 401: warning: unknown attribute "unlock_function"
+    void globalUnlock() __attribute__((unlock_function(aa_mu)));
+                                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 455: warning: unknown attribute "pt_guarded_var"
+  int *pgb_gvar __attribute__((pt_guarded_var));
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 456: warning: unknown attribute "pt_guarded_by"
+  int *pgb_var __attribute__((pt_guarded_by(sls_mu)));
+                              ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 461: warning: unknown attribute "guarded_by"
+    int *pgb_field __attribute__((guarded_by(sls_mu2)))
+                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 462: warning: unknown attribute "pt_guarded_by"
+                   __attribute__((pt_guarded_by(sls_mu)));
+                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 477: warning: unknown attribute "guarded_by"
+    int gb_field __attribute__((guarded_by(sls_mu)));
+                                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 484: warning: unknown attribute "no_thread_safety_analysis"
+    void testNoAnal() __attribute__((no_thread_safety_analysis)) {
+                                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 489: warning: unknown attribute "guarded_by"
+  GBFoo GlobalGBFoo __attribute__((guarded_by(sls_mu)));
+                                   ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 493: warning: variable "x" was declared but never referenced
+    int x = *pgb_var;
+        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 509: warning: variable "x" was declared but never referenced
+    int *x = pgb_var;
+         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 518: warning: variable "x" was declared but never referenced
+    int x = sls_guard_var;
+        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 528: warning: variable "x" was declared but never referenced
+    int x = sls_guardby_var;
+        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 538: warning: variable "x" was declared but never referenced
+    int x = *pgb_gvar;
+        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 548: warning: variable "x" was declared but never referenced
+    int x = *pgb_var;
+        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 553: warning: variable "G" was set but never used
+    GBFoo G;
+          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 575: warning: unknown attribute "guarded_by"
+    int a __attribute__((guarded_by(mu)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 578: warning: unknown attribute "exclusive_locks_required"
+    void foo() __attribute__((exclusive_locks_required(mu))) { }
+                              ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 589: warning: unknown attribute "guarded_by"
+    int c __attribute__((guarded_by(mu)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 596: warning: unknown attribute "guarded_by"
+    int a_ __attribute__((guarded_by(mu1_)));
+                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 598: warning: unknown attribute "pt_guarded_by"
+    int *q __attribute__((pt_guarded_by(mu)));
+                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 610: warning: variable "FooB" was declared but never referenced
+    LateFoo FooB;
+            ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 618: warning: variable "BarA" is used before its value is set
+    BarA.FooPointer->mu.Lock();
+    ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 625: warning: variable "fooB" was set but never used
+    LateFoo fooB;
+            ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 647: warning: variable "BarA" is used before its value is set
+    BarA.FooPointer->mu.Lock();
+    ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 710: warning: variable "x" was declared but never referenced
+    int x = sls_guardby_var;
+        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 806: warning: unknown attribute "exclusive_locks_required"
+    void aa_elr_fun() __attribute__((exclusive_locks_required(aa_mu)));
+                                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 807: warning: unknown attribute "shared_locks_required"
+    void aa_elr_fun_s() __attribute__((shared_locks_required(aa_mu)));
+                                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 808: warning: unknown attribute "locks_excluded"
+    void le_fun() __attribute__((locks_excluded(sls_mu)));
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 813: warning: unknown attribute "exclusive_locks_required"
+    void test() __attribute__((exclusive_locks_required(sls_mu)));
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 814: warning: unknown attribute "shared_locks_required"
+    void testShared() __attribute__((shared_locks_required(sls_mu2)));
+                                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 817: warning: unknown attribute "exclusive_locks_required"
+  void elr_fun() __attribute__((exclusive_locks_required(sls_mu)));
+                                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 869: warning: unknown attribute "no_thread_safety_analysis"
+  void es_fun_8() __attribute__((no_thread_safety_analysis));
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 875: warning: unknown attribute "shared_locks_required"
+  void es_fun_9() __attribute__((shared_locks_required(aa_mu)));
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 880: warning: unknown attribute "exclusive_locks_required"
+  void es_fun_10() __attribute__((exclusive_locks_required(aa_mu)));
+                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 955: warning: unknown attribute "exclusive_locks_required"
+    static int func1() __attribute__((exclusive_locks_required(mu1_)));
+                                      ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 956: warning: unknown attribute "guarded_by"
+    static int b_ __attribute__((guarded_by(mu1_)));
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 958: warning: unknown attribute "guarded_by"
+    static int a_ __attribute__((guarded_by(mu1_)));
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 980: warning: unknown attribute "guarded_by"
+    int a_ __attribute__((guarded_by(mu1_)));
+                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 982: warning: unknown attribute "pt_guarded_by"
+    int *q __attribute__((pt_guarded_by(mu)));
+                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 983: warning: unknown attribute "acquired_after"
+    Mutex mu1_ __attribute__((acquired_after(mu)));
+                              ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 987: warning: unknown attribute "guarded_by"
+  int *p __attribute__((guarded_by(mu))) __attribute__((pt_guarded_by(mu)));
+                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 987: warning: unknown attribute "pt_guarded_by"
+  int *p __attribute__((guarded_by(mu))) __attribute__((pt_guarded_by(mu)));
+                                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 988: warning: unknown attribute "guarded_by"
+  int res __attribute__((guarded_by(mu))) = 5;
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1011: warning: unknown attribute "acquired_after"
+  Mutex mu2 __attribute__((acquired_after(mu1)));
+                           ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1015: warning: unknown attribute "shared_locks_required"
+    int method1(int i) __attribute__((shared_locks_required(mu2))) __attribute__((exclusive_locks_required(mu1)));
+                                      ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1015: warning: unknown attribute "exclusive_locks_required"
+    int method1(int i) __attribute__((shared_locks_required(mu2))) __attribute__((exclusive_locks_required(mu1)));
+                                                                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1023: warning: unknown attribute "exclusive_locks_required"
+  int foo(int i) __attribute__((exclusive_locks_required(mu2))) __attribute__((shared_locks_required(mu1)));
+                                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1023: warning: unknown attribute "shared_locks_required"
+  int foo(int i) __attribute__((exclusive_locks_required(mu2))) __attribute__((shared_locks_required(mu1)));
+                                                                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1028: warning: unknown attribute "exclusive_locks_required"
+  static int bar(int i) __attribute__((exclusive_locks_required(mu1)));
+                                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1052: warning: unknown attribute "locks_excluded"
+    void func1(int y) __attribute__((locks_excluded(mu_)));
+                                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1053: warning: unknown attribute "locks_excluded"
+    template <typename T> void func2(T x) __attribute__((locks_excluded(mu_)));
+                                                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1077: warning: unknown attribute "exclusive_locks_required"
+    int GetA() __attribute__((exclusive_locks_required(foo_->mu_))) { return a_; }
+                              ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1078: warning: unknown attribute "guarded_by"
+    int a_ __attribute__((guarded_by(foo_->mu_)));
+                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1085: warning: variable "x" was set but never used
+    int x;
+        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1102: warning: unknown attribute "acquired_after"
+    Mutex bar_mu_ __attribute__((acquired_after(foo->foo_mu_)));
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1173: warning: unknown attribute "shared_locks_required"
+    int method1(int i) __attribute__((shared_locks_required(mu1, mu, mu2)));
+                                      ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1174: warning: unknown attribute "guarded_by"
+    int data __attribute__((guarded_by(mu1)));
+                            ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1188: warning: variable "a" is used before its value is set
+    a.mu2->Lock();
+    ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1217: warning: unknown attribute "guarded_by"
+    T count_ __attribute__((guarded_by(mu_)));
+                            ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1225: warning: variable "foo" is used before its value is set
+    foo->func(5);
+    ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1238: warning: unknown attribute "exclusive_lock_function"
+    void MyLock() __attribute__((exclusive_lock_function(mu)));
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1273: warning: unknown attribute "exclusive_locks_required"
+    virtual void func1() __attribute__((exclusive_locks_required(mu_)));
+                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1274: warning: unknown attribute "locks_excluded"
+    virtual void func2() __attribute__((locks_excluded(mu_)));
+                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1280: warning: unknown attribute "exclusive_locks_required"
+    virtual void func1() __attribute__((exclusive_locks_required(mu_)));
+                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1281: warning: unknown attribute "locks_excluded"
+    virtual void func2() __attribute__((locks_excluded(mu_)));
+                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1286: warning: variable "c" is used before its value is set
+    Base *b = c;
+              ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1308: warning: unknown attribute "guarded_by"
+  int g __attribute__((guarded_by(mu1)));
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1309: warning: unknown attribute "guarded_by"
+  int w __attribute__((guarded_by(mu2)));
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1313: warning: unknown attribute "locks_excluded"
+    void bar() __attribute__((locks_excluded(mu_, mu1)));
+                              ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1314: warning: unknown attribute "shared_locks_required"
+    int foo() __attribute__((shared_locks_required(mu_))) __attribute__((exclusive_locks_required(mu2)));
+                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1314: warning: unknown attribute "exclusive_locks_required"
+    int foo() __attribute__((shared_locks_required(mu_))) __attribute__((exclusive_locks_required(mu2)));
+                                                                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1317: warning: unknown attribute "guarded_by"
+    int a_ __attribute__((guarded_by(mu_)));
+                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1319: warning: unknown attribute "acquired_after"
+    Mutex mu_ __attribute__((acquired_after(mu1)));
+                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1353: warning: variable "f2" is used before its value is set
+    f2->mu_.Lock();
+    ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1368: warning: unknown attribute "exclusive_lock_function"
+    bool MyLock() __attribute__((exclusive_lock_function(mu1_)));
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1369: warning: unknown attribute "unlock_function"
+    void MyUnlock() __attribute__((unlock_function(mu1_)));
+                                   ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1370: warning: unknown attribute "guarded_by"
+    int a_ __attribute__((guarded_by(mu1_)));
+                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1398: warning: unknown attribute "guarded_by"
+    int a_ __attribute__((guarded_by(mu1_)));
+                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1400: warning: unknown attribute "pt_guarded_by"
+    int *q __attribute__((pt_guarded_by(mu)));
+                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1401: warning: unknown attribute "acquired_after"
+    Mutex mu1_ __attribute__((acquired_after(mu)));
+                              ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1405: warning: unknown attribute "guarded_by"
+  int *p __attribute__((guarded_by(mu))) __attribute__((pt_guarded_by(mu)));
+                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1405: warning: unknown attribute "pt_guarded_by"
+  int *p __attribute__((guarded_by(mu))) __attribute__((pt_guarded_by(mu)));
+                                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1407: warning: unknown attribute "guarded_by"
+  int res __attribute__((guarded_by(mu))) = 5;
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1435: warning: unknown attribute "guarded_by"
+    int a_ __attribute__((guarded_by(lock_)));
+                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1438: warning: unknown attribute "locks_excluded"
+    void Func(Foo* child) __attribute__((locks_excluded(lock_))) {
+                                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1454: warning: unknown attribute "exclusive_locks_required"
+    void bar(int y) __attribute__((exclusive_locks_required(lock_))) {
+                                   ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1474: warning: unknown attribute "guarded_by"
+    int a_ __attribute__((guarded_by(lock_)));
+                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1477: warning: unknown attribute "locks_excluded"
+    void Func(Foo* child) __attribute__((locks_excluded(lock_)));
+                                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1478: warning: unknown attribute "exclusive_locks_required"
+    void bar(int y) __attribute__((exclusive_locks_required(lock_)));
+                                   ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1514: warning: unknown attribute "guarded_by"
+    int x __attribute__((guarded_by(mu1))) __attribute__((guarded_by(mu2)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1514: warning: unknown attribute "guarded_by"
+    int x __attribute__((guarded_by(mu1))) __attribute__((guarded_by(mu2)));
+                                                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1515: warning: unknown attribute "guarded_by"
+    int y __attribute__((guarded_by(mu2)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1517: warning: unknown attribute "locks_excluded"
+    void f2() __attribute__((locks_excluded(mu1))) __attribute__((locks_excluded(mu2))) __attribute__((locks_excluded(mu3))) {
+                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1517: warning: unknown attribute "locks_excluded"
+    void f2() __attribute__((locks_excluded(mu1))) __attribute__((locks_excluded(mu2))) __attribute__((locks_excluded(mu3))) {
+                                                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1517: warning: unknown attribute "locks_excluded"
+    void f2() __attribute__((locks_excluded(mu1))) __attribute__((locks_excluded(mu2))) __attribute__((locks_excluded(mu3))) {
+                                                                                                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1524: warning: unknown attribute "exclusive_locks_required"
+    void f1() __attribute__((exclusive_locks_required(mu2))) __attribute__((exclusive_locks_required(mu1))) {
+                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1524: warning: unknown attribute "exclusive_locks_required"
+    void f1() __attribute__((exclusive_locks_required(mu2))) __attribute__((exclusive_locks_required(mu1))) {
+                                                                            ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1544: warning: unknown attribute "exclusive_locks_required"
+    virtual void func1() __attribute__((exclusive_locks_required(mu_)));
+                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1545: warning: unknown attribute "locks_excluded"
+    virtual void func2() __attribute__((locks_excluded(mu_)));
+                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1551: warning: unknown attribute "exclusive_locks_required"
+    virtual void func1() __attribute__((exclusive_locks_required(mu_)));
+                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1552: warning: unknown attribute "locks_excluded"
+    virtual void func2() __attribute__((locks_excluded(mu_)));
+                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1557: warning: variable "c" is used before its value is set
+    Base *b = c;
+              ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1580: warning: unknown attribute "shared_locks_required"
+    int method1(int i) __attribute__((shared_locks_required(mu1, mu, mu2, mu3)));
+                                      ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1581: warning: unknown attribute "guarded_by"
+    int data __attribute__((guarded_by(mu1)));
+                            ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1606: warning: unknown attribute "exclusive_lock_function"
+      void lockData() __attribute__((exclusive_lock_function(mu)));
+                                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1607: warning: unknown attribute "unlock_function"
+      void unlockData() __attribute__((unlock_function(mu)));
+                                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1609: warning: unknown attribute "exclusive_locks_required"
+      void doSomething() __attribute__((exclusive_locks_required(mu))) { }
+                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1610: warning: unknown attribute "exclusive_locks_required"
+      void operator()() __attribute__((exclusive_locks_required(mu))) { }
+                                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1612: warning: unknown attribute "shared_locks_required"
+      MyData operator+(const MyData& other) const __attribute__((shared_locks_required(mu, other.mu)));
+                                                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1615: warning: unknown attribute "shared_locks_required"
+    MyData operator-(const MyData& a, const MyData& b) __attribute__((shared_locks_required(a.mu, b.mu)));
+                                                                      ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1619: warning: unknown attribute "exclusive_lock_function"
+      void lockData (MyData *d) __attribute__((exclusive_lock_function(d->mu)));
+                                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1620: warning: unknown attribute "unlock_function"
+      void unlockData(MyData *d) __attribute__((unlock_function(d->mu)));
+                                                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1626: warning: unknown attribute "exclusive_locks_required"
+      void foo(MyData* d) __attribute__((exclusive_locks_required(d->mu))) { }
+                                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1640: warning: unknown attribute "exclusive_locks_required"
+      void binop(MyData& a, MyData& b) __attribute__((exclusive_locks_required(a.mu))) {
+                                                      ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1683: warning: unknown attribute "exclusive_locks_required"
+      ~DestructorRequires() __attribute__((exclusive_locks_required(mu)));
+                                           ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1693: warning: unknown attribute "locks_excluded"
+      ~DestructorExcludes() __attribute__((locks_excluded(mu)));
+                                           ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1708: warning: unknown attribute "guarded_by"
+    int myVar __attribute__((guarded_by(fooMu)));
+                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1712: warning: unknown attribute "exclusive_lock_function"
+      Foo() __attribute__((exclusive_lock_function(fooMu))) { }
+                           ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1713: warning: unknown attribute "unlock_function"
+      ~Foo() __attribute__((unlock_function(fooMu))) { }
+                            ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1728: warning: unknown attribute "guarded_by"
+      S *s __attribute__((guarded_by(this->m)));
+                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1735: warning: unknown attribute "guarded_by"
+    } *u __attribute__((guarded_by(m)));
+                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1752: warning: unknown attribute "guarded_by"
+      V *p __attribute__((guarded_by(this->m)));
+                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1769: warning: unknown attribute "guarded_by"
+    int a __attribute__((guarded_by(mu1)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1770: warning: unknown attribute "guarded_by"
+    int b __attribute__((guarded_by(mu2)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1855: warning: unknown attribute "exclusive_lock_function"
+    A() __attribute__((exclusive_lock_function(mu_))) { mu_.Lock(); }
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1856: warning: unknown attribute "unlock_function"
+    ~A() __attribute__((unlock_function(mu_))) { mu_.Unlock(); }
+                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1868: warning: unknown attribute "unlock_function"
+    ~B() __attribute__((unlock_function(mu_))) { mu_.Unlock(); }
+                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1874: warning: unknown attribute "scoped_lockable"
+  class __attribute__((scoped_lockable)) MutexWrapper {
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1877: warning: unknown attribute "unlock_function"
+    ~MutexWrapper() __attribute__((unlock_function(mu_))) { mu_->Unlock(); }
+                                   ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1878: warning: unknown attribute "exclusive_lock_function"
+    void Lock() __attribute__((exclusive_lock_function(mu_))) { mu_->Lock(); }
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1897: warning: unknown attribute "guarded_by"
+    int a __attribute__((guarded_by(mu_)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1902: warning: unknown attribute "exclusive_locks_required"
+  void foo() __attribute__((exclusive_locks_required(fooObj.mu_)));
+                            ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 1918: warning: unknown attribute "guarded_by"
+    int a __attribute__((guarded_by(mu)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2050: warning: variable "i" was declared but never referenced
+     int i = a;
+         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2080: warning: unknown attribute "guarded_by"
+    int a __attribute__((guarded_by(mu_)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2085: warning: unknown attribute "guarded_by"
+    int a __attribute__((guarded_by(mu_)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2094: warning: unknown attribute "exclusive_locks_required"
+    void barND(Foo1 *foo, T *fooT) __attribute__((exclusive_locks_required(foo->mu_))) {
+                                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2100: warning: unknown attribute "exclusive_locks_required"
+    void barD(Foo1 *foo, T *fooT) __attribute__((exclusive_locks_required(fooT->mu_))) {
+                                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2113: warning: unknown attribute "exclusive_locks_required"
+    void barND() __attribute__((exclusive_locks_required(fooBase.mu_))) {
+                                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2118: warning: unknown attribute "exclusive_locks_required"
+    void barD() __attribute__((exclusive_locks_required(fooBaseT.mu_))) {
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2124: warning: unknown attribute "exclusive_locks_required"
+    void barTD(T2 *fooT) __attribute__((exclusive_locks_required(fooBaseT.mu_, fooT->mu_))) {
+                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2135: warning: unknown attribute "guarded_by"
+    T data __attribute__((guarded_by(mu_)));
+                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2137: warning: unknown attribute "exclusive_locks_required"
+    void fooEx() __attribute__((exclusive_locks_required(mu_))) {
+                                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2188: warning: unknown attribute "guarded_by"
+    T data __attribute__((guarded_by(mu_)));
+                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2189: warning: unknown attribute "guarded_by"
+    static T static_data __attribute__((guarded_by(static_mu_)));
+                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2191: warning: unknown attribute "exclusive_locks_required"
+    void fooEx(CellDelayed<T> *other) __attribute__((exclusive_locks_required(mu_, other->mu_))) {
+                                                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2196: warning: unknown attribute "exclusive_locks_required"
+    void fooExT(CellDelayed<T2> *otherT) __attribute__((exclusive_locks_required(mu_, otherT->mu_))) {
+                                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2232: warning: unknown attribute "guarded_by"
+    int a __attribute__((guarded_by(mu_)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2234: warning: unknown attribute "exclusive_locks_required"
+    virtual void foo1(Foo *f_declared) __attribute__((exclusive_locks_required(f_declared->mu_)));
+                                                      ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2255: warning: unknown attribute "lockable"
+    struct __attribute__((lockable)) mutex {
+                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2256: warning: unknown attribute "exclusive_lock_function"
+      void lock() __attribute__((exclusive_lock_function()));
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2257: warning: unknown attribute "unlock_function"
+      void unlock() __attribute__((unlock_function()));
+                                   ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2296: warning: unknown attribute "exclusive_locks_required"
+    void fooT2(const T& dummy2) __attribute__((exclusive_locks_required(mu_)));
+                                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2299: warning: unknown attribute "guarded_by"
+    int a __attribute__((guarded_by(mu_)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2308: warning: unknown attribute "guarded_by"
+    T a __attribute__((guarded_by(mu_)));
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2312: warning: unknown attribute "no_thread_safety_analysis"
+  void Foo::foo1() __attribute__((no_thread_safety_analysis)) {
+                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2316: warning: unknown attribute "exclusive_locks_required"
+  void Foo::foo2() __attribute__((exclusive_locks_required(mu_))) {
+                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2320: warning: unknown attribute "exclusive_locks_required"
+  void Foo::foo3(Foo *other) __attribute__((exclusive_locks_required(other->mu_))) {
+                                            ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2325: warning: unknown attribute "exclusive_locks_required"
+  void Foo::fooT1(const T& dummy1) __attribute__((exclusive_locks_required(mu_))) {
+                                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2336: warning: unknown attribute "exclusive_locks_required"
+  void fooF1(Foo *f) __attribute__((exclusive_locks_required(f->mu_))) {
+                                    ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2341: warning: unknown attribute "exclusive_locks_required"
+  void fooF2(Foo *f) __attribute__((exclusive_locks_required(f->mu_))) {
+                                    ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2345: warning: unknown attribute "exclusive_locks_required"
+  void fooF3(Foo *f) __attribute__((exclusive_locks_required(f->mu_)));
+                                    ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2351: warning: unknown attribute "exclusive_locks_required"
+  void FooT<T>::foo() __attribute__((exclusive_locks_required(mu_))) {
+                                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2398: warning: unknown attribute "lockable"
+  class __attribute__((lockable)) MyLock {
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2400: warning: unknown attribute "guarded_by"
+    int foo __attribute__((guarded_by(this)));
+                           ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2402: warning: unknown attribute "exclusive_lock_function"
+    void lock() __attribute__((exclusive_lock_function()));
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2403: warning: unknown attribute "unlock_function"
+    void unlock() __attribute__((unlock_function()));
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2412: warning: unknown attribute "exclusive_locks_required"
+    void doSomethingElse() __attribute__((exclusive_locks_required(this))) {
+                                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2423: warning: unknown attribute "lockable"
+  class __attribute__((lockable)) MyLock2 {
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2426: warning: unknown attribute "guarded_by"
+    int foo __attribute__((guarded_by(this)));
+                           ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2429: warning: unknown attribute "exclusive_lock_function"
+    void lock() __attribute__((exclusive_lock_function())) { mu_.Lock(); }
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2430: warning: unknown attribute "unlock_function"
+    void unlock() __attribute__((unlock_function())) { mu_.Unlock(); }
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2450: warning: unknown attribute "guarded_by"
+    int foo __attribute__((guarded_by(mutex_)));
+                           ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2478: warning: unknown attribute "guarded_by"
+    int __attribute__((guarded_by(mu_))) a;
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2479: warning: unknown attribute "guarded_by"
+    int __attribute__((guarded_by(mu_))) b, c;
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2502: warning: unknown attribute "exclusive_locks_required"
+      exclusive_locks_required(a)));
+      ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2502: warning: declaration does not declare anything
+      exclusive_locks_required(a)));
+                                   ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2516: warning: unknown attribute "guarded_by"
+    int a __attribute__((guarded_by(mu_)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2550: warning: variable "a" is used before its value is set
+    bar.getFoo2(a).mu_.Lock();
+                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2554: warning: variable "b" is used before its value is set
+    bar.getFoo3(a, b).mu_.Lock();
+                   ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2570: warning: variable "fooArray" is used before its value is set
+    (a > 0 ? fooArray[1] : fooArray[b]).mu_.Lock();
+             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2574: warning: variable "fooFuncPtr" is used before its value is set
+    fooFuncPtr().mu_.Lock();
+    ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2534: warning: variable "foo" was declared but never referenced
+    Foo foo;
+        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2540: warning: variable "c" was declared but never referenced
+    int c;
+        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2593: warning: variable "a" is used before its value is set
+    bar.getFoo2(a).mu_.Lock();
+                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2594: warning: variable "b" is used before its value is set
+    bar.getFoo2(b).a = 0;
+                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2600: warning: variable "c" is used before its value is set
+    bar.getFoo3(a, c).a = 0;
+                   ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2611: warning: variable "fooArray" is used before its value is set
+    (a > 0 ? fooArray[1] : fooArray[b]).mu_.Lock();
+             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2646: warning: unknown attribute "guarded_by"
+    int a __attribute__((guarded_by(mu_)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2647: warning: unknown attribute "exclusive_locks_required"
+    void foo() __attribute__((exclusive_locks_required(mu_)));
+                              ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2648: warning: unknown attribute "exclusive_locks_required"
+    void foo2(Foo* f) __attribute__((exclusive_locks_required(mu_, f->mu_)));
+                                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2650: warning: unknown attribute "exclusive_locks_required"
+    static void sfoo(Foo* f) __attribute__((exclusive_locks_required(f->mu_)));
+                                            ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2652: warning: unknown attribute "lock_returned"
+    Mutex* getMu() __attribute__((lock_returned(mu_)));
+                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2656: warning: unknown attribute "lock_returned"
+    static Mutex* getMu(Foo* f) __attribute__((lock_returned(f->mu_)));
+                                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2687: warning: unknown attribute "lock_returned"
+  Mutex* getFooMu(Foo* f) __attribute__((lock_returned(Foo::getMu(f))));
+                                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2691: warning: unknown attribute "guarded_by"
+    int b __attribute__((guarded_by(getMu())));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2692: warning: unknown attribute "exclusive_locks_required"
+    void bar() __attribute__((exclusive_locks_required(getMu())));
+                              ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2693: warning: unknown attribute "exclusive_locks_required"
+    void bar2(Bar* g) __attribute__((exclusive_locks_required(getMu(this), g->getMu())));
+                                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2695: warning: unknown attribute "exclusive_locks_required"
+    static void sbar(Bar* g) __attribute__((exclusive_locks_required(g->getMu())));
+                                            ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2696: warning: unknown attribute "exclusive_locks_required"
+    static void sbar2(Bar* g) __attribute__((exclusive_locks_required(getFooMu(g))));
+                                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2756: warning: unknown attribute "guarded_by"
+    int a __attribute__((guarded_by(mu_)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2822: warning: unknown attribute "scoped_lockable"
+  class __attribute__((scoped_lockable)) RelockableExclusiveMutexLock {
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2824: warning: unknown attribute "exclusive_lock_function"
+    RelockableExclusiveMutexLock(Mutex *mu) __attribute__((exclusive_lock_function(mu)));
+                                                           ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2825: warning: unknown attribute "locks_excluded"
+    RelockableExclusiveMutexLock(Mutex *mu, DeferTraits) __attribute__((locks_excluded(mu)));
+                                                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2826: warning: unknown attribute "release_capability"
+    ~RelockableExclusiveMutexLock() __attribute__((release_capability()));
+                                                   ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2828: warning: unknown attribute "exclusive_lock_function"
+    void Lock() __attribute__((exclusive_lock_function()));
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2829: warning: unknown attribute "unlock_function"
+    void Unlock() __attribute__((unlock_function()));
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2835: warning: unknown attribute "scoped_lockable"
+  class __attribute__((scoped_lockable)) RelockableMutexLock {
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2837: warning: unknown attribute "locks_excluded"
+    RelockableMutexLock(Mutex *mu, DeferTraits) __attribute__((locks_excluded(mu)));
+                                                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2838: warning: unknown attribute "shared_lock_function"
+    RelockableMutexLock(Mutex *mu, SharedTraits) __attribute__((shared_lock_function(mu)));
+                                                                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2839: warning: unknown attribute "exclusive_lock_function"
+    RelockableMutexLock(Mutex *mu, ExclusiveTraits) __attribute__((exclusive_lock_function(mu)));
+                                                                   ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2840: warning: unknown attribute "unlock_function"
+    ~RelockableMutexLock() __attribute__((unlock_function()));
+                                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2842: warning: unknown attribute "exclusive_lock_function"
+    void Lock() __attribute__((exclusive_lock_function()));
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2843: warning: unknown attribute "unlock_function"
+    void Unlock() __attribute__((unlock_function()));
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2845: warning: unknown attribute "shared_lock_function"
+    void ReaderLock() __attribute__((shared_lock_function()));
+                                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2846: warning: unknown attribute "unlock_function"
+    void ReaderUnlock() __attribute__((unlock_function()));
+                                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2848: warning: unknown attribute "unlock_function"
+    void PromoteShared() __attribute__((unlock_function())) __attribute__((exclusive_lock_function()));
+                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2848: warning: unknown attribute "exclusive_lock_function"
+    void PromoteShared() __attribute__((unlock_function())) __attribute__((exclusive_lock_function()));
+                                                                           ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2849: warning: unknown attribute "unlock_function"
+    void DemoteExclusive() __attribute__((unlock_function())) __attribute__((shared_lock_function()));
+                                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2849: warning: unknown attribute "shared_lock_function"
+    void DemoteExclusive() __attribute__((unlock_function())) __attribute__((shared_lock_function()));
+                                                                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 2853: warning: unknown attribute "guarded_by"
+  int x __attribute__((guarded_by(mu)));
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3119: warning: unknown attribute "scoped_lockable"
+  class __attribute__((scoped_lockable)) MemberLock {
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3121: warning: unknown attribute "exclusive_lock_function"
+    MemberLock() __attribute__((exclusive_lock_function(mutex)));
+                                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3122: warning: unknown attribute "unlock_function"
+    ~MemberLock() __attribute__((unlock_function(mutex)));
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3123: warning: unknown attribute "exclusive_lock_function"
+    void Lock() __attribute__((exclusive_lock_function(mutex)));
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3132: warning: unknown attribute "scoped_lockable"
+  class __attribute__((scoped_lockable)) WeirdScope {
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3137: warning: unknown attribute "exclusive_lock_function"
+    WeirdScope(Mutex *mutex) __attribute__((exclusive_lock_function(mutex)));
+                                            ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3138: warning: unknown attribute "release_capability"
+    void unlock() __attribute__((release_capability())) __attribute__((release_capability(other)));
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3138: warning: unknown attribute "release_capability"
+    void unlock() __attribute__((release_capability())) __attribute__((release_capability(other)));
+                                                                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3139: warning: unknown attribute "exclusive_lock_function"
+    void lock() __attribute__((exclusive_lock_function())) __attribute__((exclusive_lock_function(other)));
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3139: warning: unknown attribute "exclusive_lock_function"
+    void lock() __attribute__((exclusive_lock_function())) __attribute__((exclusive_lock_function(other)));
+                                                                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3140: warning: unknown attribute "release_capability"
+    ~WeirdScope() __attribute__((release_capability()));
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3142: warning: unknown attribute "exclusive_locks_required"
+    void requireOther() __attribute__((exclusive_locks_required(other)));
+                                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3163: warning: unknown attribute "scoped_lockable"
+  class __attribute__((scoped_lockable)) MutexUnlock {
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3165: warning: unknown attribute "release_capability"
+    MutexUnlock(Mutex *mu) __attribute__((release_capability(mu)));
+                                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3166: warning: unknown attribute "release_capability"
+    ~MutexUnlock() __attribute__((release_capability()));
+                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3168: warning: unknown attribute "release_capability"
+    void Lock() __attribute__((release_capability()));
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3169: warning: unknown attribute "exclusive_lock_function"
+    void Unlock() __attribute__((exclusive_lock_function()));
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3172: warning: unknown attribute "scoped_lockable"
+  class __attribute__((scoped_lockable)) ReaderMutexUnlock {
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3174: warning: unknown attribute "release_shared_capability"
+    ReaderMutexUnlock(Mutex *mu) __attribute__((release_shared_capability(mu)));
+                                                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3175: warning: unknown attribute "release_capability"
+    ~ReaderMutexUnlock() __attribute__((release_capability()));
+                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3177: warning: unknown attribute "release_capability"
+    void Lock() __attribute__((release_capability()));
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3178: warning: unknown attribute "exclusive_lock_function"
+    void Unlock() __attribute__((exclusive_lock_function()));
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3182: warning: unknown attribute "scoped_lockable"
+  class __attribute__((scoped_lockable)) VariadicMutexUnlock {
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3184: warning: unknown attribute "release_capability"
+    VariadicMutexUnlock(Mus *...mus) __attribute__((release_capability(mus...)));
+                                                    ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3185: warning: unknown attribute "release_capability"
+    ~VariadicMutexUnlock() __attribute__((release_capability()));
+                                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3187: warning: unknown attribute "release_capability"
+    void Lock() __attribute__((release_capability()));
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3188: warning: unknown attribute "exclusive_lock_function"
+    void Unlock() __attribute__((exclusive_lock_function()));
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3192: warning: unknown attribute "guarded_by"
+  int x __attribute__((guarded_by(mu)));
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3196: warning: unknown attribute "exclusive_locks_required"
+  void simple() __attribute__((exclusive_locks_required(mu))) {
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3202: warning: unknown attribute "shared_locks_required"
+  void simpleShared() __attribute__((shared_locks_required(mu))) {
+                                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3226: warning: unknown attribute "exclusive_locks_required"
+  void manual() __attribute__((exclusive_locks_required(mu))) {
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3234: warning: unknown attribute "exclusive_locks_required"
+  void join() __attribute__((exclusive_locks_required(mu))) {
+                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3242: warning: unknown attribute "exclusive_locks_required"
+  void doubleLock() __attribute__((exclusive_locks_required(mu))) {
+                                   ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3248: warning: unknown attribute "exclusive_locks_required"
+  void doubleUnlock() __attribute__((exclusive_locks_required(mu))) {
+                                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3254: warning: unknown attribute "guarded_by"
+  int y __attribute__((guarded_by(mu2)));
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3256: warning: unknown attribute "exclusive_locks_required"
+  void variadic() __attribute__((exclusive_locks_required(mu, mu2))) {
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3264: warning: unknown attribute "scoped_lockable"
+  class __attribute__((scoped_lockable)) MutexLockUnlock {
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3266: warning: unknown attribute "release_capability"
+    MutexLockUnlock(Mutex *mu1, Mutex *mu2) __attribute__((release_capability(mu1))) __attribute__((exclusive_lock_function(mu2)));
+                                                           ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3266: warning: unknown attribute "exclusive_lock_function"
+    MutexLockUnlock(Mutex *mu1, Mutex *mu2) __attribute__((release_capability(mu1))) __attribute__((exclusive_lock_function(mu2)));
+                                                                                                    ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3267: warning: unknown attribute "release_capability"
+    ~MutexLockUnlock() __attribute__((release_capability()));
+                                      ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3269: warning: unknown attribute "release_capability"
+    void Release() __attribute__((release_capability()));
+                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3270: warning: unknown attribute "exclusive_lock_function"
+    void Acquire() __attribute__((exclusive_lock_function()));
+                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3274: warning: unknown attribute "exclusive_locks_required"
+  void fn() __attribute__((exclusive_locks_required(other)));
+                           ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3276: warning: unknown attribute "exclusive_locks_required"
+  void lockUnlock() __attribute__((exclusive_locks_required(mu))) {
+                                   ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3286: warning: unknown attribute "scoped_lockable"
+  class __attribute__((scoped_lockable)) RelockableScope {
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3288: warning: unknown attribute "exclusive_lock_function"
+    RelockableScope(Mutex *mu) __attribute__((exclusive_lock_function(mu)));
+                                              ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3289: warning: unknown attribute "unlock_function"
+    void Release() __attribute__((unlock_function()));
+                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3290: warning: unknown attribute "exclusive_lock_function"
+    void Acquire() __attribute__((exclusive_lock_function()));
+                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3291: warning: unknown attribute "release_capability"
+    ~RelockableScope() __attribute__((release_capability()));
+                                      ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3294: warning: unknown attribute "scoped_lockable"
+  class __attribute__((scoped_lockable)) ReaderRelockableScope {
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3296: warning: unknown attribute "shared_lock_function"
+    ReaderRelockableScope(Mutex *mu) __attribute__((shared_lock_function(mu)));
+                                                    ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3297: warning: unknown attribute "unlock_function"
+    void Release() __attribute__((unlock_function()));
+                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3298: warning: unknown attribute "shared_lock_function"
+    void Acquire() __attribute__((shared_lock_function()));
+                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3299: warning: unknown attribute "unlock_function"
+    ~ReaderRelockableScope() __attribute__((unlock_function()));
+                                            ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3305: warning: unknown attribute "guarded_by"
+  int x __attribute__((guarded_by(mu)));
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3306: warning: unknown attribute "guarded_by"
+  int y __attribute__((guarded_by(mu))) __attribute__((guarded_by(mu2)));
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3306: warning: unknown attribute "guarded_by"
+  int y __attribute__((guarded_by(mu))) __attribute__((guarded_by(mu2)));
+                                                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3311: warning: unknown attribute "shared_locks_required"
+  void sharedRequired(ReleasableMutexLock& scope __attribute__((shared_locks_required(mu)))) {
+                                                                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3315: warning: unknown attribute "shared_lock_function"
+  void sharedAcquire(ReaderRelockableScope& scope __attribute__((shared_lock_function(mu)))) {
+                                                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3320: warning: unknown attribute "release_shared_capability"
+  void sharedRelease(RelockableScope& scope __attribute__((release_shared_capability(mu)))) {
+                                                           ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3326: warning: unknown attribute "exclusive_locks_required"
+  void requiredLock(ReleasableMutexLock& scope __attribute__((exclusive_locks_required(mu)))) {
+                                                              ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3330: warning: unknown attribute "exclusive_locks_required"
+  void reacquireRequiredLock(RelockableScope& scope __attribute__((exclusive_locks_required(mu)))) {
+                                                                   ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3336: warning: unknown attribute "release_capability"
+  void releaseSingleMutex(ReleasableMutexLock& scope __attribute__((release_capability(mu)))) {
+                                                                    ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3342: warning: unknown attribute "release_capability"
+  void releaseMultipleMutexes(ReleasableMutexLock& scope __attribute__((release_capability(mu, mu2)))) {
+                                                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3349: warning: unknown attribute "exclusive_lock_function"
+  void acquireLock(RelockableScope& scope __attribute__((exclusive_lock_function(mu)))) {
+                                                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3355: warning: unknown attribute "exclusive_lock_function"
+  void acquireMultipleLocks(RelockableScope& scope __attribute__((exclusive_lock_function(mu, mu2)))) {
+                                                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3362: warning: unknown attribute "locks_excluded"
+  void excludedLock(ReleasableMutexLock& scope __attribute__((locks_excluded(mu)))) {
+                                                              ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3366: warning: unknown attribute "locks_excluded"
+  void acquireAndReleaseExcludedLocks(RelockableScope& scope __attribute__((locks_excluded(mu)))) {
+                                                                            ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3372: warning: unknown attribute "release_capability"
+  void unreleasedMutex(ReleasableMutexLock& scope __attribute__((release_capability(mu)))) {
+                                                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3377: warning: unknown attribute "release_capability"
+  void acquireAlreadyHeldMutex(RelockableScope& scope __attribute__((release_capability(mu)))) {
+                                                                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3382: warning: unknown attribute "release_capability"
+  void reacquireMutex(RelockableScope& scope __attribute__((release_capability(mu)))) {
+                                                            ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3389: warning: unknown attribute "exclusive_locks_required"
+  void requireSingleMutex(ReleasableMutexLock& scope __attribute__((exclusive_locks_required(mu)))) {
+                                                                    ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3396: warning: unknown attribute "exclusive_locks_required"
+  void requireMultipleMutexes(ReleasableMutexLock& scope __attribute__((exclusive_locks_required(mu, mu2)))) {
+                                                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3405: warning: unknown attribute "exclusive_locks_required"
+  void acquireAlreadyHeldLock(RelockableScope& scope __attribute__((exclusive_locks_required(mu)))) {
+                                                                    ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3410: warning: unknown attribute "exclusive_lock_function"
+  void releaseWithoutHoldingLock(ReleasableMutexLock& scope __attribute__((exclusive_lock_function(mu)))) {
+                                                                           ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3415: warning: unknown attribute "exclusive_lock_function"
+  void endWithReleasedMutex(RelockableScope& scope __attribute__((exclusive_lock_function(mu)))) {
+                                                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3420: warning: unknown attribute "locks_excluded"
+  void acquireExcludedLock(RelockableScope& scope __attribute__((locks_excluded(mu)))) {
+                                                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3426: warning: unknown attribute "locks_excluded"
+  void acquireMultipleExcludedLocks(RelockableScope& scope __attribute__((locks_excluded(mu, mu2)))) {
+                                                                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3434: warning: unknown attribute "locks_excluded"
+  void reacquireExcludedLocks(RelockableScope& scope __attribute__((locks_excluded(mu)))) {
+                                                                    ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3441: warning: unknown attribute "shared_locks_required"
+  void sharedRequired2(ReleasableMutexLock& scope __attribute__((shared_locks_required(mu)))) {
+                                                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3448: warning: unknown attribute "shared_lock_function"
+  void sharedAcquire2(RelockableScope& scope __attribute__((shared_lock_function(mu)))) {
+                                                            ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3454: warning: unknown attribute "release_shared_capability"
+  void sharedRelease2(RelockableScope& scope __attribute__((release_shared_capability(mu)))) {
+                                                            ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3461: warning: unknown attribute "release_capability"
+  void release(ReleasableMutexLock& scope __attribute__((release_capability(mu))));
+                                                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3463: warning: unknown attribute "release_capability"
+  void release_DoubleMutexLock(DoubleMutexLock& scope __attribute__((release_capability(mu))));
+                                                                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3465: warning: unknown attribute "release_capability"
+  void release_two(ReleasableMutexLock& scope __attribute__((release_capability(mu, mu2))));
+                                                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3467: warning: unknown attribute "release_capability"
+  void release_double(DoubleMutexLock& scope __attribute__((release_capability(mu, mu2))));
+                                                            ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3468: warning: unknown attribute "exclusive_locks_required"
+  void require(ReleasableMutexLock& scope __attribute__((exclusive_locks_required(mu))));
+                                                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3469: warning: unknown attribute "exclusive_lock_function"
+  void acquire(RelockableScope& scope __attribute__((exclusive_lock_function(mu))));
+                                                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3470: warning: unknown attribute "locks_excluded"
+  void exclude(RelockableScope& scope __attribute__((locks_excluded(mu))));
+                                                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3472: warning: unknown attribute "release_shared_capability"
+  void release_shared(ReaderRelockableScope& scope __attribute__((release_shared_capability(mu))));
+                                                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3473: warning: unknown attribute "shared_locks_required"
+  void require_shared(ReleasableMutexLock& scope __attribute__((shared_locks_required(mu))));
+                                                                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3474: warning: unknown attribute "shared_lock_function"
+  void acquire_shared(ReaderRelockableScope& scope __attribute__((shared_lock_function(mu))));
+                                                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3561: warning: unknown attribute "release_capability"
+  void releaseDefault(ReleasableMutexLock& scope __attribute__((release_capability(mu))), int = 0);
+                                                                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3588: warning: unknown attribute "exclusive_locks_required"
+  void requireConst(const ReleasableMutexLock& scope __attribute__((exclusive_locks_required(mu))));
+                                                                    ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3598: warning: unknown attribute "scoped_lockable"
+  class __attribute__((scoped_lockable)) ScopedWithoutLock {
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3602: warning: unknown attribute "release_capability"
+    ~ScopedWithoutLock() __attribute__((release_capability()));
+                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3605: warning: unknown attribute "exclusive_locks_required"
+  void require(ScopedWithoutLock &scope __attribute__((exclusive_locks_required(mu))));
+                                                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3613: warning: unknown attribute "exclusive_locks_required"
+  void requireConst(const ScopedWithoutLock& scope __attribute__((exclusive_locks_required(mu))));
+                                                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3621: warning: unknown attribute "exclusive_locks_required"
+  void requireDecl(RelockableScope &scope __attribute__((exclusive_locks_required(mu))));
+                                                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3631: warning: unknown attribute "exclusive_locks_required"
+    void require(RelockableScope &scope __attribute__((exclusive_locks_required(mu))));
+                                                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3643: warning: unknown attribute "guarded_by"
+    int x __attribute__((guarded_by(mu)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3645: warning: unknown attribute "release_capability"
+  void releaseMember(ObjectWithMutex& object, ReleasableMutexLock& scope __attribute__((release_capability(object.mu)))) {
+                                                                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3665: warning: unknown attribute "exclusive_trylock_function"
+    bool lockBoth() __attribute__((exclusive_trylock_function(true, mu1_, mu2_)));
+                                   ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3692: warning: unknown attribute "guarded_by"
+    int a __attribute__((guarded_by(mu_)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3694: warning: unknown attribute "exclusive_locks_required"
+    void foo1() __attribute__((exclusive_locks_required(mu_)));
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3695: warning: unknown attribute "shared_locks_required"
+    int foo2() __attribute__((shared_locks_required(mu_)));
+                              ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3699: warning: unknown attribute "exclusive_locks_required"
+  void Foo::foo1() __attribute__((exclusive_locks_required(mu_))) {
+                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3703: warning: unknown attribute "shared_locks_required"
+  int Foo::foo2() __attribute__((shared_locks_required(mu_))) {
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3717: warning: unknown attribute "exclusive_locks_required"
+    void foo1() __attribute__((exclusive_locks_required(mutex_))) {
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3722: warning: unknown attribute "shared_locks_required"
+    void foo2() __attribute__((shared_locks_required(mutex_))) {
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3733: warning: unknown attribute "scoped_lockable"
+  class __attribute__((scoped_lockable)) WTF_ScopedLockable {
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3735: warning: unknown attribute "exclusive_lock_function"
+    WTF_ScopedLockable(Mutex* mu) __attribute__((exclusive_lock_function(mu)));
+                                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3740: warning: unknown attribute "unlock_function"
+    void release() __attribute__((unlock_function()));
+                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3746: warning: unknown attribute "guarded_by"
+    int a __attribute__((guarded_by(mu_)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3801: warning: unknown attribute "guarded_by"
+    int a __attribute__((guarded_by(getMutexPtr().get())));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3812: warning: variable "b" was declared but never referenced
+      int b = a;
+          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3814: warning: variable "b" was declared but never referenced
+    int b = a;
+        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3840: warning: unknown attribute "guarded_by"
+    int a __attribute__((guarded_by(mu_)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3841: warning: unknown attribute "guarded_by"
+    int b __attribute__((guarded_by(mu_.get())));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3842: warning: unknown attribute "guarded_by"
+    int c __attribute__((guarded_by(*mu_)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3844: warning: unknown attribute "exclusive_lock_function"
+    void Lock() __attribute__((exclusive_lock_function(mu_)));
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 3845: warning: unknown attribute "unlock_function"
+    void Unlock() __attribute__((unlock_function(mu_)));
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4000: warning: unknown attribute "lockable"
+  class __attribute__((lockable)) Foo {
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4005: warning: unknown attribute "guarded_by"
+    int a __attribute__((guarded_by(mu1_)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4006: warning: unknown attribute "guarded_by"
+    int b __attribute__((guarded_by(mu2_)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4007: warning: unknown attribute "guarded_by"
+    int c __attribute__((guarded_by(mu3_)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4009: warning: unknown attribute "exclusive_lock_function"
+    void lock() __attribute__((exclusive_lock_function()));
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4010: warning: unknown attribute "unlock_function"
+    void unlock() __attribute__((unlock_function()));
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4012: warning: unknown attribute "exclusive_lock_function"
+    void lock1() __attribute__((exclusive_lock_function(mu1_)));
+                                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4013: warning: unknown attribute "shared_lock_function"
+    void slock1() __attribute__((shared_lock_function(mu1_)));
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4014: warning: unknown attribute "exclusive_lock_function"
+    void lock3() __attribute__((exclusive_lock_function(mu1_, mu2_, mu3_)));
+                                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4016: warning: unknown attribute "exclusive_lock_function"
+      __attribute__((exclusive_lock_function(mu1_)))
+                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4017: warning: unknown attribute "exclusive_lock_function"
+      __attribute__((exclusive_lock_function(mu2_)))
+                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4018: warning: unknown attribute "exclusive_lock_function"
+      __attribute__((exclusive_lock_function(mu1_, mu2_, mu3_)));
+                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4020: warning: unknown attribute "unlock_function"
+    void unlock1() __attribute__((unlock_function(mu1_)));
+                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4021: warning: unknown attribute "unlock_function"
+    void unlock3() __attribute__((unlock_function(mu1_, mu2_, mu3_)));
+                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4023: warning: unknown attribute "unlock_function"
+      __attribute__((unlock_function(mu1_)))
+                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4024: warning: unknown attribute "unlock_function"
+      __attribute__((unlock_function(mu2_)))
+                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4025: warning: unknown attribute "unlock_function"
+      __attribute__((unlock_function(mu1_, mu2_, mu3_)));
+                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4029: warning: unknown attribute "exclusive_lock_function"
+  void Foo::lock() __attribute__((exclusive_lock_function())) { }
+                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4030: warning: unknown attribute "unlock_function"
+  void Foo::unlock() __attribute__((unlock_function())) { }
+                                    ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4032: warning: unknown attribute "exclusive_lock_function"
+  void Foo::lock1() __attribute__((exclusive_lock_function(mu1_))) {
+                                   ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4036: warning: unknown attribute "shared_lock_function"
+  void Foo::slock1() __attribute__((shared_lock_function(mu1_))) {
+                                    ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4040: warning: unknown attribute "exclusive_lock_function"
+  void Foo::lock3() __attribute__((exclusive_lock_function(mu1_, mu2_, mu3_))) {
+                                   ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4047: warning: unknown attribute "exclusive_lock_function"
+      __attribute__((exclusive_lock_function(mu1_, mu2_)))
+                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4048: warning: unknown attribute "exclusive_lock_function"
+      __attribute__((exclusive_lock_function(mu2_, mu3_))) {
+                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4054: warning: unknown attribute "unlock_function"
+  void Foo::unlock1() __attribute__((unlock_function(mu1_))) {
+                                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4058: warning: unknown attribute "unlock_function"
+  void Foo::unlock3() __attribute__((unlock_function(mu1_, mu2_, mu3_))) {
+                                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4065: warning: unknown attribute "unlock_function"
+      __attribute__((unlock_function(mu1_, mu2_)))
+                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4066: warning: unknown attribute "unlock_function"
+      __attribute__((unlock_function(mu2_, mu3_))) {
+                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4169: warning: unknown attribute "guarded_by"
+    int a __attribute__((guarded_by(mu_)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4172: warning: unknown attribute "exclusive_trylock_function"
+    int tryLockMutexI() __attribute__((exclusive_trylock_function(1, mu_)));
+                                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4173: warning: unknown attribute "exclusive_trylock_function"
+    Mutex* tryLockMutexP() __attribute__((exclusive_trylock_function(1, mu_)));
+                                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4174: warning: unknown attribute "unlock_function"
+    void unlock() __attribute__((unlock_function(mu_)));
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4258: warning: unknown attribute "exclusive_lock_function"
+  void LockAllGraphs() __attribute__((exclusive_lock_function(&Graph::mu_)));
+                                      ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4259: warning: unknown attribute "unlock_function"
+  void UnlockAllGraphs() __attribute__((unlock_function(&Graph::mu_)));
+                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4263: warning: unknown attribute "guarded_by"
+    int a __attribute__((guarded_by(&Graph::mu_)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4265: warning: unknown attribute "exclusive_locks_required"
+    void foo() __attribute__((exclusive_locks_required(&Graph::mu_))) {
+                              ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4268: warning: unknown attribute "locks_excluded"
+    void foo2() __attribute__((locks_excluded(&Graph::mu_)));
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4317: warning: unknown attribute "exclusive_lock_function"
+    void lock() __attribute__((exclusive_lock_function("")));
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4318: warning: unknown attribute "unlock_function"
+    void unlock() __attribute__((unlock_function("")));
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4319: warning: unknown attribute "exclusive_locks_required"
+    void goober() __attribute__((exclusive_locks_required("")));
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4320: warning: unknown attribute "shared_locks_required"
+    void roober() __attribute__((shared_locks_required("")));
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4346: warning: unknown attribute "exclusive_lock_function"
+    void lockInner (Inner* i) __attribute__((exclusive_lock_function(getLock(i))));
+                                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4347: warning: unknown attribute "unlock_function"
+    void unlockInner(Inner* i) __attribute__((unlock_function(getLock(i))));
+                                              ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4348: warning: unknown attribute "exclusive_locks_required"
+    void foo(Inner* i) __attribute__((exclusive_locks_required(getLock(i))));
+                                      ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4356: warning: unknown attribute "exclusive_locks_required"
+    void doSomething() __attribute__((exclusive_locks_required(lock_)));
+                                      ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4360: warning: unknown attribute "lock_returned"
+  const Mutex& Base::getLock(const Inner* i) __attribute__((lock_returned(i->lock_))) {
+                                                            ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4387: warning: unknown attribute "guarded_by"
+    int a __attribute__((guarded_by(mu_)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4391: warning: unknown attribute "exclusive_trylock_function"
+      __attribute__((exclusive_trylock_function(true, &Foo::mu_)));
+                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4396: warning: variable "a" was declared but never referenced
+    int a = lt->a;
+        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4409: warning: unknown attribute "guarded_by"
+    int a __attribute__((guarded_by(mu_)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4410: warning: unknown attribute "shared_locks_required"
+    void r_foo() __attribute__((shared_locks_required(mu_)));
+                                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4411: warning: unknown attribute "exclusive_locks_required"
+    void w_foo() __attribute__((exclusive_locks_required(mu_)));
+                                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4414: warning: variable "b" was set but never used
+      int b;
+          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4483: warning: unknown attribute "lock_returned"
+    Mutex* get_mutex() __attribute__((lock_returned(mutex_))) { return &mutex_; }
+                                      ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4486: warning: unknown attribute "guarded_by"
+    int a __attribute__((guarded_by(mutex_)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4492: warning: unknown attribute "exclusive_locks_required"
+    void baseMethod() __attribute__((exclusive_locks_required(get_mutex()))) {
+                                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4518: warning: unknown attribute "unlock_function"
+      void unlockFoo() __attribute__((unlock_function(&Foo::mu_)));
+                                      ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4545: warning: unknown attribute "exclusive_locks_required"
+    Foo() __attribute__((exclusive_locks_required(mu_))) { }
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4546: warning: unknown attribute "exclusive_locks_required"
+    ~Foo() __attribute__((exclusive_locks_required(mu_))) { }
+                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4548: warning: unknown attribute "exclusive_locks_required"
+    int operator[](int i) __attribute__((exclusive_locks_required(mu_))) { return 0; }
+                                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4555: warning: unknown attribute "locks_excluded"
+    Bar() __attribute__((locks_excluded(mu_))) { }
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4556: warning: unknown attribute "locks_excluded"
+    ~Bar() __attribute__((locks_excluded(mu_))) { }
+                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4558: warning: unknown attribute "locks_excluded"
+    int operator[](int i) __attribute__((locks_excluded(mu_))) { return 0; }
+                                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4593: warning: unknown attribute "exclusive_locks_required"
+  void test1() __attribute__((exclusive_locks_required(fatalmu_))) {
+                              ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4597: warning: unknown attribute "exclusive_locks_required"
+  void test2() __attribute__((exclusive_locks_required(fatalmu_))) {
+                              ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4603: warning: unknown attribute "exclusive_locks_required"
+  void test3() __attribute__((exclusive_locks_required(fatalmu_))) {
+                              ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4612: warning: unknown attribute "exclusive_locks_required"
+  void test4() __attribute__((exclusive_locks_required(fatalmu_))) {
+                              ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4641: warning: unknown attribute "exclusive_locks_required"
+  void baseFun(Base *b) __attribute__((exclusive_locks_required(b->getMutex()))) { }
+                                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4643: warning: unknown attribute "exclusive_locks_required"
+  void derivedFun(Derived *d) __attribute__((exclusive_locks_required(d->getMutex()))) {
+                                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4661: warning: unknown attribute "exclusive_locks_required"
+    void elr(Cell<T>* c) __attribute__((exclusive_locks_required(c->mu_)));
+                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4677: warning: unknown attribute "exclusive_locks_required"
+  void globalELR(Cell<T>* c) __attribute__((exclusive_locks_required(c->mu_)));
+                                            ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4690: warning: unknown attribute "exclusive_locks_required"
+  void globalELR2(Cell<T>* c) __attribute__((exclusive_locks_required(c->mu_)));
+                                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4713: warning: unknown attribute "exclusive_locks_required"
+    void elr(Cell<T>* c) __attribute__((exclusive_locks_required(c->mu_)));
+                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4733: warning: unknown attribute "exclusive_lock_function"
+    SelfLock() __attribute__((exclusive_lock_function(mu_)));
+                              ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4734: warning: unknown attribute "unlock_function"
+    ~SelfLock() __attribute__((unlock_function(mu_)));
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4736: warning: unknown attribute "exclusive_locks_required"
+    void foo() __attribute__((exclusive_locks_required(mu_)));
+                              ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4741: warning: unknown attribute "lockable"
+  class __attribute__((lockable)) SelfLock2 {
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4743: warning: unknown attribute "exclusive_lock_function"
+    SelfLock2() __attribute__((exclusive_lock_function()));
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4744: warning: unknown attribute "unlock_function"
+    ~SelfLock2() __attribute__((unlock_function()));
+                                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4746: warning: unknown attribute "exclusive_locks_required"
+    void foo() __attribute__((exclusive_locks_required(this)));
+                              ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4751: warning: unknown attribute "locks_excluded"
+    SelfLockDeferred() __attribute__((locks_excluded(mu_)));
+                                      ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4752: warning: unknown attribute "unlock_function"
+    ~SelfLockDeferred() __attribute__((unlock_function(mu_)));
+                                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4757: warning: unknown attribute "lockable"
+  class __attribute__((lockable)) SelfLockDeferred2 {
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4759: warning: unknown attribute "locks_excluded"
+    SelfLockDeferred2() __attribute__((locks_excluded(this)));
+                                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4760: warning: unknown attribute "unlock_function"
+    ~SelfLockDeferred2() __attribute__((unlock_function()));
+                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4790: warning: unknown attribute "guarded_by"
+    int a __attribute__((guarded_by(mu1_)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4791: warning: unknown attribute "guarded_by"
+    int b __attribute__((guarded_by(mu2_)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4792: warning: unknown attribute "guarded_by"
+    int c __attribute__((guarded_by(mu1_))) __attribute__((guarded_by(mu2_)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4792: warning: unknown attribute "guarded_by"
+    int c __attribute__((guarded_by(mu1_))) __attribute__((guarded_by(mu2_)));
+                                                           ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4793: warning: unknown attribute "pt_guarded_by"
+    int* d __attribute__((pt_guarded_by(mu1_))) __attribute__((pt_guarded_by(mu2_)));
+                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4793: warning: unknown attribute "pt_guarded_by"
+    int* d __attribute__((pt_guarded_by(mu1_))) __attribute__((pt_guarded_by(mu2_)));
+                                                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4795: warning: unknown attribute "exclusive_locks_required"
+    void foo1() __attribute__((exclusive_locks_required(mu1_)))
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4796: warning: unknown attribute "exclusive_locks_required"
+                         __attribute__((exclusive_locks_required(mu2_)));
+                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4797: warning: unknown attribute "shared_locks_required"
+    void foo2() __attribute__((shared_locks_required(mu1_)))
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4798: warning: unknown attribute "shared_locks_required"
+                         __attribute__((shared_locks_required(mu2_)));
+                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4799: warning: unknown attribute "locks_excluded"
+    void foo3() __attribute__((locks_excluded(mu1_)))
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4800: warning: unknown attribute "locks_excluded"
+                         __attribute__((locks_excluded(mu2_)));
+                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4801: warning: unknown attribute "exclusive_lock_function"
+    void lock() __attribute__((exclusive_lock_function(mu1_)))
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4802: warning: unknown attribute "exclusive_lock_function"
+                         __attribute__((exclusive_lock_function(mu2_)));
+                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4803: warning: unknown attribute "shared_lock_function"
+    void readerlock() __attribute__((shared_lock_function(mu1_)))
+                                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4804: warning: unknown attribute "shared_lock_function"
+                         __attribute__((shared_lock_function(mu2_)));
+                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4805: warning: unknown attribute "unlock_function"
+    void unlock() __attribute__((unlock_function(mu1_)))
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4806: warning: unknown attribute "unlock_function"
+                         __attribute__((unlock_function(mu2_)));
+                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4807: warning: unknown attribute "exclusive_trylock_function"
+    bool trylock() __attribute__((exclusive_trylock_function(true, mu1_)))
+                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4808: warning: unknown attribute "exclusive_trylock_function"
+                         __attribute__((exclusive_trylock_function(true, mu2_)));
+                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4809: warning: unknown attribute "shared_trylock_function"
+    bool readertrylock() __attribute__((shared_trylock_function(true, mu1_)))
+                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4810: warning: unknown attribute "shared_trylock_function"
+                         __attribute__((shared_trylock_function(true, mu2_)));
+                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4811: warning: unknown attribute "assert_exclusive_lock"
+    void assertBoth() __attribute__((assert_exclusive_lock(mu1_)))
+                                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4812: warning: unknown attribute "assert_exclusive_lock"
+                      __attribute__((assert_exclusive_lock(mu2_)));
+                                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4814: warning: unknown attribute "assert_exclusive_lock"
+    void alsoAssertBoth() __attribute__((assert_exclusive_lock(mu1_, mu2_)));
+                                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4816: warning: unknown attribute "assert_shared_lock"
+    void assertShared() __attribute__((assert_shared_lock(mu1_)))
+                                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4817: warning: unknown attribute "assert_shared_lock"
+                        __attribute__((assert_shared_lock(mu2_)));
+                                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4819: warning: unknown attribute "assert_shared_lock"
+    void alsoAssertShared() __attribute__((assert_shared_lock(mu1_, mu2_)));
+                                           ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4833: warning: variable "result" was declared but never referenced
+    int result = a + b;
+        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4877: warning: variable "zz" was declared but never referenced
+      int zz = a + b;
+          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4853: warning: variable "x" was declared but never referenced
+    int x = c;
+        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4854: warning: variable "y" was declared but never referenced
+    int y = *d;
+        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4867: warning: variable "z" was declared but never referenced
+    int z = a + b;
+        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4904: warning: variable "zz" was declared but never referenced
+      int zz = a + b;
+          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 4909: warning: variable "zz" was declared but never referenced
+      int zz = a + b;
+          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5061: warning: unknown attribute "guarded_by"
+    Data data_ __attribute__((guarded_by(mu_)));
+                              ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5062: warning: unknown attribute "guarded_by"
+    Data* datap1_ __attribute__((guarded_by(mu_)));
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5063: warning: unknown attribute "pt_guarded_by"
+    Data* datap2_ __attribute__((pt_guarded_by(mu_)));
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5064: warning: unknown attribute "guarded_by"
+    DataWithAddrOf data_ao_ __attribute__((guarded_by(mu_)));
+                                           ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5047: warning: variable "mydat" was declared but never referenced
+      Data mydat(data_);
+           ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5085: warning: unknown attribute "guarded_by"
+    Cell c __attribute__((guarded_by(cell_mu_)));
+                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5086: warning: unknown attribute "pt_guarded_by"
+    Cell* cp __attribute__((pt_guarded_by(cell_mu_)));
+                            ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5097: warning: unknown attribute "guarded_by"
+    Foo foo __attribute__((guarded_by(mu_)));
+                           ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5098: warning: unknown attribute "pt_guarded_by"
+    Foo* foop __attribute__((pt_guarded_by(mu_)));
+                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5158: warning: unknown attribute "exclusive_locks_required"
+  void bar() __attribute__((exclusive_locks_required(getMutex1())));
+                            ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5160: warning: unknown attribute "exclusive_locks_required"
+  void bar2() __attribute__((exclusive_locks_required(getMutex1(), getMutex2())));
+                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5168: warning: unknown attribute "lockable"
+  class __attribute__((lockable)) MyLockable {
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5170: warning: unknown attribute "exclusive_lock_function"
+    void lock() __attribute__((exclusive_lock_function())) { mu_.Lock(); }
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5171: warning: unknown attribute "shared_lock_function"
+    void readerLock() __attribute__((shared_lock_function())) { mu_.ReaderLock(); }
+                                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5172: warning: unknown attribute "unlock_function"
+    void unlock() __attribute__((unlock_function())) { mu_.Unlock(); }
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5182: warning: unknown attribute "exclusive_lock_function"
+    void lock() __attribute__((exclusive_lock_function(mu_))) {
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5186: warning: unknown attribute "shared_lock_function"
+    void readerLock() __attribute__((shared_lock_function(mu_))) {
+                                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5190: warning: unknown attribute "unlock_function"
+    void unlock() __attribute__((unlock_function(mu_))) {
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5194: warning: unknown attribute "release_capability"
+    void unlockExclusive() __attribute__((release_capability(mu_))) {
+                                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5198: warning: unknown attribute "release_shared_capability"
+    void unlockShared() __attribute__((release_shared_capability(mu_))) {
+                                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5203: warning: unknown attribute "exclusive_lock_function"
+    void lockBad() __attribute__((exclusive_lock_function(mu_))) {
+                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5208: warning: unknown attribute "shared_lock_function"
+    void readerLockBad() __attribute__((shared_lock_function(mu_))) {
+                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5213: warning: unknown attribute "unlock_function"
+    void unlockBad() __attribute__((unlock_function(mu_))) {
+                                    ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5219: warning: unknown attribute "exclusive_lock_function"
+    void lockBad2() __attribute__((exclusive_lock_function(mu_))) {
+                                   ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5225: warning: unknown attribute "shared_lock_function"
+    void readerLockBad2() __attribute__((shared_lock_function(mu_))) {
+                                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5231: warning: unknown attribute "unlock_function"
+    void unlockBad2() __attribute__((unlock_function(mu_))) {
+                                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5248: warning: unknown attribute "guarded_by"
+    int a __attribute__((guarded_by(mu_)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5274: warning: unknown attribute "exclusive_locks_required"
+    void test4() __attribute__((exclusive_locks_required(mu_))) {
+                                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5280: warning: unknown attribute "unlock_function"
+    void test5() __attribute__((unlock_function(mu_))) {
+                                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5333: warning: unknown attribute "assert_exclusive_lock"
+    void assertMu() __attribute__((assert_exclusive_lock(mu_)));
+                                   ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5253: warning: variable "b" was declared but never referenced
+      int b = a;
+          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5259: warning: variable "b" was declared but never referenced
+      int b = a;
+          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5270: warning: variable "b" was declared but never referenced
+      int b = a;
+          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5276: warning: variable "b" was declared but never referenced
+      int b = a;
+          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5297: warning: variable "b" was declared but never referenced
+      int b = a;
+          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5310: warning: variable "b" was declared but never referenced
+      int b = a;
+          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5337: warning: variable "b" was declared but never referenced
+      int b = a;
+          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5347: warning: variable "b" was declared but never referenced
+      int b = a;
+          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5358: warning: variable "b" was declared but never referenced
+      int b = a;
+          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5372: warning: unknown attribute "guarded_by"
+    int a __attribute__((guarded_by(mu)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5471: warning: unknown attribute "guarded_by"
+    int* a __attribute__((guarded_by(mu1))) __attribute__((pt_guarded_by(mu2)));
+                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5471: warning: unknown attribute "pt_guarded_by"
+    int* a __attribute__((guarded_by(mu1))) __attribute__((pt_guarded_by(mu2)));
+                                                           ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5472: warning: unknown attribute "guarded_by"
+    Cell* c __attribute__((guarded_by(mu1))) __attribute__((pt_guarded_by(mu2)));
+                           ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5472: warning: unknown attribute "pt_guarded_by"
+    Cell* c __attribute__((guarded_by(mu1))) __attribute__((pt_guarded_by(mu2)));
+                                                            ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5473: warning: unknown attribute "guarded_by"
+    int sa[10] __attribute__((guarded_by(mu1)));
+                              ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5474: warning: unknown attribute "guarded_by"
+    Cell sc[10] __attribute__((guarded_by(mu1)));
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5563: warning: unknown attribute "guarded_by"
+    SmartPtr<int> sp __attribute__((guarded_by(mu1))) __attribute__((pt_guarded_by(mu2)));
+                                    ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5563: warning: unknown attribute "pt_guarded_by"
+    SmartPtr<int> sp __attribute__((guarded_by(mu1))) __attribute__((pt_guarded_by(mu2)));
+                                                                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5564: warning: unknown attribute "guarded_by"
+    SmartPtr<Cell> sq __attribute__((guarded_by(mu1))) __attribute__((pt_guarded_by(mu2)));
+                                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5564: warning: unknown attribute "pt_guarded_by"
+    SmartPtr<Cell> sq __attribute__((guarded_by(mu1))) __attribute__((pt_guarded_by(mu2)));
+                                                                      ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5630: warning: unknown attribute "exclusive_locks_required"
+   void RunHelper() __attribute__((exclusive_locks_required(M)));
+                                   ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5638: warning: unknown attribute "pt_guarded_by"
+    int i __attribute__((pt_guarded_by(sls_mu)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5639: warning: unknown attribute "pt_guarded_var"
+    int j __attribute__((pt_guarded_var));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5642: warning: unknown attribute "pt_guarded_by"
+      int i __attribute__((pt_guarded_by(sls_mu)));
+                           ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5643: warning: unknown attribute "pt_guarded_var"
+      int j __attribute__((pt_guarded_var));
+                           ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5645: warning: unknown attribute "pt_guarded_by"
+      typedef int __attribute__((pt_guarded_by(sls_mu))) bad1;
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5646: warning: unknown attribute "pt_guarded_var"
+      typedef int __attribute__((pt_guarded_var)) bad2;
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5642: warning: variable "i" was declared but never referenced
+      int i __attribute__((pt_guarded_by(sls_mu)));
+          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5643: warning: variable "j" was declared but never referenced
+      int j __attribute__((pt_guarded_var));
+          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5656: warning: unknown attribute "exclusive_locks_required"
+    void LockedFunction() __attribute__((exclusive_locks_required(mu_)));
+                                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5659: warning: unknown attribute "exclusive_locks_required"
+      auto func1 = [this]() __attribute__((exclusive_locks_required(mu_))) {
+                                           ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5663: warning: unknown attribute "no_thread_safety_analysis"
+      auto func2 = [this]() __attribute__((no_thread_safety_analysis)) {
+                                           ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5667: warning: unknown attribute "exclusive_lock_function"
+      auto func3 = [this]() __attribute__((exclusive_lock_function(mu_))) {
+                                           ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5689: warning: unknown attribute "guarded_by"
+    int a __attribute__((guarded_by(getMu())));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5691: warning: unknown attribute "lock_returned"
+    Mutex* getMu() __attribute__((lock_returned("")));
+                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5692: warning: unknown attribute "lock_returned"
+    Mutex* getUniv() __attribute__((lock_returned("*")));
+                                    ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5698: warning: unknown attribute "exclusive_locks_required"
+    void test2() __attribute__((exclusive_locks_required(getUniv()))) {
+                                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5702: warning: unknown attribute "exclusive_locks_required"
+    void foo(Mutex* mu) __attribute__((exclusive_locks_required(mu)));
+                                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5716: warning: unknown attribute "guarded_by"
+    int a __attribute__((guarded_by(map["foo"])));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5717: warning: unknown attribute "guarded_by"
+    int b __attribute__((guarded_by(mapCell["foo"].mu)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5735: warning: unknown attribute "guarded_by"
+    int val __attribute__((guarded_by(mu)));
+                           ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5749: warning: unknown attribute "guarded_by"
+    int val __attribute__((guarded_by(mu)));
+                           ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5751: warning: unknown attribute "exclusive_locks_required"
+    void test() __attribute__((exclusive_locks_required(mu)));
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5752: warning: unknown attribute "exclusive_locks_required"
+    void test2() __attribute__((exclusive_locks_required(mu.get())));
+                                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5753: warning: unknown attribute "exclusive_locks_required"
+    void test3() __attribute__((exclusive_locks_required(mu.get())));
+                                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5757: warning: unknown attribute "exclusive_locks_required"
+  void SmartRedeclare::test() __attribute__((exclusive_locks_required(mu.get()))) {
+                                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5761: warning: unknown attribute "exclusive_locks_required"
+  void SmartRedeclare::test2() __attribute__((exclusive_locks_required(mu))) {
+                                              ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5773: warning: unknown attribute "lockable"
+  class __attribute__((lockable)) BaseMutex { };
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5776: warning: unknown attribute "exclusive_lock_function"
+  void customLock(const BaseMutex *m) __attribute__((exclusive_lock_function(m)));
+                                                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5777: warning: unknown attribute "unlock_function"
+  void customUnlock(const BaseMutex *m) __attribute__((unlock_function(m)));
+                                                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5781: warning: unknown attribute "exclusive_locks_required"
+  static void doSomethingRequiringLock() __attribute__((exclusive_locks_required(custMu))) { }
+                                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5798: warning: unknown attribute "lock_returned"
+  Mutex* getMutex(Opaque* o) __attribute__((lock_returned("")));
+                                            ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5811: warning: unknown attribute "guarded_by"
+    int a __attribute__((guarded_by(mu)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5814: warning: unknown attribute "exclusive_locks_required"
+    void baz() __attribute__((exclusive_locks_required(!mu))) {
+                              ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5824: warning: unknown attribute "guarded_by"
+    int a __attribute__((guarded_by(mu)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5838: warning: unknown attribute "exclusive_locks_required"
+    void bar2() __attribute__((exclusive_locks_required(!mu))) {
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5842: warning: unknown attribute "exclusive_locks_required"
+    void baz() __attribute__((exclusive_locks_required(!mu))) {
+                              ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5859: warning: unknown attribute "capability"
+  typedef int __attribute__((capability("role"))) ThreadRole;
+                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5861: warning: unknown attribute "exclusive_lock_function"
+  void acquire(ThreadRole R) __attribute__((exclusive_lock_function(R))) __attribute__((no_thread_safety_analysis)) {}
+                                            ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5861: warning: unknown attribute "no_thread_safety_analysis"
+  void acquire(ThreadRole R) __attribute__((exclusive_lock_function(R))) __attribute__((no_thread_safety_analysis)) {}
+                                                                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5862: warning: unknown attribute "unlock_function"
+  void release(ThreadRole R) __attribute__((unlock_function(R))) __attribute__((no_thread_safety_analysis)) {}
+                                            ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5862: warning: unknown attribute "no_thread_safety_analysis"
+  void release(ThreadRole R) __attribute__((unlock_function(R))) __attribute__((no_thread_safety_analysis)) {}
+                                                                                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5871: warning: unknown attribute "requires_capability"
+  void dispatch_log(const char *msg) __attribute__((requires_capability(!FlightControl))) {}
+                                                    ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5872: warning: unknown attribute "requires_capability"
+  void dispatch_log2(const char *msg) __attribute__((requires_capability(Logger))) {}
+                                                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5874: warning: unknown attribute "requires_capability"
+  void flight_control_entry(void) __attribute__((requires_capability(FlightControl))) {
+                                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5885: warning: unknown attribute "requires_capability"
+  extern const char *deque_log_msg(void) __attribute__((requires_capability(Logger)));
+                                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5886: warning: unknown attribute "requires_capability"
+  void logger_entry(void) __attribute__((requires_capability(Logger)))
+                                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5887: warning: unknown attribute "requires_capability"
+                          __attribute__((requires_capability(!FlightControl))) {
+                                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5895: warning: unknown attribute "requires_capability"
+  void spawn_fake_logger_thread(void) __attribute__((requires_capability(!FlightControl))) {
+                                                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5901: warning: unknown attribute "requires_capability"
+  int main(void) __attribute__((requires_capability(!FlightControl))) {
+                                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5908: warning: statement is unreachable
+    return 0;
+    ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5920: warning: unknown attribute "guarded_by"
+    int a __attribute__((guarded_by(mu)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5922: warning: unknown attribute "shared_locks_required"
+    void test() __attribute__((shared_locks_required(mu))) {
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5940: warning: unknown attribute "guarded_by"
+    int a __attribute__((guarded_by(mu)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5941: warning: unknown attribute "guarded_by"
+    MyContainer<int> cntr __attribute__((guarded_by(mu)));
+                                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5942: warning: unknown attribute "guarded_by"
+    MyStruct s __attribute__((guarded_by(mu)));
+                              ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5943: warning: unknown attribute "guarded_by"
+    int arr[10] __attribute__((guarded_by(mu)));
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5946: warning: variable "b" was set but never used
+      int b = a;
+          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 5951: warning: variable "b" was set but never used
+      auto b = a;
+           ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6046: warning: unknown attribute "guarded_by"
+    Foo foo __attribute__((guarded_by(mu)));
+                           ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6047: warning: unknown attribute "guarded_by"
+    Foo foo2 __attribute__((guarded_by(mu)));
+                            ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6048: warning: unknown attribute "pt_guarded_by"
+    Foo* foop __attribute__((pt_guarded_by(mu)));
+                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6049: warning: unknown attribute "guarded_by"
+    Foo* foop2 __attribute__((guarded_by(mu)));
+                              ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6050: warning: unknown attribute "pt_guarded_by"
+    SmartPtr<Foo> foosp __attribute__((pt_guarded_by(mu)));
+                                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6234: warning: unknown attribute "guarded_by"
+    Foo foo __attribute__((guarded_by(mu)));
+                           ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6235: warning: unknown attribute "pt_guarded_by"
+    Foo* foo_ptr __attribute__((pt_guarded_by(mu)));
+                                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6236: warning: unknown attribute "guarded_var"
+    Foo foo_depr __attribute__((guarded_var));
+                                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6237: warning: unknown attribute "pt_guarded_var"
+    Foo* foo_ptr_depr __attribute__((pt_guarded_var));
+                                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6244: warning: unknown attribute "exclusive_locks_required"
+    Foo returns_value_locks_required() __attribute__((exclusive_locks_required(mu))) {
+                                                      ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6248: warning: unknown attribute "unlock_function"
+    Foo returns_value_releases_lock_after_return() __attribute__((unlock_function(mu))) {
+                                                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6253: warning: unknown attribute "exclusive_lock_function"
+    Foo returns_value_aquires_lock() __attribute__((exclusive_lock_function(mu))) {
+                                                    ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6262: warning: unknown attribute "unlock_function"
+    Foo returns_value_releases_lock_before_return() __attribute__((unlock_function(mu))) {
+                                                                   ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6276: warning: unknown attribute "shared_locks_required"
+    Foo &returns_ref_shared_locks_required() __attribute__((shared_locks_required(mu))) {
+                                                            ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6280: warning: unknown attribute "exclusive_locks_required"
+    Foo &returns_ref_exclusive_locks_required() __attribute__((exclusive_locks_required(mu))) {
+                                                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6284: warning: unknown attribute "unlock_function"
+    Foo &returns_ref_releases_lock_after_return() __attribute__((unlock_function(mu))) {
+                                                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6289: warning: unknown attribute "unlock_function"
+    Foo& returns_ref_releases_lock_before_return() __attribute__((unlock_function(mu))) {
+                                                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6294: warning: unknown attribute "exclusive_lock_function"
+    Foo &returns_ref_aquires_lock() __attribute__((exclusive_lock_function(mu))) {
+                                                   ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6299: warning: unknown attribute "shared_locks_required"
+    const Foo &returns_constref_shared_locks_required() __attribute__((shared_locks_required(mu))) {
+                                                                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6303: warning: unknown attribute "exclusive_locks_required"
+    Foo *returns_ptr_exclusive_locks_required() __attribute__((exclusive_locks_required(mu))) {
+                                                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6307: warning: unknown attribute "exclusive_locks_required"
+    Foo *returns_pt_ptr_exclusive_locks_required() __attribute__((exclusive_locks_required(mu))) {
+                                                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6311: warning: unknown attribute "shared_locks_required"
+    Foo *returns_ptr_shared_locks_required() __attribute__((shared_locks_required(mu))) {
+                                                            ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6315: warning: unknown attribute "shared_locks_required"
+    Foo *returns_pt_ptr_shared_locks_required() __attribute__((shared_locks_required(mu))) {
+                                                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6319: warning: unknown attribute "shared_locks_required"
+    const Foo *returns_constptr_shared_locks_required() __attribute__((shared_locks_required(mu))) {
+                                                                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6323: warning: unknown attribute "shared_locks_required"
+    const Foo *returns_pt_constptr_shared_locks_required() __attribute__((shared_locks_required(mu))) {
+                                                                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6381: warning: unknown attribute "acquired_before"
+    Mutex mu1 __attribute__((acquired_before(mu2, mu3)));
+                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6409: warning: unknown attribute "exclusive_locks_required"
+    void test4() __attribute__((exclusive_locks_required(mu1))) {
+                                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6414: warning: unknown attribute "exclusive_locks_required"
+    void test5() __attribute__((exclusive_locks_required(mu2))) {
+                                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6419: warning: unknown attribute "exclusive_locks_required"
+    void test6() __attribute__((exclusive_locks_required(mu2))) {
+                                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6423: warning: unknown attribute "exclusive_locks_required"
+    void test7() __attribute__((exclusive_locks_required(mu1, mu2, mu3))) { }
+                                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6425: warning: unknown attribute "exclusive_locks_required"
+    void test8() __attribute__((exclusive_locks_required(mu3, mu2, mu1))) { }
+                                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6431: warning: unknown attribute "acquired_after"
+    Mutex mu2 __attribute__((acquired_after(mu1)));
+                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6432: warning: unknown attribute "acquired_after"
+    Mutex mu3 __attribute__((acquired_after(mu1)));
+                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6461: warning: unknown attribute "acquired_before"
+    Mutex mu1 __attribute__((acquired_before(mu2)));
+                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6463: warning: unknown attribute "acquired_after"
+    Mutex mu3 __attribute__((acquired_after(mu2))) __attribute__((acquired_before(mu4)));
+                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6463: warning: unknown attribute "acquired_before"
+    Mutex mu3 __attribute__((acquired_after(mu2))) __attribute__((acquired_before(mu4)));
+                                                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6507: warning: unknown attribute "acquired_after"
+    Mutex mu2 __attribute__((acquired_after(mu1)));
+                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6508: warning: unknown attribute "acquired_after"
+    Mutex mu3 __attribute__((acquired_after(mu1)));
+                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6509: warning: unknown attribute "acquired_after"
+    Mutex mu4 __attribute__((acquired_after(mu2, mu3)));
+                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6510: warning: unknown attribute "acquired_after"
+    Mutex mu5 __attribute__((acquired_after(mu4)));
+                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6511: warning: unknown attribute "acquired_after"
+    Mutex mu6 __attribute__((acquired_after(mu4)));
+                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6512: warning: unknown attribute "acquired_after"
+    Mutex mu7 __attribute__((acquired_after(mu5, mu6)));
+                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6513: warning: unknown attribute "acquired_after"
+    Mutex mu8 __attribute__((acquired_after(mu7)));
+                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6526: warning: unknown attribute "acquired_before"
+    Mutex mu1 __attribute__((acquired_before(mu2, mu3)));
+                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6527: warning: unknown attribute "acquired_before"
+    Mutex mu2 __attribute__((acquired_before(mu4)));
+                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6528: warning: unknown attribute "acquired_before"
+    Mutex mu3 __attribute__((acquired_before(mu4)));
+                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6529: warning: unknown attribute "acquired_before"
+    Mutex mu4 __attribute__((acquired_before(mu5, mu6)));
+                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6530: warning: unknown attribute "acquired_before"
+    Mutex mu5 __attribute__((acquired_before(mu7)));
+                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6531: warning: unknown attribute "acquired_before"
+    Mutex mu6 __attribute__((acquired_before(mu7)));
+                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6532: warning: unknown attribute "acquired_before"
+    Mutex mu7 __attribute__((acquired_before(mu8)));
+                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6545: warning: unknown attribute "acquired_after"
+    Mutex mu1 __attribute__((acquired_after(mu3)));
+                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6546: warning: unknown attribute "acquired_after"
+    Mutex mu2 __attribute__((acquired_after(mu1)));
+                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6547: warning: unknown attribute "acquired_after"
+    Mutex mu3 __attribute__((acquired_after(mu2)));
+                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6549: warning: unknown attribute "acquired_before"
+    Mutex mu_b __attribute__((acquired_before(mu_b)));
+                              ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6550: warning: unknown attribute "acquired_after"
+    Mutex mu_a __attribute__((acquired_after(mu_a)));
+                              ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6591: warning: unknown attribute "guarded_by"
+    int a __attribute__((guarded_by(mu)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6594: warning: unknown attribute "release_capability"
+    void test1() __attribute__((release_capability(mu))) {
+                                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6599: warning: unknown attribute "release_shared_capability"
+    void test2() __attribute__((release_shared_capability(mu))) {
+                                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6604: warning: unknown attribute "exclusive_locks_required"
+    void test3() __attribute__((exclusive_locks_required(mu))) {
+                                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6609: warning: unknown attribute "shared_locks_required"
+    void test4() __attribute__((shared_locks_required(mu))) {
+                                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6626: warning: unknown attribute "no_thread_safety_analysis"
+  inline const T& ts_unchecked_read(const T& v) __attribute__((no_thread_safety_analysis)) {
+                                                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6631: warning: unknown attribute "no_thread_safety_analysis"
+  inline T& ts_unchecked_read(T& v) __attribute__((no_thread_safety_analysis)) {
+                                                   ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6649: warning: unknown attribute "guarded_by"
+    int a __attribute__((guarded_by(mu)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6650: warning: unknown attribute "guarded_by"
+    Foo foo __attribute__((guarded_by(mu)));
+                           ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6675: warning: unknown attribute "acquired_after"
+  Mutex mu2 __attribute__((acquired_after(mu1)));
+                           ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6704: warning: unknown attribute "lockable"
+  union __attribute__((lockable)) MutexUnion {
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6708: warning: unknown attribute "exclusive_lock_function"
+    void Lock() __attribute__((exclusive_lock_function()));
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6709: warning: unknown attribute "unlock_function"
+    void Unlock() __attribute__((unlock_function()));
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6713: warning: unknown attribute "acquired_before"
+  MutexUnion muun1 __attribute__((acquired_before(muun2)));
+                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6729: warning: unknown attribute "acquired_before"
+    Mutex lock_ __attribute__((acquired_before("")));
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6737: warning: unknown attribute "locks_excluded"
+    bool g() __attribute__((locks_excluded(h)));
+                            ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6816: warning: variable "i" is used before its value is set
+    int &i = i;
+             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6827: warning: unknown attribute "guarded_by"
+    int a __attribute__((guarded_by(mu_)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6828: warning: unknown attribute "guarded_by"
+    int b __attribute__((guarded_by(mu_.get())));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6829: warning: unknown attribute "guarded_by"
+    int c __attribute__((guarded_by(*mu_)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6831: warning: unknown attribute "exclusive_lock_function"
+    void Lock() __attribute__((exclusive_lock_function(mu_)));
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6832: warning: unknown attribute "unlock_function"
+    void Unlock() __attribute__((unlock_function(mu_)));
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6875: warning: unknown attribute "guarded_by"
+    SmartPtr_Derived<int> i __attribute__((guarded_by(mu1))) __attribute__((pt_guarded_by(mu2)));
+                                           ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6875: warning: unknown attribute "pt_guarded_by"
+    SmartPtr_Derived<int> i __attribute__((guarded_by(mu1))) __attribute__((pt_guarded_by(mu2)));
+                                                                            ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6919: warning: unknown attribute "guarded_by"
+    int x __attribute__((guarded_by(mu)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6945: warning: unknown attribute "lockable"
+  class __attribute__((lockable)) __attribute__((reentrant_capability)) ReentrantMutex {
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6945: warning: unknown attribute "reentrant_capability"
+  class __attribute__((lockable)) __attribute__((reentrant_capability)) ReentrantMutex {
+                                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6947: warning: unknown attribute "exclusive_lock_function"
+    void Lock() __attribute__((exclusive_lock_function()));
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6948: warning: unknown attribute "shared_lock_function"
+    void ReaderLock() __attribute__((shared_lock_function()));
+                                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6949: warning: unknown attribute "unlock_function"
+    void Unlock() __attribute__((unlock_function()));
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6950: warning: unknown attribute "release_capability"
+    void ExclusiveUnlock() __attribute__((release_capability()));
+                                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6951: warning: unknown attribute "release_shared_capability"
+    void ReaderUnlock() __attribute__((release_shared_capability()));
+                                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6952: warning: unknown attribute "exclusive_trylock_function"
+    bool TryLock() __attribute__((exclusive_trylock_function(true)));
+                                  ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6953: warning: unknown attribute "shared_trylock_function"
+    bool ReaderTryLock() __attribute__((shared_trylock_function(true)));
+                                        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6958: warning: unknown attribute "assert_exclusive_lock"
+    void AssertHeld() __attribute__((assert_exclusive_lock()));
+                                     ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6959: warning: unknown attribute "assert_shared_lock"
+    void AssertReaderHeld() __attribute__((assert_shared_lock()));
+                                           ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6962: warning: unknown attribute "scoped_lockable"
+  class __attribute__((scoped_lockable)) ReentrantMutexLock {
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6964: warning: unknown attribute "exclusive_lock_function"
+    ReentrantMutexLock(ReentrantMutex *mu) __attribute__((exclusive_lock_function(mu)));
+                                                          ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6965: warning: unknown attribute "unlock_function"
+    ~ReentrantMutexLock() __attribute__((unlock_function()));
+                                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6968: warning: unknown attribute "scoped_lockable"
+  class __attribute__((scoped_lockable)) ReentrantReaderMutexLock {
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6970: warning: unknown attribute "shared_lock_function"
+    ReentrantReaderMutexLock(ReentrantMutex *mu) __attribute__((shared_lock_function(mu)));
+                                                                ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6971: warning: unknown attribute "unlock_function"
+    ~ReentrantReaderMutexLock() __attribute__((unlock_function()));
+                                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6974: warning: unknown attribute "scoped_lockable"
+  class __attribute__((scoped_lockable)) RelockableReentrantMutexLock {
+                       ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6976: warning: unknown attribute "exclusive_lock_function"
+    RelockableReentrantMutexLock(ReentrantMutex *mu) __attribute__((exclusive_lock_function(mu)));
+                                                                    ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6977: warning: unknown attribute "release_capability"
+    ~RelockableReentrantMutexLock() __attribute__((release_capability()));
+                                                   ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6979: warning: unknown attribute "exclusive_lock_function"
+    void Lock() __attribute__((exclusive_lock_function()));
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6980: warning: unknown attribute "unlock_function"
+    void Unlock() __attribute__((unlock_function()));
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6984: warning: unknown attribute "guarded_var"
+  int guard_var __attribute__((guarded_var)) = 0;
+                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 6985: warning: unknown attribute "guarded_by"
+  int guardby_var __attribute__((guarded_by(rmu))) = 0;
+                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 7038: warning: variable "x" was declared but never referenced
+    int x = guard_var;
+        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 7040: warning: variable "y" was declared but never referenced
+    int y = guard_var;
+        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 7042: warning: variable "z" was declared but never referenced
+    int z = guard_var;
+        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 7044: warning: variable "a" was declared but never referenced
+    int a = guard_var;
+        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 7060: warning: variable "x" was declared but never referenced
+    int x = guardby_var;
+        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 7062: warning: variable "y" was declared but never referenced
+    int y = guardby_var;
+        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 7064: warning: variable "z" was declared but never referenced
+    int z = guardby_var;
+        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 7066: warning: variable "a" was declared but never referenced
+    int a = guardby_var;
+        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 7156: warning: unknown attribute "exclusive_locks_required"
+  void testLocksRequiredReentrant() __attribute__((exclusive_locks_required(rmu))) {
+                                                   ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 7177: warning: variable "x" was declared but never referenced
+    int x = guardby_var;
+        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 7179: warning: variable "y" was declared but never referenced
+    int y = guardby_var;
+        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 7181: warning: variable "z" was declared but never referenced
+    int z = guardby_var;
+        ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 7187: warning: unknown attribute "guarded_by"
+    int a __attribute__((guarded_by(mu1)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 7188: warning: unknown attribute "guarded_by"
+    int b __attribute__((guarded_by(mu2)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 7280: warning: unknown attribute "capability"
+  typedef int __attribute__((capability("bitlock"))) __attribute__((reentrant_capability)) *bitlock_t;
+                             ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 7280: warning: unknown attribute "reentrant_capability"
+  typedef int __attribute__((capability("bitlock"))) __attribute__((reentrant_capability)) *bitlock_t;
+                                                                    ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 7281: warning: unknown attribute "exclusive_lock_function"
+  void bit_lock(bitlock_t l) __attribute__((exclusive_lock_function(l)));
+                                            ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 7282: warning: unknown attribute "unlock_function"
+  void bit_unlock(bitlock_t l) __attribute__((unlock_function(l)));
+                                              ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 7293: warning: unknown attribute "guarded_by"
+    int a __attribute__((guarded_by(rmu)));
+                         ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 7296: warning: unknown attribute "exclusive_locks_required"
+    void baz() __attribute__((exclusive_locks_required(!rmu))) {
+                              ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 7311: warning: unknown attribute "guarded_by"
+    int data __attribute__((guarded_by(mu)));
+                            ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 7316: warning: unknown attribute "exclusive_locks_required"
+  void locksRequired(Foo *foo) __attribute__((exclusive_locks_required(foo->mu)));
+                                              ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 7505: warning: unknown attribute "exclusive_lock_function"
+  void testNestedAcquire(Container *c) __attribute__((exclusive_lock_function(&c->foo.mu))) {
+                                                      ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 7570: warning: unknown attribute "exclusive_lock_function"
+  void testLockFunction(Foo *f) __attribute__((exclusive_lock_function(&f->mu))) {
+                                               ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 7575: warning: unknown attribute "unlock_function"
+  void testUnlockFunction(Foo *f) __attribute__((unlock_function(&f->mu))) {
+                                                 ^
+
+"SemaCXX/warn-thread-safety-analysis.cpp", line 7592: warning: variable "mu" is used before its value is set
+    Mutex *mu = mu;
+                ^
+

@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 22: error: no instance of constructor "structured_rna<sequence_alphabet_t>::structured_rna [with sequence_alphabet_t=rna4]" matches the argument list
+            argument types are: (dna4)
+  structured_rna<rna4> t2{dna4{}}; // { dg-error "no match" }
+                         ^
+"Test_name.c", line 19: note: substituting "<dna4>" for function template "structured_rna<sequence_alphabet_t>::structured_rna(component_type) [with sequence_alphabet_t=rna4]" failed constraints
+      using base_type::base_type;
+      ^
+"Test_name.c", line 12: note: atomic constraint evaluates to false
+          requires __is_same(component_type, component_types)
+                   ^
+"Test_name.c", line 17: note: function "structured_rna<sequence_alphabet_t>::structured_rna(const structured_rna<rna4> &) [with sequence_alphabet_t=rna4]" does not match because argument #1 does not match parameter
+  struct structured_rna : alphabet_tuple_base<sequence_alphabet_t> {
+         ^
+"Test_name.c", line 17: note: function "structured_rna<sequence_alphabet_t>::structured_rna(structured_rna<rna4> &&) [with sequence_alphabet_t=rna4]" does not match because argument #1 does not match parameter
+  struct structured_rna : alphabet_tuple_base<sequence_alphabet_t> {
+         ^
+"Test_name.c", line 17: note: number of parameters of function "structured_rna<sequence_alphabet_t>::structured_rna() [with sequence_alphabet_t=rna4]" does not match the call
+  struct structured_rna : alphabet_tuple_base<sequence_alphabet_t> {
+         ^
+
+1 error detected in the compilation of "Test_name.c".

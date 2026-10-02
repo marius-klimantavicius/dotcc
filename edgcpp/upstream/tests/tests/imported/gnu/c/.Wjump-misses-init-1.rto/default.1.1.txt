@@ -1,0 +1,73 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 10: warning: variable "i" was declared but never referenced
+        int i = 7;	/* { dg-message "here" } */
+            ^
+
+"Test_name.c", line 17: warning: transfer of control bypasses initialization of:
+            variable "i" (declared at line 10)
+  	goto lab;	/* { dg-warning "jump" } */
+  	^
+
+"Test_name.c", line 28: warning: transfer of control bypasses initialization of:
+            variable "i" (declared at line 33)
+  	goto lab;	/* { dg-warning "jump" } */
+  	^
+
+"Test_name.c", line 33: warning: variable "i" was declared but never referenced
+        int i = 7;	/* { dg-message "here" } */
+            ^
+
+"Test_name.c", line 44: warning: variable "i" was declared but never referenced
+        static int i = 7;
+                   ^
+
+"Test_name.c", line 67: warning: variable "i" was declared but never referenced
+        static int i = 7;
+                   ^
+
+"Test_name.c", line 78: warning: variable "b" was declared but never referenced
+        int b = 1;
+            ^
+
+"Test_name.c", line 96: warning: variable "b" was declared but never referenced
+        int b = 1;
+            ^
+
+"Test_name.c", line 106: warning: dynamic initialization in unreachable code
+        int b = 1;	/* { dg-message "here" } */
+            ^
+
+"Test_name.c", line 106: warning: variable "b" was declared but never referenced
+        int b = 1;	/* { dg-message "here" } */
+            ^
+
+"Test_name.c", line 104: warning: transfer of control bypasses initialization of:
+            variable "b" (declared at line 106)
+    switch (a)		/* { dg-message "switch" } */
+    ^
+
+"Test_name.c", line 111: warning: missing return statement at end of non-void function "f7"
+  }
+  ^
+
+"Test_name.c", line 118: warning: dynamic initialization in unreachable code
+        int b = 1;	/* { dg-message "here" } */
+            ^
+
+"Test_name.c", line 118: warning: variable "b" was declared but never referenced
+        int b = 1;	/* { dg-message "here" } */
+            ^
+
+"Test_name.c", line 116: warning: transfer of control bypasses initialization of:
+            variable "b" (declared at line 118)
+    switch (a)		/* { dg-message "switch" } */
+    ^
+
+"Test_name.c", line 140: warning: missing return statement at end of non-void function "f9"
+  }
+  ^
+
+"Test_name.c", line 149: warning: variable "b" was declared but never referenced
+  	int b = 1;
+  	    ^
+

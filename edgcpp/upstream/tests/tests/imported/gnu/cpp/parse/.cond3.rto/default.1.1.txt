@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 13: error: a value of type "void" cannot be assigned to an entity of type "int"
+    (i ? j : k) = ({ l++; (void) l; });	// { dg-error "void value not ignored" }
+                ^
+
+"Test_name.c", line 14: error: expression must have arithmetic or unscoped enum type
+    (i ? j : k) += ({ l++; (void) l; });	// { dg-error "void value not ignored" }
+                   ^
+
+"Test_name.c", line 15: error: a value of type "void" cannot be assigned to an entity of type "int"
+    (i ? j : k) = baz ();			// { dg-error "void value not ignored" }
+                ^
+
+"Test_name.c", line 16: error: expression must have arithmetic or unscoped enum type
+    (i ? j : k) *= baz ();		// { dg-error "void value not ignored" }
+                   ^
+
+4 errors detected in the compilation of "Test_name.c".

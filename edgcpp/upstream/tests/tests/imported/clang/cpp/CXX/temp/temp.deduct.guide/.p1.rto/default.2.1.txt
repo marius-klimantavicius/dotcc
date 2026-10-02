@@ -1,0 +1,487 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 --exceptions -DCLASS Test_name.c
+"Test_name.c", line 17: error: a trailing return type requires the "auto" type specifier
+  *A(int(&)[3]) -> A<int>; // expected-error {{cannot specify any part of a return type in the declaration of a deduction guide}}
+                ^
+
+"Test_name.c", line 17: error: "A" has already been declared in the current scope
+  *A(int(&)[3]) -> A<int>; // expected-error {{cannot specify any part of a return type in the declaration of a deduction guide}}
+   ^
+
+"Test_name.c", line 18: error: a trailing return type requires the "auto" type specifier
+  &A(int(&)[4]) -> A<int>; // expected-error {{cannot specify any part of a return type in the declaration of a deduction guide}}
+                ^
+
+"Test_name.c", line 18: error: function "Outer::A" is not a type name
+  &A(int(&)[4]) -> A<int>; // expected-error {{cannot specify any part of a return type in the declaration of a deduction guide}}
+                   ^
+
+"Test_name.c", line 18: error: expected a ";"
+  &A(int(&)[4]) -> A<int>; // expected-error {{cannot specify any part of a return type in the declaration of a deduction guide}}
+                    ^
+
+"Test_name.c", line 19: error: function returning array is not allowed
+  A(int(&)[5])[3] -> A<int>;
+              ^
+
+"Test_name.c", line 19: error: expected a ";"
+  A(int(&)[5])[3] -> A<int>;
+                  ^
+
+"Test_name.c", line 26: error: a trailing return type requires the "auto" type specifier
+  (A[3])(int(&)[5][1]) -> A<int>; // expected-error {{'<deduction guide for A>' cannot be the name of a variable}}
+                       ^
+
+"Test_name.c", line 26: error: overloaded function "Outer::A" is not a template
+  (A[3])(int(&)[5][1]) -> A<int>; // expected-error {{'<deduction guide for A>' cannot be the name of a variable}}
+                          ^
+
+"Test_name.c", line 26: error: array of functions is not allowed
+  (A[3])(int(&)[5][1]) -> A<int>; // expected-error {{'<deduction guide for A>' cannot be the name of a variable}}
+         ^
+
+"Test_name.c", line 26: error: "A" has already been declared in the current scope
+  (A[3])(int(&)[5][1]) -> A<int>; // expected-error {{'<deduction guide for A>' cannot be the name of a variable}}
+   ^
+
+"Test_name.c", line 30: error: a trailing return type requires the "auto" type specifier
+  (*A)(int(&)[5][2]) -> A<int>; // expected-error {{'<deduction guide for A>' cannot be the name of a variable}}
+                     ^
+
+"Test_name.c", line 30: error: member "Outer::A" is not a type name
+  (*A)(int(&)[5][2]) -> A<int>; // expected-error {{'<deduction guide for A>' cannot be the name of a variable}}
+                        ^
+
+"Test_name.c", line 30: error: "A" has already been declared in the current scope
+  (*A)(int(&)[5][2]) -> A<int>; // expected-error {{'<deduction guide for A>' cannot be the name of a variable}}
+    ^
+
+"Test_name.c", line 30: error: expected a ";"
+  (*A)(int(&)[5][2]) -> A<int>; // expected-error {{'<deduction guide for A>' cannot be the name of a variable}}
+                         ^
+
+"Test_name.c", line 31: error: a trailing return type requires the "auto" type specifier
+  (&A)(int(&)[5][3]) -> A<int>; // expected-error {{'<deduction guide for A>' cannot be the name of a variable}}
+                     ^
+
+"Test_name.c", line 31: error: member "Outer::A" is not a type name
+  (&A)(int(&)[5][3]) -> A<int>; // expected-error {{'<deduction guide for A>' cannot be the name of a variable}}
+                        ^
+
+"Test_name.c", line 31: error: "A" has already been declared in the current scope
+  (&A)(int(&)[5][3]) -> A<int>; // expected-error {{'<deduction guide for A>' cannot be the name of a variable}}
+    ^
+
+"Test_name.c", line 31: error: expected a ";"
+  (&A)(int(&)[5][3]) -> A<int>; // expected-error {{'<deduction guide for A>' cannot be the name of a variable}}
+                         ^
+
+"Test_name.c", line 32: error: a trailing return type requires the "auto" type specifier
+  (*A(int))(int(&)[5][4]) -> A<int>; // expected-error {{cannot specify any part of a return type in the declaration of a deduction guide}}
+                          ^
+
+"Test_name.c", line 32: error: member "Outer::A" is not a type name
+  (*A(int))(int(&)[5][4]) -> A<int>; // expected-error {{cannot specify any part of a return type in the declaration of a deduction guide}}
+                             ^
+
+"Test_name.c", line 32: error: "A" has already been declared in the current scope
+  (*A(int))(int(&)[5][4]) -> A<int>; // expected-error {{cannot specify any part of a return type in the declaration of a deduction guide}}
+    ^
+
+"Test_name.c", line 32: error: expected a ";"
+  (*A(int))(int(&)[5][4]) -> A<int>; // expected-error {{cannot specify any part of a return type in the declaration of a deduction guide}}
+                              ^
+
+"Test_name.c", line 35: error: a trailing return type requires the "auto" type specifier
+  [[deprecated]] A(int(&)[6]) [[]] -> A<int> [[]];
+                                   ^
+
+"Test_name.c", line 35: error: function "Outer::A" is not a type name
+  [[deprecated]] A(int(&)[6]) [[]] -> A<int> [[]];
+                                      ^
+
+"Test_name.c", line 35: error: expected a ";"
+  [[deprecated]] A(int(&)[6]) [[]] -> A<int> [[]];
+                                       ^
+
+"Test_name.c", line 36: error: overloaded function "Outer::A" is not a type name
+  A [[]] (int(&)[7]) -> A<int>;
+  ^
+
+"Test_name.c", line 36: error: expected an identifier
+  A [[]] (int(&)[7]) -> A<int>;
+          ^
+
+"Test_name.c", line 36: error: expected a type specifier
+  A [[]] (int(&)[7]) -> A<int>;
+              ^
+
+"Test_name.c", line 36: error: function returning array is not allowed
+  A [[]] (int(&)[7]) -> A<int>;
+                ^
+
+"Test_name.c", line 36: error: expected a ";"
+  A [[]] (int(&)[7]) -> A<int>;
+                     ^
+
+"Test_name.c", line 37: error: a trailing return type requires the "auto" type specifier
+  (A)(int(&)[8]) -> A<int>;
+                 ^
+
+"Test_name.c", line 37: error: overloaded function "Outer::A" is not a template
+  (A)(int(&)[8]) -> A<int>;
+                    ^
+
+"Test_name.c", line 40: error: explicit type is missing ("int" assumed)
+  (A(int(&)[9])) -> A<int>;
+  ^
+
+"Test_name.c", line 40: error: expected a ";"
+  (A(int(&)[9])) -> A<int>;
+                 ^
+
+"Test_name.c", line 46: error: a trailing return type requires the "auto" type specifier
+  (A(int(&)[10]) -> A<int>); // expected-error {{trailing return type may not be nested within parentheses}}
+                 ^
+
+"Test_name.c", line 46: error: overloaded function "Outer::A" is not a template
+  (A(int(&)[10]) -> A<int>); // expected-error {{trailing return type may not be nested within parentheses}}
+                    ^
+
+"Test_name.c", line 46: error: explicit type is missing ("int" assumed)
+  (A(int(&)[10]) -> A<int>); // expected-error {{trailing return type may not be nested within parentheses}}
+  ^
+
+"Test_name.c", line 49: error: explicit type is missing ("int" assumed)
+  A(int(&)[11]); // expected-error {{deduction guide declaration without trailing return type}}
+  ^
+
+"Test_name.c", line 52: error: a trailing return type requires the "auto" type specifier
+  int A(int) -> A<int>; // expected-error {{function with trailing return type must specify return type 'auto', not 'int'}}
+             ^
+
+"Test_name.c", line 52: error: overloaded function "Outer::A" is not a template
+  int A(int) -> A<int>; // expected-error {{function with trailing return type must specify return type 'auto', not 'int'}}
+                ^
+
+"Test_name.c", line 52: error: cannot overload functions distinguished by return type alone
+  int A(int) -> A<int>; // expected-error {{function with trailing return type must specify return type 'auto', not 'int'}}
+      ^
+
+"Test_name.c", line 54: error: "B" has already been declared in the current scope
+  auto B(int) -> B<int>; // expected-error {{redefinition of 'B' as different kind of symbol}}
+       ^
+
+"Test_name.c", line 57: error: a trailing return type requires the "auto" type specifier
+  friend A(int(&)[20]) -> A<int>;
+                       ^
+
+"Test_name.c", line 57: error: overloaded function "Outer::A" is not a template
+  friend A(int(&)[20]) -> A<int>;
+                          ^
+
+"Test_name.c", line 63: error: a trailing return type requires the "auto" type specifier
+  typedef A(int(&)[21]) -> A<int>; // expected-error {{deduction guide cannot be declared 'typedef'}}
+                        ^
+
+"Test_name.c", line 63: error: overloaded function "Outer::A" is not a template
+  typedef A(int(&)[21]) -> A<int>; // expected-error {{deduction guide cannot be declared 'typedef'}}
+                           ^
+
+"Test_name.c", line 63: error: "A" has already been declared in the current scope
+  typedef A(int(&)[21]) -> A<int>; // expected-error {{deduction guide cannot be declared 'typedef'}}
+          ^
+
+"Test_name.c", line 64: error: expected an identifier
+  constexpr A(int(&)[22]) -> A<int>; // expected-error {{deduction guide cannot be declared 'constexpr'}}
+              ^
+
+"Test_name.c", line 64: error: expected a type specifier
+  constexpr A(int(&)[22]) -> A<int>; // expected-error {{deduction guide cannot be declared 'constexpr'}}
+                  ^
+
+"Test_name.c", line 64: error: function returning array is not allowed
+  constexpr A(int(&)[22]) -> A<int>; // expected-error {{deduction guide cannot be declared 'constexpr'}}
+                    ^
+
+"Test_name.c", line 64: error: expected a ";"
+  constexpr A(int(&)[22]) -> A<int>; // expected-error {{deduction guide cannot be declared 'constexpr'}}
+                          ^
+
+"Test_name.c", line 65: error: expected an identifier
+  inline A(int(&)[23]) -> A<int>; // expected-error {{deduction guide cannot be declared 'inline'}}
+           ^
+
+"Test_name.c", line 65: error: expected a type specifier
+  inline A(int(&)[23]) -> A<int>; // expected-error {{deduction guide cannot be declared 'inline'}}
+               ^
+
+"Test_name.c", line 65: error: function returning array is not allowed
+  inline A(int(&)[23]) -> A<int>; // expected-error {{deduction guide cannot be declared 'inline'}}
+                 ^
+
+"Test_name.c", line 65: error: expected a ";"
+  inline A(int(&)[23]) -> A<int>; // expected-error {{deduction guide cannot be declared 'inline'}}
+                       ^
+
+"Test_name.c", line 66: error: expected an identifier
+  static A(int(&)[24]) -> A<int>; // expected-error {{deduction guide cannot be declared 'static'}}
+           ^
+
+"Test_name.c", line 66: error: expected a type specifier
+  static A(int(&)[24]) -> A<int>; // expected-error {{deduction guide cannot be declared 'static'}}
+               ^
+
+"Test_name.c", line 66: error: function returning array is not allowed
+  static A(int(&)[24]) -> A<int>; // expected-error {{deduction guide cannot be declared 'static'}}
+                 ^
+
+"Test_name.c", line 66: error: expected a ";"
+  static A(int(&)[24]) -> A<int>; // expected-error {{deduction guide cannot be declared 'static'}}
+                       ^
+
+"Test_name.c", line 67: error: expected an identifier
+  thread_local A(int(&)[25]) -> A<int>; // expected-error {{'thread_local' is only allowed on variable declarations}}
+                 ^
+
+"Test_name.c", line 67: error: expected a type specifier
+  thread_local A(int(&)[25]) -> A<int>; // expected-error {{'thread_local' is only allowed on variable declarations}}
+                     ^
+
+"Test_name.c", line 67: error: function returning array is not allowed
+  thread_local A(int(&)[25]) -> A<int>; // expected-error {{'thread_local' is only allowed on variable declarations}}
+                       ^
+
+"Test_name.c", line 67: error: expected a ";"
+  thread_local A(int(&)[25]) -> A<int>; // expected-error {{'thread_local' is only allowed on variable declarations}}
+                             ^
+
+"Test_name.c", line 68: error: invalid storage class for a class member
+  extern A(int(&)[26]) -> A<int>;
+  ^
+
+"Test_name.c", line 68: error: expected an identifier
+  extern A(int(&)[26]) -> A<int>;
+           ^
+
+"Test_name.c", line 68: error: expected a type specifier
+  extern A(int(&)[26]) -> A<int>;
+               ^
+
+"Test_name.c", line 68: error: function returning array is not allowed
+  extern A(int(&)[26]) -> A<int>;
+                 ^
+
+"Test_name.c", line 68: error: expected a ";"
+  extern A(int(&)[26]) -> A<int>;
+                       ^
+
+"Test_name.c", line 74: error: expected an identifier
+  mutable A(int(&)[27]) -> A<int>; // expected-error-re {{{{'mutable' cannot be applied to|illegal storage class on}} function}}
+            ^
+
+"Test_name.c", line 74: error: expected a type specifier
+  mutable A(int(&)[27]) -> A<int>; // expected-error-re {{{{'mutable' cannot be applied to|illegal storage class on}} function}}
+                ^
+
+"Test_name.c", line 74: error: function returning array is not allowed
+  mutable A(int(&)[27]) -> A<int>; // expected-error-re {{{{'mutable' cannot be applied to|illegal storage class on}} function}}
+                  ^
+
+"Test_name.c", line 74: error: mutable is not allowed
+  mutable A(int(&)[27]) -> A<int>; // expected-error-re {{{{'mutable' cannot be applied to|illegal storage class on}} function}}
+  ^
+
+"Test_name.c", line 74: error: expected a ";"
+  mutable A(int(&)[27]) -> A<int>; // expected-error-re {{{{'mutable' cannot be applied to|illegal storage class on}} function}}
+                        ^
+
+"Test_name.c", line 75: error: expected an identifier
+  virtual A(int(&)[28]) -> A<int>; // expected-error {{'virtual' can only appear on non-static member functions}}
+            ^
+
+"Test_name.c", line 75: error: expected a type specifier
+  virtual A(int(&)[28]) -> A<int>; // expected-error {{'virtual' can only appear on non-static member functions}}
+                ^
+
+"Test_name.c", line 75: error: function returning array is not allowed
+  virtual A(int(&)[28]) -> A<int>; // expected-error {{'virtual' can only appear on non-static member functions}}
+                  ^
+
+"Test_name.c", line 75: error: expected a ";"
+  virtual A(int(&)[28]) -> A<int>; // expected-error {{'virtual' can only appear on non-static member functions}}
+                        ^
+
+"Test_name.c", line 76: warning: type qualifiers on function types are ignored
+  const A(int(&)[31]) -> A<int>; // expected-error {{deduction guide cannot be declared 'const'}}
+  ^
+
+"Test_name.c", line 76: error: expected an identifier
+  const A(int(&)[31]) -> A<int>; // expected-error {{deduction guide cannot be declared 'const'}}
+          ^
+
+"Test_name.c", line 76: error: expected a type specifier
+  const A(int(&)[31]) -> A<int>; // expected-error {{deduction guide cannot be declared 'const'}}
+              ^
+
+"Test_name.c", line 76: error: function returning array is not allowed
+  const A(int(&)[31]) -> A<int>; // expected-error {{deduction guide cannot be declared 'const'}}
+                ^
+
+"Test_name.c", line 76: error: expected a ";"
+  const A(int(&)[31]) -> A<int>; // expected-error {{deduction guide cannot be declared 'const'}}
+                      ^
+
+"Test_name.c", line 78: warning: type qualifiers on function types are ignored
+  const volatile static constexpr inline A(int(&)[29]) -> A<int>; // expected-error {{deduction guide cannot be declared 'static inline constexpr const volatile'}}
+  ^
+
+"Test_name.c", line 78: error: expected an identifier
+  const volatile static constexpr inline A(int(&)[29]) -> A<int>; // expected-error {{deduction guide cannot be declared 'static inline constexpr const volatile'}}
+                                           ^
+
+"Test_name.c", line 78: error: expected a type specifier
+  const volatile static constexpr inline A(int(&)[29]) -> A<int>; // expected-error {{deduction guide cannot be declared 'static inline constexpr const volatile'}}
+                                               ^
+
+"Test_name.c", line 78: error: function returning array is not allowed
+  const volatile static constexpr inline A(int(&)[29]) -> A<int>; // expected-error {{deduction guide cannot be declared 'static inline constexpr const volatile'}}
+                                                 ^
+
+"Test_name.c", line 78: error: expected a ";"
+  const volatile static constexpr inline A(int(&)[29]) -> A<int>; // expected-error {{deduction guide cannot be declared 'static inline constexpr const volatile'}}
+                                                       ^
+
+"Test_name.c", line 80: error: expected an identifier
+  A(int(&)[30]) const -> A<int>; // expected-error {{deduction guide cannot have 'const' qualifier}}
+    ^
+
+"Test_name.c", line 80: error: expected a type specifier
+  A(int(&)[30]) const -> A<int>; // expected-error {{deduction guide cannot have 'const' qualifier}}
+        ^
+
+"Test_name.c", line 80: error: function returning array is not allowed
+  A(int(&)[30]) const -> A<int>; // expected-error {{deduction guide cannot have 'const' qualifier}}
+          ^
+
+"Test_name.c", line 80: error: expected a ";"
+  A(int(&)[30]) const -> A<int>; // expected-error {{deduction guide cannot have 'const' qualifier}}
+                ^
+
+"Test_name.c", line 83: error: expected an identifier
+  A(int(&)[40]) -> A<int> {} // expected-error {{deduction guide cannot have a function definition}}
+    ^
+
+"Test_name.c", line 83: error: expected a type specifier
+  A(int(&)[40]) -> A<int> {} // expected-error {{deduction guide cannot have a function definition}}
+        ^
+
+"Test_name.c", line 83: error: function returning array is not allowed
+  A(int(&)[40]) -> A<int> {} // expected-error {{deduction guide cannot have a function definition}}
+          ^
+
+"Test_name.c", line 83: error: expected a ";"
+  A(int(&)[40]) -> A<int> {} // expected-error {{deduction guide cannot have a function definition}}
+                ^
+
+"Test_name.c", line 85: error: expected an identifier
+  A(int(&)[42]) -> A<int> = delete; // expected-error {{deduction guide cannot have a function definition}}
+    ^
+
+"Test_name.c", line 85: error: expected a type specifier
+  A(int(&)[42]) -> A<int> = delete; // expected-error {{deduction guide cannot have a function definition}}
+        ^
+
+"Test_name.c", line 85: error: function returning array is not allowed
+  A(int(&)[42]) -> A<int> = delete; // expected-error {{deduction guide cannot have a function definition}}
+          ^
+
+"Test_name.c", line 85: error: expected a ";"
+  A(int(&)[42]) -> A<int> = delete; // expected-error {{deduction guide cannot have a function definition}}
+                ^
+
+"Test_name.c", line 86: error: expected an identifier
+  A(int(&)[43]) -> A<int> try {} catch (...) {} // expected-error {{deduction guide cannot have a function definition}}
+    ^
+
+"Test_name.c", line 86: error: expected a type specifier
+  A(int(&)[43]) -> A<int> try {} catch (...) {} // expected-error {{deduction guide cannot have a function definition}}
+        ^
+
+"Test_name.c", line 86: error: function returning array is not allowed
+  A(int(&)[43]) -> A<int> try {} catch (...) {} // expected-error {{deduction guide cannot have a function definition}}
+          ^
+
+"Test_name.c", line 86: error: expected a ";"
+  A(int(&)[43]) -> A<int> try {} catch (...) {} // expected-error {{deduction guide cannot have a function definition}}
+                ^
+
+"Test_name.c", line 89: warning: parsing restarts here after previous syntax error
+  };
+  ^
+
+"Test_name.c", line 7: warning: class "Outer" defines no constructor to initialize the following:
+            reference member "Outer::A"
+  struct Outer {
+         ^
+
+"Test_name.c", line 96: error: expected an identifier
+    template<> B(int) -> B<int>; // expected-error {{deduction guide cannot be explicitly specialized}}
+                 ^
+
+"Test_name.c", line 96: error: expected a ";"
+    template<> B(int) -> B<int>; // expected-error {{deduction guide cannot be explicitly specialized}}
+                      ^
+
+"Test_name.c", line 97: error: expected an identifier
+    extern template B(float) -> B<float>; // expected-error {{deduction guide cannot be explicitly instantiated}}
+                      ^
+
+"Test_name.c", line 97: error: invalid explicit instantiation declaration
+    extern template B(float) -> B<float>; // expected-error {{deduction guide cannot be explicitly instantiated}}
+                    ^
+
+"Test_name.c", line 97: error: expected a ";"
+    extern template B(float) -> B<float>; // expected-error {{deduction guide cannot be explicitly instantiated}}
+                             ^
+
+"Test_name.c", line 98: error: expected an identifier
+    template B(char) -> B<char>; // expected-error {{deduction guide cannot be explicitly instantiated}}
+               ^
+
+"Test_name.c", line 98: error: invalid explicit instantiation declaration
+    template B(char) -> B<char>; // expected-error {{deduction guide cannot be explicitly instantiated}}
+             ^
+
+"Test_name.c", line 98: error: expected a ";"
+    template B(char) -> B<char>; // expected-error {{deduction guide cannot be explicitly instantiated}}
+                     ^
+
+"Test_name.c", line 101: error: expected a ")"
+    template<typename T> B<T*>(T*) -> B<T*>; // expected-error 1+{{}} expected-note 0+{{}}
+                                ^
+
+"Test_name.c", line 101: warning: declaration of "T" hides template parameter
+    template<typename T> B<T*>(T*) -> B<T*>; // expected-error 1+{{}} expected-note 0+{{}}
+                               ^
+
+"Test_name.c", line 101: error: expected a ";"
+    template<typename T> B<T*>(T*) -> B<T*>; // expected-error 1+{{}} expected-note 0+{{}}
+                                   ^
+
+"Test_name.c", line 106: error: expected an identifier
+      template<> C(int) -> C<int>; // expected-error {{deduction guide cannot be explicitly specialized}}
+                   ^
+
+"Test_name.c", line 106: error: expected a ";"
+      template<> C(int) -> C<int>; // expected-error {{deduction guide cannot be explicitly specialized}}
+                        ^
+
+"Test_name.c", line 107: error: explicit instantiation is not allowed in the current scope
+      extern template C(float) -> C<float>; // expected-error {{expected member name or ';'}}
+             ^
+
+"Test_name.c", line 108: error: explicit instantiation is not allowed in the current scope
+      template C(char) -> C<char>; // expected-error {{expected '<' after 'template'}}
+      ^
+
+116 errors detected in the compilation of "Test_name.c".

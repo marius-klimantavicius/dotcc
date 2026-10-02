@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 6: warning: attribute namespace "omp" is unrecognized
+  [[omp::directive(error]];	// { dg-error "expected|declare" }
+    ^
+
+"Test_name.c", line 6: error: this attribute argument contains unmatched parentheses, brackets, or braces
+  [[omp::directive(error]];	// { dg-error "expected|declare" }
+                   ^
+
+"Test_name.c", line 6: error: expected a ")"
+  [[omp::directive(error]];	// { dg-error "expected|declare" }
+                        ^
+
+2 errors detected in the compilation of "Test_name.c".

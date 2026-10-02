@@ -1,0 +1,45 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 12: warning: unrecognized #pragma
+  #pragma omp declare variant (f0) match (construct={target}) adjust_args (nothing: a) /* { dg-error "an 'adjust_args' clause can only be specified if the 'dispatch' selector of the 'construct' selector set appears in the 'match' clause" } */
+          ^
+
+"Test_name.c", line 14: warning: unrecognized #pragma
+  #pragma omp declare variant (f1) match (construct={dispatch}) adjust_args (other: a) /* { dg-error "expected 'nothing' or 'need_device_ptr'" } */
+          ^
+
+"Test_name.c", line 16: warning: unrecognized #pragma
+  #pragma omp declare variant (f0) adjust_args (nothing: a) /* { dg-error "an 'adjust_args' clause requires a 'match' clause" } */
+          ^
+
+"Test_name.c", line 18: warning: unrecognized #pragma
+  #pragma omp declare variant (f1) match (construct={dispatch}) adjust_args () /* { dg-error "expected 'nothing' or 'need_device_ptr' followed by ':'" } */
+          ^
+
+"Test_name.c", line 20: warning: unrecognized #pragma
+  #pragma omp declare variant (f1) match (construct={dispatch}) adjust_args (nothing) /* { dg-error "expected 'nothing' or 'need_device_ptr' followed by ':'" } */
+          ^
+
+"Test_name.c", line 22: warning: unrecognized #pragma
+  #pragma omp declare variant (f1) match (construct={dispatch}) adjust_args (nothing:) /* { dg-error "expected identifier before '\\)' token" } */
+          ^
+
+"Test_name.c", line 24: warning: unrecognized #pragma
+  #pragma omp declare variant (f1) match (construct={dispatch}) adjust_args (nothing: z) /* { dg-error "'z' undeclared here \\(not in a function\\)" } */
+          ^
+
+"Test_name.c", line 26: warning: unrecognized #pragma
+  #pragma omp declare variant (f1) match (construct={dispatch}) adjust_args (need_device_ptr: a) /* { dg-error "'a' is not of pointer type" } */
+          ^
+
+"Test_name.c", line 28: warning: unrecognized #pragma
+  #pragma omp declare variant (f1) match (construct={dispatch}) adjust_args (nothing: a) adjust_args (nothing: a) /* { dg-error "'a' is specified more than once" } */
+          ^
+
+"Test_name.c", line 30: warning: unrecognized #pragma
+  #pragma omp declare variant (g) match (construct={dispatch}) adjust_args (nothing: a) adjust_args (need_device_ptr: a) /* { dg-error "'a' is specified more than once" } */
+          ^
+
+"Test_name.c", line 32: warning: unrecognized #pragma
+  #pragma omp declare variant (g) match (construct={dispatch}) adjust_args (need_device_ptr: b) /* { dg-error "'b' is not a function argument" } */
+          ^
+

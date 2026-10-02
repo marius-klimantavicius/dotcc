@@ -1,0 +1,2 @@
+fe_only -DTEST_NUMBER=1 --module_import_diagnostics -d-module_report --c++20 --header_unit test.h=test.h.rtmod Test_name.c
+4 modules declarations processed (0 failed).

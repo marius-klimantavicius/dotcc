@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 26: error: function "A<Align>::operator delete(void *, std::align_val_t) [with Align=32U]" (declared at line 20) cannot be referenced -- it is a deleted function
+  void f(A<__STDCPP_DEFAULT_NEW_ALIGNMENT__ * 2> *p) { delete p; } // expected-error {{deleted}}
+                                                       ^
+
+"Test_name.c", line 34: error: function "B<Align>::operator delete(void *, size_t, std::align_val_t) [with Align=32U]" (declared at line 31) cannot be referenced -- it is a deleted function
+  void f(B<__STDCPP_DEFAULT_NEW_ALIGNMENT__ * 2> *p) { delete p; } // expected-error {{deleted}}
+                                                       ^
+
+"Test_name.c", line 50: error: function "S::~S() noexcept" (declared at line 39) cannot be referenced -- it is a deleted function
+    delete s; // Was rejected, is intended to be accepted.
+           ^
+
+"Test_name.c", line 51: error: "T::~T() noexcept" (declared at line 46) is inaccessible
+    delete t; // Was rejected, is intended to be accepted.
+           ^
+
+"Test_name.c", line 70: error: function "U::~U() noexcept" (declared at line 58) cannot be referenced -- it is a deleted function
+    delete u; // expected-error {{attempt to use a deleted function}}
+           ^
+
+"Test_name.c", line 71: error: "V::~V() noexcept" (declared at line 65) is inaccessible
+    delete v; // expected-error {{calling a private destructor of class 'V'}}
+           ^
+
+6 errors detected in the compilation of "Test_name.c".

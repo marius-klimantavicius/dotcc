@@ -1,0 +1,38 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 --strict_gnu Test_name.c
+"./gnu11-empty-init-1.c", line 15: warning: unknown attribute "noipa"
+  __attribute__((noipa)) void
+                 ^
+
+"./gnu11-empty-init-1.c", line 25: warning: unknown attribute "noipa"
+  __attribute__((noipa)) void
+                 ^
+
+"./gnu11-empty-init-1.c", line 37: warning: unknown attribute "noipa"
+  __attribute__((noipa)) void
+                 ^
+
+"./gnu11-empty-init-1.c", line 48: warning: unknown attribute "noipa"
+  __attribute__((noipa)) void
+                 ^
+
+"./gnu11-empty-init-1.c", line 58: warning: unknown attribute "noipa"
+  __attribute__((noipa)) void
+                 ^
+
+"./gnu11-empty-init-1.c", line 138: warning: unknown attribute "noipa"
+  __attribute__((noipa)) void
+                 ^
+
+"./gnu11-empty-init-1.c", line 163: warning: unknown attribute "noipa"
+  __attribute__((noipa)) void
+                 ^
+
+"./gnu11-empty-init-1.c", line 184: warning: unknown attribute "noipa"
+  __attribute__((noipa)) void
+                 ^
+
+eccp: diagnostics generated from compilation of Test_name.int.c:
+./gnu11-empty-init-1.c:6:14: error: conflicting types for 'memset'; have 'void *(void *, int,  long unsigned int)'
+eccptmp/Test_name.int.c:5:7: note: previous declaration of 'memset' with type 'void *(void *, int,  unsigned int)'
+eccp: end of diagnostics from compilation of Test_name.int.c
+eccp: gcc compilation of Test_name.int.c returned an exit status of 1

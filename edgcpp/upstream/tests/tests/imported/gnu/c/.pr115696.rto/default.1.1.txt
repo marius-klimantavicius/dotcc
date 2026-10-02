@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 6: warning: this declaration has no storage class or type specifier
+  a();	/* { dg-warning "no type or storage" } */
+  ^
+
+"Test_name.c", line 7: warning: this declaration has no storage class or type specifier
+  a;	/* { dg-error "redeclared" } */
+  ^
+
+"Test_name.c", line 7: error: declaration is incompatible with "int a(void)" (declared at line 6)
+  a;	/* { dg-error "redeclared" } */
+  ^
+
+"Test_name.c", line 9: warning: this declaration has no storage class or type specifier
+  a();	/* { dg-warning "no type or storage" } */
+  ^
+
+"Test_name.c", line 9: error: declaration is incompatible with "int a" (declared at line 7)
+  a();	/* { dg-warning "no type or storage" } */
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

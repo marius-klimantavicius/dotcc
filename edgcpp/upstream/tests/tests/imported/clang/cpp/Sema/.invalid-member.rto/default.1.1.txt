@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 8: error: too many arguments in function call
+    decltype(foo(42)) invalid; // expected-error {{no matching function}}
+                 ^
+
+"Test_name.c", line 14: error: too many arguments in function call
+    typeof(foo(42)) invalid; // expected-error {{no matching function}}
+               ^
+
+"Test_name.c", line 20: error: identifier "invalid" is undefined
+    int array[sizeof(invalid())]; // expected-error {{use of undeclared identifier}}
+                     ^
+
+"Test_name.c", line 25: error: identifier "undef" is undefined
+  constexpr int N = undef; // expected-error {{use of undeclared identifier}} \
+                    ^
+
+4 errors detected in the compilation of "Test_name.c".

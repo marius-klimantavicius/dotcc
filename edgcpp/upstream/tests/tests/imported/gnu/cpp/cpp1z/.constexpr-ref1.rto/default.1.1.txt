@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"./cpp1z/constexpr-ref1.C", line 25: warning: variable "b" was declared but never referenced
+    constexpr bool b = is_type<int>(i);
+                   ^
+

@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --c++11 --no_il_lower --il_display Test_name.c
+file-scope class-type-supplement#1
+is_lambda_closure_class: TRUE
+lambda_parent.routine:   file-scope routine#1: operator()\n\nfile-scope class-type-supplement#2
+is_lambda_closure_class: TRUE
+defined_in_field_initializer: TRUE
+lambda_parent.field:     file-scope field#1: x\n\nfile-scope field#1
+  name:                  file-scope id-name#1: "x"
+  decl_position.seq:     7
+  decl_position.column:  9
+has_initializer:         TRUE
+initializer:             file-scope dynamic-init#1
+has_field_initializer:   TRUE

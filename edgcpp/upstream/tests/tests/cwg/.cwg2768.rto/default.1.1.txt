@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c++23 Test_name.c
+"Test_name.c", line 8: error: a value of type "int" cannot be used to initialize an entity of type "E"
+       e = {0};  // #2
+            ^
+
+"Test_name.c", line 6: warning: variable "e" was set but never used
+       E e;
+         ^
+
+1 error detected in the compilation of "Test_name.c".

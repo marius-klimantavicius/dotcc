@@ -1,0 +1,18 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 Test_name.c
+"Test_name.c", line 10: error: unrecognized token
+  int a$b😀(void) { return 2; }
+         ^
+
+"Test_name.c", line 10: error: declaration is incompatible with "int a$b(void)" (declared at line 9)
+  int a$b😀(void) { return 2; }
+      ^
+
+"Test_name.c", line 10: error: expected a ";"
+  int a$b😀(void) { return 2; }
+         ^
+
+"Test_name.c", line 18: error: unrecognized token
+    if (a$b😀() != 2)
+           ^
+
+4 errors detected in the compilation of "Test_name.c".

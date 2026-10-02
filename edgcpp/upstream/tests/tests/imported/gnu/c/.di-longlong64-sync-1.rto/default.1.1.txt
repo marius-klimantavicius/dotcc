@@ -1,0 +1,6 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+eccp: diagnostics generated from compilation of Test_name.int.c:
+./di-longlong64-sync-1.c: In function 'do_noret_di':
+./di-longlong64-sync-1.c:85:13: note: '__sync_fetch_and_nand' changed semantics in GCC 4.4
+./di-longlong64-sync-1.c:98:13: note: '__sync_nand_and_fetch' changed semantics in GCC 4.4
+eccp: end of diagnostics from compilation of Test_name.int.c

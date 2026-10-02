@@ -1,0 +1,49 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 118: warning: variable "a1" was declared but never referenced
+    class A *a1;
+             ^
+
+"Test_name.c", line 119: warning: variable "a2" was declared but never referenced
+    class A *a2;
+             ^
+
+"Test_name.c", line 121: warning: variable "b1" was declared but never referenced
+    struct B *b1;
+              ^
+
+"Test_name.c", line 122: warning: variable "b2" was declared but never referenced
+    struct B *b2;
+              ^
+
+"Test_name.c", line 124: warning: variable "a3" was declared but never referenced
+    struct A *a3;             // { dg-warning "LocalObjects::A' declared with a mismatched class-key" }
+              ^
+
+"Test_name.c", line 125: warning: variable "a4" was declared but never referenced
+    class A *a4;
+             ^
+
+"Test_name.c", line 127: warning: variable "b3" was declared but never referenced
+    class B *b3;              // { dg-warning "LocalObjects::B' declared with a mismatched class-key" }
+             ^
+
+"Test_name.c", line 128: warning: variable "b4" was declared but never referenced
+    struct B *b4;
+              ^
+
+"Test_name.c", line 139: warning: invalid redeclaration of nested class
+  struct C { struct D; struct D; struct D { }; };
+                              ^
+
+"Test_name.c", line 140: warning: invalid redeclaration of nested class
+  struct E { class F; class F { }; class F; };
+                                         ^
+
+"Test_name.c", line 144: warning: invalid redeclaration of nested class
+    class H;                  // { dg-warning "MemberClasses::G::H' declared with a mismatched class-key" }
+          ^
+
+"Test_name.c", line 146: warning: invalid redeclaration of nested class
+    struct I;                 // { dg-warning "MemberClasses::G::I' declared with a mismatched class-key" }
+           ^
+

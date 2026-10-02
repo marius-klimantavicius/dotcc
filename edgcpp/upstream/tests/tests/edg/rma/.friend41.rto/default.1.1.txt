@@ -1,0 +1,1 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --cfront_3.0 Test_name.c

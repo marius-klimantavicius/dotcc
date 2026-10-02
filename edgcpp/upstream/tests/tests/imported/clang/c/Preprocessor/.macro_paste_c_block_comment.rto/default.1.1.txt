@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 7: error: expected a declaration
+  COMM // expected-error {{pasting formed '/*', an invalid preprocessing token}}
+  ^
+
+"Test_name.c", line 7: warning: concatenation with "*" in macro "COMM" does not create a valid token
+  COMM // expected-error {{pasting formed '/*', an invalid preprocessing token}}
+  ^
+
+"Test_name.c", line 11: catastrophic error: #error directive: EOF
+  #error EOF
+   ^
+
+1 error and 1 catastrophic error detected in the compilation of "Test_name.c".
+Compilation terminated.

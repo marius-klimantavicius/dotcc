@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./lto/20090706-1_0.c", line 11: warning: variable-length array field type will be treated as zero-length array field type
+     char x[size];
+            ^
+
+"./lto/20090706-1_0.c", line 17: warning: variable "i" was declared but never referenced
+    int i;
+        ^
+
+"./lto/20090706-1_0.c", line 32: warning: variable-length array field type will be treated as zero-length array field type
+    struct { struct { char a[z]; } y; unsigned r; } x;
+                             ^
+
+"./lto/20090706-1_0.c", line 31: warning: variable "i" was declared but never referenced
+    int z = 5, i;
+               ^
+

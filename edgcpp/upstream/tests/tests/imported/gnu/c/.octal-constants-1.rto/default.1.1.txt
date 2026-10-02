@@ -1,0 +1,1028 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+    do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (int *)0 : (void *)(!(((((0o1)) <= 0x7fffffff
+                                                                                         ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   ))))))0 : (__typeof__(0 ? (__typeof__(0 ? (unsigned int *)0 : (void *)(!((!((((0o1)) <= 0x7fffffff
+                                                                                   ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0o1)) <= 
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0 : (__typeof__(0 ? (__typeof__(0 ? (long int *)0 : (void *)(!((!((((0o1)) <= 0x7fffffff
+                                                                                ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && !((((0o1)) <= 
+               ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0o1)) <= 0x7fffffffffffffffL
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0 : (__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!((!((((0o1)) <= 0x7fffffff
+                                                                                         ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && !((((0o1)) <= 
+               ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && !((((0o1)) <= 0x7fffffffffffffffL
+               ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0o1)) <= 
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0 : (__typeof__(0 ? (__typeof__(0 ? (long long int *)0 : (void *)(!((!((((0o1)) <= 0x7fffffff
+                                                                                     ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && !((((0o1)) <= 
+               ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && !((((0o1)) <= 0x7fffffffffffffffL
+               ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && !((((0o1)) <= 
+               ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0o1)) <= 0x7fffffffffffffffLL
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0 : (__typeof__(0 ? (unsigned long long int *)0 : (void *)(!((!((((0o1)) <= 0x7fffffff
+                                                                              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && !((((0o1)) <= 
+               ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && !((((0o1)) <= 0x7fffffffffffffffL
+               ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && !((((0o1)) <= 
+               ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && !((((0o1)) <= 0x7fffffffffffffffLL
+               ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0o1)) <= 
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0))0))0))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned int *)0 : (void *)(!(((((0o1u)) <= 
+                                                                                ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0))0))0))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned int *)0 : (void *)(!(((((0o1u)) <= 
+                                                                                                                                                                                                                                                                            ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   ))))))0 : (__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!((!((((0o1u)) <= 
+                                                                                        ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0o1u)) <= 
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0 : (__typeof__(0 ? (unsigned long long int *)0 : (void *)(!((!((((0o1u)) <= 
+                                                                              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && !((((0o1u)) <= 
+               ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0o1u)) <= 
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1u))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned int *)0 : (void *)(!(((((0o1U)) <= 
+                                                                       ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "ctypepp" (aka "int **") cannot be assigned to an entity of type "typepp" (aka "unsigned int **")
+   )))))))0))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1u))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned int *)0 : (void *)(!(((((0o1U)) <= 
+                                                                                                                                             ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "typepp" (aka "unsigned int **") cannot be assigned to an entity of type "ctypepp" (aka "int **")
+   )))))))0))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1u))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned int *)0 : (void *)(!(((((0o1U)) <= 
+                                                                                                                                                    ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1u))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned int *)0 : (void *)(!(((((0o1U)) <= 
+                                                                                                                                                                                                                                                                    ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   ))))))0 : (__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!((!((((0o1U)) <= 
+                                                                                        ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0o1U)) <= 
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0 : (__typeof__(0 ? (unsigned long long int *)0 : (void *)(!((!((((0o1U)) <= 
+                                                                              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && !((((0o1U)) <= 
+               ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0o1U)) <= 
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1U))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (long int *)0 : (void *)(!(((((0o1l)) <= 0x7fffffffffffffffL
+                                                                       ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "ctypepp" (aka "int **") cannot be assigned to an entity of type "typepp" (aka "unsigned int **")
+   )))))))0))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1U))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (long int *)0 : (void *)(!(((((0o1l)) <= 0x7fffffffffffffffL
+                                                                                                                                             ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "typepp" (aka "unsigned int **") cannot be assigned to an entity of type "ctypepp" (aka "int **")
+   )))))))0))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1U))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (long int *)0 : (void *)(!(((((0o1l)) <= 0x7fffffffffffffffL
+                                                                                                                                                    ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1U))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (long int *)0 : (void *)(!(((((0o1l)) <= 0x7fffffffffffffffL
+                                                                                                                                                                                                                                                                ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   ))))))0 : (__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!((!((((0o1l)) <= 0x7fffffffffffffffL
+                                                                                        ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0o1l)) <= 
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0 : (__typeof__(0 ? (__typeof__(0 ? (long long int *)0 : (void *)(!((!((((0o1l)) <= 0x7fffffffffffffffL
+                                                                                     ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && !((((0o1l)) <= 
+               ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0o1l)) <= 0x7fffffffffffffffLL
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0 : (__typeof__(0 ? (unsigned long long int *)0 : (void *)(!((!((((0o1l)) <= 0x7fffffffffffffffL
+                                                                              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && !((((0o1l)) <= 
+               ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && !((((0o1l)) <= 0x7fffffffffffffffLL
+               ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0o1l)) <= 
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1l))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (long int *)0 : (void *)(!(((((0o1L)) <= 0x7fffffffffffffffL
+                                                                          ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "ctypepp" (aka "int **") cannot be assigned to an entity of type "typepp" (aka "long **")
+   )))))))0))0))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1l))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (long int *)0 : (void *)(!(((((0o1L)) <= 0x7fffffffffffffffL
+                                                                                                                                                ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "typepp" (aka "long **") cannot be assigned to an entity of type "ctypepp" (aka "int **")
+   )))))))0))0))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1l))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (long int *)0 : (void *)(!(((((0o1L)) <= 0x7fffffffffffffffL
+                                                                                                                                                       ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1l))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (long int *)0 : (void *)(!(((((0o1L)) <= 0x7fffffffffffffffL
+                                                                                                                                                                                                                                                                   ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   ))))))0 : (__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!((!((((0o1L)) <= 0x7fffffffffffffffL
+                                                                                        ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0o1L)) <= 
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0 : (__typeof__(0 ? (__typeof__(0 ? (long long int *)0 : (void *)(!((!((((0o1L)) <= 0x7fffffffffffffffL
+                                                                                     ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && !((((0o1L)) <= 
+               ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0o1L)) <= 0x7fffffffffffffffLL
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0 : (__typeof__(0 ? (unsigned long long int *)0 : (void *)(!((!((((0o1L)) <= 0x7fffffffffffffffL
+                                                                              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && !((((0o1L)) <= 
+               ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && !((((0o1L)) <= 0x7fffffffffffffffLL
+               ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0o1L)) <= 
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1L))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!(((((0o1ul)) <= 
+                                                                          ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "ctypepp" (aka "int **") cannot be assigned to an entity of type "typepp" (aka "long **")
+   )))))))0))0))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1L))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!(((((0o1ul)) <= 
+                                                                                                                                                ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "typepp" (aka "long **") cannot be assigned to an entity of type "ctypepp" (aka "int **")
+   )))))))0))0))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1L))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!(((((0o1ul)) <= 
+                                                                                                                                                       ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1L))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!(((((0o1ul)) <= 
+                                                                                                                                                                                                                                                                            ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   ))))))0 : (__typeof__(0 ? (unsigned long long int *)0 : (void *)(!((!((((0o1ul)) <= 
+                                                                             ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0o1ul)) <= 
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1ul))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!(((((0o1uL)) <= 
+                                                                    ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "ctypepp" (aka "int **") cannot be assigned to an entity of type "typepp" (aka "unsigned long **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1ul))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!(((((0o1uL)) <= 
+                                                                                                                                           ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "typepp" (aka "unsigned long **") cannot be assigned to an entity of type "ctypepp" (aka "int **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1ul))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!(((((0o1uL)) <= 
+                                                                                                                                                  ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1ul))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!(((((0o1uL)) <= 
+                                                                                                                                                                                                                                                                       ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   ))))))0 : (__typeof__(0 ? (unsigned long long int *)0 : (void *)(!((!((((0o1uL)) <= 
+                                                                             ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0o1uL)) <= 
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1uL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!(((((0o1Ul)) <= 
+                                                                    ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "ctypepp" (aka "int **") cannot be assigned to an entity of type "typepp" (aka "unsigned long **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1uL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!(((((0o1Ul)) <= 
+                                                                                                                                           ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "typepp" (aka "unsigned long **") cannot be assigned to an entity of type "ctypepp" (aka "int **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1uL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!(((((0o1Ul)) <= 
+                                                                                                                                                  ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1uL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!(((((0o1Ul)) <= 
+                                                                                                                                                                                                                                                                       ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   ))))))0 : (__typeof__(0 ? (unsigned long long int *)0 : (void *)(!((!((((0o1Ul)) <= 
+                                                                             ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0o1Ul)) <= 
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1Ul))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!(((((0o1UL)) <= 
+                                                                    ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "ctypepp" (aka "int **") cannot be assigned to an entity of type "typepp" (aka "unsigned long **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1Ul))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!(((((0o1UL)) <= 
+                                                                                                                                           ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "typepp" (aka "unsigned long **") cannot be assigned to an entity of type "ctypepp" (aka "int **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1Ul))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!(((((0o1UL)) <= 
+                                                                                                                                                  ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1Ul))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!(((((0o1UL)) <= 
+                                                                                                                                                                                                                                                                       ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   ))))))0 : (__typeof__(0 ? (unsigned long long int *)0 : (void *)(!((!((((0o1UL)) <= 
+                                                                             ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0o1UL)) <= 
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1UL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (long long int *)0 : (void *)(!(((((0o1ll)) <= 0x7fffffffffffffffLL
+                                                                    ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "ctypepp" (aka "int **") cannot be assigned to an entity of type "typepp" (aka "unsigned long **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1UL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (long long int *)0 : (void *)(!(((((0o1ll)) <= 0x7fffffffffffffffLL
+                                                                                                                                           ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "typepp" (aka "unsigned long **") cannot be assigned to an entity of type "ctypepp" (aka "int **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1UL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (long long int *)0 : (void *)(!(((((0o1ll)) <= 0x7fffffffffffffffLL
+                                                                                                                                                  ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1UL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (long long int *)0 : (void *)(!(((((0o1ll)) <= 0x7fffffffffffffffLL
+                                                                                                                                                                                                                                                                   ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   ))))))0 : (__typeof__(0 ? (unsigned long long int *)0 : (void *)(!((!((((0o1ll)) <= 0x7fffffffffffffffLL
+                                                                             ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0o1ll)) <= 
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1ll))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (long long int *)0 : (void *)(!(((((0o1LL)) <= 0x7fffffffffffffffLL
+                                                                    ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "ctypepp" (aka "int **") cannot be assigned to an entity of type "typepp" (aka "long long **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1ll))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (long long int *)0 : (void *)(!(((((0o1LL)) <= 0x7fffffffffffffffLL
+                                                                                                                                           ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "typepp" (aka "long long **") cannot be assigned to an entity of type "ctypepp" (aka "int **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1ll))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (long long int *)0 : (void *)(!(((((0o1LL)) <= 0x7fffffffffffffffLL
+                                                                                                                                                  ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1ll))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (long long int *)0 : (void *)(!(((((0o1LL)) <= 0x7fffffffffffffffLL
+                                                                                                                                                                                                                                                                   ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   ))))))0 : (__typeof__(0 ? (unsigned long long int *)0 : (void *)(!((!((((0o1LL)) <= 0x7fffffffffffffffLL
+                                                                             ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0o1LL)) <= 
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1LL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1uLL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1Ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1ULL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);; do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (int *)0 : (void *)(!(((((0O1)) <= 0x7fffffff
+                                                                    ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "ctypepp" (aka "int **") cannot be assigned to an entity of type "typepp" (aka "long long **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1LL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1uLL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1Ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1ULL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);; do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (int *)0 : (void *)(!(((((0O1)) <= 0x7fffffff
+                                                                                                                                           ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "typepp" (aka "long long **") cannot be assigned to an entity of type "ctypepp" (aka "int **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1LL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1uLL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1Ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1ULL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);; do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (int *)0 : (void *)(!(((((0O1)) <= 0x7fffffff
+                                                                                                                                                  ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1LL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1uLL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1Ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1ULL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);; do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (int *)0 : (void *)(!(((((0O1)) <= 0x7fffffff
+                                                                                                                                                                                                                                                           ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "ctypepp" (aka "int **") cannot be assigned to an entity of type "typepp" (aka "unsigned long long **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1LL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1uLL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1Ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1ULL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);; do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (int *)0 : (void *)(!(((((0O1)) <= 0x7fffffff
+                                                                                                                                                                                                                                                                                                                                   ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "typepp" (aka "unsigned long long **") cannot be assigned to an entity of type "ctypepp" (aka "int **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1LL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1uLL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1Ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1ULL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);; do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (int *)0 : (void *)(!(((((0O1)) <= 0x7fffffff
+                                                                                                                                                                                                                                                                                                                                          ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1LL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1uLL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1Ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1ULL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);; do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (int *)0 : (void *)(!(((((0O1)) <= 0x7fffffff
+                                                                                                                                                                                                                                                                                                                                                                                                                                                   ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "ctypepp" (aka "int **") cannot be assigned to an entity of type "typepp" (aka "unsigned long long **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1LL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1uLL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1Ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1ULL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);; do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (int *)0 : (void *)(!(((((0O1)) <= 0x7fffffff
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "typepp" (aka "unsigned long long **") cannot be assigned to an entity of type "ctypepp" (aka "int **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1LL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1uLL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1Ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1ULL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);; do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (int *)0 : (void *)(!(((((0O1)) <= 0x7fffffff
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1LL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1uLL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1Ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1ULL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);; do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (int *)0 : (void *)(!(((((0O1)) <= 0x7fffffff
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "ctypepp" (aka "int **") cannot be assigned to an entity of type "typepp" (aka "unsigned long long **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1LL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1uLL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1Ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1ULL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);; do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (int *)0 : (void *)(!(((((0O1)) <= 0x7fffffff
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "typepp" (aka "unsigned long long **") cannot be assigned to an entity of type "ctypepp" (aka "int **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1LL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1uLL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1Ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1ULL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);; do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (int *)0 : (void *)(!(((((0O1)) <= 0x7fffffff
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1LL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1uLL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1Ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1ULL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);; do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (int *)0 : (void *)(!(((((0O1)) <= 0x7fffffff
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "ctypepp" (aka "int **") cannot be assigned to an entity of type "typepp" (aka "unsigned long long **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1LL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1uLL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1Ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1ULL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);; do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (int *)0 : (void *)(!(((((0O1)) <= 0x7fffffff
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "typepp" (aka "unsigned long long **") cannot be assigned to an entity of type "ctypepp" (aka "int **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1LL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1uLL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1Ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1ULL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);; do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (int *)0 : (void *)(!(((((0O1)) <= 0x7fffffff
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0o1LL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1uLL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1Ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0o1ULL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);; do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (int *)0 : (void *)(!(((((0O1)) <= 0x7fffffff
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   ))))))0 : (__typeof__(0 ? (__typeof__(0 ? (unsigned int *)0 : (void *)(!((!((((0O1)) <= 0x7fffffff
+                                                                                   ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0O1)) <= 
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0 : (__typeof__(0 ? (__typeof__(0 ? (long int *)0 : (void *)(!((!((((0O1)) <= 0x7fffffff
+                                                                                ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && !((((0O1)) <= 
+               ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0O1)) <= 0x7fffffffffffffffL
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0 : (__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!((!((((0O1)) <= 0x7fffffff
+                                                                                         ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && !((((0O1)) <= 
+               ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && !((((0O1)) <= 0x7fffffffffffffffL
+               ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0O1)) <= 
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0 : (__typeof__(0 ? (__typeof__(0 ? (long long int *)0 : (void *)(!((!((((0O1)) <= 0x7fffffff
+                                                                                     ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && !((((0O1)) <= 
+               ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && !((((0O1)) <= 0x7fffffffffffffffL
+               ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && !((((0O1)) <= 
+               ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0O1)) <= 0x7fffffffffffffffLL
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0 : (__typeof__(0 ? (unsigned long long int *)0 : (void *)(!((!((((0O1)) <= 0x7fffffff
+                                                                              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && !((((0O1)) <= 
+               ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && !((((0O1)) <= 0x7fffffffffffffffL
+               ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && !((((0O1)) <= 
+               ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && !((((0O1)) <= 0x7fffffffffffffffLL
+               ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0O1)) <= 
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0))0))0))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned int *)0 : (void *)(!(((((0O1u)) <= 
+                                                                                ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0))0))0))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned int *)0 : (void *)(!(((((0O1u)) <= 
+                                                                                                                                                                                                                                                                            ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   ))))))0 : (__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!((!((((0O1u)) <= 
+                                                                                        ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0O1u)) <= 
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0 : (__typeof__(0 ? (unsigned long long int *)0 : (void *)(!((!((((0O1u)) <= 
+                                                                              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && !((((0O1u)) <= 
+               ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0O1u)) <= 
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1u))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned int *)0 : (void *)(!(((((0O1U)) <= 
+                                                                       ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "ctypepp" (aka "int **") cannot be assigned to an entity of type "typepp" (aka "unsigned int **")
+   )))))))0))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1u))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned int *)0 : (void *)(!(((((0O1U)) <= 
+                                                                                                                                             ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "typepp" (aka "unsigned int **") cannot be assigned to an entity of type "ctypepp" (aka "int **")
+   )))))))0))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1u))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned int *)0 : (void *)(!(((((0O1U)) <= 
+                                                                                                                                                    ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1u))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned int *)0 : (void *)(!(((((0O1U)) <= 
+                                                                                                                                                                                                                                                                    ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   ))))))0 : (__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!((!((((0O1U)) <= 
+                                                                                        ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0O1U)) <= 
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0 : (__typeof__(0 ? (unsigned long long int *)0 : (void *)(!((!((((0O1U)) <= 
+                                                                              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && !((((0O1U)) <= 
+               ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0O1U)) <= 
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1U))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (long int *)0 : (void *)(!(((((0O1l)) <= 0x7fffffffffffffffL
+                                                                       ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "ctypepp" (aka "int **") cannot be assigned to an entity of type "typepp" (aka "unsigned int **")
+   )))))))0))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1U))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (long int *)0 : (void *)(!(((((0O1l)) <= 0x7fffffffffffffffL
+                                                                                                                                             ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "typepp" (aka "unsigned int **") cannot be assigned to an entity of type "ctypepp" (aka "int **")
+   )))))))0))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1U))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (long int *)0 : (void *)(!(((((0O1l)) <= 0x7fffffffffffffffL
+                                                                                                                                                    ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1U))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (long int *)0 : (void *)(!(((((0O1l)) <= 0x7fffffffffffffffL
+                                                                                                                                                                                                                                                                ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   ))))))0 : (__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!((!((((0O1l)) <= 0x7fffffffffffffffL
+                                                                                        ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0O1l)) <= 
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0 : (__typeof__(0 ? (__typeof__(0 ? (long long int *)0 : (void *)(!((!((((0O1l)) <= 0x7fffffffffffffffL
+                                                                                     ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && !((((0O1l)) <= 
+               ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0O1l)) <= 0x7fffffffffffffffLL
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0 : (__typeof__(0 ? (unsigned long long int *)0 : (void *)(!((!((((0O1l)) <= 0x7fffffffffffffffL
+                                                                              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && !((((0O1l)) <= 
+               ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && !((((0O1l)) <= 0x7fffffffffffffffLL
+               ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0O1l)) <= 
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1l))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (long int *)0 : (void *)(!(((((0O1L)) <= 0x7fffffffffffffffL
+                                                                          ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "ctypepp" (aka "int **") cannot be assigned to an entity of type "typepp" (aka "long **")
+   )))))))0))0))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1l))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (long int *)0 : (void *)(!(((((0O1L)) <= 0x7fffffffffffffffL
+                                                                                                                                                ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "typepp" (aka "long **") cannot be assigned to an entity of type "ctypepp" (aka "int **")
+   )))))))0))0))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1l))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (long int *)0 : (void *)(!(((((0O1L)) <= 0x7fffffffffffffffL
+                                                                                                                                                       ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1l))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (long int *)0 : (void *)(!(((((0O1L)) <= 0x7fffffffffffffffL
+                                                                                                                                                                                                                                                                   ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   ))))))0 : (__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!((!((((0O1L)) <= 0x7fffffffffffffffL
+                                                                                        ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0O1L)) <= 
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0 : (__typeof__(0 ? (__typeof__(0 ? (long long int *)0 : (void *)(!((!((((0O1L)) <= 0x7fffffffffffffffL
+                                                                                     ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && !((((0O1L)) <= 
+               ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0O1L)) <= 0x7fffffffffffffffLL
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0 : (__typeof__(0 ? (unsigned long long int *)0 : (void *)(!((!((((0O1L)) <= 0x7fffffffffffffffL
+                                                                              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && !((((0O1L)) <= 
+               ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && !((((0O1L)) <= 0x7fffffffffffffffLL
+               ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0O1L)) <= 
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1L))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!(((((0O1ul)) <= 
+                                                                          ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "ctypepp" (aka "int **") cannot be assigned to an entity of type "typepp" (aka "long **")
+   )))))))0))0))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1L))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!(((((0O1ul)) <= 
+                                                                                                                                                ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "typepp" (aka "long **") cannot be assigned to an entity of type "ctypepp" (aka "int **")
+   )))))))0))0))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1L))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!(((((0O1ul)) <= 
+                                                                                                                                                       ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1L))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!(((((0O1ul)) <= 
+                                                                                                                                                                                                                                                                            ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   ))))))0 : (__typeof__(0 ? (unsigned long long int *)0 : (void *)(!((!((((0O1ul)) <= 
+                                                                             ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0O1ul)) <= 
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1ul))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!(((((0O1uL)) <= 
+                                                                    ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "ctypepp" (aka "int **") cannot be assigned to an entity of type "typepp" (aka "unsigned long **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1ul))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!(((((0O1uL)) <= 
+                                                                                                                                           ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "typepp" (aka "unsigned long **") cannot be assigned to an entity of type "ctypepp" (aka "int **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1ul))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!(((((0O1uL)) <= 
+                                                                                                                                                  ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1ul))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!(((((0O1uL)) <= 
+                                                                                                                                                                                                                                                                       ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   ))))))0 : (__typeof__(0 ? (unsigned long long int *)0 : (void *)(!((!((((0O1uL)) <= 
+                                                                             ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0O1uL)) <= 
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1uL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!(((((0O1Ul)) <= 
+                                                                    ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "ctypepp" (aka "int **") cannot be assigned to an entity of type "typepp" (aka "unsigned long **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1uL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!(((((0O1Ul)) <= 
+                                                                                                                                           ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "typepp" (aka "unsigned long **") cannot be assigned to an entity of type "ctypepp" (aka "int **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1uL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!(((((0O1Ul)) <= 
+                                                                                                                                                  ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1uL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!(((((0O1Ul)) <= 
+                                                                                                                                                                                                                                                                       ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   ))))))0 : (__typeof__(0 ? (unsigned long long int *)0 : (void *)(!((!((((0O1Ul)) <= 
+                                                                             ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0O1Ul)) <= 
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1Ul))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!(((((0O1UL)) <= 
+                                                                    ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "ctypepp" (aka "int **") cannot be assigned to an entity of type "typepp" (aka "unsigned long **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1Ul))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!(((((0O1UL)) <= 
+                                                                                                                                           ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "typepp" (aka "unsigned long **") cannot be assigned to an entity of type "ctypepp" (aka "int **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1Ul))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!(((((0O1UL)) <= 
+                                                                                                                                                  ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1Ul))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!(((((0O1UL)) <= 
+                                                                                                                                                                                                                                                                       ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   ))))))0 : (__typeof__(0 ? (unsigned long long int *)0 : (void *)(!((!((((0O1UL)) <= 
+                                                                             ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0O1UL)) <= 
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1UL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (long long int *)0 : (void *)(!(((((0O1ll)) <= 0x7fffffffffffffffLL
+                                                                    ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "ctypepp" (aka "int **") cannot be assigned to an entity of type "typepp" (aka "unsigned long **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1UL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (long long int *)0 : (void *)(!(((((0O1ll)) <= 0x7fffffffffffffffLL
+                                                                                                                                           ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "typepp" (aka "unsigned long **") cannot be assigned to an entity of type "ctypepp" (aka "int **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1UL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (long long int *)0 : (void *)(!(((((0O1ll)) <= 0x7fffffffffffffffLL
+                                                                                                                                                  ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1UL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (long long int *)0 : (void *)(!(((((0O1ll)) <= 0x7fffffffffffffffLL
+                                                                                                                                                                                                                                                                   ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   ))))))0 : (__typeof__(0 ? (unsigned long long int *)0 : (void *)(!((!((((0O1ll)) <= 0x7fffffffffffffffLL
+                                                                             ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0O1ll)) <= 
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1ll))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (long long int *)0 : (void *)(!(((((0O1LL)) <= 0x7fffffffffffffffLL
+                                                                    ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "ctypepp" (aka "int **") cannot be assigned to an entity of type "typepp" (aka "long long **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1ll))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (long long int *)0 : (void *)(!(((((0O1LL)) <= 0x7fffffffffffffffLL
+                                                                                                                                           ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "typepp" (aka "long long **") cannot be assigned to an entity of type "ctypepp" (aka "int **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1ll))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (long long int *)0 : (void *)(!(((((0O1LL)) <= 0x7fffffffffffffffLL
+                                                                                                                                                  ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1ll))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (long long int *)0 : (void *)(!(((((0O1LL)) <= 0x7fffffffffffffffLL
+                                                                                                                                                                                                                                                                   ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   ))))))0 : (__typeof__(0 ? (unsigned long long int *)0 : (void *)(!((!((((0O1LL)) <= 0x7fffffffffffffffLL
+                                                                             ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )) && ((((0O1LL)) <= 
+              ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1LL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1uLL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1Ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1ULL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);;;
+                                                                    ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "ctypepp" (aka "int **") cannot be assigned to an entity of type "typepp" (aka "long long **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1LL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1uLL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1Ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1ULL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);;;
+                                                                                                                                           ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "typepp" (aka "long long **") cannot be assigned to an entity of type "ctypepp" (aka "int **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1LL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1uLL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1Ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1ULL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);;;
+                                                                                                                                                  ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1LL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1uLL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1Ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1ULL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);;;
+                                                                                                                                                                                                                                                           ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "ctypepp" (aka "int **") cannot be assigned to an entity of type "typepp" (aka "unsigned long long **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1LL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1uLL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1Ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1ULL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);;;
+                                                                                                                                                                                                                                                                                                                                   ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "typepp" (aka "unsigned long long **") cannot be assigned to an entity of type "ctypepp" (aka "int **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1LL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1uLL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1Ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1ULL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);;;
+                                                                                                                                                                                                                                                                                                                                          ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1LL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1uLL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1Ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1ULL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);;;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                   ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "ctypepp" (aka "int **") cannot be assigned to an entity of type "typepp" (aka "unsigned long long **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1LL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1uLL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1Ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1ULL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);;;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "typepp" (aka "unsigned long long **") cannot be assigned to an entity of type "ctypepp" (aka "int **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1LL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1uLL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1Ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1ULL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);;;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1LL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1uLL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1Ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1ULL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);;;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "ctypepp" (aka "int **") cannot be assigned to an entity of type "typepp" (aka "unsigned long long **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1LL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1uLL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1Ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1ULL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);;;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "typepp" (aka "unsigned long long **") cannot be assigned to an entity of type "ctypepp" (aka "int **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1LL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1uLL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1Ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1ULL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);;;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ^
+
+"./octal-constants-1.c", line 152: error: extra text after expected end of number
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1LL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1uLL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1Ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1ULL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);;;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "ctypepp" (aka "int **") cannot be assigned to an entity of type "typepp" (aka "unsigned long long **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1LL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1uLL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1Ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1ULL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);;;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ^
+
+"./octal-constants-1.c", line 152: warning: a value of type "typepp" (aka "unsigned long long **") cannot be assigned to an entity of type "ctypepp" (aka "int **")
+   )))))))0))0)) type; typedef type **typepp; typedef __typeof__(((0O1LL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1uLL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1Ull))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef unsigned long long int type; typedef type **typepp; typedef __typeof__(((0O1ULL))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0);;;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ^
+
+"./octal-constants-1.c", line 153: error: extra text after expected end of number
+    do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (int *)0 : (void *)(!(((((0o2)) <= 0x7fffffff
+                                                                                         ^
+
+"./octal-constants-1.c", line 153: error: extra text after expected end of number
+   ))))))0 : (__typeof__(0 ? (__typeof__(0 ? (unsigned int *)0 : (void *)(!((!((((0o2)) <= 0x7fffffff
+                                                                                   ^
+
+"./octal-constants-1.c", line 153: error: extra text after expected end of number
+   )) && ((((0o2)) <= 
+              ^
+
+"./octal-constants-1.c", line 153: error: extra text after expected end of number
+   )))))))0 : (__typeof__(0 ? (__typeof__(0 ? (long int *)0 : (void *)(!((!((((0o2)) <= 0x7fffffff
+                                                                                ^
+
+"./octal-constants-1.c", line 153: error: extra text after expected end of number
+   )) && !((((0o2)) <= 
+               ^
+
+"./octal-constants-1.c", line 153: error: extra text after expected end of number
+   )) && ((((0o2)) <= 0x7fffffffffffffffL
+              ^
+
+"./octal-constants-1.c", line 153: error: extra text after expected end of number
+   )))))))0 : (__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!((!((((0o2)) <= 0x7fffffff
+                                                                                         ^
+
+"./octal-constants-1.c", line 153: error: extra text after expected end of number
+   )) && !((((0o2)) <= 
+               ^
+
+"./octal-constants-1.c", line 153: error: extra text after expected end of number
+   )) && !((((0o2)) <= 0x7fffffffffffffffL
+               ^
+
+"./octal-constants-1.c", line 153: error: extra text after expected end of number
+   )) && ((((0o2)) <= 
+              ^
+
+"./octal-constants-1.c", line 153: error: extra text after expected end of number
+   )))))))0 : (__typeof__(0 ? (__typeof__(0 ? (long long int *)0 : (void *)(!((!((((0o2)) <= 0x7fffffff
+                                                                                     ^
+
+"./octal-constants-1.c", line 153: error: extra text after expected end of number
+   )) && !((((0o2)) <= 
+               ^
+
+"./octal-constants-1.c", line 153: error: extra text after expected end of number
+   )) && !((((0o2)) <= 0x7fffffffffffffffL
+               ^
+
+"./octal-constants-1.c", line 153: error: extra text after expected end of number
+   )) && !((((0o2)) <= 
+               ^
+
+"./octal-constants-1.c", line 153: error: extra text after expected end of number
+   )) && ((((0o2)) <= 0x7fffffffffffffffLL
+              ^
+
+"./octal-constants-1.c", line 153: error: extra text after expected end of number
+   )))))))0 : (__typeof__(0 ? (unsigned long long int *)0 : (void *)(!((!((((0o2)) <= 0x7fffffff
+                                                                              ^
+
+"./octal-constants-1.c", line 153: error: extra text after expected end of number
+   )) && !((((0o2)) <= 
+               ^
+
+"./octal-constants-1.c", line 153: error: extra text after expected end of number
+   )) && !((((0o2)) <= 0x7fffffffffffffffL
+               ^
+
+"./octal-constants-1.c", line 153: error: extra text after expected end of number
+   )) && !((((0o2)) <= 
+               ^
+
+"./octal-constants-1.c", line 153: error: extra text after expected end of number
+   )) && !((((0o2)) <= 0x7fffffffffffffffLL
+               ^
+
+"./octal-constants-1.c", line 153: error: extra text after expected end of number
+   )) && ((((0o2)) <= 
+              ^
+
+"./octal-constants-1.c", line 153: error: extra text after expected end of number
+   )))))))0))0))0))0))0))0)) type; typedef type **typepp; typedef __typeof__(((0o2))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned int *)0 : (void *)(!(((((0o2u)) <= 
+                                                                                ^
+
+"./octal-constants-1.c", line 153: error: extra text after expected end of number
+   )))))))0))0))0))0))0))0)) type; typedef type **typepp; typedef __typeof__(((0o2))) ctype; typedef ctype **ctypepp; typepp x = 0; ctypepp y = 0; x = y; y = x; } while (0); do { typedef __typeof__(*((__typeof__(0 ? (__typeof__(0 ? (unsigned int *)0 : (void *)(!(((((0o2u)) <= 
+                                                                                                                                                                                                                                                                            ^
+
+"./octal-constants-1.c", line 153: error: extra text after expected end of number
+   ))))))0 : (__typeof__(0 ? (__typeof__(0 ? (unsigned long int *)0 : (void *)(!((!((((0o2u)) <= 
+                                                                                        ^
+
+"./octal-constants-1.c", line 153: error: extra text after expected end of number
+   )) && ((((0o2u)) <= 
+              ^
+
+"./octal-constants-1.c", line 153: error: extra text after expected end of number
+   )))))))0 : (__typeof__(0 ? (unsigned long long int *)0 : (void *)(!((!((((0o2u)) <= 
+                                                                              ^
+
+"./octal-constants-1.c", line 153: error: extra text after expected end of number
+   )) && !((((0o2u)) <= 
+               ^
+
+"./octal-constants-1.c", line 153: error: extra text after expected end of number
+   )) && ((((0o2u)) <= 
+              ^
+
+Error limit reached.
+200 errors detected in the compilation of "Test_name.c".
+Compilation terminated.

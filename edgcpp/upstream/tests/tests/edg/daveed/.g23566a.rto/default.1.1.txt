@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu=59999 --c++11 --no_defer Test_name.c
+"Test_name.c", line 7: warning: a constexpr function must contain exactly one return statement
+    constexpr bool quack() const noexcept {}
+                                           ^
+
+"Test_name.c", line 12: warning: variable "w" was declared but never referenced
+    moo<int> w;
+             ^
+

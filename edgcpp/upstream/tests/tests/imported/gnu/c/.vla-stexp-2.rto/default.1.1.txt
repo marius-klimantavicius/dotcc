@@ -1,0 +1,14 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c17 --strict_gnu Test_name.c
+"Test_name.c", line 15: warning: declaration is not visible outside of function
+  	struct f { 		/* { dg-warning "will not be visible outside of this definition" } */
+  	       ^
+
+"Test_name.c", line 16: error: variable length array with unspecified bound is not allowed
+  		int a[*]; } v,	/* { dg-warning "variably modified type" } */
+  		      ^
+
+"Test_name.c", line 24: warning: variable-length array field type will be treated as zero-length array field type
+  					int x[n]; 	/* { dg-warning "variably modified type" } */
+  					      ^
+
+1 error detected in the compilation of "Test_name.c".

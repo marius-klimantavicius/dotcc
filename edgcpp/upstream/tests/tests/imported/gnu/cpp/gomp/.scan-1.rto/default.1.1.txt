@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 6: warning: unrecognized #pragma
+  #pragma omp declare reduction (+ : S : omp_out.s += omp_in.s)
+          ^
+
+"Test_name.c", line 13: warning: unrecognized #pragma
+    #pragma omp simd reduction (+: s)
+            ^
+
+"Test_name.c", line 21: warning: unrecognized #pragma
+    #pragma omp simd reduction (inscan, +: s)	// { dg-error "use of deleted function" }
+            ^
+
+"Test_name.c", line 25: warning: unrecognized #pragma
+        #pragma omp scan inclusive (s)		// { dg-error "" }
+                ^
+

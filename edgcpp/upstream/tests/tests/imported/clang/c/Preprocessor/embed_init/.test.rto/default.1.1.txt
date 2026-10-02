@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 28: warning: use of a const variable in a constant expression is nonstandard in C
+  static_assert(meow == 'b');
+                ^
+
+"Test_name.c", line 29: error: this operator is not allowed in an integral constant expression
+  static_assert(kit.purr == 'b');
+                   ^
+
+"Test_name.c", line 30: error: this operator is not allowed in an integral constant expression
+  static_assert(kit_kit.here == 'j');
+                       ^
+
+"Test_name.c", line 31: error: this operator is not allowed in an integral constant expression
+  static_assert(kit_kit.kit.purr == 'k');
+                       ^
+
+"Test_name.c", line 31: error: this operator is not allowed in an integral constant expression
+  static_assert(kit_kit.kit.purr == 'k');
+                           ^
+
+4 errors detected in the compilation of "Test_name.c".

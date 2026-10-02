@@ -1,0 +1,246 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 29: error: more than one instance of overloaded function "g" matches the argument list:
+            function "g(int, float, int)" (declared at line 16)
+            function "g(int, float, float)" (declared at line 18)
+            argument types are: (int, float, double)
+    double* dp2 = g(0, fv, 1.5); // expected-error {{call to 'g' is ambiguous}}
+                  ^
+"Test_name.c", line 20: note: number of parameters of function "g()" does not match the call
+  void g();
+       ^
+
+"Test_name.c", line 61: warning: conversion from a string literal to "char *" is deprecated
+    int* ip1 = k("foo");
+                 ^
+
+"Test_name.c", line 68: warning: conversion from a string literal to "char *" is deprecated
+    int* ip2 = k(("foo"));
+                 ^
+
+"Test_name.c", line 81: warning: conversion from a string literal to pointer-to-character (non-const) is deprecated
+    int* ip1 = l(L"foo");
+                 ^
+
+"Test_name.c", line 104: warning: conversion from a string literal to "char *" is deprecated
+    int* ip2 = n("foo");
+                 ^
+
+"Test_name.c", line 165: error: more than one instance of overloaded function "multiparm" matches the argument list:
+            function "multiparm(long, int, long)" (declared at line 154)
+            function "multiparm(int, int, int)" (declared at line 155)
+            function "multiparm(int, int, short)" (declared at line 156)
+            argument types are: (short, short, long)
+    multiparm(sv, sv, lv); // expected-error {{call to 'multiparm' is ambiguous}}
+    ^
+
+"Test_name.c", line 211: error: more than one instance of overloaded function "quals_rank3" matches the argument list:
+            function "quals_rank3(const int *const *const volatile *)" (declared at line 194)
+            function "quals_rank3(const int *const volatile *const *)" (declared at line 195)
+            argument types are: (int ***)
+    quals_rank3(ppp); // expected-error {{call to 'quals_rank3' is ambiguous}}
+    ^
+"Test_name.c", line 198: note: function "quals_rank3(volatile int *)" does not match because argument #1 does not match parameter
+  void quals_rank3(int volatile *); // expected-note{{candidate function}}
+       ^
+"Test_name.c", line 197: note: function "quals_rank3(const int *)" does not match because argument #1 does not match parameter
+  void quals_rank3(int const *); // expected-note{{candidate function}}
+       ^
+
+"Test_name.c", line 213: error: more than one instance of overloaded function "quals_rank3" matches the argument list:
+            function "quals_rank3(const int *)" (declared at line 197)
+            function "quals_rank3(volatile int *)" (declared at line 198)
+            argument types are: (int *)
+    quals_rank3(p); // expected-error {{call to 'quals_rank3' is ambiguous}}
+    ^
+"Test_name.c", line 195: note: function "quals_rank3(const int *const volatile *const *)" does not match because argument #1 does not match parameter
+  void quals_rank3(int const * const volatile * const * p); // expected-note{{candidate function}}
+       ^
+"Test_name.c", line 194: note: function "quals_rank3(const int *const *const volatile *)" does not match because argument #1 does not match parameter
+  void quals_rank3(int const * const * const volatile * p); // expected-note{{candidate function}}
+       ^
+
+"Test_name.c", line 250: error: argument of type "A *" is incompatible with parameter of type "C *"
+    derived4(a); // expected-error{{no matching function for call to 'derived4}}
+             ^
+
+"Test_name.c", line 267: error: a reference of type "C &" (not const-qualified) cannot be initialized with a value of type "A"
+    derived5(a); // expected-error{{no matching function for call to 'derived5}}
+             ^
+
+"Test_name.c", line 292: error: more than one instance of overloaded function "cvqual_subsume" matches the argument list:
+            function "cvqual_subsume(X &)" (declared at line 285)
+            function "cvqual_subsume(const Y &)" (declared at line 286)
+            argument types are: (Z)
+    cvqual_subsume(z); // expected-error{{call to 'cvqual_subsume' is ambiguous}}
+    ^
+
+"Test_name.c", line 293: error: more than one instance of overloaded function "cvqual_subsume2" matches the argument list:
+            function "cvqual_subsume2(X &)" (declared at line 288)
+            function "cvqual_subsume2(volatile Y &)" (declared at line 289)
+            argument types are: (Z)
+    cvqual_subsume2(z); // expected-error{{call to 'cvqual_subsume2' is ambiguous}}
+    ^
+
+"Test_name.c", line 357: error: no instance of overloaded function "test1::foo" matches the argument list
+            argument types are: (int, const char [6])
+    foo(4, "hello"); //expected-error {{no matching function for call to 'foo'}}
+    ^
+"Test_name.c", line 352: note: number of parameters of function "test1::foo(unsigned int)" does not match the call
+  void foo(unsigned n = 10);      // expected-note {{candidate function not viable: allows at most single argument 'n', but 2 arguments were provided}}
+       ^
+"Test_name.c", line 351: note: number of parameters of function "test1::foo(int)" does not match the call
+  void foo(int n);                // expected-note {{candidate function not viable: requires single argument 'n', but 2 arguments were provided}}
+       ^
+"Test_name.c", line 348: note: number of parameters of function "test1::foo(int, const char *, int, int)" does not match the call
+  void foo(int n, const char *s, int t, int u = 0); // expected-note {{candidate function not viable: requires at least 3 arguments, but 2 were provided}}
+       ^
+"Test_name.c", line 347: note: number of parameters of function "test1::foo(int, const char *, int, ...)" does not match the call
+  void foo(int n, const char *s, int t, ...);       // expected-note {{candidate function not viable: requires at least 3 arguments, but 2 were provided}}
+       ^
+"Test_name.c", line 346: note: number of parameters of function "test1::foo(int, const char *, int)" does not match the call
+  void foo(int n, const char *s, int t);            // expected-note {{candidate function not viable: requires 3 arguments, but 2 were provided}}
+       ^
+"Test_name.c", line 345: note: function "test1::foo(int, char)" does not match because argument #2 does not match parameter
+  void foo(int n, char N);                          // expected-note {{candidate function not viable: no known conversion from 'const char[6]' to 'char' for 2nd argument}}
+       ^
+"Test_name.c", line 344: note: function template "test1::foo(T, unsigned int)" does not match because argument #2 does not match parameter
+  void foo(T t, unsigned N);                        // expected-note {{candidate function template not viable: no known conversion from 'const char[6]' to 'unsigned int' for 2nd argument}}
+       ^
+
+"Test_name.c", line 358: error: too few arguments in function call
+    bar();           //expected-error {{no matching function for call to 'bar'}}
+        ^
+
+"Test_name.c", line 359: error: too many arguments in function call
+    baz(3, 4, 5);    // expected-error {{no matching function for call to 'baz'}}
+              ^
+
+"Test_name.c", line 389: error: no instance of overloaded function "IncompleteConversion::completeFunction" matches the argument list
+            argument types are: (IncompleteConversion::Incomplete *)
+      completeFunction(P); // expected-error {{no matching function for call to 'completeFunction'}}
+      ^
+"Test_name.c", line 386: note: function "IncompleteConversion::completeFunction(IncompleteConversion::Complete &)" does not match because argument #1 does not match parameter
+    void completeFunction(Complete &); // expected-note 2 {{cannot convert argument of incomplete type}}
+         ^
+"Test_name.c", line 385: note: function "IncompleteConversion::completeFunction(IncompleteConversion::Complete *)" does not match because argument #1 does not match parameter
+    void completeFunction(Complete *); // expected-note 2 {{cannot convert argument of incomplete type}}
+         ^
+
+"Test_name.c", line 390: error: no instance of overloaded function "IncompleteConversion::completeFunction" matches the argument list
+            argument types are: (IncompleteConversion::Incomplete)
+      completeFunction(*P); // expected-error {{no matching function for call to 'completeFunction'}}
+      ^
+"Test_name.c", line 386: note: function "IncompleteConversion::completeFunction(IncompleteConversion::Complete &)" does not match because argument #1 does not match parameter
+    void completeFunction(Complete &); // expected-note 2 {{cannot convert argument of incomplete type}}
+         ^
+"Test_name.c", line 385: note: function "IncompleteConversion::completeFunction(IncompleteConversion::Complete *)" does not match because argument #1 does not match parameter
+    void completeFunction(Complete *); // expected-note 2 {{cannot convert argument of incomplete type}}
+         ^
+
+"Test_name.c", line 397: error: no suitable conversion function from "IncompleteConversion::Incomplete" to "IncompleteConversion::Incomplete *" exists
+      incompletePointerFunction(reference); // expected-error {{no matching function for call to 'incompletePointerFunction'}}
+                                ^
+
+"Test_name.c", line 398: error: a reference of type "IncompleteConversion::Incomplete &" (not const-qualified) cannot be initialized with a value of type "IncompleteConversion::Incomplete *"
+      incompleteReferenceFunction(pointer); // expected-error {{no matching function for call to 'incompleteReferenceFunction'}}
+                                  ^
+
+"Test_name.c", line 423: error: no instance of overloaded function "test4::B::foo" matches the argument list
+            argument types are: (test4::A *)
+        foo(a); // expected-error {{no matching function for call}}
+        ^
+"Test_name.c", line 420: note: function "test4::B::foo(long *)" does not match because argument #1 does not match parameter
+      static void foo(long*); // expected-note {{not viable}}
+                  ^
+"Test_name.c", line 419: note: function "test4::B::foo(int *)" does not match because argument #1 does not match parameter
+      static void foo(int*); // expected-note {{not viable}}
+                  ^
+"Test_name.c", line 418: note: number of parameters of function "test4::B::foo()" does not match the call
+      static void foo(); // expected-note {{not viable}}
+                  ^
+
+"Test_name.c", line 455: error: a reference of type "bool &" (not const-qualified) cannot be initialized with a value of type "PR6483::X0"
+      f1(x0); // expected-error{{no matching function for call}}
+         ^
+
+"Test_name.c", line 457: error: a reference of type "bool &" (not const-qualified) cannot be initialized with a value of type "PR6483::X1"
+      f1(x1); // expected-error{{no matching function for call}}
+         ^
+
+"Test_name.c", line 472: error: more than one constructor applies to convert from "int" to "PR6078::A":
+            function "PR6078::A::A(short)" (declared at line 463)
+            function "PR6078::A::A(long)" (declared at line 464)
+      S()(0); // expected-error{{conversion from 'int' to 'A' is ambiguous}}
+          ^
+
+"Test_name.c", line 562: error: more than one instance of overloaded function "PR9507::f" matches the argument list:
+            function "PR9507::f(int *const &)" (declared at line 557)
+            function "PR9507::f(const int (&)[1])" (declared at line 558)
+            argument types are: (int [1])
+      f(n); // expected-error{{call to 'f' is ambiguous}}
+      ^
+
+"Test_name.c", line 563: warning: missing return statement at end of non-void function "PR9507::main"
+    }
+    ^
+
+"Test_name.c", line 579: warning: "int f(const IncompleteArg::S<T> &)" declares a non-template function -- add <> to refer to a template instance
+      friend int f(const S&);
+                 ^
+
+"Test_name.c", line 585: warning: "bool operator==(const IncompleteArg::Op<T> &, const IncompleteArg::Op<T> &)" declares a non-template function -- add <> to refer to a template instance
+      friend bool operator==(const Op &, const Op &);
+                  ^
+
+"Test_name.c", line 606: error: argument of type "const int (*)[10]" is incompatible with parameter of type "int (*)[10]"
+    void g() { fun((const int(*)[10])0); } // expected-error{{no matching function for call to 'fun'}}
+                   ^
+
+"Test_name.c", line 624: error: call of an object of a class type without appropriate operator() or conversion functions to pointer-to-function type
+    callable();  // expected-error{{no matching function for call}}
+    ^
+
+"Test_name.c", line 629: warning: rvalue references are a C++11 feature
+    void f(void (&&)()) = delete; // expected-note 2{{candidate}}
+                 ^
+
+"Test_name.c", line 629: warning: deleted functions are a C++11 feature
+    void f(void (&&)()) = delete; // expected-note 2{{candidate}}
+                        ^
+
+"Test_name.c", line 648: error: function "PR20218::f(void (&&)())" (declared at line 629) cannot be referenced -- it is a deleted function
+      f(y); // expected-error {{ambiguous}}
+      ^
+
+"Test_name.c", line 649: error: function "PR20218::g(void (&&)())" (declared at line 634) cannot be referenced -- it is a deleted function
+      g(y); // expected-error {{ambiguous}}
+      ^
+
+"Test_name.c", line 656: error: more than one instance of overloaded function "StringLiteralToCharAmbiguity::f" matches the argument list:
+            function "StringLiteralToCharAmbiguity::f(char *, int)" (declared at line 654)
+            function "StringLiteralToCharAmbiguity::f(const char *, unsigned int)" (declared at line 655)
+            argument types are: (const char [4], int)
+    void g() { f("foo", 0); }
+               ^
+
+"Test_name.c", line 669: error: argument of type "int" is incompatible with parameter of type "void *"
+    void g() { f(1, 2); } // expected-error {{no matching function}}
+                 ^
+
+"Test_name.c", line 669: error: no suitable constructor exists to convert from "int" to "ProduceNotesAfterSFINAEFailure::A"
+    void g() { f(1, 2); } // expected-error {{no matching function}}
+                    ^
+
+"Test_name.c", line 688: warning: variable "pmem" is used before its value is set
+      f(pmem);
+        ^
+
+"Test_name.c", line 689: warning: variable "pmf" is used before its value is set
+      f(pmf);
+        ^
+
+"Test_name.c", line 375: warning: function "test2::qrgb666::operator==" was referenced but not defined
+      inline bool operator==(const qrgb666 &v) const;
+                  ^
+
+27 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 5: warning: attribute namespace "gsl" is unrecognized
+  struct [[gsl::Owner(int)]] MyIntOwner {
+           ^
+
+"Test_name.c", line 10: warning: attribute namespace "gsl" is unrecognized
+  struct [[gsl::Pointer(int)]] MyIntPointer {
+           ^
+
+"Test_name.c", line 19: warning: returning reference to local variable
+    return i; // expected-warning {{reference to stack memory associated with local variable 'i' returned}}
+           ^
+
+"Test_name.c", line 27: warning: parameter "p" was set but never used
+  void h(MyIntPointer p) {
+                      ^
+

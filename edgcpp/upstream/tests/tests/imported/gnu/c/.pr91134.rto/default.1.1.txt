@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 15: error: expression must have pointer-to-struct-or-union type but it has type "struct X **"
+    int i = *pointerpointer->member;	/* { dg-error "'pointerpointer' is a pointer to pointer; did you mean to dereference it before applying '->' to it\\\?" } */
+             ^
+
+"Test_name.c", line 21: error: expression must have struct or union type but it has type "struct X *"
+    int j = pointer.member;		/* { dg-error "'pointer' is a pointer; did you mean to use '->'\\\?" } */
+            ^
+
+"Test_name.c", line 27: error: expression must have pointer-to-struct-or-union type but it has type "struct X **"
+    int k = yp->x->member;		/* { dg-error "'yp->x' is a pointer to pointer; did you mean to dereference it before applying '->' to it\\\?" } */
+            ^
+
+3 errors detected in the compilation of "Test_name.c".

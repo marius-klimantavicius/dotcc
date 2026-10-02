@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 7: warning: variable "i" was set but never used
+    int* i = __null;
+         ^
+
+"Test_name.c", line 9: warning: variable "i2" was declared but never referenced
+    int i2 = __null;
+        ^
+
+"Test_name.c", line 12: warning: variable "a" was declared but never referenced
+    int a[sizeof(typeof(__null)) == sizeof(void*)? 1 : -1];
+        ^
+
+"Test_name.c", line 15: warning: variable "b" was declared but never referenced
+    int b[__null ? -1 : 1];
+        ^
+
+"Test_name.c", line 21: error: expression must have arithmetic or unscoped enum type
+    (void)(0 ? __null : A()); // expected-error {{non-pointer operand type 'A' incompatible with NULL}}
+                        ^
+
+"Test_name.c", line 22: error: operand types are incompatible ("A" and "int")
+    (void)(0 ? A(): __null); // expected-error {{non-pointer operand type 'A' incompatible with NULL}}
+                  ^
+
+2 errors detected in the compilation of "Test_name.c".

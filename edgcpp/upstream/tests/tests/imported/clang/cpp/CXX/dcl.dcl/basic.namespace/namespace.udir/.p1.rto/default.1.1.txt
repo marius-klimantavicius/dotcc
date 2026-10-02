@@ -1,0 +1,24 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 9: error: expected an identifier
+      using namespace A; // expected-error {{'using namespace' is not allowed in classes}}
+            ^
+
+"Test_name.c", line 37: error: more than one instance of overloaded function "foo" matches the argument list:
+            function "test1::C::foo()" (declared at line 26)
+            function "test1::A::B::foo()" (declared at line 21)
+      return foo(); // expected-error {{call to 'foo' is ambiguous}}
+             ^
+
+"Test_name.c", line 66: error: more than one instance of overloaded function "test2::test::foo" matches the argument list:
+            function "test2::C::foo()" (declared at line 50)
+            function "test2::A::B::foo()" (declared at line 45)
+        return foo(); // expected-error {{call to 'foo' is ambiguous}}
+               ^
+
+"Test_name.c", line 128: error: more than one instance of overloaded function "foo" matches the argument list:
+            function "test4::foo()" (declared at line 113)
+            function "test4::A::B::foo()" (declared at line 105)
+      return foo(); // expected-error {{call to 'foo' is ambiguous}}
+             ^
+
+4 errors detected in the compilation of "Test_name.c".

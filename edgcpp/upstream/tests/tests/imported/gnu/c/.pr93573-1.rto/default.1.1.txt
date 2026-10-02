@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c17 --strict_gnu Test_name.c
+"Test_name.c", line 12: error: expression must have integral type
+    union C { int d[100.0]; char *e; };	/* { dg-error "has non-integer type" } */
+                    ^
+
+"Test_name.c", line 13: internal error: assertion failed at: "overload.c", line <suppressed> in prep_transparent_union_conversion_operand
+
+    bar ((union C) &a);
+                   ^
+
+1 error and 1 catastrophic error detected in the compilation of "Test_name.c".
+Compilation aborted.
+Aborted
+eccp: front end returned an exit status of 134

@@ -1,0 +1,36 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 26: error: attribute "weakref" does not apply to a variable or function with external linkage
+    static int a __attribute__((weakref ("v2"))); // expected-error {{declaration of 'a' must be in a global context}}
+                                ^
+
+"Test_name.c", line 27: error: attribute "weakref" does not apply to a variable or function with external linkage
+    static int b() __attribute__((weakref ("f3"))); // expected-error {{declaration of 'b' must be in a global context}}
+                                  ^
+
+"Test_name.c", line 29: error: attribute "weakref" does not apply to a variable or function with external linkage
+  int a7() __attribute__((weakref ("f1"))); // expected-error {{weakref declaration must have internal linkage}}
+                          ^
+
+"Test_name.c", line 30: error: attribute "weakref" does not apply to a variable or function with external linkage
+  int a8 __attribute__((weakref ("v1"))); // expected-error {{weakref declaration must have internal linkage}}
+                        ^
+
+"Test_name.c", line 33: error: attribute "weakref" does not apply to a variable or function with external linkage
+  int a9 __attribute__((weakref));  // expected-error {{weakref declaration of 'a9' must also have an alias attribute}}
+                        ^
+
+"Test_name.c", line 38: error: expected a string literal
+  static int v __attribute__((weakref(a1), alias("foo"))); // expected-error {{expected string literal as argument of 'weakref' attribute}}
+                                      ^
+
+"Test_name.c", line 40: error: attribute "weakref" does not apply to a variable or function with external linkage
+  __attribute__((weakref ("foo"))) auto a11 = 1; // expected-error {{weakref declaration must have internal linkage}}
+                 ^
+
+Internal error: assertion failed at: "attribute.c", line <suppressed> in process_alias_fixup_list
+
+
+7 errors and 1 catastrophic error detected in the compilation of "Test_name.c".
+Compilation aborted.
+Aborted
+eccp: front end returned an exit status of 134

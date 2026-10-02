@@ -1,0 +1,182 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 13: error: template constraint not satisfied
+  using a1 = A<int>; // expected-error {{constraints not satisfied for alias template 'A' [with T = int]}}
+                  ^
+"Test_name.c", line 10: note: type constraint failed for "int"
+  template<C1 T> // expected-note {{because 'int' does not satisfy 'C1'}}
+           ^
+"Test_name.c", line 6: note: atomic constraint evaluates to false
+  concept C1 = sizeof(T) == 1;
+                         ^
+
+"Test_name.c", line 26: error: template constraint not satisfied
+  using b2 = B<char, char>; // expected-error {{constraints not satisfied for alias template 'B' [with T1 = char, T2 = char]}}
+                         ^
+"Test_name.c", line 20: note: type constraint failed for "char"
+  template<C1 T1, C2 T2>
+                  ^
+"Test_name.c", line 17: note: atomic constraint evaluates to false
+  concept C2 = sizeof(T) == 2;
+                         ^
+
+"Test_name.c", line 27: error: template constraint not satisfied
+  using b3 = B<short, short>; // expected-error {{constraints not satisfied for alias template 'B' [with T1 = short, T2 = short]}}
+                           ^
+"Test_name.c", line 20: note: type constraint failed for "short"
+  template<C1 T1, C2 T2>
+           ^
+"Test_name.c", line 6: note: atomic constraint evaluates to false
+  concept C1 = sizeof(T) == 1;
+                         ^
+
+"Test_name.c", line 28: error: template constraint not satisfied
+  using b4 = B<short, char>; // expected-error {{constraints not satisfied for alias template 'B' [with T1 = short, T2 = char]}}
+                          ^
+"Test_name.c", line 20: note: type constraint failed for "short"
+  template<C1 T1, C2 T2>
+           ^
+"Test_name.c", line 6: note: atomic constraint evaluates to false
+  concept C1 = sizeof(T) == 1;
+                         ^
+
+"Test_name.c", line 43: error: template constraint not satisfied
+  using c2 = C<char[12], char[11], char[10]>;
+                                           ^
+"Test_name.c", line 37: note: type constraint failed for "char [11]"
+  template<C3 T1, C3 T2, C3 T3>
+                  ^
+"Test_name.c", line 31: note: atomic constraint evaluates to false
+  concept C3 = (sizeof(T) + ...) == 12;
+                                 ^
+
+"Test_name.c", line 45: error: template constraint not satisfied
+  using c3 = C<char[12], char[12], char[10]>;
+                                           ^
+"Test_name.c", line 37: note: type constraint failed for "char [10]"
+  template<C3 T1, C3 T2, C3 T3>
+                         ^
+"Test_name.c", line 31: note: atomic constraint evaluates to false
+  concept C3 = (sizeof(T) + ...) == 12;
+                                 ^
+
+"Test_name.c", line 56: error: template constraint not satisfied
+  using d2 = D<int, int, int>;
+                            ^
+"Test_name.c", line 48: note: type constraint failed for "int"
+  template<C3... Ts>
+           ^
+"Test_name.c", line 31: note: atomic constraint evaluates to false
+  concept C3 = (sizeof(T) + ...) == 12;
+                                 ^
+
+"Test_name.c", line 58: error: template constraint not satisfied
+  using d3 = D<short, short, short, short, short, short>;
+                                                       ^
+"Test_name.c", line 48: note: type constraint failed for "short"
+  template<C3... Ts>
+           ^
+"Test_name.c", line 31: note: atomic constraint evaluates to false
+  concept C3 = (sizeof(T) + ...) == 12;
+                                 ^
+
+"Test_name.c", line 71: error: template constraint not satisfied
+  using e2 = E<char, int>; // expected-error {{constraints not satisfied for alias template 'E' [with Ts = <char, int>]}}
+                        ^
+"Test_name.c", line 65: note: type constraint failed for "char"
+  template<C4... Ts>
+           ^
+"Test_name.c", line 62: note: atomic constraint evaluates to false
+  concept C4 = sizeof(T) == 4;
+                         ^
+
+"Test_name.c", line 72: error: template constraint not satisfied
+  using e3 = E<char, char>; // expected-error {{constraints not satisfied for alias template 'E' [with Ts = <char, char>]}}
+                         ^
+"Test_name.c", line 65: note: type constraint failed for "char"
+  template<C4... Ts>
+           ^
+"Test_name.c", line 62: note: atomic constraint evaluates to false
+  concept C4 = sizeof(T) == 4;
+                         ^
+
+"Test_name.c", line 88: error: template constraint not satisfied
+  using f2 = F<long>; // expected-error {{constraints not satisfied for alias template 'F' [with T = long]}}
+                   ^
+"Test_name.c", line 84: note: type constraint failed for "long"
+  template<Same<int> T> // expected-note {{because 'Same<long, int>' evaluated to false}}
+           ^
+"Test_name.c", line 82: note: atomic constraint evaluates to false
+  concept Same = is_same_v<T, U>; // expected-note {{because 'is_same_v<long, int>' evaluated to false}}
+                 ^
+
+"Test_name.c", line 110: error: template constraint not satisfied
+  using g2 = G<char, int>; // expected-error{{constraints not satisfied for alias template 'G' [with T = char, U = int]}}
+                        ^
+"Test_name.c", line 104: note: type constraint failed for "char"
+  template<OneOf<char[1], char[2]> T, OneOf<int, long, char> U>
+           ^
+"Test_name.c", line 91: note: atomic constraint evaluates to false
+  concept OneOf = (is_same_v<T, Ts> || ...); // #OneOf
+                                    ^
+
+"Test_name.c", line 111: error: template constraint not satisfied
+  using g3 = G<char[1], short>; // expected-error{{constraints not satisfied for alias template 'G' [with T = char[1], U = short]}}
+                             ^
+"Test_name.c", line 104: note: type constraint failed for "short"
+  template<OneOf<char[1], char[2]> T, OneOf<int, long, char> U>
+                                      ^
+"Test_name.c", line 91: note: atomic constraint evaluates to false
+  concept OneOf = (is_same_v<T, Ts> || ...); // #OneOf
+                                    ^
+
+"Test_name.c", line 112: error: template constraint not satisfied
+  using g4 = G<char, short>; // expected-error{{constraints not satisfied for alias template 'G' [with T = char, U = short]}}
+                          ^
+"Test_name.c", line 104: note: type constraint failed for "char"
+  template<OneOf<char[1], char[2]> T, OneOf<int, long, char> U>
+           ^
+"Test_name.c", line 91: note: atomic constraint evaluates to false
+  concept OneOf = (is_same_v<T, Ts> || ...); // #OneOf
+                                    ^
+
+"Test_name.c", line 119: error: template constraint not satisfied
+  using h1 = H<char[1], int>;
+                           ^
+"Test_name.c", line 114: note: type constraint failed for "int"
+  template<OneOf<char[1], char[2]>... Ts>
+           ^
+"Test_name.c", line 91: note: atomic constraint evaluates to false
+  concept OneOf = (is_same_v<T, Ts> || ...); // #OneOf
+                                    ^
+
+"Test_name.c", line 121: error: template constraint not satisfied
+  using h2 = H<int, int>;
+                       ^
+"Test_name.c", line 114: note: type constraint failed for "int"
+  template<OneOf<char[1], char[2]>... Ts>
+           ^
+"Test_name.c", line 91: note: atomic constraint evaluates to false
+  concept OneOf = (is_same_v<T, Ts> || ...); // #OneOf
+                                    ^
+
+"Test_name.c", line 132: error: template constraint not satisfied
+  using i3 = I<nullptr>;
+               ^
+"Test_name.c", line 125: note: type constraint failed for "std::nullptr_t"
+  template<OneOf<char, int> auto x>
+           ^
+"Test_name.c", line 91: note: atomic constraint evaluates to false
+  concept OneOf = (is_same_v<T, Ts> || ...); // #OneOf
+                                    ^
+
+"Test_name.c", line 140: error: template constraint not satisfied
+  using j2 = J<'a', nullptr>;
+                    ^
+"Test_name.c", line 135: note: type constraint failed for "std::nullptr_t"
+  template<OneOf<char, int> auto... x>
+           ^
+"Test_name.c", line 91: note: atomic constraint evaluates to false
+  concept OneOf = (is_same_v<T, Ts> || ...); // #OneOf
+                                    ^
+
+18 errors detected in the compilation of "Test_name.c".

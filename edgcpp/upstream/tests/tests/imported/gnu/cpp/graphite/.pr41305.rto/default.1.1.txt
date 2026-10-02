@@ -1,0 +1,35 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 231: warning: missing return statement at end of non-void function "operator*(vector_expression<E1>, T2) [with E1=vector<double, unbounded_array<double, allocator<double>>>, T2=double]"
+  }
+  ^
+          detected during instantiation of "vector_binary_scalar2_traits<E1, T2, scalar_multiplies<E1::value_type, T2>>::result_type operator*(vector_expression<E1>, T2) [with E1=vector<double, unbounded_array<double, allocator<double>>>, T2=double]" at line 329
+
+"Test_name.c", line 244: warning: variable "i" is used before its value is set
+    for (size_type i; i <size; ++i)
+                      ^
+          detected during:
+            instantiation of "void indexing_vector_assign<F,V,E>(V &, vector_expression<E>) [with F=scalar_assign, V=vector<double, unbounded_array<double, allocator<double>>>, E=vector_binary<vector<double, unbounded_array<double, allocator<double>>>, vector_binary_scalar2<vector<double, unbounded_array<double, allocator<double>>>, double, scalar_multiplies<double, double>>, scalar_plus<double, double>>]" at line 251
+            instantiation of "void vector_assign<F,V,E>(V &, const vector_expression<E> &, dense_proxy_tag) [with F=scalar_assign, V=vector<double, unbounded_array<double, allocator<double>>>, E=vector_binary<vector<double, unbounded_array<double, allocator<double>>>, vector_binary_scalar2<vector<double, unbounded_array<double, allocator<double>>>, double, scalar_multiplies<double, double>>, scalar_plus<double, double>>]" at line 258
+            instantiation of "void vector_assign<F,V,E>(V &, const vector_expression<E> &) [with F=scalar_assign, V=vector<double, unbounded_array<double, allocator<double>>>, E=vector_binary<vector<double, unbounded_array<double, allocator<double>>>, vector_binary_scalar2<vector<double, unbounded_array<double, allocator<double>>>, double, scalar_multiplies<double, double>>, scalar_plus<double, double>>]" at line 279
+            instantiation of "vector<T, A>::vector(const vector_expression<AE> &) [with T=double, A=unbounded_array<double, allocator<double>>, AE=vector_binary<vector<double, unbounded_array<double, allocator<double>>>, vector_binary_scalar2<vector<double, unbounded_array<double, allocator<double>>>, double, scalar_multiplies<double, double>>, scalar_plus<double, double>>]" at line 298
+            instantiation of "vector<T, A> vector<T, A>::operator+=(const vector_expression<AE> &) [with T=double, A=unbounded_array<double, allocator<double>>, AE=vector_binary_scalar2<vector<double, unbounded_array<double, allocator<double>>>, double, scalar_multiplies<double, double>>]" at line 329
+
+"Test_name.c", line 244: warning: variable "i" is used before its value is set
+    for (size_type i; i <size; ++i)
+                      ^
+          detected during:
+            instantiation of "void indexing_vector_assign<F,V,E>(V &, vector_expression<E>) [with F=scalar_assign, V=vector<double, unbounded_array<double, allocator<double>>>, E=vector_binary<vector<double, unbounded_array<double, allocator<double>>>, vector<double, unbounded_array<double, allocator<double>>>, scalar_plus<double, double>>]" at line 251
+            instantiation of "void vector_assign<F,V,E>(V &, const vector_expression<E> &, dense_proxy_tag) [with F=scalar_assign, V=vector<double, unbounded_array<double, allocator<double>>>, E=vector_binary<vector<double, unbounded_array<double, allocator<double>>>, vector<double, unbounded_array<double, allocator<double>>>, scalar_plus<double, double>>]" at line 258
+            instantiation of "void vector_assign<F,V,E>(V &, const vector_expression<E> &) [with F=scalar_assign, V=vector<double, unbounded_array<double, allocator<double>>>, E=vector_binary<vector<double, unbounded_array<double, allocator<double>>>, vector<double, unbounded_array<double, allocator<double>>>, scalar_plus<double, double>>]" at line 279
+            instantiation of "vector<T, A>::vector(const vector_expression<AE> &) [with T=double, A=unbounded_array<double, allocator<double>>, AE=vector_binary<vector<double, unbounded_array<double, allocator<double>>>, vector<double, unbounded_array<double, allocator<double>>>, scalar_plus<double, double>>]" at line 298
+            instantiation of "vector<T, A> vector<T, A>::operator+=(const vector_expression<AE> &) [with T=double, A=unbounded_array<double, allocator<double>>, AE=vector<double, unbounded_array<double, allocator<double>>>]" at line 332
+
+"Test_name.c", line 244: warning: variable "i" is used before its value is set
+    for (size_type i; i <size; ++i)
+                      ^
+          detected during:
+            instantiation of "void indexing_vector_assign<F,V,E>(V &, vector_expression<E>) [with F=scalar_assign, V=vector<double, unbounded_array<double, allocator<double>>>, E=vector_binary<vector<double, unbounded_array<double, allocator<double>>>, scalar_vector<int>, scalar_plus<double, int>>]" at line 251
+            instantiation of "void vector_assign<F,V,E>(V &, const vector_expression<E> &, dense_proxy_tag) [with F=scalar_assign, V=vector<double, unbounded_array<double, allocator<double>>>, E=vector_binary<vector<double, unbounded_array<double, allocator<double>>>, scalar_vector<int>, scalar_plus<double, int>>]" at line 258
+            instantiation of "void vector_assign<F,V,E>(V &, const vector_expression<E> &) [with F=scalar_assign, V=vector<double, unbounded_array<double, allocator<double>>>, E=vector_binary<vector<double, unbounded_array<double, allocator<double>>>, scalar_vector<int>, scalar_plus<double, int>>]" at line 279
+            instantiation of "vector<T, A>::vector(const vector_expression<AE> &) [with T=double, A=unbounded_array<double, allocator<double>>, AE=vector_binary<vector<double, unbounded_array<double, allocator<double>>>, scalar_vector<int>, scalar_plus<double, int>>]" at line 333
+

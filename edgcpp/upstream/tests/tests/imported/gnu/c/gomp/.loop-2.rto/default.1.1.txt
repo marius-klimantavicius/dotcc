@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 7: warning: unrecognized #pragma
+    #pragma omp for collapse(2)	/* { dg-error "the same loop iteration variables 'i' used in multiple associated loops" } */
+            ^
+
+"Test_name.c", line 11: warning: unrecognized #pragma
+    #pragma omp taskloop collapse(2)	/* { dg-error "the same loop iteration variables 'j' used in multiple associated loops" } */
+            ^
+

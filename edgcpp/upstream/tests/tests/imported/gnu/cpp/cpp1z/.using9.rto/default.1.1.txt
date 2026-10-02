@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 44: error: function "A1::comma" (declared at line 20) is inaccessible
+      comma(); // { dg-error "private" }
+      ^
+
+"Test_name.c", line 45: error: function "A1::separate" (declared at line 19) is inaccessible
+      separate(); // { dg-error "private" }
+      ^
+
+"Test_name.c", line 46: error: function "A2::separate(int)" (declared at line 9) is inaccessible
+      separate(1); // { dg-error "private" }
+      ^
+
+"Test_name.c", line 47: error: function "A2::separate(int, int)" (declared at line 10) is inaccessible
+      separate(1, 2); // { dg-error "private" }
+      ^
+
+"Test_name.c", line 48: error: function "A2::separate(int, int, int)" (declared at line 11) is inaccessible
+      separate(1, 2, 3); // { dg-error "private" }
+      ^
+
+"Test_name.c", line 49: error: member "A2::alone" (declared at line 13) is inaccessible
+      alone = 5; // { dg-error "private" }
+      ^
+
+6 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./gomp/member-array-2.C", line 43: warning: unrecognized #pragma
+  #pragma omp target map(arr, ptr, ptr[:100])
+          ^
+
+"./gomp/member-array-2.C", line 44: warning: unrecognized #pragma
+  #pragma omp teams distribute parallel for
+          ^
+
+"./gomp/member-array-2.C", line 73: warning: unrecognized #pragma
+  #pragma omp target map(c.get_arr()[:100])
+          ^
+
+"./gomp/member-array-2.C", line 75: warning: unrecognized #pragma
+  #pragma omp teams distribute parallel for
+          ^
+
+"./gomp/member-array-2.C", line 82: warning: unrecognized #pragma
+  #pragma omp target map(c.get_ptr(), c.get_ptr()[:100])
+          ^
+
+"./gomp/member-array-2.C", line 85: warning: unrecognized #pragma
+  #pragma omp teams distribute parallel for
+          ^
+

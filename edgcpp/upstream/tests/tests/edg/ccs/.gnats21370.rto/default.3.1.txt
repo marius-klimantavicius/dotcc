@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=3 --c Test_name.c
+"Test_name.c", line 4: warning: declaration requires a typedef name
+  typedef struct A { int member; };
+                                  ^
+
+"Test_name.c", line 5: warning: declaration requires a typedef name
+  typedef enum { red, green, blue };
+                                   ^
+

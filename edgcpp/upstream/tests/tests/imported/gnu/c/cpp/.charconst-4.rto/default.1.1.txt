@@ -1,0 +1,13 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --signed_chars Test_name.c
+"./cpp/charconst-4.c", line 47: warning: multicharacter character literal (potential portability problem)
+    if ('\234a' < 0)
+        ^
+
+"./cpp/charconst-4.c", line 49: warning: too many characters in character literal -- extra leading characters ignored
+    if ('!\234abc' != '\234abc')
+        ^
+
+"./cpp/charconst-4.c", line 49: warning: multicharacter character literal (potential portability problem)
+    if ('!\234abc' != '\234abc')
+                      ^
+

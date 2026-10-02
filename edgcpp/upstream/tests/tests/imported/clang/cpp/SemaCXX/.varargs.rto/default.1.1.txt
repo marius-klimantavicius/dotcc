@@ -1,0 +1,58 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 13: warning: use of the "register" storage class specifier is deprecated
+  void g(register int i, ...) { // expected-warning 0-1{{deprecated}}
+         ^
+
+"Test_name.c", line 20: error: va_start can appear only in a function with an ellipsis parameter
+    __builtin_va_start(ap, a); // expected-warning {{second argument to 'va_start' is not the last non-variadic parameter}}
+    ^
+
+"Test_name.c", line 29: error: va_start can appear only in a function with an ellipsis parameter
+      void meth(int a, int b = (__builtin_va_start(ap, a), 0)) {}
+                                ^
+
+"Test_name.c", line 29: error: reference to local variable of enclosing function is not allowed
+      void meth(int a, int b = (__builtin_va_start(ap, a), 0)) {}
+                                                       ^
+
+"Test_name.c", line 36: warning: "Unscoped1" would have been promoted to "int" when passed through the ellipsis parameter; use the latter type instead
+    (void)__builtin_va_arg(ap, Unscoped1); // ok
+                               ^
+
+"Test_name.c", line 39: warning: "Unscoped2" would have been promoted to "unsigned int" when passed through the ellipsis parameter; use the latter type instead
+    (void)__builtin_va_arg(ap, Unscoped2); // ok
+                               ^
+
+"Test_name.c", line 41: warning: scoped enum types are a C++11 feature
+    enum class Scoped { Three };
+    ^
+
+"Test_name.c", line 44: warning: explicit enum base types are a C++11 feature
+    enum Fixed : int { Four };
+               ^
+
+"Test_name.c", line 45: warning: "Fixed" would have been promoted to "int" when passed through the ellipsis parameter; use the latter type instead
+    (void)__builtin_va_arg(ap, Fixed); // ok
+                               ^
+
+"Test_name.c", line 47: warning: explicit enum base types are a C++11 feature
+    enum FixedSmall : char { Five };
+                    ^
+
+"Test_name.c", line 48: warning: "FixedSmall" would have been promoted to "int" when passed through the ellipsis parameter; use the latter type instead
+    (void)__builtin_va_arg(ap, FixedSmall); // expected-warning {{second argument to 'va_arg' is of promotable type 'FixedSmall'; this va_arg has undefined behavior because arguments will be promoted to 'int'}}
+                               ^
+
+"Test_name.c", line 50: warning: explicit enum base types are a C++11 feature
+    enum FixedLarge : long long { Six };
+                    ^
+
+"Test_name.c", line 51: warning: "FixedLarge" would have been promoted to "long long" when passed through the ellipsis parameter; use the latter type instead
+    (void)__builtin_va_arg(ap, FixedLarge); // ok
+                               ^
+
+"Test_name.c", line 59: warning: "bool" would have been promoted to "int" when passed through the ellipsis parameter; use the latter type instead
+    (void)__builtin_va_arg(ap, bool); // expected-warning {{second argument to 'va_arg' is of promotable type 'bool'; this va_arg has undefined behavior because arguments will be promoted to 'int'}}
+                               ^
+
+3 errors detected in the compilation of "Test_name.c".

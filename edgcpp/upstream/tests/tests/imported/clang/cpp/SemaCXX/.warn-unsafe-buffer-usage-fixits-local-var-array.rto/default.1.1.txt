@@ -1,0 +1,113 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 10: warning: variable "buffer" was set but never used
+    int buffer[10];
+        ^
+
+"Test_name.c", line 16: warning: variable "buffer" was set but never used
+    int buffer[10][10];
+        ^
+
+"Test_name.c", line 22: warning: variable "buffer1" was set but never used
+    int buffer1[10][sz];
+        ^
+
+"Test_name.c", line 24: warning: variable "buffer2" was set but never used
+    int buffer2[sz][10];
+        ^
+
+"Test_name.c", line 33: warning: variable "buffer" is used before its value is set
+    int a = buffer[idx][idx];
+            ^
+
+"Test_name.c", line 33: warning: variable "a" was declared but never referenced
+    int a = buffer[idx][idx];
+        ^
+
+"Test_name.c", line 51: warning: variable "buffer" was set but never used
+    ten_ints_t buffer[10];
+               ^
+
+"Test_name.c", line 57: warning: variable "buffer_w" was set but never used
+    int      buffer_w   [       10 ];
+             ^
+
+"Test_name.c", line 63: warning: variable "buffer_w" was set but never used
+    int   /* [A] */   buffer_w  /* [B] */ [  /* [C] */ 10 /* [D] */  ] ;
+                      ^
+
+"Test_name.c", line 69: warning: variable "buffer" was set but never used
+    int buffer[3] = {0};
+        ^
+
+"Test_name.c", line 72: warning: variable "buffer2" was set but never used
+    int buffer2[3] = {0, 1, 2};
+        ^
+
+"Test_name.c", line 80: warning: variable "buffer" was set but never used
+    int buffer[] = {0, 1, 2};
+        ^
+
+"Test_name.c", line 88: warning: variable "buffer" was set but never used
+    int buffer[] {0, 1, 2};
+        ^
+
+"Test_name.c", line 96: warning: variable "a" was declared but never referenced
+    int a, buffer[10];
+        ^
+
+"Test_name.c", line 96: warning: variable "buffer" was set but never used
+    int a, buffer[10];
+           ^
+
+"Test_name.c", line 104: warning: variable "buffer" was set but never used
+    int buffer[10], b;
+        ^
+
+"Test_name.c", line 104: warning: variable "b" was declared but never referenced
+    int buffer[10], b;
+                    ^
+
+"Test_name.c", line 151: warning: variable "buffer" was set but never used
+    my_uint buffer[10];
+            ^
+
+"Test_name.c", line 158: warning: variable "buffer" was set but never used
+    decltype(a) buffer[10];
+                ^
+
+"Test_name.c", line 165: warning: variable "buffer" was set but never used
+    MY_INT buffer[10];
+           ^
+
+"Test_name.c", line 175: warning: variable "buffer" was set but never used
+    int MY_BUFFER[10];
+        ^
+
+"Test_name.c", line 183: warning: variable "buffer" was set but never used
+    int buffer[MY_TEN];
+        ^
+
+"Test_name.c", line 192: warning: variable "buffer" was set but never used
+    my_array buffer;
+             ^
+
+"Test_name.c", line 200: warning: variable "buffer2" was set but never used
+    decltype(buffer) buffer2;
+                     ^
+
+"Test_name.c", line 207: warning: variable "buffer" was set but never used
+    int buffer[my_const];
+        ^
+
+"Test_name.c", line 219: warning: subscript out of range
+    buffer[-5] = 0;
+          ^
+
+"Test_name.c", line 213: warning: variable "buffer" was set but never used
+    int buffer[10];
+        ^
+
+"Test_name.c", line 223: warning: variable "buffer" was set but never used
+    int buffer[10];
+        ^
+

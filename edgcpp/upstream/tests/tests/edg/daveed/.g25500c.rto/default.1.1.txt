@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --c++20 Test_name.c
+"Test_name.c", line 6: error: a lambda parameter cannot hide an explicit capture
+    auto g0 = [x=0](int x) { return 0; };  // error: duplicate name
+                        ^
+
+"Test_name.c", line 7: error: a lambda parameter cannot hide an explicit capture
+    auto g1 = [x](int x) { return 0; };  // error: duplicate name
+                      ^
+
+"Test_name.c", line 9: error: a lambda template parameter cannot hide an explicit capture
+      [y = 0]<typename y> {  // error: duplicate name
+                       ^
+
+"Test_name.c", line 6: warning: variable "g0" was declared but never referenced
+    auto g0 = [x=0](int x) { return 0; };  // error: duplicate name
+         ^
+
+"Test_name.c", line 7: warning: variable "g1" was declared but never referenced
+    auto g1 = [x](int x) { return 0; };  // error: duplicate name
+         ^
+
+"Test_name.c", line 8: warning: variable "h" was declared but never referenced
+    auto h =
+         ^
+
+3 errors detected in the compilation of "Test_name.c".

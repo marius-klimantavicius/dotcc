@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 15: error: expression must be a pointer to a complete object type
+         p[i][i] = i; // expected-error {{subscript of pointer to incomplete type 'int[]'}}
+         ^
+
+"Test_name.c", line 19: error: variable length array with unspecified bound is not allowed
+  void foo(int a[*][2]) {(void)a[0][1]; } // expected-error {{variable length array must be bound in function definition}}
+           ^
+
+"Test_name.c", line 20: error: variable length array with unspecified bound is not allowed
+  void foo1(int a[2][*]) {(void)a[0][1]; } // expected-error {{variable length array must be bound in function definition}}
+            ^
+
+"Test_name.c", line 21: error: variable length array with unspecified bound is not allowed
+  void foo2(int a[*][*]) {(void)a[0][1]; } // expected-error {{variable length array must be bound in function definition}}
+            ^
+
+"Test_name.c", line 22: error: variable length array with unspecified bound is not allowed
+  void foo3(int a[2][*][2]) {(void)a[0][1][1]; } // expected-error {{variable length array must be bound in function definition}}
+            ^
+
+"Test_name.c", line 23: error: variable length array with unspecified bound is not allowed
+  void foo4(int a[2][*][*]) {(void)a[0][1][1]; } // expected-error {{variable length array must be bound in function definition}}
+            ^
+
+6 errors detected in the compilation of "Test_name.c".

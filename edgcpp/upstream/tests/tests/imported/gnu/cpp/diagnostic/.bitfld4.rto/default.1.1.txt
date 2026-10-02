@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 7: error: invalid type for a bit field
+    int *f1 : 3; // { dg-error "bit-field .f1. has non-integral type .int\\*." }
+    ^
+
+"Test_name.c", line 8: error: invalid type for a bit field
+    int &f2 : 3; // { dg-error "bit-field .f2. has non-integral type .int&." }
+    ^
+
+"Test_name.c", line 9: error: invalid type for a bit field
+    int &&f3 : 3; // { dg-error "bit-field .f3. has non-integral type .int&&." }
+    ^
+
+"Test_name.c", line 10: error: invalid type for a bit field
+    int f4[1] : 3; // { dg-error "bit-field .f4. has non-integral type .int \\\[1\\\]." }
+    ^
+
+"Test_name.c", line 11: error: invalid type for a bit field
+    int *f5 __attribute__((deprecated)) : 3; // { dg-error "bit-field .f5. has non-integral type .int\\*." }
+    ^
+
+"Test_name.c", line 12: error: invalid type for a bit field
+    int f6[1] __attribute__((deprecated)) : 3; // { dg-error "bit-field .f6. has non-integral type .int \\\[1\\\]." }
+    ^
+
+"Test_name.c", line 13: error: invalid type for a bit field
+    int &f7 __attribute__((deprecated)): 3; // { dg-error "bit-field .f7. has non-integral type .int&." }
+    ^
+
+"Test_name.c", line 14: error: expected an identifier
+    int ****: 3; // { dg-error "expected" }
+            ^
+
+"Test_name.c", line 14: error: invalid type for a bit field
+    int ****: 3; // { dg-error "expected" }
+    ^
+
+"Test_name.c", line 15: error: invalid type for a bit field
+    int *f9[1] : 3; // { dg-error "bit-field .f9. has non-integral type .int\\* \\\[1\\\]." }
+    ^
+
+"Test_name.c", line 16: error: invalid type for a bit field
+    int (*f10)() : 3; // { dg-error "bit-field .f10. has non-integral type .int \\(\\*\\)\\(\\)." }
+    ^
+
+"Test_name.c", line 17: error: expected an identifier
+    int [][2] : 3; // { dg-error "expected" }
+        ^
+
+"Test_name.c", line 17: error: invalid type for a bit field
+    int [][2] : 3; // { dg-error "expected" }
+    ^
+
+13 errors detected in the compilation of "Test_name.c".

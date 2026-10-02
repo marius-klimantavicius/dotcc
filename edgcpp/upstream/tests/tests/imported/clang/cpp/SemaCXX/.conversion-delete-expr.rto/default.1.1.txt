@@ -1,0 +1,20 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 16: error: more than one conversion function from "D" to a built-in type applies:
+            function "D::operator int *()" (declared at line 11)
+            function "B::operator char *()" (declared at line 7)
+     delete d; // expected-error {{ambiguous conversion of delete expression of type 'D' to a pointer}}
+            ^
+
+"Test_name.c", line 44: error: more than one conversion function from "D2" to a built-in type applies:
+            function "D2::operator int *()" (declared at line 39)
+            function "B2::operator const int *()" (declared at line 35)
+     delete d; // expected-error {{ambiguous conversion of delete expression of type 'D2' to a pointer}}
+            ^
+
+"Test_name.c", line 61: error: more than one conversion function from "D3" to a built-in type applies:
+            function "A3::operator const int *()" (declared at line 53)
+            function "B3::operator const int *()" (declared at line 49)
+     delete d; // expected-error {{ambiguous conversion of delete expression of type 'D3' to a pointer}}
+            ^
+
+3 errors detected in the compilation of "Test_name.c".

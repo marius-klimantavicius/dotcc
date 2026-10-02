@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 8: error: _Complex can only be used with floating-point types
+  __complex__ unsigned int i;
+  ^
+
+"Test_name.c", line 18: error: _Complex can only be used with floating-point types
+    ((__complex__ int)i)();		/* { dg-error "is not a function" } */
+      ^
+
+"Test_name.c", line 19: error: _Complex can only be used with floating-point types
+    ((__complex__ int)j)();		/* { dg-error "is not a function" } */
+      ^
+
+"Test_name.c", line 20: error: _Complex can only be used with floating-point types
+    ((__complex__ int)k)();		/* { dg-error "is not a function" } */
+      ^
+
+"Test_name.c", line 21: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+    ((__complex__ long double)l)();	/* { dg-error "is not a function" } */
+    ^
+
+"Test_name.c", line 22: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+    ((__complex__ long double)m)();	/* { dg-error "is not a function" } */
+    ^
+
+"Test_name.c", line 23: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+    ((__complex__ long double)n)();	/* { dg-error "is not a function" } */
+    ^
+
+7 errors detected in the compilation of "Test_name.c".

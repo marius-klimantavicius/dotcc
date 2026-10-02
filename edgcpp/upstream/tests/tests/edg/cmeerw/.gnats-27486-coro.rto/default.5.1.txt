@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=5 --c++ --gn 90500 --target linux_x86_64 Test_name.c
+"Test_name.c", line 7: error: identifier "__builtin_coro_resume" is undefined
+    __builtin_coro_resume(0);
+    ^
+
+"Test_name.c", line 8: error: identifier "__builtin_coro_done" is undefined
+    __builtin_coro_done(0);
+    ^
+
+"Test_name.c", line 9: error: identifier "__builtin_coro_destroy" is undefined
+    __builtin_coro_destroy(0);
+    ^
+
+"Test_name.c", line 10: error: identifier "__builtin_coro_promise" is undefined
+    __builtin_coro_promise(0, 0, false);
+    ^
+
+4 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 9: error: argument of type "float" is incompatible with parameter of type "int *"
+  int A::b() { return a(a((int*)0)); } // expected-error {{cannot initialize a parameter of type 'int *' with an rvalue of type 'float'}}
+                        ^
+
+1 error detected in the compilation of "Test_name.c".

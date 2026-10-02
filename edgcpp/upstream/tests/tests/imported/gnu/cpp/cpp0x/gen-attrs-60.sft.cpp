@@ -1,0 +1,6 @@
+//type: fp
+//options: --c++11
+// PR c++/60365
+// { dg-do compile { target c++11 } }
+
+void func [[noreturn, noreturn]] (); // { dg-warning "specified multiple times" }

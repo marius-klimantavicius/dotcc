@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 --strict_gnu Test_name.c
+"Test_name.c", line 6: error: _Complex can only be used with floating-point types
+  _Complex int fcs (_Complex int r)
+  ^
+
+"Test_name.c", line 6: error: _Complex can only be used with floating-point types
+  _Complex int fcs (_Complex int r)
+                    ^
+
+"Test_name.c", line 8: error: expression must be a modifiable lvalue
+    __asm__("" : "=rm" (__imag__ r));
+                        ^
+
+"Test_name.c", line 12: error: _Complex can only be used with floating-point types
+  _Complex int fcs2 (_Complex int r)
+  ^
+
+"Test_name.c", line 12: error: _Complex can only be used with floating-point types
+  _Complex int fcs2 (_Complex int r)
+                     ^
+
+"Test_name.c", line 14: error: expression must be a modifiable lvalue
+    __asm__("" : "=m" (__imag__ r));
+                       ^
+
+6 errors detected in the compilation of "Test_name.c".

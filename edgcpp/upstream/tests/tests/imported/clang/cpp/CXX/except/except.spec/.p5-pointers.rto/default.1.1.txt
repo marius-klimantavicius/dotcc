@@ -1,0 +1,94 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --exceptions --exceptions Test_name.c
+"Test_name.c", line 46: error: incompatible exception specifications
+    t1 = &s2;                      // expected-error {{not superset}}
+       ^
+
+"Test_name.c", line 47: error: incompatible exception specifications
+    t1 = &s3;                      // expected-error {{not superset}}
+       ^
+
+"Test_name.c", line 48: error: incompatible exception specifications
+    void (&t2)() throw() = s2;     // expected-error {{not superset}}
+                           ^
+
+"Test_name.c", line 53: error: incompatible exception specifications
+    t4 = &s5;                      // expected-error {{not superset}}
+       ^
+
+"Test_name.c", line 58: error: incompatible exception specifications
+    t1 = t3;                       // expected-error {{not superset}}
+       ^
+
+"Test_name.c", line 61: error: incompatible exception specifications
+    t6 = t4;                       // expected-error {{not superset}}
+       ^
+
+"Test_name.c", line 64: error: incompatible exception specifications
+    t1 = t5;                       // expected-error {{not superset}}
+       ^
+
+"Test_name.c", line 68: error: incompatible exception specifications
+    void (*(*t8)())() throw(A) = &s8;        // expected-error {{return types differ}}
+                                 ^
+
+"Test_name.c", line 69: error: incompatible exception specifications
+    void (*(*t9)())() throw(D) = &s8;        // expected-error {{return types differ}}
+                                 ^
+
+"Test_name.c", line 71: error: incompatible exception specifications
+    void (*t11)(void (*)() throw(A)) = &s9;  // expected-error {{argument types differ}}
+                                       ^
+
+"Test_name.c", line 72: error: incompatible exception specifications
+    void (*t12)(void (*)() throw(D)) = &s9;  // expected-error {{argument types differ}}
+                                       ^
+
+"Test_name.c", line 48: warning: variable "t2" was declared but never referenced
+    void (&t2)() throw() = s2;     // expected-error {{not superset}}
+           ^
+
+"Test_name.c", line 67: warning: variable "t7" was declared but never referenced
+    void (*(*t7)())() throw(B1) = &s8;       // valid
+             ^
+
+"Test_name.c", line 68: warning: variable "t8" was declared but never referenced
+    void (*(*t8)())() throw(A) = &s8;        // expected-error {{return types differ}}
+             ^
+
+"Test_name.c", line 69: warning: variable "t9" was declared but never referenced
+    void (*(*t9)())() throw(D) = &s8;        // expected-error {{return types differ}}
+             ^
+
+"Test_name.c", line 70: warning: variable "t10" was declared but never referenced
+    void (*t10)(void (*)() throw(B1)) = &s9; // valid
+           ^
+
+"Test_name.c", line 71: warning: variable "t11" was declared but never referenced
+    void (*t11)(void (*)() throw(A)) = &s9;  // expected-error {{argument types differ}}
+           ^
+
+"Test_name.c", line 72: warning: variable "t12" was declared but never referenced
+    void (*t12)(void (*)() throw(D)) = &s9;  // expected-error {{argument types differ}}
+           ^
+
+"Test_name.c", line 79: error: allowing all exceptions is incompatible with previous function "Str1::f" (declared at line 77)
+  {
+  ^
+
+"Test_name.c", line 86: error: incompatible exception specifications
+    void (Str1::*pfn3)() throw() = &Str1::f; // expected-error {{not superset}}
+                                   ^
+
+"Test_name.c", line 84: warning: variable "pfn1" was declared but never referenced
+    void (Str1::*pfn1)() throw(int) = &Str1::f; // valid
+                 ^
+
+"Test_name.c", line 85: warning: variable "pfn2" was declared but never referenced
+    void (Str1::*pfn2)() = &Str1::f; // valid
+                 ^
+
+"Test_name.c", line 86: warning: variable "pfn3" was declared but never referenced
+    void (Str1::*pfn3)() throw() = &Str1::f; // expected-error {{not superset}}
+                 ^
+
+13 errors detected in the compilation of "Test_name.c".

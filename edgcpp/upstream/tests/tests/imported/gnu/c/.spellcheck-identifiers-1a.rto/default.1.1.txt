@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 13: warning: function "gtk_widget_showall" declared implicitly
+    gtk_widget_showall (w); /* { dg-error "3: implicit declaration of function .gtk_widget_showall.; did you mean .gtk_widget_show_all.?" } */
+    ^
+
+"Test_name.c", line 22: warning: function "gtk_widget_showall_" declared implicitly
+    gtk_widget_showall_ (w); /* { dg-error "3: implicit declaration of function .gtk_widget_showall_.; did you mean .gtk_widget_show_all.?" } */
+    ^
+
+"Test_name.c", line 29: warning: function "GtkWidgetShowAll" declared implicitly
+    GtkWidgetShowAll (w); /* { dg-error "3: implicit declaration of function .GtkWidgetShowAll.; did you mean .gtk_widget_show_all.?" } */
+    ^
+
+"Test_name.c", line 40: error: identifier "parma" is undefined
+    return parma * parma; /* { dg-error "10: .parma. undeclared .first use in this function.; did you mean .param." } */
+           ^
+
+"Test_name.c", line 53: warning: function "MACRAME" declared implicitly
+    return MACRAME (i); /* { dg-error "10: implicit declaration of function .MACRAME.; did you mean .MACRO.?" } */
+           ^
+
+"Test_name.c", line 66: warning: function "IDENTIFIER_PTR" declared implicitly
+    return IDENTIFIER_PTR (node); /* { dg-error "10: implicit declaration of function .IDENTIFIER_PTR.; did you mean .IDENTIFIER_POINTER.?" } */
+           ^
+
+"Test_name.c", line 78: error: identifier "__LINE_" is undefined
+    return __LINE_; /* { dg-error "10: .__LINE_. undeclared .first use in this function.; did you mean .__LINE__." } */
+           ^
+
+"Test_name.c", line 87: error: identifier "MAX_ITEM" is undefined
+  int array[MAX_ITEM]; /* { dg-error "11: .MAX_ITEM. undeclared here .not in a function.; did you mean .MAX_ITEMS." } */
+            ^
+
+"Test_name.c", line 105: error: identifier "FOO_FURST" is undefined
+      case FOO_FURST: /* { dg-error "10: .FOO_FURST. undeclared .first use in this function.; did you mean .FOO_FIRST." } */
+           ^
+
+"Test_name.c", line 113: error: identifier "FOO_SECCOND" is undefined
+      case FOO_SECCOND: /* { dg-error "10: .FOO_SECCOND. undeclared .first use in this function.; did you mean .FOO_SECOND." } */
+           ^
+
+"Test_name.c", line 124: warning: missing return statement at end of non-void function "test_6"
+  }
+  ^
+
+"Test_name.c", line 132: warning: function "snprint" declared implicitly
+    snprint (buffer, 100, "%i of %i", i, j); /* { dg-error "3: implicit declaration of function .snprint.; did you mean .snprintf.." } */
+    ^
+
+5 errors detected in the compilation of "Test_name.c".

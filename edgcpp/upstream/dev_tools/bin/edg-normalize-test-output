@@ -1,0 +1,92 @@
+#!/usr/bin/env python3
+
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+import argparse
+import asyncio
+import os
+import signal
+import sys
+
+import edgtest.filter
+import edgutil
+
+from pathlib import Path
+from typing import Any, Optional
+
+def parse_args() -> argparse.Namespace:
+  parser = argparse.ArgumentParser(
+    description = (
+      'EDG utility script to normalize test output.'
+    )
+  )
+  parser.add_argument(
+    '--il',
+    dest = 'normalize_il',
+    action = 'store_true',
+    help = 'include rules to normalize IL'
+  )
+  parser.add_argument(
+    '--stack-addr-cleanup',
+    dest = 'stack_addr_cleanup',
+    action = 'store_true',
+    help = (
+      'replace host-dependent stack / high addresses with STACK or 0xSTACK'
+    )
+  )
+  return parser.parse_args()
+
+def die(signum: Any, frame: Any) -> None:
+  sys.exit()
+
+def register_signal_handlers() -> None:
+  signal.signal(signal.SIGINT, die)
+  signal.signal(signal.SIGTERM, die)
+  signal.signal(signal.SIGPIPE, die)
+
+def _find_cpfe() -> Optional[Path]:
+  primary_cpfe = os.environ.get('PRIMARY_CPFE', 'CPFE')
+  env_val = os.environ.get(
+    f"TEST_{primary_cpfe}",
+    os.environ.get(primary_cpfe, '')
+  )
+  if not env_val:
+    return None
+
+  cpfe_path = Path(env_val)
+  if not cpfe_path.exists():
+    return None
+
+  return cpfe_path
+
+def main() -> None:
+  register_signal_handlers()
+  args = parse_args()
+
+  compiler_bin_path = _find_cpfe()
+  if compiler_bin_path is None:
+    edgutil.eprint('CPFE binary providing build constants could not be found')
+    sys.exit(1)
+
+  async def load_constants(
+      loop: asyncio.AbstractEventLoop) -> edgtest.filter.BuildConstants:
+    return await edgtest.filter.load_build_constants(compiler_bin_path)
+  build_constants = edgutil.run_asyncio_loop(
+    load_constants,
+    install_signal_handlers = False
+  )
+
+  normalizer = edgtest.filter.Normalizer(
+    normalize_il = args.normalize_il,
+    stack_addr_cleanup = args.stack_addr_cleanup,
+    env = os.environ,
+    build_constants = build_constants
+  )
+
+  for line in sys.stdin:
+    sys.stdout.write(normalizer.process_line(line))
+
+main()

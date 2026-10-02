@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 -w -w -DDIV_CC -w -DDIV_RC -w -DDIVASSIGN -w -DDIVMIXEDFD -w -DDIVMIXEDFD2 -w -DDIVMIXEDID -w -DDIVASSIGN_MIXEDFD Test_name.c
+"Test_name.c", line 35: error: _Complex can only be used with floating-point types
+  _Complex int div_ii(_Complex int a, _Complex int b) {
+  ^
+
+"Test_name.c", line 35: error: _Complex can only be used with floating-point types
+  _Complex int div_ii(_Complex int a, _Complex int b) {
+                      ^
+
+"Test_name.c", line 35: error: _Complex can only be used with floating-point types
+  _Complex int div_ii(_Complex int a, _Complex int b) {
+                                      ^
+
+"Test_name.c", line 83: error: _Complex can only be used with floating-point types
+  _Complex double divmixedid(_Complex int a, _Complex double b) {
+                             ^
+
+4 errors detected in the compilation of "Test_name.c".

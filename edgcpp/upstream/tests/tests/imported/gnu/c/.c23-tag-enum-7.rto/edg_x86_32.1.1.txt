@@ -1,0 +1,78 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"./c23-tag-enum-7.c", line 7: error: no association matches the selector type "unsigned long long"
+  enum E { a = 1ULL, b = _Generic(a, int: 2) };
+                         ^
+
+"./c23-tag-enum-7.c", line 10: error: this declaration of enum "E" does not declare the same type as the declaration at line 7
+  enum E { a = 1ULL, b = _Generic(a, int: 2) };
+       ^
+
+"./c23-tag-enum-7.c", line 16: error: no association matches the selector type "long long"
+  static_assert(_Generic(c, enum H: 1));
+                ^
+
+"./c23-tag-enum-7.c", line 17: error: no association matches the selector type "long long"
+  static_assert(_Generic(d, enum H: 1));
+                ^
+
+"./c23-tag-enum-7.c", line 18: error: no association matches the selector type "long long"
+                                  + 1), d = _Generic(c, enum H: 2) };
+                                            ^
+
+"./c23-tag-enum-7.c", line 18: error: this declaration of enum "H" does not declare the same type as the declaration at line 15
+  enum H { c = 1ULL << (32 
+       ^
+
+"./c23-tag-enum-7.c", line 19: error: no association matches the selector type "long long"
+  static_assert(_Generic(c, enum H: 1));
+                ^
+
+"./c23-tag-enum-7.c", line 20: error: no association matches the selector type "long long"
+  static_assert(_Generic(d, enum H: 1));
+                ^
+
+"./c23-tag-enum-7.c", line 24: error: no association matches the selector type "long long"
+  static_assert(_Generic(e, enum K: 1));
+                ^
+
+"./c23-tag-enum-7.c", line 25: error: no association matches the selector type "long long"
+  static_assert(_Generic(f, enum K: 1));
+                ^
+
+"./c23-tag-enum-7.c", line 26: error: no association matches the selector type "long long"
+  static_assert(_Generic(g, enum K: 1));
+                ^
+
+"./c23-tag-enum-7.c", line 27: error: no association matches the selector type "long long"
+                      , f, g = _Generic(e, enum K: 0) + _Generic(f, enum K: 1) };
+                               ^
+
+"./c23-tag-enum-7.c", line 27: error: no association matches the selector type "long long"
+                      , f, g = _Generic(e, enum K: 0) + _Generic(f, enum K: 1) };
+                                                        ^
+
+"./c23-tag-enum-7.c", line 27: error: this declaration of enum "K" does not declare the same type as the declaration at line 23
+  enum K { e = 
+       ^
+
+"./c23-tag-enum-7.c", line 28: error: no association matches the selector type "long long"
+  static_assert(_Generic(e, enum K: 1));
+                ^
+
+"./c23-tag-enum-7.c", line 29: error: no association matches the selector type "long long"
+  static_assert(_Generic(f, enum K: 1));
+                ^
+
+"./c23-tag-enum-7.c", line 30: error: no association matches the selector type "long long"
+  static_assert(_Generic(g, enum K: 1));
+                ^
+
+"./c23-tag-enum-7.c", line 33: error: no association matches the selector type "unsigned long long"
+                     , l, m = _Generic(k, int: 0) + _Generic(l, long: 1, long long: 1) };
+                                                    ^
+
+"./c23-tag-enum-7.c", line 37: error: this declaration of enum "U" does not declare the same type as the declaration at line 33
+  enum U { k = 0x7fffffff
+       ^
+
+19 errors detected in the compilation of "Test_name.c".

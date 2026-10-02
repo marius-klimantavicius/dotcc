@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./warn/Wstringop-overflow-4.C", line 111: warning: pointless comparison of unsigned integer with zero
+    size_t r_0_1 = (++idx, (vals[idx] < 0 || 1 < vals[idx] ? 0 : vals[idx]));
+                                      ^
+

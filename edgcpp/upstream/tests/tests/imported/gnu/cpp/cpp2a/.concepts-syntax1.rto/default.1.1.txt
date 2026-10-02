@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 10: error: expected a "<"
+  requires C decltype<I>		// { dg-error "" }
+             ^
+
+"Test_name.c", line 10: error: constant "I" is not a type name
+  requires C decltype<I>		// { dg-error "" }
+                      ^
+
+2 errors detected in the compilation of "Test_name.c".

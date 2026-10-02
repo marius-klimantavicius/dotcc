@@ -1,0 +1,5 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"./di-sync-multithread.c", line 173: warning: integer conversion resulted in a change of sign
+    tmp = __sync_val_compare_and_swap (&workspace, 0, -1ll);
+                                                      ^
+

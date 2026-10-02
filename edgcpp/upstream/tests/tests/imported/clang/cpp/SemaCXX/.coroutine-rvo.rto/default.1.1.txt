@@ -1,0 +1,74 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 67: error: function "task<T>::promise_type::return_value [with T=NoCopyNoMove]" cannot be called with the given argument list
+            argument types are: (NoCopyNoMove)
+            object type is: task<NoCopyNoMove>::promise_type
+    co_return value;
+    ^
+"Test_name.c", line 61: note: function "task<T>::promise_type::return_value [with T=NoCopyNoMove]" does not match because argument #1 does not match parameter
+      void return_value(T &&value) {} // expected-note 4{{passing argument}}
+           ^
+
+"Test_name.c", line 77: error: function "task<T>::promise_type::return_value [with T=MoveOnly]" cannot be called with the given argument list
+            argument types are: (MoveOnly)
+            object type is: task<MoveOnly>::promise_type
+    co_return value;
+    ^
+"Test_name.c", line 61: note: function "task<T>::promise_type::return_value [with T=MoveOnly]" does not match because argument #1 does not match parameter
+      void return_value(T &&value) {} // expected-note 4{{passing argument}}
+           ^
+
+"Test_name.c", line 81: error: function "task<T>::promise_type::return_value [with T=NoCopyNoMove]" cannot be called with the given argument list
+            argument types are: (NoCopyNoMove)
+            object type is: task<NoCopyNoMove>::promise_type
+    co_return value; // expected-error {{rvalue reference to type 'NoCopyNoMove' cannot bind to lvalue of type 'NoCopyNoMove'}}
+    ^
+"Test_name.c", line 61: note: function "task<T>::promise_type::return_value [with T=NoCopyNoMove]" does not match because argument #1 does not match parameter
+      void return_value(T &&value) {} // expected-note 4{{passing argument}}
+           ^
+
+"Test_name.c", line 85: error: function "task<T>::promise_type::return_value [with T=NoCopyNoMove]" cannot be called with the given argument list
+            argument types are: (NoCopyNoMove)
+            object type is: task<NoCopyNoMove>::promise_type
+    co_return value;
+    ^
+"Test_name.c", line 61: note: function "task<T>::promise_type::return_value [with T=NoCopyNoMove]" does not match because argument #1 does not match parameter
+      void return_value(T &&value) {} // expected-note 4{{passing argument}}
+           ^
+
+"Test_name.c", line 101: error: function "task<T>::promise_type::return_value [with T=MoveOnly]" cannot be called with the given argument list
+            argument types are: (To)
+            object type is: task<MoveOnly>::promise_type
+    co_return t;
+    ^
+"Test_name.c", line 61: note: function "task<T>::promise_type::return_value [with T=MoveOnly]" does not match because argument #1 does not match parameter
+      void return_value(T &&value) {} // expected-note 4{{passing argument}}
+           ^
+
+"Test_name.c", line 109: error: function "MoveOnly::MoveOnly(const MoveOnly &)" (declared at line 45) cannot be referenced -- it is a deleted function
+    co_return w;
+              ^
+
+"Test_name.c", line 115: error: function "task<T>::promise_type::return_value [with T=MoveOnly]" cannot be called with the given argument list
+            argument types are: (Derived)
+            object type is: task<MoveOnly>::promise_type
+    co_return result;
+    ^
+"Test_name.c", line 61: note: function "task<T>::promise_type::return_value [with T=MoveOnly]" does not match because argument #1 does not match parameter
+      void return_value(T &&value) {} // expected-note 4{{passing argument}}
+           ^
+
+"Test_name.c", line 120: error: function "task<T>::promise_type::return_value [with T=RetThis]" cannot be called with the given argument list
+            argument types are: (RetThis)
+            object type is: task<RetThis>::promise_type
+      co_return *this; // expected-error {{rvalue reference to type 'RetThis' cannot bind to lvalue of type 'RetThis'}}
+      ^
+"Test_name.c", line 61: note: function "task<T>::promise_type::return_value [with T=RetThis]" does not match because argument #1 does not match parameter
+      void return_value(T &&value) {} // expected-note 4{{passing argument}}
+           ^
+
+"Test_name.c", line 139: error: static assertion failed
+        static_assert(is_same<T, U>::value);
+        ^
+          detected during instantiation of "void generic_task<T>::promise_type::return_value(U &&) [with T=MoveOnly, U=MoveOnly &]" at line 145
+
+9 errors detected in the compilation of "Test_name.c".

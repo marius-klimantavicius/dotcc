@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 6: error: identifier "f" is undefined
+  void foo(auto, void (f*)()); // { dg-error "auto|expected" }
+                       ^
+
+"Test_name.c", line 6: error: function returning function is not allowed
+  void foo(auto, void (f*)()); // { dg-error "auto|expected" }
+                           ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,26 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 13: error: exception specification for virtual function "C1::~C1" is incompatible with that of overridden function "B::~B"
+    virtual ~C1();                   // error: not "at least as restrictive as"
+            ^
+
+"Test_name.c", line 13: error: exception specification for virtual function "C1::~C1" is incompatible with that of overridden function "A::~A"
+    virtual ~C1();                   // error: not "at least as restrictive as"
+            ^
+
+"Test_name.c", line 16: error: exception specification for virtual function "C2::~C2" is incompatible with that of overridden function "B::~B"
+    virtual ~C2() throw(X);          // error: not as restrictive as B::~B()
+            ^
+
+"Test_name.c", line 19: error: exception specification for virtual function "C3::~C3" is incompatible with that of overridden function "A::~A"
+    virtual ~C3() throw(Y);          // error: not as restrictive as A::~A()
+            ^
+
+"Test_name.c", line 24: error: exception specification for implicitly declared virtual function "C::~C" is incompatible with that of overridden function "B::~B"
+  class C : public A, public B {
+        ^
+
+"Test_name.c", line 24: error: exception specification for implicitly declared virtual function "C::~C" is incompatible with that of overridden function "A::~A"
+  class C : public A, public B {
+        ^
+
+6 errors detected in the compilation of "Test_name.c".

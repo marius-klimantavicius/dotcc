@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=1 --c++17 --gnu=69999 -tused -w Test_name.c

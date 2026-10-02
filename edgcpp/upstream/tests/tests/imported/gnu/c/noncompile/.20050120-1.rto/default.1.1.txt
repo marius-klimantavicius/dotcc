@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c89 --strict_gnu Test_name.c
+"Test_name.c", line 10: error: identifier "foo" is undefined
+      if (foo)		/* { dg-error "undeclared|for each" } */
+          ^
+
+"Test_name.c", line 17: error: identifier "foo" is undefined
+    if (foo)		/* { dg-error "undeclared" } */
+        ^
+
+"Test_name.c", line 19: warning: variable "foo" was declared but never referenced
+        int foo;		/* { dg-warning "shadows previous" } */
+            ^
+
+2 errors detected in the compilation of "Test_name.c".

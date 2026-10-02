@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=3 -DNEG --g++ Test_name.c
+"Test_name.c", line 19: warning: storage specifier ignored
+  template static void Foo(const int& value);
+           ^
+
+"Test_name.c", line 20: warning: storage specifier ignored
+  template extern void Foo(const char& value);
+           ^
+
+"Test_name.c", line 30: warning: storage specifier ignored
+  template extern void X<int>::f();
+           ^
+
+"Test_name.c", line 31: warning: storage specifier ignored
+  template extern int X<int>::i;
+           ^
+
+"Test_name.c", line 35: error: "typedef" may not be specified here
+  template typedef void Foo(const short& value);
+           ^
+
+"Test_name.c", line 36: error: expected an identifier
+  template static struct X<void>;
+                                ^
+
+"Test_name.c", line 36: error: invalid explicit instantiation declaration
+  template static struct X<void>;
+           ^
+
+"Test_name.c", line 36: error: a storage class may not be specified here
+  template static struct X<void>;
+           ^
+
+"Test_name.c", line 37: warning: storage specifier ignored
+  template extern void X<float>::f();
+           ^
+
+"Test_name.c", line 38: warning: storage specifier ignored
+  template extern int X<double>::i;
+           ^
+
+4 errors detected in the compilation of "Test_name.c".

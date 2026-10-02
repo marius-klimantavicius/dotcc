@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++14 Test_name.c
+"Test_name.c", line 6: error: exception specification for virtual function "D::h" is incompatible with that of overridden function "B::h"
+      void h() = delete;  // Now accepted in C++17 mode.
+           ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 7: error: a function declarator with a trailing return type must be preceded by a simple "auto" type specifier
+  const auto b() -> int; // expected-error {{function with trailing return type must specify return type 'auto', not 'const auto'}}
+             ^
+
+"Test_name.c", line 8: error: a function declarator with a trailing return type must be preceded by a simple "auto" type specifier
+  auto *c() -> int; // expected-error {{function with trailing return type must specify return type 'auto', not 'auto *'}}
+       ^
+
+"Test_name.c", line 9: error: a trailing return type cannot appear in a nested declarator
+  auto (d() -> int); // expected-error {{trailing return type may not be nested within parentheses}}
+            ^
+
+"Test_name.c", line 18: error: a trailing return type requires the "auto" type specifier
+    template <class U> B(U) -> B<int>; // expected-error {{function with trailing return type must specify return type 'auto', not 'void'}}
+                            ^
+
+4 errors detected in the compilation of "Test_name.c".

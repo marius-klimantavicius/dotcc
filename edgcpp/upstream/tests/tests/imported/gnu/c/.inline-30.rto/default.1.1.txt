@@ -1,0 +1,50 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c89 --strict_gnu Test_name.c
+"Test_name.c", line 11: warning: "inline" is not allowed
+    auto inline int f1 (void)
+         ^
+
+"Test_name.c", line 11: error: invalid storage class for a function
+    auto inline int f1 (void)
+    ^
+
+"Test_name.c", line 12: error: expected a ";"
+    {
+    ^
+
+"Test_name.c", line 19: warning: parsing restarts here after previous syntax error
+    auto inline int f3 (void);
+                             ^
+
+"Test_name.c", line 20: warning: "inline" is not allowed
+    auto inline int f3 (void)
+         ^
+
+"Test_name.c", line 20: error: invalid storage class for a function
+    auto inline int f3 (void)
+    ^
+
+"Test_name.c", line 21: error: expected a ";"
+    {
+    ^
+
+"Test_name.c", line 24: warning: parsing restarts here after previous syntax error
+    auto inline int f4 (void);
+                             ^
+
+"Test_name.c", line 25: warning: "inline" is not allowed
+    inline int f4 (void)
+    ^
+
+"Test_name.c", line 26: error: expected a ";"
+    {
+    ^
+
+"Test_name.c", line 29: warning: parsing restarts here after previous syntax error
+    return f1 () + f2 () + f3 () + f4 () - 8;
+                                            ^
+
+"Test_name.c", line 10: warning: variable "i" was declared but never referenced
+    int i = 2;
+        ^
+
+5 errors detected in the compilation of "Test_name.c".

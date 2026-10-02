@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c++14 -tused -A Test_name.c
+"Test_name.c", line 8: error: no instance of function template "k" matches the argument list
+            argument types are: ({...})
+         k({1,2,3});              // error: deduction fails, no conversion from int to Aggr
+         ^
+"Test_name.c", line 4: note: candidate function template "k" failed deduction
+    template<int N> void k(Aggr const(&)[N]);
+                         ^
+
+1 error detected in the compilation of "Test_name.c".

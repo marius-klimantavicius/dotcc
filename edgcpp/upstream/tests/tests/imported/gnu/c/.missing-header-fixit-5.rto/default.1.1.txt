@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./missing-header-fixit-5.c", line 11: warning: function "isdigit" declared implicitly
+    if (isdigit (m[0]))
+        ^
+
+"./missing-header-fixit-5.c", line 21: warning: function "abs" declared implicitly
+        return abs (i);
+               ^
+
+"./missing-header-fixit-5.c", line 32: warning: function "putchar" declared implicitly
+      putchar (m[0]);
+      ^
+

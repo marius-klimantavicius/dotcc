@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 5: error: nontype "Op::first_argument_type" is not a type name
+             Op::first_argument_type a, // { dg-error "not a type" }
+             ^
+
+"Test_name.c", line 6: error: nontype "Op::second_argument_type" is not a type name
+             Op::second_argument_type b) // { dg-error "not a type" }
+             ^
+
+2 errors detected in the compilation of "Test_name.c".

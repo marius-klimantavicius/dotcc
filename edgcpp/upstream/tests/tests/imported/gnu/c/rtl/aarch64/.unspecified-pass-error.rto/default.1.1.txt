@@ -1,0 +1,74 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 11: error: expected a "{"
+  int __RTL () badfoo ()
+               ^
+
+"Test_name.c", line 13: error: identifier "function" is undefined
+  (function "badfoo"
+   ^
+
+"Test_name.c", line 13: error: expected a ")"
+  (function "badfoo"
+            ^
+
+"Test_name.c", line 17: warning: parsing restarts here after previous syntax error
+        (cnote 3 [bb 2] NOTE_INSN_BASIC_BLOCK)
+                                             ^
+
+"Test_name.c", line 18: error: identifier "cinsn" is undefined
+        (cinsn 101 (set (reg:DI x19) (reg:DI x0)))
+         ^
+
+"Test_name.c", line 18: error: expected a ")"
+        (cinsn 101 (set (reg:DI x19) (reg:DI x0)))
+               ^
+
+"Test_name.c", line 19: error: expected a ")"
+        (cinsn 10 (use (reg/i:SI x19)))
+               ^
+
+"Test_name.c", line 20: error: identifier "edge" is undefined
+        (edge-to exit (flags "FALLTHRU"))
+         ^
+
+"Test_name.c", line 20: error: identifier "to" is undefined
+        (edge-to exit (flags "FALLTHRU"))
+              ^
+
+"Test_name.c", line 20: error: expected a ")"
+        (edge-to exit (flags "FALLTHRU"))
+                 ^
+
+"Test_name.c", line 21: error: expected a ";"
+      ) ;; block 2
+      ^
+
+"Test_name.c", line 21: error: identifier "block" is undefined
+      ) ;; block 2
+           ^
+
+"Test_name.c", line 21: error: expected a ";"
+      ) ;; block 2
+                 ^
+
+"Test_name.c", line 22: error: identifier "insn" is undefined
+    ) ;; insn-chain
+         ^
+
+"Test_name.c", line 22: error: identifier "chain" is undefined
+    ) ;; insn-chain
+              ^
+
+"Test_name.c", line 23: error: expected a ";"
+  ) ;; function "foo2"
+  ^
+
+"Test_name.c", line 23: error: expected a ";"
+  ) ;; function "foo2"
+                ^
+
+"Test_name.c", line 24: warning: missing return statement at end of non-void function "__RTL"
+  }
+  ^
+
+16 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,37 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 21: warning: type qualifier on return type is meaningless
+    const void (*ffp)(void);
+    ^
+
+"Test_name.c", line 22: warning: variable "fp" is used before its value is set
+    foo_v (fp); /* { dg-warning "10:ISO C forbids passing argument" } */
+           ^
+
+"Test_name.c", line 23: warning: enumerated type mixed with another type
+    foo_E (B); /* { dg-warning "10:enum conversion when passing argument" } */
+           ^
+
+"Test_name.c", line 24: warning: argument of type "unsigned char *" is incompatible with parameter of type "signed char *"
+    foo_sc (1, 2, uc); /* { dg-warning "17:pointer targets in passing argument" } */
+                  ^
+
+"Test_name.c", line 25: warning: argument of type "float *" is incompatible with parameter of type "signed char *"
+    foo_sc (1, 2, f); /* { dg-warning "17:passing argument" } */
+                  ^
+
+"Test_name.c", line 26: warning: argument of type "signed char" is incompatible with parameter of type "signed char *"
+    foo_sc (1, 2, sc); /* { dg-warning "17:passing argument" } */
+                  ^
+
+"Test_name.c", line 27: warning: argument of type "unsigned char *" is incompatible with parameter of type "int"
+    foo_sc (uc, 2, &sc); /* { dg-warning "11:passing argument" } */
+            ^
+
+"Test_name.c", line 28: warning: argument of type "const signed char *" is incompatible with parameter of type "signed char *"
+    foo_sc (1, 2, csc); /* { dg-warning "17:passing argument" } */
+                  ^
+
+"Test_name.c", line 21: warning: variable "ffp" was declared but never referenced
+    const void (*ffp)(void);
+                 ^
+

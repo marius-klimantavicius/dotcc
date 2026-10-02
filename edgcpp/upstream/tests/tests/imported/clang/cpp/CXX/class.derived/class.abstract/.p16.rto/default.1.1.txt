@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 11: error: deleted function overrides nondeleted function "A::a"
+    virtual void a() = delete; // expected-error{{deleted function 'a' cannot override a non-deleted function}}
+                 ^
+
+"Test_name.c", line 12: error: nondeleted function overrides deleted function "A::b"
+    virtual void b(); // expected-error{{non-deleted function 'b' cannot override a deleted function}}
+                 ^
+
+"Test_name.c", line 47: warning: overloaded virtual function "D::operator=" is only partially overridden in class "H"
+  struct H : D { // expected-note {{deleted because base class 'D' has an inaccessible move assignment}}
+         ^
+
+2 errors detected in the compilation of "Test_name.c".

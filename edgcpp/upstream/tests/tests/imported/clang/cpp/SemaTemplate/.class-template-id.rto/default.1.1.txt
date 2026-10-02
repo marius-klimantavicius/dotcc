@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 16: error: return value type does not match the function type
+      return ptr2; // precxx23-error{{cannot initialize return object of type 'A<int, FLOAT> *' (aka 'A<int, float> *') with an lvalue of type 'const A<int> *'}} \
+             ^
+
+"Test_name.c", line 19: error: return value type does not match the function type
+      return ptr3; // precxx23-error{{cannot initialize return object of type 'A<int, FLOAT> *' (aka 'A<int, float> *') with an lvalue of type 'A<int, double> *'}} \
+             ^
+
+"Test_name.c", line 33: error: return value type does not match the function type
+      return ptr3; // precxx23-error{{cannot initialize return object of type 'B<17 + 2> *' with an lvalue of type 'B<19 - 3>}} \
+             ^
+
+"Test_name.c", line 54: error: argument list for class template "Foo" is missing
+  void f(void) { Foo bar; } // precxx17-error {{use of class template 'Foo' requires template arguments}} \
+                 ^
+
+"Test_name.c", line 58: error: identifier "T" is undefined
+  template <> class Party<T> { friend struct Party<>; }; // expected-error {{use of undeclared identifier 'T'}}
+                          ^
+
+"Test_name.c", line 58: error: too few arguments for class template "Party"
+  template <> class Party<T> { friend struct Party<>; }; // expected-error {{use of undeclared identifier 'T'}}
+                                                   ^
+
+6 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c++ --target linux_x86_64 --gn 130200 Test_name.c
+"Test_name.c", line 7: error: identifier "__builtin_ia32_ldtilecfg" is undefined
+    __builtin_ia32_ldtilecfg(&ci);
+    ^
+
+"Test_name.c", line 9: error: identifier "__builtin_ia32_sttilecfg" is undefined
+    __builtin_ia32_sttilecfg(&i);
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --c++14 Test_name.c
+"Test_name.c", line 12: error: declaration is incompatible with function template "void N::fn(_Args &&...)" (declared at line 7)
+  template<class T> friend void N::fn(T&&);
+                                   ^
+
+"Test_name.c", line 13: error: declaration is incompatible with function template "void N::fn(_Args &&...)" (declared at line 7)
+  template<class T> friend void N::fn(const T&);
+                                   ^
+
+"Test_name.c", line 17: warning: variable "l" was declared but never referenced
+        CIArray l;
+                ^
+
+2 errors detected in the compilation of "Test_name.c".

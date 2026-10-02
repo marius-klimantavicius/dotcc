@@ -1,0 +1,40 @@
+fe_only -DTEST_NUMBER=4 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 -DCLANG_ABI_COMPAT=6 Test_name.c
+"Test_name.c", line 495: warning: signed bit field of length 1
+        char a:1;
+             ^
+
+"Test_name.c", line 499: warning: signed bit field of length 1
+        char e:1;
+             ^
+
+"Test_name.c", line 621: warning: offsetof applied to a type other than a standard-layout class
+    _Static_assert(__builtin_offsetof(B, n) == 1, "");
+                                      ^
+
+"Test_name.c", line 631: warning: offsetof applied to a type other than a standard-layout class
+    _Static_assert(__builtin_offsetof(C, n) == 2, "");
+                                      ^
+
+"Test_name.c", line 636: warning: offsetof applied to a type other than a standard-layout class
+    _Static_assert(__builtin_offsetof(D, n) == 1, "");
+                                      ^
+
+"Test_name.c", line 656: warning: packing attribute on the parent type is ignored for this field of class type "non_pod::t1" that is not standard-layout
+    t1 v1;
+       ^
+
+"Test_name.c", line 660: error: static assertion failed with ""
+  _Static_assert(_Alignof(t2) == 1, "");
+  ^
+"Test_name.c", line 660: note: the final comparison was 4 == 1
+  _Static_assert(_Alignof(t2) == 1, "");
+                              ^
+
+"Test_name.c", line 714: error: static assertion failed with ""
+  _Static_assert(sizeof(t3) == 8, "");
+  ^
+"Test_name.c", line 714: note: the final comparison was 12 == 8
+  _Static_assert(sizeof(t3) == 8, "");
+                            ^
+
+2 errors detected in the compilation of "Test_name.c".

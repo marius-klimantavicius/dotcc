@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 7: error: identifier "size_t" is undefined
+  template <typename, size_t X> struct array { }; // { dg-error "declared" }
+                      ^
+
+"Test_name.c", line 7: warning: declaration is incompatible with constant "long <unnamed>" (declared at line 6)
+  template <typename, size_t X> struct array { }; // { dg-error "declared" }
+                             ^
+
+1 error detected in the compilation of "Test_name.c".

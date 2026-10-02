@@ -1,0 +1,48 @@
+fe_only -DTEST_NUMBER=2 --c++20 --clang_version 160000 Test_name.c
+"Test_name.c", line 9: error: "A" has already been declared in the current scope
+      template<typename> friend struct A; // accepted by MSVC
+                                       ^
+
+"Test_name.c", line 18: error: "A" has already been declared in the current scope
+      template<typename> friend struct A; // error
+                                       ^
+
+"Test_name.c", line 27: error: "A" has already been declared in the current scope
+      template<typename> friend struct A; // error
+                                       ^
+
+"Test_name.c", line 46: error: declaration is incompatible with constant "int <unnamed>" (declared at line 37)
+        template<typename>
+                         ^
+          detected during instantiation of class "friend_lookup_using_contained::ns::C<<unnamed>> [with <unnamed>=int]" at line 51
+
+"Test_name.c", line 59: error: C is not a template
+      C<T> member;                // accepted by MSVC
+      ^
+
+"Test_name.c", line 82: error: "D" has already been declared in the current scope
+        template<int> friend struct D; // error, conflicts with C<int>::D, accepted by MSVC
+                                    ^
+          detected during instantiation of class "find_non_template_class::C<<unnamed>>::B [with <unnamed>=0]" at line 86
+
+"Test_name.c", line 101: error: template parameter "find_non_template_class_template_id::C<<unnamed>>::D" may not have a template argument list
+        template<typename T> friend struct D<T>;  // error, conflicts with C<int>::D
+                                           ^
+
+"Test_name.c", line 111: error: invalid friend declaration
+      friend W;                   // error
+      ^
+
+"Test_name.c", line 115: warning: template parameter "V" may not be used in an elaborated type specifier
+      friend struct V;            // error
+                    ^
+
+"Test_name.c", line 118: warning: declaration of "V" hides template parameter
+      friend struct V;            // error, conflicts with template parameter
+                    ^
+
+"Test_name.c", line 121: error: too few arguments for class template "template_parameter_found::A"
+    A<int> a;
+         ^
+
+9 errors detected in the compilation of "Test_name.c".

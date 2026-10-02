@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 4: error: expected a ")"
+  void f(int i = 0); // expected-error {{C does not support default arguments}}
+               ^
+
+1 error detected in the compilation of "Test_name.c".

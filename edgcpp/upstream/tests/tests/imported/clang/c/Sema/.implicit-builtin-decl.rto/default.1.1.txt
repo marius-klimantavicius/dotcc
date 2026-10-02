@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 6: warning: function "malloc" declared implicitly
+    int *ptr = malloc(sizeof(int) * 10); // expected-error{{call to undeclared library function 'malloc' with type}} \
+               ^
+
+"Test_name.c", line 6: warning: a value of type "int" cannot be used to initialize an entity of type "int *"
+    int *ptr = malloc(sizeof(int) * 10); // expected-error{{call to undeclared library function 'malloc' with type}} \
+               ^
+
+"Test_name.c", line 18: warning: variable "calloc" was declared but never referenced
+    int calloc = 1;
+        ^
+
+"Test_name.c", line 28: warning: function "fprintf" declared implicitly
+    fprintf(0, "foo"); // expected-warning{{declaration of built-in function 'fprintf' requires inclusion of the header <stdio.h>}} \
+    ^
+
+"Test_name.c", line 33: warning: declaration hides built-in function "__builtin_object_size"
+  void __builtin_object_size(); // expected-error{{conflicting types}} \
+       ^
+
+"Test_name.c", line 39: error: return value type does not match the function type
+    return __builtin_object_size(&a); // expected-error {{too few arguments to function}}
+           ^
+
+1 error detected in the compilation of "Test_name.c".

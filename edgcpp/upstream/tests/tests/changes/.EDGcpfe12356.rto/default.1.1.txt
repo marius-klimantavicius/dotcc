@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --g++ Test_name.c
+"Test_name.c", line 14: warning: attributes ignored here because they do not apply to a declared entity
+    __attribute((aligned(32)));  // Now accepted with a warning in GNU C++
+                 ^
+

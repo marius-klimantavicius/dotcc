@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 --c++03 --c++03 --c++03 Test_name.c
+"Test_name.c", line 21: warning: incrementing a bool value is deprecated
+    ++b; // precxx17-warning {{incrementing expression of type bool is deprecated}} \
+      ^
+
+"Test_name.c", line 23: warning: incrementing a bool value is deprecated
+    b++; // precxx17-warning {{incrementing expression of type bool is deprecated}} \
+    ^
+
+"Test_name.c", line 25: error: bool type is not allowed
+    --b; // expected-error {{cannot decrement expression of type bool}}
+      ^
+
+"Test_name.c", line 26: error: bool type is not allowed
+    b--; // expected-error {{cannot decrement expression of type bool}}
+    ^
+
+"Test_name.c", line 28: error: a value of type "int *" cannot be used to initialize an entity of type "bool *"
+    bool *b1 = (int *)0; // expected-error{{cannot initialize}}
+               ^
+
+3 errors detected in the compilation of "Test_name.c".

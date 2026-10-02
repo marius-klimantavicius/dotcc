@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --c99 --embedded_c Test_name.c
+"Test_name.c", line 14: error: named register is too small for the type of the variable
+  register _EDG_REG_1 int r1;
+  ^
+
+"Test_name.c", line 15: error: variable "r1" (declared at line 14) redeclared with incompatible named-register storage class
+  register _EDG_REG_1 int r1;
+  ^
+
+"Test_name.c", line 18: error: variable "r2" (declared at line 17) redeclared with incompatible named-register storage class
+  register _EDG_REG_2 int r2;
+  ^
+
+"Test_name.c", line 21: error: redeclaration of variable "r3" (declared at line 20) is missing a named-register storage class
+  extern int r3;
+  ^
+
+"Test_name.c", line 22: error: redeclaration of variable "r3" (declared at line 20) is missing a named-register storage class
+  int r3;
+      ^
+
+5 errors detected in the compilation of "Test_name.c".

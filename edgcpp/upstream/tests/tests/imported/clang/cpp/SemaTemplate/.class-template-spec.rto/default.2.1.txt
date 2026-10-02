@@ -1,0 +1,76 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 26: error: pointer or reference to incomplete type "A<double, double>" is not allowed
+    (void)a1->x; // expected-error{{member access into incomplete type}}
+          ^
+
+"Test_name.c", line 27: error: pointer or reference to incomplete type "A<double, int>" is not allowed
+    (void)a2->x; // expected-error{{implicit instantiation of undefined template 'A<double>'}}
+          ^
+
+"Test_name.c", line 28: warning: missing return statement at end of non-void function "test_incomplete_specs"
+  }
+  ^
+
+"Test_name.c", line 34: error: class "A<float, float>" has already been defined (previous definition at line 11)
+  template<> struct A<FLOAT, float> { }; // expected-error{{redefinition}}
+                    ^
+
+"Test_name.c", line 36: error: class "A<float, int>" has already been defined (previous definition at line 15)
+  template<> struct A<float, int> { }; // expected-error{{redefinition}}
+                    ^
+
+"Test_name.c", line 77: error: specializing class "A<double, int>" requires "template<>" syntax
+  struct A<double> { }; // expected-error{{template specialization requires 'template<>'}}
+         ^
+
+"Test_name.c", line 97: error: class "N::B<short>" cannot be defined in the current scope
+    template<> struct ::N::B<short> { }; // expected-error{{class template specialization of 'B' not in a namespace enclosing 'N'}}
+                      ^
+
+"Test_name.c", line 99: error: class "A<long double, int>" cannot be specialized in the current scope
+    template<> struct ::A<long double>; // expected-error{{must occur at global scope}}
+                      ^
+
+"Test_name.c", line 116: error: class template and template parameter may not have the same name
+  class Wibble<int> { }; // expected-error{{cannot specialize a template template parameter}}
+        ^
+
+"Test_name.c", line 116: error: class "Wibble<int>" cannot be partially specialized in the current scope
+  class Wibble<int> { }; // expected-error{{cannot specialize a template template parameter}}
+        ^
+
+"Test_name.c", line 115: warning: template template parameter "Wibble" is not used in or cannot be deduced from the template argument list of class template "Wibble<int>"
+  template<template<class T> class Wibble>
+                                   ^
+
+"Test_name.c", line 122: error: class "rdar9676205::X<U *>" cannot be declared in this scope
+      struct X<U*> { // expected-error{{partial specialization of 'X' not in a namespace enclosing}}
+             ^
+
+"Test_name.c", line 218: error: more than one partial specialization matches the template argument list of class "NTTPTypeVsPartialOrder::B<0, NTTPTypeVsPartialOrder::Y<int>, 0>"
+            "NTTPTypeVsPartialOrder::B<0, T, N>" (declared at line 214)
+            "NTTPTypeVsPartialOrder::B<0, NTTPTypeVsPartialOrder::Y<T>, N>" (declared at line 216)
+    B<0, Y<int>, 0> by;
+                    ^
+
+"Test_name.c", line 218: error: more than one partial specialization matches the template argument list of class "NTTPTypeVsPartialOrder::B<0, NTTPTypeVsPartialOrder::Y<int>, 0>"
+            "NTTPTypeVsPartialOrder::B<0, T, N>" (declared at line 214)
+            "NTTPTypeVsPartialOrder::B<0, NTTPTypeVsPartialOrder::Y<T>, N>" (declared at line 216)
+    B<0, Y<int>, 0> by;
+                    ^
+
+"Test_name.c", line 218: error: more than one partial specialization matches the template argument list of class "NTTPTypeVsPartialOrder::B<0, NTTPTypeVsPartialOrder::Y<int>, 0>"
+            "NTTPTypeVsPartialOrder::B<0, T, N>" (declared at line 214)
+            "NTTPTypeVsPartialOrder::B<0, NTTPTypeVsPartialOrder::Y<T>, N>" (declared at line 216)
+    B<0, Y<int>, 0> by;
+                      ^
+
+"Test_name.c", line 218: error: incomplete type "NTTPTypeVsPartialOrder::B<0, NTTPTypeVsPartialOrder::Y<int>, 0>" is not allowed
+    B<0, Y<int>, 0> by;
+                    ^
+
+"Test_name.c", line 232: error: the template argument list of the partial specialization includes a nontype argument whose type depends on a template parameter
+    template<typename T> struct S<T> {}; // expected-error {{non-type template argument specializes a template parameter with dependent type 'T'}}
+                                ^
+
+15 errors detected in the compilation of "Test_name.c".

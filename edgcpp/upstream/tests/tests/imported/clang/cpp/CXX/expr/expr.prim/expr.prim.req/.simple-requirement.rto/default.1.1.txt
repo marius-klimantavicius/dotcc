@@ -1,0 +1,142 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 9: error: expression must have class type but it has type "int"
+  static_assert(requires { (0).da; }); // expected-error{{member reference base type 'int' is not a structure or union}}
+                           ^
+
+"Test_name.c", line 25: error: template constraint not satisfied
+  using r1i2 = r1<A>; // expected-error{{constraints not satisfied for class template 'r1' [with T = A]}}
+                   ^
+"Test_name.c", line 19: note: substitution of arguments "<A>" for requires-clause failed
+  template<typename T> requires requires (T a, const T& b) { a + b; }
+                                ^
+"Test_name.c", line 19: note: atomic constraint evaluates to false
+  template<typename T> requires requires (T a, const T& b) { a + b; }
+                                ^
+
+"Test_name.c", line 27: error: template constraint not satisfied
+  using r1i4 = r1<C>; // expected-error{{constraints not satisfied for class template 'r1' [with T = C]}}
+                   ^
+"Test_name.c", line 19: note: substitution of arguments "<C>" for requires-clause failed
+  template<typename T> requires requires (T a, const T& b) { a + b; }
+                                ^
+"Test_name.c", line 19: note: atomic constraint evaluates to false
+  template<typename T> requires requires (T a, const T& b) { a + b; }
+                                ^
+
+"Test_name.c", line 37: error: template constraint not satisfied
+  using r2i1 = r2<int>; // expected-error{{constraints not satisfied for class template 'r2' [with T = int]}}
+                     ^
+"Test_name.c", line 31: note: substitution of arguments "<int>" for requires-clause failed
+  template<typename T> requires requires (T a) { a.foo(); }
+                                ^
+"Test_name.c", line 31: note: atomic constraint evaluates to false
+  template<typename T> requires requires (T a) { a.foo(); }
+                                ^
+
+"Test_name.c", line 38: error: template constraint not satisfied
+  using r2i2 = r2<A>; // expected-error{{constraints not satisfied for class template 'r2' [with T = A]}}
+                   ^
+"Test_name.c", line 31: note: substitution of arguments "<A>" for requires-clause failed
+  template<typename T> requires requires (T a) { a.foo(); }
+                                ^
+"Test_name.c", line 31: note: atomic constraint evaluates to false
+  template<typename T> requires requires (T a) { a.foo(); }
+                                ^
+
+"Test_name.c", line 40: error: template constraint not satisfied
+  using r2i4 = r2<const D>; // expected-error{{constraints not satisfied for class template 'r2' [with T = const D]}}
+                         ^
+"Test_name.c", line 31: note: substitution of arguments "<const D>" for requires-clause failed
+  template<typename T> requires requires (T a) { a.foo(); }
+                                ^
+"Test_name.c", line 31: note: atomic constraint evaluates to false
+  template<typename T> requires requires (T a) { a.foo(); }
+                                ^
+
+"Test_name.c", line 51: error: template constraint not satisfied
+  using r3i4 = r3<class nonexistent>; // expected-error{{constraints not satisfied for class template 'r3' [with T = class nonexistent]}}
+                                   ^
+"Test_name.c", line 42: note: substitution of arguments "<nonexistent>" for requires-clause failed
+  template<typename T> requires requires { sizeof(T); }
+                                ^
+"Test_name.c", line 42: note: atomic constraint evaluates to false
+  template<typename T> requires requires { sizeof(T); }
+                                ^
+
+"Test_name.c", line 51: error: invalid redeclaration of type name "r3i4" (declared at line 50)
+  using r3i4 = r3<class nonexistent>; // expected-error{{constraints not satisfied for class template 'r3' [with T = class nonexistent]}}
+        ^
+
+"Test_name.c", line 67: error: template constraint not satisfied
+  using r5i1 = r5<int>;
+                     ^
+"Test_name.c", line 63: note: substitution of arguments "<int>" for requires-clause failed
+  template<typename T> requires requires(T t) { f(t); }
+                                ^
+"Test_name.c", line 63: note: atomic constraint evaluates to false
+  template<typename T> requires requires(T t) { f(t); }
+                                ^
+
+"Test_name.c", line 76: error: expected a ";"
+  template<typename T> requires requires(T t) { typename E<T>::non_default_constructible{}; }
+                                                                                        ^
+
+"Test_name.c", line 83: error: expected a ";"
+  template<typename T> requires requires(T t) { typename E<T>::non_default_constructible(); }
+                                                                                        ^
+
+"Test_name.c", line 99: error: template constraint not satisfied
+    using c1c1 = C_check<void>; // expected-error{{constraints not satisfied for class template 'C_check' [with T = void]}}
+                             ^
+"Test_name.c", line 98: note: type constraint failed for "void"
+    template<C T> struct C_check {}; // expected-note{{because 'void' does not satisfy 'C'}} expected-note{{because 'int *' does not satisfy 'C'}}
+             ^
+"Test_name.c", line 93: note: atomic constraint evaluates to false
+      requires (T a, T b) { // expected-note{{because 'a' would be invalid: argument may not have 'void' type}}
+      ^
+
+"Test_name.c", line 100: error: template constraint not satisfied
+    using c1c2 = C_check<int *>; // expected-error{{constraints not satisfied for class template 'C_check' [with T = int *]}}
+                              ^
+"Test_name.c", line 98: note: type constraint failed for "int *"
+    template<C T> struct C_check {}; // expected-note{{because 'void' does not satisfy 'C'}} expected-note{{because 'int *' does not satisfy 'C'}}
+             ^
+"Test_name.c", line 93: note: atomic constraint evaluates to false
+      requires (T a, T b) { // expected-note{{because 'a' would be invalid: argument may not have 'void' type}}
+      ^
+
+"Test_name.c", line 106: error: expression must have a constant value
+  constexpr bool b = requires (X &x) { static_cast<int(*)[(typeid(x), 0)]>(nullptr); };
+                                                          ^
+"Test_name.c", line 106: note: attempt to access run-time storage
+  constexpr bool b = requires (X &x) { static_cast<int(*)[(typeid(x), 0)]>(nullptr); };
+                                                           ^
+
+"Test_name.c", line 142: error: static assertion failed
+  static_assert(!A<1>::bar());
+  ^
+
+"Test_name.c", line 186: error: function "access_checks::in_concepts::B::f" (declared at line 183) is inaccessible
+  concept C2 = requires() { B::f(); }; // expected-error {{'f' is a private member}}
+                               ^
+
+"Test_name.c", line 190: error: function "access_checks::in_concepts::B::f" (declared at line 183) is inaccessible
+        B::f(); // expected-error {{'f' is a private member}}
+           ^
+
+"Test_name.c", line 220: error: static assertion failed
+  static_assert(B<int>::index() == 2);
+  ^
+"Test_name.c", line 220: note: the final comparison was 1 == 2
+  static_assert(B<int>::index() == 2);
+                                ^
+
+"Test_name.c", line 240: error: constraints for function "access_checks::in_trailing_requires::missing_member_function::Use<T>::foo [with T=int]" (declared at line 230) are not satisfied
+    Use<int>::foo(); //expected-error {{invalid reference to function 'foo': constraints not satisfied}}
+              ^
+
+"Test_name.c", line 106: warning: variable "b" was declared but never referenced
+  constexpr bool b = requires (X &x) { static_cast<int(*)[(typeid(x), 0)]>(nullptr); };
+                 ^
+
+19 errors detected in the compilation of "Test_name.c".

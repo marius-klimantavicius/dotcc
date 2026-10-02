@@ -1,0 +1,254 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: warning: capturing *this is nonstandard in this mode
+      auto b = [*this, this] {};		// { dg-error "already captured 'this'" }
+                ^
+
+"Test_name.c", line 10: error: a name cannot appear more than once in a capture-list
+      auto b = [*this, this] {};		// { dg-error "already captured 'this'" }
+                       ^
+
+"Test_name.c", line 12: error: a name cannot appear more than once in a capture-list
+      auto c = [this, *this] {};		// { dg-error "already captured 'this'" }
+                      ^
+
+"Test_name.c", line 17: error: expression must be a modifiable lvalue
+      auto g = [*this] { a++; };		// { dg-error "in read-only object" }
+                         ^
+
+"Test_name.c", line 23: error: explicit capture matches default
+      auto k = [=, this] { return a; };// { dg-error "explicit by-copy capture of 'this' with by-copy capture default only available with" "" { target c++17_down } }
+                   ^
+
+"Test_name.c", line 28: error: expression must be a modifiable lvalue
+      auto p = [*this] { this = 0; };	// { dg-error "lvalue required as left operand of assignment" }
+                         ^
+
+"Test_name.c", line 30: error: explicit capture matches default
+      auto q = [=, this, *this] { return a; };// { dg-error "already captured 'this'" }
+                   ^
+
+"Test_name.c", line 30: error: a name cannot appear more than once in a capture-list
+      auto q = [=, this, *this] { return a; };// { dg-error "already captured 'this'" }
+                         ^
+
+"Test_name.c", line 33: error: explicit capture matches default
+      auto r = [=, this, this] { return a; };// { dg-error "already captured 'this'" }
+                   ^
+
+"Test_name.c", line 33: error: explicit capture matches default
+      auto r = [=, this, this] { return a; };// { dg-error "already captured 'this'" }
+                         ^
+
+"Test_name.c", line 33: error: a name cannot appear more than once in a capture-list
+      auto r = [=, this, this] { return a; };// { dg-error "already captured 'this'" }
+                         ^
+
+"Test_name.c", line 35: error: explicit capture matches default
+      auto s = [=, *this, this] { return a; };// { dg-error "already captured 'this'" }
+                          ^
+
+"Test_name.c", line 35: error: a name cannot appear more than once in a capture-list
+      auto s = [=, *this, this] { return a; };// { dg-error "already captured 'this'" }
+                          ^
+
+"Test_name.c", line 38: error: a name cannot appear more than once in a capture-list
+      auto t = [=, *this, *this] { return a; };// { dg-error "already captured 'this'" }
+                          ^
+
+"Test_name.c", line 40: error: a name cannot appear more than once in a capture-list
+      auto u = [&, this, *this] { return a; };// { dg-error "already captured 'this'" }
+                         ^
+
+"Test_name.c", line 42: error: a name cannot appear more than once in a capture-list
+      auto w = [&, this, this] { return a; };// { dg-error "already captured 'this'" }
+                         ^
+
+"Test_name.c", line 43: error: a name cannot appear more than once in a capture-list
+      auto x = [&, *this, this] { return a; };// { dg-error "already captured 'this'" }
+                          ^
+
+"Test_name.c", line 45: error: a name cannot appear more than once in a capture-list
+      auto y = [&, *this, *this] { return a; };// { dg-error "already captured 'this'" }
+                          ^
+
+"Test_name.c", line 10: warning: variable "b" was declared but never referenced
+      auto b = [*this, this] {};		// { dg-error "already captured 'this'" }
+           ^
+
+"Test_name.c", line 12: warning: variable "c" was declared but never referenced
+      auto c = [this, *this] {};		// { dg-error "already captured 'this'" }
+           ^
+
+"Test_name.c", line 14: warning: variable "d" was declared but never referenced
+      auto d = [this] { return a; };
+           ^
+
+"Test_name.c", line 15: warning: variable "e" was declared but never referenced
+      auto e = [*this] { return a; };	// { dg-error "'*this' capture only available with" "" { target c++14_down } }
+           ^
+
+"Test_name.c", line 16: warning: variable "f" was declared but never referenced
+      auto f = [this] { a++; };
+           ^
+
+"Test_name.c", line 17: warning: variable "g" was declared but never referenced
+      auto g = [*this] { a++; };		// { dg-error "in read-only object" }
+           ^
+
+"Test_name.c", line 19: warning: variable "h" was declared but never referenced
+      auto h = [*this] () mutable { a++; };// { dg-error "'*this' capture only available with" "" { target c++14_down } }
+           ^
+
+"Test_name.c", line 20: warning: variable "i" was declared but never referenced
+      auto i = [=] { return a; };		// { dg-warning "implicit capture" "" { target c++2a } }
+           ^
+
+"Test_name.c", line 21: warning: variable "j" was declared but never referenced
+      auto j = [&] { return a; };
+           ^
+
+"Test_name.c", line 23: warning: variable "k" was declared but never referenced
+      auto k = [=, this] { return a; };// { dg-error "explicit by-copy capture of 'this' with by-copy capture default only available with" "" { target c++17_down } }
+           ^
+
+"Test_name.c", line 24: warning: variable "l" was declared but never referenced
+      auto l = [&, this] { return a; };
+           ^
+
+"Test_name.c", line 25: warning: variable "m" was declared but never referenced
+      auto m = [=, *this] { return a; };// { dg-error "'*this' capture only available with" "" { target c++14_down } }
+           ^
+
+"Test_name.c", line 26: warning: variable "n" was declared but never referenced
+      auto n = [&, *this] { return a; };// { dg-error "'*this' capture only available with" "" { target c++14_down } }
+           ^
+
+"Test_name.c", line 27: warning: variable "o" was declared but never referenced
+      auto o = [*this, &v] { return a + v; };// { dg-error "'*this' capture only available with" "" { target c++14_down } }
+           ^
+
+"Test_name.c", line 28: warning: variable "p" was declared but never referenced
+      auto p = [*this] { this = 0; };	// { dg-error "lvalue required as left operand of assignment" }
+           ^
+
+"Test_name.c", line 30: warning: variable "q" was declared but never referenced
+      auto q = [=, this, *this] { return a; };// { dg-error "already captured 'this'" }
+           ^
+
+"Test_name.c", line 33: warning: variable "r" was declared but never referenced
+      auto r = [=, this, this] { return a; };// { dg-error "already captured 'this'" }
+           ^
+
+"Test_name.c", line 35: warning: variable "s" was declared but never referenced
+      auto s = [=, *this, this] { return a; };// { dg-error "already captured 'this'" }
+           ^
+
+"Test_name.c", line 38: warning: variable "t" was declared but never referenced
+      auto t = [=, *this, *this] { return a; };// { dg-error "already captured 'this'" }
+           ^
+
+"Test_name.c", line 40: warning: variable "u" was declared but never referenced
+      auto u = [&, this, *this] { return a; };// { dg-error "already captured 'this'" }
+           ^
+
+"Test_name.c", line 42: warning: variable "w" was declared but never referenced
+      auto w = [&, this, this] { return a; };// { dg-error "already captured 'this'" }
+           ^
+
+"Test_name.c", line 43: warning: variable "x" was declared but never referenced
+      auto x = [&, *this, this] { return a; };// { dg-error "already captured 'this'" }
+           ^
+
+"Test_name.c", line 45: warning: variable "y" was declared but never referenced
+      auto y = [&, *this, *this] { return a; };// { dg-error "already captured 'this'" }
+           ^
+
+"Test_name.c", line 56: error: this enclosing-function local variable cannot be referenced in this lambda body because an enclosing lambda does not allow implicit captures
+      auto c = []{ return [*this] { return b; }; };	// { dg-error "'this' was not captured for this lambda function" }
+                           ^
+
+"Test_name.c", line 56: warning: variable "c" was declared but never referenced
+      auto c = []{ return [*this] { return b; }; };	// { dg-error "'this' was not captured for this lambda function" }
+           ^
+
+"Test_name.c", line 65: error: function "C::C(const C &)" (declared at line 61) cannot be referenced -- it is a deleted function
+      auto e = [*this] { return c; };	// { dg-error "use of deleted function" }
+                ^
+
+"Test_name.c", line 65: error: "lambda []()->int::<unnamed>(const lambda []()->int &)" (declared implicitly), required for copy that was eliminated, cannot be referenced -- it is a deleted function
+      auto e = [*this] { return c; };	// { dg-error "use of deleted function" }
+               ^
+
+"Test_name.c", line 70: error: function "C::C(const C &)" (declared at line 61) cannot be referenced -- it is a deleted function
+      auto i = [*this] { bar (); };	// { dg-error "use of deleted function" }
+                ^
+
+"Test_name.c", line 70: error: "lambda []()->void::<unnamed>(const lambda []()->void &)" (declared implicitly), required for copy that was eliminated, cannot be referenced -- it is a deleted function
+      auto i = [*this] { bar (); };	// { dg-error "use of deleted function" }
+               ^
+
+"Test_name.c", line 64: warning: variable "d" was declared but never referenced
+      auto d = [this] { return c; };
+           ^
+
+"Test_name.c", line 67: warning: variable "f" was declared but never referenced
+      auto f = [=] { return c; };		// { dg-warning "implicit capture" "" { target c++2a } }
+           ^
+
+"Test_name.c", line 68: warning: variable "g" was declared but never referenced
+      auto g = [&] { return c; };
+           ^
+
+"Test_name.c", line 69: warning: variable "h" was declared but never referenced
+      auto h = [this] { bar (); };
+           ^
+
+"Test_name.c", line 80: error: function "D::~D()" (declared at line 76) cannot be referenced -- it is a deleted function
+      auto f = [*this] { return d; };	// { dg-error "use of deleted function" }
+                ^
+
+"Test_name.c", line 80: error: function "lambda []()->int::~<unnamed>()" (declared implicitly) cannot be referenced -- it is a deleted function
+      auto f = [*this] { return d; };	// { dg-error "use of deleted function" }
+               ^
+
+"Test_name.c", line 80: error: "lambda []()->int::<unnamed>(const lambda []()->int &)" (declared implicitly), required for copy that was eliminated, cannot be referenced -- it is a deleted function
+      auto f = [*this] { return d; };	// { dg-error "use of deleted function" }
+               ^
+
+"Test_name.c", line 80: error: "lambda []()->int::~<unnamed>()" (declared implicitly), required for copy that was eliminated, cannot be referenced -- it is a deleted function
+      auto f = [*this] { return d; };	// { dg-error "use of deleted function" }
+               ^
+
+"Test_name.c", line 85: error: function "D::~D()" (declared at line 76) cannot be referenced -- it is a deleted function
+      auto j = [*this] { bar (); };	// { dg-error "use of deleted function" }
+                ^
+
+"Test_name.c", line 85: error: function "lambda []()->void::~<unnamed>()" (declared implicitly) cannot be referenced -- it is a deleted function
+      auto j = [*this] { bar (); };	// { dg-error "use of deleted function" }
+               ^
+
+"Test_name.c", line 85: error: "lambda []()->void::<unnamed>(const lambda []()->void &)" (declared implicitly), required for copy that was eliminated, cannot be referenced -- it is a deleted function
+      auto j = [*this] { bar (); };	// { dg-error "use of deleted function" }
+               ^
+
+"Test_name.c", line 85: error: "lambda []()->void::~<unnamed>()" (declared implicitly), required for copy that was eliminated, cannot be referenced -- it is a deleted function
+      auto j = [*this] { bar (); };	// { dg-error "use of deleted function" }
+               ^
+
+"Test_name.c", line 79: warning: variable "e" was declared but never referenced
+      auto e = [this] { return d; };
+           ^
+
+"Test_name.c", line 82: warning: variable "g" was declared but never referenced
+      auto g = [=] { return d; };		// { dg-warning "implicit capture" "" { target c++2a } }
+           ^
+
+"Test_name.c", line 83: warning: variable "h" was declared but never referenced
+      auto h = [&] { return d; };
+           ^
+
+"Test_name.c", line 84: warning: variable "i" was declared but never referenced
+      auto i = [this] { bar (); };
+           ^
+
+30 errors detected in the compilation of "Test_name.c".

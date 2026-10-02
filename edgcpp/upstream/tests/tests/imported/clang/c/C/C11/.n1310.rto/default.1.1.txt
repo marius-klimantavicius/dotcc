@@ -1,0 +1,122 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c89 Test_name.c
+"Test_name.c", line 21: error: expected a type specifier
+  _Static_assert(__CHAR_BIT__ == 8, "");
+                 ^
+
+"Test_name.c", line 21: error: expected a type specifier
+  _Static_assert(__CHAR_BIT__ == 8, "");
+                                    ^
+
+"Test_name.c", line 21: warning: this declaration has no storage class or type specifier
+  _Static_assert(__CHAR_BIT__ == 8, "");
+  ^
+
+"Test_name.c", line 22: error: expected a type specifier
+  _Static_assert(sizeof(signed char) == 1, "");
+                 ^
+
+"Test_name.c", line 22: error: expected a type specifier
+  _Static_assert(sizeof(signed char) == 1, "");
+                                           ^
+
+"Test_name.c", line 22: warning: this declaration has no storage class or type specifier
+  _Static_assert(sizeof(signed char) == 1, "");
+  ^
+
+"Test_name.c", line 25: error: expected a type specifier
+  _Static_assert(TEST(0, 1), "");
+                 ^
+
+"Test_name.c", line 25: error: expected a type specifier
+  _Static_assert(TEST(0, 1), "");
+                             ^
+
+"Test_name.c", line 25: warning: this declaration has no storage class or type specifier
+  _Static_assert(TEST(0, 1), "");
+  ^
+
+"Test_name.c", line 26: error: expected a type specifier
+  _Static_assert(TEST(1, 2), "");
+                 ^
+
+"Test_name.c", line 26: error: expected a type specifier
+  _Static_assert(TEST(1, 2), "");
+                             ^
+
+"Test_name.c", line 26: warning: this declaration has no storage class or type specifier
+  _Static_assert(TEST(1, 2), "");
+  ^
+
+"Test_name.c", line 27: error: expected a type specifier
+  _Static_assert(TEST(2, 4), "");
+                 ^
+
+"Test_name.c", line 27: error: expected a type specifier
+  _Static_assert(TEST(2, 4), "");
+                             ^
+
+"Test_name.c", line 27: warning: this declaration has no storage class or type specifier
+  _Static_assert(TEST(2, 4), "");
+  ^
+
+"Test_name.c", line 28: error: expected a type specifier
+  _Static_assert(TEST(3, 8), "");
+                 ^
+
+"Test_name.c", line 28: error: expected a type specifier
+  _Static_assert(TEST(3, 8), "");
+                             ^
+
+"Test_name.c", line 28: warning: this declaration has no storage class or type specifier
+  _Static_assert(TEST(3, 8), "");
+  ^
+
+"Test_name.c", line 29: error: expected a type specifier
+  _Static_assert(TEST(4, 16), "");
+                 ^
+
+"Test_name.c", line 29: error: expected a type specifier
+  _Static_assert(TEST(4, 16), "");
+                              ^
+
+"Test_name.c", line 29: warning: this declaration has no storage class or type specifier
+  _Static_assert(TEST(4, 16), "");
+  ^
+
+"Test_name.c", line 30: error: expected a type specifier
+  _Static_assert(TEST(5, 32), "");
+                 ^
+
+"Test_name.c", line 30: error: expected a type specifier
+  _Static_assert(TEST(5, 32), "");
+                              ^
+
+"Test_name.c", line 30: warning: this declaration has no storage class or type specifier
+  _Static_assert(TEST(5, 32), "");
+  ^
+
+"Test_name.c", line 31: error: expected a type specifier
+  _Static_assert(TEST(6, 64), "");
+                 ^
+
+"Test_name.c", line 31: error: expected a type specifier
+  _Static_assert(TEST(6, 64), "");
+                              ^
+
+"Test_name.c", line 31: warning: this declaration has no storage class or type specifier
+  _Static_assert(TEST(6, 64), "");
+  ^
+
+"Test_name.c", line 32: error: expected a type specifier
+  _Static_assert(TEST(7, (signed char)128), "");
+                 ^
+
+"Test_name.c", line 32: error: expected a type specifier
+  _Static_assert(TEST(7, (signed char)128), "");
+                                            ^
+
+"Test_name.c", line 32: warning: this declaration has no storage class or type specifier
+  _Static_assert(TEST(7, (signed char)128), "");
+  ^
+
+20 errors detected in the compilation of "Test_name.c".

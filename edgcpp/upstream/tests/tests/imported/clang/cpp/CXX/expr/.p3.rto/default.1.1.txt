@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 5: error: nonmember operator requires a parameter with class or enum type
+  double operator +(double, double); // expected-error{{overloaded 'operator+' must have at least one parameter of class or enumeration type}}
+         ^
+
+1 error detected in the compilation of "Test_name.c".

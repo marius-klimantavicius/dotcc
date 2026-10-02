@@ -1,0 +1,20 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 20: error: static assertion failed
+  static_assert(0); // expected-error {{static assertion failed}}
+  ^
+
+"Test_name.c", line 25: error: expression must have a constant value
+  static_assert(a);      // expected-error {{static assertion expression is not an integral constant expression}}
+                ^
+"Test_name.c", line 25: note: the value of variable "a" (declared at line 22) cannot be used as a constant
+  static_assert(a);      // expected-error {{static assertion expression is not an integral constant expression}}
+                ^
+
+"Test_name.c", line 26: error: expression must have a constant value
+  static_assert(0 || a); // expected-error {{static assertion expression is not an integral constant expression}}
+                     ^
+"Test_name.c", line 26: note: the value of variable "a" (declared at line 22) cannot be used as a constant
+  static_assert(0 || a); // expected-error {{static assertion expression is not an integral constant expression}}
+                     ^
+
+3 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 29: error: function template "StdExample::process" has already been defined (previous definition at line 24)
+      void process(vector<T, Alloc<T>>& w) // expected-error {{redefinition of 'process'}}
+           ^
+
+"Test_name.c", line 39: error: no instance of function template "StdExample::f" matches the argument list
+            argument types are: (StdExample::vector<int, StdExample::Alloc<int>>)
+      f(v); // expected-error {{no matching function for call to 'f'}}
+      ^
+"Test_name.c", line 33: note: candidate function template "StdExample::f" failed deduction
+      void f(TT<int>); // expected-note {{candidate template ignored}}
+           ^
+
+"Test_name.c", line 41: warning: missing return statement at end of non-void function "StdExample::h"
+    }
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 24: warning: variable "y" was declared but never referenced
+    typeof_unqual (also_ok ()) y = 2;
+                               ^
+
+"Test_name.c", line 26: warning: variable "p" was set but never used
+    int (*p)[x] = &a;
+          ^
+
+"Test_name.c", line 27: warning: variable "q" was declared but never referenced
+    typeof (p + not_defined ()) q;
+                                ^
+
+"Test_name.c", line 28: warning: variable "q2" was declared but never referenced
+    typeof_unqual (p + also_not_defined ()) q2;
+                                            ^
+

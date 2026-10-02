@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++03 Test_name.c
+"./cpp0x/udlit-cpp98-neg.C", line 6: error: expected an operator
+  operator ""_mm(long double m)
+           ^
+
+"./cpp0x/udlit-cpp98-neg.C", line 6: error: expected a ";"
+  operator ""_mm(long double m)
+           ^
+
+"./cpp0x/udlit-cpp98-neg.C", line 9: error: extra text after expected end of number
+  int in = 0.0254_mm;
+                 ^
+
+"./cpp0x/udlit-cpp98-neg.C", line 9: warning: parsing restarts here after previous syntax error
+  int in = 0.0254_mm;
+                    ^
+
+"./cpp0x/udlit-cpp98-neg.C", line 12: error: expected an operator
+  operator ""_Q(const char *, std::size_t)
+           ^
+
+"./cpp0x/udlit-cpp98-neg.C", line 12: error: expected a ";"
+  operator ""_Q(const char *, std::size_t)
+           ^
+
+"./cpp0x/udlit-cpp98-neg.C", line 15: warning: parsing restarts here after previous syntax error
+  int x = "Hello"_Q;
+                   ^
+
+5 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,386 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 14: error: this constant expression has type "const char *" instead of the required integral or enum type
+    alignas ("foobar") int x2;			// { dg-error "'alignas' argument has non-integral type 'const char \\\[7\\\]'" }
+             ^
+
+"Test_name.c", line 16: error: this constant expression has type "const char *" instead of the required integral or enum type
+    alignas ("foo", "bar", "baz") int x4;		// { dg-error "'alignas' argument has non-integral type 'const char \\\[4\\\]'" }
+             ^
+
+"Test_name.c", line 16: error: this constant expression has type "const char *" instead of the required integral or enum type
+    alignas ("foo", "bar", "baz") int x4;		// { dg-error "'alignas' argument has non-integral type 'const char \\\[4\\\]'" }
+                    ^
+
+"Test_name.c", line 16: error: this constant expression has type "const char *" instead of the required integral or enum type
+    alignas ("foo", "bar", "baz") int x4;		// { dg-error "'alignas' argument has non-integral type 'const char \\\[4\\\]'" }
+                           ^
+
+"Test_name.c", line 24: error: alignas does not apply here
+    auto a = [] alignas (int) () {};		// { dg-error "'alignas' on function declaration" }
+                ^
+
+"Test_name.c", line 25: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+    auto b = [] constexpr alignas (int) {};	// { dg-error "'alignas' on a type other than class" }
+                ^
+
+"Test_name.c", line 25: error: constexpr lambdas are not enabled in this mode
+    auto b = [] constexpr alignas (int) {};	// { dg-error "'alignas' on a type other than class" }
+                ^
+
+"Test_name.c", line 25: error: alignas does not apply here
+    auto b = [] constexpr alignas (int) {};	// { dg-error "'alignas' on a type other than class" }
+                          ^
+
+"Test_name.c", line 28: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+    auto c = [] noexcept alignas (int) {};	// { dg-error "'alignas' on a type other than class" }
+                ^
+
+"Test_name.c", line 28: error: alignas does not apply here
+    auto c = [] noexcept alignas (int) {};	// { dg-error "'alignas' on a type other than class" }
+                         ^
+
+"Test_name.c", line 30: error: alignas does not apply here
+    auto d = [] () alignas (int) {};		// { dg-error "'alignas' on a type other than class" }
+                   ^
+
+"Test_name.c", line 34: error: alignas does not apply here
+    alignas (int);				// { dg-warning "attributes at the beginning of statement are ignored" }
+    ^
+
+"Test_name.c", line 35: error: alignas does not apply here
+    alignas (int) {}				// { dg-warning "attributes at the beginning of statement are ignored" }
+    ^
+
+"Test_name.c", line 36: error: alignas does not apply here
+    alignas (int) if (true) {}			// { dg-warning "attributes at the beginning of statement are ignored" }
+    ^
+
+"Test_name.c", line 37: error: alignas does not apply here
+    alignas (int) while (false) {}		// { dg-warning "attributes at the beginning of statement are ignored" }
+    ^
+
+"Test_name.c", line 38: error: alignas does not apply here
+    alignas (int) goto lab;			// { dg-warning "attributes at the beginning of statement are ignored" }
+    ^
+
+"Test_name.c", line 39: error: alignas does not apply here
+    alignas (int) lab:;				// { dg-error "alignment may not be specified for 'lab'" }
+    ^
+
+"Test_name.c", line 40: error: alignas does not apply here
+    alignas (int) try {} catch (int) {}		// { dg-warning "attributes at the beginning of statement are ignored" }
+    ^
+
+"Test_name.c", line 44: error: alignas does not apply here
+      alignas (int) case 1:			// { dg-error "alignment may not be specified for" }
+      ^
+
+"Test_name.c", line 45: error: alignas does not apply here
+      alignas (int) break;			// { dg-warning "attributes at the beginning of statement are ignored" }
+      ^
+
+"Test_name.c", line 46: error: alignas does not apply here
+      alignas (int) default:			// { dg-error "alignment may not be specified for" }
+      ^
+
+"Test_name.c", line 50: warning: structured bindings are a C++17 feature
+    for (alignas (int) auto [a, b] : arr2) {}	// { dg-error "structured bindings only available with" "" { target c++14_down } }
+                            ^
+
+"Test_name.c", line 50: warning: structured binding "a" was declared but never referenced
+    for (alignas (int) auto [a, b] : arr2) {}	// { dg-error "structured bindings only available with" "" { target c++14_down } }
+                             ^
+
+"Test_name.c", line 51: error: alignas does not apply here
+    alignas (int) asm ("");			// { dg-warning "attributes ignored on 'asm' declaration" }
+    ^
+
+"Test_name.c", line 52: error: attribute "alignas" does not apply to handler parameters
+    try {} catch (alignas (int) int x) {}		// { dg-error "'alignas' on exception declaration" }
+                  ^
+
+"Test_name.c", line 53: error: attribute "alignas" does not apply to handler parameters
+    try {} catch (alignas (int) int) {}		// { dg-error "'alignas' on exception declaration" }
+                  ^
+
+"Test_name.c", line 54: warning: attributes may not appear here
+    try {} catch (int alignas (int) x) {}		// { dg-warning "attribute ignored" }
+                      ^
+
+"Test_name.c", line 55: warning: attributes may not appear here
+    try {} catch (int alignas (int)) {}		// { dg-warning "attribute ignored" }
+                      ^
+
+"Test_name.c", line 56: error: attribute "alignas" does not apply to handler parameters
+    try {} catch (int x alignas (int)) {}		// { dg-error "'alignas' on exception declaration" }
+                        ^
+
+"Test_name.c", line 13: warning: variable "x1" was declared but never referenced
+    alignas (int) int x1;
+                      ^
+
+"Test_name.c", line 14: warning: variable "x2" was declared but never referenced
+    alignas ("foobar") int x2;			// { dg-error "'alignas' argument has non-integral type 'const char \\\[7\\\]'" }
+                           ^
+
+"Test_name.c", line 15: warning: variable "x3" was declared but never referenced
+    alignas (0) int x3;				// { dg-warning "requested alignment '0' is not a positive power of 2" }
+                    ^
+
+"Test_name.c", line 16: warning: variable "x4" was declared but never referenced
+    alignas ("foo", "bar", "baz") int x4;		// { dg-error "'alignas' argument has non-integral type 'const char \\\[4\\\]'" }
+                                      ^
+
+"Test_name.c", line 20: warning: variable "x5" was declared but never referenced
+    alignas (0, 1, 2) int x5;			// { dg-error "expected '\\\)' before ',' token" }
+                          ^
+
+"Test_name.c", line 24: warning: variable "a" was declared but never referenced
+    auto a = [] alignas (int) () {};		// { dg-error "'alignas' on function declaration" }
+         ^
+
+"Test_name.c", line 25: warning: variable "b" was declared but never referenced
+    auto b = [] constexpr alignas (int) {};	// { dg-error "'alignas' on a type other than class" }
+         ^
+
+"Test_name.c", line 28: warning: variable "c" was declared but never referenced
+    auto c = [] noexcept alignas (int) {};	// { dg-error "'alignas' on a type other than class" }
+         ^
+
+"Test_name.c", line 30: warning: variable "d" was declared but never referenced
+    auto d = [] () alignas (int) {};		// { dg-error "'alignas' on a type other than class" }
+         ^
+
+"Test_name.c", line 59: error: alignas does not apply here
+  alignas (int) int bar ();			// { dg-error "'alignas' on function declaration" }
+  ^
+
+"Test_name.c", line 60: error: identifier "foobar" is undefined
+  using foobar alignas (int) = int;		// { dg-error "'alignas' on a type alias" }
+        ^
+
+"Test_name.c", line 60: error: expected a ";"
+  using foobar alignas (int) = int;		// { dg-error "'alignas' on a type alias" }
+               ^
+
+"Test_name.c", line 62: warning: structured bindings are a C++17 feature
+  alignas (int) auto [b, c] = arr;		// { dg-error "structured bindings only available with" "" { target c++14_down } }
+                     ^
+
+"Test_name.c", line 63: error: alignas does not apply here
+  alignas (int);					// { dg-warning "attribute ignored" }
+  ^
+
+"Test_name.c", line 64: error: attribute does not apply to any entity
+  inline alignas (int) void baz () {}		// { dg-warning "attribute ignored" }
+         ^
+
+"Test_name.c", line 66: error: attribute does not apply to any entity
+  constexpr alignas (int) int qux () { return 0; }	// { dg-warning "attribute ignored" }
+            ^
+
+"Test_name.c", line 68: warning: alignas does not apply here
+  int alignas (int) d;				// { dg-warning "attribute ignored" }
+      ^
+
+"Test_name.c", line 69: warning: alignas does not apply here
+  int const alignas (int) e = 1;			// { dg-warning "attribute ignored" }
+            ^
+
+"Test_name.c", line 70: warning: alignas does not apply here
+  struct A {} alignas (int);			// { dg-warning "attribute ignored in declaration of 'struct A'" }
+              ^
+
+"Test_name.c", line 71: warning: alignas does not apply here
+  struct A alignas (int);				// { dg-warning "attribute ignored" }
+           ^
+
+"Test_name.c", line 71: warning: declaration does not declare anything
+  struct A alignas (int);				// { dg-warning "attribute ignored" }
+  ^
+
+"Test_name.c", line 72: warning: alignas does not apply here
+  struct A alignas (int) a1;			// { dg-warning "attribute ignored" }
+           ^
+
+"Test_name.c", line 73: warning: alignas does not apply here
+  A alignas (int) a2;				// { dg-warning "attribute ignored" }
+    ^
+
+"Test_name.c", line 74: warning: alignas does not apply here
+  enum B { B0 } alignas (int);			// { dg-warning "attribute ignored in declaration of 'enum B'" }
+                ^
+
+"Test_name.c", line 75: warning: alignas does not apply here
+  enum B alignas (int);				// { dg-warning "attribute ignored" }
+         ^
+
+"Test_name.c", line 75: warning: declaration does not declare anything
+  enum B alignas (int);				// { dg-warning "attribute ignored" }
+  ^
+
+"Test_name.c", line 76: warning: alignas does not apply here
+  enum B alignas (int) b1;			// { dg-warning "attribute ignored" }
+         ^
+
+"Test_name.c", line 77: warning: alignas does not apply here
+  B alignas (int) b2;				// { dg-warning "attribute ignored" }
+    ^
+
+"Test_name.c", line 83: error: alignas does not apply here
+  int corge () alignas (int);			// { dg-error "'alignas' on a type other than class" }
+               ^
+
+"Test_name.c", line 88: warning: attribute does not apply to any entity
+  auto l = sizeof (int [2] alignas (int));	// { dg-error "'alignas' on a type other than class" }
+                           ^
+
+"Test_name.c", line 89: error: alignas does not apply here
+  int freddy (alignas (int) int a,		// { dg-error "alignment may not be specified for 'a'" }
+              ^
+
+"Test_name.c", line 90: error: alignas does not apply here
+  	    alignas (int) int,			// { dg-error "alignment may not be specified for '<anonymous>'" }
+  	    ^
+
+"Test_name.c", line 91: error: alignas does not apply here
+  	    alignas (int) int c = 0,		// { dg-error "alignment may not be specified for 'c'" }
+  	    ^
+
+"Test_name.c", line 92: error: alignas does not apply here
+  	    alignas (int) int = 0);		// { dg-error "alignment may not be specified for '<anonymous>'" }
+  	    ^
+
+"Test_name.c", line 94: error: alignas does not apply here
+  corge (alignas (int) int a,			// { dg-error "alignment may not be specified for 'a'" }
+         ^
+
+"Test_name.c", line 95: error: alignas does not apply here
+         alignas (int) int,			// { dg-error "alignment may not be specified for '<anonymous>'" }
+         ^
+
+"Test_name.c", line 96: error: alignas does not apply here
+         alignas (int) int c = 0,			// { dg-error "alignment may not be specified for 'c'" }
+         ^
+
+"Test_name.c", line 97: error: alignas does not apply here
+         alignas (int) int = 0)			// { dg-error "alignment may not be specified for '<anonymous>'" }
+         ^
+
+"Test_name.c", line 100: error: alignas does not apply here
+  alignas (int) void
+  ^
+
+"Test_name.c", line 104: warning: alignas does not apply here
+  int grault (int alignas (int) a,		// { dg-warning "attribute ignored" }
+                  ^
+
+"Test_name.c", line 105: warning: alignas does not apply here
+  	    int alignas (int),			// { dg-warning "attribute ignored" }
+  	        ^
+
+"Test_name.c", line 106: warning: alignas does not apply here
+  	    int alignas (int) c = 0,		// { dg-warning "attribute ignored" }
+  	        ^
+
+"Test_name.c", line 107: warning: alignas does not apply here
+  	    int alignas (int) = 0);		// { dg-warning "attribute ignored" }
+  	        ^
+
+"Test_name.c", line 109: warning: alignas does not apply here
+  waldo (int alignas (int) a,			// { dg-warning "attribute ignored" }
+             ^
+
+"Test_name.c", line 110: warning: alignas does not apply here
+         int alignas (int),			// { dg-warning "attribute ignored" }
+             ^
+
+"Test_name.c", line 111: warning: alignas does not apply here
+         int alignas (int) c = 0,			// { dg-warning "attribute ignored" }
+             ^
+
+"Test_name.c", line 112: warning: alignas does not apply here
+         int alignas (int) = 0)			// { dg-warning "attribute ignored" }
+             ^
+
+"Test_name.c", line 115: error: alignas does not apply here
+  int plugh (int a alignas (int),			// { dg-error "alignment may not be specified for 'a'" }
+                   ^
+
+"Test_name.c", line 116: error: alignas does not apply here
+  	    int b alignas (int) = 0);		// { dg-error "alignment may not be specified for 'b'" }
+  	          ^
+
+"Test_name.c", line 118: error: alignas does not apply here
+  thud (int a alignas (int),			// { dg-error "alignment may not be specified for 'a'" }
+              ^
+
+"Test_name.c", line 119: error: alignas does not apply here
+        int b alignas (int) = 0)			// { dg-error "alignment may not be specified for 'b'" }
+              ^
+
+"Test_name.c", line 127: error: alignas does not apply here
+    G0 alignas (int),				// { dg-error "alignment may not be specified for 'G0'" }
+       ^
+
+"Test_name.c", line 128: error: alignas does not apply here
+    G1 alignas (int) = 2				// { dg-error "alignment may not be specified for 'G1'" }
+       ^
+
+"Test_name.c", line 130: error: alignas does not apply here
+  namespace alignas (int) H { using H0 = int; }	// { dg-error "expected identifier before 'alignas'" }
+            ^
+
+"Test_name.c", line 132: error: alignas does not apply here
+  namespace alignas (int) {}			// { dg-error "expected identifier before 'alignas'" }
+            ^
+
+"Test_name.c", line 134: error: attributes are not allowed here
+  alignas (int) using namespace H;
+  ^
+
+"Test_name.c", line 138: warning: attributes ignored here because they do not apply to a declared entity
+    alignas (int);				// { dg-error "declaration does not declare anything" }
+    ^
+
+"Test_name.c", line 140: error: alignas does not apply here
+    alignas (int) int foo ();			// { dg-error "'alignas' on function declaration" }
+    ^
+
+"Test_name.c", line 141: error: alignas does not apply here
+    alignas (int) int bar () { return 1; }	// { dg-error "'alignas' on function declaration" }
+    ^
+
+"Test_name.c", line 142: error: attribute "alignas" does not apply to bit fields
+    alignas (int) int : 0;			// { dg-error "'alignas' on bit-field" }
+    ^
+
+"Test_name.c", line 143: error: attribute "alignas" does not apply to bit fields
+    alignas (int) int i2 : 5;			// { dg-error "'alignas' on bit-field" }
+    ^
+
+"Test_name.c", line 148: error: alignas does not apply here
+  struct J : alignas (int) C {};			// { dg-warning "attributes on base specifiers are ignored" }
+             ^
+
+"Test_name.c", line 153: warning: alignas does not apply here
+  typedef int L alignas (int);			// { dg-error "'alignas' on a type alias" }
+                ^
+
+"Test_name.c", line 158: warning: alignas does not apply here
+  typedef int N[2] alignas (int);			// { dg-error "'alignas' on a type other than class" }
+                   ^
+
+"Test_name.c", line 159: warning: alignas does not apply here
+  typedef int O alignas (int) [2];		// { dg-error "'alignas' on a type alias" }
+                ^
+
+"Test_name.c", line 62: warning: structured binding "b" was declared but never referenced
+  alignas (int) auto [b, c] = arr;		// { dg-error "structured bindings only available with" "" { target c++14_down } }
+                      ^
+
+"Test_name.c", line 69: warning: variable "e" was declared but never referenced
+  int const alignas (int) e = 1;			// { dg-warning "attribute ignored" }
+                          ^
+
+53 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,32 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 35: error: no suitable conversion function from "A" to "int" exists
+      (void)((U)t); // expected-error{{cannot convert 'A' to 'int' without a conversion operator}}
+                ^
+          detected during instantiation of "void CStyleCast0<T, U>::f(T) [with T=A, U=int]" at line 40
+
+"Test_name.c", line 48: error: no suitable constructor exists to convert from "int" to "A"
+      (void)static_cast<U>(t); // expected-error{{no matching conversion for static_cast from 'int' to 'A'}}
+                           ^
+          detected during instantiation of "void StaticCast0<T, U>::f(T) [with T=int, U=A]" at line 54
+
+"Test_name.c", line 62: error: the type in a dynamic_cast must be a pointer or reference to a complete class type, or void *
+      (void)dynamic_cast<U>(t); // expected-error{{invalid target type 'A' for dynamic_cast; target type must be a reference or pointer type to a defined class}}
+                         ^
+          detected during instantiation of "void DynamicCast0<T, U>::f(T) [with T=Base *, U=A]" at line 67
+
+"Test_name.c", line 75: error: reinterpret_cast cannot cast away const or other type qualifiers
+      (void)reinterpret_cast<U>(t); // expected-error{{qualifiers}}
+            ^
+          detected during instantiation of "void ReinterpretCast0<T, U>::f(T) [with T=const int *, U=float *]" at line 80
+
+"Test_name.c", line 88: error: a const_cast can only adjust type qualifiers; it cannot change the underlying type
+      (void)const_cast<U>(t); // expected-error{{not allowed}}
+                          ^
+          detected during instantiation of "void ConstCast0<T, U>::f(T) [with T=const int *, U=float *]" at line 93
+
+"Test_name.c", line 101: error: no suitable conversion function from "A" to "int" exists
+      (void)U(t); // expected-error{{cannot convert 'A' to 'int' without a conversion operator}}
+              ^
+          detected during instantiation of "void FunctionalCast1<T, U>::f(T) [with T=A, U=int]" at line 106
+
+6 errors detected in the compilation of "Test_name.c".

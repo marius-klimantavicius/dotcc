@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 11: error: a value of type "float __complex__" cannot be assigned to an entity of type "float"
+    Real = Complex; // expected-error {{implicit conversion from '_Complex float' to 'float' is not permitted in C++}}
+         ^
+
+"Test_name.c", line 14: error: no instance of function template "take" matches the argument list
+            argument types are: (float __complex__)
+    take<float>(Complex); // expected-error {{implicit conversion from '_Complex float' to 'float' is not permitted in C++}}
+    ^
+"Test_name.c", line 5: note: function template "take" does not match because argument #1 does not match parameter
+  template<typename T> void take(T);
+                            ^
+
+"Test_name.c", line 15: error: no instance of function template "take" matches the argument list
+            argument types are: (double __complex__)
+    take<double>(1.0i); // expected-error {{implicit conversion from '_Complex double' to 'double' is not permitted in C++}}
+    ^
+"Test_name.c", line 5: note: function template "take" does not match because argument #1 does not match parameter
+  template<typename T> void take(T);
+                            ^
+
+"Test_name.c", line 23: warning: variable "c" is used before its value is set
+    c *= double();
+    ^
+
+3 errors detected in the compilation of "Test_name.c".

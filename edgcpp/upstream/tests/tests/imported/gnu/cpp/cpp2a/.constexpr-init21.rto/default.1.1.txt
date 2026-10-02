@@ -1,0 +1,84 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 17: error: expression must have a constant value
+  constexpr A<int> a0(0); // { dg-error "not a constant expression|incompletely initialized" }
+                      ^
+"Test_name.c", line 17: note: access to uninitialized subobject at index 0
+  constexpr A<int> a0(0); // { dg-error "not a constant expression|incompletely initialized" }
+                      ^
+
+"Test_name.c", line 18: error: expression must have a constant value
+  constexpr A<int> a1(1); // { dg-error "not a constant expression|incompletely initialized" }
+                      ^
+"Test_name.c", line 18: note: access to uninitialized subobject at index 1
+  constexpr A<int> a1(1); // { dg-error "not a constant expression|incompletely initialized" }
+                      ^
+
+"Test_name.c", line 19: error: expression must have a constant value
+  constexpr A<int> a2(2); // { dg-error "not a constant expression|incompletely initialized" }
+                      ^
+"Test_name.c", line 19: note: access to uninitialized subobject at index 2
+  constexpr A<int> a2(2); // { dg-error "not a constant expression|incompletely initialized" }
+                      ^
+
+"Test_name.c", line 20: error: expression must have a constant value
+  constexpr A<int> a3(3); // { dg-error "not a constant expression|incompletely initialized" }
+                      ^
+"Test_name.c", line 20: note: access to uninitialized subobject at index 3
+  constexpr A<int> a3(3); // { dg-error "not a constant expression|incompletely initialized" }
+                      ^
+
+"Test_name.c", line 21: error: expression must have a constant value
+  constexpr A<int> a4(4); // { dg-error "not a constant expression|incompletely initialized" }
+                      ^
+"Test_name.c", line 21: note: access to uninitialized subobject at index 4
+  constexpr A<int> a4(4); // { dg-error "not a constant expression|incompletely initialized" }
+                      ^
+
+"Test_name.c", line 25: error: expression must have a constant value
+  constexpr A<s> b0(0); // {  dg-error "not a constant expression|incompletely initialized" }
+                    ^
+"Test_name.c", line 25: note: access to uninitialized subobject (member "s::n")
+  constexpr A<s> b0(0); // {  dg-error "not a constant expression|incompletely initialized" }
+                    ^
+
+"Test_name.c", line 16: warning: variable "a" was declared but never referenced
+  constexpr A<int> a;
+                   ^
+
+"Test_name.c", line 17: warning: variable "a0" was declared but never referenced
+  constexpr A<int> a0(0); // { dg-error "not a constant expression|incompletely initialized" }
+                   ^
+
+"Test_name.c", line 18: warning: variable "a1" was declared but never referenced
+  constexpr A<int> a1(1); // { dg-error "not a constant expression|incompletely initialized" }
+                   ^
+
+"Test_name.c", line 19: warning: variable "a2" was declared but never referenced
+  constexpr A<int> a2(2); // { dg-error "not a constant expression|incompletely initialized" }
+                   ^
+
+"Test_name.c", line 20: warning: variable "a3" was declared but never referenced
+  constexpr A<int> a3(3); // { dg-error "not a constant expression|incompletely initialized" }
+                   ^
+
+"Test_name.c", line 21: warning: variable "a4" was declared but never referenced
+  constexpr A<int> a4(4); // { dg-error "not a constant expression|incompletely initialized" }
+                   ^
+
+"Test_name.c", line 24: warning: variable "b" was declared but never referenced
+  constexpr A<s> b;
+                 ^
+
+"Test_name.c", line 25: warning: variable "b0" was declared but never referenced
+  constexpr A<s> b0(0); // {  dg-error "not a constant expression|incompletely initialized" }
+                 ^
+
+"Test_name.c", line 28: warning: variable "c" was declared but never referenced
+  constexpr A<empty> c;
+                     ^
+
+"Test_name.c", line 29: warning: variable "c0" was declared but never referenced
+  constexpr A<empty> c0(0);
+                     ^
+
+6 errors detected in the compilation of "Test_name.c".

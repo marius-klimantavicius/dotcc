@@ -1,0 +1,46 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 8: error: this declaration has no storage class or type specifier
+    j; // expected-error {{a type specifier is required for all declarations}}
+    ^
+
+"Test_name.c", line 13: warning: "auto" as a type specifier is nonstandard in this mode
+    auto q = [child]{};
+    ^
+
+"Test_name.c", line 13: warning: lambda expressions are a C++11 feature
+    auto q = [child]{};
+             ^
+
+"Test_name.c", line 13: warning: variable "child" is used before its value is set
+    auto q = [child]{};
+              ^
+
+"Test_name.c", line 13: warning: variable "q" was set but never used
+    auto q = [child]{};
+         ^
+
+"Test_name.c", line 14: warning: variable "n" was declared but never referenced
+    const int n = sizeof(q);
+              ^
+
+"Test_name.c", line 19: warning: "auto" as a type specifier is nonstandard in this mode
+    auto q = [child]{};
+    ^
+
+"Test_name.c", line 19: warning: variable "child" is used before its value is set
+    auto q = [child]{};
+              ^
+
+"Test_name.c", line 19: warning: variable "q" was set but never used
+    auto q = [child]{};
+         ^
+
+"Test_name.c", line 20: warning: variable "n" was declared but never referenced
+    const int n = sizeof(q);
+              ^
+
+"Test_name.c", line 26: error: an enclosing-function local variable cannot be referenced in a lambda body unless it is in the capture list
+        i; // expected-error {{variable 'i' cannot be implicitly captured in a lambda with no capture-default specified}}
+        ^
+
+2 errors detected in the compilation of "Test_name.c".

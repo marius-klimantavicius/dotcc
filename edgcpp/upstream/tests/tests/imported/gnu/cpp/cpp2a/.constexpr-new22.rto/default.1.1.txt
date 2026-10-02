@@ -1,0 +1,41 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 15: warning: variable "q1" was declared but never referenced
+    auto q1 = &p[0];
+         ^
+
+"Test_name.c", line 16: warning: variable "q2" was declared but never referenced
+    auto q2 = &p[1];
+         ^
+
+"Test_name.c", line 17: warning: variable "q3" was declared but never referenced
+    auto q3 = &p[2];
+         ^
+
+"Test_name.c", line 26: warning: variable "q1" was declared but never referenced
+    auto q1 = &p[0];
+         ^
+
+"Test_name.c", line 27: warning: variable "q2" was declared but never referenced
+    auto q2 = &p[1];
+         ^
+
+"Test_name.c", line 28: warning: variable "q3" was declared but never referenced
+    auto q3 = &p[2];
+         ^
+
+"Test_name.c", line 37: warning: variable "q1" was declared but never referenced
+    auto q1 = &p[0];
+         ^
+
+"Test_name.c", line 42: warning: variable "a" was declared but never referenced
+  constexpr bool a = foo ();
+                 ^
+
+"Test_name.c", line 43: warning: variable "b" was declared but never referenced
+  constexpr bool b = bar ();
+                 ^
+
+"Test_name.c", line 44: warning: variable "c" was declared but never referenced
+  constexpr bool c = baz ();
+                 ^
+

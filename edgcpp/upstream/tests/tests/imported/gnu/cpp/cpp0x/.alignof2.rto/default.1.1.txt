@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 7: warning: expression has no effect
+    alignof(int); //ok with a type but not with an expression
+    ^
+
+"Test_name.c", line 8: warning: the standard "alignof" operator does not accept an expression argument (use a type instead)
+    alignof(3);   // { dg-warning "alignof" }
+           ^
+
+"Test_name.c", line 8: warning: expression has no effect
+    alignof(3);   // { dg-warning "alignof" }
+    ^
+

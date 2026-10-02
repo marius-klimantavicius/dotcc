@@ -1,0 +1,41 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./strlenopt-45.c", line 65: warning: integer conversion resulted in a change of sign
+    if (!(strnlen (&c, -1) == 0)) do { extern void call_in_true_branch_not_eliminated_on_line_65 (void); call_in_true_branch_not_eliminated_on_line_65(); } while (0); else (void)0;
+                       ^
+
+"./strlenopt-45.c", line 73: warning: integer conversion resulted in a change of sign
+    if (!(strnlen (a1, -1) == 0)) do { extern void call_in_true_branch_not_eliminated_on_line_73 (void); call_in_true_branch_not_eliminated_on_line_73(); } while (0); else (void)0;
+                       ^
+
+"./strlenopt-45.c", line 82: warning: integer conversion resulted in a change of sign
+    if (!(strnlen (a3, -1) < 4)) do { extern void call_in_true_branch_not_eliminated_on_line_82 (void); call_in_true_branch_not_eliminated_on_line_82(); } while (0); else (void)0;
+                       ^
+
+"./strlenopt-45.c", line 91: warning: integer conversion resulted in a change of sign
+    if (!(strnlen (a3_7[0], -1) <= sizeof a3_7)) do { extern void call_in_true_branch_not_eliminated_on_line_91 (void); call_in_true_branch_not_eliminated_on_line_91(); } while (0); else (void)0;
+                            ^
+
+"./strlenopt-45.c", line 100: warning: integer conversion resulted in a change of sign
+    if (!(strnlen (a3_7[2], -1) < sizeof a3_7)) do { extern void call_in_true_branch_not_eliminated_on_line_100 (void); call_in_true_branch_not_eliminated_on_line_100(); } while (0); else (void)0;
+                            ^
+
+"./strlenopt-45.c", line 112: warning: integer conversion resulted in a change of sign
+    if (!(strnlen ((char*)a3_7, -1) <= sizeof a3_7)) do { extern void call_in_true_branch_not_eliminated_on_line_112 (void); call_in_true_branch_not_eliminated_on_line_112(); } while (0); else (void)0;
+                                ^
+
+"./strlenopt-45.c", line 120: warning: integer conversion resulted in a change of sign
+    if (!(strnlen (ax, -1) < 0x7fffffffffffffffL)) do { extern void call_in_true_branch_not_eliminated_on_line_120 (void); call_in_true_branch_not_eliminated_on_line_120(); } while (0); else (void)0;
+                       ^
+
+"./strlenopt-45.c", line 135: warning: integer conversion resulted in a change of sign
+    if (!(strnlen (s0, -1) == 0)) do { extern void call_in_true_branch_not_eliminated_on_line_135 (void); call_in_true_branch_not_eliminated_on_line_135(); } while (0); else (void)0;
+                       ^
+
+"./strlenopt-45.c", line 142: warning: integer conversion resulted in a change of sign
+    if (!(strnlen (s1, -2) == 1)) do { extern void call_in_true_branch_not_eliminated_on_line_142 (void); call_in_true_branch_not_eliminated_on_line_142(); } while (0); else (void)0;
+                       ^
+
+"./strlenopt-45.c", line 151: warning: integer conversion resulted in a change of sign
+    if (!(strnlen (s3, -2) == 3)) do { extern void call_in_true_branch_not_eliminated_on_line_151 (void); call_in_true_branch_not_eliminated_on_line_151(); } while (0); else (void)0;
+                       ^
+

@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 33: error: qualifiers dropped in binding reference of type "A &&" to initializer of type "const A"
+    A &&ar8 = static_cast<A&&>(prvalue<const A>()); // expected-error {{binding reference of type 'A' to value of type 'const A' drops 'const' qualifier}}
+                               ^
+
+"Test_name.c", line 34: error: qualifiers dropped in binding reference of type "A &&" to initializer of type "const A"
+    A &&ar9 = static_cast<A&&>(lvalue<const A>());  // expected-error {{cannot cast from lvalue of type 'const A'}}
+                               ^
+
+"Test_name.c", line 35: error: qualifiers dropped in binding reference of type "A &&" to initializer of type "const A"
+    A &&ar10 = static_cast<A&&>(xvalue<const A>()); // expected-error {{cannot cast from rvalue of type 'const A'}}
+                                ^
+
+"Test_name.c", line 44: error: static_cast cannot cast away const or other type qualifiers
+    const A &&ar17 = static_cast<const A&&>(prvalue<A const volatile>()); // expected-error {{binding reference of type 'const A' to value of type 'const volatile A' drops 'volatile' qualifier}}
+                     ^
+
+4 errors detected in the compilation of "Test_name.c".

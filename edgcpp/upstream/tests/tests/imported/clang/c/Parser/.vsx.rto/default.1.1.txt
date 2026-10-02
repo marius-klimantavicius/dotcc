@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 7: warning: this declaration has no storage class or type specifier
+  __vector double vv_d1;
+  ^
+
+"Test_name.c", line 7: error: expected a ";"
+  __vector double vv_d1;
+           ^
+
+"Test_name.c", line 8: warning: this declaration has no storage class or type specifier
+  vector double v_d2;
+  ^
+
+"Test_name.c", line 8: error: expected a ";"
+  vector double v_d2;
+         ^
+
+"Test_name.c", line 11: warning: this declaration has no storage class or type specifier
+  __vector long double  vv_ld3;        // expected-error {{cannot use 'long double' with '__vector'}}
+  ^
+
+"Test_name.c", line 11: error: expected a ";"
+  __vector long double  vv_ld3;        // expected-error {{cannot use 'long double' with '__vector'}}
+           ^
+
+"Test_name.c", line 12: warning: this declaration has no storage class or type specifier
+  vector long double  v_ld4;           // expected-error {{cannot use 'long double' with '__vector'}}
+  ^
+
+"Test_name.c", line 12: error: expected a ";"
+  vector long double  v_ld4;           // expected-error {{cannot use 'long double' with '__vector'}}
+         ^
+
+4 errors detected in the compilation of "Test_name.c".

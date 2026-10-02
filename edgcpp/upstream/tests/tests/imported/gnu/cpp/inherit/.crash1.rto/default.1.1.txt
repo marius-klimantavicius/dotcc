@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 7: error: a class cannot not derive from a union
+  struct B : A {}; // { dg-error "fails to be a struct or class type" }
+             ^
+
+"Test_name.c", line 8: error: class "B" has already been defined (previous definition at line 7)
+  struct B : A {}; // { dg-error "redefinition" }
+         ^
+
+"Test_name.c", line 8: error: a class cannot not derive from a union
+  struct B : A {}; // { dg-error "redefinition" }
+             ^
+
+3 errors detected in the compilation of "Test_name.c".

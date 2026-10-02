@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: error: identifier "operator ""_F" is undefined
+    float x = operator ""_F();  //  { dg-error  "13:'operator\"\"_F' was not declared in this scope" }
+              ^
+
+"Test_name.c", line 15: error: user-defined literal operator not found
+    float y = 0_F;  //  { dg-error  "unable to find numeric literal operator" }
+              ^
+
+2 errors detected in the compilation of "Test_name.c".

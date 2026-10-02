@@ -1,0 +1,29 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 8: warning: unrecognized #pragma
+  #pragma scalar_storage_order /* { dg-warning "missing .big-endian., .little-endian., or .default." } */
+          ^
+
+"Test_name.c", line 10: warning: unrecognized #pragma
+  #pragma scalar_storage_order big-endian
+          ^
+
+"Test_name.c", line 17: warning: unknown attribute "scalar_storage_order"
+  struct __attribute__((scalar_storage_order("little-endian"))) S2
+                        ^
+
+"Test_name.c", line 22: warning: unrecognized #pragma
+  #pragma scalar_storage_order little-endian
+          ^
+
+"Test_name.c", line 29: warning: unknown attribute "scalar_storage_order"
+  struct __attribute__((scalar_storage_order("big-endian"))) S4
+                        ^
+
+"Test_name.c", line 34: warning: unrecognized #pragma
+  #pragma scalar_storage_order default
+          ^
+
+"Test_name.c", line 41: warning: unrecognized #pragma
+  #pragma scalar_storage_order other /* { dg-warning "expected .big-endian., .little-endian., or .default." } */
+          ^
+

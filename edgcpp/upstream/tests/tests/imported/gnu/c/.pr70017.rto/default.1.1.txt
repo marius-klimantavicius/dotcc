@@ -1,0 +1,801 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 17: warning: variable "aa00" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa01" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa02" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa03" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa04" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa05" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa06" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa07" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa08" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa09" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa10" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa11" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa12" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa13" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa14" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa15" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa16" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa17" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa18" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa19" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa20" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa21" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa22" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa23" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa24" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa25" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa26" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa27" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa28" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa29" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa30" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa31" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa32" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa33" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa34" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa35" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa36" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa37" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa38" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa39" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa40" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa41" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa42" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa43" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa44" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa45" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa46" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa47" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa48" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa49" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa50" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa51" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa52" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa53" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa54" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa55" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa56" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa57" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa58" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa59" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa60" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa61" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa62" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa63" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa64" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa65" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa66" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa67" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa68" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa69" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa70" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa71" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa72" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa73" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa74" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa75" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa76" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa77" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa78" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa79" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa80" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa81" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa82" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa83" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa84" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa85" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa86" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa87" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa88" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa89" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa90" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa91" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa92" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa93" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa94" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa95" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa96" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa97" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa98" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 17: warning: variable "aa99" was set but never used
+    HUNDRED(a)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab00" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab01" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab02" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab03" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab04" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab05" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab06" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab07" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab08" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab09" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab10" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab11" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab12" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab13" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab14" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab15" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab16" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab17" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab18" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab19" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab20" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab21" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab22" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab23" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab24" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab25" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab26" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab27" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab28" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab29" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab30" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab31" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab32" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab33" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab34" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab35" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab36" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab37" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab38" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab39" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab40" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab41" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab42" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab43" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab44" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab45" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab46" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab47" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab48" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab49" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab50" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab51" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab52" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab53" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab54" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab55" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab56" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab57" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab58" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab59" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab60" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab61" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab62" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab63" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab64" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab65" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab66" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab67" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab68" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab69" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab70" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab71" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab72" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab73" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab74" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab75" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab76" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab77" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab78" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab79" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab80" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab81" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab82" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab83" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab84" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab85" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab86" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab87" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab88" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab89" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab90" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab91" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab92" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab93" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab94" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab95" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab96" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab97" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab98" was set but never used
+    HUNDRED(b)
+    ^
+
+"Test_name.c", line 18: warning: variable "ab99" was set but never used
+    HUNDRED(b)
+    ^
+

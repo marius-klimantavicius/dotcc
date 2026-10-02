@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --target linux_aarch64 Test_name.c
+"Sema/aarch64-sve-intrinsics/acle_neon_sve_bridge.cpp", line 13: error: this declaration has no storage class or type specifier
+  uint32x4_t __attribute__((target("+sve"))) foo(svuint32_t a) {
+  ^
+
+"Sema/aarch64-sve-intrinsics/acle_neon_sve_bridge.cpp", line 13: warning: attribute "target" does not apply here
+  uint32x4_t __attribute__((target("+sve"))) foo(svuint32_t a) {
+                            ^
+
+"Sema/aarch64-sve-intrinsics/acle_neon_sve_bridge.cpp", line 13: error: expected a ";"
+  uint32x4_t __attribute__((target("+sve"))) foo(svuint32_t a) {
+                                             ^
+
+2 errors detected in the compilation of "Test_name.c".

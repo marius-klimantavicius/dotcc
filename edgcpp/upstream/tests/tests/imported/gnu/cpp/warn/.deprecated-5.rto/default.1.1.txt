@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 6: warning: class "Foo" was declared deprecated
+  void foo() { Foo f; }		// { dg-warning "deprecated" }
+                   ^
+"Test_name.c", line 5: note: because of a "deprecated" attribute
+  struct Foo { int i; } __attribute__ ((deprecated));
+                                        ^
+
+"Test_name.c", line 6: warning: variable "f" was declared but never referenced
+  void foo() { Foo f; }		// { dg-warning "deprecated" }
+                   ^
+

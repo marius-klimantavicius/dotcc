@@ -1,0 +1,50 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 12: warning: variable-length array field type will be treated as zero-length array field type
+  	struct foo { char x[++n]; } bar(void) { struct foo r; return r; }
+  	                    ^
+
+"Test_name.c", line 12: error: expected a ";"
+  	struct foo { char x[++n]; } bar(void) { struct foo r; return r; }
+  	                                      ^
+
+"Test_name.c", line 15: warning: parsing restarts here after previous syntax error
+  		__builtin_abort();
+  		                 ^
+
+"Test_name.c", line 22: warning: variable-length array field type will be treated as zero-length array field type
+  	struct bar { char x[++n]; } (*bar2p)(void);
+  	                    ^
+
+"Test_name.c", line 23: error: expected a ";"
+  	struct bar bar2(void) { struct bar r; return r; }
+  	                      ^
+
+"Test_name.c", line 34: warning: variable-length array field type will be treated as zero-length array field type
+  	struct str { char x[++n]; } *bar3(void)
+  	                    ^
+
+"Test_name.c", line 35: error: expected a ";"
+  	{ 
+  	^
+
+"Test_name.c", line 45: warning: parsing restarts here after previous syntax error
+  		__builtin_abort();
+  		                 ^
+
+"Test_name.c", line 52: warning: variable "p" is used before its value is set
+  	__builtin_free(p);
+  	               ^
+
+"Test_name.c", line 56: warning: variable-length array field type will be treated as zero-length array field type
+  	struct { char x[++n]; } *bar4(void) { }
+  	                ^
+
+"Test_name.c", line 56: error: expected a ";"
+  	struct { char x[++n]; } *bar4(void) { }
+  	                                    ^
+
+"Test_name.c", line 59: warning: parsing restarts here after previous syntax error
+  		__builtin_abort();
+  		                 ^
+
+4 errors detected in the compilation of "Test_name.c".

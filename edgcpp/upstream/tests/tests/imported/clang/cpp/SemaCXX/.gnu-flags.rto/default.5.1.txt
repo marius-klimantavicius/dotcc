@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=5 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 -DNONE -DANONYMOUSSTRUCT -DREDECLAREDCLASSMEMBER -DFLEXIBLEARRAYUNIONMEMBER -DFOLDINGCONSTANT -DEMPTYSTRUCT Test_name.c
+"Test_name.c", line 70: warning: invalid redeclaration of nested class
+      class X;
+            ^
+

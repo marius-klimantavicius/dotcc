@@ -1,0 +1,177 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./vect/complex/complex-operations.c", line 18: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 25: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 32: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 39: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 49: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 56: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 63: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 70: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 80: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 87: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 94: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 105: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 112: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 119: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 126: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 135: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 142: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 149: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 156: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 165: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 172: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 179: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 191: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 198: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 205: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 212: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 221: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 228: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 235: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 242: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 251: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 258: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 265: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 277: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 284: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 291: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 298: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 307: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 314: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 321: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 328: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 337: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 344: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+
+"./vect/complex/complex-operations.c", line 351: warning: unknown attribute "noipa"
+  __attribute__((noinline,noipa))
+                          ^
+

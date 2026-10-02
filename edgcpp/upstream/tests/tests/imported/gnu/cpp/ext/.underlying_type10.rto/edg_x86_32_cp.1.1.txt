@@ -1,0 +1,6 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./ext/underlying_type10.C", line 11: error: enumeration value is outside the range of its underlying type ("long")
+  enum class E6 : long { c = 0x7fffffffffffffffL };
+                             ^
+
+1 error detected in the compilation of "Test_name.c".

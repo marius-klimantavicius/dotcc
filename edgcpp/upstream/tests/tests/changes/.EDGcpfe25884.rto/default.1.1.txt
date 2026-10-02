@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 --c++20 --gn 110100 Test_name.c
+"Test_name.c", line 15: error: function returning abstract class "S" is not allowed:
+            function "S::f" is a pure virtual function
+  S h() {        // Previously failed to be diagnosed.  Now an error again.
+    ^
+
+"Test_name.c", line 16: error: function returning abstract class "S" is not allowed:
+            function "S::f" is a pure virtual function
+    return g();  // Ditto.
+            ^
+
+2 errors detected in the compilation of "Test_name.c".

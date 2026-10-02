@@ -1,0 +1,32 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 9: error: a function cannot be both constexpr and virtual in this mode
+      virtual constexpr void bar(unsigned int) = 0;
+              ^
+
+"Test_name.c", line 14: error: a function cannot be both constexpr and virtual in this mode
+      constexpr void bar(unsigned int) override {}
+                     ^
+          detected during instantiation of class "GH74016::D<T> [with T=int]" at line 18
+
+"Test_name.c", line 26: warning: type qualifier on return type is meaningless
+      const void foo(const T &) { B::bar(1); } // expected-warning {{instantiation of function 'call_pure_virtual_function_from_virtual::B<int>::bar' required here, but no definition is available}}
+      ^
+
+"Test_name.c", line 28: warning: type qualifier on return type is meaningless
+      virtual const void bar(unsigned int) = 0; // expected-note {{forward declaration of template entity is here}}
+              ^
+
+"Test_name.c", line 33: warning: type qualifier on return type is meaningless
+      const void bar(unsigned int) override {}
+      ^
+
+"Test_name.c", line 47: error: a function cannot be both constexpr and virtual in this mode
+      virtual constexpr void bar(unsigned int); // expected-warning {{inline function 'non_pure_virtual_function::B<int>::bar' is not defined}}
+              ^
+
+"Test_name.c", line 62: error: a function cannot be both constexpr and virtual in this mode
+      constexpr void bar(unsigned int) override { }
+                     ^
+          detected during instantiation of class "non_pure_virtual_function::D<T> [with T=int]" at line 66
+
+4 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,39 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 5: warning: the "carries_dependency" attribute is ignored
+  [[carries_dependency]] int *f1 ();		// { dg-warning "attribute ignored" }
+    ^
+
+"Test_name.c", line 6: warning: the "carries_dependency" attribute is ignored
+  int f2 (int *x [[carries_dependency]]);		// { dg-warning "attribute ignored" }
+                   ^
+
+"Test_name.c", line 7: warning: the "carries_dependency" attribute is ignored
+  [[carries_dependency]] int f3 ();		// { dg-warning "attribute ignored" }
+    ^
+
+"Test_name.c", line 8: warning: the "carries_dependency" attribute is ignored
+  int f4 (int x [[carries_dependency]]);		// { dg-warning "attribute ignored" }
+                  ^
+
+"Test_name.c", line 9: error: attribute "carries_dependency" does not take arguments
+  [[carries_dependency(1)]] int f5 ();		// { dg-error "'carries_dependency' attribute does not take any arguments" }
+                      ^
+
+"Test_name.c", line 10: warning: attribute "carries_dependency" does not apply here
+  [[carries_dependency]] int v;			// { dg-warning "'carries_dependency' attribute can only be applied to functions or parameters" }
+    ^
+
+"Test_name.c", line 11: error: attribute "carries_dependency" does not apply here
+  [[carries_dependency]];				// { dg-warning "attribute ignored" }
+    ^
+
+"Test_name.c", line 15: warning: attribute "carries_dependency" does not apply here
+    [[carries_dependency]];			// { dg-warning "attributes at the beginning of statement are ignored" }
+      ^
+
+"Test_name.c", line 18: catastrophic error: #error directive: carries_dependency attribute is not actually implemented
+  #error carries_dependency attribute is not actually implemented
+   ^
+
+2 errors and 1 catastrophic error detected in the compilation of "Test_name.c".
+Compilation terminated.

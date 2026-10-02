@@ -1,0 +1,8 @@
+./a.out
+0xSTACK constructed
+0xSTACK copied from 0xSTACK
+0xSTACK destroyed
+0xSTACK copied from 0xSTACK
+0xSTACK destroyed
+0xSTACK x.tag_ in main()
+0xSTACK destroyed

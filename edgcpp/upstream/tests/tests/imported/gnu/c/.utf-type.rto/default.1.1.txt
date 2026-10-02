@@ -1,0 +1,18 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 16: error: identifier "u" is undefined
+      if (sizeof (char16_t) != sizeof (u'a'))
+                                       ^
+
+"Test_name.c", line 16: error: expected a ")"
+      if (sizeof (char16_t) != sizeof (u'a'))
+                                        ^
+
+"Test_name.c", line 18: error: identifier "U" is undefined
+      if (sizeof (char32_t) != sizeof (U'a'))
+                                       ^
+
+"Test_name.c", line 18: error: expected a ")"
+      if (sizeof (char32_t) != sizeof (U'a'))
+                                        ^
+
+4 errors detected in the compilation of "Test_name.c".

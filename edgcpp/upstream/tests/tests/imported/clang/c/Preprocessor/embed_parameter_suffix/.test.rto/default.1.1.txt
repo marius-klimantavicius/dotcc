@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 13: error: this operator is not allowed in an integral constant expression
+  static_assert('b' == data[0]);
+                           ^
+
+"Test_name.c", line 14: error: this operator is not allowed in an integral constant expression
+  static_assert('\xA' == data[1]);
+                             ^
+
+"Test_name.c", line 16: error: this operator is not allowed in an integral constant expression
+  static_assert(1 == empty_data[0]);
+                               ^
+
+"Test_name.c", line 26: error: this operator is not allowed in an integral constant expression
+  static_assert(s.x == 'b');
+                 ^
+
+"Test_name.c", line 27: error: this operator is not allowed in an integral constant expression
+  static_assert(s.y == 100);
+                 ^
+
+"Test_name.c", line 28: error: this operator is not allowed in an integral constant expression
+  static_assert(s.z == 10);
+                 ^
+
+"Test_name.c", line 36: error: parameter specified more than once
+  #embed <jk.txt> suffix(,1) prefix() suffix(,1)
+                                      ^
+
+"Test_name.c", line 38: error: expected an expression
+  ,
+  ^
+
+"Test_name.c", line 39: error: parameter specified more than once
+  #embed <jk.txt> suffix(,1) if_empty() suffix(,2)
+                                        ^
+
+9 errors detected in the compilation of "Test_name.c".

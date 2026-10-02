@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 22: error: argument of type "float (*)(int, double)" is incompatible with template parameter of type "float (*)(int, int)"
+  Constant<float (*)(int, int), f> *c6; // precxx17-error {{non-type template argument of type 'float (int, double)' cannot be converted to a value of type 'float (*)(int, int)'}} \
+                                ^
+
+"Test_name.c", line 7: error: floating-point template parameter is nonstandard
+  template<typename T, T Value> struct Constant;
+                       ^
+          detected during processing of template argument list for "Constant" based on template argument <float> at line 26
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 7: error: invalid redeclaration of type name "x" (declared at line 5)
+  typedef int x;  // expected-error {{typedef redefinition with different types}}
+              ^
+
+"Test_name.c", line 8: error: declaration is incompatible with "x a" (declared at line 6)
+  extern x a;
+           ^
+
+"Test_name.c", line 11: error: declaration is incompatible with "int y" (declared at line 10)
+  float y; // expected-error{{redefinition of 'y' with a different type}}
+        ^
+
+"Test_name.c", line 12: error: declaration is incompatible with "int y" (declared at line 11)
+  double y; // expected-error{{redefinition of 'y' with a different type}}
+         ^
+
+4 errors detected in the compilation of "Test_name.c".

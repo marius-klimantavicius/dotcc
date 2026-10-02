@@ -1,0 +1,45 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 30: warning: variable "ld" is used before its value is set
+    ld + q; // expected-error {{invalid operands to binary expression ('long double' and '__float128')}}
+    ^
+
+"Test_name.c", line 30: warning: variable "q" is used before its value is set
+    ld + q; // expected-error {{invalid operands to binary expression ('long double' and '__float128')}}
+         ^
+
+"Test_name.c", line 30: warning: expression has no effect
+    ld + q; // expected-error {{invalid operands to binary expression ('long double' and '__float128')}}
+    ^
+
+"Test_name.c", line 31: warning: expression has no effect
+    q + ld; // expected-error {{invalid operands to binary expression ('__float128' and 'long double')}}
+    ^
+
+"Test_name.c", line 32: warning: expression has no effect
+    ld - q; // expected-error {{invalid operands to binary expression ('long double' and '__float128')}}
+    ^
+
+"Test_name.c", line 33: warning: expression has no effect
+    q - ld; // expected-error {{invalid operands to binary expression ('__float128' and 'long double')}}
+    ^
+
+"Test_name.c", line 34: warning: expression has no effect
+    ld * q; // expected-error {{invalid operands to binary expression ('long double' and '__float128')}}
+    ^
+
+"Test_name.c", line 35: warning: expression has no effect
+    q * ld; // expected-error {{invalid operands to binary expression ('__float128' and 'long double')}}
+    ^
+
+"Test_name.c", line 36: warning: expression has no effect
+    ld / q; // expected-error {{invalid operands to binary expression ('long double' and '__float128')}}
+    ^
+
+"Test_name.c", line 37: warning: expression has no effect
+    q / ld; // expected-error {{invalid operands to binary expression ('__float128' and 'long double')}}
+    ^
+
+"Test_name.c", line 40: warning: expression has no effect
+    q + b ? q : ld; // expected-error {{incompatible operand types ('__float128' and 'long double')}}
+    ^
+

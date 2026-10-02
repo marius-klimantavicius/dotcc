@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 15: error: out-of-order initializers are nonstandard in C++
+    f({.y = 2, .x = 1}, 0);  // error: selects #1
+                ^
+
+"Test_name.c", line 18: error: more than one instance of overloaded function "g" matches the argument list:
+            function "g(A)" (declared at line 10)
+            function "g(B)" (declared at line 11)
+            argument types are: ({...})
+    g({.x = 1, .y = 2});     // error: ambiguous between #3 and #4
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

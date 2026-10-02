@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 8: error: identifier "foo" is undefined
+        : Y(foo()) {} // expected-error {{use of undeclared identifier 'foo'}}
+            ^
+
+"Test_name.c", line 14: error: identifier "foo" is undefined
+    int Y = foo();    // expected-error {{use of undeclared identifier 'foo'}}
+            ^
+
+"Test_name.c", line 33: error: identifier "invalid" is undefined
+    int* p = new int(invalid()); // expected-error {{use of undeclared identifier}}
+                     ^
+
+"Test_name.c", line 36: error: expression must have a constant value
+  constexpr int* s = X4().p; // expected-error {{must be initialized by}}
+                     ^
+"Test_name.c", line 33: note: expression cannot be interpreted
+    int* p = new int(invalid()); // expected-error {{use of undeclared identifier}}
+             ^
+
+"Test_name.c", line 11: warning: variable "Z" was declared but never referenced
+  constexpr int Z = X().Y; // expected-error {{constexpr variable 'Z' must be initialized by a constant expression}}
+                ^
+
+"Test_name.c", line 36: warning: variable "s" was declared but never referenced
+  constexpr int* s = X4().p; // expected-error {{must be initialized by}}
+                 ^
+
+4 errors detected in the compilation of "Test_name.c".

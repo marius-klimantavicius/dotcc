@@ -1,0 +1,3 @@
+./a.out
+Called template ctor: 2
+Calling S::print()

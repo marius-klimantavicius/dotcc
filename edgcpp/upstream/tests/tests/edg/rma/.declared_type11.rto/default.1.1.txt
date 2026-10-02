@@ -1,0 +1,26 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 14: error: identifier "gbl_callee2" is undefined
+  int gbl_sink5 = gbl_callee2 (77, 88, 99);
+                  ^
+
+"Test_name.c", line 15: error: "gbl_callee2" has already been declared in the current scope
+  struct S2 { friend int gbl_callee2 (int, int, int = 3); };	/* OK */
+                         ^
+
+"Test_name.c", line 15: error: default arguments are not allowed on friend declarations that are not definitions
+  struct S2 { friend int gbl_callee2 (int, int, int = 3); };	/* OK */
+              ^
+
+"Test_name.c", line 17: error: friend declaration cannot add default arguments to previous declaration
+  struct S3 { friend int gbl_callee2 (int, int = 2, int); };	/* OK */
+                         ^
+
+"Test_name.c", line 17: error: default argument not at end of parameter list
+  struct S3 { friend int gbl_callee2 (int, int = 2, int); };	/* OK */
+                         ^
+
+"Test_name.c", line 17: error: default arguments are not allowed on friend declarations that are not definitions
+  struct S3 { friend int gbl_callee2 (int, int = 2, int); };	/* OK */
+              ^
+
+6 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,75 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 14: error: object of abstract class type "A" is not allowed:
+            function "A::f" is a pure virtual function
+    A a;				// { dg-error "abstract" }
+      ^
+
+"Test_name.c", line 15: error: array of abstract class "A" is not allowed:
+            function "A::f" is a pure virtual function
+    A ar[4];			// { dg-error "abstract" }
+      ^
+
+"Test_name.c", line 18: error: array of abstract class "A" is not allowed:
+            function "A::f" is a pure virtual function
+  using Aa = A[4];		// OK
+              ^
+
+"Test_name.c", line 21: error: object of abstract class type "A" is not allowed:
+            function "A::f" is a pure virtual function
+  extern A a;			// OK
+           ^
+
+"Test_name.c", line 26: error: object of abstract class type "A" is not allowed:
+            function "A::f" is a pure virtual function
+  A a;				// { dg-error "abstract" }
+    ^
+
+"Test_name.c", line 28: error: function returning abstract class "A" is not allowed:
+            function "A::f" is a pure virtual function
+  A f() { }			// { dg-error "abstract" }
+    ^
+
+"Test_name.c", line 28: warning: missing return statement at end of non-void function "f"
+  A f() { }			// { dg-error "abstract" }
+          ^
+
+"Test_name.c", line 29: error: parameter of abstract class type "A" is not allowed:
+            function "A::f" is a pure virtual function
+  void g(A) { }			// { dg-error "abstract" }
+         ^
+
+"Test_name.c", line 33: error: a cast to abstract class "A" is not allowed:
+            function "A::f" is a pure virtual function
+    (A(a));			// { dg-error "abstract" }
+     ^
+
+"Test_name.c", line 34: error: a cast to abstract class "A" is not allowed:
+            function "A::f" is a pure virtual function
+    A{};				// { dg-error "abstract" }
+    ^
+
+"Test_name.c", line 35: error: a cast to abstract class "A" is not allowed:
+            function "A::f" is a pure virtual function
+    static_cast<A>(a);		// { dg-error "abstract" }
+                ^
+
+"Test_name.c", line 37: error: function returning abstract class "A" is not allowed:
+            function "A::f" is a pure virtual function
+    f();				// { dg-error "abstract" }
+     ^
+
+"Test_name.c", line 39: error: parameter of abstract class type "A" is not allowed:
+            function "A::f" is a pure virtual function
+    g(a);				// { dg-error "abstract" }
+     ^
+
+"Test_name.c", line 41: error: object of abstract class type "A" is not allowed:
+            function "A::f" is a pure virtual function
+    throw a;			// { dg-error "abstract" }
+          ^
+
+"Test_name.c", line 38: warning: variable "p" was declared but never referenced
+    decltype(f())* p;		// OK
+                   ^
+
+13 errors detected in the compilation of "Test_name.c".

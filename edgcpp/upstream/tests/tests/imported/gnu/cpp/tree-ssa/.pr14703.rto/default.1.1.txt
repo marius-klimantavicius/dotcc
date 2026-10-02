@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./tree-ssa/pr14703.C", line 9: error: excessive recursion at instantiation of member "<unnamed>::fib<L>::value [with L=26ULL]"
+     static const unsigned long long value = fib<L - 1>::value + fib<L - 2>::value;
+                                             ^
+          detected during:
+            instantiation of class "<unnamed>::fib<L> [with L=27ULL]" at line 9
+            instantiation of class "<unnamed>::fib<L> [with L=28ULL]" at line 9
+            instantiation of class "<unnamed>::fib<L> [with L=29ULL]" at line 9
+            instantiation of class "<unnamed>::fib<L> [with L=30ULL]" at line 9
+            instantiation of class "<unnamed>::fib<L> [with L=31ULL]" at line 9
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "<unnamed>::fib<L> [with L=86ULL]" at line 9
+            instantiation of class "<unnamed>::fib<L> [with L=87ULL]" at line 9
+            instantiation of class "<unnamed>::fib<L> [with L=88ULL]" at line 9
+            instantiation of class "<unnamed>::fib<L> [with L=89ULL]" at line 9
+            instantiation of class "<unnamed>::fib<L> [with L=90ULL]" at line 46
+
+"./tree-ssa/pr14703.C", line 9: error: excessive recursion at instantiation of member "<unnamed>::fib<L>::value [with L=25ULL]"
+     static const unsigned long long value = fib<L - 1>::value + fib<L - 2>::value;
+                                                                 ^
+          detected during:
+            instantiation of class "<unnamed>::fib<L> [with L=27ULL]" at line 9
+            instantiation of class "<unnamed>::fib<L> [with L=28ULL]" at line 9
+            instantiation of class "<unnamed>::fib<L> [with L=29ULL]" at line 9
+            instantiation of class "<unnamed>::fib<L> [with L=30ULL]" at line 9
+            instantiation of class "<unnamed>::fib<L> [with L=31ULL]" at line 9
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "<unnamed>::fib<L> [with L=86ULL]" at line 9
+            instantiation of class "<unnamed>::fib<L> [with L=87ULL]" at line 9
+            instantiation of class "<unnamed>::fib<L> [with L=88ULL]" at line 9
+            instantiation of class "<unnamed>::fib<L> [with L=89ULL]" at line 9
+            instantiation of class "<unnamed>::fib<L> [with L=90ULL]" at line 46
+
+"./tree-ssa/pr14703.C", line 24: error: excessive recursion at instantiation of function "<unnamed>::fibconst<L>() [with L=26ULL]"
+     return fibconst<L - 1>() + fibconst<L - 2>();
+            ^
+          detected during:
+            instantiation of "unsigned long long <unnamed>::fibconst<L>() [with L=27ULL]" at line 24
+            instantiation of "unsigned long long <unnamed>::fibconst<L>() [with L=28ULL]" at line 24
+            instantiation of "unsigned long long <unnamed>::fibconst<L>() [with L=29ULL]" at line 24
+            instantiation of "unsigned long long <unnamed>::fibconst<L>() [with L=30ULL]" at line 24
+            instantiation of "unsigned long long <unnamed>::fibconst<L>() [with L=31ULL]" at line 24
+            [ 54 instantiation contexts not shown ]
+            instantiation of "unsigned long long <unnamed>::fibconst<L>() [with L=86ULL]" at line 24
+            instantiation of "unsigned long long <unnamed>::fibconst<L>() [with L=87ULL]" at line 24
+            instantiation of "unsigned long long <unnamed>::fibconst<L>() [with L=88ULL]" at line 24
+            instantiation of "unsigned long long <unnamed>::fibconst<L>() [with L=89ULL]" at line 24
+            instantiation of "unsigned long long <unnamed>::fibconst<L>() [with L=90ULL]" at line 47
+
+3 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 24: warning: attribute is supported only in 32-bit x86 configurations
+  struct FuncResult<R(CC_FASTCALL*)(Args...)>
+                      ^
+
+"Test_name.c", line 24: error: class template "FuncResult" has already been defined (previous definition at line 17)
+  struct FuncResult<R(CC_FASTCALL*)(Args...)>
+         ^
+
+"Test_name.c", line 30: warning: attribute is supported only in 32-bit x86 configurations
+  struct FuncResult<R(CC_STDCALL*)(Args...)>
+                      ^
+
+"Test_name.c", line 30: error: class template "FuncResult" has already been defined (previous definition at line 17)
+  struct FuncResult<R(CC_STDCALL*)(Args...)>
+         ^
+
+"Test_name.c", line 41: warning: attribute is supported only in 32-bit x86 configurations
+  int CC_FASTCALL func1(int x, int y, int z)
+      ^
+
+"Test_name.c", line 46: warning: attribute is supported only in 32-bit x86 configurations
+  int CC_STDCALL func2(int x, int y, int z)
+      ^
+
+2 errors detected in the compilation of "Test_name.c".

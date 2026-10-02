@@ -1,0 +1,14 @@
+eccp -DTEST_NUMBER=1 -r -x -tused --microsoft_version=1400 --set_flag=no_checking_pragmas Test_name.c
+"Test_name.c", line 9: remark: return type "int" omitted in declaration of function "main"
+  main() {
+  ^
+
+"Test_name.c", line 10: warning: variable "s" was declared but never referenced
+    S<int> s;
+           ^
+
+"Test_name.c", line 7: warning: variable "x" was declared but never referenced
+    friend void f() { A<T> x; }
+                           ^
+          detected during instantiation of class "S<T> [with T=int]" 
+

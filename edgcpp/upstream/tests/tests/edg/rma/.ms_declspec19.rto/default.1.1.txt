@@ -1,0 +1,5 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --microsoft_version=1200 -n Test_name.c
+"Test_name.c", line 18: remark: "operator>>" is not a class or function template name in the current scope
+  extern template __declspec(dllimport) basic_istream<char, char_traits<char> >& __cdecl operator>>(
+                                                                                         ^
+

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=3 -A -W --c++26 Test_name.c
+"Test_name.c", line 5: error: exception specification is not allowed
+  int main() noexcept             // OK
+             ^
+
+1 error detected in the compilation of "Test_name.c".

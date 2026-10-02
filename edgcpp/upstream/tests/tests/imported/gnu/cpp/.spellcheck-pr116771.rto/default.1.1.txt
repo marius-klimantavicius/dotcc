@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: error: incomplete type "void" is not allowed
+  layout_pirnter::print_newline () // { dg-error "'layout_pirnter' has not been declared; did you mean 'layout_printer'" }
+  ^
+
+"Test_name.c", line 9: error: expected a ";"
+  layout_pirnter::print_newline () // { dg-error "'layout_pirnter' has not been declared; did you mean 'layout_printer'" }
+                ^
+
+2 errors detected in the compilation of "Test_name.c".

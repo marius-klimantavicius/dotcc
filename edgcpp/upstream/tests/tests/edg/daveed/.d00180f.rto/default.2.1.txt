@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=2 --upc --c99 Test_name.c
+"Test_name.c", line 18: error: shared variables must be static or extern
+  	strict shared [4] int a[THREADS];
+  	                      ^
+
+"Test_name.c", line 23: error: identifier "a" is undefined
+  	upc_forall (a[0] = 1; ;; a[2]) {
+  	            ^
+
+"Test_name.c", line 15: warning: variable "N" was declared but never referenced
+     int N = THREADS;
+         ^
+
+"Test_name.c", line 16: warning: variable "Q" was declared but never referenced
+     int Q = 2*THREADS*2;
+         ^
+
+2 errors detected in the compilation of "Test_name.c".

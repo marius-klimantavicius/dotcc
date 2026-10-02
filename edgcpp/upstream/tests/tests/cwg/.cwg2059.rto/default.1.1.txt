@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++17 -tused -A Test_name.c
+"Test_name.c", line 5: error: function "B<T>::h [with T=A]", declared using a local type, must be defined in this translation unit
+      void h(T);
+           ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,132 @@
+#!/usr/bin/env python3
+
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+import argparse
+import sys
+
+from pathlib import Path
+from typing import List, Optional, TextIO, Tuple
+
+from edgtest import runtest
+
+def parse_args() -> argparse.Namespace:
+  parser = argparse.ArgumentParser(
+    description = 'Test modification tool.'
+  )
+  parser.add_argument(
+    '-a',
+    '--add',
+    dest = 'additions',
+    action = 'append',
+    default = [],
+    help = 'the addition operations to be made'
+  )
+  parser.add_argument(
+    '-r',
+    '--rem',
+    '--remove',
+    dest = 'removals',
+    action = 'append',
+    default = [],
+    help = 'the removal operations to be made'
+  )
+  parser.add_argument(
+    '-s',
+    '--set',
+    dest = 'sets',
+    action = 'append',
+    default = [],
+    help = 'the set operations to be made'
+  )
+  parser.add_argument(
+    'test_file',
+    type = Path,
+    help = 'the path to the test to modify'
+  )
+  return parser.parse_args()
+
+def _fail_unknown_key(key: str, op_kind: str) -> None:
+  print(f"Cannot {op_kind} {key}: Operation not programmed")
+  sys.exit(1)
+
+TEXTUAL_MODIFICATION_KEYS = (
+  'remark',
+  'options_all',
+  'options_sep',
+  'eccp_command',
+  'ulimit_options',
+  'linker_options',
+  'execution_args',
+  'script',
+  'filter'
+)
+
+def do_adds(test_descript: runtest.TestDescription, ops: List[str]):
+  for op in ops:
+    op_key, op_value = op.split(':')
+    if op_key in TEXTUAL_MODIFICATION_KEYS:
+      curr_value = getattr(test_descript, op_key)
+      if op_value in curr_value:
+        continue
+      new_value = curr_value + ' '
+      new_value += op_value
+      # Trim any excess whitespace
+      new_value = new_value.strip()
+      setattr(test_descript, op_key, new_value)
+    else:
+      _fail_unknown_key(op_key, 'add')
+
+def do_rems(test_descript: runtest.TestDescription, ops: List[str]):
+  for op in ops:
+    op_key, op_value = op.split(':')
+    if op_key in TEXTUAL_MODIFICATION_KEYS:
+      orig_value = getattr(test_descript, op_key)
+      # Try to remove a version with surrounding whitespace first as this
+      # version will not be subject to the strip() operation to cleanup
+      # whitespace at the beginning or end of the value.
+      trials = [f" {op_value} ", op_value]
+      for trial in trials:
+        new_value = orig_value.replace(op_value, ' ')
+        if new_value != orig_value:
+          break
+      # Trim any excess whitespace
+      new_value = new_value.strip()
+      setattr(test_descript, op_key, new_value)
+    else:
+      _fail_unknown_key(op_key, 'add')
+
+def do_sets(test_descript: runtest.TestDescription, ops: List[str]):
+  for op in ops:
+    op_key, op_value = op.split(':')
+    if op_key in TEXTUAL_MODIFICATION_KEYS:
+      # Trim any excess whitespace
+      new_value = op_value.strip()
+      setattr(test_descript, op_key, new_value)
+    else:
+      _fail_unknown_key(op_key, 'add')
+
+def modify_test(test_path: Path, add_ops: List[str], rem_ops: List[str],
+                set_ops: List[str]) -> None:
+  test_descript = runtest.load_single_description(test_path)
+
+  do_adds(test_descript, add_ops)
+  do_rems(test_descript, rem_ops)
+  do_sets(test_descript, set_ops)
+
+  runtest.replace_description(test_descript, test_path)
+
+def main() -> None:
+  args = parse_args()
+
+  modify_test(
+    args.test_file.resolve(),
+    args.additions,
+    args.removals,
+    args.sets
+  )
+
+main()

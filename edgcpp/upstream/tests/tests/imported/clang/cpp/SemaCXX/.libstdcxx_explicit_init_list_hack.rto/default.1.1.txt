@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 -D__GLIBCXX__=20100000L Test_name.c
+"SemaCXX/libstdcxx_explicit_init_list_hack.cpp", line 21: error: no default constructor exists for class "std::__debug::vector<int>"
+  struct { int a, b; std::__debug::vector<int> c; } e[] = { {1, 1} };
+                                                                 ^
+
+"SemaCXX/libstdcxx_explicit_init_list_hack.cpp", line 23: error: no default constructor exists for class "std::__debug::vector<int>"
+  decltype(new std::__debug::vector<int>[1]{}) x;
+                                            ^
+
+2 errors detected in the compilation of "Test_name.c".

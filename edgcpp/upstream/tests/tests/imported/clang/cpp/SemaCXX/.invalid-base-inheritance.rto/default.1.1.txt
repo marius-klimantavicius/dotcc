@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 10: error: incomplete type "GH147186::X" is not allowed
+  class A : X { // expected-error {{base class has incomplete type}}
+            ^
+
+"Test_name.c", line 13: error: expected an identifier
+  class Y : int { // expected-error {{expected class name}}
+            ^
+
+"Test_name.c", line 16: error: incomplete type "GH147186::X" is not allowed
+  class Z : X*, virtual int { // expected-error {{base class has incomplete type}} expected-error {{expected class name}}
+            ^
+
+"Test_name.c", line 16: error: class or struct definition is missing
+  class Z : X*, virtual int { // expected-error {{base class has incomplete type}} expected-error {{expected class name}}
+             ^
+
+4 errors detected in the compilation of "Test_name.c".

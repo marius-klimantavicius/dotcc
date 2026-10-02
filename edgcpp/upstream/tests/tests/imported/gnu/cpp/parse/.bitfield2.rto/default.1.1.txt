@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: error: invalid type for a bit field
+      X x : 2;            // { dg-error "7:bit-field .x. with non-integral type .X." }
+      ^
+
+"Test_name.c", line 24: error: invalid type for a bit field
+    T t : 3;              // { dg-error "5:bit-field .double D\\<double\\>::t. with non-integral type .double." }
+    ^
+          detected during instantiation of class "D<T> [with T=double]" at line 27
+
+"Test_name.c", line 33: error: invalid type for a bit field
+    U t : 3;             // { dg-error "5:bit-field .t. with non-integral type .E\\<T\\>::U." }
+    ^
+
+3 errors detected in the compilation of "Test_name.c".

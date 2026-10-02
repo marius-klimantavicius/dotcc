@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 33: error: identifier "g" is undefined
+      g(X1::N::S{}); // expected-error {{use of undeclared identifier}}
+      ^
+
+"Test_name.c", line 138: error: identifier "X1_f" is undefined
+      X1_f(c); // N is not added to the set of associated namespaces
+      ^
+
+"Test_name.c", line 141: error: identifier "X1_g" is undefined
+      X1_g(c); // ... nor is #2 ...
+      ^
+
+"Test_name.c", line 199: warning: variable "g" is used before its value is set
+        return g;
+               ^
+
+"Test_name.c", line 207: warning: variable "e" is used before its value is set
+      f(e); // ok
+        ^
+
+"Test_name.c", line 209: warning: variable "f" is used before its value is set
+      g(f); // ok
+        ^
+
+"Test_name.c", line 211: warning: variable "g" is used before its value is set
+      h(g); // ok
+        ^
+
+"Test_name.c", line 229: warning: variable "p" is used before its value is set
+      f(p); // ok
+        ^
+
+"Test_name.c", line 279: warning: variable "p" is used before its value is set
+      f(p); // ok
+        ^
+
+"Test_name.c", line 300: warning: variable "p" is used before its value is set
+      f(p); // ok
+        ^
+
+"Test_name.c", line 43: error: function "adl_class_type::X2::f", declared using a local type, must be defined in this translation unit
+      void f(S); // #1
+           ^
+
+"Test_name.c", line 82: error: function "adl_class_type::X5::N::f", declared using a local type, must be defined in this translation unit
+        void f(decltype(get_lambda()));
+             ^
+
+"Test_name.c", line 202: error: function "adl_enumeration_type::N::h", declared using a local type, must be defined in this translation unit
+      void h(G);
+           ^
+
+6 errors detected in the compilation of "Test_name.c".

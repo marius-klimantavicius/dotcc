@@ -1,0 +1,44 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 15: error: the address of a consteval function cannot be used here
+    auto c = &S::foo;			// { dg-error "taking address of an immediate function" }
+             ^
+
+"Test_name.c", line 16: error: expression must have a constant value
+    constexpr auto d = &S::foo;		// { dg-error "constant evaluation returns address of immediate function" }
+                       ^
+"Test_name.c", line 16: note: address of consteval function "S::foo" in constant expression result
+    constexpr auto d = &S::foo;		// { dg-error "constant evaluation returns address of immediate function" }
+                       ^
+
+"Test_name.c", line 17: error: the address of a consteval function cannot be used here
+    static auto e = &S::foo;		// { dg-error "taking address of an immediate function" }
+                    ^
+
+"Test_name.c", line 15: warning: variable "c" was declared but never referenced
+    auto c = &S::foo;			// { dg-error "taking address of an immediate function" }
+         ^
+
+"Test_name.c", line 16: warning: variable "d" was declared but never referenced
+    constexpr auto d = &S::foo;		// { dg-error "constant evaluation returns address of immediate function" }
+                   ^
+
+"Test_name.c", line 17: warning: variable "e" was declared but never referenced
+    static auto e = &S::foo;		// { dg-error "taking address of an immediate function" }
+                ^
+
+"Test_name.c", line 21: error: expression must have a constant value
+  constexpr auto a = &S::foo;		// { dg-error "constant evaluation returns address of immediate function" }
+                     ^
+"Test_name.c", line 21: note: address of consteval function "S::foo" in constant expression result
+  constexpr auto a = &S::foo;		// { dg-error "constant evaluation returns address of immediate function" }
+                     ^
+
+"Test_name.c", line 22: error: the address of a consteval function cannot be used here
+  auto b = &S::foo;			// { dg-error "taking address of an immediate function" }
+           ^
+
+"Test_name.c", line 21: warning: variable "a" was declared but never referenced
+  constexpr auto a = &S::foo;		// { dg-error "constant evaluation returns address of immediate function" }
+                 ^
+
+5 errors detected in the compilation of "Test_name.c".

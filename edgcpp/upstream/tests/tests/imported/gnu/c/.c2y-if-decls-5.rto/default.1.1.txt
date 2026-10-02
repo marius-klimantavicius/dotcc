@@ -1,0 +1,38 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 16: error: expected an expression
+    if (auto x = get (); get (), x);
+        ^
+
+"Test_name.c", line 20: error: expected an expression
+    switch (auto x = get (); get (), x);
+            ^
+
+"Test_name.c", line 24: error: expected an expression
+    if (struct S s = { 42 }; s.i != 42)
+        ^
+
+"Test_name.c", line 27: error: expected an expression
+    if (int i = 42)
+        ^
+
+"Test_name.c", line 29: error: identifier "i" is undefined
+        i = 0;
+        ^
+
+"Test_name.c", line 30: error: expected an expression
+        if (int j = 42)
+            ^
+
+"Test_name.c", line 31: error: identifier "j" is undefined
+  	j = 0;
+  	^
+
+"Test_name.c", line 33: error: identifier "j" is undefined
+  	j = 42;
+  	^
+
+"Test_name.c", line 36: error: identifier "i" is undefined
+      i = 42;
+      ^
+
+9 errors detected in the compilation of "Test_name.c".

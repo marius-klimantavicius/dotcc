@@ -1,0 +1,137 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 11: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive]];		// { dg-error "'omp::directive' attribute requires argument" }
+      ^
+
+"Test_name.c", line 12: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive ()]];	// { dg-error "expected OpenMP directive name" }
+      ^
+
+"Test_name.c", line 13: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (nonexistent foobar)]];	// { dg-error "unknown OpenMP directive name in 'omp::directive' attribute argument" }
+      ^
+
+"Test_name.c", line 14: warning: attribute namespace "omp" is unrecognized
+    [[omp::sequence]];		// { dg-error "'omp::sequence' attribute requires argument" }
+      ^
+
+"Test_name.c", line 15: warning: attribute namespace "omp" is unrecognized
+    [[omp::sequence()]];		// { dg-error "expected 'directive' or 'sequence'" }
+      ^
+
+"Test_name.c", line 16: warning: attribute namespace "omp" is unrecognized
+    [[omp::sequence(foobar())]];		// { dg-error "expected 'directive' or 'sequence'" }
+      ^
+
+"Test_name.c", line 17: warning: attribute namespace "omp" is unrecognized
+    [[omp::sequence(omp::foobar())]];		// { dg-error "expected 'directive' or 'sequence'" }
+      ^
+
+"Test_name.c", line 18: warning: attribute namespace "omp" is unrecognized
+    [[omp::sequence(directive(taskwait), foobar())]];		// { dg-error "expected 'directive' or 'sequence'" }
+      ^
+
+"Test_name.c", line 19: warning: attribute namespace "omp" is unrecognized
+    [[omp::sequence(omp::directive(taskwait), omp::foobar())]];	// { dg-error "expected 'directive' or 'sequence'" }
+      ^
+
+"Test_name.c", line 20: warning: attribute namespace "omp" is unrecognized
+    [[omp::sequence(directive(taskwait) foobar())]];		// { dg-error "expected '\\\)' before 'foobar'" }
+      ^
+
+"Test_name.c", line 21: warning: attribute namespace "omp" is unrecognized
+    [[omp::sequence(directive)]];		// { dg-error "expected '\\\(' before '\\\)' token" }
+      ^
+
+"Test_name.c", line 22: warning: attribute namespace "omp" is unrecognized
+    [[omp::sequence(omp::sequence)]];	// { dg-error "expected '\\\(' before '\\\)' token" }
+      ^
+
+"Test_name.c", line 23: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (parallel), omp::directive (single)]]	// { dg-error "OpenMP construct among 'omp::directive' attributes requires all 'omp::directive' attributes on the same statement to be in the same 'omp::sequence'" }
+      ^
+
+"Test_name.c", line 23: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (parallel), omp::directive (single)]]	// { dg-error "OpenMP construct among 'omp::directive' attributes requires all 'omp::directive' attributes on the same statement to be in the same 'omp::sequence'" }
+                                 ^
+
+"Test_name.c", line 25: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (parallel)]]	// { dg-error "OpenMP construct among 'omp::directive' attributes requires all 'omp::directive' attributes on the same statement to be in the same 'omp::sequence'" }
+      ^
+
+"Test_name.c", line 26: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (single)]]
+      ^
+
+"Test_name.c", line 28: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (taskwait), omp::directive (taskyield)]]	// { dg-error "multiple OpenMP standalone directives among 'omp::directive' attributes must be all within the same 'omp::sequence'" }
+      ^
+
+"Test_name.c", line 28: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (taskwait), omp::directive (taskyield)]]	// { dg-error "multiple OpenMP standalone directives among 'omp::directive' attributes must be all within the same 'omp::sequence'" }
+                                 ^
+
+"Test_name.c", line 30: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (taskwait)]]
+      ^
+
+"Test_name.c", line 31: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (taskyield)]]	// { dg-error "multiple OpenMP standalone directives among 'omp::directive' attributes must be all within the same 'omp::sequence'" }
+      ^
+
+"Test_name.c", line 33: warning: attribute namespace "omp" is unrecognized
+    [[omp::directive (flush)]]	// { dg-error "standalone OpenMP directives in 'omp::directive' attribute can only appear on an empty statement" }
+      ^
+
+"Test_name.c", line 35: warning: attribute namespace "omp" is unrecognized
+    auto a = [] () [[omp::directive (threadprivate (t1))]] {};	// { dg-error "'omp::directive' not allowed to be specified in this context" }
+                     ^
+
+"Test_name.c", line 36: warning: attribute namespace "omp" is unrecognized
+    int [[omp::directive (threadprivate (t2))]] b;		// { dg-warning "attribute ignored" }
+          ^
+
+"Test_name.c", line 37: warning: attribute namespace "omp" is unrecognized
+    int *[[omp::directive (threadprivate (t3))]] c;		// { dg-warning "'omp::directive' scoped attribute directive ignored" }
+           ^
+
+"Test_name.c", line 38: warning: attribute namespace "omp" is unrecognized
+    int &[[omp::directive (threadprivate (t4))]] d = b;		// { dg-warning "'omp::directive' scoped attribute directive ignored" }
+           ^
+
+"Test_name.c", line 39: warning: attribute namespace "omp" is unrecognized
+    typedef int T [[omp::directive (threadprivate (t5))]];	// { dg-error "'omp::directive' not allowed to be specified in this context" }
+                    ^
+
+"Test_name.c", line 40: warning: attribute namespace "omp" is unrecognized
+    int e [[omp::directive (threadprivate (t6))]] [10];		// { dg-error "'omp::directive' not allowed to be specified in this context" }
+            ^
+
+"Test_name.c", line 41: warning: attribute namespace "omp" is unrecognized
+    int f[10] [[omp::directive (threadprivate (t6))]];		// { dg-warning "'omp::directive' scoped attribute directive ignored" }
+                ^
+
+"Test_name.c", line 42: warning: attribute namespace "omp" is unrecognized
+    struct [[omp::directive (threadprivate (t7))]] S {};		// { dg-error "'omp::directive' not allowed to be specified in this context" }
+             ^
+
+"Test_name.c", line 35: warning: variable "a" was declared but never referenced
+    auto a = [] () [[omp::directive (threadprivate (t1))]] {};	// { dg-error "'omp::directive' not allowed to be specified in this context" }
+         ^
+
+"Test_name.c", line 37: warning: variable "c" was declared but never referenced
+    int *[[omp::directive (threadprivate (t3))]] c;		// { dg-warning "'omp::directive' scoped attribute directive ignored" }
+                                                 ^
+
+"Test_name.c", line 38: warning: variable "d" was declared but never referenced
+    int &[[omp::directive (threadprivate (t4))]] d = b;		// { dg-warning "'omp::directive' scoped attribute directive ignored" }
+                                                 ^
+
+"Test_name.c", line 40: warning: variable "e" was declared but never referenced
+    int e [[omp::directive (threadprivate (t6))]] [10];		// { dg-error "'omp::directive' not allowed to be specified in this context" }
+        ^
+
+"Test_name.c", line 41: warning: variable "f" was declared but never referenced
+    int f[10] [[omp::directive (threadprivate (t6))]];		// { dg-warning "'omp::directive' scoped attribute directive ignored" }
+        ^
+

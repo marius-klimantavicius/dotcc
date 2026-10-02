@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 9: error: expected an expression
+  bool a = __builtin_is_pointer_interconvertible_with_class ();			// { dg-error "needs a single argument" }
+                                                             ^
+
+"Test_name.c", line 10: error: expected a ")"
+  bool b = __builtin_is_pointer_interconvertible_with_class (&A::a, &A::a);	// { dg-error "needs a single argument" }
+                                                                  ^
+
+"Test_name.c", line 10: error: a nonstatic data member may not be defined outside its class
+  bool b = __builtin_is_pointer_interconvertible_with_class (&A::a, &A::a);	// { dg-error "needs a single argument" }
+                                                                        ^
+
+"Test_name.c", line 10: error: expected a ";"
+  bool b = __builtin_is_pointer_interconvertible_with_class (&A::a, &A::a);	// { dg-error "needs a single argument" }
+                                                                         ^
+
+"Test_name.c", line 11: error: expected a class, struct, or union type
+  bool c = __builtin_is_pointer_interconvertible_with_class (1);			// { dg-error "argument is not pointer to member" }
+                                                             ^
+
+"Test_name.c", line 12: error: expected a class, struct, or union type
+  bool d = __builtin_is_pointer_interconvertible_with_class (1.0);		// { dg-error "argument is not pointer to member" }
+                                                             ^
+
+"Test_name.c", line 13: error: incomplete type "B" is not allowed
+  bool e = __builtin_is_pointer_interconvertible_with_class ((int B::*) nullptr);	// { dg-error "invalid use of incomplete type" }
+                                                             ^
+
+7 errors detected in the compilation of "Test_name.c".

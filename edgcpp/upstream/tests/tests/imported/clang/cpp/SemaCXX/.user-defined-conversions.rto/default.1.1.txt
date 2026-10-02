@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 25: warning: variable "s" was set but never used
+    short s;
+          ^
+
+"Test_name.c", line 86: warning: "X1::X1(X1 &)", required for copy that was eliminated, is not callable because reference parameter cannot be bound to rvalue
+    int &ir = f(b); // precxx17-error{{no viable constructor copying parameter of type 'X1'}}
+                ^
+
+"Test_name.c", line 100: error: "rdar10202900::A::A(int)" (declared at line 95) is inaccessible
+      a = b; // expected-error{{calling a private constructor of class 'rdar10202900::A'}}
+          ^
+
+"Test_name.c", line 98: warning: parameter "a" was set but never used
+    void testA(A a) {
+                 ^
+
+1 error detected in the compilation of "Test_name.c".

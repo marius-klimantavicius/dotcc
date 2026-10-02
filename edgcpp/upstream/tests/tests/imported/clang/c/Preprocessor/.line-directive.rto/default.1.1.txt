@@ -1,0 +1,7 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c99 Test_name.c
+"", line 11: catastrophic error: #error directive: MAIN7
+  #error MAIN7
+   ^
+
+1 catastrophic error detected in the compilation of "Test_name.c".
+Compilation terminated.

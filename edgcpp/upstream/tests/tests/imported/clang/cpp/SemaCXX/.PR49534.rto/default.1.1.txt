@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 6: error: "virtual" is not allowed
+    virtual int a(); // expected-error {{unions cannot have virtual functions}}
+    ^
+
+"Test_name.c", line 5: error: invalid anonymous union -- member function is not allowed
+  static union {     // expected-warning {{declaration does not declare anything}}
+               ^
+
+2 errors detected in the compilation of "Test_name.c".

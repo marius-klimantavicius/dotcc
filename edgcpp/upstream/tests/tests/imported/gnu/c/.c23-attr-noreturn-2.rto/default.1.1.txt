@@ -1,0 +1,142 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 7: warning: expected a declaration
+  [[noreturn]]; /* { dg-error "ignored" } */
+              ^
+
+"Test_name.c", line 9: error: attribute "noreturn" does not apply here
+  int [[noreturn]] var; /* { dg-error "ignored" } */
+        ^
+
+"Test_name.c", line 11: error: attribute "noreturn" does not apply here
+  int array_with_dep_type[2] [[noreturn]]; /* { dg-error "ignored" } */
+                               ^
+
+"Test_name.c", line 13: error: attribute "noreturn" does not apply here
+  void fn_with_dep_type () [[noreturn]]; /* { dg-error "ignored" } */
+                             ^
+
+"Test_name.c", line 15: error: attribute "__noreturn__" does not apply here
+  int z = sizeof (int [[__noreturn__]]); /* { dg-error "ignored" } */
+                        ^
+
+"Test_name.c", line 17: error: attribute "noreturn" does not apply here
+  [[noreturn]] int x1; /* { dg-error "can only be applied to functions" } */
+    ^
+
+"Test_name.c", line 18: error: attribute "__noreturn__" does not apply here
+  int x2 [[__noreturn__]]; /* { dg-error "can only be applied to functions" } */
+           ^
+
+"Test_name.c", line 20: error: attribute "_Noreturn" does not apply here
+  [[_Noreturn]] void (*fp) (); /* { dg-error "can only be applied to functions" } */
+    ^
+
+"Test_name.c", line 26: warning: attribute "_Noreturn" does not apply here
+    [[_Noreturn]]; /* { dg-error "ignored" } */
+      ^
+
+"Test_name.c", line 27: warning: attribute "___Noreturn__" does not apply here
+    [[___Noreturn__]] a = 1; /* { dg-error "ignored" } */
+      ^
+
+"Test_name.c", line 25: warning: variable "a" was set but never used
+    int a;
+        ^
+
+"Test_name.c", line 31: error: attribute "noreturn" does not apply here
+  g ([[noreturn]] int x, int y) /* { dg-error "can only be applied to functions" } */
+       ^
+
+"Test_name.c", line 33: error: attribute "noreturn" does not apply here
+    [[noreturn]] typedef float F; /* { dg-error "can only be applied to functions" } */
+      ^
+
+"Test_name.c", line 34: error: attribute "noreturn" does not apply here
+    [[noreturn]] int a; /* { dg-error "can only be applied to functions" } */
+      ^
+
+"Test_name.c", line 35: error: attribute "__noreturn__" does not apply here
+    int b [[__noreturn__]]; /* { dg-error "can only be applied to functions" } */
+            ^
+
+"Test_name.c", line 36: error: attribute "noreturn" does not apply here
+    int c [[noreturn]]; /* { dg-error "can only be applied to functions" } */
+            ^
+
+"Test_name.c", line 37: warning: attribute "__noreturn__" does not apply here
+    [[__noreturn__]] label1: ; /* { dg-error "can only be applied to functions" } */
+      ^
+
+"Test_name.c", line 39: warning: attribute "noreturn" does not apply here
+    [[noreturn]] label2: ; /* { dg-error "can only be applied to functions" } */
+      ^
+
+"Test_name.c", line 34: warning: variable "a" was declared but never referenced
+    [[noreturn]] int a; /* { dg-error "can only be applied to functions" } */
+                     ^
+
+"Test_name.c", line 35: warning: variable "b" was declared but never referenced
+    int b [[__noreturn__]]; /* { dg-error "can only be applied to functions" } */
+        ^
+
+"Test_name.c", line 36: warning: variable "c" was set but never used
+    int c [[noreturn]]; /* { dg-error "can only be applied to functions" } */
+        ^
+
+"Test_name.c", line 37: warning: label "label1" was declared but never referenced
+    [[__noreturn__]] label1: ; /* { dg-error "can only be applied to functions" } */
+                     ^
+
+"Test_name.c", line 39: warning: label "label2" was declared but never referenced
+    [[noreturn]] label2: ; /* { dg-error "can only be applied to functions" } */
+                 ^
+
+"Test_name.c", line 43: warning: attribute "_Noreturn" does not apply here
+  struct [[_Noreturn]] s { double d; }; /* { dg-error "can only be applied to functions" } */
+           ^
+
+"Test_name.c", line 47: error: attribute "___Noreturn__" does not apply here
+    [[___Noreturn__]] int a; /* { dg-error "can only be applied to functions" } */
+      ^
+
+"Test_name.c", line 48: error: attribute "noreturn" does not apply here
+    int b [[noreturn]]; /* { dg-error "can only be applied to functions" } */
+            ^
+
+"Test_name.c", line 51: warning: attribute "noreturn" does not apply here
+  enum e { E1 [[noreturn]] }; /* { dg-error "can only be applied to functions" } */
+                ^
+
+"Test_name.c", line 53: warning: attribute "_Noreturn" does not apply here
+  union [[_Noreturn]] u { int x; }; /* { dg-error "can only be applied to functions" } */
+          ^
+
+"Test_name.c", line 55: warning: attribute "noreturn" does not apply here
+  enum [[noreturn]] eu { E2 }; /* { dg-error "can only be applied to functions" } */
+         ^
+
+"Test_name.c", line 57: error: attribute "noreturn" does not apply here
+  void fx ([[noreturn]] int p); /* { dg-error "can only be applied" } */
+             ^
+
+"Test_name.c", line 61: error: attribute "noreturn" does not apply here
+    [[noreturn]] int a; /* { dg-error "can only be applied to functions" } */
+      ^
+
+"Test_name.c", line 62: error: attribute "noreturn" does not apply here
+    int b [[noreturn]]; /* { dg-error "can only be applied to functions" } */
+            ^
+
+"Test_name.c", line 70: warning: attribute "noreturn" does not apply here
+        [[noreturn]] case 1: ; /* { dg-error "can only be applied to functions" } */
+          ^
+
+"Test_name.c", line 71: warning: attribute "__noreturn__" does not apply here
+        [[__noreturn__]] case 2: ; /* { dg-error "can only be applied to functions" } */
+          ^
+
+"Test_name.c", line 72: warning: attribute "noreturn" does not apply here
+        [[noreturn]] default: ; /* { dg-error "can only be applied to functions" } */
+          ^
+
+17 errors detected in the compilation of "Test_name.c".

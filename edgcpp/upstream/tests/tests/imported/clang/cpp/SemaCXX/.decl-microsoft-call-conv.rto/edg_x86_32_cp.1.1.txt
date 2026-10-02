@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 -w --ms_extensions -DMSABI Test_name.c
+"Test_name.c", line 18: error: declaration is incompatible with "void __cdecl free_func_default()" (declared at line 11)
+  void __stdcall  free_func_default(); // expected-error {{function declared 'stdcall' here was previously declared without calling convention}}
+                  ^
+
+"Test_name.c", line 19: error: declaration is incompatible with "void __stdcall free_func_default()" (declared at line 18)
+  void __fastcall free_func_default(); // expected-error {{function declared 'fastcall' here was previously declared without calling convention}}
+                  ^
+
+"Test_name.c", line 22: error: declaration is incompatible with "void __cdecl free_func_cdecl()" (declared at line 12)
+  void __stdcall  free_func_cdecl(); // expected-error {{function declared 'stdcall' here was previously declared 'cdecl'}}
+                  ^
+
+"Test_name.c", line 23: error: declaration is incompatible with "void __stdcall free_func_cdecl()" (declared at line 22)
+  void __fastcall free_func_cdecl(); // expected-error {{function declared 'fastcall' here was previously declared 'cdecl'}}
+                  ^
+
+"Test_name.c", line 25: error: declaration is incompatible with "void __stdcall free_func_stdcall()" (declared at line 13)
+  void            free_func_stdcall();
+                  ^
+
+"Test_name.c", line 27: error: declaration is incompatible with "void __cdecl free_func_stdcall()" (declared at line 25)
+  void __fastcall free_func_stdcall(); // expected-error {{function declared 'fastcall' here was previously declared 'stdcall'}}
+                  ^
+
+"Test_name.c", line 29: error: declaration is incompatible with "void __fastcall free_func_fastcall()" (declared at line 14)
+  void __cdecl    free_func_fastcall(); // expected-error {{function declared 'cdecl' here was previously declared 'fastcall'}}
+                  ^
+
+"Test_name.c", line 30: error: declaration is incompatible with "void __cdecl free_func_fastcall()" (declared at line 29)
+  void __stdcall  free_func_fastcall(); // expected-error {{function declared 'stdcall' here was previously declared 'fastcall'}}
+                  ^
+
+"Test_name.c", line 31: error: declaration is incompatible with "void __stdcall free_func_fastcall()" (declared at line 30)
+  void            free_func_fastcall();
+                  ^
+
+"Test_name.c", line 33: error: declaration is incompatible with "void __vectorcall free_func_vectorcall()" (declared at line 15)
+  void __cdecl    free_func_vectorcall(); // expected-error {{function declared 'cdecl' here was previously declared 'vectorcall'}}
+                  ^
+
+"Test_name.c", line 34: error: declaration is incompatible with "void __cdecl free_func_vectorcall()" (declared at line 33)
+  void __stdcall  free_func_vectorcall(); // expected-error {{function declared 'stdcall' here was previously declared 'vectorcall'}}
+                  ^
+
+"Test_name.c", line 35: error: declaration is incompatible with "void __stdcall free_func_vectorcall()" (declared at line 34)
+  void            free_func_vectorcall();
+                  ^
+
+"Test_name.c", line 41: error: __thiscall can only appear on nonstatic member function declarations
+  void __thiscall free_func_cdecl(char *);
+                  ^
+
+"Test_name.c", line 62: internal error: assertion failed at: "decls.c", line <suppressed> in add_src_seq_end_of_routine_if_needed
+
+    void_fun_t __stdcall member_typedef_stdcall;
+                         ^
+
+13 errors and 1 catastrophic error detected in the compilation of "Test_name.c".
+Compilation aborted.
+Aborted
+eccp: front end returned an exit status of 134

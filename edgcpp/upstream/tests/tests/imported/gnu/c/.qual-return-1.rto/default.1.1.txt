@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 10: warning: type qualifier on return type is meaningless
+  const int int_fn (void); /* { dg-warning "qualifiers" "int decl" } */
+  ^
+
+"Test_name.c", line 11: warning: type qualifier on return type is meaningless
+  const int (*int_ptr) (void); /* { dg-warning "qualifiers" "int ptr" } */
+  ^
+
+"Test_name.c", line 12: warning: type qualifier on return type is meaningless
+  const int int_fn2 (void) { return 0; } /* { dg-warning "qualifiers" "int defn" } */
+  ^
+
+"Test_name.c", line 14: warning: type qualifier on return type is meaningless
+  const void void_fn (void); /* { dg-warning "qualifiers" "void decl" } */
+  ^
+
+"Test_name.c", line 15: warning: type qualifier on return type is meaningless
+  const void (*void_ptr) (void); /* { dg-warning "qualifiers" "void ptr" } */
+  ^
+
+"Test_name.c", line 16: warning: type qualifier on return type is meaningless
+  const void void_fn2 (void) { } /* { dg-warning "qualified" "void defn" } */
+  ^
+

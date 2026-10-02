@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"./cpp2a/constexpr-indeterminate1.C", line 15: warning: variable "foo" is used before its value is set
+    unsigned char u = foo;
+                      ^
+
+"./cpp2a/constexpr-indeterminate1.C", line 15: warning: variable "u" was declared but never referenced
+    unsigned char u = foo;
+                  ^
+
+"./cpp2a/constexpr-indeterminate1.C", line 23: warning: variable "foo" is used before its value is set
+    int i = foo;
+            ^
+
+"./cpp2a/constexpr-indeterminate1.C", line 23: warning: variable "i" was declared but never referenced
+    int i = foo;
+        ^
+
+"./cpp2a/constexpr-indeterminate1.C", line 31: warning: variable "foo" is used before its value is set
+    char8_t u = foo;
+                ^
+
+"./cpp2a/constexpr-indeterminate1.C", line 31: warning: variable "u" was declared but never referenced
+    char8_t u = foo;
+            ^
+
+"./cpp2a/constexpr-indeterminate1.C", line 39: warning: variable "foo" is used before its value is set
+    std::byte b = foo;
+                  ^
+
+"./cpp2a/constexpr-indeterminate1.C", line 39: warning: variable "b" was declared but never referenced
+    std::byte b = foo;
+              ^
+
+"./cpp2a/constexpr-indeterminate1.C", line 43: error: expression must have a constant value
+  constexpr int w1 = fn1 ();
+                     ^
+"./cpp2a/constexpr-indeterminate1.C", line 15: note: access to uninitialized object
+    unsigned char u = foo;
+                      ^
+
+"./cpp2a/constexpr-indeterminate1.C", line 44: error: expression must have a constant value
+  constexpr int w2 = fn2 ();
+                     ^
+"./cpp2a/constexpr-indeterminate1.C", line 23: note: access to uninitialized object
+    int i = foo;
+            ^
+
+"./cpp2a/constexpr-indeterminate1.C", line 45: error: expression must have a constant value
+  constexpr int w3 = fn3 ();
+                     ^
+"./cpp2a/constexpr-indeterminate1.C", line 31: note: access to uninitialized object
+    char8_t u = foo;
+                ^
+
+"./cpp2a/constexpr-indeterminate1.C", line 46: error: expression must have a constant value
+  constexpr int w4 = fn4 ();
+                     ^
+"./cpp2a/constexpr-indeterminate1.C", line 39: note: access to uninitialized object
+    std::byte b = foo;
+                  ^
+
+4 errors detected in the compilation of "Test_name.c".

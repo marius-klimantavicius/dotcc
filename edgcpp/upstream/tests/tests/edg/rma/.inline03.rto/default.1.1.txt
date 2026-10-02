@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 5: error: inline specifier allowed on function declarations only
+  inline class X { public: int i; };
+  ^
+
+"Test_name.c", line 9: warning: variable "x" was set but never used
+      X x;
+        ^
+
+1 error detected in the compilation of "Test_name.c".

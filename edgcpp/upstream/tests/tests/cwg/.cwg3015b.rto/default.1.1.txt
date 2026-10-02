@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++26 -A Test_name.c
+"Test_name.c", line 4: error: unrecognized parameter name
+  #embed "foo\" vendor_specific_arg("something else")
+                ^
+
+1 error detected in the compilation of "Test_name.c".

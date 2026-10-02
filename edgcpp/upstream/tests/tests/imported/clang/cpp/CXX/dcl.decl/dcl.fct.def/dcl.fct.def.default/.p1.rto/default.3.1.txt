@@ -1,0 +1,74 @@
+fe_only -DTEST_NUMBER=3 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 10: error: invalid type for defaulted constructor
+    A(int) = default;
+    ^
+
+"Test_name.c", line 16: error: copy constructor for class "A" may not have a parameter of type "A"
+    A(A) = default; // expected-error {{must pass its first argument by reference}}
+      ^
+
+"Test_name.c", line 16: error: invalid type for defaulted constructor
+    A(A) = default; // expected-error {{must pass its first argument by reference}}
+    ^
+
+"Test_name.c", line 17: error: "= default" can only appear on default constructors, copy/move constructors, copy/move assignment operators, and destructors
+    void f(A) = default; // expected-error-re {{only special member functions{{( and comparison operators)?}} may be defaulted}}
+         ^
+
+"Test_name.c", line 27: error: "= default" can only appear on default constructors, copy/move constructors, copy/move assignment operators, and destructors
+    A operator+(const A&) const = default; // expected-error-re {{only special member functions{{( and comparison operators)?}} may be defaulted}}
+      ^
+
+"Test_name.c", line 31: error: invalid type for defaulted assignment operator
+    void operator=(const A &) = default; // expected-error {{must return 'A &'}}
+         ^
+
+"Test_name.c", line 32: error: invalid type for defaulted constructor
+    A(...) = default;
+    ^
+
+"Test_name.c", line 33: error: invalid type for defaulted constructor
+    A(const A &, ...) = default;
+    ^
+
+"Test_name.c", line 35: error: invalid type for defaulted assignment operator
+    A &operator=(A) const = default; // expected-error {{must be an lvalue refe}}
+       ^
+
+"Test_name.c", line 56: error: invalid type for defaulted constructor
+    A(double = 0.0) = default; // expected-error {{cannot have default arguments}}
+    ^
+
+"Test_name.c", line 57: error: a copy constructor with a default argument cannot be defaulted
+    A(const A & = 0) = default; // expected-error {{cannot have default arguments}}
+    ^
+
+"Test_name.c", line 8: error: no valid std::strong_ordering type found (<compare> must be included)
+  struct A {
+         ^
+
+"Test_name.c", line 8: error: no valid std::partial_ordering type found (<compare> must be included)
+  struct A {
+         ^
+
+"Test_name.c", line 8: error: no valid std::weak_ordering type found (<compare> must be included)
+  struct A {
+         ^
+
+"Test_name.c", line 65: error: invalid type for defaulted constructor
+  A2::A2(...) = default; // expected-error {{cannot be variadic}}
+      ^
+
+"Test_name.c", line 66: error: invalid type for defaulted constructor
+  A2::A2(const A2&, ...) = default; // expected-error {{cannot be variadic}}
+      ^
+
+"Test_name.c", line 85: error: class "B" has no copy constructor to copy a const object
+  struct D : B { // expected-note 2{{base class}}
+             ^
+
+"Test_name.c", line 85: error: class "B" has no assignment operator to copy a const object
+  struct D : B { // expected-note 2{{base class}}
+             ^
+
+18 errors detected in the compilation of "Test_name.c".

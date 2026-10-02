@@ -1,0 +1,45 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 27: error: declaration is incompatible with "void S1<T>::g2()" (declared at line 23)
+    void S1<T>::g2() requires D<T> { } // { dg-error "no declaration matches" }
+                ^
+
+"Test_name.c", line 34: error: no instance of function "S1<T>::f1 [with T=int]" matches the argument list
+            object type is: S1<int>
+    si.f1(); // { dg-error "matching" }
+       ^
+"Test_name.c", line 19: note: constraint on candidate function "S1<T>::f1 [with T=int]" not satisfied
+      void f1() requires C<T> { }
+           ^
+
+"Test_name.c", line 35: error: no instance of function "S1<T>::g1 [with T=int]" matches the argument list
+            object type is: S1<int>
+    si.g1(); // { dg-error "matching" }
+       ^
+"Test_name.c", line 20: note: constraint on candidate function "S1<T>::g1 [with T=int]" not satisfied
+      void g1() requires C<T> and true;
+           ^
+
+"Test_name.c", line 36: error: no instance of function template "S1<T>::h1 [with T=int]" matches the argument list
+            argument types are: (int)
+            object type is: S1<int>
+    si.h1(0); // { dg-error "matching" }
+       ^
+"Test_name.c", line 21: note: substituting "<int>" for function template "S1<T>::h1 [with T=int]" failed constraints
+      template<C U> void h1(U u) { called = 1; }
+                         ^
+"Test_name.c", line 21: note: concept "C" not satisfied for "<int>"
+      template<C U> void h1(U u) { called = 1; }
+               ^
+"Test_name.c", line 6: note: atomic constraint evaluates to false
+    concept C = __is_class(T);
+                ^
+
+"Test_name.c", line 30: warning: variable "sx" was declared but never referenced
+    S1<X> sx;
+          ^
+
+"Test_name.c", line 31: warning: variable "sy" was declared but never referenced
+    S1<Y> sy;
+          ^
+
+4 errors detected in the compilation of "Test_name.c".

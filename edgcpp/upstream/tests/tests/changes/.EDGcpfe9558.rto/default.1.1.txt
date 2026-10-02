@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --c --gcc Test_name.c
+"Test_name.c", line 15: warning: this anonymous union/struct field is hidden by field "c" (declared at line 12)
+      float c;  // Conflicts with field c of type int.  Now accepted in
+            ^
+

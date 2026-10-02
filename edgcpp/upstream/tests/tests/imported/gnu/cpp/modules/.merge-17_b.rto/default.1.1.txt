@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 --modules Test_name.c
+"./modules/merge-17.h", line 28: warning: variable "a0" is used before its value is set
+    return a0;
+           ^
+
+"./modules/merge-17.h", line 27: warning: variable "a1" was declared but never referenced
+    struct { char n; } a1;
+                       ^
+
+"./modules/merge-17.h", line 34: warning: variable "a1" is used before its value is set
+    return a1;
+           ^
+
+"./modules/merge-17.h", line 32: warning: variable "a0" was declared but never referenced
+    struct { int m; } a0;
+                      ^
+
+"./modules/merge-17.h", line 41: warning: variable "a0" is used before its value is set
+    return a0;
+           ^
+          detected during instantiation of "auto h0t<T>() [with T=int]" at line 56
+
+"./modules/merge-17.h", line 48: warning: variable "a1" is used before its value is set
+    return a1;
+           ^
+          detected during instantiation of "auto h1t<T>() [with T=int]" at line 58
+
+"./modules/merge-17_b.C", line 3: catastrophic error: cannot find header "merge-17_a.H" to import
+  import "merge-17_a.H";
+         ^
+
+1 catastrophic error detected in the compilation of "Test_name.c".
+Compilation terminated.

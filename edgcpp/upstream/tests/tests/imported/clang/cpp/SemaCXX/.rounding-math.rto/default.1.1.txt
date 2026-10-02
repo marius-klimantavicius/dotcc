@@ -1,0 +1,44 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 43: error: the size of an array in "new" must be non-negative
+    return new int[int(-3 * (1.0 / 3.0))]; // norounding-error {{too large}}
+                   ^
+
+"Test_name.c", line 59: warning: unrecognized STDC pragma
+  #pragma STDC FENV_ROUND FE_UPWARD
+               ^
+
+"Test_name.c", line 60: error: static assertion failed with ""
+  static_assert(1.0F + 0x0.000001p0F == 0x1.000002p0F, "");
+  ^
+
+"Test_name.c", line 63: error: static assertion failed with ""
+  static_assert(sizeof(Arr01u) == 2, "");
+  ^
+"Test_name.c", line 63: note: the final comparison was 1 == 2
+  static_assert(sizeof(Arr01u) == 2, "");
+                               ^
+
+"Test_name.c", line 69: error: static assertion failed with ""
+  static_assert(sizeof(S1u) > sizeof(int), "");
+  ^
+"Test_name.c", line 69: note: the final comparison was 4 > 4
+  static_assert(sizeof(S1u) > sizeof(int), "");
+                            ^
+
+"Test_name.c", line 71: warning: unrecognized STDC pragma
+  #pragma STDC FENV_ROUND FE_DOWNWARD
+               ^
+
+"Test_name.c", line 94: warning: unrecognized STDC pragma
+  #pragma STDC FENV_ROUND FE_UPWARD
+               ^
+
+"Test_name.c", line 102: error: static assertion failed with ""
+  static_assert(incr_up(0x1.0p24F) == 0x1.000002p24F, "");
+  ^
+
+"Test_name.c", line 10: warning: variable "a" was declared but never referenced
+  constexpr double a = 1.0 / 3.0;
+                   ^
+
+5 errors detected in the compilation of "Test_name.c".

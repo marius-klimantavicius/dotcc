@@ -1,0 +1,23 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 18: error: expected a string literal
+  #if __has_warning(-Wfoo)
+                    ^
+
+"Test_name.c", line 24: warning: #warning directive: Not a valid warning flag
+  #warning Not a valid warning flag
+   ^
+
+"Test_name.c", line 28: error: expected a "("
+  #if __has_warning "not valid"
+                    ^
+
+"Test_name.c", line 38: error: expected a string literal
+  #if __has_warning(MY_ALIAS)
+                    ^
+
+"Test_name.c", line 46: catastrophic error: #error directive: Expansion should have occurred
+  #error Expansion should have occurred
+   ^
+
+3 errors and 1 catastrophic error detected in the compilation of "Test_name.c".
+Compilation terminated.

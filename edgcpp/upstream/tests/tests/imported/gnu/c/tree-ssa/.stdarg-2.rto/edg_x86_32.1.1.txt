@@ -1,0 +1,61 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./tree-ssa/stdarg-2.c", line 21: warning: variable "ap" is used before its value is set
+   ap, i
+   ^
+
+"./tree-ssa/stdarg-2.c", line 37: warning: variable "ap" is used before its value is set
+   ap, i
+   ^
+
+"./tree-ssa/stdarg-2.c", line 58: warning: variable "ap" is used before its value is set
+   ap, i
+   ^
+
+"./tree-ssa/stdarg-2.c", line 75: warning: variable "ap" is used before its value is set
+   ap, i
+   ^
+
+"./tree-ssa/stdarg-2.c", line 93: warning: variable "ap" is used before its value is set
+   ap, i
+   ^
+
+"./tree-ssa/stdarg-2.c", line 112: warning: variable "ap" is used before its value is set
+   ap, i
+   ^
+
+"./tree-ssa/stdarg-2.c", line 133: warning: variable "ap" is used before its value is set
+   ap, i
+   ^
+
+"./tree-ssa/stdarg-2.c", line 151: warning: variable "ap" is used before its value is set
+   ap, i
+   ^
+
+"./tree-ssa/stdarg-2.c", line 171: warning: variable "ap" is used before its value is set
+   ap, i
+   ^
+
+"./tree-ssa/stdarg-2.c", line 189: warning: variable "ap" is used before its value is set
+   ap, i
+   ^
+
+"./tree-ssa/stdarg-2.c", line 209: warning: variable "ap" is used before its value is set
+   ap, i
+   ^
+
+"./tree-ssa/stdarg-2.c", line 230: warning: variable "ap" is used before its value is set
+   ap, i
+   ^
+
+"./tree-ssa/stdarg-2.c", line 251: warning: variable "ap" is used before its value is set
+   ap, i
+   ^
+
+"./tree-ssa/stdarg-2.c", line 272: warning: variable "ap" is used before its value is set
+   ap, i
+   ^
+
+"./tree-ssa/stdarg-2.c", line 301: warning: variable "ap" is used before its value is set
+   ap, i
+   ^
+

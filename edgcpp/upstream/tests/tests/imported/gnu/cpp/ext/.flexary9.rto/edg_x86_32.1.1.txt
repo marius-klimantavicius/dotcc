@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./ext/flexary.h", line 22: warning: declaration of "size_t" does not match the expected type "unsigned int"
+  typedef long unsigned int size_t;
+                            ^
+
+"./ext/flexary9.C", line 139: error: incomplete type "Sx24::S [0]" is not allowed
+    S a_x [0];
+      ^
+
+1 error detected in the compilation of "Test_name.c".

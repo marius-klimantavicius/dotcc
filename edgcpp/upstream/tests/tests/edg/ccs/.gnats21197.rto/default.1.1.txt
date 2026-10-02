@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c++20 Test_name.c
+"Test_name.c", line 4: error: identifier "A" is undefined
+  auto x = [] <class ...T> (T decltype(A)::A) {};
+                                       ^
+
+"Test_name.c", line 4: error: parameter pack "T" was referenced but not expanded
+  auto x = [] <class ...T> (T decltype(A)::A) {};
+                            ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,51 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 9: error: redefinition of default argument
+  void f(int i = 17); // expected-error {{redefinition of default argument}}
+                 ^
+
+"Test_name.c", line 16: error: default argument not at end of parameter list
+  void h(int i, int j = 2, int k = 3, 
+                        ^
+
+"Test_name.c", line 22: error: no suitable conversion function from "S" to "int" exists
+  void i(int = s) { } // expected-error {{no viable conversion}} \
+               ^
+
+"Test_name.c", line 39: error: no suitable constructor exists to convert from "int" to "Y"
+  void k(Y y = 17); // expected-error{{no viable conversion}} \
+               ^
+
+"Test_name.c", line 42: error: no suitable constructor exists to convert from "int" to "Y"
+  void kk(Y = 17); // expected-error{{no viable conversion}} \
+              ^
+
+"Test_name.c", line 59: error: too few arguments in function call
+      j(); // expected-error{{too few arguments to function call, expected 1, have 0; did you mean '::j'?}}
+        ^
+
+"Test_name.c", line 64: error: too few arguments in function call
+      jj(); // expected-error{{too few arguments to function call, single argument 'f' was not specified}}
+         ^
+
+"Test_name.c", line 66: warning: missing return statement at end of non-void function "i()"
+  }
+  ^
+
+"Test_name.c", line 71: error: too many arguments in function call
+      j(2, 3); // expected-error{{too many arguments to function call, expected at most single argument 'f', have 2}}
+           ^
+
+"Test_name.c", line 73: warning: missing return statement at end of non-void function "i2"
+  }
+  ^
+
+"Test_name.c", line 75: error: identifier "UNDEFINED" is undefined
+  int pr20055_f(int x = 0, int y = UNDEFINED); // expected-error{{use of undeclared identifier}}
+                                   ^
+
+"Test_name.c", line 97: error: name followed by "::" must be a class or namespace name
+  template<typename T> int f3() { return T::error; } // expected-error {{no members}}
+                                         ^
+          detected during instantiation of "int f3<T>() [with T=int]" at line 98
+
+10 errors detected in the compilation of "Test_name.c".

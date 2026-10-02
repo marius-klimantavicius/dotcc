@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 -A --c++23 Test_name.c
+"Test_name.c", line 9: error: no instance of function template "f" matches the argument list
+            argument types are: (E<v> *)
+    f(bp); // error: type int of x does not match the int & type of the template parameter in the E<v> specialization of E
+    ^
+"Test_name.c", line 6: note: candidate function template "f" failed deduction
+  template<auto x> void f(E<x> *);
+                        ^
+
+1 error detected in the compilation of "Test_name.c".

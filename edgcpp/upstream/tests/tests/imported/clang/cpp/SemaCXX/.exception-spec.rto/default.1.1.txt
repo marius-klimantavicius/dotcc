@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --exceptions --c++11 Test_name.c
+"Test_name.c", line 7: error: allowing all exceptions is incompatible with previous function template "MissingOnTemplate::foo" (declared at line 6)
+    template<typename T> void foo(T); // expected-error {{missing exception specification 'noexcept(true)'}}
+                                    ^
+
+"Test_name.c", line 22: error: exception specification is incompatible with that of previous function "UseBeforeComplete2::~UseBeforeComplete2" (declared at line 20)
+      friend UseBeforeComplete2::~UseBeforeComplete2() noexcept; // expected-error {{does not match previous}}
+                                                       ^
+
+"Test_name.c", line 52: error: exception specification for implicitly declared virtual function "AssignmentOp::D1::operator=(const AssignmentOp::D1 &)" is incompatible with that of overridden function "AssignmentOp::B::operator=(const AssignmentOp::D1 &)"
+    struct D1 : B {}; // expected-error {{more lax}}
+           ^
+
+"Test_name.c", line 53: warning: overloaded virtual function "AssignmentOp::B::operator=" is only partially overridden in class "AssignmentOp::D2"
+    struct D2 : B {
+           ^
+
+"Test_name.c", line 54: error: exception specification for virtual function "AssignmentOp::D2::operator=" is incompatible with that of overridden function "AssignmentOp::B::operator=(const AssignmentOp::D2 &)"
+      D2 &operator=(const D2&); // expected-error {{more lax}}
+          ^
+
+4 errors detected in the compilation of "Test_name.c".

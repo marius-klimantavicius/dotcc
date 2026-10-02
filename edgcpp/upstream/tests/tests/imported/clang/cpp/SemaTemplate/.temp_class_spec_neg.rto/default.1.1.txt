@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 21: warning: constant "I" is not used in or cannot be deduced from the template argument list of class template "A<<expression>, <expression>>"
+  template <int I> struct A<I+5, I*2> {}; // expected-error{{cannot be deduced}} expected-note {{'I'}}
+                ^
+
+"Test_name.c", line 27: error: the template argument list of the partial specialization includes a nontype argument whose type depends on a template parameter
+  template <class T> struct C<T, 1>; // expected-error{{specializes}}
+                            ^
+
+"Test_name.c", line 32: error: the template argument list of the partial specialization includes a nontype argument whose type depends on a template parameter
+  template< int X > class A2<X, &array> { }; // expected-error{{specializes}}
+                          ^
+
+"Test_name.c", line 39: error: a template argument list is not allowed in a declaration of a primary template
+  struct Test0<T, N, TT>; // expected-error{{does not specialize}}
+         ^
+
+"Test_name.c", line 42: error: partial specializations may not have default template arguments
+  template<typename T = int, // expected-error{{default template argument}}
+                    ^
+
+"Test_name.c", line 43: error: partial specializations may not have default template arguments
+           int N = 17, // expected-error{{default template argument}}
+               ^
+
+"Test_name.c", line 44: error: partial specializations may not have default template arguments
+           template<typename X> class TT = ::vector> // expected-error{{default template argument}}
+                                      ^
+
+"Test_name.c", line 48: warning: template parameter "U" is not used in or cannot be deduced from the template argument list of class template "Test1<T *>"
+  template<typename T, typename U>  // expected-note{{non-deducible}}
+                                ^
+
+6 errors detected in the compilation of "Test_name.c".

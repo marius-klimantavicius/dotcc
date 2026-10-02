@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 7: warning: function "CONCAT" declared implicitly
+    GH139913(CONCAT(foo, )); // expected-error {{use of undeclared identifier 'CONCAT'}} \
+             ^
+
+"Test_name.c", line 7: error: identifier "foo" is undefined
+    GH139913(CONCAT(foo, )); // expected-error {{use of undeclared identifier 'CONCAT'}} \
+                    ^
+
+"Test_name.c", line 7: error: expected an expression
+    GH139913(CONCAT(foo, )); // expected-error {{use of undeclared identifier 'CONCAT'}} \
+                         ^
+
+"Test_name.c", line 17: warning: function "atomic_load" declared implicitly
+    while (!atomic_load(&t.value)->value) // expected-error {{use of undeclared identifier 'atomic_load'}} \
+            ^
+
+"Test_name.c", line 17: warning: access to member of _Atomic object
+    while (!atomic_load(&t.value)->value) // expected-error {{use of undeclared identifier 'atomic_load'}} \
+                         ^
+
+"Test_name.c", line 17: error: operator -> or ->* applied to "int" instead of to a pointer type
+    while (!atomic_load(&t.value)->value) // expected-error {{use of undeclared identifier 'atomic_load'}} \
+            ^
+
+3 errors detected in the compilation of "Test_name.c".

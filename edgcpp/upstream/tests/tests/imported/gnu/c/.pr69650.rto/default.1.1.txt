@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"somefile", line 9: error: identifier "not_a_type" is undefined
+  not_a_type a; /* { dg-error "unknown type" } */
+  ^
+
+1 error detected in the compilation of "Test_name.c".

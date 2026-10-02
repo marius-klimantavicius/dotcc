@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 25: error: variable "i1" has already been initialized
+  int i1 = 2; // expected-error {{redefinition of 'i1'}}
+      ^
+
+"Test_name.c", line 29: error: external/internal linkage conflict with previous declaration at line 28
+  static int i5; // expected-error{{static declaration of 'i5' follows non-static declaration}}
+             ^
+
+"Test_name.c", line 32: error: external/internal linkage conflict with previous declaration at line 31
+  int i2 = 3; // expected-error{{non-static declaration of 'i2' follows static declaration}}
+      ^
+
+"Test_name.c", line 32: error: variable "i2" has already been initialized
+  int i2 = 3; // expected-error{{non-static declaration of 'i2' follows static declaration}}
+      ^
+
+"Test_name.c", line 37: warning: this declaration has no storage class or type specifier
+  __private_extern__ int pExtern; // expected-warning {{use of __private_extern__ on a declaration may not produce external symbol private to the linkage unit and is deprecated}} \
+  ^
+
+"Test_name.c", line 37: error: expected a ";"
+  __private_extern__ int pExtern; // expected-warning {{use of __private_extern__ on a declaration may not produce external symbol private to the linkage unit and is deprecated}} \
+                     ^
+
+"Test_name.c", line 50: error: declaration is incompatible with "int redef[10]" (declared at line 48)
+  int redef[11]; // expected-error{{redefinition of 'redef'}}
+      ^
+
+"Test_name.c", line 54: error: "i6" has already been declared in the current scope
+    static int i6; // expected-error{{static declaration of 'i6' follows non-static declaration}}
+               ^
+
+"Test_name.c", line 54: warning: variable "i6" was declared but never referenced
+    static int i6; // expected-error{{static declaration of 'i6' follows non-static declaration}}
+               ^
+
+"Test_name.c", line 7: warning: variable "x2" was declared but never referenced
+  static struct a x2; // expected-warning{{tentative definition of variable with internal linkage has incomplete non-array type 'struct a'}}
+                  ^
+
+"Test_name.c", line 10: warning: variable "x2_okay" was declared but never referenced
+  static struct a x2_okay;
+                  ^
+
+"Test_name.c", line 12: error: variable "x4" was declared with a never-completed type
+  struct b x4; // expected-error{{tentative definition has type 'struct b' that is never completed}} \
+           ^
+
+"Test_name.c", line 29: warning: variable "i5" was declared but never referenced
+  static int i5; // expected-error{{static declaration of 'i5' follows non-static declaration}}
+             ^
+
+"Test_name.c", line 34: warning: variable "i3" was declared but never referenced
+  static int i3 = 5;
+             ^
+
+"Test_name.c", line 66: warning: variable "a0" was declared but never referenced
+  static int a0[] = { 4 };
+             ^
+
+"Test_name.c", line 67: warning: variable "b0" was declared but never referenced
+  static int b0 = 5;
+             ^
+
+8 errors detected in the compilation of "Test_name.c".

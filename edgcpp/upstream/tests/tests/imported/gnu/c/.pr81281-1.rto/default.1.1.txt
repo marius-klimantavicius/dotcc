@@ -1,0 +1,137 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 11: warning: variable "c" was declared but never referenced
+    int c = p + 1;
+        ^
+
+"Test_name.c", line 12: warning: variable "d" was declared but never referenced
+    int d = a + 2;
+        ^
+
+"Test_name.c", line 13: warning: variable "e" was declared but never referenced
+    int e = b + 3;
+        ^
+
+"Test_name.c", line 22: warning: variable "c" was declared but never referenced
+    int c = a + 1;
+        ^
+
+"Test_name.c", line 23: warning: variable "d" was declared but never referenced
+    int d = p + 2;
+        ^
+
+"Test_name.c", line 24: warning: variable "e" was declared but never referenced
+    int e = b + 3;
+        ^
+
+"Test_name.c", line 33: warning: variable "c" was declared but never referenced
+    int c = b + 1;
+        ^
+
+"Test_name.c", line 34: warning: variable "d" was declared but never referenced
+    int d = p + 2;
+        ^
+
+"Test_name.c", line 35: warning: variable "e" was declared but never referenced
+    int e = a + 3;
+        ^
+
+"Test_name.c", line 44: warning: variable "c" was declared but never referenced
+    int c = p + 1;
+        ^
+
+"Test_name.c", line 45: warning: variable "d" was declared but never referenced
+    int d = a + 2;
+        ^
+
+"Test_name.c", line 46: warning: variable "e" was declared but never referenced
+    int e = b + 3;
+        ^
+
+"Test_name.c", line 55: warning: variable "c" was declared but never referenced
+    int c = a + 1;
+        ^
+
+"Test_name.c", line 56: warning: variable "d" was declared but never referenced
+    int d = p + 2;
+        ^
+
+"Test_name.c", line 57: warning: variable "e" was declared but never referenced
+    int e = b + 3;
+        ^
+
+"Test_name.c", line 66: warning: variable "c" was declared but never referenced
+    int c = b + 1;
+        ^
+
+"Test_name.c", line 67: warning: variable "d" was declared but never referenced
+    int d = p + 2;
+        ^
+
+"Test_name.c", line 68: warning: variable "e" was declared but never referenced
+    int e = a + 3;
+        ^
+
+"Test_name.c", line 77: warning: variable "c" was declared but never referenced
+    int c = p + 1;
+        ^
+
+"Test_name.c", line 78: warning: variable "d" was declared but never referenced
+    int d = a + 2;
+        ^
+
+"Test_name.c", line 87: warning: variable "c" was declared but never referenced
+    int c = a + 1;
+        ^
+
+"Test_name.c", line 88: warning: variable "d" was declared but never referenced
+    int d = p + 2;
+        ^
+
+"Test_name.c", line 97: warning: variable "c" was declared but never referenced
+    int c = p + 1;
+        ^
+
+"Test_name.c", line 98: warning: variable "d" was declared but never referenced
+    int d = a + 2;
+        ^
+
+"Test_name.c", line 107: warning: variable "c" was declared but never referenced
+    int c = a + 1;
+        ^
+
+"Test_name.c", line 108: warning: variable "d" was declared but never referenced
+    int d = p + 2;
+        ^
+
+"Test_name.c", line 117: warning: variable "c" was declared but never referenced
+    int c = p + 1;
+        ^
+
+"Test_name.c", line 118: warning: variable "d" was declared but never referenced
+    int d = a + 2;
+        ^
+
+"Test_name.c", line 127: warning: variable "c" was declared but never referenced
+    int c = a + 1;
+        ^
+
+"Test_name.c", line 128: warning: variable "d" was declared but never referenced
+    int d = p + 2;
+        ^
+
+"Test_name.c", line 137: warning: variable "c" was declared but never referenced
+    int c = p + 1;
+        ^
+
+"Test_name.c", line 138: warning: variable "d" was declared but never referenced
+    int d = a + 2;
+        ^
+
+"Test_name.c", line 147: warning: variable "c" was declared but never referenced
+    int c = a + 1;
+        ^
+
+"Test_name.c", line 148: warning: variable "d" was declared but never referenced
+    int d = p + 2;
+        ^
+

@@ -1,0 +1,6 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 7: error: class "X" has no suitable copy constructor
+    X(const X&, int = f(x));
+                        ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 9: error: a value of type "char *" cannot be assigned to an entity of type "signed char *"
+    p = &c; // expected-error {{converts between pointers to integer types where one is of the unique plain 'char' type and the other is not}}
+      ^
+
+"Test_name.c", line 8: warning: variable "p" was set but never used
+    signed char *p;
+                 ^
+
+"Test_name.c", line 15: error: a value of type "unsigned char *" cannot be assigned to an entity of type "char *"
+    p = &uc; // expected-error {{converts between pointers to integer types where one is of the unique plain 'char' type and the other is not}}
+      ^
+
+"Test_name.c", line 14: warning: variable "p" was set but never used
+    char *p;
+          ^
+
+2 errors detected in the compilation of "Test_name.c".

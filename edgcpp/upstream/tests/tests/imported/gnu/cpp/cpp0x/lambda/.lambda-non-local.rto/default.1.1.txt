@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: warning: variable "<unnamed>::l3" was declared but never referenced
+    auto l3 = [=]{}; // { dg-error "non-local lambda expression cannot have a capture-default" }
+         ^
+
+"Test_name.c", line 11: warning: variable "<unnamed>::l4" was declared but never referenced
+    auto l4 = [&]{}; // { dg-error "non-local lambda expression cannot have a capture-default" }
+         ^
+

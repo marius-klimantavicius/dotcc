@@ -1,0 +1,24 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 10: error: expression must have a constant value
+  constexpr __PTRDIFF_TYPE__ r = bar (2); // { dg-message "in .constexpr. expansion of" }
+                                 ^
+"Test_name.c", line 10: note: conversion from "const int *" to "int" is invalid in constant-expression evaluation
+  constexpr __PTRDIFF_TYPE__ r = bar (2); // { dg-message "in .constexpr. expansion of" }
+                                 ^
+
+"Test_name.c", line 11: error: expression must have a constant value
+  constexpr __PTRDIFF_TYPE__ s = bar (0);
+                                 ^
+"Test_name.c", line 11: note: conversion from "const int *" to "int" is invalid in constant-expression evaluation
+  constexpr __PTRDIFF_TYPE__ s = bar (0);
+                                 ^
+
+"Test_name.c", line 10: warning: variable "r" was declared but never referenced
+  constexpr __PTRDIFF_TYPE__ r = bar (2); // { dg-message "in .constexpr. expansion of" }
+                             ^
+
+"Test_name.c", line 11: warning: variable "s" was declared but never referenced
+  constexpr __PTRDIFF_TYPE__ s = bar (0);
+                             ^
+
+2 errors detected in the compilation of "Test_name.c".

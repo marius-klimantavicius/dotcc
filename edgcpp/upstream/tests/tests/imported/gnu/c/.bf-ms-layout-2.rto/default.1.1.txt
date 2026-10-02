@@ -1,0 +1,41 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./bf-ms-layout-2.c", line 28: warning: unknown attribute "ms_struct"
+  } __attribute__ ((ms_struct));
+                    ^
+
+"./bf-ms-layout-2.c", line 35: warning: unknown attribute "ms_struct"
+  } __attribute__ ((ms_struct));
+                    ^
+
+"./bf-ms-layout-2.c", line 42: warning: unknown attribute "ms_struct"
+  } __attribute__ ((ms_struct));
+                    ^
+
+"./bf-ms-layout-2.c", line 52: warning: unknown attribute "ms_struct"
+  } __attribute__ ((ms_struct));
+                    ^
+
+"./bf-ms-layout-2.c", line 59: warning: unknown attribute "ms_struct"
+  } __attribute__ ((ms_struct));
+                    ^
+
+"./bf-ms-layout-2.c", line 67: warning: unknown attribute "ms_struct"
+  } __attribute__ ((ms_struct));
+                    ^
+
+"./bf-ms-layout-2.c", line 75: warning: unknown attribute "ms_struct"
+  } __attribute__ ((ms_struct));
+                    ^
+
+"./bf-ms-layout-2.c", line 80: warning: unknown attribute "ms_struct"
+  } __attribute__ ((ms_struct));
+                    ^
+
+"./bf-ms-layout-2.c", line 91: warning: unknown attribute "ms_struct"
+  } __attribute__ ((ms_struct));
+                    ^
+
+"./bf-ms-layout-2.c", line 97: warning: unknown attribute "ms_struct"
+  } __attribute__ ((ms_struct));
+                    ^
+

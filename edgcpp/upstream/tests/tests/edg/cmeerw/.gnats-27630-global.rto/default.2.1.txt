@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=2 -w -tused --c++20 --clang_version 190100 Test_name.c
+"Test_name.c", line 20: error: the global scope has no "I2"
+      friend struct ::I2;
+                      ^
+
+"Test_name.c", line 36: error: member "C::v" (declared at line 23) is inaccessible
+      { return C::v; }
+                  ^
+          detected during instantiation of "int inner::I2<<unnamed>>::f() [with <unnamed>=void]" at line 39
+
+2 errors detected in the compilation of "Test_name.c".

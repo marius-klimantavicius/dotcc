@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 17: warning: expression has no effect
+  void Frob () { X::i; }
+                 ^
+
+"Test_name.c", line 20: error: "N" has already been declared in the current scope
+  namespace N = N;
+            ^
+
+"Test_name.c", line 7: warning: variable "P::X::i" was set but never used
+      static int i = 1;
+                 ^
+
+1 error detected in the compilation of "Test_name.c".

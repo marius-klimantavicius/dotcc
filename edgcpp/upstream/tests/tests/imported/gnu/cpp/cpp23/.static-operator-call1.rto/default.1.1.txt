@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: warning: operator may not be a static member function
+    static constexpr bool operator () (T const &x, T const &y) { return x < y; }; // { dg-warning "may be a static member function only with" "" { target c++20_down } }
+                          ^
+
+"Test_name.c", line 32: warning: a "static" lambda expression is nonstandard
+    auto b = []() static { return 1; };						// { dg-warning "'static' only valid in lambda with" "" { target c++20_down } }
+                  ^
+
+"Test_name.c", line 34: warning: a "static" lambda expression is nonstandard
+    auto c = [](int x, int y) static { return x + y; };				// { dg-warning "'static' only valid in lambda with" "" { target c++20_down } }
+                              ^
+
+"Test_name.c", line 32: warning: variable "b" was set but never used
+    auto b = []() static { return 1; };						// { dg-warning "'static' only valid in lambda with" "" { target c++20_down } }
+         ^
+

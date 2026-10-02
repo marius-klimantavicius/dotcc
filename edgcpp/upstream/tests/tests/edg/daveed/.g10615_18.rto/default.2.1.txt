@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=2 --c++11 --gnu_version=40700 Test_name.c
+"Test_name.c", line 12: error: function "D::operator=(const D &)" (declared implicitly) cannot be referenced -- it is a deleted function
+    d = static_cast<D&&>(d);
+      ^
+
+1 error detected in the compilation of "Test_name.c".

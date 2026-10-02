@@ -1,0 +1,337 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --cfront_3.0 Test_name.c
+"Test_name.c", line 13: warning: dynamic initialization in unreachable code
+    int j = 0;
+        ^
+
+"Test_name.c", line 22: warning: statement is unreachable
+    if (i != 0) {
+    ^
+
+"Test_name.c", line 6: warning: transfer of control bypasses initialization of:
+            variable "j" (declared at line 13)
+  DL01:  goto L1;     // error: jump over j
+         ^
+
+"Test_name.c", line 32: warning: dynamic initialization in unreachable code
+      int k = 0;
+          ^
+
+"Test_name.c", line 7: warning: transfer of control bypasses initialization of:
+            variable "j" (declared at line 13)
+            variable "k" (declared at line 32)
+  DL02:  goto L2;     // error: jump over j,k
+         ^
+
+"Test_name.c", line 16: warning: transfer of control bypasses initialization of:
+            variable "k" (declared at line 32)
+  DL12:  goto L2;     // error: jump over k
+         ^
+
+"Test_name.c", line 26: warning: transfer of control bypasses initialization of:
+            variable "k" (declared at line 32)
+  DL22:  goto L2;     // error: jump over k
+         ^
+
+"Test_name.c", line 32: warning: variable "k" was declared but never referenced
+      int k = 0;
+          ^
+
+"Test_name.c", line 8: warning: transfer of control bypasses initialization of:
+            variable "j" (declared at line 13)
+  DL03:  goto L3;     // error: jump over j
+         ^
+
+"Test_name.c", line 9: warning: transfer of control bypasses initialization of:
+            variable "j" (declared at line 13)
+            variable "l" (declared at line 44)
+  DL04:  goto L4;     // error: jump over j,l
+         ^
+
+"Test_name.c", line 18: warning: transfer of control bypasses initialization of:
+            variable "l" (declared at line 44)
+  DL14:  goto L4;     // error: jump over l
+         ^
+
+"Test_name.c", line 28: warning: transfer of control bypasses initialization of:
+            variable "l" (declared at line 44)
+  DL24:  goto L4;     // error: jump over l
+         ^
+
+"Test_name.c", line 38: warning: transfer of control bypasses initialization of:
+            variable "l" (declared at line 44)
+  DL34:  goto L4;     // error: jump over l
+         ^
+
+"Test_name.c", line 48: warning: transfer of control bypasses initialization of:
+            variable "k" (declared at line 32)
+  DL42:  goto L2;     // error: jump over k
+         ^
+
+"Test_name.c", line 54: warning: statement is unreachable
+    if (i != 0 ) {
+    ^
+
+"Test_name.c", line 59: warning: transfer of control bypasses initialization of:
+            variable "k" (declared at line 32)
+  DL52:  goto L2;     // error: jump over k
+         ^
+
+"Test_name.c", line 10: warning: transfer of control bypasses initialization of:
+            variable "j" (declared at line 13)
+            variable "l" (declared at line 44)
+            variable "m" (declared at line 56)
+  DL05:  goto L5;     // error: jump over j,l,m
+         ^
+
+"Test_name.c", line 19: warning: transfer of control bypasses initialization of:
+            variable "l" (declared at line 44)
+            variable "m" (declared at line 56)
+  DL15:  goto L5;     // error: jump over l,m
+         ^
+
+"Test_name.c", line 29: warning: transfer of control bypasses initialization of:
+            variable "l" (declared at line 44)
+            variable "m" (declared at line 56)
+  DL25:  goto L5;     // error: jump over l,m
+         ^
+
+"Test_name.c", line 39: warning: transfer of control bypasses initialization of:
+            variable "l" (declared at line 44)
+            variable "m" (declared at line 56)
+  DL35:  goto L5;     // error: jump over l,m
+         ^
+
+"Test_name.c", line 51: warning: transfer of control bypasses initialization of:
+            variable "m" (declared at line 56)
+  DL45:  goto L5;     // error: jump over m
+         ^
+
+"Test_name.c", line 69: warning: transfer of control bypasses initialization of:
+            variable "k" (declared at line 32)
+  DL62:  goto L2;     // error: jump over k
+         ^
+
+"Test_name.c", line 11: warning: transfer of control bypasses initialization of:
+            variable "j" (declared at line 13)
+            variable "l" (declared at line 44)
+            variable "m" (declared at line 56)
+            variable "n" (declared at line 66)
+  DL06:  goto L6;     // error: jump over j,l,m,n
+         ^
+
+"Test_name.c", line 20: warning: transfer of control bypasses initialization of:
+            variable "l" (declared at line 44)
+            variable "m" (declared at line 56)
+            variable "n" (declared at line 66)
+  DL16:  goto L6;     // error: jump over l,m,n
+         ^
+
+"Test_name.c", line 30: warning: transfer of control bypasses initialization of:
+            variable "l" (declared at line 44)
+            variable "m" (declared at line 56)
+            variable "n" (declared at line 66)
+  DL26:  goto L6;     // error: jump over l,m,n
+         ^
+
+"Test_name.c", line 40: warning: transfer of control bypasses initialization of:
+            variable "l" (declared at line 44)
+            variable "m" (declared at line 56)
+            variable "n" (declared at line 66)
+  DL36:  goto L6;     // error: jump over l,m,n
+         ^
+
+"Test_name.c", line 52: warning: transfer of control bypasses initialization of:
+            variable "m" (declared at line 56)
+            variable "n" (declared at line 66)
+  DL46:  goto L6;     // error: jump over m,n
+         ^
+
+"Test_name.c", line 63: warning: transfer of control bypasses initialization of:
+            variable "n" (declared at line 66)
+  DL56:  goto L6;     // error: jump over n
+         ^
+
+"Test_name.c", line 56: warning: variable "m" was declared but never referenced
+      int m = 0;
+          ^
+
+"Test_name.c", line 66: warning: variable "n" was declared but never referenced
+      int n = 0;
+          ^
+
+"Test_name.c", line 6: warning: label "DL01" was declared but never referenced
+  DL01:  goto L1;     // error: jump over j
+  ^
+
+"Test_name.c", line 7: warning: label "DL02" was declared but never referenced
+  DL02:  goto L2;     // error: jump over j,k
+  ^
+
+"Test_name.c", line 8: warning: label "DL03" was declared but never referenced
+  DL03:  goto L3;     // error: jump over j
+  ^
+
+"Test_name.c", line 9: warning: label "DL04" was declared but never referenced
+  DL04:  goto L4;     // error: jump over j,l
+  ^
+
+"Test_name.c", line 10: warning: label "DL05" was declared but never referenced
+  DL05:  goto L5;     // error: jump over j,l,m
+  ^
+
+"Test_name.c", line 11: warning: label "DL06" was declared but never referenced
+  DL06:  goto L6;     // error: jump over j,l,m,n
+  ^
+
+"Test_name.c", line 13: warning: variable "j" was declared but never referenced
+    int j = 0;
+        ^
+
+"Test_name.c", line 15: warning: label "DL11" was declared but never referenced
+  DL11:  goto L1;     // okay
+  ^
+
+"Test_name.c", line 16: warning: label "DL12" was declared but never referenced
+  DL12:  goto L2;     // error: jump over k
+  ^
+
+"Test_name.c", line 17: warning: label "DL13" was declared but never referenced
+  DL13:  goto L3;     // okay
+  ^
+
+"Test_name.c", line 18: warning: label "DL14" was declared but never referenced
+  DL14:  goto L4;     // error: jump over l
+  ^
+
+"Test_name.c", line 19: warning: label "DL15" was declared but never referenced
+  DL15:  goto L5;     // error: jump over l,m
+  ^
+
+"Test_name.c", line 20: warning: label "DL16" was declared but never referenced
+  DL16:  goto L6;     // error: jump over l,m,n
+  ^
+
+"Test_name.c", line 25: warning: label "DL21" was declared but never referenced
+  DL21:  goto L1;     // okay
+  ^
+
+"Test_name.c", line 26: warning: label "DL22" was declared but never referenced
+  DL22:  goto L2;     // error: jump over k
+  ^
+
+"Test_name.c", line 27: warning: label "DL23" was declared but never referenced
+  DL23:  goto L3;     // okay
+  ^
+
+"Test_name.c", line 28: warning: label "DL24" was declared but never referenced
+  DL24:  goto L4;     // error: jump over l
+  ^
+
+"Test_name.c", line 29: warning: label "DL25" was declared but never referenced
+  DL25:  goto L5;     // error: jump over l,m
+  ^
+
+"Test_name.c", line 30: warning: label "DL26" was declared but never referenced
+  DL26:  goto L6;     // error: jump over l,m,n
+  ^
+
+"Test_name.c", line 35: warning: label "DL31" was declared but never referenced
+  DL31:  goto L1;     // okay
+  ^
+
+"Test_name.c", line 36: warning: label "DL32" was declared but never referenced
+  DL32:  goto L2;     // error: jump over k  ??? cfront: NO ERROR
+  ^
+
+"Test_name.c", line 37: warning: label "DL33" was declared but never referenced
+  DL33:  goto L3;     // okay
+  ^
+
+"Test_name.c", line 38: warning: label "DL34" was declared but never referenced
+  DL34:  goto L4;     // error: jump over l
+  ^
+
+"Test_name.c", line 39: warning: label "DL35" was declared but never referenced
+  DL35:  goto L5;     // error: jump over l,m
+  ^
+
+"Test_name.c", line 40: warning: label "DL36" was declared but never referenced
+  DL36:  goto L6;     // error: jump over l,m,n
+  ^
+
+"Test_name.c", line 44: warning: variable "l" was declared but never referenced
+    int l = 0;
+        ^
+
+"Test_name.c", line 47: warning: label "DL41" was declared but never referenced
+  DL41:  goto L1;     // okay
+  ^
+
+"Test_name.c", line 48: warning: label "DL42" was declared but never referenced
+  DL42:  goto L2;     // error: jump over k
+  ^
+
+"Test_name.c", line 49: warning: label "DL43" was declared but never referenced
+  DL43:  goto L3;     // okay
+  ^
+
+"Test_name.c", line 50: warning: label "DL44" was declared but never referenced
+  DL44:  goto L4;     // okay
+  ^
+
+"Test_name.c", line 51: warning: label "DL45" was declared but never referenced
+  DL45:  goto L5;     // error: jump over m
+  ^
+
+"Test_name.c", line 52: warning: label "DL46" was declared but never referenced
+  DL46:  goto L6;     // error: jump over m,n
+  ^
+
+"Test_name.c", line 58: warning: label "DL51" was declared but never referenced
+  DL51:  goto L1;     // okay
+  ^
+
+"Test_name.c", line 59: warning: label "DL52" was declared but never referenced
+  DL52:  goto L2;     // error: jump over k
+  ^
+
+"Test_name.c", line 60: warning: label "DL53" was declared but never referenced
+  DL53:  goto L3;     // okay
+  ^
+
+"Test_name.c", line 61: warning: label "DL54" was declared but never referenced
+  DL54:  goto L4;     // okay
+  ^
+
+"Test_name.c", line 62: warning: label "DL55" was declared but never referenced
+  DL55:  goto L5;     // okay
+  ^
+
+"Test_name.c", line 63: warning: label "DL56" was declared but never referenced
+  DL56:  goto L6;     // error: jump over n
+  ^
+
+"Test_name.c", line 68: warning: label "DL61" was declared but never referenced
+  DL61:  goto L1;     // okay
+  ^
+
+"Test_name.c", line 69: warning: label "DL62" was declared but never referenced
+  DL62:  goto L2;     // error: jump over k
+  ^
+
+"Test_name.c", line 70: warning: label "DL63" was declared but never referenced
+  DL63:  goto L3;     // okay
+  ^
+
+"Test_name.c", line 71: warning: label "DL64" was declared but never referenced
+  DL64:  goto L4;     // okay
+  ^
+
+"Test_name.c", line 72: warning: label "DL65" was declared but never referenced
+  DL65:  goto L5;     // error: jump over m
+  ^
+
+"Test_name.c", line 73: warning: label "DL66" was declared but never referenced
+  DL66:  goto L6;     // okay
+  ^
+

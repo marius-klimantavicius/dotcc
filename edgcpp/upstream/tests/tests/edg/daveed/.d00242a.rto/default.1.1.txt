@@ -1,0 +1,21 @@
+eccp -DTEST_NUMBER=1 --microsoft Test_name.c
+"Test_name.c", line 29: warning: alignment-of operator applied to incomplete type
+          printf("%d\n", __alignof__(void));
+                         ^
+
+"Test_name.c", line 30: warning: alignment-of operator applied to incomplete type
+          printf("%d\n", __alignof__(X));
+                         ^
+
+"Test_name.c", line 31: warning: alignment-of operator applied to incomplete type
+          printf("%d\n", __alignof__(XX<int>));
+                         ^
+
+"Test_name.c", line 32: warning: alignment-of operator applied to incomplete type
+          return __alignof(a) == 0 || __alignof(void) == 0 || __alignof(X) != 0;
+                                      ^
+
+"Test_name.c", line 32: warning: alignment-of operator applied to incomplete type
+          return __alignof(a) == 0 || __alignof(void) == 0 || __alignof(X) != 0;
+                                                              ^
+

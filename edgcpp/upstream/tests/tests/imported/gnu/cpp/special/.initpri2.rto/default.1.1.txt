@@ -1,0 +1,48 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 7: error: invalid argument to attribute "constructor"
+       __attribute__((constructor (-1))); /* { dg-error "priorities" } */
+                                   ^
+
+"Test_name.c", line 9: error: invalid argument to attribute "constructor"
+       __attribute__((constructor (65536))); /* { dg-error "priorities" } */
+                                   ^
+
+"Test_name.c", line 11: error: invalid argument to attribute "destructor"
+       __attribute__((destructor (-1))); /* { dg-error "priorities" } */
+                                  ^
+
+"Test_name.c", line 13: error: invalid argument to attribute "destructor"
+       __attribute__((destructor (65536))); /* { dg-error "priorities" } */
+                                  ^
+
+"Test_name.c", line 17: warning: requested constructor/destructor priority is reserved for internal use
+       __attribute__((constructor (50))); /* { dg-warning "reserved" } */
+                      ^
+
+"Test_name.c", line 19: warning: requested constructor/destructor priority is reserved for internal use
+       __attribute__((constructor (50))); /* { dg-warning "reserved" } */
+                      ^
+
+"Test_name.c", line 25: error: this constant expression has type "void *" instead of the required integral or enum type
+       __attribute__((constructor ((void*) 500))); /* { dg-error "priorities" } */
+                                   ^
+
+"Test_name.c", line 27: error: this constant expression has type "void *" instead of the required integral or enum type
+       __attribute__((destructor ((void*) 500))); /* { dg-error "priorities" } */
+                                  ^
+
+"Test_name.c", line 32: error: expression must have a constant value
+       __attribute__((constructor ((i)))); /* { dg-error "priorities" } */
+                                   ^
+"Test_name.c", line 32: note: the value of variable "i" (declared at line 30) cannot be used as a constant
+       __attribute__((constructor ((i)))); /* { dg-error "priorities" } */
+                                    ^
+
+"Test_name.c", line 34: error: expression must have a constant value
+       __attribute__((destructor ((i)))); /* { dg-error "priorities" } */
+                                  ^
+"Test_name.c", line 34: note: the value of variable "i" (declared at line 30) cannot be used as a constant
+       __attribute__((destructor ((i)))); /* { dg-error "priorities" } */
+                                   ^
+
+8 errors detected in the compilation of "Test_name.c".

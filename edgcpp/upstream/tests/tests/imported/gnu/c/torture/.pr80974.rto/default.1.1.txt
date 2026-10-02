@@ -1,0 +1,15 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 17: warning: use of "=" where "==" may have been intended
+         e = !f && (n = 5);
+                   ^
+
+"Test_name.c", line 25: warning: expression has no effect
+         a & n || b;
+         ^
+
+"Test_name.c", line 11: warning: transfer of control bypasses initialization of:
+            variable "m" (declared at line 13)
+            variable "n" (declared at line 16)
+      goto L1;
+      ^
+

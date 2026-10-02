@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 9: error: invalid redeclaration of member function "Funject::operator auto()" (declared at line 8)
+    operator auto() { return +[](bool b, bool, bool) {return b;}; }  // { dg-error "cannot be overloaded" }
+    ^
+
+"Test_name.c", line 14: error: call of an object of a class type without appropriate operator() or conversion functions to pointer-to-function type
+  auto bbbb = fun(true, false, true);  // { dg-error "no match" }
+              ^
+
+2 errors detected in the compilation of "Test_name.c".

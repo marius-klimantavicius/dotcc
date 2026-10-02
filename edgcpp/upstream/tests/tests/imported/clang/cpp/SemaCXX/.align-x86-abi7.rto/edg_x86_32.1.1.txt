@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 13: error: static assertion failed with "__alignof__(value) != Preferred"
+    static_assert(__alignof__(value) == Preferred, "__alignof__(value) != Preferred");
+    ^
+"Test_name.c", line 13: note: the final comparison was 4 == 8
+    static_assert(__alignof__(value) == Preferred, "__alignof__(value) != Preferred");
+                                     ^
+          detected during instantiation of class "check_alignment<T, Preferred> [with T=double, Preferred=8U]" at line 19
+
+"Test_name.c", line 14: error: static assertion failed with "__alignof__(type) != Preferred"
+    static_assert(__alignof__(type) == Preferred, "__alignof__(type) != Preferred");
+    ^
+"Test_name.c", line 14: note: the final comparison was 4 == 8
+    static_assert(__alignof__(type) == Preferred, "__alignof__(type) != Preferred");
+                                    ^
+          detected during instantiation of class "check_alignment<T, Preferred> [with T=double, Preferred=8U]" at line 19
+
+"Test_name.c", line 15: error: static assertion failed with "alignof(type) != Preferred"
+    static_assert(alignof(type) == Preferred, "alignof(type) != Preferred");
+    ^
+"Test_name.c", line 15: note: the final comparison was 4 == 8
+    static_assert(alignof(type) == Preferred, "alignof(type) != Preferred");
+                                ^
+          detected during instantiation of class "check_alignment<T, Preferred> [with T=double, Preferred=8U]" at line 19
+
+"Test_name.c", line 13: error: static assertion failed with "__alignof__(value) != Preferred"
+    static_assert(__alignof__(value) == Preferred, "__alignof__(value) != Preferred");
+    ^
+"Test_name.c", line 13: note: the final comparison was 4 == 8
+    static_assert(__alignof__(value) == Preferred, "__alignof__(value) != Preferred");
+                                     ^
+          detected during instantiation of class "check_alignment<T, Preferred> [with T=double [3], Preferred=8U]" at line 24
+
+"Test_name.c", line 14: error: static assertion failed with "__alignof__(type) != Preferred"
+    static_assert(__alignof__(type) == Preferred, "__alignof__(type) != Preferred");
+    ^
+"Test_name.c", line 14: note: the final comparison was 4 == 8
+    static_assert(__alignof__(type) == Preferred, "__alignof__(type) != Preferred");
+                                    ^
+          detected during instantiation of class "check_alignment<T, Preferred> [with T=double [3], Preferred=8U]" at line 24
+
+"Test_name.c", line 15: error: static assertion failed with "alignof(type) != Preferred"
+    static_assert(alignof(type) == Preferred, "alignof(type) != Preferred");
+    ^
+"Test_name.c", line 15: note: the final comparison was 4 == 8
+    static_assert(alignof(type) == Preferred, "alignof(type) != Preferred");
+                                ^
+          detected during instantiation of class "check_alignment<T, Preferred> [with T=double [3], Preferred=8U]" at line 24
+
+6 errors detected in the compilation of "Test_name.c".

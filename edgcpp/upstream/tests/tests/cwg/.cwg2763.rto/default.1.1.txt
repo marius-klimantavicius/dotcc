@@ -1,0 +1,9 @@
+cpfe -DTEST_NUMBER=1 --c++23 -A Test_name.c
+"Test_name.c", line 2: warning: function declared with "noreturn" does return
+    [[noreturn]] constexpr void f() {}
+                                     ^
+
+"Test_name.c", line 3: warning: variable "x" was declared but never referenced
+    constexpr int x = (f(), 0);
+                  ^
+

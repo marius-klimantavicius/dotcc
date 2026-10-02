@@ -1,0 +1,138 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -w --ms_compatibility --c Test_name.c
+"Test_name.c", line 15: error: function "CPU" has already been defined (previous definition at line 14)
+  ATTR(cpu_specific(pentium)) void CPU(void){}
+                                   ^
+
+"Test_name.c", line 16: error: function "CPU" has already been defined (previous definition at line 14)
+  ATTR(cpu_specific(pentium_pro)) void CPU(void){}
+                                       ^
+
+"Test_name.c", line 17: error: function "CPU" has already been defined (previous definition at line 14)
+  ATTR(cpu_specific(pentium_mmx)) void CPU(void){}
+                                       ^
+
+"Test_name.c", line 18: error: function "CPU" has already been defined (previous definition at line 14)
+  ATTR(cpu_specific(pentium_ii)) void CPU(void){}
+                                      ^
+
+"Test_name.c", line 19: error: function "CPU" has already been defined (previous definition at line 14)
+  ATTR(cpu_specific(pentium_iii)) void CPU(void){}
+                                       ^
+
+"Test_name.c", line 20: error: function "CPU" has already been defined (previous definition at line 14)
+  ATTR(cpu_specific(pentium_4)) void CPU(void){}
+                                     ^
+
+"Test_name.c", line 21: error: function "CPU" has already been defined (previous definition at line 14)
+  ATTR(cpu_specific(pentium_m)) void CPU(void){}
+                                     ^
+
+"Test_name.c", line 22: error: function "CPU" has already been defined (previous definition at line 14)
+  ATTR(cpu_specific(pentium_4_sse3)) void CPU(void){}
+                                          ^
+
+"Test_name.c", line 23: error: function "CPU" has already been defined (previous definition at line 14)
+  ATTR(cpu_specific(core_2_duo_ssse3)) void CPU(void){}
+                                            ^
+
+"Test_name.c", line 24: error: function "CPU" has already been defined (previous definition at line 14)
+  ATTR(cpu_specific(core_2_duo_sse4_1)) void CPU(void){}
+                                             ^
+
+"Test_name.c", line 25: error: function "CPU" has already been defined (previous definition at line 14)
+  ATTR(cpu_specific(atom)) void CPU(void){}
+                                ^
+
+"Test_name.c", line 26: error: function "CPU" has already been defined (previous definition at line 14)
+  ATTR(cpu_specific(atom_sse4_2)) void CPU(void){}
+                                       ^
+
+"Test_name.c", line 27: error: function "CPU" has already been defined (previous definition at line 14)
+  ATTR(cpu_specific(core_i7_sse4_2)) void CPU(void){}
+                                          ^
+
+"Test_name.c", line 28: error: function "CPU" has already been defined (previous definition at line 14)
+  ATTR(cpu_specific(core_aes_pclmulqdq)) void CPU(void){}
+                                              ^
+
+"Test_name.c", line 29: error: function "CPU" has already been defined (previous definition at line 14)
+  ATTR(cpu_specific(atom_sse4_2_movbe)) void CPU(void){}
+                                             ^
+
+"Test_name.c", line 30: error: function "CPU" has already been defined (previous definition at line 14)
+  ATTR(cpu_specific(goldmont)) void CPU(void){}
+                                    ^
+
+"Test_name.c", line 31: error: function "CPU" has already been defined (previous definition at line 14)
+  ATTR(cpu_specific(sandybridge)) void CPU(void){}
+                                       ^
+
+"Test_name.c", line 32: error: function "CPU" has already been defined (previous definition at line 14)
+  ATTR(cpu_specific(ivybridge)) void CPU(void){}
+                                     ^
+
+"Test_name.c", line 33: error: function "CPU" has already been defined (previous definition at line 14)
+  ATTR(cpu_specific(haswell)) void CPU(void){}
+                                   ^
+
+"Test_name.c", line 34: error: function "CPU" has already been defined (previous definition at line 14)
+  ATTR(cpu_specific(core_4th_gen_avx_tsx)) void CPU(void){}
+                                                ^
+
+"Test_name.c", line 35: error: function "CPU" has already been defined (previous definition at line 14)
+  ATTR(cpu_specific(broadwell)) void CPU(void){}
+                                     ^
+
+"Test_name.c", line 36: error: function "CPU" has already been defined (previous definition at line 14)
+  ATTR(cpu_specific(core_5th_gen_avx_tsx)) void CPU(void){}
+                                                ^
+
+"Test_name.c", line 37: error: function "CPU" has already been defined (previous definition at line 14)
+  ATTR(cpu_specific(knl)) void CPU(void){}
+                               ^
+
+"Test_name.c", line 38: error: function "CPU" has already been defined (previous definition at line 14)
+  ATTR(cpu_specific(skylake)) void CPU(void){}
+                                   ^
+
+"Test_name.c", line 39: error: function "CPU" has already been defined (previous definition at line 14)
+  ATTR(cpu_specific(skylake_avx512)) void CPU(void){}
+                                          ^
+
+"Test_name.c", line 40: error: function "CPU" has already been defined (previous definition at line 14)
+  ATTR(cpu_specific(cannonlake)) void CPU(void){}
+                                      ^
+
+"Test_name.c", line 41: error: function "CPU" has already been defined (previous definition at line 14)
+  ATTR(cpu_specific(knm)) void CPU(void){}
+                               ^
+
+"Test_name.c", line 42: error: function "CPU" has already been defined (previous definition at line 14)
+  ATTR(cpu_specific(cascadelake)) void CPU(void){}
+                                       ^
+
+"Test_name.c", line 43: error: function "CPU" has already been defined (previous definition at line 14)
+  ATTR(cpu_specific(cooperlake)) void CPU(void){}
+                                      ^
+
+"Test_name.c", line 44: error: function "CPU" has already been defined (previous definition at line 14)
+  ATTR(cpu_specific(icelake_client)) void CPU(void){}
+                                          ^
+
+"Test_name.c", line 45: error: function "CPU" has already been defined (previous definition at line 14)
+  ATTR(cpu_specific(tigerlake)) void CPU(void){}
+                                     ^
+
+"Test_name.c", line 46: error: function "CPU" has already been defined (previous definition at line 14)
+  ATTR(cpu_specific(alderlake)) void CPU(void){}
+                                     ^
+
+"Test_name.c", line 47: error: function "CPU" has already been defined (previous definition at line 14)
+  ATTR(cpu_specific(sapphirerapids)) void CPU(void){}
+                                          ^
+
+"Test_name.c", line 48: error: function "CPU" has already been defined (previous definition at line 14)
+  ATTR(cpu_specific(diamondrapids)) void CPU(void){}
+                                         ^
+
+34 errors detected in the compilation of "Test_name.c".

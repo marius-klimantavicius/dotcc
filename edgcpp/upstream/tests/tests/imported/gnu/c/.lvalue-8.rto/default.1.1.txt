@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 11: error: expression must be a modifiable lvalue
+    (int *) p = 0; /* { dg-error "lvalue required as left operand of assignment" } */
+    ^
+
+"Test_name.c", line 14: warning: type qualifier is meaningless on cast type
+    (int *const) p = 0; /* { dg-error "lvalue required as left operand of assignment" } */
+     ^
+
+"Test_name.c", line 14: error: expression must be a modifiable lvalue
+    (int *const) p = 0; /* { dg-error "lvalue required as left operand of assignment" } */
+    ^
+
+"Test_name.c", line 15: error: expression must be a modifiable lvalue
+    (int *) (char *) p = 0; /* { dg-error "lvalue required as left operand of assignment" } */
+    ^
+
+"Test_name.c", line 16: error: expression must be a modifiable lvalue
+    (int *) (char *) (int *) p = 0; /* { dg-error "lvalue required as left operand of assignment" } */
+    ^
+
+"Test_name.c", line 17: error: expression must be a modifiable lvalue
+    (int *) (char *) (int *) (char *) p = 0; /* { dg-error "lvalue required as left operand of assignment" } */
+    ^
+
+"Test_name.c", line 18: error: expression must be a modifiable lvalue
+    (int *) (double *) p = 0; /* { dg-error "lvalue required as left operand of assignment" } */
+    ^
+
+"Test_name.c", line 19: error: expression must be a modifiable lvalue
+    (int *) (int *) p = 0; /* { dg-error "lvalue required as left operand of assignment" } */
+    ^
+
+"Test_name.c", line 20: warning: type qualifier is meaningless on cast type
+    (int *) (int *const) p = 0; /* { dg-error "lvalue required as left operand of assignment" } */
+             ^
+
+"Test_name.c", line 20: error: expression must be a modifiable lvalue
+    (int *) (int *const) p = 0; /* { dg-error "lvalue required as left operand of assignment" } */
+    ^
+
+8 errors detected in the compilation of "Test_name.c".

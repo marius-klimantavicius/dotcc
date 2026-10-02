@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 7: error: function "foo_static(void)" (declared at line 8) must have external C linkage
+  #pragma redefine_extname foo_static bar_static
+  ^
+
+"Test_name.c", line 8: warning: function "foo_static" was declared but never referenced
+  static int foo_static(void) { return 1; } // expected-warning {{#pragma redefine_extname is applicable to external C declarations only; not applied to function 'foo_static'}}
+             ^
+
+1 error detected in the compilation of "Test_name.c".

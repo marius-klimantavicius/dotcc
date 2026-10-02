@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c++17 -tused -A Test_name.c
+"Test_name.c", line 9: error: use the "typename" keyword to treat nontype "X<<unnamed>, <unnamed>>::type [with <unnamed>=T, <unnamed>=unsigned int]" as a type in a dependent context
+        X<T, decltype(sizeof(int))>::type n; // error, not the current instantiation, need decltype
+        ^
+
+"Test_name.c", line 8: warning: variable "m" was declared but never referenced
+        X<T, decltype(sizeof(T()))>::type m; // ok, current instantiation
+                                          ^
+
+1 error detected in the compilation of "Test_name.c".

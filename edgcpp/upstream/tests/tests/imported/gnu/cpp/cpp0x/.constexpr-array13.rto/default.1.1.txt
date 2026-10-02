@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: warning: pointer points outside of underlying object
+  constexpr char ch = *(p-1);  // { dg-error "array subscript" }
+                         ^
+
+"Test_name.c", line 8: error: expression must have a constant value
+  constexpr char ch = *(p-1);  // { dg-error "array subscript" }
+                      ^
+"Test_name.c", line 8: note: cannot set pointer before the first array element
+  constexpr char ch = *(p-1);  // { dg-error "array subscript" }
+                         ^
+
+"Test_name.c", line 8: warning: variable "ch" was declared but never referenced
+  constexpr char ch = *(p-1);  // { dg-error "array subscript" }
+                 ^
+
+1 error detected in the compilation of "Test_name.c".

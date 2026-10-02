@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: error: function "lambda []()->void" was declared declared unavailable
+    i ();			// { dg-error "'foo\\\(bool, bool\\\)::<lambda\\\(\\\)>' is unavailable" }
+      ^
+"Test_name.c", line 9: note: because of an "unavailable" attribute
+    auto i = [] [[ gnu::unavailable ]] () {};
+                   ^
+
+"Test_name.c", line 12: error: function "lambda []()->void" was declared declared unavailable
+    j ();			// { dg-error "'foo\\\(bool, bool\\\)::<lambda\\\(\\\)>' is unavailable" }
+      ^
+"Test_name.c", line 11: note: because of an "unavailable" attribute
+    auto j = [][[gnu::unavailable]] {};
+                 ^
+
+2 errors detected in the compilation of "Test_name.c".

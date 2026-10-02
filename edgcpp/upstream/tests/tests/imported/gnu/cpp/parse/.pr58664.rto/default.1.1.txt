@@ -1,0 +1,44 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: error: incomplete type "U" is not allowed
+    U u;             // { dg-error "field 'u' has incomplete type 'U'" }
+      ^
+
+"Test_name.c", line 15: error: incomplete type "const CU" is not allowed
+    const CU u;      // { dg-error "incomplete type" }
+             ^
+
+"Test_name.c", line 21: error: incomplete type "UT<int>" is not allowed
+    UT u;            // { dg-error "incomplete type" }
+       ^
+          detected during instantiation of union "UT<T> [with T=int]" at line 24
+
+"Test_name.c", line 28: error: incomplete type "F" is not allowed
+    F u;             // { dg-error "field 'u' has incomplete type 'F'" }
+      ^
+
+"Test_name.c", line 34: error: incomplete type "F" is not allowed
+    F u;             // { dg-error "incomplete type" }
+      ^
+
+"Test_name.c", line 41: error: incomplete type "S" is not allowed
+    S s;             // { dg-error "field 's' has incomplete type 'S'" }
+      ^
+
+"Test_name.c", line 46: error: incomplete type "volatile VS" is not allowed
+    volatile VS s;   // { dg-error "incomplete type" }
+                ^
+
+"Test_name.c", line 52: error: incomplete type "ST<int>" is not allowed
+    ST s;            // { dg-error "incomplete type" }
+       ^
+          detected during instantiation of class "ST<T> [with T=int]" at line 55
+
+"Test_name.c", line 59: error: incomplete type "F" is not allowed
+    F s;             // { dg-error "field 's' has incomplete type 'F'" }
+      ^
+
+"Test_name.c", line 65: error: incomplete type "F" is not allowed
+    F s;             // { dg-error "incomplete type" }
+      ^
+
+10 errors detected in the compilation of "Test_name.c".

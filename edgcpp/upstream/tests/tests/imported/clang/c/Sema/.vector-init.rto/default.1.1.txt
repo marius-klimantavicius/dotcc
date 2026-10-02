@@ -1,0 +1,82 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 10: warning: excess initializers are ignored
+  float4 foo2 = (float4){ 1.0, 2.0, 3.0, 4.0 , 5.0 }; // expected-warning{{excess elements in vector initializer}}
+                                               ^
+
+"Test_name.c", line 12: error: a value of type "double" cannot be used to initialize an entity of type "float4" (aka "__attribute((vector_size(16))) float")
+  float4 array[] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0};
+                     ^
+
+"Test_name.c", line 12: error: a value of type "double" cannot be used to initialize an entity of type "float4" (aka "__attribute((vector_size(16))) float")
+  float4 array[] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0};
+                          ^
+
+"Test_name.c", line 12: error: a value of type "double" cannot be used to initialize an entity of type "float4" (aka "__attribute((vector_size(16))) float")
+  float4 array[] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0};
+                               ^
+
+"Test_name.c", line 12: error: a value of type "double" cannot be used to initialize an entity of type "float4" (aka "__attribute((vector_size(16))) float")
+  float4 array[] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0};
+                                    ^
+
+"Test_name.c", line 12: error: a value of type "double" cannot be used to initialize an entity of type "float4" (aka "__attribute((vector_size(16))) float")
+  float4 array[] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0};
+                                         ^
+
+"Test_name.c", line 12: error: a value of type "double" cannot be used to initialize an entity of type "float4" (aka "__attribute((vector_size(16))) float")
+  float4 array[] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0};
+                                              ^
+
+"Test_name.c", line 12: error: a value of type "double" cannot be used to initialize an entity of type "float4" (aka "__attribute((vector_size(16))) float")
+  float4 array[] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0};
+                                                   ^
+
+"Test_name.c", line 12: error: a value of type "double" cannot be used to initialize an entity of type "float4" (aka "__attribute((vector_size(16))) float")
+  float4 array[] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0};
+                                                        ^
+
+"Test_name.c", line 12: error: a value of type "double" cannot be used to initialize an entity of type "float4" (aka "__attribute((vector_size(16))) float")
+  float4 array[] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0};
+                                                             ^
+
+"Test_name.c", line 15: error: a value of type "double" cannot be used to initialize an entity of type "float4" (aka "__attribute((vector_size(16))) float")
+  float4 array2[2] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 
+                       ^
+
+"Test_name.c", line 15: error: a value of type "double" cannot be used to initialize an entity of type "float4" (aka "__attribute((vector_size(16))) float")
+  float4 array2[2] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 
+                            ^
+
+"Test_name.c", line 15: warning: excess initializers are ignored
+  float4 array2[2] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 
+                                 ^
+
+"Test_name.c", line 18: error: a value of type "double" cannot be used to initialize an entity of type "float4" (aka "__attribute((vector_size(16))) float")
+  float4 array3[2] = { {1.0, 2.0, 3.0}, 5.0, 6.0, 7.0, 8.0,
+                                        ^
+
+"Test_name.c", line 18: warning: excess initializers are ignored
+  float4 array3[2] = { {1.0, 2.0, 3.0}, 5.0, 6.0, 7.0, 8.0,
+                                             ^
+
+"Test_name.c", line 36: error: the size of an array must be greater than zero
+  int test2[sizeof(float3) == sizeof(float4) ? 1 : -1];
+            ^
+
+"Test_name.c", line 44: error: a value of type "short8" (aka "__attribute((vector_size(16))) short") cannot be used to initialize an entity of type "short4" (aka "__attribute((vector_size(8))) short")
+    short4 arr2[2] = { test3_helper(), test3_helper() }; // expected-error 2 {{initializing 'short4' (vector of 4 'short' values) with an expression of incompatible type 'short8' (vector of 8 'short' values)}}
+                       ^
+
+"Test_name.c", line 44: error: a value of type "short8" (aka "__attribute((vector_size(16))) short") cannot be used to initialize an entity of type "short4" (aka "__attribute((vector_size(8))) short")
+    short4 arr2[2] = { test3_helper(), test3_helper() }; // expected-error 2 {{initializing 'short4' (vector of 4 'short' values) with an expression of incompatible type 'short8' (vector of 8 'short' values)}}
+                                       ^
+
+"Test_name.c", line 50: error: type of cast must be arithmetic or pointer
+  float64x1_t arg1 = (float64x1_t)0x3fedf9d4343c7c80; // okay
+                      ^
+
+"Test_name.c", line 53: error: type of cast must be arithmetic or pointer
+  float32x1_t arg2 = (float32x1_t)0x3fedf9d4; // okay
+                      ^
+
+17 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 10: error: a union can have at most one field initializer -- member "U::x" (declared at line 6) also has an initializer
+      int y = 1; // expected-error {{initializing multiple members of union}}
+          ^
+
+"Test_name.c", line 22: error: "cs" has already been declared in the current scope
+        union X *cs[csize] = {}; // expected-error {{member of anonymous struct redeclares}} expected-note {{previous initialization is here}}
+                 ^
+
+"Test_name.c", line 25: error: "data" has already been declared in the current scope
+        int data; // expected-error {{member of anonymous struct redeclares}}
+            ^
+
+"Test_name.c", line 26: error: a union can have at most one field initializer -- member "GH149985::X::cs" (declared at line 22) also has an initializer
+        union X *ds[2] = {}; // expected-error {{initializing multiple members of union}}
+                 ^
+
+"Test_name.c", line 33: error: "x" has already been declared in the current scope
+        int x = {}; // expected-error {{member of anonymous union redeclares}} expected-note {{previous initialization is here}}
+            ^
+
+"Test_name.c", line 35: error: a union can have at most one field initializer -- member "GH149985::U::x" (declared at line 33) also has an initializer
+      int y = {}; // expected-error {{initializing multiple members of union}}
+          ^
+
+6 errors detected in the compilation of "Test_name.c".

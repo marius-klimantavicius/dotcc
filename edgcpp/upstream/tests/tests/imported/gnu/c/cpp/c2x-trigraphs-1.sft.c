@@ -1,0 +1,12 @@
+//type: fp
+//options: --c23
+/* Test trigraphs not supported in C2x.  */
+/* { dg-do compile } */
+/* { dg-options "-std=c2x -pedantic-errors" } */
+
+const char a[] = "??=??(??/??/??)??'??<??!??>??-";
+const char b[] = "?""?=?""?(?""?/?""?/?""?)?""?'?""?<?""?!?""?>?""?-";
+
+_Static_assert (sizeof a == sizeof b, "checking trigraph conversions");
+
+/* { dg-prune-output "\\\[-Wtrigraphs" } */

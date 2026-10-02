@@ -1,0 +1,65 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 6: warning: unknown attribute "acquire_handle"
+  void f(int *a __attribute__((acquire_handle("Fuchsia"))));
+                               ^
+
+"Test_name.c", line 7: warning: unknown attribute "clang::use_handle"
+  void (*fp)(int handle [[clang::use_handle("Fuchsia")]]);
+                          ^
+
+"Test_name.c", line 8: warning: unknown attribute "clang::use_handle"
+  auto lambda = [](int handle [[clang::use_handle("Fuchsia")]]){};
+                                ^
+
+"Test_name.c", line 9: warning: unknown attribute "acquire_handle"
+  void g(int a __attribute__((acquire_handle("Fuchsia")))); // expected-error {{attribute only applies to output parameters}}
+                              ^
+
+"Test_name.c", line 10: warning: unknown attribute "acquire_handle"
+  void h(int *a __attribute__((acquire_handle))); // expected-error {{'acquire_handle' attribute takes one argument}}
+                               ^
+
+"Test_name.c", line 11: warning: unknown attribute "acquire_handle"
+  void h(int *a __attribute__((acquire_handle(1)))); // expected-error {{expected string literal as argument of 'acquire_handle' attribute}}
+                               ^
+
+"Test_name.c", line 12: warning: unknown attribute "acquire_handle"
+  void h(int *a __attribute__((acquire_handle("RandomString", "AndAnother")))); // expected-error {{'acquire_handle' attribute takes one argument}}
+                               ^
+
+"Test_name.c", line 13: warning: unknown attribute "release_handle"
+  __attribute__((release_handle("Fuchsia"))) int i(); // expected-warning {{'release_handle' attribute only applies to parameters}}
+                 ^
+
+"Test_name.c", line 14: warning: unknown attribute "use_handle"
+  __attribute__((use_handle("Fuchsia"))) int j(); // expected-warning {{'use_handle' attribute only applies to parameters}}
+                 ^
+
+"Test_name.c", line 15: warning: unknown attribute "acquire_handle"
+  int a __attribute__((acquire_handle("Fuchsia"))); // expected-warning {{'acquire_handle' attribute only applies to functions, typedefs, and parameters}}
+                       ^
+
+"Test_name.c", line 16: warning: unknown attribute "acquire_handle"
+  int (* __attribute__((acquire_handle("Fuchsia"))) fpt)(char *); // expected-warning {{'acquire_handle' attribute only applies to functions, typedefs, and parameters}}
+                        ^
+
+"Test_name.c", line 19: warning: unknown attribute "use_handle"
+  auto lambdat = [](int handle __attribute__((use_handle("Fuchsia"))))
+                                              ^
+
+"Test_name.c", line 20: warning: unknown attribute "acquire_handle"
+      __attribute__((acquire_handle("Fuchsia"))) -> int { return 0; };
+                     ^
+
+"Test_name.c", line 21: warning: unknown attribute "acquire_handle"
+  int __attribute((acquire_handle("Fuchsia"))) ta; // expected-warning {{'acquire_handle' attribute only applies to functions, typedefs, and parameters}}
+                   ^
+
+"Test_name.c", line 22: warning: unknown attribute "clang::acquire_handle"
+  int open(const char *path, int flags, ...) [[clang::acquire_handle]]; // expected-error {{'clang::acquire_handle' attribute takes one argument}}
+                                               ^
+
+"Test_name.c", line 25: warning: unknown attribute "acquire_handle"
+  typedef int callback(char *) __attribute__((acquire_handle("Fuchsia")));
+                                              ^
+

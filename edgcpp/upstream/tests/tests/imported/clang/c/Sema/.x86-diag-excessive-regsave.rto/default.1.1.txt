@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -DNO_CALLER_SAVED_REGISTERS=1 -DGPRONLY=1 --c Test_name.c
+"Test_name.c", line 22: warning: unknown attribute "no_caller_saved_registers"
+  __attribute__((no_caller_saved_registers))
+                 ^
+
+"Test_name.c", line 30: warning: unknown attribute "interrupt"
+  __attribute__((interrupt))
+                 ^
+

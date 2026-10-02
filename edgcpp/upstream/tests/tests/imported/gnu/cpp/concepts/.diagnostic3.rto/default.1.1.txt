@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 29: error: no instance of function template "bar" matches the argument list
+    bar<int, char>(); // { dg-error "no match" }
+    ^
+"Test_name.c", line 12: note: concept "foo" not satisfied for "<char>"
+  requires (foo<Ts> && ...) // { dg-message "19:with Ts = .int, char... evaluated to .false." }
+            ^
+"Test_name.c", line 12: note: concept "foo" not satisfied for "<int>"
+  requires (foo<Ts> && ...) // { dg-message "19:with Ts = .int, char... evaluated to .false." }
+            ^
+
+"Test_name.c", line 30: error: no instance of overloaded function "baz" matches the argument list
+    baz<2,3,4>(); // { dg-error "no match" }
+    ^
+"Test_name.c", line 21: note: concept "foo" not satisfied for "<S<4>>"
+  requires (foo<S<Is>> && ...) // { dg-message "22:with Is = .2, 3, 4... evaluated to .false." }
+            ^
+"Test_name.c", line 21: note: concept "foo" not satisfied for "<S<3>>"
+  requires (foo<S<Is>> && ...) // { dg-message "22:with Is = .2, 3, 4... evaluated to .false." }
+            ^
+"Test_name.c", line 21: note: concept "foo" not satisfied for "<S<2>>"
+  requires (foo<S<Is>> && ...) // { dg-message "22:with Is = .2, 3, 4... evaluated to .false." }
+            ^
+
+2 errors detected in the compilation of "Test_name.c".

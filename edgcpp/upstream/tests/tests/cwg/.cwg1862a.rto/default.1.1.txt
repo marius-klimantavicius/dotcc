@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++17 -tused -A Test_name.c
+"Test_name.c", line 26: error: declaration is incompatible with nontype "<unnamed> A<T>::h [with T=T *]" (declared at line 26)
+      template<class T> friend int *A<T*>::h();     // grants friendship to A<int*>::h() and A<float*>::h()
+                                           ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,904 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 Test_name.c
+"Test_name.c", line 10: warning: explicit type is missing ("int" assumed)
+  extern __typeof_unqual__ (i) i;
+         ^
+
+"Test_name.c", line 10: error: expected a declaration
+  extern __typeof_unqual__ (i) i;
+                               ^
+
+"Test_name.c", line 11: error: invalid storage class for a parameter
+  extern __typeof_unqual (int) i;
+  ^
+
+"Test_name.c", line 11: error: a declaration here must declare a parameter
+  extern __typeof_unqual (int) i;
+         ^
+
+"Test_name.c", line 11: warning: explicit type is missing ("int" assumed)
+  extern __typeof_unqual (int) i;
+         ^
+
+"Test_name.c", line 11: error: expected a ";"
+  extern __typeof_unqual (int) i;
+                               ^
+
+"Test_name.c", line 13: error: a declaration here must declare a parameter
+  volatile int vi;
+               ^
+
+"Test_name.c", line 14: error: invalid storage class for a parameter
+  extern __typeof__ (volatile int) vi;
+  ^
+
+"Test_name.c", line 14: error: a declaration here must declare a parameter
+  extern __typeof__ (volatile int) vi;
+                                   ^
+
+"Test_name.c", line 14: error: "vi" has already been declared in the current scope
+  extern __typeof__ (volatile int) vi;
+                                   ^
+
+"Test_name.c", line 15: error: invalid storage class for a parameter
+  extern __typeof (vi) vi;
+  ^
+
+"Test_name.c", line 15: error: a declaration here must declare a parameter
+  extern __typeof (vi) vi;
+                       ^
+
+"Test_name.c", line 15: error: "vi" has already been declared in the current scope
+  extern __typeof (vi) vi;
+                       ^
+
+"Test_name.c", line 17: error: invalid storage class for a parameter
+  extern __typeof_unqual__ (volatile int) i;
+  ^
+
+"Test_name.c", line 17: error: a declaration here must declare a parameter
+  extern __typeof_unqual__ (volatile int) i;
+         ^
+
+"Test_name.c", line 17: warning: explicit type is missing ("int" assumed)
+  extern __typeof_unqual__ (volatile int) i;
+         ^
+
+"Test_name.c", line 17: error: expected a ";"
+  extern __typeof_unqual__ (volatile int) i;
+                                          ^
+
+"Test_name.c", line 18: error: invalid storage class for a parameter
+  extern __typeof_unqual__ (vi) i;
+  ^
+
+"Test_name.c", line 18: error: a declaration here must declare a parameter
+  extern __typeof_unqual__ (vi) i;
+         ^
+
+"Test_name.c", line 18: warning: explicit type is missing ("int" assumed)
+  extern __typeof_unqual__ (vi) i;
+         ^
+
+"Test_name.c", line 18: error: "__typeof_unqual__" has already been declared in the current scope
+  extern __typeof_unqual__ (vi) i;
+         ^
+
+"Test_name.c", line 18: error: expected a ";"
+  extern __typeof_unqual__ (vi) i;
+                                ^
+
+"Test_name.c", line 19: error: invalid storage class for a parameter
+  extern __typeof__ ((const int) vi) i;
+  ^
+
+"Test_name.c", line 19: warning: type qualifier is meaningless on cast type
+  extern __typeof__ ((const int) vi) i;
+                      ^
+
+"Test_name.c", line 20: error: invalid storage class for a parameter
+  extern __typeof ((volatile int) vi) i;
+  ^
+
+"Test_name.c", line 20: warning: type qualifier is meaningless on cast type
+  extern __typeof ((volatile int) vi) i;
+                    ^
+
+"Test_name.c", line 20: error: "i" has already been declared in the current scope
+  extern __typeof ((volatile int) vi) i;
+                                      ^
+
+"Test_name.c", line 22: error: a declaration here must declare a parameter
+  const int ci;
+            ^
+
+"Test_name.c", line 23: error: invalid storage class for a parameter
+  extern __typeof (const int) ci;
+  ^
+
+"Test_name.c", line 23: error: a declaration here must declare a parameter
+  extern __typeof (const int) ci;
+                              ^
+
+"Test_name.c", line 23: error: "ci" has already been declared in the current scope
+  extern __typeof (const int) ci;
+                              ^
+
+"Test_name.c", line 24: error: invalid storage class for a parameter
+  extern __typeof (ci) ci;
+  ^
+
+"Test_name.c", line 24: error: a declaration here must declare a parameter
+  extern __typeof (ci) ci;
+                       ^
+
+"Test_name.c", line 24: error: "ci" has already been declared in the current scope
+  extern __typeof (ci) ci;
+                       ^
+
+"Test_name.c", line 26: error: invalid storage class for a parameter
+  extern __typeof_unqual (const int) i;
+  ^
+
+"Test_name.c", line 26: error: a declaration here must declare a parameter
+  extern __typeof_unqual (const int) i;
+         ^
+
+"Test_name.c", line 26: warning: explicit type is missing ("int" assumed)
+  extern __typeof_unqual (const int) i;
+         ^
+
+"Test_name.c", line 26: error: "__typeof_unqual" has already been declared in the current scope
+  extern __typeof_unqual (const int) i;
+         ^
+
+"Test_name.c", line 26: error: expected a ";"
+  extern __typeof_unqual (const int) i;
+                                     ^
+
+"Test_name.c", line 27: error: invalid storage class for a parameter
+  extern __typeof_unqual (ci) i;
+  ^
+
+"Test_name.c", line 27: error: a declaration here must declare a parameter
+  extern __typeof_unqual (ci) i;
+         ^
+
+"Test_name.c", line 27: warning: explicit type is missing ("int" assumed)
+  extern __typeof_unqual (ci) i;
+         ^
+
+"Test_name.c", line 27: error: "__typeof_unqual" has already been declared in the current scope
+  extern __typeof_unqual (ci) i;
+         ^
+
+"Test_name.c", line 27: error: expected a ";"
+  extern __typeof_unqual (ci) i;
+                              ^
+
+"Test_name.c", line 28: error: invalid storage class for a parameter
+  extern __typeof__ ((const int) ci) i;
+  ^
+
+"Test_name.c", line 28: warning: type qualifier is meaningless on cast type
+  extern __typeof__ ((const int) ci) i;
+                      ^
+
+"Test_name.c", line 28: error: "i" has already been declared in the current scope
+  extern __typeof__ ((const int) ci) i;
+                                     ^
+
+"Test_name.c", line 29: error: invalid storage class for a parameter
+  extern __typeof__ (+ci) i;
+  ^
+
+"Test_name.c", line 29: error: "i" has already been declared in the current scope
+  extern __typeof__ (+ci) i;
+                          ^
+
+"Test_name.c", line 30: error: invalid storage class for a parameter
+  extern __typeof (0, ci) i;
+  ^
+
+"Test_name.c", line 30: error: "i" has already been declared in the current scope
+  extern __typeof (0, ci) i;
+                          ^
+
+"Test_name.c", line 31: error: invalid storage class for a parameter
+  extern __typeof__ (1 ? ci : ci) i;
+  ^
+
+"Test_name.c", line 31: error: "i" has already been declared in the current scope
+  extern __typeof__ (1 ? ci : ci) i;
+                                  ^
+
+"Test_name.c", line 32: error: invalid storage class for a parameter
+  extern __typeof (0) i;
+  ^
+
+"Test_name.c", line 32: error: "i" has already been declared in the current scope
+  extern __typeof (0) i;
+                      ^
+
+"Test_name.c", line 34: warning: type qualifier on return type is meaningless
+  const int fci (void);
+  ^
+
+"Test_name.c", line 34: error: a declaration here must declare a parameter
+  const int fci (void);
+            ^
+
+"Test_name.c", line 35: error: invalid storage class for a parameter
+  extern __typeof__ (fci ()) i;
+  ^
+
+"Test_name.c", line 35: error: "i" has already been declared in the current scope
+  extern __typeof__ (fci ()) i;
+                             ^
+
+"Test_name.c", line 37: error: a declaration here must declare a parameter
+  _Atomic int ai;
+              ^
+
+"Test_name.c", line 38: error: invalid storage class for a parameter
+  extern __typeof (_Atomic int) ai;
+  ^
+
+"Test_name.c", line 38: error: a declaration here must declare a parameter
+  extern __typeof (_Atomic int) ai;
+                                ^
+
+"Test_name.c", line 38: error: "ai" has already been declared in the current scope
+  extern __typeof (_Atomic int) ai;
+                                ^
+
+"Test_name.c", line 39: error: invalid storage class for a parameter
+  extern __typeof__ (_Atomic (int)) ai;
+  ^
+
+"Test_name.c", line 39: error: a declaration here must declare a parameter
+  extern __typeof__ (_Atomic (int)) ai;
+                                    ^
+
+"Test_name.c", line 39: error: "ai" has already been declared in the current scope
+  extern __typeof__ (_Atomic (int)) ai;
+                                    ^
+
+"Test_name.c", line 40: error: invalid storage class for a parameter
+  extern __typeof (ai) ai;
+  ^
+
+"Test_name.c", line 40: error: a declaration here must declare a parameter
+  extern __typeof (ai) ai;
+                       ^
+
+"Test_name.c", line 40: error: "ai" has already been declared in the current scope
+  extern __typeof (ai) ai;
+                       ^
+
+"Test_name.c", line 42: error: invalid storage class for a parameter
+  extern __typeof_unqual__ (_Atomic int) i;
+  ^
+
+"Test_name.c", line 42: error: a declaration here must declare a parameter
+  extern __typeof_unqual__ (_Atomic int) i;
+         ^
+
+"Test_name.c", line 42: warning: explicit type is missing ("int" assumed)
+  extern __typeof_unqual__ (_Atomic int) i;
+         ^
+
+"Test_name.c", line 42: error: "__typeof_unqual__" has already been declared in the current scope
+  extern __typeof_unqual__ (_Atomic int) i;
+         ^
+
+"Test_name.c", line 42: error: expected a ";"
+  extern __typeof_unqual__ (_Atomic int) i;
+                                         ^
+
+"Test_name.c", line 43: error: invalid storage class for a parameter
+  extern __typeof_unqual (_Atomic (int)) i;
+  ^
+
+"Test_name.c", line 43: error: a declaration here must declare a parameter
+  extern __typeof_unqual (_Atomic (int)) i;
+         ^
+
+"Test_name.c", line 43: warning: explicit type is missing ("int" assumed)
+  extern __typeof_unqual (_Atomic (int)) i;
+         ^
+
+"Test_name.c", line 43: error: "__typeof_unqual" has already been declared in the current scope
+  extern __typeof_unqual (_Atomic (int)) i;
+         ^
+
+"Test_name.c", line 43: error: expected a ";"
+  extern __typeof_unqual (_Atomic (int)) i;
+                                         ^
+
+"Test_name.c", line 44: error: invalid storage class for a parameter
+  extern __typeof_unqual__ (ai) i;
+  ^
+
+"Test_name.c", line 44: error: a declaration here must declare a parameter
+  extern __typeof_unqual__ (ai) i;
+         ^
+
+"Test_name.c", line 44: warning: explicit type is missing ("int" assumed)
+  extern __typeof_unqual__ (ai) i;
+         ^
+
+"Test_name.c", line 44: error: "__typeof_unqual__" has already been declared in the current scope
+  extern __typeof_unqual__ (ai) i;
+         ^
+
+"Test_name.c", line 44: error: expected a ";"
+  extern __typeof_unqual__ (ai) i;
+                                ^
+
+"Test_name.c", line 45: error: invalid storage class for a parameter
+  extern __typeof (+ai) i;
+  ^
+
+"Test_name.c", line 45: error: "i" has already been declared in the current scope
+  extern __typeof (+ai) i;
+                        ^
+
+"Test_name.c", line 46: error: invalid storage class for a parameter
+  extern __typeof__ ((_Atomic int) ai) i;
+  ^
+
+"Test_name.c", line 46: warning: type qualifier is meaningless on cast type
+  extern __typeof__ ((_Atomic int) ai) i;
+                      ^
+
+"Test_name.c", line 46: error: "i" has already been declared in the current scope
+  extern __typeof__ ((_Atomic int) ai) i;
+                                       ^
+
+"Test_name.c", line 47: error: invalid storage class for a parameter
+  extern __typeof__ (0, ai) i;
+  ^
+
+"Test_name.c", line 47: error: "i" has already been declared in the current scope
+  extern __typeof__ (0, ai) i;
+                            ^
+
+"Test_name.c", line 48: error: invalid storage class for a parameter
+  extern __typeof (1 ? ai : ai) i;
+  ^
+
+"Test_name.c", line 48: error: "i" has already been declared in the current scope
+  extern __typeof (1 ? ai : ai) i;
+                                ^
+
+"Test_name.c", line 50: warning: type qualifier on return type is meaningless
+  _Atomic int fai (void);
+  ^
+
+"Test_name.c", line 50: error: a declaration here must declare a parameter
+  _Atomic int fai (void);
+              ^
+
+"Test_name.c", line 51: error: invalid storage class for a parameter
+  extern __typeof__ (fai ()) i;
+  ^
+
+"Test_name.c", line 51: error: "i" has already been declared in the current scope
+  extern __typeof__ (fai ()) i;
+                             ^
+
+"Test_name.c", line 53: error: a declaration here must declare a parameter
+  _Atomic const volatile int acvi;
+                             ^
+
+"Test_name.c", line 54: error: invalid storage class for a parameter
+  extern __typeof (int volatile const _Atomic) acvi;
+  ^
+
+"Test_name.c", line 54: error: a declaration here must declare a parameter
+  extern __typeof (int volatile const _Atomic) acvi;
+                                               ^
+
+"Test_name.c", line 54: error: "acvi" has already been declared in the current scope
+  extern __typeof (int volatile const _Atomic) acvi;
+                                               ^
+
+"Test_name.c", line 55: error: invalid storage class for a parameter
+  extern __typeof (acvi) acvi;
+  ^
+
+"Test_name.c", line 55: error: a declaration here must declare a parameter
+  extern __typeof (acvi) acvi;
+                         ^
+
+"Test_name.c", line 55: error: "acvi" has already been declared in the current scope
+  extern __typeof (acvi) acvi;
+                         ^
+
+"Test_name.c", line 56: error: invalid storage class for a parameter
+  extern const _Atomic volatile __typeof (acvi) acvi;
+  ^
+
+"Test_name.c", line 56: error: a declaration here must declare a parameter
+  extern const _Atomic volatile __typeof (acvi) acvi;
+                                                ^
+
+"Test_name.c", line 56: error: "acvi" has already been declared in the current scope
+  extern const _Atomic volatile __typeof (acvi) acvi;
+                                                ^
+
+"Test_name.c", line 57: error: invalid storage class for a parameter
+  extern _Atomic volatile __typeof__ (ci) acvi;
+  ^
+
+"Test_name.c", line 57: error: a declaration here must declare a parameter
+  extern _Atomic volatile __typeof__ (ci) acvi;
+                                          ^
+
+"Test_name.c", line 57: error: "acvi" has already been declared in the current scope
+  extern _Atomic volatile __typeof__ (ci) acvi;
+                                          ^
+
+"Test_name.c", line 58: error: invalid storage class for a parameter
+  extern _Atomic const __typeof (vi) acvi;
+  ^
+
+"Test_name.c", line 58: error: a declaration here must declare a parameter
+  extern _Atomic const __typeof (vi) acvi;
+                                     ^
+
+"Test_name.c", line 58: error: "acvi" has already been declared in the current scope
+  extern _Atomic const __typeof (vi) acvi;
+                                     ^
+
+"Test_name.c", line 59: error: invalid storage class for a parameter
+  extern const __typeof__ (ai) volatile acvi;
+  ^
+
+"Test_name.c", line 59: error: a declaration here must declare a parameter
+  extern const __typeof__ (ai) volatile acvi;
+                                        ^
+
+"Test_name.c", line 59: error: "acvi" has already been declared in the current scope
+  extern const __typeof__ (ai) volatile acvi;
+                                        ^
+
+"Test_name.c", line 61: error: invalid storage class for a parameter
+  extern __typeof_unqual (acvi) i;
+  ^
+
+"Test_name.c", line 61: error: a declaration here must declare a parameter
+  extern __typeof_unqual (acvi) i;
+         ^
+
+"Test_name.c", line 61: warning: explicit type is missing ("int" assumed)
+  extern __typeof_unqual (acvi) i;
+         ^
+
+"Test_name.c", line 61: error: "__typeof_unqual" has already been declared in the current scope
+  extern __typeof_unqual (acvi) i;
+         ^
+
+"Test_name.c", line 61: error: expected a ";"
+  extern __typeof_unqual (acvi) i;
+                                ^
+
+"Test_name.c", line 62: error: invalid storage class for a parameter
+  extern __typeof_unqual__ (__typeof (acvi)) i;
+  ^
+
+"Test_name.c", line 62: error: a declaration here must declare a parameter
+  extern __typeof_unqual__ (__typeof (acvi)) i;
+         ^
+
+"Test_name.c", line 62: warning: explicit type is missing ("int" assumed)
+  extern __typeof_unqual__ (__typeof (acvi)) i;
+         ^
+
+"Test_name.c", line 62: error: "__typeof_unqual__" has already been declared in the current scope
+  extern __typeof_unqual__ (__typeof (acvi)) i;
+         ^
+
+"Test_name.c", line 62: error: expected a ";"
+  extern __typeof_unqual__ (__typeof (acvi)) i;
+                                             ^
+
+"Test_name.c", line 63: error: invalid storage class for a parameter
+  extern __typeof_unqual (_Atomic __typeof_unqual__ (acvi)) i;
+  ^
+
+"Test_name.c", line 63: warning: explicit type is missing ("int" assumed)
+  extern __typeof_unqual (_Atomic __typeof_unqual__ (acvi)) i;
+                                  ^
+
+"Test_name.c", line 63: error: identifier-list parameters may only be used in a function definition
+  extern __typeof_unqual (_Atomic __typeof_unqual__ (acvi)) i;
+                                                     ^
+
+"Test_name.c", line 63: warning: type qualifier on return type is meaningless
+  extern __typeof_unqual (_Atomic __typeof_unqual__ (acvi)) i;
+                          ^
+
+"Test_name.c", line 63: error: a declaration here must declare a parameter
+  extern __typeof_unqual (_Atomic __typeof_unqual__ (acvi)) i;
+         ^
+
+"Test_name.c", line 63: warning: explicit type is missing ("int" assumed)
+  extern __typeof_unqual (_Atomic __typeof_unqual__ (acvi)) i;
+         ^
+
+"Test_name.c", line 63: error: "__typeof_unqual" has already been declared in the current scope
+  extern __typeof_unqual (_Atomic __typeof_unqual__ (acvi)) i;
+         ^
+
+"Test_name.c", line 63: error: expected a ";"
+  extern __typeof_unqual (_Atomic __typeof_unqual__ (acvi)) i;
+                                                            ^
+
+"Test_name.c", line 65: error: invalid storage class for a parameter
+  extern _Atomic __typeof_unqual (acvi) ai;
+  ^
+
+"Test_name.c", line 65: warning: type qualifier on return type is meaningless
+  extern _Atomic __typeof_unqual (acvi) ai;
+         ^
+
+"Test_name.c", line 65: error: a declaration here must declare a parameter
+  extern _Atomic __typeof_unqual (acvi) ai;
+                 ^
+
+"Test_name.c", line 65: warning: explicit type is missing ("int" assumed)
+  extern _Atomic __typeof_unqual (acvi) ai;
+                 ^
+
+"Test_name.c", line 65: error: "__typeof_unqual" has already been declared in the current scope
+  extern _Atomic __typeof_unqual (acvi) ai;
+                 ^
+
+"Test_name.c", line 65: error: expected a ";"
+  extern _Atomic __typeof_unqual (acvi) ai;
+                                        ^
+
+"Test_name.c", line 67: error: a declaration here must declare a parameter
+  char c;
+       ^
+
+"Test_name.c", line 68: error: a declaration here must declare a parameter
+  volatile char vc;
+                ^
+
+"Test_name.c", line 69: error: a declaration here must declare a parameter
+  volatile char *pvc;
+                 ^
+
+"Test_name.c", line 70: error: a declaration here must declare a parameter
+  volatile char *const cpvc;
+                       ^
+
+"Test_name.c", line 71: error: a declaration here must declare a parameter
+  const char *pcc;
+              ^
+
+"Test_name.c", line 72: error: a declaration here must declare a parameter
+  const char *volatile vpcc;
+                       ^
+
+"Test_name.c", line 73: error: a declaration here must declare a parameter
+  __typeof (*vpcc) cc;
+                   ^
+
+"Test_name.c", line 75: error: invalid storage class for a parameter
+  extern __typeof__ (*cpvc) vc;
+  ^
+
+"Test_name.c", line 75: error: a declaration here must declare a parameter
+  extern __typeof__ (*cpvc) vc;
+                            ^
+
+"Test_name.c", line 75: error: "vc" has already been declared in the current scope
+  extern __typeof__ (*cpvc) vc;
+                            ^
+
+"Test_name.c", line 76: error: invalid storage class for a parameter
+  extern __typeof_unqual (*cpvc) c;
+  ^
+
+"Test_name.c", line 76: error: expected a type specifier
+  extern __typeof_unqual (*cpvc) c;
+                          ^
+
+"Test_name.c", line 76: error: a declaration here must declare a parameter
+  extern __typeof_unqual (*cpvc) c;
+         ^
+
+"Test_name.c", line 76: warning: explicit type is missing ("int" assumed)
+  extern __typeof_unqual (*cpvc) c;
+         ^
+
+"Test_name.c", line 76: error: "__typeof_unqual" has already been declared in the current scope
+  extern __typeof_unqual (*cpvc) c;
+         ^
+
+"Test_name.c", line 76: error: expected a ";"
+  extern __typeof_unqual (*cpvc) c;
+                                 ^
+
+"Test_name.c", line 77: error: invalid storage class for a parameter
+  extern __typeof_unqual__ (cpvc) pvc;
+  ^
+
+"Test_name.c", line 77: error: a declaration here must declare a parameter
+  extern __typeof_unqual__ (cpvc) pvc;
+         ^
+
+"Test_name.c", line 77: warning: explicit type is missing ("int" assumed)
+  extern __typeof_unqual__ (cpvc) pvc;
+         ^
+
+"Test_name.c", line 77: error: "__typeof_unqual__" has already been declared in the current scope
+  extern __typeof_unqual__ (cpvc) pvc;
+         ^
+
+"Test_name.c", line 77: error: expected a ";"
+  extern __typeof_unqual__ (cpvc) pvc;
+                                  ^
+
+"Test_name.c", line 78: error: invalid storage class for a parameter
+  extern __typeof_unqual__ (vpcc) pcc;
+  ^
+
+"Test_name.c", line 78: error: a declaration here must declare a parameter
+  extern __typeof_unqual__ (vpcc) pcc;
+         ^
+
+"Test_name.c", line 78: warning: explicit type is missing ("int" assumed)
+  extern __typeof_unqual__ (vpcc) pcc;
+         ^
+
+"Test_name.c", line 78: error: "__typeof_unqual__" has already been declared in the current scope
+  extern __typeof_unqual__ (vpcc) pcc;
+         ^
+
+"Test_name.c", line 78: error: expected a ";"
+  extern __typeof_unqual__ (vpcc) pcc;
+                                  ^
+
+"Test_name.c", line 79: error: invalid storage class for a parameter
+  extern const char cc;
+  ^
+
+"Test_name.c", line 79: error: a declaration here must declare a parameter
+  extern const char cc;
+                    ^
+
+"Test_name.c", line 79: error: "cc" has already been declared in the current scope
+  extern const char cc;
+                    ^
+
+"Test_name.c", line 81: error: invalid storage class for a parameter
+  extern __typeof (++vi) i;
+  ^
+
+"Test_name.c", line 81: error: "i" has already been declared in the current scope
+  extern __typeof (++vi) i;
+                         ^
+
+"Test_name.c", line 82: error: invalid storage class for a parameter
+  extern __typeof (++ai) i;
+  ^
+
+"Test_name.c", line 82: error: "i" has already been declared in the current scope
+  extern __typeof (++ai) i;
+                         ^
+
+"Test_name.c", line 83: error: invalid storage class for a parameter
+  extern __typeof__ (--vi) i;
+  ^
+
+"Test_name.c", line 83: error: "i" has already been declared in the current scope
+  extern __typeof__ (--vi) i;
+                           ^
+
+"Test_name.c", line 84: error: invalid storage class for a parameter
+  extern __typeof (--ai) i;
+  ^
+
+"Test_name.c", line 84: error: "i" has already been declared in the current scope
+  extern __typeof (--ai) i;
+                         ^
+
+"Test_name.c", line 85: error: invalid storage class for a parameter
+  extern __typeof__ (vi++) i;
+  ^
+
+"Test_name.c", line 85: error: "i" has already been declared in the current scope
+  extern __typeof__ (vi++) i;
+                           ^
+
+"Test_name.c", line 86: error: invalid storage class for a parameter
+  extern __typeof__ (ai++) i;
+  ^
+
+"Test_name.c", line 86: error: "i" has already been declared in the current scope
+  extern __typeof__ (ai++) i;
+                           ^
+
+"Test_name.c", line 87: error: invalid storage class for a parameter
+  extern __typeof (vi--) i;
+  ^
+
+"Test_name.c", line 87: error: "i" has already been declared in the current scope
+  extern __typeof (vi--) i;
+                         ^
+
+"Test_name.c", line 88: error: invalid storage class for a parameter
+  extern __typeof__ (ai--) i;
+  ^
+
+"Test_name.c", line 88: error: "i" has already been declared in the current scope
+  extern __typeof__ (ai--) i;
+                           ^
+
+"Test_name.c", line 90: error: a declaration here must declare a parameter
+  _Bool b;
+        ^
+
+"Test_name.c", line 91: error: a declaration here must declare a parameter
+  volatile _Bool vb;
+                 ^
+
+"Test_name.c", line 92: error: a declaration here must declare a parameter
+  _Atomic _Bool ab;
+                ^
+
+"Test_name.c", line 93: error: invalid storage class for a parameter
+  extern __typeof__ (++vb) b;
+  ^
+
+"Test_name.c", line 93: error: a declaration here must declare a parameter
+  extern __typeof__ (++vb) b;
+                           ^
+
+"Test_name.c", line 93: error: "b" has already been declared in the current scope
+  extern __typeof__ (++vb) b;
+                           ^
+
+"Test_name.c", line 94: error: invalid storage class for a parameter
+  extern __typeof__ (++ab) b;
+  ^
+
+"Test_name.c", line 94: error: a declaration here must declare a parameter
+  extern __typeof__ (++ab) b;
+                           ^
+
+"Test_name.c", line 94: error: "b" has already been declared in the current scope
+  extern __typeof__ (++ab) b;
+                           ^
+
+"Test_name.c", line 95: error: invalid storage class for a parameter
+  extern __typeof (--vb) b;
+  ^
+
+"Test_name.c", line 95: error: a declaration here must declare a parameter
+  extern __typeof (--vb) b;
+                         ^
+
+"Test_name.c", line 95: error: "b" has already been declared in the current scope
+  extern __typeof (--vb) b;
+                         ^
+
+"Test_name.c", line 96: error: invalid storage class for a parameter
+  extern __typeof__ (--ab) b;
+  ^
+
+"Test_name.c", line 96: error: a declaration here must declare a parameter
+  extern __typeof__ (--ab) b;
+                           ^
+
+"Test_name.c", line 96: error: "b" has already been declared in the current scope
+  extern __typeof__ (--ab) b;
+                           ^
+
+"Test_name.c", line 97: error: invalid storage class for a parameter
+  extern __typeof (vb++) b;
+  ^
+
+"Test_name.c", line 97: error: a declaration here must declare a parameter
+  extern __typeof (vb++) b;
+                         ^
+
+"Test_name.c", line 97: error: "b" has already been declared in the current scope
+  extern __typeof (vb++) b;
+                         ^
+
+"Test_name.c", line 98: error: invalid storage class for a parameter
+  extern __typeof (ab++) b;
+  ^
+
+"Test_name.c", line 98: error: a declaration here must declare a parameter
+  extern __typeof (ab++) b;
+                         ^
+
+"Test_name.c", line 98: error: "b" has already been declared in the current scope
+  extern __typeof (ab++) b;
+                         ^
+
+"Test_name.c", line 99: error: invalid storage class for a parameter
+  extern __typeof__ (vb--) b;
+  ^
+
+"Test_name.c", line 99: error: a declaration here must declare a parameter
+  extern __typeof__ (vb--) b;
+                           ^
+
+"Test_name.c", line 99: error: "b" has already been declared in the current scope
+  extern __typeof__ (vb--) b;
+                           ^
+
+"Test_name.c", line 100: error: invalid storage class for a parameter
+  extern __typeof (ab--) b;
+  ^
+
+"Test_name.c", line 100: error: a declaration here must declare a parameter
+  extern __typeof (ab--) b;
+                         ^
+
+"Test_name.c", line 100: error: "b" has already been declared in the current scope
+  extern __typeof (ab--) b;
+                         ^
+
+"Test_name.c", line 102: error: invalid storage class for a parameter
+  extern __typeof__ (vc = 1) c;
+  ^
+
+"Test_name.c", line 102: error: a declaration here must declare a parameter
+  extern __typeof__ (vc = 1) c;
+                             ^
+
+"Test_name.c", line 102: error: "c" has already been declared in the current scope
+  extern __typeof__ (vc = 1) c;
+                             ^
+
+"Test_name.c", line 103: error: invalid storage class for a parameter
+  extern __typeof__ (vpcc = 0) pcc;
+  ^
+
+"Test_name.c", line 103: error: a declaration here must declare a parameter
+  extern __typeof__ (vpcc = 0) pcc;
+                               ^
+
+"Test_name.c", line 103: error: "pcc" has already been declared in the current scope
+  extern __typeof__ (vpcc = 0) pcc;
+                               ^
+
+"Test_name.c", line 104: error: invalid storage class for a parameter
+  extern __typeof (ai *= 2) i;
+  ^
+
+"Test_name.c", line 104: error: "i" has already been declared in the current scope
+  extern __typeof (ai *= 2) i;
+                            ^
+
+"Test_name.c", line 106: error: a declaration here must declare a parameter
+  int s = sizeof (__typeof__ (int (*)[++i]));
+      ^
+
+"Test_name.c", line 106: error: a parameter declaration may not have an initializer
+  int s = sizeof (__typeof__ (int (*)[++i]));
+      ^
+
+"Test_name.c", line 106: error: this operator is not allowed in a constant expression
+  int s = sizeof (__typeof__ (int (*)[++i]));
+                                      ^
+
+"Test_name.c", line 106: error: a parameter is not allowed
+  int s = sizeof (__typeof__ (int (*)[++i]));
+                                        ^
+
+"Test_name.c", line 108: error: a declaration here must declare a parameter
+  void *vp;
+        ^
+
+Error limit reached.
+200 errors detected in the compilation of "Test_name.c".
+Compilation terminated.

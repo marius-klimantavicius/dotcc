@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --c++14 Test_name.c
+"Test_name.c", line 15: error: cannot deduce the return type of function "f(T) [with T=long]" (declared at line 14); it has not been defined
+    g([] (auto a) { f(a); });  // Previously triggered an abort.  Now okay.
+                    ^
+          detected during:
+            instantiation of function "lambda [](auto)->auto [with <auto-1>=long]" at line 15
+            instantiation of "auto f(T) [with T=long]" at line 15
+            instantiation of function "lambda [](auto)->auto [with <auto-1>=long]" at line 15
+            instantiation of "auto f(T) [with T=int]" at line 18
+
+1 error detected in the compilation of "Test_name.c".

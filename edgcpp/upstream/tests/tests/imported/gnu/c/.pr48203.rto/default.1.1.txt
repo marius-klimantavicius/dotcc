@@ -1,0 +1,129 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 13: warning: variable "a2" was declared but never referenced
+    long a2 = a;
+         ^
+
+"Test_name.c", line 14: warning: variable "b2" was declared but never referenced
+    long b2 = b;
+         ^
+
+"Test_name.c", line 15: warning: variable "c2" was declared but never referenced
+    long c2 = c;
+         ^
+
+"Test_name.c", line 16: warning: variable "d2" was declared but never referenced
+    long d2 = d;
+         ^
+
+"Test_name.c", line 17: warning: variable "e2" was declared but never referenced
+    long e2 = e;
+         ^
+
+"Test_name.c", line 18: warning: variable "f2" was declared but never referenced
+    long f2 = f;
+         ^
+
+"Test_name.c", line 19: warning: variable "g2" was declared but never referenced
+    long g2 = g;
+         ^
+
+"Test_name.c", line 20: warning: variable "h2" was declared but never referenced
+    long h2 = h;
+         ^
+
+"Test_name.c", line 21: warning: variable "i2" was declared but never referenced
+    long i2 = i;
+         ^
+
+"Test_name.c", line 22: warning: variable "j2" was declared but never referenced
+    long j2 = j;
+         ^
+
+"Test_name.c", line 23: warning: variable "k2" was declared but never referenced
+    long k2 = k;
+         ^
+
+"Test_name.c", line 24: warning: variable "l2" was declared but never referenced
+    long l2 = l;
+         ^
+
+"Test_name.c", line 25: warning: variable "m2" was declared but never referenced
+    long m2 = m;
+         ^
+
+"Test_name.c", line 26: warning: variable "n2" was declared but never referenced
+    long n2 = n;
+         ^
+
+"Test_name.c", line 27: warning: variable "o2" was declared but never referenced
+    long o2 = o;
+         ^
+
+"Test_name.c", line 28: warning: variable "p2" was declared but never referenced
+    long p2 = p;
+         ^
+
+"Test_name.c", line 36: warning: variable "a2" was declared but never referenced
+    int a2 = a;
+        ^
+
+"Test_name.c", line 37: warning: variable "b2" was declared but never referenced
+    int b2 = b;
+        ^
+
+"Test_name.c", line 38: warning: variable "c2" was declared but never referenced
+    int c2 = c;
+        ^
+
+"Test_name.c", line 39: warning: variable "d2" was declared but never referenced
+    int d2 = d;
+        ^
+
+"Test_name.c", line 40: warning: variable "e2" was declared but never referenced
+    int e2 = e;
+        ^
+
+"Test_name.c", line 41: warning: variable "f2" was declared but never referenced
+    int f2 = f;
+        ^
+
+"Test_name.c", line 42: warning: variable "g2" was declared but never referenced
+    int g2 = g;
+        ^
+
+"Test_name.c", line 43: warning: variable "h2" was declared but never referenced
+    int h2 = h;
+        ^
+
+"Test_name.c", line 44: warning: variable "i2" was declared but never referenced
+    int i2 = i;
+        ^
+
+"Test_name.c", line 45: warning: variable "j2" was declared but never referenced
+    int j2 = j;
+        ^
+
+"Test_name.c", line 46: warning: variable "k2" was declared but never referenced
+    int k2 = k;
+        ^
+
+"Test_name.c", line 47: warning: variable "l2" was declared but never referenced
+    int l2 = l;
+        ^
+
+"Test_name.c", line 48: warning: variable "m2" was declared but never referenced
+    int m2 = m;
+        ^
+
+"Test_name.c", line 49: warning: variable "n2" was declared but never referenced
+    int n2 = n;
+        ^
+
+"Test_name.c", line 50: warning: variable "o2" was declared but never referenced
+    int o2 = o;
+        ^
+
+"Test_name.c", line 51: warning: variable "p2" was declared but never referenced
+    int p2 = p;
+        ^
+

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 5: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(macos, introduced = 10.0))) int init10();
+                 ^
+
+"Test_name.c", line 6: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(macos, introduced = 11.0))) int init11(); // expected-note 2 {{'init11' has been marked as being introduced in macOS 11.0}}
+                 ^
+

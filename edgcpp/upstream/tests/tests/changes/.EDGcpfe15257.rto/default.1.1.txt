@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang Test_name.c
+"Test_name.c", line 18: error: invalid combination of type specifiers
+  typedef __char16_t char16_t;  // Accepted when the 4.10 change was made;
+                     ^
+
+"Test_name.c", line 19: error: invalid combination of type specifiers
+  typedef __char32_t char32_t;  // later versions diagnose invalid type specifiers.
+                     ^
+
+2 errors detected in the compilation of "Test_name.c".

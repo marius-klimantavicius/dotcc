@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 3: error: incomplete type "void" is not allowed
+    y;                   // error: void is not an object type
+    ^
+
+1 error detected in the compilation of "Test_name.c".

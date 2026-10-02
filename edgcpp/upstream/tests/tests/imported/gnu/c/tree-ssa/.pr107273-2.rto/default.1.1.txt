@@ -1,0 +1,10 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 19: warning: variable "k" was declared but never referenced
+      char k = 0;
+           ^
+
+"Test_name.c", line 24: warning: transfer of control bypasses initialization of:
+            variable "k" (declared at line 19)
+        goto L2;
+        ^
+

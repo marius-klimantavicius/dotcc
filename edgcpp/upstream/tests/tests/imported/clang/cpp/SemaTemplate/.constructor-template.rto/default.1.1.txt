@@ -1,0 +1,53 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 15: warning: template parameter "T" is not used in declaring the parameter types of function template "X0::X0<T>()"
+    template<typename T> X0() : f0(T::foo) {} // expected-note {{candidate}}
+                      ^
+
+"Test_name.c", line 33: error: no instance of constructor "X0::X0" matches the argument list
+            argument types are: (float, int *)
+    X0 x0g(f, &i); // expected-error{{no matching constructor}}
+           ^
+"Test_name.c", line 6: note: number of parameters of function "X0::X0(const X0 &)" does not match the call
+  struct X0 { // expected-note {{candidate constructor (the implicit copy constructor) not viable}}
+         ^
+"Test_name.c", line 15: note: number of parameters of function template "X0::X0<T>()" does not match the call
+    template<typename T> X0() : f0(T::foo) {} // expected-note {{candidate}}
+                         ^
+"Test_name.c", line 12: note: candidate function template "X0::X0(T *, U *)" failed deduction
+    template<typename T, typename U> X0(T*, U*); // expected-note {{candidate}}
+                                     ^
+"Test_name.c", line 11: note: number of parameters of function template "X0::X0(T)" does not match the call
+    template<typename T> X0(T); // expected-note {{candidate}}
+                         ^
+"Test_name.c", line 10: note: number of parameters of function "X0::X0(int)" does not match the call
+    X0(int); // expected-note{{candidate}}
+    ^
+
+"Test_name.c", line 71: error: class "X2" has no suitable copy constructor
+    return X2(); // precxx17-error{{no matching constructor}}
+           ^
+
+"Test_name.c", line 78: error: copy constructor for class "X3" may not have a parameter of type "X3"
+  template<> X3::X3(X3); // No error (template constructor)
+                    ^
+
+"Test_name.c", line 117: warning: variable "tf2" was declared but never referenced
+    X5<X6> tf2(tf);
+           ^
+
+"Test_name.c", line 144: error: copy constructor for class "self_by_value::A<int, int>" may not have a parameter of type "self_by_value::A<int, int>"
+      A(A<T,T> o) {} // expected-error{{copy constructor must pass its first argument by reference}}
+        ^
+          detected during instantiation of class "self_by_value::A<T, U> [with T=int, U=int]" at line 149
+
+"Test_name.c", line 161: error: copy constructor for class "self_by_value_2::A<int, int>" may not have a parameter of type "self_by_value_2::A<int, int>"
+      A(A<T,T> o) {} // expected-error{{copy constructor must pass its first argument by reference}}
+        ^
+          detected during instantiation of class "self_by_value_2::A<T, U> [with T=int, U=int]" at line 166
+
+"Test_name.c", line 175: error: copy constructor for class "self_by_value_3::A<int, int>" may not have a parameter of type "self_by_value_3::A<int, int>"
+      A(A<T,T> o) {} // expected-error{{copy constructor must pass its first argument by reference}}
+        ^
+          detected during instantiation of class "self_by_value_3::A<T, U> [with T=int, U=int]" at line 179
+
+6 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,166 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --exceptions --exceptions --c++14 Test_name.c
+"Test_name.c", line 7: error: target attribute not recognized
+  void __attribute__((target("hello_world"))) invalid_features(void);
+                             ^
+
+"Test_name.c", line 9: error: target attribute not recognized
+  void __attribute__((target("no-sse4.2"))) invalid_features(void);
+                             ^
+
+"Test_name.c", line 12: error: target attribute not recognized
+  void __attribute__((target("arch=sandybridge")))  no_default(void);
+                             ^
+
+"Test_name.c", line 16: error: missing "default" target function
+    no_default();
+    ^
+
+"Test_name.c", line 19: error: target attribute not recognized
+  constexpr int __attribute__((target("arch=sandybridge"))) foo(void);
+                                      ^
+
+"Test_name.c", line 21: error: function "foo" (declared at line 18) was previously declared constexpr
+  int __attribute__((target("arch=ivybridge"))) foo(void) {return 1;}
+                                                ^
+
+"Test_name.c", line 21: error: target attribute not recognized
+  int __attribute__((target("arch=ivybridge"))) foo(void) {return 1;}
+                            ^
+
+"Test_name.c", line 26: error: function "foo2" (declared at line 24) was previously not declared constexpr
+  constexpr int __attribute__((target("arch=sandybridge"))) foo2(void);
+  ^
+
+"Test_name.c", line 26: error: target attribute not recognized
+  constexpr int __attribute__((target("arch=sandybridge"))) foo2(void);
+                                      ^
+
+"Test_name.c", line 27: error: target attribute not recognized
+  int __attribute__((target("arch=ivybridge"))) foo2(void) {return 1;}
+                            ^
+
+"Test_name.c", line 31: error: target attribute not recognized
+  static int __attribute__((target("arch=sandybridge"))) bar(void);
+                                   ^
+
+"Test_name.c", line 33: error: target attribute not recognized
+  int __attribute__((target("arch=ivybridge"))) bar(void) {return 1;}
+                            ^
+
+"Test_name.c", line 38: error: external/internal linkage conflict with previous declaration at line 36
+  static int __attribute__((target("arch=sandybridge"))) bar2(void);
+                                                         ^
+
+"Test_name.c", line 38: error: target attribute not recognized
+  static int __attribute__((target("arch=sandybridge"))) bar2(void);
+                                   ^
+
+"Test_name.c", line 39: error: target attribute not recognized
+  int __attribute__((target("arch=ivybridge"))) bar2(void) {return 1;}
+                            ^
+
+"Test_name.c", line 45: error: target attribute not recognized
+  extern int __attribute__((target("arch=sandybridge"))) bar2(void);
+                                   ^
+
+"Test_name.c", line 45: error: function "bar2" has already been defined (previous definition at line 39)
+  extern int __attribute__((target("arch=sandybridge"))) bar2(void);
+                                                         ^
+
+"Test_name.c", line 49: error: target attribute not recognized
+  static int __attribute__((target("arch=sandybridge"))) bar4(void);
+                                   ^
+
+"Test_name.c", line 53: error: target attribute not recognized
+  inline int __attribute__((target("arch=sandybridge"))) baz(void);
+                                   ^
+
+"Test_name.c", line 55: error: target attribute not recognized
+  int __attribute__((target("arch=ivybridge"))) baz(void) {return 1;}
+                            ^
+
+"Test_name.c", line 60: error: target attribute not recognized
+  inline int __attribute__((target("arch=sandybridge"))) baz2(void);
+                                   ^
+
+"Test_name.c", line 61: error: target attribute not recognized
+  int __attribute__((target("arch=ivybridge"))) baz2(void) {return 1;}
+                            ^
+
+"Test_name.c", line 66: error: cannot overload functions distinguished by return type alone
+  int __attribute__((target("arch=sandybridge"))) bock(void);
+                                                  ^
+
+"Test_name.c", line 66: error: target attribute not recognized
+  int __attribute__((target("arch=sandybridge"))) bock(void);
+                            ^
+
+"Test_name.c", line 68: error: cannot overload functions distinguished by return type alone
+  int __attribute__((target("arch=ivybridge"))) bock(void) {return 1;}
+                                                ^
+
+"Test_name.c", line 68: error: target attribute not recognized
+  int __attribute__((target("arch=ivybridge"))) bock(void) {return 1;}
+                            ^
+
+"Test_name.c", line 70: error: cannot overload functions distinguished by return type alone
+  int __attribute__((target("default"))) bock(void) { return 2; }
+                                         ^
+
+"Test_name.c", line 74: error: cannot overload functions distinguished by return type alone
+  float __attribute__((target("arch=sandybridge"))) bock2(void);
+                                                    ^
+
+"Test_name.c", line 74: error: target attribute not recognized
+  float __attribute__((target("arch=sandybridge"))) bock2(void);
+                              ^
+
+"Test_name.c", line 75: error: target attribute not recognized
+  int __attribute__((target("arch=ivybridge"))) bock2(void) {return 1;}
+                            ^
+
+"Test_name.c", line 80: error: cannot overload functions distinguished by return type alone
+  auto __attribute__((target("arch=sandybridge"))) bock3(void) -> short { return (short)0;}
+                                                   ^
+
+"Test_name.c", line 80: error: target attribute not recognized
+  auto __attribute__((target("arch=sandybridge"))) bock3(void) -> short { return (short)0;}
+                             ^
+
+"Test_name.c", line 85: error: exception specification is incompatible with that of previous function "bock4" (declared at line 82)
+  int __attribute__((target("arch=sandybridge"))) bock4(void) noexcept(true) { return 1;}
+                                                              ^
+
+"Test_name.c", line 85: error: target attribute not recognized
+  int __attribute__((target("arch=sandybridge"))) bock4(void) noexcept(true) { return 1;}
+                            ^
+
+"Test_name.c", line 96: error: function template "foo(T)" has already been defined (previous definition at line 88)
+  int __attribute__((target("default"))) foo(T) { return 2; }
+                                         ^
+
+"Test_name.c", line 103: error: invalid redeclaration of member function template "int S::foo(T)" (declared at line 100)
+    int __attribute__((target("arch=sandybridge"))) foo(T);
+                                                    ^
+
+"Test_name.c", line 107: error: invalid redeclaration of member function template "int S::foo(T)" (declared at line 100)
+    int __attribute__((target("default"))) foo(T) { return 2; }
+                                           ^
+
+"Test_name.c", line 117: error: function "diff_mangle" has already been defined (previous definition at line 114)
+  int __attribute__((target("arch=sandybridge"))) diff_mangle(void) { return 0; }
+                                                  ^
+
+"Test_name.c", line 117: error: target attribute not recognized
+  int __attribute__((target("arch=sandybridge"))) diff_mangle(void) { return 0; }
+                            ^
+
+"Test_name.c", line 120: internal error: assertion failed at: "exprutil.c", line <suppressed> in generic_cast_operand
+
+  auto __attribute__((target("default"))) deduced_return(void) { return 0; }
+                                                                        ^
+
+39 errors and 1 catastrophic error detected in the compilation of "Test_name.c".
+Compilation aborted.
+Aborted
+eccp: front end returned an exit status of 134

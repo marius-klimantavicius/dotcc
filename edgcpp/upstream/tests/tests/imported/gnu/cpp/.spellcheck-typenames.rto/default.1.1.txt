@@ -1,0 +1,46 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: error: incomplete type "void" is not allowed
+  void test_2 (singed char e); // { dg-error "6: variable or field 'test_2' declared void" }
+       ^
+
+"Test_name.c", line 9: error: identifier "singed" is undefined
+  void test_2 (singed char e); // { dg-error "6: variable or field 'test_2' declared void" }
+               ^
+
+"Test_name.c", line 9: error: expected a ")"
+  void test_2 (singed char e); // { dg-error "6: variable or field 'test_2' declared void" }
+                      ^
+
+"Test_name.c", line 21: error: identifier "car" is undefined
+  void test_3 (car e); // { dg-error "6: variable or field 'test_3' declared void" }
+               ^
+
+"Test_name.c", line 34: error: expected a ")"
+  void test_4 (signed car e); // { dg-error "25: expected ',' or '...' before 'e'" }
+                          ^
+
+"Test_name.c", line 44: error: identifier "some_thing_t" is undefined
+  some_thing_t test_5; // { dg-error "1: 'some_thing_t' does not name a type; did you mean 'something_t'?" }
+  ^
+
+"Test_name.c", line 52: error: incomplete type "some_thing" is not allowed
+  struct some_thing test_6; // { dg-error "aggregate 'some_thing test_6' has incomplete type and cannot be defined" }
+                    ^
+
+"Test_name.c", line 59: error: identifier "int64" is undefined
+  int64 i; // { dg-error "1: 'int64' does not name a type; did you mean 'int'?" }
+  ^
+
+"Test_name.c", line 68: error: identifier "nonsensical_suggestion_t" is undefined
+  nonsensical_suggestion_t var; /* { dg-bogus "did you mean" } */
+  ^
+
+"Test_name.c", line 75: error: this declaration has no storage class or type specifier
+  singed char ch; // { dg-error "1: 'singed' does not name a type; did you mean 'signed'?" }
+  ^
+
+"Test_name.c", line 75: error: expected a ";"
+  singed char ch; // { dg-error "1: 'singed' does not name a type; did you mean 'signed'?" }
+         ^
+
+11 errors detected in the compilation of "Test_name.c".

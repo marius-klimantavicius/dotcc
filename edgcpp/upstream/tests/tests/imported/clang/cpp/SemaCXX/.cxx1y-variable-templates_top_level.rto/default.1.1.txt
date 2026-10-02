@@ -1,0 +1,399 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 -DPRECXX11 Test_name.c
+"Test_name.c", line 16: warning: variable templates are a C++14 feature
+  T pi = T(3.1415926535897932385); // expected-note 2{{declared here}}
+       ^
+
+"Test_name.c", line 19: warning: variable templates are a C++14 feature
+  CONST T cpi = T(3.1415926535897932385); // expected-note {{template is declared here}}
+              ^
+
+"Test_name.c", line 21: warning: variable templates are a C++14 feature
+  template<typename T> extern CONST T vc;
+                                        ^
+
+"Test_name.c", line 29: warning: variable "ipi" was declared but never referenced
+      int ipi = pi<int>;
+          ^
+
+"Test_name.c", line 30: warning: variable "icpi" was declared but never referenced
+      int icpi = cpi<int>;
+          ^
+
+"Test_name.c", line 31: warning: variable "dpi" was declared but never referenced
+      double dpi = pi<double>;
+             ^
+
+"Test_name.c", line 32: warning: variable "dcpi" was declared but never referenced
+      double dcpi = cpi<double>;
+             ^
+
+"Test_name.c", line 37: error: argument list for variable template "pi" is missing
+      int ipi = pi; // expected-error {{use of variable template 'pi' requires template arguments}}
+                ^
+
+"Test_name.c", line 38: error: argument list for variable template "cpi" is missing
+      int icpi = cpi; // expected-error {{use of variable template 'cpi' requires template arguments}}
+                 ^
+
+"Test_name.c", line 66: warning: variable "pi" is used before its value is set
+      int a = pi;
+              ^
+
+"Test_name.c", line 67: error: type name is not allowed
+      int ipi = pi<int>;  // expected-error {{'pi' does not name a template but is followed by template arguments; did you mean '::pi'?}}
+                   ^
+
+"Test_name.c", line 67: error: expected an expression
+      int ipi = pi<int>;  // expected-error {{'pi' does not name a template but is followed by template arguments; did you mean '::pi'?}}
+                       ^
+
+"Test_name.c", line 64: warning: variable "ipi0" was declared but never referenced
+      int ipi0 = pi<int>;
+          ^
+
+"Test_name.c", line 66: warning: variable "a" was declared but never referenced
+      int a = pi;
+          ^
+
+"Test_name.c", line 74: warning: variable templates are a C++14 feature
+      template<typename T> T v; // expected-error {{redefinition of 'v' as different kind of symbol}}
+                              ^
+
+"Test_name.c", line 74: error: "v" has already been declared in the current scope
+      template<typename T> T v; // expected-error {{redefinition of 'v' as different kind of symbol}}
+                             ^
+
+"Test_name.c", line 77: warning: variable templates are a C++14 feature
+      template<typename T> T v; // expected-note {{previous definition is here}}
+                              ^
+
+"Test_name.c", line 78: error: "v" has already been declared in the current scope
+      int v;   // expected-error {{redefinition of 'v' as different kind of symbol}}
+          ^
+
+"Test_name.c", line 81: warning: variable templates are a C++14 feature
+      template<typename T> T v0; // expected-note {{previous definition is here}}
+                               ^
+
+"Test_name.c", line 82: warning: variable templates are a C++14 feature
+      template<typename T> T v0; // expected-error {{redefinition of 'v0'}}
+                               ^
+
+"Test_name.c", line 82: error: variable template "odr_tmpl::pvt_cvt::v0" has already been defined (previous definition at line 81)
+      template<typename T> T v0; // expected-error {{redefinition of 'v0'}}
+                             ^
+
+"Test_name.c", line 84: warning: variable templates are a C++14 feature
+      template<typename T> T v; // expected-note {{previous definition is here}}
+                              ^
+
+"Test_name.c", line 85: warning: variable templates are a C++14 feature
+      template<typename T> int v; // expected-error {{redefinition of 'v'}}
+                                ^
+
+"Test_name.c", line 85: error: declaration is incompatible with variable template "odr_tmpl::pvt_cvt::v" (declared at line 84)
+      template<typename T> int v; // expected-error {{redefinition of 'v'}}
+                               ^
+
+"Test_name.c", line 87: warning: variable templates are a C++14 feature
+      template<typename T> extern int v1; // expected-note {{previous template declaration is here}}
+                                        ^
+
+"Test_name.c", line 88: warning: variable templates are a C++14 feature
+      template<int I> int v1;      // expected-error {{template parameter has a different kind in template redeclaration}}
+                            ^
+
+"Test_name.c", line 88: error: declaration is incompatible with template parameter "T" (declared at line 87)
+      template<int I> int v1;      // expected-error {{template parameter has a different kind in template redeclaration}}
+                   ^
+
+"Test_name.c", line 91: warning: variable templates are a C++14 feature
+      template<typename T> T v;
+                              ^
+
+"Test_name.c", line 92: error: argument list for variable template "odr_tmpl::pvt_use::v" is missing
+      v = 10;  // expected-error {{a type specifier is required for all declarations}}
+      ^
+
+"Test_name.c", line 92: error: expected an identifier
+      v = 10;  // expected-error {{a type specifier is required for all declarations}}
+        ^
+
+"Test_name.c", line 96: warning: variable templates are a C++14 feature
+      template<typename T, typename> T v;   // expected-note 2{{previous template declaration is here}}
+                                        ^
+
+"Test_name.c", line 97: warning: variable templates are a C++14 feature
+      template<typename T> T v;   // expected-error {{too few template parameters in template redeclaration}}
+                              ^
+
+"Test_name.c", line 97: error: too few template parameters -- does not match previous declaration (declared at line 96)
+      template<typename T> T v;   // expected-error {{too few template parameters in template redeclaration}}
+                        ^
+
+"Test_name.c", line 98: warning: variable templates are a C++14 feature
+      template<typename T, typename, typename> T v; // expected-error {{too many template parameters in template redeclaration}}
+                                                  ^
+
+"Test_name.c", line 98: error: too many template parameters -- does not match previous declaration (declared at line 96)
+      template<typename T, typename, typename> T v; // expected-error {{too many template parameters in template redeclaration}}
+                                             ^
+
+"Test_name.c", line 102: warning: variable templates are a C++14 feature
+      template<typename T> T v = T();
+                               ^
+
+"Test_name.c", line 103: warning: variable templates are a C++14 feature
+      template<typename T> extern T v;      // redeclaration is allowed \
+                                     ^
+
+"Test_name.c", line 103: error: variable template "odr_tmpl::pvt_extern::v" has already been defined (previous definition at line 102)
+      template<typename T> extern T v;      // redeclaration is allowed \
+                                    ^
+
+"Test_name.c", line 105: warning: variable templates are a C++14 feature
+      template<typename T> extern int v;    // expected-error {{redeclaration of 'v' with a different type: 'int' vs 'T'}}
+                                       ^
+
+"Test_name.c", line 105: error: declaration is incompatible with variable template "odr_tmpl::pvt_extern::v" (declared at line 102)
+      template<typename T> extern int v;    // expected-error {{redeclaration of 'v' with a different type: 'int' vs 'T'}}
+                                      ^
+
+"Test_name.c", line 111: warning: variable templates are a C++14 feature
+      template<typename T> T var = T();     // expected-note {{previous definition is here}}
+                                 ^
+
+"Test_name.c", line 112: error: "var" has already been declared in the current scope
+      extern int var;                       // expected-error {{redefinition of 'var' as different kind of symbol}}
+                 ^
+
+"Test_name.c", line 133: warning: variable templates are a C++14 feature
+    T pi0a = T(3.1415926535897932385);  // expected-note {{variable template 'pi0a' declared here}}
+           ^
+
+"Test_name.c", line 134: error: declaration is incompatible with "int explicit_instantiation::pi0a<int>" (declared at line 133)
+    template float pi0a<int>; // expected-error {{type 'float' of explicit instantiation of 'pi0a' does not match expected type 'int'}}
+                   ^
+
+"Test_name.c", line 137: warning: variable templates are a C++14 feature
+    T pi0b = T(3.1415926535897932385);  // expected-note {{variable template 'pi0b' declared here}}
+           ^
+
+"Test_name.c", line 138: error: declaration is incompatible with "int explicit_instantiation::pi0b<int>" (declared at line 137)
+    template CONST int pi0b<int>; // expected-error {{type 'const int' of explicit instantiation of 'pi0b' does not match expected type 'int'}}
+                       ^
+
+"Test_name.c", line 141: warning: variable templates are a C++14 feature
+    T pi0c = T(3.1415926535897932385);  // expected-note {{variable template 'pi0c' declared here}}
+           ^
+
+"Test_name.c", line 142: error: declaration is incompatible with "const int explicit_instantiation::pi0c<const int>" (declared at line 141)
+    template int pi0c<const int>;  // expected-error {{type 'int' of explicit instantiation of 'pi0c' does not match expected type 'const int'}}
+                 ^
+
+"Test_name.c", line 145: warning: variable templates are a C++14 feature
+    T pi0 = T(3.1415926535897932385);
+          ^
+
+"Test_name.c", line 147: error: variable "explicit_instantiation::pi0<int>" explicitly instantiated more than once
+    template int pi0<int>;   // expected-error {{duplicate explicit instantiation of 'pi0<int>'}}
+                 ^
+
+"Test_name.c", line 150: warning: variable templates are a C++14 feature
+    CONST T pi1a = T(3.1415926535897932385);  // expected-note {{variable template 'pi1a' declared here}}
+                 ^
+
+"Test_name.c", line 151: error: declaration is incompatible with "const int explicit_instantiation::pi1a<int>" (declared at line 150)
+    template int pi1a<int>; // expected-error {{type 'int' of explicit instantiation of 'pi1a' does not match expected type 'const int'}}
+                 ^
+
+"Test_name.c", line 154: warning: variable templates are a C++14 feature
+    CONST T pi1b = T(3.1415926535897932385);  // expected-note {{variable template 'pi1b' declared here}}
+                 ^
+
+"Test_name.c", line 155: error: declaration is incompatible with "const int explicit_instantiation::pi1b<const int>" (declared at line 154)
+    template int pi1b<const int>;  // expected-error {{type 'int' of explicit instantiation of 'pi1b' does not match expected type 'const const int'}}
+                 ^
+
+"Test_name.c", line 158: warning: variable templates are a C++14 feature
+    CONST T pi1 = T(3.1415926535897932385);
+                ^
+
+"Test_name.c", line 160: error: variable "explicit_instantiation::pi1<int>" explicitly instantiated more than once
+    template CONST int pi1<int>;   // expected-error {{duplicate explicit instantiation of 'pi1<int>'}}
+                       ^
+
+"Test_name.c", line 172: warning: variable templates are a C++14 feature
+    template<typename=int> int missing_args; // expected-note {{here}}
+                                           ^
+
+"Test_name.c", line 173: error: invalid explicit instantiation declaration
+    template int missing_args; // expected-error {{must specify a template argument list}}
+             ^
+
+"Test_name.c", line 184: warning: variable templates are a C++14 feature
+      CONST int pi2 = 1;
+                    ^
+
+"Test_name.c", line 209: warning: variable templates are a C++14 feature
+      CONST int pi2 = 1;
+                    ^
+
+"Test_name.c", line 218: warning: variable "a" was declared but never referenced
+        int a = pi2<int,int>;  // expected-error {{ambiguous partial specializations of 'pi2<int, int>'}}
+            ^
+
+"Test_name.c", line 225: warning: variable templates are a C++14 feature
+      T pi0 = T(3.1415926535897932385);
+            ^
+
+"Test_name.c", line 231: warning: variable templates are a C++14 feature
+      T pi1 = T(3.1415926535897932385);
+            ^
+
+"Test_name.c", line 235: warning: variable templates are a C++14 feature
+      T pi2 = T(3.1415926535897932385);
+            ^
+
+"Test_name.c", line 239: warning: variable templates are a C++14 feature
+      CONST T pi4 = T(3.1415926535897932385);
+                  ^
+
+"Test_name.c", line 245: warning: variable templates are a C++14 feature
+      T pi0 = T(3.1415926535897932385);
+            ^
+
+"Test_name.c", line 251: error: variable "explicit_specialization::redefinition::pi0<int>" has already been defined (previous definition at line 247)
+      template<> int pi0<int> = 10;   // expected-error {{redefinition of 'pi0<int>'}}
+                     ^
+
+"Test_name.c", line 252: error: variable "explicit_specialization::redefinition::pi0<int>" has already been defined (previous definition at line 247)
+      template<> CONST int pi0<int> = 10; // expected-error {{redefinition of 'pi0' with a different type: 'const int' vs 'int'}}
+                           ^
+
+"Test_name.c", line 253: error: variable "explicit_specialization::redefinition::pi0<int>" has already been defined (previous definition at line 247)
+      template<> float pi0<int> = 10; // expected-error {{redefinition of 'pi0' with a different type: 'float' vs 'int'}}
+                       ^
+
+"Test_name.c", line 260: warning: variable templates are a C++14 feature
+      CONST T pi1 = T(3.1415926535897932385);
+                  ^
+
+"Test_name.c", line 263: error: variable "explicit_specialization::redefinition::pi1<int>" has already been defined (previous definition at line 262)
+      template<> CONST int pi1<int> = 10;   // expected-error {{redefinition of 'pi1<int>'}}
+                           ^
+
+"Test_name.c", line 268: warning: variable templates are a C++14 feature
+      T pi0 = T(3.1415926535897932385);   // expected-note {{variable template 'pi0' declared here}}
+            ^
+
+"Test_name.c", line 272: error: declaration is incompatible with "int explicit_specialization::before_instantiation::pi0<int>" (declared at line 270)
+      template float pi0<int>;      // expected-error {{type 'float' of explicit instantiation of 'pi0' does not match expected type}} expected-warning {{has no effect}}
+                     ^
+
+"Test_name.c", line 275: warning: variable templates are a C++14 feature
+      CONST int pi2 = 1;
+                    ^
+
+"Test_name.c", line 282: warning: variable templates are a C++14 feature
+      T pi0 = T(3.1415926535897932385);
+            ^
+
+"Test_name.c", line 286: error: variable "explicit_specialization::after_instantiation::pi0<int>" has already been defined (previous definition at line 285)
+      template<> float pi0<int>;    // expected-error {{explicit specialization of 'pi0' after instantiation}}
+                       ^
+
+"Test_name.c", line 289: warning: variable templates are a C++14 feature
+      CONST int pi2 = 1;
+                    ^
+
+"Test_name.c", line 318: warning: variable templates are a C++14 feature
+      template<typename T> T* var = new T();
+                                  ^
+
+"Test_name.c", line 327: warning: variable templates are a C++14 feature
+    template<typename T> T v = {1234};  // expected-warning {{implicit conversion from 'int' to 'char' changes value from 1234 to}}
+                             ^
+
+"Test_name.c", line 327: warning: integer conversion resulted in truncation
+    template<typename T> T v = {1234};  // expected-warning {{implicit conversion from 'int' to 'char' changes value from 1234 to}}
+                                ^
+          detected during instantiation of "T narrowing::v [with T=char]" at line 332
+
+"Test_name.c", line 367: warning: variable templates are a C++14 feature
+      T pi0a = T(3.1415926535897932385);
+             ^
+
+"Test_name.c", line 381: warning: variable templates are a C++14 feature
+      T pi0b = T(3.1415926535897932385);
+             ^
+
+"Test_name.c", line 394: warning: variable templates are a C++14 feature
+      T pi1a = T(3.1415926535897932385); // expected-note {{explicitly specialized declaration is here}}
+             ^
+
+"Test_name.c", line 400: warning: variable templates are a C++14 feature
+      T pi1b = T(3.1415926535897932385); // expected-note {{explicitly specialized declaration is here}}
+             ^
+
+"Test_name.c", line 410: error: variable "nested::n1::pi1a<float>" cannot be explicitly instantiated in the current scope
+      template float pi1a<float>;
+                     ^
+
+"Test_name.c", line 416: error: variable "nested::n1::pi1a<double>" cannot be specialized in the current scope
+      template<> double pi1a<double> = 5.2; // expected-error {{not in a namespace enclosing 'n1'}}
+                        ^
+
+"Test_name.c", line 423: error: variable "nested::n1::pi1b<float>" cannot be explicitly instantiated in the current scope
+      template float n1::pi1b<float>;
+                         ^
+
+"Test_name.c", line 429: error: variable "nested::n1::pi1b<double>" cannot be specialized in the current scope
+      template<> double n1::pi1b<double> = 5.2;  // expected-error {{not in a namespace enclosing 'n1'}}
+                            ^
+
+"Test_name.c", line 435: warning: variable templates are a C++14 feature
+    template<typename T> int a; // expected-note {{variable template 'a' declared here}}
+                              ^
+
+"Test_name.c", line 436: error: name followed by "::" must be a class or namespace name
+    a<int>::b c; // expected-error {{qualified name refers into a specialization of variable template 'a'}}
+    ^
+
+"Test_name.c", line 438: error: tag kind of class or struct is incompatible with declaration of "int nested_name::a<int>" (declared at line 435)
+    class a<int> {}; // expected-error {{identifier followed by '<' indicates a class template specialization but 'a' refers to a variable template}}
+          ^
+
+"Test_name.c", line 439: error: tag kind of enum is incompatible with declaration of "int nested_name::a<int>" (declared at line 435)
+    enum a<int> {}; // expected-error {{expected identifier or '{'}}
+         ^
+
+"Test_name.c", line 443: warning: variable templates are a C++14 feature
+    template<typename T> int a;
+                              ^
+
+"Test_name.c", line 444: error: an explicit template argument list is not allowed on this declaration
+    int a<int>; // expected-error {{requires 'template<>'}}
+        ^
+
+"Test_name.c", line 457: error: overloaded function "PR19169::f" is not an entity that can be explicitly specialized
+    template<> int f<double>; // expected-error {{no variable template matches specialization; did you mean to use 'f' as function template instead?}}
+                   ^
+
+"Test_name.c", line 460: error: function template "void PR19169::g<T>()" is not an entity that can be explicitly specialized
+    template<> int g<double>; // expected-error {{no variable template matches specialization; did you mean to use 'g' as function template instead?}}
+                   ^
+
+"Test_name.c", line 471: warning: variable templates are a C++14 feature
+    template <typename> int var; // expected-note {{declared here}}
+                               ^
+
+"Test_name.c", line 472: error: argument list for variable template "VexingParse::var" is missing
+    int x(var); // expected-error {{use of variable template 'var' requires template arguments}}
+          ^
+
+"Test_name.c", line 284: warning: variable "explicit_specialization::after_instantiation::pi0<int>" cannot be instantiated -- it has been explicitly specialized
+      template int pi0<int>;   // expected-note 2{{explicit instantiation first required here}}
+               ^
+
+41 errors detected in the compilation of "Test_name.c".

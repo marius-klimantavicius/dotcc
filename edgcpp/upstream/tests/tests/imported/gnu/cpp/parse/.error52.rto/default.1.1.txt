@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: error: class "X" has no member "T"
+    explicit S (const X::T&) {}  // { dg-error "does not name a type" }
+                         ^
+
+"Test_name.c", line 13: error: class "Y" has no member "T"
+  typedef Y::T xt;               // { dg-error "does not name a type" }
+             ^
+
+2 errors detected in the compilation of "Test_name.c".

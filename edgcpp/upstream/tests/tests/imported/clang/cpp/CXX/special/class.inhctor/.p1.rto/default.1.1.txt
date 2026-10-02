@@ -1,0 +1,109 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 26: error: class "A" has more than one default constructor
+  A a0{}; // expected-error {{ambiguous}}
+      ^
+
+"Test_name.c", line 27: error: class "B" has more than one default constructor
+  B b0{}; // expected-error {{deleted}}
+      ^
+
+"Test_name.c", line 29: error: more than one instance of constructor "A::A" matches the argument list:
+            function "A::A(int, int, int, int, ...)" (declared at line 10)
+            function "A::A(int, int, ...)" (declared at line 11)
+            argument types are: (int)
+  A a1{1}; // expected-error {{ambiguous}}
+      ^
+"Test_name.c", line 16: note: candidate function template "A::A(const T (&)[N], int)" failed deduction
+    template<typename T, int N> A(const T (&)[N], int = 0); // expected-note {{candidate constructor}} expected-note {{candidate inherited constructor}}
+                                ^
+"Test_name.c", line 15: note: candidate function template "A::A(const T (&)[N])" failed deduction
+    template<typename T, int N> A(const T (&)[N]); // expected-note {{candidate constructor}} expected-note {{candidate inherited constructor}}
+                                ^
+
+"Test_name.c", line 30: error: more than one instance of constructor "B::B" matches the argument list:
+            function "A::A(int, int, ...)" (declared at line 11), inherited via using decl at line 20
+            function "A::A(int, int, int, int, ...)" (declared at line 10), inherited via using decl at line 20
+            argument types are: (int)
+  B b1{1}; // expected-error {{ambiguous}}
+      ^
+"Test_name.c", line 20: note: candidate function template "B::B(const T (&)[N])" failed deduction
+    using A::A; // expected-note 6{{inherited here}}
+    ^
+"Test_name.c", line 20: note: candidate function template "B::B(const T (&)[N], int)" failed deduction
+    using A::A; // expected-note 6{{inherited here}}
+    ^
+"Test_name.c", line 21: note: function "B::B(void *)" does not match because argument #1 does not match parameter
+    B(void*);
+    ^
+
+"Test_name.c", line 32: error: more than one instance of constructor "A::A" matches the argument list:
+            function "A::A(int, int, int, int, ...)" (declared at line 10)
+            function "A::A(int, int, ...)" (declared at line 11)
+            argument types are: (int, int)
+  A a2{1,2}; // expected-error {{ambiguous}}
+      ^
+"Test_name.c", line 8: note: number of parameters of function "A::A(const A &)" does not match the call
+  struct A {
+         ^
+"Test_name.c", line 8: note: number of parameters of function "A::A(A &&)" does not match the call
+  struct A {
+         ^
+"Test_name.c", line 16: note: candidate function template "A::A(const T (&)[N], int)" failed deduction
+    template<typename T, int N> A(const T (&)[N], int = 0); // expected-note {{candidate constructor}} expected-note {{candidate inherited constructor}}
+                                ^
+"Test_name.c", line 15: note: number of parameters of function template "A::A(const T (&)[N])" does not match the call
+    template<typename T, int N> A(const T (&)[N]); // expected-note {{candidate constructor}} expected-note {{candidate inherited constructor}}
+                                ^
+
+"Test_name.c", line 33: error: more than one instance of constructor "B::B" matches the argument list:
+            function "A::A(int, int, ...)" (declared at line 11), inherited via using decl at line 20
+            function "A::A(int, int, int, int, ...)" (declared at line 10), inherited via using decl at line 20
+            argument types are: (int, int)
+  B b2{1,2}; // expected-error {{ambiguous}}
+      ^
+"Test_name.c", line 20: note: number of parameters of function template "B::B(const T (&)[N])" does not match the call
+    using A::A; // expected-note 6{{inherited here}}
+    ^
+"Test_name.c", line 20: note: candidate function template "B::B(const T (&)[N], int)" failed deduction
+    using A::A; // expected-note 6{{inherited here}}
+    ^
+"Test_name.c", line 19: note: number of parameters of function "B::B(const B &)" does not match the call
+  struct B : A { // expected-note {{because base class 'A' has multiple default constructors}}
+         ^
+"Test_name.c", line 19: note: number of parameters of function "B::B(B &&)" does not match the call
+  struct B : A { // expected-note {{because base class 'A' has multiple default constructors}}
+         ^
+"Test_name.c", line 21: note: number of parameters of function "B::B(void *)" does not match the call
+    B(void*);
+    ^
+
+"Test_name.c", line 53: error: more than one instance of constructor "A::A" matches the argument list:
+            function template "A::A(const T (&)[N])" (declared at line 15)
+            function template "A::A(const T (&)[N], int)" (declared at line 16)
+            argument types are: (const char [4])
+  A a9{"foo"}; // expected-error {{ambiguous}}
+      ^
+"Test_name.c", line 11: note: function "A::A(int, int, ...)" does not match because argument #1 does not match parameter
+    A(int = 0, int = 0, ...); // expected-note 3{{candidate constructor}} expected-note 2{{candidate inherited constructor}}
+    ^
+"Test_name.c", line 10: note: function "A::A(int, int, int, int, ...)" does not match because argument #1 does not match parameter
+    A(int = 0, int = 0, int = 0, int = 0, ...); // expected-note 3{{candidate constructor}} expected-note 2{{candidate inherited constructor}}
+    ^
+
+"Test_name.c", line 54: error: more than one instance of constructor "B::B" matches the argument list:
+            function "A::A(const T (&)[N], int)" (declared at line 16), inherited via using decl at line 20
+            function "A::A(const T (&)[N])" (declared at line 15), inherited via using decl at line 20
+            argument types are: (const char [4])
+  B b9{"foo"}; // expected-error {{ambiguous}}
+      ^
+"Test_name.c", line 20: note: function "B::A(int, int, int, int, ...)" does not match because argument #1 does not match parameter
+    using A::A; // expected-note 6{{inherited here}}
+    ^
+"Test_name.c", line 20: note: function "B::A(int, int, ...)" does not match because argument #1 does not match parameter
+    using A::A; // expected-note 6{{inherited here}}
+    ^
+"Test_name.c", line 21: note: function "B::B(void *)" does not match because argument #1 does not match parameter
+    B(void*);
+    ^
+
+8 errors detected in the compilation of "Test_name.c".

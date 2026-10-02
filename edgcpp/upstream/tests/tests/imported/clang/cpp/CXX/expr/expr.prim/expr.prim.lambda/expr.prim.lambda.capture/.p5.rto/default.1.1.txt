@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 7: error: a lambda parameter cannot hide an explicit capture
+    auto g = [x](int x) { return 0; }; // expected-error {{a lambda parameter cannot shadow an explicitly captured entity}} \
+                     ^
+
+"Test_name.c", line 9: error: a lambda template parameter cannot hide an explicit capture
+    auto h = [y = 0]<typename y>(y) { return 0; };  // expected-error {{declaration of 'y' shadows template parameter}} \
+                              ^
+
+"Test_name.c", line 7: warning: variable "g" was declared but never referenced
+    auto g = [x](int x) { return 0; }; // expected-error {{a lambda parameter cannot shadow an explicitly captured entity}} \
+         ^
+
+"Test_name.c", line 9: warning: variable "h" was declared but never referenced
+    auto h = [y = 0]<typename y>(y) { return 0; };  // expected-error {{declaration of 'y' shadows template parameter}} \
+         ^
+
+2 errors detected in the compilation of "Test_name.c".

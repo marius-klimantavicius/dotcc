@@ -1,0 +1,88 @@
+fe_only -DTEST_NUMBER=2 --c++14 --clear_flag=alias_templ_intrinsics --clear_flag=templ_type_member_intrinsics Test_name.c
+"Test_name.c", line 9: error: static assertion failed with ""
+    template<typename T> struct remove_const<const T> { using type = T; KILL };
+                                                                        ^
+"Test_name.c", line 9: note: the final comparison was 4 == 31
+    template<typename T> struct remove_const<const T> { using type = T; KILL };
+                                                                        ^
+          detected during:
+            instantiation of class "std::remove_const<const T> [with T=volatile int]" at line 10
+            instantiation of type "std::remove_const_t<CVI>" at line 40
+
+"Test_name.c", line 13: error: static assertion failed with ""
+    template<typename T> struct remove_volatile<volatile T> { using type = T; KILL };
+                                                                              ^
+"Test_name.c", line 13: note: the final comparison was 4 == 31
+    template<typename T> struct remove_volatile<volatile T> { using type = T; KILL };
+                                                                              ^
+          detected during:
+            instantiation of class "std::remove_volatile<volatile T> [with T=const int]" at line 14
+            instantiation of type "std::remove_volatile_t<CVI>" at line 41
+
+"Test_name.c", line 9: error: static assertion failed with ""
+    template<typename T> struct remove_const<const T> { using type = T; KILL };
+                                                                        ^
+"Test_name.c", line 9: note: the final comparison was 4 == 31
+    template<typename T> struct remove_const<const T> { using type = T; KILL };
+                                                                        ^
+          detected during:
+            instantiation of class "std::remove_const<const T> [with T=int]" at line 10
+            instantiation of type "std::remove_const_t<const int>" at line 22
+            instantiation of class "std::remove_cv<T> [with T=CVI]" at line 25
+            instantiation of type "std::remove_cv_t<CVI>" at line 42
+
+"Test_name.c", line 23: error: static assertion failed with ""
+      KILL
+      ^
+"Test_name.c", line 23: note: the final comparison was 4 == 31
+      KILL
+      ^
+          detected during:
+            instantiation of class "std::remove_cv<T> [with T=CVI]" at line 25
+            instantiation of type "std::remove_cv_t<CVI>" at line 42
+
+"Test_name.c", line 16: error: static assertion failed with ""
+    template<typename T> struct remove_reference { using type = T; KILL };
+                                                                   ^
+"Test_name.c", line 16: note: the final comparison was 4 == 31
+    template<typename T> struct remove_reference { using type = T; KILL };
+                                                                   ^
+          detected during:
+            instantiation of class "std::remove_reference<T> [with T=CVI]" at line 19
+            instantiation of type "std::remove_reference_t<CVI>" at line 27
+            instantiation of class "std::remove_cvref<T> [with T=CVI]" at line 30
+            instantiation of type "std::remove_cvref_t<CVI>" at line 43
+
+"Test_name.c", line 28: error: static assertion failed with ""
+      KILL
+      ^
+"Test_name.c", line 28: note: the final comparison was 4 == 31
+      KILL
+      ^
+          detected during:
+            instantiation of class "std::remove_cvref<T> [with T=CVI]" at line 30
+            instantiation of type "std::remove_cvref_t<CVI>" at line 43
+
+"Test_name.c", line 17: error: static assertion failed with ""
+    template<typename T> struct remove_reference<T&> { using type = T; KILL };
+                                                                       ^
+"Test_name.c", line 17: note: the final comparison was 4 == 31
+    template<typename T> struct remove_reference<T&> { using type = T; KILL };
+                                                                       ^
+          detected during:
+            instantiation of class "std::remove_reference<T &> [with T=const volatile int]" at line 19
+            instantiation of type "std::remove_reference_t<RCVI>" at line 27
+            instantiation of class "std::remove_cvref<T> [with T=RCVI]" at line 30
+            instantiation of type "std::remove_cvref_t<RCVI>" at line 44
+
+"Test_name.c", line 28: error: static assertion failed with ""
+      KILL
+      ^
+"Test_name.c", line 28: note: the final comparison was 4 == 31
+      KILL
+      ^
+          detected during:
+            instantiation of class "std::remove_cvref<T> [with T=RCVI]" at line 30
+            instantiation of type "std::remove_cvref_t<RCVI>" at line 44
+
+8 errors detected in the compilation of "Test_name.c".

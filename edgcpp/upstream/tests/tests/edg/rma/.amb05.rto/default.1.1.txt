@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 6: error: "C::X" is ambiguous
+  class C : public A, public B { X a; Y b; };
+                                 ^
+
+"Test_name.c", line 6: error: "C::Y" is ambiguous
+  class C : public A, public B { X a; Y b; };
+                                      ^
+
+2 errors detected in the compilation of "Test_name.c".

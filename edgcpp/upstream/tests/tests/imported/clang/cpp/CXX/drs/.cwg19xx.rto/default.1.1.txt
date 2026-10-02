@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 --exceptions --exceptions Test_name.c
+"Test_name.c", line 23: error: namespace "cwg1900::N" has no member "g"
+  int N::g() { return 0; }
+         ^
+
+"Test_name.c", line 31: warning: deleted functions are a C++11 feature
+      B() = delete; // #cwg1902-B-ctor
+            ^
+
+"Test_name.c", line 39: error: function "cwg1902::B::B(const cwg1902::B &)" (declared at line 33) cannot be referenced -- it is a deleted function
+    B b2(b1);
+         ^
+
+"Test_name.c", line 80: error: declaration of a member with the same name as its class
+      template<typename T> struct A {};
+                                  ^
+
+"Test_name.c", line 84: error: declaration of a member with the same name as its class
+      template<typename T> void B() {}
+                                ^
+
+"Test_name.c", line 88: error: declaration of a member with the same name as its class
+      template<typename T> static int C;
+                                      ^
+
+"Test_name.c", line 93: warning: alias templates are a C++11 feature
+      template<typename T> using D = int;
+                           ^
+
+"Test_name.c", line 93: error: declaration of a member with the same name as its class
+      template<typename T> using D = int;
+                                 ^
+
+"Test_name.c", line 118: error: member "cwg1918::X::x" (declared at line 106) is inaccessible
+      int f() { return X::x; }
+                          ^
+
+"Test_name.c", line 62: warning: variable "cwg1903::A::<unnamed>::c" was declared but never referenced
+        int c;
+            ^
+
+7 errors detected in the compilation of "Test_name.c".

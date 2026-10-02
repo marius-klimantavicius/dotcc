@@ -1,0 +1,28 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 34: error: class "A" has no member "f"
+    m.f<int>(); // expected-error{{no member named 'f' in 'A'}} \
+      ^
+
+"Test_name.c", line 34: error: type name is not allowed
+    m.f<int>(); // expected-error{{no member named 'f' in 'A'}} \
+        ^
+
+"Test_name.c", line 34: error: expected an expression
+    m.f<int>(); // expected-error{{no member named 'f' in 'A'}} \
+             ^
+
+"Test_name.c", line 44: error: "member" has already been declared in the current scope
+      int member;
+          ^
+
+"Test_name.c", line 53: warning: expression has no effect
+        P(&T::X) // expected-error {{cannot cast from type 'int *' to member pointer type 'P'}}
+        ^
+          detected during instantiation of "void AddrOfMember::S<T>::f() [with T=AddrOfMember::A]" at line 59
+
+"Test_name.c", line 53: error: invalid type conversion
+        P(&T::X) // expected-error {{cannot cast from type 'int *' to member pointer type 'P'}}
+        ^
+          detected during instantiation of "void AddrOfMember::S<T>::f() [with T=AddrOfMember::B]" at line 64
+
+5 errors detected in the compilation of "Test_name.c".

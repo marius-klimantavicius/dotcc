@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./analyzer/torture/boxed-int-1.c", line 149: warning: variable "i" is used before its value is set
+    return i.value;
+           ^
+
+"./analyzer/torture/boxed-int-1.c", line 156: warning: variable "i" is used before its value is set
+    return i;
+           ^
+

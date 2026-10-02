@@ -1,0 +1,110 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 10: warning: the auto specifier is ignored here (invalid in standard C/C++)
+  auto void f0 (void) {} /* { dg-error "function definition declared 'auto'" } */
+  ^
+
+"Test_name.c", line 11: error: invalid storage class for a function
+  register void f1 (void) {} /* { dg-error "function definition declared 'register'" } */
+  ^
+
+"Test_name.c", line 12: error: expected a ";"
+  typedef void f2 (void) {} /* { dg-error "function definition declared 'typedef'" } */
+                         ^
+
+"Test_name.c", line 15: error: invalid storage class for a parameter
+  void f4 (extern int); /* { dg-error "storage class specified for unnamed parameter" } */
+           ^
+
+"Test_name.c", line 17: error: invalid storage class for a parameter
+  void f6 (static int); /* { dg-error "storage class specified for unnamed parameter" } */
+           ^
+
+"Test_name.c", line 18: error: "typedef" may not be specified here
+  void f7 (typedef int); /* { dg-error "storage class specified for unnamed parameter" } */
+           ^
+
+"Test_name.c", line 20: warning: the auto specifier is ignored here (invalid in standard C/C++)
+  auto int x; /* { dg-error "file-scope declaration of 'x' specifies 'auto'" } */
+  ^
+
+"Test_name.c", line 22: error: a global-scope declaration may not have this storage class
+  register int y;
+  ^
+
+"Test_name.c", line 26: error: declaration is incompatible with previous "x" (declared at line 20)
+  void h (void) { extern void x (void) {} } /* { dg-error "nested function 'x' declared 'extern'" } */
+                              ^
+
+"Test_name.c", line 26: error: expected a ";"
+  void h (void) { extern void x (void) {} } /* { dg-error "nested function 'x' declared 'extern'" } */
+                                       ^
+
+"Test_name.c", line 32: error: incomplete type "void" is not allowed
+    void a; /* { dg-error "variable or field 'a' declared void" } */
+         ^
+
+"Test_name.c", line 33: warning: type qualifiers are meaningless in this declaration
+    const void b; /* { dg-error "variable or field 'b' declared void" } */
+               ^
+
+"Test_name.c", line 33: warning: const variable "b" requires an initializer
+    const void b; /* { dg-error "variable or field 'b' declared void" } */
+                ^
+
+"Test_name.c", line 33: error: incomplete type "const void" is not allowed
+    const void b; /* { dg-error "variable or field 'b' declared void" } */
+               ^
+
+"Test_name.c", line 34: error: incomplete type "void" is not allowed
+    static void c; /* { dg-error "variable or field 'c' declared void" } */
+                ^
+
+"Test_name.c", line 37: error: incomplete type "void" is not allowed
+  void p;
+       ^
+
+"Test_name.c", line 38: warning: type qualifiers are meaningless in this declaration
+  const void p1;
+             ^
+
+"Test_name.c", line 38: error: incomplete type "const void" is not allowed
+  const void p1;
+             ^
+
+"Test_name.c", line 40: warning: type qualifiers are meaningless in this declaration
+  extern const void q1;
+                    ^
+
+"Test_name.c", line 41: error: incomplete type "void" is not allowed
+  static void r; /* { dg-error "variable or field 'r' declared void" } */
+              ^
+
+"Test_name.c", line 42: warning: type qualifiers are meaningless in this declaration
+  static const void r1; /* { dg-error "variable or field 'r1' declared void" } */
+                    ^
+
+"Test_name.c", line 42: error: incomplete type "const void" is not allowed
+  static const void r1; /* { dg-error "variable or field 'r1' declared void" } */
+                    ^
+
+"Test_name.c", line 44: error: invalid storage class for a function
+  register void f8 (void); /* { dg-error "invalid storage class for function 'f8'" } */
+  ^
+
+"Test_name.c", line 47: error: invalid storage class for a function
+  void i (void) { auto void y (void) {} } /* { dg-error "ISO C forbids nested functions" } */
+                  ^
+
+"Test_name.c", line 47: error: declaration is incompatible with previous "y" (declared at line 22)
+  void i (void) { auto void y (void) {} } /* { dg-error "ISO C forbids nested functions" } */
+                            ^
+
+"Test_name.c", line 47: error: expected a ";"
+  void i (void) { auto void y (void) {} } /* { dg-error "ISO C forbids nested functions" } */
+                                     ^
+
+"Test_name.c", line 50: error: function "main" may not be declared inline
+  inline int main (void) { return 0; } /* { dg-error "cannot inline function 'main'" } */
+             ^
+
+20 errors detected in the compilation of "Test_name.c".

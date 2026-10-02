@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 15: warning: variable "a" is used before its value is set
+    static int ary3[(*__builtin_classify_type)(a)]; // expected-error{{builtin functions must be directly called}}
+                                               ^
+
+"Test_name.c", line 15: error: a variable length array cannot have static storage duration
+    static int ary3[(*__builtin_classify_type)(a)]; // expected-error{{builtin functions must be directly called}}
+               ^
+
+"Test_name.c", line 13: warning: variable "ary" was declared but never referenced
+    static int ary[__builtin_classify_type(a)];
+               ^
+
+"Test_name.c", line 14: warning: variable "ary2" was declared but never referenced
+    static int ary2[(__builtin_classify_type)(a)];
+               ^
+
+"Test_name.c", line 15: warning: variable "ary3" was declared but never referenced
+    static int ary3[(*__builtin_classify_type)(a)]; // expected-error{{builtin functions must be directly called}}
+               ^
+
+"Test_name.c", line 17: warning: variable "result" was set but never used
+    int result;
+        ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"SemaCXX/printf-cstr.cpp", line 29: warning: variable "dest" was declared but never referenced
+    char dest[32];
+         ^
+

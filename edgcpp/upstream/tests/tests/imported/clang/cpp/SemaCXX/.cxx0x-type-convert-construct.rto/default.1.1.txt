@@ -1,0 +1,65 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 7: warning: conversion from a string literal to "char *" is deprecated
+    u8str = u8"a UTF-8 string"; // expected-error {{assigning to 'char *' from incompatible type 'const char[15]'}}
+          ^
+
+"Test_name.c", line 9: warning: conversion from a string literal to pointer-to-character (non-const) is deprecated
+    ustr = u"a UTF-16 string"; // expected-error {{assigning to 'char16_t *' from incompatible type 'const char16_t[16]'}}
+         ^
+
+"Test_name.c", line 11: warning: conversion from a string literal to pointer-to-character (non-const) is deprecated
+    Ustr = U"a UTF-32 string"; // expected-error {{assigning to 'char32_t *' from incompatible type 'const char32_t[16]'}}
+         ^
+
+"Test_name.c", line 14: warning: conversion from a string literal to "char *" is deprecated
+    Rstr = R"foo(a raw string)foo"; // expected-warning{{ISO C++11 does not allow conversion from string literal to 'char *'}}
+         ^
+
+"Test_name.c", line 16: warning: conversion from a string literal to pointer-to-character (non-const) is deprecated
+    LRstr = LR"foo(a wide raw string)foo"; // expected-warning{{ISO C++11 does not allow conversion from string literal to 'wchar_t *'}}
+          ^
+
+"Test_name.c", line 18: warning: conversion from a string literal to "char *" is deprecated
+    u8Rstr = u8R"foo(a UTF-8 raw string)foo"; // expected-error {{assigning to 'char *' from incompatible type 'const char[19]'}}
+           ^
+
+"Test_name.c", line 20: warning: conversion from a string literal to pointer-to-character (non-const) is deprecated
+    uRstr = uR"foo(a UTF-16 raw string)foo"; // expected-error {{assigning to 'char16_t *' from incompatible type 'const char16_t[20]'}}
+          ^
+
+"Test_name.c", line 22: warning: conversion from a string literal to pointer-to-character (non-const) is deprecated
+    URstr = UR"foo(a UTF-32 raw string)foo"; // expected-error {{assigning to 'char32_t *' from incompatible type 'const char32_t[20]'}}
+          ^
+
+"Test_name.c", line 6: warning: variable "u8str" was set but never used
+    char *u8str;
+          ^
+
+"Test_name.c", line 8: warning: variable "ustr" was set but never used
+    char16_t *ustr;
+              ^
+
+"Test_name.c", line 10: warning: variable "Ustr" was set but never used
+    char32_t *Ustr;
+              ^
+
+"Test_name.c", line 13: warning: variable "Rstr" was set but never used
+    char *Rstr;
+          ^
+
+"Test_name.c", line 15: warning: variable "LRstr" was set but never used
+    wchar_t *LRstr;
+             ^
+
+"Test_name.c", line 17: warning: variable "u8Rstr" was set but never used
+    char *u8Rstr;
+          ^
+
+"Test_name.c", line 19: warning: variable "uRstr" was set but never used
+    char16_t *uRstr;
+              ^
+
+"Test_name.c", line 21: warning: variable "URstr" was set but never used
+    char32_t *URstr;
+              ^
+

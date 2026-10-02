@@ -1,0 +1,150 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 20: error: identifier "startwith" is undefined
+  int __RTL (startwith ("peephole2")) compare_move_peephole ()
+             ^
+
+"Test_name.c", line 20: error: expected a ")"
+  int __RTL (startwith ("peephole2")) compare_move_peephole ()
+                        ^
+
+"Test_name.c", line 20: error: expected a "{"
+  int __RTL (startwith ("peephole2")) compare_move_peephole ()
+                                      ^
+
+"Test_name.c", line 22: error: identifier "function" is undefined
+  (function "compare_move_peephole"
+   ^
+
+"Test_name.c", line 22: error: expected a ")"
+  (function "compare_move_peephole"
+            ^
+
+"Test_name.c", line 26: warning: parsing restarts here after previous syntax error
+        (cnote 3 [bb 2] NOTE_INSN_BASIC_BLOCK)
+                                             ^
+
+"Test_name.c", line 27: error: identifier "cinsn" is undefined
+        (cinsn 8 (set (reg:CC %cr0)
+         ^
+
+"Test_name.c", line 27: error: expected a ")"
+        (cinsn 8 (set (reg:CC %cr0)
+               ^
+
+"Test_name.c", line 30: error: expected a ")"
+        (cinsn 2 (set (reg:SI %r4)
+               ^
+
+"Test_name.c", line 32: error: identifier "Extra" is undefined
+        ;; Extra insn to avoid the above being deleted by DCE.
+           ^
+
+"Test_name.c", line 32: error: expected a ";"
+        ;; Extra insn to avoid the above being deleted by DCE.
+                      ^
+
+"Test_name.c", line 36: warning: parsing restarts here after previous syntax error
+      ) ;; block 2
+        ^
+
+"Test_name.c", line 36: error: identifier "block" is undefined
+      ) ;; block 2
+           ^
+
+"Test_name.c", line 36: error: expected a ";"
+      ) ;; block 2
+                 ^
+
+"Test_name.c", line 37: error: identifier "chain" is undefined
+    ) ;; insn-chain
+              ^
+
+"Test_name.c", line 38: error: expected a ";"
+  ) ;; function "main"
+  ^
+
+"Test_name.c", line 38: error: expected a ";"
+  ) ;; function "main"
+                ^
+
+"Test_name.c", line 39: warning: missing return statement at end of non-void function "__RTL"
+  }
+  ^
+
+"Test_name.c", line 41: error: identifier "startwith" is undefined
+  int __RTL (startwith ("peephole2")) move_compare_peephole ()
+             ^
+
+"Test_name.c", line 41: error: expected a ")"
+  int __RTL (startwith ("peephole2")) move_compare_peephole ()
+                        ^
+
+"Test_name.c", line 41: error: function "__RTL" has already been defined (previous definition at line 20)
+  int __RTL (startwith ("peephole2")) move_compare_peephole ()
+      ^
+
+"Test_name.c", line 41: error: expected a "{"
+  int __RTL (startwith ("peephole2")) move_compare_peephole ()
+                                      ^
+
+"Test_name.c", line 43: error: identifier "function" is undefined
+  (function "move_compare_peephole"
+   ^
+
+"Test_name.c", line 43: error: expected a ")"
+  (function "move_compare_peephole"
+            ^
+
+"Test_name.c", line 47: warning: parsing restarts here after previous syntax error
+        (cnote 3 [bb 2] NOTE_INSN_BASIC_BLOCK)
+                                             ^
+
+"Test_name.c", line 48: error: identifier "cinsn" is undefined
+        (cinsn 2 (set (reg:SI %r4)
+         ^
+
+"Test_name.c", line 48: error: expected a ")"
+        (cinsn 2 (set (reg:SI %r4)
+               ^
+
+"Test_name.c", line 50: error: expected a ")"
+        (cinsn 8 (set (reg:CC %cr0)
+               ^
+
+"Test_name.c", line 53: error: identifier "Extra" is undefined
+        ;; Extra insn to avoid the above being deleted by DCE.
+           ^
+
+"Test_name.c", line 53: error: expected a ";"
+        ;; Extra insn to avoid the above being deleted by DCE.
+                      ^
+
+"Test_name.c", line 57: warning: parsing restarts here after previous syntax error
+      ) ;; block 2
+        ^
+
+"Test_name.c", line 57: error: identifier "block" is undefined
+      ) ;; block 2
+           ^
+
+"Test_name.c", line 57: error: expected a ";"
+      ) ;; block 2
+                 ^
+
+"Test_name.c", line 58: error: identifier "chain" is undefined
+    ) ;; insn-chain
+              ^
+
+"Test_name.c", line 59: error: expected a ";"
+  ) ;; function "main"
+  ^
+
+"Test_name.c", line 59: error: expected a ";"
+  ) ;; function "main"
+                ^
+
+"Test_name.c", line 60: warning: missing return statement at end of non-void function "__RTL"
+  }
+  ^
+
+31 errors detected in the compilation of "Test_name.c".

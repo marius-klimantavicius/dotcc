@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 6: error: "= default" can only appear on default constructors, copy/move constructors, copy/move assignment operators, and destructors
+  void foo() = default;		// { dg-error "cannot be defaulted" }
+               ^
+
+"Test_name.c", line 9: error: "= default" can only appear on default constructors, copy/move constructors, copy/move assignment operators, and destructors
+    void bar() = default;		// { dg-error "cannot be defaulted" }
+                 ^
+
+"Test_name.c", line 14: error: "= default" can only appear on default constructors, copy/move constructors, copy/move assignment operators, and destructors
+  E& operator |= (E&, const E&) = default; // { dg-error "cannot be defaulted" }
+                                  ^
+
+"Test_name.c", line 9: warning: function "<unnamed>::bar" was declared but never referenced
+    void bar() = default;		// { dg-error "cannot be defaulted" }
+         ^
+
+3 errors detected in the compilation of "Test_name.c".

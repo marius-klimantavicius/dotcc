@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: error: identifier "X" is undefined
+    static void f(X&); // { dg-error "" }
+                  ^
+
+"Test_name.c", line 9: warning: qualified name is not allowed in member declaration
+    inline void A::f<void>(X&); // { dg-error "f|expected|not been declared" }
+                ^
+
+"Test_name.c", line 9: error: an explicit template argument list is not allowed on this declaration
+    inline void A::f<void>(X&); // { dg-error "f|expected|not been declared" }
+                ^
+
+"Test_name.c", line 9: error: identifier "X" is undefined
+    inline void A::f<void>(X&); // { dg-error "f|expected|not been declared" }
+                           ^
+
+3 errors detected in the compilation of "Test_name.c".

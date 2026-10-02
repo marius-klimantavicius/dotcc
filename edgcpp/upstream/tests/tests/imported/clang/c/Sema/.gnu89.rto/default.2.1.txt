@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=2 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c89 --strict_gnu Test_name.c
+"Test_name.c", line 7: warning: return type of function "main" must be "int"
+  void main(void) {} // expected-warning {{return type of 'main' is not 'int'}} expected-note {{change return type to 'int'}}
+       ^
+

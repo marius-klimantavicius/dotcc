@@ -1,0 +1,112 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 16: error: expression must have a constant value
+  constexpr int x1 = f1 (X);    // { dg-message "in .constexpr. expansion of" }
+                     ^
+"Test_name.c", line 8: note: shift count is too large
+  constexpr int f1 (int n) { return 1 << n; }   // { dg-error "shift expression" }
+                                         ^
+
+"Test_name.c", line 17: error: expression must have a constant value
+  constexpr int x2 = f2 (-1);   // { dg-message "in .constexpr. expansion of" }
+                     ^
+"Test_name.c", line 9: note: shift count is negative
+  constexpr int f2 (int n) { return 1 << n; }   // { dg-error "shift expression" }
+                                         ^
+
+"Test_name.c", line 18: error: expression must have a constant value
+  constexpr int x3 = f3 (-1);   // { dg-message "in .constexpr. expansion of" "" { target c++17_down } }
+                     ^
+"Test_name.c", line 10: note: left-shifting a negative value has undefined behavior
+  constexpr int f3 (int n) { return n << 1; }   // { dg-error "shift expression" "" { target c++17_down } }
+                                      ^
+
+"Test_name.c", line 19: error: expression must have a constant value
+  constexpr int x4 = f4 (X);    // { dg-message "in .constexpr. expansion of" }
+                     ^
+"Test_name.c", line 11: note: shift count is too large
+  constexpr int f4 (int n) { return 1 >> n; }   // { dg-error "shift expression" }
+                                         ^
+
+"Test_name.c", line 20: error: expression must have a constant value
+  constexpr int x5 = f5 (-1);   // { dg-message "in .constexpr. expansion of" }
+                     ^
+"Test_name.c", line 12: note: shift count is negative
+  constexpr int f5 (int n) { return 1 >> n; }   // { dg-error "shift expression" }
+                                         ^
+
+"Test_name.c", line 22: error: expression must have a constant value
+  constexpr int y1 =  1 << X;   // { dg-error "shift expression" }
+                      ^
+"Test_name.c", line 22: note: shift count is too large
+  constexpr int y1 =  1 << X;   // { dg-error "shift expression" }
+                           ^
+
+"Test_name.c", line 23: error: expression must have a constant value
+  constexpr int y2 =  1 << -1;  // { dg-error "shift expression" }
+                      ^
+"Test_name.c", line 23: note: shift count is negative
+  constexpr int y2 =  1 << -1;  // { dg-error "shift expression" }
+                           ^
+
+"Test_name.c", line 24: error: expression must have a constant value
+  constexpr int y3 = -1 << 1;   // { dg-error "shift expression" "" { target c++17_down } }
+                     ^
+"Test_name.c", line 24: note: left-shifting a negative value has undefined behavior
+  constexpr int y3 = -1 << 1;   // { dg-error "shift expression" "" { target c++17_down } }
+                        ^
+
+"Test_name.c", line 25: error: expression must have a constant value
+  constexpr int y4 =  1 >> X;   // { dg-error "shift expression" }
+                      ^
+"Test_name.c", line 25: note: shift count is too large
+  constexpr int y4 =  1 >> X;   // { dg-error "shift expression" }
+                           ^
+
+"Test_name.c", line 26: error: expression must have a constant value
+  constexpr int y5 =  1 >> -1;  // { dg-error "shift expression" }
+                      ^
+"Test_name.c", line 26: note: shift count is negative
+  constexpr int y5 =  1 >> -1;  // { dg-error "shift expression" }
+                           ^
+
+"Test_name.c", line 16: warning: variable "x1" was declared but never referenced
+  constexpr int x1 = f1 (X);    // { dg-message "in .constexpr. expansion of" }
+                ^
+
+"Test_name.c", line 17: warning: variable "x2" was declared but never referenced
+  constexpr int x2 = f2 (-1);   // { dg-message "in .constexpr. expansion of" }
+                ^
+
+"Test_name.c", line 18: warning: variable "x3" was declared but never referenced
+  constexpr int x3 = f3 (-1);   // { dg-message "in .constexpr. expansion of" "" { target c++17_down } }
+                ^
+
+"Test_name.c", line 19: warning: variable "x4" was declared but never referenced
+  constexpr int x4 = f4 (X);    // { dg-message "in .constexpr. expansion of" }
+                ^
+
+"Test_name.c", line 20: warning: variable "x5" was declared but never referenced
+  constexpr int x5 = f5 (-1);   // { dg-message "in .constexpr. expansion of" }
+                ^
+
+"Test_name.c", line 22: warning: variable "y1" was declared but never referenced
+  constexpr int y1 =  1 << X;   // { dg-error "shift expression" }
+                ^
+
+"Test_name.c", line 23: warning: variable "y2" was declared but never referenced
+  constexpr int y2 =  1 << -1;  // { dg-error "shift expression" }
+                ^
+
+"Test_name.c", line 24: warning: variable "y3" was declared but never referenced
+  constexpr int y3 = -1 << 1;   // { dg-error "shift expression" "" { target c++17_down } }
+                ^
+
+"Test_name.c", line 25: warning: variable "y4" was declared but never referenced
+  constexpr int y4 =  1 >> X;   // { dg-error "shift expression" }
+                ^
+
+"Test_name.c", line 26: warning: variable "y5" was declared but never referenced
+  constexpr int y5 =  1 >> -1;  // { dg-error "shift expression" }
+                ^
+
+10 errors detected in the compilation of "Test_name.c".

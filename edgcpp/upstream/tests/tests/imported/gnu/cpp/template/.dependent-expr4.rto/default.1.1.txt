@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 15: error: expected a class, struct, or union type
+    S< (bool)(__builtin_offsetof (Y<T>*, x) == 0) >
+                                  ^
+
+"Test_name.c", line 15: error: expression must have class type but it has type "Y<T> *"
+    S< (bool)(__builtin_offsetof (Y<T>*, x) == 0) >
+                                       ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,362 @@
+#!/usr/bin/env python3
+
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+import argparse
+import json
+import os
+import re
+import sys
+import tarfile
+
+import edgpack
+
+from pathlib import Path, PurePath
+from typing import List
+
+from edgutil import eprint
+
+PACKAGED_BINARIES = [
+  'cpfe',
+  'edg_decode',
+  'edg_munch',
+  'edg_prelink'
+]
+
+PACKAGED_LIBS = [
+  'libedgrt.a'
+]
+
+COMPILER_FAMILIES = [
+  'default',
+  'gcc'
+]
+
+def _write_eccp(tar: tarfile.TarFile, source_dir: Path) -> None:
+  source_path = (source_dir / 'util' / 'eccp.sh').resolve()
+  edgpack.check_bash_script(source_path)
+  edgpack.write_file_to_tar(tar, source_path, PurePath('bin', 'eccp'))
+
+def _write_binary(tar: tarfile.TarFile, build_dir: Path,
+                  bin_name: str) -> None:
+  source_path = (build_dir / 'bin' / bin_name).resolve()
+  edgpack.check_binary(source_path)
+  edgpack.write_file_to_tar(tar, source_path, PurePath('bin', bin_name))
+
+def _write_lib(tar: tarfile.TarFile, build_dir: Path,
+               lib_name: str) -> None:
+  source_path = (build_dir / 'lib' / lib_name).resolve()
+  edgpack.check_lib(source_path)
+  edgpack.write_file_to_tar(tar, source_path, PurePath('lib', lib_name))
+
+DEFAULT_ECCP_CONFIG="""
+################################################################################
+#
+# Configuration file for the EDG eccp script.
+#
+# This file must be located in the directory specified by the EDG_BASE
+# environment variable.  It is used to set other environment variables
+# that are used by the eccp script.
+#
+################################################################################
+EDG_DEFAULT_DEFINES="-D__CHAR_BIT__=8"
+EDG_DEFAULT_CPP_DEFINES="-D_POSIX_SOURCE"
+
+extra_flags="[[SCRIPT_EXTRA_FLAGS]]"
+
+# Disable the last line incomplete warning for compiler explorer
+# (it's not particularly useful there).
+extra_flags="$extra_flags --diag_suppress last_line_incomplete"
+# Disable diagnostic wrapping for compiler explorer as compiler explorer
+# has its own system for wrapping terminal output.
+extra_flags="$extra_flags --no_wrap_diagnostics"
+# Make sure exception handling support is on.
+extra_flags="$extra_flags --exceptions"
+
+export EDG_CPFE_DEFAULT_OPTIONS="$EDG_CPFE_DEFAULT_OPTIONS $extra_flags"
+
+# Use only the EDG library files (and include any packaged experimental
+# headers).
+EDG_INCLDIR="$EDG_BASE/include_cpp_exp/:$EDG_BASE/include"
+EDG_CINCLDIR="$EDG_BASE/include_c99"
+
+EDG_C_TO_OBJ_LIBRARIES="$EDG_C_TO_OBJ_LIBRARIES -lstdc++ -lgcc -lpthread"
+
+# Get rid of the annoying "nm: stubs.o: no symbols" errors:
+EDG_PRELINK_DEFAULT_OPTIONS='-c "nm -og 2>/dev/null" '$EDG_PRELINK_DEFAULT_OPTIONS
+
+default_opts="$EDG_C_TO_OBJ_DEFAULT_OPTIONS -Dva_copy=__va_copy -falign-functions=4"
+EDG_C_TO_OBJ_DEFAULT_OPTIONS=$default_opts
+EDG_C_TO_OBJ_DEFAULT_OPTIONS_linux_i686="$default_opts -m32 -march=i686 -msse2"
+EDG_C_TO_OBJ_DEFAULT_OPTIONS_linux_x86_64="$default_opts -m64 -march=x86-64"
+EDG_C_TO_OBJ_DEFAULT_OPTIONS_win64="$default_opts"
+EDG_C_TO_OBJ_DEFAULT_OPTIONS_win32="$default_opts -m32 -march=i686 -msse2"
+
+EDG_C_TO_OBJ_C99_OPTIONS="-std=gnu9x"
+
+EDG_SUPPRESS_PATCH_MUNCH=1
+EDG_STD_LIBS=${EDG_STD_LIBS-""}
+COLLECT_NO_DEMANGLE=1
+export COLLECT_NO_DEMANGLE
+"""
+
+def _generate_default_base(tar: tarfile.TarFile, source_dir: Path,
+                           extra_flags: str) -> None:
+  edgpack.add_header_files_to_tar(
+    tar,
+    source_dir / 'include_c++',
+    PurePath('base', 'include')
+  )
+  edgpack.add_header_files_to_tar(
+    tar,
+    source_dir / 'include_c99',
+    PurePath('base', 'include_c99')
+  )
+
+  edgpack.write_str_to_tar(
+    tar,
+    PurePath('base', 'edg_eccp_config'),
+    DEFAULT_ECCP_CONFIG.replace('[[SCRIPT_EXTRA_FLAGS]]', extra_flags or '')
+  )
+  edgpack.write_str_to_tar(
+    tar,
+    PurePath('base', 'lib', 'predefined_macros.txt'),
+    edgpack.DEFAULT_PREDEF_MACROS
+  )
+
+GCC_ECCP_CONFIG="""
+################################################################################
+#
+# Configuration file for the EDG eccp script.
+#
+# This file must be located in the directory specified by the EDG_BASE
+# environment variable.  It is used to set other environment variables
+# that are used by the eccp script.
+#
+################################################################################
+EDG_DEFAULT_DEFINES="-D__CHAR_BIT__=8"
+EDG_DEFAULT_CPP_DEFINES="-D_POSIX_SOURCE"
+
+extra_flags="[[SCRIPT_EXTRA_FLAGS]]"
+
+# Disable the last line incomplete warning for compiler explorer
+# (it's not particularly useful there).
+extra_flags="$extra_flags --diag_suppress last_line_incomplete"
+# Disable diagnostic wrapping for compiler explorer as compiler explorer
+# has its own system for wrapping terminal output.
+extra_flags="$extra_flags --no_wrap_diagnostics"
+# Make sure exception handling support is on.
+extra_flags="$extra_flags --exceptions"
+
+export EDG_CPFE_DEFAULT_OPTIONS="$EDG_CPFE_DEFAULT_OPTIONS $extra_flags"
+
+# Use the defualt GCC include paths (and include any packaged experimental
+# headers).
+EDG_INCLDIR="$EDG_BASE/include_cpp_exp/:$EDG_GCC_INCL_SCRAPE"
+EDG_CINCLDIR="$EDG_GCC_CINCL_SCRAPE"
+
+EDG_C_TO_OBJ_LIBRARIES="$EDG_C_TO_OBJ_LIBRARIES -lstdc++ -lgcc -lpthread"
+
+# Get rid of the annoying "nm: stubs.o: no symbols" errors:
+EDG_PRELINK_DEFAULT_OPTIONS='-c "nm -og 2>/dev/null" '$EDG_PRELINK_DEFAULT_OPTIONS
+
+default_opts="$EDG_C_TO_OBJ_DEFAULT_OPTIONS -Dva_copy=__va_copy -falign-functions=4"
+EDG_C_TO_OBJ_DEFAULT_OPTIONS=$default_opts
+EDG_C_TO_OBJ_DEFAULT_OPTIONS_linux_i686="$default_opts -m32 -march=i686 -msse2"
+EDG_C_TO_OBJ_DEFAULT_OPTIONS_linux_x86_64="$default_opts -m64 -march=x86-64"
+EDG_C_TO_OBJ_DEFAULT_OPTIONS_win64="$default_opts"
+EDG_C_TO_OBJ_DEFAULT_OPTIONS_win32="$default_opts -m32 -march=i686 -msse2"
+
+EDG_C_TO_OBJ_C99_OPTIONS="-std=gnu9x"
+
+EDG_SUPPRESS_PATCH_MUNCH=1
+EDG_STD_LIBS=${EDG_STD_LIBS-""}
+COLLECT_NO_DEMANGLE=1
+export COLLECT_NO_DEMANGLE
+"""
+
+def _generate_gcc_base(tar: tarfile.TarFile, extra_flags: str) -> None:
+  edgpack.write_str_to_tar(
+    tar,
+    PurePath('base', 'edg_eccp_config'),
+    GCC_ECCP_CONFIG.replace('[[SCRIPT_EXTRA_FLAGS]]', extra_flags or '')
+  )
+
+def _add_experimental_headers_to_base(tar: tarfile.TarFile,
+                                      source_dir: Path) -> None:
+  '''Add the experimental headers in "<source_dir>/include_c++/experimental/"
+  to the tar file.
+  '''
+  header_dir = source_dir / 'include_c++' / 'experimental'
+  if not header_dir.exists():
+    eprint(f"{header_dir} does not exist")
+    sys.exit(1)
+
+  edgpack.add_header_files_to_tar(
+    tar,
+    header_dir,
+    PurePath('base', 'include_cpp_exp', 'experimental')
+  )
+
+def _generate_base(tar: tarfile.TarFile, source_dir: Path,
+                   compiler_mode: str, extra_flags: str,
+                   add_experimental_headers: bool) -> None:
+  if compiler_mode == 'default':
+    _generate_default_base(tar, source_dir, extra_flags)
+  elif compiler_mode == 'gcc':
+    _generate_gcc_base(tar, extra_flags)
+
+  if add_experimental_headers:
+    _add_experimental_headers_to_base(tar, source_dir)
+
+def _generate_metadata(tar: tarfile.TarFile, compiler_mode: str,
+                       compiler_tag: str) -> None:
+  metadata = {
+    'mode': compiler_mode,
+    'tag': compiler_tag
+  }
+
+  edgpack.write_str_to_tar(
+    tar,
+    PurePath('metadata.json'),
+    json.dumps(metadata)
+  )
+
+def create_package(file_path: Path, source_dir: Path, build_dir: Path,
+                   compiler_mode: str, compiler_tag: str, extra_flags: str,
+                   add_experimental_headers: bool) -> None:
+  with tarfile.open(file_path, 'w:gz') as tar:
+    _write_eccp(tar, source_dir)
+    for bin_name in PACKAGED_BINARIES:
+      _write_binary(tar, build_dir, bin_name)
+    for lib_name in PACKAGED_LIBS:
+      _write_lib(tar, build_dir, lib_name)
+    _generate_base(
+      tar,
+      source_dir,
+      compiler_mode,
+      extra_flags,
+      add_experimental_headers
+    )
+    _generate_metadata(tar, compiler_mode, compiler_tag)
+
+def _list_compiler_modes() -> str:
+  lines = [f"  - {l}" for l in COMPILER_FAMILIES]
+  return '\n'.join(lines)
+
+CMD_DESCRIPTION = f"""
+EDG Compiler Explorer Package Creation Tool.
+
+This tool is used to create a packaged distribution for Compiler Explorer.
+As an example, consider:
+
+  # ... Build EDG 6.5 via CMake in "build/gcc-release" ...
+
+  # Create the compiler explorer package
+  edg-pack-cpfe-ce gcc 6.5 'EDG 6.5 (GNU mode gcc 13)' . ./build/gcc-release
+
+  # A file "compiler-explorer.tar.gz" appears in the current directory.
+
+The command takes a supported compiler mode:
+{_list_compiler_modes()}
+
+That's then followed by the "release tag" (which identifies the version
+of the compiler). Some examples of existing release tags are:
+  - 6.5
+  - 6.6
+  - experimental-reflection
+
+These release tags correspond to edg_version entries in
+https://github.com/compiler-explorer/infra/blob/master/bin/yaml/cpp.yaml.
+When adding a new release tag, that file must also be updated.
+
+Next is the "compiler tag" (effectively the label to be displayed in Compiler
+Explorer -- in this case 'EDG 6.5 (GNU mode gcc 13)').
+
+Finally, the source directory and CMake build directory where the binaries
+live is given (in this case '.' and './build/gcc-release' respectively).
+
+Flags can additionally be added for special feature builds. As an example,
+if a special feature "foo" should run in GCC mode with --set-flag foo on,
+the following can be used:
+
+  edg-pack-cpfe-ce --add-flags '--set-flag foo' \\
+                   gcc 'experimental-reflection' \\
+                   'EDG (experimental reflection)' \\
+                   ./build/gcc-reflection-release
+
+If additional headers for an experimental C++ language feature are required
+they can be pulled from the source directory's "include_c++/experimental"
+sub-directory using the --add-cpp-experimental-includes flag. For instance, to
+enable reflection and add its experimental headers:
+
+  edg-pack-cpfe-ce --add-flags '--set-flag reflection' \\
+                   --add-cpp-experimental-headers \\
+                   gcc 'experimental-reflection' \\
+                   'EDG (experimental reflection)' \\
+                   ./build/gcc-reflection-release
+
+-----------------------------------------------------------------------------
+"""
+
+def parse_args() -> argparse.Namespace:
+  parser = argparse.ArgumentParser(
+    description = CMD_DESCRIPTION,
+    formatter_class = argparse.RawDescriptionHelpFormatter
+  )
+  parser.add_argument(
+    '--add-flags',
+    dest = 'extra_flags',
+    help = 'additional implicit flags'
+  )
+  parser.add_argument(
+    '--add-experimental-headers',
+    dest = 'experimental_headers',
+    action = 'store_true',
+    help = 'add headers from experimental include directories'
+  )
+  parser.add_argument(
+    'compiler_mode',
+    choices = COMPILER_FAMILIES,
+    help = 'the compiler mode to use'
+  )
+  parser.add_argument(
+    'release_tag',
+    help = 'the release tag used for the compiler (e.g., 6.5)'
+  )
+  parser.add_argument(
+    'compiler_tag',
+    help = 'the tag used for the compiler'
+  )
+  parser.add_argument(
+    'source_dir',
+    type = Path,
+    help = 'the root CPFE source directory'
+  )
+  parser.add_argument(
+    'build_dir',
+    type = Path,
+    help = 'the CMake build directory'
+  )
+  return parser.parse_args()
+
+def _form_package_name(compiler_mode: str, release_tag: str) -> Path:
+  return Path(f"edg-{compiler_mode}-{release_tag}.tar.gz")
+
+def main() -> None:
+  args = parse_args()
+
+  create_package(
+    _form_package_name(args.compiler_mode, args.release_tag),
+    args.source_dir,
+    args.build_dir,
+    args.compiler_mode,
+    args.compiler_tag,
+    args.extra_flags,
+    args.experimental_headers
+  )
+
+main()

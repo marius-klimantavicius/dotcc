@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 7: error: attributes may not appear here
+  namespace [[]] bad = foo; // expected-error {{attributes cannot be specified on namespace alias}}
+              ^
+
+"Test_name.c", line 9: error: attributes may not appear here
+  namespace [[]] A::B {} // expected-error {{attributes cannot be specified on a nested namespace definition}}
+              ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,48 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 -W Test_name.c
+"Test_name.c", line 20: error: constexpr non-static member function will not be implicitly 'const' in C++14
+    constexpr const T *foo() { return (const T *) reinterpret_cast<const S *> (this); } // { dg-error "is not a constant expression" }
+    ^
+
+"Test_name.c", line 24: error: expression must have a constant value
+  constexpr const T *p = t.foo ();	// { dg-error "called in a constant expression" }
+                         ^
+"Test_name.c", line 20: note: conversion from "const T *" to "const S *" is invalid in constant-expression evaluation
+    constexpr const T *foo() { return (const T *) reinterpret_cast<const S *> (this); } // { dg-error "is not a constant expression" }
+                                                  ^
+
+"Test_name.c", line 40: error: constexpr non-static member function will not be implicitly 'const' in C++14
+    constexpr const W<U> *foo() { return (const W<U> *) reinterpret_cast<const V<U> *> (this); } // { dg-error "is not a constant expression" }
+    ^
+
+"Test_name.c", line 44: error: expression must have a constant value
+  constexpr const W<int> *s = w.foo ();	// { dg-error "called in a constant expression" }
+                              ^
+"Test_name.c", line 40: note: conversion from "const W<int> *" to "const V<int> *" is invalid in constant-expression evaluation
+    constexpr const W<U> *foo() { return (const W<U> *) reinterpret_cast<const V<U> *> (this); } // { dg-error "is not a constant expression" }
+                                                        ^
+
+"Test_name.c", line 50: error: expression must have a constant value
+    static constexpr const T *p = t.foo ();	// { dg-error "called in a constant expression" }
+                                  ^
+"Test_name.c", line 20: note: conversion from "const T *" to "const S *" is invalid in constant-expression evaluation
+    constexpr const T *foo() { return (const T *) reinterpret_cast<const S *> (this); } // { dg-error "is not a constant expression" }
+                                                  ^
+          detected during instantiation of "int foo<U>() [with U=char]" at line 56
+
+"Test_name.c", line 52: error: expression must have a constant value
+    static constexpr const W<U> *s = w.foo ();	// { dg-error "called in a constant expression" }
+                                     ^
+"Test_name.c", line 40: note: conversion from "const W<char> *" to "const V<char> *" is invalid in constant-expression evaluation
+    constexpr const W<U> *foo() { return (const W<U> *) reinterpret_cast<const V<U> *> (this); } // { dg-error "is not a constant expression" }
+                                                        ^
+          detected during instantiation of "int foo<U>() [with U=char]" at line 56
+
+"Test_name.c", line 24: error: variable "p" was declared but never referenced
+  constexpr const T *p = t.foo ();	// { dg-error "called in a constant expression" }
+                     ^
+
+"Test_name.c", line 44: error: variable "s" was declared but never referenced
+  constexpr const W<int> *s = w.foo ();	// { dg-error "called in a constant expression" }
+                          ^
+
+8 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 34: error: "C::operator bool *()" (declared at line 17) is inaccessible
+  bool* a2 = v2; // { dg-error "inaccessible|not an accessible" }
+             ^
+
+"Test_name.c", line 39: error: "C::operator long *()" (declared at line 18) is inaccessible
+  long* b3 = v3; // { dg-error "inaccessible|not an accessible" }
+             ^
+
+2 errors detected in the compilation of "Test_name.c".

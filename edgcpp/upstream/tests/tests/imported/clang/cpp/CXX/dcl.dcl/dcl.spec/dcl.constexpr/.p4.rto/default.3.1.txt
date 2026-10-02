@@ -1,0 +1,58 @@
+fe_only -DTEST_NUMBER=3 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 --exceptions -DCXX14 -DCXX2A Test_name.c
+"Test_name.c", line 29: error: a constexpr function cannot have a parameter of nonliteral type "NonLiteral"
+    constexpr S(int, NonLiteral, N::C) {} // expected-error {{constexpr constructor's 2nd parameter type 'NonLiteral' is not a literal type}}
+              ^
+
+"Test_name.c", line 30: error: a constexpr function cannot have a parameter of nonliteral type "NonLiteral"
+    constexpr S(int, NonLiteral = 42) {} // expected-error {{constexpr constructor's 2nd parameter type 'NonLiteral' is not a literal type}}
+              ^
+
+"Test_name.c", line 41: error: a constructor for a class with virtual bases cannot be constexpr
+    constexpr T() {} // expected-error {{constexpr constructor not allowed in struct with virtual base class}}
+    ^
+
+"Test_name.c", line 48: error: a constructor for a class with virtual bases cannot be constexpr
+      constexpr C() {} // expected-error {{constexpr constructor not allowed in class with virtual base class}}
+      ^
+
+"Test_name.c", line 102: warning: variable "a" was declared but never referenced
+      constexpr int a = 0;
+                    ^
+
+"Test_name.c", line 253: error: constexpr constructor calls non-constexpr constructor for subobject initialization
+      Literal(0), // expected-note {{non-constexpr constructor}}
+             ^
+
+"Test_name.c", line 256: error: constexpr constructor calls non-constexpr constructor for subobject initialization
+      l(0) // expected-note {{non-constexpr constructor}}
+       ^
+
+"Test_name.c", line 365: error: initialization is not constant
+    constexpr V<int> v; // expected-error {{constant expression}} expected-note {{subobject 'y' is not initialized}}
+                     ^
+"Test_name.c", line 365: note: access to uninitialized subobject (member "PR14503::V<<unnamed>>::y [with <unnamed>=int]")
+    constexpr V<int> v; // expected-error {{constant expression}} expected-note {{subobject 'y' is not initialized}}
+                     ^
+
+"Test_name.c", line 367: error: expression must have a constant value
+    constexpr int k = V<int>().x; // FIXME: ok?
+                      ^
+Note: access to uninitialized object
+
+"Test_name.c", line 199: warning: variable "empty1" was declared but never referenced
+  } constexpr empty1;
+              ^
+
+"Test_name.c", line 205: warning: variable "empty2" was declared but never referenced
+  } constexpr empty2;
+              ^
+
+"Test_name.c", line 365: warning: variable "PR14503::v" was declared but never referenced
+    constexpr V<int> v; // expected-error {{constant expression}} expected-note {{subobject 'y' is not initialized}}
+                     ^
+
+"Test_name.c", line 367: warning: variable "PR14503::k" was declared but never referenced
+    constexpr int k = V<int>().x; // FIXME: ok?
+                  ^
+
+8 errors detected in the compilation of "Test_name.c".

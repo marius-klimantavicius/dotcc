@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 12: error: more than one instance of overloaded function "composite" matches the argument list:
+            function "composite(const int (&)[2])" (declared at line 6)
+            function "composite(const int (&)[3])" (declared at line 7)
+            argument types are: ({...})
+    composite({0,1});
+    ^
+
+1 error detected in the compilation of "Test_name.c".

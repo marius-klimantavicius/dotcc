@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 -W --g++ --ms_extensions Test_name.c
+"Test_name.c", line 14: error: expected a ")"
+  TEST_EXT(alignof)
+  ^
+
+"Test_name.c", line 15: error: invalid specifier on a parameter
+  TEST_EXT(inline)
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

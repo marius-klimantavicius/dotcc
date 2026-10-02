@@ -1,0 +1,74 @@
+cpfe -DTEST_NUMBER=2 -r -x -tused --diag_warn=260 Test_name.c
+"Test_name.c", line 9: remark: extra ";" ignored
+  void f() { };
+              ^
+
+"Test_name.c", line 15: warning: handler is potentially masked by previous handler for type "int"
+    catch (int) { }    // Error
+           ^
+
+"Test_name.c", line 19: warning: handler is potentially masked by previous handler for type "A"
+    catch (C2) { }     // Error (masked by A)
+           ^
+
+"Test_name.c", line 20: warning: handler is potentially masked by previous handler for type "A"
+    catch (B2) { }     // Error (masked by A)
+           ^
+
+"Test_name.c", line 22: error: handler is masked by default handler
+    catch (...) { }    // Error
+           ^
+
+"Test_name.c", line 23: error: handler is masked by default handler
+    catch (int*) { }   // Error
+           ^
+
+"Test_name.c", line 30: warning: handler is potentially masked by previous handler for type "A *"
+    catch (C2*) { }     // Error (masked by A)
+           ^
+
+"Test_name.c", line 31: warning: handler is potentially masked by previous handler for type "A *"
+    catch (B2*) { }     // Error (masked by A)
+           ^
+
+"Test_name.c", line 38: warning: handler is potentially masked by previous handler for type "A &"
+    catch (C2&) { }     // Error (masked by A)
+           ^
+
+"Test_name.c", line 39: warning: handler is potentially masked by previous handler for type "A &"
+    catch (B2&) { }     // Error (masked by A)
+           ^
+
+"Test_name.c", line 47: warning: handler is potentially masked by previous handler for type "const int &"
+    catch (int&) { }            // Error
+           ^
+
+"Test_name.c", line 48: warning: handler is potentially masked by previous handler for type "const int &"
+    catch (int) { }             // Error
+           ^
+
+"Test_name.c", line 49: warning: explicit type is missing ("int" assumed)
+    catch (const) { }           // Error
+                ^
+
+"Test_name.c", line 49: warning: handler is potentially masked by previous handler for type "const int &"
+    catch (const) { }           // Error
+           ^
+
+"Test_name.c", line 50: warning: handler is potentially masked by previous handler for type "const int &"
+    catch (I) { }               // Error
+           ^
+
+"Test_name.c", line 51: warning: handler is potentially masked by previous handler for type "const int &"
+    catch (volatile I) { }      // Error
+           ^
+
+"Test_name.c", line 53: warning: handler is potentially masked by previous handler for type "volatile UI"
+    catch (unsigned int&) { }   // Error
+           ^
+
+"Test_name.c", line 54: warning: handler is potentially masked by previous handler for type "volatile UI"
+    catch (unsigned) { }        // Error
+           ^
+
+2 errors detected in the compilation of "Test_name.c".

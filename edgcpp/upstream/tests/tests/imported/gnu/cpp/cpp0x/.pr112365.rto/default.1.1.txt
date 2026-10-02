@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: error: expected a ")"
+  template <typename T> A <T> foo (T;
+                                    ^
+
+"Test_name.c", line 9: error: invalid type for a bit field
+  template <typename T> struct A { constexpr A : T {} }
+                                   ^
+
+"Test_name.c", line 9: error: "constexpr" is not valid here
+  template <typename T> struct A { constexpr A : T {} }
+                                   ^
+
+"Test_name.c", line 9: error: expected a ";"
+  template <typename T> struct A { constexpr A : T {} }
+                                                      ^
+
+"Test_name.c", line 10: error: expected a ";"
+  struct { bar ( { foo (this)
+  ^
+
+5 errors detected in the compilation of "Test_name.c".

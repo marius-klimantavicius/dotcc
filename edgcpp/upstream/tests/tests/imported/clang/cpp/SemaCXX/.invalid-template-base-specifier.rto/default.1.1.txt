@@ -1,0 +1,19 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 8: error: argument of type "int" is incompatible with parameter of type "int *"
+  struct Crash : decltype(Foo(T())) { // expected-error {{no matching function for call to 'Foo'}}
+                              ^
+          detected during instantiation of class "Crash<T> [with T=int]" at line 12
+
+"Test_name.c", line 15: error: argument of type "int" is incompatible with parameter of type "int *"
+  using Alias = decltype(Foo(T())); // expected-error {{no matching function for call to 'Foo'}}
+                             ^
+          detected during:
+            instantiation of type "Alias<int>" at line 17
+            instantiation of class "Crash2<T> [with T=int]" at line 21
+
+"Test_name.c", line 26: error: argument of type "int" is incompatible with parameter of type "int *"
+  struct Crash3 : Base<decltype(Foo(T()))> { // expected-error {{no matching function for call to 'Foo'}}
+                                    ^
+          detected during instantiation of class "Crash3<T> [with T=int]" at line 30
+
+3 errors detected in the compilation of "Test_name.c".

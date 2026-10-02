@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 7: error: identifier "foo" is undefined
+  void __builtin_abort (int[foo]);            /* { dg-error "'foo' undeclared" } */
+                            ^
+
+"Test_name.c", line 7: warning: declaration hides built-in function "__builtin_abort"
+  void __builtin_abort (int[foo]);            /* { dg-error "'foo' undeclared" } */
+       ^
+
+"Test_name.c", line 8: error: array is too large
+  void __builtin_trap (int[__SIZE_MAX__]);    /* { dg-error "size of unnamed array is too large" } */
+                          ^
+
+"Test_name.c", line 8: warning: declaration hides built-in function "__builtin_trap"
+  void __builtin_trap (int[__SIZE_MAX__]);    /* { dg-error "size of unnamed array is too large" } */
+       ^
+
+"Test_name.c", line 9: warning: declaration hides built-in function "__builtin_unreachable"
+  void __builtin_unreachable (int[][]);       /* { dg-error "array type has incomplete element type" } */
+       ^
+
+"Test_name.c", line 11: error: expected an expression
+  void __builtin_exit (int, int[+]);          /* { dg-error "expected expression before" } */
+                                 ^
+
+"Test_name.c", line 11: warning: declaration hides built-in function "__builtin_exit"
+  void __builtin_exit (int, int[+]);          /* { dg-error "expected expression before" } */
+       ^
+
+3 errors detected in the compilation of "Test_name.c".

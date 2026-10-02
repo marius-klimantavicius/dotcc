@@ -1,0 +1,49 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 19: warning: a value of type "void (*)(void)" cannot be used to initialize an entity of type "char *"
+  char *c1 = f; /* { dg-warning "12:pointer" "bad conversion" } */
+             ^
+
+"Test_name.c", line 20: warning: a value of type "void (*)(void)" cannot be used to initialize an entity of type "char *"
+  char *c2 = &f; /* { dg-warning "12:pointer" "bad conversion" } */
+             ^
+
+"Test_name.c", line 34: warning: a value of type "void (*)(void)" cannot be assigned to an entity of type "char *"
+    c5 = f; /* { dg-warning "6:pointer" "bad conversion" } */
+       ^
+
+"Test_name.c", line 35: warning: a value of type "void (*)(void)" cannot be assigned to an entity of type "char *"
+    c5 = &f; /* { dg-warning "6:pointer" "bad conversion" } */
+       ^
+
+"Test_name.c", line 38: warning: a value of type "void *" cannot be assigned to an entity of type "void (*)(void)"
+    fp = v5; /* { dg-warning "6:pointer" "bad conversion" } */
+       ^
+
+"Test_name.c", line 39: warning: a value of type "char *" cannot be assigned to an entity of type "void (*)(void)"
+    fp = c5; /* { dg-warning "6:pointer" "bad conversion" } */
+       ^
+
+"Test_name.c", line 42: warning: expression has no effect
+    (a ? f : v3); /* { dg-warning "10:pointer" "bad conversion" } */
+    ^
+
+"Test_name.c", line 43: warning: expression has no effect
+    (a ? v2 : fp); /* { dg-warning "11:pointer" "bad conversion" } */
+    ^
+
+"Test_name.c", line 50: warning: expression has no effect
+    (a ? f : 0);
+    ^
+
+"Test_name.c", line 51: warning: expression has no effect
+    (a ? f : (void *)0);
+    ^
+
+"Test_name.c", line 52: warning: expression has no effect
+    (a ? (void *)0 : fp);
+    ^
+
+"Test_name.c", line 53: warning: expression has no effect
+    (a ? 0 : fp);
+    ^
+

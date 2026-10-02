@@ -1,0 +1,56 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 22: error: expression must have a constant value
+  constexpr int area = squarei(side); // { dg-error "side|argument" }
+                       ^
+"Test_name.c", line 22: note: the value of variable "side" (declared at line 21) cannot be used as a constant
+  constexpr int area = squarei(side); // { dg-error "side|argument" }
+                               ^
+
+"Test_name.c", line 25: error: invalid specifier on a parameter
+  int next(constexpr int x) // { dg-error "parameter" }
+           ^
+
+"Test_name.c", line 28: error: a constexpr function cannot have a nonliteral return type "void"
+  constexpr void f(int x)       // { dg-error "return type .void" "" { target c++11_only } }
+                 ^
+
+"Test_name.c", line 32: error: constexpr function return is non-constant
+  { return --x; }               // { dg-error "--" "" { target c++11_only } }
+           ^
+
+"Test_name.c", line 36: error: statement may not appear in a constexpr function
+     int r = 1;
+     ^
+
+"Test_name.c", line 37: error: statement may not appear in a constexpr function
+     while (--n > 0) r *= x;
+                     ^
+
+"Test_name.c", line 37: error: statement may not appear in a constexpr function
+     while (--n > 0) r *= x;
+     ^
+
+"Test_name.c", line 44: error: function "bar" has already been defined (previous definition at line 42)
+  int bar(int x, int y)	     // { dg-error "redefinition" }
+      ^
+
+"Test_name.c", line 44: error: function "bar" (declared at line 42) was previously declared constexpr
+  int bar(int x, int y)	     // { dg-error "redefinition" }
+      ^
+
+"Test_name.c", line 48: error: expression must have a constant value
+  enum { bufsz = twice(256) }; // { dg-error "" } twice() isn’t (yet) defined
+                 ^
+"Test_name.c", line 48: note: constexpr function "twice" (declared at line 47) is not defined
+  enum { bufsz = twice(256) }; // { dg-error "" } twice() isn’t (yet) defined
+                 ^
+
+"Test_name.c", line 22: warning: variable "area" was declared but never referenced
+  constexpr int area = squarei(side); // { dg-error "side|argument" }
+                ^
+
+"Test_name.c", line 47: warning: extern inline function "twice" was referenced but not defined
+  constexpr int twice(int x);  // { dg-message "never defined" }
+                ^
+
+10 errors detected in the compilation of "Test_name.c".

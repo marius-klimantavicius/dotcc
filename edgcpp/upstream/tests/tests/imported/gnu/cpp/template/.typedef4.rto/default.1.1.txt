@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 6: error: "typedef" may not be specified here
+  template<typedef> void foo();  // { dg-error "10:typedef declaration" }
+           ^
+
+"Test_name.c", line 6: error: explicit type is missing ("int" assumed)
+  template<typedef> void foo();  // { dg-error "10:typedef declaration" }
+           ^
+
+"Test_name.c", line 11: error: no instance of function template "foo" matches the argument list
+    foo<int>();                  // { dg-error "matching" }
+    ^
+"Test_name.c", line 6: note: substituting explicit template arguments "<int>" for function template "foo" failed
+  template<typedef> void foo();  // { dg-error "10:typedef declaration" }
+                         ^
+
+3 errors detected in the compilation of "Test_name.c".

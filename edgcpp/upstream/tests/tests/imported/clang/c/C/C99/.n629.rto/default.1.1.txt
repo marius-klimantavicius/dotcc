@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -w -w --c Test_name.c
+"Test_name.c", line 45: error: no association matches the selector type "long"
+    (void)_Generic(4294967296L, long long : 1);
+          ^
+
+"Test_name.c", line 46: error: no association matches the selector type "unsigned long"
+    (void)_Generic(4294967296U, unsigned long long : 1);
+          ^
+
+"Test_name.c", line 80: error: no association matches the selector type "long"
+    (void)_Generic(040000000000L, long long : 1);
+          ^
+
+"Test_name.c", line 81: error: no association matches the selector type "unsigned long"
+    (void)_Generic(040000000000U, unsigned long long : 1);
+          ^
+
+"Test_name.c", line 115: error: no association matches the selector type "long"
+    (void)_Generic(0x100000000L, long long : 1);
+          ^
+
+"Test_name.c", line 116: error: no association matches the selector type "unsigned long"
+    (void)_Generic(0x100000000U, unsigned long long : 1);
+          ^
+
+6 errors detected in the compilation of "Test_name.c".

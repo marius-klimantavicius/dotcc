@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 13: warning: function "X::operator new" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+  int main() { noexcept(new(0) X); }
+                        ^
+
+"Test_name.c", line 13: warning: expression has no effect
+  int main() { noexcept(new(0) X); }
+               ^
+

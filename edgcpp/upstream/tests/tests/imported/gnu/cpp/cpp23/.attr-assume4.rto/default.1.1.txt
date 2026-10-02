@@ -1,0 +1,127 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 6: warning: attribute "__assume__" does not apply here
+  [[__assume__ (true)]] void f1 ();		// { dg-error "'assume' attribute ignored" }
+    ^
+
+"Test_name.c", line 7: warning: attribute "__assume__" does not apply here
+  typedef int intx [[__assume__ (true)]];		// { dg-error "'assume' attribute ignored" }
+                     ^
+
+"Test_name.c", line 8: error: attribute "__assume__" does not apply here
+  [[__assume__ (true)]];				// { dg-warning "attribute ignored" }
+    ^
+
+"Test_name.c", line 9: warning: attribute "gnu::assume" does not apply here
+  [[gnu::assume (true)]] void f1a ();		// { dg-error "'assume' attribute ignored" }
+    ^
+
+"Test_name.c", line 10: warning: attribute "gnu::__assume__" does not apply here
+  typedef int inty [[gnu::__assume__ (true)]];	// { dg-error "'assume' attribute ignored" }
+                     ^
+
+"Test_name.c", line 11: error: attribute "__gnu__::assume" does not apply here
+  [[__gnu__::assume (true)]];			// { dg-warning "attribute ignored" }
+    ^
+
+"Test_name.c", line 12: warning: attribute "assume" does not apply here
+  __attribute__((assume (true))) void f1b ();	// { dg-error "'assume' attribute ignored" }
+                 ^
+
+"Test_name.c", line 13: warning: attribute "assume" does not apply here
+  typedef int intz __attribute__((assume (true)));// { dg-error "'assume' attribute ignored" }
+                                  ^
+
+"Test_name.c", line 19: error: expected a "("
+    [[__assume__]];			// { dg-error "wrong number of arguments specified for 'assume' attribute" }
+                ^
+
+"Test_name.c", line 21: error: expected an expression
+    [[__assume__ ()]];			// { dg-error "parentheses must be omitted if 'assume' attribute argument list is empty" }
+                  ^
+
+"Test_name.c", line 24: error: expected a ")"
+    [[__assume__ (true, true)]];		// { dg-error "wrong number of arguments specified for 'assume' attribute" }
+                      ^
+
+"Test_name.c", line 26: warning: the "assume" attribute can only apply to a null statement
+    [[__assume__ (true)]] i = 1;		// { dg-warning "'assume' attribute not followed by ';'" }
+    ^
+
+"Test_name.c", line 27: error: expression must have bool type (or be convertible to bool)
+    [[__assume__ (throw 1)]];		// { dg-error "expected primary-expression before 'throw'" }
+                  ^
+
+"Test_name.c", line 28: error: expected a ")"
+    [[__assume__ (i = 1)]];		// { dg-error "expected '\\\)' before '=' token" }
+                    ^
+
+"Test_name.c", line 29: error: expected a "("
+    [[gnu::assume]];			// { dg-error "wrong number of arguments specified for 'assume' attribute" }
+                 ^
+
+"Test_name.c", line 31: error: expected an expression
+    [[gnu::assume ()]];			// { dg-error "parentheses must be omitted if 'assume' attribute argument list is empty" }
+                   ^
+
+"Test_name.c", line 34: error: expected a ")"
+    [[gnu::assume (true, true)]];		// { dg-error "wrong number of arguments specified for 'assume' attribute" }
+                       ^
+
+"Test_name.c", line 36: warning: the "assume" attribute can only apply to a null statement
+    [[gnu::assume (true)]] i = 1;		// { dg-warning "'assume' attribute not followed by ';'" }
+    ^
+
+"Test_name.c", line 37: error: expression must have bool type (or be convertible to bool)
+    [[gnu::assume (throw 1)]];		// { dg-error "expected primary-expression before 'throw'" }
+                   ^
+
+"Test_name.c", line 38: error: expected a ")"
+    [[gnu::assume (i = 1)]];		// { dg-error "expected '\\\)' before '=' token" }
+                     ^
+
+"Test_name.c", line 39: error: expected a "("
+    __attribute__((assume));		// { dg-error "wrong number of arguments specified for 'assume' attribute" }
+                         ^
+
+"Test_name.c", line 41: error: expected an expression
+    __attribute__((assume ()));		// { dg-error "wrong number of arguments specified for 'assume' attribute" }
+                           ^
+
+"Test_name.c", line 43: error: expected a ")"
+    __attribute__((assume (true, true)));	// { dg-error "wrong number of arguments specified for 'assume' attribute" }
+                               ^
+
+"Test_name.c", line 45: warning: the "assume" attribute can only apply to a null statement
+    __attribute__((assume (true))) i = 1;	// { dg-warning "'assume' attribute not followed by ';'" }
+    ^
+
+"Test_name.c", line 46: error: expression must have bool type (or be convertible to bool)
+    __attribute__((assume (throw 1)));	// { dg-error "expected primary-expression before 'throw'" }
+                           ^
+
+"Test_name.c", line 47: error: expected a ")"
+    __attribute__((assume (i = 1)));	// { dg-error "expected '\\\)' before '=' token" }
+                             ^
+
+"Test_name.c", line 125: error: expression must have bool type (or be convertible to bool)
+    [[gnu::assume (s)]];			// { dg-error "could not convert 's' from 'S' to 'bool'" }
+                   ^
+
+"Test_name.c", line 134: error: expression must have bool type (or be convertible to bool)
+    __attribute__((assume (t)));		// { dg-error "could not convert 't' from 'S' to 'bool'" }
+                           ^
+          detected during instantiation of "int f6<T>() [with T=S]" at line 138
+
+"Test_name.c", line 77: warning: variable "a" was declared but never referenced
+  constexpr int a = f2 (44);
+                ^
+
+"Test_name.c", line 78: warning: variable "aa" was declared but never referenced
+  constexpr int aa = f2a (44);
+                ^
+
+"Test_name.c", line 79: warning: variable "ab" was declared but never referenced
+  constexpr int ab = f2b (44);
+                ^
+
+19 errors detected in the compilation of "Test_name.c".

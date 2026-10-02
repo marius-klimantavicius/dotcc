@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=2 --c++17 -tused -DNEG Test_name.c
+"Test_name.c", line 17: error: no instance of function template "f" matches the argument list
+    f<>();
+    ^
+"Test_name.c", line 12: note: candidate function template "f" failed deduction
+  int f();
+      ^
+
+1 error detected in the compilation of "Test_name.c".

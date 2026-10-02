@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 12: warning: a user-provided literal suffix must begin with "_"
+    same<decltype(0i),__complex int>{};
+                  ^
+
+"Test_name.c", line 12: error: user-defined literal operator not found
+    same<decltype(0i),__complex int>{};
+                  ^
+
+"Test_name.c", line 12: error: _Complex can only be used with floating-point types
+    same<decltype(0i),__complex int>{};
+                      ^
+
+"Test_name.c", line 12: error: incomplete type "same<<error-type>, <error-type>>" is not allowed
+    same<decltype(0i),__complex int>{};
+    ^
+
+"Test_name.c", line 13: error: user-defined literal operator not found
+    same<decltype(0.0i),__complex double>{};
+                  ^
+
+"Test_name.c", line 13: error: incomplete type "same<<error-type>, double __complex__>" is not allowed
+    same<decltype(0.0i),__complex double>{};
+    ^
+
+"Test_name.c", line 14: warning: a user-provided literal suffix must begin with "_"
+    same<decltype(0.0if),__complex float>{};
+                  ^
+
+"Test_name.c", line 14: error: user-defined literal operator not found
+    same<decltype(0.0if),__complex float>{};
+                  ^
+
+"Test_name.c", line 14: error: incomplete type "same<<error-type>, float __complex__>" is not allowed
+    same<decltype(0.0if),__complex float>{};
+    ^
+
+"Test_name.c", line 15: warning: a user-provided literal suffix must begin with "_"
+    same<decltype(0.0il),__complex long double>{};
+                  ^
+
+"Test_name.c", line 15: error: user-defined literal operator not found
+    same<decltype(0.0il),__complex long double>{};
+                  ^
+
+"Test_name.c", line 15: error: incomplete type "same<<error-type>, long double __complex__>" is not allowed
+    same<decltype(0.0il),__complex long double>{};
+    ^
+
+9 errors detected in the compilation of "Test_name.c".

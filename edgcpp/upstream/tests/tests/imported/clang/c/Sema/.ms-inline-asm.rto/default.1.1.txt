@@ -1,0 +1,82 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --ms_extensions --c Test_name.c
+"Test_name.c", line 11: warning: variable "foo" was declared but never referenced
+    int foo;
+        ^
+
+"Test_name.c", line 47: warning: variable "x" was declared but never referenced
+    int x = 0;
+        ^
+
+"Test_name.c", line 105: error: expected a "("
+    asm { movl eax, x } // expected-error {{parameter references not allowed in naked functions}} expected-error {{use of undeclared label 'x'}}
+        ^
+
+"Test_name.c", line 107: error: expected an asm string
+  }
+  ^
+
+"Test_name.c", line 107: error: expected a ")"
+  }
+  ^
+
+"Test_name.c", line 107: error: expected a ";"
+  }
+  ^
+
+"Test_name.c", line 107: warning: missing return statement at end of non-void function "t5"
+  }
+  ^
+
+"Test_name.c", line 111: error: expected a "("
+    asm { mov eax, y } // No error.
+        ^
+
+"Test_name.c", line 113: error: expected an asm string
+  }
+  ^
+
+"Test_name.c", line 113: error: expected a ")"
+  }
+  ^
+
+"Test_name.c", line 113: error: expected a ";"
+  }
+  ^
+
+"Test_name.c", line 113: warning: missing return statement at end of non-void function "t6"
+  }
+  ^
+
+"Test_name.c", line 120: error: label "foo" was referenced but not defined
+    goto foo; // expected-error {{cannot jump from this goto statement to label 'foo' inside an inline assembly block}}
+         ^
+
+"Test_name.c", line 126: error: label "foo" was referenced but not defined
+    goto foo; // expected-error {{cannot jump from this goto statement to label 'foo' inside an inline assembly block}}
+         ^
+
+"Test_name.c", line 134: warning: statement is unreachable
+    }
+    ^
+
+"Test_name.c", line 130: error: label "foo" was referenced but not defined
+    goto foo; // expected-error {{cannot jump from this goto statement to label 'foo' inside an inline assembly block}}
+         ^
+
+"Test_name.c", line 139: warning: statement is unreachable
+    __asm foo: // expected-note {{inline assembly label 'foo' declared here}}
+                                                                             ^
+
+"Test_name.c", line 138: error: label "foo" was referenced but not defined
+    goto foo; // expected-error {{cannot jump from this goto statement to label 'foo' inside an inline assembly block}}
+         ^
+
+"Test_name.c", line 144: warning: label "foo" was declared but never referenced
+  foo:
+  ^
+
+"Test_name.c", line 54: warning: variable "global" was declared but never referenced
+  static int global;
+             ^
+
+12 errors detected in the compilation of "Test_name.c".

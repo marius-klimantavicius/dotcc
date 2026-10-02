@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -w --c Test_name.c
+"Test_name.c", line 23: error: identifier "iOS" is undefined
+    if (__builtin_available(iOS 19, *)) {
+                            ^
+
+"Test_name.c", line 23: error: expected a ")"
+    if (__builtin_available(iOS 19, *)) {
+                                ^
+
+"Test_name.c", line 28: error: identifier "iOS" is undefined
+    if (__builtin_available(iOS 26, *)) {
+                            ^
+
+"Test_name.c", line 28: error: expected a ")"
+    if (__builtin_available(iOS 26, *)) {
+                                ^
+
+4 errors detected in the compilation of "Test_name.c".

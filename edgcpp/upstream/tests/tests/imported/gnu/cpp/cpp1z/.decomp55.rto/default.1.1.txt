@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 20: error: a value of type "void" cannot be used to initialize an entity of type "std::tuple_element<0, A>::type &&" (aka "void &&")
+  auto [ x, y ] = a;	// { dg-error ".std::tuple_element<0, A>::type. is .void." }
+       ^
+
+"Test_name.c", line 20: error: a value of type "void" cannot be used to initialize an entity of type "std::tuple_element<1, A>::type &&" (aka "void &&")
+  auto [ x, y ] = a;	// { dg-error ".std::tuple_element<0, A>::type. is .void." }
+       ^
+
+2 errors detected in the compilation of "Test_name.c".

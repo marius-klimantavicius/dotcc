@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 137: error: the default constructor of "A1" cannot be referenced -- it is a deleted function
+    new A1; // { dg-error "deleted|uninitialized const member" }
+        ^
+
+"Test_name.c", line 142: error: the default constructor of "A2" cannot be referenced -- it is a deleted function
+    new A2; // { dg-error "deleted|uninitialized const member" }
+        ^
+
+"Test_name.c", line 147: error: the default constructor of "A3" cannot be referenced -- it is a deleted function
+    new A3; // { dg-error "deleted|uninitialized reference member" }
+        ^
+
+"Test_name.c", line 152: error: the default constructor of "A4" cannot be referenced -- it is a deleted function
+    new A4; // { dg-error "deleted|uninitialized reference member" }
+        ^
+
+"Test_name.c", line 157: error: the default constructor of "A5" cannot be referenced -- it is a deleted function
+    new A5; // { dg-error "deleted|uninitialized reference member|uninitialized const member" }
+        ^
+
+"Test_name.c", line 162: error: the default constructor of "S1<int>" cannot be referenced -- it is a deleted function
+    new S1<int>; // { dg-error "deleted|uninitialized const member" }
+        ^
+
+"Test_name.c", line 167: error: the default constructor of "S2<int>" cannot be referenced -- it is a deleted function
+    new S2<int>; // { dg-error "deleted|uninitialized const member" }
+        ^
+
+"Test_name.c", line 172: error: the default constructor of "S3<int>" cannot be referenced -- it is a deleted function
+    new S3<int>; // { dg-error "deleted|uninitialized reference member" }
+        ^
+
+"Test_name.c", line 177: error: the default constructor of "S4<int>" cannot be referenced -- it is a deleted function
+    new S4<int>; // { dg-error "deleted|uninitialized reference member|uninitialized const member" }
+        ^
+
+"Test_name.c", line 187: error: the default constructor of "A1" cannot be referenced -- it is a deleted function
+    new A1[1]; // { dg-error "deleted|uninitialized const member" }
+        ^
+
+"Test_name.c", line 192: error: the default constructor of "A3" cannot be referenced -- it is a deleted function
+    new A3[1]; // { dg-error "deleted|uninitialized reference member" }
+        ^
+
+"Test_name.c", line 197: error: the default constructor of "Y1" cannot be referenced -- it is a deleted function
+    new Y1; // { dg-error "deleted|uninitialized const member" }
+        ^
+
+"Test_name.c", line 202: error: the default constructor of "Y2" cannot be referenced -- it is a deleted function
+    new Y2; // { dg-error "deleted|uninitialized reference member" }
+        ^
+
+"Test_name.c", line 207: error: the default constructor of "Z" cannot be referenced -- it is a deleted function
+    new Z; // { dg-error "deleted|uninitialized reference member|uninitialized const member" }
+        ^
+
+"Test_name.c", line 212: error: the default constructor of "U" cannot be referenced -- it is a deleted function
+    new U; // { dg-error "deleted|uninitialized const member" }
+        ^
+
+15 errors detected in the compilation of "Test_name.c".

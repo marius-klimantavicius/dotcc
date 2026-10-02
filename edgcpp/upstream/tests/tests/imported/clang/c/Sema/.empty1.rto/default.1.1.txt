@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 15: warning: struct or union declares no named members
+  };
+  ^
+
+"Test_name.c", line 19: warning: struct or union declares no named members
+  };
+  ^
+
+"Test_name.c", line 24: warning: struct or union declares no named members
+  };
+  ^
+
+"Test_name.c", line 29: warning: struct or union declares no named members
+  };
+  ^
+
+"Test_name.c", line 49: warning: integer operation result is out of range
+    return v - v; // expected-warning {{subtraction of pointers to type 'struct emp_1' of zero size has undefined behavior}}
+             ^
+
+"Test_name.c", line 70: warning: integer operation result is out of range
+    return v - v; // expected-warning {{subtraction of pointers to type 'union emp_2' of zero size has undefined behavior}}
+             ^
+
+"Test_name.c", line 76: error: expression must be a pointer to a complete object type
+    return x - y; // expected-error {{arithmetic on a pointer to an incomplete type 'struct A'}}
+           ^
+
+"Test_name.c", line 84: error: expression must be a pointer to a complete object type
+    return x - y; // expected-error {{arithmetic on a pointer to an incomplete type 'struct emp_1[]'}}
+           ^
+
+2 errors detected in the compilation of "Test_name.c".

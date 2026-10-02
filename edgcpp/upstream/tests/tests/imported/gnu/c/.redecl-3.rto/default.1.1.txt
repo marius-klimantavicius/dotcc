@@ -1,0 +1,1330 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 24: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(a0); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 27: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(a0); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 32: error: incomplete type "IA" (aka "int []") is not allowed
+          sizeof(a0); /* { dg-error "incomplete" } */
+                ^
+
+"Test_name.c", line 29: warning: variable "a0" was declared but never referenced
+        int a0;
+            ^
+
+"Test_name.c", line 35: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(a0); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 37: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(a0); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 45: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(a1); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 48: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(a1); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 53: warning: expression has no effect
+          sizeof(a1);
+          ^
+
+"Test_name.c", line 50: warning: variable "a1" was declared but never referenced
+        int a1;
+            ^
+
+"Test_name.c", line 56: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(a1); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 58: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(a1); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 66: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(a2); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 69: warning: expression has no effect
+      sizeof(a2);
+      ^
+
+"Test_name.c", line 74: warning: expression has no effect
+          sizeof(a2); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 71: warning: variable "a2" was declared but never referenced
+        int a2;
+            ^
+
+"Test_name.c", line 77: warning: expression has no effect
+      sizeof(a2);
+      ^
+
+"Test_name.c", line 79: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(a2); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 87: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(a3); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 90: warning: expression has no effect
+      sizeof(a3);
+      ^
+
+"Test_name.c", line 95: warning: expression has no effect
+          sizeof(a3);
+          ^
+
+"Test_name.c", line 92: warning: variable "a3" was declared but never referenced
+        int a3;
+            ^
+
+"Test_name.c", line 98: warning: expression has no effect
+      sizeof(a3);
+      ^
+
+"Test_name.c", line 100: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(a3); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 108: warning: expression has no effect
+    sizeof(a4);
+    ^
+
+"Test_name.c", line 111: warning: expression has no effect
+      sizeof(a4);
+      ^
+
+"Test_name.c", line 116: warning: expression has no effect
+          sizeof(a4); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 113: warning: variable "a4" was declared but never referenced
+        int a4;
+            ^
+
+"Test_name.c", line 119: warning: expression has no effect
+      sizeof(a4);
+      ^
+
+"Test_name.c", line 121: warning: expression has no effect
+    sizeof(a4);
+    ^
+
+"Test_name.c", line 129: warning: expression has no effect
+    sizeof(a5);
+    ^
+
+"Test_name.c", line 132: warning: expression has no effect
+      sizeof(a5);
+      ^
+
+"Test_name.c", line 137: warning: expression has no effect
+          sizeof(a5);
+          ^
+
+"Test_name.c", line 134: warning: variable "a5" was declared but never referenced
+        int a5;
+            ^
+
+"Test_name.c", line 140: warning: expression has no effect
+      sizeof(a5);
+      ^
+
+"Test_name.c", line 142: warning: expression has no effect
+    sizeof(a5);
+    ^
+
+"Test_name.c", line 150: warning: expression has no effect
+    sizeof(a6);
+    ^
+
+"Test_name.c", line 153: warning: expression has no effect
+      sizeof(a6);
+      ^
+
+"Test_name.c", line 158: warning: expression has no effect
+          sizeof(a6); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 155: warning: variable "a6" was declared but never referenced
+        int a6;
+            ^
+
+"Test_name.c", line 161: warning: expression has no effect
+      sizeof(a6);
+      ^
+
+"Test_name.c", line 163: warning: expression has no effect
+    sizeof(a6);
+    ^
+
+"Test_name.c", line 171: warning: expression has no effect
+    sizeof(a7);
+    ^
+
+"Test_name.c", line 174: warning: expression has no effect
+      sizeof(a7);
+      ^
+
+"Test_name.c", line 179: warning: expression has no effect
+          sizeof(a7);
+          ^
+
+"Test_name.c", line 176: warning: variable "a7" was declared but never referenced
+        int a7;
+            ^
+
+"Test_name.c", line 182: warning: expression has no effect
+      sizeof(a7);
+      ^
+
+"Test_name.c", line 184: warning: expression has no effect
+    sizeof(a7);
+    ^
+
+"Test_name.c", line 192: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(a8); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 195: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(a8); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 200: error: incomplete type "IA" (aka "int []") is not allowed
+          sizeof(a8); /* { dg-error "incomplete" } */
+                ^
+
+"Test_name.c", line 197: warning: variable "a8" was declared but never referenced
+        int a8;
+            ^
+
+"Test_name.c", line 203: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(a8); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 205: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(a8); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 213: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(a9); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 216: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(a9); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 221: warning: expression has no effect
+          sizeof(a9);
+          ^
+
+"Test_name.c", line 218: warning: variable "a9" was declared but never referenced
+        int a9;
+            ^
+
+"Test_name.c", line 224: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(a9); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 226: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(a9); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 234: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(a10); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 237: warning: expression has no effect
+      sizeof(a10);
+      ^
+
+"Test_name.c", line 242: warning: expression has no effect
+          sizeof(a10); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 239: warning: variable "a10" was declared but never referenced
+        int a10;
+            ^
+
+"Test_name.c", line 245: warning: expression has no effect
+      sizeof(a10);
+      ^
+
+"Test_name.c", line 247: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(a10); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 255: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(a11); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 258: warning: expression has no effect
+      sizeof(a11);
+      ^
+
+"Test_name.c", line 263: warning: expression has no effect
+          sizeof(a11);
+          ^
+
+"Test_name.c", line 260: warning: variable "a11" was declared but never referenced
+        int a11;
+            ^
+
+"Test_name.c", line 266: warning: expression has no effect
+      sizeof(a11);
+      ^
+
+"Test_name.c", line 268: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(a11); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 276: warning: expression has no effect
+    sizeof(a12);
+    ^
+
+"Test_name.c", line 279: warning: expression has no effect
+      sizeof(a12);
+      ^
+
+"Test_name.c", line 284: warning: expression has no effect
+          sizeof(a12); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 281: warning: variable "a12" was declared but never referenced
+        int a12;
+            ^
+
+"Test_name.c", line 287: warning: expression has no effect
+      sizeof(a12);
+      ^
+
+"Test_name.c", line 289: warning: expression has no effect
+    sizeof(a12);
+    ^
+
+"Test_name.c", line 297: warning: expression has no effect
+    sizeof(a13);
+    ^
+
+"Test_name.c", line 300: warning: expression has no effect
+      sizeof(a13);
+      ^
+
+"Test_name.c", line 305: warning: expression has no effect
+          sizeof(a13);
+          ^
+
+"Test_name.c", line 302: warning: variable "a13" was declared but never referenced
+        int a13;
+            ^
+
+"Test_name.c", line 308: warning: expression has no effect
+      sizeof(a13);
+      ^
+
+"Test_name.c", line 310: warning: expression has no effect
+    sizeof(a13);
+    ^
+
+"Test_name.c", line 318: warning: expression has no effect
+    sizeof(a14);
+    ^
+
+"Test_name.c", line 321: warning: expression has no effect
+      sizeof(a14);
+      ^
+
+"Test_name.c", line 326: warning: expression has no effect
+          sizeof(a14); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 323: warning: variable "a14" was declared but never referenced
+        int a14;
+            ^
+
+"Test_name.c", line 329: warning: expression has no effect
+      sizeof(a14);
+      ^
+
+"Test_name.c", line 331: warning: expression has no effect
+    sizeof(a14);
+    ^
+
+"Test_name.c", line 339: warning: expression has no effect
+    sizeof(a15);
+    ^
+
+"Test_name.c", line 342: warning: expression has no effect
+      sizeof(a15);
+      ^
+
+"Test_name.c", line 347: warning: expression has no effect
+          sizeof(a15);
+          ^
+
+"Test_name.c", line 344: warning: variable "a15" was declared but never referenced
+        int a15;
+            ^
+
+"Test_name.c", line 350: warning: expression has no effect
+      sizeof(a15);
+      ^
+
+"Test_name.c", line 352: warning: expression has no effect
+    sizeof(a15);
+    ^
+
+"Test_name.c", line 360: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(a16); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 363: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(a16); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 365: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(a16); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 373: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(a17); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 376: warning: expression has no effect
+      sizeof(a17);
+      ^
+
+"Test_name.c", line 378: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(a17); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 386: warning: expression has no effect
+    sizeof(a18);
+    ^
+
+"Test_name.c", line 389: warning: expression has no effect
+      sizeof(a18);
+      ^
+
+"Test_name.c", line 391: warning: expression has no effect
+    sizeof(a18);
+    ^
+
+"Test_name.c", line 399: warning: expression has no effect
+    sizeof(a19);
+    ^
+
+"Test_name.c", line 402: warning: expression has no effect
+      sizeof(a19);
+      ^
+
+"Test_name.c", line 404: warning: expression has no effect
+    sizeof(a19);
+    ^
+
+"Test_name.c", line 412: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*b0); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 415: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(*b0); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 420: error: incomplete type "IA" (aka "int []") is not allowed
+          sizeof(*b0); /* { dg-error "incomplete" } */
+                ^
+
+"Test_name.c", line 417: warning: variable "b0" was declared but never referenced
+        int b0;
+            ^
+
+"Test_name.c", line 423: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(*b0); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 425: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*b0); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 433: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*b1); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 436: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(*b1); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 441: warning: expression has no effect
+          sizeof(*b1);
+          ^
+
+"Test_name.c", line 438: warning: variable "b1" was declared but never referenced
+        int b1;
+            ^
+
+"Test_name.c", line 444: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(*b1); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 446: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*b1); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 454: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*b2); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 457: warning: expression has no effect
+      sizeof(*b2);
+      ^
+
+"Test_name.c", line 462: warning: expression has no effect
+          sizeof(*b2); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 459: warning: variable "b2" was declared but never referenced
+        int b2;
+            ^
+
+"Test_name.c", line 465: warning: expression has no effect
+      sizeof(*b2);
+      ^
+
+"Test_name.c", line 467: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*b2); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 475: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*b3); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 478: warning: expression has no effect
+      sizeof(*b3);
+      ^
+
+"Test_name.c", line 483: warning: expression has no effect
+          sizeof(*b3);
+          ^
+
+"Test_name.c", line 480: warning: variable "b3" was declared but never referenced
+        int b3;
+            ^
+
+"Test_name.c", line 486: warning: expression has no effect
+      sizeof(*b3);
+      ^
+
+"Test_name.c", line 488: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*b3); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 496: warning: expression has no effect
+    sizeof(*b4);
+    ^
+
+"Test_name.c", line 499: warning: expression has no effect
+      sizeof(*b4);
+      ^
+
+"Test_name.c", line 504: warning: expression has no effect
+          sizeof(*b4); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 501: warning: variable "b4" was declared but never referenced
+        int b4;
+            ^
+
+"Test_name.c", line 507: warning: expression has no effect
+      sizeof(*b4);
+      ^
+
+"Test_name.c", line 509: warning: expression has no effect
+    sizeof(*b4);
+    ^
+
+"Test_name.c", line 517: warning: expression has no effect
+    sizeof(*b5);
+    ^
+
+"Test_name.c", line 520: warning: expression has no effect
+      sizeof(*b5);
+      ^
+
+"Test_name.c", line 525: warning: expression has no effect
+          sizeof(*b5);
+          ^
+
+"Test_name.c", line 522: warning: variable "b5" was declared but never referenced
+        int b5;
+            ^
+
+"Test_name.c", line 528: warning: expression has no effect
+      sizeof(*b5);
+      ^
+
+"Test_name.c", line 530: warning: expression has no effect
+    sizeof(*b5);
+    ^
+
+"Test_name.c", line 538: warning: expression has no effect
+    sizeof(*b6);
+    ^
+
+"Test_name.c", line 541: warning: expression has no effect
+      sizeof(*b6);
+      ^
+
+"Test_name.c", line 546: warning: expression has no effect
+          sizeof(*b6); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 543: warning: variable "b6" was declared but never referenced
+        int b6;
+            ^
+
+"Test_name.c", line 549: warning: expression has no effect
+      sizeof(*b6);
+      ^
+
+"Test_name.c", line 551: warning: expression has no effect
+    sizeof(*b6);
+    ^
+
+"Test_name.c", line 559: warning: expression has no effect
+    sizeof(*b7);
+    ^
+
+"Test_name.c", line 562: warning: expression has no effect
+      sizeof(*b7);
+      ^
+
+"Test_name.c", line 567: warning: expression has no effect
+          sizeof(*b7);
+          ^
+
+"Test_name.c", line 564: warning: variable "b7" was declared but never referenced
+        int b7;
+            ^
+
+"Test_name.c", line 570: warning: expression has no effect
+      sizeof(*b7);
+      ^
+
+"Test_name.c", line 572: warning: expression has no effect
+    sizeof(*b7);
+    ^
+
+"Test_name.c", line 580: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*b8); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 583: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(*b8); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 588: error: incomplete type "IA" (aka "int []") is not allowed
+          sizeof(*b8); /* { dg-error "incomplete" } */
+                ^
+
+"Test_name.c", line 585: warning: variable "b8" was declared but never referenced
+        int b8;
+            ^
+
+"Test_name.c", line 591: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(*b8); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 593: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*b8); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 601: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*b9); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 604: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(*b9); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 609: warning: expression has no effect
+          sizeof(*b9);
+          ^
+
+"Test_name.c", line 606: warning: variable "b9" was declared but never referenced
+        int b9;
+            ^
+
+"Test_name.c", line 612: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(*b9); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 614: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*b9); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 622: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*b10); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 625: warning: expression has no effect
+      sizeof(*b10);
+      ^
+
+"Test_name.c", line 630: warning: expression has no effect
+          sizeof(*b10); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 627: warning: variable "b10" was declared but never referenced
+        int b10;
+            ^
+
+"Test_name.c", line 633: warning: expression has no effect
+      sizeof(*b10);
+      ^
+
+"Test_name.c", line 635: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*b10); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 643: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*b11); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 646: warning: expression has no effect
+      sizeof(*b11);
+      ^
+
+"Test_name.c", line 651: warning: expression has no effect
+          sizeof(*b11);
+          ^
+
+"Test_name.c", line 648: warning: variable "b11" was declared but never referenced
+        int b11;
+            ^
+
+"Test_name.c", line 654: warning: expression has no effect
+      sizeof(*b11);
+      ^
+
+"Test_name.c", line 656: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*b11); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 664: warning: expression has no effect
+    sizeof(*b12);
+    ^
+
+"Test_name.c", line 667: warning: expression has no effect
+      sizeof(*b12);
+      ^
+
+"Test_name.c", line 672: warning: expression has no effect
+          sizeof(*b12); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 669: warning: variable "b12" was declared but never referenced
+        int b12;
+            ^
+
+"Test_name.c", line 675: warning: expression has no effect
+      sizeof(*b12);
+      ^
+
+"Test_name.c", line 677: warning: expression has no effect
+    sizeof(*b12);
+    ^
+
+"Test_name.c", line 685: warning: expression has no effect
+    sizeof(*b13);
+    ^
+
+"Test_name.c", line 688: warning: expression has no effect
+      sizeof(*b13);
+      ^
+
+"Test_name.c", line 693: warning: expression has no effect
+          sizeof(*b13);
+          ^
+
+"Test_name.c", line 690: warning: variable "b13" was declared but never referenced
+        int b13;
+            ^
+
+"Test_name.c", line 696: warning: expression has no effect
+      sizeof(*b13);
+      ^
+
+"Test_name.c", line 698: warning: expression has no effect
+    sizeof(*b13);
+    ^
+
+"Test_name.c", line 706: warning: expression has no effect
+    sizeof(*b14);
+    ^
+
+"Test_name.c", line 709: warning: expression has no effect
+      sizeof(*b14);
+      ^
+
+"Test_name.c", line 714: warning: expression has no effect
+          sizeof(*b14); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 711: warning: variable "b14" was declared but never referenced
+        int b14;
+            ^
+
+"Test_name.c", line 717: warning: expression has no effect
+      sizeof(*b14);
+      ^
+
+"Test_name.c", line 719: warning: expression has no effect
+    sizeof(*b14);
+    ^
+
+"Test_name.c", line 727: warning: expression has no effect
+    sizeof(*b15);
+    ^
+
+"Test_name.c", line 730: warning: expression has no effect
+      sizeof(*b15);
+      ^
+
+"Test_name.c", line 735: warning: expression has no effect
+          sizeof(*b15);
+          ^
+
+"Test_name.c", line 732: warning: variable "b15" was declared but never referenced
+        int b15;
+            ^
+
+"Test_name.c", line 738: warning: expression has no effect
+      sizeof(*b15);
+      ^
+
+"Test_name.c", line 740: warning: expression has no effect
+    sizeof(*b15);
+    ^
+
+"Test_name.c", line 748: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*b16); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 751: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(*b16); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 753: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*b16); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 761: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*b17); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 764: warning: expression has no effect
+      sizeof(*b17);
+      ^
+
+"Test_name.c", line 766: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*b17); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 774: warning: expression has no effect
+    sizeof(*b18);
+    ^
+
+"Test_name.c", line 777: warning: expression has no effect
+      sizeof(*b18);
+      ^
+
+"Test_name.c", line 779: warning: expression has no effect
+    sizeof(*b18);
+    ^
+
+"Test_name.c", line 787: warning: expression has no effect
+    sizeof(*b19);
+    ^
+
+"Test_name.c", line 790: warning: expression has no effect
+      sizeof(*b19);
+      ^
+
+"Test_name.c", line 792: warning: expression has no effect
+    sizeof(*b19);
+    ^
+
+"Test_name.c", line 800: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*c0()); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 803: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(*c0()); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 808: error: incomplete type "IA" (aka "int []") is not allowed
+          sizeof(*c0()); /* { dg-error "incomplete" } */
+                ^
+
+"Test_name.c", line 805: warning: variable "c0" was declared but never referenced
+        int c0;
+            ^
+
+"Test_name.c", line 811: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(*c0()); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 813: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*c0()); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 821: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*c1()); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 824: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(*c1()); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 829: warning: expression has no effect
+          sizeof(*c1());
+          ^
+
+"Test_name.c", line 826: warning: variable "c1" was declared but never referenced
+        int c1;
+            ^
+
+"Test_name.c", line 832: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(*c1()); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 834: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*c1()); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 842: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*c2()); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 845: warning: expression has no effect
+      sizeof(*c2());
+      ^
+
+"Test_name.c", line 850: error: incomplete type "IA" (aka "int []") is not allowed
+          sizeof(*c2()); /* { dg-error "incomplete" } */
+                ^
+
+"Test_name.c", line 847: warning: variable "c2" was declared but never referenced
+        int c2;
+            ^
+
+"Test_name.c", line 853: warning: expression has no effect
+      sizeof(*c2());
+      ^
+
+"Test_name.c", line 855: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*c2()); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 863: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*c3()); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 866: warning: expression has no effect
+      sizeof(*c3());
+      ^
+
+"Test_name.c", line 871: warning: expression has no effect
+          sizeof(*c3());
+          ^
+
+"Test_name.c", line 868: warning: variable "c3" was declared but never referenced
+        int c3;
+            ^
+
+"Test_name.c", line 874: warning: expression has no effect
+      sizeof(*c3());
+      ^
+
+"Test_name.c", line 876: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*c3()); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 884: warning: expression has no effect
+    sizeof(*c4());
+    ^
+
+"Test_name.c", line 887: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(*c4());
+            ^
+
+"Test_name.c", line 892: error: incomplete type "IA" (aka "int []") is not allowed
+          sizeof(*c4()); /* { dg-error "incomplete" } */
+                ^
+
+"Test_name.c", line 889: warning: variable "c4" was declared but never referenced
+        int c4;
+            ^
+
+"Test_name.c", line 895: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(*c4());
+            ^
+
+"Test_name.c", line 897: warning: expression has no effect
+    sizeof(*c4());
+    ^
+
+"Test_name.c", line 905: warning: expression has no effect
+    sizeof(*c5());
+    ^
+
+"Test_name.c", line 908: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(*c5());
+            ^
+
+"Test_name.c", line 913: warning: expression has no effect
+          sizeof(*c5());
+          ^
+
+"Test_name.c", line 910: warning: variable "c5" was declared but never referenced
+        int c5;
+            ^
+
+"Test_name.c", line 916: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(*c5());
+            ^
+
+"Test_name.c", line 918: warning: expression has no effect
+    sizeof(*c5());
+    ^
+
+"Test_name.c", line 926: warning: expression has no effect
+    sizeof(*c6());
+    ^
+
+"Test_name.c", line 929: warning: expression has no effect
+      sizeof(*c6());
+      ^
+
+"Test_name.c", line 934: error: incomplete type "IA" (aka "int []") is not allowed
+          sizeof(*c6()); /* { dg-error "incomplete" } */
+                ^
+
+"Test_name.c", line 931: warning: variable "c6" was declared but never referenced
+        int c6;
+            ^
+
+"Test_name.c", line 937: warning: expression has no effect
+      sizeof(*c6());
+      ^
+
+"Test_name.c", line 939: warning: expression has no effect
+    sizeof(*c6());
+    ^
+
+"Test_name.c", line 947: warning: expression has no effect
+    sizeof(*c7());
+    ^
+
+"Test_name.c", line 950: warning: expression has no effect
+      sizeof(*c7());
+      ^
+
+"Test_name.c", line 955: warning: expression has no effect
+          sizeof(*c7());
+          ^
+
+"Test_name.c", line 952: warning: variable "c7" was declared but never referenced
+        int c7;
+            ^
+
+"Test_name.c", line 958: warning: expression has no effect
+      sizeof(*c7());
+      ^
+
+"Test_name.c", line 960: warning: expression has no effect
+    sizeof(*c7());
+    ^
+
+"Test_name.c", line 968: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*c8()); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 971: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(*c8()); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 976: error: incomplete type "IA" (aka "int []") is not allowed
+          sizeof(*c8()); /* { dg-error "incomplete" } */
+                ^
+
+"Test_name.c", line 973: warning: variable "c8" was declared but never referenced
+        int c8;
+            ^
+
+"Test_name.c", line 979: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(*c8()); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 981: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*c8()); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 989: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*c9()); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 992: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(*c9()); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 997: warning: expression has no effect
+          sizeof(*c9());
+          ^
+
+"Test_name.c", line 994: warning: variable "c9" was declared but never referenced
+        int c9;
+            ^
+
+"Test_name.c", line 1000: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(*c9()); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 1002: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*c9()); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 1010: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*c10()); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 1013: warning: expression has no effect
+      sizeof(*c10());
+      ^
+
+"Test_name.c", line 1018: error: incomplete type "IA" (aka "int []") is not allowed
+          sizeof(*c10()); /* { dg-error "incomplete" } */
+                ^
+
+"Test_name.c", line 1015: warning: variable "c10" was declared but never referenced
+        int c10;
+            ^
+
+"Test_name.c", line 1021: warning: expression has no effect
+      sizeof(*c10());
+      ^
+
+"Test_name.c", line 1023: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*c10()); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 1031: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*c11()); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 1034: warning: expression has no effect
+      sizeof(*c11());
+      ^
+
+"Test_name.c", line 1039: warning: expression has no effect
+          sizeof(*c11());
+          ^
+
+"Test_name.c", line 1036: warning: variable "c11" was declared but never referenced
+        int c11;
+            ^
+
+"Test_name.c", line 1042: warning: expression has no effect
+      sizeof(*c11());
+      ^
+
+"Test_name.c", line 1044: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*c11()); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 1052: warning: expression has no effect
+    sizeof(*c12());
+    ^
+
+"Test_name.c", line 1055: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(*c12());
+            ^
+
+"Test_name.c", line 1060: error: incomplete type "IA" (aka "int []") is not allowed
+          sizeof(*c12()); /* { dg-error "incomplete" } */
+                ^
+
+"Test_name.c", line 1057: warning: variable "c12" was declared but never referenced
+        int c12;
+            ^
+
+"Test_name.c", line 1063: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(*c12());
+            ^
+
+"Test_name.c", line 1065: warning: expression has no effect
+    sizeof(*c12());
+    ^
+
+"Test_name.c", line 1073: warning: expression has no effect
+    sizeof(*c13());
+    ^
+
+"Test_name.c", line 1076: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(*c13());
+            ^
+
+"Test_name.c", line 1081: warning: expression has no effect
+          sizeof(*c13());
+          ^
+
+"Test_name.c", line 1078: warning: variable "c13" was declared but never referenced
+        int c13;
+            ^
+
+"Test_name.c", line 1084: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(*c13());
+            ^
+
+"Test_name.c", line 1086: warning: expression has no effect
+    sizeof(*c13());
+    ^
+
+"Test_name.c", line 1094: warning: expression has no effect
+    sizeof(*c14());
+    ^
+
+"Test_name.c", line 1097: warning: expression has no effect
+      sizeof(*c14());
+      ^
+
+"Test_name.c", line 1102: error: incomplete type "IA" (aka "int []") is not allowed
+          sizeof(*c14()); /* { dg-error "incomplete" } */
+                ^
+
+"Test_name.c", line 1099: warning: variable "c14" was declared but never referenced
+        int c14;
+            ^
+
+"Test_name.c", line 1105: warning: expression has no effect
+      sizeof(*c14());
+      ^
+
+"Test_name.c", line 1107: warning: expression has no effect
+    sizeof(*c14());
+    ^
+
+"Test_name.c", line 1115: warning: expression has no effect
+    sizeof(*c15());
+    ^
+
+"Test_name.c", line 1118: warning: expression has no effect
+      sizeof(*c15());
+      ^
+
+"Test_name.c", line 1123: warning: expression has no effect
+          sizeof(*c15());
+          ^
+
+"Test_name.c", line 1120: warning: variable "c15" was declared but never referenced
+        int c15;
+            ^
+
+"Test_name.c", line 1126: warning: expression has no effect
+      sizeof(*c15());
+      ^
+
+"Test_name.c", line 1128: warning: expression has no effect
+    sizeof(*c15());
+    ^
+
+"Test_name.c", line 1136: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*c16()); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 1139: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(*c16()); /* { dg-error "incomplete" } */
+            ^
+
+"Test_name.c", line 1141: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*c16()); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 1149: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*c17()); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 1152: warning: expression has no effect
+      sizeof(*c17());
+      ^
+
+"Test_name.c", line 1154: error: incomplete type "IA" (aka "int []") is not allowed
+    sizeof(*c17()); /* { dg-error "incomplete" } */
+          ^
+
+"Test_name.c", line 1162: warning: expression has no effect
+    sizeof(*c18());
+    ^
+
+"Test_name.c", line 1165: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(*c18());
+            ^
+
+"Test_name.c", line 1167: warning: expression has no effect
+    sizeof(*c18());
+    ^
+
+"Test_name.c", line 1175: warning: expression has no effect
+    sizeof(*c19());
+    ^
+
+"Test_name.c", line 1178: warning: expression has no effect
+      sizeof(*c19());
+      ^
+
+"Test_name.c", line 1180: warning: expression has no effect
+    sizeof(*c19());
+    ^
+
+"Test_name.c", line 356: warning: variable "a16" was set but never used
+  static IA a16;
+            ^
+
+"Test_name.c", line 369: warning: variable "a17" was set but never used
+  static IA a17;
+            ^
+
+"Test_name.c", line 382: warning: variable "a18" was set but never used
+  static A10 a18;
+             ^
+
+"Test_name.c", line 395: warning: variable "a19" was set but never used
+  static A10 a19;
+             ^
+
+"Test_name.c", line 744: warning: variable "b16" was set but never used
+  static IA *b16;
+             ^
+
+"Test_name.c", line 757: warning: variable "b17" was set but never used
+  static IA *b17;
+             ^
+
+"Test_name.c", line 770: warning: variable "b18" was set but never used
+  static A10 *b18;
+              ^
+
+"Test_name.c", line 783: warning: variable "b19" was set but never used
+  static A10 *b19;
+              ^
+
+108 errors detected in the compilation of "Test_name.c".

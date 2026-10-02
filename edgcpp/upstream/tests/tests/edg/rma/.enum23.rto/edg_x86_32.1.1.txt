@@ -1,0 +1,34 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 6: warning: integer conversion resulted in a change of sign
+           za = (int)(ya > -1) };
+                           ^
+
+"Test_name.c", line 9: warning: integer conversion resulted in a change of sign
+           zb = (int)(yb > -1) };
+                           ^
+
+"Test_name.c", line 12: warning: integer conversion resulted in a change of sign
+           zc = (int)(yc > -1) };
+                           ^
+
+"Test_name.c", line 15: warning: integer conversion resulted in a change of sign
+           zd = (int)(yd > -1) };
+                           ^
+
+"Test_name.c", line 18: warning: integer conversion resulted in a change of sign
+           ze = (int)(ye > -1) };
+                           ^
+
+"Test_name.c", line 20: error: enumeration value is out of "int" range
+           yf,
+           ^
+
+"Test_name.c", line 22: error: the type "long long" is nonstandard
+  enum G { xg = (long long)0x7fffffffffffffff,
+                      ^
+
+"Test_name.c", line 22: error: integer constant is too large
+  enum G { xg = (long long)0x7fffffffffffffff,
+                           ^
+
+3 errors detected in the compilation of "Test_name.c".

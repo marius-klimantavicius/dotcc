@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 4: error: previous declaration of function "f" (declared at line 3) had no abi_tag attribute
+  void f(int) __attribute ((abi_tag ("foo"))); // { dg-error "adds abi tag" }
+                            ^
+
+"Test_name.c", line 7: error: previous declaration of class "C" (declared at line 6) had no abi_tag attribute
+  struct __attribute ((abi_tag ("foo"))) C; // { dg-error "adds abi tag" }
+                       ^
+
+2 errors detected in the compilation of "Test_name.c".

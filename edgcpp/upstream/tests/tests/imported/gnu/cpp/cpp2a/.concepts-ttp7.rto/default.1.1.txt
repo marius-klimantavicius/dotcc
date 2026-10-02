@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 14: error: template constraint not satisfied
+  A<long, B> a2; // { dg-error "constraint failure" }
+           ^
+"Test_name.c", line 8: note: type constraint failed for "long"
+  template<same_as<bool> T, template<same_as<bool>> class UU>
+           ^
+"Test_name.c", line 6: note: atomic constraint evaluates to false
+  template<class T, class U> concept same_as = __is_same(T, U);
+                                               ^
+
+1 error detected in the compilation of "Test_name.c".

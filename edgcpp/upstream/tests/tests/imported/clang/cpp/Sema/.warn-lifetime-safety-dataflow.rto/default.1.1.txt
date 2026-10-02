@@ -1,0 +1,45 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 79: warning: variable "pObj" was declared but never referenced
+    MyObj* pObj = &obj;
+           ^
+
+"Test_name.c", line 94: warning: variable "pTrivialObj" was declared but never referenced
+    int* pTrivialObj = &trivial_obj;
+         ^
+
+"Test_name.c", line 120: warning: variable "q" was declared but never referenced
+    int *q = p;
+         ^
+
+"Test_name.c", line 190: warning: variable "p" was set but never used
+    MyObj* p = &s1;
+           ^
+
+"Test_name.c", line 208: warning: variable "p" was set but never used
+    MyObj* p = &s1;
+           ^
+
+"Test_name.c", line 226: warning: variable "p" was set but never used
+    MyObj* p = &s1;
+           ^
+
+"Test_name.c", line 252: warning: variable "p" was set but never used
+    MyObj* p = nullptr;
+           ^
+
+"Test_name.c", line 292: warning: variable "p" was set but never used
+    MyObj* p = nullptr;
+           ^
+
+"Test_name.c", line 313: warning: variable "p" was set but never used
+    MyObj* p = &s1;
+           ^
+
+"Test_name.c", line 340: warning: variable "p" was set but never used
+    MyObj* p = nullptr;
+           ^
+
+"Test_name.c", line 379: warning: variable "q" was declared but never referenced
+    int *q = *pp;
+         ^
+

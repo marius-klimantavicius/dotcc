@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=2 -w --gn 160000 Test_name.c

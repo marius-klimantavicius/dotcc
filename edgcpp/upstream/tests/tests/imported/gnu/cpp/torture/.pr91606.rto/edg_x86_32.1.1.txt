@@ -1,0 +1,250 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/std_abs.h", line 90: error: identifier "__int128" is undefined
+    __extension__ inline constexpr __int128
+                                   ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/std_abs.h", line 91: error: identifier "__int128" is undefined
+    abs(__int128 __x) { return __x >= 0 ? __x : -__x; }
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 421: error: identifier "__int128" is undefined
+      struct __is_integral_helper<__int128>
+                                  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 426: error: expected a ">"
+      struct __is_integral_helper<unsigned __int128>
+                                           ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 812: error: expected a ">"
+     , signed __int128
+              ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 832: error: expected a ">"
+     , unsigned __int128
+                ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 1877: error: identifier "__int128" is undefined
+      struct __make_unsigned<__int128>
+                             ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 1878: error: expected a ";"
+      { using __type = unsigned __int128; };
+                                ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 2037: error: expected a ">"
+      struct __make_signed<unsigned __int128>
+                                    ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 2038: error: identifier "__int128" is undefined
+      { using __type = __int128; };
+                       ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/cpp_type_traits.h", line 264: error: identifier "__int128" is undefined
+  __extension__ template<> struct __is_integer<__int128> { enum { __value = 1 }; typedef __true_type __type; }; __extension__ template<> struct __is_integer<unsigned __int128> { enum { __value = 1 }; typedef __true_type __type; };
+                                               ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/cpp_type_traits.h", line 264: error: expected a ">"
+  __extension__ template<> struct __is_integer<__int128> { enum { __value = 1 }; typedef __true_type __type; }; __extension__ template<> struct __is_integer<unsigned __int128> { enum { __value = 1 }; typedef __true_type __type; };
+                                                                                                                                                                      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1041: error: identifier "__int128" is undefined
+    __extension__ inline constexpr __int128
+                                   ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1042: error: identifier "__int128" is undefined
+    __size_to_integer(__int128 __n) { return __n; }
+                      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1044: error: missing initializer for constexpr variable
+    __size_to_integer(unsigned __int128 __n) { return __n; }
+    ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1044: error: expected a ";"
+    __size_to_integer(unsigned __int128 __n) { return __n; }
+    ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1223: error: identifier "__is_random_access_iter" is undefined
+        __is_random_access_iter<_II>::__value, bool>::__type
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1223: error: type name is not allowed
+        __is_random_access_iter<_II>::__value, bool>::__type
+                                ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1223: error: too few arguments for class template "__gnu_cxx::__enable_if"
+        __is_random_access_iter<_II>::__value, bool>::__type
+                                   ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1223: error: expected a ";"
+        __is_random_access_iter<_II>::__value, bool>::__type
+                                             ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1237: error: identifier "__is_random_access_iter" is undefined
+        __is_random_access_iter<_II>::__value, bool>::__type
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1237: error: type name is not allowed
+        __is_random_access_iter<_II>::__value, bool>::__type
+                                ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1237: error: too few arguments for class template "__gnu_cxx::__enable_if"
+        __is_random_access_iter<_II>::__value, bool>::__type
+                                   ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1237: error: expected a ";"
+        __is_random_access_iter<_II>::__value, bool>::__type
+                                             ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1308: error: identifier "random_access_iterator_tag" is undefined
+      struct __lc_rai<random_access_iterator_tag, random_access_iterator_tag>
+                      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1308: error: identifier "random_access_iterator_tag" is undefined
+      struct __lc_rai<random_access_iterator_tag, random_access_iterator_tag>
+                                                  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1398: error: identifier "ptrdiff_t" is undefined
+   static ptrdiff_t
+          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1934: error: pair is not a template
+      pair<_InputIterator1, _InputIterator2>
+      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1961: error: pair is not a template
+      inline pair<_InputIterator1, _InputIterator2>
+             ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 1996: error: pair is not a template
+      inline pair<_InputIterator1, _InputIterator2>
+             ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 2013: error: pair is not a template
+      pair<_InputIterator1, _InputIterator2>
+      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 2043: error: pair is not a template
+      inline pair<_InputIterator1, _InputIterator2>
+             ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 2080: error: pair is not a template
+      inline pair<_InputIterator1, _InputIterator2>
+             ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 2112: error: iterator_traits is not a template
+      typename iterator_traits<_InputIterator>::difference_type
+               ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_algobase.h", line 2305: error: expected a declaration
+  }
+  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/range_access.h", line 119: error: identifier "valarray" is undefined
+    template<typename _Tp> _Tp* begin(valarray<_Tp>&) noexcept;
+                                      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/range_access.h", line 119: error: type name is not allowed
+    template<typename _Tp> _Tp* begin(valarray<_Tp>&) noexcept;
+                                               ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/range_access.h", line 119: error: expected an expression
+    template<typename _Tp> _Tp* begin(valarray<_Tp>&) noexcept;
+                                                    ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/range_access.h", line 119: error: expected a ";"
+    template<typename _Tp> _Tp* begin(valarray<_Tp>&) noexcept;
+                                                      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/range_access.h", line 120: error: "begin" has already been declared in the current scope
+    template<typename _Tp> const _Tp* begin(const valarray<_Tp>&) noexcept;
+                                      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/range_access.h", line 121: error: type name is not allowed
+    template<typename _Tp> _Tp* end(valarray<_Tp>&) noexcept;
+                                             ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/range_access.h", line 121: error: expected an expression
+    template<typename _Tp> _Tp* end(valarray<_Tp>&) noexcept;
+                                                  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/range_access.h", line 121: error: expected a ";"
+    template<typename _Tp> _Tp* end(valarray<_Tp>&) noexcept;
+                                                    ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/range_access.h", line 122: error: "end" has already been declared in the current scope
+    template<typename _Tp> const _Tp* end(const valarray<_Tp>&) noexcept;
+                                      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/range_access.h", line 199: error: reverse_iterator is not a template
+      inline constexpr reverse_iterator<_Tp*>
+                       ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/range_access.h", line 210: error: reverse_iterator is not a template
+      inline constexpr reverse_iterator<_Tp*>
+                       ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/range_access.h", line 221: error: reverse_iterator is not a template
+      inline constexpr reverse_iterator<const _Tp*>
+                       ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/range_access.h", line 222: error: "rbegin" has already been declared in the current scope
+      rbegin(initializer_list<_Tp> __il) noexcept
+      ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/range_access.h", line 222: error: identifier "initializer_list" is undefined
+      rbegin(initializer_list<_Tp> __il) noexcept
+             ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/range_access.h", line 222: error: type name is not allowed
+      rbegin(initializer_list<_Tp> __il) noexcept
+                              ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/range_access.h", line 222: error: identifier "__il" is undefined
+      rbegin(initializer_list<_Tp> __il) noexcept
+                                   ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/range_access.h", line 222: error: expected a ";"
+      rbegin(initializer_list<_Tp> __il) noexcept
+                                         ^
+
+"./torture/pr91606.C", line 31: error: variant is not a template
+  constexpr const T1* get_if(const variant<T1, T2>* v)
+                                   ^
+
+"./torture/pr91606.C", line 41: error: variant is not a template
+  constexpr const T2* get_if(const variant<T1, T2>* v)
+                                   ^
+
+"./torture/pr91606.C", line 41: error: function template "get_if" has already been defined (previous definition at line 30)
+  constexpr const T2* get_if(const variant<T1, T2>* v)
+                      ^
+
+"./torture/pr91606.C", line 69: error: variant is not a template
+    return std::array<variant<std::decay_t<Ts>...>, sizeof...(Ts)>{ ptrs... };
+                      ^
+
+"./torture/pr91606.C", line 69: error: incomplete type "std::array<<error-type>, 2UL>" is not allowed
+    return std::array<variant<std::decay_t<Ts>...>, sizeof...(Ts)>{ ptrs... };
+           ^
+          detected during instantiation of "auto get_array_of_variants(Ts...) [with Ts=<void (MyStruct::*)(int), int (MyStruct::*)(char, short, bool)>]" at line 104
+
+"./torture/pr91606.C", line 69: error: too many initializer values
+    return std::array<variant<std::decay_t<Ts>...>, sizeof...(Ts)>{ ptrs... };
+                                                                    ^
+          detected during instantiation of "auto get_array_of_variants(Ts...) [with Ts=<void (MyStruct::*)(int), int (MyStruct::*)(char, short, bool)>]" at line 104
+
+"./torture/pr91606.C", line 81: error: no instance of function template "get_if" matches the argument list
+            argument types are: (<error-type>)
+        if (auto *specificFunc = get_if<Member (Class::*)>(&anyFunc))
+                                 ^
+"./torture/pr91606.C", line 31: note: candidate function template "get_if" failed deduction
+  constexpr const T1* get_if(const variant<T1, T2>* v)
+                      ^
+          detected during instantiation of "int getFuncId(Member Class::*) [with Member=void (int), Class=MyStruct]" at line 109
+
+"./torture/pr91606.C", line 81: error: cannot deduce "auto" type
+        if (auto *specificFunc = get_if<Member (Class::*)>(&anyFunc))
+            ^
+          detected during instantiation of "int getFuncId(Member Class::*) [with Member=void (int), Class=MyStruct]" at line 109
+
+60 errors detected in the compilation of "Test_name.c".

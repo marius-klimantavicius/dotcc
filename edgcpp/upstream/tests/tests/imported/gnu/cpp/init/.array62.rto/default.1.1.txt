@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: error: invalid initializer for array member "pair::s"
+    pair() : s(a) {} // { dg-error "array must be initialized" }
+               ^
+
+"Test_name.c", line 20: error: a value of type "string *" cannot be used to initialize an entity of type "string [1]"
+    string x[1](a); // { dg-error "array must be initialized" }
+                ^
+
+2 errors detected in the compilation of "Test_name.c".

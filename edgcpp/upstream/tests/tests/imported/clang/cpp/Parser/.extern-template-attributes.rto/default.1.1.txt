@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 --ms_extensions Test_name.c
+"Test_name.c", line 8: error: attributes are not allowed here
+  [[deprecated]] extern template struct S<int>;              // expected-error {{an attribute list cannot appear here}}
+  ^
+
+"Test_name.c", line 9: error: attributes are not allowed here
+  __attribute__((deprecated)) extern template struct S<int>; // expected-error {{an attribute list cannot appear here}}
+  ^
+
+"Test_name.c", line 10: error: attributes are not allowed here
+  __declspec(deprecated) extern template struct S<int>;      // expected-error {{expected unqualified-id}}
+  ^
+
+3 errors detected in the compilation of "Test_name.c".

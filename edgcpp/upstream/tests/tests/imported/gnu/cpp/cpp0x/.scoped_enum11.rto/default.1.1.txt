@@ -1,0 +1,24 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 31: error: expression must have arithmetic or unscoped enum type
+    r += f1 (e2);
+         ^
+
+"Test_name.c", line 32: error: expression must have arithmetic or unscoped enum type
+    r += f2 (e2);
+         ^
+
+"Test_name.c", line 34: error: more than one instance of overloaded function "f4" matches the argument list:
+            function "f4(short)" (declared at line 18)
+            function "f4(long)" (declared at line 19)
+            argument types are: (E2)
+    r += f4 (e2);
+         ^
+
+"Test_name.c", line 36: error: more than one instance of overloaded function "f6" matches the argument list:
+            function "f6(unsigned int)" (declared at line 24)
+            function "f6(long)" (declared at line 25)
+            argument types are: (E2)
+    r += f6 (e2); // { dg-error "ambiguous" }
+         ^
+
+4 errors detected in the compilation of "Test_name.c".

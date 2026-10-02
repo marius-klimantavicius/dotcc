@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 36: warning: variable "foo7" was declared but never referenced
+    void (*foo7)() = 0; // expected-warning {{a function declaration without a prototype is deprecated in all versions of C}}
+           ^
+
+"Test_name.c", line 39: warning: variable "foo8" was declared but never referenced
+    void (*foo8[2])() = {0}; // expected-warning {{a function declaration without a prototype is deprecated in all versions of C}}
+           ^
+
+"Test_name.c", line 64: warning: standard requires that parameter "p2" be given a type by a subsequent declaration ("int" assumed)
+  void foo10(p, p2) void *p; {} // expected-warning {{a function definition without a prototype is deprecated in all versions of C and is not supported in C23}} \
+                ^
+
+"Test_name.c", line 83: warning: function "foo14_call" declared implicitly
+    foo14_call(); // no-warning
+    ^
+

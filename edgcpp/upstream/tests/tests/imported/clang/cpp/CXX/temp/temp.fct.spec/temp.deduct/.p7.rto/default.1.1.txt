@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 14: error: initial value of reference to non-const must be an lvalue
+  int &a_disabled = a(0);
+                    ^
+
+"Test_name.c", line 15: error: initial value of reference to non-const must be an lvalue
+  int &a_enabled = a(Q()); // expected-error {{cannot bind to a temporary of type 'void'}}
+                   ^
+
+"Test_name.c", line 19: error: initial value of reference to non-const must be an lvalue
+  int &b_disabled = b(0);
+                    ^
+
+"Test_name.c", line 20: error: initial value of reference to non-const must be an lvalue
+  int &b_enabled = b(Q()); // expected-error {{cannot bind to a temporary of type 'void'}}
+                   ^
+
+"Test_name.c", line 24: error: initial value of reference to non-const must be an lvalue
+  int &c_disabled = c(0);
+                    ^
+
+"Test_name.c", line 25: error: initial value of reference to non-const must be an lvalue
+  int &c_enabled = c(Q()); // expected-error {{cannot bind to a temporary of type 'void'}}
+                   ^
+
+6 errors detected in the compilation of "Test_name.c".

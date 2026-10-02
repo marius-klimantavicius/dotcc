@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 19: error: expected a declaration
+    catch (...) {}	// { dg-error "expected unqualified-id before" }
+    ^
+
+"Test_name.c", line 23: warning: parsing restarts here after previous syntax error
+    int m;
+         ^
+
+"Test_name.c", line 18: error: "m" is not a nonstatic data member or base class of class "T"
+    T () : m (0) {}
+           ^
+
+2 errors detected in the compilation of "Test_name.c".

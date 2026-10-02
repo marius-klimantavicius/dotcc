@@ -1,0 +1,49 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 6: warning: unknown attribute "no_caller_saved_registers"
+    int b __attribute__((no_caller_saved_registers)); // expected-warning {{'no_caller_saved_registers' only applies to function types; type here is 'int'}}
+                         ^
+
+"Test_name.c", line 7: warning: unknown attribute "no_caller_saved_registers"
+    static void foo(int *a) __attribute__((no_caller_saved_registers)) {}
+                                           ^
+
+"Test_name.c", line 10: warning: unknown attribute "no_caller_saved_registers"
+  struct a test __attribute__((no_caller_saved_registers)); // expected-warning {{'no_caller_saved_registers' only applies to function types; type here is 'struct a'}}
+                               ^
+
+"Test_name.c", line 12: warning: unknown attribute "no_caller_saved_registers"
+  __attribute__((no_caller_saved_registers(999))) void bar(int *) {} // expected-error {{'no_caller_saved_registers' attribute takes no arguments}}
+                 ^
+
+"Test_name.c", line 14: warning: unknown attribute "no_caller_saved_registers"
+  void __attribute__((no_caller_saved_registers)) foo(int *){}
+                      ^
+
+"Test_name.c", line 16: warning: unknown attribute "gnu::no_caller_saved_registers"
+  [[gnu::no_caller_saved_registers]] void foo2(int *) {}
+    ^
+
+"Test_name.c", line 18: warning: unknown attribute "no_caller_saved_registers"
+  typedef __attribute__((no_caller_saved_registers)) void (*foo3)(int *);
+                         ^
+
+"Test_name.c", line 20: warning: unknown attribute "no_caller_saved_registers"
+  int (*foo4)(double a, __attribute__((no_caller_saved_registers)) float b); // expected-warning {{'no_caller_saved_registers' only applies to function types; type here is 'float'}}
+                                       ^
+
+"Test_name.c", line 26: warning: unknown attribute "no_caller_saved_registers"
+  void __attribute__((no_caller_saved_registers)) foo6(); // expected-error {{function declared with 'no_caller_saved_registers' attribute was previously declared without the 'no_caller_saved_registers' attribute}}
+                      ^
+
+"Test_name.c", line 33: warning: unknown attribute "no_caller_saved_registers"
+    foo5 __attribute__((no_caller_saved_registers)) func2 = foo2;
+                        ^
+
+"Test_name.c", line 29: warning: variable "fp" was declared but never referenced
+    void (*fp)(int *) = foo; // expected-error {{cannot initialize a variable of type 'void (*)(int *)' with an lvalue of type 'void (int *) __attribute__((no_caller_saved_registers))'}}
+           ^
+
+"Test_name.c", line 33: warning: variable "func2" was declared but never referenced
+    foo5 __attribute__((no_caller_saved_registers)) func2 = foo2;
+                                                    ^
+

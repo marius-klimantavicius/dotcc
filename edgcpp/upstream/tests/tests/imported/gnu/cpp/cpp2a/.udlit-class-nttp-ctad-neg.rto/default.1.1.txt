@@ -1,0 +1,7 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 25: error: no instance of constructor "fixed_string" matches the argument list
+            argument types are: (const char [5])
+  static_assert("test"_udl == 5); // { dg-error "15:no matching function for call to" }
+                ^
+
+1 error detected in the compilation of "Test_name.c".

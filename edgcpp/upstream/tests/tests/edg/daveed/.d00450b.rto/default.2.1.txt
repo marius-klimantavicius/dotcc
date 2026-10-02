@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=2 --g++ -DNEG Test_name.c
+"Test_name.c", line 30: error: cannot determine which instance of overloaded function "f" is intended
+    i = __builtin_constant_p(f);
+                             ^
+
+1 error detected in the compilation of "Test_name.c".

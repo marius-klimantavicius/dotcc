@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c++14 --sys_include $RUN_TEST_CURR_DIR/include Test_name.c
+"Test_name.c", line 11: error: a parenthesized initializer must be an expression, not a brace-enclosed list
+    auto a = new decltype(auto) ({2});
+                                 ^
+
+"Test_name.c", line 11: error: cannot deduce "decltype(auto)" type
+    auto a = new decltype(auto) ({2});
+                 ^
+
+2 errors detected in the compilation of "Test_name.c".

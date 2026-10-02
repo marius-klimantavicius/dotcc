@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=4 --multi_trans --g++ -DNEG Test_name.c d00385a_2.c
+"d00385a_2.c", line 7: error: function "f" already defined in another translation unit
+            the other declaration is at line 21 of "Test_name.c"
+  void f() {}
+       ^
+          detected during compilation of secondary translation unit "d00385a_2.c"
+
+"d00385a_2.c", line 8: error: variable "s" already defined in another translation unit
+            the other declaration is at line 22 of "Test_name.c"
+  short s;
+        ^
+          detected during compilation of secondary translation unit "d00385a_2.c"
+
+2 errors detected in the compilation of "Test_name.c".

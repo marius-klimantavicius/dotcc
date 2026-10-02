@@ -1,0 +1,5 @@
+cpfe -DTEST_NUMBER=4 --c++11 -r -A -Dconstexpr=const Test_name.c
+"Test_name.c", line 6: warning: storage class is not first
+    constexpr static bool is_nothrow_destructible = true;
+              ^
+

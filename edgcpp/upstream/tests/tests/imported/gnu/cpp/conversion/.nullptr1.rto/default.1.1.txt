@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./conversion/nullptr1.C", line 8: warning: integer operation result is out of range
+                        + 1);
+                        ^
+
+"./conversion/nullptr1.C", line 8: error: a value of type "int" cannot be used to initialize an entity of type "void *"
+  void *q = 0 * (0x7fffffff 
+            ^
+
+1 error detected in the compilation of "Test_name.c".

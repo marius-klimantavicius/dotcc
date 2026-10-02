@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 5: error: expected an expression
+  int i = delete; // expected-error{{only functions}}
+                ^
+
+"Test_name.c", line 6: error: expected an expression
+  int j = default; // expected-error{{special member functions}}
+          ^
+
+"Test_name.c", line 8: error: expected a ";"
+  int f() = delete, g; // expected-error{{'= delete' is a function definition}}
+                  ^
+
+"Test_name.c", line 11: error: "= default" can only appear on default constructors, copy/move constructors, copy/move assignment operators, and destructors
+  int q() = default, r; // expected-error{{only special member functions}} \
+            ^
+
+"Test_name.c", line 13: error: "= default" can only appear on default constructors, copy/move constructors, copy/move assignment operators, and destructors
+  int s, t() = default; // expected-error{{'= default' is a function definition}}
+               ^
+
+"Test_name.c", line 24: error: member function with the same name as its class must be a constructor
+    int quux() = default; // expected-error{{constructor cannot have a return type}}
+        ^
+
+"Test_name.c", line 24: error: "= default" can only appear on default constructors, copy/move constructors, copy/move assignment operators, and destructors
+    int quux() = default; // expected-error{{constructor cannot have a return type}}
+        ^
+
+7 errors detected in the compilation of "Test_name.c".

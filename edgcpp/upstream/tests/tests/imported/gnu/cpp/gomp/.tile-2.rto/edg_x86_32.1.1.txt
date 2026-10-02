@@ -1,0 +1,94 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/cpp_type_traits.h", line 553: error: identifier "__int128" is undefined
+      struct __memcpyable_integer<__int128> { enum { __width = 128 }; };
+                                  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/cpp_type_traits.h", line 556: error: expected a ">"
+      struct __memcpyable_integer<unsigned __int128> { enum { __width = 128 }; };
+                                           ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/ext/numeric_traits.h", line 132: error: identifier "__int128" is undefined
+    __extension__ template<> struct __is_integer_nonstrict<__int128> { enum { __value = 1 }; typedef std::__true_type __type; enum { __width = 128 }; }; __extension__ template<> struct __is_integer_nonstrict<unsigned __int128> { enum { __value = 1 }; typedef std::__true_type __type; enum { __width = 128 }; };
+                                                           ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/ext/numeric_traits.h", line 132: error: expected a ">"
+    __extension__ template<> struct __is_integer_nonstrict<__int128> { enum { __value = 1 }; typedef std::__true_type __type; enum { __width = 128 }; }; __extension__ template<> struct __is_integer_nonstrict<unsigned __int128> { enum { __value = 1 }; typedef std::__true_type __type; enum { __width = 128 }; };
+                                                                                                                                                                                                                         ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 137: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 140: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 155: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new(std::size_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 158: error: first parameter of allocation function must be of type "size_t"
+  [[__nodiscard__]] void* operator new[](std::size_t, const std::nothrow_t&)
+                          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 206: error: first parameter of allocation function must be of type "size_t"
+  void* operator new(std::size_t, void* __p)
+        ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/new", line 210: error: first parameter of allocation function must be of type "size_t"
+  void* operator new[](std::size_t, void* __p)
+        ^
+
+"./gomp/tile-2.C", line 16: warning: unrecognized #pragma
+  #pragma omp for
+          ^
+
+"./gomp/tile-2.C", line 20: warning: unrecognized #pragma
+  #pragma omp tile sizes (U, 10, V)
+          ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/type_traits", line 1671: error: function "operator new" cannot be called with the given argument list
+            argument types are: (unsigned int, void *)
+   noexcept(::new(std::declval<void*>()) _Tp(std::declval<_Args>()...))
+              ^
+Note: number of parameters of function "operator new" does not match the call
+          detected during:
+            instantiation of class "std::__is_nothrow_new_constructible_impl<_Tp, _Args...> [with _Tp=int, _Args=<int>]" at line 204
+            instantiation of class "std::__and_<_Bn...> [with _Bn=<std::is_constructible<int, int>, std::__is_nothrow_new_constructible_impl<int, int>>]" at line 1678
+            instantiation of "const bool std::__is_nothrow_new_constructible [with _Tp=int, _Args=<int>]" at line 190 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/new_allocator.h"
+            instantiation of "void std::__new_allocator<_Tp>::construct(_Up *, _Args &&...) [with _Tp=int, _Up=int, _Args=<int>]" at line 668 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/alloc_traits.h"
+            instantiation of "void std::allocator_traits<std::allocator<_Tp>>::construct(std::allocator_traits<std::allocator<_Tp>>::allocator_type &, _Up *, _Args &&...) [with _Tp=int, _Up=int, _Args=<int>]" at line 672 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/alloc_traits.h"
+            instantiation of "void std::allocator_traits<std::allocator<_Tp>>::construct(std::allocator_traits<std::allocator<_Tp>>::allocator_type &, _Up *, _Args &&...) [with _Tp=int, _Up=int, _Args=<int>]" at line 118 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/vector.tcc"
+            instantiation of "void std::vector<_Tp, _Alloc>::emplace_back(_Args &&...) [with _Tp=int, _Alloc=std::allocator<int>, _Args=<int>]" at line 1433 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_vector.h"
+            instantiation of "void std::vector<_Tp, _Alloc>::push_back(std::vector<_Tp, _Alloc>::value_type &&) [with _Tp=int, _Alloc=std::allocator<int>]" at line 14 of "./gomp/tile-2.C"
+            instantiation of "void test1_template<T,U,V>() [with T=long, U=5, V=0U]" at line 30 of "./gomp/tile-2.C"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/new_allocator.h", line 191: error: function "operator new" cannot be called with the given argument list
+            argument types are: (unsigned int, void *)
+   { ::new((void *)__p) _Up(std::forward<_Args>(__args)...); }
+       ^
+Note: number of parameters of function "operator new" does not match the call
+          detected during:
+            instantiation of "void std::__new_allocator<_Tp>::construct(_Up *, _Args &&...) [with _Tp=int, _Up=int, _Args=<int>]" at line 674 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/alloc_traits.h"
+            instantiation of "void std::allocator_traits<std::allocator<_Tp>>::construct(std::allocator_traits<std::allocator<_Tp>>::allocator_type &, _Up *, _Args &&...) [with _Tp=int, _Up=int, _Args=<int>]" at line 118 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/vector.tcc"
+            instantiation of "void std::vector<_Tp, _Alloc>::emplace_back(_Args &&...) [with _Tp=int, _Alloc=std::allocator<int>, _Args=<int>]" at line 1433 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_vector.h"
+            instantiation of "void std::vector<_Tp, _Alloc>::push_back(std::vector<_Tp, _Alloc>::value_type &&) [with _Tp=int, _Alloc=std::allocator<int>]" at line 14 of "./gomp/tile-2.C"
+            instantiation of "void test1_template<T,U,V>() [with T=long, U=5, V=0U]" at line 30 of "./gomp/tile-2.C"
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_construct.h", line 133: error: function "operator new" cannot be called with the given argument list
+            argument types are: (unsigned int, void *)
+        ::new(static_cast<void*>(__p)) _Tp(std::forward<_Args>(__args)...);
+          ^
+Note: number of parameters of function "operator new" does not match the call
+          detected during:
+            instantiation of "void std::_Construct(_Tp *, _Args &&...) [with _Tp=int, _Args=<int>]" at line 145 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_uninitialized.h"
+            instantiation of "_ForwardIterator std::__do_uninit_copy(_InputIterator, _Sentinel, _ForwardIterator) [with _InputIterator=std::move_iterator<int *>, _Sentinel=std::move_iterator<int *>, _ForwardIterator=int *]" at line 297 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_uninitialized.h"
+            instantiation of "_ForwardIterator std::uninitialized_copy(_InputIterator, _InputIterator, _ForwardIterator) [with _InputIterator=std::move_iterator<int *>, _ForwardIterator=int *]" at line 619 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_uninitialized.h"
+            instantiation of "_ForwardIterator std::__uninitialized_copy_a(_InputIterator, _Sentinel, _ForwardIterator, std::allocator<_Tp> &) [with _InputIterator=std::move_iterator<int *>, _Sentinel=std::move_iterator<int *>, _ForwardIterator=int *, _Tp=int]" at line 647 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_uninitialized.h"
+            instantiation of "_ForwardIterator std::__uninitialized_move_if_noexcept_a(_InputIterator, _InputIterator, _ForwardIterator, _Allocator &) [with _InputIterator=int *, _ForwardIterator=int *, _Allocator=std::allocator<int>]" at line 630 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/vector.tcc"
+            instantiation of "void std::vector<_Tp, _Alloc>::_M_realloc_append(_Args &&...) [with _Tp=int, _Alloc=std::allocator<int>, _Args=<int>]" at line 123 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/vector.tcc"
+            instantiation of "void std::vector<_Tp, _Alloc>::emplace_back(_Args &&...) [with _Tp=int, _Alloc=std::allocator<int>, _Args=<int>]" at line 1433 of "/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_vector.h"
+            instantiation of "void std::vector<_Tp, _Alloc>::push_back(std::vector<_Tp, _Alloc>::value_type &&) [with _Tp=int, _Alloc=std::allocator<int>]" at line 14 of "./gomp/tile-2.C"
+            instantiation of "void test1_template<T,U,V>() [with T=long, U=5, V=0U]" at line 30 of "./gomp/tile-2.C"
+
+13 errors detected in the compilation of "Test_name.c".

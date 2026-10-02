@@ -1,0 +1,72 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 59: error: expression must have a constant value
+  constexpr std::size_t ssmall = S<std::size_t>(100)[42];
+                                 ^
+"Test_name.c", line 22: note: a placement new-expression cannot be constant-evaluated
+      new (p) T((Args&&)args...);
+      ^
+"Test_name.c", line 34: note: called from:
+              std::construct_at<T>(data + i, i); // #construct_call
+                                  ^
+
+"Test_name.c", line 62: error: expression must have a constant value
+  constexpr std::size_t s4 = S<std::size_t>(1024)[42]; // expected-error {{constexpr variable 's4' must be initialized by a constant expression}} \
+                             ^
+"Test_name.c", line 22: note: a placement new-expression cannot be constant-evaluated
+      new (p) T((Args&&)args...);
+      ^
+"Test_name.c", line 34: note: called from:
+              std::construct_at<T>(data + i, i); // #construct_call
+                                  ^
+
+"Test_name.c", line 69: error: expression must have a constant value
+  constexpr std::size_t s5 = S<std::size_t>(1025)[42]; // expected-error{{constexpr variable 's5' must be initialized by a constant expression}} \
+                             ^
+"Test_name.c", line 22: note: a placement new-expression cannot be constant-evaluated
+      new (p) T((Args&&)args...);
+      ^
+"Test_name.c", line 34: note: called from:
+              std::construct_at<T>(data + i, i); // #construct_call
+                                  ^
+
+"Test_name.c", line 95: error: "foo" has already been declared in the current scope
+    constexpr int foo[stack_array<1025>()]; // expected-warning {{variable length arrays in C++ are a Clang extension}} \
+                  ^
+
+"Test_name.c", line 95: error: missing initializer for constexpr variable
+    constexpr int foo[stack_array<1025>()]; // expected-warning {{variable length arrays in C++ are a Clang extension}} \
+                                          ^
+
+"Test_name.c", line 91: warning: variable "bar" was declared but never referenced
+    int bar[stack_array<1024>()];
+        ^
+
+"Test_name.c", line 92: warning: variable "foo" was declared but never referenced
+    int foo[stack_array<1025>()]; // expected-warning {{variable length arrays in C++ are a Clang extension}} \
+        ^
+
+"Test_name.c", line 95: warning: variable "foo" was declared but never referenced
+    constexpr int foo[stack_array<1025>()]; // expected-warning {{variable length arrays in C++ are a Clang extension}} \
+                  ^
+
+"Test_name.c", line 59: warning: variable "GH63562::ssmall" was declared but never referenced
+  constexpr std::size_t ssmall = S<std::size_t>(100)[42];
+                        ^
+
+"Test_name.c", line 62: warning: variable "GH63562::s4" was declared but never referenced
+  constexpr std::size_t s4 = S<std::size_t>(1024)[42]; // expected-error {{constexpr variable 's4' must be initialized by a constant expression}} \
+                        ^
+
+"Test_name.c", line 69: warning: variable "GH63562::s5" was declared but never referenced
+  constexpr std::size_t s5 = S<std::size_t>(1025)[42]; // expected-error{{constexpr variable 's5' must be initialized by a constant expression}} \
+                        ^
+
+"Test_name.c", line 87: warning: variable "GH63562::e" was declared but never referenced
+  constexpr int e = stack_array<1024>();
+                ^
+
+"Test_name.c", line 88: warning: variable "GH63562::f" was declared but never referenced
+  constexpr int f = stack_array<1025>(); // expected-error {{constexpr variable 'f' must be initialized by a constant expression}} \
+                ^
+
+5 errors detected in the compilation of "Test_name.c".

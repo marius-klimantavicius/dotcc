@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 -W Test_name.c
+"Test_name.c", line 10: error: explicit capture matches default
+    [&, &i]{ };	   // { dg-error "" } i preceded by & when & is the default
+        ^
+
+"Test_name.c", line 11: error: explicit capture matches default
+    [=, i]{ };       // { dg-error "" } i not preceded by & when = is the default
+        ^
+
+"Test_name.c", line 12: error: explicit capture matches default
+    [=, this]{ };	   // { dg-error "" "" { target c++17_down } } this when = is the default
+        ^
+
+"Test_name.c", line 13: error: a name cannot appear more than once in a capture-list
+    [i, i]{ };	   // { dg-error "" } i repeated
+        ^
+
+"Test_name.c", line 14: error: a name cannot appear more than once in a capture-list
+    [this, this]{ }; // { dg-error "" } i repeated
+           ^
+
+5 errors detected in the compilation of "Test_name.c".

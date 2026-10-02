@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 10: warning: scoped enum types are a C++11 feature
+  enum struct E1 { A, B }; // expected-warning {{scoped enumerations are a C++11 extension}}
+  ^
+
+"Test_name.c", line 11: warning: scoped enum types are a C++11 feature
+  enum class E2 { C, D }; // expected-warning {{scoped enumerations are a C++11 extension}}
+  ^
+
+"Test_name.c", line 13: warning: standard attribute syntax is a C++11 feature
+  [[]] void func(); // expected-warning {{[[]] attributes are a C++11 extension}}
+  ^
+

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: error: default argument is not allowed
+    friend void foo<T> (int = 3); // { dg-error "27:default arguments are not allowed in declaration of friend" }
+                            ^
+
+1 error detected in the compilation of "Test_name.c".

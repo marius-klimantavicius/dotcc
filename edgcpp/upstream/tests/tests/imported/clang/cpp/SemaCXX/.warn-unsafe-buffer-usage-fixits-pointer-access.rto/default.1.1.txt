@@ -1,0 +1,57 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 20: warning: variable "tmp" was declared but never referenced
+    int tmp = p[5];
+        ^
+
+"Test_name.c", line 33: warning: variable "tmp" was declared but never referenced
+    int tmp = p[5];
+        ^
+
+"Test_name.c", line 68: warning: variable "tmp" was set but never used
+    int tmp = p[5];
+        ^
+
+"Test_name.c", line 82: warning: variable "tmp" was declared but never referenced
+    int tmp = p[5];
+        ^
+
+"Test_name.c", line 92: warning: variable "p" is used before its value is set
+    int tmp = p[idx];
+              ^
+
+"Test_name.c", line 92: warning: variable "tmp" was declared but never referenced
+    int tmp = p[idx];
+        ^
+
+"Test_name.c", line 115: warning: variable "tmp" was declared but never referenced
+    int tmp = p[5];
+        ^
+
+"Test_name.c", line 138: warning: variable "p" is used before its value is set
+    q[idx] = p[idx];
+             ^
+
+"Test_name.c", line 135: warning: variable "q" was set but never used
+    int q[40];
+        ^
+
+"Test_name.c", line 151: warning: variable "my_lambda" was declared but never referenced
+    auto my_lambda = [&](){
+         ^
+
+"Test_name.c", line 165: warning: variable "my_lambda" was declared but never referenced
+    auto my_lambda = [&](){
+         ^
+
+"Test_name.c", line 180: warning: variable "my_lambda" was declared but never referenced
+    auto my_lambda = [p](){ // No fixits emitted here.
+         ^
+
+"Test_name.c", line 193: warning: variable "my_lambda" was declared but never referenced
+    auto my_lambda = [&p](){ // No fixits emitted here.
+         ^
+
+"Test_name.c", line 206: warning: variable "my_lambda" was declared but never referenced
+    auto my_lambda = [x = p](){ // No fixits emitted here.
+         ^
+

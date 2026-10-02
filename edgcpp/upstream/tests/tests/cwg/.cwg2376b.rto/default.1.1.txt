@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++20 -A Test_name.c
+"Test_name.c", line 6: error: cannot deduce class template arguments
+    const A& y{}; // error: no declarator operators allowed
+          ^
+
+1 error detected in the compilation of "Test_name.c".

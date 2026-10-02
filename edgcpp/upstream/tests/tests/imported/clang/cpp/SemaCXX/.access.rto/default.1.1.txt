@@ -1,0 +1,78 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 9: warning: redeclaration of class "C::S" alters its access
+      struct S {}; // expected-error {{'S' redeclared with 'public' access}}
+             ^
+
+"Test_name.c", line 16: warning: redeclaration of class "S::C" alters its access
+      class C { }; // expected-error {{'C' redeclared with 'private' access}}
+            ^
+
+"Test_name.c", line 34: warning: redeclaration of class "test1::A::X" is not allowed to alter its access
+      class X; // expected-error {{'X' redeclared with 'public' access}} \
+            ^
+
+"Test_name.c", line 34: warning: invalid redeclaration of nested class
+      class X; // expected-error {{'X' redeclared with 'public' access}} \
+            ^
+
+"Test_name.c", line 36: warning: redeclaration of class "test1::A::X" alters its access
+      class X {};
+            ^
+
+"Test_name.c", line 86: error: type "PR15209::templates::A::I" (declared at line 78) is inaccessible
+      template<A::I> struct B { };
+                  ^
+
+"Test_name.c", line 88: error: type "PR15209::templates::A::I" (declared at line 78) is inaccessible
+      template<A::I> struct A::C { };
+                  ^
+
+"Test_name.c", line 90: error: type "PR15209::templates::A::I" (declared at line 78) is inaccessible
+      template<template<A::I> class T> struct TT {
+                           ^
+
+"Test_name.c", line 95: error: type "PR15209::templates::A::I" (declared at line 78) is inaccessible
+      template<A::I> struct D { };  // expected-error {{'I' is a private member of 'PR15209::templates::A'}}
+                  ^
+
+"Test_name.c", line 109: error: member "PR15209::templates::A::x" (declared at line 79) is inaccessible
+        (void)A::x;  // expected-error {{'x' is a private member of 'PR15209::templates::A'}}
+                 ^
+
+"Test_name.c", line 137: error: member "PR7434::comment2::N::Y::t" (declared at line 133) is inaccessible
+        X() { (void)N::Y().t; } // expected-error {{private}}
+                           ^
+
+"Test_name.c", line 157: error: class "LocalExternVar::test::private_struct" (declared at line 145) is inaccessible
+      extern int array[sizeof(test::private_struct)]; // expected-error {{private}}
+                                    ^
+
+"Test_name.c", line 161: error: class "LocalExternVar::test::private_struct" (declared at line 145) is inaccessible
+    int array[sizeof(test::private_struct)]; // expected-error {{private}}
+                           ^
+
+"Test_name.c", line 216: warning: variable "f" was declared but never referenced
+          auto f = foo1<int>;
+               ^
+
+"Test_name.c", line 63: error: member "PR15209::alias_templates::A::y" (declared at line 49) is inaccessible
+        U() : v_(A::y) { } // expected-error {{'y' is a private member of 'PR15209::alias_templates::A'}}
+                    ^
+          detected during instantiation of "PR15209::alias_templates::U<T1, int>::U() [with T1=int]" at line 66
+
+"Test_name.c", line 57: error: member "PR15209::alias_templates::A::x" (declared at line 48) is inaccessible
+        U() : v_(A::x) { } // expected-error {{'x' is a private member of 'PR15209::alias_templates::A'}}
+                    ^
+          detected during instantiation of "PR15209::alias_templates::U<T1, float>::U() [with T1=float]" at line 72
+
+"Test_name.c", line 124: error: member "PR7434::comment0::N::Y::t" (declared at line 120) is inaccessible
+        X() { (void)N::Y().t; } // expected-error {{private}}
+                           ^
+          detected during instantiation of "PR7434::comment0::X<T>::X() [with T=char]" at line 126
+
+"Test_name.c", line 170: error: function "ThisLambdaIsNotMyFriend::A::foo" (declared at line 167) is inaccessible
+      []() { A::foo(); }(); // expected-error {{private}}
+                ^
+          detected during instantiation of "void ThisLambdaIsNotMyFriend::foo<T>() [with T=void]" at line 172
+
+12 errors detected in the compilation of "Test_name.c".

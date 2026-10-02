@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gcc --gnu_version=29500 Test_name.c
+Command-line error: invalid GNU version number: 29500
+
+1 catastrophic error detected in this compilation.
+Compilation terminated.

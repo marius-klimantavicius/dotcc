@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 6: error: static assertion failed
+  static_assert(!__has_c_attribute(assume));
+  ^
+
+"Test_name.c", line 7: error: static assertion failed
+  static_assert(__has_c_attribute(clang::assume));
+  ^
+
+"Test_name.c", line 16: error: expected a "("
+    __attribute__((assume));    // expected-error {{'assume' attribute takes one argument}}
+                         ^
+
+"Test_name.c", line 17: error: expected an expression
+    __attribute__((assume()));  // expected-error {{expected expression}}
+                          ^
+
+"Test_name.c", line 18: error: expected a "("
+    [[clang::assume]];          // expected-error {{'assume' attribute takes one argument}}
+                   ^
+
+"Test_name.c", line 19: error: expected an expression
+    [[clang::assume()]];        // expected-error {{expected expression}}
+                    ^
+
+"Test_name.c", line 24: warning: attribute "clang::assume" does not apply here
+    [[clang::assume(true)]] int x;       // expected-error {{'clang::assume' attribute cannot be applied to a declaration}}
+      ^
+
+"Test_name.c", line 25: warning: attribute "assume" does not apply here
+    __attribute__((assume(true))) int y; // expected-error {{'assume' attribute cannot be applied to a declaration}}
+                   ^
+
+"Test_name.c", line 24: warning: variable "x" was declared but never referenced
+    [[clang::assume(true)]] int x;       // expected-error {{'clang::assume' attribute cannot be applied to a declaration}}
+                                ^
+
+"Test_name.c", line 25: warning: variable "y" was declared but never referenced
+    __attribute__((assume(true))) int y; // expected-error {{'assume' attribute cannot be applied to a declaration}}
+                                      ^
+
+6 errors detected in the compilation of "Test_name.c".

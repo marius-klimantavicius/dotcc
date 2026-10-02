@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c99 Test_name.c
+"Test_name.c", line 64: warning: variable "x" is used before its value is set
+    int *p = ((void)0, x).a; // c-warning {{temporary whose address is used as value of local variable 'p' will be destroyed at the end of the full-expression}}
+                       ^
+
+"Test_name.c", line 64: warning: variable "p" was set but never used
+    int *p = ((void)0, x).a; // c-warning {{temporary whose address is used as value of local variable 'p' will be destroyed at the end of the full-expression}}
+         ^
+
+"Test_name.c", line 72: warning: variable "p" was set but never used
+    int *p = ((struct X)x).a;  // expected-warning {{temporary whose address is used as value of local variable 'p' will be destroyed at the end of the full-expression}}
+         ^
+
+"Test_name.c", line 80: warning: variable "s" is used before its value is set
+    int *p = (x = s).a;  // c-warning {{temporary whose address is used as value of local variable 'p' will be destroyed at the end of the full-expression}}
+                  ^
+
+"Test_name.c", line 79: warning: variable "x" was set but never used
+    struct X x, s;
+             ^
+

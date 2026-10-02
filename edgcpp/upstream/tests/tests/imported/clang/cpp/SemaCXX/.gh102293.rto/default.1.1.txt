@@ -1,0 +1,23 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++23 Test_name.c
+"Test_name.c", line 27: error: incomplete type "GH104802::foo" is not allowed
+    foo a;          // expected-error {{field has incomplete type 'foo'}}
+        ^
+
+"Test_name.c", line 33: error: incomplete type "const GH104802::bar" is not allowed
+    const bar a;    // expected-error {{field has incomplete type 'const bar'}}
+              ^
+
+"Test_name.c", line 40: error: incomplete type "GH104802::baz::blech" (aka "GH104802::baz") is not allowed
+    blech a;        // expected-error {{field has incomplete type 'blech' (aka 'class baz')}}
+          ^
+
+"Test_name.c", line 45: error: incomplete type "GH104802::quux" is not allowed
+  class quux : quux { // expected-error {{base class has incomplete type}} \
+               ^
+
+"Test_name.c", line 55: error: incomplete type "GH141789::X" is not allowed
+    Ty t; // expected-error {{field has incomplete type 'GH141789::X'}}
+       ^
+          detected during instantiation of class "GH141789::S<Ty> [with Ty=GH141789::X]" at line 63
+
+5 errors detected in the compilation of "Test_name.c".

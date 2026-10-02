@@ -1,0 +1,1 @@
+//require:SKIPTHISTEST we do not support -fno-new-inheriting-ctors

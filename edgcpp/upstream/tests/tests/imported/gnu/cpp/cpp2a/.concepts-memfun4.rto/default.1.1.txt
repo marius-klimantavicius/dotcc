@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 14: warning: explicit "this" parameters are a C++23 feature
+    constexpr int g(this S<T>&&) requires true { return 5; }
+                    ^
+
+"Test_name.c", line 27: warning: explicit "this" parameters are a C++23 feature
+    constexpr int h(this S&&) { return 10; }
+                    ^
+
+"Test_name.c", line 52: error: "B<T>::f [with T=void]" is ambiguous
+  static_assert(S2<>{}.f() == 5);	// { dg-error "ambiguous" }
+                       ^
+
+"Test_name.c", line 98: error: static assertion failed
+    static_assert (!(a == b));
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

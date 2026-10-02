@@ -1,0 +1,13 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --no_wchar_t --microsoft --microsoft_version=1310 -n Test_name.c
+"Test_name.c", line 6: remark: extra ";" ignored
+  template<class _P> basic_ostream<_P>& operator<<(basic_ostream<_P>&, int) { };
+                                                                               ^
+
+"Test_name.c", line 8: warning: __declspec attributes ignored
+  template<> basic_ostream<wchar_t>& __declspec(dllimport) operator<<(basic_ostream<wchar_t>&, int);
+                                     ^
+
+"Test_name.c", line 10: remark: return type "int" omitted in declaration of function "main"
+  main() {
+  ^
+

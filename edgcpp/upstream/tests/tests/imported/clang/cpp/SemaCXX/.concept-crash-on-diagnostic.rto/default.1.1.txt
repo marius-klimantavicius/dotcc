@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 11: error: class "is_convertible<bool, bool>" has no member "value"
+  inline constexpr bool is_convertible_v = is_convertible<From, To>::value; // expected-error {{no member named 'value' in 'is_convertible<bool, bool>'}}
+                                                                     ^
+          detected during instantiation of "const bool is_convertible_v [with From=bool, To=bool]" at line 28
+
+"Test_name.c", line 28: error: no instance of function template "compare" matches the argument list
+            argument types are: (normal_iterator<Object *>, normal_iterator<Object *>)
+    compare(begin, end); // expected-error {{no matching function for call to 'compare'}} #5
+    ^
+"Test_name.c", line 20: note: substituting "<Object *, Object *>" for function template "compare" failed constraints
+  constexpr bool compare(normal_iterator<IteratorL> lhs, normal_iterator<IteratorR> rhs) { // #4
+                 ^
+"Test_name.c", line 17: note: atomic constraint evaluates to false
+    requires requires(IteratorL lhs, IteratorR rhs) { // #2
+             ^
+
+"Test_name.c", line 49: error: class "GH131530::foo::bar" (declared at line 45) is inaccessible
+  concept is_foo_concept = __is_same(foo::bar, T);
+                                          ^
+
+"Test_name.c", line 60: error: expected a "}"
+     ... // expected-error {{expected '}'}}
+     ^
+"Test_name.c", line 58: note: to match this "{"
+    {    // expected-note {{to match this '{'}}
+    ^
+
+"Test_name.c", line 63: error: this declaration has no storage class or type specifier
+  atomicish<int> f(); // expected-error {{expected 'auto' or 'decltype(auto)' after concept name}}
+  ^
+
+"Test_name.c", line 63: error: "atomicish" has already been declared in the current scope
+  atomicish<int> f(); // expected-error {{expected 'auto' or 'decltype(auto)' after concept name}}
+  ^
+
+"Test_name.c", line 63: error: expected a ";"
+  atomicish<int> f(); // expected-error {{expected 'auto' or 'decltype(auto)' after concept name}}
+           ^
+
+"Test_name.c", line 69: error: parameter pack "Ts" was referenced but not expanded
+    concept ConceptA = requires { foo<Ts>(); };
+                                      ^
+
+"Test_name.c", line 77: error: no instance of function template "GH138823::bar" matches the argument list
+            argument types are: (int)
+    void test() { bar(1); }
+                  ^
+"Test_name.c", line 75: note: substituting "<int>" for function template "GH138823::bar" failed constraints
+    template <ConceptB Foo> void bar(Foo);
+                                 ^
+"Test_name.c", line 75: note: concept "GH138823::ConceptB" not satisfied for "<int>"
+    template <ConceptB Foo> void bar(Foo);
+              ^
+"Test_name.c", line 73: note: concept "GH138823::ConceptA" not satisfied for "<int>"
+    concept ConceptB = ConceptA<int>;
+                       ^
+"Test_name.c", line 69: note: atomic constraint evaluates to false
+    concept ConceptA = requires { foo<Ts>(); };
+                       ^
+
+9 errors detected in the compilation of "Test_name.c".

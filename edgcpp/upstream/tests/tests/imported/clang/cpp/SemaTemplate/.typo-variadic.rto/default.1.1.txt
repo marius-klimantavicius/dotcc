@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 4: error: identifier "s" is undefined
+  int x = m(s...); // expected-error{{undeclared identifier}}
+            ^
+
+"Test_name.c", line 4: error: expected a ")"
+  int x = m(s...); // expected-error{{undeclared identifier}}
+             ^
+
+"Test_name.c", line 4: error: identifier "m" is undefined
+  int x = m(s...); // expected-error{{undeclared identifier}}
+          ^
+
+3 errors detected in the compilation of "Test_name.c".

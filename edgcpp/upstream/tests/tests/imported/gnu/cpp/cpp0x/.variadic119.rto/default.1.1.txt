@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: error: this range-based "for" statement requires a suitable "begin" function and none was found
+    for (int i : IS);		// { dg-error "not expanded" }
+                 ^
+
+"Test_name.c", line 9: error: parameter pack "IS" was referenced but not expanded
+    for (int i : IS);		// { dg-error "not expanded" }
+                 ^
+
+2 errors detected in the compilation of "Test_name.c".

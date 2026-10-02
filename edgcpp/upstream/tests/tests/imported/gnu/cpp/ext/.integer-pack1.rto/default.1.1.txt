@@ -1,0 +1,47 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: error: no suitable constructor exists to convert from "int" to "A<0, 1, 2, 3>"
+  TS<4> t = 1;			// { dg-error "A<0, 1, 2, 3>" }
+            ^
+
+"Test_name.c", line 13: error: a negative value is not permitted here
+  using TS2 = A<__integer_pack(N)...>; // { dg-error "argument" }
+                               ^
+          detected during instantiation of type "TS2<-1>" at line 15
+
+"Test_name.c", line 18: error: expected "..."
+  using TS2 = A<__integer_pack(N)>; // { dg-error "not expanded" }
+                                 ^
+
+"Test_name.c", line 21: error: expected a "("
+  using TS3 = A<__integer_pack>; // { dg-error "" }
+                              ^
+
+"Test_name.c", line 21: error: expected an expression
+  using TS3 = A<__integer_pack>; // { dg-error "" }
+                              ^
+
+"Test_name.c", line 21: error: expected an expression
+  using TS3 = A<__integer_pack>; // { dg-error "" }
+                               ^
+
+"Test_name.c", line 21: error: expected a ")"
+  using TS3 = A<__integer_pack>; // { dg-error "" }
+                               ^
+
+"Test_name.c", line 21: error: expected "..."
+  using TS3 = A<__integer_pack>; // { dg-error "" }
+                               ^
+
+"Test_name.c", line 21: error: expected a ">"
+  using TS3 = A<__integer_pack>; // { dg-error "" }
+                               ^
+
+"Test_name.c", line 23: error: expected an expression
+  int i = __integer_pack(2);	// { dg-error "__integer_pack" }
+          ^
+
+"Test_name.c", line 24: error: expected an expression
+  int j = __integer_pack(2)...;	// { dg-error "__integer_pack" }
+          ^
+
+11 errors detected in the compilation of "Test_name.c".

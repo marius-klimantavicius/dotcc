@@ -1,0 +1,18 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 24: error: "X::j" is ambiguous
+    X::j = 0;   // ambiguous
+       ^
+
+"Test_name.c", line 27: error: "Y::j" is ambiguous
+    Y::j = 0;   // ambiguous
+       ^
+
+"Test_name.c", line 30: error: "D::j" is ambiguous
+    D::j = 0;   // ambiguous
+       ^
+
+"Test_name.c", line 33: error: "D::j" is ambiguous
+    j = 0;      // ambiguous
+    ^
+
+4 errors detected in the compilation of "Test_name.c".

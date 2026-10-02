@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c11 Test_name.c
+"Test_name.c", line 17: error: this operator is not allowed in an integral constant expression
+  _Static_assert(&s != (void *)&f, ""); // c-pedantic-warning {{not an integer constant expression}} \
+                 ^
+
+"Test_name.c", line 17: error: this operator is not allowed in an integral constant expression
+  _Static_assert(&s != (void *)&f, ""); // c-pedantic-warning {{not an integer constant expression}} \
+                               ^
+
+"Test_name.c", line 17: error: expression must be an integral constant expression
+  _Static_assert(&s != (void *)&f, ""); // c-pedantic-warning {{not an integer constant expression}} \
+                                ^
+
+"Test_name.c", line 17: error: type of cast must be integral
+  _Static_assert(&s != (void *)&f, ""); // c-pedantic-warning {{not an integer constant expression}} \
+                        ^
+
+4 errors detected in the compilation of "Test_name.c".

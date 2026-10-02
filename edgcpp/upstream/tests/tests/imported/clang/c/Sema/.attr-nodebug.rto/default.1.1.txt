@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 5: warning: unknown attribute "nodebug"
+  int a __attribute__((nodebug));
+                       ^
+
+"Test_name.c", line 7: warning: unknown attribute "nodebug"
+  void b(int p __attribute__((nodebug))) { // expected-warning {{'nodebug' attribute only applies to typedefs, functions, function pointers, Objective-C methods, and variables}}
+                              ^
+
+"Test_name.c", line 8: warning: unknown attribute "nodebug"
+    int b __attribute__((nodebug));
+                         ^
+
+"Test_name.c", line 8: warning: variable "b" was declared but never referenced
+    int b __attribute__((nodebug));
+        ^
+
+"Test_name.c", line 11: warning: unknown attribute "nodebug"
+  void t1(void) __attribute__((nodebug));
+                               ^
+
+"Test_name.c", line 13: warning: unknown attribute "nodebug"
+  void t2(void) __attribute__((nodebug(2))); // expected-error {{'nodebug' attribute takes no arguments}}
+                               ^
+

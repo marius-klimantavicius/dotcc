@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 6: error: this declaration may not have extern "C" linkage
+    template<typename _Tp>  // { dg-error "C" }   
+    ^
+
+"Test_name.c", line 9: error: name followed by "::" must be a class or namespace name
+        __value = (sizeof(__gnu_internal::__test_type<_Tp>(0)))}; // { dg-error "expected|declared"  }
+                          ^
+
+At end of source: error: expected a "}"
+"Test_name.c", line 7: note: to match this "{"
+    struct ___is_pod {
+                     ^
+
+At end of source: error: expected a ";"
+
+4 errors detected in the compilation of "Test_name.c".

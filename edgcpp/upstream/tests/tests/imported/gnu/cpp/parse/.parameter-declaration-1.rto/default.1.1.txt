@@ -1,0 +1,49 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: error: a parameter may not have void type
+    a(void = 0; a(0), a(0) // { dg-error "invalid|cannot|before|forbid|member" }
+      ^
+
+"Test_name.c", line 8: error: expected a ")"
+    a(void = 0; a(0), a(0) // { dg-error "invalid|cannot|before|forbid|member" }
+              ^
+
+"Test_name.c", line 8: error: explicit type is missing ("int" assumed)
+    a(void = 0; a(0), a(0) // { dg-error "invalid|cannot|before|forbid|member" }
+    ^
+
+"Test_name.c", line 8: error: expected a type specifier
+    a(void = 0; a(0), a(0) // { dg-error "invalid|cannot|before|forbid|member" }
+                  ^
+
+"Test_name.c", line 8: error: explicit type is missing ("int" assumed)
+    a(void = 0; a(0), a(0) // { dg-error "invalid|cannot|before|forbid|member" }
+                ^
+
+"Test_name.c", line 8: error: invalid redeclaration of member function "<unnamed>::a(<error-type>)" (declared at line 8)
+    a(void = 0; a(0), a(0) // { dg-error "invalid|cannot|before|forbid|member" }
+                ^
+
+"Test_name.c", line 8: error: expected a type specifier
+    a(void = 0; a(0), a(0) // { dg-error "invalid|cannot|before|forbid|member" }
+                        ^
+
+"Test_name.c", line 8: error: explicit type is missing ("int" assumed)
+    a(void = 0; a(0), a(0) // { dg-error "invalid|cannot|before|forbid|member" }
+                      ^
+
+"Test_name.c", line 8: error: invalid redeclaration of member function "<unnamed>::a(<error-type>)" (declared at line 8)
+    a(void = 0; a(0), a(0) // { dg-error "invalid|cannot|before|forbid|member" }
+                      ^
+
+At end of source: error: expected a ";"
+
+At end of source: error: expected a "}"
+"Test_name.c", line 7: note: to match this "{"
+  struct {
+         ^
+
+At end of source: error: expected an identifier
+
+At end of source: error: expected a ";"
+
+13 errors detected in the compilation of "Test_name.c".

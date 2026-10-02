@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --c++ --c23_typeof Test_name.c
+Command-line error: option "c23_typeof" can be used only when compiling C
+
+1 catastrophic error detected in this compilation.
+Compilation terminated.

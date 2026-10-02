@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 Test_name.c
+"Test_name.c", line 8: error: argument list for class template "PR51547::A" is missing
+  auto p = new A[]{}; // cxx14-error {{use of class template 'A' requires template arguments}} \
+               ^
+
+"Test_name.c", line 8: error: expected a type specifier
+  auto p = new A[]{}; // cxx14-error {{use of class template 'A' requires template arguments}} \
+               ^
+
+2 errors detected in the compilation of "Test_name.c".

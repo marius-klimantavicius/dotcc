@@ -1,0 +1,26 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 20: warning: use of alternative token "<:" appears to be unintended
+    X<::Y::B> x;
+    ^
+
+"Test_name.c", line 20: error: argument list for class template "X" is missing
+    X<::Y::B> x;
+    ^
+
+"Test_name.c", line 20: error: expected an identifier
+    X<::Y::B> x;
+     ^
+
+"Test_name.c", line 20: error: expected an expression
+    X<::Y::B> x;
+       ^
+
+"Test_name.c", line 20: error: expected a "]"
+    X<::Y::B> x;
+               ^
+
+"Test_name.c", line 21: error: identifier "x" is undefined
+    x.foo();
+    ^
+
+5 errors detected in the compilation of "Test_name.c".

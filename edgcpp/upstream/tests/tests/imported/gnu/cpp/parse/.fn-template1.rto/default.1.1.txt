@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 14: error: expected a ">"
+    f < a; // { dg-error "invalid" "" { target c++2a } }
+         ^
+
+"Test_name.c", line 15: error: expected a ">"
+    bool b = f < a; // { dg-error "invalid" "" { target c++2a } }
+                  ^
+
+2 errors detected in the compilation of "Test_name.c".

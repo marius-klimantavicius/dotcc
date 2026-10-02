@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 7: error: a reference of type "void (&)() noexcept" (not const-qualified) cannot be initialized with a value of type "void ()"
+  void (&s)() noexcept = r; // expected-error {{cannot bind}}
+                         ^
+
+"Test_name.c", line 9: error: initial value of reference to non-const must be an lvalue
+  void (&cond1)() noexcept = true ? r : f; // expected-error {{cannot bind}}
+                             ^
+
+"Test_name.c", line 10: error: initial value of reference to non-const must be an lvalue
+  void (&cond2)() noexcept = true ? f : r; // expected-error {{cannot bind}}
+                             ^
+
+"Test_name.c", line 14: error: initial value of reference to non-const must be an lvalue
+  void (&cond3)() = true ? r : f;
+                    ^
+
+"Test_name.c", line 15: error: initial value of reference to non-const must be an lvalue
+  void (&cond4)() = true ? f : r;
+                    ^
+
+5 errors detected in the compilation of "Test_name.c".

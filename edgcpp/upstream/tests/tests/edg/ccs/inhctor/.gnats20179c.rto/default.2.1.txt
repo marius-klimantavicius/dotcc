@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=2 --c++17 -DNEG Test_name.c
+"Test_name.c", line 19: error: the sub-object construction of "Y" for inheriting constructors cannot be performed -- the associated constructor is deleted
+  Y y; // Calls X::X() - a trivial ctor
+    ^
+
+1 error detected in the compilation of "Test_name.c".

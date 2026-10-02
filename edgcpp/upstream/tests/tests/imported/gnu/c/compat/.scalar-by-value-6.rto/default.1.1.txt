@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 3: warning: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+  TEST_FUNCS (longdouble_i, long double, int, d, -987)
+              ^
+
+"Test_name.c", line 3: error: expected an identifier
+  TEST_FUNCS (longdouble_i, long double, int, d, -987)
+                            ^
+
+"Test_name.c", line 3: error: expected an identifier
+  TEST_FUNCS (longdouble_i, long double, int, d, -987)
+                                         ^
+
+"Test_name.c", line 3: error: expected an identifier
+  TEST_FUNCS (longdouble_i, long double, int, d, -987)
+                                                 ^
+
+"Test_name.c", line 3: warning: explicit type is missing ("int" assumed)
+  TEST_FUNCS (longdouble_i, long double, int, d, -987)
+  ^
+
+"Test_name.c", line 4: error: expected a declaration
+  TEST_FUNCS (longdouble_d, long double, double, d, -987.0)
+  ^
+
+"Test_name.c", line 3: warning: standard requires that parameter "longdouble_i" be given a type by a subsequent declaration ("int" assumed)
+  TEST_FUNCS (longdouble_i, long double, int, d, -987)
+              ^
+
+"Test_name.c", line 3: warning: standard requires that parameter "d" be given a type by a subsequent declaration ("int" assumed)
+  TEST_FUNCS (longdouble_i, long double, int, d, -987)
+                                              ^
+
+At end of source: error: expected a "{"
+
+At end of source: error: expected a "}"
+
+6 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gcc --upc Test_name.c
+"Test_name.c", line 14: error: MYTHREAD not allowed in this context
+  int i = MYTHREAD;
+          ^
+
+"Test_name.c", line 15: error: THREADS not allowed in this context
+  int j = THREADS;
+          ^
+
+"Test_name.c", line 16: error: expression must have a constant value
+  int a[2+THREADS];
+         ^
+
+3 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c89 --strict_gnu Test_name.c
+"Test_name.c", line 36: error: expected a ";"
+    void f3a (void) { return; }
+                    ^
+
+"Test_name.c", line 39: warning: parsing restarts here after previous syntax error
+    void f3d (f) int f; { return; }
+                      ^
+
+"Test_name.c", line 40: error: expected a ";"
+    void f3e (const char *f, ...) { return; }
+                                  ^
+
+"Test_name.c", line 46: error: expected a ";"
+    void f4a (void) { return; }
+                    ^
+
+"Test_name.c", line 49: warning: parsing restarts here after previous syntax error
+    void f4d (f) int f; { return; }
+                      ^
+
+"Test_name.c", line 50: error: expected a ";"
+    void f4e (const char *f, ...) { return; }
+                                  ^
+
+"Test_name.c", line 58: error: expected a ";"
+    void f5a (void) { return; }
+                    ^
+
+"Test_name.c", line 61: warning: parsing restarts here after previous syntax error
+    void f5d (f) int f; { return; }
+                      ^
+
+"Test_name.c", line 62: error: expected a ";"
+    void f5e (const char *f, ...) { return; }
+                                  ^
+
+"Test_name.c", line 69: error: expected a ";"
+    void f6a (void) { return; }
+                    ^
+
+"Test_name.c", line 72: warning: parsing restarts here after previous syntax error
+    void f6d (f) int f; { return; }
+                      ^
+
+"Test_name.c", line 73: error: expected a ";"
+    void f6e (const char *f, ...) { return; }
+                                  ^
+
+8 errors detected in the compilation of "Test_name.c".

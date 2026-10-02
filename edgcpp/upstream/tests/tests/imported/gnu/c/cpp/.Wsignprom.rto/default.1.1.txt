@@ -1,0 +1,56 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc -E Test_name.c
+# 1 "Test_name.c"
+
+
+ 
+ 
+
+
+ 
+
+"Test_name.c", line 9: warning: integer conversion resulted in a change of sign
+  #if -1 > 0U  /* { dg-warning "5:changes sign when promoted" } */
+      ^
+
+
+
+
+"Test_name.c", line 12: warning: integer conversion resulted in a change of sign
+  #if 0U + -1  /* { dg-warning "10:changes sign when promoted" } */
+           ^
+
+
+
+
+"Test_name.c", line 15: warning: integer conversion resulted in a change of sign
+  #if 0U * -1  /* { dg-warning "10:changes sign when promoted" } */
+           ^
+
+
+
+
+"Test_name.c", line 18: warning: integer conversion resulted in a change of sign
+  #if 1U / -2  /* { dg-warning "10:changes sign when promoted" } */
+           ^
+
+
+
+
+"Test_name.c", line 21: warning: integer conversion resulted in a change of sign
+  #if -1 % 1U  /* { dg-warning "5:changes sign when promoted" } */
+      ^
+
+
+
+
+"Test_name.c", line 24: warning: integer conversion resulted in a change of sign
+  #if 1 ? 0U : -1  /* { dg-warning "14:changes sign when promoted" } */
+               ^
+
+
+
+
+"Test_name.c", line 27: warning: integer conversion resulted in a change of sign
+  #if 1 ? -1 : 0U  /* { dg-warning "9:changes sign when promoted" } */
+          ^
+

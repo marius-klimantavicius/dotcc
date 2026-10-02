@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 13: warning: variable "a" was set but never used
+      decltype(auto) a = x;
+                     ^
+
+"Test_name.c", line 18: warning: variable "b" was set but never used
+      decltype(auto) b = y;
+                     ^
+
+"Test_name.c", line 35: warning: variable "a" was set but never used
+      decltype(auto) a = x;
+                     ^
+
+"Test_name.c", line 40: warning: variable "b" was set but never used
+      decltype(auto) b = y;
+                     ^
+
+"Test_name.c", line 45: warning: variable "ca" was set but never used
+      decltype(auto) ca = cx;
+                     ^
+
+"Test_name.c", line 50: warning: variable "cb" was set but never used
+      decltype(auto) cb = cy;
+                     ^
+

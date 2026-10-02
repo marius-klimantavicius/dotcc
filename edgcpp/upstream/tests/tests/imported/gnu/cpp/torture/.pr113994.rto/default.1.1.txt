@@ -1,0 +1,5 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./torture/pr113994.C", line 19: warning: unknown attribute "noipa"
+  __attribute__((noipa)) void
+                 ^
+

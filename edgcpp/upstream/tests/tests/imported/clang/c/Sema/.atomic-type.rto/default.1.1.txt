@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 20: error: type "int (void)" cannot be _Atomic because it is an array or function type
+  _Atomic(int(void)) error1; // expected-error {{_Atomic cannot be applied to function type}}
+          ^
+
+"Test_name.c", line 22: error: type "int [10]" cannot be _Atomic because it is an array or function type
+  _Atomic(int[10]) error3; // expected-error {{_Atomic cannot be applied to array type}}
+          ^
+
+"Test_name.c", line 23: error: the _Atomic(...) specifier cannot be applied to qualified type "const int"
+  _Atomic(const int) error4; // expected-error {{_Atomic cannot be applied to qualified type}}
+          ^
+
+"Test_name.c", line 24: error: the _Atomic(...) specifier cannot be applied to qualified type "_Atomic(int)"
+  _Atomic(_Atomic(int)) error5; // expected-error {{_Atomic cannot be applied to atomic type}}
+          ^
+
+"Test_name.c", line 21: error: variable "error2" was declared with a never-completed type
+  _Atomic(struct ErrorS) error2; // expected-error {{_Atomic cannot be applied to incomplete type}} expected-note {{forward declaration}}
+                         ^
+
+5 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 10: error: identifier "__int128" is undefined
+    struct limits<__int128> { }; // { dg-error "does not support" }
+                  ^
+
+"Test_name.c", line 13: error: expected a ">"
+    struct limits<unsigned __int128> { }; // { dg-error "does not support" }
+                           ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,28 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 17: error: no suitable conversion function from "A" to "int" exists
+    int i = a;			// { dg-error "" }
+            ^
+
+"Test_name.c", line 18: error: no suitable conversion function from "A" to "const int" exists
+    const int &ir = a;		// { dg-error "" }
+                    ^
+
+"Test_name.c", line 19: error: call of an object of a class type without appropriate operator() or conversion functions to pointer-to-function type
+    a();				// { dg-error "" }
+    ^
+
+"Test_name.c", line 20: error: no operator "+" matches these operands
+            operand types are: A + int
+    a + 1;			// { dg-message "" } (error and note on same line)
+      ^
+"Test_name.c", line 20: note: built-in operator+(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    a + 1;			// { dg-message "" } (error and note on same line)
+      ^
+"Test_name.c", line 20: note: built-in operator+(<pointer to object>, <ptrdiff_t>) does not match because argument #1 does not match parameter
+    a + 1;			// { dg-message "" } (error and note on same line)
+      ^
+"Test_name.c", line 20: note: built-in operator+(<ptrdiff_t>, <pointer to object>) does not match because argument #1 does not match parameter
+    a + 1;			// { dg-message "" } (error and note on same line)
+      ^
+
+4 errors detected in the compilation of "Test_name.c".

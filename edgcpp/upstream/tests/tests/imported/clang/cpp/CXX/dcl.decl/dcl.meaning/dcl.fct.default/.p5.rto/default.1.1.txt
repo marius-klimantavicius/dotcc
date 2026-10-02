@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 7: error: default argument of type "float *" is incompatible with parameter of type "int *"
+  void f0(int *ip = &global_f); // expected-error{{cannot initialize}} \
+                    ^
+
+"Test_name.c", line 18: warning: variable "a" was declared but never referenced
+      int *a = 0;
+           ^
+
+1 error detected in the compilation of "Test_name.c".

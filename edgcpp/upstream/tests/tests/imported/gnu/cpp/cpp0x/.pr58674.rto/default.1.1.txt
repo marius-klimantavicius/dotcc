@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 12: error: expression must have a constant value
+    B<T::i> b;  // { dg-error "not usable" }
+      ^
+"Test_name.c", line 12: note: the value of member "X::i" (declared at line 17) cannot be used as a constant
+    B<T::i> b;  // { dg-error "not usable" }
+      ^
+          detected during instantiation of class "C<T> [with T=X]" at line 20
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 -w -DSKIP_ERROR_TESTS Test_name.c
+"Test_name.c", line 10: error: invalid combination of type specifiers
+    unsigned wchar_t y; // expected-error {{'wchar_t' cannot be signed or unsigned}}
+    ^
+
+"Test_name.c", line 11: error: invalid combination of type specifiers
+    signed wchar_t z; // expected-error {{'wchar_t' cannot be signed or unsigned}}
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

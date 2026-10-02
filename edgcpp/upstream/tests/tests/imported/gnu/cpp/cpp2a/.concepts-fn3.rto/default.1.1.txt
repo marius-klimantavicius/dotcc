@@ -1,0 +1,77 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 36: error: no instance of function template "f1" matches the argument list
+            argument types are: (int, int, unsigned int)
+    f1(1, 2, 3u); // { dg-error "" }
+    ^
+"Test_name.c", line 17: note: substituting "<int, int, unsigned int>" for function template "f1" failed constraints
+  void f1(integral auto... args) { }
+       ^
+"Test_name.c", line 17: note: concept "integral" not satisfied for "<unsigned int>"
+  void f1(integral auto... args) { }
+          ^
+"Test_name.c", line 12: note: atomic constraint evaluates to false
+  concept integral = __is_same_as(T, int);
+                     ^
+
+"Test_name.c", line 38: error: no instance of function template "f2" matches the argument list
+            argument types are: (int, int, unsigned int)
+    f2(1, 2, 3u); // { dg-error "" }
+    ^
+"Test_name.c", line 15: note: concept "integral" not satisfied for "<unsigned int>"
+  concept all_integral = (integral<Ts> && ...);
+                          ^
+
+"Test_name.c", line 40: error: no instance of function template "f3" matches the argument list
+            argument types are: (int, int, unsigned int)
+    f3(1, 2, 3u); // { dg-error "" }
+    ^
+"Test_name.c", line 21: note: substituting "<int, int, unsigned int>" for function template "f3" failed constraints
+  void f3(T, integral auto... args) { }
+       ^
+"Test_name.c", line 21: note: concept "integral" not satisfied for "<unsigned int>"
+  void f3(T, integral auto... args) { }
+             ^
+"Test_name.c", line 12: note: atomic constraint evaluates to false
+  concept integral = __is_same_as(T, int);
+                     ^
+
+"Test_name.c", line 45: error: no instance of function template "S<T>::f1 [with T=void]" matches the argument list
+            argument types are: (int, int, unsigned int)
+            object type is: S<void>
+    s.f1(1, 2, 3u); // { dg-error "no matching function" }
+      ^
+"Test_name.c", line 26: note: substituting "<int, int, unsigned int>" for function template "S<T>::f1 [with T=void]" failed constraints
+    void f1(integral auto... args) { }
+         ^
+"Test_name.c", line 26: note: concept "integral" not satisfied for "<unsigned int>"
+    void f1(integral auto... args) { }
+            ^
+"Test_name.c", line 12: note: atomic constraint evaluates to false
+  concept integral = __is_same_as(T, int);
+                     ^
+
+"Test_name.c", line 47: error: no instance of function template "S<T>::f2 [with T=void]" matches the argument list
+            argument types are: (int, int, unsigned int)
+            object type is: S<void>
+    s.f2(1, 2, 3u); // { dg-error "no matching function" }
+      ^
+"Test_name.c", line 15: note: concept "integral" not satisfied for "<unsigned int>"
+  concept all_integral = (integral<Ts> && ...);
+                          ^
+
+"Test_name.c", line 49: error: no instance of function template "S<T>::f3 [with T=void]" matches the argument list
+            argument types are: (int, int, unsigned int)
+            object type is: S<void>
+    s.f3(1, 2, 3u); // { dg-error "no matching function" }
+      ^
+"Test_name.c", line 30: note: substituting "<int, int, unsigned int>" for function template "S<T>::f3 [with T=void]" failed constraints
+    void f3(U, integral auto... args) { }
+         ^
+"Test_name.c", line 30: note: concept "integral" not satisfied for "<unsigned int>"
+    void f3(U, integral auto... args) { }
+               ^
+"Test_name.c", line 12: note: atomic constraint evaluates to false
+  concept integral = __is_same_as(T, int);
+                     ^
+
+6 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --microsoft Test_name.c
+"Test_name.c", line 12: warning: declaring a void parameter list with a template parameter is nonstandard
+    int f(T);
+          ^
+          detected during instantiation of class "S<T> [with T=void]" at line 14
+

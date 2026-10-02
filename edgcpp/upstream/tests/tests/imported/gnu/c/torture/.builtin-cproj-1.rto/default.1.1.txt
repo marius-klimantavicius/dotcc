@@ -1,0 +1,626 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 127: error: complex integral types are not supported
+    TEST_CST_INF (INF+0I, 0);
+    ^
+
+"Test_name.c", line 127: error: complex integral types are not supported
+    TEST_CST_INF (INF+0I, 0);
+    ^
+
+"Test_name.c", line 127: error: complex integral types are not supported
+    TEST_CST_INF (INF+0I, 0);
+    ^
+
+"Test_name.c", line 127: error: complex integral types are not supported
+    TEST_CST_INF (INF+0I, 0);
+    ^
+
+"Test_name.c", line 127: error: complex integral types are not supported
+    TEST_CST_INF (INF+0I, 0);
+    ^
+
+"Test_name.c", line 127: error: complex integral types are not supported
+    TEST_CST_INF (INF+0I, 0);
+    ^
+
+"Test_name.c", line 128: error: complex integral types are not supported
+    TEST_CST_INF (INF-0I, -0.FI);
+    ^
+
+"Test_name.c", line 128: error: complex integral types are not supported
+    TEST_CST_INF (INF-0I, -0.FI);
+    ^
+
+"Test_name.c", line 128: error: complex integral types are not supported
+    TEST_CST_INF (INF-0I, -0.FI);
+    ^
+
+"Test_name.c", line 128: error: complex integral types are not supported
+    TEST_CST_INF (INF-0I, -0.FI);
+    ^
+
+"Test_name.c", line 128: error: complex integral types are not supported
+    TEST_CST_INF (INF-0I, -0.FI);
+    ^
+
+"Test_name.c", line 128: error: complex integral types are not supported
+    TEST_CST_INF (INF-0I, -0.FI);
+    ^
+
+"Test_name.c", line 129: error: complex integral types are not supported
+    TEST_CST_INF (INF+4I, 0);
+    ^
+
+"Test_name.c", line 129: error: complex integral types are not supported
+    TEST_CST_INF (INF+4I, 0);
+    ^
+
+"Test_name.c", line 129: error: complex integral types are not supported
+    TEST_CST_INF (INF+4I, 0);
+    ^
+
+"Test_name.c", line 129: error: complex integral types are not supported
+    TEST_CST_INF (INF+4I, 0);
+    ^
+
+"Test_name.c", line 129: error: complex integral types are not supported
+    TEST_CST_INF (INF+4I, 0);
+    ^
+
+"Test_name.c", line 129: error: complex integral types are not supported
+    TEST_CST_INF (INF+4I, 0);
+    ^
+
+"Test_name.c", line 130: error: complex integral types are not supported
+    TEST_CST_INF (INF-4I, -0.FI);
+    ^
+
+"Test_name.c", line 130: error: complex integral types are not supported
+    TEST_CST_INF (INF-4I, -0.FI);
+    ^
+
+"Test_name.c", line 130: error: complex integral types are not supported
+    TEST_CST_INF (INF-4I, -0.FI);
+    ^
+
+"Test_name.c", line 130: error: complex integral types are not supported
+    TEST_CST_INF (INF-4I, -0.FI);
+    ^
+
+"Test_name.c", line 130: error: complex integral types are not supported
+    TEST_CST_INF (INF-4I, -0.FI);
+    ^
+
+"Test_name.c", line 130: error: complex integral types are not supported
+    TEST_CST_INF (INF-4I, -0.FI);
+    ^
+
+"Test_name.c", line 131: error: complex integral types are not supported
+    TEST_CST_INF (-INF+0I, 0);
+    ^
+
+"Test_name.c", line 131: error: complex integral types are not supported
+    TEST_CST_INF (-INF+0I, 0);
+    ^
+
+"Test_name.c", line 131: error: complex integral types are not supported
+    TEST_CST_INF (-INF+0I, 0);
+    ^
+
+"Test_name.c", line 131: error: complex integral types are not supported
+    TEST_CST_INF (-INF+0I, 0);
+    ^
+
+"Test_name.c", line 131: error: complex integral types are not supported
+    TEST_CST_INF (-INF+0I, 0);
+    ^
+
+"Test_name.c", line 131: error: complex integral types are not supported
+    TEST_CST_INF (-INF+0I, 0);
+    ^
+
+"Test_name.c", line 132: error: complex integral types are not supported
+    TEST_CST_INF (-INF-0I, -0.FI);
+    ^
+
+"Test_name.c", line 132: error: complex integral types are not supported
+    TEST_CST_INF (-INF-0I, -0.FI);
+    ^
+
+"Test_name.c", line 132: error: complex integral types are not supported
+    TEST_CST_INF (-INF-0I, -0.FI);
+    ^
+
+"Test_name.c", line 132: error: complex integral types are not supported
+    TEST_CST_INF (-INF-0I, -0.FI);
+    ^
+
+"Test_name.c", line 132: error: complex integral types are not supported
+    TEST_CST_INF (-INF-0I, -0.FI);
+    ^
+
+"Test_name.c", line 132: error: complex integral types are not supported
+    TEST_CST_INF (-INF-0I, -0.FI);
+    ^
+
+"Test_name.c", line 133: error: complex integral types are not supported
+    TEST_CST_INF (-INF+4I, 0);
+    ^
+
+"Test_name.c", line 133: error: complex integral types are not supported
+    TEST_CST_INF (-INF+4I, 0);
+    ^
+
+"Test_name.c", line 133: error: complex integral types are not supported
+    TEST_CST_INF (-INF+4I, 0);
+    ^
+
+"Test_name.c", line 133: error: complex integral types are not supported
+    TEST_CST_INF (-INF+4I, 0);
+    ^
+
+"Test_name.c", line 133: error: complex integral types are not supported
+    TEST_CST_INF (-INF+4I, 0);
+    ^
+
+"Test_name.c", line 133: error: complex integral types are not supported
+    TEST_CST_INF (-INF+4I, 0);
+    ^
+
+"Test_name.c", line 134: error: complex integral types are not supported
+    TEST_CST_INF (-INF-4I, -0.FI);
+    ^
+
+"Test_name.c", line 134: error: complex integral types are not supported
+    TEST_CST_INF (-INF-4I, -0.FI);
+    ^
+
+"Test_name.c", line 134: error: complex integral types are not supported
+    TEST_CST_INF (-INF-4I, -0.FI);
+    ^
+
+"Test_name.c", line 134: error: complex integral types are not supported
+    TEST_CST_INF (-INF-4I, -0.FI);
+    ^
+
+"Test_name.c", line 134: error: complex integral types are not supported
+    TEST_CST_INF (-INF-4I, -0.FI);
+    ^
+
+"Test_name.c", line 134: error: complex integral types are not supported
+    TEST_CST_INF (-INF-4I, -0.FI);
+    ^
+
+"Test_name.c", line 136: error: complex integral types are not supported
+    TEST_CST_INF (0+I*INF, 0);
+    ^
+
+"Test_name.c", line 136: error: complex integral types are not supported
+    TEST_CST_INF (0+I*INF, 0);
+    ^
+
+"Test_name.c", line 136: error: complex integral types are not supported
+    TEST_CST_INF (0+I*INF, 0);
+    ^
+
+"Test_name.c", line 136: error: complex integral types are not supported
+    TEST_CST_INF (0+I*INF, 0);
+    ^
+
+"Test_name.c", line 136: error: complex integral types are not supported
+    TEST_CST_INF (0+I*INF, 0);
+    ^
+
+"Test_name.c", line 136: error: complex integral types are not supported
+    TEST_CST_INF (0+I*INF, 0);
+    ^
+
+"Test_name.c", line 137: error: complex integral types are not supported
+    TEST_CST_INF (0-I*INF, -0.FI);
+    ^
+
+"Test_name.c", line 137: error: complex integral types are not supported
+    TEST_CST_INF (0-I*INF, -0.FI);
+    ^
+
+"Test_name.c", line 137: error: complex integral types are not supported
+    TEST_CST_INF (0-I*INF, -0.FI);
+    ^
+
+"Test_name.c", line 137: error: complex integral types are not supported
+    TEST_CST_INF (0-I*INF, -0.FI);
+    ^
+
+"Test_name.c", line 137: error: complex integral types are not supported
+    TEST_CST_INF (0-I*INF, -0.FI);
+    ^
+
+"Test_name.c", line 137: error: complex integral types are not supported
+    TEST_CST_INF (0-I*INF, -0.FI);
+    ^
+
+"Test_name.c", line 138: error: complex integral types are not supported
+    TEST_CST_INF (23+I*INF, 0);
+    ^
+
+"Test_name.c", line 138: error: complex integral types are not supported
+    TEST_CST_INF (23+I*INF, 0);
+    ^
+
+"Test_name.c", line 138: error: complex integral types are not supported
+    TEST_CST_INF (23+I*INF, 0);
+    ^
+
+"Test_name.c", line 138: error: complex integral types are not supported
+    TEST_CST_INF (23+I*INF, 0);
+    ^
+
+"Test_name.c", line 138: error: complex integral types are not supported
+    TEST_CST_INF (23+I*INF, 0);
+    ^
+
+"Test_name.c", line 138: error: complex integral types are not supported
+    TEST_CST_INF (23+I*INF, 0);
+    ^
+
+"Test_name.c", line 139: error: complex integral types are not supported
+    TEST_CST_INF (23-I*INF, -0.FI);
+    ^
+
+"Test_name.c", line 139: error: complex integral types are not supported
+    TEST_CST_INF (23-I*INF, -0.FI);
+    ^
+
+"Test_name.c", line 139: error: complex integral types are not supported
+    TEST_CST_INF (23-I*INF, -0.FI);
+    ^
+
+"Test_name.c", line 139: error: complex integral types are not supported
+    TEST_CST_INF (23-I*INF, -0.FI);
+    ^
+
+"Test_name.c", line 139: error: complex integral types are not supported
+    TEST_CST_INF (23-I*INF, -0.FI);
+    ^
+
+"Test_name.c", line 139: error: complex integral types are not supported
+    TEST_CST_INF (23-I*INF, -0.FI);
+    ^
+
+"Test_name.c", line 140: error: complex integral types are not supported
+    TEST_CST_INF (-0.F+I*INF, 0);
+    ^
+
+"Test_name.c", line 140: error: complex integral types are not supported
+    TEST_CST_INF (-0.F+I*INF, 0);
+    ^
+
+"Test_name.c", line 140: error: complex integral types are not supported
+    TEST_CST_INF (-0.F+I*INF, 0);
+    ^
+
+"Test_name.c", line 140: error: complex integral types are not supported
+    TEST_CST_INF (-0.F+I*INF, 0);
+    ^
+
+"Test_name.c", line 140: error: complex integral types are not supported
+    TEST_CST_INF (-0.F+I*INF, 0);
+    ^
+
+"Test_name.c", line 140: error: complex integral types are not supported
+    TEST_CST_INF (-0.F+I*INF, 0);
+    ^
+
+"Test_name.c", line 141: error: complex integral types are not supported
+    TEST_CST_INF (-0.F-I*INF, -0.FI);
+    ^
+
+"Test_name.c", line 141: error: complex integral types are not supported
+    TEST_CST_INF (-0.F-I*INF, -0.FI);
+    ^
+
+"Test_name.c", line 141: error: complex integral types are not supported
+    TEST_CST_INF (-0.F-I*INF, -0.FI);
+    ^
+
+"Test_name.c", line 141: error: complex integral types are not supported
+    TEST_CST_INF (-0.F-I*INF, -0.FI);
+    ^
+
+"Test_name.c", line 141: error: complex integral types are not supported
+    TEST_CST_INF (-0.F-I*INF, -0.FI);
+    ^
+
+"Test_name.c", line 141: error: complex integral types are not supported
+    TEST_CST_INF (-0.F-I*INF, -0.FI);
+    ^
+
+"Test_name.c", line 142: error: complex integral types are not supported
+    TEST_CST_INF (-23+I*INF, 0);
+    ^
+
+"Test_name.c", line 142: error: complex integral types are not supported
+    TEST_CST_INF (-23+I*INF, 0);
+    ^
+
+"Test_name.c", line 142: error: complex integral types are not supported
+    TEST_CST_INF (-23+I*INF, 0);
+    ^
+
+"Test_name.c", line 142: error: complex integral types are not supported
+    TEST_CST_INF (-23+I*INF, 0);
+    ^
+
+"Test_name.c", line 142: error: complex integral types are not supported
+    TEST_CST_INF (-23+I*INF, 0);
+    ^
+
+"Test_name.c", line 142: error: complex integral types are not supported
+    TEST_CST_INF (-23+I*INF, 0);
+    ^
+
+"Test_name.c", line 143: error: complex integral types are not supported
+    TEST_CST_INF (-23-I*INF, -0.FI);
+    ^
+
+"Test_name.c", line 143: error: complex integral types are not supported
+    TEST_CST_INF (-23-I*INF, -0.FI);
+    ^
+
+"Test_name.c", line 143: error: complex integral types are not supported
+    TEST_CST_INF (-23-I*INF, -0.FI);
+    ^
+
+"Test_name.c", line 143: error: complex integral types are not supported
+    TEST_CST_INF (-23-I*INF, -0.FI);
+    ^
+
+"Test_name.c", line 143: error: complex integral types are not supported
+    TEST_CST_INF (-23-I*INF, -0.FI);
+    ^
+
+"Test_name.c", line 143: error: complex integral types are not supported
+    TEST_CST_INF (-23-I*INF, -0.FI);
+    ^
+
+"Test_name.c", line 145: error: complex integral types are not supported
+    TEST_CST_INF (INF+I*INF, 0);
+    ^
+
+"Test_name.c", line 145: error: complex integral types are not supported
+    TEST_CST_INF (INF+I*INF, 0);
+    ^
+
+"Test_name.c", line 145: error: complex integral types are not supported
+    TEST_CST_INF (INF+I*INF, 0);
+    ^
+
+"Test_name.c", line 145: error: complex integral types are not supported
+    TEST_CST_INF (INF+I*INF, 0);
+    ^
+
+"Test_name.c", line 145: error: complex integral types are not supported
+    TEST_CST_INF (INF+I*INF, 0);
+    ^
+
+"Test_name.c", line 145: error: complex integral types are not supported
+    TEST_CST_INF (INF+I*INF, 0);
+    ^
+
+"Test_name.c", line 146: error: complex integral types are not supported
+    TEST_CST_INF (INF-I*INF, -0.FI);
+    ^
+
+"Test_name.c", line 146: error: complex integral types are not supported
+    TEST_CST_INF (INF-I*INF, -0.FI);
+    ^
+
+"Test_name.c", line 146: error: complex integral types are not supported
+    TEST_CST_INF (INF-I*INF, -0.FI);
+    ^
+
+"Test_name.c", line 146: error: complex integral types are not supported
+    TEST_CST_INF (INF-I*INF, -0.FI);
+    ^
+
+"Test_name.c", line 146: error: complex integral types are not supported
+    TEST_CST_INF (INF-I*INF, -0.FI);
+    ^
+
+"Test_name.c", line 146: error: complex integral types are not supported
+    TEST_CST_INF (INF-I*INF, -0.FI);
+    ^
+
+"Test_name.c", line 147: error: complex integral types are not supported
+    TEST_CST_INF (-INF+I*INF, 0);
+    ^
+
+"Test_name.c", line 147: error: complex integral types are not supported
+    TEST_CST_INF (-INF+I*INF, 0);
+    ^
+
+"Test_name.c", line 147: error: complex integral types are not supported
+    TEST_CST_INF (-INF+I*INF, 0);
+    ^
+
+"Test_name.c", line 147: error: complex integral types are not supported
+    TEST_CST_INF (-INF+I*INF, 0);
+    ^
+
+"Test_name.c", line 147: error: complex integral types are not supported
+    TEST_CST_INF (-INF+I*INF, 0);
+    ^
+
+"Test_name.c", line 147: error: complex integral types are not supported
+    TEST_CST_INF (-INF+I*INF, 0);
+    ^
+
+"Test_name.c", line 148: error: complex integral types are not supported
+    TEST_CST_INF (-INF-I*INF, -0.FI);
+    ^
+
+"Test_name.c", line 148: error: complex integral types are not supported
+    TEST_CST_INF (-INF-I*INF, -0.FI);
+    ^
+
+"Test_name.c", line 148: error: complex integral types are not supported
+    TEST_CST_INF (-INF-I*INF, -0.FI);
+    ^
+
+"Test_name.c", line 148: error: complex integral types are not supported
+    TEST_CST_INF (-INF-I*INF, -0.FI);
+    ^
+
+"Test_name.c", line 148: error: complex integral types are not supported
+    TEST_CST_INF (-INF-I*INF, -0.FI);
+    ^
+
+"Test_name.c", line 148: error: complex integral types are not supported
+    TEST_CST_INF (-INF-I*INF, -0.FI);
+    ^
+
+"Test_name.c", line 155: error: complex integral types are not supported
+    TEST_CST (22+3I);
+    ^
+
+"Test_name.c", line 155: error: complex integral types are not supported
+    TEST_CST (22+3I);
+    ^
+
+"Test_name.c", line 155: error: complex integral types are not supported
+    TEST_CST (22+3I);
+    ^
+
+"Test_name.c", line 155: error: complex integral types are not supported
+    TEST_CST (22+3I);
+    ^
+
+"Test_name.c", line 155: error: complex integral types are not supported
+    TEST_CST (22+3I);
+    ^
+
+"Test_name.c", line 155: error: complex integral types are not supported
+    TEST_CST (22+3I);
+    ^
+
+"Test_name.c", line 156: error: complex integral types are not supported
+    TEST_CST (22-3I);
+    ^
+
+"Test_name.c", line 156: error: complex integral types are not supported
+    TEST_CST (22-3I);
+    ^
+
+"Test_name.c", line 156: error: complex integral types are not supported
+    TEST_CST (22-3I);
+    ^
+
+"Test_name.c", line 156: error: complex integral types are not supported
+    TEST_CST (22-3I);
+    ^
+
+"Test_name.c", line 156: error: complex integral types are not supported
+    TEST_CST (22-3I);
+    ^
+
+"Test_name.c", line 156: error: complex integral types are not supported
+    TEST_CST (22-3I);
+    ^
+
+"Test_name.c", line 157: error: complex integral types are not supported
+    TEST_CST (-22+3I);
+    ^
+
+"Test_name.c", line 157: error: complex integral types are not supported
+    TEST_CST (-22+3I);
+    ^
+
+"Test_name.c", line 157: error: complex integral types are not supported
+    TEST_CST (-22+3I);
+    ^
+
+"Test_name.c", line 157: error: complex integral types are not supported
+    TEST_CST (-22+3I);
+    ^
+
+"Test_name.c", line 157: error: complex integral types are not supported
+    TEST_CST (-22+3I);
+    ^
+
+"Test_name.c", line 157: error: complex integral types are not supported
+    TEST_CST (-22+3I);
+    ^
+
+"Test_name.c", line 158: error: complex integral types are not supported
+    TEST_CST (-22-3I);
+    ^
+
+"Test_name.c", line 158: error: complex integral types are not supported
+    TEST_CST (-22-3I);
+    ^
+
+"Test_name.c", line 158: error: complex integral types are not supported
+    TEST_CST (-22-3I);
+    ^
+
+"Test_name.c", line 158: error: complex integral types are not supported
+    TEST_CST (-22-3I);
+    ^
+
+"Test_name.c", line 158: error: complex integral types are not supported
+    TEST_CST (-22-3I);
+    ^
+
+"Test_name.c", line 158: error: complex integral types are not supported
+    TEST_CST (-22-3I);
+    ^
+
+"Test_name.c", line 160: error: complex integral types are not supported
+    TEST_IMAG_INF (,0.FI);
+    ^
+
+"Test_name.c", line 160: error: complex integral types are not supported
+    TEST_IMAG_INF (,0.FI);
+    ^
+
+"Test_name.c", line 160: error: complex integral types are not supported
+    TEST_IMAG_INF (,0.FI);
+    ^
+
+"Test_name.c", line 160: error: complex integral types are not supported
+    TEST_IMAG_INF (,0.FI);
+    ^
+
+"Test_name.c", line 160: error: complex integral types are not supported
+    TEST_IMAG_INF (,0.FI);
+    ^
+
+"Test_name.c", line 160: error: complex integral types are not supported
+    TEST_IMAG_INF (,0.FI);
+    ^
+
+"Test_name.c", line 161: error: complex integral types are not supported
+    TEST_IMAG_INF (-,-0.FI);
+    ^
+
+"Test_name.c", line 161: error: complex integral types are not supported
+    TEST_IMAG_INF (-,-0.FI);
+    ^
+
+"Test_name.c", line 161: error: complex integral types are not supported
+    TEST_IMAG_INF (-,-0.FI);
+    ^
+
+"Test_name.c", line 161: error: complex integral types are not supported
+    TEST_IMAG_INF (-,-0.FI);
+    ^
+
+"Test_name.c", line 161: error: complex integral types are not supported
+    TEST_IMAG_INF (-,-0.FI);
+    ^
+
+"Test_name.c", line 161: error: complex integral types are not supported
+    TEST_IMAG_INF (-,-0.FI);
+    ^
+
+156 errors detected in the compilation of "Test_name.c".

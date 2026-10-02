@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c89 --strict_gnu Test_name.c
+"Test_name.c", line 6: error: identifier "w" is undefined
+  w *x; /* { dg-error "unknown type name 'w'" } */
+  ^
+
+"Test_name.c", line 9: error: identifier "y" is undefined
+  y         /* { dg-error "unknown type name 'y'" } */
+  ^
+
+"Test_name.c", line 10: error: declaration is incompatible with "int z" (declared at line 8)
+    * z;    /* { dg-error "conflicting " } */
+      ^
+
+"Test_name.c", line 15: warning: variable "d" is used before its value is set
+    d * e; /* { dg-bogus "unknown type name 'd'" } */
+    ^
+
+"Test_name.c", line 15: warning: variable "e" is used before its value is set
+    d * e; /* { dg-bogus "unknown type name 'd'" } */
+        ^
+
+"Test_name.c", line 15: warning: expression has no effect
+    d * e; /* { dg-bogus "unknown type name 'd'" } */
+    ^
+
+"Test_name.c", line 16: error: identifier "g" is undefined
+    g * h; /* { dg-error "unknown type name 'g'" } */
+    ^
+
+"Test_name.c", line 16: error: identifier "h" is undefined
+    g * h; /* { dg-error "unknown type name 'g'" } */
+        ^
+
+"Test_name.c", line 18: error: expected a ";"
+    g i;   /* { dg-error "unknown type name 'g'" } */
+      ^
+
+"Test_name.c", line 19: warning: missing return statement at end of non-void function "f1"
+  }
+  ^
+
+"Test_name.c", line 26: error: a declaration cannot have a label
+  c: d e; /* { dg-error "a label can only be part of a statement" } */
+     ^
+
+"Test_name.c", line 26: error: identifier "d" is undefined
+  c: d e; /* { dg-error "a label can only be part of a statement" } */
+     ^
+
+"Test_name.c", line 29: warning: missing return statement at end of non-void function "f2"
+  }
+  ^
+
+"Test_name.c", line 25: warning: label "b" was declared but never referenced
+  b: a: ; /* { dg-bogus "a label can only be part of a statement" } */
+  ^
+
+"Test_name.c", line 25: warning: label "a" was declared but never referenced
+  b: a: ; /* { dg-bogus "a label can only be part of a statement" } */
+     ^
+
+"Test_name.c", line 26: warning: label "c" was declared but never referenced
+  c: d e; /* { dg-error "a label can only be part of a statement" } */
+  ^
+
+8 errors detected in the compilation of "Test_name.c".

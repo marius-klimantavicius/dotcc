@@ -1,0 +1,8 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 14: error: object of abstract class type "E" is not allowed:
+            pure virtual function "A::f" has no overrider
+            pure virtual function "A::f" has no overrider
+  E b;
+    ^
+
+1 error detected in the compilation of "Test_name.c".

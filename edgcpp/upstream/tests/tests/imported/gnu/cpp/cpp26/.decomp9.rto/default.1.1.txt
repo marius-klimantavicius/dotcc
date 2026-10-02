@@ -1,0 +1,134 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 18: warning: structured bindings are a C++17 feature
+    if (auto [ i, j, k, l ] = a)			// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+             ^
+
+"Test_name.c", line 18: error: structured binding is not allowed in a condition
+    if (auto [ i, j, k, l ] = a)			// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+             ^
+
+"Test_name.c", line 20: warning: structured bindings are a C++17 feature
+    if (auto & [a, b, c] = "ht")			// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+               ^
+
+"Test_name.c", line 20: error: structured binding is not allowed in a condition
+    if (auto & [a, b, c] = "ht")			// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+               ^
+
+"Test_name.c", line 22: warning: structured bindings are a C++17 feature
+    if (auto const & [i, j] = s)			// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                     ^
+
+"Test_name.c", line 22: error: structured binding is not allowed in a condition
+    if (auto const & [i, j] = s)			// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                     ^
+
+"Test_name.c", line 24: warning: structured bindings are a C++17 feature
+    if (auto const & [i, j, k] = t)		// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                     ^
+
+"Test_name.c", line 24: error: structured binding is not allowed in a condition
+    if (auto const & [i, j, k] = t)		// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                     ^
+
+"Test_name.c", line 28: warning: structured bindings are a C++17 feature
+    if (auto [i, j, k, l] = u)			// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+             ^
+
+"Test_name.c", line 28: error: structured binding is not allowed in a condition
+    if (auto [i, j, k, l] = u)			// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+             ^
+
+"Test_name.c", line 30: warning: structured bindings are a C++17 feature
+    if (auto [i] = x)				// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+             ^
+
+"Test_name.c", line 30: error: type "X" has no components to bind to
+    if (auto [i] = x)				// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+             ^
+
+"Test_name.c", line 30: error: structured binding is not allowed in a condition
+    if (auto [i] = x)				// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+             ^
+
+"Test_name.c", line 33: warning: structured bindings are a C++17 feature
+    if (auto [i, j, k] = s)			// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+             ^
+
+"Test_name.c", line 33: error: too many identifiers
+    if (auto [i, j, k] = s)			// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                    ^
+
+"Test_name.c", line 33: error: structured binding is not allowed in a condition
+    if (auto [i, j, k] = s)			// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+             ^
+
+"Test_name.c", line 36: warning: structured bindings are a C++17 feature
+    if (auto [i] = s)				// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+             ^
+
+"Test_name.c", line 36: error: there are more elements than there are binding names
+    if (auto [i] = s)				// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+             ^
+
+"Test_name.c", line 36: error: structured binding is not allowed in a condition
+    if (auto [i] = s)				// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+             ^
+
+"Test_name.c", line 39: warning: structured bindings are a C++17 feature
+    switch (auto [a, b, c] = "ht")		// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                 ^
+
+"Test_name.c", line 39: error: structured binding is not allowed in a condition
+    switch (auto [a, b, c] = "ht")		// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                 ^
+
+"Test_name.c", line 44: warning: structured bindings are a C++17 feature
+    switch (auto const & [i, j] = s)		// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                         ^
+
+"Test_name.c", line 44: error: structured binding is not allowed in a condition
+    switch (auto const & [i, j] = s)		// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                         ^
+
+"Test_name.c", line 50: warning: structured bindings are a C++17 feature
+    switch (auto const & [i, j, k] = t)		// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                         ^
+
+"Test_name.c", line 50: error: structured binding is not allowed in a condition
+    switch (auto const & [i, j, k] = t)		// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                         ^
+
+"Test_name.c", line 56: warning: structured bindings are a C++17 feature
+    switch (auto [i, j, k, l] = u)		// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                 ^
+
+"Test_name.c", line 56: error: structured binding is not allowed in a condition
+    switch (auto [i, j, k, l] = u)		// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                 ^
+
+"Test_name.c", line 65: warning: structured bindings are a C++17 feature
+    if (static auto [i, j, k] = t)		// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                    ^
+
+"Test_name.c", line 65: error: a structured binding cannot declare an explicit storage class
+    if (static auto [i, j, k] = t)		// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+        ^
+
+"Test_name.c", line 65: error: structured binding is not allowed in a condition
+    if (static auto [i, j, k] = t)		// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                    ^
+
+"Test_name.c", line 68: warning: structured bindings are a C++17 feature
+    if (constexpr auto [i, j, k] = t)		// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                       ^
+
+"Test_name.c", line 68: error: a structured binding cannot be declared "constexpr"
+    if (constexpr auto [i, j, k] = t)		// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+        ^
+
+"Test_name.c", line 68: error: structured binding is not allowed in a condition
+    if (constexpr auto [i, j, k] = t)		// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                       ^
+
+19 errors detected in the compilation of "Test_name.c".

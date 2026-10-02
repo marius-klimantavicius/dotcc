@@ -1,0 +1,61 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 Test_name.c
+"Test_name.c", line 66: warning: access to member of _Atomic object
+    t1.i = at1.i; /* { dg-warning "accessing a member .i. of an atomic structure" } */
+           ^
+
+"Test_name.c", line 67: warning: access to member of _Atomic object
+    at1.i = t1.i; /* { dg-warning "accessing a member .i. of an atomic structure" } */
+    ^
+
+"Test_name.c", line 68: warning: access to member of _Atomic object
+    atp1->i = t1.i; /* { dg-warning "accessing a member .i. of an atomic structure" } */
+    ^
+
+"Test_name.c", line 73: warning: access to member of _Atomic object
+    v1.i = av1.i; /* { dg-warning "accessing a member .i. of an atomic union" } */
+           ^
+
+"Test_name.c", line 74: warning: access to member of _Atomic object
+    av1.i = v1.i; /* { dg-warning "accessing a member .i. of an atomic union" } */
+    ^
+
+"Test_name.c", line 86: warning: type qualifier on return type is meaningless
+  _Atomic int
+  ^
+
+"Test_name.c", line 96: warning: type qualifier is meaningless on cast type
+    return func2 ((_Atomic long) i);
+                   ^
+
+"Test_name.c", line 141: warning: variable "i" was declared but never referenced
+    int i = *aiclp;
+        ^
+
+"Test_name.c", line 142: warning: variable "p" was declared but never referenced
+    _Atomic int *p = &ai2;
+                 ^
+
+"Test_name.c", line 147: warning: type qualifier is meaningless on cast type
+  int i2 = (_Atomic int) 1.0;
+            ^
+
+"Test_name.c", line 201: warning: a value of type "_Atomic(struct t) *" cannot be assigned to an entity of type "void *"
+    xvp1 = atp1;
+         ^
+
+"Test_name.c", line 265: warning: division by zero
+    p[0 / 0] = 1; /* { dg-warning "division by zero" } */
+        ^
+
+"Test_name.c", line 266: warning: division by zero
+    p[0 / 0] += 1; /* { dg-warning "division by zero" } */
+        ^
+
+"Test_name.c", line 267: warning: division by zero
+    *p = 0 / 0; /* { dg-warning "division by zero" } */
+           ^
+
+"Test_name.c", line 268: warning: division by zero
+    *p += 0 / 0; /* { dg-warning "division by zero" } */
+            ^
+

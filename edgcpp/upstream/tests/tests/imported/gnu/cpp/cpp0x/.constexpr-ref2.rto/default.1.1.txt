@@ -1,0 +1,35 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 7: error: expression must have a constant value
+  constexpr int& ri = *p;		// { dg-error "p" }
+                      ^
+"Test_name.c", line 7: note: the value of variable "p" (declared at line 6) cannot be used as a constant
+  constexpr int& ri = *p;		// { dg-error "p" }
+                       ^
+
+"Test_name.c", line 9: error: missing initializer for constexpr variable
+  extern constexpr int &er;	// { dg-error "not a definition|not a constant" }
+         ^
+
+"Test_name.c", line 15: error: expression must have a constant value
+    constexpr int const& ri = i;	// { dg-error "" }
+                              ^
+"Test_name.c", line 15: note: attempt to access run-time storage
+    constexpr int const& ri = i;	// { dg-error "" }
+                              ^
+
+"Test_name.c", line 17: error: expression must have a constant value
+    constexpr int& rj = j;	// { dg-error "" }
+                        ^
+"Test_name.c", line 17: note: a pointer or reference to parameter "j" (declared at line 12) cannot be used as a constant
+    constexpr int& rj = j;	// { dg-error "" }
+                        ^
+
+"Test_name.c", line 15: warning: variable "ri" was declared but never referenced
+    constexpr int const& ri = i;	// { dg-error "" }
+                         ^
+
+"Test_name.c", line 17: warning: variable "rj" was declared but never referenced
+    constexpr int& rj = j;	// { dg-error "" }
+                   ^
+
+4 errors detected in the compilation of "Test_name.c".

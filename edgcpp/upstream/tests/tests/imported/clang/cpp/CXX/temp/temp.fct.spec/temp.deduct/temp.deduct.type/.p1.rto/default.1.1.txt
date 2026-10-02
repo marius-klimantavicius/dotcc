@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 11: error: no instance of function template "cv_mismatch::f" matches the argument list
+            argument types are: (cv_mismatch::X<volatile int>)
+    void g() { f(X<volatile int>()); } // expected-error {{no matching}}
+               ^
+"Test_name.c", line 10: note: candidate function template "cv_mismatch::f" failed deduction
+    template<typename T> void f(X<const T>); // expected-note {{cannot deduce a type for 'T' that would make 'const T' equal 'volatile int'}}
+                              ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 29: warning: a class type that is not trivially copyable passed through ellipsis
+    vararg(x2); // expected-error{{cannot pass object of non-trivial type 'X2' through variadic function; call will abort at runtime}}
+           ^
+
+"Test_name.c", line 31: warning: a class type that is not trivially copyable passed through ellipsis
+    vararg(x4); // expected-error{{cannot pass object of non-trivial type 'X4' through variadic function; call will abort at runtime}}
+           ^
+
+"Test_name.c", line 33: error: incomplete type "void" is not allowed
+    vararg(g()); // expected-error{{cannot pass expression of type 'void' to variadic function}}
+           ^
+
+"Test_name.c", line 34: error: a brace-enclosed list cannot be passed for an ellipsis parameter
+    vararg({1, 2, 3}); // expected-error{{cannot pass initializer list to variadic function}}
+           ^
+
+"Test_name.c", line 46: error: incomplete type "PR11131::S" is not allowed
+      (void)sizeof(f(getS()));
+                     ^
+
+3 errors detected in the compilation of "Test_name.c".

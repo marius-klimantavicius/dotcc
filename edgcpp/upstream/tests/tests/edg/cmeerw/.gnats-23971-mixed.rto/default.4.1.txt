@@ -1,0 +1,47 @@
+fe_only -DTEST_NUMBER=4 --c++17 -DFAIL=1 Test_name.c
+"Test_name.c", line 143: error: function "use_before_spec::C<I>::fn<J>() [with I=0, J=0]" has already been defined (previous definition at line 134)
+    constexpr CLS C<0>::fn<0>()   // already defined
+                        ^
+
+"Test_name.c", line 143: error: "constexpr" is not valid here
+    constexpr CLS C<0>::fn<0>()   // already defined
+    ^
+
+"Test_name.c", line 157: error: class template "use_before_spec::C" has already been defined (previous definition at line 124)
+    struct C
+           ^
+
+"Test_name.c", line 176: error: no instance of function template "use_before_spec::C<I>::fn [with I=0]" matches the specified type
+    constexpr auto C<0>::fn<0>()   // already defined
+                         ^
+
+"Test_name.c", line 176: error: "constexpr" is not valid here
+    constexpr auto C<0>::fn<0>()   // already defined
+    ^
+
+"Test_name.c", line 204: error: function "non_tmpl::C::fn<J>() [with J=1]" has already been defined (previous definition at line 200)
+      void fn<1>()                // already defined
+           ^
+
+"Test_name.c", line 214: error: variable "non_tmpl::C::var<0>" has already been initialized
+      inline int var<0> = 0;      // already defined
+                 ^
+
+"Test_name.c", line 221: error: function "non_tmpl::C::fn<J>() [with J=0]" has already been defined (previous definition at line 196)
+    void C::fn<0>()               // already defined
+            ^
+
+"Test_name.c", line 225: error: variable "non_tmpl::C::var<1>" has already been initialized
+    inline int C::var<1> = 1;     // already defined
+                  ^
+
+"Test_name.c", line 252: error: variable "tmpl::C<I>::var<0>" has already been initialized
+      inline int var<0> = 0;      // already defined
+                 ^
+
+"Test_name.c", line 242: error: function "tmpl::C<I>::fn<J>() [with I=0, J=0]" has already been defined (previous definition at line 238)
+      void fn<0>()                // already defined
+           ^
+          detected during instantiation of class "tmpl::C<I> [with I=0]" at line 255
+
+11 errors detected in the compilation of "Test_name.c".

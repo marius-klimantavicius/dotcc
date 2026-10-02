@@ -1,0 +1,48 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 31: error: the size of an array must be greater than zero
+                     has_nondeduced_pack_test<int(float, double, int),
+                     ^
+
+"Test_name.c", line 39: error: no instance of function template "has_non_trailing_pack_and_more" matches the required type
+  void (*ptr_has_non_trailing_pack_and_more_2)(float, double, int) = &has_non_trailing_pack_and_more<float>; // expected-error {{does not match}}
+                                                                     ^
+
+"Test_name.c", line 49: error: a class or namespace qualified name is required
+    template<typename T, typename ...> struct X { using type = typename T::error; };
+                                                                        ^
+          detected during instantiation of class "VariadicVsInitList::X<T, <unnamed>...> [with T=int, <unnamed>=<>]" at line 63
+
+"Test_name.c", line 49: error: expected a ";"
+    template<typename T, typename ...> struct X { using type = typename T::error; };
+                                                                         ^
+          detected during instantiation of class "VariadicVsInitList::X<T, <unnamed>...> [with T=int, <unnamed>=<>]" at line 63
+
+"Test_name.c", line 49: error: a class or namespace qualified name is required
+    template<typename T, typename ...> struct X { using type = typename T::error; };
+                                                                        ^
+          detected during instantiation of class "VariadicVsInitList::X<T, <unnamed>...> [with T=int, <unnamed>=<int>]" at line 65
+
+"Test_name.c", line 49: error: expected a ";"
+    template<typename T, typename ...> struct X { using type = typename T::error; };
+                                                                         ^
+          detected during instantiation of class "VariadicVsInitList::X<T, <unnamed>...> [with T=int, <unnamed>=<int>]" at line 65
+
+"Test_name.c", line 49: error: a class or namespace qualified name is required
+    template<typename T, typename ...> struct X { using type = typename T::error; };
+                                                                        ^
+          detected during instantiation of class "VariadicVsInitList::X<T, <unnamed>...> [with T=int, <unnamed>=<int, int>]" at line 66
+
+"Test_name.c", line 49: error: expected a ";"
+    template<typename T, typename ...> struct X { using type = typename T::error; };
+                                                                         ^
+          detected during instantiation of class "VariadicVsInitList::X<T, <unnamed>...> [with T=int, <unnamed>=<int, int>]" at line 66
+
+"Test_name.c", line 68: error: no instance of function template "VariadicVsInitList::g" matches the argument list
+            argument types are: ({...})
+      g({0}); // expected-error {{no matching function}}
+      ^
+"Test_name.c", line 56: note: function template "VariadicVsInitList::g" does not match because argument #1 is provided for an empty parameter pack
+    template<typename ...T> void g(T ...) = delete; // expected-note {{substitution failure: deduced incomplete pack <(no value)> for template parameter 'T'}}
+                                 ^
+
+9 errors detected in the compilation of "Test_name.c".

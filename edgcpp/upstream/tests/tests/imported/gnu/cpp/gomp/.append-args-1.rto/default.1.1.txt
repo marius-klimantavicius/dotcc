@@ -1,0 +1,81 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 20: warning: unrecognized #pragma
+  #pragma omp declare variant(repl1) match(construct={dispatch}) append_args(interop(target,prefer_type(1,5,4)), interop(targetsync))
+          ^
+
+"Test_name.c", line 32: warning: unrecognized #pragma
+  #pragma omp declare variant(repl3inval) match(construct={dispatch}) adjust_args(nothing : y) \
+          ^
+
+"Test_name.c", line 46: warning: unrecognized #pragma
+  #pragma omp declare variant(repl99) match(construct={dispatch}) \
+          ^
+
+"Test_name.c", line 56: warning: unrecognized #pragma
+  #pragma omp declare variant(repl2) match(construct={dispatch}) adjust_args(need_device_ptr : y) \
+          ^
+
+"Test_name.c", line 68: warning: unrecognized #pragma
+  #pragma omp declare variant(tooFewRepl) match(construct={dispatch}) \
+          ^
+
+"Test_name.c", line 83: warning: unrecognized #pragma
+  #pragma omp declare variant(repl3) match(construct={dispatch}) \
+          ^
+
+"Test_name.c", line 98: warning: unrecognized #pragma
+    #pragma omp dispatch interop ( obj1, obj2 ) device(2) // OK
+            ^
+
+"Test_name.c", line 101: warning: unrecognized #pragma
+    #pragma omp dispatch interop ( obj1, obj2 ) // { dg-error "the 'device' clause must be present if the 'interop' clause has more than one list item" }
+            ^
+
+"Test_name.c", line 104: warning: unrecognized #pragma
+    #pragma omp dispatch
+            ^
+
+"Test_name.c", line 107: warning: unrecognized #pragma
+    #pragma omp dispatch
+            ^
+
+"Test_name.c", line 111: warning: unrecognized #pragma
+    #pragma omp dispatch interop ( obj1 )
+            ^
+
+"Test_name.c", line 115: warning: unrecognized #pragma
+    #pragma omp dispatch interop ( obj1 )
+            ^
+
+"Test_name.c", line 119: warning: unrecognized #pragma
+    #pragma omp dispatch interop ( obj1 )
+            ^
+
+"Test_name.c", line 123: warning: unrecognized #pragma
+    #pragma omp dispatch interop ( obj1 )
+            ^
+
+"Test_name.c", line 127: warning: unrecognized #pragma
+    #pragma omp dispatch
+            ^
+
+"Test_name.c", line 130: warning: unrecognized #pragma
+    #pragma omp dispatch nocontext(1)
+            ^
+
+"Test_name.c", line 133: warning: unrecognized #pragma
+    #pragma omp dispatch
+            ^
+
+"Test_name.c", line 95: warning: variable "obj1" was declared but never referenced
+    omp_interop_t obj1, obj2;
+                  ^
+
+"Test_name.c", line 95: warning: variable "obj2" was declared but never referenced
+    omp_interop_t obj1, obj2;
+                        ^
+
+"Test_name.c", line 96: warning: variable "y" was declared but never referenced
+    float x, y;
+             ^
+

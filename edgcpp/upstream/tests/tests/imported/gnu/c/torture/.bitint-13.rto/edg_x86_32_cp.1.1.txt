@@ -1,0 +1,33 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 --strict_gnu Test_name.c
+"Test_name.c", line 36: warning: signed bit field of length 1
+    int i : 1;
+        ^
+
+"Test_name.c", line 39: warning: signed bit field of length 1
+    int128 l : int128_bitfld (120);
+           ^
+
+"Test_name.c", line 93: warning: variable "a" was declared but never referenced
+    int a;
+        ^
+
+"Test_name.c", line 94: warning: variable "b" was declared but never referenced
+    long long b;
+              ^
+
+"Test_name.c", line 95: warning: variable "c" was declared but never referenced
+    int128 c;
+           ^
+
+"Test_name.c", line 96: warning: variable "d" was declared but never referenced
+    unsigned short d;
+                   ^
+
+"Test_name.c", line 97: warning: variable "e" was declared but never referenced
+    unsigned long long e;
+                       ^
+
+"Test_name.c", line 98: warning: variable "f" was declared but never referenced
+    unsigned int128 f;
+                    ^
+

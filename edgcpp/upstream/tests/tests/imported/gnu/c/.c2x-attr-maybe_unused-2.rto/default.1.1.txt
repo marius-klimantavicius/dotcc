@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 10: warning: expected a declaration
+  [[maybe_unused]]; /* { dg-error "ignored" } */
+                  ^
+
+"Test_name.c", line 12: error: attribute "maybe_unused" does not apply here
+  int [[maybe_unused]] var; /* { dg-error "ignored" } */
+        ^
+
+"Test_name.c", line 14: error: attribute "maybe_unused" does not apply here
+  int array_with_dep_type[2] [[maybe_unused]]; /* { dg-error "ignored" } */
+                               ^
+
+"Test_name.c", line 16: error: attribute "maybe_unused" does not apply here
+  void fn_with_dep_type () [[maybe_unused]]; /* { dg-error "ignored" } */
+                             ^
+
+"Test_name.c", line 18: error: attribute "__maybe_unused__" does not apply here
+  int z = sizeof (int [[__maybe_unused__]]); /* { dg-error "ignored" } */
+                        ^
+
+"Test_name.c", line 24: warning: attribute "maybe_unused" does not apply here
+    [[maybe_unused]]; /* { dg-error "ignored" } */
+      ^
+
+"Test_name.c", line 25: warning: attribute "maybe_unused" does not apply here
+    [[maybe_unused]] a = 1; /* { dg-error "ignored" } */
+      ^
+
+"Test_name.c", line 23: warning: variable "a" was set but never used
+    int a;
+        ^
+
+4 errors detected in the compilation of "Test_name.c".

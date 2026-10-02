@@ -1,0 +1,96 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 13: error: expression must have a constant value
+  constexpr auto v1 = f1 ();
+                      ^
+"Test_name.c", line 13: note: invalid use of address of interpreter storage
+  constexpr auto v1 = f1 ();
+                      ^
+
+"Test_name.c", line 22: error: expression must have a constant value
+  constexpr auto v2 = f2 ();
+                      ^
+"Test_name.c", line 22: note: some dynamic allocations (total number = 1) were not deallocated
+  constexpr auto v2 = f2 ();
+                      ^
+"Test_name.c", line 18: note: allocation occurred here
+    int *p = new int (3);		// { dg-error "is not a constant expression because allocated storage has not been deallocated" }
+             ^
+
+"Test_name.c", line 34: error: expression must have a constant value
+  constexpr auto v3 = f3 ();	// { dg-message "in 'constexpr' expansion of" }
+                      ^
+"Test_name.c", line 30: note: deallocation of storage that was not dynamically allocated
+    delete q;			// { dg-error "deallocation of already deallocated storage" }
+    ^
+
+"Test_name.c", line 44: error: expression must have a constant value
+  constexpr auto v4 = f4 (&q);	// { dg-message "in 'constexpr' expansion of" }
+                      ^
+"Test_name.c", line 39: note: deallocation of storage that was not dynamically allocated
+    delete p;			// { dg-error "destroying 'q' from outside current evaluation" }
+    ^
+
+"Test_name.c", line 53: error: expression must have a constant value
+  constexpr auto v5 = f5 (); 	// { dg-message "in 'constexpr' expansion of" }
+                      ^
+"Test_name.c", line 50: note: access to uninitialized object
+    return *p == 1;		// { dg-error "the content of uninitialized storage is not usable in a constant expression" }
+           ^
+
+"Test_name.c", line 64: error: expression must have a constant value
+  constexpr auto v6 = f6 (); 	// { dg-message "in 'constexpr' expansion of" }
+                      ^
+"Test_name.c", line 61: note: attempt to access expired storage
+    return *q == 2;		// { dg-error "use of allocated storage after deallocation in a constant expression" }
+           ^
+
+"Test_name.c", line 74: error: expression must have a constant value
+  constexpr auto v7 = f7 ();
+                      ^
+"Test_name.c", line 74: note: invalid use of address of interpreter storage
+  constexpr auto v7 = f7 ();
+                      ^
+
+"Test_name.c", line 89: error: expression must have a constant value
+  constexpr auto v8 = f8 ();	// { dg-message "in 'constexpr' expansion of" }
+                      ^
+"Test_name.c", line 79: note: deallocation of storage that was not dynamically allocated
+    delete p;			// { dg-error "deallocation of storage that was not previously allocated" }
+    ^
+"Test_name.c", line 87: note: called from:
+    return f8_impl (&q);
+                   ^
+
+"Test_name.c", line 13: warning: variable "v1" was declared but never referenced
+  constexpr auto v1 = f1 ();
+                 ^
+
+"Test_name.c", line 22: warning: variable "v2" was declared but never referenced
+  constexpr auto v2 = f2 ();
+                 ^
+
+"Test_name.c", line 34: warning: variable "v3" was declared but never referenced
+  constexpr auto v3 = f3 ();	// { dg-message "in 'constexpr' expansion of" }
+                 ^
+
+"Test_name.c", line 44: warning: variable "v4" was declared but never referenced
+  constexpr auto v4 = f4 (&q);	// { dg-message "in 'constexpr' expansion of" }
+                 ^
+
+"Test_name.c", line 53: warning: variable "v5" was declared but never referenced
+  constexpr auto v5 = f5 (); 	// { dg-message "in 'constexpr' expansion of" }
+                 ^
+
+"Test_name.c", line 64: warning: variable "v6" was declared but never referenced
+  constexpr auto v6 = f6 (); 	// { dg-message "in 'constexpr' expansion of" }
+                 ^
+
+"Test_name.c", line 74: warning: variable "v7" was declared but never referenced
+  constexpr auto v7 = f7 ();
+                 ^
+
+"Test_name.c", line 89: warning: variable "v8" was declared but never referenced
+  constexpr auto v8 = f8 ();	// { dg-message "in 'constexpr' expansion of" }
+                 ^
+
+8 errors detected in the compilation of "Test_name.c".

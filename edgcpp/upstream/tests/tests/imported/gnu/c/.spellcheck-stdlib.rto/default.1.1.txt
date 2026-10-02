@@ -1,0 +1,78 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./spellcheck-stdlib.c", line 3: error: identifier "NULL" is undefined
+  void *ptr = NULL;
+              ^
+
+"./spellcheck-stdlib.c", line 6: error: identifier "ptrdiff_t" is undefined
+  ptrdiff_t pd;
+  ^
+
+"./spellcheck-stdlib.c", line 9: error: identifier "wchar_t" is undefined
+  wchar_t wc;
+  ^
+
+"./spellcheck-stdlib.c", line 12: error: identifier "size_t" is undefined
+  size_t sz;
+  ^
+
+"./spellcheck-stdlib.c", line 19: error: identifier "FILE" is undefined
+    FILE *f;
+    ^
+
+"./spellcheck-stdlib.c", line 19: error: identifier "f" is undefined
+    FILE *f;
+          ^
+
+"./spellcheck-stdlib.c", line 22: error: identifier "BUFSIZ" is undefined
+    char buf[BUFSIZ];
+             ^
+
+"./spellcheck-stdlib.c", line 25: error: identifier "FILENAME_MAX" is undefined
+    char buf2[FILENAME_MAX];
+              ^
+
+"./spellcheck-stdlib.c", line 28: error: identifier "stderr" is undefined
+    stderr;
+    ^
+
+"./spellcheck-stdlib.c", line 31: error: identifier "stdin" is undefined
+    stdin;
+    ^
+
+"./spellcheck-stdlib.c", line 34: error: identifier "stdout" is undefined
+    stdout;
+    ^
+
+"./spellcheck-stdlib.c", line 37: error: identifier "EOF" is undefined
+    EOF;
+    ^
+
+"./spellcheck-stdlib.c", line 45: error: identifier "EXIT_SUCCESS" is undefined
+    i = EXIT_SUCCESS;
+        ^
+
+"./spellcheck-stdlib.c", line 47: error: identifier "EXIT_FAILURE" is undefined
+    i = EXIT_FAILURE;
+        ^
+
+"./spellcheck-stdlib.c", line 43: warning: parameter "i" was set but never used
+  void test_stdlib (int i)
+                        ^
+
+"./spellcheck-stdlib.c", line 55: error: identifier "errno" is undefined
+    return errno;
+           ^
+
+"./spellcheck-stdlib.c", line 63: error: identifier "va_list" is undefined
+    va_list ap;
+    ^
+
+"./spellcheck-stdlib.c", line 70: error: identifier "INT_MAX" is undefined
+    return INT_MAX;
+           ^
+
+"./spellcheck-stdlib.c", line 77: error: identifier "FLT_MAX" is undefined
+  float test_FLT_MAX = FLT_MAX;
+                       ^
+
+18 errors detected in the compilation of "Test_name.c".

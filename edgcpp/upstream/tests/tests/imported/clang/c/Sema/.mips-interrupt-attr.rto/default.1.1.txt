@@ -1,0 +1,93 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 6: warning: unknown attribute "interrupt"
+  struct a test __attribute__((interrupt)); // expected-warning {{'interrupt' attribute only applies to functions and methods}}
+                               ^
+
+"Test_name.c", line 8: warning: unknown attribute "interrupt"
+  __attribute((interrupt(42))) void foo0(void) {} // expected-error {{expected string literal as argument of 'interrupt' attribute}} 
+               ^
+
+"Test_name.c", line 9: warning: unknown attribute "interrupt"
+  __attribute__((interrupt("EIC"))) void foo1(void) {} // expected-warning {{'interrupt' attribute argument not supported: 'EIC'}}
+                 ^
+
+"Test_name.c", line 11: warning: unknown attribute "interrupt"
+  __attribute__((interrupt("eic", 1))) void foo2(void) {} // expected-error {{'interrupt' attribute takes no more than 1 argument}}
+                 ^
+
+"Test_name.c", line 13: warning: unknown attribute "interrupt"
+  __attribute__((interrupt("eic"))) void foo3(void) {}
+                 ^
+
+"Test_name.c", line 14: warning: unknown attribute "interrupt"
+  __attribute__((interrupt("vector=sw0"))) void foo4(void) {}
+                 ^
+
+"Test_name.c", line 15: warning: unknown attribute "interrupt"
+  __attribute__((interrupt("vector=hw0"))) void foo5(void) {}
+                 ^
+
+"Test_name.c", line 16: warning: unknown attribute "interrupt"
+  __attribute__((interrupt("vector=hw1"))) void foo6(void) {}
+                 ^
+
+"Test_name.c", line 17: warning: unknown attribute "interrupt"
+  __attribute__((interrupt("vector=hw2"))) void foo7(void) {}
+                 ^
+
+"Test_name.c", line 18: warning: unknown attribute "interrupt"
+  __attribute__((interrupt("vector=hw3"))) void foo8(void) {}
+                 ^
+
+"Test_name.c", line 19: warning: unknown attribute "interrupt"
+  __attribute__((interrupt("vector=hw4"))) void foo9(void) {}
+                 ^
+
+"Test_name.c", line 20: warning: unknown attribute "interrupt"
+  __attribute__((interrupt("vector=hw5"))) void fooa(void) {}
+                 ^
+
+"Test_name.c", line 21: warning: unknown attribute "interrupt"
+  __attribute__((interrupt(""))) void food(void) {}
+                 ^
+
+"Test_name.c", line 23: warning: unknown attribute "interrupt"
+  __attribute__((interrupt)) int foob(void) {return 0;} // expected-warning {{MIPS 'interrupt' attribute only applies to functions that have a 'void' return type}}
+                 ^
+
+"Test_name.c", line 24: warning: unknown attribute "interrupt"
+  __attribute__((interrupt())) void fooc(int a) {} // expected-warning {{MIPS 'interrupt' attribute only applies to functions that have no parameters}}
+                 ^
+
+"Test_name.c", line 25: warning: unknown attribute "interrupt"
+  __attribute__((interrupt,mips16)) void fooe(void) {} // expected-error {{'mips16' and 'interrupt' attributes are not compatible}} \
+                 ^
+
+"Test_name.c", line 25: warning: unknown attribute "mips16"
+  __attribute__((interrupt,mips16)) void fooe(void) {} // expected-error {{'mips16' and 'interrupt' attributes are not compatible}} \
+                           ^
+
+"Test_name.c", line 27: warning: unknown attribute "mips16"
+  __attribute__((mips16,interrupt)) void foof(void) {} // expected-error {{'interrupt' and 'mips16' attributes are not compatible}} \
+                 ^
+
+"Test_name.c", line 27: warning: unknown attribute "interrupt"
+  __attribute__((mips16,interrupt)) void foof(void) {} // expected-error {{'interrupt' and 'mips16' attributes are not compatible}} \
+                        ^
+
+"Test_name.c", line 29: warning: unknown attribute "interrupt"
+  __attribute__((interrupt)) __attribute__ ((mips16)) void foo10(void) {} // expected-error {{'mips16' and 'interrupt' attributes are not compatible}} \
+                 ^
+
+"Test_name.c", line 29: warning: unknown attribute "mips16"
+  __attribute__((interrupt)) __attribute__ ((mips16)) void foo10(void) {} // expected-error {{'mips16' and 'interrupt' attributes are not compatible}} \
+                                             ^
+
+"Test_name.c", line 31: warning: unknown attribute "mips16"
+  __attribute__((mips16)) __attribute ((interrupt)) void foo11(void) {} // expected-error {{'interrupt' and 'mips16' attributes are not compatible}} \
+                 ^
+
+"Test_name.c", line 31: warning: unknown attribute "interrupt"
+  __attribute__((mips16)) __attribute ((interrupt)) void foo11(void) {} // expected-error {{'interrupt' and 'mips16' attributes are not compatible}} \
+                                        ^
+

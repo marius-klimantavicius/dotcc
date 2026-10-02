@@ -1,0 +1,40 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 117: error: static assertion failed with ""
+    static_assert( ({ false; }), "" ); // expected-error {{failed}}
+    ^
+
+"Test_name.c", line 143: error: invalid redeclaration of type name "PR45083::U" (declared at line 142)
+    using U = float; // expected-error {{different types ('float' vs 'decltype(g<int>())' (aka 'void'))}}
+          ^
+
+"Test_name.c", line 146: error: function template "PR45083::h" has already been defined (previous definition at line 145)
+    void h(auto a, void *) {}               // expected-error {{redefinition}}
+         ^
+
+"Test_name.c", line 159: error: a parameter is not allowed
+      auto f1 = [](auto t, int) -> decltype(({ auto [_1] = t; N<1>(); })) { return {}; };
+                                                           ^
+
+"Test_name.c", line 160: error: a parameter is not allowed
+      auto f2 = [](auto t, int) -> decltype(({ auto [_1, _2] = t; N<2>(); })) { return {}; };
+                                                               ^
+
+"Test_name.c", line 161: error: a parameter is not allowed
+      auto f3 = [](auto t, int) -> decltype(({ auto [_1, _2, _3] = t; N<3>(); })) { return {}; };
+                                                                   ^
+
+"Test_name.c", line 162: error: more than one instance of overloaded function "BindingInStmtExpr::overload<Ts...>::operator() [with Ts=<lambda [](auto, unsigned int)->auto, lambda [](auto, int)-><error-type>, lambda [](auto, int)-><error-type>, lambda [](auto, int)-><error-type>>]" matches the argument list:
+            function template "lambda [](auto, int)-><error-type>" (declared at line 159)
+            function template "lambda [](auto, int)-><error-type>" (declared at line 160)
+            function template "lambda [](auto, int)-><error-type>" (declared at line 161)
+            argument types are: (BindingInStmtExpr::T, int)
+            object type is: BindingInStmtExpr::overload<lambda [](auto, unsigned int)->auto, lambda [](auto, int)-><error-type>, lambda [](auto, int)-><error-type>, lambda [](auto, int)-><error-type>>
+      return decltype(overload(f0, f1, f2, f3)(T(), 0))();
+                      ^
+          detected during instantiation of "auto BindingInStmtExpr::num_bindings<T>() [with T=BindingInStmtExpr::T]" at line 167
+
+"Test_name.c", line 132: error: incomplete type "void" is not allowed
+      decltype(({})) x; // expected-error {{incomplete type}}
+                     ^
+
+8 errors detected in the compilation of "Test_name.c".

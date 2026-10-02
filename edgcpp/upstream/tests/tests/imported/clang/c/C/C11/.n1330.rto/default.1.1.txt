@@ -1,0 +1,60 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 13: error: expression must have a constant value
+  _Static_assert(a, ""); // expected-error {{static assertion expression is not an integral constant expression}}
+                 ^
+"Test_name.c", line 13: note: the value of variable "a" (declared at line 12) cannot be used as a constant
+  _Static_assert(a, ""); // expected-error {{static assertion expression is not an integral constant expression}}
+                 ^
+
+"Test_name.c", line 18: error: static assertion failed with "this fails"
+  _Static_assert(0, "this fails"); // expected-error {{static assertion failed: this fails}}
+  ^
+
+"Test_name.c", line 19: error: static assertion failed
+  _Static_assert(0); // expected-error {{static assertion failed}} \
+  ^
+
+"Test_name.c", line 30: error: expected an identifier
+      _Static_assert(1, "this should not compile"); // expected-error {{expected identifier}}
+      ^
+
+"Test_name.c", line 30: error: expected a "}"
+      _Static_assert(1, "this should not compile"); // expected-error {{expected identifier}}
+                                                  ^
+"Test_name.c", line 29: note: to match this "{"
+    enum E {
+           ^
+
+"Test_name.c", line 30: warning: expected an identifier
+      _Static_assert(1, "this should not compile"); // expected-error {{expected identifier}}
+                                                  ^
+
+"Test_name.c", line 31: warning: this declaration has no storage class or type specifier
+      One
+      ^
+
+"Test_name.c", line 32: warning: expected a ";"
+    } e;
+    ^
+
+"Test_name.c", line 33: error: expected a declaration
+  };
+  ^
+
+"Test_name.c", line 36: error: expected a type specifier
+    _Static_assert(1, "this should not compile") // expected-error {{expected parameter declarator}} \
+    ^
+
+"Test_name.c", line 40: error: expected a type specifier
+    _Static_assert(1, "this should not compile") // expected-error {{expected parameter declarator}} \
+    ^
+
+"Test_name.c", line 39: warning: unnamed prototyped parameters not allowed when body is present
+  void func(                                     // expected-note {{to match this '('}}
+       ^
+
+"Test_name.c", line 46: error: static assertion failed with "this fails"
+    _Static_assert(0, "this fails"); // expected-error {{static assertion failed: this fails}}
+    ^
+
+9 errors detected in the compilation of "Test_name.c".

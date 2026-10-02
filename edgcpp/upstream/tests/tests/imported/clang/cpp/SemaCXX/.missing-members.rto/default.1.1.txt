@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 13: error: namespace "A::B" has no member "i"
+    A::B::i; // expected-error {{no member named 'i' in namespace 'A::B'}}
+          ^
+
+"Test_name.c", line 14: error: class "A::B::C" has no member "i"
+    A::B::C::i; // expected-error {{no member named 'i' in 'A::B::C'}}
+             ^
+
+"Test_name.c", line 15: error: the global scope has no "i"
+    ::i; // expected-error {{no member named 'i' in the global namespace}}
+      ^
+
+"Test_name.c", line 23: error: name followed by "::" must be a class or namespace name
+    A::B::D::E; // expected-error-re {{no member named 'D' in namespace 'A::B'{{$}}}}
+          ^
+
+"Test_name.c", line 26: error: name followed by "::" must be a class or namespace name
+    B::B::C::D; // expected-error {{no member named 'C' in 'B::B'; did you mean 'A::B::C'?}} \
+          ^
+
+"Test_name.c", line 28: error: name followed by "::" must be a class or namespace name
+    ::C::D; // expected-error-re {{no member named 'C' in the global namespace{{$}}}}
+      ^
+
+"Test_name.c", line 31: error: namespace "A::B" has no member "i"
+  int A::B::i = 10; // expected-error {{no member named 'i' in namespace 'A::B'}}
+            ^
+
+"Test_name.c", line 32: error: class "A::B::C" has no member "i"
+  int A::B::C::i = 10; // expected-error {{no member named 'i' in 'A::B::C'}}
+               ^
+
+"Test_name.c", line 33: error: class "A::B::S" has no member "i"
+  int A::B::S::i = 10; // expected-error {{no member named 'i' in 'A::B::S'}}
+               ^
+
+"Test_name.c", line 34: error: union "A::B::U" has no member "i"
+  int A::B::U::i = 10; // expected-error {{no member named 'i' in 'A::B::U'}}
+               ^
+
+"Test_name.c", line 36: error: namespace "A::B" has no member "D"
+  using A::B::D; // expected-error {{no member named 'D' in namespace 'A::B'}}
+              ^
+
+"Test_name.c", line 39: error: class "A::B::C" has no member "f"
+    using A::B::C::f; // expected-error {{no member named 'f' in 'A::B::C'}}
+                   ^
+
+"Test_name.c", line 54: error: class "S1" has no member "run"
+    ptr->S1::run();  // expected-error {{no member named 'run' in 'S1'}}
+             ^
+
+13 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,106 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 10: error: identifier "startwith" is undefined
+  int __RTL (startwith ("cse1")) test (int n)
+             ^
+
+"Test_name.c", line 10: error: expected a ")"
+  int __RTL (startwith ("cse1")) test (int n)
+                        ^
+
+"Test_name.c", line 10: error: expected a "{"
+  int __RTL (startwith ("cse1")) test (int n)
+                                 ^
+
+"Test_name.c", line 12: error: identifier "function" is undefined
+  (function "fragment"
+   ^
+
+"Test_name.c", line 12: error: expected a ")"
+  (function "fragment"
+            ^
+
+"Test_name.c", line 16: warning: parsing restarts here after previous syntax error
+    ) ;; param "n"
+      ^
+
+"Test_name.c", line 16: error: identifier "param" is undefined
+    ) ;; param "n"
+         ^
+
+"Test_name.c", line 16: error: expected a ";"
+    ) ;; param "n"
+               ^
+
+"Test_name.c", line 22: warning: parsing restarts here after previous syntax error
+  ;; MEM[(struct isl_obj *)&obj1] = &isl_obj_map_vtable;
+  ^
+
+"Test_name.c", line 22: error: identifier "MEM" is undefined
+  ;; MEM[(struct isl_obj *)&obj1] = &isl_obj_map_vtable;
+     ^
+
+"Test_name.c", line 22: error: identifier "obj1" is undefined
+  ;; MEM[(struct isl_obj *)&obj1] = &isl_obj_map_vtable;
+                            ^
+
+"Test_name.c", line 22: error: identifier "isl_obj_map_vtable" is undefined
+  ;; MEM[(struct isl_obj *)&obj1] = &isl_obj_map_vtable;
+                                     ^
+
+"Test_name.c", line 23: error: identifier "insn" is undefined
+  (insn 1045 (set (reg:SI <480>)
+   ^
+
+"Test_name.c", line 23: error: expected a ")"
+  (insn 1045 (set (reg:SI <480>)
+        ^
+
+"Test_name.c", line 26: warning: parsing restarts here after previous syntax error
+                      <var_decl 0x7fa0363ea240 isl_obj_map_vtable>)))
+                                                                  ^
+
+"Test_name.c", line 26: error: expected a ";"
+                      <var_decl 0x7fa0363ea240 isl_obj_map_vtable>)))
+                                                                   ^
+
+"Test_name.c", line 43: warning: parsing restarts here after previous syntax error
+  ;; Extra insn, to avoid all of the above from being deleted by DCE
+  ^
+
+"Test_name.c", line 43: error: identifier "Extra" is undefined
+  ;; Extra insn, to avoid all of the above from being deleted by DCE
+     ^
+
+"Test_name.c", line 43: error: expected a ";"
+  ;; Extra insn, to avoid all of the above from being deleted by DCE
+                    ^
+
+"Test_name.c", line 47: warning: parsing restarts here after previous syntax error
+      ) ;; block 2
+        ^
+
+"Test_name.c", line 47: error: identifier "block" is undefined
+      ) ;; block 2
+           ^
+
+"Test_name.c", line 47: error: expected a ";"
+      ) ;; block 2
+                 ^
+
+"Test_name.c", line 48: error: identifier "chain" is undefined
+    ) ;; insn-chain
+              ^
+
+"Test_name.c", line 49: error: expected a ";"
+  ) ;; function
+  ^
+
+"Test_name.c", line 50: error: expected a ";"
+  }
+  ^
+
+"Test_name.c", line 50: warning: missing return statement at end of non-void function "__RTL"
+  }
+  ^
+
+20 errors detected in the compilation of "Test_name.c".

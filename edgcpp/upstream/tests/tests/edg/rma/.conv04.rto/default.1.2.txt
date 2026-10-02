@@ -1,0 +1,7 @@
+./a.out
+implicit cast to b:
+explicit cast to b:
+explicit cast to ref b:
+implicit cast to bc1:
+explicit cast to bc2:
+explicit cast to ref bc3:

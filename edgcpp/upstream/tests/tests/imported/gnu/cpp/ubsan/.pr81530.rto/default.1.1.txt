@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 7: error: floating-point value does not fit in required integral type
+  int a[(long) 4e20]; /* { dg-error "7:size of array .a." } */
+        ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --set_flag coroutines -tused --microsoft_version 1900 Test_name.c
+"Test_name.c", line 6: error: co_yield expression is not permitted outside a function scope
+  void f(int x = co_yield 5);
+                 ^
+
+1 error detected in the compilation of "Test_name.c".

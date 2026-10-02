@@ -1,0 +1,7 @@
+fe_only -DTEST_NUMBER=3 --ms_c++17 --microsoft_version 1942 --no_ms_permissive --defer_parse_function_templates -tused Test_name.c
+"Test_name.c", line 11: error: identifier "undefined_id" is undefined
+          undefined_id;  // Previously skipped, now an error.
+          ^
+          detected during instantiation of "minimal::C<T>::C() [with T=int]" at line 15
+
+1 error detected in the compilation of "Test_name.c".

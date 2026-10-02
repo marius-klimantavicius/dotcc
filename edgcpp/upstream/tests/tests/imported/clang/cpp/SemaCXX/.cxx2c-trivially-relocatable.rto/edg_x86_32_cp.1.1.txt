@@ -1,0 +1,194 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++26 Test_name.c
+"Test_name.c", line 7: error: type name is not allowed
+  static_assert(__builtin_is_cpp_trivially_relocatable(Trivial));
+                                                       ^
+
+"Test_name.c", line 7: error: identifier "__builtin_is_cpp_trivially_relocatable" is undefined
+  static_assert(__builtin_is_cpp_trivially_relocatable(Trivial));
+                ^
+
+"Test_name.c", line 14: error: type name is not allowed
+  static_assert(__builtin_is_cpp_trivially_relocatable(Incomplete));  // expected-error {{incomplete type 'Incomplete' used in type trait expression}}
+                                                       ^
+
+"Test_name.c", line 15: error: type name is not allowed
+  static_assert(__builtin_is_cpp_trivially_relocatable(int));
+                                                       ^
+
+"Test_name.c", line 16: error: type name is not allowed
+  static_assert(__builtin_is_cpp_trivially_relocatable(void*));
+                                                       ^
+
+"Test_name.c", line 16: error: expected an expression
+  static_assert(__builtin_is_cpp_trivially_relocatable(void*));
+                                                            ^
+
+"Test_name.c", line 17: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(int&));
+                                                        ^
+
+"Test_name.c", line 17: error: expected an expression
+  static_assert(!__builtin_is_cpp_trivially_relocatable(int&));
+                                                            ^
+
+"Test_name.c", line 18: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(Trivial&));
+                                                        ^
+
+"Test_name.c", line 18: error: expected an expression
+  static_assert(!__builtin_is_cpp_trivially_relocatable(Trivial&));
+                                                                ^
+
+"Test_name.c", line 19: error: expected an expression
+  static_assert(__builtin_is_cpp_trivially_relocatable(const Trivial));
+                                                       ^
+
+"Test_name.c", line 20: error: type name is not allowed
+  static_assert(__builtin_is_cpp_trivially_relocatable(Trivial[1]));
+                                                       ^
+
+"Test_name.c", line 21: error: type name is not allowed
+  static_assert(__builtin_is_cpp_trivially_relocatable(Trivial[]));
+                                                       ^
+
+"Test_name.c", line 21: error: expected an expression
+  static_assert(__builtin_is_cpp_trivially_relocatable(Trivial[]));
+                                                               ^
+
+"Test_name.c", line 26: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(WithConst));
+                                                        ^
+
+"Test_name.c", line 67: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(UserDtr));
+                                                        ^
+
+"Test_name.c", line 68: error: type name is not allowed
+  static_assert(__builtin_is_cpp_trivially_relocatable(DefaultedDtr));
+                                                       ^
+
+"Test_name.c", line 69: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(UserMoveWithDefaultCopy));
+                                                        ^
+
+"Test_name.c", line 70: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(UserMove));
+                                                        ^
+
+"Test_name.c", line 71: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(UserCopy));
+                                                        ^
+
+"Test_name.c", line 72: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(UserMoveDefault));
+                                                        ^
+
+"Test_name.c", line 73: error: type name is not allowed
+  static_assert(__builtin_is_cpp_trivially_relocatable(UserMoveAssignDefault));
+                                                       ^
+
+"Test_name.c", line 74: error: type name is not allowed
+  static_assert(__builtin_is_cpp_trivially_relocatable(UserCopyDefault));
+                                                       ^
+
+"Test_name.c", line 75: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(UserDeletedMove));
+                                                        ^
+
+"Test_name.c", line 91: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(DeletedMove));
+                                                        ^
+
+"Test_name.c", line 92: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(DeletedCopy));
+                                                        ^
+
+"Test_name.c", line 93: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(DeletedMoveAssign));
+                                                        ^
+
+"Test_name.c", line 94: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(DeletedDtr));
+                                                        ^
+
+"Test_name.c", line 101: error: type name is not allowed
+  static_assert(__builtin_is_cpp_trivially_relocatable(S<int>));
+                                                       ^
+
+"Test_name.c", line 102: error: type name is not allowed
+  static_assert(__builtin_is_cpp_trivially_relocatable(S<volatile int>));
+                                                       ^
+
+"Test_name.c", line 103: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(S<const int>));
+                                                        ^
+
+"Test_name.c", line 104: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(S<const int&>));
+                                                        ^
+
+"Test_name.c", line 105: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(S<int&>));
+                                                        ^
+
+"Test_name.c", line 106: error: type name is not allowed
+  static_assert(__builtin_is_cpp_trivially_relocatable(S<int[2]>));
+                                                       ^
+
+"Test_name.c", line 107: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(S<const int[2]>));
+                                                        ^
+
+"Test_name.c", line 108: error: type name is not allowed
+  static_assert(__builtin_is_cpp_trivially_relocatable(S<int[]>));
+                                                       ^
+
+"Test_name.c", line 167: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(int[n]));
+                                                        ^
+
+"Test_name.c", line 193: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(UserDeleted1));
+                                                        ^
+
+"Test_name.c", line 198: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(UserDeleted2));
+                                                        ^
+
+"Test_name.c", line 204: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(UserDeleted3));
+                                                        ^
+
+"Test_name.c", line 209: error: type name is not allowed
+  static_assert(!__builtin_is_cpp_trivially_relocatable(UserDeleted4));
+                                                        ^
+
+"Test_name.c", line 217: error: too few arguments in function call
+      __builtin_trivially_relocate(); //expected-error {{too few arguments to function call, expected 3, have 0}}
+                                   ^
+
+"Test_name.c", line 218: error: too many arguments in function call
+      __builtin_trivially_relocate(0, 0, 0, 0); //expected-error {{too many arguments to function call, expected 3, have 4}}
+                                            ^
+
+"Test_name.c", line 220: error: argument of type "const int *" is incompatible with parameter of type "void *"
+      __builtin_trivially_relocate((const int*)0, 0, 0); //expected-error {{argument to '__builtin_trivially_relocate' must be non-const}}
+                                   ^
+
+"Test_name.c", line 224: error: argument of type "int *" is incompatible with parameter of type "unsigned int"
+      __builtin_trivially_relocate((int*)0, (int*)0, (int*)0); // expected-error-re {{cannot initialize a value of type '__size_t' (aka '{{.*}}') with an rvalue of type 'int *'}}
+                                                     ^
+
+"Test_name.c", line 247: error: type name is not allowed
+  static_assert (!__builtin_is_cpp_trivially_relocatable(A));
+                                                         ^
+
+"Test_name.c", line 252: error: type name is not allowed
+  static_assert (!__builtin_is_cpp_trivially_relocatable(B));
+                                                         ^
+
+"Test_name.c", line 257: error: type name is not allowed
+  static_assert (!__builtin_is_cpp_trivially_relocatable(C));
+                                                         ^
+
+48 errors detected in the compilation of "Test_name.c".

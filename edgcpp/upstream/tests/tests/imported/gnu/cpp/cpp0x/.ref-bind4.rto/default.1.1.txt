@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 56: error: more than one instance of overloaded function "f8" matches the argument list:
+            function "f8(const int *const *)" (declared at line 29)
+            function "f8(const int *const *const &)" (declared at line 30)
+            argument types are: (const int **)
+    f8 (q); // { dg-error "call of overloaded" }
+    ^
+
+1 error detected in the compilation of "Test_name.c".

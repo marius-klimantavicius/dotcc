@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 8: error: call to consteval function "f(T) [with T=int]" did not produce a valid constant expression
+  int r = f(1)(2);      // proposed ok
+           ^
+"Test_name.c", line 8: note: address of consteval function "g" in constant expression result
+  int r = f(1)(2);      // proposed ok
+           ^
+
+"Test_name.c", line 9: error: call to consteval function "f(T) [with T=int]" did not produce a valid constant expression
+  int s = f(1)(2) + r;  // { dg-error "call to consteval function|returns address of immediate function" }
+           ^
+"Test_name.c", line 9: note: address of consteval function "g" in constant expression result
+  int s = f(1)(2) + r;  // { dg-error "call to consteval function|returns address of immediate function" }
+           ^
+
+2 errors detected in the compilation of "Test_name.c".

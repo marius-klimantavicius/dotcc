@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 8: warning: unknown attribute "type_tag_for_datatype"
+      __attribute__((type_tag_for_datatype(test, int))) = INT_TAG;
+                     ^
+
+"Test_name.c", line 12: warning: unknown attribute "argument_with_type_tag"
+      __attribute__((argument_with_type_tag(test, 1, 2)));
+                     ^
+
+"Test_name.c", line 16: warning: unknown attribute "pointer_with_type_tag"
+      __attribute__((pointer_with_type_tag(test, 1, 2)));
+                     ^
+
+"Test_name.c", line 20: warning: unknown attribute "argument_with_type_tag"
+      __attribute__((argument_with_type_tag(test, 3, 1)));
+                     ^
+
+"Test_name.c", line 26: warning: unknown attribute "argument_with_type_tag"
+        __attribute__((argument_with_type_tag(test, 2, 3)));
+                       ^
+
+"Test_name.c", line 30: warning: unknown attribute "pointer_with_type_tag"
+        __attribute__((pointer_with_type_tag(test, 2, 3)));
+                       ^
+
+"Test_name.c", line 34: warning: unknown attribute "argument_with_type_tag"
+        __attribute__((argument_with_type_tag(test, 4, 2)));
+                       ^
+
+"Test_name.c", line 7: warning: variable "test_in" was declared but never referenced
+  static const int test_in
+                   ^
+

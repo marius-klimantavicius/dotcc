@@ -1,0 +1,23 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 18: error: no suitable user-defined conversion from "Opaque1" to "Opaque0" exists
+      foo(Opaque1()); // expected-error {{no matching function for call}}
+          ^
+
+"Test_name.c", line 26: error: no suitable user-defined conversion from "Opaque1" to "Opaque0" exists
+      foo(Opaque1()); // expected-error {{no matching function for call}}
+          ^
+
+"Test_name.c", line 49: error: no suitable user-defined conversion from "Opaque1" to "Opaque0" exists
+      foo(Opaque1()); // expected-error {{no matching function for call}}
+          ^
+
+"Test_name.c", line 57: error: no suitable user-defined conversion from "Opaque1" to "Opaque0" exists
+      foo(Opaque1()); // expected-error {{no matching function for call}}
+          ^
+
+"Test_name.c", line 81: warning: duplicate using-declaration of "test2::Base<T>::foo [with T=int]" ignored
+      using Base<T>::type::foo; //expected-error {{redeclaration of using decl}}
+      ^
+          detected during instantiation of class "test2::Derived<T> [with T=int]" at line 84
+
+4 errors detected in the compilation of "Test_name.c".

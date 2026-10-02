@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=2 --c++17 --no_exceptions Test_name.c

@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --ms_extensions --ms_extensions --ms_extensions --ms_extensions Test_name.c
+"Test_name.c", line 71: error: static assertion failed
+    static_assert(!__is_sealed(int));
+    ^
+
+"Test_name.c", line 73: error: static assertion failed
+    static_assert(!__is_sealed(Int));
+    ^
+
+"Test_name.c", line 74: error: static assertion failed
+    static_assert(!__is_sealed(Int[10]));
+    ^
+
+"Test_name.c", line 75: error: static assertion failed
+    static_assert(!__is_sealed(Union[10]));
+    ^
+
+"Test_name.c", line 78: error: static assertion failed
+    static_assert(!__is_sealed(const void));
+    ^
+
+"Test_name.c", line 79: error: static assertion failed
+    static_assert(!__is_sealed(Int[]));
+    ^
+
+6 errors detected in the compilation of "Test_name.c".

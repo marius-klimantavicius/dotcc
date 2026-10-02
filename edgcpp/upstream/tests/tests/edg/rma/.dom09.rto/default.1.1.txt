@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 25: error: "D::y" is ambiguous
+    y++;                // error: B::y and C's W::y
+    ^
+
+"Test_name.c", line 26: error: "D::g" is ambiguous
+    g();                // error: B::g() and C's W::g()
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

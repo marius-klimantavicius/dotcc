@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 14: error: exception specification is incompatible with that of previous function "g1" (declared at line 13):
+            previously specified: no exceptions will be thrown
+    friend void g1() noexcept(noexcept(fn1())); // { dg-error "different exception specifier" }
+                     ^
+
+"Test_name.c", line 25: error: exception specification is incompatible with that of previous function "g3" (declared at line 24)
+    friend void g3() noexcept(noexcept(fn3())); // { dg-error "different exception specifier" }
+                     ^
+
+"Test_name.c", line 38: error: exception specification is incompatible with that of previous function "g" (declared at line 10):
+            previously specified: no exceptions will be thrown
+    friend void g() noexcept(noexcept(fn1())); // { dg-error "different exception specifier" }
+                    ^
+
+"Test_name.c", line 45: error: exception specification is incompatible with that of previous function "gg" (declared at line 42):
+            previously specified: no exceptions will be thrown
+  void gg() noexcept(noexcept(fn1())); // { dg-error "different exception specifier" }
+            ^
+
+"Test_name.c", line 49: error: exception specification is incompatible with that of previous function "g8" (declared at line 48)
+    friend void g8() noexcept(noexcept(fn2())); // { dg-error "different exception specifier" }
+                     ^
+
+"Test_name.c", line 64: error: allowing all exceptions is incompatible with previous function "g11" (declared at line 63)
+    friend void g11(); // { dg-error "different exception specifier" }
+                     ^
+
+"Test_name.c", line 69: error: exception specification is incompatible with that of previous function "g12" (declared at line 68)
+    friend void g12() noexcept(noexcept(fn2())); // { dg-error "different exception specifier" }
+                      ^
+
+"Test_name.c", line 84: error: exception specification is incompatible with that of previous function "g15" (declared at line 83):
+            previously specified: no exceptions will be thrown
+    friend void g15() noexcept(false); // { dg-error "different exception specifier" }
+                      ^
+
+8 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,85 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 6: warning: unknown attribute "no_builtin"
+  void valid_attribute_all_1() __attribute__((no_builtin)) {}
+                                              ^
+
+"Test_name.c", line 7: warning: unknown attribute "no_builtin"
+  void valid_attribute_all_2() __attribute__((no_builtin())) {}
+                                              ^
+
+"Test_name.c", line 10: warning: unknown attribute "no_builtin"
+  void valid_attribute_function() __attribute__((no_builtin("memcpy"))) {}
+                                                 ^
+
+"Test_name.c", line 11: warning: unknown attribute "no_builtin"
+  void valid_attribute_functions() __attribute__((no_builtin("memcpy"))) __attribute__((no_builtin("memcmp"))) {}
+                                                  ^
+
+"Test_name.c", line 11: warning: unknown attribute "no_builtin"
+  void valid_attribute_functions() __attribute__((no_builtin("memcpy"))) __attribute__((no_builtin("memcmp"))) {}
+                                                                                        ^
+
+"Test_name.c", line 14: warning: unknown attribute "no_builtin"
+  void many_attribute_function_1() __attribute__((no_builtin)) __attribute__((no_builtin)) {}
+                                                  ^
+
+"Test_name.c", line 14: warning: unknown attribute "no_builtin"
+  void many_attribute_function_1() __attribute__((no_builtin)) __attribute__((no_builtin)) {}
+                                                                              ^
+
+"Test_name.c", line 15: warning: unknown attribute "no_builtin"
+  void many_attribute_function_2() __attribute__((no_builtin("memcpy"))) __attribute__((no_builtin("memcpy"))) {}
+                                                  ^
+
+"Test_name.c", line 15: warning: unknown attribute "no_builtin"
+  void many_attribute_function_2() __attribute__((no_builtin("memcpy"))) __attribute__((no_builtin("memcpy"))) {}
+                                                                                        ^
+
+"Test_name.c", line 16: warning: unknown attribute "no_builtin"
+  void many_attribute_function_3() __attribute__((no_builtin("memcpy", "memcpy"))) {}
+                                                  ^
+
+"Test_name.c", line 17: warning: unknown attribute "no_builtin"
+  void many_attribute_function_4() __attribute__((no_builtin("memcpy", "memcpy"))) __attribute__((no_builtin("memcpy"))) {}
+                                                  ^
+
+"Test_name.c", line 17: warning: unknown attribute "no_builtin"
+  void many_attribute_function_4() __attribute__((no_builtin("memcpy", "memcpy"))) __attribute__((no_builtin("memcpy"))) {}
+                                                                                                  ^
+
+"Test_name.c", line 20: warning: unknown attribute "no_builtin"
+  void invalid_builtin() __attribute__((no_builtin("not_a_builtin"))) {}
+                                        ^
+
+"Test_name.c", line 24: warning: unknown attribute "no_builtin"
+  void wildcard_and_functionname() __attribute__((no_builtin)) __attribute__((no_builtin("memcpy"))) {}
+                                                  ^
+
+"Test_name.c", line 24: warning: unknown attribute "no_builtin"
+  void wildcard_and_functionname() __attribute__((no_builtin)) __attribute__((no_builtin("memcpy"))) {}
+                                                                              ^
+
+"Test_name.c", line 28: warning: unknown attribute "no_builtin"
+  int __attribute__((no_builtin)) variable;
+                     ^
+
+"Test_name.c", line 32: warning: unknown attribute "no_builtin"
+  void nobuiltin_on_declaration() __attribute__((no_builtin));
+                                                 ^
+
+"Test_name.c", line 38: warning: unknown attribute "no_builtin"
+    __attribute__((no_builtin)) = default;
+                   ^
+
+"Test_name.c", line 43: warning: unknown attribute "no_builtin"
+    __attribute__((no_builtin)) = delete;
+                   ^
+
+"Test_name.c", line 46: warning: unknown attribute "no_builtin"
+    void whatever() __attribute__((no_builtin("memcpy")));
+                                   ^
+
+"Test_name.c", line 52: warning: unknown attribute "no_builtin"
+  void aliasing_function() __attribute__((no_builtin)) __attribute__((alias("alised_function")));
+                                          ^
+

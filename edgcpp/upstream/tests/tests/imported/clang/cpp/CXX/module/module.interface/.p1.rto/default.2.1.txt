@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 12: error: an export declaration can only appear in a module interface unit
+  export int a; // expected-error {{export declaration can only be used within a module interface}}
+  ^
+
+"Test_name.c", line 20: error: an export declaration cannot export a name with internal linkage
+    export int d1; // expected-error {{export declaration appears within anonymous namespace}}
+               ^
+
+"Test_name.c", line 22: error: an export declaration cannot export a name with internal linkage
+      export int d2; // expected-error {{export declaration appears within anonymous namespace}}
+                 ^
+
+"Test_name.c", line 26: error: an export declaration cannot contain an export declaration (previous declaration at line 26)
+  export export int e; // expected-error {{within another export declaration}}
+         ^
+
+"Test_name.c", line 27: error: an export declaration cannot contain an export declaration (previous declaration at line 27)
+  export { export int f; } // expected-error {{within another export declaration}} expected-note {{export block begins here}}
+           ^
+
+"Test_name.c", line 30: error: an export declaration can only appear in a module interface unit
+  export int priv; // expected-error {{export declaration cannot be used in a private module fragment}}
+  ^
+
+"Test_name.c", line 33: error: a module declaration can only be preceded by a global module fragment
+  export module M;
+                ^
+
+"Test_name.c", line 34: error: an export declaration can only appear in a module interface unit
+  export int b;
+  ^
+
+"Test_name.c", line 34: error: variable "b" has already been defined (previous definition at line 14)
+  export int b;
+             ^
+
+"Test_name.c", line 36: error: an export declaration can only appear in a module interface unit
+    export int c;
+    ^
+
+"Test_name.c", line 36: error: variable "N::c" has already been defined (previous definition at line 16)
+    export int c;
+               ^
+
+"Test_name.c", line 40: error: a module declaration can only be preceded by a global module fragment
+  module M; // #M
+         ^
+
+"Test_name.c", line 42: error: an export declaration can only appear in a module interface unit
+  export int b2; // expected-error {{export declaration can only be used within a module interface}}
+  ^
+
+"Test_name.c", line 44: error: an export declaration can only appear in a module interface unit
+    export int c2; // expected-error {{export declaration can only be used within a module interface}}
+    ^
+
+"Test_name.c", line 20: warning: variable "<unnamed>::d1" was declared but never referenced
+    export int d1; // expected-error {{export declaration appears within anonymous namespace}}
+               ^
+
+"Test_name.c", line 22: warning: variable "<unnamed>::X::d2" was declared but never referenced
+      export int d2; // expected-error {{export declaration appears within anonymous namespace}}
+                 ^
+
+14 errors detected in the compilation of "Test_name.c".

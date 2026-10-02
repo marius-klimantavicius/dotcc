@@ -1,0 +1,49 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./analyzer/pr93355-localealias.c", line 29: warning: declaration of "size_t" does not match the expected type "unsigned int"
+  typedef long unsigned int size_t;
+                            ^
+
+"./analyzer/pr93355-localealias.c", line 36: warning: unknown attribute "__leaf__"
+  extern int feof_unlocked(FILE *__stream) __attribute__((__nothrow__, __leaf__));
+                                                                       ^
+
+"./analyzer/pr93355-localealias.c", line 44: warning: unknown attribute "__leaf__"
+      __attribute__((__nothrow__, __leaf__)) __attribute__((__pure__))
+                                  ^
+
+"./analyzer/pr93355-localealias.c", line 47: warning: unknown attribute "__leaf__"
+        size_t __n) __attribute__((__nothrow__, __leaf__))
+                                                ^
+
+"./analyzer/pr93355-localealias.c", line 50: warning: unknown attribute "__leaf__"
+         size_t __n) __attribute__((__nothrow__, __leaf__))
+                                                 ^
+
+"./analyzer/pr93355-localealias.c", line 53: warning: unknown attribute "__leaf__"
+  extern size_t strlen(const char *__s) __attribute__((__nothrow__, __leaf__))
+                                                                    ^
+
+"./analyzer/pr93355-localealias.c", line 57: warning: unknown attribute "__leaf__"
+      __attribute__((__nothrow__, __leaf__)) __attribute__((__pure__))
+                                  ^
+
+"./analyzer/pr93355-localealias.c", line 60: warning: unknown attribute "__leaf__"
+  extern int isspace(int) __attribute__((__nothrow__, __leaf__));
+                                                      ^
+
+"./analyzer/pr93355-localealias.c", line 63: warning: unknown attribute "__leaf__"
+      __attribute__((__nothrow__, __leaf__))
+                                  ^
+
+"./analyzer/pr93355-localealias.c", line 146: warning: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+  _nl_expand_alias (name)
+                    ^
+
+"./analyzer/pr93355-localealias.c", line 213: warning: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+  read_alias_file (fname, fname_len)
+                   ^
+
+"./analyzer/pr93355-localealias.c", line 385: warning: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+  alias_compare (map1, map2)
+                 ^
+

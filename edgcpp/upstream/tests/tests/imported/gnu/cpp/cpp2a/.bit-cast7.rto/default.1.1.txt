@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 40: error: expression must have a constant value
+  static_assert (bit_cast <K> (J{}) == K{}, "");
+                 ^
+"Test_name.c", line 13: note: class types with bitfields "J" are not currently supported for constexpr evaluation of __builtin_bit_cast
+  struct J
+         ^
+
+"Test_name.c", line 41: error: expression must have a constant value
+  static_assert (bit_cast <M> (L{0x0feedbacdeadbeefLL}) == M{0x0feedbacdeadbeefLL}, "");
+                 ^
+"Test_name.c", line 27: note: class types with bitfields "L" are not currently supported for constexpr evaluation of __builtin_bit_cast
+  struct L
+         ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,74 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --exceptions --exceptions --c++11 Test_name.c
+"Test_name.c", line 11: warning: returning reference to local temporary
+    return 0; // expected-warning {{returning reference to local temporary}}
+           ^
+
+"Test_name.c", line 31: error: reference variable "virr1" requires an initializer
+    int &&virr1; // expected-error {{declaration of reference variable 'virr1' requires an initializer}}
+               ^
+
+"Test_name.c", line 33: error: an rvalue reference cannot be bound to an lvalue
+    int &&virr3 = virr2; // expected-error {{rvalue reference to type 'int' cannot bind to lvalue of type 'int'}}
+                  ^
+
+"Test_name.c", line 37: error: an rvalue reference cannot be bound to an lvalue
+    int &&virr4 = i1; // expected-error {{rvalue reference to type 'int' cannot bind to lvalue of type 'int'}}
+                  ^
+
+"Test_name.c", line 40: error: invalid type conversion
+    (void)static_cast<not_int &&>(i1); // expected-error {{reference to type 'not_int' could not bind to an lvalue of type 'int'}}
+          ^
+
+"Test_name.c", line 41: error: static_cast cannot cast away const or other type qualifiers
+    (void)static_cast<int &&>(static_cast<int const&&>(i1)); // expected-error {{cannot cast from rvalue of type 'const int' to rvalue reference type 'int &&'}}
+          ^
+
+"Test_name.c", line 42: error: static_cast cannot cast away const or other type qualifiers
+    (void)static_cast<int &&>(ci1);    // expected-error {{types are not compatible}}
+          ^
+
+"Test_name.c", line 57: error: a reference of type "not_int &" (not const-qualified) cannot be initialized with a value of type "conv_to_not_int_rvalue"
+    not_int &ni5 = cnir; // expected-error{{non-const lvalue reference to type 'not_int' cannot bind to a value of unrelated type 'conv_to_not_int_rvalue'}}
+                   ^
+
+"Test_name.c", line 65: error: an rvalue reference is not allowed as a catch type
+    } catch(int&&) { // expected-error {{cannot catch exceptions by rvalue reference}}
+            ^
+
+"Test_name.c", line 31: warning: variable "virr1" was declared but never referenced
+    int &&virr1; // expected-error {{declaration of reference variable 'virr1' requires an initializer}}
+          ^
+
+"Test_name.c", line 39: warning: variable "virr6" was declared but never referenced
+    int &&virr6 = static_cast<int&&>(i1);
+          ^
+
+"Test_name.c", line 52: warning: variable "vilr1" was declared but never referenced
+    ilr_c1 vilr1 = i1;
+           ^
+
+"Test_name.c", line 53: warning: variable "vilr2" was declared but never referenced
+    ilr_c2 vilr2 = i1;
+           ^
+
+"Test_name.c", line 60: warning: variable "fun_ref" was declared but never referenced
+    fun_type &&fun_ref = fun; // works because functions are special
+               ^
+
+"Test_name.c", line 70: warning: returning reference to local variable
+    return static_cast<int&&>(i); // expected-warning {{reference to stack memory associated with parameter 'i' returned}}
+           ^
+
+"Test_name.c", line 88: error: function "MoveOnly::MoveOnly(const MoveOnly &)" (declared at line 80) cannot be referenced -- it is a deleted function
+      return gmo; // expected-error {{call to deleted constructor}}
+             ^
+
+"Test_name.c", line 90: error: function "MoveOnly::MoveOnly(const MoveOnly &)" (declared at line 80) cannot be referenced -- it is a deleted function
+      return mo; // expected-error {{call to deleted constructor}}
+             ^
+
+"Test_name.c", line 92: error: function "MoveOnly::MoveOnly(const MoveOnly &)" (declared at line 80) cannot be referenced -- it is a deleted function
+      return r; // expected-error {{call to deleted constructor}}
+             ^
+
+11 errors detected in the compilation of "Test_name.c".

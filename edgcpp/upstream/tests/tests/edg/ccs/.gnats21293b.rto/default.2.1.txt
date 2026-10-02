@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=2 --c++11 --clang_version 80000 Test_name.c
+"Test_name.c", line 14: error: the parameter of this defaulted copy-constructor cannot be const because a base or member copy constructor parameter is non-const
+    W(const W&) = default;
+    ^
+          detected during instantiation of class "W<T> [with T=M]" at line 18
+
+"Test_name.c", line 15: error: class "M" has no copy constructor to copy a const object
+    T t;
+      ^
+          detected during instantiation of class "W<T> [with T=M]" at line 20
+
+2 errors detected in the compilation of "Test_name.c".

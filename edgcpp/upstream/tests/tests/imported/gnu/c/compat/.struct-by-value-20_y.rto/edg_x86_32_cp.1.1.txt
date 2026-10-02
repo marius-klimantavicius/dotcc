@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./compat/struct-by-value-20_y.c", line 96: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-20_y.c", line 97: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+
+"./compat/struct-by-value-20_y.c", line 98: warning: variable "ap" is used before its value is set
+  ap, n
+  ^
+

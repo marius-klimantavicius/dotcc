@@ -1,0 +1,122 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 11: error: identifier "_Fract" is undefined
+  struct s {_Fract f; const long _Fract lf;};
+            ^
+
+"Test_name.c", line 11: error: expected a ";"
+  struct s {_Fract f; const long _Fract lf;};
+                                        ^
+
+"Test_name.c", line 12: error: identifier "_Fract" is undefined
+  struct sv { volatile _Fract f; volatile long _Fract lf; };
+                       ^
+
+"Test_name.c", line 12: error: expected a ";"
+  struct sv { volatile _Fract f; volatile long _Fract lf; };
+                                                      ^
+
+"Test_name.c", line 15: error: expected a ";"
+    const long _Fract lf;
+                      ^
+
+"Test_name.c", line 16: error: identifier "_Fract" is undefined
+    _Fract f;
+    ^
+
+"Test_name.c", line 39: error: extra text after expected end of number
+    cs.f = 0.1r; /* { dg-error "assignment of member 'f' in read-only object" } */
+              ^
+
+"Test_name.c", line 40: error: struct "s" has no field "lf"
+    cs.lf = 0.2lr; /* { dg-error "assignment of member 'lf' in read-only object" } */
+       ^
+
+"Test_name.c", line 40: error: extra text after expected end of number
+    cs.lf = 0.2lr; /* { dg-error "assignment of member 'lf' in read-only object" } */
+                ^
+
+"Test_name.c", line 41: error: struct "s" has no field "lf"
+    s.lf = 0.3lr;  /* { dg-error "assignment of read-only member" } */
+      ^
+
+"Test_name.c", line 41: error: extra text after expected end of number
+    s.lf = 0.3lr;  /* { dg-error "assignment of read-only member" } */
+               ^
+
+"Test_name.c", line 43: error: extra text after expected end of number
+    s.f = 0.4r;
+             ^
+
+"Test_name.c", line 44: error: extra text after expected end of number
+    u.f = 0.5r;
+             ^
+
+"Test_name.c", line 46: error: union "u" has no field "lf"
+    u.lf = 0.6lr;    /* { dg-error "assignment of read-only member" } */
+      ^
+
+"Test_name.c", line 46: error: extra text after expected end of number
+    u.lf = 0.6lr;    /* { dg-error "assignment of read-only member" } */
+               ^
+
+"Test_name.c", line 47: error: extra text after expected end of number
+    u.cs.f = 0.7r;   /* { dg-error "assignment of member 'f' in read-only object" } */
+                ^
+
+"Test_name.c", line 48: error: struct "s" has no field "lf"
+    u.cs.lf = 0.8lr; /* { dg-error "assignment of member 'lf' in read-only object" } */
+         ^
+
+"Test_name.c", line 48: error: extra text after expected end of number
+    u.cs.lf = 0.8lr; /* { dg-error "assignment of member 'lf' in read-only object" } */
+                  ^
+
+"Test_name.c", line 50: error: extra text after expected end of number
+    cu.f = 0.9r;   /* { dg-error "assignment of member 'f' in read-only object" } */
+              ^
+
+"Test_name.c", line 52: error: union "u" has no field "lf"
+    cu.lf = 0.01lr;    /* { dg-error "assignment of member 'lf' in read-only object" } */
+       ^
+
+"Test_name.c", line 52: error: extra text after expected end of number
+    cu.lf = 0.01lr;    /* { dg-error "assignment of member 'lf' in read-only object" } */
+                 ^
+
+"Test_name.c", line 53: error: extra text after expected end of number
+    cu.cs.f = 0.02r;   /* { dg-error "assignment of member 'f' in read-only object" } */
+                  ^
+
+"Test_name.c", line 54: error: struct "s" has no field "lf"
+    cu.cs.lf = 0.03lr; /* { dg-error "assignment of member 'lf' in read-only object" } */
+          ^
+
+"Test_name.c", line 54: error: extra text after expected end of number
+    cu.cs.lf = 0.03lr; /* { dg-error "assignment of member 'lf' in read-only object" } */
+                    ^
+
+"Test_name.c", line 58: error: extra text after expected end of number
+    g(s).f = 0.04r;  /* { dg-error "lvalue required" } */
+                 ^
+
+"Test_name.c", line 59: error: union "u" has no field "lf"
+    h(u).lf = 0.05lr;  /* { dg-error "lvalue required" } */
+         ^
+
+"Test_name.c", line 59: error: extra text after expected end of number
+    h(u).lf = 0.05lr;  /* { dg-error "lvalue required" } */
+                   ^
+
+"Test_name.c", line 62: error: extra text after expected end of number
+    sv.f = 0.06r;
+               ^
+
+"Test_name.c", line 63: error: struct "sv" has no field "lf"
+    sv.lf = 0.07lr;
+       ^
+
+"Test_name.c", line 63: error: extra text after expected end of number
+    sv.lf = 0.07lr;
+                 ^
+
+30 errors detected in the compilation of "Test_name.c".

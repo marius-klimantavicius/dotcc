@@ -1,0 +1,37 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./tree-ssa/stdarg-3.c", line 54: warning: variable "aps" is used before its value is set
+   aps[4], i
+   ^
+
+"./tree-ssa/stdarg-3.c", line 71: warning: variable "aps" is used before its value is set
+   aps[4], i
+   ^
+
+"./tree-ssa/stdarg-3.c", line 88: warning: variable "aps" is used before its value is set
+   aps[4], i
+   ^
+
+"./tree-ssa/stdarg-3.c", line 107: warning: variable "a" is used before its value is set
+   a.g, i
+   ^
+
+"./tree-ssa/stdarg-3.c", line 124: warning: variable "a" is used before its value is set
+   a.g, i
+   ^
+
+"./tree-ssa/stdarg-3.c", line 141: warning: variable "a" is used before its value is set
+   a.g, i
+   ^
+
+"./tree-ssa/stdarg-3.c", line 158: warning: variable "a" is used before its value is set
+   a.h[1], i
+   ^
+
+"./tree-ssa/stdarg-3.c", line 175: warning: variable "a" is used before its value is set
+   a.h[1], i
+   ^
+
+"./tree-ssa/stdarg-3.c", line 192: warning: variable "a" is used before its value is set
+   a.h[1], i
+   ^
+

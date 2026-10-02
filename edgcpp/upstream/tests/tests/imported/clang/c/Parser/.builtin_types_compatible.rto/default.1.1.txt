@@ -1,0 +1,53 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 29: warning: variable "tmp" is used before its value is set
+    func(a);
+    ^
+
+"Test_name.c", line 30: warning: variable "tmp" is used before its value is set
+    func(b);
+    ^
+
+"Test_name.c", line 31: warning: variable "tmp" is used before its value is set
+    func(d);
+    ^
+
+"Test_name.c", line 32: warning: variable "a" is used before its value is set
+    a = func_choose(a);
+        ^
+
+"Test_name.c", line 33: warning: variable "b" is used before its value is set
+    b = func_choose(b);
+        ^
+
+"Test_name.c", line 34: warning: variable "d" is used before its value is set
+    d = func_choose(d);
+        ^
+
+"Test_name.c", line 39: error: expression must have a constant value
+    c = __builtin_choose_expr(a+3-7, b, x); // expected-error{{'__builtin_choose_expr' requires a constant expression}}
+                              ^
+"Test_name.c", line 39: note: the value of variable "a" (declared at line 25) cannot be used as a constant
+    c = __builtin_choose_expr(a+3-7, b, x); // expected-error{{'__builtin_choose_expr' requires a constant expression}}
+                              ^
+
+"Test_name.c", line 40: error: a value of type "struct xx" cannot be assigned to an entity of type "int"
+    c = __builtin_choose_expr(0, b, x); // expected-error{{assigning to 'int' from incompatible type 'struct xx'}}
+      ^
+
+"Test_name.c", line 36: warning: variable "c" was set but never used
+    int c; 
+        ^
+
+"Test_name.c", line 37: warning: variable "y" was set but never used
+    struct xx { int a; } x, y;
+                            ^
+
+"Test_name.c", line 23: warning: function "test" was declared but never referenced
+  static void test(void)
+              ^
+
+"Test_name.c", line 49: warning: function "testGccCompatibility" was declared but never referenced
+  static void testGccCompatibility(void) {
+              ^
+
+2 errors detected in the compilation of "Test_name.c".

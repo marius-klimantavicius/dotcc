@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 Test_name.c
+"./c99-const-expr-15.c", line 8: warning: signed bit field of length 1
+  struct s { int a : (0 ? (_Bool) (0x7fffffff 
+                 ^
+
+"./c99-const-expr-15.c", line 9: warning: signed bit field of length 1
+  struct t { int a : (0 ? (short) ((0x7fffffff 
+                 ^
+

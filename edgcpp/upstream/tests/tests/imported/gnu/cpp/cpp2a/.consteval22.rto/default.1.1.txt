@@ -1,0 +1,24 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 35: error: expression must have a constant value
+  constexpr P a = foo ();		// { dg-error "immediate evaluation returns address of immediate function" }
+                  ^
+"Test_name.c", line 35: note: address of consteval function "S::foo" in constant expression result
+  constexpr P a = foo ();		// { dg-error "immediate evaluation returns address of immediate function" }
+                  ^
+
+"Test_name.c", line 36: error: expression must have a constant value
+  constexpr P b = bar ();		// { dg-error "immediate evaluation returns address of immediate function" }
+                  ^
+"Test_name.c", line 36: note: address of consteval function "S::bar" in constant expression result
+  constexpr P b = bar ();		// { dg-error "immediate evaluation returns address of immediate function" }
+                  ^
+
+"Test_name.c", line 35: warning: variable "a" was declared but never referenced
+  constexpr P a = foo ();		// { dg-error "immediate evaluation returns address of immediate function" }
+              ^
+
+"Test_name.c", line 36: warning: variable "b" was declared but never referenced
+  constexpr P b = bar ();		// { dg-error "immediate evaluation returns address of immediate function" }
+              ^
+
+2 errors detected in the compilation of "Test_name.c".

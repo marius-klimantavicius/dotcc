@@ -1,0 +1,7 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 -w --ms_extensions --c++03 -DERROR -w --ms_extensions Test_name.c
+"Test_name.c", line 26: error: "NonCopyable::NonCopyable()" (declared at line 17) is inaccessible
+    NonCopyable member;
+                ^
+          detected during implicit generation of "S::S()" at line 27
+
+1 error detected in the compilation of "Test_name.c".

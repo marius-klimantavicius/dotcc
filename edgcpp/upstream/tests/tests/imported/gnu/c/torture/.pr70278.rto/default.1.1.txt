@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 27: warning: variable "hb" is used before its value is set
+   if(hb > ha) {a=y;b=x;j=ha; ha=hb;hb=j;} else {a=x;b=y;}
+      ^
+
+"Test_name.c", line 34: warning: variable "t1" is used before its value is set
+       t2 = a - t1;
+                ^
+
+"Test_name.c", line 35: warning: variable "y2" is used before its value is set
+       w = t1*y1-(w*(-w)-(t1*y2+t2*b));
+                             ^
+
+"Test_name.c", line 35: warning: variable "y1" is used before its value is set
+       w = t1*y1-(w*(-w)-(t1*y2+t2*b));
+              ^
+
+"Test_name.c", line 37: warning: variable "k" is used before its value is set
+   if(k!=0) {
+      ^
+
+"Test_name.c", line 39: warning: missing return statement at end of non-void function "__ieee754_hypot"
+  }
+  ^
+

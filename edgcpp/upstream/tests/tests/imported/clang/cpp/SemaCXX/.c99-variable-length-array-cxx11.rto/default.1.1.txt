@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 27: error: no default constructor exists for class "NonPOD"
+    NonPOD array5[N]; // expected-error{{no matching constructor for initialization of 'NonPOD[N]'}}
+           ^
+
+"Test_name.c", line 23: warning: variable "array1" was declared but never referenced
+    int array1[N]; // expected-warning{{variable length arrays in C++ are a Clang extension}} expected-note {{parameter 'N'}}
+        ^
+
+"Test_name.c", line 24: warning: variable "array2" was declared but never referenced
+    POD array2[N]; // expected-warning{{variable length arrays in C++ are a Clang extension}} expected-note {{parameter 'N'}}
+        ^
+
+"Test_name.c", line 25: warning: variable "array3" was declared but never referenced
+    StillPOD array3[N]; // expected-warning{{variable length arrays in C++ are a Clang extension}} expected-note {{parameter 'N'}}
+             ^
+
+"Test_name.c", line 26: warning: variable "array4" was declared but never referenced
+    StillPOD2 array4[N][3]; // expected-warning{{variable length arrays in C++ are a Clang extension}} expected-note {{parameter 'N'}}
+              ^
+
+"Test_name.c", line 27: warning: variable "array5" was declared but never referenced
+    NonPOD array5[N]; // expected-error{{no matching constructor for initialization of 'NonPOD[N]'}}
+           ^
+
+1 error detected in the compilation of "Test_name.c".

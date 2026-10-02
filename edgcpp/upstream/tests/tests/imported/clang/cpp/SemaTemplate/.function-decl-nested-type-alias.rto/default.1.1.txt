@@ -1,0 +1,20 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 Test_name.c
+"Test_name.c", line 18: warning: last line of file ends without a newline
+  }
+   ^
+
+"Test_name.c", line 6: error: a class or namespace qualified name is required
+  using Type = typename A::NestedType; // expected-error {{type 'float' cannot be used prior to '::' because it has no members}}
+                        ^
+          detected during:
+            instantiation of type "Type<float>" at line 10
+            instantiation of "void Func<T>() [with T=float]" at line 17
+
+"Test_name.c", line 6: error: expected a ";"
+  using Type = typename A::NestedType; // expected-error {{type 'float' cannot be used prior to '::' because it has no members}}
+                         ^
+          detected during:
+            instantiation of type "Type<float>" at line 10
+            instantiation of "void Func<T>() [with T=float]" at line 17
+
+2 errors detected in the compilation of "Test_name.c".

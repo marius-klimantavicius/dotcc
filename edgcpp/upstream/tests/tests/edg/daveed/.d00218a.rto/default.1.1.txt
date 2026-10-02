@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=1 --gcc Test_name.c
+"Test_name.c", line 23: warning: function "f" was declared deprecated
+  	f(&a);
+  	^
+"Test_name.c", line 20: note: because of a "deprecated" attribute
+  void f(void*) __attribute__((deprecated));
+                               ^
+
+"Test_name.c", line 23: warning: variable "a" was declared deprecated
+  	f(&a);
+  	   ^
+"Test_name.c", line 18: note: because of a "deprecated" attribute
+  extern struct S a __attribute__((deprecated));
+                                   ^
+

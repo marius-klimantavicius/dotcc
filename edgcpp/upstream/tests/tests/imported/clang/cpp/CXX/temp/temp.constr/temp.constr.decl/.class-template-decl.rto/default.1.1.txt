@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 26: error: requires-clause incompatible with class template "diag::A" (declared at line 25)
+  template <typename T> struct A; // expected-error{{requires clause differs in template redeclaration}}
+                               ^
+
+"Test_name.c", line 29: error: requires-clause incompatible with class template "diag::B" (declared at line 28)
+  template <typename T> requires true // expected-error{{requires clause differs in template redeclaration}}
+                        ^
+
+"Test_name.c", line 34: error: requires-clause incompatible with class template "diag::C" (declared at line 33)
+  template <typename T> requires (!0) // expected-error{{requires clause differs in template redeclaration}}
+                        ^
+
+"Test_name.c", line 42: error: requires-clause incompatible with class template "diag::D" (declared at line 41)
+  template <typename T> requires C1<T> // expected-error{{type constraint differs in template redeclaration}}
+                        ^
+
+"Test_name.c", line 42: error: declaration is incompatible with template parameter "T" (declared at line 40)
+  template <typename T> requires C1<T> // expected-error{{type constraint differs in template redeclaration}}
+                     ^
+
+"Test_name.c", line 78: error: requires-clause incompatible with class template "diag::TA<N>::A" (declared at line 69)
+  template <template <unsigned> class TT> struct TA<N>::A { }; // expected-error{{requires clause differs in template redeclaration}}
+                                                        ^
+
+"Test_name.c", line 82: error: requires-clause incompatible with class template "diag::TA<N>::B" (declared at line 72)
+  template <template <unsigned> class TT> requires TT<N + 1>::happy struct TA<N>::B { }; // expected-error{{requires clause differs in template redeclaration}}
+                                          ^
+
+"Test_name.c", line 87: error: requires-clause incompatible with class template "diag::TA<N>::A" (declared at line 78)
+    template <template <unsigned> class TT> requires TT<N + 0>::happy
+                                            ^
+
+8 errors detected in the compilation of "Test_name.c".

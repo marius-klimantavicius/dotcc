@@ -1,0 +1,325 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c --target linux_aarch64 Test_name.c
+"Test_name.c", line 10: error: expected a ";"
+  enum ATTR_USE E { // expected-error {{'ATTR_NAME' only applies to non-K&R-style functions}}
+                  ^
+
+"Test_name.c", line 14: warning: parsing restarts here after previous syntax error
+  };
+   ^
+
+"Test_name.c", line 17: warning: this declaration has no storage class or type specifier
+  ATTR_USE enum E2 { Five }; // expected-error {{misplaced 'ATTR_NAME'}}
+  ^
+
+"Test_name.c", line 17: error: expected a ";"
+  ATTR_USE enum E2 { Five }; // expected-error {{misplaced 'ATTR_NAME'}}
+           ^
+
+"Test_name.c", line 20: error: "ATTR_USE" has already been declared in the current scope
+  enum { ATTR_USE Six }; // expected-error {{expected identifier}}
+         ^
+
+"Test_name.c", line 20: error: expected a "}"
+  enum { ATTR_USE Six }; // expected-error {{expected identifier}}
+                  ^
+"Test_name.c", line 20: note: to match this "{"
+  enum { ATTR_USE Six }; // expected-error {{expected identifier}}
+       ^
+
+"Test_name.c", line 23: error: "ATTR_USE" has already been declared in the current scope
+  enum E3 ATTR_USE { Seven }; // expected-error {{expected identifier or '('}}
+          ^
+
+"Test_name.c", line 23: error: expected a ";"
+  enum E3 ATTR_USE { Seven }; // expected-error {{expected identifier or '('}}
+                   ^
+
+"Test_name.c", line 25: error: tag kind of class or struct is incompatible with declaration of enum "ATTR_USE" (declared at line 16)
+  struct ATTR_USE S1 { // expected-error {{'ATTR_NAME' only applies to non-K&R-style functions}}
+         ^
+
+"Test_name.c", line 25: error: expected a ";"
+  struct ATTR_USE S1 { // expected-error {{'ATTR_NAME' only applies to non-K&R-style functions}}
+                     ^
+
+"Test_name.c", line 37: warning: parsing restarts here after previous syntax error
+  };
+   ^
+
+"Test_name.c", line 39: warning: this declaration has no storage class or type specifier
+  ATTR_USE struct S2 { int a; }; // expected-error {{misplaced 'ATTR_NAME'}}
+  ^
+
+"Test_name.c", line 39: error: expected a ";"
+  ATTR_USE struct S2 { int a; }; // expected-error {{misplaced 'ATTR_NAME'}}
+           ^
+
+"Test_name.c", line 40: error: declaration is incompatible with "int ATTR_USE" (declared at line 23)
+  struct S3 ATTR_USE { int a; }; // expected-error {{'ATTR_NAME' cannot appear here}} \
+            ^
+
+"Test_name.c", line 40: error: expected a ";"
+  struct S3 ATTR_USE { int a; }; // expected-error {{'ATTR_NAME' cannot appear here}} \
+                     ^
+
+"Test_name.c", line 43: error: tag kind of union is incompatible with declaration of enum "ATTR_USE" (declared at line 16)
+  union ATTR_USE U { // expected-error {{'ATTR_NAME' only applies to non-K&R-style functions}}
+        ^
+
+"Test_name.c", line 43: error: expected a ";"
+  union ATTR_USE U { // expected-error {{'ATTR_NAME' only applies to non-K&R-style functions}}
+                   ^
+
+"Test_name.c", line 46: warning: parsing restarts here after previous syntax error
+  };
+   ^
+
+"Test_name.c", line 48: warning: this declaration has no storage class or type specifier
+  ATTR_USE union U2 { double d; }; // expected-error {{misplaced 'ATTR_NAME'}}
+  ^
+
+"Test_name.c", line 48: error: expected a ";"
+  ATTR_USE union U2 { double d; }; // expected-error {{misplaced 'ATTR_NAME'}}
+           ^
+
+"Test_name.c", line 49: error: declaration is incompatible with "int ATTR_USE" (declared at line 40)
+  union U3 ATTR_USE { double d; }; // expected-error {{'ATTR_NAME' cannot appear here}} \
+           ^
+
+"Test_name.c", line 49: error: expected a ";"
+  union U3 ATTR_USE { double d; }; // expected-error {{'ATTR_NAME' cannot appear here}} \
+                    ^
+
+"Test_name.c", line 52: error: tag kind of class or struct is incompatible with declaration of enum "ATTR_USE" (declared at line 16)
+  struct ATTR_USE IncompleteStruct; // expected-error {{'ATTR_NAME' only applies to non-K&R-style functions}}
+         ^
+
+"Test_name.c", line 53: error: tag kind of union is incompatible with declaration of enum "ATTR_USE" (declared at line 16)
+  union ATTR_USE IncompleteUnion; // expected-error {{'ATTR_NAME' only applies to non-K&R-style functions}}
+        ^
+
+"Test_name.c", line 56: warning: this declaration has no storage class or type specifier
+  ATTR_USE void f1(void); // expected-error {{'ATTR_NAME' cannot be applied to a declaration}}
+  ^
+
+"Test_name.c", line 56: error: expected a ";"
+  ATTR_USE void f1(void); // expected-error {{'ATTR_NAME' cannot be applied to a declaration}}
+           ^
+
+"Test_name.c", line 57: error: declaration is incompatible with "int ATTR_USE" (declared at line 49)
+  void ATTR_USE f2(void); // expected-error {{'ATTR_NAME' only applies to function types}}
+       ^
+
+"Test_name.c", line 57: error: expected a ";"
+  void ATTR_USE f2(void); // expected-error {{'ATTR_NAME' only applies to function types}}
+                ^
+
+"Test_name.c", line 58: error: incomplete type "void" is not allowed
+  void f3 ATTR_USE (void); // expected-error {{'ATTR_NAME' cannot be applied to a declaration}}
+       ^
+
+"Test_name.c", line 58: error: expected a ";"
+  void f3 ATTR_USE (void); // expected-error {{'ATTR_NAME' cannot be applied to a declaration}}
+          ^
+
+"Test_name.c", line 59: error: expected a "{"
+  void f4(void) ATTR_USE;
+                ^
+
+"Test_name.c", line 63: warning: parsing restarts here after previous syntax error
+  void f6(a, b) ATTR_USE int a; int b; { // expected-error {{'ATTR_NAME' cannot appear here}} \
+                                       ^
+
+"Test_name.c", line 72: error: expected a declaration
+  int (*f7(a, b))(int, int) ATTR_USE int a; int b; { // c2x-warning {{deprecated}}
+                            ^
+
+"Test_name.c", line 72: warning: standard requires that parameter "a" be given a type by a subsequent declaration ("int" assumed)
+  int (*f7(a, b))(int, int) ATTR_USE int a; int b; { // c2x-warning {{deprecated}}
+           ^
+
+"Test_name.c", line 76: warning: this declaration has no storage class or type specifier
+  ATTR_USE int a, b; // expected-error {{'ATTR_NAME' only applies to function types}}
+  ^
+
+"Test_name.c", line 76: error: expected a ";"
+  ATTR_USE int a, b; // expected-error {{'ATTR_NAME' only applies to function types}}
+           ^
+
+"Test_name.c", line 77: error: expected a ";"
+  int c ATTR_USE, d ATTR_USE; // expected-error 2 {{'ATTR_NAME' only applies to function types}}
+        ^
+
+"Test_name.c", line 79: error: expected a "{"
+  void f8(void) ATTR_USE {
+                ^
+
+"Test_name.c", line 80: warning: expression has no effect
+    ATTR_USE int i, j; // expected-error {{'ATTR_NAME' only applies to function types}}
+    ^
+
+"Test_name.c", line 80: error: expected a ";"
+    ATTR_USE int i, j; // expected-error {{'ATTR_NAME' only applies to function types}}
+             ^
+
+"Test_name.c", line 81: error: expected a ";"
+    int k, l ATTR_USE; // expected-error {{'ATTR_NAME' only applies to function types}}
+             ^
+
+"Test_name.c", line 81: warning: variable "k" was declared but never referenced
+    int k, l ATTR_USE; // expected-error {{'ATTR_NAME' only applies to function types}}
+        ^
+
+"Test_name.c", line 81: warning: variable "l" was declared but never referenced
+    int k, l ATTR_USE; // expected-error {{'ATTR_NAME' only applies to function types}}
+           ^
+
+"Test_name.c", line 84: warning: this declaration has no storage class or type specifier
+  ATTR_USE void f9(void) { // expected-error {{'ATTR_NAME' cannot be applied to a declaration}}
+  ^
+
+"Test_name.c", line 84: error: expected a ";"
+  ATTR_USE void f9(void) { // expected-error {{'ATTR_NAME' cannot be applied to a declaration}}
+           ^
+
+"Test_name.c", line 92: warning: parsing restarts here after previous syntax error
+  void f10(int j[static 10] ATTR_USE, int k[*] ATTR_USE); // expected-error 2 {{'ATTR_NAME' only applies to function types}}
+                                                        ^
+
+"Test_name.c", line 95: warning: expression has no effect
+    ATTR_USE {} // expected-error {{'ATTR_NAME' cannot be applied to a statement}}
+    ^
+
+"Test_name.c", line 95: error: expected a ";"
+    ATTR_USE {} // expected-error {{'ATTR_NAME' cannot be applied to a statement}}
+             ^
+
+"Test_name.c", line 103: warning: parsing restarts here after previous syntax error
+    goto foo;
+            ^
+
+"Test_name.c", line 104: warning: expression has no effect
+    ATTR_USE foo: (void)1; // expected-error {{'ATTR_NAME' only applies to non-K&R-style functions}}
+    ^
+
+"Test_name.c", line 104: error: expected a ";"
+    ATTR_USE foo: (void)1; // expected-error {{'ATTR_NAME' only applies to non-K&R-style functions}}
+             ^
+
+"Test_name.c", line 106: warning: expression has no effect
+    ATTR_USE for (;;); // expected-error {{'ATTR_NAME' cannot be applied to a statement}}
+    ^
+
+"Test_name.c", line 106: error: expected a ";"
+    ATTR_USE for (;;); // expected-error {{'ATTR_NAME' cannot be applied to a statement}}
+             ^
+
+"Test_name.c", line 107: warning: expression has no effect
+    ATTR_USE while (1); // expected-error {{'ATTR_NAME' cannot be applied to a statement}}
+    ^
+
+"Test_name.c", line 107: error: expected a ";"
+    ATTR_USE while (1); // expected-error {{'ATTR_NAME' cannot be applied to a statement}}
+             ^
+
+"Test_name.c", line 108: warning: expression has no effect
+    ATTR_USE do ATTR_USE { } while(1); // expected-error 2 {{'ATTR_NAME' cannot be applied to a statement}}
+    ^
+
+"Test_name.c", line 108: error: expected a ";"
+    ATTR_USE do ATTR_USE { } while(1); // expected-error 2 {{'ATTR_NAME' cannot be applied to a statement}}
+             ^
+
+"Test_name.c", line 110: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+    ATTR_USE (void)1; // expected-error {{'ATTR_NAME' cannot be applied to a statement}}
+    ^
+
+"Test_name.c", line 110: error: expected an expression
+    ATTR_USE (void)1; // expected-error {{'ATTR_NAME' cannot be applied to a statement}}
+              ^
+
+"Test_name.c", line 110: error: expected a ";"
+    ATTR_USE (void)1; // expected-error {{'ATTR_NAME' cannot be applied to a statement}}
+                   ^
+
+"Test_name.c", line 112: warning: expression has no effect
+    ATTR_USE; // expected-error {{'ATTR_NAME' cannot be applied to a statement}}
+    ^
+
+"Test_name.c", line 114: error: expected a ")"
+    (void)sizeof(int [4]ATTR_USE); // expected-error {{'ATTR_NAME' only applies to function types}}
+                        ^
+
+"Test_name.c", line 115: error: tag kind of class or struct is incompatible with declaration of enum "ATTR_USE" (declared at line 16)
+    (void)sizeof(struct ATTR_USE S3 { int a ATTR_USE; }); // expected-error {{'ATTR_NAME' only applies to non-K&R-style functions}} \
+                        ^
+
+"Test_name.c", line 115: error: expected a ")"
+    (void)sizeof(struct ATTR_USE S3 { int a ATTR_USE; }); // expected-error {{'ATTR_NAME' only applies to non-K&R-style functions}} \
+                                 ^
+
+"Test_name.c", line 118: warning: expression has no effect
+    ATTR_USE return; // expected-error {{'ATTR_NAME' cannot be applied to a statement}}
+    ^
+
+"Test_name.c", line 118: error: expected a ";"
+    ATTR_USE return; // expected-error {{'ATTR_NAME' cannot be applied to a statement}}
+             ^
+
+"Test_name.c", line 120: warning: expression has no effect
+    ATTR_USE asm (""); // expected-error {{'ATTR_NAME' cannot appear here}}
+    ^
+
+"Test_name.c", line 120: error: expected a ";"
+    ATTR_USE asm (""); // expected-error {{'ATTR_NAME' cannot appear here}}
+             ^
+
+"Test_name.c", line 123: error: tag kind of class or struct is incompatible with declaration of enum "ATTR_USE" (declared at line 16)
+  struct ATTR_USE S4 *s; // expected-error {{'ATTR_NAME' cannot appear here}}
+         ^
+
+"Test_name.c", line 123: error: expected a ";"
+  struct ATTR_USE S4 *s; // expected-error {{'ATTR_NAME' cannot appear here}}
+                     ^
+
+"Test_name.c", line 125: error: tag kind of class or struct is incompatible with declaration of enum "ATTR_USE" (declared at line 16)
+  int c = sizeof(struct ATTR_USE S5); // expected-error {{'ATTR_NAME' cannot appear here}}
+                        ^
+
+"Test_name.c", line 125: error: expected a ")"
+  int c = sizeof(struct ATTR_USE S5); // expected-error {{'ATTR_NAME' cannot appear here}}
+                                 ^
+
+"Test_name.c", line 127: error: expected a declaration
+  void invalid_parentheses1() __arm_inout; // expected-error {{expected '(' after ''__arm_inout''}}
+                              ^
+
+"Test_name.c", line 128: error: a declaration here must declare a parameter
+  void invalid_parentheses2() __arm_inout(; // expected-error {{expected string literal as argument of '__arm_inout' attribute}}
+       ^
+
+"Test_name.c", line 128: error: expected a ";"
+  void invalid_parentheses2() __arm_inout(; // expected-error {{expected string literal as argument of '__arm_inout' attribute}}
+                              ^
+
+"Test_name.c", line 132: warning: parsing restarts here after previous syntax error
+  void invalid_parentheses5() __arm_inout(());  // expected-error {{expected string literal as argument of '__arm_inout' attribute}}
+                                             ^
+
+"Test_name.c", line 133: error: a declaration here must declare a parameter
+  void invalid_parentheses6() __arm_inout("za"; // expected-error {{expected ')'}}
+       ^
+
+"Test_name.c", line 133: error: expected a ";"
+  void invalid_parentheses6() __arm_inout("za"; // expected-error {{expected ')'}}
+                              ^
+
+"Test_name.c", line 140: warning: parsing restarts here after previous syntax error
+  void invalid_parentheses8() __arm_streaming();  // expected-error {{function cannot return function type 'void ()'}} \
+                                               ^
+
+At end of source: error: expected a "{"
+
+At end of source: error: expected a "}"
+
+55 errors detected in the compilation of "Test_name.c".

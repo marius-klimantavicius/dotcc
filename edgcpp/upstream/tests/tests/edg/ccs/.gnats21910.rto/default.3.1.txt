@@ -1,0 +1,12 @@
+cpfe -DTEST_NUMBER=3 --il_display --c++20 Test_name.c
+initializer_range
+  start.seq:             32
+  start.column:          8
+  end.seq:               32
+  end.column:            10
+--
+initializer_range
+  start.seq:             34
+  start.column:          8
+  end.seq:               34
+  end.column:            13

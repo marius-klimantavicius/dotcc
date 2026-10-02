@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 14: error: a value of type "const char *" cannot be used to initialize an entity of type "const char"
+  char const s[6] = { "a", 1 };  // Previously silent accepted; now an error.
+                      ^
+
+"Test_name.c", line 14: warning: variable "s" was declared but never referenced
+  char const s[6] = { "a", 1 };  // Previously silent accepted; now an error.
+             ^
+
+1 error detected in the compilation of "Test_name.c".

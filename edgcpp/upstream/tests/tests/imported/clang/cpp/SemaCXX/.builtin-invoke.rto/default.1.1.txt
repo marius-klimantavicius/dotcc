@@ -1,0 +1,102 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++23 Test_name.c
+"Test_name.c", line 6: error: too few arguments in function call
+    __builtin_invoke(); // expected-error {{too few arguments to function call, expected at least 1, have 0}}
+                     ^
+
+"Test_name.c", line 87: error: no operator "*" matches these operands
+            operand types are: * Incomplete
+    __builtin_invoke((int (Incomplete2::*)){}, incomplete); // expected-error {{incomplete type 'Incomplete' used in type trait expression}} \
+                                               ^
+"Test_name.c", line 87: note: built-in operator*(<pointer to object>) does not match because argument #1 does not match parameter
+    __builtin_invoke((int (Incomplete2::*)){}, incomplete); // expected-error {{incomplete type 'Incomplete' used in type trait expression}} \
+                                               ^
+"Test_name.c", line 87: note: built-in operator*(<pointer to function>) does not match because argument #1 does not match parameter
+    __builtin_invoke((int (Incomplete2::*)){}, incomplete); // expected-error {{incomplete type 'Incomplete' used in type trait expression}} \
+                                               ^
+
+"Test_name.c", line 90: error: cannot convert to incomplete class "Incomplete"
+    __builtin_invoke(incomplete_by_val_test, incomplete); // expected-error {{argument type 'Incomplete' is incomplete}}
+                                             ^
+
+"Test_name.c", line 98: error: too many arguments in function call
+    __builtin_invoke(func, 1); // expected-error {{too many arguments to function call, expected 0, have 1}}
+                           ^
+
+"Test_name.c", line 99: error: too few arguments in function call
+    __builtin_invoke(argfunc, 1); // expected-error {{too few arguments to function call, expected 2, have 1}}
+                               ^
+
+"Test_name.c", line 107: error: too few arguments in function call
+    __builtin_invoke(variadic_func); // expected-error {{too few arguments to function call, expected at least 1, have 0}}
+                                  ^
+
+"Test_name.c", line 125: error: too few arguments in function call
+    __builtin_invoke(&Callable::func); // expected-error {{too few arguments to function call, expected at least 2, have 1}}
+                                    ^
+
+"Test_name.c", line 126: error: expression must have class type but it has type "int"
+    __builtin_invoke(&Callable::func, 1); // expected-error {{indirection requires pointer operand ('int' invalid)}}
+                                      ^
+
+"Test_name.c", line 128: error: too many arguments in function call
+    __builtin_invoke(&Callable::func, Callable{}, 1); // expected-error {{too many arguments to function call, expected 0, have 1}}
+                                                  ^
+
+"Test_name.c", line 135: error: too many arguments in function call
+    __builtin_invoke(&Callable::func, &c, 2); // expected-error {{too many arguments to function call, expected 0, have 1}}
+                                          ^
+
+"Test_name.c", line 137: error: too many arguments in function call
+    __builtin_invoke(&Callable::func, pointer_wrapper<Callable>{&c}, 2); // expected-error {{too many arguments to function call, expected 0, have 1}}
+                                                                     ^
+
+"Test_name.c", line 141: error: "std::reference_wrapper<InvalidSpecialization1>" has no member "get"
+    __builtin_invoke(&InvalidSpecialization1::func, std::ref(is1)); // expected-error {{no member named 'get' in 'std::reference_wrapper<InvalidSpecialization1>'}}
+                                                    ^
+
+"Test_name.c", line 142: error: function "std::reference_wrapper<InvalidSpecialization2>::get" (declared at line 74) is inaccessible
+    __builtin_invoke(&InvalidSpecialization2::func, std::ref(is2)); // expected-error {{'get' is a private member of 'std::reference_wrapper<InvalidSpecialization2>'}}
+                                                    ^
+
+"Test_name.c", line 145: error: too few arguments in function call
+    __builtin_invoke(&Callable::var); // expected-error {{too few arguments to function call, expected at least 2, have 1}}
+                                   ^
+
+"Test_name.c", line 146: error: expression must have class type but it has type "int"
+    __builtin_invoke(&Callable::var, 1); // expected-error {{indirection requires pointer operand ('int' invalid)}}
+                                     ^
+
+"Test_name.c", line 148: error: too many arguments in function call
+    __builtin_invoke(&Callable::var, Callable{}, 1); // expected-error {{too many arguments to function call, expected 2, have 3}}
+                                                  ^
+
+"Test_name.c", line 153: error: too many arguments in function call
+    __builtin_invoke(&Callable::var, &c, 2); // expected-error {{too many arguments to function call, expected 2, have 3}}
+                                          ^
+
+"Test_name.c", line 155: error: too many arguments in function call
+    __builtin_invoke(&Callable::var, pointer_wrapper<Callable>{&c}, 2); // expected-error {{too many arguments to function call, expected 2, have 3}}
+                                                                     ^
+
+"Test_name.c", line 157: error: "std::reference_wrapper<InvalidSpecialization1>" has no member "get"
+    __builtin_invoke(&InvalidSpecialization1::var, std::ref(is1)); // expected-error {{no member named 'get' in 'std::reference_wrapper<InvalidSpecialization1>'}}
+                                                   ^
+
+"Test_name.c", line 158: error: function "std::reference_wrapper<InvalidSpecialization2>::get" (declared at line 74) is inaccessible
+    (void)__builtin_invoke(&InvalidSpecialization2::var, std::ref(is2)); // expected-error {{'get' is a private member of 'std::reference_wrapper<InvalidSpecialization2>'}}
+                                                         ^
+
+"Test_name.c", line 113: warning: local class member function "StaticMember::func" requires a definition
+      static void func(int);
+                  ^
+
+"Test_name.c", line 176: warning: ignoring return value from routine declared with "nodiscard" attribute
+    __builtin_invoke(diagnose_discard); // expected-warning {{ignoring return value of function declared with 'nodiscard' attribute}}
+                    ^
+
+"Test_name.c", line 191: error: too many arguments in function call
+    __builtin_invoke(func, c, 1, 2, 3); // expected-error {{too many arguments to function call, expected 0, have 3}}
+                              ^
+          detected during instantiation of "void func(ClassT &, FuncT &&) [with ClassT=DependentTest, FuncT=void (DependentTest::*)()]" at line 202
+
+21 errors detected in the compilation of "Test_name.c".

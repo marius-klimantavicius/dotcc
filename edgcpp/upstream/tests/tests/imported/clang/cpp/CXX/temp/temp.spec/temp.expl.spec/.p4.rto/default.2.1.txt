@@ -1,0 +1,20 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 38: error: the default constructor of "X<IntHolder, int>::Inner" cannot be referenced -- it is a deleted function
+    X<IntHolder, int>::Inner inner;
+                             ^
+
+"Test_name.c", line 72: error: "X<T, U>::X() [with T=IntHolder, U=long]" is not an entity that can be explicitly specialized
+  X<IntHolder, long>::X() { } // expected-error{{instantiated member}}
+                      ^
+
+"Test_name.c", line 14: error: no default constructor exists for class "IntHolder"
+      T t; // expected-error{{no matching}}
+        ^
+          detected during instantiation of "void X<T, U>::f() [with T=IntHolder, U=int]" at line 36
+
+"Test_name.c", line 32: error: no default constructor exists for class "IntHolder"
+  T X<T, U>::value; // expected-error{{no matching constructor}}
+             ^
+          detected during implicit definition of "IntHolder X<T, U>::value [with T=IntHolder, U=int]" at line 45
+
+4 errors detected in the compilation of "Test_name.c".

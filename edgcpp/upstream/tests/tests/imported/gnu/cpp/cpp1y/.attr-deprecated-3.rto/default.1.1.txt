@@ -1,0 +1,23 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 13: warning: class "bar<int>" was declared deprecated ("foo")
+    bar<int> b;	// { dg-warning "is deprecated: foo" }
+             ^
+"Test_name.c", line 7: note: because of a "deprecated" attribute
+  struct [[deprecated("foo")]] bar {};	// { dg-message "declared here" }
+           ^
+
+"Test_name.c", line 14: warning: class "qux" was declared deprecated ("baz")
+    qux c;	// { dg-warning "is deprecated: baz" }
+        ^
+"Test_name.c", line 8: note: because of a "deprecated" attribute
+  struct [[deprecated("baz")]] qux {}; 	// { dg-message "declared here" }
+           ^
+
+"Test_name.c", line 13: warning: variable "b" was declared but never referenced
+    bar<int> b;	// { dg-warning "is deprecated: foo" }
+             ^
+
+"Test_name.c", line 14: warning: variable "c" was declared but never referenced
+    qux c;	// { dg-warning "is deprecated: baz" }
+        ^
+

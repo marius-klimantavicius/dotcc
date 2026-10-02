@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 9: error: this declaration has no storage class or type specifier
+    a; // expected-error {{a type specifier is required}}
+    ^
+
+"Test_name.c", line 15: error: invalid combination of type specifiers
+  basic_string<char> struct{ // expected-error {{cannot combine with previous 'type-name' declaration specifier}}
+                     ^
+
+"Test_name.c", line 16: error: explicit type is missing ("int" assumed)
+  a(){ // expected-error {{a type specifier is required}}
+  ^
+
+3 errors detected in the compilation of "Test_name.c".

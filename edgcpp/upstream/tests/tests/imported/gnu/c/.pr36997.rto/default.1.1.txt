@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 Test_name.c
+"Test_name.c", line 9: error: argument of type "long long" is incompatible with parameter of type "__attribute((vector_size(8))) long long"
+      return (__m64) __builtin_ia32_paddq ((long long)__m1, (long long)__m2); /* { dg-error "incompatible type" } */
+                                           ^
+
+"Test_name.c", line 9: error: argument of type "long long" is incompatible with parameter of type "__attribute((vector_size(8))) long long"
+      return (__m64) __builtin_ia32_paddq ((long long)__m1, (long long)__m2); /* { dg-error "incompatible type" } */
+                                                            ^
+
+2 errors detected in the compilation of "Test_name.c".

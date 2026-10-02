@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 17: warning: constexpr non-static member function will not be implicitly 'const' in C++14
+    constexpr W& operator=(const W&) && = default; // { dg-error "defaulted" "" { target c++11_down } }
+    ^
+
+"Test_name.c", line 17: error: invalid type for defaulted assignment operator
+    constexpr W& operator=(const W&) && = default; // { dg-error "defaulted" "" { target c++11_down } }
+                 ^
+
+1 error detected in the compilation of "Test_name.c".

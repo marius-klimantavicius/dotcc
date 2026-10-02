@@ -1,0 +1,24 @@
+fe_only -DTEST_NUMBER=2 --c++20 -DNEG Test_name.c
+"Test_name.c", line 35: error: no operator "=" matches these operands
+            operand types are: aggr = double
+    a = 8.0;
+      ^
+"Test_name.c", line 7: note: function "aggr::operator=(aggr &&)" does not match because argument #1 does not match parameter
+  struct aggr {
+         ^
+"Test_name.c", line 7: note: function "aggr::operator=(const aggr &)" does not match because argument #1 does not match parameter
+  struct aggr {
+         ^
+
+"Test_name.c", line 50: error: no operator "=" matches these operands
+            operand types are: aggr = convertible
+    b = conv;
+      ^
+"Test_name.c", line 7: note: function "aggr::operator=(aggr &&)" does not match because argument #1 does not match parameter
+  struct aggr {
+         ^
+"Test_name.c", line 7: note: function "aggr::operator=(const aggr &)" does not match because argument #1 does not match parameter
+  struct aggr {
+         ^
+
+2 errors detected in the compilation of "Test_name.c".

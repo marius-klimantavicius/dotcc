@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: error: incomplete type "A<I>" is not allowed
+    template <int A_S> friend void A<A_S>::impl();
+                                   ^
+          detected during instantiation of class "B<I> [with I=0]" at line 11
+
+"Test_name.c", line 15: error: member "B<I>::i [with I=0]" (declared at line 7) is inaccessible
+  template<int I> void A<I>::impl() { ++b1.i; ++b2.i; }
+                                           ^
+          detected during instantiation of "void A<I>::impl() [with I=0]" at line 19
+
+2 errors detected in the compilation of "Test_name.c".

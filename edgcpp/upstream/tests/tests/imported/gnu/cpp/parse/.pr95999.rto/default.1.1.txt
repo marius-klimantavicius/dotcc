@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 6: error: expected a "}"
+  template <typename = enum struct b { c = a d } 
+                                             ^
+"Test_name.c", line 6: note: to match this "{"
+  template <typename = enum struct b { c = a d } 
+                                     ^
+
+"Test_name.c", line 7: error: "template" is not allowed
+  template <> enum struct b { e };  // { dg-error "explicit specialization" }
+  ^
+
+"Test_name.c", line 6: error: type definition is not allowed
+  template <typename = enum struct b { c = a d } 
+                       ^
+
+"Test_name.c", line 7: error: enum "b" has already been defined (previous definition at line 6)
+  template <> enum struct b { e };  // { dg-error "explicit specialization" }
+                          ^
+
+4 errors detected in the compilation of "Test_name.c".

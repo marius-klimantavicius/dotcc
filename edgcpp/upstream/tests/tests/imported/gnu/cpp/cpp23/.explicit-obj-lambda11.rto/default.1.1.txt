@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++23 Test_name.c
+"Test_name.c", line 12: warning: variable "f0" was declared but never referenced
+    auto f0 = [](this S0){ return 5; }; // { dg-bogus "a lambda with captures may not have an explicit object parameter of an unrelated type" }
+         ^
+
+"Test_name.c", line 13: warning: variable "f1" was declared but never referenced
+    auto f1 = [x = 42](this S0){ return 5; }; // { dg-error "a lambda with captures may not have an explicit object parameter of an unrelated type" }
+         ^
+
+"Test_name.c", line 43: error: no instance of function template "lambda [](auto &&) static->auto" matches the required type
+    int (*fp0)(decltype(f)&) = &decltype(f)::operator();
+                               ^
+
+"Test_name.c", line 44: error: no instance of function template "lambda [](auto &&) static->auto" matches the required type
+    int (*fp1)(int&) = &decltype(f)::operator(); // { dg-error {no matches converting function} }
+                       ^
+
+"Test_name.c", line 41: warning: variable "f" was set but never used
+    auto f = [x = 42](this auto&&){ return x; }; // { dg-line t2_f }
+         ^
+
+2 errors detected in the compilation of "Test_name.c".

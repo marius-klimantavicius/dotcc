@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 --exceptions Test_name.c
+"p5.cpp", line 131: error: identifier "g" is undefined
+      B() { g(T::f()); } // expected-error {{undeclared identifier 'g'}}
+            ^
+          detected during instantiation of "PR14550::B<T>::B() [with T=PR14550::A]" at line 134
+
+"Test_name.c", line 19: warning: variable "StdExample::c" was declared but never referenced
+  constexpr int c = 0;
+                ^
+
+1 error detected in the compilation of "Test_name.c".

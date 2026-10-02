@@ -1,0 +1,94 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 20: error: cast to incomplete array type "int []" is not allowed
+    (int []) p; /* { dg-error "cast specifies array type" } */
+     ^
+
+"Test_name.c", line 21: error: cast to type "int ()" is not allowed
+    (int ()) p; /* { dg-error "cast specifies function type" } */
+     ^
+
+"Test_name.c", line 22: warning: expression has no effect
+    (struct s) sv; /* { dg-warning "ISO C forbids casting nonscalar to the same type" } */
+    ^
+
+"Test_name.c", line 23: warning: expression has no effect
+    (union u) uv; /* { dg-warning "ISO C forbids casting nonscalar to the same type" } */
+    ^
+
+"Test_name.c", line 24: error: cast to type "struct s" is not allowed
+    (struct s) i; /* { dg-error "conversion to non-scalar type requested" } */
+     ^
+
+"Test_name.c", line 26: error: cast to type "union u" is not allowed
+    (union u) l; /* { dg-error "cast to union type from type not present in union" } */
+     ^
+
+"Test_name.c", line 27: error: invalid type conversion
+    (int) sv; /* { dg-error "aggregate value used where an integer was expected" } */
+    ^
+
+"Test_name.c", line 28: error: invalid type conversion
+    (int) uv; /* { dg-error "aggregate value used where an integer was expected" } */
+    ^
+
+"Test_name.c", line 29: error: invalid type conversion
+    (float) sv; /* { dg-error "aggregate value used where a floating-point was expected" } */
+    ^
+
+"Test_name.c", line 30: error: invalid type conversion
+    (float) uv; /* { dg-error "aggregate value used where a floating-point was expected" } */
+    ^
+
+"Test_name.c", line 31: error: invalid type conversion
+    (_Complex double) sv; /* { dg-error "aggregate value used where a complex was expected" } */
+    ^
+
+"Test_name.c", line 32: error: invalid type conversion
+    (_Complex double) uv; /* { dg-error "aggregate value used where a complex was expected" } */
+    ^
+
+"Test_name.c", line 33: error: invalid type conversion
+    (void *) sv; /* { dg-error "cannot convert to a pointer type" } */
+    ^
+
+"Test_name.c", line 34: error: invalid type conversion
+    (void *) uv; /* { dg-error "cannot convert to a pointer type" } */
+    ^
+
+"Test_name.c", line 35: error: invalid type conversion
+    (_Bool) sv; /* { dg-error "used struct type value where scalar is required" } */
+    ^
+
+"Test_name.c", line 36: error: invalid type conversion
+    (_Bool) uv; /* { dg-error "used union type value where scalar is required" } */
+    ^
+
+"Test_name.c", line 38: warning: type qualifier is meaningless on cast type
+    (const void) uv;
+     ^
+
+"Test_name.c", line 39: warning: expression has no effect
+    (void *) c; /* { dg-warning "cast to pointer from integer of different size" } */
+    ^
+
+"Test_name.c", line 40: warning: expression has no effect
+    (void *) (char) 1;
+    ^
+
+"Test_name.c", line 41: warning: conversion from pointer to smaller integer
+    (char) p; /* { dg-warning "cast from pointer to integer of different size" } */
+    ^
+
+"Test_name.c", line 41: warning: expression has no effect
+    (char) p; /* { dg-warning "cast from pointer to integer of different size" } */
+    ^
+
+"Test_name.c", line 42: warning: conversion from pointer to smaller integer
+    (char) (void *) 1; /* { dg-warning "cast from pointer to integer of different size" } */
+    ^
+
+"Test_name.c", line 42: warning: expression has no effect
+    (char) (void *) 1; /* { dg-warning "cast from pointer to integer of different size" } */
+    ^
+
+14 errors detected in the compilation of "Test_name.c".

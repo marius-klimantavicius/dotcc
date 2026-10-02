@@ -1,0 +1,31 @@
+eccp -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 8: remark: function "Set::~Set" cannot be inlined
+  struct Set: public Collection {
+         ^
+          detected during:
+            implicit generation of "Set::~Set()" at line 17
+            implicit generation of "Set::Set()" at line 17
+            implicit generation of "IdentSet::IdentSet()" at line 17
+
+"Test_name.c", line 8: remark: function "Set::Set()" cannot be inlined
+  struct Set: public Collection {
+         ^
+          detected during:
+            implicit generation of "Set::Set()" at line 17
+            implicit generation of "IdentSet::IdentSet()" at line 17
+
+"Test_name.c", line 11: remark: function "IdentSet::IdentSet()" cannot be inlined
+  struct IdentSet : public Set {
+         ^
+          detected during implicit generation of "IdentSet::IdentSet()" at line 17
+
+/usr/sbin/ld: Test_name.o: in function `_ZN3SetC1Ev':
+Test_name.int.c:(.text+0xXX): undefined reference to `_ZTV10Collection'
+/usr/sbin/ld: Test_name.o: in function `_ZN3SetD1Ev':
+Test_name.int.c:(.text+0xXX): undefined reference to `_ZN10CollectionD2Ev'
+/usr/sbin/ld: Test_name.o: in function `_ZN8IdentSetC1Ev':
+Test_name.int.c:(.text+0xXX): undefined reference to `_ZTV8IdentSet'
+/usr/sbin/ld: Test_name.o:(.data+0x18): undefined reference to `_ZN10CollectionD2Ev'
+/usr/sbin/ld: Test_name.o:(.data+0x24): undefined reference to `_ZN10CollectionD2Ev'
+/usr/sbin/ld: Test_name.o:(.rodata+0x18): undefined reference to `_ZTI10Collection'
+collect2: error: ld returned 1 exit status

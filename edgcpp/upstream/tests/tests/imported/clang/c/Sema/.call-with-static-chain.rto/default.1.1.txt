@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 8: error: incomplete type "void" is not allowed
+    __builtin_call_with_static_chain(f(), f);
+                                     ^
+
+"Test_name.c", line 10: error: expected an expression
+    __builtin_call_with_static_chain(^{}(), f); // expected-error {{first argument to __builtin_call_with_static_chain must not be a block call}}
+                                     ^
+
+"Test_name.c", line 11: error: incomplete type "void" is not allowed
+    __builtin_call_with_static_chain(__builtin_unreachable(), f); // expected-error {{first argument to __builtin_call_with_static_chain must not be a builtin call}}
+                                     ^
+
+"Test_name.c", line 12: error: incomplete type "void" is not allowed
+    __builtin_call_with_static_chain(f(), 42); // expected-error {{second argument to __builtin_call_with_static_chain must be of pointer type}}
+                                     ^
+
+4 errors detected in the compilation of "Test_name.c".

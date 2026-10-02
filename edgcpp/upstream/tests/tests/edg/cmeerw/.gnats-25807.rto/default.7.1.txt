@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=7 -tused --no_defer --ms_c++20 Test_name.c

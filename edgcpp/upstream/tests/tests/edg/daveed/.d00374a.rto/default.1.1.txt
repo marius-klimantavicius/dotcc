@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --embedded_c Test_name.c
+"Test_name.c", line 17: warning: variable "a" is used before its value is set
+  a += b;
+  ^
+
+"Test_name.c", line 17: warning: variable "b" is used before its value is set
+  a += b;
+       ^
+

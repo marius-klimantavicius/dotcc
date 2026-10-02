@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 10: error: incomplete type "TraitCheckImpl<Swappable<int, void>>" is not allowed
+  template<class T, class=typename TraitCheckImpl<Swappable<T, void> >::Complete>
+                                   ^
+          detected during processing of template argument list for "Swappable" based on template argument <int> at line 18
+
+"Test_name.c", line 18: error: incomplete type "Swappable<int, <error-type>>" is not allowed
+  Swappable<int> s;  // { dg-error "" }
+                 ^
+
+2 errors detected in the compilation of "Test_name.c".

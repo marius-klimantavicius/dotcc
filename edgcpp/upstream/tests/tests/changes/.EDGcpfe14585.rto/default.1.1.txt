@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --c++11 --g++ Test_name.c
+"Test_name.c", line 12: error: no instance of constructor "S::S" matches the argument list
+            argument types are: (lambda []()->void)
+  S s([&]{ i = 0; });  // Accepted when the 4.9 change was made (implicit
+      ^
+"Test_name.c", line 11: note: function "S::S(const S &)" does not match because argument #1 does not match parameter
+  struct S { S(void (*pf)()); };
+         ^
+"Test_name.c", line 11: note: function "S::S(S &&)" does not match because argument #1 does not match parameter
+  struct S { S(void (*pf)()); };
+         ^
+"Test_name.c", line 11: note: function "S::S(void (*)())" does not match because argument #1 does not match parameter
+  struct S { S(void (*pf)()); };
+             ^
+
+1 error detected in the compilation of "Test_name.c".

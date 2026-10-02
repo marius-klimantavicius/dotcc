@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 -w --c++03 -A Test_name.c
+"Test_name.c", line 7: error: the "template" keyword used for syntactic disambiguation may only be used within a template
+    ::template S<void> s;
+      ^
+
+"Test_name.c", line 28: error: the "template" keyword used for syntactic disambiguation may only be used within a template
+  ::template C<void> c2;
+    ^
+
+"Test_name.c", line 29: error: typename may only be used within a template
+  typename ::C<void> c3;
+  ^
+
+"Test_name.c", line 30: error: typename may only be used within a template
+  typename ::template C<void> c4;
+  ^
+
+"Test_name.c", line 30: error: the "template" keyword used for syntactic disambiguation may only be used within a template
+  typename ::template C<void> c4;
+             ^
+
+"Test_name.c", line 33: error: the "template" keyword used for syntactic disambiguation may only be used within a template
+  ns::template C<void> c6;
+      ^
+
+"Test_name.c", line 34: error: typename may only be used within a template
+  typename ns::C<void> c7;
+  ^
+
+"Test_name.c", line 35: error: typename may only be used within a template
+  typename ns::template C<void> c8;
+  ^
+
+"Test_name.c", line 35: error: the "template" keyword used for syntactic disambiguation may only be used within a template
+  typename ns::template C<void> c8;
+               ^
+
+9 errors detected in the compilation of "Test_name.c".

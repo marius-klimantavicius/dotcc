@@ -1,0 +1,118 @@
+fe_only -DTEST_NUMBER=3 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 20: warning: variable "e" was declared but never referenced
+    E e = Val1;
+      ^
+
+"Test_name.c", line 30: warning: variable "myvar" was set but never used
+    Foo myvar = A;
+        ^
+
+"Test_name.c", line 36: error: forward declaration of enum type is nonstandard
+    enum e1 (*bar)(void); // expected-error{{ISO C++ forbids forward references to 'enum' types}}
+         ^
+
+"Test_name.c", line 45: error: forward declaration of enum type is nonstandard
+  enum e2; // expected-error{{ISO C++ forbids forward references to 'enum' types}}
+       ^
+
+"Test_name.c", line 54: error: identifier "__INT_MAX__" is undefined
+    enum enum1 { v1 = __INT_MAX__ };
+                      ^
+
+"Test_name.c", line 55: error: the size of an array must be greater than zero
+    int test1[is_same<__typeof(+v1), int>::value];
+              ^
+
+"Test_name.c", line 58: error: the size of an array must be greater than zero
+    int test2[is_same<__typeof(+v2), unsigned int>::value];
+              ^
+
+"Test_name.c", line 60: error: identifier "__LONG_MAX__" is undefined
+    enum enum3 { v3 = __LONG_MAX__ };
+                      ^
+
+"Test_name.c", line 61: error: the size of an array must be greater than zero
+    int test3[is_same<__typeof(+v3), long>::value];
+              ^
+
+"Test_name.c", line 64: error: the size of an array must be greater than zero
+    int test4[is_same<__typeof(+v4), unsigned long>::value];
+              ^
+
+"Test_name.c", line 86: error: a value of type "int" cannot be assigned to an entity of type "PR7051::E"
+      e = 1; // expected-error{{assigning to 'E' from incompatible type 'int'}}
+        ^
+
+"Test_name.c", line 87: error: this operation on an enumerated type requires an applicable user-defined operator function
+      e |= 1; // expected-error{{assigning to 'E' from incompatible type 'int'}}
+        ^
+
+"Test_name.c", line 92: warning: declaration does not declare anything
+  enum { }; // expected-warning{{declaration does not declare anything}}
+  ^
+
+"Test_name.c", line 93: warning: declaration requires a typedef name
+  typedef enum { }; // expected-warning{{typedef requires a name}}
+                  ^
+
+"Test_name.c", line 97: error: incomplete type "PR7921E" is not allowed
+      PR7921V = (PR7921E)(123) // expected-error {{'PR7921E' is an incomplete type}}
+                 ^
+
+"Test_name.c", line 101: error: forward declaration of enum type is nonstandard
+    enum E; // expected-error{{ISO C++ forbids forward references to 'enum' types}} expected-note {{forward declaration}}
+         ^
+
+"Test_name.c", line 102: error: incomplete type "E" is not allowed
+    int a = (E)3; // expected-error {{'E' is an incomplete type}}
+             ^
+
+"Test_name.c", line 107: error: expression must have a constant value
+  enum { overflow = 123456 * 234567 };
+                    ^
+"Test_name.c", line 107: note: value exceeds range of "int"
+  enum { overflow = 123456 * 234567 };
+                           ^
+
+"Test_name.c", line 113: error: expression must have a constant value
+  enum { overflow_shift = 1 << 32 };
+                          ^
+"Test_name.c", line 113: note: shift count is too large
+  enum { overflow_shift = 1 << 32 };
+                               ^
+
+"Test_name.c", line 118: error: expression must have a constant value
+  enum NoFold : int { overflow2 = 123456 * 234567 };
+                                  ^
+"Test_name.c", line 118: note: value exceeds range of "int"
+  enum NoFold : int { overflow2 = 123456 * 234567 };
+                                         ^
+
+"Test_name.c", line 128: error: expression must have a constant value
+  enum : int { overflow2_shift = 1 << 32 };
+                                 ^
+"Test_name.c", line 128: note: shift count is too large
+  enum : int { overflow2_shift = 1 << 32 };
+                                      ^
+
+"Test_name.c", line 142: error: type definition is not allowed
+      PR28903_A = (enum { // expected-error-re {{'PR28903::(unnamed enum at {{.*}})' cannot be defined in an enumeration}}
+                   ^
+
+"Test_name.c", line 146: error: expected an expression
+    };
+    ^
+
+"Test_name.c", line 152: error: expected a ")"
+    void f(int, enum E;); // expected-error {{ISO C++ forbids forward references to 'enum' types}} \
+                      ^
+
+"Test_name.c", line 152: error: expected a declaration
+    void f(int, enum E;); // expected-error {{ISO C++ forbids forward references to 'enum' types}} \
+                       ^
+
+"Test_name.c", line 41: warning: function "badfunc" was declared but never referenced
+  static enum e1 badfunc(struct s1 *q) {
+                 ^
+
+21 errors detected in the compilation of "Test_name.c".

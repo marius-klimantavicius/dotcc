@@ -1,0 +1,16 @@
+cpfe -DTEST_NUMBER=1 --gn 40801 --c++11 Test_name.c
+"Test_name.c", line 17: error: no instance of constructor "Foo::Foo" matches the argument list
+            argument types are: ({...})
+      Foo f({ 0, { } });
+            ^
+"Test_name.c", line 11: note: function "Foo::Foo(const Foo &)" does not match because argument #1 does not match parameter
+  struct Foo {
+         ^
+"Test_name.c", line 11: note: function "Foo::Foo(Foo &&)" does not match because argument #1 does not match parameter
+  struct Foo {
+         ^
+"Test_name.c", line 11: note: number of parameters of function "Foo::Foo()" does not match the call
+  struct Foo {
+         ^
+
+1 error detected in the compilation of "Test_name.c".

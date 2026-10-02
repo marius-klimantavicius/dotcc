@@ -1,0 +1,56 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 95: warning: variable "p" was declared but never referenced
+  void q() { void (*p)(int) = Y::g; }
+                    ^
+
+"Test_name.c", line 143: error: incomplete type "templ_spec::A<T::X<int>>" (aka "void") is not allowed
+      A<typename T::template X<int>> t1;
+                                     ^
+
+"Test_name.c", line 146: error: template parameter "T::X" may not have a template argument list
+      A<typename T::X<int>> t2; // expected-error {{use 'template' keyword}}
+                    ^
+
+"Test_name.c", line 146: error: incomplete type "templ_spec::A<<error-type>>" (aka "void") is not allowed
+      A<typename T::X<int>> t2; // expected-error {{use 'template' keyword}}
+                            ^
+
+"Test_name.c", line 150: error: template "T::X" is not a type name
+      A<T::template X<int>> t3; // expected-error {{did you forget 'typename'}}
+        ^
+
+"Test_name.c", line 150: error: incomplete type "templ_spec::A<<error-type>>" (aka "void") is not allowed
+      A<T::template X<int>> t3; // expected-error {{did you forget 'typename'}}
+                            ^
+
+"Test_name.c", line 153: error: nontype "T::X" is not a template
+      A<T::X<int>> t4; // expected-error {{use 'template' keyword}} expected-error {{did you forget 'typename'}}
+           ^
+
+"Test_name.c", line 153: error: incomplete type "templ_spec::A<<error-type>>" (aka "void") is not allowed
+      A<T::X<int>> t4; // expected-error {{use 'template' keyword}} expected-error {{did you forget 'typename'}}
+                   ^
+
+"Test_name.c", line 88: error: type name is not allowed
+    T::g<mb, int>(0); // expected-error {{missing 'template' keyword prior to dependent template name 'g'}}
+             ^
+
+"Test_name.c", line 85: error: no instance of function template "Y::g" matches the argument list
+            argument types are: (int)
+    T::g<mb>(0);
+    ^
+"Test_name.c", line 93: note: substituting explicit template arguments "<<expression>>" for function template "Y::g" failed
+    template <int = 0> static void g(int); // expected-warning 0-1{{extension}}
+                                   ^
+          detected during instantiation of "void f<N,T>(T) [with N=0, T=Y]" at line 96
+
+"Test_name.c", line 88: error: no instance of function template "Y::g" matches the argument list
+            argument types are: (int)
+    T::g<mb, int>(0); // expected-error {{missing 'template' keyword prior to dependent template name 'g'}}
+    ^
+"Test_name.c", line 93: note: substituting explicit template arguments "<<expression>, int>" for function template "Y::g" failed
+    template <int = 0> static void g(int); // expected-warning 0-1{{extension}}
+                                   ^
+          detected during instantiation of "void f<N,T>(T) [with N=0, T=Y]" at line 96
+
+10 errors detected in the compilation of "Test_name.c".

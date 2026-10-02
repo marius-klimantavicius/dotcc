@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=2 --set_flag coroutines -tused -DNEG --microsoft_version=1900 Test_name.c
+"Test_name.c", line 9: warning: statement is unreachable
+    co_return;
+    ^
+
+"Test_name.c", line 9: error: "co_return" is only allowed in coroutines
+    co_return;
+    ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 5: error: a type qualifier is not allowed on a nonmember function
+  void f() const; // expected-error {{non-member function cannot have 'const' qualifier}}
+           ^
+
+"Test_name.c", line 6: error: a type qualifier is not allowed on a nonmember function
+  void (*pf)() const; // expected-error {{pointer to function type cannot have 'const' qualifier}}
+               ^
+
+"Test_name.c", line 7: error: a type qualifier is not allowed on a nonmember function
+  extern void (&rf)() const; // expected-error {{reference to function type cannot have 'const' qualifier}}
+                      ^
+
+"Test_name.c", line 10: error: a qualified function type cannot be used to declare a nonmember function or a static member function
+  cfn f2; // expected-error {{non-member function of type 'cfn' (aka 'void () const') cannot have 'const' qualifier}}
+      ^
+
+"Test_name.c", line 15: error: a type qualifier is not allowed on a static member function
+    static void f3() const; // expected-error {{static member function cannot have 'const' qualifier}}
+                     ^
+
+"Test_name.c", line 16: error: a qualified function type cannot be used to declare a nonmember function or a static member function
+    static cfn f4; // expected-error {{static member function of type 'cfn' (aka 'void () const') cannot have 'const' qualifier}}
+               ^
+
+"Test_name.c", line 23: error: expression must be a modifiable lvalue
+      x = 0; // expected-error {{cannot assign to non-static data member within const member function 'm2'}}
+      ^
+
+"Test_name.c", line 33: error: a type qualifier is not allowed on a nonmember function
+  void (PR14171)() const; // expected-error {{non-member function cannot have 'const' qualifier}}
+                   ^
+
+"Test_name.c", line 46: error: a type qualifier is not allowed on operator new or operator delete
+    void* operator new(size_t bytes) const; //expected-error {{static member function cannot have 'const' qualifier}}
+                                     ^
+
+"Test_name.c", line 47: error: a type qualifier is not allowed on operator new or operator delete
+    void* operator new[](size_t bytes) const; //expected-error {{static member function cannot have 'const' qualifier}}
+                                       ^
+
+"Test_name.c", line 49: error: a type qualifier is not allowed on operator new or operator delete
+    void operator delete(void*) const; //expected-error {{static member function cannot have 'const' qualifier}}
+                                ^
+
+"Test_name.c", line 50: error: a type qualifier is not allowed on operator new or operator delete
+    void operator delete[](void*) const; //expected-error {{static member function cannot have 'const' qualifier}}
+                                  ^
+
+"Test_name.c", line 53: error: a type qualifier is not allowed on operator new or operator delete
+    void* operator new(size_t bytes) volatile; //expected-error {{static member function cannot have 'volatile' qualifier}}
+                                     ^
+
+"Test_name.c", line 54: error: a type qualifier is not allowed on operator new or operator delete
+    void* operator new[](size_t bytes) volatile; //expected-error {{static member function cannot have 'volatile' qualifier}}
+                                       ^
+
+"Test_name.c", line 56: error: a type qualifier is not allowed on operator new or operator delete
+    void operator delete(void*) volatile; //expected-error {{static member function cannot have 'volatile' qualifier}}
+                                ^
+
+"Test_name.c", line 57: error: a type qualifier is not allowed on operator new or operator delete
+    void operator delete[](void*) volatile; //expected-error {{static member function cannot have 'volatile' qualifier}}
+                                  ^
+
+16 errors detected in the compilation of "Test_name.c".

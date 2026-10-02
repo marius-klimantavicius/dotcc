@@ -1,0 +1,46 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 30: error: static assertion failed
+  static_assert(foo<'a'>() == 3);
+  ^
+"Test_name.c", line 30: note: the final comparison was 2 == 3
+  static_assert(foo<'a'>() == 3);
+                           ^
+
+"Test_name.c", line 50: error: no instance of overloaded function "case1::foo" matches the argument list
+  static_assert(foo<char, 'a'>() == 2);
+                ^
+"Test_name.c", line 48: note: substituting "<char, 'a'>" for function template "case1::foo<T,X>()" failed constraints
+  constexpr int foo() requires C1<T{}, X> && true { return 2; } // #case1_foo2
+                ^
+"Test_name.c", line 48: note: concept "case1::C1" not satisfied for "<'\000', 'a'>"
+  constexpr int foo() requires C1<T{}, X> && true { return 2; } // #case1_foo2
+                               ^
+"Test_name.c", line 39: note: atomic constraint evaluates to false
+  concept C1 = sizeof(T) >= 4; // #case1_C1
+                         ^
+"Test_name.c", line 45: note: substituting "<char, 'a'>" for function template "case1::foo<T,W>()" failed constraints
+  constexpr int foo() requires C2<T, W> { return 1; } // #case1_foo1
+                ^
+"Test_name.c", line 45: note: concept "case1::C2" not satisfied for "<char, 'a'>"
+  constexpr int foo() requires C2<T, W> { return 1; } // #case1_foo1
+                               ^
+"Test_name.c", line 42: note: concept "case1::C1" not satisfied for "<'\000', 'a'>"
+  concept C2 = C1<Y{}, V>; // #case1_C2
+               ^
+"Test_name.c", line 39: note: atomic constraint evaluates to false
+  concept C1 = sizeof(T) >= 4; // #case1_C1
+                         ^
+
+"Test_name.c", line 60: error: more than one instance of overloaded function "case1::foo" matches the argument list:
+            function template "int case1::foo<T,W>()" (declared at line 45)
+            function template "int case1::foo<T,X>()" (declared at line 48)
+  static_assert(foo<int, 'a'>() == 2);
+                ^
+
+"Test_name.c", line 109: error: more than one instance of overloaded function "case3::foo" matches the argument list:
+            function template "int case3::foo<W>()" (declared at line 104)
+            function template "int case3::foo<X>()" (declared at line 107)
+  static_assert(foo<0>() == 2);
+                ^
+
+4 errors detected in the compilation of "Test_name.c".

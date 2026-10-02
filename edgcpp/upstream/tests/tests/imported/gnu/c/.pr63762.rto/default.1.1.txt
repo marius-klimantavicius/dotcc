@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c17 --strict_gnu Test_name.c
+"./pr63762.c", line 32: warning: variable "used_region" is used before its value is set
+        astGetRegionBounds (used_region, lbndgd, ubndgd);
+                            ^
+
+"./pr63762.c", line 22: warning: variable "d" was declared but never referenced
+    float *c, *d, *out, *tmp_out;
+               ^
+
+"./pr63762.c", line 24: warning: variable "nax" was declared but never referenced
+    int *lbndg, *ubndg, idim, ipix, nax, nin, nout, npix, npixg, result = 0;
+                                    ^
+
+"./pr63762.c", line 24: warning: variable "nin" was declared but never referenced
+    int *lbndg, *ubndg, idim, ipix, nax, nin, nout, npix, npixg, result = 0;
+                                         ^
+
+"./pr63762.c", line 24: warning: variable "nout" was declared but never referenced
+    int *lbndg, *ubndg, idim, ipix, nax, nin, nout, npix, npixg, result = 0;
+                                              ^
+

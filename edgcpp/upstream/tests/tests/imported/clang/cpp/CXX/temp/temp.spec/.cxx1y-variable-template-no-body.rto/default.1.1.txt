@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 Test_name.c
+"Test_name.c", line 14: error: too few arguments for variable template "pi"
+  template float pi<>; // expected-error {{too few template arguments for variable template 'pi'}}
+                    ^
+
+"Test_name.c", line 14: error: invalid explicit instantiation declaration
+  template float pi<>; // expected-error {{too few template arguments for variable template 'pi'}}
+           ^
+
+"Test_name.c", line 15: error: invalid explicit instantiation declaration
+  template double pi_var0; // expected-error {{explicit instantiation of 'pi_var0' does not refer to a function template, variable template, member function, member class, or static data member}}
+           ^
+
+"Test_name.c", line 19: error: invalid explicit instantiation declaration
+  template double pi_var = 5; // expected-error {{variable cannot be defined in an explicit instantiation; if this declaration is meant to be a variable definition, remove the 'template' keyword}}
+           ^
+
+"Test_name.c", line 19: error: expected a ";"
+  template double pi_var = 5; // expected-error {{variable cannot be defined in an explicit instantiation; if this declaration is meant to be a variable definition, remove the 'template' keyword}}
+                         ^
+
+"Test_name.c", line 24: error: invalid explicit instantiation declaration
+  template int pi0 = 10; // expected-error {{variable cannot be defined in an explicit instantiation; if this declaration is meant to be a variable definition, remove the 'template' keyword}} \
+           ^
+
+"Test_name.c", line 24: error: expected a ";"
+  template int pi0 = 10; // expected-error {{variable cannot be defined in an explicit instantiation; if this declaration is meant to be a variable definition, remove the 'template' keyword}} \
+                   ^
+
+"Test_name.c", line 32: error: expected a ";"
+  template float pi1<float> = 1.0;  // expected-error {{explicit template instantiation cannot have a definition; if this definition is meant to be an explicit specialization, add '<>' after the 'template' keyword}}
+                            ^
+
+"Test_name.c", line 35: error: variable "pi1<int>" cannot be explicitly instantiated in the current scope
+    template int pi1<int> = 10;  // expected-error {{explicit template instantiation cannot have a definition; if this definition is meant to be an explicit specialization, add '<>' after the 'template' keyword}} expected-error {{must occur at global scope}}
+                 ^
+
+"Test_name.c", line 35: error: expected a ";"
+    template int pi1<int> = 10;  // expected-error {{explicit template instantiation cannot have a definition; if this definition is meant to be an explicit specialization, add '<>' after the 'template' keyword}} expected-error {{must occur at global scope}}
+                          ^
+
+10 errors detected in the compilation of "Test_name.c".

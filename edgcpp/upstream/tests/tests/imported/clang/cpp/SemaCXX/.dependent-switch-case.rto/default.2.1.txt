@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 6: warning: statement is unreachable
+  constexpr bool e(int){switch(0)0=0:return t(;} // expected-error {{expression is not assignable}} \
+                                 ^
+
+"Test_name.c", line 6: error: expression must be a modifiable lvalue
+  constexpr bool e(int){switch(0)0=0:return t(;} // expected-error {{expression is not assignable}} \
+                                 ^
+
+"Test_name.c", line 6: error: expected a ";"
+  constexpr bool e(int){switch(0)0=0:return t(;} // expected-error {{expression is not assignable}} \
+                                    ^
+
+At end of source: warning: missing return statement at end of non-void function "e"
+
+At end of source: error: expected a "}"
+"Test_name.c", line 6: note: to match this "{"
+  constexpr bool e(int){switch(0)0=0:return t(;} // expected-error {{expression is not assignable}} \
+                       ^
+
+3 errors detected in the compilation of "Test_name.c".

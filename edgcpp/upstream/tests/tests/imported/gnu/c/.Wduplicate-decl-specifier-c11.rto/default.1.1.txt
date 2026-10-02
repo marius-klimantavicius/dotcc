@@ -1,0 +1,57 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 Test_name.c
+"Test_name.c", line 13: warning: type qualifier specified more than once
+    _Atomic AT2 x2;
+            ^
+
+"Test_name.c", line 15: warning: type qualifier specified more than once
+    AT2 _Atomic x4;
+        ^
+
+"Test_name.c", line 16: warning: type qualifier specified more than once
+    _Atomic int _Atomic x5; /* { dg-warning "duplicate ._Atomic." } */
+                ^
+
+"Test_name.c", line 12: warning: variable "x1" was declared but never referenced
+    _Atomic AT1 x1;
+                ^
+
+"Test_name.c", line 13: warning: variable "x2" was declared but never referenced
+    _Atomic AT2 x2;
+                ^
+
+"Test_name.c", line 14: warning: variable "x3" was declared but never referenced
+    AT1 _Atomic x3;
+                ^
+
+"Test_name.c", line 15: warning: variable "x4" was declared but never referenced
+    AT2 _Atomic x4;
+                ^
+
+"Test_name.c", line 16: warning: variable "x5" was declared but never referenced
+    _Atomic int _Atomic x5; /* { dg-warning "duplicate ._Atomic." } */
+                        ^
+
+"Test_name.c", line 20: warning: type qualifier specified more than once
+  void a2(_Atomic AT2 t) { }
+                  ^
+
+"Test_name.c", line 22: warning: type qualifier specified more than once
+  void a4(AT2 _Atomic t) { }
+              ^
+
+"Test_name.c", line 23: warning: type qualifier specified more than once
+  void a5(_Atomic int _Atomic t) { }  /* { dg-warning "duplicate ._Atomic." } */
+                      ^
+
+"Test_name.c", line 26: warning: type qualifier specified more than once
+  typedef _Atomic AT2 AAT2;
+                  ^
+
+"Test_name.c", line 28: warning: type qualifier specified more than once
+  typedef AT2 _Atomic AT2A;
+              ^
+
+"Test_name.c", line 29: warning: type qualifier specified more than once
+  typedef _Atomic int _Atomic AIA;    /* { dg-warning "duplicate ._Atomic." } */
+                      ^
+

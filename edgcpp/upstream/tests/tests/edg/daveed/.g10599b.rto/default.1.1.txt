@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++0x Test_name.c
+"Test_name.c", line 7: error: declaration is incompatible with "_A1_ x" (declared at line 7)
+  auto x(37);
+       ^
+
+1 error detected in the compilation of "Test_name.c".

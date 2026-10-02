@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c --target linux_aarch64 Test_name.c
+"Test_name.c", line 6: error: unknown register name "w0"
+  register int w0 __asm__ ("w0");
+                           ^
+
+"Test_name.c", line 7: error: unknown register name "x0"
+  register long x0 __asm__ ("x0");
+                            ^
+
+"Test_name.c", line 8: error: unknown register name "x15"
+  register char i1 __asm__ ("x15"); // expected-error {{size of register 'x15' does not match variable size}}
+                            ^
+
+"Test_name.c", line 9: error: unknown register name "w15"
+  register long long l2 __asm__ ("w15"); // expected-error {{size of register 'w15' does not match variable size}}
+                                 ^
+
+"Test_name.c", line 10: error: unknown register name "w3"
+  register int w3 __asm__ ("w3"); // expected-error {{register 'w3' unsuitable for global register variables on this target}}
+                           ^
+
+"Test_name.c", line 11: error: unknown register name "x3"
+  register long x3 __asm__ ("x3"); // expected-error {{register 'x3' unsuitable for global register variables on this target}}
+                            ^
+
+"Test_name.c", line 12: error: unknown register name "w4"
+  register int w4 __asm__ ("w4");
+                           ^
+
+"Test_name.c", line 13: error: unknown register name "x4"
+  register long x4 __asm__ ("x4");
+                            ^
+
+"Test_name.c", line 14: error: unknown register name "w18"
+  register int w18 __asm__ ("w18"); // no_x18-error {{register 'w18' unsuitable for global register variables on this target}}
+                            ^
+
+"Test_name.c", line 15: error: unknown register name "x18"
+  register long x18 __asm__ ("x18"); // no_x18-error {{register 'x18' unsuitable for global register variables on this target}}
+                             ^
+
+10 errors detected in the compilation of "Test_name.c".

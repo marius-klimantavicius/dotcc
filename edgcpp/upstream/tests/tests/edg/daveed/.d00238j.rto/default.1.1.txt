@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --microsoft Test_name.c
+"Test_name.c", line 26: error: interface types cannot have member templates
+  	template<typename> class X;
+  	^
+
+"Test_name.c", line 27: error: interface types cannot have member templates
+  	template<typename> void f();
+  	^
+
+2 errors detected in the compilation of "Test_name.c".

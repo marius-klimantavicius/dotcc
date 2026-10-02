@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 6: warning: nested comment is not allowed
+  /* Check if entry points get implicit C linkage. If they don't, compiler will
+  ^
+
+"Test_name.c", line 10: warning: function "main" cannot be declared in a linkage-specification
+  extern "C" int main();  // { dg-warning "linkage specification" }
+                 ^
+

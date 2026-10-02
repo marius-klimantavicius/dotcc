@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=2 --modules -E -DNEG Test_name.c
+#line 1 "Test_name.c"
+
+
+
+
+module X;
+
+
+import foo;
+export import bar;
+
+
+void
+import_function() {}
+
+void
+import1() {}

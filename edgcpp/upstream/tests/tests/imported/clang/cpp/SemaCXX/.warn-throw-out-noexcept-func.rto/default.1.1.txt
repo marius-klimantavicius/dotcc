@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --exceptions --c++17 Test_name.c
+"Test_name.c", line 25: error: identifier "nothrow" is undefined
+    void __declspec(nothrow) SomeDeclspecThrow() {// expected-note {{function declared non-throwing here}}
+                    ^
+
+"Test_name.c", line 25: error: expected a ";"
+    void __declspec(nothrow) SomeDeclspecThrow() {// expected-note {{function declared non-throwing here}}
+                             ^
+
+"Test_name.c", line 28: warning: parsing restarts here after previous syntax error
+  };
+  ^
+
+"Test_name.c", line 392: warning: type qualifier is meaningless on cast type
+      try { throw (int* volatile)0; } catch (void* const volatile &) {} // expected-warning {{still throw}}
+                   ^
+
+2 errors detected in the compilation of "Test_name.c".

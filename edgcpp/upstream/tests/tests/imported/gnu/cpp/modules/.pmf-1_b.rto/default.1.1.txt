@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 --modules Test_name.c
+"./modules/pmf-1.h", line 9: warning: variable "pmf" was declared but never referenced
+    int (X::*pmf) () = &X::mfn;
+             ^
+
+"./modules/pmf-1_b.C", line 4: catastrophic error: cannot find header "pmf-1_a.H" to import
+  import "pmf-1_a.H";
+         ^
+
+1 catastrophic error detected in the compilation of "Test_name.c".
+Compilation terminated.

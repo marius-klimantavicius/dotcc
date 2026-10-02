@@ -1,0 +1,14 @@
+//type: fp
+//options: --c++14
+// { dg-do compile { target c++14 } }
+
+template<class,class> struct ST;
+template<class T> struct ST<T,T> {};
+
+int j;
+auto x3 = []()->auto&& { return j; }; // OK: return type is int&
+
+int main()
+{
+  ST<decltype(x3()),int&>();
+}

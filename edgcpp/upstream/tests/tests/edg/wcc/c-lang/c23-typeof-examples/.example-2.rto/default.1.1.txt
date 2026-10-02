@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --c23 Test_name.c
+"Test_name.c", line 14: warning: const variable "atomic_meow" requires an initializer
+    typeof(_Atomic typeof(meow)) atomic_meow;
+                                            ^
+
+"Test_name.c", line 13: warning: variable "plain_purr" was declared but never referenced
+    typeof_unqual(purr)          plain_purr;
+                                 ^
+
+"Test_name.c", line 14: warning: variable "atomic_meow" was declared but never referenced
+    typeof(_Atomic typeof(meow)) atomic_meow;
+                                 ^
+
+"Test_name.c", line 15: warning: variable "animals_array" was declared but never referenced
+    typeof(animals)              animals_array;
+                                 ^
+
+"Test_name.c", line 16: warning: variable "animals2_array" was declared but never referenced
+    typeof_unqual(animals)       animals2_array;
+                                 ^
+

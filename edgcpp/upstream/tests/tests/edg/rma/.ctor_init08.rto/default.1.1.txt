@@ -1,0 +1,13 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 7: error: "A::A(int)" provides no initializer for:
+            const member "A::i"
+            reference member "A::ri"
+    A(int) { }
+           ^
+
+"Test_name.c", line 8: error: "A::A()" provides no initializer for:
+            reference member "A::ri"
+    A() : i() { }
+              ^
+
+2 errors detected in the compilation of "Test_name.c".

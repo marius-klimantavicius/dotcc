@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -w --c --target linux_aarch64 Test_name.c
+"Test_name.c", line 6: error: identifier "__BITINT_MAXWIDTH__" is undefined
+    _Static_assert(__BITINT_MAXWIDTH__ == 1024, "Macro value is unexpected.");
+                   ^
+
+"Test_name.c", line 11: error: _BitInt(8388609) is invalid; the maximum integer width is 65535
+    _BitInt(8388609) c;                // expected-error {{signed _BitInt of bit sizes greater than 1024 not supported}}
+            ^
+
+"Test_name.c", line 12: error: _BitInt(-1) is invalid; the maximum integer width is 65535
+    unsigned _BitInt(0xFFFFFFFFFF) d; // expected-error {{unsigned _BitInt of bit sizes greater than 1024 not supported}}
+                     ^
+
+3 errors detected in the compilation of "Test_name.c".

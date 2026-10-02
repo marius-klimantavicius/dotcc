@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++23 Test_name.c
+"Test_name.c", line 21: error: const variable "b" requires an initializer -- class "B" has no user-provided default constructor
+  const B b; // expected-error {{default initialization of an object of const type 'const B' without a user-provided default constructor}}
+          ^
+
+"Test_name.c", line 11: warning: variable "a" was declared but never referenced
+  const A a;
+          ^
+
+"Test_name.c", line 44: warning: variable "c" was declared but never referenced
+  const C c; // expected-error {{default initialization of an object of const type 'const C' without a user-provided default constructor}}
+          ^
+
+"Test_name.c", line 45: warning: variable "d" was declared but never referenced
+  const D d; // expected-error {{default initialization of an object of const type 'const D' without a user-provided default constructor}}
+          ^
+
+"Test_name.c", line 53: warning: variable "e" was declared but never referenced
+  const E e;
+          ^
+
+1 error detected in the compilation of "Test_name.c".

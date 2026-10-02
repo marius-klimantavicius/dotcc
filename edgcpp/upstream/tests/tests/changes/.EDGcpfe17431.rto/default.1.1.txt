@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 18: error: identifier "constexpr" is undefined
+    constexpr S(): second(0) {}  // Previously triggered an error.  Now okay.
+    ^
+
+"Test_name.c", line 18: error: member function with the same name as its class must be a constructor
+    constexpr S(): second(0) {}  // Previously triggered an error.  Now okay.
+              ^
+
+"Test_name.c", line 18: error: expected a ";"
+    constexpr S(): second(0) {}  // Previously triggered an error.  Now okay.
+                 ^
+
+3 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,67 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --exceptions --exceptions Test_name.c
+"Test_name.c", line 31: error: class "S<10U>" has no member "recurse"
+    static void recurse() noexcept(noexcept(S<N+1>::recurse())); // \
+                                                    ^
+          detected during:
+            instantiation of "void S<N>::recurse() [with N=9U]" at line 31
+            instantiation of "void S<N>::recurse() [with N=8U]" at line 31
+            instantiation of "void S<N>::recurse() [with N=7U]" at line 31
+            instantiation of "void S<N>::recurse() [with N=6U]" at line 31
+            instantiation of "void S<N>::recurse() [with N=5U]" at line 31
+            instantiation of "void S<N>::recurse() [with N=4U]" at line 31
+            instantiation of "void S<N>::recurse() [with N=3U]" at line 31
+            instantiation of "void S<N>::recurse() [with N=2U]" at line 31
+            instantiation of "void S<N>::recurse() [with N=1U]" at line 31
+            instantiation of "void S<N>::recurse() [with N=0U]" at line 37
+
+"Test_name.c", line 37: error: incompatible exception specifications
+  void (*pFn2)() noexcept = &S<0>::recurse; // expected-note {{instantiation of exception spec}} expected-error {{not superset}}
+                            ^
+
+"Test_name.c", line 42: error: a class or namespace qualified name is required
+      void f(...) throw (typename T::X);
+                                  ^
+          detected during instantiation of class "dr1330_example::A<T> [with T=int]" at line 47
+
+"Test_name.c", line 42: error: expected a ")"
+      void f(...) throw (typename T::X);
+                                   ^
+          detected during instantiation of class "dr1330_example::A<T> [with T=int]" at line 47
+
+"Test_name.c", line 48: warning: missing return statement at end of non-void function "dr1330_example::main"
+    }
+    ^
+
+"Test_name.c", line 51: error: class "dr1330_example::S" has no member "X"
+      template<typename T> static void f() throw(typename T::X);
+                                                             ^
+          detected during instantiation of "dr1330_example::S::f" based on template argument <dr1330_example::S> at line 52
+
+"Test_name.c", line 114: error: more than one instance of overloaded function "pr9485::f1" matches the argument list:
+            function template "void pr9485::f1(T)" (declared at line 107)
+            function template "void pr9485::f1(T, int)" (declared at line 108)
+            argument types are: (int)
+      f1(0); // expected-error {{ambiguous}}
+      ^
+
+"Test_name.c", line 115: error: more than one instance of overloaded function "pr9485::f2" matches the argument list:
+            function template "void pr9485::f2(T)" (declared at line 110)
+            function template "void pr9485::f2(T, int)" (declared at line 111)
+            argument types are: (int)
+      f2(0); // expected-error {{ambiguous}}
+      ^
+
+"Test_name.c", line 166: error: incompatible exception specifications
+        void (*q)() noexcept = p; // expected-error {{not superset of source}}
+                               ^
+
+"Test_name.c", line 166: warning: variable "q" was declared but never referenced
+        void (*q)() noexcept = p; // expected-error {{not superset of source}}
+               ^
+
+"Test_name.c", line 182: error: name followed by "::" must be a class or namespace name
+      int g1(int) noexcept(T::error); // expected-error{{type 'int' cannot be used prior to '::' because it has no members}}
+                           ^
+          detected during instantiation of "void NondefDecls::f1<T>() [with T=int]" at line 184
+
+9 errors detected in the compilation of "Test_name.c".

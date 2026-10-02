@@ -1,0 +1,35 @@
+fe_only -DTEST_NUMBER=1 -w -tused --c++11 Test_name.c
+"Test_name.c", line 12: error: a pack expansion cannot be used as an argument for non-pack template parameter "T" of alias template "minimal::A2"
+    using A3 = A2<Ts...>;         // error
+                    ^
+
+"Test_name.c", line 24: error: a pack expansion cannot be used as an argument for non-pack template parameter "T" of alias template "cwg1430_1::A"
+    void foo(A<Ts...>);           // error
+                 ^
+
+"Test_name.c", line 31: error: a pack expansion cannot be used as an argument for non-pack template parameter "a" of alias template "cwg1430_2::tail"
+    template<class...T> void f(tail<T...>); // error
+                                     ^
+
+"Test_name.c", line 34: error: no instance of overloaded function "cwg1430_2::f" matches the argument list
+            argument types are: ({...})
+      f<int,int>({});             // error
+      ^
+"Test_name.c", line 31: note: function template "cwg1430_2::f<T...>(<error-type>)" does not match because argument #1 does not match parameter
+    template<class...T> void f(tail<T...>); // error
+                             ^
+
+"Test_name.c", line 49: error: a pack expansion cannot be used as an argument for non-pack template parameter "A" of alias template "cwg1430_3::X"
+    template<typename ...U> void f(X<U...> x, Y<U...> y); // error
+                                      ^
+
+"Test_name.c", line 49: error: a pack expansion cannot be used as an argument for non-pack template parameter "A" of alias template "cwg1430_3::Y"
+    template<typename ...U> void f(X<U...> x, Y<U...> y); // error
+                                                 ^
+
+"Test_name.c", line 67: error: a pack expansion cannot be used as an argument for non-pack template parameter "T2" of alias template "simple_alias_to_non_simple_alias::A2"
+      template <typename... Us> using type = T<Us...>; // error
+                                                 ^
+          detected during instantiation of class "simple_alias_to_non_simple_alias::Template<T> [with T=simple_alias_to_non_simple_alias::A2]" at line 74
+
+7 errors detected in the compilation of "Test_name.c".

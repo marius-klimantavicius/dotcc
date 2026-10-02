@@ -1,0 +1,90 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 8: error: a pointer-to-member function with type "int (A::*)() const &" can only be used with an lvalue object
+  int use_pa = (A().*pa)();
+                   ^
+
+"Test_name.c", line 25: warning: a default bit-field initializer is a C++20 feature
+    int n : 5 = 0;
+              ^
+
+"Test_name.c", line 17: error: explicit capture matches default
+      (void) [=, this] {};
+                 ^
+
+"Test_name.c", line 34: error: the default constructor of "lambda []()->void" cannot be referenced -- it is a deleted function
+  decltype(Lambda) AnotherLambda;
+                   ^
+
+"Test_name.c", line 41: error: function "lambda []()->void::operator=(const lambda []()->void &)" (declared implicitly) cannot be referenced -- it is a deleted function
+  void copy_lambda() { Lambda = Lambda; }
+                              ^
+
+"Test_name.c", line 52: error: the parameter of this defaulted copy-constructor cannot be const because a base or member copy constructor parameter is non-const
+    DefaultDeleteWrongType(const DefaultDeleteWrongType&) = default;
+    ^
+
+"Test_name.c", line 61: error: C++20-style initializer statement in a range-based "for" statement is nonstandard in this mode
+    for (int arr[3] = {1, 2, 3}; int n : arr) {}
+         ^
+
+"Test_name.c", line 70: error: a function cannot be both constexpr and virtual in this mode
+    virtual constexpr void f() {}
+            ^
+
+"Test_name.c", line 79: error: a structured binding cannot declare an explicit storage class
+  static auto [cx, cy, cz] = C();
+  ^
+
+"Test_name.c", line 86: error: a structured binding cannot declare an explicit storage class
+    static thread_local auto [cx, cy, cz] = C();
+    ^
+
+"Test_name.c", line 86: warning: structured binding "cx" was declared but never referenced
+    static thread_local auto [cx, cy, cz] = C();
+                              ^
+
+"Test_name.c", line 97: error: "= default" can only appear on default constructors, copy/move constructors, copy/move assignment operators, and destructors
+    bool operator==(const DefaultedComparisons&) const = default;
+         ^
+
+"Test_name.c", line 98: error: "= default" can only appear on default constructors, copy/move constructors, copy/move assignment operators, and destructors
+    bool operator!=(const DefaultedComparisons&) const = default;
+         ^
+
+"Test_name.c", line 106: error: an operator name must be declared as a function
+    bool operator<=>(const DefaultedComparisons&) const = default;
+         ^
+
+"Test_name.c", line 106: error: expected a ";"
+    bool operator<=>(const DefaultedComparisons&) const = default;
+                   ^
+
+"Test_name.c", line 112: error: "= default" can only appear on default constructors, copy/move constructors, copy/move assignment operators, and destructors
+    bool operator<(const DefaultedComparisons&) const = default;
+         ^
+
+"Test_name.c", line 113: error: "= default" can only appear on default constructors, copy/move constructors, copy/move assignment operators, and destructors
+    bool operator<=(const DefaultedComparisons&) const = default;
+         ^
+
+"Test_name.c", line 114: error: "= default" can only appear on default constructors, copy/move constructors, copy/move assignment operators, and destructors
+    bool operator>(const DefaultedComparisons&) const = default;
+         ^
+
+"Test_name.c", line 115: error: "= default" can only appear on default constructors, copy/move constructors, copy/move assignment operators, and destructors
+    bool operator>=(const DefaultedComparisons&) const = default;
+         ^
+
+"Test_name.c", line 131: error: a nontype template parameter may not have class type
+    template<A> struct Class {};
+             ^
+
+"Test_name.c", line 142: warning: class template argument deduction for alias templates is a C++20 feature
+  B b = {1};
+  ^
+
+"Test_name.c", line 79: warning: structured binding "cx" was declared but never referenced
+  static auto [cx, cy, cz] = C();
+               ^
+
+18 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 49: error: taking the address of a bit field is not allowed
+    g (b ? x.i : x.j); // { dg-error "cannot bind bit-field" }
+       ^
+
+"Test_name.c", line 50: error: taking the address of a bit field is not allowed
+    g (b ? x.i : x.k); // { dg-error "cannot bind bit-field" }
+       ^
+
+"Test_name.c", line 51: error: taking the address of a bit field is not allowed
+    g (b ? x.j : x.k); // { dg-error "cannot bind bit-field" }
+       ^
+
+"Test_name.c", line 62: error: taking the address of a bit field is not allowed
+    (long &)(b ? x.i : x.j); // { dg-error "18:attempt to take address of bit-field" }
+            ^
+
+"Test_name.c", line 63: error: taking the address of a bit field is not allowed
+    (long &)(b ? x.i : x.k); // { dg-error "18:attempt to take address of bit-field" }
+            ^
+
+"Test_name.c", line 65: error: taking the address of a bit field is not allowed
+    (long &)(b ? x.j : x.k); // { dg-error "24:attempt to take address of bit-field" }
+            ^
+
+6 errors detected in the compilation of "Test_name.c".

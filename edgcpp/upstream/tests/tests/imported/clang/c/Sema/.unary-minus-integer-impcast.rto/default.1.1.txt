@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 24: warning: variable "m" is used before its value is set
+    int n = -(m & 0xff); // no warning
+              ^
+
+"Test_name.c", line 9: warning: variable "b" was declared but never referenced
+    unsigned long long b = -a; // expected-warning {{higher order bits are zeroes after implicit conversion}}
+                       ^
+
+"Test_name.c", line 10: warning: variable "c" was declared but never referenced
+    long long c = -a;          // expected-warning {{the resulting value is always non-negative after implicit conversion}}
+              ^
+
+"Test_name.c", line 12: warning: variable "b2" was declared but never referenced
+    unsigned long b2 = -a;
+                  ^
+
+"Test_name.c", line 16: warning: variable "c2" was declared but never referenced
+    long c2 = -a;
+         ^
+
+"Test_name.c", line 24: warning: variable "n" was declared but never referenced
+    int n = -(m & 0xff); // no warning
+        ^
+

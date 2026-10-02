@@ -1,0 +1,140 @@
+fe_only -DTEST_NUMBER=1 -W --clang --ms_extensions Test_name.c
+"Test_name.c", line 14: error: expected a ")"
+  TEST_EXT(try)
+  ^
+
+"Test_name.c", line 15: error: expected a ")"
+  TEST_EXT(finally)
+  ^
+
+"Test_name.c", line 16: error: expected a ")"
+  TEST_EXT(leave)
+  ^
+
+"Test_name.c", line 18: error: expected a "("
+  TEST_EXT(declspec)
+  ^
+
+"Test_name.c", line 18: error: expected a ")"
+  TEST_EXT(declspec)
+  ^
+
+"Test_name.c", line 23: error: invalid storage class for a parameter
+  TEST_EXT(forceinline)
+  ^
+
+"Test_name.c", line 24: error: expected a ")"
+  TEST_EXT(builtin_alignof)
+  ^
+
+"Test_name.c", line 25: error: expected a ")"
+  TEST_EXT(FUNCSIG__)
+  ^
+
+"Test_name.c", line 26: error: expected a ")"
+  TEST_EXT(FUNCDNAME__)
+  ^
+
+"Test_name.c", line 27: error: invalid combination of type specifiers
+  TEST_EXT(int8)
+  ^
+
+"Test_name.c", line 28: error: invalid combination of type specifiers
+  TEST_EXT(int32)
+  ^
+
+"Test_name.c", line 29: error: expected a ")"
+  TEST_EXT(ptr32)
+  ^
+
+"Test_name.c", line 30: error: expected a ")"
+  TEST_EXT(ptr64)
+  ^
+
+"Test_name.c", line 31: error: expected a ")"
+  TEST_EXT(sptr)
+  ^
+
+"Test_name.c", line 32: error: expected a ")"
+  TEST_EXT(uptr)
+  ^
+
+"Test_name.c", line 33: error: expected a ")"
+  TEST_EXT(uuidof)
+  ^
+
+"Test_name.c", line 34: error: expected a "("
+  TEST_EXT(if_exists)
+  ^
+
+"Test_name.c", line 34: error: expected an identifier
+  TEST_EXT(if_exists)
+  ^
+
+"Test_name.c", line 34: error: expected a ")"
+  TEST_EXT(if_exists)
+  ^
+
+"Test_name.c", line 34: error: expected a "{"
+  TEST_EXT(if_exists)
+  ^
+
+"Test_name.c", line 35: error: expected a "("
+  TEST_EXT(if_not_exists)
+  ^
+
+"Test_name.c", line 35: error: expected an identifier
+  TEST_EXT(if_not_exists)
+  ^
+
+"Test_name.c", line 35: error: expected a ")"
+  TEST_EXT(if_not_exists)
+  ^
+
+"Test_name.c", line 35: error: expected a "{"
+  TEST_EXT(if_not_exists)
+  ^
+
+"Test_name.c", line 36: error: __super must be followed by "::"
+  TEST_EXT(super)
+  ^
+
+"Test_name.c", line 36: error: __super may only be used in a class scope
+  TEST_EXT(super)
+  ^
+
+"Test_name.c", line 37: error: invalid combination of type specifiers
+  TEST_EXT(interface)
+  ^
+
+"Test_name.c", line 37: error: expected either a definition or a tag name
+  TEST_EXT(interface)
+  ^
+
+"Test_name.c", line 38: error: expected a "("
+  TEST_EXT(identifier)
+  ^
+
+"Test_name.c", line 38: error: expected a C++ keyword
+  TEST_EXT(identifier)
+  ^
+
+"Test_name.c", line 38: error: expected a ")"
+  TEST_EXT(identifier)
+  ^
+
+"Test_name.c", line 39: error: expected a ")"
+  TEST_EXT(nullptr)
+  ^
+
+At end of source: error: expected a "}"
+"Test_name.c", line 35: note: to match this "{"
+  TEST_EXT(if_not_exists)
+  ^
+
+At end of source: error: expected a "}"
+"Test_name.c", line 34: note: to match this "{"
+  TEST_EXT(if_exists)
+  ^
+
+34 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 5: warning: unrecognized STDC pragma
+  #pragma STDC FENV_ROUND ON   // expected-warning {{invalid or unsupported rounding mode}}
+               ^
+
+"Test_name.c", line 10: warning: a STDC pragma may only appear between declarations in the global scope or before any statements or declarations in a block scope
+    #pragma STDC FENV_ROUND FE_DOWNWARD // expected-error{{'#pragma STDC FENV_ROUND' can only appear at file scope or at the start of a compound statement}}
+    ^
+

@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 11: error: the size of an array must be greater than zero
+    char name2[(int)&((struct bar *)0)->n - 1]; // expected-error {{array size is negative}}
+               ^
+
+"Test_name.c", line 25: warning: variable "f" is used before its value is set
+    return f->v + f[0].v;
+                  ^
+
+"Test_name.c", line 42: error: "a" has already been declared in the current scope
+    char a;  // expected-error {{duplicate member 'a'}}
+         ^
+
+"Test_name.c", line 45: warning: missing return statement at end of non-void function "f0"
+  struct s0 f0(void) {}
+                      ^
+
+"Test_name.c", line 52: warning: a storage class may not be specified here
+  static struct test1 { // expected-warning {{'static' ignored on this declaration}}
+  ^
+
+"Test_name.c", line 55: warning: type qualifiers are meaningless in this declaration
+  const struct test2 { // expected-warning {{'const' ignored on this declaration}}
+  ^
+
+"Test_name.c", line 58: warning: inline specifier allowed on function declarations only
+  inline struct test3 { // expected-error {{'inline' can only appear on functions}}
+  ^
+
+"Test_name.c", line 68: warning: variable "q" was declared but never referenced
+    struct hiding_2 *q = hiding_2;
+                     ^
+
+"Test_name.c", line 72: warning: attribute "noreturn" does not apply here
+  typedef struct __attribute__((noreturn)) PreserveAttributes PreserveAttributes_t; // expected-warning {{'noreturn' attribute only applies to functions and methods}}
+                                ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,25 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 10: error: nonstandard preprocessing directive
+  #ident  "$Revision: 1.1 $"
+   ^
+
+"Test_name.c", line 11: error: explicit type is missing ("int" assumed)
+  main(){} 
+  ^
+
+At end of source: error: expected a "}"
+"Test_name.c", line 5: note: to match this "{"
+  class smatrix { 
+                ^
+
+"Test_name.c", line 8: warning: missing return statement at end of non-void function "smatrix<E>::foo"
+  }; 
+  ^
+
+"Test_name.c", line 11: warning: missing return statement at end of non-void function "smatrix<E>::main"
+  main(){} 
+         ^
+
+At end of source: error: expected a ";"
+
+4 errors detected in the compilation of "Test_name.c".

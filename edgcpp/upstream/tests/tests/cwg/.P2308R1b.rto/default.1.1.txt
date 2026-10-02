@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --c++23 -tused Test_name.c
+"Test_name.c", line 7: error: expression must have a constant value
+  B<J1{}> j1;  // error: initialization of template parameter object
+    ^
+"Test_name.c", line 7: note: reference or pointer to temporary with limited lifetime
+  B<J1{}> j1;  // error: initialization of template parameter object
+    ^
+
+1 error detected in the compilation of "Test_name.c".

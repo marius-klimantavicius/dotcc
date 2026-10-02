@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 23: warning: missing return statement at end of non-void function "Common::Array<T>::operator="
+   }
+   ^
+
+"Test_name.c", line 15: warning: missing return statement at end of non-void function "Common::copy(In, In, Out) [with In=Cine::Palette::Color *, Out=Cine::Palette::Color *]"
+  }
+  ^
+          detected during:
+            instantiation of "Out Common::copy(In, In, Out) [with In=Cine::Palette::Color *, Out=Cine::Palette::Color *]" at line 22
+            instantiation of "Common::Array<T> &Common::Array<T>::operator=(const Common::Array<T> &) [with T=Cine::Palette::Color]" at line 46
+

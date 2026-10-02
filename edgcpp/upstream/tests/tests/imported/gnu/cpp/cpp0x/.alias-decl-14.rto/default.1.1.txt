@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 11: error: typedef "X" may not be used in an elaborated type specifier
+  struct X<int>* px; // { dg-error "using\[^\n\r\]*alias\[^\n\r\]*specialization\[^\n\r\]*X<int>\[^\n\r\]*after\[^\n\r\]*struct|invalid type in declaration before\[^\n\r\]*;" }
+         ^
+
+"Test_name.c", line 16: error: typedef "Y" may not be used in an elaborated type specifier
+  struct Y<0>* py;// { dg-error "alias\[^\n\r\]*specialization\[^\n\r\]*Y<0>\[^\n\r\]*after\[^\n\r\]*struct|invalid type in declaration before\[^\n\r\]*;" }
+         ^
+
+2 errors detected in the compilation of "Test_name.c".

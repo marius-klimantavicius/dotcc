@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=2 --microsoft_v=1924 Test_name.c
+"Test_name.c", line 7: error: no default constructor exists for class "S"
+  S s = {};
+        ^
+
+1 error detected in the compilation of "Test_name.c".

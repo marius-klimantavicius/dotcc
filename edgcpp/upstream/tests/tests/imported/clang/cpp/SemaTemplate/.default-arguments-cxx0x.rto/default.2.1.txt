@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 Test_name.c
+"Test_name.c", line 120: error: identifier "a" is undefined
+    template<typename T> void f(T a, int = decltype(a)());
+                                                    ^
+
+"Test_name.c", line 130: error: identifier "c" is undefined
+      (void) [](auto c, int x = sizeof(decltype(c))) {};
+                                                ^
+
+2 errors detected in the compilation of "Test_name.c".

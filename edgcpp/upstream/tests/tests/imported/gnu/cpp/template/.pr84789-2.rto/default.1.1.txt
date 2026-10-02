@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 25: error: "O<T>::P::N" is not a class template
+  int O<T>::P::N::i = 42; // This is obfuscated, but apparently ok.
+      ^
+
+"Test_name.c", line 28: error: "O<T>::Q::L" is not a class template
+  double O<T>::Q::L::j = 42.0; // { dg-error "non-template" }
+         ^
+
+2 errors detected in the compilation of "Test_name.c".

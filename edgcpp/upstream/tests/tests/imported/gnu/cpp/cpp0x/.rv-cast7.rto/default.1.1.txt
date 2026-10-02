@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 7: error: invalid type conversion
+  int(&int4_lvref)[4] = static_cast<int(&)[4]>(intu_rvref); // { dg-error "invalid .static_cast." }
+                        ^
+
+"Test_name.c", line 8: error: invalid type conversion
+  int(&&int4_rvref)[4] = static_cast<int(&&)[4]>(intu_rvref); // { dg-error "invalid .static_cast." }
+                         ^
+
+2 errors detected in the compilation of "Test_name.c".

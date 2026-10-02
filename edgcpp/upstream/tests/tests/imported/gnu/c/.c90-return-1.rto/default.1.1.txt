@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 11: warning: non-void function "foo" should return a value
+    return;
+          ^
+
+"Test_name.c", line 17: warning: return value type does not match the function type
+    return 1; /* { dg-bogus "warning" "warning in place of error" } */
+           ^
+

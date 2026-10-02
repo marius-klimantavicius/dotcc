@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./rtti/typeid8.C", line 10: error: nonstandard form for taking the address of a member function
+      typeid (foo).name ();
+              ^
+
+"./rtti/typeid8.C", line 11: error: nonstandard form for taking the address of a member function
+      typeid (A::foo).name ();
+              ^
+
+"./rtti/typeid8.C", line 15: error: nonstandard form for taking the address of a member function
+      typeid (foo).name ();
+              ^
+
+"./rtti/typeid8.C", line 16: error: nonstandard form for taking the address of a member function
+      typeid (A::foo).name ();
+              ^
+
+"./rtti/typeid8.C", line 25: error: nonstandard form for taking the address of a member function
+  const char *p1 = typeid (A::foo).name ();
+                           ^
+
+5 errors detected in the compilation of "Test_name.c".

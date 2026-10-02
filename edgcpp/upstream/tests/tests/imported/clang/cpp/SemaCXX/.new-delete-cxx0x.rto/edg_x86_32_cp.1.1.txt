@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 6: error: the size of an array in "new" must be non-negative
+    (void)new int[-1]; // expected-error {{array size is negative}}
+                  ^
+
+"Test_name.c", line 7: error: array is too large
+    (void)new int[2000000000]; // expected-error {{array is too large}}
+                 ^
+
+"Test_name.c", line 12: error: the size of an array in "new" must be non-negative
+    int *p = new int[i]; // expected-error {{array size is negative}}
+                     ^
+
+"Test_name.c", line 17: error: too many initializer values
+    int *p = new int[i]{1, 2}; // expected-error {{excess elements in array initializer}}
+                           ^
+
+"Test_name.c", line 48: error: no instance of constructor "T::T" matches the argument list
+    (void) new T[3] {1, 2}; // expected-error {{no matching constructor}} expected-note {{in implicit initialization of array element 2}}
+                         ^
+"Test_name.c", line 26: note: number of parameters of function "T::T(const T &)" does not match the call
+  struct T { // expected-note 1+{{not viable}}
+         ^
+"Test_name.c", line 26: note: number of parameters of function "T::T(T &&)" does not match the call
+  struct T { // expected-note 1+{{not viable}}
+         ^
+"Test_name.c", line 27: note: number of parameters of function "T::T(int)" does not match the call
+    T(int); // expected-note 1+{{not viable}}
+    ^
+
+"Test_name.c", line 49: error: no instance of constructor "T::T" matches the argument list
+    (void) new T[n] {1, 2}; // expected-error {{no matching constructor}} expected-note {{in implicit initialization of trailing array elements in runtime-sized array new}}
+                         ^
+"Test_name.c", line 26: note: number of parameters of function "T::T(const T &)" does not match the call
+  struct T { // expected-note 1+{{not viable}}
+         ^
+"Test_name.c", line 26: note: number of parameters of function "T::T(T &&)" does not match the call
+  struct T { // expected-note 1+{{not viable}}
+         ^
+"Test_name.c", line 27: note: number of parameters of function "T::T(int)" does not match the call
+    T(int); // expected-note 1+{{not viable}}
+    ^
+
+"Test_name.c", line 50: error: no instance of constructor "T::T" matches the argument list
+    (void) new T[n] {}; // expected-error {{no matching constructor}} expected-note {{in implicit initialization of trailing array elements in runtime-sized array new}}
+                     ^
+"Test_name.c", line 26: note: number of parameters of function "T::T(const T &)" does not match the call
+  struct T { // expected-note 1+{{not viable}}
+         ^
+"Test_name.c", line 26: note: number of parameters of function "T::T(T &&)" does not match the call
+  struct T { // expected-note 1+{{not viable}}
+         ^
+"Test_name.c", line 27: note: number of parameters of function "T::T(int)" does not match the call
+    T(int); // expected-note 1+{{not viable}}
+    ^
+
+"Test_name.c", line 54: error: no default constructor exists for class "T"
+    T t; // expected-note 3{{in implicit initialization of field 't'}}
+      ^
+          detected during implicit generation of "U::U()" at line 60
+
+"Test_name.c", line 63: error: too many initializer values
+    (void) new U[2] {1, 2, 3, 4, 5}; // expected-error {{excess elements in array initializer}}
+                                 ^
+
+9 errors detected in the compilation of "Test_name.c".

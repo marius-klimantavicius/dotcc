@@ -1,0 +1,5 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --set_flag=no_checking_pragmas --strict Test_name.c
+"Test_name.c", line 10: warning: expression has no effect
+      void f(V::I& x) { x.p; } 
+                        ^
+

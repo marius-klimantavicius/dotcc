@@ -1,0 +1,86 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 48: error: the deduced placeholder type "bool" failed the type constraint
+  Int decltype(auto) b1 = true; // { dg-error "deduced initializer" }
+  ^
+"Test_name.c", line 11: note: atomic constraint evaluates to false
+  concept Int = __is_same_as(T, int);
+                ^
+
+"Test_name.c", line 49: error: the deduced placeholder type "bool &" failed the type constraint
+  Int decltype(auto) b2 = (b);  // { dg-error "deduced initializer" }
+  ^
+"Test_name.c", line 11: note: atomic constraint evaluates to false
+  concept Int = __is_same_as(T, int);
+                ^
+
+"Test_name.c", line 50: error: the deduced placeholder type "const bool &" failed the type constraint
+  Int decltype(auto) b3 = (cb); // { dg-error "deduced initializer" }
+  ^
+"Test_name.c", line 11: note: atomic constraint evaluates to false
+  concept Int = __is_same_as(T, int);
+                ^
+
+"Test_name.c", line 52: error: the deduced placeholder type "void" failed the type constraint
+  Int decltype(auto) g1() { } // { dg-error "deduced return type" }
+  ^
+"Test_name.c", line 11: note: atomic constraint evaluates to false
+  concept Int = __is_same_as(T, int);
+                ^
+
+"Test_name.c", line 53: error: the deduced placeholder type "void" failed the type constraint
+  Int decltype(auto) g2() { return; } // { dg-error "deduced return type" }
+  ^
+"Test_name.c", line 11: note: atomic constraint evaluates to false
+  concept Int = __is_same_as(T, int);
+                ^
+
+"Test_name.c", line 54: error: the deduced placeholder type "bool" failed the type constraint
+  Int decltype(auto) g3() { return true; } // { dg-error "deduced return type" }
+  ^
+"Test_name.c", line 11: note: atomic constraint evaluates to false
+  concept Int = __is_same_as(T, int);
+                ^
+
+"Test_name.c", line 55: error: expected "auto"
+  int g4(Type decltype(auto) x) { return 0; } // { dg-error "cannot declare" }
+              ^
+
+"Test_name.c", line 55: error: "auto" is not allowed here
+  int g4(Type decltype(auto) x) { return 0; } // { dg-error "cannot declare" }
+                       ^
+
+"Test_name.c", line 55: error: expected a ")"
+  int g4(Type decltype(auto) x) { return 0; } // { dg-error "cannot declare" }
+                             ^
+
+"Test_name.c", line 56: error: decltype(auto) is not allowed here
+  int g5(decltype(auto) x) { return 0; } // { dg-error "cannot declare" }
+         ^
+
+"Test_name.c", line 65: error: template constraint not satisfied
+  static_assert(deduced_as<0, int&>); // { dg-error "invalid variable template" }
+                                  ^
+"Test_name.c", line 59: note: substitution of arguments "<0, int &>" for requires-clause failed
+    requires SameAs<decltype(X), T>
+             ^
+"Test_name.c", line 59: note: concept is false for arguments "<int, int &>"
+    requires SameAs<decltype(X), T>
+             ^
+"Test_name.c", line 14: note: atomic constraint evaluates to false
+  concept SameAs = __is_same_as(T, U);
+                   ^
+
+"Test_name.c", line 67: error: template constraint not satisfied
+  static_assert(deduced_as<(Z), const int>); // { dg-error "invalid variable template" }
+                                         ^
+"Test_name.c", line 59: note: substitution of arguments "<Z, const int>" for requires-clause failed
+    requires SameAs<decltype(X), T>
+             ^
+"Test_name.c", line 59: note: concept is false for arguments "<const int &, const int>"
+    requires SameAs<decltype(X), T>
+             ^
+"Test_name.c", line 14: note: atomic constraint evaluates to false
+  concept SameAs = __is_same_as(T, U);
+                   ^
+
+12 errors detected in the compilation of "Test_name.c".

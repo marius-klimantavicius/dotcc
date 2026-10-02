@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 15: error: class "N::N" has no member "B"
+  void N::operator>>(int, N::B)  // { dg-error "N::N::B|N::operator>>" }
+                             ^
+
+"Test_name.c", line 15: error: nonmember operator requires a parameter with class or enum type
+  void N::operator>>(int, N::B)  // { dg-error "N::N::B|N::operator>>" }
+          ^
+
+2 errors detected in the compilation of "Test_name.c".

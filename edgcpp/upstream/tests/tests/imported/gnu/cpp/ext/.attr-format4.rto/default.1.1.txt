@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 11: error: no instance of function template "foo" matches the argument list
+            argument types are: (const char [3], int)
+  int a = foo <> ("%d", 1);
+          ^
+"Test_name.c", line 8: note: candidate function template "foo" failed deduction
+  int foo (T ...args, const char *fmt, ...)
+      ^
+
+"Test_name.c", line 13: error: no instance of function template "foo" matches the argument list
+            argument types are: (const char [3], int)
+  int c = foo <> ("%f", 1);	// { dg-warning "format '%f' expects argument of type 'double', but argument 2 has type 'int'" }
+          ^
+"Test_name.c", line 8: note: candidate function template "foo" failed deduction
+  int foo (T ...args, const char *fmt, ...)
+      ^
+
+2 errors detected in the compilation of "Test_name.c".

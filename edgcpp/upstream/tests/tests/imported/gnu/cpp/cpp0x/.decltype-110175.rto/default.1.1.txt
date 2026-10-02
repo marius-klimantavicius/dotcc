@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 6: warning: incrementing a bool value is deprecated
+  template<class T> auto f(T t) -> decltype(++t) { return t; } // { dg-warning "reference" "" { target c++14_down } }
+                                              ^
+          detected during instantiation of "f" based on template argument <bool> at line 8
+
+"Test_name.c", line 6: warning: returning reference to local variable
+  template<class T> auto f(T t) -> decltype(++t) { return t; } // { dg-warning "reference" "" { target c++14_down } }
+                                                          ^
+          detected during instantiation of "auto f(T)->decltype((<expression>)) [with T=bool]" at line 8
+

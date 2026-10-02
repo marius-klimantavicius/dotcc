@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 15: error: function "foo(...)" was declared declared unavailable
+    foo(sp); // expected-error{{'foo' is unavailable}}
+    ^
+"Test_name.c", line 7: note: because of an "unavailable" attribute
+  void foo(...) __attribute__((__unavailable__)); // \
+                               ^
+
+"Test_name.c", line 17: error: function "bar" was declared declared unavailable
+    void (*fp)(...) = &bar; // expected-error{{'bar' is unavailable}}
+                       ^
+"Test_name.c", line 10: note: because of an "unavailable" attribute
+  void bar(...) __attribute__((__unavailable__)); // expected-note 4 {{explicitly marked unavailable}}
+                               ^
+
+"Test_name.c", line 18: error: function "bar" was declared declared unavailable
+    void (*fp2)(...) = bar; // expected-error{{'bar' is unavailable}}
+                       ^
+"Test_name.c", line 10: note: because of an "unavailable" attribute
+  void bar(...) __attribute__((__unavailable__)); // expected-note 4 {{explicitly marked unavailable}}
+                               ^
+
+"Test_name.c", line 21: error: function "foo(...)" was declared declared unavailable
+    void (*fp4)(...) = foo; // expected-error{{'foo' is unavailable}}
+                       ^
+"Test_name.c", line 7: note: because of an "unavailable" attribute
+  void foo(...) __attribute__((__unavailable__)); // \
+                               ^
+
+"Test_name.c", line 17: warning: variable "fp" was declared but never referenced
+    void (*fp)(...) = &bar; // expected-error{{'bar' is unavailable}}
+           ^
+
+"Test_name.c", line 18: warning: variable "fp2" was declared but never referenced
+    void (*fp2)(...) = bar; // expected-error{{'bar' is unavailable}}
+           ^
+
+"Test_name.c", line 20: warning: variable "fp3" was declared but never referenced
+    int &(*fp3)(int) = foo;
+           ^
+
+"Test_name.c", line 21: warning: variable "fp4" was declared but never referenced
+    void (*fp4)(...) = foo; // expected-error{{'foo' is unavailable}}
+           ^
+
+"Test_name.c", line 29: error: function "radar9046492::foo" was declared unavailable ("not available - replaced")
+    foo(); // expected-error {{'foo' is unavailable: not available - replaced}}
+    ^
+"Test_name.c", line 27: note: because of an "unavailable" attribute
+  void foo() FOO; // expected-note{{'foo' has been explicitly marked unavailable here}}
+             ^
+
+"Test_name.c", line 44: warning: attribute does not apply to any entity
+  enum DeprecatedEnum { DE_A, DE_B } __attribute__((deprecated)); // expected-note {{'DeprecatedEnum' has been explicitly marked deprecated here}}
+                                                    ^
+
+"Test_name.c", line 52: warning: attribute does not apply to any entity
+  enum UnavailableEnum { UE_A, UE_B } __attribute__((unavailable)); // expected-note {{'UnavailableEnum' has been explicitly marked unavailable here}}
+                                                     ^
+
+"Test_name.c", line 64: catastrophic error: #error directive: "Missing __has_feature"
+  #error "Missing __has_feature"
+   ^
+
+5 errors and 1 catastrophic error detected in the compilation of "Test_name.c".
+Compilation terminated.

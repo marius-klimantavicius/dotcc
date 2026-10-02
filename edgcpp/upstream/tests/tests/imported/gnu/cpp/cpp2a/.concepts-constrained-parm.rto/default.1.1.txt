@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 8: error: concept "C" is not a type name
+  template<const C T> struct S1 { };    // { dg-error "cv-qualified" }
+                 ^
+
+"Test_name.c", line 9: error: concept "C" is not a type name
+  template<volatile C T> struct S2 { }; // { dg-error "cv-qualified" }
+                    ^
+
+"Test_name.c", line 10: error: expected a "," or ">"
+  template<C* T> struct S3 { };         // { dg-error "invalid" }
+            ^
+
+"Test_name.c", line 11: error: expected a "," or ">"
+  template<C const* T> struct S3a { };  // { dg-error "invalid" }
+             ^
+
+"Test_name.c", line 12: error: expected a "," or ">"
+  template<C* const T> struct S3b { };  // { dg-error "invalid" }
+            ^
+
+"Test_name.c", line 13: error: expected a "," or ">"
+  template<C& T> struct S4 { };         // { dg-error "invalid" }
+            ^
+
+"Test_name.c", line 14: error: expected a "," or ">"
+  template<C[3] T> struct S4 { };       // { dg-error "invalid|expected" }
+            ^
+
+"Test_name.c", line 14: error: class template "S4" has already been defined (previous definition at line 13)
+  template<C[3] T> struct S4 { };       // { dg-error "invalid|expected" }
+                          ^
+
+"Test_name.c", line 15: error: expected a "," or ">"
+  template<C(*T)()> struct S5 { };      // { dg-error "invalid" }
+            ^
+
+9 errors detected in the compilation of "Test_name.c".

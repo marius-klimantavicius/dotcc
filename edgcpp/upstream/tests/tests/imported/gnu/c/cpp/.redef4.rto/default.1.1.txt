@@ -1,0 +1,210 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc -E Test_name.c
+# 1 "Test_name.c"
+
+
+
+
+ 
+ 
+ 
+
+# 45 "Test_name.c"
+
+# 58 "Test_name.c"
+
+"Test_name.c", line 69: warning: incompatible redefinition of macro "astr" (declared at line 68)
+  #define astr(x) a #x /* { dg-warning "redefined" } */
+          ^
+
+"Test_name.c", line 72: warning: incompatible redefinition of macro "astr" (declared at line 71)
+  #define astr(x) a %:x /* { dg-warning "redefined" } */
+          ^
+
+"Test_name.c", line 75: warning: incompatible redefinition of macro "astr" (declared at line 74)
+  #define astr(x) a # x /* { dg-warning "redefined" } */
+          ^
+
+"Test_name.c", line 78: warning: incompatible redefinition of macro "astr" (declared at line 77)
+  #define astr(x) a %: x /* { dg-warning "redefined" } */
+          ^
+
+"Test_name.c", line 93: warning: incompatible redefinition of macro "astr" (declared at line 92)
+  #define astr(x) a #x /* { dg-warning "redefined" } */
+          ^
+
+"Test_name.c", line 96: warning: incompatible redefinition of macro "astr" (declared at line 95)
+  #define astr(x) a %:x /* { dg-warning "redefined" } */
+          ^
+
+"Test_name.c", line 99: warning: incompatible redefinition of macro "astr" (declared at line 98)
+  #define astr(x) a # x /* { dg-warning "redefined" } */
+          ^
+
+"Test_name.c", line 102: warning: incompatible redefinition of macro "astr" (declared at line 101)
+  #define astr(x) a %: x /* { dg-warning "redefined" } */
+          ^
+
+"Test_name.c", line 114: warning: incompatible redefinition of macro "astr" (declared at line 113)
+  #define astr(x) a #x /* { dg-warning "redefined" } */
+          ^
+
+"Test_name.c", line 117: warning: incompatible redefinition of macro "astr" (declared at line 116)
+  #define astr(x) a %:x /* { dg-warning "redefined" } */
+          ^
+
+"Test_name.c", line 120: warning: incompatible redefinition of macro "astr" (declared at line 119)
+  #define astr(x) a # x /* { dg-warning "redefined" } */
+          ^
+
+"Test_name.c", line 123: warning: incompatible redefinition of macro "astr" (declared at line 122)
+  #define astr(x) a %: x /* { dg-warning "redefined" } */
+          ^
+
+"Test_name.c", line 132: warning: incompatible redefinition of macro "astr" (declared at line 131)
+  #define astr(x) a #x /* { dg-warning "redefined" } */
+          ^
+
+"Test_name.c", line 135: warning: incompatible redefinition of macro "astr" (declared at line 134)
+  #define astr(x) a %:x /* { dg-warning "redefined" } */
+          ^
+
+"Test_name.c", line 138: warning: incompatible redefinition of macro "astr" (declared at line 137)
+  #define astr(x) a # x /* { dg-warning "redefined" } */
+          ^
+
+"Test_name.c", line 141: warning: incompatible redefinition of macro "astr" (declared at line 140)
+  #define astr(x) a %: x /* { dg-warning "redefined" } */
+          ^
+
+"Test_name.c", line 144: warning: incompatible redefinition of macro "astr" (declared at line 143)
+  #define astr(x) a#x /* { dg-warning "redefined" } */
+          ^
+
+"Test_name.c", line 147: warning: incompatible redefinition of macro "astr" (declared at line 146)
+  #define astr(x) a%: x /* { dg-warning "redefined" } */
+          ^
+
+"Test_name.c", line 150: warning: incompatible redefinition of macro "astr" (declared at line 149)
+  #define astr(x) a# x /* { dg-warning "redefined" } */
+          ^
+
+"Test_name.c", line 153: warning: incompatible redefinition of macro "astr" (declared at line 152)
+  #define astr(x) a%: x /* { dg-warning "redefined" } */
+          ^
+
+"Test_name.c", line 165: warning: incompatible redefinition of macro "astr" (declared at line 164)
+  #define astr(x) a#x /* { dg-warning "redefined" } */
+          ^
+
+"Test_name.c", line 168: warning: incompatible redefinition of macro "astr" (declared at line 167)
+  #define astr(x) a%: x /* { dg-warning "redefined" } */
+          ^
+
+"Test_name.c", line 171: warning: incompatible redefinition of macro "astr" (declared at line 170)
+  #define astr(x) a# x /* { dg-warning "redefined" } */
+          ^
+
+"Test_name.c", line 174: warning: incompatible redefinition of macro "astr" (declared at line 173)
+  #define astr(x) a%: x /* { dg-warning "redefined" } */
+          ^
+
+"Test_name.c", line 186: warning: incompatible redefinition of macro "astr" (declared at line 185)
+  #define astr(x) a#x /* { dg-warning "redefined" } */
+          ^
+
+"Test_name.c", line 189: warning: incompatible redefinition of macro "astr" (declared at line 188)
+  #define astr(x) a%: x /* { dg-warning "redefined" } */
+          ^
+
+"Test_name.c", line 192: warning: incompatible redefinition of macro "astr" (declared at line 191)
+  #define astr(x) a# x /* { dg-warning "redefined" } */
+          ^
+
+"Test_name.c", line 195: warning: incompatible redefinition of macro "astr" (declared at line 194)
+  #define astr(x) a%: x /* { dg-warning "redefined" } */
+          ^
+
+"Test_name.c", line 207: warning: incompatible redefinition of macro "astr" (declared at line 206)
+  #define astr(x) a#x /* { dg-warning "redefined" } */
+          ^
+
+"Test_name.c", line 210: warning: incompatible redefinition of macro "astr" (declared at line 209)
+  #define astr(x) a%: x /* { dg-warning "redefined" } */
+          ^
+
+"Test_name.c", line 213: warning: incompatible redefinition of macro "astr" (declared at line 212)
+  #define astr(x) a# x /* { dg-warning "redefined" } */
+          ^
+
+"Test_name.c", line 216: warning: incompatible redefinition of macro "astr" (declared at line 215)
+  #define astr(x) a%: x /* { dg-warning "redefined" } */
+          ^
+
+# 227 "Test_name.c"
+
+# 252 "Test_name.c"
+
+# 421 "Test_name.c"
+
+# 446 "Test_name.c"
+
+"Test_name.c", line 448: warning: incompatible redefinition of macro "cat3" (declared at line 447)
+  #define cat3(x,y,z) x##y####z /* { dg-warning "redefined" } */
+          ^
+
+
+
+
+
+"Test_name.c", line 452: warning: incompatible redefinition of macro "cat3" (declared at line 451)
+  #define cat3(x,y,z) x####y##z /* { dg-warning "redefined" } */
+          ^
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

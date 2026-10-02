@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 6: error: identifier "startwith" is undefined
+  __int128 __RTL (startwith ("vregs")) foo (void)
+                  ^
+
+"Test_name.c", line 6: error: expected a ")"
+  __int128 __RTL (startwith ("vregs")) foo (void)
+                             ^
+
+"Test_name.c", line 6: error: expected a "{"
+  __int128 __RTL (startwith ("vregs")) foo (void)
+                                       ^
+
+"Test_name.c", line 8: error: identifier "function" is undefined
+  (function "foo"
+   ^
+
+"Test_name.c", line 8: error: expected a ")"
+  (function "foo"
+            ^
+
+"Test_name.c", line 12: warning: parsing restarts here after previous syntax error
+        (cnote 1 [bb 2] NOTE_INSN_BASIC_BLOCK)
+                                             ^
+
+"Test_name.c", line 13: error: identifier "cnote" is undefined
+        (cnote 2 NOTE_INSN_FUNCTION_BEG)
+         ^
+
+"Test_name.c", line 13: error: expected a ")"
+        (cnote 2 NOTE_INSN_FUNCTION_BEG)
+               ^
+
+"Test_name.c", line 14: error: identifier "cinsn" is undefined
+        (cinsn 3 (set (subreg:TI (reg:V8HI x0) 0) (const_int -1)))
+         ^
+
+"Test_name.c", line 14: error: expected a ")"
+        (cinsn 3 (set (subreg:TI (reg:V8HI x0) 0) (const_int -1)))
+               ^
+
+"Test_name.c", line 15: error: identifier "edge" is undefined
+        (edge-to exit (flags "FALLTHRU"))
+         ^
+
+"Test_name.c", line 15: error: identifier "to" is undefined
+        (edge-to exit (flags "FALLTHRU"))
+              ^
+
+"Test_name.c", line 15: error: expected a ")"
+        (edge-to exit (flags "FALLTHRU"))
+                 ^
+
+"Test_name.c", line 16: error: expected a ";"
+      )
+      ^
+
+"Test_name.c", line 20: warning: parsing restarts here after previous syntax error
+  }
+  ^
+
+"Test_name.c", line 20: warning: missing return statement at end of non-void function "__RTL"
+  }
+  ^
+
+13 errors detected in the compilation of "Test_name.c".

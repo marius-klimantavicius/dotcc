@@ -1,0 +1,49 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 21: warning: unknown attribute "reproducible"
+  int f1 () [[reproducible]];
+              ^
+
+"Test_name.c", line 22: warning: unknown attribute "reproducible"
+  int f2 () [[reproducible]], f3 (int) [[__reproducible__]];
+              ^
+
+"Test_name.c", line 22: warning: unknown attribute "__reproducible__"
+  int f2 () [[reproducible]], f3 (int) [[__reproducible__]];
+                                         ^
+
+"Test_name.c", line 23: warning: unknown attribute "reproducible"
+  int f4 (int, int *restrict) [[reproducible]];
+                                ^
+
+"Test_name.c", line 24: warning: unknown attribute "reproducible"
+  int f5 (int) [[reproducible]];
+                 ^
+
+"Test_name.c", line 26: warning: unknown attribute "reproducible"
+  int (*fp1) (int) [[reproducible]] = f6;
+                     ^
+
+"Test_name.c", line 27: warning: unknown attribute "reproducible"
+  typedef int ft1 (int) [[reproducible]];
+                          ^
+
+"Test_name.c", line 29: warning: unknown attribute "reproducible"
+  extern typeof (f6) [[reproducible]] f7;
+                       ^
+
+"Test_name.c", line 30: warning: unknown attribute "__reproducible__"
+  extern ft2 [[__reproducible__]] f8;
+               ^
+
+"Test_name.c", line 33: warning: unknown attribute "__reproducible__"
+  int f9 (int) [[__reproducible__]];
+                 ^
+
+"Test_name.c", line 37: warning: unknown attribute "reproducible"
+  f10 (int w) [[reproducible]]
+                ^
+
+"Test_name.c", line 43: warning: unknown attribute "__reproducible__"
+  f11 (int *restrict w, long long y[restrict static 1], int z) [[__reproducible__]]
+                                                                 ^
+

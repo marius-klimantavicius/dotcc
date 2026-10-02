@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 8: warning: unknown attribute "clang::not_tail_called"
+    [[clang::not_tail_called]] virtual int foo1();
+      ^
+
+"Test_name.c", line 10: warning: unknown attribute "clang::not_tail_called"
+    [[clang::not_tail_called]] int foo3();
+      ^
+
+"Test_name.c", line 17: warning: unknown attribute "clang::not_tail_called"
+    [[clang::not_tail_called]] int foo2() override;
+      ^
+
+"Test_name.c", line 18: warning: unknown attribute "clang::not_tail_called"
+    [[clang::not_tail_called]] int foo4();
+      ^
+

@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 32: warning: "PR6066::A::operator PR6066::B &()" will not be called for implicit or explicit conversions
+      operator B&(); // expected-warning{{conversion function converting 'PR6066::A' to its base class 'PR6066::B' will never be used}}
+      ^
+
+"Test_name.c", line 54: error: taking the address of a bit field is not allowed
+      unsigned &t0 = a->bitX; // expected-error {{non-const reference cannot bind to bit-field 'bitX'}}
+                     ^
+
+"Test_name.c", line 55: error: taking the address of a bit field is not allowed
+      unsigned &t1 = (unsigned&) a->bitX; // expected-error {{C-style cast from bit-field lvalue to reference type 'unsigned int &'}}
+                                 ^
+
+"Test_name.c", line 56: error: taking the address of a bit field is not allowed
+      unsigned &t2 = const_cast<unsigned&>(a->bitX); // expected-error {{const_cast from bit-field lvalue to reference type 'unsigned int &'}}
+                                           ^
+
+"Test_name.c", line 57: error: taking the address of a bit field is not allowed
+      unsigned &t3 = (a->foo(), a->bitX); // expected-error {{non-const reference cannot bind to bit-field 'bitX'}}
+                     ^
+
+"Test_name.c", line 58: error: taking the address of a bit field is not allowed
+      unsigned &t4 = (a->var ? a->bitX : a->bitY); // expected-error {{non-const reference cannot bind to bit-field}}
+                     ^
+
+"Test_name.c", line 59: error: taking the address of a bit field is not allowed
+      unsigned &t5 = (a->var ? a->bitX : a->bitX); // expected-error {{non-const reference cannot bind to bit-field}}
+                     ^
+
+"Test_name.c", line 60: error: taking the address of a bit field is not allowed
+      unsigned &t6 = (a->var ? a->bitX : a->var); // expected-error {{non-const reference cannot bind to bit-field}}
+                     ^
+
+"Test_name.c", line 61: error: taking the address of a bit field is not allowed
+      unsigned &t7 = (a->var ? a->var : a->bitY); // expected-error {{non-const reference cannot bind to bit-field}}
+                     ^
+
+"Test_name.c", line 62: error: taking the address of a bit field is not allowed
+      unsigned &t8 = (a->bitX = 3); // expected-error {{non-const reference cannot bind to bit-field 'bitX'}}
+                     ^
+
+"Test_name.c", line 63: error: taking the address of a bit field is not allowed
+      unsigned &t9 = (a->bitY += 3); // expected-error {{non-const reference cannot bind to bit-field 'bitY'}}
+                     ^
+
+"Test_name.c", line 73: error: no suitable user-defined conversion from "explicit_ctor::A" to "const explicit_ctor::B" exists
+    const B &b(a); // expected-error {{no viable conversion}}
+               ^
+
+11 errors detected in the compilation of "Test_name.c".

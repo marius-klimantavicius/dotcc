@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 10: error: expected an expression
+    Foo(sizeof int); // expected-error {{expected parentheses around type name in sizeof expression}}
+               ^
+
+"Test_name.c", line 11: error: expected an expression
+    Bar(sizeof int); // expected-error {{expected parentheses around type name in sizeof expression}}
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

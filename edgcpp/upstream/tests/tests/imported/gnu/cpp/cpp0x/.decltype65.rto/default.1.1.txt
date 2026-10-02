@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 13: warning: a decltype-qualified name is nonstandard in this declaration context
+  template < typename T > int decltype (A < T > ())::i = 100; // { dg-error "decltype" }
+                                                     ^
+
+"Test_name.c", line 13: error: "class <unnamed>" is not a class template
+  template < typename T > int decltype (A < T > ())::i = 100; // { dg-error "decltype" }
+                              ^
+
+"Test_name.c", line 13: warning: variable templates are a C++14 feature
+  template < typename T > int decltype (A < T > ())::i = 100; // { dg-error "decltype" }
+                                                       ^
+
+1 error detected in the compilation of "Test_name.c".

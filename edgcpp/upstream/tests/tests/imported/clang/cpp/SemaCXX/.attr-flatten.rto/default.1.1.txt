@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 5: warning: attribute "flatten" does not apply here
+  int i __attribute__((flatten)); // expected-error {{'flatten' attribute only applies to functions}}
+                       ^
+
+"Test_name.c", line 8: error: attribute "flatten" does not take arguments
+  void f2() __attribute__((flatten(1))); // expected-error {{'flatten' attribute takes no arguments}}
+                                  ^
+
+"Test_name.c", line 13: warning: attribute "flatten" does not apply here
+  int f3(int __attribute__((flatten)), int); // expected-error{{'flatten' attribute only applies to functions}}
+                            ^
+
+"Test_name.c", line 16: warning: attribute "flatten" does not apply here
+    int f __attribute__((flatten));  // expected-error{{'flatten' attribute only applies to functions}}
+                         ^
+
+"Test_name.c", line 21: warning: attribute "gnu::flatten" does not apply here
+  int ci [[gnu::flatten]]; // expected-error {{'gnu::flatten' attribute only applies to functions}}
+           ^
+
+"Test_name.c", line 24: error: attribute "gnu::flatten" does not take arguments
+  [[gnu::flatten(1)]] void cf2(); // expected-error {{'gnu::flatten' attribute takes no arguments}}
+                ^
+
+"Test_name.c", line 30: warning: attribute "gnu::flatten" does not apply here
+  int cf3(int c[[gnu::flatten]], int); // expected-error{{'gnu::flatten' attribute only applies to functions}}
+                 ^
+
+"Test_name.c", line 33: warning: attribute "gnu::flatten" does not apply here
+    int f [[gnu::flatten]];  // expected-error{{'gnu::flatten' attribute only applies to functions}}
+            ^
+
+2 errors detected in the compilation of "Test_name.c".

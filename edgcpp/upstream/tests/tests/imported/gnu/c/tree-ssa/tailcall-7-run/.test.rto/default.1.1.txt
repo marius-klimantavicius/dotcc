@@ -1,0 +1,12 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c tailcall-7.c
+Test_name.c:
+tailcall-7.c:
+"tailcall-7.c", line 75: error: expected a ";"
+    void inner (void) { param = f (9); }
+                      ^
+
+"tailcall-7.c", line 84: error: expected a ";"
+    void inner (void) { f (param); }
+                      ^
+
+2 errors detected in the compilation of "tailcall-7.c".

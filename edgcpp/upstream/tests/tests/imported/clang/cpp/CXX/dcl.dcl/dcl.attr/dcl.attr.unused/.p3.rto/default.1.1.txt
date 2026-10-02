@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 19: warning: variable "e" is used before its value is set
+    switch (e) { // expected-warning {{enumeration value 'UsedEnumVal' not handled in switch}}
+            ^
+
+"Test_name.c", line 16: warning: variable "x" was declared but never referenced
+    int x; // expected-warning {{unused variable}}
+        ^
+
+"Test_name.c", line 27: warning: variable "s" was declared but never referenced
+    S s;
+      ^
+
+"Test_name.c", line 28: warning: variable "test" was declared but never referenced
+    maybe_unused_int test;
+                     ^
+

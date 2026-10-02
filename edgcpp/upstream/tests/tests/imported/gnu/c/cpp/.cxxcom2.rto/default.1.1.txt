@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c89 -E Test_name.c
+# 1 "Test_name.c"
+
+
+# 1 "./cpp/cxxcom2.c"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 1 "/usr/include/stdc-predef.h"
+# 1 "<command-line>"
+# 1 "./cpp/cxxcom2.c"
+
+
+
+# 1 "./cpp/cxxcom2.h"
+
+       
+# 3 "./cpp/cxxcom2.h"
+# 5 "./cpp/cxxcom2.c"

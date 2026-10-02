@@ -1,0 +1,80 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 --exceptions Test_name.c
+"Test_name.c", line 98: error: function "Deletedness::Cmp<T>::operator<=>(const Deletedness::Cmp<T> &) const [with T=Deletedness::C]" (declared at line 90) cannot be referenced -- it is a deleted function
+        Cmp<C>() <=> Cmp<C>(), // expected-error {{deleted}}
+                 ^
+
+"Test_name.c", line 99: error: function "Deletedness::Cmp<T>::operator<=>(const Deletedness::Cmp<T> &) const [with T=Deletedness::D1]" (declared at line 90) cannot be referenced -- it is a deleted function
+        Cmp<D1>() <=> Cmp<D1>(), // expected-error {{deleted}}
+                  ^
+
+"Test_name.c", line 100: error: function "Deletedness::Cmp<T>::operator<=>(const Deletedness::Cmp<T> &) const [with T=Deletedness::D2]" (declared at line 90) cannot be referenced -- it is a deleted function
+        Cmp<D2>() <=> Cmp<D2>(), // expected-error {{deleted}}
+                  ^
+
+"Test_name.c", line 101: error: function "Deletedness::Cmp<T>::operator<=>(const Deletedness::Cmp<T> &) const [with T=Deletedness::E]" (declared at line 90) cannot be referenced -- it is a deleted function
+        Cmp<E>() <=> Cmp<E>(), // expected-error {{deleted}}
+                 ^
+
+"Test_name.c", line 102: error: function "Deletedness::Cmp<T>::operator<=>(const Deletedness::Cmp<T> &) const [with T=Deletedness::F]" (declared at line 90) cannot be referenced -- it is a deleted function
+        Cmp<F>() <=> Cmp<F>(), // expected-error {{deleted}}
+                 ^
+
+"Test_name.c", line 105: error: expression must have bool type (or be convertible to bool)
+        Cmp<G1>() <=> Cmp<G1>(), // expected-note-re {{in defaulted three-way comparison operator for '{{.*}}Cmp<{{.*}}G1>' first required here}}j
+                               ^
+          detected during instantiation of class "Deletedness::Cmp<T> [with T=Deletedness::G1]" at line 105
+
+"Test_name.c", line 107: error: expression must have bool type (or be convertible to bool)
+        Cmp<G2>() <=> Cmp<G2>(), // expected-note-re {{in defaulted three-way comparison operator for '{{.*}}Cmp<{{.*}}G2>' first required here}}j
+                               ^
+          detected during instantiation of class "Deletedness::Cmp<T> [with T=Deletedness::G2]" at line 107
+
+"Test_name.c", line 109: error: no suitable constructor exists to convert from "void" to "std::strong_ordering"
+        Cmp<H>() <=> Cmp<H>(), // expected-note-re {{in defaulted three-way comparison operator for '{{.*}}Cmp<{{.*}}H>' first required here}}j
+                             ^
+          detected during instantiation of class "Deletedness::Cmp<T> [with T=Deletedness::H]" at line 109
+
+"Test_name.c", line 129: error: function "Deletedness::CmpArray<T>::operator<=>(const Deletedness::CmpArray<T> &) const [with T=Deletedness::C]" (declared at line 123) cannot be referenced -- it is a deleted function
+        CmpArray<C>() <=> CmpArray<C>(), // expected-error {{deleted}}
+                      ^
+
+"Test_name.c", line 130: error: function "Deletedness::CmpArray<T>::operator<=>(const Deletedness::CmpArray<T> &) const [with T=Deletedness::D1]" (declared at line 123) cannot be referenced -- it is a deleted function
+        CmpArray<D1>() <=> CmpArray<D1>(), // expected-error {{deleted}}
+                       ^
+
+"Test_name.c", line 131: error: function "Deletedness::CmpArray<T>::operator<=>(const Deletedness::CmpArray<T> &) const [with T=Deletedness::D2]" (declared at line 123) cannot be referenced -- it is a deleted function
+        CmpArray<D2>() <=> CmpArray<D2>(), // expected-error {{deleted}}
+                       ^
+
+"Test_name.c", line 132: error: function "Deletedness::CmpArray<T>::operator<=>(const Deletedness::CmpArray<T> &) const [with T=Deletedness::E]" (declared at line 123) cannot be referenced -- it is a deleted function
+        CmpArray<E>() <=> CmpArray<E>(), // expected-error {{deleted}}
+                      ^
+
+"Test_name.c", line 133: error: function "Deletedness::CmpArray<T>::operator<=>(const Deletedness::CmpArray<T> &) const [with T=Deletedness::F]" (declared at line 123) cannot be referenced -- it is a deleted function
+        CmpArray<F>() <=> CmpArray<F>(), // expected-error {{deleted}}
+                      ^
+
+"Test_name.c", line 136: error: expression must have bool type (or be convertible to bool)
+        CmpArray<G1>() <=> CmpArray<G1>(), // expected-note-re {{in defaulted three-way comparison operator for '{{.*}}CmpArray<{{.*}}G1>' first required here}}j
+                                         ^
+          detected during instantiation of class "Deletedness::CmpArray<T> [with T=Deletedness::G1]" at line 136
+
+"Test_name.c", line 138: error: expression must have bool type (or be convertible to bool)
+        CmpArray<G2>() <=> CmpArray<G2>(), // expected-note-re {{in defaulted three-way comparison operator for '{{.*}}CmpArray<{{.*}}G2>' first required here}}j
+                                         ^
+          detected during instantiation of class "Deletedness::CmpArray<T> [with T=Deletedness::G2]" at line 138
+
+"Test_name.c", line 140: error: no suitable constructor exists to convert from "void" to "std::strong_ordering"
+        CmpArray<H>() <=> CmpArray<H>(), // expected-note-re {{in defaulted three-way comparison operator for '{{.*}}CmpArray<{{.*}}H>' first required here}}j
+                                       ^
+          detected during instantiation of class "Deletedness::CmpArray<T> [with T=Deletedness::H]" at line 140
+
+"Test_name.c", line 213: error: function "Synthesis::operator<=>(const Synthesis::Cmp<Synthesis::custom_ordering> &, const Synthesis::Cmp<Synthesis::custom_ordering> &)" (declared at line 185) cannot be referenced -- it is a deleted function
+      c <=> c; // expected-error {{deleted}}
+        ^
+
+"Test_name.c", line 232: error: function "Preference::B::operator<=>(const Preference::B &) const" (declared at line 230) cannot be referenced -- it is a deleted function
+    bool x = B() < B(); // expected-note {{in defaulted three-way comparison operator for 'B' first required here}}
+                 ^
+
+18 errors detected in the compilation of "Test_name.c".

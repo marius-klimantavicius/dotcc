@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 24: warning: variable "c" was declared but never referenced
+    secret_ctor c = __builtin_bit_cast(secret_ctor, (char)0);
+                ^
+
+"Test_name.c", line 30: error: the type of the second operand "int" must have the same size as "char"
+    constexpr char c = __builtin_bit_cast(char, i);
+                                                ^
+
+"Test_name.c", line 38: error: type must be trivially copyable
+  constexpr unsigned long ul = __builtin_bit_cast(unsigned long, not_trivially_copyable{});
+                                                                 ^
+
+"Test_name.c", line 41: error: type must be trivially copyable
+  constexpr long us = __builtin_bit_cast(unsigned long &, 0L);
+                                         ^
+
+"Test_name.c", line 38: warning: variable "ul" was declared but never referenced
+  constexpr unsigned long ul = __builtin_bit_cast(unsigned long, not_trivially_copyable{});
+                          ^
+
+"Test_name.c", line 41: warning: variable "us" was declared but never referenced
+  constexpr long us = __builtin_bit_cast(unsigned long &, 0L);
+                 ^
+
+3 errors detected in the compilation of "Test_name.c".

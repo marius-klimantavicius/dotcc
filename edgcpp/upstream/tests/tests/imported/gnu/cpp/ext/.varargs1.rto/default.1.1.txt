@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./ext/varargs1.C", line 26: error: a class type that cannot be trivially copied cannot be fetched by va_arg
+          A
+          ^
+
+"./ext/varargs1.C", line 31: warning: a class type that is not trivially copyable passed through ellipsis
+    f(42,A());
+         ^
+
+1 error detected in the compilation of "Test_name.c".

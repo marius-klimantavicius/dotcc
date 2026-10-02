@@ -1,0 +1,1 @@
+eccp -DTEST_NUMBER=1 --c99 --multi_trans_unit Test_name.c x96_b.c

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=5 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --c++ Test_name.c
+"Test_name.c", line 12: error: expression must have a constant value
+      X = (-1<<29) // c-warning {{expression is not an integer constant expression; folding it to a constant is a GNU extension}}
+          ^
+"Test_name.c", line 12: note: left-shifting a negative value has undefined behavior
+      X = (-1<<29) // c-warning {{expression is not an integer constant expression; folding it to a constant is a GNU extension}}
+             ^
+
+1 error detected in the compilation of "Test_name.c".

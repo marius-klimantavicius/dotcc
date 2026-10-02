@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 14: error: too few arguments in function call
+    __atomic_exchange_n (&i, 1); /* { dg-error "too few arguments" } */
+                              ^
+
+"Test_name.c", line 15: warning: extra arguments ignored
+    __atomic_exchange_n (&i, 1, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST); /* { dg-error "too many arguments" } */
+                                                  ^
+
+1 error detected in the compilation of "Test_name.c".

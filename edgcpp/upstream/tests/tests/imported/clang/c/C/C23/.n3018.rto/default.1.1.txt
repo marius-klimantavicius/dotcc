@@ -1,0 +1,174 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 14: error: identifier "constexpr" is undefined
+    constexpr unsigned int minusOne    = -1;
+    ^
+
+"Test_name.c", line 14: error: expected a ";"
+    constexpr unsigned int minusOne    = -1;
+              ^
+
+"Test_name.c", line 16: error: expected a ";"
+    constexpr unsigned int uint_max    = -1U;
+              ^
+
+"Test_name.c", line 17: error: expected a ";"
+    constexpr double onethird          = 1.0/3.0;
+              ^
+
+"Test_name.c", line 18: error: expected a ";"
+    constexpr double onethirdtrunc     = (double)(1.0/3.0);
+              ^
+
+"Test_name.c", line 20: error: expected a ";"
+    constexpr char string[] = { "\xFF", };
+              ^
+
+"Test_name.c", line 21: error: expected a ";"
+    constexpr unsigned char ucstring[] = { "\xFF", };
+              ^
+
+"Test_name.c", line 23: error: expected a ";"
+    constexpr char string1[] = { -1, 0, };
+              ^
+
+"Test_name.c", line 24: error: expected a ";"
+    constexpr unsigned char ucstring1[] = { -1, 0, };
+              ^
+
+"Test_name.c", line 34: error: identifier "constexpr" is undefined
+    constexpr int K = 47;
+    ^
+
+"Test_name.c", line 34: error: expected a ";"
+    constexpr int K = 47;
+              ^
+
+"Test_name.c", line 36: error: identifier "K" is undefined
+        A = K,
+            ^
+
+"Test_name.c", line 38: error: expected a ";"
+    constexpr int L = K;
+              ^
+
+"Test_name.c", line 39: warning: variable "b" was declared but never referenced
+    static int b    = K + 1;
+               ^
+
+"Test_name.c", line 44: warning: this declaration has no storage class or type specifier
+  constexpr int K = 47;
+  ^
+
+"Test_name.c", line 44: error: expected a ";"
+  constexpr int K = 47;
+            ^
+
+"Test_name.c", line 45: error: identifier "K" is undefined
+  static const int b = K + 1;
+                       ^
+
+"Test_name.c", line 48: warning: expression has no effect
+    constexpr int A          = 42LL;
+    ^
+
+"Test_name.c", line 48: error: expected a ";"
+    constexpr int A          = 42LL;
+              ^
+
+"Test_name.c", line 49: warning: expression has no effect
+    constexpr signed short B = ULLONG_MAX;
+    ^
+
+"Test_name.c", line 49: error: expected a ";"
+    constexpr signed short B = ULLONG_MAX;
+              ^
+
+"Test_name.c", line 51: warning: expression has no effect
+    constexpr float C        = 47u;
+    ^
+
+"Test_name.c", line 51: error: expected a ";"
+    constexpr float C        = 47u;
+              ^
+
+"Test_name.c", line 53: warning: expression has no effect
+    constexpr float D = 432000000;
+    ^
+
+"Test_name.c", line 53: error: expected a ";"
+    constexpr float D = 432000000;
+              ^
+
+"Test_name.c", line 54: warning: expression has no effect
+    constexpr float E = 1.0 / 3.0;
+    ^
+
+"Test_name.c", line 54: error: expected a ";"
+    constexpr float E = 1.0 / 3.0;
+              ^
+
+"Test_name.c", line 56: warning: expression has no effect
+    constexpr float F = 1.0f / 3.0f;
+    ^
+
+"Test_name.c", line 56: error: expected a ";"
+    constexpr float F = 1.0f / 3.0f;
+              ^
+
+"Test_name.c", line 61: warning: expression has no effect
+    constexpr static unsigned short array[] = {
+    ^
+
+"Test_name.c", line 61: error: expected a ";"
+    constexpr static unsigned short array[] = {
+              ^
+
+"Test_name.c", line 67: warning: parsing restarts here after previous syntax error
+    };
+     ^
+
+"Test_name.c", line 69: warning: expression has no effect
+    constexpr static unsigned short array1[] = {
+    ^
+
+"Test_name.c", line 69: error: expected a ";"
+    constexpr static unsigned short array1[] = {
+              ^
+
+"Test_name.c", line 74: warning: parsing restarts here after previous syntax error
+    };
+     ^
+
+"Test_name.c", line 79: warning: expression has no effect
+    constexpr struct S s = {
+    ^
+
+"Test_name.c", line 79: error: expected a ";"
+    constexpr struct S s = {
+              ^
+
+"Test_name.c", line 83: warning: parsing restarts here after previous syntax error
+    };
+     ^
+
+"Test_name.c", line 88: warning: expression has no effect
+    constexpr struct s A = { nullptr };
+    ^
+
+"Test_name.c", line 88: error: expected a ";"
+    constexpr struct s A = { nullptr };
+              ^
+
+"Test_name.c", line 89: warning: expression has no effect
+    constexpr struct s B = A;
+    ^
+
+"Test_name.c", line 89: error: expected a ";"
+    constexpr struct s B = A;
+              ^
+
+"Test_name.c", line 45: warning: variable "b" was declared but never referenced
+  static const int b = K + 1;
+                   ^
+
+26 errors detected in the compilation of "Test_name.c".

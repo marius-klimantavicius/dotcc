@@ -1,0 +1,18 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 15: error: return type "int" omitted in declaration of function "main"
+  main(){
+  ^
+
+"Test_name.c", line 16: remark: declaration hides variable "a" (declared at line 10)
+          int (a)  ; // valid redeclaration of a
+               ^
+
+"Test_name.c", line 17: warning: expression has no effect
+          int (::b); // valid function like cast of b
+          ^
+
+"Test_name.c", line 16: warning: variable "a" was declared but never referenced
+          int (a)  ; // valid redeclaration of a
+               ^
+
+1 error detected in the compilation of "Test_name.c".

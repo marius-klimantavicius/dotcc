@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 16: error: class "C<u8'\x78'>" has no member "D"
+  C<u8'x'>::D d; // expected-error {{no type named 'D' in 'C<u8'x'>'}}
+            ^
+
+"Test_name.c", line 9: error: incomplete type "check<char8_t, (char8_t)34U, (char8_t)209U, (char8_t)130U, (char8_t)208U, (char8_t)181U, (char8_t)209U, (char8_t)129U, (char8_t)209U, (char8_t)130U, (char8_t)95U, (char8_t)240U, (char8_t)144U, (char8_t)128U, (char8_t)128U>" is not allowed
+    check<T, str...> chars;                            // expected-error {{implicit instantiation of undefined template 'check<char8_t, u8'"', u8'\xd1', u8'\x82', u8'\xd0', u8'\xb5', u8'\xd1', u8'\x81', u8'\xd1', u8'\x82', u8'_', u8'\xf0', u8'\x90', u8'\x80', u8'\x80'>'}}
+                     ^
+          detected during instantiation of "int operator ""_x<T,str...>() [with T=char8_t, str=<(char8_t)34U, (char8_t)209U, (char8_t)130U, (char8_t)208U, (char8_t)181U, (char8_t)209U, (char8_t)129U, (char8_t)209U, (char8_t)130U, (char8_t)95U, (char8_t)240U, (char8_t)144U, (char8_t)128U, (char8_t)128U>]" 
+
+2 errors detected in the compilation of "Test_name.c".

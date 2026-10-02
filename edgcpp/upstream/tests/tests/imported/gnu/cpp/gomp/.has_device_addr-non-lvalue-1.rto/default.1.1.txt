@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./gomp/has_device_addr-non-lvalue-1.C", line 18: warning: unrecognized #pragma
+  #pragma omp target enter data map(to: (*s).arr)
+          ^
+
+"./gomp/has_device_addr-non-lvalue-1.C", line 22: warning: unrecognized #pragma
+  #pragma omp target has_device_addr((*s).arr[5:20])
+          ^
+
+"./gomp/has_device_addr-non-lvalue-1.C", line 29: warning: unrecognized #pragma
+  #pragma omp target exit data map(from: (*s).arr)
+          ^
+

@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=5 -w -tused --ms_c++20 --microsoft_version 1942 -DMBR_PTR Test_name.c

@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c99 Test_name.c
+"Test_name.c", line 31: error: variable "u" is not a type name
+  _Static_assert(u == 10U, "");
+                 ^
+
+"Test_name.c", line 31: error: expected a ")"
+  _Static_assert(u == 10U, "");
+                   ^
+
+"Test_name.c", line 31: warning: this declaration has no storage class or type specifier
+  _Static_assert(u == 10U, "");
+  ^
+
+"Test_name.c", line 32: error: variable "i" is not a type name
+  _Static_assert(i == 10, "");
+                 ^
+
+"Test_name.c", line 32: error: expected a ")"
+  _Static_assert(i == 10, "");
+                   ^
+
+"Test_name.c", line 32: warning: this declaration has no storage class or type specifier
+  _Static_assert(i == 10, "");
+  ^
+
+"Test_name.c", line 33: error: variable "l" is not a type name
+  _Static_assert(l == 10L, "");
+                 ^
+
+"Test_name.c", line 33: error: expected a ")"
+  _Static_assert(l == 10L, "");
+                   ^
+
+"Test_name.c", line 33: warning: this declaration has no storage class or type specifier
+  _Static_assert(l == 10L, "");
+  ^
+
+6 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --c99 --embedded_c Test_name.c
+"Test_name.c", line 14: error: a named-register storage class is not allowed here
+  void f(register _EDG_REG_2 int const x) {
+                  ^
+
+"Test_name.c", line 16: error: an initializer is not allowed on a local declaration of a named register variable
+  	register _EDG_REG_3 int loc2 = 2;
+  	                             ^
+
+"Test_name.c", line 16: error: named-register storage specifier is already in use
+  	register _EDG_REG_3 int loc2 = 2;
+  	^
+
+3 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 -W Test_name.c
+"Test_name.c", line 9: error: a function cannot be both constexpr and virtual in this mode
+    virtual constexpr void foo();  // { dg-error "3:member .foo. can be declared both .virtual. and .constexpr." }
+            ^
+
+"Test_name.c", line 14: error: a function cannot be both constexpr and virtual in this mode
+    constexpr virtual void bar();  // { dg-error "13:member .bar. can be declared both .virtual. and .constexpr." }
+              ^
+
+2 errors detected in the compilation of "Test_name.c".

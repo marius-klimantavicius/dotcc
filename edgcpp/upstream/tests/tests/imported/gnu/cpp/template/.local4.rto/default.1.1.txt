@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++03 Test_name.c
+"Test_name.c", line 10: error: no instance of function template "foo" matches the argument list
+    foo<S> (); // { dg-error "(match|template argument for|trying to instantiate)" } 
+    ^
+"Test_name.c", line 6: note: candidate function template "foo" failed deduction
+  template <typename T> void foo() {} // { dg-message "note" }
+                             ^
+
+1 error detected in the compilation of "Test_name.c".

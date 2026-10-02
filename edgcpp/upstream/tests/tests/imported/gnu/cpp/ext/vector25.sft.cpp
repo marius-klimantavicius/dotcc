@@ -1,0 +1,8 @@
+//type: fp
+//options: 
+volatile int i __attribute__((vector_size(8)));
+
+void foo()
+{
+  i += i; // { dg-bogus "deprecated" }
+}

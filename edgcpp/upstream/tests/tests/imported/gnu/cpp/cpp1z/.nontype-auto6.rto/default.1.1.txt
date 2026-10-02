@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 9: error: function "foo<T,N>(A<N> *) [with T=int, N=0]" (declared at line 6) cannot be referenced -- it is a deleted function
+    foo(p);			// { dg-error "" "" { target c++17 } }
+    ^
+
+1 error detected in the compilation of "Test_name.c".

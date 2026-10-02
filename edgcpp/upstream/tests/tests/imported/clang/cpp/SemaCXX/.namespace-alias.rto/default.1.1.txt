@@ -1,0 +1,67 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 10: error: "B" has already been declared in the current scope
+  namespace B = N; // expected-error {{redefinition of 'B' as different kind of symbol}}
+            ^
+
+"Test_name.c", line 13: error: "C" has already been declared in the current scope
+  namespace C = N; // expected-error {{redefinition of 'C'}}
+            ^
+
+"Test_name.c", line 17: error: name must be a namespace name
+  i; // expected-error {{expected namespace name}}
+  ^
+
+"Test_name.c", line 20: error: namespace "N" has no member "Foo"
+  Foo; // expected-error {{expected namespace name}}
+  ^
+
+"Test_name.c", line 21: error: name must be a namespace name
+  namespace E2 = N::
+                 ^
+
+"Test_name.c", line 28: error: "F::B" is ambiguous
+    namespace D = B; // expected-error {{reference to 'B' is ambiguous}}
+                  ^
+
+"Test_name.c", line 45: error: namespace "H::B" has already been defined
+    namespace B = A2; // expected-error {{redefinition of 'B' as an alias for a different namespace}}
+              ^
+
+"Test_name.c", line 53: error: expected a "{"
+    namespace A3::extra::specifiers = A2;  // expected-error {{alias must be a single identifier}}
+                                    ^
+
+"Test_name.c", line 90: error: name followed by "::" must be a class or namespace name
+      KB::func(); // expected-error {{undeclared identifier 'KB'}}
+      ^
+
+"Test_name.c", line 91: error: name followed by "::" must be a class or namespace name
+      KC::func(); // expected-error {{undeclared identifier 'KC'}}
+      ^
+
+"Test_name.c", line 120: error: namespace "I::N" has no member "X"
+  A::X nx;
+     ^
+
+"Test_name.c", line 157: error: "I::MultipleUnambiguousLookupResults::Z" is ambiguous
+    int z1 = Z::x; // expected-error {{ambiguous}}
+             ^
+
+"Test_name.c", line 171: error: "a" has already been declared in the current scope
+    namespace a = X; // expected-error {{different kind}}
+              ^
+
+"Test_name.c", line 172: error: "b" has already been declared in the current scope
+    namespace b = X; // expected-error {{different kind}}
+              ^
+
+"Test_name.c", line 173: error: "c" has already been declared in the current scope
+    namespace c = X; // expected-error-re {{redefinition of 'c'{{$}}}}
+              ^
+
+At end of source: error: expected a "}"
+"Test_name.c", line 48: note: to match this "{"
+  namespace I { 
+              ^
+
+16 errors detected in the compilation of "Test_name.c".

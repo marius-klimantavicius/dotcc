@@ -1,0 +1,665 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 24: warning: unknown attribute "noipa"
+  T (a4, s, 0, 1);
+  ^
+
+"Test_name.c", line 25: warning: unknown attribute "noipa"
+  T (a4, s, 1, 1);
+  ^
+
+"Test_name.c", line 26: warning: unknown attribute "noipa"
+  T (a4, s, 2, 1);
+  ^
+
+"Test_name.c", line 27: warning: unknown attribute "noipa"
+  T (a4, s, 3, 1);
+  ^
+
+"Test_name.c", line 28: warning: unknown attribute "noipa"
+  T (a4, s, 4, 1);    // { dg-warning "writing 1 byte into a region of size 0" }
+  ^
+
+"Test_name.c", line 30: warning: unknown attribute "noipa"
+  T (a4, s, 0, 2);
+  ^
+
+"Test_name.c", line 31: warning: unknown attribute "noipa"
+  T (a4, s, 1, 2);
+  ^
+
+"Test_name.c", line 32: warning: unknown attribute "noipa"
+  T (a4, s, 2, 2);
+  ^
+
+"Test_name.c", line 33: warning: unknown attribute "noipa"
+  T (a4, s, 3, 2);    // { dg-warning "writing 2 bytes into a region of size 1" }
+  ^
+
+"Test_name.c", line 34: warning: unknown attribute "noipa"
+  T (a4, s, 4, 2);    // { dg-warning "writing 2 bytes into a region of size 0" }
+  ^
+
+"Test_name.c", line 36: warning: unknown attribute "noipa"
+  T (a4, s, 0, 3);
+  ^
+
+"Test_name.c", line 37: warning: unknown attribute "noipa"
+  T (a4, s, 1, 3);
+  ^
+
+"Test_name.c", line 38: warning: unknown attribute "noipa"
+  T (a4, s, 2, 3);    // { dg-warning "writing 3 bytes into a region of size 2" }
+  ^
+
+"Test_name.c", line 39: warning: unknown attribute "noipa"
+  T (a4, s, 3, 3);    // { dg-warning "writing 3 bytes into a region of size 1" }
+  ^
+
+"Test_name.c", line 40: warning: unknown attribute "noipa"
+  T (a4, s, 4, 3);    // { dg-warning "writing 3 bytes into a region of size 0" }
+  ^
+
+"Test_name.c", line 42: warning: unknown attribute "noipa"
+  T (a4, s, 0, 4);
+  ^
+
+"Test_name.c", line 43: warning: unknown attribute "noipa"
+  T (a4, s, 1, 4);    // { dg-warning "writing 4 bytes into a region of size 3" }
+  ^
+
+"Test_name.c", line 44: warning: unknown attribute "noipa"
+  T (a4, s, 2, 4);    // { dg-warning "writing 4 bytes into a region of size 2" }
+  ^
+
+"Test_name.c", line 45: warning: unknown attribute "noipa"
+  T (a4, s, 3, 4);    // { dg-warning "writing 4 bytes into a region of size 1" }
+  ^
+
+"Test_name.c", line 46: warning: unknown attribute "noipa"
+  T (a4, s, 4, 4);    // { dg-warning "writing 4 bytes into a region of size 0" }
+  ^
+
+"Test_name.c", line 48: warning: unknown attribute "noipa"
+  T (a7, s, 3, 3);
+  ^
+
+"Test_name.c", line 49: warning: unknown attribute "noipa"
+  T (a7, s, 4, 3);
+  ^
+
+"Test_name.c", line 50: warning: unknown attribute "noipa"
+  T (a7, s, 5, 3);    // { dg-warning "writing 3 bytes into a region of size 2" }
+  ^
+
+"Test_name.c", line 51: warning: unknown attribute "noipa"
+  T (a7, s, 6, 3);    // { dg-warning "writing 3 bytes into a region of size 1" }
+  ^
+
+"Test_name.c", line 52: warning: unknown attribute "noipa"
+  T (a7, s, 7, 3);    // { dg-warning "writing 3 bytes into a region of size 0" }
+  ^
+
+"Test_name.c", line 54: warning: unknown attribute "noipa"
+  T (a7, s, 3, 4);
+  ^
+
+"Test_name.c", line 55: warning: unknown attribute "noipa"
+  T (a7, s, 4, 4);    // { dg-warning "writing 4 bytes into a region of size 3" }
+  ^
+
+"Test_name.c", line 56: warning: unknown attribute "noipa"
+  T (a7, s, 5, 4);    // { dg-warning "writing 4 bytes into a region of size 2" }
+  ^
+
+"Test_name.c", line 57: warning: unknown attribute "noipa"
+  T (a7, s, 6, 4);    // { dg-warning "writing 4 bytes into a region of size 1" }
+  ^
+
+"Test_name.c", line 58: warning: unknown attribute "noipa"
+  T (a7, s, 7, 4);    // { dg-warning "writing 4 bytes into a region of size 0" }
+  ^
+
+"Test_name.c", line 60: warning: unknown attribute "noipa"
+  T (a7, s, 1, 6);
+  ^
+
+"Test_name.c", line 61: warning: unknown attribute "noipa"
+  T (a7, s, 2, 6);    // { dg-warning "writing 6 bytes into a region of size 5" }
+  ^
+
+"Test_name.c", line 62: warning: unknown attribute "noipa"
+  T (a7, s, 3, 6);    // { dg-warning "writing 6 bytes into a region of size 4" }
+  ^
+
+"Test_name.c", line 63: warning: unknown attribute "noipa"
+  T (a7, s, 4, 6);    // { dg-warning "writing 6 bytes into a region of size 3" }
+  ^
+
+"Test_name.c", line 64: warning: unknown attribute "noipa"
+  T (a7, s, 5, 6);    // { dg-warning "writing 6 bytes into a region of size 2" }
+  ^
+
+"Test_name.c", line 65: warning: unknown attribute "noipa"
+  T (a7, s, 6, 6);    // { dg-warning "writing 6 bytes into a region of size 1" }
+  ^
+
+"Test_name.c", line 66: warning: unknown attribute "noipa"
+  T (a7, s, 7, 6);    // { dg-warning "writing 6 bytes into a region of size 0" }
+  ^
+
+"Test_name.c", line 68: warning: unknown attribute "noipa"
+  T (a8, s, 1, 7);
+  ^
+
+"Test_name.c", line 69: warning: unknown attribute "noipa"
+  T (a8, s, 2, 7);    // { dg-warning "writing 7 bytes into a region of size 6" }
+  ^
+
+"Test_name.c", line 70: warning: unknown attribute "noipa"
+  T (a8, s, 3, 7);    // { dg-warning "writing 7 bytes into a region of size 5" }
+  ^
+
+"Test_name.c", line 71: warning: unknown attribute "noipa"
+  T (a8, s, 4, 7);    // { dg-warning "writing 7 bytes into a region of size 4" }
+  ^
+
+"Test_name.c", line 72: warning: unknown attribute "noipa"
+  T (a8, s, 5, 7);    // { dg-warning "writing 7 bytes into a region of size 3" }
+  ^
+
+"Test_name.c", line 73: warning: unknown attribute "noipa"
+  T (a8, s, 6, 7);    // { dg-warning "writing 7 bytes into a region of size 2" }
+  ^
+
+"Test_name.c", line 74: warning: unknown attribute "noipa"
+  T (a8, s, 7, 7);    // { dg-warning "writing 7 bytes into a region of size 1" }
+  ^
+
+"Test_name.c", line 75: warning: unknown attribute "noipa"
+  T (a8, s, 8, 7);    // { dg-warning "writing 7 bytes into a region of size 0" }
+  ^
+
+"Test_name.c", line 85: warning: unknown attribute "noipa"
+  T (a4, s, 0, 1);
+  ^
+
+"Test_name.c", line 86: warning: unknown attribute "noipa"
+  T (a4, s, 1, 1);
+  ^
+
+"Test_name.c", line 87: warning: unknown attribute "noipa"
+  T (a4, s, 2, 1);
+  ^
+
+"Test_name.c", line 88: warning: unknown attribute "noipa"
+  T (a4, s, 3, 1);
+  ^
+
+"Test_name.c", line 89: warning: unknown attribute "noipa"
+  T (a4, s, 4, 1);    // { dg-warning "writing 1 byte into a region of size 0" }
+  ^
+
+"Test_name.c", line 91: warning: unknown attribute "noipa"
+  T (a4, s, 0, 2);
+  ^
+
+"Test_name.c", line 92: warning: unknown attribute "noipa"
+  T (a4, s, 1, 2);
+  ^
+
+"Test_name.c", line 93: warning: unknown attribute "noipa"
+  T (a4, s, 2, 2);
+  ^
+
+"Test_name.c", line 94: warning: unknown attribute "noipa"
+  T (a4, s, 3, 2);    // { dg-warning "writing 2 bytes into a region of size 1" }
+  ^
+
+"Test_name.c", line 95: warning: unknown attribute "noipa"
+  T (a4, s, 4, 2);    // { dg-warning "writing 2 bytes into a region of size 0" }
+  ^
+
+"Test_name.c", line 97: warning: unknown attribute "noipa"
+  T (a4, s, 0, 3);
+  ^
+
+"Test_name.c", line 98: warning: unknown attribute "noipa"
+  T (a4, s, 1, 3);
+  ^
+
+"Test_name.c", line 99: warning: unknown attribute "noipa"
+  T (a4, s, 2, 3);    // { dg-warning "writing 3 bytes into a region of size 2" }
+  ^
+
+"Test_name.c", line 100: warning: unknown attribute "noipa"
+  T (a4, s, 3, 3);    // { dg-warning "writing 3 bytes into a region of size 1" }
+  ^
+
+"Test_name.c", line 101: warning: unknown attribute "noipa"
+  T (a4, s, 4, 3);    // { dg-warning "writing 3 bytes into a region of size 0" }
+  ^
+
+"Test_name.c", line 103: warning: unknown attribute "noipa"
+  T (a4, s, 0, 4);
+  ^
+
+"Test_name.c", line 104: warning: unknown attribute "noipa"
+  T (a4, s, 1, 4);    // { dg-warning "writing 4 bytes into a region of size 3" }
+  ^
+
+"Test_name.c", line 105: warning: unknown attribute "noipa"
+  T (a4, s, 2, 4);    // { dg-warning "writing 4 bytes into a region of size 2" }
+  ^
+
+"Test_name.c", line 106: warning: unknown attribute "noipa"
+  T (a4, s, 3, 4);    // { dg-warning "writing 4 bytes into a region of size 1" }
+  ^
+
+"Test_name.c", line 107: warning: unknown attribute "noipa"
+  T (a4, s, 4, 4);    // { dg-warning "writing 4 bytes into a region of size 0" }
+  ^
+
+"Test_name.c", line 109: warning: unknown attribute "noipa"
+  T (a7, s, 3, 3);
+  ^
+
+"Test_name.c", line 110: warning: unknown attribute "noipa"
+  T (a7, s, 4, 3);
+  ^
+
+"Test_name.c", line 111: warning: unknown attribute "noipa"
+  T (a7, s, 5, 3);    // { dg-warning "writing 3 bytes into a region of size 2" }
+  ^
+
+"Test_name.c", line 112: warning: unknown attribute "noipa"
+  T (a7, s, 6, 3);    // { dg-warning "writing 3 bytes into a region of size 1" }
+  ^
+
+"Test_name.c", line 113: warning: unknown attribute "noipa"
+  T (a7, s, 7, 3);    // { dg-warning "writing 3 bytes into a region of size 0" }
+  ^
+
+"Test_name.c", line 115: warning: unknown attribute "noipa"
+  T (a7, s, 3, 4);
+  ^
+
+"Test_name.c", line 116: warning: unknown attribute "noipa"
+  T (a7, s, 4, 4);    // { dg-warning "writing 4 bytes into a region of size 3" }
+  ^
+
+"Test_name.c", line 117: warning: unknown attribute "noipa"
+  T (a7, s, 5, 4);    // { dg-warning "writing 4 bytes into a region of size 2" }
+  ^
+
+"Test_name.c", line 118: warning: unknown attribute "noipa"
+  T (a7, s, 6, 4);    // { dg-warning "writing 4 bytes into a region of size 1" }
+  ^
+
+"Test_name.c", line 119: warning: unknown attribute "noipa"
+  T (a7, s, 7, 4);    // { dg-warning "writing 4 bytes into a region of size 0" }
+  ^
+
+"Test_name.c", line 121: warning: unknown attribute "noipa"
+  T (a7, s, 1, 6);
+  ^
+
+"Test_name.c", line 122: warning: unknown attribute "noipa"
+  T (a7, s, 2, 6);    // { dg-warning "writing 6 bytes into a region of size 5" }
+  ^
+
+"Test_name.c", line 123: warning: unknown attribute "noipa"
+  T (a7, s, 3, 6);    // { dg-warning "writing 6 bytes into a region of size 4" }
+  ^
+
+"Test_name.c", line 124: warning: unknown attribute "noipa"
+  T (a7, s, 4, 6);    // { dg-warning "writing 6 bytes into a region of size 3" }
+  ^
+
+"Test_name.c", line 125: warning: unknown attribute "noipa"
+  T (a7, s, 5, 6);    // { dg-warning "writing 6 bytes into a region of size 2" }
+  ^
+
+"Test_name.c", line 126: warning: unknown attribute "noipa"
+  T (a7, s, 6, 6);    // { dg-warning "writing 6 bytes into a region of size 1" }
+  ^
+
+"Test_name.c", line 127: warning: unknown attribute "noipa"
+  T (a7, s, 7, 6);    // { dg-warning "writing 6 bytes into a region of size 0" }
+  ^
+
+"Test_name.c", line 139: warning: unknown attribute "noipa"
+  T (a6, b6, S4, 0, 4);
+  ^
+
+"Test_name.c", line 140: warning: unknown attribute "noipa"
+  T (a6, b6, S4, 1, 4);
+  ^
+
+"Test_name.c", line 141: warning: unknown attribute "noipa"
+  T (a6, b6, S4, 2, 4);
+  ^
+
+"Test_name.c", line 142: warning: unknown attribute "noipa"
+  T (a6, b6, S4, 3, 4);   // { dg-warning "writing 4 bytes into a region of size 3" } */
+  ^
+
+"Test_name.c", line 143: warning: unknown attribute "noipa"
+  T (a6, b6, S4, 4, 4);   // { dg-warning "writing 4 bytes into a region of size 2" } */
+  ^
+
+"Test_name.c", line 144: warning: unknown attribute "noipa"
+  T (a6, b6, S4, 5, 4);   // { dg-warning "writing 4 bytes into a region of size 1" } */
+  ^
+
+"Test_name.c", line 145: warning: unknown attribute "noipa"
+  T (a6, b6, S4, 6, 4);   // { dg-warning "writing 4 bytes into a region of size 0" } */
+  ^
+
+"Test_name.c", line 147: warning: unknown attribute "noipa"
+  T (a7, b7, S4, 0, 4);
+  ^
+
+"Test_name.c", line 148: warning: unknown attribute "noipa"
+  T (a7, b7, S4, 1, 4);
+  ^
+
+"Test_name.c", line 149: warning: unknown attribute "noipa"
+  T (a7, b7, S4, 2, 4);
+  ^
+
+"Test_name.c", line 150: warning: unknown attribute "noipa"
+  T (a7, b7, S4, 3, 4);
+  ^
+
+"Test_name.c", line 151: warning: unknown attribute "noipa"
+  T (a7, b7, S4, 4, 4);   // { dg-warning "writing 4 bytes into a region of size 3" } */
+  ^
+
+"Test_name.c", line 152: warning: unknown attribute "noipa"
+  T (a7, b7, S4, 5, 4);   // { dg-warning "writing 4 bytes into a region of size 2" } */
+  ^
+
+"Test_name.c", line 153: warning: unknown attribute "noipa"
+  T (a7, b7, S4, 6, 4);   // { dg-warning "writing 4 bytes into a region of size 1" } */
+  ^
+
+"Test_name.c", line 154: warning: unknown attribute "noipa"
+  T (a7, b7, S4, 7, 4);   // { dg-warning "writing 4 bytes into a region of size 0" } */
+  ^
+
+"Test_name.c", line 156: warning: unknown attribute "noipa"
+  T (a8, b4, S3, 0, 4);
+  ^
+
+"Test_name.c", line 157: warning: unknown attribute "noipa"
+  T (a8, b4, S3, 1, 4);
+  ^
+
+"Test_name.c", line 158: warning: unknown attribute "noipa"
+  T (a8, b4, S3, 2, 4);
+  ^
+
+"Test_name.c", line 159: warning: unknown attribute "noipa"
+  T (a8, b4, S3, 3, 4);
+  ^
+
+"Test_name.c", line 160: warning: unknown attribute "noipa"
+  T (a8, b4, S3, 4, 4);
+  ^
+
+"Test_name.c", line 161: warning: unknown attribute "noipa"
+  T (a8, b4, S3, 5, 4);   // { dg-warning "writing 4 bytes into a region of size 3" } */
+  ^
+
+"Test_name.c", line 162: warning: unknown attribute "noipa"
+  T (a8, b4, S3, 6, 4);   // { dg-warning "writing 4 bytes into a region of size 2" } */
+  ^
+
+"Test_name.c", line 163: warning: unknown attribute "noipa"
+  T (a8, b4, S3, 7, 4);   // { dg-warning "writing 4 bytes into a region of size 1" } */
+  ^
+
+"Test_name.c", line 164: warning: unknown attribute "noipa"
+  T (a8, b4, S3, 8, 4);   // { dg-warning "writing 4 bytes into a region of size 0" } */
+  ^
+
+"Test_name.c", line 166: warning: unknown attribute "noipa"
+  T (a8, b8, S3, 0, 4);
+  ^
+
+"Test_name.c", line 167: warning: unknown attribute "noipa"
+  T (a8, b8, S3, 1, 4);
+  ^
+
+"Test_name.c", line 168: warning: unknown attribute "noipa"
+  T (a8, b8, S3, 2, 4);
+  ^
+
+"Test_name.c", line 169: warning: unknown attribute "noipa"
+  T (a8, b8, S3, 3, 4);
+  ^
+
+"Test_name.c", line 170: warning: unknown attribute "noipa"
+  T (a8, b8, S3, 4, 4);
+  ^
+
+"Test_name.c", line 171: warning: unknown attribute "noipa"
+  T (a8, b8, S3, 5, 4);   // { dg-warning "writing 4 bytes into a region of size 3" } */
+  ^
+
+"Test_name.c", line 172: warning: unknown attribute "noipa"
+  T (a8, b8, S3, 6, 4);   // { dg-warning "writing 4 bytes into a region of size 2" } */
+  ^
+
+"Test_name.c", line 173: warning: unknown attribute "noipa"
+  T (a8, b8, S3, 7, 4);   // { dg-warning "writing 4 bytes into a region of size 1" } */
+  ^
+
+"Test_name.c", line 174: warning: unknown attribute "noipa"
+  T (a8, b8, S3, 8, 4);   // { dg-warning "writing 4 bytes into a region of size 0" } */
+  ^
+
+"Test_name.c", line 176: warning: unknown attribute "noipa"
+  T (a8, b8, S4, 0, 4);
+  ^
+
+"Test_name.c", line 177: warning: unknown attribute "noipa"
+  T (a8, b8, S4, 1, 4);
+  ^
+
+"Test_name.c", line 178: warning: unknown attribute "noipa"
+  T (a8, b8, S4, 2, 4);
+  ^
+
+"Test_name.c", line 179: warning: unknown attribute "noipa"
+  T (a8, b8, S4, 3, 4);
+  ^
+
+"Test_name.c", line 180: warning: unknown attribute "noipa"
+  T (a8, b8, S4, 4, 4);
+  ^
+
+"Test_name.c", line 181: warning: unknown attribute "noipa"
+  T (a8, b8, S4, 5, 4);   // { dg-warning "writing 4 bytes into a region of size 3" } */
+  ^
+
+"Test_name.c", line 182: warning: unknown attribute "noipa"
+  T (a8, b8, S4, 6, 4);   // { dg-warning "writing 4 bytes into a region of size 2" } */
+  ^
+
+"Test_name.c", line 183: warning: unknown attribute "noipa"
+  T (a8, b8, S4, 7, 4);   // { dg-warning "writing 4 bytes into a region of size 1" } */
+  ^
+
+"Test_name.c", line 184: warning: unknown attribute "noipa"
+  T (a8, b8, S4, 8, 4);   // { dg-warning "writing 4 bytes into a region of size 0" } */
+  ^
+
+"Test_name.c", line 186: warning: unknown attribute "noipa"
+  T (a8, b8, S4, 0, 5);
+  ^
+
+"Test_name.c", line 187: warning: unknown attribute "noipa"
+  T (a8, b8, S4, 1, 5);
+  ^
+
+"Test_name.c", line 188: warning: unknown attribute "noipa"
+  T (a8, b8, S4, 2, 5);
+  ^
+
+"Test_name.c", line 189: warning: unknown attribute "noipa"
+  T (a8, b8, S4, 3, 5);
+  ^
+
+"Test_name.c", line 190: warning: unknown attribute "noipa"
+  T (a8, b8, S4, 4, 5);   // { dg-warning "writing 5 bytes into a region of size 4" } */
+  ^
+
+"Test_name.c", line 191: warning: unknown attribute "noipa"
+  T (a8, b8, S4, 5, 5);   // { dg-warning "writing 5 bytes into a region of size 3" } */
+  ^
+
+"Test_name.c", line 192: warning: unknown attribute "noipa"
+  T (a8, b8, S4, 6, 5);   // { dg-warning "writing 5 bytes into a region of size 2" } */
+  ^
+
+"Test_name.c", line 193: warning: unknown attribute "noipa"
+  T (a8, b8, S4, 7, 5);   // { dg-warning "writing 5 bytes into a region of size 1" } */
+  ^
+
+"Test_name.c", line 194: warning: unknown attribute "noipa"
+  T (a8, b8, S4, 8, 5);   // { dg-warning "writing 5 bytes into a region of size 0" } */
+  ^
+
+"Test_name.c", line 196: warning: unknown attribute "noipa"
+  T (a8, b8, S4, 0, 6);
+  ^
+
+"Test_name.c", line 197: warning: unknown attribute "noipa"
+  T (a8, b8, S4, 1, 6);
+  ^
+
+"Test_name.c", line 198: warning: unknown attribute "noipa"
+  T (a8, b8, S4, 2, 6);
+  ^
+
+"Test_name.c", line 199: warning: unknown attribute "noipa"
+  T (a8, b8, S4, 3, 6);   // { dg-warning "writing 6 bytes into a region of size 5" } */
+  ^
+
+"Test_name.c", line 200: warning: unknown attribute "noipa"
+  T (a8, b8, S4, 4, 6);   // { dg-warning "writing 6 bytes into a region of size 4" } */
+  ^
+
+"Test_name.c", line 201: warning: unknown attribute "noipa"
+  T (a8, b8, S4, 5, 6);   // { dg-warning "writing 6 bytes into a region of size 3" } */
+  ^
+
+"Test_name.c", line 202: warning: unknown attribute "noipa"
+  T (a8, b8, S4, 6, 6);   // { dg-warning "writing 6 bytes into a region of size 2" } */
+  ^
+
+"Test_name.c", line 203: warning: unknown attribute "noipa"
+  T (a8, b8, S4, 7, 6);   // { dg-warning "writing 6 bytes into a region of size 1" } */
+  ^
+
+"Test_name.c", line 204: warning: unknown attribute "noipa"
+  T (a8, b8, S4, 8, 6);   // { dg-warning "writing 6 bytes into a region of size 0" } */
+  ^
+
+"Test_name.c", line 216: warning: unknown attribute "noipa"
+  T (a6, S4, 0, 4);
+  ^
+
+"Test_name.c", line 217: warning: unknown attribute "noipa"
+  T (a6, S4, 1, 4);
+  ^
+
+"Test_name.c", line 218: warning: unknown attribute "noipa"
+  T (a6, S4, 2, 4);
+  ^
+
+"Test_name.c", line 219: warning: unknown attribute "noipa"
+  T (a6, S4, 3, 4);   // { dg-warning "writing 4 bytes into a region of size 3" } */
+  ^
+
+"Test_name.c", line 220: warning: unknown attribute "noipa"
+  T (a6, S4, 4, 4);   // { dg-warning "writing 4 bytes into a region of size 2" } */
+  ^
+
+"Test_name.c", line 221: warning: unknown attribute "noipa"
+  T (a6, S4, 5, 4);   // { dg-warning "writing 4 bytes into a region of size 1" } */
+  ^
+
+"Test_name.c", line 222: warning: unknown attribute "noipa"
+  T (a6, S4, 6, 4);   // { dg-warning "writing 4 bytes into a region of size 0" } */
+  ^
+
+"Test_name.c", line 224: warning: unknown attribute "noipa"
+  T (a7, S4, 0, 4);
+  ^
+
+"Test_name.c", line 225: warning: unknown attribute "noipa"
+  T (a7, S4, 1, 4);
+  ^
+
+"Test_name.c", line 226: warning: unknown attribute "noipa"
+  T (a7, S4, 2, 4);
+  ^
+
+"Test_name.c", line 227: warning: unknown attribute "noipa"
+  T (a7, S4, 3, 4);
+  ^
+
+"Test_name.c", line 228: warning: unknown attribute "noipa"
+  T (a7, S4, 4, 4);   // { dg-warning "writing 4 bytes into a region of size 3" } */
+  ^
+
+"Test_name.c", line 229: warning: unknown attribute "noipa"
+  T (a7, S4, 5, 4);   // { dg-warning "writing 4 bytes into a region of size 2" } */
+  ^
+
+"Test_name.c", line 230: warning: unknown attribute "noipa"
+  T (a7, S4, 6, 4);   // { dg-warning "writing 4 bytes into a region of size 1" } */
+  ^
+
+"Test_name.c", line 231: warning: unknown attribute "noipa"
+  T (a7, S4, 7, 4);   // { dg-warning "writing 4 bytes into a region of size 0" } */
+  ^
+
+"Test_name.c", line 233: warning: unknown attribute "noipa"
+  T (a8, S3, 0, 4);
+  ^
+
+"Test_name.c", line 234: warning: unknown attribute "noipa"
+  T (a8, S3, 1, 4);
+  ^
+
+"Test_name.c", line 235: warning: unknown attribute "noipa"
+  T (a8, S3, 2, 4);
+  ^
+
+"Test_name.c", line 236: warning: unknown attribute "noipa"
+  T (a8, S3, 3, 4);
+  ^
+
+"Test_name.c", line 237: warning: unknown attribute "noipa"
+  T (a8, S3, 4, 4);
+  ^
+
+"Test_name.c", line 238: warning: unknown attribute "noipa"
+  T (a8, S3, 5, 4);   // { dg-warning "writing 4 bytes into a region of size 3" } */
+  ^
+
+"Test_name.c", line 239: warning: unknown attribute "noipa"
+  T (a8, S3, 6, 4);   // { dg-warning "writing 4 bytes into a region of size 2" } */
+  ^
+
+"Test_name.c", line 240: warning: unknown attribute "noipa"
+  T (a8, S3, 7, 4);   // { dg-warning "writing 4 bytes into a region of size 1" } */
+  ^
+
+"Test_name.c", line 241: warning: unknown attribute "noipa"
+  T (a8, S3, 8, 4);   // { dg-warning "writing 4 bytes into a region of size 0" } */
+  ^
+

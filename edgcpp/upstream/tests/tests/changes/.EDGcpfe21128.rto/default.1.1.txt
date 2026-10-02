@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c11 Test_name.c
+"Test_name.c", line 16: error: the alignment of a function type ("int (void)") is nonstandard
+  long a1 = _Alignof(int(void));  // Now an error in C11 mode.
+                     ^
+
+"Test_name.c", line 17: warning: the alignment of an array of unspecified bound is nonstandard in C
+  long a2 = _Alignof(int[]);      // Now a warning in nonstrict C11 mode,
+                     ^
+
+1 error detected in the compilation of "Test_name.c".

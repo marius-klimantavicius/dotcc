@@ -1,0 +1,1 @@
+cpfe -DTEST_NUMBER=2 --diag_error 1143 --g++ Test_name.c

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=2 -A --c++17 Test_name.c
+"Test_name.c", line 14: error: "S::~S() noexcept" (declared at line 10) is inaccessible
+   return S();
+          ^
+
+1 error detected in the compilation of "Test_name.c".

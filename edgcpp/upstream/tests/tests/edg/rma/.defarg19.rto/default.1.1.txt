@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --diag_warning=949 --strict Test_name.c
+"Test_name.c", line 5: warning: specifying a default argument on this declaration is nonstandard
+    virtual void (*pf)(int = 0);
+                           ^
+
+"Test_name.c", line 5: error: "virtual" is not allowed
+    virtual void (*pf)(int = 0);
+    ^
+
+1 error detected in the compilation of "Test_name.c".

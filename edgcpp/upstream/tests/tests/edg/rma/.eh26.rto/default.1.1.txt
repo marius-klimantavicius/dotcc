@@ -1,0 +1,30 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 20: error: exception specification for implicitly declared virtual function "Q3::~Q3" is incompatible with that of overridden function "A::~A"
+  class Q3 : public A, public B { };  // implicit decl: virtual ~Q3() throw(X,Y) Error
+        ^
+
+"Test_name.c", line 23: error: exception specification for implicitly declared virtual function "Q6::~Q6" is incompatible with that of overridden function "B::~B"
+  class Q6 : public B, public D { };  // implicit decl: virtual ~Q6()
+        ^
+
+"Test_name.c", line 24: error: exception specification for implicitly declared virtual function "Q7::~Q7" is incompatible with that of overridden function "C::~C"
+  class Q7 : public A, public C { };  // implicit decl: virtual ~Q7() throw(X)
+        ^
+
+"Test_name.c", line 25: error: exception specification for implicitly declared virtual function "Q8::~Q8" is incompatible with that of overridden function "C::~C"
+  class Q8 : public C, public D { };  // implicit decl: virtual ~Q8()
+        ^
+
+"Test_name.c", line 26: error: exception specification for implicitly declared virtual function "Q9::~Q9" is incompatible with that of overridden function "A::~A"
+  class Q9 : public A {
+        ^
+
+"Test_name.c", line 32: error: exception specification for implicitly declared virtual function "Q11::~Q11" is incompatible with that of overridden function "A::~A"
+  class Q11 : public A {
+        ^
+
+"Test_name.c", line 38: error: exception specification for implicitly declared virtual function "Q13::~Q13" is incompatible with that of overridden function "B::~B"
+  class Q13 : public B {
+        ^
+
+7 errors detected in the compilation of "Test_name.c".

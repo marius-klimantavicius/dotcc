@@ -1,0 +1,125 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 10: warning: unrecognized #pragma
+  #pragma omp declare target to (bar, baz, v)
+          ^
+
+"Test_name.c", line 19: warning: unrecognized #pragma
+    #pragma omp target
+            ^
+
+"Test_name.c", line 21: warning: unrecognized #pragma
+    #pragma omp target
+            ^
+
+"Test_name.c", line 22: warning: unrecognized #pragma
+    #pragma omp teams
+            ^
+
+"Test_name.c", line 24: warning: unrecognized #pragma
+    #pragma omp target teams
+            ^
+
+"Test_name.c", line 26: warning: unrecognized #pragma
+    #pragma omp target
+            ^
+
+"Test_name.c", line 27: warning: unrecognized #pragma
+    #pragma omp teams num_teams (4)
+            ^
+
+"Test_name.c", line 29: warning: unrecognized #pragma
+    #pragma omp target teams num_teams (4)
+            ^
+
+"Test_name.c", line 31: warning: unrecognized #pragma
+    #pragma omp target
+            ^
+
+"Test_name.c", line 32: warning: unrecognized #pragma
+    #pragma omp teams thread_limit (7)
+            ^
+
+"Test_name.c", line 34: warning: unrecognized #pragma
+    #pragma omp target teams thread_limit (7)
+            ^
+
+"Test_name.c", line 36: warning: unrecognized #pragma
+    #pragma omp target
+            ^
+
+"Test_name.c", line 37: warning: unrecognized #pragma
+    #pragma omp teams num_teams (4) thread_limit (8)
+            ^
+
+"Test_name.c", line 43: warning: unrecognized #pragma
+    #pragma omp target teams num_teams (4) thread_limit (8)
+            ^
+
+"Test_name.c", line 45: warning: unrecognized #pragma
+    #pragma omp target
+            ^
+
+"Test_name.c", line 46: warning: unrecognized #pragma
+    #pragma omp teams num_teams (a) thread_limit (b)
+            ^
+
+"Test_name.c", line 48: warning: unrecognized #pragma
+    #pragma omp target teams num_teams (a) thread_limit (b)
+            ^
+
+"Test_name.c", line 50: warning: unrecognized #pragma
+    #pragma omp target
+            ^
+
+"Test_name.c", line 51: warning: unrecognized #pragma
+    #pragma omp teams num_teams (c + 1) thread_limit (d - 1)
+            ^
+
+"Test_name.c", line 53: warning: unrecognized #pragma
+    #pragma omp target teams num_teams (c + 1) thread_limit (d - 1)
+            ^
+
+"Test_name.c", line 55: warning: unrecognized #pragma
+    #pragma omp target map (always, to: c, d)
+            ^
+
+"Test_name.c", line 56: warning: unrecognized #pragma
+    #pragma omp teams num_teams (c + 1) thread_limit (d - 1)
+            ^
+
+"Test_name.c", line 58: warning: unrecognized #pragma
+    #pragma omp target data map (to: c, d)
+            ^
+
+"Test_name.c", line 60: warning: unrecognized #pragma
+      #pragma omp target defaultmap (tofrom: scalar)
+              ^
+
+"Test_name.c", line 65: warning: unrecognized #pragma
+      #pragma omp target map (to: c, d)
+              ^
+
+"Test_name.c", line 66: warning: unrecognized #pragma
+      #pragma omp teams num_teams (c + 1) thread_limit (d - 1)
+              ^
+
+"Test_name.c", line 71: warning: unrecognized #pragma
+    #pragma omp target
+            ^
+
+"Test_name.c", line 72: warning: unrecognized #pragma
+    #pragma omp teams num_teams (baz () + 1) thread_limit (baz () - 1)
+            ^
+
+"Test_name.c", line 74: warning: unrecognized #pragma
+    #pragma omp target teams num_teams (baz () + 1) thread_limit (baz () - 1)
+            ^
+
+"Test_name.c", line 78: warning: unrecognized #pragma
+    #pragma omp target
+            ^
+
+"Test_name.c", line 79: warning: unrecognized #pragma
+    #pragma omp teams num_teams (v + 1) thread_limit (v - 1)
+            ^
+

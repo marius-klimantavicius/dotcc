@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 12: warning: unrecognized #pragma
+  #pragma omp target map(arr1[arr2[4:5]:arr2[6:7]])
+          ^
+
+"Test_name.c", line 15: warning: unrecognized #pragma
+  #pragma omp target map(arr1[arr2[:1]:arr2[6:1]])
+          ^
+
+"Test_name.c", line 18: warning: unrecognized #pragma
+  #pragma omp target map(arr1[x:arr2[6:1]])
+          ^
+
+"Test_name.c", line 27: warning: unrecognized #pragma
+  #pragma omp target map(arr1[arr2[4:5]:arr2[6:7]])
+          ^
+
+"Test_name.c", line 30: warning: unrecognized #pragma
+  #pragma omp target map(arr1[arr2[:1]:arr2[6:1]])
+          ^
+
+"Test_name.c", line 33: warning: unrecognized #pragma
+  #pragma omp target map(arr1[x:arr2[6:1]])
+          ^
+
+"Test_name.c", line 25: warning: variable "arr1" was declared but never referenced
+    int arr1[40];
+        ^
+
+"Test_name.c", line 26: warning: variable "arr2" was declared but never referenced
+    int arr2[40];
+        ^
+

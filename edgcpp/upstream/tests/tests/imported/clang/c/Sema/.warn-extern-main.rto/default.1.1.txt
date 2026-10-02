@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -DTEST1 -DTEST2 -DTEST3 -DTEST4 -DTEST5 -DTEST6 -DTEST7 -DTEST8 -DTEST9 --c Test_name.c
+"Test_name.c", line 14: warning: "main" cannot be used as a global variable name or given C language linkage
+  int main; // expected-warning{{variable named 'main' with external linkage has undefined behavior}}
+      ^
+

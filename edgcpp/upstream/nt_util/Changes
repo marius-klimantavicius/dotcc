@@ -1,0 +1,161 @@
+Version 7.0, September 28, 2026
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 6.9, July 20, 2026
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 6.8, November 21, 2025
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 6.7, January 29, 2025
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 6.6, December 18, 2023
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 6.5, June 21, 2023
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 6.4, October 25, 2022
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 6.3, December 13, 2021
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 6.2, February 10, 2021
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 6.1, July 24, 2020
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 6.0, December 5, 2019
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 5.1, July 12, 2019
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 5.0, August 10, 2018
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 4.14, September 12, 2017
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 4.13, February 22, 2017
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 4.12, October 5, 2016
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 4.11, May 12, 2016
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 4.10.1, June 23, 2015
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 4.10, December 23, 2014
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 4.9, April 17, 2014
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 4.8, October 18, 2013
+
+7/19/13  [EDGcpfe/10662]
+C++11 const-correctness
+
+C++11 removed the previously-deprecated implicit conversion from a narrow
+string literal to char*.  In order to permit their compilation as C++11
+code, edgcc.c and pl_nm.c have been changed to use the new a_const_char
+typedef that has been added to basics.h (see the EDGcpfe/10662 entry in
+the src/Changes file for a more detailed discussion).
+
+
+7/19/13  Fix warnings in edgcc.c compilation with EDG front end
+
+A number of warnings were issued when edgcc.c was compiled with our front
+end (some of which only occurred on non-Windows system, which is really
+only intended for testing purposes).  Now fixed.
+
+------------------------------------------------------------------------------
+Version 4.2
+
+8/25/10  Handle object files with large numbers of symbols in pl_nm
+
+The pl_nm command is invoked by edg_prelink to display symbols from
+object files in a format acceptable to the prelinker.  pl_nm did not
+work properly for certain object files with a very large number of
+symbols.  Now fixed.
+
+------------------------------------------------------------------------------
+Version 4.0
+
+12/8/08  Avoid linker warnings on default libraries
+
+When EDG_MSCV_VERSION is >= 1300 the /NODEFAULTLIB:LIBC option is now
+passed to the linker to suppress warnings that can occur when edgcc is used
+on a different version of Windows from the one on which it was built.
+
+12/8/08  Use /Fe option instead of -o to name executable
+
+The -o option has been deprecated by Microsoft, so edgcc now uses the /Fe
+option is used instead.
+
+------------------------------------------------------------------------------
+Version 3.1
+
+6/12/02  Add EDG_PRELINK_DEFAULT_OPTIONS
+
+The environment variable EDG_PRELINK_DEFAULT_OPTIONS may now be used to
+specify options to be used when invoking the prelinker.
+
+5/23/02  Support for Microsoft C version 7
+
+edgcc has been updated to work with the version 7 tools.  The version
+7 linker no longer includes symbol information in the .exe file, so
+edg_munch cannot be used.  An improved static initialization mechanism
+is now used the eliminates the need for edg_munch.
+
+edg_munch is still needed when targeting older versions of the Microsoft
+compiler.  A new environment variable named EDG_MSVC_VERSION can be
+used to specify that an older version is being used.  It should be
+set to 1200 if MSVC version 6 is being used.

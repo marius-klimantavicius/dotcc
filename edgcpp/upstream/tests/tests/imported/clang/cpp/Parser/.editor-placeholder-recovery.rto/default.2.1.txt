@@ -1,0 +1,278 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 -DSUPPRESS Test_name.c
+"Test_name.c", line 11: error: expected either a definition or a tag name
+  struct <#struct name#> {
+         ^
+
+"Test_name.c", line 11: error: "#" not expected here
+  struct <#struct name#> {
+          ^
+
+"Test_name.c", line 11: error: "#" not expected here
+  struct <#struct name#> {
+                      ^
+
+"Test_name.c", line 12: error: expected an identifier
+    int <#field-name#>;
+        ^
+
+"Test_name.c", line 12: error: "#" not expected here
+    int <#field-name#>;
+         ^
+
+"Test_name.c", line 12: error: "#" not expected here
+    int <#field-name#>;
+                    ^
+
+"Test_name.c", line 19: error: expected an identifier
+  typename <#typename#>::<#name#>;
+           ^
+
+"Test_name.c", line 19: error: "#" not expected here
+  typename <#typename#>::<#name#>;
+            ^
+
+"Test_name.c", line 19: error: "#" not expected here
+  typename <#typename#>::<#name#>;
+                     ^
+
+"Test_name.c", line 19: error: "#" not expected here
+  typename <#typename#>::<#name#>;
+                          ^
+
+"Test_name.c", line 19: error: "#" not expected here
+  typename <#typename#>::<#name#>;
+                               ^
+
+"Test_name.c", line 19: warning: declaration does not declare anything
+  typename <#typename#>::<#name#>;
+  ^
+
+"Test_name.c", line 20: error: expected an expression
+  decltype(<#expression#>) foobar;
+           ^
+
+"Test_name.c", line 20: error: "#" not expected here
+  decltype(<#expression#>) foobar;
+            ^
+
+"Test_name.c", line 20: error: "#" not expected here
+  decltype(<#expression#>) foobar;
+                       ^
+
+"Test_name.c", line 21: error: expected an identifier
+  typedef <#type#> <#name#>;
+          ^
+
+"Test_name.c", line 21: error: "#" not expected here
+  typedef <#type#> <#name#>;
+           ^
+
+"Test_name.c", line 21: error: "#" not expected here
+  typedef <#type#> <#name#>;
+                ^
+
+"Test_name.c", line 21: error: "#" not expected here
+  typedef <#type#> <#name#>;
+                    ^
+
+"Test_name.c", line 21: error: "#" not expected here
+  typedef <#type#> <#name#>;
+                         ^
+
+"Test_name.c", line 28: error: expected an identifier
+  namespace <#identifier#> {
+            ^
+
+"Test_name.c", line 28: error: "#" not expected here
+  namespace <#identifier#> {
+             ^
+
+"Test_name.c", line 28: error: "#" not expected here
+  namespace <#identifier#> {
+                        ^
+
+"Test_name.c", line 28: error: expected a "{"
+  namespace <#identifier#> {
+                        ^
+
+"Test_name.c", line 29: error: expected a declaration
+    <#declarations#>
+    ^
+
+"Test_name.c", line 29: error: "#" not expected here
+    <#declarations#>
+     ^
+
+"Test_name.c", line 29: error: "#" not expected here
+    <#declarations#>
+                  ^
+
+"Test_name.c", line 35: warning: parsing restarts here after previous syntax error
+  }
+  ^
+
+"Test_name.c", line 37: error: expected an identifier
+  using <#qualifier#>::<#name#>;
+        ^
+
+"Test_name.c", line 37: error: "#" not expected here
+  using <#qualifier#>::<#name#>;
+         ^
+
+"Test_name.c", line 37: error: "#" not expected here
+  using <#qualifier#>::<#name#>;
+                   ^
+
+"Test_name.c", line 37: error: "#" not expected here
+  using <#qualifier#>::<#name#>;
+                        ^
+
+"Test_name.c", line 37: error: "#" not expected here
+  using <#qualifier#>::<#name#>;
+                             ^
+
+"Test_name.c", line 43: error: expected a type specifier
+      static_cast< <#type#> >(<#expression#>);
+                   ^
+
+"Test_name.c", line 43: error: "#" not expected here
+      static_cast< <#type#> >(<#expression#>);
+                    ^
+
+"Test_name.c", line 43: error: "#" not expected here
+      static_cast< <#type#> >(<#expression#>);
+                         ^
+
+"Test_name.c", line 43: error: expected a "("
+      static_cast< <#type#> >(<#expression#>);
+                            ^
+
+"Test_name.c", line 43: error: expected an expression
+      static_cast< <#type#> >(<#expression#>);
+                              ^
+
+"Test_name.c", line 43: error: "#" not expected here
+      static_cast< <#type#> >(<#expression#>);
+                               ^
+
+"Test_name.c", line 43: error: "#" not expected here
+      static_cast< <#type#> >(<#expression#>);
+                                          ^
+
+"Test_name.c", line 44: error: expected an expression
+      while (<#condition#>) {
+             ^
+
+"Test_name.c", line 44: error: "#" not expected here
+      while (<#condition#>) {
+              ^
+
+"Test_name.c", line 44: error: "#" not expected here
+      while (<#condition#>) {
+                        ^
+
+"Test_name.c", line 45: error: expected an expression
+          <#statements#>
+          ^
+
+"Test_name.c", line 45: error: "#" not expected here
+          <#statements#>
+           ^
+
+"Test_name.c", line 45: error: "#" not expected here
+          <#statements#>
+                      ^
+
+"Test_name.c", line 46: error: expected a ";"
+      }
+      ^
+
+"Test_name.c", line 47: error: expected an expression
+      obj.method(<#Struct &x#>);
+                 ^
+
+"Test_name.c", line 47: error: "#" not expected here
+      obj.method(<#Struct &x#>);
+                  ^
+
+"Test_name.c", line 47: error: "#" not expected here
+      obj.method(<#Struct &x#>);
+                            ^
+
+"Test_name.c", line 54: error: expected an expression
+      switch (<#expression#>) {
+              ^
+
+"Test_name.c", line 54: error: "#" not expected here
+      switch (<#expression#>) {
+               ^
+
+"Test_name.c", line 54: error: "#" not expected here
+      switch (<#expression#>) {
+                          ^
+
+"Test_name.c", line 55: error: expected an expression
+          case <#constant#>:
+               ^
+
+"Test_name.c", line 55: error: "#" not expected here
+          case <#constant#>:
+                ^
+
+"Test_name.c", line 55: error: "#" not expected here
+          case <#constant#>:
+                         ^
+
+"Test_name.c", line 56: error: expected an expression
+              <#statements#>
+              ^
+
+"Test_name.c", line 56: error: "#" not expected here
+              <#statements#>
+               ^
+
+"Test_name.c", line 56: error: "#" not expected here
+              <#statements#>
+                          ^
+
+"Test_name.c", line 62: warning: parsing restarts here after previous syntax error
+              break;
+                   ^
+
+"Test_name.c", line 69: error: expected a type specifier
+  void Struct::method(<#Struct &x#>, noSupressionHere) { // expected-error {{unknown type name 'noSupressionHere'}}
+                      ^
+
+"Test_name.c", line 69: error: "#" not expected here
+  void Struct::method(<#Struct &x#>, noSupressionHere) { // expected-error {{unknown type name 'noSupressionHere'}}
+                       ^
+
+"Test_name.c", line 69: error: "#" not expected here
+  void Struct::method(<#Struct &x#>, noSupressionHere) { // expected-error {{unknown type name 'noSupressionHere'}}
+                                 ^
+
+"Test_name.c", line 69: error: identifier "noSupressionHere" is undefined
+  void Struct::method(<#Struct &x#>, noSupressionHere) { // expected-error {{unknown type name 'noSupressionHere'}}
+                                     ^
+
+"Test_name.c", line 69: error: declaration is incompatible with "void Struct::method(Struct &)" (declared at line 8)
+  void Struct::method(<#Struct &x#>, noSupressionHere) { // expected-error {{unknown type name 'noSupressionHere'}}
+               ^
+
+"Test_name.c", line 76: warning: support for trigraphs is disabled
+    <??=placeholder#> // expected-error {{expected expression}} expected-error {{expected expression}} expected-warning {{trigraph converted to '#' character}}
+     ^
+
+"Test_name.c", line 76: error: expected an expression
+    <??=placeholder#> // expected-error {{expected expression}} expected-error {{expected expression}} expected-warning {{trigraph converted to '#' character}}
+    ^
+
+"Test_name.c", line 76: error: "#" not expected here
+    <??=placeholder#> // expected-error {{expected expression}} expected-error {{expected expression}} expected-warning {{trigraph converted to '#' character}}
+                   ^
+
+"Test_name.c", line 77: error: expected a ";"
+  }
+  ^
+
+65 errors detected in the compilation of "Test_name.c".

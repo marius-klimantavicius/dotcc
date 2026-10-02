@@ -1,0 +1,138 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 30: error: cannot bind to non-public member "NonPublicMembers::NonPublic1::a"
+      auto [a1] = NonPublic1(); // expected-error {{cannot bind protected member 'a' of 'NonPublicMembers::NonPublic1'}}
+            ^
+
+"Test_name.c", line 31: error: cannot bind to non-public member "NonPublicMembers::NonPublic2::a"
+      auto [a2] = NonPublic2(); // expected-error {{cannot bind private member 'a' of 'NonPublicMembers::NonPublic2'}}
+            ^
+
+"Test_name.c", line 32: error: conversion to inaccessible base class "A" is not allowed
+      auto [a3] = NonPublic3(); // expected-error {{cannot bind members of inaccessible base class 'A' of 'NonPublicMembers::NonPublic3'}}
+                              ^
+
+"Test_name.c", line 33: error: cannot bind to non-public member "NonPublicMembers::NonPublic2::a"
+      auto [a4] = NonPublic4(); // expected-error {{cannot bind private member 'a' of 'NonPublicMembers::NonPublic2'}}
+            ^
+
+"Test_name.c", line 30: warning: structured binding "a1" was declared but never referenced
+      auto [a1] = NonPublic1(); // expected-error {{cannot bind protected member 'a' of 'NonPublicMembers::NonPublic1'}}
+            ^
+
+"Test_name.c", line 31: warning: structured binding "a2" was declared but never referenced
+      auto [a2] = NonPublic2(); // expected-error {{cannot bind private member 'a' of 'NonPublicMembers::NonPublic2'}}
+            ^
+
+"Test_name.c", line 32: warning: structured binding "a3" was declared but never referenced
+      auto [a3] = NonPublic3(); // expected-error {{cannot bind members of inaccessible base class 'A' of 'NonPublicMembers::NonPublic3'}}
+            ^
+
+"Test_name.c", line 33: warning: structured binding "a4" was declared but never referenced
+      auto [a4] = NonPublic4(); // expected-error {{cannot bind private member 'a' of 'NonPublicMembers::NonPublic2'}}
+            ^
+
+"Test_name.c", line 51: error: type "AnonymousMember::Struct" has no components to bind to
+      auto [a1] = Struct(); // expected-error {{cannot bind class type 'Struct' because it has an anonymous struct member}}
+           ^
+
+"Test_name.c", line 52: error: type "AnonymousMember::Union" has no components to bind to
+      auto [a2] = Union(); // expected-error {{cannot bind class type 'Union' because it has an anonymous union member}}
+           ^
+
+"Test_name.c", line 78: error: type "MultipleClasses::B" has no components to bind to
+      auto [b] = B(); // expected-error {{cannot bind class type 'B': both it and its base class 'A' have non-static data members}}
+           ^
+
+"Test_name.c", line 79: error: type "MultipleClasses::D" has no components to bind to
+      auto [d] = D(); // expected-error {{cannot bind class type 'D': its base classes 'A' and 'C' have non-static data members}}
+           ^
+
+"Test_name.c", line 81: error: type "MultipleClasses::F" has no components to bind to
+      auto [f] = F(); // expected-error-re {{cannot bind members of ambiguous base class 'A' of 'F':{{.*}}struct MultipleClasses::F -> A{{.*}}struct MultipleClasses::F -> E -> A}}
+           ^
+
+"Test_name.c", line 83: error: type "MultipleClasses::K" has no components to bind to
+      auto [k] = K(); // expected-error {{cannot bind members of ambiguous base class 'I'}}
+           ^
+
+"Test_name.c", line 80: warning: structured binding "e" was declared but never referenced
+      auto [e] = E();
+            ^
+
+"Test_name.c", line 82: warning: structured binding "h" was declared but never referenced
+      auto [h] = H(); // ok, only one (virtual) base subobject even though there are two paths to it
+            ^
+
+"Test_name.c", line 84: warning: structured binding "m" was set but never used
+      auto [m] = M(); // ok, all paths to I are through the same virtual base subobject J
+            ^
+
+"Test_name.c", line 154: warning: structured binding "i" was set but never used
+      auto [i] = B();
+            ^
+
+"Test_name.c", line 155: warning: structured binding "ci" was set but never used
+      const auto [ci] = B();
+                  ^
+
+"Test_name.c", line 156: warning: structured binding "vi" was set but never used
+      volatile auto [vi] = B();
+                     ^
+
+"Test_name.c", line 167: error: taking the address of a bit field is not allowed
+      unsigned long long &ra = a; // expected-error {{bit-field 'x'}}
+                               ^
+
+"Test_name.c", line 168: error: taking the address of a bit field is not allowed
+      unsigned long long &rb = b; // expected-error {{bit-field 'y'}}
+                               ^
+
+"Test_name.c", line 211: warning: structured binding "x" was declared but never referenced
+        auto &[x, y] = *this;
+               ^
+
+"Test_name.c", line 216: warning: structured binding "x" was declared but never referenced
+      auto &[x, y] = b;
+             ^
+
+"Test_name.c", line 219: error: conversion to inaccessible base class "p0969r0::A" is not allowed
+      auto &[x, y] = b; // expected-error {{cannot bind members of inaccessible base class 'A' of 'p0969r0::B'}}
+                      ^
+
+"Test_name.c", line 219: error: conversion to inaccessible base class "p0969r0::A" is not allowed
+      auto &[x, y] = b; // expected-error {{cannot bind members of inaccessible base class 'A' of 'p0969r0::B'}}
+                      ^
+
+"Test_name.c", line 219: warning: structured binding "x" was declared but never referenced
+      auto &[x, y] = b; // expected-error {{cannot bind members of inaccessible base class 'A' of 'p0969r0::B'}}
+             ^
+
+"Test_name.c", line 227: warning: structured binding "x" was declared but never referenced
+        auto &[x, y] = *this;
+               ^
+
+"Test_name.c", line 234: error: protected member "p0969r0::C::y" (declared at line 225) is not accessible through a "p0969r0::C" pointer or object
+        auto &[x2, y2] = c; // expected-error {{cannot bind protected member 'y' of 'p0969r0::C'}}
+                          ^
+
+"Test_name.c", line 233: warning: structured binding "x1" was declared but never referenced
+        auto &[x1, y1] = d;
+               ^
+
+"Test_name.c", line 234: warning: structured binding "x2" was declared but never referenced
+        auto &[x2, y2] = c; // expected-error {{cannot bind protected member 'y' of 'p0969r0::C'}}
+               ^
+
+"Test_name.c", line 238: warning: structured binding "x" was declared but never referenced
+      auto &[x, y] = d;
+             ^
+
+"Test_name.c", line 241: error: cannot bind to non-public member "p0969r0::C::y"
+      auto &[x, y] = d; // expected-error {{cannot bind protected member 'y' of 'p0969r0::C'}}
+                ^
+
+"Test_name.c", line 241: warning: structured binding "x" was declared but never referenced
+      auto &[x, y] = d; // expected-error {{cannot bind protected member 'y' of 'p0969r0::C'}}
+             ^
+
+16 errors detected in the compilation of "Test_name.c".

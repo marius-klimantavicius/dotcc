@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp0x/variadic-tuple2.C", line 9: warning: expression has no effect
+          : std::is_same<fast_and<b...>, fast_and<(b, true)...>>
+                                                   ^
+          detected during instantiation of class "detail::fast_and<b...> [with b=<true>]" at line 29
+
+"./cpp0x/variadic-tuple2.C", line 9: warning: expression has no effect
+          : std::is_same<fast_and<b...>, fast_and<(b, true)...>>
+                                                   ^
+          detected during instantiation of class "detail::fast_and<b...> [with b=<false>]" at line 29
+

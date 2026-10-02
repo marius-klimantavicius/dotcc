@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./ext/dll-MI1.h", line 13: warning: unknown attribute "dllexport"
+  class __attribute__ ((dllexport)) MBase
+                        ^
+
+"./ext/dll-MI1.h", line 20: warning: unknown attribute "dllexport"
+  class __attribute__ ((dllexport)) D1 : virtual public MBase
+                        ^
+
+"./ext/dll-MI1.h", line 26: warning: unknown attribute "dllexport"
+  class __attribute__ ((dllexport)) D2 : virtual public MBase
+                        ^
+
+"./ext/dll-MI1.h", line 34: warning: unknown attribute "dllexport"
+  class __attribute__ ((dllexport)) MI1 : public D1, public D2
+                        ^
+
+"./ext/dllexport-MI1.C", line 23: warning: unknown attribute "dllexport"
+  __attribute__ ((dllexport)) MI1 dllMI1;
+                  ^
+
+"./ext/dllexport-MI1.C", line 26: warning: unknown attribute "dllexport"
+  __attribute__ ((dllexport)) MI1 dllMI1Copy = dllMI1;
+                  ^
+

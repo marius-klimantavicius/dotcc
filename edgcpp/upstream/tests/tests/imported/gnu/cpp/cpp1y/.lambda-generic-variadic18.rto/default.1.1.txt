@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 7: error: a lambda parameter cannot hide an explicit capture
+    auto lambda2 = [x=x](int x) {}; // { dg-error "previously declared as a capture" }
+                             ^
+
+"Test_name.c", line 8: error: a lambda parameter cannot hide an explicit capture
+    auto lambda3 = [x](auto... x) {}; // { dg-error "previously declared as a capture" }
+                               ^
+
+"Test_name.c", line 10: error: a lambda parameter cannot hide an explicit capture
+      auto lambda5 = [x...](auto... x) {};  // { dg-error "previously declared as a capture" }
+                                    ^
+
+"Test_name.c", line 11: error: a lambda parameter cannot hide an explicit capture
+      auto lambda6 = [x...](int x) {};  // { dg-error "previously declared as a capture" }
+                                ^
+
+"Test_name.c", line 7: warning: variable "lambda2" was declared but never referenced
+    auto lambda2 = [x=x](int x) {}; // { dg-error "previously declared as a capture" }
+         ^
+
+"Test_name.c", line 8: warning: variable "lambda3" was declared but never referenced
+    auto lambda3 = [x](auto... x) {}; // { dg-error "previously declared as a capture" }
+         ^
+
+"Test_name.c", line 9: warning: variable "lambda4" was declared but never referenced
+    auto lambda4 = [](auto... x) {
+         ^
+
+4 errors detected in the compilation of "Test_name.c".

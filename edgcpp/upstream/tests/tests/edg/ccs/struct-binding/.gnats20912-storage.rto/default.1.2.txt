@@ -1,0 +1,3 @@
+./a.out
+sa=1, sb=2, sc=3
+sa=4, sb=8, sc=12

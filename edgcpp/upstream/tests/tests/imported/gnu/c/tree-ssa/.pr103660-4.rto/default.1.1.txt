@@ -1,0 +1,142 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 34: warning: explicit type is missing ("int" assumed)
+  funcs(|, ior)
+  ^
+
+"Test_name.c", line 34: error: expected a "{"
+  funcs(|, ior)
+  ^
+
+"Test_name.c", line 34: error: identifier "a" is undefined
+  funcs(|, ior)
+  ^
+
+"Test_name.c", line 34: error: identifier "b" is undefined
+  funcs(|, ior)
+  ^
+
+"Test_name.c", line 34: warning: explicit type is missing ("int" assumed)
+  funcs(|, ior)
+  ^
+
+"Test_name.c", line 34: error: function "__GIMPLE" has already been defined (previous definition at line 34)
+  funcs(|, ior)
+  ^
+
+"Test_name.c", line 34: error: expected a "{"
+  funcs(|, ior)
+  ^
+
+"Test_name.c", line 34: error: identifier "a" is undefined
+  funcs(|, ior)
+  ^
+
+"Test_name.c", line 34: error: identifier "b" is undefined
+  funcs(|, ior)
+  ^
+
+"Test_name.c", line 34: error: identifier "c" is undefined
+  funcs(|, ior)
+  ^
+
+"Test_name.c", line 34: error: identifier "d" is undefined
+  funcs(|, ior)
+  ^
+
+"Test_name.c", line 35: warning: explicit type is missing ("int" assumed)
+  funcs(^, xor)
+  ^
+
+"Test_name.c", line 35: error: function "__GIMPLE" has already been defined (previous definition at line 34)
+  funcs(^, xor)
+  ^
+
+"Test_name.c", line 35: error: expected a "{"
+  funcs(^, xor)
+  ^
+
+"Test_name.c", line 35: error: identifier "a" is undefined
+  funcs(^, xor)
+  ^
+
+"Test_name.c", line 35: error: identifier "b" is undefined
+  funcs(^, xor)
+  ^
+
+"Test_name.c", line 35: warning: explicit type is missing ("int" assumed)
+  funcs(^, xor)
+  ^
+
+"Test_name.c", line 35: error: function "__GIMPLE" has already been defined (previous definition at line 34)
+  funcs(^, xor)
+  ^
+
+"Test_name.c", line 35: error: expected a "{"
+  funcs(^, xor)
+  ^
+
+"Test_name.c", line 35: error: identifier "a" is undefined
+  funcs(^, xor)
+  ^
+
+"Test_name.c", line 35: error: identifier "b" is undefined
+  funcs(^, xor)
+  ^
+
+"Test_name.c", line 35: error: identifier "c" is undefined
+  funcs(^, xor)
+  ^
+
+"Test_name.c", line 35: error: identifier "d" is undefined
+  funcs(^, xor)
+  ^
+
+"Test_name.c", line 36: warning: explicit type is missing ("int" assumed)
+  funcs(+, plus)
+  ^
+
+"Test_name.c", line 36: error: function "__GIMPLE" has already been defined (previous definition at line 34)
+  funcs(+, plus)
+  ^
+
+"Test_name.c", line 36: error: expected a "{"
+  funcs(+, plus)
+  ^
+
+"Test_name.c", line 36: error: identifier "a" is undefined
+  funcs(+, plus)
+  ^
+
+"Test_name.c", line 36: error: identifier "b" is undefined
+  funcs(+, plus)
+  ^
+
+"Test_name.c", line 36: warning: explicit type is missing ("int" assumed)
+  funcs(+, plus)
+  ^
+
+"Test_name.c", line 36: error: function "__GIMPLE" has already been defined (previous definition at line 34)
+  funcs(+, plus)
+  ^
+
+"Test_name.c", line 36: error: expected a "{"
+  funcs(+, plus)
+  ^
+
+"Test_name.c", line 36: error: identifier "a" is undefined
+  funcs(+, plus)
+  ^
+
+"Test_name.c", line 36: error: identifier "b" is undefined
+  funcs(+, plus)
+  ^
+
+"Test_name.c", line 36: error: identifier "c" is undefined
+  funcs(+, plus)
+  ^
+
+"Test_name.c", line 36: error: identifier "d" is undefined
+  funcs(+, plus)
+  ^
+
+29 errors detected in the compilation of "Test_name.c".

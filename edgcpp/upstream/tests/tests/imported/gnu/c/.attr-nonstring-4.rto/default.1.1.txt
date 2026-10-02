@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./attr-nonstring-4.c", line 40: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a40[]; sink (strnlen (a40, n)); } while (0);
+                                ^
+
+"./attr-nonstring-4.c", line 41: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a41[]; sink (strnlen (a41, n + 1)); } while (0);
+                                ^
+
+"./attr-nonstring-4.c", line 43: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a43[9]; sink (strnlen (a43, n)); } while (0);
+                                ^
+
+"./attr-nonstring-4.c", line 44: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a44[10]; sink (strnlen (a44, n + 1)); } while (0);
+                                ^
+
+"./attr-nonstring-4.c", line 59: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a59[]; sink (strnlen (a59, n)); } while (0);
+                                ^
+
+"./attr-nonstring-4.c", line 60: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a60[]; sink (strnlen (a60, n + 1)); } while (0);
+                                ^
+
+"./attr-nonstring-4.c", line 62: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a62[9]; sink (strnlen (a62, n)); } while (0);
+                                ^
+
+"./attr-nonstring-4.c", line 63: warning: unknown attribute "nonstring"
+    do { extern __attribute__ ((nonstring)) char a63[10]; sink (strnlen (a63, n + 1)); } while (0);
+                                ^
+

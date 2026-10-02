@@ -1,0 +1,938 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"./fixed-point/define.c", line 10: error: expected a ";"
+             sf = 
+             ^
+
+"./fixed-point/define.c", line 10: warning: parsing restarts here after previous syntax error
+                            ;
+                            ^
+
+"./fixed-point/define.c", line 11: error: variable "_Fract" is not a type name
+  _Fract 
+  ^
+
+"./fixed-point/define.c", line 11: error: identifier "__FRACT_MAX__" is undefined
+           __FRACT_MAX__
+           ^
+
+"./fixed-point/define.c", line 12: error: declaration is incompatible with "short _Fract" (declared at line 10)
+      _Fract 
+      ^
+
+"./fixed-point/define.c", line 12: error: expected a ";"
+            lf = 
+            ^
+
+"./fixed-point/define.c", line 12: warning: parsing restarts here after previous syntax error
+                           ;
+                           ^
+
+"./fixed-point/define.c", line 13: error: declaration is incompatible with "short _Fract" (declared at line 12)
+           _Fract 
+           ^
+
+"./fixed-point/define.c", line 13: error: expected a ";"
+                 llf = 
+                 ^
+
+"./fixed-point/define.c", line 13: warning: parsing restarts here after previous syntax error
+                                  ;
+                                  ^
+
+"./fixed-point/define.c", line 15: error: declaration is incompatible with "short _Fract" (declared at line 13)
+                _Fract 
+                ^
+
+"./fixed-point/define.c", line 15: error: expected a ";"
+                      usf = 
+                      ^
+
+"./fixed-point/define.c", line 15: warning: parsing restarts here after previous syntax error
+                                       ;
+                                       ^
+
+"./fixed-point/define.c", line 16: error: declaration is incompatible with "short _Fract" (declared at line 15)
+          _Fract 
+          ^
+
+"./fixed-point/define.c", line 16: error: expected a ";"
+                uf = 
+                ^
+
+"./fixed-point/define.c", line 16: warning: parsing restarts here after previous syntax error
+                               ;
+                               ^
+
+"./fixed-point/define.c", line 17: error: declaration is incompatible with "short _Fract" (declared at line 16)
+               _Fract 
+               ^
+
+"./fixed-point/define.c", line 17: error: expected a ";"
+                     ulf = 
+                     ^
+
+"./fixed-point/define.c", line 17: warning: parsing restarts here after previous syntax error
+                                      ;
+                                      ^
+
+"./fixed-point/define.c", line 18: error: declaration is incompatible with "short _Fract" (declared at line 17)
+                    _Fract 
+                    ^
+
+"./fixed-point/define.c", line 18: error: expected a ";"
+                          ullf = 
+                          ^
+
+"./fixed-point/define.c", line 18: warning: parsing restarts here after previous syntax error
+                                             ;
+                                             ^
+
+"./fixed-point/define.c", line 20: error: expected a ";"
+     short 
+     ^
+
+"./fixed-point/define.c", line 20: warning: parsing restarts here after previous syntax error
+                                 ;
+                                 ^
+
+"./fixed-point/define.c", line 21: error: variable "_Sat" is not a type name
+  _Sat _Fract 
+  ^
+
+"./fixed-point/define.c", line 21: error: expected a ";"
+           Sf = 
+           ^
+
+"./fixed-point/define.c", line 21: warning: parsing restarts here after previous syntax error
+                         ;
+                         ^
+
+"./fixed-point/define.c", line 22: error: expected a ";"
+     long 
+     ^
+
+"./fixed-point/define.c", line 22: warning: parsing restarts here after previous syntax error
+                                ;
+                                ^
+
+"./fixed-point/define.c", line 23: error: expected a ";"
+     long long 
+     ^
+
+"./fixed-point/define.c", line 23: warning: parsing restarts here after previous syntax error
+                                       ;
+                                       ^
+
+"./fixed-point/define.c", line 25: error: expected a ";"
+     unsigned short 
+     ^
+
+"./fixed-point/define.c", line 25: warning: parsing restarts here after previous syntax error
+                                            ;
+                                            ^
+
+"./fixed-point/define.c", line 26: error: expected a ";"
+     unsigned 
+     ^
+
+"./fixed-point/define.c", line 26: warning: parsing restarts here after previous syntax error
+                                    ;
+                                    ^
+
+"./fixed-point/define.c", line 27: error: expected a ";"
+     unsigned long 
+     ^
+
+"./fixed-point/define.c", line 27: warning: parsing restarts here after previous syntax error
+                                           ;
+                                           ^
+
+"./fixed-point/define.c", line 28: error: expected a ";"
+     unsigned long long 
+     ^
+
+"./fixed-point/define.c", line 28: warning: parsing restarts here after previous syntax error
+                                                  ;
+                                                  ^
+
+"./fixed-point/define.c", line 30: error: expected a ";"
+             sfm = 
+             ^
+
+"./fixed-point/define.c", line 30: warning: parsing restarts here after previous syntax error
+                             ;
+                             ^
+
+"./fixed-point/define.c", line 31: error: variable "_Fract" is not a type name
+  _Fract 
+  ^
+
+"./fixed-point/define.c", line 31: error: identifier "__FRACT_MIN__" is undefined
+            __FRACT_MIN__
+            ^
+
+"./fixed-point/define.c", line 32: error: expected a ";"
+            lfm = 
+            ^
+
+"./fixed-point/define.c", line 32: warning: parsing restarts here after previous syntax error
+                            ;
+                            ^
+
+"./fixed-point/define.c", line 33: error: expected a ";"
+                 llfm = 
+                 ^
+
+"./fixed-point/define.c", line 33: warning: parsing restarts here after previous syntax error
+                                   ;
+                                   ^
+
+"./fixed-point/define.c", line 35: error: expected a ";"
+                      usfm = 
+                      ^
+
+"./fixed-point/define.c", line 35: warning: parsing restarts here after previous syntax error
+                                        ;
+                                        ^
+
+"./fixed-point/define.c", line 36: error: expected a ";"
+                ufm = 
+                ^
+
+"./fixed-point/define.c", line 36: warning: parsing restarts here after previous syntax error
+                                ;
+                                ^
+
+"./fixed-point/define.c", line 37: error: expected a ";"
+                     ulfm = 
+                     ^
+
+"./fixed-point/define.c", line 37: warning: parsing restarts here after previous syntax error
+                                       ;
+                                       ^
+
+"./fixed-point/define.c", line 38: error: expected a ";"
+                          ullfm = 
+                          ^
+
+"./fixed-point/define.c", line 38: warning: parsing restarts here after previous syntax error
+                                              ;
+                                              ^
+
+"./fixed-point/define.c", line 40: error: expected a ";"
+     short 
+     ^
+
+"./fixed-point/define.c", line 40: warning: parsing restarts here after previous syntax error
+                                  ;
+                                  ^
+
+"./fixed-point/define.c", line 41: error: variable "_Sat" is not a type name
+  _Sat _Fract 
+  ^
+
+"./fixed-point/define.c", line 41: error: expected a ";"
+           Sfm = 
+           ^
+
+"./fixed-point/define.c", line 41: warning: parsing restarts here after previous syntax error
+                          ;
+                          ^
+
+"./fixed-point/define.c", line 42: error: expected a ";"
+     long 
+     ^
+
+"./fixed-point/define.c", line 42: warning: parsing restarts here after previous syntax error
+                                 ;
+                                 ^
+
+"./fixed-point/define.c", line 43: error: expected a ";"
+     long long 
+     ^
+
+"./fixed-point/define.c", line 43: warning: parsing restarts here after previous syntax error
+                                        ;
+                                        ^
+
+"./fixed-point/define.c", line 45: error: expected a ";"
+     unsigned short 
+     ^
+
+"./fixed-point/define.c", line 45: warning: parsing restarts here after previous syntax error
+                                             ;
+                                             ^
+
+"./fixed-point/define.c", line 46: error: expected a ";"
+     unsigned 
+     ^
+
+"./fixed-point/define.c", line 46: warning: parsing restarts here after previous syntax error
+                                     ;
+                                     ^
+
+"./fixed-point/define.c", line 47: error: expected a ";"
+     unsigned long 
+     ^
+
+"./fixed-point/define.c", line 47: warning: parsing restarts here after previous syntax error
+                                            ;
+                                            ^
+
+"./fixed-point/define.c", line 48: error: expected a ";"
+     unsigned long long 
+     ^
+
+"./fixed-point/define.c", line 48: warning: parsing restarts here after previous syntax error
+                                                   ;
+                                                   ^
+
+"./fixed-point/define.c", line 50: error: expected a ";"
+             sfE = 
+             ^
+
+"./fixed-point/define.c", line 50: warning: parsing restarts here after previous syntax error
+                                 ;
+                                 ^
+
+"./fixed-point/define.c", line 51: error: variable "_Fract" is not a type name
+  _Fract 
+  ^
+
+"./fixed-point/define.c", line 51: error: identifier "__FRACT_EPSILON__" is undefined
+            __FRACT_EPSILON__
+            ^
+
+"./fixed-point/define.c", line 52: error: expected a ";"
+            lfE = 
+            ^
+
+"./fixed-point/define.c", line 52: warning: parsing restarts here after previous syntax error
+                                ;
+                                ^
+
+"./fixed-point/define.c", line 53: error: expected a ";"
+                 llfE = 
+                 ^
+
+"./fixed-point/define.c", line 53: warning: parsing restarts here after previous syntax error
+                                       ;
+                                       ^
+
+"./fixed-point/define.c", line 55: error: expected a ";"
+                      usfE = 
+                      ^
+
+"./fixed-point/define.c", line 55: warning: parsing restarts here after previous syntax error
+                                            ;
+                                            ^
+
+"./fixed-point/define.c", line 56: error: expected a ";"
+                ufE = 
+                ^
+
+"./fixed-point/define.c", line 56: warning: parsing restarts here after previous syntax error
+                                    ;
+                                    ^
+
+"./fixed-point/define.c", line 57: error: expected a ";"
+                     ulfE = 
+                     ^
+
+"./fixed-point/define.c", line 57: warning: parsing restarts here after previous syntax error
+                                           ;
+                                           ^
+
+"./fixed-point/define.c", line 58: error: expected a ";"
+                          ullfE = 
+                          ^
+
+"./fixed-point/define.c", line 58: warning: parsing restarts here after previous syntax error
+                                                  ;
+                                                  ^
+
+"./fixed-point/define.c", line 60: error: expected a ";"
+     short 
+     ^
+
+"./fixed-point/define.c", line 60: warning: parsing restarts here after previous syntax error
+                                      ;
+                                      ^
+
+"./fixed-point/define.c", line 61: error: variable "_Sat" is not a type name
+  _Sat _Fract 
+  ^
+
+"./fixed-point/define.c", line 61: error: expected a ";"
+           SfE = 
+           ^
+
+"./fixed-point/define.c", line 61: warning: parsing restarts here after previous syntax error
+                              ;
+                              ^
+
+"./fixed-point/define.c", line 62: error: expected a ";"
+     long 
+     ^
+
+"./fixed-point/define.c", line 62: warning: parsing restarts here after previous syntax error
+                                     ;
+                                     ^
+
+"./fixed-point/define.c", line 63: error: expected a ";"
+     long long 
+     ^
+
+"./fixed-point/define.c", line 63: warning: parsing restarts here after previous syntax error
+                                            ;
+                                            ^
+
+"./fixed-point/define.c", line 65: error: expected a ";"
+     unsigned short 
+     ^
+
+"./fixed-point/define.c", line 65: warning: parsing restarts here after previous syntax error
+                                                 ;
+                                                 ^
+
+"./fixed-point/define.c", line 66: error: expected a ";"
+     unsigned 
+     ^
+
+"./fixed-point/define.c", line 66: warning: parsing restarts here after previous syntax error
+                                         ;
+                                         ^
+
+"./fixed-point/define.c", line 67: error: expected a ";"
+     unsigned long 
+     ^
+
+"./fixed-point/define.c", line 67: warning: parsing restarts here after previous syntax error
+                                                ;
+                                                ^
+
+"./fixed-point/define.c", line 68: error: expected a ";"
+     unsigned long long 
+     ^
+
+"./fixed-point/define.c", line 68: warning: parsing restarts here after previous syntax error
+                                                       ;
+                                                       ^
+
+"./fixed-point/define.c", line 70: error: expected a ";"
+             sk = 
+             ^
+
+"./fixed-point/define.c", line 70: warning: parsing restarts here after previous syntax error
+                            ;
+                            ^
+
+"./fixed-point/define.c", line 71: error: variable "_Accum" is not a type name
+  _Accum 
+  ^
+
+"./fixed-point/define.c", line 71: error: identifier "__ACCUM_MAX__" is undefined
+           __ACCUM_MAX__
+           ^
+
+"./fixed-point/define.c", line 72: error: declaration is incompatible with "short _Accum" (declared at line 70)
+      _Accum 
+      ^
+
+"./fixed-point/define.c", line 72: error: expected a ";"
+            lk = 
+            ^
+
+"./fixed-point/define.c", line 72: warning: parsing restarts here after previous syntax error
+                           ;
+                           ^
+
+"./fixed-point/define.c", line 73: error: declaration is incompatible with "short _Accum" (declared at line 72)
+           _Accum 
+           ^
+
+"./fixed-point/define.c", line 73: error: expected a ";"
+                 llk = 
+                 ^
+
+"./fixed-point/define.c", line 73: warning: parsing restarts here after previous syntax error
+                                  ;
+                                  ^
+
+"./fixed-point/define.c", line 75: error: declaration is incompatible with "short _Accum" (declared at line 73)
+                _Accum 
+                ^
+
+"./fixed-point/define.c", line 75: error: expected a ";"
+                      usk = 
+                      ^
+
+"./fixed-point/define.c", line 75: warning: parsing restarts here after previous syntax error
+                                       ;
+                                       ^
+
+"./fixed-point/define.c", line 76: error: declaration is incompatible with "short _Accum" (declared at line 75)
+          _Accum 
+          ^
+
+"./fixed-point/define.c", line 76: error: expected a ";"
+                uk = 
+                ^
+
+"./fixed-point/define.c", line 76: warning: parsing restarts here after previous syntax error
+                               ;
+                               ^
+
+"./fixed-point/define.c", line 77: error: declaration is incompatible with "short _Accum" (declared at line 76)
+               _Accum 
+               ^
+
+"./fixed-point/define.c", line 77: error: expected a ";"
+                     ulk = 
+                     ^
+
+"./fixed-point/define.c", line 77: warning: parsing restarts here after previous syntax error
+                                      ;
+                                      ^
+
+"./fixed-point/define.c", line 78: error: declaration is incompatible with "short _Accum" (declared at line 77)
+                    _Accum 
+                    ^
+
+"./fixed-point/define.c", line 78: error: expected a ";"
+                          ullk = 
+                          ^
+
+"./fixed-point/define.c", line 78: warning: parsing restarts here after previous syntax error
+                                             ;
+                                             ^
+
+"./fixed-point/define.c", line 80: error: expected a ";"
+     short 
+     ^
+
+"./fixed-point/define.c", line 80: warning: parsing restarts here after previous syntax error
+                                 ;
+                                 ^
+
+"./fixed-point/define.c", line 81: error: variable "_Sat" is not a type name
+  _Sat _Accum 
+  ^
+
+"./fixed-point/define.c", line 81: error: expected a ";"
+           Sk = 
+           ^
+
+"./fixed-point/define.c", line 81: warning: parsing restarts here after previous syntax error
+                         ;
+                         ^
+
+"./fixed-point/define.c", line 82: error: expected a ";"
+     long 
+     ^
+
+"./fixed-point/define.c", line 82: warning: parsing restarts here after previous syntax error
+                                ;
+                                ^
+
+"./fixed-point/define.c", line 83: error: expected a ";"
+     long long 
+     ^
+
+"./fixed-point/define.c", line 83: warning: parsing restarts here after previous syntax error
+                                       ;
+                                       ^
+
+"./fixed-point/define.c", line 85: error: expected a ";"
+     unsigned short 
+     ^
+
+"./fixed-point/define.c", line 85: warning: parsing restarts here after previous syntax error
+                                            ;
+                                            ^
+
+"./fixed-point/define.c", line 86: error: expected a ";"
+     unsigned 
+     ^
+
+"./fixed-point/define.c", line 86: warning: parsing restarts here after previous syntax error
+                                    ;
+                                    ^
+
+"./fixed-point/define.c", line 87: error: expected a ";"
+     unsigned long 
+     ^
+
+"./fixed-point/define.c", line 87: warning: parsing restarts here after previous syntax error
+                                           ;
+                                           ^
+
+"./fixed-point/define.c", line 88: error: expected a ";"
+     unsigned long long 
+     ^
+
+"./fixed-point/define.c", line 88: warning: parsing restarts here after previous syntax error
+                                                  ;
+                                                  ^
+
+"./fixed-point/define.c", line 90: error: expected a ";"
+             skm = 
+             ^
+
+"./fixed-point/define.c", line 90: warning: parsing restarts here after previous syntax error
+                             ;
+                             ^
+
+"./fixed-point/define.c", line 91: error: variable "_Accum" is not a type name
+  _Accum 
+  ^
+
+"./fixed-point/define.c", line 91: error: identifier "__ACCUM_MIN__" is undefined
+            __ACCUM_MIN__
+            ^
+
+"./fixed-point/define.c", line 92: error: expected a ";"
+            lkm = 
+            ^
+
+"./fixed-point/define.c", line 92: warning: parsing restarts here after previous syntax error
+                            ;
+                            ^
+
+"./fixed-point/define.c", line 93: error: expected a ";"
+                 llkm = 
+                 ^
+
+"./fixed-point/define.c", line 93: warning: parsing restarts here after previous syntax error
+                                   ;
+                                   ^
+
+"./fixed-point/define.c", line 95: error: expected a ";"
+                      uskm = 
+                      ^
+
+"./fixed-point/define.c", line 95: warning: parsing restarts here after previous syntax error
+                                        ;
+                                        ^
+
+"./fixed-point/define.c", line 96: error: expected a ";"
+                ukm = 
+                ^
+
+"./fixed-point/define.c", line 96: warning: parsing restarts here after previous syntax error
+                                ;
+                                ^
+
+"./fixed-point/define.c", line 97: error: expected a ";"
+                     ulkm = 
+                     ^
+
+"./fixed-point/define.c", line 97: warning: parsing restarts here after previous syntax error
+                                       ;
+                                       ^
+
+"./fixed-point/define.c", line 98: error: expected a ";"
+                          ullkm = 
+                          ^
+
+"./fixed-point/define.c", line 98: warning: parsing restarts here after previous syntax error
+                                              ;
+                                              ^
+
+"./fixed-point/define.c", line 100: error: expected a ";"
+     short 
+     ^
+
+"./fixed-point/define.c", line 100: warning: parsing restarts here after previous syntax error
+                                  ;
+                                  ^
+
+"./fixed-point/define.c", line 101: error: variable "_Sat" is not a type name
+  _Sat _Accum 
+  ^
+
+"./fixed-point/define.c", line 101: error: expected a ";"
+           Skm = 
+           ^
+
+"./fixed-point/define.c", line 101: warning: parsing restarts here after previous syntax error
+                          ;
+                          ^
+
+"./fixed-point/define.c", line 102: error: expected a ";"
+     long 
+     ^
+
+"./fixed-point/define.c", line 102: warning: parsing restarts here after previous syntax error
+                                 ;
+                                 ^
+
+"./fixed-point/define.c", line 103: error: expected a ";"
+     long long 
+     ^
+
+"./fixed-point/define.c", line 103: warning: parsing restarts here after previous syntax error
+                                        ;
+                                        ^
+
+"./fixed-point/define.c", line 105: error: expected a ";"
+     unsigned short 
+     ^
+
+"./fixed-point/define.c", line 105: warning: parsing restarts here after previous syntax error
+                                             ;
+                                             ^
+
+"./fixed-point/define.c", line 106: error: expected a ";"
+     unsigned 
+     ^
+
+"./fixed-point/define.c", line 106: warning: parsing restarts here after previous syntax error
+                                     ;
+                                     ^
+
+"./fixed-point/define.c", line 107: error: expected a ";"
+     unsigned long 
+     ^
+
+"./fixed-point/define.c", line 107: warning: parsing restarts here after previous syntax error
+                                            ;
+                                            ^
+
+"./fixed-point/define.c", line 108: error: expected a ";"
+     unsigned long long 
+     ^
+
+"./fixed-point/define.c", line 108: warning: parsing restarts here after previous syntax error
+                                                   ;
+                                                   ^
+
+"./fixed-point/define.c", line 110: error: expected a ";"
+             skE = 
+             ^
+
+"./fixed-point/define.c", line 110: warning: parsing restarts here after previous syntax error
+                                 ;
+                                 ^
+
+"./fixed-point/define.c", line 111: error: variable "_Accum" is not a type name
+  _Accum 
+  ^
+
+"./fixed-point/define.c", line 111: error: identifier "__ACCUM_EPSILON__" is undefined
+            __ACCUM_EPSILON__
+            ^
+
+"./fixed-point/define.c", line 112: error: expected a ";"
+            lkE = 
+            ^
+
+"./fixed-point/define.c", line 112: warning: parsing restarts here after previous syntax error
+                                ;
+                                ^
+
+"./fixed-point/define.c", line 113: error: expected a ";"
+                 llkE = 
+                 ^
+
+"./fixed-point/define.c", line 113: warning: parsing restarts here after previous syntax error
+                                       ;
+                                       ^
+
+"./fixed-point/define.c", line 115: error: expected a ";"
+                      uskE = 
+                      ^
+
+"./fixed-point/define.c", line 115: warning: parsing restarts here after previous syntax error
+                                            ;
+                                            ^
+
+"./fixed-point/define.c", line 116: error: expected a ";"
+                ukE = 
+                ^
+
+"./fixed-point/define.c", line 116: warning: parsing restarts here after previous syntax error
+                                    ;
+                                    ^
+
+"./fixed-point/define.c", line 117: error: expected a ";"
+                     ulkE = 
+                     ^
+
+"./fixed-point/define.c", line 117: warning: parsing restarts here after previous syntax error
+                                           ;
+                                           ^
+
+"./fixed-point/define.c", line 118: error: expected a ";"
+                          ullkE = 
+                          ^
+
+"./fixed-point/define.c", line 118: warning: parsing restarts here after previous syntax error
+                                                  ;
+                                                  ^
+
+"./fixed-point/define.c", line 120: error: expected a ";"
+     short 
+     ^
+
+"./fixed-point/define.c", line 120: warning: parsing restarts here after previous syntax error
+                                      ;
+                                      ^
+
+"./fixed-point/define.c", line 121: error: variable "_Sat" is not a type name
+  _Sat _Accum 
+  ^
+
+"./fixed-point/define.c", line 121: error: expected a ";"
+           SkE = 
+           ^
+
+"./fixed-point/define.c", line 121: warning: parsing restarts here after previous syntax error
+                              ;
+                              ^
+
+"./fixed-point/define.c", line 122: error: expected a ";"
+     long 
+     ^
+
+"./fixed-point/define.c", line 122: warning: parsing restarts here after previous syntax error
+                                     ;
+                                     ^
+
+"./fixed-point/define.c", line 123: error: expected a ";"
+     long long 
+     ^
+
+"./fixed-point/define.c", line 123: warning: parsing restarts here after previous syntax error
+                                            ;
+                                            ^
+
+"./fixed-point/define.c", line 125: error: expected a ";"
+     unsigned short 
+     ^
+
+"./fixed-point/define.c", line 125: warning: parsing restarts here after previous syntax error
+                                                 ;
+                                                 ^
+
+"./fixed-point/define.c", line 126: error: expected a ";"
+     unsigned 
+     ^
+
+"./fixed-point/define.c", line 126: warning: parsing restarts here after previous syntax error
+                                         ;
+                                         ^
+
+"./fixed-point/define.c", line 127: error: expected a ";"
+     unsigned long 
+     ^
+
+"./fixed-point/define.c", line 127: warning: parsing restarts here after previous syntax error
+                                                ;
+                                                ^
+
+"./fixed-point/define.c", line 128: error: expected a ";"
+     unsigned long long 
+     ^
+
+"./fixed-point/define.c", line 128: warning: parsing restarts here after previous syntax error
+                                                       ;
+                                                       ^
+
+"./fixed-point/define.c", line 130: error: identifier "__SFRACT_FBIT__" is undefined
+               __SFRACT_FBIT__
+               ^
+
+"./fixed-point/define.c", line 131: error: identifier "__FRACT_FBIT__" is undefined
+              __FRACT_FBIT__
+              ^
+
+"./fixed-point/define.c", line 132: error: identifier "__LFRACT_FBIT__" is undefined
+               __LFRACT_FBIT__
+               ^
+
+"./fixed-point/define.c", line 133: error: identifier "__LLFRACT_FBIT__" is undefined
+                __LLFRACT_FBIT__
+                ^
+
+"./fixed-point/define.c", line 135: error: identifier "__USFRACT_FBIT__" is undefined
+                __USFRACT_FBIT__
+                ^
+
+"./fixed-point/define.c", line 136: error: identifier "__UFRACT_FBIT__" is undefined
+               __UFRACT_FBIT__
+               ^
+
+"./fixed-point/define.c", line 137: error: identifier "__ULFRACT_FBIT__" is undefined
+                __ULFRACT_FBIT__
+                ^
+
+"./fixed-point/define.c", line 138: error: identifier "__ULLFRACT_FBIT__" is undefined
+                 __ULLFRACT_FBIT__
+                 ^
+
+"./fixed-point/define.c", line 140: error: identifier "__SACCUM_FBIT__" is undefined
+               __SACCUM_FBIT__
+               ^
+
+"./fixed-point/define.c", line 141: error: identifier "__ACCUM_FBIT__" is undefined
+              __ACCUM_FBIT__
+              ^
+
+"./fixed-point/define.c", line 142: error: identifier "__LACCUM_FBIT__" is undefined
+               __LACCUM_FBIT__
+               ^
+
+"./fixed-point/define.c", line 143: error: identifier "__LLACCUM_FBIT__" is undefined
+                __LLACCUM_FBIT__
+                ^
+
+"./fixed-point/define.c", line 145: error: identifier "__USACCUM_FBIT__" is undefined
+                __USACCUM_FBIT__
+                ^
+
+"./fixed-point/define.c", line 146: error: identifier "__UACCUM_FBIT__" is undefined
+               __UACCUM_FBIT__
+               ^
+
+"./fixed-point/define.c", line 147: error: identifier "__ULACCUM_FBIT__" is undefined
+                __ULACCUM_FBIT__
+                ^
+
+"./fixed-point/define.c", line 148: error: identifier "__ULLACCUM_FBIT__" is undefined
+                 __ULLACCUM_FBIT__
+                 ^
+
+"./fixed-point/define.c", line 150: error: identifier "__SACCUM_IBIT__" is undefined
+               __SACCUM_IBIT__
+               ^
+
+"./fixed-point/define.c", line 151: error: identifier "__ACCUM_IBIT__" is undefined
+              __ACCUM_IBIT__
+              ^
+
+"./fixed-point/define.c", line 152: error: identifier "__LACCUM_IBIT__" is undefined
+               __LACCUM_IBIT__
+               ^
+
+"./fixed-point/define.c", line 153: error: identifier "__LLACCUM_IBIT__" is undefined
+                __LLACCUM_IBIT__
+                ^
+
+"./fixed-point/define.c", line 155: error: identifier "__USACCUM_IBIT__" is undefined
+                __USACCUM_IBIT__
+                ^
+
+"./fixed-point/define.c", line 156: error: identifier "__UACCUM_IBIT__" is undefined
+               __UACCUM_IBIT__
+               ^
+
+"./fixed-point/define.c", line 157: error: identifier "__ULACCUM_IBIT__" is undefined
+                __ULACCUM_IBIT__
+                ^
+
+"./fixed-point/define.c", line 158: error: identifier "__ULLACCUM_IBIT__" is undefined
+                 __ULLACCUM_IBIT__
+                 ^
+
+144 errors detected in the compilation of "Test_name.c".

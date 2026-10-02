@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 8: warning: unknown attribute "regparm"
+    void __attribute__((regparm(3))) f0();
+                        ^
+
+"Test_name.c", line 9: warning: unknown attribute "regparm"
+    void __attribute__((regparm(3))) f1();
+                        ^
+
+"Test_name.c", line 10: warning: unknown attribute "regparm"
+    void __attribute__((regparm(3))) f2(); // expected-note{{previous declaration is here}}
+                        ^
+
+"Test_name.c", line 15: warning: unknown attribute "regparm"
+  void __attribute__((regparm(3))) X0::f1() { }
+                      ^
+
+"Test_name.c", line 16: warning: unknown attribute "regparm"
+  void __attribute__((regparm(2))) X0::f2() { } // expected-error{{function declared with regparm(2) attribute was previously declared with the regparm(3) attribute}}
+                      ^
+
+"Test_name.c", line 17: warning: unknown attribute "regparm"
+  void __attribute__((regparm(2))) X0::f3() { } // expected-error{{function declared with regparm(2) attribute was previously declared without the regparm attribute}}
+                      ^
+

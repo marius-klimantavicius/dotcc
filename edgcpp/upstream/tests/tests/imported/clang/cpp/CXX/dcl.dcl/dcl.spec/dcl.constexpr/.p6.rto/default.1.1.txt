@@ -1,0 +1,77 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 29: error: a function cannot be both constexpr and virtual in this mode
+    constexpr int ImplicitlyVirtual() const { return 0; }
+                  ^
+          detected during instantiation of class "ImplicitVirtualFromDependentBase<T> [with T=S]" at line 32
+
+"Test_name.c", line 32: error: expression must have a constant value
+  constexpr int a = ImplicitVirtualFromDependentBase<S>().ImplicitlyVirtual(); // expected-error {{constant expression}} expected-note {{cannot evaluate call to virtual function}}
+                    ^
+"Test_name.c", line 32: note: cannot call non-constexpr function "ImplicitVirtualFromDependentBase<T>::ImplicitlyVirtual [with T=S]" (declared at line 29)
+  constexpr int a = ImplicitVirtualFromDependentBase<S>().ImplicitlyVirtual(); // expected-error {{constant expression}} expected-note {{cannot evaluate call to virtual function}}
+                                                          ^
+
+"Test_name.c", line 34: error: expression must have a constant value
+  constexpr int c = ImplicitVirtualFromDependentBase<S>().ImplicitVirtualFromDependentBase<S>::ImplicitlyVirtual(); // expected-error {{constant expression}} expected-note {{cannot evaluate call to virtual function}}
+                    ^
+"Test_name.c", line 34: note: cannot call non-constexpr function "ImplicitVirtualFromDependentBase<T>::ImplicitlyVirtual [with T=S]" (declared at line 29)
+  constexpr int c = ImplicitVirtualFromDependentBase<S>().ImplicitVirtualFromDependentBase<S>::ImplicitlyVirtual(); // expected-error {{constant expression}} expected-note {{cannot evaluate call to virtual function}}
+                                                                                               ^
+
+"Test_name.c", line 40: error: expression must have a constant value
+  constexpr int e = ConstexprMember<NonLiteral>().F(); // expected-error {{constant expression}} expected-note {{non-literal type 'NonLiteral' cannot be used in a constant expression}}
+                    ^
+"Test_name.c", line 40: note: cannot call non-constexpr function "ConstexprMember<R>::F [with R=NonLiteral]" (declared at line 37)
+  constexpr int e = ConstexprMember<NonLiteral>().F(); // expected-error {{constant expression}} expected-note {{non-literal type 'NonLiteral' cannot be used in a constant expression}}
+                                                  ^
+
+"Test_name.c", line 47: error: constexpr function return is non-constant
+  constexpr ConstexprCtor<NonLiteral> f3() { return { 0 }; } // expected-error {{never produces a constant expression}} expected-note {{non-literal type 'NonLiteral}}
+                                                    ^
+
+"Test_name.c", line 48: error: constexpr function return is non-constant
+  constexpr ConstexprCtor<int, NonLiteral> f4() { return { 0, 0 }; } // expected-error {{never produces a constant expression}} expected-note {{non-literal type 'NonLiteral}}
+                                                         ^
+
+"Test_name.c", line 54: error: a constructor for a class with virtual bases cannot be constexpr
+      constexpr T1() {} // expected-error {{constexpr constructor not allowed in struct with virtual base class}}
+      ^
+
+"Test_name.c", line 60: error: a constructor for a class with virtual bases cannot be constexpr
+      constexpr T2() {}
+      ^
+
+"Test_name.c", line 62: error: a constexpr function cannot have a nonliteral return type "TemplateVBase::T2<Literal>"
+    constexpr T2<Literal> g2() { return {}; }
+                          ^
+
+"Test_name.c", line 66: error: a constructor for a class with virtual bases cannot be constexpr
+      constexpr T3() {}
+      ^
+          detected during instantiation of class "TemplateVBase::T3<T> [with T=VirtBase]" at line 69
+
+"Test_name.c", line 69: error: a constexpr function cannot have a nonliteral return type "TemplateVBase::T3<VirtBase>"
+    constexpr T3<VirtBase> g4() { return {}; } // expected-error {{not a literal type}}
+                           ^
+
+"Test_name.c", line 32: warning: variable "a" was declared but never referenced
+  constexpr int a = ImplicitVirtualFromDependentBase<S>().ImplicitlyVirtual(); // expected-error {{constant expression}} expected-note {{cannot evaluate call to virtual function}}
+                ^
+
+"Test_name.c", line 33: warning: variable "b" was declared but never referenced
+  constexpr int b = ImplicitVirtualFromDependentBase<T>().ImplicitlyVirtual(); // ok
+                ^
+
+"Test_name.c", line 34: warning: variable "c" was declared but never referenced
+  constexpr int c = ImplicitVirtualFromDependentBase<S>().ImplicitVirtualFromDependentBase<S>::ImplicitlyVirtual(); // expected-error {{constant expression}} expected-note {{cannot evaluate call to virtual function}}
+                ^
+
+"Test_name.c", line 39: warning: variable "d" was declared but never referenced
+  constexpr int d = ConstexprMember<int>().F(); // ok
+                ^
+
+"Test_name.c", line 40: warning: variable "e" was declared but never referenced
+  constexpr int e = ConstexprMember<NonLiteral>().F(); // expected-error {{constant expression}} expected-note {{non-literal type 'NonLiteral' cannot be used in a constant expression}}
+                ^
+
+11 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 10: error: array of void is not allowed
+  volatile void ar2[10]; // expected-error {{incomplete element type 'volatile void'}}
+                ^
+
+"Test_name.c", line 12: error: array of reference is not allowed
+  int& ar3[10]; // expected-error {{array of references}}
+       ^
+
+"Test_name.c", line 15: error: array of functions is not allowed
+  Fn ar4[10]; // expected-error {{array of functions}}
+     ^
+
+"Test_name.c", line 18: error: array of abstract class "Abstract" is not allowed:
+            function "Abstract::fn" is a pure virtual function
+  Abstract ar5[10]; // expected-error {{abstract class}}
+           ^
+
+"Test_name.c", line 21: error: the size of an array must be greater than zero
+  int ar6[-1]; // expected-error {{array with a negative size}}
+          ^
+
+"Test_name.c", line 25: error: incomplete type "int []" is not allowed
+  int ar8[]; // expected-error {{needs an explicit size or an initializer}}
+      ^
+
+"Test_name.c", line 28: error: incomplete type "Incomplete [10]" is not allowed
+  Incomplete ar9[10]; // expected-error {{incomplete type}}
+             ^
+
+"Test_name.c", line 44: error: a class or namespace qualified name is required
+    typename T::type x; // expected-error {{has no members}}
+             ^
+          detected during instantiation of class "S<T> [with T=int]" at line 46
+
+"Test_name.c", line 44: error: global-scope qualifier (leading "::") is not allowed
+    typename T::type x; // expected-error {{has no members}}
+              ^
+          detected during instantiation of class "S<T> [with T=int]" at line 46
+
+"Test_name.c", line 44: error: expected a ";"
+    typename T::type x; // expected-error {{has no members}}
+                     ^
+          detected during instantiation of class "S<T> [with T=int]" at line 46
+
+"Test_name.c", line 53: error: the size of an array must be greater than zero
+  [-1]; // expected-error {{user_error_message}}
+   ^
+
+"Test_name.c", line 56: error: the size of an array must be greater than zero
+  [-1]; // expected-error {{another_user_error_message}}
+   ^
+
+12 errors detected in the compilation of "Test_name.c".

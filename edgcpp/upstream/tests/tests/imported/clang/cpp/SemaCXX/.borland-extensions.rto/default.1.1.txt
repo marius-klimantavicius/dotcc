@@ -1,0 +1,82 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 13: error: expected a ";"
+  int _pascal f2();
+              ^
+
+"Test_name.c", line 16: error: expected a ";"
+  float __pascal gi2(int, int); 
+                 ^
+
+"Test_name.c", line 18: error: expected an expression
+  template<typename T> T g2(T (__pascal * const )(int, int)) { return 0; }
+                                          ^
+
+"Test_name.c", line 18: error: type name is not allowed
+  template<typename T> T g2(T (__pascal * const )(int, int)) { return 0; }
+                                                  ^
+
+"Test_name.c", line 18: error: type name is not allowed
+  template<typename T> T g2(T (__pascal * const )(int, int)) { return 0; }
+                                                       ^
+
+"Test_name.c", line 18: error: expected a ";"
+  template<typename T> T g2(T (__pascal * const )(int, int)) { return 0; }
+                                                             ^
+
+"Test_name.c", line 27: error: name followed by "::" must be a class or namespace name
+  template<typename T> int h2(T (__pascal M::* const )()) { return 0; }
+                                          ^
+
+"Test_name.c", line 27: error: expected a ")"
+  template<typename T> int h2(T (__pascal M::* const )()) { return 0; }
+                                          ^
+
+"Test_name.c", line 27: error: expected a ";"
+  template<typename T> int h2(T (__pascal M::* const )()) { return 0; }
+                                                          ^
+
+"Test_name.c", line 40: error: expected a ";"
+  int _fastcall fc3();
+                ^
+
+"Test_name.c", line 42: error: expected a ";"
+  int _stdcall fd3();
+               ^
+
+"Test_name.c", line 52: error: expected a type specifier
+  struct __declspec(uuid("{12345678-1234-1234-1234-123456789abc}")) Foo;
+                         ^
+
+"Test_name.c", line 52: error: function "uuid" returns incomplete type "__declspec"
+  struct __declspec(uuid("{12345678-1234-1234-1234-123456789abc}")) Foo;
+                    ^
+
+"Test_name.c", line 52: error: expected a "{"
+  struct __declspec(uuid("{12345678-1234-1234-1234-123456789abc}")) Foo;
+                                                                    ^
+
+"Test_name.c", line 55: warning: missing return statement at end of non-void function "uuid"
+  };
+  ^
+
+"Test_name.c", line 54: warning: variable "Guid" was declared but never referenced
+       GUID const* Guid;
+                   ^
+
+"Test_name.c", line 60: error: identifier "Foo" is undefined
+      const GUID guid_inl = __uuidof(Foo);
+                                     ^
+
+"Test_name.c", line 60: error: identifier "__uuidof" is undefined
+      const GUID guid_inl = __uuidof(Foo);
+                            ^
+
+"Test_name.c", line 61: error: identifier "Data" is undefined
+      Data ata1 = { &guid_inl};
+      ^
+
+"Test_name.c", line 58: warning: variable "data" was set but never used
+      unsigned long  data;
+                     ^
+
+17 errors detected in the compilation of "Test_name.c".

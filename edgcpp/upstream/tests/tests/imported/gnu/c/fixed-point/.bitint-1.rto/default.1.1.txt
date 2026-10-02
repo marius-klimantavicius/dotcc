@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 10: error: identifier "_Sat" is undefined
+    _Sat _BitInt (42) a;		/* { dg-error "both '_Sat' and '_BitInt' in declaration specifiers" } */
+    ^
+
+"Test_name.c", line 10: error: expected a ";"
+    _Sat _BitInt (42) a;		/* { dg-error "both '_Sat' and '_BitInt' in declaration specifiers" } */
+         ^
+
+"Test_name.c", line 11: error: expected a ";"
+    _BitInt (42) _Sat b;		/* { dg-error "both '_Sat' and '_BitInt' in declaration specifiers" } */
+                      ^
+
+"Test_name.c", line 11: warning: variable "_Sat" was declared but never referenced
+    _BitInt (42) _Sat b;		/* { dg-error "both '_Sat' and '_BitInt' in declaration specifiers" } */
+                 ^
+
+3 errors detected in the compilation of "Test_name.c".

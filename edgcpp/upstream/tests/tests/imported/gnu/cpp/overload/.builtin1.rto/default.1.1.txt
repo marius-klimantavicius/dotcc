@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 17: error: more than one operator "+" matches these operands:
+            built-in operator "arithmetic + arithmetic"
+            function "operator+(B, B)" (declared at line 12)
+            operand types are: A + A
+    a + a;			// { dg-error "ambiguous" "ambiguous" }
+      ^
+"Test_name.c", line 17: note: built-in operator+(<pointer to object>, <ptrdiff_t>) does not match because argument #1 does not match parameter
+    a + a;			// { dg-error "ambiguous" "ambiguous" }
+      ^
+"Test_name.c", line 17: note: built-in operator+(<ptrdiff_t>, <pointer to object>) does not match because argument #2 does not match parameter
+    a + a;			// { dg-error "ambiguous" "ambiguous" }
+      ^
+
+1 error detected in the compilation of "Test_name.c".

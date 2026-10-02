@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 8: error: namespace "stretch_v1" has no member "ops_t"
+      const stretch_v1::ops_t* d_methods; // expected-error {{no type named 'ops_t' in namespace 'stretch_v1'}}
+                        ^
+
+"Test_name.c", line 14: error: namespace "gatekeeper_v1" has no member "closure_t"
+        gatekeeper_v1::closure_t* create(); // expected-error {{no type named 'closure_t' in namespace 'gatekeeper_v1'; did you mean simply 'closure_t'?}}
+                       ^
+
+"Test_name.c", line 18: error: namespace "gatekeeper_v1" has no member "closure_t"
+    gatekeeper_v1::closure_t *x; // expected-error {{no type named 'closure_t' in namespace 'gatekeeper_v1'; did you mean 'gatekeeper_factory_v1::closure_t'}}
+                   ^
+
+"Test_name.c", line 29: error: namespace "Foo" has no member "Bar"
+      Foo::Bar(); // expected-error{{no member named 'Bar' in namespace 'Foo'; did you mean simply 'Bar'?}}
+           ^
+
+4 errors detected in the compilation of "Test_name.c".

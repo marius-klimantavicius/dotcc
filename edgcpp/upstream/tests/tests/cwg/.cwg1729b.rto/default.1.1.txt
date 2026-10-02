@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c++20 -tused -A Test_name.c
+"Test_name.c", line 4: error: declaration is incompatible with variable template "x" (declared at line 3)
+  template<typename T> auto x = T::get();
+                            ^
+
+"Test_name.c", line 7: error: declaration is incompatible with variable template "y" (declared at line 6)
+  template<typename T> auto y = 0;
+                            ^
+
+2 errors detected in the compilation of "Test_name.c".

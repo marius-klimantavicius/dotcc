@@ -1,0 +1,121 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 16: warning: unknown attribute "return_typestate"
+  int returnTypestateForUnconsumable() RETURN_TYPESTATE(consumed); // expected-warning {{return state set for an unconsumable type 'int'}}
+                                       ^
+
+"Test_name.c", line 22: warning: unknown attribute "set_typestate"
+    void consumes()       __attribute__ ((set_typestate())); // expected-error {{'set_typestate' attribute takes one argument}}
+                                          ^
+
+"Test_name.c", line 23: warning: unknown attribute "test_typestate"
+    bool testUnconsumed() __attribute__ ((test_typestate())); // expected-error {{'test_typestate' attribute takes one argument}}
+                                          ^
+
+"Test_name.c", line 24: warning: unknown attribute "callable_when"
+    void callableWhen()   __attribute__ ((callable_when())); // expected-error {{'callable_when' attribute takes at least 1 argument}}
+                                          ^
+
+"Test_name.c", line 27: warning: unknown attribute "set_typestate"
+  int var0 SET_TYPESTATE(consumed); // expected-warning {{'set_typestate' attribute only applies to functions}}
+           ^
+
+"Test_name.c", line 28: warning: unknown attribute "test_typestate"
+  int var1 TEST_TYPESTATE(consumed); // expected-warning {{'test_typestate' attribute only applies to}}
+           ^
+
+"Test_name.c", line 29: warning: unknown attribute "callable_when"
+  int var2 CALLABLE_WHEN("consumed"); // expected-warning {{'callable_when' attribute only applies to}}
+           ^
+
+"Test_name.c", line 30: warning: unknown attribute "consumable"
+  int var3 CONSUMABLE(consumed); // expected-warning {{'consumable' attribute only applies to classes}}
+           ^
+
+"Test_name.c", line 31: warning: unknown attribute "return_typestate"
+  int var4 RETURN_TYPESTATE(consumed); // expected-warning {{'return_typestate' attribute only applies to functions}}
+           ^
+
+"Test_name.c", line 33: warning: unknown attribute "set_typestate"
+  void function0() SET_TYPESTATE(consumed); // expected-warning {{'set_typestate' attribute only applies to}}
+                   ^
+
+"Test_name.c", line 34: warning: unknown attribute "test_typestate"
+  void function1() TEST_TYPESTATE(consumed); // expected-warning {{'test_typestate' attribute only applies to}}
+                   ^
+
+"Test_name.c", line 35: warning: unknown attribute "callable_when"
+  void function2() CALLABLE_WHEN("consumed"); // expected-warning {{'callable_when' attribute only applies to}}
+                   ^
+
+"Test_name.c", line 36: warning: unknown attribute "consumable"
+  void function3() CONSUMABLE(consumed); // expected-warning {{'consumable' attribute only applies to classes}}
+                   ^
+
+"Test_name.c", line 38: warning: unknown attribute "consumable"
+  class CONSUMABLE(unknown) AttrTester1 {
+        ^
+
+"Test_name.c", line 39: warning: unknown attribute "callable_when"
+    void callableWhen0()  CALLABLE_WHEN("unconsumed");
+                          ^
+
+"Test_name.c", line 40: warning: unknown attribute "callable_when"
+    void callableWhen1()  CALLABLE_WHEN(42); // expected-error {{expected string literal as argument of 'callable_when' attribute}}
+                          ^
+
+"Test_name.c", line 41: warning: unknown attribute "callable_when"
+    void callableWhen2()  CALLABLE_WHEN("foo"); // expected-warning {{'callable_when' attribute argument not supported: foo}}
+                          ^
+
+"Test_name.c", line 42: warning: unknown attribute "callable_when"
+    void callableWhen3()  CALLABLE_WHEN(unconsumed);
+                          ^
+
+"Test_name.c", line 43: warning: unknown attribute "set_typestate"
+    void consumes()       SET_TYPESTATE(consumed);
+                          ^
+
+"Test_name.c", line 44: warning: unknown attribute "test_typestate"
+    bool testUnconsumed() TEST_TYPESTATE(consumed);
+                          ^
+
+"Test_name.c", line 47: warning: unknown attribute "return_typestate"
+  AttrTester1 returnTypestateTester0() RETURN_TYPESTATE(not_a_state); // expected-warning {{'return_typestate' attribute argument not supported: 'not_a_state'}}
+                                       ^
+
+"Test_name.c", line 48: warning: unknown attribute "return_typestate"
+  AttrTester1 returnTypestateTester1() RETURN_TYPESTATE(42); // expected-error {{'return_typestate' attribute requires an identifier}}
+                                       ^
+
+"Test_name.c", line 50: warning: unknown attribute "return_typestate"
+  void returnTypestateTester2(AttrTester1 &Param RETURN_TYPESTATE(unconsumed));
+                                                 ^
+
+"Test_name.c", line 53: warning: unknown attribute "callable_when"
+    void callableWhen()   CALLABLE_WHEN("unconsumed"); // expected-warning {{consumed analysis attribute is attached to member of class 'AttrTester2' which isn't marked as consumable}}
+                          ^
+
+"Test_name.c", line 54: warning: unknown attribute "set_typestate"
+    void consumes()       SET_TYPESTATE(consumed); // expected-warning {{consumed analysis attribute is attached to member of class 'AttrTester2' which isn't marked as consumable}}
+                          ^
+
+"Test_name.c", line 55: warning: unknown attribute "test_typestate"
+    bool testUnconsumed() TEST_TYPESTATE(consumed); // expected-warning {{consumed analysis attribute is attached to member of class 'AttrTester2' which isn't marked as consumable}}
+                          ^
+
+"Test_name.c", line 58: warning: unknown attribute "consumable"
+  class CONSUMABLE(42) AttrTester3; // expected-error {{'consumable' attribute requires an identifier}}
+        ^
+
+"Test_name.c", line 61: warning: unknown attribute "consumable"
+  class CONSUMABLE(unconsumed)
+        ^
+
+"Test_name.c", line 62: warning: unknown attribute "consumable_auto_cast_state"
+        __attribute__((consumable_auto_cast_state))
+                       ^
+
+"Test_name.c", line 63: warning: unknown attribute "consumable_set_state_on_read"
+        __attribute__((consumable_set_state_on_read))
+                       ^
+

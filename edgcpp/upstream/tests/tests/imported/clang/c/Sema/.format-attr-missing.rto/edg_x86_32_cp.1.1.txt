@@ -1,0 +1,61 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 6: warning: declaration of "size_t" does not match the expected type "unsigned int"
+  typedef unsigned long size_t;
+                        ^
+
+"Test_name.c", line 29: warning: unrecognized format function type "strfmon" ignored
+  [[gnu::format(strfmon, 3, 4)]]
+                ^
+
+"Test_name.c", line 53: warning: variable "args" is used before its value is set
+    vprintf(fmt, args); // expected-warning {{diagnostic behavior may be improved by adding the 'format(printf, 1, 2)' attribute to the declaration of 'f3'}}
+                 ^
+
+"Test_name.c", line 61: warning: variable "args" is used before its value is set
+    vscanf(fmt, args); // expected-warning {{diagnostic behavior may be improved by adding the 'format(scanf, 1, 2)' attribute to the declaration of 'f4'}}
+                ^
+
+"Test_name.c", line 70: warning: variable "args" is used before its value is set
+    vsprintf(out, format, args); // expected-warning {{diagnostic behavior may be improved by adding the 'format(printf, 2, 3)' attribute to the declaration of 'f5'}}
+                          ^
+
+"Test_name.c", line 79: warning: variable "args" is used before its value is set
+    vsprintf(out, format, args); // expected-warning {{diagnostic behavior may be improved by adding the 'format(printf, 2, 3)' attribute to the declaration of 'f6'}}
+                          ^
+
+"Test_name.c", line 89: warning: variable "args" is used before its value is set
+    vprintf(ch, args);
+                ^
+
+"Test_name.c", line 118: warning: variable "args" is used before its value is set
+    custom_print(fmt, args); // expected-warning {{diagnostic behavior may be improved by adding the 'format_matches(printf, 1, "%d %f \"'")' attribute to the declaration of 'f9'}}
+                      ^
+
+"Test_name.c", line 126: warning: variable "args" is used before its value is set
+    vscanf(out, args);  // expected-warning {{diagnostic behavior may be improved by adding the 'format(scanf, 1, 2)' attribute to the declaration of 'f10'}}
+                ^
+
+"Test_name.c", line 136: warning: variable "args" is used before its value is set
+    vprintf(ch, args);
+                ^
+
+"Test_name.c", line 146: warning: variable "args" is used before its value is set
+    vsprintf(out, ch, args);
+                      ^
+
+"Test_name.c", line 163: warning: variable "args" is used before its value is set
+    vscanf(out, args); // expected-warning {{diagnostic behavior may be improved by adding the 'format(scanf, 1, 2)' attribute to the declaration of 'f14'}}
+                ^
+
+"Test_name.c", line 173: warning: variable "args" is used before its value is set
+    vprintf(ch, args); // expected-warning {{diagnostic behavior may be improved by adding the 'format(printf, 1, 3)' attribute to the declaration of 'f15'}}
+                ^
+
+"Test_name.c", line 184: warning: variable "args" is used before its value is set
+  	vprintf(b, args); // expected-warning {{diagnostic behavior may be improved by adding the 'format(printf, 1, 2)' attribute to the declaration of 'f16'}}
+  	           ^
+
+"Test_name.c", line 228: warning: variable "args" is used before its value is set
+    vprintf(fmt, args); // expected-warning {{diagnostic behavior may be improved by adding the 'format(printf, 1, 2)' attribute to the declaration of 'f22'}}
+                 ^
+

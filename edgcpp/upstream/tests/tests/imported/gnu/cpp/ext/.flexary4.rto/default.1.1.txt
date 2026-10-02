@@ -1,0 +1,222 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./ext/flexary4.C", line 14: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a[];
+           ^
+
+"./ext/flexary4.C", line 21: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a[];
+           ^
+
+"./ext/flexary4.C", line 27: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a[];
+           ^
+
+"./ext/flexary4.C", line 31: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a[];
+           ^
+
+"./ext/flexary4.C", line 37: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a[];
+           ^
+
+"./ext/flexary4.C", line 41: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a[];
+           ^
+
+"./ext/flexary4.C", line 47: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a[];
+           ^
+
+"./ext/flexary4.C", line 51: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a[];
+           ^
+
+"./ext/flexary4.C", line 57: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a[];
+           ^
+
+"./ext/flexary4.C", line 61: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a[];
+           ^
+
+"./ext/flexary4.C", line 67: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a[];
+           ^
+
+"./ext/flexary4.C", line 71: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a[];
+           ^
+
+"./ext/flexary4.C", line 77: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a[];
+           ^
+
+"./ext/flexary4.C", line 81: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a[][1];
+              ^
+
+"./ext/flexary4.C", line 86: error: a flexible array member cannot be declared in an otherwise-empty type
+    A a;
+       ^
+
+"./ext/flexary4.C", line 98: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a_x [];
+              ^
+
+"./ext/flexary4.C", line 98: error: incomplete type "int []" is not allowed
+    int a_x [];
+        ^
+
+"./ext/flexary4.C", line 111: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a_x [];
+              ^
+
+"./ext/flexary4.C", line 111: error: incomplete type "int []" is not allowed
+    int a_x [];
+        ^
+
+"./ext/flexary4.C", line 126: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a_x [];
+              ^
+
+"./ext/flexary4.C", line 130: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a_x [];
+              ^
+
+"./ext/flexary4.C", line 130: error: incomplete type "int []" is not allowed
+    int a_x [];
+        ^
+
+"./ext/flexary4.C", line 135: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a_x [];
+              ^
+
+"./ext/flexary4.C", line 135: error: incomplete type "int []" is not allowed
+    int a_x [];
+        ^
+
+"./ext/flexary4.C", line 146: error: incomplete type "Sx24::S []" is not allowed
+    S a_x [];
+      ^
+
+"./ext/flexary4.C", line 151: error: a flexible array member cannot be declared in an otherwise-empty type
+    S a_x [];
+            ^
+
+"./ext/flexary4.C", line 156: error: a flexible array member cannot be declared in an otherwise-empty type
+      a_x [];
+            ^
+
+"./ext/flexary4.C", line 169: error: a flexible array member cannot be declared in an otherwise-empty type
+      a_x [];
+            ^
+
+"./ext/flexary4.C", line 169: error: incomplete type "struct Sx28::<unnamed> []" is not allowed
+      a_x [];
+      ^
+
+"./ext/flexary4.C", line 184: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a [];
+            ^
+
+"./ext/flexary4.C", line 184: error: incomplete type "int []" is not allowed
+    int a [];
+        ^
+
+"./ext/flexary4.C", line 196: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a [];
+            ^
+
+"./ext/flexary4.C", line 202: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a [];
+            ^
+
+"./ext/flexary4.C", line 208: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a[];
+           ^
+
+"./ext/flexary4.C", line 208: error: incomplete type "int []" is not allowed
+    int a[];
+        ^
+
+"./ext/flexary4.C", line 222: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a[];
+           ^
+
+"./ext/flexary4.C", line 222: error: incomplete type "int []" is not allowed
+    int a[];
+        ^
+
+"./ext/flexary4.C", line 236: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a[];
+           ^
+
+"./ext/flexary4.C", line 236: error: incomplete type "int []" is not allowed
+    int a[];
+        ^
+
+"./ext/flexary4.C", line 250: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a[];
+           ^
+
+"./ext/flexary4.C", line 250: error: incomplete type "int []" is not allowed
+    int a[];
+        ^
+
+"./ext/flexary4.C", line 264: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a[];
+           ^
+
+"./ext/flexary4.C", line 264: error: incomplete type "int []" is not allowed
+    int a[];
+        ^
+
+"./ext/flexary4.C", line 280: error: a flexible array member cannot be declared in an otherwise-empty type
+        int a[];
+               ^
+
+"./ext/flexary4.C", line 292: error: a flexible array member cannot be declared in an otherwise-empty type
+      int good[];
+                ^
+
+"./ext/flexary4.C", line 303: error: a flexible array member cannot be declared in an otherwise-empty type
+      int bad[];
+               ^
+
+"./ext/flexary4.C", line 311: error: a flexible array member cannot be declared in an otherwise-empty type
+        int good[];
+                  ^
+
+"./ext/flexary4.C", line 331: error: a flexible array member cannot be declared in an otherwise-empty type
+      int in_empty_struct[];
+                           ^
+
+"./ext/flexary4.C", line 337: error: a flexible array member cannot be declared in an otherwise-empty type
+      int not_at_end[];
+                      ^
+
+"./ext/flexary4.C", line 345: error: a flexible array member cannot be declared in an otherwise-empty type
+        int not_at_end[];
+                        ^
+
+"./ext/flexary4.C", line 355: error: a flexible array member cannot be declared in an otherwise-empty type
+        int not_at_end[];
+                        ^
+
+"./ext/flexary4.C", line 369: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a[];
+           ^
+
+"./ext/flexary4.C", line 378: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a[];
+           ^
+
+"./ext/flexary4.C", line 378: error: incomplete type "int []" is not allowed
+    int a[];
+        ^
+
+"./ext/flexary4.C", line 414: error: incomplete type "int []" is not allowed
+    int ax[];
+        ^
+
+55 errors detected in the compilation of "Test_name.c".

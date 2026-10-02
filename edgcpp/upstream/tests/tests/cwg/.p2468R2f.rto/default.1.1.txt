@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --c++20 -tused Test_name.c
+"Test_name.c", line 8: error: no operator "==" matches these operands
+            operand types are: int == A
+     bool a2 = 0 == A();  // error, #1 is not a rewrite target
+                 ^
+"Test_name.c", line 5: note: function template "operator==" does not match because argument #1 does not match parameter
+     template<typename T> bool operator==(A, T);  // #1
+                               ^
+"Test_name.c", line 8: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #2 does not match parameter
+     bool a2 = 0 == A();  // error, #1 is not a rewrite target
+                 ^
+"Test_name.c", line 8: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+     bool a2 = 0 == A();  // error, #1 is not a rewrite target
+                 ^
+
+1 error detected in the compilation of "Test_name.c".

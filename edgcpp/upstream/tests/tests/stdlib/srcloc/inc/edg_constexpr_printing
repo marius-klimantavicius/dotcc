@@ -1,0 +1,16 @@
+#pragma once
+
+namespace std {
+  constexpr void __report_constexpr_value(int) {}
+  constexpr void __report_constexpr_value(unsigned int) {}
+  constexpr void __report_constexpr_value(long long) {}
+  constexpr void __report_constexpr_value(unsigned long long) {}
+  constexpr void __report_constexpr_value(char const*) {}
+  constexpr void __report_constexpr_value(char const*, long long) {}
+}
+
+constexpr void print_indent(unsigned amt) {
+  for (unsigned i = 0; i < amt; ++i) {
+    std::__report_constexpr_value("  ");
+  }
+}

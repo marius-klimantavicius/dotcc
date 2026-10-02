@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=3 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 --exceptions --exceptions Test_name.c
+"Test_name.c", line 19: warning: variable "v" was set but never used
+    U v;
+      ^
+

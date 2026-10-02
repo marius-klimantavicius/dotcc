@@ -1,0 +1,378 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 29: warning: expression has no effect
+    sizeof(a5);
+    ^
+
+"Test_name.c", line 32: warning: expression has no effect
+      sizeof(a5);
+      ^
+
+"Test_name.c", line 37: warning: expression has no effect
+          sizeof(a5);
+          ^
+
+"Test_name.c", line 34: warning: variable "a5" was declared but never referenced
+        int a5;
+            ^
+
+"Test_name.c", line 40: warning: expression has no effect
+      sizeof(a5);
+      ^
+
+"Test_name.c", line 42: warning: expression has no effect
+    sizeof(a5);
+    ^
+
+"Test_name.c", line 50: warning: expression has no effect
+    sizeof(a7);
+    ^
+
+"Test_name.c", line 53: warning: expression has no effect
+      sizeof(a7);
+      ^
+
+"Test_name.c", line 58: warning: expression has no effect
+          sizeof(a7);
+          ^
+
+"Test_name.c", line 55: warning: variable "a7" was declared but never referenced
+        int a7;
+            ^
+
+"Test_name.c", line 61: warning: expression has no effect
+      sizeof(a7);
+      ^
+
+"Test_name.c", line 63: warning: expression has no effect
+    sizeof(a7);
+    ^
+
+"Test_name.c", line 71: warning: expression has no effect
+    sizeof(a13);
+    ^
+
+"Test_name.c", line 74: warning: expression has no effect
+      sizeof(a13);
+      ^
+
+"Test_name.c", line 79: warning: expression has no effect
+          sizeof(a13);
+          ^
+
+"Test_name.c", line 76: warning: variable "a13" was declared but never referenced
+        int a13;
+            ^
+
+"Test_name.c", line 82: warning: expression has no effect
+      sizeof(a13);
+      ^
+
+"Test_name.c", line 84: warning: expression has no effect
+    sizeof(a13);
+    ^
+
+"Test_name.c", line 92: warning: expression has no effect
+    sizeof(a15);
+    ^
+
+"Test_name.c", line 95: warning: expression has no effect
+      sizeof(a15);
+      ^
+
+"Test_name.c", line 100: warning: expression has no effect
+          sizeof(a15);
+          ^
+
+"Test_name.c", line 97: warning: variable "a15" was declared but never referenced
+        int a15;
+            ^
+
+"Test_name.c", line 103: warning: expression has no effect
+      sizeof(a15);
+      ^
+
+"Test_name.c", line 105: warning: expression has no effect
+    sizeof(a15);
+    ^
+
+"Test_name.c", line 114: warning: expression has no effect
+    sizeof(a18);
+    ^
+
+"Test_name.c", line 117: warning: expression has no effect
+      sizeof(a18);
+      ^
+
+"Test_name.c", line 119: warning: expression has no effect
+    sizeof(a18);
+    ^
+
+"Test_name.c", line 127: warning: expression has no effect
+    sizeof(a19);
+    ^
+
+"Test_name.c", line 130: warning: expression has no effect
+      sizeof(a19);
+      ^
+
+"Test_name.c", line 132: warning: expression has no effect
+    sizeof(a19);
+    ^
+
+"Test_name.c", line 140: warning: expression has no effect
+    sizeof(*b5);
+    ^
+
+"Test_name.c", line 143: warning: expression has no effect
+      sizeof(*b5);
+      ^
+
+"Test_name.c", line 148: warning: expression has no effect
+          sizeof(*b5);
+          ^
+
+"Test_name.c", line 145: warning: variable "b5" was declared but never referenced
+        int b5;
+            ^
+
+"Test_name.c", line 151: warning: expression has no effect
+      sizeof(*b5);
+      ^
+
+"Test_name.c", line 153: warning: expression has no effect
+    sizeof(*b5);
+    ^
+
+"Test_name.c", line 161: warning: expression has no effect
+    sizeof(*b7);
+    ^
+
+"Test_name.c", line 164: warning: expression has no effect
+      sizeof(*b7);
+      ^
+
+"Test_name.c", line 169: warning: expression has no effect
+          sizeof(*b7);
+          ^
+
+"Test_name.c", line 166: warning: variable "b7" was declared but never referenced
+        int b7;
+            ^
+
+"Test_name.c", line 172: warning: expression has no effect
+      sizeof(*b7);
+      ^
+
+"Test_name.c", line 174: warning: expression has no effect
+    sizeof(*b7);
+    ^
+
+"Test_name.c", line 182: warning: expression has no effect
+    sizeof(*b13);
+    ^
+
+"Test_name.c", line 185: warning: expression has no effect
+      sizeof(*b13);
+      ^
+
+"Test_name.c", line 190: warning: expression has no effect
+          sizeof(*b13);
+          ^
+
+"Test_name.c", line 187: warning: variable "b13" was declared but never referenced
+        int b13;
+            ^
+
+"Test_name.c", line 193: warning: expression has no effect
+      sizeof(*b13);
+      ^
+
+"Test_name.c", line 195: warning: expression has no effect
+    sizeof(*b13);
+    ^
+
+"Test_name.c", line 203: warning: expression has no effect
+    sizeof(*b15);
+    ^
+
+"Test_name.c", line 206: warning: expression has no effect
+      sizeof(*b15);
+      ^
+
+"Test_name.c", line 211: warning: expression has no effect
+          sizeof(*b15);
+          ^
+
+"Test_name.c", line 208: warning: variable "b15" was declared but never referenced
+        int b15;
+            ^
+
+"Test_name.c", line 214: warning: expression has no effect
+      sizeof(*b15);
+      ^
+
+"Test_name.c", line 216: warning: expression has no effect
+    sizeof(*b15);
+    ^
+
+"Test_name.c", line 224: warning: expression has no effect
+    sizeof(*b18);
+    ^
+
+"Test_name.c", line 227: warning: expression has no effect
+      sizeof(*b18);
+      ^
+
+"Test_name.c", line 229: warning: expression has no effect
+    sizeof(*b18);
+    ^
+
+"Test_name.c", line 237: warning: expression has no effect
+    sizeof(*b19);
+    ^
+
+"Test_name.c", line 240: warning: expression has no effect
+      sizeof(*b19);
+      ^
+
+"Test_name.c", line 242: warning: expression has no effect
+    sizeof(*b19);
+    ^
+
+"Test_name.c", line 250: warning: expression has no effect
+    sizeof(*c5());
+    ^
+
+"Test_name.c", line 253: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(*c5());
+            ^
+
+"Test_name.c", line 258: warning: expression has no effect
+          sizeof(*c5());
+          ^
+
+"Test_name.c", line 255: warning: variable "c5" was declared but never referenced
+        int c5;
+            ^
+
+"Test_name.c", line 261: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(*c5());
+            ^
+
+"Test_name.c", line 263: warning: expression has no effect
+    sizeof(*c5());
+    ^
+
+"Test_name.c", line 271: warning: expression has no effect
+    sizeof(*c7());
+    ^
+
+"Test_name.c", line 274: warning: expression has no effect
+      sizeof(*c7());
+      ^
+
+"Test_name.c", line 279: warning: expression has no effect
+          sizeof(*c7());
+          ^
+
+"Test_name.c", line 276: warning: variable "c7" was declared but never referenced
+        int c7;
+            ^
+
+"Test_name.c", line 282: warning: expression has no effect
+      sizeof(*c7());
+      ^
+
+"Test_name.c", line 284: warning: expression has no effect
+    sizeof(*c7());
+    ^
+
+"Test_name.c", line 292: warning: expression has no effect
+    sizeof(*c13());
+    ^
+
+"Test_name.c", line 295: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(*c13());
+            ^
+
+"Test_name.c", line 300: warning: expression has no effect
+          sizeof(*c13());
+          ^
+
+"Test_name.c", line 297: warning: variable "c13" was declared but never referenced
+        int c13;
+            ^
+
+"Test_name.c", line 303: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(*c13());
+            ^
+
+"Test_name.c", line 305: warning: expression has no effect
+    sizeof(*c13());
+    ^
+
+"Test_name.c", line 313: warning: expression has no effect
+    sizeof(*c15());
+    ^
+
+"Test_name.c", line 316: warning: expression has no effect
+      sizeof(*c15());
+      ^
+
+"Test_name.c", line 321: warning: expression has no effect
+          sizeof(*c15());
+          ^
+
+"Test_name.c", line 318: warning: variable "c15" was declared but never referenced
+        int c15;
+            ^
+
+"Test_name.c", line 324: warning: expression has no effect
+      sizeof(*c15());
+      ^
+
+"Test_name.c", line 326: warning: expression has no effect
+    sizeof(*c15());
+    ^
+
+"Test_name.c", line 334: warning: expression has no effect
+    sizeof(*c18());
+    ^
+
+"Test_name.c", line 337: error: incomplete type "IA" (aka "int []") is not allowed
+      sizeof(*c18());
+            ^
+
+"Test_name.c", line 339: warning: expression has no effect
+    sizeof(*c18());
+    ^
+
+"Test_name.c", line 347: warning: expression has no effect
+    sizeof(*c19());
+    ^
+
+"Test_name.c", line 350: warning: expression has no effect
+      sizeof(*c19());
+      ^
+
+"Test_name.c", line 352: warning: expression has no effect
+    sizeof(*c19());
+    ^
+
+"Test_name.c", line 110: warning: variable "a18" was set but never used
+  static A10 a18;
+             ^
+
+"Test_name.c", line 123: warning: variable "a19" was set but never used
+  static A10 a19;
+             ^
+
+"Test_name.c", line 220: warning: variable "b18" was set but never used
+  static A10 *b18;
+              ^
+
+"Test_name.c", line 233: warning: variable "b19" was set but never used
+  static A10 *b19;
+              ^
+
+5 errors detected in the compilation of "Test_name.c".

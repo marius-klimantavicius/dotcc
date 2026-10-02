@@ -1,0 +1,30 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp23/attr-assume3.C", line 20: error: constexpr function return is non-constant
+    { return __builtin_sqrtf (x); }
+             ^
+
+"./cpp23/attr-assume3.C", line 24: error: constexpr function return is non-constant
+    { return __builtin_sqrt (x); }
+             ^
+
+"./cpp23/attr-assume3.C", line 28: error: constexpr function return is non-constant
+    { return __builtin_sqrtl (x); }
+             ^
+
+"./cpp23/attr-assume3.C", line 162: warning: variable "d" was set but never used
+    double d = 42.0, e = 43.0;
+           ^
+
+"./cpp23/attr-assume3.C", line 162: warning: variable "e" was set but never used
+    double d = 42.0, e = 43.0;
+                     ^
+
+"./cpp23/attr-assume3.C", line 185: warning: variable "j" was set but never used
+    int i = 90, j = 91, k = 92;
+                ^
+
+"./cpp23/attr-assume3.C", line 185: warning: variable "k" was set but never used
+    int i = 90, j = 91, k = 92;
+                        ^
+
+3 errors detected in the compilation of "Test_name.c".

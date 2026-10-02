@@ -1,0 +1,9 @@
+# Start with the normal MacOS x86 clang debug configuration
+import <macos-x86-clang/cpfe>
+
+# Make the front end a callable library with multiple
+# threads and a custom default error file.
+EDG_FRONT_END_DAEMON=1
+MAKE_FRONT_END_CALLABLE=1
+MULTIPLE_THREAD_COMPILATION=1
+CUSTOM_DEFAULT_OUTPUT_FILES=1

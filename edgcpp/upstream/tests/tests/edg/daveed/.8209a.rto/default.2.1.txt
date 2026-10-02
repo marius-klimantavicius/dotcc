@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=2 --microsoft_version=1310 Test_name.c
+"Test_name.c", line 20: warning: invalid friend declaration
+      friend class A;   // Error in msvc8, ok in msvc 7.1
+                   ^
+

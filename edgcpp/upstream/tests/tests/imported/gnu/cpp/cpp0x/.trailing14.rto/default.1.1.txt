@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 12: error: function returning function is not allowed
+  Fi f1();           // { dg-error "1: 'f1' declared as function returning a function" }
+     ^
+
+"Test_name.c", line 13: error: function returning function is not allowed
+  auto f2() -> Fi;   // { dg-error "1: 'f2' declared as function returning a function" }
+               ^
+
+"Test_name.c", line 16: error: function returning array is not allowed
+  Ai a1();           // { dg-error "1: 'a1' declared as function returning an array" }
+     ^
+
+"Test_name.c", line 17: error: function returning array is not allowed
+  auto a2() -> Ai;   // { dg-error "1: 'a2' declared as function returning an array" }
+               ^
+
+4 errors detected in the compilation of "Test_name.c".

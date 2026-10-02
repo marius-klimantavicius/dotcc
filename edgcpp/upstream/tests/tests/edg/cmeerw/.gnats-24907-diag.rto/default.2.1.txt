@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=2 -tused --ms_c++20 --microsoft_version 1938 Test_name.c
+"Test_name.c", line 17: error: static assertion failed
+        static_assert( requires { * this + 1; } ); // error
+        ^
+          detected during:
+            instantiation of function "lambda [](auto)->auto [with <auto-1>=int]" at line 18
+            instantiation of "int C<I>::f() [with I=1]" at line 23
+
+1 error detected in the compilation of "Test_name.c".

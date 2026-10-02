@@ -1,0 +1,110 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 42: error: this range-based "for" statement requires a suitable "begin" function and none was found
+    for (auto i : pt) { } // expected-error{{invalid range expression of type 'T *'; did you mean to dereference it with '*'?}}
+                  ^
+
+"Test_name.c", line 42: error: this range-based "for" statement requires a suitable "end" function and none was found
+    for (auto i : pt) { } // expected-error{{invalid range expression of type 'T *'; did you mean to dereference it with '*'?}}
+                  ^
+
+"Test_name.c", line 47: error: this range-based "for" statement requires a suitable "begin" function and none was found
+    for (auto i : parr) { }// expected-error{{invalid range expression of type 'int (*)[10]'; did you mean to dereference it with '*'?}}
+                  ^
+
+"Test_name.c", line 47: error: this range-based "for" statement requires a suitable "end" function and none was found
+    for (auto i : parr) { }// expected-error{{invalid range expression of type 'int (*)[10]'; did you mean to dereference it with '*'?}}
+                  ^
+
+"Test_name.c", line 50: error: this range-based "for" statement requires a suitable "begin" function and none was found
+    for (auto i : NB) { }// expected-error{{invalid range expression of type 'NoBegin'; no viable 'begin' function available}}
+                  ^
+
+"Test_name.c", line 50: error: this range-based "for" statement requires a suitable "end" function and none was found
+    for (auto i : NB) { }// expected-error{{invalid range expression of type 'NoBegin'; no viable 'begin' function available}}
+                  ^
+
+"Test_name.c", line 52: error: this range-based "for" statement requires a suitable "begin" function and none was found
+    for (auto i : pNB) { }// expected-error{{invalid range expression of type 'NoBegin *'; no viable 'begin' function available}}
+                  ^
+
+"Test_name.c", line 52: error: this range-based "for" statement requires a suitable "end" function and none was found
+    for (auto i : pNB) { }// expected-error{{invalid range expression of type 'NoBegin *'; no viable 'begin' function available}}
+                  ^
+
+"Test_name.c", line 54: error: this range-based "for" statement requires a suitable "begin" function and none was found
+    for (auto i : ppNB) { }// expected-error{{invalid range expression of type 'NoBegin **'; no viable 'begin' function available}}
+                  ^
+
+"Test_name.c", line 54: error: this range-based "for" statement requires a suitable "end" function and none was found
+    for (auto i : ppNB) { }// expected-error{{invalid range expression of type 'NoBegin **'; no viable 'begin' function available}}
+                  ^
+
+"Test_name.c", line 56: error: this range-based "for" statement requires a suitable "begin" function and none was found
+    for (auto i : pppppNB) { }// expected-error{{invalid range expression of type 'NoBegin *****'; no viable 'begin' function available}}
+                  ^
+
+"Test_name.c", line 56: error: this range-based "for" statement requires a suitable "end" function and none was found
+    for (auto i : pppppNB) { }// expected-error{{invalid range expression of type 'NoBegin *****'; no viable 'begin' function available}}
+                  ^
+
+"Test_name.c", line 59: error: this range-based "for" statement requires a suitable "end" function and none was found
+    for (auto i : ANE) { } // expected-error{{invalid range expression of type 'ADLNoEnd'; no viable 'end' function available}}
+                  ^
+
+"Test_name.c", line 61: error: this range-based "for" statement requires a suitable "begin" function and none was found
+    for (auto i : pANE) { } // expected-error{{invalid range expression of type 'ADLNoEnd *'; no viable 'begin' function available}}
+                  ^
+
+"Test_name.c", line 61: error: this range-based "for" statement requires a suitable "end" function and none was found
+    for (auto i : pANE) { } // expected-error{{invalid range expression of type 'ADLNoEnd *'; no viable 'begin' function available}}
+                  ^
+
+"Test_name.c", line 64: error: function "DeletedEnd::end()" (declared at line 16) cannot be referenced -- it is a deleted function
+    for (auto i : DE) { } // expected-error{{attempt to use a deleted function}} \
+                  ^
+
+"Test_name.c", line 68: error: this range-based "for" statement requires a suitable "begin" function and none was found
+    for (auto i : pDE) { } // expected-error {{invalid range expression of type 'DeletedEnd *'; no viable 'begin' function available}}
+                  ^
+
+"Test_name.c", line 68: error: this range-based "for" statement requires a suitable "end" function and none was found
+    for (auto i : pDE) { } // expected-error {{invalid range expression of type 'DeletedEnd *'; no viable 'begin' function available}}
+                  ^
+
+"Test_name.c", line 73: error: function "PrivateEnd::end" (declared at line 28) is inaccessible
+    for (auto i : PE) { } // expected-error{{'end' is a private member of 'PrivateEnd'}}
+                  ^
+
+"Test_name.c", line 76: error: this range-based "for" statement requires a suitable "begin" function and none was found
+    for (auto i : pPE) { }// expected-error {{invalid range expression of type 'PrivateEnd *'}}
+                  ^
+
+"Test_name.c", line 76: error: this range-based "for" statement requires a suitable "end" function and none was found
+    for (auto i : pPE) { }// expected-error {{invalid range expression of type 'PrivateEnd *'}}
+                  ^
+
+"Test_name.c", line 80: error: function "begin(DeletedADLBegin)" (declared at line 21) cannot be referenced -- it is a deleted function
+    for (auto i : DAB) { } // expected-error {{call to deleted function 'begin'}}\
+                  ^
+
+"Test_name.c", line 80: error: this range-based "for" statement requires a suitable "end" function and none was found
+    for (auto i : DAB) { } // expected-error {{call to deleted function 'begin'}}\
+                  ^
+
+"Test_name.c", line 86: error: this range-based "for" statement requires a suitable "begin" function and none was found
+    for (auto i : OS) { } // expected-error {{invalid range expression of type 'OverloadedStar'; did you mean to dereference it with '*'?}}
+                  ^
+
+"Test_name.c", line 86: error: this range-based "for" statement requires a suitable "end" function and none was found
+    for (auto i : OS) { } // expected-error {{invalid range expression of type 'OverloadedStar'; did you mean to dereference it with '*'?}}
+                  ^
+
+"Test_name.c", line 88: error: this range-based "for" statement requires a suitable "begin" function and none was found
+    for (Data *p : pt) { } // expected-error {{invalid range expression of type 'T *'; did you mean to dereference it with '*'?}}
+                   ^
+
+"Test_name.c", line 88: error: this range-based "for" statement requires a suitable "end" function and none was found
+    for (Data *p : pt) { } // expected-error {{invalid range expression of type 'T *'; did you mean to dereference it with '*'?}}
+                   ^
+
+27 errors detected in the compilation of "Test_name.c".

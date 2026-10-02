@@ -1,0 +1,486 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 13: warning: unknown attribute "deprecated"
+    [[deprecated]] int x1;
+      ^
+
+"Test_name.c", line 14: warning: unknown attribute "deprecated"
+    [[deprecated ("foobar")]] int x2;
+      ^
+
+"Test_name.c", line 15: warning: unknown attribute "deprecated"
+    [[deprecated (0)]] int x3;			// { dg-error "deprecated message is not a string" }
+      ^
+
+"Test_name.c", line 17: warning: unknown attribute "deprecated"
+    [[deprecated ("foo", "bar", "baz")]] int x4;	// { dg-error "wrong number of arguments specified for 'deprecated' attribute" }
+      ^
+
+"Test_name.c", line 18: warning: unknown attribute "deprecated"
+    [[deprecated (0, 1, 2)]] int x5;		// { dg-error "wrong number of arguments specified for 'deprecated' attribute" }
+      ^
+
+"Test_name.c", line 21: warning: unknown attribute "deprecated"
+    auto a = [] [[deprecated]] () {};
+                  ^
+
+"Test_name.c", line 22: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+    auto b = [] constexpr [[deprecated]] {};	// { dg-error "'deprecated' on a type other than class or enumeration definition" }
+                ^
+
+"Test_name.c", line 22: error: constexpr lambdas are not enabled in this mode
+    auto b = [] constexpr [[deprecated]] {};	// { dg-error "'deprecated' on a type other than class or enumeration definition" }
+                ^
+
+"Test_name.c", line 22: warning: unknown attribute "deprecated"
+    auto b = [] constexpr [[deprecated]] {};	// { dg-error "'deprecated' on a type other than class or enumeration definition" }
+                            ^
+
+"Test_name.c", line 25: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+    auto c = [] noexcept [[deprecated]] {};	// { dg-error "'deprecated' on a type other than class or enumeration definition" }
+                ^
+
+"Test_name.c", line 25: warning: unknown attribute "deprecated"
+    auto c = [] noexcept [[deprecated]] {};	// { dg-error "'deprecated' on a type other than class or enumeration definition" }
+                           ^
+
+"Test_name.c", line 27: warning: unknown attribute "deprecated"
+    auto d = [] () [[deprecated]] {};		// { dg-error "'deprecated' on a type other than class or enumeration definition" }
+                     ^
+
+"Test_name.c", line 28: warning: unknown attribute "deprecated"
+    auto e = new int [n] [[deprecated]];		// { dg-warning "attributes ignored on outermost array type in new expression" }
+                           ^
+
+"Test_name.c", line 29: warning: unknown attribute "deprecated"
+    auto e2 = new int [n] [[deprecated]] [42];	// { dg-warning "attributes ignored on outermost array type in new expression" }
+                            ^
+
+"Test_name.c", line 30: warning: unknown attribute "deprecated"
+    auto f = new int [n][42] [[deprecated]];	// { dg-error "'deprecated' on a type other than class or enumeration definition" }
+                               ^
+
+"Test_name.c", line 31: warning: unknown attribute "deprecated"
+    [[deprecated]];				// { dg-warning "attributes at the beginning of statement are ignored" }
+      ^
+
+"Test_name.c", line 32: warning: unknown attribute "deprecated"
+    [[deprecated]] {}				// { dg-warning "attributes at the beginning of statement are ignored" }
+      ^
+
+"Test_name.c", line 33: warning: unknown attribute "deprecated"
+    [[deprecated]] if (true) {}			// { dg-warning "attributes at the beginning of statement are ignored" }
+      ^
+
+"Test_name.c", line 34: warning: unknown attribute "deprecated"
+    [[deprecated]] while (false) {}		// { dg-warning "attributes at the beginning of statement are ignored" }
+      ^
+
+"Test_name.c", line 35: warning: unknown attribute "deprecated"
+    [[deprecated]] goto lab;			// { dg-warning "attributes at the beginning of statement are ignored" }
+      ^
+
+"Test_name.c", line 36: warning: unknown attribute "deprecated"
+    [[deprecated]] lab:;				// { dg-error "'deprecated' attribute ignored" }
+      ^
+
+"Test_name.c", line 37: warning: unknown attribute "deprecated"
+    [[deprecated]] try {} catch (int) {}		// { dg-warning "attributes at the beginning of statement are ignored" }
+      ^
+
+"Test_name.c", line 38: warning: unknown attribute "deprecated"
+    if ([[deprecated]] int x = 0) {}
+          ^
+
+"Test_name.c", line 41: warning: unknown attribute "deprecated"
+      [[deprecated]] case 1:			// { dg-error "'deprecated' attribute ignored" }
+        ^
+
+"Test_name.c", line 42: warning: unknown attribute "deprecated"
+      [[deprecated]] break;			// { dg-warning "attributes at the beginning of statement are ignored" }
+        ^
+
+"Test_name.c", line 43: warning: unknown attribute "deprecated"
+      [[deprecated]] default:			// { dg-error "'deprecated' attribute ignored" }
+        ^
+
+"Test_name.c", line 46: warning: unknown attribute "deprecated"
+    for ([[deprecated]] auto a : arr) {}
+           ^
+
+"Test_name.c", line 47: warning: unknown attribute "deprecated"
+    for ([[deprecated]] auto [a, b] : arr2) {}	// { dg-error "structured bindings only available with" "" { target c++14_down } }
+           ^
+
+"Test_name.c", line 47: warning: structured bindings are a C++17 feature
+    for ([[deprecated]] auto [a, b] : arr2) {}	// { dg-error "structured bindings only available with" "" { target c++14_down } }
+                             ^
+
+"Test_name.c", line 47: warning: structured binding "a" was declared but never referenced
+    for ([[deprecated]] auto [a, b] : arr2) {}	// { dg-error "structured bindings only available with" "" { target c++14_down } }
+                              ^
+
+"Test_name.c", line 48: warning: unknown attribute "deprecated"
+    [[deprecated]] asm ("");			// { dg-warning "attributes ignored on 'asm' declaration" }
+      ^
+
+"Test_name.c", line 49: warning: unknown attribute "deprecated"
+    try {} catch ([[deprecated]] int x) {}
+                    ^
+
+"Test_name.c", line 50: warning: unknown attribute "deprecated"
+    try {} catch ([[deprecated]] int) {}
+                    ^
+
+"Test_name.c", line 51: warning: unknown attribute "deprecated"
+    try {} catch (int [[deprecated]] x) {}	// { dg-warning "attribute ignored" }
+                        ^
+
+"Test_name.c", line 52: warning: unknown attribute "deprecated"
+    try {} catch (int [[deprecated]]) {}		// { dg-warning "attribute ignored" }
+                        ^
+
+"Test_name.c", line 53: warning: unknown attribute "deprecated"
+    try {} catch (int x [[deprecated]]) {}
+                          ^
+
+"Test_name.c", line 13: warning: variable "x1" was declared but never referenced
+    [[deprecated]] int x1;
+                       ^
+
+"Test_name.c", line 14: warning: variable "x2" was declared but never referenced
+    [[deprecated ("foobar")]] int x2;
+                                  ^
+
+"Test_name.c", line 15: warning: variable "x3" was declared but never referenced
+    [[deprecated (0)]] int x3;			// { dg-error "deprecated message is not a string" }
+                           ^
+
+"Test_name.c", line 17: warning: variable "x4" was declared but never referenced
+    [[deprecated ("foo", "bar", "baz")]] int x4;	// { dg-error "wrong number of arguments specified for 'deprecated' attribute" }
+                                             ^
+
+"Test_name.c", line 18: warning: variable "x5" was declared but never referenced
+    [[deprecated (0, 1, 2)]] int x5;		// { dg-error "wrong number of arguments specified for 'deprecated' attribute" }
+                                 ^
+
+"Test_name.c", line 21: warning: variable "a" was declared but never referenced
+    auto a = [] [[deprecated]] () {};
+         ^
+
+"Test_name.c", line 22: warning: variable "b" was declared but never referenced
+    auto b = [] constexpr [[deprecated]] {};	// { dg-error "'deprecated' on a type other than class or enumeration definition" }
+         ^
+
+"Test_name.c", line 25: warning: variable "c" was declared but never referenced
+    auto c = [] noexcept [[deprecated]] {};	// { dg-error "'deprecated' on a type other than class or enumeration definition" }
+         ^
+
+"Test_name.c", line 27: warning: variable "d" was declared but never referenced
+    auto d = [] () [[deprecated]] {};		// { dg-error "'deprecated' on a type other than class or enumeration definition" }
+         ^
+
+"Test_name.c", line 56: warning: unknown attribute "deprecated"
+  [[deprecated]] int bar ();
+    ^
+
+"Test_name.c", line 57: warning: unknown attribute "deprecated"
+  using foobar [[deprecated]] = int;
+                 ^
+
+"Test_name.c", line 58: warning: unknown attribute "deprecated"
+  [[deprecated]] int a;
+    ^
+
+"Test_name.c", line 59: warning: unknown attribute "deprecated"
+  [[deprecated]] auto [b, c] = arr;		// { dg-error "structured bindings only available with" "" { target c++14_down } }
+    ^
+
+"Test_name.c", line 59: warning: structured bindings are a C++17 feature
+  [[deprecated]] auto [b, c] = arr;		// { dg-error "structured bindings only available with" "" { target c++14_down } }
+                      ^
+
+"Test_name.c", line 60: warning: unknown attribute "deprecated"
+  [[deprecated]];					// { dg-warning "attribute ignored" }
+    ^
+
+"Test_name.c", line 61: warning: unknown attribute "deprecated"
+  inline [[deprecated]] void baz () {}		// { dg-warning "attribute ignored" }
+           ^
+
+"Test_name.c", line 63: warning: unknown attribute "deprecated"
+  constexpr [[deprecated]] int qux () { return 0; }	// { dg-warning "attribute ignored" }
+              ^
+
+"Test_name.c", line 65: warning: unknown attribute "deprecated"
+  int [[deprecated]] d;				// { dg-warning "attribute ignored" }
+        ^
+
+"Test_name.c", line 66: warning: unknown attribute "deprecated"
+  int const [[deprecated]] e = 1;			// { dg-warning "attribute ignored" }
+              ^
+
+"Test_name.c", line 67: warning: unknown attribute "deprecated"
+  struct A {} [[deprecated]];			// { dg-warning "attribute ignored in declaration of 'struct A'" }
+                ^
+
+"Test_name.c", line 68: warning: unknown attribute "deprecated"
+  struct A [[deprecated]];			// { dg-warning "attribute ignored" }
+             ^
+
+"Test_name.c", line 68: warning: declaration does not declare anything
+  struct A [[deprecated]];			// { dg-warning "attribute ignored" }
+  ^
+
+"Test_name.c", line 69: warning: unknown attribute "deprecated"
+  struct A [[deprecated]] a1;			// { dg-warning "attribute ignored" }
+             ^
+
+"Test_name.c", line 70: warning: unknown attribute "deprecated"
+  A [[deprecated]] a2;				// { dg-warning "attribute ignored" }
+      ^
+
+"Test_name.c", line 71: warning: unknown attribute "deprecated"
+  enum B { B0 } [[deprecated]];			// { dg-warning "attribute ignored in declaration of 'enum B'" }
+                  ^
+
+"Test_name.c", line 72: warning: unknown attribute "deprecated"
+  enum B [[deprecated]];				// { dg-warning "attribute ignored" }
+           ^
+
+"Test_name.c", line 72: warning: declaration does not declare anything
+  enum B [[deprecated]];				// { dg-warning "attribute ignored" }
+  ^
+
+"Test_name.c", line 73: warning: unknown attribute "deprecated"
+  enum B [[deprecated]] b1;			// { dg-warning "attribute ignored" }
+           ^
+
+"Test_name.c", line 74: warning: unknown attribute "deprecated"
+  B [[deprecated]] b2;				// { dg-warning "attribute ignored" }
+      ^
+
+"Test_name.c", line 75: warning: unknown attribute "deprecated"
+  struct [[deprecated]] C {};
+           ^
+
+"Test_name.c", line 76: warning: unknown attribute "deprecated"
+  int f [[deprecated]];
+          ^
+
+"Test_name.c", line 77: warning: unknown attribute "deprecated"
+  int g[2] [[deprecated]];			// { dg-error "'deprecated' on a type other than class or enumeration definition" }
+             ^
+
+"Test_name.c", line 78: warning: unknown attribute "deprecated"
+  int g2 [[deprecated]] [2];
+           ^
+
+"Test_name.c", line 79: warning: unknown attribute "deprecated"
+  int corge () [[deprecated]];			// { dg-error "'deprecated' on a type other than class or enumeration definition" }
+                 ^
+
+"Test_name.c", line 80: warning: unknown attribute "deprecated"
+  int *[[deprecated]] h;				// { dg-error "'deprecated' on a type other than class or enumeration definition" }
+         ^
+
+"Test_name.c", line 81: warning: unknown attribute "deprecated"
+  int & [[deprecated]] i = f;			// { dg-error "'deprecated' on a type other than class or enumeration definition" }
+          ^
+
+"Test_name.c", line 83: warning: unknown attribute "deprecated"
+  int && [[deprecated]] j = 0;			// { dg-error "'deprecated' on a type other than class or enumeration definition" }
+           ^
+
+"Test_name.c", line 84: warning: unknown attribute "deprecated"
+  int S::* [[deprecated]] k;			// { dg-error "'deprecated' on a type other than class or enumeration definition" }
+             ^
+
+"Test_name.c", line 85: warning: unknown attribute "deprecated"
+  auto l = sizeof (int [2] [[deprecated]]);	// { dg-error "'deprecated' on a type other than class or enumeration definition" }
+                             ^
+
+"Test_name.c", line 86: warning: unknown attribute "deprecated"
+  int freddy ([[deprecated]] int a,
+                ^
+
+"Test_name.c", line 87: warning: unknown attribute "deprecated"
+  	    [[deprecated]] int,
+  	      ^
+
+"Test_name.c", line 88: warning: unknown attribute "deprecated"
+  	    [[deprecated]] int c = 0,
+  	      ^
+
+"Test_name.c", line 89: warning: unknown attribute "deprecated"
+  	    [[deprecated]] int = 0);
+  	      ^
+
+"Test_name.c", line 91: warning: unknown attribute "deprecated"
+  corge ([[deprecated]] int a,
+           ^
+
+"Test_name.c", line 92: warning: unknown attribute "deprecated"
+         [[deprecated]] int,
+           ^
+
+"Test_name.c", line 93: warning: unknown attribute "deprecated"
+         [[deprecated]] int c = 0,
+           ^
+
+"Test_name.c", line 94: warning: unknown attribute "deprecated"
+         [[deprecated]] int = 0)
+           ^
+
+"Test_name.c", line 97: warning: unknown attribute "deprecated"
+  [[deprecated]] void
+    ^
+
+"Test_name.c", line 101: warning: unknown attribute "deprecated"
+  int grault (int [[deprecated]] a,		// { dg-warning "attribute ignored" }
+                    ^
+
+"Test_name.c", line 102: warning: unknown attribute "deprecated"
+  	    int [[deprecated]],			// { dg-warning "attribute ignored" }
+  	          ^
+
+"Test_name.c", line 103: warning: unknown attribute "deprecated"
+  	    int [[deprecated]] c = 0,		// { dg-warning "attribute ignored" }
+  	          ^
+
+"Test_name.c", line 104: warning: unknown attribute "deprecated"
+  	    int [[deprecated]] = 0);		// { dg-warning "attribute ignored" }
+  	          ^
+
+"Test_name.c", line 106: warning: unknown attribute "deprecated"
+  waldo (int [[deprecated]] a,			// { dg-warning "attribute ignored" }
+               ^
+
+"Test_name.c", line 107: warning: unknown attribute "deprecated"
+         int [[deprecated]],			// { dg-warning "attribute ignored" }
+               ^
+
+"Test_name.c", line 108: warning: unknown attribute "deprecated"
+         int [[deprecated]] c = 0,		// { dg-warning "attribute ignored" }
+               ^
+
+"Test_name.c", line 109: warning: unknown attribute "deprecated"
+         int [[deprecated]] = 0)			// { dg-warning "attribute ignored" }
+               ^
+
+"Test_name.c", line 112: warning: unknown attribute "deprecated"
+  int plugh (int a [[deprecated]],
+                     ^
+
+"Test_name.c", line 113: warning: unknown attribute "deprecated"
+  	    int b [[deprecated]] = 0);
+  	            ^
+
+"Test_name.c", line 115: warning: unknown attribute "deprecated"
+  thud (int a [[deprecated]],
+                ^
+
+"Test_name.c", line 116: warning: unknown attribute "deprecated"
+        int b [[deprecated]] = 0)
+                ^
+
+"Test_name.c", line 119: warning: unknown attribute "deprecated"
+  enum [[deprecated]] D { D0 };
+         ^
+
+"Test_name.c", line 120: warning: unknown attribute "deprecated"
+  enum class [[deprecated]] E { E0 };
+               ^
+
+"Test_name.c", line 122: warning: unknown attribute "deprecated"
+  enum [[deprecated]] F;				// { dg-warning "type attributes ignored after type is already defined" }
+         ^
+
+"Test_name.c", line 124: warning: unknown attribute "deprecated"
+    G0 [[deprecated]],
+         ^
+
+"Test_name.c", line 125: warning: unknown attribute "deprecated"
+    G1 [[deprecated]] = 2
+         ^
+
+"Test_name.c", line 127: warning: unknown attribute "deprecated"
+  namespace [[deprecated]] H { using H0 = int; }
+              ^
+
+"Test_name.c", line 128: warning: unknown attribute "deprecated"
+  namespace [[deprecated]] {}			// { dg-warning "ignoring 'deprecated' attribute on anonymous namespace" }
+              ^
+
+"Test_name.c", line 129: warning: unknown attribute "deprecated"
+  [[deprecated]] using namespace H;		// { dg-warning "'deprecated' attribute directive ignored" }
+    ^
+
+"Test_name.c", line 131: warning: unknown attribute "deprecated"
+  struct [[deprecated]] I
+           ^
+
+"Test_name.c", line 133: warning: unknown attribute "deprecated"
+    [[deprecated]];				// { dg-error "declaration does not declare anything" }
+      ^
+
+"Test_name.c", line 133: warning: declaration does not declare anything
+    [[deprecated]];				// { dg-error "declaration does not declare anything" }
+                  ^
+
+"Test_name.c", line 134: warning: unknown attribute "deprecated"
+    [[deprecated]] int i;
+      ^
+
+"Test_name.c", line 135: warning: unknown attribute "deprecated"
+    [[deprecated]] int foo ();
+      ^
+
+"Test_name.c", line 136: warning: unknown attribute "deprecated"
+    [[deprecated]] int bar () { return 1; }
+      ^
+
+"Test_name.c", line 137: warning: unknown attribute "deprecated"
+    [[deprecated]] int : 0;			// { dg-error "'deprecated' on unnamed bit-field" }
+      ^
+
+"Test_name.c", line 138: warning: unknown attribute "deprecated"
+    [[deprecated]] int i2 : 5;
+      ^
+
+"Test_name.c", line 139: warning: unknown attribute "deprecated"
+    [[deprecated]] static int i3;
+      ^
+
+"Test_name.c", line 142: warning: unknown attribute "deprecated"
+  [[deprecated]] int I::i4 = 0;
+    ^
+
+"Test_name.c", line 143: warning: unknown attribute "deprecated"
+  struct J : [[deprecated]] C {};			// { dg-warning "attributes on base specifiers are ignored" }
+               ^
+
+"Test_name.c", line 148: warning: unknown attribute "deprecated"
+  typedef int L [[deprecated]];
+                  ^
+
+"Test_name.c", line 152: warning: unknown attribute "deprecated"
+  struct [[deprecated]] M<int> { int m; };
+           ^
+
+"Test_name.c", line 153: warning: unknown attribute "deprecated"
+  typedef int N[2] [[deprecated]];		// { dg-error "'deprecated' on a type other than class or enumeration definition" }
+                     ^
+
+"Test_name.c", line 154: warning: unknown attribute "deprecated"
+  typedef int O [[deprecated]] [2];
+                  ^
+
+"Test_name.c", line 59: warning: structured binding "b" was declared but never referenced
+  [[deprecated]] auto [b, c] = arr;		// { dg-error "structured bindings only available with" "" { target c++14_down } }
+                       ^
+
+"Test_name.c", line 66: warning: variable "e" was declared but never referenced
+  int const [[deprecated]] e = 1;			// { dg-warning "attribute ignored" }
+                           ^
+
+1 error detected in the compilation of "Test_name.c".

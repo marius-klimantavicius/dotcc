@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 23: warning: structured bindings are a C++17 feature
+    auto [ ci ] = c;		// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+         ^
+
+"Test_name.c", line 24: warning: structured bindings are a C++17 feature
+    auto [ fi ] = f;		// { dg-error "cannot decompose class type 'F': both it and its base class 'A' have non-static data members" }
+         ^
+
+"Test_name.c", line 24: error: type "F" has no components to bind to
+    auto [ fi ] = f;		// { dg-error "cannot decompose class type 'F': both it and its base class 'A' have non-static data members" }
+         ^
+
+"Test_name.c", line 26: warning: structured bindings are a C++17 feature
+    auto [ gi ] = g;		// { dg-error "cannot decompose class type 'G': its base classes 'A' and 'E' have non-static data members" }
+         ^
+
+"Test_name.c", line 26: error: type "G" has no components to bind to
+    auto [ gi ] = g;		// { dg-error "cannot decompose class type 'G': its base classes 'A' and 'E' have non-static data members" }
+         ^
+
+"Test_name.c", line 28: warning: structured bindings are a C++17 feature
+    auto [ hi ] = h;		// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+         ^
+
+"Test_name.c", line 29: warning: structured bindings are a C++17 feature
+    auto [ ki ] = k;		// { dg-error "'B' is an ambiguous base of 'K'" }
+         ^
+
+"Test_name.c", line 29: error: type "K" has no components to bind to
+    auto [ ki ] = k;		// { dg-error "'B' is an ambiguous base of 'K'" }
+         ^
+
+"Test_name.c", line 31: warning: structured bindings are a C++17 feature
+    auto [ mi ] = m;		// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+         ^
+
+"Test_name.c", line 23: warning: structured binding "ci" was declared but never referenced
+    auto [ ci ] = c;		// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+           ^
+
+"Test_name.c", line 28: warning: structured binding "hi" was declared but never referenced
+    auto [ hi ] = h;		// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+           ^
+
+"Test_name.c", line 31: warning: structured binding "mi" was declared but never referenced
+    auto [ mi ] = m;		// { dg-warning "structured bindings only available with" "" { target c++14_down } }
+           ^
+
+3 errors detected in the compilation of "Test_name.c".

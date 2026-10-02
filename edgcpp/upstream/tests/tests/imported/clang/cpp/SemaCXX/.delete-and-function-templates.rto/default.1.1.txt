@@ -1,0 +1,57 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 17: error: function "test_sfinae_and_delete::ns1::f(T) [with T=int]" (declared at line 14) cannot be referenced -- it is a deleted function
+  static_assert(is_same<decltype(f(3)),char>::value, ""); //expected-error{{call to deleted function}} expected-error{{static assertion failed}}
+                                 ^
+
+"Test_name.c", line 17: error: static assertion failed with ""
+  static_assert(is_same<decltype(f(3)),char>::value, ""); //expected-error{{call to deleted function}} expected-error{{static assertion failed}}
+  ^
+
+"Test_name.c", line 33: error: more than one instance of overloaded function "test_sfinae_and_delete::ns2::g" matches the argument list:
+            function template "decltype((<expression>)) test_sfinae_and_delete::ns2::g(T)" (declared at line 30)
+            function template "int *test_sfinae_and_delete::ns2::g(T)" (declared at line 31)
+            argument types are: (int)
+    double *dp = g(3); //expected-error{{ambiguous}}
+                 ^
+
+"Test_name.c", line 48: error: more than one instance of overloaded function "test_sfinae_and_delete::ns3::g" matches the argument list:
+            function template "decltype((<expression>)) test_sfinae_and_delete::ns3::g(T)" (declared at line 43)
+            function template "int *test_sfinae_and_delete::ns3::g(T)" (declared at line 44)
+            argument types are: (double)
+    double *ip = g(3.14); //expected-error{{ambiguous}}
+                 ^
+
+"Test_name.c", line 59: warning: missing return statement at end of non-void function "test_explicit_specialization_of_member::ns1::X<T>::f [with T=int]"
+  template<> int* X<int>::f(int) { }
+                                   ^
+
+"Test_name.c", line 66: error: more than one instance of overloaded function "test_explicit_specialization_of_member::ns1::g" matches the argument list:
+            function template "decltype((<expression>)) test_explicit_specialization_of_member::ns1::g(T)" (declared at line 61)
+            function template "int *test_explicit_specialization_of_member::ns1::g(T)" (declared at line 62)
+            argument types are: (int)
+    int *ip = g(3); //expected-error{{ambiguous}}
+              ^
+
+"Test_name.c", line 82: error: more than one instance of overloaded function "test_explicit_specialization_of_member::ns2::g" matches the argument list:
+            function template "decltype((<expression>)) test_explicit_specialization_of_member::ns2::g(T)" (declared at line 77)
+            function template "int *test_explicit_specialization_of_member::ns2::g(T)" (declared at line 78)
+            argument types are: (int)
+    int *ip = g(3); //expected-error{{ambiguous}}
+              ^
+
+"Test_name.c", line 104: error: more than one instance of overloaded function "test_explicit_specialization_of_member::ns3::g1" matches the argument list:
+            function template "decltype((<expression>)) test_explicit_specialization_of_member::ns3::g1(U, T)" (declared at line 95)
+            function template "int *test_explicit_specialization_of_member::ns3::g1(U, T)" (declared at line 96)
+            argument types are: (int, int)
+    int *ip = g1(3, 3); //expected-error{{ambiguous}}
+              ^
+
+"Test_name.c", line 123: error: function "test_explicit_specialization_of_member::ns4::foo(T) [with T=int]" (declared at line 120) cannot be referenced -- it is a deleted function
+  int *IP = foo(2); //expected-error{{deleted}}
+            ^
+
+"Test_name.c", line 130: error: "= delete" can only appear on the first declaration of a function
+  template <> int* foo(int) = delete; //expected-error{{deleted definition must be first declaration}}
+                              ^
+
+9 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,182 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 21: error: this operator is not allowed in an integral constant expression
+  static_assert(' ' == data[0]);
+                           ^
+
+"Test_name.c", line 22: error: this operator is not allowed in an integral constant expression
+  static_assert('_' == data[11]);
+                           ^
+
+"Test_name.c", line 23: error: this operator is not allowed in an integral constant expression
+  static_assert('\n' == data[273]);
+                            ^
+
+"Test_name.c", line 25: error: this operator is not allowed in an integral constant expression
+  static_assert(' ' == data2[0]);
+                            ^
+
+"Test_name.c", line 26: error: this operator is not allowed in an integral constant expression
+  static_assert('_' == data2[11]);
+                            ^
+
+"Test_name.c", line 27: error: this operator is not allowed in an integral constant expression
+  static_assert('\n' == data2[273]);
+                             ^
+
+"Test_name.c", line 28: error: this operator is not allowed in an integral constant expression
+  static_assert('\0' == data2[274]);
+                             ^
+
+"Test_name.c", line 30: error: this operator is not allowed in an integral constant expression
+  static_assert(' ' == data3[0]);
+                            ^
+
+"Test_name.c", line 31: error: this operator is not allowed in an integral constant expression
+  static_assert('_' == data3[11]);
+                            ^
+
+"Test_name.c", line 32: error: this operator is not allowed in an integral constant expression
+  static_assert('\n' == data3[273]);
+                             ^
+
+"Test_name.c", line 33: error: this operator is not allowed in an integral constant expression
+  static_assert('\0' == data3[274]);
+                             ^
+
+"Test_name.c", line 35: error: this operator is not allowed in an integral constant expression
+  static_assert(' ' == data4[0]);
+                            ^
+
+"Test_name.c", line 36: error: this operator is not allowed in an integral constant expression
+  static_assert('_' == data4[11]);
+                            ^
+
+"Test_name.c", line 37: error: this operator is not allowed in an integral constant expression
+  static_assert('\n' == data4[273]);
+                             ^
+
+"Test_name.c", line 38: error: this operator is not allowed in an integral constant expression
+  static_assert('\0' == data4[274]);
+                             ^
+
+"Test_name.c", line 55: error: this operator is not allowed in an integral constant expression
+  static_assert(' ' == data5[0]);
+                            ^
+
+"Test_name.c", line 56: error: this operator is not allowed in an integral constant expression
+  static_assert('_' == data5[11]);
+                            ^
+
+"Test_name.c", line 57: error: this operator is not allowed in an integral constant expression
+  static_assert('\n' == data5[273]);
+                             ^
+
+"Test_name.c", line 59: error: this operator is not allowed in an integral constant expression
+  static_assert(' ' == data6[0]);
+                            ^
+
+"Test_name.c", line 60: error: this operator is not allowed in an integral constant expression
+  static_assert('_' == data6[11]);
+                            ^
+
+"Test_name.c", line 61: error: this operator is not allowed in an integral constant expression
+  static_assert('\n' == data6[273]);
+                             ^
+
+"Test_name.c", line 62: error: this operator is not allowed in an integral constant expression
+  static_assert('\0' == data6[274]);
+                             ^
+
+"Test_name.c", line 64: error: this operator is not allowed in an integral constant expression
+  static_assert(' ' == data7[0]);
+                            ^
+
+"Test_name.c", line 65: error: this operator is not allowed in an integral constant expression
+  static_assert('_' == data7[11]);
+                            ^
+
+"Test_name.c", line 66: error: this operator is not allowed in an integral constant expression
+  static_assert('\n' == data7[273]);
+                             ^
+
+"Test_name.c", line 67: error: this operator is not allowed in an integral constant expression
+  static_assert('\0' == data7[274]);
+                             ^
+
+"Test_name.c", line 69: error: this operator is not allowed in an integral constant expression
+  static_assert(' ' == data8[0]);
+                            ^
+
+"Test_name.c", line 70: error: this operator is not allowed in an integral constant expression
+  static_assert('_' == data8[11]);
+                            ^
+
+"Test_name.c", line 71: error: this operator is not allowed in an integral constant expression
+  static_assert('\n' == data8[273]);
+                             ^
+
+"Test_name.c", line 72: error: this operator is not allowed in an integral constant expression
+  static_assert('\0' == data8[274]);
+                             ^
+
+"Test_name.c", line 89: error: this operator is not allowed in an integral constant expression
+  static_assert(' ' == data9[0]);
+                            ^
+
+"Test_name.c", line 90: error: this operator is not allowed in an integral constant expression
+  static_assert('_' == data9[11]);
+                            ^
+
+"Test_name.c", line 91: error: this operator is not allowed in an integral constant expression
+  static_assert('\n' == data9[273]);
+                             ^
+
+"Test_name.c", line 93: error: this operator is not allowed in an integral constant expression
+  static_assert(' ' == data10[1]);
+                             ^
+
+"Test_name.c", line 94: error: this operator is not allowed in an integral constant expression
+  static_assert('_' == data10[12]);
+                             ^
+
+"Test_name.c", line 95: error: this operator is not allowed in an integral constant expression
+  static_assert('\n' == data10[274]);
+                              ^
+
+"Test_name.c", line 96: error: this operator is not allowed in an integral constant expression
+  static_assert('\0' == data10[0]);
+                              ^
+
+"Test_name.c", line 98: error: this operator is not allowed in an integral constant expression
+  static_assert(' ' == data11[1]);
+                             ^
+
+"Test_name.c", line 99: error: this operator is not allowed in an integral constant expression
+  static_assert('_' == data11[12]);
+                             ^
+
+"Test_name.c", line 100: error: this operator is not allowed in an integral constant expression
+  static_assert('\n' == data11[274]);
+                              ^
+
+"Test_name.c", line 101: error: this operator is not allowed in an integral constant expression
+  static_assert('\0' == data11[0]);
+                              ^
+
+"Test_name.c", line 103: error: this operator is not allowed in an integral constant expression
+  static_assert(' ' == data12[1]);
+                             ^
+
+"Test_name.c", line 104: error: this operator is not allowed in an integral constant expression
+  static_assert('_' == data12[12]);
+                             ^
+
+"Test_name.c", line 105: error: this operator is not allowed in an integral constant expression
+  static_assert('\n' == data12[274]);
+                              ^
+
+"Test_name.c", line 106: error: this operator is not allowed in an integral constant expression
+  static_assert('\0' == data12[0]);
+                              ^
+
+45 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 11: error: no operator "++" matches these operands
+            operand types are: BoolRef ++
+    bool b = br++; // expected-error{{cannot increment value of type 'BoolRef'}}
+               ^
+"Test_name.c", line 11: note: built-in operator++(<non-bool arithmetic>, <integral>) does not match because argument #1 does not match parameter
+    bool b = br++; // expected-error{{cannot increment value of type 'BoolRef'}}
+               ^
+"Test_name.c", line 11: note: built-in operator++(<pointer to object>, <integral>) does not match because argument #1 does not match parameter
+    bool b = br++; // expected-error{{cannot increment value of type 'BoolRef'}}
+               ^
+
+"Test_name.c", line 12: warning: last line of file ends without a newline
+  }
+   ^
+
+1 error detected in the compilation of "Test_name.c".

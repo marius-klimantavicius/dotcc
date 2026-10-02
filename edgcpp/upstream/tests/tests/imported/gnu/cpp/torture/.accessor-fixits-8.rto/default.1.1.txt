@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 20: error: member "t1::m_field" (declared at line 15) is inaccessible
+    return ptr->m_field; // { dg-error ".int t1::m_field. is private within this context" }
+                ^
+
+1 error detected in the compilation of "Test_name.c".

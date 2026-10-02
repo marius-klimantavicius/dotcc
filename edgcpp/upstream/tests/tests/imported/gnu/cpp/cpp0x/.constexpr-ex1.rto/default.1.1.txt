@@ -1,0 +1,70 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 27: error: expression must have a constant value
+  constexpr int x2a = s.t();     // { dg-error "S::t" } error: S::t() not defined
+                      ^
+"Test_name.c", line 27: note: constexpr function "S::t" (declared at line 18) is not defined
+  constexpr int x2a = s.t();     // { dg-error "S::t" } error: S::t() not defined
+                        ^
+
+"Test_name.c", line 31: error: expression must have a constant value
+  constexpr int x3a = ff();      // { dg-error "ff" } error: ff() not defined
+                      ^
+"Test_name.c", line 31: note: constexpr function "ff" (declared at line 28) is not defined
+  constexpr int x3a = ff();      // { dg-error "ff" } error: ff() not defined
+                      ^
+
+"Test_name.c", line 60: error: expression must have a constant value
+  constexpr complex unit(x5, 0);	// { dg-error "x5|argument" } error: x5 non-constant
+                         ^
+"Test_name.c", line 60: note: the value of variable "x5" (declared at line 59) cannot be used as a constant
+  constexpr complex unit(x5, 0);	// { dg-error "x5|argument" } error: x5 non-constant
+                         ^
+
+"Test_name.c", line 92: error: constexpr function return is non-constant
+  { return d; }                  // { dg-error "non-.constexpr." "" { target { { { ! implicit_constexpr } && c++20_down } || c++11_only } } }
+           ^
+
+"Test_name.c", line 94: error: expression must have a constant value
+  constexpr resource d = f(9);   // { dg-message ".constexpr." "" { target { { ! implicit_constexpr } || c++11_only } } }
+                         ^
+"Test_name.c", line 92: note: cannot call non-constexpr function "resource::resource(const resource &)" (declared at line 86)
+  { return d; }                  // { dg-error "non-.constexpr." "" { target { { { ! implicit_constexpr } && c++20_down } || c++11_only } } }
+    ^
+
+"Test_name.c", line 27: warning: variable "x2a" was declared but never referenced
+  constexpr int x2a = s.t();     // { dg-error "S::t" } error: S::t() not defined
+                ^
+
+"Test_name.c", line 31: warning: variable "x3a" was declared but never referenced
+  constexpr int x3a = ff();      // { dg-error "ff" } error: ff() not defined
+                ^
+
+"Test_name.c", line 60: warning: variable "unit" was declared but never referenced
+  constexpr complex unit(x5, 0);	// { dg-error "x5|argument" } error: x5 non-constant
+                    ^
+
+"Test_name.c", line 63: warning: variable "xx" was declared but never referenced
+  constexpr double xx = I.real(); // OK
+                   ^
+
+"Test_name.c", line 70: warning: variable "x6" was declared but never referenced
+  constexpr double x6 = v[2].real(); // OK
+                   ^
+
+"Test_name.c", line 75: warning: variable "ip" was declared but never referenced
+    constexpr intptr_t ip = (intptr_t) &i;	// { dg-error "constant" }
+                       ^
+
+"Test_name.c", line 82: warning: variable "I2" was declared but never referenced
+  constexpr complex I2 = I + I;                 // OK
+                    ^
+
+"Test_name.c", line 94: warning: variable "d" was declared but never referenced
+  constexpr resource d = f(9);   // { dg-message ".constexpr." "" { target { { ! implicit_constexpr } || c++11_only } } }
+                     ^
+
+"Test_name.c", line 18: warning: function "S::t" was referenced but not defined
+      constexpr int t() const;	// { dg-message "used but never defined" }
+                    ^
+
+5 errors detected in the compilation of "Test_name.c".

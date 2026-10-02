@@ -1,0 +1,142 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 8: error: expected a type specifier
+    decltype(auto) a = a; // expected-error{{variable 'a' declared with deduced type 'decltype(auto)' cannot appear in its own initializer}}
+    ^
+
+"Test_name.c", line 9: error: expected a type specifier
+    if (decltype(auto) b = b) {} // expected-error {{variable 'b' declared with deduced type 'decltype(auto)' cannot appear in its own initializer}}
+        ^
+
+"Test_name.c", line 9: error: expected an identifier
+    if (decltype(auto) b = b) {} // expected-error {{variable 'b' declared with deduced type 'decltype(auto)' cannot appear in its own initializer}}
+                            ^
+
+"Test_name.c", line 9: error: a condition declaration must include an initializer
+    if (decltype(auto) b = b) {} // expected-error {{variable 'b' declared with deduced type 'decltype(auto)' cannot appear in its own initializer}}
+                            ^
+
+"Test_name.c", line 10: error: expected a type specifier
+    decltype(auto) c = ({ decltype(auto) d = c; 0; }); // expected-error {{variable 'c' declared with deduced type 'decltype(auto)' cannot appear in its own initializer}}
+    ^
+
+"Test_name.c", line 14: error: expected a type specifier
+    decltype(auto) a; // expected-error{{declaration of variable 'a' with deduced type 'decltype(auto)' requires an initializer}}
+    ^
+
+"Test_name.c", line 16: error: expected a type specifier
+    decltype(auto) *b; // expected-error{{cannot form pointer to 'decltype(auto)'}} expected-error{{declaration of variable 'b' with deduced type 'decltype(auto) *' requires an initializer}}
+    ^
+
+"Test_name.c", line 18: error: expected an expression
+    if (decltype(auto) b) {} // expected-error {{must have an initializer}}
+                 ^
+
+"Test_name.c", line 18: error: type name is not allowed
+    if (decltype(auto) b) {} // expected-error {{must have an initializer}}
+        ^
+
+"Test_name.c", line 18: error: expected a ")"
+    if (decltype(auto) b) {} // expected-error {{must have an initializer}}
+                       ^
+
+"Test_name.c", line 19: error: expected an expression
+    for (;decltype(auto) b;) {} // expected-error {{must have an initializer}}
+                   ^
+
+"Test_name.c", line 19: error: type name is not allowed
+    for (;decltype(auto) b;) {} // expected-error {{must have an initializer}}
+          ^
+
+"Test_name.c", line 19: error: expected a ";"
+    for (;decltype(auto) b;) {} // expected-error {{must have an initializer}}
+                         ^
+
+"Test_name.c", line 20: error: expected an expression
+    while (decltype(auto) b) {} // expected-error {{must have an initializer}}
+                    ^
+
+"Test_name.c", line 20: error: type name is not allowed
+    while (decltype(auto) b) {} // expected-error {{must have an initializer}}
+           ^
+
+"Test_name.c", line 20: error: expected a ")"
+    while (decltype(auto) b) {} // expected-error {{must have an initializer}}
+                          ^
+
+"Test_name.c", line 21: error: expected a type specifier
+    if (decltype(auto) b = true) { (void)b; }
+        ^
+
+"Test_name.c", line 21: error: expected an identifier
+    if (decltype(auto) b = true) { (void)b; }
+                               ^
+
+"Test_name.c", line 21: error: a condition declaration must include an initializer
+    if (decltype(auto) b = true) { (void)b; }
+                               ^
+
+"Test_name.c", line 21: error: identifier "b" is undefined
+    if (decltype(auto) b = true) { (void)b; }
+                                         ^
+
+"Test_name.c", line 24: error: expected an identifier
+  decltype(auto) n(1,2,3); // expected-error{{initializer for variable 'n' with type 'decltype(auto)' contains multiple expressions}}
+  ^
+
+"Test_name.c", line 24: error: "auto" is not allowed here
+  decltype(auto) n(1,2,3); // expected-error{{initializer for variable 'n' with type 'decltype(auto)' contains multiple expressions}}
+           ^
+
+"Test_name.c", line 24: error: explicit type is missing ("int" assumed)
+  decltype(auto) n(1,2,3); // expected-error{{initializer for variable 'n' with type 'decltype(auto)' contains multiple expressions}}
+  ^
+
+"Test_name.c", line 24: error: expected a "{"
+  decltype(auto) n(1,2,3); // expected-error{{initializer for variable 'n' with type 'decltype(auto)' contains multiple expressions}}
+                 ^
+
+"Test_name.c", line 27: warning: parsing restarts here after previous syntax error
+  {
+  ^
+
+"Test_name.c", line 29: error: expected a type specifier
+    decltype(auto) a = "const char (&)[19]", b = a, c = (a);
+    ^
+
+"Test_name.c", line 30: warning: missing return statement at end of non-void function "<error>"
+  }
+  ^
+
+"Test_name.c", line 33: error: expected a type specifier
+    decltype(auto) b = 42ULL;
+    ^
+
+"Test_name.c", line 35: error: expected a type specifier
+    for (decltype(auto) c = 0; c < b; ++c) {
+         ^
+
+"Test_name.c", line 35: error: identifier "c" is undefined
+    for (decltype(auto) c = 0; c < b; ++c) {
+                               ^
+
+"Test_name.c", line 35: error: identifier "b" is undefined
+    for (decltype(auto) c = 0; c < b; ++c) {
+                                   ^
+
+"Test_name.c", line 43: error: expected a type specifier
+    decltype(auto) x = 5;
+    ^
+
+"Test_name.c", line 44: error: expected a type specifier
+    decltype(auto) int r; // expected-error {{cannot combine with previous 'decltype(auto)' declaration specifier}} expected-error {{requires an initializer}}
+    ^
+
+"Test_name.c", line 61: error: invalid combination of type specifiers
+    auto int r;  // expected-warning {{storage class}} expected-error {{file-scope}}
+         ^
+
+"Test_name.c", line 60: warning: variable "p3_example::y" was set but never used
+    static auto y = 0.0;
+                ^
+
+32 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --c++ --vla -x Test_name.c
+"Test_name.c", line 27: error: a local class cannot reference a variable-length array type from an enclosing function
+  void m(T const) {}
+         ^
+
+"Test_name.c", line 28: error: a local class cannot reference a variable-length array type from an enclosing function
+  operator T const T ; 
+           ^
+
+"Test_name.c", line 28: error: an operator name must be declared as a function
+  operator T const T ; 
+  ^
+
+"Test_name.c", line 28: error: expected a ";"
+  operator T const T ; 
+                   ^
+
+"Test_name.c", line 24: warning: variable "x" was declared but never referenced
+  void e(int n) { double x[n]; }
+                         ^
+
+"Test_name.c", line 25: error: a local class cannot reference a variable-length array type from an enclosing function
+  void d() { T volatile x; }
+             ^
+
+5 errors detected in the compilation of "Test_name.c".

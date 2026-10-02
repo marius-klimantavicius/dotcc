@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./analyzer/placement-new.C", line 53: warning: variable "m" was declared but never referenced
+    short m = *lp;
+          ^
+
+"./analyzer/placement-new.C", line 68: warning: variable "m" was declared but never referenced
+    int m = *lp;
+        ^
+
+"./analyzer/placement-new.C", line 76: warning: variable "z" was declared but never referenced
+    int z = x + 2;
+        ^
+
+"./analyzer/placement-new.C", line 85: warning: variable "z" was set but never used
+    char z = buf[2] + 2;
+         ^
+
+"./analyzer/placement-new.C", line 113: warning: variable "m" was declared but never referenced
+    int m = *lp;
+        ^
+

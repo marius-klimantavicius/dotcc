@@ -1,0 +1,310 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++26 Test_name.c
+"Test_name.c", line 8: error: "_" has already been declared in the current scope
+      static int _; // expected-error {{redefinition of '_'}}
+                 ^
+
+"Test_name.c", line 9: error: "_" has already been declared in the current scope
+      int _;        // expected-warning {{placeholder variables are incompatible with C++ standards before C++2c}} \
+          ^
+
+"Test_name.c", line 11: warning: variable "_" is used before its value is set
+      _++; // expected-error{{reference to '_' is ambiguous}}
+      ^
+
+"Test_name.c", line 6: warning: variable "_" was declared but never referenced
+      static int _; // expected-note {{previous definition is here}} \
+                 ^
+
+"Test_name.c", line 8: warning: variable "_" was declared but never referenced
+      static int _; // expected-error {{redefinition of '_'}}
+                 ^
+
+"Test_name.c", line 16: error: "_" has already been declared in the current scope
+      static int _; // expected-error {{redefinition of '_'}}
+                 ^
+
+"Test_name.c", line 15: warning: variable "_" was declared but never referenced
+      int _; // expected-note {{previous definition is here}}
+          ^
+
+"Test_name.c", line 16: warning: variable "_" was declared but never referenced
+      static int _; // expected-error {{redefinition of '_'}}
+                 ^
+
+"Test_name.c", line 21: error: "_" has already been declared in the current scope
+      auto [_, _, _, _] = arr; // expected-warning 3{{placeholder variables are incompatible with C++ standards before C++2c}} \
+               ^
+
+"Test_name.c", line 21: error: "_" has already been declared in the current scope
+      auto [_, _, _, _] = arr; // expected-warning 3{{placeholder variables are incompatible with C++ standards before C++2c}} \
+                  ^
+
+"Test_name.c", line 21: error: "_" has already been declared in the current scope
+      auto [_, _, _, _] = arr; // expected-warning 3{{placeholder variables are incompatible with C++ standards before C++2c}} \
+                     ^
+
+"Test_name.c", line 23: warning: expression has no effect
+      _ == 42; // expected-error {{ambiguous reference to placeholder '_', which is defined multiple times}}
+      ^
+
+"Test_name.c", line 26: warning: structured binding "_" was declared but never referenced
+          auto [_, a, b, c] = arr; // expected-warning {{unused variable '[_, a, b, c]'}}
+                ^
+
+"Test_name.c", line 29: error: "_" has already been declared in the current scope
+          auto [_, _, b, c] = arr; // expected-warning {{unused variable '[_, _, b, c]'}} \
+                   ^
+
+"Test_name.c", line 29: warning: structured binding "_" was declared but never referenced
+          auto [_, _, b, c] = arr; // expected-warning {{unused variable '[_, _, b, c]'}} \
+                ^
+
+"Test_name.c", line 35: error: "_" has already been declared in the current scope
+          auto [_, _, _, _] = arr; // expected-warning 3{{placeholder variables are incompatible with C++ standards before C++2c}}
+                   ^
+
+"Test_name.c", line 35: error: "_" has already been declared in the current scope
+          auto [_, _, _, _] = arr; // expected-warning 3{{placeholder variables are incompatible with C++ standards before C++2c}}
+                      ^
+
+"Test_name.c", line 35: error: "_" has already been declared in the current scope
+          auto [_, _, _, _] = arr; // expected-warning 3{{placeholder variables are incompatible with C++ standards before C++2c}}
+                         ^
+
+"Test_name.c", line 35: warning: structured binding "_" was declared but never referenced
+          auto [_, _, _, _] = arr; // expected-warning 3{{placeholder variables are incompatible with C++ standards before C++2c}}
+                ^
+
+"Test_name.c", line 42: error: declaration is incompatible with structured binding "StaticBindings::_" (declared at line 42)
+  static auto [_, _] = arr; // expected-error {{redefinition of '_'}} \
+                  ^
+
+"Test_name.c", line 47: error: "_" has already been declared in the current scope
+      static auto [_, _] = arr; // expected-error {{redefinition of '_'}} \
+                      ^
+
+"Test_name.c", line 47: warning: structured binding "_" was declared but never referenced
+      static auto [_, _] = arr; // expected-error {{redefinition of '_'}} \
+                   ^
+
+"Test_name.c", line 54: error: a name cannot appear more than once in a capture-list
+      (void)[_ = 0, _ = 1] { // expected-warning {{placeholder variables are incompatible with C++ standards before C++2c}} \
+                    ^
+
+"Test_name.c", line 56: error: expression must be a modifiable lvalue
+          (void)_++; // expected-error {{ambiguous reference to placeholder '_', which is defined multiple times}}
+                ^
+
+"Test_name.c", line 60: warning: variable "_" was declared but never referenced
+          int _ = 12;
+              ^
+
+"Test_name.c", line 64: warning: variable "GH107024" was declared but never referenced
+      auto GH107024 = [_ = 42]() { return _; }();
+           ^
+
+"Test_name.c", line 69: error: variable "global_var::_" has already been defined (previous definition at line 68)
+      int _; // expected-error {{redefinition of '_'}}
+          ^
+
+"Test_name.c", line 74: error: variable "<unnamed>::_" has already been defined (previous definition at line 73)
+      int _; // expected-error {{redefinition of '_'}}
+          ^
+
+"Test_name.c", line 83: error: function "global_fun::_" has already been defined (previous definition at line 82)
+  void _() {} // expected-error {{redefinition of '_'}}
+       ^
+
+"Test_name.c", line 93: error: "_" has already been declared in the current scope
+      int _; //expected-note {{candidate}}
+          ^
+
+"Test_name.c", line 94: warning: variable "_" is used before its value is set
+      _++; // expected-error {{reference to '_' is ambiguous}}
+      ^
+
+"Test_name.c", line 100: error: "_" has already been declared in the current scope
+      int _; // expected-warning{{placeholder variables are incompatible with C++ standards before C++2c}} \
+          ^
+
+"Test_name.c", line 113: error: "_" has already been declared in the current scope
+      using using_::_; // expected-error {{target of using declaration conflicts with declaration already in scope}}
+                    ^
+
+"Test_name.c", line 111: warning: variable "_" was set but never used
+      int _; // expected-note {{conflicting declaration}}
+          ^
+
+"Test_name.c", line 120: error: duplicate parameter name
+  void test_params(int _, int _); // expected-error {{redefinition of parameter '_'}} \
+                              ^
+
+"Test_name.c", line 123: warning: declaration of "_" hides template parameter
+  template <auto _, auto _> // expected-error {{declaration of '_' shadows template parameter}} \
+                         ^
+
+"Test_name.c", line 123: error: "_" has already been declared in the current scope
+  template <auto _, auto _> // expected-error {{declaration of '_' shadows template parameter}} \
+                         ^
+
+"Test_name.c", line 128: error: duplicate parameter name
+  concept C = requires(T _, T _) {  // expected-error {{redefinition of parameter '_'}} \
+                              ^
+
+"Test_name.c", line 144: error: "_" has already been declared in the current scope
+    int _ = 12; // expected-warning {{placeholder variables are incompatible with C++ standards before C++2c}}
+        ^
+
+"Test_name.c", line 142: warning: variable "_" was declared but never referenced
+    int _ = 12; // placeholder variable, no unused-but-set warning
+        ^
+
+"Test_name.c", line 143: warning: variable "x" was declared but never referenced
+    int x = 12; // expected-warning {{unused variable 'x'}}
+        ^
+
+"Test_name.c", line 144: warning: variable "_" was declared but never referenced
+    int _ = 12; // expected-warning {{placeholder variables are incompatible with C++ standards before C++2c}}
+        ^
+
+"Test_name.c", line 150: warning: variable "_" was set but never used
+      int _;
+          ^
+
+"Test_name.c", line 157: error: "_" has already been declared in the current scope
+    int _, _; // expected-warning {{placeholder variables are incompatible with C++ standards before C++2c}} \
+           ^
+
+"Test_name.c", line 166: error: "_" has already been declared in the current scope
+    int _, _; // expected-note 2{{placeholder declared here}} \
+           ^
+
+"Test_name.c", line 172: error: "_" has already been declared in the current scope
+    union { int _; int _; }; // expected-note 2 {{placeholder declared here}} \
+                       ^
+
+"Test_name.c", line 172: error: "_" has already been declared in the current scope
+    union { int _; int _; }; // expected-note 2 {{placeholder declared here}} \
+                ^
+
+"Test_name.c", line 172: error: "_" has already been declared in the current scope
+    union { int _; int _; }; // expected-note 2 {{placeholder declared here}} \
+                       ^
+
+"Test_name.c", line 179: error: "_" has already been declared in the current scope
+  struct Union { union { int _, _, _; }; };   // expected-note 3{{placeholder declared here}} \
+                                ^
+
+"Test_name.c", line 179: error: "_" has already been declared in the current scope
+  struct Union { union { int _, _, _; }; };   // expected-note 3{{placeholder declared here}} \
+                                   ^
+
+"Test_name.c", line 179: error: "_" has already been declared in the current scope
+  struct Union { union { int _, _, _; }; };   // expected-note 3{{placeholder declared here}} \
+                                ^
+
+"Test_name.c", line 179: error: "_" has already been declared in the current scope
+  struct Union { union { int _, _, _; }; };   // expected-note 3{{placeholder declared here}} \
+                                   ^
+
+"Test_name.c", line 183: warning: variable "c" was set but never used
+     Union c;
+           ^
+
+"Test_name.c", line 188: error: "_" has already been declared in the current scope
+      union  {int _, _;}; // expected-warning {{placeholder variables are incompatible with C++ standards before C++2c}}  \
+                     ^
+
+"Test_name.c", line 188: error: "_" has already been declared in the current scope
+      union  {int _, _;}; // expected-warning {{placeholder variables are incompatible with C++ standards before C++2c}}  \
+                     ^
+
+"Test_name.c", line 190: error: "_" has already been declared in the current scope
+      union  {int _, _;}; // expected-warning 2{{placeholder variables are incompatible with C++ standards before C++2c}} \
+                     ^
+
+"Test_name.c", line 190: error: "_" has already been declared in the current scope
+      union  {int _, _;}; // expected-warning 2{{placeholder variables are incompatible with C++ standards before C++2c}} \
+                  ^
+
+"Test_name.c", line 190: error: "_" has already been declared in the current scope
+      union  {int _, _;}; // expected-warning 2{{placeholder variables are incompatible with C++ standards before C++2c}} \
+                     ^
+
+"Test_name.c", line 192: error: expected a member name
+      _. = 0; // expected-error {{ambiguous reference to placeholder '_', which is defined multiple times}}
+         ^
+
+"Test_name.c", line 192: error: expression must have class type but it has type "int"
+      _. = 0; // expected-error {{ambiguous reference to placeholder '_', which is defined multiple times}}
+      ^
+
+"Test_name.c", line 198: error: "_" has already been declared in the current scope
+  static union { int _ = 43; }; // expected-error {{member of anonymous union redeclares '_'}}
+                     ^
+
+"Test_name.c", line 202: error: "_" has already been declared in the current scope
+    static union { int _{}; }; // expected-error {{member of anonymous union redeclares '_'}}
+                       ^
+
+"Test_name.c", line 210: error: "_" has already been declared in the current scope
+      int _, _, _;  // expected-warning 2{{placeholder variables are incompatible with C++ standards before C++2c}}
+             ^
+
+"Test_name.c", line 210: error: "_" has already been declared in the current scope
+      int _, _, _;  // expected-warning 2{{placeholder variables are incompatible with C++ standards before C++2c}}
+                ^
+
+"Test_name.c", line 214: error: "_" has already been declared in the current scope
+      int _, _, _; // expected-warning 2{{placeholder variables are incompatible with C++ standards before C++2c}}
+             ^
+
+"Test_name.c", line 214: error: "_" has already been declared in the current scope
+      int _, _, _; // expected-warning 2{{placeholder variables are incompatible with C++ standards before C++2c}}
+                ^
+
+"Test_name.c", line 222: error: "_" has already been declared in the current scope
+      int _, _; // expected-warning {{placeholder variables are incompatible with C++ standards before C++2c}} \
+             ^
+
+"Test_name.c", line 236: warning: expression has no effect
+      S{}._; // expected-error {{ambiguous reference to placeholder '_', which is defined multiple times}}
+      ^
+
+"Test_name.c", line 235: warning: variable "s" was declared but never referenced
+      S s{._ =0}; // expected-error {{ambiguous reference to placeholder '_', which is defined multiple times}}
+        ^
+
+"Test_name.c", line 244: error: "_" has already been declared in the current scope
+          int _, _; // expected-warning {{placeholder variables are incompatible with C++ standards before C++2c}} \
+                 ^
+
+"Test_name.c", line 249: error: "_" has already been declared in the current scope
+          int _, _; // expected-warning {{placeholder variables are incompatible with C++ standards before C++2c}} \
+                 ^
+
+"Test_name.c", line 253: warning: expression has no effect
+              _; // expected-error {{ambiguous reference to placeholder '_', which is defined multiple times}}
+              ^
+
+"Test_name.c", line 254: warning: expression has no effect
+              S::_; // expected-error {{ambiguous reference to placeholder '_', which is defined multiple times}} \
+              ^
+
+"Test_name.c", line 265: error: "_" has already been declared in the current scope
+      T _ = 2;
+        ^
+
+"Test_name.c", line 268: error: "_" has already been declared in the current scope
+      T _ = 4;
+        ^
+
+"Test_name.c", line 160: warning: variable "oh_no" was declared but never referenced
+  constexpr int oh_no = __builtin_offsetof(MemberPtrs, _); // expected-error {{ambiguous reference to placeholder '_', which is defined multiple times}}
+                ^
+
+"Test_name.c", line 42: warning: structured binding "StaticBindings::_" was declared but never referenced
+  static auto [_, _] = arr; // expected-error {{redefinition of '_'}} \
+               ^
+
+51 errors detected in the compilation of "Test_name.c".

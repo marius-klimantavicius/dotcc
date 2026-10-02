@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 5: warning: attribute "constructor" does not apply here
+  int x __attribute__((constructor)); // expected-warning {{'constructor' attribute only applies to functions}}
+                       ^
+
+"Test_name.c", line 7: warning: requested constructor/destructor priority is reserved for internal use
+  int f(void) __attribute__((constructor(1)));
+                             ^
+
+"Test_name.c", line 8: error: expected a ")"
+  int f(void) __attribute__((constructor(1,2))); // expected-error {{'constructor' attribute takes no more than 1 argument}}
+                                          ^
+
+"Test_name.c", line 8: error: expected an identifier
+  int f(void) __attribute__((constructor(1,2))); // expected-error {{'constructor' attribute takes no more than 1 argument}}
+                                           ^
+
+"Test_name.c", line 8: warning: requested constructor/destructor priority is reserved for internal use
+  int f(void) __attribute__((constructor(1,2))); // expected-error {{'constructor' attribute takes no more than 1 argument}}
+                             ^
+
+"Test_name.c", line 8: error: expected a "{"
+  int f(void) __attribute__((constructor(1,2))); // expected-error {{'constructor' attribute takes no more than 1 argument}}
+                                              ^
+
+At end of source: warning: missing return statement at end of non-void function "f"
+
+At end of source: error: expected a "}"
+
+4 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,7 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 9: error: no default constructor exists for class "foo"
+  struct bar : public foo {
+                      ^
+          detected during implicit generation of "bar::bar()" at line 13
+
+1 error detected in the compilation of "Test_name.c".

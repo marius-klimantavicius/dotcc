@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++17 --microsoft Test_name.c
+"Test_name.c", line 15: error: static assertion failed with ""
+  static_assert(!__is_literal_type(C), "");  // Now an error in GNU and
+  ^
+
+1 error detected in the compilation of "Test_name.c".

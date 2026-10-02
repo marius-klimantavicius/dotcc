@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 13: warning: unknown attribute "transaction_pure"
+  extern double sqrt(double) __attribute__((transaction_pure));
+                                            ^
+
+"Test_name.c", line 14: warning: unknown attribute "transaction_safe"
+  extern void *xmalloc(int) __attribute__((transaction_safe));
+                                           ^
+
+"Test_name.c", line 27: warning: unknown attribute "transaction_safe"
+  __attribute__((transaction_safe))
+                 ^
+
+"Test_name.c", line 34: warning: unknown attribute "transaction_safe"
+  __attribute__((transaction_safe))
+                 ^
+
+"Test_name.c", line 82: warning: unknown attribute "transaction_safe"
+  __attribute__((transaction_safe))
+                 ^
+

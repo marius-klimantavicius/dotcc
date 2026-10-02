@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 12: warning: keyword "__is_pod" will be treated as a context-sensitive keyword from this point
+  struct __is_pod { // expected-warning {{keyword '__is_pod' will be made available as an identifier}}
+         ^
+
+"Test_name.c", line 20: warning: keyword "__is_same" will be treated as a context-sensitive keyword from this point
+  struct __is_same { // expected-warning {{keyword '__is_same' will be made available as an identifier}}
+         ^
+
+"Test_name.c", line 38: warning: variable "b" was declared but never referenced
+    bool b = __is_pod(int);
+         ^
+
+"Test_name.c", line 39: warning: variable "mbt" was declared but never referenced
+    must_be_true<__is_pod(int)> mbt;
+                                ^
+
+"Test_name.c", line 44: warning: empty pack alignment stack
+  #pragma pack(pop)
+               ^
+

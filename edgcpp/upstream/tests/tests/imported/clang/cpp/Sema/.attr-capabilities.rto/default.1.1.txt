@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 5: warning: unknown attribute "shared_capability"
+  class __attribute__((shared_capability("mutex"))) Mutex {
+                       ^
+
+"Test_name.c", line 7: warning: unknown attribute "assert_capability"
+    void func1() __attribute__((assert_capability(this)));
+                                ^
+
+"Test_name.c", line 8: warning: unknown attribute "assert_capability"
+    void func2() __attribute__((assert_capability(!this)));
+                                ^
+
+"Test_name.c", line 15: warning: unknown attribute "assert_capability"
+    void func1() __attribute__((assert_capability(this)));  // expected-warning {{'assert_capability' attribute requires arguments whose type is annotated with 'capability' attribute; type here is 'NotACapability *'}}
+                                ^
+
+"Test_name.c", line 16: warning: unknown attribute "assert_capability"
+    void func2() __attribute__((assert_capability(!this)));  // expected-warning {{'assert_capability' attribute requires arguments whose type is annotated with 'capability' attribute; type here is 'bool'}}
+                                ^
+

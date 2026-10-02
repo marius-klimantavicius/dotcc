@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: error: invalid narrowing conversion from "double" to "int"
+  auto f1() -> decltype(S{2.0}, void()) { } // { dg-error "narrowing conversion" }
+                          ^
+
+"Test_name.c", line 12: error: invalid narrowing conversion from "double" to "int"
+  auto f2() -> decltype(S{2.0}, 1) { return 1; } // { dg-error "narrowing conversion" }
+                          ^
+
+"Test_name.c", line 15: error: invalid narrowing conversion from "double" to "int"
+  auto f3() -> decltype(void(), S{2.0}, 1) { return 1; } // { dg-error "narrowing conversion" }
+                                  ^
+
+"Test_name.c", line 18: error: invalid narrowing conversion from "double" to "int"
+  auto f4() -> decltype((S{2.0}, 1)) { return 1; } // { dg-error "narrowing conversion" }
+                           ^
+
+"Test_name.c", line 25: error: invalid narrowing conversion from "double" to "int"
+  auto f5(double v) -> decltype((S{id(v)}, 1)) { return 1; } // { dg-error "narrowing conversion" }
+                                   ^
+
+5 errors detected in the compilation of "Test_name.c".

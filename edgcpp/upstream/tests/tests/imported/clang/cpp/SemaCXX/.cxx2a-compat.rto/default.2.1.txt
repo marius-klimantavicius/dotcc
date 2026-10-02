@@ -1,0 +1,52 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 10: error: no instance of constructor "A::A" matches the argument list
+            argument types are: (int, int)
+  A a1 = {1, 2};
+         ^
+"Test_name.c", line 6: note: number of parameters of function "A::A(const A &)" does not match the call
+  struct A { // expected-note 0+{{candidate}}
+         ^
+"Test_name.c", line 6: note: number of parameters of function "A::A(A &&)" does not match the call
+  struct A { // expected-note 0+{{candidate}}
+         ^
+"Test_name.c", line 7: note: number of parameters of function "A::A()" does not match the call
+    A() = default; // expected-note 0+{{candidate}}
+    ^
+
+"Test_name.c", line 20: error: no suitable constructor exists to convert from "int" to "A"
+  B b2 = {1, 2, 3, 4};
+          ^
+
+"Test_name.c", line 20: error: no suitable constructor exists to convert from "int" to "A"
+  B b2 = {1, 2, 3, 4};
+             ^
+
+"Test_name.c", line 20: error: too many initializer values
+  B b2 = {1, 2, 3, 4};
+                ^
+
+"Test_name.c", line 31: error: a value of type "const char8_t *" cannot be used to initialize an entity of type "const char *"
+  const char *u8ptr = "wo" u8"rld";
+                      ^
+
+"Test_name.c", line 32: error: no suitable constructor exists to convert from "const char8_t [9]" to "string"
+  string u8str = u8"test" u8"test";
+                 ^
+
+"Test_name.c", line 44: error: type name is not allowed
+    explicit(C)(int);
+             ^
+
+"Test_name.c", line 44: error: expected an identifier
+    explicit(C)(int);
+                ^
+
+"Test_name.c", line 44: error: explicit type is missing ("int" assumed)
+    explicit(C)(int);
+               ^
+
+"Test_name.c", line 63: error: expected an identifier
+  int consteval();
+                ^
+
+10 errors detected in the compilation of "Test_name.c".

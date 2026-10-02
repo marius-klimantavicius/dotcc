@@ -1,0 +1,7 @@
+fe_only -DTEST_NUMBER=2 -w -tused --ms_c++20 Test_name.c
+"Test_name.c", line 12: error: incomplete type "void" is not allowed
+      constexpr C(C &&o) : i(o.i) { T t; } // error expected
+                                      ^
+          detected during instantiation of "expect_instantiation::C<T>::C(expect_instantiation::C<T> &&) [with T=void]" at line 28
+
+1 error detected in the compilation of "Test_name.c".

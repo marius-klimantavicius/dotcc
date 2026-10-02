@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 43: error: declaration aliased to undefined entity "resolve_randomstream_impl_init"
+      __attribute__ ((ifunc ("resolve_" "randomstream_impl_init")))
+                      ^
+
+"Test_name.c", line 44: warning: function "NTL::randomstream_impl_init" was referenced but not defined
+      randomstream_impl_init ();
+      ^
+
+"Test_name.c", line 33: warning: function "NTL::resolve_randomstream_impl_init" was declared but never referenced
+      static void (*resolve_randomstream_impl_init (void)) ()
+                    ^
+
+1 error detected in the compilation of "Test_name.c".

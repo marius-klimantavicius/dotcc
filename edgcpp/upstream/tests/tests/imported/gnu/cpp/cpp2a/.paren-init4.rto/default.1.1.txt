@@ -1,0 +1,62 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 15: error: an empty initializer is invalid for an array with unspecified bound
+  int a5[](++i, ++i);
+      ^
+
+"Test_name.c", line 32: error: too many initializer values
+  const int (&ra1)[](1, 2);
+                        ^
+
+"Test_name.c", line 32: error: a value of type "int" cannot be used to initialize an entity of type "const int (&)[]"
+  const int (&ra1)[](1, 2);
+                     ^
+
+"Test_name.c", line 33: error: too many initializer values
+  const int (&ra2)[](1.0, 2);
+                          ^
+
+"Test_name.c", line 33: error: a value of type "double" cannot be used to initialize an entity of type "const int (&)[]"
+  const int (&ra2)[](1.0, 2);
+                     ^
+
+"Test_name.c", line 34: error: too many initializer values
+  const int (&ra3)[2](1.0, 2);
+                           ^
+
+"Test_name.c", line 34: error: a value of type "double" cannot be used to initialize an entity of type "const int (&)[2]"
+  const int (&ra3)[2](1.0, 2);
+                      ^
+
+"Test_name.c", line 35: error: too many initializer values
+  int (&&rra1)[](1, 2);
+                    ^
+
+"Test_name.c", line 35: error: a value of type "int" cannot be used to initialize an entity of type "int (&&)[]"
+  int (&&rra1)[](1, 2);
+                 ^
+
+"Test_name.c", line 36: error: too many initializer values
+  int (&&rra2)[](1.0, 2);
+                      ^
+
+"Test_name.c", line 36: error: a value of type "double" cannot be used to initialize an entity of type "int (&&)[]"
+  int (&&rra2)[](1.0, 2);
+                 ^
+
+"Test_name.c", line 37: error: too many initializer values
+  int (&&rra3)[2](1.0, 2);
+                       ^
+
+"Test_name.c", line 37: error: a value of type "double" cannot be used to initialize an entity of type "int (&&)[2]"
+  int (&&rra3)[2](1.0, 2);
+                  ^
+
+"Test_name.c", line 48: error: an empty initializer is invalid for an array with unspecified bound
+  S s5[]({++i}, {++i});
+    ^
+
+"Test_name.c", line 50: error: an empty initializer is invalid for an array with unspecified bound
+  S s6[](s, s);
+    ^
+
+15 errors detected in the compilation of "Test_name.c".

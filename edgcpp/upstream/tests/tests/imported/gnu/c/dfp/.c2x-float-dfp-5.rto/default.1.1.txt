@@ -1,0 +1,22 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"./dfp/c2x-float-dfp-5.c", line 11: error: identifier "_Decimal32" is undefined
+  volatile _Decimal32 d = 
+           ^
+
+"./dfp/c2x-float-dfp-5.c", line 11: error: function call is not allowed in a constant expression
+                         (__builtin_nand32 (""))
+                          ^
+
+"./dfp/c2x-float-dfp-5.c", line 19: error: identifier "_Decimal32" is undefined
+                           , _Decimal32 : 0);
+                             ^
+
+"./dfp/c2x-float-dfp-5.c", line 20: error: function call requires a real floating-point argument
+    if (!__builtin_isnan (
+                         ^
+
+"./dfp/c2x-float-dfp-5.c", line 22: error: function call requires a real floating-point argument
+    if (!__builtin_isnan (d))
+                         ^
+
+5 errors detected in the compilation of "Test_name.c".

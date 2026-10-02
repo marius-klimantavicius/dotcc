@@ -1,0 +1,166 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 176: error: function "PR13381::T::operator=(const PR13381::T &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      t = T(); // expected-error{{object of type 'T' cannot be assigned because its copy assignment operator is implicitly deleted}}
+        ^
+
+"Test_name.c", line 10: error: function "A1::operator=(const A1 &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      t = t; // expected-error +{{deleted}}
+        ^
+          detected during instantiation of "void CopyAssign<T>::test() [with T=A1]" at line 68
+
+"Test_name.c", line 18: error: function "A2::operator=(A2 &&)" (declared at line 71) cannot be referenced -- it is a deleted function
+      T &(T::*f)(T&&) = &T::operator=; // expected-error +{{deleted}}
+                            ^
+          detected during instantiation of "void MoveAssign<T>::test() [with T=A2]" at line 76
+
+"Test_name.c", line 10: error: function "B1::operator=(const B1 &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      t = t; // expected-error +{{deleted}}
+        ^
+          detected during instantiation of "void CopyAssign<T>::test() [with T=B1]" at line 88
+
+"Test_name.c", line 18: error: a value of type "B1 &(B1::*)(const B1 &)" cannot be used to initialize an entity of type "B1 &(B1::*)(B1 &&)"
+      T &(T::*f)(T&&) = &T::operator=; // expected-error +{{deleted}}
+                        ^
+          detected during instantiation of "void MoveAssign<T>::test() [with T=B1]" at line 89
+
+"Test_name.c", line 18: error: function "B1::operator=(const B1 &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      T &(T::*f)(T&&) = &T::operator=; // expected-error +{{deleted}}
+                            ^
+          detected during instantiation of "void MoveAssign<T>::test() [with T=B1]" at line 89
+
+"Test_name.c", line 10: error: function "B2::operator=(const B2 &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      t = t; // expected-error +{{deleted}}
+        ^
+          detected during instantiation of "void CopyAssign<T>::test() [with T=B2]" at line 90
+
+"Test_name.c", line 18: error: a value of type "B2 &(B2::*)(const B2 &)" cannot be used to initialize an entity of type "B2 &(B2::*)(B2 &&)"
+      T &(T::*f)(T&&) = &T::operator=; // expected-error +{{deleted}}
+                        ^
+          detected during instantiation of "void MoveAssign<T>::test() [with T=B2]" at line 91
+
+"Test_name.c", line 18: error: function "B2::operator=(const B2 &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      T &(T::*f)(T&&) = &T::operator=; // expected-error +{{deleted}}
+                            ^
+          detected during instantiation of "void MoveAssign<T>::test() [with T=B2]" at line 91
+
+"Test_name.c", line 10: error: function "C1::operator=(const C1 &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      t = t; // expected-error +{{deleted}}
+        ^
+          detected during instantiation of "void CopyAssign<T>::test() [with T=C1]" at line 99
+
+"Test_name.c", line 18: error: a value of type "C1 &(C1::*)(const C1 &)" cannot be used to initialize an entity of type "C1 &(C1::*)(C1 &&)"
+      T &(T::*f)(T&&) = &T::operator=; // expected-error +{{deleted}}
+                        ^
+          detected during instantiation of "void MoveAssign<T>::test() [with T=C1]" at line 100
+
+"Test_name.c", line 18: error: function "C1::operator=(const C1 &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      T &(T::*f)(T&&) = &T::operator=; // expected-error +{{deleted}}
+                            ^
+          detected during instantiation of "void MoveAssign<T>::test() [with T=C1]" at line 100
+
+"Test_name.c", line 10: error: function "D1::operator=(const D1 &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      t = t; // expected-error +{{deleted}}
+        ^
+          detected during instantiation of "void CopyAssign<T>::test() [with T=D1]" at line 130
+
+"Test_name.c", line 18: error: function "D2::operator=(D2 &&)" (declared at line 107) cannot be referenced -- it is a deleted function
+      T &(T::*f)(T&&) = &T::operator=; // expected-error +{{deleted}}
+                            ^
+          detected during instantiation of "void MoveAssign<T>::test() [with T=D2]" at line 131
+
+"Test_name.c", line 24: error: function "D2::operator=(const D2 &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      t = static_cast<T&&>(t); // expected-error +{{copy assignment operator is implicitly deleted}}
+        ^
+          detected during instantiation of "void MoveOrCopyAssign<T>::test() [with T=D2]" at line 132
+
+"Test_name.c", line 10: error: function "D3::operator=(const D3 &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      t = t; // expected-error +{{deleted}}
+        ^
+          detected during instantiation of "void CopyAssign<T>::test() [with T=D3]" at line 133
+
+"Test_name.c", line 18: error: function "D4::operator=(D4 &&)" (declared at line 114) cannot be referenced -- it is a deleted function
+      T &(T::*f)(T&&) = &T::operator=; // expected-error +{{deleted}}
+                            ^
+          detected during instantiation of "void MoveAssign<T>::test() [with T=D4]" at line 134
+
+"Test_name.c", line 24: error: function "D4::operator=(const D4 &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      t = static_cast<T&&>(t); // expected-error +{{copy assignment operator is implicitly deleted}}
+        ^
+          detected during instantiation of "void MoveOrCopyAssign<T>::test() [with T=D4]" at line 135
+
+"Test_name.c", line 10: error: function "D5::operator=(const D5 &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      t = t; // expected-error +{{deleted}}
+        ^
+          detected during instantiation of "void CopyAssign<T>::test() [with T=D5]" at line 136
+
+"Test_name.c", line 18: error: function "D6::operator=(D6 &&)" (declared at line 121) cannot be referenced -- it is a deleted function
+      T &(T::*f)(T&&) = &T::operator=; // expected-error +{{deleted}}
+                            ^
+          detected during instantiation of "void MoveAssign<T>::test() [with T=D6]" at line 137
+
+"Test_name.c", line 24: error: function "D6::operator=(const D6 &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      t = static_cast<T&&>(t); // expected-error +{{copy assignment operator is implicitly deleted}}
+        ^
+          detected during instantiation of "void MoveOrCopyAssign<T>::test() [with T=D6]" at line 138
+
+"Test_name.c", line 10: error: function "D7::operator=(const D7 &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      t = t; // expected-error +{{deleted}}
+        ^
+          detected during instantiation of "void CopyAssign<T>::test() [with T=D7]" at line 139
+
+"Test_name.c", line 18: error: a value of type "D7 &(D7::*)(const D7 &)" cannot be used to initialize an entity of type "D7 &(D7::*)(D7 &&)"
+      T &(T::*f)(T&&) = &T::operator=; // expected-error +{{deleted}}
+                        ^
+          detected during instantiation of "void MoveAssign<T>::test() [with T=D7]" at line 140
+
+"Test_name.c", line 18: error: function "D7::operator=(const D7 &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      T &(T::*f)(T&&) = &T::operator=; // expected-error +{{deleted}}
+                            ^
+          detected during instantiation of "void MoveAssign<T>::test() [with T=D7]" at line 140
+
+"Test_name.c", line 24: error: function "D7::operator=(const D7 &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      t = static_cast<T&&>(t); // expected-error +{{copy assignment operator is implicitly deleted}}
+        ^
+          detected during instantiation of "void MoveOrCopyAssign<T>::test() [with T=D7]" at line 141
+
+"Test_name.c", line 10: error: function "D8::operator=(const D8 &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      t = t; // expected-error +{{deleted}}
+        ^
+          detected during instantiation of "void CopyAssign<T>::test() [with T=D8]" at line 142
+
+"Test_name.c", line 10: error: function "E1::operator=(const E1 &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      t = t; // expected-error +{{deleted}}
+        ^
+          detected during instantiation of "void CopyAssign<T>::test() [with T=E1]" at line 159
+
+"Test_name.c", line 18: error: function "E2::operator=(E2 &&)" (declared at line 149) cannot be referenced -- it is a deleted function
+      T &(T::*f)(T&&) = &T::operator=; // expected-error +{{deleted}}
+                            ^
+          detected during instantiation of "void MoveAssign<T>::test() [with T=E2]" at line 160
+
+"Test_name.c", line 10: error: function "E3::operator=(const E3 &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      t = t; // expected-error +{{deleted}}
+        ^
+          detected during instantiation of "void CopyAssign<T>::test() [with T=E3]" at line 161
+
+"Test_name.c", line 18: error: function "E4::operator=(E4 &&)" (declared at line 153) cannot be referenced -- it is a deleted function
+      T &(T::*f)(T&&) = &T::operator=; // expected-error +{{deleted}}
+                            ^
+          detected during instantiation of "void MoveAssign<T>::test() [with T=E4]" at line 162
+
+"Test_name.c", line 10: error: function "E5::operator=(const E5 &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      t = t; // expected-error +{{deleted}}
+        ^
+          detected during instantiation of "void CopyAssign<T>::test() [with T=E5]" at line 163
+
+"Test_name.c", line 18: error: function "E6::operator=(E6 &&)" (declared at line 157) cannot be referenced -- it is a deleted function
+      T &(T::*f)(T&&) = &T::operator=; // expected-error +{{deleted}}
+                            ^
+          detected during instantiation of "void MoveAssign<T>::test() [with T=E6]" at line 164
+
+"Test_name.c", line 10: error: function "Mutable::Y::operator=(const Mutable::Y &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      t = t; // expected-error +{{deleted}}
+        ^
+          detected during instantiation of "void CopyAssign<T>::test() [with T=Mutable::Y]" at line 193
+
+33 errors detected in the compilation of "Test_name.c".

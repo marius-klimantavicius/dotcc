@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 --exceptions --exceptions Test_name.c
+"Test_name.c", line 36: warning: ambiguous class member reference -- function template "cwg1111::example1::X::set" (declared at line 31) used in preference to class template "cwg1111::example1::set" (declared at line 28)
+    x.set<double>(3.2);
+      ^
+
+"Test_name.c", line 45: error: type name is not allowed
+    y.set<double>(3.2);
+      ^
+
+"Test_name.c", line 61: warning: ambiguous class member reference -- type "cwg1111::example2::N::A::A" (declared at line 53) used in preference to class "cwg1111::example2::A" (declared at line 51)
+    a.operator A();
+               ^
+
+"Test_name.c", line 111: error: external/internal linkage conflict with previous declaration at line 110
+      static int a;
+                 ^
+
+"Test_name.c", line 117: error: external/internal linkage conflict with previous declaration at line 116
+      static int a; // ok, both declarations have internal linkage
+                 ^
+
+"Test_name.c", line 111: warning: variable "cwg1113::named::a" was declared but never referenced
+      static int a;
+                 ^
+
+"Test_name.c", line 118: warning: variable "cwg1113::<unnamed>::b" was declared but never referenced
+      int b = a;
+          ^
+
+3 errors detected in the compilation of "Test_name.c".

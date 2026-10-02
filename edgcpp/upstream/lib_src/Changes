@@ -1,0 +1,1662 @@
+Version 7.0, September 28, 2026
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 6.9, July 20, 2026
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 6.8, November 21, 2025
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 6.7, January 29, 2025
+
+5/18/24  [EDGcpfe/27239]
+Conditional support for complex bfloat16 type
+
+Support for complex bfloat16 types (see the entry for EDGcpfe/26466) is now
+conditioned on the value of the macro __EDG_BFLOAT16_ENABLING_POSSIBLE.
+This macro is predefined by the front end when --building_runtime is
+specified, based on the assumed characteristics of the target of the
+compilation.  The macro can be redefined via command-line or other macro
+definitions if the value provided by the front end does not accurately
+reflect the actual capabilities of the target.
+
+
+3/27/24  [EDGcpfe/27124]
+Build errors in c99_complex.c with _EDG_bfloat16
+
+The changes for EDGcpfe/26466 in version 6.6 introduced some build errors in
+c99_complex.c where the type _EDG_bfloat16_t was misspelled.  This is now
+fixed.
+
+
+-------------------------------------------------------------------------------
+Version 6.6, December 18, 2023
+
+9/19/23  [EDGcpfe/26466]
+C++23, gcc, and clang compatibility: complex bfloat16 types
+
+c99_complex.c has been updated to provide support for complex types based on
+the bfloat16 floating-point type (C++23 std::bfloat16_t and __bf16 in gcc
+and clang).  This code is only enabled when the host compiler supports the
+bfloat16 type.
+
+
+-------------------------------------------------------------------------------
+Version 6.4, October 25, 2022
+
+9/30/22  [EDGcpfe/20094,EDGcpfe/20264,EDGcpfe/25494]
+GNU/Clang compatibility: _Float16
+
+c99_complex.c has been updated to provide support for complex types based
+on the _Float16 16-bit floating-point type.  This code is only enabled when
+the host compiler supports the _Float16 type.
+
+
+-------------------------------------------------------------------------------
+Version 6.3, December 13, 2021
+
+11/4/21 [EDGcpfe/24816]
+Incomplete signature for std::terminate
+
+std::terminate (and some other internal functions) have had their function
+signatures changed to indicate that they do not throw and use the [[noreturn]]
+attribute when available.
+
+
+-------------------------------------------------------------------------------
+Version 6.2, February 10, 2021
+
+-------------------------------------------------------------------------------
+Version 6.1, July 24, 2020
+
+3/9/20  [EDGcpfe/22450]
+Optionally flush streams on abort
+
+Older versions of the GNU library appear to flush IO streams when abort is
+called, but it appears that newer versions do not flush the IO streams.  A new
+configuration macro, FLUSH_ON_ABORT, has been added and when TRUE, the
+stdout and stderr IO streams are now flushed before calling abort.
+
+
+-------------------------------------------------------------------------------
+Version 6.0, December 5, 2019
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 5.1, July 12, 2019
+
+3/14/19  [EDGcpfe/20530,EDGcpfe/20644]
+C++20: char8_t type
+
+A typeinfo entry has now been added for the char8_t type in configurations
+where the front end implements it.
+
+
+-------------------------------------------------------------------------------
+Version 5.0, August 10, 2018
+
+4/27/18  [EDGcpfe/19637]
+Exception specifications on pointer-to-member-function types
+
+The changes for EDGcpfe/17685 added support for exception specifications as
+a part of function types, but those changes didn't include pointer-to-member-
+function types.  Those changes have now been made.
+
+One note: As mentioned in the Changes entry for EDGcpfe/17685, the
+ETS_IS_ELLIPSIS macro has the same value as the
+ETS_IS_POINTER_TO_NOEXCEPT_FUNCTION macro and these two are now distinguished
+by either ETS_IS_POINTER_TO_MEMBER_FUNCTION or ETS_IS_POINTER being set (prior
+to this change, only ETS_IS_POINTER was used to differentiate the two cases).
+
+
+11/13/17 [EDGcpfe/18921]
+typeinfo now for __float80, __float128, __int128_t, and __uint128_t
+
+typeinfo entries have now been added for __float80, __float128, __int128_t, and
+__uint128_t types in configurations where the front end implements those
+types.  Note that the 128-bit integer types will only be available when the
+run time library is built in GCC or clang emulation mode (because those types
+are not available otherwise).
+
+
+9/25/17  [EDGcpfe/10590,EDGcpfe/16574,EDGcpfe/17582]
+Implementation of some standard library utilities
+
+The run time library now implements std::get_terminate, std::get_new_handler,
+and std::uncaught_exceptions.
+
+
+9/25/17  [EDGcpfe/18806]
+Microsoft compatibility: exception specifications for allocation/deallocation
+functions
+
+C++17 removes dynamic exception specifications (those using the "throw"
+keyword).  The config.h file previously determined whether to use the newer
+"noexcept" forms based on the value of the __cplusplus predefined macro.
+However, the Microsoft compiler always sets __cplusplus to reflect C++98,
+resulting in incorrect exception specifications when compiling in Microsoft
+C++17 mode.  The config.h file has now been changed to use the value of the
+Microsoft-specific predefined macro _NOEXCEPT_TYPES_SUPPORTED to determine
+which form of exception specification to use in Microsoft-mode
+compilations.
+
+
+9/12/17  [EDGcpfe/18760]
+Incompatible definition of _GNU_SOURCE
+
+Support for C++17 overaligned storage allocation using gcc to compile the
+library source requires defining the macro _GNU_SOURCE in config.h to
+enable the declaration of posix_memalign in the system headers.  This macro
+was previously given an empty definition, but it is now defined to the
+value 1 to be compatible with its definition by g++.
+
+
+9/12/17  [EDGcpfe/18759]
+Incorrect spelling of aligned nothrow version of operator new routine name
+
+The file newnothrow_aligned.c contained a typographical error, incorrectly
+spelling the name of operator new as operator_new.  This is now fixed.
+(This was updated in the 4.14 master copy, but early downloads will contain
+the erroneous spelling.)
+
+-------------------------------------------------------------------------------
+Version 4.14, September 12, 2017
+
+9/5/17   [EDGcpfe/18732]
+New configuration macro for passing exception type flags to run time library
+
+When --building_runtime is specified on the command-line, the front end now
+sets a new configuration macro, __EDG_ETS_FLAG_TYPE, which specifies the type
+used to pass exception type flags to the run time library.  Previously the run
+time library had used a_byte for these flags.  The change is made in
+anticipation of adding other bits to the ETS_* set of bits.
+
+
+9/1/17   [EDGcpfe/17685,EDGcpfe/18637]
+C++17: Library support for exception specifications as part of function types
+
+To support the throwing of pointers to function types with noexcept
+exception specifications in configurations where lowering generates
+exception tables, a new bit, ETS_IS_POINTER_TO_NOEXCEPT_FUNCTION, is introduced
+to indicate the presence of a noexcept exception specification on the
+underlying function type.  Due to the lack of bits in the run time library's
+an_ETS_flag_set type, ETS_IS_POINTER_TO_NOEXCEPT_FUNCTION uses the same bit
+as ETS_IS_ELLIPSIS with (ETS_IS_POINTER_TO_MEMBER_FUNCTION | ETS_IS_POINTER)
+being used to distinguish between the two cases.  This is a subtle IL CHANGE.
+
+
+8/24/17  [EDGcpfe/17696]
+C++17: overaligned storage allocation
+
+The library has been modified to add the allocation and deallocation
+routines described in Committee document P0035R4 supporting overaligned
+data types.  These routines are only defined when the macro
+__STDCPP_DEFAULT_NEW_ALIGNMENT__ is defined, indicating a C++17
+compilation.
+
+
+7/11/17  [EDGcpfe/18572]
+Inconsistent type used for "id" field of type_info in Cfront ABI
+
+The front end uses a "char" type for the "id" field of the type_info structure
+and the runtime library had used "unsigned char" for the same field and has now
+been changed to use "char".
+
+
+3/24/17  [EDGcpfe/18147]
+Destructions for static and thread_local objects before main is called
+
+In the Cfront ABI, the run time library had failed to destroy static and
+thread_local objects if the process exited before the main routine is called.
+In certain cases the objects had been inadvertently destroyed by a separate bug
+that is now fixed (see the Changes entry for EDGcpfe/18126), making this more
+visible.  For example:
+
+  extern "C" int printf(const char *,...);
+  extern "C" void exit(int);
+  struct A {
+    ~A() { printf("~A()\n"); }
+  };
+  struct Exit {
+    Exit() { exit(0); }
+  };
+  A a;    // had not been destroyed in Cfront ABI configurations
+  Exit e;
+  int main() {}
+
+
+-------------------------------------------------------------------------------
+Version 4.13, February 22, 2017
+
+2/20/17  [EDGcpfe/18032]
+Build problem when building the runtime with a version without C++11 support
+
+A change in 4.12 could cause build issues when compiling the runtime with
+a front end that did not have C++11 support.  Now fixed.
+
+
+11/23/16 [EDGcpfe/17767]
+Inadvertent destruction of rethrown object
+
+As a result of the changes dated 6/2/05, it's possible for a rethrown object to
+be inadvertently destroyed prematurely during the rethrow process.  This can
+happen if the same automatic storage address is pointed to by
+__curr_eh_stack_entry when __throw and __rethrow are invoked.  In the following
+example (in some configurations), the same stack addresses are used in both foo
+and bar for the exception handling data structures, resulting in a run-time
+assertion failure in __destroy_exception_object:
+
+  void foo() {
+    try {
+      throw 0;
+    } catch (char) {
+    }
+  }
+  void bar() {
+    try {
+      throw;
+    } catch (int) {
+    }
+  }
+  int main() {
+    try {
+      foo();
+    } catch (int) {
+      bar();
+    }
+  }
+
+
+10/26/16 [EDGcpfe/6091,EDGcpfe/6874,EDGcpfe/12710,EDGcpfe/12965,EDGcpfe/13971,
+          EDGcpfe/14218,EDGcpfe/16440,EDGcpfe/16488,EDGcpfe/16497,
+          EDGcpfe/17067,EDGcpfe/17667]
+GNU compatibility: adding __float80 and __float128 support
+
+When the front end supports __float80 and/or __float128, the run time library
+routines to support complex and imaginary numbers with those floating-point
+types as their underlying components are now available.  Note that the
+implementation requires that the target platform has support for arithmetic
+operations on these types.
+
+
+-------------------------------------------------------------------------------
+Version 4.12, October 5, 2016
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 4.11, May 12, 2016
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 4.10.1, June 23, 2015
+
+6/15/15 [EDGcpfe/16303]
+Function signature for __throw
+
+The return type for the library routine __throw has been changed from "int"
+to "void" to match the IL that is generated by the front end.
+
+
+3/5/15  [EDGcpfe/14687]
+C++14: Support for sized global deallocation
+
+Definitions for the sized global deallocation operators, namely
+operator ::delete(void*, size_t) and operator ::delete[](void*, size_t),
+have been added.  These routines simply call their un-sized versions
+at the present time.
+
+Note that these definitions are conditional upon the value of the
+__cpp_sized_deallocation feature test macro, and as such the runtime library
+must be built with the --c++14 option (if these library routines are to be
+included).
+
+
+-------------------------------------------------------------------------------
+Version 4.10, December 23, 2014
+
+12/16/14 [EDGcpfe/15838]
+Runtime source now copyrighted but not proprietary
+
+We've changed the copyright notices in the runtime library source to make
+those files freely redistributable.  They're copyrighted, but they're
+not proprietary.  This was done because some customers wanted to provide
+code generation options that required a customized runtime library to
+be built by their end-users.
+
+
+-------------------------------------------------------------------------------
+Version 4.9, April 17, 2014
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 4.8, October 18, 2013
+
+8/28/13 [EDGcpfe/9167,EDGcpfe/12359]
+C++11: Support for thread_local
+
+In configurations where the front end supports thread_local storage, the
+runtime library is required to handle destruction of objects with thread_local
+storage duration at thread termination.  The front end signals that a
+destruction for a thread_local object is necessary by calling
+__cxa_thread_atexit in the IA-64 ABI or __record_needed_thread_destruction
+in the Cfront ABI.  Such destruction requests are queued on thread-specific
+lists and invoked in reverse order when the thread is terminated.
+
+In cases where the target system already has an IA-64 compliant library
+that includes __cxa_thread_atexit, that library can be used to perform
+the necessary destructions, but in all other cases (i.e., in Cfront ABI
+configurations, or when the target system does not have an IA-64 compliant
+library, or when that library doesn't yet implement __cxa_thread_atexit
+-- in which case SYSTEM_RUNTIME_HAS_IA64_THREAD_ATEXIT should be set to FALSE),
+this runtime library can be used for thread_local destructions.
+
+In order to process destruction of objects with thread_local storage at
+thread termination, the runtime library requires notification each time
+a thread terminates.  Such notification is highly specific to the threading
+system used and will likely need to be customized.  When USE_PTHREADS is
+TRUE, the runtime library assumes that the POSIX thread library is being
+used to manage threads and issues calls to that library to determine
+when a thread is terminated.  If USE_PTHREADS is FALSE, an #error directive
+will trigger to indicate the location of code that needs to be customized.
+
+
+6/16/13  [EDGcpfe/14142]
+Exception object not destroyed when an exception is thrown by placement new
+
+If an exception was thrown by the constructor invoked by a placement
+new operation, a variety of incorrect behavior could result.  This
+includes not destroying the exception object in the example below.
+Other possible behavior includes getting an internal error in the
+EH runtime, and rethrowing the incorrect object.  Now fixed.
+  
+  #include <stdio.h>
+  #include <stdlib.h>
+
+  struct E {
+      E() { printf("E created\n"); }
+      E(const E &e) { printf("E created (copy)\n"); }
+      ~E() throw() { printf("E destroyed\n"); }
+  };
+
+  void *operator new(size_t size, void *pool);
+  void operator delete(void *ptr, void *pool);
+
+  struct A {
+      A() { throw E(); }
+  };
+
+  int main() {
+    try {
+      char pool[4];
+      new (pool) A();
+    } catch (...) {
+      printf("catch\n");
+    }
+    printf("done\n");
+  }
+
+
+6/15/13  [EDGcpfe/14188]
+C++11: Eliminate use of deprecated string literal conversion
+
+The runtime has been updated to eliminate any uses of the deprecated
+conversion from a string literal to non-const char*.
+
+-------------------------------------------------------------------------------
+Version 4.7, May 21, 2013
+
+5/17/13  [EDGcpfe/7689,EDGcpfe/13901]
+C++11: Delegating constructors
+
+A change has been made to allow a NULL vtable pointer to be passed to a
+destructor during exception handling processing.  Previously if a NULL
+value was found in a RDF_SUBOBJECT_VTABLE region table entry, the run-time
+library silently invoked the "complete" object destructor; now the
+"subobject" destructor is invoked with the NULL value.  This functionality
+is required for the implementation of delegating constructors.
+
+
+-------------------------------------------------------------------------------
+Version 4.6, March 30, 2013
+
+12/7/12 [EDGcpfe/13489,EDGcpfe/9247,EDGcpfe/9975]
+C++11: changes for std::bad_array_new_length
+
+A change has been made to implement the std::bad_array_new_length class
+that is thrown (when ABI_COMPATIBILITY_VERSION >= 406) to indicate that
+the number of elements in an array new operation is too small (less than
+zero or the number of initializers) or too large.
+
+A new utility function, __throw_bad_array_new_length, has been added to
+unconditionally throw an object of type std::bad_array_new_length.  This
+routine is invoked by code generated by the front end in Cfront-ABI
+configurations.  In IA-64 ABI configurations, __cxa_throw_bad_array_new_length
+has been added to perform the same task.
+
+
+-------------------------------------------------------------------------------
+Version 4.5, October 5, 2012
+
+9/5/12   [EDGcpfe/10617,EDGcpfe/11496,EDGcpfe/12018]
+C++11: Add support for noexcept specifications
+
+The runtime library has been modified to support the new exception handling
+stack frame, ehsek_noexcept, which is pushed by the front end for functions
+whose noexcept specification indicates that the function does not allow
+exceptions to be thrown.  When a function violates the noexcept specification,
+the exception stack is unwound (if UNWIND_STACK_BEFORE_CALLING_TERMINATE is
+TRUE) and the std::terminate function is called.
+
+
+-------------------------------------------------------------------------------
+Version 4.4, December 21, 2011
+
+6/17/11 [EDGcpfe/8403,EDGcpfe/10669,EDGcpfe/11510,EDGcpfe/11628,EDGcpfe/11684,
+         EDGcpfe/11800]
+C++0x: Add type_info entries for char16_t/char32_t types
+
+New type_info entries have been added to support the char16_t/char32_t types.
+
+-------------------------------------------------------------------------------
+Version 4.3, March 17, 2011
+
+1/27/11  [EDGcpfe/11316]
+Unneeded include in throw.c
+
+throw.c included vla_alloc.h, but should not have.  Now fixed.
+
+
+10/12/10 [EDGcpfe/11068]
+Warn on signed/unsigned comparison in vec_newdel.c
+
+Some compilers warn on a comparison of signed and unsigned variables.
+vec_newdel.c made use of such a comparison resulting in a warning from
+those compilers.  This code has been revised to avoid the warning.
+
+-------------------------------------------------------------------------------
+Version 4.2, August 25, 2010
+
+10/28/09 [EDGcpfe/10145]
+C++0x: configuration macro to disable C++0x runtime features
+
+A new configuration macro __EDG_CPP0X_IL_EXTENSIONS_SUPPORTED is now passed
+from the front end to indicate whether C++0x features are supported by the
+front end.  When this flag is TRUE, the runtime library is configured to
+support C++ features and needs to be compiled with the --c++0x command line
+option.  The --c++0x command line option is not needed when the flag is
+FALSE (see the Changes entry of 9/30/09).
+
+
+10/23/09 [EDGcpfe/10107]
+Use __EDG_IA64_VTABLE_ENTRY_TYPE as the type of an IA-64 ABI vtable entry
+
+A new macro __EDG_IA64_VTABLE_ENTRY_TYPE is now used by the front end to
+specify the type of an IA-64 ABI vtable entry.  See the Changes entry in
+the front end for more information.
+
+
+9/30/09  [EDGcpfe/8623, EDGcpfe/9926, EDGcpfe/10102, EDGcpfe/10522]
+C++0x: Support for nullptr
+
+Exception handling and RTTI support for the C++0x decltype(nullptr) type has
+been added to both Cfront and IA-64 ABIs.  A thrown std::nullptr_t type can now
+be caught by handlers with pointer type or pointer to member type. The new
+flags ETS_IS_POINTER_TO_DATA_MEMBER and ETS_IS_POINTER_TO_MEMBER_FUNCTION have
+been added to the flags field of the exception type specification entry for
+this purpose.
+
+Note that these changes require that --c++0x be specified when compiling the
+library (i.e., the Makefile may need to be updated).
+
+
+-------------------------------------------------------------------------------
+Version 4.1, August 6, 2009
+
+6/25/09  [EDGcpfe/9835]
+New runtime routine for invocation of a deleted virtual function
+
+A new runtime routine (__cxa_deleted_virtual in the IA-64 ABI and
+__deleted_virtual_called in the Cfront ABI) is provided to catch instances
+where a deleted virtual function is erroneously invoked.  The new function
+issues a diagnostic and terminates the application.
+
+
+1/14/09  [EDGcpfe/8065]
+IA-64 ABI: Incorrect return status from __cxa_atexit
+
+Versions of runtime configured to use the IA-64 ABI provide a definition
+of __cxa_atexit for use on systems where the system's runtime does not
+provide one.  The function is supposed to return zero on success and
+non-zero on failure, but the opposite was being done.  Now fixed.
+
+-------------------------------------------------------------------------------
+Version 4.0, December 5, 2008
+
+2/12/08  Point of destruction of the exception object
+
+The EH mechanism maintains an internal copy of the object being thrown, which
+is known as the "exception object".  If the catch clause of a try block
+exited with an exception, the exception object was not destroyed at the
+point mandated by the standard (it was destroyed earlier).  This has been
+fixed.
+
+An ABI change was required to resolve this issue.  New versions of the runtime
+library will continue to work with code compiled by older versions of the
+front end, but code compiled with the new ABI will not work with older
+versions of the runtime library.  See the front end Changes entry for more
+information
+
+In this example, ~A() should be called after ~B(), but was being called
+before ~B().
+
+  extern "C" int printf(const char *, ...);
+  struct A { ~A() { printf("~A()\n"); } };
+  struct B { ~B() { printf("~B()\n"); } };
+  int main () {
+    try {
+      try { throw A(); }
+      catch (A&) {
+        B b;
+        throw 1;
+      }
+    }
+    catch (int) { }
+  }
+
+-------------------------------------------------------------------------------
+Version 3.10, September 23, 2007
+
+8/7/07   IA-64 ABI: Read and write least significant bit in guard when
+         using ARM EABI (affects ARM in big-endian mode)
+
+The guard routines (__cxa_guard_acquire, __cxa_guard_release and
+__cxa_guard_abort) have been modified to read and write the least significant
+bit of the guard variable when __EDG_IA64_ABI_USE_INT_STATIC_INIT_GUARD is TRUE
+(i.e., when using ARM EABI).  When __EDG_IA64_ABI_USE_INT_STATIC_INIT_GUARD
+is FALSE (i.e., when using generic IA-64 ABI), continue to 
+use the first byte of the guard variable.  This change is consistent
+with the ARM EABI (see section 4.4.2 of version 2.02 of the ARM EABI).
+The change should only be noticeable on big-endian architectures.
+
+7/23/07  Zero-length array with same address as other object
+
+When an array of destructible objects is constructed, the space allocated
+by the runtime includes a prefix that contains information used when the
+array is deleted.  The pointer returned by the new operation points to the
+array itself, which is just after the prefix.  If the array has a length of
+zero it is possible for the array address to be the same as that of a
+non-array object allocated later.  This is unlikely as most allocators
+also place a prefix before the memory returned, but not impossible.
+
+  struct C {~C(){}};
+  struct D {~D(){}};
+  int main() {
+    C *ptr1 = new C[0];
+    D *ptr2 = new D;
+    return (void*)ptr1 == (void*)ptr2;
+  }
+
+4/30/07  Type of argument passed to Cfront ABI runtime routines for
+         number of elements
+
+The type of the parameter used to pass an array element count to routines
+such as __vec_new and __vec_delete can now be configured to be ptrdiff_t
+instead of int.  See the front end Changes file for more information
+
+-------------------------------------------------------------------------------
+Version 3.9, March 23, 2007
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 3.8, July 14, 2006
+
+No Changes.
+
+-------------------------------------------------------------------------------
+Version 3.7, January 12, 2006
+
+11/7/05  GNU compatibility: Support for lowered complex conjugate operation
+
+Routines have been added to support the lowered version of the GNU complex
+conjugation operator (i.e., the "~" operator).  For example (assuming a GNU
+mode):
+
+  void f(_Complex double z) {
+    z = ~z;  // "~z" is lowered to a call to a new run-time support routine.
+  }
+
+The routines are __c99_complex_float_conj, __c99_complex_double_conj, and
+__c99_complex_long_double_conj (all defined in c99_complex.c).
+
+6/17/05  IA-64 ABI: Incorrect result of throw of null pointer to derived
+         class with ambiguous base
+
+When using the IA-64 ABI, the EH runtime did not properly handle a throw of
+a null pointer to a derived class with ambiguous base classes.  A catch
+of the ambiguous base class succeeded when it should have failed.  Now fixed.
+
+  #include <stdio.h>
+  struct B { };
+  struct C1 : B { };
+  struct C2 : B { };
+  struct D : C1, C2 { };
+  void g() { throw (D*)0; }
+  int main() {
+    try { g(); }
+    catch (B*) { printf("wrong_place\n"); return 1; }
+    catch (D*) { printf("right_place\n"); }
+    return 0;
+  };
+
+-------------------------------------------------------------------------------
+Version 3.6, June 7, 2005
+
+6/2/05   Missing destruction on recursively abandoned throw operation
+
+A throw operation is "abandoned" if the object is being constructed
+directly into the temporary used by the EH runtime and an exception is
+thrown by the construction.  If this process occurred recursively, the
+object that was ultimately thrown was never destroyed.  Now fixed.
+
+  int ctor, dtor, cnt;
+  struct A {
+    A() {
+      cnt++;
+      if (cnt == 5 || cnt == 6) throw A();
+      ctor++;
+    }
+    ~A() { dtor++; }
+  };
+  int main() {
+    try { A a[10]; }
+    catch (...) { }
+    return ctor != dtor;
+  }
+
+5/17/05  Zero-length VLAs supported
+
+When the front end lowers VLA operations (i.e., when the __vla_alloc
+runtime routine is called to allocate VLAs), the runtime required the VLA
+size to be positive.  The runtime now supports zero-length VLAs.  They are
+treated as if they had a size of 1 for allocation purposes.
+
+5/4/05   Support for VLAs in exception handling
+
+VLAs are now supported in some C++ modes.  As a result, the exception handling
+mechanism has been updated to make use of the new data structures generated
+by the front end for the cleanup of variable length arrays.  See the front
+end Changes entry for more information.
+
+3/14/05  Handling of recursive calls of main
+
+Formerly, if main were to call itself recursively, the runtime would print an
+error message and abort.  Because some people intentionally call main (which
+the front end now permits in some modes), the runtime has been changed to
+permit main to be called recursively.  In versions that use the "patch" or
+"munch" mechanisms for static initialization, static constructors are only
+invoked the first time that main is called.
+
+-------------------------------------------------------------------------------
+
+Version 3.5, November 8, 2004
+
+6/7/04  ARM EABI Features
+
+When using the IA-64 ABI, the runtime now supports several variants of the
+ABI that are specified in the ARM EABI.  See the front end Changes file
+entry for more information.
+
+-------------------------------------------------------------------------------
+
+Version 3.4, May 8, 2004
+
+2/12/04  Change in proprietary status of runtime source
+
+The runtime source code is copyrighted but no longer confidential.  This
+permits distribution of the source code under certain conditions.  Refer
+to your license agreement for additional information.
+
+12/9/03  Missing exception specification on uncaught_exception
+
+A change in the TC1 version of the standard added an exception specification
+to uncaught_exception.  Our header files and runtime have been updated
+to include the exception specification.
+
+10/2/03  dynamic_cast did not handle certain downcasts properly
+
+The runtime did not properly implement certain downcasts.  Formerly, these
+casts would fail (by returning a null pointer or throwing a bad_cast
+exception).  The cast would fail if the source was either an ambiguous
+or non-public base class.  These casts are now supported.
+
+  #include <stdio.h>
+  struct A {
+    virtual void f () {}
+  };
+  struct B : public A { };
+  struct C : public B { };
+  struct D : public B { };
+  struct E : public C, public D { };
+  int main () {
+    E e;
+    A* ap = (C*)&e;
+    printf("%s\n", dynamic_cast <B*> (ap) == 0 ? "fail" : "pass");
+  }
+
+8/6/03   Detect recursive call of terminate()
+
+The runtime now detects an attempt by a user-written terminate routine to
+call itself recursively.  The runtime aborts execution if this occurs.  This
+change was made so that such cases are diagnosed quickly, rather than consuming
+a large amount of memory and CPU time.
+
+-------------------------------------------------------------------------------
+
+Version 3.3, July 31, 2003
+
+6/17/03  Function type of constructor pointers in the runtime
+
+The types used to represent constructors in the runtime have been updated
+to reflect that constructors return a pointer to the object constructed when
+using the Cfront-like ABI.  Previously they had been declared as returning
+void.
+
+-------------------------------------------------------------------------------
+Version 3.2, May 12, 2003
+
+4/15/03  IA-64: __cxa_finalize problem if non-null DSO handle is used
+
+The runtime provides a version of the __cxa_finalize routine that can be
+used if the host runtime does not provide one.  This routine did not
+correctly handle cases where the caller provides a non-null DSO handle.
+The runtime never calls the routine in such a way, but this could
+cause incorrect behavior if the user explicitly called __cxa_finalize.
+
+3/31/03  IA-64: _main no longer called
+
+The library _main routine is no longer called at program start when using
+the IA-64 ABI.  The presence of the call to _main made it difficult for
+code generated by our front end to be linked with a third party IA-64
+runtime library.
+	
+3/19/03  dynamic_cast problem in both IA-64 and cfront ABI
+
+A problem in the runtime for dynamic_cast produced the incorrect
+result when casting from an inaccessible base class.  This has been
+fixed.
+
+  extern "C" int printf(const char *, ...);
+  struct A { virtual void f(){} };
+  struct B : protected A {
+    friend int main();
+  };
+  B b;
+  int main() {
+    A* a = &b;
+    B* p = dynamic_cast<B*>(a);
+    printf("%p\n", p);  // p should be NULL
+  }
+
+3/19/03  Incorrect test of base class flags in IA-64 runtime
+
+The IA-64 runtime included some incorrect tests of the base class
+flags field, which could result in incorrect behavior in dynamic_cast
+and exception handling operations.  This has been fixed.
+
+3/18/03  __cxa_vec_cleanup added to IA-64 runtime
+
+The __cxa_vec_cleanup routine was missing from our IA-64 runtime.  This
+has been fixed.
+
+3/6/03   __cxa_vec_ctor no longer returns a value
+
+__cxa_vec_ctor returned the pointer to the array being constructed, in
+violation of the IA-64 ABI.  This has been fixed.
+
+-------------------------------------------------------------------------------
+Version 3.1, January 26, 2003
+
+1/22/03  IA-64 ABI
+
+We have added support for the IA-64 ABI.  See the front end Changes
+file for more information.
+
+1/20/03  EH destruction of base class subobjects, with construction vtables
+
+The front end and EH runtime have been updated to support the destruction
+of objects for which construction vtables are required.  Formerly, such
+objects could be destroyed successfully, but an attempt to use a virtual
+function during the destruction of the object would usually result in a
+runtime abort.  See the front end Changes file for more information.
+
+12/5/02  Incorrect size passed to delete routine by EH array cleanup
+
+If an exception is throw during the creation of a dynamically allocated
+array of a class that has a two-argument operator delete[] routine, the
+size passed to the operator delete was incorrect.  This has been fixed.
+
+5/13/02  Configuration flags for use of third party standard libraries
+
+Configuration flags have been added to simplify the use of third party
+standard libraries with the EDG runtime.  Some functions provided by the
+third party library should be used in place of those defined by the EDG
+runtime library.
+
+USE_EDG_EXCEPTION_CLASSES can be set to FALSE to suppress the definitions
+of the members of bad_alloc, exception, bad_cast, and bad_typeid.
+DEFINE_PLACEMENT_NEW_ROUTINES can be set to FALSE to suppress the
+definitions of placement new and placement array new.
+
+5/13/02  Missing exception specification on set_new_handler, et al
+
+A throw specification was missing on the definition of set_new_handler,
+set_unexpected, and set_terminate.  Now fixed.
+
+-------------------------------------------------------------------------------
+Version 3.0, May 9, 2002
+
+11/1/01  Changes for updated exception and stdexcept headers
+
+The exception and stdexcept headers did not match the specification
+in the standard.  In particular, the exception class was defined in
+stdexcept instead of exception.  The equivalent problem existed in the
+exception.c and stdexcept.c files of the library.  These files have
+been updated to match the updated header files.
+
+10/16/01 Throw of pointer type incorrectly caught by void**
+
+A throw of any pointer type can be caught by a void*.  The runtime was
+incorrectly allowing a catch of void** to also catch any pointer type.
+This has been fixed.
+
+  #include <stdio.h>
+  int main() {
+    int *i=0;
+    try {
+      throw i;
+    } catch (void **) {
+      printf("Caught void **\n");
+    } catch (int *) {
+      printf("Caught int *\n");
+    }
+  }
+
+7/24/01  Array new operations with value initialization
+
+A forthcoming technical corrigendum (TC1) of the C++ standard introduces the
+concept of "value initialization".  Unlike "default initialization", this
+ensures that all fields of non-POD classes without user-written constructors
+are properly initialized, by zeroing the storage for the object before calling
+the constructor.  The library now supports this by providing three new 
+routines: __array_new_zero, __placement_array_new_zero, and __vec_new_eh_zero.
+They are identical to their counterparts without "_zero" suffix, except that
+they zero the array storage before calling the constructor.
+
+6/2/01   Missing nothrow operator delete routines
+
+The nothrow versions of operator delete and operator delete[] were missing
+from the library (they were included in the <new> header, however).  They
+have now been added.
+
+2/9/01   Missing C99 complex support routine
+
+The routine __c99_cdouble_to_clong_double was added.  (Calls to it were
+generated by the C99 complex lowering code.)  [Patch sent out 2/14/01.]
+
+1/11/01  Value returned by the first call of set_new_handler
+
+The initial call of set_new_handler now returns zero, as required by the
+standard.  Previously, it returned a pointer to the default new handler
+routine provided by the runtime library.
+-------------------------------------------------------------------------------
+Version 2.45, December 26, 2000
+
+11/9/00 C99 complex support
+
+The file c99_complex.c has been added.  It contains a sample implementation
+of the runtime routines called when C99 complex and imaginary operations
+are lowered to runtime calls.
+
+-------------------------------------------------------------------------------
+Version 2.44, August 1, 2000
+
+6/11/00  Eliminated casts of pointer-to-function to pointer-to-object
+
+As required by the standard, the front end now issues a diagnostic when
+a pointer-to-function is cast to a pointer-to-object.  The runtime contained
+several such constructs which would no longer compile in strict mode.  These
+casts have been removed.
+
+3/9/00   Bug in internal try block handling with exception specifications
+
+A bug in the EH code that handles internal try blocks resulted in an
+infinite loop when an exception specification was encountered after
+the internal try was found but before the matching handler for the
+throw.  This has been fixed.
+
+12/15/99 Inline functions in runtime changed to static
+
+The runtime includes some inline functions which, because of the
+language changes related to "extern inline", are now external.  These
+functions have now been declared "static" to prevent them from polluting
+the global namespace.
+-------------------------------------------------------------------------------
+Version 2.43, December 8, 1999
+
+8/13/99  Runtime build problem on some systems
+
+The runtime  did not compile on some systems (e.g., Red Hat 6.0) on which
+the assignment of stderr to a FILE* is not a static initialization.  Now fixed.
+-------------------------------------------------------------------------------
+Version 2.42, August 12, 1999
+
+7/28/99  Displaying runtime abort messages
+
+There are several conditions that cause the runtime to abort execution.
+Formerly, the runtime would simply call abort; typically from a routine
+whose name suggests the cause of the abort.  The runtime can now be
+configured to display a message describing the cause of the abort by
+setting the DISPLAY_ABORT_DESCRIPTION flag when building the runtime.
+
+6/17/99  Dynamic case access checking problem
+
+The 2.41 change to do the standard-mandated access checking of dynamic
+casts introduced a bug that could cause a dynamic cast to fail when
+multiple type_info objects exist for the base class to which the
+cast is being done.  This has been fixed.
+
+6/9/99   Including standard headers
+
+The references in the runtime library to standard header files have been
+modified to use the form specified by the standard (e.g., "#include <new>"
+instead of "#include <new.h>").
+
+6/4/99   Bug in nothrow version of new when not using exceptions
+
+A bug in the nothrow version of new would cause it to loop if called
+when there is not enough memory available to complete the operation.
+This occurred only if the runtime was built without exception
+handling support.  This has been fixed.
+
+5/5/99   Operator delete routines missing exception specifications
+
+The operator delete routines in the runtime were missing exception
+specifications.  Now fixed.
+
+3/17/99  name field in typeinfo now const
+
+The "name" field in the type_info_impl data structure now has "const
+char *" type.  The "const" has been added to make the field match the
+type of string literals, which are now const in some modes (see the
+front end Changes entry of 1/21/99).
+
+3/11/99  Derived object caught by handler for base pointer
+
+2.41 introduced a bug in which a throw of a derived object could be
+caught by a catch of a base pointer, or a throw of a derived pointer
+could be caught by a catch of a base object.  This has been fixed.
+-------------------------------------------------------------------------------
+Version 2.41, March 5, 1999
+
+2/25/99  Complete access checking on dynamic_cast
+
+Certain access checks required by the standard were not performed by
+the __dynamic_cast runtime routine because additional information was
+required for the checks to be done.  Two new parameters have been added
+to __dynamic_cast and __dynamic_cast_ref to allow these checks to
+be done (this is an ABI change).  See the front end Changes file for
+more information.
+
+2/25/99  Qualification conversion on throw of multi-level pointer
+
+The EH mechanism now supports qualification conversions on multi-level
+pointers.  This feature requires an ABI change, and so it is only
+provided for ABI versions >= 2.41.  See the front end Changes file for
+more information.
+
+2/22/99  New semantics for unexpected()
+
+The runtime now implements the semantics of unexpected() described in
+the standard.  Specifically, if unexpected() exits by throwing an
+exception, the new exception must satisfy the requirements of the
+violated exception specification, or the violated exception specification
+must permit std::bad_exception to be thrown.  In the latter case, the
+exception thrown is replaced with a throw of std::bad_exception.
+-------------------------------------------------------------------------------
+Version 2.40, December 8, 1998
+
+11/18/98 Conflicting return types for sti and std functions
+
+The runtime files munch_ctors.c and munch_dtors.c provide definitions
+of the arrays of function pointers that would be supplied by edg_munch.
+These definitions are linked in when edg_munch is not being used.  The
+function pointer type used as the element type of the array differed
+between the definitions in these files and the reference in main.h.
+This has been fixed.
+-------------------------------------------------------------------------------
+Version 2.39, August 10, 1998
+
+No changes.
+
+-------------------------------------------------------------------------------
+Version 2.38, January 13, 1998
+
+12/16/97 Destructor pointer no longer in the type_info_impl object
+
+The destructor pointer has been removed from the type_info_impl object
+and is instead passed to the runtime each time an object is thrown
+using a new runtime routine named __throw_setup_dtor.  The presence of
+the destructor pointer in the type_info_impl object could require that
+a destructor be provided when one was not otherwise needed.  Passing
+the destructor pointer as part of processing a throw fixes this
+problem.  See the "Destructor for thrown object" entry in the front
+end Changes file for additional information.
+
+12/16/97 Restructuring of include files used by the runtime
+
+The runtime has been modified so that basics.h is included before any
+other header file.  This was done so that defines.h (which is included by
+basics.h) can affect system headers that are included by basics.h or later
+in the source file being compiled.
+
+-------------------------------------------------------------------------------
+Version 2.37, October 18, 1997
+
+8/18/97  Default new handler implementation did not match Working Paper
+
+The implementation of the default new handler did not match the
+working paper definition.  In particular, a NULL value was used to
+specify that the implementation's default new_handler should be used.
+The new_handler is now initialized with a pointer to the default new
+handler routine.  A new runtime source file named newhandler.c
+contains the default new handler.
+
+8/12/97  Incorrect handling of nonvirtual base class of a virtual base
+         class in exception handling and dynamic_cast
+
+The runtime __derived_to_base_conversion routine in rtti.c did not
+correctly handle nonvirtual base classes of virtual bases.  This could
+produce incorrect results when such classes are used in exception
+handling or in dynamic_cast operations.  This has been fixed.
+
+  extern "C" int printf(char *, ...);
+  struct B {
+    virtual ~B(){}
+  };
+  struct C:  B { };
+  struct D: virtual C { };
+  struct E: D { };
+ 
+  int main()
+  {
+    E *e = new E;
+    B* correct_b = e;
+    try { throw e; }
+    catch (B* b) { printf ("%s\n", b == correct_b ? "PASS" : "FAIL"); }
+  }
+
+6/23/97  Exception not considered caught when terminate() is entered
+
+When terminate() is called as the result of a throw, the exception should
+be considered caught.  In other words, if terminate() does a rethrow,
+the rethrown exception should be the one that caused terminate() to
+be called.  We now implement this feature correctly.
+
+-------------------------------------------------------------------------------
+Version 2.36, June 17, 1997
+
+6/5/97   Incorrect exception rethrown during processing of nested throw
+
+A rethrow that is done by a routine called by the EH runtime (e.g., 
+to make a copy of the thrown object) results in the wrong object being
+rethrown.  This has been fixed.
+
+5/5/97   File renamed to guarantee uniqueness when truncated to 8 characters
+
+array_newno.c has been renamed to array_nonew.c.  This permits the runtime
+file names to be truncated to 8 characters with the assurance that the
+resulting names will still be unique, which is important when using
+certain DOS library utilities.
+
+3/3/97   Check to ensure that a needed destruction is not registered twice
+
+A check has been added to __record_needed_destruction() to guard against
+an entry being added to the list more than once (which could result
+in an infinite loop during the destruction of static objects).  If such
+a condition is detected, __already_marked_for_destruction() is called,
+which in turn calls abort().
+
+-------------------------------------------------------------------------------
+Version 2.35, February 28, 1997
+
+2/21/97  Type of an_object_handle configured automatically
+
+The type of "an_object_handle" is now passed from the front end to
+the runtime by the predefined macro __EDG_VAR_HANDLE_TYPE.  The runtime
+should work properly when __EDG_VAR_HANDLE_TYPE is an integral type.
+If some other kind of type is used as an object handle, the runtime
+will need to be modified to work properly with that type.
+
+2/14/97  New runtime routine __internal_rethrow
+
+A new runtime routine named __internal_rethrow has been added.  This routine
+is called at the completion of the catch clause associated with an internal
+try block.  This routine was needed to properly handle cases when such
+catch clauses exit via an exception.
+
+1/3/97   Placement delete code conditionally compiled
+
+The placement delete routines are now included in the runtime only
+when the ABI_CHANGES_FOR_PLACEMENT_DELETE flag is set.  By default
+this flag is set to the value of the __EDG_ABI_CHANGES_FOR_PLACEMENT_DELETE
+macro defined by the front end.
+
+-------------------------------------------------------------------------------
+Version 2.34, December 18, 1996
+
+12/4/96  Missing defines of guard macros
+
+rtti.h and vtbl.h were missing #defines of their include guard variables.
+This has been fixed.
+
+11/25/96 uncaught_exception() returns TRUE when called from terminate()
+
+X3J16/WG21 clarified the definition of uncaught_exception() when
+called from within terminate().  The runtime has been modified to
+conform to the updated definition by always returning TRUE when
+called from within terminate().
+
+10/14/96 Recording array allocation information for placement array new
+
+A new runtime routine named __placement_array_new has been added
+for use when an array is allocated using placement array new.
+__placement_array_new records the array size information so that
+the memory may be freed later using the normal array delete
+operations.
+
+10/14/96 Internal try block added to exception handling routines
+
+A new kind of try block known as an "internal" try block has been
+added to the exception handling runtime.  An internal try block
+is identical to a normal try block except that it is not considered
+as a handler for purposes of determining whether terminate() should
+be called.
+
+10/14/96 UNWIND_STACK_BEFORE_CALLING_TERMINATE in config.h
+
+A new configuration flag has been added that can be used to specify
+whether the stack should be unwound before terminate() is called when
+an exception with no matching handler is thrown.  According to the
+Working Paper, it is unspecified whether or not the stack is unwound
+in this case.  This flag is TRUE by default, which matches the behavior
+of previous versions of the runtime.
+
+-------------------------------------------------------------------------------
+Version 2.33, October 2, 1996
+
+9/26/96 Guard against _main being called more than once
+
+An explicit call of _main could result in an infinite loop during static
+destruction.  To prevent this, a second call of _main is now detected
+and results in an abort in __main_called_more_than_once.
+
+9/25/96 Scope of an uncaught exception now conforms to the Working Paper
+
+The Working Paper specifies that an exception is "uncaught" from the
+time that the object to be thrown is completely evaluated until the time
+that the initialization of the catch parameter is complete.  The EH runtime
+has been updated to conform to this definition when using ABI versions
+2.33 and newer.  Two new routines have been added that are called by the
+code generated when the portable EH mechanism is being used:
+ __exception_started is called after the thrown object has been evaluated,
+but before the copy constructor call (if any) that copies the object to
+the EH temporary;  __exception_caught is called from the catch handler to
+mark the completion of the throw.
+
+9/25/96 uncaught_exception routine has been added
+
+The Working Paper specifies that a routine named std::uncaught_exception
+can be called to determine if an exception is in the process of being
+throw.  This routine is now supplied.
+
+9/23/96 Exception specifications added to new routines
+
+The default operator new, placement operator new, and nothrow operator new
+routines (and the array versions) now have exception specifications as
+described in the Working Paper.
+
+8/15/96 Linkage of function passed to atexit
+
+The 2.33 front end now includes a function's linkage as part of its
+type as required by the WP as of 7/96.  Because the language says
+that it is unspecified whether C library functions have C or C++ linkage,
+it is now impossible to pass a function pointer to a C library routine
+in a way that is guaranteed to be portable.  Presumably, this will be
+fixed in the WP at some point.  Until this is clarified, the argument
+to atexit (and on_exit on SunOS) is considered to be a pointer to
+a function with C linkage.
+
+7/22/96 Use standard name for the new handler type
+
+__new_handler was changed to new_handler as specified in the
+working paper.
+-------------------------------------------------------------------------------
+Version 2.32, June 28, 1996
+
+5/24/96 Restarting initialization of local static when exception thrown
+
+The EH runtime now supports the new RDF_GUARD_VAR_FOR_LOCAL_STATIC
+flag that is generated when IL lowering is used to generate EH
+region tables.  When this flag is set, the object associated with
+the region entry is the guard variable used to determine whether
+a local static has already been initialized.  The cleanup action
+is to reset the variable to zero.
+
+5/17/96  Added guard around definition of CFRONT_COMPATIBILITY_MODE
+
+In config.h, CFRONT_COMPATIBILITY_MODE is only defined if it was
+not already defined.
+
+5/15/96  Added missing #define to guard code in eh.h
+
+eh.h was missing a #define of _EH_H.  This has been fixed.
+
+5/6/96   Revised nothrow new implementation
+
+The nothrow versions of the operator new routines have been revised to
+reflect the new definition of std::nothrow as an object instead of a type.
+
+4/26/96  Include of malloc.h removed from throw.c
+
+throw.c now includes stdlib.h instead of malloc.h.
+
+2/21/96  __memzero routine added for initialization of member arrays
+
+A new file, memzero.c, has been added to supply a routine called
+__memzero, which is called by code generated by IL lowering for
+default initialization of member aggregates.
+
+2/7/96   Rethrow failed while a new throw was being processed
+
+If a rethrow occurred after the processing of a nested throw had
+already begun, but before the nested throw entered a handler, the
+runtime incorrectly called unexpected because it believed that no
+handler was active.  This has been fixed.
+
+2/5/96   incorrect deallocation routine may be called if an exception is
+         thrown while an array is being destroyed
+
+If an exception occurs while an array is being destroyed (by __vec_delete
+or __array_delete), the global operator delete[] (or operator delete, if
+array new and delete are not being used) was being called in all cases.
+This has been fixed.
+
+1/31/96  deallocation routine called with invalid value when array new fails
+
+If an array new operation fails, and EH is being used, the deallocation
+routine was incorrectly being called to free the memory.  This problem
+was introduced in version 2.31, and is now fixed.
+
+1/24/96  nothrow operator new defined incorrectly
+
+The version of operator new that does not throw an exception was
+incorrectly defined with the same signature as the default
+operator new.  It should have included the "nothrow" parameter
+in its type.  This has been corrected.
+
+1/24/96  New predefined macros used for region number type and null
+         region value
+
+The runtime has been changed to use new macros, defined by the front
+end when the --building_runtime option is used, as the type of the
+EH region number and the null region number value.  In addition to
+making the runtime automatically adapt to the values used by the
+front end this also fixes a problem on one's complement machines
+caused by the previous method used to initialize NULL_REGION_NUMBER
+in the runtime.
+
+1/22/96  Dynamically allocated array without destructor not destroyed by
+         EH mechanism
+
+If a constructor causes an exception to be thrown during the construction
+of a dynamically allocated array, the space used for the array should
+be freed after calling the destructor for any array elements already
+constructed.  This was not being done for arrays of classes with
+no destructor.  This has been fixed.
+
+-------------------------------------------------------------------------------
+Version 2.31, January 19, 1996
+
+1/15/96  Exceptions thrown by routines called by vec_cctor handled incorrectly
+
+__vec_cctor is called for constructor initialization of member arrays.
+If calling the constructor for one of the elements of the array directly
+or indirectly resulted in an exception being thrown that would transfer
+control out of vec_cctor, the constructed array elements should be
+destroyed, but were not.  A new runtime routine __vec_cctor_eh is
+now called so that the cleanup can be done, if needed.
+
+1/12/96  Type of an_object_offset now automatically configured
+
+The type "an_object_offset" is required to match the type specified
+by TARG_DELTA_INT_KIND in the front end.  This is now automatically
+configured by using the __EDG_DELTA_TYPE macro defined by the
+front end.
+
+1/12/96  Parameter type mismatch in __throw_alloc and __throw_setup
+
+The front end calls these routines without providing prototypes.
+Consequently, their parameter types must all be promoted types.
+The ETS flag set parameter has been changed from an_ETS_flag_set
+to "int" to make sure that the type always matches the value
+passed by the front end.
+
+1/5/96   Order of destruction of temporaries used by the EH mechanism
+
+Temporary copies of thrown objects are now destroyed in the sequence
+specified by the Working Paper.  The WP specifies (15.1 [except.throw])
+that the temporary object "persists as long as there is a handler being
+executed for that exception".  The most visible consequence of this
+change is that a throw that transfers control out of a handler will
+cause the exception object associated with that handler to be destroyed
+(unless the throw is a rethrow of that object).
+
+12/28/95 Added placement array new and delete and nothrow new routines
+
+The placement version of array new and delete have been added, as
+have the nothrow versions of new and array new.  The placement delete
+routines, although present, have been disabled because the front end
+does not yet support overloaded operator delete routines, nor calling
+the placement delete routines in the EH mechanism.
+
+11/29/95 Building runtime with RTTI enabled but not exception handling
+
+When building the runtime with RTTI enabled and exception handling
+disabled, the member functions of bad_cast were incorrectly being
+included in the library.  This could result in either compilation
+errors when building the runtime or link time failures when linking
+a program that uses dynamic_cast depending on whether or not the
+runtime was built with --exceptions enabled.  This has been fixed.
+
+11/27/95 Destructors for virtual bases called more than once
+
+When calling destructors, the EH runtime was always passing the
+"complete object" flag to the destructor.  This caused virtual
+base classes to be destroyed more than once in some cases.  The
+runtime needs additional information in order to provide the correct
+"complete object" flag to the destructor.  The front end and runtime
+have been modified to use a new flag (named RDF_BASE_CLASS_SUBOBJECT)
+to determine whether the "complete object" flag should be set.
+
+11/08/95 Destructors incorrectly called when pointers are thrown
+
+When a pointer to an object with a destructor was thrown, the destructor
+for the object was incorrectly being called to destroy the temporary
+object created by the runtime.  The destructor should not have been
+called because the temporary created by the runtime was only a pointer
+and not an actual object.  This has been fixed.
+
+10/12/95 Linux automatically sets USE_SYSTEM_JMP_BUF_DEFINITION
+
+USE_SYSTEM_JMP_BUF_DEFINITION is set to TRUE by default when compiled
+with a front end compiled with __linux__ defined.
+-------------------------------------------------------------------------------
+Version 2.30, October 30, 1995
+
+9/1/95    Namespace changes
+
+The runtime has been changed to define standard types and routines in the
+std namespace, but only if the front end option RUNTIME_USES_NAMESPACES
+is TRUE.
+
+7/7/95    USE_SYSTEM_JMP_BUF_DEFINITION in config.h
+
+In version 2.29, the runtime was changed to automatically configure
+the setjmp buffer to the size and type configured in the front end.
+This does not work if the buffer is a struct instead of an array.
+In such cases, the configuration flag USE_SYSTEM_JMP_BUF_DEFINITION should
+be set to TRUE, either on the compilation command line in the runtime
+Makefile or in the config.h file.  This causes setjmp.h to be included,
+and jmp_buf to be used as the type of the setjmp buffer.
+This is only needed when full portable exception handling is being used.
+-------------------------------------------------------------------------------
+Version 2.29, May 24, 1995
+
+5/23/95   More efficient means of recording array sizes
+
+When an array is allocated by the new operator, the runtime needs to
+record the size of the array so that it can be destroyed correctly
+when it is deleted.  Through version 2.28, the algorithm used to
+record this information was simply a linked list of allocations.
+This was intended as a sample implementation and not intended for
+production use.  The runtime now supports a new mechanism in which
+the array size is recorded in a prefix block that is allocated as
+part of the array allocation.  The new mechanism is used by default
+with ABI versions >= 2.29, but may be explicitly enabled or disabled
+using the USE_PREFIX_FOR_ARRAY_ALLOC_INFO flag in the config.h file.
+
+vec_newdel.c has been restructured to make it easier to change the
+mechanism used to record the array size.  Operations that were
+formerly part of _vec_new and __vec_delete have been separated
+out into alloc_array, free_array, record_array_alloc_info, 
+
+The new mechanism is permitted by the rules specified in the Working
+Paper, but may cause a change in behavior in programs that use
+certain undefined operations.  For example, a program that allocates
+memory using array new, but frees the memory using nonarray delete
+could result in a runtime abort where none occurred previously.
+
+5/23/95   Array new and delete
+
+Default operator new[] and operator delete[] routines are now provides.
+By default, these are only supported for ABI versions >= 2.29.
+New interface routines called __array_new and __array_delete are
+provided.
+
+4/19/95   New throw interface
+
+A new runtime routine named __throw_setup has been added.  This routine
+is called for ABI versions >= 2.29.  __throw_setup is used to implement
+the revised language rule that accessibility checking of base classes
+of thrown objects in based purely on whether or not the base class
+is public.  Previously, the accessibility was based on the
+actual accessibility at the throw point.
+
+3/22/95   Eliminated use of hard-coded mangled names in vec_newdel.c
+
+Formerly, vec_newdel.c contained hard-coded mangled names for
+operator new and operator delete.  This created problems when size_t
+was not unsigned int.  The hard-coded names have been eliminated.
+
+-------------------------------------------------------------------------------
+Version 2.28, March 2, 1995
+
+3/2/95    Added __suppress_optim_on_vars_in_try
+
+A routine called __suppress_optim_on_vars_in_try has been added to the
+runtime.  Calls of this routine are generated when the C generating back
+end is used.  It is used to make optimizers think that the addresses have
+been taken of any local variables used inside a try block, thus ensuring
+that their values will be saved when calling a routine inside the try block
+that may throw an exception.  The routine is not actually called (i.e.,
+flow of control never reaches the call).
+
+2/27/95   EH runtime updated to simplify use in a threaded environment
+
+The way in which base class accessibility is checked has been changed
+to make porting to a threaded environment simpler.  Formerly, at the
+initiation of a throw operation, the runtime would update flags in the
+typeinfo structure indicating the accessible base classes of the object
+being thrown.  Instead, the more expensive operation of checking the
+base classes for each class found in a catch clause or exception
+specification is used.
+
+2/27/95   Accessible base class bug in the EH runtime
+
+A bug has been fixed that could cause the runtime to use an
+incorrect value to determine whether a base class of a thrown
+object is accessible.
+
+-------------------------------------------------------------------------------
+Version 2.27, December 22, 1994
+
+12/23/94  Bug in handling of condition flags in exception handling
+
+The compiler and runtime were both using the same wrong location
+when setting and checking the value of a conditional flag.  This
+has been fixed.
+
+10/20/94  exit.c could define the wrong version of exit
+
+The file exit.c included some files that could result in it defining
+the C linkage version of exit instead of the C++ linkage version.
+This has been corrected.
+
+10/17/94  New files for destruction list processing
+
+dtor_list.c and dtor_list.h have been added to the runtime to support
+the new needed destructions list.
+
+10/17/94  Added needed destructions list
+
+A new mechanism for handling destruction of static object has been added.
+The ANSI/ISO working paper requires all static objects to be destroyed
+in the reverse order of creation.  This requires the destruction
+sequence to be determined dynamically at run time instead of statically
+at link time as was previously done.
+
+Object files generated with the new mechanism may be linked with object
+files generated with the older mechanisms and with object files
+generated by cfront.  Of course, when linking with older object files,
+the order of destruction of static objects will not be standard conforming.
+-------------------------------------------------------------------------------
+Version 2.24, July 8, 1994
+
+6/30/94   Avoid malloc(0) from new
+
+new.c has been changed so that a "new" with a size of zero causes a
+call of malloc with a size of one.  C++ makes a new with zero size well
+defined, but malloc(0) is not guaranteed by the C standard.
+
+-------------------------------------------------------------------------------
+Version 2.22, February 26, 1994
+
+2/4/94    Selection of on_exit vs. atexit
+
+The code used to select the routine to be used to invoke the static
+destructors when exit has been called to more easily accommodate
+Solaris 2.0, which uses atexit instead of on_exit.
+
+-------------------------------------------------------------------------------
+Version 2.21, December 21, 1993
+
+11/17/93  Changed __head to eliminate multiple definitions
+
+The compiler now puts out global declarations of the form "int i" as
+definitions instead of tentative definitions.  This caused a multiple
+definition error in the library.  This has been fixed.
+-------------------------------------------------------------------------------
+Version 2.20, November 4, 1993
+
+11/04/93  Exception Handling support
+
+This version includes support for a portable exception handling
+implementation.  The config.h file should be inspected to ensure
+that the settings are appropriate for your system.
+
+Most of the EH implementation is in EH specific files such as throw.c
+and eh_util.c.  There have been changed made to vec_newdel.c to
+handle cleanup of partially constructed arrays.
+
+The library now contains a version of exit with C++ linkage.  This change
+is also a result of the EH implementation and requires that the header
+files that define exit be modified accordingly.
+
+-------------------------------------------------------------------------------
+Version 2.13, January 22, 1993
+
+12/07/92  More portable means of calling static destructors
+
+The code that invokes static destructors has been made more portable.
+- references to "osfcn.h" have been eliminated
+- on_exit is still used on Suns
+- atexit is the default for non-Sun systems
+- a special version of "exit" is supplied for systems that don't support
+  on_exit or atexit.
+- a configuration file (config.h) is provided to define USE_ATEXIT and the
+  existing flag CFRONT_COMPATIBILITY_MODE
+
+-------------------------------------------------------------------------------
+Version 2.09, September 15, 1992
+
+09/10/92  Eliminated unneeded files
+
+Made variables used by vec_newdel static to eliminate the need for newdel.h.
+Removed newdel.h, memberptr.c, and vec_cdtor.c
+
+09/09/92  Modified vec_new and vec_delete names for cfront compatibility
+
+An extra underscore has been added to the names of several runtime routines
+to make them compatible with cfront.  The new names are "__vec_new" and
+"__vec_delete".  The EDG specific function "_vec_cctor" was changed to
+"__vec_cctor" for consistency.
+
+
+09/08/92  Added "munch" support
+
+Modified the functions that call the static constructors and destructors
+to support the AT&T "munch" style executable in addition to the "patch"
+style that was already supported.  The runtime detects whether a given
+executable was set up for "patch" or "munch".
+
+Version 2.08, August 25, 1992
+
+8/19/92  Eliminated use of printf
+
+Printf was used for some catastrophic error situations such as deleting an
+array with vec_del that was not allocating by vec_new and calling a
+pure virtual function.  These cases have been modified to simply abort
+in a function whose name describes the offending condition (i.e.,
+_array_pointer_not_from_vec_new()).
+
+8/18/92  Changed names of source files
+
+The names of the source files were changed as follows:
+
+Old		New
+-------------   -----------
+_delete.C	delete.c
+_handler.C	set_new.c
+_main.C		main.c
+_new.C		new.c
+_newdel.h	newdel.h
+_placenew.C	placenew.c
+_ptrtomembers.C	memberptr.c
+_pure_virt.C	pure_virt.c
+_vec_cctor.C	vec_cctor.c
+_vec_cdtor.C	vec_cdtor.c
+_vec_newdel.C	vec_newdel.c
+
+------------------------------------------------------------------------------
+Version 2.07, July 2, 1992
+
+6/24/92  New runtime routine _vec_cctor()
+
+A new C++ runtime routine _vec_cctor() to execute a copy constructor for
+each element of an array.
+ 
+------------------------------------------------------------------------------
+Version 2.05, April 30, 1992
+
+first official release.

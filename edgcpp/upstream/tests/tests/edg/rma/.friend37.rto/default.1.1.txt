@@ -1,0 +1,6 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 9: error: a qualified name is not allowed for a friend declaration that is a function definition
+    friend void ::g() { }       // Error
+                  ^
+
+1 error detected in the compilation of "Test_name.c".

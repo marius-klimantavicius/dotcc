@@ -1,0 +1,130 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 37: warning: variable "xs" is used before its value is set
+    a = xs[++a]; // ok
+        ^
+
+"Test_name.c", line 79: warning: use of "=" where "==" may have been intended
+    (xs[2] && (a = 0)) + a; // cxx11-warning {{unsequenced modification and access to 'a'}}
+              ^
+
+"Test_name.c", line 81: warning: use of "=" where "==" may have been intended
+    (0 && (a = 0)) + a; // ok
+          ^
+
+"Test_name.c", line 81: warning: expression has no effect
+    (0 && (a = 0)) + a; // ok
+    ^
+
+"Test_name.c", line 82: warning: use of "=" where "==" may have been intended
+    (1 && (a = 0)) + a; // cxx11-warning {{unsequenced modification and access to 'a'}}
+          ^
+
+"Test_name.c", line 85: warning: use of "=" where "==" may have been intended
+    (xs[3] || (a = 0)) + a; // cxx11-warning {{unsequenced modification and access to 'a'}}
+              ^
+
+"Test_name.c", line 87: warning: use of "=" where "==" may have been intended
+    (0 || (a = 0)) + a; // cxx11-warning {{unsequenced modification and access to 'a'}}
+          ^
+
+"Test_name.c", line 89: warning: use of "=" where "==" may have been intended
+    (1 || (a = 0)) + a; // ok
+          ^
+
+"Test_name.c", line 89: warning: expression has no effect
+    (1 || (a = 0)) + a; // ok
+    ^
+
+"Test_name.c", line 169: warning: expression has no effect
+    a = ((a++, false) || (a++, false) || (a++, false) || (a + a, false)); // no-warning
+                                                          ^
+
+"Test_name.c", line 170: warning: expression has no effect
+    a = ((a++, true) && (a++, true) && (a++, true) && (a + a, true)); // no-warning
+                                                       ^
+
+"Test_name.c", line 198: warning: expression has no effect
+    (i, xs)[++i + ++i]; // cxx11-warning {{multiple unsequenced modifications to 'i'}}
+     ^
+
+"Test_name.c", line 265: warning: variable "pf" is used before its value is set
+    (pf = f)(pf != nullptr, pf != nullptr); // cxx11-warning {{unsequenced modification and access to 'pf'}}
+             ^
+
+"Test_name.c", line 159: warning: variable "j" was set but never used
+    int i,j;
+          ^
+
+"Test_name.c", line 600: warning: variable "s" is used before its value is set
+    ++s.x + ++s.x; // no-warning TODO {{multiple unsequenced modifications to}}
+      ^
+
+"Test_name.c", line 606: warning: variable "t" is used before its value is set
+    ++t.x + ++t.x; // no-warning TODO {{multiple unsequenced modifications to}}
+      ^
+
+"Test_name.c", line 628: warning: variable "other" is used before its value is set
+    ++ra1 + ++other; // no-warning
+              ^
+
+"Test_name.c", line 632: warning: variable "ref_cycle" is used before its value is set
+    int &ref_cycle = ref_cycle;
+                     ^
+
+"Test_name.c", line 619: warning: variable "xs" was declared but never referenced
+    int xs[10];
+        ^
+
+"Test_name.c", line 658: warning: structured bindings are a C++17 feature
+      auto [x, y] = a;
+           ^
+
+"Test_name.c", line 658: warning: variable "a" is used before its value is set
+      auto [x, y] = a;
+                    ^
+
+"Test_name.c", line 669: warning: structured bindings are a C++17 feature
+      auto &[x, y] = a;
+            ^
+
+"Test_name.c", line 683: warning: structured bindings are a C++17 feature
+      auto [x, y] = b;
+           ^
+
+"Test_name.c", line 683: warning: variable "b" is used before its value is set
+      auto [x, y] = b;
+                    ^
+
+"Test_name.c", line 694: warning: structured bindings are a C++17 feature
+      auto &[x, y] = b;
+            ^
+
+"Test_name.c", line 708: warning: structured bindings are a C++17 feature
+      auto [x, y] = c;
+           ^
+
+"Test_name.c", line 717: warning: structured bindings are a C++17 feature
+      auto &[x, y] = c;
+            ^
+
+"Test_name.c", line 729: warning: structured bindings are a C++17 feature
+      auto [x, y] = d;
+           ^
+
+"Test_name.c", line 729: warning: variable "d" is used before its value is set
+      auto [x, y] = d;
+                    ^
+
+"Test_name.c", line 740: warning: structured bindings are a C++17 feature
+      auto &[x, y] = d;
+            ^
+
+"Test_name.c", line 808: warning: variable templates are a C++14 feature
+  template <typename T> int var = sizeof(T);
+                                ^
+
+"Test_name.c", line 800: warning: use of "=" where "==" may have been intended
+    return (t = static_cast<T>(1)) && t;
+           ^
+          detected during instantiation of "int templates::Run2<T>() [with T=bool]" at line 804
+

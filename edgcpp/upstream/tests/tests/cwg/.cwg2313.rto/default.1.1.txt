@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++17 -A Test_name.c
+"Test_name.c", line 4: error: declaration is incompatible with "int a" (declared at line 3)
+     extern char &&a; // ok, redeclaration, could even be in a different TU 
+                   ^
+
+1 error detected in the compilation of "Test_name.c".

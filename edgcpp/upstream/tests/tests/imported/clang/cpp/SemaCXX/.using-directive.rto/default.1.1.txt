@@ -1,0 +1,56 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 33: warning: variable "a" was declared but never referenced
+      int a[sizeof(i) == sizeof(char)? 1 : -1]; // okay
+          ^
+
+"Test_name.c", line 42: error: "i" is ambiguous
+      (void) i; // expected-error{{reference to 'i' is ambiguous}}
+             ^
+
+"Test_name.c", line 43: error: more than one instance of overloaded function "f" matches the argument list:
+            function "A::f()" (declared at line 23)
+            function "A::B::f()" (declared at line 9)
+      f(); // expected-error{{call to 'f' is ambiguous}}
+      ^
+
+"Test_name.c", line 47: error: "E" is ambiguous
+      using namespace E; // expected-error{{reference to 'E' is ambiguous}}
+                      ^
+
+"Test_name.c", line 59: error: "K2" is ambiguous
+  struct K2 *k2; // expected-error{{reference to 'K2' is ambiguous}}
+         ^
+
+"Test_name.c", line 61: error: "K2" is ambiguous
+  K2 *k3; // expected-error{{reference to 'K2' is ambiguous}}
+  ^
+
+"Test_name.c", line 65: error: expected an identifier
+    using namespace A; // expected-error{{not allowed}}
+          ^
+
+"Test_name.c", line 82: error: "NiTest::i" is ambiguous
+     return i; // expected-error{{reference to 'i' is ambiguous}}
+            ^
+
+"Test_name.c", line 104: error: "FuncHidesTagAmbiguity::X" is ambiguous
+      (void)X(); // expected-error{{reference to 'X' is ambiguous}}
+            ^
+
+"Test_name.c", line 133: error: expected an identifier
+    template <class T> using namespace ns; // expected-error {{cannot template a using directive}}
+                             ^
+
+"Test_name.c", line 133: error: expected an "="
+    template <class T> using namespace ns; // expected-error {{cannot template a using directive}}
+                             ^
+
+"Test_name.c", line 133: error: expected a type specifier
+    template <class T> using namespace ns; // expected-error {{cannot template a using directive}}
+                             ^
+
+"Test_name.c", line 136: error: namespace "test1" is not a type name
+    test1 x;
+    ^
+
+12 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,32 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 10: error: fold expression does not refer to a parameter pack
+  int k1 = (1 + ... + 2); // expected-error {{does not contain any unexpanded parameter packs}}
+                ^
+
+"Test_name.c", line 11: error: fold expression does not refer to a parameter pack
+  int k2 = (1 + ...); // expected-error {{does not contain any unexpanded parameter packs}}
+                ^
+
+"Test_name.c", line 12: error: fold expression does not refer to a parameter pack
+  int k3 = (... + 2); // expected-error {{does not contain any unexpanded parameter packs}}
+            ^
+
+"Test_name.c", line 21: warning: constant "M" cannot be used because it follows a parameter pack and cannot be deduced from the parameters of function template "bad4"
+  template<int ...N, int ...M> void bad4(int (&...x)[N]) { (N + M * ... * 1); } // expected-error {{expression not permitted as operand}}
+                            ^
+
+"Test_name.c", line 22: warning: constant "M" cannot be used because it follows a parameter pack and cannot be deduced from the parameters of function template "fixed4"
+  template<int ...N, int ...M> void fixed4(int (&...x)[N]) { ((N + M) * ... * 1); }
+                            ^
+
+"Test_name.c", line 77: error: expression must have class type but it has type "int"
+    return (T)(Args + ...).Value; // expected-error{{member reference base type 'int' is not a structure or union}}
+              ^
+          detected during instantiation of "auto castSum<T,Ts...>(Ts...) [with T=int, Ts=<int, int>]" at line 86
+
+"Test_name.c", line 82: error: expression must have class type but it has type "int"
+    return (... + Args).Value; // expected-error{{member reference base type 'int' is not a structure or union}}
+           ^
+          detected during instantiation of "auto simpleSum(Ts...) [with Ts=<int, int>]" at line 88
+
+5 errors detected in the compilation of "Test_name.c".

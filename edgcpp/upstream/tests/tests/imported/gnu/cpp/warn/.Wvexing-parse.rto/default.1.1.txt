@@ -1,0 +1,37 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 37: warning: variable "f3" was declared but never referenced
+    int (*f3)(int(a));
+          ^
+
+"Test_name.c", line 42: warning: variable "f8" was declared but never referenced
+    int (f8);
+         ^
+
+"Test_name.c", line 44: warning: variable "f10" was declared but never referenced
+    int(f10) __attribute__(());
+        ^
+
+"Test_name.c", line 47: warning: variable "j" was declared but never referenced
+    int j, k, l(); // { dg-warning "empty parentheses were disambiguated as a function declaration" }
+        ^
+
+"Test_name.c", line 47: warning: variable "k" was declared but never referenced
+    int j, k, l(); // { dg-warning "empty parentheses were disambiguated as a function declaration" }
+           ^
+
+"Test_name.c", line 48: warning: variable "m" was declared but never referenced
+    int m, f12(int(j)); // { dg-warning "parentheses were disambiguated as a function declaration" }
+        ^
+
+"Test_name.c", line 53: warning: variable "t3" was declared but never referenced
+    T(t3);
+      ^
+
+"Test_name.c", line 72: warning: variable "foo" was declared but never referenced
+    S (S::*foo)(int (int));
+           ^
+
+"Test_name.c", line 73: warning: variable "s14" was declared but never referenced
+    S(*s14)(int(a));
+       ^
+

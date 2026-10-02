@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp0x/new-auto1.C", line 6: error: braced initialization of a variable declared with a placeholder type but without "=" requires exactly one element inside the braces
+  auto foo1 = new auto { 3, 4, 5 };
+                       ^
+
+"./cpp0x/new-auto1.C", line 6: warning: a "new" of an std::initializer_list object is unlikely to work as expected because the underlying array will be destroyed at the end of the full expression
+  auto foo1 = new auto { 3, 4, 5 };
+                       ^
+
+"./cpp0x/new-auto1.C", line 9: error: expected a ")"
+  auto foo2 = new auto ( 3, 4, 5 );
+                          ^
+
+2 errors detected in the compilation of "Test_name.c".

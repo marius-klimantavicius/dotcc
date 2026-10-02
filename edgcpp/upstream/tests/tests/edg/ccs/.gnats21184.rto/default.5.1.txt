@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=5 --c++11 --microsoft Test_name.c
+"Test_name.c", line 8: error: static assertion failed with "S not copyable"
+  static_assert(__is_trivially_copyable(S), "S not copyable");
+  ^
+
+1 error detected in the compilation of "Test_name.c".

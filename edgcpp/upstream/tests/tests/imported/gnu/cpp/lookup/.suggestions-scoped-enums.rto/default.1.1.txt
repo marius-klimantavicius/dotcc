@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 20: error: enum "vegetable" has no member "TURNUP"
+    vegetable::TURNUP; // { dg-error "'TURNUP' is not a member of 'vegetable'; did you mean 'TURNIP'" }
+               ^
+
+"Test_name.c", line 30: error: enum "pasta::shape" has no member "SPOOGHETTI"
+    pasta::shape::SPOOGHETTI; // { dg-error "'SPOOGHETTI' is not a member of 'pasta::shape'; did you mean 'SPAGHETTI'" }
+                  ^
+
+"Test_name.c", line 41: error: enum "pasta::shape" has no member "SPOOGHETTI"
+    shape::SPOOGHETTI; // { dg-error "'SPOOGHETTI' is not a member of 'pasta::shape'; did you mean 'SPAGHETTI'" }
+           ^
+
+"Test_name.c", line 52: error: identifier "CARROT" is undefined
+    CARROT; // { dg-error "'CARROT' was not declared in this scope; did you mean 'vegetable::CARROT'" }
+    ^
+
+"Test_name.c", line 67: error: identifier "LASAGNA" is undefined
+    LASAGNA; // { dg-error "'LASAGNA' was not declared in this scope; did you mean 'pasta::shape::LASAGNA'" }
+    ^
+
+"Test_name.c", line 85: error: namespace "pasta" has no member "LINGUINE"
+    pasta::LINGUINE; // { dg-error "'LINGUINE' is not a member of 'pasta'; did you mean 'pasta::shape::LINGUINE'" }
+           ^
+
+"Test_name.c", line 100: error: identifier "TAGLIATELLE" is undefined
+    TAGLIATELLE; // { dg-error "'TAGLIATELLE' was not declared in this scope; did you mean 'pasta::shape::TAGLIATELLE'" }
+    ^
+
+7 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 --exceptions --exceptions Test_name.c
+"Test_name.c", line 20: error: placement "new" expression refers to non-placement function "operator delete(void *, size_t)" (declared at line 6)
+    new (123) S; // expected-error {{'new' expression with placement arguments refers to non-placement 'operator delete'}}
+    ^
+
+"Test_name.c", line 20: warning: function "operator new(size_t, size_t)" has no corresponding operator delete (to be called if an exception is thrown during initialization of an allocated object)
+    new (123) S; // expected-error {{'new' expression with placement arguments refers to non-placement 'operator delete'}}
+    ^
+
+1 error detected in the compilation of "Test_name.c".

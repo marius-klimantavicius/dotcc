@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 Test_name.c
+"Test_name.c", line 19: warning: unknown attribute "address_space"
+  MyType __attribute__((address_space(10))) m1 = 123; //expected-error{{no viable conversion from 'int' to '__attribute__((address_space(10))) MyType'}}
+                        ^
+
+"Test_name.c", line 20: warning: unknown attribute "address_space"
+  MyType __attribute__((address_space(10))) m2(123);  //expected-error{{no matching constructor for initialization of '__attribute__((address_space(10))) MyType'}}
+                        ^
+

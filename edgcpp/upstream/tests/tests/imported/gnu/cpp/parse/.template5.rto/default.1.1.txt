@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 19: warning: variable "pf1" was declared but never referenced
+    S<int> (S<int>::*pf1)(int (int)) = &S<int>::foo;
+                     ^
+
+"Test_name.c", line 20: warning: variable "pf2" was declared but never referenced
+    S<int> (S<int>::*pf2)(int (const int&)) = &S<int>::foo;
+                     ^
+

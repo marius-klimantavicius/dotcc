@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 13: error: invalid combination of type specifiers
+  typedef _Bool			bool;
+               			^
+
+"Test_name.c", line 41: warning: function "arch_static_branch_jump" was declared but never referenced
+  static __always_inline bool arch_static_branch_jump(struct static_key * const key, const bool branch)
+                              ^
+
+"Test_name.c", line 66: warning: function "expanded_dynamic_pr_debug" was declared but never referenced
+  static void expanded_dynamic_pr_debug(void) {
+              ^
+
+1 error detected in the compilation of "Test_name.c".

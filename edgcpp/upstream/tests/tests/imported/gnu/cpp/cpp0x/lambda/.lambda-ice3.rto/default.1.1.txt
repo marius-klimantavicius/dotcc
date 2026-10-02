@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 16: error: the enclosing-function "this" cannot be referenced in a lambda body unless it is in the capture list
+      if (local & 1) { return true; } // { dg-error "not captured|non-static" }
+          ^
+
+"Test_name.c", line 15: warning: variable "f" was declared but never referenced
+    auto f = []() -> bool {
+         ^
+
+"Test_name.c", line 25: warning: variable "c" was declared but never referenced
+    Klass c;
+          ^
+
+1 error detected in the compilation of "Test_name.c".

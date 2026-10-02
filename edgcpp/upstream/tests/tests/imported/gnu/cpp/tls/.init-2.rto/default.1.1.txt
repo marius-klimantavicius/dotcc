@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 7: error: thread-local variable cannot be dynamically initialized
+  __thread int *p = &i;	/* { dg-error "dynamic initialization" } */
+                ^
+
+"Test_name.c", line 10: error: thread-local variable cannot be dynamically initialized
+  __thread int j = f();	/* { dg-error "dynamic initialization" } */
+               ^
+
+"Test_name.c", line 16: error: thread-local variable cannot be dynamically initialized
+  __thread S s;		/* { dg-error "dynamic initialization" } */
+             ^
+
+3 errors detected in the compilation of "Test_name.c".

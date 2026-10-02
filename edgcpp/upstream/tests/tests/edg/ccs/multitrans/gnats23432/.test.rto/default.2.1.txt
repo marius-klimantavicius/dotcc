@@ -1,0 +1,1 @@
+cpfe -DTEST_NUMBER=2 --c++14 --multi_trans_unit -DCONSTEXPR=const Test_name.c gnats23432-p2.C

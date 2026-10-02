@@ -1,0 +1,357 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --exceptions Test_name.c
+"Test_name.c", line 8: error: identifier "__externref_t" is undefined
+  __externref_t ref;
+  ^
+
+"Test_name.c", line 9: error: identifier "__externref_t" is undefined
+  __externref_t &ref_ref1 = ref; // expected-error {{reference to WebAssembly reference type is not allowed}}
+  ^
+
+"Test_name.c", line 10: error: identifier "__externref_t" is undefined
+  __externref_t &ref_ref2(ref);  // expected-error {{reference to WebAssembly reference type is not allowed}}
+  ^
+
+"Test_name.c", line 12: error: identifier "__externref_t" is undefined
+  static __externref_t table[0];                    // expected-error {{array has sizeless element type '__externref_t'}}
+         ^
+
+"Test_name.c", line 13: error: explicit type is missing ("int" assumed)
+  static __externref_t (&ref_to_table1)[0] = table; // expected-error {{array has sizeless element type '__externref_t'}}
+         ^
+
+"Test_name.c", line 13: error: identifier "ref_to_table1" is undefined
+  static __externref_t (&ref_to_table1)[0] = table; // expected-error {{array has sizeless element type '__externref_t'}}
+                         ^
+
+"Test_name.c", line 13: error: expected a ";"
+  static __externref_t (&ref_to_table1)[0] = table; // expected-error {{array has sizeless element type '__externref_t'}}
+                                       ^
+
+"Test_name.c", line 14: error: explicit type is missing ("int" assumed)
+  static __externref_t (&ref_to_table2)[0](table);  // expected-error {{array has sizeless element type '__externref_t'}}
+         ^
+
+"Test_name.c", line 14: error: variable "__externref_t" has already been defined (previous definition at line 13)
+  static __externref_t (&ref_to_table2)[0](table);  // expected-error {{array has sizeless element type '__externref_t'}}
+         ^
+
+"Test_name.c", line 14: error: identifier "ref_to_table2" is undefined
+  static __externref_t (&ref_to_table2)[0](table);  // expected-error {{array has sizeless element type '__externref_t'}}
+                         ^
+
+"Test_name.c", line 14: error: expected a ";"
+  static __externref_t (&ref_to_table2)[0](table);  // expected-error {{array has sizeless element type '__externref_t'}}
+                                       ^
+
+"Test_name.c", line 16: error: incomplete type "void" is not allowed
+  void illegal_argument_1(__externref_t &r); // expected-error {{reference to WebAssembly reference type is not allowed}}
+       ^
+
+"Test_name.c", line 16: error: identifier "r" is undefined
+  void illegal_argument_1(__externref_t &r); // expected-error {{reference to WebAssembly reference type is not allowed}}
+                                         ^
+
+"Test_name.c", line 17: error: incomplete type "void" is not allowed
+  void illegal_argument_2(__externref_t (&t)[0]); // expected-error {{array has sizeless element type '__externref_t'}}
+       ^
+
+"Test_name.c", line 17: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+  void illegal_argument_2(__externref_t (&t)[0]); // expected-error {{array has sizeless element type '__externref_t'}}
+                          ^
+
+"Test_name.c", line 17: error: identifier "t" is undefined
+  void illegal_argument_2(__externref_t (&t)[0]); // expected-error {{array has sizeless element type '__externref_t'}}
+                                          ^
+
+"Test_name.c", line 19: error: variable "__externref_t" is not a type name
+  __externref_t &illegal_return_1(); // expected-error {{reference to WebAssembly reference type is not allowed}}
+  ^
+
+"Test_name.c", line 20: error: this declaration has no storage class or type specifier
+  __externref_t (&illegal_return_2())[0]; // expected-error {{array has sizeless element type '__externref_t'}}
+  ^
+
+"Test_name.c", line 20: error: variable "__externref_t" has already been defined (previous definition at line 13)
+  __externref_t (&illegal_return_2())[0]; // expected-error {{array has sizeless element type '__externref_t'}}
+  ^
+
+"Test_name.c", line 20: error: identifier "illegal_return_2" is undefined
+  __externref_t (&illegal_return_2())[0]; // expected-error {{array has sizeless element type '__externref_t'}}
+                  ^
+
+"Test_name.c", line 20: error: expected a ";"
+  __externref_t (&illegal_return_2())[0]; // expected-error {{array has sizeless element type '__externref_t'}}
+                                     ^
+
+"Test_name.c", line 22: error: variable "__externref_t" is not a type name
+  void illegal_throw1() throw(__externref_t);   // expected-error {{sizeless type '__externref_t' is not allowed in exception specification}}
+                              ^
+
+"Test_name.c", line 22: error: dynamic exception specifications are not permitted in this mode
+  void illegal_throw1() throw(__externref_t);   // expected-error {{sizeless type '__externref_t' is not allowed in exception specification}}
+                        ^
+
+"Test_name.c", line 23: error: variable "__externref_t" is not a type name
+  void illegal_throw2() throw(__externref_t *); // expected-error {{pointer to WebAssembly reference type is not allowed}}
+                              ^
+
+"Test_name.c", line 23: error: dynamic exception specifications are not permitted in this mode
+  void illegal_throw2() throw(__externref_t *); // expected-error {{pointer to WebAssembly reference type is not allowed}}
+                        ^
+
+"Test_name.c", line 24: error: variable "__externref_t" is not a type name
+  void illegal_throw3() throw(__externref_t &); // expected-error {{reference to WebAssembly reference type is not allowed}}
+                              ^
+
+"Test_name.c", line 24: error: dynamic exception specifications are not permitted in this mode
+  void illegal_throw3() throw(__externref_t &); // expected-error {{reference to WebAssembly reference type is not allowed}}
+                        ^
+
+"Test_name.c", line 25: error: variable "__externref_t" is not a type name
+  void illegal_throw4() throw(__externref_t[0]); // expected-error {{array has sizeless element type '__externref_t'}}
+                              ^
+
+"Test_name.c", line 25: error: dynamic exception specifications are not permitted in this mode
+  void illegal_throw4() throw(__externref_t[0]); // expected-error {{array has sizeless element type '__externref_t'}}
+                        ^
+
+"Test_name.c", line 28: error: variable "__externref_t" is not a type name
+    __externref_t f1;       // expected-error {{field has sizeless type '__externref_t'}}
+    ^
+
+"Test_name.c", line 29: error: variable "__externref_t" is not a type name
+    __externref_t f2[0];    // expected-error {{array has sizeless element type '__externref_t'}}
+    ^
+
+"Test_name.c", line 30: error: variable "__externref_t" is not a type name
+    __externref_t f3[];     // expected-error {{array has sizeless element type '__externref_t'}}
+    ^
+
+"Test_name.c", line 31: error: variable "__externref_t" is not a type name
+    __externref_t f4[0][0]; // expected-error {{array has sizeless element type '__externref_t'}}
+    ^
+
+"Test_name.c", line 30: error: incomplete type "<error-type> []" is not allowed
+    __externref_t f3[];     // expected-error {{array has sizeless element type '__externref_t'}}
+                  ^
+
+"Test_name.c", line 32: error: variable "__externref_t" is not a type name
+    __externref_t *f5;      // expected-error {{pointer to WebAssembly reference type is not allowed}}
+    ^
+
+"Test_name.c", line 33: error: variable "__externref_t" is not a type name
+    __externref_t ****f6;   // expected-error {{pointer to WebAssembly reference type is not allowed}}
+    ^
+
+"Test_name.c", line 34: error: expected a type specifier
+    __externref_t (*f7)[0]; // expected-error {{array has sizeless element type '__externref_t'}}
+                   ^
+
+"Test_name.c", line 34: error: function returning array is not allowed
+    __externref_t (*f7)[0]; // expected-error {{array has sizeless element type '__externref_t'}}
+                       ^
+
+"Test_name.c", line 50: error: variable "__externref_t" is not a type name
+    static_cast<__externref_t>(foo);      // expected-error {{static_cast from 'int' to '__externref_t' is not allowed}}
+                ^
+
+"Test_name.c", line 51: error: variable "__externref_t" is not a type name
+    static_cast<__externref_t *>(&foo);   // expected-error {{pointer to WebAssembly reference type is not allowed}}
+                ^
+
+"Test_name.c", line 51: warning: expression has no effect
+    static_cast<__externref_t *>(&foo);   // expected-error {{pointer to WebAssembly reference type is not allowed}}
+    ^
+
+"Test_name.c", line 53: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+    __externref_t(10);                    // expected-error {{functional-style cast from 'int' to '__externref_t' is not allowed}}
+    ^
+
+"Test_name.c", line 55: error: variable "__externref_t" is not a type name
+    const_cast<__externref_t[0]>(table);  // expected-error {{array has sizeless element type '__externref_t'}}
+               ^
+
+"Test_name.c", line 55: error: cast to type "<error-type> [0]" is not allowed
+    const_cast<__externref_t[0]>(table);  // expected-error {{array has sizeless element type '__externref_t'}}
+               ^
+
+"Test_name.c", line 56: error: variable "__externref_t" is not a type name
+    const_cast<__externref_t *>(table);   // expected-error {{pointer to WebAssembly reference type is not allowed}}
+               ^
+
+"Test_name.c", line 56: warning: expression has no effect
+    const_cast<__externref_t *>(table);   // expected-error {{pointer to WebAssembly reference type is not allowed}}
+    ^
+
+"Test_name.c", line 57: error: variable "__externref_t" is not a type name
+    reinterpret_cast<__externref_t>(foo); // expected-error {{reinterpret_cast from 'int' to '__externref_t' is not allowed}}
+                     ^
+
+"Test_name.c", line 60: error: variable "__externref_t" is not a type name
+    reinterpret_cast<__externref_t[0]>(iarr); // expected-error {{array has sizeless element type '__externref_t'}}
+                     ^
+
+"Test_name.c", line 60: error: cast to type "<error-type> [0]" is not allowed
+    reinterpret_cast<__externref_t[0]>(iarr); // expected-error {{array has sizeless element type '__externref_t'}}
+                     ^
+
+"Test_name.c", line 61: error: variable "__externref_t" is not a type name
+    reinterpret_cast<__externref_t *>(iarr);  // expected-error {{pointer to WebAssembly reference type is not allowed}}
+                     ^
+
+"Test_name.c", line 61: warning: expression has no effect
+    reinterpret_cast<__externref_t *>(iarr);  // expected-error {{pointer to WebAssembly reference type is not allowed}}
+    ^
+
+"Test_name.c", line 62: error: variable "__externref_t" is not a type name
+    dynamic_cast<__externref_t>(foo);         // expected-error {{invalid target type '__externref_t' for dynamic_cast; target type must be a reference or pointer type to a defined class}}
+                 ^
+
+"Test_name.c", line 63: error: variable "__externref_t" is not a type name
+    dynamic_cast<__externref_t *>(&foo);      // expected-error {{pointer to WebAssembly reference type is not allowed}}
+                 ^
+
+"Test_name.c", line 63: error: the type in a dynamic_cast must be a pointer or reference to a complete class type, or void *
+    dynamic_cast<__externref_t *>(&foo);      // expected-error {{pointer to WebAssembly reference type is not allowed}}
+                 ^
+
+"Test_name.c", line 65: error: variable "__externref_t" is not a type name
+    TemplatedStruct<__externref_t> ts1;    // expected-note {{in instantiation}}
+                    ^
+
+"Test_name.c", line 66: error: variable "__externref_t" is not a type name
+    TemplatedStruct<__externref_t *> ts2;  // expected-error {{pointer to WebAssembly reference type is not allowed}}
+                    ^
+
+"Test_name.c", line 67: error: variable "__externref_t" is not a type name
+    TemplatedStruct<__externref_t &> ts3;  // expected-error {{reference to WebAssembly reference type is not allowed}}
+                    ^
+
+"Test_name.c", line 44: error: array of reference is not allowed
+    T arr[0]; // expected-error {{array has sizeless element type '__externref_t'}}
+      ^
+          detected during instantiation of class "TemplatedStruct<T> [with T=<error-type> &]" at line 67
+
+"Test_name.c", line 45: error: pointer to reference is not allowed
+    T *ptr;   // expected-error {{pointer to WebAssembly reference type is not allowed}}
+      ^
+          detected during instantiation of class "TemplatedStruct<T> [with T=<error-type> &]" at line 67
+
+"Test_name.c", line 67: error: the default constructor of "TemplatedStruct<<error-type> &>" cannot be referenced -- it is a deleted function
+    TemplatedStruct<__externref_t &> ts3;  // expected-error {{reference to WebAssembly reference type is not allowed}}
+                                     ^
+
+"Test_name.c", line 68: error: variable "__externref_t" is not a type name
+    TemplatedStruct<__externref_t[0]> ts4; // expected-error {{array has sizeless element type '__externref_t'}}
+                    ^
+
+"Test_name.c", line 43: error: function returning array is not allowed
+    T bar(void);
+      ^
+          detected during instantiation of class "TemplatedStruct<T> [with T=<error-type> [0]]" at line 68
+
+"Test_name.c", line 72: error: variable "__externref_t" is not a type name
+    auto fn1 = [](__externref_t x) { return x; };
+                  ^
+
+"Test_name.c", line 73: error: variable "__externref_t" is not a type name
+    auto fn2 = [](__externref_t *x) { return x; };   // expected-error {{pointer to WebAssembly reference type is not allowed}}
+                  ^
+
+"Test_name.c", line 74: error: variable "__externref_t" is not a type name
+    auto fn3 = [](__externref_t &x) { return x; };   // expected-error {{reference to WebAssembly reference type is not allowed}}
+                  ^
+
+"Test_name.c", line 75: error: variable "__externref_t" is not a type name
+    auto fn4 = [](__externref_t x[0]) { return x; }; // expected-error {{array has sizeless element type '__externref_t'}}
+                  ^
+
+"Test_name.c", line 78: warning: expression has no effect
+    auto fn7 = [&](void) { auto_ref; return true; };                        // expected-error {{cannot capture WebAssembly reference}}
+                           ^
+
+"Test_name.c", line 79: warning: expression has no effect
+    auto fn8 = [=](void) { auto_ref; return true; };                        // expected-error {{cannot capture WebAssembly reference}}
+                           ^
+
+"Test_name.c", line 81: warning: the standard "alignof" operator does not accept an expression argument (use a type instead)
+    alignof(__externref_t);    // expected-error {{invalid application of 'alignof' to sizeless type '__externref_t'}}
+           ^
+
+"Test_name.c", line 81: warning: expression has no effect
+    alignof(__externref_t);    // expected-error {{invalid application of 'alignof' to sizeless type '__externref_t'}}
+    ^
+
+"Test_name.c", line 82: warning: the standard "alignof" operator does not accept an expression argument (use a type instead)
+    alignof(ref);              // expected-warning {{'alignof' applied to an expression is a GNU extension}} expected-error {{invalid application of 'alignof' to sizeless type '__externref_t'}}
+           ^
+
+"Test_name.c", line 83: error: expression must have pointer-to-object type but it has type "int"
+    alignof(__externref_t[0]); // expected-error {{array has sizeless element type '__externref_t'}}
+                          ^
+
+"Test_name.c", line 83: warning: the standard "alignof" operator does not accept an expression argument (use a type instead)
+    alignof(__externref_t[0]); // expected-error {{array has sizeless element type '__externref_t'}}
+           ^
+
+"Test_name.c", line 86: warning: statement is unreachable
+    throw &ref; // expected-error {{cannot take address of WebAssembly reference}}
+    ^
+
+"Test_name.c", line 88: warning: statement is unreachable
+    try {
+    ^
+
+"Test_name.c", line 89: error: handler requires an exception declaration
+    } catch (__externref_t) { // expected-error {{cannot catch sizeless type '__externref_t'}}
+             ^
+
+"Test_name.c", line 92: error: variable "__externref_t" is not a type name
+    } catch (__externref_t *) { // expected-error {{pointer to WebAssembly reference type is not allowed}}
+             ^
+
+"Test_name.c", line 95: error: variable "__externref_t" is not a type name
+    } catch (__externref_t &) { // expected-error {{reference to WebAssembly reference type is not allowed}}
+             ^
+
+"Test_name.c", line 98: error: variable "__externref_t" is not a type name
+    } catch (__externref_t[0]) { // expected-error {{array has sizeless element type '__externref_t'}}
+             ^
+
+"Test_name.c", line 101: error: expected a type specifier
+    new __externref_t;    // expected-error {{allocation of sizeless type '__externref_t'}}
+        ^
+
+"Test_name.c", line 102: error: expected a type specifier
+    new __externref_t[0]; // expected-error {{allocation of sizeless type '__externref_t'}}
+        ^
+
+"Test_name.c", line 65: warning: variable "ts1" was declared but never referenced
+    TemplatedStruct<__externref_t> ts1;    // expected-note {{in instantiation}}
+                                   ^
+
+"Test_name.c", line 66: warning: variable "ts2" was declared but never referenced
+    TemplatedStruct<__externref_t *> ts2;  // expected-error {{pointer to WebAssembly reference type is not allowed}}
+                                     ^
+
+"Test_name.c", line 68: warning: variable "ts4" was declared but never referenced
+    TemplatedStruct<__externref_t[0]> ts4; // expected-error {{array has sizeless element type '__externref_t'}}
+                                      ^
+
+"Test_name.c", line 72: warning: variable "fn1" was declared but never referenced
+    auto fn1 = [](__externref_t x) { return x; };
+         ^
+
+"Test_name.c", line 73: warning: variable "fn2" was declared but never referenced
+    auto fn2 = [](__externref_t *x) { return x; };   // expected-error {{pointer to WebAssembly reference type is not allowed}}
+         ^
+
+"Test_name.c", line 74: warning: variable "fn3" was declared but never referenced
+    auto fn3 = [](__externref_t &x) { return x; };   // expected-error {{reference to WebAssembly reference type is not allowed}}
+         ^
+
+"Test_name.c", line 75: warning: variable "fn4" was declared but never referenced
+    auto fn4 = [](__externref_t x[0]) { return x; }; // expected-error {{array has sizeless element type '__externref_t'}}
+         ^
+
+70 errors detected in the compilation of "Test_name.c".

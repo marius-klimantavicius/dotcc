@@ -1,0 +1,49 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 9: warning: unrecognized #pragma
+  #pragma omp declare variant (fn0) match (user={condition(0)})
+          ^
+
+"Test_name.c", line 12: warning: unrecognized #pragma
+  #pragma omp declare variant (fn0) match (user={condition(0)})
+          ^
+
+"Test_name.c", line 15: warning: unrecognized #pragma
+  #pragma omp declare variant (fn0) match (user={condition(0)})
+          ^
+
+"Test_name.c", line 18: warning: unrecognized #pragma
+  #pragma omp declare variant (fn0) match (user={condition(0)})
+          ^
+
+"Test_name.c", line 23: warning: unrecognized #pragma
+  #pragma omp declare variant (fn0) match (user={condition(0)})
+          ^
+
+"Test_name.c", line 24: warning: unrecognized #pragma
+  #pragma omp declare variant (fn6) match (implementation={vendor(unknown)})
+          ^
+
+"Test_name.c", line 25: warning: unrecognized #pragma
+  #pragma omp threadprivate(t)	/* { dg-error "must be followed by function declaration or definition or another" } */
+          ^
+
+"Test_name.c", line 28: warning: unrecognized #pragma
+  #pragma omp declare variant (1 + 2) match (user={condition(0)})	/* { dg-error "expected identifier before numeric constant" } */
+          ^
+
+"Test_name.c", line 31: warning: unrecognized #pragma
+  #pragma omp declare variant (t) match (user={condition(0)})	/* { dg-error "variant 't' is not a function" } */
+          ^
+
+"Test_name.c", line 36: warning: unrecognized #pragma
+  #pragma omp declare variant (fn9) match (implementation={vendor(unknown)})	/* { dg-error "variant 'fn9' and base 'fn10' have incompatible types" } */
+          ^
+
+"Test_name.c", line 39: warning: unrecognized #pragma
+  #pragma omp declare variant (memcpy) match (implementation={vendor(llvm)})	/* { dg-error "'memcpy' undeclared here" } */
+          ^
+
+"Test_name.c", line 42: warning: unrecognized #pragma
+  #pragma omp declare variant (__builtin_memmove) match (implementation={vendor(gnu)})	/* { dg-error "variant '__builtin_memmove' is a built-in" } */
+          ^
+

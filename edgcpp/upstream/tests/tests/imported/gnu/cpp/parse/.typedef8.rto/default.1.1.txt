@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 5: error: more than one storage class may not be specified
+  typedef static int a;   // { dg-error "'static' specifier conflicts with 'typedef'" }
+          ^
+
+"Test_name.c", line 6: error: more than one storage class may not be specified
+  typedef register int b; // { dg-error "'register' specifier conflicts with 'typedef'" }
+          ^
+
+"Test_name.c", line 7: error: more than one storage class may not be specified
+  typedef extern int c;   // { dg-error "'extern' specifier conflicts with 'typedef'" }
+          ^
+
+"Test_name.c", line 8: error: more than one storage class may not be specified
+  static typedef int a;   // { dg-error "'typedef' specifier conflicts with 'static'" }
+         ^
+
+"Test_name.c", line 8: error: "a" has already been declared in the current scope
+  static typedef int a;   // { dg-error "'typedef' specifier conflicts with 'static'" }
+                     ^
+
+"Test_name.c", line 12: error: invalid combination of type specifiers
+    typedef auto int bar; // { dg-error "'auto' specifier conflicts with 'typedef'|two or more data types" }
+                 ^
+
+"Test_name.c", line 8: warning: variable "a" was declared but never referenced
+  static typedef int a;   // { dg-error "'typedef' specifier conflicts with 'static'" }
+                     ^
+
+6 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,241 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./strlenopt-68.c", line 27: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void
+                  ^
+
+"./strlenopt-68.c", line 27: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void
+                                     ^
+
+"./strlenopt-68.c", line 36: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void
+                  ^
+
+"./strlenopt-68.c", line 36: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void
+                                     ^
+
+"./strlenopt-68.c", line 45: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void
+                  ^
+
+"./strlenopt-68.c", line 45: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void
+                                     ^
+
+"./strlenopt-68.c", line 55: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void
+                  ^
+
+"./strlenopt-68.c", line 55: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void
+                                     ^
+
+"./strlenopt-68.c", line 64: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void
+                  ^
+
+"./strlenopt-68.c", line 64: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void
+                                     ^
+
+"./strlenopt-68.c", line 73: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void
+                  ^
+
+"./strlenopt-68.c", line 73: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void
+                                     ^
+
+"./strlenopt-68.c", line 83: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void
+                  ^
+
+"./strlenopt-68.c", line 83: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void
+                                     ^
+
+"./strlenopt-68.c", line 92: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void
+                  ^
+
+"./strlenopt-68.c", line 92: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void
+                                     ^
+
+"./strlenopt-68.c", line 101: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void
+                  ^
+
+"./strlenopt-68.c", line 101: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void
+                                     ^
+
+"./strlenopt-68.c", line 111: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void
+                  ^
+
+"./strlenopt-68.c", line 111: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void
+                                     ^
+
+"./strlenopt-68.c", line 120: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void
+                  ^
+
+"./strlenopt-68.c", line 120: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void
+                                     ^
+
+"./strlenopt-68.c", line 129: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void
+                  ^
+
+"./strlenopt-68.c", line 129: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void
+                                     ^
+
+"./strlenopt-68.c", line 139: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void
+                  ^
+
+"./strlenopt-68.c", line 139: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void
+                                     ^
+
+"./strlenopt-68.c", line 148: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void
+                  ^
+
+"./strlenopt-68.c", line 148: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void
+                                     ^
+
+"./strlenopt-68.c", line 157: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void
+                  ^
+
+"./strlenopt-68.c", line 157: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void
+                                     ^
+
+"./strlenopt-68.c", line 170: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void
+                  ^
+
+"./strlenopt-68.c", line 170: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void
+                                     ^
+
+"./strlenopt-68.c", line 180: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void
+                  ^
+
+"./strlenopt-68.c", line 180: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void
+                                     ^
+
+"./strlenopt-68.c", line 190: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void
+                  ^
+
+"./strlenopt-68.c", line 190: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void
+                                     ^
+
+"./strlenopt-68.c", line 201: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void
+                  ^
+
+"./strlenopt-68.c", line 201: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void
+                                     ^
+
+"./strlenopt-68.c", line 211: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void
+                  ^
+
+"./strlenopt-68.c", line 211: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void
+                                     ^
+
+"./strlenopt-68.c", line 221: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void
+                  ^
+
+"./strlenopt-68.c", line 221: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void
+                                     ^
+
+"./strlenopt-68.c", line 232: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void
+                  ^
+
+"./strlenopt-68.c", line 232: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void
+                                     ^
+
+"./strlenopt-68.c", line 242: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void
+                  ^
+
+"./strlenopt-68.c", line 242: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void
+                                     ^
+
+"./strlenopt-68.c", line 252: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void
+                  ^
+
+"./strlenopt-68.c", line 252: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void
+                                     ^
+
+"./strlenopt-68.c", line 263: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void
+                  ^
+
+"./strlenopt-68.c", line 263: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void
+                                     ^
+
+"./strlenopt-68.c", line 273: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void
+                  ^
+
+"./strlenopt-68.c", line 273: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void
+                                     ^
+
+"./strlenopt-68.c", line 283: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void
+                  ^
+
+"./strlenopt-68.c", line 283: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void
+                                     ^
+
+"./strlenopt-68.c", line 294: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void
+                  ^
+
+"./strlenopt-68.c", line 294: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void
+                                     ^
+
+"./strlenopt-68.c", line 304: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void
+                  ^
+
+"./strlenopt-68.c", line 304: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void
+                                     ^
+
+"./strlenopt-68.c", line 314: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void
+                  ^
+
+"./strlenopt-68.c", line 314: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void
+                                     ^
+

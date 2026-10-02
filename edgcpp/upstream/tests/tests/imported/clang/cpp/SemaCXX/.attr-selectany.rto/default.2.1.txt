@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 -w --ms_compatibility --ms_extensions Test_name.c
+"Test_name.c", line 13: error: the "selectany" attribute can only appear on functions and variables with external linkage
+  const __declspec(selectany) int x2 = 2; // expected-error{{'selectany' can only be applied to data items with external linkage}}
+                   ^
+
+"Test_name.c", line 23: error: the "selectany" attribute can only appear on functions and variables with external linkage
+  static __declspec(selectany) int x6 = 2; // expected-error{{'selectany' can only be applied to data items with external linkage}}
+                    ^
+
+"Test_name.c", line 28: error: the "selectany" attribute can only appear on functions and variables with external linkage
+  extern __declspec(selectany) int x7;  // expected-warning{{attribute declaration must precede definition}}
+                    ^
+
+"Test_name.c", line 57: error: const variable "some_struct2" requires an initializer -- class "SomeStruct" has no user-provided default constructor
+  const SomeStruct some_struct2; // expected-error {{default initialization of an object of const type 'const SomeStruct' without a user-provided default constructor}}
+                               ^
+
+4 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 6: error: "i" has already been declared in the current scope
+    int i  // { dg-error "7:declaration of .int i. shadows a parameter" }
+        ^
+
+"Test_name.c", line 10: error: "j", declared in for-loop initialization, may not be redeclared in this scope
+      int j  // { dg-error "9:redeclaration of .int j." }
+          ^
+
+"Test_name.c", line 10: warning: variable "j" was declared but never referenced
+      int j  // { dg-error "9:redeclaration of .int j." }
+          ^
+
+"Test_name.c", line 9: warning: variable "j" was declared but never referenced
+    for (int j ;;)  // { dg-message "12:.int j. previously declared here" }
+             ^
+
+"Test_name.c", line 6: warning: variable "i" was declared but never referenced
+    int i  // { dg-error "7:declaration of .int i. shadows a parameter" }
+        ^
+
+"Test_name.c", line 20: warning: parameter "i" may not be redeclared in a catch clause of function try block
+        int i  // { dg-error "11:declaration of .int i. shadows a parameter" }
+            ^
+
+"Test_name.c", line 20: warning: variable "i" was declared but never referenced
+        int i  // { dg-error "11:declaration of .int i. shadows a parameter" }
+            ^
+
+2 errors detected in the compilation of "Test_name.c".

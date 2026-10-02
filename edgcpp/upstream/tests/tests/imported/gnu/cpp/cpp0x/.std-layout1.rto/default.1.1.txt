@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp0x/std-layout1.C", line 37: error: _Complex can only be used with floating-point types
+  static_assert (std::is_standard_layout<__complex int>::value, "std::is_standard_layout<__complex int>::value"); static_assert (std::is_standard_layout<__complex int[]>::value, "std::is_standard_layout<__complex int[]>::value"); static_assert (std::is_standard_layout<const volatile __complex int>::value, "std::is_standard_layout<const volatile __complex int>::value");
+                                         ^
+
+"./cpp0x/std-layout1.C", line 37: error: _Complex can only be used with floating-point types
+  static_assert (std::is_standard_layout<__complex int>::value, "std::is_standard_layout<__complex int>::value"); static_assert (std::is_standard_layout<__complex int[]>::value, "std::is_standard_layout<__complex int[]>::value"); static_assert (std::is_standard_layout<const volatile __complex int>::value, "std::is_standard_layout<const volatile __complex int>::value");
+                                                                                                                                                         ^
+
+"./cpp0x/std-layout1.C", line 37: error: _Complex can only be used with floating-point types
+  static_assert (std::is_standard_layout<__complex int>::value, "std::is_standard_layout<__complex int>::value"); static_assert (std::is_standard_layout<__complex int[]>::value, "std::is_standard_layout<__complex int[]>::value"); static_assert (std::is_standard_layout<const volatile __complex int>::value, "std::is_standard_layout<const volatile __complex int>::value");
+                                                                                                                                                                                                                                                                             ^
+
+"./cpp0x/std-layout1.C", line 57: error: _Complex can only be used with floating-point types
+    __complex int c;
+    ^
+
+4 errors detected in the compilation of "Test_name.c".

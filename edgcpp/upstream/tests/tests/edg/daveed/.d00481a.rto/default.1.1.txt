@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=1 --upc --upc_threads=4 Test_name.c

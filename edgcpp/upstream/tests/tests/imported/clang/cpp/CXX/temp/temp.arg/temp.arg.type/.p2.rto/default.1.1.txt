@@ -1,0 +1,43 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 8: error: a function type is not allowed here
+    static T t; // expected-error{{static data member instantiated with function type 'int ()'}}
+             ^
+          detected during instantiation of class "A<T> [with T=function]" at line 11
+
+"Test_name.c", line 23: error: a template argument may not reference an unnamed type
+    int i = f0(0, e);
+            ^
+
+"Test_name.c", line 34: error: no instance of function template "f0" matches the argument list
+            argument types are: (int, int [n])
+    f0(0, vla); // expected-error{{no matching function for call to 'f0'}}
+    ^
+"Test_name.c", line 18: note: candidate function template "f0" failed deduction
+  template <typename T> int f0(void *, const T&); // expected-note{{candidate template ignored: substitution failure}}
+                            ^
+
+"Test_name.c", line 60: error: a template argument may not reference an unnamed type
+      f0(
+      ^
+
+"Test_name.c", line 78: error: a template argument may not reference an unnamed type
+      f1(e2);
+      ^
+
+"Test_name.c", line 84: error: a template argument may not reference an unnamed type
+      f1(e2);
+      ^
+
+"Test_name.c", line 86: error: a template argument may not reference an unnamed type
+      X<__typeof__(e3)*> x;
+        ^
+
+"Test_name.c", line 86: error: incomplete type "N0::X<<error-type>>" is not allowed
+      X<__typeof__(e3)*> x;
+                         ^
+
+"Test_name.c", line 72: warning: variable "fp1" was declared but never referenced
+      int (*fp1)(int, __typeof__(e2)) = f1;
+            ^
+
+8 errors detected in the compilation of "Test_name.c".

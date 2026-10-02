@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 12: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+    (struct A){}();			/* { dg-error "called object" } */
+    ^
+
+"Test_name.c", line 13: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+    (struct B){ .i = 2, .j[1] = 1 }();	/* { dg-error "called object" } */
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

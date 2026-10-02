@@ -1,0 +1,17 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./torture/pr115916.C", line 30: warning: unknown attribute "noipa"
+  __attribute__((noipa, optimize(0)))
+                 ^
+
+"./torture/pr115916.C", line 30: warning: unknown attribute "optimize"
+  __attribute__((noipa, optimize(0)))
+                        ^
+
+"./torture/pr115916.C", line 79: warning: unknown attribute "noipa"
+  __attribute__((noipa, optimize(0)))
+                 ^
+
+"./torture/pr115916.C", line 79: warning: unknown attribute "optimize"
+  __attribute__((noipa, optimize(0)))
+                        ^
+

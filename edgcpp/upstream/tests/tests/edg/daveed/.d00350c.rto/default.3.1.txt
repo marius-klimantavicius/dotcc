@@ -1,0 +1,5 @@
+eccp -DTEST_NUMBER=3 --microsoft_version=1310 --wchar_t --old_for_init Test_name.c
+"Test_name.c", line 20: warning: variable "i" was declared but never referenced
+      int i = -1;
+          ^
+

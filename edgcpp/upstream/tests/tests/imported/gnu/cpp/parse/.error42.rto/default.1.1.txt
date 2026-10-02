@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 6: error: nonstandard form for taking the address of a member function
+  int (*C::f())() { return C::bar; } // { dg-error "cannot convert 'C::bar'" }
+                           ^
+
+"Test_name.c", line 6: error: return value type does not match the function type
+  int (*C::f())() { return C::bar; } // { dg-error "cannot convert 'C::bar'" }
+                           ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 17: error: "D2::Base" is ambiguous
+    D2::Base* p1;			// { dg-error "" }
+        ^
+
+"Test_name.c", line 19: error: "D2::Base" is ambiguous
+    Base *p3;			// { dg-error "" }
+    ^
+
+"Test_name.c", line 32: error: "D4<T>::Base [with T=void]" is ambiguous
+    typename D4::Base* p1;	// { dg-error "" }
+                 ^
+          detected during instantiation of class "D4<T> [with T=void]" at line 35
+
+3 errors detected in the compilation of "Test_name.c".

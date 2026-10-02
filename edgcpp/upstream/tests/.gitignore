@@ -1,0 +1,27 @@
+# Generic items to ignore:
+*~
+*.swp
+*.o
+*.a
+*.bak
+*.BAK
+*.so
+*.obj
+*.exe
+*.rej
+*.orig
+*.nfs
+*.diff
+*.patch
+*.out
+core
+
+# EDG-specific items to ignore:
+*.ti
+*.ii
+*.et
+*.int.c
+*.rt
+.git-up
+# Ignore any "sandbox.log" expectation file.
+/expectations/*/sandbox.log

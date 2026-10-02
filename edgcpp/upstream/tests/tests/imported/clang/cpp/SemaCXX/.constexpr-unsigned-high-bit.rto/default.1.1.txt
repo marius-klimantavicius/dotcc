@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 Test_name.c
+"SemaCXX/constexpr-unsigned-high-bit.cpp", line 13: warning: integer conversion resulted in a change of sign
+    unsigned i = (-2147483647 -1);
+                 ^
+

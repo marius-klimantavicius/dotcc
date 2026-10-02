@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --exceptions --exceptions Test_name.c
+"Test_name.c", line 8: error: expected a ";"
+  using IntIntFuncref = int(*)(int) __funcref;
+                                    ^
+
+"Test_name.c", line 9: error: expected a ";"
+  using DoubleQual = IntIntFuncref __funcref;
+                                   ^
+
+2 errors detected in the compilation of "Test_name.c".

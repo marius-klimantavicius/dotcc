@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: warning: statement may not appear in a constexpr function
+    T t;
+    ^
+
+"Test_name.c", line 10: error: incomplete type "void" is not allowed
+    T t;
+      ^
+          detected during instantiation of "int foo() [with T=void]" at line 14
+
+1 error detected in the compilation of "Test_name.c".

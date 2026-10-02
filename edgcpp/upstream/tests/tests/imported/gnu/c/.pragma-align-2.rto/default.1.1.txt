@@ -1,0 +1,69 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 8: warning: unrecognized #pragma
+  #pragma align 1(x1)
+          ^
+
+"Test_name.c", line 9: warning: unrecognized #pragma
+  #pragma align 2(x2)
+          ^
+
+"Test_name.c", line 10: warning: unrecognized #pragma
+  #pragma align 4(x4)
+          ^
+
+"Test_name.c", line 11: warning: unrecognized #pragma
+  #pragma align 8(x8,y8,z8)
+          ^
+
+"Test_name.c", line 12: warning: unrecognized #pragma
+  #pragma align 16(x16)
+          ^
+
+"Test_name.c", line 13: warning: unrecognized #pragma
+  #pragma align 32(x32)
+          ^
+
+"Test_name.c", line 14: warning: unrecognized #pragma
+  #pragma align 64(x64)
+          ^
+
+"Test_name.c", line 15: warning: unrecognized #pragma
+  #pragma align 128(x128)
+          ^
+
+"Test_name.c", line 20: warning: unrecognized #pragma
+  #pragma align MACRO(y128)
+          ^
+
+"Test_name.c", line 21: warning: unrecognized #pragma
+  #pragma align MACRO2(MACRO) (z128)
+          ^
+
+"Test_name.c", line 23: warning: unrecognized #pragma
+  #pragma align 8(not_defined)
+          ^
+
+"Test_name.c", line 25: warning: unrecognized #pragma
+  #pragma align 9(odd_align)	/* { dg-warning "invalid alignment" } */
+          ^
+
+"Test_name.c", line 26: warning: unrecognized #pragma
+  #pragma align 256(high_align)	/* { dg-warning "invalid alignment" } */
+          ^
+
+"Test_name.c", line 27: warning: unrecognized #pragma
+  #pragma align -1(neg_align)	/* { dg-warning "malformed" } */
+          ^
+
+"Test_name.c", line 28: warning: unrecognized #pragma
+  #pragma align bad_align		/* { dg-warning "malformed" } */
+          ^
+
+"Test_name.c", line 29: warning: unrecognized #pragma
+  #pragma align 1(bad_align	/* { dg-warning "malformed" } */
+          ^
+
+"Test_name.c", line 33: warning: unrecognized #pragma
+  #pragma align 16(x)		/* { dg-warning "must appear before" } */
+          ^
+

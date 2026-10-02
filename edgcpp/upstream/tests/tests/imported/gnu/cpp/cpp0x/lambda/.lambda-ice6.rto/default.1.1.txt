@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 6: error: a lambda is not allowed in an unevaluated expression
+  template<int = sizeof([])> struct A {}; // { dg-error "" } 
+                        ^
+
+"Test_name.c", line 6: warning: omitting "()" in a lambda declarator is nonstandard in this mode
+  template<int = sizeof([])> struct A {}; // { dg-error "" } 
+                          ^
+
+"Test_name.c", line 6: error: expected a "{" introducing a lambda body
+  template<int = sizeof([])> struct A {}; // { dg-error "" } 
+                          ^
+
+"Test_name.c", line 6: error: expected an identifier
+  template<int = sizeof([])> struct A {}; // { dg-error "" } 
+                          ^
+
+"Test_name.c", line 6: error: expected a ";"
+  template<int = sizeof([])> struct A {}; // { dg-error "" } 
+                          ^
+
+4 errors detected in the compilation of "Test_name.c".

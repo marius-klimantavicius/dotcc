@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --c++11 Test_name.c
+"Test_name.c", line 16: warning: variable "x" was declared but never referenced
+    C() { static int x = 0; }
+                     ^
+

@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 8: warning: unknown attribute "strict_flex_array"
+  int x __attribute__ ((strict_flex_array (1))); /* { dg-error "'strict_flex_array' attribute may not be specified for 'x'" } */
+                        ^
+
+"Test_name.c", line 10: warning: unknown attribute "gnu::strict_flex_array"
+  int [[gnu::strict_flex_array(1)]] x; /* { dg-warning "'strict_flex_array' attribute does not apply to types" } */
+        ^
+
+"Test_name.c", line 14: warning: unknown attribute "strict_flex_array"
+      int c __attribute ((strict_flex_array)); /* { dg-error "wrong number of arguments specified for 'strict_flex_array' attribute" } */
+                          ^
+
+"Test_name.c", line 20: warning: unknown attribute "strict_flex_array"
+      int c __attribute ((strict_flex_array (2))); /* { dg-error "'strict_flex_array' attribute may not be specified for a non-array field" } */
+                          ^
+
+"Test_name.c", line 28: warning: unknown attribute "strict_flex_array"
+      int c[1] __attribute ((strict_flex_array (d))); /* { dg-error "'strict_flex_array' attribute argument not an integer" } */
+                             ^
+
+"Test_name.c", line 34: warning: unknown attribute "strict_flex_array"
+      int c[0] __attribute ((strict_flex_array (5))); /* { dg-error "'strict_flex_array' attribute argument '5' is not an integer constant between 0 and 3" } */
+                             ^
+

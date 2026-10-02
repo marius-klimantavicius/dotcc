@@ -1,0 +1,20 @@
+./a.out
+A::A()
+A::A(9)
+Top of loop, j = 0
+A::A(1)
+A::~A, i = 1
+Bottom of loop, j = 0
+Top of loop, j = 1
+A::A(3)
+A::~A, i = 3
+Bottom of loop, j = 1
+A::A(5)
+A::~A, i = 5
+A::A(11)
+A::operator int, i = 11
+A::~A, i = 11
+A::A(7)
+A::~A, i = 7
+A::~A, i = 9
+A::~A, i = 5

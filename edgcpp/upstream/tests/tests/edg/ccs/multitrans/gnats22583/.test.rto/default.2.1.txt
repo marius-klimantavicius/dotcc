@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=2 --gnu_version 80999 --multi_trans_unit -DINLINE=inline -DDEFAULT= Test_name.c gnats22583-p2.C
+"Test_name.c", line 9: error: declaration of function "A<T>::A" is incompatible with a declaration in another translation unit
+            the other declaration is at line 3 of "gnats22583-p2.C"
+    INLINE A() DEFAULT;
+           ^
+
+"Test_name.c", line 9: warning: function "A<T>::A() [with T=int]" was referenced but not defined
+    INLINE A() DEFAULT;
+           ^
+
+1 error detected in the compilation of "Test_name.c".

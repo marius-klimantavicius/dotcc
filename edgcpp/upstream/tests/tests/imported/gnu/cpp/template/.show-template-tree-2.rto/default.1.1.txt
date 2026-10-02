@@ -1,0 +1,106 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 20: error: no suitable user-defined conversion from "var<int>" to "var<>" exists
+    fn_0 (var<int> ()); // { dg-error "could not convert .* from 'var<int>' to 'var<>'" }
+          ^
+
+"Test_name.c", line 25: error: no suitable user-defined conversion from "var<int, int>" to "var<>" exists
+    fn_0 (var<int, int> ()); // { dg-error "could not convert .* from 'var<int, int>' to 'var<>'" }
+          ^
+
+"Test_name.c", line 30: error: no suitable user-defined conversion from "vector<var<int>>" to "var<>" exists
+    fn_0 (vector<var<int> >()); // { dg-error "could not convert .* from 'vector<var<int> >' to 'var<>'" }
+          ^
+
+"Test_name.c", line 31: error: no suitable user-defined conversion from "vector<var<int, int>>" to "var<>" exists
+    fn_0 (vector<var<int, int> >());  // { dg-error "could not convert .* from 'vector<var<int, int> >' to 'var<>'" }
+          ^
+
+"Test_name.c", line 36: error: no suitable user-defined conversion from "var<>" to "var<int>" exists
+    fn_1 (var<> ()); // { dg-error "could not convert .* from 'var<>' to 'var<int>'" }
+          ^
+
+"Test_name.c", line 42: error: no suitable user-defined conversion from "var<int, int>" to "var<int>" exists
+    fn_1 (var<int, int> ()); // { dg-error "could not convert .* from 'var<int, int>' to 'var<int>'" }
+          ^
+
+"Test_name.c", line 47: error: no suitable user-defined conversion from "vector<var<int>>" to "var<int>" exists
+    fn_1 (vector<var<int> >()); // { dg-error "could not convert .* from 'vector<var<int> >' to 'var<int>'" }
+          ^
+
+"Test_name.c", line 48: error: no suitable user-defined conversion from "vector<var<int, int>>" to "var<int>" exists
+    fn_1 (vector<var<int, int> >()); // { dg-error "could not convert .* from 'vector<var<int, int> >' to 'var<int>'" }
+          ^
+
+"Test_name.c", line 53: error: no suitable user-defined conversion from "var<>" to "var<int, int>" exists
+    fn_2 (var<> ()); // { dg-error "could not convert .* from 'var<>' to 'var<int, int>'" }
+          ^
+
+"Test_name.c", line 58: error: no suitable user-defined conversion from "var<int>" to "var<int, int>" exists
+    fn_2 (var<int> ()); // { dg-error "could not convert .* from 'var<int>' to 'var<int, int>'" }
+          ^
+
+"Test_name.c", line 64: error: no suitable user-defined conversion from "vector<var<int>>" to "var<int, int>" exists
+    fn_2 (vector<var<int> >()); // { dg-error "could not convert .* from 'vector<var<int> >' to 'var<int, int>'" }
+          ^
+
+"Test_name.c", line 65: error: no suitable user-defined conversion from "vector<var<int, int>>" to "var<int, int>" exists
+    fn_2 (vector<var<int, int> >()); // { dg-error "could not convert .* from 'vector<var<int, int> >' to 'var<int, int>'" }
+          ^
+
+"Test_name.c", line 70: error: no suitable user-defined conversion from "var<>" to "vector<var<>>" exists
+    fn_3 (var<> ()); // { dg-error "could not convert .* from 'var<>' to 'vector<var<> >'" }
+          ^
+
+"Test_name.c", line 71: error: no suitable user-defined conversion from "var<int>" to "vector<var<>>" exists
+    fn_3 (var<int> ()); // { dg-error "could not convert .* from 'var<int>' to 'vector<var<> >'" }
+          ^
+
+"Test_name.c", line 72: error: no suitable user-defined conversion from "var<int, int>" to "vector<var<>>" exists
+    fn_3 (var<int, int> ()); // { dg-error "could not convert .* from 'var<int, int>' to 'vector<var<> >'" }
+          ^
+
+"Test_name.c", line 74: error: no suitable user-defined conversion from "vector<var<int>>" to "vector<var<>>" exists
+    fn_3 (vector<var<int> >());  // { dg-error "could not convert .* from 'vector<var<int>>' to 'vector<var<>>'" }
+          ^
+
+"Test_name.c", line 80: error: no suitable user-defined conversion from "vector<var<int, int>>" to "vector<var<>>" exists
+    fn_3 (vector<var<int, int> >()); // { dg-error "could not convert .* from 'vector<var<int, int>>' to 'vector<var<>>'" }
+          ^
+
+"Test_name.c", line 90: error: no suitable user-defined conversion from "var<>" to "vector<var<int>>" exists
+    fn_4 (var<> ()); // { dg-error "could not convert .* from 'var<>' to 'vector<var<int> >'" }
+          ^
+
+"Test_name.c", line 91: error: no suitable user-defined conversion from "var<int>" to "vector<var<int>>" exists
+    fn_4 (var<int> ()); // { dg-error "could not convert .* from 'var<int>' to 'vector<var<int> >'" }
+          ^
+
+"Test_name.c", line 92: error: no suitable user-defined conversion from "var<int, int>" to "vector<var<int>>" exists
+    fn_4 (var<int, int> ()); // { dg-error "could not convert .* from 'var<int, int>' to 'vector<var<int> >'" }
+          ^
+
+"Test_name.c", line 93: error: no suitable user-defined conversion from "vector<var<>>" to "vector<var<int>>" exists
+    fn_4 (vector<var<> >()); // { dg-error "could not convert .* from 'vector<var<>>' to 'vector<var<int>>'" }
+          ^
+
+"Test_name.c", line 100: error: no suitable user-defined conversion from "vector<var<int, int>>" to "vector<var<int>>" exists
+    fn_4 (vector<var<int, int> >()); // { dg-error "could not convert .* from 'vector<var<int, int>>' to 'vector<var<int>>'" }
+          ^
+
+"Test_name.c", line 110: error: no suitable user-defined conversion from "var<>" to "vector<var<int, int>>" exists
+    fn_5 (var<> ()); // { dg-error "could not convert .* from 'var<>' to 'vector<var<int, int> >'" }
+          ^
+
+"Test_name.c", line 111: error: no suitable user-defined conversion from "var<int>" to "vector<var<int, int>>" exists
+    fn_5 (var<int> ());  // { dg-error "could not convert .* from 'var<int>' to 'vector<var<int, int> >'" }
+          ^
+
+"Test_name.c", line 112: error: no suitable user-defined conversion from "var<int, int>" to "vector<var<int, int>>" exists
+    fn_5 (var<int, int> ());  // { dg-error "could not convert .* from 'var<int, int>' to 'vector<var<int, int> >'" }
+          ^
+
+"Test_name.c", line 113: error: no suitable user-defined conversion from "vector<var<int>>" to "vector<var<int, int>>" exists
+    fn_5 (vector<var<int> >());  // { dg-error "could not convert .* from 'vector<var<int>>' to 'vector<var<int, int>>'" }
+          ^
+
+26 errors detected in the compilation of "Test_name.c".

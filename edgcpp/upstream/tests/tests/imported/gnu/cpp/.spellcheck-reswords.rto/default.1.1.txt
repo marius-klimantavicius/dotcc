@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./spellcheck-reswords.C", line 3: error: identifier "forget" is undefined
+    forget (p);
+    ^
+
+"./spellcheck-reswords.C", line 9: error: identifier "memset" is undefined
+    memset (p, 0, 4);
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

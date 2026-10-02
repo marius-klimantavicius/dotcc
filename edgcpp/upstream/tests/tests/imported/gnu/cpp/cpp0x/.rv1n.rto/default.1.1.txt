@@ -1,0 +1,242 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 41: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a;	// { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 43: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a;	// { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 44: error: qualifiers dropped in binding reference of type "A &" to initializer of type "const A"
+      sink_1_1(ca);           // { dg-error "" }
+               ^
+
+"Test_name.c", line 45: error: qualifiers dropped in binding reference of type "A &" to initializer of type "volatile A"
+      sink_1_1(va);           // { dg-error "" }
+               ^
+
+"Test_name.c", line 46: error: qualifiers dropped in binding reference of type "A &" to initializer of type "const volatile A"
+      sink_1_1(cva);          // { dg-error "" }
+               ^
+
+"Test_name.c", line 47: error: initial value of reference to non-const must be an lvalue
+      sink_1_1(source());     // { dg-error "" }
+               ^
+
+"Test_name.c", line 48: error: qualifiers dropped in binding reference of type "A &" to initializer of type "const A"
+      sink_1_1(c_source());   // { dg-error "" }
+               ^
+
+"Test_name.c", line 49: error: qualifiers dropped in binding reference of type "A &" to initializer of type "volatile A"
+      sink_1_1(v_source());   // { dg-error "" }
+               ^
+
+"Test_name.c", line 50: error: qualifiers dropped in binding reference of type "A &" to initializer of type "const volatile A"
+      sink_1_1(cv_source());  // { dg-error "" }
+               ^
+
+"Test_name.c", line 59: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 61: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 62: error: qualifiers dropped in binding reference of type "const A &" to initializer of type "volatile A"
+      sink_1_2(va);           // { dg-error "" }
+               ^
+
+"Test_name.c", line 63: error: qualifiers dropped in binding reference of type "const A &" to initializer of type "const volatile A"
+      sink_1_2(cva);          // { dg-error "" }
+               ^
+
+"Test_name.c", line 64: error: qualifiers dropped in binding reference of type "const A &" to initializer of type "volatile A"
+      sink_1_2(v_source());   // { dg-error "" }
+               ^
+
+"Test_name.c", line 65: error: qualifiers dropped in binding reference of type "const A &" to initializer of type "const volatile A"
+      sink_1_2(cv_source());  // { dg-error "" }
+               ^
+
+"Test_name.c", line 74: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 76: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 77: error: qualifiers dropped in binding reference of type "volatile A &" to initializer of type "const A"
+      sink_1_3(ca);           // { dg-error "" }
+               ^
+
+"Test_name.c", line 78: error: qualifiers dropped in binding reference of type "volatile A &" to initializer of type "const volatile A"
+      sink_1_3(cva);          // { dg-error "" }
+               ^
+
+"Test_name.c", line 79: error: initial value of reference to non-const must be an lvalue
+      sink_1_3(source());     // { dg-error "" }
+               ^
+
+"Test_name.c", line 80: error: qualifiers dropped in binding reference of type "volatile A &" to initializer of type "const A"
+      sink_1_3(c_source());   // { dg-error "" }
+               ^
+
+"Test_name.c", line 81: error: initial value of reference to non-const must be an lvalue
+      sink_1_3(v_source());   // { dg-error "" }
+               ^
+
+"Test_name.c", line 82: error: qualifiers dropped in binding reference of type "volatile A &" to initializer of type "const volatile A"
+      sink_1_3(cv_source());  // { dg-error "" }
+               ^
+
+"Test_name.c", line 91: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 93: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 94: error: initial value of reference to const volatile must be an lvalue
+      sink_1_4(source());     // { dg-error "" }
+               ^
+
+"Test_name.c", line 95: error: initial value of reference to const volatile must be an lvalue
+      sink_1_4(c_source());   // { dg-error "" }
+               ^
+
+"Test_name.c", line 96: error: initial value of reference to const volatile must be an lvalue
+      sink_1_4(v_source());   // { dg-error "" }
+               ^
+
+"Test_name.c", line 97: error: initial value of reference to const volatile must be an lvalue
+      sink_1_4(cv_source());  // { dg-error "" }
+               ^
+
+"Test_name.c", line 106: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 108: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 109: error: an rvalue reference cannot be bound to an lvalue
+      sink_1_5(a);		// { dg-error "lvalue" }
+               ^
+
+"Test_name.c", line 110: error: qualifiers dropped in binding reference of type "A &&" to initializer of type "const A"
+      sink_1_5(ca);           // { dg-error "" }
+               ^
+
+"Test_name.c", line 111: error: qualifiers dropped in binding reference of type "A &&" to initializer of type "volatile A"
+      sink_1_5(va);           // { dg-error "" }
+               ^
+
+"Test_name.c", line 112: error: qualifiers dropped in binding reference of type "A &&" to initializer of type "const volatile A"
+      sink_1_5(cva);          // { dg-error "" }
+               ^
+
+"Test_name.c", line 113: error: qualifiers dropped in binding reference of type "A &&" to initializer of type "const A"
+      sink_1_5(c_source());   // { dg-error "" }
+               ^
+
+"Test_name.c", line 114: error: qualifiers dropped in binding reference of type "A &&" to initializer of type "volatile A"
+      sink_1_5(v_source());   // { dg-error "" }
+               ^
+
+"Test_name.c", line 115: error: qualifiers dropped in binding reference of type "A &&" to initializer of type "const volatile A"
+      sink_1_5(cv_source());  // { dg-error "" }
+               ^
+
+"Test_name.c", line 124: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 126: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 127: error: an rvalue reference cannot be bound to an lvalue
+      sink_1_6(a);		// { dg-error "lvalue" }
+               ^
+
+"Test_name.c", line 128: error: an rvalue reference cannot be bound to an lvalue
+      sink_1_6(ca);		// { dg-error "lvalue" }
+               ^
+
+"Test_name.c", line 129: error: qualifiers dropped in binding reference of type "const A &&" to initializer of type "volatile A"
+      sink_1_6(va);           // { dg-error "" }
+               ^
+
+"Test_name.c", line 130: error: qualifiers dropped in binding reference of type "const A &&" to initializer of type "const volatile A"
+      sink_1_6(cva);          // { dg-error "" }
+               ^
+
+"Test_name.c", line 131: error: qualifiers dropped in binding reference of type "const A &&" to initializer of type "volatile A"
+      sink_1_6(v_source());   // { dg-error "" }
+               ^
+
+"Test_name.c", line 132: error: qualifiers dropped in binding reference of type "const A &&" to initializer of type "const volatile A"
+      sink_1_6(cv_source());  // { dg-error "" }
+               ^
+
+"Test_name.c", line 141: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 143: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 144: error: an rvalue reference cannot be bound to an lvalue
+      sink_1_7(a);	    // { dg-error "lvalue" }
+               ^
+
+"Test_name.c", line 145: error: qualifiers dropped in binding reference of type "volatile A &&" to initializer of type "const A"
+      sink_1_7(ca);           // { dg-error "" }
+               ^
+
+"Test_name.c", line 146: error: an rvalue reference cannot be bound to an lvalue
+      sink_1_7(va);	    // { dg-error "lvalue" }
+               ^
+
+"Test_name.c", line 147: error: qualifiers dropped in binding reference of type "volatile A &&" to initializer of type "const volatile A"
+      sink_1_7(cva);          // { dg-error "" }
+               ^
+
+"Test_name.c", line 148: error: qualifiers dropped in binding reference of type "volatile A &&" to initializer of type "const A"
+      sink_1_7(c_source());   // { dg-error "" }
+               ^
+
+"Test_name.c", line 149: error: qualifiers dropped in binding reference of type "volatile A &&" to initializer of type "const volatile A"
+      sink_1_7(cv_source());  // { dg-error "" }
+               ^
+
+"Test_name.c", line 158: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 160: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 161: error: an rvalue reference cannot be bound to an lvalue
+      sink_1_8(a);		// { dg-error "lvalue" }
+               ^
+
+"Test_name.c", line 162: error: an rvalue reference cannot be bound to an lvalue
+      sink_1_8(ca);		// { dg-error "lvalue" }
+               ^
+
+"Test_name.c", line 163: error: an rvalue reference cannot be bound to an lvalue
+      sink_1_8(va);		// { dg-error "lvalue" }
+               ^
+
+"Test_name.c", line 164: error: an rvalue reference cannot be bound to an lvalue
+      sink_1_8(cva);		// { dg-error "lvalue" }
+               ^
+
+60 errors detected in the compilation of "Test_name.c".

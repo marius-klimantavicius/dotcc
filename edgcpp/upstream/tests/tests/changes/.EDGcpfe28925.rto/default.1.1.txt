@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang_v 220100 --c++03 Test_name.c
+"Test_name.c", line 11: warning: "auto" as a type specifier is nonstandard in this mode
+  auto r = E::e;  // Normally requires C++11, but
+  ^
+
+"Test_name.c", line 11: warning: an enum-type name qualifier is a C++11 feature
+  auto r = E::e;  // Normally requires C++11, but
+           ^
+

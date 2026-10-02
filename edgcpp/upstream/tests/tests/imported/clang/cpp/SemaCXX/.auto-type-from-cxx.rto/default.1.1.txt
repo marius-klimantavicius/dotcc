@@ -1,0 +1,71 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 Test_name.c
+"Test_name.c", line 6: error: expected an operator
+      operator __auto_type() {} // expected-error {{'__auto_type' not allowed in conversion function type}}
+               ^
+
+"Test_name.c", line 6: error: explicit type is missing ("int" assumed)
+      operator __auto_type() {} // expected-error {{'__auto_type' not allowed in conversion function type}}
+      ^
+
+"Test_name.c", line 9: error: identifier "__auto_type" is undefined
+  __auto_type a() -> int; // expected-error {{function with trailing return type must specify return type 'auto'}}
+  ^
+
+"Test_name.c", line 9: error: a trailing return type requires the "auto" type specifier
+  __auto_type a() -> int; // expected-error {{function with trailing return type must specify return type 'auto'}}
+                  ^
+
+"Test_name.c", line 10: error: identifier "__auto_type" is undefined
+  __auto_type a2(); // expected-error {{'__auto_type' not allowed in function return type}}
+  ^
+
+"Test_name.c", line 12: error: identifier "__auto_type" is undefined
+  __auto_type b() { return T::x; } // expected-error {{'__auto_type' not allowed in function return type}}
+  ^
+
+"Test_name.c", line 13: error: identifier "__auto_type" is undefined
+  auto c() -> __auto_type { __builtin_unreachable(); } // expected-error {{'__auto_type' not allowed in function return type}}
+              ^
+
+"Test_name.c", line 15: error: identifier "__auto_type" is undefined
+    decltype(__auto_type) e = 1; // expected-error {{expected expression}}
+             ^
+
+"Test_name.c", line 16: error: "__auto_type" is not a type name
+    auto _ = [](__auto_type f) {}; // expected-error {{'__auto_type' not allowed in lambda parameter}}
+                ^
+
+"Test_name.c", line 17: error: expected a ";"
+    __auto_type g = 2;
+                ^
+
+"Test_name.c", line 19: error: expected a ";"
+    __auto_type h = BitField{1}.field; // (should work from C++)
+                ^
+
+"Test_name.c", line 20: error: expected a type specifier
+    new __auto_type; // expected-error {{'__auto_type' not allowed in type allocated by 'new'}}
+        ^
+
+"Test_name.c", line 21: warning: missing return statement at end of non-void function "d"
+  }
+  ^
+
+"Test_name.c", line 16: warning: variable "_" was declared but never referenced
+    auto _ = [](__auto_type f) {}; // expected-error {{'__auto_type' not allowed in lambda parameter}}
+         ^
+
+"Test_name.c", line 26: error: parameter of abstract class type "TestDeductionFail::Abstract" is not allowed:
+            function "TestDeductionFail::Abstract::vfun" is a pure virtual function
+  void caller(T x) {x.fun();} // expected-error {{parameter type 'TestDeductionFail::Abstract' is an abstract class}}
+              ^
+          detected during:
+            instantiation of "TestDeductionFail::caller" based on template argument <TestDeductionFail::Abstract> at line 30
+            instantiation of "auto TestDeductionFail::getCaller<T>() [with T=TestDeductionFail::Abstract]" at line 37
+
+"Test_name.c", line 37: error: parameter of abstract class type "TestDeductionFail::Abstract" is not allowed:
+            function "TestDeductionFail::Abstract::vfun" is a pure virtual function
+      void call(){getCaller<Abstract>()(*this);} // expected-error {{allocating an object of abstract class type 'TestDeductionFail::Abstract'}}
+                                        ^
+
+14 errors detected in the compilation of "Test_name.c".

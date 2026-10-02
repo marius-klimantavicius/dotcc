@@ -1,0 +1,41 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c89 --strict_gnu Test_name.c
+"Test_name.c", line 11: warning: type qualifier specified more than once
+  const const int i; /* { dg-error "duplicate .const." } */
+        ^
+
+"Test_name.c", line 12: warning: type qualifier specified more than once
+  volatile volatile v; /* { dg-error "duplicate .volatile." } */
+           ^
+
+"Test_name.c", line 12: warning: explicit type is missing ("int" assumed)
+  volatile volatile v; /* { dg-error "duplicate .volatile." } */
+                    ^
+
+"Test_name.c", line 24: warning: "static" is nonstandard here
+  fn2 (char x[static 4]) /* { dg-error "ISO C90 does not support .static. or type qualifiers" } */
+              ^
+
+"Test_name.c", line 26: warning: variable "i" was declared but never referenced
+    int i = (int) { 1 }; /* { dg-error "ISO C90 forbids compound literals" } */
+        ^
+
+"Test_name.c", line 27: warning: variable "a" was declared but never referenced
+    struct A a = { .i = 3 }; /* { dg-error "ISO C90 forbids specifying subobject to initialize" } */
+             ^
+
+"Test_name.c", line 31: warning: parameter "n" was set but never used
+  fn3 (int n)
+           ^
+
+"Test_name.c", line 34: warning: variable "i" was declared but never referenced
+    int i; /* { dg-error "ISO C90 forbids mixed declarations and code" } */
+        ^
+
+"Test_name.c", line 38: warning: parameter "n" was set but never used
+  fn4 (int n)
+           ^
+
+"Test_name.c", line 41: warning: variable "i" was declared but never referenced
+    __extension__ int i; /* { dg-error "ISO C90 forbids mixed declarations and code" } */
+                      ^
+

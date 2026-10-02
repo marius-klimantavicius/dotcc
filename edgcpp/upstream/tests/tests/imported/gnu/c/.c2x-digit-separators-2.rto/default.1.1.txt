@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 11: error: digit separator cannot appear here
+    i = 1''2; /* { dg-error "adjacent digit separators" } */
+         ^
+
+"Test_name.c", line 12: error: digit separator cannot appear here
+    i = 0x'0; /* { dg-error "digit separator after base indicator" } */
+          ^
+
+"Test_name.c", line 13: error: digit separator cannot appear here
+    i = 0X'1; /* { dg-error "digit separator after base indicator" } */
+          ^
+
+"Test_name.c", line 14: error: digit separator cannot appear here
+    i = 0b'0; /* { dg-error "digit separator after base indicator" } */
+          ^
+
+"Test_name.c", line 15: error: digit separator cannot appear here
+    i = 0B'1; /* { dg-error "digit separator after base indicator" } */
+          ^
+
+"Test_name.c", line 16: error: digit separator cannot appear here
+    i = 1'u; /* { dg-error "digit separator outside digit sequence" } */
+         ^
+
+"Test_name.c", line 17: error: digit separator cannot appear here
+    float f = 1.2e-3'f; /* { dg-error "digit separator outside digit sequence" } */
+                    ^
+
+"Test_name.c", line 18: error: digit separator cannot appear here
+    i = 1'2'3'; /* { dg-error "12:missing terminating" } */
+             ^
+
+"Test_name.c", line 21: error: digit separator cannot appear here
+    d = 1'.2'3e-4; /* { dg-warning "multi-character" } */
+         ^
+
+"Test_name.c", line 23: error: digit separator cannot appear here
+    d = 1.2''3; /* { dg-error "adjacent digit separators" } */
+           ^
+
+"Test_name.c", line 24: error: digit separator cannot appear here
+    d = 1.23e-4''5; /* { dg-error "adjacent digit separators" } */
+               ^
+
+"Test_name.c", line 25: error: digit separator cannot appear here
+    d = 1.2'3e-4'5'; /* { dg-error "17:missing terminating" } */
+                  ^
+
+"Test_name.c", line 10: warning: variable "i" was set but never used
+    int i;
+        ^
+
+"Test_name.c", line 17: warning: variable "f" was declared but never referenced
+    float f = 1.2e-3'f; /* { dg-error "digit separator outside digit sequence" } */
+          ^
+
+"Test_name.c", line 20: warning: variable "d" was set but never used
+    double d;
+           ^
+
+12 errors detected in the compilation of "Test_name.c".

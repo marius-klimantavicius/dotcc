@@ -1,0 +1,181 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 11: warning: unrecognized #pragma
+  #pragma unroll
+          ^
+
+"Test_name.c", line 16: warning: unrecognized #pragma
+  #pragma nounroll
+          ^
+
+"Test_name.c", line 21: warning: unrecognized #pragma
+  #pragma unroll 4
+          ^
+
+"Test_name.c", line 26: warning: unrecognized #pragma
+  #pragma unroll(8)
+          ^
+
+"Test_name.c", line 31: warning: unrecognized #pragma
+  /* expected-error {{expected ')'}} */ #pragma unroll(4
+                                                ^
+
+"Test_name.c", line 32: warning: unrecognized #pragma
+  /* expected-error {{missing argument; expected an integer value}} */ #pragma unroll()
+                                                                               ^
+
+"Test_name.c", line 33: warning: unrecognized #pragma
+  /* expected-warning {{extra tokens at end of '#pragma unroll'}} */ #pragma unroll 1 2
+                                                                             ^
+
+"Test_name.c", line 38: warning: unrecognized #pragma
+  /* expected-warning {{extra tokens at end of '#pragma nounroll'}} */ #pragma nounroll 1
+                                                                               ^
+
+"Test_name.c", line 43: warning: unrecognized #pragma
+  /* expected-error {{expected ')'}} */ #pragma unroll(()
+                                                ^
+
+"Test_name.c", line 44: warning: unrecognized #pragma
+  /* expected-error {{expected expression}} */ #pragma unroll -
+                                                       ^
+
+"Test_name.c", line 45: warning: unrecognized #pragma
+  /* The values of 0 and 1 block any unrolling of the loop. */ #pragma unroll 0
+                                                                       ^
+
+"Test_name.c", line 46: warning: unrecognized #pragma
+  /* expected-error {{value '3000000000' is too large}} */ #pragma unroll(3000000000)
+                                                                   ^
+
+"Test_name.c", line 47: warning: unrecognized #pragma
+  /* expected-error {{value '3000000000' is too large}} */ #pragma unroll 3000000000
+                                                                   ^
+
+"Test_name.c", line 52: warning: unrecognized #pragma
+  /* The values of 0 and 1 block any unrolling of the loop. */ #pragma unroll(0)
+                                                                       ^
+
+"Test_name.c", line 57: warning: unrecognized #pragma
+  #pragma unroll
+          ^
+
+"Test_name.c", line 59: warning: unrecognized #pragma
+  #pragma unroll 4
+          ^
+
+"Test_name.c", line 61: warning: unrecognized #pragma
+  #pragma nounroll
+          ^
+
+"Test_name.c", line 66: warning: unrecognized #pragma
+  #pragma unroll
+          ^
+
+"Test_name.c", line 67: warning: unknown attribute "fallthrough"
+  /* expected-error {{expected a for, while, or do-while loop to follow '#pragma unroll'}} */ [[fallthrough]];
+                                                                                                ^
+
+"Test_name.c", line 73: warning: unrecognized #pragma
+  #pragma unroll 4
+          ^
+
+"Test_name.c", line 74: warning: unrecognized #pragma
+  /* expected-error {{incompatible directives 'unroll(disable)' and '#pragma unroll(4)'}} */ #pragma clang loop unroll(disable)
+                                                                                                     ^
+
+"Test_name.c", line 79: warning: unrecognized #pragma
+  #pragma unroll(4)
+          ^
+
+"Test_name.c", line 80: warning: unrecognized #pragma
+  /* expected-error {{incompatible directives 'unroll(full)' and '#pragma unroll(4)'}} */ #pragma clang loop unroll(full)
+                                                                                                  ^
+
+"Test_name.c", line 85: warning: unrecognized #pragma
+  #pragma unroll(4)
+          ^
+
+"Test_name.c", line 86: warning: unrecognized #pragma
+  /* expected-error {{incompatible directives 'unroll(enable)' and '#pragma unroll(4)'}} */ #pragma clang loop unroll(enable)
+                                                                                                    ^
+
+"Test_name.c", line 91: warning: unrecognized #pragma
+  #pragma unroll(4)
+          ^
+
+"Test_name.c", line 92: warning: unrecognized #pragma
+  /* expected-error {{incompatible directives '#pragma unroll' and '#pragma unroll(4)'}} */ #pragma unroll
+                                                                                                    ^
+
+"Test_name.c", line 97: warning: unrecognized #pragma
+  #pragma clang loop unroll_count(4)
+          ^
+
+"Test_name.c", line 98: warning: unrecognized #pragma
+  /* expected-error {{incompatible directives '#pragma nounroll' and 'unroll_count(4)'}} */ #pragma nounroll
+                                                                                                    ^
+
+"Test_name.c", line 103: warning: unrecognized #pragma
+  #pragma nounroll
+          ^
+
+"Test_name.c", line 104: warning: unrecognized #pragma
+  /* expected-error {{duplicate directives '#pragma nounroll' and '#pragma nounroll'}} */ #pragma nounroll
+                                                                                                  ^
+
+"Test_name.c", line 109: warning: unrecognized #pragma
+  #pragma unroll
+          ^
+
+"Test_name.c", line 110: warning: unrecognized #pragma
+  /* expected-error {{duplicate directives '#pragma unroll' and '#pragma unroll'}} */ #pragma unroll
+                                                                                              ^
+
+"Test_name.c", line 115: warning: unrecognized #pragma
+  #pragma unroll
+          ^
+
+"Test_name.c", line 116: warning: unrecognized #pragma
+  /* expected-error {{duplicate directives '#pragma unroll' and 'unroll(full)'}} */ #pragma clang loop unroll(full)
+                                                                                            ^
+
+"Test_name.c", line 121: warning: unrecognized #pragma
+  #pragma unroll 4
+          ^
+
+"Test_name.c", line 122: warning: unrecognized #pragma
+  /* expected-error {{duplicate directives '#pragma unroll(4)' and '#pragma unroll(4)'}} */ #pragma unroll(4)
+                                                                                                    ^
+
+"Test_name.c", line 127: warning: unrecognized #pragma
+  #pragma unroll
+          ^
+
+"Test_name.c", line 58: warning: variable "j" was declared but never referenced
+  /* expected-error {{expected a for, while, or do-while loop to follow '#pragma unroll'}} */ int j = Length;
+                                                                                                  ^
+
+"Test_name.c", line 60: warning: variable "k" was declared but never referenced
+  /* expected-error {{expected a for, while, or do-while loop to follow '#pragma unroll'}} */ int k = Length;
+                                                                                                  ^
+
+"Test_name.c", line 62: warning: variable "l" was declared but never referenced
+  /* expected-error {{expected a for, while, or do-while loop to follow '#pragma nounroll'}} */ int l = Length;
+                                                                                                    ^
+
+"Test_name.c", line 130: warning: declaration of "size_t" does not match the expected type "unsigned long"
+  using size_t = unsigned long long;
+        ^
+
+"Test_name.c", line 140: warning: unrecognized #pragma
+  #pragma unroll Flag ? 0 : N // Ok, allow 0.
+          ^
+
+"Test_name.c", line 144: warning: unrecognized GCC pragma
+  #pragma GCC unroll Flag ? 0 : N // Ok, allow 0.
+              ^
+
+"Test_name.c", line 134: warning: variable "N" was declared but never referenced
+    constexpr int N = 100;
+                  ^
+

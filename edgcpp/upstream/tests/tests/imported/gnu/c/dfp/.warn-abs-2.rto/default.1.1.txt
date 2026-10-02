@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./dfp/warn-abs-2.c", line 8: error: identifier "_Decimal32" is undefined
+  void tst_decimal (_Decimal32 *p32, _Decimal64 *p64, _Decimal128 *p128)
+                    ^
+
+"./dfp/warn-abs-2.c", line 8: error: identifier "_Decimal64" is undefined
+  void tst_decimal (_Decimal32 *p32, _Decimal64 *p64, _Decimal128 *p128)
+                                     ^
+
+"./dfp/warn-abs-2.c", line 8: error: identifier "_Decimal128" is undefined
+  void tst_decimal (_Decimal32 *p32, _Decimal64 *p64, _Decimal128 *p128)
+                                                      ^
+
+"./dfp/warn-abs-2.c", line 17: warning: function "__builtin_fabsd32" declared implicitly
+    *pi = __builtin_fabsd32 (*pi);
+          ^
+
+"./dfp/warn-abs-2.c", line 18: warning: function "__builtin_fabsd64" declared implicitly
+    *pd = __builtin_fabsd64 (*pd);
+          ^
+
+"./dfp/warn-abs-2.c", line 20: warning: function "__builtin_fabsd128" declared implicitly
+    *pc = __builtin_fabsd128 (*pc);
+          ^
+
+"./dfp/warn-abs-2.c", line 24: error: identifier "_Decimal64" is undefined
+  test_size (_Decimal64 *p64, _Decimal128 *p128)
+             ^
+
+"./dfp/warn-abs-2.c", line 24: error: identifier "_Decimal128" is undefined
+  test_size (_Decimal64 *p64, _Decimal128 *p128)
+                              ^
+
+"./dfp/warn-abs-2.c", line 26: warning: function "__builtin_fabsd32" declared implicitly
+    *p64 = __builtin_fabsd32 (*p64);
+           ^
+
+"./dfp/warn-abs-2.c", line 27: warning: function "__builtin_fabsd64" declared implicitly
+    *p128 = __builtin_fabsd64 (*p128);
+            ^
+
+5 errors detected in the compilation of "Test_name.c".

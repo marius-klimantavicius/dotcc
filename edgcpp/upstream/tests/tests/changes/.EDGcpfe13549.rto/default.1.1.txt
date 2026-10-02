@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --c++11 --microsoft Test_name.c
+"Test_name.c", line 16: warning: variable "s" was declared but never referenced
+    S s = {x};  // Previously, this could produce an internal error in
+      ^
+

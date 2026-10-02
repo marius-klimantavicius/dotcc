@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./range.h", line 13: warning: declaration of "size_t" does not match the expected type "unsigned int"
+  typedef long unsigned int size_t;
+                            ^
+
+"./attr-nonstring-4.c", line 32: warning: integer conversion resulted in truncation
+    size_t n = 0x7fffffffffffffffL;
+               ^
+
+"./attr-nonstring-4.c", line 50: warning: integer conversion resulted in truncation
+    size_t n = 0x7fffffffffffffffL;
+               ^
+

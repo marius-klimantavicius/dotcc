@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc -w Test_name.c
+"Test_name.c", line 6: error: expected a ";"
+  typedef _Decimal64 __attribute__((__vector_size__ (8))) U;
+                                                          ^
+
+"Test_name.c", line 7: error: vector_size attribute requires an arithmetic or enum type
+  typedef _Decimal64 __attribute__((__vector_size__ (16))) V;
+                                    ^
+
+"Test_name.c", line 11: error: identifier "U" is undefined
+  U
+  ^
+
+"Test_name.c", line 12: error: identifier "U" is undefined
+  foo (U u)
+       ^
+
+"Test_name.c", line 15: error: identifier "U" is undefined
+    u *= -(U){ v[1] };
+           ^
+
+"Test_name.c", line 15: error: expected a ";"
+    u *= -(U){ v[1] };
+             ^
+
+6 errors detected in the compilation of "Test_name.c".

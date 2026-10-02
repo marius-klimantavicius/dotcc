@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c++14 --clang_v=70000 Test_name.c
+"Test_name.c", line 9: error: no instance of function template "f" matches the argument list
+            argument types are: (I<100>)
+    f(i);
+    ^
+"Test_name.c", line 6: note: candidate function template "f" failed deduction
+  template<short N> void f(I<N>) {}
+                         ^
+
+1 error detected in the compilation of "Test_name.c".

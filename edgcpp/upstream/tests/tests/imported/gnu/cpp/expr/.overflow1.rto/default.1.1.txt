@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./expr/overflow1.C", line 6: error: expression must have a constant value
+    C = 0x7fffffff 
+        ^
+"./expr/overflow1.C", line 6: note: value exceeds range of "int"
+              +1,
+              ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,16 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 5: error: exception specification is incompatible with that of previous function "f" (declared at line 4):
+            previously specified but omitted here: "char"
+  void f() throw (int) { };
+           ^
+
+"Test_name.c", line 5: error: extra ";" ignored
+  void f() throw (int) { };
+                          ^
+
+"Test_name.c", line 6: error: exception specification is incompatible with that of previous function "f" (declared at line 5):
+            previously specified but omitted here: "int"
+  void f() throw ();
+           ^
+
+3 errors detected in the compilation of "Test_name.c".

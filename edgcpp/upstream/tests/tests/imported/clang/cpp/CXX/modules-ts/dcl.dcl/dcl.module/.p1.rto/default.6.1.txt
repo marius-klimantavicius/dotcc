@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=6 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 -DFOO= -DBAR=export Test_name.c
+"Test_name.c", line 11: error: identifier "module" is undefined
+  FOO module foo; // expected-note {{previous module declaration is here}}
+      ^
+
+"Test_name.c", line 15: error: exported templates are no longer in the standard C++ language
+  BAR module bar; // expected-error {{translation unit contains multiple module declarations}}
+  ^
+
+"Test_name.c", line 15: error: expected "template"
+  BAR module bar; // expected-error {{translation unit contains multiple module declarations}}
+      ^
+
+3 errors detected in the compilation of "Test_name.c".

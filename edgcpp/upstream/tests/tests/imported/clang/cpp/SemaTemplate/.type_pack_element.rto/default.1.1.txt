@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++23 Test_name.c
+"Test_name.c", line 64: error: incomplete type "B<char, long>" is not allowed
+  template struct B<char, long>;
+           ^
+
+"Test_name.c", line 68: error: incomplete type "C<int, int>" is not allowed
+  template struct C<int, int>;
+           ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 15: error: no instance of function template "S<<unnamed>>::f [with <unnamed>=int]" matches the argument list
+            argument types are: (int)
+  int a = S<int>::f(0);
+          ^
+"Test_name.c", line 12: note: substituting "<int>" for function template "S<<unnamed>>::f [with <unnamed>=int]" failed constraints
+    static int f(T);
+               ^
+"Test_name.c", line 11: note: atomic constraint evaluates to false
+      requires requires (T object) { Tmpl{object}; }
+               ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,70 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 8: warning: variable "a16" was declared but never referenced
+      extern int a16[];
+                 ^
+
+"Test_name.c", line 21: warning: return value type does not match the function type
+    return PR10013_x; // expected-error{{incompatible pointer to integer conversion}}
+           ^
+
+"Test_name.c", line 29: error: incomplete type "int []" is not allowed
+  int test2v = sizeof(test2_array); // expected-error {{invalid application of 'sizeof' to an incomplete type 'int[]'}}
+                     ^
+
+"Test_name.c", line 34: warning: variable "x" was declared but never referenced
+    int x = sizeof(test3_array); // expected-error {{invalid application of 'sizeof' to an incomplete type 'int[]'}}
+        ^
+
+"Test_name.c", line 41: warning: variable "x" was declared but never referenced
+      int x = sizeof(test4_array); // fine
+          ^
+
+"Test_name.c", line 43: error: incomplete type "int []" is not allowed
+    int x = sizeof(test4_array); // expected-error {{invalid application of 'sizeof' to an incomplete type 'int[]'}}
+                  ^
+
+"Test_name.c", line 51: error: declaration is incompatible with previous "abort" (declared at line 48)
+    int abort(void); // expected-error {{conflicting types}}
+        ^
+
+"Test_name.c", line 53: error: declaration is incompatible with previous "calloc" (declared at line 49)
+    int *calloc(void); // expected-error {{conflicting types}}
+         ^
+
+"Test_name.c", line 56: error: declaration is incompatible with previous "abort" (declared at line 48)
+    int abort(void); // expected-error {{conflicting types}}
+        ^
+
+"Test_name.c", line 58: error: declaration is incompatible with previous "calloc" (declared at line 49)
+    int *calloc(void); // expected-error {{conflicting types}}
+         ^
+
+"Test_name.c", line 62: error: identifier "malloc" is undefined
+    void *(*_malloc)() = &malloc;
+                          ^
+
+"Test_name.c", line 61: warning: variable "_abort" was declared but never referenced
+    void (*_abort)(void) = &abort;
+           ^
+
+"Test_name.c", line 63: warning: variable "_calloc" was declared but never referenced
+    float *(*_calloc)() = &calloc;
+             ^
+
+"Test_name.c", line 73: warning: variable "test6_array2" was declared but never referenced
+      char test6_array2;
+           ^
+
+"Test_name.c", line 74: warning: variable "test6_fn2" was declared but never referenced
+      char test6_fn2;
+           ^
+
+"Test_name.c", line 5: warning: variable "a16" was declared but never referenced
+  static int a16[];  // expected-warning {{tentative array definition assumed to have one element}}
+             ^
+
+"Test_name.c", line 24: warning: variable "test1_a" was declared but never referenced
+  static int test1_a[]; // expected-warning {{tentative array definition assumed to have one element}}
+             ^
+
+7 errors detected in the compilation of "Test_name.c".

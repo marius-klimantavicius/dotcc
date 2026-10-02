@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: warning: constexpr non-static member function will not be implicitly 'const' in C++14
+    constexpr X f(X x) { return x; }
+    ^
+
+"Test_name.c", line 10: warning: constexpr non-static member function will not be implicitly 'const' in C++14
+    constexpr X g(X x);
+    ^
+
+"Test_name.c", line 18: warning: constexpr non-static member function will not be implicitly 'const' in C++14
+    constexpr Y f(Y y) { return y; }  // { dg-error "constexpr" "" { target { { ! implicit_constexpr } && c++20_down } } }
+    ^
+
+"Test_name.c", line 18: error: a constexpr function cannot have a nonliteral return type "Y"
+    constexpr Y f(Y y) { return y; }  // { dg-error "constexpr" "" { target { { ! implicit_constexpr } && c++20_down } } }
+                ^
+
+"Test_name.c", line 19: error: a constexpr function cannot have a nonliteral return type "Y"
+    static constexpr Y g(Y y) { return y; } // { dg-error "constexpr" "" { target { { ! implicit_constexpr } && c++20_down } } }
+                       ^
+
+2 errors detected in the compilation of "Test_name.c".

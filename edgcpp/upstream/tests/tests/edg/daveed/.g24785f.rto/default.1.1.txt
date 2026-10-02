@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++23 Test_name.c
+"Test_name.c", line 6: error: a brace-enclosed list is not allowed here
+    arr[{1, 2}] = 0.0;
+        ^
+
+1 error detected in the compilation of "Test_name.c".

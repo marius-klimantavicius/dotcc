@@ -1,0 +1,270 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 20: error: member "test0::A::x" (declared at line 7) is inaccessible
+      (void) a.x; // expected-error {{'x' is a protected member}}
+               ^
+
+"Test_name.c", line 21: error: member "test0::A::sx" (declared at line 9) is inaccessible
+      (void) a.sx; // expected-error {{'sx' is a protected member}}
+               ^
+
+"Test_name.c", line 24: error: member "test0::A::x" (declared at line 7) is inaccessible
+      (void) b.x; // expected-error {{'x' is a protected member}}
+               ^
+
+"Test_name.c", line 25: error: member "test0::A::sx" (declared at line 9) is inaccessible
+      (void) b.sx; // expected-error {{'sx' is a protected member}}
+               ^
+
+"Test_name.c", line 28: error: member "test0::A::x" (declared at line 7) is inaccessible
+      (void) c.x; // expected-error {{'x' is a protected member}}
+               ^
+
+"Test_name.c", line 29: error: member "test0::A::sx" (declared at line 9) is inaccessible
+      (void) c.sx; // expected-error {{'sx' is a protected member}}
+               ^
+
+"Test_name.c", line 32: error: member "test0::A::x" (declared at line 7) is inaccessible
+      (void) d.x; // expected-error {{'x' is a private member}}
+               ^
+
+"Test_name.c", line 33: error: member "test0::A::sx" (declared at line 9) is inaccessible
+      (void) d.sx; // expected-error {{'sx' is a private member}}
+               ^
+
+"Test_name.c", line 92: error: protected member "test2::A::x" (declared at line 73) is not accessible through a "test2::A" pointer or object
+      (void) a.x; // expected-error {{'x' is a protected member}}
+               ^
+
+"Test_name.c", line 96: error: protected member "test2::A::x" (declared at line 73) is not accessible through a "test2::A" pointer or object
+      (void) a.x; // expected-error {{'x' is a protected member}}
+               ^
+
+"Test_name.c", line 100: error: protected member "test2::A::x" (declared at line 73) is not accessible through a "test2::A" pointer or object
+      (void) a.x; // expected-error {{'x' is a protected member}}
+               ^
+
+"Test_name.c", line 131: error: protected member "test3::A::x" (declared at line 108) is not accessible through a "test3::B" pointer or object
+      (void) b.x; // expected-error {{'x' is a protected member}}
+               ^
+
+"Test_name.c", line 135: error: protected member "test3::A::x" (declared at line 108) is not accessible through a "test3::B" pointer or object
+      (void) b.x; // expected-error {{'x' is a protected member}}
+               ^
+
+"Test_name.c", line 158: error: member "test4::A::x" (declared at line 143) is inaccessible
+      (void) c.x;  // expected-error {{'x' is a protected member}}
+               ^
+
+"Test_name.c", line 159: error: member "test4::A::sx" (declared at line 144) is inaccessible
+      (void) c.sx; // expected-error {{'sx' is a protected member}}
+               ^
+
+"Test_name.c", line 162: error: member "test4::A::x" (declared at line 143) is inaccessible
+      (void) c.x;  // expected-error {{'x' is a protected member}}
+               ^
+
+"Test_name.c", line 163: error: member "test4::A::sx" (declared at line 144) is inaccessible
+      (void) c.sx; // expected-error {{'sx' is a protected member}}
+               ^
+
+"Test_name.c", line 170: error: member "test4::A::x" (declared at line 143) is inaccessible
+      (void) c.x;  // expected-error {{'x' is a protected member}}
+               ^
+
+"Test_name.c", line 171: error: member "test4::A::sx" (declared at line 144) is inaccessible
+      (void) c.sx; // expected-error {{'sx' is a protected member}}
+               ^
+
+"Test_name.c", line 193: error: member "test5::A::x" (declared at line 178) is inaccessible
+      (void) d.x;  // expected-error {{'x' is a private member}}
+               ^
+
+"Test_name.c", line 194: error: member "test5::A::sx" (declared at line 179) is inaccessible
+      (void) d.sx; // expected-error {{'sx' is a private member}}
+               ^
+
+"Test_name.c", line 197: error: member "test5::A::x" (declared at line 178) is inaccessible
+      (void) d.x;  // expected-error {{'x' is a private member}}
+               ^
+
+"Test_name.c", line 198: error: member "test5::A::sx" (declared at line 179) is inaccessible
+      (void) d.sx; // expected-error {{'sx' is a private member}}
+               ^
+
+"Test_name.c", line 201: error: member "test5::A::x" (declared at line 178) is inaccessible
+      (void) d.x;  // expected-error {{'x' is a private member}}
+               ^
+
+"Test_name.c", line 202: error: member "test5::A::sx" (declared at line 179) is inaccessible
+      (void) d.sx; // expected-error {{'sx' is a private member}}
+               ^
+
+"Test_name.c", line 235: error: protected function "test6::A::foo(int)" (declared at line 214) is not accessible through a "test6::A" pointer or object
+      a.foo(10); // expected-error {{'foo' is a protected member}}
+      ^
+
+"Test_name.c", line 239: error: protected function "test6::A::foo(int)" (declared at line 214) is not accessible through a "test6::A" pointer or object
+      a.foo(10); // expected-error {{'foo' is a protected member}}
+      ^
+
+"Test_name.c", line 243: error: protected function "test6::A::foo(int)" (declared at line 214) is not accessible through a "test6::A" pointer or object
+      a.foo(10); // expected-error {{'foo' is a protected member}}
+      ^
+
+"Test_name.c", line 269: warning: variable "x" was declared but never referenced
+      void (A::*x)(int) = &A::foo;
+                ^
+
+"Test_name.c", line 270: warning: variable "sx" was declared but never referenced
+      void (*sx)(Static) = &A::foo;
+             ^
+
+"Test_name.c", line 273: error: protected function "test7::A::foo(int)" (declared at line 252) is not accessible through a "test7::A" pointer or object
+      void (A::*x)(int) = &A::foo; // expected-error {{'foo' is a protected member}}
+                          ^
+
+"Test_name.c", line 273: warning: variable "x" was declared but never referenced
+      void (A::*x)(int) = &A::foo; // expected-error {{'foo' is a protected member}}
+                ^
+
+"Test_name.c", line 274: warning: variable "sx" was declared but never referenced
+      void (*sx)(Static) = &A::foo;
+             ^
+
+"Test_name.c", line 277: error: protected function "test7::A::foo(int)" (declared at line 252) is not accessible through a "test7::A" pointer or object
+      void (A::*x)(int) = &A::foo; // expected-error {{'foo' is a protected member}}
+                          ^
+
+"Test_name.c", line 277: warning: variable "x" was declared but never referenced
+      void (A::*x)(int) = &A::foo; // expected-error {{'foo' is a protected member}}
+                ^
+
+"Test_name.c", line 278: warning: variable "sx" was declared but never referenced
+      void (*sx)(Static) = &A::foo;
+             ^
+
+"Test_name.c", line 281: error: protected function "test7::A::foo(int)" (declared at line 252) is not accessible through a "test7::A" pointer or object
+      void (A::*x)(int) = &A::foo; // expected-error {{'foo' is a protected member}}
+                          ^
+
+"Test_name.c", line 281: warning: variable "x" was declared but never referenced
+      void (A::*x)(int) = &A::foo; // expected-error {{'foo' is a protected member}}
+                ^
+
+"Test_name.c", line 282: warning: variable "sx" was declared but never referenced
+      void (*sx)(Static) = &A::foo;
+             ^
+
+"Test_name.c", line 313: error: protected function "test8::A::foo(int)" (declared at line 290) is not accessible through a "test8::A" pointer or object
+      call(&A::foo); // expected-error {{'foo' is a protected member}}
+           ^
+
+"Test_name.c", line 317: error: protected function "test8::A::foo(int)" (declared at line 290) is not accessible through a "test8::A" pointer or object
+      call(&A::foo); // expected-error {{'foo' is a protected member}}
+           ^
+
+"Test_name.c", line 321: error: protected function "test8::A::foo(int)" (declared at line 290) is not accessible through a "test8::A" pointer or object
+      call(&A::foo); // expected-error {{'foo' is a protected member}}
+           ^
+
+"Test_name.c", line 341: error: protected function "test9::A::foo" (declared at line 328) is not accessible through a "test9::A" pointer or object
+        a.foo(); // expected-error {{'foo' is a protected member}}
+          ^
+
+"Test_name.c", line 342: error: protected function "test9::A::foo" (declared at line 328) is not accessible through a "test9::A" pointer or object
+        a.A::foo(); // expected-error {{'foo' is a protected member}}
+             ^
+
+"Test_name.c", line 343: error: qualified name is not a member of class "test9::A" or its base classes
+        a.B::foo(); // expected-error {{'foo' is a protected member}}
+          ^
+
+"Test_name.c", line 344: error: qualified name is not a member of class "test9::A" or its base classes
+        a.C::foo(); // expected-error {{'foo' is a protected member}}
+          ^
+
+"Test_name.c", line 345: error: qualified name is not a member of class "test9::A" or its base classes
+        a.D::foo(); // expected-error {{'foo' is a protected member}}
+          ^
+
+"Test_name.c", line 352: error: qualified name is not a member of class "test9::B" or its base classes
+        b.C::foo(); // expected-error {{'foo' is a protected member}}
+          ^
+
+"Test_name.c", line 356: error: function "test9::A::foo" (declared at line 328) is inaccessible
+        c.foo();    // expected-error {{'foo' is a protected member}}
+          ^
+
+"Test_name.c", line 357: error: conversion to inaccessible base class "test9::B" is not allowed
+        c.A::foo(); // expected-error {{'A' is a protected member}} \
+        ^
+
+"Test_name.c", line 359: error: conversion to inaccessible base class "test9::B" is not allowed
+        c.B::foo(); // expected-error {{'B' is a protected member}} \
+        ^
+
+"Test_name.c", line 361: error: function "test9::A::foo" (declared at line 328) is inaccessible
+        c.C::foo(); // expected-error {{'foo' is a protected member}}
+             ^
+
+"Test_name.c", line 367: error: qualified name is not a member of class "test9::D" or its base classes
+        d.B::foo();
+          ^
+
+"Test_name.c", line 368: error: qualified name is not a member of class "test9::D" or its base classes
+        d.C::foo(); // expected-error {{'foo' is a protected member}}
+          ^
+
+"Test_name.c", line 428: error: function "test13::A::foo" (declared at line 421) is inaccessible
+      d.A::foo(); // expected-error {{protected member}}
+           ^
+
+"Test_name.c", line 453: error: protected function "test14::A::temp(T) [with T=int]" (declared at line 436) is not accessible through a "test14::A" pointer or object
+        ptr = &A::temp; // expected-error {{protected member}}
+              ^
+
+"Test_name.c", line 454: error: protected function "test14::A::nontemp" (declared at line 438) is not accessible through a "test14::A" pointer or object
+        ptr = &A::nontemp; // expected-error {{protected member}}
+              ^
+
+"Test_name.c", line 455: error: protected function "test14::A::ovl_temp(T) [with T=int]" (declared at line 440) is not accessible through a "test14::A" pointer or object
+        ptr = &A::ovl_temp; // expected-error {{protected member}}
+              ^
+
+"Test_name.c", line 456: error: protected function "test14::A::ovl_nontemp(int)" (declared at line 443) is not accessible through a "test14::A" pointer or object
+        ptr = &A::ovl_nontemp; // expected-error {{protected member}}
+              ^
+
+"Test_name.c", line 457: error: protected function "test14::A::ovl_withtemp(int)" (declared at line 447) is not accessible through a "test14::A" pointer or object
+        ptr = &A::ovl_withtemp; // expected-error {{protected member}}
+              ^
+
+"Test_name.c", line 452: warning: variable "ptr" was set but never used
+        void (A::*ptr)(int);
+                  ^
+
+"Test_name.c", line 479: error: protected function "test15::A::A()" (declared at line 465) is not accessible through a "test15::A" pointer or object
+        A a; // expected-error {{protected constructor}} expected-error {{protected destructor}}
+          ^
+
+"Test_name.c", line 479: error: protected function "test15::A::~A" (declared at line 467) is not accessible through a "test15::A" pointer or object
+        A a; // expected-error {{protected constructor}} expected-error {{protected destructor}}
+          ^
+
+"Test_name.c", line 483: error: protected function "test15::A::A()" (declared at line 465) is not accessible through a "test15::A" pointer or object
+        return new A(); // expected-error {{protected constructor}}
+                    ^
+
+"Test_name.c", line 487: error: protected function "test15::A::~A" (declared at line 467) is not accessible through a "test15::A" pointer or object
+        delete a; // expected-error {{protected destructor}}
+               ^
+
+"Test_name.c", line 491: error: protected function "test15::A::A(const test15::A &)" (declared at line 466) is not accessible through a "test15::A" pointer or object
+        return *a; // expected-error {{protected constructor}}
+               ^
+
+"Test_name.c", line 495: error: protected function "test15::A::~A" (declared at line 467) is not accessible through a "test15::A" pointer or object
+        a->~A(); // expected-error {{protected member}}
+           ^
+
+58 errors detected in the compilation of "Test_name.c".

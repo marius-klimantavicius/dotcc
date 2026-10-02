@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++11 Test_name.c
+"Test_name.c", line 8: error: identifier "id" is undefined
+    decltype(id) x;
+             ^
+
+1 error detected in the compilation of "Test_name.c".

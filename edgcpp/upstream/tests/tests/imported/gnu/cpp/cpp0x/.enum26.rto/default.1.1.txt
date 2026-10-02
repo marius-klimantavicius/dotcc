@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 7: warning: declaration does not declare anything
+  enum {};            // { dg-warning "empty unnamed" }
+  ^
+
+"Test_name.c", line 9: error: a scoped enum type must have a name
+  enum class {};      // { dg-error "unnamed" }
+             ^
+
+"Test_name.c", line 9: warning: declaration does not declare anything
+  enum class {};      // { dg-error "unnamed" }
+  ^
+
+"Test_name.c", line 11: error: a scoped enum type must have a name
+  enum class { x };   // { dg-error "unnamed" }
+             ^
+
+"Test_name.c", line 11: warning: declaration does not declare anything
+  enum class { x };   // { dg-error "unnamed" }
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

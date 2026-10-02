@@ -1,0 +1,694 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"./atomic/stdatomic-bitint-1.c", line 17: error: integer constant is too large
+   13505789527944801758751150119415226784wb
+   ^
+
+"./atomic/stdatomic-bitint-1.c", line 18: error: integer constant is too large
+    count = -64910836855286429164283779649638556795wb;
+             ^
+
+"./atomic/stdatomic-bitint-1.c", line 20: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+       __atomic_fetch_add ((
+                           ^
+
+"./atomic/stdatomic-bitint-1.c", line 21: error: integer constant is too large
+       != 13505789527944801758751150119415226784wb)
+          ^
+
+"./atomic/stdatomic-bitint-1.c", line 20: error: expression must have arithmetic or pointer type but has type "void"
+       __atomic_fetch_add ((
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 24: error: integer constant is too large
+       2227507280963412295355244564739509222wb
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 24: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+       __atomic_fetch_add ((
+                           ^
+
+"./atomic/stdatomic-bitint-1.c", line 26: error: integer constant is too large
+       != -51405047327341627405532629530223330011wb)
+           ^
+
+"./atomic/stdatomic-bitint-1.c", line 24: error: expression must have arithmetic or pointer type but has type "void"
+       __atomic_fetch_add ((
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 29: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+       __atomic_fetch_add ((
+                           ^
+
+"./atomic/stdatomic-bitint-1.c", line 30: error: integer constant is too large
+       != -49177540046378215110177384965483820789wb)
+           ^
+
+"./atomic/stdatomic-bitint-1.c", line 29: error: expression must have arithmetic or pointer type but has type "void"
+       __atomic_fetch_add ((
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 33: error: integer constant is too large
+       42245667388877614520169143618236120405wb
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 33: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+       __atomic_fetch_add ((
+                           ^
+
+"./atomic/stdatomic-bitint-1.c", line 35: error: integer constant is too large
+       != 56052806558804587457226139100761728144wb)
+          ^
+
+"./atomic/stdatomic-bitint-1.c", line 33: error: expression must have arithmetic or pointer type but has type "void"
+       __atomic_fetch_add ((
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 38: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+       __atomic_fetch_add ((
+                           ^
+
+"./atomic/stdatomic-bitint-1.c", line 39: error: integer constant is too large
+       != -71842709512787029754292020996886257179wb)
+           ^
+
+"./atomic/stdatomic-bitint-1.c", line 38: error: expression must have arithmetic or pointer type but has type "void"
+       __atomic_fetch_add ((
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 42: error: integer constant is too large
+       77995075987640754057679086146674392947wb
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 42: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+       __atomic_fetch_add ((
+                           ^
+
+"./atomic/stdatomic-bitint-1.c", line 44: error: integer constant is too large
+       != 33387637092395772813111503069359291754wb)
+          ^
+
+"./atomic/stdatomic-bitint-1.c", line 42: error: expression must have arithmetic or pointer type but has type "void"
+       __atomic_fetch_add ((
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 47: error: integer constant is too large
+       11810767284628435493328779846084830297wb
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 47: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+       __atomic_fetch_add ((
+                           ^
+
+"./atomic/stdatomic-bitint-1.c", line 48: error: integer constant is too large
+       != -58758470380432704860896714499850421027wb)
+           ^
+
+"./atomic/stdatomic-bitint-1.c", line 47: error: expression must have arithmetic or pointer type but has type "void"
+       __atomic_fetch_add ((
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 51: error: integer constant is too large
+                        != -46947703095804269367567934653765590730wb)
+                            ^
+
+"./atomic/stdatomic-bitint-1.c", line 58: error: integer constant is too large
+   30796781768365552851024605388374299173wb
+   ^
+
+"./atomic/stdatomic-bitint-1.c", line 60: error: integer constant is too large
+    count = 32457177597484647488149720668185011722wb;
+            ^
+
+"./atomic/stdatomic-bitint-1.c", line 62: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+       __atomic_fetch_sub ((
+                           ^
+
+"./atomic/stdatomic-bitint-1.c", line 63: error: integer constant is too large
+       != 30796781768365552851024605388374299173wb)
+          ^
+
+"./atomic/stdatomic-bitint-1.c", line 62: error: expression must have arithmetic or pointer type but has type "void"
+       __atomic_fetch_sub ((
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 66: error: integer constant is too large
+       54614103079293459991417218347656369566wb
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 66: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+       __atomic_fetch_sub ((
+                           ^
+
+"./atomic/stdatomic-bitint-1.c", line 68: error: integer constant is too large
+       != -1660395829119094637125115279810712549wb)
+           ^
+
+"./atomic/stdatomic-bitint-1.c", line 66: error: expression must have arithmetic or pointer type but has type "void"
+       __atomic_fetch_sub ((
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 71: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+       __atomic_fetch_sub ((
+                           ^
+
+"./atomic/stdatomic-bitint-1.c", line 72: error: integer constant is too large
+       != -56274498908412554628542333627467082115wb)
+           ^
+
+"./atomic/stdatomic-bitint-1.c", line 71: error: expression must have arithmetic or pointer type but has type "void"
+       __atomic_fetch_sub ((
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 75: error: integer constant is too large
+       -44514083923735151931107302009741400482wb
+        ^
+
+"./atomic/stdatomic-bitint-1.c", line 75: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+       __atomic_fetch_sub ((
+                           ^
+
+"./atomic/stdatomic-bitint-1.c", line 77: error: integer constant is too large
+       != 81409506954572029614995249420232011891wb)
+          ^
+
+"./atomic/stdatomic-bitint-1.c", line 75: error: expression must have arithmetic or pointer type but has type "void"
+       __atomic_fetch_sub ((
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 80: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+       __atomic_fetch_sub ((
+                           ^
+
+"./atomic/stdatomic-bitint-1.c", line 81: error: integer constant is too large
+       != -44217592582162050185584752285910693355wb)
+           ^
+
+"./atomic/stdatomic-bitint-1.c", line 80: error: expression must have arithmetic or pointer type but has type "void"
+       __atomic_fetch_sub ((
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 84: error: integer constant is too large
+       30348078982452392099140613411731040827wb
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 84: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+       __atomic_fetch_sub ((
+                           ^
+
+"./atomic/stdatomic-bitint-1.c", line 86: error: integer constant is too large
+       != -76674770179646697673734472954095705077wb)
+           ^
+
+"./atomic/stdatomic-bitint-1.c", line 84: error: expression must have arithmetic or pointer type but has type "void"
+       __atomic_fetch_sub ((
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 89: error: integer constant is too large
+       -82224045897086857020012824788652775087wb
+        ^
+
+"./atomic/stdatomic-bitint-1.c", line 89: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+       __atomic_fetch_sub ((
+                           ^
+
+"./atomic/stdatomic-bitint-1.c", line 90: error: integer constant is too large
+       != 63118334298370141958812217350057359824wb)
+          ^
+
+"./atomic/stdatomic-bitint-1.c", line 89: error: expression must have arithmetic or pointer type but has type "void"
+       __atomic_fetch_sub ((
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 94: error: integer constant is too large
+       != -24798803265012232752862261577173970817wb)
+           ^
+
+"./atomic/stdatomic-bitint-1.c", line 103: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+       __atomic_fetch_and ((
+                           ^
+
+"./atomic/stdatomic-bitint-1.c", line 103: error: expression must have arithmetic or pointer type but has type "void"
+       __atomic_fetch_and ((
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 106: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+       __atomic_fetch_and ((
+                           ^
+
+"./atomic/stdatomic-bitint-1.c", line 106: error: expression must have arithmetic or pointer type but has type "void"
+       __atomic_fetch_and ((
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 109: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+       __atomic_fetch_and ((
+                           ^
+
+"./atomic/stdatomic-bitint-1.c", line 109: error: expression must have arithmetic or pointer type but has type "void"
+       __atomic_fetch_and ((
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 113: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+       __atomic_fetch_and ((
+                           ^
+
+"./atomic/stdatomic-bitint-1.c", line 113: error: expression must have arithmetic or pointer type but has type "void"
+       __atomic_fetch_and ((
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 116: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+       __atomic_fetch_and ((
+                           ^
+
+"./atomic/stdatomic-bitint-1.c", line 116: error: expression must have arithmetic or pointer type but has type "void"
+       __atomic_fetch_and ((
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 119: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+       __atomic_fetch_and ((
+                           ^
+
+"./atomic/stdatomic-bitint-1.c", line 119: error: expression must have arithmetic or pointer type but has type "void"
+       __atomic_fetch_and ((
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 122: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+       __atomic_fetch_and ((
+                           ^
+
+"./atomic/stdatomic-bitint-1.c", line 122: error: expression must have arithmetic or pointer type but has type "void"
+       __atomic_fetch_and ((
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 132: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+       __atomic_fetch_xor ((
+                           ^
+
+"./atomic/stdatomic-bitint-1.c", line 132: error: expression must have arithmetic or pointer type but has type "void"
+       __atomic_fetch_xor ((
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 135: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+       __atomic_fetch_xor ((
+                           ^
+
+"./atomic/stdatomic-bitint-1.c", line 135: error: expression must have arithmetic or pointer type but has type "void"
+       __atomic_fetch_xor ((
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 138: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+       __atomic_fetch_xor ((
+                           ^
+
+"./atomic/stdatomic-bitint-1.c", line 138: error: expression must have arithmetic or pointer type but has type "void"
+       __atomic_fetch_xor ((
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 141: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+       __atomic_fetch_xor ((
+                           ^
+
+"./atomic/stdatomic-bitint-1.c", line 141: error: expression must have arithmetic or pointer type but has type "void"
+       __atomic_fetch_xor ((
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 144: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+       __atomic_fetch_xor ((
+                           ^
+
+"./atomic/stdatomic-bitint-1.c", line 144: error: expression must have arithmetic or pointer type but has type "void"
+       __atomic_fetch_xor ((
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 147: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+       __atomic_fetch_xor ((
+                           ^
+
+"./atomic/stdatomic-bitint-1.c", line 147: error: expression must have arithmetic or pointer type but has type "void"
+       __atomic_fetch_xor ((
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 150: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+       __atomic_fetch_xor ((
+                           ^
+
+"./atomic/stdatomic-bitint-1.c", line 150: error: expression must have arithmetic or pointer type but has type "void"
+       __atomic_fetch_xor ((
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 160: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+       __atomic_fetch_or ((
+                          ^
+
+"./atomic/stdatomic-bitint-1.c", line 160: error: expression must have arithmetic or pointer type but has type "void"
+       __atomic_fetch_or ((
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 164: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+       __atomic_fetch_or ((
+                          ^
+
+"./atomic/stdatomic-bitint-1.c", line 164: error: expression must have arithmetic or pointer type but has type "void"
+       __atomic_fetch_or ((
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 169: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+       __atomic_fetch_or ((
+                          ^
+
+"./atomic/stdatomic-bitint-1.c", line 169: error: expression must have arithmetic or pointer type but has type "void"
+       __atomic_fetch_or ((
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 174: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+       __atomic_fetch_or ((
+                          ^
+
+"./atomic/stdatomic-bitint-1.c", line 174: error: expression must have arithmetic or pointer type but has type "void"
+       __atomic_fetch_or ((
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 179: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+       __atomic_fetch_or ((
+                          ^
+
+"./atomic/stdatomic-bitint-1.c", line 179: error: expression must have arithmetic or pointer type but has type "void"
+       __atomic_fetch_or ((
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 184: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+       __atomic_fetch_or ((
+                          ^
+
+"./atomic/stdatomic-bitint-1.c", line 184: error: expression must have arithmetic or pointer type but has type "void"
+       __atomic_fetch_or ((
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 189: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+       __atomic_fetch_or ((
+                          ^
+
+"./atomic/stdatomic-bitint-1.c", line 189: error: expression must have arithmetic or pointer type but has type "void"
+       __atomic_fetch_or ((
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 200: error: integer constant is too large
+    count = 4722366482869645213696wb;
+            ^
+
+"./atomic/stdatomic-bitint-1.c", line 202: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+   __atomic_fetch_add ((
+                       ^
+
+"./atomic/stdatomic-bitint-1.c", line 203: error: integer constant is too large
+    if (v != 4722366482869645213696wb)
+             ^
+
+"./atomic/stdatomic-bitint-1.c", line 206: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+   __atomic_fetch_add ((
+                       ^
+
+"./atomic/stdatomic-bitint-1.c", line 207: error: integer constant is too large
+    if (v != 9444732965739290427392wb)
+             ^
+
+"./atomic/stdatomic-bitint-1.c", line 210: error: integer constant is too large
+   4722366482869645213696wb
+   ^
+
+"./atomic/stdatomic-bitint-1.c", line 210: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+   __atomic_fetch_add ((
+                       ^
+
+"./atomic/stdatomic-bitint-1.c", line 211: error: integer constant is too large
+    if (v != 14167099448608935641088wb)
+             ^
+
+"./atomic/stdatomic-bitint-1.c", line 214: error: integer constant is too large
+   4722366482869645213696wb
+   ^
+
+"./atomic/stdatomic-bitint-1.c", line 214: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+   __atomic_fetch_add ((
+                       ^
+
+"./atomic/stdatomic-bitint-1.c", line 216: error: integer constant is too large
+    if (v != 18889465931478580854784wb)
+             ^
+
+"./atomic/stdatomic-bitint-1.c", line 219: error: integer constant is too large
+   4722366482869645213696wb
+   ^
+
+"./atomic/stdatomic-bitint-1.c", line 219: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+   __atomic_fetch_add ((
+                       ^
+
+"./atomic/stdatomic-bitint-1.c", line 220: error: integer constant is too large
+    if (v != 23611832414348226068480wb)
+             ^
+
+"./atomic/stdatomic-bitint-1.c", line 223: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+   __atomic_fetch_add ((
+                       ^
+
+"./atomic/stdatomic-bitint-1.c", line 224: error: integer constant is too large
+    if (v != 28334198897217871282176wb)
+             ^
+
+"./atomic/stdatomic-bitint-1.c", line 231: error: integer constant is too large
+    v = res = -3638804536836293398783417724445294828wb;
+               ^
+
+"./atomic/stdatomic-bitint-1.c", line 234: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+   __atomic_fetch_sub ((
+                       ^
+
+"./atomic/stdatomic-bitint-1.c", line 238: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+   __atomic_fetch_sub ((
+                       ^
+
+"./atomic/stdatomic-bitint-1.c", line 242: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+   __atomic_fetch_sub ((
+                       ^
+
+"./atomic/stdatomic-bitint-1.c", line 246: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+   __atomic_fetch_sub ((
+                       ^
+
+"./atomic/stdatomic-bitint-1.c", line 250: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+   __atomic_fetch_sub ((
+                       ^
+
+"./atomic/stdatomic-bitint-1.c", line 254: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+   __atomic_fetch_sub ((
+                       ^
+
+"./atomic/stdatomic-bitint-1.c", line 264: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+   __atomic_fetch_and ((
+                       ^
+
+"./atomic/stdatomic-bitint-1.c", line 269: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+   __atomic_fetch_and ((
+                       ^
+
+"./atomic/stdatomic-bitint-1.c", line 273: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+   __atomic_fetch_and ((
+                       ^
+
+"./atomic/stdatomic-bitint-1.c", line 278: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+   __atomic_fetch_and ((
+                       ^
+
+"./atomic/stdatomic-bitint-1.c", line 282: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+   __atomic_fetch_and ((
+                       ^
+
+"./atomic/stdatomic-bitint-1.c", line 287: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+   __atomic_fetch_and ((
+                       ^
+
+"./atomic/stdatomic-bitint-1.c", line 298: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+   __atomic_fetch_xor ((
+                       ^
+
+"./atomic/stdatomic-bitint-1.c", line 302: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+   __atomic_fetch_xor ((
+                       ^
+
+"./atomic/stdatomic-bitint-1.c", line 306: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+   __atomic_fetch_xor ((
+                       ^
+
+"./atomic/stdatomic-bitint-1.c", line 310: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+   __atomic_fetch_xor ((
+                       ^
+
+"./atomic/stdatomic-bitint-1.c", line 314: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+   __atomic_fetch_xor ((
+                       ^
+
+"./atomic/stdatomic-bitint-1.c", line 318: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+   __atomic_fetch_xor ((
+                       ^
+
+"./atomic/stdatomic-bitint-1.c", line 327: error: integer constant is too large
+    count = 19342813113834066795298816wb;
+            ^
+
+"./atomic/stdatomic-bitint-1.c", line 329: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+   __atomic_fetch_or ((
+                      ^
+
+"./atomic/stdatomic-bitint-1.c", line 330: error: integer constant is too large
+    if (v != 19342813113834066795298816wb)
+             ^
+
+"./atomic/stdatomic-bitint-1.c", line 334: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+   __atomic_fetch_or ((
+                      ^
+
+"./atomic/stdatomic-bitint-1.c", line 335: error: integer constant is too large
+    if (v != 58028439341502200385896448wb)
+             ^
+
+"./atomic/stdatomic-bitint-1.c", line 339: error: integer constant is too large
+   77371252455336267181195264wb
+   ^
+
+"./atomic/stdatomic-bitint-1.c", line 339: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+   __atomic_fetch_or ((
+                      ^
+
+"./atomic/stdatomic-bitint-1.c", line 340: error: integer constant is too large
+    if (v != 135399691796838467567091712wb)
+             ^
+
+"./atomic/stdatomic-bitint-1.c", line 344: error: integer constant is too large
+   154742504910672534362390528wb
+   ^
+
+"./atomic/stdatomic-bitint-1.c", line 344: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+   __atomic_fetch_or ((
+                      ^
+
+"./atomic/stdatomic-bitint-1.c", line 346: error: integer constant is too large
+    if (v != 290142196707511001929482240wb)
+             ^
+
+"./atomic/stdatomic-bitint-1.c", line 350: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+   __atomic_fetch_or ((
+                      ^
+
+"./atomic/stdatomic-bitint-1.c", line 351: error: integer constant is too large
+    if (v != 599627206528856070654263296wb)
+             ^
+
+"./atomic/stdatomic-bitint-1.c", line 355: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+   __atomic_fetch_or ((
+                      ^
+
+"./atomic/stdatomic-bitint-1.c", line 356: error: integer constant is too large
+    if (v != 1218597226171546208103825408wb)
+             ^
+
+"./atomic/stdatomic-bitint-1.c", line 363: error: integer constant is too large
+   15794812138349191682564933935017390008wb
+   ^
+
+"./atomic/stdatomic-bitint-1.c", line 364: error: integer constant is too large
+       -2166613183393424891717146518563613668wb
+        ^
+
+"./atomic/stdatomic-bitint-1.c", line 365: error: integer constant is too large
+       != 15794812138349191682564933935017390008wb
+          ^
+
+"./atomic/stdatomic-bitint-1.c", line 366: error: integer constant is too large
+                           != -2166613183393424891717146518563613668wb)
+                               ^
+
+"./atomic/stdatomic-bitint-1.c", line 368: error: integer constant is too large
+       61251098386268815852902382804483910638wb
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 370: error: integer constant is too large
+       != -2166613183393424891717146518563613668wb
+           ^
+
+"./atomic/stdatomic-bitint-1.c", line 372: error: integer constant is too large
+    != 61251098386268815852902382804483910638wb))
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 375: error: integer constant is too large
+    count = -2166613183393424891717146518563613668wb;
+             ^
+
+"./atomic/stdatomic-bitint-1.c", line 376: error: integer constant is too large
+       -36677332297536901313774263310237646448wb
+        ^
+
+"./atomic/stdatomic-bitint-1.c", line 379: error: integer constant is too large
+    if (count != 61251098386268815852902382804483910638wb
+                 ^
+
+"./atomic/stdatomic-bitint-1.c", line 380: error: integer constant is too large
+                           != 61251098386268815852902382804483910638wb)
+                              ^
+
+"./atomic/stdatomic-bitint-1.c", line 382: error: integer constant is too large
+        -36677332297536901313774263310237646448wb
+         ^
+
+"./atomic/stdatomic-bitint-1.c", line 385: error: integer constant is too large
+    if (count != 61251098386268815852902382804483910638wb
+                 ^
+
+"./atomic/stdatomic-bitint-1.c", line 386: error: integer constant is too large
+                           != -36677332297536901313774263310237646448wb)
+                               ^
+
+"./atomic/stdatomic-bitint-1.c", line 389: error: integer constant is too large
+    count = -2166613183393424891717146518563613668wb;
+             ^
+
+"./atomic/stdatomic-bitint-1.c", line 390: error: integer constant is too large
+       73949932022761409003352953944661689416wb
+       ^
+
+"./atomic/stdatomic-bitint-1.c", line 395: error: integer constant is too large
+    if (count != -36677332297536901313774263310237646448wb
+                  ^
+
+"./atomic/stdatomic-bitint-1.c", line 396: error: integer constant is too large
+                           != -36677332297536901313774263310237646448wb)
+                               ^
+
+"./atomic/stdatomic-bitint-1.c", line 398: error: integer constant is too large
+        73949932022761409003352953944661689416wb
+        ^
+
+"./atomic/stdatomic-bitint-1.c", line 403: error: integer constant is too large
+    if (count != -36677332297536901313774263310237646448wb
+                  ^
+
+"./atomic/stdatomic-bitint-1.c", line 404: error: integer constant is too large
+                           != 73949932022761409003352953944661689416wb)
+                              ^
+
+"./atomic/stdatomic-bitint-1.c", line 409: error: integer constant is too large
+      res = count + -82256758205518164043596305502815392646wb;
+                     ^
+
+"./atomic/stdatomic-bitint-1.c", line 411: error: integer constant is too large
+                        != -8306826182756755040243351558153703230wb)
+                            ^
+
+"./atomic/stdatomic-bitint-1.c", line 416: error: integer constant is too large
+      res = count + 48855144829609538366772317026461909818wb;
+                    ^
+
+"./atomic/stdatomic-bitint-1.c", line 420: error: integer constant is too large
+                        != 40548318646852783326528965468308206588wb)
+                           ^
+
+173 errors detected in the compilation of "Test_name.c".

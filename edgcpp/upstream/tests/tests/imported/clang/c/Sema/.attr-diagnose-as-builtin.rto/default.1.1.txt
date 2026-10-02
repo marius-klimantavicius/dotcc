@@ -1,0 +1,57 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 8: warning: unknown attribute "diagnose_as_builtin"
+  __attribute__((diagnose_as_builtin(__builtin_memcpy, 3, 1, 2))) int x; // expected-warning {{'diagnose_as_builtin' attribute only applies to functions}}
+                 ^
+
+"Test_name.c", line 10: warning: unknown attribute "diagnose_as_builtin"
+  void *test_memcpy(const void *src, size_t c, void *dst) __attribute__((diagnose_as_builtin(__builtin_memcpy, 3, 1, 2))) {
+                                                                         ^
+
+"Test_name.c", line 21: warning: unknown attribute "diagnose_as_builtin"
+  void failure_function_doesnt_exist(void) __attribute__((diagnose_as_builtin(__function_that_doesnt_exist))) {} // expected-error {{use of undeclared identifier '__function_that_doesnt_exist'}}
+                                                          ^
+
+"Test_name.c", line 25: warning: unknown attribute "diagnose_as_builtin"
+  void failure_not_a_builtin(void) __attribute__((diagnose_as_builtin(not_a_builtin))) {} // expected-error {{'diagnose_as_builtin' attribute requires parameter 1 to be a builtin function}}
+                                                  ^
+
+"Test_name.c", line 27: warning: unknown attribute "diagnose_as_builtin"
+  void failure_too_many_parameters(void *dst, const void *src, size_t count, size_t nothing) __attribute__((diagnose_as_builtin(__builtin_memcpy, 1, 2, 3, 4))) {} // expected-error {{'diagnose_as_builtin' attribute references function '__builtin_memcpy', which takes exactly 3 arguments}}
+                                                                                                            ^
+
+"Test_name.c", line 29: warning: unknown attribute "diagnose_as_builtin"
+  void failure_too_few_parameters(void *dst, const void *src) __attribute__((diagnose_as_builtin(__builtin_memcpy, 1, 2))) {} // expected-error{{'diagnose_as_builtin' attribute references function '__builtin_memcpy', which takes exactly 3 arguments}}
+                                                                             ^
+
+"Test_name.c", line 31: warning: unknown attribute "diagnose_as_builtin"
+  void failure_not_an_integer(void *dst, const void *src, size_t count) __attribute__((diagnose_as_builtin(__builtin_memcpy, "abc", 2, 3))) {} // expected-error{{'diagnose_as_builtin' attribute requires parameter 2 to be an integer constant}}
+                                                                                       ^
+
+"Test_name.c", line 33: warning: unknown attribute "diagnose_as_builtin"
+  void failure_not_a_builtin2(void) __attribute__((diagnose_as_builtin("abc"))) {} // expected-error{{'diagnose_as_builtin' attribute requires parameter 1 to be a builtin function}}
+                                                   ^
+
+"Test_name.c", line 35: warning: unknown attribute "diagnose_as_builtin"
+  void failure_parameter_index_bounds(void *dst, const void *src) __attribute__((diagnose_as_builtin(__builtin_memcpy, 1, 2, 3))) {} // expected-error{{'diagnose_as_builtin' attribute references parameter 3, but the function 'failure_parameter_index_bounds' has only 2 parameters}}
+                                                                                 ^
+
+"Test_name.c", line 37: warning: unknown attribute "diagnose_as_builtin"
+  void failure_parameter_types(double dst, const void *src, size_t count) __attribute__((diagnose_as_builtin(__builtin_memcpy, 1, 2, 3))) {} // expected-error{{'diagnose_as_builtin' attribute parameter types do not match: parameter 1 of function 'failure_parameter_types' has type 'double', but parameter 1 of function '__builtin_memcpy' has type 'void *'}}
+                                                                                         ^
+
+"Test_name.c", line 48: warning: unknown attribute "diagnose_as_builtin"
+  void to_redeclare(void *dst, const void *src, size_t count) __attribute((diagnose_as_builtin(__builtin_memcpy, 1, 2, 3)));
+                                                                           ^
+
+"Test_name.c", line 58: warning: unknown attribute "diagnose_as_builtin"
+  void *memcpy2(void *const dst __attribute__((pass_object_size(0))), const void *src, size_t copy_amount) __attribute((diagnose_as_builtin(__builtin_memcpy, 1, 2, 3)));
+                                                                                                                        ^
+
+"Test_name.c", line 68: warning: unknown attribute "diagnose_as_builtin"
+  void failure_type(void *dest, char val, size_t n) __attribute__((diagnose_as_builtin(__builtin_memset, 1, 2, 3))) {} // expected-error {{'diagnose_as_builtin' attribute parameter types do not match: parameter 2 of function 'failure_type' has type 'char', but parameter 2 of function '__builtin_memset' has type 'int'}}
+                                                                   ^
+
+"Test_name.c", line 81: warning: unknown attribute "diagnose_as_builtin"
+  int mysscanf(const char *str, const char *format, ...) __attribute__((diagnose_as_builtin(sscanf, 1, 2)));
+                                                                        ^
+

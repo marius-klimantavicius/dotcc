@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 9: warning: variable "x" was declared but never referenced
+    [&buffer] { __typeof(buffer) x; }();
+                                 ^
+
+"Test_name.c", line 9: error: const variable "x" requires an initializer
+    [&buffer] { __typeof(buffer) x; }();
+                                  ^
+          detected during instantiation of "void f(T) [with T=int]" at line 12
+
+1 error detected in the compilation of "Test_name.c".

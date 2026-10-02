@@ -1,0 +1,49 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 12: remark: declaration hides variable "x" (declared at line 4)
+    int x;
+        ^
+
+"Test_name.c", line 13: remark: declaration hides variable "a" (declared at line 6)
+    class x a;
+            ^
+
+"Test_name.c", line 14: remark: declaration hides variable "b" (declared at line 8)
+    class y b;
+            ^
+
+"Test_name.c", line 16: remark: declaration hides variable "c" (declared at line 10)
+    class x c;
+            ^
+
+"Test_name.c", line 19: remark: declaration hides variable "y" (declared at line 9)
+    int y;
+        ^
+
+"Test_name.c", line 12: warning: variable "x" was declared but never referenced
+    int x;
+        ^
+
+"Test_name.c", line 13: warning: variable "a" was declared but never referenced
+    class x a;
+            ^
+
+"Test_name.c", line 14: warning: variable "b" was declared but never referenced
+    class y b;
+            ^
+
+"Test_name.c", line 16: warning: variable "c" was declared but never referenced
+    class x c;
+            ^
+
+"Test_name.c", line 18: warning: variable "d" was declared but never referenced
+    y d;
+      ^
+
+"Test_name.c", line 19: warning: variable "y" was declared but never referenced
+    int y;
+        ^
+
+"Test_name.c", line 20: warning: variable "e" was declared but never referenced
+    class y e;
+            ^
+

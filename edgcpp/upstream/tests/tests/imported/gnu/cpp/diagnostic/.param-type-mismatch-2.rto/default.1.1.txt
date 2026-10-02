@@ -1,0 +1,56 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 13: error: argument of type "const char *" is incompatible with parameter of type "const char **"
+    return callee_1 (first, second, third); // { dg-error "27: cannot convert 'const char\\*' to 'const char\\*\\*'" }
+                            ^
+
+"Test_name.c", line 33: error: argument of type "const char *" is incompatible with parameter of type "const char **"
+    return callee_2 (first, second, third); // { dg-error "27: cannot convert 'const char\\*' to 'const char\\*\\*'" }
+                            ^
+
+"Test_name.c", line 56: error: argument of type "const char *" is incompatible with parameter of type "const char **"
+    return callee_3 (first, second, third); // { dg-error "27: cannot convert 'const char\\*' to 'const char\\*\\*'" }
+                            ^
+
+"Test_name.c", line 76: error: argument of type "const char *" is incompatible with parameter of type "const char **"
+    return s4::member_1 (first, second, third); // { dg-error "31: cannot convert 'const char\\*' to 'const char\\*\\*'" }
+                                ^
+
+"Test_name.c", line 97: error: argument of type "const char *" is incompatible with parameter of type "const char **"
+    return inst.member_1 (first, second, third); // { dg-error "32: cannot convert 'const char\\*' to 'const char\\*\\*'" }
+                                 ^
+
+"Test_name.c", line 117: error: argument of type "const char *" is incompatible with parameter of type "const char **"
+    return ptr->member_1 (first, second, third); // { dg-error "32: cannot convert 'const char\\*' to 'const char\\*\\*'" }
+                                 ^
+
+"Test_name.c", line 138: error: no instance of function template "callee_7" matches the argument list
+            argument types are: (int, const char *, float)
+    return callee_7 <const char **> (first, second, third); // { dg-line callee_7_usage }
+           ^
+"Test_name.c", line 134: note: function template "callee_7" does not match because argument #2 does not match parameter
+  int callee_7 (int one, T two, float three); // { dg-line callee_7_decl }
+      ^
+
+"Test_name.c", line 160: error: argument of type "const char *" is incompatible with parameter of type "const char **"
+    return s8 <const char **>::member_1 (first, second, third); // { dg-error "47: cannot convert 'const char\\*' to 'const char\\*\\*'" }
+                                                ^
+
+"Test_name.c", line 182: error: argument of type "const char *" is incompatible with parameter of type "const char **"
+    return inst.member_1 (first, second, third); // { dg-error "32: cannot convert 'const char\\*' to 'const char\\*\\*'" }
+                                 ^
+
+"Test_name.c", line 206: error: no operator "-" matches these operands
+            operand types are: s10 - s10
+    return v10_a - v10_b; // { dg-line s10_usage }
+                 ^
+"Test_name.c", line 200: note: function "operator-" does not match because argument #2 does not match parameter
+  extern int operator- (const s10&, int); // { dg-line s10_operator }
+             ^
+"Test_name.c", line 206: note: built-in operator-(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    return v10_a - v10_b; // { dg-line s10_usage }
+                 ^
+"Test_name.c", line 206: note: built-in operator-(<pointer to object>, <ptrdiff_t>) does not match because argument #1 does not match parameter
+    return v10_a - v10_b; // { dg-line s10_usage }
+                 ^
+
+10 errors detected in the compilation of "Test_name.c".

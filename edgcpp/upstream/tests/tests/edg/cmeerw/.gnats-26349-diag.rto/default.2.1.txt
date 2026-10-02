@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=2 --c++20 Test_name.c
+"Test_name.c", line 27: error: constant "C::E1" (declared at line 8) is inaccessible
+      return C::E1;               // "E1" inaccessible
+                ^
+
+"Test_name.c", line 32: error: enum "C::E" (declared at line 8) is inaccessible
+      return C::E::E1;            // "E" inaccessible
+                ^
+
+"Test_name.c", line 48: error: enum "B::G" (declared at line 15) is inaccessible
+      return G::G1;               // "G" inaccessible
+             ^
+
+3 errors detected in the compilation of "Test_name.c".

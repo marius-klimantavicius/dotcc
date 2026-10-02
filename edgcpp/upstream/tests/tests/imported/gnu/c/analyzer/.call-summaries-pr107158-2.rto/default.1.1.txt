@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 8: warning: unknown attribute "__access__"
+      __attribute__((__access__(__write_only__, 1, 2)));
+                     ^
+
+"Test_name.c", line 14: warning: unknown attribute "__leaf__"
+      __attribute__((__nothrow__, __leaf__)) __attribute__((__const__));
+                                  ^
+
+"Test_name.c", line 15: warning: unknown attribute "__leaf__"
+  extern void *malloc(size_t __size) __attribute__((__nothrow__, __leaf__))
+                                                                 ^
+
+"Test_name.c", line 17: warning: unknown attribute "__leaf__"
+  extern void exit(int __status) __attribute__((__nothrow__, __leaf__))
+                                                             ^
+
+"Test_name.c", line 20: warning: unknown attribute "__leaf__"
+      __attribute__((__nothrow__, __leaf__)) __attribute__((__nonnull__(1, 2)));
+                                  ^
+
+"Test_name.c", line 21: warning: unknown attribute "__leaf__"
+  extern size_t strlen(const char *__s) __attribute__((__nothrow__, __leaf__))
+                                                                    ^
+
+"Test_name.c", line 100: warning: function "makecfg" was declared but never referenced
+  static void makecfg(FILE *ifp, FILE *ofp, FILE *ofp2) {
+              ^
+

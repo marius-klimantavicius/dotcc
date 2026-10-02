@@ -1,0 +1,53 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 17: warning: a value of type "long *" cannot be assigned to an entity of type "unsigned long *"
+    ulp = lp;	/* { dg-warning " pointer targets in assignment from 'long int \\*' to 'long unsigned int \\*' differ in signedness" } */
+        ^
+
+"Test_name.c", line 17: warning: variable "lp" is used before its value is set
+    ulp = lp;	/* { dg-warning " pointer targets in assignment from 'long int \\*' to 'long unsigned int \\*' differ in signedness" } */
+          ^
+
+"Test_name.c", line 18: warning: a value of type "unsigned long *" cannot be assigned to an entity of type "long *"
+    lp = ulp;	/* { dg-warning " pointer targets in assignment from 'long unsigned int \\*' to 'long int \\*' differ in signedness" } */
+       ^
+
+"Test_name.c", line 19: warning: argument of type "unsigned long *" is incompatible with parameter of type "long *"
+    f1(ulp);	/* { dg-warning " differ in signedness" } */
+       ^
+
+"Test_name.c", line 20: warning: argument of type "long *" is incompatible with parameter of type "unsigned long *"
+    f2(lp);	/* { dg-warning " differ in signedness" } */
+       ^
+
+"Test_name.c", line 22: warning: a value of type "unsigned char *" cannot be assigned to an entity of type "char *"
+    cp = ucp;	/* { dg-warning " pointer targets in assignment from 'unsigned char \\*' to 'char \\*' differ in signedness" } */
+       ^
+
+"Test_name.c", line 22: warning: variable "ucp" is used before its value is set
+    cp = ucp;	/* { dg-warning " pointer targets in assignment from 'unsigned char \\*' to 'char \\*' differ in signedness" } */
+         ^
+
+"Test_name.c", line 23: warning: a value of type "signed char *" cannot be assigned to an entity of type "char *"
+    cp = scp;	/* { dg-warning " pointer targets in assignment from 'signed char \\*' to 'char \\*' differ in signedness" } */
+       ^
+
+"Test_name.c", line 23: warning: variable "scp" is used before its value is set
+    cp = scp;	/* { dg-warning " pointer targets in assignment from 'signed char \\*' to 'char \\*' differ in signedness" } */
+         ^
+
+"Test_name.c", line 24: warning: a value of type "signed char *" cannot be assigned to an entity of type "unsigned char *"
+    ucp = scp;	/* { dg-warning " pointer targets in assignment from 'signed char \\*' to 'unsigned char \\*' differ in signedness" } */
+        ^
+
+"Test_name.c", line 25: warning: a value of type "char *" cannot be assigned to an entity of type "unsigned char *"
+    ucp = cp;	/* { dg-warning " pointer targets in assignment from 'char \\*' to 'unsigned char \\*' differ in signedness" } */
+        ^
+
+"Test_name.c", line 26: warning: a value of type "unsigned char *" cannot be assigned to an entity of type "signed char *"
+    scp = ucp;	/* { dg-warning " pointer targets in assignment from 'unsigned char \\*' to 'signed char \\*' differ in signedness" } */
+        ^
+
+"Test_name.c", line 27: warning: a value of type "char *" cannot be assigned to an entity of type "signed char *"
+    scp = cp;	/* { dg-warning " pointer targets in assignment from 'char \\*' to 'signed char \\*' differ in signedness" } */
+        ^
+

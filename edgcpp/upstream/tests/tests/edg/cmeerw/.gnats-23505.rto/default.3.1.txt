@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=3 --ms_c++14 --microsoft_version=1903 Test_name.c
+"Test_name.c", line 16: error: const member "mbr::C<I>::var [with I=0]" requires an initializer
+    const int C<0>::var;          // missing initializer in MSVC mode
+                    ^
+
+"Test_name.c", line 19: error: member "mbr::C<I>::var [with I=0]" has already been defined (previous definition at line 16)
+    const int C<0>::var = 2;      // already defined in MSVC mode
+                    ^
+
+2 errors detected in the compilation of "Test_name.c".

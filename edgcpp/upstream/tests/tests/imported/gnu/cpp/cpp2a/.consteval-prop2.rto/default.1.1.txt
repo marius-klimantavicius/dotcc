@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 16: error: the address of a consteval function cannot be used here
+  auto b = &f<int>;               // { dg-error "taking address of an immediate function" }
+           ^
+
+"Test_name.c", line 37: error: call to consteval function "id(int)" did not produce a valid constant expression
+  constexpr T h(T t = id(x)) {    // h<int> is not an immediate function
+                        ^
+"Test_name.c", line 37: note: the value of variable "x" (declared at line 34) cannot be used as a constant
+  constexpr T h(T t = id(x)) {    // h<int> is not an immediate function
+                         ^
+          detected during:
+            instantiation of "T h(T) [with T=int]" at line 43
+            instantiation of "T hh<T>() [with T=int]" at line 47
+
+2 errors detected in the compilation of "Test_name.c".

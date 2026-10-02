@@ -1,0 +1,73 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 12: warning: unrecognized #pragma
+  #pragma mark hey hey ho
+          ^
+
+"Test_name.c", line 17: warning: unrecognized #pragma
+  #pragma options 23  /* { dg-warning "malformed '#pragma options'" } */
+          ^
+
+"Test_name.c", line 18: warning: unrecognized #pragma
+  #pragma options align  /* { dg-warning "malformed '#pragma options'" } */
+          ^
+
+"Test_name.c", line 19: warning: unrecognized #pragma
+  #pragma options align natural /* { dg-warning "malformed '#pragma options'" } */
+          ^
+
+"Test_name.c", line 20: warning: unrecognized #pragma
+  #pragma options align=45 /* { dg-warning "malformed '#pragma options'" } */
+          ^
+
+"Test_name.c", line 21: warning: unrecognized #pragma
+  #pragma options align=foo /* { dg-warning "malformed '#pragma options align" } */
+          ^
+
+"Test_name.c", line 27: warning: unrecognized #pragma
+  #pragma options align=power
+          ^
+
+"Test_name.c", line 33: warning: unrecognized #pragma
+  #pragma options align=reset
+          ^
+
+"Test_name.c", line 36: warning: unrecognized #pragma
+  #pragma options align=natural foo /* { dg-warning "junk at end of '#pragma options'" } */
+          ^
+
+"Test_name.c", line 41: warning: unrecognized #pragma
+  #pragma segment foo
+          ^
+
+"Test_name.c", line 47: warning: unrecognized #pragma
+    #pragma unused (x, y)
+            ^
+
+"Test_name.c", line 46: warning: variable "x" was declared but never referenced
+    int x, z;  /* { dg-warning "unused variable 'z'" } */
+        ^
+
+"Test_name.c", line 46: warning: variable "z" was declared but never referenced
+    int x, z;  /* { dg-warning "unused variable 'z'" } */
+           ^
+
+"Test_name.c", line 69: warning: unrecognized #pragma
+  #pragma unused  /* { dg-warning "missing '.' after '#pragma unused" } */
+          ^
+
+"Test_name.c", line 70: warning: unrecognized #pragma
+  #pragma unused (a  /* { dg-warning "missing '.' after '#pragma unused" } */
+          ^
+
+"Test_name.c", line 71: warning: unrecognized #pragma
+  #pragma unused (b) foo /* { dg-warning "junk at end of '#pragma unused'" } */
+          ^
+
+"Test_name.c", line 67: warning: variable "a" was declared but never referenced
+    int a, b;
+        ^
+
+"Test_name.c", line 67: warning: variable "b" was declared but never referenced
+    int a, b;
+           ^
+

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 10: warning: unknown attribute "btf_type_tag"
+  static_assert(__builtin_is_implicit_lifetime(int __attribute__((btf_type_tag("user"))) *)); // expected-warning {{'btf_type_tag' attribute ignored}}
+                                                                  ^
+
+"Test_name.c", line 12: warning: unknown attribute "btf_type_tag"
+  int __attribute__((btf_type_tag("user"))) *ptr; // expected-warning {{'btf_type_tag' attribute ignored}}
+                     ^
+

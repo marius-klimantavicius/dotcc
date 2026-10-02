@@ -1,0 +1,45 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --exceptions --c++14 Test_name.c
+"Test_name.c", line 17: warning: variable "y" was declared but never referenced
+    int &y = x;
+         ^
+
+"Test_name.c", line 32: warning: variable "a" is used before its value is set
+    (void)typeid(*a); // expected-warning{{variable 'a' is uninitialized when used here}}
+                  ^
+
+"Test_name.c", line 68: warning: variable "a" is used before its value is set
+   return a; // expected-warning{{variable 'a' is uninitialized when used here}}
+          ^
+
+"Test_name.c", line 107: warning: variable "x" is used before its value is set
+      (void)static_cast<float>(x); // no-warning
+                               ^
+
+"Test_name.c", line 127: warning: variable "y" was declared but never referenced
+      int y = (int&)x; // no-warning
+          ^
+
+"Test_name.c", line 132: warning: variable "x" is used before its value is set
+      int y = (int&)x; // expected-warning {{uninitialized when used here}}
+                    ^
+
+"Test_name.c", line 132: warning: variable "y" was declared but never referenced
+      int y = (int&)x; // expected-warning {{uninitialized when used here}}
+          ^
+
+"Test_name.c", line 138: warning: variable "y" was declared but never referenced
+    int y = (float &)x; // no-warning
+        ^
+
+"Test_name.c", line 143: warning: variable "x" is used before its value is set
+    int y = (float &)x; // expected-warning {{uninitialized when used here}}
+                     ^
+
+"Test_name.c", line 143: warning: variable "y" was declared but never referenced
+    int y = (float &)x; // expected-warning {{uninitialized when used here}}
+        ^
+
+"Test_name.c", line 154: warning: variable "t" was declared but never referenced
+  auto PR19996 = [a=0]{int t; return a;};
+                           ^
+

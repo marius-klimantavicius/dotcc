@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++11 -tused Test_name.c
+"Test_name.c", line 8: error: a mem-initializer for a data member cannot be a pack expansion
+    X(T ...args) : data_(args)... { }
+                              ^
+
+1 error detected in the compilation of "Test_name.c".

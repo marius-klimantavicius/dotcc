@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=2 --microsoft -DNEG Test_name.c
+"Test_name.c", line 19: error: dllexport/dllimport requires external linkage
+  static EXP void f1() {};
+                  ^
+
+"Test_name.c", line 20: error: dllexport/dllimport requires external linkage
+  static IMP void f2();
+                  ^
+
+"Test_name.c", line 22: error: dllexport/dllimport requires external linkage
+  static EXP int v1;
+                 ^
+
+"Test_name.c", line 23: error: dllexport/dllimport requires external linkage
+  static IMP int v2;
+                 ^
+
+"Test_name.c", line 27: warning: dllimport/dllexport applied to a member of an unnamed namespace
+  	EXP void f3() {}
+  	         ^
+
+"Test_name.c", line 28: warning: dllimport/dllexport applied to a member of an unnamed namespace
+  	IMP void f4();
+  	         ^
+
+"Test_name.c", line 30: warning: dllimport/dllexport applied to a member of an unnamed namespace
+  	EXP int v3;
+  	        ^
+
+"Test_name.c", line 31: warning: dllimport/dllexport applied to a member of an unnamed namespace
+  	IMP extern int v4;
+  	               ^
+
+"Test_name.c", line 19: warning: function "f1" was declared but never referenced
+  static EXP void f1() {};
+                  ^
+
+"Test_name.c", line 20: warning: function "f2" was declared but never referenced
+  static IMP void f2();
+                  ^
+
+"Test_name.c", line 22: warning: variable "v1" was declared but never referenced
+  static EXP int v1;
+                 ^
+
+"Test_name.c", line 23: warning: variable "v2" was declared but never referenced
+  static IMP int v2;
+                 ^
+
+"Test_name.c", line 27: warning: function "<unnamed>::f3" was declared but never referenced
+  	EXP void f3() {}
+  	         ^
+
+"Test_name.c", line 28: warning: function "<unnamed>::f4" was declared but never referenced
+  	IMP void f4();
+  	         ^
+
+"Test_name.c", line 30: warning: variable "<unnamed>::v3" was declared but never referenced
+  	EXP int v3;
+  	        ^
+
+"Test_name.c", line 31: warning: variable "<unnamed>::v4" was declared but never referenced
+  	IMP extern int v4;
+  	               ^
+
+4 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 13: warning: attribute "gnu::packed" does not apply here
+  using B = A<__underlying_type(T) [[gnu::packed]]>; // { dg-warning "ignoring attributes applied to dependent type" }
+                                     ^
+

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 55: warning: unknown attribute "__designated_init__"
+  } __attribute__((__designated_init__));
+                   ^
+
+"Test_name.c", line 63: warning: arithmetic on pointer to void or function type
+      ((struct kset*)(__mptr - __builtin_offsetof(struct kset, kobj)));
+                             ^
+

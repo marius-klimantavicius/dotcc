@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=4 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c17 Test_name.c
+"Test_name.c", line 18: warning: variable "uc" is used before its value is set
+    return uc + 1 >= 0; /* expected-warning {{variable 'uc' is uninitialized when used here}} */
+           ^
+

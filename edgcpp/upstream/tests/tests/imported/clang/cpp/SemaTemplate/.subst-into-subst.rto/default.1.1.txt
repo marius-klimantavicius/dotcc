@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 19: error: more than one instance of overloaded function "SubstIntoResolvedTypeTemplateArg::f" matches the argument list:
+            function template "int SubstIntoResolvedTypeTemplateArg::f(SubstIntoResolvedTypeTemplateArg::A auto)" (declared at line 17)
+            function template "int SubstIntoResolvedTypeTemplateArg::f(SubstIntoResolvedTypeTemplateArg::C auto)" (declared at line 18)
+            argument types are: (int)
+    int k1 = f(0); // expected-error {{ambiguous}}
+             ^
+
+"Test_name.c", line 35: error: more than one instance of overloaded function "SubstIntoResolvedTypeTemplateArg::g" matches the argument list:
+            function template "int SubstIntoResolvedTypeTemplateArg::g(SubstIntoResolvedTypeTemplateArg::E auto)" (declared at line 31)
+            function template "int SubstIntoResolvedTypeTemplateArg::g(SubstIntoResolvedTypeTemplateArg::D auto)" (declared at line 34)
+            argument types are: (int)
+    int k4 = g(0); // expected-error {{ambiguous}}
+             ^
+
+2 errors detected in the compilation of "Test_name.c".

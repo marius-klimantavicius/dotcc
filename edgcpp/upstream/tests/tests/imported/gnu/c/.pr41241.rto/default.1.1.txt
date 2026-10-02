@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c17 --strict_gnu Test_name.c
+"Test_name.c", line 30: warning: too many arguments in function call
+    h = bar (b);
+             ^
+
+"Test_name.c", line 30: warning: variable "b" is used before its value is set
+    h = bar (b);
+             ^
+
+"Test_name.c", line 31: warning: variable "e" is used before its value is set
+    c = fn1 (e);
+             ^
+
+"Test_name.c", line 33: warning: variable "g" is used before its value is set
+    f->t3 &= g->t3 |= fn2 (0, b, x->t1);
+             ^
+
+"Test_name.c", line 33: warning: variable "f" is used before its value is set
+    f->t3 &= g->t3 |= fn2 (0, b, x->t1);
+    ^
+
+"Test_name.c", line 25: warning: variable "a" was set but never used
+    int a, b, c, d, e;
+        ^
+
+"Test_name.c", line 27: warning: variable "h" was set but never used
+    S h;
+      ^
+

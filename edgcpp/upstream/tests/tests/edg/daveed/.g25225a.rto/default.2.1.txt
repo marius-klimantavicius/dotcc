@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=2 --c++17 Test_name.c
+"Test_name.c", line 12: error: class "S" has no suitable copy constructor
+    int r = g(sc);  // Normally an error.  Now okay in Microsoft C++ modes.
+              ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,118 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 6: error: expected an identifier
+  int S::(a);  // expected-error{{expected unqualified-id}}
+         ^
+
+"Test_name.c", line 6: error: identifier "a" is undefined
+  int S::(a);  // expected-error{{expected unqualified-id}}
+          ^
+
+"Test_name.c", line 7: error: expected an identifier
+  int S::(b;  // expected-error{{expected unqualified-id}}
+         ^
+
+"Test_name.c", line 7: error: identifier "b" is undefined
+  int S::(b;  // expected-error{{expected unqualified-id}}
+          ^
+
+"Test_name.c", line 7: error: expected a ")"
+  int S::(b;  // expected-error{{expected unqualified-id}}
+           ^
+
+"Test_name.c", line 8: error: expected a declaration
+          );
+          ^
+
+"Test_name.c", line 10: error: expected an identifier
+  int S::(*d);  // expected-error{{expected unqualified-id}}
+         ^
+
+"Test_name.c", line 10: error: identifier "d" is undefined
+  int S::(*d);  // expected-error{{expected unqualified-id}}
+           ^
+
+"Test_name.c", line 11: error: expected an identifier
+  int S::(*e;  // expected-error{{expected unqualified-id}}
+         ^
+
+"Test_name.c", line 11: error: identifier "e" is undefined
+  int S::(*e;  // expected-error{{expected unqualified-id}}
+           ^
+
+"Test_name.c", line 11: error: expected a ")"
+  int S::(*e;  // expected-error{{expected unqualified-id}}
+            ^
+
+"Test_name.c", line 12: error: expected a declaration
+          );
+          ^
+
+"Test_name.c", line 14: error: expected an identifier
+  int g = S::(a);  // expected-error {{expected unqualified-id}} expected-error {{use of undeclared identifier 'a'}}
+             ^
+
+"Test_name.c", line 15: error: expected an identifier
+  int h = S::(b;  // expected-error {{expected unqualified-id}} expected-error {{use of undeclared identifier 'b'}}
+             ^
+
+"Test_name.c", line 15: error: expected a ")"
+  int h = S::(b;  // expected-error {{expected unqualified-id}} expected-error {{use of undeclared identifier 'b'}}
+               ^
+
+"Test_name.c", line 16: error: expected a declaration
+              );  // expected-error {{expected unqualified-id}}
+              ^
+
+"Test_name.c", line 21: error: expected an identifier
+    a = ::(g);  // expected-error{{expected unqualified-id}}
+          ^
+
+"Test_name.c", line 22: error: expected an identifier
+    a = ::(h;  // expected-error{{expected unqualified-id}}
+          ^
+
+"Test_name.c", line 22: error: expected a ")"
+    a = ::(h;  // expected-error{{expected unqualified-id}}
+            ^
+
+"Test_name.c", line 20: warning: variable "a" was set but never used
+    int a;
+        ^
+
+"Test_name.c", line 31: error: expected an identifier
+  a (::( ));
+       ^
+
+"Test_name.c", line 31: error: this declaration has no storage class or type specifier
+  a (::( ));
+  ^
+
+"Test_name.c", line 33: error: expected an identifier
+  ::((c )); // expected-error{{expected unqualified-id}}
+    ^
+
+"Test_name.c", line 36: error: expected an identifier
+  int f1(::(B) p); // expected-error {{expected unqualified-id}} expected-error {{use of undeclared identifier 'B'}}
+           ^
+
+"Test_name.c", line 36: error: identifier "B" is undefined
+  int f1(::(B) p); // expected-error {{expected unqualified-id}} expected-error {{use of undeclared identifier 'B'}}
+            ^
+
+"Test_name.c", line 36: error: expected a ")"
+  int f1(::(B) p); // expected-error {{expected unqualified-id}} expected-error {{use of undeclared identifier 'B'}}
+               ^
+
+"Test_name.c", line 38: error: expected an identifier
+  int f2(::S::(C) p); // expected-error {{expected unqualified-id}} expected-error {{use of undeclared identifier 'C'}}
+              ^
+
+"Test_name.c", line 38: error: identifier "C" is undefined
+  int f2(::S::(C) p); // expected-error {{expected unqualified-id}} expected-error {{use of undeclared identifier 'C'}}
+               ^
+
+"Test_name.c", line 38: error: expected a ")"
+  int f2(::S::(C) p); // expected-error {{expected unqualified-id}} expected-error {{use of undeclared identifier 'C'}}
+                  ^
+
+28 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 8: warning: a universal character name must designate a valid code point
+    U'\U00110000'; // { dg-warning "outside" "110000 outside UCS" }
+      ^
+
+"Test_name.c", line 8: warning: expression has no effect
+    U'\U00110000'; // { dg-warning "outside" "110000 outside UCS" }
+    ^
+

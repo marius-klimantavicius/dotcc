@@ -1,0 +1,8 @@
+# Fixed point is enabled for Linux, and the C-generating back end needs to
+# lower it.
+LOWER_FIXED_POINT=1
+# GNU ifunc is enabled for Linux, and the C-generating back end needs to lower
+# it.
+LOWER_IFUNC=1
+# Including backing expressions on Linux when doing lowering.
+RECORD_BACKING_EXPRS_WITH_IL_LOWERING=1

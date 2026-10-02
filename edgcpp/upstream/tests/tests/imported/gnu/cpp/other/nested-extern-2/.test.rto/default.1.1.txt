@@ -1,0 +1,3 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics nested-extern-2.cc Test_name.c
+nested-extern-2.cc:
+Test_name.c:

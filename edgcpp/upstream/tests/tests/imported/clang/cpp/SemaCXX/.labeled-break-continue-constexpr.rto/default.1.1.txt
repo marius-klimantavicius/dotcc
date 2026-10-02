@@ -1,0 +1,212 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++23 Test_name.c
+"Test_name.c", line 16: error: expected a ";"
+        break a;
+              ^
+
+"Test_name.c", line 19: warning: statement is unreachable
+    return 1;
+    ^
+
+"Test_name.c", line 14: warning: label "a" was declared but never referenced
+    a: for (;;) {
+    ^
+
+"Test_name.c", line 21: error: expression must have a constant value
+  static_assert(f1() == 1);
+                ^
+"Test_name.c", line 21: note: expression not folded to a constant due to excessive constexpr function call complexity
+  static_assert(f1() == 1);
+                     ^
+
+"Test_name.c", line 28: error: expected a ";"
+        if (i == 2 && j == 2) break a;
+                                    ^
+
+"Test_name.c", line 25: warning: label "a" was declared but never referenced
+    a: for (int i = 0; i < 10; i++) {
+    ^
+
+"Test_name.c", line 26: warning: label "b" was declared but never referenced
+      b: for (int j = 0; j < 10; j++) {
+      ^
+
+"Test_name.c", line 33: error: static assertion failed
+  static_assert(f2() == 93);
+  ^
+"Test_name.c", line 33: note: the final comparison was 408 == 93
+  static_assert(f2() == 93);
+                     ^
+
+"Test_name.c", line 39: error: expected a ";"
+      continue a;
+               ^
+
+"Test_name.c", line 37: warning: label "a" was declared but never referenced
+    a: for (int i = 0; i < 10; i++) {
+    ^
+
+"Test_name.c", line 49: error: expected a ";"
+      break a;
+            ^
+
+"Test_name.c", line 47: warning: label "a" was declared but never referenced
+    a: for (int i = 1; i < 10; i++) {
+    ^
+
+"Test_name.c", line 60: error: expected a ";"
+        if (should_break) break a;
+                                ^
+
+"Test_name.c", line 61: error: expected a ";"
+        continue a;
+                 ^
+
+"Test_name.c", line 57: warning: label "a" was declared but never referenced
+    a: while (!destroyed) {
+    ^
+
+"Test_name.c", line 67: error: expression must have a constant value
+  static_assert(f5(false));
+                ^
+"Test_name.c", line 67: note: expression not folded to a constant due to excessive constexpr function call complexity
+  static_assert(f5(false));
+                  ^
+
+"Test_name.c", line 77: error: expected a ";"
+              if (should_break) break a;
+                                      ^
+
+"Test_name.c", line 78: error: expected a ";"
+              continue a;
+                       ^
+
+"Test_name.c", line 71: warning: label "a" was declared but never referenced
+    a: while (!destroyed) {
+    ^
+
+"Test_name.c", line 86: error: expression must have a constant value
+  static_assert(f6(true));
+                ^
+"Test_name.c", line 86: note: expression not folded to a constant due to excessive constexpr function call complexity
+  static_assert(f6(true));
+                  ^
+
+"Test_name.c", line 87: error: expression must have a constant value
+  static_assert(f6(false));
+                ^
+"Test_name.c", line 87: note: expression not folded to a constant due to excessive constexpr function call complexity
+  static_assert(f6(false));
+                  ^
+
+"Test_name.c", line 95: error: expected a ";"
+          if (should_break) break a;
+                                  ^
+
+"Test_name.c", line 96: error: expected a ";"
+          break b;
+                ^
+
+"Test_name.c", line 91: warning: label "a" was declared but never referenced
+    a: for (int i = 0; i < 10; i++) {
+    ^
+
+"Test_name.c", line 92: warning: label "b" was declared but never referenced
+      b: switch (1) {
+      ^
+
+"Test_name.c", line 101: error: static assertion failed
+  static_assert(f7(true) == 100);
+  ^
+"Test_name.c", line 101: note: the final comparison was 145 == 100
+  static_assert(f7(true) == 100);
+                         ^
+
+"Test_name.c", line 109: error: expected a ";"
+            case 1: break a;
+                          ^
+
+"Test_name.c", line 105: warning: label "a" was declared but never referenced
+    a: switch (1) {
+    ^
+
+"Test_name.c", line 116: error: expression must have a constant value
+  static_assert(f8());
+                ^
+"Test_name.c", line 116: note: expression not folded to a constant due to excessive constexpr function call complexity
+  static_assert(f8());
+                  ^
+
+"Test_name.c", line 121: error: expected a ";"
+        break a;
+              ^
+
+"Test_name.c", line 124: warning: statement is unreachable
+    return true;
+    ^
+
+"Test_name.c", line 119: warning: label "a" was declared but never referenced
+    a: do {
+    ^
+
+"Test_name.c", line 126: error: expression must have a constant value
+  static_assert(f9());
+                ^
+"Test_name.c", line 126: note: expression not folded to a constant due to excessive constexpr function call complexity
+  static_assert(f9());
+                  ^
+
+"Test_name.c", line 134: error: expected a ";"
+        if (should_break && v == 5) break a;
+                                          ^
+
+"Test_name.c", line 131: warning: label "a" was declared but never referenced
+    a: for (int v : a) {
+    ^
+
+"Test_name.c", line 140: error: static assertion failed
+  static_assert(f10(true) == 35);
+  ^
+"Test_name.c", line 140: note: the final comparison was 155 == 35
+  static_assert(f10(true) == 35);
+                          ^
+
+"Test_name.c", line 153: error: expected a ";"
+        if (v == 5) break a;
+                          ^
+
+"Test_name.c", line 151: warning: label "a" was declared but never referenced
+    a: for (int v : X(destroyed).a) {
+    ^
+
+"Test_name.c", line 158: error: expression must have a constant value
+  static_assert(f11());
+                ^
+Note: attempt to access expired storage
+
+"Test_name.c", line 166: error: expected a ";"
+        if (i == 2 && j == 2) break a;
+                                    ^
+
+"Test_name.c", line 163: warning: label "a" was declared but never referenced
+    a: for (T i = 0; i < 10; i++) {
+    ^
+
+"Test_name.c", line 164: warning: label "b" was declared but never referenced
+      b: for (T j = 0; j < 10; j++) {
+      ^
+
+"Test_name.c", line 171: error: static assertion failed
+  static_assert(f12<int>() == 93);
+  ^
+"Test_name.c", line 171: note: the final comparison was 408 == 93
+  static_assert(f12<int>() == 93);
+                           ^
+
+"Test_name.c", line 172: error: static assertion failed
+  static_assert(f12<unsigned>() == 93u);
+  ^
+"Test_name.c", line 172: note: the final comparison was 408 == 93
+  static_assert(f12<unsigned>() == 93u);
+                                ^
+
+27 errors detected in the compilation of "Test_name.c".

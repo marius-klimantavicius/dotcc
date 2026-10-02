@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --ms_compatibility --c++11 Test_name.c
+"SemaCXX/microsoft-new-delete.cpp", line 16: error: "noncopyable::noncopyable(const noncopyable &)" (declared at line 13) is inaccessible
+  void *q = new (nc) int[4];
+                 ^
+
+"SemaCXX/microsoft-new-delete.cpp", line 27: error: conversion to inaccessible base class "base" is not allowed
+  void *s = new (der) int[4];
+                 ^
+
+2 errors detected in the compilation of "Test_name.c".

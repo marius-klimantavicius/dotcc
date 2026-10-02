@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 6: error: excessive recursion at instantiation of class "A<A<A<A<A<A<A</* etc... */>>>>>>>"
+    A<A> a; /* { dg-error "depth" } */
+         ^
+          detected during:
+            instantiation of class "A<<unnamed>> [with <unnamed>=A<A<A<A<A<A<A</* etc... */>>>>>>>]" at line 6
+            instantiation of class "A<<unnamed>> [with <unnamed>=A<A<A<A<A<A<A</* etc... */>>>>>>>]" at line 6
+            instantiation of class "A<<unnamed>> [with <unnamed>=A<A<A<A<A<A<A</* etc... */>>>>>>>]" at line 6
+            instantiation of class "A<<unnamed>> [with <unnamed>=A<A<A<A<A<A<A</* etc... */>>>>>>>]" at line 6
+            instantiation of class "A<<unnamed>> [with <unnamed>=A<A<A<A<A<A<A</* etc... */>>>>>>>]" at line 6
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "A<<unnamed>> [with <unnamed>=A<A<A<A<int>>>>]" at line 6
+            instantiation of class "A<<unnamed>> [with <unnamed>=A<A<A<int>>>]" at line 6
+            instantiation of class "A<<unnamed>> [with <unnamed>=A<A<int>>]" at line 6
+            instantiation of class "A<<unnamed>> [with <unnamed>=A<int>]" at line 6
+            instantiation of class "A<<unnamed>> [with <unnamed>=int]" at line 10
+
+"Test_name.c", line 6: error: incomplete type "A<A<A<A<A<A<A</* etc... */>>>>>>>" is not allowed
+    A<A> a; /* { dg-error "depth" } */
+         ^
+          detected during:
+            instantiation of class "A<<unnamed>> [with <unnamed>=A<A<A<A<A<A<A</* etc... */>>>>>>>]" at line 6
+            instantiation of class "A<<unnamed>> [with <unnamed>=A<A<A<A<A<A<A</* etc... */>>>>>>>]" at line 6
+            instantiation of class "A<<unnamed>> [with <unnamed>=A<A<A<A<A<A<A</* etc... */>>>>>>>]" at line 6
+            instantiation of class "A<<unnamed>> [with <unnamed>=A<A<A<A<A<A<A</* etc... */>>>>>>>]" at line 6
+            instantiation of class "A<<unnamed>> [with <unnamed>=A<A<A<A<A<A<A</* etc... */>>>>>>>]" at line 6
+            [ 54 instantiation contexts not shown ]
+            instantiation of class "A<<unnamed>> [with <unnamed>=A<A<A<A<int>>>>]" at line 6
+            instantiation of class "A<<unnamed>> [with <unnamed>=A<A<A<int>>>]" at line 6
+            instantiation of class "A<<unnamed>> [with <unnamed>=A<A<int>>]" at line 6
+            instantiation of class "A<<unnamed>> [with <unnamed>=A<int>]" at line 6
+            instantiation of class "A<<unnamed>> [with <unnamed>=int]" at line 10
+
+2 errors detected in the compilation of "Test_name.c".

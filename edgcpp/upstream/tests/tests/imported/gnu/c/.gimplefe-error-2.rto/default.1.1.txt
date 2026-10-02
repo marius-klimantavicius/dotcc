@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 7: error: expected a "{"
+  main (int argc, char * * argv)
+  ^
+
+"Test_name.c", line 11: error: identifier "a" is undefined
+    switch (a) {default: L2; case 1: L0; case 2: L1; } /* { dg-error "undeclared" } */
+            ^
+
+"Test_name.c", line 11: error: identifier "L2" is undefined
+    switch (a) {default: L2; case 1: L0; case 2: L1; } /* { dg-error "undeclared" } */
+                         ^
+
+"Test_name.c", line 11: error: identifier "L0" is undefined
+    switch (a) {default: L2; case 1: L0; case 2: L1; } /* { dg-error "undeclared" } */
+                                     ^
+
+"Test_name.c", line 11: error: identifier "L1" is undefined
+    switch (a) {default: L2; case 1: L0; case 2: L1; } /* { dg-error "undeclared" } */
+                                                 ^
+
+"Test_name.c", line 14: error: identifier "a" is undefined
+    a = 0;
+    ^
+
+"Test_name.c", line 10: warning: label "bb_2" was declared but never referenced
+  bb_2:
+  ^
+
+"Test_name.c", line 13: warning: label "L0" was declared but never referenced
+  L0:
+  ^
+
+"Test_name.c", line 15: error: label "bb_6" was referenced but not defined
+    goto bb_6;
+         ^
+
+"Test_name.c", line 17: warning: label "L1" was declared but never referenced
+  L1:
+  ^
+
+7 errors detected in the compilation of "Test_name.c".

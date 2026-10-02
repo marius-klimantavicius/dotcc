@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 7: error: "auto" is not allowed here
+  void (*a)(auto);         // { dg-error "" }
+            ^
+
+"Test_name.c", line 9: error: "auto" is not allowed here
+  void (*b)(auto) = 0;     // { dg-error "" }
+            ^
+
+"Test_name.c", line 11: error: "auto" is not allowed here
+  typedef void (*f)(auto); // { dg-error "" }
+                    ^
+
+3 errors detected in the compilation of "Test_name.c".

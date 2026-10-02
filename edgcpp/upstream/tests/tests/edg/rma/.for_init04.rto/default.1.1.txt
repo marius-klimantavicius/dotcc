@@ -1,0 +1,22 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 7: remark: declaration hides variable "i" (declared at line 5)
+    for (int i = 0; i < t; ++i) { }
+             ^
+
+"Test_name.c", line 10: remark: parameter "t" was never referenced
+  template <class T> int g(T t) {
+                             ^
+
+"Test_name.c", line 14: error: return type "int" omitted in declaration of function "main"
+  main() {
+  ^
+
+"Test_name.c", line 15: remark: declaration hides variable "i" (declared at line 5)
+    for (int i = 0; i < 2; ++i) {
+             ^
+
+"Test_name.c", line 18: remark: declaration hides variable "i" (declared at line 5)
+    int i = 4;
+        ^
+
+1 error detected in the compilation of "Test_name.c".

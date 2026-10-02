@@ -1,0 +1,8 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 --c++11 Test_name.c
+"./eh/forced3.C", line 56: warning: function "std::set_unexpected" was declared deprecated
+    std::set_unexpected (handle_unexpected);
+         ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/exception", line 93: note: because of a "deprecated" attribute
+    __attribute__ ((__deprecated__))
+                    ^
+

@@ -1,0 +1,57 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./strlenopt-71.c", line 17: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void terminate (void)
+                  ^
+
+"./strlenopt-71.c", line 17: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void terminate (void)
+                                     ^
+
+"./strlenopt-71.c", line 64: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void
+                  ^
+
+"./strlenopt-71.c", line 64: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void
+                                     ^
+
+"./strlenopt-71.c", line 85: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void
+                  ^
+
+"./strlenopt-71.c", line 85: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void
+                                     ^
+
+"./strlenopt-71.c", line 108: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void
+                  ^
+
+"./strlenopt-71.c", line 108: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void
+                                     ^
+
+"./strlenopt-71.c", line 118: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void
+                  ^
+
+"./strlenopt-71.c", line 118: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void
+                                     ^
+
+"./strlenopt-71.c", line 144: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void
+                  ^
+
+"./strlenopt-71.c", line 144: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void
+                                     ^
+
+"./strlenopt-71.c", line 174: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void
+                  ^
+
+"./strlenopt-71.c", line 174: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void
+                                     ^
+

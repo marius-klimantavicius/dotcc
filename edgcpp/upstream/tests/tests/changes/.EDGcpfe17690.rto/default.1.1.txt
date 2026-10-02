@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --c++17 Test_name.c
+"Test_name.c", line 12: warning: variable "I" was declared but never referenced
+  constexpr int I = ID(3);  // Now permitted in C++17 mode
+                ^
+

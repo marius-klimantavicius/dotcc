@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 7: error: expected a ";"
+  void foo () = delete (;				// { dg-warning "'delete' reason only available with" "" { target c++23_down } }
+                       ^
+
+"Test_name.c", line 10: warning: parsing restarts here after previous syntax error
+  void bar () = delete ();			// { dg-warning "'delete' reason only available with" "" { target c++23_down } }
+                         ^
+
+"Test_name.c", line 12: error: expected a ";"
+  void baz () = delete (0);			// { dg-warning "'delete' reason only available with" "" { target c++23_down } }
+                       ^
+
+"Test_name.c", line 16: error: expected a ";"
+  void qux () = delete (L"");			// { dg-warning "'delete' reason only available with" "" { target c++23_down } }
+                       ^
+
+"Test_name.c", line 18: error: expected a ";"
+  void corge () = delete (u8"");			// { dg-warning "'delete' reason only available with" "" { target c++23_down } }
+                         ^
+
+"Test_name.c", line 20: error: expected a ";"
+  void garply () = delete ("something" + 0);	// { dg-warning "'delete' reason only available with" "" { target c++23_down } }
+                          ^
+
+5 errors detected in the compilation of "Test_name.c".

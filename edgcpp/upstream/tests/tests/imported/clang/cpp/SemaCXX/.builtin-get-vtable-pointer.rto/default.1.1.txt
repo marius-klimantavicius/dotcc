@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 81: error: argument of type "double" is incompatible with parameter of type "void *"
+    __builtin_get_vtable_pointer(0.5);           // expected-error{{__builtin_get_vtable_pointer requires an argument of class pointer type, but 'double' was provided}}
+                                 ^
+
+"Test_name.c", line 83: error: no suitable conversion function from "basic::NonPolymorphic" to "void *" exists
+    __builtin_get_vtable_pointer(np);            // expected-error{{__builtin_get_vtable_pointer requires an argument of class pointer type, but 'NonPolymorphic' was provided}}
+                                 ^
+
+"Test_name.c", line 85: error: no suitable conversion function from "basic::Polymorphic" to "void *" exists
+    __builtin_get_vtable_pointer(p);             // expected-error{{__builtin_get_vtable_pointer requires an argument of class pointer type, but 'Polymorphic' was provided}}
+                                 ^
+
+"Test_name.c", line 91: error: more than one instance of overloaded function "basic::test_function" matches the required type
+    __builtin_get_vtable_pointer(test_function); // expected-error{{reference to overloaded function could not be resolved; did you mean to call it?}}
+                                 ^
+
+"Test_name.c", line 94: error: no suitable conversion function from "basic::Foo<double>" to "void *" exists
+    __builtin_get_vtable_pointer(Food); // expected-error{{__builtin_get_vtable_pointer requires an argument of class pointer type, but 'Foo<double>' was provided}}
+                                 ^
+
+"Test_name.c", line 96: error: no suitable conversion function from "basic::Foo<int>" to "void *" exists
+    __builtin_get_vtable_pointer(Fooi);  // expected-error{{__builtin_get_vtable_pointer requires an argument of class pointer type, but 'Foo<int>' was provided}}
+                                 ^
+
+"Test_name.c", line 109: error: no suitable conversion function from "basic::PolymorphicTemplate<int>" to "void *" exists
+    __builtin_get_vtable_pointer(pti); // expected-error{{__builtin_get_vtable_pointer requires an argument of class pointer type, but 'PolymorphicTemplate<int>' was provided}}
+                                 ^
+
+"Test_name.c", line 110: error: no suitable conversion function from "basic::MonomorphicTemplate<int>" to "void *" exists
+    __builtin_get_vtable_pointer(mti); // expected-error{{__builtin_get_vtable_pointer requires an argument of class pointer type, but 'MonomorphicTemplate<int>' was provided}}
+                                 ^
+
+8 errors detected in the compilation of "Test_name.c".

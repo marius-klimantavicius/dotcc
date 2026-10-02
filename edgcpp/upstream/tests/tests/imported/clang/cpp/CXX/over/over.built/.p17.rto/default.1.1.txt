@@ -1,0 +1,343 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 17: error: no operator "<" matches these operands
+            operand types are: A < B
+    (void)(a < b); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 17: note: built-in operator<(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (void)(a < b); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 17: note: built-in operator<(<nullptr>, <nullptr>) does not match because argument #2 does not match parameter
+    (void)(a < b); // expected-error {{invalid operands}}
+             ^
+
+"Test_name.c", line 18: error: no operator ">" matches these operands
+            operand types are: A > B
+    (void)(a > b); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 18: note: built-in operator>(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (void)(a > b); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 18: note: built-in operator>(<nullptr>, <nullptr>) does not match because argument #2 does not match parameter
+    (void)(a > b); // expected-error {{invalid operands}}
+             ^
+
+"Test_name.c", line 19: error: no operator "<=" matches these operands
+            operand types are: A <= B
+    (void)(a <= b); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 19: note: built-in operator<=(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (void)(a <= b); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 19: note: built-in operator<=(<nullptr>, <nullptr>) does not match because argument #2 does not match parameter
+    (void)(a <= b); // expected-error {{invalid operands}}
+             ^
+
+"Test_name.c", line 20: error: no operator ">=" matches these operands
+            operand types are: A >= B
+    (void)(a >= b); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 20: note: built-in operator>=(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (void)(a >= b); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 20: note: built-in operator>=(<nullptr>, <nullptr>) does not match because argument #2 does not match parameter
+    (void)(a >= b); // expected-error {{invalid operands}}
+             ^
+
+"Test_name.c", line 24: error: no operator "<" matches these operands
+            operand types are: B < A
+    (void)(b < a); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 24: note: built-in operator<(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (void)(b < a); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 24: note: built-in operator<(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    (void)(b < a); // expected-error {{invalid operands}}
+             ^
+
+"Test_name.c", line 25: error: no operator ">" matches these operands
+            operand types are: B > A
+    (void)(b > a); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 25: note: built-in operator>(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (void)(b > a); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 25: note: built-in operator>(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    (void)(b > a); // expected-error {{invalid operands}}
+             ^
+
+"Test_name.c", line 26: error: no operator "<=" matches these operands
+            operand types are: B <= A
+    (void)(b <= a); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 26: note: built-in operator<=(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (void)(b <= a); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 26: note: built-in operator<=(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    (void)(b <= a); // expected-error {{invalid operands}}
+             ^
+
+"Test_name.c", line 27: error: no operator ">=" matches these operands
+            operand types are: B >= A
+    (void)(b >= a); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 27: note: built-in operator>=(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (void)(b >= a); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 27: note: built-in operator>=(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    (void)(b >= a); // expected-error {{invalid operands}}
+             ^
+
+"Test_name.c", line 31: error: no operator "<" matches these operands
+            operand types are: A < int A::*
+    (void)(a < pi); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 31: note: built-in operator<(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (void)(a < pi); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 31: note: built-in operator<(<nullptr>, <nullptr>) does not match because argument #2 does not match parameter
+    (void)(a < pi); // expected-error {{invalid operands}}
+             ^
+
+"Test_name.c", line 32: error: no operator ">" matches these operands
+            operand types are: A > int A::*
+    (void)(a > pi); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 32: note: built-in operator>(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (void)(a > pi); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 32: note: built-in operator>(<nullptr>, <nullptr>) does not match because argument #2 does not match parameter
+    (void)(a > pi); // expected-error {{invalid operands}}
+             ^
+
+"Test_name.c", line 33: error: no operator "<=" matches these operands
+            operand types are: A <= int A::*
+    (void)(a <= pi); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 33: note: built-in operator<=(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (void)(a <= pi); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 33: note: built-in operator<=(<nullptr>, <nullptr>) does not match because argument #2 does not match parameter
+    (void)(a <= pi); // expected-error {{invalid operands}}
+             ^
+
+"Test_name.c", line 34: error: no operator ">=" matches these operands
+            operand types are: A >= int A::*
+    (void)(a >= pi); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 34: note: built-in operator>=(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (void)(a >= pi); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 34: note: built-in operator>=(<nullptr>, <nullptr>) does not match because argument #2 does not match parameter
+    (void)(a >= pi); // expected-error {{invalid operands}}
+             ^
+
+"Test_name.c", line 38: error: no operator "<" matches these operands
+            operand types are: int A::* < A
+    (void)(pi < a); // expected-error {{invalid operands}}
+              ^
+"Test_name.c", line 38: note: built-in operator<(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (void)(pi < a); // expected-error {{invalid operands}}
+              ^
+"Test_name.c", line 38: note: built-in operator<(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    (void)(pi < a); // expected-error {{invalid operands}}
+              ^
+
+"Test_name.c", line 39: error: no operator ">" matches these operands
+            operand types are: int A::* > A
+    (void)(pi > a); // expected-error {{invalid operands}}
+              ^
+"Test_name.c", line 39: note: built-in operator>(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (void)(pi > a); // expected-error {{invalid operands}}
+              ^
+"Test_name.c", line 39: note: built-in operator>(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    (void)(pi > a); // expected-error {{invalid operands}}
+              ^
+
+"Test_name.c", line 40: error: no operator "<=" matches these operands
+            operand types are: int A::* <= A
+    (void)(pi <= a); // expected-error {{invalid operands}}
+              ^
+"Test_name.c", line 40: note: built-in operator<=(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (void)(pi <= a); // expected-error {{invalid operands}}
+              ^
+"Test_name.c", line 40: note: built-in operator<=(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    (void)(pi <= a); // expected-error {{invalid operands}}
+              ^
+
+"Test_name.c", line 41: error: no operator ">=" matches these operands
+            operand types are: int A::* >= A
+    (void)(pi >= a); // expected-error {{invalid operands}}
+              ^
+"Test_name.c", line 41: note: built-in operator>=(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (void)(pi >= a); // expected-error {{invalid operands}}
+              ^
+"Test_name.c", line 41: note: built-in operator>=(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    (void)(pi >= a); // expected-error {{invalid operands}}
+              ^
+
+"Test_name.c", line 45: error: no operator "<" matches these operands
+            operand types are: B < int A::*
+    (void)(b < pi); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 45: note: built-in operator<(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (void)(b < pi); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 45: note: built-in operator<(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    (void)(b < pi); // expected-error {{invalid operands}}
+             ^
+
+"Test_name.c", line 46: error: no operator ">" matches these operands
+            operand types are: B > int A::*
+    (void)(b > pi); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 46: note: built-in operator>(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (void)(b > pi); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 46: note: built-in operator>(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    (void)(b > pi); // expected-error {{invalid operands}}
+             ^
+
+"Test_name.c", line 47: error: no operator "<=" matches these operands
+            operand types are: B <= int A::*
+    (void)(b <= pi); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 47: note: built-in operator<=(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (void)(b <= pi); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 47: note: built-in operator<=(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    (void)(b <= pi); // expected-error {{invalid operands}}
+             ^
+
+"Test_name.c", line 48: error: no operator ">=" matches these operands
+            operand types are: B >= int A::*
+    (void)(b >= pi); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 48: note: built-in operator>=(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (void)(b >= pi); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 48: note: built-in operator>=(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    (void)(b >= pi); // expected-error {{invalid operands}}
+             ^
+
+"Test_name.c", line 52: error: no operator "<" matches these operands
+            operand types are: int A::* < B
+    (void)(pi < b); // expected-error {{invalid operands}}
+              ^
+"Test_name.c", line 52: note: built-in operator<(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (void)(pi < b); // expected-error {{invalid operands}}
+              ^
+"Test_name.c", line 52: note: built-in operator<(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    (void)(pi < b); // expected-error {{invalid operands}}
+              ^
+
+"Test_name.c", line 53: error: no operator ">" matches these operands
+            operand types are: int A::* > B
+    (void)(pi > b); // expected-error {{invalid operands}}
+              ^
+"Test_name.c", line 53: note: built-in operator>(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (void)(pi > b); // expected-error {{invalid operands}}
+              ^
+"Test_name.c", line 53: note: built-in operator>(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    (void)(pi > b); // expected-error {{invalid operands}}
+              ^
+
+"Test_name.c", line 54: error: no operator "<=" matches these operands
+            operand types are: int A::* <= B
+    (void)(pi <= b); // expected-error {{invalid operands}}
+              ^
+"Test_name.c", line 54: note: built-in operator<=(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (void)(pi <= b); // expected-error {{invalid operands}}
+              ^
+"Test_name.c", line 54: note: built-in operator<=(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    (void)(pi <= b); // expected-error {{invalid operands}}
+              ^
+
+"Test_name.c", line 55: error: no operator ">=" matches these operands
+            operand types are: int A::* >= B
+    (void)(pi >= b); // expected-error {{invalid operands}}
+              ^
+"Test_name.c", line 55: note: built-in operator>=(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (void)(pi >= b); // expected-error {{invalid operands}}
+              ^
+"Test_name.c", line 55: note: built-in operator>=(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    (void)(pi >= b); // expected-error {{invalid operands}}
+              ^
+
+"Test_name.c", line 59: error: no operator "<" matches these operands
+            operand types are: B < B
+    (void)(b < b); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 59: note: built-in operator<(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (void)(b < b); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 59: note: built-in operator<(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    (void)(b < b); // expected-error {{invalid operands}}
+             ^
+
+"Test_name.c", line 60: error: no operator ">" matches these operands
+            operand types are: B > B
+    (void)(b > b); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 60: note: built-in operator>(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (void)(b > b); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 60: note: built-in operator>(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    (void)(b > b); // expected-error {{invalid operands}}
+             ^
+
+"Test_name.c", line 61: error: no operator "<=" matches these operands
+            operand types are: B <= B
+    (void)(b <= b); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 61: note: built-in operator<=(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (void)(b <= b); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 61: note: built-in operator<=(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    (void)(b <= b); // expected-error {{invalid operands}}
+             ^
+
+"Test_name.c", line 62: error: no operator ">=" matches these operands
+            operand types are: B >= B
+    (void)(b >= b); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 62: note: built-in operator>=(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (void)(b >= b); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 62: note: built-in operator>=(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    (void)(b >= b); // expected-error {{invalid operands}}
+             ^
+
+"Test_name.c", line 66: error: expression must have arithmetic, unscoped enum, or pointer type but has type "int A::*"
+    (void)(pi < pi); // expected-error {{invalid operands}}
+           ^
+
+"Test_name.c", line 67: error: expression must have arithmetic, unscoped enum, or pointer type but has type "int A::*"
+    (void)(pi > pi); // expected-error {{invalid operands}}
+           ^
+
+"Test_name.c", line 68: error: expression must have arithmetic, unscoped enum, or pointer type but has type "int A::*"
+    (void)(pi <= pi); // expected-error {{invalid operands}}
+           ^
+
+"Test_name.c", line 69: error: expression must have arithmetic, unscoped enum, or pointer type but has type "int A::*"
+    (void)(pi >= pi); // expected-error {{invalid operands}}
+           ^
+
+"Test_name.c", line 76: error: no operator "==" matches these operands
+            operand types are: C == volatile int *A::*B::*
+    (void)(c == p); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 76: note: built-in operator==(<promoted arithmetic>, <promoted arithmetic>) does not match because argument #1 does not match parameter
+    (void)(c == p); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 76: note: built-in operator==(<nullptr>, <nullptr>) does not match because argument #1 does not match parameter
+    (void)(c == p); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 76: note: built-in operator==(<pointer-to-member>, <pointer-to-member>) does not match because argument #2 does not match parameter
+    (void)(c == p); // expected-error {{invalid operands}}
+             ^
+"Test_name.c", line 76: note: built-in operator==(<pointer-to-member>, <pointer-to-member>) does not match because argument #1 does not match parameter
+    (void)(c == p); // expected-error {{invalid operands}}
+             ^
+
+33 errors detected in the compilation of "Test_name.c".

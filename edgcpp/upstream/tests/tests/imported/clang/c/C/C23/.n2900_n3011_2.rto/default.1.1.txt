@@ -1,0 +1,41 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 16: warning: variable "s" was declared but never referenced
+    struct S s = {};
+             ^
+
+"Test_name.c", line 24: warning: variable "i" was declared but never referenced
+    int i = {};
+        ^
+
+"Test_name.c", line 32: warning: variable "j" was declared but never referenced
+    int j = (int){};
+        ^
+
+"Test_name.c", line 43: warning: variable "unknown_size" was declared but never referenced
+    int unknown_size[] = {};
+        ^
+
+"Test_name.c", line 51: warning: variable "vla" was declared but never referenced
+    int vla[num_elts] = {};
+        ^
+
+"Test_name.c", line 67: warning: variable "vla" was declared but never referenced
+    int vla[num_elts] = {};
+        ^
+
+"Test_name.c", line 82: warning: variable "t1" was declared but never referenced
+    struct T t1 = { 1, {} };
+             ^
+
+"Test_name.c", line 83: warning: variable "t2" was declared but never referenced
+    struct T t2 = { 1, { 2, {} } };
+             ^
+
+"Test_name.c", line 84: warning: variable "t3" was declared but never referenced
+    struct T t3 = { (int){}, {} };
+             ^
+
+"Test_name.c", line 96: warning: variable "t3" was declared but never referenced
+    struct T t3[num_elts] = {};
+             ^
+

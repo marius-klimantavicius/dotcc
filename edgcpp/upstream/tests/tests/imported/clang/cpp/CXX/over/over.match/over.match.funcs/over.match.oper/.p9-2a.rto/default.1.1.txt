@@ -1,0 +1,46 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 11: error: function "not_bool::operator==" (declared at line 9) selected for operator rewrite does not return type bool
+    bool b = y == x; // expected-error {{return type 'double' of selected 'operator==' function for rewritten '==' comparison is not 'bool'}}
+               ^
+
+"Test_name.c", line 12: error: function "not_bool::operator==" (declared at line 9) selected for operator rewrite does not return type bool
+    bool c = x != y; // expected-error {{return type 'double' of selected 'operator==' function for rewritten '!=' comparison is not 'bool'}}
+               ^
+
+"Test_name.c", line 13: error: function "not_bool::operator==" (declared at line 9) selected for operator rewrite does not return type bool
+    bool d = y != x; // expected-error {{return type 'double' of selected 'operator==' function for rewritten '!=' comparison is not 'bool'}}
+               ^
+
+"Test_name.c", line 16: warning: type qualifier on return type is meaningless
+    const bool operator==(Y, X);
+    ^
+
+"Test_name.c", line 20: error: function "not_bool::operator==(not_bool::X, not_bool::Y)" (declared at line 9) selected for operator rewrite does not return type bool
+    bool f = x != y; // expected-error {{return type 'double' of selected 'operator==' function for rewritten '!=' comparison is not 'bool'}}
+               ^
+
+"Test_name.c", line 26: warning: function "not_bool::operator==(not_bool::X, not_bool::Z)" (declared at line 25) selected for operator rewrite does not return type bool
+    bool g = z == x; // expected-warning {{ISO C++20 requires return type of selected 'operator==' function for rewritten '==' comparison to be 'bool', not 'int'}}
+               ^
+
+"Test_name.c", line 30: warning: function "not_bool::operator==(not_bool::Y, not_bool::Z)" (declared at line 29) selected for operator rewrite does not return type bool
+    bool h = z == y; // expected-warning {{ISO C++20 requires return type of selected 'operator==' function for rewritten '==' comparison to be 'bool', not 'E'}}
+               ^
+
+"Test_name.c", line 38: error: static assertion failed
+  static_assert(X{false} == Y{}); // expected-error {{failed}}
+  ^
+
+"Test_name.c", line 42: error: static assertion failed
+  static_assert(Y{} == X{false}); // expected-error {{failed}}
+  ^
+
+"Test_name.c", line 45: error: static assertion failed
+  static_assert(X{true} != Y{}); // expected-error {{failed}}
+  ^
+
+"Test_name.c", line 49: error: static assertion failed
+  static_assert(Y{} != X{true}); // expected-error {{failed}}
+  ^
+
+8 errors detected in the compilation of "Test_name.c".

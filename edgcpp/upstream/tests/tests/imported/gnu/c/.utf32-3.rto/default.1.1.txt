@@ -1,0 +1,58 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 12: error: identifier "U" is undefined
+  char32_t	*s0 = U"a" U"b";
+          	      ^
+
+"Test_name.c", line 12: error: expected a ";"
+  char32_t	*s0 = U"a" U"b";
+          	       ^
+
+"Test_name.c", line 14: error: expected a ";"
+  char32_t	*s1 = U"a" "b";
+          	       ^
+
+"Test_name.c", line 15: warning: a value of type "char *" cannot be used to initialize an entity of type "char32_t *" (aka "unsigned int *")
+  char32_t	*s2 = "a" U"b";
+          	      ^
+
+"Test_name.c", line 15: error: expected a ";"
+  char32_t	*s2 = "a" U"b";
+          	          ^
+
+"Test_name.c", line 16: error: expected a ";"
+  char32_t	*s3 = U"a" "\u2029";
+          	       ^
+
+"Test_name.c", line 17: warning: a value of type "char *" cannot be used to initialize an entity of type "char32_t *" (aka "unsigned int *")
+  char32_t	*s4 = "\u2029" U"b";
+          	      ^
+
+"Test_name.c", line 17: error: expected a ";"
+  char32_t	*s4 = "\u2029" U"b";
+          	               ^
+
+"Test_name.c", line 18: error: expected a ";"
+  char32_t	*s5 = U"a" "\U00064321";
+          	       ^
+
+"Test_name.c", line 19: warning: a value of type "char *" cannot be used to initialize an entity of type "char32_t *" (aka "unsigned int *")
+  char32_t	*s6 = "\U00064321" U"b";
+          	      ^
+
+"Test_name.c", line 19: error: expected a ";"
+  char32_t	*s6 = "\U00064321" U"b";
+          	                   ^
+
+"Test_name.c", line 28: error: expected a ")"
+      if (sizeof ((U"a" U"b")[0]) != sizeof (char32_t))
+                    ^
+
+"Test_name.c", line 30: error: expected a ")"
+      if (sizeof ((U"a"  "b")[0]) != sizeof (char32_t))
+                    ^
+
+"Test_name.c", line 32: error: expected a ")"
+      if (sizeof (( "a" U"b")[0]) != sizeof (char32_t))
+                        ^
+
+11 errors detected in the compilation of "Test_name.c".

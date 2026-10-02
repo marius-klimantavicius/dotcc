@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 5: warning: unknown attribute "address_space"
+  typedef int __attribute__((address_space(1))) int_1;
+                             ^
+
+"Test_name.c", line 6: warning: unknown attribute "address_space"
+  typedef int __attribute__((address_space(2))) int_2;
+                             ^
+

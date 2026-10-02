@@ -1,0 +1,5 @@
+# Disable Microsoft extensions.
+MICROSOFT_EXTENSIONS_ALLOWED=0
+
+# Disable the dependent C++/CLI and C++/CX feature.
+import <support/feature/cppcli/off>

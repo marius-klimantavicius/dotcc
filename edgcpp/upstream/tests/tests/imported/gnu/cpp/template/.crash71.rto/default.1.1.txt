@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 --c++17 Test_name.c
+"Test_name.c", line 5: error: A is not a template
+  extern "C" template A<char> foo();
+                      ^
+
+"Test_name.c", line 5: error: "foo" is not a class or function template name in the current scope
+  extern "C" template A<char> foo();
+                              ^
+
+2 errors detected in the compilation of "Test_name.c".

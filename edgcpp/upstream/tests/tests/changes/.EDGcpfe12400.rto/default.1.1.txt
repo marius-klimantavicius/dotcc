@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 13: error: identifier "__interface" is undefined
+  __interface B1 { virtual void f1() = 0; };
+  ^
+
+"Test_name.c", line 13: error: expected an expression
+  __interface B1 { virtual void f1() = 0; };
+                   ^
+
+"Test_name.c", line 13: error: expected a "}"
+  __interface B1 { virtual void f1() = 0; };
+                                        ^
+
+"Test_name.c", line 13: error: expected a declaration
+  __interface B1 { virtual void f1() = 0; };
+                                          ^
+
+"Test_name.c", line 14: error: identifier "__interface" is undefined
+  __interface B2 { virtual void f2() = 0; };
+  ^
+
+"Test_name.c", line 14: error: expected an expression
+  __interface B2 { virtual void f2() = 0; };
+                   ^
+
+"Test_name.c", line 14: error: expected a "}"
+  __interface B2 { virtual void f2() = 0; };
+                                        ^
+
+"Test_name.c", line 14: error: expected a declaration
+  __interface B2 { virtual void f2() = 0; };
+                                          ^
+
+"Test_name.c", line 15: error: identifier "__interface" is undefined
+  __interface C: B1, B2 {};
+  ^
+
+"Test_name.c", line 15: error: expected a ";"
+  __interface C: B1, B2 {};
+               ^
+
+"Test_name.c", line 16: error: not a class or struct name
+  struct D: C {
+            ^
+
+"Test_name.c", line 17: error: name followed by "::" must be a class or namespace name
+    void C::f1() {}
+         ^
+
+"Test_name.c", line 18: error: name followed by "::" must be a class or namespace name
+    void C::f2() {}  // Triggered an internal error.
+         ^
+
+13 errors detected in the compilation of "Test_name.c".

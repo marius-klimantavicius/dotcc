@@ -1,0 +1,820 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 --exceptions --c++03 --exceptions Test_name.c
+"Test_name.c", line 71: error: identifier "__is_rvalue_expr" is undefined
+      ASSERT_RVALUE(ReturnInt());
+      ^
+
+"Test_name.c", line 71: error: invalid redeclaration of type name "sa_71" (declared at line 71)
+      ASSERT_RVALUE(ReturnInt());
+      ^
+
+"Test_name.c", line 71: error: identifier "__is_lvalue_expr" is undefined
+      ASSERT_RVALUE(ReturnInt());
+      ^
+
+"Test_name.c", line 71: error: invalid redeclaration of type name "sa_71" (declared at line 71)
+      ASSERT_RVALUE(ReturnInt());
+      ^
+
+"Test_name.c", line 71: error: invalid redeclaration of type name "sa_71" (declared at line 71)
+      ASSERT_RVALUE(ReturnInt());
+      ^
+
+"Test_name.c", line 72: error: invalid redeclaration of type name "sa_72" (declared at line 72)
+      ASSERT_RVALUE(ReturnVoid());
+      ^
+
+"Test_name.c", line 72: error: invalid redeclaration of type name "sa_72" (declared at line 72)
+      ASSERT_RVALUE(ReturnVoid());
+      ^
+
+"Test_name.c", line 72: error: invalid redeclaration of type name "sa_72" (declared at line 72)
+      ASSERT_RVALUE(ReturnVoid());
+      ^
+
+"Test_name.c", line 73: error: invalid redeclaration of type name "sa_73" (declared at line 73)
+      ASSERT_RVALUE(ReturnEnum());
+      ^
+
+"Test_name.c", line 73: error: invalid redeclaration of type name "sa_73" (declared at line 73)
+      ASSERT_RVALUE(ReturnEnum());
+      ^
+
+"Test_name.c", line 73: error: invalid redeclaration of type name "sa_73" (declared at line 73)
+      ASSERT_RVALUE(ReturnEnum());
+      ^
+
+"Test_name.c", line 100: error: identifier "__is_rvalue_expr" is undefined
+      ASSERT_RVALUE((int)intLvalue);
+      ^
+
+"Test_name.c", line 100: error: invalid redeclaration of type name "sa_100" (declared at line 100)
+      ASSERT_RVALUE((int)intLvalue);
+      ^
+
+"Test_name.c", line 100: error: identifier "__is_lvalue_expr" is undefined
+      ASSERT_RVALUE((int)intLvalue);
+      ^
+
+"Test_name.c", line 100: error: invalid redeclaration of type name "sa_100" (declared at line 100)
+      ASSERT_RVALUE((int)intLvalue);
+      ^
+
+"Test_name.c", line 100: error: invalid redeclaration of type name "sa_100" (declared at line 100)
+      ASSERT_RVALUE((int)intLvalue);
+      ^
+
+"Test_name.c", line 101: error: invalid redeclaration of type name "sa_101" (declared at line 101)
+      ASSERT_RVALUE((short)intLvalue);
+      ^
+
+"Test_name.c", line 101: error: invalid redeclaration of type name "sa_101" (declared at line 101)
+      ASSERT_RVALUE((short)intLvalue);
+      ^
+
+"Test_name.c", line 101: error: invalid redeclaration of type name "sa_101" (declared at line 101)
+      ASSERT_RVALUE((short)intLvalue);
+      ^
+
+"Test_name.c", line 102: error: invalid redeclaration of type name "sa_102" (declared at line 102)
+      ASSERT_RVALUE((long)intLvalue);
+      ^
+
+"Test_name.c", line 102: error: invalid redeclaration of type name "sa_102" (declared at line 102)
+      ASSERT_RVALUE((long)intLvalue);
+      ^
+
+"Test_name.c", line 102: error: invalid redeclaration of type name "sa_102" (declared at line 102)
+      ASSERT_RVALUE((long)intLvalue);
+      ^
+
+"Test_name.c", line 105: error: invalid redeclaration of type name "sa_105" (declared at line 105)
+      ASSERT_RVALUE(int(intLvalue));
+      ^
+
+"Test_name.c", line 105: error: invalid redeclaration of type name "sa_105" (declared at line 105)
+      ASSERT_RVALUE(int(intLvalue));
+      ^
+
+"Test_name.c", line 105: error: invalid redeclaration of type name "sa_105" (declared at line 105)
+      ASSERT_RVALUE(int(intLvalue));
+      ^
+
+"Test_name.c", line 106: error: invalid redeclaration of type name "sa_106" (declared at line 106)
+      ASSERT_RVALUE(short(intLvalue));
+      ^
+
+"Test_name.c", line 106: error: invalid redeclaration of type name "sa_106" (declared at line 106)
+      ASSERT_RVALUE(short(intLvalue));
+      ^
+
+"Test_name.c", line 106: error: invalid redeclaration of type name "sa_106" (declared at line 106)
+      ASSERT_RVALUE(short(intLvalue));
+      ^
+
+"Test_name.c", line 107: error: invalid redeclaration of type name "sa_107" (declared at line 107)
+      ASSERT_RVALUE(long(intLvalue));
+      ^
+
+"Test_name.c", line 107: error: invalid redeclaration of type name "sa_107" (declared at line 107)
+      ASSERT_RVALUE(long(intLvalue));
+      ^
+
+"Test_name.c", line 107: error: invalid redeclaration of type name "sa_107" (declared at line 107)
+      ASSERT_RVALUE(long(intLvalue));
+      ^
+
+"Test_name.c", line 110: error: invalid redeclaration of type name "sa_110" (declared at line 110)
+      ASSERT_RVALUE((signed char)charLValue);
+      ^
+
+"Test_name.c", line 110: error: invalid redeclaration of type name "sa_110" (declared at line 110)
+      ASSERT_RVALUE((signed char)charLValue);
+      ^
+
+"Test_name.c", line 110: error: invalid redeclaration of type name "sa_110" (declared at line 110)
+      ASSERT_RVALUE((signed char)charLValue);
+      ^
+
+"Test_name.c", line 111: error: invalid redeclaration of type name "sa_111" (declared at line 111)
+      ASSERT_RVALUE((unsigned char)charLValue);
+      ^
+
+"Test_name.c", line 111: error: invalid redeclaration of type name "sa_111" (declared at line 111)
+      ASSERT_RVALUE((unsigned char)charLValue);
+      ^
+
+"Test_name.c", line 111: error: invalid redeclaration of type name "sa_111" (declared at line 111)
+      ASSERT_RVALUE((unsigned char)charLValue);
+      ^
+
+"Test_name.c", line 113: error: invalid redeclaration of type name "sa_113" (declared at line 113)
+      ASSERT_RVALUE(static_cast<int>(IntClass()));
+      ^
+
+"Test_name.c", line 113: error: invalid redeclaration of type name "sa_113" (declared at line 113)
+      ASSERT_RVALUE(static_cast<int>(IntClass()));
+      ^
+
+"Test_name.c", line 113: error: invalid redeclaration of type name "sa_113" (declared at line 113)
+      ASSERT_RVALUE(static_cast<int>(IntClass()));
+      ^
+
+"Test_name.c", line 115: error: invalid redeclaration of type name "sa_115" (declared at line 115)
+      ASSERT_RVALUE(static_cast<int>(intClassLValue)); 
+      ^
+
+"Test_name.c", line 115: error: invalid redeclaration of type name "sa_115" (declared at line 115)
+      ASSERT_RVALUE(static_cast<int>(intClassLValue)); 
+      ^
+
+"Test_name.c", line 115: error: invalid redeclaration of type name "sa_115" (declared at line 115)
+      ASSERT_RVALUE(static_cast<int>(intClassLValue)); 
+      ^
+
+"Test_name.c", line 116: error: invalid redeclaration of type name "sa_116" (declared at line 116)
+      ASSERT_RVALUE(static_cast<IntClass>(ConvertibleToIntClass()));
+      ^
+
+"Test_name.c", line 116: error: invalid redeclaration of type name "sa_116" (declared at line 116)
+      ASSERT_RVALUE(static_cast<IntClass>(ConvertibleToIntClass()));
+      ^
+
+"Test_name.c", line 116: error: invalid redeclaration of type name "sa_116" (declared at line 116)
+      ASSERT_RVALUE(static_cast<IntClass>(ConvertibleToIntClass()));
+      ^
+
+"Test_name.c", line 118: error: invalid redeclaration of type name "sa_118" (declared at line 118)
+      ASSERT_RVALUE(static_cast<IntClass>(convertibleToIntClassLValue));
+      ^
+
+"Test_name.c", line 118: error: invalid redeclaration of type name "sa_118" (declared at line 118)
+      ASSERT_RVALUE(static_cast<IntClass>(convertibleToIntClassLValue));
+      ^
+
+"Test_name.c", line 118: error: invalid redeclaration of type name "sa_118" (declared at line 118)
+      ASSERT_RVALUE(static_cast<IntClass>(convertibleToIntClassLValue));
+      ^
+
+"Test_name.c", line 123: error: invalid redeclaration of type name "sa_123" (declared at line 123)
+      ASSERT_RVALUE(signed_char(charLValue));
+      ^
+
+"Test_name.c", line 123: error: invalid redeclaration of type name "sa_123" (declared at line 123)
+      ASSERT_RVALUE(signed_char(charLValue));
+      ^
+
+"Test_name.c", line 123: error: invalid redeclaration of type name "sa_123" (declared at line 123)
+      ASSERT_RVALUE(signed_char(charLValue));
+      ^
+
+"Test_name.c", line 124: error: invalid redeclaration of type name "sa_124" (declared at line 124)
+      ASSERT_RVALUE(unsigned_char(charLValue));
+      ^
+
+"Test_name.c", line 124: error: invalid redeclaration of type name "sa_124" (declared at line 124)
+      ASSERT_RVALUE(unsigned_char(charLValue));
+      ^
+
+"Test_name.c", line 124: error: invalid redeclaration of type name "sa_124" (declared at line 124)
+      ASSERT_RVALUE(unsigned_char(charLValue));
+      ^
+
+"Test_name.c", line 126: error: invalid redeclaration of type name "sa_126" (declared at line 126)
+      ASSERT_RVALUE(int(IntClass()));
+      ^
+
+"Test_name.c", line 126: error: invalid redeclaration of type name "sa_126" (declared at line 126)
+      ASSERT_RVALUE(int(IntClass()));
+      ^
+
+"Test_name.c", line 126: error: invalid redeclaration of type name "sa_126" (declared at line 126)
+      ASSERT_RVALUE(int(IntClass()));
+      ^
+
+"Test_name.c", line 127: error: invalid redeclaration of type name "sa_127" (declared at line 127)
+      ASSERT_RVALUE(int(intClassLValue)); 
+      ^
+
+"Test_name.c", line 127: error: invalid redeclaration of type name "sa_127" (declared at line 127)
+      ASSERT_RVALUE(int(intClassLValue)); 
+      ^
+
+"Test_name.c", line 127: error: invalid redeclaration of type name "sa_127" (declared at line 127)
+      ASSERT_RVALUE(int(intClassLValue)); 
+      ^
+
+"Test_name.c", line 128: error: invalid redeclaration of type name "sa_128" (declared at line 128)
+      ASSERT_RVALUE(IntClass(ConvertibleToIntClass()));
+      ^
+
+"Test_name.c", line 128: error: invalid redeclaration of type name "sa_128" (declared at line 128)
+      ASSERT_RVALUE(IntClass(ConvertibleToIntClass()));
+      ^
+
+"Test_name.c", line 128: error: invalid redeclaration of type name "sa_128" (declared at line 128)
+      ASSERT_RVALUE(IntClass(ConvertibleToIntClass()));
+      ^
+
+"Test_name.c", line 129: error: invalid redeclaration of type name "sa_129" (declared at line 129)
+      ASSERT_RVALUE(IntClass(convertibleToIntClassLValue));
+      ^
+
+"Test_name.c", line 129: error: invalid redeclaration of type name "sa_129" (declared at line 129)
+      ASSERT_RVALUE(IntClass(convertibleToIntClassLValue));
+      ^
+
+"Test_name.c", line 129: error: invalid redeclaration of type name "sa_129" (declared at line 129)
+      ASSERT_RVALUE(IntClass(convertibleToIntClassLValue));
+      ^
+
+"Test_name.c", line 96: warning: variable "b" was declared but never referenced
+      ConvertibleToIntClass b;
+                            ^
+
+"Test_name.c", line 86: warning: local class member function "IntClass::IntClass(int)" requires a definition
+          explicit IntClass(int = 0);
+                   ^
+
+"Test_name.c", line 88: warning: local class member function "IntClass::operator int" requires a definition
+          operator int() const;
+          ^
+
+"Test_name.c", line 93: warning: local class member function "ConvertibleToIntClass::operator IntClass" requires a definition
+          operator IntClass() const;
+          ^
+
+"Test_name.c", line 137: error: identifier "__is_rvalue_expr" is undefined
+      ASSERT_RVALUE(0);
+      ^
+
+"Test_name.c", line 137: error: invalid redeclaration of type name "sa_137" (declared at line 137)
+      ASSERT_RVALUE(0);
+      ^
+
+"Test_name.c", line 137: error: identifier "__is_lvalue_expr" is undefined
+      ASSERT_RVALUE(0);
+      ^
+
+"Test_name.c", line 137: error: invalid redeclaration of type name "sa_137" (declared at line 137)
+      ASSERT_RVALUE(0);
+      ^
+
+"Test_name.c", line 137: error: invalid redeclaration of type name "sa_137" (declared at line 137)
+      ASSERT_RVALUE(0);
+      ^
+
+"Test_name.c", line 146: error: identifier "__is_lvalue_expr" is undefined
+      ASSERT_LVALUE(referenceToInt);
+      ^
+
+"Test_name.c", line 146: error: invalid redeclaration of type name "sa_146" (declared at line 146)
+      ASSERT_LVALUE(referenceToInt);
+      ^
+
+"Test_name.c", line 146: error: identifier "__is_rvalue_expr" is undefined
+      ASSERT_LVALUE(referenceToInt);
+      ^
+
+"Test_name.c", line 146: error: invalid redeclaration of type name "sa_146" (declared at line 146)
+      ASSERT_LVALUE(referenceToInt);
+      ^
+
+"Test_name.c", line 146: error: invalid redeclaration of type name "sa_146" (declared at line 146)
+      ASSERT_LVALUE(referenceToInt);
+      ^
+
+"Test_name.c", line 147: error: invalid redeclaration of type name "sa_147" (declared at line 147)
+      ASSERT_LVALUE(ReturnIntReference());
+      ^
+
+"Test_name.c", line 147: error: invalid redeclaration of type name "sa_147" (declared at line 147)
+      ASSERT_LVALUE(ReturnIntReference());
+      ^
+
+"Test_name.c", line 147: error: invalid redeclaration of type name "sa_147" (declared at line 147)
+      ASSERT_LVALUE(ReturnIntReference());
+      ^
+
+"Test_name.c", line 154: error: identifier "__is_lvalue_expr" is undefined
+      ASSERT_LVALUE("foo");
+      ^
+
+"Test_name.c", line 154: error: invalid redeclaration of type name "sa_154" (declared at line 154)
+      ASSERT_LVALUE("foo");
+      ^
+
+"Test_name.c", line 154: error: identifier "__is_rvalue_expr" is undefined
+      ASSERT_LVALUE("foo");
+      ^
+
+"Test_name.c", line 154: error: invalid redeclaration of type name "sa_154" (declared at line 154)
+      ASSERT_LVALUE("foo");
+      ^
+
+"Test_name.c", line 154: error: invalid redeclaration of type name "sa_154" (declared at line 154)
+      ASSERT_LVALUE("foo");
+      ^
+
+"Test_name.c", line 155: error: invalid redeclaration of type name "sa_155" (declared at line 155)
+      ASSERT_RVALUE(1);
+      ^
+
+"Test_name.c", line 155: error: invalid redeclaration of type name "sa_155" (declared at line 155)
+      ASSERT_RVALUE(1);
+      ^
+
+"Test_name.c", line 155: error: invalid redeclaration of type name "sa_155" (declared at line 155)
+      ASSERT_RVALUE(1);
+      ^
+
+"Test_name.c", line 156: error: invalid redeclaration of type name "sa_156" (declared at line 156)
+      ASSERT_RVALUE(1.2);
+      ^
+
+"Test_name.c", line 156: error: invalid redeclaration of type name "sa_156" (declared at line 156)
+      ASSERT_RVALUE(1.2);
+      ^
+
+"Test_name.c", line 156: error: invalid redeclaration of type name "sa_156" (declared at line 156)
+      ASSERT_RVALUE(1.2);
+      ^
+
+"Test_name.c", line 157: error: invalid redeclaration of type name "sa_157" (declared at line 157)
+      ASSERT_RVALUE(10UL);
+      ^
+
+"Test_name.c", line 157: error: invalid redeclaration of type name "sa_157" (declared at line 157)
+      ASSERT_RVALUE(10UL);
+      ^
+
+"Test_name.c", line 157: error: invalid redeclaration of type name "sa_157" (declared at line 157)
+      ASSERT_RVALUE(10UL);
+      ^
+
+"Test_name.c", line 167: error: identifier "__is_rvalue_expr" is undefined
+          void f() { ASSERT_RVALUE(this); }
+                     ^
+
+"Test_name.c", line 167: error: invalid redeclaration of type name "sa_167" (declared at line 167)
+          void f() { ASSERT_RVALUE(this); }
+                     ^
+
+"Test_name.c", line 167: error: identifier "__is_lvalue_expr" is undefined
+          void f() { ASSERT_RVALUE(this); }
+                     ^
+
+"Test_name.c", line 167: error: invalid redeclaration of type name "sa_167" (declared at line 167)
+          void f() { ASSERT_RVALUE(this); }
+                     ^
+
+"Test_name.c", line 167: error: invalid redeclaration of type name "sa_167" (declared at line 167)
+          void f() { ASSERT_RVALUE(this); }
+                     ^
+
+"Test_name.c", line 223: error: identifier "__is_lvalue_expr" is undefined
+          ASSERT_LVALUE(::Function);         // identifier: function
+          ^
+
+"Test_name.c", line 223: error: invalid redeclaration of type name "sa_223" (declared at line 223)
+          ASSERT_LVALUE(::Function);         // identifier: function
+          ^
+
+"Test_name.c", line 223: error: identifier "__is_rvalue_expr" is undefined
+          ASSERT_LVALUE(::Function);         // identifier: function
+          ^
+
+"Test_name.c", line 223: error: invalid redeclaration of type name "sa_223" (declared at line 223)
+          ASSERT_LVALUE(::Function);         // identifier: function
+          ^
+
+"Test_name.c", line 223: error: invalid redeclaration of type name "sa_223" (declared at line 223)
+          ASSERT_LVALUE(::Function);         // identifier: function
+          ^
+
+"Test_name.c", line 224: error: invalid redeclaration of type name "sa_224" (declared at line 224)
+          ASSERT_LVALUE(::variable);         // identifier: variable
+          ^
+
+"Test_name.c", line 224: error: invalid redeclaration of type name "sa_224" (declared at line 224)
+          ASSERT_LVALUE(::variable);         // identifier: variable
+          ^
+
+"Test_name.c", line 224: error: invalid redeclaration of type name "sa_224" (declared at line 224)
+          ASSERT_LVALUE(::variable);         // identifier: variable
+          ^
+
+"Test_name.c", line 230: error: invalid redeclaration of type name "sa_230" (declared at line 230)
+          ASSERT_LVALUE(::Class::function);  // qualified-id: function
+          ^
+
+"Test_name.c", line 230: error: invalid redeclaration of type name "sa_230" (declared at line 230)
+          ASSERT_LVALUE(::Class::function);  // qualified-id: function
+          ^
+
+"Test_name.c", line 230: error: invalid redeclaration of type name "sa_230" (declared at line 230)
+          ASSERT_LVALUE(::Class::function);  // qualified-id: function
+          ^
+
+"Test_name.c", line 231: error: invalid redeclaration of type name "sa_231" (declared at line 231)
+          ASSERT_LVALUE(::Class::variable);  // qualified-id: variable
+          ^
+
+"Test_name.c", line 231: error: invalid redeclaration of type name "sa_231" (declared at line 231)
+          ASSERT_LVALUE(::Class::variable);  // qualified-id: variable
+          ^
+
+"Test_name.c", line 231: error: invalid redeclaration of type name "sa_231" (declared at line 231)
+          ASSERT_LVALUE(::Class::variable);  // qualified-id: variable
+          ^
+
+"Test_name.c", line 258: error: identifier "__is_lvalue_expr" is undefined
+          ASSERT_LVALUE(Function);        // identifier: function
+          ^
+
+"Test_name.c", line 258: error: invalid redeclaration of type name "sa_258" (declared at line 258)
+          ASSERT_LVALUE(Function);        // identifier: function
+          ^
+
+"Test_name.c", line 258: error: identifier "__is_rvalue_expr" is undefined
+          ASSERT_LVALUE(Function);        // identifier: function
+          ^
+
+"Test_name.c", line 258: error: invalid redeclaration of type name "sa_258" (declared at line 258)
+          ASSERT_LVALUE(Function);        // identifier: function
+          ^
+
+"Test_name.c", line 258: error: invalid redeclaration of type name "sa_258" (declared at line 258)
+          ASSERT_LVALUE(Function);        // identifier: function
+          ^
+
+"Test_name.c", line 259: error: invalid redeclaration of type name "sa_259" (declared at line 259)
+          ASSERT_LVALUE(StaticMemberFunction);        // identifier: function
+          ^
+
+"Test_name.c", line 259: error: invalid redeclaration of type name "sa_259" (declared at line 259)
+          ASSERT_LVALUE(StaticMemberFunction);        // identifier: function
+          ^
+
+"Test_name.c", line 259: error: invalid redeclaration of type name "sa_259" (declared at line 259)
+          ASSERT_LVALUE(StaticMemberFunction);        // identifier: function
+          ^
+
+"Test_name.c", line 260: error: invalid redeclaration of type name "sa_260" (declared at line 260)
+          ASSERT_LVALUE(variable);        // identifier: variable
+          ^
+
+"Test_name.c", line 260: error: invalid redeclaration of type name "sa_260" (declared at line 260)
+          ASSERT_LVALUE(variable);        // identifier: variable
+          ^
+
+"Test_name.c", line 260: error: invalid redeclaration of type name "sa_260" (declared at line 260)
+          ASSERT_LVALUE(variable);        // identifier: variable
+          ^
+
+"Test_name.c", line 261: error: invalid redeclaration of type name "sa_261" (declared at line 261)
+          ASSERT_LVALUE(dataMember);      // identifier: data member
+          ^
+
+"Test_name.c", line 261: error: invalid redeclaration of type name "sa_261" (declared at line 261)
+          ASSERT_LVALUE(dataMember);      // identifier: data member
+          ^
+
+"Test_name.c", line 261: error: invalid redeclaration of type name "sa_261" (declared at line 261)
+          ASSERT_LVALUE(dataMember);      // identifier: data member
+          ^
+
+"Test_name.c", line 271: error: invalid redeclaration of type name "sa_271" (declared at line 271)
+          ASSERT_LVALUE(Class::dataMember);
+          ^
+
+"Test_name.c", line 271: error: invalid redeclaration of type name "sa_271" (declared at line 271)
+          ASSERT_LVALUE(Class::dataMember);
+          ^
+
+"Test_name.c", line 271: error: invalid redeclaration of type name "sa_271" (declared at line 271)
+          ASSERT_LVALUE(Class::dataMember);
+          ^
+
+"Test_name.c", line 272: error: invalid redeclaration of type name "sa_272" (declared at line 272)
+          ASSERT_LVALUE(Class::StaticMemberFunction);
+          ^
+
+"Test_name.c", line 272: error: invalid redeclaration of type name "sa_272" (declared at line 272)
+          ASSERT_LVALUE(Class::StaticMemberFunction);
+          ^
+
+"Test_name.c", line 272: error: invalid redeclaration of type name "sa_272" (declared at line 272)
+          ASSERT_LVALUE(Class::StaticMemberFunction);
+          ^
+
+"Test_name.c", line 275: error: invalid redeclaration of type name "sa_275" (declared at line 275)
+          ASSERT_LVALUE(Class::baseDataMember);
+          ^
+
+"Test_name.c", line 275: error: invalid redeclaration of type name "sa_275" (declared at line 275)
+          ASSERT_LVALUE(Class::baseDataMember);
+          ^
+
+"Test_name.c", line 275: error: invalid redeclaration of type name "sa_275" (declared at line 275)
+          ASSERT_LVALUE(Class::baseDataMember);
+          ^
+
+"Test_name.c", line 276: error: invalid redeclaration of type name "sa_276" (declared at line 276)
+          ASSERT_LVALUE(Class::BaseStaticMemberFunction);
+          ^
+
+"Test_name.c", line 276: error: invalid redeclaration of type name "sa_276" (declared at line 276)
+          ASSERT_LVALUE(Class::BaseStaticMemberFunction);
+          ^
+
+"Test_name.c", line 276: error: invalid redeclaration of type name "sa_276" (declared at line 276)
+          ASSERT_LVALUE(Class::BaseStaticMemberFunction);
+          ^
+
+"Test_name.c", line 288: error: identifier "__is_lvalue_expr" is undefined
+      ASSERT_LVALUE(ReturnIntReference());
+      ^
+
+"Test_name.c", line 288: error: invalid redeclaration of type name "sa_288" (declared at line 288)
+      ASSERT_LVALUE(ReturnIntReference());
+      ^
+
+"Test_name.c", line 288: error: identifier "__is_rvalue_expr" is undefined
+      ASSERT_LVALUE(ReturnIntReference());
+      ^
+
+"Test_name.c", line 288: error: invalid redeclaration of type name "sa_288" (declared at line 288)
+      ASSERT_LVALUE(ReturnIntReference());
+      ^
+
+"Test_name.c", line 288: error: invalid redeclaration of type name "sa_288" (declared at line 288)
+      ASSERT_LVALUE(ReturnIntReference());
+      ^
+
+"Test_name.c", line 289: error: invalid redeclaration of type name "sa_289" (declared at line 289)
+      ASSERT_LVALUE(ReturnEnumReference());
+      ^
+
+"Test_name.c", line 289: error: invalid redeclaration of type name "sa_289" (declared at line 289)
+      ASSERT_LVALUE(ReturnEnumReference());
+      ^
+
+"Test_name.c", line 289: error: invalid redeclaration of type name "sa_289" (declared at line 289)
+      ASSERT_LVALUE(ReturnEnumReference());
+      ^
+
+"Test_name.c", line 308: error: identifier "__is_lvalue_expr" is undefined
+      ASSERT_LVALUE(Namespace::x);
+      ^
+
+"Test_name.c", line 308: error: invalid redeclaration of type name "sa_308" (declared at line 308)
+      ASSERT_LVALUE(Namespace::x);
+      ^
+
+"Test_name.c", line 308: error: identifier "__is_rvalue_expr" is undefined
+      ASSERT_LVALUE(Namespace::x);
+      ^
+
+"Test_name.c", line 308: error: invalid redeclaration of type name "sa_308" (declared at line 308)
+      ASSERT_LVALUE(Namespace::x);
+      ^
+
+"Test_name.c", line 308: error: invalid redeclaration of type name "sa_308" (declared at line 308)
+      ASSERT_LVALUE(Namespace::x);
+      ^
+
+"Test_name.c", line 309: error: invalid redeclaration of type name "sa_309" (declared at line 309)
+      ASSERT_LVALUE(Namespace::function);
+      ^
+
+"Test_name.c", line 309: error: invalid redeclaration of type name "sa_309" (declared at line 309)
+      ASSERT_LVALUE(Namespace::function);
+      ^
+
+"Test_name.c", line 309: error: invalid redeclaration of type name "sa_309" (declared at line 309)
+      ASSERT_LVALUE(Namespace::function);
+      ^
+
+"Test_name.c", line 319: error: identifier "__is_lvalue_expr" is undefined
+      ASSERT_LVALUE(pointer[1]);
+      ^
+
+"Test_name.c", line 319: error: invalid redeclaration of type name "sa_319" (declared at line 319)
+      ASSERT_LVALUE(pointer[1]);
+      ^
+
+"Test_name.c", line 319: error: identifier "__is_rvalue_expr" is undefined
+      ASSERT_LVALUE(pointer[1]);
+      ^
+
+"Test_name.c", line 319: error: invalid redeclaration of type name "sa_319" (declared at line 319)
+      ASSERT_LVALUE(pointer[1]);
+      ^
+
+"Test_name.c", line 319: error: invalid redeclaration of type name "sa_319" (declared at line 319)
+      ASSERT_LVALUE(pointer[1]);
+      ^
+
+"Test_name.c", line 322: error: invalid redeclaration of type name "sa_322" (declared at line 322)
+      ASSERT_LVALUE(*(pointer+1));
+      ^
+
+"Test_name.c", line 322: error: invalid redeclaration of type name "sa_322" (declared at line 322)
+      ASSERT_LVALUE(*(pointer+1));
+      ^
+
+"Test_name.c", line 322: error: invalid redeclaration of type name "sa_322" (declared at line 322)
+      ASSERT_LVALUE(*(pointer+1));
+      ^
+
+"Test_name.c", line 335: error: identifier "__is_rvalue_expr" is undefined
+      ASSERT_RVALUE(Class(2,2));
+      ^
+
+"Test_name.c", line 335: error: invalid redeclaration of type name "sa_335" (declared at line 335)
+      ASSERT_RVALUE(Class(2,2));
+      ^
+
+"Test_name.c", line 335: error: identifier "__is_lvalue_expr" is undefined
+      ASSERT_RVALUE(Class(2,2));
+      ^
+
+"Test_name.c", line 335: error: invalid redeclaration of type name "sa_335" (declared at line 335)
+      ASSERT_RVALUE(Class(2,2));
+      ^
+
+"Test_name.c", line 335: error: invalid redeclaration of type name "sa_335" (declared at line 335)
+      ASSERT_RVALUE(Class(2,2));
+      ^
+
+"Test_name.c", line 344: error: identifier "__is_rvalue_expr" is undefined
+      ASSERT_RVALUE(int());
+      ^
+
+"Test_name.c", line 344: error: invalid redeclaration of type name "sa_344" (declared at line 344)
+      ASSERT_RVALUE(int());
+      ^
+
+"Test_name.c", line 344: error: identifier "__is_lvalue_expr" is undefined
+      ASSERT_RVALUE(int());
+      ^
+
+"Test_name.c", line 344: error: invalid redeclaration of type name "sa_344" (declared at line 344)
+      ASSERT_RVALUE(int());
+      ^
+
+"Test_name.c", line 344: error: invalid redeclaration of type name "sa_344" (declared at line 344)
+      ASSERT_RVALUE(int());
+      ^
+
+"Test_name.c", line 345: error: invalid redeclaration of type name "sa_345" (declared at line 345)
+      ASSERT_RVALUE(Class());
+      ^
+
+"Test_name.c", line 345: error: invalid redeclaration of type name "sa_345" (declared at line 345)
+      ASSERT_RVALUE(Class());
+      ^
+
+"Test_name.c", line 345: error: invalid redeclaration of type name "sa_345" (declared at line 345)
+      ASSERT_RVALUE(Class());
+      ^
+
+"Test_name.c", line 346: error: invalid redeclaration of type name "sa_346" (declared at line 346)
+      ASSERT_RVALUE(void());
+      ^
+
+"Test_name.c", line 346: error: invalid redeclaration of type name "sa_346" (declared at line 346)
+      ASSERT_RVALUE(void());
+      ^
+
+"Test_name.c", line 346: error: invalid redeclaration of type name "sa_346" (declared at line 346)
+      ASSERT_RVALUE(void());
+      ^
+
+"Test_name.c", line 356: error: identifier "__is_lvalue_expr" is undefined
+      ASSERT_LVALUE(Class().staticReferenceDataMember);
+      ^
+
+"Test_name.c", line 356: error: invalid redeclaration of type name "sa_356" (declared at line 356)
+      ASSERT_LVALUE(Class().staticReferenceDataMember);
+      ^
+
+"Test_name.c", line 356: error: identifier "__is_rvalue_expr" is undefined
+      ASSERT_LVALUE(Class().staticReferenceDataMember);
+      ^
+
+"Test_name.c", line 356: error: invalid redeclaration of type name "sa_356" (declared at line 356)
+      ASSERT_LVALUE(Class().staticReferenceDataMember);
+      ^
+
+"Test_name.c", line 356: error: invalid redeclaration of type name "sa_356" (declared at line 356)
+      ASSERT_LVALUE(Class().staticReferenceDataMember);
+      ^
+
+"Test_name.c", line 357: error: invalid redeclaration of type name "sa_357" (declared at line 357)
+      ASSERT_LVALUE(Class().referenceDataMember);
+      ^
+
+"Test_name.c", line 357: error: invalid redeclaration of type name "sa_357" (declared at line 357)
+      ASSERT_LVALUE(Class().referenceDataMember);
+      ^
+
+"Test_name.c", line 357: error: invalid redeclaration of type name "sa_357" (declared at line 357)
+      ASSERT_LVALUE(Class().referenceDataMember);
+      ^
+
+"Test_name.c", line 361: error: invalid redeclaration of type name "sa_361" (declared at line 361)
+      ASSERT_LVALUE(Class().staticNonreferenceDataMember);
+      ^
+
+"Test_name.c", line 361: error: invalid redeclaration of type name "sa_361" (declared at line 361)
+      ASSERT_LVALUE(Class().staticNonreferenceDataMember);
+      ^
+
+"Test_name.c", line 361: error: invalid redeclaration of type name "sa_361" (declared at line 361)
+      ASSERT_LVALUE(Class().staticNonreferenceDataMember);
+      ^
+
+"Test_name.c", line 362: error: invalid redeclaration of type name "sa_362" (declared at line 362)
+      ASSERT_LVALUE(Class().staticReferenceDataMember);
+      ^
+
+"Test_name.c", line 362: error: invalid redeclaration of type name "sa_362" (declared at line 362)
+      ASSERT_LVALUE(Class().staticReferenceDataMember);
+      ^
+
+"Test_name.c", line 362: error: invalid redeclaration of type name "sa_362" (declared at line 362)
+      ASSERT_LVALUE(Class().staticReferenceDataMember);
+      ^
+
+"Test_name.c", line 368: error: invalid redeclaration of type name "sa_368" (declared at line 368)
+      ASSERT_LVALUE(lvalue.dataMember);
+      ^
+
+"Test_name.c", line 368: error: invalid redeclaration of type name "sa_368" (declared at line 368)
+      ASSERT_LVALUE(lvalue.dataMember);
+      ^
+
+"Test_name.c", line 368: error: invalid redeclaration of type name "sa_368" (declared at line 368)
+      ASSERT_LVALUE(lvalue.dataMember);
+      ^
+
+"Test_name.c", line 369: error: invalid redeclaration of type name "sa_369" (declared at line 369)
+      ASSERT_RVALUE(Class().dataMember);
+      ^
+
+"Test_name.c", line 369: error: invalid redeclaration of type name "sa_369" (declared at line 369)
+      ASSERT_RVALUE(Class().dataMember);
+      ^
+
+"Test_name.c", line 369: error: invalid redeclaration of type name "sa_369" (declared at line 369)
+      ASSERT_RVALUE(Class().dataMember);
+      ^
+
+"Test_name.c", line 373: error: invalid redeclaration of type name "sa_373" (declared at line 373)
+      ASSERT_LVALUE(Class().StaticMemberFunction);
+      ^
+
+Error limit reached.
+200 errors detected in the compilation of "Test_name.c".
+Compilation terminated.

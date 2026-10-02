@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 9: error: extra text after expected end of number
+  static_assert (0x0'e-0xe == 0, "signs");
+                      ^
+
+"Test_name.c", line 9: error: static assertion failed with "signs"
+  static_assert (0x0'e-0xe == 0, "signs");
+  ^
+"Test_name.c", line 9: note: the final comparison was 14 == 0
+  static_assert (0x0'e-0xe == 0, "signs");
+                           ^
+
+2 errors detected in the compilation of "Test_name.c".

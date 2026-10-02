@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 13: error: expression must have struct or union type but it has type "struct foo *"
+    return ptr.x; /* { dg-error "'ptr' is a pointer; did you mean to use '->'?" } */
+           ^
+
+"Test_name.c", line 25: error: expression must have struct or union type but it has type "union u *"
+    return ptr.x; /* { dg-error "'ptr' is a pointer; did you mean to use '->'?" } */
+           ^
+
+"Test_name.c", line 38: error: expression must have struct or union type but it has type "void **"
+    return ptr.x; /* { dg-error "request for member 'x' in something not a structure or union" } */
+           ^
+
+3 errors detected in the compilation of "Test_name.c".

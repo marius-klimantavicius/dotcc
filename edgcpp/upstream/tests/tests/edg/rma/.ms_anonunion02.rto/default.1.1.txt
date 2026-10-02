@@ -1,0 +1,9 @@
+eccp -DTEST_NUMBER=1 -r --microsoft_version=1400 Test_name.c
+"Test_name.c", line 7: warning: this anonymous union/struct field is hidden by member "S::b" (declared at line 6)
+    union { int b, c; };
+                ^
+
+"Test_name.c", line 9: remark: return type "int" omitted in declaration of function "main"
+  main() {
+  ^
+

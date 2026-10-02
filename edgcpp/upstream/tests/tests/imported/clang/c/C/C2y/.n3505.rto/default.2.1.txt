@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=2 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c11 Test_name.c
+"Test_name.c", line 27: error: expression must be a modifiable lvalue
+  #if 1 ? 1 : ('a' += 5) // expected-error {{token is not a valid binary operator in a preprocessor subexpression}}
+               ^
+
+1 error detected in the compilation of "Test_name.c".

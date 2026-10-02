@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 18: error: function "f(T &&, int)->int [with T=AutoPtr]" (declared at line 12) cannot be referenced -- it is a deleted function
+    f (AutoPtr (), 42); // { dg-error "use of deleted function" "" { target c++20_down } }
+    ^
+
+1 error detected in the compilation of "Test_name.c".

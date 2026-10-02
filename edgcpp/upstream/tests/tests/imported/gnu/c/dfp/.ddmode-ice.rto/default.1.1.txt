@@ -1,0 +1,94 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 8: error: identifier "_Decimal64" is undefined
+  _Decimal64 y[258][258];
+  ^
+
+"Test_name.c", line 9: error: identifier "_Decimal64" is undefined
+  _Decimal64 dd[258][258];
+  ^
+
+"Test_name.c", line 10: error: identifier "_Decimal64" is undefined
+  _Decimal64 ry[258][258];
+  ^
+
+"Test_name.c", line 11: error: identifier "_Decimal64" is undefined
+  _Decimal64
+  ^
+
+"Test_name.c", line 23: error: identifier "_Decimal64" is undefined
+    _Decimal64 a;
+    ^
+
+"Test_name.c", line 24: error: identifier "_Decimal64" is undefined
+    _Decimal64 b;
+    ^
+
+"Test_name.c", line 25: error: identifier "_Decimal64" is undefined
+    _Decimal64 c;
+    ^
+
+"Test_name.c", line 26: error: identifier "_Decimal64" is undefined
+    _Decimal64 qi;
+    ^
+
+"Test_name.c", line 27: error: identifier "_Decimal64" is undefined
+    _Decimal64 qj;
+    ^
+
+"Test_name.c", line 28: error: identifier "_Decimal64" is undefined
+    _Decimal64 xx;
+    ^
+
+"Test_name.c", line 29: error: identifier "_Decimal64" is undefined
+    _Decimal64 yx;
+    ^
+
+"Test_name.c", line 30: error: identifier "_Decimal64" is undefined
+    _Decimal64 xy;
+    ^
+
+"Test_name.c", line 31: error: identifier "_Decimal64" is undefined
+    _Decimal64 yy;
+    ^
+
+"Test_name.c", line 32: error: identifier "_Decimal64" is undefined
+    _Decimal64 rel;
+    ^
+
+"Test_name.c", line 33: error: identifier "_Decimal64" is undefined
+    _Decimal64 qxx;
+    ^
+
+"Test_name.c", line 34: error: identifier "_Decimal64" is undefined
+    _Decimal64 qyy;
+    ^
+
+"Test_name.c", line 35: error: identifier "_Decimal64" is undefined
+    _Decimal64 qxy;
+    ^
+
+"Test_name.c", line 44: error: extra text after expected end of number
+  	  a = 0.25dd * (xy * xy + yy * yy);
+  	          ^
+
+"Test_name.c", line 45: error: extra text after expected end of number
+  	  b = 0.25dd * (xx * xx + yx * yx);
+  	          ^
+
+"Test_name.c", line 46: error: extra text after expected end of number
+  	  c = 0.125dd * (xx * xy + yx * yy);
+  	           ^
+
+"Test_name.c", line 47: error: extra text after expected end of number
+  	  qj = 0.0dd;
+  	          ^
+
+"Test_name.c", line 49: error: extra text after expected end of number
+  	  qxx = y[ip][j] - 2.0dd * y[i][j] + y[im][j];
+  	                      ^
+
+"Test_name.c", line 50: error: extra text after expected end of number
+  	  qyy = y[i][jp] - 2.0dd * y[i][j] + y[i][jm];
+  	                      ^
+
+23 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,3 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --gnu_version=80200 -tused -e 200 --no_wrap mv12-aux.cc Test_name.c
+mv12-aux.cc:
+Test_name.c:

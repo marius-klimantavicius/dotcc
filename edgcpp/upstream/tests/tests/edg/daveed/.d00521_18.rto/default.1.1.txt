@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --microsoft Test_name.c
+"Test_name.c", line 24: warning: dllexport/dllimport conflict with "S::f" (declared at line 19); dllexport assumed
+  void S::f() {}
+          ^
+
+"Test_name.c", line 25: warning: dllexport/dllimport conflict with "S::s" (declared at line 20); dllexport assumed
+  void S::s() {}
+          ^
+

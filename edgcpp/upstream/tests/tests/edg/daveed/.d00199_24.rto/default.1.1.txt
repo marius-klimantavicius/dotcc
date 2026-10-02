@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=40300 --gcc Test_name.c
+"Test_name.c", line 15: warning: function "f" was declared but never referenced
+  static void f(int i, int a[i][i]);
+              ^
+

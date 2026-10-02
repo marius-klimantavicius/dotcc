@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 36: warning: missing return statement at end of non-void function "lexicographical_compare(_II1, _II1, _II2, _II2, _Compare)"
+  }
+  ^
+
+"Test_name.c", line 49: warning: missing return statement at end of non-void function "input_iterator_wrapper<T>::operator=="
+      }
+      ^
+          detected during:
+            instantiation of "bool input_iterator_wrapper<T>::operator!=(const input_iterator_wrapper<T> &) const [with T=X]" at line 32
+            instantiation of "bool lexicographical_compare(_II1, _II1, _II2, _II2, _Compare) [with _II1=input_iterator_wrapper<X>, _II2=input_iterator_wrapper<X>, _Compare=bool (*)(const X &, const X &)]" at line 61
+
+"Test_name.c", line 54: warning: missing return statement at end of non-void function "input_iterator_wrapper<T>::operator++"
+      input_iterator_wrapper& operator++() { }
+                                             ^
+          detected during instantiation of "bool lexicographical_compare(_II1, _II1, _II2, _II2, _Compare) [with _II1=input_iterator_wrapper<X>, _II2=input_iterator_wrapper<X>, _Compare=bool (*)(const X &, const X &)]" at line 61
+
+"Test_name.c", line 53: warning: missing return statement at end of non-void function "input_iterator_wrapper<T>::operator*"
+      T& operator*() const { }
+                             ^
+          detected during instantiation of "bool lexicographical_compare(_II1, _II1, _II2, _II2, _Compare) [with _II1=input_iterator_wrapper<X>, _II2=input_iterator_wrapper<X>, _Compare=bool (*)(const X &, const X &)]" at line 61
+

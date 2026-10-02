@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 29: warning: expression has no effect
+  const int& r5 = (42, f(10)); // { dg-warning "dangling reference" }
+                   ^
+
+"Test_name.c", line 33: warning: expression has no effect
+  const int& r9 = (42, g ? f(10) : f(9)); // { dg-warning "dangling reference" }
+                   ^
+
+"Test_name.c", line 53: warning: expression has no effect
+  const int& r25 = g ? h(10) : (1, f(10)); // { dg-warning "dangling reference" }
+                                ^
+
+"Test_name.c", line 54: warning: expression has no effect
+  const int& r26 = g ? (1, f(10)) : h(10); // { dg-warning "dangling reference" }
+                        ^
+

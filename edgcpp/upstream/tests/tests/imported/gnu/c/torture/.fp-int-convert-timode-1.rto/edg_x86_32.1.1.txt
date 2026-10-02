@@ -1,0 +1,14 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./torture/fp-int-convert-timode-1.c", line 14: error: expected a ";"
+    volatile unsigned __int128 u128 = (((unsigned __int128) h) << 64) | l;
+                               ^
+
+"./torture/fp-int-convert-timode-1.c", line 15: error: variable "__int128" is not a type name
+    volatile __int128 s128 = u128;
+             ^
+
+"./torture/fp-int-convert-timode-1.c", line 15: error: identifier "u128" is undefined
+    volatile __int128 s128 = u128;
+                             ^
+
+3 errors detected in the compilation of "Test_name.c".

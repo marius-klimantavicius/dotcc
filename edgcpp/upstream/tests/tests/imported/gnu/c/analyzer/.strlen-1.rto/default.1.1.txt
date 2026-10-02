@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./analyzer/strlen-1.c", line 78: warning: string literal too long -- excess characters ignored
+    const char buf[3] = "abcdefg";
+                        ^
+
+"./analyzer/strlen-1.c", line 80: warning: subscript out of range
+    return buf[5];
+              ^
+
+"./analyzer/strlen-1.c", line 104: warning: subscript out of range
+    return buf[4];
+           ^
+

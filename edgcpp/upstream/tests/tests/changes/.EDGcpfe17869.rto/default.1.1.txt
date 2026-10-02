@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --clang Test_name.c
+"syshdr", line 1: error: invalid combination of type specifiers
+  typedef int wchar_t;   // Previously accepted in Clang mode.  Now an error.
+              ^
+
+1 error detected in the compilation of "Test_name.c".

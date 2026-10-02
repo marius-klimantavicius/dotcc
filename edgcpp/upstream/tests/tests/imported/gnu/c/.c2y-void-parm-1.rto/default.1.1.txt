@@ -1,0 +1,498 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 20: error: declaring a void parameter list with a qualified void type is nonstandard
+  void g1 (const void); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 21: error: declaring a void parameter list with a qualified void type is nonstandard
+  void g2 (CVoid); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 22: error: declaring a void parameter list with a qualified void type is nonstandard
+  void g3 (volatile void); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 23: error: declaring a void parameter list with a qualified void type is nonstandard
+  void g4 (VVoid); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 24: error: a parameter may not have void type
+  void g5 (register void); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 25: error: a parameter may not have void type
+  void g6 (register Void); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 27: error: a parameter may not have void type
+  void h1 (void x); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 28: error: a parameter may not have void type
+  void h2 (Void x); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 29: error: a parameter may not have void type
+  void h3 (const void x); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 30: error: a parameter may not have void type
+  void h4 (CVoid x); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 31: error: a parameter may not have void type
+  void h5 (volatile void x); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 32: error: a parameter may not have void type
+  void h6 (VVoid x); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 33: error: a parameter may not have void type
+  void h7 (register void x); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 34: error: a parameter may not have void type
+  void h8 (register Void x); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 36: error: a parameter may not have void type
+  void i1 (void, ...); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 37: error: a parameter may not have void type
+  void i2 (Void, ...); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 38: error: a parameter may not have void type
+  void i3 (const void, ...); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 39: error: a parameter may not have void type
+  void i4 (CVoid, ...); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 40: error: a parameter may not have void type
+  void i5 (volatile void, ...); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 41: error: a parameter may not have void type
+  void i6 (VVoid, ...); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 42: error: a parameter may not have void type
+  void i7 (register void, ...); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 43: error: a parameter may not have void type
+  void i8 (register Void, ...); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 45: error: a parameter may not have void type
+  void j1 (void x, ...); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 46: error: a parameter may not have void type
+  void j2 (Void x, ...); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 47: error: a parameter may not have void type
+  void j3 (const void x, ...); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 48: error: a parameter may not have void type
+  void j4 (CVoid x, ...); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 49: error: a parameter may not have void type
+  void j5 (volatile void x, ...); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 50: error: a parameter may not have void type
+  void j6 (VVoid x, ...); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 51: error: a parameter may not have void type
+  void j7 (register void x, ...); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 52: error: a parameter may not have void type
+  void j8 (register Void x, ...); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 54: error: a parameter may not have void type
+  void k1 (int i, void); /* { dg-error "void" } */
+                  ^
+
+"Test_name.c", line 55: error: a parameter may not have void type
+  void k2 (int i, Void); /* { dg-error "void" } */
+                  ^
+
+"Test_name.c", line 56: error: a parameter may not have void type
+  void k3 (int i, const void); /* { dg-error "void" } */
+                  ^
+
+"Test_name.c", line 57: error: a parameter may not have void type
+  void k4 (int i, CVoid); /* { dg-error "void" } */
+                  ^
+
+"Test_name.c", line 58: error: a parameter may not have void type
+  void k5 (int i, volatile void); /* { dg-error "void" } */
+                  ^
+
+"Test_name.c", line 59: error: a parameter may not have void type
+  void k6 (int i, VVoid); /* { dg-error "void" } */
+                  ^
+
+"Test_name.c", line 60: error: a parameter may not have void type
+  void k7 (int i, register void); /* { dg-error "void" } */
+                  ^
+
+"Test_name.c", line 61: error: a parameter may not have void type
+  void k8 (int i, register Void); /* { dg-error "void" } */
+                  ^
+
+"Test_name.c", line 62: error: a parameter may not have void type
+  void k9 (int i, void x); /* { dg-error "void" } */
+                  ^
+
+"Test_name.c", line 63: error: a parameter may not have void type
+  void k10 (int i, Void x); /* { dg-error "void" } */
+                   ^
+
+"Test_name.c", line 64: error: a parameter may not have void type
+  void k11 (int i, const void x); /* { dg-error "void" } */
+                   ^
+
+"Test_name.c", line 65: error: a parameter may not have void type
+  void k12 (int i, CVoid x); /* { dg-error "void" } */
+                   ^
+
+"Test_name.c", line 66: error: a parameter may not have void type
+  void k13 (int i, volatile void x); /* { dg-error "void" } */
+                   ^
+
+"Test_name.c", line 67: error: a parameter may not have void type
+  void k14 (int i, VVoid x); /* { dg-error "void" } */
+                   ^
+
+"Test_name.c", line 68: error: a parameter may not have void type
+  void k15 (int i, register void x); /* { dg-error "void" } */
+                   ^
+
+"Test_name.c", line 69: error: a parameter may not have void type
+  void k16 (int i, register Void x); /* { dg-error "void" } */
+                   ^
+
+"Test_name.c", line 71: error: a parameter may not have void type
+  void l1 (void, int i); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 72: error: a parameter may not have void type
+  void l2 (Void, int i); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 73: error: a parameter may not have void type
+  void l3 (const void, int i); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 74: error: a parameter may not have void type
+  void l4 (CVoid, int i); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 75: error: a parameter may not have void type
+  void l5 (volatile void, int i); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 76: error: a parameter may not have void type
+  void l6 (VVoid, int i); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 77: error: a parameter may not have void type
+  void l7 (register void, int i); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 78: error: a parameter may not have void type
+  void l8 (register Void, int i); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 79: error: a parameter may not have void type
+  void l9 (void x, int i); /* { dg-error "void" } */
+           ^
+
+"Test_name.c", line 80: error: a parameter may not have void type
+  void l10 (Void x, int i); /* { dg-error "void" } */
+            ^
+
+"Test_name.c", line 81: error: a parameter may not have void type
+  void l11 (const void x, int i); /* { dg-error "void" } */
+            ^
+
+"Test_name.c", line 82: error: a parameter may not have void type
+  void l12 (CVoid x, int i); /* { dg-error "void" } */
+            ^
+
+"Test_name.c", line 83: error: a parameter may not have void type
+  void l13 (volatile void x, int i); /* { dg-error "void" } */
+            ^
+
+"Test_name.c", line 84: error: a parameter may not have void type
+  void l14 (VVoid x, int i); /* { dg-error "void" } */
+            ^
+
+"Test_name.c", line 85: error: a parameter may not have void type
+  void l15 (register void x, int i); /* { dg-error "void" } */
+            ^
+
+"Test_name.c", line 86: error: a parameter may not have void type
+  void l16 (register Void x, int i); /* { dg-error "void" } */
+            ^
+
+"Test_name.c", line 88: error: declaring a void parameter list with a qualified void type is nonstandard
+  void dg1 (const void) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 89: error: declaring a void parameter list with a qualified void type is nonstandard
+  void dg2 (CVoid) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 90: error: declaring a void parameter list with a qualified void type is nonstandard
+  void dg3 (volatile void) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 91: error: declaring a void parameter list with a qualified void type is nonstandard
+  void dg4 (VVoid) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 92: error: a parameter may not have void type
+  void dg5 (register void) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 93: error: a parameter may not have void type
+  void dg6 (register Void) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 95: error: a parameter may not have void type
+  void dh1 (void x) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 96: error: a parameter may not have void type
+  void dh2 (Void x) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 97: error: a parameter may not have void type
+  void dh3 (const void x) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 98: error: a parameter may not have void type
+  void dh4 (CVoid x) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 99: error: a parameter may not have void type
+  void dh5 (volatile void x) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 100: error: a parameter may not have void type
+  void dh6 (VVoid x) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 101: error: a parameter may not have void type
+  void dh7 (register void x) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 102: error: a parameter may not have void type
+  void dh8 (register Void x) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 104: error: a parameter may not have void type
+  void di1 (void, ...) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 105: error: a parameter may not have void type
+  void di2 (Void, ...) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 106: error: a parameter may not have void type
+  void di3 (const void, ...) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 107: error: a parameter may not have void type
+  void di4 (CVoid, ...) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 108: error: a parameter may not have void type
+  void di5 (volatile void, ...) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 109: error: a parameter may not have void type
+  void di6 (VVoid, ...) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 110: error: a parameter may not have void type
+  void di7 (register void, ...) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 111: error: a parameter may not have void type
+  void di8 (register Void, ...) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 113: error: a parameter may not have void type
+  void dj1 (void x, ...) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 114: error: a parameter may not have void type
+  void dj2 (Void x, ...) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 115: error: a parameter may not have void type
+  void dj3 (const void x, ...) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 116: error: a parameter may not have void type
+  void dj4 (CVoid x, ...) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 117: error: a parameter may not have void type
+  void dj5 (volatile void x, ...) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 118: error: a parameter may not have void type
+  void dj6 (VVoid x, ...) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 119: error: a parameter may not have void type
+  void dj7 (register void x, ...) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 120: error: a parameter may not have void type
+  void dj8 (register Void x, ...) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 122: error: a parameter may not have void type
+  void dk1 (int i, void) {} /* { dg-error "void|incomplete" } */
+                   ^
+
+"Test_name.c", line 123: error: a parameter may not have void type
+  void dk2 (int i, Void) {} /* { dg-error "void|incomplete" } */
+                   ^
+
+"Test_name.c", line 124: error: a parameter may not have void type
+  void dk3 (int i, const void) {} /* { dg-error "void|incomplete" } */
+                   ^
+
+"Test_name.c", line 125: error: a parameter may not have void type
+  void dk4 (int i, CVoid) {} /* { dg-error "void|incomplete" } */
+                   ^
+
+"Test_name.c", line 126: error: a parameter may not have void type
+  void dk5 (int i, volatile void) {} /* { dg-error "void|incomplete" } */
+                   ^
+
+"Test_name.c", line 127: error: a parameter may not have void type
+  void dk6 (int i, VVoid) {} /* { dg-error "void|incomplete" } */
+                   ^
+
+"Test_name.c", line 128: error: a parameter may not have void type
+  void dk7 (int i, register void) {} /* { dg-error "void|incomplete" } */
+                   ^
+
+"Test_name.c", line 129: error: a parameter may not have void type
+  void dk8 (int i, register Void) {} /* { dg-error "void|incomplete" } */
+                   ^
+
+"Test_name.c", line 130: error: a parameter may not have void type
+  void dk9 (int i, void x) {} /* { dg-error "void|incomplete" } */
+                   ^
+
+"Test_name.c", line 131: error: a parameter may not have void type
+  void dk10 (int i, Void x) {} /* { dg-error "void|incomplete" } */
+                    ^
+
+"Test_name.c", line 132: error: a parameter may not have void type
+  void dk11 (int i, const void x) {} /* { dg-error "void|incomplete" } */
+                    ^
+
+"Test_name.c", line 133: error: a parameter may not have void type
+  void dk12 (int i, CVoid x) {} /* { dg-error "void|incomplete" } */
+                    ^
+
+"Test_name.c", line 134: error: a parameter may not have void type
+  void dk13 (int i, volatile void x) {} /* { dg-error "void|incomplete" } */
+                    ^
+
+"Test_name.c", line 135: error: a parameter may not have void type
+  void dk14 (int i, VVoid x) {} /* { dg-error "void|incomplete" } */
+                    ^
+
+"Test_name.c", line 136: error: a parameter may not have void type
+  void dk15 (int i, register void x) {} /* { dg-error "void|incomplete" } */
+                    ^
+
+"Test_name.c", line 137: error: a parameter may not have void type
+  void dk16 (int i, register Void x) {} /* { dg-error "void|incomplete" } */
+                    ^
+
+"Test_name.c", line 139: error: a parameter may not have void type
+  void dl1 (void, int i) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 140: error: a parameter may not have void type
+  void dl2 (Void, int i) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 141: error: a parameter may not have void type
+  void dl3 (const void, int i) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 142: error: a parameter may not have void type
+  void dl4 (CVoid, int i) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 143: error: a parameter may not have void type
+  void dl5 (volatile void, int i) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 144: error: a parameter may not have void type
+  void dl6 (VVoid, int i) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 145: error: a parameter may not have void type
+  void dl7 (register void, int i) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 146: error: a parameter may not have void type
+  void dl8 (register Void, int i) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 147: error: a parameter may not have void type
+  void dl9 (void x, int i) {} /* { dg-error "void|incomplete" } */
+            ^
+
+"Test_name.c", line 148: error: a parameter may not have void type
+  void dl10 (Void x, int i) {} /* { dg-error "void|incomplete" } */
+             ^
+
+"Test_name.c", line 149: error: a parameter may not have void type
+  void dl11 (const void x, int i) {} /* { dg-error "void|incomplete" } */
+             ^
+
+"Test_name.c", line 150: error: a parameter may not have void type
+  void dl12 (CVoid x, int i) {} /* { dg-error "void|incomplete" } */
+             ^
+
+"Test_name.c", line 151: error: a parameter may not have void type
+  void dl13 (volatile void x, int i) {} /* { dg-error "void|incomplete" } */
+             ^
+
+"Test_name.c", line 152: error: a parameter may not have void type
+  void dl14 (VVoid x, int i) {} /* { dg-error "void|incomplete" } */
+             ^
+
+"Test_name.c", line 153: error: a parameter may not have void type
+  void dl15 (register void x, int i) {} /* { dg-error "void|incomplete" } */
+             ^
+
+"Test_name.c", line 154: error: a parameter may not have void type
+  void dl16 (register Void x, int i) {} /* { dg-error "void|incomplete" } */
+             ^
+
+124 errors detected in the compilation of "Test_name.c".

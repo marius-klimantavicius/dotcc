@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"foobar", line 3: error: static assertion failed with "0 == __builtin_strcmp (f4, FILE_4)"
+  A (0 == __builtin_strcmp (f4, FILE_4));
+  ^
+"foobar", line 3: note: the final comparison was 0 == -1
+  A (0 == __builtin_strcmp (f4, FILE_4));
+  ^
+
+"foobar", line 3: error: static assertion failed with "n6 == 99"
+  A (n6 == 99);
+  ^
+"foobar", line 3: note: the final comparison was 1 == 99
+  A (n6 == 99);
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

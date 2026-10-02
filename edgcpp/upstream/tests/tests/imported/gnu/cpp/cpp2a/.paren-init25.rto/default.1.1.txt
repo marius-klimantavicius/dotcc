@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 17: error: static assertion failed
+  static_assert(__is_constructible(aggr, int, int));
+  ^
+
+"Test_name.c", line 22: error: static assertion failed
+  static_assert(__is_constructible(T, aggr));
+  ^
+
+"Test_name.c", line 23: error: static assertion failed
+  static_assert(__is_constructible(T, aggr, aggr));
+  ^
+
+"Test_name.c", line 26: error: static assertion failed
+  static_assert(__is_constructible(N, nonaggr));
+  ^
+
+"Test_name.c", line 27: error: static assertion failed
+  static_assert(__is_constructible(N, nonaggr, nonaggr));
+  ^
+
+5 errors detected in the compilation of "Test_name.c".

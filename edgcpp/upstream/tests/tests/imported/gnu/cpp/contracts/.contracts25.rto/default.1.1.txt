@@ -1,0 +1,74 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 9: warning: unknown attribute "assert"
+    [[assert: a > 0]];
+      ^
+
+"Test_name.c", line 9: error: expected a ","
+    [[assert: a > 0]];
+            ^
+
+"Test_name.c", line 14: warning: unknown attribute "assert"
+    [[assert: a > 0]];
+      ^
+
+"Test_name.c", line 14: error: expected a ","
+    [[assert: a > 0]];
+            ^
+
+"Test_name.c", line 37: warning: unknown attribute "assert"
+    [[assert ignore: a > 0]];
+      ^
+
+"Test_name.c", line 37: error: expected a ","
+    [[assert ignore: a > 0]];
+             ^
+
+"Test_name.c", line 38: warning: unknown attribute "assert"
+    [[assert check_maybe_continue: a > 0]];
+      ^
+
+"Test_name.c", line 38: error: expected a ","
+    [[assert check_maybe_continue: a > 0]];
+             ^
+
+"Test_name.c", line 26: warning: unknown attribute "assert"
+    [[assert: a > 0]];
+      ^
+
+"Test_name.c", line 26: error: expected a ","
+    [[assert: a > 0]];
+            ^
+
+"Test_name.c", line 32: warning: unknown attribute "assert"
+    [[assert: a > 0]];
+      ^
+
+"Test_name.c", line 32: error: expected a ","
+    [[assert: a > 0]];
+            ^
+
+"Test_name.c", line 43: warning: variable "a" was declared but never referenced
+    int a = wfun(10);
+        ^
+
+"Test_name.c", line 44: warning: variable "b" was declared but never referenced
+    int b = ffun(-10);
+        ^
+
+"Test_name.c", line 45: warning: variable "c" was declared but never referenced
+    int c = wtfun(10);
+        ^
+
+"Test_name.c", line 46: warning: variable "d" was declared but never referenced
+    int d = ftfun(-10);
+        ^
+
+"Test_name.c", line 48: warning: variable "e" was declared but never referenced
+    int e = explicitfn(-10);
+        ^
+
+"Test_name.c", line 50: warning: variable "z" was declared but never referenced
+    int z = ftfun(-10.0);
+        ^
+
+6 errors detected in the compilation of "Test_name.c".

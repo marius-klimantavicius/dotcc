@@ -1,0 +1,65 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 16: error: expression must have a constant value
+    A<(intptr_t)&&lab1 - (__INTPTR_TYPE__)&&lab2> c;	// { dg-error "conversion from pointer type" }
+      ^
+"Test_name.c", line 16: note: conversion from "intptr_t *" (aka "int *") to "intptr_t" (aka "int") is invalid in constant-expression evaluation
+    A<(intptr_t)&&lab1 - (__INTPTR_TYPE__)&&lab2> c;	// { dg-error "conversion from pointer type" }
+                       ^
+
+"Test_name.c", line 17: error: expression must have a constant value
+    A<(intptr_t)&&lab1 - (__INTPTR_TYPE__)&&lab1> d;	// { dg-error "conversion from pointer type" }
+      ^
+"Test_name.c", line 17: note: conversion from "intptr_t *" (aka "int *") to "intptr_t" (aka "int") is invalid in constant-expression evaluation
+    A<(intptr_t)&&lab1 - (__INTPTR_TYPE__)&&lab1> d;	// { dg-error "conversion from pointer type" }
+                       ^
+
+"Test_name.c", line 18: error: expression must have a constant value
+    A<(intptr_t)&a - (intptr_t)&b> e;			// { dg-error "conversion from pointer type" }
+      ^
+"Test_name.c", line 18: note: conversion from "int *" to "intptr_t" (aka "int") is invalid in constant-expression evaluation
+    A<(intptr_t)&a - (intptr_t)&b> e;			// { dg-error "conversion from pointer type" }
+                   ^
+
+"Test_name.c", line 19: error: expression must have a constant value
+    A<(intptr_t)&a - (intptr_t)&a> f;			// { dg-error "conversion from pointer type" }
+      ^
+"Test_name.c", line 19: note: conversion from "int *" to "intptr_t" (aka "int") is invalid in constant-expression evaluation
+    A<(intptr_t)&a - (intptr_t)&a> f;			// { dg-error "conversion from pointer type" }
+                   ^
+
+"Test_name.c", line 20: error: expression must have a constant value
+    A<(intptr_t)sizeof(a) + (intptr_t)&a> g;		// { dg-error "conversion from pointer type" }
+      ^
+"Test_name.c", line 20: note: conversion from "int *" to "intptr_t" (aka "int") is invalid in constant-expression evaluation
+    A<(intptr_t)sizeof(a) + (intptr_t)&a> g;		// { dg-error "conversion from pointer type" }
+                          ^
+
+"Test_name.c", line 21: error: a template argument may not reference a non-external entity
+    A<(intptr_t)&a> h;					// { dg-error "conversion from pointer type" }
+      ^
+
+"Test_name.c", line 16: warning: variable "c" was declared but never referenced
+    A<(intptr_t)&&lab1 - (__INTPTR_TYPE__)&&lab2> c;	// { dg-error "conversion from pointer type" }
+                                                  ^
+
+"Test_name.c", line 17: warning: variable "d" was declared but never referenced
+    A<(intptr_t)&&lab1 - (__INTPTR_TYPE__)&&lab1> d;	// { dg-error "conversion from pointer type" }
+                                                  ^
+
+"Test_name.c", line 18: warning: variable "e" was declared but never referenced
+    A<(intptr_t)&a - (intptr_t)&b> e;			// { dg-error "conversion from pointer type" }
+                                   ^
+
+"Test_name.c", line 19: warning: variable "f" was declared but never referenced
+    A<(intptr_t)&a - (intptr_t)&a> f;			// { dg-error "conversion from pointer type" }
+                                   ^
+
+"Test_name.c", line 20: warning: variable "g" was declared but never referenced
+    A<(intptr_t)sizeof(a) + (intptr_t)&a> g;		// { dg-error "conversion from pointer type" }
+                                          ^
+
+"Test_name.c", line 21: warning: variable "h" was declared but never referenced
+    A<(intptr_t)&a> h;					// { dg-error "conversion from pointer type" }
+                    ^
+
+6 errors detected in the compilation of "Test_name.c".

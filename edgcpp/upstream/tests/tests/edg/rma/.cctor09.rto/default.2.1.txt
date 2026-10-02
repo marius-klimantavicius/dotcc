@@ -1,0 +1,18 @@
+cpfe -DTEST_NUMBER=2 -r -x -tused Test_name.c
+"Test_name.c", line 15: error: class "Base" has no suitable copy constructor
+              Base b3 = Base ( 9 );       // Okay, explicit generation of the
+                        ^
+
+"Test_name.c", line 17: error: class "Base" has no suitable copy constructor
+              Base b4 = (Base)9;  // Same thing
+                        ^
+
+"Test_name.c", line 15: remark: variable "b3" was declared but never referenced
+              Base b3 = Base ( 9 );       // Okay, explicit generation of the
+                   ^
+
+"Test_name.c", line 17: remark: variable "b4" was declared but never referenced
+              Base b4 = (Base)9;  // Same thing
+                   ^
+
+2 errors detected in the compilation of "Test_name.c".

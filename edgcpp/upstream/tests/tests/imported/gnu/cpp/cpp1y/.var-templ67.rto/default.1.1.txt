@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 11: error: default argument not at end of parameter list
+  template<typename T = int, typename U>
+                    ^
+
+"Test_name.c", line 17: error: template parameter pack not at end of parameter list
+  template<typename... Ts, typename U> // { dg-error "must be at the end" }
+                       ^
+
+2 errors detected in the compilation of "Test_name.c".

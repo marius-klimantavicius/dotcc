@@ -1,0 +1,65 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 Test_name.c
+"Test_name.c", line 5: error: member "lambda []()->void::x" (declared at line 5) is inaccessible
+  const char *has_no_member = [x("hello")] {}.x; // expected-error {{no member named 'x'}}
+                                              ^
+
+"Test_name.c", line 21: warning: variable "c" was declared but never referenced
+    char c;
+         ^
+
+"Test_name.c", line 35: error: class "ExplicitCopy" has no suitable copy constructor
+  auto init_kind_2 = [ec = ExplicitCopy()] {}; // expected-error {{no matching constructor}}
+                           ^
+
+"Test_name.c", line 48: error: expected an expression
+  auto bad_init_1 = [a()] {}; // expected-error {{expected expression}}
+                       ^
+
+"Test_name.c", line 48: error: expected a ")"
+  auto bad_init_1 = [a()] {}; // expected-error {{expected expression}}
+                        ^
+
+"Test_name.c", line 49: error: expected a ")"
+  auto bad_init_2 = [a(1, 2)] {}; // expected-error {{initializer for lambda capture 'a' contains multiple expressions}}
+                        ^
+
+"Test_name.c", line 49: error: expected an identifier
+  auto bad_init_2 = [a(1, 2)] {}; // expected-error {{initializer for lambda capture 'a' contains multiple expressions}}
+                          ^
+
+"Test_name.c", line 50: error: cannot deduce "auto" type
+  auto bad_init_3 = [&a(void_fn())] {}; // expected-error {{cannot form a reference to 'void'}}
+                      ^
+
+"Test_name.c", line 51: error: cannot deduce "auto" type
+  auto bad_init_4 = [a(void_fn())] {}; // expected-error {{has incomplete type 'void'}}
+                     ^
+
+"Test_name.c", line 52: error: cannot deduce "auto" type
+  auto bad_init_5 = [a(overload_fn)] {}; // expected-error {{cannot deduce type for lambda capture 'a' from initializer of type '<overloaded function}}
+                     ^
+
+"Test_name.c", line 53: error: cannot deduce "auto" type
+  auto bad_init_6 = [a{overload_fn}] {}; // expected-error {{cannot deduce type for lambda capture 'a' from initializer list}}
+                     ^
+
+"Test_name.c", line 54: error: cannot deduce "auto" type
+  auto bad_init_7 = [a{{1}}] {}; // expected-error {{cannot deduce type for lambda capture 'a' from nested initializer list}}
+                     ^
+
+"Test_name.c", line 39: error: class "ExplicitCopy" has no suitable copy constructor
+    auto init_kind_2 = [ec = T()] {}; // expected-error {{no matching constructor}}
+                             ^
+          detected during instantiation of "void init_kind_template<T>() [with T=ExplicitCopy]" at line 42
+
+"Test_name.c", line 56: error: this pack expansion produced an empty list of expressions, and an expression is needed here
+  template<typename...T> void pack_1(T...t) { (void)[a(t...)] {}; } // expected-error {{initializer missing for lambda capture 'a'}}
+                                                       ^
+          detected during instantiation of "void pack_1(T...) [with T=<>]" at line 57
+
+"Test_name.c", line 78: error: a value of type "int" cannot be assigned to an entity of type "const char *"
+    [x(&t)]() { *x = 1; } (); // expected-error {{assigning to 'const char *'}}
+                   ^
+          detected during instantiation of "T instantiate_test(T) [with T=const char *]" at line 83
+
+14 errors detected in the compilation of "Test_name.c".

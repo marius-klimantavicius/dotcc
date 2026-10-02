@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c --target linux_aarch64 Test_name.c
+"Test_name.c", line 5: warning: target attribute not recognized
+  __attribute__((target("branch-protection=foo"))) // expected-error {{invalid or misplaced branch protection specification 'foo'}}
+                        ^
+
+"Test_name.c", line 9: warning: target attribute not recognized
+  __attribute__((target("branch-protection=+bti"))) // expected-error {{invalid or misplaced branch protection specification '<empty>'}}
+                        ^
+
+"Test_name.c", line 13: warning: target attribute not recognized
+  __attribute__((target("branch-protection=bti+"))) // expected-error {{invalid or misplaced branch protection specification '<empty>'}}
+                        ^
+
+"Test_name.c", line 17: warning: target attribute not recognized
+  __attribute__((target("branch-protection=pac-ret+bkey"))) // expected-error {{invalid or misplaced branch protection specification 'bkey'}}
+                        ^
+
+"Test_name.c", line 21: warning: target attribute not recognized
+  __attribute__((target("branch-protection=bti+leaf"))) // expected-error {{invalid or misplaced branch protection specification 'leaf'}}
+                        ^
+
+"Test_name.c", line 25: warning: target attribute not recognized
+  __attribute__((target("branch-protection=bti+leaf+pac-ret"))) // expected-error {{invalid or misplaced branch protection specification 'leaf'}}
+                        ^
+
+"Test_name.c", line 29: warning: target attribute not recognized
+  __attribute__((target("branch-protection=pac-ret+bti+leaf"))) // expected-error {{invalid or misplaced branch protection specification 'leaf'}}
+                        ^
+

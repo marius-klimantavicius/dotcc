@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 10: error: a member with an in-class initializer must be const
+    static int k3 = k2; // expected-error {{non-const static data member must be initialized out of line}}
+                  ^
+
+"Test_name.c", line 37: error: "k" is not a nonstatic data member or base class of class "U3"
+    U3() : k(0) {} // expected-error {{does not name a non-static data member}}
+           ^
+
+"Test_name.c", line 42: error: static data member declaration is not allowed in this class
+      static const int n; // expected-error {{static data member 'n' not allowed in anonymous union}}
+      ^
+
+"Test_name.c", line 48: error: static data member declaration is not allowed in this class
+    static const int k; // expected-error {{static data member 'k' not allowed in anonymous union}}
+    ^
+
+4 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 11: warning: explicit enum base types are a C++11 feature
+    enum F : int{0}; // expected-error {{expected '(' for function-style cast}}
+           ^
+
+"Test_name.c", line 11: error: expected an identifier
+    enum F : int{0}; // expected-error {{expected '(' for function-style cast}}
+                 ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,6 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 6: error: member function with the same name as its class must be a constructor
+    int A(int);
+        ^
+
+1 error detected in the compilation of "Test_name.c".

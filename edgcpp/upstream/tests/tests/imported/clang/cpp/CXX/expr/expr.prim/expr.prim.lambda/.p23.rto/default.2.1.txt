@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 Test_name.c
+"Test_name.c", line 89: error: this pack expansion produced an empty list of expressions, and an expression is needed here
+    [as(args...)] {} (); // expected-error {{initializer missing for lambda capture 'as'}} expected-error {{multiple}}
+        ^
+          detected during instantiation of "void init_capture_pack_multi(Args...) [with Args=<>]" at line 91
+
+"Test_name.c", line 89: error: this pack expansion produced more than one expression, and a single expression is needed here
+    [as(args...)] {} (); // expected-error {{initializer missing for lambda capture 'as'}} expected-error {{multiple}}
+        ^
+          detected during instantiation of "void init_capture_pack_multi(Args...) [with Args=<int, int>]" at line 93
+
+2 errors detected in the compilation of "Test_name.c".

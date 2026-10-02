@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -DCODEGEN --c Test_name.c
+"Test_name.c", line 8: warning: declaration of "size_t" does not match the expected type "unsigned int"
+  typedef unsigned long size_t;
+                        ^
+
+"Test_name.c", line 20: error: no instance of overloaded function "open" matches the argument list
+            argument types are: (char [5], int)
+    open("path", 0);
+    ^
+"Test_name.c", line 13: note: number of parameters of function "open(const char *, int, mode_t) C++" does not match the call
+  int open(const char *pathname, int flags, mode_t mode) __attribute__((overloadable));  // expected-note{{candidate function not viable: requires 3 arguments, but 2 were provided}}
+      ^
+
+"Test_name.c", line 99: error: more than one instance of overloaded function "isdigit2" matches the required type
+    int (*p1)(int) = &isdigit2;
+                     ^
+
+"Test_name.c", line 100: error: more than one instance of overloaded function "isdigit2" matches the required type
+    int (*p2)(int) = isdigit2;
+                     ^
+
+"Test_name.c", line 101: error: cannot determine which instance of overloaded function "isdigit2" is intended
+    void *p3 = (void *)&isdigit2;
+                       ^
+
+"Test_name.c", line 102: error: cannot determine which instance of overloaded function "isdigit2" is intended
+    void *p4 = (void *)isdigit2;
+                       ^
+
+5 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=3 -A Test_name.c
+"Test_name.c", line 16: error: const variable "A" requires an initializer -- class "struct <unnamed>" has no user-provided default constructor
+  } A;
+     ^
+
+"Test_name.c", line 19: error: const variable "B" requires an initializer -- class "struct <unnamed>" has no user-provided default constructor
+  } B[3];
+        ^
+
+"Test_name.c", line 24: error: const variable "X" requires an initializer
+  } X;
+     ^
+
+"Test_name.c", line 27: error: const variable "Y" requires an initializer
+  } Y[2];
+        ^
+
+"Test_name.c", line 30: error: const variable "x" requires an initializer
+  enum { k } const x[2];
+                       ^
+
+"Test_name.c", line 16: warning: variable "A" was declared but never referenced
+  } A;
+    ^
+
+"Test_name.c", line 19: warning: variable "B" was declared but never referenced
+  } B[3];
+    ^
+
+"Test_name.c", line 24: warning: variable "X" was declared but never referenced
+  } X;
+    ^
+
+"Test_name.c", line 27: warning: variable "Y" was declared but never referenced
+  } Y[2];
+    ^
+
+"Test_name.c", line 30: warning: variable "x" was declared but never referenced
+  enum { k } const x[2];
+                   ^
+
+5 errors detected in the compilation of "Test_name.c".

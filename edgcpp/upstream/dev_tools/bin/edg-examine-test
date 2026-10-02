@@ -1,0 +1,59 @@
+#!/usr/bin/env python3
+
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+import argparse
+import os
+import sys
+
+from pathlib import Path
+from typing import Optional
+
+from edgtest.runtest import (
+  TestDescription,
+  load_description,
+  description_to_string
+)
+
+def parse_args():
+  parser = argparse.ArgumentParser(
+    description = 'EDG tool for examining a test\'s specification.'
+  )
+  parser.add_argument(
+    '-t',
+    '--top-dir',
+    dest = 'top_dir',
+    type = Path,
+    default = Path(os.getcwd()),
+    help = 'the path to the contextually "top" directory'
+  )
+  parser.add_argument(
+    'path',
+    type = Path,
+    help = 'the test to examine'
+  )
+  return parser.parse_args()
+
+def main() -> None:
+  args = parse_args()
+
+  if not os.path.exists(args.path):
+    print('No such file exists.')
+    sys.exit(1)
+
+  test_descript: Optional[TestDescription] = (
+    load_description(args.path, top_dir = args.top_dir)
+  )
+  parent_number = 0
+  print(f"Test {args.path}:")
+  while test_descript is not None:
+    if parent_number > 0:
+      print("Inheriting:")
+    print(description_to_string(test_descript))
+    test_descript = test_descript.parent
+    parent_number += 1
+
+main()

@@ -1,0 +1,8 @@
+./a.out
+Called f
+Called g
+Called h #1
+Called h #2
+Called h #2
+Called h #3
+Called h #4

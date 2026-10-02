@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 13: error: no instance of overloaded function "f" matches the argument list
+            argument types are: (int, int)
+    f(1, 2); // { dg-error "no match|invalid conversion" }
+    ^
+"Test_name.c", line 10: note: number of parameters of function "f(int, int, int)" does not match the call
+  void f(int, int, int); // { dg-message "candidate" }
+       ^
+"Test_name.c", line 9: note: function "f(int *, int)" does not match because argument #1 does not match parameter
+  void f(int*, int); // { dg-message "candidate" }
+       ^
+"Test_name.c", line 8: note: function "f(int, int *)" does not match because argument #2 does not match parameter
+  void f(int, int*); // { dg-message "candidate" }
+       ^
+
+1 error detected in the compilation of "Test_name.c".

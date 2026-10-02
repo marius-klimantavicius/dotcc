@@ -1,0 +1,35 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 17: error: expression must have a constant value
+  constexpr bool b1 = (dynamic_cast<U&>((B&)a), 0); // { dg-error "reference .dynamic_cast. failed" }
+                      ^
+"Test_name.c", line 17: note: dynamic_cast to subobject of type "U" is invalid (most-derived type is "A")
+  constexpr bool b1 = (dynamic_cast<U&>((B&)a), 0); // { dg-error "reference .dynamic_cast. failed" }
+                       ^
+
+"Test_name.c", line 19: error: expression must have a constant value
+  constexpr bool b2 = (dynamic_cast<U&>((P1&)a), 0); // { dg-error "reference .dynamic_cast. failed" }
+                      ^
+"Test_name.c", line 19: note: dynamic_cast to subobject of type "U" is invalid (most-derived type is "A")
+  constexpr bool b2 = (dynamic_cast<U&>((P1&)a), 0); // { dg-error "reference .dynamic_cast. failed" }
+                       ^
+
+"Test_name.c", line 21: error: expression must have a constant value
+  constexpr bool b3 = (dynamic_cast<U&>((P2&)a), 0); // { dg-error "reference .dynamic_cast. failed" }
+                      ^
+"Test_name.c", line 21: note: dynamic_cast to subobject of type "U" is invalid (most-derived type is "A")
+  constexpr bool b3 = (dynamic_cast<U&>((P2&)a), 0); // { dg-error "reference .dynamic_cast. failed" }
+                       ^
+
+"Test_name.c", line 17: warning: variable "b1" was declared but never referenced
+  constexpr bool b1 = (dynamic_cast<U&>((B&)a), 0); // { dg-error "reference .dynamic_cast. failed" }
+                 ^
+
+"Test_name.c", line 19: warning: variable "b2" was declared but never referenced
+  constexpr bool b2 = (dynamic_cast<U&>((P1&)a), 0); // { dg-error "reference .dynamic_cast. failed" }
+                 ^
+
+"Test_name.c", line 21: warning: variable "b3" was declared but never referenced
+  constexpr bool b3 = (dynamic_cast<U&>((P2&)a), 0); // { dg-error "reference .dynamic_cast. failed" }
+                 ^
+
+3 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 94: warning: unrecognized #pragma
+  #pragma clang diagnostic push
+          ^
+
+"Test_name.c", line 95: warning: unrecognized #pragma
+  #pragma clang diagnostic ignored "-Wenum-compare-typo"
+          ^
+
+"Test_name.c", line 100: warning: unrecognized #pragma
+  #pragma clang diagnostic pop
+          ^
+

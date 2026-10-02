@@ -1,0 +1,8 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 31: warning: statement is unreachable
+      (void)a;
+      ^
+          detected during:
+            instantiation of function "lambda [](auto, auto)->auto [with <auto-1>=lambda [](auto, auto)->auto, <auto-2>=Number<1U>]" at line 34
+            instantiation of "auto fun1(Number<IBegin>, Number<IEnd>) [with IBegin=0U, IEnd=1U]" at line 39
+

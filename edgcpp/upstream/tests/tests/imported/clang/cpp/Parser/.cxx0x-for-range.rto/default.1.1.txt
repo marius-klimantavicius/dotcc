@@ -1,0 +1,150 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 26: error: function template "tie" is not a type name
+    for (tie(p, n) : m) { // expected-error {{for range declaration must declare a variable}}
+         ^
+
+"Test_name.c", line 26: error: expected a ")"
+    for (tie(p, n) : m) { // expected-error {{for range declaration must declare a variable}}
+              ^
+
+"Test_name.c", line 26: error: expected a ":"
+    for (tie(p, n) : m) { // expected-error {{for range declaration must declare a variable}}
+              ^
+
+"Test_name.c", line 31: warning: variable "n" is used before its value is set
+    return n;
+           ^
+
+"Test_name.c", line 19: warning: variable "p" was declared but never referenced
+    char *p;
+          ^
+
+"Test_name.c", line 49: error: expected a ";"
+    for (auto foo   =     a) // expected-error {{range-based 'for' statement uses ':', not '='}}
+                           ^
+
+"Test_name.c", line 49: error: expected an expression
+    for (auto foo   =     a) // expected-error {{range-based 'for' statement uses ':', not '='}}
+                           ^
+
+"Test_name.c", line 49: error: expected a ";"
+    for (auto foo   =     a) // expected-error {{range-based 'for' statement uses ':', not '='}}
+                           ^
+
+"Test_name.c", line 49: warning: variable "foo" was set but never used
+    for (auto foo   =     a) // expected-error {{range-based 'for' statement uses ':', not '='}}
+              ^
+
+"Test_name.c", line 54: error: expected a ";"
+        v) // expected-error@-1 {{range-based 'for' statement uses ':', not '='}}
+         ^
+
+"Test_name.c", line 54: error: expected an expression
+        v) // expected-error@-1 {{range-based 'for' statement uses ':', not '='}}
+         ^
+
+"Test_name.c", line 54: error: expected a ";"
+        v) // expected-error@-1 {{range-based 'for' statement uses ':', not '='}}
+         ^
+
+"Test_name.c", line 52: warning: variable "i" was set but never used
+    for (auto i
+              ^
+
+"Test_name.c", line 60: error: expected a ";"
+    FORRANGE(i, a) {  // expected-error {{range-based 'for' statement uses ':', not '='}}
+    ^
+
+"Test_name.c", line 70: error: expected a ":"
+          for (auto x = n ? 1 : 2 : a); // expected-error {{expected ';' in 'for' statement specifier}} \
+                      ^
+
+"Test_name.c", line 70: error: this range-based "for" statement requires a suitable "begin" function and none was found
+          for (auto x = n ? 1 : 2 : a); // expected-error {{expected ';' in 'for' statement specifier}} \
+                                ^
+
+"Test_name.c", line 70: error: this range-based "for" statement requires a suitable "end" function and none was found
+          for (auto x = n ? 1 : 2 : a); // expected-error {{expected ';' in 'for' statement specifier}} \
+                                ^
+
+"Test_name.c", line 70: error: expected a ")"
+          for (auto x = n ? 1 : 2 : a); // expected-error {{expected ';' in 'for' statement specifier}} \
+                                  ^
+
+"Test_name.c", line 72: error: C++20-style initializer statement in a range-based "for" statement is nonstandard in this mode
+          for (int i = 1; auto x = n ? 1 : 2 : a); // expected-error {{expected ';' in 'for' statement specifier}}
+               ^
+
+"Test_name.c", line 72: error: expected a ":"
+          for (int i = 1; auto x = n ? 1 : 2 : a); // expected-error {{expected ';' in 'for' statement specifier}}
+                                 ^
+
+"Test_name.c", line 72: error: this range-based "for" statement requires a suitable "begin" function and none was found
+          for (int i = 1; auto x = n ? 1 : 2 : a); // expected-error {{expected ';' in 'for' statement specifier}}
+                                           ^
+
+"Test_name.c", line 72: error: this range-based "for" statement requires a suitable "end" function and none was found
+          for (int i = 1; auto x = n ? 1 : 2 : a); // expected-error {{expected ';' in 'for' statement specifier}}
+                                           ^
+
+"Test_name.c", line 72: error: expected a ")"
+          for (int i = 1; auto x = n ? 1 : 2 : a); // expected-error {{expected ';' in 'for' statement specifier}}
+                                             ^
+
+"Test_name.c", line 72: warning: variable "i" was declared but never referenced
+          for (int i = 1; auto x = n ? 1 : 2 : a); // expected-error {{expected ';' in 'for' statement specifier}}
+                   ^
+
+"Test_name.c", line 75: error: expected a ":"
+          for (auto x = n ? 1 : 2 : a)  // expected-error {{expected ';' in 'for' statement specifier}} \
+                      ^
+
+"Test_name.c", line 75: error: this range-based "for" statement requires a suitable "begin" function and none was found
+          for (auto x = n ? 1 : 2 : a)  // expected-error {{expected ';' in 'for' statement specifier}} \
+                                ^
+
+"Test_name.c", line 75: error: this range-based "for" statement requires a suitable "end" function and none was found
+          for (auto x = n ? 1 : 2 : a)  // expected-error {{expected ';' in 'for' statement specifier}} \
+                                ^
+
+"Test_name.c", line 75: error: expected a ")"
+          for (auto x = n ? 1 : 2 : a)  // expected-error {{expected ';' in 'for' statement specifier}} \
+                                  ^
+
+"Test_name.c", line 78: error: expected a statement
+      }  // expected-error {{expected statement}}
+      ^
+
+"Test_name.c", line 80: error: C++20-style initializer statement in a range-based "for" statement is nonstandard in this mode
+          for (int i = 1; auto x = n ? 1 : 2 : a) // expected-error {{expected ';' in 'for' statement specifier}}
+               ^
+
+"Test_name.c", line 80: error: expected a ":"
+          for (int i = 1; auto x = n ? 1 : 2 : a) // expected-error {{expected ';' in 'for' statement specifier}}
+                                 ^
+
+"Test_name.c", line 80: error: this range-based "for" statement requires a suitable "begin" function and none was found
+          for (int i = 1; auto x = n ? 1 : 2 : a) // expected-error {{expected ';' in 'for' statement specifier}}
+                                           ^
+
+"Test_name.c", line 80: error: this range-based "for" statement requires a suitable "end" function and none was found
+          for (int i = 1; auto x = n ? 1 : 2 : a) // expected-error {{expected ';' in 'for' statement specifier}}
+                                           ^
+
+"Test_name.c", line 80: error: expected a ")"
+          for (int i = 1; auto x = n ? 1 : 2 : a) // expected-error {{expected ';' in 'for' statement specifier}}
+                                             ^
+
+"Test_name.c", line 81: error: expected a statement
+      } // expected-error {{expected statement}}
+      ^
+
+"Test_name.c", line 80: warning: variable "i" was declared but never referenced
+          for (int i = 1; auto x = n ? 1 : 2 : a) // expected-error {{expected ';' in 'for' statement specifier}}
+                   ^
+
+"Test_name.c", line 68: warning: variable "a" was declared but never referenced
+      int a[] = {1, 2, 3, 4, 5};
+          ^
+
+30 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 11: error: enumeration value is out of "int" range
+  enum e2 { e2a = __LONG_LONG_MAX__ * 2ULL + 1ULL, e2b }; /* { dg-error "enumerator value outside the range" } */
+                                                   ^
+
+"Test_name.c", line 16: warning: some enumerator values cannot be represented by the integral type underlying the enum type
+  enum e3 { e3a = -__LONG_LONG_MAX__ - 1, e3b = __LONG_LONG_MAX__ * 2ULL + 1ULL }; /* { dg-error "enumeration values exceed range of 'intmax_t'" } */
+       ^
+
+1 error detected in the compilation of "Test_name.c".

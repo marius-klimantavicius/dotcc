@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 19: error: expected an identifier
+      using namespace B ; // expected-error{{not allowed}}
+            ^
+
+"Test_name.c", line 25: error: namespace "D::B" has no member "A"
+    using namespace B::A ; // expected-error{{no namespace named 'A' in namespace 'D::B'; did you mean '::B::A'?}}
+                       ^
+
+"Test_name.c", line 27: error: namespace "D" has no member "F"
+    using namespace ::D::F ; // expected-error{{expected namespace name}}
+                         ^
+
+"Test_name.c", line 28: error: name must be a namespace name
+    using namespace ::D::C ; // expected-error{{no namespace named 'C' in namespace 'D'; did you mean simply 'C'?}}
+                    ^
+
+"Test_name.c", line 31: error: expected an identifier
+  using namespace ! ; // expected-error{{expected namespace name}}
+                  ^
+
+"Test_name.c", line 32: error: name must be a namespace name
+  using namespace A ; // expected-error{{no namespace named 'A'; did you mean 'B::A'?}}
+                  ^
+
+"Test_name.c", line 33: error: name must be a namespace name
+  using namespace ::A // expected-error{{no namespace named 'A' in the global namespace; did you mean 'B::A'?}} \
+                  ^
+
+"Test_name.c", line 35: error: expected a ";"
+                      B ; 
+                      ^
+
+"Test_name.c", line 38: warning: variable "B" was declared but never referenced
+    int B;
+        ^
+
+8 errors detected in the compilation of "Test_name.c".

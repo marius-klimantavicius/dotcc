@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 11: warning: unrecognized #pragma
+    #pragma omp parallel if (foo () > 10) if (foo () == 3) /* { dg-error "too many" } */
+            ^
+
+"Test_name.c", line 16: warning: unrecognized #pragma
+    #pragma omp parallel num_threads (3) num_threads (20)	/* { dg-error "too many" } */
+            ^
+
+"Test_name.c", line 22: warning: unrecognized #pragma
+    #pragma omp parallel if (foo () == 10) num_threads (foo ())
+            ^
+

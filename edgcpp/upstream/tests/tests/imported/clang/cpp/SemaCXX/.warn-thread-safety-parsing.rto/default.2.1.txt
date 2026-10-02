@@ -1,0 +1,63 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 32: warning: unknown attribute "lockable"
+  class LOCKABLE Mutex {
+        ^
+
+"Test_name.c", line 34: warning: unknown attribute "exclusive_lock_function"
+    void Lock()          EXCLUSIVE_LOCK_FUNCTION();
+                         ^
+
+"Test_name.c", line 35: warning: unknown attribute "shared_lock_function"
+    void ReaderLock()    SHARED_LOCK_FUNCTION();
+                         ^
+
+"Test_name.c", line 36: warning: unknown attribute "unlock_function"
+    void Unlock()        UNLOCK_FUNCTION();
+                         ^
+
+"Test_name.c", line 38: warning: unknown attribute "exclusive_trylock_function"
+    bool TryLock()       EXCLUSIVE_TRYLOCK_FUNCTION(true);
+                         ^
+
+"Test_name.c", line 39: warning: unknown attribute "shared_trylock_function"
+    bool ReaderTryLock() SHARED_TRYLOCK_FUNCTION(true);
+                         ^
+
+"Test_name.c", line 41: warning: unknown attribute "assert_exclusive_lock"
+    void AssertHeld()       ASSERT_EXCLUSIVE_LOCK();
+                            ^
+
+"Test_name.c", line 42: warning: unknown attribute "assert_shared_lock"
+    void AssertReaderHeld() ASSERT_SHARED_LOCK();
+                            ^
+
+"Test_name.c", line 68: warning: unknown attribute "scoped_lockable"
+  class SCOPED_LOCKABLE MutexLock {
+        ^
+
+"Test_name.c", line 70: warning: unknown attribute "exclusive_lock_function"
+    MutexLock(Mutex *mu) EXCLUSIVE_LOCK_FUNCTION(mu);
+                         ^
+
+"Test_name.c", line 71: warning: unknown attribute "unlock_function"
+    ~MutexLock() UNLOCK_FUNCTION();
+                 ^
+
+"Test_name.c", line 89: warning: unknown attribute "exclusive_lock_function"
+    void needLock() EXCLUSIVE_LOCK_FUNCTION(foomu);
+                    ^
+
+"Test_name.c", line 93: warning: unknown attribute "exclusive_lock_function"
+    void needLock() EXCLUSIVE_LOCK_FUNCTION(foomu);
+                    ^
+
+"Test_name.c", line 99: warning: unknown attribute "acquired_after"
+   Mutex barmu2 ACQUIRED_AFTER(barmu);
+                ^
+
+"Test_name.c", line 111: catastrophic error: #error directive: "Should support no_thread_safety_analysis attribute"
+  #error "Should support no_thread_safety_analysis attribute"
+   ^
+
+1 catastrophic error detected in the compilation of "Test_name.c".
+Compilation terminated.

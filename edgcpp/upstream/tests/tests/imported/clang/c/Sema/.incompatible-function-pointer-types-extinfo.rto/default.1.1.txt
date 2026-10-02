@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c99 Test_name.c
+"Test_name.c", line 25: warning: unknown attribute "noescape"
+  int (*fp2a)(int* __attribute__((noescape))) __attribute__((noreturn)) = &f2; // expected-error {{incompatible function pointer types}}
+                                  ^
+
+"Test_name.c", line 26: warning: unknown attribute "noescape"
+  int (*fp2b)(int* __attribute__((noescape)))                           = &f2; // expected-error {{incompatible function pointer types}}
+                                  ^
+
+"Test_name.c", line 32: warning: unknown attribute "noescape"
+  int (*fp3b)(int* __attribute__((noescape)))                                                = &f3; // expected-error {{incompatible function pointer types}}
+                                  ^
+
+"Test_name.c", line 33: warning: unknown attribute "cfi_unchecked_callee"
+  int (*fp3c)(int*                          ) __attribute__((noreturn,cfi_unchecked_callee)) = &f3; // expected-error {{incompatible function pointer types}}
+                                                                      ^
+
+"Test_name.c", line 34: warning: unknown attribute "noescape"
+  int (*fp3d)(int* __attribute__((noescape))) __attribute__((         cfi_unchecked_callee)) = &f3; // expected-error {{incompatible function pointer types}}
+                                  ^
+
+"Test_name.c", line 34: warning: unknown attribute "cfi_unchecked_callee"
+  int (*fp3d)(int* __attribute__((noescape))) __attribute__((         cfi_unchecked_callee)) = &f3; // expected-error {{incompatible function pointer types}}
+                                                                      ^
+
+"Test_name.c", line 35: warning: unknown attribute "noescape"
+  int (*fp3e)(int* __attribute__((noescape))) __attribute__((noreturn,cfi_unchecked_callee)) = &f3; // expected-error {{incompatible function pointer types}}
+                                  ^
+
+"Test_name.c", line 35: warning: unknown attribute "cfi_unchecked_callee"
+  int (*fp3e)(int* __attribute__((noescape))) __attribute__((noreturn,cfi_unchecked_callee)) = &f3; // expected-error {{incompatible function pointer types}}
+                                                                      ^
+

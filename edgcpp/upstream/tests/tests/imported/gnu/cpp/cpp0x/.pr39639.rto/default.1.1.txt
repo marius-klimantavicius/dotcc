@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: error: a parameter pack declaration is not allowed here
+    : S<...Types>, // { dg-error "expected parameter pack before '...'" }
+        ^
+
+"Test_name.c", line 10: error: parameter pack "Types" was referenced but not expanded
+    : S<...Types>, // { dg-error "expected parameter pack before '...'" }
+           ^
+
+"Test_name.c", line 11: error: a parameter pack declaration is not allowed here
+      S<...Types...>, // { dg-error "expected parameter pack before '...'" }
+        ^
+
+"Test_name.c", line 12: error: a parameter pack declaration is not allowed here
+      S<...> // { dg-error "expected parameter pack before '...'" }
+        ^
+
+"Test_name.c", line 12: error: explicit type is missing ("int" assumed)
+      S<...> // { dg-error "expected parameter pack before '...'" }
+        ^
+
+"Test_name.c", line 12: error: incomplete type "S<int>" is not allowed
+      S<...> // { dg-error "expected parameter pack before '...'" }
+      ^
+
+"Test_name.c", line 10: error: incomplete type "S<void>" is not allowed
+    : S<...Types>, // { dg-error "expected parameter pack before '...'" }
+      ^
+          detected during instantiation of class "S<Types...> [with Types=<void>]" at line 20
+
+"Test_name.c", line 11: error: incomplete type "S<void>" is not allowed
+      S<...Types...>, // { dg-error "expected parameter pack before '...'" }
+      ^
+          detected during instantiation of class "S<Types...> [with Types=<void>]" at line 20
+
+"Test_name.c", line 10: error: incomplete type "S<int>" is not allowed
+    : S<...Types>, // { dg-error "expected parameter pack before '...'" }
+      ^
+          detected during:
+            instantiation of class "S<Types...> [with Types=<int>]" at line 12
+            instantiation of class "S<Types...> [with Types=<void>]" at line 20
+
+"Test_name.c", line 11: error: incomplete type "S<int>" is not allowed
+      S<...Types...>, // { dg-error "expected parameter pack before '...'" }
+      ^
+          detected during:
+            instantiation of class "S<Types...> [with Types=<int>]" at line 12
+            instantiation of class "S<Types...> [with Types=<void>]" at line 20
+
+10 errors detected in the compilation of "Test_name.c".

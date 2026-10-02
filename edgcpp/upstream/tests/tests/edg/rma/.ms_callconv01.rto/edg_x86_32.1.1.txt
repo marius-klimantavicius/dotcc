@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --microsoft -n Test_name.c
+"Test_name.c", line 6: error: declaration is incompatible with "void *operator new(unsigned int)" (declared implicitly)
+  void * __stdcall operator new(size_t) { return 0; }
+                   ^
+
+"Test_name.c", line 7: error: declaration is incompatible with "void operator delete(void *)" (declared implicitly)
+  void __stdcall operator delete(void *)  {}
+                 ^
+
+2 errors detected in the compilation of "Test_name.c".

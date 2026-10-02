@@ -1,0 +1,90 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -DNEW -DAPP_EXT --c Test_name.c
+"Test_name.c", line 8: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(ios,strict,introduced=19)))
+                 ^
+
+"Test_name.c", line 14: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(ios,strict,introduced=19)))
+                 ^
+
+"Test_name.c", line 17: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(ios,strict,introduced=26)))
+                 ^
+
+"Test_name.c", line 23: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(ios,strict,deprecated=19)))
+                 ^
+
+"Test_name.c", line 26: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(ios,strict,deprecated=26)))
+                 ^
+
+"Test_name.c", line 32: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(ios,strict,obsoleted=19)))
+                 ^
+
+"Test_name.c", line 35: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(ios,strict,obsoleted=26)))
+                 ^
+
+"Test_name.c", line 41: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(ios_app_extension,strict,introduced=19)))
+                 ^
+
+"Test_name.c", line 44: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(ios_app_extension,strict,introduced=26)))
+                 ^
+
+"Test_name.c", line 74: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(ios,strict,introduced=18.5))) // expected-note {{here}}
+                 ^
+
+"Test_name.c", line 77: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(ios,strict,introduced=26))) // expected-warning {{availability does not match previous declaration}}
+                 ^
+
+"Test_name.c", line 80: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(ios_app_extension,strict,introduced=19))) // expected-note {{here}}
+                 ^
+
+"Test_name.c", line 83: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(ios_app_extension,strict,introduced=26.1))) // expected-warning {{availability does not match previous declaration}}
+                 ^
+
+"Test_name.c", line 86: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(ios,introduced=26)))
+                 ^
+
+"Test_name.c", line 91: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(ios,introduced=19)))
+                 ^
+
+"Test_name.c", line 94: warning: the "availability" attribute used here is ignored
+  __attribute__((availability(ios,introduced=27)))
+                 ^
+
+"Test_name.c", line 101: warning: function "__builtin_available" declared implicitly
+    if (__builtin_available(iOS 19, *)) {
+        ^
+
+"Test_name.c", line 101: error: identifier "iOS" is undefined
+    if (__builtin_available(iOS 19, *)) {
+                            ^
+
+"Test_name.c", line 101: error: expected a ")"
+    if (__builtin_available(iOS 19, *)) {
+                                ^
+
+"Test_name.c", line 105: warning: function "__builtin_available" declared implicitly
+    if (__builtin_available(iOS 26, *)) {
+        ^
+
+"Test_name.c", line 105: error: identifier "iOS" is undefined
+    if (__builtin_available(iOS 26, *)) {
+                            ^
+
+"Test_name.c", line 105: error: expected a ")"
+    if (__builtin_available(iOS 26, *)) {
+                                ^
+
+4 errors detected in the compilation of "Test_name.c".

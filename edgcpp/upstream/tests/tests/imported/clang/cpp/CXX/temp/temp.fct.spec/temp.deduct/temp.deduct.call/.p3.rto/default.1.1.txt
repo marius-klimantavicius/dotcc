@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 147: error: no instance of function template "PR9233::f" matches the argument list
+            argument types are: (int **)
+      f(p); // expected-error{{no matching function for call to 'f'}}
+      ^
+"Test_name.c", line 144: note: function template "PR9233::f" does not match because argument #1 does not match parameter
+    template<typename T> void f(const T **q); // expected-note{{candidate template ignored: deduced type 'const int **' of 1st parameter does not match adjusted type 'int **' of argument [with T = int]}}
+                              ^
+
+"Test_name.c", line 161: error: no instance of function template "PR27155::Foo" matches the argument list
+            argument types are: (PR27155::D<PR27155::D<PR27155::B, 1>, 0>)
+    Foo(f);
+    ^
+"Test_name.c", line 157: note: candidate function template "PR27155::Foo" failed deduction
+  template<class T> void Foo(D<T, 1>);
+                         ^
+
+"Test_name.c", line 162: warning: missing return statement at end of non-void function "PR27155::fn"
+  }
+  ^
+
+"Test_name.c", line 174: error: no instance of function template "PR28195::callee" matches the argument list
+            argument types are: (PR28195::D)
+    callee(D()); // expected-error{{no matching function}}
+    ^
+"Test_name.c", line 171: note: candidate function template "PR28195::callee" failed deduction
+  template<int N> int callee(B<N>); // expected-note{{failed template argument deduction}}
+                      ^
+
+"Test_name.c", line 175: warning: missing return statement at end of non-void function "PR28195::caller"
+  }
+  ^
+
+3 errors detected in the compilation of "Test_name.c".

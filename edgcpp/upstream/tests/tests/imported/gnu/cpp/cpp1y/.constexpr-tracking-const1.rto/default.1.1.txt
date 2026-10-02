@@ -1,0 +1,60 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 20: error: expression must have a constant value
+  constexpr int i1 = fn1 (); // { dg-message "in .constexpr. expansion of " }
+                     ^
+"Test_name.c", line 9: note: attempt to modify const storage
+    r = 99; // { dg-error "modifying a const object" }
+      ^
+"Test_name.c", line 16: note: called from:
+    mod (const_cast<int &>(i)); // { dg-message "in .constexpr. expansion of " }
+        ^
+
+"Test_name.c", line 30: error: expression must have a constant value
+  constexpr int i2 = fn2 (); // { dg-message "in .constexpr. expansion of " }
+                     ^
+"Test_name.c", line 26: note: attempt to modify const storage
+    const_cast<int &>(i) = 10; // { dg-error "modifying a const object" }
+                         ^
+
+"Test_name.c", line 40: error: expression must have a constant value
+  constexpr int i3 = fn3 (); // { dg-message "in .constexpr. expansion of " }
+                     ^
+"Test_name.c", line 36: note: attempt to modify const storage
+    ++const_cast<int &>(i); // { dg-error "modifying a const object" }
+    ^
+
+"Test_name.c", line 50: error: expression must have a constant value
+  constexpr int i4 = fn4 (); // { dg-message "in .constexpr. expansion of " }
+                     ^
+"Test_name.c", line 46: note: attempt to modify const storage
+    const_cast<int &>(i)--; // { dg-error "modifying a const object" }
+                        ^
+
+"Test_name.c", line 60: error: expression must have a constant value
+  constexpr int i5 = fn5 (); // { dg-message "in .constexpr. expansion of " }
+                     ^
+"Test_name.c", line 56: note: attempt to modify const storage
+    const_cast<int &>(i) += 2; // { dg-error "modifying a const object" }
+                         ^
+
+"Test_name.c", line 20: warning: variable "i1" was declared but never referenced
+  constexpr int i1 = fn1 (); // { dg-message "in .constexpr. expansion of " }
+                ^
+
+"Test_name.c", line 30: warning: variable "i2" was declared but never referenced
+  constexpr int i2 = fn2 (); // { dg-message "in .constexpr. expansion of " }
+                ^
+
+"Test_name.c", line 40: warning: variable "i3" was declared but never referenced
+  constexpr int i3 = fn3 (); // { dg-message "in .constexpr. expansion of " }
+                ^
+
+"Test_name.c", line 50: warning: variable "i4" was declared but never referenced
+  constexpr int i4 = fn4 (); // { dg-message "in .constexpr. expansion of " }
+                ^
+
+"Test_name.c", line 60: warning: variable "i5" was declared but never referenced
+  constexpr int i5 = fn5 (); // { dg-message "in .constexpr. expansion of " }
+                ^
+
+5 errors detected in the compilation of "Test_name.c".

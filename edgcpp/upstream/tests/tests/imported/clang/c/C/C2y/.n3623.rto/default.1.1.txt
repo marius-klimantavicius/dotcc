@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -DSTD1 -DSTD2 -DGNU1 -DGNU2 -DGNU3 -DGNU4 -DGNU5 -DGNU6 -DGNU7 -DDARWIN1 -w --ms_compatibility -DMS1 -w --ms_compatibility -DMS2 -DINVALID1 -DINVALID2 --c Test_name.c
+"Test_name.c", line 37: error: function "main" has already been defined (previous definition at line 30)
+  void main(void) {} /* gnu1-warning {{return type of 'main' is not 'int'}}
+       ^
+
+"Test_name.c", line 56: error: function "main" has already been defined (previous definition at line 30)
+  int main(int argc, char *argv[], char *environ[], char **undocumented) {}
+      ^
+
+"Test_name.c", line 68: error: function "main" may not be declared inline
+  inline int main(int, char *[]); /* invalid-error {{'main' is not allowed to be declared inline}} */
+             ^
+
+"Test_name.c", line 68: error: declaration is incompatible with "int main(void)" (declared at line 30)
+  inline int main(int, char *[]); /* invalid-error {{'main' is not allowed to be declared inline}} */
+             ^
+
+"Test_name.c", line 69: error: function call is not allowed in a constant expression
+  #if !__is_target_os(darwin)
+       ^
+
+"Test_name.c", line 73: error: declaration is incompatible with "int main(int, char **)" (declared at line 68)
+  float main(int); /* invalid-error {{'main' must return 'int'}} */
+        ^
+
+"Test_name.c", line 74: error: declaration is incompatible with "float main(int)" (declared at line 73)
+  _Noreturn int main(int, char *[]); /* invalid-warning {{'main' is not allowed to be declared _Noreturn}}
+                ^
+
+7 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"./cpp1z/class-deduction14.C", line 16: error: no instance of constructor "container" matches the argument list
+            argument types are: (int, int)
+  container e{5, 6};
+            ^
+
+"./cpp1z/class-deduction14.C", line 16: error: cannot deduce class template arguments
+  container e{5, 6};
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

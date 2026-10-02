@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 16: warning: unrecognized STDC pragma
+  #pragma STDC CX_LIMITED_RANGE ON
+               ^
+
+"Test_name.c", line 21: warning: expected "ON", "OFF", or "DEFAULT"
+  #pragma STDC FENV_ACCESS BLERP      // expected-warning {{expected 'ON' or 'OFF' or 'DEFAULT' in pragma}}
+                           ^
+
+"Test_name.c", line 22: warning: unrecognized STDC pragma
+  #pragma STDC CX_LIMITED_RANGE BLERP // expected-warning {{expected 'ON' or 'OFF' or 'DEFAULT' in pragma}}
+               ^
+
+"Test_name.c", line 23: warning: expected "ON", "OFF", or "DEFAULT"
+  #pragma STDC FP_CONTRACT BLERP      // expected-warning {{expected 'ON' or 'OFF' or 'DEFAULT' in pragma}}
+                           ^
+

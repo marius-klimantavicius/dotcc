@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 193: warning: use of "=" where "==" may have been intended
+        && (x = 1);
+           ^
+
+"Test_name.c", line 205: warning: statement is unreachable
+        && ({ goto skip_init; 0; });
+                              ^
+
+"Test_name.c", line 219: warning: statement is unreachable
+        || ({ goto skip_init; 0; });
+                              ^
+
+"Test_name.c", line 233: warning: use of "=" where "==" may have been intended
+        || (x = 1);
+           ^
+
+"Test_name.c", line 400: warning: variable "x" is used before its value is set
+    while (x != 0) { // expected-note {{use}}
+           ^
+
+"Test_name.c", line 429: warning: variable "r" was declared but never referenced
+      const double &r = d;
+                    ^
+

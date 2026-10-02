@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 15: error: expected a ";"
+    long bar (long z) { return z * 2; }
+                      ^
+
+"Test_name.c", line 18: warning: parsing restarts here after previous syntax error
+      sum += bar (i);
+                    ^
+
+"Test_name.c", line 14: warning: variable "i" was declared but never referenced
+    long i, sum = 0;
+         ^
+
+1 error detected in the compilation of "Test_name.c".

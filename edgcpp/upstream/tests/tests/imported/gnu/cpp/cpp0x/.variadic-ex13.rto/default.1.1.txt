@@ -1,0 +1,7 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 20: error: pack "Args2" does not have the same number of elements as "Args1"
+        typedef Tuple<Pair<Args1, Args2>...> type; // { dg-error "mismatched argument pack" }
+                                  ^
+          detected during instantiation of class "zip<Args1...>::with<Args2...> [with Args1=<short>, Args2=<unsigned short, unsigned int>]" at line 29
+
+1 error detected in the compilation of "Test_name.c".

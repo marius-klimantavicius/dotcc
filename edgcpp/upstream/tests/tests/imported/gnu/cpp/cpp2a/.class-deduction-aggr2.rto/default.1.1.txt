@@ -1,0 +1,47 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 22: error: no instance of constructor "S2" matches the argument list
+            argument types are: (int)
+  S2 s2 = {1};			// { dg-error "deduction failed" }
+     ^
+
+"Test_name.c", line 22: error: cannot deduce class template arguments
+  S2 s2 = {1};			// { dg-error "deduction failed" }
+  ^
+
+"Test_name.c", line 30: error: no instance of constructor "S3" matches the argument list
+            argument types are: (int)
+  S3 s3 = {1};			// { dg-error "deduction failed" }
+     ^
+
+"Test_name.c", line 30: error: cannot deduce class template arguments
+  S3 s3 = {1};			// { dg-error "deduction failed" }
+  ^
+
+"Test_name.c", line 38: error: no instance of constructor "S4" matches the argument list
+            argument types are: (int)
+  S4 s4 = {1};			// { dg-error "deduction failed" }
+     ^
+
+"Test_name.c", line 38: error: cannot deduce class template arguments
+  S4 s4 = {1};			// { dg-error "deduction failed" }
+  ^
+
+"Test_name.c", line 46: error: no instance of constructor "S5" matches the argument list
+            argument types are: (int)
+  S5 s5 = {1};			// { dg-error "deduction failed" }
+     ^
+
+"Test_name.c", line 46: error: cannot deduce class template arguments
+  S5 s5 = {1};			// { dg-error "deduction failed" }
+  ^
+
+"Test_name.c", line 53: error: no instance of constructor "S6" matches the argument list
+            argument types are: (int)
+  S6 s6 = {1};			// { dg-error "deduction failed" }
+     ^
+
+"Test_name.c", line 53: error: cannot deduce class template arguments
+  S6 s6 = {1};			// { dg-error "deduction failed" }
+  ^
+
+10 errors detected in the compilation of "Test_name.c".

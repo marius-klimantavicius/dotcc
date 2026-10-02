@@ -1,0 +1,632 @@
+#!/usr/bin/env python3
+
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+import argparse
+import json
+import os
+import shutil
+import subprocess
+import sys
+import tempfile
+
+import edgdocker
+import edgtest
+import edgutil
+
+from datetime import datetime
+from typing import Any, Dict, List, Optional
+from pathlib import Path, PurePosixPath
+
+from edgutil import eprint
+
+TOOL_PATH_EDG_EXEC = edgutil.RequiredToolPath('edg-exec')
+
+BUILTIN_POSTURES = [
+  'day',
+  'night',
+  'quick-c-fe',
+  'extensive'
+]
+
+def parse_args() -> argparse.Namespace:
+  parser = argparse.ArgumentParser(
+    description = (
+      'EDG utility script that captures common docker hybrid '
+      'testing workflows.'
+    )
+  )
+  parser.add_argument(
+    '--posture',
+    dest = 'posture',
+    default = 'day',
+    help = (
+      'run tests in docker with one of the builtin postures '
+      f"{{{', '.join(BUILTIN_POSTURES)}}}, or the "
+      'path to a JSON configuration file.'
+    )
+  )
+  parser.add_argument(
+    '-T',
+    '--timeout',
+    dest = 'timeout_seconds',
+    default = 0,
+    type = int,
+    help = (
+      'the number of seconds to wait for tests before '
+      'killing them (0 to disable)'
+    )
+  )
+  parser.add_argument(
+    '-W',
+    '--record',
+    dest = 'record_mode',
+    action = 'store_true',
+    help = 'record tests'
+  )
+  parser.add_argument(
+    '--discard-test-results',
+    dest = 'discard_test_results',
+    action = 'store_true',
+    help = 'do not keep edgy testing results'
+  )
+  parser.add_argument(
+    '--non-interactive',
+    dest = 'non_interactive',
+    action = 'store_true',
+    help = 'do not launch AcknowlEDG'
+  )
+  parser.add_argument(
+    '--dry-run',
+    dest = 'dry_run',
+    action = 'store_true',
+    help = 'do not run the docker commands'
+  )
+  parser.add_argument(
+    '--verbose',
+    dest = 'verbose',
+    action = 'store_true',
+    help = 'enable verbose mode'
+  )
+  parser.add_argument(
+    'filters',
+    nargs = '?',
+    default = '',
+    help = 'the test filter to apply (see edgy --help for more information)'
+  )
+  return parser.parse_args()
+
+class TestRunPostureBuild:
+  def __init__(self, *, cmake_preset: str, build_path: str,
+               targets: List[str], test_configs: List[str],
+               edg_base: str) -> None:
+    self.cmake_preset = cmake_preset
+    self.build_path = build_path
+    self.targets = targets
+    self.test_configs = test_configs
+    self.edg_base = PurePosixPath(edg_base)
+
+class TestRunPosture:
+  def __init__(self, *, builds: List[TestRunPostureBuild],
+               keep_test_results: bool, test_timeout_seconds: int,
+               record_tests: bool, slow_tests: bool, meticulous: bool,
+               test_filters: str,
+               acknowledg_ui_host: Optional[str],
+               acknowledg_api_host: Optional[str]) -> None:
+    self.builds = builds
+    self.keep_test_results = keep_test_results
+    self.test_timeout_seconds = test_timeout_seconds
+    self.record_tests = record_tests
+    self.slow_tests = slow_tests
+    self.meticulous = meticulous
+    self.test_filters = test_filters
+    self.acknowledg_ui_host = acknowledg_ui_host
+    self.acknowledg_api_host = acknowledg_api_host
+
+def _configure_day_posture(args: argparse.Namespace) -> TestRunPosture:
+  return TestRunPosture(
+    builds = [
+      TestRunPostureBuild(
+        cmake_preset = edgdocker.DEFAULT_BUILD_PRESET,
+        build_path = edgdocker.DEFAULT_BUILD_DIR,
+        targets = ['all'],
+        test_configs = ['edg_x86_64', 'edg_x86_64_cp'],
+        edg_base = edgdocker.DEFAULT_EDG_BASE,
+      )
+    ],
+    keep_test_results = True,
+    test_timeout_seconds = 600,
+    record_tests = False,
+    slow_tests = False,
+    meticulous = False,
+    test_filters = '',
+    acknowledg_ui_host = os.environ.get('EDG_ACKNOWLEDG_UI_HOST'),
+    acknowledg_api_host = os.environ.get('EDG_ACKNOWLEDG_API_HOST')
+  )
+
+def _configure_night_posture(args: argparse.Namespace) -> TestRunPosture:
+  return TestRunPosture(
+    builds = [
+      TestRunPostureBuild(
+        cmake_preset = edgdocker.DEFAULT_BUILD_PRESET,
+        build_path = edgdocker.DEFAULT_BUILD_DIR,
+        targets = ['all'],
+        test_configs = ['edg_x86_64', 'edg_x86_64_cp'],
+        edg_base = edgdocker.DEFAULT_EDG_BASE,
+      )
+    ],
+    keep_test_results = True,
+    test_timeout_seconds = 600,
+    record_tests = False,
+    slow_tests = True,
+    meticulous = True,
+    test_filters = 'all',
+    acknowledg_ui_host = os.environ.get('EDG_ACKNOWLEDG_UI_HOST'),
+    acknowledg_api_host = os.environ.get('EDG_ACKNOWLEDG_API_HOST')
+  )
+
+def _configure_quick_c_fe_posture(args: argparse.Namespace) -> TestRunPosture:
+  base_posture = _configure_day_posture(args)
+  base_posture.builds = [
+    TestRunPostureBuild(
+      cmake_preset = edgdocker.DEFAULT_BUILD_PRESET,
+      build_path = edgdocker.DEFAULT_BUILD_DIR,
+      targets = ['cpfe'],
+      test_configs = ['edg_x86_64'],
+      edg_base = edgdocker.DEFAULT_EDG_BASE
+    )
+  ]
+  return base_posture
+
+def _configure_extensive_posture(args: argparse.Namespace) -> TestRunPosture:
+  base_posture = _configure_night_posture(args)
+  base_posture.builds = [
+    TestRunPostureBuild(
+      cmake_preset = edgdocker.DEFAULT_BUILD_PRESET,
+      build_path = edgdocker.DEFAULT_BUILD_DIR,
+      targets = ['all'],
+      test_configs = ['edg_x86_64', 'edg_x86_64_cp'],
+      edg_base = edgdocker.DEFAULT_EDG_BASE,
+    ),
+    TestRunPostureBuild(
+      cmake_preset = 'linux-i686-gcc-debug',
+      build_path = 'build/gcc-i686',
+      targets = ['all'],
+      test_configs = ['edg_x86_32', 'edg_x86_32_cp'],
+      edg_base = 'bases/docker/dev-env/gcc-i686',
+    ),
+  ]
+  return base_posture
+
+def _load_posture_builds(
+                 config_file_dict: Any,
+                 default_posture: TestRunPosture) -> List[TestRunPostureBuild]:
+  if 'builds' not in config_file_dict:
+    return default_posture.builds
+
+  build_objs = []
+  for build_dict in config_file_dict['builds']:
+    build_objs.append(TestRunPostureBuild(
+      cmake_preset = build_dict['cmake_preset'],
+      build_path = build_dict['build_path'],
+      targets = build_dict['targets'],
+      test_configs = build_dict['test_configs'],
+      edg_base = build_dict['edg_base']
+    ))
+
+  return build_objs
+
+def load_posture_file(file_path: Path,
+                      default_posture: TestRunPosture) -> TestRunPosture:
+  with open(file_path, 'r') as file_handle:
+    config_file_dict = json.load(file_handle)
+    return TestRunPosture(
+      builds = _load_posture_builds(config_file_dict, default_posture),
+      keep_test_results = config_file_dict.get(
+        'keep_test_results',
+        default_posture.keep_test_results
+      ),
+      test_timeout_seconds = config_file_dict.get(
+        'test_timeout_seconds',
+        default_posture.test_timeout_seconds
+      ),
+      record_tests = config_file_dict.get(
+        'record_tests',
+        default_posture.record_tests
+      ),
+      slow_tests = config_file_dict.get(
+        'slow_tests',
+        default_posture.slow_tests
+      ),
+      meticulous = config_file_dict.get(
+        'meticulous',
+        default_posture.meticulous
+      ),
+      test_filters = config_file_dict.get(
+        'test_filters',
+        default_posture.test_filters
+      ),
+      acknowledg_ui_host = config_file_dict.get(
+        'acknowledg_ui_host',
+        default_posture.acknowledg_ui_host
+      ),
+      acknowledg_api_host = config_file_dict.get(
+        'acknowledg_api_host',
+        default_posture.acknowledg_api_host
+      )
+    )
+
+def _configure_base_posture(args: argparse.Namespace) -> TestRunPosture:
+  if args.posture == 'day':
+    return _configure_day_posture(args)
+  elif args.posture == 'night':
+    return _configure_night_posture(args)
+  elif args.posture == 'quick-c-fe':
+    return _configure_quick_c_fe_posture(args)
+  elif args.posture == 'extensive':
+    return _configure_extensive_posture(args)
+  elif args.posture.startswith('@'):
+    posture_file_path = Path(args.posture[1:])
+    if posture_file_path.exists():
+      return load_posture_file(
+        posture_file_path,
+        _configure_night_posture(args)
+      )
+    else:
+      eprint(f"No posture file found at path: {posture_file_path}")
+      sys.exit(1)
+  else:
+    eprint(f"No builtin mode named: {args.posture}")
+    sys.exit(1)
+
+def _configure_posture(args: argparse.Namespace) -> TestRunPosture:
+  posture = _configure_base_posture(args)
+  if args.filters:
+    posture.test_filters = args.filters
+  if args.record_mode:
+    posture.record_tests = True
+  if args.timeout_seconds != posture.test_timeout_seconds:
+    posture.test_timeout_seconds = args.timeout_seconds
+  if args.discard_test_results:
+    posture.keep_test_results = False
+  if args.non_interactive:
+    posture.acknowledg_api_host = None
+    posture.acknowledg_ui_host = None
+  return posture
+
+def _apply_tty_fix(cmd_str: str) -> str:
+  # There are some quirks in how docker maps stdin, stdout, and stderr.  There
+  # may be a way to fix this in edg-exec.  However, for the sake of fixing this
+  # now, pipe the command through cat so the terminal commands know they're not
+  # really in a tty.
+  tty_fix = '' if sys.stdout.isatty() else ' | cat'
+  return f"{cmd_str}{tty_fix}"
+
+def _build_posture_env(posture: TestRunPosture) -> Dict[str, str]:
+  env_cpy = dict(os.environ)
+  if 'EDG_DOCKER_HOST_PATHS' not in env_cpy:
+    env_cpy['EDG_DOCKER_HOST_PATHS'] = '1'
+  return env_cpy
+
+def _build_build_env(src_dir: Path, posture: TestRunPosture,
+                     posture_build: TestRunPostureBuild) -> Dict[str, str]:
+  env_cpy = _build_posture_env(posture)
+  env_cpy['EDG_BASE'] = str(src_dir.joinpath(posture_build.edg_base))
+  return env_cpy
+
+def configure_build(src_dir: Path, posture: TestRunPosture, *,
+                    dry_run: bool, verbose: bool) -> None:
+  for build in posture.builds:
+    if (src_dir / build.build_path).exists():
+      continue
+
+    print(f"Configuring build ({build.cmake_preset})...", flush = True)
+
+    configure_cmd = f"cmake --preset {build.cmake_preset}"
+    cmd_args = [
+      str(TOOL_PATH_EDG_EXEC),
+      '--',
+      _apply_tty_fix(configure_cmd)
+    ]
+    if dry_run or verbose:
+      print(' '.join(cmd_args), flush = True)
+    if not dry_run:
+      env_ovr = _build_build_env(src_dir, posture, build)
+      build_process = subprocess.run(
+        cmd_args,
+        stdout = sys.stdout,
+        stderr = sys.stderr,
+        cwd = src_dir,
+        env = env_ovr
+      )
+      if build_process.returncode != 0:
+        sys.exit(10)
+
+def update_build(src_dir: Path, posture: TestRunPosture, *,
+                 dry_run: bool, verbose: bool) -> None:
+  for build in posture.builds:
+    print(f"Updating build ({build.cmake_preset})...", flush = True)
+    build_cmd = f"cmake --build {build.build_path}"
+    build_target_str = ' '.join(build.targets)
+    if build_target_str != 'all':
+      build_cmd += f" --target=\"{build_target_str}\""
+    if verbose:
+      build_cmd = f"{build_cmd} --verbose"
+    cmd_args = [
+      str(TOOL_PATH_EDG_EXEC),
+      '--',
+      _apply_tty_fix(build_cmd)
+    ]
+    if dry_run or verbose:
+      print(' '.join(cmd_args), flush = True)
+    if not dry_run:
+      env_ovr = _build_build_env(src_dir, posture, build)
+      build_process = subprocess.run(
+        cmd_args,
+        stdout = sys.stdout,
+        stderr = sys.stderr,
+        cwd = src_dir,
+        env = env_ovr
+      )
+      if build_process.returncode != 0:
+        sys.exit(11)
+
+def generate_run_timestamp() -> str:
+  return datetime.now().strftime(edgutil.RUN_TIMESTAMP_FORMAT)
+
+def _build_edgy_test_config_arg(posture: TestRunPosture) -> str:
+  all_configs = set()
+
+  for build in posture.builds:
+    all_configs.update(build.test_configs)
+
+  return ','.join(all_configs)
+
+def _build_edgy_args(posture: TestRunPosture, *,
+                     run_timestamp: str, verbose: bool) -> str:
+  arg_str = (
+    f"--run-timestamp={run_timestamp} "
+    f"--config=\"{_build_edgy_test_config_arg(posture)}\""
+  )
+
+  if posture.test_timeout_seconds != 0:
+    arg_str += f" --timeout={posture.test_timeout_seconds}"
+  if posture.record_tests:
+    arg_str += ' --record'
+  if not posture.keep_test_results:
+    # This works because each run is in its own container, so we can safely
+    # "claim" /tmp/edgy-run within the container.  It will be both unique and
+    # auto-deleted upon the contianer terminating.
+    arg_str += ' --runs-dir=/tmp/edgy-run'
+  if posture.slow_tests:
+    arg_str += ' -A'
+  if posture.meticulous:
+    arg_str += ' --meticulous'
+  if verbose:
+    arg_str += ' --verbose'
+  if len(posture.test_filters) != 0:
+    arg_str += f" {posture.test_filters}"
+  return arg_str
+
+def _write_prefixed_env_context(tmp_dir: Path, src_dir: Path,
+                                posture: TestRunPosture) -> Path:
+  '''Write prefix_source directives for every build/test config.
+
+  Also emits per-build helper env files that set EDG_BASE.  Returns the path
+  to the context file (prefix directives only; no exec).
+  '''
+  context_file = tmp_dir / 'prefix-env.edgivk'
+  with open(context_file, 'w') as file_handle:
+    for idx, build in enumerate(posture.builds):
+      # Use the environment.sh written by CMake for the majority of
+      # environment variables the testing system cares about.
+      env_file = str(PurePosixPath(build.build_path, 'environment.sh'))
+      # The EDG_BASE environment variable is prefixed through this system
+      # by a file generated by edg-docker-test itself.
+      generated_env_file = tmp_dir / f"build-{idx}.sh"
+      with open(generated_env_file, 'w') as gen_file_handle:
+        base_path = PurePosixPath('/', 'edg', 'workspace', build.edg_base)
+        gen_file_handle.write(f"export EDG_BASE=\"{base_path}\"\n")
+      docker_test_env_file = (
+        generated_env_file.relative_to(src_dir).as_posix()
+      )
+
+      for test_config in build.test_configs:
+        file_handle.write(
+          f"prefix_source TEST_{test_config} {env_file}\n"
+          f"prefix_source TEST_{test_config} {docker_test_env_file}\n"
+        )
+  return context_file
+
+def _write_loader_invocation(tmp_dir: Path, src_dir: Path,
+                             context_file: Path, invocation_name: str,
+                             exec_cmd: str, *, dry_run: bool,
+                             verbose: bool) -> str:
+  '''Combine the shared prefix context with an exec directive.
+
+  Returns the path to the invocation file relative to ``src_dir`` (as used
+  inside the container under /edg/workspace).
+  '''
+  invocation_file = tmp_dir / invocation_name
+  shutil.copyfile(context_file, invocation_file)
+  with open(invocation_file, 'a') as file_handle:
+    file_handle.write(f"exec {exec_cmd}\n")
+
+  docker_invocation_file = invocation_file.relative_to(src_dir).as_posix()
+  if dry_run or verbose:
+    print(f"Wrote executable directives file ({docker_invocation_file}):")
+    with open(invocation_file) as file_handle:
+      for line in file_handle:
+        print(f"  {line}", end = '')
+    print('', flush = True)
+  return docker_invocation_file
+
+def run_tests(tmp_dir: Path, src_dir: Path, posture: TestRunPosture, *,
+              context_file: Path, run_timestamp: str, dry_run: bool,
+              verbose: bool) -> int:
+  print('Running tests...', flush = True)
+
+  edgy_args = _build_edgy_args(
+    posture,
+    run_timestamp = run_timestamp,
+    verbose = verbose
+  )
+  docker_invocation_file = _write_loader_invocation(
+    tmp_dir,
+    src_dir,
+    context_file,
+    'edgy.edgivk',
+    f"edgy {edgy_args}",
+    dry_run = dry_run,
+    verbose = verbose
+  )
+
+  cmd_args = [
+    str(TOOL_PATH_EDG_EXEC),
+    '--',
+    _apply_tty_fix(f"edg-prefix-env-loader {docker_invocation_file}"),
+  ]
+
+  if dry_run or verbose:
+    print(' '.join(cmd_args), flush = True)
+
+  if not dry_run:
+    env_ovr = _build_posture_env(posture)
+    test_process = subprocess.run(
+      cmd_args,
+      stdout = sys.stdout,
+      stderr = sys.stderr,
+      cwd = src_dir,
+      env = env_ovr
+    )
+    return test_process.returncode
+
+  return 0
+
+def _is_posture_acknowledg_enabled(posture: TestRunPosture) -> bool:
+  return bool(posture.acknowledg_ui_host and posture.acknowledg_api_host and
+              posture.keep_test_results)
+
+def run_acknowledg(tmp_dir: Path, src_dir: Path, posture: TestRunPosture, *,
+                    context_file: Path, run_timestamp: str, dry_run: bool,
+                    verbose: bool) -> None:
+  print('Opening AcknowlEDG...', flush = True)
+
+  docker_invocation_file = _write_loader_invocation(
+    tmp_dir,
+    src_dir,
+    context_file,
+    'edgy-review.edgivk',
+    f"edgy-review --root='/edg/workspace/tests/runs/{run_timestamp}'",
+    dry_run = dry_run,
+    verbose = verbose
+  )
+
+  cmd_args = [
+    str(TOOL_PATH_EDG_EXEC),
+    '--',
+    _apply_tty_fix(f"edg-prefix-env-loader {docker_invocation_file}"),
+  ]
+
+  if dry_run or verbose:
+    print(' '.join(cmd_args), flush = True)
+
+  if not dry_run:
+    env_ovr = _build_posture_env(posture)
+    acknowledg_process = subprocess.run(
+      cmd_args,
+      stdout = sys.stdout,
+      stderr = sys.stderr,
+      cwd = src_dir,
+      env = env_ovr
+    )
+    if acknowledg_process.returncode != 0:
+      sys.exit(1)
+
+class Serializer(json.JSONEncoder):
+  def default(self, obj: Any) -> Any:
+    if isinstance(obj, TestRunPosture):
+      return vars(obj)
+    if isinstance(obj, TestRunPostureBuild):
+      return vars(obj)
+    if isinstance(obj, PurePosixPath):
+      return str(obj)
+    return json.JSONEncoder.default(self, obj)
+
+def main() -> None:
+  edgdocker.terminate_if_running_in_docker()
+
+  args = parse_args()
+
+  TOOL_PATH_EDG_EXEC.exit_if_not_found()
+
+  src_dir = edgutil.find_mono_repo_or_exit()
+
+  if args.verbose:
+    print(f"Using front end source in: {src_dir}", flush = True)
+
+  edgdocker.ensure_edg_docker_image_present(edgdocker.DEFAULT_IMAGE)
+
+  run_posture = _configure_posture(args)
+  if args.dry_run or args.verbose:
+    config_str = json.dumps(
+      vars(run_posture),
+      cls = Serializer,
+      indent = '  '
+    )
+    print(f"Using configuration:\n{config_str}", flush = True)
+
+  configure_build(
+    src_dir,
+    run_posture,
+    dry_run = args.dry_run,
+    verbose = args.verbose
+  )
+  update_build(
+    src_dir,
+    run_posture,
+    dry_run = args.dry_run,
+    verbose = args.verbose
+  )
+
+  containing_tmp_dir = src_dir / '.tmp'
+  containing_tmp_dir.mkdir(parents = True, exist_ok = True)
+  with tempfile.TemporaryDirectory(dir = containing_tmp_dir) as tmp_dir_str:
+    tmp_dir = Path(tmp_dir_str)
+    context_file = _write_prefixed_env_context(tmp_dir, src_dir, run_posture)
+
+    test_run_timestamp = generate_run_timestamp()
+    test_exit_code = run_tests(
+      tmp_dir,
+      src_dir,
+      run_posture,
+      context_file = context_file,
+      run_timestamp = test_run_timestamp,
+      dry_run = args.dry_run,
+      verbose = args.verbose
+    )
+
+    # Connect to AcknowlEDG if:
+    #   - testing passed [0] (which might include output
+    #     mismatches to review) or failed [5],
+    #   - and the posture has AcknowlEDG enabled.
+    if (
+      (test_exit_code == 0 or test_exit_code == 5) and
+      _is_posture_acknowledg_enabled(run_posture)
+    ):
+      run_acknowledg(
+        tmp_dir,
+        src_dir,
+        run_posture,
+        context_file = context_file,
+        run_timestamp = test_run_timestamp,
+        dry_run = args.dry_run,
+        verbose = args.verbose
+      )
+
+  sys.exit(0 if test_exit_code == 0 else 20)
+
+main()

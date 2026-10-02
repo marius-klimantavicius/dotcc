@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 8: warning: #warning directive: defined as expected
+  #warning defined as expected
+   ^
+
+"Test_name.c", line 13: error: argument of type "int" is incompatible with parameter of type "void *"
+    __builtin_memcpy_inline(1, 2, 3); // expected-error {{cannot initialize a parameter of type 'void *' with an rvalue of type 'int'}}
+                            ^
+
+"Test_name.c", line 13: error: argument of type "int" is incompatible with parameter of type "const void *"
+    __builtin_memcpy_inline(1, 2, 3); // expected-error {{cannot initialize a parameter of type 'void *' with an rvalue of type 'int'}}
+                               ^
+
+"Test_name.c", line 53: error: too few arguments in function call
+   __builtin_memcpy_inline(); // expected-error {{too few arguments to function call}}
+                           ^
+
+"Test_name.c", line 54: error: too many arguments in function call
+   __builtin_memcpy_inline(dst, src, 4, NULL); // expected-error {{too many arguments to function call}}
+                                        ^
+
+4 errors detected in the compilation of "Test_name.c".

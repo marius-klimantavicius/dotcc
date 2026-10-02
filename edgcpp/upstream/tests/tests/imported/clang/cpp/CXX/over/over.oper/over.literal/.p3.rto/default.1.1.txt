@@ -1,0 +1,74 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 24: error: at least one parameter expected for a literal operator
+  char operator ""_b(); // expected-error {{parameter}}
+       ^
+
+"Test_name.c", line 25: error: invalid parameter type "const wchar_t *" for literal operator
+  char operator ""_b(const wchar_t *); // expected-error {{parameter}}
+       ^
+
+"Test_name.c", line 26: error: invalid integer parameter type ("long long") for literal operator; expected a character type or unsigned long long
+  char operator ""_b(long long); // expected-error {{parameter}}
+       ^
+
+"Test_name.c", line 27: error: invalid floating-point parameter type ("double") for literal operator; expected long double
+  char operator ""_b(double); // expected-error {{parameter}}
+       ^
+
+"Test_name.c", line 28: error: invalid integer parameter type ("short") for literal operator; expected a character type or unsigned long long
+  char operator ""_b(short); // expected-error {{parameter}}
+       ^
+
+"Test_name.c", line 29: error: too many parameters for this literal operator
+  char operator ""_a(char, int = 0); // expected-error {{parameter}}
+       ^
+
+"Test_name.c", line 30: error: invalid integer parameter type ("unsigned short") for literal operator; expected a character type or unsigned long long
+  char operator ""_b(unsigned short); // expected-error {{parameter}}
+       ^
+
+"Test_name.c", line 31: error: invalid integer parameter type ("signed char") for literal operator; expected a character type or unsigned long long
+  char operator ""_b(signed char); // expected-error {{parameter}}
+       ^
+
+"Test_name.c", line 32: error: invalid integer parameter type ("unsigned char") for literal operator; expected a character type or unsigned long long
+  char operator ""_b(unsigned char); // expected-error {{parameter}}
+       ^
+
+"Test_name.c", line 33: error: invalid pointer parameter type ("const short *") for literal operator; expected a pointer to a character type
+  char operator ""_b(const short *, size_t); // expected-error {{parameter}}
+       ^
+
+"Test_name.c", line 34: error: invalid pointer parameter type ("const unsigned short *") for literal operator; expected a pointer to a character type
+  char operator ""_b(const unsigned short *, size_t); // expected-error {{parameter}}
+       ^
+
+"Test_name.c", line 35: error: invalid pointer parameter type ("const signed char *") for literal operator; expected a pointer to a character type
+  char operator ""_b(const signed char *, size_t); // expected-error {{parameter}}
+       ^
+
+"Test_name.c", line 36: error: invalid pointer parameter type ("const unsigned char *") for literal operator; expected a pointer to a character type
+  char operator ""_b(const unsigned char *, size_t); // expected-error {{parameter}}
+       ^
+
+"Test_name.c", line 37: error: invalid first parameter type ("const volatile char *") for literal operator; pointer to non-const type is not allowed
+  char operator ""_a(const volatile char *, size_t); // expected-error {{parameter}}
+       ^
+
+"Test_name.c", line 38: error: invalid first parameter type ("volatile wchar_t *") for literal operator; pointer to non-const type is not allowed
+  char operator ""_a(volatile wchar_t *, size_t); // expected-error {{parameter}}
+       ^
+
+"Test_name.c", line 39: error: invalid first parameter type ("char16_t *") for literal operator; pointer to non-const type is not allowed
+  char operator ""_a(char16_t *, size_t); // expected-error {{parameter}}
+       ^
+
+"Test_name.c", line 40: error: too many parameters for this literal operator
+  char operator ""_a(const char32_t *, size_t, bool = false); // expected-error {{parameter}}
+       ^
+
+"Test_name.c", line 41: error: invalid second parameter type ("signed long") for literal operator; must be size_t
+  char operator ""_a(const char *, signed long); // expected-error {{parameter}}
+       ^
+
+18 errors detected in the compilation of "Test_name.c".

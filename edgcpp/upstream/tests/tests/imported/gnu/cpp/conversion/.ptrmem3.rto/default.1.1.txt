@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 20: error: cannot convert pointer to member of derived class "D" to pointer to member of base class "V" -- base class is virtual
+  int (V::*p3)() = static_cast<int (V::*)()>(&D::f);  // { dg-error "" }
+                               ^
+
+"Test_name.c", line 21: error: cannot convert pointer to member of base class "V" to pointer to member of derived class "D" -- base class is virtual
+  int (D::*p4)() = static_cast<int (D::*)()>(&V::f);  // { dg-error "" }
+                               ^
+
+"Test_name.c", line 24: error: conversion to inaccessible base class "P" is not allowed
+  int (P::*p5)() = static_cast<int (P::*)()>(&D::f);  // { dg-error "" }
+                   ^
+
+"Test_name.c", line 25: error: conversion from inaccessible base class "P" is not allowed
+  int (D::*p6)() = static_cast<int (D::*)()>(&P::f);  // { dg-error "" }
+                               ^
+
+"Test_name.c", line 28: error: base class "A" is ambiguous
+  int (A::*p7)() = static_cast<int (A::*)()>(&D::f);  // { dg-error "" }
+                               ^
+
+"Test_name.c", line 29: error: derived class "D" contains more than one instance of class "A"
+  int (D::*p8)() = static_cast<int (D::*)()>(&A::f);  // { dg-error "" }
+                               ^
+
+"Test_name.c", line 32: error: invalid type conversion
+  float (B::*p13)() = static_cast<float (B::*)()>(&D::f); // { dg-error "21:invalid .static_cast." }
+                      ^
+
+"Test_name.c", line 33: error: invalid type conversion
+  float (D::*p14)() = static_cast<float (D::*)()>(&B::f); // { dg-error "21:invalid .static_cast." }
+                      ^
+
+8 errors detected in the compilation of "Test_name.c".

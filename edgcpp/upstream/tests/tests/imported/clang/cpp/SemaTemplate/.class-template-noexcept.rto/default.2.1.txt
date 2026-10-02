@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 21: error: no instance of function template "foo" matches the argument list
+            argument types are: (<unknown-type>)
+    foo(func<A>);	// expected-error{{no matching function for call}}
+    ^
+"Test_name.c", line 17: note: candidate function template "foo" failed deduction
+  void foo(void(B...) noexcept(x)) {} // expected-note{{candidate template ignored}}
+       ^
+
+1 error detected in the compilation of "Test_name.c".

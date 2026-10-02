@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=2 -r -x -tused --set_flag=no_checking_pragmas Test_name.c
+"Test_name.c", line 41: error: override of virtual function "A::f" is ambiguous
+  struct D : public virtual C2 , public virtual C1 {
+         ^
+
+"Test_name.c", line 45: remark: return type "int" omitted in declaration of function "main"
+  main() {
+  ^
+
+1 error detected in the compilation of "Test_name.c".

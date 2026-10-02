@@ -1,0 +1,9 @@
+eccp -DTEST_NUMBER=1 --export -UM -DM --g++ Test_name.c t2.c
+Test_name.c:
+t2.c:
+"/usr/include/stdio.h", line 34: catastrophic error: cannot open source file "stddef.h"
+  #include <stddef.h>
+                     ^
+
+1 catastrophic error detected in the compilation of "t2.c".
+Compilation terminated.

@@ -1,0 +1,45 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 21: error: function "N::f(int)" has already been defined (previous definition at line 19)
+    void f(int) { } // expected-error{{redefinition}}
+         ^
+
+"Test_name.c", line 59: warning: variable "f_ptr1" was declared but never referenced
+      void (*f_ptr1)(double) = f;
+             ^
+
+"Test_name.c", line 60: warning: variable "f_ptr2" was declared but never referenced
+      void (*f_ptr2)() = f;
+             ^
+
+"Test_name.c", line 78: error: no suitable conversion function from "test0::ns::Foo" to "char *" exists
+      foo(*p); // expected-error {{no matching function for call to 'foo'}}
+          ^
+
+"Test_name.c", line 102: warning: alias templates are a C++11 feature
+    template <class T> using ns::foo; // expected-error {{cannot template a using declaration}}
+                       ^
+
+"Test_name.c", line 102: error: qualified name is not allowed
+    template <class T> using ns::foo; // expected-error {{cannot template a using declaration}}
+                             ^
+
+"Test_name.c", line 102: error: expected an "="
+    template <class T> using ns::foo; // expected-error {{cannot template a using declaration}}
+                                    ^
+
+"Test_name.c", line 102: error: expected a type specifier
+    template <class T> using ns::foo; // expected-error {{cannot template a using declaration}}
+                                    ^
+
+"Test_name.c", line 407: warning: last line of file ends without a newline
+  template<class> struct S { using S
+                                    ^
+
+At end of source: error: expected a ";"
+
+At end of source: error: expected a "}"
+"Test_name.c", line 100: note: to match this "{"
+  namespace test2 {
+                  ^
+
+7 errors detected in the compilation of "Test_name.c".

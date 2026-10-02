@@ -1,0 +1,268 @@
+#!/usr/bin/env python3
+
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+import argparse
+import asyncio
+import os
+import shlex
+import shutil
+import sys
+import tempfile
+
+import edgbench
+import edgutil
+
+from datetime import datetime
+from pathlib import Path
+from typing import Coroutine, Dict, List, Optional, Set
+
+from edgdocker import render_docker_path
+from edgutil import eprint, print_env_var
+
+TOOL_PATH_VALGRIND = edgutil.RequiredToolPath('valgrind')
+
+# Fixed Cachegrind geometry so results are comparable across hosts.  Valgrind
+# otherwise autodiscovers the host CPU caches, which can swing simulated miss
+# rates for the same binary.  Sizes and associativities must be powers of two.
+#
+# Profile: mainstream desktop/laptop circa 2026 (32 KiB L1i/L1d, 64 B lines,
+# 32 MiB last-level).  Cachegrind only models I1, D1, and LL (no separate L2).
+CACHEGRIND_I1 = '32768,8,64'
+CACHEGRIND_D1 = '32768,8,64'
+CACHEGRIND_LL = '33554432,16,64'
+
+def parse_args() -> argparse.Namespace:
+  parser = argparse.ArgumentParser(
+    description = 'Run the compiler against valgrind benchmarks'
+  )
+  parser.add_argument(
+    '-j',
+    '--jobs',
+    dest = 'job_count',
+    default = os.cpu_count(),
+    type = int,
+    help = 'the number of concurrent jobs'
+  )
+  parser.add_argument(
+    '--verbose',
+    dest = 'verbose',
+    action = 'store_true',
+    help = 'enable verbose mode'
+  )
+  parser.add_argument(
+    'compiler_path',
+    type = Path,
+    help = 'the compiler binary to run the benchmarks against'
+  )
+  return parser.parse_args()
+
+def collect_benchmark_files(starting_path: Path) -> List[Path]:
+  paths = []
+  for root, _, filenames in os.walk(starting_path):
+    for filename in filenames:
+      file_path = Path(root, filename)
+      if ''.join(file_path.suffixes) != '.bnch.cpp':
+        continue
+
+      paths.append(file_path)
+  return paths
+
+class BenchmarkStatus:
+  def __init__(self, num_total: int) -> None:
+    self.num_completed = 0
+    self.num_total = num_total
+
+def handle_bench_cancel(proc: Optional[asyncio.subprocess.Process],
+                        status_reporter: edgutil.AsyncStatusReporter,
+                        rel_benchmark_path: Path) -> None:
+  if not edgutil.handle_proc_cancel(proc):
+    return
+
+  status_reporter.print(f"X {rel_benchmark_path}")
+
+async def run_benchmark(status_reporter: edgutil.AsyncStatusReporter,
+                        compiler_path: Path, benchmarks_dir: Path,
+                        benchmark_run_dir: Path,
+                        benchmark_file_path: Path) -> None:
+  rel_benchmark_path = benchmark_file_path.relative_to(benchmarks_dir)
+
+  directive_map = edgutil.collect_cpp_line_directives(benchmark_file_path)
+  options_lines = directive_map.get('options_all', [])
+
+  if len(options_lines) > 1:
+    status_reporter.print(
+      'Benchmark description error:\n'
+      f"  benchmark: {rel_benchmark_path}\n"
+      f"  error: there can be at most one 'options_all' directive"
+    )
+    return
+  elif len(options_lines) == 1:
+    options = shlex.split(options_lines[0])
+  else:
+    options = []
+
+  benchmark_output_file = (
+    benchmark_run_dir /
+    rel_benchmark_path.with_suffix('.cgout')
+  )
+  benchmark_output_file.parent.mkdir(
+    parents = True,
+    exist_ok = True
+  )
+
+  with tempfile.TemporaryDirectory() as tmp_dir_str:
+    tmp_dir = Path(tmp_dir_str)
+    tmp_benchmark_file = tmp_dir / 'benchmark.cpp'
+
+    shutil.copy2(benchmark_file_path, tmp_benchmark_file)
+
+    # Forward declare proc so that it can be handled if this coroutine gets
+    # canceled.
+    proc = None
+    try:
+      proc = await asyncio.create_subprocess_exec(
+        str(TOOL_PATH_VALGRIND),
+        '--tool=cachegrind',
+        '--cache-sim=yes',
+        f"--I1={CACHEGRIND_I1}",
+        f"--D1={CACHEGRIND_D1}",
+        f"--LL={CACHEGRIND_LL}",
+        f"--cachegrind-out-file={benchmark_output_file}",
+        '--',
+        str(compiler_path),
+        *options,
+        'benchmark.cpp',
+        cwd = tmp_dir,
+        stdout = asyncio.subprocess.PIPE,
+        stderr = asyncio.subprocess.STDOUT,
+        start_new_session = True
+      )
+
+      stdout, _ = await proc.communicate()
+
+      if proc.returncode == 0:
+        status_reporter.print(
+          f"Benchmark complete: {rel_benchmark_path}"
+        )
+      else:
+        lines = [f"  {l}\n" for l in stdout.decode().splitlines()]
+        status_reporter.print(
+          f"Benchmark failed: {rel_benchmark_path}\n"
+          f"Output:\n"
+          f"{''.join(lines)}"
+        )
+
+    except asyncio.CancelledError:
+      handle_bench_cancel(proc, status_reporter, rel_benchmark_path)
+
+async def run_benchmarks(loop: asyncio.AbstractEventLoop,
+                         args: argparse.Namespace,
+                         benchmark_home: Path,
+                         benchmark_run_dir: Path) -> None:
+  job_loop = edgutil.AsyncJobLoop(loop, max_jobs = args.job_count)
+
+  benchmarks_dir = benchmark_home / 'benchmarks'
+  benchmark_file_paths = collect_benchmark_files(benchmarks_dir)
+  task_status = BenchmarkStatus(len(benchmark_file_paths))
+
+  # Create the status reporter.
+  def get_current_status() -> str:
+    return f"{task_status.num_completed}/{task_status.num_total}"
+  status_reporter = edgutil.AsyncStatusReporter(get_current_status)
+
+  # Add the main set of jobs, and run the task.
+  try:
+    def supply_job() -> Optional[Coroutine]:
+      if len(benchmark_file_paths) > 0:
+        return run_benchmark(
+          status_reporter,
+          args.compiler_path,
+          benchmarks_dir,
+          benchmark_run_dir,
+          benchmark_file_paths.pop()
+        )
+
+      return None
+
+    def update_callback(done_tasks: Set[asyncio.Task]) -> bool:
+      task_status.num_completed += len(done_tasks)
+      status_reporter.print_status_line()
+      return False
+
+    await job_loop.run_supplier(supply_job, update_callback)
+  finally:
+    status_reporter.cleanup_status_line()
+
+def get_bench_runs_kept_count(args: argparse.Namespace) -> int:
+  if args.verbose:
+    print_env_var('EDG_BENCH_RUNS_KEPT')
+
+  if 'EDG_BENCH_RUNS_KEPT' not in os.environ:
+    return 10
+
+  try:
+    return int(os.environ['EDG_BENCH_RUNS_KEPT'])
+  except ValueError:
+    if args.verbose:
+      print('EDG_BENCH_RUNS_KEPT was not a valid integer.')
+    return -1
+
+def try_cleanup_bench_runs(benchmark_home: Path,
+                           args: argparse.Namespace) -> None:
+  runs_kept = get_bench_runs_kept_count(args)
+  if runs_kept < 1:
+    if args.verbose:
+      print('All benchmark runs will be kept.')
+    return
+
+  if args.verbose:
+    print(f"{runs_kept} benchmark runs will be kept.")
+
+  # Get the list of bench runs sorted, most recent benchs will be first.
+  run_dirs = edgbench.get_benchmark_runs(benchmark_home)
+
+  # Count up to the limit of kept bench runs, then remove any bench runs
+  # beyond the limit.
+  for index, dir in enumerate(run_dirs):
+    if index >= runs_kept:
+      if args.verbose:
+        print(f"Removing: {render_docker_path(dir)}")
+      shutil.rmtree(dir)
+    elif args.verbose:
+      print(f"Keeping: {render_docker_path(dir)}")
+
+def main() -> None:
+  args = parse_args()
+
+  TOOL_PATH_VALGRIND.exit_if_not_found()
+
+  benchmark_home = edgbench.load_benchmark_home_or_exit(verbose = args.verbose)
+
+  # Verify the compiler binary exists and resolve the path to an absolute path.
+  args.compiler_path = args.compiler_path.resolve()
+  if not args.compiler_path.exists():
+    eprint(f"Compiler binary not found at: {args.compiler_path}")
+    sys.exit(1)
+
+  # Create an output directory for the benchmark run.
+  timestamp = datetime.now().strftime(edgutil.RUN_TIMESTAMP_FORMAT)
+  benchmark_run_dir = benchmark_home / 'runs' / timestamp
+  benchmark_run_dir.mkdir()
+
+  async def run_tasks(loop: asyncio.AbstractEventLoop) -> None:
+    await run_benchmarks(
+      loop,
+      args,
+      benchmark_home,
+      benchmark_run_dir
+    )
+
+  edgutil.run_asyncio_loop(run_tasks)
+
+  try_cleanup_bench_runs(benchmark_home, args)
+
+main()

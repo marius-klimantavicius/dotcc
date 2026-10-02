@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 8: error: a parameter pack cannot have a default
+  template<Int... Ts = int> struct S1; // { dg-error "default argument" }
+                     ^
+
+"Test_name.c", line 9: error: a parameter pack cannot have a default
+  template<Int... = int> struct S2; // { dg-error "default argument" }
+                  ^
+
+"Test_name.c", line 10: error: a parameter pack cannot have a default
+  template<Int auto... Ns = 0> struct S3; // { dg-error "default argument" }
+                          ^
+
+"Test_name.c", line 11: error: a parameter pack cannot have a default
+  template<Int auto... = 0> struct S4; // { dg-error "default argument" }
+                       ^
+
+4 errors detected in the compilation of "Test_name.c".

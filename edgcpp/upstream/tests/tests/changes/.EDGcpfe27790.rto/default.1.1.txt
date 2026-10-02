@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gcc --gn 80300 Test_name.c
+"Test_name.c", line 13: warning: use of a const variable in a constant expression is nonstandard in C
+  const unsigned long arr[] = { pvar };
+                                ^
+

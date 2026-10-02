@@ -1,0 +1,22 @@
+cpfe -DTEST_NUMBER=2 -r -x -tused Test_name.c
+"Test_name.c", line 5: remark: return type "int" omitted in declaration of function "main"
+  main() {
+  ^
+
+"Test_name.c", line 8: error: declaration is incompatible with previous "f" (declared at line 4)
+      extern float f();        /* Is an ext sym created? */
+                   ^
+
+"Test_name.c", line 13: error: declaration is incompatible with previous "f" (declared at line 4)
+          extern float f();    /* Which is found? */
+                       ^
+
+"Test_name.c", line 11: warning: variable "f" was declared but never referenced
+        int f;
+            ^
+
+"Test_name.c", line 6: warning: variable "f" was declared but never referenced
+    int f;                     /* Original ::f is not visible */
+        ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,29 @@
+//type: fp
+//options: --c17 --strict_gnu
+/* { dg-do compile } */
+/* { dg-options "-std=gnu17 -O2 -fno-early-inlining -fipa-sra"  } */
+
+struct S
+{
+  float red;
+  int green;
+  void *blue;
+};
+
+extern int gi;
+static int foo ();
+
+int
+bar (void)
+{
+  foo ();
+  return 0;
+}
+
+static int
+foo (struct S s)
+{
+  gi = s.green;
+  return 0;
+}
+

@@ -1,0 +1,74 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 12: error: cannot overload functions distinguished by return type alone
+    double f(); // expected-error{{functions that differ only in their return type cannot be overloaded}}
+           ^
+
+"Test_name.c", line 28: error: cannot overload functions distinguished by return type alone
+    double f(int); // expected-error{{functions that differ only in their return type cannot be overloaded}}
+           ^
+
+"Test_name.c", line 51: warning: variable "ir" was declared but never referenced
+    f1::type &ir = i;
+              ^
+
+"Test_name.c", line 58: warning: missing return statement at end of non-void function "N::f1(int)"
+    }
+    ^
+
+"Test_name.c", line 56: warning: variable "i1" was declared but never referenced
+      N::f1::type& i1 = x;
+                   ^
+
+"Test_name.c", line 57: warning: variable "i2" was declared but never referenced
+      f1::type& i2 = x;
+                ^
+
+"Test_name.c", line 74: warning: variable "v3" was declared but never referenced
+    int v3 = ::i1;
+        ^
+
+"Test_name.c", line 75: warning: variable "v4" was declared but never referenced
+    int v4 = N::f1::member;
+        ^
+
+"Test_name.c", line 83: error: expected a ")"
+      ::f2_type(1, 2); // expected-error {{excess elements in scalar initializer}}
+                 ^
+
+"Test_name.c", line 83: warning: expression has no effect
+      ::f2_type(1, 2); // expected-error {{excess elements in scalar initializer}}
+      ^
+
+"Test_name.c", line 97: error: namespace "a::a" has no member "i"
+    a::a::i = 3; // expected-error{{no member named 'i' in namespace 'a::a'; did you mean 'a::a::a::i'?}}
+          ^
+
+"Test_name.c", line 99: error: namespace "a::a" has no member "j"
+    a::a::j = 3; // expected-error-re{{no member named 'j' in namespace 'a::a'{{$}}}}
+          ^
+
+"Test_name.c", line 107: error: a member with an in-class initializer must be const
+    static int size = sizeof(Undef); // expected-error{{invalid application of 'sizeof' to an incomplete type 'Undef'}}
+                    ^
+
+"Test_name.c", line 107: error: incomplete type "Undef" is not allowed
+    static int size = sizeof(Undef); // expected-error{{invalid application of 'sizeof' to an incomplete type 'Undef'}}
+                             ^
+
+"Test_name.c", line 154: error: incomplete type "void" is not allowed
+    extern "C" void i; // expected-error{{variable has incomplete type 'void'}}
+                    ^
+
+"Test_name.c", line 155: warning: nonstandard qualified name in namespace member declaration
+    pr12339::FOO  // expected-error{{no type named 'FOO' in namespace 'pr12339'}}
+    ^
+
+"Test_name.c", line 155: error: this declaration has no storage class or type specifier
+    pr12339::FOO  // expected-error{{no type named 'FOO' in namespace 'pr12339'}}
+    ^
+
+"Test_name.c", line 156: error: expected a ";"
+  }  // expected-error{{expected unqualified-id}}
+  ^
+
+10 errors detected in the compilation of "Test_name.c".

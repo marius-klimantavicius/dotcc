@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 6: error: identifier "ned" is undefined
+  decltype(ned);  // expected-error {{use of undeclared identifier 'ned'}}
+           ^
+
+"Test_name.c", line 6: warning: declaration does not declare anything
+  decltype(ned);  // expected-error {{use of undeclared identifier 'ned'}}
+  ^
+
+"Test_name.c", line 22: error: identifier "gned" is undefined
+  auto lneed = gned.*[] {};  // expected-error-re {{use of undeclared identifier 'gned'{{$}}}}
+               ^
+
+"Test_name.c", line 22: error: expression must have pointer-to-member type
+  auto lneed = gned.*[] {};  // expected-error-re {{use of undeclared identifier 'gned'{{$}}}}
+                     ^
+
+"Test_name.c", line 25: error: identifier "thatvar" is undefined
+    int thatval = aaa * (bbb + thatvar);  // expected-error {{use of undeclared identifier 'thatvar'; did you mean 'thatval'}} \
+                               ^
+
+"Test_name.c", line 32: error: identifier "e" is undefined
+    for (auto&& x : e) {  // expected-error-re {{use of undeclared identifier 'e'{{$}}}}
+                    ^
+
+"Test_name.c", line 34: warning: variable "Alignment" was declared but never referenced
+      long Alignment = __alignof__(Functor);
+           ^
+
+"Test_name.c", line 61: error: identifier "new_annotation" is undefined
+    new_annotation->Swap(&annotation);  // expected-error {{use of undeclared identifier 'new_annotation'}}
+    ^
+
+"Test_name.c", line 60: warning: variable "new_anotation" was declared but never referenced
+    auto &new_anotation = new_it.second;
+          ^
+
+6 errors detected in the compilation of "Test_name.c".

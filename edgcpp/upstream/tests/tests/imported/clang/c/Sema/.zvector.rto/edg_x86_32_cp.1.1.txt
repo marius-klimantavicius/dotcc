@@ -1,0 +1,894 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 7: warning: this declaration has no storage class or type specifier
+  vector signed char sc, sc2;
+  ^
+
+"Test_name.c", line 7: error: expected a ";"
+  vector signed char sc, sc2;
+         ^
+
+"Test_name.c", line 8: warning: this declaration has no storage class or type specifier
+  vector unsigned char uc, uc2;
+  ^
+
+"Test_name.c", line 8: error: expected a ";"
+  vector unsigned char uc, uc2;
+         ^
+
+"Test_name.c", line 9: error: variable "vector" is not a type name
+  vector bool char bc, bc2;
+  ^
+
+"Test_name.c", line 9: error: expected a ";"
+  vector bool char bc, bc2;
+              ^
+
+"Test_name.c", line 11: warning: this declaration has no storage class or type specifier
+  vector signed short ss, ss2;
+  ^
+
+"Test_name.c", line 11: error: expected a ";"
+  vector signed short ss, ss2;
+         ^
+
+"Test_name.c", line 12: warning: this declaration has no storage class or type specifier
+  vector unsigned short us, us2;
+  ^
+
+"Test_name.c", line 12: error: expected a ";"
+  vector unsigned short us, us2;
+         ^
+
+"Test_name.c", line 13: error: variable "vector" is not a type name
+  vector bool short bs, bs2;
+  ^
+
+"Test_name.c", line 13: error: expected a ";"
+  vector bool short bs, bs2;
+              ^
+
+"Test_name.c", line 15: warning: this declaration has no storage class or type specifier
+  vector signed int si, si2;
+  ^
+
+"Test_name.c", line 15: error: expected a ";"
+  vector signed int si, si2;
+         ^
+
+"Test_name.c", line 16: warning: this declaration has no storage class or type specifier
+  vector unsigned int ui, ui2;
+  ^
+
+"Test_name.c", line 16: error: expected a ";"
+  vector unsigned int ui, ui2;
+         ^
+
+"Test_name.c", line 17: error: variable "vector" is not a type name
+  vector bool int bi, bi2;
+  ^
+
+"Test_name.c", line 17: error: expected a ";"
+  vector bool int bi, bi2;
+              ^
+
+"Test_name.c", line 19: warning: this declaration has no storage class or type specifier
+  vector signed long long sl, sl2;
+  ^
+
+"Test_name.c", line 19: error: expected a ";"
+  vector signed long long sl, sl2;
+         ^
+
+"Test_name.c", line 20: warning: this declaration has no storage class or type specifier
+  vector unsigned long long ul, ul2;
+  ^
+
+"Test_name.c", line 20: error: expected a ";"
+  vector unsigned long long ul, ul2;
+         ^
+
+"Test_name.c", line 21: error: variable "vector" is not a type name
+  vector bool long long bl, bl2;
+  ^
+
+"Test_name.c", line 21: error: expected a ";"
+  vector bool long long bl, bl2;
+              ^
+
+"Test_name.c", line 23: warning: this declaration has no storage class or type specifier
+  vector signed __int128 slll, slll2;
+  ^
+
+"Test_name.c", line 23: error: expected a ";"
+  vector signed __int128 slll, slll2;
+         ^
+
+"Test_name.c", line 24: warning: this declaration has no storage class or type specifier
+  vector unsigned __int128 ulll, ulll2;
+  ^
+
+"Test_name.c", line 24: error: expected a ";"
+  vector unsigned __int128 ulll, ulll2;
+         ^
+
+"Test_name.c", line 25: error: variable "vector" is not a type name
+  vector bool __int128 blll, blll2;
+  ^
+
+"Test_name.c", line 25: error: expected a ";"
+  vector bool __int128 blll, blll2;
+              ^
+
+"Test_name.c", line 27: warning: this declaration has no storage class or type specifier
+  vector double fd, fd2;
+  ^
+
+"Test_name.c", line 27: error: expected a ";"
+  vector double fd, fd2;
+         ^
+
+"Test_name.c", line 29: warning: this declaration has no storage class or type specifier
+  vector long ll; // expected-error {{cannot use 'long' with '__vector'}}
+  ^
+
+"Test_name.c", line 29: error: expected a ";"
+  vector long ll; // expected-error {{cannot use 'long' with '__vector'}}
+         ^
+
+"Test_name.c", line 30: warning: this declaration has no storage class or type specifier
+  vector float ff; // expected-error {{cannot use 'float' with '__vector'}}
+  ^
+
+"Test_name.c", line 30: error: expected a ";"
+  vector float ff; // expected-error {{cannot use 'float' with '__vector'}}
+         ^
+
+"Test_name.c", line 31: warning: this declaration has no storage class or type specifier
+  vector long double ld; // expected-error {{cannot use 'long double' with '__vector'}}
+  ^
+
+"Test_name.c", line 31: error: expected a ";"
+  vector long double ld; // expected-error {{cannot use 'long double' with '__vector'}}
+         ^
+
+"Test_name.c", line 32: warning: this declaration has no storage class or type specifier
+  vector float _Complex cf; // expected-error {{cannot use '_Complex' with '__vector'}}
+  ^
+
+"Test_name.c", line 32: error: expected a ";"
+  vector float _Complex cf; // expected-error {{cannot use '_Complex' with '__vector'}}
+         ^
+
+"Test_name.c", line 33: warning: this declaration has no storage class or type specifier
+  vector double _Complex cd; // expected-error {{cannot use '_Complex' with '__vector'}}
+  ^
+
+"Test_name.c", line 33: error: expected a ";"
+  vector double _Complex cd; // expected-error {{cannot use '_Complex' with '__vector'}}
+         ^
+
+"Test_name.c", line 34: warning: this declaration has no storage class or type specifier
+  vector long double _Complex cld; // expected-error {{cannot use '_Complex' with '__vector'}}
+  ^
+
+"Test_name.c", line 34: error: expected a ";"
+  vector long double _Complex cld; // expected-error {{cannot use '_Complex' with '__vector'}}
+         ^
+
+"Test_name.c", line 48: error: expected a ";"
+  signed __int128 slll_scalar;
+                  ^
+
+"Test_name.c", line 49: error: declaration is incompatible with "signed int __int128" (declared at line 48)
+  unsigned __int128 ulll_scalar;
+           ^
+
+"Test_name.c", line 49: error: expected a ";"
+  unsigned __int128 ulll_scalar;
+                    ^
+
+"Test_name.c", line 54: warning: this declaration has no storage class or type specifier
+  __vector signed char sc3;
+  ^
+
+"Test_name.c", line 54: error: expected a ";"
+  __vector signed char sc3;
+           ^
+
+"Test_name.c", line 55: warning: this declaration has no storage class or type specifier
+  __vector unsigned char uc3;
+  ^
+
+"Test_name.c", line 55: error: expected a ";"
+  __vector unsigned char uc3;
+           ^
+
+"Test_name.c", line 56: error: variable "__vector" is not a type name
+  __vector bool char bc3;
+  ^
+
+"Test_name.c", line 56: error: expected a ";"
+  __vector bool char bc3;
+                ^
+
+"Test_name.c", line 57: warning: this declaration has no storage class or type specifier
+  __vector signed short ss3;
+  ^
+
+"Test_name.c", line 57: error: expected a ";"
+  __vector signed short ss3;
+           ^
+
+"Test_name.c", line 58: warning: this declaration has no storage class or type specifier
+  __vector unsigned short us3;
+  ^
+
+"Test_name.c", line 58: error: expected a ";"
+  __vector unsigned short us3;
+           ^
+
+"Test_name.c", line 59: error: variable "__vector" is not a type name
+  __vector bool short bs3;
+  ^
+
+"Test_name.c", line 59: error: expected a ";"
+  __vector bool short bs3;
+                ^
+
+"Test_name.c", line 60: warning: this declaration has no storage class or type specifier
+  __vector signed int si3;
+  ^
+
+"Test_name.c", line 60: error: expected a ";"
+  __vector signed int si3;
+           ^
+
+"Test_name.c", line 61: warning: this declaration has no storage class or type specifier
+  __vector unsigned int ui3;
+  ^
+
+"Test_name.c", line 61: error: expected a ";"
+  __vector unsigned int ui3;
+           ^
+
+"Test_name.c", line 62: error: variable "__vector" is not a type name
+  __vector bool int bi3;
+  ^
+
+"Test_name.c", line 62: error: expected a ";"
+  __vector bool int bi3;
+                ^
+
+"Test_name.c", line 63: warning: this declaration has no storage class or type specifier
+  __vector signed long long sl3;
+  ^
+
+"Test_name.c", line 63: error: expected a ";"
+  __vector signed long long sl3;
+           ^
+
+"Test_name.c", line 64: warning: this declaration has no storage class or type specifier
+  __vector unsigned long long ul3;
+  ^
+
+"Test_name.c", line 64: error: expected a ";"
+  __vector unsigned long long ul3;
+           ^
+
+"Test_name.c", line 65: error: variable "__vector" is not a type name
+  __vector bool long long bl3;
+  ^
+
+"Test_name.c", line 65: error: expected a ";"
+  __vector bool long long bl3;
+                ^
+
+"Test_name.c", line 66: warning: this declaration has no storage class or type specifier
+  __vector signed __int128 slll3;
+  ^
+
+"Test_name.c", line 66: error: expected a ";"
+  __vector signed __int128 slll3;
+           ^
+
+"Test_name.c", line 67: warning: this declaration has no storage class or type specifier
+  __vector unsigned __int128 ulll3;
+  ^
+
+"Test_name.c", line 67: error: expected a ";"
+  __vector unsigned __int128 ulll3;
+           ^
+
+"Test_name.c", line 68: error: variable "__vector" is not a type name
+  __vector bool __int128 blll3;
+  ^
+
+"Test_name.c", line 68: error: expected a ";"
+  __vector bool __int128 blll3;
+                ^
+
+"Test_name.c", line 69: warning: this declaration has no storage class or type specifier
+  __vector double fd3;
+  ^
+
+"Test_name.c", line 69: error: expected a ";"
+  __vector double fd3;
+           ^
+
+"Test_name.c", line 70: warning: this declaration has no storage class or type specifier
+  __vector long ll3; // expected-error {{cannot use 'long' with '__vector'}}
+  ^
+
+"Test_name.c", line 70: error: expected a ";"
+  __vector long ll3; // expected-error {{cannot use 'long' with '__vector'}}
+           ^
+
+"Test_name.c", line 71: warning: this declaration has no storage class or type specifier
+  __vector float ff3; // expected-error {{cannot use 'float' with '__vector'}}
+  ^
+
+"Test_name.c", line 71: error: expected a ";"
+  __vector float ff3; // expected-error {{cannot use 'float' with '__vector'}}
+           ^
+
+"Test_name.c", line 72: warning: this declaration has no storage class or type specifier
+  __vector long double ld3; // expected-error {{cannot use 'long double' with '__vector'}}
+  ^
+
+"Test_name.c", line 72: error: expected a ";"
+  __vector long double ld3; // expected-error {{cannot use 'long double' with '__vector'}}
+           ^
+
+"Test_name.c", line 73: warning: this declaration has no storage class or type specifier
+  __vector float _Complex cf3; // expected-error {{cannot use '_Complex' with '__vector'}}
+  ^
+
+"Test_name.c", line 73: error: expected a ";"
+  __vector float _Complex cf3; // expected-error {{cannot use '_Complex' with '__vector'}}
+           ^
+
+"Test_name.c", line 74: warning: this declaration has no storage class or type specifier
+  __vector double _Complex cd3; // expected-error {{cannot use '_Complex' with '__vector'}}
+  ^
+
+"Test_name.c", line 74: error: expected a ";"
+  __vector double _Complex cd3; // expected-error {{cannot use '_Complex' with '__vector'}}
+           ^
+
+"Test_name.c", line 75: warning: this declaration has no storage class or type specifier
+  __vector long double _Complex cld3; // expected-error {{cannot use '_Complex' with '__vector'}}
+  ^
+
+"Test_name.c", line 75: error: expected a ";"
+  __vector long double _Complex cld3; // expected-error {{cannot use '_Complex' with '__vector'}}
+           ^
+
+"Test_name.c", line 78: error: variable "vector" is not a type name
+  vector __bool char bc4;
+  ^
+
+"Test_name.c", line 78: error: expected a ";"
+  vector __bool char bc4;
+                ^
+
+"Test_name.c", line 79: error: variable "vector" is not a type name
+  vector __bool short bs4;
+  ^
+
+"Test_name.c", line 79: error: expected a ";"
+  vector __bool short bs4;
+                ^
+
+"Test_name.c", line 80: error: variable "vector" is not a type name
+  vector __bool int bi4;
+  ^
+
+"Test_name.c", line 80: error: expected a ";"
+  vector __bool int bi4;
+                ^
+
+"Test_name.c", line 81: error: variable "vector" is not a type name
+  vector __bool long long bl4;
+  ^
+
+"Test_name.c", line 81: error: expected a ";"
+  vector __bool long long bl4;
+                ^
+
+"Test_name.c", line 82: error: variable "__vector" is not a type name
+  __vector __bool char bc5;
+  ^
+
+"Test_name.c", line 82: error: expected a ";"
+  __vector __bool char bc5;
+                  ^
+
+"Test_name.c", line 83: error: variable "__vector" is not a type name
+  __vector __bool short bs5;
+  ^
+
+"Test_name.c", line 83: error: expected a ";"
+  __vector __bool short bs5;
+                  ^
+
+"Test_name.c", line 84: error: variable "__vector" is not a type name
+  __vector __bool int bi5;
+  ^
+
+"Test_name.c", line 84: error: expected a ";"
+  __vector __bool int bi5;
+                  ^
+
+"Test_name.c", line 85: error: variable "__vector" is not a type name
+  __vector __bool long long bl5;
+  ^
+
+"Test_name.c", line 85: error: expected a ";"
+  __vector __bool long long bl5;
+                  ^
+
+"Test_name.c", line 88: error: function call is not allowed in a constant expression
+  int res_sc[vec_step(sc) == 16 ? 1 : -1];
+             ^
+
+"Test_name.c", line 88: error: identifier "sc" is undefined
+  int res_sc[vec_step(sc) == 16 ? 1 : -1];
+                      ^
+
+"Test_name.c", line 89: error: function call is not allowed in a constant expression
+  int res_uc[vec_step(uc) == 16 ? 1 : -1];
+             ^
+
+"Test_name.c", line 89: error: identifier "uc" is undefined
+  int res_uc[vec_step(uc) == 16 ? 1 : -1];
+                      ^
+
+"Test_name.c", line 90: error: function call is not allowed in a constant expression
+  int res_bc[vec_step(bc) == 16 ? 1 : -1];
+             ^
+
+"Test_name.c", line 90: error: identifier "bc" is undefined
+  int res_bc[vec_step(bc) == 16 ? 1 : -1];
+                      ^
+
+"Test_name.c", line 91: error: function call is not allowed in a constant expression
+  int res_ss[vec_step(ss) == 8 ? 1 : -1];
+             ^
+
+"Test_name.c", line 91: error: identifier "ss" is undefined
+  int res_ss[vec_step(ss) == 8 ? 1 : -1];
+                      ^
+
+"Test_name.c", line 92: error: function call is not allowed in a constant expression
+  int res_us[vec_step(us) == 8 ? 1 : -1];
+             ^
+
+"Test_name.c", line 92: error: identifier "us" is undefined
+  int res_us[vec_step(us) == 8 ? 1 : -1];
+                      ^
+
+"Test_name.c", line 93: error: function call is not allowed in a constant expression
+  int res_bs[vec_step(bs) == 8 ? 1 : -1];
+             ^
+
+"Test_name.c", line 93: error: identifier "bs" is undefined
+  int res_bs[vec_step(bs) == 8 ? 1 : -1];
+                      ^
+
+"Test_name.c", line 94: error: function call is not allowed in a constant expression
+  int res_si[vec_step(si) == 4 ? 1 : -1];
+             ^
+
+"Test_name.c", line 94: error: identifier "si" is undefined
+  int res_si[vec_step(si) == 4 ? 1 : -1];
+                      ^
+
+"Test_name.c", line 95: error: function call is not allowed in a constant expression
+  int res_ui[vec_step(ui) == 4 ? 1 : -1];
+             ^
+
+"Test_name.c", line 95: error: identifier "ui" is undefined
+  int res_ui[vec_step(ui) == 4 ? 1 : -1];
+                      ^
+
+"Test_name.c", line 96: error: function call is not allowed in a constant expression
+  int res_bi[vec_step(bi) == 4 ? 1 : -1];
+             ^
+
+"Test_name.c", line 96: error: identifier "bi" is undefined
+  int res_bi[vec_step(bi) == 4 ? 1 : -1];
+                      ^
+
+"Test_name.c", line 97: error: function call is not allowed in a constant expression
+  int res_sl[vec_step(sl) == 2 ? 1 : -1];
+             ^
+
+"Test_name.c", line 97: error: identifier "sl" is undefined
+  int res_sl[vec_step(sl) == 2 ? 1 : -1];
+                      ^
+
+"Test_name.c", line 98: error: function call is not allowed in a constant expression
+  int res_ul[vec_step(ul) == 2 ? 1 : -1];
+             ^
+
+"Test_name.c", line 98: error: identifier "ul" is undefined
+  int res_ul[vec_step(ul) == 2 ? 1 : -1];
+                      ^
+
+"Test_name.c", line 99: error: function call is not allowed in a constant expression
+  int res_bl[vec_step(bl) == 2 ? 1 : -1];
+             ^
+
+"Test_name.c", line 99: error: identifier "bl" is undefined
+  int res_bl[vec_step(bl) == 2 ? 1 : -1];
+                      ^
+
+"Test_name.c", line 100: error: function call is not allowed in a constant expression
+  int res_slll[vec_step(slll) == 1 ? 1 : -1];
+               ^
+
+"Test_name.c", line 100: error: identifier "slll" is undefined
+  int res_slll[vec_step(slll) == 1 ? 1 : -1];
+                        ^
+
+"Test_name.c", line 101: error: function call is not allowed in a constant expression
+  int res_ulll[vec_step(ulll) == 1 ? 1 : -1];
+               ^
+
+"Test_name.c", line 101: error: identifier "ulll" is undefined
+  int res_ulll[vec_step(ulll) == 1 ? 1 : -1];
+                        ^
+
+"Test_name.c", line 102: error: function call is not allowed in a constant expression
+  int res_blll[vec_step(blll) == 1 ? 1 : -1];
+               ^
+
+"Test_name.c", line 102: error: identifier "blll" is undefined
+  int res_blll[vec_step(blll) == 1 ? 1 : -1];
+                        ^
+
+"Test_name.c", line 103: error: function call is not allowed in a constant expression
+  int res_fd[vec_step(fd) == 2 ? 1 : -1];
+             ^
+
+"Test_name.c", line 103: error: identifier "fd" is undefined
+  int res_fd[vec_step(fd) == 2 ? 1 : -1];
+                      ^
+
+"Test_name.c", line 112: error: identifier "sc2" is undefined
+    sc = sc2;
+         ^
+
+"Test_name.c", line 113: error: identifier "uc2" is undefined
+    uc = uc2;
+         ^
+
+"Test_name.c", line 114: error: identifier "bc2" is undefined
+    bc = bc2;
+         ^
+
+"Test_name.c", line 116: error: identifier "ss2" is undefined
+    ss = ss2;
+         ^
+
+"Test_name.c", line 117: error: identifier "us2" is undefined
+    us = us2;
+         ^
+
+"Test_name.c", line 118: error: identifier "bs2" is undefined
+    bs = bs2;
+         ^
+
+"Test_name.c", line 120: error: identifier "si2" is undefined
+    si = si2;
+         ^
+
+"Test_name.c", line 121: error: identifier "ui2" is undefined
+    ui = ui2;
+         ^
+
+"Test_name.c", line 122: error: identifier "bi2" is undefined
+    bi = bi2;
+         ^
+
+"Test_name.c", line 124: error: identifier "sl2" is undefined
+    sl = sl2;
+         ^
+
+"Test_name.c", line 125: error: identifier "ul2" is undefined
+    ul = ul2;
+         ^
+
+"Test_name.c", line 126: error: identifier "bl2" is undefined
+    bl = bl2;
+         ^
+
+"Test_name.c", line 127: error: identifier "fd2" is undefined
+    fd = fd2;
+         ^
+
+"Test_name.c", line 129: error: identifier "slll2" is undefined
+    slll = slll2;
+           ^
+
+"Test_name.c", line 130: error: identifier "ulll2" is undefined
+    ulll = ulll2;
+           ^
+
+"Test_name.c", line 131: error: identifier "blll2" is undefined
+    blll = blll2;
+           ^
+
+"Test_name.c", line 187: error: expected a ")"
+    sc = (vector signed char)bc2;
+                 ^
+
+"Test_name.c", line 187: error: expected a ";"
+    sc = (vector signed char)bc2;
+                             ^
+
+"Test_name.c", line 188: error: expected a ")"
+    bc = (vector bool char)uc2;
+                 ^
+
+"Test_name.c", line 188: error: expected a ";"
+    bc = (vector bool char)uc2;
+                           ^
+
+"Test_name.c", line 189: error: expected a ")"
+    uc = (vector unsigned char)sc2;
+                 ^
+
+"Test_name.c", line 189: error: expected a ";"
+    uc = (vector unsigned char)sc2;
+                               ^
+
+"Test_name.c", line 191: error: expected a ")"
+    ss = (vector signed short)bs2;
+                 ^
+
+"Test_name.c", line 191: error: expected a ";"
+    ss = (vector signed short)bs2;
+                              ^
+
+"Test_name.c", line 192: error: expected a ")"
+    bs = (vector bool short)us2;
+                 ^
+
+"Test_name.c", line 192: error: expected a ";"
+    bs = (vector bool short)us2;
+                            ^
+
+"Test_name.c", line 193: error: expected a ")"
+    us = (vector unsigned short)ss2;
+                 ^
+
+"Test_name.c", line 193: error: expected a ";"
+    us = (vector unsigned short)ss2;
+                                ^
+
+"Test_name.c", line 195: error: expected a ")"
+    si = (vector signed int)bi2;
+                 ^
+
+"Test_name.c", line 195: error: expected a ";"
+    si = (vector signed int)bi2;
+                            ^
+
+"Test_name.c", line 196: error: expected a ")"
+    bi = (vector bool int)ui2;
+                 ^
+
+"Test_name.c", line 196: error: expected a ";"
+    bi = (vector bool int)ui2;
+                          ^
+
+"Test_name.c", line 197: error: expected a ")"
+    ui = (vector unsigned int)si2;
+                 ^
+
+"Test_name.c", line 197: error: expected a ";"
+    ui = (vector unsigned int)si2;
+                              ^
+
+"Test_name.c", line 199: error: expected a ")"
+    sl = (vector signed long long)bl2;
+                 ^
+
+"Test_name.c", line 199: error: expected a ";"
+    sl = (vector signed long long)bl2;
+                                  ^
+
+"Test_name.c", line 200: error: expected a ")"
+    bl = (vector bool long long)ul2;
+                 ^
+
+"Test_name.c", line 200: error: expected a ";"
+    bl = (vector bool long long)ul2;
+                                ^
+
+"Test_name.c", line 201: error: expected a ")"
+    ul = (vector unsigned long long)fd2;
+                 ^
+
+"Test_name.c", line 201: error: expected a ";"
+    ul = (vector unsigned long long)fd2;
+                                    ^
+
+"Test_name.c", line 202: error: expected a ")"
+    fd = (vector double)sl2;
+                 ^
+
+"Test_name.c", line 202: error: expected a ";"
+    fd = (vector double)sl2;
+                        ^
+
+"Test_name.c", line 204: error: expected a ")"
+    slll = (vector signed __int128)blll2;
+                   ^
+
+"Test_name.c", line 204: error: expected a ";"
+    slll = (vector signed __int128)blll2;
+                                   ^
+
+"Test_name.c", line 205: error: expected a ")"
+    blll = (vector bool __int128)ulll2;
+                   ^
+
+"Test_name.c", line 205: error: expected a ";"
+    blll = (vector bool __int128)ulll2;
+                                 ^
+
+"Test_name.c", line 206: error: expected a ")"
+    ulll = (vector unsigned __int128)slll2;
+                   ^
+
+"Test_name.c", line 206: error: expected a ";"
+    ulll = (vector unsigned __int128)slll2;
+                                     ^
+
+"Test_name.c", line 212: error: expected a ")"
+    sc = (vector signed char)bs2;
+                 ^
+
+"Test_name.c", line 212: error: expected a ";"
+    sc = (vector signed char)bs2;
+                             ^
+
+"Test_name.c", line 213: error: expected a ")"
+    bc = (vector bool char)us2;
+                 ^
+
+"Test_name.c", line 213: error: expected a ";"
+    bc = (vector bool char)us2;
+                           ^
+
+"Test_name.c", line 214: error: expected a ")"
+    uc = (vector unsigned char)fd2;
+                 ^
+
+"Test_name.c", line 214: error: expected a ";"
+    uc = (vector unsigned char)fd2;
+                               ^
+
+"Test_name.c", line 216: error: expected a ")"
+    ss = (vector signed short)bi2;
+                 ^
+
+"Test_name.c", line 216: error: expected a ";"
+    ss = (vector signed short)bi2;
+                              ^
+
+"Test_name.c", line 217: error: expected a ")"
+    bs = (vector bool short)ui2;
+                 ^
+
+"Test_name.c", line 217: error: expected a ";"
+    bs = (vector bool short)ui2;
+                            ^
+
+"Test_name.c", line 218: error: expected a ")"
+    us = (vector unsigned short)fd2;
+                 ^
+
+"Test_name.c", line 218: error: expected a ";"
+    us = (vector unsigned short)fd2;
+                                ^
+
+"Test_name.c", line 220: error: expected a ")"
+    si = (vector signed int)bl2;
+                 ^
+
+"Test_name.c", line 220: error: expected a ";"
+    si = (vector signed int)bl2;
+                            ^
+
+"Test_name.c", line 221: error: expected a ")"
+    bi = (vector bool int)ul2;
+                 ^
+
+"Test_name.c", line 221: error: expected a ";"
+    bi = (vector bool int)ul2;
+                          ^
+
+"Test_name.c", line 222: error: expected a ")"
+    ui = (vector unsigned int)fd2;
+                 ^
+
+"Test_name.c", line 222: error: expected a ";"
+    ui = (vector unsigned int)fd2;
+                              ^
+
+"Test_name.c", line 224: error: expected a ")"
+    sl = (vector signed long long)bc2;
+                 ^
+
+"Test_name.c", line 224: error: expected a ";"
+    sl = (vector signed long long)bc2;
+                                  ^
+
+"Test_name.c", line 225: error: expected a ")"
+    bl = (vector bool long long)uc2;
+                 ^
+
+"Test_name.c", line 225: error: expected a ";"
+    bl = (vector bool long long)uc2;
+                                ^
+
+"Test_name.c", line 226: error: expected a ")"
+    ul = (vector unsigned long long)sc2;
+                 ^
+
+"Test_name.c", line 226: error: expected a ";"
+    ul = (vector unsigned long long)sc2;
+                                    ^
+
+"Test_name.c", line 227: error: expected a ")"
+    fd = (vector double)sc2;
+                 ^
+
+"Test_name.c", line 227: error: expected a ";"
+    fd = (vector double)sc2;
+                        ^
+
+"Test_name.c", line 229: error: expected a ")"
+    slll = (vector signed __int128)bi2;
+                   ^
+
+"Test_name.c", line 229: error: expected a ";"
+    slll = (vector signed __int128)bi2;
+                                   ^
+
+"Test_name.c", line 230: error: expected a ")"
+    blll = (vector bool __int128)ui2;
+                   ^
+
+"Test_name.c", line 230: error: expected a ";"
+    blll = (vector bool __int128)ui2;
+                                 ^
+
+"Test_name.c", line 231: error: expected a ")"
+    ulll = (vector unsigned __int128)si2;
+                   ^
+
+"Test_name.c", line 231: error: expected a ";"
+    ulll = (vector unsigned __int128)si2;
+                                     ^
+
+"Test_name.c", line 830: error: expression must have integral type
+    sc = sc << 1.0f; // expected-error {{integer is required}}
+               ^
+
+"Test_name.c", line 865: error: identifier "slll_scalar" is undefined
+    slll = slll << slll_scalar;
+                   ^
+
+"Test_name.c", line 867: error: identifier "ulll_scalar" is undefined
+    ulll = ulll << ulll_scalar;
+                   ^
+
+"Test_name.c", line 942: error: expression must have integral type
+    sc = sc >> 1.0f; // expected-error {{integer is required}}
+               ^
+
+189 errors detected in the compilation of "Test_name.c".

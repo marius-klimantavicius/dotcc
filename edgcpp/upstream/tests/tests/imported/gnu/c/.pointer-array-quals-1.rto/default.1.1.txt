@@ -1,0 +1,262 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c17 --strict_gnu Test_name.c
+"Test_name.c", line 11: warning: return value type does not match the function type
+  int (*y2(const int x[3][3]))[3] { return x; } /* { dg-warning "return discards 'const' qualifier from pointer target type" } */
+                                           ^
+
+"Test_name.c", line 12: warning: return value type does not match the function type
+  const int (*y3(int x[3][3]))[3] { return x; }
+                                           ^
+
+"Test_name.c", line 30: warning: argument of type "const double *" is incompatible with parameter of type "void *"
+  	tvoid(z0); /* { dg-warning "passing argument 1 of 'tvoid' discards 'const' qualifier from pointer target type" } */
+  	      ^
+
+"Test_name.c", line 38: warning: a value of type "const double *" cannot be assigned to an entity of type "void *"
+  	p = z0; /* { dg-warning "assignment discards 'const' qualifier from pointer target type" } */
+  	  ^
+
+"Test_name.c", line 47: warning: argument of type "const void *" is incompatible with parameter of type "double *"
+  	transpose0(pc, p); /* { dg-warning "passing argument 1 of 'transpose0' discards 'const' qualifier from pointer target type" } */
+  	           ^
+
+"Test_name.c", line 48: warning: argument of type "const void *" is incompatible with parameter of type "double (*)[2]"
+  	transpose1(pc, p); /* { dg-warning "passing argument 1 of 'transpose1' discards 'const' qualifier from pointer target type" } */
+  	           ^
+
+"Test_name.c", line 49: warning: argument of type "const void *" is incompatible with parameter of type "double (*)[2][2]"
+  	transpose2(pc, p); /* { dg-warning "passing argument 1 of 'transpose2' discards 'const' qualifier from pointer target type" } */
+  	           ^
+
+"Test_name.c", line 51: warning: argument of type "const void *" is incompatible with parameter of type "const double (*)[2]"
+  	transpose1(p, pc);
+  	              ^
+
+"Test_name.c", line 52: warning: argument of type "const void *" is incompatible with parameter of type "const double (*)[2][2]"
+  	transpose2(p, pc);
+  	              ^
+
+"Test_name.c", line 55: warning: argument of type "double (*)[2]" is incompatible with parameter of type "const double (*)[2]"
+  	transpose1(y1, x1);
+  	               ^
+
+"Test_name.c", line 56: warning: argument of type "double (*)[2][2]" is incompatible with parameter of type "const double (*)[2][2]"
+  	transpose2(y2, x2);
+  	               ^
+
+"Test_name.c", line 59: warning: a value of type "double (*)[2]" cannot be used to initialize an entity of type "const double (*)[2]"
+  	const double (*u1p)[2] = x1;
+  	                         ^
+
+"Test_name.c", line 60: warning: a value of type "double (*)[2][2]" cannot be used to initialize an entity of type "const double (*)[2][2]"
+  	const double (*u2p)[2][2] = x2;
+  	                            ^
+
+"Test_name.c", line 61: warning: a value of type "const double *" cannot be used to initialize an entity of type "double *"
+  	double (*v0p) = z0; /* { dg-warning "initialization discards 'const' qualifier from pointer target type" } */
+  	                ^
+
+"Test_name.c", line 62: warning: a value of type "const double (*)[2]" cannot be used to initialize an entity of type "double (*)[2]"
+  	double (*v1p)[2] = z1; /* { dg-warning "initialization discards 'const' qualifier from pointer target type" } */
+  	                   ^
+
+"Test_name.c", line 63: warning: a value of type "const double (*)[2][2]" cannot be used to initialize an entity of type "double (*)[2][2]"
+  	double (*v2p)[2][2] = z2; /* { dg-warning "initialization discards 'const' qualifier from pointer target type" } */
+  	                      ^
+
+"Test_name.c", line 65: warning: expression has no effect
+  	&(x0[1]) - &(z0[0]);
+  	^
+
+"Test_name.c", line 66: warning: operand types are incompatible ("double (*)[2]" and "const double (*)[2]")
+  	&(x1[1]) - &(z1[0]);
+  	         ^
+
+"Test_name.c", line 66: warning: subtraction of pointer types "double (*)[2]" and "const double (*)[2]" is nonstandard
+  	&(x1[1]) - &(z1[0]);
+  	         ^
+
+"Test_name.c", line 66: warning: expression has no effect
+  	&(x1[1]) - &(z1[0]);
+  	^
+
+"Test_name.c", line 67: warning: operand types are incompatible ("double (*)[2][2]" and "const double (*)[2][2]")
+  	&(x2[1]) - &(z2[0]);
+  	         ^
+
+"Test_name.c", line 67: warning: subtraction of pointer types "double (*)[2][2]" and "const double (*)[2][2]" is nonstandard
+  	&(x2[1]) - &(z2[0]);
+  	         ^
+
+"Test_name.c", line 67: warning: expression has no effect
+  	&(x2[1]) - &(z2[0]);
+  	^
+
+"Test_name.c", line 69: warning: expression has no effect
+  	x0 == z0;
+  	^
+
+"Test_name.c", line 70: warning: operand types are incompatible ("double (*)[2]" and "const double (*)[2]")
+  	x1 == z1;
+  	   ^
+
+"Test_name.c", line 70: warning: expression has no effect
+  	x1 == z1;
+  	^
+
+"Test_name.c", line 71: warning: operand types are incompatible ("double (*)[2][2]" and "const double (*)[2][2]")
+  	x2 == z2;
+  	   ^
+
+"Test_name.c", line 71: warning: expression has no effect
+  	x2 == z2;
+  	^
+
+"Test_name.c", line 72: warning: expression has no effect
+  	x0 < z0; 
+  	^
+
+"Test_name.c", line 73: warning: operand types are incompatible ("double (*)[2]" and "const double (*)[2]")
+  	x1 < z1; 
+  	   ^
+
+"Test_name.c", line 73: warning: expression has no effect
+  	x1 < z1; 
+  	^
+
+"Test_name.c", line 74: warning: operand types are incompatible ("double (*)[2][2]" and "const double (*)[2][2]")
+  	x2 < z2; 
+  	   ^
+
+"Test_name.c", line 74: warning: expression has no effect
+  	x2 < z2; 
+  	^
+
+"Test_name.c", line 75: warning: expression has no effect
+  	x0 > z0;
+  	^
+
+"Test_name.c", line 76: warning: operand types are incompatible ("double (*)[2]" and "const double (*)[2]")
+  	x1 > z1;
+  	   ^
+
+"Test_name.c", line 76: warning: expression has no effect
+  	x1 > z1;
+  	^
+
+"Test_name.c", line 77: warning: operand types are incompatible ("double (*)[2][2]" and "const double (*)[2][2]")
+  	x2 > z2;
+  	   ^
+
+"Test_name.c", line 77: warning: expression has no effect
+  	x2 > z2;
+  	^
+
+"Test_name.c", line 80: warning: a value of type "double (*)[2]" cannot be assigned to an entity of type "const double (*)[2]"
+  	u1p = x1;
+  	    ^
+
+"Test_name.c", line 81: warning: a value of type "double (*)[2][2]" cannot be assigned to an entity of type "const double (*)[2][2]"
+  	u2p = x2;
+  	    ^
+
+"Test_name.c", line 82: warning: a value of type "const double *" cannot be assigned to an entity of type "double *"
+  	v0p = z0; /* { dg-warning "assignment discards 'const' qualifier from pointer target type" } */
+  	    ^
+
+"Test_name.c", line 83: warning: a value of type "const double (*)[2]" cannot be assigned to an entity of type "double (*)[2]"
+  	v1p = z1; /* { dg-warning "assignment discards 'const' qualifier from pointer target type" } */
+  	    ^
+
+"Test_name.c", line 84: warning: a value of type "const double (*)[2][2]" cannot be assigned to an entity of type "double (*)[2][2]"
+  	v2p = z2; /* { dg-warning "assignment discards 'const' qualifier from pointer target type" } */
+  	    ^
+
+"Test_name.c", line 87: warning: operand types are incompatible ("double (*)[2]" and "const double (*)[2]")
+  	(void)(1 ? x1 : z1);
+  	              ^
+
+"Test_name.c", line 88: warning: operand types are incompatible ("double (*)[2][2]" and "const double (*)[2][2]")
+  	(void)(1 ? x2 : z2);
+  	              ^
+
+"Test_name.c", line 89: warning: operand types are incompatible ("double *" and "double (*)[2]")
+  	(void)(1 ? x0 : x1); /* { dg-error "pointer type mismatch in conditional expression" } */
+  	              ^
+
+"Test_name.c", line 90: warning: operand types are incompatible ("double (*)[2]" and "double (*)[2][2]")
+  	(void)(1 ? x1 : x2); /* { dg-error "pointer type mismatch in conditional expression" } */
+  	              ^
+
+"Test_name.c", line 91: warning: operand types are incompatible ("double (*)[2][2]" and "double *")
+  	(void)(1 ? x2 : x0); /* { dg-error "pointer type mismatch in conditional expression" } */
+  	              ^
+
+"Test_name.c", line 92: warning: a value of type "const double *" cannot be assigned to an entity of type "double *"
+  	v0p = (1 ? z0 : v0p); /* { dg-warning "assignment discards 'const' qualifier from pointer target type" } */
+  	    ^
+
+"Test_name.c", line 93: warning: operand types are incompatible ("const double (*)[2]" and "double (*)[2]")
+  	v1p = (1 ? z1 : v1p); /* { dg-warning "assignment discards 'const' qualifier from pointer target type" } */
+  	              ^
+
+"Test_name.c", line 93: warning: a value of type "const double (*)[2]" cannot be assigned to an entity of type "double (*)[2]"
+  	v1p = (1 ? z1 : v1p); /* { dg-warning "assignment discards 'const' qualifier from pointer target type" } */
+  	    ^
+
+"Test_name.c", line 94: warning: operand types are incompatible ("const double (*)[2][2]" and "double (*)[2][2]")
+  	v2p = (1 ? z2 : v2p); /* { dg-warning "assignment discards 'const' qualifier from pointer target type" } */
+  	              ^
+
+"Test_name.c", line 94: warning: a value of type "const double (*)[2][2]" cannot be assigned to an entity of type "double (*)[2][2]"
+  	v2p = (1 ? z2 : v2p); /* { dg-warning "assignment discards 'const' qualifier from pointer target type" } */
+  	    ^
+
+"Test_name.c", line 95: warning: a value of type "const double *" cannot be assigned to an entity of type "double *"
+  	v0p = (1 ? x0 : u0p); /* { dg-warning "assignment discards 'const' qualifier from pointer target type" } */
+  	    ^
+
+"Test_name.c", line 96: warning: operand types are incompatible ("double (*)[2]" and "const double (*)[2]")
+  	v1p = (1 ? x1 : u1p); /* { dg-warning "assignment discards 'const' qualifier from pointer target type" } */
+  	              ^
+
+"Test_name.c", line 97: warning: operand types are incompatible ("double (*)[2][2]" and "const double (*)[2][2]")
+  	v2p = (1 ? x2 : u2p); /* { dg-warning "assignment discards 'const' qualifier from pointer target type" } */
+  	              ^
+
+"Test_name.c", line 98: error: expression must be a modifiable lvalue
+  	(1 ? x0 : z0)[0] = 1; /* { dg-error "assignment of read-only location" } */
+  	^
+
+"Test_name.c", line 99: warning: operand types are incompatible ("double (*)[2]" and "const double (*)[2]")
+  	(1 ? x1 : z1)[0][0] = 1; /* { dg-error "assignment of read-only location" } */
+  	        ^
+
+"Test_name.c", line 100: warning: operand types are incompatible ("double (*)[2][2]" and "const double (*)[2][2]")
+  	(1 ? x2 : z2)[0][0][0] = 1; /* { dg-error "assignment of read-only location" } */
+  	        ^
+
+"Test_name.c", line 101: warning: a value of type "const void *" cannot be assigned to an entity of type "double *"
+  	v0p = (1 ? p : z0); /* { dg-warning "assignment discards 'const' qualifier from pointer target type" } */
+  	    ^
+
+"Test_name.c", line 104: warning: a value of type "const void *" cannot be assigned to an entity of type "double *"
+  	v0p = (1 ? pc : x0); /* { dg-warning "assignment discards 'const' qualifier from pointer target type" } */
+  	    ^
+
+"Test_name.c", line 105: warning: a value of type "const void *" cannot be assigned to an entity of type "double (*)[2]"
+  	v1p = (1 ? pc : x1); /* { dg-warning "assignment discards 'const' qualifier from pointer target type" } */
+  	    ^
+
+"Test_name.c", line 106: warning: a value of type "const void *" cannot be assigned to an entity of type "double (*)[2][2]"
+  	v2p = (1 ? pc : x2); /* { dg-warning "assignment discards 'const' qualifier from pointer target type" } */
+  	    ^
+
+"Test_name.c", line 20: warning: variable "o1" was declared but never referenced
+  	double o1[2][3];
+  	       ^
+
+"Test_name.c", line 24: warning: variable "o2" was declared but never referenced
+  	double o2[2][2][3];
+  	       ^
+
+1 error detected in the compilation of "Test_name.c".

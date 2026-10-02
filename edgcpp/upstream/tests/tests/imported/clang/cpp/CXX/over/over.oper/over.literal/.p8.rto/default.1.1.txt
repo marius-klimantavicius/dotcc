@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 12: warning: a user-provided literal suffix must begin with "_"
+  template<char...> int operator ""\u03C0(); // ok, UCN for lowercase pi // expected-warning {{reserved}}
+                                 ^
+
+"Test_name.c", line 13: warning: a user-provided literal suffix must begin with "_"
+  float operator ""E(const char *); // expected-error {{invalid suffix on literal}} expected-warning {{reserved}}
+                 ^
+
+"Test_name.c", line 14: error: invalid literal operator name
+  float operator " " B(const char *); // expected-error {{must be '""'}} expected-warning {{reserved}}
+                 ^
+
+"Test_name.c", line 14: error: expected a ";"
+  float operator " " B(const char *); // expected-error {{must be '""'}} expected-warning {{reserved}}
+                     ^
+
+"Test_name.c", line 15: warning: a user-provided literal suffix must begin with "_"
+  string operator ""5X(const char *, std::size_t); // expected-error {{expected identifier}}
+                    ^
+
+"Test_name.c", line 15: error: invalid literal operator name
+  string operator ""5X(const char *, std::size_t); // expected-error {{expected identifier}}
+                    ^
+
+"Test_name.c", line 15: error: expected a ";"
+  string operator ""5X(const char *, std::size_t); // expected-error {{expected identifier}}
+                    ^
+
+"Test_name.c", line 16: error: invalid floating-point parameter type ("double") for literal operator; expected long double
+  double operator ""_miles(double); // expected-error {{parameter}}
+         ^
+
+"Test_name.c", line 17: warning: a user-provided literal suffix must begin with "_"
+  template<char...> int operator "" j(const char*); // expected-error {{template}}
+                                    ^
+
+"Test_name.c", line 17: error: a literal operator template cannot have any parameters
+  template<char...> int operator "" j(const char*); // expected-error {{template}}
+                        ^
+
+6 errors detected in the compilation of "Test_name.c".

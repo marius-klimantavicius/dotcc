@@ -1,0 +1,49 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 17: warning: excess initializers are ignored
+  #embed __FILE__
+   ^
+
+"Test_name.c", line 22: warning: string literal too long -- excess characters ignored
+  #embed __FILE__
+  ^
+
+"Test_name.c", line 30: warning: string literal too long -- excess characters ignored
+  #embed __FILE__
+  ^
+
+"Test_name.c", line 40: warning: excess initializers are ignored
+  #embed __FILE__
+   ^
+
+"Test_name.c", line 47: warning: excess initializers are ignored
+  #embed __FILE__
+   ^
+
+"Test_name.c", line 16: warning: variable "a" was declared but never referenced
+    int a[8] = {x, x, x, x, x, x,
+        ^
+
+"Test_name.c", line 21: warning: variable "b" was declared but never referenced
+    int b[8] = {
+        ^
+
+"Test_name.c", line 26: warning: variable "c" was declared but never referenced
+    int c[3000] = {x, x, x, x, x, x,
+        ^
+
+"Test_name.c", line 29: warning: variable "d" was declared but never referenced
+   char d[3] = {
+        ^
+
+"Test_name.c", line 35: warning: variable "e" was declared but never referenced
+  char e[3000] = { 1,
+       ^
+
+"Test_name.c", line 39: warning: variable "s" was declared but never referenced
+  struct S s = {
+           ^
+
+"Test_name.c", line 46: warning: variable "s1" was declared but never referenced
+  struct S1 s1 = {
+            ^
+

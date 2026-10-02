@@ -1,0 +1,70 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 16: error: requires-clause incompatible with class template "r1" (declared at line 13)
+  template<typename T> requires requires { typename identity_t<T*>; } // expected-error{{requires clause differs in template redeclaration}}
+                       ^
+
+"Test_name.c", line 27: error: requires-clause incompatible with class template "r2" (declared at line 22)
+  template<typename T> requires requires { typename identity<T>::typr; } // expected-error{{requires clause differs in template redeclaration}}
+                       ^
+
+"Test_name.c", line 32: error: requires-clause incompatible with class template "r2" (declared at line 22)
+  template<typename T> requires requires { typename ns::identity<T>::type; } // expected-error{{requires clause differs in template redeclaration}}
+                       ^
+
+"Test_name.c", line 39: error: requires-clause incompatible with class template "r3" (declared at line 36)
+  template<typename T> requires requires { typename T::template identitr<T>::type; } // expected-error{{requires clause differs in template redeclaration}}
+                       ^
+
+"Test_name.c", line 50: error: requires-clause incompatible with class template "r5" (declared at line 49)
+  template<typename T> requires requires { 1; } // expected-error{{requires clause differs in template redeclaration}}
+                       ^
+
+"Test_name.c", line 60: error: requires-clause incompatible with class template "r6" (declared at line 57)
+  template<typename U> requires requires { sizeof(U) - 1; } // expected-error{{requires clause differs in template redeclaration}}
+                       ^
+
+"Test_name.c", line 62: error: requires-clause incompatible with class template "r6" (declared at line 57)
+  template<typename T> requires requires { { sizeof(T) }; } // expected-note 2{{previous template declaration is here}}
+                       ^
+
+"Test_name.c", line 64: error: requires-clause incompatible with class template "r6" (declared at line 57)
+  template<typename T> requires requires { { sizeof(T) } noexcept; } // expected-error{{requires clause differs in template redeclaration}}
+                       ^
+
+"Test_name.c", line 66: error: requires-clause incompatible with class template "r6" (declared at line 57)
+  template<typename T> requires requires { { sizeof(T) } -> C1; } // expected-error{{requires clause differs in template redeclaration}}
+                       ^
+
+"Test_name.c", line 75: error: requires-clause incompatible with class template "r7" (declared at line 70)
+  template<typename U> requires requires { { sizeof(U) }; } // expected-error{{requires clause differs in template redeclaration}}
+                       ^
+
+"Test_name.c", line 85: error: requires-clause incompatible with class template "r8" (declared at line 82)
+  template<typename T> requires requires { { sizeof(T) } -> C2<T*>; } // expected-error{{requires clause differs in template redeclaration}}
+                       ^
+
+"Test_name.c", line 93: error: requires-clause incompatible with class template "r9" (declared at line 90)
+  template<typename T> requires requires { requires sizeof(T) == 1; } // expected-error{{requires clause differs in template redeclaration}}
+                       ^
+
+"Test_name.c", line 101: error: requires-clause incompatible with class template "r10" (declared at line 98)
+  template<typename T> requires requires(T i) { requires true; } // expected-error{{requires clause differs in template redeclaration}}
+                       ^
+
+"Test_name.c", line 106: error: requires-clause incompatible with class template "r11" (declared at line 105)
+  template<typename T> requires requires(T i) { requires true; } // expected-error{{requires clause differs in template redeclaration}}
+                       ^
+
+"Test_name.c", line 108: error: requires-clause incompatible with class template "r11" (declared at line 105)
+  template<typename T> requires requires(T i, T *j, T &k) { requires true; } // expected-error{{requires clause differs in template redeclaration}}
+                       ^
+
+"Test_name.c", line 116: error: requires-clause incompatible with class template "r12" (declared at line 113)
+  template<typename T> requires requires(int k) { requires sizeof(k) == 2; } // expected-error{{requires clause differs in template redeclaration}}
+                       ^
+
+"Test_name.c", line 126: error: requires-clause incompatible with class template "r13" (declared at line 123)
+  template<typename T> requires requires { 0; requires true; } // expected-error{{requires clause differs in template redeclaration}}
+                       ^
+
+17 errors detected in the compilation of "Test_name.c".

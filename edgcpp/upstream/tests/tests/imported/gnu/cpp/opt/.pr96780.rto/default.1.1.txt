@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./opt/pr96780.C", line 14: warning: variable "x1" was declared but never referenced
+    auto&& x1 = std::move(a);
+           ^
+
+"./opt/pr96780.C", line 15: warning: variable "x2" was declared but never referenced
+    auto&& x2 = std::forward<A>(a);
+           ^
+
+"./opt/pr96780.C", line 16: warning: variable "x3" was declared but never referenced
+    auto&& x3 = std::forward<A&>(a);
+           ^
+
+"./opt/pr96780.C", line 18: warning: variable "x4" was declared but never referenced
+    auto&& x4 = std::move(ca);
+           ^
+
+"./opt/pr96780.C", line 19: warning: variable "x5" was declared but never referenced
+    auto&& x5 = std::forward<const A>(ca);
+           ^
+
+"./opt/pr96780.C", line 20: warning: variable "x6" was declared but never referenced
+    auto&& x6 = std::forward<const A&>(ca);
+           ^
+

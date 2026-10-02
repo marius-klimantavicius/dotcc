@@ -1,0 +1,106 @@
+fe_only -DTEST_NUMBER=3 --c++20 --gn 140200 Test_name.c
+"Test_name.c", line 12: error: function "minimal::A::f(int)" (declared at line 8) is inaccessible
+      using B::f;
+               ^
+
+"Test_name.c", line 12: error: function "minimal::A::f()" (declared at line 7) is inaccessible
+      using B::f;
+               ^
+
+"Test_name.c", line 29: error: function "overloaded::A::f(int)" (declared at line 21) is inaccessible
+      using B::f;
+               ^
+
+"Test_name.c", line 29: error: function "overloaded::A::f()" (declared at line 20) is inaccessible
+      using B::f;
+               ^
+
+"Test_name.c", line 32: error: function "overloaded::A::f()" (declared at line 20) is inaccessible
+    int i = D::f() + D::f(1);
+               ^
+
+"Test_name.c", line 32: error: function "overloaded::A::f(int)" (declared at line 21) is inaccessible
+    int i = D::f() + D::f(1);
+                        ^
+
+"Test_name.c", line 47: error: function "no_overload::B::f" (declared at line 39) is inaccessible
+      using B::f;
+               ^
+
+"Test_name.c", line 50: error: function "no_overload::A::f" (declared at line 39) is inaccessible
+    int i = D::f();
+               ^
+
+"Test_name.c", line 69: error: function "overloaded_with_using::B::f()" (declared at line 64) is inaccessible
+      using B::f;
+               ^
+
+"Test_name.c", line 69: error: function "overloaded_with_using::B::f(int)" (declared at line 64) is inaccessible
+      using B::f;
+               ^
+
+"Test_name.c", line 72: error: function "overloaded_with_using::A::f()" (declared at line 58) is inaccessible
+    int i = D::f() + D::f(1);
+               ^
+
+"Test_name.c", line 72: error: function "overloaded_with_using::A::f(int)" (declared at line 59) is inaccessible
+    int i = D::f() + D::f(1);
+                        ^
+
+"Test_name.c", line 90: error: function "no_overload_with_using::B::f" (declared at line 85) is inaccessible
+      using B::f;
+               ^
+
+"Test_name.c", line 93: error: function "no_overload_with_using::A::f" (declared at line 80) is inaccessible
+    int i = D::f();
+               ^
+
+"Test_name.c", line 111: error: function template "rmpl_overloaded::A::f(int)" (declared at line 103) is inaccessible
+      using B::f;
+               ^
+
+"Test_name.c", line 111: error: function template "rmpl_overloaded::A::f()" (declared at line 101) is inaccessible
+      using B::f;
+               ^
+
+"Test_name.c", line 114: error: function "rmpl_overloaded::A::f() [with T=void]" (declared at line 101) is inaccessible
+    int i = D::f() + D::f(1);
+               ^
+
+"Test_name.c", line 114: error: function "rmpl_overloaded::A::f(int) [with T=void]" (declared at line 103) is inaccessible
+    int i = D::f() + D::f(1);
+                        ^
+
+"Test_name.c", line 130: error: function template "tmpl_no_overload::B::f" (declared at line 122) is inaccessible
+      using B::f;
+               ^
+
+"Test_name.c", line 133: error: function "tmpl_no_overload::A::f() [with T=void]" (declared at line 122) is inaccessible
+    int i = D::f();
+               ^
+
+"Test_name.c", line 154: error: function template "tmpl_overloaded_with_using::B::f()" (declared at line 149) is inaccessible
+      using B::f;
+               ^
+
+"Test_name.c", line 154: error: function template "tmpl_overloaded_with_using::B::f(int)" (declared at line 149) is inaccessible
+      using B::f;
+               ^
+
+"Test_name.c", line 157: error: function "tmpl_overloaded_with_using::A::f() [with T=void]" (declared at line 142) is inaccessible
+    int i = D::f() + D::f(1);
+               ^
+
+"Test_name.c", line 157: error: function "tmpl_overloaded_with_using::A::f(int) [with T=void]" (declared at line 144) is inaccessible
+    int i = D::f() + D::f(1);
+                        ^
+
+"Test_name.c", line 176: error: function template "tmpl_no_overload_with_using::B::f" (declared at line 171) is inaccessible
+      using B::f;
+               ^
+
+"Test_name.c", line 179: error: function "tmpl_no_overload_with_using::A::f() [with T=void]" (declared at line 166) is inaccessible
+    int i = D::f();
+               ^
+
+26 errors detected in the compilation of "Test_name.c".

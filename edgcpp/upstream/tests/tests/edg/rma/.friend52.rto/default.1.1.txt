@@ -1,0 +1,17 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 12: warning: variable "S" was declared but never referenced
+    int S, T;
+        ^
+
+"Test_name.c", line 12: warning: variable "T" was declared but never referenced
+    int S, T;
+           ^
+
+"Test_name.c", line 16: warning: variable "ps" was declared but never referenced
+    struct S *ps;
+              ^
+
+"Test_name.c", line 17: warning: variable "pt" was declared but never referenced
+    struct T *pt;
+              ^
+

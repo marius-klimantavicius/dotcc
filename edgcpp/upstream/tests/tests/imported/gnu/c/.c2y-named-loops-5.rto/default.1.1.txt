@@ -1,0 +1,298 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./c2y-named-loops-1.c", line 13: error: expected a ";"
+   continue a;
+            ^
+
+"./c2y-named-loops-1.c", line 15: error: expected a ";"
+   continue b;
+            ^
+
+"./c2y-named-loops-1.c", line 17: error: expected a ";"
+   continue c;
+            ^
+
+"./c2y-named-loops-1.c", line 19: error: expected a ";"
+   break b;
+         ^
+
+"./c2y-named-loops-1.c", line 23: warning: unrecognized GCC pragma
+  #pragma GCC unroll 2
+              ^
+
+"./c2y-named-loops-1.c", line 28: error: expected a ";"
+   continue g;
+            ^
+
+"./c2y-named-loops-1.c", line 30: error: expected a ";"
+   continue h;
+            ^
+
+"./c2y-named-loops-1.c", line 32: error: expected a ";"
+   break g;
+         ^
+
+"./c2y-named-loops-1.c", line 41: error: expected a ";"
+        break k;
+              ^
+
+"./c2y-named-loops-1.c", line 43: error: expected a ";"
+        break l;
+              ^
+
+"./c2y-named-loops-1.c", line 64: error: expected a ";"
+        break ae;
+              ^
+
+"./c2y-named-loops-1.c", line 66: error: expected a ";"
+        break ab;
+              ^
+
+"./c2y-named-loops-1.c", line 68: error: expected a ";"
+        break z;
+              ^
+
+"./c2y-named-loops-1.c", line 70: error: expected a ";"
+        break v;
+              ^
+
+"./c2y-named-loops-1.c", line 72: error: expected a ";"
+        break s;
+              ^
+
+"./c2y-named-loops-1.c", line 74: error: expected a ";"
+        break p;
+              ^
+
+"./c2y-named-loops-1.c", line 78: error: expected a ";"
+        continue aa;
+                 ^
+
+"./c2y-named-loops-1.c", line 80: error: expected a ";"
+        continue y;
+                 ^
+
+"./c2y-named-loops-1.c", line 82: error: expected a ";"
+        continue x;
+                 ^
+
+"./c2y-named-loops-1.c", line 84: error: expected a ";"
+        continue m;
+                 ^
+
+"./c2y-named-loops-1.c", line 89: error: expected a ";"
+     break ag;
+           ^
+
+"./c2y-named-loops-1.c", line 91: error: expected a ";"
+     continue ah;
+              ^
+
+"./c2y-named-loops-1.c", line 108: error: expected a ";"
+        break ak;
+              ^
+
+"./c2y-named-loops-1.c", line 110: error: expected a ";"
+        break aj;
+              ^
+
+"./c2y-named-loops-1.c", line 112: error: expected a ";"
+        continue ai;
+                 ^
+
+"./c2y-named-loops-1.c", line 119: error: expected a ";"
+   continue am;
+            ^
+
+"./c2y-named-loops-1.c", line 121: error: expected a ";"
+   break al;
+         ^
+
+"./c2y-named-loops-1.c", line 130: error: expected a ";"
+   break ao;
+         ^
+
+"./c2y-named-loops-1.c", line 132: error: expected a ";"
+   continue an;
+            ^
+
+"./c2y-named-loops-1.c", line 140: error: expected a ";"
+        break ap;
+              ^
+
+"./c2y-named-loops-1.c", line 142: error: expected a ";"
+        break aq;
+              ^
+
+"./c2y-named-loops-1.c", line 8: warning: label "d" was declared but never referenced
+    d: e: f:;
+    ^
+
+"./c2y-named-loops-1.c", line 8: warning: label "e" was declared but never referenced
+    d: e: f:;
+       ^
+
+"./c2y-named-loops-1.c", line 8: warning: label "f" was declared but never referenced
+    d: e: f:;
+          ^
+
+"./c2y-named-loops-1.c", line 9: warning: label "a" was declared but never referenced
+    a: b: c:
+    ^
+
+"./c2y-named-loops-1.c", line 9: warning: label "b" was declared but never referenced
+    a: b: c:
+       ^
+
+"./c2y-named-loops-1.c", line 9: warning: label "c" was declared but never referenced
+    a: b: c:
+          ^
+
+"./c2y-named-loops-1.c", line 22: warning: label "g" was declared but never referenced
+    g: h:
+    ^
+
+"./c2y-named-loops-1.c", line 22: warning: label "h" was declared but never referenced
+    g: h:
+       ^
+
+"./c2y-named-loops-1.c", line 34: warning: label "i" was declared but never referenced
+    i: j:;
+    ^
+
+"./c2y-named-loops-1.c", line 34: warning: label "j" was declared but never referenced
+    i: j:;
+       ^
+
+"./c2y-named-loops-1.c", line 35: warning: label "k" was declared but never referenced
+    k: l:
+    ^
+
+"./c2y-named-loops-1.c", line 35: warning: label "l" was declared but never referenced
+    k: l:
+       ^
+
+"./c2y-named-loops-1.c", line 45: warning: label "m" was declared but never referenced
+    m: n: o: p:
+    ^
+
+"./c2y-named-loops-1.c", line 45: warning: label "n" was declared but never referenced
+    m: n: o: p:
+       ^
+
+"./c2y-named-loops-1.c", line 45: warning: label "o" was declared but never referenced
+    m: n: o: p:
+          ^
+
+"./c2y-named-loops-1.c", line 45: warning: label "p" was declared but never referenced
+    m: n: o: p:
+             ^
+
+"./c2y-named-loops-1.c", line 47: warning: label "q" was declared but never referenced
+      q: r: s: t:
+      ^
+
+"./c2y-named-loops-1.c", line 47: warning: label "r" was declared but never referenced
+      q: r: s: t:
+         ^
+
+"./c2y-named-loops-1.c", line 47: warning: label "s" was declared but never referenced
+      q: r: s: t:
+            ^
+
+"./c2y-named-loops-1.c", line 47: warning: label "t" was declared but never referenced
+      q: r: s: t:
+               ^
+
+"./c2y-named-loops-1.c", line 51: warning: label "u" was declared but never referenced
+   u: v:
+   ^
+
+"./c2y-named-loops-1.c", line 51: warning: label "v" was declared but never referenced
+   u: v:
+      ^
+
+"./c2y-named-loops-1.c", line 53: warning: label "w" was declared but never referenced
+   w: x:
+   ^
+
+"./c2y-named-loops-1.c", line 53: warning: label "x" was declared but never referenced
+   w: x:
+      ^
+
+"./c2y-named-loops-1.c", line 55: warning: label "y" was declared but never referenced
+     y: z:
+     ^
+
+"./c2y-named-loops-1.c", line 55: warning: label "z" was declared but never referenced
+     y: z:
+        ^
+
+"./c2y-named-loops-1.c", line 57: warning: label "aa" was declared but never referenced
+       aa: ab: ac:
+       ^
+
+"./c2y-named-loops-1.c", line 57: warning: label "ab" was declared but never referenced
+       aa: ab: ac:
+           ^
+
+"./c2y-named-loops-1.c", line 57: warning: label "ac" was declared but never referenced
+       aa: ab: ac:
+               ^
+
+"./c2y-named-loops-1.c", line 59: warning: label "ad" was declared but never referenced
+         ad: ae: af:
+         ^
+
+"./c2y-named-loops-1.c", line 59: warning: label "ae" was declared but never referenced
+         ad: ae: af:
+             ^
+
+"./c2y-named-loops-1.c", line 59: warning: label "af" was declared but never referenced
+         ad: ae: af:
+                 ^
+
+"./c2y-named-loops-1.c", line 85: warning: label "ag" was declared but never referenced
+      ag: ah:
+      ^
+
+"./c2y-named-loops-1.c", line 85: warning: label "ah" was declared but never referenced
+      ag: ah:
+          ^
+
+"./c2y-named-loops-1.c", line 102: warning: label "ai" was declared but never referenced
+    [[]] [[]] ai:
+              ^
+
+"./c2y-named-loops-1.c", line 103: warning: label "aj" was declared but never referenced
+    [[]] [[]] aj:
+              ^
+
+"./c2y-named-loops-1.c", line 104: warning: label "ak" was declared but never referenced
+    [[]] [[]] ak:
+              ^
+
+"./c2y-named-loops-1.c", line 113: warning: label "al" was declared but never referenced
+    al:
+    ^
+
+"./c2y-named-loops-1.c", line 114: warning: label "am" was declared but never referenced
+    [[]] am:
+         ^
+
+"./c2y-named-loops-1.c", line 124: warning: label "an" was declared but never referenced
+    an:
+    ^
+
+"./c2y-named-loops-1.c", line 125: warning: label "ao" was declared but never referenced
+    [[]] ao:
+         ^
+
+"./c2y-named-loops-1.c", line 134: warning: label "ap" was declared but never referenced
+    [[]] ap:
+         ^
+
+"./c2y-named-loops-1.c", line 135: warning: label "aq" was declared but never referenced
+    [[]] aq:
+         ^
+
+30 errors detected in the compilation of "Test_name.c".

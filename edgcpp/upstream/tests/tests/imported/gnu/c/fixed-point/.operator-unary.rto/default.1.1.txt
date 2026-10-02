@@ -1,0 +1,914 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 26: error: expected a ";"
+    UNARY_OPERATOR(short _Fract, hr);
+    ^
+
+"Test_name.c", line 26: error: extra text after expected end of number
+    UNARY_OPERATOR(short _Fract, hr);
+    ^
+
+"Test_name.c", line 26: error: "_Fract" has already been declared in the current scope
+    UNARY_OPERATOR(short _Fract, hr);
+    ^
+
+"Test_name.c", line 26: error: expected a ";"
+    UNARY_OPERATOR(short _Fract, hr);
+    ^
+
+"Test_name.c", line 26: error: identifier "unary_dp" is undefined
+    UNARY_OPERATOR(short _Fract, hr);
+    ^
+
+"Test_name.c", line 26: error: identifier "unary_d" is undefined
+    UNARY_OPERATOR(short _Fract, hr);
+    ^
+
+"Test_name.c", line 26: warning: variable "_Fract" was declared but never referenced
+    UNARY_OPERATOR(short _Fract, hr);
+    ^
+
+"Test_name.c", line 26: warning: variable "_Fract" was declared but never referenced
+    UNARY_OPERATOR(short _Fract, hr);
+    ^
+
+"Test_name.c", line 27: error: identifier "_Fract" is undefined
+    UNARY_OPERATOR(_Fract, r);
+    ^
+
+"Test_name.c", line 27: error: extra text after expected end of number
+    UNARY_OPERATOR(_Fract, r);
+    ^
+
+"Test_name.c", line 27: error: identifier "_Fract" is undefined
+    UNARY_OPERATOR(_Fract, r);
+    ^
+
+"Test_name.c", line 27: error: identifier "unary_dp" is undefined
+    UNARY_OPERATOR(_Fract, r);
+    ^
+
+"Test_name.c", line 28: error: expected a ";"
+    UNARY_OPERATOR(long _Fract, lr);
+    ^
+
+"Test_name.c", line 28: error: extra text after expected end of number
+    UNARY_OPERATOR(long _Fract, lr);
+    ^
+
+"Test_name.c", line 28: warning: concatenation with "lr" in macro "UNARY_OPERATOR" does not create a valid token
+    UNARY_OPERATOR(long _Fract, lr);
+    ^
+
+"Test_name.c", line 28: error: "_Fract" has already been declared in the current scope
+    UNARY_OPERATOR(long _Fract, lr);
+    ^
+
+"Test_name.c", line 28: error: expected a ";"
+    UNARY_OPERATOR(long _Fract, lr);
+    ^
+
+"Test_name.c", line 28: error: identifier "unary_dp" is undefined
+    UNARY_OPERATOR(long _Fract, lr);
+    ^
+
+"Test_name.c", line 28: error: identifier "unary_d" is undefined
+    UNARY_OPERATOR(long _Fract, lr);
+    ^
+
+"Test_name.c", line 28: warning: variable "_Fract" was declared but never referenced
+    UNARY_OPERATOR(long _Fract, lr);
+    ^
+
+"Test_name.c", line 28: warning: variable "_Fract" was declared but never referenced
+    UNARY_OPERATOR(long _Fract, lr);
+    ^
+
+"Test_name.c", line 29: error: expected a ";"
+    UNARY_OPERATOR(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 29: error: extra text after expected end of number
+    UNARY_OPERATOR(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 29: warning: concatenation with "llr" in macro "UNARY_OPERATOR" does not create a valid token
+    UNARY_OPERATOR(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 29: error: "_Fract" has already been declared in the current scope
+    UNARY_OPERATOR(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 29: error: expected a ";"
+    UNARY_OPERATOR(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 29: error: identifier "unary_dp" is undefined
+    UNARY_OPERATOR(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 29: error: identifier "unary_d" is undefined
+    UNARY_OPERATOR(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 29: warning: variable "_Fract" was declared but never referenced
+    UNARY_OPERATOR(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 29: warning: variable "_Fract" was declared but never referenced
+    UNARY_OPERATOR(long long _Fract, llr);
+    ^
+
+"Test_name.c", line 30: error: expected a ";"
+    UNARY_OPERATOR(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 30: error: extra text after expected end of number
+    UNARY_OPERATOR(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 30: error: "_Fract" has already been declared in the current scope
+    UNARY_OPERATOR(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 30: error: expected a ";"
+    UNARY_OPERATOR(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 30: error: identifier "unary_dp" is undefined
+    UNARY_OPERATOR(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 30: error: identifier "unary_d" is undefined
+    UNARY_OPERATOR(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 30: warning: variable "_Fract" was declared but never referenced
+    UNARY_OPERATOR(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 30: warning: variable "_Fract" was declared but never referenced
+    UNARY_OPERATOR(unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 31: error: expected a ";"
+    UNARY_OPERATOR(unsigned _Fract, ur);
+    ^
+
+"Test_name.c", line 31: error: extra text after expected end of number
+    UNARY_OPERATOR(unsigned _Fract, ur);
+    ^
+
+"Test_name.c", line 31: error: "_Fract" has already been declared in the current scope
+    UNARY_OPERATOR(unsigned _Fract, ur);
+    ^
+
+"Test_name.c", line 31: error: expected a ";"
+    UNARY_OPERATOR(unsigned _Fract, ur);
+    ^
+
+"Test_name.c", line 31: error: identifier "unary_dp" is undefined
+    UNARY_OPERATOR(unsigned _Fract, ur);
+    ^
+
+"Test_name.c", line 31: error: identifier "unary_d" is undefined
+    UNARY_OPERATOR(unsigned _Fract, ur);
+    ^
+
+"Test_name.c", line 31: warning: variable "_Fract" was declared but never referenced
+    UNARY_OPERATOR(unsigned _Fract, ur);
+    ^
+
+"Test_name.c", line 31: warning: variable "_Fract" was declared but never referenced
+    UNARY_OPERATOR(unsigned _Fract, ur);
+    ^
+
+"Test_name.c", line 32: error: expected a ";"
+    UNARY_OPERATOR(unsigned long _Fract, ulr);
+    ^
+
+"Test_name.c", line 32: error: extra text after expected end of number
+    UNARY_OPERATOR(unsigned long _Fract, ulr);
+    ^
+
+"Test_name.c", line 32: error: "_Fract" has already been declared in the current scope
+    UNARY_OPERATOR(unsigned long _Fract, ulr);
+    ^
+
+"Test_name.c", line 32: error: expected a ";"
+    UNARY_OPERATOR(unsigned long _Fract, ulr);
+    ^
+
+"Test_name.c", line 32: error: identifier "unary_dp" is undefined
+    UNARY_OPERATOR(unsigned long _Fract, ulr);
+    ^
+
+"Test_name.c", line 32: error: identifier "unary_d" is undefined
+    UNARY_OPERATOR(unsigned long _Fract, ulr);
+    ^
+
+"Test_name.c", line 32: warning: variable "_Fract" was declared but never referenced
+    UNARY_OPERATOR(unsigned long _Fract, ulr);
+    ^
+
+"Test_name.c", line 32: warning: variable "_Fract" was declared but never referenced
+    UNARY_OPERATOR(unsigned long _Fract, ulr);
+    ^
+
+"Test_name.c", line 33: error: expected a ";"
+    UNARY_OPERATOR(unsigned long long _Fract, ullr);
+    ^
+
+"Test_name.c", line 33: error: extra text after expected end of number
+    UNARY_OPERATOR(unsigned long long _Fract, ullr);
+    ^
+
+"Test_name.c", line 33: error: "_Fract" has already been declared in the current scope
+    UNARY_OPERATOR(unsigned long long _Fract, ullr);
+    ^
+
+"Test_name.c", line 33: error: expected a ";"
+    UNARY_OPERATOR(unsigned long long _Fract, ullr);
+    ^
+
+"Test_name.c", line 33: error: identifier "unary_dp" is undefined
+    UNARY_OPERATOR(unsigned long long _Fract, ullr);
+    ^
+
+"Test_name.c", line 33: error: identifier "unary_d" is undefined
+    UNARY_OPERATOR(unsigned long long _Fract, ullr);
+    ^
+
+"Test_name.c", line 33: warning: variable "_Fract" was declared but never referenced
+    UNARY_OPERATOR(unsigned long long _Fract, ullr);
+    ^
+
+"Test_name.c", line 33: warning: variable "_Fract" was declared but never referenced
+    UNARY_OPERATOR(unsigned long long _Fract, ullr);
+    ^
+
+"Test_name.c", line 34: error: identifier "_Sat" is undefined
+    UNARY_OPERATOR(_Sat short _Fract, hr);
+    ^
+
+"Test_name.c", line 34: error: expected a ";"
+    UNARY_OPERATOR(_Sat short _Fract, hr);
+    ^
+
+"Test_name.c", line 34: error: extra text after expected end of number
+    UNARY_OPERATOR(_Sat short _Fract, hr);
+    ^
+
+"Test_name.c", line 34: error: expected a ";"
+    UNARY_OPERATOR(_Sat short _Fract, hr);
+    ^
+
+"Test_name.c", line 34: error: identifier "unary_dp" is undefined
+    UNARY_OPERATOR(_Sat short _Fract, hr);
+    ^
+
+"Test_name.c", line 34: error: identifier "unary_d" is undefined
+    UNARY_OPERATOR(_Sat short _Fract, hr);
+    ^
+
+"Test_name.c", line 35: error: identifier "_Sat" is undefined
+    UNARY_OPERATOR(_Sat _Fract, r);
+    ^
+
+"Test_name.c", line 35: error: expected a ";"
+    UNARY_OPERATOR(_Sat _Fract, r);
+    ^
+
+"Test_name.c", line 35: error: extra text after expected end of number
+    UNARY_OPERATOR(_Sat _Fract, r);
+    ^
+
+"Test_name.c", line 35: error: identifier "_Sat" is undefined
+    UNARY_OPERATOR(_Sat _Fract, r);
+    ^
+
+"Test_name.c", line 35: error: "_Fract" has already been declared in the current scope
+    UNARY_OPERATOR(_Sat _Fract, r);
+    ^
+
+"Test_name.c", line 35: error: expected a ";"
+    UNARY_OPERATOR(_Sat _Fract, r);
+    ^
+
+"Test_name.c", line 35: error: identifier "unary_dp" is undefined
+    UNARY_OPERATOR(_Sat _Fract, r);
+    ^
+
+"Test_name.c", line 35: error: identifier "unary_d" is undefined
+    UNARY_OPERATOR(_Sat _Fract, r);
+    ^
+
+"Test_name.c", line 36: error: identifier "_Sat" is undefined
+    UNARY_OPERATOR(_Sat long _Fract, lr);
+    ^
+
+"Test_name.c", line 36: error: expected a ";"
+    UNARY_OPERATOR(_Sat long _Fract, lr);
+    ^
+
+"Test_name.c", line 36: error: extra text after expected end of number
+    UNARY_OPERATOR(_Sat long _Fract, lr);
+    ^
+
+"Test_name.c", line 36: warning: concatenation with "lr" in macro "UNARY_OPERATOR" does not create a valid token
+    UNARY_OPERATOR(_Sat long _Fract, lr);
+    ^
+
+"Test_name.c", line 36: error: expected a ";"
+    UNARY_OPERATOR(_Sat long _Fract, lr);
+    ^
+
+"Test_name.c", line 36: error: identifier "unary_dp" is undefined
+    UNARY_OPERATOR(_Sat long _Fract, lr);
+    ^
+
+"Test_name.c", line 36: error: identifier "unary_d" is undefined
+    UNARY_OPERATOR(_Sat long _Fract, lr);
+    ^
+
+"Test_name.c", line 37: error: identifier "_Sat" is undefined
+    UNARY_OPERATOR(_Sat long long _Fract, llr);
+    ^
+
+"Test_name.c", line 37: error: expected a ";"
+    UNARY_OPERATOR(_Sat long long _Fract, llr);
+    ^
+
+"Test_name.c", line 37: error: extra text after expected end of number
+    UNARY_OPERATOR(_Sat long long _Fract, llr);
+    ^
+
+"Test_name.c", line 37: warning: concatenation with "llr" in macro "UNARY_OPERATOR" does not create a valid token
+    UNARY_OPERATOR(_Sat long long _Fract, llr);
+    ^
+
+"Test_name.c", line 37: error: expected a ";"
+    UNARY_OPERATOR(_Sat long long _Fract, llr);
+    ^
+
+"Test_name.c", line 37: error: identifier "unary_dp" is undefined
+    UNARY_OPERATOR(_Sat long long _Fract, llr);
+    ^
+
+"Test_name.c", line 37: error: identifier "unary_d" is undefined
+    UNARY_OPERATOR(_Sat long long _Fract, llr);
+    ^
+
+"Test_name.c", line 38: error: identifier "_Sat" is undefined
+    UNARY_OPERATOR(_Sat unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 38: error: expected a ";"
+    UNARY_OPERATOR(_Sat unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 38: error: extra text after expected end of number
+    UNARY_OPERATOR(_Sat unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 38: error: expected a ";"
+    UNARY_OPERATOR(_Sat unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 38: error: identifier "unary_dp" is undefined
+    UNARY_OPERATOR(_Sat unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 38: error: identifier "unary_d" is undefined
+    UNARY_OPERATOR(_Sat unsigned short _Fract, uhr);
+    ^
+
+"Test_name.c", line 39: error: identifier "_Sat" is undefined
+    UNARY_OPERATOR(_Sat unsigned _Fract, ur);
+    ^
+
+"Test_name.c", line 39: error: expected a ";"
+    UNARY_OPERATOR(_Sat unsigned _Fract, ur);
+    ^
+
+"Test_name.c", line 39: error: extra text after expected end of number
+    UNARY_OPERATOR(_Sat unsigned _Fract, ur);
+    ^
+
+"Test_name.c", line 39: error: expected a ";"
+    UNARY_OPERATOR(_Sat unsigned _Fract, ur);
+    ^
+
+"Test_name.c", line 39: error: identifier "unary_dp" is undefined
+    UNARY_OPERATOR(_Sat unsigned _Fract, ur);
+    ^
+
+"Test_name.c", line 39: error: identifier "unary_d" is undefined
+    UNARY_OPERATOR(_Sat unsigned _Fract, ur);
+    ^
+
+"Test_name.c", line 40: error: identifier "_Sat" is undefined
+    UNARY_OPERATOR(_Sat unsigned long _Fract, ulr);
+    ^
+
+"Test_name.c", line 40: error: expected a ";"
+    UNARY_OPERATOR(_Sat unsigned long _Fract, ulr);
+    ^
+
+"Test_name.c", line 40: error: extra text after expected end of number
+    UNARY_OPERATOR(_Sat unsigned long _Fract, ulr);
+    ^
+
+"Test_name.c", line 40: error: expected a ";"
+    UNARY_OPERATOR(_Sat unsigned long _Fract, ulr);
+    ^
+
+"Test_name.c", line 40: error: identifier "unary_dp" is undefined
+    UNARY_OPERATOR(_Sat unsigned long _Fract, ulr);
+    ^
+
+"Test_name.c", line 40: error: identifier "unary_d" is undefined
+    UNARY_OPERATOR(_Sat unsigned long _Fract, ulr);
+    ^
+
+"Test_name.c", line 41: error: identifier "_Sat" is undefined
+    UNARY_OPERATOR(_Sat unsigned long long _Fract, ullr);
+    ^
+
+"Test_name.c", line 41: error: expected a ";"
+    UNARY_OPERATOR(_Sat unsigned long long _Fract, ullr);
+    ^
+
+"Test_name.c", line 41: error: extra text after expected end of number
+    UNARY_OPERATOR(_Sat unsigned long long _Fract, ullr);
+    ^
+
+"Test_name.c", line 41: error: expected a ";"
+    UNARY_OPERATOR(_Sat unsigned long long _Fract, ullr);
+    ^
+
+"Test_name.c", line 41: error: identifier "unary_dp" is undefined
+    UNARY_OPERATOR(_Sat unsigned long long _Fract, ullr);
+    ^
+
+"Test_name.c", line 41: error: identifier "unary_d" is undefined
+    UNARY_OPERATOR(_Sat unsigned long long _Fract, ullr);
+    ^
+
+"Test_name.c", line 42: error: expected a ";"
+    UNARY_OPERATOR(short _Accum, hk);
+    ^
+
+"Test_name.c", line 42: error: extra text after expected end of number
+    UNARY_OPERATOR(short _Accum, hk);
+    ^
+
+"Test_name.c", line 42: error: "_Accum" has already been declared in the current scope
+    UNARY_OPERATOR(short _Accum, hk);
+    ^
+
+"Test_name.c", line 42: error: expected a ";"
+    UNARY_OPERATOR(short _Accum, hk);
+    ^
+
+"Test_name.c", line 42: error: identifier "unary_dp" is undefined
+    UNARY_OPERATOR(short _Accum, hk);
+    ^
+
+"Test_name.c", line 42: error: identifier "unary_d" is undefined
+    UNARY_OPERATOR(short _Accum, hk);
+    ^
+
+"Test_name.c", line 42: warning: variable "_Accum" was declared but never referenced
+    UNARY_OPERATOR(short _Accum, hk);
+    ^
+
+"Test_name.c", line 42: warning: variable "_Accum" was declared but never referenced
+    UNARY_OPERATOR(short _Accum, hk);
+    ^
+
+"Test_name.c", line 43: error: identifier "_Accum" is undefined
+    UNARY_OPERATOR(_Accum, k);
+    ^
+
+"Test_name.c", line 43: error: extra text after expected end of number
+    UNARY_OPERATOR(_Accum, k);
+    ^
+
+"Test_name.c", line 43: error: identifier "_Accum" is undefined
+    UNARY_OPERATOR(_Accum, k);
+    ^
+
+"Test_name.c", line 43: error: identifier "unary_dp" is undefined
+    UNARY_OPERATOR(_Accum, k);
+    ^
+
+"Test_name.c", line 44: error: expected a ";"
+    UNARY_OPERATOR(long _Accum, lk);
+    ^
+
+"Test_name.c", line 44: error: extra text after expected end of number
+    UNARY_OPERATOR(long _Accum, lk);
+    ^
+
+"Test_name.c", line 44: warning: concatenation with "lk" in macro "UNARY_OPERATOR" does not create a valid token
+    UNARY_OPERATOR(long _Accum, lk);
+    ^
+
+"Test_name.c", line 44: error: "_Accum" has already been declared in the current scope
+    UNARY_OPERATOR(long _Accum, lk);
+    ^
+
+"Test_name.c", line 44: error: expected a ";"
+    UNARY_OPERATOR(long _Accum, lk);
+    ^
+
+"Test_name.c", line 44: error: identifier "unary_dp" is undefined
+    UNARY_OPERATOR(long _Accum, lk);
+    ^
+
+"Test_name.c", line 44: error: identifier "unary_d" is undefined
+    UNARY_OPERATOR(long _Accum, lk);
+    ^
+
+"Test_name.c", line 44: warning: variable "_Accum" was declared but never referenced
+    UNARY_OPERATOR(long _Accum, lk);
+    ^
+
+"Test_name.c", line 44: warning: variable "_Accum" was declared but never referenced
+    UNARY_OPERATOR(long _Accum, lk);
+    ^
+
+"Test_name.c", line 45: error: expected a ";"
+    UNARY_OPERATOR(long long _Accum, llk);
+    ^
+
+"Test_name.c", line 45: error: extra text after expected end of number
+    UNARY_OPERATOR(long long _Accum, llk);
+    ^
+
+"Test_name.c", line 45: warning: concatenation with "llk" in macro "UNARY_OPERATOR" does not create a valid token
+    UNARY_OPERATOR(long long _Accum, llk);
+    ^
+
+"Test_name.c", line 45: error: "_Accum" has already been declared in the current scope
+    UNARY_OPERATOR(long long _Accum, llk);
+    ^
+
+"Test_name.c", line 45: error: expected a ";"
+    UNARY_OPERATOR(long long _Accum, llk);
+    ^
+
+"Test_name.c", line 45: error: identifier "unary_dp" is undefined
+    UNARY_OPERATOR(long long _Accum, llk);
+    ^
+
+"Test_name.c", line 45: error: identifier "unary_d" is undefined
+    UNARY_OPERATOR(long long _Accum, llk);
+    ^
+
+"Test_name.c", line 45: warning: variable "_Accum" was declared but never referenced
+    UNARY_OPERATOR(long long _Accum, llk);
+    ^
+
+"Test_name.c", line 45: warning: variable "_Accum" was declared but never referenced
+    UNARY_OPERATOR(long long _Accum, llk);
+    ^
+
+"Test_name.c", line 46: error: expected a ";"
+    UNARY_OPERATOR(unsigned short _Accum, uhk);
+    ^
+
+"Test_name.c", line 46: error: extra text after expected end of number
+    UNARY_OPERATOR(unsigned short _Accum, uhk);
+    ^
+
+"Test_name.c", line 46: error: "_Accum" has already been declared in the current scope
+    UNARY_OPERATOR(unsigned short _Accum, uhk);
+    ^
+
+"Test_name.c", line 46: error: expected a ";"
+    UNARY_OPERATOR(unsigned short _Accum, uhk);
+    ^
+
+"Test_name.c", line 46: error: identifier "unary_dp" is undefined
+    UNARY_OPERATOR(unsigned short _Accum, uhk);
+    ^
+
+"Test_name.c", line 46: error: identifier "unary_d" is undefined
+    UNARY_OPERATOR(unsigned short _Accum, uhk);
+    ^
+
+"Test_name.c", line 46: warning: variable "_Accum" was declared but never referenced
+    UNARY_OPERATOR(unsigned short _Accum, uhk);
+    ^
+
+"Test_name.c", line 46: warning: variable "_Accum" was declared but never referenced
+    UNARY_OPERATOR(unsigned short _Accum, uhk);
+    ^
+
+"Test_name.c", line 47: error: expected a ";"
+    UNARY_OPERATOR(unsigned _Accum, uk);
+    ^
+
+"Test_name.c", line 47: error: extra text after expected end of number
+    UNARY_OPERATOR(unsigned _Accum, uk);
+    ^
+
+"Test_name.c", line 47: error: "_Accum" has already been declared in the current scope
+    UNARY_OPERATOR(unsigned _Accum, uk);
+    ^
+
+"Test_name.c", line 47: error: expected a ";"
+    UNARY_OPERATOR(unsigned _Accum, uk);
+    ^
+
+"Test_name.c", line 47: error: identifier "unary_dp" is undefined
+    UNARY_OPERATOR(unsigned _Accum, uk);
+    ^
+
+"Test_name.c", line 47: error: identifier "unary_d" is undefined
+    UNARY_OPERATOR(unsigned _Accum, uk);
+    ^
+
+"Test_name.c", line 47: warning: variable "_Accum" was declared but never referenced
+    UNARY_OPERATOR(unsigned _Accum, uk);
+    ^
+
+"Test_name.c", line 47: warning: variable "_Accum" was declared but never referenced
+    UNARY_OPERATOR(unsigned _Accum, uk);
+    ^
+
+"Test_name.c", line 48: error: expected a ";"
+    UNARY_OPERATOR(unsigned long _Accum, ulk);
+    ^
+
+"Test_name.c", line 48: error: extra text after expected end of number
+    UNARY_OPERATOR(unsigned long _Accum, ulk);
+    ^
+
+"Test_name.c", line 48: error: "_Accum" has already been declared in the current scope
+    UNARY_OPERATOR(unsigned long _Accum, ulk);
+    ^
+
+"Test_name.c", line 48: error: expected a ";"
+    UNARY_OPERATOR(unsigned long _Accum, ulk);
+    ^
+
+"Test_name.c", line 48: error: identifier "unary_dp" is undefined
+    UNARY_OPERATOR(unsigned long _Accum, ulk);
+    ^
+
+"Test_name.c", line 48: error: identifier "unary_d" is undefined
+    UNARY_OPERATOR(unsigned long _Accum, ulk);
+    ^
+
+"Test_name.c", line 48: warning: variable "_Accum" was declared but never referenced
+    UNARY_OPERATOR(unsigned long _Accum, ulk);
+    ^
+
+"Test_name.c", line 48: warning: variable "_Accum" was declared but never referenced
+    UNARY_OPERATOR(unsigned long _Accum, ulk);
+    ^
+
+"Test_name.c", line 49: error: expected a ";"
+    UNARY_OPERATOR(unsigned long long _Accum, ullk);
+    ^
+
+"Test_name.c", line 49: error: extra text after expected end of number
+    UNARY_OPERATOR(unsigned long long _Accum, ullk);
+    ^
+
+"Test_name.c", line 49: error: "_Accum" has already been declared in the current scope
+    UNARY_OPERATOR(unsigned long long _Accum, ullk);
+    ^
+
+"Test_name.c", line 49: error: expected a ";"
+    UNARY_OPERATOR(unsigned long long _Accum, ullk);
+    ^
+
+"Test_name.c", line 49: error: identifier "unary_dp" is undefined
+    UNARY_OPERATOR(unsigned long long _Accum, ullk);
+    ^
+
+"Test_name.c", line 49: error: identifier "unary_d" is undefined
+    UNARY_OPERATOR(unsigned long long _Accum, ullk);
+    ^
+
+"Test_name.c", line 49: warning: variable "_Accum" was declared but never referenced
+    UNARY_OPERATOR(unsigned long long _Accum, ullk);
+    ^
+
+"Test_name.c", line 49: warning: variable "_Accum" was declared but never referenced
+    UNARY_OPERATOR(unsigned long long _Accum, ullk);
+    ^
+
+"Test_name.c", line 50: error: identifier "_Sat" is undefined
+    UNARY_OPERATOR(_Sat short _Accum, hk);
+    ^
+
+"Test_name.c", line 50: error: expected a ";"
+    UNARY_OPERATOR(_Sat short _Accum, hk);
+    ^
+
+"Test_name.c", line 50: error: extra text after expected end of number
+    UNARY_OPERATOR(_Sat short _Accum, hk);
+    ^
+
+"Test_name.c", line 50: error: expected a ";"
+    UNARY_OPERATOR(_Sat short _Accum, hk);
+    ^
+
+"Test_name.c", line 50: error: identifier "unary_dp" is undefined
+    UNARY_OPERATOR(_Sat short _Accum, hk);
+    ^
+
+"Test_name.c", line 50: error: identifier "unary_d" is undefined
+    UNARY_OPERATOR(_Sat short _Accum, hk);
+    ^
+
+"Test_name.c", line 51: error: identifier "_Sat" is undefined
+    UNARY_OPERATOR(_Sat _Accum, k);
+    ^
+
+"Test_name.c", line 51: error: expected a ";"
+    UNARY_OPERATOR(_Sat _Accum, k);
+    ^
+
+"Test_name.c", line 51: error: extra text after expected end of number
+    UNARY_OPERATOR(_Sat _Accum, k);
+    ^
+
+"Test_name.c", line 51: error: identifier "_Sat" is undefined
+    UNARY_OPERATOR(_Sat _Accum, k);
+    ^
+
+"Test_name.c", line 51: error: "_Accum" has already been declared in the current scope
+    UNARY_OPERATOR(_Sat _Accum, k);
+    ^
+
+"Test_name.c", line 51: error: expected a ";"
+    UNARY_OPERATOR(_Sat _Accum, k);
+    ^
+
+"Test_name.c", line 51: error: identifier "unary_dp" is undefined
+    UNARY_OPERATOR(_Sat _Accum, k);
+    ^
+
+"Test_name.c", line 51: error: identifier "unary_d" is undefined
+    UNARY_OPERATOR(_Sat _Accum, k);
+    ^
+
+"Test_name.c", line 52: error: identifier "_Sat" is undefined
+    UNARY_OPERATOR(_Sat long _Accum, lk);
+    ^
+
+"Test_name.c", line 52: error: expected a ";"
+    UNARY_OPERATOR(_Sat long _Accum, lk);
+    ^
+
+"Test_name.c", line 52: error: extra text after expected end of number
+    UNARY_OPERATOR(_Sat long _Accum, lk);
+    ^
+
+"Test_name.c", line 52: warning: concatenation with "lk" in macro "UNARY_OPERATOR" does not create a valid token
+    UNARY_OPERATOR(_Sat long _Accum, lk);
+    ^
+
+"Test_name.c", line 52: error: expected a ";"
+    UNARY_OPERATOR(_Sat long _Accum, lk);
+    ^
+
+"Test_name.c", line 52: error: identifier "unary_dp" is undefined
+    UNARY_OPERATOR(_Sat long _Accum, lk);
+    ^
+
+"Test_name.c", line 52: error: identifier "unary_d" is undefined
+    UNARY_OPERATOR(_Sat long _Accum, lk);
+    ^
+
+"Test_name.c", line 53: error: identifier "_Sat" is undefined
+    UNARY_OPERATOR(_Sat long long _Accum, llk);
+    ^
+
+"Test_name.c", line 53: error: expected a ";"
+    UNARY_OPERATOR(_Sat long long _Accum, llk);
+    ^
+
+"Test_name.c", line 53: error: extra text after expected end of number
+    UNARY_OPERATOR(_Sat long long _Accum, llk);
+    ^
+
+"Test_name.c", line 53: warning: concatenation with "llk" in macro "UNARY_OPERATOR" does not create a valid token
+    UNARY_OPERATOR(_Sat long long _Accum, llk);
+    ^
+
+"Test_name.c", line 53: error: expected a ";"
+    UNARY_OPERATOR(_Sat long long _Accum, llk);
+    ^
+
+"Test_name.c", line 53: error: identifier "unary_dp" is undefined
+    UNARY_OPERATOR(_Sat long long _Accum, llk);
+    ^
+
+"Test_name.c", line 53: error: identifier "unary_d" is undefined
+    UNARY_OPERATOR(_Sat long long _Accum, llk);
+    ^
+
+"Test_name.c", line 54: error: identifier "_Sat" is undefined
+    UNARY_OPERATOR(_Sat unsigned short _Accum, uhk);
+    ^
+
+"Test_name.c", line 54: error: expected a ";"
+    UNARY_OPERATOR(_Sat unsigned short _Accum, uhk);
+    ^
+
+"Test_name.c", line 54: error: extra text after expected end of number
+    UNARY_OPERATOR(_Sat unsigned short _Accum, uhk);
+    ^
+
+"Test_name.c", line 54: error: expected a ";"
+    UNARY_OPERATOR(_Sat unsigned short _Accum, uhk);
+    ^
+
+"Test_name.c", line 54: error: identifier "unary_dp" is undefined
+    UNARY_OPERATOR(_Sat unsigned short _Accum, uhk);
+    ^
+
+"Test_name.c", line 54: error: identifier "unary_d" is undefined
+    UNARY_OPERATOR(_Sat unsigned short _Accum, uhk);
+    ^
+
+"Test_name.c", line 55: error: identifier "_Sat" is undefined
+    UNARY_OPERATOR(_Sat unsigned _Accum, uk);
+    ^
+
+"Test_name.c", line 55: error: expected a ";"
+    UNARY_OPERATOR(_Sat unsigned _Accum, uk);
+    ^
+
+"Test_name.c", line 55: error: extra text after expected end of number
+    UNARY_OPERATOR(_Sat unsigned _Accum, uk);
+    ^
+
+"Test_name.c", line 55: error: expected a ";"
+    UNARY_OPERATOR(_Sat unsigned _Accum, uk);
+    ^
+
+"Test_name.c", line 55: error: identifier "unary_dp" is undefined
+    UNARY_OPERATOR(_Sat unsigned _Accum, uk);
+    ^
+
+"Test_name.c", line 55: error: identifier "unary_d" is undefined
+    UNARY_OPERATOR(_Sat unsigned _Accum, uk);
+    ^
+
+"Test_name.c", line 56: error: identifier "_Sat" is undefined
+    UNARY_OPERATOR(_Sat unsigned long _Accum, ulk);
+    ^
+
+"Test_name.c", line 56: error: expected a ";"
+    UNARY_OPERATOR(_Sat unsigned long _Accum, ulk);
+    ^
+
+"Test_name.c", line 56: error: extra text after expected end of number
+    UNARY_OPERATOR(_Sat unsigned long _Accum, ulk);
+    ^
+
+"Test_name.c", line 56: error: expected a ";"
+    UNARY_OPERATOR(_Sat unsigned long _Accum, ulk);
+    ^
+
+"Test_name.c", line 56: error: identifier "unary_dp" is undefined
+    UNARY_OPERATOR(_Sat unsigned long _Accum, ulk);
+    ^
+
+"Test_name.c", line 56: error: identifier "unary_d" is undefined
+    UNARY_OPERATOR(_Sat unsigned long _Accum, ulk);
+    ^
+
+"Test_name.c", line 57: error: identifier "_Sat" is undefined
+    UNARY_OPERATOR(_Sat unsigned long long _Accum, ullk);
+    ^
+
+"Test_name.c", line 57: error: expected a ";"
+    UNARY_OPERATOR(_Sat unsigned long long _Accum, ullk);
+    ^
+
+"Test_name.c", line 57: error: extra text after expected end of number
+    UNARY_OPERATOR(_Sat unsigned long long _Accum, ullk);
+    ^
+
+"Test_name.c", line 57: error: expected a ";"
+    UNARY_OPERATOR(_Sat unsigned long long _Accum, ullk);
+    ^
+
+"Test_name.c", line 57: error: identifier "unary_dp" is undefined
+    UNARY_OPERATOR(_Sat unsigned long long _Accum, ullk);
+    ^
+
+"Test_name.c", line 57: error: identifier "unary_d" is undefined
+    UNARY_OPERATOR(_Sat unsigned long long _Accum, ullk);
+    ^
+
+192 errors detected in the compilation of "Test_name.c".

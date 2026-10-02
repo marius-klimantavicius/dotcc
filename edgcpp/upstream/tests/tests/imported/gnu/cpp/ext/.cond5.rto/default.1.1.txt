@@ -1,0 +1,8 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: warning: integer conversion resulted in truncation
+      char c = N ?: 1; // { dg-warning "conversion from .int. to .char. changes value from .300. to " }
+               ^
+          detected during:
+            implicit generation of "jj<N>::jj() [with N=300]" at line 14
+            instantiation of class "jj<N> [with N=300]" at line 14
+

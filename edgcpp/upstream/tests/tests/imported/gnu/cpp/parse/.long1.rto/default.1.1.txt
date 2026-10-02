@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 7: error: invalid combination of type specifiers
+  long long double x; // { dg-error "long long" }
+  ^
+
+"Test_name.c", line 9: error: invalid combination of type specifiers
+  long float z;       // { dg-error "long" }
+  ^
+
+"Test_name.c", line 11: error: invalid combination of type specifiers
+  typedef short void    SV; // { dg-error "short" }
+  ^
+
+"Test_name.c", line 12: error: invalid combination of type specifiers
+  typedef long struct A LA; // { dg-error "long" }
+  ^
+
+"Test_name.c", line 13: error: invalid combination of type specifiers
+  typedef short char    SC; // { dg-error "short" }
+  ^
+
+5 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,9 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 21: warning: variable "y" is used before its value is set
+  void BB::g() { struct i x; struct ii y; x.n = y.n; }
+                                                ^
+
+"Test_name.c", line 21: warning: variable "x" was set but never used
+  void BB::g() { struct i x; struct ii y; x.n = y.n; }
+                          ^
+

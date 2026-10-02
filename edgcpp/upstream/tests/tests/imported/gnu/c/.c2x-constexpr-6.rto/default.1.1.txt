@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 --signed_chars Test_name.c
+"Test_name.c", line 7: warning: this declaration has no storage class or type specifier
+  constexpr unsigned char v3[] = "\x00\xff"; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+  ^
+
+"Test_name.c", line 7: error: expected a ";"
+  constexpr unsigned char v3[] = "\x00\xff"; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+            ^
+
+"Test_name.c", line 8: warning: this declaration has no storage class or type specifier
+  constexpr char v4[] = u8"\x00\xff"; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+  ^
+
+"Test_name.c", line 8: error: expected a ";"
+  constexpr char v4[] = u8"\x00\xff"; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+            ^
+
+"Test_name.c", line 9: warning: this declaration has no storage class or type specifier
+  constexpr signed char v5[] = u8"\x00\xff"; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+  ^
+
+"Test_name.c", line 9: error: expected a ";"
+  constexpr signed char v5[] = u8"\x00\xff"; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+            ^
+
+"Test_name.c", line 14: error: expected a ")"
+    (constexpr unsigned char []) { "\x00\xff" }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+               ^
+
+"Test_name.c", line 14: warning: expression has no effect
+    (constexpr unsigned char []) { "\x00\xff" }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+    ^
+
+"Test_name.c", line 14: error: expected a ";"
+    (constexpr unsigned char []) { "\x00\xff" }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                                 ^
+
+"Test_name.c", line 15: error: expected a ")"
+    (constexpr char []) { u8"\x00\xff" }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+               ^
+
+"Test_name.c", line 15: warning: expression has no effect
+    (constexpr char []) { u8"\x00\xff" }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+    ^
+
+"Test_name.c", line 15: error: expected a ";"
+    (constexpr char []) { u8"\x00\xff" }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                        ^
+
+"Test_name.c", line 16: error: expected a ")"
+    (constexpr signed char []) { u8"\x00\xff" }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+               ^
+
+"Test_name.c", line 16: warning: expression has no effect
+    (constexpr signed char []) { u8"\x00\xff" }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+    ^
+
+"Test_name.c", line 16: error: expected a ";"
+    (constexpr signed char []) { u8"\x00\xff" }; /* { dg-error "'constexpr' initializer not representable in type of object" } */
+                               ^
+
+9 errors detected in the compilation of "Test_name.c".

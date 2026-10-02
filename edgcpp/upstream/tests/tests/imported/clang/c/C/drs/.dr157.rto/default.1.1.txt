@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c89 Test_name.c
+"Test_name.c", line 24: warning: declaring a void parameter list with a typedef is nonstandard
+  extern int dr157(dr157_1_t); /* ok */
+                   ^
+
+"Test_name.c", line 25: warning: declaring a void parameter list with a typedef is nonstandard
+  int dr157(dr157_1_t) { /* ok */
+            ^
+
+"Test_name.c", line 28: error: "Int" has already been declared in the current scope
+    long Int val;    /* expected-error {{redefinition of 'Int' as different kind of symbol}}
+         ^
+
+"Test_name.c", line 28: error: expected a ";"
+    long Int val;    /* expected-error {{redefinition of 'Int' as different kind of symbol}}
+             ^
+
+"Test_name.c", line 28: warning: variable "Int" was declared but never referenced
+    long Int val;    /* expected-error {{redefinition of 'Int' as different kind of symbol}}
+         ^
+
+"Test_name.c", line 41: error: function type may not come from a typedef
+  extern dr157_3_t dr157_2 { /* expected-error {{expected ';' after top level declarator}} */
+                   ^
+
+3 errors detected in the compilation of "Test_name.c".

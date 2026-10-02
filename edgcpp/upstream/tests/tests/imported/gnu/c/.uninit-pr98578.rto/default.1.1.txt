@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 18: warning: variable "a1" is used before its value is set
+    T (a1[0]);        // { dg-warning "'a1\\\[0]' is used uninitialized" "pr98587" { xfail *-*-* } }
+       ^
+
+"Test_name.c", line 28: warning: variable "a2" is used before its value is set
+    T (a2[0][0]);   // { dg-warning "a2\\\[0]\\\[0]' is used uninitialized" "" { xfail { ! alloca } } }
+       ^
+
+"Test_name.c", line 40: warning: variable "a2" is used before its value is set
+    T (a2[0][0]);     // { dg-warning "a2\\\[0]\\\[0]' is used uninitialized" "" { xfail { ! alloca } } }
+       ^
+
+"Test_name.c", line 52: warning: variable "a2" is used before its value is set
+    T (a2[0][0]);     // { dg-warning "a2\\\[0]\\\[0]' is used uninitialized" "" { xfail { ! alloca } } }
+       ^
+

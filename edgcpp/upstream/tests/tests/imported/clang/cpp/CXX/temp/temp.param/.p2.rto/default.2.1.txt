@@ -1,0 +1,70 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 -DCPP17 Test_name.c
+"Test_name.c", line 17: error: a class or namespace qualified name is required
+  template<typename T typename U> struct Y2; // expected-error{{expected ',' or '>'}}
+                    ^
+
+"Test_name.c", line 17: error: "typename" may not be specified here
+  template<typename T typename U> struct Y2; // expected-error{{expected ',' or '>'}}
+                      ^
+
+"Test_name.c", line 18: error: a class or namespace qualified name is required
+  template<typename T U> struct Y3; // expected-error{{expected a qualified name after 'typename'}} expected-error{{expected ',' or '>'}}
+                    ^
+
+"Test_name.c", line 19: error: "typedef" may not be specified here
+  template<typedef T typename U> struct Y4; // expected-error{{expected template parameter}} expected-note {{did you mean to use 'typename'?}} expected-error{{expected ',' or '>'}}
+           ^
+
+"Test_name.c", line 19: error: explicit type is missing ("int" assumed)
+  template<typedef T typename U> struct Y4; // expected-error{{expected template parameter}} expected-note {{did you mean to use 'typename'?}} expected-error{{expected ',' or '>'}}
+           ^
+
+"Test_name.c", line 19: error: expected a "," or ">"
+  template<typedef T typename U> struct Y4; // expected-error{{expected template parameter}} expected-note {{did you mean to use 'typename'?}} expected-error{{expected ',' or '>'}}
+                     ^
+
+"Test_name.c", line 22: error: a storage class may not be specified here
+  template<static int Value> struct Z; //expected-error{{invalid declaration specifier}}
+           ^
+
+"Test_name.c", line 23: error: "typedef" may not be specified here
+  template<typedef int Value> struct Z0; //expected-error{{invalid declaration specifier}}
+           ^
+
+"Test_name.c", line 24: error: a storage class may not be specified here
+  template<extern inline int Value> struct Z1; //expected-error2{{invalid declaration specifier}}
+           ^
+
+"Test_name.c", line 24: warning: "inline" is not allowed
+  template<extern inline int Value> struct Z1; //expected-error2{{invalid declaration specifier}}
+                  ^
+
+"Test_name.c", line 25: error: invalid specifier outside a class declaration
+  template<virtual int Value> struct Z2; //expected-error{{invalid declaration specifier}}
+           ^
+
+"Test_name.c", line 26: error: "explicit" is not allowed
+  template<explicit int Value> struct Z3; //expected-error{{invalid declaration specifier}}
+           ^
+
+"Test_name.c", line 27: warning: "inline" is not allowed
+  template<inline int Value> struct Z4; //expected-error{{invalid declaration specifier}}
+           ^
+
+"Test_name.c", line 28: error: a storage class may not be specified here
+  template<extern int> struct Z5; //expected-error{{invalid declaration specifier}}
+           ^
+
+"Test_name.c", line 29: error: a storage class may not be specified here
+  template<static int> struct Z6;  //expected-error{{invalid declaration specifier}}
+           ^
+
+"Test_name.c", line 30: error: "explicit" is not allowed
+  template<explicit int Value> struct Z7; //expected-error{{invalid declaration specifier}}
+           ^
+
+"Test_name.c", line 31: error: a storage class may not be specified here
+  template<mutable int> struct Z8; //expected-error{{invalid declaration specifier}}
+           ^
+
+15 errors detected in the compilation of "Test_name.c".

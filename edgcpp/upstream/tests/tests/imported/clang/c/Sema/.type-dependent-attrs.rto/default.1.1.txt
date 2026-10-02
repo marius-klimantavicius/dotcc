@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 10: error: cleanup routine has invalid type
+    auto fd_auto [[gnu::cleanup(close)]] = open();
+                   ^
+
+"Test_name.c", line 11: error: cleanup routine has invalid type
+    float fd_invalid [[gnu::cleanup(close)]] = open(); // expected-error {{'cleanup' function 'close' parameter has type 'typeof (open()) *' (aka 'int *') which is incompatible with type 'float *'}}
+                       ^
+
+2 errors detected in the compilation of "Test_name.c".

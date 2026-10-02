@@ -1,0 +1,74 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 23: error: a pointer-to-member function with type "void (A::*)() &" can only be used with an lvalue object
+    (A().*p)();			// { dg-error "" }
+        ^
+
+"Test_name.c", line 25: error: a value of type "void (A::*)() &&" cannot be assigned to an entity of type "void (A::*)() &"
+    p = &A::g;			// { dg-error "" }
+      ^
+
+"Test_name.c", line 26: error: a value of type "void (A::*)()" cannot be assigned to an entity of type "void (A::*)() &"
+    p = &A::h;			// { dg-error "" }
+      ^
+
+"Test_name.c", line 30: error: a pointer-to-member function with type "void (A::*)() &&" can only be used with an rvalue object
+    (a.*p2)();			// { dg-error "" }
+      ^
+
+"Test_name.c", line 31: error: a value of type "void (A::*)() &" cannot be assigned to an entity of type "void (A::*)() &&"
+    p2 = &A::f;			// { dg-error "" }
+       ^
+
+"Test_name.c", line 32: error: a value of type "void (A::*)()" cannot be assigned to an entity of type "void (A::*)() &&"
+    p2 = &A::h;			// { dg-error "" }
+       ^
+
+"Test_name.c", line 37: error: a value of type "void (A::*)() &" cannot be assigned to an entity of type "void (A::*)()"
+    p3 = &A::f;			// { dg-error "" }
+       ^
+
+"Test_name.c", line 38: error: a value of type "void (A::*)() &&" cannot be assigned to an entity of type "void (A::*)()"
+    p3 = &A::g;			// { dg-error "" }
+       ^
+
+"Test_name.c", line 55: error: a pointer-to-member function with type "void (B<int>::*)() &" can only be used with an lvalue object
+    (B<T>().*p)();		// { dg-error "" }
+           ^
+          detected during instantiation of "void two<T>() [with T=int]" at line 76
+
+"Test_name.c", line 57: error: a value of type "void (B<int>::*)() &&" cannot be assigned to an entity of type "void (B<int>::*)() &"
+    p = &B<T>::g;			// { dg-error "" }
+      ^
+          detected during instantiation of "void two<T>() [with T=int]" at line 76
+
+"Test_name.c", line 58: error: a value of type "void (B<int>::*)()" cannot be assigned to an entity of type "void (B<int>::*)() &"
+    p = &B<T>::h;			// { dg-error "" }
+      ^
+          detected during instantiation of "void two<T>() [with T=int]" at line 76
+
+"Test_name.c", line 62: error: a pointer-to-member function with type "void (B<int>::*)() &&" can only be used with an rvalue object
+    (a.*p2)();			// { dg-error "" }
+      ^
+          detected during instantiation of "void two<T>() [with T=int]" at line 76
+
+"Test_name.c", line 63: error: a value of type "void (B<int>::*)() &" cannot be assigned to an entity of type "void (B<int>::*)() &&"
+    p2 = &B<T>::f;		// { dg-error "" }
+       ^
+          detected during instantiation of "void two<T>() [with T=int]" at line 76
+
+"Test_name.c", line 64: error: a value of type "void (B<int>::*)()" cannot be assigned to an entity of type "void (B<int>::*)() &&"
+    p2 = &B<T>::h;		// { dg-error "" }
+       ^
+          detected during instantiation of "void two<T>() [with T=int]" at line 76
+
+"Test_name.c", line 69: error: a value of type "void (B<int>::*)() &" cannot be assigned to an entity of type "void (B<int>::*)()"
+    p3 = &B<T>::f;		// { dg-error "" }
+       ^
+          detected during instantiation of "void two<T>() [with T=int]" at line 76
+
+"Test_name.c", line 70: error: a value of type "void (B<int>::*)() &&" cannot be assigned to an entity of type "void (B<int>::*)()"
+    p3 = &B<T>::g;		// { dg-error "" }
+       ^
+          detected during instantiation of "void two<T>() [with T=int]" at line 76
+
+16 errors detected in the compilation of "Test_name.c".

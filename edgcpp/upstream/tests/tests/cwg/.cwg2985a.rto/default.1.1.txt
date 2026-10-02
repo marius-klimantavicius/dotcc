@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++23 -A Test_name.c
+"Test_name.c", line 12: error: no suitable user-defined conversion from "Z" to "X" exists
+  X&& r = z; // #1, ill-formed; was well-formed before CWG1604
+          ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,69 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 474: error: identifier "operator=" is undefined
+      auto not_instantiated() -> decltype(operator=(0)); // expected-error {{use of undeclared 'operator='}}
+                                          ^
+
+"Test_name.c", line 479: error: identifier "operator=" is undefined
+      auto instantiated(E& e) -> decltype(operator=(e)); // expected-error {{use of undeclared 'operator='}}
+                                          ^
+          detected during instantiation of class "N3::E<T> [with T=int]" at line 482
+
+"Test_name.c", line 495: error: operator -> or ->* applied to "N4::A<int>" instead of to a pointer type
+        a->x; // expected-error {{member reference type 'A<int>' is not a pointer; did you mean to use '.'?}}
+        ^
+          detected during instantiation of "void N4::A<T>::instantiated(N4::A<T>, N4::A<T>, T) [with T=int]" at line 503
+
+"Test_name.c", line 497: error: operator -> or ->* applied to "N4::A<int>" instead of to a pointer type
+        b->x; // expected-error {{member reference type 'A<int>' is not a pointer; did you mean to use '.'?}}
+        ^
+          detected during instantiation of "void N4::A<T>::instantiated(N4::A<T>, N4::A<T>, T) [with T=int]" at line 503
+
+"Test_name.c", line 499: error: operator -> or ->* applied to "int" instead of to a pointer type
+        c->x; // expected-error {{member reference type 'int' is not a pointer}}
+        ^
+          detected during instantiation of "void N4::A<T>::instantiated(N4::A<T>, N4::A<T>, T) [with T=int]" at line 503
+
+"Test_name.c", line 524: error: operator -> or ->* applied to "int" instead of to a pointer type
+        c->x; // expected-error {{member reference type 'int' is not a pointer}}
+        ^
+          detected during instantiation of "void N4::C<T>::instantiated(N4::C<T>, N4::C<T>, T) [with T=int]" at line 528
+
+"Test_name.c", line 554: error: class "N4::B" has no member "y"
+        a->y; // expected-error {{no member named 'y' in 'N4::B'}}
+           ^
+          detected during instantiation of "void N4::D<T>::instantiated(N4::D<T>) [with T=N4::B]" at line 565
+
+"Test_name.c", line 556: error: class "N4::B" has no member "g"
+        a->g(); // expected-error {{no member named 'g' in 'N4::B'}}
+           ^
+          detected during instantiation of "void N4::D<T>::instantiated(N4::D<T>) [with T=N4::B]" at line 565
+
+"Test_name.c", line 559: error: class "N4::B" has no member "y"
+        a->T::y; // expected-error {{no member named 'y' in 'N4::B'}}
+              ^
+          detected during instantiation of "void N4::D<T>::instantiated(N4::D<T>) [with T=N4::B]" at line 565
+
+"Test_name.c", line 561: error: class "N4::B" has no member "g"
+        a->T::g(); // expected-error {{no member named 'g' in 'N4::B'}}
+              ^
+          detected during instantiation of "void N4::D<T>::instantiated(N4::D<T>) [with T=N4::B]" at line 565
+
+"Test_name.c", line 588: warning: expression has no effect
+      y.x;
+      ^
+
+"Test_name.c", line 587: error: name followed by "::" must be a class or namespace name
+      A y = T::x; // expected-error {{type 'int' cannot be used prior to '::' because it has no members}}
+            ^
+          detected during instantiation of "void N5::f<T>() [with T=int]" at line 591
+
+"Test_name.c", line 605: warning: expression has no effect
+      z.x;
+      ^
+
+"Test_name.c", line 603: error: identifier "h" is undefined
+        h(&y); // expected-error {{use of undeclared identifier 'h'}}
+        ^
+          detected during instantiation of "void N5::g(T) [with T=int]" at line 608
+
+12 errors detected in the compilation of "Test_name.c".

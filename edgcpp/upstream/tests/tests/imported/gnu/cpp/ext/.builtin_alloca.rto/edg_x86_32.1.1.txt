@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 107: error: argument of type "void *" is incompatible with parameter of type "unsigned int"
+    p =  __builtin_alloca_with_align ((void*)0, 32);   // { dg-error "invalid conversion" }
+                                      ^
+
+"Test_name.c", line 109: error: argument of type "const char *" is incompatible with parameter of type "unsigned int"
+    p =  __builtin_alloca_with_align ("", 32);         // { dg-error "invalid conversion" }
+                                      ^
+
+"Test_name.c", line 110: error: argument of type "const wchar_t *" is incompatible with parameter of type "unsigned int"
+    p =  __builtin_alloca_with_align (L"", 32);        // { dg-error "invalid conversion" }
+                                      ^
+
+"Test_name.c", line 111: error: argument of type "void (*)()" is incompatible with parameter of type "unsigned int"
+    p =  __builtin_alloca_with_align (f, 32);          // { dg-error "invalid conversion" }
+                                      ^
+
+"Test_name.c", line 120: error: argument of type "void *" is incompatible with parameter of type "unsigned int"
+    p =  __builtin_alloca_with_align (n, (void*)0);    // { dg-error "invalid conversion|must be a constant integer" }
+                                         ^
+
+"Test_name.c", line 121: error: argument of type "const char *" is incompatible with parameter of type "unsigned int"
+    p =  __builtin_alloca_with_align (n, "");          // { dg-error "invalid conversion|must be a constant integer" }
+                                         ^
+
+"Test_name.c", line 122: error: argument of type "const wchar_t *" is incompatible with parameter of type "unsigned int"
+    p =  __builtin_alloca_with_align (n, L"");         // { dg-error "invalid conversion|must be a constant integer" }
+                                         ^
+
+"Test_name.c", line 27: warning: variable "p" was set but never used
+  static void* p;
+               ^
+
+7 errors detected in the compilation of "Test_name.c".

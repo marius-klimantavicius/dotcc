@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --upc Test_name.c
+"Test_name.c", line 23: warning: missing return statement at end of non-void function "t"
+  }
+  ^
+
+"Test_name.c", line 28: warning: branching into or out of a upc_forall loop is not allowed
+  		return g();
+  		^
+
+"Test_name.c", line 30: warning: missing return statement at end of non-void function "f"
+  }
+  ^
+

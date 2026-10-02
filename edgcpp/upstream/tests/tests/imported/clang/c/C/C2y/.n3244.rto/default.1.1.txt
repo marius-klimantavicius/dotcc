@@ -1,0 +1,70 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 22: warning: taking the address of a register variable is not allowed
+    int *vp = array;    // expected-error {{address of register variable requested}}
+              ^
+
+"Test_name.c", line 23: warning: taking the address of a register variable is not allowed
+    int val = array[0]; // expected-error {{address of register variable requested}}
+              ^
+
+"Test_name.c", line 22: warning: variable "vp" was declared but never referenced
+    int *vp = array;    // expected-error {{address of register variable requested}}
+         ^
+
+"Test_name.c", line 23: warning: variable "val" was declared but never referenced
+    int val = array[0]; // expected-error {{address of register variable requested}}
+        ^
+
+"Test_name.c", line 28: error: incomplete type "struct F" is not allowed
+  void incomplete_no_linkage(struct F f) { // expected-error {{variable has incomplete type 'struct F'}}
+                             ^
+
+"Test_name.c", line 29: error: incomplete type "struct G" is not allowed
+    struct G g; // expected-error {{variable has incomplete type 'struct G'}} \
+             ^
+
+"Test_name.c", line 31: error: incomplete type "int []" is not allowed
+    int i[];    // expected-error {{definition of variable with array type needs an explicit size or an initializer}}
+        ^
+
+"Test_name.c", line 35: error: a block-scope function may only have extern storage class
+    static void f(void); // expected-error {{function declared in block scope cannot have 'static' storage class}}
+    ^
+
+"Test_name.c", line 37: error: identifier "__private_extern__" is undefined
+    __private_extern__ void h(void); // okay
+    ^
+
+"Test_name.c", line 37: error: expected a ";"
+    __private_extern__ void h(void); // okay
+                       ^
+
+"Test_name.c", line 52: warning: the standard "alignof" operator does not accept an expression argument (use a type instead)
+  _Static_assert(_Alignof(NoAlignmentOnOriginalDecl) == 8, "");
+                         ^
+
+"Test_name.c", line 54: error: alignment attribute must also appear on definition at line 54
+  _Alignas(8) int AlignmentOnOriginalDecl; // expected-note {{declared with '_Alignas' attribute here}}
+  ^
+
+"Test_name.c", line 58: warning: the standard "alignof" operator does not accept an expression argument (use a type instead)
+  _Static_assert(_Alignof(AlignmentOnOriginalDecl) == 8, "");
+                         ^
+
+"Test_name.c", line 64: error: alignment attribute must also appear on definition at line 64
+  _Alignas(_Alignof(long long)) long long CompatibleAlignment2; // expected-note {{declared with '_Alignas' attribute here}}
+  ^
+
+"Test_name.c", line 71: error: alignment attribute must also appear on definition at line 71
+  _Alignas(8) long long DefnWithInit = 12; // expected-note {{declared with '_Alignas' attribute here}}
+  ^
+
+"Test_name.c", line 85: error: specified alignment (16) is different from alignment (8) specified on a previous declaration
+  _Alignas(16) int Mismatch; // expected-error {{redeclaration has different alignment requirement (16 vs 8)}}
+  ^
+
+"Test_name.c", line 35: warning: function "f" was declared but never referenced
+    static void f(void); // expected-error {{function declared in block scope cannot have 'static' storage class}}
+                ^
+
+10 errors detected in the compilation of "Test_name.c".

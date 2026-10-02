@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: error: expression must have a constant value
+    Tree* L[subtrees]; // { dg-error "" }
+            ^
+"Test_name.c", line 8: note: the value of variable "subtrees" (declared at line 5) cannot be used as a constant
+    Tree* L[subtrees]; // { dg-error "" }
+            ^
+          detected during instantiation of class "Tree<T> [with T=int]" at line 19
+
+"Test_name.c", line 9: error: expression must have a constant value
+    Tree* R[subtrees]; // { dg-error "" }
+            ^
+"Test_name.c", line 9: note: the value of variable "subtrees" (declared at line 5) cannot be used as a constant
+    Tree* R[subtrees]; // { dg-error "" }
+            ^
+          detected during instantiation of class "Tree<T> [with T=int]" at line 19
+
+2 errors detected in the compilation of "Test_name.c".

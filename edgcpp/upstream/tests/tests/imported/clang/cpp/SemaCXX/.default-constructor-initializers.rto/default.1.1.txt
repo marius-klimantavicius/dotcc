@@ -1,0 +1,29 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 19: error: no default constructor exists for class "X2"
+  struct X3 : public X2 {
+                     ^
+          detected during implicit generation of "X3::X3()" at line 27
+
+"Test_name.c", line 40: error: no default constructor exists for class "X2"
+    X2 x2;
+       ^
+          detected during implicit generation of "X4::X4()" at line 53
+
+"Test_name.c", line 34: error: implicitly generated constructor for class "X4" cannot initialize:
+            reference member "X4::rx2"
+  struct X4 {
+         ^
+          detected during implicit generation of "X4::X4()" at line 53
+
+"Test_name.c", line 81: error: implicitly generated constructor for class "Z1" cannot initialize:
+            reference member "Z1::z"
+            const member "Z1::c1"
+  struct Z1 {
+         ^
+          detected during implicit generation of "Z1::Z1()" at line 102
+
+"Test_name.c", line 121: error: variable "u" has an uninitialized const or reference member
+  U u;
+    ^
+
+5 errors detected in the compilation of "Test_name.c".

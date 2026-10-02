@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --c11 --gcc Test_name.c
+"Test_name.c", line 11: warning: _Noreturn is not allowed here
+  _Noreturn int main() {}
+  ^
+
+"Test_name.c", line 11: warning: function declared with "noreturn" does return
+  _Noreturn int main() {}
+                        ^
+

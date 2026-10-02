@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 9: error: declaration aliased to undefined entity "g2"
+  void f2(void) __attribute__((alias("g2"))); // expected-error {{alias must point to a defined variable or function}}
+                               ^
+
+"Test_name.c", line 12: error: declaration aliased to undefined entity "g3"
+  void f3(void) __attribute__((alias("g3"))); // expected-error {{alias must point to a defined variable or function}}
+                               ^
+
+"Test_name.c", line 42: error: alias creates cycle of aliased entities
+  void g10() __attribute__((alias("f10"))); // expected-error {{alias definition is part of a cycle}}
+                            ^
+
+"Test_name.c", line 51: error: declaration aliased to undefined entity "b2"
+  extern int a2 __attribute__((alias("b2"))); // expected-error {{alias must point to a defined variable or function}}
+                               ^
+
+"Test_name.c", line 54: error: declaration aliased to undefined entity "b3"
+  extern int a3 __attribute__((alias("b3"))); // expected-error {{alias must point to a defined variable or function}}
+                               ^
+
+"Test_name.c", line 58: error: declaration does not match its alias type "b4"
+  extern int a4 __attribute__((alias("b4"))); // expected-error {{alias must point to a defined variable or function}}
+             ^
+
+6 errors detected in the compilation of "Test_name.c".

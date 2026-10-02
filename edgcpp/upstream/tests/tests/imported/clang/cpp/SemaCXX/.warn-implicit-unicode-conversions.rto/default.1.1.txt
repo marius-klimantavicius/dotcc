@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 28: warning: integer conversion resulted in truncation
+      c8(char16_t(0xD800)); // expected-warning {{implicit conversion from 'char16_t' to 'char8_t' changes the meaning of the code unit '<0xD800>'}}
+         ^
+
+"Test_name.c", line 29: warning: integer conversion resulted in truncation
+      c8(char16_t(0xE000)); // expected-warning {{implicit conversion from 'char16_t' to 'char8_t' changes the meaning of the code point '<U+E000>'}}
+         ^
+
+"Test_name.c", line 37: warning: integer conversion resulted in truncation
+      c16(char32_t(U'🐉')); // expected-warning {{implicit conversion from 'char32_t' to 'char16_t' changes the meaning of the code point '🐉'}}
+          ^
+
+"Test_name.c", line 57: warning: variable "c81" was declared but never referenced
+      Char8 c81 = u16; // expected-warning {{implicit conversion from 'char16_t' to 'Char8' (aka 'char8_t') may lose precision and change the meaning of the represented code unit}}
+            ^
+

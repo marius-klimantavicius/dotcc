@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 6: error: constant "I" is not a type name
+  template <int... I> struct B: A<I...> {}; // { dg-error "type" }
+                                  ^
+
+"Test_name.c", line 6: error: pack expansion does not make use of any argument packs
+  template <int... I> struct B: A<I...> {}; // { dg-error "type" }
+                                   ^
+
+2 errors detected in the compilation of "Test_name.c".

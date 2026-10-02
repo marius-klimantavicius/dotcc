@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 31: warning: variable "p0" was declared but never referenced
+    auto p0 = (AlignedChar(*)[1])p;    // expected-error {{size of array element}}
+         ^
+
+"Test_name.c", line 32: warning: variable "r0" was declared but never referenced
+    auto r0 = (AlignedChar(&)[1])(*p); // expected-error {{size of array element}}
+         ^
+
+"Test_name.c", line 34: warning: variable "p2" was declared but never referenced
+    auto p2 = (AlignedStruct(*)[1])p;
+         ^
+
+"Test_name.c", line 36: warning: variable "p4" was declared but never referenced
+    auto p4 = (AlignedPackedStruct(*)[1])p; // expected-error {{size of array element}}
+         ^
+

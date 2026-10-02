@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 16: warning: visibility attribute ignored because it conflicts with a previous declaration
+   __attribute__((visibility("default"))) // expected-error {{visibility does not match previous declaration}}
+                  ^
+
+"Test_name.c", line 22: warning: invalid attribute for "x3"
+  } __attribute((visibility("default"))); // expected-warning {{attribute 'visibility' after definition is ignored}}
+                 ^
+

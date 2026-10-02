@@ -1,0 +1,861 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 28: warning: unknown attribute "noipa"
+  T (a);                /* { dg-warning "argument missing terminating nul" }  */
+  ^
+
+"Test_name.c", line 29: warning: unknown attribute "noipa"
+  T (&a[0]);            /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 30: warning: unknown attribute "noipa"
+  T (&a[0] + 1);        /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 31: warning: unknown attribute "noipa"
+  T (&a[1]);            /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 32: warning: unknown attribute "noipa"
+  T (&a[v0]);           /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 33: warning: unknown attribute "noipa"
+  T (&a[v0] + 1);       /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 40: warning: unknown attribute "noipa"
+  T (b[0]);
+  ^
+
+"Test_name.c", line 41: warning: unknown attribute "noipa"
+  T (b[1]);
+  ^
+
+"Test_name.c", line 42: warning: unknown attribute "noipa"
+  T (b[2]);
+  ^
+
+"Test_name.c", line 43: warning: unknown attribute "noipa"
+  T (b[3]);             /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 45: warning: unknown attribute "noipa"
+  T (b[i0]);
+  ^
+
+"Test_name.c", line 46: warning: unknown attribute "noipa"
+  T (b[i1]);
+  ^
+
+"Test_name.c", line 47: warning: unknown attribute "noipa"
+  T (b[i2]);
+  ^
+
+"Test_name.c", line 48: warning: unknown attribute "noipa"
+  T (b[i3]);            /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 50: warning: unknown attribute "noipa"
+  T (b[v0]);
+  ^
+
+"Test_name.c", line 52: warning: unknown attribute "noipa"
+  T (&b[i2][i1]);
+  ^
+
+"Test_name.c", line 53: warning: unknown attribute "noipa"
+  T (&b[i2][i1] + i1);
+  ^
+
+"Test_name.c", line 54: warning: unknown attribute "noipa"
+  T (&b[i2][v0]);
+  ^
+
+"Test_name.c", line 55: warning: unknown attribute "noipa"
+  T (&b[i2][i1] + v0);
+  ^
+
+"Test_name.c", line 57: warning: unknown attribute "noipa"
+  T (&b[2][1]);
+  ^
+
+"Test_name.c", line 58: warning: unknown attribute "noipa"
+  T (&b[2][1] + i1);
+  ^
+
+"Test_name.c", line 59: warning: unknown attribute "noipa"
+  T (&b[2][i0]);
+  ^
+
+"Test_name.c", line 60: warning: unknown attribute "noipa"
+  T (&b[2][1] + i0);
+  ^
+
+"Test_name.c", line 62: warning: unknown attribute "noipa"
+  T (&b[2][1]);
+  ^
+
+"Test_name.c", line 63: warning: unknown attribute "noipa"
+  T (&b[2][1] + v0);
+  ^
+
+"Test_name.c", line 64: warning: unknown attribute "noipa"
+  T (&b[2][v0]);
+  ^
+
+"Test_name.c", line 66: warning: unknown attribute "noipa"
+  T (&b[3][1]);           /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 67: warning: unknown attribute "noipa"
+  T (&b[3][1] + 1);       /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 68: warning: unknown attribute "noipa"
+  T (&b[3][1] + i1);      /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 69: warning: unknown attribute "noipa"
+  T (&b[3][v0]);          /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 70: warning: unknown attribute "noipa"
+  T (&b[3][1] + v0);      /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 71: warning: unknown attribute "noipa"
+  T (&b[3][v0] + v1);     /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 73: warning: unknown attribute "noipa"
+  T (&b[i3][i1]);         /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 74: warning: unknown attribute "noipa"
+  T (&b[i3][i1] + 1);     /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 75: warning: unknown attribute "noipa"
+  T (&b[i3][i1] + i1);    /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 76: warning: unknown attribute "noipa"
+  T (&b[i3][v0]);         /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 77: warning: unknown attribute "noipa"
+  T (&b[i3][i1] + v0);    /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 78: warning: unknown attribute "noipa"
+  T (&b[i3][v0] + v1);    /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 80: warning: unknown attribute "noipa"
+  T (v0 ? "" : b[0]);
+  ^
+
+"Test_name.c", line 81: warning: unknown attribute "noipa"
+  T (v0 ? "" : b[1]);
+  ^
+
+"Test_name.c", line 82: warning: unknown attribute "noipa"
+  T (v0 ? "" : b[2]);
+  ^
+
+"Test_name.c", line 83: warning: unknown attribute "noipa"
+  T (v0 ? "" : b[3]);               /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 84: warning: unknown attribute "noipa"
+  T (v0 ? b[0] : "");
+  ^
+
+"Test_name.c", line 85: warning: unknown attribute "noipa"
+  T (v0 ? b[1] : "");
+  ^
+
+"Test_name.c", line 86: warning: unknown attribute "noipa"
+  T (v0 ? b[2] : "");
+  ^
+
+"Test_name.c", line 87: warning: unknown attribute "noipa"
+  T (v0 ? b[3] : "");               /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 89: warning: unknown attribute "noipa"
+  T (v0 ? "" : b[i0]);
+  ^
+
+"Test_name.c", line 90: warning: unknown attribute "noipa"
+  T (v0 ? "" : b[i1]);
+  ^
+
+"Test_name.c", line 91: warning: unknown attribute "noipa"
+  T (v0 ? "" : b[i2]);
+  ^
+
+"Test_name.c", line 94: warning: unknown attribute "noipa"
+  T (v0 ? "" : b[i3]);              /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 95: warning: unknown attribute "noipa"
+  T (v0 ? b[i0] : "");
+  ^
+
+"Test_name.c", line 96: warning: unknown attribute "noipa"
+  T (v0 ? b[i1] : "");
+  ^
+
+"Test_name.c", line 97: warning: unknown attribute "noipa"
+  T (v0 ? b[i2] : "");
+  ^
+
+"Test_name.c", line 98: warning: unknown attribute "noipa"
+  T (v0 ? b[i3] : "");              /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 100: warning: unknown attribute "noipa"
+  T (v0 ? "1234" : b[3]);           /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 101: warning: unknown attribute "noipa"
+  T (v0 ? "1234" : b[i3]);          /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 102: warning: unknown attribute "noipa"
+  T (v0 ? b[3] : "1234");           /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 103: warning: unknown attribute "noipa"
+  T (v0 ? b[i3] : "1234");          /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 105: warning: unknown attribute "noipa"
+  T (v0 ? a : b[3]);                /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 106: warning: unknown attribute "noipa"
+  T (v0 ? b[0] : b[2]);
+  ^
+
+"Test_name.c", line 107: warning: unknown attribute "noipa"
+  T (v0 ? b[2] : b[3]);             /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 108: warning: unknown attribute "noipa"
+  T (v0 ? b[3] : b[2]);             /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 110: warning: unknown attribute "noipa"
+  T (v0 ? a : b[i3]);               /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 111: warning: unknown attribute "noipa"
+  T (v0 ? b[i0] : b[i2]);
+  ^
+
+"Test_name.c", line 112: warning: unknown attribute "noipa"
+  T (v0 ? b[i2] : b[i3]);           /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 113: warning: unknown attribute "noipa"
+  T (v0 ? b[i3] : b[i2]);           /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 115: warning: unknown attribute "noipa"
+  T (v0 ? b[0] : &b[3][0] + 1);     /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 116: warning: unknown attribute "noipa"
+  T (v0 ? b[0] : &b[3][0] + i1);    /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 117: warning: unknown attribute "noipa"
+  T (v0 ? b[1] : &b[3][1] + v0);    /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 119: warning: unknown attribute "noipa"
+  T (v0 ? b[i0] : &b[i3][i0] + i1);    /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 120: warning: unknown attribute "noipa"
+  T (v0 ? b[i0] : &b[i3][i0] + i1);    /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 121: warning: unknown attribute "noipa"
+  T (v0 ? b[i1] : &b[i3][i1] + v0);    /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 123: warning: unknown attribute "noipa"
+  T (v0 ? &b[3][1] + v0 : b[2]);    /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 124: warning: unknown attribute "noipa"
+  T (v0 ? &b[3][v0] : &b[3][v1]);   /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 131: warning: unknown attribute "noipa"
+  T (s.a);
+  ^
+
+"Test_name.c", line 132: warning: unknown attribute "noipa"
+  T (&s.a[0]);
+  ^
+
+"Test_name.c", line 133: warning: unknown attribute "noipa"
+  T (&s.a[0] + 1);
+  ^
+
+"Test_name.c", line 134: warning: unknown attribute "noipa"
+  T (&s.a[0] + v0);
+  ^
+
+"Test_name.c", line 135: warning: unknown attribute "noipa"
+  T (&s.a[1]);
+  ^
+
+"Test_name.c", line 136: warning: unknown attribute "noipa"
+  T (&s.a[1] + 1);
+  ^
+
+"Test_name.c", line 137: warning: unknown attribute "noipa"
+  T (&s.a[1] + v0);
+  ^
+
+"Test_name.c", line 139: warning: unknown attribute "noipa"
+  T (&s.a[i0]);
+  ^
+
+"Test_name.c", line 140: warning: unknown attribute "noipa"
+  T (&s.a[i0] + i1);
+  ^
+
+"Test_name.c", line 141: warning: unknown attribute "noipa"
+  T (&s.a[i0] + v0);
+  ^
+
+"Test_name.c", line 142: warning: unknown attribute "noipa"
+  T (&s.a[i1]);
+  ^
+
+"Test_name.c", line 143: warning: unknown attribute "noipa"
+  T (&s.a[i1] + i1);
+  ^
+
+"Test_name.c", line 144: warning: unknown attribute "noipa"
+  T (&s.a[i1] + v0);
+  ^
+
+"Test_name.c", line 146: warning: unknown attribute "noipa"
+  T (s.b);              /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 147: warning: unknown attribute "noipa"
+  T (&s.b[0]);          /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 148: warning: unknown attribute "noipa"
+  T (&s.b[0] + 1);      /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 149: warning: unknown attribute "noipa"
+  T (&s.b[0] + v0);     /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 150: warning: unknown attribute "noipa"
+  T (&s.b[1]);          /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 151: warning: unknown attribute "noipa"
+  T (&s.b[1] + 1);      /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 152: warning: unknown attribute "noipa"
+  T (&s.b[1] + i0);     /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 153: warning: unknown attribute "noipa"
+  T (&s.b[1] + v0);     /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 155: warning: unknown attribute "noipa"
+  T (&s.b[i0]);         /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 156: warning: unknown attribute "noipa"
+  T (&s.b[i0] + i1);    /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 157: warning: unknown attribute "noipa"
+  T (&s.b[i0] + v0);    /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 158: warning: unknown attribute "noipa"
+  T (&s.b[i1]);         /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 159: warning: unknown attribute "noipa"
+  T (&s.b[i1] + i1);    /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 160: warning: unknown attribute "noipa"
+  T (&s.b[i1] + v0);    /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 171: warning: unknown attribute "noipa"
+  T (ba[0].a[0].a);
+  ^
+
+"Test_name.c", line 172: warning: unknown attribute "noipa"
+  T (&ba[0].a[0].a[0]);
+  ^
+
+"Test_name.c", line 173: warning: unknown attribute "noipa"
+  T (&ba[0].a[0].a[0] + 1);
+  ^
+
+"Test_name.c", line 174: warning: unknown attribute "noipa"
+  T (&ba[0].a[0].a[0] + v0);
+  ^
+
+"Test_name.c", line 175: warning: unknown attribute "noipa"
+  T (&ba[0].a[0].a[1]);
+  ^
+
+"Test_name.c", line 176: warning: unknown attribute "noipa"
+  T (&ba[0].a[0].a[1] + 1);
+  ^
+
+"Test_name.c", line 177: warning: unknown attribute "noipa"
+  T (&ba[0].a[0].a[1] + v0);
+  ^
+
+"Test_name.c", line 179: warning: unknown attribute "noipa"
+  T (ba[0].a[0].b);           /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 180: warning: unknown attribute "noipa"
+  T (&ba[0].a[0].b[0]);       /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 181: warning: unknown attribute "noipa"
+  T (&ba[0].a[0].b[0] + 1);   /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 182: warning: unknown attribute "noipa"
+  T (&ba[0].a[0].b[0] + v0);  /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 183: warning: unknown attribute "noipa"
+  T (&ba[0].a[0].b[1]);       /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 184: warning: unknown attribute "noipa"
+  T (&ba[0].a[0].b[1] + 1);   /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 185: warning: unknown attribute "noipa"
+  T (&ba[0].a[0].b[1] + v0);  /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 187: warning: unknown attribute "noipa"
+  T (ba[0].a[1].a);           /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 188: warning: unknown attribute "noipa"
+  T (&ba[0].a[1].a[0]);       /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 189: warning: unknown attribute "noipa"
+  T (&ba[0].a[1].a[0] + 1);   /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 190: warning: unknown attribute "noipa"
+  T (&ba[0].a[1].a[0] + v0);  /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 191: warning: unknown attribute "noipa"
+  T (&ba[0].a[1].a[1]);       /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 192: warning: unknown attribute "noipa"
+  T (&ba[0].a[1].a[1] + 1);   /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 193: warning: unknown attribute "noipa"
+  T (&ba[0].a[1].a[1] + v0);  /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 195: warning: unknown attribute "noipa"
+  T (ba[0].a[1].b);
+  ^
+
+"Test_name.c", line 196: warning: unknown attribute "noipa"
+  T (&ba[0].a[1].b[0]);
+  ^
+
+"Test_name.c", line 197: warning: unknown attribute "noipa"
+  T (&ba[0].a[1].b[0] + 1);
+  ^
+
+"Test_name.c", line 198: warning: unknown attribute "noipa"
+  T (&ba[0].a[1].b[0] + v0);
+  ^
+
+"Test_name.c", line 199: warning: unknown attribute "noipa"
+  T (&ba[0].a[1].b[1]);
+  ^
+
+"Test_name.c", line 200: warning: unknown attribute "noipa"
+  T (&ba[0].a[1].b[1] + 1);
+  ^
+
+"Test_name.c", line 201: warning: unknown attribute "noipa"
+  T (&ba[0].a[1].b[1] + v0);
+  ^
+
+"Test_name.c", line 204: warning: unknown attribute "noipa"
+  T (ba[1].a[0].a);           /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 205: warning: unknown attribute "noipa"
+  T (&ba[1].a[0].a[0]);       /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 206: warning: unknown attribute "noipa"
+  T (&ba[1].a[0].a[0] + 1);   /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 207: warning: unknown attribute "noipa"
+  T (&ba[1].a[0].a[0] + v0);  /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 208: warning: unknown attribute "noipa"
+  T (&ba[1].a[0].a[1]);       /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 209: warning: unknown attribute "noipa"
+  T (&ba[1].a[0].a[1] + 1);   /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 210: warning: unknown attribute "noipa"
+  T (&ba[1].a[0].a[1] + v0);  /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 212: warning: unknown attribute "noipa"
+  T (ba[1].a[0].b);
+  ^
+
+"Test_name.c", line 213: warning: unknown attribute "noipa"
+  T (&ba[1].a[0].b[0]);
+  ^
+
+"Test_name.c", line 214: warning: unknown attribute "noipa"
+  T (&ba[1].a[0].b[0] + 1);
+  ^
+
+"Test_name.c", line 215: warning: unknown attribute "noipa"
+  T (&ba[1].a[0].b[0] + v0);
+  ^
+
+"Test_name.c", line 216: warning: unknown attribute "noipa"
+  T (&ba[1].a[0].b[1]);
+  ^
+
+"Test_name.c", line 217: warning: unknown attribute "noipa"
+  T (&ba[1].a[0].b[1] + 1);
+  ^
+
+"Test_name.c", line 218: warning: unknown attribute "noipa"
+  T (&ba[1].a[0].b[1] + v0);
+  ^
+
+"Test_name.c", line 220: warning: unknown attribute "noipa"
+  T (ba[1].a[1].a);
+  ^
+
+"Test_name.c", line 221: warning: unknown attribute "noipa"
+  T (&ba[1].a[1].a[0]);
+  ^
+
+"Test_name.c", line 222: warning: unknown attribute "noipa"
+  T (&ba[1].a[1].a[0] + 1);
+  ^
+
+"Test_name.c", line 223: warning: unknown attribute "noipa"
+  T (&ba[1].a[1].a[0] + v0);
+  ^
+
+"Test_name.c", line 224: warning: unknown attribute "noipa"
+  T (&ba[1].a[1].a[1]);
+  ^
+
+"Test_name.c", line 225: warning: unknown attribute "noipa"
+  T (&ba[1].a[1].a[1] + 1);
+  ^
+
+"Test_name.c", line 226: warning: unknown attribute "noipa"
+  T (&ba[1].a[1].a[1] + v0);
+  ^
+
+"Test_name.c", line 228: warning: unknown attribute "noipa"
+  T (ba[1].a[1].b);           /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 229: warning: unknown attribute "noipa"
+  T (&ba[1].a[1].b[0]);       /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 230: warning: unknown attribute "noipa"
+  T (&ba[1].a[1].b[0] + 1);   /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 231: warning: unknown attribute "noipa"
+  T (&ba[1].a[1].b[0] + v0);  /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 232: warning: unknown attribute "noipa"
+  T (&ba[1].a[1].b[1]);       /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 233: warning: unknown attribute "noipa"
+  T (&ba[1].a[1].b[1] + 1);   /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 234: warning: unknown attribute "noipa"
+  T (&ba[1].a[1].b[1] + v0);  /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 237: warning: unknown attribute "noipa"
+  T (ba[2].a[0].a);
+  ^
+
+"Test_name.c", line 238: warning: unknown attribute "noipa"
+  T (&ba[2].a[0].a[0]);
+  ^
+
+"Test_name.c", line 239: warning: unknown attribute "noipa"
+  T (&ba[2].a[0].a[0] + 1);
+  ^
+
+"Test_name.c", line 240: warning: unknown attribute "noipa"
+  T (&ba[2].a[0].a[0] + v0);
+  ^
+
+"Test_name.c", line 241: warning: unknown attribute "noipa"
+  T (&ba[2].a[0].a[1]);
+  ^
+
+"Test_name.c", line 242: warning: unknown attribute "noipa"
+  T (&ba[2].a[0].a[1] + 1);
+  ^
+
+"Test_name.c", line 243: warning: unknown attribute "noipa"
+  T (&ba[2].a[0].a[1] + v0);
+  ^
+
+"Test_name.c", line 245: warning: unknown attribute "noipa"
+  T (ba[2].a[0].b);
+  ^
+
+"Test_name.c", line 246: warning: unknown attribute "noipa"
+  T (&ba[2].a[0].b[0]);
+  ^
+
+"Test_name.c", line 247: warning: unknown attribute "noipa"
+  T (&ba[2].a[0].b[0] + 1);
+  ^
+
+"Test_name.c", line 248: warning: unknown attribute "noipa"
+  T (&ba[2].a[0].b[0] + v0);
+  ^
+
+"Test_name.c", line 249: warning: unknown attribute "noipa"
+  T (&ba[2].a[0].b[1]);
+  ^
+
+"Test_name.c", line 250: warning: unknown attribute "noipa"
+  T (&ba[2].a[0].b[1] + 1);
+  ^
+
+"Test_name.c", line 251: warning: unknown attribute "noipa"
+  T (&ba[2].a[0].b[1] + v0);
+  ^
+
+"Test_name.c", line 253: warning: unknown attribute "noipa"
+  T (ba[2].a[1].a);
+  ^
+
+"Test_name.c", line 254: warning: unknown attribute "noipa"
+  T (&ba[2].a[1].a[0]);
+  ^
+
+"Test_name.c", line 255: warning: unknown attribute "noipa"
+  T (&ba[2].a[1].a[0] + 1);
+  ^
+
+"Test_name.c", line 256: warning: unknown attribute "noipa"
+  T (&ba[2].a[1].a[0] + v0);
+  ^
+
+"Test_name.c", line 257: warning: unknown attribute "noipa"
+  T (&ba[2].a[1].a[1]);
+  ^
+
+"Test_name.c", line 258: warning: unknown attribute "noipa"
+  T (&ba[2].a[1].a[1] + 1);
+  ^
+
+"Test_name.c", line 259: warning: unknown attribute "noipa"
+  T (&ba[2].a[1].a[1] + v0);
+  ^
+
+"Test_name.c", line 262: warning: unknown attribute "noipa"
+  T (ba[3].a[0].a);
+  ^
+
+"Test_name.c", line 263: warning: unknown attribute "noipa"
+  T (&ba[3].a[0].a[0]);
+  ^
+
+"Test_name.c", line 264: warning: unknown attribute "noipa"
+  T (&ba[3].a[0].a[0] + 1);
+  ^
+
+"Test_name.c", line 265: warning: unknown attribute "noipa"
+  T (&ba[3].a[0].a[0] + v0);
+  ^
+
+"Test_name.c", line 266: warning: unknown attribute "noipa"
+  T (&ba[3].a[0].a[1]);
+  ^
+
+"Test_name.c", line 267: warning: unknown attribute "noipa"
+  T (&ba[3].a[0].a[1] + 1);
+  ^
+
+"Test_name.c", line 268: warning: unknown attribute "noipa"
+  T (&ba[3].a[0].a[1] + v0);
+  ^
+
+"Test_name.c", line 270: warning: unknown attribute "noipa"
+  T (ba[3].a[0].b);
+  ^
+
+"Test_name.c", line 271: warning: unknown attribute "noipa"
+  T (&ba[3].a[0].b[0]);
+  ^
+
+"Test_name.c", line 272: warning: unknown attribute "noipa"
+  T (&ba[3].a[0].b[0] + 1);
+  ^
+
+"Test_name.c", line 273: warning: unknown attribute "noipa"
+  T (&ba[3].a[0].b[0] + v0);
+  ^
+
+"Test_name.c", line 274: warning: unknown attribute "noipa"
+  T (&ba[3].a[0].b[1]);
+  ^
+
+"Test_name.c", line 275: warning: unknown attribute "noipa"
+  T (&ba[3].a[0].b[1] + 1);
+  ^
+
+"Test_name.c", line 276: warning: unknown attribute "noipa"
+  T (&ba[3].a[0].b[1] + v0);
+  ^
+
+"Test_name.c", line 278: warning: unknown attribute "noipa"
+  T (ba[3].a[1].a);           /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 279: warning: unknown attribute "noipa"
+  T (&ba[3].a[1].a[0]);	    /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 280: warning: unknown attribute "noipa"
+  T (&ba[3].a[1].a[0] + 1);   /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 281: warning: unknown attribute "noipa"
+  T (&ba[3].a[1].a[0] + v0);  /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 282: warning: unknown attribute "noipa"
+  T (&ba[3].a[1].a[1]);	    /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 283: warning: unknown attribute "noipa"
+  T (&ba[3].a[1].a[1] + 1);   /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 284: warning: unknown attribute "noipa"
+  T (&ba[3].a[1].a[1] + v0);  /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 286: warning: unknown attribute "noipa"
+  T (ba[3].a[1].b);
+  ^
+
+"Test_name.c", line 287: warning: unknown attribute "noipa"
+  T (&ba[3].a[1].b[0]);
+  ^
+
+"Test_name.c", line 288: warning: unknown attribute "noipa"
+  T (&ba[3].a[1].b[0] + 1);
+  ^
+
+"Test_name.c", line 289: warning: unknown attribute "noipa"
+  T (&ba[3].a[1].b[0] + v0);
+  ^
+
+"Test_name.c", line 290: warning: unknown attribute "noipa"
+  T (&ba[3].a[1].b[1]);
+  ^
+
+"Test_name.c", line 291: warning: unknown attribute "noipa"
+  T (&ba[3].a[1].b[1] + 1);
+  ^
+
+"Test_name.c", line 292: warning: unknown attribute "noipa"
+  T (&ba[3].a[1].b[1] + v0);
+  ^
+
+"Test_name.c", line 295: warning: unknown attribute "noipa"
+  T (v0 ? ba[0].a[0].a : ba[0].a[0].b);           /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 296: warning: unknown attribute "noipa"
+  T (v0 ? ba[0].a[0].a : ba[0].a[0].b);           /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 298: warning: unknown attribute "noipa"
+  T (v0 ? &ba[0].a[0].a[0] : &ba[3].a[1].a[0]);   /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 299: warning: unknown attribute "noipa"
+  T (v0 ? &ba[3].a[1].a[1] :  ba[0].a[0].a);      /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 301: warning: unknown attribute "noipa"
+  T (v0 ? ba[0].a[0].a : ba[0].a[1].b);
+  ^
+
+"Test_name.c", line 302: warning: unknown attribute "noipa"
+  T (v0 ? ba[0].a[1].b : ba[0].a[0].a);
+  ^
+
+"Test_name.c", line 304: warning: unknown attribute "noipa"
+  T (v2 ? b[1] : &b[3][1] + v2);    /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 305: warning: unknown attribute "noipa"
+  T (v2 ? &b[3][1] + v2 : b[2]);    /* { dg-warning "nul" }  */
+  ^
+
+"Test_name.c", line 306: warning: unknown attribute "noipa"
+  T (v2 ? &b[3][v2] : &b[2][v2]);   /* { dg-warning "nul" }  */
+  ^
+

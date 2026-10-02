@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./vect/group-no-gaps-1.c", line 80: warning: invalid type conversion
+    x = mmap ((void *) 0x1122000000, 0x20000, 
+              ^
+
+"./vect/group-no-gaps-1.c", line 88: warning: invalid type conversion
+    y = mmap ((void *) (0x1122000000 + 0x20000 * 16), 0x20000, 
+              ^
+

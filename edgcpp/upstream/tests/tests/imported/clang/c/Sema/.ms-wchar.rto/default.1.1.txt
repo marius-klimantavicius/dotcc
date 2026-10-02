@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --ms_extensions -w -w --ms_extensions -w --c Test_name.c
+"Test_name.c", line 8: error: identifier "wchar_t" is undefined
+  wchar_t f(void); // expected-error{{unknown type name 'wchar_t'}}
+  ^
+
+"Test_name.c", line 14: error: declaration is incompatible with "__wchar_t g" (declared at line 11)
+  unsigned short g; // expected-error {{redefinition of 'g' with a different type: 'unsigned short' vs '__wchar_t'}}
+                 ^
+
+"Test_name.c", line 20: error: a value of type "int" cannot be used to initialize an entity of type "__wchar_t []"
+  __wchar_t t[] = 1; // expected-error-re {{array initializer must be an initializer list{{$}}}}
+                  ^
+
+3 errors detected in the compilation of "Test_name.c".

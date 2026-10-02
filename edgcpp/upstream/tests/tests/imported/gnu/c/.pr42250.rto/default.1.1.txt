@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 27: warning: variable "num_inputs_to_cblock" is used before its value is set
+      get_cblock_trans (num_inputs_to_cblock, max_inputs_to_cblock,
+                        ^
+
+"Test_name.c", line 27: warning: variable "max_inputs_to_cblock" is used before its value is set
+      get_cblock_trans (num_inputs_to_cblock, max_inputs_to_cblock,
+                                              ^
+
+"Test_name.c", line 28: warning: variable "trans_cblock_to_lblock_buf" is used before its value is set
+  		      trans_cblock_to_lblock_buf, trans_sram_bit);
+  		      ^
+
+"Test_name.c", line 22: warning: variable "iswitch" was declared but never referenced
+    int iswitch, i, j, iseg, max_inputs_to_cblock;
+        ^
+
+"Test_name.c", line 22: warning: variable "i" was declared but never referenced
+    int iswitch, i, j, iseg, max_inputs_to_cblock;
+                 ^
+
+"Test_name.c", line 22: warning: variable "j" was declared but never referenced
+    int iswitch, i, j, iseg, max_inputs_to_cblock;
+                    ^
+
+"Test_name.c", line 22: warning: variable "iseg" was declared but never referenced
+    int iswitch, i, j, iseg, max_inputs_to_cblock;
+                       ^
+
+"Test_name.c", line 23: warning: variable "input_cblock_trans" was set but never used
+    float input_cblock_trans;
+          ^
+

@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++23 Test_name.c
+"Test_name.c", line 36: error: no suitable constructor exists to convert from "int" to "XA"
+    InsertRow(3, B{}); // expected-error {{no matching function for call to 'InsertRow'}}
+              ^
+
+"Test_name.c", line 58: error: a value of type "void" cannot be used to initialize an entity of type "int"
+      int x = S{}.f(0);
+              ^
+
+"Test_name.c", line 60: warning: missing return statement at end of non-void function "overloadCheck::main"
+    }
+    ^
+
+"Test_name.c", line 67: error: no instance of function template "GH93076::b" matches the argument list
+            argument types are: (int, int, int ())
+    (void)b<int, int>(0, 0, d); // expected-error {{no matching function for call to 'b'}}
+          ^
+"Test_name.c", line 65: note: function template "GH93076::b" does not match because argument #3 does not match parameter
+  template <typename ...a> int b(a..., int); // expected-note-re 3 {{candidate function template not viable: no known conversion from 'int ()' to 'int' for {{.*}} argument}}
+                               ^
+
+"Test_name.c", line 68: error: no instance of function template "GH93076::b" matches the argument list
+            argument types are: (int, int (), int)
+    (void)b<int, int>(0, d, 0); // expected-error {{no matching function for call to 'b'}}
+          ^
+"Test_name.c", line 65: note: function template "GH93076::b" does not match because argument #2 does not match parameter
+  template <typename ...a> int b(a..., int); // expected-note-re 3 {{candidate function template not viable: no known conversion from 'int ()' to 'int' for {{.*}} argument}}
+                               ^
+
+"Test_name.c", line 69: error: no instance of function template "GH93076::b" matches the argument list
+            argument types are: (int (), int, int)
+    (void)b<int, int>(d, 0, 0); // expected-error {{no matching function for call to 'b'}}
+          ^
+"Test_name.c", line 65: note: function template "GH93076::b" does not match because argument #1 does not match parameter
+  template <typename ...a> int b(a..., int); // expected-note-re 3 {{candidate function template not viable: no known conversion from 'int ()' to 'int' for {{.*}} argument}}
+                               ^
+
+5 errors detected in the compilation of "Test_name.c".

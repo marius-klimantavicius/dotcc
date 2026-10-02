@@ -1,0 +1,31 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 75: warning: missing return statement at end of non-void function "F::G::operator()"
+      }
+      ^
+
+"Test_name.c", line 81: warning: variable "h" is used before its value is set
+    stable_sort(h, g, G());
+                ^
+
+"Test_name.c", line 81: warning: variable "g" is used before its value is set
+    stable_sort(h, g, G());
+                   ^
+
+"Test_name.c", line 39: warning: variable "d" is used before its value is set
+    __insertion_sort(d, p3);
+                     ^
+          detected during:
+            instantiation of "void __chunk_insertion_sort(_RandomAccessIterator, _Distance, _Compare) [with _RandomAccessIterator=int *, _Distance=int, _Compare=B<F::G>]" at line 43
+            instantiation of "void __merge_sort_with_buffer(_RandomAccessIterator, _Pointer, _Compare) [with _RandomAccessIterator=int *, _Pointer=int, _Compare=B<F::G>]" at line 50
+            instantiation of "void __stable_sort_adaptive(_RandomAccessIterator, _Pointer, _Distance, _Compare) [with _RandomAccessIterator=int *, _Pointer=int, _Distance=int, _Compare=B<F::G>]" at line 55
+            instantiation of "void __stable_sort(_RandomAccessIterator, _Compare) [with _RandomAccessIterator=int *, _Compare=B<F::G>]" at line 60
+            instantiation of "void stable_sort(_RandomAccessIterator, _RandomAccessIterator, _Compare) [with _RandomAccessIterator=int *, _Compare=F::G]" at line 81
+
+"Test_name.c", line 50: warning: variable "e" is used before its value is set
+    __merge_sort_with_buffer(e, 0, p4);
+                             ^
+          detected during:
+            instantiation of "void __stable_sort_adaptive(_RandomAccessIterator, _Pointer, _Distance, _Compare) [with _RandomAccessIterator=int *, _Pointer=int, _Distance=int, _Compare=B<F::G>]" at line 55
+            instantiation of "void __stable_sort(_RandomAccessIterator, _Compare) [with _RandomAccessIterator=int *, _Compare=B<F::G>]" at line 60
+            instantiation of "void stable_sort(_RandomAccessIterator, _RandomAccessIterator, _Compare) [with _RandomAccessIterator=int *, _Compare=F::G]" at line 81
+

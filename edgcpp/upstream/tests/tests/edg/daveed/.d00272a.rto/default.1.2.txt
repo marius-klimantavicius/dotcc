@@ -1,0 +1,2 @@
+./a.out
+sizeof(s) = 20

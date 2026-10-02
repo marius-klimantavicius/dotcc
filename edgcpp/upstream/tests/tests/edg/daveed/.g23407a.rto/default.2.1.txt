@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=2 --microsoft_bugs --c++11 Test_name.c
+"Test_name.c", line 7: error: function "f<T>(...) [with T=X]" (declared at line 5) cannot be referenced -- it is a deleted function
+  int r = f<X>(0);
+          ^
+
+1 error detected in the compilation of "Test_name.c".

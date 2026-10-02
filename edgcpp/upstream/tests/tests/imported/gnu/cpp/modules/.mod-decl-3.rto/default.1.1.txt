@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 --modules Test_name.c
+"mod-decl-3.C", line 4: error: an export declaration can only appear in a module interface unit
+  export void Foo (); // { dg-error "after a module interface" }
+  ^
+
+"", line 11: error: an export declaration cannot contain an export declaration (previous declaration at line 10)
+  export // { dg-error "occur once" }
+  ^
+
+"", line 16: error: an export declaration cannot contain an export declaration (previous declaration at line 14)
+    export // { dg-error "occur once" }
+    ^
+
+"", line 22: warning: "import" is parsed as an identifier rather than a keyword because the tokens that follow it do not match those of a preprocessor directive
+    import  // { dg-error "does not name" }
+    ^
+
+"", line 22: error: identifier "import" is undefined
+    import  // { dg-error "does not name" }
+    ^
+
+4 errors detected in the compilation of "Test_name.c".

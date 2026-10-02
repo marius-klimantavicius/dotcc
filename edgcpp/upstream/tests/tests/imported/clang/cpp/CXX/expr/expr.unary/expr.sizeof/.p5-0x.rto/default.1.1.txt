@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 32: error: the operand of sizeof... must be a parameter pack name
+    static const unsigned value = sizeof...(Value); // expected-error{{'Value' does not refer to the name of a parameter pack}}
+                                            ^
+
+"Test_name.c", line 37: error: expected a "("
+    static const unsigned value = sizeof... Type; // expected-error{{missing parentheses around the size of parameter pack 'Type'}} \
+                                            ^
+
+"Test_name.c", line 37: error: expected an identifier
+    static const unsigned value = sizeof... Type; // expected-error{{missing parentheses around the size of parameter pack 'Type'}} \
+                                                ^
+
+"Test_name.c", line 37: error: expected a ")"
+    static const unsigned value = sizeof... Type; // expected-error{{missing parentheses around the size of parameter pack 'Type'}} \
+                                                ^
+
+"Test_name.c", line 37: error: pack expansion does not make use of any argument packs
+    static const unsigned value = sizeof... Type; // expected-error{{missing parentheses around the size of parameter pack 'Type'}} \
+                                        ^
+
+5 errors detected in the compilation of "Test_name.c".

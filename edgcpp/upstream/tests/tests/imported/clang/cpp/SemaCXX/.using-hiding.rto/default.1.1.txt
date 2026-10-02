@@ -1,0 +1,98 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 20: error: "Test1a::X" is ambiguous
+      X(1); // expected-error{{reference to 'X' is ambiguous}}
+      ^
+
+"Test_name.c", line 29: error: "Test1b::X" is ambiguous
+      X(1); // expected-error{{reference to 'X' is ambiguous}}
+      ^
+
+"Test_name.c", line 45: error: "Test2a::X" is ambiguous
+      X(1); // expected-error{{reference to 'X' is ambiguous}}
+      ^
+
+"Test_name.c", line 60: error: "Test2b::X" is ambiguous
+      X(1); // expected-error{{reference to 'X' is ambiguous}}
+      ^
+
+"Test_name.c", line 76: error: "Test3a::X" is ambiguous
+      X(1); // expected-error{{reference to 'X' is ambiguous}}
+      ^
+
+"Test_name.c", line 91: error: "Test3b::X" is ambiguous
+      X(1); // expected-error{{reference to 'X' is ambiguous}}
+      ^
+
+"Test_name.c", line 106: error: "Test3c::X" is ambiguous
+      X(1); // expected-error{{reference to 'X' is ambiguous}}
+      ^
+
+"Test_name.c", line 121: error: "Test3d::X" is ambiguous
+      X(1); // expected-error{{reference to 'X' is ambiguous}}
+      ^
+
+"Test_name.c", line 138: error: "Test4a::X" is ambiguous
+      X(1);
+      ^
+
+"Test_name.c", line 154: error: "Test4b::X" is ambiguous
+      X(1);
+      ^
+
+"Test_name.c", line 170: error: "Test4c::X" is ambiguous
+      X(1);
+      ^
+
+"Test_name.c", line 186: error: "Test4d::X" is ambiguous
+      X(1);
+      ^
+
+"Test_name.c", line 202: error: "Test5a::X" is ambiguous
+      X(1);
+      ^
+
+"Test_name.c", line 217: error: "Test5b::X" is ambiguous
+      X(1);
+      ^
+
+"Test_name.c", line 232: error: "Test5c::X" is ambiguous
+      X(1);
+      ^
+
+"Test_name.c", line 247: error: "Test5d::X" is ambiguous
+      X(1);
+      ^
+
+"Test_name.c", line 264: error: "Test6a::X" is ambiguous
+      X(1);
+      ^
+
+"Test_name.c", line 280: error: "Test6b::X" is ambiguous
+      X(1);
+      ^
+
+"Test_name.c", line 296: error: "Test6c::X" is ambiguous
+      X(1);
+      ^
+
+"Test_name.c", line 312: error: "Test6d::X" is ambiguous
+      X(1);
+      ^
+
+"Test_name.c", line 328: error: "Test7a::X" is ambiguous
+      X(1); // expected-error{{reference to 'X' is ambiguous}}
+      ^
+
+"Test_name.c", line 343: error: "Test7b::X" is ambiguous
+      X(1); // expected-error{{reference to 'X' is ambiguous}}
+      ^
+
+"Test_name.c", line 358: error: "Test7c::X" is ambiguous
+      X(1); // expected-error{{reference to 'X' is ambiguous}}
+      ^
+
+"Test_name.c", line 373: error: "Test7d::X" is ambiguous
+      X(1); // expected-error{{reference to 'X' is ambiguous}}
+      ^
+
+24 errors detected in the compilation of "Test_name.c".

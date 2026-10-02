@@ -1,0 +1,27 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 8: error: "A::A()" provides no initializer for:
+            const member "A::i"
+            reference member "A::j"
+    A() {}               // Warnings on user-defined default constructor
+        ^
+
+"Test_name.c", line 9: error: "A::A(const A &)" provides no initializer for:
+            const member "A::i"
+            reference member "A::j"
+    A(const A&) {}       // No error on user-defined copy constructor
+                ^
+
+"Test_name.c", line 13: warning: class "B" defines no constructor to initialize the following:
+            const member "B::i"
+            reference member "B::j"
+  class B {
+        ^
+
+"Test_name.c", line 13: error: implicitly generated constructor for class "B" cannot initialize:
+            const member "B::i"
+            reference member "B::j"
+  class B {
+        ^
+          detected during implicit generation of "B::B()" at line 18
+
+3 errors detected in the compilation of "Test_name.c".

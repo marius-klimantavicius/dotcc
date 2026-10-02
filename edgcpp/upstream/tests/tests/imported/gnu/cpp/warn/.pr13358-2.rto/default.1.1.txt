@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++03 -W Test_name.c
+"Test_name.c", line 12: error: variable "x1" was set but never used
+    unsigned long long x1, x2, x3; // { dg-error "ISO C\\+\\+ 1998 does not support 'long long'" }
+                       ^
+
+"Test_name.c", line 12: error: variable "x2" was set but never used
+    unsigned long long x1, x2, x3; // { dg-error "ISO C\\+\\+ 1998 does not support 'long long'" }
+                           ^
+
+"Test_name.c", line 12: error: variable "x3" was set but never used
+    unsigned long long x1, x2, x3; // { dg-error "ISO C\\+\\+ 1998 does not support 'long long'" }
+                               ^
+
+"Test_name.c", line 21: error: variable "x1" was set but never used
+    unsigned long long x1, x2, x3; // { dg-error "ISO C\\+\\+ 1998 does not support 'long long'" }
+                       ^
+
+"Test_name.c", line 21: error: variable "x2" was set but never used
+    unsigned long long x1, x2, x3; // { dg-error "ISO C\\+\\+ 1998 does not support 'long long'" }
+                           ^
+
+"Test_name.c", line 21: error: variable "x3" was set but never used
+    unsigned long long x1, x2, x3; // { dg-error "ISO C\\+\\+ 1998 does not support 'long long'" }
+                               ^
+
+6 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,37 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 5: error: const variable "i" requires an initializer
+    T i;                         // Error -- uninitialized const variable
+       ^
+
+"Test_name.c", line 6: remark: class "S" defines no constructor to initialize the following:
+            const member "S::j"
+    struct S { const int j; };   // Warning -- no constructor
+           ^
+
+"Test_name.c", line 6: error: implicitly generated constructor for class "S" cannot initialize:
+            const member "S::j"
+    struct S { const int j; };   // Warning -- no constructor
+           ^
+          detected during implicit generation of "S::S()" at line 7
+
+"Test_name.c", line 7: error: variable "s" has an uninitialized const or reference member
+    S s;                         // Error -- uninitialized const member
+      ^
+
+"Test_name.c", line 10: error: const object requires an initializer
+      T* pi = new T;             // warning -- uninitialized const object
+                  ^
+
+"Test_name.c", line 10: remark: variable "pi" was declared but never referenced
+      T* pi = new T;             // warning -- uninitialized const object
+         ^
+
+"Test_name.c", line 11: remark: variable "ps" was declared but never referenced
+      S* ps = new S;             // warning -- uninitialized const member
+         ^
+
+"Test_name.c", line 5: warning: variable "i" was declared but never referenced
+    T i;                         // Error -- uninitialized const variable
+      ^
+
+4 errors detected in the compilation of "Test_name.c".

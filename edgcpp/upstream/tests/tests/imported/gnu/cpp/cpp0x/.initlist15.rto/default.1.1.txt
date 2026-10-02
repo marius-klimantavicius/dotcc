@@ -1,0 +1,44 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp0x/initlist15.C", line 14: error: no instance of constructor "std::vector<_Tp, _Alloc>::vector [with _Tp=std::type_info *, _Alloc=std::allocator<std::type_info *>]" matches the argument list
+            argument types are: (const std::type_info *, const std::type_info *, const std::type_info *)
+     vector<type_info*> x = { &typeid(ArgTypes)... };
+                            ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_vector.h", line 705: note: function "std::vector<_Tp, _Alloc>::vector(std::initializer_list<std::vector<_Tp, _Alloc>::value_type>, const std::vector<_Tp, _Alloc>::allocator_type &) [with _Tp=std::type_info *, _Alloc=std::allocator<std::type_info *>]" does not match because argument #1 does not match parameter
+        vector(initializer_list<value_type> __l,
+        ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_vector.h", line 734: note: function template "std::vector<_Tp, _Alloc>::vector(_InputIterator, _InputIterator, const std::allocator<std::type_info *> &) [with _Tp=std::type_info *, _Alloc=std::allocator<std::type_info *>]" does not match because argument #3 does not match parameter
+   vector(_InputIterator __first, _InputIterator __last,
+   ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_vector.h", line 686: note: number of parameters of function "std::vector<_Tp, _Alloc>::vector(std::vector<_Tp, _Alloc> &&, const std::__type_identity_t<std::vector<_Tp, _Alloc>::allocator_type> &) [with _Tp=std::type_info *, _Alloc=std::allocator<std::type_info *>]" does not match the call
+        vector(vector&& __rv, const __type_identity_t<allocator_type>& __m)
+        ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_vector.h", line 667: note: function "std::vector<_Tp, _Alloc>::vector(std::vector<_Tp, _Alloc> &&, const std::vector<_Tp, _Alloc>::allocator_type &, std::false_type) [with _Tp=std::type_info *, _Alloc=std::allocator<std::type_info *>]" does not match because argument #1 does not match parameter
+        vector(vector&& __rv, const allocator_type& __m, false_type)
+        ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_vector.h", line 662: note: function "std::vector<_Tp, _Alloc>::vector(std::vector<_Tp, _Alloc> &&, const std::vector<_Tp, _Alloc>::allocator_type &, std::true_type) [with _Tp=std::type_info *, _Alloc=std::allocator<std::type_info *>]" does not match because argument #1 does not match parameter
+        vector(vector&& __rv, const allocator_type& __m, true_type) noexcept
+        ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_vector.h", line 651: note: number of parameters of function "std::vector<_Tp, _Alloc>::vector(const std::vector<_Tp, _Alloc> &, const std::__type_identity_t<std::vector<_Tp, _Alloc>::allocator_type> &) [with _Tp=std::type_info *, _Alloc=std::allocator<std::type_info *>]" does not match the call
+        vector(const vector& __x, const __type_identity_t<allocator_type>& __a)
+        ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_vector.h", line 647: note: number of parameters of function "std::vector<_Tp, _Alloc>::vector(std::vector<_Tp, _Alloc> &&) [with _Tp=std::type_info *, _Alloc=std::allocator<std::type_info *>]" does not match the call
+        vector(vector&&) noexcept = default;
+        ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_vector.h", line 628: note: number of parameters of function "std::vector<_Tp, _Alloc>::vector(const std::vector<_Tp, _Alloc> &) [with _Tp=std::type_info *, _Alloc=std::allocator<std::type_info *>]" does not match the call
+        vector(const vector& __x)
+        ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_vector.h", line 596: note: function "std::vector<_Tp, _Alloc>::vector(std::vector<_Tp, _Alloc>::size_type, const std::vector<_Tp, _Alloc>::value_type &, const std::vector<_Tp, _Alloc>::allocator_type &) [with _Tp=std::type_info *, _Alloc=std::allocator<std::type_info *>]" does not match because argument #1 does not match parameter
+        vector(size_type __n, const value_type& __value,
+        ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_vector.h", line 583: note: number of parameters of function "std::vector<_Tp, _Alloc>::vector(std::vector<_Tp, _Alloc>::size_type, const std::vector<_Tp, _Alloc>::allocator_type &) [with _Tp=std::type_info *, _Alloc=std::allocator<std::type_info *>]" does not match the call
+        vector(size_type __n, const allocator_type& __a = allocator_type())
+        ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_vector.h", line 569: note: number of parameters of function "std::vector<_Tp, _Alloc>::vector(const std::vector<_Tp, _Alloc>::allocator_type &) [with _Tp=std::type_info *, _Alloc=std::allocator<std::type_info *>]" does not match the call
+        vector(const allocator_type& __a) noexcept
+        ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/stl_vector.h", line 558: note: number of parameters of function "std::vector<_Tp, _Alloc>::vector() [with _Tp=std::type_info *, _Alloc=std::allocator<std::type_info *>]" does not match the call
+        vector() = default;
+        ^
+          detected during instantiation of "void test(ArgTypes...) [with ArgTypes=<int, float, double>]" at line 19
+
+1 error detected in the compilation of "Test_name.c".

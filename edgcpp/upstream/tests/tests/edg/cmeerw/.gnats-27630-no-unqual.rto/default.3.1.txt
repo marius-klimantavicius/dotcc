@@ -1,0 +1,20 @@
+fe_only -DTEST_NUMBER=3 -w -tused --c++20 --clang_version 190100 Test_name.c
+"Test_name.c", line 88: error: namespace "non_tmpl::ns" has no member "O"
+        friend struct ns::O;
+                          ^
+
+"Test_name.c", line 91: error: namespace "non_tmpl::ns" has no member "I"
+        friend struct ns::I;
+                          ^
+
+"Test_name.c", line 102: error: member "non_tmpl::ns::C::v" (declared at line 94) is inaccessible
+      { return ns::C::v; }
+                      ^
+          detected during instantiation of "int non_tmpl::outer::O<<unnamed>>::f() [with <unnamed>=void]" at line 112
+
+"Test_name.c", line 109: error: member "non_tmpl::ns::C::v" (declared at line 94) is inaccessible
+      { return ns::C::v; }
+                      ^
+          detected during instantiation of "int non_tmpl::ns::inner::I<<unnamed>>::f() [with <unnamed>=void]" at line 112
+
+4 errors detected in the compilation of "Test_name.c".

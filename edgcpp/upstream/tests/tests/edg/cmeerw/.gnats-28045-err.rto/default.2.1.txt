@@ -1,0 +1,195 @@
+fe_only -DTEST_NUMBER=2 --c++20 --clang_version 190100 Test_name.c
+"Test_name.c", line 10: error: type "int" is invalid as an argument for this builtin
+    __builtin_clzg(i);
+                   ^
+
+"Test_name.c", line 11: error: type "ES" is invalid as an argument for this builtin
+    __builtin_clzg(es);
+                   ^
+
+"Test_name.c", line 13: error: type "S" is invalid as an argument for this builtin
+    __builtin_clzg(s);
+                   ^
+
+"Test_name.c", line 14: error: type "ES" is invalid as an argument for this builtin
+    __builtin_clzg(1u, es);
+                       ^
+
+"Test_name.c", line 15: error: type "EU" is invalid as an argument for this builtin
+    __builtin_clzg(1u, eu);
+                       ^
+
+"Test_name.c", line 17: error: type "int" is invalid as an argument for this builtin
+    __builtin_ctzg(i);
+                   ^
+
+"Test_name.c", line 18: error: type "ES" is invalid as an argument for this builtin
+    __builtin_ctzg(es);
+                   ^
+
+"Test_name.c", line 20: error: type "S" is invalid as an argument for this builtin
+    __builtin_ctzg(s);
+                   ^
+
+"Test_name.c", line 21: error: type "ES" is invalid as an argument for this builtin
+    __builtin_ctzg(1u, es);
+                       ^
+
+"Test_name.c", line 22: error: type "EU" is invalid as an argument for this builtin
+    __builtin_ctzg(1u, eu);
+                       ^
+
+"Test_name.c", line 24: error: type "int" is invalid as an argument for this builtin
+    __builtin_popcountg(i);
+                        ^
+
+"Test_name.c", line 25: error: type "ES" is invalid as an argument for this builtin
+    __builtin_popcountg(es);
+                        ^
+
+"Test_name.c", line 27: error: type "S" is invalid as an argument for this builtin
+    __builtin_popcountg(s);
+                        ^
+
+"Test_name.c", line 29: error: identifier "__builtin_parityg" is undefined
+    __builtin_parityg(i);
+    ^
+
+"Test_name.c", line 34: error: identifier "__builtin_ffsg" is undefined
+    __builtin_ffsg(ui);
+    ^
+
+"Test_name.c", line 39: error: expression must have a constant value
+    static_assert(__builtin_clz(ui) == 0);
+                  ^
+"Test_name.c", line 39: note: the value of parameter "ui" (declared at line 8) cannot be used as a constant
+    static_assert(__builtin_clz(ui) == 0);
+                                ^
+
+"Test_name.c", line 41: error: expression must have a constant value
+    static_assert(__builtin_clzg(ui, 0) == 0);
+                  ^
+"Test_name.c", line 41: note: the value of parameter "ui" (declared at line 8) cannot be used as a constant
+    static_assert(__builtin_clzg(ui, 0) == 0);
+                                 ^
+
+"Test_name.c", line 42: error: expression must have a constant value
+    static_assert(__builtin_clzg(ui, i) == 0);
+                  ^
+"Test_name.c", line 42: note: the value of parameter "ui" (declared at line 8) cannot be used as a constant
+    static_assert(__builtin_clzg(ui, i) == 0);
+                                 ^
+
+"Test_name.c", line 43: error: expression must have a constant value
+    static_assert(__builtin_clzg(0u, i) == 0);
+                  ^
+"Test_name.c", line 43: note: the value of parameter "i" (declared at line 8) cannot be used as a constant
+    static_assert(__builtin_clzg(0u, i) == 0);
+                                     ^
+
+"Test_name.c", line 44: error: expression must have a constant value
+    static_assert(__builtin_clzg(1u, i) == 0);
+                  ^
+"Test_name.c", line 44: note: the value of parameter "i" (declared at line 8) cannot be used as a constant
+    static_assert(__builtin_clzg(1u, i) == 0);
+                                     ^
+
+"Test_name.c", line 46: error: expression must have a constant value
+    static_assert(__builtin_ctz(ui) == 0);
+                  ^
+"Test_name.c", line 46: note: the value of parameter "ui" (declared at line 8) cannot be used as a constant
+    static_assert(__builtin_ctz(ui) == 0);
+                                ^
+
+"Test_name.c", line 48: error: expression must have a constant value
+    static_assert(__builtin_ctzg(ui, 0) == 0);
+                  ^
+"Test_name.c", line 48: note: the value of parameter "ui" (declared at line 8) cannot be used as a constant
+    static_assert(__builtin_ctzg(ui, 0) == 0);
+                                 ^
+
+"Test_name.c", line 49: error: expression must have a constant value
+    static_assert(__builtin_ctzg(ui, i) == 0);
+                  ^
+"Test_name.c", line 49: note: the value of parameter "ui" (declared at line 8) cannot be used as a constant
+    static_assert(__builtin_ctzg(ui, i) == 0);
+                                 ^
+
+"Test_name.c", line 50: error: expression must have a constant value
+    static_assert(__builtin_ctzg(0u, i) == 0);
+                  ^
+"Test_name.c", line 50: note: the value of parameter "i" (declared at line 8) cannot be used as a constant
+    static_assert(__builtin_ctzg(0u, i) == 0);
+                                     ^
+
+"Test_name.c", line 51: error: expression must have a constant value
+    static_assert(__builtin_ctzg(1u, i) == 0);
+                  ^
+"Test_name.c", line 51: note: the value of parameter "i" (declared at line 8) cannot be used as a constant
+    static_assert(__builtin_ctzg(1u, i) == 0);
+                                     ^
+
+"Test_name.c", line 53: error: expression must have a constant value
+    static_assert(__builtin_popcountg(ui) == 0);
+                  ^
+"Test_name.c", line 53: note: the value of parameter "ui" (declared at line 8) cannot be used as a constant
+    static_assert(__builtin_popcountg(ui) == 0);
+                                      ^
+
+"Test_name.c", line 62: error: too few arguments in function call
+  static_assert(__builtin_clzg() == 0);
+                               ^
+
+"Test_name.c", line 62: error: expression must have a constant value
+  static_assert(__builtin_clzg() == 0);
+                ^
+
+"Test_name.c", line 63: error: too many arguments in function call
+  static_assert(__builtin_clzg(1u, 2, 3) == 0);
+                                      ^
+
+"Test_name.c", line 63: error: expression must have a constant value
+  static_assert(__builtin_clzg(1u, 2, 3) == 0);
+                ^
+
+"Test_name.c", line 65: error: too few arguments in function call
+  static_assert(__builtin_ctzg() == 0);
+                               ^
+
+"Test_name.c", line 65: error: expression must have a constant value
+  static_assert(__builtin_ctzg() == 0);
+                ^
+
+"Test_name.c", line 66: error: too many arguments in function call
+  static_assert(__builtin_ctzg(1u, 2, 3) == 0);
+                                      ^
+
+"Test_name.c", line 66: error: expression must have a constant value
+  static_assert(__builtin_ctzg(1u, 2, 3) == 0);
+                ^
+
+"Test_name.c", line 68: error: too few arguments in function call
+  static_assert(__builtin_popcountg() == 0);
+                                    ^
+
+"Test_name.c", line 68: error: expression must have a constant value
+  static_assert(__builtin_popcountg() == 0);
+                ^
+
+"Test_name.c", line 69: error: too many arguments in function call
+  static_assert(__builtin_popcountg(1u, 2) == 0);
+                                        ^
+
+"Test_name.c", line 69: error: expression must have a constant value
+  static_assert(__builtin_popcountg(1u, 2) == 0);
+                ^
+
+"Test_name.c", line 71: error: identifier "__builtin_parityg" is undefined
+  static_assert(__builtin_parityg() == 0);
+                ^
+
+"Test_name.c", line 74: error: identifier "__builtin_ffsg" is undefined
+  static_assert(__builtin_ffsg() == 0);
+                ^
+
+40 errors detected in the compilation of "Test_name.c".

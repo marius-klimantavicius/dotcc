@@ -1,0 +1,13 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 --c++11 Test_name.c
+"./ext/has_nothrow_assign.C", line 37: warning: statement is unreachable
+    E1& operator=(const E1&) throw(int) { throw int(); return *this; }
+                                                       ^
+
+"./ext/has_nothrow_assign.C", line 57: warning: statement is unreachable
+    H1& operator=(H1&) throw(int) { throw int(); return *this; }
+                                                 ^
+
+"./ext/has_nothrow_assign.C", line 68: warning: statement is unreachable
+    I1& operator=(I1&) throw(int) { throw int(); return *this; }
+                                                 ^
+

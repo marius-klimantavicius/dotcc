@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 24: error: function "NonCopyable<T>::NonCopyable(const NonCopyable<T> &) [with T=double]" (declared at line 18) cannot be referenced -- it is a deleted function
+    NonCopyable<double> nc_dbl_cpy(nc_dbl); // { dg-error "use" }
+                                   ^
+
+"Test_name.c", line 27: error: function "NonCopyable<T>::NonCopyable(const NonCopyable<T> &) [with T=int]" (declared at line 12) cannot be referenced -- it is a deleted function
+    NonCopyable<int> nc_int_cpy(nc_int); // { dg-error "use" }
+                                ^
+
+"Test_name.c", line 24: warning: variable "nc_dbl_cpy" was declared but never referenced
+    NonCopyable<double> nc_dbl_cpy(nc_dbl); // { dg-error "use" }
+                        ^
+
+"Test_name.c", line 30: warning: variable "nc_char_cpy" was declared but never referenced
+    NonCopyable<char> nc_char_cpy(nc_char);
+                      ^
+
+2 errors detected in the compilation of "Test_name.c".

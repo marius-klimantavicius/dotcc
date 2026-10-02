@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 11: warning: variable "__1" was declared but never referenced
+    unsigned int __1 =               // expected-warning {{identifier '__1' is reserved because it starts with '__'}}
+                 ^
+
+"Test_name.c", line 6: warning: function "_bar" was declared but never referenced
+  static int _bar() { return 0; } // expected-warning {{identifier '_bar' is reserved because it starts with '_' at global scope}}
+             ^
+
+"Test_name.c", line 7: warning: function "_Bar" was declared but never referenced
+  static int _Bar() { return 0; } // expected-warning {{identifier '_Bar' is reserved because it starts with '_' followed by a capital letter}}
+             ^
+
+"Test_name.c", line 78: warning: variable "<unnamed>::_barbatruc" was declared but never referenced
+  int _barbatruc; // no-warning
+      ^
+

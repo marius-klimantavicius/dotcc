@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 6: warning: attribute "no_unique_address" does not apply here
+  [[no_unique_address]] int a; // expected-error {{only applies to non-bit-field non-static data members}} unsupported-warning {{unknown}}
+    ^
+
+"Test_name.c", line 7: warning: attribute "no_unique_address" does not apply here
+  [[no_unique_address]] void f(); // expected-error {{only applies to non-bit-field non-static data members}} unsupported-warning {{unknown}}
+    ^
+
+"Test_name.c", line 8: warning: attribute "no_unique_address" does not apply here
+  struct [[no_unique_address]] S { // expected-error {{only applies to non-bit-field non-static data members}} unsupported-warning {{unknown}}
+           ^
+
+"Test_name.c", line 10: warning: attribute "no_unique_address" does not apply here
+    [[no_unique_address]] void f(); // expected-error {{only applies to non-bit-field non-static data members}} unsupported-warning {{unknown}}
+      ^
+
+"Test_name.c", line 11: warning: attribute "no_unique_address" does not apply here
+    [[no_unique_address]] static int sa;// expected-error {{only applies to non-bit-field non-static data members}} unsupported-warning {{unknown}}
+      ^
+
+"Test_name.c", line 12: warning: attribute "no_unique_address" does not apply here
+    [[no_unique_address]] static void sf(); // expected-error {{only applies to non-bit-field non-static data members}} unsupported-warning {{unknown}}
+      ^
+
+"Test_name.c", line 13: error: attribute "no_unique_address" does not apply to bit fields
+    [[no_unique_address]] int b : 3; // expected-error {{only applies to non-bit-field non-static data members}} unsupported-warning {{unknown}}
+      ^
+
+"Test_name.c", line 18: error: attribute "no_unique_address" does not take arguments
+    [[no_unique_address()]] int arglist; // expected-error {{cannot have an argument list}} unsupported-warning {{unknown}}
+                       ^
+
+"Test_name.c", line 20: warning: attribute "no_unique_address" does not apply here
+    int [[no_unique_address]] c; // expected-error {{cannot be applied to types}} unsupported-error {{cannot be applied to types}}
+          ^
+
+2 errors detected in the compilation of "Test_name.c".

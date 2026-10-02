@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./vect/bb-slp-pr95271.c", line 16: warning: shift count is too large
+    d = (int64_t)(&a)[0] << 56 | (int64_t)((unsigned char *)&a)[1] << 48 |
+                            ^
+
+"./vect/bb-slp-pr95271.c", line 16: warning: shift count is too large
+    d = (int64_t)(&a)[0] << 56 | (int64_t)((unsigned char *)&a)[1] << 48 |
+                                                                      ^
+
+"./vect/bb-slp-pr95271.c", line 17: warning: shift count is too large
+        (int64_t)((unsigned char *)&a)[2] << 40 |
+                                             ^
+
+"./vect/bb-slp-pr95271.c", line 18: warning: shift count is too large
+        (int64_t)((unsigned char *)&a)[3] << 32 |
+                                             ^
+

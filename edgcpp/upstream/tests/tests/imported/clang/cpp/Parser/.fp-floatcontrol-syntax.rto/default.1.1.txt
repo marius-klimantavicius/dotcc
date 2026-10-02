@@ -1,0 +1,85 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 -DCHECK_ERROR -DDEFAULT -DPRECISE -DSTRICT -DFAST Test_name.c
+"Test_name.c", line 6: warning: unrecognized #pragma
+  #pragma float_control(precise, on) junk // expected-warning {{extra tokens at end of '#pragma float_control' - ignored}}
+          ^
+
+"Test_name.c", line 12: warning: unrecognized #pragma
+  #pragma float_control(push)
+          ^
+
+"Test_name.c", line 13: warning: unrecognized #pragma
+  #pragma float_control(pop)
+          ^
+
+"Test_name.c", line 18: warning: unrecognized #pragma
+  #pragma float_control(push)
+          ^
+
+"Test_name.c", line 19: warning: unrecognized #pragma
+  #pragma float_control(pop)
+          ^
+
+"Test_name.c", line 24: warning: unrecognized #pragma
+  #pragma float_control(push)
+          ^
+
+"Test_name.c", line 25: warning: unrecognized #pragma
+  #pragma float_control(pop)
+          ^
+
+"Test_name.c", line 30: warning: unrecognized #pragma
+  #pragma float_control(push)
+          ^
+
+"Test_name.c", line 31: warning: unrecognized #pragma
+  #pragma float_control(pop)
+          ^
+
+"Test_name.c", line 32: warning: unrecognized #pragma
+  #pragma float_control(precise, on, push)
+          ^
+
+"Test_name.c", line 35: warning: unrecognized #pragma
+  #pragma float_control(push)                   // expected-error {{can only appear at file or namespace scope or within a language linkage specification}}
+          ^
+
+"Test_name.c", line 36: warning: unrecognized #pragma
+  #pragma float_control(pop)                    // expected-error {{can only appear at file or namespace scope or within a language linkage specification}}
+          ^
+
+"Test_name.c", line 37: warning: unrecognized #pragma
+  #pragma float_control(precise, on, push)      // expected-error {{can only appear at file or namespace scope or within a language linkage specification}}
+          ^
+
+"Test_name.c", line 38: warning: unrecognized #pragma
+  #pragma float_control(except, on, push)       // expected-error {{can only appear at file or namespace scope or within a language linkage specification}}
+          ^
+
+"Test_name.c", line 39: warning: unrecognized #pragma
+  #pragma float_control(except, on, push, junk) // expected-error {{float_control is malformed}}
+          ^
+
+"Test_name.c", line 52: warning: unrecognized #pragma
+  #pragma float_control(precise, off) // expected-error {{'#pragma float_control(precise, off)' is illegal when except is enabled}}
+          ^
+
+"Test_name.c", line 60: warning: unrecognized #pragma
+  #pragma float_control(precise, on)
+          ^
+
+"Test_name.c", line 61: warning: unrecognized #pragma
+  #pragma float_control(except, on) // OK
+          ^
+
+"Test_name.c", line 68: warning: unrecognized #pragma
+  #pragma float_control(precise, off) // expected-error {{'#pragma float_control(precise, off)' is illegal when except is enabled}}
+          ^
+
+"Test_name.c", line 72: warning: unrecognized #pragma
+  #pragma float_control(except, on)
+          ^
+
+"Test_name.c", line 74: warning: variable "x" was declared but never referenced
+    double x = b / a; // only used for fp flag setting
+           ^
+

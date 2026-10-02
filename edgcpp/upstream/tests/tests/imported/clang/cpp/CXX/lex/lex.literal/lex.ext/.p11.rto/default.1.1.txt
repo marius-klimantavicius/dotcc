@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 11: error: a string literal operator template must have a template parameter list equivalent to "<typename T, T ...>"
+  int operator ""_x(); // expected-warning {{string literal operator templates are a GNU extension}}
+      ^
+
+"Test_name.c", line 17: error: incomplete type "same_type<<error-type>, int>" is not allowed
+  same_type<decltype(a), int> test_a;
+                              ^
+
+"Test_name.c", line 24: error: incomplete type "same_type<<error-type>, int>" is not allowed
+  same_type<decltype(d), int> test_d;
+                              ^
+
+3 errors detected in the compilation of "Test_name.c".

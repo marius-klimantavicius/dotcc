@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./rtti/typeid5.C", line 10: warning: variable "info1" was declared but never referenced
+    const std::type_info& info1 = typeid(int []);
+                          ^
+
+"./rtti/typeid5.C", line 11: warning: variable "info2" was declared but never referenced
+    const std::type_info& info2 = typeid(S [3]);
+                          ^
+
+"./rtti/typeid5.C", line 12: warning: variable "info3" was declared but never referenced
+    const std::type_info& info3 = typeid(S []);
+                          ^
+

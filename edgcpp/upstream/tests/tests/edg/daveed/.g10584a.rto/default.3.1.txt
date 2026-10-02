@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=3 --c++03 Test_name.c
+"Test_name.c", line 4: error: invalid type conversion
+    int p = 1, q = reinterpret_cast<int>(p);  // Now accepted in C++11 mode.
+                   ^
+
+1 error detected in the compilation of "Test_name.c".

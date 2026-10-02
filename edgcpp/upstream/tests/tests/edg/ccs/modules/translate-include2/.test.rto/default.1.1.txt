@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=1 -r --microsoft --modules --set_flag skip_module_version_check --ms_header_unit foo.h=foo.h.ifc Test_name.c

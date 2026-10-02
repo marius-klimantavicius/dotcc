@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 54: error: in this range-based "for" statement, no instance of "default1::begin" matches the argument list
+            object type is: default1
+    for (int x : default1()); // { dg-error "no matching function|note" }
+                 ^
+"Test_name.c", line 24: note: number of parameters of function "default1::begin" does not match the call
+      int *begin(int x); // { dg-message "note" }
+           ^
+
+"Test_name.c", line 56: error: in this range-based "for" statement, no instance of "default3::begin" matches the argument list
+            object type is: default3
+    for (int x : default3()); // { dg-error "no matching function|note" }
+                 ^
+"Test_name.c", line 36: note: candidate function template "default3::begin" failed deduction
+      template <typename T> T *begin(); // { dg-message "note" }
+                               ^
+
+"Test_name.c", line 96: error: "derived2::begin" is ambiguous
+    for (int x : derived2()); // { dg-error "is ambiguous" }
+                 ^
+
+3 errors detected in the compilation of "Test_name.c".

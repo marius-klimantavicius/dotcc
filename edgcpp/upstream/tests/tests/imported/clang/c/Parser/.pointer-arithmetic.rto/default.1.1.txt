@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 10: error: expression must have integral type
+  int  test5(int *a, int *b) { return a + b; } /* expected-error {{invalid operands}} */
+                                          ^
+
+"Test_name.c", line 11: error: expression must have arithmetic type
+  int *test6(int *a)         { return 1 - a; } /* expected-error {{invalid operands}} */
+                                          ^
+
+2 errors detected in the compilation of "Test_name.c".

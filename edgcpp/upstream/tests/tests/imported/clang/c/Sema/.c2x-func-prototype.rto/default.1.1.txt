@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 14: error: too many arguments in function call
+    func(1, 2, 3); // c2x-error {{too many arguments to function call, expected 0, have 3}}
+         ^
+
+"Test_name.c", line 16: error: too many arguments in function call
+    call_me(1, 2, 3); // c2x-error {{too many arguments to function call, expected 0, have 3}}
+            ^
+
+"Test_name.c", line 18: warning: a value of type "void (*)(int)" cannot be used to initialize an entity of type "fp" (aka "void (*)(void)")
+    fp nope = other_func; // c2x-error {{incompatible function pointer types initializing 'fp' (aka 'void (*)(void)') with an expression of type 'void (int)'}}
+              ^
+
+"Test_name.c", line 18: warning: variable "nope" was declared but never referenced
+    fp nope = other_func; // c2x-error {{incompatible function pointer types initializing 'fp' (aka 'void (*)(void)') with an expression of type 'void (int)'}}
+       ^
+
+"Test_name.c", line 23: error: declaration is incompatible with "void redecl1(void)" (declared at line 22)
+  void redecl1(int i); // c2x-error {{conflicting types for 'redecl1'}}
+       ^
+
+"Test_name.c", line 26: error: declaration is incompatible with "void redecl2(int)" (declared at line 25)
+  void redecl2();      // c2x-error {{conflicting types for 'redecl2'}}
+       ^
+
+4 errors detected in the compilation of "Test_name.c".

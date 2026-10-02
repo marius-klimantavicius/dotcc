@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 8: error: identifier "X" is undefined
+    (i ? 1 : 2) = ({ X; }); /* { dg-error "" } */
+                     ^
+
+"Test_name.c", line 8: error: expression must be a modifiable lvalue
+    (i ? 1 : 2) = ({ X; }); /* { dg-error "" } */
+    ^
+
+"Test_name.c", line 16: error: identifier "X" is undefined
+      delete this = ({ X; }); /* { dg-error "" } */
+                       ^
+
+"Test_name.c", line 16: error: expression must be a modifiable lvalue
+      delete this = ({ X; }); /* { dg-error "" } */
+      ^
+
+4 errors detected in the compilation of "Test_name.c".

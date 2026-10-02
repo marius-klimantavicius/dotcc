@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 6: error: identifier "x" is undefined
+    void f1(int x, int y = sizeof(x));      // ok
+                                  ^
+
+"Test_name.c", line 7: error: identifier "x" is undefined
+    void f2(int x, int y = decltype(x)());  // ok
+                                    ^
+
+"Test_name.c", line 8: error: identifier "x" is undefined
+    void f3(int x, int y = x);
+                           ^
+
+"Test_name.c", line 10: error: identifier "x" is undefined
+    void f4(int x, int y = x + 0);
+                           ^
+
+"Test_name.c", line 12: error: identifier "x" is undefined
+    void f5(int x, int y = ((void)x, 0));
+                                  ^
+
+5 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc -w Test_name.c
+"Test_name.c", line 8: error: expected a ";"
+  typedef unsigned __int128 B;
+                            ^
+
+"Test_name.c", line 9: error: expected a ";"
+  typedef unsigned __int128 C __attribute__ ((vector_size (32)));
+                            ^
+
+"Test_name.c", line 10: error: expected a ";"
+  typedef unsigned __int128 D __attribute__ ((vector_size (32)));
+                            ^
+
+"Test_name.c", line 13: error: identifier "B" is undefined
+  foo (B a, D b, A c, A d, C e)
+       ^
+
+"Test_name.c", line 13: error: identifier "D" is undefined
+  foo (B a, D b, A c, A d, C e)
+            ^
+
+"Test_name.c", line 13: error: identifier "C" is undefined
+  foo (B a, D b, A c, A d, C e)
+                           ^
+
+"Test_name.c", line 15: error: identifier "D" is undefined
+    b /= (D) {11} | 1;
+          ^
+
+"Test_name.c", line 15: error: expected a ";"
+    b /= (D) {11} | 1;
+             ^
+
+"Test_name.c", line 17: error: identifier "C" is undefined
+    e *= (C) d;
+          ^
+
+"Test_name.c", line 17: error: expected a ";"
+    e *= (C) d;
+             ^
+
+"Test_name.c", line 18: error: expected a ";"
+    e += (C) ~b;
+             ^
+
+"Test_name.c", line 21: error: expected a ";"
+    b += (D) {45, 123};
+             ^
+
+12 errors detected in the compilation of "Test_name.c".

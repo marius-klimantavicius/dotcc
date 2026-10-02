@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 9: error: expected an identifier
+    static concept D = __is_same_as(T, int); // { dg-error "static data member" }
+           ^
+
+"Test_name.c", line 9: error: explicit type is missing ("int" assumed)
+    static concept D = __is_same_as(T, int); // { dg-error "static data member" }
+           ^
+
+"Test_name.c", line 12: error: expected an identifier
+    static concept E = __is_same_as(T, U); // { dg-error "static data member" }
+           ^
+
+"Test_name.c", line 12: error: explicit type is missing ("int" assumed)
+    static concept E = __is_same_as(T, U); // { dg-error "static data member" }
+           ^
+
+"Test_name.c", line 15: error: concept definition cannot appear in this scope
+    concept C1 = __is_same_as(T, int); // { dg-error "not in namespace scope" }
+    ^
+
+"Test_name.c", line 20: error: concept definition cannot appear in this scope
+    concept C = true; // // { dg-error "not in namespace scope" }
+    ^
+
+6 errors detected in the compilation of "Test_name.c".

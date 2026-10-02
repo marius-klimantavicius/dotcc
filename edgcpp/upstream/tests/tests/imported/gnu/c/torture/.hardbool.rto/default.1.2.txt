@@ -1,0 +1,2 @@
+./a.out
+a.out: ./torture/hardbool.c:70: check_ptrue: Assertion `*(char*)p == (char)~0' failed.

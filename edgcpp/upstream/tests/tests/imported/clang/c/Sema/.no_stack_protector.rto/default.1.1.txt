@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 5: warning: unknown attribute "gnu::no_stack_protector"
+  [[gnu::no_stack_protector]] void test1(void) {}
+    ^
+
+"Test_name.c", line 6: warning: unknown attribute "clang::no_stack_protector"
+  [[clang::no_stack_protector]] void test2(void) {}
+    ^
+
+"Test_name.c", line 8: warning: unknown attribute "no_stack_protector"
+  void __attribute__((no_stack_protector)) foo(void) {}
+                      ^
+
+"Test_name.c", line 9: warning: unknown attribute "no_stack_protector"
+  int __attribute__((no_stack_protector)) var; // expected-warning {{'no_stack_protector' attribute only applies to functions}}
+                     ^
+
+"Test_name.c", line 10: warning: unknown attribute "no_stack_protector"
+  void  __attribute__((no_stack_protector(2))) bar(void) {} // expected-error {{'no_stack_protector' attribute takes no arguments}}
+                       ^
+

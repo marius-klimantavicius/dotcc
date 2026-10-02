@@ -1,0 +1,21 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./range-test-1.c", line 127: warning: pointless comparison of unsigned integer with zero
+  void __attribute__((noinline)) test19 (unsigned long x) { if ((x >= 0 && x <= 16) || (x >= 18 && x <= -1UL)) check (); }
+                                                                   ^
+
+"./range-test-1.c", line 149: warning: pointless comparison of unsigned integer with zero
+  void __attribute__((noinline)) testo1 (unsigned long x) { if ((x >= 0 && x <= 16) || (x >= 17 && x <= -1UL)) check (); }
+                                                                   ^
+
+"./range-test-1.c", line 152: warning: pointless comparison of unsigned integer with zero
+  void __attribute__((noinline)) testo2 (unsigned long x) { if ((x >= 0 && x <= -3UL) || (x == -2UL || x == -1UL)) check (); }
+                                                                   ^
+
+"./range-test-1.c", line 133: warning: enumerated type mixed with another type
+  { static enum integers yesarr21 [] = { int_zero , int_one }; static enum integers noarr21 [] = { int_minus1 , int_two , 12 , 35 , int_largest , int_smallest }; for (i = 0; i < (int) (sizeof (yesarr21) / sizeof (enum integers)); ++i) { var = 0; test21 (yesarr21 [i]); if (var != 1) printf ("test" "21" " failed for yesarr [%u]\n", i), ++fails; } var = 0; for (i = 0; i < (int) (sizeof (noarr21) / sizeof (enum integers)); ++i) { test21 (noarr21 [i]); if (var != 0) printf ("test" "21" " failed for noarr [%u]\n", i), ++fails; } }
+                                                                                                                          ^
+
+"./range-test-1.c", line 133: warning: enumerated type mixed with another type
+  { static enum integers yesarr21 [] = { int_zero , int_one }; static enum integers noarr21 [] = { int_minus1 , int_two , 12 , 35 , int_largest , int_smallest }; for (i = 0; i < (int) (sizeof (yesarr21) / sizeof (enum integers)); ++i) { var = 0; test21 (yesarr21 [i]); if (var != 1) printf ("test" "21" " failed for yesarr [%u]\n", i), ++fails; } var = 0; for (i = 0; i < (int) (sizeof (noarr21) / sizeof (enum integers)); ++i) { test21 (noarr21 [i]); if (var != 0) printf ("test" "21" " failed for noarr [%u]\n", i), ++fails; } }
+                                                                                                                               ^
+

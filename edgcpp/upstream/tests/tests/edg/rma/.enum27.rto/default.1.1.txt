@@ -1,0 +1,9 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 10: warning: declared size for bit field is larger than the size of the bit field type; truncated to 32 bits
+  struct SS { enum e : 33; };
+                       ^
+
+"Test_name.c", line 11: warning: declared size for bit field is larger than the size of the bit field type; truncated to 32 bits
+  struct SSS { enum e : 65; };
+                        ^
+

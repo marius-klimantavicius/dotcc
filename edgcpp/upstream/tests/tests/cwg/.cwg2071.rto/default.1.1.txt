@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++17 -A -tused Test_name.c
+"Test_name.c", line 4: error: declaration requires a typedef name
+    typedef struct X { };    // Missing declarator
+                        ^
+
+1 error detected in the compilation of "Test_name.c".

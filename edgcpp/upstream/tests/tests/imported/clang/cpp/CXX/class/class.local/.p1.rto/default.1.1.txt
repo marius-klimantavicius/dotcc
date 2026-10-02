@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 13: error: reference to local variable of enclosing function is not allowed
+      int g() { return x; } // expected-error{{reference to local variable 'x' declared in enclosing function 'f'}}
+                       ^
+
+"Test_name.c", line 20: error: identifier "local" is undefined
+  local* p = 0; // expected-error{{unknown type name 'local'}}
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

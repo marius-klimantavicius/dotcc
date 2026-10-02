@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 10: warning: return value type does not match the function type
+  void t () { return 1; } /* { dg-error "return" "function returning void" } */
+                     ^
+
+"Test_name.c", line 11: warning: non-void function "b" should return a value
+  int b () { return; } /* { dg-error "return" "function returning non-void" } */
+                   ^
+

@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 12: warning: division by zero
+    int m3 = 10 / (sizeof(T) - sizeof(int)); // { dg-bogus "division by" }
+                ^
+          detected during instantiation of "int foo<T,N>(T, int) [with T=int, N=0]" at line 20
+
+"Test_name.c", line 13: warning: division by zero
+    int m4 = 10 / N; // { dg-bogus "division by" }
+                ^
+          detected during instantiation of "int foo<T,N>(T, int) [with T=int, N=0]" at line 20
+

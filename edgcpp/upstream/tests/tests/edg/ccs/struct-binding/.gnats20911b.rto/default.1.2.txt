@@ -1,0 +1,4 @@
+./a.out
+Struct values are: 1, 2, 3
+Array values are: 4, 5, 6
+Tuple values are: 7, 8, 9

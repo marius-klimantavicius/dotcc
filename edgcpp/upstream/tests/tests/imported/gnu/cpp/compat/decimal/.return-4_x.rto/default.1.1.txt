@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./compat/decimal/decimal-dummy.h", line 7: error: invalid argument to attribute "mode"
+      typedef float __dec32 __attribute__((mode(SD)));
+                                                ^
+
+"./compat/decimal/decimal-dummy.h", line 8: warning: a user-provided literal suffix must begin with "_"
+      decimal32 () : __val(0.e-101DF) {}
+                           ^
+
+"./compat/decimal/decimal-dummy.h", line 8: error: user-defined literal operator not found
+      decimal32 () : __val(0.e-101DF) {}
+                           ^
+
+"./compat/decimal/decimal-dummy.h", line 16: error: invalid argument to attribute "mode"
+      typedef float __dec64 __attribute__((mode(DD)));
+                                                ^
+
+"./compat/decimal/decimal-dummy.h", line 17: warning: a user-provided literal suffix must begin with "_"
+      decimal64 () : __val(0.e-398dd) {}
+                           ^
+
+"./compat/decimal/decimal-dummy.h", line 17: error: user-defined literal operator not found
+      decimal64 () : __val(0.e-398dd) {}
+                           ^
+
+"./compat/decimal/decimal-dummy.h", line 25: error: invalid argument to attribute "mode"
+      typedef float __dec128 __attribute__((mode(TD)));
+                                                 ^
+
+"./compat/decimal/decimal-dummy.h", line 26: warning: a user-provided literal suffix must begin with "_"
+      decimal128 () : __val(0.e-6176DL) {}
+                            ^
+
+"./compat/decimal/decimal-dummy.h", line 26: error: user-defined literal operator not found
+      decimal128 () : __val(0.e-6176DL) {}
+                            ^
+
+6 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 10: error: more than one instance of overloaded function "f" matches the argument list:
+            function "f(void *, int)" (declared at line 5)
+            function template "void f(T *, long)" (declared at line 7)
+            argument types are: (int *, int)
+    f(ip, i); // expected-error{{ambiguous}}
+    ^
+
+1 error detected in the compilation of "Test_name.c".

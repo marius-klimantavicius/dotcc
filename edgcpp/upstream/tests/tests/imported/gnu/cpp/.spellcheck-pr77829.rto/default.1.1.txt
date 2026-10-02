@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 23: error: namespace "detail" has no member "some_type"
+    detail::some_type i; // { dg-error ".some_type. is not a member of .detail.; did you mean 'some_typedef'\\?" }
+            ^
+
+"Test_name.c", line 35: error: identifier "some_type" is undefined
+    some_type i; // { dg-error ".some_type. was not declared in this scope; did you mean 'some_typedef'\\?" }
+    ^
+
+"Test_name.c", line 49: error: namespace "detail" has no member "foo"
+    detail::foo(i); // { dg-error ".foo. is not a member of .detail.; did you mean '_foo'\\?" }
+            ^
+
+"Test_name.c", line 60: error: identifier "foo" is undefined
+    foo(i); // { dg-error ".foo. was not declared in this scope; did you mean '_foo'\\?" }
+    ^
+
+"Test_name.c", line 74: error: namespace "detail" has no member "something_els"
+    detail::something_els(i); // { dg-error ".something_els. is not a member of .detail.; did you mean 'something_else'\\?" }
+            ^
+
+"Test_name.c", line 85: error: identifier "something_els" is undefined
+    something_els(i); // { dg-error ".something_els. was not declared in this scope; did you mean 'something_else'\\?" }
+    ^
+
+"Test_name.c", line 99: error: namespace "detail" has no member "not_recognized"
+    detail::not_recognized(i); // { dg-error ".not_recognized. is not a member of .detail." }
+            ^
+
+"Test_name.c", line 110: error: identifier "not_recognized" is undefined
+    not_recognized(i); // { dg-error ".not_recognized. was not declared in this scope" }
+    ^
+
+"Test_name.c", line 126: error: the global scope has no "another_type"
+    ::another_type i; // { dg-error ".::another_type. has not been declared; did you mean 'another_typedef'\\?" }
+      ^
+
+9 errors detected in the compilation of "Test_name.c".

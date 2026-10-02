@@ -1,0 +1,13 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 11: error: no operator "++" matches these operands
+            operand types are: A ++
+    a++;
+     ^
+"Test_name.c", line 11: note: built-in operator++(<arithmetic>, <integral>) does not match because argument #1 does not match parameter
+    a++;
+     ^
+"Test_name.c", line 11: note: built-in operator++(<pointer to object>, <integral>) does not match because argument #1 does not match parameter
+    a++;
+     ^
+
+1 error detected in the compilation of "Test_name.c".

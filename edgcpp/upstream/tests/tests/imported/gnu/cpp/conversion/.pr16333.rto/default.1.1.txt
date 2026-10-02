@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 11: warning: returning reference to local temporary
+  const X &foo2 () { return a; } // { dg-message "returning reference to temporary" }
+                            ^
+
+"Test_name.c", line 12: error: a reference of type "X &" (not const-qualified) cannot be initialized with a value of type "int [3]"
+  X &foo3 () { return a; } // { dg-error "cannot bind non-const lvalue ref" }
+                      ^
+
+1 error detected in the compilation of "Test_name.c".

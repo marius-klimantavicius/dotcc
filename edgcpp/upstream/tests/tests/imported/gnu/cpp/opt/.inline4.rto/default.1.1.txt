@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: warning: variable "i" was declared but never referenced
+  inline void g<0>() { int i; return; }
+                           ^
+
+"Test_name.c", line 6: error: excessive recursion at instantiation of function "g<I>() [with I=186]"
+  inline void g() { g<I-1>(); return; }
+                    ^
+          detected during:
+            instantiation of "void g<I>() [with I=187]" at line 6
+            instantiation of "void g<I>() [with I=188]" at line 6
+            instantiation of "void g<I>() [with I=189]" at line 6
+            instantiation of "void g<I>() [with I=190]" at line 6
+            instantiation of "void g<I>() [with I=191]" at line 6
+            [ 54 instantiation contexts not shown ]
+            instantiation of "void g<I>() [with I=246]" at line 6
+            instantiation of "void g<I>() [with I=247]" at line 6
+            instantiation of "void g<I>() [with I=248]" at line 6
+            instantiation of "void g<I>() [with I=249]" at line 6
+            instantiation of "void g<I>() [with I=250]" at line 12
+
+1 error detected in the compilation of "Test_name.c".

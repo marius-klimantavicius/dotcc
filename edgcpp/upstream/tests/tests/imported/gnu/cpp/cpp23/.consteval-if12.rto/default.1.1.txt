@@ -1,0 +1,55 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 23: warning: "if consteval" and "if not consteval" are not standard in this mode
+    if consteval {			// { dg-warning "'if consteval' only available with" "" { target c++20_only } }
+    ^
+
+"Test_name.c", line 24: error: expression must have a constant value
+      constexpr auto fn1 = foo;		// { dg-error "constant evaluation returns address of immediate function" }
+                           ^
+"Test_name.c", line 24: note: address of consteval function "foo" in constant expression result
+      constexpr auto fn1 = foo;		// { dg-error "constant evaluation returns address of immediate function" }
+                           ^
+
+"Test_name.c", line 25: error: expression must have a constant value
+      constexpr auto fn2 = &foo;		// { dg-error "constant evaluation returns address of immediate function" }
+                           ^
+"Test_name.c", line 25: note: address of consteval function "foo" in constant expression result
+      constexpr auto fn2 = &foo;		// { dg-error "constant evaluation returns address of immediate function" }
+                           ^
+
+"Test_name.c", line 26: error: expression must have a constant value
+      constexpr auto fn3 = &S::foo;	// { dg-error "constant evaluation returns address of immediate function" }
+                           ^
+"Test_name.c", line 26: note: address of consteval function "S::foo" in constant expression result
+      constexpr auto fn3 = &S::foo;	// { dg-error "constant evaluation returns address of immediate function" }
+                           ^
+
+"Test_name.c", line 27: error: expression must have a constant value
+      constexpr auto fn4 = &S::bar;	// { dg-error "constant evaluation returns address of immediate function" }
+                           ^
+"Test_name.c", line 27: note: address of consteval function "S::bar" in constant expression result
+      constexpr auto fn4 = &S::bar;	// { dg-error "constant evaluation returns address of immediate function" }
+                           ^
+
+"Test_name.c", line 28: error: expression must have a constant value
+      constexpr auto fn5 = baz ();	// { dg-error "immediate evaluation returns address of immediate function" }
+                           ^
+"Test_name.c", line 28: note: address of consteval function "foo" in constant expression result
+      constexpr auto fn5 = baz ();	// { dg-error "immediate evaluation returns address of immediate function" }
+                           ^
+
+"Test_name.c", line 29: error: expression must have a constant value
+      constexpr auto fn6 = qux ();	// { dg-error "immediate evaluation returns address of immediate function" }
+                           ^
+"Test_name.c", line 29: note: address of consteval function "S::foo" in constant expression result
+      constexpr auto fn6 = qux ();	// { dg-error "immediate evaluation returns address of immediate function" }
+                           ^
+
+"Test_name.c", line 30: error: expression must have a constant value
+      constexpr auto fn7 = corge ();	// { dg-error "immediate evaluation returns address of immediate function" }
+                           ^
+"Test_name.c", line 30: note: address of consteval function "S::bar" in constant expression result
+      constexpr auto fn7 = corge ();	// { dg-error "immediate evaluation returns address of immediate function" }
+                           ^
+
+7 errors detected in the compilation of "Test_name.c".

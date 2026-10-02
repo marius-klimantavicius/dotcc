@@ -1,0 +1,74 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 16: error: function call requires a real floating-point argument
+    r += __builtin_isfinite (0); /* { dg-error "28:non-floating-point argument in call" } */
+                            ^
+
+"Test_name.c", line 17: error: function call requires a real floating-point argument
+    r += __builtin_isinf (0); /* { dg-error "25:non-floating-point argument in call" } */
+                         ^
+
+"Test_name.c", line 19: error: function call requires a real floating-point argument
+    r += __builtin_isnan (0); /* { dg-error "25:non-floating-point argument in call" } */
+                         ^
+
+"Test_name.c", line 20: error: function call requires a real floating-point argument
+    r += __builtin_isnormal (0); /* { dg-error "28:non-floating-point argument in call" } */
+                            ^
+
+"Test_name.c", line 21: error: function call requires a real floating-point argument
+    r += __builtin_signbit (0); /* { dg-error "27:non-floating-point argument in call" } */
+                           ^
+
+"Test_name.c", line 30: error: the last argument in a call to __builtin_fpclassify must have a real floating-point type
+    r += __builtin_fpclassify (1, 2, n, 4, 5, n); /* { dg-error "36:non-const integer argument 3 in call" } */
+                              ^
+
+"Test_name.c", line 31: error: the last argument in a call to __builtin_fpclassify must have a real floating-point type
+    r += __builtin_fpclassify (1, 2, 3, 4, 5, 6); /* { dg-error "45:non-floating-point argument in call" } */
+                              ^
+
+"Test_name.c", line 33: error: the optional third argument of a call to __builtin_assumed_aligned must have integral type
+    d = __builtin_assume_aligned (p, n, p); /* { dg-error "39:non-integer argument 3 in call" } */
+                                 ^
+
+"Test_name.c", line 46: error: expected an expression
+    if (__builtin_constant_p ()) /* { dg-error "7:too few" } */
+                              ^
+
+"Test_name.c", line 48: error: expected a ")"
+    if (__builtin_constant_p (1, 2)) /* { dg-error "7:too many" } */
+                               ^
+
+"Test_name.c", line 50: warning: statement is unreachable
+    if (__builtin_isfinite ()) /* { dg-error "7:too few" } */
+    ^
+
+"Test_name.c", line 50: error: function call requires one argument
+    if (__builtin_isfinite ()) /* { dg-error "7:too few" } */
+                           ^
+
+"Test_name.c", line 52: error: function call requires one argument
+    if (__builtin_isfinite (1, 2)) /* { dg-error "7:too many" } */
+                           ^
+
+"Test_name.c", line 58: error: a call to __builtin_fpclassify requires five integral arguments followed by one floating-point argument
+    if (__builtin_fpclassify (1, 2, 3, 4, 5)) /* { dg-error "7:too few" } */
+                             ^
+
+"Test_name.c", line 60: error: a call to __builtin_fpclassify requires five integral arguments followed by one floating-point argument
+    if (__builtin_fpclassify (1, 2, 3, 4, 5, r, 6)) /* { dg-error "7:too many" } */
+                             ^
+
+"Test_name.c", line 62: error: too few arguments in function call
+    if (__builtin_assume_aligned (p)) /* { dg-error "7:too few" } */
+                                   ^
+
+"Test_name.c", line 64: error: too many arguments in function call
+    if (__builtin_assume_aligned (p, r, p, p)) /* { dg-error "7:too many" } */
+                                 ^
+
+"Test_name.c", line 9: warning: variable "b" was set but never used
+  __extension__ static _Bool b;
+                             ^
+
+16 errors detected in the compilation of "Test_name.c".

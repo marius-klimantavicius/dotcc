@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 21: error: no instance of function template "g" matches the argument list
+            argument types are: (std::nullptr_t)
+    g(nullptr);               // { dg-error "no matching function for call to " }
+    ^
+"Test_name.c", line 15: note: candidate function template "g" failed deduction
+  template<typename T> T* g( T* t ); // { dg-message "note" }
+                          ^
+
+"Test_name.c", line 25: error: no instance of function template "g" matches the argument list
+            argument types are: (std::nullptr_t)
+    g(mynull);                // { dg-error "no matching function for call to " }
+    ^
+"Test_name.c", line 15: note: candidate function template "g" failed deduction
+  template<typename T> T* g( T* t ); // { dg-message "note" }
+                          ^
+
+2 errors detected in the compilation of "Test_name.c".

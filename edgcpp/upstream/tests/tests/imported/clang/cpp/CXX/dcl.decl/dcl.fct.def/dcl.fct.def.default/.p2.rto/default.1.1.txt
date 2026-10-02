@@ -1,0 +1,72 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --exceptions Test_name.c
+"Test_name.c", line 12: error: invalid type for defaulted assignment operator
+    constexpr S1 &operator=(const S1&) const = default; // expected-error {{explicitly-defaulted copy assignment operator may not have}}
+                  ^
+
+"Test_name.c", line 13: error: invalid type for defaulted assignment operator
+    constexpr S1 &operator=(S1&&) const = default; // expected-error {{explicitly-defaulted move assignment operator may not have}}
+                  ^
+
+"Test_name.c", line 14: error: a destructor cannot be constexpr
+    constexpr ~S1() = default; // expected-error {{destructor cannot be declared constexpr}}
+    ^
+
+"Test_name.c", line 9: error: defaulted default constructor cannot be constexpr because the corresponding implicitly declared default constructor would not be constexpr
+    constexpr S1() = default; // expected-error {{defaulted definition of default constructor cannot be marked constexpr}}
+              ^
+
+"Test_name.c", line 42: error: const variable "s3d" requires an initializer -- class "S3" has no user-provided default constructor
+  constexpr S3 s3d; // expected-error {{default initialization of an object of const type 'const S3' without a user-provided default constructor}}
+               ^
+
+"Test_name.c", line 51: error: expression must have a constant value
+  constexpr S4 s4b = S4(); // expected-error {{constant expression}} expected-note {{non-constexpr constructor}}
+                     ^
+"Test_name.c", line 51: note: cannot call non-constexpr function "S4::S4(S4 &&)" (declared at line 47)
+  constexpr S4 s4b = S4(); // expected-error {{constant expression}} expected-note {{non-constexpr constructor}}
+                     ^
+
+"Test_name.c", line 52: error: expression must have a constant value
+  constexpr S4 s4c = s4a; // expected-error {{constant expression}} expected-note {{non-constexpr constructor}}
+                     ^
+"Test_name.c", line 52: note: cannot call non-constexpr function "S4::S4(const S4 &)" (declared at line 46)
+  constexpr S4 s4c = s4a; // expected-error {{constant expression}} expected-note {{non-constexpr constructor}}
+                     ^
+
+"Test_name.c", line 86: error: static assertion failed with ""
+  static_assert(!noexcept(e2 = e2), "");
+  ^
+
+"Test_name.c", line 87: error: static assertion failed with ""
+  static_assert(!noexcept(e2 = static_cast<E2&&>(e2)), "");
+  ^
+
+"Test_name.c", line 137: error: const variable "b" requires an initializer -- class "PR13492::B" has no user-provided default constructor
+      const B b; // expected-error {{default initialization of an object of const type 'const B' without a user-provided default constructor}}
+              ^
+
+"Test_name.c", line 137: warning: variable "b" was declared but never referenced
+      const B b; // expected-error {{default initialization of an object of const type 'const B' without a user-provided default constructor}}
+              ^
+
+"Test_name.c", line 40: warning: variable "s3b" was declared but never referenced
+  constexpr S3 s3b = s3a;
+               ^
+
+"Test_name.c", line 41: warning: variable "s3c" was declared but never referenced
+  constexpr S3 s3c = S3();
+               ^
+
+"Test_name.c", line 42: warning: variable "s3d" was declared but never referenced
+  constexpr S3 s3d; // expected-error {{default initialization of an object of const type 'const S3' without a user-provided default constructor}}
+               ^
+
+"Test_name.c", line 51: warning: variable "s4b" was declared but never referenced
+  constexpr S4 s4b = S4(); // expected-error {{constant expression}} expected-note {{non-constexpr constructor}}
+               ^
+
+"Test_name.c", line 52: warning: variable "s4c" was declared but never referenced
+  constexpr S4 s4c = s4a; // expected-error {{constant expression}} expected-note {{non-constexpr constructor}}
+               ^
+
+10 errors detected in the compilation of "Test_name.c".

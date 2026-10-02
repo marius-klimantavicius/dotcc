@@ -1,0 +1,77 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --ms_extensions --c Test_name.c
+"Test_name.c", line 4: error: expected an identifier
+  __stdcall int func0(void);
+            ^
+
+"Test_name.c", line 33: warning: variable "s" was set but never used
+    unsigned int s = _alignof(int);
+                 ^
+
+"Test_name.c", line 41: error: expected a macro parameter name
+  #define MISSING_ARG(x) #@
+                           ^
+
+"Test_name.c", line 44: warning: declaration requires a typedef name
+  typedef enum E { e1 };
+                       ^
+
+"Test_name.c", line 46: warning: modifier is ignored on an enum specifier
+  enum __declspec(deprecated) E2 { i, j, k }; /* expected-note {{'E2' has been explicitly marked deprecated here}} */
+                  ^
+
+"Test_name.c", line 53: warning: variable "e" was declared deprecated
+    enum E3 e3 = e;  /* expected-warning {{'e' is deprecated}} */
+                 ^
+"Test_name.c", line 47: note: because of a "deprecated" attribute
+  __declspec(deprecated) enum E3 { a, b, c } e; /* expected-note {{'e' has been explicitly marked deprecated here}} */
+             ^
+
+"Test_name.c", line 51: warning: variable "e1" was declared but never referenced
+    enum E2 e1;  /* expected-warning {{'E2' is deprecated}} */
+            ^
+
+"Test_name.c", line 52: warning: variable "e2" was declared but never referenced
+    enum E3 e2; /* No warning expected, the deprecation follows the variable */
+            ^
+
+"Test_name.c", line 53: warning: variable "e3" was declared but never referenced
+    enum E3 e3 = e;  /* expected-warning {{'e' is deprecated}} */
+            ^
+
+"Test_name.c", line 60: warning: unrecognized attribute
+  [unbalanced(attribute) /* expected-note {{to match this '['}} */
+   ^
+
+"Test_name.c", line 98: warning: unrecognized attribute
+  typedef int ignored_quals_dummy1, const volatile __ptr32 __ptr64 __w64 __unaligned __sptr __uptr ignored_quals1; // expected-warning {{qualifiers after comma in declarator list are ignored}}
+                                    ^
+
+"Test_name.c", line 99: warning: unrecognized attribute
+  typedef void(*ignored_quals_dummy2)(void), __fastcall ignored_quals2; // expected-warning {{qualifiers after comma in declarator list are ignored}}
+                                             ^
+
+"Test_name.c", line 100: warning: unrecognized attribute
+  typedef void(*ignored_quals_dummy3)(void), __stdcall ignored_quals3; // expected-warning {{qualifiers after comma in declarator list are ignored}}
+                                             ^
+
+"Test_name.c", line 101: warning: unrecognized attribute
+  typedef void(*ignored_quals_dummy4)(void), __thiscall ignored_quals4; // expected-warning {{qualifiers after comma in declarator list are ignored}}
+                                             ^
+
+"Test_name.c", line 102: warning: unrecognized attribute
+  typedef void(*ignored_quals_dummy5)(void), __cdecl ignored_quals5; // expected-warning {{qualifiers after comma in declarator list are ignored}}
+                                             ^
+
+"Test_name.c", line 103: warning: unrecognized attribute
+  typedef void(*ignored_quals_dummy6)(void), __vectorcall ignored_quals6; // expected-warning {{qualifiers after comma in declarator list are ignored}}
+                                             ^
+
+At end of source: error: expected a "]"
+
+At end of source: error: expected a declaration
+
+"Test_name.c", line 60: error: attributes are not allowed here
+  [unbalanced(attribute) /* expected-note {{to match this '['}} */
+   ^
+
+5 errors detected in the compilation of "Test_name.c".

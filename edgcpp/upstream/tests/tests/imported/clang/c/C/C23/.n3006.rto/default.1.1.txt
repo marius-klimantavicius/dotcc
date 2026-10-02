@@ -1,0 +1,238 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Test_name.c", line 15: error: this declaration of struct "S1" does not declare the same type as the declaration at line 10
+    auto underspecified_struct_redef = (struct S1 { char x, y; }){ 'A', 'B'}; // expected-error {{type 'struct S1' has incompatible definitions}} \
+                                               ^
+
+"Test_name.c", line 12: warning: variable "normal_struct" was declared but never referenced
+    auto normal_struct = (struct S1){ 1, 2 };
+         ^
+
+"Test_name.c", line 13: warning: variable "normal_struct2" was declared but never referenced
+    auto normal_struct2 = (struct S1) { .x = 1, .y = 2 };
+         ^
+
+"Test_name.c", line 14: warning: variable "underspecified_struct" was declared but never referenced
+    auto underspecified_struct = (struct S2 { int x, y; }){ 1, 2 };
+         ^
+
+"Test_name.c", line 15: warning: variable "underspecified_struct_redef" was declared but never referenced
+    auto underspecified_struct_redef = (struct S1 { char x, y; }){ 'A', 'B'}; // expected-error {{type 'struct S1' has incompatible definitions}} \
+         ^
+
+"Test_name.c", line 18: warning: variable "underspecified_empty_struct" was declared but never referenced
+    auto underspecified_empty_struct = (struct S3 { }){ };
+         ^
+
+"Test_name.c", line 19: warning: variable "zero_init_struct" was declared but never referenced
+    auto zero_init_struct = (struct S4 { int x; }){ 0 };
+         ^
+
+"Test_name.c", line 20: warning: variable "field_struct" was declared but never referenced
+    int field_struct = (struct S5 { int y; }){ 0 }.y;
+        ^
+
+"Test_name.c", line 29: error: this declaration of union "U1" does not declare the same type as the declaration at line 24
+    auto underspecified_union_redef = (union U1 { char a; double b; }){ .a = 'A' }; // expected-error {{type 'union U1' has incompatible definitions}} \
+                                             ^
+
+"Test_name.c", line 26: warning: variable "normal_union_int" was declared but never referenced
+    auto normal_union_int = (union U1){ .a = 12 };
+         ^
+
+"Test_name.c", line 27: warning: variable "normal_union_double" was declared but never referenced
+    auto normal_union_double = (union U1){ .b = 2.4 };
+         ^
+
+"Test_name.c", line 28: warning: variable "underspecified_union" was declared but never referenced
+    auto underspecified_union = (union U2 { int a; double b; }){ .a = 34 };
+         ^
+
+"Test_name.c", line 29: warning: variable "underspecified_union_redef" was declared but never referenced
+    auto underspecified_union_redef = (union U1 { char a; double b; }){ .a = 'A' }; // expected-error {{type 'union U1' has incompatible definitions}} \
+         ^
+
+"Test_name.c", line 32: warning: variable "underspecified_empty_union" was declared but never referenced
+    auto underspecified_empty_union = (union U3 {  }){  };
+         ^
+
+"Test_name.c", line 41: error: this declaration of enum "E1" does not declare the same type as the declaration at line 36
+    auto underspecified_enum_redef = (enum E1 { ONE, TWO }){ ONE }; // expected-error {{type 'enum E1' has incompatible definitions}} \
+                                           ^
+
+"Test_name.c", line 41: error: identifier "ONE" is undefined
+    auto underspecified_enum_redef = (enum E1 { ONE, TWO }){ ONE }; // expected-error {{type 'enum E1' has incompatible definitions}} \
+                                                             ^
+
+"Test_name.c", line 44: error: expected an identifier
+    auto underspecified_empty_enum = (enum E3 {  }){ };             // expected-error {{use of empty enum}}
+                                                 ^
+
+"Test_name.c", line 45: error: a compound literal of type "enum E4" is not allowed
+    auto underspecified_undeclared_enum = (enum E4){ FOO };         // expected-error {{variable has incomplete type 'enum E4'}} \
+                                           ^
+
+"Test_name.c", line 38: warning: variable "normal_enum_foo" was declared but never referenced
+    auto normal_enum_foo = (enum E1){ FOO };
+         ^
+
+"Test_name.c", line 39: warning: variable "normal_enum_bar" was declared but never referenced
+    auto normal_enum_bar = (enum E1){ BAR };
+         ^
+
+"Test_name.c", line 40: warning: variable "underspecified_enum" was declared but never referenced
+    auto underspecified_enum = (enum E2 { BAZ, QUX }){ BAZ };
+         ^
+
+"Test_name.c", line 44: warning: variable "underspecified_empty_enum" was declared but never referenced
+    auto underspecified_empty_enum = (enum E3 {  }){ };             // expected-error {{use of empty enum}}
+         ^
+
+"Test_name.c", line 50: error: identifier "constexpr" is undefined
+    constexpr auto ce_struct = (struct S1){ 1, 2 };                   // expected-error {{variable has incomplete type 'struct S1'}} \
+    ^
+
+"Test_name.c", line 50: error: expected a ";"
+    constexpr auto ce_struct = (struct S1){ 1, 2 };                   // expected-error {{variable has incomplete type 'struct S1'}} \
+              ^
+
+"Test_name.c", line 52: error: expected a ";"
+    constexpr auto ce_struct_zero_init = (struct S2 { int x; }){ 0 };
+              ^
+
+"Test_name.c", line 53: error: expected a ";"
+    constexpr int ce_struct_field = (struct S3 { int y; }){ 0 }.y;
+              ^
+
+"Test_name.c", line 54: error: expected a ";"
+    constexpr auto ce_union = (union U1){ .a = 12 };                  // expected-error {{variable has incomplete type 'union U1'}} \
+              ^
+
+"Test_name.c", line 57: error: expected a ";"
+    constexpr auto ce_enum = (enum E1 { BAZ, QUX }){ BAZ };
+              ^
+
+"Test_name.c", line 58: error: expected a ";"
+    constexpr auto ce_empty_enum = (enum E2){ FOO };                  // expected-error {{use of undeclared identifier 'FOO'}}
+              ^
+
+"Test_name.c", line 62: error: identifier "constexpr" is undefined
+    constexpr int i = i;  // expected-error {{constexpr variable 'i' must be initialized by a constant expression}} \
+    ^
+
+"Test_name.c", line 62: error: expected a ";"
+    constexpr int i = i;  // expected-error {{constexpr variable 'i' must be initialized by a constant expression}} \
+              ^
+
+"Test_name.c", line 64: error: a variable declared with an auto type specifier cannot appear in its own initializer
+    auto j = j;           // expected-error {{variable 'j' declared with deduced type 'auto' cannot appear in its own initializer}}
+             ^
+
+"Test_name.c", line 68: warning: const variable "s" requires an initializer
+    const struct S { int x; } s;  // expected-warning {{default initialization of an object of type 'const struct S' leaves the object uninitialized}} \
+                               ^
+
+"Test_name.c", line 70: error: identifier "constexpr" is undefined
+    constexpr struct S s = {0};   // expected-error {{redefinition of 's'}}
+    ^
+
+"Test_name.c", line 70: error: expected a ";"
+    constexpr struct S s = {0};   // expected-error {{redefinition of 's'}}
+              ^
+
+"Test_name.c", line 68: warning: variable "s" was declared but never referenced
+    const struct S { int x; } s;  // expected-warning {{default initialization of an object of type 'const struct S' leaves the object uninitialized}} \
+                              ^
+
+"Test_name.c", line 75: error: identifier "constexpr" is undefined
+    constexpr int i = (struct T { int a, b; }){0, 1}.a;
+    ^
+
+"Test_name.c", line 75: error: expected a ";"
+    constexpr int i = (struct T { int a, b; }){0, 1}.a;
+              ^
+
+"Test_name.c", line 77: error: incomplete type "struct T" is not allowed
+    struct T t = { 1, 2 };
+             ^
+
+"Test_name.c", line 82: error: identifier "constexpr" is undefined
+    constexpr int y = (struct Bar { int x; }){ 0 }.x;
+    ^
+
+"Test_name.c", line 82: error: expected a ";"
+    constexpr int y = (struct Bar { int x; }){ 0 }.x;
+              ^
+
+"Test_name.c", line 81: warning: variable "x" was declared but never referenced
+    int x = (struct Foo { int x; }){ 0 }.x;
+        ^
+
+"Test_name.c", line 86: error: identifier "constexpr" is undefined
+    constexpr typeof(struct s *) x = 0;
+    ^
+
+"Test_name.c", line 86: error: expected a ";"
+    constexpr typeof(struct s *) x = 0;
+              ^
+
+"Test_name.c", line 87: warning: variable "so" was declared but never referenced
+    auto so = sizeof(struct S {});
+         ^
+
+"Test_name.c", line 88: warning: variable "to" was declared but never referenced
+    auto to = (typeof(struct S {})){};
+         ^
+
+"Test_name.c", line 92: error: identifier "constexpr" is undefined
+    constexpr struct S { int a, b; } y = { 0 };
+    ^
+
+"Test_name.c", line 92: error: expected a ";"
+    constexpr struct S { int a, b; } y = { 0 };
+              ^
+
+"Test_name.c", line 93: error: expected a ";"
+    constexpr int a = 0, b = 0;
+              ^
+
+"Test_name.c", line 97: error: expected a ";"
+    constexpr int (*fp)(struct X { int x; } val) = 0;
+              ^
+
+"Test_name.c", line 94: warning: variable "c" was declared but never referenced
+    auto c = (struct T { int x, y; }){0, 0};
+         ^
+
+"Test_name.c", line 95: warning: variable "s2" was declared but never referenced
+    auto s2 = ({struct T { int x; } s = {}; s.x; });
+         ^
+
+"Test_name.c", line 96: warning: variable "s3" was declared but never referenced
+    auto s3 = ((struct {}){},0); // expected-warning {{left operand of comma operator has no effect}}
+         ^
+
+"Test_name.c", line 98: warning: variable "v" was declared but never referenced
+    auto v = (void (*)(int y))0;
+         ^
+
+"Test_name.c", line 102: error: identifier "constexpr" is undefined
+    constexpr struct {
+    ^
+
+"Test_name.c", line 102: error: expected a ";"
+    constexpr struct {
+              ^
+
+"Test_name.c", line 106: error: expected a ";"
+    constexpr struct {
+              ^
+
+"Test_name.c", line 112: warning: variable "s" was declared but never referenced
+        struct {} s;
+                  ^
+
+"Test_name.c", line 110: warning: variable "z" was declared but never referenced
+    auto z = ({
+         ^
+
+32 errors detected in the compilation of "Test_name.c".

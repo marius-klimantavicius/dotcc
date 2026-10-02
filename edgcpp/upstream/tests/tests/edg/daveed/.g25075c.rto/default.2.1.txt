@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=2 --c++23 -DNEG Test_name.c
+"Test_name.c", line 13: error: invalid type conversion
+      f(auto());
+        ^
+
+"Test_name.c", line 14: error: expected a ")"
+      f(auto(1, 1));
+              ^
+
+"Test_name.c", line 14: error: no instance of overloaded function "f" matches the argument list
+            argument types are: (int)
+      f(auto(1, 1));
+      ^
+"Test_name.c", line 6: note: function "f(A &&)" does not match because argument #1 does not match parameter
+    void f(A&&); // #2
+         ^
+"Test_name.c", line 5: note: function "f(A &)" does not match because argument #1 does not match parameter
+    void f(A&);  // #1
+         ^
+
+3 errors detected in the compilation of "Test_name.c".

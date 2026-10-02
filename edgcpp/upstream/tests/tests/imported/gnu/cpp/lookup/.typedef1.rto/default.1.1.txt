@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 28: warning: variable "s1" was set but never used
+    S1 s1;
+       ^
+
+"Test_name.c", line 29: warning: variable "s2" was declared but never referenced
+    S2 s2;
+       ^
+
+"Test_name.c", line 30: warning: variable "s3" was set but never used
+    S3 s3;
+       ^
+

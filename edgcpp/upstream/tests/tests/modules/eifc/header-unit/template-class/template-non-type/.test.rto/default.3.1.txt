@@ -1,0 +1,1 @@
+eccp -DTEST_NUMBER=3 --module_import_diagnostics -d-module_report --c++20 --create_header_unit=test.h.rtmod test.h

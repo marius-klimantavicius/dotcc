@@ -1,0 +1,44 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 --c++03 Test_name.c
+"Test_name.c", line 50: error: no instance of overloaded function "test1::Knot::Visit" matches the argument list
+            argument types are: (Object3 *)
+            object type is: test1::Knot
+      Knot().Visit((struct Object3*) 0); // expected-error {{no matching member function for call}}
+             ^
+"Test_name.c", line 32: note: function "test1::Visitor2<Derived>::Visit [with Derived=test1::Knot]" does not match because argument #1 does not match parameter
+      void Visit(struct Object2*); // expected-note {{candidate function}}
+           ^
+"Test_name.c", line 40: note: function "test1::JoinVisitor<Derived>::Visit(test1::Object1 *) [with Derived=test1::Knot]" does not match because argument #1 does not match parameter
+      void Visit(struct Object1*);  // expected-note {{candidate function}}
+           ^
+
+"Test_name.c", line 121: error: a nonstatic member reference must be relative to a specific object
+      (void)field;
+            ^
+          detected during instantiation of "void pr21923::Derived<Scalar>::m_fn1() [with Scalar=int]" at line 147
+
+"Test_name.c", line 123: error: a nonstatic member reference must be relative to a specific object
+      (void)&field;
+             ^
+          detected during instantiation of "void pr21923::Derived<Scalar>::m_fn1() [with Scalar=int]" at line 147
+
+"Test_name.c", line 125: error: nonstandard form for taking the address of a member function
+      (void)method;
+            ^
+          detected during instantiation of "void pr21923::Derived<Scalar>::m_fn1() [with Scalar=int]" at line 147
+
+"Test_name.c", line 127: error: nonstandard form for taking the address of a member function
+      (void)&method;
+            ^
+          detected during instantiation of "void pr21923::Derived<Scalar>::m_fn1() [with Scalar=int]" at line 147
+
+"Test_name.c", line 129: error: a nonstatic member reference must be relative to a specific object
+      method();
+      ^
+          detected during instantiation of "void pr21923::Derived<Scalar>::m_fn1() [with Scalar=int]" at line 147
+
+"Test_name.c", line 164: error: a nonstatic member reference must be relative to a specific object
+      (void)maybe_static<T>();
+            ^
+          detected during instantiation of "void pr21923::UnresolvedTemplateNames::static_method<T>() [with T=int]" at line 169
+
+7 errors detected in the compilation of "Test_name.c".

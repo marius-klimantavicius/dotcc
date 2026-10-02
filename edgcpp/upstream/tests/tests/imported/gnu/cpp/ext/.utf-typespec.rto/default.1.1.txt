@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 7: error: invalid combination of type specifiers
+  signed char16_t		c0;		/* { dg-error "signed" } */
+  ^
+
+"Test_name.c", line 8: error: invalid combination of type specifiers
+  signed char32_t		c1;		/* { dg-error "signed" } */
+  ^
+
+"Test_name.c", line 9: error: invalid combination of type specifiers
+  unsigned char16_t	c2;		/* { dg-error "unsigned" } */
+  ^
+
+"Test_name.c", line 10: error: invalid combination of type specifiers
+  unsigned char32_t	c3;		/* { dg-error "unsigned" } */
+  ^
+
+"Test_name.c", line 12: error: invalid combination of type specifiers
+  short char16_t		c4;		/* { dg-error "short" } */
+  ^
+
+"Test_name.c", line 13: error: invalid combination of type specifiers
+  long char16_t		c5;		/* { dg-error "long" } */
+  ^
+
+"Test_name.c", line 14: error: invalid combination of type specifiers
+  short char32_t		c6;		/* { dg-error "short" } */
+  ^
+
+"Test_name.c", line 15: error: invalid combination of type specifiers
+  long char32_t		c7;		/* { dg-error "long" } */
+  ^
+
+"Test_name.c", line 17: error: invalid combination of type specifiers
+  signed short char16_t	c8;		/* { dg-error "signed" } */
+  ^
+
+"Test_name.c", line 18: error: invalid combination of type specifiers
+  signed short char32_t	c9;		/* { dg-error "signed" } */
+  ^
+
+"Test_name.c", line 19: error: invalid combination of type specifiers
+  signed long char16_t	ca;		/* { dg-error "signed" } */
+  ^
+
+"Test_name.c", line 20: error: invalid combination of type specifiers
+  signed long char32_t	cb;		/* { dg-error "signed" } */
+  ^
+
+"Test_name.c", line 21: error: invalid combination of type specifiers
+  unsigned short char16_t	cc;		/* { dg-error "unsigned" } */
+  ^
+
+"Test_name.c", line 22: error: invalid combination of type specifiers
+  unsigned short char32_t	cd;		/* { dg-error "unsigned" } */
+  ^
+
+"Test_name.c", line 23: error: invalid combination of type specifiers
+  unsigned long char16_t	ce;		/* { dg-error "unsigned" } */
+  ^
+
+"Test_name.c", line 24: error: invalid combination of type specifiers
+  unsigned long char32_t	cf;		/* { dg-error "unsigned" } */
+  ^
+
+16 errors detected in the compilation of "Test_name.c".

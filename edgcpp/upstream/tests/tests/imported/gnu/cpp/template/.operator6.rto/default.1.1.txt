@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 6: error: an operator name must be declared as a function
+  template void operator+; // { dg-error "15:declaration of .operator\\+. as non-function" }
+                ^
+
+"Test_name.c", line 6: error: invalid explicit instantiation declaration
+  template void operator+; // { dg-error "15:declaration of .operator\\+. as non-function" }
+           ^
+
+2 errors detected in the compilation of "Test_name.c".

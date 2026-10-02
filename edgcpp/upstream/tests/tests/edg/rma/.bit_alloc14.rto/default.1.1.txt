@@ -1,0 +1,33 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 5: warning: signed bit field of length 1
+  struct A { char a; char b:1; };
+                          ^
+
+"Test_name.c", line 6: warning: signed bit field of length 1
+  struct B { enum Z a; int b:1; };
+                           ^
+
+"Test_name.c", line 7: warning: signed bit field of length 1
+  struct C { int a; int b:1; int c; int d:1; };
+                        ^
+
+"Test_name.c", line 7: warning: signed bit field of length 1
+  struct C { int a; int b:1; int c; int d:1; };
+                                        ^
+
+"Test_name.c", line 8: warning: signed bit field of length 1
+  struct D { int a; int b:1; int c:1; int d:1; int e:1; int f; };
+                        ^
+
+"Test_name.c", line 8: warning: signed bit field of length 1
+  struct D { int a; int b:1; int c:1; int d:1; int e:1; int f; };
+                                 ^
+
+"Test_name.c", line 8: warning: signed bit field of length 1
+  struct D { int a; int b:1; int c:1; int d:1; int e:1; int f; };
+                                          ^
+
+"Test_name.c", line 8: warning: signed bit field of length 1
+  struct D { int a; int b:1; int c:1; int d:1; int e:1; int f; };
+                                                   ^
+

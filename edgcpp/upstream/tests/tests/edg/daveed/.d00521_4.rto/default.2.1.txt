@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=2 --microsoft -DNEG Test_name.c
+"Test_name.c", line 23: warning: class "S<int>" explicitly instantiated more than once
+  template struct S<int>; // Okay
+           ^
+
+"Test_name.c", line 25: error: invalid combination of DLL attributes
+  template struct IMP S<int>;  // Error: Cannot change DLL interface in 2nd specialization (however omitting the DLL interface is okay).
+                      ^
+
+"Test_name.c", line 25: warning: class "S<int>" explicitly instantiated more than once
+  template struct IMP S<int>;  // Error: Cannot change DLL interface in 2nd specialization (however omitting the DLL interface is okay).
+           ^
+
+1 error detected in the compilation of "Test_name.c".

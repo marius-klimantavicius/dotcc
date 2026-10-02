@@ -1,0 +1,61 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c99 Test_name.c
+"Test_name.c", line 17: warning: variable "f" was set but never used
+    struct foo f = { 0 }; // no-warning
+               ^
+
+"Test_name.c", line 18: warning: variable "g" was set but never used
+    struct foo g = { 9 }; // expected-warning {{missing field 'y' initializer}}
+               ^
+
+"Test_name.c", line 19: warning: variable "h" was set but never used
+    struct foo h = { 9, 9 }; // no-warning
+               ^
+
+"Test_name.c", line 20: warning: variable "i" was set but never used
+    struct bar i = { 0 }; // no-warning
+               ^
+
+"Test_name.c", line 21: warning: variable "j" was set but never used
+    struct bar j = { 0, 0 }; // expected-warning {{suggest braces around initialization of subobject}} expected-warning {{missing field 'b' initializer}}
+               ^
+
+"Test_name.c", line 22: warning: variable "k" was set but never used
+    struct bar k = { { 9, 9 }, { 9, 9 } }; // no-warning
+               ^
+
+"Test_name.c", line 23: warning: variable "l" was set but never used
+    struct bar l = { { 9, 9 }, { 0 } }; // no-warning
+               ^
+
+"Test_name.c", line 24: warning: variable "m" was set but never used
+    struct bar m = { { 0 }, { 0 } }; // no-warning
+               ^
+
+"Test_name.c", line 25: warning: variable "n" was set but never used
+    struct bar n = { { 0 }, { 9, 9 } }; // no-warning
+               ^
+
+"Test_name.c", line 26: warning: variable "o" was set but never used
+    struct bar o = { { 9 }, { 9, 9 } }; // expected-warning {{missing field 'y' initializer}}
+               ^
+
+"Test_name.c", line 27: warning: variable "p" was set but never used
+    struct C p = { 0 }; // no-warning
+             ^
+
+"Test_name.c", line 28: warning: variable "q" was set but never used
+    struct C q = { 9 }; // warning suppressed for struct with single element
+             ^
+
+"Test_name.c", line 29: warning: variable "r" was set but never used
+    struct D r = { 9 }; // expected-warning {{suggest braces around initialization of subobject}} expected-warning {{missing field 'n' initializer}}
+             ^
+
+"Test_name.c", line 30: warning: variable "s" was set but never used
+    struct F s = { 0 }; // no-warning
+             ^
+
+"Test_name.c", line 31: warning: variable "t" was set but never used
+    struct F t = { 9 }; // expected-warning {{suggest braces around initialization of subobject}} expected-warning {{missing field 'n' initializer}}
+             ^
+

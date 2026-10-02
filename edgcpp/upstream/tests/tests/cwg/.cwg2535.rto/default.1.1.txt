@@ -1,0 +1,9 @@
+cpfe -DTEST_NUMBER=1 --c++20 -A Test_name.c
+"Test_name.c", line 7: warning: expression has no effect
+      static_cast<B&>(d).j;       // OK, object expression designates the B subobject of d
+      ^
+
+"Test_name.c", line 8: warning: expression has no effect
+      reinterpret_cast<B&>(d).j;  // undefined behavior
+      ^
+

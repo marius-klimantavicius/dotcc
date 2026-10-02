@@ -1,0 +1,190 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a[];          // { dg-error "flexible array member '<unnamed struct>::a' not at end of 'struct<unnamed>'" }
+           ^
+
+"Test_name.c", line 9: error: incomplete type "int []" is not allowed
+    int a[];          // { dg-error "flexible array member '<unnamed struct>::a' not at end of 'struct<unnamed>'" }
+        ^
+
+"Test_name.c", line 14: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a[];          // { dg-error "flexible array member '<unnamed struct>::a' not at end of 'struct<unnamed>'" }
+           ^
+
+"Test_name.c", line 14: error: incomplete type "int []" is not allowed
+    int a[];          // { dg-error "flexible array member '<unnamed struct>::a' not at end of 'struct<unnamed>'" }
+        ^
+
+"Test_name.c", line 19: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a[];          // { dg-error "flexible array member '<unnamed struct>::a' not at end of 'struct<unnamed>'" }
+           ^
+
+"Test_name.c", line 19: error: incomplete type "int []" is not allowed
+    int a[];          // { dg-error "flexible array member '<unnamed struct>::a' not at end of 'struct<unnamed>'" }
+        ^
+
+"Test_name.c", line 24: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a[];          // { dg-error "flexible array member '<unnamed struct>::a' not at end of 'struct<unnamed>'" }
+           ^
+
+"Test_name.c", line 24: error: incomplete type "int []" is not allowed
+    int a[];          // { dg-error "flexible array member '<unnamed struct>::a' not at end of 'struct<unnamed>'" }
+        ^
+
+"Test_name.c", line 30: error: incomplete type "int []" is not allowed
+    int a[];
+        ^
+
+"Test_name.c", line 36: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a[];          // { dg-error "flexible array member 'A::a' not at end of 'struct A'" }
+           ^
+
+"Test_name.c", line 36: error: incomplete type "int []" is not allowed
+    int a[];          // { dg-error "flexible array member 'A::a' not at end of 'struct A'" }
+        ^
+
+"Test_name.c", line 41: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a[];          // { dg-error "flexible array member 'B::a' not at end of 'struct B'" }
+           ^
+
+"Test_name.c", line 41: error: incomplete type "int []" is not allowed
+    int a[];          // { dg-error "flexible array member 'B::a' not at end of 'struct B'" }
+        ^
+
+"Test_name.c", line 46: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a[];          // { dg-error "flexible array member 'C::a' not at end of 'struct C'" }
+           ^
+
+"Test_name.c", line 46: error: incomplete type "int []" is not allowed
+    int a[];          // { dg-error "flexible array member 'C::a' not at end of 'struct C'" }
+        ^
+
+"Test_name.c", line 51: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a[];          // { dg-error "flexible array member 'D::a' not at end of 'struct D'" }
+           ^
+
+"Test_name.c", line 51: error: incomplete type "int []" is not allowed
+    int a[];          // { dg-error "flexible array member 'D::a' not at end of 'struct D'" }
+        ^
+
+"Test_name.c", line 58: error: a flexible array member cannot be declared in an otherwise-empty type
+      int a[];        // { dg-error " not at end " }
+             ^
+
+"Test_name.c", line 58: error: incomplete type "int []" is not allowed
+      int a[];        // { dg-error " not at end " }
+          ^
+
+"Test_name.c", line 65: error: a flexible array member cannot be declared in an otherwise-empty type
+      int a[];        // { dg-error " not at end " }
+             ^
+
+"Test_name.c", line 65: error: incomplete type "int []" is not allowed
+      int a[];        // { dg-error " not at end " }
+          ^
+
+"Test_name.c", line 73: error: a flexible array member cannot be declared in an otherwise-empty type
+      int a[];        // { dg-error " not at end " }
+             ^
+
+"Test_name.c", line 73: error: incomplete type "int []" is not allowed
+      int a[];        // { dg-error " not at end " }
+          ^
+
+"Test_name.c", line 81: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a[];          // { dg-error " not at end of " }
+           ^
+
+"Test_name.c", line 81: error: incomplete type "int []" is not allowed
+    int a[];          // { dg-error " not at end of " }
+        ^
+
+"Test_name.c", line 86: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a[];          // { dg-error " not at end " }
+           ^
+
+"Test_name.c", line 86: error: incomplete type "int []" is not allowed
+    int a[];          // { dg-error " not at end " }
+        ^
+
+"Test_name.c", line 91: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a[];          // { dg-error " not at end " }
+           ^
+
+"Test_name.c", line 91: error: incomplete type "int []" is not allowed
+    int a[];          // { dg-error " not at end " }
+        ^
+
+"Test_name.c", line 96: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a[];          // { dg-error " not at end " }
+           ^
+
+"Test_name.c", line 96: error: incomplete type "int []" is not allowed
+    int a[];          // { dg-error " not at end " }
+        ^
+
+"Test_name.c", line 102: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a[];          // { dg-error " not at end of 'struct {anonymous}::A'" }
+           ^
+
+"Test_name.c", line 102: error: incomplete type "int []" is not allowed
+    int a[];          // { dg-error " not at end of 'struct {anonymous}::A'" }
+        ^
+
+"Test_name.c", line 107: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a[];          // { dg-error " not at end of 'struct {anonymous}::B'" }
+           ^
+
+"Test_name.c", line 107: error: incomplete type "int []" is not allowed
+    int a[];          // { dg-error " not at end of 'struct {anonymous}::B'" }
+        ^
+
+"Test_name.c", line 112: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a[];          // { dg-error " not at end of 'struct {anonymous}::C'" }
+           ^
+
+"Test_name.c", line 112: error: incomplete type "int []" is not allowed
+    int a[];          // { dg-error " not at end of 'struct {anonymous}::C'" }
+        ^
+
+"Test_name.c", line 117: error: a flexible array member cannot be declared in an otherwise-empty type
+    int a[];          // { dg-error " not at end of 'struct {anonymous}::D'" }
+           ^
+
+"Test_name.c", line 117: error: incomplete type "int []" is not allowed
+    int a[];          // { dg-error " not at end of 'struct {anonymous}::D'" }
+        ^
+
+"Test_name.c", line 83: warning: variable "<unnamed>::ax" was declared but never referenced
+  } ax;
+    ^
+
+"Test_name.c", line 88: warning: variable "<unnamed>::bx" was declared but never referenced
+  } bx = { };
+    ^
+
+"Test_name.c", line 93: warning: variable "<unnamed>::cx" was declared but never referenced
+  } cx = { 0 };
+    ^
+
+"Test_name.c", line 98: warning: variable "<unnamed>::dx" was declared but never referenced
+  } dx = { 1 };
+    ^
+
+"Test_name.c", line 104: warning: variable "<unnamed>::a" was declared but never referenced
+  } a;
+    ^
+
+"Test_name.c", line 109: warning: variable "<unnamed>::b" was declared but never referenced
+  } b = { };
+    ^
+
+"Test_name.c", line 114: warning: variable "<unnamed>::c" was declared but never referenced
+  } c = { 0 };
+    ^
+
+"Test_name.c", line 119: warning: variable "<unnamed>::d" was declared but never referenced
+  } d = { 1 };
+    ^
+
+39 errors detected in the compilation of "Test_name.c".

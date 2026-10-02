@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -DEXPECTWARNING --c Test_name.c
+"Test_name.c", line 13: warning: operand types are incompatible ("int" and "int *")
+  	return integer != pointer; 
+  	               ^
+

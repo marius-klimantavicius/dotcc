@@ -1,0 +1,19 @@
+./a.out
+Default init of c
+A() called
+A() called
+A() called
+A() called
+A() called
+Default init of b
+A(const A&) called
+A(const A&) called
+Throwing exception
+~A() called
+Caught in main
+About to return
+~A() called
+~A() called
+~A() called
+~A() called
+~A() called

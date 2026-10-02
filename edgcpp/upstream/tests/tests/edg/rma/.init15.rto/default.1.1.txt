@@ -1,0 +1,54 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --cfront_3.0 Test_name.c
+"Test_name.c", line 9: remark: class "A" defines no constructor to initialize the following:
+            const member "A::i"
+  struct A {
+         ^
+
+"Test_name.c", line 14: warning: variable "a3" has an uninitialized const or reference member
+  A a3;                    // Error                     [edg: E, CC3: -]
+    ^
+
+"Test_name.c", line 27: remark: class "B" defines no constructor to initialize the following:
+            reference member "B::ri"
+  struct B {
+         ^
+
+"Test_name.c", line 27: error: implicitly generated constructor for class "B" cannot initialize:
+            reference member "B::ri"
+  struct B {
+         ^
+          detected during implicit generation of "B::B()" at line 33
+
+"Test_name.c", line 52: error: no default constructor exists for class "C"
+  C c3;                     // Error -- C::C()          [edg: E, CC3: E]
+    ^
+
+"Test_name.c", line 59: error: "D::D(int)" provides no initializer for:
+            const member "D::i"
+    D(int) { }              // Error                    [edg: W, CC3: E]
+           ^
+
+"Test_name.c", line 70: error: "E::E(int)" provides no initializer for:
+            const member "E::i"
+  E::E(int) { };            // Error                     [edg: W, CC3: E]
+            ^
+
+"Test_name.c", line 70: remark: extra ";" ignored
+  E::E(int) { };            // Error                     [edg: W, CC3: E]
+               ^
+
+"Test_name.c", line 83: error: no default constructor exists for class "F"
+  F f3;                     // Error -- no F::F()       [edg: E, CC3: E]
+    ^
+
+"Test_name.c", line 90: error: "G::G(int &)" provides no initializer for:
+            reference member "G::ri"
+    G(int&) { }             // Error                    [edg: W, CC3: E]
+            ^
+
+"Test_name.c", line 101: error: "H::H(int &)" provides no initializer for:
+            reference member "H::ri"
+  H::H(int&) { }            // Error                    [edg: W, CC3: E]
+             ^
+
+7 errors detected in the compilation of "Test_name.c".

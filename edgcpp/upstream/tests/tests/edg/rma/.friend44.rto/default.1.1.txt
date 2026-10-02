@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 7: error: nonstandard local-class friend declaration -- no prior declaration in the enclosing scope
+    struct X { friend int f(); };
+                          ^
+
+"Test_name.c", line 5: warning: function "f" was declared but never referenced
+  static int f();
+             ^
+
+1 error detected in the compilation of "Test_name.c".

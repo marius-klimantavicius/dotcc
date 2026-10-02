@@ -1,0 +1,150 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 21: error: declaration is incompatible with previous "test2::test2_x" (declared at line 17)
+  float test2_x; // expected-error {{declaration of 'test2_x' in global scope conflicts with declaration with C language linkage}}
+        ^
+
+"Test_name.c", line 30: error: declaration is incompatible with previous "test3::test3_b" (declared at line 26)
+      float test3_b; // expected-error {{redefinition of 'test3_b' with a different type: 'float' vs 'int'}}
+            ^
+
+"Test_name.c", line 41: error: declaration is incompatible with previous "N::test4_b" (declared at line 37)
+  static float test4_b; // expected-error {{declaration of 'test4_b' in global scope conflicts with declaration with C language linkage}}
+               ^
+
+"Test_name.c", line 48: error: declaration is incompatible with previous "test4_c" (declared at line 45)
+  static float test4_c; // expected-error {{redefinition of 'test4_c' with a different type: 'float' vs 'int'}}
+               ^
+
+"Test_name.c", line 58: error: declaration is incompatible with previous "N::test5_b" (declared at line 53)
+    static float test5_b; // expected-error {{declaration of 'test5_b' in global scope conflicts with declaration with C language linkage}}
+                 ^
+
+"Test_name.c", line 67: error: declaration is incompatible with previous "test5_c" (declared at line 63)
+    static float test5_c; // expected-error {{redefinition of 'test5_c' with a different type: 'float' vs 'int'}}
+                 ^
+
+"Test_name.c", line 91: error: cannot overload functions distinguished by return type alone
+      int ovl_decl(void); // expected-error {{functions that differ only in their return type}}
+          ^
+
+"Test_name.c", line 103: error: more than one instance of overloaded function "linkage::redecl::linkage_redecl" has "C" linkage
+        void linkage_redecl(double); // expected-error {{conflicting types}}
+             ^
+
+"Test_name.c", line 109: error: more than one instance of overloaded function "linkage::redecl_2::linkage_redecl_2" has "C" linkage
+        int linkage_redecl_2(int); // expected-error {{conflicting types}}
+            ^
+
+"Test_name.c", line 117: error: linkage specification is incompatible with previous "linkage::from_outer::linkage_from_outer_1" (declared at line 113)
+        void linkage_from_outer_1(); // expected-error {{different language linkage}}
+             ^
+
+"Test_name.c", line 118: error: linkage specification is incompatible with previous "linkage::from_outer::linkage_from_outer_2" (declared at line 114)
+        void linkage_from_outer_2(); // expected-error {{different language linkage}}
+             ^
+
+"Test_name.c", line 137: error: declaration is incompatible with previous "linkage::across_scopes::X::linkage_across_scopes_g" (declared at line 133)
+        extern "C" void linkage_across_scopes_g(int); // expected-error {{conflicting}}
+                        ^
+
+"Test_name.c", line 147: error: declaration is incompatible with previous "lookup_in_global_f" (declared at line 142)
+      void lookup_in_global_f(int); // expected-error {{conflicts with declaration in global scope}}
+           ^
+
+"Test_name.c", line 151: error: declaration is incompatible with previous "lookup_in_global::lookup_in_global_g" (declared at line 148)
+  int lookup_in_global_g; // expected-error {{conflicts with declaration with C language linkage}}
+      ^
+
+"Test_name.c", line 158: error: declaration is incompatible with previous "N1::different_kind_1" (declared at line 154)
+    extern "C" void different_kind_1(); // expected-error {{different kind of symbol}}
+                    ^
+
+"Test_name.c", line 159: error: declaration is incompatible with previous "N1::different_kind_2" (declared at line 155)
+    extern "C" int different_kind_2; // expected-error {{different kind of symbol}}
+                   ^
+
+"Test_name.c", line 201: error: declaration is incompatible with previous "global_var_vs_extern_c_fn_1" (declared at line 199)
+    extern "C" void global_var_vs_extern_c_fn_1(); // expected-error {{conflicts with declaration in global scope}}
+                    ^
+
+"Test_name.c", line 204: error: declaration is incompatible with previous "X::global_var_vs_extern_c_fn_2" (declared at line 202)
+  int global_var_vs_extern_c_fn_2; // expected-error {{conflicts with declaration with C language linkage}}
+      ^
+
+"Test_name.c", line 207: error: declaration is incompatible with previous "global_var_vs_extern_c_var_1" (declared at line 205)
+    extern "C" double global_var_vs_extern_c_var_1; // expected-error {{conflicts with declaration in global scope}}
+                      ^
+
+"Test_name.c", line 210: error: declaration is incompatible with previous "X::global_var_vs_extern_c_var_2" (declared at line 208)
+  int global_var_vs_extern_c_var_2; // expected-error {{conflicts with declaration with C language linkage}}
+      ^
+
+"Test_name.c", line 253: error: "tag_hiding::ExternCStruct4" is ambiguous
+    ExternCStruct4 *p4; // expected-error {{ambiguous}}
+    ^
+
+"Test_name.c", line 264: error: "tag_hiding::ExternCStruct4" is ambiguous
+    ExternCStruct4 *q4 = p4; // expected-error {{ambiguous}}
+    ^
+
+"Test_name.c", line 278: warning: function "PR35697_f" was declared but never referenced
+        extern ReturnStruct PR35697_f();
+                            ^
+
+"Test_name.c", line 279: warning: variable "PR35697_v" was declared but never referenced
+        extern ReturnStruct PR35697_v;
+                            ^
+
+"Test_name.c", line 285: error: unknown external linkage specification
+    extern "bogus" // expected-error {{unknown linkage language}}
+           ^
+
+"Test_name.c", line 41: warning: variable "test4_b" was declared but never referenced
+  static float test4_b; // expected-error {{declaration of 'test4_b' in global scope conflicts with declaration with C language linkage}}
+               ^
+
+"Test_name.c", line 48: warning: variable "test4_c" was declared but never referenced
+  static float test4_c; // expected-error {{redefinition of 'test4_c' with a different type: 'float' vs 'int'}}
+               ^
+
+"Test_name.c", line 58: warning: variable "test5_b" was declared but never referenced
+    static float test5_b; // expected-error {{declaration of 'test5_b' in global scope conflicts with declaration with C language linkage}}
+                 ^
+
+"Test_name.c", line 67: warning: variable "test5_c" was declared but never referenced
+    static float test5_c; // expected-error {{redefinition of 'test5_c' with a different type: 'float' vs 'int'}}
+                 ^
+
+"Test_name.c", line 77: warning: variable "foo::test6_b" was declared but never referenced
+      static float test6_b;
+                   ^
+
+"Test_name.c", line 99: warning: function "linkage::redecl::linkage_redecl(int)" was declared but never referenced
+        static void linkage_redecl(int);
+                    ^
+
+"Test_name.c", line 98: warning: function "linkage::redecl::linkage_redecl()" was declared but never referenced
+        static void linkage_redecl();
+                    ^
+
+"Test_name.c", line 124: warning: function "linkage::mixed::linkage_mixed_1(int)" was declared but never referenced
+        static void linkage_mixed_1(int);
+                    ^
+
+"Test_name.c", line 126: warning: function "linkage::mixed::linkage_mixed_2(int)" was declared but never referenced
+        static void linkage_mixed_2(int);
+                    ^
+
+"Test_name.c", line 269: warning: function "PR35697::PR35697_f" was declared but never referenced
+    extern "C" ReturnStruct PR35697_f();
+                            ^
+
+"Test_name.c", line 275: warning: function "PR35697::<unnamed>::PR35697_f" was declared but never referenced
+      extern "C" ReturnStruct PR35697_f();
+                              ^
+
+"Test_name.c", line 277: warning: function "PR35697::<unnamed>::q" was declared but never referenced
+      void q() {
+           ^
+
+23 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 13: error: deduced return type "double" conflicts with previously deduced type "int"
+        return 1 / beta * (alpha - 1); // { dg-error "type" }
+               ^
+
+"Test_name.c", line 7: warning: variable "phi0_prime" was declared but never referenced
+    auto phi0_prime = [=](double alpha) {
+         ^
+
+1 error detected in the compilation of "Test_name.c".

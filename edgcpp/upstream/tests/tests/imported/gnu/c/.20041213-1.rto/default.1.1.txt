@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c89 --strict_gnu Test_name.c
+"Test_name.c", line 7: error: declaration is incompatible with "int foo1()" (declared at line 6)
+  extern void foo1(); /* { dg-error "13:conflicting types" } */
+              ^
+
+"Test_name.c", line 10: error: declaration is incompatible with "void foo2()" (declared at line 9)
+  extern foo2(); /* { dg-error "8:conflicting types" } */
+         ^
+
+"Test_name.c", line 13: error: declaration is incompatible with "void foo3()" (declared at line 12)
+  extern foo3(); /* { dg-error "8:conflicting types" } */
+         ^
+
+"Test_name.c", line 16: error: declaration is incompatible with "int foo4()" (declared at line 15)
+  void foo4() {} /* { dg-error "6:conflicting types" } */
+       ^
+
+"Test_name.c", line 19: error: declaration is incompatible with "void foo5()" (declared at line 18)
+  foo5() {} /* { dg-warning "1:conflicting types" } */
+  ^
+
+"Test_name.c", line 22: error: declaration is incompatible with "int foo6()" (declared at line 21)
+  extern void foo6(); /* { dg-error "13:conflicting types" } */
+              ^
+
+"Test_name.c", line 25: error: function "foo7" has already been defined (previous definition at line 24)
+  void foo7() {} /* { dg-error "6:conflicting types" } */
+       ^
+
+"Test_name.c", line 28: error: function "foo8" has already been defined (previous definition at line 27)
+  foo8() {} /* { dg-error "1:conflicting types" } */
+  ^
+
+"Test_name.c", line 30: warning: missing return statement at end of non-void function "use9"
+  int use9() { foo9(); } /* { dg-message "note: previous implicit declaration" } */
+                       ^
+
+"Test_name.c", line 31: warning: declaration is incompatible with previous "foo9" (declared implicitly)
+  extern void foo9(); /* { dg-warning "13:conflicting types" } */
+              ^
+
+"Test_name.c", line 33: warning: missing return statement at end of non-void function "use10"
+  int use10() { foo10(); } /* { dg-message "note: previous implicit declaration" } */
+                         ^
+
+"Test_name.c", line 34: warning: declaration is incompatible with previous "foo10" (declared implicitly)
+  void foo10() {} /* { dg-warning "6:conflicting types" } */
+       ^
+
+8 errors detected in the compilation of "Test_name.c".

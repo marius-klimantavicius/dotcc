@@ -1,0 +1,24 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp0x/initlist56.C", line 12: warning: a parenthesized initializer for a non-class entity must be an expression, not a brace-enclosed list
+  A1::A1():a({1, 2}) { }
+                   ^
+
+"./cpp0x/initlist56.C", line 17: error: copy-list-initialization cannot use a constructor marked "explicit"
+  A c({1, 2});
+      ^
+
+"./cpp0x/initlist56.C", line 34: error: no instance of constructor "B::B" matches the argument list
+            argument types are: (int, int, int)
+  B f{1, 2, 3};
+     ^
+"./cpp0x/initlist56.C", line 27: note: number of parameters of function "B::B(const B &)" does not match the call
+  struct B {
+         ^
+"./cpp0x/initlist56.C", line 27: note: number of parameters of function "B::B(B &&)" does not match the call
+  struct B {
+         ^
+"./cpp0x/initlist56.C", line 29: note: function template "B::B(std::initializer_list<int>, T...)" does not match because argument #1 does not match parameter
+    B(std::initializer_list<int>, T ...);
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

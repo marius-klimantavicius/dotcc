@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --microsoft_version=1900 Test_name.c
+"Test_name.c", line 32: warning: variable "y" was declared but never referenced
+    constexpr Y y{3, 1};  // Previously a spurious error
+                ^
+

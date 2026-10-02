@@ -1,0 +1,45 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 6: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m0,branch-protection=bti"))) void f1(void) {}
+                        ^
+
+"Test_name.c", line 6: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m0,branch-protection=bti"))) void f1(void) {}
+                        ^
+
+"Test_name.c", line 9: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m0,branch-protection=pac-ret"))) void f2(void) {}
+                        ^
+
+"Test_name.c", line 9: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m0,branch-protection=pac-ret"))) void f2(void) {}
+                        ^
+
+"Test_name.c", line 12: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m0,branch-protection=bti+pac-ret"))) void f3(void) {}
+                        ^
+
+"Test_name.c", line 12: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m0,branch-protection=bti+pac-ret"))) void f3(void) {}
+                        ^
+
+"Test_name.c", line 15: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m0,branch-protection=bti+pac-ret+leaf"))) void f4(void) {}
+                        ^
+
+"Test_name.c", line 15: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-m0,branch-protection=bti+pac-ret+leaf"))) void f4(void) {}
+                        ^
+
+"Test_name.c", line 18: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-a17,thumb,branch-protection=bti+pac-ret+leaf"))) void f5(void) {}
+                        ^
+
+"Test_name.c", line 18: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-a17,thumb,branch-protection=bti+pac-ret+leaf"))) void f5(void) {}
+                        ^
+
+"Test_name.c", line 18: warning: target attribute not recognized
+  __attribute__((target("arch=cortex-a17,thumb,branch-protection=bti+pac-ret+leaf"))) void f5(void) {}
+                        ^
+

@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++23 Test_name.c
+"Test_name.c", line 22: error: invalid type conversion
+      (void)static_cast<T*>(b); // expected-error {{static_cast from 'const void *' to 'T *' casts away qualifiers}}
+            ^
+
+"Test_name.c", line 23: error: invalid type conversion
+      (void)static_cast<volatile T*>(b); // expected-error {{static_cast from 'const void *' to 'volatile T *' casts away qualifiers}}
+            ^
+
+"Test_name.c", line 27: error: invalid type conversion
+      (void)static_cast<T*>(c); // expected-error{{static_cast from 'volatile void *' to 'T *' casts away qualifiers}}
+            ^
+
+"Test_name.c", line 35: error: expression must have a constant value
+      constexpr auto err1 = static_cast<int*>(a); // expected-error{{constexpr variable 'err1' must be initialized by a constant expression}} \
+                                        ^
+
+"Test_name.c", line 38: error: expression must have a constant value
+      constexpr auto err2 = static_cast<S*>(a);   // expected-error{{constexpr variable 'err2' must be initialized by a constant expression}} \
+                                        ^
+
+"Test_name.c", line 46: error: expression must have a constant value
+  constexpr auto cvp = static_cast<const int* volatile*>(vp);
+                                   ^
+
+6 errors detected in the compilation of "Test_name.c".

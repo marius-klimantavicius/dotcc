@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: error: a storage class may not be specified here
+    if (static long v = something()) { } // { dg-error "'static' invalid" }
+        ^
+
+"Test_name.c", line 10: warning: variable "v" was declared but never referenced
+    if (static long v = something()) { } // { dg-error "'static' invalid" }
+                    ^
+
+1 error detected in the compilation of "Test_name.c".

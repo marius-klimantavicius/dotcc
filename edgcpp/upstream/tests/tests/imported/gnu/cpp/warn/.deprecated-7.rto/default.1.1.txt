@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 12: warning: variable "f_n" was declared deprecated
+    f_n = 1;    // { dg-warning "'f_n' is deprecated" }
+    ^
+"Test_name.c", line 11: note: because of a "deprecated" attribute
+    int& f_n __attribute__((deprecated)) = f_nn;
+                            ^
+
+"Test_name.c", line 17: warning: variable "g_n" was declared deprecated
+    g_n = 1;    // { dg-warning "'g_n' is deprecated" }
+    ^
+"Test_name.c", line 6: note: because of a "deprecated" attribute
+  int& g_n __attribute__((deprecated)) = g_nn;
+                          ^
+

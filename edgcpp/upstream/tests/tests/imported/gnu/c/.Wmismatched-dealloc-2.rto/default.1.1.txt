@@ -1,0 +1,37 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 17: warning: unknown attribute "noipa"
+  A (__builtin_free) A* alloc_A (int);
+  ^
+
+"Test_name.c", line 18: warning: unknown attribute "noipa"
+  A (__builtin_free) B* alloc_B (int);
+  ^
+
+"Test_name.c", line 19: warning: unknown attribute "noipa"
+  A (__builtin_free) A* realloc_A (A *p, int n) { return p; }
+  ^
+
+"Test_name.c", line 20: warning: unknown attribute "noipa"
+  A (__builtin_free) B* realloc_B (B *p, int n) { return p; }
+  ^
+
+"Test_name.c", line 22: warning: unknown attribute "noipa"
+  A (realloc_A) A* alloc_A (int);
+  ^
+
+"Test_name.c", line 23: warning: unknown attribute "noipa"
+  A (realloc_B) B* alloc_B (int);
+  ^
+
+"Test_name.c", line 24: warning: unknown attribute "noipa"
+  A (realloc_A) A* realloc_A (A*, int);
+  ^
+
+"Test_name.c", line 25: warning: unknown attribute "noipa"
+  A (realloc_B) B* realloc_B (B*, int);
+  ^
+
+"Test_name.c", line 28: warning: unknown attribute "noipa"
+  A (dealloc) void* alloc (int);
+  ^
+

@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 19: warning: expression has no effect
+  ASSERT (q, sizeof (0, x.c) == sizeof (char *));
+  ^
+
+"Test_name.c", line 21: warning: expression has no effect
+  ASSERT (r1, sizeof ((d, b).c) == 17);
+  ^
+
+"Test_name.c", line 24: warning: expression has no effect
+  ASSERT (s0, sizeof (0, (d ? b : c).c) == sizeof (char *)); /* { dg-bogus "array" "bad non-lvalue array handling" } */
+  ^
+
+"Test_name.c", line 25: warning: expression has no effect
+  ASSERT (s0, sizeof (0, (d, b).c) == sizeof (char *)); /* { dg-bogus "array" "bad non-lvalue array handling" } */
+  ^
+
+"Test_name.c", line 26: warning: expression has no effect
+  ASSERT (s0, sizeof (0, (a = b).c) == sizeof (char *)); /* { dg-bogus "array" "bad non-lvalue array handling" } */
+  ^
+

@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 7: error: name followed by "::" must be a class or namespace name
+    static A a{T::a};		// { dg-error "int" }
+               ^
+          detected during instantiation of class "B<T> [with T=int]" at line 9
+
+"Test_name.c", line 7: error: no instance of constructor "A" matches the argument list
+            argument types are: (<error-type>)
+    static A a{T::a};		// { dg-error "int" }
+             ^
+          detected during instantiation of class "B<T> [with T=int]" at line 9
+
+"Test_name.c", line 7: error: cannot deduce class template arguments
+    static A a{T::a};		// { dg-error "int" }
+           ^
+          detected during instantiation of class "B<T> [with T=int]" at line 9
+
+"Test_name.c", line 9: warning: variable "a" was declared but never referenced
+  void foo () { B<int> a; }
+                       ^
+
+3 errors detected in the compilation of "Test_name.c".

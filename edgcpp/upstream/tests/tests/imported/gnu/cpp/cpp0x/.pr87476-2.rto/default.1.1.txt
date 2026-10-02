@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 6: warning: variable "p" was declared but never referenced
+  void f0 () { constexpr char p[] = "11111"; }
+                              ^
+
+"Test_name.c", line 7: warning: variable "p" was declared but never referenced
+  void f1 () { constexpr unsigned char p[] = "11111"; }
+                                       ^
+
+"Test_name.c", line 8: warning: variable "p" was declared but never referenced
+  void f2 () { constexpr signed char p[] = "11111"; }
+                                     ^
+
+"Test_name.c", line 10: warning: variable "p" was declared but never referenced
+  void f3 () { constexpr char p[] = "11111"; }
+                              ^
+
+"Test_name.c", line 12: warning: variable "p" was declared but never referenced
+  void f4 () { constexpr unsigned char p[] = "11111"; }
+                                       ^
+
+"Test_name.c", line 14: warning: variable "p" was declared but never referenced
+  void f5 () { constexpr signed char p[] = "11111"; }
+                                     ^
+

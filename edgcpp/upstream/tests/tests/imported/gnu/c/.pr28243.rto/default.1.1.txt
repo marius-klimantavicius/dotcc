@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c17 --strict_gnu Test_name.c
+"Test_name.c", line 39: warning: variable "radx" is used before its value is set
+    if (radx != rady)
+        ^
+
+"Test_name.c", line 39: warning: variable "rady" is used before its value is set
+    if (radx != rady)
+                ^
+
+"Test_name.c", line 40: warning: variable "cx" is used before its value is set
+      PSMyArc(cx, cy, radx, rady, 0, 360);
+              ^
+
+"Test_name.c", line 40: warning: variable "cy" is used before its value is set
+      PSMyArc(cx, cy, radx, rady, 0, 360);
+                  ^
+
+"Test_name.c", line 55: warning: variable "gdisp" is used before its value is set
+    gdisp->funcs = (void *)&psfuncs;
+    ^
+

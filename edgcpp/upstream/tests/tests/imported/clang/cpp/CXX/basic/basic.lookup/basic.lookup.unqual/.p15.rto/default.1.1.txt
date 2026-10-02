@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --exceptions --exceptions Test_name.c
+"Test_name.c", line 13: warning: variable "c" was declared but never referenced
+    int c;
+        ^
+
+"Test_name.c", line 14: warning: parameter "a" may not be redeclared in a catch clause of function try block
+  } catch (int a) { // expected-error {{redefinition of 'a'}}
+               ^
+
+"Test_name.c", line 15: warning: parameter "b" may not be redeclared in a catch clause of function try block
+    int b; // expected-error {{redefinition of 'b'}}
+        ^
+
+"Test_name.c", line 16: error: identifier "c" is undefined
+    ++c; // expected-error {{use of undeclared identifier 'c'}}
+      ^
+
+"Test_name.c", line 15: warning: variable "b" was declared but never referenced
+    int b; // expected-error {{redefinition of 'b'}}
+        ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,7 @@
+eccp -DTEST_NUMBER=2 -r -x -tused Test_name.c
+"Test_name.c", line 7: warning: transfer of control bypasses initialization of:
+            variable "arr3" (declared at line 11)
+            variable "arr4" (declared at line 12)
+      if(i) goto label;            // errors for jumping over arr3 and arr4
+            ^
+

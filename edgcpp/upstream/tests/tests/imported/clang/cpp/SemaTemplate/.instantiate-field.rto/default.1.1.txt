@@ -1,0 +1,68 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 17: warning: variable "i1" was declared but never referenced
+    int i1 = xi->x;
+        ^
+
+"Test_name.c", line 18: warning: variable "i2" was declared but never referenced
+    const int &i2 = xi->y;
+               ^
+
+"Test_name.c", line 19: warning: variable "ip1" was declared but never referenced
+    int* ip1 = xi->z;
+         ^
+
+"Test_name.c", line 20: warning: variable "i3" was declared but never referenced
+    int i3 = xi->bitfield;
+        ^
+
+"Test_name.c", line 10: error: invalid type for a bit field
+    T bitfield : 12; // expected-error{{bit-field 'bitfield' has non-integral type 'float'}} \
+    ^
+          detected during instantiation of class "X<T> [with T=float]" at line 25
+
+"Test_name.c", line 8: error: a function type is not allowed here
+    T y; // expected-error{{data member instantiated with function type}}
+      ^
+          detected during instantiation of class "X<T> [with T=int (int)]" at line 29
+
+"Test_name.c", line 10: error: a function type is not allowed here
+    T bitfield : 12; // expected-error{{bit-field 'bitfield' has non-integral type 'float'}} \
+      ^
+          detected during instantiation of class "X<T> [with T=int (int)]" at line 29
+
+"Test_name.c", line 10: error: expected a ";"
+    T bitfield : 12; // expected-error{{bit-field 'bitfield' has non-integral type 'float'}} \
+               ^
+          detected during instantiation of class "X<T> [with T=int (int)]" at line 29
+
+"Test_name.c", line 13: error: mutable is not allowed
+    mutable T x2; // expected-error{{data member instantiated with function type}}
+    ^
+          detected during instantiation of class "X<T> [with T=int (int)]" at line 29
+
+"Test_name.c", line 13: error: a function type is not allowed here
+    mutable T x2; // expected-error{{data member instantiated with function type}}
+              ^
+          detected during instantiation of class "X<T> [with T=int (int)]" at line 29
+
+"Test_name.c", line 90: error: incomplete type "PR7355::A<int>::D" is not allowed
+      D d; //expected-error{{implicit instantiation of undefined member 'PR7355::A<int>::D'}}
+        ^
+          detected during instantiation of class "PR7355::A<T1> [with T1=int]" at line 93
+
+"Test_name.c", line 69: error: no operator "--" matches these operands
+            operand types are: PR7123::X --
+      { i--; } // expected-error{{cannot decrement value of type 'PR7123::X'}}
+         ^
+"Test_name.c", line 69: note: built-in operator--(<non-bool arithmetic>, <integral>) does not match because argument #1 does not match parameter
+      { i--; } // expected-error{{cannot decrement value of type 'PR7123::X'}}
+         ^
+"Test_name.c", line 69: note: built-in operator--(<pointer to object>, <integral>) does not match because argument #1 does not match parameter
+      { i--; } // expected-error{{cannot decrement value of type 'PR7123::X'}}
+         ^
+          detected during:
+            instantiation of "PR7123::BidirectionalIterator<TT>::~BidirectionalIterator() [with TT=PR7123::X]" at line 58
+            instantiation of "PR7123::usage_requirements<Model>::~usage_requirements() [with Model=PR7123::BidirectionalIterator<PR7123::X>]" at line 45
+            instantiation of "void PR7123::requirement<PR7123::failed *Model::*>::failed() [with Model=PR7123::usage_requirements<PR7123::BidirectionalIterator<PR7123::X>>]" at line 66
+
+8 errors detected in the compilation of "Test_name.c".

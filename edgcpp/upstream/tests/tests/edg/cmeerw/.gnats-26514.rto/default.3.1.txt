@@ -1,0 +1,23 @@
+fe_only -DTEST_NUMBER=3 --c++20 --gn 120100 Test_name.c
+"Test_name.c", line 10: error: more than one instance of overloaded function "minimal::f" matches the argument list:
+            function template "void minimal::f(T *, U)" (declared at line 7)
+            function template "char minimal::f(T, U *)" (declared at line 9)
+            argument types are: (const char [1], const char [1])
+    char c = f("", "");
+             ^
+
+"Test_name.c", line 20: error: more than one instance of overloaded function "template_constraint::f" matches the argument list:
+            function template "void template_constraint::f(T *, U)" (declared at line 16)
+            function template "char template_constraint::f(T, U *)" (declared at line 18)
+            argument types are: (const char [1], const char [1])
+    char c = f("", "");
+             ^
+
+"Test_name.c", line 30: error: more than one instance of overloaded function "int_param::f" matches the argument list:
+            function template "void int_param::f(T, int)" (declared at line 26)
+            function template "char int_param::f(int, T)" (declared at line 28)
+            argument types are: (int, int)
+    char c = f(1, 2);
+             ^
+
+3 errors detected in the compilation of "Test_name.c".

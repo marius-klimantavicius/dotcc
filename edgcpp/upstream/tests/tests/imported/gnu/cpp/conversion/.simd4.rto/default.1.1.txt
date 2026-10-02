@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 16: warning: expression has no effect
+    b[t];
+    ^
+
+"Test_name.c", line 17: error: expression must have integral or unscoped enum type
+    b[u];		// { dg-error "4:invalid types" }
+      ^
+
+"Test_name.c", line 18: error: expression must have integral or unscoped enum type
+    b[v];		// { dg-error "4:invalid types" }
+      ^
+
+"Test_name.c", line 19: error: expression must have integral or unscoped enum type
+    b[w];		// { dg-error "4:invalid types" }
+      ^
+
+"Test_name.c", line 20: warning: expression has no effect
+    t[b];
+    ^
+
+"Test_name.c", line 21: error: expression must have pointer-to-object type but it has type "float"
+    u[b];		// { dg-error "4:invalid types" }
+    ^
+
+"Test_name.c", line 21: error: expression must have integral or unscoped enum type
+    u[b];		// { dg-error "4:invalid types" }
+      ^
+
+"Test_name.c", line 22: error: expression must have integral or enum type
+    v[b];		// { dg-error "4:invalid types" }
+      ^
+
+"Test_name.c", line 23: error: expression must have integral or enum type
+    w[b];		// { dg-error "4:invalid types" }
+      ^
+
+"Test_name.c", line 26: error: expression must have integral or unscoped enum type
+    new int[v];	// { dg-error "11:expression in new-declarator must have integral" }
+            ^
+
+"Test_name.c", line 27: error: expression must have integral or unscoped enum type
+    new int[w];	// { dg-error "11:expression in new-declarator must have integral" }
+            ^
+
+"Test_name.c", line 29: error: expression must have integral or enum type
+    switch (u) { default: break; }	// { dg-error "11:switch quantity not an integer" }
+            ^
+
+"Test_name.c", line 30: error: expression must have integral or enum type
+    switch (v) { default: break; }	// { dg-error "11:switch quantity not an integer" }
+            ^
+
+"Test_name.c", line 31: error: expression must have integral or enum type
+    switch (w) { default: break; }	// { dg-error "11:switch quantity not an integer" }
+            ^
+
+"Test_name.c", line 33: error: expression must have integral or unscoped enum type
+    u = ~u;	// { dg-error "8:wrong type argument to bit-complement" }
+         ^
+
+"Test_name.c", line 35: error: vector operation does not apply to vector with non-integral type
+    w = ~w;	// { dg-error "8:wrong type argument to bit-complement" }
+         ^
+
+14 errors detected in the compilation of "Test_name.c".

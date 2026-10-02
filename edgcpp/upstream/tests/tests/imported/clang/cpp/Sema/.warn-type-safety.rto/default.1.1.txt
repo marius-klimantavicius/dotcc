@@ -1,0 +1,41 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 13: warning: unknown attribute "type_tag_for_datatype"
+  extern struct ompi_predefined_datatype_t ompi_mpi_float __attribute__(( type_tag_for_datatype(mpi,float) ));
+                                                                          ^
+
+"Test_name.c", line 14: warning: unknown attribute "type_tag_for_datatype"
+  extern struct ompi_predefined_datatype_t ompi_mpi_int   __attribute__(( type_tag_for_datatype(mpi,int) ));
+                                                                          ^
+
+"Test_name.c", line 15: warning: unknown attribute "type_tag_for_datatype"
+  extern struct ompi_predefined_datatype_t ompi_mpi_null  __attribute__(( type_tag_for_datatype(mpi,void,must_be_null) ));
+                                                                          ^
+
+"Test_name.c", line 18: warning: unknown attribute "type_tag_for_datatype"
+  static const int wrong_init __attribute__(( type_tag_for_datatype(zzz,int) )) = f(100); // expected-error {{'type_tag_for_datatype' attribute requires the initializer to be an integral constant expression}}
+                                              ^
+
+"Test_name.c", line 27: warning: unknown attribute "pointer_with_type_tag"
+         __attribute__(( pointer_with_type_tag(mpi,5,6) )); // expected-error {{attribute parameter 2 is out of bounds}}
+                         ^
+
+"Test_name.c", line 30: warning: unknown attribute "pointer_with_type_tag"
+         __attribute__(( pointer_with_type_tag(mpi,2,5) )); // expected-error {{attribute parameter 3 is out of bounds}}
+                         ^
+
+"Test_name.c", line 33: warning: unknown attribute "pointer_with_type_tag"
+         __attribute__(( pointer_with_type_tag(mpi,1,5) )); // expected-error {{attribute is invalid for the implicit this argument}}
+                         ^
+
+"Test_name.c", line 36: warning: unknown attribute "pointer_with_type_tag"
+         __attribute__(( pointer_with_type_tag(mpi,2,1) )); // expected-error {{attribute is invalid for the implicit this argument}}
+                         ^
+
+"Test_name.c", line 39: warning: unknown attribute "pointer_with_type_tag"
+         __attribute__(( pointer_with_type_tag(mpi,2,4) )); // no-error
+                         ^
+
+"Test_name.c", line 45: warning: unknown attribute "pointer_with_type_tag"
+       __attribute__(( pointer_with_type_tag(mpi,a,5) )); // expected-error {{attribute requires parameter 2 to be an integer constant}}
+                       ^
+

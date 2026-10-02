@@ -1,0 +1,70 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 158: error: the size of an array must be greater than zero
+    int check8[X4<1, 3, 5>::Inner<tuple<unsigned_pair<1, 2>,
+               ^
+
+"Test_name.c", line 183: error: the size of an array must be greater than zero
+    int check10[X5<add_reference, add_pointer, add_const>
+                ^
+
+"Test_name.c", line 213: error: expression must have a constant value
+      static_assert(X6<int, int>().f2(3, 4, 0, 1) == 34, ""); // expected-error {{constant expression}} expected-note {{in call}}
+                    ^
+"Test_name.c", line 201: note: attempt to access storage one position past an object treated as an array of one element
+        constexpr auto f2(A ...a, B ...b) const -> decltype(g((&a)[b] ...)) { return g((&a)[b] ...); } // expected-note {{past-the-end}}
+                                                                                           ^
+
+"Test_name.c", line 221: error: floating-point template parameter is nonstandard
+      template<Types ...Values> // expected-error{{a non-type template parameter cannot have type 'float'}} \
+               ^
+          detected during instantiation of class "ExpandingNonTypeTemplateParameters::tuple_of_values<Types...> [with Types=<int, float>]" at line 237
+
+"Test_name.c", line 239: error: a reference of type "float &" (not const-qualified) cannot be initialized with a value of type "int"
+    tuple_of_values<int&, float&>::apply<i, i>::type tv2; // expected-error{{non-type template parameter of reference type 'float &' cannot bind to template argument of type 'int'}}
+                                            ^
+
+"Test_name.c", line 241: error: too few arguments for class template "ExpandingNonTypeTemplateParameters::tuple_of_values<Types...>::apply [with Types=<int &, float &>]"
+    tuple_of_values<int&, float&>::apply<i>::type tv3; // expected-error{{too few template arguments for class template 'apply'}}
+                                          ^
+
+"Test_name.c", line 243: error: too many arguments for class template "ExpandingNonTypeTemplateParameters::tuple_of_values<Types...>::apply [with Types=<int &, float &>]"
+    tuple_of_values<int&, float&>::apply<i, f, i>::type tv4; // expected-error{{too many template arguments for class template 'apply'}}
+                                               ^
+
+"Test_name.c", line 304: error: no instance of function template "PR13386::S<T...>::f [with T=<int, int>]" matches the argument list
+            argument types are: (int)
+            object type is: PR13386::S<int, int>
+      S<int, int>().f(0); // expected-error {{no matching member function for call}}
+                    ^
+"Test_name.c", line 284: note: number of parameters of function template "PR13386::S<T...>::f [with T=<int, int>]" does not match the call
+      void f(T &&...t, U &&...u) {} // expected-note {{candidate}}
+           ^
+
+"Test_name.c", line 309: error: no instance of function template "PR13386::S<T...>::g [with T=<int>]" matches the argument list
+            argument types are: (int, int)
+            object type is: PR13386::S<int>
+      S<int>().g(0, 1); // expected-error {{no matching member function for call}}
+               ^
+"Test_name.c", line 286: note: candidate function template "PR13386::S<T...>::g [with T=<int>]" failed deduction
+      void g(U &&...u, T &&...t) {} // expected-note {{candidate}}
+           ^
+
+"Test_name.c", line 314: error: no instance of function template "PR13386::S<T...>::h [with T=<>]" matches the argument list
+            argument types are: (int)
+            object type is: PR13386::S<>
+      S<>().h(0); // expected-error {{no matching member function for call}}
+            ^
+"Test_name.c", line 288: note: candidate function template "PR13386::S<T...>::h [with T=<>]" failed deduction
+      void h(tuple<T, U> &&...) {}
+           ^
+
+"Test_name.c", line 315: error: no instance of function template "PR13386::S<T...>::h [with T=<int>]" matches the argument list
+            argument types are: ({...})
+            object type is: PR13386::S<int>
+      S<int>().h({}); // expected-error {{no matching member function for call}}
+               ^
+"Test_name.c", line 288: note: candidate function template "PR13386::S<T...>::h [with T=<int>]" failed deduction
+      void h(tuple<T, U> &&...) {}
+           ^
+
+11 errors detected in the compilation of "Test_name.c".

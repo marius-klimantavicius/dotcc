@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 11: warning: inline specifier allowed on function declarations only
+  inline int a; /* { dg-error "variable 'a' declared 'inline'" } */
+  ^
+
+"Test_name.c", line 12: warning: inline specifier allowed on function declarations only
+  inline int (*b)(void); /* { dg-error "variable 'b' declared 'inline'" } */
+  ^
+
+"Test_name.c", line 13: warning: inline specifier allowed on function declarations only
+  typedef inline void c(void); /* { dg-error "typedef 'c' declared 'inline'" } */
+          ^
+
+"Test_name.c", line 14: warning: inline specifier allowed on function declarations only
+  typedef inline int d; /* { dg-error "typedef 'd' declared 'inline'" } */
+          ^
+
+"Test_name.c", line 15: error: invalid specifier on a parameter
+  void e(inline int f(void)); /* { dg-error "parameter 'f' declared 'inline'" } */
+         ^
+
+"Test_name.c", line 16: error: invalid specifier on a parameter
+  void g(inline int(void)); /* { dg-error "parameter '\\({anonymous}\\)' declared 'inline'" } */
+         ^
+
+2 errors detected in the compilation of "Test_name.c".

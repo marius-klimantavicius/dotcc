@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 10: error: linkage specification is incompatible with previous "g" (declared at line 6)
+  extern "C++" void g();
+                    ^
+
+"Test_name.c", line 11: error: declaration is incompatible with previous "h" (declared at line 7)
+  extern "C++" int h();
+                   ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,21 @@
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+#
+# This file is used to supply additional tags that may be used as aliases
+# for diagnostic messages for the purpose of overriding the severity of
+# diagnostic using command line options.
+#
+# Each line should be formatted as:
+#
+#   error_code;tag
+#
+# The error code is the enumeration element name used by the front end.  The
+# tag is the alias being assigned.  There may be more than one alias that
+# references a given enumerator.
+#
+# Lines that begin with a "#", and blank lines, are ignored by mk_errinfo.
+#
+

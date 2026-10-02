@@ -1,0 +1,110 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --ms_extensions -w Test_name.c
+"Test_name.c", line 5: error: unknown attribute "code_seg"
+  struct __declspec(code_seg("my_one")) FooOne {
+                    ^
+
+"Test_name.c", line 10: error: unknown attribute "code_seg"
+    int __declspec(code_seg("my_three")) barD();
+                   ^
+
+"Test_name.c", line 13: error: unknown attribute "code_seg"
+  int __declspec(code_seg("my_four")) FooOne::barC() { return 10; }
+                 ^
+
+"Test_name.c", line 16: error: unknown attribute "code_seg"
+  int __declspec(code_seg("my_five")) FooTwo::barD() { return 20; }
+                 ^
+
+"Test_name.c", line 19: error: unknown attribute "code_seg"
+  int __declspec(code_seg("my_six")) FooTwo::barE() { return 30; }
+                 ^
+
+"Test_name.c", line 26: error: unknown attribute "code_seg"
+  struct __declspec(code_seg("my_base")) Base1 {};
+                    ^
+
+"Test_name.c", line 32: error: unknown attribute "code_seg"
+  struct __declspec(code_seg("my_derived")) D2 : Base1 {};
+                    ^
+
+"Test_name.c", line 35: error: unknown attribute "code_seg"
+  struct __declspec(code_seg("my_derived")) D3 : Base2 {};
+                    ^
+
+"Test_name.c", line 39: error: unknown attribute "code_seg"
+  template <typename T> struct __declspec(code_seg("my_base")) MB : T { };
+                                          ^
+
+"Test_name.c", line 40: error: unknown attribute "code_seg"
+  template <typename T> struct __declspec(code_seg("my_derived")) MD : T { };
+                                          ^
+
+"Test_name.c", line 56: error: unknown attribute "code_seg"
+  struct __declspec(code_seg("my_one")) Base3 {
+                    ^
+
+"Test_name.c", line 58: error: unknown attribute "code_seg"
+    virtual int __declspec(code_seg("my_two")) barB() { return 2; }
+                           ^
+
+"Test_name.c", line 60: error: unknown attribute "code_seg"
+  struct __declspec(code_seg("my_one")) Derived3 : Base3 {
+                    ^
+
+"Test_name.c", line 68: error: unknown attribute "code_seg"
+    virtual int __declspec(code_seg("my_one")) barA() {return 1;}
+                           ^
+
+"Test_name.c", line 75: error: unknown attribute "code_seg"
+    virtual int __declspec(code_seg("my_two")) barB() {return 1;}
+                           ^
+
+"Test_name.c", line 83: error: unknown attribute "code_seg"
+  int __declspec(code_seg("foo")) __declspec(code_seg("foo")) bar1() { return 1; }
+                 ^
+
+"Test_name.c", line 83: error: unknown attribute "code_seg"
+  int __declspec(code_seg("foo")) __declspec(code_seg("foo")) bar1() { return 1; }
+                                             ^
+
+"Test_name.c", line 85: error: unknown attribute "code_seg"
+  int __declspec(code_seg("foo")) __declspec(code_seg("bar")) bar2() { return 1; }
+                 ^
+
+"Test_name.c", line 85: error: unknown attribute "code_seg"
+  int __declspec(code_seg("foo")) __declspec(code_seg("bar")) bar2() { return 1; }
+                                             ^
+
+"Test_name.c", line 89: error: unknown attribute "code_seg"
+  struct __declspec(code_seg("foo")) __declspec(code_seg("foo")) Foo {
+                    ^
+
+"Test_name.c", line 89: error: unknown attribute "code_seg"
+  struct __declspec(code_seg("foo")) __declspec(code_seg("foo")) Foo {
+                                                ^
+
+"Test_name.c", line 93: error: unknown attribute "code_seg"
+  struct __declspec(code_seg("foo")) __declspec(code_seg("bar")) FooSix {
+                    ^
+
+"Test_name.c", line 93: error: unknown attribute "code_seg"
+  struct __declspec(code_seg("foo")) __declspec(code_seg("bar")) FooSix {
+                                                ^
+
+"Test_name.c", line 100: error: unknown attribute "code_seg"
+    int __declspec(code_seg("foo")) __declspec(code_seg("foo")) bar1() { return 1; }
+                   ^
+
+"Test_name.c", line 100: error: unknown attribute "code_seg"
+    int __declspec(code_seg("foo")) __declspec(code_seg("foo")) bar1() { return 1; }
+                                               ^
+
+"Test_name.c", line 102: error: unknown attribute "code_seg"
+    int __declspec(code_seg("foo")) __declspec(code_seg("bar")) bar2() { return 1; }
+                   ^
+
+"Test_name.c", line 102: error: unknown attribute "code_seg"
+    int __declspec(code_seg("foo")) __declspec(code_seg("bar")) bar2() { return 1; }
+                                               ^
+
+27 errors detected in the compilation of "Test_name.c".

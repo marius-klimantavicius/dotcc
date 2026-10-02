@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=3 --c++11 --gn 130100 --target linux_x86_64 Test_name.c
+"Test_name.c", line 8: error: identifier "__builtin_ia32_ldtilecfg" is undefined
+    __builtin_ia32_ldtilecfg(&ci); // only available in 12.4.0 and 13.3.0
+    ^
+
+"Test_name.c", line 10: error: identifier "__builtin_ia32_sttilecfg" is undefined
+    __builtin_ia32_sttilecfg(&i);  // only available in 12.4.0 and 13.3.0
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c++11 Test_name.c
+"Test_name.c", line 7: error: a fully qualified constructor call is not allowed
+  auto s = S::S();
+           ^
+
+"Test_name.c", line 9: error: a fully qualified constructor call is not allowed
+  auto s3{S::S()};
+          ^
+
+2 errors detected in the compilation of "Test_name.c".

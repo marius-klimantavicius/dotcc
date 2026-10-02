@@ -1,0 +1,37 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 12: warning: variable "v1" has an uninitialized const field
+    s v1; /* { dg-warning "uninitialized const member in" } */
+      ^
+
+"Test_name.c", line 13: warning: variable "va" has an uninitialized const field
+    s va[2]; /* { dg-warning "uninitialized const member in" } */
+      ^
+
+"Test_name.c", line 15: warning: variable "v3" has an uninitialized const field
+    struct ts v3; /* { dg-warning "uninitialized const member in" } */
+              ^
+
+"Test_name.c", line 16: warning: variable "ta" has an uninitialized const field
+    struct ta ta[2]; /* { dg-warning "uninitialized const member in" } */
+              ^
+
+"Test_name.c", line 12: warning: variable "v1" was declared but never referenced
+    s v1; /* { dg-warning "uninitialized const member in" } */
+      ^
+
+"Test_name.c", line 13: warning: variable "va" was declared but never referenced
+    s va[2]; /* { dg-warning "uninitialized const member in" } */
+      ^
+
+"Test_name.c", line 14: warning: variable "v2" was declared but never referenced
+    union u v2; /* { dg-warning "uninitialized const member in" } */ 
+            ^
+
+"Test_name.c", line 15: warning: variable "v3" was declared but never referenced
+    struct ts v3; /* { dg-warning "uninitialized const member in" } */
+              ^
+
+"Test_name.c", line 16: warning: variable "ta" was declared but never referenced
+    struct ta ta[2]; /* { dg-warning "uninitialized const member in" } */
+              ^
+

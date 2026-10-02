@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: error: identifier "_forbegin" is undefined
+      _forbegin; // { dg-bogus "suggested alternative" }
+      ^
+
+"Test_name.c", line 20: error: identifier "__for_begin" is undefined
+      __for_begin = __for_end;	// { dg-error "was not declared in this scope" }
+      ^
+
+"Test_name.c", line 20: error: identifier "__for_end" is undefined
+      __for_begin = __for_end;	// { dg-error "was not declared in this scope" }
+                    ^
+
+3 errors detected in the compilation of "Test_name.c".

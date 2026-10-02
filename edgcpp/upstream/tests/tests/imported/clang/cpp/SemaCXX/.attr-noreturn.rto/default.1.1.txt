@@ -1,0 +1,247 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 15: warning: missing return statement at end of non-void function "test5::test1"
+    } // expected-warning {{non-void function does not return a value}}
+    ^
+
+"Test_name.c", line 46: warning: function declared with "noreturn" does return
+    __attribute__((noreturn)) void test_1() { A a; }
+                                                   ^
+
+"Test_name.c", line 47: warning: function declared with "noreturn" does return
+    __attribute__((noreturn)) void test_2() { B b; }
+                                                   ^
+
+"Test_name.c", line 48: warning: function declared with "noreturn" does return
+    __attribute__((noreturn)) void test_3() { C c; }
+                                                   ^
+
+"Test_name.c", line 49: warning: function declared with "noreturn" does return
+    __attribute__((noreturn)) void test_4() { D d; }
+                                                   ^
+
+"Test_name.c", line 50: warning: function declared with "noreturn" does return
+    __attribute__((noreturn)) void test_5() { E e; }
+                                                   ^
+
+"Test_name.c", line 51: warning: function declared with "noreturn" does return
+    __attribute__((noreturn)) void test_6() { F f; }
+                                                   ^
+
+"Test_name.c", line 52: warning: function declared with "noreturn" does return
+    __attribute__((noreturn)) void test_7() { G g; }
+                                                   ^
+
+"Test_name.c", line 53: warning: function declared with "noreturn" does return
+    __attribute__((noreturn)) void test_8() { H h; }
+                                                   ^
+
+"Test_name.c", line 54: warning: function declared with "noreturn" does return
+    __attribute__((noreturn)) void test_9() { I i; }
+                                                   ^
+
+"Test_name.c", line 55: warning: function declared with "noreturn" does return
+    __attribute__((noreturn)) void test_10() { J j; }
+                                                    ^
+
+"Test_name.c", line 56: warning: function declared with "noreturn" does return
+    __attribute__((noreturn)) void test_11() { K k; }
+                                                    ^
+
+"Test_name.c", line 57: warning: function declared with "noreturn" does return
+    __attribute__((noreturn)) void test_12() { L l; }
+                                                    ^
+
+"Test_name.c", line 58: warning: function declared with "noreturn" does return
+    __attribute__((noreturn)) void test_13() { M m; }
+                                                    ^
+
+"Test_name.c", line 59: warning: function declared with "noreturn" does return
+    __attribute__((noreturn)) void test_14() { N n; }
+                                                    ^
+
+"Test_name.c", line 60: warning: function declared with "noreturn" does return
+    __attribute__((noreturn)) void test_15() { O o; }
+                                                    ^
+
+"Test_name.c", line 62: warning: function declared with "noreturn" does return
+    __attribute__((noreturn)) void test_16() { const A& a = A(); }
+                                                                 ^
+
+"Test_name.c", line 63: warning: function declared with "noreturn" does return
+    __attribute__((noreturn)) void test_17() { const B& b = B(); }
+                                                                 ^
+
+"Test_name.c", line 64: warning: function declared with "noreturn" does return
+    __attribute__((noreturn)) void test_18() { const C& c = C(); }
+                                                                 ^
+
+"Test_name.c", line 65: warning: function declared with "noreturn" does return
+    __attribute__((noreturn)) void test_19() { const D& d = D(); }
+                                                                 ^
+
+"Test_name.c", line 66: warning: function declared with "noreturn" does return
+    __attribute__((noreturn)) void test_20() { const E& e = E(); }
+                                                                 ^
+
+"Test_name.c", line 67: warning: function declared with "noreturn" does return
+    __attribute__((noreturn)) void test_21() { const F& f = F(); }
+                                                                 ^
+
+"Test_name.c", line 68: warning: function declared with "noreturn" does return
+    __attribute__((noreturn)) void test_22() { const G& g = G(); }
+                                                                 ^
+
+"Test_name.c", line 69: warning: function declared with "noreturn" does return
+    __attribute__((noreturn)) void test_23() { const H& h = H(); }
+                                                                 ^
+
+"Test_name.c", line 70: warning: function declared with "noreturn" does return
+    __attribute__((noreturn)) void test_24() { const I& i = I(); }
+                                                                 ^
+
+"Test_name.c", line 71: warning: function declared with "noreturn" does return
+    __attribute__((noreturn)) void test_25() { const J& j = J(); }
+                                                                 ^
+
+"Test_name.c", line 72: warning: function declared with "noreturn" does return
+    __attribute__((noreturn)) void test_26() { const K& k = K(); }
+                                                                 ^
+
+"Test_name.c", line 73: warning: function declared with "noreturn" does return
+    __attribute__((noreturn)) void test_27() { const L& l = L(); }
+                                                                 ^
+
+"Test_name.c", line 74: warning: function declared with "noreturn" does return
+    __attribute__((noreturn)) void test_28() { const M& m = M(); }
+                                                                 ^
+
+"Test_name.c", line 75: warning: function declared with "noreturn" does return
+    __attribute__((noreturn)) void test_29() { const N& n = N(); }
+                                                                 ^
+
+"Test_name.c", line 76: warning: function declared with "noreturn" does return
+    __attribute__((noreturn)) void test_30() { const O& o = O(); }
+                                                                 ^
+
+"Test_name.c", line 126: warning: function declared with "noreturn" does return
+    }  // expected-warning {{function declared 'noreturn' should not return}}
+    ^
+
+"Test_name.c", line 95: warning: variable "a" was declared but never referenced
+      AA a;
+         ^
+
+"Test_name.c", line 97: warning: variable "c" was declared but never referenced
+      CC c;
+         ^
+
+"Test_name.c", line 103: warning: variable "i" was declared but never referenced
+      II i;
+         ^
+
+"Test_name.c", line 104: warning: variable "j" was declared but never referenced
+      JJ j;
+         ^
+
+"Test_name.c", line 111: warning: variable "aa" was declared but never referenced
+      const AA& aa = AA();
+                ^
+
+"Test_name.c", line 113: warning: variable "cc" was declared but never referenced
+      const CC& cc = CC();
+                ^
+
+"Test_name.c", line 119: warning: variable "ii" was declared but never referenced
+      const II& ii = II();
+                ^
+
+"Test_name.c", line 120: warning: variable "jj" was declared but never referenced
+      const JJ& jj = JJ();
+                ^
+
+"Test_name.c", line 135: warning: function declared with "noreturn" does return
+    }
+    ^
+
+"Test_name.c", line 138: warning: function declared with "noreturn" does return
+    }
+    ^
+
+"Test_name.c", line 145: warning: function declared with "noreturn" does return
+    }
+    ^
+
+"Test_name.c", line 152: warning: function declared with "noreturn" does return
+    }  // expected-warning {{function declared 'noreturn' should not return}}
+    ^
+
+"Test_name.c", line 167: warning: function declared with "noreturn" does return
+    }  // expected-warning {{function declared 'noreturn' should not return}}
+    ^
+
+"Test_name.c", line 177: warning: variable "fp" was declared but never referenced
+    void (*fp)() = f0;
+           ^
+
+"Test_name.c", line 178: warning: variable "fp1" was declared but never referenced
+    void (*fp1)() __attribute__((noreturn)) = f0;
+           ^
+
+"Test_name.c", line 185: warning: variable "fp" was declared but never referenced
+    void (*fp)() = f0;
+           ^
+
+"Test_name.c", line 186: warning: variable "fp1" was declared but never referenced
+    void (*fp1)() __attribute__((noreturn)) = f0;
+           ^
+
+"Test_name.c", line 205: warning: function declared with "noreturn" does return
+    return 3; // expected-warning {{function 'blah' declared 'noreturn' should not return}}
+    ^
+
+"Test_name.c", line 237: warning: function declared with "noreturn" does return
+    __attribute__((noreturn)) void foo(int) {}
+                                             ^
+
+"Test_name.c", line 238: warning: function declared with "noreturn" does return
+    __attribute__((noreturn)) void foo(double) {}
+                                                ^
+
+"Test_name.c", line 285: error: no instance of function template "PR15291::bar" matches the required type
+      accept_fptr(bar<double>); // expected-error {{no matching function for call to 'accept_fptr'}}
+                  ^
+
+"Test_name.c", line 289: error: no instance of function template "PR15291::bar" matches the required type
+      accept_fptr_t(bar<double>); // expected-error {{no matching function for call to 'accept_fptr_t'}}
+                    ^
+
+"Test_name.c", line 293: error: no instance of function template "PR15291::accept_T" matches the argument list
+            argument types are: (<unknown-type>)
+      accept_T<void __attribute__((noreturn)) (*)(int)>(bar<double>); // expected-error {{no matching function for call to 'accept_T'}}
+      ^
+"Test_name.c", line 254: note: function template "PR15291::accept_T" does not match because argument #1 does not match parameter
+    template <typename T> void accept_T(T) {}
+                               ^
+
+"Test_name.c", line 297: error: no instance of function template "PR15291::accept_T" matches the argument list
+            argument types are: (<unknown-type>)
+      accept_T<void (*)(int)>(bar<double>); // expected-error {{no matching function for call to 'accept_T'}}
+      ^
+"Test_name.c", line 254: note: function template "PR15291::accept_T" does not match because argument #1 does not match parameter
+    template <typename T> void accept_T(T) {}
+                               ^
+
+"Test_name.c", line 301: error: no instance of function template "PR15291::accept_T" matches the argument list
+            argument types are: (<unknown-type>)
+      accept_T<void (int)>(bar<double>); // expected-error {{no matching function for call to 'accept_T'}}
+      ^
+"Test_name.c", line 254: note: function template "PR15291::accept_T" does not match because argument #1 does not match parameter
+    template <typename T> void accept_T(T) {}
+                               ^
+
+"Test_name.c", line 241: warning: function declared with "noreturn" does return
+    __attribute__((noreturn)) void bar(T) {}
+                                           ^
+          detected during instantiation of "void PR15291::bar(T) [with T=int]" at line 284
+
+5 errors detected in the compilation of "Test_name.c".

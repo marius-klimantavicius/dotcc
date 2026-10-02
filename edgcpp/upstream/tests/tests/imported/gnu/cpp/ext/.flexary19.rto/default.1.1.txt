@@ -1,0 +1,114 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 17: error: a flexible array member cannot be declared in an otherwise-empty type
+      int a[];        // { dg-warning "in an otherwise empty" }
+             ^
+
+"Test_name.c", line 26: error: a flexible array member cannot be declared in an otherwise-empty type
+      int a[];        // { dg-warning "in an otherwise empty" }
+             ^
+
+"Test_name.c", line 27: warning: array of elements containing a flexible array member is nonstandard
+    } s[1];
+      ^
+
+"Test_name.c", line 35: error: a flexible array member cannot be declared in an otherwise-empty type
+      int a[];        // { dg-warning "in an otherwise empty" }
+             ^
+
+"Test_name.c", line 36: warning: array of elements containing a flexible array member is nonstandard
+    } s[];
+      ^
+
+"Test_name.c", line 44: error: a flexible array member cannot be declared in an otherwise-empty type
+      int a[];        // { dg-warning "in an otherwise empty" }
+             ^
+
+"Test_name.c", line 45: warning: array of elements containing a flexible array member is nonstandard
+    } s[2];
+      ^
+
+"Test_name.c", line 53: error: a flexible array member cannot be declared in an otherwise-empty type
+      int a[];        // { dg-warning "in an otherwise empty" }
+             ^
+
+"Test_name.c", line 54: warning: array of elements containing a flexible array member is nonstandard
+    } s[1][2];
+      ^
+
+"Test_name.c", line 62: error: a flexible array member cannot be declared in an otherwise-empty type
+      int a[];        // { dg-warning "in an otherwise empty" }
+             ^
+
+"Test_name.c", line 63: warning: array of elements containing a flexible array member is nonstandard
+    } s[][2];
+      ^
+
+"Test_name.c", line 71: error: a flexible array member cannot be declared in an otherwise-empty type
+      int a[];        // { dg-warning "in an otherwise empty" }
+             ^
+
+"Test_name.c", line 80: error: a flexible array member cannot be declared in an otherwise-empty type
+      int a[];        // { dg-warning "in an otherwise empty" }
+             ^
+
+"Test_name.c", line 89: error: a flexible array member cannot be declared in an otherwise-empty type
+      int a[];        // { dg-warning "in an otherwise empty" }
+             ^
+
+"Test_name.c", line 98: error: a flexible array member cannot be declared in an otherwise-empty type
+      int a[];        // { dg-warning "in an otherwise empty" }
+             ^
+
+"Test_name.c", line 107: error: a flexible array member cannot be declared in an otherwise-empty type
+      int a[];        // { dg-warning "in an otherwise empty" }
+             ^
+
+"Test_name.c", line 116: error: a flexible array member cannot be declared in an otherwise-empty type
+      int a[];        // { dg-warning "in an otherwise empty" }
+             ^
+
+"Test_name.c", line 125: error: a flexible array member cannot be declared in an otherwise-empty type
+      int a[];        // { dg-warning "in an otherwise empty" }
+             ^
+
+"Test_name.c", line 134: error: a flexible array member cannot be declared in an otherwise-empty type
+      int a[];        // { dg-warning "in an otherwise empty" }
+             ^
+
+"Test_name.c", line 143: error: a flexible array member cannot be declared in an otherwise-empty type
+      int a[];        // { dg-warning "in an otherwise empty" }
+             ^
+
+"Test_name.c", line 156: error: a flexible array member cannot be declared in an otherwise-empty type
+      int a[];
+             ^
+
+"Test_name.c", line 165: error: incomplete type "int []" is not allowed
+      int a[];        // { dg-warning "flexible array member in union" }
+          ^
+
+"Test_name.c", line 214: error: a flexible array member cannot be declared in an otherwise-empty type
+      int a[];        // { dg-warning "in an otherwise empty" }
+             ^
+
+"Test_name.c", line 221: error: static data member declaration is not allowed in this class
+      static int i;   // { dg-error "static data member" }
+      ^
+
+"Test_name.c", line 223: error: a flexible array member cannot be declared in an otherwise-empty type
+      int a[];        // { dg-warning "in an otherwise empty" }
+             ^
+
+"Test_name.c", line 220: warning: declaration does not declare anything
+    struct {          // { dg-warning "10:ISO C\\+\\+ prohibits anonymous struct" }
+    ^
+
+"Test_name.c", line 232: error: a flexible array member cannot be declared in an otherwise-empty type
+      int a[];        // { dg-warning "in an otherwise empty" }
+             ^
+
+"Test_name.c", line 257: error: a flexible array member cannot be declared in an otherwise-empty type
+      int a[];        // { dg-warning "in an otherwise empty" }
+             ^
+
+22 errors detected in the compilation of "Test_name.c".

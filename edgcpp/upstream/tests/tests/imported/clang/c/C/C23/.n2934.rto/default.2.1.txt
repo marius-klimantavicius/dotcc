@@ -1,0 +1,82 @@
+fe_only -DTEST_NUMBER=2 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c17 Test_name.c
+"C/C23/n2934.c", line 8: warning: this declaration has no storage class or type specifier
+  thread_local struct S {
+  ^
+
+"C/C23/n2934.c", line 8: error: expected a ";"
+  thread_local struct S {
+               ^
+
+"C/C23/n2934.c", line 13: warning: parsing restarts here after previous syntax error
+  } s;
+     ^
+
+"C/C23/n2934.c", line 15: error: identifier "alignof" is undefined
+  static_assert(alignof(int) != 0, "");
+                ^
+
+"C/C23/n2934.c", line 15: error: expected a ")"
+  static_assert(alignof(int) != 0, "");
+                             ^
+
+"C/C23/n2934.c", line 15: warning: this declaration has no storage class or type specifier
+  static_assert(alignof(int) != 0, "");
+  ^
+
+"C/C23/n2934.c", line 60: error: expected a type specifier
+    char alignas(8) a1;
+                 ^
+
+"C/C23/n2934.c", line 60: error: a function type is not allowed here
+    char alignas(8) a1;
+         ^
+
+"C/C23/n2934.c", line 60: error: expected a ";"
+    char alignas(8) a1;
+                    ^
+
+"C/C23/n2934.c", line 61: error: expected a type specifier
+    alignas(8) char a2;
+            ^
+
+"C/C23/n2934.c", line 61: warning: this declaration has no storage class or type specifier
+    alignas(8) char a2;
+    ^
+
+"C/C23/n2934.c", line 61: error: a function type is not allowed here
+    alignas(8) char a2;
+    ^
+
+"C/C23/n2934.c", line 61: error: "alignas" has already been declared in the current scope
+    alignas(8) char a2;
+    ^
+
+"C/C23/n2934.c", line 61: error: expected a ";"
+    alignas(8) char a2;
+               ^
+
+"C/C23/n2934.c", line 64: error: expected a ";"
+    char a5 alignas(8);
+            ^
+
+"C/C23/n2934.c", line 65: error: attributes may not appear here
+    char a6 _Alignas(8);
+            ^
+
+"C/C23/n2934.c", line 71: error: expected an identifier
+  struct alignas(8) Reject1 {
+                 ^
+
+"C/C23/n2934.c", line 71: error: expected a ";"
+  struct alignas(8) Reject1 {
+                    ^
+
+"C/C23/n2934.c", line 74: warning: parsing restarts here after previous syntax error
+  };
+   ^
+
+"C/C23/n2934.c", line 76: error: attributes may not appear here
+  struct _Alignas(8) Reject2 {
+         ^
+
+15 errors detected in the compilation of "Test_name.c".

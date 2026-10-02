@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 786: warning: argument of type "long long *" is incompatible with parameter of type "long long"
+    return llabs((long long[]){1});
+                 ^
+
+"Test_name.c", line 790: warning: argument of type "long long (*)(void)" is incompatible with parameter of type "long long"
+    return llabs(&test_function_pointer);
+                 ^
+
+"Test_name.c", line 794: warning: argument of type "void *" is incompatible with parameter of type "long long"
+    return llabs(x);
+                 ^
+
+"Test_name.c", line 798: warning: argument of type "long long (*)(void)" is incompatible with parameter of type "long long"
+    return llabs(test_function);
+                 ^
+

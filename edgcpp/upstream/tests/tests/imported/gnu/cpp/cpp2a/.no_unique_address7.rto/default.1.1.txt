@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 15: error: "A::A(const A &)" (declared at line 6), required for copy that was eliminated, cannot be referenced -- it is a deleted function
+  C c{f()};			// { dg-error "deleted" }
+      ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 16: warning: unrecognized #pragma
+  #pragma omp target map( (struct St<T>) { .ptr = (T *) arr[5:5] } )
+          ^
+
+"Test_name.c", line 23: warning: unrecognized #pragma
+  #pragma omp target map( (struct St<T>) { .ptr = &arr[5] } )
+          ^
+
+"Test_name.c", line 37: warning: unrecognized #pragma
+  #pragma omp target map( (struct S) { .ptr = (int *) arr[5:5] } )
+          ^
+
+"Test_name.c", line 45: warning: unrecognized #pragma
+  #pragma omp target map( (struct S) { .ptr = &arr[5] } )
+          ^
+
+"Test_name.c", line 34: warning: variable "arr" was declared but never referenced
+    int arr[20];
+        ^
+

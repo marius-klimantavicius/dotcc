@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 6: error: invalid specifier outside a class declaration
+    virtual int f (void) const; // { dg-line line_4 }
+    ^
+
+"Test_name.c", line 6: error: a type qualifier is not allowed on a nonmember function
+    virtual int f (void) const; // { dg-line line_4 }
+                         ^
+
+"Test_name.c", line 6: error: declaration is incompatible with previous "f" (declared at line 5)
+    virtual int f (void) const; // { dg-line line_4 }
+                ^
+
+"Test_name.c", line 7: error: invalid specifier outside a class declaration
+    virtual int f (void); // { dg-line line_5 }
+    ^
+
+4 errors detected in the compilation of "Test_name.c".

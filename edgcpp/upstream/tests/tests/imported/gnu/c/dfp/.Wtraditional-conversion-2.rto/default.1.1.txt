@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 10: warning: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+  void fd32(_Decimal32);
+            ^
+
+"Test_name.c", line 10: warning: identifier-list parameters may only be used in a function definition
+  void fd32(_Decimal32);
+       ^
+
+"Test_name.c", line 11: warning: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+  void fd64(_Decimal64);
+            ^
+
+"Test_name.c", line 11: warning: identifier-list parameters may only be used in a function definition
+  void fd64(_Decimal64);
+       ^
+
+"Test_name.c", line 12: warning: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+  void fd128(_Decimal128);
+             ^
+
+"Test_name.c", line 12: warning: identifier-list parameters may only be used in a function definition
+  void fd128(_Decimal128);
+       ^
+
+"Test_name.c", line 16: error: identifier-list parameters may only be used in a function definition
+    void (*fd32)(_Decimal32);
+                 ^
+
+"Test_name.c", line 16: warning: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+    void (*fd32)(_Decimal32);
+                 ^
+
+"Test_name.c", line 17: error: identifier-list parameters may only be used in a function definition
+    void (*fd64)(_Decimal64);
+                 ^
+
+"Test_name.c", line 17: warning: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+    void (*fd64)(_Decimal64);
+                 ^
+
+"Test_name.c", line 18: error: identifier-list parameters may only be used in a function definition
+    void (*fd128)(_Decimal128);
+                  ^
+
+"Test_name.c", line 18: warning: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+    void (*fd128)(_Decimal128);
+                  ^
+
+"Test_name.c", line 23: error: identifier "_Decimal32" is undefined
+  _Decimal32 d32;
+  ^
+
+"Test_name.c", line 24: error: identifier "_Decimal64" is undefined
+  _Decimal64 d64;
+  ^
+
+"Test_name.c", line 25: error: identifier "_Decimal128" is undefined
+  _Decimal128 d128;
+  ^
+
+6 errors detected in the compilation of "Test_name.c".

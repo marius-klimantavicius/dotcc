@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 7: error: a namespace name is not allowed
+  decltype(N) x;   // { dg-error "expected primary-expression" }
+           ^
+
+"Test_name.c", line 10: error: type name is not allowed
+  decltype(S) y;  // { dg-error "argument to .decltype. must be an expression" }
+           ^
+
+"Test_name.c", line 14: error: argument list for class template "U" is missing
+  decltype(U) z;  // { dg-error "missing template arguments" }
+           ^
+
+3 errors detected in the compilation of "Test_name.c".

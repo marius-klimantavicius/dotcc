@@ -1,0 +1,71 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 5: error: function call is not allowed in a constant expression
+  #if !__is_target_arch(x86_64) || !__is_target_arch(X86_64)
+       ^
+
+"Test_name.c", line 5: error: function call is not allowed in a constant expression
+  #if !__is_target_arch(x86_64) || !__is_target_arch(X86_64)
+                                    ^
+
+"Test_name.c", line 9: error: function call is not allowed in a constant expression
+  #if __is_target_arch(arm64)
+      ^
+
+"Test_name.c", line 15: error: function call is not allowed in a constant expression
+  #if __is_target_arch(foo)
+      ^
+
+"Test_name.c", line 19: error: function call is not allowed in a constant expression
+  #if !__is_target_vendor(apple) || !__is_target_vendor(APPLE)
+       ^
+
+"Test_name.c", line 19: error: function call is not allowed in a constant expression
+  #if !__is_target_vendor(apple) || !__is_target_vendor(APPLE)
+                                     ^
+
+"Test_name.c", line 23: error: function call is not allowed in a constant expression
+  #if __is_target_vendor(unknown)
+      ^
+
+"Test_name.c", line 27: error: function call is not allowed in a constant expression
+  #if __is_target_vendor(foo)
+      ^
+
+"Test_name.c", line 31: error: function call is not allowed in a constant expression
+  #if !__is_target_os(darwin) || !__is_target_os(DARWIN)
+       ^
+
+"Test_name.c", line 31: error: function call is not allowed in a constant expression
+  #if !__is_target_os(darwin) || !__is_target_os(DARWIN)
+                                  ^
+
+"Test_name.c", line 35: error: function call is not allowed in a constant expression
+  #if __is_target_os(ios)
+      ^
+
+"Test_name.c", line 39: error: function call is not allowed in a constant expression
+  #if __is_target_os(foo)
+      ^
+
+"Test_name.c", line 43: error: function call is not allowed in a constant expression
+  #if !__is_target_environment(simulator) || !__is_target_environment(SIMULATOR)
+       ^
+
+"Test_name.c", line 43: error: function call is not allowed in a constant expression
+  #if !__is_target_environment(simulator) || !__is_target_environment(SIMULATOR)
+                                              ^
+
+"Test_name.c", line 47: error: function call is not allowed in a constant expression
+  #if __is_target_environment(unknown)
+      ^
+
+"Test_name.c", line 51: error: function call is not allowed in a constant expression
+  #if __is_target_environment(foo)
+      ^
+
+"Test_name.c", line 56: catastrophic error: #error directive: "has builtin doesn't work"
+    #error "has builtin doesn't work"
+     ^
+
+16 errors and 1 catastrophic error detected in the compilation of "Test_name.c".
+Compilation terminated.

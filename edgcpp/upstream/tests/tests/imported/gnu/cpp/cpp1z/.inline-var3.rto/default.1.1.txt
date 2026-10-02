@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 9: warning: inline variables are a C++17 feature
+  inline int inlvarvariable1 = 1;				// { dg-warning "1:inline variables are only available with" "" { target c++14_down } }
+  ^
+
+"Test_name.c", line 50: warning: variable "v3" was declared but never referenced
+  decltype (S::inlvarvariable6) v3 = sizeof (S::inlvarvariable5) + S::inlvarvariable6 + S::inlvarvariable7;
+                                ^
+

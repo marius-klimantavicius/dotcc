@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 14: error: expected an expression
+    [[]] __extension__ asm ("");			// { dg-error "expected" }
+                       ^
+
+"Test_name.c", line 16: error: attributes are not allowed here
+    [[]] namespace M = ::N;			// { dg-error "expected" }
+    ^
+
+"Test_name.c", line 17: error: attributes are not allowed here
+    [[]] using namespace N;			// { dg-bogus "expected" }
+    ^
+
+"Test_name.c", line 18: error: expected a ";"
+    using namespace P [[]];			// { dg-error "expected" }
+                      ^
+
+"Test_name.c", line 19: error: attributes are not allowed here
+    [[]] using O::T;				// { dg-error "expected" }
+    ^
+
+"Test_name.c", line 20: error: identifier "__label__" is undefined
+    [[]] __label__ foo;				// { dg-error "expected" }
+         ^
+
+"Test_name.c", line 27: warning: attribute "gnu::unused" does not apply here
+    [[gnu::unused]] asm ("");
+      ^
+
+"Test_name.c", line 28: warning: attribute "gnu::unused" does not apply here
+    [[gnu::unused]] __extension__ asm ("");	// { dg-error "expected" }
+      ^
+
+"Test_name.c", line 28: error: expected an expression
+    [[gnu::unused]] __extension__ asm ("");	// { dg-error "expected" }
+                                  ^
+
+"Test_name.c", line 29: warning: attribute "gnu::unused" does not apply here
+    __extension__ [[gnu::unused]] asm ("");
+                    ^
+
+"Test_name.c", line 30: error: attributes are not allowed here
+    [[gnu::unused]] namespace M = ::N;		// { dg-error "expected" }
+    ^
+
+"Test_name.c", line 31: error: attributes are not allowed here
+    [[gnu::unused]] using namespace N;		// { dg-bogus "expected" }
+    ^
+
+"Test_name.c", line 32: error: expected a ";"
+    using namespace P [[gnu::unused]];		// { dg-error "expected" }
+                      ^
+
+"Test_name.c", line 33: error: attributes are not allowed here
+    [[gnu::unused]] using O::T;			// { dg-error "expected" }
+    ^
+
+"Test_name.c", line 34: error: identifier "__label__" is undefined
+    [[gnu::unused]] __label__ foo;		// { dg-error "expected" }
+                    ^
+
+12 errors detected in the compilation of "Test_name.c".

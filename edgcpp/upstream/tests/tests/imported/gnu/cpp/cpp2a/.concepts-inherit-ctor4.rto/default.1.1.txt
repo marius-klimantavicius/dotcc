@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 19: error: no instance of constructor "S2<T>::S2 [with T=int]" matches the argument list
+            argument types are: (int)
+    S2<int> s(0); // { dg-error "no matching function" }
+              ^
+"Test_name.c", line 15: note: substituting "<int>" for function template "S2<T>::S2(U) [with T=int]" failed constraints
+      using S1<T>::S1;
+      ^
+"Test_name.c", line 10: note: concept "C" not satisfied for "<int>"
+      template<C U> S1(U x) { }
+               ^
+"Test_name.c", line 6: note: atomic constraint evaluates to false
+    concept C = __is_class(T);
+                ^
+"Test_name.c", line 14: note: function "S2<T>::S2(const S2<int> &) [with T=int]" does not match because argument #1 does not match parameter
+    struct S2 : S1<T> {
+           ^
+"Test_name.c", line 14: note: function "S2<T>::S2(S2<int> &&) [with T=int]" does not match because argument #1 does not match parameter
+    struct S2 : S1<T> {
+           ^
+"Test_name.c", line 14: note: number of parameters of function "S2<T>::S2() [with T=int]" does not match the call
+    struct S2 : S1<T> {
+           ^
+
+1 error detected in the compilation of "Test_name.c".

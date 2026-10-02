@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 7: warning: this declaration has no storage class or type specifier
+    Foo(int n) : n_(n) {} // expected-error 1+{{}}
+    ^
+
+"Test_name.c", line 7: error: function call is not allowed in a constant expression
+    Foo(int n) : n_(n) {} // expected-error 1+{{}}
+                 ^
+
+"Test_name.c", line 7: error: identifier "n" is undefined
+    Foo(int n) : n_(n) {} // expected-error 1+{{}}
+                    ^
+
+"Test_name.c", line 7: error: a function type is not allowed here
+    Foo(int n) : n_(n) {} // expected-error 1+{{}}
+    ^
+
+"Test_name.c", line 7: error: expected a ";"
+    Foo(int n) : n_(n) {} // expected-error 1+{{}}
+                       ^
+
+"Test_name.c", line 11: error: identifier "Foo" is undefined
+  int main() { Foo f; } // expected-error 1+{{}}
+               ^
+
+"Test_name.c", line 11: error: expected a ";"
+  int main() { Foo f; } // expected-error 1+{{}}
+                   ^
+
+6 errors detected in the compilation of "Test_name.c".

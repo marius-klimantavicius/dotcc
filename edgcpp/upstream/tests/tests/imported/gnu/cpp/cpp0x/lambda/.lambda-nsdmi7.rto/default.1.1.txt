@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 20: error: invalid reference to an outer-scope local variable in a lambda body
+        a;			// { dg-error "not captured" }
+        ^
+
+"Test_name.c", line 24: error: an enclosing-function local variable cannot be referenced in a lambda body unless it is in the capture list
+      a;				// { dg-error "not captured" }
+      ^
+
+2 errors detected in the compilation of "Test_name.c".

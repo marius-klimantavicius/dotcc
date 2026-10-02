@@ -1,0 +1,190 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c89 --strict_gnu Test_name.c
+"Test_name.c", line 6: error: identifier "t1" is undefined
+  static t1 *a;           /* { dg-error "unknown type name 't1'" } */
+         ^
+
+"Test_name.c", line 9: error: identifier "t2" is undefined
+  typedef t2 *z;          /* { dg-error "unknown type name 't2'" } */
+          ^
+
+"Test_name.c", line 9: error: "z" has already been declared in the current scope
+  typedef t2 *z;          /* { dg-error "unknown type name 't2'" } */
+              ^
+
+"Test_name.c", line 12: error: identifier "t3" is undefined
+  extern t3 p1(void);     /* { dg-error "unknown type name 't3'" } */
+         ^
+
+"Test_name.c", line 13: error: identifier "t4" is undefined
+  int p2(const t4 x);     /* { dg-error "unknown type name 't4'" } */
+               ^
+
+"Test_name.c", line 14: error: identifier "t1" is undefined
+  int p3(const t1 x);     /* { dg-error "unknown type name 't1'" } */ /* dup??? */
+               ^
+
+"Test_name.c", line 15: error: identifier "t5" is undefined
+  int p4(t5 (*x)(void));  /* { dg-error "unknown type name 't5'" } */
+         ^
+
+"Test_name.c", line 16: error: identifier "t6" is undefined
+  int p5(t6 *);           /* { dg-error "unknown type name 't6'" } */
+         ^
+
+"Test_name.c", line 17: error: identifier "t7" is undefined
+  int p6(t7 x);           /* { dg-error "unknown type name 't7'" } */
+         ^
+
+"Test_name.c", line 18: error: identifier "t8" is undefined
+  int p7(t8[]);           /* { dg-error "unknown type name 't8'" } */
+         ^
+
+"Test_name.c", line 19: error: identifier "t9" is undefined
+  int p8(int, t9);        /* { dg-error "unknown type name 't9'" } */
+              ^
+
+"Test_name.c", line 22: error: identifier "t1" is undefined
+    const t1 a;           /* { dg-error "unknown type name 't1'" } */ /* dup??? */
+          ^
+
+"Test_name.c", line 23: error: identifier "t10" is undefined
+    const t10 b;          /* { dg-error "unknown type name 't10'" } */
+          ^
+
+"Test_name.c", line 24: error: "b" has already been declared in the current scope
+    int b;                /* { dg-error "duplicate member" } */
+        ^
+
+"Test_name.c", line 29: error: identifier "x1" is undefined
+  typeof (x1) c2;
+          ^
+
+"Test_name.c", line 33: warning: explicit type is missing ("int" assumed)
+  typeof (const t11) c3;  /* { dg-error "unknown type name 't11'" } */
+          ^
+
+"Test_name.c", line 33: error: expected a ")"
+  typeof (const t11) c3;  /* { dg-error "unknown type name 't11'" } */
+                ^
+
+"Test_name.c", line 35: error: identifier "t12" is undefined
+  typeof (t12 *) c3;
+          ^
+
+"Test_name.c", line 35: error: expected an expression
+  typeof (t12 *) c3;
+               ^
+
+"Test_name.c", line 35: error: expected a ")"
+  typeof (t12 *) c3;
+                   ^
+
+"Test_name.c", line 35: warning: declaration does not declare anything
+  typeof (t12 *) c3;
+  ^
+
+"Test_name.c", line 44: error: identifier "x2" is undefined
+  int s1 = sizeof (x2);
+                   ^
+
+"Test_name.c", line 48: warning: explicit type is missing ("int" assumed)
+  int s2 = sizeof (const t13);   /* { dg-error "unknown type name 't13'" } */
+                   ^
+
+"Test_name.c", line 48: error: expected a ")"
+  int s2 = sizeof (const t13);   /* { dg-error "unknown type name 't13'" } */
+                         ^
+
+"Test_name.c", line 50: error: identifier "t14" is undefined
+  int s3 = sizeof (t14 *);
+                   ^
+
+"Test_name.c", line 50: error: expected an expression
+  int s3 = sizeof (t14 *);
+                        ^
+
+"Test_name.c", line 59: error: identifier "x3" is undefined
+  int a1 = __alignof__ (x3);          /* { dg-error "undeclared" } */
+                        ^
+
+"Test_name.c", line 62: warning: explicit type is missing ("int" assumed)
+  int a2 = __alignof__ (const t15);   /* { dg-error "unknown type name 't15'" } */
+                        ^
+
+"Test_name.c", line 62: error: expected a ")"
+  int a2 = __alignof__ (const t15);   /* { dg-error "unknown type name 't15'" } */
+                              ^
+
+"Test_name.c", line 64: error: identifier "t16" is undefined
+  int a3 = __alignof__ (t16 *);
+                        ^
+
+"Test_name.c", line 64: error: expected an expression
+  int a3 = __alignof__ (t16 *);
+                             ^
+
+"Test_name.c", line 77: warning: explicit type is missing ("int" assumed)
+    return (const t17) "abc";       /* { dg-error "unknown type name 't17'" "t17" } */
+            ^
+
+"Test_name.c", line 77: error: expected a ")"
+    return (const t17) "abc";       /* { dg-error "unknown type name 't17'" "t17" } */
+                  ^
+
+"Test_name.c", line 77: warning: type qualifier is meaningless on cast type
+    return (const t17) "abc";       /* { dg-error "unknown type name 't17'" "t17" } */
+            ^
+
+"Test_name.c", line 77: warning: return value type does not match the function type
+    return (const t17) "abc";       /* { dg-error "unknown type name 't17'" "t17" } */
+           ^
+
+"Test_name.c", line 83: error: identifier "t18" is undefined
+    return (const t18 *) "abc";     /* { dg-error "unknown type name 't18'" "t18" } */
+                  ^
+
+"Test_name.c", line 93: error: identifier-list parameters may only be used in a function definition
+    return (void *) ((void *(*)(t19)) f3);       /* { dg-error "unknown type name 't19'" "t19" } */
+                                ^
+
+"Test_name.c", line 99: warning: explicit type is missing ("int" assumed)
+    return &((const t20){1});       /* { dg-error "unknown type name 't20'" } */
+              ^
+
+"Test_name.c", line 99: error: expected a ")"
+    return &((const t20){1});       /* { dg-error "unknown type name 't20'" } */
+                    ^
+
+"Test_name.c", line 99: warning: returning pointer to local temporary
+    return &((const t20){1});       /* { dg-error "unknown type name 't20'" } */
+           ^
+
+"Test_name.c", line 106: error: identifier "t21" is undefined
+    int x = __builtin_va_arg (ap, t21);       /* { dg-error "unknown type name 't21'" } */
+                                  ^
+
+"Test_name.c", line 107: warning: explicit type is missing ("int" assumed)
+    int y = __builtin_va_arg (ap, const t22); /* { dg-error "unknown type name 't22'" } */
+                                  ^
+
+"Test_name.c", line 107: error: expected a ")"
+    int y = __builtin_va_arg (ap, const t22); /* { dg-error "unknown type name 't22'" } */
+                                        ^
+
+"Test_name.c", line 108: warning: missing return statement at end of non-void function "f5"
+  }
+  ^
+
+"Test_name.c", line 112: error: identifier "t23" is undefined
+    return __builtin_offsetof (t23, field); /* { dg-error "unknown type name 't23'" "t23" } */
+                               ^
+
+"Test_name.c", line 112: error: expected a class, struct, or union type
+    return __builtin_offsetof (t23, field); /* { dg-error "unknown type name 't23'" "t23" } */
+                               ^
+
+"Test_name.c", line 6: warning: variable "a" was declared but never referenced
+  static t1 *a;           /* { dg-error "unknown type name 't1'" } */
+             ^
+
+35 errors detected in the compilation of "Test_name.c".

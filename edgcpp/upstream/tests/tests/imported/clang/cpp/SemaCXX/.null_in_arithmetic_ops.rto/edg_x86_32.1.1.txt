@@ -1,0 +1,78 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"/mds/clang/clang-22.1.0/build/lib/clang/22/include/__stddef_size_t.h", line 18: warning: declaration of "size_t" does not match the expected type "unsigned int"
+  typedef long unsigned int size_t;
+                            ^
+
+"SemaCXX/null_in_arithmetic_ops.cpp", line 7: error: expected an expression
+    void (^c)();
+          ^
+
+"SemaCXX/null_in_arithmetic_ops.cpp", line 7: error: expression preceding parentheses of apparent call must have (pointer-to-) function type
+    void (^c)();
+    ^
+
+"SemaCXX/null_in_arithmetic_ops.cpp", line 14: warning: variable "a" is used before its value is set
+    a = 0 ? __null + a : a + __null;
+                     ^
+
+"SemaCXX/null_in_arithmetic_ops.cpp", line 16: warning: division by zero
+    a = 0 ? __null / a : a / __null;
+                             ^
+
+"SemaCXX/null_in_arithmetic_ops.cpp", line 21: warning: right operand of "%" is zero
+    a = 0 ? __null % a : a % __null;
+                             ^
+
+"SemaCXX/null_in_arithmetic_ops.cpp", line 30: error: identifier "c" is undefined
+    v = 0 ? __null + c : c + __null;
+                     ^
+
+"SemaCXX/null_in_arithmetic_ops.cpp", line 33: error: expression must have arithmetic or unscoped enum type
+    v = 0 ? __null + d : d + __null;
+                     ^
+
+"SemaCXX/null_in_arithmetic_ops.cpp", line 33: warning: variable "d" is used before its value is set
+    v = 0 ? __null + d : d + __null;
+                     ^
+
+"SemaCXX/null_in_arithmetic_ops.cpp", line 33: error: expression must have arithmetic, unscoped enum, or pointer type but has type "void (X::*)()"
+    v = 0 ? __null + d : d + __null;
+                         ^
+
+"SemaCXX/null_in_arithmetic_ops.cpp", line 36: error: expression must be a pointer to a complete object type
+    v = 0 ? __null + e : e + __null;
+                     ^
+
+"SemaCXX/null_in_arithmetic_ops.cpp", line 36: warning: arithmetic on pointer to void or function type
+    v = 0 ? __null + e : e + __null;
+                           ^
+
+"SemaCXX/null_in_arithmetic_ops.cpp", line 43: warning: division by zero
+    a = __null / __null;
+               ^
+
+"SemaCXX/null_in_arithmetic_ops.cpp", line 48: warning: right operand of "%" is zero
+    a = __null % __null;
+               ^
+
+"SemaCXX/null_in_arithmetic_ops.cpp", line 56: warning: division by zero
+    a /= __null;
+         ^
+
+"SemaCXX/null_in_arithmetic_ops.cpp", line 61: warning: right operand of "%" is zero
+    a %= __null;
+         ^
+
+"SemaCXX/null_in_arithmetic_ops.cpp", line 94: error: return value type does not match the function type
+    return __null;
+           ^
+
+"SemaCXX/null_in_arithmetic_ops.cpp", line 6: warning: variable "b" was set but never used
+    bool b;
+         ^
+
+"SemaCXX/null_in_arithmetic_ops.cpp", line 12: warning: variable "v" was set but never used
+    const void *v;
+                ^
+
+7 errors detected in the compilation of "Test_name.c".

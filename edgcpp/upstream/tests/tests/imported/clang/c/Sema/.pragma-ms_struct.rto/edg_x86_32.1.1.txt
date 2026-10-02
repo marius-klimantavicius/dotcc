@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --ms_extensions --c Test_name.c
+"Test_name.c", line 5: warning: unrecognized #pragma
+  #pragma ms_struct on
+          ^
+
+"Test_name.c", line 7: warning: unrecognized #pragma
+  #pragma ms_struct off
+          ^
+
+"Test_name.c", line 9: warning: unrecognized #pragma
+  #pragma ms_struct reset
+          ^
+
+"Test_name.c", line 11: warning: unrecognized #pragma
+  #pragma ms_struct // expected-warning {{incorrect use of '#pragma ms_struct on|off' - ignored}}
+          ^
+
+"Test_name.c", line 13: warning: unrecognized #pragma
+  #pragma ms_struct on top of spaghetti  // expected-warning {{extra tokens at end of '#pragma ms_struct' - ignored}}
+          ^
+
+"Test_name.c", line 27: warning: unknown attribute "__ms_struct__"
+  } __attribute__((__ms_struct__)) t1;
+                   ^
+
+"Test_name.c", line 30: warning: unknown attribute "ms_struct"
+  		   double __attribute__((ms_struct)) d;	// expected-warning {{'ms_struct' attribute only applies to structs, unions, and classes}}
+  		                         ^
+
+"Test_name.c", line 34: warning: unknown attribute "ms_struct"
+  } __attribute__((ms_struct)) t2;
+                   ^
+
+"Test_name.c", line 41: warning: unknown attribute "ms_struct"
+  } __attribute__((ms_struct)) e1; // expected-warning {{'ms_struct' attribute only applies to}}
+                   ^
+
+"Test_name.c", line 43: warning: unrecognized #pragma
+  #pragma ms_struct on
+          ^
+
+"Test_name.c", line 59: warning: unrecognized #pragma
+  #pragma ms_struct off
+          ^
+
+"Test_name.c", line 61: error: the size of an array must be greater than zero
+  static int arr[sizeof(PackOddity) == 40 ? 1 : -1];
+                 ^
+
+"Test_name.c", line 63: error: unknown attribute "ms_struct"
+  struct __declspec(ms_struct) bad { // expected-warning {{__declspec attribute 'ms_struct' is not supported}}
+                    ^
+
+2 errors detected in the compilation of "Test_name.c".

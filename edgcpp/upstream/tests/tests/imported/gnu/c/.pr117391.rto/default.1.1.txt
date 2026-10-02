@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 Test_name.c
+"Test_name.c", line 11: error: too few arguments in function call
+  	(1 ? foo : bar)(0);	/* { dg-error "too few arguments to function '\\\(int \\\(\\\*\\\)\\\(int,  char \\\(\\\*\\\)\\\[n]\\\)\\\)&foo'" } */
+  	                 ^
+
+"Test_name.c", line 12: error: too few arguments in function call
+  	(0 ? bar : foo)(0);	/* { dg-error "too few arguments to function '\\\(int \\\(\\\*\\\)\\\(int,  char \\\(\\\*\\\)\\\[n]\\\)\\\)&foo'" } */
+  	                 ^
+
+"Test_name.c", line 13: error: too few arguments in function call
+  	(0 ? foo : bar)(0);	/* { dg-error "too few arguments to function 'bar'" } */
+  	                 ^
+
+"Test_name.c", line 14: error: too few arguments in function call
+  	(1 ? bar : foo)(0);	/* { dg-error "too few arguments to function 'bar'" } */
+  	                 ^
+
+4 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,81 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 11: warning: unrecognized #pragma
+  #pragma unroll_and_jam
+          ^
+
+"Test_name.c", line 18: warning: unrecognized #pragma
+  #pragma nounroll_and_jam
+          ^
+
+"Test_name.c", line 25: warning: unrecognized #pragma
+  #pragma unroll_and_jam 4
+          ^
+
+"Test_name.c", line 32: warning: unrecognized #pragma
+  /* expected-error {{expected ')'}} */ #pragma unroll_and_jam(4
+                                                ^
+
+"Test_name.c", line 33: warning: unrecognized #pragma
+  /* expected-error {{missing argument; expected an integer value}} */ #pragma unroll_and_jam()
+                                                                               ^
+
+"Test_name.c", line 34: warning: unrecognized #pragma
+  /* expected-warning {{extra tokens at end of '#pragma unroll_and_jam'}} */ #pragma unroll_and_jam 1 2
+                                                                                     ^
+
+"Test_name.c", line 41: warning: unrecognized #pragma
+  /* expected-warning {{extra tokens at end of '#pragma nounroll_and_jam'}} */ #pragma nounroll_and_jam 1
+                                                                                       ^
+
+"Test_name.c", line 48: warning: unrecognized #pragma
+  #pragma unroll_and_jam
+          ^
+
+"Test_name.c", line 50: warning: unrecognized #pragma
+  #pragma unroll_and_jam 4
+          ^
+
+"Test_name.c", line 52: warning: unrecognized #pragma
+  #pragma nounroll_and_jam
+          ^
+
+"Test_name.c", line 55: warning: unrecognized #pragma
+  #pragma unroll_and_jam 4
+          ^
+
+"Test_name.c", line 56: warning: unrecognized #pragma
+  /* expected-error {{incompatible directives '#pragma nounroll_and_jam' and '#pragma unroll_and_jam(4)'}} */ #pragma nounroll_and_jam
+                                                                                                                      ^
+
+"Test_name.c", line 63: warning: unrecognized #pragma
+  #pragma nounroll_and_jam
+          ^
+
+"Test_name.c", line 64: warning: unrecognized #pragma
+  #pragma unroll(4)
+          ^
+
+"Test_name.c", line 72: warning: unrecognized #pragma
+  /* expected-error {{invalid option 'unroll_and_jam'; expected vectorize, vectorize_width, interleave, interleave_count, unroll, unroll_count, pipeline, pipeline_initiation_interval, vectorize_predicate, or distribute}} */ #pragma clang loop unroll_and_jam(4)
+                                                                                                                                                                                                                                        ^
+
+"Test_name.c", line 79: warning: unrecognized #pragma
+  #pragma unroll_and_jam
+          ^
+
+"Test_name.c", line 9: warning: variable "i" was declared but never referenced
+    int i = 0;
+        ^
+
+"Test_name.c", line 49: warning: variable "j" was declared but never referenced
+  /* expected-error {{expected a for, while, or do-while loop to follow '#pragma unroll_and_jam'}} */ int j = Length;
+                                                                                                          ^
+
+"Test_name.c", line 51: warning: variable "k" was declared but never referenced
+  /* expected-error {{expected a for, while, or do-while loop to follow '#pragma unroll_and_jam'}} */ int k = Length;
+                                                                                                          ^
+
+"Test_name.c", line 53: warning: variable "l" was declared but never referenced
+  /* expected-error {{expected a for, while, or do-while loop to follow '#pragma nounroll_and_jam'}} */ int l = Length;
+                                                                                                            ^
+

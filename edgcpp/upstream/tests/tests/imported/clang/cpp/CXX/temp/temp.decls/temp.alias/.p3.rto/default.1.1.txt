@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 7: error: class "A<short>" has no member "U"
+  template<class T> using B = typename A<T>::U; // expected-error {{no type named 'U' in 'A<T>'}}
+                                             ^
+          detected during:
+            instantiation of type "B<short>" at line 9
+            instantiation of class "A<T> [with T=short]" at line 7
+            instantiation of type "B<short>" at line 11
+
+1 error detected in the compilation of "Test_name.c".

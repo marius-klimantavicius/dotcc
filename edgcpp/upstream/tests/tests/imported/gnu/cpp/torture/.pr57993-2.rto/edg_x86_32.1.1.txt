@@ -1,0 +1,65 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 11: warning: declaration of "size_t" does not match the expected type "unsigned int"
+    typedef long unsigned int size_t;
+                              ^
+
+"Test_name.c", line 151: warning: variable "vt" was declared but never referenced
+      double c, t, ut, vt;
+                       ^
+
+"Test_name.c", line 152: warning: variable "u" was declared but never referenced
+      double u[4], uu[4], v[4], vv[4];
+             ^
+
+"Test_name.c", line 152: warning: variable "uu" was declared but never referenced
+      double u[4], uu[4], v[4], vv[4];
+                   ^
+
+"Test_name.c", line 153: warning: variable "du" was declared but never referenced
+      double du[4], duu[4], dv[4], dvv[4];
+             ^
+
+"Test_name.c", line 153: warning: variable "duu" was declared but never referenced
+      double du[4], duu[4], dv[4], dvv[4];
+                    ^
+
+"Test_name.c", line 177: warning: missing return statement at end of non-void function "intersect_subpatch"
+    }
+    ^
+
+"Test_name.c", line 173: warning: variable "Q" was declared but never referenced
+      VECTOR Q, T1;
+             ^
+
+"Test_name.c", line 174: warning: variable "B" was declared but never referenced
+      VECTOR B[3], IB[3], NN[3];
+             ^
+
+"Test_name.c", line 174: warning: variable "IB" was declared but never referenced
+      VECTOR B[3], IB[3], NN[3];
+                   ^
+
+"Test_name.c", line 195: warning: missing return statement at end of non-void function "bezier_tree_walker"
+    }
+    ^
+
+"Test_name.c", line 181: warning: variable "cnt" was declared but never referenced
+      int i, cnt = 0;
+             ^
+
+"Test_name.c", line 208: warning: missing return statement at end of non-void function "All_Bicubic_Patch_Intersections"
+    }
+    ^
+
+"Test_name.c", line 199: warning: variable "Found" was declared but never referenced
+      int Found, cnt = 0;
+          ^
+
+"Test_name.c", line 199: warning: variable "cnt" was set but never used
+      int Found, cnt = 0;
+                 ^
+
+"Test_name.c", line 216: warning: missing return statement at end of non-void function "Create_Bicubic_Patch"
+    }
+    ^
+

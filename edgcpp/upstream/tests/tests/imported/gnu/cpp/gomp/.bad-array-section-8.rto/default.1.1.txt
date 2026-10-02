@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 23: warning: unrecognized #pragma
+  #pragma omp target map(s->tvec[3:5].arr[0:20])
+          ^
+
+"Test_name.c", line 26: warning: unrecognized #pragma
+  #pragma omp target map(s->tvec[5:x].arr[0:20])
+          ^
+
+"Test_name.c", line 44: warning: unrecognized #pragma
+  #pragma omp target map(s->tvec[3:5].arr[0:20])
+          ^
+
+"Test_name.c", line 47: warning: unrecognized #pragma
+  #pragma omp target map(s->tvec[5:x].arr[0:20])
+          ^
+
+"Test_name.c", line 41: warning: variable "s" was declared but never referenced
+    struct S *s;
+              ^
+
+"Test_name.c", line 20: warning: variable "s" was declared but never referenced
+    struct St<Tt<T> > *s;
+                       ^
+

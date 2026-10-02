@@ -1,0 +1,1 @@
+cpfe -DTEST_NUMBER=1 --c++11 --short_enums --g++ Test_name.c

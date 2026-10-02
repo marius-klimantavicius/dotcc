@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./dfp/float-constant-double.c", line 16: warning: unrecognized STDC pragma
+  #pragma STDC FLOAT_CONST_DECIMAL64 ON
+               ^
+
+"./dfp/float-constant-double.c", line 17: error: extra text after expected end of number
+    a = 0.1d * ((double)1.79769313486231570814527423731704357e+308L)
+           ^
+
+"./dfp/float-constant-double.c", line 18: error: extra text after expected end of number
+                   * 10.0d;
+                         ^
+
+"./dfp/float-constant-double.c", line 19: error: extra text after expected end of number
+               * 200.0d;
+                      ^
+
+3 errors detected in the compilation of "Test_name.c".

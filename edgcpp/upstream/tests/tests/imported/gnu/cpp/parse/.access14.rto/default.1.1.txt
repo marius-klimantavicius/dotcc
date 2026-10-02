@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 18: error: member "A::j" (declared at line 8) is inaccessible
+  struct B<&A::j> b;       // { dg-error "private" }
+               ^
+
+"Test_name.c", line 19: error: member "A::j" (declared at line 8) is inaccessible
+  struct B<&A::j>::C c;    // { dg-error "private" }
+               ^
+
+"Test_name.c", line 20: error: class template "B<V>::D [with V=&A::i]" (declared at line 15) is inaccessible
+  struct B<&A::i>::D<0> d; // { dg-error "private" }
+                   ^
+
+3 errors detected in the compilation of "Test_name.c".

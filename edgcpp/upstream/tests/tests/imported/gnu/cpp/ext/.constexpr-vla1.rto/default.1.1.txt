@@ -1,0 +1,24 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 31: error: expression must have a constant value
+  constexpr int n1 = fn_ok (3);
+                     ^
+"Test_name.c", line 9: note: cannot use variable-length array during constexpr evaluation
+      __extension__ int a[n] = { };
+                         ^
+
+"Test_name.c", line 32: error: expression must have a constant value
+  constexpr int n2 = fn_not_ok (3); // { dg-message "in .constexpr. expansion of " }
+                     ^
+"Test_name.c", line 22: note: cannot use variable-length array during constexpr evaluation
+      __extension__ int a[n] = { };
+                         ^
+
+"Test_name.c", line 31: warning: variable "n1" was declared but never referenced
+  constexpr int n1 = fn_ok (3);
+                ^
+
+"Test_name.c", line 32: warning: variable "n2" was declared but never referenced
+  constexpr int n2 = fn_not_ok (3); // { dg-message "in .constexpr. expansion of " }
+                ^
+
+2 errors detected in the compilation of "Test_name.c".

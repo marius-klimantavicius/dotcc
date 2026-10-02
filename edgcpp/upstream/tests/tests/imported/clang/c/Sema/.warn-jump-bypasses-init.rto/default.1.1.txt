@@ -1,0 +1,51 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --ms_compatibility --c Test_name.c
+"Test_name.c", line 13: warning: dynamic initialization in unreachable code
+    int i = 12; // both-note {{jump bypasses variable initialization}}
+        ^
+
+"Test_name.c", line 11: warning: transfer of control bypasses initialization of:
+            variable "i" (declared at line 13)
+    goto ouch;  // c-warning {{jump from this goto statement to its label is incompatible with C++}} \
+    ^
+
+"Test_name.c", line 13: warning: variable "i" was declared but never referenced
+    int i = 12; // both-note {{jump bypasses variable initialization}}
+        ^
+
+"Test_name.c", line 21: warning: variable "i" was declared but never referenced
+    static int i = 12; // This initialization is not jumped over, so no warning.
+               ^
+
+"Test_name.c", line 29: warning: dynamic initialization in unreachable code
+      int x = 12; // both-note {{jump bypasses variable initialization}}
+          ^
+
+"Test_name.c", line 29: warning: variable "x" was declared but never referenced
+      int x = 12; // both-note {{jump bypasses variable initialization}}
+          ^
+
+"Test_name.c", line 28: warning: transfer of control bypasses initialization of:
+            variable "x" (declared at line 29)
+    switch (i) {
+    ^
+
+"Test_name.c", line 42: warning: dynamic initialization in unreachable code
+      int i = 12;
+          ^
+
+"Test_name.c", line 42: warning: variable "i" was declared but never referenced
+      int i = 12;
+          ^
+
+"Test_name.c", line 45: warning: dynamic initialization in unreachable code
+    for (int i = ({ goto ouch; int x = 10; x;}); i < 0; ++i) {
+                                   ^
+
+"Test_name.c", line 60: warning: dynamic initialization in unreachable code
+    int x = 12;     // both-note {{jump bypasses variable initialization}}
+        ^
+
+"Test_name.c", line 60: warning: variable "x" was declared but never referenced
+    int x = 12;     // both-note {{jump bypasses variable initialization}}
+        ^
+

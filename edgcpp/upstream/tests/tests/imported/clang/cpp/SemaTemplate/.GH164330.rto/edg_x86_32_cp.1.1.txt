@@ -1,0 +1,61 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 156: error: expression must have a constant value
+    static PathImpl<kFieldComponents<kLongPath>[I]...>
+                    ^
+"Test_name.c", line 206: note: value exceeds range of "long long"
+      hash *= hash_prime;
+           ^
+"Test_name.c", line 211: note: called from:
+    return Fnv1a<1099511628211u, 1039346656037>(str);
+                                               ^
+"Test_name.c", line 253: note: called from:
+      : size(), hash(HashField(str)) {}
+                              ^
+          detected during:
+            instantiation of "LongPathHelper<kLongPath>::PathForLongPath [with kLongPath=LongPathLiteral<14>{{'m', 'e', <2 repetitions of 's'>, 'a', 'g', 'e', '_', 'f', 'i', 'e', 'l', 'd', '\000', '\001'}, 1, 1}]" based on template argument <0> at line 159
+            instantiation of class "LongPathHelper<kLongPath> [with kLongPath=LongPathLiteral<14>{{'m', 'e', <2 repetitions of 's'>, 'a', 'g', 'e', '_', 'f', 'i', 'e', 'l', 'd', '\000', '\001'}, 1, 1}]" at line 199
+            instantiation of "auto PathImplHelper<<unnamed>...>() [with <unnamed>=<PathFieldId<LongPathLiteral<14>>{{{'m', 'e', <2 repetitions of 's'>, 'a', 'g', 'e', '_', 'f', 'i', 'e', 'l', 'd', '\000', '\001'}, 1, 1}}, PathFieldId<LongPathLiteral<12>>{{{'i', 'n', 't', '3', '2', '_', 'f', 'i', 'e', 'l', 'd', '\000', '\001'}, 1, 1}}>]" at line 170
+            instantiation of "const auto Path [with fields=<PathFieldId<LongPathLiteral<14>>{{{'m', 'e', <2 repetitions of 's'>, 'a', 'g', 'e', '_', 'f', 'i', 'e', 'l', 'd', '\000', '\001'}, 1, 1}}, PathFieldId<LongPathLiteral<12>>{{{'i', 'n', 't', '3', '2', '_', 'f', 'i', 'e', 'l', 'd', '\000', '\001'}, 1, 1}}>]" at line 298
+
+"Test_name.c", line 156: error: expression must have a constant value
+    static PathImpl<kFieldComponents<kLongPath>[I]...>
+                    ^
+"Test_name.c", line 206: note: value exceeds range of "long long"
+      hash *= hash_prime;
+           ^
+"Test_name.c", line 211: note: called from:
+    return Fnv1a<1099511628211u, 1039346656037>(str);
+                                               ^
+"Test_name.c", line 253: note: called from:
+      : size(), hash(HashField(str)) {}
+                              ^
+          detected during:
+            instantiation of "LongPathHelper<kLongPath>::PathForLongPath [with kLongPath=LongPathLiteral<12>{{'i', 'n', 't', '3', '2', '_', 'f', 'i', 'e', 'l', 'd', '\000', '\001'}, 1, 1}]" based on template argument <0> at line 159
+            instantiation of class "LongPathHelper<kLongPath> [with kLongPath=LongPathLiteral<12>{{'i', 'n', 't', '3', '2', '_', 'f', 'i', 'e', 'l', 'd', '\000', '\001'}, 1, 1}]" at line 199
+            instantiation of "auto PathImplHelper<<unnamed>...>() [with <unnamed>=<PathFieldId<LongPathLiteral<14>>{{{'m', 'e', <2 repetitions of 's'>, 'a', 'g', 'e', '_', 'f', 'i', 'e', 'l', 'd', '\000', '\001'}, 1, 1}}, PathFieldId<LongPathLiteral<12>>{{{'i', 'n', 't', '3', '2', '_', 'f', 'i', 'e', 'l', 'd', '\000', '\001'}, 1, 1}}>]" at line 170
+            instantiation of "const auto Path [with fields=<PathFieldId<LongPathLiteral<14>>{{{'m', 'e', <2 repetitions of 's'>, 'a', 'g', 'e', '_', 'f', 'i', 'e', 'l', 'd', '\000', '\001'}, 1, 1}}, PathFieldId<LongPathLiteral<12>>{{{'i', 'n', 't', '3', '2', '_', 'f', 'i', 'e', 'l', 'd', '\000', '\001'}, 1, 1}}>]" at line 298
+
+"Test_name.c", line 199: error: no instance of function template "ConcatPath" matches the argument list
+            argument types are: (<error-type> *, <error-type> *)
+    return ConcatPath(SinglePath<fields.value>()...);
+           ^
+"Test_name.c", line 190: note: candidate function template "ConcatPath" failed deduction
+  constexpr PathImpl<fields1..., fields2...> *ConcatPath(PathImpl<fields1...> *,
+                                              ^
+          detected during:
+            instantiation of "auto PathImplHelper<<unnamed>...>() [with <unnamed>=<PathFieldId<LongPathLiteral<14>>{{{'m', 'e', <2 repetitions of 's'>, 'a', 'g', 'e', '_', 'f', 'i', 'e', 'l', 'd', '\000', '\001'}, 1, 1}}, PathFieldId<LongPathLiteral<12>>{{{'i', 'n', 't', '3', '2', '_', 'f', 'i', 'e', 'l', 'd', '\000', '\001'}, 1, 1}}>]" at line 170
+            instantiation of "const auto Path [with fields=<PathFieldId<LongPathLiteral<14>>{{{'m', 'e', <2 repetitions of 's'>, 'a', 'g', 'e', '_', 'f', 'i', 'e', 'l', 'd', '\000', '\001'}, 1, 1}}, PathFieldId<LongPathLiteral<12>>{{{'i', 'n', 't', '3', '2', '_', 'f', 'i', 'e', 'l', 'd', '\000', '\001'}, 1, 1}}>]" at line 298
+
+"Test_name.c", line 298: error: incomplete type "FieldNameBuilder<<error-constant>>" is not allowed
+    FieldNameBuilder<Path<"message_field", "int32_field">>::Get<T>();
+    ^
+
+"Test_name.c", line 298: error: type name is not allowed
+    FieldNameBuilder<Path<"message_field", "int32_field">>::Get<T>();
+                                                                ^
+
+"Test_name.c", line 298: error: expected an expression
+    FieldNameBuilder<Path<"message_field", "int32_field">>::Get<T>();
+                                                                   ^
+
+6 errors detected in the compilation of "Test_name.c".

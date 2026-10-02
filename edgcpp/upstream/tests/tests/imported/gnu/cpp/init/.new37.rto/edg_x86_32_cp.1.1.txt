@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 8: error: expression must have a constant value
+    new (long[n][n]); // { dg-error "variable length|array size|not a constant|runtime bound" }
+                 ^
+"Test_name.c", line 8: note: the value of parameter "n" (declared at line 6) cannot be used as a constant
+    new (long[n][n]); // { dg-error "variable length|array size|not a constant|runtime bound" }
+                 ^
+
+"Test_name.c", line 9: error: expression must have a constant value
+    new long[n][n]; // { dg-error "variable length|array size|not a constant" }
+                ^
+"Test_name.c", line 9: note: the value of parameter "n" (declared at line 6) cannot be used as a constant
+    new long[n][n]; // { dg-error "variable length|array size|not a constant" }
+                ^
+
+"Test_name.c", line 60: error: expression must have integral or unscoped enum type
+    new long[0.2]; // { dg-error "integral or enumeration type" }
+             ^
+
+"Test_name.c", line 23: error: expression must have a constant value
+    return new long[n][T::n]; // { dg-error "variable length|array size|usable in a constant" }
+                       ^
+"Test_name.c", line 23: note: the value of member "T1::n" (declared at line 41) cannot be used as a constant
+    return new long[n][T::n]; // { dg-error "variable length|array size|usable in a constant" }
+                       ^
+          detected during instantiation of "void *callnew_fail_1<T>(int) [with T=T1]" at line 61
+
+"Test_name.c", line 30: error: expression must have integral or unscoped enum type
+    return new long[T::n]; // { dg-error "size in array new" }
+                    ^
+          detected during instantiation of "void *callnew_fail_2<T>() [with T=T2]" at line 62
+
+"Test_name.c", line 37: error: this constant expression has type "double" instead of the required "unsigned int" type
+    return new T[2][T::n]; // { dg-error "could not convert|size of array has non-integral type|converted constant expression" }
+                    ^
+          detected during instantiation of "void *callnew_fail_3<T>() [with T=T2]" at line 63
+
+6 errors detected in the compilation of "Test_name.c".

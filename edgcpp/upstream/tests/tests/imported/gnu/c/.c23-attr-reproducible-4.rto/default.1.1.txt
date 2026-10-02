@@ -1,0 +1,49 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 7: warning: unknown attribute "reproducible"
+  int a () [[reproducible, __reproducible__]];
+             ^
+
+"Test_name.c", line 7: warning: unknown attribute "__reproducible__"
+  int a () [[reproducible, __reproducible__]];
+                           ^
+
+"Test_name.c", line 8: warning: unknown attribute "__reproducible__"
+  int b () [[__reproducible__, reproducible]];
+             ^
+
+"Test_name.c", line 8: warning: unknown attribute "reproducible"
+  int b () [[__reproducible__, reproducible]];
+                               ^
+
+"Test_name.c", line 9: warning: unknown attribute "reproducible"
+  int c () [[reproducible, reproducible]];
+             ^
+
+"Test_name.c", line 9: warning: unknown attribute "reproducible"
+  int c () [[reproducible, reproducible]];
+                           ^
+
+"Test_name.c", line 10: warning: unknown attribute "__reproducible__"
+  int d () [[__reproducible__, __reproducible__]];
+             ^
+
+"Test_name.c", line 10: warning: unknown attribute "__reproducible__"
+  int d () [[__reproducible__, __reproducible__]];
+                               ^
+
+"Test_name.c", line 11: warning: unknown attribute "reproducible"
+  int d () [[reproducible]];
+             ^
+
+"Test_name.c", line 12: warning: unknown attribute "__reproducible__"
+  int d () [[__reproducible__]];
+             ^
+
+"Test_name.c", line 13: warning: unknown attribute "reproducible"
+  [[reproducible, reproducible]];
+    ^
+
+"Test_name.c", line 13: warning: unknown attribute "reproducible"
+  [[reproducible, reproducible]];
+                  ^
+

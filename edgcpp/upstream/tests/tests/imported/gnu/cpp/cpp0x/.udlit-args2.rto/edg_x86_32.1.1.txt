@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp0x/udlit-args2.C", line 7: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+  int operator ""_a (const char *, std::size_t);
+      ^
+
+"./cpp0x/udlit-args2.C", line 9: error: user-defined literal operator not found
+  int a2 = "abc"_a;
+           ^
+
+"./cpp0x/udlit-args2.C", line 11: error: invalid second parameter type ("unsigned long") for literal operator; must be size_t
+  int operator ""_b (const char *, std::size_t);
+      ^
+
+"./cpp0x/udlit-args2.C", line 14: error: user-defined literal operator not found
+  int b2 = "abc"_b;
+           ^
+
+4 errors detected in the compilation of "Test_name.c".

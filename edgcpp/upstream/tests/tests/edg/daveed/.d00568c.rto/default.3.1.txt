@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=3 Test_name.c
+"Test_name.c", line 17: error: expected a ")"
+  	asm("fsinx %[Angle],%0" : [Out]"=f"(r) : [In]"[Out ]"(a));
+  	                        ^
+
+"Test_name.c", line 16: warning: variable "a" was declared but never referenced
+  	register float a, r;
+  	               ^
+
+"Test_name.c", line 16: warning: variable "r" was declared but never referenced
+  	register float a, r;
+  	                  ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 21: error: template constraint not satisfied
+  A<bool>::B<> a2; // { dg-error "constraint" }
+             ^
+"Test_name.c", line 12: note: substitution of arguments "<>" for requires-clause failed
+      requires requires { { 0 } -> is_same<T>; }
+               ^
+"Test_name.c", line 12: note: atomic constraint evaluates to false
+      requires requires { { 0 } -> is_same<T>; }
+               ^
+
+"Test_name.c", line 25: error: no instance of function template "A<T>::f [with T=bool]" matches the argument list
+    A<bool>::f(); // { dg-error "no match" }
+    ^
+"Test_name.c", line 17: note: substituting "<>" for function template "A<T>::f [with T=bool]" failed constraints
+    static void f();
+                ^
+"Test_name.c", line 16: note: atomic constraint evaluates to false
+      requires requires { { 1 } -> is_same<T>; }
+               ^
+
+2 errors detected in the compilation of "Test_name.c".

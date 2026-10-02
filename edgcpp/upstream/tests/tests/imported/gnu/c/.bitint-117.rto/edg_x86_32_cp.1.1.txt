@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 10: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+    __sync_add_and_fetch (b, 1);			/* { dg-error "incompatible" "" { target { ! int128 } } } */
+                          ^
+
+"Test_name.c", line 11: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+    __sync_val_compare_and_swap (b, 0, 1);	/* { dg-error "incompatible" "" { target { ! int128 } } } */
+                                 ^
+
+"Test_name.c", line 12: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+    __sync_bool_compare_and_swap (b, 0, 1);	/* { dg-error "incompatible" "" { target { ! int128 } } } */
+                                  ^
+
+"Test_name.c", line 13: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+    __sync_lock_test_and_set (b, 1);		/* { dg-error "incompatible" "" { target { ! int128 } } } */
+                              ^
+
+"Test_name.c", line 14: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+    __sync_lock_release (b);			/* { dg-error "incompatible" "" { target { ! int128 } } } */
+                         ^
+
+5 errors detected in the compilation of "Test_name.c".

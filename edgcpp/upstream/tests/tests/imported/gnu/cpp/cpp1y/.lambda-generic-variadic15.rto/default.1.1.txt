@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 7: error: parameter pack "c" was referenced but not expanded
+  int main() { [](auto... c) { v = c; }(1); } // { dg-error "not expanded" }
+                                   ^
+
+"Test_name.c", line 7: error: cannot deduce the return type of function "lambda [](auto...)->auto [with <auto-1>=<int>]" (declared at line 7); it has not been defined
+  int main() { [](auto... c) { v = c; }(1); } // { dg-error "not expanded" }
+               ^
+
+2 errors detected in the compilation of "Test_name.c".

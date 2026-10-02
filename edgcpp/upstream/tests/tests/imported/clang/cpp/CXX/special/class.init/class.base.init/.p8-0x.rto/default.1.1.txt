@@ -1,0 +1,20 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 14: error: "S::S()" provides no initializer for:
+            reference member "S::a"
+    S() {} // expected-error {{constructor for 'S' must explicitly initialize the reference member 'a'}}
+        ^
+
+"Test_name.c", line 16: error: "S::S(char)" provides no initializer for:
+            reference member "S::a"
+    S(char) : b(n) {} // expected-error {{constructor for 'S' must explicitly initialize the reference member 'a'}}
+                   ^
+
+"Test_name.c", line 22: error: a union can have at most one field initializer -- member "U::a" (declared at line 21) also has an initializer
+    char b = 'x'; // expected-error {{initializing multiple members of union}}
+         ^
+
+"Test_name.c", line 28: error: only one member of a union may be specified in a constructor initializer list
+                b('y') {} // expected-error{{initializing multiple members of union}}
+                ^
+
+4 errors detected in the compilation of "Test_name.c".

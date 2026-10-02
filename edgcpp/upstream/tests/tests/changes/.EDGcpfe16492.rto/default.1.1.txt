@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 17: error: this declaration has no storage class or type specifier
+  static_assert(__is_constructible(S, int) , "Unexpected!");
+  ^
+
+"Test_name.c", line 17: error: too many initializer values
+  static_assert(__is_constructible(S, int) , "Unexpected!");
+                                             ^
+
+2 errors detected in the compilation of "Test_name.c".

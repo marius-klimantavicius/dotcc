@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 14: warning: argument is incompatible with corresponding format string conversion (expected type "char *" but argument has type "int")
+    out.log ("before %s after", 42); // { dg-warning "argument 3 has type 'int'" }
+                                ^
+
+"Test_name.c", line 34: warning: argument is incompatible with corresponding format string conversion (expected type "char *" but argument has type "int")
+    out.log ("before %s after", 42); // { dg-warning "argument 3 has type 'int'" }
+                                ^
+

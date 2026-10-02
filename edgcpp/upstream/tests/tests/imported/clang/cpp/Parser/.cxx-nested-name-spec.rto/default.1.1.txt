@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 5: error: identifier "b" is undefined
+  namespace a { b c ( a:c::
+                ^
+
+"Test_name.c", line 5: error: a namespace name is not allowed
+  namespace a { b c ( a:c::
+                      ^
+
+"Test_name.c", line 5: error: expected a ")"
+  namespace a { b c ( a:c::
+                       ^
+
+At end of source: error: expected a ";"
+
+At end of source: error: expected a "}"
+"Test_name.c", line 5: note: to match this "{"
+  namespace a { b c ( a:c::
+              ^
+
+5 errors detected in the compilation of "Test_name.c".

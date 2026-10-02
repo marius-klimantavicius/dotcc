@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 24: error: no instance of constructor "C<T, U>::C [with T=int, U=int]" matches the argument list
+            argument types are: (char *, char *)
+  C c2 (&c, &c);			// { dg-error "conversion" } deduces with #3
+        ^
+"Test_name.c", line 10: note: number of parameters of function "C<T, U>::C(const C<int, int> &) [with T=int, U=int]" does not match the call
+  template <class T, class U> struct C {
+                                     ^
+"Test_name.c", line 10: note: number of parameters of function "C<T, U>::C(C<int, int> &&) [with T=int, U=int]" does not match the call
+  template <class T, class U> struct C {
+                                     ^
+"Test_name.c", line 11: note: function "C<T, U>::C(T, U) [with T=int, U=int]" does not match because argument #1 does not match parameter
+    C(T, U);			// #1
+    ^
+
+1 error detected in the compilation of "Test_name.c".

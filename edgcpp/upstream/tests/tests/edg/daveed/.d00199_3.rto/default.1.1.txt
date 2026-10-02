@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c99 Test_name.c
+"Test_name.c", line 18: error: argument of type "const float (*)[i]" is incompatible with parameter of type "float (*)[2]"
+    g(a);
+      ^
+
+1 error detected in the compilation of "Test_name.c".

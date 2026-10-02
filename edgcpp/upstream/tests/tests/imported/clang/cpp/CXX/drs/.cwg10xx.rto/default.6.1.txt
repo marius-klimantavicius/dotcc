@@ -1,0 +1,47 @@
+fe_only -DTEST_NUMBER=6 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++23 --exceptions --exceptions Test_name.c
+"Test_name.c", line 32: error: more than one instance of overloaded function "cwg1004::f" matches the argument list:
+            function template "void cwg1004::f<X>()" (declared at line 24)
+            function template "void cwg1004::f<X>()" (declared at line 25)
+        f<A>();
+        ^
+
+"Test_name.c", line 36: error: more than one instance of overloaded function "cwg1004::g" matches the argument list:
+            function template "void cwg1004::g<X>()" (declared at line 26)
+            function template "void cwg1004::g<X>()" (declared at line 27)
+        g<A>();
+        ^
+
+"Test_name.c", line 55: warning: type "cwg1042::foo" was declared deprecated
+    foo f = 12;
+        ^
+"Test_name.c", line 54: note: because of a "deprecated" attribute
+    using foo [[deprecated]] = int; // #cwg1042-using
+                ^
+
+"Test_name.c", line 106: error: no instance of constructor "cwg1070::A::A" matches the argument list
+    B b = {1};
+            ^
+"Test_name.c", line 100: note: function "cwg1070::A::A(std::initializer_list<int>)" does not match because argument #1 does not match parameter
+      A(std::initializer_list<int>);
+      ^
+"Test_name.c", line 99: note: number of parameters of function "cwg1070::A::A(const cwg1070::A &)" does not match the call
+    struct A {
+           ^
+"Test_name.c", line 99: note: number of parameters of function "cwg1070::A::A(cwg1070::A &&)" does not match the call
+    struct A {
+           ^
+
+"Test_name.c", line 112: error: no instance of constructor "cwg1070::A::A" matches the argument list
+    C c = {};
+           ^
+"Test_name.c", line 100: note: function "cwg1070::A::A(std::initializer_list<int>)" does not match because argument #1 does not match parameter
+      A(std::initializer_list<int>);
+      ^
+"Test_name.c", line 99: note: number of parameters of function "cwg1070::A::A(const cwg1070::A &)" does not match the call
+    struct A {
+           ^
+"Test_name.c", line 99: note: number of parameters of function "cwg1070::A::A(cwg1070::A &&)" does not match the call
+    struct A {
+           ^
+
+4 errors detected in the compilation of "Test_name.c".

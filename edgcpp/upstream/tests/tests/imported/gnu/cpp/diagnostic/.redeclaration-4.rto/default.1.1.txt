@@ -1,0 +1,78 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics -W --c++11 Test_name.c
+"Test_name.c", line 10: error: "x" has already been declared in the current scope
+    extern int x;				// { dg-error "declaration of 'int x' shadows a parameter" }
+               ^
+
+"Test_name.c", line 29: error: "x" has already been declared in the current scope
+    auto f = [] (int x) { extern int x; };// { dg-error "declaration of 'int x' shadows a parameter" "" { target c++11 } }
+                                     ^
+
+"Test_name.c", line 34: error: "x", declared in condition, may not be redeclared in this scope
+        extern int x;			// { dg-error "redeclaration of 'int x'" }
+                   ^
+
+"Test_name.c", line 40: error: "x", declared in condition, may not be redeclared in this scope
+        extern int x;			// { dg-error "redeclaration of 'int x'" }
+                   ^
+
+"Test_name.c", line 43: error: "x", declared in condition, may not be redeclared in this scope
+      extern int x;			// { dg-error "redeclaration of 'int x'" }
+                 ^
+
+"Test_name.c", line 47: error: "x", declared in condition, may not be redeclared in this scope
+      extern int x;			// { dg-error "redeclaration of 'int x'" }
+                 ^
+
+"Test_name.c", line 50: error: "x", declared in condition, may not be redeclared in this scope
+        extern int x;			// { dg-error "redeclaration of 'int x'" }
+                   ^
+
+"Test_name.c", line 54: error: "x", declared in condition, may not be redeclared in this scope
+      extern int x;			// { dg-error "redeclaration of 'int x'" }
+                 ^
+
+"Test_name.c", line 57: error: "x", declared in condition, may not be redeclared in this scope
+        extern int x;			// { dg-error "'int x' conflicts with a previous declaration" }
+                   ^
+
+"Test_name.c", line 60: error: "x", declared in condition, may not be redeclared in this scope
+      extern int x;			// { dg-error "'int x' conflicts with a previous declaration" }
+                 ^
+
+"Test_name.c", line 63: error: "x", declared in for-loop initialization, may not be redeclared in this scope
+        extern int x;			// { dg-error "redeclaration of 'int x'" }
+                   ^
+
+"Test_name.c", line 66: error: "x", declared in for-loop initialization, may not be redeclared in this scope
+      extern int x;			// { dg-error "redeclaration of 'int x'" }
+                 ^
+
+"Test_name.c", line 69: error: "x", declared in condition, may not be redeclared in this scope
+        extern int x;			// { dg-error "'int x' conflicts with a previous declaration" }
+                   ^
+
+"Test_name.c", line 72: error: "x", declared in condition, may not be redeclared in this scope
+      extern int x;			// { dg-error "'int x' conflicts with a previous declaration" }
+                 ^
+
+"Test_name.c", line 78: error: declaration of "x" hides handler parameter
+        extern int x;			// { dg-error "redeclaration of 'int x'" }
+                   ^
+
+"Test_name.c", line 29: error: variable "f" was declared but never referenced
+    auto f = [] (int x) { extern int x; };// { dg-error "declaration of 'int x' shadows a parameter" "" { target c++11 } }
+         ^
+
+"Test_name.c", line 89: error: parameter "x" may not be redeclared in a catch clause of function try block
+    extern int x;				// { dg-error "declaration of 'int x' shadows a parameter" }
+               ^
+
+"Test_name.c", line 102: error: parameter "x" may not be redeclared in a catch clause of function try block
+    extern int x;				// { dg-error "declaration of 'int x' shadows a parameter" }
+               ^
+
+"Test_name.c", line 139: error: parameter "x" may not be redeclared in a catch clause of function try block
+      extern int x;			// { dg-error "declaration of 'int x' shadows a parameter" }
+                 ^
+
+19 errors detected in the compilation of "Test_name.c".

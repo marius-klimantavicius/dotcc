@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --c++11 -tused --multi_trans_unit Test_name.c gnats23164b-p2.C
+"gnats23164b-p2.C", line 4: error: declaration of class template "std::vector<bool, a>" is incompatible with a declaration in another translation unit
+            the other declaration is at line 8 of "Test_name.c"
+    template <typename a> class vector<bool, a> {
+                                ^
+          detected during compilation of secondary translation unit "gnats23164b-p2.C"
+
+"Test_name.c", line 8: error: declaration of class template "std::vector<bool, a>::b<<unnamed>>" is incompatible with a declaration in another translation unit
+            the other declaration is at line 5 of "gnats23164b-p2.C"
+  template <typename a> class vector<bool, a> { template <typename> struct b; };
+                                                                           ^
+
+2 errors detected in the compilation of "Test_name.c".

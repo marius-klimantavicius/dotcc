@@ -1,0 +1,458 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 118: warning: type qualifier on return type is meaningless
+    const int f ();
+    ^
+
+"Test_name.c", line 120: error: no instance of function template "PR7463::g" matches the argument list
+            argument types are: (int)
+    void h (void) { g(f()); } // expected-error{{no matching function for call}}
+                    ^
+"Test_name.c", line 119: note: function template "PR7463::g" does not match because argument #1 does not match parameter
+    template <typename T_> void g (T_&); // expected-note{{T_ = int}}
+                                ^
+
+"Test_name.c", line 127: error: no instance of function template "test0::make" matches the argument list
+            argument types are: (char *())
+      make(char_maker); // expected-error {{no matching function for call to 'make'}}
+      ^
+"Test_name.c", line 124: note: candidate function template "test0::make" failed deduction
+    template <class T> void make(const T *(*fn)()); // expected-note {{candidate template ignored: cannot deduce a type for 'T' that would make 'const T' equal 'char'}}
+                            ^
+
+"Test_name.c", line 259: error: expected a type specifier
+      template<typename ...A> using Z = X<A..., 1, 2, 3>; // expected-error {{must be a type}}
+                                                ^
+
+"Test_name.c", line 259: error: expected a type specifier
+      template<typename ...A> using Z = X<A..., 1, 2, 3>; // expected-error {{must be a type}}
+                                                   ^
+
+"Test_name.c", line 259: error: expected a type specifier
+      template<typename ...A> using Z = X<A..., 1, 2, 3>; // expected-error {{must be a type}}
+                                                      ^
+
+"Test_name.c", line 294: warning: missing return statement at end of non-void function "PR27601_RecursivelyInheritedBaseSpecializationsDeductionAmbiguity::ns1::main"
+  }
+  ^
+
+"Test_name.c", line 337: error: no instance of function template "multiple_deduction_different_type::f" matches the argument list
+            argument types are: (multiple_deduction_different_type::X<int, 2>, multiple_deduction_different_type::X<unsigned int, 2U>)
+      f(X<int, 1+1>(), X<unsigned int, 3-1>()); // expected-error {{no matching function}}
+      ^
+"Test_name.c", line 332: note: candidate function template "multiple_deduction_different_type::f" failed deduction
+      void f(X<T, N>, X<U, N>) {} // expected-note 2{{values of conflicting types}}
+           ^
+
+"Test_name.c", line 338: error: no instance of function template "multiple_deduction_different_type::f" matches the argument list
+            argument types are: (multiple_deduction_different_type::X<unsigned int, 2U>, multiple_deduction_different_type::X<int, 2>)
+      f(X<unsigned int, 1+1>(), X<int, 3-1>()); // expected-error {{no matching function}}
+      ^
+"Test_name.c", line 332: note: candidate function template "multiple_deduction_different_type::f" failed deduction
+      void f(X<T, N>, X<U, N>) {} // expected-note 2{{values of conflicting types}}
+           ^
+
+"Test_name.c", line 340: error: no instance of function template "multiple_deduction_different_type::g" matches the argument list
+            argument types are: (multiple_deduction_different_type::X<const int *, &multiple_deduction_different_type::n>, multiple_deduction_different_type::X<int *, &multiple_deduction_different_type::n>)
+      g(X<const int*, &n>(), X<int*, &n + 1 - 1>()); // expected-error {{no matching function}}
+      ^
+"Test_name.c", line 334: note: candidate function template "multiple_deduction_different_type::g" failed deduction
+      void g(X<T, N>, X<U, N>) {} // expected-note 0-2{{values of conflicting types}}
+           ^
+
+"Test_name.c", line 341: error: no instance of function template "multiple_deduction_different_type::g" matches the argument list
+            argument types are: (multiple_deduction_different_type::X<int *, &multiple_deduction_different_type::n>, multiple_deduction_different_type::X<const int *, &multiple_deduction_different_type::n>)
+      g(X<int*, &n>(), X<const int*, &n + 1 - 1>()); // expected-error {{no matching function}}
+      ^
+"Test_name.c", line 334: note: candidate function template "multiple_deduction_different_type::g" failed deduction
+      void g(X<T, N>, X<U, N>) {} // expected-note 0-2{{values of conflicting types}}
+           ^
+
+"Test_name.c", line 354: error: no instance of overloaded function "multiple_deduction_different_type::x" matches the argument list
+            argument types are: (multiple_deduction_different_type::X<int, 3>, int (*)[3], multiple_deduction_different_type::X<char, '\003'>)
+      x(X<int, 3>(), &arr, X<char, 3>()); // expected-error {{no matching function}}
+      ^
+"Test_name.c", line 348: note: candidate function template "multiple_deduction_different_type::x(int (*)[N], X<T, N>, X<U, N>)" failed deduction
+      void x(int(*)[N], X<T, N>, X<U, N>) {} // expected-note 1+{{candidate}}
+           ^
+"Test_name.c", line 346: note: candidate function template "multiple_deduction_different_type::x(X<T, N>, int (*)[N], X<U, N>)" failed deduction
+      void x(X<T, N>, int(*)[N], X<U, N>) {} // expected-note 1+{{candidate}}
+           ^
+
+"Test_name.c", line 355: error: no instance of overloaded function "multiple_deduction_different_type::x" matches the argument list
+            argument types are: (int (*)[3], multiple_deduction_different_type::X<int, 3>, multiple_deduction_different_type::X<char, '\003'>)
+      x(&arr, X<int, 3>(), X<char, 3>()); // expected-error {{no matching function}}
+      ^
+"Test_name.c", line 348: note: candidate function template "multiple_deduction_different_type::x(int (*)[N], X<T, N>, X<U, N>)" failed deduction
+      void x(int(*)[N], X<T, N>, X<U, N>) {} // expected-note 1+{{candidate}}
+           ^
+"Test_name.c", line 346: note: candidate function template "multiple_deduction_different_type::x(X<T, N>, int (*)[N], X<U, N>)" failed deduction
+      void x(X<T, N>, int(*)[N], X<U, N>) {} // expected-note 1+{{candidate}}
+           ^
+
+"Test_name.c", line 378: error: no instance of function template "nullptr_deduction::f0" matches the argument list
+            argument types are: (nullptr_deduction::X<nullptr_deduction::nullptr_t, nullptr>)
+      f0(X<nullptr_t, nullptr>()); // expected-error {{no matching function}}
+      ^
+"Test_name.c", line 375: note: candidate function template "nullptr_deduction::f0" failed deduction
+      void f0(X<T, P>) {} // expected-note {{deduced non-type template argument does not have the same type as the corresponding template parameter ('std::nullptr_t' vs 'int *')}}
+           ^
+
+"Test_name.c", line 384: error: no instance of function template "nullptr_deduction::f1" matches the argument list
+            argument types are: (nullptr_deduction::X<int *, (int *)nullptr>, nullptr_deduction::X<nullptr_deduction::nullptr_t, nullptr>)
+      f1(X<int*, nullptr>(), X<nullptr_t, nullptr>()); // expected-error {{no matching function}}
+      ^
+"Test_name.c", line 382: note: candidate function template "nullptr_deduction::f1" failed deduction
+      void f1(X<T, P>, X<U, P>) {} // expected-note 2{{values of conflicting types}}
+           ^
+
+"Test_name.c", line 385: error: no instance of function template "nullptr_deduction::f1" matches the argument list
+            argument types are: (nullptr_deduction::X<nullptr_deduction::nullptr_t, nullptr>, nullptr_deduction::X<int *, (int *)nullptr>)
+      f1(X<nullptr_t, nullptr>(), X<int*, nullptr>()); // expected-error {{no matching function}}
+      ^
+"Test_name.c", line 382: note: candidate function template "nullptr_deduction::f1" failed deduction
+      void f1(X<T, P>, X<U, P>) {} // expected-note 2{{values of conflicting types}}
+           ^
+
+"Test_name.c", line 391: error: no instance of function template "nullptr_deduction::f2" matches the argument list
+            argument types are: (nullptr_deduction::X<int *, (int *)nullptr>, nullptr_deduction::X<nullptr_deduction::nullptr_t, nullptr>)
+      f2(X<int*, nullptr>(), X<nullptr_t, nullptr>()); // expected-error {{no matching function}}
+      ^
+"Test_name.c", line 389: note: candidate function template "nullptr_deduction::f2" failed deduction
+      void f2(X<T, P>, X<U, P>) {} // expected-note 2{{values of conflicting types}}
+           ^
+
+"Test_name.c", line 392: error: no instance of function template "nullptr_deduction::f2" matches the argument list
+            argument types are: (nullptr_deduction::X<nullptr_deduction::nullptr_t, nullptr>, nullptr_deduction::X<int *, (int *)nullptr>)
+      f2(X<nullptr_t, nullptr>(), X<int*, nullptr>()); // expected-error {{no matching function}}
+      ^
+"Test_name.c", line 389: note: candidate function template "nullptr_deduction::f2" failed deduction
+      void f2(X<T, P>, X<U, P>) {} // expected-note 2{{values of conflicting types}}
+           ^
+
+"Test_name.c", line 407: error: a class or namespace qualified name is required
+    template<typename T> struct Fail { typedef typename T::error error; }; // expected-error 2{{prior to '::'}}
+                                                        ^
+          detected during instantiation of class "deduction_substitution_failure::Fail<T> [with T=int]" at line 411
+
+"Test_name.c", line 407: error: global-scope qualifier (leading "::") is not allowed
+    template<typename T> struct Fail { typedef typename T::error error; }; // expected-error 2{{prior to '::'}}
+                                                         ^
+          detected during instantiation of class "deduction_substitution_failure::Fail<T> [with T=int]" at line 411
+
+"Test_name.c", line 407: error: expected a ";"
+    template<typename T> struct Fail { typedef typename T::error error; }; // expected-error 2{{prior to '::'}}
+                                                                 ^
+          detected during instantiation of class "deduction_substitution_failure::Fail<T> [with T=int]" at line 411
+
+"Test_name.c", line 407: error: a class or namespace qualified name is required
+    template<typename T> struct Fail { typedef typename T::error error; }; // expected-error 2{{prior to '::'}}
+                                                        ^
+          detected during instantiation of class "deduction_substitution_failure::Fail<T> [with T=char]" at line 415
+
+"Test_name.c", line 407: error: global-scope qualifier (leading "::") is not allowed
+    template<typename T> struct Fail { typedef typename T::error error; }; // expected-error 2{{prior to '::'}}
+                                                         ^
+          detected during instantiation of class "deduction_substitution_failure::Fail<T> [with T=char]" at line 415
+
+"Test_name.c", line 407: error: expected a ";"
+    template<typename T> struct Fail { typedef typename T::error error; }; // expected-error 2{{prior to '::'}}
+                                                                 ^
+          detected during instantiation of class "deduction_substitution_failure::Fail<T> [with T=char]" at line 415
+
+"Test_name.c", line 427: error: no instance of function template "deduce_pack_from_argument::separator" matches the argument list
+            argument types are: (args_tag<int, int>, int, int, int, int, int)
+      separator(args_tag<int, int>{}, 4, 8, 42, 16, 25);
+      ^
+"Test_name.c", line 420: note: number of parameters of function template "deduce_pack_from_argument::separator" does not match the call
+    void separator(args_tag<T...>, T..., int, T...) {}
+         ^
+
+"Test_name.c", line 439: error: no instance of function template "deduce_pack_from_argument::no_separator" matches the argument list
+            argument types are: (args_tag<int, int>, int, int, int, int)
+      no_separator(args_tag<int, int>{}, 1, 2, 3, 4);
+      ^
+"Test_name.c", line 434: note: number of parameters of function template "deduce_pack_from_argument::no_separator" does not match the call
+    template <typename... Y, typename... T> void no_separator(args_tag<T...>, T..., T...) {}
+                                                 ^
+
+"Test_name.c", line 465: error: no instance of function template "deduction_after_explicit_pack::i" matches the argument list
+            argument types are: (int, int)
+      i(0, 1); // expected-error {{no match}}
+      ^
+"Test_name.c", line 462: note: number of parameters of function template "deduction_after_explicit_pack::i" does not match the call
+    template <typename... T> void i(T..., int, T..., ...); // expected-note 5{{deduced packs of different lengths}}
+                                  ^
+
+"Test_name.c", line 466: error: no instance of function template "deduction_after_explicit_pack::i" matches the argument list
+            argument types are: (int, int, int)
+      i(0, 1, 2); // expected-error {{no match}}
+      ^
+"Test_name.c", line 462: note: number of parameters of function template "deduction_after_explicit_pack::i" does not match the call
+    template <typename... T> void i(T..., int, T..., ...); // expected-note 5{{deduced packs of different lengths}}
+                                  ^
+
+"Test_name.c", line 468: error: no instance of function template "deduction_after_explicit_pack::i" matches the argument list
+            argument types are: (int, int)
+      i<>(0, 1); // expected-error {{no match}}
+      ^
+"Test_name.c", line 462: note: number of parameters of function template "deduction_after_explicit_pack::i" does not match the call
+    template <typename... T> void i(T..., int, T..., ...); // expected-note 5{{deduced packs of different lengths}}
+                                  ^
+
+"Test_name.c", line 469: error: no instance of function template "deduction_after_explicit_pack::i" matches the argument list
+            argument types are: (int, int, int)
+      i<>(0, 1, 2); // expected-error {{no match}}
+      ^
+"Test_name.c", line 462: note: number of parameters of function template "deduction_after_explicit_pack::i" does not match the call
+    template <typename... T> void i(T..., int, T..., ...); // expected-note 5{{deduced packs of different lengths}}
+                                  ^
+
+"Test_name.c", line 471: error: no instance of function template "deduction_after_explicit_pack::i" matches the argument list
+            argument types are: (int, int, int, int, int, int)
+      i<int, int>(0, 1, 2, 3, 4, 5); // expected-error {{no match}}
+      ^
+
+"Test_name.c", line 479: error: no instance of function template "deduction_after_explicit_pack::p" matches the argument list
+            argument types are: (deduction_after_explicit_pack::X<int>, int)
+    void q() { p(X<int>(0), 0); } // expected-error {{no match}}
+               ^
+"Test_name.c", line 478: note: candidate function template "deduction_after_explicit_pack::p" failed deduction
+    template<typename... T> void p(T..., X<T...>, ...); // expected-note {{deduced packs of different lengths for parameter 'T' (<> vs. <int>)}}
+                                 ^
+
+"Test_name.c", line 489: error: no instance of overloaded function "deduction_after_explicit_pack::A::f" matches the argument list
+            argument types are: (double, double)
+        f(1.0, 2.0); // expected-error {{no match}}
+        ^
+"Test_name.c", line 483: note: number of parameters of function "deduction_after_explicit_pack::A::f()" does not match the call
+      void f(); // expected-note 2{{requires 0}}
+           ^
+"Test_name.c", line 482: note: function template "deduction_after_explicit_pack::A::f(T, void *, int)" does not match because argument #2 does not match parameter
+      template <typename T> void f(T, void *, int = 0); // expected-note 2{{no known conversion from 'double' to 'void *' for 2nd argument}}
+                                 ^
+
+"Test_name.c", line 490: error: no instance of overloaded function "deduction_after_explicit_pack::A::g" matches the argument list
+            argument types are: (double, double)
+        g(1.0, 2.0); // expected-error {{no match}}
+        ^
+"Test_name.c", line 486: note: number of parameters of function "deduction_after_explicit_pack::A::g()" does not match the call
+      void g(); // expected-note 2{{requires 0}}
+           ^
+"Test_name.c", line 485: note: function template "deduction_after_explicit_pack::A::g(T, void *, int)" does not match because argument #2 does not match parameter
+      template <typename T> static void g(T, void *, int = 0); // expected-note 2{{no known conversion from 'double' to 'void *' for 2nd argument}}
+                                        ^
+
+"Test_name.c", line 494: error: no instance of overloaded function "deduction_after_explicit_pack::A::f" matches the argument list
+            argument types are: (double, double)
+            object type is: deduction_after_explicit_pack::A
+      a.f(1.0, 2.0); // expected-error {{no match}}
+        ^
+"Test_name.c", line 483: note: number of parameters of function "deduction_after_explicit_pack::A::f()" does not match the call
+      void f(); // expected-note 2{{requires 0}}
+           ^
+"Test_name.c", line 482: note: function template "deduction_after_explicit_pack::A::f(T, void *, int)" does not match because argument #2 does not match parameter
+      template <typename T> void f(T, void *, int = 0); // expected-note 2{{no known conversion from 'double' to 'void *' for 2nd argument}}
+                                 ^
+
+"Test_name.c", line 495: error: no instance of overloaded function "deduction_after_explicit_pack::A::g" matches the argument list
+            argument types are: (double, double)
+            object type is: deduction_after_explicit_pack::A
+      a.g(1.0, 2.0); // expected-error {{no match}}
+        ^
+"Test_name.c", line 486: note: number of parameters of function "deduction_after_explicit_pack::A::g()" does not match the call
+      void g(); // expected-note 2{{requires 0}}
+           ^
+"Test_name.c", line 485: note: function template "deduction_after_explicit_pack::A::g(T, void *, int)" does not match because argument #2 does not match parameter
+      template <typename T> static void g(T, void *, int = 0); // expected-note 2{{no known conversion from 'double' to 'void *' for 2nd argument}}
+                                        ^
+
+"Test_name.c", line 519: error: no instance of function template "overload_vs_pack::g1" matches the argument list
+            argument types are: (overload_vs_pack::X<int, float>, <unknown-type>, void (double))
+    int n1 = g1(X<int, float>(), f, g); // expected-error {{no matching function}}
+             ^
+"Test_name.c", line 510: note: candidate function template "overload_vs_pack::g1" failed deduction
+    template<typename ...T> typename Y<T...>::type g1(X<T...>, void (*...fns)(T)); // expected-note {{deduced conflicting types for parameter 'T' (<int, float> vs. <(no value), double>)}}
+                                                   ^
+
+"Test_name.c", line 520: error: no instance of function template "overload_vs_pack::g2" matches the argument list
+            argument types are: (<unknown-type>, <unknown-type>, void (double))
+    int n2 = g2(x<int, float>, f, g); // expected-error {{no matching function}}
+             ^
+"Test_name.c", line 511: note: candidate function template "overload_vs_pack::g2" failed deduction
+    template<typename ...T> typename Y<T...>::type g2(void(*)(T...), void (*...fns)(T)); // expected-note {{deduced conflicting types for parameter 'T' (<int, float> vs. <(no value), double>)}}
+                                                   ^
+
+"Test_name.c", line 522: error: a reference of type "int &" (not const-qualified) cannot be initialized with a value of type "float"
+    int &a1 = h1<double>(0); // ok, skip deduction for 'f's, deduce matching value from 'g'
+              ^
+
+"Test_name.c", line 523: error: a reference of type "int &" (not const-qualified) cannot be initialized with a value of type "float"
+    int &a2 = h2<double>(0);
+              ^
+
+"Test_name.c", line 529: error: no instance of function template "overload_vs_pack::partial_deduction" matches the argument list
+            argument types are: (<unknown-type>, void (double))
+    int pd1 = partial_deduction(f, g); // expected-error {{no matching function}}
+              ^
+"Test_name.c", line 528: note: candidate function template "overload_vs_pack::partial_deduction" failed deduction
+    template<typename ...T> int partial_deduction(void (*...f)(T)); // expected-note {{deduced incomplete pack <(no value), double> for template parameter 'T'}}
+                                ^
+
+"Test_name.c", line 532: error: no instance of function template "overload_vs_pack::partial_deduction_2" matches the argument list
+            argument types are: (<unknown-type>, void (double))
+    int pd2 = partial_deduction_2(f, g); // expected-error {{no matching function}}
+              ^
+"Test_name.c", line 531: note: candidate function template "overload_vs_pack::partial_deduction_2" failed deduction
+    template<typename ...T> int partial_deduction_2(void (*...f)(T), ...); // expected-note {{deduced incomplete pack <(no value), double> for template parameter 'T'}}
+                                ^
+
+"Test_name.c", line 548: error: no instance of function template "b29946541::f" matches the argument list
+            argument types are: (b29946541::A<int>)
+    void g(A<int> a) { f(a); } // expected-error {{no match}}
+                       ^
+"Test_name.c", line 547: note: candidate function template "b29946541::f" failed deduction
+    void f(C<T, U>); // expected-note {{failed template argument deduction}}
+         ^
+
+"Test_name.c", line 557: error: no instance of function template "deduction_from_empty_list::f" matches the argument list
+            argument types are: ({...}, {...})
+      f<5>({}, {});
+      ^
+"Test_name.c", line 552: note: candidate function template "deduction_from_empty_list::f" failed deduction
+    template<int M, int N = 5> void f(int (&&)[N], int (&&)[N]) { // expected-note {{1 vs. 2}}
+                                    ^
+
+"Test_name.c", line 558: error: no instance of function template "deduction_from_empty_list::f" matches the argument list
+            argument types are: ({...}, {...})
+      f<1>({}, {0});
+      ^
+"Test_name.c", line 552: note: candidate function template "deduction_from_empty_list::f" failed deduction
+    template<int M, int N = 5> void f(int (&&)[N], int (&&)[N]) { // expected-note {{1 vs. 2}}
+                                    ^
+
+"Test_name.c", line 559: error: no instance of function template "deduction_from_empty_list::f" matches the argument list
+            argument types are: ({...}, {...})
+      f<1>({0}, {});
+      ^
+"Test_name.c", line 552: note: candidate function template "deduction_from_empty_list::f" failed deduction
+    template<int M, int N = 5> void f(int (&&)[N], int (&&)[N]) { // expected-note {{1 vs. 2}}
+                                    ^
+
+"Test_name.c", line 561: error: no instance of function template "deduction_from_empty_list::f" matches the argument list
+            argument types are: ({...}, {...})
+      f<1>({0}, {0, 1}); // expected-error {{no matching}}
+      ^
+"Test_name.c", line 552: note: candidate function template "deduction_from_empty_list::f" failed deduction
+    template<int M, int N = 5> void f(int (&&)[N], int (&&)[N]) { // expected-note {{1 vs. 2}}
+                                    ^
+
+"Test_name.c", line 576: error: no instance of overloaded function "check_extended_pack::g" matches the argument list
+            argument types are: (check_extended_pack::Y<0, &check_extended_pack::n>)
+    void h() { g<0>(Y<0, &n>()); } // expected-error {{no matching function}}
+               ^
+"Test_name.c", line 574: note: candidate function template "check_extended_pack::g(check_extended_pack::Y<N...>)" failed deduction
+    template<int ...N> void g(Y<N...>); // expected-note {{deduced non-type template argument does not have the same type as the corresponding template parameter ('int *' vs 'int')}}
+                            ^
+
+"Test_name.c", line 627: error: no instance of function template "dependent_list_deduction::f" matches the argument list
+            argument types are: ({...}, {...}, const char [4])
+      f({1, 2, 3}, {'a', 'b'}, "foo");
+      ^
+"Test_name.c", line 618: note: candidate function template "dependent_list_deduction::f" failed deduction
+    template<typename ...T, T ...V> void f(const T (&...p)[V]) {
+                                         ^
+
+"Test_name.c", line 628: error: no instance of function template "dependent_list_deduction::g" matches the argument list
+            argument types are: ({...}, {...})
+      g({1, 2}, {{}, {}, {}});
+      ^
+"Test_name.c", line 622: note: candidate function template "dependent_list_deduction::g" failed deduction
+    template<typename ...T, T ...V> void g(const T (&...p)[V]) {
+                                         ^
+
+"Test_name.c", line 639: error: no instance of function template "designators::f" matches the argument list
+            argument types are: ({...})
+    static_assert(f({1, 2, [20] = 3}) == 3, ""); // expected-error {{no matching function}} expected-warning 2{{C99}} expected-note {{}}
+                  ^
+"Test_name.c", line 638: note: candidate function template "designators::f" failed deduction
+    template<typename T, int N> constexpr int f(T (&&)[N]) { return N; } // expected-note 2{{couldn't infer template argument 'T'}}
+                                              ^
+
+"Test_name.c", line 641: error: no instance of function template "designators::f" matches the argument list
+            argument types are: ({...})
+    static_assert(f({.a = 1, .b = 2}) == 3, ""); // expected-error {{no matching function}}
+                  ^
+"Test_name.c", line 638: note: candidate function template "designators::f" failed deduction
+    template<typename T, int N> constexpr int f(T (&&)[N]) { return N; } // expected-note 2{{couldn't infer template argument 'T'}}
+                                              ^
+
+"Test_name.c", line 648: error: no instance of function template "nested_packs::f" matches the argument list
+            argument types are: (void (), void (int))
+    void i() { f(g, h); } // expected-error {{no matching function}}
+               ^
+"Test_name.c", line 645: note: function template "nested_packs::f" does not match because argument #1 does not match parameter
+    template<typename ...T, typename ...U> void f(T (*...f)(U...)); // expected-note {{deduced packs of different lengths for parameter 'U' (<> vs. <int>)}}
+                                                ^
+
+"Test_name.c", line 655: error: no instance of function template "nested_packs::q" matches the argument list
+            argument types are: (nested_packs::Q<1, 2>, nested_packs::Q<1, 2>)
+      q(qii, qii);
+      ^
+"Test_name.c", line 652: note: candidate function template "nested_packs::q" failed deduction
+    template<typename ...T, T ...A, T ...B> void q(Q<A...>, Q<B...>); // #q
+                                                 ^
+
+"Test_name.c", line 656: error: no instance of function template "nested_packs::q" matches the argument list
+            argument types are: (nested_packs::Q<1, 2>, nested_packs::Q<1, 2, 3>)
+      q(qii, qiii); // expected-error {{no match}} expected-note@#q {{deduced packs of different lengths for parameter 'T' (<int, int> vs. <int, int, int>)}}
+      ^
+"Test_name.c", line 652: note: candidate function template "nested_packs::q" failed deduction
+    template<typename ...T, T ...A, T ...B> void q(Q<A...>, Q<B...>); // #q
+                                                 ^
+
+"Test_name.c", line 657: error: no instance of function template "nested_packs::q" matches the argument list
+            argument types are: (nested_packs::Q<>, nested_packs::Q<1, 2, 3>)
+      q(q0, qiii); // expected-error {{no match}} expected-note@#q {{deduced packs of different lengths for parameter 'T' (<> vs. <int, int, int>)}}
+      ^
+"Test_name.c", line 652: note: candidate function template "nested_packs::q" failed deduction
+    template<typename ...T, T ...A, T ...B> void q(Q<A...>, Q<B...>); // #q
+                                                 ^
+
+"Test_name.c", line 690: error: no instance of function template "merge_size_only_deductions::f" matches the argument list
+            argument types are: (merge_size_only_deductions::X<char [1], char [2]>, merge_size_only_deductions::Y<1UL, 2UL>, merge_size_only_deductions::X<merge_size_only_deductions::id<merge_size_only_deductions::size_t>, merge_size_only_deductions::id<merge_size_only_deductions::size_t>>)
+    int a = f(X<char [1], char [2]>(), Y<(size_t)1, (size_t)2>(), X<id<size_t>, id<size_t>>());
+            ^
+"Test_name.c", line 687: note: candidate function template "merge_size_only_deductions::f" failed deduction
+      int f(X<char [V] ...>, Y<V ...>, X<T ...>);
+          ^
+
+"Test_name.c", line 691: error: no instance of function template "merge_size_only_deductions::f" matches the argument list
+            argument types are: (merge_size_only_deductions::X<char [1], char [2]>, merge_size_only_deductions::Y<1, 2>, merge_size_only_deductions::X<merge_size_only_deductions::id<int>, merge_size_only_deductions::id<int>>)
+    int b = f(X<char [1], char [2]>(), Y<1, 2>(), X<id<int>, id<int>>());
+            ^
+"Test_name.c", line 687: note: candidate function template "merge_size_only_deductions::f" failed deduction
+      int f(X<char [V] ...>, Y<V ...>, X<T ...>);
+          ^
+
+"Test_name.c", line 714: error: no instance of function template "sugared_deduction::f1" matches the argument list
+            argument types are: (sugared_deduction::Int [2], sugared_deduction::Int [2])
+    f1(a, b); // expected-error {{no matching function for call to 'f1'}}
+    ^
+"Test_name.c", line 709: note: function template "sugared_deduction::f1" does not match because argument #2 does not match parameter
+  template <class T, int C> void f1(T(&)[C], T(&)[C+1]);
+                                 ^
+
+"Test_name.c", line 401: warning: variable "t" is used before its value is set
+      C() { A a; T t; (a.*F)(t); }
+                             ^
+          detected during instantiation of "member_pointer::C<member_pointer::B<T, F>>::C() [with T=int, F=&member_pointer::A::f]" at line 403
+
+"Test_name.c", line 154: warning: function "test3::Foo::foo<F>() [with F=&test3::Bar::wobble]" was referenced but not defined
+      template <void F(char)> static inline void foo();
+                                                 ^
+
+"Test_name.c", line 158: warning: function "test3::Bar::wobble(T) [with T=char]" was referenced but not defined
+      template<typename T> static inline void wobble(T ch);
+                                              ^
+
+57 errors detected in the compilation of "Test_name.c".

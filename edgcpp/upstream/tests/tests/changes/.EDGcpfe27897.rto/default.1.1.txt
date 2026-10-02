@@ -1,0 +1,1 @@
+fe_only -DTEST_NUMBER=1 --ms_extensions --ms_extensions --gcc Test_name.c

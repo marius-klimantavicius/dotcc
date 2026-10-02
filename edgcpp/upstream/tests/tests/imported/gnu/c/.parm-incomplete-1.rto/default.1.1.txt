@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c17 --strict_gnu Test_name.c
+"Test_name.c", line 21: warning: declaration is not visible outside of function
+  void j(struct t2); /* { dg-warning "'struct t2' declared inside parameter list" } */
+                ^
+
+"Test_name.c", line 25: error: incomplete type "union u" is not allowed
+  void v(union u x) { } /* { dg-error "parameter 1 \\('x'\\) has incomplete type" } */
+         ^
+
+"Test_name.c", line 27: error: a parameter may not have void type
+  void p(void x); /* { dg-error "'void' must be the only parameter and unnamed" } */
+         ^
+
+"Test_name.c", line 29: error: a parameter may not have void type
+  void q(const void x); /* { dg-error "'void' must be the only parameter and unnamed" } */
+         ^
+
+3 errors detected in the compilation of "Test_name.c".

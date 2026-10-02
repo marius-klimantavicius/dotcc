@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"./format/multattr-1.c", line 38: warning: argument is incompatible with corresponding format string conversion (expected type "long" but argument has type "int")
+    my_vprintf_scanf ("%d", ap, "%ld", ip);
+                                       ^
+
+"./format/multattr-1.c", line 42: warning: argument is incompatible with corresponding format string conversion (expected type "long" but argument has type "int")
+    my_vprintf_scanf2 ("%d", ap, "%ld", ip);
+                                        ^
+
+"./format/multattr-1.c", line 46: warning: argument is incompatible with corresponding format string conversion (expected type "long" but argument has type "int")
+    my_vprintf_scanf3 ("%d", ap, "%ld", ip);
+                                        ^
+
+"./format/multattr-1.c", line 50: warning: argument is incompatible with corresponding format string conversion (expected type "long" but argument has type "int")
+    my_vprintf_scanf4 ("%d", ap, "%ld", ip);
+                                        ^
+

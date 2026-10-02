@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: error: return type may not be specified on a constructor
+  const Rulec::Rulec() { }      // { dg-error "1:qualifiers" }
+  ^
+
+"Test_name.c", line 15: error: return type may not be specified on a constructor
+  volatile Rulev::Rulev() { }   // { dg-error "1:qualifiers" }
+  ^
+
+"Test_name.c", line 21: error: "restrict" is not allowed
+  __restrict Ruler::Ruler() { }  // { dg-error "1:qualifiers" }
+  ^
+
+"Test_name.c", line 27: error: "restrict" is not allowed
+  const volatile __restrict Rulecvr::Rulecvr() { }  // { dg-error "1:qualifiers" }
+                 ^
+
+"Test_name.c", line 27: error: return type may not be specified on a constructor
+  const volatile __restrict Rulecvr::Rulecvr() { }  // { dg-error "1:qualifiers" }
+  ^
+
+"Test_name.c", line 33: error: "restrict" is not allowed
+  __restrict volatile const Rulervc::Rulervc() { }  // { dg-error "1:qualifiers" }
+  ^
+
+"Test_name.c", line 33: error: return type may not be specified on a constructor
+  __restrict volatile const Rulervc::Rulervc() { }  // { dg-error "1:qualifiers" }
+  ^
+
+7 errors detected in the compilation of "Test_name.c".

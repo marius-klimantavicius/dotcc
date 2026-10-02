@@ -1,0 +1,38 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 31: warning: structured bindings are a C++17 feature
+    switch (auto [ i, j ] = S { 53, 62 })	// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                 ^
+
+"Test_name.c", line 31: error: structured binding is not allowed in a condition
+    switch (auto [ i, j ] = S { 53, 62 })	// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                 ^
+
+"Test_name.c", line 41: warning: C++17-style initializer is nonstandard in this mode
+    switch (int m = 78; auto & [ i, j ] = t)	// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                      ^
+
+"Test_name.c", line 41: warning: structured bindings are a C++17 feature
+    switch (int m = 78; auto & [ i, j ] = t)	// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                               ^
+
+"Test_name.c", line 41: error: structured binding is not allowed in a condition
+    switch (int m = 78; auto & [ i, j ] = t)	// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                               ^
+
+"Test_name.c", line 50: warning: structured bindings are a C++17 feature
+    switch (auto m = 15; auto [ i, j ] = S { -1, 1 })	// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                              ^
+
+"Test_name.c", line 50: error: structured binding is not allowed in a condition
+    switch (auto m = 15; auto [ i, j ] = S { -1, 1 })	// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                              ^
+
+"Test_name.c", line 61: warning: structured bindings are a C++17 feature
+    switch (auto & [ i, j ] = t)	// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                   ^
+
+"Test_name.c", line 61: error: structured binding is not allowed in a condition
+    switch (auto & [ i, j ] = t)	// { dg-warning "structured bindings in conditions only available with" "" { target c++23_down } }
+                   ^
+
+4 errors detected in the compilation of "Test_name.c".

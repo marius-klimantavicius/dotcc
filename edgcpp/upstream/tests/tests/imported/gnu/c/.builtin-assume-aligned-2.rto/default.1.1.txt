@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 10: error: too many arguments in function call
+    double *a = __builtin_assume_aligned (ptr, 16, 8, 7);	/* { dg-error "too many arguments to function" } */
+                                         ^
+
+"Test_name.c", line 13: error: the optional third argument of a call to __builtin_assumed_aligned must have integral type
+    double *d = __builtin_assume_aligned (ptr, i, ptr);	/* { dg-error "non-integer argument 3 in call to function" } */
+                                         ^
+
+"Test_name.c", line 14: error: the optional third argument of a call to __builtin_assumed_aligned must have integral type
+    double *e = __builtin_assume_aligned (ptr, i, *ptr);	/* { dg-error "non-integer argument 3 in call to function" } */
+                                         ^
+
+3 errors detected in the compilation of "Test_name.c".

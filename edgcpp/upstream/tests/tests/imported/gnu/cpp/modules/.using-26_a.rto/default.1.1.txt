@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 --modules Test_name.c
+"./modules/using-26_a.C", line 10: warning: using-declaration ignored -- it refers to the current namespace
+    using ::int8_t;
+          ^
+
+"./modules/using-26_a.C", line 9: error: an exported declaration must introduce a name
+  export {
+  ^
+
+"./modules/using-26_a.C", line 14: warning: using-declaration ignored -- it refers to the current namespace
+    using std::int8_t;
+          ^
+
+1 error detected in the compilation of "Test_name.c".

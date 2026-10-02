@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 39: error: template parameter "S1<T>::S2::E1" cannot be defined in the current scope
+      enum class S1::S2::E1 { e11, e12 };
+                 ^
+
+"Test_name.c", line 40: error: template parameter "S1<T>::S2::E2" cannot be defined in the current scope
+      enum class S1::S2::E2 : T { e21, e22 };
+                 ^
+
+"Test_name.c", line 41: error: template parameter "S1<T>::S2::E3" cannot be defined in the current scope
+      enum class S1::S2::E3 : short {e31, e32 };
+                 ^
+
+"Test_name.c", line 42: error: template parameter "S1<T>::S2::E4" cannot be defined in the current scope
+      enum S1::S2::E4 : T { e41, e42 };
+           ^
+
+"Test_name.c", line 43: error: template parameter "S1<T>::S2::E5" cannot be defined in the current scope
+      enum S1::S2::E5 : short { e51, e52 };
+           ^
+
+5 errors detected in the compilation of "Test_name.c".

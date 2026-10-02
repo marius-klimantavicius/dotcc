@@ -1,0 +1,37 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 4: remark: class "C" defines no constructor to initialize the following:
+            const member "C::i"
+    struct C {
+           ^
+
+"Test_name.c", line 4: error: implicitly generated constructor for class "C" cannot initialize:
+            const member "C::i"
+    struct C {
+           ^
+          detected during implicit generation of "C::C()" at line 7
+
+"Test_name.c", line 7: error: variable "c1" has an uninitialized const or reference member
+    static C c1;
+             ^
+
+"Test_name.c", line 8: error: const variable "c2" requires an initializer -- class "C" has no user-provided default constructor
+    static const C c2;
+                     ^
+
+"Test_name.c", line 9: error: variable "c3" has an uninitialized const or reference member
+    C c3;
+      ^
+
+"Test_name.c", line 7: warning: variable "c1" was declared but never referenced
+    static C c1;
+             ^
+
+"Test_name.c", line 8: warning: variable "c2" was declared but never referenced
+    static const C c2;
+                   ^
+
+"Test_name.c", line 11: warning: variable "c5" was declared but never referenced
+    static C c5 = { 1 };
+             ^
+
+4 errors detected in the compilation of "Test_name.c".

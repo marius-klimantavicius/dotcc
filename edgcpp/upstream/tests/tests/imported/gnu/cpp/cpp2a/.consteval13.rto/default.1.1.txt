@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 14: error: call to consteval function "quux" did not produce a valid constant expression
+     auto qux = [] (fnptr a = quux ()) consteval { return a (); };
+                                   ^
+"Test_name.c", line 14: note: address of consteval function "bar" in constant expression result
+     auto qux = [] (fnptr a = quux ()) consteval { return a (); };
+                                   ^
+
+1 error detected in the compilation of "Test_name.c".

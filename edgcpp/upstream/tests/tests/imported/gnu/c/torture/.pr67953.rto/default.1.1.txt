@@ -1,0 +1,13 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 33: warning: integer conversion resulted in a change of sign
+    if (fn1 (-5) != -2
+                    ^
+
+"Test_name.c", line 34: warning: integer conversion resulted in a change of sign
+        || fn2 (-5) != -2
+                       ^
+
+"Test_name.c", line 35: warning: integer conversion resulted in a change of sign
+        || fn3 (-5) != -2
+                       ^
+

@@ -1,0 +1,116 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 -w --exceptions --ms_extensions -w --exceptions --ms_extensions Test_name.c
+"Test_name.c", line 7: error: identifier "Invalid" is undefined
+  Invalid inv; // expected-error {{unknown type name}}
+  ^
+
+"Test_name.c", line 37: error: transfer of control bypasses initialization of:
+            variable "c" (declared at line 38)
+        goto foo; // expected-error {{cannot jump}}
+        ^
+
+"Test_name.c", line 164: error: transfer of control bypasses initialization of:
+            variable "x" (declared at line 165)
+      goto l2;     // expected-error {{cannot jump}}
+      ^
+
+"Test_name.c", line 201: error: identifier "what_am_i_thinking" is undefined
+      case what_am_i_thinking: // expected-error {{use of undeclared identifier}}
+           ^
+
+"Test_name.c", line 282: error: transfer of control into an exception handler
+      goto x; // expected-error {{cannot jump}}
+      ^
+
+"Test_name.c", line 289: error: transfer of control into a try block
+      goto x; // expected-error {{cannot jump}}
+      ^
+
+"Test_name.c", line 296: error: transfer of control bypasses initialization of:
+            variable "s" (declared at line 297)
+      goto x; // expected-error {{cannot jump}}
+      ^
+
+"Test_name.c", line 306: error: transfer of control bypasses initialization of:
+            variable "s" (declared at line 307)
+      goto x; // expected-error {{cannot jump}}
+      ^
+
+"Test_name.c", line 363: error: no suitable user-defined conversion from "test20::A" to "const test20::B" exists
+        a,
+        ^
+
+"Test_name.c", line 364: error: no suitable user-defined conversion from "test20::A" to "const test20::B" exists
+        a
+        ^
+
+"Test_name.c", line 373: error: no suitable user-defined conversion from "test20::A" to "const test20::B" exists
+        a,
+        ^
+
+"Test_name.c", line 431: error: incomplete type "void" is not allowed
+    void test(nexist, int c) { // expected-error {{}}
+         ^
+
+"Test_name.c", line 431: error: identifier "nexist" is undefined
+    void test(nexist, int c) { // expected-error {{}}
+              ^
+
+"Test_name.c", line 431: error: type name is not allowed
+    void test(nexist, int c) { // expected-error {{}}
+                      ^
+
+"Test_name.c", line 431: error: expected a ")"
+    void test(nexist, int c) { // expected-error {{}}
+                          ^
+
+"Test_name.c", line 431: error: expected a ";"
+    void test(nexist, int c) { // expected-error {{}}
+                             ^
+
+"Test_name.c", line 453: error: transfer of control into a try block
+    goto into_try_except_try; // expected-error {{cannot jump from this goto statement to its label}}
+    ^
+
+"Test_name.c", line 460: error: transfer of control into a try block
+    goto into_try_except_except; // expected-error {{cannot jump from this goto statement to its label}}
+    ^
+
+"Test_name.c", line 469: error: transfer of control into a try block
+    goto into_try_except_try; // expected-error {{cannot jump from this goto statement to its label}}
+    ^
+
+"Test_name.c", line 476: error: transfer of control into a try block
+    goto into_try_except_finally; // expected-error {{cannot jump from this goto statement to its label}}
+    ^
+
+"Test_name.c", line 528: error: transfer of control into a try block
+      goto from_try_to_except; // expected-error {{cannot jump from this goto statement to its label}}
+      ^
+
+"Test_name.c", line 538: error: transfer of control into a try block
+      goto from_except_to_try; // expected-error {{cannot jump from this goto statement to its label}}
+      ^
+
+"Test_name.c", line 544: error: transfer of control into a try block
+      goto from_try_to_finally; // expected-error {{cannot jump from this goto statement to its label}}
+      ^
+
+"Test_name.c", line 554: error: transfer of control into a try block
+      goto from_finally_to_try; // expected-error {{cannot jump from this goto statement to its label}} expected-warning {{jump out of __finally block has undefined behavior}}
+      ^
+
+"Test_name.c", line 563: error: transfer of control into a try block
+        goto outer_except; // expected-error {{cannot jump from this goto statement to its label}}
+        ^
+
+"Test_name.c", line 573: error: transfer of control into a try block
+        goto outer_finally; // expected-error {{cannot jump from this goto statement to its label}}
+        ^
+
+"Test_name.c", line 383: error: transfer of control bypasses initialization of:
+            variable "t" (declared at line 384)
+    goto x; // expected-error {{cannot jump}}
+    ^
+          detected during instantiation of "void test21::f<T>() [with T=test21::X]" at line 390
+
+27 errors detected in the compilation of "Test_name.c".

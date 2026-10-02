@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 9: error: _Complex can only be used with floating-point types
+  template<_Complex int> struct ComplexInt {}; // { dg-error "not a valid type" }
+           ^
+
+"Test_name.c", line 10: warning: a user-provided literal suffix must begin with "_"
+  using CI = ComplexInt<1 + 3i>;
+                            ^
+
+"Test_name.c", line 10: error: user-defined literal operator not found
+  using CI = ComplexInt<1 + 3i>;
+                            ^
+
+2 errors detected in the compilation of "Test_name.c".

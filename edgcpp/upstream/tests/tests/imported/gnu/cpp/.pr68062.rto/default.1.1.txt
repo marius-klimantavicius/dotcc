@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 13: warning: invalid narrowing conversion from "char" to "unsigned char"
+    uv4qi d={a,a,a,a};
+             ^
+
+"Test_name.c", line 13: warning: invalid narrowing conversion from "char" to "unsigned char"
+    uv4qi d={a,a,a,a};
+               ^
+
+"Test_name.c", line 13: warning: invalid narrowing conversion from "char" to "unsigned char"
+    uv4qi d={a,a,a,a};
+                 ^
+
+"Test_name.c", line 13: warning: invalid narrowing conversion from "char" to "unsigned char"
+    uv4qi d={a,a,a,a};
+                   ^
+

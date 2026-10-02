@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/cpp_type_traits.h", line 553: error: identifier "__int128" is undefined
+      struct __memcpyable_integer<__int128> { enum { __width = 128 }; };
+                                  ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/cpp_type_traits.h", line 556: error: expected a ">"
+      struct __memcpyable_integer<unsigned __int128> { enum { __width = 128 }; };
+                                           ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/ext/numeric_traits.h", line 132: error: identifier "__int128" is undefined
+    __extension__ template<> struct __is_integer_nonstrict<__int128> { enum { __value = 1 }; typedef std::__true_type __type; enum { __width = 128 }; }; __extension__ template<> struct __is_integer_nonstrict<unsigned __int128> { enum { __value = 1 }; typedef std::__true_type __type; enum { __width = 128 }; };
+                                                           ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/ext/numeric_traits.h", line 132: error: expected a ">"
+    __extension__ template<> struct __is_integer_nonstrict<__int128> { enum { __value = 1 }; typedef std::__true_type __type; enum { __width = 128 }; }; __extension__ template<> struct __is_integer_nonstrict<unsigned __int128> { enum { __value = 1 }; typedef std::__true_type __type; enum { __width = 128 }; };
+                                                                                                                                                                                                                         ^
+
+"./cpp1z/constexpr-array2.C", line 11: error: expression must have a constant value
+      mat {{ {1.0, 2.0, 3.0}, {4.0, 5.0, 6.0} }};
+          ^
+"./cpp1z/constexpr-array2.C", line 11: note: constexpr function "Matrix<N, M>::Matrix(const double (&)[N][M]) [with N=2U, M=3U]" (declared at line 6) is not defined
+      mat {{ {1.0, 2.0, 3.0}, {4.0, 5.0, 6.0} }};
+          ^
+
+"./cpp1z/constexpr-array2.C", line 11: warning: variable "mat" was declared but never referenced
+      mat {{ {1.0, 2.0, 3.0}, {4.0, 5.0, 6.0} }};
+      ^
+
+"./cpp1z/constexpr-array2.C", line 6: warning: function "Matrix<N, M>::Matrix(const double (&)[N][M]) [with N=2U, M=3U]" was referenced but not defined
+    constexpr Matrix(double const (&arr)[N][M]);
+              ^
+
+5 errors detected in the compilation of "Test_name.c".

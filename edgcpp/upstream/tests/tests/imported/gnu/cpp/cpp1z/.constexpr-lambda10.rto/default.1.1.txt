@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 9: warning: variable "i" was declared but never referenced
+      constexpr int i = n; // OK, 'n' is not odr-used and not captured here.
+                    ^
+
+"Test_name.c", line 10: warning: variable "j" was declared but never referenced
+      constexpr int j = *&n; // { dg-error "" } '&n' would be an odr-use of 'n'.
+                    ^
+

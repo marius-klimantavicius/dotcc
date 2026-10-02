@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 13: warning: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+  extern void foo_d32 (_Decimal32);
+                       ^
+
+"Test_name.c", line 13: warning: identifier-list parameters may only be used in a function definition
+  extern void foo_d32 (_Decimal32);
+              ^
+
+"Test_name.c", line 14: warning: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+  extern void foo_d64 (_Decimal64);
+                       ^
+
+"Test_name.c", line 14: warning: identifier-list parameters may only be used in a function definition
+  extern void foo_d64 (_Decimal64);
+              ^
+
+"Test_name.c", line 15: warning: identifier-only parameters can only be used in old-style function definitions, which are nonstandard since C23
+  extern void foo_d128 (_Decimal128);
+                        ^
+
+"Test_name.c", line 15: warning: identifier-list parameters may only be used in a function definition
+  extern void foo_d128 (_Decimal128);
+              ^
+
+"Test_name.c", line 20: error: identifier "_Decimal32" is undefined
+  extern _Decimal32 d32;
+         ^
+
+"Test_name.c", line 21: error: identifier "_Decimal64" is undefined
+  extern _Decimal64 d64;
+         ^
+
+"Test_name.c", line 22: error: identifier "_Decimal128" is undefined
+  extern _Decimal128 d128;
+         ^
+
+3 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=2 --microsoft_version=1928 Test_name.c
+"Test_name.c", line 6: error: argument of type "int" is incompatible with template parameter of type "int *"
+    S<0> s;  // Previously accepted in all Microsoft C++ modes.
+      ^
+
+1 error detected in the compilation of "Test_name.c".

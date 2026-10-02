@@ -1,0 +1,93 @@
+fe_only -DTEST_NUMBER=2 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c99 Test_name.c
+"Test_name.c", line 10: error: type must be an object type
+        struct A: 0, // ext-warning {{incomplete type 'struct A' in a '_Generic' association is a C2y extension}}
+        ^
+
+"Test_name.c", line 11: error: type must be an object type
+        void(): 0,   // expected-error {{type 'void ()' in generic association not an object type}}
+        ^
+
+"Test_name.c", line 12: error: a type involving a variable length array is not allowed here
+        int[n]: 0);  // expected-error {{type 'int[n]' in generic association is a variably modified type}}
+        ^
+
+"Test_name.c", line 16: error: duplicate association type ("void (*)(void)") in _Generic selection
+        void (*)(void): 0); // expected-error {{type 'void (*)(void)' in generic association compatible with previously specified type 'void (*)()'}}
+        ^
+
+"Test_name.c", line 21: error: _Generic construct matches multiple types
+        void (*)(void): 0); // expected-note {{compatible type 'void (*)(void)' specified here}}
+        ^
+"Test_name.c", line 20: note: the other match is "void (*)(int)"
+        void (*)(int):  0,  // expected-note {{compatible type 'void (*)(int)' specified here}}
+        ^
+
+"Test_name.c", line 23: error: no association matches the selector type "int"
+    (void) _Generic(0, // expected-error {{controlling expression type 'int' not compatible with any generic association type}} \
+           ^
+
+"Test_name.c", line 27: warning: variable "a1" was declared but never referenced
+    int a1[_Generic(0, int: 1, short: 2, float: 3, default: 4) == 1 ? 1 : -1]; // ext-warning {{'_Generic' is a C11 extension}}
+        ^
+
+"Test_name.c", line 28: warning: variable "a2" was declared but never referenced
+    int a2[_Generic(0, default: 1, short: 2, float: 3, int: 4) == 4 ? 1 : -1]; // ext-warning {{'_Generic' is a C11 extension}}
+        ^
+
+"Test_name.c", line 29: warning: variable "a3" was declared but never referenced
+    int a3[_Generic(0L, int: 1, short: 2, float: 3, default: 4) == 4 ? 1 : -1]; // ext-warning {{'_Generic' is a C11 extension}}
+        ^
+
+"Test_name.c", line 30: warning: variable "a4" was declared but never referenced
+    int a4[_Generic(0L, default: 1, short: 2, float: 3, int: 4) == 1 ? 1 : -1]; // ext-warning {{'_Generic' is a C11 extension}}
+        ^
+
+"Test_name.c", line 31: warning: variable "a5" was declared but never referenced
+    int a5[_Generic(0, int: 1, short: 2, float: 3) == 1 ? 1 : -1]; // ext-warning {{'_Generic' is a C11 extension}}
+        ^
+
+"Test_name.c", line 32: warning: variable "a6" was declared but never referenced
+    int a6[_Generic(0, short: 1, float: 2, int: 3) == 3 ? 1 : -1]; // ext-warning {{'_Generic' is a C11 extension}}
+        ^
+
+"Test_name.c", line 34: warning: variable "a7" was declared but never referenced
+    int a7[_Generic("test", char *: 1, default: 2) == 1 ? 1 : -1]; // ext-warning {{'_Generic' is a C11 extension}}
+        ^
+
+"Test_name.c", line 35: warning: variable "a8" was declared but never referenced
+    int a8[_Generic(g, void (*)(void): 1, default: 2) == 1 ? 1 : -1]; // ext-warning {{'_Generic' is a C11 extension}}
+        ^
+
+"Test_name.c", line 38: warning: variable "a9" was declared but never referenced
+    int a9[_Generic(i, int: 1, default: 2) == 1 ? 1 : -1]; // ext-warning {{'_Generic' is a C11 extension}}
+        ^
+
+"Test_name.c", line 50: error: cannot determine which instance of overloaded function "test" is intended
+    _Generic(4, char:testc, default:test)(4); // ext-warning {{'_Generic' is a C11 extension}}
+                                    ^
+
+"Test_name.c", line 58: warning: function "n" declared implicitly
+      n(
+      ^
+
+"Test_name.c", line 59: warning: arithmetic on pointer to void or function type
+        _Generic(n++, int : 0) // expected-error {{cannot increment value of type 'int ()'}} ext-warning {{'_Generic' is a C11 extension}}
+                  ^
+
+"Test_name.c", line 59: error: expression must be a modifiable lvalue
+        _Generic(n++, int : 0) // expected-error {{cannot increment value of type 'int ()'}} ext-warning {{'_Generic' is a C11 extension}}
+                 ^
+
+"Test_name.c", line 57: warning: expression has no effect
+    _Generic( // ext-warning {{'_Generic' is a C11 extension}}
+    ^
+
+"Test_name.c", line 68: warning: function "_Static_assert" declared implicitly
+    _Static_assert( // ext-warning {{'_Static_assert' is a C11 extension}}
+    ^
+
+"Test_name.c", line 89: warning: variable "i" was declared but never referenced
+    int i = s.a;
+        ^
+
+8 errors detected in the compilation of "Test_name.c".

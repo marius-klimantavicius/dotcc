@@ -1,0 +1,58 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 19: warning: declaration does not declare anything
+    struct A;		/* { dg-warning "does not declare anything" } */
+    ^
+
+"Test_name.c", line 37: warning: argument of type "struct B *" is incompatible with parameter of type "struct A *"
+    f1 (&b);		/* { dg-warning "incompatible pointer type" } */
+        ^
+
+"Test_name.c", line 38: error: struct "B" has no field "a"
+    if (b.a != 1)		/* { dg-error "no member" } */
+          ^
+
+"Test_name.c", line 42: warning: a value of type "struct B *" cannot be assigned to an entity of type "struct A *"
+    p = &b;		/* { dg-warning "incompatible pointer type" } */
+      ^
+
+"Test_name.c", line 51: warning: expected an identifier
+    struct F { char f; };	/* { dg-warning "does not declare anything" } */
+                        ^
+
+"Test_name.c", line 87: warning: argument of type "struct E *" is incompatible with parameter of type "struct F *"
+    f2 (&e);		/* { dg-warning "incompatible pointer type" } */
+        ^
+
+"Test_name.c", line 88: warning: argument of type "struct E *" is incompatible with parameter of type "D *" (aka "struct <unnamed> *")
+    f3 (&e);		/* { dg-warning "incompatible pointer type" } */
+        ^
+
+"Test_name.c", line 91: error: struct "E" has no field "f"
+    if (e.f != 6)		/* { dg-error "no member" } */
+          ^
+
+"Test_name.c", line 95: warning: a value of type "struct E *" cannot be assigned to an entity of type "struct F *"
+    pf = &e;		/* { dg-warning "incompatible pointer type" } */
+       ^
+
+"Test_name.c", line 98: warning: a value of type "struct E *" cannot be assigned to an entity of type "D *" (aka "struct <unnamed> *")
+    pd = &e;		/* { dg-warning "incompatible pointer type" } */
+       ^
+
+"Test_name.c", line 101: error: struct "E" has no field "D"
+    d = e.D;		/* { dg-error "no member" } */
+          ^
+
+"Test_name.c", line 102: error: struct "E" has no field "D"
+    f3 (&e.D);		/* { dg-error "no member" } */
+           ^
+
+"Test_name.c", line 103: error: struct "E" has no field "D"
+    f4 (e.D);		/* { dg-error "no member" } */
+          ^
+
+"Test_name.c", line 82: warning: variable "d" was set but never used
+    D d;
+      ^
+
+5 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,23 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc -E Test_name.c
+# 1 "Test_name.c"
+
+
+ 
+ 
+
+
+
+ 
+ 
+
+
+10000,10001,10002+
+10,10,47,42
+# 12 "Test_name.c"
++10003,10004,10005
+ 
+20000,20001,20002,
+10,10,47,42,32,123
+# 14 "Test_name.c"
+,30000,30001,30002
+ 

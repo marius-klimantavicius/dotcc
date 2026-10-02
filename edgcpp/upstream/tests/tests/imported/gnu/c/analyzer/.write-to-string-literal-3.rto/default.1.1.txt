@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 6: warning: unknown attribute "access"
+    __attribute__ ((access (read_only, 1)));
+                    ^
+
+"Test_name.c", line 8: warning: unknown attribute "access"
+    __attribute__ ((access (write_only, 1)));
+                    ^
+
+"Test_name.c", line 10: warning: unknown attribute "access"
+    __attribute__ ((access (read_write, 1)));
+                    ^
+
+"Test_name.c", line 12: warning: unknown attribute "access"
+    __attribute__ ((access (none, 1)));
+                    ^
+
+"Test_name.c", line 14: warning: unknown attribute "access"
+    __attribute__ ((access (read_only, 1, 2)));
+                    ^
+
+"Test_name.c", line 16: warning: unknown attribute "access"
+    __attribute__ ((access (write_only, 1, 2)));
+                    ^
+
+"Test_name.c", line 18: warning: unknown attribute "access"
+    __attribute__ ((access (read_write, 1, 2)));
+                    ^
+
+"Test_name.c", line 20: warning: unknown attribute "access"
+    __attribute__ ((access (none, 1, 2)));
+                    ^
+

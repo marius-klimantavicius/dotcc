@@ -1,0 +1,17 @@
+eccp -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 23: warning: integer conversion resulted in a change of sign
+    a.ui = -1;
+           ^
+
+"Test_name.c", line 26: warning: integer conversion resulted in a change of sign
+    a.uj = -1;
+           ^
+
+"Test_name.c", line 29: warning: integer conversion resulted in a change of sign
+    a.uk = -1;
+           ^
+
+"Test_name.c", line 32: warning: integer conversion resulted in a change of sign
+    a.ul = -1;
+           ^
+

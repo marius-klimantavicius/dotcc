@@ -1,0 +1,85 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 25: warning: subscript out of range
+      a[-1] = 0;             /* { dg-warning "array subscript" } */
+       ^
+
+"Test_name.c", line 31: warning: subscript out of range
+      a[10] = 0;             /* { dg-warning "array subscript" } */
+      ^
+
+"Test_name.c", line 32: warning: subscript out of range
+      a[11] = 0;             /* { dg-warning "array subscript" } */
+       ^
+
+"Test_name.c", line 39: warning: subscript out of range
+      b[-1] = 0;             /* { dg-warning "array subscript" } */
+       ^
+
+"Test_name.c", line 43: warning: subscript out of range
+      b[10] = 0;             /* { dg-warning "array subscript" } */
+      ^
+
+"Test_name.c", line 44: warning: subscript out of range
+      b[11] = 0;             /* { dg-warning "array subscript" } */
+       ^
+
+"Test_name.c", line 51: warning: subscript out of range
+      c.c[-1] = 0;           /* { dg-warning "array subscript" } */
+         ^
+
+"Test_name.c", line 55: warning: subscript out of range
+      c.c[10] = 0;           /* { dg-warning "array subscript" } */
+      ^
+
+"Test_name.c", line 56: warning: subscript out of range
+      c.c[11] = 0;           /* { dg-warning "array subscript" } */
+         ^
+
+"Test_name.c", line 66: warning: subscript out of range
+      g(&a[11]);             /* { dg-warning "array subscript" } */
+          ^
+
+"Test_name.c", line 67: warning: subscript out of range
+      g(&a[-30]+10);             /* { dg-warning "array subscript" } */
+          ^
+
+"Test_name.c", line 68: warning: subscript out of range
+      g(&a[-30]+30);
+          ^
+
+"Test_name.c", line 72: warning: subscript out of range
+      g(&a[11]);             /* { dg-warning "array subscript" } */
+          ^
+
+"Test_name.c", line 73: warning: subscript out of range
+      g(&b[11]);             /* { dg-warning "array subscript" } */
+          ^
+
+"Test_name.c", line 74: warning: subscript out of range
+      g(&c.c[11]);           /* { dg-warning "array subscript" } */
+            ^
+
+"Test_name.c", line 80: warning: subscript out of range
+      g(&a[-1]);             /* { dg-warning "array subscript" } */
+          ^
+
+"Test_name.c", line 81: warning: subscript out of range
+      g(&b[-1]);             /* { dg-warning "array subscript" } */ 
+          ^
+
+"Test_name.c", line 90: warning: subscript out of range
+         a[10] = 0;
+         ^
+
+"Test_name.c", line 92: warning: subscript out of range
+         b[10] = 0;
+         ^
+
+"Test_name.c", line 94: warning: subscript out of range
+         c.c[-1] = 0;
+            ^
+
+"Test_name.c", line 20: warning: variable "i" was declared but never referenced
+      int i;
+          ^
+

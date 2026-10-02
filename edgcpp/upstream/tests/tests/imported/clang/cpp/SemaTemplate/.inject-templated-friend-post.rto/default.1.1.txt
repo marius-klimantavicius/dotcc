@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 --c++03 -DPROTOTYPE --c++03 -DINSTANTIATE --c++03 -DPROTOTYPE -DINSTANTIATE -DREDEFINE -DPROTOTYPE -DREDEFINE Test_name.c
+"Test_name.c", line 61: error: function "operator<<" has already been defined (previous definition at line 39)
+  std_ostream& operator << (std_ostream& o, const Streamer<Foo>&) // expected-note{{is here}}
+               ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++20 -tused -A Test_name.c
+"Test_name.c", line 8: error: incomplete type "void" is not allowed
+    void f(A<decltype(C<T>)>::type); // error: needs typename to avoid vexing parse
+         ^
+
+1 error detected in the compilation of "Test_name.c".

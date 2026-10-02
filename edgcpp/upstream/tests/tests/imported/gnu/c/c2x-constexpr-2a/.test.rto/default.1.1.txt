@@ -1,0 +1,12 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c c2x-constexpr-2b.c
+Test_name.c:
+c2x-constexpr-2b.c:
+"c2x-constexpr-2b.c", line 6: warning: this declaration has no storage class or type specifier
+  constexpr int a = 3;
+  ^
+
+"c2x-constexpr-2b.c", line 6: error: expected a ";"
+  constexpr int a = 3;
+            ^
+
+1 error detected in the compilation of "c2x-constexpr-2b.c".

@@ -1,0 +1,130 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc -E Test_name.c
+# 1 "Test_name.c"
+
+
+ 
+
+ 
+
+ 
+
+ 
+
+"Test_name.c", line 11: warning: predefined meaning of "defined" discarded
+  #define defined			/* { dg-error "defined" } */
+          ^
+
+
+
+ 
+"Test_name.c", line 14: error: expected an expression
+  #if defined defined
+                     ^
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+"Test_name.c", line 32: error: expected an expression
+  #if !defined Z
+                ^
+
+
+
+
+
+"Test_name.c", line 36: error: expected an expression
+  #if !is_Z_defined               /* { dg-error "may not be portable" } */
+                                                                          ^
+
+
+
+
+
+
+
+
+ 
+
+ 
+"Test_name.c", line 46: error: expected an expression
+  #if defined(defined)
+                     ^
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+"Test_name.c", line 64: error: expected an expression
+  #if !defined(Z)
+                ^
+
+
+
+
+
+"Test_name.c", line 68: error: expected an expression
+  #if !is_Z_defined               /* { dg-error "may not be portable" } */
+       ^
+
+
+
+
+
+ 
+
+"Test_name.c", line 75: error: expected an expression
+  #if !bad1 Z			/* { dg-error "may not be portable" } */
+             			                                        ^
+
+
+
+
+
+
+"Test_name.c", line 79: error: expected an expression
+  #if !bad1 (Z)			/* { dg-error "may not be portable" } */
+              ^
+
+
+
+
+
+"Test_name.c", line 84: error: expected an expression
+  #if !bad2)			/* { dg-error "may not be portable" } */
+           ^
+
+
+
+
+
+
+9 errors detected in the compilation of "Test_name.c".

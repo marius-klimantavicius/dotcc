@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --clang --c++11 Test_name.c
+"Test_name.c", line 18: warning: variable "bar" was declared but never referenced
+  constexpr int bar = foo[0].x;  // Previously rejected as not constant
+                ^
+

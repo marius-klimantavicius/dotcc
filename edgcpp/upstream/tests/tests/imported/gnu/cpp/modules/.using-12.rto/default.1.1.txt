@@ -1,0 +1,78 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 --modules Test_name.c
+"Test_name.c", line 32: error: an export declaration cannot export a name with internal linkage
+      export using s::f1;  // { dg-error "does not have external linkage" }
+                   ^
+
+"Test_name.c", line 33: error: an export declaration cannot export a name with internal linkage
+      export using s::g1;  // { dg-error "does not have external linkage" }
+                   ^
+
+"Test_name.c", line 54: warning: using-declaration ignored -- it refers to the current namespace
+    export using m::a2;  // { dg-error "does not have external linkage" }
+                 ^
+
+"Test_name.c", line 55: warning: using-declaration ignored -- it refers to the current namespace
+    export using m::b2;  // { dg-error "does not have external linkage" }
+                 ^
+
+"Test_name.c", line 56: warning: using-declaration ignored -- it refers to the current namespace
+    export using m::x2;  // { dg-error "does not have external linkage" }
+                 ^
+
+"Test_name.c", line 57: warning: using-declaration ignored -- it refers to the current namespace
+    export using m::y2;  // { dg-error "does not have external linkage" }
+                 ^
+
+"Test_name.c", line 58: warning: using-declaration ignored -- it refers to the current namespace
+    export using m::f2;  // { dg-error "does not have external linkage" }
+                 ^
+
+"Test_name.c", line 59: warning: using-declaration ignored -- it refers to the current namespace
+    export using m::g2;  // { dg-error "does not have external linkage" }
+                 ^
+
+"Test_name.c", line 78: warning: using-declaration ignored -- it refers to the current namespace
+    export using n::a3;  // { dg-error "does not have external linkage" }
+                 ^
+
+"Test_name.c", line 79: warning: using-declaration ignored -- it refers to the current namespace
+    export using n::b3;  // { dg-error "does not have external linkage" }
+                 ^
+
+"Test_name.c", line 80: warning: using-declaration ignored -- it refers to the current namespace
+    export using n::c3;  // { dg-error "does not have external linkage" }
+                 ^
+
+"Test_name.c", line 81: warning: using-declaration ignored -- it refers to the current namespace
+    export using n::d3;  // { dg-error "does not have external linkage" }
+                 ^
+
+"Test_name.c", line 100: warning: using-declaration ignored -- it refers to the current namespace
+    export using t::a;
+                 ^
+
+"Test_name.c", line 101: warning: using-declaration ignored -- it refers to the current namespace
+    export using t::b;
+                 ^
+
+"Test_name.c", line 102: warning: using-declaration ignored -- it refers to the current namespace
+    export using t::c;  // { dg-error "does not have external linkage" }
+                 ^
+
+"Test_name.c", line 103: warning: using-declaration ignored -- it refers to the current namespace
+    export using t::d;  // { dg-error "does not have external linkage" }
+                 ^
+
+"Test_name.c", line 104: warning: using-declaration ignored -- it refers to the current namespace
+    export using t::e;  // { dg-error "does not have external linkage" }
+                 ^
+
+"Test_name.c", line 18: warning: variable "s::<unnamed>::x1" was declared but never referenced
+      int x1;  // { dg-message "declared here with internal linkage" }
+          ^
+
+"Test_name.c", line 23: warning: function "s::<unnamed>::f1" was declared but never referenced
+      void f1();  // { dg-message "declared here with internal linkage" }
+           ^
+
+2 errors detected in the compilation of "Test_name.c".

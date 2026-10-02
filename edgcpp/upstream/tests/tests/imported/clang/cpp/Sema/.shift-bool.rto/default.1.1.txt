@@ -1,0 +1,53 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 19: warning: shift count is negative
+    bool g = y << -1; // expected-warning {{shift count is negative}}
+                  ^
+
+"Test_name.c", line 20: warning: shift count is negative
+    bool h = y >> -1; // expected-warning {{right shifting a 'bool' implicitly converts it to 'int'}} \
+                  ^
+
+"Test_name.c", line 10: warning: variable "a" was declared but never referenced
+    bool a = y << x;
+         ^
+
+"Test_name.c", line 11: warning: variable "b" was declared but never referenced
+    bool b = y >> x; // expected-warning {{right shifting a 'bool' implicitly converts it to 'int'}}
+         ^
+
+"Test_name.c", line 13: warning: variable "c" was declared but never referenced
+    bool c = false << x;
+         ^
+
+"Test_name.c", line 14: warning: variable "d" was declared but never referenced
+    bool d = false >> x; // expected-warning {{right shifting a 'bool' implicitly converts it to 'int'}}
+         ^
+
+"Test_name.c", line 16: warning: variable "e" was declared but never referenced
+    bool e = y << 1;
+         ^
+
+"Test_name.c", line 17: warning: variable "f" was declared but never referenced
+    bool f = y >> 1; // expected-warning {{right shifting a 'bool' implicitly converts it to 'int'}}
+         ^
+
+"Test_name.c", line 19: warning: variable "g" was declared but never referenced
+    bool g = y << -1; // expected-warning {{shift count is negative}}
+         ^
+
+"Test_name.c", line 20: warning: variable "h" was declared but never referenced
+    bool h = y >> -1; // expected-warning {{right shifting a 'bool' implicitly converts it to 'int'}} \
+         ^
+
+"Test_name.c", line 23: warning: variable "i" was declared but never referenced
+    bool i = y << 0;
+         ^
+
+"Test_name.c", line 24: warning: variable "j" was declared but never referenced
+    bool j = y >> 0; // expected-warning {{right shifting a 'bool' implicitly converts it to 'int'}}
+         ^
+
+"Test_name.c", line 26: warning: variable "k" was declared but never referenced
+    bool k = (x < z) >> 1; // expected-warning {{right shifting a 'bool' implicitly converts it to 'int'}}
+         ^
+

@@ -1,0 +1,32 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 Test_name.c
+"Test_name.c", line 18: warning: variable "same_entity" was declared but never referenced
+    int same_entity = 0; // not the same entity
+        ^
+
+"Test_name.c", line 30: warning: variable in constexpr function does not have automatic storage duration
+    extern int same_entity_2[];
+               ^
+
+"Test_name.c", line 33: error: expression must have a constant value
+  static_assert(get2() == same_entity_2, "failed to find previous decl");
+                ^
+"Test_name.c", line 30: note: constant-evaluation cannot go through the declaration of a variable with static or thread storage duration
+    extern int same_entity_2[];
+    ^
+
+"Test_name.c", line 42: warning: variable in constexpr function does not have automatic storage duration
+      extern int different_entities;
+                 ^
+
+"Test_name.c", line 37: warning: variable "different_entities" was declared but never referenced
+    int different_entities = 0;
+        ^
+
+"Test_name.c", line 46: error: expression must have a constant value
+  static_assert(get3() == &different_entities, "failed to find previous decl");
+                ^
+"Test_name.c", line 42: note: constant-evaluation cannot go through the declaration of a variable with static or thread storage duration
+      extern int different_entities;
+      ^
+
+2 errors detected in the compilation of "Test_name.c".

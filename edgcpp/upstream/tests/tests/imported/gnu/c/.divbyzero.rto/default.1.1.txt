@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 14: warning: right operand of "%" is zero
+    int w = argc % ZERO;		/* { dg-warning "division by zero" } */
+                   ^
+
+"Test_name.c", line 15: warning: division by zero
+    int x = argc / 0;		/* { dg-warning "division by zero" } */
+                   ^
+
+"Test_name.c", line 16: warning: division by zero
+    int y = argc / ZERO;		/* { dg-warning "division by zero" } */
+                   ^
+
+"Test_name.c", line 14: warning: variable "w" was set but never used
+    int w = argc % ZERO;		/* { dg-warning "division by zero" } */
+        ^
+

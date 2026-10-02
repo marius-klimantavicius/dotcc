@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 36: warning: label "x" was declared but never referenced
+      x: [[]]; /* { dg-error "expected" } */
+      ^
+
+"Test_name.c", line 41: error: attribute does not apply to any entity
+  int z = sizeof ([[]] int); /* { dg-error "expected" } */
+                  ^
+
+"Test_name.c", line 47: warning: type qualifiers are meaningless in this declaration
+  const struct [[]] s2; /* { dg-warning "useless type qualifier" } */
+  ^
+
+"Test_name.c", line 50: warning: type qualifiers are meaningless in this declaration
+  const union [[]] u2; /* { dg-warning "useless type qualifier" } */
+  ^
+
+"Test_name.c", line 53: error: attributes are not allowed here
+  struct [[]] s3 *sv; /* { dg-error "expected" } */
+           ^
+
+"Test_name.c", line 55: error: attributes are not allowed here
+  union [[]] u3 *uv; /* { dg-error "expected" } */
+          ^
+
+"Test_name.c", line 59: error: attributes are not allowed here
+  enum [[]] e *ev; /* { dg-error "expected" } */
+         ^
+
+4 errors detected in the compilation of "Test_name.c".

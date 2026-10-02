@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --upc Test_name.c
+"Test_name.c", line 17: warning: branching into or out of a upc_forall loop is not allowed
+  		break;
+  		^
+

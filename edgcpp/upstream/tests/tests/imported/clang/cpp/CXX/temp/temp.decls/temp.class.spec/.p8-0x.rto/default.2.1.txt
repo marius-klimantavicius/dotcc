@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 8: warning: constant "Values" is not used in or cannot be deduced from the template argument list of class template "X1<0, <expression>...>"
+  template<int ...Values>  // expected-note {{non-deducible}}
+                  ^
+
+"Test_name.c", line 14: error: incomplete type "X2<X1<1, 2, 3>, 2, 3, 4, 5>" is not allowed
+  X2<X1<1, 2, 3>, 2, 3, 4, 5> x3; // expected-error {{undefined template}}
+                              ^
+
+1 error detected in the compilation of "Test_name.c".

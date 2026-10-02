@@ -1,0 +1,1824 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 44: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 46: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 47: error: no instance of overloaded function "sink_5_12345" matches the argument list
+            argument types are: (volatile A)
+      sink_5_12345(v_source());   // { dg-error "" }
+      ^
+"Test_name.c", line 39: note: function "sink_5_12345(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_12345(               A&&);
+        ^
+"Test_name.c", line 38: note: function "sink_5_12345(const volatile A &)" does not match because argument #1 does not match parameter
+  four  sink_5_12345(const volatile A&);
+        ^
+"Test_name.c", line 37: note: function "sink_5_12345(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_12345(volatile       A&);
+        ^
+"Test_name.c", line 36: note: function "sink_5_12345(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_12345(const          A&);
+        ^
+"Test_name.c", line 35: note: function "sink_5_12345(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_12345(               A&);  // { dg-message "one sink_5_12345|no known conversion" }
+        ^
+
+"Test_name.c", line 48: error: no instance of overloaded function "sink_5_12345" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_12345(cv_source());  // { dg-error "" }
+      ^
+"Test_name.c", line 39: note: function "sink_5_12345(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_12345(               A&&);
+        ^
+"Test_name.c", line 38: note: function "sink_5_12345(const volatile A &)" does not match because argument #1 does not match parameter
+  four  sink_5_12345(const volatile A&);
+        ^
+"Test_name.c", line 37: note: function "sink_5_12345(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_12345(volatile       A&);
+        ^
+"Test_name.c", line 36: note: function "sink_5_12345(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_12345(const          A&);
+        ^
+"Test_name.c", line 35: note: function "sink_5_12345(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_12345(               A&);  // { dg-message "one sink_5_12345|no known conversion" }
+        ^
+
+"Test_name.c", line 61: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 63: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 64: error: no instance of overloaded function "sink_5_12346" matches the argument list
+            argument types are: (volatile A)
+      sink_5_12346(v_source());   // { dg-error "" }
+      ^
+"Test_name.c", line 56: note: function "sink_5_12346(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_12346(const          A&&);
+        ^
+"Test_name.c", line 55: note: function "sink_5_12346(const volatile A &)" does not match because argument #1 does not match parameter
+  four  sink_5_12346(const volatile A&);
+        ^
+"Test_name.c", line 54: note: function "sink_5_12346(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_12346(volatile       A&);
+        ^
+"Test_name.c", line 53: note: function "sink_5_12346(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_12346(const          A&);
+        ^
+"Test_name.c", line 52: note: function "sink_5_12346(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_12346(               A&);  // { dg-message "one sink_5_12346|no known conversion" }
+        ^
+
+"Test_name.c", line 65: error: no instance of overloaded function "sink_5_12346" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_12346(cv_source());  // { dg-error "" }
+      ^
+"Test_name.c", line 56: note: function "sink_5_12346(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_12346(const          A&&);
+        ^
+"Test_name.c", line 55: note: function "sink_5_12346(const volatile A &)" does not match because argument #1 does not match parameter
+  four  sink_5_12346(const volatile A&);
+        ^
+"Test_name.c", line 54: note: function "sink_5_12346(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_12346(volatile       A&);
+        ^
+"Test_name.c", line 53: note: function "sink_5_12346(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_12346(const          A&);
+        ^
+"Test_name.c", line 52: note: function "sink_5_12346(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_12346(               A&);  // { dg-message "one sink_5_12346|no known conversion" }
+        ^
+
+"Test_name.c", line 78: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 80: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 81: error: no instance of overloaded function "sink_5_12347" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_12347(cv_source());  // { dg-error "" }
+      ^
+"Test_name.c", line 73: note: function "sink_5_12347(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_12347(volatile       A&&);
+        ^
+"Test_name.c", line 72: note: function "sink_5_12347(const volatile A &)" does not match because argument #1 does not match parameter
+  four  sink_5_12347(const volatile A&);
+        ^
+"Test_name.c", line 71: note: function "sink_5_12347(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_12347(volatile       A&);
+        ^
+"Test_name.c", line 70: note: function "sink_5_12347(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_12347(const          A&);
+        ^
+"Test_name.c", line 69: note: function "sink_5_12347(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_12347(               A&);  // { dg-message "one sink_5_12347|no known conversion" }
+        ^
+
+"Test_name.c", line 94: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 96: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 97: error: no instance of overloaded function "sink_5_12356" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_12356(cva);          // { dg-error "" }
+      ^
+"Test_name.c", line 89: note: function "sink_5_12356(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_12356(const          A&&);
+        ^
+"Test_name.c", line 88: note: function "sink_5_12356(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_12356(               A&&);
+        ^
+"Test_name.c", line 87: note: function "sink_5_12356(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_12356(volatile       A&);
+        ^
+"Test_name.c", line 86: note: function "sink_5_12356(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_12356(const          A&);
+        ^
+"Test_name.c", line 85: note: function "sink_5_12356(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_12356(               A&);  // { dg-message "one sink_5_12356|no known conversion" }
+        ^
+
+"Test_name.c", line 98: error: no instance of overloaded function "sink_5_12356" matches the argument list
+            argument types are: (volatile A)
+      sink_5_12356(v_source());   // { dg-error "" }
+      ^
+"Test_name.c", line 89: note: function "sink_5_12356(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_12356(const          A&&);
+        ^
+"Test_name.c", line 88: note: function "sink_5_12356(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_12356(               A&&);
+        ^
+"Test_name.c", line 87: note: function "sink_5_12356(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_12356(volatile       A&);
+        ^
+"Test_name.c", line 86: note: function "sink_5_12356(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_12356(const          A&);
+        ^
+"Test_name.c", line 85: note: function "sink_5_12356(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_12356(               A&);  // { dg-message "one sink_5_12356|no known conversion" }
+        ^
+
+"Test_name.c", line 99: error: no instance of overloaded function "sink_5_12356" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_12356(cv_source());  // { dg-error "" }
+      ^
+"Test_name.c", line 89: note: function "sink_5_12356(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_12356(const          A&&);
+        ^
+"Test_name.c", line 88: note: function "sink_5_12356(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_12356(               A&&);
+        ^
+"Test_name.c", line 87: note: function "sink_5_12356(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_12356(volatile       A&);
+        ^
+"Test_name.c", line 86: note: function "sink_5_12356(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_12356(const          A&);
+        ^
+"Test_name.c", line 85: note: function "sink_5_12356(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_12356(               A&);  // { dg-message "one sink_5_12356|no known conversion" }
+        ^
+
+"Test_name.c", line 112: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 114: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 115: error: no instance of overloaded function "sink_5_12357" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_12357(cva);          // { dg-error "" }
+      ^
+"Test_name.c", line 107: note: function "sink_5_12357(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_12357(volatile       A&&);
+        ^
+"Test_name.c", line 106: note: function "sink_5_12357(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_12357(               A&&);
+        ^
+"Test_name.c", line 105: note: function "sink_5_12357(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_12357(volatile       A&);
+        ^
+"Test_name.c", line 104: note: function "sink_5_12357(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_12357(const          A&);
+        ^
+"Test_name.c", line 103: note: function "sink_5_12357(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_12357(               A&);  // { dg-message "one sink_5_12357|no known conversion" }
+        ^
+
+"Test_name.c", line 116: error: no instance of overloaded function "sink_5_12357" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_12357(cv_source());  // { dg-error "" }
+      ^
+"Test_name.c", line 107: note: function "sink_5_12357(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_12357(volatile       A&&);
+        ^
+"Test_name.c", line 106: note: function "sink_5_12357(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_12357(               A&&);
+        ^
+"Test_name.c", line 105: note: function "sink_5_12357(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_12357(volatile       A&);
+        ^
+"Test_name.c", line 104: note: function "sink_5_12357(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_12357(const          A&);
+        ^
+"Test_name.c", line 103: note: function "sink_5_12357(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_12357(               A&);  // { dg-message "one sink_5_12357|no known conversion" }
+        ^
+
+"Test_name.c", line 129: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 131: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 132: error: no instance of overloaded function "sink_5_12358" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_12358(cva);		// { dg-error "" }
+      ^
+"Test_name.c", line 124: note: function "sink_5_12358(const volatile A &&)" does not match because argument #1 does not match parameter
+  eight sink_5_12358(const volatile A&&); // { dg-message "" }
+        ^
+"Test_name.c", line 123: note: function "sink_5_12358(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_12358(               A&&);
+        ^
+"Test_name.c", line 122: note: function "sink_5_12358(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_12358(volatile       A&);
+        ^
+"Test_name.c", line 121: note: function "sink_5_12358(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_12358(const          A&);
+        ^
+"Test_name.c", line 120: note: function "sink_5_12358(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_12358(               A&);
+        ^
+
+"Test_name.c", line 145: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 147: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 148: error: no instance of overloaded function "sink_5_12367" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_12367(cva);          // { dg-error "" }
+      ^
+"Test_name.c", line 140: note: function "sink_5_12367(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_12367(volatile       A&&);
+        ^
+"Test_name.c", line 139: note: function "sink_5_12367(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_12367(const          A&&);
+        ^
+"Test_name.c", line 138: note: function "sink_5_12367(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_12367(volatile       A&);
+        ^
+"Test_name.c", line 137: note: function "sink_5_12367(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_12367(const          A&);
+        ^
+"Test_name.c", line 136: note: function "sink_5_12367(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_12367(               A&);  // { dg-message "one sink_5_12367|no known conversion" }
+        ^
+
+"Test_name.c", line 149: error: more than one instance of overloaded function "sink_5_12367" matches the argument list:
+            function "sink_5_12367(const A &&)" (declared at line 139)
+            function "sink_5_12367(volatile A &&)" (declared at line 140)
+            argument types are: (A)
+      sink_5_12367(source());     // { dg-error "" }
+      ^
+"Test_name.c", line 138: note: function "sink_5_12367(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_12367(volatile       A&);
+        ^
+"Test_name.c", line 136: note: function "sink_5_12367(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_12367(               A&);  // { dg-message "one sink_5_12367|no known conversion" }
+        ^
+
+"Test_name.c", line 150: error: no instance of overloaded function "sink_5_12367" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_12367(cv_source());  // { dg-error "" }
+      ^
+"Test_name.c", line 140: note: function "sink_5_12367(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_12367(volatile       A&&);
+        ^
+"Test_name.c", line 139: note: function "sink_5_12367(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_12367(const          A&&);
+        ^
+"Test_name.c", line 138: note: function "sink_5_12367(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_12367(volatile       A&);
+        ^
+"Test_name.c", line 137: note: function "sink_5_12367(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_12367(const          A&);
+        ^
+"Test_name.c", line 136: note: function "sink_5_12367(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_12367(               A&);  // { dg-message "one sink_5_12367|no known conversion" }
+        ^
+
+"Test_name.c", line 163: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 165: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 166: error: no instance of overloaded function "sink_5_12368" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_12368(cva);		// { dg-error "" }
+      ^
+"Test_name.c", line 158: note: function "sink_5_12368(const volatile A &&)" does not match because argument #1 does not match parameter
+  eight sink_5_12368(const volatile A&&); // { dg-message "" }
+        ^
+"Test_name.c", line 157: note: function "sink_5_12368(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_12368(const          A&&);
+        ^
+"Test_name.c", line 156: note: function "sink_5_12368(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_12368(volatile       A&);
+        ^
+"Test_name.c", line 155: note: function "sink_5_12368(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_12368(const          A&);
+        ^
+"Test_name.c", line 154: note: function "sink_5_12368(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_12368(               A&);
+        ^
+
+"Test_name.c", line 179: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 181: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 182: error: no instance of overloaded function "sink_5_12378" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_12378(cva);		// { dg-error "" }
+      ^
+"Test_name.c", line 174: note: function "sink_5_12378(const volatile A &&)" does not match because argument #1 does not match parameter
+  eight sink_5_12378(const volatile A&&); // { dg-message "" }
+        ^
+"Test_name.c", line 173: note: function "sink_5_12378(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_12378(volatile       A&&);
+        ^
+"Test_name.c", line 172: note: function "sink_5_12378(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_12378(volatile       A&);
+        ^
+"Test_name.c", line 171: note: function "sink_5_12378(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_12378(const          A&);
+        ^
+"Test_name.c", line 170: note: function "sink_5_12378(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_12378(               A&);
+        ^
+
+"Test_name.c", line 195: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 197: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 198: error: no instance of overloaded function "sink_5_12456" matches the argument list
+            argument types are: (volatile A)
+      sink_5_12456(v_source());   // { dg-error "" }
+      ^
+"Test_name.c", line 190: note: function "sink_5_12456(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_12456(const          A&&);
+        ^
+"Test_name.c", line 189: note: function "sink_5_12456(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_12456(               A&&);
+        ^
+"Test_name.c", line 188: note: function "sink_5_12456(const volatile A &)" does not match because argument #1 does not match parameter
+  four  sink_5_12456(const volatile A&);
+        ^
+"Test_name.c", line 187: note: function "sink_5_12456(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_12456(const          A&);
+        ^
+"Test_name.c", line 186: note: function "sink_5_12456(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_12456(               A&);  // { dg-message "one sink_5_12456|no known conversion" }
+        ^
+
+"Test_name.c", line 199: error: no instance of overloaded function "sink_5_12456" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_12456(cv_source());  // { dg-error "" }
+      ^
+"Test_name.c", line 190: note: function "sink_5_12456(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_12456(const          A&&);
+        ^
+"Test_name.c", line 189: note: function "sink_5_12456(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_12456(               A&&);
+        ^
+"Test_name.c", line 188: note: function "sink_5_12456(const volatile A &)" does not match because argument #1 does not match parameter
+  four  sink_5_12456(const volatile A&);
+        ^
+"Test_name.c", line 187: note: function "sink_5_12456(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_12456(const          A&);
+        ^
+"Test_name.c", line 186: note: function "sink_5_12456(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_12456(               A&);  // { dg-message "one sink_5_12456|no known conversion" }
+        ^
+
+"Test_name.c", line 212: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 214: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 215: error: no instance of overloaded function "sink_5_12457" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_12457(cv_source());  // { dg-error "" }
+      ^
+"Test_name.c", line 207: note: function "sink_5_12457(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_12457(volatile       A&&);
+        ^
+"Test_name.c", line 206: note: function "sink_5_12457(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_12457(               A&&);
+        ^
+"Test_name.c", line 205: note: function "sink_5_12457(const volatile A &)" does not match because argument #1 does not match parameter
+  four  sink_5_12457(const volatile A&);
+        ^
+"Test_name.c", line 204: note: function "sink_5_12457(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_12457(const          A&);
+        ^
+"Test_name.c", line 203: note: function "sink_5_12457(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_12457(               A&);  // { dg-message "one sink_5_12457|no known conversion" }
+        ^
+
+"Test_name.c", line 228: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 230: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 231: error: more than one instance of overloaded function "sink_5_12467" matches the argument list:
+            function "sink_5_12467(const A &&)" (declared at line 222)
+            function "sink_5_12467(volatile A &&)" (declared at line 223)
+            argument types are: (A)
+      sink_5_12467(source());     // { dg-error "" }
+      ^
+"Test_name.c", line 221: note: function "sink_5_12467(const volatile A &)" does not match because argument #1 does not match parameter
+  four  sink_5_12467(const volatile A&);
+        ^
+"Test_name.c", line 219: note: function "sink_5_12467(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_12467(               A&);  // { dg-message "one sink_5_12467|no known conversion" }
+        ^
+
+"Test_name.c", line 232: error: no instance of overloaded function "sink_5_12467" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_12467(cv_source());  // { dg-error "" }
+      ^
+"Test_name.c", line 223: note: function "sink_5_12467(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_12467(volatile       A&&);
+        ^
+"Test_name.c", line 222: note: function "sink_5_12467(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_12467(const          A&&);
+        ^
+"Test_name.c", line 221: note: function "sink_5_12467(const volatile A &)" does not match because argument #1 does not match parameter
+  four  sink_5_12467(const volatile A&);
+        ^
+"Test_name.c", line 220: note: function "sink_5_12467(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_12467(const          A&);
+        ^
+"Test_name.c", line 219: note: function "sink_5_12467(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_12467(               A&);  // { dg-message "one sink_5_12467|no known conversion" }
+        ^
+
+"Test_name.c", line 245: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 247: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 248: error: no instance of overloaded function "sink_5_12567" matches the argument list
+            argument types are: (volatile A)
+      sink_5_12567(va);		// { dg-error "" }
+      ^
+"Test_name.c", line 240: note: function "sink_5_12567(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_12567(volatile       A&&);  // { dg-message "" }
+        ^
+"Test_name.c", line 239: note: function "sink_5_12567(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_12567(const          A&&);
+        ^
+"Test_name.c", line 238: note: function "sink_5_12567(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_12567(               A&&);
+        ^
+"Test_name.c", line 237: note: function "sink_5_12567(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_12567(const          A&);
+        ^
+"Test_name.c", line 236: note: function "sink_5_12567(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_12567(               A&);  // { dg-message "one sink_5_12567|no known conversion" }
+        ^
+
+"Test_name.c", line 249: error: no instance of overloaded function "sink_5_12567" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_12567(cva);          // { dg-error "" }
+      ^
+"Test_name.c", line 240: note: function "sink_5_12567(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_12567(volatile       A&&);  // { dg-message "" }
+        ^
+"Test_name.c", line 239: note: function "sink_5_12567(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_12567(const          A&&);
+        ^
+"Test_name.c", line 238: note: function "sink_5_12567(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_12567(               A&&);
+        ^
+"Test_name.c", line 237: note: function "sink_5_12567(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_12567(const          A&);
+        ^
+"Test_name.c", line 236: note: function "sink_5_12567(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_12567(               A&);  // { dg-message "one sink_5_12567|no known conversion" }
+        ^
+
+"Test_name.c", line 250: error: no instance of overloaded function "sink_5_12567" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_12567(cv_source());  // { dg-error "" }
+      ^
+"Test_name.c", line 240: note: function "sink_5_12567(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_12567(volatile       A&&);  // { dg-message "" }
+        ^
+"Test_name.c", line 239: note: function "sink_5_12567(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_12567(const          A&&);
+        ^
+"Test_name.c", line 238: note: function "sink_5_12567(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_12567(               A&&);
+        ^
+"Test_name.c", line 237: note: function "sink_5_12567(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_12567(const          A&);
+        ^
+"Test_name.c", line 236: note: function "sink_5_12567(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_12567(               A&);  // { dg-message "one sink_5_12567|no known conversion" }
+        ^
+
+"Test_name.c", line 263: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 265: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 266: error: no instance of overloaded function "sink_5_12568" matches the argument list
+            argument types are: (volatile A)
+      sink_5_12568(va);		// { dg-error "" }
+      ^
+"Test_name.c", line 258: note: function "sink_5_12568(const volatile A &&)" does not match because argument #1 does not match parameter
+  eight sink_5_12568(const volatile A&&); // { dg-message "" }
+        ^
+"Test_name.c", line 257: note: function "sink_5_12568(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_12568(const          A&&);
+        ^
+"Test_name.c", line 256: note: function "sink_5_12568(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_12568(               A&&);
+        ^
+"Test_name.c", line 255: note: function "sink_5_12568(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_12568(const          A&);
+        ^
+"Test_name.c", line 254: note: function "sink_5_12568(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_12568(               A&);
+        ^
+
+"Test_name.c", line 267: error: no instance of overloaded function "sink_5_12568" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_12568(cva);		// { dg-error "" }
+      ^
+"Test_name.c", line 258: note: function "sink_5_12568(const volatile A &&)" does not match because argument #1 does not match parameter
+  eight sink_5_12568(const volatile A&&); // { dg-message "" }
+        ^
+"Test_name.c", line 257: note: function "sink_5_12568(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_12568(const          A&&);
+        ^
+"Test_name.c", line 256: note: function "sink_5_12568(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_12568(               A&&);
+        ^
+"Test_name.c", line 255: note: function "sink_5_12568(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_12568(const          A&);
+        ^
+"Test_name.c", line 254: note: function "sink_5_12568(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_12568(               A&);
+        ^
+
+"Test_name.c", line 280: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 282: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 283: error: no instance of overloaded function "sink_5_12578" matches the argument list
+            argument types are: (volatile A)
+      sink_5_12578(va);		// { dg-error "" }
+      ^
+"Test_name.c", line 275: note: function "sink_5_12578(const volatile A &&)" does not match because argument #1 does not match parameter
+  eight sink_5_12578(const volatile A&&); // { dg-message "" }
+        ^
+"Test_name.c", line 274: note: function "sink_5_12578(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_12578(volatile       A&&); // { dg-message "" }
+        ^
+"Test_name.c", line 273: note: function "sink_5_12578(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_12578(               A&&);
+        ^
+"Test_name.c", line 272: note: function "sink_5_12578(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_12578(const          A&);
+        ^
+"Test_name.c", line 271: note: function "sink_5_12578(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_12578(               A&);
+        ^
+
+"Test_name.c", line 284: error: no instance of overloaded function "sink_5_12578" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_12578(cva);		// { dg-error "" }
+      ^
+"Test_name.c", line 275: note: function "sink_5_12578(const volatile A &&)" does not match because argument #1 does not match parameter
+  eight sink_5_12578(const volatile A&&); // { dg-message "" }
+        ^
+"Test_name.c", line 274: note: function "sink_5_12578(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_12578(volatile       A&&); // { dg-message "" }
+        ^
+"Test_name.c", line 273: note: function "sink_5_12578(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_12578(               A&&);
+        ^
+"Test_name.c", line 272: note: function "sink_5_12578(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_12578(const          A&);
+        ^
+"Test_name.c", line 271: note: function "sink_5_12578(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_12578(               A&);
+        ^
+
+"Test_name.c", line 297: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 299: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 300: error: no instance of overloaded function "sink_5_12678" matches the argument list
+            argument types are: (volatile A)
+      sink_5_12678(va);		// { dg-error "" }
+      ^
+"Test_name.c", line 292: note: function "sink_5_12678(const volatile A &&)" does not match because argument #1 does not match parameter
+  eight sink_5_12678(const volatile A&&);  // { dg-message "" }
+        ^
+"Test_name.c", line 291: note: function "sink_5_12678(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_12678(volatile       A&&);  // { dg-message "" }
+        ^
+"Test_name.c", line 290: note: function "sink_5_12678(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_12678(const          A&&);
+        ^
+"Test_name.c", line 289: note: function "sink_5_12678(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_12678(const          A&);
+        ^
+"Test_name.c", line 288: note: function "sink_5_12678(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_12678(               A&);
+        ^
+
+"Test_name.c", line 301: error: no instance of overloaded function "sink_5_12678" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_12678(cva);		// { dg-error "" }
+      ^
+"Test_name.c", line 292: note: function "sink_5_12678(const volatile A &&)" does not match because argument #1 does not match parameter
+  eight sink_5_12678(const volatile A&&);  // { dg-message "" }
+        ^
+"Test_name.c", line 291: note: function "sink_5_12678(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_12678(volatile       A&&);  // { dg-message "" }
+        ^
+"Test_name.c", line 290: note: function "sink_5_12678(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_12678(const          A&&);
+        ^
+"Test_name.c", line 289: note: function "sink_5_12678(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_12678(const          A&);
+        ^
+"Test_name.c", line 288: note: function "sink_5_12678(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_12678(               A&);
+        ^
+
+"Test_name.c", line 302: error: more than one instance of overloaded function "sink_5_12678" matches the argument list:
+            function "sink_5_12678(const A &&)" (declared at line 290)
+            function "sink_5_12678(volatile A &&)" (declared at line 291)
+            argument types are: (A)
+      sink_5_12678(source());  // { dg-error "" }
+      ^
+"Test_name.c", line 288: note: function "sink_5_12678(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_12678(               A&);
+        ^
+
+"Test_name.c", line 315: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 317: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 318: error: no instance of overloaded function "sink_5_13456" matches the argument list
+            argument types are: (volatile A)
+      sink_5_13456(v_source());   // { dg-error "" }
+      ^
+"Test_name.c", line 310: note: function "sink_5_13456(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_13456(const          A&&);
+        ^
+"Test_name.c", line 309: note: function "sink_5_13456(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_13456(               A&&);
+        ^
+"Test_name.c", line 308: note: function "sink_5_13456(const volatile A &)" does not match because argument #1 does not match parameter
+  four  sink_5_13456(const volatile A&);
+        ^
+"Test_name.c", line 307: note: function "sink_5_13456(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_13456(volatile       A&);
+        ^
+"Test_name.c", line 306: note: function "sink_5_13456(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_13456(               A&);  // { dg-message "one sink_5_13456|no known conversion" }
+        ^
+
+"Test_name.c", line 319: error: no instance of overloaded function "sink_5_13456" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_13456(cv_source());  // { dg-error "" }
+      ^
+"Test_name.c", line 310: note: function "sink_5_13456(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_13456(const          A&&);
+        ^
+"Test_name.c", line 309: note: function "sink_5_13456(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_13456(               A&&);
+        ^
+"Test_name.c", line 308: note: function "sink_5_13456(const volatile A &)" does not match because argument #1 does not match parameter
+  four  sink_5_13456(const volatile A&);
+        ^
+"Test_name.c", line 307: note: function "sink_5_13456(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_13456(volatile       A&);
+        ^
+"Test_name.c", line 306: note: function "sink_5_13456(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_13456(               A&);  // { dg-message "one sink_5_13456|no known conversion" }
+        ^
+
+"Test_name.c", line 332: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 334: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 335: error: no instance of overloaded function "sink_5_13457" matches the argument list
+            argument types are: (const A)
+      sink_5_13457(c_source());   // { dg-error "" }
+      ^
+"Test_name.c", line 327: note: function "sink_5_13457(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_13457(volatile       A&&);
+        ^
+"Test_name.c", line 326: note: function "sink_5_13457(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_13457(               A&&);
+        ^
+"Test_name.c", line 325: note: function "sink_5_13457(const volatile A &)" does not match because argument #1 does not match parameter
+  four  sink_5_13457(const volatile A&);
+        ^
+"Test_name.c", line 324: note: function "sink_5_13457(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_13457(volatile       A&);
+        ^
+"Test_name.c", line 323: note: function "sink_5_13457(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_13457(               A&);  // { dg-message "one sink_5_13457|no known conversion" }
+        ^
+
+"Test_name.c", line 336: error: no instance of overloaded function "sink_5_13457" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_13457(cv_source());  // { dg-error "" }
+      ^
+"Test_name.c", line 327: note: function "sink_5_13457(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_13457(volatile       A&&);
+        ^
+"Test_name.c", line 326: note: function "sink_5_13457(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_13457(               A&&);
+        ^
+"Test_name.c", line 325: note: function "sink_5_13457(const volatile A &)" does not match because argument #1 does not match parameter
+  four  sink_5_13457(const volatile A&);
+        ^
+"Test_name.c", line 324: note: function "sink_5_13457(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_13457(volatile       A&);
+        ^
+"Test_name.c", line 323: note: function "sink_5_13457(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_13457(               A&);  // { dg-message "one sink_5_13457|no known conversion" }
+        ^
+
+"Test_name.c", line 349: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 351: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 352: error: more than one instance of overloaded function "sink_5_13467" matches the argument list:
+            function "sink_5_13467(const A &&)" (declared at line 343)
+            function "sink_5_13467(volatile A &&)" (declared at line 344)
+            argument types are: (A)
+      sink_5_13467(source());     // { dg-error "" }
+      ^
+"Test_name.c", line 342: note: function "sink_5_13467(const volatile A &)" does not match because argument #1 does not match parameter
+  four  sink_5_13467(const volatile A&);
+        ^
+"Test_name.c", line 341: note: function "sink_5_13467(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_13467(volatile       A&);
+        ^
+"Test_name.c", line 340: note: function "sink_5_13467(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_13467(               A&);  // { dg-message "one sink_5_13467|no known conversion" }
+        ^
+
+"Test_name.c", line 353: error: no instance of overloaded function "sink_5_13467" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_13467(cv_source());  // { dg-error "" }
+      ^
+"Test_name.c", line 344: note: function "sink_5_13467(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_13467(volatile       A&&);
+        ^
+"Test_name.c", line 343: note: function "sink_5_13467(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_13467(const          A&&);
+        ^
+"Test_name.c", line 342: note: function "sink_5_13467(const volatile A &)" does not match because argument #1 does not match parameter
+  four  sink_5_13467(const volatile A&);
+        ^
+"Test_name.c", line 341: note: function "sink_5_13467(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_13467(volatile       A&);
+        ^
+"Test_name.c", line 340: note: function "sink_5_13467(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_13467(               A&);  // { dg-message "one sink_5_13467|no known conversion" }
+        ^
+
+"Test_name.c", line 366: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 368: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 369: error: no instance of overloaded function "sink_5_13567" matches the argument list
+            argument types are: (const A)
+      sink_5_13567(ca);		// { dg-error "" }
+      ^
+"Test_name.c", line 361: note: function "sink_5_13567(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_13567(volatile       A&&);
+        ^
+"Test_name.c", line 360: note: function "sink_5_13567(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_13567(const          A&&);  // { dg-message "" }
+        ^
+"Test_name.c", line 359: note: function "sink_5_13567(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_13567(               A&&);
+        ^
+"Test_name.c", line 358: note: function "sink_5_13567(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_13567(volatile       A&);
+        ^
+"Test_name.c", line 357: note: function "sink_5_13567(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_13567(               A&);  // { dg-message "one sink_5_13567|no known conversion" }
+        ^
+
+"Test_name.c", line 370: error: no instance of overloaded function "sink_5_13567" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_13567(cva);          // { dg-error "" }
+      ^
+"Test_name.c", line 361: note: function "sink_5_13567(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_13567(volatile       A&&);
+        ^
+"Test_name.c", line 360: note: function "sink_5_13567(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_13567(const          A&&);  // { dg-message "" }
+        ^
+"Test_name.c", line 359: note: function "sink_5_13567(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_13567(               A&&);
+        ^
+"Test_name.c", line 358: note: function "sink_5_13567(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_13567(volatile       A&);
+        ^
+"Test_name.c", line 357: note: function "sink_5_13567(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_13567(               A&);  // { dg-message "one sink_5_13567|no known conversion" }
+        ^
+
+"Test_name.c", line 371: error: no instance of overloaded function "sink_5_13567" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_13567(cv_source());  // { dg-error "" }
+      ^
+"Test_name.c", line 361: note: function "sink_5_13567(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_13567(volatile       A&&);
+        ^
+"Test_name.c", line 360: note: function "sink_5_13567(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_13567(const          A&&);  // { dg-message "" }
+        ^
+"Test_name.c", line 359: note: function "sink_5_13567(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_13567(               A&&);
+        ^
+"Test_name.c", line 358: note: function "sink_5_13567(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_13567(volatile       A&);
+        ^
+"Test_name.c", line 357: note: function "sink_5_13567(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_13567(               A&);  // { dg-message "one sink_5_13567|no known conversion" }
+        ^
+
+"Test_name.c", line 384: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 386: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 387: error: no instance of overloaded function "sink_5_13568" matches the argument list
+            argument types are: (const A)
+      sink_5_13568(ca);		// { dg-error "" }
+      ^
+"Test_name.c", line 379: note: function "sink_5_13568(const volatile A &&)" does not match because argument #1 does not match parameter
+  eight sink_5_13568(const volatile A&&); // { dg-message "" }
+        ^
+"Test_name.c", line 378: note: function "sink_5_13568(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_13568(const          A&&); // { dg-message "" }
+        ^
+"Test_name.c", line 377: note: function "sink_5_13568(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_13568(               A&&);
+        ^
+"Test_name.c", line 376: note: function "sink_5_13568(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_13568(volatile       A&);
+        ^
+"Test_name.c", line 375: note: function "sink_5_13568(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_13568(               A&);
+        ^
+
+"Test_name.c", line 388: error: no instance of overloaded function "sink_5_13568" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_13568(cva);		// { dg-error "" }
+      ^
+"Test_name.c", line 379: note: function "sink_5_13568(const volatile A &&)" does not match because argument #1 does not match parameter
+  eight sink_5_13568(const volatile A&&); // { dg-message "" }
+        ^
+"Test_name.c", line 378: note: function "sink_5_13568(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_13568(const          A&&); // { dg-message "" }
+        ^
+"Test_name.c", line 377: note: function "sink_5_13568(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_13568(               A&&);
+        ^
+"Test_name.c", line 376: note: function "sink_5_13568(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_13568(volatile       A&);
+        ^
+"Test_name.c", line 375: note: function "sink_5_13568(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_13568(               A&);
+        ^
+
+"Test_name.c", line 401: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 403: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 404: error: no instance of overloaded function "sink_5_13578" matches the argument list
+            argument types are: (const A)
+      sink_5_13578(ca);		// { dg-error "" }
+      ^
+"Test_name.c", line 396: note: function "sink_5_13578(const volatile A &&)" does not match because argument #1 does not match parameter
+  eight sink_5_13578(const volatile A&&); // { dg-message "" }
+        ^
+"Test_name.c", line 395: note: function "sink_5_13578(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_13578(volatile       A&&);
+        ^
+"Test_name.c", line 394: note: function "sink_5_13578(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_13578(               A&&);
+        ^
+"Test_name.c", line 393: note: function "sink_5_13578(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_13578(volatile       A&);
+        ^
+"Test_name.c", line 392: note: function "sink_5_13578(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_13578(               A&);
+        ^
+
+"Test_name.c", line 405: error: no instance of overloaded function "sink_5_13578" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_13578(cva);		// { dg-error "" }
+      ^
+"Test_name.c", line 396: note: function "sink_5_13578(const volatile A &&)" does not match because argument #1 does not match parameter
+  eight sink_5_13578(const volatile A&&); // { dg-message "" }
+        ^
+"Test_name.c", line 395: note: function "sink_5_13578(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_13578(volatile       A&&);
+        ^
+"Test_name.c", line 394: note: function "sink_5_13578(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_13578(               A&&);
+        ^
+"Test_name.c", line 393: note: function "sink_5_13578(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_13578(volatile       A&);
+        ^
+"Test_name.c", line 392: note: function "sink_5_13578(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_13578(               A&);
+        ^
+
+"Test_name.c", line 418: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 420: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 421: error: no instance of overloaded function "sink_5_13678" matches the argument list
+            argument types are: (const A)
+      sink_5_13678(ca);		// { dg-error "" }
+      ^
+"Test_name.c", line 413: note: function "sink_5_13678(const volatile A &&)" does not match because argument #1 does not match parameter
+  eight sink_5_13678(const volatile A&&);  // { dg-message "" }
+        ^
+"Test_name.c", line 412: note: function "sink_5_13678(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_13678(volatile       A&&);
+        ^
+"Test_name.c", line 411: note: function "sink_5_13678(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_13678(const          A&&);  // { dg-message "" }
+        ^
+"Test_name.c", line 410: note: function "sink_5_13678(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_13678(volatile       A&);
+        ^
+"Test_name.c", line 409: note: function "sink_5_13678(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_13678(               A&);
+        ^
+
+"Test_name.c", line 422: error: no instance of overloaded function "sink_5_13678" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_13678(cva);		// { dg-error "" }
+      ^
+"Test_name.c", line 413: note: function "sink_5_13678(const volatile A &&)" does not match because argument #1 does not match parameter
+  eight sink_5_13678(const volatile A&&);  // { dg-message "" }
+        ^
+"Test_name.c", line 412: note: function "sink_5_13678(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_13678(volatile       A&&);
+        ^
+"Test_name.c", line 411: note: function "sink_5_13678(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_13678(const          A&&);  // { dg-message "" }
+        ^
+"Test_name.c", line 410: note: function "sink_5_13678(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_13678(volatile       A&);
+        ^
+"Test_name.c", line 409: note: function "sink_5_13678(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_13678(               A&);
+        ^
+
+"Test_name.c", line 423: error: more than one instance of overloaded function "sink_5_13678" matches the argument list:
+            function "sink_5_13678(const A &&)" (declared at line 411)
+            function "sink_5_13678(volatile A &&)" (declared at line 412)
+            argument types are: (A)
+      sink_5_13678(source());  // { dg-error "" }
+      ^
+"Test_name.c", line 410: note: function "sink_5_13678(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_13678(volatile       A&);
+        ^
+"Test_name.c", line 409: note: function "sink_5_13678(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_13678(               A&);
+        ^
+
+"Test_name.c", line 436: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 438: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 439: error: no instance of overloaded function "sink_5_14567" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_14567(cv_source());  // { dg-error "" }
+      ^
+"Test_name.c", line 431: note: function "sink_5_14567(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_14567(volatile       A&&);
+        ^
+"Test_name.c", line 430: note: function "sink_5_14567(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_14567(const          A&&);
+        ^
+"Test_name.c", line 429: note: function "sink_5_14567(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_14567(               A&&);
+        ^
+"Test_name.c", line 428: note: function "sink_5_14567(const volatile A &)" does not match because argument #1 does not match parameter
+  four  sink_5_14567(const volatile A&);
+        ^
+"Test_name.c", line 427: note: function "sink_5_14567(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_14567(               A&);  // { dg-message "one sink_5_14567|no known conversion" }
+        ^
+
+"Test_name.c", line 452: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 454: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 455: error: more than one instance of overloaded function "sink_5_14678" matches the argument list:
+            function "sink_5_14678(const A &&)" (declared at line 445)
+            function "sink_5_14678(volatile A &&)" (declared at line 446)
+            argument types are: (A)
+      sink_5_14678(source());  // { dg-error "" }
+      ^
+"Test_name.c", line 444: note: function "sink_5_14678(const volatile A &)" does not match because argument #1 does not match parameter
+  four  sink_5_14678(const volatile A&);
+        ^
+"Test_name.c", line 443: note: function "sink_5_14678(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_14678(               A&);
+        ^
+
+"Test_name.c", line 468: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 470: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 471: error: no instance of overloaded function "sink_5_15678" matches the argument list
+            argument types are: (const A)
+      sink_5_15678(ca);		// { dg-error "" }
+      ^
+"Test_name.c", line 463: note: function "sink_5_15678(const volatile A &&)" does not match because argument #1 does not match parameter
+  eight sink_5_15678(const volatile A&&); // { dg-message "" }
+        ^
+"Test_name.c", line 462: note: function "sink_5_15678(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_15678(volatile       A&&); // { dg-message "" }
+        ^
+"Test_name.c", line 461: note: function "sink_5_15678(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_15678(const          A&&); // { dg-message "" }
+        ^
+"Test_name.c", line 460: note: function "sink_5_15678(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_15678(               A&&);
+        ^
+"Test_name.c", line 459: note: function "sink_5_15678(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_15678(               A&);
+        ^
+
+"Test_name.c", line 472: error: no instance of overloaded function "sink_5_15678" matches the argument list
+            argument types are: (volatile A)
+      sink_5_15678(va);		// { dg-error "" }
+      ^
+"Test_name.c", line 463: note: function "sink_5_15678(const volatile A &&)" does not match because argument #1 does not match parameter
+  eight sink_5_15678(const volatile A&&); // { dg-message "" }
+        ^
+"Test_name.c", line 462: note: function "sink_5_15678(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_15678(volatile       A&&); // { dg-message "" }
+        ^
+"Test_name.c", line 461: note: function "sink_5_15678(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_15678(const          A&&); // { dg-message "" }
+        ^
+"Test_name.c", line 460: note: function "sink_5_15678(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_15678(               A&&);
+        ^
+"Test_name.c", line 459: note: function "sink_5_15678(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_15678(               A&);
+        ^
+
+"Test_name.c", line 473: error: no instance of overloaded function "sink_5_15678" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_15678(cva);		// { dg-error "" }
+      ^
+"Test_name.c", line 463: note: function "sink_5_15678(const volatile A &&)" does not match because argument #1 does not match parameter
+  eight sink_5_15678(const volatile A&&); // { dg-message "" }
+        ^
+"Test_name.c", line 462: note: function "sink_5_15678(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_15678(volatile       A&&); // { dg-message "" }
+        ^
+"Test_name.c", line 461: note: function "sink_5_15678(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_15678(const          A&&); // { dg-message "" }
+        ^
+"Test_name.c", line 460: note: function "sink_5_15678(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_15678(               A&&);
+        ^
+"Test_name.c", line 459: note: function "sink_5_15678(A &)" does not match because argument #1 does not match parameter
+  one   sink_5_15678(               A&);
+        ^
+
+"Test_name.c", line 486: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 488: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 489: error: more than one instance of overloaded function "sink_5_23456" matches the argument list:
+            function "sink_5_23456(const A &)" (declared at line 477)
+            function "sink_5_23456(volatile A &)" (declared at line 478)
+            argument types are: (A)
+      sink_5_23456(a);            // { dg-error "" }
+      ^
+"Test_name.c", line 481: note: function "sink_5_23456(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_23456(const          A&&);
+        ^
+"Test_name.c", line 480: note: function "sink_5_23456(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_23456(               A&&);
+        ^
+
+"Test_name.c", line 490: error: no instance of overloaded function "sink_5_23456" matches the argument list
+            argument types are: (volatile A)
+      sink_5_23456(v_source());   // { dg-error "" }
+      ^
+"Test_name.c", line 481: note: function "sink_5_23456(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_23456(const          A&&);
+        ^
+"Test_name.c", line 480: note: function "sink_5_23456(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_23456(               A&&);
+        ^
+"Test_name.c", line 479: note: function "sink_5_23456(const volatile A &)" does not match because argument #1 does not match parameter
+  four  sink_5_23456(const volatile A&);
+        ^
+"Test_name.c", line 478: note: function "sink_5_23456(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_23456(volatile       A&);
+        ^
+"Test_name.c", line 477: note: function "sink_5_23456(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_23456(const          A&);  // { dg-message "two sink_5_23456|no known conversion" }
+        ^
+
+"Test_name.c", line 491: error: no instance of overloaded function "sink_5_23456" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_23456(cv_source());  // { dg-error "" }
+      ^
+"Test_name.c", line 481: note: function "sink_5_23456(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_23456(const          A&&);
+        ^
+"Test_name.c", line 480: note: function "sink_5_23456(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_23456(               A&&);
+        ^
+"Test_name.c", line 479: note: function "sink_5_23456(const volatile A &)" does not match because argument #1 does not match parameter
+  four  sink_5_23456(const volatile A&);
+        ^
+"Test_name.c", line 478: note: function "sink_5_23456(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_23456(volatile       A&);
+        ^
+"Test_name.c", line 477: note: function "sink_5_23456(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_23456(const          A&);  // { dg-message "two sink_5_23456|no known conversion" }
+        ^
+
+"Test_name.c", line 504: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 506: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 507: error: more than one instance of overloaded function "sink_5_23457" matches the argument list:
+            function "sink_5_23457(const A &)" (declared at line 495)
+            function "sink_5_23457(volatile A &)" (declared at line 496)
+            argument types are: (A)
+      sink_5_23457(a);            // { dg-error "" }
+      ^
+"Test_name.c", line 499: note: function "sink_5_23457(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_23457(volatile       A&&);
+        ^
+"Test_name.c", line 498: note: function "sink_5_23457(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_23457(               A&&);
+        ^
+
+"Test_name.c", line 508: error: no instance of overloaded function "sink_5_23457" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_23457(cv_source());  // { dg-error "" }
+      ^
+"Test_name.c", line 499: note: function "sink_5_23457(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_23457(volatile       A&&);
+        ^
+"Test_name.c", line 498: note: function "sink_5_23457(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_23457(               A&&);
+        ^
+"Test_name.c", line 497: note: function "sink_5_23457(const volatile A &)" does not match because argument #1 does not match parameter
+  four  sink_5_23457(const volatile A&);
+        ^
+"Test_name.c", line 496: note: function "sink_5_23457(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_23457(volatile       A&);
+        ^
+"Test_name.c", line 495: note: function "sink_5_23457(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_23457(const          A&);  // { dg-message "two sink_5_23457|no known conversion" }
+        ^
+
+"Test_name.c", line 521: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 523: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 524: error: more than one instance of overloaded function "sink_5_23458" matches the argument list:
+            function "sink_5_23458(const A &)" (declared at line 512)
+            function "sink_5_23458(volatile A &)" (declared at line 513)
+            argument types are: (A)
+      sink_5_23458(a);  // { dg-error "" }
+      ^
+"Test_name.c", line 516: note: function "sink_5_23458(const volatile A &&)" does not match because argument #1 does not match parameter
+  eight sink_5_23458(const volatile A&&);
+        ^
+"Test_name.c", line 515: note: function "sink_5_23458(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_23458(               A&&);
+        ^
+
+"Test_name.c", line 537: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 539: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 540: error: more than one instance of overloaded function "sink_5_23467" matches the argument list:
+            function "sink_5_23467(const A &)" (declared at line 528)
+            function "sink_5_23467(volatile A &)" (declared at line 529)
+            argument types are: (A)
+      sink_5_23467(a);            // { dg-error "" }
+      ^
+"Test_name.c", line 532: note: function "sink_5_23467(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_23467(volatile       A&&);
+        ^
+"Test_name.c", line 531: note: function "sink_5_23467(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_23467(const          A&&);
+        ^
+
+"Test_name.c", line 541: error: more than one instance of overloaded function "sink_5_23467" matches the argument list:
+            function "sink_5_23467(const A &&)" (declared at line 531)
+            function "sink_5_23467(volatile A &&)" (declared at line 532)
+            argument types are: (A)
+      sink_5_23467(source());     // { dg-error "" }
+      ^
+"Test_name.c", line 530: note: function "sink_5_23467(const volatile A &)" does not match because argument #1 does not match parameter
+  four  sink_5_23467(const volatile A&);
+        ^
+"Test_name.c", line 529: note: function "sink_5_23467(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_23467(volatile       A&);
+        ^
+
+"Test_name.c", line 542: error: no instance of overloaded function "sink_5_23467" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_23467(cv_source());  // { dg-error "" }
+      ^
+"Test_name.c", line 532: note: function "sink_5_23467(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_23467(volatile       A&&);
+        ^
+"Test_name.c", line 531: note: function "sink_5_23467(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_23467(const          A&&);
+        ^
+"Test_name.c", line 530: note: function "sink_5_23467(const volatile A &)" does not match because argument #1 does not match parameter
+  four  sink_5_23467(const volatile A&);
+        ^
+"Test_name.c", line 529: note: function "sink_5_23467(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_23467(volatile       A&);
+        ^
+"Test_name.c", line 528: note: function "sink_5_23467(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_23467(const          A&);  // { dg-message "two sink_5_23467|no known conversion" }
+        ^
+
+"Test_name.c", line 555: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 557: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 558: error: more than one instance of overloaded function "sink_5_23468" matches the argument list:
+            function "sink_5_23468(const A &)" (declared at line 546)
+            function "sink_5_23468(volatile A &)" (declared at line 547)
+            argument types are: (A)
+      sink_5_23468(a);  // { dg-error "" }
+      ^
+"Test_name.c", line 550: note: function "sink_5_23468(const volatile A &&)" does not match because argument #1 does not match parameter
+  eight sink_5_23468(const volatile A&&);
+        ^
+"Test_name.c", line 549: note: function "sink_5_23468(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_23468(const          A&&);
+        ^
+
+"Test_name.c", line 571: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 573: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 574: error: more than one instance of overloaded function "sink_5_23478" matches the argument list:
+            function "sink_5_23478(const A &)" (declared at line 562)
+            function "sink_5_23478(volatile A &)" (declared at line 563)
+            argument types are: (A)
+      sink_5_23478(a);  // { dg-error "" }
+      ^
+"Test_name.c", line 566: note: function "sink_5_23478(const volatile A &&)" does not match because argument #1 does not match parameter
+  eight sink_5_23478(const volatile A&&);
+        ^
+"Test_name.c", line 565: note: function "sink_5_23478(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_23478(volatile       A&&);
+        ^
+
+"Test_name.c", line 587: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 589: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 590: error: more than one instance of overloaded function "sink_5_23567" matches the argument list:
+            function "sink_5_23567(const A &)" (declared at line 578)
+            function "sink_5_23567(volatile A &)" (declared at line 579)
+            argument types are: (A)
+      sink_5_23567(a);            // { dg-error "" }
+      ^
+"Test_name.c", line 582: note: function "sink_5_23567(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_23567(volatile       A&&);
+        ^
+"Test_name.c", line 581: note: function "sink_5_23567(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_23567(const          A&&);
+        ^
+"Test_name.c", line 580: note: function "sink_5_23567(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_23567(               A&&);
+        ^
+
+"Test_name.c", line 591: error: no instance of overloaded function "sink_5_23567" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_23567(cva);          // { dg-error "" }
+      ^
+"Test_name.c", line 582: note: function "sink_5_23567(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_23567(volatile       A&&);
+        ^
+"Test_name.c", line 581: note: function "sink_5_23567(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_23567(const          A&&);
+        ^
+"Test_name.c", line 580: note: function "sink_5_23567(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_23567(               A&&);
+        ^
+"Test_name.c", line 579: note: function "sink_5_23567(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_23567(volatile       A&);
+        ^
+"Test_name.c", line 578: note: function "sink_5_23567(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_23567(const          A&);  // { dg-message "two sink_5_23567|no known conversion" }
+        ^
+
+"Test_name.c", line 592: error: no instance of overloaded function "sink_5_23567" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_23567(cv_source());  // { dg-error "" }
+      ^
+"Test_name.c", line 582: note: function "sink_5_23567(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_23567(volatile       A&&);
+        ^
+"Test_name.c", line 581: note: function "sink_5_23567(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_23567(const          A&&);
+        ^
+"Test_name.c", line 580: note: function "sink_5_23567(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_23567(               A&&);
+        ^
+"Test_name.c", line 579: note: function "sink_5_23567(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_23567(volatile       A&);
+        ^
+"Test_name.c", line 578: note: function "sink_5_23567(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_23567(const          A&);  // { dg-message "two sink_5_23567|no known conversion" }
+        ^
+
+"Test_name.c", line 605: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 607: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 608: error: no instance of overloaded function "sink_5_23568" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_23568(cva); // { dg-error "" }
+      ^
+"Test_name.c", line 600: note: function "sink_5_23568(const volatile A &&)" does not match because argument #1 does not match parameter
+  eight sink_5_23568(const volatile A&&);
+        ^
+"Test_name.c", line 599: note: function "sink_5_23568(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_23568(const          A&&);
+        ^
+"Test_name.c", line 598: note: function "sink_5_23568(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_23568(               A&&);
+        ^
+"Test_name.c", line 597: note: function "sink_5_23568(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_23568(volatile       A&);
+        ^
+"Test_name.c", line 596: note: function "sink_5_23568(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_23568(const          A&);
+        ^
+
+"Test_name.c", line 609: error: more than one instance of overloaded function "sink_5_23568" matches the argument list:
+            function "sink_5_23568(const A &)" (declared at line 596)
+            function "sink_5_23568(volatile A &)" (declared at line 597)
+            argument types are: (A)
+      sink_5_23568(a);  // { dg-error "" }
+      ^
+"Test_name.c", line 600: note: function "sink_5_23568(const volatile A &&)" does not match because argument #1 does not match parameter
+  eight sink_5_23568(const volatile A&&);
+        ^
+"Test_name.c", line 599: note: function "sink_5_23568(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_23568(const          A&&);
+        ^
+"Test_name.c", line 598: note: function "sink_5_23568(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_23568(               A&&);
+        ^
+
+"Test_name.c", line 622: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 624: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 625: error: no instance of overloaded function "sink_5_23578" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_23578(cva); // { dg-error "" }
+      ^
+"Test_name.c", line 617: note: function "sink_5_23578(const volatile A &&)" does not match because argument #1 does not match parameter
+  eight sink_5_23578(const volatile A&&);  // { dg-message "" }
+        ^
+"Test_name.c", line 616: note: function "sink_5_23578(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_23578(volatile       A&&);
+        ^
+"Test_name.c", line 615: note: function "sink_5_23578(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_23578(               A&&);
+        ^
+"Test_name.c", line 614: note: function "sink_5_23578(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_23578(volatile       A&);
+        ^
+"Test_name.c", line 613: note: function "sink_5_23578(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_23578(const          A&);
+        ^
+
+"Test_name.c", line 626: error: more than one instance of overloaded function "sink_5_23578" matches the argument list:
+            function "sink_5_23578(const A &)" (declared at line 613)
+            function "sink_5_23578(volatile A &)" (declared at line 614)
+            argument types are: (A)
+      sink_5_23578(a);  // { dg-error "" }
+      ^
+"Test_name.c", line 617: note: function "sink_5_23578(const volatile A &&)" does not match because argument #1 does not match parameter
+  eight sink_5_23578(const volatile A&&);  // { dg-message "" }
+        ^
+"Test_name.c", line 616: note: function "sink_5_23578(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_23578(volatile       A&&);
+        ^
+"Test_name.c", line 615: note: function "sink_5_23578(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_23578(               A&&);
+        ^
+
+"Test_name.c", line 639: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 641: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 642: error: more than one instance of overloaded function "sink_5_23678" matches the argument list:
+            function "sink_5_23678(const A &)" (declared at line 630)
+            function "sink_5_23678(volatile A &)" (declared at line 631)
+            argument types are: (A)
+      sink_5_23678(a);         // { dg-error "" }
+      ^
+"Test_name.c", line 634: note: function "sink_5_23678(const volatile A &&)" does not match because argument #1 does not match parameter
+  eight sink_5_23678(const volatile A&&);  // { dg-message "" }
+        ^
+"Test_name.c", line 633: note: function "sink_5_23678(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_23678(volatile       A&&);
+        ^
+"Test_name.c", line 632: note: function "sink_5_23678(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_23678(const          A&&);
+        ^
+
+"Test_name.c", line 643: error: no instance of overloaded function "sink_5_23678" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_23678(cva);	     // { dg-error "" }
+      ^
+"Test_name.c", line 634: note: function "sink_5_23678(const volatile A &&)" does not match because argument #1 does not match parameter
+  eight sink_5_23678(const volatile A&&);  // { dg-message "" }
+        ^
+"Test_name.c", line 633: note: function "sink_5_23678(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_23678(volatile       A&&);
+        ^
+"Test_name.c", line 632: note: function "sink_5_23678(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_23678(const          A&&);
+        ^
+"Test_name.c", line 631: note: function "sink_5_23678(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_23678(volatile       A&);
+        ^
+"Test_name.c", line 630: note: function "sink_5_23678(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_23678(const          A&);
+        ^
+
+"Test_name.c", line 644: error: more than one instance of overloaded function "sink_5_23678" matches the argument list:
+            function "sink_5_23678(const A &&)" (declared at line 632)
+            function "sink_5_23678(volatile A &&)" (declared at line 633)
+            argument types are: (A)
+      sink_5_23678(source());  // { dg-error "" }
+      ^
+"Test_name.c", line 631: note: function "sink_5_23678(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_23678(volatile       A&);
+        ^
+
+"Test_name.c", line 657: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 659: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 660: error: no instance of overloaded function "sink_5_24567" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_24567(cv_source());  // { dg-error "" }
+      ^
+"Test_name.c", line 652: note: function "sink_5_24567(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_24567(volatile       A&&);
+        ^
+"Test_name.c", line 651: note: function "sink_5_24567(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_24567(const          A&&);
+        ^
+"Test_name.c", line 650: note: function "sink_5_24567(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_24567(               A&&);
+        ^
+"Test_name.c", line 649: note: function "sink_5_24567(const volatile A &)" does not match because argument #1 does not match parameter
+  four  sink_5_24567(const volatile A&);
+        ^
+"Test_name.c", line 648: note: function "sink_5_24567(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_24567(const          A&);  // { dg-message "two sink_5_24567|no known conversion" }
+        ^
+
+"Test_name.c", line 673: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 675: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 676: error: more than one instance of overloaded function "sink_5_24678" matches the argument list:
+            function "sink_5_24678(const A &&)" (declared at line 666)
+            function "sink_5_24678(volatile A &&)" (declared at line 667)
+            argument types are: (A)
+      sink_5_24678(source());  // { dg-error "" }
+      ^
+"Test_name.c", line 665: note: function "sink_5_24678(const volatile A &)" does not match because argument #1 does not match parameter
+  four  sink_5_24678(const volatile A&);
+        ^
+
+"Test_name.c", line 689: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 691: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 692: error: no instance of overloaded function "sink_5_25678" matches the argument list
+            argument types are: (volatile A)
+      sink_5_25678(va);		// { dg-error "" }
+      ^
+"Test_name.c", line 684: note: function "sink_5_25678(const volatile A &&)" does not match because argument #1 does not match parameter
+  eight sink_5_25678(const volatile A&&); // { dg-message "" }
+        ^
+"Test_name.c", line 683: note: function "sink_5_25678(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_25678(volatile       A&&); // { dg-message "" }
+        ^
+"Test_name.c", line 682: note: function "sink_5_25678(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_25678(const          A&&);
+        ^
+"Test_name.c", line 681: note: function "sink_5_25678(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_25678(               A&&);
+        ^
+"Test_name.c", line 680: note: function "sink_5_25678(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_25678(const          A&);
+        ^
+
+"Test_name.c", line 693: error: no instance of overloaded function "sink_5_25678" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_25678(cva);		// { dg-error "" }
+      ^
+"Test_name.c", line 684: note: function "sink_5_25678(const volatile A &&)" does not match because argument #1 does not match parameter
+  eight sink_5_25678(const volatile A&&); // { dg-message "" }
+        ^
+"Test_name.c", line 683: note: function "sink_5_25678(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_25678(volatile       A&&); // { dg-message "" }
+        ^
+"Test_name.c", line 682: note: function "sink_5_25678(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_25678(const          A&&);
+        ^
+"Test_name.c", line 681: note: function "sink_5_25678(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_25678(               A&&);
+        ^
+"Test_name.c", line 680: note: function "sink_5_25678(const A &)" does not match because argument #1 does not match parameter
+  two   sink_5_25678(const          A&);
+        ^
+
+"Test_name.c", line 706: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 708: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 709: error: no instance of overloaded function "sink_5_34567" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_34567(cv_source());  // { dg-error "" }
+      ^
+"Test_name.c", line 701: note: function "sink_5_34567(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_34567(volatile       A&&);
+        ^
+"Test_name.c", line 700: note: function "sink_5_34567(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_34567(const          A&&);
+        ^
+"Test_name.c", line 699: note: function "sink_5_34567(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_34567(               A&&);
+        ^
+"Test_name.c", line 698: note: function "sink_5_34567(const volatile A &)" does not match because argument #1 does not match parameter
+  four  sink_5_34567(const volatile A&);
+        ^
+"Test_name.c", line 697: note: function "sink_5_34567(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_34567(volatile       A&);  // { dg-message "three sink_5_34567|no known conversion" }
+        ^
+
+"Test_name.c", line 722: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 724: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 725: error: more than one instance of overloaded function "sink_5_34678" matches the argument list:
+            function "sink_5_34678(const A &&)" (declared at line 715)
+            function "sink_5_34678(volatile A &&)" (declared at line 716)
+            argument types are: (A)
+      sink_5_34678(source());  // { dg-error "" }
+      ^
+"Test_name.c", line 714: note: function "sink_5_34678(const volatile A &)" does not match because argument #1 does not match parameter
+  four  sink_5_34678(const volatile A&);
+        ^
+"Test_name.c", line 713: note: function "sink_5_34678(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_34678(volatile       A&);
+        ^
+
+"Test_name.c", line 738: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const          A ca = a; // { dg-error "deleted" }
+                            ^
+
+"Test_name.c", line 740: error: function "A::A(const A &)" (declared implicitly) cannot be referenced -- it is a deleted function
+      const volatile A cva = a; // { dg-error "deleted" }
+                             ^
+
+"Test_name.c", line 741: error: no instance of overloaded function "sink_5_35678" matches the argument list
+            argument types are: (const A)
+      sink_5_35678(ca);		// { dg-error "" }
+      ^
+"Test_name.c", line 733: note: function "sink_5_35678(const volatile A &&)" does not match because argument #1 does not match parameter
+  eight sink_5_35678(const volatile A&&); // { dg-message "" }
+        ^
+"Test_name.c", line 732: note: function "sink_5_35678(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_35678(volatile       A&&);
+        ^
+"Test_name.c", line 731: note: function "sink_5_35678(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_35678(const          A&&); // { dg-message "" }
+        ^
+"Test_name.c", line 730: note: function "sink_5_35678(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_35678(               A&&);
+        ^
+"Test_name.c", line 729: note: function "sink_5_35678(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_35678(volatile       A&);
+        ^
+
+"Test_name.c", line 742: error: no instance of overloaded function "sink_5_35678" matches the argument list
+            argument types are: (const volatile A)
+      sink_5_35678(cva);		// { dg-error "" }
+      ^
+"Test_name.c", line 733: note: function "sink_5_35678(const volatile A &&)" does not match because argument #1 does not match parameter
+  eight sink_5_35678(const volatile A&&); // { dg-message "" }
+        ^
+"Test_name.c", line 732: note: function "sink_5_35678(volatile A &&)" does not match because argument #1 does not match parameter
+  seven sink_5_35678(volatile       A&&);
+        ^
+"Test_name.c", line 731: note: function "sink_5_35678(const A &&)" does not match because argument #1 does not match parameter
+  six   sink_5_35678(const          A&&); // { dg-message "" }
+        ^
+"Test_name.c", line 730: note: function "sink_5_35678(A &&)" does not match because argument #1 does not match parameter
+  five  sink_5_35678(               A&&);
+        ^
+"Test_name.c", line 729: note: function "sink_5_35678(volatile A &)" does not match because argument #1 does not match parameter
+  three sink_5_35678(volatile       A&);
+        ^
+
+165 errors detected in the compilation of "Test_name.c".

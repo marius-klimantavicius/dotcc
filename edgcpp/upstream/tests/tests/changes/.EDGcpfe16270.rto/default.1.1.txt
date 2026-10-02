@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=1 --c++17 Test_name.c
+"Test_name.c", line 15: warning: namespace "N" was declared deprecated
+  int z = N::x + y;     // Generates warnings for uses of N and y.
+          ^
+"Test_name.c", line 11: note: because of a "deprecated" attribute
+  namespace [[deprecated]] N {
+              ^
+
+"Test_name.c", line 15: warning: constant "y" was declared deprecated
+  int z = N::x + y;     // Generates warnings for uses of N and y.
+                 ^
+"Test_name.c", line 14: note: because of a "deprecated" attribute
+  enum E { y [[deprecated]] };
+               ^
+

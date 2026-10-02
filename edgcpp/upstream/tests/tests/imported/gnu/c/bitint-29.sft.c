@@ -1,0 +1,516 @@
+//type: rp
+//options: --c23
+# 0 "./bitint-29.c"
+# 0 "<built-in>"
+# 0 "<command-line>"
+# 1 "/usr/include/stdc-predef.h" 1 3 4
+# 0 "<command-line>" 2
+# 1 "./bitint-29.c"
+
+
+
+
+
+
+# 1 "/usr/include/fenv.h" 1 3 4
+# 25 "/usr/include/fenv.h" 3 4
+# 1 "/usr/include/features.h" 1 3 4
+# 375 "/usr/include/features.h" 3 4
+# 1 "/usr/include/sys/cdefs.h" 1 3 4
+# 392 "/usr/include/sys/cdefs.h" 3 4
+# 1 "/usr/include/bits/wordsize.h" 1 3 4
+# 393 "/usr/include/sys/cdefs.h" 2 3 4
+# 376 "/usr/include/features.h" 2 3 4
+# 399 "/usr/include/features.h" 3 4
+# 1 "/usr/include/gnu/stubs.h" 1 3 4
+# 10 "/usr/include/gnu/stubs.h" 3 4
+# 1 "/usr/include/gnu/stubs-64.h" 1 3 4
+# 11 "/usr/include/gnu/stubs.h" 2 3 4
+# 400 "/usr/include/features.h" 2 3 4
+# 26 "/usr/include/fenv.h" 2 3 4
+# 57 "/usr/include/fenv.h" 3 4
+# 1 "/usr/include/bits/fenv.h" 1 3 4
+# 24 "/usr/include/bits/fenv.h" 3 4
+
+# 24 "/usr/include/bits/fenv.h" 3 4
+enum
+  {
+    FE_INVALID =
+
+      0x01,
+    __FE_DENORM = 0x02,
+    FE_DIVBYZERO =
+
+      0x04,
+    FE_OVERFLOW =
+
+      0x08,
+    FE_UNDERFLOW =
+
+      0x10,
+    FE_INEXACT =
+
+      0x20
+  };
+
+
+
+
+
+
+
+enum
+  {
+    FE_TONEAREST =
+
+      0,
+    FE_DOWNWARD =
+
+      0x400,
+    FE_UPWARD =
+
+      0x800,
+    FE_TOWARDZERO =
+
+      0xc00
+  };
+
+
+
+typedef unsigned short int fexcept_t;
+
+
+
+
+
+
+typedef struct
+  {
+    unsigned short int __control_word;
+    unsigned short int __unused1;
+    unsigned short int __status_word;
+    unsigned short int __unused2;
+    unsigned short int __tags;
+    unsigned short int __unused3;
+    unsigned int __eip;
+    unsigned short int __cs_selector;
+    unsigned int __opcode:11;
+    unsigned int __unused4:5;
+    unsigned int __data_offset;
+    unsigned short int __data_selector;
+    unsigned short int __unused5;
+
+    unsigned int __mxcsr;
+
+  }
+fenv_t;
+# 58 "/usr/include/fenv.h" 2 3 4
+
+
+
+
+
+
+extern int feclearexcept (int __excepts) __attribute__ ((__nothrow__ , __leaf__));
+
+
+
+extern int fegetexceptflag (fexcept_t *__flagp, int __excepts) __attribute__ ((__nothrow__ , __leaf__));
+
+
+extern int feraiseexcept (int __excepts) __attribute__ ((__nothrow__ , __leaf__));
+
+
+
+extern int fesetexceptflag (const fexcept_t *__flagp, int __excepts) __attribute__ ((__nothrow__ , __leaf__));
+
+
+
+extern int fetestexcept (int __excepts) __attribute__ ((__nothrow__ , __leaf__));
+
+
+
+
+
+extern int fegetround (void) __attribute__ ((__nothrow__ , __leaf__));
+
+
+extern int fesetround (int __rounding_direction) __attribute__ ((__nothrow__ , __leaf__));
+
+
+
+
+
+
+extern int fegetenv (fenv_t *__envp) __attribute__ ((__nothrow__ , __leaf__));
+
+
+
+
+extern int feholdexcept (fenv_t *__envp) __attribute__ ((__nothrow__ , __leaf__));
+
+
+
+extern int fesetenv (const fenv_t *__envp) __attribute__ ((__nothrow__ , __leaf__));
+
+
+
+
+extern int feupdateenv (const fenv_t *__envp) __attribute__ ((__nothrow__ , __leaf__));
+# 133 "/usr/include/fenv.h" 3 4
+
+# 8 "./bitint-29.c" 2
+
+
+
+
+# 11 "./bitint-29.c"
+__attribute__((noipa)) _BitInt(135)
+testflt_135 (float d)
+{
+  return d;
+}
+
+__attribute__((noipa)) unsigned _BitInt(135)
+testfltu_135 (float d)
+{
+  return d;
+}
+
+
+
+__attribute__((noipa)) _BitInt(192)
+testflt_192 (float d)
+{
+  return d;
+}
+
+__attribute__((noipa)) unsigned _BitInt(192)
+testfltu_192 (float d)
+{
+  return d;
+}
+
+
+
+__attribute__((noipa)) _BitInt(575)
+testflt_575 (float d)
+{
+  return d;
+}
+
+__attribute__((noipa)) unsigned _BitInt(575)
+testfltu_575 (float d)
+{
+  return d;
+}
+
+
+
+
+
+__attribute__((noipa)) _BitInt(135)
+testdbl_135 (double d)
+{
+  return d;
+}
+
+__attribute__((noipa)) unsigned _BitInt(135)
+testdblu_135 (double d)
+{
+  return d;
+}
+
+
+
+__attribute__((noipa)) _BitInt(192)
+testdbl_192 (double d)
+{
+  return d;
+}
+
+__attribute__((noipa)) unsigned _BitInt(192)
+testdblu_192 (double d)
+{
+  return d;
+}
+
+
+
+__attribute__((noipa)) _BitInt(575)
+testdbl_575 (double d)
+{
+  return d;
+}
+
+__attribute__((noipa)) unsigned _BitInt(575)
+testdblu_575 (double d)
+{
+  return d;
+}
+
+
+
+
+
+__attribute__((noipa)) _BitInt(135)
+testldbl_135 (long double d)
+{
+  return d;
+}
+
+__attribute__((noipa)) unsigned _BitInt(135)
+testldblu_135 (long double d)
+{
+  return d;
+}
+
+
+
+__attribute__((noipa)) _BitInt(192)
+testldbl_192 (long double d)
+{
+  return d;
+}
+
+__attribute__((noipa)) unsigned _BitInt(192)
+testldblu_192 (long double d)
+{
+  return d;
+}
+
+
+
+__attribute__((noipa)) _BitInt(575)
+testldbl_575 (long double d)
+{
+  return d;
+}
+
+__attribute__((noipa)) unsigned _BitInt(575)
+testldblu_575 (long double d)
+{
+  return d;
+}
+
+
+
+
+
+__attribute__((noipa)) _BitInt(135)
+testflt128_135 (_Float128 d)
+{
+  return d;
+}
+
+__attribute__((noipa)) unsigned _BitInt(135)
+testflt128u_135 (_Float128 d)
+{
+  return d;
+}
+
+
+
+__attribute__((noipa)) _BitInt(192)
+testflt128_192 (_Float128 d)
+{
+  return d;
+}
+
+__attribute__((noipa)) unsigned _BitInt(192)
+testflt128u_192 (_Float128 d)
+{
+  return d;
+}
+
+
+
+__attribute__((noipa)) _BitInt(575)
+testflt128_575 (_Float128 d)
+{
+  return d;
+}
+
+__attribute__((noipa)) unsigned _BitInt(575)
+testflt128u_575 (_Float128 d)
+{
+  return d;
+}
+
+
+
+__attribute__((noipa)) void
+check_inexact (int test, int inex)
+{
+  if (!test)
+    __builtin_abort ();
+  if ((!fetestexcept (
+# 190 "./bitint-29.c" 3 4
+                     0x20
+# 190 "./bitint-29.c"
+                               )) != (!inex))
+    __builtin_abort ();
+  feclearexcept (
+# 192 "./bitint-29.c" 3 4
+                0x20
+# 192 "./bitint-29.c"
+                          );
+}
+
+int
+main ()
+{
+
+
+  check_inexact (testflt_135 (-85070591730234615865843651857942052864.0f) == -85070591730234615865843651857942052864wb, 0);
+  check_inexact (testflt_135 (0xffffffp+104f) == 340282346638528859811704183484516925440wb, 0);
+  check_inexact (testflt_135 (-0xffffffp+104f) == -340282346638528859811704183484516925440wb, 0);
+  check_inexact (testflt_135 (-0xffffffp-1f) == -8388607wb, 1);
+  check_inexact (testflt_135 (-0.f) == 0wb, 0);
+  check_inexact (testflt_135 (-0.f) == 0wb, 0);
+  check_inexact (testflt_135 (-0.9990234375f) == 0wb, 1);
+  check_inexact (testfltu_135 (0.f) == 0uwb, 0);
+  check_inexact (testfltu_135 (-0.9990234375f) == 0uwb, 1);
+  check_inexact (testfltu_135 (0xffffffp-1f) == 8388607uwb, 1);
+  check_inexact (testfltu_135 (0xffffffp+104f) == 340282346638528859811704183484516925440uwb, 0);
+
+
+  check_inexact (testflt_192 (-85070591730234615865843651857942052864.0f) == -85070591730234615865843651857942052864wb, 0);
+  check_inexact (testflt_192 (0xffffffp+104f) == 340282346638528859811704183484516925440wb, 0);
+  check_inexact (testflt_192 (-0xffffffp+104f) == -340282346638528859811704183484516925440wb, 0);
+  check_inexact (testflt_192 (-0xffffffp-3f) == -2097151wb, 1);
+  check_inexact (testflt_192 (-0.f) == 0wb, 0);
+  check_inexact (testflt_192 (-0.9990234375f) == 0wb, 1);
+  check_inexact (testfltu_192 (0.f) == 0uwb, 0);
+  check_inexact (testfltu_192 (-0.9990234375f) == 0uwb, 1);
+  check_inexact (testfltu_192 (0xffffffp-3f) == 2097151uwb, 1);
+  check_inexact (testfltu_192 (0xffffffp+104f) == 340282346638528859811704183484516925440uwb, 0);
+
+
+  check_inexact (testflt_575 (-85070591730234615865843651857942052864.0f) == -85070591730234615865843651857942052864wb, 0);
+  check_inexact (testflt_575 (0xffffffp+104f) == 340282346638528859811704183484516925440wb, 0);
+  check_inexact (testflt_575 (-0xffffffp+104f) == -340282346638528859811704183484516925440wb, 0);
+  check_inexact (testflt_575 (-0xffffffp-5f) == -524287wb, 1);
+  check_inexact (testflt_575 (0.f) == 0wb, 0);
+  check_inexact (testflt_575 (-0.9990234375f) == 0wb, 1);
+  check_inexact (testfltu_575 (-0.f) == 0uwb, 0);
+  check_inexact (testfltu_575 (-0.9990234375f) == 0uwb, 1);
+  check_inexact (testfltu_575 (0xffffffp-5f) == 524287uwb, 1);
+  check_inexact (testfltu_575 (0xffffffp+104f) == 340282346638528859811704183484516925440uwb, 0);
+
+
+
+
+  check_inexact (testdbl_135 (-85070591730234615865843651857942052864.0) == -85070591730234615865843651857942052864wb, 0);
+  check_inexact (testdbl_135 (0x1fffffffffffffp+81) == 21778071482940059243804335646374816120832wb, 0);
+  check_inexact (testdbl_135 (-0x20000000000000p+81) == -21778071482940061661655974875633165533183wb - 1, 0);
+  check_inexact (testdbl_135 (-0x1fffffffffffffp-1) == -4503599627370495wb, 1);
+  check_inexact (testdbl_135 (-0.) == 0wb, 0);
+  check_inexact (testdbl_135 (-0.9990234375) == 0wb, 1);
+  check_inexact (testdblu_135 (0.) == 0uwb, 0);
+  check_inexact (testdblu_135 (-0.9990234375) == 0uwb, 1);
+  check_inexact (testdblu_135 (0x1fffffffffffffp-1) == 4503599627370495uwb, 1);
+  check_inexact (testdblu_135 (0x1fffffffffffffp+82) == 43556142965880118487608671292749632241664uwb, 0);
+
+
+  check_inexact (testdbl_192 (-85070591730234615865843651857942052864.0) == -85070591730234615865843651857942052864wb, 0);
+  check_inexact (testdbl_192 (0x1fffffffffffffp+138) == 3138550867693340033468750984562846621555579712101368725504wb, 0);
+  check_inexact (testdbl_192 (-0x20000000000000p+138) == -3138550867693340381917894711603833208051177722232017256447wb - 1, 0);
+  check_inexact (testdbl_192 (-0x1fffffffffffffp-3) == -1125899906842623wb, 1);
+  check_inexact (testdbl_192 (0.) == 0wb, 0);
+  check_inexact (testdbl_192 (-0.9990234375) == 0wb, 1);
+  check_inexact (testdblu_192 (-0.) == 0uwb, 0);
+  check_inexact (testdblu_192 (-0.9990234375) == 0uwb, 1);
+  check_inexact (testdblu_192 (0x1fffffffffffffp-3) == 1125899906842623uwb, 1);
+  check_inexact (testdblu_192 (0x1fffffffffffffp+139) == 6277101735386680066937501969125693243111159424202737451008uwb, 0);
+
+
+  check_inexact (testdbl_575 (-85070591730234615865843651857942052864.0) == -85070591730234615865843651857942052864wb, 0);
+  check_inexact (testdbl_575 (0x1fffffffffffffp+521) == 61832600368276126650327970124302082526882038193909742709080463879918896882169507607035916867654709124839777195049479857541529867095829765369898539058829479405123401922117632wb, 0);
+  check_inexact (testdbl_575 (-0x20000000000000p+521) == -61832600368276133515125630254911797508782837275302959978515764023224306276632966792579100265310761247399417856504034834837841258576687802491886538775473291979151693037174783wb - 1, 0);
+  check_inexact (testdbl_575 (-0x1fffffffffffffp-5) == -281474976710655wb, 1);
+  check_inexact (testdbl_575 (-0.) == 0wb, 0);
+  check_inexact (testdbl_575 (-0.9990234375) == 0wb, 1);
+  check_inexact (testdblu_575 (0.) == 0uwb, 0);
+  check_inexact (testdblu_575 (-0.9990234375) == 0uwb, 1);
+  check_inexact (testdblu_575 (0x1fffffffffffffp-5) == 281474976710655uwb, 1);
+  check_inexact (testdblu_575 (0x1fffffffffffffp+522) == 123665200736552253300655940248604165053764076387819485418160927759837793764339015214071833735309418249679554390098959715083059734191659530739797078117658958810246803844235264uwb, 0);
+
+
+
+
+  check_inexact (testldbl_135 (-85070591730234615865843651857942052864.0L) == -85070591730234615865843651857942052864wb, 0);
+  check_inexact (testldbl_135 (0xffffffffffffffffp+70L) == 21778071482940061660475383254915754229760wb, 0);
+  check_inexact (testldbl_135 (-0x10000000000000000p+70L) == -21778071482940061661655974875633165533183wb - 1, 0);
+  check_inexact (testldbl_135 (-0xffffffffffffffffp-1L) == -9223372036854775807wb, 1);
+  check_inexact (testldbl_135 (-0.L) == 0wb, 0);
+  check_inexact (testldbl_135 (-0.9990234375L) == 0wb, 1);
+  check_inexact (testldblu_135 (0.L) == 0uwb, 0);
+  check_inexact (testldblu_135 (-0.9990234375L) == 0uwb, 1);
+  check_inexact (testldblu_135 (0xffffffffffffffffp-1L) == 9223372036854775807uwb, 1);
+  check_inexact (testldblu_135 (0xffffffffffffffffp+71L) == 43556142965880123320950766509831508459520uwb, 0);
+
+
+  check_inexact (testldbl_192 (-85070591730234615865843651857942052864.0L) == -85070591730234615865843651857942052864wb, 0);
+  check_inexact (testldbl_192 (0xffffffffffffffffp+127L) == 3138550867693340381747753528143363976319490418516133150720wb, 0);
+  check_inexact (testldbl_192 (-0x10000000000000000p+127L) == -3138550867693340381917894711603833208051177722232017256447wb - 1, 0);
+  check_inexact (testldbl_192 (-0xffffffffffffffffp-2L) == -4611686018427387903wb, 1);
+  check_inexact (testldbl_192 (0.L) == 0wb, 0);
+  check_inexact (testldbl_192 (-0.9990234375L) == 0wb, 1);
+  check_inexact (testldblu_192 (-0.L) == 0uwb, 0);
+  check_inexact (testldblu_192 (-0.9990234375L) == 0uwb, 1);
+  check_inexact (testldblu_192 (0xffffffffffffffffp-2L) == 4611686018427387903uwb, 1);
+  check_inexact (testldblu_192 (0xffffffffffffffffp+128L) == 6277101735386680763495507056286727952638980837032266301440uwb, 0);
+
+
+  check_inexact (testldbl_575 (-85070591730234615865843651857942052864.0L) == -85070591730234615865843651857942052864wb, 0);
+  check_inexact (testldbl_575 (0xffffffffffffffffp+510L) == 61832600368276133511773678272426148233889331025751498446645922568076207932202076431648659257792374503198949281962308977915333294030066289778448068072486649492543280785653760wb, 0);
+  check_inexact (testldbl_575 (-0x10000000000000000p+510L) == -61832600368276133515125630254911797508782837275302959978515764023224306276632966792579100265310761247399417856504034834837841258576687802491886538775473291979151693037174783wb - 1, 0);
+  check_inexact (testldbl_575 (-0xffffffffffffffffp-4L) == -1152921504606846975wb, 1);
+  check_inexact (testldbl_575 (0.L) == 0wb, 0);
+  check_inexact (testldbl_575 (-0.9990234375L) == 0wb, 1);
+  check_inexact (testldblu_575 (-0.L) == 0uwb, 0);
+  check_inexact (testldblu_575 (-0.9990234375L) == 0uwb, 1);
+  check_inexact (testldblu_575 (0xffffffffffffffffp-4L) == 1152921504606846975uwb, 1);
+  check_inexact (testldblu_575 (0xffffffffffffffffp+511L) == 123665200736552267023547356544852296467778662051502996893291845136152415864404152863297318515584749006397898563924617955830666588060132579556896136144973298985086561571307520uwb, 0);
+
+
+
+
+  check_inexact (testflt128_135 (-85070591730234615865843651857942052864.0F128) == -85070591730234615865843651857942052864wb, 0);
+  check_inexact (testflt128_135 (0x1ffffffffffffffffffffffffffffp+21F128) == 21778071482940061661655974875633163436032wb, 0);
+  check_inexact (testflt128_135 (-0x20000000000000000000000000000p+21F128) == -21778071482940061661655974875633165533183wb - 1, 0);
+  check_inexact (testflt128_135 (-0x1ffffffffffffffffffffffffffffp-1F128) == -5192296858534827628530496329220095wb, 1);
+  check_inexact (testflt128_135 (-0.F128) == 0wb, 0);
+  check_inexact (testflt128_135 (-0.9990234375F128) == 0wb, 1);
+  check_inexact (testflt128u_135 (0.F128) == 0uwb, 0);
+  check_inexact (testflt128u_135 (-0.9990234375F128) == 0uwb, 1);
+  check_inexact (testflt128u_135 (0x1ffffffffffffffffffffffffffffp-1F128) == 5192296858534827628530496329220095uwb, 1);
+  check_inexact (testflt128u_135 (0x1ffffffffffffffffffffffffffffp+22F128) == 43556142965880123323311949751266326872064uwb, 0);
+
+
+  check_inexact (testflt128_192 (-85070591730234615865843651857942052864.0F128) == -85070591730234615865843651857942052864wb, 0);
+  check_inexact (testflt128_192 (0x1ffffffffffffffffffffffffffffp+78F128) == 3138550867693340381917894711603832905819722818574723579904wb, 0);
+  check_inexact (testflt128_192 (-0x20000000000000000000000000000p+78F128) == -3138550867693340381917894711603833208051177722232017256447wb - 1, 0);
+  check_inexact (testflt128_192 (-0x1ffffffffffffffffffffffffffffp-4F128) == -649037107316853453566312041152511wb, 1);
+  check_inexact (testflt128_192 (-0.F128) == 0wb, 0);
+  check_inexact (testflt128_192 (-0.9990234375F128) == 0wb, 1);
+  check_inexact (testflt128u_192 (0.F128) == 0uwb, 0);
+  check_inexact (testflt128u_192 (-0.9990234375F128) == 0uwb, 1);
+  check_inexact (testflt128u_192 (0x1ffffffffffffffffffffffffffffp-4F128) == 649037107316853453566312041152511uwb, 1);
+  check_inexact (testflt128u_192 (0x1ffffffffffffffffffffffffffffp+79F128) == 6277101735386680763835789423207665811639445637149447159808uwb, 0);
+
+
+  check_inexact (testflt128_575 (-85070591730234615865843651857942052864.0F128) == -85070591730234615865843651857942052864wb, 0);
+  check_inexact (testflt128_575 (0x1ffffffffffffffffffffffffffffp+461F128) == 61832600368276133515125630254911791554520007845691312598455129804691160851602940042069550439343049559602369631548246946680753811425558728725309540242943660463695151425912832wb, 0);
+  check_inexact (testflt128_575 (-0x20000000000000000000000000000p+461F128) == -61832600368276133515125630254911797508782837275302959978515764023224306276632966792579100265310761247399417856504034834837841258576687802491886538775473291979151693037174783wb - 1, 0);
+  check_inexact (testflt128_575 (-0x1ffffffffffffffffffffffffffffp-8F128) == -40564819207303340847894502572031wb, 1);
+  check_inexact (testflt128_575 (0.F128) == 0wb, 0);
+  check_inexact (testflt128_575 (-0.9990234375F128) == 0wb, 1);
+  check_inexact (testflt128u_575 (-0.F128) == 0uwb, 0);
+  check_inexact (testflt128u_575 (-0.9990234375F128) == 0uwb, 1);
+  check_inexact (testflt128u_575 (0x1ffffffffffffffffffffffffffffp-8F128) == 40564819207303340847894502572031uwb, 1);
+  check_inexact (testflt128u_575 (0x1ffffffffffffffffffffffffffffp+462F128) == 123665200736552267030251260509823583109040015691382625196910259609382321703205880084139100878686099119204739263096493893361507622851117457450619080485887320927390302851825664uwb, 0);
+
+
+}

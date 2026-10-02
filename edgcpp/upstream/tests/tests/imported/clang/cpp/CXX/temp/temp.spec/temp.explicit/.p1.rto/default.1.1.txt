@@ -1,0 +1,46 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 11: error: incomplete type "void" is not allowed
+    T value; // expected-error{{incomplete}}
+      ^
+          detected during instantiation of class "X0<T> [with T=void]" at line 16
+
+"Test_name.c", line 35: error: incomplete type "void" is not allowed
+      U member2; // expected-error{{incomplete}}
+        ^
+          detected during instantiation of class "X1<T>::Inner<U> [with T=int, U=void]" at line 46
+
+"Test_name.c", line 84: error: declaration is incompatible with "void X2<T, U>::f(T &, U) [with T=int, U=float]" (declared at line 64)
+  template void X2<int, float>::f(int &, double); // expected-error{{does not refer}}
+                                ^
+
+"Test_name.c", line 70: error: incomplete type "Incomplete" is not allowed
+      U member2; // expected-error{{incomplete}}
+        ^
+          detected during instantiation of class "X2<T, U>::Inner [with T=int, U=Incomplete]" at line 88
+
+"Test_name.c", line 21: error: expression must have arithmetic, enum, or pointer type
+    ++t; // expected-error{{cannot increment}}
+      ^
+          detected during instantiation of "void f0(T) [with T=int C::*]" at line 27
+
+"Test_name.c", line 40: error: a value of type "int *" cannot be assigned to an entity of type "int"
+      t = u; // expected-error{{incompatible}}
+        ^
+          detected during instantiation of "void X1<T>::f(T &, U) [with T=int, U=int *]" at line 51
+
+"Test_name.c", line 65: error: a value of type "int *" cannot be assigned to an entity of type "int"
+      t = u; // expected-error{{incompatible}}
+        ^
+          detected during instantiation of "void X2<T, U>::f(T &, U) [with T=int, U=int *]" at line 85
+
+"Test_name.c", line 78: error: a value of type "int" cannot be used to initialize an entity of type "int *"
+  T X2<T, U>::static_member1 = 17; // expected-error{{cannot initialize}}
+                               ^
+          detected during implicit definition of "int *X2<T, U>::static_member1 [with T=int *, U=float]" at line 91
+
+"Test_name.c", line 81: error: no default constructor exists for class "NonDefaultConstructible"
+  U X2<T, U>::static_member2; // expected-error{{no matching}}
+              ^
+          detected during implicit definition of "NonDefaultConstructible X2<T, U>::static_member2 [with T=int, U=NonDefaultConstructible]" at line 96
+
+9 errors detected in the compilation of "Test_name.c".

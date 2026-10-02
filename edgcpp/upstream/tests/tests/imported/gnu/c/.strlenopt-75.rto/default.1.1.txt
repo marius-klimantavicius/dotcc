@@ -1,0 +1,73 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./strlenopt-75.c", line 21: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void test_memcpy_same_length ()
+                  ^
+
+"./strlenopt-75.c", line 21: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void test_memcpy_same_length ()
+                                     ^
+
+"./strlenopt-75.c", line 31: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void test_strcpy_strcat_same_length ()
+                  ^
+
+"./strlenopt-75.c", line 31: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void test_strcpy_strcat_same_length ()
+                                     ^
+
+"./strlenopt-75.c", line 43: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void test_assign_same_length ()
+                  ^
+
+"./strlenopt-75.c", line 43: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void test_assign_same_length ()
+                                     ^
+
+"./strlenopt-75.c", line 54: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void test_memcpy_lengthen ()
+                  ^
+
+"./strlenopt-75.c", line 54: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void test_memcpy_lengthen ()
+                                     ^
+
+"./strlenopt-75.c", line 62: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void test_strcpy_strcat_lengthen ()
+                  ^
+
+"./strlenopt-75.c", line 62: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void test_strcpy_strcat_lengthen ()
+                                     ^
+
+"./strlenopt-75.c", line 71: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void test_assign_lengthen ()
+                  ^
+
+"./strlenopt-75.c", line 71: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void test_assign_lengthen ()
+                                     ^
+
+"./strlenopt-75.c", line 79: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void test_memcpy_shorten ()
+                  ^
+
+"./strlenopt-75.c", line 79: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void test_memcpy_shorten ()
+                                     ^
+
+"./strlenopt-75.c", line 87: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void test_strcpy_strcat_shorten ()
+                  ^
+
+"./strlenopt-75.c", line 87: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void test_strcpy_strcat_shorten ()
+                                     ^
+
+"./strlenopt-75.c", line 96: warning: unknown attribute "noclone"
+  __attribute__ ((noclone, noinline, noipa)) void test_assign_shorten ()
+                  ^
+
+"./strlenopt-75.c", line 96: warning: unknown attribute "noipa"
+  __attribute__ ((noclone, noinline, noipa)) void test_assign_shorten ()
+                                     ^
+

@@ -1,0 +1,89 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 17: warning: unrecognized #pragma
+    #pragma acc cache (p[-1:2])
+            ^
+
+"Test_name.c", line 19: warning: unrecognized #pragma
+    #pragma acc cache (q[-1:2][0:10])
+            ^
+
+"Test_name.c", line 21: warning: unrecognized #pragma
+    #pragma acc cache (q[-1:2][-2:10]) /* { dg-error "negative low bound in array section in" } */
+            ^
+
+"Test_name.c", line 23: warning: unrecognized #pragma
+    #pragma acc cache (r[-1:2])
+            ^
+
+"Test_name.c", line 25: warning: unrecognized #pragma
+    #pragma acc cache (s[-1:2][:])
+            ^
+
+"Test_name.c", line 27: warning: unrecognized #pragma
+    #pragma acc cache (s[-1:2][-2:10]) /* { dg-error "negative low bound in array section in" } */
+            ^
+
+"Test_name.c", line 29: warning: unrecognized #pragma
+    #pragma acc cache (a[-1:2])	 /* { dg-error "negative low bound in array section in" } */
+            ^
+
+"Test_name.c", line 31: warning: unrecognized #pragma
+    #pragma acc cache (b[-1:2][0:])	 /* { dg-error "negative low bound in array section in" } */
+            ^
+
+"Test_name.c", line 33: warning: unrecognized #pragma
+    #pragma acc cache (b[1:2][-2:10]) /* { dg-error "negative low bound in array section in" } */
+            ^
+
+"Test_name.c", line 35: warning: unrecognized #pragma
+    #pragma acc cache (p[2:-3])	 /* { dg-error "negative length in array section in" } */
+            ^
+
+"Test_name.c", line 37: warning: unrecognized #pragma
+    #pragma acc cache (q[2:-3][:])	 /* { dg-error "negative length in array section in" } */
+            ^
+
+"Test_name.c", line 39: warning: unrecognized #pragma
+    #pragma acc cache (q[2:3][0:-1])	 /* { dg-error "negative length in array section in" } */
+            ^
+
+"Test_name.c", line 41: warning: unrecognized #pragma
+    #pragma acc cache (r[2:-5])	 /* { dg-error "negative length in array section in" } */
+            ^
+
+"Test_name.c", line 43: warning: unrecognized #pragma
+    #pragma acc cache (s[2:-5][:])	 /* { dg-error "negative length in array section in" } */
+            ^
+
+"Test_name.c", line 45: warning: unrecognized #pragma
+    #pragma acc cache (s[2:5][0:-4])	 /* { dg-error "negative length in array section in" } */
+            ^
+
+"Test_name.c", line 47: warning: unrecognized #pragma
+    #pragma acc cache (a[2:-5])	 /* { dg-error "negative length in array section in" } */
+            ^
+
+"Test_name.c", line 49: warning: unrecognized #pragma
+    #pragma acc cache (b[2:-5][0:10]) /* { dg-error "negative length in array section in" } */
+            ^
+
+"Test_name.c", line 51: warning: unrecognized #pragma
+    #pragma acc cache (b[2:5][0:-4]) /* { dg-error "negative length in array section in" } */
+            ^
+
+"Test_name.c", line 58: warning: expression has no effect
+    &foo<0>;
+    ^
+
+"Test_name.c", line 16: warning: variable "a" was declared but never referenced
+    int a[10], b[10][10];
+        ^
+
+"Test_name.c", line 16: warning: variable "b" was declared but never referenced
+    int a[10], b[10][10];
+               ^
+
+"Test_name.c", line 56: warning: function "instantiate" was declared but never referenced
+  instantiate ()
+  ^
+

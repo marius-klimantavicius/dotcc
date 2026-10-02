@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 6: error: function "f" previously declared without the carries_dependency attribute
+  [[carries_dependency]] int f(int); // expected-error {{function declared '[[carries_dependency]]' after its first declaration}}
+    ^
+
+"Test_name.c", line 7: error: function "f" previously declared without the carries_dependency attribute
+  int f(int n [[carries_dependency]]); // expected-error {{parameter declared '[[carries_dependency]]' after its first declaration}}
+                ^
+
+"Test_name.c", line 11: error: function "g" previously declared without the carries_dependency attribute
+  [[carries_dependency]] int g(int); // expected-error {{function declared '[[carries_dependency]]' after its first declaration}}
+    ^
+
+3 errors detected in the compilation of "Test_name.c".

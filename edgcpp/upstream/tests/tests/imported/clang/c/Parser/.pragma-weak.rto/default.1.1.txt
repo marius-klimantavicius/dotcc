@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 9: warning: expected an identifier
+  /* expected-warning {{expected identifier in '#pragma weak'}}*/ #pragma weak
+                                                                              ^
+
+"Test_name.c", line 13: warning: extra text after expected end of preprocessing directive
+  /* expected-warning {{expected identifier in '#pragma weak'}}*/ #pragma weak z = =
+                                                                                 ^
+
+"Test_name.c", line 14: warning: extra text after expected end of preprocessing directive
+  /* expected-warning {{expected identifier in '#pragma weak'}}*/ #pragma weak z =
+                                                                                 ^
+
+"Test_name.c", line 18: warning: extra text after expected end of preprocessing directive
+  /* expected-warning {{extra tokens at end of '#pragma weak'}}*/ #pragma weak a b
+                                                                                 ^
+
+"Test_name.c", line 19: warning: extra text after expected end of preprocessing directive
+  /* expected-warning {{extra tokens at end of '#pragma weak'}}*/ #pragma weak a = x c
+                                                                                     ^
+
+"Test_name.c", line 29: error: expected a statement
+      else // expected-error {{expected expression}}
+      ^
+
+"Test_name.c", line 31: error: expected a statement
+    }
+    ^
+
+"Test_name.c", line 36: warning: expected a statement
+    } // expected-error {{expected statement}}
+    ^
+
+"Test_name.c", line 40: warning: expected a statement
+    } // expected-error {{expected statement}}
+    ^
+
+"Test_name.c", line 44: warning: expected a statement
+  } // expected-error {{expected statement}}
+  ^
+
+"Test_name.c", line 24: warning: variable "t" was declared but never referenced
+    int t;
+        ^
+
+"Test_name.c", line 42: warning: label "label" was declared but never referenced
+  label:
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 11: error: no operator "*" matches these operands
+            operand types are: * A
+  int i = *A();// { dg-error "no match" }
+          ^
+"Test_name.c", line 11: note: built-in operator*(<pointer to object>) does not match because argument #1 does not match parameter
+  int i = *A();// { dg-error "no match" }
+          ^
+"Test_name.c", line 11: note: built-in operator*(<pointer to function>) does not match because argument #1 does not match parameter
+  int i = *A();// { dg-error "no match" }
+          ^
+
+1 error detected in the compilation of "Test_name.c".

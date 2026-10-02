@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"./c23-tag-enum-6.c", line 10: error: this declaration of enum "H" does not declare the same type as the declaration at line 9
+  enum H { x = 2ULL + 
+       ^
+
+"./c23-tag-enum-6.c", line 13: error: enumeration value is outside the range of its underlying type ("int")
+  enum K : int { z = 2ULL + 
+                     ^
+
+"./c23-tag-enum-6.c", line 13: error: this declaration of enum "K" does not declare the same type as the declaration at line 12
+  enum K : int { z = 2ULL + 
+       ^
+
+"./c23-tag-enum-6.c", line 16: error: this declaration of enum "F" does not declare the same type as the declaration at line 15
+  enum F { B = 
+       ^
+
+"./c23-tag-enum-6.c", line 19: error: enumeration value is outside the range of its underlying type ("unsigned int")
+                                     , C };
+                                       ^
+
+"./c23-tag-enum-6.c", line 19: error: this declaration of enum "G" does not declare the same type as the declaration at line 18
+  enum G : unsigned int { D = 
+       ^
+
+6 errors detected in the compilation of "Test_name.c".

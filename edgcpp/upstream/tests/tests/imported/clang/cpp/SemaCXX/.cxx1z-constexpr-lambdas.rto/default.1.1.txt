@@ -1,0 +1,130 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 --exceptions Test_name.c
+"Test_name.c", line 28: error: a constexpr function cannot have a parameter of nonliteral type "test_constexpr_checking::ns1::NonLit"
+    auto L = [](NonLit NL) constexpr { }; //expected-error{{not a literal type}}
+               ^
+
+"Test_name.c", line 32: error: statement may not appear in a constexpr function
+    auto L = [](int I) constexpr { if (I == 5) asm("non-constexpr");  };
+                                               ^
+
+"Test_name.c", line 45: error: expression must have a constant value
+  constexpr int try_catch = [] { // #try-catch
+                            ^
+"Test_name.c", line 47: note: this call cannot be evaluated because the target function function "lambda []()->int" (declared at line 45) is not constexpr or not completely defined yet
+  }();
+   ^
+
+"Test_name.c", line 56: warning: missing return statement at end of non-void function "lambda []()->int"
+  };
+  ^
+
+"Test_name.c", line 62: error: a decltype-qualified name is nonstandard in this declaration context
+    friend auto decltype(never_constant_1)::operator()() const;
+                                            ^
+
+"Test_name.c", line 62: error: declaration is incompatible with function "lambda []()->int" (declared at line 51)
+    friend auto decltype(never_constant_1)::operator()() const;
+                                            ^
+
+"Test_name.c", line 63: error: a decltype-qualified name is nonstandard in this declaration context
+    friend int decltype(never_constant_2)::operator()() const;
+                                           ^
+
+"Test_name.c", line 82: error: expression must have a constant value
+        L(3);
+        ^
+"Test_name.c", line 82: note: this call cannot be evaluated because the target function function "lambda [](auto)->auto [with <auto-1>=int]" (declared at line 80) is not constexpr or not completely defined yet
+        L(3);
+         ^
+
+"Test_name.c", line 98: warning: variable "C" was declared but never referenced
+    constexpr char C = L();
+                   ^
+
+"Test_name.c", line 102: error: an enclosing-function local variable cannot be referenced in a lambda body unless it is in the capture list
+    auto L = [] { return c; }; //expected-error{{cannot be implicitly captured}} expected-note{{lambda expression begins here}} expected-note 2 {{capture 'c' by}} expected-note 2 {{default capture by}}
+                         ^
+
+"Test_name.c", line 127: error: expression must have a constant value
+                    fp5(5); //expected-note{{non-constexpr function}} 
+                    ^
+"Test_name.c", line 127: note: cannot call non-constexpr function "lambda [](int)->int" (declared at line 124)
+                    fp5(5); //expected-note{{non-constexpr function}} 
+                    ^
+
+"Test_name.c", line 134: error: expression must have class type but it has type "int"
+  auto deduced_return_type = [](auto x) { return x.get(); }; //expected-error{{not a structure or union}}
+                                                 ^
+          detected during instantiation of function "lambda [](auto)->auto [with <auto-1>=int]" at line 135
+
+"Test_name.c", line 160: warning: variable "Isz" was declared but never referenced
+      int Isz = sizeof(i);
+          ^
+
+"Test_name.c", line 158: warning: variable "d" was set but never used
+    double d = 3.14;
+           ^
+
+"Test_name.c", line 163: warning: variable "I" was declared but never referenced
+    int I = L("abc") + L(nullptr);
+        ^
+
+"Test_name.c", line 187: warning: variable "Isz" was declared but never referenced
+      int Isz = sizeof(i);
+          ^
+
+"Test_name.c", line 185: warning: variable "d" was set but never used
+    double d = 3.14;
+           ^
+
+"Test_name.c", line 197: error: expression must have a constant value
+      L("abc");
+      ^
+"Test_name.c", line 197: note: this call cannot be evaluated because the target function function "lambda [](auto)->auto [with <auto-1>=const char *]" (declared at line 186) is not constexpr or not completely defined yet
+      L("abc");
+       ^
+
+"Test_name.c", line 318: warning: variable "B" was declared but never referenced
+      constexpr bool B = [&]{ return &n; }() == &n; // should be accepted
+                     ^
+
+"Test_name.c", line 389: warning: capturing structured bindings is a C++20 feature
+      return [&] { return key; }();
+                          ^
+
+"Test_name.c", line 400: warning: capturing structured bindings is a C++20 feature
+      return [=] { return key; };
+                          ^
+
+"Test_name.c", line 406: error: expression must have a constant value
+    constexpr auto lambda = retlambda();
+                            ^
+"Test_name.c", line 400: note: the value of structured binding "key" (declared at line 399) cannot be used as a constant
+      return [=] { return key; };
+      ^
+
+"Test_name.c", line 45: warning: variable "test_constexpr_checking::try_catch" was declared but never referenced
+  constexpr int try_catch = [] { // #try-catch
+                ^
+
+"Test_name.c", line 81: warning: variable "test_constexpr_call::ns3::I" was declared but never referenced
+    constexpr int I =  //expected-error{{must be initialized by a constant expression}}
+                  ^
+
+"Test_name.c", line 126: warning: variable "test_conversion_function_for_non_capturing_lambdas::ns1::I" was declared but never referenced
+  constexpr int I =  //expected-error{{must be initialized by a constant expression}}
+                ^
+
+"Test_name.c", line 196: warning: variable "test_lambda_is_cce::ns1_simple_lambda::contained_lambdas_call_operator_is_not_constexpr::M" was declared but never referenced
+  constexpr auto M =  // expected-error{{must be initialized by}} 
+                 ^
+
+"Test_name.c", line 242: warning: variable "test_lambda_is_cce::test_captures_1::ns2::L" was declared but never referenced
+  constexpr auto L = foo(3);
+                 ^
+
+"Test_name.c", line 263: warning: variable "test_lambda_is_cce::test_captures_1::ns3::L" was declared but never referenced
+  constexpr auto L = foo(3);
+                 ^
+
+12 errors detected in the compilation of "Test_name.c".

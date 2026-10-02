@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 19: error: defaulted default constructor cannot be constexpr because the corresponding implicitly declared default constructor would not be constexpr
+    constexpr bar() = default;	// { dg-error "constexpr" "" { target c++17_down } }
+              ^
+
+1 error detected in the compilation of "Test_name.c".

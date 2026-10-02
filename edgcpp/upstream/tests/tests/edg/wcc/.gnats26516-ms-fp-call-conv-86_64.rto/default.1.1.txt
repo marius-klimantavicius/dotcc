@@ -1,0 +1,50 @@
+cpfe -DTEST_NUMBER=1 --c++20 --microsoft --target linux_x86_64 Test_name.c
+"Test_name.c", line 24: error: function "x<T>() [with T=void (__cdecl *)()]" has already been defined (previous definition at line 21)
+  CC_TEST(__stdcall)
+  ^
+
+"Test_name.c", line 24: error: function "foo(void (__cdecl *)())" has already been defined (previous definition at line 21)
+  CC_TEST(__stdcall)
+  ^
+
+"Test_name.c", line 24: error: function "x<T>() [with T=void (__cdecl foo::*)()]" has already been defined (previous definition at line 21)
+  CC_TEST(__stdcall)
+  ^
+
+"Test_name.c", line 24: error: function "foo(void (__cdecl foo::*)())" has already been defined (previous definition at line 21)
+  CC_TEST(__stdcall)
+  ^
+
+"Test_name.c", line 25: error: function "x<T>() [with T=void (__cdecl *)()]" has already been defined (previous definition at line 21)
+  CC_TEST(__fastcall)
+  ^
+
+"Test_name.c", line 25: error: function "foo(void (__cdecl *)())" has already been defined (previous definition at line 21)
+  CC_TEST(__fastcall)
+  ^
+
+"Test_name.c", line 25: error: function "x<T>() [with T=void (__cdecl foo::*)()]" has already been defined (previous definition at line 21)
+  CC_TEST(__fastcall)
+  ^
+
+"Test_name.c", line 25: error: function "foo(void (__cdecl foo::*)())" has already been defined (previous definition at line 21)
+  CC_TEST(__fastcall)
+  ^
+
+"Test_name.c", line 26: error: function "x<T>() [with T=void (__cdecl *)()]" has already been defined (previous definition at line 21)
+  CC_TEST(__thiscall)
+  ^
+
+"Test_name.c", line 26: error: function "foo(void (__cdecl *)())" has already been defined (previous definition at line 21)
+  CC_TEST(__thiscall)
+  ^
+
+"Test_name.c", line 26: error: function "x<T>() [with T=void (__cdecl foo::*)()]" has already been defined (previous definition at line 21)
+  CC_TEST(__thiscall)
+  ^
+
+"Test_name.c", line 26: error: function "foo(void (__cdecl foo::*)())" has already been defined (previous definition at line 21)
+  CC_TEST(__thiscall)
+  ^
+
+12 errors detected in the compilation of "Test_name.c".

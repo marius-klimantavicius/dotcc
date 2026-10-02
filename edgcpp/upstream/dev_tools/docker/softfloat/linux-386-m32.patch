@@ -1,0 +1,13 @@
+diff --git a/build/Linux-386-SSE2-GCC/Makefile b/build/Linux-386-SSE2-GCC/Makefile
+index ced977b..c672021 100644
+--- a/build/Linux-386-SSE2-GCC/Makefile
++++ b/build/Linux-386-SSE2-GCC/Makefile
+@@ -44,7 +44,7 @@ SOFTFLOAT_OPTS ?= \
+ DELETE = rm -f
+ C_INCLUDES = -I. -I$(SOURCE_DIR)/$(SPECIALIZE_TYPE) -I$(SOURCE_DIR)/include
+ COMPILE_C = \
+-  gcc -c -Werror-implicit-function-declaration $(SOFTFLOAT_OPTS) \
++  gcc -m32 -c -Werror-implicit-function-declaration $(SOFTFLOAT_OPTS) \
+     $(C_INCLUDES) -O2 -o $@
+ MAKELIB = ar crs $@
+ 

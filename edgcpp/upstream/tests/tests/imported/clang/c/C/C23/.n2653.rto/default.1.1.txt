@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"C/C23/n2653.c", line 16: error: type name is not allowed
+  _Static_assert((__extension__ _Generic(atomic_char8_t, unsigned char _Atomic: 1, default: 0) && __extension__ _Generic(unsigned char _Atomic, atomic_char8_t: 1, default: 0)), "");
+                                         ^
+
+"C/C23/n2653.c", line 16: error: expected an expression
+  _Static_assert((__extension__ _Generic(atomic_char8_t, unsigned char _Atomic: 1, default: 0) && __extension__ _Generic(unsigned char _Atomic, atomic_char8_t: 1, default: 0)), "");
+                                                                                                                         ^
+
+"C/C23/n2653.c", line 20: error: static assertion failed with ""
+  _Static_assert(_Generic(u8"", unsigned char*: 1, char*: 0), "");
+  ^
+
+"C/C23/n2653.c", line 26: error: expression must have integral type
+  _Static_assert((__builtin_constant_p((u8"\U000000E9"[0]) >= 0x80) ? ((u8"\U000000E9"[0]) >= 0x80) : ((u8"\U000000E9"[0]) >= 0x80)), "");
+                                                                        ^
+
+"C/C23/n2653.c", line 26: error: this operator is not allowed in an integral constant expression
+  _Static_assert((__builtin_constant_p((u8"\U000000E9"[0]) >= 0x80) ? ((u8"\U000000E9"[0]) >= 0x80) : ((u8"\U000000E9"[0]) >= 0x80)), "");
+                                                                                      ^
+
+5 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 18: error: no operator "=" matches these operands
+            operand types are: A = B
+    a = B();		// { dg-error "no match" }
+      ^
+"Test_name.c", line 10: note: function "A::operator=(char)" does not match because argument #1 does not match parameter
+    void operator=(char) {}	// { dg-message "" }
+         ^
+"Test_name.c", line 9: note: function "A::operator=(int)" does not match because argument #1 does not match parameter
+    void operator=(int) {}	// { dg-message "" }
+         ^
+"Test_name.c", line 7: note: function "A::operator=(const A &)" does not match because argument #1 does not match parameter
+    A& operator=(const A&) = delete; // { dg-bogus "" }
+       ^
+
+"Test_name.c", line 19: error: more than one operator "=" matches these operands:
+            function "A::operator=(int)" (declared at line 9)
+            function "A::operator=(char)" (declared at line 10)
+            operand types are: A = double
+    a = 1.0;		// { dg-error "ambiguous" }
+      ^
+"Test_name.c", line 7: note: function "A::operator=(const A &)" does not match because argument #1 does not match parameter
+    A& operator=(const A&) = delete; // { dg-bogus "" }
+       ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,54 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 26: error: the default constructor of "std_example::D1" cannot be referenced -- it is a deleted function
+      D1 e; // expected-error {{implicitly-deleted}}
+         ^
+
+"Test_name.c", line 34: error: the sub-object construction of "std_example::D2" for inheriting constructors cannot be performed -- the associated constructor is deleted
+    D2 f(1.0); // expected-error {{constructor inherited by 'D2' from base class 'B2' is implicitly deleted}}
+         ^
+
+"Test_name.c", line 79: error: the default constructor of "vbase::A" cannot be referenced -- it is a deleted function
+    A a0; // expected-error {{deleted}}
+      ^
+
+"Test_name.c", line 81: error: the default constructor of "vbase::B" cannot be referenced -- it is a deleted function
+    B b0; // expected-error {{deleted}}
+      ^
+
+"Test_name.c", line 84: error: the default constructor of "vbase::C" cannot be referenced -- it is a deleted function
+    C c0; // expected-error {{deleted}}
+      ^
+
+"Test_name.c", line 86: error: no default constructor exists for class "vbase::V"
+    C c2(0, 0); // expected-error {{deleted}}
+              ^
+          detected during implicit generation of "vbase::C::B(int, int)" at line 86
+
+"Test_name.c", line 87: error: the default constructor of "vbase::D" cannot be referenced -- it is a deleted function
+    D d0; // expected-error {{deleted}}
+      ^
+
+"Test_name.c", line 89: error: no default constructor exists for class "vbase::V"
+    D d2(0, 0); // expected-error {{deleted}}
+              ^
+          detected during implicit generation of "vbase::D::B(int, int)" at line 89
+
+"Test_name.c", line 89: error: the default constructor of "vbase::A" cannot be referenced -- it is a deleted function
+    D d2(0, 0); // expected-error {{deleted}}
+              ^
+          detected during implicit generation of "vbase::D::B(int, int)" at line 89
+
+"Test_name.c", line 125: error: expression must have a constant value
+    constexpr Wrap2 b = {};
+                        ^
+"Test_name.c", line 117: note: access to uninitialized object
+      constexpr Param(int c) : n(4 * b.a + b.b + c) {}
+                                      ^
+"Test_name.c", line 123: note: called from:
+    constexpr Wrap1::Wrap1() : B(1) {}
+                                 ^
+"Test_name.c", line 112: note: called from:
+    struct Wrap2 : Wrap1 {};
+           ^
+
+10 errors detected in the compilation of "Test_name.c".

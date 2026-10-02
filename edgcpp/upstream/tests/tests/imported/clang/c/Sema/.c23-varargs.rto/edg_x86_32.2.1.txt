@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=2 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Sema/c23-varargs.c", line 8: warning: function "__builtin_c23_va_start" declared implicitly
+    __builtin_c23_va_start();
+    ^
+
+"Sema/c23-varargs.c", line 12: warning: variable "list" is used before its value is set
+    __builtin_c23_va_start(list);
+                           ^
+
+"Sema/c23-varargs.c", line 28: warning: function "__builtin_c23_va_start" declared implicitly
+    __builtin_c23_va_start();
+    ^
+
+"Sema/c23-varargs.c", line 31: warning: variable "list" is used before its value is set
+    __builtin_c23_va_start(list);
+                           ^
+

@@ -1,0 +1,70 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 13: error: expected a ")"
+  void foo10 (int x, ...) __attribute__ ((__sentinel__(1,1)));
+                                                        ^
+
+"Test_name.c", line 13: error: expected an identifier
+  void foo10 (int x, ...) __attribute__ ((__sentinel__(1,1)));
+                                                         ^
+
+"Test_name.c", line 13: error: expected a "{"
+  void foo10 (int x, ...) __attribute__ ((__sentinel__(1,1)));
+                                                            ^
+
+"Test_name.c", line 18: warning: parsing restarts here after previous syntax error
+  void test1(void) {
+                   ^
+
+"Test_name.c", line 20: warning: argument must be a constant null pointer value
+    foo1(1, 0) ; // expected-warning {{missing sentinel in function call}}
+            ^
+
+"Test_name.c", line 23: warning: argument must be a constant null pointer value
+    foo5(1, NULL, 2, 1); // expected-warning {{missing sentinel in function call}}
+                  ^
+
+"Test_name.c", line 25: warning: argument must be a constant null pointer value
+    foo6(1,2,3,4,5,6,7); // expected-warning {{missing sentinel in function call}}
+           ^
+
+"Test_name.c", line 27: warning: insufficient number of arguments for sentinel value
+    foo7(1); // expected-warning {{not enough variable arguments in 'foo7' declaration to fit a sentinel}}
+          ^
+
+"Test_name.c", line 30: warning: function "foo12" declared implicitly
+    foo12(1); // expected-warning {{not enough variable arguments in 'foo12' declaration to fit a sentinel}}
+    ^
+
+"Test_name.c", line 35: warning: argument must be a constant null pointer value
+    foo1(3, &a, &b, &c); // expected-warning {{missing sentinel in function call}}
+                    ^
+
+"Test_name.c", line 39: warning: argument must be a constant null pointer value
+    FOOMACRO(1, 2); // expected-warning {{missing sentinel in function call}}
+    ^
+
+"Test_name.c", line 44: error: expected a ")"
+  void (*e) (int arg, const char * format, ...) __attribute__ ((__sentinel__ (1,1)));
+                                                                               ^
+
+"Test_name.c", line 44: error: expected an identifier
+  void (*e) (int arg, const char * format, ...) __attribute__ ((__sentinel__ (1,1)));
+                                                                                ^
+
+"Test_name.c", line 44: error: expected a ";"
+  void (*e) (int arg, const char * format, ...) __attribute__ ((__sentinel__ (1,1)));
+                                                                                   ^
+
+"Test_name.c", line 53: warning: variable "b" is used before its value is set
+    b(1, "%s", (void*)0); // OK
+    ^
+
+"Test_name.c", line 55: warning: variable "z" is used before its value is set
+    z(1, "%s",4 ,1,0);  // expected-warning {{missing sentinel in function call}}
+    ^
+
+"Test_name.c", line 58: warning: variable "y" is used before its value is set
+    y(1, "%s", 1,2,3,4,5,6,7);  // expected-warning {{missing sentinel in function call}}
+    ^
+
+6 errors detected in the compilation of "Test_name.c".

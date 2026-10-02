@@ -1,0 +1,45 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 13: warning: statement is unreachable
+      if (1)
+      ^
+
+"Test_name.c", line 15: warning: variable "x" was declared but never referenced
+    T x;
+      ^
+
+"Test_name.c", line 23: warning: statement is unreachable
+      if (1)
+      ^
+
+"Test_name.c", line 25: warning: variable "x" was declared but never referenced
+    T x;
+      ^
+
+"Test_name.c", line 32: warning: statement is unreachable
+      if (1)
+      ^
+
+"Test_name.c", line 35: warning: variable "x" was declared but never referenced
+    T x;
+      ^
+
+"Test_name.c", line 42: warning: statement is unreachable
+      if (1)
+      ^
+
+"Test_name.c", line 43: warning: label "L" was declared but never referenced
+  L:
+  ^
+
+"Test_name.c", line 45: warning: variable "x" was declared but never referenced
+    T x;
+      ^
+
+"Test_name.c", line 52: warning: statement is unreachable
+      if (1)
+      ^
+
+"Test_name.c", line 56: warning: variable "x" was declared but never referenced
+    T x;
+      ^
+

@@ -1,0 +1,62 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 11: warning: function "__builtin_arm_ldrex" declared implicitly
+    sum += __builtin_arm_ldrex(addr);
+           ^
+
+"Test_name.c", line 18: error: operand of "*" must be a pointer but has type "int"
+    sum += *__builtin_arm_ldrex((int **)addr);
+            ^
+
+"Test_name.c", line 19: error: operator -> or ->* applied to "int" instead of to a pointer type
+    sum += __builtin_arm_ldrex((struct Simple **)addr)->a;
+           ^
+
+"Test_name.c", line 25: error: expression must have struct or union type but it has type "int"
+    sum += __builtin_arm_ldrex((struct Simple *)addr).a; // expected-error {{address argument to atomic builtin must be a pointer to}}
+           ^
+
+"Test_name.c", line 35: warning: function "__builtin_arm_strex" declared implicitly
+    res |= __builtin_arm_strex(4, addr);
+           ^
+
+"Test_name.c", line 45: warning: type qualifier is meaningless on cast type
+    res |= __builtin_arm_strex(42, (char *const)addr);
+                                    ^
+
+"Test_name.c", line 51: error: expression must have struct or union type but it has type "int"
+    res |= __builtin_arm_strex(&var, (struct Simple **)addr).a; // expected-error {{is not a structure or union}}
+           ^
+
+"Test_name.c", line 60: warning: function "__builtin_arm_ldaex" declared implicitly
+    sum += __builtin_arm_ldaex(addr);
+           ^
+
+"Test_name.c", line 67: error: operand of "*" must be a pointer but has type "int"
+    sum += *__builtin_arm_ldaex((int **)addr);
+            ^
+
+"Test_name.c", line 68: error: operator -> or ->* applied to "int" instead of to a pointer type
+    sum += __builtin_arm_ldaex((struct Simple **)addr)->a;
+           ^
+
+"Test_name.c", line 74: error: expression must have struct or union type but it has type "int"
+    sum += __builtin_arm_ldaex((struct Simple *)addr).a; // expected-error {{address argument to atomic builtin must be a pointer to}}
+           ^
+
+"Test_name.c", line 84: warning: function "__builtin_arm_stlex" declared implicitly
+    res |= __builtin_arm_stlex(4, addr);
+           ^
+
+"Test_name.c", line 94: warning: type qualifier is meaningless on cast type
+    res |= __builtin_arm_stlex(42, (char *const)addr);
+                                    ^
+
+"Test_name.c", line 100: error: expression must have struct or union type but it has type "int"
+    res |= __builtin_arm_stlex(&var, (struct Simple **)addr).a; // expected-error {{is not a structure or union}}
+           ^
+
+"Test_name.c", line 108: warning: function "__builtin_arm_clrex" declared implicitly
+    __builtin_arm_clrex();
+    ^
+
+8 errors detected in the compilation of "Test_name.c".

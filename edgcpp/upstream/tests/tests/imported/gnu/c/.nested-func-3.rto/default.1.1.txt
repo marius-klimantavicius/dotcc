@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 12: error: invalid storage class for a function
+    auto int fn (int); /* { dg-error "nested function 'fn' declared but never defined" } */
+    ^
+
+"Test_name.c", line 13: error: invalid storage class for a function
+    auto int fn2 (int); /* { dg-error "nested function 'fn2' declared but never defined" } */
+    ^
+
+"Test_name.c", line 14: warning: expression has no effect
+    sizeof(fn(1));
+    ^
+
+"Test_name.c", line 20: error: invalid storage class for a function
+    auto int hn (int); /* { dg-error "nested function 'hn' declared but never defined" } */
+    ^
+
+3 errors detected in the compilation of "Test_name.c".

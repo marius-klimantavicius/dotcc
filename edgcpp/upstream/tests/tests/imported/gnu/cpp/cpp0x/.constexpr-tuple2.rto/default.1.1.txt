@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp0x/constexpr-tuple2.C", line 16: warning: variable "a" was declared but never referenced
+    constexpr auto a=get<0>(Tup1 );
+                   ^
+
+"./cpp0x/constexpr-tuple2.C", line 17: warning: variable "b" was declared but never referenced
+    constexpr auto b=get<0>(Tup2 );
+                   ^
+

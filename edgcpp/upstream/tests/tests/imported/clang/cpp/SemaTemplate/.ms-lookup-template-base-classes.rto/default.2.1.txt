@@ -1,0 +1,201 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 --ms_compatibility Test_name.c
+"Test_name.c", line 80: error: incomplete type "lookup_dependent_bases_id_expr::C<T>" is not allowed
+  auto C<T>::f() -> decltype(x) { } // expected-error {{use of undeclared identifier 'x'}}
+       ^
+
+"Test_name.c", line 80: error: identifier "x" is undefined
+  auto C<T>::f() -> decltype(x) { } // expected-error {{use of undeclared identifier 'x'}}
+                             ^
+
+"Test_name.c", line 124: error: a nonstatic member reference must be relative to a specific object
+    void g2(int p = f2());// expected-warning {{use of member 'f2' found via unqualified lookup into dependent bases of class templates is a Microsoft extension}} expected-error {{call to non-static member function without an object argument}}
+                    ^
+          detected during instantiation of "void lookup_dependent_base_class_default_argument::B<T>::g2(int) [with T=int]" at line 131
+
+"Test_name.c", line 157: warning: missing return statement at end of non-void function "lookup_dependent_base_class_friend::main2"
+  }
+  ^
+
+"Test_name.c", line 319: error: "two_types_in_base::C<T>::NameFromBase [with T=int]" is ambiguous
+    NameFromBase m; // expected-error {{member 'NameFromBase' found in multiple base classes of different types}} expected-warning {{use of member 'NameFromBase' found via unqualified lookup into dependent bases of class templates is a Microsoft extension}}
+    ^
+          detected during instantiation of class "two_types_in_base::C<T> [with T=int]" at line 321
+
+"Test_name.c", line 360: error: nontype "template_in_base::C<T>::NameFromBase" is not a template
+    NameFromBase<T> m; // expected-error {{no template named 'NameFromBase'}}
+    ^
+
+"Test_name.c", line 391: error: identifier "NameFromBase" is undefined
+  struct C : A<int> { NameFromBase m; }; // expected-error {{unknown type name 'NameFromBase'}}
+                      ^
+
+"Test_name.c", line 496: warning: variable "x" was set but never used
+      NameFromBase x = {}; // expected-warning {{lookup into dependent bases}}
+                   ^
+          detected during instantiation of "int lookup_in_function_contexts::B<T>::constexprFunc() [with T=int]" at line 507
+
+"Test_name.c", line 579: error: no instance of function template "PR23823::check" matches the argument list
+  decltype(check<int>()) x; // expected-error{{no matching function for call to 'check'}}
+           ^
+"Test_name.c", line 578: note: substituting explicit template arguments "<int>" for function template "PR23823::check" failed
+  template <typename T> decltype(g(T())) check(); // expected-note{{candidate template ignored: substitution failure [with T = int]: use of undeclared identifier 'g'}}
+                                         ^
+
+"Test_name.c", line 583: error: no instance of function template "PR23823::check2" matches the argument list
+  decltype(check2<int>()) y; // expected-error{{no matching function for call to 'check2'}}
+           ^
+"Test_name.c", line 582: note: substituting explicit template arguments "<int>" for function template "PR23823::check2" failed
+  template <typename T> decltype(h(T())) check2(); // expected-note{{candidate template ignored: substitution failure [with T = int]: no matching function for call to 'h'}}
+                                         ^
+
+"Test_name.c", line 35: error: identifier "XX" is undefined
+      XX; //expected-error {{use of undeclared identifier 'XX'}}
+      ^
+          detected during instantiation of "void A2::f(T) [with T=int]" at line 39
+
+"Test_name.c", line 36: error: class "A2" has no member "XX"
+      A2::XX; //expected-error {{no member named 'XX' in 'A2'}}
+          ^
+          detected during instantiation of "void A2::f(T) [with T=int]" at line 39
+
+"Test_name.c", line 44: error: identifier "XX" is undefined
+      XX; //expected-error {{use of undeclared identifier 'XX'}}
+      ^
+          detected during instantiation of "void A3<T0>::f(T1) [with T0=int, T1=int]" at line 47
+
+"Test_name.c", line 52: error: identifier "XX" is undefined
+      XX; //expected-error {{use of undeclared identifier 'XX'}}
+      ^
+          detected during instantiation of "void A4<T0>::f(char) [with T0=int]" at line 55
+
+"Test_name.c", line 102: error: a nonstatic member reference must be relative to a specific object
+      func(); // expected-warning {{use of member 'func' found via unqualified lookup into dependent bases of class templates is a Microsoft extension}} expected-error {{call to non-static member function without an object argument}}
+      ^
+          detected during instantiation of "void lookup_dependent_base_class_static_function::B<T>::z2() [with T=int]" at line 105
+
+"Test_name.c", line 229: error: identifier "b" is undefined
+    int     foo() { return b; }      // expected-error {{no member named 'b' in 'PR16014::C<A>'}} expected-warning {{lookup into dependent bases}}
+                           ^
+          detected during instantiation of "int PR16014::C<T>::foo() [with T=PR16014::A]" at line 238
+
+"Test_name.c", line 230: error: identifier "b" is undefined
+    int    *bar() { return &b; }     // expected-error {{no member named 'b' in 'PR16014::C<A>'}} expected-warning {{lookup into dependent bases}}
+                            ^
+          detected during instantiation of "int *PR16014::C<T>::bar() [with T=PR16014::A]" at line 238
+
+"Test_name.c", line 231: error: class "PR16014::A" has no member "b"
+    int     baz() { return T::b; }   // expected-error {{no member named 'b' in 'PR16014::A'}}
+                              ^
+          detected during instantiation of "int PR16014::C<T>::baz() [with T=PR16014::A]" at line 238
+
+"Test_name.c", line 232: error: class "PR16014::A" has no member "b"
+    int T::*qux() { return &T::b; }  // expected-error {{no member named 'b' in 'PR16014::A'}}
+                               ^
+          detected during instantiation of "int T::*PR16014::C<T>::qux() [with T=PR16014::A]" at line 238
+
+"Test_name.c", line 233: error: name followed by "::" must be a class or namespace name
+    int T::*fuz() { return &U::a; }  // expected-error {{no member named 'U' in 'PR16014::C<A>'}} \
+                            ^
+          detected during instantiation of "int T::*PR16014::C<T>::fuz() [with T=PR16014::A]" at line 238
+
+"Test_name.c", line 257: error: the global scope has no "undef"
+      ::undef(); // expected-error {{no member named 'undef' in the global namespace}}
+        ^
+          detected during instantiation of "void PR19233::A<T>::foo() [with T=PR19233::C]" at line 270
+
+"Test_name.c", line 260: error: name followed by "::" must be a class or namespace name
+      ::UndefClass::undef(); // expected-error {{no member named 'UndefClass' in the global namespace}}
+        ^
+          detected during instantiation of "void PR19233::A<T>::bar() [with T=PR19233::C]" at line 270
+
+"Test_name.c", line 257: error: the global scope has no "undef"
+      ::undef(); // expected-error {{no member named 'undef' in the global namespace}}
+        ^
+          detected during instantiation of "void PR19233::A<T>::foo() [with T=PR19233::D]" at line 273
+
+"Test_name.c", line 260: error: name followed by "::" must be a class or namespace name
+      ::UndefClass::undef(); // expected-error {{no member named 'UndefClass' in the global namespace}}
+        ^
+          detected during instantiation of "void PR19233::A<T>::bar() [with T=PR19233::D]" at line 273
+
+"Test_name.c", line 263: error: a nonstatic member reference must be relative to a specific object
+      B::qux(); // expected-error {{no member named 'B' in 'PR19233::A<D>'}} \
+      ^
+          detected during instantiation of "void PR19233::A<T>::baz() [with T=PR19233::D]" at line 273
+
+"Test_name.c", line 470: warning: variable "x" was declared but never referenced
+      NameFromBase x; // expected-warning {{lookup into dependent bases}}
+                   ^
+          detected during instantiation of "void lookup_in_function_contexts::B<T>::memberFunc() [with T=int]" at line 507
+
+"Test_name.c", line 476: warning: variable "y" was declared but never referenced
+      } y;
+        ^
+          detected during instantiation of "void lookup_in_function_contexts::B<T>::funcLocalClass() [with T=int]" at line 507
+
+"Test_name.c", line 482: warning: variable "m" was declared but never referenced
+          NameFromBase m; // expected-warning {{lookup into dependent bases}}
+                       ^
+          detected during instantiation of "void lookup_in_function_contexts::B<T>::localClassMethod() [with T=int]" at line 507
+
+"Test_name.c", line 490: warning: variable "x" was declared but never referenced
+        NameFromBase x; // expected-warning {{lookup into dependent bases}}
+                     ^
+          detected during instantiation of "void lookup_in_function_contexts::B<T>::funcLambda() [with T=int]" at line 507
+
+"Test_name.c", line 502: warning: variable "x" is used before its value is set
+      return x;
+             ^
+          detected during instantiation of "auto lookup_in_function_contexts::B<T>::autoFunc() [with T=int]" at line 507
+
+"Test_name.c", line 567: error: too few arguments in function call
+      f(); // expected-warning {{found via unqualified lookup into dependent bases}}
+        ^
+          detected during instantiation of "void PR23810::Template<T>::member() [with T=PR23810::Base]" at line 572
+
+"Test_name.c", line 593: warning: variable "x" was declared but never referenced
+      size_t x = __builtin_offsetof(TheType, f2); // expected-warning {{unqualified lookup}} expected-error {{no type}}
+             ^
+          detected during instantiation of "void UseUnqualifiedTypeNames<T>::foo() [with T=Base]" at line 612
+
+"Test_name.c", line 598: warning: variable "a" was declared but never referenced
+      _Atomic(TheType) a; // expected-warning {{unqualified lookup}} expected-error {{no type}}
+                       ^
+          detected during instantiation of "void UseUnqualifiedTypeNames<T>::foo() [with T=Base]" at line 612
+
+"Test_name.c", line 592: error: expected a type specifier
+      void *P = new TheType; // expected-warning {{unqualified lookup}} expected-error {{no type}}
+                    ^
+          detected during instantiation of "void UseUnqualifiedTypeNames<T>::foo() [with T=BadBase]" at line 614
+
+"Test_name.c", line 593: error: identifier "TheType" is undefined
+      size_t x = __builtin_offsetof(TheType, f2); // expected-warning {{unqualified lookup}} expected-error {{no type}}
+                                    ^
+          detected during instantiation of "void UseUnqualifiedTypeNames<T>::foo() [with T=BadBase]" at line 614
+
+"Test_name.c", line 593: error: expected a class, struct, or union type
+      size_t x = __builtin_offsetof(TheType, f2); // expected-warning {{unqualified lookup}} expected-error {{no type}}
+                                    ^
+          detected during instantiation of "void UseUnqualifiedTypeNames<T>::foo() [with T=BadBase]" at line 614
+
+"Test_name.c", line 595: error: handler requires an exception declaration
+      } catch (TheType) { // expected-warning {{unqualified lookup}} expected-error {{no type}}
+               ^
+          detected during instantiation of "void UseUnqualifiedTypeNames<T>::foo() [with T=BadBase]" at line 614
+
+"Test_name.c", line 597: error: identifier "IntegerType" is undefined
+      enum E : IntegerType { E0 = 42 }; // expected-warning {{unqualified lookup}} expected-error {{no type}}
+               ^
+          detected during instantiation of "void UseUnqualifiedTypeNames<T>::foo() [with T=BadBase]" at line 614
+
+"Test_name.c", line 598: error: identifier "TheType" is undefined
+      _Atomic(TheType) a; // expected-warning {{unqualified lookup}} expected-error {{no type}}
+              ^
+          detected during instantiation of "void UseUnqualifiedTypeNames<T>::foo() [with T=BadBase]" at line 614
+
+"Test_name.c", line 604: error: expected a type specifier
+    void *p = new TheType; // expected-warning {{unqualified lookup}} expected-error {{no type}}
+                  ^
+          detected during instantiation of "void UseUnqualifiedTypeNames<T>::out_of_line() [with T=BadBase]" at line 614
+
+31 errors detected in the compilation of "Test_name.c".

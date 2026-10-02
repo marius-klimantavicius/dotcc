@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=2 Test_name.c
+"Test_name.c", line 19: error: "virtual" is not allowed
+      friend virtual void Foo::func();
+             ^
+
+1 error detected in the compilation of "Test_name.c".

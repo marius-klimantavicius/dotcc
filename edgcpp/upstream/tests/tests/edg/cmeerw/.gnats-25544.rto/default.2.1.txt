@@ -1,0 +1,39 @@
+fe_only -DTEST_NUMBER=2 --c++17 -DTOO_FEW_ARGS Test_name.c
+"Test_name.c", line 48: error: this range-based "for" statement requires a suitable "begin" function and none was found
+    for (auto i : x) {}
+                  ^
+
+"Test_name.c", line 52: error: no instance of function template "X::get" matches the argument list and object (the object has type qualifiers that prevent a match)
+            object type is: const X
+    const auto [ xi, xj ] = x;
+               ^
+
+"Test_name.c", line 52: error: no instance of function template "X::get" matches the argument list and object (the object has type qualifiers that prevent a match)
+            object type is: const X
+    const auto [ xi, xj ] = x;
+               ^
+
+"Test_name.c", line 56: error: this structured binding requires a suitable "get" function and none was found
+    const auto [ yi, yj ] = y;
+               ^
+
+"Test_name.c", line 56: error: this structured binding requires a suitable "get" function and none was found
+    const auto [ yi, yj ] = y;
+               ^
+
+"Test_name.c", line 69: error: argument of type "const char *" is incompatible with parameter of type "int"
+    single_function("");
+                    ^
+
+"Test_name.c", line 72: error: no instance of overloaded function "overloaded_function" matches the argument list
+            argument types are: (const char [1])
+    overloaded_function("");
+    ^
+"Test_name.c", line 64: note: function "overloaded_function(long)" does not match because argument #1 does not match parameter
+  void overloaded_function(long);
+       ^
+"Test_name.c", line 63: note: function "overloaded_function(int)" does not match because argument #1 does not match parameter
+  void overloaded_function(int);
+       ^
+
+7 errors detected in the compilation of "Test_name.c".

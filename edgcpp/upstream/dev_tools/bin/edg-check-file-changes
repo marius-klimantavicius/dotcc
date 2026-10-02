@@ -1,0 +1,272 @@
+#!/usr/bin/env python3
+
+# Part of the EDG Compiler Project, under the Apache License v2.0 with LLVM
+# Exceptions.
+# See https://edgcpp.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+import argparse
+import contextlib
+import re
+import json
+import shutil
+import subprocess
+import sys
+import tempfile
+import traceback
+
+from concurrent.futures import ThreadPoolExecutor
+from pathlib import Path
+from typing import Any, List, Optional, Set, Tuple
+
+import edgutil
+
+TOOL_PATH_ASPELL = shutil.which('aspell')
+TOOL_PATH_GET_COMMENTS = edgutil.RequiredToolPath('get-comments')
+
+CODE_FILE_EXTENSIONS = {'.c', '.cpp', '.h', '.hpp'}
+
+# (pattern, ignore_case, exclude_substrings)
+_FIND_THE_THE_CHECKS = [
+  ('the the', True, ()),
+  ('is is', True, ()),
+  ('it it', True, ()),
+  ('be be', True, ()),
+  ('the its', True, ()),
+  ('its the', True, ()),
+  ('the a', False, ()),
+  ('The a', False, ()),
+  ('a the', True, ()),
+  ('a an', True, ()),
+  ('its a', True, ()),
+  ('an member', True, ()),
+  ('this it a', True, ()),
+  ('of of', True, ()),
+  ('the that', True, ()),
+  ('in in', True, ('in in-', '-in in')),
+  ('if is', True, ('#if is',)),
+  ('is has', True, ()),
+  ('that for which', True, ()),
+  ('the is', True, ()),
+  ('and and', True, ()),
+  ('on on', True, ()),
+  ('with with', True, ()),
+]
+
+def _compile_find_the_checks():
+  checks = []
+  for pattern, ignore_case, excludes in _FIND_THE_THE_CHECKS:
+    checks.append(
+      (
+        re.compile(
+          r'(?<!\w)' + re.escape(pattern) + r'(?!\w)',
+          re.IGNORECASE if ignore_case else 0
+        ),
+        excludes
+      )
+    )
+  return checks
+
+_FIND_THE_THE_CHECKS_COMPILED = _compile_find_the_checks()
+
+def find_the_the(path):
+  '''Find repeated-word typos like "the the".
+
+  Matches use whole-word boundaries.  Patterns marked ignore_case use.  Some
+  patterns also exclude fixed substrings.  Returns matching lines joined by
+  newlines, or '' if none.
+  '''
+
+  with open(path, 'r', errors = 'replace') as handle:
+    lines = handle.read().splitlines()
+
+  matches = []
+  for regex, excludes in _FIND_THE_THE_CHECKS_COMPILED:
+    # grep -w: match must be bounded by non-word characters (or line edges).
+    for line in lines:
+      if regex.search(line) is None:
+        continue
+      if any(exclude in line for exclude in excludes):
+        continue
+      matches.append(line)
+
+  return matches
+
+def _is_aspell_working() -> bool:
+  if not TOOL_PATH_ASPELL:
+    return False
+
+  completed_process = subprocess.run(
+    [TOOL_PATH_ASPELL, 'list'],
+    input = 'cat'.encode('utf-8'),
+    stdout = subprocess.DEVNULL,
+    stderr = subprocess.DEVNULL
+  )
+  return completed_process.returncode == 0
+
+def _run_spell_command(file_path: Path) -> Set[str]:
+  with contextlib.ExitStack() as exit_stack:
+    src_file_handle = exit_stack.enter_context(open(file_path, 'rb'))
+    if file_path.suffix in CODE_FILE_EXTENSIONS:
+      comment_rewrite_file = exit_stack.enter_context(tempfile.TemporaryFile())
+      completed_process = subprocess.run(
+        [str(TOOL_PATH_GET_COMMENTS), '-c'],
+        stdin = src_file_handle,
+        stdout = comment_rewrite_file,
+        stderr = subprocess.STDOUT
+      )
+      spelling_input = comment_rewrite_file
+    else:
+      spelling_input = src_file_handle
+
+    completed_process = subprocess.run(
+      [TOOL_PATH_ASPELL, 'list'],
+      stdin = spelling_input,
+      stdout = subprocess.PIPE,
+      stderr = subprocess.STDOUT
+    )
+
+    return set(completed_process.stdout.decode().splitlines())
+
+def check_spelling(old_file: Path, new_file: Path) -> Optional[List[str]]:
+  '''Report new misspellings and "the the" typos relative to the old file.'''
+
+  if not _is_aspell_working():
+    return None
+
+  new_mispelled_words = _run_spell_command(new_file)
+  old_mispelled_words = _run_spell_command(old_file)
+
+  return sorted(new_mispelled_words - old_mispelled_words)
+
+def _file_check_config(file_path: Path):
+  '''Return spelling/coding/line-length check settings for a path.'''
+  suffix = file_path.suffix
+
+  check_for_coding_errors = False
+  check_for_overlong_lines = False
+
+  if suffix in CODE_FILE_EXTENSIONS:
+    check_for_coding_errors = True
+    check_for_overlong_lines = True
+  elif suffix == 'txt':
+    pass
+  else:
+    check_for_overlong_lines = True
+
+  return check_for_coding_errors, check_for_overlong_lines
+
+ENDIF_WITHOUT_COMMENT_REGEX = re.compile(r'^#endif[ \t]*$')
+ELSE_WITHOUT_COMMENT_REGEX = re.compile(r'^#else[ \t]*$')
+
+def _check_coding_errors(new_file: Path) -> Any:
+  '''Report missing #endif/#else comments and closing-comment issues.'''
+  coding_errors = {
+    'missing_endifs': [],
+    'missing_elses': [],
+    'closing_comments': []
+  }
+
+  with open(new_file, 'r', errors = 'replace') as file_handle:
+    for line_no, line in enumerate(file_handle, start = 1):
+      if ENDIF_WITHOUT_COMMENT_REGEX.match(line.rstrip('\n')):
+        coding_errors['missing_endifs'].append(f"{line_no}:{line.rstrip()}")
+      if ELSE_WITHOUT_COMMENT_REGEX.match(line.rstrip('\n')):
+        coding_errors['missing_elses'].append(f"{line_no}:{line.rstrip()}")
+
+  completed_process = subprocess.run(
+    ['check-closing-comments', new_file],
+    capture_output = True,
+    text = True
+  )
+  if completed_process.returncode != 0:
+    coding_errors['closing_comments'] = completed_process.stdout.splitlines()
+
+  return coding_errors
+
+def _check_overlong_lines(new_file: Path) -> Any:
+  '''Report lines longer than 79 columns after tab expansion.'''
+  overlong_lines = {}
+
+  with open(new_file, 'r', errors = 'replace') as file_handle:
+    lines = file_handle.readlines()
+    for line_no, line in enumerate(lines, start = 1):
+      if len(line.rstrip('\n').expandtabs()) <= 79:
+        continue
+
+      overlong_lines[line_no] = [
+         max(1, line_no - 1),
+         lines[max(0, line_no - 2):min(len(lines), line_no + 1)]
+      ]
+
+  return overlong_lines
+
+def check_file(old_file: Path, new_file: Path) -> Any:
+  check_for_coding_errors, check_for_overlong_lines = (
+    _file_check_config(new_file)
+  )
+  return {
+    'misspellings': check_spelling(old_file, new_file),
+    'typos': find_the_the(new_file),
+    'coding_errors': (
+      _check_coding_errors(new_file) if check_for_coding_errors else {}
+    ),
+    'overlong_lines': (
+      _check_overlong_lines(new_file) if check_for_overlong_lines else []
+    )
+  }
+
+def parse_args() -> argparse.Namespace:
+  parser = argparse.ArgumentParser(
+    description = (
+      'Perform checking on the files defined by the given input file.'
+    )
+  )
+  parser.add_argument(
+    'input_spec',
+    type = Path,
+    help = 'the json file defining what to check'
+  )
+  parser.add_argument(
+    'output_file',
+    type = Path,
+    help = 'the json file reporting the results of the check'
+  )
+  return parser.parse_args()
+
+def main() -> None:
+  args = parse_args()
+
+  TOOL_PATH_GET_COMMENTS.exit_if_not_found()
+
+  with open(args.input_spec, 'r', encoding = 'utf-8') as file_handle:
+    input_dict = json.load(file_handle)
+
+  output_dict = dict.fromkeys(input_dict)
+
+  with ThreadPoolExecutor() as executor:
+    result = {}
+    cwd = Path.cwd()
+
+    for key, (old_file, new_file) in input_dict.items():
+      output_dict[key] = executor.submit(
+        check_file,
+        cwd.joinpath(old_file),
+        cwd.joinpath(new_file)
+      )
+
+  for key in list(output_dict.keys()):
+    try:
+      output_dict[key] = output_dict[key].result()
+    except Exception as ex:
+      if sys.version_info >= (3, 10):
+        ex.add_note(f"while processing file: {key}")
+        traceback.print_exception(ex)
+      else:
+        print(f"{key} generated an exception: {ex}")
+      del output_dict[key]
+
+  with open(args.output_file, 'w') as file_handle:
+    json.dump(output_dict, file_handle)
+
+main()

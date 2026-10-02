@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 34: warning: expression has no effect
+    e1+e2+e3; // { dg-warning "arithmetic between different enumeration types" "" { target { c++20 && c++23_down } } }
+    ^
+
+"Test_name.c", line 13: error: function "B<T>::h [with T=A]", declared using a local type, must be defined in this translation unit
+    void h(T);			// { dg-error "never defined" }
+         ^
+
+"Test_name.c", line 15: error: member "B<T>::t1 [with T=A]", declared using a local type, must be defined in this translation unit
+    static T t1;			// { dg-error "never defined" }
+             ^
+
+"Test_name.c", line 22: error: variable "e2", declared using a type with no linkage, must be defined in this translation unit
+  extern enum { E2 } e2;		// { dg-error "never defined" }
+                     ^
+
+3 errors detected in the compilation of "Test_name.c".

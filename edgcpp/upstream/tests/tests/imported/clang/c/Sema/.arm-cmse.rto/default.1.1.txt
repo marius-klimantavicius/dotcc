@@ -1,0 +1,73 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 5: warning: unknown attribute "cmse_nonsecure_call"
+  typedef void (*callback_ns_1t)(void) __attribute__((cmse_nonsecure_call));
+                                                      ^
+
+"Test_name.c", line 7: warning: unknown attribute "cmse_nonsecure_call"
+  typedef void (*callback_ns_2t)(void) __attribute__((cmse_nonsecure_call));
+                                                      ^
+
+"Test_name.c", line 11: warning: unknown attribute "cmse_nonsecure_call"
+           callback_1t fptr) __attribute__((cmse_nonsecure_call))
+                                            ^
+
+"Test_name.c", line 13: warning: variable "fp1" was declared but never referenced
+    callback_1t fp1 = nsfptr; // expected-error{{incompatible function pointer types initializing 'callback_1t'}}
+                ^
+
+"Test_name.c", line 14: warning: variable "fp2" was declared but never referenced
+    callback_ns_1t fp2 = fptr; // expected-error{{incompatible function pointer types initializing 'callback_ns_1t'}}
+                   ^
+
+"Test_name.c", line 15: warning: variable "fp3" was declared but never referenced
+    callback_2t fp3 = fptr;
+                ^
+
+"Test_name.c", line 16: warning: variable "fp4" was declared but never referenced
+    callback_ns_2t fp4 = nsfptr;
+                   ^
+
+"Test_name.c", line 19: warning: unknown attribute "cmse_nonsecure_entry"
+  static void bar(void) __attribute__((cmse_nonsecure_entry)) // expected-warning{{'cmse_nonsecure_entry' cannot be applied to functions with internal linkage}}
+                                       ^
+
+"Test_name.c", line 23: warning: unknown attribute "cmse_nonsecure_call"
+  typedef void nonsecure_fn_t(int) __attribute__((cmse_nonsecure_call));
+                                                  ^
+
+"Test_name.c", line 26: warning: unknown attribute "cmse_nonsecure_call"
+  int v0 __attribute__((cmse_nonsecure_call)); // expected-warning {{'cmse_nonsecure_call' only applies to function types; type here is 'int'}}
+                        ^
+
+"Test_name.c", line 27: warning: unknown attribute "cmse_nonsecure_entry"
+  int v1 __attribute__((cmse_nonsecure_entry)); // expected-warning {{'cmse_nonsecure_entry' attribute only applies to functions}}
+                        ^
+
+"Test_name.c", line 29: warning: unknown attribute "cmse_nonsecure_entry"
+  void fn0(void) __attribute__((cmse_nonsecure_entry));
+                                ^
+
+"Test_name.c", line 30: warning: unknown attribute "cmse_nonsecure_entry"
+  void fn1(void) __attribute__((cmse_nonsecure_entry(1)));  // expected-error {{'cmse_nonsecure_entry' attribute takes no arguments}}
+                                ^
+
+"Test_name.c", line 32: warning: unknown attribute "cmse_nonsecure_call"
+  typedef void (*fn2_t)(void) __attribute__((cmse_nonsecure_call("abc"))); // expected-error {{'cmse_nonsecure_call' attribute takes no argument}}
+                                             ^
+
+"Test_name.c", line 36: warning: unknown attribute "cmse_nonsecure_entry"
+  union U xyzzy(void) __attribute__((cmse_nonsecure_entry)) {
+                                     ^
+
+"Test_name.c", line 40: warning: unknown attribute "cmse_nonsecure_call"
+  void (*fn2)(int, union U) __attribute__((cmse_nonsecure_call));
+                                           ^
+
+"Test_name.c", line 41: warning: unknown attribute "cmse_nonsecure_call"
+  void (*fn3)() __attribute__ ((cmse_nonsecure_call));
+                                ^
+
+"Test_name.c", line 19: warning: function "bar" was declared but never referenced
+  static void bar(void) __attribute__((cmse_nonsecure_entry)) // expected-warning{{'cmse_nonsecure_entry' cannot be applied to functions with internal linkage}}
+              ^
+

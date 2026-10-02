@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 -DMSABI -DMSABI --c++03 -DMSABI Test_name.c
+"Test_name.c", line 18: error: operand of "*" must be a pointer but has type "int"
+    return *x; // expected-error{{requires pointer operand}}
+            ^
+          detected during:
+            instantiation of "int PR5557::A<T>::a(T) [with T=int]" at line 15
+            instantiation of "PR5557::A<T>::A() [with T=int]" at line 22
+
+"Test_name.c", line 44: error: operand of "*" must be a pointer but has type "int"
+    return *x; // expected-error{{requires pointer operand}}
+            ^
+          detected during:
+            instantiation of "int PR5557_dtor::A<T>::a(T) [with T=int]" at line 41
+            instantiation of "PR5557_dtor::A<T>::~A() [with T=int]" at line 48
+
+"Test_name.c", line 56: error: a value of type "int *" cannot be used to initialize an entity of type "int"
+      T t = ptr; // expected-error{{cannot initialize}}
+            ^
+          detected during instantiation of "Base<T>::~Base() [with T=int]" at line 61
+
+"Test_name.c", line 75: error: return value type does not match the function type
+    return fp; // expected-error{{cannot initialize return object of type 'int *' with an lvalue of type 'float *'}}
+           ^
+          detected during:
+            instantiation of "T *HasOutOfLineKey<T>::f(float *) [with T=int]" at line 69
+            instantiation of "HasOutOfLineKey<T>::HasOutOfLineKey() [with T=int]" at line 78
+
+"Test_name.c", line 206: error: pointer or reference to incomplete type "vtable_uses_incomplete::DeclaredOnly" is not allowed
+    ~RefPtr() { m_ptr->deref(); }  // expected-error {{member access into incomplete type 'vtable_uses_incomplete::DeclaredOnly'}}
+                ^
+          detected during instantiation of "vtable_uses_incomplete::RefPtr<T>::~RefPtr() [with T=vtable_uses_incomplete::DeclaredOnly]" at line 216
+
+5 errors detected in the compilation of "Test_name.c".

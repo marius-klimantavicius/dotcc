@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 22: error: expression must have a constant value
+  constexpr auto x = foo ();
+                     ^
+"Test_name.c", line 10: note: deallocation does not match allocation kind (one is for an array and the other not)
+    delete[] p;		// { dg-error "array deallocation of object allocated with non-array allocation" }
+    ^
+"Test_name.c", line 9: note: allocation occurred here
+    int *p = new int;	// { dg-message "allocation performed here" }
+             ^
+
+"Test_name.c", line 23: error: expression must have a constant value
+  constexpr auto y = bar ();
+                     ^
+"Test_name.c", line 18: note: deallocation does not match allocation kind (one is for an array and the other not)
+    delete p;		// { dg-error "non-array deallocation of object allocated with array allocation" }
+    ^
+"Test_name.c", line 17: note: allocation occurred here
+    int *p = new int[1];	// { dg-message "allocation performed here" }
+             ^
+
+"Test_name.c", line 22: warning: variable "x" was declared but never referenced
+  constexpr auto x = foo ();
+                 ^
+
+"Test_name.c", line 23: warning: variable "y" was declared but never referenced
+  constexpr auto y = bar ();
+                 ^
+
+2 errors detected in the compilation of "Test_name.c".

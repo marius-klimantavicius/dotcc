@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --gnu_version=80200 -tused -e 200 --no_wrap --c++03 Test_name.c
+"Test_name.c", line 22: warning: variable "i" was declared but never referenced
+    for (int i = 1;;)	// { dg-message "using obsolete binding" }
+             ^
+
+"Test_name.c", line 29: warning: statement is unreachable
+    i;  // { dg-warning "name lookup" }
+    ^
+
+"Test_name.c", line 29: error: identifier "i" is undefined
+    i;  // { dg-warning "name lookup" }
+    ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 53: error: parameter of abstract class type "N3::X" is not allowed:
+            function "N3::X::xfunc" is a pure virtual function
+    void g(X parm13) {}          // { dg-error "abstract" }
+           ^
+
+"Test_name.c", line 64: error: no instance of overloaded function "N3::g" matches the specified type
+    template void g<42>(X);
+                  ^
+
+2 errors detected in the compilation of "Test_name.c".

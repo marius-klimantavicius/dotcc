@@ -1,0 +1,44 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 87: error: the object has type qualifiers that are not compatible with the member function "X0::g"
+            object type is: const volatile X0
+    cvr.g(); // expected-error {{'this' argument to member function 'g' has type 'const volatile X0', but function is not marked const or volatile}}
+    ^
+
+"Test_name.c", line 88: error: the object has type qualifiers that are not compatible with the member function "X0::c"
+            object type is: const volatile X0
+    cvr.c(); // expected-error {{not marked volatile}}
+    ^
+
+"Test_name.c", line 89: error: the object has type qualifiers that are not compatible with the member function "X0::v"
+            object type is: const volatile X0
+    cvr.v(); // expected-error {{not marked const}}
+    ^
+
+"Test_name.c", line 90: error: the object has type qualifiers that are not compatible with the member function "X0::r"
+            object type is: const volatile X0
+    cvr.r(); // expected-error {{not marked const or volatile}}
+    ^
+
+"Test_name.c", line 91: error: the object has type qualifiers that are not compatible with the member function "X0::cr"
+            object type is: const volatile X0
+    cvr.cr(); // expected-error {{not marked volatile}}
+    ^
+
+"Test_name.c", line 93: error: the object has type qualifiers that are not compatible with the member function "X0::vr"
+            object type is: const volatile X0
+    cvr.vr(); // expected-error {{not marked const}}
+    ^
+
+"Test_name.c", line 98: error: function "X0::rvalue" (declared at line 34) cannot be called on an lvalue
+    lvalue<X0>().rvalue(); // expected-error {{'this' argument to member function 'rvalue' is an lvalue, but function has rvalue ref-qualifier}}
+    ^
+
+"Test_name.c", line 100: error: function "X0::lvalue" (declared at line 32) cannot be called on an rvalue
+    xvalue<X0>().lvalue(); // expected-error {{'this' argument to member function 'lvalue' is an rvalue, but function has non-const lvalue ref-qualifier}}
+    ^
+
+"Test_name.c", line 104: error: function "X0::lvalue" (declared at line 32) cannot be called on an rvalue
+    prvalue<X0>().lvalue(); // expected-error {{'this' argument to member function 'lvalue' is an rvalue, but function has non-const lvalue ref-qualifier}}
+    ^
+
+9 errors detected in the compilation of "Test_name.c".

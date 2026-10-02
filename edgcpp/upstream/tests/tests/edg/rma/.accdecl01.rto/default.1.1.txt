@@ -1,0 +1,30 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 9: error: member "A::x" (declared at line 4) is inaccessible
+      A::x;
+         ^
+
+"Test_name.c", line 11: error: invalid base class
+      B::a;
+      ^
+
+"Test_name.c", line 16: error: member "A::y" (declared at line 4) is inaccessible
+      A::y;
+         ^
+
+"Test_name.c", line 17: error: "c" has already been declared in the current scope
+      A::c;
+         ^
+
+"Test_name.c", line 19: error: "j" has already been declared in the current scope
+      int j;
+          ^
+
+"Test_name.c", line 20: error: "b" has already been declared in the current scope
+      int b;
+          ^
+
+"Test_name.c", line 22: error: member "A::z" (declared at line 4) is inaccessible
+      A::z;
+         ^
+
+7 errors detected in the compilation of "Test_name.c".

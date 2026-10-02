@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 7: error: invalid alignment value specified by attribute
+  int badcommon __attribute__ ((aligned (65536))); /* { dg-error "common variables must have an alignment" "" { target { *-*-darwin1[1-9]* *-*-darwin2* } } } */
+                                         ^
+
+"Test_name.c", line 8: warning: last line of file ends without a newline
+  /* { dg-error "requested alignment .65536. exceeds object file maximum 32768" "" { target { *-*-darwin[4-9]* *-*-darwin10* } } .-1 } */
+                                                                                                                                         ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 12: warning: variable "A" was declared but never referenced
+    int A = (struct{ int a;}){ 1}.a;
+        ^
+
+"Test_name.c", line 19: warning: parameter "a" was set but never used
+  int test3(int a, int b, int c) {
+                ^
+
+"Test_name.c", line 19: warning: parameter "b" was set but never used
+  int test3(int a, int b, int c) {
+                       ^
+
+"Test_name.c", line 54: error: expected a ")"
+                   ; // expected-error {{expected ')'}}
+                   ^
+
+"Test_name.c", line 60: error: expected a ")"
+      ;   // expected-error {{expected ')'}}
+      ^
+
+"Test_name.c", line 67: error: expected an expression
+    int x1 = sizeof int;            // expected-error {{expected parentheses around type name in sizeof expression}}
+                    ^
+
+"Test_name.c", line 68: error: expected an expression
+    int x2 = sizeof struct pr16992; // expected-error {{expected parentheses around type name in sizeof expression}}
+                    ^
+
+"Test_name.c", line 69: error: expected an expression
+    int x3 = __alignof int;         // expected-error {{expected parentheses around type name in __alignof expression}}
+                       ^
+
+"Test_name.c", line 70: error: expected an expression
+    int x4 = _Alignof int;          // expected-error {{expected parentheses around type name in _Alignof expression}}
+                      ^
+
+"Test_name.c", line 70: warning: the standard "alignof" operator does not accept an expression argument (use a type instead)
+    int x4 = _Alignof int;          // expected-error {{expected parentheses around type name in _Alignof expression}}
+                         ^
+
+"Test_name.c", line 75: error: identifier "foobar" is undefined
+    callee(foobar,   // expected-error {{use of undeclared identifier 'foobar'}}
+           ^
+
+"Test_name.c", line 76: error: identifier "fizbin" is undefined
+           fizbin);  // expected-error {{use of undeclared identifier 'fizbin'}}
+           ^
+
+8 errors detected in the compilation of "Test_name.c".

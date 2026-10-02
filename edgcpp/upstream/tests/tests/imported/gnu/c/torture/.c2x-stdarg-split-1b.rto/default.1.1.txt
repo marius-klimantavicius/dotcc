@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"./torture/c2x-stdarg-split-1b.c", line 15: error: va_start can appear only in a function with an ellipsis parameter
+   __builtin_va_start(
+   ^
+
+"./torture/c2x-stdarg-split-1b.c", line 28: error: va_start can appear only in a function with an ellipsis parameter
+   __builtin_va_start(
+   ^
+
+2 errors detected in the compilation of "Test_name.c".

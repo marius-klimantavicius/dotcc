@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 7: error: identifier "X" is undefined
+  alignas(X) using namespace N; // { dg-error "declared" }
+          ^
+
+"Test_name.c", line 7: error: attributes are not allowed here
+  alignas(X) using namespace N; // { dg-error "declared" }
+  ^
+
+"Test_name.c", line 9: error: expected a ";"
+  using namespace O alignas(X); // { dg-error "expected" }
+                    ^
+
+"Test_name.c", line 13: error: expected a ";"
+  using namespace P alignas(int); // { dg-error "expected" }
+                    ^
+
+4 errors detected in the compilation of "Test_name.c".

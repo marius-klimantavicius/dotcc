@@ -1,0 +1,81 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 16: warning: controlling expression is constant
+    if (!b) {} // expected-warning {{address of array 'b' will always evaluate to 'true'}}
+         ^
+
+"Test_name.c", line 18: warning: controlling expression is constant
+    if (!c.x) {} // expected-warning {{address of array 'c.x' will always evaluate to 'true'}}
+         ^
+
+"Test_name.c", line 20: warning: controlling expression is constant
+    if (!str) {} // expected-warning {{address of array 'str' will always evaluate to 'true'}}
+         ^
+
+"Test_name.c", line 27: warning: controlling expression is constant
+    if (!array) { // expected-warning {{address of array 'array' will always evaluate to 'true'}}
+         ^
+
+"Test_name.c", line 32: warning: statement is unreachable
+    if (array == 0) // expected-warning {{comparison of array 'array' equal to a null pointer is always false}}
+    ^
+
+"Test_name.c", line 56: warning: controlling expression is constant
+     if (array) { } // expected-warning {{address of array 'array' will always evaluate to 'true'}}
+         ^
+
+"Test_name.c", line 58: warning: controlling expression is constant
+     if (!array) { } // expected-warning {{address of array 'array' will always evaluate to 'true'}}
+          ^
+
+"Test_name.c", line 62: warning: controlling expression is constant
+         array) {} // expected-warning {{address of array 'array' will always evaluate to 'true'}}
+         ^
+
+"Test_name.c", line 65: warning: controlling expression is constant
+         array) {} // expected-warning {{address of array 'array' will always evaluate to 'true'}}
+         ^
+
+"Test_name.c", line 68: warning: controlling expression is constant
+         !array) {} // expected-warning {{address of array 'array' will always evaluate to 'true'}}
+          ^
+
+"Test_name.c", line 70: warning: controlling expression is constant
+         !array) {} // expected-warning {{address of array 'array' will always evaluate to 'true'}}
+          ^
+
+"Test_name.c", line 72: warning: controlling expression is constant
+     if (array && // expected-warning {{address of array 'array' will always evaluate to 'true'}}
+         ^
+
+"Test_name.c", line 74: warning: controlling expression is constant
+     if (!array || // expected-warning {{address of array 'array' will always evaluate to 'true'}}
+          ^
+
+"Test_name.c", line 78: warning: controlling expression is constant
+         (!array && array[0])) {} // expected-warning {{address of array 'array' will always evaluate to 'true'}}
+           ^
+
+"Test_name.c", line 77: warning: controlling expression is constant
+     if (array ||  // expected-warning {{address of array 'array' will always evaluate to 'true'}}
+         ^
+
+"Test_name.c", line 90: warning: controlling expression is constant
+    x = b ? 1 : 0;     // expected-warning {{address of array}}
+        ^
+
+"Test_name.c", line 91: warning: controlling expression is constant
+    x = c.x ? 1 : 0;   // expected-warning {{address of array}}
+        ^
+
+"Test_name.c", line 92: warning: controlling expression is constant
+    x = str ? 1 : 0;   // expected-warning {{address of array}}
+        ^
+
+"Test_name.c", line 93: warning: controlling expression is constant
+    x = array ? 1 : 0; // expected-warning {{address of array}}
+        ^
+
+"Test_name.c", line 99: warning: variable "b" was declared but never referenced
+    int b = (&a) == ((void *) 0); // expected-warning {{comparison of address of 'a' equal to a null pointer is always false}}
+        ^
+

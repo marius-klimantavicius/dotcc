@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 12: warning: a value of type "int *__restrict__ *" cannot be used to initialize an entity of type "int **"
+    int **b = &a; /* { dg-error "discards 'restrict' qualifier" } */
+              ^
+
+"Test_name.c", line 12: warning: variable "b" was declared but never referenced
+    int **b = &a; /* { dg-error "discards 'restrict' qualifier" } */
+          ^
+
+"Test_name.c", line 13: warning: variable "c" was declared but never referenced
+    int *restrict *c = &a;
+                   ^
+
+"Test_name.c", line 20: warning: a value of type "int *__restrict__ *" cannot be used to initialize an entity of type "int **"
+    int **b = &a; /* { dg-error "discards 'restrict' qualifier" } */
+              ^
+
+"Test_name.c", line 20: warning: variable "b" was declared but never referenced
+    int **b = &a; /* { dg-error "discards 'restrict' qualifier" } */
+          ^
+
+"Test_name.c", line 21: warning: variable "c" was declared but never referenced
+    int *restrict *c = &a;
+                   ^
+

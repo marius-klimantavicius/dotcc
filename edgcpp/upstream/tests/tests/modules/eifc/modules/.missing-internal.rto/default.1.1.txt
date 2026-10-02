@@ -1,0 +1,4 @@
+fe_only -DTEST_NUMBER=1 --c++20 --module_internal Test_name.c
+At end of source: error: module file generation was requested but no module was declared in the translation unit
+
+1 error detected in the compilation of "Test_name.c".

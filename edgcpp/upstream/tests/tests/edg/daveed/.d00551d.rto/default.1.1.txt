@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --g++ -tused --gnu_version=40000 -DVIRTUAL Test_name.c
+"Test_name.c", line 18: warning: incompatible redefinition of macro "VIRTUAL"
+  #define VIRTUAL virtual
+          ^
+
+"Test_name.c", line 33: warning: offsetof applied to a type other than a standard-layout class
+  int i = offsetof(D, m);
+                   ^
+
+"Test_name.c", line 33: error: cannot apply offsetof to a member of a virtual base
+  int i = offsetof(D, m);
+          ^
+
+"Test_name.c", line 34: warning: offsetof applied to a type other than a standard-layout class
+  int k = offsetof(D, B1::m);
+                   ^
+
+"Test_name.c", line 34: error: cannot apply offsetof to a member of a virtual base
+  int k = offsetof(D, B1::m);
+          ^
+
+2 errors detected in the compilation of "Test_name.c".

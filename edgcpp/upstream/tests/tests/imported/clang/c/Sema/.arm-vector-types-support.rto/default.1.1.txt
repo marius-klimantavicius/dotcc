@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c --target linux_aarch64 Test_name.c
+"Test_name.c", line 9: warning: unknown attribute "arm_sve_vector_bits"
+  typedef __attribute__((arm_sve_vector_bits(256))) void nosveflag; // expected-error{{'arm_sve_vector_bits' attribute is not supported on targets missing 'sve'; specify an appropriate -march= or -mcpu=}}
+                         ^
+

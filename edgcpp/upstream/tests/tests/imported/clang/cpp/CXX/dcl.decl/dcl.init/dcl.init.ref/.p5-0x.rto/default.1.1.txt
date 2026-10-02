@@ -1,0 +1,114 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 66: error: no suitable conversion function from "ConvertsTo<int &>" to "int" exists
+    int &&int2 = ConvertsTo<int&>(); // expected-error{{no viable conversion from 'ConvertsTo<int &>' to 'int'}}
+                 ^
+
+"Test_name.c", line 67: error: no suitable conversion function from "ConvertsTo<float &>" to "int" exists
+    int &&int3 = ConvertsTo<float&>(); // expected-error{{no viable conversion from 'ConvertsTo<float &>' to 'int'}}
+                 ^
+
+"Test_name.c", line 40: warning: variable "array0" was declared but never referenced
+    int (&&array0)[5] = HasArray().array;
+           ^
+
+"Test_name.c", line 43: warning: variable "function0" was declared but never referenced
+    int (&&function0)(int) = f;
+           ^
+
+"Test_name.c", line 108: error: initial value of reference to non-const must be an lvalue
+    double& rd2 = 2.0; // expected-error{{non-const lvalue reference to type 'double' cannot bind to a temporary of type 'double'}}
+                  ^
+
+"Test_name.c", line 110: error: a reference of type "double &" (not const-qualified) cannot be initialized with a value of type "int"
+    double& rd3 = i; // expected-error{{non-const lvalue reference to type 'double' cannot bind to a value of unrelated type 'int'}}
+                  ^
+
+"Test_name.c", line 123: error: no suitable conversion function from "std_example_2::X" to "int" exists
+    int&& rri2 = X(); // expected-error{{no viable conversion from 'X' to 'int'}}
+                 ^
+
+"Test_name.c", line 128: error: qualifiers dropped in binding reference of type "const int &" to initializer of type "const volatile int"
+    const int& r2 = cvi; // expected-error{{binding reference of type 'const int' to value of type 'const volatile int' drops 'volatile' qualifier}}
+                    ^
+
+"Test_name.c", line 131: error: an rvalue reference cannot be bound to an lvalue
+    double&& rrd2 = d; // expected-error{{rvalue reference to type 'double' cannot bind to lvalue of type 'double'}}
+                    ^
+
+"Test_name.c", line 164: error: no suitable conversion function from "ConvertsTo<int &>" to "int" exists
+      int_rvalue_ref(ConvertsTo<int&>()); // expected-error{{no matching function for call to 'int_rvalue_ref'}}
+                     ^
+
+"Test_name.c", line 165: error: no suitable conversion function from "ConvertsTo<float &>" to "int" exists
+      int_rvalue_ref(ConvertsTo<float&>()); // expected-error{{no matching function for call to 'int_rvalue_ref'}}
+                     ^
+
+"Test_name.c", line 201: error: an rvalue reference cannot be bound to an lvalue
+    X &&f0(X &x) { return x; } // expected-error{{rvalue reference to type 'X' cannot bind to lvalue of type 'X'}}
+                          ^
+
+"Test_name.c", line 202: error: an rvalue reference cannot be bound to an lvalue
+    X &&f1(Y &y) { return y; } // expected-error{{rvalue reference to type 'X' cannot bind to lvalue of type 'Y'}}
+                          ^
+
+"Test_name.c", line 203: error: an rvalue reference cannot be bound to an lvalue
+    const X &&f2(Y &y) { return y; } // expected-error{{rvalue reference to type 'const X' cannot bind to lvalue of type 'Y'}}
+                                ^
+
+"Test_name.c", line 218: error: taking the address of a bit field is not allowed
+      int & ir1 = (lvalue<IntBitfield>().i); // expected-error{{non-const reference cannot bind to bit-field 'i'}}
+                  ^
+
+"Test_name.c", line 219: error: initial value of reference to non-const must be an lvalue
+      int & ir2 = (xvalue<IntBitfield>().i); // expected-error{{non-const lvalue reference to type 'int' cannot bind to a temporary of type 'int'}}
+                  ^
+
+"Test_name.c", line 220: error: taking the address of a bit field is not allowed
+      int && ir3 = (xvalue<IntBitfield>().i); // no-warning
+                   ^
+
+"Test_name.c", line 221: error: taking the address of a bit field is not allowed
+      int && ir4 = move(lvalue<IntBitfield>()).i; // no-warning
+                   ^
+
+"Test_name.c", line 223: error: taking the address of a bit field is not allowed
+      volatile int & vir1 = (lvalue<IntBitfield>().i); // expected-error{{non-const reference cannot bind to bit-field 'i'}}
+                            ^
+
+"Test_name.c", line 224: error: initial value of reference to non-const must be an lvalue
+      volatile int & vir2 = (xvalue<IntBitfield>().i); // expected-error{{volatile lvalue reference to type 'volatile int' cannot bind to a temporary of type 'int'}}
+                            ^
+
+"Test_name.c", line 225: error: taking the address of a bit field is not allowed
+      volatile int && vir3 = (xvalue<IntBitfield>().i); // no-warning
+                             ^
+
+"Test_name.c", line 226: error: taking the address of a bit field is not allowed
+      volatile int && vir4 = move(lvalue<IntBitfield>()).i; // no-warning
+                             ^
+
+"Test_name.c", line 230: error: taking the address of a bit field is not allowed
+      const int && cir3 = (xvalue<IntBitfield>().i); // no-warning
+                          ^
+
+"Test_name.c", line 231: error: taking the address of a bit field is not allowed
+      const int && cir4 = move(lvalue<IntBitfield>()).i; // no-warning
+                          ^
+
+"Test_name.c", line 233: error: taking the address of a bit field is not allowed
+      const volatile int & cvir1 = (lvalue<IntBitfield>().i); // expected-error{{non-const reference cannot bind to bit-field 'i'}}
+                                   ^
+
+"Test_name.c", line 234: error: initial value of reference to const volatile must be an lvalue
+      const volatile int & cvir2 = (xvalue<IntBitfield>().i); // expected-error{{volatile lvalue reference to type 'const volatile int' cannot bind to a temporary of type 'int'}}
+                                   ^
+
+"Test_name.c", line 235: error: taking the address of a bit field is not allowed
+      const volatile int && cvir3 = (xvalue<IntBitfield>().i); // no-warning
+                                    ^
+
+"Test_name.c", line 236: error: taking the address of a bit field is not allowed
+      const volatile int && cvir4 = move(lvalue<IntBitfield>()).i; // no-warning
+                                    ^
+
+26 errors detected in the compilation of "Test_name.c".

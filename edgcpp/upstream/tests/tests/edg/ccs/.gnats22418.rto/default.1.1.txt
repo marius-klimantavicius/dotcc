@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 9: error: this operator is not allowed at this point; parenthesize the preceding new-expression
+    new E()->x = 7;
+           ^
+
+1 error detected in the compilation of "Test_name.c".

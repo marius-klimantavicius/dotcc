@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 6: error: a literal operator cannot have extern "C" name linkage
+  extern "C" void operator ""_a(const char *); // expected-error {{must have C++ linkage}}
+                  ^
+
+"Test_name.c", line 7: error: this declaration may not have extern "C" linkage
+  extern "C" template<char...> void operator ""_b(); // expected-error {{must have C++ linkage}}
+             ^
+
+"Test_name.c", line 11: error: a literal operator cannot have extern "C" name linkage
+    void operator ""_c(const char *); // expected-error {{must have C++ linkage}}
+         ^
+
+"Test_name.c", line 12: error: this declaration may not have extern "C" linkage
+    template<char...> void operator ""_d(); // expected-error {{must have C++ linkage}}
+    ^
+
+"Test_name.c", line 14: error: a literal operator cannot have extern "C" name linkage
+      void operator ""_e(const char *); // expected-error {{must have C++ linkage}}
+           ^
+
+"Test_name.c", line 15: error: this declaration may not have extern "C" linkage
+      template<char...> void operator ""_f(); // expected-error {{must have C++ linkage}}
+      ^
+
+6 errors detected in the compilation of "Test_name.c".

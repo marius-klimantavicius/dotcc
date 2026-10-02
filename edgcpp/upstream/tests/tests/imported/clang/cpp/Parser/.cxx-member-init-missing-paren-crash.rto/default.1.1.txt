@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+At end of source: error: expected a "}"
+"Test_name.c", line 5: note: to match this "{"
+  class Test {
+             ^
+
+"Test_name.c", line 7: error: "ab_" is not a nonstatic data member or base class of class "Test"
+    Test() : ab_(false {};
+             ^
+
+"Test_name.c", line 10: error: expected a "{"
+      return ab_;
+             ^
+
+"Test_name.c", line 12: error: invalid start of member declaration
+   private:
+   ^
+
+At end of source: error: expected a ";"
+
+5 errors detected in the compilation of "Test_name.c".

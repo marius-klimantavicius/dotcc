@@ -1,0 +1,10 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 7: error: type "A::A" (declared at line 4) is inaccessible
+  class D : private B, private C { public: A::a; A::b; };
+                                           ^
+
+"Test_name.c", line 7: error: type "A::A" (declared at line 4) is inaccessible
+  class D : private B, private C { public: A::a; A::b; };
+                                                 ^
+
+2 errors detected in the compilation of "Test_name.c".

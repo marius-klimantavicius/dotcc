@@ -1,0 +1,6 @@
+import <default/cpprtlib>
+
+delete SYSTEM_RUNTIME_HAS_IA64_THREAD_ATEXIT
+
+# Fix issues where __tls_init is missing.
+RUNTIME_DOES_THREAD_LOCAL_DESTRUCTIONS=0

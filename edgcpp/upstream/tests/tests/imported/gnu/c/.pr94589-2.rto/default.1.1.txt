@@ -1,0 +1,113 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 10: warning: unknown attribute "noipa"
+  A int f1 (double i, double j) { int c; if (i == j) c = 0; else if (i < j) c = -1; else if (i > j) c = 1; else c = 2; return c == 0; }
+  ^
+
+"Test_name.c", line 11: warning: unknown attribute "noipa"
+  A int f2 (double i, double j) { int c; if (i == j) c = 0; else if (i < j) c = -1; else if (i > j) c = 1; else c = 2; return c != 0; }
+  ^
+
+"Test_name.c", line 12: warning: unknown attribute "noipa"
+  A int f3 (double i, double j) { int c; if (i == j) c = 0; else if (i < j) c = -1; else if (i > j) c = 1; else c = 2; return c > 0; }
+  ^
+
+"Test_name.c", line 13: warning: unknown attribute "noipa"
+  A int f4 (double i, double j) { int c; if (i == j) c = 0; else if (i < j) c = -1; else if (i > j) c = 1; else c = 2; return c < 0; }
+  ^
+
+"Test_name.c", line 14: warning: unknown attribute "noipa"
+  A int f5 (double i, double j) { int c; if (i == j) c = 0; else if (i < j) c = -1; else if (i > j) c = 1; else c = 2; return c >= 0; }
+  ^
+
+"Test_name.c", line 15: warning: unknown attribute "noipa"
+  A int f6 (double i, double j) { int c; if (i == j) c = 0; else if (i < j) c = -1; else if (i > j) c = 1; else c = 2; return c <= 0; }
+  ^
+
+"Test_name.c", line 16: warning: unknown attribute "noipa"
+  A int f7 (double i, double j) { int c; if (i == j) c = 0; else if (i < j) c = -1; else if (i > j) c = 1; else c = 2; return c == -1; }
+  ^
+
+"Test_name.c", line 17: warning: unknown attribute "noipa"
+  A int f8 (double i, double j) { int c; if (i == j) c = 0; else if (i < j) c = -1; else if (i > j) c = 1; else c = 2; return c != -1; }
+  ^
+
+"Test_name.c", line 18: warning: unknown attribute "noipa"
+  A int f9 (double i, double j) { int c; if (i == j) c = 0; else if (i < j) c = -1; else if (i > j) c = 1; else c = 2; return c > -1; }
+  ^
+
+"Test_name.c", line 19: warning: unknown attribute "noipa"
+  A int f10 (double i, double j) { int c; if (i == j) c = 0; else if (i < j) c = -1; else if (i > j) c = 1; else c = 2; return c <= -1; }
+  ^
+
+"Test_name.c", line 20: warning: unknown attribute "noipa"
+  A int f11 (double i, double j) { int c; if (i == j) c = 0; else if (i < j) c = -1; else if (i > j) c = 1; else c = 2; return c == 1; }
+  ^
+
+"Test_name.c", line 21: warning: unknown attribute "noipa"
+  A int f12 (double i, double j) { int c; if (i == j) c = 0; else if (i < j) c = -1; else if (i > j) c = 1; else c = 2; return c != 1; }
+  ^
+
+"Test_name.c", line 22: warning: unknown attribute "noipa"
+  A int f13 (double i, double j) { int c; if (i == j) c = 0; else if (i < j) c = -1; else if (i > j) c = 1; else c = 2; return c < 1; }
+  ^
+
+"Test_name.c", line 23: warning: unknown attribute "noipa"
+  A int f14 (double i, double j) { int c; if (i == j) c = 0; else if (i < j) c = -1; else if (i > j) c = 1; else c = 2; return c >= 1; }
+  ^
+
+"Test_name.c", line 24: warning: unknown attribute "noipa"
+  A int f15 (double i) { int c; if (i == 5.0) c = 0; else if (i < 5.0) c = -1; else if (i > 5.0) c = 1; else c = 2; return c == 0; }
+  ^
+
+"Test_name.c", line 25: warning: unknown attribute "noipa"
+  A int f16 (double i) { int c; if (i == 5.0) c = 0; else if (i < 5.0) c = -1; else if (i > 5.0) c = 1; else c = 2; return c != 0; }
+  ^
+
+"Test_name.c", line 26: warning: unknown attribute "noipa"
+  A int f17 (double i) { int c; if (i == 5.0) c = 0; else if (i < 5.0) c = -1; else if (i > 5.0) c = 1; else c = 2; return c > 0; }
+  ^
+
+"Test_name.c", line 27: warning: unknown attribute "noipa"
+  A int f18 (double i) { int c; if (i == 5.0) c = 0; else if (i < 5.0) c = -1; else if (i > 5.0) c = 1; else c = 2; return c < 0; }
+  ^
+
+"Test_name.c", line 28: warning: unknown attribute "noipa"
+  A int f19 (double i) { int c; if (i == 5.0) c = 0; else if (i < 5.0) c = -1; else if (i > 5.0) c = 1; else c = 2; return c >= 0; }
+  ^
+
+"Test_name.c", line 29: warning: unknown attribute "noipa"
+  A int f20 (double i) { int c; if (i == 5.0) c = 0; else if (i < 5.0) c = -1; else if (i > 5.0) c = 1; else c = 2; return c <= 0; }
+  ^
+
+"Test_name.c", line 30: warning: unknown attribute "noipa"
+  A int f21 (double i) { int c; if (i == 5.0) c = 0; else if (i < 5.0) c = -1; else if (i > 5.0) c = 1; else c = 2; return c == -1; }
+  ^
+
+"Test_name.c", line 31: warning: unknown attribute "noipa"
+  A int f22 (double i) { int c; if (i == 5.0) c = 0; else if (i < 5.0) c = -1; else if (i > 5.0) c = 1; else c = 2; return c != -1; }
+  ^
+
+"Test_name.c", line 32: warning: unknown attribute "noipa"
+  A int f23 (double i) { int c; if (i == 5.0) c = 0; else if (i < 5.0) c = -1; else if (i > 5.0) c = 1; else c = 2; return c > -1; }
+  ^
+
+"Test_name.c", line 33: warning: unknown attribute "noipa"
+  A int f24 (double i) { int c; if (i == 5.0) c = 0; else if (i < 5.0) c = -1; else if (i > 5.0) c = 1; else c = 2; return c <= -1; }
+  ^
+
+"Test_name.c", line 34: warning: unknown attribute "noipa"
+  A int f25 (double i) { int c; if (i == 5.0) c = 0; else if (i < 5.0) c = -1; else if (i > 5.0) c = 1; else c = 2; return c == 1; }
+  ^
+
+"Test_name.c", line 35: warning: unknown attribute "noipa"
+  A int f26 (double i) { int c; if (i == 5.0) c = 0; else if (i < 5.0) c = -1; else if (i > 5.0) c = 1; else c = 2; return c != 1; }
+  ^
+
+"Test_name.c", line 36: warning: unknown attribute "noipa"
+  A int f27 (double i) { int c; if (i == 5.0) c = 0; else if (i < 5.0) c = -1; else if (i > 5.0) c = 1; else c = 2; return c < 1; }
+  ^
+
+"Test_name.c", line 37: warning: unknown attribute "noipa"
+  A int f28 (double i) { int c; if (i == 5.0) c = 0; else if (i < 5.0) c = -1; else if (i > 5.0) c = 1; else c = 2; return c >= 1; }
+  ^
+

@@ -1,0 +1,23 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 24: error: no instance of function template "f1" matches the argument list
+            argument types are: (int)
+    f1(0); // { dg-error "" }
+    ^
+"Test_name.c", line 9: note: substituting "<int>" for function template "f1" failed constraints
+  void f1(T) { }
+       ^
+"Test_name.c", line 8: note: concept "Class" not satisfied for "<int>"
+  template<Class T>
+           ^
+"Test_name.c", line 6: note: atomic constraint evaluates to false
+  concept Class = __is_class(T);
+                  ^
+
+"Test_name.c", line 27: error: more than one instance of overloaded function "decl1" matches the argument list:
+            function template "void decl1(T)" (declared at line 16)
+            function template "void decl1(T)" (declared at line 20)
+            argument types are: (empty)
+    decl1(empty{}); // { dg-error "call of overload | ambiguous" }
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

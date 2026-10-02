@@ -1,0 +1,169 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 30: warning: subscript out of range
+    new (&carr[DIFF_MIN]) A ();       // { dg-warning "placement new constructing an object of type .A. and size .1. in a region of type .char \\\[2]. and size .0." }
+              ^
+
+"Test_name.c", line 31: warning: subscript out of range
+    new (&carr[-1]) A;                // { dg-warning "\\\[-Wplacement-new" }
+              ^
+
+"Test_name.c", line 32: warning: pointer points outside of underlying object
+    new (carr -1 ) A;                 // { dg-warning "\\\[-Wplacement-new" }
+              ^
+
+"Test_name.c", line 39: warning: subscript out of range
+    new (&carr[DIFF_MAX]) A;          // { dg-warning "\\\[-Wplacement-new" }
+              ^
+
+"Test_name.c", line 40: warning: pointer points outside of underlying object
+    new (carr + DIFF_MAX) A;          // { dg-warning "\\\[-Wplacement-new" }
+              ^
+
+"Test_name.c", line 41: warning: subscript out of range
+    new (&carr[SIZE_MAX]) A;          // { dg-warning "\\\[-Wplacement-new" }
+              ^
+
+"Test_name.c", line 42: warning: pointer points outside of underlying object
+    new (carr + SIZE_MAX) A;          // { dg-warning "\\\[-Wplacement-new" }
+              ^
+
+"Test_name.c", line 44: warning: subscript out of range
+    new (&pc->carr[DIFF_MIN]) A;      // { dg-warning "\\\[-Wplacement-new" }
+                  ^
+
+"Test_name.c", line 45: warning: subscript out of range
+    new (&pc->carr[-1]) A;            // { dg-warning "\\\[-Wplacement-new" }
+                  ^
+
+"Test_name.c", line 74: warning: subscript out of range
+    new (&pi->iarr[DIFF_MIN]) A;      // { dg-warning "\\\[-Wplacement-new" }
+                  ^
+
+"Test_name.c", line 75: warning: subscript out of range
+    new (&pi->iarr[-1]) A;            // { dg-warning "\\\[-Wplacement-new" }
+                  ^
+
+"Test_name.c", line 102: warning: subscript out of range
+    new (&iarr[DIFF_MIN]) A;          // { dg-warning "\\\[-Wplacement-new" }
+              ^
+
+"Test_name.c", line 103: warning: subscript out of range
+    new (&iarr[-1]) A;                // { dg-warning "\\\[-Wplacement-new" }
+              ^
+
+"Test_name.c", line 106: warning: subscript out of range
+    new (&iarr[DIFF_MAX]) A;          // { dg-warning "\\\[-Wplacement-new" }
+              ^
+
+"Test_name.c", line 107: warning: subscript out of range
+    new (&iarr[SIZE_MAX]) A;          // { dg-warning "\\\[-Wplacement-new" }
+              ^
+
+"Test_name.c", line 114: warning: subscript out of range
+    new (&carr[DIFF_MIN]) A[N];       // { dg-warning "placement new constructing an object of type .A \\\[\[0-9\]+]. and size .\[0-9\]+. in a region of type .char \\\[2]. and size .0." }
+              ^
+
+"Test_name.c", line 115: warning: subscript out of range
+    new (&carr[-1]) A[N];             // { dg-warning "\\\[-Wplacement-new" }
+              ^
+
+"Test_name.c", line 116: warning: subscript out of range
+    new (&carr[DIFF_MAX]) A[N];       // { dg-warning "\\\[-Wplacement-new" }
+              ^
+
+"Test_name.c", line 117: warning: subscript out of range
+    new (&carr[SIZE_MAX]) A[N];       // { dg-warning "\\\[-Wplacement-new" }
+              ^
+
+"Test_name.c", line 119: warning: subscript out of range
+    new (&pc->carr[DIFF_MIN]) A[N];   // { dg-warning "\\\[-Wplacement-new" }
+                  ^
+
+"Test_name.c", line 120: warning: subscript out of range
+    new (&pc->carr[-1]) A[N];         // { dg-warning "\\\[-Wplacement-new" }
+                  ^
+
+"Test_name.c", line 141: warning: subscript out of range
+    new (&pi->iarr[DIFF_MIN]) A[N];   // { dg-warning "\\\[-Wplacement-new" }
+                  ^
+
+"Test_name.c", line 142: warning: subscript out of range
+    new (&pi->iarr[-1]) A[N];         // { dg-warning "\\\[-Wplacement-new" }
+                  ^
+
+"Test_name.c", line 163: warning: subscript out of range
+    new (&iarr[DIFF_MIN]) A[N];       // { dg-warning "\\\[-Wplacement-new" }
+              ^
+
+"Test_name.c", line 164: warning: subscript out of range
+    new (&iarr[-1]) A[N];             // { dg-warning "\\\[-Wplacement-new" }
+              ^
+
+"Test_name.c", line 165: warning: subscript out of range
+    new (&iarr[DIFF_MAX]) A[N];       // { dg-warning "\\\[-Wplacement-new" }
+              ^
+
+"Test_name.c", line 166: warning: subscript out of range
+    new (&iarr[SIZE_MAX]) A[N];       // { dg-warning "\\\[-Wplacement-new" }
+              ^
+
+"Test_name.c", line 174: warning: subscript out of range
+    new (&carr[DIFF_MIN]) A[N];       // { dg-warning "placement new constructing an object of type .A \\\[\[0-9\]+]. and size .\[0-9\]+. in a region of type .char \\\[2]. and size .0." }
+              ^
+
+"Test_name.c", line 175: warning: subscript out of range
+    new (&carr[-1]) A[N];             // { dg-warning "\\\[-Wplacement-new" }
+              ^
+
+"Test_name.c", line 176: warning: subscript out of range
+    new (&carr[DIFF_MAX]) A[N];       // { dg-warning "\\\[-Wplacement-new" }
+              ^
+
+"Test_name.c", line 177: warning: subscript out of range
+    new (&carr[SIZE_MAX]) A[N];       // { dg-warning "\\\[-Wplacement-new" }
+              ^
+
+"Test_name.c", line 179: warning: subscript out of range
+    new (&pc->carr[DIFF_MIN]) A[N];   // { dg-warning "\\\[-Wplacement-new" }
+                  ^
+
+"Test_name.c", line 180: warning: subscript out of range
+    new (&pc->carr[-1]) A[N];         // { dg-warning "\\\[-Wplacement-new" }
+                  ^
+
+"Test_name.c", line 201: warning: subscript out of range
+    new (&pi->iarr[DIFF_MIN]) A[N];   // { dg-warning "\\\[-Wplacement-new" }
+                  ^
+
+"Test_name.c", line 202: warning: subscript out of range
+    new (&pi->iarr[-1]) A[N];         // { dg-warning "\\\[-Wplacement-new" }
+                  ^
+
+"Test_name.c", line 223: warning: subscript out of range
+    new (&iarr[DIFF_MIN]) A[N];       // { dg-warning "\\\[-Wplacement-new" }
+              ^
+
+"Test_name.c", line 224: warning: subscript out of range
+    new (&iarr[-1]) A[N];             // { dg-warning "\\\[-Wplacement-new" }
+              ^
+
+"Test_name.c", line 225: warning: subscript out of range
+    new (&iarr[DIFF_MAX]) A[N];       // { dg-warning "\\\[-Wplacement-new" }
+              ^
+
+"Test_name.c", line 226: warning: subscript out of range
+    new (&iarr[SIZE_MAX]) A[N];       // { dg-warning "\\\[-Wplacement-new" }
+              ^
+
+"Test_name.c", line 234: warning: subscript out of range
+    new (&cvla[DIFF_MIN]) A;          // { dg-warning "placement new constructing an object of type .A. and size .1. in a region of type .char \\\[n]. and size .0." }
+              ^
+
+"Test_name.c", line 235: warning: subscript out of range
+    new (&cvla[-1]) A;                // { dg-warning "\\\[-Wplacement-new" }
+              ^
+
+"Test_name.c", line 236: warning: pointer points outside of underlying object
+    new (cvla -1) A;                  // { dg-warning "\\\[-Wplacement-new" }
+              ^
+

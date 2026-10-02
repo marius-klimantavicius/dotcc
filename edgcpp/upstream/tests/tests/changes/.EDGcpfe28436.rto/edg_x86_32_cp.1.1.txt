@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c++17 --clang_v 190100 Test_name.c
+"Test_name.c", line 15: error: identifier "__int128" is undefined
+  template <char... Cs> __int128 operator""_i128() {
+                        ^
+
+"Test_name.c", line 18: error: identifier "__int128" is undefined
+  __int128 i128_max() {
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

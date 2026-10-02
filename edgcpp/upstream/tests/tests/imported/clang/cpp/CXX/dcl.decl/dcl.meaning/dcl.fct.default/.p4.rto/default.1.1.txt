@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 18: error: too few arguments in function call
+      f0(); // expected-error{{no matching}}
+         ^
+
+"Test_name.c", line 26: error: redefinition of default argument
+  void f0(int i = 1, // expected-error{{redefinition of default argument}}
+                  ^
+
+"Test_name.c", line 32: warning: specifying a default argument when redeclaring an unreferenced function template is nonstandard
+  void f1(T = T()); // expected-error{{cannot be added}}
+       ^
+
+"Test_name.c", line 42: error: default argument not at end of parameter list
+      void f(int = 1, int);	// expected-error{{missing default argument}}
+                   ^
+
+"Test_name.c", line 48: error: too few arguments in function call
+      f(4);  // expected-error{{too few arguments to function call}}
+         ^
+
+"Test_name.c", line 51: error: redefinition of default argument
+      void f(int, int = 5); // expected-error{{redefinition of default argument}}
+                        ^
+
+5 errors detected in the compilation of "Test_name.c".

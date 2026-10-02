@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++23 Test_name.c
+"Test_name.c", line 44: error: more than one instance of overloaded function "S0<T>::operator() [with T=lambda [](auto) static->auto]" matches the argument list:
+            function template "lambda [](auto) static->auto" (declared at line 43)
+            function template "void B0::operator()(auto)" (declared at line 31)
+    s0.operator()<int>(); // { dg-error {call of overloaded 'operator\(\)\(\)' is ambiguous} }
+       ^
+
+"Test_name.c", line 47: error: more than one instance of overloaded function "S0<T>::operator() [with T=lambda [](auto) static->auto]" matches the argument list:
+            function template "lambda [](auto) static->auto" (declared at line 46)
+            function template "void B0::operator()(auto)" (declared at line 31)
+    s1.operator()<int>(); // { dg-bogus {call of overloaded 'operator\(\)\(\)' is ambiguous} }
+       ^
+
+"Test_name.c", line 43: warning: variable "s0" was set but never used
+    auto s0 = S0{[](this auto){}};
+         ^
+
+"Test_name.c", line 46: warning: variable "s1" was set but never used
+    auto s1 = S0{[x = 42](this auto){}};
+         ^
+
+"Test_name.c", line 64: error: more than one instance of overloaded function "S1<T>::operator() [with T=lambda [](auto &&) static->auto]" matches the argument list:
+            function template "lambda [](auto &&) static->auto" (declared at line 63)
+            function template "void B1::operator()(auto &&)" (declared at line 52)
+    s0.operator()<int>(); // { dg-error {call of overloaded 'operator\(\)\(\)' is ambiguous} }
+       ^
+
+"Test_name.c", line 67: error: more than one instance of overloaded function "S1<T>::operator() [with T=lambda [](auto &&) static->auto]" matches the argument list:
+            function template "lambda [](auto &&) static->auto" (declared at line 66)
+            function template "void B1::operator()(auto &&)" (declared at line 52)
+    s1.operator()<int>(); // { dg-bogus {call of overloaded 'operator\(\)\(\)' is ambiguous} }
+       ^
+
+"Test_name.c", line 63: warning: variable "s0" was set but never used
+    auto s0 = S1{[](this auto&&){}};
+         ^
+
+"Test_name.c", line 66: warning: variable "s1" was set but never used
+    auto s1 = S1{[x = 42](this auto&&){}};
+         ^
+
+4 errors detected in the compilation of "Test_name.c".

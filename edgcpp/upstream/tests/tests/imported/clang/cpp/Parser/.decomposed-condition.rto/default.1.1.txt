@@ -1,0 +1,66 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 Test_name.c
+"Test_name.c", line 38: error: structured binding is not allowed in a condition
+    if (auto [ok, d] = f()) // expected-warning {{structured binding declaration in a condition is a C++2c extension}}
+             ^
+
+"Test_name.c", line 40: error: structured binding is not allowed in a condition
+    if (auto [ok, d] = g()) // expected-warning {{structured binding declaration in a condition is a C++2c extension}} expected-error {{value of type 'Na' is not contextually convertible to 'bool'}}
+             ^
+
+"Test_name.c", line 42: error: structured binding is not allowed in a condition
+    if (auto [value] = Get()) // expected-warning {{structured binding declaration in a condition is a C++2c extension}}
+             ^
+
+"Test_name.c", line 44: warning: missing return statement at end of non-void function "CondInIf::h"
+  }
+  ^
+
+"Test_name.c", line 49: error: structured binding is not allowed in a condition
+    while (auto [ok, d] = f()) // expected-warning {{structured binding declaration in a condition is a C++2c extension}}
+                ^
+
+"Test_name.c", line 51: error: structured binding is not allowed in a condition
+    while (auto [ok, d] = g()) // expected-warning {{structured binding declaration in a condition is a C++2c extension}} expected-error {{value of type 'Na' is not contextually convertible to 'bool'}}
+                ^
+
+"Test_name.c", line 53: error: structured binding is not allowed in a condition
+    while (auto [value] = Get()) // expected-warning{{structured binding declaration in a condition is a C++2c extension}}
+                ^
+
+"Test_name.c", line 55: warning: missing return statement at end of non-void function "CondInWhile::h"
+  }
+  ^
+
+"Test_name.c", line 60: error: structured binding is not allowed in a condition
+    for (; auto [ok, d] = f();) // expected-warning {{structured binding declaration in a condition is a C++2c extension}}
+                ^
+
+"Test_name.c", line 62: error: structured binding is not allowed in a condition
+    for (; auto [ok, d] = g();) // expected-warning {{structured binding declaration in a condition is a C++2c extension}} expected-error {{value of type 'Na' is not contextually convertible to 'bool'}}
+                ^
+
+"Test_name.c", line 64: error: structured binding is not allowed in a condition
+    for (; auto [value] = Get();) // expected-warning {{structured binding declaration in a condition is a C++2c extension}}
+                ^
+
+"Test_name.c", line 66: warning: missing return statement at end of non-void function "CondInFor::h"
+  }
+  ^
+
+"Test_name.c", line 79: error: structured binding is not allowed in a condition
+    switch (auto [ok, d] = x) // expected-warning {{structured binding declaration in a condition is a C++2c extension}}
+                 ^
+
+"Test_name.c", line 81: error: structured binding is not allowed in a condition
+    switch (auto [ok, d] = g()) // expected-warning {{structured binding declaration in a condition is a C++2c extension}} expected-error {{statement requires expression of integer type ('Na' invalid)}}
+                 ^
+
+"Test_name.c", line 83: error: structured binding is not allowed in a condition
+    switch (auto [value] = Get()) {// expected-warning {{structured binding declaration in a condition is a C++2c extension}}
+                 ^
+
+"Test_name.c", line 88: warning: missing return statement at end of non-void function "CondInSwitch::h"
+  }
+  ^
+
+12 errors detected in the compilation of "Test_name.c".

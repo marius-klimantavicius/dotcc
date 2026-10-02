@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c17 --strict_gnu Test_name.c
+"Test_name.c", line 16: error: declaration is incompatible with "void f2()" (declared at line 15)
+  void f2(char); /* { dg-error "conflicting types for 'f2'" } */
+       ^
+
+"Test_name.c", line 19: warning: the prototype declaration of "void f3(char)" (declared at line 18) is ignored after this unprototyped redeclaration
+  void f3(); /* { dg-error "conflicting types for 'f3'" } */
+       ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 16: warning: variable "cbig" was set but never used
+    struct { char c[100]; } cbig;
+                            ^
+
+"Test_name.c", line 17: warning: variable "ibig" was set but never used
+    struct { int i[800]; } ibig;
+                           ^
+
+"Test_name.c", line 18: warning: variable "lbig" was set but never used
+    struct { long l[900]; } lbig;
+                            ^
+
+"Test_name.c", line 19: warning: variable "fbig" was set but never used
+    struct { float f[200]; } fbig;
+                             ^
+
+"Test_name.c", line 20: warning: variable "dbig" was set but never used
+    struct { double d[300]; } dbig;
+                              ^
+
+"Test_name.c", line 21: warning: variable "sbig" was set but never used
+    struct { short s[400]; } sbig;
+                             ^
+

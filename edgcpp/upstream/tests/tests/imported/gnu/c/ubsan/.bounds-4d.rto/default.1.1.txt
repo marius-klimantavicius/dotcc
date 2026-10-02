@@ -1,0 +1,45 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./ubsan/bounds-4.c", line 16: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int
+                 ^
+
+"./ubsan/bounds-4.c", line 22: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int
+                 ^
+
+"./ubsan/bounds-4.c", line 28: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int
+                 ^
+
+"./ubsan/bounds-4.c", line 34: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int
+                 ^
+
+"./ubsan/bounds-4.c", line 37: warning: subscript out of range
+    return a->b[2];
+           ^
+
+"./ubsan/bounds-4.c", line 40: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int
+                 ^
+
+"./ubsan/bounds-4.c", line 46: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int
+                 ^
+
+"./ubsan/bounds-4.c", line 52: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int
+                 ^
+
+"./ubsan/bounds-4.c", line 55: warning: subscript out of range
+    return a->b[15];
+           ^
+
+"./ubsan/bounds-4.c", line 58: warning: unknown attribute "noipa"
+  __attribute__((noipa)) int
+                 ^
+
+"./ubsan/bounds-4.c", line 61: warning: subscript out of range
+    return a->b[16];
+               ^
+

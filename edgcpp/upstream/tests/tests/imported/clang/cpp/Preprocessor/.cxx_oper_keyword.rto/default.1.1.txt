@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 -DOPERATOR_NAMES Test_name.c
+"Test_name.c", line 32: warning: #warning directive: and is defined
+  #warning and is defined
+   ^
+
+"Test_name.c", line 38: error: expected an expression
+  #if or
+      ^
+
+"Test_name.c", line 44: error: expected an expression
+  #if and_eq
+      ^
+
+2 errors detected in the compilation of "Test_name.c".

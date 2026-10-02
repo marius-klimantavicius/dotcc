@@ -1,0 +1,114 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./analyzer/atomic-builtins-1.c", line 52: error: identifier "__int128" is undefined
+  void test__atomic_exchange_on_int128 (__int128 i, __int128 j)
+                                        ^
+
+"./analyzer/atomic-builtins-1.c", line 52: error: identifier "__int128" is undefined
+  void test__atomic_exchange_on_int128 (__int128 i, __int128 j)
+                                                    ^
+
+"./analyzer/atomic-builtins-1.c", line 54: error: identifier "__int128" is undefined
+    __int128 orig_i = i;
+    ^
+
+"./analyzer/atomic-builtins-1.c", line 55: error: identifier "__int128" is undefined
+    __int128 orig_j = j;
+    ^
+
+"./analyzer/atomic-builtins-1.c", line 56: error: identifier "__int128" is undefined
+    __int128 ret;
+    ^
+
+"./analyzer/atomic-builtins-1.c", line 104: error: identifier "__int128" is undefined
+  void test__atomic_exchange_n_on_int128 (__int128 i, __int128 j)
+                                          ^
+
+"./analyzer/atomic-builtins-1.c", line 104: error: identifier "__int128" is undefined
+  void test__atomic_exchange_n_on_int128 (__int128 i, __int128 j)
+                                                      ^
+
+"./analyzer/atomic-builtins-1.c", line 106: error: identifier "__int128" is undefined
+    __int128 orig_i = i;
+    ^
+
+"./analyzer/atomic-builtins-1.c", line 107: error: identifier "__int128" is undefined
+    __int128 orig_j = j;
+    ^
+
+"./analyzer/atomic-builtins-1.c", line 108: error: identifier "__int128" is undefined
+    __int128 ret;
+    ^
+
+"./analyzer/atomic-builtins-1.c", line 156: error: identifier "__int128" is undefined
+  void test__atomic_exchange_16 (__int128 i, __int128 j)
+                                 ^
+
+"./analyzer/atomic-builtins-1.c", line 156: error: identifier "__int128" is undefined
+  void test__atomic_exchange_16 (__int128 i, __int128 j)
+                                             ^
+
+"./analyzer/atomic-builtins-1.c", line 158: error: identifier "__int128" is undefined
+    __int128 orig_i = i;
+    ^
+
+"./analyzer/atomic-builtins-1.c", line 159: error: identifier "__int128" is undefined
+    __int128 orig_j = j;
+    ^
+
+"./analyzer/atomic-builtins-1.c", line 160: error: identifier "__int128" is undefined
+    __int128 ret;
+    ^
+
+"./analyzer/atomic-builtins-1.c", line 161: warning: function "__atomic_exchange_16" declared implicitly
+    ret = __atomic_exchange_16 (&i, j, 0);
+          ^
+
+"./analyzer/atomic-builtins-1.c", line 204: error: identifier "__int128" is undefined
+  void test__atomic_load_from_int1288 (__int128 i)
+                                       ^
+
+"./analyzer/atomic-builtins-1.c", line 206: error: identifier "__int128" is undefined
+    __int128 orig_i = i;
+    ^
+
+"./analyzer/atomic-builtins-1.c", line 207: error: identifier "__int128" is undefined
+    __int128 ret;
+    ^
+
+"./analyzer/atomic-builtins-1.c", line 251: error: identifier "__int128" is undefined
+  void test__atomic_load_n_from_int128 (__int128 i)
+                                        ^
+
+"./analyzer/atomic-builtins-1.c", line 253: error: identifier "__int128" is undefined
+    __int128 orig_i = i;
+    ^
+
+"./analyzer/atomic-builtins-1.c", line 254: error: identifier "__int128" is undefined
+    __int128 ret;
+    ^
+
+"./analyzer/atomic-builtins-1.c", line 298: error: identifier "__int128" is undefined
+  void test__atomic_load_16 (__int128 i)
+                             ^
+
+"./analyzer/atomic-builtins-1.c", line 300: error: identifier "__int128" is undefined
+    __int128 orig_i = i;
+    ^
+
+"./analyzer/atomic-builtins-1.c", line 301: error: identifier "__int128" is undefined
+    __int128 ret;
+    ^
+
+"./analyzer/atomic-builtins-1.c", line 302: warning: function "__atomic_load_16" declared implicitly
+    ret = __atomic_load_16 (&i, 0);
+          ^
+
+"./analyzer/atomic-builtins-1.c", line 335: error: identifier "__int128" is undefined
+  void test__atomic_store_n_on_int128 (__int128 i)
+                                       ^
+
+"./analyzer/atomic-builtins-1.c", line 337: error: identifier "__int128" is undefined
+    __int128 tmp;
+    ^
+
+26 errors detected in the compilation of "Test_name.c".

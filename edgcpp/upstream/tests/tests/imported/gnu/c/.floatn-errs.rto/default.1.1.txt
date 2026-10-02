@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c17 --strict_gnu Test_name.c
+"Test_name.c", line 17: error: declaration is incompatible with "float a" (declared at line 16)
+  extern _Float32 a; /* { dg-error "conflicting" } */
+                  ^
+
+"Test_name.c", line 20: error: declaration is incompatible with "double b" (declared at line 19)
+  extern _Float32x b; /* { dg-error "conflicting" } */
+                   ^
+
+"Test_name.c", line 23: error: declaration is incompatible with "_Float64 c" (declared at line 22)
+  extern _Float32x c; /* { dg-error "conflicting" } */
+                   ^
+
+"Test_name.c", line 36: error: declaration is incompatible with "void g(double)" (declared at line 34)
+  g (x)
+  ^
+
+"Test_name.c", line 43: error: declaration is incompatible with "void h(_Float64)" (declared at line 41)
+  h (x)
+  ^
+
+5 errors detected in the compilation of "Test_name.c".

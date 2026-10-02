@@ -1,0 +1,18 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 5: error: incomplete type "void" is not allowed
+  void g(i,...) {}
+       ^
+
+"Test_name.c", line 5: error: identifier "i" is undefined
+  void g(i,...) {}
+         ^
+
+"Test_name.c", line 5: error: expected an expression
+  void g(i,...) {}
+           ^
+
+"Test_name.c", line 5: error: expected a ";"
+  void g(i,...) {}
+                ^
+
+4 errors detected in the compilation of "Test_name.c".

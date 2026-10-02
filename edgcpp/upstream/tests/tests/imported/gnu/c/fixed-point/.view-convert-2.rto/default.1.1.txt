@@ -1,0 +1,106 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 12: error: identifier "_Accum" is undefined
+    _Accum a;
+    ^
+
+"Test_name.c", line 20: error: extra text after expected end of number
+    if (a >= 0k)
+              ^
+
+"Test_name.c", line 26: error: identifier "_Accum" is undefined
+    _Accum a;
+    ^
+
+"Test_name.c", line 34: error: extra text after expected end of number
+    if (a != 0k)
+              ^
+
+"Test_name.c", line 41: error: expected a ";"
+    short _Fract a;
+                 ^
+
+"Test_name.c", line 44: error: identifier "a" is undefined
+    if (sizeof (a) != sizeof (i))
+                ^
+
+"Test_name.c", line 47: error: identifier "a" is undefined
+    __builtin_memcpy (&a, &i, sizeof (a));
+                       ^
+
+"Test_name.c", line 49: error: extra text after expected end of number
+    if (a >= 0hr)
+              ^
+
+"Test_name.c", line 41: warning: variable "_Fract" was declared but never referenced
+    short _Fract a;
+          ^
+
+"Test_name.c", line 55: error: expected a ";"
+    short _Fract a;
+                 ^
+
+"Test_name.c", line 58: error: identifier "a" is undefined
+    if (sizeof (a) != sizeof (i))
+                ^
+
+"Test_name.c", line 61: error: identifier "a" is undefined
+    __builtin_memcpy (&a, &i, sizeof (a));
+                       ^
+
+"Test_name.c", line 63: error: extra text after expected end of number
+    if (a != 0hr)
+              ^
+
+"Test_name.c", line 55: warning: variable "_Fract" was declared but never referenced
+    short _Fract a;
+          ^
+
+"Test_name.c", line 70: error: identifier "_Accum" is undefined
+    _Accum a = __ACCUM_MIN__;
+    ^
+
+"Test_name.c", line 70: error: identifier "__ACCUM_MIN__" is undefined
+    _Accum a = __ACCUM_MIN__;
+               ^
+
+"Test_name.c", line 84: error: identifier "_Accum" is undefined
+    _Accum a = 0;
+    ^
+
+"Test_name.c", line 99: error: expected a ";"
+    short _Fract a = __SFRACT_MIN__;
+                 ^
+
+"Test_name.c", line 102: error: identifier "a" is undefined
+    if (sizeof (a) != sizeof (i))
+                ^
+
+"Test_name.c", line 105: error: identifier "a" is undefined
+    __builtin_memcpy (&i, &a, sizeof (i));
+                           ^
+
+"Test_name.c", line 99: warning: variable "_Fract" was declared but never referenced
+    short _Fract a = __SFRACT_MIN__;
+          ^
+
+"Test_name.c", line 113: error: expected a ";"
+    short _Fract a = 0hr;
+                 ^
+
+"Test_name.c", line 113: error: extra text after expected end of number
+    short _Fract a = 0hr;
+                      ^
+
+"Test_name.c", line 116: error: identifier "a" is undefined
+    if (sizeof (a) != sizeof (i))
+                ^
+
+"Test_name.c", line 119: error: identifier "a" is undefined
+    __builtin_memcpy (&i, &a, sizeof (i));
+                           ^
+
+"Test_name.c", line 113: warning: variable "_Fract" was declared but never referenced
+    short _Fract a = 0hr;
+          ^
+
+22 errors detected in the compilation of "Test_name.c".

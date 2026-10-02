@@ -1,0 +1,170 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 24: error: member "test0::Base::priv" (declared at line 15) is inaccessible
+        priv++; // expected-error {{private member}}
+        ^
+
+"Test_name.c", line 25: error: member "test0::Base::spriv" (declared at line 15) is inaccessible
+        spriv++; // expected-error {{private member}}
+        ^
+
+"Test_name.c", line 31: error: member "test0::Base::priv" (declared at line 15) is inaccessible
+        Base::priv++; // expected-error {{private member}}
+              ^
+
+"Test_name.c", line 32: error: member "test0::Base::spriv" (declared at line 15) is inaccessible
+        Base::spriv++; // expected-error {{private member}}
+              ^
+
+"Test_name.c", line 39: error: member "test0::Base::prot" (declared at line 14) is inaccessible
+      t->prot++; // expected-error {{protected member}}
+         ^
+
+"Test_name.c", line 40: error: member "test0::Base::sprot" (declared at line 14) is inaccessible
+      t->sprot++; // expected-error {{protected member}}
+         ^
+
+"Test_name.c", line 41: error: member "test0::Base::priv" (declared at line 15) is inaccessible
+      t->priv++; // expected-error {{private member}}
+         ^
+
+"Test_name.c", line 42: error: member "test0::Base::spriv" (declared at line 15) is inaccessible
+      t->spriv++; // expected-error {{private member}}
+         ^
+
+"Test_name.c", line 46: error: member "test0::Base::prot" (declared at line 14) is inaccessible
+      t->Base::prot++; // expected-error {{protected member}}
+               ^
+
+"Test_name.c", line 47: error: member "test0::Base::sprot" (declared at line 14) is inaccessible
+      t->Base::sprot++; // expected-error {{protected member}}
+               ^
+
+"Test_name.c", line 48: error: member "test0::Base::priv" (declared at line 15) is inaccessible
+      t->Base::priv++; // expected-error {{private member}}
+               ^
+
+"Test_name.c", line 49: error: member "test0::Base::spriv" (declared at line 15) is inaccessible
+      t->Base::spriv++; // expected-error {{private member}}
+               ^
+
+"Test_name.c", line 73: error: member "test1::Base::priv" (declared at line 64) is inaccessible
+        priv++; // expected-error {{private member}}
+        ^
+
+"Test_name.c", line 74: error: member "test1::Base::spriv" (declared at line 64) is inaccessible
+        spriv++; // expected-error {{private member}}
+        ^
+
+"Test_name.c", line 80: error: member "test1::Base::priv" (declared at line 64) is inaccessible
+        Base::priv++; // expected-error {{private member}}
+              ^
+
+"Test_name.c", line 81: error: member "test1::Base::spriv" (declared at line 64) is inaccessible
+        Base::spriv++; // expected-error {{private member}}
+              ^
+
+"Test_name.c", line 86: error: member "test1::Base::pub" (declared at line 61) is inaccessible
+      t->pub++; // expected-error {{protected member}}
+         ^
+
+"Test_name.c", line 87: error: member "test1::Base::spub" (declared at line 62) is inaccessible
+      t->spub++; // expected-error {{protected member}}
+         ^
+
+"Test_name.c", line 88: error: member "test1::Base::prot" (declared at line 63) is inaccessible
+      t->prot++; // expected-error {{protected member}}
+         ^
+
+"Test_name.c", line 89: error: member "test1::Base::sprot" (declared at line 63) is inaccessible
+      t->sprot++; // expected-error {{protected member}}
+         ^
+
+"Test_name.c", line 90: error: member "test1::Base::priv" (declared at line 64) is inaccessible
+      t->priv++; // expected-error {{private member}}
+         ^
+
+"Test_name.c", line 91: error: member "test1::Base::spriv" (declared at line 64) is inaccessible
+      t->spriv++; // expected-error {{private member}}
+         ^
+
+"Test_name.c", line 94: error: conversion to inaccessible base class "test1::Base" is not allowed
+      t->Base::pub++; // expected-error {{protected member}} expected-error {{protected base class}}
+      ^
+
+"Test_name.c", line 96: error: member "test1::Base::prot" (declared at line 63) is inaccessible
+      t->Base::prot++; // expected-error 2 {{protected member}} expected-error {{protected base class}}
+               ^
+
+"Test_name.c", line 97: error: member "test1::Base::sprot" (declared at line 63) is inaccessible
+      t->Base::sprot++; // expected-error 2 {{protected member}}
+               ^
+
+"Test_name.c", line 98: error: member "test1::Base::priv" (declared at line 64) is inaccessible
+      t->Base::priv++; // expected-error {{protected member}} expected-error {{private member}} expected-error {{protected base class}}
+               ^
+
+"Test_name.c", line 99: error: member "test1::Base::spriv" (declared at line 64) is inaccessible
+      t->Base::spriv++; // expected-error {{protected member}} expected-error {{private member}}
+               ^
+
+"Test_name.c", line 130: error: member "test2::Base::priv" (declared at line 119) is inaccessible
+        priv++; // expected-error {{private member}}
+        ^
+
+"Test_name.c", line 131: error: member "test2::Base::spriv" (declared at line 120) is inaccessible
+        spriv++; // expected-error {{private member}}
+        ^
+
+"Test_name.c", line 137: error: member "test2::Base::priv" (declared at line 119) is inaccessible
+        Base::priv++; // expected-error {{private member}}
+              ^
+
+"Test_name.c", line 138: error: member "test2::Base::spriv" (declared at line 120) is inaccessible
+        Base::spriv++; // expected-error {{private member}}
+              ^
+
+"Test_name.c", line 143: error: member "test2::Base::pub" (declared at line 111) is inaccessible
+      t->pub++; // expected-error {{private member}}
+         ^
+
+"Test_name.c", line 144: error: member "test2::Base::spub" (declared at line 112) is inaccessible
+      t->spub++; // expected-error {{private member}}
+         ^
+
+"Test_name.c", line 145: error: member "test2::Base::prot" (declared at line 114) is inaccessible
+      t->prot++; // expected-error {{private member}}
+         ^
+
+"Test_name.c", line 146: error: member "test2::Base::sprot" (declared at line 116) is inaccessible
+      t->sprot++; // expected-error {{private member}}
+         ^
+
+"Test_name.c", line 147: error: member "test2::Base::priv" (declared at line 119) is inaccessible
+      t->priv++; // expected-error {{private member}}
+         ^
+
+"Test_name.c", line 148: error: member "test2::Base::spriv" (declared at line 120) is inaccessible
+      t->spriv++; // expected-error {{private member}}
+         ^
+
+"Test_name.c", line 150: error: conversion to inaccessible base class "test2::Base" is not allowed
+      t->Base::pub++; // expected-error {{private member}} expected-error {{private base class}}
+      ^
+
+"Test_name.c", line 152: error: member "test2::Base::prot" (declared at line 114) is inaccessible
+      t->Base::prot++; // expected-error {{protected member}} expected-error {{private member}} expected-error {{private base class}}
+               ^
+
+"Test_name.c", line 153: error: member "test2::Base::sprot" (declared at line 116) is inaccessible
+      t->Base::sprot++; // expected-error {{protected member}} expected-error {{private member}}
+               ^
+
+"Test_name.c", line 154: error: member "test2::Base::priv" (declared at line 119) is inaccessible
+      t->Base::priv++; // expected-error 2 {{private member}} expected-error {{private base class}}
+               ^
+
+"Test_name.c", line 155: error: member "test2::Base::spriv" (declared at line 120) is inaccessible
+      t->Base::spriv++; // expected-error 2 {{private member}}
+               ^
+
+42 errors detected in the compilation of "Test_name.c".

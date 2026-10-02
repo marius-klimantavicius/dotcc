@@ -1,0 +1,55 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 52: warning: class "A" was declared deprecated
+    A aaa; // { dg-warning "is deprecated" }
+      ^
+"Test_name.c", line 5: note: because of a "deprecated" attribute
+  class [[deprecated]] A
+          ^
+
+"Test_name.c", line 53: warning: function "foo" was declared deprecated
+    int n = foo(12); // { dg-warning "is deprecated" }
+            ^
+"Test_name.c", line 9: note: because of a "deprecated" attribute
+  [[deprecated]]
+    ^
+
+"Test_name.c", line 55: warning: class "B" was declared deprecated ("B has been superceded by C")
+    B bbb; // { dg-warning "is deprecated" "B has been superceded by C" }
+      ^
+"Test_name.c", line 16: note: because of a "deprecated" attribute
+  class [[deprecated("B has been superceded by C")]] B
+          ^
+
+"Test_name.c", line 56: warning: function "bar" was declared deprecated ("bar is unsafe; use foobar instead")
+    int m = bar(666); // { dg-warning "is deprecated" "bar is unsafe; use foobar instead" }
+            ^
+"Test_name.c", line 20: note: because of a "deprecated" attribute
+  [[deprecated("bar is unsafe; use foobar instead")]]
+    ^
+
+"Test_name.c", line 58: warning: class "C" was declared deprecated
+    C ccc; // { dg-warning "is deprecated" }
+      ^
+"Test_name.c", line 30: note: because of a "deprecated" attribute
+  class [[deprecated]] C;
+          ^
+
+"Test_name.c", line 59: warning: function "foobar" was declared deprecated
+    int l = foobar(8); // { dg-warning "is deprecated" }
+            ^
+"Test_name.c", line 33: note: because of a "deprecated" attribute
+  [[deprecated]]
+    ^
+
+"Test_name.c", line 52: warning: variable "aaa" was declared but never referenced
+    A aaa; // { dg-warning "is deprecated" }
+      ^
+
+"Test_name.c", line 55: warning: variable "bbb" was declared but never referenced
+    B bbb; // { dg-warning "is deprecated" "B has been superceded by C" }
+      ^
+
+"Test_name.c", line 58: warning: variable "ccc" was declared but never referenced
+    C ccc; // { dg-warning "is deprecated" }
+      ^
+

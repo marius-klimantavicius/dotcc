@@ -1,0 +1,88 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c23 Test_name.c
+"Sema/nullptr.c", line 23: error: a value of type "nullptr_t" cannot be used to initialize an entity of type "uintptr_t" (aka "unsigned long")
+    uintptr_t i = nullptr;
+                  ^
+
+"Sema/nullptr.c", line 38: error: operand types are incompatible ("int" and "nullptr_t")
+    (void)(1 > nullptr);
+             ^
+
+"Sema/nullptr.c", line 39: error: operand types are incompatible ("int" and "nullptr_t")
+    (void)(1 != nullptr);
+             ^
+
+"Sema/nullptr.c", line 40: error: expression must have arithmetic type
+    (void)(1 + nullptr);
+               ^
+
+"Sema/nullptr.c", line 43: error: operand types are incompatible ("nullptr_t" and "struct A")
+    (void)(0 ? nullptr : (struct A){});
+                       ^
+
+"Sema/nullptr.c", line 44: error: operand types are incompatible ("struct A" and "nullptr_t")
+    (void)(0 ? (struct A){} : nullptr);
+                            ^
+
+"Sema/nullptr.c", line 51: error: expression must be an lvalue or a function designator
+    (void)&nullptr;
+           ^
+
+"Sema/nullptr.c", line 56: warning: missing return statement at end of non-void function "f"
+  }
+  ^
+
+"Sema/nullptr.c", line 15: warning: variable "p" was set but never used
+    void *p = nullptr;
+          ^
+
+"Sema/nullptr.c", line 17: warning: variable "pi" was set but never used
+    int *pi = nullptr;
+         ^
+
+"Sema/nullptr.c", line 20: warning: variable "b" was declared but never referenced
+    bool b = nullptr;
+         ^
+
+"Sema/nullptr.c", line 54: warning: variable "ip" was declared but never referenced
+    int *ip = *pn;
+         ^
+
+"Sema/nullptr.c", line 62: error: more than one instance of overloaded function "g" matches the argument list:
+            function "g(void *) C++" (declared at line 58)
+            function "g(_Bool) C++" (declared at line 59)
+            argument types are: (nullptr_t)
+  static_assert(__builtin_types_compatible_p(typeof(g(nullptr)), void *), "");
+                                                    ^
+
+"Sema/nullptr.c", line 75: warning: argument is incompatible with corresponding format string conversion (expected type "void *" but argument has type "nullptr_t")
+    printf("%p", nullptr);
+                 ^
+
+"Sema/nullptr.c", line 81: error: a compound literal is not allowed in an integral constant expression
+  static_assert(!(bool){nullptr}, "");
+                  ^
+
+"Sema/nullptr.c", line 108: error: more than one instance of overloaded function "f1" matches the argument list:
+            function "f1(int *) C++" (declared at line 104)
+            function "f1(_Bool) C++" (declared at line 105)
+            argument types are: (nullptr_t)
+    int ir = (f1)(nullptr);
+             ^
+
+"Sema/nullptr.c", line 113: error: identifier "__nullptr" is undefined
+  void bar() { foo(__nullptr); }
+                   ^
+
+"Sema/nullptr.c", line 114: error: identifier "__nullptr" is undefined
+  static_assert(nullptr == __nullptr);
+                           ^
+
+"Sema/nullptr.c", line 116: error: expected an expression
+  static_assert(_Generic(typeof(__nullptr), nullptr_t: true, default: false));
+                         ^
+
+"Sema/nullptr.c", line 117: error: expected an expression
+  static_assert(_Generic(__typeof(__nullptr), int : 0, void * : 0, default : 1));
+                         ^
+
+14 errors detected in the compilation of "Test_name.c".

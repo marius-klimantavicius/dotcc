@@ -1,0 +1,62 @@
+cpfe -DTEST_NUMBER=2 -r -x -tused Test_name.c
+"Test_name.c", line 11: error: type "A::A" (declared at line 4) is inaccessible
+      A::i;         // Access adjustment on a member of an indirect base class
+      ^
+
+"Test_name.c", line 16: error: type "A::A" (declared at line 4) is inaccessible
+        A::i = 2;   // cfront: no error
+        ^
+
+"Test_name.c", line 16: error: conversion to inaccessible base class "A" is not allowed
+        A::i = 2;   // cfront: no error
+           ^
+
+"Test_name.c", line 17: error: member "A::i" (declared at line 6) is inaccessible
+        B::i = 3;   // cfront: no error
+           ^
+
+"Test_name.c", line 18: error: member "A::j" (declared at line 6) is inaccessible
+        j = 1;      // cfront: base class access error
+        ^
+
+"Test_name.c", line 19: error: type "A::A" (declared at line 4) is inaccessible
+        A::j = 2;   // cfront: base class access error
+        ^
+
+"Test_name.c", line 19: error: conversion to inaccessible base class "A" is not allowed
+        A::j = 2;   // cfront: base class access error
+           ^
+
+"Test_name.c", line 20: error: member "A::j" (declared at line 6) is inaccessible
+        B::j = 3;   // cfront: base class access error
+           ^
+
+"Test_name.c", line 23: remark: return type "int" omitted in declaration of function "main"
+  main () {
+  ^
+
+"Test_name.c", line 26: error: conversion to inaccessible base class "B" is not allowed
+    c.A::i = 0;     // cfront: no error
+    ^
+
+"Test_name.c", line 27: error: member "A::i" (declared at line 6) is inaccessible
+    c.B::i = 0;     // cfront: no error
+         ^
+
+"Test_name.c", line 28: error: member "A::j" (declared at line 6) is inaccessible
+    c.j = 0;        // cfront: base class access error
+      ^
+
+"Test_name.c", line 29: error: conversion to inaccessible base class "B" is not allowed
+    c.A::j = 0;     // cfront: base class access error
+    ^
+
+"Test_name.c", line 30: error: member "A::j" (declared at line 6) is inaccessible
+    c.B::j = 0;     // cfront: base class access error
+         ^
+
+"Test_name.c", line 24: warning: variable "c" was set but never used
+    C c;
+      ^
+
+13 errors detected in the compilation of "Test_name.c".

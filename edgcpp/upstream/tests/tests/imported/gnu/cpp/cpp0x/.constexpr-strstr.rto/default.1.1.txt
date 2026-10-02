@@ -1,0 +1,48 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 5: error: constexpr function return is non-constant
+  constexpr const char *f1 (const char *p, const char *q) { return __builtin_strstr (p, q); }
+                                                                   ^
+
+"Test_name.c", line 9: error: expression must have a constant value
+  static_assert (f1 ("abcde", "ee") == nullptr, "");
+                 ^
+"Test_name.c", line 5: note: cannot call non-constexpr function "__builtin_strstr" (declared implicitly)
+  constexpr const char *f1 (const char *p, const char *q) { return __builtin_strstr (p, q); }
+                                                                   ^
+
+"Test_name.c", line 10: error: expression must have a constant value
+  static_assert (f1 (a, b) == a + 5, "");
+                 ^
+"Test_name.c", line 5: note: cannot call non-constexpr function "__builtin_strstr" (declared implicitly)
+  constexpr const char *f1 (const char *p, const char *q) { return __builtin_strstr (p, q); }
+                                                                   ^
+
+"Test_name.c", line 11: error: expression must have a constant value
+  static_assert (f1 (a, c) == a + 12, "");
+                 ^
+"Test_name.c", line 5: note: cannot call non-constexpr function "__builtin_strstr" (declared implicitly)
+  constexpr const char *f1 (const char *p, const char *q) { return __builtin_strstr (p, q); }
+                                                                   ^
+
+"Test_name.c", line 12: error: expression must have a constant value
+  static_assert (f1 (a, "") == a, "");
+                 ^
+"Test_name.c", line 5: note: cannot call non-constexpr function "__builtin_strstr" (declared implicitly)
+  constexpr const char *f1 (const char *p, const char *q) { return __builtin_strstr (p, q); }
+                                                                   ^
+
+"Test_name.c", line 13: error: expression must have a constant value
+  static_assert (f1 (a, "aaaaaab") == nullptr, "");
+                 ^
+"Test_name.c", line 5: note: cannot call non-constexpr function "__builtin_strstr" (declared implicitly)
+  constexpr const char *f1 (const char *p, const char *q) { return __builtin_strstr (p, q); }
+                                                                   ^
+
+"Test_name.c", line 14: error: expression must have a constant value
+  static_assert (f1 (a, "aaa") == a + 10, "");
+                 ^
+"Test_name.c", line 5: note: cannot call non-constexpr function "__builtin_strstr" (declared implicitly)
+  constexpr const char *f1 (const char *p, const char *q) { return __builtin_strstr (p, q); }
+                                                                   ^
+
+7 errors detected in the compilation of "Test_name.c".

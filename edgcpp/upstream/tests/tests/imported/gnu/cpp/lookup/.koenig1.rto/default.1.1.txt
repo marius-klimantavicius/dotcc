@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 13: error: incomplete type "X" is not allowed
+    X x(1); // { dg-error "incomplete type" }
+      ^
+
+"Test_name.c", line 14: error: identifier "bar" is undefined
+    bar(x); // { dg-error "3:'bar' was not declared" }
+    ^
+
+2 errors detected in the compilation of "Test_name.c".

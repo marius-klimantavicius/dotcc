@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 --modules Test_name.c
+"./modules/tpl-tpl-parm-2.h", line 15: warning: variable "_M_unpooled" was declared but never referenced
+    allocator_traits<int> _M_unpooled;
+                          ^
+
+"./modules/tpl-tpl-parm-2_b.C", line 4: catastrophic error: cannot find header "tpl-tpl-parm-2_a.H" to import
+  import "tpl-tpl-parm-2_a.H";
+         ^
+
+1 catastrophic error detected in the compilation of "Test_name.c".
+Compilation terminated.

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"./format/ms_attr-1.c", line 9: warning: unrecognized format function type "__ms_strftime__" ignored
+  extern void foo0 (const char *) __attribute__((__format__(__ms_strftime__, 1, 0)));
+                                                            ^
+
+"./format/ms_attr-1.c", line 10: warning: unrecognized format function type "__ms_strftime__" ignored
+  extern void foo1 (const char *, ...) __attribute__((__format__(__ms_strftime__, 1, 2)));
+                                                                 ^
+

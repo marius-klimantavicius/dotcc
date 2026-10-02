@@ -1,0 +1,80 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 69: error: expected a "<"
+    (void)static_cast<: :c>(&x); //\
+                     ^
+
+"Test_name.c", line 86: warning: parsing restarts here after previous syntax error
+    test1::A LCC B> e;
+             ^
+
+"Test_name.c", line 86: error: expected a "("
+    test1::A LCC B> e;
+                    ^
+
+"Test_name.c", line 86: error: expected an expression
+    test1::A LCC B> e;
+                     ^
+
+"Test_name.c", line 86: error: expected a ")"
+    test1::A LCC B> e;
+                     ^
+
+"Test_name.c", line 129: error: argument list for class template "D" is missing
+    ::D[:F> A5; // expected-error {{class template '::D' requires template arguments}} \
+    ^
+
+"Test_name.c", line 129: error: expected an expression
+    ::D[:F> A5; // expected-error {{class template '::D' requires template arguments}} \
+        ^
+
+"Test_name.c", line 129: error: expected a "]"
+    ::D[:F> A5; // expected-error {{class template '::D' requires template arguments}} \
+              ^
+
+"Test_name.c", line 103: warning: variable "A1" was declared but never referenced
+    ::D<::F> A1;
+             ^
+
+"Test_name.c", line 108: warning: variable "A2" was declared but never referenced
+    D<::F> A2;
+           ^
+
+"Test_name.c", line 123: warning: variable "A3" was declared but never referenced
+    ::D< ::F> A3;
+              ^
+
+"Test_name.c", line 124: warning: variable "A4" was declared but never referenced
+    D< ::F> A4;
+            ^
+
+"Test_name.c", line 138: warning: variable "b" is used before its value is set
+    int test1 = true ? (int)A : b;
+                                ^
+
+"Test_name.c", line 138: warning: variable "test1" was declared but never referenced
+    int test1 = true ? (int)A : b;
+        ^
+
+"Test_name.c", line 148: error: cast to type "T ()" is not allowed
+    (T())++n; // expected-error {{C-style cast from 'int' to 'T ()' is not allowed}}
+     ^
+
+"Test_name.c", line 146: warning: local class member function "T::operator++" requires a definition
+    struct T { void operator++(int); };
+                    ^
+
+At end of source: error: expected a "<"
+
+At end of source: error: expected a type specifier
+
+At end of source: error: expected a ">"
+
+At end of source: error: expected a "("
+
+At end of source: error: expected an expression
+
+At end of source: error: expected a ")"
+
+At end of source: error: expected a ";"
+
+15 errors detected in the compilation of "Test_name.c".

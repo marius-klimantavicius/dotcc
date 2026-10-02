@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 --c++11 Test_name.c
+"Test_name.c", line 23: error: exception specification for virtual function "E::V" is incompatible with that of overridden function "D::V"
+    virtual void V () throw (D); // { dg-error "looser exception" "" { target { ! c++17 } } }
+                 ^
+
+"Test_name.c", line 32: warning: handler is potentially masked by previous handler for type "const B &"
+    catch (D const &d) {}
+           ^
+
+1 error detected in the compilation of "Test_name.c".

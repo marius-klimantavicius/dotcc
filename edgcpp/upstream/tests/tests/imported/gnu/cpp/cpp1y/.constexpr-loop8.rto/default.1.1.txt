@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 44: error: expression must have a constant value
+    constexpr int i2 = fn2 (); // { dg-message "in .constexpr. expansion of " }
+                       ^
+"Test_name.c", line 26: note: cannot call non-constexpr function "f" (declared at line 7)
+      f(); // { dg-error "call to non-.constexpr. function" }
+      ^
+
+"Test_name.c", line 43: warning: variable "i1" was declared but never referenced
+    constexpr int i1 = fn1 ();
+                  ^
+
+"Test_name.c", line 44: warning: variable "i2" was declared but never referenced
+    constexpr int i2 = fn2 (); // { dg-message "in .constexpr. expansion of " }
+                  ^
+
+"Test_name.c", line 45: warning: variable "i3" was declared but never referenced
+    constexpr int i3 = fn3 ();
+                  ^
+
+1 error detected in the compilation of "Test_name.c".

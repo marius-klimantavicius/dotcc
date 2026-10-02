@@ -1,0 +1,34 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 12: error: incomplete type "B" is not allowed
+    a->B::x; // expected-error {{incomplete type 'B' named in nested name specifier}}
+       ^
+
+"Test_name.c", line 13: error: class "A" has no member "x"
+    a->A::x; // expected-error {{no member named 'x' in 'A'}}
+          ^
+
+"Test_name.c", line 14: warning: expression has no effect
+    a->A::y;
+    ^
+
+"Test_name.c", line 15: error: incomplete type "B" is not allowed
+    b->B::x; // expected-error {{member access into incomplete type 'B'}}
+       ^
+
+"Test_name.c", line 15: error: pointer or reference to incomplete type "B" is not allowed
+    b->B::x; // expected-error {{member access into incomplete type 'B'}}
+    ^
+
+"Test_name.c", line 16: error: class "A" has no member "x"
+    b->A::x; // expected-error {{member access into incomplete type 'B'}}
+          ^
+
+"Test_name.c", line 16: error: pointer or reference to incomplete type "B" is not allowed
+    b->A::x; // expected-error {{member access into incomplete type 'B'}}
+    ^
+
+"Test_name.c", line 17: error: pointer or reference to incomplete type "B" is not allowed
+    b->A::y; // expected-error {{member access into incomplete type 'B'}}
+    ^
+
+7 errors detected in the compilation of "Test_name.c".

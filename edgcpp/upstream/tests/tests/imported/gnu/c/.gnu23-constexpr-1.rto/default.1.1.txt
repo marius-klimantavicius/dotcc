@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 --strict_gnu Test_name.c
+"Test_name.c", line 8: warning: this declaration has no storage class or type specifier
+  constexpr struct s v = { { 123, 150 } };
+  ^
+
+"Test_name.c", line 8: error: expected a ";"
+  constexpr struct s v = { { 123, 150 } };
+            ^
+
+"Test_name.c", line 10: warning: this declaration has no storage class or type specifier
+  constexpr int a[200] = { [v.x.x ... v.x.y] = 7 };
+  ^
+
+"Test_name.c", line 10: error: expected a ";"
+  constexpr int a[200] = { [v.x.x ... v.x.y] = 7 };
+            ^
+
+"Test_name.c", line 17: error: identifier "v" is undefined
+      case v.x.x ... v.x.y: ;
+           ^
+
+3 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 18: error: storage class must be auto or register
+    for (static int i = 1; i <= 10; i++) /* { dg-bogus "warning" "warning in place of error" } */
+         ^
+
+"Test_name.c", line 22: error: storage class must be auto or register
+    for (extern int i; j <= 500; j++) /* { dg-bogus "warning" "warning in place of error" } */
+         ^
+
+"Test_name.c", line 22: warning: variable "i" was declared but never referenced
+    for (extern int i; j <= 500; j++) /* { dg-bogus "warning" "warning in place of error" } */
+                    ^
+
+"Test_name.c", line 34: error: storage class must be auto or register
+    for (typedef int T;;) /* { dg-error "non-variable" } */
+         ^
+
+"Test_name.c", line 34: warning: variable "T" was declared but never referenced
+    for (typedef int T;;) /* { dg-error "non-variable" } */
+                     ^
+
+3 errors detected in the compilation of "Test_name.c".

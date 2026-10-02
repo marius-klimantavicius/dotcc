@@ -1,0 +1,21 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 7: error: argument list for class template "B" is missing
+  template <typename> struct B : A < B { , // { dg-error ""  }
+                                     ^
+
+"Test_name.c", line 7: error: expected a ">"
+  template <typename> struct B : A < B { , // { dg-error ""  }
+                                       ^
+
+"Test_name.c", line 7: error: expected a declaration
+  template <typename> struct B : A < B { , // { dg-error ""  }
+                                         ^
+
+At end of source: error: expected a "}"
+"Test_name.c", line 7: note: to match this "{"
+  template <typename> struct B : A < B { , // { dg-error ""  }
+                                       ^
+
+At end of source: error: expected a ";"
+
+5 errors detected in the compilation of "Test_name.c".

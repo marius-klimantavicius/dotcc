@@ -1,0 +1,97 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"./optimize-bswapdi-3.c", line 19: warning: shift count is too large
+    | ((uint64_t) data[4] << 32) | ((uint64_t) data[5] << 40)
+                             ^
+
+"./optimize-bswapdi-3.c", line 19: warning: shift count is too large
+    | ((uint64_t) data[4] << 32) | ((uint64_t) data[5] << 40)
+                                                          ^
+
+"./optimize-bswapdi-3.c", line 20: warning: shift count is too large
+    | ((uint64_t) data[6] << 48) | ((uint64_t) data[7] << 56);
+                             ^
+
+"./optimize-bswapdi-3.c", line 20: warning: shift count is too large
+    | ((uint64_t) data[6] << 48) | ((uint64_t) data[7] << 56);
+                                                          ^
+
+"./optimize-bswapdi-3.c", line 27: warning: shift count is too large
+    | ((uint64_t) data.u4 << 32) | ((uint64_t) data.u5 << 40)
+                             ^
+
+"./optimize-bswapdi-3.c", line 27: warning: shift count is too large
+    | ((uint64_t) data.u4 << 32) | ((uint64_t) data.u5 << 40)
+                                                          ^
+
+"./optimize-bswapdi-3.c", line 28: warning: shift count is too large
+    | ((uint64_t) data.u6 << 48) | ((uint64_t) data.u7 << 56);
+                             ^
+
+"./optimize-bswapdi-3.c", line 28: warning: shift count is too large
+    | ((uint64_t) data.u6 << 48) | ((uint64_t) data.u7 << 56);
+                                                          ^
+
+"./optimize-bswapdi-3.c", line 35: warning: shift count is too large
+    | ((uint64_t) *(data + 4) << 32) | ((uint64_t) *(data + 5) << 40)
+                                 ^
+
+"./optimize-bswapdi-3.c", line 35: warning: shift count is too large
+    | ((uint64_t) *(data + 4) << 32) | ((uint64_t) *(data + 5) << 40)
+                                                                  ^
+
+"./optimize-bswapdi-3.c", line 36: warning: shift count is too large
+    | ((uint64_t) *(data + 6) << 48) | ((uint64_t) *(data + 7) << 56);
+                                 ^
+
+"./optimize-bswapdi-3.c", line 36: warning: shift count is too large
+    | ((uint64_t) *(data + 6) << 48) | ((uint64_t) *(data + 7) << 56);
+                                                                  ^
+
+"./optimize-bswapdi-3.c", line 43: warning: shift count is too large
+    | ((uint64_t) data[3] << 32) | ((uint64_t) data[2] << 40)
+                             ^
+
+"./optimize-bswapdi-3.c", line 43: warning: shift count is too large
+    | ((uint64_t) data[3] << 32) | ((uint64_t) data[2] << 40)
+                                                          ^
+
+"./optimize-bswapdi-3.c", line 44: warning: shift count is too large
+    | ((uint64_t) data[1] << 48) | ((uint64_t) data[0] << 56);
+                             ^
+
+"./optimize-bswapdi-3.c", line 44: warning: shift count is too large
+    | ((uint64_t) data[1] << 48) | ((uint64_t) data[0] << 56);
+                                                          ^
+
+"./optimize-bswapdi-3.c", line 51: warning: shift count is too large
+    | ((uint64_t) data.u3 << 32) | ((uint64_t) data.u2 << 40)
+                             ^
+
+"./optimize-bswapdi-3.c", line 51: warning: shift count is too large
+    | ((uint64_t) data.u3 << 32) | ((uint64_t) data.u2 << 40)
+                                                          ^
+
+"./optimize-bswapdi-3.c", line 52: warning: shift count is too large
+    | ((uint64_t) data.u1 << 48) | ((uint64_t) data.u0 << 56);
+                             ^
+
+"./optimize-bswapdi-3.c", line 52: warning: shift count is too large
+    | ((uint64_t) data.u1 << 48) | ((uint64_t) data.u0 << 56);
+                                                          ^
+
+"./optimize-bswapdi-3.c", line 59: warning: shift count is too large
+    | ((uint64_t) *(data + 3) << 32) | ((uint64_t) *(data + 2) << 40)
+                                 ^
+
+"./optimize-bswapdi-3.c", line 59: warning: shift count is too large
+    | ((uint64_t) *(data + 3) << 32) | ((uint64_t) *(data + 2) << 40)
+                                                                  ^
+
+"./optimize-bswapdi-3.c", line 60: warning: shift count is too large
+    | ((uint64_t) *(data + 1) << 48) | ((uint64_t) *data << 56);
+                                 ^
+
+"./optimize-bswapdi-3.c", line 60: warning: shift count is too large
+    | ((uint64_t) *(data + 1) << 48) | ((uint64_t) *data << 56);
+                                                            ^
+

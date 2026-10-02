@@ -1,0 +1,37 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 8: warning: routine is both "inline" and "noinline"
+  static inline void __attribute__((__noinline__)) function_definition(void) {t();} /* { dg-warning "inline function \[^\n\]* given attribute 'noinline'" } */
+                                    ^
+
+"Test_name.c", line 10: warning: routine is both "inline" and "noinline"
+  static inline void __attribute__((__noinline__)) function_declaration_both_before(void); /* { dg-warning "inline function \[^\n\]* given attribute 'noinline'" } */
+                                    ^
+
+"Test_name.c", line 16: warning: routine is both "inline" and "noinline"
+  static inline void __attribute__((__noinline__)) function_declaration_both_after(void); /* { dg-warning "(inline function \[^\n\]* given attribute .noinline.|declared inline after its definition)" } */
+                                    ^
+
+"Test_name.c", line 22: warning: routine is both "inline" and "noinline"
+  static inline void function_declaration_noinline_before(void) {t();} /* { dg-warning "follows declaration with attribute .noinline." } */
+                     ^
+
+"Test_name.c", line 26: warning: routine is both "inline" and "noinline"
+  static void function_declaration_noinline_after(void) __attribute__((__noinline__)); /* { dg-warning "follows inline declaration" } */
+                                                                       ^
+
+"Test_name.c", line 30: warning: routine is both "inline" and "noinline"
+  static void __attribute__((__noinline__)) function_declaration_inline_before(void) {t();} /* { dg-warning "follows inline declaration" } */
+                             ^
+
+"Test_name.c", line 34: warning: routine is both "inline" and "noinline"
+  static void function_declaration_inline_noinline_before(void) __attribute__((__noinline__)); /* { dg-warning "follows inline declaration" } */
+                                                                               ^
+
+"Test_name.c", line 42: warning: routine is both "inline" and "noinline"
+  static void function_declaration_inline_noinline_after(void) __attribute__((__noinline__)); /* { dg-warning "follows inline declaration" } */
+                                                                              ^
+
+"Test_name.c", line 46: warning: routine is both "inline" and "noinline"
+  static inline void function_declaration_noinline_inline_before(void); /* { dg-warning "follows declaration with attribute .noinline." } */
+                     ^
+

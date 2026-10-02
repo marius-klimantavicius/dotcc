@@ -1,0 +1,3 @@
+./a.out
+Choice: 0, Delta: 100
+Choice: 1, Delta: 100

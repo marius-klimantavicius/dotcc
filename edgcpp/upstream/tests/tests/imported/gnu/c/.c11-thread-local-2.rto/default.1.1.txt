@@ -1,0 +1,121 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c11 Test_name.c
+"Test_name.c", line 7: error: thread-local storage class is not valid here
+  _Thread_local void f (void); /* { dg-error "storage class" } */
+  ^
+
+"Test_name.c", line 8: error: thread-local storage class is not valid here
+  _Thread_local void g (void) {} /* { dg-error "_Thread_local" } */
+  ^
+
+"Test_name.c", line 9: error: thread-local storage class is not valid here
+  typedef _Thread_local int t1; /* { dg-error "_Thread_local" } */
+  ^
+
+"Test_name.c", line 10: error: thread-local storage class is not valid here
+  _Thread_local typedef int t2; /* { dg-error "_Thread_local" } */
+                ^
+
+"Test_name.c", line 15: error: only static and extern variables can use thread-local storage
+    _Thread_local auto int a; /* { dg-error "_Thread_local" } */
+                  ^
+
+"Test_name.c", line 15: error: a block-scope thread-local declaration must include static or extern
+    _Thread_local auto int a; /* { dg-error "_Thread_local" } */
+                  ^
+
+"Test_name.c", line 16: error: only static and extern variables can use thread-local storage
+    _Thread_local register int b; /* { dg-error "_Thread_local" } */
+                  ^
+
+"Test_name.c", line 16: error: a block-scope thread-local declaration must include static or extern
+    _Thread_local register int b; /* { dg-error "_Thread_local" } */
+                  ^
+
+"Test_name.c", line 17: error: only static and extern variables can use thread-local storage
+    auto _Thread_local int c; /* { dg-error "_Thread_local" } */
+    ^
+
+"Test_name.c", line 17: error: a block-scope thread-local declaration must include static or extern
+    auto _Thread_local int c; /* { dg-error "_Thread_local" } */
+    ^
+
+"Test_name.c", line 18: error: only static and extern variables can use thread-local storage
+    register _Thread_local int d; /* { dg-error "_Thread_local" } */
+    ^
+
+"Test_name.c", line 18: error: a block-scope thread-local declaration must include static or extern
+    register _Thread_local int d; /* { dg-error "_Thread_local" } */
+    ^
+
+"Test_name.c", line 19: error: a block-scope thread-local declaration must include static or extern
+    _Thread_local int e; /* { dg-error "_Thread_local" } */
+    ^
+
+"Test_name.c", line 15: warning: variable "a" was declared but never referenced
+    _Thread_local auto int a; /* { dg-error "_Thread_local" } */
+                           ^
+
+"Test_name.c", line 16: warning: variable "b" was declared but never referenced
+    _Thread_local register int b; /* { dg-error "_Thread_local" } */
+                               ^
+
+"Test_name.c", line 17: warning: variable "c" was declared but never referenced
+    auto _Thread_local int c; /* { dg-error "_Thread_local" } */
+                           ^
+
+"Test_name.c", line 18: warning: variable "d" was declared but never referenced
+    register _Thread_local int d; /* { dg-error "_Thread_local" } */
+                               ^
+
+"Test_name.c", line 19: warning: variable "e" was declared but never referenced
+    _Thread_local int e; /* { dg-error "_Thread_local" } */
+                      ^
+
+"Test_name.c", line 23: error: non-thread-local declaration follows thread-local declaration (declared at line 22)
+  extern int v; /* { dg-error "thread" } */
+             ^
+
+"Test_name.c", line 25: error: thread-local declaration follows non-thread-local declaration (declared at line 24)
+  extern _Thread_local int w; /* { dg-error "thread" } */
+                           ^
+
+"Test_name.c", line 35: error: non-thread-local declaration follows thread-local declaration (declared at line 27)
+    extern int x; /* { dg-error "thread" } */
+               ^
+
+"Test_name.c", line 36: error: thread-local declaration follows non-thread-local declaration (declared at line 28)
+    extern _Thread_local int y; /* { dg-error "thread" } */
+                             ^
+
+"Test_name.c", line 37: error: a variable length array cannot have static storage duration
+    static _Thread_local int a[vv]; /* { dg-error "storage size" } */
+                             ^
+
+"Test_name.c", line 38: error: expression must have a constant value
+    static _Thread_local int vi = vv; /* { dg-error "not constant" } */
+                                  ^
+"Test_name.c", line 38: note: the value of variable "vv" (declared at line 30) cannot be used as a constant
+    static _Thread_local int vi = vv; /* { dg-error "not constant" } */
+                                  ^
+
+"Test_name.c", line 37: warning: variable "a" was declared but never referenced
+    static _Thread_local int a[vv]; /* { dg-error "storage size" } */
+                             ^
+
+"Test_name.c", line 38: warning: variable "vi" was declared but never referenced
+    static _Thread_local int vi = vv; /* { dg-error "not constant" } */
+                             ^
+
+"Test_name.c", line 46: warning: variable "vj" was declared but never referenced
+    static _Thread_local int vj; /* { dg-error "static but declared" } */
+                             ^
+
+"Test_name.c", line 47: warning: an entity with internal linkage cannot be referenced within an inline function with external linkage
+    (void) sv; /* { dg-error "static but used in inline" } */
+           ^
+
+"Test_name.c", line 46: warning: a variable with static storage duration cannot be defined within an inline function
+    static _Thread_local int vj; /* { dg-error "static but declared" } */
+                             ^
+
+19 errors detected in the compilation of "Test_name.c".

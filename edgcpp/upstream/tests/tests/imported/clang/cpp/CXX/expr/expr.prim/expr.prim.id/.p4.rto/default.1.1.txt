@@ -1,0 +1,90 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 18: error: constraints for function "functions::S<T>::foo [with T=int]" (declared at line 9) are not satisfied
+      S<int>::foo(1); // expected-error{{invalid reference to function 'foo': constraints not satisfied}}
+              ^
+
+"Test_name.c", line 20: error: constraints for function "functions::S<T>::foo [with T=int]" (declared at line 9) are not satisfied
+      void (*p1)(int) = S<int>::foo; // expected-error{{invalid reference to function 'foo': constraints not satisfied}}
+                                ^
+
+"Test_name.c", line 22: error: constraints for function "functions::S<T>::foo [with T=int]" (declared at line 9) are not satisfied
+      decltype(S<int>::foo)* a1 = nullptr; // expected-error{{invalid reference to function 'foo': constraints not satisfied}}
+                       ^
+
+"Test_name.c", line 21: warning: variable "p3" was declared but never referenced
+      void (*p3)(int) = S<int>::bar;
+             ^
+
+"Test_name.c", line 22: warning: variable "a1" was declared but never referenced
+      decltype(S<int>::foo)* a1 = nullptr; // expected-error{{invalid reference to function 'foo': constraints not satisfied}}
+                             ^
+
+"Test_name.c", line 23: warning: variable "a2" was declared but never referenced
+      decltype(S<int>::bar)* a2 = nullptr;
+                             ^
+
+"Test_name.c", line 39: error: constraints for function "methods::A<T>::bar [with T=char]" (declared at line 32) are not satisfied
+      A<char>::bar(1); // expected-error{{invalid reference to function 'bar': constraints not satisfied}}
+               ^
+
+"Test_name.c", line 40: error: constraints for function "methods::A<T>::baz [with T=char]" (declared at line 34) are not satisfied
+      A<char>::baz(1); // expected-error{{invalid reference to function 'baz': constraints not satisfied}}
+               ^
+
+"Test_name.c", line 41: error: constraints for function "methods::A<T>::foo [with T=char [2]]" (declared at line 31) are not satisfied
+      A<char[2]>::foo(1); // expected-error{{invalid reference to function 'foo': constraints not satisfied}}
+                  ^
+
+"Test_name.c", line 44: error: constraints for function "methods::A<T>::bar [with T=char]" (declared at line 32) are not satisfied
+      void (*p2)(int) = A<char>::bar; // expected-error{{invalid reference to function 'bar': constraints not satisfied}}
+                                 ^
+
+"Test_name.c", line 45: error: constraints for function "methods::A<T>::foo [with T=char [2]]" (declared at line 31) are not satisfied
+      void (*p3)(int) = A<char[2]>::foo; // expected-error{{invalid reference to function 'foo': constraints not satisfied}}
+                                    ^
+
+"Test_name.c", line 48: error: constraints for function "methods::A<T>::bar [with T=char]" (declared at line 32) are not satisfied
+      decltype(A<char>::bar)* a2 = nullptr; // expected-error{{invalid reference to function 'bar': constraints not satisfied}}
+                        ^
+
+"Test_name.c", line 49: error: constraints for function "methods::A<T>::foo [with T=char [2]]" (declared at line 31) are not satisfied
+      decltype(A<char[2]>::foo)* a3 = nullptr; // expected-error{{invalid reference to function 'foo': constraints not satisfied}}
+                           ^
+
+"Test_name.c", line 43: warning: variable "p1" was declared but never referenced
+      void (*p1)(int) = A<char>::foo;
+             ^
+
+"Test_name.c", line 46: warning: variable "p4" was declared but never referenced
+      void (*p4)(int) = A<char[2]>::bar;
+             ^
+
+"Test_name.c", line 47: warning: variable "a1" was declared but never referenced
+      decltype(A<char>::foo)* a1 = nullptr;
+                              ^
+
+"Test_name.c", line 48: warning: variable "a2" was declared but never referenced
+      decltype(A<char>::bar)* a2 = nullptr; // expected-error{{invalid reference to function 'bar': constraints not satisfied}}
+                              ^
+
+"Test_name.c", line 49: warning: variable "a3" was declared but never referenced
+      decltype(A<char[2]>::foo)* a3 = nullptr; // expected-error{{invalid reference to function 'foo': constraints not satisfied}}
+                                 ^
+
+"Test_name.c", line 50: warning: variable "a4" was declared but never referenced
+      decltype(A<char[2]>::bar)* a4 = nullptr;
+                                 ^
+
+"Test_name.c", line 62: error: constraints for function "operators::A<T>::operator- [with T=int]" (declared at line 58) are not satisfied
+      auto* x = &A<int>::operator-; // expected-error{{invalid reference to function 'operator-': constraints not satisfied}}
+                         ^
+
+"Test_name.c", line 62: error: cannot deduce "auto" type
+      auto* x = &A<int>::operator-; // expected-error{{invalid reference to function 'operator-': constraints not satisfied}}
+      ^
+
+"Test_name.c", line 63: warning: variable "y" was declared but never referenced
+      auto y = &A<char>::operator-;
+           ^
+
+12 errors detected in the compilation of "Test_name.c".

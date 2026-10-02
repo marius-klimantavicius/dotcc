@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 6: error: invalid alignment value specified by attribute
+  int foo __attribute__ ((aligned(1 << 29))) =  20; /* { dg-error "requested alignment" } */
+                                  ^
+
+"Test_name.c", line 7: error: invalid alignment value specified by attribute
+  typedef int __attribute__ ((aligned(1 << 29))) int29; /* { dg-error "requested alignment" } */
+                                      ^
+
+2 errors detected in the compilation of "Test_name.c".

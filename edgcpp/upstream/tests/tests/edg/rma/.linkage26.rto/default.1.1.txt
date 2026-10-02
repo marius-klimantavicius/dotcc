@@ -1,0 +1,6 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 7: error: linkage specification is incompatible with previous "f" (declared at line 5)
+  extern "C" void f();
+                  ^
+
+1 error detected in the compilation of "Test_name.c".

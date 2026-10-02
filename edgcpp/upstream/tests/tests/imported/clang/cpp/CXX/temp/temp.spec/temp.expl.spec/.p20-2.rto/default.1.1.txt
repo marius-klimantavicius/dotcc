@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 10: error: an explicit specialization declaration may not be a friend declaration
+    template <> friend void f<>(int) {}
+                ^
+
+"Test_name.c", line 10: error: function "f(T) [with T=int]" cannot be specialized in the current scope
+    template <> friend void f<>(int) {}
+                            ^
+          detected during instantiation of class "A<T> [with T=int]" at line 16
+
+"Test_name.c", line 16: warning: variable "a" was declared but never referenced
+      A<int> a;
+             ^
+
+2 errors detected in the compilation of "Test_name.c".

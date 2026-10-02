@@ -1,0 +1,74 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 111: error: this range-based "for" statement requires a suitable "begin" function and none was found
+    for (int x : container1()); // { dg-error "'begin' was not declared|'end' was not declared" }
+                 ^
+
+"Test_name.c", line 111: error: this range-based "for" statement requires a suitable "end" function and none was found
+    for (int x : container1()); // { dg-error "'begin' was not declared|'end' was not declared" }
+                 ^
+
+"Test_name.c", line 112: error: this range-based "for" statement requires a suitable "begin" function and none was found
+    for (int x : container2()); // { dg-error "'begin' was not declared|'end' was not declared" }
+                 ^
+
+"Test_name.c", line 112: error: this range-based "for" statement requires a suitable "end" function and none was found
+    for (int x : container2()); // { dg-error "'begin' was not declared|'end' was not declared" }
+                 ^
+
+"Test_name.c", line 113: error: function "container3::begin" (declared at line 23) is inaccessible
+    for (int x : container3()); // { dg-error "within this context" }
+                 ^
+
+"Test_name.c", line 113: error: function "container3::end" (declared at line 24) is inaccessible
+    for (int x : container3()); // { dg-error "within this context" }
+                 ^
+
+"Test_name.c", line 114: error: this range-based "for" statement requires a suitable "begin" function and none was found
+    for (int x : container4()); // { dg-error "cannot be used as a function" }
+                 ^
+
+"Test_name.c", line 114: error: this range-based "for" statement requires a suitable "end" function and none was found
+    for (int x : container4()); // { dg-error "cannot be used as a function" }
+                 ^
+
+"Test_name.c", line 115: error: this range-based "for" statement requires a suitable "begin" function and none was found
+    for (int x : container5()); // { dg-error "invalid use of" }
+                 ^
+
+"Test_name.c", line 115: error: this range-based "for" statement requires a suitable "end" function and none was found
+    for (int x : container5()); // { dg-error "invalid use of" }
+                 ^
+
+"Test_name.c", line 116: error: this range-based "for" statement requires a suitable "begin" function and none was found
+    for (int x : container6());
+                 ^
+
+"Test_name.c", line 116: error: this range-based "for" statement requires a suitable "end" function and none was found
+    for (int x : container6());
+                 ^
+
+"Test_name.c", line 117: error: this range-based "for" statement requires a suitable "begin" function and none was found
+    for (int x : container7());
+                 ^
+
+"Test_name.c", line 117: error: this range-based "for" statement requires a suitable "end" function and none was found
+    for (int x : container7());
+                 ^
+
+"Test_name.c", line 119: error: this range-based "for" statement requires a suitable "begin" function and none was found
+    for (int x : container9()); // { dg-error "within this context" }
+                 ^
+
+"Test_name.c", line 119: error: this range-based "for" statement requires a suitable "end" function and none was found
+    for (int x : container9()); // { dg-error "within this context" }
+                 ^
+
+"Test_name.c", line 120: error: this range-based "for" statement requires a suitable "begin" function and none was found
+    for (int x : container10());
+                 ^
+
+"Test_name.c", line 120: error: this range-based "for" statement requires a suitable "end" function and none was found
+    for (int x : container10());
+                 ^
+
+18 errors detected in the compilation of "Test_name.c".

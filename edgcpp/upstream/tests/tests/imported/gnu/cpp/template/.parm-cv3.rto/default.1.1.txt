@@ -1,0 +1,38 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 16: error: no instance of function template "test2::f" matches the specified type
+  void f<int[]>(const int*){}
+       ^
+
+"Test_name.c", line 29: error: declaration is incompatible with "void test3::A<T>::f(T) [with T=int [3]]" (declared at line 22)
+  void A<int[3]>::f(const int*){}
+                  ^
+
+"Test_name.c", line 43: error: no instance of function template "test4::f" matches the specified type
+  void f<int, char>(const typename A<int>::B<char>::Arr3){}
+       ^
+
+"Test_name.c", line 56: error: no instance of function template "test5::f" matches the specified type
+  void f<A>(const int[3]){}
+       ^
+
+"Test_name.c", line 67: error: no instance of function template "test6::f" matches the specified type
+  void f<A>(const int*){}
+       ^
+
+"Test_name.c", line 81: error: no instance of function template "test7::f" matches the specified type
+  void f<int, char>(const typename A<int>::template Type<char>){}
+       ^
+
+"Test_name.c", line 99: error: no instance of function template "test8::f" matches the specified type
+  void f<int, char>(const typename A<int>::template B<char>::template C<>::Arr3){}
+       ^
+
+"Test_name.c", line 113: error: no instance of function template "test0::f" matches the specified type
+  void f<int>(const int[3]){}
+       ^
+
+"Test_name.c", line 132: error: no instance of function template "test9::g" matches the specified type
+  void g<1,int>(const fPtr<1,int>[1]){}
+       ^
+
+9 errors detected in the compilation of "Test_name.c".

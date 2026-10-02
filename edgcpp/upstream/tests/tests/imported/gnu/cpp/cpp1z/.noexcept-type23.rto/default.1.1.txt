@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++17 Test_name.c
+"Test_name.c", line 15: error: a value of type "F1" (aka "int (S::*)()") cannot be used to initialize an entity of type "F2" (aka "int (S::*)() noexcept")
+  F2 f12 = F1(); // { dg-error "cannot convert" }
+           ^
+
+"Test_name.c", line 16: error: a value of type "F3" (aka "int (R::*)() noexcept") cannot be used to initialize an entity of type "F1" (aka "int (S::*)()")
+  F1 f31 = F3(); // { dg-error "cannot convert" }
+           ^
+
+2 errors detected in the compilation of "Test_name.c".

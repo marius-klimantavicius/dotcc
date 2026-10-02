@@ -1,0 +1,40 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 10: error: attribute "noreturn" does not take arguments
+  inline __attribute__((noreturn(a))) void *f1(void);  // expected-error {{'noreturn' attribute takes no arguments}}
+                                ^
+
+"Test_name.c", line 11: error: attribute "always_inline" does not take arguments
+  inline __attribute__((always_inline(a))) void *f2(void);  // expected-error {{'always_inline' attribute takes no arguments}}
+                                     ^
+
+"Test_name.c", line 12: error: attribute "cdecl" does not take arguments
+  inline __attribute__((cdecl(a))) void *f3(void);  // expected-error {{'cdecl' attribute takes no arguments}}
+                             ^
+
+"Test_name.c", line 13: error: attribute "const" does not take arguments
+  inline __attribute__((const(a))) void *f4(void);  // expected-error {{'const' attribute takes no arguments}}
+                             ^
+
+"Test_name.c", line 14: error: attribute "fastcall" does not take arguments
+  inline __attribute__((fastcall(a))) void *f5(void);  // expected-error {{'fastcall' attribute takes no arguments}}
+                                ^
+
+"Test_name.c", line 15: error: "restrict" is not allowed
+  inline __declspec(restrict(a)) void *f6_a(void);  // expected-error {{'restrict' attribute takes no arguments}}
+                    ^
+
+"Test_name.c", line 15: warning: explicit type is missing ("int" assumed)
+  inline __declspec(restrict(a)) void *f6_a(void);  // expected-error {{'restrict' attribute takes no arguments}}
+                            ^
+
+"Test_name.c", line 15: warning: explicit type is missing ("int" assumed)
+  inline __declspec(restrict(a)) void *f6_a(void);  // expected-error {{'restrict' attribute takes no arguments}}
+         ^
+
+"Test_name.c", line 15: error: expected a "{"
+  inline __declspec(restrict(a)) void *f6_a(void);  // expected-error {{'restrict' attribute takes no arguments}}
+                                 ^
+
+At end of source: error: expected a "}"
+
+8 errors detected in the compilation of "Test_name.c".

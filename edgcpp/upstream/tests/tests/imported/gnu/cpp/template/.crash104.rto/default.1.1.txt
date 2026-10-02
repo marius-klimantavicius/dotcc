@@ -1,0 +1,36 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 14: error: class "bar<int>" has no member "some_type"
+              typename T::template some_type<int>,
+                                   ^
+          detected during instantiation of class "foo<T> [with T=bar<int>]" at line 27
+
+"Test_name.c", line 14: error: expected a ">"
+              typename T::template some_type<int>,
+                                            ^
+          detected during instantiation of class "foo<T> [with T=bar<int>]" at line 27
+
+"Test_name.c", line 14: error: expected an identifier
+              typename T::template some_type<int>,
+                                                 ^
+          detected during instantiation of class "foo<T> [with T=bar<int>]" at line 27
+
+"Test_name.c", line 13: error: not a valid member class or function template declaration
+          struct type<
+          ^
+          detected during instantiation of class "foo<T> [with T=bar<int>]" at line 27
+
+"Test_name.c", line 14: error: expected a ";"
+              typename T::template some_type<int>,
+                                                 ^
+          detected during instantiation of class "foo<T> [with T=bar<int>]" at line 27
+
+"Test_name.c", line 17: warning: parsing restarts here after previous syntax error
+      {};
+        ^
+          detected during instantiation of class "foo<T> [with T=bar<int>]" at line 27
+
+"Test_name.c", line 27: warning: variable "obj" was declared but never referenced
+    cont::type<char> obj; // { dg-error "cannot be defined" }
+                     ^
+
+5 errors detected in the compilation of "Test_name.c".

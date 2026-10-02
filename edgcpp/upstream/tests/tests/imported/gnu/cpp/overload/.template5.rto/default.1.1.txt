@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 15: error: no instance of function template "low" matches the argument list
+            argument types are: (int, int)
+    low (5, 6);			// { dg-error "no matching function" }
+    ^
+"Test_name.c", line 6: note: number of parameters of function template "low" does not match the call
+  int low(T a, T b, T c) { return a + b + c; } // { dg-message "template" }
+      ^
+
+"Test_name.c", line 16: error: no instance of function template "high" matches the argument list
+            argument types are: (int, int, int, int)
+    high (5, 6, 7, 8);		// { dg-error "no matching function" }
+    ^
+"Test_name.c", line 10: note: number of parameters of function template "high" does not match the call
+  int high(T a, T b, T c) { return a + b + c; } // { dg-message "template" }
+      ^
+
+2 errors detected in the compilation of "Test_name.c".

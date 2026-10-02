@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 15: error: invalid type conversion
+  int x((int)&x);  // Previously x in "&x" was not found in some GNU and
+        ^
+
+1 error detected in the compilation of "Test_name.c".

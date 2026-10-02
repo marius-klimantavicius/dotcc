@@ -1,0 +1,42 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 5: warning: unrecognized GCC pragma
+  #pragma GCC poison rindex
+              ^
+
+"Test_name.c", line 6: error: expected an identifier
+  rindex(some_string, 'h');   // expected-error {{attempt to use a poisoned identifier}}
+                      ^
+
+"Test_name.c", line 6: warning: this declaration has no storage class or type specifier
+  rindex(some_string, 'h');   // expected-error {{attempt to use a poisoned identifier}}
+  ^
+
+"Test_name.c", line 6: warning: identifier-list parameters may only be used in a function definition
+  rindex(some_string, 'h');   // expected-error {{attempt to use a poisoned identifier}}
+  ^
+
+"Test_name.c", line 10: warning: unrecognized GCC pragma
+  BAR
+  ^
+
+"Test_name.c", line 9: error: identifier "XYZW" is undefined
+    XYZW      // ok
+    ^
+
+"Test_name.c", line 11: error: expected a ";"
+    XYZW      // expected-error {{attempt to use a poisoned identifier}}
+    ^
+
+"Test_name.c", line 17: warning: unrecognized GCC pragma
+  #pragma GCC poison rindex2
+              ^
+
+"Test_name.c", line 20: warning: unrecognized GCC pragma
+  #pragma GCC poison rindex2
+              ^
+
+"Test_name.c", line 22: warning: parsing restarts here after previous syntax error
+  strrchr(some_string, 'h');   // ok.
+                           ^
+
+3 errors detected in the compilation of "Test_name.c".

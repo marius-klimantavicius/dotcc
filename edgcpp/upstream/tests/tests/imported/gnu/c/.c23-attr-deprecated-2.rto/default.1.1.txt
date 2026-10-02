@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 11: warning: expected a declaration
+  [[deprecated]]; /* { dg-error "ignored" } */
+                ^
+
+"Test_name.c", line 13: error: attribute "deprecated" does not apply here
+  int [[deprecated]] var; /* { dg-error "ignored" } */
+        ^
+
+"Test_name.c", line 15: warning: attribute "deprecated" does not apply here
+  int array_with_dep_type[2] [[deprecated]]; /* { dg-error "ignored" } */
+                               ^
+
+"Test_name.c", line 17: warning: attribute "deprecated" does not apply here
+  void fn_with_dep_type () [[deprecated]]; /* { dg-error "ignored" } */
+                             ^
+
+"Test_name.c", line 19: error: attribute "__deprecated__" does not apply here
+  int z = sizeof (int [[__deprecated__]]); /* { dg-error "ignored" } */
+                        ^
+
+"Test_name.c", line 25: warning: attribute "deprecated" does not apply here
+    [[deprecated]]; /* { dg-error "ignored" } */
+      ^
+
+"Test_name.c", line 26: warning: attribute "deprecated" does not apply here
+    [[deprecated]] a = 1; /* { dg-error "ignored" } */
+      ^
+
+"Test_name.c", line 27: warning: attribute "deprecated" does not apply here
+    [[deprecated]] label: ; /* { dg-error "ignored" } */
+      ^
+
+"Test_name.c", line 30: warning: attribute "deprecated" does not apply here
+      [[deprecated]] case 1: ; /* { dg-error "ignored" } */
+        ^
+
+"Test_name.c", line 31: warning: attribute "deprecated" does not apply here
+      [[deprecated]] default: ; /* { dg-error "ignored" } */
+        ^
+
+"Test_name.c", line 24: warning: variable "a" was set but never used
+    int a;
+        ^
+
+"Test_name.c", line 27: warning: label "label" was declared but never referenced
+    [[deprecated]] label: ; /* { dg-error "ignored" } */
+                   ^
+
+2 errors detected in the compilation of "Test_name.c".

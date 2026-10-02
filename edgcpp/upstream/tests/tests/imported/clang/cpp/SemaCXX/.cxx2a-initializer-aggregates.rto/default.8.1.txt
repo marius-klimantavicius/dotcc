@@ -1,0 +1,216 @@
+fe_only -DTEST_NUMBER=8 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 19: error: no instance of constructor "class_with_ctor::A::A" matches the argument list
+            argument types are: (int, int)
+    A a = {1, 2}; // cxx20-error {{no matching constructor}}
+          ^
+"Test_name.c", line 14: note: number of parameters of function "class_with_ctor::A::A(const class_with_ctor::A &)" does not match the call
+    struct A { // cxx20-note 6{{candidate}}
+           ^
+"Test_name.c", line 14: note: number of parameters of function "class_with_ctor::A::A(class_with_ctor::A &&)" does not match the call
+    struct A { // cxx20-note 6{{candidate}}
+           ^
+"Test_name.c", line 15: note: number of parameters of function "class_with_ctor::A::A()" does not match the call
+      A() = default; // cxx20-note 3{{candidate}}
+      ^
+
+"Test_name.c", line 32: error: no instance of constructor "class_with_ctor::A::A" matches the argument list
+            argument types are: (int, int)
+    C c2 = {{1, 2}, {3, 4}}; // cxx20-error 2{{no matching constructor}}
+            ^
+"Test_name.c", line 14: note: number of parameters of function "class_with_ctor::A::A(const class_with_ctor::A &)" does not match the call
+    struct A { // cxx20-note 6{{candidate}}
+           ^
+"Test_name.c", line 14: note: number of parameters of function "class_with_ctor::A::A(class_with_ctor::A &&)" does not match the call
+    struct A { // cxx20-note 6{{candidate}}
+           ^
+"Test_name.c", line 15: note: number of parameters of function "class_with_ctor::A::A()" does not match the call
+      A() = default; // cxx20-note 3{{candidate}}
+      ^
+
+"Test_name.c", line 32: error: no instance of constructor "class_with_ctor::A::A" matches the argument list
+            argument types are: (int, int)
+    C c2 = {{1, 2}, {3, 4}}; // cxx20-error 2{{no matching constructor}}
+                    ^
+"Test_name.c", line 14: note: number of parameters of function "class_with_ctor::A::A(const class_with_ctor::A &)" does not match the call
+    struct A { // cxx20-note 6{{candidate}}
+           ^
+"Test_name.c", line 14: note: number of parameters of function "class_with_ctor::A::A(class_with_ctor::A &&)" does not match the call
+    struct A { // cxx20-note 6{{candidate}}
+           ^
+"Test_name.c", line 15: note: number of parameters of function "class_with_ctor::A::A()" does not match the call
+      A() = default; // cxx20-note 3{{candidate}}
+      ^
+
+"Test_name.c", line 41: warning: out-of-order initializers are nonstandard in C++
+    .x = 2 // reorder-error {{ISO C++ requires field designators to be specified in declaration order; field 'y' will be initialized after field 'x'}}
+     ^
+
+"Test_name.c", line 55: warning: out-of-order initializers are nonstandard in C++
+    .x = 1 // override-error {{overrides prior initialization}}
+     ^
+
+"Test_name.c", line 59: warning: out-of-order initializers are nonstandard in C++
+    .y = 1 // override-error {{overrides prior initialization}}
+     ^
+
+"Test_name.c", line 64: error: too many initializer values
+  B b4 = {.a = 1, 2, 3}; // pedantic-error {{mixture of designated and non-designated}} pedantic-note {{first non-designated}} pedantic-error {{brace elision}} expected-error {{excess elements}}
+                     ^
+
+"Test_name.c", line 65: error: a value of type "std::nullptr_t" cannot be used to initialize an entity of type "int"
+  B b5 = {.a = nullptr}; // expected-error {{cannot initialize}}
+               ^
+
+"Test_name.c", line 70: warning: out-of-order initializers are nonstandard in C++
+    .x = 1, // override-error {{overrides prior initialization}} override-note {{previous}}
+     ^
+
+"Test_name.c", line 72: warning: out-of-order initializers are nonstandard in C++
+    .y = 1, // override-error {{overrides prior initialization}} // reorder-note {{previous initialization for field 'y' is here}}
+     ^
+
+"Test_name.c", line 73: warning: out-of-order initializers are nonstandard in C++
+    .x = 1, // reorder-error {{declaration order}} override-error {{overrides prior initialization}} override-note {{previous}}
+     ^
+
+"Test_name.c", line 74: warning: out-of-order initializers are nonstandard in C++
+    .x = 1, // override-error {{overrides prior initialization}}
+     ^
+
+"Test_name.c", line 92: error: class "base_class::derived" has no field "x"
+    derived d = {.x = 1, .y = 2}; // expected-error {{'x' does not refer to any field}}
+                  ^
+
+"Test_name.c", line 92: warning: out-of-order initializers are nonstandard in C++
+    derived d = {.x = 1, .y = 2}; // expected-error {{'x' does not refer to any field}}
+                  ^
+
+"Test_name.c", line 92: warning: out-of-order initializers are nonstandard in C++
+    derived d = {.x = 1, .y = 2}; // expected-error {{'x' does not refer to any field}}
+                          ^
+
+"Test_name.c", line 109: error: more than one instance of overloaded function "overload_resolution::f" matches the argument list:
+            function "overload_resolution::f(overload_resolution::A)" (declared at line 107)
+            function "overload_resolution::f(overload_resolution::B)" (declared at line 108)
+            argument types are: ({...})
+    void g() { f({.x = 1, .y = 2}); } // ok, calls non-union overload
+               ^
+
+"Test_name.c", line 115: error: more than one instance of overloaded function "overload_resolution::f" matches the argument list:
+            function "overload_resolution::f(overload_resolution::A)" (declared at line 107)
+            function "overload_resolution::f(overload_resolution::A2)" (declared at line 114)
+            argument types are: ({...})
+    void g2() { int k = f({.x = 1, 2, .y = 3}); (void)k; } // pedantic-error {{mixture of designated and non-designated}} pedantic-note {{here}}
+                        ^
+"Test_name.c", line 108: note: function "overload_resolution::f(overload_resolution::B)" does not match because argument #1 does not match parameter
+    void f(B b) = delete;
+         ^
+
+"Test_name.c", line 122: warning: out-of-order initializers are nonstandard in C++
+      h({.y = 1, .x = 2}); // reorder-error {{declaration order}} reorder-note {{previous}}
+                  ^
+
+"Test_name.c", line 123: error: more than one instance of overloaded function "overload_resolution::h" matches the argument list:
+            function "overload_resolution::h(overload_resolution::A)" (declared at line 118)
+            function "overload_resolution::h(overload_resolution::C)" (declared at line 119)
+            argument types are: ({...})
+      h({.x = 1}); // expected-error {{ambiguous}}
+      ^
+
+"Test_name.c", line 130: error: more than one instance of overloaded function "overload_resolution::j" matches the argument list:
+            function "overload_resolution::j(overload_resolution::A)" (declared at line 127)
+            function "overload_resolution::j(overload_resolution::D)" (declared at line 128)
+            argument types are: ({...})
+      j({.x = 1, .y = 2}); // expected-error {{ambiguous}}
+      ^
+
+"Test_name.c", line 138: error: more than one instance of overloaded function "overload_resolution::l" matches the argument list:
+            function "overload_resolution::l(overload_resolution::E)" (declared at line 135)
+            function "overload_resolution::l(overload_resolution::F)" (declared at line 136)
+            argument types are: ({...})
+      int &r = l({.a = 0}); // ok, l(E) is not viable
+               ^
+
+"Test_name.c", line 139: error: more than one instance of overloaded function "overload_resolution::l" matches the argument list:
+            function "overload_resolution::l(overload_resolution::E)" (declared at line 135)
+            function "overload_resolution::l(overload_resolution::F)" (declared at line 136)
+            argument types are: ({...})
+      int &s = l({.a = {0}}); // expected-error {{ambiguous}}
+               ^
+
+"Test_name.c", line 149: error: more than one instance of overloaded function "deduction::f" matches the argument list:
+            function template "void deduction::f<T,U>(decltype((<expression>)))" (declared at line 147)
+            function template "void deduction::f<T,U>(decltype((<expression>)))" (declared at line 148)
+    void g() { f<A, B>(); } // ok, calls non-union overload
+               ^
+
+"Test_name.c", line 155: error: more than one instance of overloaded function "deduction::h" matches the argument list:
+            function template "void deduction::h<T,U>(decltype((<expression>)))" (declared at line 152)
+            function template "void deduction::h<T,U>(decltype((<expression>)))" (declared at line 153)
+      h<A, C>(); // ok, selects C overload by SFINAE
+      ^
+
+"Test_name.c", line 167: error: more than one instance of overloaded function "deduction::j1" matches the argument list:
+            function template "void deduction::j1<T,U>(decltype((<expression>)))" (declared at line 160)
+            function template "void deduction::j1<T,U>(decltype((<expression>)))" (declared at line 161)
+            argument types are: ({...})
+      j1<D, E>({}); // ok, selects D overload by SFINAE (too few braces for E)
+      ^
+
+"Test_name.c", line 168: error: more than one instance of overloaded function "deduction::j2" matches the argument list:
+            function template "void deduction::j2<T,U>(decltype((<expression>)))" (declared at line 162)
+            function template "void deduction::j2<T,U>(decltype((<expression>)))" (declared at line 163)
+            argument types are: ({...})
+      j2<D, E>({}); // expected-error {{ambiguous}}
+      ^
+
+"Test_name.c", line 165: warning: extra braces are nonstandard
+    template<typename T, typename U> void j3(decltype(U{.n = {{0}}}));
+                                                              ^
+          detected during instantiation of "deduction::j3" based on template arguments <deduction::D, deduction::E> at line 169
+
+"Test_name.c", line 182: error: a designator cannot be used with a non-aggregate type "no_unwrap::Q"
+    void g() { Q q = {.a = 1}; } // expected-error {{initialization of non-aggregate type 'Q' with a designated initializer list}}
+                       ^
+
+"Test_name.c", line 219: warning: out-of-order initializers are nonstandard in C++
+     .y=1, // reorder-error {{field 'z' will be initialized after field 'y'}}
+      ^
+
+"Test_name.c", line 221: warning: out-of-order initializers are nonstandard in C++
+     .x=2}, // reorder-error {{field 'y' will be initialized after field 'x'}}
+      ^
+
+"Test_name.c", line 223: warning: out-of-order initializers are nonstandard in C++
+     .a=4}, // reorder-error {{field 'b' will be initialized after field 'a'}}
+      ^
+
+"Test_name.c", line 226: warning: out-of-order initializers are nonstandard in C++
+      .d = 1, // reorder-error {{field 'e' will be initialized after field 'd'}}
+       ^
+
+"Test_name.c", line 228: warning: out-of-order initializers are nonstandard in C++
+      .c = 1, // reorder-error {{field 'd' will be initialized after field 'c'}} // reorder-note {{previous initialization for field 'c' is here}}
+       ^
+
+"Test_name.c", line 229: warning: out-of-order initializers are nonstandard in C++
+      .b = 1, // reorder-error {{field 'c' will be initialized after field 'b'}} // reorder-note {{previous initialization for field 'b' is here}}
+       ^
+
+"Test_name.c", line 230: warning: out-of-order initializers are nonstandard in C++
+      .a = 1, // reorder-error {{field 'b' will be initialized after field 'a'}}
+       ^
+
+"Test_name.c", line 248: warning: out-of-order initializers are nonstandard in C++
+    C c2 = {.a = 3, .y = 1}; // reorder-error-re {{ISO C++ requires field designators to be specified in declaration order; field 'GH63759::C::(anonymous union at {{.*}})' will be initialized after field 'y'}}
+                     ^
+
+"Test_name.c", line 245: warning: variable "c1" was declared but never referenced
+    C c1 = {.x = 3, .a = 1}; // reorder-error-re {{ISO C++ requires field designators to be specified in declaration order; field 'x' will be initialized after field 'GH63759::C::(anonymous union at {{.*}})'}}
+      ^
+
+"Test_name.c", line 248: warning: variable "c2" was declared but never referenced
+    C c2 = {.a = 3, .y = 1}; // reorder-error-re {{ISO C++ requires field designators to be specified in declaration order; field 'GH63759::C::(anonymous union at {{.*}})' will be initialized after field 'y'}}
+      ^
+
+17 errors detected in the compilation of "Test_name.c".

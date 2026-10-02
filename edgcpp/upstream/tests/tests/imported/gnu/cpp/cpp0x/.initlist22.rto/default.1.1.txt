@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: error: an rvalue reference cannot be bound to an lvalue
+  int&& r2{ i };			// { dg-error "" } binding && to lvalue
+            ^
+
+"Test_name.c", line 11: error: initial value of reference to non-const must be an lvalue
+  int& r3{ };			// { dg-error "" } reference to temporary
+         ^
+
+"Test_name.c", line 16: error: initial value of reference to non-const must be an lvalue
+  A& r5 { i };			// { dg-error "" } reference to temporary
+        ^
+
+"Test_name.c", line 19: error: an rvalue reference cannot be bound to an lvalue
+  A&& r8 { a };			// { dg-error "lvalue" } binding && to lvalue
+           ^
+
+"Test_name.c", line 23: error: initial value of reference to non-const must be an lvalue
+  B& r9 { i };			// { dg-error "" } reference to temporary
+        ^
+
+"Test_name.c", line 26: error: an rvalue reference cannot be bound to an lvalue
+  B&& r12 { b };			// { dg-error "lvalue" } binding && to lvalue
+            ^
+
+6 errors detected in the compilation of "Test_name.c".

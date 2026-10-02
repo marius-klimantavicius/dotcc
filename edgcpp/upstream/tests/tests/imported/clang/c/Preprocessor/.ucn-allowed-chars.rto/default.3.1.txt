@@ -1,0 +1,65 @@
+fe_only -DTEST_NUMBER=3 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c11 Test_name.c
+"Test_name.c", line 14: warning: this universal character is not allowed in an identifier
+  extern char a\uFFFF; // none
+               ^
+
+"Test_name.c", line 21: warning: this universal character cannot begin an identifier
+  extern char \u0300; // disallowed in C99/C++03
+              ^
+
+"Test_name.c", line 31: warning: a universal character name cannot designate a character in the basic character set
+  #define A \u0000 // expected-error{{control character}}
+            ^
+
+"Test_name.c", line 32: warning: a universal character name cannot designate a character in the basic character set
+  #define B \u001F // expected-error{{control character}}
+            ^
+
+"Test_name.c", line 33: warning: a universal character name cannot designate a character in the basic character set
+  #define C \u007F // expected-error{{control character}}
+            ^
+
+"Test_name.c", line 34: warning: a universal character name cannot designate a character in the basic character set
+  #define D \u009F // expected-error{{control character}}
+            ^
+
+"Test_name.c", line 35: warning: a universal character name cannot designate a surrogate code point
+  #define E \uD800 // C++03 allows UCNs representing surrogate characters!
+            ^
+
+"Test_name.c", line 87: warning: a universal character name cannot designate a character in the basic character set
+  #define AAA\u0024 // expected-error {{character '$' cannot be specified by a universal character name}} \
+             ^
+
+"Test_name.c", line 89: warning: this universal character is not allowed in an identifier
+  #define AAB\u0040 // expected-error {{character '@' cannot be specified by a universal character name}} \
+             ^
+
+"Test_name.c", line 91: warning: this universal character is not allowed in an identifier
+  #define AAC\u0060 // expected-error {{character '`' cannot be specified by a universal character name}} \
+             ^
+
+"Test_name.c", line 94: warning: a universal character name cannot designate a character in the basic character set
+  #define ABA \u0024 // expected-error {{character '$' cannot be specified by a universal character name}}
+              ^
+
+"Test_name.c", line 95: warning: this universal character is not allowed in an identifier
+  #define ABB \u0040 // expected-error {{character '@' cannot be specified by a universal character name}}
+              ^
+
+"Test_name.c", line 96: warning: this universal character is not allowed in an identifier
+  #define ABC \u0060 // expected-error {{character '`' cannot be specified by a universal character name}}
+              ^
+
+"Test_name.c", line 98: warning: a universal character name cannot designate a character in the basic character set
+  int GH62133_a\u0024; // expected-error {{character '$' cannot be specified by a universal character name}} \
+               ^
+
+"Test_name.c", line 100: warning: this universal character is not allowed in an identifier
+  int GH62133_b\u0040; // expected-error {{character '@' cannot be specified by a universal character name}} \
+               ^
+
+"Test_name.c", line 102: warning: this universal character is not allowed in an identifier
+  int GH62133_c\u0060; // expected-error {{character '`' cannot be specified by a universal character name}} \
+               ^
+

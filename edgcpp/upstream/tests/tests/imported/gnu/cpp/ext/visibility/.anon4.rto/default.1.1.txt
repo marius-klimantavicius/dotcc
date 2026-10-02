@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./ext/visibility/anon4.C", line 12: warning: virtual function "<unnamed>::foo::bar" was not defined (and cannot be defined elsewhere because it is a member of an unnamed namespace)
+      virtual void bar();
+                   ^
+

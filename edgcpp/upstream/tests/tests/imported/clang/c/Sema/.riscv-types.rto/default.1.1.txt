@@ -1,0 +1,214 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 8: error: identifier "__rvv_int64m1_t" is undefined
+    __rvv_int64m1_t x0;
+    ^
+
+"Test_name.c", line 11: error: identifier "__rvv_float64m1_t" is undefined
+    __rvv_float64m1_t x1;
+    ^
+
+"Test_name.c", line 14: error: identifier "__rvv_int64m2_t" is undefined
+    __rvv_int64m2_t x2;
+    ^
+
+"Test_name.c", line 17: error: identifier "__rvv_float64m2_t" is undefined
+    __rvv_float64m2_t x3;
+    ^
+
+"Test_name.c", line 20: error: identifier "__rvv_int64m4_t" is undefined
+    __rvv_int64m4_t x4;
+    ^
+
+"Test_name.c", line 23: error: identifier "__rvv_float64m4_t" is undefined
+    __rvv_float64m4_t x5;
+    ^
+
+"Test_name.c", line 26: error: identifier "__rvv_int64m8_t" is undefined
+    __rvv_int64m8_t x6;
+    ^
+
+"Test_name.c", line 29: error: identifier "__rvv_float64m8_t" is undefined
+    __rvv_float64m8_t x7;
+    ^
+
+"Test_name.c", line 32: error: identifier "__rvv_int32m1_t" is undefined
+    __rvv_int32m1_t x8;
+    ^
+
+"Test_name.c", line 35: error: identifier "__rvv_float32m1_t" is undefined
+    __rvv_float32m1_t x9;
+    ^
+
+"Test_name.c", line 38: error: identifier "__rvv_int32m2_t" is undefined
+    __rvv_int32m2_t x10;
+    ^
+
+"Test_name.c", line 41: error: identifier "__rvv_float32m2_t" is undefined
+    __rvv_float32m2_t x11;
+    ^
+
+"Test_name.c", line 44: error: identifier "__rvv_int32m4_t" is undefined
+    __rvv_int32m4_t x12;
+    ^
+
+"Test_name.c", line 47: error: identifier "__rvv_float32m4_t" is undefined
+    __rvv_float32m4_t x13;
+    ^
+
+"Test_name.c", line 50: error: identifier "__rvv_int32m8_t" is undefined
+    __rvv_int32m8_t x14;
+    ^
+
+"Test_name.c", line 53: error: identifier "__rvv_float32m8_t" is undefined
+    __rvv_float32m8_t x15;
+    ^
+
+"Test_name.c", line 56: error: identifier "__rvv_int16m1_t" is undefined
+    __rvv_int16m1_t x16;
+    ^
+
+"Test_name.c", line 59: error: identifier "__rvv_float16m1_t" is undefined
+    __rvv_float16m1_t x17;
+    ^
+
+"Test_name.c", line 62: error: identifier "__rvv_int16m2_t" is undefined
+    __rvv_int16m2_t x18;
+    ^
+
+"Test_name.c", line 65: error: identifier "__rvv_float16m2_t" is undefined
+    __rvv_float16m2_t x19;
+    ^
+
+"Test_name.c", line 68: error: identifier "__rvv_int16m4_t" is undefined
+    __rvv_int16m4_t x20;
+    ^
+
+"Test_name.c", line 71: error: identifier "__rvv_float16m4_t" is undefined
+    __rvv_float16m4_t x21;
+    ^
+
+"Test_name.c", line 74: error: identifier "__rvv_int16m8_t" is undefined
+    __rvv_int16m8_t x22;
+    ^
+
+"Test_name.c", line 77: error: identifier "__rvv_float16m8_t" is undefined
+    __rvv_float16m8_t x23;
+    ^
+
+"Test_name.c", line 80: error: identifier "__rvv_int8m1_t" is undefined
+    __rvv_int8m1_t x24;
+    ^
+
+"Test_name.c", line 83: error: identifier "__rvv_int8m2_t" is undefined
+    __rvv_int8m2_t x25;
+    ^
+
+"Test_name.c", line 86: error: identifier "__rvv_int8m4_t" is undefined
+    __rvv_int8m4_t x26;
+    ^
+
+"Test_name.c", line 89: error: identifier "__rvv_int8m8_t" is undefined
+    __rvv_int8m8_t x27;
+    ^
+
+"Test_name.c", line 92: error: identifier "__rvv_bool64_t" is undefined
+    __rvv_bool64_t x28;
+    ^
+
+"Test_name.c", line 95: error: identifier "__rvv_bool32_t" is undefined
+    __rvv_bool32_t x29;
+    ^
+
+"Test_name.c", line 98: error: identifier "__rvv_bool16_t" is undefined
+    __rvv_bool16_t x30;
+    ^
+
+"Test_name.c", line 101: error: identifier "__rvv_bool8_t" is undefined
+    __rvv_bool8_t x31;
+    ^
+
+"Test_name.c", line 104: error: identifier "__rvv_bool8_t" is undefined
+    __rvv_bool8_t x32;
+    ^
+
+"Test_name.c", line 107: error: identifier "__rvv_bool8_t" is undefined
+    __rvv_bool8_t x33;
+    ^
+
+"Test_name.c", line 110: error: identifier "__rvv_bool8_t" is undefined
+    __rvv_bool8_t x34;
+    ^
+
+"Test_name.c", line 113: error: identifier "__rvv_int32mf2_t" is undefined
+    __rvv_int32mf2_t x35;
+    ^
+
+"Test_name.c", line 116: error: identifier "__rvv_float32mf2_t" is undefined
+    __rvv_float32mf2_t x36;
+    ^
+
+"Test_name.c", line 119: error: identifier "__rvv_int16mf4_t" is undefined
+    __rvv_int16mf4_t x37;
+    ^
+
+"Test_name.c", line 122: error: identifier "__rvv_float16mf4_t" is undefined
+    __rvv_float16mf4_t x38;
+    ^
+
+"Test_name.c", line 125: error: identifier "__rvv_int16mf2_t" is undefined
+    __rvv_int16mf2_t x39;
+    ^
+
+"Test_name.c", line 128: error: identifier "__rvv_float16mf2_t" is undefined
+    __rvv_float16mf2_t x40;
+    ^
+
+"Test_name.c", line 131: error: identifier "__rvv_int8mf8_t" is undefined
+    __rvv_int8mf8_t x41;
+    ^
+
+"Test_name.c", line 134: error: identifier "__rvv_int8mf4_t" is undefined
+    __rvv_int8mf4_t x42;
+    ^
+
+"Test_name.c", line 137: error: identifier "__rvv_int8mf2_t" is undefined
+    __rvv_int8mf2_t x43;
+    ^
+
+"Test_name.c", line 140: error: identifier "__rvv_int32m1x2_t" is undefined
+    __rvv_int32m1x2_t x44;
+    ^
+
+"Test_name.c", line 143: error: identifier "__rvv_bfloat16m1_t" is undefined
+    __rvv_bfloat16m1_t x45;
+    ^
+
+"Test_name.c", line 146: error: identifier "__rvv_bfloat16m2_t" is undefined
+    __rvv_bfloat16m2_t x46;
+    ^
+
+"Test_name.c", line 149: error: identifier "__rvv_bfloat16m4_t" is undefined
+    __rvv_bfloat16m4_t x47;
+    ^
+
+"Test_name.c", line 152: error: identifier "__rvv_bfloat16m8_t" is undefined
+    __rvv_bfloat16m8_t x48;
+    ^
+
+"Test_name.c", line 155: error: identifier "__rvv_bfloat16mf4_t" is undefined
+    __rvv_bfloat16mf4_t x49;
+    ^
+
+"Test_name.c", line 158: error: identifier "__rvv_bfloat16mf2_t" is undefined
+    __rvv_bfloat16mf2_t x50;
+    ^
+
+"Test_name.c", line 162: error: identifier "__rvv_bool4_t" is undefined
+  typedef __rvv_bool4_t vbool4_t;
+          ^
+
+"Test_name.c", line 163: error: identifier "__rvv_bool4_t" is undefined
+  __rvv_bool4_t get_rvv_bool4(void);
+  ^
+
+53 errors detected in the compilation of "Test_name.c".

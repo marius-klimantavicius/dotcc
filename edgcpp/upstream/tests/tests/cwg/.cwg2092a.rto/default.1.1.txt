@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c++17 -tused -A Test_name.c
+"Test_name.c", line 7: error: no instance of function template "foo" matches the argument list
+            argument types are: (int)
+      foo(0);   // #1 valid?
+      ^
+"Test_name.c", line 3: note: candidate function template "foo" failed deduction
+  template <class T = int> void foo(T*);
+                                ^
+
+1 error detected in the compilation of "Test_name.c".

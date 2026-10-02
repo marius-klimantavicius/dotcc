@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 19: error: "i", declared in for-loop initialization, may not be redeclared in this scope
+        int i = 2;	// { dg-error "redeclaration" "redecl" }
+            ^
+
+"Test_name.c", line 31: error: "k", declared in condition, may not be redeclared in this scope
+        int k = 2;	// { dg-error "redeclaration" "redecl" }
+            ^
+
+"Test_name.c", line 41: error: "i", declared in condition, may not be redeclared in this scope
+        int i = 2;	// { dg-error "redeclaration" "redecl" }
+            ^
+
+"Test_name.c", line 55: error: "i", declared in condition, may not be redeclared in this scope
+        int i = 2;	// { dg-error "redeclaration" "redecl" }
+            ^
+
+"Test_name.c", line 65: error: "i", declared in condition, may not be redeclared in this scope
+        int i = 2;	// { dg-error "redeclaration" "redecl" }
+            ^
+
+"Test_name.c", line 75: error: "i", declared in condition, may not be redeclared in this scope
+      int i;		// { dg-error "redeclaration" "redecl" }
+          ^
+
+"Test_name.c", line 170: warning: variable "i" was declared but never referenced
+    int i = 1;
+        ^
+
+6 errors detected in the compilation of "Test_name.c".

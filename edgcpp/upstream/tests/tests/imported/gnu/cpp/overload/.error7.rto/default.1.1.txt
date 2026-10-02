@@ -1,0 +1,15 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 11: error: more than one instance of overloaded function "foo" matches the argument list:
+            function "foo(char *, long)" (declared at line 5)
+            function "foo(char *, unsigned int)" (declared at line 6)
+            argument types are: (char *, int)
+    foo((char *)0, 0); // { dg-error "ambiguous" }
+    ^
+"Test_name.c", line 8: note: function "foo(char, unsigned int)" does not match because argument #1 does not match parameter
+  bool foo(char, unsigned);   // #4, non-strictly viable
+       ^
+"Test_name.c", line 7: note: function "foo(char, long)" does not match because argument #1 does not match parameter
+  bool foo(char, long);       // #3, non-strictly viable
+       ^
+
+1 error detected in the compilation of "Test_name.c".

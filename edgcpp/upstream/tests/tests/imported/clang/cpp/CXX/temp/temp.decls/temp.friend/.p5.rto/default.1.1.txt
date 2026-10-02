@@ -1,0 +1,23 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 24: error: incomplete type "test1::A<T>" is not allowed
+      template <class T> friend void A<T>::f(); // expected-warning {{not supported}}
+                                     ^
+
+"Test_name.c", line 36: error: function "test1::C::foo" (declared at line 23) is inaccessible
+      void f() { C::foo(); }
+                    ^
+
+"Test_name.c", line 46: error: incomplete type "test2::A<T>" is not allowed
+      template <class T> friend void A<T>::g(); // expected-warning {{not supported}}
+                                     ^
+
+"Test_name.c", line 58: error: function "test2::C::foo" (declared at line 45) is inaccessible
+      void f() { C::foo(); }
+                    ^
+
+"Test_name.c", line 99: error: declaration is incompatible with nontype "<unnamed> test5::A<T>::foo" (declared at line 99)
+      template<template <class> class U> friend void A<U>::foo(); // expected-warning {{not supported}}
+                                                           ^
+          detected during instantiation of class "test5::A<T> [with T=test5::B]" at line 103
+
+5 errors detected in the compilation of "Test_name.c".

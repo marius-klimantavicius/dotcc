@@ -1,0 +1,19 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 10: error: expected a string literal
+  int foo6 asm ("bar6"_x); // expected-error {{string literal with user-defined suffix cannot be used here}}
+                ^
+
+"Test_name.c", line 11: error: variable "foo6" has already been defined (previous definition at line 10)
+  int foo6 asm ("" L"bar7"); // expected-error {{cannot use wide string literal in 'asm'}}
+      ^
+
+"Test_name.c", line 15: warning: attribute "gnu::deprecated" does not apply here
+    [[gnu::deprecated]] asm(""); // expected-warning {{'gnu::deprecated' attribute ignored}}
+      ^
+
+"Test_name.c", line 20: catastrophic error: #error directive: Extension 'gnu_asm_constexpr_strings' should be available by default
+  #error Extension 'gnu_asm_constexpr_strings' should be available by default
+   ^
+
+2 errors and 1 catastrophic error detected in the compilation of "Test_name.c".
+Compilation terminated.

@@ -1,0 +1,1 @@
+cpfe -DTEST_NUMBER=2 --c++11 -tused --multi_trans_unit --g++ Test_name.c gnats25352-2.C

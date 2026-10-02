@@ -1,0 +1,25 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 15: warning: declaration of "e" hides handler parameter
+      void *e;       // { dg-error "redeclaration" }
+            ^
+
+"Test_name.c", line 15: warning: variable "e" was declared but never referenced
+      void *e;       // { dg-error "redeclaration" }
+            ^
+
+"Test_name.c", line 28: warning: variable "e" was declared but never referenced
+        void *e; // Ok, not outermost block.
+              ^
+
+"Test_name.c", line 40: warning: declaration of "e" hides handler parameter
+    void *e;       // { dg-error "redeclaration" }
+          ^
+
+"Test_name.c", line 40: warning: variable "e" was declared but never referenced
+    void *e;       // { dg-error "redeclaration" }
+          ^
+
+"Test_name.c", line 51: warning: variable "e" was declared but never referenced
+      void *e; // Ok, not outermost block.
+            ^
+

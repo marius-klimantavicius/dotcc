@@ -1,0 +1,97 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 5: error: expression must have a constant value
+  constexpr int a = -42 << 0;	// { dg-error "left operand of shift expression '\\(-42 << 0\\)' is negative" "" { target c++17_down } }
+                    ^
+"Test_name.c", line 5: note: left-shifting a negative value has undefined behavior
+  constexpr int a = -42 << 0;	// { dg-error "left operand of shift expression '\\(-42 << 0\\)' is negative" "" { target c++17_down } }
+                        ^
+
+"Test_name.c", line 6: error: expression must have a constant value
+  constexpr int b = -42 << 1;	// { dg-error "left operand of shift expression '\\(-42 << 1\\)' is negative" "" { target c++17_down } }
+                    ^
+"Test_name.c", line 6: note: left-shifting a negative value has undefined behavior
+  constexpr int b = -42 << 1;	// { dg-error "left operand of shift expression '\\(-42 << 1\\)' is negative" "" { target c++17_down } }
+                        ^
+
+"Test_name.c", line 7: error: expression must have a constant value
+  constexpr int c = -42 << (__SIZEOF_INT__ * __CHAR_BIT__ - 1);	// { dg-error "left operand of shift expression '\\(-42 << \[0-9]*\\)' is negative" "" { target c++17_down } }
+                    ^
+"Test_name.c", line 7: note: left-shifting a negative value has undefined behavior
+  constexpr int c = -42 << (__SIZEOF_INT__ * __CHAR_BIT__ - 1);	// { dg-error "left operand of shift expression '\\(-42 << \[0-9]*\\)' is negative" "" { target c++17_down } }
+                        ^
+
+"Test_name.c", line 9: error: expression must have a constant value
+  constexpr int d = 42 << (__SIZEOF_INT__ * __CHAR_BIT__ - 1);	// { dg-error "shift expression '\\(42 << \[0-9]*\\)' overflows" "" { target c++17_down } }
+                    ^
+"Test_name.c", line 9: note: value exceeds range of "int"
+  constexpr int d = 42 << (__SIZEOF_INT__ * __CHAR_BIT__ - 1);	// { dg-error "shift expression '\\(42 << \[0-9]*\\)' overflows" "" { target c++17_down } }
+                       ^
+
+"Test_name.c", line 11: error: expression must have a constant value
+  constexpr int e = 32 << (__SIZEOF_INT__ * __CHAR_BIT__ - 5);	// { dg-error "shift expression '\\(32 << \[0-9]*\\)' overflows" "" { target c++17_down } }
+                    ^
+"Test_name.c", line 11: note: value exceeds range of "int"
+  constexpr int e = 32 << (__SIZEOF_INT__ * __CHAR_BIT__ - 5);	// { dg-error "shift expression '\\(32 << \[0-9]*\\)' overflows" "" { target c++17_down } }
+                       ^
+
+"Test_name.c", line 14: warning: integer conversion resulted in a change of sign
+  constexpr int g = -42U << 0;
+                    ^
+
+"Test_name.c", line 15: warning: integer conversion resulted in a change of sign
+  constexpr int h = -42U << 1;
+                    ^
+
+"Test_name.c", line 19: warning: integer conversion resulted in a change of sign
+  constexpr int l = 32U << (__SIZEOF_INT__ * __CHAR_BIT__ - 6);
+                    ^
+
+"Test_name.c", line 5: warning: variable "a" was declared but never referenced
+  constexpr int a = -42 << 0;	// { dg-error "left operand of shift expression '\\(-42 << 0\\)' is negative" "" { target c++17_down } }
+                ^
+
+"Test_name.c", line 6: warning: variable "b" was declared but never referenced
+  constexpr int b = -42 << 1;	// { dg-error "left operand of shift expression '\\(-42 << 1\\)' is negative" "" { target c++17_down } }
+                ^
+
+"Test_name.c", line 7: warning: variable "c" was declared but never referenced
+  constexpr int c = -42 << (__SIZEOF_INT__ * __CHAR_BIT__ - 1);	// { dg-error "left operand of shift expression '\\(-42 << \[0-9]*\\)' is negative" "" { target c++17_down } }
+                ^
+
+"Test_name.c", line 9: warning: variable "d" was declared but never referenced
+  constexpr int d = 42 << (__SIZEOF_INT__ * __CHAR_BIT__ - 1);	// { dg-error "shift expression '\\(42 << \[0-9]*\\)' overflows" "" { target c++17_down } }
+                ^
+
+"Test_name.c", line 11: warning: variable "e" was declared but never referenced
+  constexpr int e = 32 << (__SIZEOF_INT__ * __CHAR_BIT__ - 5);	// { dg-error "shift expression '\\(32 << \[0-9]*\\)' overflows" "" { target c++17_down } }
+                ^
+
+"Test_name.c", line 13: warning: variable "f" was declared but never referenced
+  constexpr int f = 32 << (__SIZEOF_INT__ * __CHAR_BIT__ - 6);
+                ^
+
+"Test_name.c", line 14: warning: variable "g" was declared but never referenced
+  constexpr int g = -42U << 0;
+                ^
+
+"Test_name.c", line 15: warning: variable "h" was declared but never referenced
+  constexpr int h = -42U << 1;
+                ^
+
+"Test_name.c", line 16: warning: variable "i" was declared but never referenced
+  constexpr int i = -42U << (__SIZEOF_INT__ * __CHAR_BIT__ - 1);
+                ^
+
+"Test_name.c", line 17: warning: variable "j" was declared but never referenced
+  constexpr int j = 42U << (__SIZEOF_INT__ * __CHAR_BIT__ - 1);
+                ^
+
+"Test_name.c", line 18: warning: variable "k" was declared but never referenced
+  constexpr int k = 32U << (__SIZEOF_INT__ * __CHAR_BIT__ - 5);
+                ^
+
+"Test_name.c", line 19: warning: variable "l" was declared but never referenced
+  constexpr int l = 32U << (__SIZEOF_INT__ * __CHAR_BIT__ - 6);
+                ^
+
+5 errors detected in the compilation of "Test_name.c".

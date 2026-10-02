@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++26 Test_name.c
+"Test_name.c", line 4: error: incomplete type "int []" is not allowed
+    int y[] = { 0 };          // error: non-static data member of incomplete type
+        ^
+
+1 error detected in the compilation of "Test_name.c".

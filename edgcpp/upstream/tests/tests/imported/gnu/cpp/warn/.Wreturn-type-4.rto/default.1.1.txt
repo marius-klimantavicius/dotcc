@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 7: warning: type qualifier on return type is meaningless
+  volatile void bar(); /* { dg-warning "type qualifiers ignored" } */
+  ^
+
+"Test_name.c", line 7: warning: a volatile return type is deprecated
+  volatile void bar(); /* { dg-warning "type qualifiers ignored" } */
+                ^
+
+"Test_name.c", line 12: warning: type qualifier on return type is meaningless
+      const int bla(); /* { dg-warning "type qualifiers ignored" } */
+      ^
+
+"Test_name.c", line 27: warning: type qualifier on return type is meaningless
+      const int f();                     /* { dg-warning "type qualifiers ignored" } */
+      ^
+

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=3 --diag_error=nonstd_void_param_list --c -A Test_name.c
+"Test_name.c", line 15: error: declaring a void parameter list with a typedef is nonstandard
+  void f(V) {}
+         ^
+
+1 error detected in the compilation of "Test_name.c".

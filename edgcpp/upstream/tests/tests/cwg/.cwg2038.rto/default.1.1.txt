@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++17 -tused -A Test_name.c
+"Test_name.c", line 5: error: braced initialization of a variable declared with a placeholder type but without "=" requires exactly one element inside the braces
+   auto x2{1, 2}; // Was std::initializer_list<int>, now ill-formed
+          ^
+
+1 error detected in the compilation of "Test_name.c".

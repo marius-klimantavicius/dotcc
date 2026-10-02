@@ -1,0 +1,182 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 --ms_extensions -w Test_name.c
+"Test_name.c", line 45: error: a value of type "Animal" (aka "int") cannot be used to initialize an entity of type "N"
+  N t1 = x1; // expected-error {{lvalue of type 'Animal' (aka 'int')}}
+         ^
+
+"Test_name.c", line 48: error: a value of type "AnimalPtr" (aka "int *") cannot be used to initialize an entity of type "N"
+  N t2 = x2; // expected-error {{lvalue of type 'AnimalPtr' (aka 'int *')}}
+         ^
+
+"Test_name.c", line 51: error: a value of type "Animal *" (aka "int *") cannot be used to initialize an entity of type "N"
+  N t3 = x3; // expected-error {{lvalue of type 'Animal *' (aka 'int *')}}
+         ^
+
+"Test_name.c", line 55: error: a value of type "Man" (aka "int") cannot be used to initialize an entity of type "N"
+  N t4 = x4; // expected-error {{lvalue of type 'Man' (aka 'int')}}
+         ^
+
+"Test_name.c", line 56: error: a value of type "Dog" (aka "int") cannot be used to initialize an entity of type "N"
+  N t5 = x5; // expected-error {{lvalue of type 'Dog' (aka 'int')}}
+         ^
+
+"Test_name.c", line 58: error: the definition of std::initializer_list does not contain the expected constructor
+  auto x6 = { Man(), Dog() };
+            ^
+
+"Test_name.c", line 59: error: no suitable conversion function from "std::initializer_list<Man>" (aka "std::initializer_list<int>") to "N" exists
+  N t6 = x6; // expected-error {{from 'std::initializer_list<Animal>' (aka 'std::initializer_list<int>')}}
+         ^
+
+"Test_name.c", line 67: error: a value of type "Animal" (aka "int") cannot be used to initialize an entity of type "N"
+  N t1 = x1; // expected-error {{lvalue of type 'Animal' (aka 'int')}}
+         ^
+
+"Test_name.c", line 71: error: a value of type "Animal" (aka "int") cannot be used to initialize an entity of type "N"
+  N t2 = x2; // expected-error {{lvalue of type 'Animal' (aka 'int')}}
+         ^
+
+"Test_name.c", line 74: error: a value of type "Animal" (aka "int") cannot be used to initialize an entity of type "N"
+  N t3 = x3; // expected-error {{lvalue of type 'Animal' (aka 'int')}}
+         ^
+
+"Test_name.c", line 80: error: a value of type "Dog" (aka "int") cannot be used to initialize an entity of type "N"
+  N t1 = [] { // expected-error {{rvalue of type 'Animal' (aka 'int')}}
+         ^
+
+"Test_name.c", line 86: error: a value of type "Dog" (aka "int") cannot be used to initialize an entity of type "N"
+  N t2 = []() -> decltype(auto) { // expected-error {{rvalue of type 'Animal' (aka 'int')}}
+         ^
+
+"Test_name.c", line 92: error: a value of type "Man" (aka "int") cannot be used to initialize an entity of type "N"
+  N t3 = [] { // expected-error {{rvalue of type 'Animal' (aka 'int')}}
+         ^
+
+"Test_name.c", line 99: error: a value of type "int" cannot be used to initialize an entity of type "N"
+  N t4 = [] { // expected-error {{rvalue of type 'int'}}
+         ^
+
+"Test_name.c", line 105: error: a value of type "void" cannot be used to initialize an entity of type "N"
+  N t5 = [] { // expected-error {{rvalue of type 'Virus' (aka 'void')}}
+         ^
+
+"Test_name.c", line 111: error: a value of type "void" cannot be used to initialize an entity of type "N"
+  N t6 = [] { // expected-error {{rvalue of type 'void'}}
+         ^
+
+"Test_name.c", line 117: error: a value of type "void" cannot be used to initialize an entity of type "N"
+  N t7 = [] { // expected-error {{rvalue of type 'Virus' (aka 'void')}}
+         ^
+
+"Test_name.c", line 146: error: deduced return type "N" conflicts with previously deduced type "DogPtr"
+  TEST_AUTO(t1, ManPtr, DogPtr)      // expected-error {{but deduced as 'Animal *' (aka 'int *')}}
+  ^
+
+"Test_name.c", line 147: error: deduced return type "N" conflicts with previously deduced type "int *"
+  TEST_AUTO(t2, ManPtr, int *)       // expected-error {{but deduced as 'int *'}}
+  ^
+
+"Test_name.c", line 148: error: deduced return type "N" conflicts with previously deduced type "ManPtr"
+  TEST_AUTO(t3, SocratesPtr, ManPtr) // expected-error {{but deduced as 'ManPtr' (aka 'int *')}}
+  ^
+
+"Test_name.c", line 150: error: deduced return type "N" conflicts with previously deduced type "Dog"
+  TEST_AUTO(t4, _Atomic(Man), _Atomic(Dog)) // expected-error {{but deduced as '_Atomic(Animal)'}}
+  ^
+
+"Test_name.c", line 152: error: expected a ")"
+  using block_man = void (^)(Man);
+                          ^
+
+"Test_name.c", line 153: error: expected a ")"
+  using block_dog = void (^)(Dog);
+                          ^
+
+"Test_name.c", line 154: error: deduced return type "N" conflicts with previously deduced type "misc::block_dog *" (aka "void (*)(int)")
+  TEST_AUTO(t5, block_man, block_dog) // expected-error {{but deduced as 'void (^__strong)(Animal)'}}
+  ^
+
+"Test_name.c", line 157: error: dynamic exception specifications are not permitted in this mode
+  using fp1 = SARS (*)(Man, DogPtr) throw(Vibrio);
+                                    ^
+
+"Test_name.c", line 158: error: dynamic exception specifications are not permitted in this mode
+  using fp2 = Ebola (*)(Dog, ManPtr) throw(Bacilli);
+                                     ^
+
+"Test_name.c", line 159: error: deduced return type "N" conflicts with previously deduced type "misc::fp2"
+  TEST_AUTO(t6, fp1, fp2); // expected-error {{but deduced as 'Virus (*)(Animal, Animal *) throw(Bacteria)' (aka 'void (*)(int, int *) throw(Bacteria)')}}
+  ^
+
+"Test_name.c", line 161: error: dynamic exception specifications are not permitted in this mode
+  using fp3 = SARS (*)() throw(Man);
+                         ^
+
+"Test_name.c", line 162: error: dynamic exception specifications are not permitted in this mode
+  using fp4 = Ebola (*)() throw(Vibrio);
+                          ^
+
+"Test_name.c", line 168: error: deduced return type "N" conflicts with previously deduced type "misc::fp3"
+    return N(); // expected-error {{but deduced as 'Virus (*)() throw(Man, Vibrio)' (aka 'void (*)() throw(Man, Vibrio)')}}
+           ^
+
+"Test_name.c", line 174: error: deduced return type "N" conflicts with previously deduced type "misc::fp6"
+  TEST_AUTO(t8, fp5, fp6); // expected-error {{but deduced as 'void (*)(Animal)' (aka 'void (*)(int)')}}
+  ^
+
+"Test_name.c", line 178: error: deduced return type "N" conflicts with previously deduced type "void (*)(Dog)" (aka "void (*)(int)")
+  TEST_AUTO(t9, fp7, fp8); // expected-error {{but deduced as 'void (*)(const Animal)' (aka 'void (*)(const int)')}}
+  ^
+
+"Test_name.c", line 182: error: deduced return type "N" conflicts with previously deduced type "void (*)(Dog)" (aka "void (*)(int)")
+  TEST_AUTO(t10, fp9, fp10); // expected-error {{but deduced as 'void (*)(const Animal)' (aka 'void (*)(const int)')}}
+  ^
+
+"Test_name.c", line 184: error: identifier "__strong" is undefined
+  using fp11 = void (*)(__strong block_man);
+                        ^
+
+"Test_name.c", line 185: error: identifier "__weak" is undefined
+  using fp12 = void (*)(__weak block_dog);
+                        ^
+
+"Test_name.c", line 186: error: deduced return type "N" conflicts with previously deduced type "misc::fp12"
+  TEST_AUTO(t11, fp11, fp12); // expected-error {{but deduced as 'void (*)(void (^)(Animal))'}}
+  ^
+
+"Test_name.c", line 188: error: deduced return type "N" conflicts with previously deduced type "Dog Plant::*" (aka "int Plant::*")
+  TEST_AUTO(t12, Man Angiosperm::*, Dog Gymnosperm::*) // expected-error {{but deduced as 'Animal Plant::*'}}
+  ^
+
+"Test_name.c", line 190: error: deduced return type "N" conflicts with previously deduced type "const Dog &"
+  TEST_DAUTO(t13, const Man &, const Dog &) // expected-error {{but deduced as 'const Animal &' (aka 'const int &')}}
+  ^
+
+"Test_name.c", line 192: error: deduced return type "N" conflicts with previously deduced type "Dog &&" (aka "int &&")
+  TEST_DAUTO(t14, Man &&, Dog &&) // expected-error {{but deduced as 'Animal &&' (aka 'int &&')}}
+  ^
+
+"Test_name.c", line 196: error: deduced return type "N" conflicts with previously deduced type "misc::matrix_dog"
+  TEST_AUTO(t15, matrix_man, matrix_dog) // expected-error {{but deduced as 'Animal __attribute__((matrix_type(4, 4)))'}}
+  ^
+
+"Test_name.c", line 200: error: deduced return type "N" conflicts with previously deduced type "misc::vector_dog"
+  TEST_AUTO(t16, vector_man, vector_dog) // expected-error {{but deduced as '__attribute__((__vector_size__(1 * sizeof(Animal)))) Animal' (vector of 1 'Animal' value)}}
+  ^
+
+"Test_name.c", line 204: error: deduced return type "N" conflicts with previously deduced type "misc::ext_vector_dog"
+  TEST_AUTO(t17, ext_vector_man, ext_vector_dog) // expected-error {{but deduced as 'Animal __attribute__((ext_vector_type(4)))' (vector of 4 'Animal' values)}}
+  ^
+
+"Test_name.c", line 209: error: deduced return type "N" conflicts with previously deduced type "misc::ConstTwoMenPtr"
+  TEST_AUTO(t18, ConstTwoDogsPtr, ConstTwoMenPtr); // expected-error {{but deduced as 'const Animal (*)[2]' (aka 'const int (*)[2]')}}
+  ^
+
+"Test_name.c", line 217: error: dynamic exception specifications are not permitted in this mode
+  void dyn() throw(int);
+             ^
+
+"Test_name.c", line 241: error: cannot determine which instance of overloaded function "non_deduced::g" is intended
+      return g;
+             ^
+
+45 errors detected in the compilation of "Test_name.c".

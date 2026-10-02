@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 12: warning: invalid narrowing conversion from "int" to "char"
+    char arr[2] = {c+'0', 0};	// { dg-error "narrowing" }
+                   ^
+
+"Test_name.c", line 12: warning: variable "arr" was declared but never referenced
+    char arr[2] = {c+'0', 0};	// { dg-error "narrowing" }
+         ^
+
+"Test_name.c", line 13: warning: variable "s" was declared but never referenced
+    stru s = {x,0};
+         ^
+

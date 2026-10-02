@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 11: error: expected an expression
+    foo ({.d = 5, 6, .b = 2, 3});
+         ^
+
+"Test_name.c", line 12: error: expected an expression
+    bar ({.b = 1, .a = 2});
+         ^
+
+2 errors detected in the compilation of "Test_name.c".

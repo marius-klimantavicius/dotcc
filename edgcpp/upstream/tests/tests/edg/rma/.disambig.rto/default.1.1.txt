@@ -1,0 +1,22 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 7: error: expression must be a modifiable lvalue
+    I(a)++;          // stmt
+    ^
+
+"Test_name.c", line 7: warning: variable "a" is used before its value is set
+    I(a)++;          // stmt
+      ^
+
+"Test_name.c", line 12: warning: expression has no effect
+    I(a)<I(b);       // expr
+    ^
+
+"Test_name.c", line 9: warning: variable "g" was declared but never referenced
+    I(*g)(int);      // decl
+       ^
+
+"Test_name.c", line 11: warning: variable "c" was declared but never referenced
+    I(c)[2];         // decl
+      ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 26: error: reference to local variable of enclosing function is not allowed
+      Void<(decltype(of_type_X)::foo(f), 0)> // { dg-error "variable" }
+                                     ^
+
+"Test_name.c", line 28: error: no instance of function template "bar" matches the argument list
+            argument types are: (lambda [](auto)->Void<<expression>>, X)
+    bar(l , X{});			// { dg-error "no match" }
+    ^
+"Test_name.c", line 17: note: candidate function template "bar" failed deduction
+  bar(F f, A a) -> decltype( ( f(a) , 0 ) ) // { dg-message "" }
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

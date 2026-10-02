@@ -1,0 +1,12 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: error: not a class or struct name
+    int { []{ struct ZZ : Ts {}; }... }; // { dg-bogus "" "" { xfail *-*-* } }
+                          ^
+          detected during instantiation of "void local_class<Ts...>() [with Ts=<int>]" at line 14
+
+"Test_name.c", line 10: error: no suitable conversion function from "lambda []()->void" to "int" exists
+    int { []{ struct ZZ : Ts {}; }... }; // { dg-bogus "" "" { xfail *-*-* } }
+          ^
+          detected during instantiation of "void local_class<Ts...>() [with Ts=<int>]" at line 14
+
+2 errors detected in the compilation of "Test_name.c".

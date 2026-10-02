@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 13: error: more than one instance of overloaded function "f" matches the argument list:
+            function template "void f<T>(short)" (declared at line 8)
+            function template "void f<T>(long)" (declared at line 9)
+            argument types are: (int)
+    f<int>(42);
+    ^
+
+1 error detected in the compilation of "Test_name.c".

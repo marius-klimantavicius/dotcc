@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 30: error: invalid storage class for a function
+  auto f(double x) -> decltype(f(int(x))) {
+  ^
+
+"Test_name.c", line 30: error: explicit type is missing ("int" assumed)
+  auto f(double x) -> decltype(f(int(x))) {
+       ^
+
+"Test_name.c", line 30: error: expected a "{"
+  auto f(double x) -> decltype(f(int(x))) {
+                   ^
+
+"Test_name.c", line 31: error: type name is not allowed
+    return E{C()};  // Previously caused an abort
+           ^
+
+"Test_name.c", line 31: error: expected a ";"
+    return E{C()};  // Previously caused an abort
+            ^
+
+5 errors detected in the compilation of "Test_name.c".

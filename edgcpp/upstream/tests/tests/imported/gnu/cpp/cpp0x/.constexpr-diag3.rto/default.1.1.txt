@@ -1,0 +1,59 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 13: error: expression must have a constant value
+    constexpr int i = g(1);	// { dg-error "g.T" }
+                      ^
+"Test_name.c", line 13: note: cannot call non-constexpr function "g(T) [with T=int]" (declared at line 9)
+    constexpr int i = g(1);	// { dg-error "g.T" }
+                      ^
+
+"Test_name.c", line 13: warning: variable "i" was declared but never referenced
+    constexpr int i = g(1);	// { dg-error "g.T" }
+                  ^
+
+"Test_name.c", line 29: error: expression must have a constant value
+  constexpr complex co1(0, 1);	   // { dg-error "19:the type .const complex. of .constexpr. variable .co1. is not literal" "" { target { ! implicit_constexpr } } }
+                        ^
+"Test_name.c", line 29: note: cannot call non-constexpr function "complex::complex(double, double)" (declared at line 20)
+  constexpr complex co1(0, 1);	   // { dg-error "19:the type .const complex. of .constexpr. variable .co1. is not literal" "" { target { ! implicit_constexpr } } }
+                        ^
+
+"Test_name.c", line 29: error: a constexpr variable must have a literal type or a reference type
+  constexpr complex co1(0, 1);	   // { dg-error "19:the type .const complex. of .constexpr. variable .co1. is not literal" "" { target { ! implicit_constexpr } } }
+  ^
+
+"Test_name.c", line 42: error: non-constant initializer for constexpr constructor
+    constexpr derived(): base() { } // { dg-error "non-.constexpr. function" "" { target { { ! implicit_constexpr } && c++20_down } } }
+                             ^
+
+"Test_name.c", line 45: error: initialization is not constant
+  constexpr derived obj;		// { dg-error "not literal" "" { target { ! implicit_constexpr } } }
+                    ^
+"Test_name.c", line 42: note: cannot call non-constexpr function "base::base()" (declared at line 37)
+    constexpr derived(): base() { } // { dg-error "non-.constexpr. function" "" { target { { ! implicit_constexpr } && c++20_down } } }
+              ^
+
+"Test_name.c", line 45: error: a constexpr variable must have a literal type or a reference type
+  constexpr derived obj;		// { dg-error "not literal" "" { target { ! implicit_constexpr } } }
+  ^
+
+"Test_name.c", line 53: error: defaulted default constructor cannot be constexpr because the corresponding implicitly declared default constructor would not be constexpr
+    constexpr Def() = default;	// { dg-error "implicit declaration is not .constexpr." "" { target c++17_down } }
+              ^
+
+"Test_name.c", line 56: error: const variable "defobj" requires an initializer -- class "Def" has no user-provided default constructor
+  constexpr Def defobj;		// { dg-error "uninitialized" }
+                ^
+
+"Test_name.c", line 30: warning: variable "dd2" was declared but never referenced
+  constexpr double dd2 = co1.real(); // { dg-error "|in .constexpr. expansion of " "" { target { ! implicit_constexpr } } }
+                   ^
+
+"Test_name.c", line 45: warning: variable "obj" was declared but never referenced
+  constexpr derived obj;		// { dg-error "not literal" "" { target { ! implicit_constexpr } } }
+                    ^
+
+"Test_name.c", line 56: warning: variable "defobj" was declared but never referenced
+  constexpr Def defobj;		// { dg-error "uninitialized" }
+                ^
+
+8 errors detected in the compilation of "Test_name.c".

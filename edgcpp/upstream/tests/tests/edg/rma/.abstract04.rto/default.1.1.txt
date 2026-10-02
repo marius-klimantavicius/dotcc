@@ -1,0 +1,47 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --strict Test_name.c
+"Test_name.c", line 14: error: object of abstract class type "A" is not allowed:
+            function "A::f2" is a pure virtual function
+    static A x;
+             ^
+
+"Test_name.c", line 12: error: array of abstract class "A" is not allowed:
+            function "A::f2" is a pure virtual function
+    A f3(A, A[2]);
+             ^
+
+"Test_name.c", line 10: error: array of abstract class "A" is not allowed:
+            function "A::f2" is a pure virtual function
+    typedef A (F)(A, A[2]);
+                      ^
+
+"Test_name.c", line 9: error: array of abstract class "A" is not allowed:
+            function "A::f2" is a pure virtual function
+    A f1(A, A[2]);
+             ^
+
+"Test_name.c", line 6: error: array of abstract class "A" is not allowed:
+            function "A::f2" is a pure virtual function
+  typedef A (F)(A, A[2]);
+                    ^
+
+"Test_name.c", line 5: error: array of abstract class "A" is not allowed:
+            function "A::f2" is a pure virtual function
+  A ff1(A, A[2]);
+            ^
+
+"Test_name.c", line 16: error: object of abstract class type "A" is not allowed:
+            function "A::f2" is a pure virtual function
+  A x, y[10];
+    ^
+
+"Test_name.c", line 16: error: array of abstract class "A" is not allowed:
+            function "A::f2" is a pure virtual function
+  A x, y[10];
+       ^
+
+"Test_name.c", line 17: error: array of abstract class "A" is not allowed:
+            function "A::f2" is a pure virtual function
+  A ff2(A, A[2]);
+            ^
+
+9 errors detected in the compilation of "Test_name.c".

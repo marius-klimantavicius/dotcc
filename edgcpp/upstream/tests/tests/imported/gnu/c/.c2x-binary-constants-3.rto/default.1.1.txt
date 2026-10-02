@@ -1,0 +1,22 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 7: error: invalid binary number
+  int a = 0b; /* { dg-error "invalid suffix" } */
+          ^
+
+"Test_name.c", line 8: error: invalid binary number
+  int b = 0B2; /* { dg-error "invalid suffix" } */
+            ^
+
+"Test_name.c", line 9: error: invalid binary number
+  int c = 0B02; /* { dg-error "invalid digit" } */
+             ^
+
+"Test_name.c", line 10: error: extra text after expected end of number
+  int d = 0b1.1; /* { dg-error "invalid prefix" } */
+             ^
+
+"Test_name.c", line 11: error: extra text after expected end of number
+  int e = 0B0p0; /* { dg-error "invalid suffix" } */
+             ^
+
+5 errors detected in the compilation of "Test_name.c".

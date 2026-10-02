@@ -1,0 +1,87 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: error: a "final" class type cannot be used as a base class
+  struct D2 : B2 {}; // { dg-error "cannot derive from 'final' base" }
+              ^
+
+"Test_name.c", line 22: error: undeclared is not a template
+  struct undeclared<int> final { }; // { dg-error "not a class template" }
+         ^
+
+"Test_name.c", line 26: error: a "final" class type cannot be used as a base class
+  struct D6 : B4<D6> {}; // { dg-error "cannot derive from 'final' base" }
+              ^
+
+"Test_name.c", line 28: error: duplicate class modifier
+  struct B6 final final {}; // { dg-error "duplicate virt-specifier" }
+                  ^
+
+"Test_name.c", line 30: error: incomplete type "B7" is not allowed
+  struct B7 override {}; // { dg-error "cannot specify 'override' for a class" }
+            ^
+
+"Test_name.c", line 14: error: a "final" class type cannot be used as a base class
+  template<class T> struct D4 : T {}; // { dg-error "cannot derive from 'final' base" }
+                                ^
+          detected during instantiation of class "D4<T> [with T=B2]" at line 42
+
+"Test_name.c", line 46: error: class "B2" has already been defined (previous definition at line 43)
+    struct B2 {}; // { dg-error "redefinition" }
+           ^
+
+"Test_name.c", line 47: error: "final" has already been declared in the current scope
+    struct B2 final; // { dg-error "redeclaration" }
+              ^
+
+"Test_name.c", line 49: error: class "B2" has already been defined (previous definition at line 46)
+    struct B2 final {}; // { dg-error "redefinition" }
+           ^
+
+"Test_name.c", line 50: error: "override" has already been declared in the current scope
+    struct B2 override {}; // { dg-error "cannot specify 'override' for a class" }
+              ^
+
+"Test_name.c", line 51: error: "override" has already been declared in the current scope
+    B2 override{}; // { dg-error "redeclaration" }
+       ^
+
+"Test_name.c", line 53: error: class "foo" has already been defined (previous definition at line 52)
+    struct foo final {}; // { dg-error "redefinition" }
+           ^
+
+"Test_name.c", line 54: error: "final" has already been declared in the current scope
+    foo final; // { dg-error "conflicting declaration" }
+        ^
+
+"Test_name.c", line 41: warning: variable "d" was declared but never referenced
+    D3<B1> d;
+           ^
+
+"Test_name.c", line 42: warning: variable "d2" was declared but never referenced
+    D4<B2> d2;
+           ^
+
+"Test_name.c", line 45: warning: variable "final2" was declared but never referenced
+    B2 final2 = final;
+       ^
+
+"Test_name.c", line 47: warning: variable "final" was declared but never referenced
+    struct B2 final; // { dg-error "redeclaration" }
+              ^
+
+"Test_name.c", line 48: warning: variable "override" was declared but never referenced
+    struct B2 override; // { dg-message "previously declared here" }
+              ^
+
+"Test_name.c", line 50: warning: variable "override" was declared but never referenced
+    struct B2 override {}; // { dg-error "cannot specify 'override' for a class" }
+              ^
+
+"Test_name.c", line 51: warning: variable "override" was declared but never referenced
+    B2 override{}; // { dg-error "redeclaration" }
+       ^
+
+"Test_name.c", line 54: warning: variable "final" was declared but never referenced
+    foo final; // { dg-error "conflicting declaration" }
+        ^
+
+13 errors detected in the compilation of "Test_name.c".

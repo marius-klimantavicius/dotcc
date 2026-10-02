@@ -1,0 +1,28 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 16: error: variable was previously declared with "constinit" at line 10
+  int S::m = 42;
+  ^
+
+"Test_name.c", line 18: error: expression must have a constant value
+  constinit int S::n = nonconst; // { dg-error "variable .S::n. does not have a constant initializer" }
+                       ^
+"Test_name.c", line 18: note: the value of variable "nonconst" (declared at line 17) cannot be used as a constant
+  constinit int S::n = nonconst; // { dg-error "variable .S::n. does not have a constant initializer" }
+                       ^
+
+"Test_name.c", line 21: error: variable was previously declared with "constinit" at line 12
+  const int &S::r1 = gl;
+  ^
+
+"Test_name.c", line 22: error: variable was previously declared with "constinit" at line 13
+  const int &S::r2 = 42;
+  ^
+
+"Test_name.c", line 29: error: expression must have a constant value
+  constinit thread_local const int &T::r2 = 42; // { dg-error "variable .T::r2. does not have a constant initializer|not a constant expression" }
+                                            ^
+"Test_name.c", line 29: note: reference or pointer to temporary with limited lifetime
+  constinit thread_local const int &T::r2 = 42; // { dg-error "variable .T::r2. does not have a constant initializer|not a constant expression" }
+                                            ^
+
+5 errors detected in the compilation of "Test_name.c".

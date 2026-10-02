@@ -1,0 +1,19 @@
+fe_only -DTEST_NUMBER=1 --c++17 -tused -A Test_name.c
+"Test_name.c", line 5: error: expected a "}"
+    enum class E { e1; };
+                     ^
+"Test_name.c", line 5: note: to match this "{"
+    enum class E { e1; };
+                 ^
+
+"Test_name.c", line 5: error: expected an identifier
+    enum class E { e1; };
+                       ^
+          detected during instantiation of class "A<T> [with T=int]" at line 7
+
+"Test_name.c", line 5: error: expected a ";"
+    enum class E { e1; };
+                       ^
+          detected during instantiation of class "A<T> [with T=int]" at line 7
+
+3 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,46 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++03 Test_name.c
+"Test_name.c", line 207: error: character cannot appear in a Unicode name
+  int \N{Λ} = 0;
+         ^
+
+"Test_name.c", line 207: error: expected an "="
+  int \N{Λ} = 0;
+        ^
+
+"Test_name.c", line 207: error: identifier "\u039b" is undefined
+  int \N{Λ} = 0;
+         ^
+
+"Test_name.c", line 207: error: expected a ";"
+  int \N{Λ} = 0;
+            ^
+
+"Test_name.c", line 210: error: character cannot appear in a Unicode name
+  const char* emoji = "\N{🤡}";
+                          ^
+
+"Test_name.c", line 220: error: the name "abc" does not designate a known Unicode character
+  int x = cwg2640_a\N{abc});
+                      ^
+
+"Test_name.c", line 222: warning: this universal character is not allowed in an identifier
+  int y = cwg2640_a\N{LOTUS});
+                   ^
+
+"Test_name.c", line 222: error: identifier "cwg2640_a\U0001fab7" is undefined
+  int y = cwg2640_a\N{LOTUS});
+          ^
+
+"Test_name.c", line 222: error: expected a ";"
+  int y = cwg2640_a\N{LOTUS});
+                            ^
+
+"Test_name.c", line 266: warning: variable "neck" is used before its value is set
+      brachiosaur += neck;                // OK
+                     ^
+
+"Test_name.c", line 264: warning: variable "tail" was declared but never referenced
+      int neck, tail;
+                ^
+
+8 errors detected in the compilation of "Test_name.c".

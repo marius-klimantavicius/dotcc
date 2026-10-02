@@ -1,0 +1,130 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 22: warning: unknown attribute "sized_by_or_null"
+    struct size_known * buf __sized_by_or_null(size);
+                            ^
+
+"Test_name.c", line 27: warning: unknown attribute "sized_by_or_null"
+    struct size_unknown * buf __sized_by_or_null(size);
+                              ^
+
+"Test_name.c", line 32: warning: unknown attribute "sized_by_or_null"
+    const struct size_unknown * buf __sized_by_or_null(size);
+                                    ^
+
+"Test_name.c", line 37: warning: unknown attribute "sized_by_or_null"
+    void* buf __sized_by_or_null(size);
+              ^
+
+"Test_name.c", line 43: warning: unknown attribute "sized_by_or_null"
+    void (**fn_ptr)(void) __sized_by_or_null(size);
+                          ^
+
+"Test_name.c", line 49: warning: unknown attribute "sized_by_or_null"
+    fn_ptr_ty* fn_ptr __sized_by_or_null(size);
+                      ^
+
+"Test_name.c", line 56: warning: unknown attribute "sized_by_or_null"
+    void (*fn_ptr)(void) __sized_by_or_null(size);
+                         ^
+
+"Test_name.c", line 63: warning: unknown attribute "sized_by_or_null"
+    fn_ptr_ty fn_ptr __sized_by_or_null(size);
+                     ^
+
+"Test_name.c", line 75: warning: unknown attribute "sized_by_or_null"
+    struct has_unannotated_vla* objects __sized_by_or_null(size);
+                                        ^
+
+"Test_name.c", line 80: warning: unknown attribute "counted_by"
+    int buffer[] __counted_by(count);
+                 ^
+
+"Test_name.c", line 87: warning: unknown attribute "sized_by_or_null"
+    struct has_annotated_vla* objects __sized_by_or_null(size);
+                                      ^
+
+"Test_name.c", line 93: warning: unknown attribute "sized_by_or_null"
+      struct size_known *buf __sized_by_or_null(size);
+                             ^
+
+"Test_name.c", line 101: warning: unknown attribute "sized_by_or_null"
+    struct size_known *buf __sized_by_or_null(size);
+                           ^
+
+"Test_name.c", line 112: warning: unknown attribute "sized_by_or_null"
+    struct size_known *__sized_by_or_null(size) buf;
+                       ^
+
+"Test_name.c", line 117: warning: unknown attribute "sized_by_or_null"
+    struct size_unknown * __sized_by_or_null(size) buf;
+                          ^
+
+"Test_name.c", line 122: warning: unknown attribute "sized_by_or_null"
+    const struct size_unknown * __sized_by_or_null(size) buf;
+                                ^
+
+"Test_name.c", line 127: warning: unknown attribute "sized_by_or_null"
+    void *__sized_by_or_null(size) buf;
+          ^
+
+"Test_name.c", line 135: warning: unknown attribute "sized_by_or_null"
+    void (** __sized_by_or_null(size) fn_ptr)(void);
+             ^
+
+"Test_name.c", line 141: warning: unknown attribute "sized_by_or_null"
+    fn_ptr_ty* __sized_by_or_null(size) fn_ptr;
+               ^
+
+"Test_name.c", line 147: warning: unknown attribute "sized_by_or_null"
+    void (* __sized_by_or_null(size) fn_ptr)(void);
+            ^
+
+"Test_name.c", line 153: warning: unknown attribute "sized_by_or_null"
+    fn_ptr_ty __sized_by_or_null(size) fn_ptr;
+              ^
+
+"Test_name.c", line 160: warning: unknown attribute "sized_by_or_null"
+    void (* __sized_by_or_null(size) * fn_ptr)(void);
+            ^
+
+"Test_name.c", line 166: warning: unknown attribute "sized_by_or_null"
+    struct has_unannotated_vla *__sized_by_or_null(size) objects;
+                                ^
+
+"Test_name.c", line 172: warning: unknown attribute "sized_by_or_null"
+    struct has_annotated_vla* __sized_by_or_null(size) objects;
+                              ^
+
+"Test_name.c", line 179: warning: unknown attribute "sized_by_or_null"
+    struct size_known *__sized_by_or_null(size) *buf;
+                       ^
+
+"Test_name.c", line 184: warning: unknown attribute "sized_by_or_null"
+    struct size_known **__sized_by_or_null(size) buf;
+                        ^
+
+"Test_name.c", line 190: warning: unknown attribute "sized_by_or_null"
+      struct size_known * __sized_by_or_null(size) buf;
+                          ^
+
+"Test_name.c", line 198: warning: unknown attribute "sized_by_or_null"
+    struct size_known *__sized_by_or_null(size) buf;
+                       ^
+
+"Test_name.c", line 208: warning: unknown attribute "sized_by_or_null"
+    int wrong_ty __sized_by_or_null(size);
+                 ^
+
+"Test_name.c", line 215: warning: unknown attribute "sized_by_or_null"
+    void wrong_ty __sized_by_or_null(size);
+                  ^
+
+"Test_name.c", line 215: error: incomplete type "void" is not allowed
+    void wrong_ty __sized_by_or_null(size);
+         ^
+
+"Test_name.c", line 221: warning: unknown attribute "sized_by_or_null"
+    struct size_known array[] __sized_by_or_null(size);
+                              ^
+
+1 error detected in the compilation of "Test_name.c".

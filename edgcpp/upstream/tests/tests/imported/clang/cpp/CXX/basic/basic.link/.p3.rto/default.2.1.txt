@@ -1,0 +1,51 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++20 Test_name.c
+"Test_name.c", line 18: error: cannot declare more than one module
+  module y = {}; // expected-error {{multiple module declarations}} expected-error 2{{}}
+         ^
+
+"Test_name.c", line 18: error: expected a ";"
+  module y = {}; // expected-error {{multiple module declarations}} expected-error 2{{}}
+           ^
+
+"Test_name.c", line 24: warning: "import" is parsed as an identifier rather than a keyword because the tokens that follow it do not match those of a preprocessor directive
+  import::inner xi = {};
+  ^
+
+"Test_name.c", line 25: warning: "module" is parsed as an identifier rather than a keyword because the tokens that follow it do not match those of a preprocessor directive
+  module::inner yi = {};
+  ^
+
+"Test_name.c", line 28: error: this directive can only appear in the global namespace scope
+    module a;
+    ^
+
+"Test_name.c", line 29: error: this directive can only appear in the global namespace scope
+    import b;
+    ^
+
+"Test_name.c", line 41: error: a global module fragment declaration must precede any other declaration
+  module;
+  ^
+
+"Test_name.c", line 43: error: class "import" has already been defined (previous definition at line 13)
+  struct import { struct inner {}; };
+         ^
+
+"Test_name.c", line 44: error: class "module" has already been defined (previous definition at line 14)
+  struct module { struct inner {}; };
+         ^
+
+"Test_name.c", line 46: error: variable "n" has already been defined (previous definition at line 15)
+  constexpr int n = 123;
+                ^
+
+"Test_name.c", line 48: error: cannot declare more than one module
+  export module m; // #1
+                ^
+
+"Test_name.c", line 50: catastrophic error: could not find module file for module "x"
+  import x = {}; // expected-error {{expected ';' after module name}}
+         ^
+
+9 errors and 1 catastrophic error detected in the compilation of "Test_name.c".
+Compilation terminated.

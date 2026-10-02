@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=7 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++17 -DMODULE_INTERFACE -DNO_ERRORS -DNO_IMPORT Test_name.c
+"Test_name.c", line 24: error: exported templates are no longer in the standard C++ language
+  export
+  ^
+
+"Test_name.c", line 26: error: expected "template"
+  module N;
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

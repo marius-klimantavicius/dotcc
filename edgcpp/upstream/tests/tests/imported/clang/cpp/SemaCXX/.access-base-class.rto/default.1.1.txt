@@ -1,0 +1,68 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 10: error: conversion to inaccessible base class "T1::A" is not allowed
+    A *a = b; // expected-error{{cannot cast 'B' to its private base class 'A'}}
+           ^
+
+"Test_name.c", line 10: warning: variable "a" was declared but never referenced
+    A *a = b; // expected-error{{cannot cast 'B' to its private base class 'A'}}
+       ^
+
+"Test_name.c", line 21: error: conversion to inaccessible base class "T2::A" is not allowed
+    A *a = b; // expected-error {{cannot cast 'B' to its private base class 'A'}}
+           ^
+
+"Test_name.c", line 21: warning: variable "a" was declared but never referenced
+    A *a = b; // expected-error {{cannot cast 'B' to its private base class 'A'}}
+       ^
+
+"Test_name.c", line 32: warning: variable "a" was declared but never referenced
+    A *a = b;
+       ^
+
+"Test_name.c", line 48: warning: variable "a" was declared but never referenced
+    A *a = d;
+       ^
+
+"Test_name.c", line 58: warning: variable "a" was declared but never referenced
+        A *a = b;
+           ^
+
+"Test_name.c", line 74: error: type "T6::A::A" (declared at line 66) is inaccessible
+        A* a = c; // expected-error {{cannot cast 'C' to its private base class 'A'}} \
+        ^
+
+"Test_name.c", line 74: error: conversion to inaccessible base class "T6::A" is not allowed
+        A* a = c; // expected-error {{cannot cast 'C' to its private base class 'A'}} \
+               ^
+
+"Test_name.c", line 74: warning: variable "a" was declared but never referenced
+        A* a = c; // expected-error {{cannot cast 'C' to its private base class 'A'}} \
+           ^
+
+"Test_name.c", line 80: warning: variable "a" was declared but never referenced
+      A *a = c;
+         ^
+
+"Test_name.c", line 89: warning: variable "a" was declared but never referenced
+        A* a = c; // okay
+           ^
+
+"Test_name.c", line 114: error: static assertion failed with ""
+    static_assert(false, ""); // expected-error {{static assertion failed}}
+    ^
+          detected during:
+            instantiation of class "T8::Impossible<<unnamed>> [with <unnamed>=0]" at line 101
+            instantiation of class "T8::trait<T> [with T=T8::Impossible<0>]" at line 103
+            processing of template argument list for "T8::a" based on template argument <T8::Impossible<0>> at line 108
+            instantiation of class "T8::b<T> [with T=T8::Impossible<0>]" at line 101
+            instantiation of class "T8::trait<T> [with T=T8::b<T8::Impossible<0>>]" at line 118
+
+"Test_name.c", line 118: error: this declaration has no storage class or type specifier
+  trait<b<Impossible<0>>>::value; // expected-note {{here}}
+  ^
+
+"Test_name.c", line 118: error: inherited member is not allowed
+  trait<b<Impossible<0>>>::value; // expected-note {{here}}
+                           ^
+
+7 errors detected in the compilation of "Test_name.c".

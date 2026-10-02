@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c --target linux_aarch64 Test_name.c
+"Test_name.c", line 5: warning: function "__builtin_arm_tcancel" declared implicitly
+    __builtin_arm_tcancel(u); // expected-error{{argument to '__builtin_arm_tcancel' must be a constant integer}}
+    ^
+
+"Test_name.c", line 10: warning: function "__builtin_arm_tcancel" declared implicitly
+    __builtin_arm_tcancel(0x12345u); // expected-error{{argument value 74565 is outside the valid range [0, 65535]}}
+    ^
+

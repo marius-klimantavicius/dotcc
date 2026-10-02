@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++11 --clang Test_name.c
+"Test_name.c", line 15: error: exception specification is incompatible with that of previous function "operator new" (declared implicitly)
+  void* operator new(decltype(sizeof(2))) noexcept(true);
+                                          ^
+
+1 error detected in the compilation of "Test_name.c".

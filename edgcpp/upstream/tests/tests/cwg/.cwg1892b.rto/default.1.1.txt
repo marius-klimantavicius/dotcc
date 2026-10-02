@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++20 -A Test_name.c
+"Test_name.c", line 4: error: "auto" function requires a trailing return type
+    X<auto()> f_with_deduced_return_type; 
+      ^
+
+1 error detected in the compilation of "Test_name.c".

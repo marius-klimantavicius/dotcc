@@ -1,0 +1,234 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"./cpp0x/auto9.C", line 9: error: "auto" is not allowed here
+  int i = *(auto *) 0;
+            ^
+
+"./cpp0x/auto9.C", line 10: error: "auto" is not allowed here
+  struct A *p = (auto *) 0;
+                 ^
+
+"./cpp0x/auto9.C", line 11: error: "auto" is not allowed here
+  int *q = static_cast <auto *>(0);
+                        ^
+
+"./cpp0x/auto9.C", line 12: error: "auto" is not allowed here
+  const int *r = const_cast <auto *>(q);
+                             ^
+
+"./cpp0x/auto9.C", line 13: error: "auto" is not allowed here
+  const std::type_info &t1 = typeid (auto);
+                                     ^
+
+"./cpp0x/auto9.C", line 14: error: "auto" is not allowed here
+  const std::type_info &t2 = typeid (auto *);
+                                     ^
+
+"./cpp0x/auto9.C", line 18: error: "auto" is not allowed here
+    operator auto ();
+             ^
+
+"./cpp0x/auto9.C", line 19: error: "auto" is not allowed here
+    operator auto *();
+             ^
+
+"./cpp0x/auto9.C", line 24: error: "auto" is not allowed here
+    operator auto () -> int;
+             ^
+
+"./cpp0x/auto9.C", line 24: error: a trailing return type requires the "auto" type specifier
+    operator auto () -> int;
+                     ^
+
+"./cpp0x/auto9.C", line 25: error: "auto" is not allowed here
+    operator auto*() -> int;
+             ^
+
+"./cpp0x/auto9.C", line 25: error: a trailing return type requires the "auto" type specifier
+    operator auto*() -> int;
+                     ^
+
+"./cpp0x/auto9.C", line 39: error: "auto" is not allowed here
+  bool d = (auto (A::*)()) 0;
+            ^
+
+"./cpp0x/auto9.C", line 44: error: "auto" is not allowed here
+    __extension__ (auto) { 0 };
+                   ^
+
+"./cpp0x/auto9.C", line 46: error: "auto" is not allowed here
+    dynamic_cast<auto> (c);
+                 ^
+
+"./cpp0x/auto9.C", line 47: error: "auto" is not allowed here
+    reinterpret_cast<auto> (c);
+                     ^
+
+"./cpp0x/auto9.C", line 48: warning: auto(<expr>) and auto{<expr>} are a C++23 feature
+    int i = auto (0);
+            ^
+
+"./cpp0x/auto9.C", line 49: error: cannot deduce "auto" type (initializer required)
+    auto p1 = new (auto);
+                   ^
+
+"./cpp0x/auto9.C", line 51: error: "auto" is not allowed here
+   auto
+   ^
+
+"./cpp0x/auto9.C", line 51: error: expected a class, struct, or union type
+   auto
+   ^
+
+"./cpp0x/auto9.C", line 52: error: "auto" is not allowed here
+   auto *
+   ^
+
+"./cpp0x/auto9.C", line 52: error: expected a class, struct, or union type
+   auto *
+   ^
+
+"./cpp0x/auto9.C", line 53: error: "auto" is not allowed here
+    sizeof (auto);
+            ^
+
+"./cpp0x/auto9.C", line 54: error: "auto" is not allowed here
+    sizeof (auto *);
+            ^
+
+"./cpp0x/auto9.C", line 48: warning: variable "i" was declared but never referenced
+    int i = auto (0);
+        ^
+
+"./cpp0x/auto9.C", line 60: error: "auto" is not allowed here
+    __alignof__ (auto);
+                 ^
+
+"./cpp0x/auto9.C", line 61: error: "auto" is not allowed here
+    __alignof__ (auto *);
+                 ^
+
+"./cpp0x/auto9.C", line 62: error: "auto" is not allowed here
+    __typeof__ (auto) v1;
+                ^
+
+"./cpp0x/auto9.C", line 63: error: "auto" is not allowed here
+    __typeof__ (auto *) v2;
+                ^
+
+"./cpp0x/auto9.C", line 64: error: "auto" is not allowed here
+    __is_class (auto);
+                ^
+
+"./cpp0x/auto9.C", line 65: error: "auto" is not allowed here
+    __is_pod (auto *);
+              ^
+
+"./cpp0x/auto9.C", line 66: error: "auto" is not allowed here
+    __is_base_of (int, auto);
+                       ^
+
+"./cpp0x/auto9.C", line 67: error: "auto" is not allowed here
+    __is_base_of (auto, int);
+                  ^
+
+"./cpp0x/auto9.C", line 68: error: "auto" is not allowed here
+    __is_base_of (auto, auto *);
+                  ^
+
+"./cpp0x/auto9.C", line 68: error: "auto" is not allowed here
+    __is_base_of (auto, auto *);
+                        ^
+
+"./cpp0x/auto9.C", line 71: error: "auto" is not allowed here
+  B<auto> b;
+    ^
+
+"./cpp0x/auto9.C", line 72: error: "auto" is not allowed here
+  C<auto> c;
+    ^
+
+"./cpp0x/auto9.C", line 73: error: "auto" is not allowed here
+  C<auto *> c2;
+    ^
+
+"./cpp0x/auto9.C", line 75: error: "auto" is not allowed here
+  enum : auto { EE = 0 };
+         ^
+
+"./cpp0x/auto9.C", line 76: error: "auto" is not allowed here
+  enum struct D : auto * { FF = 0 };
+                  ^
+
+"./cpp0x/auto9.C", line 81: error: "auto" is not allowed here
+    try { } catch (auto i) { }
+                   ^
+
+"./cpp0x/auto9.C", line 82: error: "auto" is not allowed here
+    try { } catch (auto) { }
+                   ^
+
+"./cpp0x/auto9.C", line 83: error: "auto" is not allowed here
+    try { } catch (auto *i) { }
+                   ^
+
+"./cpp0x/auto9.C", line 84: error: "auto" is not allowed here
+    try { } catch (auto *) { }
+                   ^
+
+"./cpp0x/auto9.C", line 92: error: "auto" is not allowed here
+   auto
+   ^
+
+"./cpp0x/auto9.C", line 93: error: "auto" is not allowed here
+   auto *
+   ^
+
+"./cpp0x/auto9.C", line 94: error: "auto" is not allowed here
+   auto &
+   ^
+
+"./cpp0x/auto9.C", line 98: error: "auto" is not allowed here
+  template <typename T = auto> struct E {};
+                         ^
+
+"./cpp0x/auto9.C", line 99: error: "auto" is not allowed here
+  template <class T = auto *> struct F {};
+                      ^
+
+"./cpp0x/auto9.C", line 101: error: "auto" is not allowed here
+  auto fnlate () -> auto;
+                    ^
+
+"./cpp0x/auto9.C", line 102: error: "auto" is not allowed here
+  auto fnlate2 () -> auto *;
+                     ^
+
+"./cpp0x/auto9.C", line 105: error: "auto" is not allowed here
+  badthrow () throw (auto)
+                     ^
+
+"./cpp0x/auto9.C", line 110: error: "auto" is not allowed here
+  badthrow2 () throw (auto &)
+                      ^
+
+"./cpp0x/auto9.C", line 114: error: "auto" is not allowed here
+  template <auto V = 4> struct G {};
+            ^
+
+"./cpp0x/auto9.C", line 117: error: "auto" is not allowed here
+  H<auto> h;
+    ^
+
+"./cpp0x/auto9.C", line 119: error: "auto" is not allowed here
+  void qq (auto);
+           ^
+
+"./cpp0x/auto9.C", line 120: error: "auto" is not allowed here
+  void qr (auto*);
+           ^
+
+"./cpp0x/auto9.C", line 123: error: "auto" is not allowed here
+  typedef auto autot;
+          ^
+
+56 errors detected in the compilation of "Test_name.c".

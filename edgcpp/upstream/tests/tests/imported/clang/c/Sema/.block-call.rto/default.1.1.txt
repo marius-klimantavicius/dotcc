@@ -1,0 +1,198 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 6: error: expected an identifier
+  int (^IFP) ();
+       ^
+
+"Test_name.c", line 7: error: expected an identifier
+  int (^II) (int);
+       ^
+
+"Test_name.c", line 12: error: expected an identifier
+    int (^PFR) (int) = IFP; // OK
+         ^
+
+"Test_name.c", line 12: error: function "<error>" may not be initialized
+    int (^PFR) (int) = IFP; // OK
+                     ^
+
+"Test_name.c", line 12: error: identifier "IFP" is undefined
+    int (^PFR) (int) = IFP; // OK
+                       ^
+
+"Test_name.c", line 13: error: identifier "PFR" is undefined
+    PFR = II;       // OK
+    ^
+
+"Test_name.c", line 13: error: identifier "II" is undefined
+    PFR = II;       // OK
+          ^
+
+"Test_name.c", line 15: error: expected an identifier
+    int (^IFP) () = PFR; // OK
+         ^
+
+"Test_name.c", line 15: error: function "<error>" may not be initialized
+    int (^IFP) () = PFR; // OK
+                  ^
+
+"Test_name.c", line 18: error: expected an identifier
+    const int (^CIC) () = IFP; // OK -  initializing 'const int (^)()' with an expression of type 'int (^)()'}}
+               ^
+
+"Test_name.c", line 18: warning: type qualifier on return type is meaningless
+    const int (^CIC) () = IFP; // OK -  initializing 'const int (^)()' with an expression of type 'int (^)()'}}
+    ^
+
+"Test_name.c", line 18: error: function "<error>" may not be initialized
+    const int (^CIC) () = IFP; // OK -  initializing 'const int (^)()' with an expression of type 'int (^)()'}}
+                        ^
+
+"Test_name.c", line 20: error: expected an identifier
+    const int (^CICC) () = CIC;
+               ^
+
+"Test_name.c", line 20: warning: type qualifier on return type is meaningless
+    const int (^CICC) () = CIC;
+    ^
+
+"Test_name.c", line 20: error: function "<error>" may not be initialized
+    const int (^CICC) () = CIC;
+                         ^
+
+"Test_name.c", line 20: error: identifier "CIC" is undefined
+    const int (^CICC) () = CIC;
+                           ^
+
+"Test_name.c", line 23: error: expected an identifier
+    int * const (^IPCC) () = 0;
+                 ^
+
+"Test_name.c", line 23: warning: type qualifier on return type is meaningless
+    int * const (^IPCC) () = 0;
+          ^
+
+"Test_name.c", line 23: error: function "<error>" may not be initialized
+    int * const (^IPCC) () = 0;
+                           ^
+
+"Test_name.c", line 25: error: expected an identifier
+    int * const (^IPCC1) () = IPCC;
+                 ^
+
+"Test_name.c", line 25: warning: type qualifier on return type is meaningless
+    int * const (^IPCC1) () = IPCC;
+          ^
+
+"Test_name.c", line 25: error: function "<error>" may not be initialized
+    int * const (^IPCC1) () = IPCC;
+                            ^
+
+"Test_name.c", line 25: error: identifier "IPCC" is undefined
+    int * const (^IPCC1) () = IPCC;
+                              ^
+
+"Test_name.c", line 27: error: expected an identifier
+    int * (^IPCC2) () = IPCC;       // expected-error {{incompatible block pointer types initializing 'int *(^)()' with an expression of type 'int *const (^)()'}}
+           ^
+
+"Test_name.c", line 27: error: function "<error>" may not be initialized
+    int * (^IPCC2) () = IPCC;       // expected-error {{incompatible block pointer types initializing 'int *(^)()' with an expression of type 'int *const (^)()'}}
+                      ^
+
+"Test_name.c", line 29: error: expected an identifier
+    int (^IPCC3) (const int) = PFR;
+         ^
+
+"Test_name.c", line 29: error: function "<error>" may not be initialized
+    int (^IPCC3) (const int) = PFR;
+                             ^
+
+"Test_name.c", line 31: error: expected an identifier
+    int (^IPCC4) (int, char (^CArg) (double));
+         ^
+
+"Test_name.c", line 31: error: expected a ")"
+    int (^IPCC4) (int, char (^CArg) (double));
+                             ^
+
+"Test_name.c", line 33: error: expected an identifier
+    int (^IPCC5) (int, char (^CArg) (double)) = IPCC4;
+         ^
+
+"Test_name.c", line 33: error: expected a ")"
+    int (^IPCC5) (int, char (^CArg) (double)) = IPCC4;
+                             ^
+
+"Test_name.c", line 33: error: function "<error>" may not be initialized
+    int (^IPCC5) (int, char (^CArg) (double)) = IPCC4;
+                                              ^
+
+"Test_name.c", line 33: error: identifier "IPCC4" is undefined
+    int (^IPCC5) (int, char (^CArg) (double)) = IPCC4;
+                                                ^
+
+"Test_name.c", line 35: error: expected an identifier
+    int (^IPCC6) (int, char (^CArg) (float))  = IPCC4; // expected-error {{incompatible block pointer types initializing 'int (^)(int, char (^)(float))' with an expression of type 'int (^)(int, char (^)(double))'}}
+         ^
+
+"Test_name.c", line 35: error: expected a ")"
+    int (^IPCC6) (int, char (^CArg) (float))  = IPCC4; // expected-error {{incompatible block pointer types initializing 'int (^)(int, char (^)(float))' with an expression of type 'int (^)(int, char (^)(double))'}}
+                             ^
+
+"Test_name.c", line 35: error: function "<error>" may not be initialized
+    int (^IPCC6) (int, char (^CArg) (float))  = IPCC4; // expected-error {{incompatible block pointer types initializing 'int (^)(int, char (^)(float))' with an expression of type 'int (^)(int, char (^)(double))'}}
+                                              ^
+
+"Test_name.c", line 37: error: identifier "IPCC2" is undefined
+    IPCC2 = 0;
+    ^
+
+"Test_name.c", line 38: error: identifier "IPCC1" is undefined
+    IPCC1 = 1; // expected-error {{invalid block pointer conversion assigning to 'int *const (^)()' from 'int'}}
+    ^
+
+"Test_name.c", line 39: error: expected an identifier
+    int (^x)() = 0;
+         ^
+
+"Test_name.c", line 39: error: function "<error>" may not be initialized
+    int (^x)() = 0;
+               ^
+
+"Test_name.c", line 40: error: expected an identifier
+    int (^y)() = 3;   // expected-error {{invalid block pointer conversion initializing 'int (^)()' with an expression of type 'int'}}
+         ^
+
+"Test_name.c", line 40: error: function "<error>" may not be initialized
+    int (^y)() = 3;   // expected-error {{invalid block pointer conversion initializing 'int (^)()' with an expression of type 'int'}}
+               ^
+
+"Test_name.c", line 42: error: expected an identifier
+    int (^z)() = a+4;   // expected-error {{invalid block pointer conversion initializing 'int (^)()' with an expression of type 'int'}}
+         ^
+
+"Test_name.c", line 42: error: function "<error>" may not be initialized
+    int (^z)() = a+4;   // expected-error {{invalid block pointer conversion initializing 'int (^)()' with an expression of type 'int'}}
+               ^
+
+"Test_name.c", line 9: warning: variable "FPL" was declared but never referenced
+    int (*FPL) (int) = FP; // C doesn't consider this an error.
+          ^
+
+"Test_name.c", line 46: error: expected an identifier
+    int (^IFP) (float);
+         ^
+
+"Test_name.c", line 47: error: expected an identifier
+    char (^PCP)(double, double, char);
+          ^
+
+"Test_name.c", line 49: warning: function "IFP" declared implicitly
+    IFP(1.0);
+    ^
+
+"Test_name.c", line 52: warning: function "PCP" declared implicitly
+    char ch = PCP(1.0, 2.0, 'a');
+              ^
+
+42 errors detected in the compilation of "Test_name.c".

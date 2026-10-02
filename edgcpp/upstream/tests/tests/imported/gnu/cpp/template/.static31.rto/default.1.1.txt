@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 20: error: too many initializer values
+  template<int N> const int A<N>::i3(C::j, 5); // { dg-error "compound expression" }
+                                           ^
+
+"Test_name.c", line 21: warning: expression has no effect
+  template<int N> const int A<N>::i4 = (C::j, 7);
+                                        ^
+
+1 error detected in the compilation of "Test_name.c".

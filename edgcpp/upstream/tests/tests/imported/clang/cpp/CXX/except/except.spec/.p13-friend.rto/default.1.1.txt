@@ -1,0 +1,18 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --exceptions --exceptions Test_name.c
+"Test_name.c", line 11: error: identifier "x" is undefined
+      friend void g() noexcept(x);
+                               ^
+
+"Test_name.c", line 11: error: exception specification is incompatible with that of previous function "N0::g" (declared at line 7):
+            previously specified: no exceptions will be thrown
+      friend void g() noexcept(x);
+                      ^
+
+"Test_name.c", line 25: error: identifier "x" is undefined
+      friend void g() noexcept(x); // expected-error {{no member 'x' in 'N1::A<int>'; it has not yet been instantiated}}
+                               ^
+          detected during:
+            instantiation of class "N1::A<T> [with T=int]" at line 25
+            instantiation of class "N1::A<T> [with T=int]" at line 30
+
+3 errors detected in the compilation of "Test_name.c".

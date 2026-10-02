@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --g++ Test_name.c
+"Test_name.c", line 18: warning: return type is not identical to return type "void *" of overridden virtual function "B::f"
+    B* f() { return this; }  // Now accepted in GNU C++ mode.
+       ^
+

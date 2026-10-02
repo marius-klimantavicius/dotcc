@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 5: error: incomplete type "void" is not allowed
+  void f1(x) __attribute__((enable_if(1, "")));    // expected-error {{a parameter list without types is only allowed in a function definition}}
+       ^
+
+"Test_name.c", line 5: error: identifier "x" is undefined
+  void f1(x) __attribute__((enable_if(1, "")));    // expected-error {{a parameter list without types is only allowed in a function definition}}
+          ^
+
+"Test_name.c", line 5: warning: variable attributes appearing after a parenthesized initializer are ignored
+  void f1(x) __attribute__((enable_if(1, "")));    // expected-error {{a parameter list without types is only allowed in a function definition}}
+                            ^
+
+"Test_name.c", line 6: error: incomplete type "void" is not allowed
+  void f2(x, y) __attribute__((enable_if(1, ""))); // expected-error {{a parameter list without types is only allowed in a function definition}}
+       ^
+
+"Test_name.c", line 6: error: identifier "y" is undefined
+  void f2(x, y) __attribute__((enable_if(1, ""))); // expected-error {{a parameter list without types is only allowed in a function definition}}
+             ^
+
+"Test_name.c", line 6: warning: variable attributes appearing after a parenthesized initializer are ignored
+  void f2(x, y) __attribute__((enable_if(1, ""))); // expected-error {{a parameter list without types is only allowed in a function definition}}
+                               ^
+
+4 errors detected in the compilation of "Test_name.c".

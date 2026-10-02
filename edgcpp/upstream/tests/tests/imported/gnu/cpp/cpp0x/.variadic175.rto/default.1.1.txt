@@ -1,0 +1,11 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: error: parameter pack "t" was referenced but not expanded
+      : decltype(t)() {} // { dg-error "parameter pack" }
+                 ^
+
+"Test_name.c", line 9: error: expected a "{"
+      : decltype(t)() {} // { dg-error "parameter pack" }
+                   ^
+          detected during instantiation of "A::A(T...) [with T=<>]" at line 12
+
+2 errors detected in the compilation of "Test_name.c".

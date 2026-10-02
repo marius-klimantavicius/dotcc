@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++17 -A Test_name.c
+"Test_name.c", line 4: error: alignas does not apply here
+  alignas(double) void f(); 
+  ^
+
+1 error detected in the compilation of "Test_name.c".

@@ -1,0 +1,242 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 11: error: class "Y" has no member "error"
+  template<typename T, typename> struct Error { typedef typename T::error error; };
+                                                                    ^
+          detected during instantiation of class "Error<T, <unnamed>> [with T=Y, <unnamed>=X]" at line 16
+
+"Test_name.c", line 11: error: class "X" has no member "error"
+  template<typename T, typename> struct Error { typedef typename T::error error; };
+                                                                    ^
+          detected during instantiation of class "Error<T, <unnamed>> [with T=X, <unnamed>=Y]" at line 16
+
+"Test_name.c", line 16: error: more than one instance of "f" matches the argument list:
+            function template "Error<X, T>::error f(X, T)" (declared at line 12)
+            function template "Error<Y, T>::error f(T, Y)" (declared at line 13)
+            argument types are: (X, Y)
+    f(X(), Y());
+    ^
+
+"Test_name.c", line 36: error: expected a type specifier
+    operator int(*[1])();
+                 ^
+
+"Test_name.c", line 36: error: function returning function is not allowed
+    operator int(*[1])();
+                       ^
+
+"Test_name.c", line 36: error: no arguments allowed on user-defined conversion
+    operator int(*[1])();
+    ^
+
+"Test_name.c", line 37: error: expected a type specifier
+    operator int(*[2])();
+                 ^
+
+"Test_name.c", line 37: error: function returning function is not allowed
+    operator int(*[2])();
+                       ^
+
+"Test_name.c", line 37: error: no arguments allowed on user-defined conversion
+    operator int(*[2])();
+    ^
+
+"Test_name.c", line 38: error: expected a type specifier
+    operator int(*[3])();
+                 ^
+
+"Test_name.c", line 38: error: function returning function is not allowed
+    operator int(*[3])();
+                       ^
+
+"Test_name.c", line 38: error: no arguments allowed on user-defined conversion
+    operator int(*[3])();
+    ^
+
+"Test_name.c", line 39: error: expected a type specifier
+    operator int(*[4])();
+                 ^
+
+"Test_name.c", line 39: error: function returning function is not allowed
+    operator int(*[4])();
+                       ^
+
+"Test_name.c", line 39: error: no arguments allowed on user-defined conversion
+    operator int(*[4])();
+    ^
+
+"Test_name.c", line 40: error: expected a type specifier
+    operator int(*[5])();
+                 ^
+
+"Test_name.c", line 40: error: function returning function is not allowed
+    operator int(*[5])();
+                       ^
+
+"Test_name.c", line 40: error: no arguments allowed on user-defined conversion
+    operator int(*[5])();
+    ^
+
+"Test_name.c", line 41: error: expected a type specifier
+    operator int(*[6])();
+                 ^
+
+"Test_name.c", line 41: error: function returning function is not allowed
+    operator int(*[6])();
+                       ^
+
+"Test_name.c", line 41: error: no arguments allowed on user-defined conversion
+    operator int(*[6])();
+    ^
+
+"Test_name.c", line 42: error: expected a type specifier
+    operator int(*[7])();
+                 ^
+
+"Test_name.c", line 42: error: function returning function is not allowed
+    operator int(*[7])();
+                       ^
+
+"Test_name.c", line 42: error: no arguments allowed on user-defined conversion
+    operator int(*[7])();
+    ^
+
+"Test_name.c", line 43: error: expected a type specifier
+    operator int(*[8])();
+                 ^
+
+"Test_name.c", line 43: error: function returning function is not allowed
+    operator int(*[8])();
+                       ^
+
+"Test_name.c", line 43: error: no arguments allowed on user-defined conversion
+    operator int(*[8])();
+    ^
+
+"Test_name.c", line 44: error: expected a type specifier
+    operator float(*[1])();
+                   ^
+
+"Test_name.c", line 44: error: function returning function is not allowed
+    operator float(*[1])();
+                         ^
+
+"Test_name.c", line 44: error: no arguments allowed on user-defined conversion
+    operator float(*[1])();
+    ^
+
+"Test_name.c", line 45: error: expected a type specifier
+    operator float(*[2])();
+                   ^
+
+"Test_name.c", line 45: error: function returning function is not allowed
+    operator float(*[2])();
+                         ^
+
+"Test_name.c", line 45: error: no arguments allowed on user-defined conversion
+    operator float(*[2])();
+    ^
+
+"Test_name.c", line 46: error: expected a type specifier
+    operator float(*[3])();
+                   ^
+
+"Test_name.c", line 46: error: function returning function is not allowed
+    operator float(*[3])();
+                         ^
+
+"Test_name.c", line 46: error: no arguments allowed on user-defined conversion
+    operator float(*[3])();
+    ^
+
+"Test_name.c", line 47: error: expected a type specifier
+    operator float(*[4])();
+                   ^
+
+"Test_name.c", line 47: error: function returning function is not allowed
+    operator float(*[4])();
+                         ^
+
+"Test_name.c", line 47: error: no arguments allowed on user-defined conversion
+    operator float(*[4])();
+    ^
+
+"Test_name.c", line 48: error: expected a type specifier
+    operator float(*[5])();
+                   ^
+
+"Test_name.c", line 48: error: function returning function is not allowed
+    operator float(*[5])();
+                         ^
+
+"Test_name.c", line 48: error: no arguments allowed on user-defined conversion
+    operator float(*[5])();
+    ^
+
+"Test_name.c", line 49: error: expected a type specifier
+    operator float(*[6])();
+                   ^
+
+"Test_name.c", line 49: error: function returning function is not allowed
+    operator float(*[6])();
+                         ^
+
+"Test_name.c", line 49: error: no arguments allowed on user-defined conversion
+    operator float(*[6])();
+    ^
+
+"Test_name.c", line 50: error: expected a type specifier
+    operator float(*[7])();
+                   ^
+
+"Test_name.c", line 50: error: function returning function is not allowed
+    operator float(*[7])();
+                         ^
+
+"Test_name.c", line 50: error: no arguments allowed on user-defined conversion
+    operator float(*[7])();
+    ^
+
+"Test_name.c", line 51: error: expected a type specifier
+    operator float(*[8])();
+                   ^
+
+"Test_name.c", line 51: error: function returning function is not allowed
+    operator float(*[8])();
+                         ^
+
+"Test_name.c", line 51: error: no arguments allowed on user-defined conversion
+    operator float(*[8])();
+    ^
+
+"Test_name.c", line 11: error: class "Oper" has no member "error"
+  template<typename T, typename> struct Error { typedef typename T::error error; };
+                                                                    ^
+          detected during instantiation of class "Error<T, <unnamed>> [with T=Oper, <unnamed>=int]" at line 53
+
+"Test_name.c", line 53: error: more than one operator "+" matches these operands:
+            built-in operator "pointer-to-object + integer"
+            built-in operator "arithmetic + arithmetic"
+            operand types are: Oper + int
+  int *p = Oper() + 0;
+                  ^
+"Test_name.c", line 53: note: built-in operator+(<ptrdiff_t>, <pointer to object>) does not match because argument #2 does not match parameter
+  int *p = Oper() + 0;
+                  ^
+
+"Test_name.c", line 67: warning: function "UndefButUsed<T>::f [with T=int]" was referenced but not defined
+    static inline int f();
+                      ^
+
+"Test_name.c", line 67: warning: function "UndefButUsed<T>::f [with T=float]" was referenced but not defined
+    static inline int f();
+                      ^
+
+"Test_name.c", line 67: warning: function "UndefButUsed<T>::f [with T=char]" was referenced but not defined
+    static inline int f();
+                      ^
+
+"Test_name.c", line 67: warning: function "UndefButUsed<T>::f [with T=void]" was referenced but not defined
+    static inline int f();
+                      ^
+
+53 errors detected in the compilation of "Test_name.c".

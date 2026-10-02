@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 -w --ms_extensions -DMSABI Test_name.c
+"Test_name.c", line 33: error: declaration is incompatible with "void __vectorcall free_func_vectorcall()" (declared at line 15)
+  void __cdecl    free_func_vectorcall(); // expected-error {{function declared 'cdecl' here was previously declared 'vectorcall'}}
+                  ^
+
+"Test_name.c", line 41: error: __thiscall can only appear on nonstatic member function declarations
+  void __thiscall free_func_cdecl(char *);
+                  ^
+
+"Test_name.c", line 101: error: conflicting calling convention modifiers
+  void __cdecl    S::member_vectorcall2() {} // expected-error {{function declared 'cdecl' here was previously declared 'vectorcall'}}
+                     ^
+
+"Test_name.c", line 159: error: expected an identifier
+  void __attribute__((noreturn)) __stdcall __attribute__((regparm(1))) multi_attribute(int x);
+                                           ^
+
+"Test_name.c", line 159: error: expected a type specifier
+  void __attribute__((noreturn)) __stdcall __attribute__((regparm(1))) multi_attribute(int x);
+                                                         ^
+
+"Test_name.c", line 159: error: expected a "{"
+  void __attribute__((noreturn)) __stdcall __attribute__((regparm(1))) multi_attribute(int x);
+                                                                       ^
+
+"Test_name.c", line 166: error: conflicting calling convention modifiers
+  void __cdecl __cdecl __stdcall __cdecl __fastcall __vectorcall multi_cc(int x);
+                                                    ^
+
+7 errors detected in the compilation of "Test_name.c".

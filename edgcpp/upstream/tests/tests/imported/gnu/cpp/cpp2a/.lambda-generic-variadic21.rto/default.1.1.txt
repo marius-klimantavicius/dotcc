@@ -1,0 +1,16 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 17: error: a variable declared with an auto type specifier cannot appear in its own initializer
+       return get<I,__integer_pack(I)...>.template operator()<V>(v...);
+              ^
+          detected during instantiation of "const auto get [with I=0, Is=<>]" at line 21
+
+"Test_name.c", line 16: error: no instance of function template "arg_T" matches the argument list
+            argument types are: (char, short, int, long)
+       using V = decltype(arg_T<__integer_pack(I)...>(v...));
+                          ^
+"Test_name.c", line 7: note: candidate function template "arg_T" failed deduction
+  T arg_T(decltype(Is)..., T, ...);
+    ^
+          detected during instantiation of function "lambda [](T..., ...)->auto [with T=<char, short, int, long>]" at line 21
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 Test_name.c
+"Test_name.c", line 18: error: "C::operator()" is ambiguous
+      c(); // expected-error {{member 'operator()' found in multiple base classes of different types}}
+      ^
+
+"Test_name.c", line 19: error: "C::f" is ambiguous
+      c.f(10); //expected-error {{member 'f' found in multiple base classes of different types}}
+        ^
+
+2 errors detected in the compilation of "Test_name.c".

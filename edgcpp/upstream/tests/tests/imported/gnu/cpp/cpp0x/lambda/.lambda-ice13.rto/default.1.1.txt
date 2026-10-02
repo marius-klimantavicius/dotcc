@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 9: error: a flexible array member cannot be declared in an otherwise-empty type
+    X x[] = { [x](){} };  // { dg-error "incomplete type" }
+                   ^
+
+"Test_name.c", line 9: warning: variable "x" is used before its value is set
+    X x[] = { [x](){} };  // { dg-error "incomplete type" }
+               ^
+
+"Test_name.c", line 9: error: no suitable conversion function from "lambda []()->void" to "X" (aka "void (*)()") exists
+    X x[] = { [x](){} };  // { dg-error "incomplete type" }
+              ^
+
+"Test_name.c", line 15: error: array of functions is not allowed
+    X x[] = { [x](){} };  // { dg-error "5:declaration of .x. as array of functions" }
+      ^
+
+"Test_name.c", line 15: error: a flexible array member cannot be declared in an otherwise-empty type
+    X x[] = { [x](){} };  // { dg-error "5:declaration of .x. as array of functions" }
+                   ^
+
+"Test_name.c", line 15: warning: variable "x" is used before its value is set
+    X x[] = { [x](){} };  // { dg-error "5:declaration of .x. as array of functions" }
+               ^
+
+4 errors detected in the compilation of "Test_name.c".

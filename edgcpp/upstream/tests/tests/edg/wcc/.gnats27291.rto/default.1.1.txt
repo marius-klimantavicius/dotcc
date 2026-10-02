@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 -tused --c++11 Test_name.c
+"Test_name.c", line 6: warning: shift count is too large
+    return (0 << X * 1000) + recurse<X + 1>();
+                 ^
+          detected during instantiation of "int recurse<X>() [with X=1]" at line 14
+
+"Test_name.c", line 6: warning: shift count is too large
+    return (0 << X * 1000) + recurse<X + 1>();
+                 ^
+          detected during:
+            instantiation of "int recurse<X>() [with X=2]" at line 6
+            instantiation of "int recurse<X>() [with X=1]" at line 14
+
+"Test_name.c", line 6: warning: shift count is too large
+    return (0 << X * 1000) + recurse<X + 1>();
+                 ^
+          detected during:
+            instantiation of "int recurse<X>() [with X=3]" at line 6
+            instantiation of "int recurse<X>() [with X=2]" at line 6
+            instantiation of "int recurse<X>() [with X=1]" at line 14
+
+"Test_name.c", line 6: warning: shift count is too large
+    return (0 << X * 1000) + recurse<X + 1>();
+                 ^
+          detected during:
+            instantiation of "int recurse<X>() [with X=4]" at line 6
+            instantiation of "int recurse<X>() [with X=3]" at line 6
+            instantiation of "int recurse<X>() [with X=2]" at line 6
+            instantiation of "int recurse<X>() [with X=1]" at line 14
+

@@ -1,0 +1,39 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 38: warning: variable "inputPreL" is used before its value is set
+      winI = { inputPreL->at() }; // expected-error {{call to deleted constructor of 'Matrix<double> &&'}}
+               ^
+
+"Test_name.c", line 38: error: the definition of std::initializer_list does not contain the expected constructor
+      winI = { inputPreL->at() }; // expected-error {{call to deleted constructor of 'Matrix<double> &&'}}
+             ^
+
+"Test_name.c", line 38: error: the definition of std::initializer_list does not contain the expected constructor
+      winI = { inputPreL->at() }; // expected-error {{call to deleted constructor of 'Matrix<double> &&'}}
+             ^
+
+"Test_name.c", line 38: error: the definition of std::initializer_list does not contain the expected constructor
+      winI = { inputPreL->at() }; // expected-error {{call to deleted constructor of 'Matrix<double> &&'}}
+             ^
+
+"Test_name.c", line 38: error: no instance of constructor "cva::Matrix<VT, 0U, 0U>::Matrix [with VT=double]" matches the argument list
+            argument types are: (float)
+      winI = { inputPreL->at() }; // expected-error {{call to deleted constructor of 'Matrix<double> &&'}}
+             ^
+"Test_name.c", line 30: note: function "cva::Matrix<VT, 0U, 0U>::Matrix(const std::initializer_list<cva::Matrix<VT, 0U, 0U>::value_type> &) [with VT=double]" does not match because argument #1 does not match parameter
+      Matrix(const std::initializer_list<value_type>& list) = delete; // expected-note {{'Matrix' has been explicitly marked deleted here}}
+      ^
+"Test_name.c", line 12: note: function "cva::Matrix<VT, 0U, 0U>::Matrix(const cva::Matrix<double, 0U, 0U> &) [with VT=double]" does not match because argument #1 does not match parameter
+  class Matrix {
+        ^
+"Test_name.c", line 12: note: function "cva::Matrix<VT, 0U, 0U>::Matrix(cva::Matrix<double, 0U, 0U> &&) [with VT=double]" does not match because argument #1 does not match parameter
+  class Matrix {
+        ^
+"Test_name.c", line 28: note: number of parameters of function "cva::Matrix<VT, 0U, 0U>::Matrix(unsigned int, unsigned int, const cva::Matrix<VT, 0U, 0U>::value_type *) [with VT=double]" does not match the call
+      Matrix(const unsigned int nRows, const unsigned int nColumns, const value_type* data = nullptr);
+      ^
+
+"Test_name.c", line 16: warning: function "cva::Matrix<VT, ROWS, COLS>::at [with VT=float, ROWS=3U, COLS=1U]" was referenced but not defined
+      inline __attribute__((always_inline)) value_type& at();
+                                                        ^
+
+4 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 7: warning: variable "PI_0" was declared but never referenced
+  constexpr float PI_0 = 3.1415926F;
+                  ^
+
+"Test_name.c", line 8: warning: variable "PI_1" was declared but never referenced
+  constexpr auto PI_1 = 3.1415926F;
+                 ^
+
+"Test_name.c", line 9: warning: variable "PI_2" was declared but never referenced
+  const float PI_2 = 3.1415926F;
+              ^
+
+"Test_name.c", line 10: warning: variable "PI_3" was declared but never referenced
+  const auto PI_3 = 3.1415926F;
+             ^
+

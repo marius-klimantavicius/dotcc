@@ -1,0 +1,42 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --microsoft_version=1400 -n Test_name.c
+"Test_name.c", line 9: warning: a storage class is not allowed in a friend declaration
+    friend typedef void e();
+           ^
+
+"Test_name.c", line 10: warning: a storage class is not allowed in a friend declaration
+    typedef friend void f();
+    ^
+
+"Test_name.c", line 11: error: mutable is not allowed
+    friend mutable void g();
+           ^
+
+"Test_name.c", line 12: error: mutable is not allowed
+    mutable friend void h();
+    ^
+
+"Test_name.c", line 13: warning: a storage class is not allowed in a friend declaration
+    friend auto void i();
+           ^
+
+"Test_name.c", line 14: warning: a storage class is not allowed in a friend declaration
+    auto friend void j();
+    ^
+
+"Test_name.c", line 15: warning: a storage class is not allowed in a friend declaration
+    friend register void k();
+           ^
+
+"Test_name.c", line 16: warning: a storage class is not allowed in a friend declaration
+    register friend void l();
+    ^
+
+"Test_name.c", line 5: warning: function "a" was declared but never referenced
+    static friend void a();
+                       ^
+
+"Test_name.c", line 6: warning: function "b" was declared but never referenced
+    friend static void b();
+                       ^
+
+2 errors detected in the compilation of "Test_name.c".

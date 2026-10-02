@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 9: error: entity declared as alias cannot have definition
+  void fun1() {} // expected-note {{previous definition}}
+       ^
+
+"Test_name.c", line 14: error: entity declared as alias cannot have definition
+  void fun2() {} // expected-error {{redefinition of 'fun2'}}
+       ^
+
+"Test_name.c", line 25: error: entity declared as alias cannot have definition
+  void __attribute((alias("f5"))) fun5(void) {} // expected-error {{definition 'fun5' cannot also be an alias}}
+                                  ^
+
+"Test_name.c", line 27: error: entity declared as alias cannot have definition
+  int var1 __attribute((alias("v1"))); // expected-error {{definition 'var1' cannot also be an alias}}
+      ^
+
+"Test_name.c", line 27: error: declaration aliased to undefined entity "v1"
+  int var1 __attribute((alias("v1"))); // expected-error {{definition 'var1' cannot also be an alias}}
+                        ^
+
+"Test_name.c", line 28: error: entity declared as alias cannot have definition
+  static int var2 __attribute((alias("v2"))) = 2; // expected-error {{definition 'var2' cannot also be an alias}}
+             ^
+
+"Test_name.c", line 28: error: declaration aliased to undefined entity "v2"
+  static int var2 __attribute((alias("v2"))) = 2; // expected-error {{definition 'var2' cannot also be an alias}}
+                               ^
+
+"Test_name.c", line 31: error: entity declared as alias cannot have definition
+  int var3 = 3; // expected-error{{redefinition of 'var3'}}
+      ^
+
+"Test_name.c", line 30: error: declaration aliased to undefined entity "C"
+  extern int var3 __attribute__((alias("C"))); // expected-note{{previous definition is here}}
+                                 ^
+
+"Test_name.c", line 33: error: entity declared as alias cannot have definition
+  int var4; // expected-note{{previous definition is here}}
+      ^
+
+"Test_name.c", line 34: error: declaration aliased to undefined entity "v4"
+  extern int var4 __attribute__((alias("v4"))); // expected-error{{alias definition of 'var4' after tentative definition}}
+                                 ^
+
+"Test_name.c", line 28: warning: variable "var2" was declared but never referenced
+  static int var2 __attribute((alias("v2"))) = 2; // expected-error {{definition 'var2' cannot also be an alias}}
+             ^
+
+11 errors detected in the compilation of "Test_name.c".

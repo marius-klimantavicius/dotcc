@@ -1,0 +1,50 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 9: error: expected a "("
+    if foo ()) /* { dg-error "expected '\\(' before 'foo'" } */
+       ^
+
+"Test_name.c", line 9: error: expected an expression
+    if foo ()) /* { dg-error "expected '\\(' before 'foo'" } */
+            ^
+
+"Test_name.c", line 9: error: expected an expression
+    if foo ()) /* { dg-error "expected '\\(' before 'foo'" } */
+             ^
+
+"Test_name.c", line 17: warning: parsing restarts here after previous syntax error
+  }
+  ^
+
+"Test_name.c", line 17: error: expected a ";"
+  }
+  ^
+
+"Test_name.c", line 22: error: expected a "]"
+    const char test [42;  /* { dg-error "22: expected ']' before ';' token" } */
+                       ^
+
+"Test_name.c", line 22: error: const variable "test" requires an initializer
+    const char test [42;  /* { dg-error "22: expected ']' before ';' token" } */
+                       ^
+
+"Test_name.c", line 22: warning: variable "test" was declared but never referenced
+    const char test [42;  /* { dg-error "22: expected ']' before ';' token" } */
+               ^
+
+"Test_name.c", line 33: error: expected a ";"
+  }
+  ^
+
+"Test_name.c", line 48: error: expected a ":"
+        return 42;
+        ^
+
+"Test_name.c", line 57: warning: parsing restarts here after previous syntax error
+      default:
+             ^
+
+"Test_name.c", line 60: warning: missing return statement at end of non-void function "missing_colon_in_switch"
+  }
+  ^
+
+8 errors detected in the compilation of "Test_name.c".

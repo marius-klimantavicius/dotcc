@@ -1,0 +1,22 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"./eh/uncaught1.C", line 51: warning: function "std::uncaught_exception" was declared deprecated ("use 'std::uncaught_exceptions()' instead")
+    test (id, id, std::uncaught_exception ());
+                       ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/exception", line 126: note: because of a "deprecated" attribute
+    __attribute__ ((__deprecated__ ("use '" "std::uncaught_exceptions()" "' instead")))
+                    ^
+
+"./eh/uncaught1.C", line 57: warning: function "std::uncaught_exception" was declared deprecated ("use 'std::uncaught_exceptions()' instead")
+    test (id, x.id, std::uncaught_exception ());
+                         ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/exception", line 126: note: because of a "deprecated" attribute
+    __attribute__ ((__deprecated__ ("use '" "std::uncaught_exceptions()" "' instead")))
+                    ^
+
+"./eh/uncaught1.C", line 62: warning: function "std::uncaught_exception" was declared deprecated ("use 'std::uncaught_exceptions()' instead")
+    test (id, id, std::uncaught_exception ());
+                       ^
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/exception", line 126: note: because of a "deprecated" attribute
+    __attribute__ ((__deprecated__ ("use '" "std::uncaught_exceptions()" "' instead")))
+                    ^
+

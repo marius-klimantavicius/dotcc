@@ -1,0 +1,12 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 15: warning: unknown attribute "regparm"
+  __attribute__((regparm(3), stdcall))
+                 ^
+
+eccp: diagnostics generated from compilation of Test_name.int.c:
+Test_name.c:10:53: error: conflicting types for '_Z18IndirectExternCallIPFviiEiEvT_T0_S3_'; have 'void(void (*)(int,  int), int,  int)'
+Test_name.c:10:101: note: previous declaration of '_Z18IndirectExternCallIPFviiEiEvT_T0_S3_' with type 'void(void (__attribute__((stdcall)) *)(int,  int), int,  int)'
+Test_name.c:10:94: error: conflicting types for '_Z18IndirectExternCallIPFviiEiEvT_T0_S3_'; have 'void(void (*)(int,  int), int,  int)'
+Test_name.c:10:94: note: previous definition of '_Z18IndirectExternCallIPFviiEiEvT_T0_S3_' with type 'void(void (__attribute__((stdcall)) *)(int,  int), int,  int)'
+eccp: end of diagnostics from compilation of Test_name.int.c
+eccp: gcc compilation of Test_name.int.c returned an exit status of 1

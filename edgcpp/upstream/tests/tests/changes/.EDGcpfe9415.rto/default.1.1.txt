@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 17: error: pure specifier ("= 0") allowed only on virtual functions
+    void f() = 0;  // Now silently accepted in GNU, Microsoft, and Sun C++
+             ^
+
+1 error detected in the compilation of "Test_name.c".

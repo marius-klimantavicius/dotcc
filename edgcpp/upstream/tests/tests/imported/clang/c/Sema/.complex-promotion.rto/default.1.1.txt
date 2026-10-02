@@ -1,0 +1,14 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 8: error: complex integral types are not supported
+  int b[__builtin_classify_type(a + 1i) == 9 ? 1 : -1];
+                                     ^
+
+"Test_name.c", line 9: error: complex integral types are not supported
+  int c[__builtin_classify_type(1i + a) == 9 ? 1 : -1];
+                                 ^
+
+"Test_name.c", line 12: error: complex integral types are not supported
+  __typeof__ (d + 1i) e;
+                   ^
+
+3 errors detected in the compilation of "Test_name.c".

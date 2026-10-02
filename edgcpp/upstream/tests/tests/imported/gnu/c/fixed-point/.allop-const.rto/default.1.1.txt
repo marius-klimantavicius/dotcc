@@ -1,0 +1,924 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: declaration is incompatible with "short _Fract" (declared at line 142)
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: warning: this declaration has no storage class or type specifier
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: warning: this declaration has no storage class or type specifier
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: warning: this declaration has no storage class or type specifier
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: warning: this declaration has no storage class or type specifier
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: declaration is incompatible with "short _Fract" (declared at line 142)
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: warning: this declaration has no storage class or type specifier
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: warning: this declaration has no storage class or type specifier
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: declaration is incompatible with "short _Fract" (declared at line 142)
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: warning: this declaration has no storage class or type specifier
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: warning: this declaration has no storage class or type specifier
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: declaration is incompatible with "short _Fract" (declared at line 142)
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: warning: this declaration has no storage class or type specifier
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: warning: this declaration has no storage class or type specifier
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: declaration is incompatible with "short _Fract" (declared at line 142)
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: warning: this declaration has no storage class or type specifier
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: warning: this declaration has no storage class or type specifier
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: declaration is incompatible with "short _Fract" (declared at line 142)
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: warning: this declaration has no storage class or type specifier
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: warning: this declaration has no storage class or type specifier
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: declaration is incompatible with "short _Fract" (declared at line 142)
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: warning: this declaration has no storage class or type specifier
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: warning: this declaration has no storage class or type specifier
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: declaration is incompatible with "short _Fract" (declared at line 142)
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: warning: this declaration has no storage class or type specifier
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: warning: this declaration has no storage class or type specifier
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: declaration is incompatible with "short _Fract" (declared at line 142)
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: warning: this declaration has no storage class or type specifier
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: warning: this declaration has no storage class or type specifier
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: declaration is incompatible with "short _Fract" (declared at line 142)
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: warning: this declaration has no storage class or type specifier
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: warning: this declaration has no storage class or type specifier
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: declaration is incompatible with "short _Fract" (declared at line 142)
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: warning: this declaration has no storage class or type specifier
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: warning: this declaration has no storage class or type specifier
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: declaration is incompatible with "short _Fract" (declared at line 142)
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: warning: this declaration has no storage class or type specifier
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: warning: this declaration has no storage class or type specifier
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: declaration is incompatible with "short _Fract" (declared at line 142)
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: warning: this declaration has no storage class or type specifier
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: warning: this declaration has no storage class or type specifier
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: declaration is incompatible with "short _Fract" (declared at line 142)
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: warning: this declaration has no storage class or type specifier
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: warning: this declaration has no storage class or type specifier
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: expected a ";"
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+"Test_name.c", line 142: error: extra text after expected end of number
+  ALLOPCONST(short _Fract, sf, hr);
+  ^
+
+Error limit reached.
+200 errors detected in the compilation of "Test_name.c".
+Compilation terminated.

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 5: warning: attribute "noinline" does not apply here
+  int a __attribute__((noinline)); // expected-warning {{'noinline' attribute only applies to functions and statements}}
+                       ^
+
+"Test_name.c", line 9: error: attribute "noinline" does not take arguments
+  void t2(void) __attribute__((noinline(2))); // expected-error {{'noinline' attribute takes no arguments}}
+                                       ^
+
+1 error detected in the compilation of "Test_name.c".

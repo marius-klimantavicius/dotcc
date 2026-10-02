@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --c++20 Test_name.c
+"Test_name.c", line 4: error: expected an identifier
+  export module A..B+C.+D.E+:.PA.PB..*PC*;
+                  ^
+
+"Test_name.c", line 4: error: expected a ";"
+  export module A..B+C.+D.E+:.PA.PB..*PC*;
+                    ^
+
+2 errors detected in the compilation of "Test_name.c".

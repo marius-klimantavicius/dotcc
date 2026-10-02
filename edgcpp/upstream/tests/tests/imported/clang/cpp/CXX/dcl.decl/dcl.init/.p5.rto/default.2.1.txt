@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=2 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 13: error: reference variable "r" requires an initializer
+  IR r; // expected-error {{declaration of reference variable 'r' requires an initializer}}
+      ^
+
+"Test_name.c", line 14: error: invalid type conversion
+  int n = IR(); // expected-error {{reference to type 'int' requires an initializer}}
+          ^
+
+"Test_name.c", line 38: error: the default constructor of "S" cannot be referenced -- it is a deleted function
+  S s; // expected-error {{deleted default constructor}}
+    ^
+
+"Test_name.c", line 40: error: the default constructor of "S" cannot be referenced -- it is a deleted function
+    return S(); // expected-error {{deleted default constructor}}
+           ^
+
+"Test_name.c", line 46: error: the default constructor of "T" cannot be referenced -- it is a deleted function
+  T t = T(); // expected-error {{deleted default constructor}}
+        ^
+
+"Test_name.c", line 51: error: the default constructor of "U" cannot be referenced -- it is a deleted function
+  U u = U(); // expected-error {{deleted default constructor}}
+        ^
+
+6 errors detected in the compilation of "Test_name.c".

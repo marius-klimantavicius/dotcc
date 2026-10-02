@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 10: error: a variable declared with an auto type specifier cannot appear in its own initializer
+    auto i = foo1(i);   // { dg-error "before deduction" }
+                  ^
+
+"Test_name.c", line 19: error: a variable declared with an auto type specifier cannot appear in its own initializer
+    auto a = foo2(a);   // { dg-error "before deduction" }
+                  ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 7: warning: variable "cp1" was declared but never referenced
+  char* const cp1 = nullptr;
+              ^
+
+"Test_name.c", line 8: warning: variable "cp2" was declared but never referenced
+  char* const cp2 = __null;
+              ^
+
+"Test_name.c", line 9: warning: variable "cp3" was declared but never referenced
+  char* const cp3 = 0;
+              ^
+
+"Test_name.c", line 11: warning: variable "cp4" was declared but never referenced
+  char* const cp4 = mynull;
+              ^
+

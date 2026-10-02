@@ -1,0 +1,88 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 42: error: expression must have a constant value
+    = foo (); // { dg-error "call to non-.constexpr. function" }
+      ^
+"Test_name.c", line 42: note: cannot call non-constexpr function "foo" (declared at line 6)
+    = foo (); // { dg-error "call to non-.constexpr. function" }
+      ^
+
+"Test_name.c", line 45: error: expression must have a constant value
+    = 42; // { dg-error "call to non-.constexpr. function" "" { target { ! implicit_constexpr } } }
+      ^
+"Test_name.c", line 45: note: cannot call non-constexpr function "nonliteral::nonliteral(int)" (declared at line 13)
+    = 42; // { dg-error "call to non-.constexpr. function" "" { target { ! implicit_constexpr } } }
+      ^
+
+"Test_name.c", line 46: error: expression must have a constant value
+  constinit const int &r6 = nonliteral(2).m; // { dg-error "variable .r6. does not have a constant initializer|call to non-.constexpr. function" "" { target { ! implicit_constexpr } } }
+                            ^
+"Test_name.c", line 46: note: cannot call non-constexpr function "nonliteral::nonliteral(int)" (declared at line 13)
+  constinit const int &r6 = nonliteral(2).m; // { dg-error "variable .r6. does not have a constant initializer|call to non-.constexpr. function" "" { target { ! implicit_constexpr } } }
+                            ^
+
+"Test_name.c", line 51: error: expression must have a constant value
+  constinit pod p4 = { foo() }; // { dg-error "variable .p4. does not have a constant initializer|call to non-.constexpr. function" }
+                     ^
+"Test_name.c", line 51: note: cannot call non-constexpr function "foo" (declared at line 6)
+  constinit pod p4 = { foo() }; // { dg-error "variable .p4. does not have a constant initializer|call to non-.constexpr. function" }
+                       ^
+
+"Test_name.c", line 57: error: expression must have a constant value
+  constinit literal l4 = foo(); // { dg-error "variable .l4. does not have a constant initializer|call to non-.constexpr. function" }
+                         ^
+"Test_name.c", line 57: note: cannot call non-constexpr function "foo" (declared at line 6)
+  constinit literal l4 = foo(); // { dg-error "variable .l4. does not have a constant initializer|call to non-.constexpr. function" }
+                         ^
+
+"Test_name.c", line 63: error: expression must have a constant value
+  constinit thread_local literal l10 = foo(); // { dg-error "variable .l10. does not have a constant initializer|call to non-.constexpr. function" }
+                                       ^
+"Test_name.c", line 63: note: cannot call non-constexpr function "foo" (declared at line 6)
+  constinit thread_local literal l10 = foo(); // { dg-error "variable .l10. does not have a constant initializer|call to non-.constexpr. function" }
+                                       ^
+
+"Test_name.c", line 66: error: variable was previously declared with "constinit" at line 28
+  pod S::p;
+  ^
+
+"Test_name.c", line 67: error: expression must have a constant value
+  constinit pod S::pc(S::p); // { dg-error "variable .S::pc. does not have a constant initializer|not usable" }
+                      ^
+"Test_name.c", line 67: note: the value of member "S::p" (declared at line 66) cannot be used as a constant
+  constinit pod S::pc(S::p); // { dg-error "variable .S::pc. does not have a constant initializer|not usable" }
+                      ^
+
+"Test_name.c", line 69: error: expression must have a constant value
+  constinit const nonliteral S::n(42); // { dg-error "variable .S::n. does not have a constant initializer|call to non-.constexpr. function" "" { target { ! implicit_constexpr } } }
+                                  ^
+"Test_name.c", line 69: note: cannot call non-constexpr function "nonliteral::nonliteral(int)" (declared at line 13)
+  constinit const nonliteral S::n(42); // { dg-error "variable .S::n. does not have a constant initializer|call to non-.constexpr. function" "" { target { ! implicit_constexpr } } }
+                                  ^
+
+"Test_name.c", line 70: error: expression must have a constant value
+  constinit int n1 = nonliteral{42}.m; // { dg-error "variable .n1. does not have a constant initializer|temporary of non-literal type" "" { target { ! implicit_constexpr } } }
+                     ^
+"Test_name.c", line 70: note: cannot call non-constexpr function "nonliteral::nonliteral(int)" (declared at line 13)
+  constinit int n1 = nonliteral{42}.m; // { dg-error "variable .n1. does not have a constant initializer|temporary of non-literal type" "" { target { ! implicit_constexpr } } }
+                     ^
+
+"Test_name.c", line 78: error: expression must have a constant value
+      = c; // { dg-error "not a constant" }
+        ^
+"Test_name.c", line 78: note: attempt to access run-time storage
+      = c; // { dg-error "not a constant" }
+        ^
+
+"Test_name.c", line 77: warning: variable "l" was declared but never referenced
+    static constinit const int &l // { dg-error "variable .l. does not have a constant initializer" }
+                                ^
+
+"Test_name.c", line 79: warning: variable "l2" was declared but never referenced
+    static const int &l2 = 10;
+                      ^
+
+"Test_name.c", line 80: warning: variable "l3" was declared but never referenced
+    static const int &l3 = gl;
+                      ^
+
+11 errors detected in the compilation of "Test_name.c".

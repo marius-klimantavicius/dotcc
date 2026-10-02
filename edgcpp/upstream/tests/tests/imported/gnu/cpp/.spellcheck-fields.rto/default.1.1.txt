@@ -1,0 +1,46 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 14: error: class "foo" has no member "m_bar"
+    return ptr->m_bar; /* { dg-error "'struct foo' has no member named 'm_bar'; did you mean 'bar'?" } */
+                ^
+
+"Test_name.c", line 20: error: class "foo" has no member "m_bar"
+    return instance.m_bar; /* { dg-error "'struct foo' has no member named 'm_bar'; did you mean 'bar'?" } */
+                    ^
+
+"Test_name.c", line 30: error: class "s" has no member "ac"
+    x.ac;  /* { dg-error "'struct s' has no member named 'ac'; did you mean 'ab'?" } */
+      ^
+
+"Test_name.c", line 35: error: class "foo" has no member "foa"
+    return sizeof (ptr->foa); /* { dg-error "'struct foo' has no member named 'foa'; did you mean 'foo'?" } */
+                        ^
+
+"Test_name.c", line 42: error: class "foo" has no member "this_is_unlike_any_of_the_fields"
+    return ptr->this_is_unlike_any_of_the_fields;   /* { dg-bogus "did you mean" } */
+                ^
+
+"Test_name.c", line 54: error: union "u" has no member "colour"
+    return ptr->colour; /* { dg-error "'union u' has no member named 'colour'; did you mean 'color'?" } */
+                ^
+
+"Test_name.c", line 64: error: class "has_anon::<unnamed>" has no member "colour"
+    return ptr->s.colour; /* { dg-error "'struct has_anon::<unnamed>' has no member named 'colour'; did you mean 'color'?" } */
+                  ^
+
+"Test_name.c", line 69: error: class "foo" has no member "m_bar"
+    return ref.m_bar; /* { dg-error "'struct foo' has no member named 'm_bar'; did you mean 'bar'?" } */
+               ^
+
+"Test_name.c", line 80: error: class "bar" has no member "fuzz"
+    return ptr->fuzz; /* { dg-error "'struct bar' has no member named 'fuzz'; did you mean 'fizz'?" } */
+                ^
+
+"Test_name.c", line 85: error: class "bar" has no member "m_foo"
+    return ptr->m_foo; /* { dg-error "'struct bar' has no member named 'm_foo'; did you mean 'foo'?" } */
+                ^
+
+"Test_name.c", line 90: error: class "bar" has no member "mytype"
+    return ptr->mytype; /* { dg-error "'struct bar' has no member named 'mytype'; did you mean 'my_type'?" } */
+                ^
+
+11 errors detected in the compilation of "Test_name.c".

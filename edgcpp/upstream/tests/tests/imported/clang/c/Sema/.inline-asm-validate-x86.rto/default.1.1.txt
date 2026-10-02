@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 -DAMD64 --c Test_name.c
+"Test_name.c", line 112: error: unknown asm constraint letter 'O'
+            : "0"(i), "O"(BelowMin)); // expected-error{{value '-1' out of range for constraint 'O'}}
+                      ^
+
+"Test_name.c", line 115: error: unknown asm constraint letter 'O'
+            : "0"(i), "O"(AboveMax)); // expected-error{{value '128' out of range for constraint 'O'}}
+                      ^
+
+"Test_name.c", line 118: error: unknown asm constraint letter 'O'
+            : "0"(i), "O"(64)); // expected-no-error
+                      ^
+
+"Test_name.c", line 125: warning: variable "s" was declared but never referenced
+    static struct s s;
+                    ^
+
+"Test_name.c", line 137: error: unknown asm constraint letter 'W'
+    __asm__("" : : "Wd"(test_W)); // expected-error{{invalid input constraint 'Wd' in asm}}
+                   ^
+
+"Test_name.c", line 139: error: unknown asm constraint letter 'W'
+    __asm__("" : : "Ws"(test_W(0))); // expected-error{{invalid type 'void' in asm input for constraint 'Ws'}}
+                   ^
+
+"Test_name.c", line 141: error: unknown asm constraint letter 'W'
+    __asm__("" : : "Ws"(i));
+                   ^
+
+6 errors detected in the compilation of "Test_name.c".

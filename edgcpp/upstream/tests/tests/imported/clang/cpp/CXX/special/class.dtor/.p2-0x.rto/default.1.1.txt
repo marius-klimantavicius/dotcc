@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++11 Test_name.c
+"Test_name.c", line 7: error: a ref-qualifier is not allowed here
+    ~X() &; // expected-error{{ref-qualifier '&' is not allowed on a destructor}}
+         ^
+
+"Test_name.c", line 11: error: a ref-qualifier is not allowed here
+    ~Y() &&; // expected-error{{ref-qualifier '&&' is not allowed on a destructor}}
+         ^
+
+2 errors detected in the compilation of "Test_name.c".

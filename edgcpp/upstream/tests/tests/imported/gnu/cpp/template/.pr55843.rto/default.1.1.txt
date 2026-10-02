@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 14: error: no instance of function template "has_type<T>::gcc_3_2_wknd::test [with T=Get_type<int, FT_tag, void>]" matches the argument list
+            argument types are: (type_wrapper<Get_type<int, FT_tag, void>> *)
+    static const bool value = sizeof(gcc_3_2_wknd::test(static_cast<t_*>(0))) == // { dg-message "" }
+                                     ^
+"Test_name.c", line 10: note: candidate function template "has_type<T>::gcc_3_2_wknd::test [with T=Get_type<int, FT_tag, void>]" failed deduction
+      template< typename U > static yes_tag test( type_wrapper<U> const volatile* // { dg-message "" }
+                                            ^
+          detected during:
+            instantiation of class "has_type<T> [with T=Get_type<int, FT_tag, void>]" at line 14
+            instantiation of class "has_type<T> [with T=Get_type<int, RT_tag, void>]" at line 25
+
+"Test_name.c", line 14: error: no instance of function template "has_type<T>::gcc_3_2_wknd::test [with T=Get_type<int, RT_tag, void>]" matches the argument list
+            argument types are: (type_wrapper<Get_type<int, RT_tag, void>> *)
+    static const bool value = sizeof(gcc_3_2_wknd::test(static_cast<t_*>(0))) == // { dg-message "" }
+                                     ^
+"Test_name.c", line 10: note: candidate function template "has_type<T>::gcc_3_2_wknd::test [with T=Get_type<int, RT_tag, void>]" failed deduction
+      template< typename U > static yes_tag test( type_wrapper<U> const volatile* // { dg-message "" }
+                                            ^
+          detected during instantiation of class "has_type<T> [with T=Get_type<int, RT_tag, void>]" at line 25
+
+"Test_name.c", line 25: error: class "Get_type<int, FT_tag, void>" has no member "type"
+  typedef Get_type<int, FT_tag>::type P;		      // { dg-message "" }
+                                 ^
+
+3 errors detected in the compilation of "Test_name.c".

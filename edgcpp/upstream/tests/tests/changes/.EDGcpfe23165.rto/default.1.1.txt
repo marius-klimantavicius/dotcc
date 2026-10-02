@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --gn 40600 Test_name.c
+"Test_name.c", line 14: warning: in-class initializer for nonstatic member is nonstandard
+      const int x = 33;
+                  ^
+

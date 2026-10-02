@@ -1,0 +1,13 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 11: warning: unrecognized #pragma
+  #pragma omp declare variant(templ_var_fn) match(construct={dispatch}) adjust_args(need_device_ptr: x)
+          ^
+
+"Test_name.c", line 18: warning: unrecognized #pragma
+  #pragma omp dispatch nocontext (x)
+          ^
+
+"Test_name.c", line 20: warning: unrecognized #pragma
+  #pragma omp dispatch novariants (x)
+          ^
+

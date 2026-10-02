@@ -1,0 +1,43 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++20 Test_name.c
+"Test_name.c", line 21: error: constant "E::v" (declared at line 7) is inaccessible
+  E b = C::v;			// { dg-error "private" }
+           ^
+
+"Test_name.c", line 33: error: invalid base class
+    using B::e;			// { dg-message "declared private here" }
+          ^
+
+"Test_name.c", line 34: error: invalid base class
+    using B::f;			// { dg-message "declared private here" }
+          ^
+
+"Test_name.c", line 39: error: identifier "e" is undefined
+    static inline const auto bad1 = e; // { dg-error "private" }
+                                    ^
+
+"Test_name.c", line 40: error: identifier "f" is undefined
+    static inline const auto bad2 = f; // { dg-error "private" }
+                                    ^
+
+"Test_name.c", line 53: error: invalid base class
+    using B::e;
+          ^
+
+"Test_name.c", line 55: error: class "Q" has no member "e"
+  using Q::e;			// OK
+           ^
+
+"Test_name.c", line 57: error: class "D" has no member "e"
+  using D::e;			// { dg-error "private" }
+           ^
+
+"Test_name.c", line 62: error: class "Q" has no member "e"
+    using T::e;
+             ^
+          detected during instantiation of class "X<T> [with T=Q]" at line 64
+
+"Test_name.c", line 64: error: class "X<Q>" has no member "e"
+  auto fob = X<Q>::e;
+                   ^
+
+10 errors detected in the compilation of "Test_name.c".

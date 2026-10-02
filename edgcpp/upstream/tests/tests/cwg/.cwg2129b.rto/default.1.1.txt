@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --c++20 -tused -A Test_name.c
+"Test_name.c", line 8: error: expression must have a constant value
+  constexpr auto e = g(); // ill-formed: a pointer to an immediate function is
+                     ^
+"Test_name.c", line 8: note: address of consteval function "f" in constant expression result
+  constexpr auto e = g(); // ill-formed: a pointer to an immediate function is
+                     ^
+
+"Test_name.c", line 7: warning: variable "r" was declared but never referenced
+  constexpr int r = h(); // OK
+                ^
+
+"Test_name.c", line 8: warning: variable "e" was declared but never referenced
+  constexpr auto e = g(); // ill-formed: a pointer to an immediate function is
+                 ^
+
+1 error detected in the compilation of "Test_name.c".

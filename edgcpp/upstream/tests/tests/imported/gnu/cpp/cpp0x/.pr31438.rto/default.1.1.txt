@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++11 Test_name.c
+"Test_name.c", line 6: error: parameter pack "U" was referenced but not expanded
+  template<typename T, typename... U> struct A<T(U)> // { dg-error "parameter packs|U" }
+                                                 ^
+
+"Test_name.c", line 11: error: incomplete type "A<void (int)>" is not allowed
+  A<void(int)> a(0); // { dg-error "incomplete type" }
+               ^
+
+2 errors detected in the compilation of "Test_name.c".

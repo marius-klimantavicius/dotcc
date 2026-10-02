@@ -1,0 +1,17 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 16: warning: name following "template" must be a template
+      double x=T::template add<double>(5.0,6.0); // { dg-error "add" }
+                           ^
+          detected during instantiation of "void Something<T>::work() [with T=Foo2]" at line 23
+
+"Test_name.c", line 16: error: type name is not allowed
+      double x=T::template add<double>(5.0,6.0); // { dg-error "add" }
+                               ^
+          detected during instantiation of "void Something<T>::work() [with T=Foo2]" at line 23
+
+"Test_name.c", line 16: warning: expression has no effect
+      double x=T::template add<double>(5.0,6.0); // { dg-error "add" }
+                                       ^
+          detected during instantiation of "void Something<T>::work() [with T=Foo2]" at line 23
+
+1 error detected in the compilation of "Test_name.c".

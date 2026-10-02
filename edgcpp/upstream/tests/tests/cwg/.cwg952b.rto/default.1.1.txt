@@ -1,0 +1,26 @@
+fe_only -DTEST_NUMBER=1 --c++20 -tused -A Test_name.c
+"Test_name.c", line 11: error: type "A::I" (declared at line 4) is inaccessible
+          I i2;             // error 
+          ^
+
+"Test_name.c", line 13: error: type "A::I" (declared at line 4) is inaccessible
+              I i3;         // error
+              ^
+
+"Test_name.c", line 9: error: type "A::I" (declared at line 4) is inaccessible
+              I i1;         // error: access violation
+              ^
+
+"Test_name.c", line 9: warning: variable "i1" was declared but never referenced
+              I i1;         // error: access violation
+                ^
+
+"Test_name.c", line 15: error: type "A::I" (declared at line 4) is inaccessible
+                  I i4;     // error
+                  ^
+
+"Test_name.c", line 15: warning: variable "i4" was declared but never referenced
+                  I i4;     // error
+                    ^
+
+4 errors detected in the compilation of "Test_name.c".

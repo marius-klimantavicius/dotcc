@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c99 --strict_gnu Test_name.c
+"Test_name.c", line 12: error: declaration is incompatible with "char *strchr(const char *, int)" (declared at line 11)
+  char *strchr(a) const char *a; { return 0; } /* { dg-error "number of arguments doesn't match prototype" } */
+        ^
+
+1 error detected in the compilation of "Test_name.c".

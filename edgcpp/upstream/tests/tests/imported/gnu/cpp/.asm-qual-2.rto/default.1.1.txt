@@ -1,0 +1,74 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++03 Test_name.c
+"Test_name.c", line 25: warning: type qualifier specified more than once
+    asm goto volatile volatile ("" :::: lab);  /* { dg-error "" } */
+                      ^
+
+"Test_name.c", line 26: error: duplicate 'asm' qualifier
+    asm volatile goto volatile ("" :::: lab);  /* { dg-error "" } */
+                      ^
+
+"Test_name.c", line 27: warning: type qualifier specified more than once
+    asm volatile volatile goto ("" :::: lab);  /* { dg-error "" } */
+                 ^
+
+"Test_name.c", line 28: error: duplicate 'asm' qualifier
+    asm goto goto volatile ("" :::: lab);  /* { dg-error "" } */
+             ^
+
+"Test_name.c", line 29: error: duplicate 'asm' qualifier
+    asm goto volatile goto ("" :::: lab);  /* { dg-error "" } */
+                      ^
+
+"Test_name.c", line 30: error: duplicate 'asm' qualifier
+    asm volatile goto goto ("" :::: lab);  /* { dg-error "" } */
+                      ^
+
+"Test_name.c", line 32: warning: type qualifier specified more than once
+    asm inline volatile volatile ("" :::);  /* { dg-error "" } */
+                        ^
+
+"Test_name.c", line 33: error: duplicate 'asm' qualifier
+    asm volatile inline volatile ("" :::);  /* { dg-error "" } */
+                        ^
+
+"Test_name.c", line 34: warning: type qualifier specified more than once
+    asm volatile volatile inline ("" :::);  /* { dg-error "" } */
+                 ^
+
+"Test_name.c", line 35: error: duplicate 'asm' qualifier
+    asm inline inline volatile ("" :::);  /* { dg-error "" } */
+               ^
+
+"Test_name.c", line 36: error: duplicate 'asm' qualifier
+    asm inline volatile inline ("" :::);  /* { dg-error "" } */
+                        ^
+
+"Test_name.c", line 37: error: duplicate 'asm' qualifier
+    asm volatile inline inline ("" :::);  /* { dg-error "" } */
+                        ^
+
+"Test_name.c", line 39: error: duplicate 'asm' qualifier
+    asm goto inline inline ("" :::: lab);  /* { dg-error "" } */
+                    ^
+
+"Test_name.c", line 40: error: duplicate 'asm' qualifier
+    asm inline goto inline ("" :::: lab);  /* { dg-error "" } */
+                    ^
+
+"Test_name.c", line 41: error: duplicate 'asm' qualifier
+    asm inline inline goto ("" :::: lab);  /* { dg-error "" } */
+               ^
+
+"Test_name.c", line 42: error: duplicate 'asm' qualifier
+    asm goto goto inline ("" :::: lab);  /* { dg-error "" } */
+             ^
+
+"Test_name.c", line 43: error: duplicate 'asm' qualifier
+    asm goto inline goto ("" :::: lab);  /* { dg-error "" } */
+                    ^
+
+"Test_name.c", line 44: error: duplicate 'asm' qualifier
+    asm inline goto goto ("" :::: lab);  /* { dg-error "" } */
+                    ^
+
+14 errors detected in the compilation of "Test_name.c".

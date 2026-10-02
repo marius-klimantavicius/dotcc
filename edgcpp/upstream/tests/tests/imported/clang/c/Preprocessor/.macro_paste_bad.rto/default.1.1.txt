@@ -1,0 +1,106 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 6: warning: concatenation with "+" in macro "XYZ" does not create a valid token
+  XYZ   // expected-error {{pasting formed 'x+', an invalid preprocessing token}}
+  ^
+
+"Test_name.c", line 6: warning: this declaration has no storage class or type specifier
+  XYZ   // expected-error {{pasting formed 'x+', an invalid preprocessing token}}
+  ^
+
+"Test_name.c", line 6: error: expected a ";"
+  XYZ   // expected-error {{pasting formed 'x+', an invalid preprocessing token}}
+  ^
+
+"Test_name.c", line 8: warning: concatenation with "test" in macro "XXYZ" does not create a valid token
+  XXYZ   // expected-error {{pasting formed '.test', an invalid preprocessing token}}
+  ^
+
+"Test_name.c", line 12: error: "##" may not be last in a macro definition
+  #define a   a ## ## // expected-error {{'##' cannot appear at end of macro expansion}}
+                                                                                        ^
+
+"Test_name.c", line 13: error: "##" may not be last in a macro definition
+  #define b() b ## ## // expected-error {{'##' cannot appear at end of macro expansion}}
+                                                                                        ^
+
+"Test_name.c", line 14: error: "##" may not be last in a macro definition
+  #define c   c ##    // expected-error {{'##' cannot appear at end of macro expansion}}
+                                                                                        ^
+
+"Test_name.c", line 15: error: "##" may not be last in a macro definition
+  #define d() d ##    // expected-error {{'##' cannot appear at end of macro expansion}}
+                                                                                        ^
+
+"Test_name.c", line 18: error: "##" may not be first in a macro definition
+  #define e   ## ## e // expected-error {{'##' cannot appear at start of macro expansion}}
+              ^
+
+"Test_name.c", line 18: error: "##" may not be first in a macro definition
+  #define e   ## ## e // expected-error {{'##' cannot appear at start of macro expansion}}
+                 ^
+
+"Test_name.c", line 19: error: "##" may not be first in a macro definition
+  #define f() ## ## f // expected-error {{'##' cannot appear at start of macro expansion}}
+              ^
+
+"Test_name.c", line 19: error: "##" may not be first in a macro definition
+  #define f() ## ## f // expected-error {{'##' cannot appear at start of macro expansion}}
+                 ^
+
+"Test_name.c", line 20: error: "##" may not be first in a macro definition
+  #define g   ## g    // expected-error {{'##' cannot appear at start of macro expansion}}
+              ^
+
+"Test_name.c", line 21: error: "##" may not be first in a macro definition
+  #define h() ## h    // expected-error {{'##' cannot appear at start of macro expansion}}
+              ^
+
+"Test_name.c", line 22: error: "##" may not be first in a macro definition
+  #define i   ##      // expected-error {{'##' cannot appear at start of macro expansion}}
+              ^
+
+"Test_name.c", line 23: error: "##" may not be first in a macro definition
+  #define j() ##      // expected-error {{'##' cannot appear at start of macro expansion}}
+              ^
+
+"Test_name.c", line 29: warning: unrecognized GCC pragma
+  #pragma GCC poison BLARG
+              ^
+
+"Test_name.c", line 35: error: the identifier __VA_ARGS__ can only appear in the replacement lists of variadic macros
+  int VA;   // expected-warning {{__VA_ARGS__ can only appear in the expansion of a C99 variadic macro}}
+      ^
+
+"Test_name.c", line 35: warning: parsing restarts here after previous syntax error
+  int VA;   // expected-warning {{__VA_ARGS__ can only appear in the expansion of a C99 variadic macro}}
+        ^
+
+"Test_name.c", line 37: error: expected a macro parameter name
+  #define LOG_ON_ERROR(x) x ## #y; // expected-error {{'#' is not followed by a macro parameter}}
+                                ^
+
+"Test_name.c", line 38: error: extra text after expected end of number
+  LOG_ON_ERROR(0);
+  ^
+
+"Test_name.c", line 38: error: expected a declaration
+  LOG_ON_ERROR(0);
+  ^
+
+"Test_name.c", line 41: error: too many arguments in invocation of macro "PR21379A"
+  PR21379A(0 {, }) // expected-error {{too many arguments provided to function-like macro invocation}}
+                ^
+
+"Test_name.c", line 41: warning: this declaration has no storage class or type specifier
+  PR21379A(0 {, }) // expected-error {{too many arguments provided to function-like macro invocation}}
+  ^
+
+"Test_name.c", line 41: error: expected a ";"
+  PR21379A(0 {, }) // expected-error {{too many arguments provided to function-like macro invocation}}
+  ^
+
+"Test_name.c", line 45: error: too many arguments in invocation of macro "PR21379B"
+  PR21379B(0 {, }) // expected-error {{too many arguments provided to function-like macro invocation}}
+                ^
+
+20 errors detected in the compilation of "Test_name.c".

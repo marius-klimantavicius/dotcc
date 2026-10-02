@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 Test_name.c
+"Test_name.c", line 15: error: expected a "("
+    B() : A {}  // Triggered an internal error in version 4.5.
+            ^
+
+1 error detected in the compilation of "Test_name.c".

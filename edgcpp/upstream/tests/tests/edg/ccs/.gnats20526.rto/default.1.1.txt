@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --c++ Test_name.c
+"Test_name.c", line 25: error: class "Foo3" has no copy constructor to copy a const object
+    (void)(true ? Bar() : Foo3()); // error expected
+                  ^
+
+1 error detected in the compilation of "Test_name.c".

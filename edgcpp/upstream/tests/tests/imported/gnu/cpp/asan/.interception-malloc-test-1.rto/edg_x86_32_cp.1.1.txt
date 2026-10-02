@@ -1,0 +1,14 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/std_abs.h", line 90: error: identifier "__int128" is undefined
+    __extension__ inline constexpr __int128
+                                   ^
+
+"/mds/gnu/build/gcc-15-20250112/include/c++/15.0.0/bits/std_abs.h", line 91: error: identifier "__int128" is undefined
+    abs(__int128 __x) { return __x >= 0 ? __x : -__x; }
+        ^
+
+"./asan/interception-malloc-test-1.C", line 13: warning: allowing all exceptions is incompatible with previous function "malloc" (declared at line 465 of "/usr/include/stdlib.h")
+  extern "C" void *malloc(size_t size) {
+                                       ^
+
+2 errors detected in the compilation of "Test_name.c".

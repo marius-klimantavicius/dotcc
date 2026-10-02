@@ -1,0 +1,9 @@
+./a.out
+allocator()
+allocator()
+basic_string()
+~Bar()
+~Foo()
+~basic_string()
+~allocator()
+~allocator()

@@ -1,0 +1,37 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 10: warning: unrecognized #pragma
+  #pragma unknown1 /* { dg-warning "-:unknown1" "unknown1" } */
+          ^
+
+"Test_name.c", line 17: warning: unrecognized #pragma
+  int _Pragma("unknown2") bar1; /* { dg-warning "-:unknown2" "unknown2" } */
+              ^
+
+"Test_name.c", line 19: warning: unrecognized #pragma
+  FOO(int _Pragma("unknown3") bar2); /* { dg-warning "-:unknown3" "unknown3" } */
+  ^
+
+"Test_name.c", line 21: warning: unrecognized #pragma
+  int BAR(bar3); /* { dg-warning "-:unknown_before" "unknown_before 1" } */
+      ^
+
+"Test_name.c", line 23: warning: unrecognized #pragma
+  BAR(int bar4); /* { dg-warning "-:unknown_before" "unknown_before 2" } */
+  ^
+
+"Test_name.c", line 25: warning: unrecognized #pragma
+  int BAZ(bar5); /* { dg-warning "-:unknown_after" "unknown_after 1" } */
+      ^
+
+"Test_name.c", line 27: warning: unrecognized #pragma
+  int BAZ(bar6;) /* { dg-warning "-:unknown_after" "unknown_after 2" } */
+      ^
+
+"Test_name.c", line 29: warning: unrecognized #pragma
+  FOO(int bar7; _Pragma("unknown4")) /* { dg-warning "-:unknown4" "unknown4" } */
+  ^
+
+"Test_name.c", line 31: warning: unrecognized #pragma
+  #pragma unknown5 /* { dg-warning "-:unknown5" "unknown5" } */
+          ^
+

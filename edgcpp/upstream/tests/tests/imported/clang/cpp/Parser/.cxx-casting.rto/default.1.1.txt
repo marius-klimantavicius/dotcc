@@ -1,0 +1,152 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 --c++03 Test_name.c
+"Test_name.c", line 48: warning: use of alternative token "<:" appears to be unintended
+    (void)const_cast<::c>(&x);
+          ^
+
+"Test_name.c", line 48: error: expected a "<"
+    (void)const_cast<::c>(&x);
+                    ^
+
+"Test_name.c", line 53: warning: use of alternative token "<:" appears to be unintended
+    (void)dynamic_cast<::a>(b);
+          ^
+
+"Test_name.c", line 58: warning: use of alternative token "<:" appears to be unintended
+    (void)reinterpret_cast<::c>(x);
+          ^
+
+"Test_name.c", line 63: warning: use of alternative token "<:" appears to be unintended
+    (void)static_cast<::c>(&x);
+          ^
+
+"Test_name.c", line 85: warning: use of alternative token "<:" appears to be unintended
+  #define LCC <::
+          ^
+
+"Test_name.c", line 98: warning: parsing restarts here after previous syntax error
+  template <class T> class D {}; // expected-note{{template is declared here}}
+           ^
+
+"Test_name.c", line 98: error: incomplete type "T" is not allowed
+  template <class T> class D {}; // expected-note{{template is declared here}}
+            ^
+
+"Test_name.c", line 98: error: expected a "("
+  template <class T> class D {}; // expected-note{{template is declared here}}
+                     ^
+
+"Test_name.c", line 98: error: expected an expression
+  template <class T> class D {}; // expected-note{{template is declared here}}
+                               ^
+
+"Test_name.c", line 98: error: expected a ")"
+  template <class T> class D {}; // expected-note{{template is declared here}}
+                               ^
+
+"Test_name.c", line 99: error: a template declaration is not allowed here
+  template <class T> void E() {};
+  ^
+
+"Test_name.c", line 102: error: expected a ";"
+  void test3() {
+               ^
+
+"Test_name.c", line 103: warning: use of alternative token "<:" appears to be unintended
+    ::D<::F> A1;
+      ^
+
+"Test_name.c", line 108: warning: use of alternative token "<:" appears to be unintended
+    D<::F> A2;
+    ^
+
+"Test_name.c", line 113: warning: use of alternative token "<:" appears to be unintended
+    ::E<::F>();
+      ^
+
+"Test_name.c", line 118: warning: use of alternative token "<:" appears to be unintended
+    E<::F>();
+    ^
+
+"Test_name.c", line 123: warning: parsing restarts here after previous syntax error
+    ::D< ::F> A3;
+                ^
+
+"Test_name.c", line 124: error: identifier "D" is undefined
+    D< ::F> A4;
+    ^
+
+"Test_name.c", line 124: error: the global scope has no "F"
+    D< ::F> A4;
+         ^
+
+"Test_name.c", line 124: error: identifier "A4" is undefined
+    D< ::F> A4;
+            ^
+
+"Test_name.c", line 125: error: the global scope has no "E"
+    ::E< ::F>();
+      ^
+
+"Test_name.c", line 125: error: the global scope has no "F"
+    ::E< ::F>();
+           ^
+
+"Test_name.c", line 125: error: expected an expression
+    ::E< ::F>();
+              ^
+
+"Test_name.c", line 126: error: identifier "E" is undefined
+    E< ::F>();
+    ^
+
+"Test_name.c", line 126: error: the global scope has no "F"
+    E< ::F>();
+         ^
+
+"Test_name.c", line 126: error: expected an expression
+    E< ::F>();
+            ^
+
+"Test_name.c", line 129: error: the global scope has no "D"
+    ::D[:F> A5; // expected-error {{class template '::D' requires template arguments}} \
+      ^
+
+"Test_name.c", line 129: error: expected an expression
+    ::D[:F> A5; // expected-error {{class template '::D' requires template arguments}} \
+        ^
+
+"Test_name.c", line 129: error: expected a "]"
+    ::D[:F> A5; // expected-error {{class template '::D' requires template arguments}} \
+              ^
+
+"Test_name.c", line 138: warning: variable "b" is used before its value is set
+    int test1 = true ? (int)A : b;
+                                ^
+
+"Test_name.c", line 138: warning: variable "test1" was declared but never referenced
+    int test1 = true ? (int)A : b;
+        ^
+
+"Test_name.c", line 148: error: cast to type "T ()" is not allowed
+    (T())++n; // expected-error {{C-style cast from 'int' to 'T ()' is not allowed}}
+     ^
+
+"Test_name.c", line 146: warning: local class member function "T::operator++" requires a definition
+    struct T { void operator++(int); };
+                    ^
+
+At end of source: error: expected a "<"
+
+At end of source: error: expected a type specifier
+
+At end of source: error: expected a ">"
+
+At end of source: error: expected a "("
+
+At end of source: error: expected an expression
+
+At end of source: error: expected a ")"
+
+At end of source: error: expected a ";"
+
+27 errors detected in the compilation of "Test_name.c".

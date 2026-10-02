@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --c++17 -tused -A Test_name.c
+"Test_name.c", line 6: warning: variable "n" was declared but never referenced
+      int n = sizeof(i=5);
+          ^
+

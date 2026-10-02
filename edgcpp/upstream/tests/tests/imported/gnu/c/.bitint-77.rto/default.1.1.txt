@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc --c23 Test_name.c
+"Test_name.c", line 16: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+    __atomic_fetch_or (&v, 1 << 31, __ATOMIC_RELAXED);
+                       ^
+
+"Test_name.c", line 25: error: synchronized operations are valid only on objects of size 1, 2, 4, or 8
+    __atomic_fetch_add (&w, 1 << 31, __ATOMIC_SEQ_CST);
+                        ^
+
+2 errors detected in the compilation of "Test_name.c".

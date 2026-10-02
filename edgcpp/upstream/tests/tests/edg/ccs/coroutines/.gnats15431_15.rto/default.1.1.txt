@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=1 --microsoft_version 1900 --set_flag coroutines -tused Test_name.c
+"Test_name.c", line 17: error: "std::coroutine_traits<std::task<void>>::promise_type" (aka "std::task<void>::promise_type") has no member "return_value"
+    co_return 5;  //(!)
+    ^
+
+1 error detected in the compilation of "Test_name.c".

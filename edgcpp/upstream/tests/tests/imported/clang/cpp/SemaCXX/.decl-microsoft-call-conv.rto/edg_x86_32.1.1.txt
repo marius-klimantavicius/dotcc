@@ -1,0 +1,122 @@
+fe_only -DTEST_NUMBER=1 --clang -tused -e 200 --no_wrap_diagnostics --clang_version 999999 --c++14 -w --ms_extensions -DMSABI Test_name.c
+"Test_name.c", line 18: error: declaration is incompatible with "void __cdecl free_func_default()" (declared at line 11)
+  void __stdcall  free_func_default(); // expected-error {{function declared 'stdcall' here was previously declared without calling convention}}
+                  ^
+
+"Test_name.c", line 19: error: declaration is incompatible with "void __stdcall free_func_default()" (declared at line 18)
+  void __fastcall free_func_default(); // expected-error {{function declared 'fastcall' here was previously declared without calling convention}}
+                  ^
+
+"Test_name.c", line 22: error: declaration is incompatible with "void __cdecl free_func_cdecl()" (declared at line 12)
+  void __stdcall  free_func_cdecl(); // expected-error {{function declared 'stdcall' here was previously declared 'cdecl'}}
+                  ^
+
+"Test_name.c", line 23: error: declaration is incompatible with "void __stdcall free_func_cdecl()" (declared at line 22)
+  void __fastcall free_func_cdecl(); // expected-error {{function declared 'fastcall' here was previously declared 'cdecl'}}
+                  ^
+
+"Test_name.c", line 25: error: declaration is incompatible with "void __stdcall free_func_stdcall()" (declared at line 13)
+  void            free_func_stdcall();
+                  ^
+
+"Test_name.c", line 27: error: declaration is incompatible with "void __cdecl free_func_stdcall()" (declared at line 25)
+  void __fastcall free_func_stdcall(); // expected-error {{function declared 'fastcall' here was previously declared 'stdcall'}}
+                  ^
+
+"Test_name.c", line 29: error: declaration is incompatible with "void __fastcall free_func_fastcall()" (declared at line 14)
+  void __cdecl    free_func_fastcall(); // expected-error {{function declared 'cdecl' here was previously declared 'fastcall'}}
+                  ^
+
+"Test_name.c", line 30: error: declaration is incompatible with "void __cdecl free_func_fastcall()" (declared at line 29)
+  void __stdcall  free_func_fastcall(); // expected-error {{function declared 'stdcall' here was previously declared 'fastcall'}}
+                  ^
+
+"Test_name.c", line 31: error: declaration is incompatible with "void __stdcall free_func_fastcall()" (declared at line 30)
+  void            free_func_fastcall();
+                  ^
+
+"Test_name.c", line 33: error: declaration is incompatible with "void __vectorcall free_func_vectorcall()" (declared at line 15)
+  void __cdecl    free_func_vectorcall(); // expected-error {{function declared 'cdecl' here was previously declared 'vectorcall'}}
+                  ^
+
+"Test_name.c", line 34: error: declaration is incompatible with "void __cdecl free_func_vectorcall()" (declared at line 33)
+  void __stdcall  free_func_vectorcall(); // expected-error {{function declared 'stdcall' here was previously declared 'vectorcall'}}
+                  ^
+
+"Test_name.c", line 35: error: declaration is incompatible with "void __stdcall free_func_vectorcall()" (declared at line 34)
+  void            free_func_vectorcall();
+                  ^
+
+"Test_name.c", line 41: error: __thiscall can only appear on nonstatic member function declarations
+  void __thiscall free_func_cdecl(char *);
+                  ^
+
+"Test_name.c", line 86: error: conflicting calling convention modifiers
+  void __cdecl    S::member_default1() {} // expected-error {{function declared 'cdecl' here was previously declared without calling convention}}
+                     ^
+
+"Test_name.c", line 89: error: conflicting calling convention modifiers
+  void __cdecl   S::member_typedef_default() {} // expected-error {{function declared 'cdecl' here was previously declared without calling convention}}
+                    ^
+
+"Test_name.c", line 95: error: conflicting calling convention modifiers
+  void __thiscall S::member_cdecl2() {} // expected-error {{function declared 'thiscall' here was previously declared 'cdecl'}}
+                     ^
+
+"Test_name.c", line 98: error: conflicting calling convention modifiers
+  void __cdecl    S::member_thiscall2() {} // expected-error {{function declared 'cdecl' here was previously declared 'thiscall'}}
+                     ^
+
+"Test_name.c", line 101: error: conflicting calling convention modifiers
+  void __cdecl    S::member_vectorcall2() {} // expected-error {{function declared 'cdecl' here was previously declared 'vectorcall'}}
+                     ^
+
+"Test_name.c", line 105: error: conflicting calling convention modifiers
+  void __stdcall  S::static_member_default3() {} // expected-error {{function declared 'stdcall' here was previously declared without calling convention}}
+                     ^
+
+"Test_name.c", line 108: error: conflicting calling convention modifiers
+  void __stdcall  S::static_member_cdecl2() {} // expected-error {{function declared 'stdcall' here was previously declared 'cdecl'}}
+                     ^
+
+"Test_name.c", line 110: error: conflicting calling convention modifiers
+  void __cdecl    S::member_variadic_default(int x, ...) { (void)x; }
+                     ^
+
+"Test_name.c", line 150: error: declaration is incompatible with "void __stdcall friend_stdcall1()" (declared at line 145)
+    friend void              friend_stdcall1();
+                             ^
+
+"Test_name.c", line 155: error: declaration is incompatible with "void friend_stdcall3()" (declared at line 152)
+  void __stdcall friend_stdcall3() {} // expected-error {{function declared 'stdcall' here was previously declared without calling convention}}
+                 ^
+
+"Test_name.c", line 159: error: expected an identifier
+  void __attribute__((noreturn)) __stdcall __attribute__((regparm(1))) multi_attribute(int x);
+                                           ^
+
+"Test_name.c", line 159: error: expected a type specifier
+  void __attribute__((noreturn)) __stdcall __attribute__((regparm(1))) multi_attribute(int x);
+                                                         ^
+
+"Test_name.c", line 159: error: expected a "{"
+  void __attribute__((noreturn)) __stdcall __attribute__((regparm(1))) multi_attribute(int x);
+                                                                       ^
+
+"Test_name.c", line 166: error: conflicting calling convention modifiers
+  void __cdecl __cdecl __stdcall __cdecl __fastcall __vectorcall multi_cc(int x);
+                       ^
+
+"Test_name.c", line 166: error: conflicting calling convention modifiers
+  void __cdecl __cdecl __stdcall __cdecl __fastcall __vectorcall multi_cc(int x);
+                                 ^
+
+"Test_name.c", line 166: error: conflicting calling convention modifiers
+  void __cdecl __cdecl __stdcall __cdecl __fastcall __vectorcall multi_cc(int x);
+                                         ^
+
+"Test_name.c", line 166: error: conflicting calling convention modifiers
+  void __cdecl __cdecl __stdcall __cdecl __fastcall __vectorcall multi_cc(int x);
+                                                    ^
+
+30 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 6: warning: declared size for bit field is larger than the size of the bit field type; truncated to 8 bits
+    bool bit : sizeof(bool) * __CHAR_BIT__ + 1;  // { dg-warning "exceeds" }
+               ^
+
+"Test_name.c", line 12: warning: declared size for bit field is larger than the size of the bit field type; truncated to 32 bits
+    E bit : sizeof(E) * __CHAR_BIT__ + 1;        // { dg-warning "exceeds" }
+            ^
+

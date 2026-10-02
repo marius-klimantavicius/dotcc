@@ -1,0 +1,818 @@
+eccp -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++23 Test_name.c
+"./cpp23/ext-floating14.C", line 86: error: expected a ">"
+    if (cvt <std::float16_t, signed __int128> (42LL) != (std::float16_t) (signed __int128) 42LL
+                                    ^
+
+"./cpp23/ext-floating14.C", line 86: error: expected a ")"
+    if (cvt <std::float16_t, signed __int128> (42LL) != (std::float16_t) (signed __int128) 42LL
+                                                                                 ^
+
+"./cpp23/ext-floating14.C", line 87: error: expected a ">"
+        || cvt <std::float16_t, signed __int128> (-42LL) != (std::float16_t) (signed __int128) -42LL
+                                       ^
+
+"./cpp23/ext-floating14.C", line 87: error: expected a ")"
+        || cvt <std::float16_t, signed __int128> (-42LL) != (std::float16_t) (signed __int128) -42LL
+                                                                                     ^
+
+"./cpp23/ext-floating14.C", line 88: error: expected a ">"
+        || cvt <std::float16_t, signed __int128> (65504LL) != (std::float16_t) (signed __int128) 65504LL
+                                       ^
+
+"./cpp23/ext-floating14.C", line 88: error: expected a ")"
+        || cvt <std::float16_t, signed __int128> (65504LL) != (std::float16_t) (signed __int128) 65504LL
+                                                                                       ^
+
+"./cpp23/ext-floating14.C", line 89: error: expected a ">"
+        || cvt <std::float16_t, signed __int128> (-65504LL) != (std::float16_t) (signed __int128) -65504LL)
+                                       ^
+
+"./cpp23/ext-floating14.C", line 89: error: expected a ")"
+        || cvt <std::float16_t, signed __int128> (-65504LL) != (std::float16_t) (signed __int128) -65504LL)
+                                                                                        ^
+
+"./cpp23/ext-floating14.C", line 91: error: expected a ">"
+    if (cvt <std::float16_t, unsigned __int128> (42ULL) != (std::float16_t) (unsigned __int128) 42ULL
+                                      ^
+
+"./cpp23/ext-floating14.C", line 91: error: expected a ")"
+    if (cvt <std::float16_t, unsigned __int128> (42ULL) != (std::float16_t) (unsigned __int128) 42ULL
+                                                                                      ^
+
+"./cpp23/ext-floating14.C", line 92: error: expected a ">"
+        || cvt <std::float16_t, unsigned __int128> (65504ULL) != (std::float16_t) (unsigned __int128) 65504ULL)
+                                         ^
+
+"./cpp23/ext-floating14.C", line 92: error: expected a ")"
+        || cvt <std::float16_t, unsigned __int128> (65504ULL) != (std::float16_t) (unsigned __int128) 65504ULL)
+                                                                                            ^
+
+"./cpp23/ext-floating14.C", line 123: warning: integer conversion resulted in truncation
+        || cvt <std::bfloat16_t, signed long int> (0x7fffffffffffffffL) != (std::bfloat16_t) 0x7fffffffffffffffL
+                                                   ^
+
+"./cpp23/ext-floating14.C", line 124: warning: integer conversion resulted in truncation
+        || cvt <std::bfloat16_t, signed long int> (-0x7fffffffffffffffL - 1) != (std::bfloat16_t) (-0x7fffffffffffffffL - 1))
+                                                   ^
+
+"./cpp23/ext-floating14.C", line 138: error: expected a ">"
+    if (cvt <std::bfloat16_t, signed __int128> (42LL) != (std::bfloat16_t) (signed __int128) 42LL
+                                     ^
+
+"./cpp23/ext-floating14.C", line 138: error: expected a ")"
+    if (cvt <std::bfloat16_t, signed __int128> (42LL) != (std::bfloat16_t) (signed __int128) 42LL
+                                                                                   ^
+
+"./cpp23/ext-floating14.C", line 139: error: expected a ">"
+        || cvt <std::bfloat16_t, signed __int128> (-42LL) != (std::bfloat16_t) (signed __int128) -42LL
+                                        ^
+
+"./cpp23/ext-floating14.C", line 139: error: expected a ")"
+        || cvt <std::bfloat16_t, signed __int128> (-42LL) != (std::bfloat16_t) (signed __int128) -42LL
+                                                                                       ^
+
+"./cpp23/ext-floating14.C", line 140: error: expected a ">"
+        || cvt <std::bfloat16_t, signed __int128> (((signed __int128) ((~(unsigned __int128) 0) >> 1))) != (std::bfloat16_t) ((signed __int128) ((~(unsigned __int128) 0) >> 1))
+                                        ^
+
+"./cpp23/ext-floating14.C", line 140: error: expected a ")"
+        || cvt <std::bfloat16_t, signed __int128> (((signed __int128) ((~(unsigned __int128) 0) >> 1))) != (std::bfloat16_t) ((signed __int128) ((~(unsigned __int128) 0) >> 1))
+                                                            ^
+
+"./cpp23/ext-floating14.C", line 140: error: expected a ")"
+        || cvt <std::bfloat16_t, signed __int128> (((signed __int128) ((~(unsigned __int128) 0) >> 1))) != (std::bfloat16_t) ((signed __int128) ((~(unsigned __int128) 0) >> 1))
+                                                                                   ^
+
+"./cpp23/ext-floating14.C", line 140: error: expected a ")"
+        || cvt <std::bfloat16_t, signed __int128> (((signed __int128) ((~(unsigned __int128) 0) >> 1))) != (std::bfloat16_t) ((signed __int128) ((~(unsigned __int128) 0) >> 1))
+                                                                                                                                      ^
+
+"./cpp23/ext-floating14.C", line 140: error: expected a ")"
+        || cvt <std::bfloat16_t, signed __int128> (((signed __int128) ((~(unsigned __int128) 0) >> 1))) != (std::bfloat16_t) ((signed __int128) ((~(unsigned __int128) 0) >> 1))
+                                                                                                                                                             ^
+
+"./cpp23/ext-floating14.C", line 141: error: expected a ">"
+        || cvt <std::bfloat16_t, signed __int128> (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1) != (std::bfloat16_t) (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1))
+                                        ^
+
+"./cpp23/ext-floating14.C", line 141: error: expected a ")"
+        || cvt <std::bfloat16_t, signed __int128> (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1) != (std::bfloat16_t) (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1))
+                                                             ^
+
+"./cpp23/ext-floating14.C", line 141: error: expected a ")"
+        || cvt <std::bfloat16_t, signed __int128> (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1) != (std::bfloat16_t) (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1))
+                                                                                    ^
+
+"./cpp23/ext-floating14.C", line 141: error: expected a ")"
+        || cvt <std::bfloat16_t, signed __int128> (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1) != (std::bfloat16_t) (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1))
+                                                                                                                                             ^
+
+"./cpp23/ext-floating14.C", line 141: error: expected a ")"
+        || cvt <std::bfloat16_t, signed __int128> (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1) != (std::bfloat16_t) (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1))
+                                                                                                                                                                    ^
+
+"./cpp23/ext-floating14.C", line 143: error: expected a ">"
+    if (cvt <std::bfloat16_t, unsigned __int128> (42ULL) != (std::bfloat16_t) (unsigned __int128) 42ULL
+                                       ^
+
+"./cpp23/ext-floating14.C", line 143: error: expected a ")"
+    if (cvt <std::bfloat16_t, unsigned __int128> (42ULL) != (std::bfloat16_t) (unsigned __int128) 42ULL
+                                                                                        ^
+
+"./cpp23/ext-floating14.C", line 144: error: expected a ">"
+        || cvt <std::bfloat16_t, unsigned __int128> (~(unsigned __int128) 0) != (std::bfloat16_t) (~(unsigned __int128) 0))
+                                          ^
+
+"./cpp23/ext-floating14.C", line 144: error: expected a ")"
+        || cvt <std::bfloat16_t, unsigned __int128> (~(unsigned __int128) 0) != (std::bfloat16_t) (~(unsigned __int128) 0))
+                                                                ^
+
+"./cpp23/ext-floating14.C", line 144: error: expected a ")"
+        || cvt <std::bfloat16_t, unsigned __int128> (~(unsigned __int128) 0) != (std::bfloat16_t) (~(unsigned __int128) 0))
+                                                                                                              ^
+
+"./cpp23/ext-floating14.C", line 175: warning: integer conversion resulted in truncation
+        || cvt <std::float32_t, signed long int> (0x7fffffffffffffffL) != (std::float32_t) 0x7fffffffffffffffL
+                                                  ^
+
+"./cpp23/ext-floating14.C", line 176: warning: integer conversion resulted in truncation
+        || cvt <std::float32_t, signed long int> (-0x7fffffffffffffffL - 1) != (std::float32_t) (-0x7fffffffffffffffL - 1))
+                                                  ^
+
+"./cpp23/ext-floating14.C", line 190: error: expected a ">"
+    if (cvt <std::float32_t, signed __int128> (42LL) != (std::float32_t) (signed __int128) 42LL
+                                    ^
+
+"./cpp23/ext-floating14.C", line 190: error: expected a ")"
+    if (cvt <std::float32_t, signed __int128> (42LL) != (std::float32_t) (signed __int128) 42LL
+                                                                                 ^
+
+"./cpp23/ext-floating14.C", line 191: error: expected a ">"
+        || cvt <std::float32_t, signed __int128> (-42LL) != (std::float32_t) (signed __int128) -42LL
+                                       ^
+
+"./cpp23/ext-floating14.C", line 191: error: expected a ")"
+        || cvt <std::float32_t, signed __int128> (-42LL) != (std::float32_t) (signed __int128) -42LL
+                                                                                     ^
+
+"./cpp23/ext-floating14.C", line 192: error: expected a ">"
+        || cvt <std::float32_t, signed __int128> (((signed __int128) ((~(unsigned __int128) 0) >> 1))) != (std::float32_t) ((signed __int128) ((~(unsigned __int128) 0) >> 1))
+                                       ^
+
+"./cpp23/ext-floating14.C", line 192: error: expected a ")"
+        || cvt <std::float32_t, signed __int128> (((signed __int128) ((~(unsigned __int128) 0) >> 1))) != (std::float32_t) ((signed __int128) ((~(unsigned __int128) 0) >> 1))
+                                                           ^
+
+"./cpp23/ext-floating14.C", line 192: error: expected a ")"
+        || cvt <std::float32_t, signed __int128> (((signed __int128) ((~(unsigned __int128) 0) >> 1))) != (std::float32_t) ((signed __int128) ((~(unsigned __int128) 0) >> 1))
+                                                                                  ^
+
+"./cpp23/ext-floating14.C", line 192: error: expected a ")"
+        || cvt <std::float32_t, signed __int128> (((signed __int128) ((~(unsigned __int128) 0) >> 1))) != (std::float32_t) ((signed __int128) ((~(unsigned __int128) 0) >> 1))
+                                                                                                                                    ^
+
+"./cpp23/ext-floating14.C", line 192: error: expected a ")"
+        || cvt <std::float32_t, signed __int128> (((signed __int128) ((~(unsigned __int128) 0) >> 1))) != (std::float32_t) ((signed __int128) ((~(unsigned __int128) 0) >> 1))
+                                                                                                                                                           ^
+
+"./cpp23/ext-floating14.C", line 193: error: expected a ">"
+        || cvt <std::float32_t, signed __int128> (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1) != (std::float32_t) (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1))
+                                       ^
+
+"./cpp23/ext-floating14.C", line 193: error: expected a ")"
+        || cvt <std::float32_t, signed __int128> (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1) != (std::float32_t) (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1))
+                                                            ^
+
+"./cpp23/ext-floating14.C", line 193: error: expected a ")"
+        || cvt <std::float32_t, signed __int128> (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1) != (std::float32_t) (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1))
+                                                                                   ^
+
+"./cpp23/ext-floating14.C", line 193: error: expected a ")"
+        || cvt <std::float32_t, signed __int128> (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1) != (std::float32_t) (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1))
+                                                                                                                                           ^
+
+"./cpp23/ext-floating14.C", line 193: error: expected a ")"
+        || cvt <std::float32_t, signed __int128> (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1) != (std::float32_t) (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1))
+                                                                                                                                                                  ^
+
+"./cpp23/ext-floating14.C", line 195: error: expected a ">"
+    if (cvt <std::float32_t, unsigned __int128> (42ULL) != (std::float32_t) (unsigned __int128) 42ULL
+                                      ^
+
+"./cpp23/ext-floating14.C", line 195: error: expected a ")"
+    if (cvt <std::float32_t, unsigned __int128> (42ULL) != (std::float32_t) (unsigned __int128) 42ULL
+                                                                                      ^
+
+"./cpp23/ext-floating14.C", line 196: error: expected a ">"
+        || cvt <std::float32_t, unsigned __int128> (~(unsigned __int128) 0) != (std::float32_t) (~(unsigned __int128) 0))
+                                         ^
+
+"./cpp23/ext-floating14.C", line 196: error: expected a ")"
+        || cvt <std::float32_t, unsigned __int128> (~(unsigned __int128) 0) != (std::float32_t) (~(unsigned __int128) 0))
+                                                               ^
+
+"./cpp23/ext-floating14.C", line 196: error: expected a ")"
+        || cvt <std::float32_t, unsigned __int128> (~(unsigned __int128) 0) != (std::float32_t) (~(unsigned __int128) 0))
+                                                                                                            ^
+
+"./cpp23/ext-floating14.C", line 227: warning: integer conversion resulted in truncation
+        || cvt <std::float64_t, signed long int> (0x7fffffffffffffffL) != (std::float64_t) 0x7fffffffffffffffL
+                                                  ^
+
+"./cpp23/ext-floating14.C", line 228: warning: integer conversion resulted in truncation
+        || cvt <std::float64_t, signed long int> (-0x7fffffffffffffffL - 1) != (std::float64_t) (-0x7fffffffffffffffL - 1))
+                                                  ^
+
+"./cpp23/ext-floating14.C", line 242: error: expected a ">"
+    if (cvt <std::float64_t, signed __int128> (42LL) != (std::float64_t) (signed __int128) 42LL
+                                    ^
+
+"./cpp23/ext-floating14.C", line 242: error: expected a ")"
+    if (cvt <std::float64_t, signed __int128> (42LL) != (std::float64_t) (signed __int128) 42LL
+                                                                                 ^
+
+"./cpp23/ext-floating14.C", line 243: error: expected a ">"
+        || cvt <std::float64_t, signed __int128> (-42LL) != (std::float64_t) (signed __int128) -42LL
+                                       ^
+
+"./cpp23/ext-floating14.C", line 243: error: expected a ")"
+        || cvt <std::float64_t, signed __int128> (-42LL) != (std::float64_t) (signed __int128) -42LL
+                                                                                     ^
+
+"./cpp23/ext-floating14.C", line 244: error: expected a ">"
+        || cvt <std::float64_t, signed __int128> (((signed __int128) ((~(unsigned __int128) 0) >> 1))) != (std::float64_t) ((signed __int128) ((~(unsigned __int128) 0) >> 1))
+                                       ^
+
+"./cpp23/ext-floating14.C", line 244: error: expected a ")"
+        || cvt <std::float64_t, signed __int128> (((signed __int128) ((~(unsigned __int128) 0) >> 1))) != (std::float64_t) ((signed __int128) ((~(unsigned __int128) 0) >> 1))
+                                                           ^
+
+"./cpp23/ext-floating14.C", line 244: error: expected a ")"
+        || cvt <std::float64_t, signed __int128> (((signed __int128) ((~(unsigned __int128) 0) >> 1))) != (std::float64_t) ((signed __int128) ((~(unsigned __int128) 0) >> 1))
+                                                                                  ^
+
+"./cpp23/ext-floating14.C", line 244: error: expected a ")"
+        || cvt <std::float64_t, signed __int128> (((signed __int128) ((~(unsigned __int128) 0) >> 1))) != (std::float64_t) ((signed __int128) ((~(unsigned __int128) 0) >> 1))
+                                                                                                                                    ^
+
+"./cpp23/ext-floating14.C", line 244: error: expected a ")"
+        || cvt <std::float64_t, signed __int128> (((signed __int128) ((~(unsigned __int128) 0) >> 1))) != (std::float64_t) ((signed __int128) ((~(unsigned __int128) 0) >> 1))
+                                                                                                                                                           ^
+
+"./cpp23/ext-floating14.C", line 245: error: expected a ">"
+        || cvt <std::float64_t, signed __int128> (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1) != (std::float64_t) (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1))
+                                       ^
+
+"./cpp23/ext-floating14.C", line 245: error: expected a ")"
+        || cvt <std::float64_t, signed __int128> (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1) != (std::float64_t) (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1))
+                                                            ^
+
+"./cpp23/ext-floating14.C", line 245: error: expected a ")"
+        || cvt <std::float64_t, signed __int128> (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1) != (std::float64_t) (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1))
+                                                                                   ^
+
+"./cpp23/ext-floating14.C", line 245: error: expected a ")"
+        || cvt <std::float64_t, signed __int128> (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1) != (std::float64_t) (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1))
+                                                                                                                                           ^
+
+"./cpp23/ext-floating14.C", line 245: error: expected a ")"
+        || cvt <std::float64_t, signed __int128> (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1) != (std::float64_t) (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1))
+                                                                                                                                                                  ^
+
+"./cpp23/ext-floating14.C", line 247: error: expected a ">"
+    if (cvt <std::float64_t, unsigned __int128> (42ULL) != (std::float64_t) (unsigned __int128) 42ULL
+                                      ^
+
+"./cpp23/ext-floating14.C", line 247: error: expected a ")"
+    if (cvt <std::float64_t, unsigned __int128> (42ULL) != (std::float64_t) (unsigned __int128) 42ULL
+                                                                                      ^
+
+"./cpp23/ext-floating14.C", line 248: error: expected a ">"
+        || cvt <std::float64_t, unsigned __int128> (~(unsigned __int128) 0) != (std::float64_t) (~(unsigned __int128) 0))
+                                         ^
+
+"./cpp23/ext-floating14.C", line 248: error: expected a ")"
+        || cvt <std::float64_t, unsigned __int128> (~(unsigned __int128) 0) != (std::float64_t) (~(unsigned __int128) 0))
+                                                               ^
+
+"./cpp23/ext-floating14.C", line 248: error: expected a ")"
+        || cvt <std::float64_t, unsigned __int128> (~(unsigned __int128) 0) != (std::float64_t) (~(unsigned __int128) 0))
+                                                                                                            ^
+
+"./cpp23/ext-floating14.C", line 279: warning: integer conversion resulted in truncation
+        || cvt <std::float128_t, signed long int> (0x7fffffffffffffffL) != (std::float128_t) 0x7fffffffffffffffL
+                                                   ^
+
+"./cpp23/ext-floating14.C", line 280: warning: integer conversion resulted in truncation
+        || cvt <std::float128_t, signed long int> (-0x7fffffffffffffffL - 1) != (std::float128_t) (-0x7fffffffffffffffL - 1))
+                                                   ^
+
+"./cpp23/ext-floating14.C", line 294: error: expected a ">"
+    if (cvt <std::float128_t, signed __int128> (42LL) != (std::float128_t) (signed __int128) 42LL
+                                     ^
+
+"./cpp23/ext-floating14.C", line 294: error: expected a ")"
+    if (cvt <std::float128_t, signed __int128> (42LL) != (std::float128_t) (signed __int128) 42LL
+                                                                                   ^
+
+"./cpp23/ext-floating14.C", line 295: error: expected a ">"
+        || cvt <std::float128_t, signed __int128> (-42LL) != (std::float128_t) (signed __int128) -42LL
+                                        ^
+
+"./cpp23/ext-floating14.C", line 295: error: expected a ")"
+        || cvt <std::float128_t, signed __int128> (-42LL) != (std::float128_t) (signed __int128) -42LL
+                                                                                       ^
+
+"./cpp23/ext-floating14.C", line 296: error: expected a ">"
+        || cvt <std::float128_t, signed __int128> (((signed __int128) ((~(unsigned __int128) 0) >> 1))) != (std::float128_t) ((signed __int128) ((~(unsigned __int128) 0) >> 1))
+                                        ^
+
+"./cpp23/ext-floating14.C", line 296: error: expected a ")"
+        || cvt <std::float128_t, signed __int128> (((signed __int128) ((~(unsigned __int128) 0) >> 1))) != (std::float128_t) ((signed __int128) ((~(unsigned __int128) 0) >> 1))
+                                                            ^
+
+"./cpp23/ext-floating14.C", line 296: error: expected a ")"
+        || cvt <std::float128_t, signed __int128> (((signed __int128) ((~(unsigned __int128) 0) >> 1))) != (std::float128_t) ((signed __int128) ((~(unsigned __int128) 0) >> 1))
+                                                                                   ^
+
+"./cpp23/ext-floating14.C", line 296: error: expected a ")"
+        || cvt <std::float128_t, signed __int128> (((signed __int128) ((~(unsigned __int128) 0) >> 1))) != (std::float128_t) ((signed __int128) ((~(unsigned __int128) 0) >> 1))
+                                                                                                                                      ^
+
+"./cpp23/ext-floating14.C", line 296: error: expected a ")"
+        || cvt <std::float128_t, signed __int128> (((signed __int128) ((~(unsigned __int128) 0) >> 1))) != (std::float128_t) ((signed __int128) ((~(unsigned __int128) 0) >> 1))
+                                                                                                                                                             ^
+
+"./cpp23/ext-floating14.C", line 297: error: expected a ">"
+        || cvt <std::float128_t, signed __int128> (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1) != (std::float128_t) (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1))
+                                        ^
+
+"./cpp23/ext-floating14.C", line 297: error: expected a ")"
+        || cvt <std::float128_t, signed __int128> (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1) != (std::float128_t) (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1))
+                                                             ^
+
+"./cpp23/ext-floating14.C", line 297: error: expected a ")"
+        || cvt <std::float128_t, signed __int128> (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1) != (std::float128_t) (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1))
+                                                                                    ^
+
+"./cpp23/ext-floating14.C", line 297: error: expected a ")"
+        || cvt <std::float128_t, signed __int128> (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1) != (std::float128_t) (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1))
+                                                                                                                                             ^
+
+"./cpp23/ext-floating14.C", line 297: error: expected a ")"
+        || cvt <std::float128_t, signed __int128> (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1) != (std::float128_t) (-((signed __int128) ((~(unsigned __int128) 0) >> 1)) - 1))
+                                                                                                                                                                    ^
+
+"./cpp23/ext-floating14.C", line 299: error: expected a ">"
+    if (cvt <std::float128_t, unsigned __int128> (42ULL) != (std::float128_t) (unsigned __int128) 42ULL
+                                       ^
+
+"./cpp23/ext-floating14.C", line 299: error: expected a ")"
+    if (cvt <std::float128_t, unsigned __int128> (42ULL) != (std::float128_t) (unsigned __int128) 42ULL
+                                                                                        ^
+
+"./cpp23/ext-floating14.C", line 300: error: expected a ">"
+        || cvt <std::float128_t, unsigned __int128> (~(unsigned __int128) 0) != (std::float128_t) (~(unsigned __int128) 0))
+                                          ^
+
+"./cpp23/ext-floating14.C", line 300: error: expected a ")"
+        || cvt <std::float128_t, unsigned __int128> (~(unsigned __int128) 0) != (std::float128_t) (~(unsigned __int128) 0))
+                                                                ^
+
+"./cpp23/ext-floating14.C", line 300: error: expected a ")"
+        || cvt <std::float128_t, unsigned __int128> (~(unsigned __int128) 0) != (std::float128_t) (~(unsigned __int128) 0))
+                                                                                                              ^
+
+"./cpp23/ext-floating14.C", line 365: error: expected a ">"
+    if (cvt <signed __int128, std::float16_t> (42.0f16) != (signed __int128) (std::float16_t) 42.0f16
+                    ^
+
+"./cpp23/ext-floating14.C", line 365: error: expected a ")"
+    if (cvt <signed __int128, std::float16_t> (42.0f16) != (signed __int128) (std::float16_t) 42.0f16
+                                                                   ^
+
+"./cpp23/ext-floating14.C", line 366: error: expected a ">"
+        || cvt <signed __int128, std::float16_t> (-42.0f16) != (signed __int128) (std::float16_t) -42.0f16
+                       ^
+
+"./cpp23/ext-floating14.C", line 366: error: expected a ")"
+        || cvt <signed __int128, std::float16_t> (-42.0f16) != (signed __int128) (std::float16_t) -42.0f16
+                                                                       ^
+
+"./cpp23/ext-floating14.C", line 367: error: expected a ">"
+        || cvt <signed __int128, std::float16_t> (65504.0f16) != (signed __int128) (std::float16_t) 65504.0f16
+                       ^
+
+"./cpp23/ext-floating14.C", line 367: error: expected a ")"
+        || cvt <signed __int128, std::float16_t> (65504.0f16) != (signed __int128) (std::float16_t) 65504.0f16
+                                                                         ^
+
+"./cpp23/ext-floating14.C", line 368: error: expected a ">"
+        || cvt <signed __int128, std::float16_t> (-65504.0f16) != (signed __int128) (std::float16_t) -65504.0f16)
+                       ^
+
+"./cpp23/ext-floating14.C", line 368: error: expected a ")"
+        || cvt <signed __int128, std::float16_t> (-65504.0f16) != (signed __int128) (std::float16_t) -65504.0f16)
+                                                                          ^
+
+"./cpp23/ext-floating14.C", line 370: error: expected a ">"
+    if (cvt <unsigned __int128, std::float16_t> (42.0f16) != (unsigned __int128) (std::float16_t) 42.0f16
+                      ^
+
+"./cpp23/ext-floating14.C", line 370: error: expected a ")"
+    if (cvt <unsigned __int128, std::float16_t> (42.0f16) != (unsigned __int128) (std::float16_t) 42.0f16
+                                                                       ^
+
+"./cpp23/ext-floating14.C", line 371: error: expected a ">"
+        || cvt <unsigned __int128, std::float16_t> (65504.0f16) != (unsigned __int128) (std::float16_t) 65504.0f16)
+                         ^
+
+"./cpp23/ext-floating14.C", line 371: error: expected a ")"
+        || cvt <unsigned __int128, std::float16_t> (65504.0f16) != (unsigned __int128) (std::float16_t) 65504.0f16)
+                                                                             ^
+
+"./cpp23/ext-floating14.C", line 417: error: expected a ">"
+    if (cvt <signed __int128, std::bfloat16_t> (42.0bf16) != (signed __int128) (std::bfloat16_t) 42.0bf16
+                    ^
+
+"./cpp23/ext-floating14.C", line 417: error: expected a ")"
+    if (cvt <signed __int128, std::bfloat16_t> (42.0bf16) != (signed __int128) (std::bfloat16_t) 42.0bf16
+                                                                     ^
+
+"./cpp23/ext-floating14.C", line 418: error: expected a ">"
+        || cvt <signed __int128, std::bfloat16_t> (-42.0bf16) != (signed __int128) (std::bfloat16_t) -42.0bf16
+                       ^
+
+"./cpp23/ext-floating14.C", line 418: error: expected a ")"
+        || cvt <signed __int128, std::bfloat16_t> (-42.0bf16) != (signed __int128) (std::bfloat16_t) -42.0bf16
+                                                                         ^
+
+"./cpp23/ext-floating14.C", line 419: error: expected a ">"
+        || cvt <signed __int128, std::bfloat16_t> ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2)) != (signed __int128) (std::bfloat16_t) ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))
+                       ^
+
+"./cpp23/ext-floating14.C", line 419: error: expected a ")"
+        || cvt <signed __int128, std::bfloat16_t> ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2)) != (signed __int128) (std::bfloat16_t) ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))
+                                                           ^
+
+"./cpp23/ext-floating14.C", line 419: error: expected a ")"
+        || cvt <signed __int128, std::bfloat16_t> ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2)) != (signed __int128) (std::bfloat16_t) ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))
+                                                                                              ^
+
+"./cpp23/ext-floating14.C", line 419: error: expected a ")"
+        || cvt <signed __int128, std::bfloat16_t> ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2)) != (signed __int128) (std::bfloat16_t) ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))
+                                                                                                                         ^
+
+"./cpp23/ext-floating14.C", line 419: error: expected a ")"
+        || cvt <signed __int128, std::bfloat16_t> ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2)) != (signed __int128) (std::bfloat16_t) ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))
+                                                                                                                                                              ^
+
+"./cpp23/ext-floating14.C", line 419: error: expected a ")"
+        || cvt <signed __int128, std::bfloat16_t> ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2)) != (signed __int128) (std::bfloat16_t) ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))
+                                                                                                                                                                                                 ^
+
+"./cpp23/ext-floating14.C", line 420: error: expected a ">"
+        || cvt <signed __int128, std::bfloat16_t> (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))) != (signed __int128) (std::bfloat16_t) (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))))
+                       ^
+
+"./cpp23/ext-floating14.C", line 420: error: expected a ")"
+        || cvt <signed __int128, std::bfloat16_t> (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))) != (signed __int128) (std::bfloat16_t) (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))))
+                                                             ^
+
+"./cpp23/ext-floating14.C", line 420: error: expected a ")"
+        || cvt <signed __int128, std::bfloat16_t> (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))) != (signed __int128) (std::bfloat16_t) (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))))
+                                                                                                ^
+
+"./cpp23/ext-floating14.C", line 420: error: expected a ")"
+        || cvt <signed __int128, std::bfloat16_t> (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))) != (signed __int128) (std::bfloat16_t) (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))))
+                                                                                                                            ^
+
+"./cpp23/ext-floating14.C", line 420: error: expected a ")"
+        || cvt <signed __int128, std::bfloat16_t> (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))) != (signed __int128) (std::bfloat16_t) (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))))
+                                                                                                                                                                   ^
+
+"./cpp23/ext-floating14.C", line 420: error: expected a ")"
+        || cvt <signed __int128, std::bfloat16_t> (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))) != (signed __int128) (std::bfloat16_t) (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))))
+                                                                                                                                                                                                      ^
+
+"./cpp23/ext-floating14.C", line 422: error: expected a ">"
+    if (cvt <unsigned __int128, std::bfloat16_t> (42.0bf16) != (unsigned __int128) (std::bfloat16_t) 42.0bf16
+                      ^
+
+"./cpp23/ext-floating14.C", line 422: error: expected a ")"
+    if (cvt <unsigned __int128, std::bfloat16_t> (42.0bf16) != (unsigned __int128) (std::bfloat16_t) 42.0bf16
+                                                                         ^
+
+"./cpp23/ext-floating14.C", line 423: error: expected a ">"
+        || cvt <unsigned __int128, std::bfloat16_t> ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)) != (unsigned __int128) (std::bfloat16_t) ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)))
+                         ^
+
+"./cpp23/ext-floating14.C", line 423: error: expected a ")"
+        || cvt <unsigned __int128, std::bfloat16_t> ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)) != (unsigned __int128) (std::bfloat16_t) ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)))
+                                                               ^
+
+"./cpp23/ext-floating14.C", line 423: error: expected a ")"
+        || cvt <unsigned __int128, std::bfloat16_t> ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)) != (unsigned __int128) (std::bfloat16_t) ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)))
+                                                                                                    ^
+
+"./cpp23/ext-floating14.C", line 423: error: expected a ")"
+        || cvt <unsigned __int128, std::bfloat16_t> ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)) != (unsigned __int128) (std::bfloat16_t) ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)))
+                                                                                                                                 ^
+
+"./cpp23/ext-floating14.C", line 423: error: expected a ")"
+        || cvt <unsigned __int128, std::bfloat16_t> ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)) != (unsigned __int128) (std::bfloat16_t) ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)))
+                                                                                                                                                                        ^
+
+"./cpp23/ext-floating14.C", line 423: error: expected a ")"
+        || cvt <unsigned __int128, std::bfloat16_t> ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)) != (unsigned __int128) (std::bfloat16_t) ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)))
+                                                                                                                                                                                                             ^
+
+"./cpp23/ext-floating14.C", line 469: error: expected a ">"
+    if (cvt <signed __int128, std::float32_t> (42.0f32) != (signed __int128) (std::float32_t) 42.0f32
+                    ^
+
+"./cpp23/ext-floating14.C", line 469: error: expected a ")"
+    if (cvt <signed __int128, std::float32_t> (42.0f32) != (signed __int128) (std::float32_t) 42.0f32
+                                                                   ^
+
+"./cpp23/ext-floating14.C", line 470: error: expected a ">"
+        || cvt <signed __int128, std::float32_t> (-42.0f32) != (signed __int128) (std::float32_t) -42.0f32
+                       ^
+
+"./cpp23/ext-floating14.C", line 470: error: expected a ")"
+        || cvt <signed __int128, std::float32_t> (-42.0f32) != (signed __int128) (std::float32_t) -42.0f32
+                                                                       ^
+
+"./cpp23/ext-floating14.C", line 471: error: expected a ">"
+        || cvt <signed __int128, std::float32_t> ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2)) != (signed __int128) (std::float32_t) ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))
+                       ^
+
+"./cpp23/ext-floating14.C", line 471: error: expected a ")"
+        || cvt <signed __int128, std::float32_t> ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2)) != (signed __int128) (std::float32_t) ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))
+                                                          ^
+
+"./cpp23/ext-floating14.C", line 471: error: expected a ")"
+        || cvt <signed __int128, std::float32_t> ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2)) != (signed __int128) (std::float32_t) ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))
+                                                                                             ^
+
+"./cpp23/ext-floating14.C", line 471: error: expected a ")"
+        || cvt <signed __int128, std::float32_t> ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2)) != (signed __int128) (std::float32_t) ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))
+                                                                                                                        ^
+
+"./cpp23/ext-floating14.C", line 471: error: expected a ")"
+        || cvt <signed __int128, std::float32_t> ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2)) != (signed __int128) (std::float32_t) ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))
+                                                                                                                                                            ^
+
+"./cpp23/ext-floating14.C", line 471: error: expected a ")"
+        || cvt <signed __int128, std::float32_t> ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2)) != (signed __int128) (std::float32_t) ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))
+                                                                                                                                                                                               ^
+
+"./cpp23/ext-floating14.C", line 472: error: expected a ">"
+        || cvt <signed __int128, std::float32_t> (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))) != (signed __int128) (std::float32_t) (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))))
+                       ^
+
+"./cpp23/ext-floating14.C", line 472: error: expected a ")"
+        || cvt <signed __int128, std::float32_t> (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))) != (signed __int128) (std::float32_t) (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))))
+                                                            ^
+
+"./cpp23/ext-floating14.C", line 472: error: expected a ")"
+        || cvt <signed __int128, std::float32_t> (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))) != (signed __int128) (std::float32_t) (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))))
+                                                                                               ^
+
+"./cpp23/ext-floating14.C", line 472: error: expected a ")"
+        || cvt <signed __int128, std::float32_t> (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))) != (signed __int128) (std::float32_t) (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))))
+                                                                                                                           ^
+
+"./cpp23/ext-floating14.C", line 472: error: expected a ")"
+        || cvt <signed __int128, std::float32_t> (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))) != (signed __int128) (std::float32_t) (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))))
+                                                                                                                                                                 ^
+
+"./cpp23/ext-floating14.C", line 472: error: expected a ")"
+        || cvt <signed __int128, std::float32_t> (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))) != (signed __int128) (std::float32_t) (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))))
+                                                                                                                                                                                                    ^
+
+"./cpp23/ext-floating14.C", line 474: error: expected a ">"
+    if (cvt <unsigned __int128, std::float32_t> (42.0f32) != (unsigned __int128) (std::float32_t) 42.0f32
+                      ^
+
+"./cpp23/ext-floating14.C", line 474: error: expected a ")"
+    if (cvt <unsigned __int128, std::float32_t> (42.0f32) != (unsigned __int128) (std::float32_t) 42.0f32
+                                                                       ^
+
+"./cpp23/ext-floating14.C", line 475: error: expected a ">"
+        || cvt <unsigned __int128, std::float32_t> ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)) != (unsigned __int128) (std::float32_t) ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)))
+                         ^
+
+"./cpp23/ext-floating14.C", line 475: error: expected a ")"
+        || cvt <unsigned __int128, std::float32_t> ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)) != (unsigned __int128) (std::float32_t) ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)))
+                                                              ^
+
+"./cpp23/ext-floating14.C", line 475: error: expected a ")"
+        || cvt <unsigned __int128, std::float32_t> ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)) != (unsigned __int128) (std::float32_t) ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)))
+                                                                                                   ^
+
+"./cpp23/ext-floating14.C", line 475: error: expected a ")"
+        || cvt <unsigned __int128, std::float32_t> ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)) != (unsigned __int128) (std::float32_t) ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)))
+                                                                                                                                ^
+
+"./cpp23/ext-floating14.C", line 475: error: expected a ")"
+        || cvt <unsigned __int128, std::float32_t> ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)) != (unsigned __int128) (std::float32_t) ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)))
+                                                                                                                                                                      ^
+
+"./cpp23/ext-floating14.C", line 475: error: expected a ")"
+        || cvt <unsigned __int128, std::float32_t> ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)) != (unsigned __int128) (std::float32_t) ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)))
+                                                                                                                                                                                                           ^
+
+"./cpp23/ext-floating14.C", line 521: error: expected a ">"
+    if (cvt <signed __int128, std::float64_t> (42.0f64) != (signed __int128) (std::float64_t) 42.0f64
+                    ^
+
+"./cpp23/ext-floating14.C", line 521: error: expected a ")"
+    if (cvt <signed __int128, std::float64_t> (42.0f64) != (signed __int128) (std::float64_t) 42.0f64
+                                                                   ^
+
+"./cpp23/ext-floating14.C", line 522: error: expected a ">"
+        || cvt <signed __int128, std::float64_t> (-42.0f64) != (signed __int128) (std::float64_t) -42.0f64
+                       ^
+
+"./cpp23/ext-floating14.C", line 522: error: expected a ")"
+        || cvt <signed __int128, std::float64_t> (-42.0f64) != (signed __int128) (std::float64_t) -42.0f64
+                                                                       ^
+
+"./cpp23/ext-floating14.C", line 523: error: expected a ">"
+        || cvt <signed __int128, std::float64_t> ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2)) != (signed __int128) (std::float64_t) ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))
+                       ^
+
+"./cpp23/ext-floating14.C", line 523: error: expected a ")"
+        || cvt <signed __int128, std::float64_t> ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2)) != (signed __int128) (std::float64_t) ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))
+                                                          ^
+
+"./cpp23/ext-floating14.C", line 523: error: expected a ")"
+        || cvt <signed __int128, std::float64_t> ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2)) != (signed __int128) (std::float64_t) ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))
+                                                                                             ^
+
+"./cpp23/ext-floating14.C", line 523: error: expected a ")"
+        || cvt <signed __int128, std::float64_t> ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2)) != (signed __int128) (std::float64_t) ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))
+                                                                                                                        ^
+
+"./cpp23/ext-floating14.C", line 523: error: expected a ")"
+        || cvt <signed __int128, std::float64_t> ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2)) != (signed __int128) (std::float64_t) ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))
+                                                                                                                                                            ^
+
+"./cpp23/ext-floating14.C", line 523: error: expected a ")"
+        || cvt <signed __int128, std::float64_t> ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2)) != (signed __int128) (std::float64_t) ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))
+                                                                                                                                                                                               ^
+
+"./cpp23/ext-floating14.C", line 524: error: expected a ">"
+        || cvt <signed __int128, std::float64_t> (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))) != (signed __int128) (std::float64_t) (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))))
+                       ^
+
+"./cpp23/ext-floating14.C", line 524: error: expected a ")"
+        || cvt <signed __int128, std::float64_t> (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))) != (signed __int128) (std::float64_t) (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))))
+                                                            ^
+
+"./cpp23/ext-floating14.C", line 524: error: expected a ")"
+        || cvt <signed __int128, std::float64_t> (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))) != (signed __int128) (std::float64_t) (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))))
+                                                                                               ^
+
+"./cpp23/ext-floating14.C", line 524: error: expected a ")"
+        || cvt <signed __int128, std::float64_t> (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))) != (signed __int128) (std::float64_t) (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))))
+                                                                                                                           ^
+
+"./cpp23/ext-floating14.C", line 524: error: expected a ")"
+        || cvt <signed __int128, std::float64_t> (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))) != (signed __int128) (std::float64_t) (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))))
+                                                                                                                                                                 ^
+
+"./cpp23/ext-floating14.C", line 524: error: expected a ")"
+        || cvt <signed __int128, std::float64_t> (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))) != (signed __int128) (std::float64_t) (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))))
+                                                                                                                                                                                                    ^
+
+"./cpp23/ext-floating14.C", line 526: error: expected a ">"
+    if (cvt <unsigned __int128, std::float64_t> (42.0f64) != (unsigned __int128) (std::float64_t) 42.0f64
+                      ^
+
+"./cpp23/ext-floating14.C", line 526: error: expected a ")"
+    if (cvt <unsigned __int128, std::float64_t> (42.0f64) != (unsigned __int128) (std::float64_t) 42.0f64
+                                                                       ^
+
+"./cpp23/ext-floating14.C", line 527: error: expected a ">"
+        || cvt <unsigned __int128, std::float64_t> ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)) != (unsigned __int128) (std::float64_t) ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)))
+                         ^
+
+"./cpp23/ext-floating14.C", line 527: error: expected a ")"
+        || cvt <unsigned __int128, std::float64_t> ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)) != (unsigned __int128) (std::float64_t) ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)))
+                                                              ^
+
+"./cpp23/ext-floating14.C", line 527: error: expected a ")"
+        || cvt <unsigned __int128, std::float64_t> ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)) != (unsigned __int128) (std::float64_t) ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)))
+                                                                                                   ^
+
+"./cpp23/ext-floating14.C", line 527: error: expected a ")"
+        || cvt <unsigned __int128, std::float64_t> ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)) != (unsigned __int128) (std::float64_t) ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)))
+                                                                                                                                ^
+
+"./cpp23/ext-floating14.C", line 527: error: expected a ")"
+        || cvt <unsigned __int128, std::float64_t> ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)) != (unsigned __int128) (std::float64_t) ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)))
+                                                                                                                                                                      ^
+
+"./cpp23/ext-floating14.C", line 527: error: expected a ")"
+        || cvt <unsigned __int128, std::float64_t> ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)) != (unsigned __int128) (std::float64_t) ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)))
+                                                                                                                                                                                                           ^
+
+"./cpp23/ext-floating14.C", line 573: error: expected a ">"
+    if (cvt <signed __int128, std::float128_t> (42.0f128) != (signed __int128) (std::float128_t) 42.0f128
+                    ^
+
+"./cpp23/ext-floating14.C", line 573: error: expected a ")"
+    if (cvt <signed __int128, std::float128_t> (42.0f128) != (signed __int128) (std::float128_t) 42.0f128
+                                                                     ^
+
+"./cpp23/ext-floating14.C", line 574: error: expected a ">"
+        || cvt <signed __int128, std::float128_t> (-42.0f128) != (signed __int128) (std::float128_t) -42.0f128
+                       ^
+
+"./cpp23/ext-floating14.C", line 574: error: expected a ")"
+        || cvt <signed __int128, std::float128_t> (-42.0f128) != (signed __int128) (std::float128_t) -42.0f128
+                                                                         ^
+
+"./cpp23/ext-floating14.C", line 575: error: expected a ">"
+        || cvt <signed __int128, std::float128_t> ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2)) != (signed __int128) (std::float128_t) ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))
+                       ^
+
+"./cpp23/ext-floating14.C", line 575: error: expected a ")"
+        || cvt <signed __int128, std::float128_t> ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2)) != (signed __int128) (std::float128_t) ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))
+                                                           ^
+
+"./cpp23/ext-floating14.C", line 575: error: expected a ")"
+        || cvt <signed __int128, std::float128_t> ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2)) != (signed __int128) (std::float128_t) ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))
+                                                                                              ^
+
+"./cpp23/ext-floating14.C", line 575: error: expected a ")"
+        || cvt <signed __int128, std::float128_t> ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2)) != (signed __int128) (std::float128_t) ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))
+                                                                                                                         ^
+
+"./cpp23/ext-floating14.C", line 575: error: expected a ")"
+        || cvt <signed __int128, std::float128_t> ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2)) != (signed __int128) (std::float128_t) ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))
+                                                                                                                                                              ^
+
+"./cpp23/ext-floating14.C", line 575: error: expected a ")"
+        || cvt <signed __int128, std::float128_t> ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2)) != (signed __int128) (std::float128_t) ((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))
+                                                                                                                                                                                                 ^
+
+"./cpp23/ext-floating14.C", line 576: error: expected a ">"
+        || cvt <signed __int128, std::float128_t> (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))) != (signed __int128) (std::float128_t) (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))))
+                       ^
+
+"./cpp23/ext-floating14.C", line 576: error: expected a ")"
+        || cvt <signed __int128, std::float128_t> (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))) != (signed __int128) (std::float128_t) (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))))
+                                                             ^
+
+"./cpp23/ext-floating14.C", line 576: error: expected a ")"
+        || cvt <signed __int128, std::float128_t> (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))) != (signed __int128) (std::float128_t) (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))))
+                                                                                                ^
+
+"./cpp23/ext-floating14.C", line 576: error: expected a ")"
+        || cvt <signed __int128, std::float128_t> (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))) != (signed __int128) (std::float128_t) (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))))
+                                                                                                                            ^
+
+"./cpp23/ext-floating14.C", line 576: error: expected a ")"
+        || cvt <signed __int128, std::float128_t> (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))) != (signed __int128) (std::float128_t) (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))))
+                                                                                                                                                                   ^
+
+"./cpp23/ext-floating14.C", line 576: error: expected a ")"
+        || cvt <signed __int128, std::float128_t> (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))) != (signed __int128) (std::float128_t) (-((signed __int128) 1 << (8 * sizeof (signed __int128) - 2))))
+                                                                                                                                                                                                      ^
+
+"./cpp23/ext-floating14.C", line 578: error: expected a ">"
+    if (cvt <unsigned __int128, std::float128_t> (42.0f128) != (unsigned __int128) (std::float128_t) 42.0f128
+                      ^
+
+"./cpp23/ext-floating14.C", line 578: error: expected a ")"
+    if (cvt <unsigned __int128, std::float128_t> (42.0f128) != (unsigned __int128) (std::float128_t) 42.0f128
+                                                                         ^
+
+"./cpp23/ext-floating14.C", line 579: error: expected a ">"
+        || cvt <unsigned __int128, std::float128_t> ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)) != (unsigned __int128) (std::float128_t) ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)))
+                         ^
+
+"./cpp23/ext-floating14.C", line 579: error: expected a ")"
+        || cvt <unsigned __int128, std::float128_t> ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)) != (unsigned __int128) (std::float128_t) ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)))
+                                                               ^
+
+"./cpp23/ext-floating14.C", line 579: error: expected a ")"
+        || cvt <unsigned __int128, std::float128_t> ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)) != (unsigned __int128) (std::float128_t) ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)))
+                                                                                                    ^
+
+"./cpp23/ext-floating14.C", line 579: error: expected a ")"
+        || cvt <unsigned __int128, std::float128_t> ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)) != (unsigned __int128) (std::float128_t) ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)))
+                                                                                                                                 ^
+
+"./cpp23/ext-floating14.C", line 579: error: expected a ")"
+        || cvt <unsigned __int128, std::float128_t> ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)) != (unsigned __int128) (std::float128_t) ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)))
+                                                                                                                                                                        ^
+
+"./cpp23/ext-floating14.C", line 579: error: expected a ")"
+        || cvt <unsigned __int128, std::float128_t> ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)) != (unsigned __int128) (std::float128_t) ((unsigned __int128) 1 << (8 * sizeof (unsigned __int128) - 1)))
+                                                                                                                                                                                                             ^
+
+196 errors detected in the compilation of "Test_name.c".

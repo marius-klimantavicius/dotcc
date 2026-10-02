@@ -1,0 +1,35 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++23 Test_name.c
+"Test_name.c", line 35: error: expression must have a constant value
+    constexpr int a = foo (); // { dg-error "constant expression" }
+                      ^
+"Test_name.c", line 10: note: 'goto' cannot be executed in constexpr contexts
+    goto lab;		// { dg-error "'goto' is not a constant expression" }
+    ^
+
+"Test_name.c", line 36: error: expression must have a constant value
+    constexpr int b = bar (); // { dg-error "constant expression" }
+                      ^
+"Test_name.c", line 18: note: constant-evaluation cannot go through the declaration of a variable with static or thread storage duration
+    static int a;		// { dg-error "'a' defined 'static' in 'constexpr' context" }
+    ^
+
+"Test_name.c", line 37: error: expression must have a constant value
+    constexpr int c = baz (); // { dg-error "constant expression" }
+                      ^
+"Test_name.c", line 25: note: constant-evaluation cannot go through the declaration of a variable with static or thread storage duration
+    thread_local int a;	// { dg-error "'a' defined 'thread_local' in 'constexpr' context" }
+    ^
+
+"Test_name.c", line 35: warning: variable "a" was declared but never referenced
+    constexpr int a = foo (); // { dg-error "constant expression" }
+                  ^
+
+"Test_name.c", line 36: warning: variable "b" was declared but never referenced
+    constexpr int b = bar (); // { dg-error "constant expression" }
+                  ^
+
+"Test_name.c", line 37: warning: variable "c" was declared but never referenced
+    constexpr int c = baz (); // { dg-error "constant expression" }
+                  ^
+
+3 errors detected in the compilation of "Test_name.c".

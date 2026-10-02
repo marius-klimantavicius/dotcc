@@ -1,0 +1,5 @@
+fe_only -DTEST_NUMBER=1 --clang -e 200 --no_wrap_diagnostics --clang_version 999999 --c Test_name.c
+"Test_name.c", line 19: warning: variable "c" is used before its value is set
+    __builtin_add_overflow(c, 1, &r);  // expected-error {{operand argument to overflow builtin must be an integer type ('const char *' invalid)}}
+                           ^
+

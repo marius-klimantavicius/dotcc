@@ -1,0 +1,9 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 11: error: more than one instance of overloaded function "f" matches the argument list:
+            function "f(const int *const &)" (declared at line 6)
+            function "f(const int *)" (declared at line 7)
+            argument types are: (int *)
+    f(x); // { dg-error "call of overloaded" }
+    ^
+
+1 error detected in the compilation of "Test_name.c".

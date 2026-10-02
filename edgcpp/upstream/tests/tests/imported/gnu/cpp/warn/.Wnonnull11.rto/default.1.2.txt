@@ -1,0 +1,2 @@
+./a.out
+object is: (nil)

@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -e 200 --no_wrap --no_wrap_diagnostics --gcc Test_name.c
+"Test_name.c", line 10: error: too many arguments in function call
+    foo (i);
+         ^
+
+"Test_name.c", line 13: error: declaration is incompatible with "void foo(void)" (declared at line 6)
+  void foo(int *p)
+       ^
+
+2 errors detected in the compilation of "Test_name.c".

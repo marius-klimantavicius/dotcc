@@ -1,0 +1,33 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 33: error: member "N::M::A::x" (declared at line 14) is inaccessible
+      { M::A::x = 0; }      // { dg-error "within this context" }
+              ^
+
+"Test_name.c", line 54: error: member "N::M::B::x" (declared at line 19) is inaccessible
+      M::B::x = 0;       // { dg-error "within this context" }
+            ^
+
+"Test_name.c", line 58: error: member "N::M::A::x" (declared at line 14) is inaccessible
+    { M::A::x = 0; }      // { dg-error "within this context" }
+            ^
+
+"Test_name.c", line 61: error: member "N::M::C::x" (declared at line 24) is inaccessible
+    { M::C::x = 0; }      // { dg-error "within this context" }
+            ^
+
+"Test_name.c", line 29: error: member "N::M::A::x" (declared at line 14) is inaccessible
+        M::A::x = 0;    // { dg-error "within this context" }
+              ^
+          detected during instantiation of "void N::M::f(T) [with T=long]" at line 37
+
+"Test_name.c", line 46: error: member "N::M::A::x" (declared at line 14) is inaccessible
+      M::A::x = 0;       // { dg-error "within this context" }
+            ^
+          detected during instantiation of "void N::f(T) [with T=long]" at line 52
+
+"Test_name.c", line 47: error: member "N::M::B::x" (declared at line 19) is inaccessible
+      M::B::x = 0;       // { dg-error "within this context" }
+            ^
+          detected during instantiation of "void N::f(T) [with T=long]" at line 52
+
+7 errors detected in the compilation of "Test_name.c".

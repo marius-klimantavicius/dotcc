@@ -1,0 +1,30 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics --c++14 Test_name.c
+"Test_name.c", line 16: error: expression must have a constant value
+  static_assert (foo () == 5, "");	// { dg-error "non-constant condition for static assertion" "" { target c++17_down } }
+                 ^
+"Test_name.c", line 12: note: invalid access to inactive member "U::b" of union (member "U::a" is active)
+    w.u.a = w.v = w.u.b = 5L;		// { dg-error "change of the active member of a union from" "" { target c++17_down } }
+                        ^
+
+"Test_name.c", line 30: error: expression must have a constant value
+  static_assert (bar () == 10, "");	// { dg-error "non-constant condition for static assertion" "" { target c++17_down } }
+                 ^
+"Test_name.c", line 26: note: access to uninitialized object
+    w.u.a[3] = w.u.a[1] = w.v;		// { dg-error "change of the active member of a union from" "" { target c++17_down } }
+                    ^
+
+"Test_name.c", line 45: error: expression must have a constant value
+  static_assert (baz ().x == 22, "");	// { dg-error "non-constant condition for static assertion" "" { target c++17_down } }
+                 ^
+"Test_name.c", line 41: note: invalid access to inactive member "W::w" of union (member "W::a" is active)
+    w.a = { (int) (w.w = 17LL + w.a.x), 2 };	// { dg-error "change of the active member of a union from" "" { target c++17_down } }
+                       ^
+
+"Test_name.c", line 47: error: expression must have a constant value
+  static_assert (baz ().y == 2, "");	// { dg-error "non-constant condition for static assertion" "" { target c++17_down } }
+                 ^
+"Test_name.c", line 41: note: invalid access to inactive member "W::w" of union (member "W::a" is active)
+    w.a = { (int) (w.w = 17LL + w.a.x), 2 };	// { dg-error "change of the active member of a union from" "" { target c++17_down } }
+                       ^
+
+4 errors detected in the compilation of "Test_name.c".

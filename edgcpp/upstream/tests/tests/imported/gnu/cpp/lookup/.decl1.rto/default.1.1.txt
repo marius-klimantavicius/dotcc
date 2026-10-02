@@ -1,0 +1,10 @@
+fe_only -DTEST_NUMBER=1 --gnu_version=999999 -tused -e 200 --no_wrap --no_wrap_diagnostics Test_name.c
+"Test_name.c", line 31: error: class "A" has no member "operator short"
+  A::operator short () { // { dg-error "no declaration matches" }
+     ^
+
+"Test_name.c", line 31: error: this declaration has no storage class or type specifier
+  A::operator short () { // { dg-error "no declaration matches" }
+  ^
+
+2 errors detected in the compilation of "Test_name.c".

@@ -1,0 +1,6 @@
+fe_only -DTEST_NUMBER=2 --microsoft_v=1914 Test_name.c
+"Test_name.c", line 5: error: qualified name is not allowed in namespace member declaration
+      template<typename> void N::f();  // Now accepted in some Microsoft modes.
+                              ^
+
+1 error detected in the compilation of "Test_name.c".

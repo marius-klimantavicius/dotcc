@@ -1,0 +1,1 @@
+cpfe -DTEST_NUMBER=1 --parse_templates Test_name.c

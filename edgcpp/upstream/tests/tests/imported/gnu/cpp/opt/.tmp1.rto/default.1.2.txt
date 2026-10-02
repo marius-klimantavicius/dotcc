@@ -1,0 +1,7 @@
+./a.out
+0 1 0xSTACK A<I>::A() [with int I = 1]
+0 2 0xSTACK A<I>::A() [with int I = 2]
+500 2 0xSTACK void Foo(A<I>) [with int I = 2]
+100 2 0xSTACK A<I>::~A() [with int I = 2]
+100 1 0xSTACK A<I>::~A() [with int I = 1]
+0 0 (nil) end

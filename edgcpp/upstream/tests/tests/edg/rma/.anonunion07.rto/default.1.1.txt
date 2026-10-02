@@ -1,0 +1,18 @@
+cpfe -DTEST_NUMBER=1 -r -x -tused --diag_suppress=2458 --strict Test_name.c
+"Test_name.c", line 7: error: "x" has already been declared in the current scope
+  		typedef int x;
+  		            ^
+
+"Test_name.c", line 7: error: types cannot be declared in anonymous unions
+  		typedef int x;
+  		            ^
+
+"Test_name.c", line 7: error: "x" has already been declared in the current scope
+  		typedef int x;
+  		            ^
+
+"Test_name.c", line 6: error: types cannot be declared in anonymous unions
+  	union {
+  	      ^
+
+4 errors detected in the compilation of "Test_name.c".
